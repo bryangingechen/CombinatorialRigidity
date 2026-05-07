@@ -4,11 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Laman
+import CombinatorialRigidity.Mathlib.Data.Finset.Option
 import CombinatorialRigidity.Mathlib.Data.Set.Card
 import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Combinatorics.SimpleGraph.Maps
-import Mathlib.Data.Finset.Preimage
 import Mathlib.Data.Finite.Card
 import Mathlib.Logic.Equiv.Option
 import Mathlib.Tactic.IntervalCases
@@ -133,8 +133,10 @@ instance instDecidableTypeIIAdj [DecidableEq V] (G : SimpleGraph V) [DecidableRe
 
 `typeI_isLaman` and `typeII_isLaman` decompose `(typeI/II _).edgesIn ↑s` into "old" edges (image
 under `some`) plus the subset of fresh edges (each of the form `s(none, some _)`) that lie in
-`s.sym2`. The two helpers below isolate the recurring set-cardinality steps used in the sparsity
-case analysis. -/
+`s.sym2`. The three helpers below isolate the recurring set-cardinality steps used in the
+sparsity case analysis. They are stated against `s.eraseNone` (mathlib's name for the
+some-preimage of a `Finset (Option V)`) so callers can pass the produced equalities /
+non-memberships directly. -/
 
 /-- If `none ∉ s`, no fresh edge `s(none, some _)` lies in `s.sym2`, so any subset of fresh edges
 intersected with `s.sym2` has cardinality `0`. -/
@@ -145,25 +147,24 @@ private lemma fresh_sym2_ncard_eq_zero_of_none_notMem [Finite V] {s : Finset (Op
   rintro e ⟨he, hsub⟩
   exact hnone (Set.mem_sym2_iff_subset.mp hsub (h_xs e he))
 
-/-- If the `some`-preimage of `s` is the singleton `{w}`, every fresh edge `s(none, some x)` that
-lies in `s.sym2` satisfies `x = w`, so the intersection with `s.sym2` is contained in
-`{s(none, some w)}`. -/
-private lemma fresh_sym2_subset_singleton {s : Finset (Option V)} {s' : Finset V}
-    (hmem : ∀ v : V, v ∈ s' ↔ some v ∈ s) {w : V} (hw : s' = {w})
+/-- If `s.eraseNone = {w}`, every fresh edge `s(none, some x)` that lies in `s.sym2` satisfies
+`x = w`, so the intersection with `s.sym2` is contained in `{s(none, some w)}`. -/
+private lemma fresh_sym2_subset_singleton {s : Finset (Option V)} {w : V}
+    (hw : s.eraseNone = {w})
     (xs : Set (Sym2 (Option V))) (h_xs : ∀ e ∈ xs, ∃ x : V, e = s(none, some x)) :
     xs ∩ ((↑s : Set (Option V)).sym2) ⊆ ({s(none, some w)} : Set _) := by
   rintro e ⟨he, hsub⟩
   obtain ⟨x, rfl⟩ := h_xs e he
   rw [Set.mem_sym2_iff_subset, Sym2.coe_mk] at hsub
-  have hx : x ∈ s' := (hmem _).mpr (hsub (Or.inr rfl))
+  have hx : x ∈ s.eraseNone := Finset.mem_eraseNone.mpr (hsub (Or.inr rfl))
   rw [hw, Finset.mem_singleton] at hx
   exact hx ▸ rfl
 
 /-- The triple-fresh-edges intersection is bounded by `2` when at least one of the three vertices
-sits outside the `some`-preimage `s'`: that vertex's edge fails the `s.sym2` membership, leaving
-at most the other two. -/
-private lemma fresh_sym2_triple_inter_ncard_le_two {s : Finset (Option V)} {s' : Finset V}
-    (hmem : ∀ v : V, v ∈ s' ↔ some v ∈ s) {x y z : V} (hx : x ∉ s') :
+sits outside `s.eraseNone`: that vertex's edge fails the `s.sym2` membership, leaving at most the
+other two. -/
+private lemma fresh_sym2_triple_inter_ncard_le_two {s : Finset (Option V)}
+    {x y z : V} (hx : x ∉ s.eraseNone) :
     (({s(none, some x), s(none, some y), s(none, some z)} : Set _) ∩
         ((↑s : Set (Option V)).sym2)).ncard ≤ 2 := by
   refine (Set.ncard_le_ncard (?_ : _ ⊆
@@ -171,7 +172,7 @@ private lemma fresh_sym2_triple_inter_ncard_le_two {s : Finset (Option V)} {s' :
   rintro e ⟨hpair, hsub⟩
   have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
   rcases hpair with rfl | rfl | rfl
-  · exact (hx ((hmem x).mpr (hsubV (by simp)))).elim
+  · exact (hx (Finset.mem_eraseNone.mpr (hsubV (by simp)))).elim
   · exact Set.mem_insert _ _
   · exact Set.mem_insert_of_mem _ rfl
 
@@ -204,16 +205,16 @@ lemma typeI_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b : V} (hab : a ≠ 
 
 /-- The Type I Henneberg move preserves the Laman property: if `G` is Laman and `a ≠ b`, then
 `typeI G a b` is Laman. Tightness follows from `typeI_edgeSet_ncard` and `Finite.card_option`;
-sparsity is by case analysis on `none ∈ s` and on the cardinality of the `some`-preimage `s'`. -/
+sparsity is by case analysis on `none ∈ s` and on the cardinality of `s.eraseNone` (the
+some-preimage `s'`). -/
 theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
     {a b : V} (hab : a ≠ b) : (typeI G a b).IsLaman := by
   classical
   have : Fintype V := Fintype.ofFinite V
   refine ⟨fun s hs_pre => ?_, ?_⟩
-  · -- Sparsity. Define `s'` to be the `some`-preimage of `s` (the "old" vertices in `s`).
-    set s' : Finset V := s.preimage some (Option.some_injective V).injOn with hs'_def
-    have hmem : ∀ v : V, v ∈ s' ↔ some v ∈ s := fun _ => Finset.mem_preimage
-    have hcoe : (s' : Set V) = some ⁻¹' (↑s : Set (Option V)) := Finset.coe_preimage s _
+  · -- Sparsity. `s' := s.eraseNone` is the some-preimage (the "old" vertices in `s`).
+    set s' : Finset V := s.eraseNone with hs'_def
+    have hcoe : (s' : Set V) = some ⁻¹' (↑s : Set (Option V)) := Finset.coe_eraseNone s
     -- Decompose `(typeI G a b).edgesIn ↑s` as old edges (image of `G.edgesIn ↑s'`) plus new edges
     -- (a subset of `{s(none, some a), s(none, some b)}` constrained to lie in `(↑s).sym2`).
     set T : Set (Sym2 (Option V)) :=
@@ -237,13 +238,8 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
       (Set.ncard_le_ncard Set.inter_subset_left).trans (Set.ncard_pair_le _ _)
     -- Case-split on whether `none ∈ s`.
     by_cases hnone : none ∈ s
-    · -- Case `none ∈ s`. Then `s = insert none (s'.image some)`, so `s.card = s'.card + 1`.
-      have hni : none ∉ s'.image some := by simp
-      have hs_eq : s = insert none (s'.image some) := by
-        ext x; cases x <;> simp [hmem, hnone]
-      have hsc : s.card = s'.card + 1 := by
-        rw [hs_eq, Finset.card_insert_of_notMem hni,
-            Finset.card_image_of_injective _ (Option.some_injective V)]
+    · -- Case `none ∈ s`. Then `s.card = s'.card + 1`.
+      have hsc : s.card = s'.card + 1 := (Finset.card_eraseNone_add_one_of_mem hnone).symm
       -- Sub-case on `s'.card`: 0 (vacuous), 1 (singleton), ≥ 2 (use sparsity).
       rcases (show s'.card = 0 ∨ s'.card = 1 ∨ 2 ≤ s'.card from by omega)
         with h0 | h1 | hge
@@ -253,7 +249,7 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
         obtain ⟨w, hw⟩ : ∃ w, s' = {w} := Finset.card_eq_one.mp h1
         have hG_empty : (G.edgesIn (↑s' : Set V)).ncard = 0 := by rw [hw]; simp
         have hT_sub : T ⊆ ({s(none, some w)} : Set _) :=
-          fresh_sym2_subset_singleton hmem hw _
+          fresh_sym2_subset_singleton hw _
             (by rintro e (rfl | rfl) <;> exact ⟨_, rfl⟩)
         have hT_le_1 : T.ncard ≤ 1 :=
           (Set.ncard_le_ncard hT_sub).trans (le_of_eq (Set.ncard_singleton _))
@@ -262,12 +258,7 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
         have hG := h.isSparse s' (by omega)
         omega
     · -- Case `none ∉ s`. Then `T.ncard = 0` and `s.card = s'.card`.
-      have hs_eq : s = s'.image some := by
-        ext x; cases x
-        · simp [hnone]
-        · simp [hmem]
-      have hsc : s.card = s'.card := by
-        rw [hs_eq, Finset.card_image_of_injective _ (Option.some_injective V)]
+      have hsc : s.card = s'.card := (Finset.card_eraseNone_of_not_mem hnone).symm
       have hT_empty : T.ncard = 0 :=
         fresh_sym2_ncard_eq_zero_of_none_notMem hnone _ (by rintro e (rfl | rfl) <;> simp)
       have hG := h.isSparse s' (by omega)
@@ -320,10 +311,9 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
   classical
   have : Fintype V := Fintype.ofFinite V
   refine ⟨fun s hs_pre => ?_, ?_⟩
-  · -- Sparsity.
-    set s' : Finset V := s.preimage some (Option.some_injective V).injOn with hs'_def
-    have hmem : ∀ v : V, v ∈ s' ↔ some v ∈ s := fun _ => Finset.mem_preimage
-    have hcoe : (s' : Set V) = some ⁻¹' (↑s : Set (Option V)) := Finset.coe_preimage s _
+  · -- Sparsity. `s' := s.eraseNone` is the some-preimage (the "old" vertices in `s`).
+    set s' : Finset V := s.eraseNone with hs'_def
+    have hcoe : (s' : Set V) = some ⁻¹' (↑s : Set (Option V)) := Finset.coe_eraseNone s
     -- Decompose `(typeII G a b c).edgesIn ↑s` as deleted-old-edges (image of `G.edgesIn ↑s'` minus
     -- `s(a, b)`) plus new edges (a subset of `{s(none, some a), s(none, some b), s(none, some c)}`
     -- constrained to lie in `(↑s).sym2`).
@@ -350,12 +340,7 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
     -- Case-split on whether `none ∈ s`.
     by_cases hnone : none ∈ s
     · -- Case `none ∈ s`. Then `s.card = s'.card + 1`.
-      have hni : none ∉ s'.image some := by simp
-      have hs_eq : s = insert none (s'.image some) := by
-        ext x; cases x <;> simp [hmem, hnone]
-      have hsc : s.card = s'.card + 1 := by
-        rw [hs_eq, Finset.card_insert_of_notMem hni,
-            Finset.card_image_of_injective _ (Option.some_injective V)]
+      have hsc : s.card = s'.card + 1 := (Finset.card_eraseNone_add_one_of_mem hnone).symm
       -- Sub-case on `s'.card`.
       rcases (show s'.card = 0 ∨ s'.card = 1 ∨ 2 ≤ s'.card from by omega)
         with h0 | h1 | hge
@@ -365,7 +350,7 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
         have hG_empty : (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard = 0 := by
           rw [hw]; simp
         have hT'_sub : T' ⊆ ({s(none, some w)} : Set _) :=
-          fresh_sym2_subset_singleton hmem hw _
+          fresh_sym2_subset_singleton hw _
             (by rintro e (rfl | rfl | rfl) <;> exact ⟨_, rfl⟩)
         have hT'_le_1 : T'.ncard ≤ 1 :=
           (Set.ncard_le_ncard hT'_sub).trans (le_of_eq (Set.ncard_singleton _))
@@ -396,17 +381,12 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
           -- (the underlying `Set` is unchanged) so the helper applies with `x = b`.
           have hT'_le_2 : T'.ncard ≤ 2 := by
             rcases h_or with ha | hb
-            · exact fresh_sym2_triple_inter_ncard_le_two hmem ha
+            · exact fresh_sym2_triple_inter_ncard_le_two ha
             · rw [hT'_def, Set.insert_comm s(none, some a) s(none, some b)]
-              exact fresh_sym2_triple_inter_ncard_le_two hmem hb
+              exact fresh_sym2_triple_inter_ncard_le_two hb
           omega
     · -- Case `none ∉ s`. Then `T'.ncard = 0` and `s.card = s'.card`.
-      have hs_eq : s = s'.image some := by
-        ext x; cases x
-        · simp [hnone]
-        · simp [hmem]
-      have hsc : s.card = s'.card := by
-        rw [hs_eq, Finset.card_image_of_injective _ (Option.some_injective V)]
+      have hsc : s.card = s'.card := (Finset.card_eraseNone_of_not_mem hnone).symm
       have hT'_empty : T'.ncard = 0 :=
         fresh_sym2_ncard_eq_zero_of_none_notMem hnone _ (by rintro e (rfl | rfl | rfl) <;> simp)
       have hG := h.isSparse s' (by omega)

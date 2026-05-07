@@ -102,6 +102,35 @@ can see how it was handled before.
   to Phase 3 where Henneberg gives a one-liner), but worth doing if a
   later phase wants to mechanize more concrete graphs.
 
+### [open] Potential refactor: extract per-move `_edgesIn_ncard_decomp` lemmas
+- **Where it would land:** `Henneberg.lean`, between `typeI_edgeSet_ncard`
+  and `typeI_isLaman` (and the analogous spot for typeII).
+- **Friction:** the sparsity branches of `typeI_isLaman` and
+  `typeII_isLaman` each open with ~10 lines of identical structure —
+  `h_decomp` (Sym2 case-split establishing the union decomposition),
+  `h_disj` (disjointness of the two summands), `h_ncard` (cardinality
+  identity from the disjoint union). The shapes differ only in `T`'s
+  size (2 vs 3 fresh edges) and in whether the image side carries a
+  `\ {s(a, b)}` deletion. The math case-split that follows
+  (`none ∈ s` × subcases on `s'.card`) is what the proof is *about*,
+  but it is buried under that plumbing.
+- **Proposed fix:** extract two project-internal lemmas
+  ```
+  lemma typeI_edgesIn_ncard_decomp {G : SimpleGraph V} (a b : V) (s : Finset (Option V)) :
+      ((typeI G a b).edgesIn (↑s : Set _)).ncard =
+        (G.edgesIn (↑s.eraseNone : Set V)).ncard +
+        (({s(none, some a), s(none, some b)} : Set _) ∩ ((↑s : Set _).sym2)).ncard
+  ```
+  and the typeII analogue (with `\ {s(a, b)}` on the first summand and
+  the three-element fresh-edge set on the second). Each is called
+  exactly once, but expressing the cardinality identity up front means
+  each `_isLaman` sparsity branch can lead with the math case-split.
+- **Status:** open (deferred; original Phase 3 decision was *not*
+  to factor — see Phase3.md "Inline the `edgesIn` decomposition in
+  each `_isLaman` proof". The follow-up `eraseNone` refactor reduced
+  the surrounding bookkeeping enough that the cost-benefit may have
+  flipped; revisit when next touching these proofs).
+
 ### [open] `simp` leaves and-grouping in `typeII` `edgesIn` decomposition
 - **Where it bit:** `typeII_isLaman` sparsity, `h_decomp` proof.
 - **Friction:** the `s(some u, some v)` branch of the Sym2 case-split
@@ -113,7 +142,12 @@ can see how it was handled before.
   the simp closes the typeII case in one extra line per branch.
 - **Proposed fix:** none upstream-able; this is just `simp` not
   doing classical AC. Documented so the next agent doesn't churn
-  on the `simp` set when it inevitably "almost" works.
+  on the `simp` set when it inevitably "almost" works. **Tried
+  later:** adding `and_assoc, and_left_comm` to the simp set does
+  *not* work — they reorder past the `Sym2.map ... = s(some u, some v)`
+  conjunct, breaking the `Sym2.exists_and_map_eq_mk_iff` simp pattern,
+  so the `(some, some)` case fails to close even with the trailing
+  `try tauto`. Stay with the `try tauto` workaround.
 - **Status:** wontfix (tactic limitation, not a missing lemma).
 
 ### [open] `push_neg` deprecated in favour of `push Not`
@@ -221,6 +255,36 @@ can see how it was handled before.
   import is the project's `Sym2.mk_mem_image_map_iff` mirror.
 - **Status:** resolved (project-internal). Lifted as a phase-local
   decision into `notes/Phase3.md`.
+
+### [mirrored] `Finset.card_eraseNone_add_one_of_mem` (addition-form `eraseNone` cardinality)
+- **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity, the
+  `none ∈ s` branch's `s.card = s'.card + 1` derivation. Each occurrence
+  was a 4-line `hni; hs_eq; hsc` block (`hni : none ∉ s'.image some`,
+  rebuild `s = insert none (s'.image some)` by `ext; cases x`, then
+  `rw [hs_eq, card_insert_of_notMem, card_image_of_injective]`).
+- **Friction:** the project was using `s.preimage some _` for the
+  some-preimage. Mathlib's `Finset.eraseNone` is the better-named
+  computable companion and ships exactly the API needed
+  (`mem_eraseNone`, `coe_eraseNone`, `card_eraseNone_of_not_mem`),
+  except the `none ∈ s` cardinality lemma is in `ℕ`-subtraction form
+  (`#s.eraseNone = #s - 1`). The project's coding convention forbids
+  `ℕ`-subtraction, so consumers had to `Nat.sub_add_cancel` it back
+  manually. Switched both `_isLaman` proofs to `s.eraseNone` and
+  added the addition-form companion as a one-line mirror.
+- **Resolution:** mirrored as `Finset.card_eraseNone_add_one_of_mem`
+  (`#s.eraseNone + 1 = #s` under `none ∈ s`). Both `_isLaman` proofs
+  collapsed each `none ∈ s` and `none ∉ s` `hsc` derivation to one
+  line. Net ~9 lines saved in `typeI_isLaman`, ~18 lines in
+  `typeII_isLaman`. The `Finset.Preimage` import was dropped in
+  favour of `Finset.Option`. Follow-up cleanup: the three private
+  `fresh_sym2_*` helpers were taking a generic `s' : Finset V` plus
+  `hmem : ∀ v, v ∈ s' ↔ some v ∈ s` to abstract over which
+  some-preimage was being used; with `eraseNone` standardised across
+  callers, those parameters were dropped, the helpers now state their
+  hypotheses directly against `s.eraseNone`, and call sites no longer
+  pass `hmem`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Finset/Option.lean`.
 
 ### [mirrored] `Set.ncard_pair_le` / `Set.ncard_triple_le` (unconditional pair / triple bounds)
 - **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,

@@ -221,8 +221,8 @@ there.
   3-element for typeII; typeII also carries the `\ {s(a, b)}` on the
   image side). Factoring out a generic `_edgesIn_decomp` lemma would
   not be reused enough to pay for itself, and would force consumers
-  to also reason about the `Finset.preimage some _` -- which is more
-  natural to set up in-context.
+  to also reason about `s.eraseNone` -- which is more natural to set
+  up in-context.
 
 - **`s'.card = 1` sub-case needs explicit subset reasoning.** The
   uniform bound `T.ncard ≤ 2` (resp. `T'.ncard ≤ 3`) is one too loose
@@ -374,6 +374,30 @@ there.
   `Iso.image_edgesIn` (existentials over `φ p = u, φ q = v` need a
   named witness; grind picks the wrong one). Disjointness proofs on
   Sym2 patterns also stay manual per TACTICS.md.
+
+- **Switch `_isLaman` sparsity scaffolds from `s.preimage some _` to
+  `s.eraseNone`.** Both `typeI_isLaman` and `typeII_isLaman` originally
+  introduced `s' := s.preimage some (Option.some_injective V).injOn` and
+  then rebuilt `s = insert none (s'.image some)` (or `s = s'.image some`)
+  in 4–5 lines per branch via `ext; cases x; …; rw [card_insert_of_notMem,
+  card_image_of_injective]`. Mathlib's `Finset.eraseNone` provides the
+  same some-preimage with all the needed API as `@[simp]`-lemmas
+  (`mem_eraseNone`, `coe_eraseNone`, `card_eraseNone_of_not_mem`); the
+  only missing piece was an addition-form companion to
+  `card_eraseNone_of_mem` (mathlib's version uses `ℕ`-subtraction,
+  which the project bans). Mirrored that one lemma as
+  `Finset.card_eraseNone_add_one_of_mem` and switched both proofs.
+  Each `none ∈ s` / `none ∉ s` branch's `hsc` derivation collapsed to
+  one line. Net ~27 lines across the two proofs. Logged in FRICTION.md.
+
+- **`and_assoc` / `and_left_comm` cannot replace `try tauto` in the
+  typeII `h_decomp`.** Tried `simp [edgesIn, hcoe, Set.mem_preimage,
+  T', and_assoc, and_left_comm]` to canonicalize the `(A ∧ p) ∧ q ↔
+  (A ∧ q) ∧ p` mismatch flagged in FRICTION. The associativity rewrites
+  re-order the conjuncts past the `Sym2.map ... = s(some u, some v)`
+  pattern, breaking `Sym2.exists_and_map_eq_mk_iff`'s simp form, so
+  the `(some, some)` case fails to close even after a trailing `try
+  tauto`. Reverted; FRICTION entry updated with the negative result.
 
 - **Extract `isoOfOptionSubtypeNe` from the two iso constructors.**
   `typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors`
