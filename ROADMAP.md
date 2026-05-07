@@ -198,6 +198,11 @@ more elegant if Phase 4 produces a clean rigidity-matroid API.
   mirror-first rule, and other cross-cutting idioms all live in
   `TACTICS.md`. When in doubt, read it — the section TL;DRs are
   short and save iteration time.
+- **No prose counts in shared docs.** Don't write "Phase X surfaced
+  N upstream candidates" or similar in `ROADMAP.md`, `DESIGN.md`, or
+  `TACTICS.md` — counts drift the moment a new phase mirrors more
+  lemmas. Link to `notes/FRICTION.md` "Mirrored" (or the mirror
+  directory listing) as the source of truth instead.
 
 ## Per-session workflow
 
@@ -268,17 +273,38 @@ next concrete task without reading any source file or commit history.
 This means in the same commit:
 
 - **Update `notes/PhaseN.md`** — the active phase's "Current state",
-  "Next", and "Blockers" sections so a cold reader can resume.
+  "Next", and "Blockers" sections so a cold reader can resume. When
+  writing the *Hand-off / next phase* section, name the **smallest
+  concrete commit** that moves the next phase forward, not the full
+  target theorem. If you genuinely don't know whether the next lemma
+  is one session's work or three, say so explicitly: "land the iso
+  half; assess the Laman-preservation half once it closes" beats
+  "deliver the full decomposition theorem". Phase 3 hit this trap
+  with `exists_typeI_or_typeII_reverse`.
 - **Move deferred items to where they will land.** A lemma punted
   from Phase 2 to Phase 3 belongs in Phase 3's "Lemmas to develop"
   list with a one-line rationale, not as a footnote in Phase 2.
   Forward-looking TODOs stranded under closed phases rot.
+- **Lift on promotion.** If a `notes/PhaseN.md` decision has been
+  referenced in 2+ files or by 2+ phases, promote it to `TACTICS.md`
+  (general idiom) or `DESIGN.md` (cross-cutting rationale) and
+  replace the Phase N entry with a one-line pointer. Cross-cutting
+  lessons that stay in phase notes rot — this is the rule that
+  prevents Phase notes from accumulating into 500-line documents.
 - **If the phase finished:**
   - Flip its row in the Status table to ✓.
   - **Compress its planning section in this file** to a one-paragraph
     summary plus a pointer to `notes/PhaseN.md`. Phase 1's section is
     the canonical model. The lemma list and decisions live in
     `notes/PhaseN.md`; ROADMAP carries the hand-off summary.
+  - **Review project organization.** Re-skim ROADMAP.md, TACTICS.md,
+    and FRICTION.md (status sections). Have decisions in
+    `notes/PhaseN.md` accumulated past the lift-on-promotion threshold?
+    Has FRICTION.md grown unscannable? Is any DESIGN.md / ROADMAP.md
+    prose-count or section-name reference stale? Apply the small fix
+    in this commit if obvious; otherwise file a project-organization
+    friction entry to address next phase. This step is what keeps the
+    docs from drifting between phase boundaries.
 - **If you answered a "Choices to revisit" entry** in `DESIGN.md`,
   update it.
 

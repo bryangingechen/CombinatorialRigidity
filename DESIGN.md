@@ -265,12 +265,14 @@ candidates spread over six paths:
   `card_eraseNone_of_mem` (mathlib's version uses `ℕ`-subtraction,
   forbidden by the project)
 
-See `notes/FRICTION.md` "Resolved / mirrored entries" for the
-per-lemma rationale; phases 4 and 5 will likely add more (the
-Phase 4 plan flags one open question — whether mathlib has
-`finrank` for `skewAdjointMatricesSubmodule`).
+See `notes/FRICTION.md` "Mirrored" for the per-lemma rationale;
+phases 4 and 5 will likely add more (the Phase 4 plan flags one
+open question — whether mathlib has `finrank` for
+`skewAdjointMatricesSubmodule`).
 
+---
 
+## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually
 unfold. Add to this list whenever a session surfaces a question; move

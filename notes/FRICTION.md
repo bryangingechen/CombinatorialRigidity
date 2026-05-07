@@ -24,11 +24,14 @@ can see how it was handled before.
   reach for the same glue lemma three times? Did `grind` need an
   unusually long hint list? File an entry — and if the lesson is
   cross-cutting, lift it into `TACTICS.md` instead.
-- When starting a new session, optionally browse here for a small
-  upstream-able item to land alongside the main work.
+- When starting a new session, optionally browse [Open](#open) for a
+  small upstream-able item to land alongside the main work. Skim
+  [Anti-patterns / known dead ends](#anti-patterns--known-dead-ends)
+  if you're about to try something that might already have been
+  rejected.
 - Items that turned into actual upstream candidates live under
-  `Mathlib/<exact mathlib path>` (project mirror); each entry below
-  links to the mirrored file when applicable.
+  `Mathlib/<exact mathlib path>` (project mirror); each entry under
+  [Mirrored](#mirrored) links to its mirror file.
 - The "Ending a session" step in `ROADMAP.md` includes a friction
   review: do not skip it. Even "no new entries this session" is a
   useful checkpoint.
@@ -44,7 +47,26 @@ can see how it was handled before.
 - **Mirror file (if any):** path under `Mathlib/`
 ```
 
-## Open entries
+## Sections
+
+- [Open](#open) — actionable items you'd consider working on.
+- [Anti-patterns / known dead ends](#anti-patterns--known-dead-ends)
+  — wontfix items: tried-and-rejected approaches, deprecated patterns,
+  tactic limitations. Worth seeing once so future agents don't
+  re-litigate.
+- [Mirrored](#mirrored) — upstream-eligible lemmas now living under
+  `Mathlib/<path>`. Active reference list — DESIGN.md "Mirror
+  directory" points here.
+- [Resolved (project-internal)](#resolved-project-internal) — design
+  history: friction we resolved in-project (helper extraction,
+  refactor, simp-set tweak). No further action; preserved for context.
+
+**Filing rule for new entries.** Pick by what the *next agent* would
+do with it: open if you'd act on it; anti-pattern if you wouldn't but
+want to warn future agents; mirrored if you mirrored an upstream
+lemma; resolved otherwise.
+
+## Open
 
 ### [open] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
 - **Where it bit:** Phase 3 close, while planning
@@ -71,7 +93,26 @@ can see how it was handled before.
   matroid (see ROADMAP §5 *Carryover from Phase 3*).
 - **Status:** open (Phase-5-bound).
 
-### [open] `revert` ordering before `e'.ind` is finicky
+### [open] `IsSparse` is not `Decidable`, blocking small-example proofs by `decide`
+- **Where it bit:** Phase 2 attempt at `K₄ \ e` is Laman (deferred).
+- **Friction:** `IsSparse` is `∀ s : Finset V, ℓ ≤ k * #s → (G.edgesIn ↑s).ncard + ℓ ≤ k * #s`,
+  but `Set.ncard` is noncomputable. Even though the statement is morally
+  decidable for finite `V`, we can't close the K₄ \ e example with
+  `decide` and instead fall back on a finite case analysis.
+- **Proposed fix:** add a project-internal `IsSparse'` companion that
+  goes through `Finset.sym2` + `Finset.filter` for the count. Prove
+  `IsSparse ↔ IsSparse'` under `[Fintype V] [DecidableRel G.Adj]`.
+  Then concrete examples can use `decide`.
+- **Status:** open. Acceptable for now (the K₄ \ e example was deferred
+  to Phase 3 where Henneberg gives a one-liner), but worth doing if a
+  later phase wants to mechanize more concrete graphs.
+
+## Anti-patterns / known dead ends
+
+Tried-and-rejected approaches, deprecated patterns, and tactic
+limitations. Worth a once-over so future agents don't re-litigate.
+
+### [wontfix] `revert` ordering before `e'.ind` is finicky
 - **Where it bit:** `typeI_edgeSet` proof, backward direction.
 - **Friction:** To do Sym2 induction on a hypothesis `e'` while
   preserving other hypotheses depending on `e'` (here: `heG : e' ∈ S`
@@ -88,21 +129,7 @@ can see how it was handled before.
   generalizes context automatically.
 - **Status:** wontfix (tactic-semantics issue, not a missing lemma).
 
-### [open] `IsSparse` is not `Decidable`, blocking small-example proofs by `decide`
-- **Where it bit:** Phase 2 attempt at `K₄ \ e` is Laman (deferred).
-- **Friction:** `IsSparse` is `∀ s : Finset V, ℓ ≤ k * #s → (G.edgesIn ↑s).ncard + ℓ ≤ k * #s`,
-  but `Set.ncard` is noncomputable. Even though the statement is morally
-  decidable for finite `V`, we can't close the K₄ \ e example with
-  `decide` and instead fall back on a finite case analysis.
-- **Proposed fix:** add a project-internal `IsSparse'` companion that
-  goes through `Finset.sym2` + `Finset.filter` for the count. Prove
-  `IsSparse ↔ IsSparse'` under `[Fintype V] [DecidableRel G.Adj]`.
-  Then concrete examples can use `decide`.
-- **Status:** open. Acceptable for now (the K₄ \ e example was deferred
-  to Phase 3 where Henneberg gives a one-liner), but worth doing if a
-  later phase wants to mechanize more concrete graphs.
-
-### [open] `simp` leaves and-grouping in `typeII` `edgesIn` decomposition
+### [wontfix] `simp` leaves and-grouping in `typeII` `edgesIn` decomposition
 - **Where it bit:** `typeII_isLaman` sparsity, `h_decomp` proof.
 - **Friction:** the `s(some u, some v)` branch of the Sym2 case-split
   reduces under `simp [edgesIn, hcoe, Set.mem_preimage, T']` to
@@ -121,7 +148,7 @@ can see how it was handled before.
   `try tauto`. Stay with the `try tauto` workaround.
 - **Status:** wontfix (tactic limitation, not a missing lemma).
 
-### [open] `push_neg` deprecated in favour of `push Not`
+### [wontfix] `push_neg` deprecated in favour of `push Not`
 - **Where it bit:** `IsLaman.exists_degree_le_three`.
 - **Friction:** `push_neg` triggers a deprecation warning. The
   replacement `push Not at hcontra` works but produces `3 < x` rather
@@ -132,7 +159,164 @@ can see how it was handled before.
   re-litigate it.
 - **Status:** wontfix (upstream concern).
 
-## Resolved / mirrored entries
+## Mirrored
+
+### [mirrored] `Sym2.notMem_map_some` and `Sym2.disjoint_image_map_some`
+- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
+  `typeI_isLaman` (`h_disj`), `typeII_isLaman` (`h_disj`) — four
+  disjointness obligations of the shape
+  `Disjoint (Sym2.map some '' S) ({s(none, some _), …} : Set _)`
+  (or its `T`/`T'` intersection variant inside `_isLaman`). Each was a
+  3–4 line `rw [Set.disjoint_left]; rintro e he hpair; rcases hpair
+  with rfl | …; simp at he` block.
+- **Friction:** mathlib has `Sym2.mem_map` but no specialization for
+  `none ∉ Sym2.map some e`, and no packaged disjointness lemma for
+  the recurring "image vs Option-fresh-edges" pattern. The four call
+  sites were fundamentally proving the same fact — every element of
+  `Sym2.map some '' S` has both endpoints in the `some` branch, so it
+  cannot equal a fresh edge containing `none` — but each call site
+  re-derived this from `simp at he` after rcases.
+- **Resolution:** mirrored as
+  - `Sym2.notMem_map_some` (`@[simp]`): `none ∉ Sym2.map some e`.
+  - `Sym2.disjoint_image_map_some`: `(∀ e ∈ T, none ∈ e) →
+    Disjoint (Sym2.map some '' S) T`.
+
+  Both `_edgeSet_ncard` lemmas now state `hDisj`'s type explicitly
+  and consume it via the helper as a one-line term-mode application;
+  the `_isLaman` `h_disj` blocks (where `T`/`T'` is `set`-bound and
+  the type can be inferred) collapse to one or two lines via
+  `Sym2.disjoint_image_map_some fun _ ⟨hpair, _⟩ => by rcases hpair
+  …; simp`. Net ~7 lines across the four sites.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
+
+### [mirrored] `Finset.card_eraseNone_add_one_of_mem` (addition-form `eraseNone` cardinality)
+- **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity, the
+  `none ∈ s` branch's `s.card = s'.card + 1` derivation. Each occurrence
+  was a 4-line `hni; hs_eq; hsc` block (`hni : none ∉ s'.image some`,
+  rebuild `s = insert none (s'.image some)` by `ext; cases x`, then
+  `rw [hs_eq, card_insert_of_notMem, card_image_of_injective]`).
+- **Friction:** the project was using `s.preimage some _` for the
+  some-preimage. Mathlib's `Finset.eraseNone` is the better-named
+  computable companion and ships exactly the API needed
+  (`mem_eraseNone`, `coe_eraseNone`, `card_eraseNone_of_not_mem`),
+  except the `none ∈ s` cardinality lemma is in `ℕ`-subtraction form
+  (`#s.eraseNone = #s - 1`). The project's coding convention forbids
+  `ℕ`-subtraction, so consumers had to `Nat.sub_add_cancel` it back
+  manually. Switched both `_isLaman` proofs to `s.eraseNone` and
+  added the addition-form companion as a one-line mirror.
+- **Resolution:** mirrored as `Finset.card_eraseNone_add_one_of_mem`
+  (`#s.eraseNone + 1 = #s` under `none ∈ s`). Both `_isLaman` proofs
+  collapsed each `none ∈ s` and `none ∉ s` `hsc` derivation to one
+  line. Net ~9 lines saved in `typeI_isLaman`, ~18 lines in
+  `typeII_isLaman`. The `Finset.Preimage` import was dropped in
+  favour of `Finset.Option`. Follow-up cleanup: the three private
+  `fresh_sym2_*` helpers were taking a generic `s' : Finset V` plus
+  `hmem : ∀ v, v ∈ s' ↔ some v ∈ s` to abstract over which
+  some-preimage was being used; with `eraseNone` standardised across
+  callers, those parameters were dropped, the helpers now state their
+  hypotheses directly against `s.eraseNone`, and call sites no longer
+  pass `hmem`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Finset/Option.lean`.
+
+### [mirrored] `Set.ncard_pair_le` / `Set.ncard_triple_le` (unconditional pair / triple bounds)
+- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
+  `typeI_isLaman` (`hT_le_2`), `typeII_isLaman` (`hT'_le_3`,
+  `hT'_le_2` ×2).
+- **Friction:** mathlib has `Set.ncard_pair` (`= 2` under `a ≠ b`)
+  but no unconditional `≤ 2` companion. Bounding the cardinality of
+  a literal pair/triple of new edges expanded to 3- and 5-line calc
+  chains via `Set.ncard_insert_le` + `Set.ncard_singleton`, repeated
+  five times across the file (the same 5-line block for each
+  `T ⊆ {…, …}` sub-bound).
+- **Resolution:** mirrored unconditional `≤` bounds. Each calc
+  chain collapses to one `Set.ncard_pair_le _ _` (resp.
+  `Set.ncard_triple_le _ _ _`) application.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Set/Card.lean`.
+
+### [mirrored] `Sym2.map_some_injective` (named specialization)
+- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
+  `typeI_isLaman`, `typeII_isLaman` — every `Set.ncard_image_of_injective`
+  application on a `Sym2.map some` image.
+- **Friction:** the same four-token incantation
+  `Sym2.map.injective (Option.some_injective V)` was written four
+  times. It correctly typechecks but is harder to read than the
+  intent ("`Sym2.map some` is injective").
+- **Status:** mirrored as `Sym2.map_some_injective`.
+- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
+
+### [mirrored] `Sym2.exists_and_map_eq_mk_iff` (Sym2 image-membership case analysis)
+- **Where it bit:** `typeI_edgeSet` (Phase 3); aborted attempt at
+  `typeII_edgeSet`.
+- **Friction:** Proving things of the form
+  `(typeI G a b).edgeSet = (Sym2.map some '' G.edgeSet) ∪ {s(none, some a), s(none, some b)}`
+  required `Sym2.ind` to expose the underlying pair `(x, y)`, then a
+  4-way case analysis `rcases x with _ | u <;> rcases y with _ | v`,
+  each branch closed by mixed `Sym2.eq_iff` / `Option.some.injEq` /
+  `Sym2.map_mk` rewrites and `simp_all`. `aesop`, `tauto`, and bare
+  `simp` each got stuck on a different sub-goal.
+- **Resolution:** The right shape was a *predicate-form* simp lemma:
+  `(∃ e, P e ∧ Sym2.map f e = s(x, y)) ↔ ∃ p q, f p = x ∧ f q = y ∧ P s(p, q)`.
+  This is what `simp` reaches after `Set.mem_image` (a `@[simp]` lemma)
+  has fired, and after any further unfolding of `e ∈ S` (e.g.
+  `Set.mem_diff` for set differences), so the predicate `P` is whatever
+  conjunction those unfoldings produce. The earlier sketches (e.g.
+  `Sym2.map_some_mem_iff` for the `e = Sym2.map f e'` shape) didn't
+  match the simp normal form and so wouldn't fire.
+
+  With the predicate-form lemma tagged `@[simp]`, both
+  `typeI_edgeSet` and `typeII_edgeSet` close in three lines:
+  `ext e; induction e with | h x y => ?_; rcases x with _ | u <;>
+  rcases y with _ | v <;> simp`. The companion non-`simp`
+  `Sym2.mk_mem_image_map_iff` for the pre-`Set.mem_image` shape is
+  also provided, alongside `f = some` specializations.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
+
+### [mirrored] `(G.incidenceSet v).ncard = G.degree v`
+- **Where it bit:** `IsLaman.two_le_degree` (Phase 2).
+- **Friction:** mathlib has `card_incidenceSet_eq_degree` for
+  `Fintype.card`, not for `Set.ncard`. We chained
+  `← Nat.card_coe_set_eq, Nat.card_eq_fintype_card,
+  card_incidenceSet_eq_degree` every time we needed it.
+- **Status:** mirrored as `SimpleGraph.ncard_incidenceSet_eq_degree`.
+- **Mirror file:** `Mathlib/Combinatorics/SimpleGraph/Finite.lean`.
+
+### [mirrored] `G.edgeSet.ncard = G.edgeFinset.card`
+- **Where it bit:** `IsLaman.exists_degree_le_three` and
+  `top_fin_two_isLaman` (Phase 1 + 2).
+- **Friction:** trivial composite of `← Set.ncard_coe_finset` and
+  `coe_edgeFinset`, but written out by hand each time.
+- **Status:** mirrored as `SimpleGraph.ncard_edgeSet_eq_card_edgeFinset`.
+- **Mirror file:** `Mathlib/Combinatorics/SimpleGraph/Finite.lean`.
+
+### [mirrored] `(⊤ : SimpleGraph V).edgeSet.ncard = (Fintype.card V).choose 2`
+- **Where it bit:** `top_fin_two_isLaman`.
+- **Friction:** mathlib's `card_edgeFinset_top_eq_card_choose_two` is
+  in `Finset.card` form; the `Set.ncard` companion was missing.
+- **Status:** mirrored as `SimpleGraph.ncard_edgeSet_top_eq_card_choose_two`.
+- **Mirror file:** `Mathlib/Combinatorics/SimpleGraph/Finite.lean`.
+
+### [mirrored] `Finset.coe_compl_singleton`
+- **Where it bit:** `IsLaman.two_le_degree`.
+- **Friction:** singleton complement coercion is the standard
+  "delete one vertex" idiom, but you have to compose
+  `Finset.coe_compl` and `Finset.coe_singleton` by hand.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Finset/BooleanAlgebra.lean`.
+
+### [mirrored] `Finset.card_compl_singleton`
+- **Where it bit:** `IsLaman.two_le_degree`.
+- **Friction:** as above for the cardinality side.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Fintype/Card.lean`.
+  (Sibling of `coe_compl_singleton` but lands in a different upstream
+  file because `Finset.card_compl` requires `Fintype α` and lives in
+  `Fintype/Card.lean`, not `Finset/BooleanAlgebra.lean`.)
+
+## Resolved (project-internal)
 
 ### [resolved] Per-move `_edgesIn_ncard_decomp` extraction
 - **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity
@@ -262,35 +446,6 @@ can see how it was handled before.
 - **Status:** resolved (project-internal). Lifted as a phase-local
   decision into `notes/Phase3.md`.
 
-### [mirrored] `Sym2.notMem_map_some` and `Sym2.disjoint_image_map_some`
-- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
-  `typeI_isLaman` (`h_disj`), `typeII_isLaman` (`h_disj`) — four
-  disjointness obligations of the shape
-  `Disjoint (Sym2.map some '' S) ({s(none, some _), …} : Set _)`
-  (or its `T`/`T'` intersection variant inside `_isLaman`). Each was a
-  3–4 line `rw [Set.disjoint_left]; rintro e he hpair; rcases hpair
-  with rfl | …; simp at he` block.
-- **Friction:** mathlib has `Sym2.mem_map` but no specialization for
-  `none ∉ Sym2.map some e`, and no packaged disjointness lemma for
-  the recurring "image vs Option-fresh-edges" pattern. The four call
-  sites were fundamentally proving the same fact — every element of
-  `Sym2.map some '' S` has both endpoints in the `some` branch, so it
-  cannot equal a fresh edge containing `none` — but each call site
-  re-derived this from `simp at he` after rcases.
-- **Resolution:** mirrored as
-  - `Sym2.notMem_map_some` (`@[simp]`): `none ∉ Sym2.map some e`.
-  - `Sym2.disjoint_image_map_some`: `(∀ e ∈ T, none ∈ e) →
-    Disjoint (Sym2.map some '' S) T`.
-
-  Both `_edgeSet_ncard` lemmas now state `hDisj`'s type explicitly
-  and consume it via the helper as a one-line term-mode application;
-  the `_isLaman` `h_disj` blocks (where `T`/`T'` is `set`-bound and
-  the type can be inferred) collapse to one or two lines via
-  `Sym2.disjoint_image_map_some fun _ ⟨hpair, _⟩ => by rcases hpair
-  …; simp`. Net ~7 lines across the four sites.
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
-
 ### [resolved] 6-edge / 4-set cardinalities in `IsLaman.exists_nonadj_among_three_neighbors`
 - **Where it bit:** the cardinality preamble in
   `IsLaman.exists_nonadj_among_three_neighbors` (`Laman.lean`):
@@ -341,129 +496,3 @@ can see how it was handled before.
   lines total).
 - **Status:** resolved (no missing lemma — was a `simp`-set
   oversight).
-
-### [mirrored] `Finset.card_eraseNone_add_one_of_mem` (addition-form `eraseNone` cardinality)
-- **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity, the
-  `none ∈ s` branch's `s.card = s'.card + 1` derivation. Each occurrence
-  was a 4-line `hni; hs_eq; hsc` block (`hni : none ∉ s'.image some`,
-  rebuild `s = insert none (s'.image some)` by `ext; cases x`, then
-  `rw [hs_eq, card_insert_of_notMem, card_image_of_injective]`).
-- **Friction:** the project was using `s.preimage some _` for the
-  some-preimage. Mathlib's `Finset.eraseNone` is the better-named
-  computable companion and ships exactly the API needed
-  (`mem_eraseNone`, `coe_eraseNone`, `card_eraseNone_of_not_mem`),
-  except the `none ∈ s` cardinality lemma is in `ℕ`-subtraction form
-  (`#s.eraseNone = #s - 1`). The project's coding convention forbids
-  `ℕ`-subtraction, so consumers had to `Nat.sub_add_cancel` it back
-  manually. Switched both `_isLaman` proofs to `s.eraseNone` and
-  added the addition-form companion as a one-line mirror.
-- **Resolution:** mirrored as `Finset.card_eraseNone_add_one_of_mem`
-  (`#s.eraseNone + 1 = #s` under `none ∈ s`). Both `_isLaman` proofs
-  collapsed each `none ∈ s` and `none ∉ s` `hsc` derivation to one
-  line. Net ~9 lines saved in `typeI_isLaman`, ~18 lines in
-  `typeII_isLaman`. The `Finset.Preimage` import was dropped in
-  favour of `Finset.Option`. Follow-up cleanup: the three private
-  `fresh_sym2_*` helpers were taking a generic `s' : Finset V` plus
-  `hmem : ∀ v, v ∈ s' ↔ some v ∈ s` to abstract over which
-  some-preimage was being used; with `eraseNone` standardised across
-  callers, those parameters were dropped, the helpers now state their
-  hypotheses directly against `s.eraseNone`, and call sites no longer
-  pass `hmem`.
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/Data/Finset/Option.lean`.
-
-### [mirrored] `Set.ncard_pair_le` / `Set.ncard_triple_le` (unconditional pair / triple bounds)
-- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
-  `typeI_isLaman` (`hT_le_2`), `typeII_isLaman` (`hT'_le_3`,
-  `hT'_le_2` ×2).
-- **Friction:** mathlib has `Set.ncard_pair` (`= 2` under `a ≠ b`)
-  but no unconditional `≤ 2` companion. Bounding the cardinality of
-  a literal pair/triple of new edges expanded to 3- and 5-line calc
-  chains via `Set.ncard_insert_le` + `Set.ncard_singleton`, repeated
-  five times across the file (the same 5-line block for each
-  `T ⊆ {…, …}` sub-bound).
-- **Resolution:** mirrored unconditional `≤` bounds. Each calc
-  chain collapses to one `Set.ncard_pair_le _ _` (resp.
-  `Set.ncard_triple_le _ _ _`) application.
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/Data/Set/Card.lean`.
-
-### [mirrored] `Sym2.map_some_injective` (named specialization)
-- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
-  `typeI_isLaman`, `typeII_isLaman` — every `Set.ncard_image_of_injective`
-  application on a `Sym2.map some` image.
-- **Friction:** the same four-token incantation
-  `Sym2.map.injective (Option.some_injective V)` was written four
-  times. It correctly typechecks but is harder to read than the
-  intent ("`Sym2.map some` is injective").
-- **Status:** mirrored as `Sym2.map_some_injective`.
-- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
-
-### [mirrored] `Sym2.exists_and_map_eq_mk_iff` (Sym2 image-membership case analysis)
-- **Where it bit:** `typeI_edgeSet` (Phase 3); aborted attempt at
-  `typeII_edgeSet`.
-- **Friction:** Proving things of the form
-  `(typeI G a b).edgeSet = (Sym2.map some '' G.edgeSet) ∪ {s(none, some a), s(none, some b)}`
-  required `Sym2.ind` to expose the underlying pair `(x, y)`, then a
-  4-way case analysis `rcases x with _ | u <;> rcases y with _ | v`,
-  each branch closed by mixed `Sym2.eq_iff` / `Option.some.injEq` /
-  `Sym2.map_mk` rewrites and `simp_all`. `aesop`, `tauto`, and bare
-  `simp` each got stuck on a different sub-goal.
-- **Resolution:** The right shape was a *predicate-form* simp lemma:
-  `(∃ e, P e ∧ Sym2.map f e = s(x, y)) ↔ ∃ p q, f p = x ∧ f q = y ∧ P s(p, q)`.
-  This is what `simp` reaches after `Set.mem_image` (a `@[simp]` lemma)
-  has fired, and after any further unfolding of `e ∈ S` (e.g.
-  `Set.mem_diff` for set differences), so the predicate `P` is whatever
-  conjunction those unfoldings produce. The earlier sketches (e.g.
-  `Sym2.map_some_mem_iff` for the `e = Sym2.map f e'` shape) didn't
-  match the simp normal form and so wouldn't fire.
-
-  With the predicate-form lemma tagged `@[simp]`, both
-  `typeI_edgeSet` and `typeII_edgeSet` close in three lines:
-  `ext e; induction e with | h x y => ?_; rcases x with _ | u <;>
-  rcases y with _ | v <;> simp`. The companion non-`simp`
-  `Sym2.mk_mem_image_map_iff` for the pre-`Set.mem_image` shape is
-  also provided, alongside `f = some` specializations.
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
-
-### [mirrored] `(G.incidenceSet v).ncard = G.degree v`
-- **Where it bit:** `IsLaman.two_le_degree` (Phase 2).
-- **Friction:** mathlib has `card_incidenceSet_eq_degree` for
-  `Fintype.card`, not for `Set.ncard`. We chained
-  `← Nat.card_coe_set_eq, Nat.card_eq_fintype_card,
-  card_incidenceSet_eq_degree` every time we needed it.
-- **Status:** mirrored as `SimpleGraph.ncard_incidenceSet_eq_degree`.
-- **Mirror file:** `Mathlib/Combinatorics/SimpleGraph/Finite.lean`.
-
-### [mirrored] `G.edgeSet.ncard = G.edgeFinset.card`
-- **Where it bit:** `IsLaman.exists_degree_le_three` and
-  `top_fin_two_isLaman` (Phase 1 + 2).
-- **Friction:** trivial composite of `← Set.ncard_coe_finset` and
-  `coe_edgeFinset`, but written out by hand each time.
-- **Status:** mirrored as `SimpleGraph.ncard_edgeSet_eq_card_edgeFinset`.
-- **Mirror file:** `Mathlib/Combinatorics/SimpleGraph/Finite.lean`.
-
-### [mirrored] `(⊤ : SimpleGraph V).edgeSet.ncard = (Fintype.card V).choose 2`
-- **Where it bit:** `top_fin_two_isLaman`.
-- **Friction:** mathlib's `card_edgeFinset_top_eq_card_choose_two` is
-  in `Finset.card` form; the `Set.ncard` companion was missing.
-- **Status:** mirrored as `SimpleGraph.ncard_edgeSet_top_eq_card_choose_two`.
-- **Mirror file:** `Mathlib/Combinatorics/SimpleGraph/Finite.lean`.
-
-### [mirrored] `Finset.coe_compl_singleton`
-- **Where it bit:** `IsLaman.two_le_degree`.
-- **Friction:** singleton complement coercion is the standard
-  "delete one vertex" idiom, but you have to compose
-  `Finset.coe_compl` and `Finset.coe_singleton` by hand.
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/Data/Finset/BooleanAlgebra.lean`.
-
-### [mirrored] `Finset.card_compl_singleton`
-- **Where it bit:** `IsLaman.two_le_degree`.
-- **Friction:** as above for the cardinality side.
-- **Status:** mirrored.
-- **Mirror file:** `Mathlib/Data/Fintype/Card.lean`.
-  (Sibling of `coe_compl_singleton` but lands in a different upstream
-  file because `Finset.card_compl` requires `Fintype α` and lives in
-  `Fintype/Card.lean`, not `Finset/BooleanAlgebra.lean`.)
