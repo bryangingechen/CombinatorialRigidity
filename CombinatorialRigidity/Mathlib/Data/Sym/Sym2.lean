@@ -49,6 +49,9 @@ copy-paste alongside `Sym2.mem_map` / `Sym2.coe_map`. See
 * `Sym2.map_some_injective` — `Sym2.map (some : α → Option α)` is injective.
   A common specialization that otherwise reads as
   `Sym2.map.injective (Option.some_injective _)`.
+* `Sym2.notMem_map_some` — `none ∉ Sym2.map some e`. Tagged `@[simp]`.
+* `Sym2.disjoint_image_map_some` — disjointness packaging: `Sym2.map some '' S`
+  is disjoint from any `T` whose elements all contain `none`.
 -/
 
 namespace Sym2
@@ -102,5 +105,23 @@ lemma mk_mem_image_map_some_iff {S : Set (Sym2 α)} {x y : Option α} :
 via `Set.ncard_image_of_injective`. -/
 lemma map_some_injective : Function.Injective (Sym2.map (some : α → Option α)) :=
   Sym2.map.injective (Option.some_injective α)
+
+/-- `none` is never an endpoint of `Sym2.map some e`: the image of any edge `e : Sym2 α`
+under `some : α → Option α` has both endpoints in the `some`-branch of `Option α`. -/
+@[simp]
+lemma notMem_map_some (e : Sym2 α) :
+    none ∉ Sym2.map (some : α → Option α) e := by
+  rw [Sym2.mem_map]
+  rintro ⟨_, _, h⟩
+  exact Option.some_ne_none _ h
+
+/-- The image `Sym2.map some '' S` is disjoint from any `T ⊆ Sym2 (Option α)` whose
+elements all contain `none` as an endpoint. The typical use is when `T` is a literal
+set of "fresh" edges of the form `s(none, some _)`. -/
+theorem disjoint_image_map_some {S : Set (Sym2 α)} {T : Set (Sym2 (Option α))}
+    (hT : ∀ e ∈ T, none ∈ e) : Disjoint (Sym2.map some '' S) T := by
+  rw [Set.disjoint_left]
+  rintro _ ⟨e, _, rfl⟩ heT
+  exact notMem_map_some e (hT _ heT)
 
 end Sym2

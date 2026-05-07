@@ -194,10 +194,8 @@ lemma typeI_edgeSet (G : SimpleGraph V) (a b : V) :
 lemma typeI_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b : V} (hab : a ≠ b) :
     ((typeI G a b).edgeSet).ncard = G.edgeSet.ncard + 2 := by
   have hDisj : Disjoint (Sym2.map some '' G.edgeSet)
-      ({s(none, some a), s(none, some b)} : Set (Sym2 (Option V))) := by
-    rw [Set.disjoint_left]
-    rintro e he hpair
-    rcases hpair with rfl | rfl <;> simp at he
+      ({s(none, some a), s(none, some b)} : Set (Sym2 (Option V))) :=
+    Sym2.disjoint_image_map_some (by rintro e (rfl | rfl) <;> simp)
   rw [typeI_edgeSet, Set.ncard_union_eq hDisj,
     Set.ncard_image_of_injective _ Sym2.map_some_injective, Set.ncard_pair (by simp [hab])]
 
@@ -214,7 +212,6 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
   refine ⟨fun s hs_pre => ?_, ?_⟩
   · -- Sparsity. `s' := s.eraseNone` is the some-preimage (the "old" vertices in `s`).
     set s' : Finset V := s.eraseNone with hs'_def
-    have hcoe : (s' : Set V) = some ⁻¹' (↑s : Set (Option V)) := Finset.coe_eraseNone s
     -- Decompose `(typeI G a b).edgesIn ↑s` as old edges (image of `G.edgesIn ↑s'`) plus new edges
     -- (a subset of `{s(none, some a), s(none, some b)}` constrained to lie in `(↑s).sym2`).
     set T : Set (Sym2 (Option V)) :=
@@ -224,11 +221,9 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
       ext e
       induction e with | h x y => ?_
       rcases x with _ | u <;> rcases y with _ | v <;>
-        simp [edgesIn, hcoe, Set.mem_preimage, T]
-    have h_disj : Disjoint (Sym2.map some '' G.edgesIn (↑s' : Set V)) T := by
-      rw [Set.disjoint_left]
-      rintro e he ⟨hpair, _⟩
-      rcases hpair with rfl | rfl <;> simp at he
+        simp [hs'_def, edgesIn, T]
+    have h_disj : Disjoint (Sym2.map some '' G.edgesIn (↑s' : Set V)) T :=
+      Sym2.disjoint_image_map_some fun _ ⟨hpair, _⟩ => by rcases hpair with rfl | rfl <;> simp
     have h_ncard : ((typeI G a b).edgesIn (↑s : Set (Option V))).ncard =
         (G.edgesIn (↑s' : Set V)).ncard + T.ncard := by
       rw [h_decomp, Set.ncard_union_eq h_disj,
@@ -289,10 +284,8 @@ lemma typeII_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b c : V}
     ((typeII G a b c).edgeSet).ncard = (G.edgeSet \ {s(a, b)}).ncard + 3 := by
   have hDisj : Disjoint (Sym2.map some '' (G.edgeSet \ {s(a, b)}))
       ({s(none, some a), s(none, some b), s(none, some c)} :
-        Set (Sym2 (Option V))) := by
-    rw [Set.disjoint_left]
-    rintro e he hpair
-    rcases hpair with rfl | rfl | rfl <;> simp at he
+        Set (Sym2 (Option V))) :=
+    Sym2.disjoint_image_map_some (by rintro e (rfl | rfl | rfl) <;> simp)
   rw [typeII_edgeSet, Set.ncard_union_eq hDisj,
     Set.ncard_image_of_injective _ Sym2.map_some_injective,
     Set.ncard_insert_of_notMem (by simp [hab, hca.symm]) (by simp),
@@ -313,7 +306,6 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
   refine ⟨fun s hs_pre => ?_, ?_⟩
   · -- Sparsity. `s' := s.eraseNone` is the some-preimage (the "old" vertices in `s`).
     set s' : Finset V := s.eraseNone with hs'_def
-    have hcoe : (s' : Set V) = some ⁻¹' (↑s : Set (Option V)) := Finset.coe_eraseNone s
     -- Decompose `(typeII G a b c).edgesIn ↑s` as deleted-old-edges (image of `G.edgesIn ↑s'` minus
     -- `s(a, b)`) plus new edges (a subset of `{s(none, some a), s(none, some b), s(none, some c)}`
     -- constrained to lie in `(↑s).sym2`).
@@ -325,11 +317,10 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
       ext e
       induction e with | h x y => ?_
       rcases x with _ | u <;> rcases y with _ | v <;>
-        (simp [edgesIn, hcoe, Set.mem_preimage, T']; try tauto)
-    have h_disj : Disjoint (Sym2.map some '' (G.edgesIn (↑s' : Set V) \ {s(a, b)})) T' := by
-      rw [Set.disjoint_left]
-      rintro e he ⟨hpair, _⟩
-      rcases hpair with rfl | rfl | rfl <;> simp at he
+        (simp [hs'_def, edgesIn, T']; try tauto)
+    have h_disj : Disjoint (Sym2.map some '' (G.edgesIn (↑s' : Set V) \ {s(a, b)})) T' :=
+      Sym2.disjoint_image_map_some
+        fun _ ⟨hpair, _⟩ => by rcases hpair with rfl | rfl | rfl <;> simp
     have h_ncard : ((typeII G a b c).edgesIn (↑s : Set (Option V))).ncard =
         (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard + T'.ncard := by
       rw [h_decomp, Set.ncard_union_eq h_disj,

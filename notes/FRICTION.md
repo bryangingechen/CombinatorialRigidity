@@ -256,6 +256,86 @@ can see how it was handled before.
 - **Status:** resolved (project-internal). Lifted as a phase-local
   decision into `notes/Phase3.md`.
 
+### [mirrored] `Sym2.notMem_map_some` and `Sym2.disjoint_image_map_some`
+- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
+  `typeI_isLaman` (`h_disj`), `typeII_isLaman` (`h_disj`) — four
+  disjointness obligations of the shape
+  `Disjoint (Sym2.map some '' S) ({s(none, some _), …} : Set _)`
+  (or its `T`/`T'` intersection variant inside `_isLaman`). Each was a
+  3–4 line `rw [Set.disjoint_left]; rintro e he hpair; rcases hpair
+  with rfl | …; simp at he` block.
+- **Friction:** mathlib has `Sym2.mem_map` but no specialization for
+  `none ∉ Sym2.map some e`, and no packaged disjointness lemma for
+  the recurring "image vs Option-fresh-edges" pattern. The four call
+  sites were fundamentally proving the same fact — every element of
+  `Sym2.map some '' S` has both endpoints in the `some` branch, so it
+  cannot equal a fresh edge containing `none` — but each call site
+  re-derived this from `simp at he` after rcases.
+- **Resolution:** mirrored as
+  - `Sym2.notMem_map_some` (`@[simp]`): `none ∉ Sym2.map some e`.
+  - `Sym2.disjoint_image_map_some`: `(∀ e ∈ T, none ∈ e) →
+    Disjoint (Sym2.map some '' S) T`.
+
+  Both `_edgeSet_ncard` lemmas now state `hDisj`'s type explicitly
+  and consume it via the helper as a one-line term-mode application;
+  the `_isLaman` `h_disj` blocks (where `T`/`T'` is `set`-bound and
+  the type can be inferred) collapse to one or two lines via
+  `Sym2.disjoint_image_map_some fun _ ⟨hpair, _⟩ => by rcases hpair
+  …; simp`. Net ~7 lines across the four sites.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
+
+### [resolved] 6-edge / 4-set cardinalities in `IsLaman.exists_nonadj_among_three_neighbors`
+- **Where it bit:** the cardinality preamble in
+  `IsLaman.exists_nonadj_among_three_neighbors` (`Laman.lean`):
+  ```
+  hs_card : ({v, a, b, c} : Finset V).card = 4
+  hE_card : E.card = 6      where E = {s(v,a), s(v,b), …, s(b,c)}
+  ```
+  was an 8-line `rw [Finset.card_insert_of_notMem ?_, …, card_singleton]`
+  chain plus an `all_goals simp only [Finset.mem_insert, mem_singleton,
+  Sym2.eq_iff]; tauto` cleanup, repeated at the 4-set case in 4 lines.
+- **Friction:** the cardinality bound is mathematically trivial given
+  the pairwise distinctness already in scope, but the proof is the
+  longest mechanical block in `Laman.lean`. Tried direct `Finset.sym2`
+  / off-diagonal-image routes (`Sym2.card_image_offDiag`); they
+  require equally long subset-equality preambles. Tried injecting
+  from `Fin 6`; same problem. Tried `decide`; doesn't see the
+  symbolic disequalities.
+- **Resolution:** `grind` with the right hint set closes both:
+  ```
+  hs_card: grind [Finset.card_insert_of_notMem, Finset.card_singleton]
+  hE_card: grind [Finset.card_insert_of_notMem, Finset.card_singleton, Sym2.eq_iff]
+  ```
+  (`Finset.mem_insert` / `Finset.mem_singleton` are already
+  `@[grind =]` upstream, so don't pass them — `grind` warns.) The
+  4-set proof drops 4 → 2 lines; the 6-edge proof drops 8 → 3.
+- **Status:** resolved (project-internal — Laman-specific application
+  of an upstream `grind` tactic).
+
+### [resolved] `hcoe` `have` line in `_isLaman` proofs
+- **Where it bit:** both `typeI_isLaman` and `typeII_isLaman` opened
+  with
+  ```
+  have hcoe : (s' : Set V) = some ⁻¹' (↑s : Set (Option V)) :=
+    Finset.coe_eraseNone s
+  ```
+  and then passed `hcoe` (and `Set.mem_preimage`) to the `simp` inside
+  the `h_decomp` proof.
+- **Friction:** `set s' := s.eraseNone with hs'_def` introduces `s'`
+  as an opaque abbreviation; `simp` in `h_decomp` cannot unfold `↑s'`
+  to `↑s.eraseNone` on its own and so does not see the `@[simp]`-
+  tagged `Finset.coe_eraseNone`. The `hcoe` `have` worked around this
+  by surfacing the equation manually.
+- **Resolution:** pass `hs'_def` directly to `simp`. With
+  `simp [hs'_def, edgesIn, T]` (and `T'` for typeII) the
+  `s' → s.eraseNone` rewrite fires, then `Finset.coe_eraseNone` and
+  `Set.mem_preimage` (both upstream `@[simp]`) handle the remaining
+  goal automatically. Drops the `hcoe` line from both proofs (~4
+  lines total).
+- **Status:** resolved (no missing lemma — was a `simp`-set
+  oversight).
+
 ### [mirrored] `Finset.card_eraseNone_add_one_of_mem` (addition-form `eraseNone` cardinality)
 - **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity, the
   `none ∈ s` branch's `s.card = s'.card + 1` derivation. Each occurrence

@@ -151,21 +151,13 @@ theorem IsLaman.exists_nonadj_among_three_neighbors [Finite V]
   have hvc : v ≠ c := G.ne_of_adj hc
   -- The 4-set `{v, a, b, c}` has cardinality 4.
   have hs_card : ({v, a, b, c} : Finset V).card = 4 := by
-    rw [Finset.card_insert_of_notMem (by simp [hva, hvb, hvc] : v ∉ ({a, b, c} : Finset V)),
-        Finset.card_insert_of_notMem (by simp [hab, hac] : a ∉ ({b, c} : Finset V)),
-        Finset.card_insert_of_notMem (by simp [hbc] : b ∉ ({c} : Finset V)),
-        Finset.card_singleton]
+    grind [Finset.card_insert_of_notMem, Finset.card_singleton]
   -- The 6 candidate edges form a 6-element Finset, all contained in `G.edgesIn ↑{v,a,b,c}`.
   set E : Finset (Sym2 V) :=
     {s(v, a), s(v, b), s(v, c), s(a, b), s(a, c), s(b, c)} with hE_def
   have hE_card : E.card = 6 := by
     rw [hE_def]
-    rw [Finset.card_insert_of_notMem ?_, Finset.card_insert_of_notMem ?_,
-        Finset.card_insert_of_notMem ?_, Finset.card_insert_of_notMem ?_,
-        Finset.card_insert_of_notMem ?_, Finset.card_singleton]
-    all_goals
-      simp only [Finset.mem_insert, Finset.mem_singleton, Sym2.eq_iff]
-      tauto
+    grind [Finset.card_insert_of_notMem, Finset.card_singleton, Sym2.eq_iff]
   have hE_sub : (↑E : Set (Sym2 V)) ⊆ G.edgesIn (↑({v, a, b, c} : Finset V) : Set V) := by
     intro e he
     simp only [hE_def, Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,

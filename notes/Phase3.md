@@ -399,6 +399,39 @@ there.
   the `(some, some)` case fails to close even after a trailing `try
   tauto`. Reverted; FRICTION entry updated with the negative result.
 
+- **Mirror Sym2 disjointness lemma; collapse 4 disjointness blocks.**
+  Each of `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
+  `typeI_isLaman` (`h_disj`), `typeII_isLaman` (`h_disj`) carried a
+  3–4 line `rw [Set.disjoint_left]; rintro e he hpair; rcases hpair
+  …; simp at he` proving disjointness between `Sym2.map some '' S`
+  and a literal Option-fresh-edge set. Mirrored two upstream-eligible
+  lemmas in `Sym2.lean`: `notMem_map_some` (`none ∉ Sym2.map some e`,
+  `@[simp]`) and `disjoint_image_map_some` (`(∀ e ∈ T, none ∈ e) →
+  Disjoint (Sym2.map some '' S) T`). Each call site collapses to a
+  one-line term-mode application of the helper. Net ~7 lines saved.
+
+- **Drop `hcoe` `have` from both `_isLaman` proofs.** `set s' :=
+  s.eraseNone with hs'_def` introduces `s'` as an opaque
+  abbreviation, so `simp` inside `h_decomp` can't fire
+  `Finset.coe_eraseNone` (which is `@[simp]` upstream) on its own —
+  the `hcoe` `have` was working around that. Passing `hs'_def`
+  directly to the simp set instead (`simp [hs'_def, edgesIn, T]`)
+  unfolds `s' → s.eraseNone` first, after which `coe_eraseNone` and
+  `Set.mem_preimage` fire automatically. ~4 lines saved across the
+  two proofs.
+
+- **Shrink 6-edge / 4-set cardinality computations via `grind`.** The
+  `hs_card` (`{v,a,b,c}.card = 4`) and `hE_card` (literal 6-edge
+  Finset.card = 6) preambles in
+  `IsLaman.exists_nonadj_among_three_neighbors` were 4- and 8-line
+  `Finset.card_insert_of_notMem` chains with explicit `notMem`
+  side-condition proofs. Both close in one `grind only [...]` line
+  with hints `[Finset.card_insert_of_notMem, Finset.card_singleton]`
+  (plus `Sym2.eq_iff` for the Sym2 case). `Finset.mem_insert` and
+  `Finset.mem_singleton` are already `@[grind =]` upstream, so don't
+  pass them. Net ~9 lines saved in `Laman.lean`. Both lifted into
+  the FRICTION resolved log.
+
 - **Extract `isoOfOptionSubtypeNe` from the two iso constructors.**
   `typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors`
   both built `G ≃g (move-graph)` along the equivalence
