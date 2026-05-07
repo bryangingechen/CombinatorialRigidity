@@ -159,6 +159,22 @@ private lemma fresh_sym2_subset_singleton {s : Finset (Option V)} {s' : Finset V
   rw [hw, Finset.mem_singleton] at hx
   exact hx ▸ rfl
 
+/-- The triple-fresh-edges intersection is bounded by `2` when at least one of the three vertices
+sits outside the `some`-preimage `s'`: that vertex's edge fails the `s.sym2` membership, leaving
+at most the other two. -/
+private lemma fresh_sym2_triple_inter_ncard_le_two {s : Finset (Option V)} {s' : Finset V}
+    (hmem : ∀ v : V, v ∈ s' ↔ some v ∈ s) {x y z : V} (hx : x ∉ s') :
+    (({s(none, some x), s(none, some y), s(none, some z)} : Set _) ∩
+        ((↑s : Set (Option V)).sym2)).ncard ≤ 2 := by
+  refine (Set.ncard_le_ncard (?_ : _ ⊆
+      ({s(none, some y), s(none, some z)} : Set _))).trans (Set.ncard_pair_le _ _)
+  rintro e ⟨hpair, hsub⟩
+  have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
+  rcases hpair with rfl | rfl | rfl
+  · exact (hx ((hmem x).mpr (hsubV (by simp)))).elim
+  · exact Set.mem_insert _ _
+  · exact Set.mem_insert_of_mem _ rfl
+
 /-! ### Edge set of `typeI`
 
 The edge set of `typeI G a b` decomposes into the image of `G.edgeSet` under `some` plus the two
@@ -238,7 +254,7 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
         have hG_empty : (G.edgesIn (↑s' : Set V)).ncard = 0 := by rw [hw]; simp
         have hT_sub : T ⊆ ({s(none, some w)} : Set _) :=
           fresh_sym2_subset_singleton hmem hw _
-            (by rintro e (rfl | rfl); exacts [⟨a, rfl⟩, ⟨b, rfl⟩])
+            (by rintro e (rfl | rfl) <;> exact ⟨_, rfl⟩)
         have hT_le_1 : T.ncard ≤ 1 :=
           (Set.ncard_le_ncard hT_sub).trans (le_of_eq (Set.ncard_singleton _))
         omega
@@ -347,11 +363,10 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
       · -- s'.card = 1: `s' = {w}`. Singleton means no `G`-edges; `T' ⊆ {s(none, some w)}`.
         obtain ⟨w, hw⟩ : ∃ w, s' = {w} := Finset.card_eq_one.mp h1
         have hG_empty : (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard = 0 := by
-          have : (G.edgesIn (↑s' : Set V)) = ∅ := by rw [hw]; simp
-          rw [this]; simp
+          rw [hw]; simp
         have hT'_sub : T' ⊆ ({s(none, some w)} : Set _) :=
           fresh_sym2_subset_singleton hmem hw _
-            (by rintro e (rfl | rfl | rfl); exacts [⟨a, rfl⟩, ⟨b, rfl⟩, ⟨c, rfl⟩])
+            (by rintro e (rfl | rfl | rfl) <;> exact ⟨_, rfl⟩)
         have hT'_le_1 : T'.ncard ≤ 1 :=
           (Set.ncard_le_ncard hT'_sub).trans (le_of_eq (Set.ncard_singleton _))
         omega
@@ -374,33 +389,16 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
           have h_or : a ∉ s' ∨ b ∉ s' := by
             by_contra h_both
             push Not at h_both
-            refine h_ab_in ⟨hG_ab, Set.mem_sym2_iff_subset.mpr ?_⟩
-            rw [Sym2.coe_mk]
-            rintro _ (rfl | rfl)
-            exacts [h_both.1, h_both.2]
+            exact h_ab_in (mem_edgesIn.mpr ⟨hG_ab, by
+              simp [Sym2.coe_mk, Set.insert_subset_iff, h_both.1, h_both.2]⟩)
           -- Then T'.ncard ≤ 2: whichever of `a, b` is not in `s'` contributes no edge to `T'`.
+          -- For the `b ∉ s'` arm, reorder T' as `{s(none, some b), s(none, some a), …} ∩ s.sym2`
+          -- (the underlying `Set` is unchanged) so the helper applies with `x = b`.
           have hT'_le_2 : T'.ncard ≤ 2 := by
             rcases h_or with ha | hb
-            · -- `a ∉ s'`: `s(none, some a) ∉ T'`. So T' ⊆ {s(none, some b), s(none, some c)}.
-              refine (Set.ncard_le_ncard (?_ : T' ⊆
-                  ({s(none, some b), s(none, some c)} : Set _))).trans
-                (Set.ncard_pair_le _ _)
-              rintro e ⟨hpair, hsub⟩
-              have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
-              rcases hpair with rfl | rfl | rfl
-              · exact (ha ((hmem a).mpr (hsubV (by simp)))).elim
-              · exact Set.mem_insert _ _
-              · exact Set.mem_insert_of_mem _ rfl
-            · -- `b ∉ s'`: `s(none, some b) ∉ T'`. So T' ⊆ {s(none, some a), s(none, some c)}.
-              refine (Set.ncard_le_ncard (?_ : T' ⊆
-                  ({s(none, some a), s(none, some c)} : Set _))).trans
-                (Set.ncard_pair_le _ _)
-              rintro e ⟨hpair, hsub⟩
-              have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
-              rcases hpair with rfl | rfl | rfl
-              · exact Set.mem_insert _ _
-              · exact (hb ((hmem b).mpr (hsubV (by simp)))).elim
-              · exact Set.mem_insert_of_mem _ rfl
+            · exact fresh_sym2_triple_inter_ncard_le_two hmem ha
+            · rw [hT'_def, Set.insert_comm s(none, some a) s(none, some b)]
+              exact fresh_sym2_triple_inter_ncard_le_two hmem hb
           omega
     · -- Case `none ∉ s`. Then `T'.ncard = 0` and `s.card = s'.card`.
       have hs_eq : s = s'.image some := by
@@ -434,60 +432,62 @@ theorem is the deeper combinatorial direction (the choice of which non-adjacent 
 bridge in the Type II case is not arbitrary). It is deferred to a future phase. See
 `notes/Phase3.md` and `notes/FRICTION.md` for details. -/
 
+/-- Build a graph iso `G ≃g H` along the canonical `V ≃ Option {w : V // w ≠ v}` equivalence,
+given the adjacency-equivalence at each of the four `(u, w)` cases w.r.t. `v`. The `(none, none)`
+case is `H` losing the loop, and the `(none, some)` and `(some, none)` cases are related by
+adjacency-symmetry, so only one of them is asked for. The `(some, some)` case carries any
+move-specific bridging-edge logic. -/
+private def isoOfOptionSubtypeNe [DecidableEq V] {G : SimpleGraph V} (v : V)
+    {H : SimpleGraph (Option {w : V // w ≠ v})}
+    (hnone : ¬ H.Adj none none)
+    (hns : ∀ w (hw : w ≠ v), H.Adj none (some ⟨w, hw⟩) ↔ G.Adj v w)
+    (hss : ∀ {u w} (hu : u ≠ v) (hw : w ≠ v),
+        H.Adj (some ⟨u, hu⟩) (some ⟨w, hw⟩) ↔ G.Adj u w) :
+    G ≃g H where
+  toEquiv := (Equiv.optionSubtypeNe v).symm
+  map_rel_iff' {u w} := by
+    by_cases hu : u = v <;> by_cases hw : w = v
+    · subst hu; subst hw
+      -- `simp` uses `hnone` (and `G.irrefl`) from context; explicit hints would be redundant.
+      simp
+    · subst hu
+      rw [Equiv.optionSubtypeNe_symm_self, Equiv.optionSubtypeNe_symm_of_ne hw]
+      exact hns w hw
+    · subst hw
+      rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_self,
+        H.adj_comm, G.adj_comm]
+      exact hns u hu
+    · rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_of_ne hw]
+      exact hss hu hw
+
 /-- Iso from `G` to a Type I move applied to its induced subgraph on `{w // w ≠ v}`, when `v` is a
 degree-2 vertex with neighbors `a, b`. The membership-style hypothesis `hN` says `N(v) = {a, b}`. -/
 private def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
     (hva : v ≠ a) (hvb : v ≠ b) (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b) :
     G ≃g typeI (G.comap (Subtype.val : {w : V // w ≠ v} → V))
-      ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ where
-  toEquiv := (Equiv.optionSubtypeNe v).symm
-  map_rel_iff' {u w} := by
-    by_cases hu : u = v <;> by_cases hw : w = v
-    · subst hu; subst hw
-      simp
-    · subst hu
-      rw [Equiv.optionSubtypeNe_symm_self, Equiv.optionSubtypeNe_symm_of_ne hw,
-        typeI_adj_none_some, hN]
-      simp
-    · subst hw
-      rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_self,
-        typeI_adj_some_none, ← G.adj_comm, hN]
-      simp
-    · rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_of_ne hw,
-        typeI_adj_some_some, comap_adj]
+      ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ :=
+  isoOfOptionSubtypeNe v (by simp)
+    (fun w _ => by simp [hN])
+    (fun _ _ => Iff.rfl)
 
 /-- Iso from `G` to a Type II move applied to (induced subgraph + bridging edge `s(a, b)`), when
 `v` has degree 3 with neighbors `a, b, c` and `a, b` are non-adjacent in `G`. -/
 private def typeII_iso_of_three_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
-    (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c)
-    (hab : a ≠ b)
+    (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c) (hab : a ≠ b)
     (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c) (hnab : ¬ G.Adj a b) :
     G ≃g typeII (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
         fromEdgeSet ({s(⟨a, hva.symm⟩, ⟨b, hvb.symm⟩)} : Set (Sym2 _)))
-      ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ ⟨c, hvc.symm⟩ where
-  toEquiv := (Equiv.optionSubtypeNe v).symm
-  map_rel_iff' {u w} := by
-    by_cases hu : u = v <;> by_cases hw : w = v
-    · subst hu; subst hw
-      simp
-    · subst hu
-      rw [Equiv.optionSubtypeNe_symm_self, Equiv.optionSubtypeNe_symm_of_ne hw,
-        typeII_adj_none_some, hN]
-      simp
-    · subst hw
-      rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_self,
-        typeII_adj_some_none, ← G.adj_comm, hN]
-      simp
-    · rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_of_ne hw,
-        typeII_adj_some_some, sup_adj, comap_adj, fromEdgeSet_adj,
-        Set.mem_singleton_iff]
+      ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ ⟨c, hvc.symm⟩ :=
+  isoOfOptionSubtypeNe v (by simp)
+    (fun w _ => by simp [hN])
+    (fun {u w} _ _ => by
+      rw [typeII_adj_some_some, sup_adj, comap_adj, fromEdgeSet_adj, Set.mem_singleton_iff]
       -- Forward: contradiction from the deletion clause. Backward: lift the subtype-level Sym2
       -- equality through `Subtype.val` to `s(u, w) = s(a, b)`, then case-split to hit `¬G.Adj a b`.
       refine ⟨fun h => h.1.elim id (fun ⟨hL, _⟩ => absurd hL h.2),
         fun hadj => ⟨Or.inl hadj, fun heq => ?_⟩⟩
       have : s(u, w) = s(a, b) := by simpa using congrArg (Sym2.map Subtype.val) heq
-      rcases Sym2.eq_iff.mp this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-      exacts [hnab hadj, hnab hadj.symm]
+      rcases Sym2.eq_iff.mp this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> grind [G.adj_symm])
 
 /-- The typeI side of `IsLaman.exists_typeI_or_typeII_iso`: package the iso witness for a
 degree-2 vertex `v` with neighbors `{a, b}`. -/

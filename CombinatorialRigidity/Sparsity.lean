@@ -170,7 +170,6 @@ theorem IsTight.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
     simp only [← Nat.card_coe_set_eq]
     exact Nat.card_congr φ.mapEdgeSet.symm
   have hV : Nat.card W = Nat.card V := Nat.card_congr φ.toEquiv.symm
-  rw [hE, hV]
-  exact h.2
+  grind only [h.2]
 
 end SimpleGraph

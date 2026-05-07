@@ -81,17 +81,12 @@ theorem IsLaman.two_le_degree [Fintype V]
     (hV : 3 ≤ Fintype.card V) (v : V) :
     2 ≤ G.degree v := by
   classical
-  -- Apply sparsity to the Finset `{v}ᶜ`.
-  have hs_card := Finset.card_compl_singleton (α := V) v
-  have hpre : 3 ≤ 2 * (({v} : Finset V)ᶜ).card := by rw [hs_card]; omega
-  have hsparse := h.isSparse _ hpre
-  rw [Finset.coe_compl_singleton, hs_card] at hsparse
-  -- Vertex-deletion partition + tightness.
+  -- Apply sparsity to the Finset `{v}ᶜ`; combine with the vertex-deletion partition + tightness.
+  have hsparse := h.isSparse ({v} : Finset V)ᶜ (by simp; omega)
   have hpart := G.ncard_edgesIn_compl_singleton_add_ncard_incidenceSet v
-  rw [G.ncard_incidenceSet_eq_degree v] at hpart
   have hE := h.edgeSet_ncard
-  rw [Nat.card_eq_fintype_card] at hE
-  omega
+  grind only [Finset.coe_compl_singleton, Finset.card_compl_singleton,
+    G.ncard_incidenceSet_eq_degree, Nat.card_eq_fintype_card]
 
 /-! ### A vertex of low degree
 
@@ -106,18 +101,15 @@ theorem IsLaman.exists_degree_le_three [Fintype V]
     ∃ v, G.degree v ≤ 3 := by
   by_contra hcontra
   push Not at hcontra
+  -- Sum of degrees ≥ 4 * Fintype.card V (each vertex has degree ≥ 4 by hcontra), but the
+  -- handshake identity + tightness gives sum = 2 * (2n - 3) < 4n.
+  have h4n : ∑ _ : V, (4 : ℕ) ≤ ∑ v, G.degree v :=
+    Finset.sum_le_sum (fun v _ => by have := hcontra v; omega)
+  simp at h4n
   have hsum := G.sum_degrees_eq_twice_card_edges
-  have hEcoe : G.edgeFinset.card = G.edgeSet.ncard := (G.ncard_edgeSet_eq_card_edgeFinset).symm
+  have hEcoe := G.ncard_edgeSet_eq_card_edgeFinset
   have hE := h.edgeSet_ncard
-  rw [Nat.card_eq_fintype_card] at hE
-  -- Sum of degrees ≥ 4 * Fintype.card V.
-  have h4n : 4 * Fintype.card V ≤ ∑ v, G.degree v :=
-    calc 4 * Fintype.card V
-        = ∑ _ : V, (4 : ℕ) := by
-          rw [Finset.sum_const, Finset.card_univ, smul_eq_mul, mul_comm]
-      _ ≤ ∑ v, G.degree v :=
-          Finset.sum_le_sum (fun v _ => by have := hcontra v; omega)
-  omega
+  grind only [Nat.card_eq_fintype_card]
 
 /-- In a Laman graph on `n ≥ 3` vertices there is a vertex of degree exactly 2 or 3.
 This is the inductive step underlying the Henneberg construction. -/
@@ -175,15 +167,13 @@ theorem IsLaman.exists_nonadj_among_three_neighbors [Finite V]
       simp only [Finset.mem_insert, Finset.mem_singleton, Sym2.eq_iff]
       tauto
   have hE_sub : (↑E : Set (Sym2 V)) ⊆ G.edgesIn (↑({v, a, b, c} : Finset V) : Set V) := by
-    rw [hE_def]
-    rintro e he
-    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+    intro e he
+    simp only [hE_def, Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
                Set.mem_singleton_iff] at he
     rcases he with rfl | rfl | rfl | rfl | rfl | rfl <;>
       exact mem_edgesIn.mpr ⟨by rwa [mem_edgeSet],
         by rw [Sym2.coe_mk]; rintro _ (rfl | rfl) <;> simp⟩
-  have hsparse := h.isSparse {v, a, b, c} (by rw [hs_card]; omega)
-  rw [hs_card] at hsparse
+  have hsparse := h.isSparse {v, a, b, c} (by omega)
   have h6_le : 6 ≤ (G.edgesIn (↑({v, a, b, c} : Finset V) : Set V)).ncard := by
     rw [← hE_card, ← Set.ncard_coe_finset]
     exact Set.ncard_le_ncard hE_sub
@@ -198,8 +188,8 @@ theorem top_fin_two_isLaman : (⊤ : SimpleGraph (Fin 2)).IsLaman := by
     rw [ncard_edgeSet_top_eq_card_choose_two]; rfl
   refine ⟨fun s hs => ?_, by grind only [Nat.card_eq_fintype_card, Fintype.card_fin]⟩
   -- Sparsity. Only the case `s = Finset.univ` is non-vacuous.
-  have hsle : s.card ≤ 2 := by simpa using Finset.card_le_card (Finset.subset_univ s)
-  obtain rfl : s = Finset.univ := s.eq_univ_of_card (by grind only [Fintype.card_fin])
+  obtain rfl : s = Finset.univ :=
+    s.eq_univ_of_card (by have := s.card_le_univ; grind only [Fintype.card_fin])
   grind only [!Finset.coe_univ, edgesIn_univ]
 
 end SimpleGraph

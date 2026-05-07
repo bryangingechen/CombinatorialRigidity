@@ -324,6 +324,88 @@ there.
     `hE_sub` into one rcases that closes both projections in
     parallel. Same proof, two lines shorter.
 
+- **Second cleanup pass: lean harder on `grind`.** Net 15 lines saved
+  across the four files via the TACTICS.md "replace `omega` with
+  `grind only [...hints...]`" workflow plus a few targeted refactors:
+  - `IsLaman.two_le_degree` (`Laman.lean`) — the closing
+    `rw`-chain-then-`omega` block (5 staged hypotheses) collapsed to
+    one `grind only [Finset.coe_compl_singleton,
+    Finset.card_compl_singleton, ncard_incidenceSet_eq_degree,
+    Nat.card_eq_fintype_card]`. The simp/coercion lemmas are needed
+    as hints because `grind` does not pick up `@[simp]` annotations
+    on its own (TACTICS.md § 1).
+  - `IsLaman.exists_degree_le_three` (`Laman.lean`) — the three-line
+    `calc 4 * Fintype.card V = ∑ _ : V, 4 ≤ ∑ v, G.degree v` chain
+    collapsed to a single `Finset.sum_le_sum` line plus `simp at h4n`,
+    and the closing `omega` became `grind only [Nat.card_eq_fintype_card]`
+    sweeping the staged handshake/edge-count facts.
+  - `IsTight.iso` (`Sparsity.lean`) — closing `rw [hE, hV]; exact h.2`
+    became `grind only [h.2]`, with hE/hV in context as `have`s.
+  - `edgesIn_compl_singleton` (`EdgesIn.lean`) — `simp only [...];
+    tauto` became `grind [mem_edgesIn_compl_singleton, incidenceSet]`.
+  - `IsLaman.exists_nonadj_among_three_neighbors` (`Laman.lean`) —
+    `rw [hs_card] at hsparse` is unnecessary since `omega` reads
+    `hs_card` from context; the inner `rw [hE_def]` and
+    `rintro/simp only` were also fused.
+  - `top_fin_two_isLaman` (`Laman.lean`) — `hsle` is unnecessary if
+    we feed `s.card_le_univ` as a `have` directly into the
+    `eq_univ_of_card` precondition's `grind only`.
+  - `typeII_isLaman` `h_or` block (`Henneberg.lean`) — six lines
+    (`refine ... ⟨hG_ab, _⟩`, `rw [Sym2.coe_mk]`, `rintro _ (rfl |
+    rfl)`, `exacts [...]`) collapsed to a single
+    `mem_edgesIn.mpr ⟨hG_ab, by simp [...]⟩` via simp on
+    `Set.insert_subset_iff` over the Sym2 coercion.
+  - `typeII_isLaman` `hT'_le_2` block (`Henneberg.lean`) — the
+    biggest single win. Extracted a third "fresh-edges" helper,
+    `fresh_sym2_triple_inter_ncard_le_two`, alongside the existing
+    `fresh_sym2_subset_singleton` and
+    `fresh_sym2_ncard_eq_zero_of_none_notMem`. The two duplicated
+    11-line branches (`a ∉ s'` and `b ∉ s'`) collapsed to two-line
+    helper invocations, with the second arm reordering T' via
+    `Set.insert_comm` so the helper applies with `x = b` instead of
+    `x = a`. `Set` is unordered so the rewrite is identity-as-Set;
+    only the literal expression form changes.
+  - `typeII_iso_of_three_neighbors` `(some, some)` arm — the closing
+    `exacts [hnab hadj, hnab hadj.symm]` became `<;> grind
+    [G.adj_symm]` since both arms only need `hnab : ¬G.Adj a b`,
+    `hadj`, and adjacency-symmetry.
+
+  Things `grind` did **not** close (and where I reverted): full
+  `Iso.image_edgesIn` (existentials over `φ p = u, φ q = v` need a
+  named witness; grind picks the wrong one). Disjointness proofs on
+  Sym2 patterns also stay manual per TACTICS.md.
+
+- **Extract `isoOfOptionSubtypeNe` from the two iso constructors.**
+  `typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors`
+  both built `G ≃g (move-graph)` along the equivalence
+  `(Equiv.optionSubtypeNe v).symm`, with identical 4-case `by_cases`
+  scaffolding (`(v, v)`, `(v, w)`, `(u, v)`, `(u, w)`) and identical
+  rewrites in cases 1–3 modulo the `Adj` lemma name (`typeI_adj_*`
+  vs `typeII_adj_*`). Factored the scaffolding into a private
+  helper `isoOfOptionSubtypeNe` taking just three adjacency-condition
+  hypotheses: `¬ H.Adj none none` (closes case 1), `H.Adj none (some
+  ⟨w, hw⟩) ↔ G.Adj v w` (case 2; case 3 follows by symmetry of both
+  Adj relations), and `H.Adj (some ⟨u, hu⟩) (some ⟨w, hw⟩) ↔
+  G.Adj u w` (case 4; carries any move-specific bridging logic).
+
+  After extraction:
+  - `typeI_iso_of_two_neighbors` is a 6-line term-mode definition
+    whose three closing arguments are `(by simp)`, `(fun w _ => by
+    simp [hN])`, and `(fun _ _ => Iff.rfl)`.
+  - `typeII_iso_of_three_neighbors` keeps the bridging-edge logic
+    in its `(some, some)` argument; cases 1 and 2 collapse to
+    `(by simp)` and `(fun w _ => by simp [hN])` matching typeI.
+  - Net 14 more lines saved, plus a clearer division between
+    the iso-construction scaffolding and the move-specific
+    adjacency facts. Also removes the slightly subtle `← G.adj_comm`
+    rewrite in case 3 (now handled once in the helper, by `rw
+    [H.adj_comm, G.adj_comm]; exact hns u hu`).
+
+  The helper's `hnone` parameter is technically unused inside the
+  `simp` call — `simp` picks it up from local context as a `P ↔
+  False` rewrite. Keeping it as an explicit parameter documents
+  the obligation; the inline comment notes this.
+
 ## Blockers / open questions
 
 - **typeII reverse Laman preservation needs the Henneberg blocker

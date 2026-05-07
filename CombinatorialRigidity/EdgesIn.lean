@@ -102,8 +102,7 @@ deletion edge-count arguments (Phase 2). -/
 lemma edgesIn_compl_singleton (v : V) :
     G.edgesIn ({v}ᶜ : Set V) = G.edgeSet \ G.incidenceSet v := by
   ext e
-  simp only [mem_edgesIn_compl_singleton, Set.mem_diff, incidenceSet, Set.mem_setOf_eq]
-  tauto
+  grind [mem_edgesIn_compl_singleton, incidenceSet]
 
 /-- Edges of `G` partition into "not incident to `v`" plus "incident to `v`": the cardinality
 identity `#(edgesIn {v}ᶜ) + #(incidenceSet v) = #edgeSet`. The vertex-deletion edge-count
