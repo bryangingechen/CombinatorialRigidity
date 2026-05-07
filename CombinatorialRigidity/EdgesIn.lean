@@ -64,4 +64,22 @@ lemma edgesIn_finite (G : SimpleGraph V) (s : Finset V) : (G.edgesIn ↑s).Finit
   rw [Finset.coe_sym2]
   exact Set.inter_subset_right
 
+/-! ### Vertex deletion: edges avoiding a vertex
+
+Edges of `G` whose both endpoints differ from `v` are exactly the edges of `G` that are not
+incident to `v`. This bridges `edgesIn` and `incidenceSet`, and is the keystone for vertex-
+deletion edge-count arguments (Phase 2). -/
+
+@[simp] lemma mem_edgesIn_compl_singleton {v : V} {e : Sym2 V} :
+    e ∈ G.edgesIn ({v}ᶜ : Set V) ↔ e ∈ G.edgeSet ∧ v ∉ e := by
+  rw [mem_edgesIn, Set.subset_compl_singleton_iff]
+  rfl
+
+/-- Edges with both endpoints in `{v}ᶜ` are precisely the edges not incident to `v`. -/
+lemma edgesIn_compl_singleton (v : V) :
+    G.edgesIn ({v}ᶜ : Set V) = G.edgeSet \ G.incidenceSet v := by
+  ext e
+  simp only [mem_edgesIn_compl_singleton, Set.mem_diff, incidenceSet, Set.mem_setOf_eq]
+  tauto
+
 end SimpleGraph

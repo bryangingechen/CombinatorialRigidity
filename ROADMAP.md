@@ -16,22 +16,22 @@ hand-off document: read it first when picking up the project.
 
 ## Status
 
-| File | What it contains | Status |
+| Phase | File(s) | Status |
 |---|---|---|
-| `EdgesIn.lean` | `edgesIn` selector + basic API | **In progress — small** |
-| `Sparsity.lean` | `IsSparse`, `IsTight` + basic API | **In progress — small** |
-| `Laman.lean` | `IsLaman` + accessors; worked example for `K₂` | **In progress — small** |
-| `Henneberg.lean` | Type I (vertex addition) and Type II (edge split) moves | Not yet created |
-| `Framework.lean` | Bar-joint frameworks, rigidity matrix, infinitesimal rigidity | Not yet created |
-| `LamanTheorem.lean` | Statement and assembly | Not yet created |
+| 1. Sparsity | `EdgesIn.lean`, `Sparsity.lean`, `Laman.lean` | ✓ Complete (see `notes/Phase1.md`) |
+| 2. Laman graphs | `Laman.lean` | Pending |
+| 3. Henneberg moves | `Henneberg.lean` | Not yet created |
+| 4. Frameworks | `Framework.lean` | Not yet created |
+| 5. Laman's theorem | `LamanTheorem.lean` | Not yet created |
 
-The first three files exist with a small amount of content each. Their
-APIs are still likely to grow (or be revised) as downstream proofs
-demand. Add lemmas in the file that introduces the relevant definition;
-a lemma about `IsSparse` belongs in `Sparsity.lean`, not in `Laman.lean`,
-even if it is first used there.
+Phase-level details (per-phase lemma checklists, decisions made during
+that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
+when picking up a phase or reviewing how an earlier phase was finished.
 
-When creating a new file, update this table in the *same commit*.
+Add lemmas in the file that introduces the relevant definition; a
+lemma about `IsSparse` belongs in `Sparsity.lean`, not in `Laman.lean`,
+even if it is first used there. When starting a new phase, create the
+corresponding `notes/PhaseN.md` file in your first commit.
 
 ## Mathematical roadmap
 
@@ -39,22 +39,12 @@ We follow the **Henneberg construction** route, which is elementary and
 matches mathlib's combinatorics style. The matroid-theoretic route via
 `Mathlib.Combinatorics.Matroid` is left as a future alternative framing.
 
-### Phase 1 — Sparsity (`Sparsity.lean`)
+### Phase 1 — Sparsity (`EdgesIn.lean`, `Sparsity.lean`, `Laman.lean`)
 
-Definitions:
-- `SimpleGraph.edgesIn G s` — edges of `G` with both endpoints in `s : Set V`.
-- `SimpleGraph.IsSparse G k ℓ` — for every finite `s ⊆ V` with `ℓ ≤ k * #s`,
-  the number of edges in `s` plus `ℓ` is at most `k * #s`.
-- `SimpleGraph.IsTight G k ℓ` — sparse and `#E + ℓ = k * #V`.
-
-Lemmas to develop:
-- Sparsity is preserved under taking subgraphs (`G ≤ G' → IsSparse G' k ℓ → IsSparse G k ℓ`).
-- The empty graph is `(k, ℓ)`-sparse for all `k, ℓ`.
-- `edgesIn` is monotone in the vertex set.
-- `edgesIn` for `Set.univ` equals `edgeSet`.
-- For finite `V`: deleting an edge preserves sparsity; adding an edge breaks tightness.
-- For Laman's purposes: a `(2, 3)`-sparse graph has at most `2 * #V − 3` edges
-  when `#V ≥ 2`.
+Complete. Defines `edgesIn`, `IsSparse`, `IsTight`, `IsLaman` and the
+basic API (monotonicity, subgraph preservation, global edge bound,
+vertex partition). See `notes/Phase1.md` for the full lemma list and
+phase-specific decisions.
 
 ### Phase 2 — Laman graphs (`Laman.lean`)
 
