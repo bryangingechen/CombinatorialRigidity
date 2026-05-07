@@ -207,6 +207,20 @@ to a fixed section above once a question is answered.
   simp does not always discharge the existential cleanly. Structural
   match-based `Adj` makes all eight adjacency lemmas `Iff.rfl`; the cost
   is one manual `Sym2.ind`-based proof for the edgeSet decomposition.
+- ~~**Decomposition theorem: one statement or split?**~~ **Resolved
+  (Phase 3 close):** Split. The Phase 3 hand-off planned a single
+  `IsLaman.exists_typeI_or_typeII_reverse` that gave both (a) the
+  iso `G ≃g typeI/II G'` and (b) `G'.IsLaman`. Working through
+  the proof revealed (b) is much harder for typeII than the hand-off
+  implied — an arbitrary non-adjacent neighbor pair can fail to give
+  a Laman `G'` (concrete counter-example in `notes/Phase3.md`).
+  Phase 3 ships only (a) as `IsLaman.exists_typeI_or_typeII_iso`;
+  the strengthened (a)+(b) version is a Phase 5 prerequisite. The
+  split makes both halves cleanly testable: the iso uses
+  `(Equiv.optionSubtypeNe v).symm` and is mechanical, while the
+  Laman-preservation half is the Henneberg blocker argument and can
+  be approached independently (or bypassed via the matroid route —
+  see ROADMAP §5 *Carryover from Phase 3*).
 - **Rigidity matrix.** Build via `Matrix` directly, or as a `LinearMap`
   with `LinearMap.toMatrix` for rank arguments? Likely `LinearMap` for
   the abstract definition, `Matrix` for explicit computations on small

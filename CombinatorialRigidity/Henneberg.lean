@@ -10,6 +10,7 @@ import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Combinatorics.SimpleGraph.Maps
 import Mathlib.Data.Finset.Preimage
 import Mathlib.Data.Finite.Card
+import Mathlib.Logic.Equiv.Option
 import Mathlib.Tactic.IntervalCases
 
 /-!
@@ -414,6 +415,159 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
     have hab_in : s(a, b) ∈ G.edgeSet := hG_ab
     grind only [!typeII_edgeSet_ncard, !Finite.card_option,
       !Set.ncard_diff_singleton_of_mem, h.edgeSet_ncard]
+
+/-! ### Decomposition iso (without a Laman claim about `G'`)
+
+A Laman graph on `n ≥ 3` vertices is, up to canonical relabelling, the result of a Type I or
+Type II Henneberg move applied to *some* underlying graph `G'` on one fewer vertex. The graph `G'`
+is the natural choice (the induced subgraph on `{w | w ≠ v}`, plus the bridging edge `s(a, b)` for
+Type II). The underlying equivalence is `(Equiv.optionSubtypeNe v).symm : V ≃ Option {w // w ≠ v}`,
+which sends the chosen low-degree vertex `v` to `none`.
+
+This statement does **not** claim `G'.IsLaman`; the Laman-preservation half of Henneberg's
+theorem is the deeper combinatorial direction (the choice of which non-adjacent neighbor pair to
+bridge in the Type II case is not arbitrary). It is deferred to a future phase. See
+`notes/Phase3.md` and `notes/FRICTION.md` for details. -/
+
+/-- Iso from `G` to a Type I move applied to its induced subgraph on `{w // w ≠ v}`, when `v` is a
+degree-2 vertex with neighbors `a, b`. The membership-style hypothesis `hN` says `N(v) = {a, b}`. -/
+private def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
+    (hva : v ≠ a) (hvb : v ≠ b) (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b) :
+    G ≃g typeI (G.comap (Subtype.val : {w : V // w ≠ v} → V))
+      ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ where
+  toEquiv := (Equiv.optionSubtypeNe v).symm
+  map_rel_iff' {u w} := by
+    by_cases hu : u = v <;> by_cases hw : w = v
+    · subst hu; subst hw
+      simp
+    · subst hu
+      rw [Equiv.optionSubtypeNe_symm_self, Equiv.optionSubtypeNe_symm_of_ne hw,
+        typeI_adj_none_some, hN]
+      simp
+    · subst hw
+      rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_self,
+        typeI_adj_some_none, ← G.adj_comm, hN]
+      simp
+    · rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_of_ne hw,
+        typeI_adj_some_some, comap_adj]
+
+/-- Iso from `G` to a Type II move applied to (induced subgraph + bridging edge `s(a, b)`), when
+`v` has degree 3 with neighbors `a, b, c` and `a, b` are non-adjacent in `G`. -/
+private def typeII_iso_of_three_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
+    (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c)
+    (hab : a ≠ b)
+    (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c) (hnab : ¬ G.Adj a b) :
+    G ≃g typeII (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+        fromEdgeSet ({s(⟨a, hva.symm⟩, ⟨b, hvb.symm⟩)} : Set (Sym2 _)))
+      ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ ⟨c, hvc.symm⟩ where
+  toEquiv := (Equiv.optionSubtypeNe v).symm
+  map_rel_iff' {u w} := by
+    by_cases hu : u = v <;> by_cases hw : w = v
+    · subst hu; subst hw
+      simp
+    · subst hu
+      rw [Equiv.optionSubtypeNe_symm_self, Equiv.optionSubtypeNe_symm_of_ne hw,
+        typeII_adj_none_some, hN]
+      simp
+    · subst hw
+      rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_self,
+        typeII_adj_some_none, ← G.adj_comm, hN]
+      simp
+    · rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_of_ne hw,
+        typeII_adj_some_some, sup_adj, comap_adj, fromEdgeSet_adj,
+        Set.mem_singleton_iff]
+      -- Goal: (G.Adj u w ∨ (s(⟨u, hu⟩, ⟨w, hw⟩) = s(⟨a, _⟩, ⟨b, _⟩) ∧ ⟨u, hu⟩ ≠ ⟨w, hw⟩))
+      --       ∧ s(⟨u, hu⟩, ⟨w, hw⟩) ≠ s(⟨a, _⟩, ⟨b, _⟩) ↔ G.Adj u w
+      constructor
+      · rintro ⟨hL | ⟨hL, _⟩, hR⟩
+        · exact hL
+        · exact (hR hL).elim
+      · intro hadj
+        refine ⟨Or.inl hadj, fun heq => ?_⟩
+        -- s(⟨u⟩, ⟨w⟩) = s(⟨a⟩, ⟨b⟩) implies {u, w} = {a, b}, contradicting ¬G.Adj a b.
+        rw [Sym2.eq_iff] at heq
+        rcases heq with ⟨h1, h2⟩ | ⟨h1, h2⟩
+        · rw [Subtype.mk.injEq] at h1 h2
+          subst h1; subst h2; exact hnab hadj
+        · rw [Subtype.mk.injEq] at h1 h2
+          subst h1; subst h2; exact hnab hadj.symm
+
+/-- Every Laman graph on `n ≥ 3` vertices is isomorphic to a Type I or Type II Henneberg move
+applied to some graph `G'` on `{w : V // w ≠ v}` (for some chosen `v`). The Laman-ness of `G'` is
+**not** asserted; that is the deeper Henneberg-reverse direction, deferred to a later phase.
+
+Proof outline:
+* Pick a vertex `v` of degree 2 or 3 via `IsLaman.exists_two_le_degree_le_three`.
+* Degree 2: `G'` is the induced subgraph and `a, b` are the two `v`-neighbors.
+* Degree 3: pick a non-adjacent neighbor pair `{a, b}` (via
+  `IsLaman.exists_nonadj_among_three_neighbors`) and the third neighbor `c`; `G'` is the induced
+  subgraph augmented with the bridging edge `s(a, b)`. -/
+theorem IsLaman.exists_typeI_or_typeII_iso [Fintype V]
+    {G : SimpleGraph V} (h : G.IsLaman)
+    (hV : 3 ≤ Fintype.card V) :
+    ∃ (v : V) (G' : SimpleGraph {w : V // w ≠ v}),
+      ((∃ a b : {w : V // w ≠ v}, a ≠ b ∧ Nonempty (G ≃g typeI G' a b)) ∨
+       (∃ a b c : {w : V // w ≠ v}, a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ G'.Adj a b ∧
+        Nonempty (G ≃g typeII G' a b c))) := by
+  classical
+  obtain ⟨v, hv2, hv3⟩ := h.exists_two_le_degree_le_three hV
+  refine ⟨v, ?_⟩
+  rcases (show G.degree v = 2 ∨ G.degree v = 3 from by omega) with hdeg | hdeg
+  · -- Degree-2 case: Type I reverse.
+    obtain ⟨a, b, hab, hN_eq⟩ := Finset.card_eq_two.mp hdeg
+    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b := fun w => by
+      rw [← mem_neighborFinset, hN_eq]; simp
+    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
+    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr rfl)
+    have hva : v ≠ a := G.ne_of_adj ha_adj
+    have hvb : v ≠ b := G.ne_of_adj hb_adj
+    refine ⟨_, Or.inl ⟨⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, ?_,
+      ⟨typeI_iso_of_two_neighbors hva hvb hN_iff⟩⟩⟩
+    intro heq
+    exact hab (Subtype.mk.injEq .. |>.mp heq)
+  · -- Degree-3 case: Type II reverse.
+    obtain ⟨a, b, c, hab, hac, hbc, hN_eq⟩ := Finset.card_eq_three.mp hdeg
+    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c := fun w => by
+      rw [← mem_neighborFinset, hN_eq]; simp
+    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
+    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr (Or.inl rfl))
+    have hc_adj : G.Adj v c := (hN_iff c).mpr (Or.inr (Or.inr rfl))
+    have hva : v ≠ a := G.ne_of_adj ha_adj
+    have hvb : v ≠ b := G.ne_of_adj hb_adj
+    have hvc : v ≠ c := G.ne_of_adj hc_adj
+    -- Pick a non-adjacent pair among `{a, b, c}` and rotate the names so it is `(a, b)`.
+    -- Each case calls `typeII_iso_of_three_neighbors` with the appropriate relabelling.
+    rcases h.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc with
+      hnab | hnac | hnbc
+    · -- Pair `{a, b}` non-adjacent: third neighbor is `c`.
+      refine ⟨_, Or.inr ⟨⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩,
+        ?_, ?_, ?_, ?_, ⟨typeII_iso_of_three_neighbors hva hvb hvc hab hN_iff hnab⟩⟩⟩
+      · intro heq; exact hab (Subtype.mk.injEq .. |>.mp heq)
+      · intro heq; exact hac (Subtype.mk.injEq .. |>.mp heq).symm
+      · intro heq; exact hbc (Subtype.mk.injEq .. |>.mp heq).symm
+      · -- `G'.Adj ⟨a⟩ ⟨b⟩` via the added edge.
+        refine Or.inr ⟨rfl, ?_⟩
+        intro heq; exact hab (Subtype.mk.injEq .. |>.mp heq)
+    · -- Pair `{a, c}` non-adjacent: relabel as `(a, c, b)`.
+      have hN_iff' : ∀ w, G.Adj v w ↔ w = a ∨ w = c ∨ w = b := fun w => by
+        rw [hN_iff]; tauto
+      refine ⟨_, Or.inr ⟨⟨a, hva.symm⟩, ⟨c, hvc.symm⟩, ⟨b, hvb.symm⟩,
+        ?_, ?_, ?_, ?_, ⟨typeII_iso_of_three_neighbors hva hvc hvb hac hN_iff' hnac⟩⟩⟩
+      · intro heq; exact hac (Subtype.mk.injEq .. |>.mp heq)
+      · intro heq; exact hab (Subtype.mk.injEq .. |>.mp heq).symm
+      · intro heq; exact hbc.symm (Subtype.mk.injEq .. |>.mp heq).symm
+      · refine Or.inr ⟨rfl, ?_⟩
+        intro heq; exact hac (Subtype.mk.injEq .. |>.mp heq)
+    · -- Pair `{b, c}` non-adjacent: relabel as `(b, c, a)`.
+      have hN_iff' : ∀ w, G.Adj v w ↔ w = b ∨ w = c ∨ w = a := fun w => by
+        rw [hN_iff]; tauto
+      refine ⟨_, Or.inr ⟨⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩, ⟨a, hva.symm⟩,
+        ?_, ?_, ?_, ?_, ⟨typeII_iso_of_three_neighbors hvb hvc hva hbc hN_iff' hnbc⟩⟩⟩
+      · intro heq; exact hbc (Subtype.mk.injEq .. |>.mp heq)
+      · intro heq; exact hab.symm (Subtype.mk.injEq .. |>.mp heq).symm
+      · intro heq; exact hac.symm (Subtype.mk.injEq .. |>.mp heq).symm
+      · refine Or.inr ⟨rfl, ?_⟩
+        intro heq; exact hbc (Subtype.mk.injEq .. |>.mp heq)
 
 end Henneberg
 

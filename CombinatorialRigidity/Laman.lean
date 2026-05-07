@@ -134,6 +134,62 @@ theorem IsLaman.iso {V W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
     (φ : G ≃g H) (h : G.IsLaman) : H.IsLaman :=
   IsTight.iso φ h
 
+/-! ### Non-adjacent pair among three neighbors
+
+In a Laman graph, any three neighbors of a single vertex contain a non-adjacent pair. This is the
+combinatorial input for the Type II Henneberg reverse move: given a degree-3 vertex with neighbors
+`a, b, c`, we use this lemma to pick the two non-adjacent ones to bridge with a fresh edge. -/
+
+/-- In a Laman graph, three pairwise distinct neighbors of any vertex contain a non-adjacent
+pair. Apply sparsity to the 4-set `{v, a, b, c}` (size 4, so at most `2·4 − 3 = 5` edges); the three
+edges `v-a`, `v-b`, `v-c` are present, so among `{a, b, c}` there are at most 2 edges, hence at
+least one of the three possible pairs is missing. -/
+theorem IsLaman.exists_nonadj_among_three_neighbors [Finite V]
+    {G : SimpleGraph V} (h : G.IsLaman) {v a b c : V}
+    (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ¬ G.Adj a b ∨ ¬ G.Adj a c ∨ ¬ G.Adj b c := by
+  classical
+  have : Fintype V := Fintype.ofFinite V
+  by_contra hall
+  push Not at hall
+  obtain ⟨hab_e, hac_e, hbc_e⟩ := hall
+  have hva : v ≠ a := G.ne_of_adj ha
+  have hvb : v ≠ b := G.ne_of_adj hb
+  have hvc : v ≠ c := G.ne_of_adj hc
+  -- The 4-set `{v, a, b, c}` has cardinality 4.
+  have hs_card : ({v, a, b, c} : Finset V).card = 4 := by
+    rw [Finset.card_insert_of_notMem (by simp [hva, hvb, hvc] : v ∉ ({a, b, c} : Finset V)),
+        Finset.card_insert_of_notMem (by simp [hab, hac] : a ∉ ({b, c} : Finset V)),
+        Finset.card_insert_of_notMem (by simp [hbc] : b ∉ ({c} : Finset V)),
+        Finset.card_singleton]
+  -- The 6 candidate edges form a 6-element Finset, all contained in `G.edgesIn ↑{v,a,b,c}`.
+  set E : Finset (Sym2 V) :=
+    {s(v, a), s(v, b), s(v, c), s(a, b), s(a, c), s(b, c)} with hE_def
+  have hE_card : E.card = 6 := by
+    rw [hE_def]
+    rw [Finset.card_insert_of_notMem ?_, Finset.card_insert_of_notMem ?_,
+        Finset.card_insert_of_notMem ?_, Finset.card_insert_of_notMem ?_,
+        Finset.card_insert_of_notMem ?_, Finset.card_singleton]
+    all_goals
+      simp only [Finset.mem_insert, Finset.mem_singleton, Sym2.eq_iff]
+      tauto
+  have hE_sub : (↑E : Set (Sym2 V)) ⊆ G.edgesIn (↑({v, a, b, c} : Finset V) : Set V) := by
+    rw [hE_def]
+    rintro e he
+    simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at he
+    refine mem_edgesIn.mpr ⟨?_, ?_⟩
+    · rcases he with rfl | rfl | rfl | rfl | rfl | rfl <;> rwa [mem_edgeSet]
+    · rcases he with rfl | rfl | rfl | rfl | rfl | rfl <;>
+        (rw [Sym2.coe_mk]; intro x hx; simp_all <;> tauto)
+  have hsparse := h.isSparse {v, a, b, c} (by rw [hs_card]; omega)
+  rw [hs_card] at hsparse
+  have h6_le : 6 ≤ (G.edgesIn (↑({v, a, b, c} : Finset V) : Set V)).ncard := by
+    rw [← hE_card, ← Set.ncard_coe_finset]
+    exact Set.ncard_le_ncard hE_sub
+  omega
+
 /-! ### Base case for Henneberg: `K₂` is Laman -/
 
 /-- The complete graph on two vertices is Laman: it has one edge, matching `2 · 2 − 3 = 1`.

@@ -8,27 +8,42 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 ## Current state
 
 Both Henneberg moves provably preserve the Laman property
-(`typeI_isLaman`, `typeII_isLaman`), and the `K₄ \ e` worked example
-(`top_fin_four_minus_edge_isLaman`) lands as a transport along an
-explicit `Option (Option (Fin 2)) ≃g K₄ \ {s(2, 3)}` iso. The iso
-construction is `decide`-driven once `DecidableRel` instances for
-`typeI.Adj` and `typeII.Adj` are in scope.
+(`typeI_isLaman`, `typeII_isLaman`), the `K₄ \ e` worked example
+(`top_fin_four_minus_edge_isLaman`) lands via iso transport, and the
+**iso half of the structural decomposition** is done:
+`IsLaman.exists_typeI_or_typeII_iso` says every Laman graph on `n ≥ 3`
+vertices is iso to a Type I or Type II move applied to *some* graph
+`G'`. **It does not claim `G'.IsLaman`** — that is the deeper
+"Laman-preservation under reverse Henneberg moves" direction, which
+turned out to be substantially harder than the Phase-start hand-off
+suggested and is now deferred to Phase 5.
 
-The Laman-preservation infrastructure factored cleanly through
-`IsSparse.iso` and `IsTight.iso` in `Sparsity.lean` (with the
-`edgesIn` transport helper `SimpleGraph.Iso.image_edgesIn`), with
-`IsLaman.iso` becoming a one-line corollary of `IsTight.iso` in
-`Laman.lean`. Tightness in each `_isLaman` is a few lines combining
-the edge-count formula with `Finite.card_option`; sparsity uses the
-`Finset.preimage some`-driven case-split on `none ∈ s` and on
-`s'.card = 0 / 1 / ≥ 2`.
+Supporting helpers added this session:
+* `IsLaman.exists_nonadj_among_three_neighbors` (in `Laman.lean`) —
+  given a degree-3 neighborhood `{a, b, c}` of `v` in a Laman graph,
+  some pair is non-adjacent. Sparsity at `{v, a, b, c}` (size 4, ≤ 5
+  edges) minus the three known `v`-edges leaves ≤ 2 edges among
+  `{a, b, c}`, hence a non-edge. Counts the 6 candidate edges as a
+  literal `Finset` via `Finset.card_insert_of_notMem` chain; pairwise
+  distinctness closes by `simp [Sym2.eq_iff]; tauto`.
+* `Henneberg.typeI_iso_of_two_neighbors`,
+  `Henneberg.typeII_iso_of_three_neighbors` (private, in
+  `Henneberg.lean`) — the iso constructions, parameterised on a
+  membership-style `hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b (∨ w = c)`
+  which is what the surrounding caller can produce from
+  `Finset.card_eq_two.mp` / `Finset.card_eq_three.mp` plus
+  `mem_neighborFinset`. Underlying equiv is
+  `(Equiv.optionSubtypeNe v).symm`.
 
 **Next concrete task** (one sentence): prove
-`IsLaman.exists_typeI_or_typeII_reverse` — the structural decomposition
-theorem (the hard remaining Phase 3 task), using
-`IsLaman.exists_two_le_degree_le_three` to pick a degree-2 or
-degree-3 vertex, then case-split on its degree to exhibit the
-Type I or Type II reverse move.
+`IsLaman.exists_typeI_or_typeII_reverse` — the strengthened version
+that *also* asserts `G'.IsLaman`. This is the remaining Phase-5-bound
+task and is genuinely hard: the typeII reverse case can fail for an
+arbitrary non-adjacent neighbor pair, so it requires the classical
+Henneberg "blocker"/contradiction argument that finds a specific
+non-adjacent pair `{a, b}` for which `G'` is Laman. See `FRICTION.md`
+entry "[open] typeII reverse Laman preservation" and ROADMAP §5 for
+the obstruction.
 
 ## Architectural choices made up front
 
@@ -127,17 +142,62 @@ there.
 - [x] `top_fin_four_minus_edge_isLaman` — `IsLaman.iso fin4iso` applied
   to `typeI_isLaman` doubled from `top_fin_two_isLaman`.
 
-### Deferred to next session
-- [ ] `IsLaman.exists_typeI_or_typeII_reverse` — the structural
-  decomposition theorem (per the new architecture; replaces the original
-  ROADMAP `Reachable` plan). The hard remaining Phase 3 task. Plan: use
-  `IsLaman.exists_two_le_degree_le_three` to find a degree-2 or
-  degree-3 vertex `v`, then case-split on its degree to produce the
-  Type I or Type II reverse move.
+### Decomposition iso (this session)
+- [x] `IsLaman.exists_nonadj_among_three_neighbors` (in `Laman.lean`)
+  — supporting helper for the typeII branch.
+- [x] `Henneberg.typeI_iso_of_two_neighbors`,
+  `Henneberg.typeII_iso_of_three_neighbors` — private iso helpers.
+- [x] `IsLaman.exists_typeI_or_typeII_iso` — main result. Picks `v`
+  with `2 ≤ G.degree v ≤ 3`, lifts neighbors via
+  `Finset.card_eq_two/three.mp`, and for the typeII branch rotates
+  through the three neighbor permutations to land on whichever pair
+  is non-adjacent. `G'` is the induced subgraph, plus the bridging
+  edge `s(a, b)` for typeII.
+
+### Deferred to a later phase (Phase 5 candidate)
+- [ ] `IsLaman.exists_typeI_or_typeII_reverse` — the strengthened
+  version that also asserts `G'.IsLaman`. The typeII case requires
+  the Henneberg combinatorial argument (a non-adjacent pair `{a, b}`
+  whose `G'` is Laman exists; not every non-adjacent pair works). See
+  `FRICTION.md` entry on this and ROADMAP §5.
 
 ## Decisions made during this phase
 
 (Phase-local trade-offs; cross-cutting ones go in `../DESIGN.md`.)
+
+- **Split the decomposition theorem into iso-only + Laman-claim.**
+  The Phase 3 hand-off treated `IsLaman.exists_typeI_or_typeII_reverse`
+  as one theorem combining (a) the canonical iso `G ≃g typeI/II G'`
+  and (b) `G'.IsLaman`. Working through the proof revealed (b) is
+  much harder for typeII than the hand-off implied: an arbitrary
+  non-adjacent neighbor pair `{a, b}` does not always give a Laman
+  `G'` (concrete 6-vertex counter-example: `V = {v, x, y, z, w₁, w₂}`,
+  edges `{v-x, v-y, v-z, x-z, x-w₁, x-w₂, y-w₁, y-w₂, w₁-w₂}` —
+  Laman, with `v` of degree 3 to `{x, y, z}`; the pair `{x, y}` is
+  non-adjacent but `G' = (G - v) + edge(x, y)` violates sparsity at
+  `{x, y, w₁, w₂}` (6 edges where `(2, 3)`-sparsity allows 5)). The
+  classical Henneberg theorem chooses a *specific* non-adjacent pair
+  via a "blocker" argument (page-long graph theory). We split: this
+  phase delivers the iso half (`exists_typeI_or_typeII_iso`); Phase 5
+  will need the Laman half if the induction route demands it.
+
+- **Iso construction parameterised on `hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b (∨ w = c)`
+  rather than `G.neighborFinset v = {a, b}`.** Both convey "the
+  neighbors are `a` and `b`," but the iff form is what
+  `typeI_adj_none_some` / `typeII_adj_none_some` reduce to after
+  `rw`, so the iso closes by `rw [..., hN]; simp` rather than
+  needing extra `mem_neighborFinset` glue. The caller produces `hN`
+  in one line from `Finset.card_eq_two.mp`.
+
+- **Iso closes by `rw [Equiv.optionSubtypeNe_symm_*, *_adj_*]; simp` per case.**
+  The `(Equiv.optionSubtypeNe v).symm` only has explicit-rewrite
+  lemmas (`_symm_self`, `_symm_of_ne`), not simp ones, so we lead
+  each case with the appropriate explicit `rw`. After the rewrite
+  the goal has only Subtype-equality / disjunction shape left, and
+  bare `simp` (or `simp [Subtype.mk.injEq]`) closes it. The
+  `(some, some)` arm of typeII needs an extra `constructor` +
+  `rcases` since `simp` does not eliminate the `s(...) ≠ s(...)`
+  conjunct via the `¬ G.Adj a b` hypothesis on its own.
 
 - **Use the structural `match`-based `Adj` for `typeI`/`typeII`.** First
   attempted the lattice form `G.map .some ⊔ fromEdgeSet …` to inherit
@@ -236,35 +296,21 @@ there.
 
 ## Blockers / open questions
 
-- None blocking next session. Both deferred items (K₄\e and the
-  decomposition theorem) are well-specified.
+- **typeII reverse Laman preservation needs the Henneberg blocker
+  argument.** See `FRICTION.md` entry. Not blocking Phase 3 closure
+  (we shipped the iso half); becomes a Phase 5 prerequisite if the
+  Laman's-theorem proof needs it explicitly.
 
 ## Hand-off / next phase
 
-(Will be written when Phase 3 finishes.)
+Phase 3 is **complete**: `IsLaman.exists_typeI_or_typeII_iso` plus
+the per-move Laman-preservation theorems
+(`typeI_isLaman`, `typeII_isLaman`) and the `K₄ \ e` worked example
+land the canonical Henneberg apparatus. The strengthened
+`IsLaman.exists_typeI_or_typeII_reverse` (with `G'.IsLaman`) is
+deferred and properly belongs in Phase 5 — see ROADMAP §5.
 
-For the next agent picking this up: start with
-`IsLaman.exists_typeI_or_typeII_reverse` — the structural decomposition
-theorem. Plan: the Phase 2 lemma `IsLaman.exists_two_le_degree_le_three`
-gives a vertex `v` of `G` with `2 ≤ G.degree v ≤ 3` (under `n ≥ 3`); case-
-split on `G.degree v`:
-
-- `G.degree v = 2`: the two `v`-neighbors `a, b` exhibit a Type I reverse
-  move. Build the underlying `G' : SimpleGraph (V \ {v})` (or via
-  `Equiv.optionEquivOfNotMem`-style transport: pick an iso
-  `V ≃ Option (V \ {v})` sending `v ↦ none`), show `G ≃g typeI G' a b`,
-  and prove `G'.IsLaman` (the inductive step) via the typeI-preservation
-  lemma in reverse (the new `Iso.image_edgesIn` plus sparsity
-  manipulations should suffice).
-- `G.degree v = 3`: pick two of the three neighbors that are
-  *non-adjacent* in `G`, call them `a, b`, and the third `c`. They give a
-  Type II reverse move at `v`. Same outline as above with `typeII`.
-
-The tricky piece is **finding non-adjacent neighbors in the
-degree-3 case**. By `IsSparse 2 3` applied to the 3-element neighbor set
-`N(v)`, the induced edge count is at most `2 · 3 − 3 = 3`, but `N(v)`
-spans `≤ 3` edges among its `(3 choose 2) = 3` possible pairs.
-Combinatorially: the average degree bound forces at least one
-non-edge among the three. Make this concrete using a sparsity
-application; see `IsLaman.two_le_degree`'s proof for the analogous
-sparsity-on-a-finset technique.
+For the next agent: open `notes/Phase4.md` (create it) and start the
+`Framework.lean` work. Phase 4 is independent of Phase 3 — it builds
+the rigidity-matrix infrastructure needed for the analytical half of
+Laman's theorem. ROADMAP §4 lists the lemmas to develop.

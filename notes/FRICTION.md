@@ -46,6 +46,31 @@ can see how it was handled before.
 
 ## Open entries
 
+### [open] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
+- **Where it bit:** Phase 3 close, while planning
+  `IsLaman.exists_typeI_or_typeII_reverse`.
+- **Friction:** The Phase-3-start hand-off identified "find non-adjacent
+  neighbors among the three degree-3 neighbors" as the tricky piece.
+  That part is straightforward (sparsity at `{v, a, b, c}` ⇒ ≤ 2 edges
+  among `{a, b, c}` ⇒ a non-adjacent pair exists; see
+  `IsLaman.exists_nonadj_among_three_neighbors`). The genuinely hard
+  piece is showing that *for some* non-adjacent pair `{a, b}`, the
+  reconstructed `G' := (G - v) + edge(a, b)` is Laman. An arbitrary
+  non-adjacent pair does **not** suffice: concrete counter-example,
+  `V = {v, x, y, z, w₁, w₂}` with edges `{v-x, v-y, v-z, x-z, x-w₁,
+  x-w₂, y-w₁, y-w₂, w₁-w₂}` (Laman, `v` of degree 3 to `{x, y, z}`,
+  `{x, y}` non-adjacent), and `G' = (G-v) + xy` violates sparsity at
+  the 4-set `{x, y, w₁, w₂}` (6 edges where `2·4 - 3 = 5`). Picking
+  the other non-adjacent pair `{y, z}` does work — but the
+  combinatorial choice is the heart of Henneberg's classical theorem
+  and requires several pages of contradiction/blocker reasoning.
+- **Proposed fix:** Phase 3 ships the iso-only half
+  (`IsLaman.exists_typeI_or_typeII_iso`); the
+  Laman-preservation half is deferred to Phase 5 and may either be
+  proved directly (Henneberg blocker) or bypassed via the rigidity
+  matroid (see ROADMAP §5 *Carryover from Phase 3*).
+- **Status:** open (Phase-5-bound).
+
 ### [open] `revert` ordering before `e'.ind` is finicky
 - **Where it bit:** `typeI_edgeSet` proof, backward direction.
 - **Friction:** To do Sym2 induction on a hypothesis `e'` while

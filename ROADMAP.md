@@ -39,7 +39,7 @@ Archive/CombinatorialRigidity/
 |---|---|---|
 | 1. Sparsity | `EdgesIn.lean`, `Sparsity.lean`, `Laman.lean` | ✓ Complete (see `notes/Phase1.md`) |
 | 2. Laman graphs | `Laman.lean` | ✓ Complete (see `notes/Phase2.md`) |
-| 3. Henneberg moves | `Henneberg.lean` | In progress (see `notes/Phase3.md`) |
+| 3. Henneberg moves | `Henneberg.lean` | ✓ Complete (see `notes/Phase3.md`) |
 | 4. Frameworks | `Framework.lean` | Not yet created |
 | 5. Laman's theorem | `LamanTheorem.lean` | Not yet created |
 
@@ -76,27 +76,27 @@ and phase-specific decisions.
 
 ### Phase 3 — Henneberg moves (`Henneberg.lean`)
 
-Type I and Type II moves on simple graphs. The fresh vertex is represented
-as `none : Option V`, with old vertices embedded via `some`. Both moves
-preserve the Laman property, and Henneberg's theorem (every Laman graph is
-"reachable" from `K₂` by these moves) is expressed as a structural
-**decomposition** lemma `IsLaman.exists_typeI_or_typeII_reverse` rather
-than an explicit `Reachable` inductive — see `notes/Phase3.md` for the
-architectural choice (and `DESIGN.md` "Choices to revisit").
+Complete. Type I and Type II moves on simple graphs (fresh vertex as
+`none : Option V`, old vertices via `some`). Both moves preserve the
+Laman property (`typeI_isLaman`, `typeII_isLaman`); both edge-set
+decompositions land (`typeI_edgeSet[_ncard]`, `typeII_edgeSet[_ncard]`).
+Iso transport (`IsSparse.iso`, `IsTight.iso`, `IsLaman.iso`, plus
+`Iso.image_edgesIn`) lifts Laman across graph isomorphisms. The
+`K₄ \ e` worked example (`top_fin_four_minus_edge_isLaman`) ties
+these together. The structural decomposition iso
+`IsLaman.exists_typeI_or_typeII_iso` says every Laman graph on
+`n ≥ 3` vertices is iso to a Type I or Type II move on *some* `G'`;
+`G'` is the induced subgraph (plus a bridging edge for typeII).
 
-Phase 3 is in progress; see `notes/Phase3.md` for the lemma checklist,
-phase-local decisions, and the next concrete task. Definitions, both
-edge-set decompositions (`typeI_edgeSet`, `typeI_edgeSet_ncard`,
-`typeII_edgeSet`, `typeII_edgeSet_ncard`), both Laman-preservation
-theorems (`typeI_isLaman` under `a ≠ b`, `typeII_isLaman` under
-`a ≠ b`, `c ≠ a`, `c ≠ b`, and `G.Adj a b`), and the K₄\e worked
-example (`top_fin_four_minus_edge_isLaman`) are landed. Iso transport
-(`IsSparse.iso`, `IsTight.iso`, `IsLaman.iso`) was added to
-`Sparsity.lean`/`Laman.lean` to enable the K₄\e transport. The
-decomposition theorem `IsLaman.exists_typeI_or_typeII_reverse` is the
-last remaining Phase 3 task. The Sym2 case-analysis friction logged
-mid-Phase 3 was resolved by mirroring `Sym2.exists_and_map_eq_mk_iff`
-upstream-style; see `notes/FRICTION.md`.
+The strengthened "the same `G'` is Laman" version
+(`IsLaman.exists_typeI_or_typeII_reverse`) is **not** delivered: it
+requires the classical Henneberg blocker argument, since the typeII
+reverse can fail for an arbitrary non-adjacent pair (concrete
+6-vertex counter-example in `notes/Phase3.md` "Decisions made"). It
+is treated as a Phase 5 prerequisite — see §5 below.
+
+See `notes/Phase3.md` for the full lemma list and phase-specific
+decisions.
 
 Both moves additionally preserve generic rigidity (proved later in
 `Framework.lean`).
@@ -134,7 +134,9 @@ theorem SimpleGraph.IsGenericallyRigid_two_iff_hasLamanSubgraph
 Two directions:
 - **(⇐)** Henneberg induction: `K₂` is rigid; both Henneberg moves preserve
   generic rigidity; hence every Laman graph is generically rigid; hence so
-  is every supergraph.
+  is every supergraph. Needs the strengthened decomposition theorem
+  `IsLaman.exists_typeI_or_typeII_reverse` — see *Carryover from Phase 3*
+  below.
 - **(⇒)** If `G` is generically rigid, the rigidity matroid has full rank,
   so there is a basis (an independent edge set) of size `2n − 3`. The
   spanning subgraph on those edges is `(2, 3)`-tight by the matroid property.
@@ -142,6 +144,30 @@ Two directions:
 The hard direction needs the equality of the **rigidity matroid** and the
 **(2, 3)-count matroid** in dimension 2 — the deepest part of the proof.
 Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
+
+#### Carryover from Phase 3
+
+`IsLaman.exists_typeI_or_typeII_reverse` — the strengthened decomposition
+theorem that *also* asserts `G'.IsLaman` — is needed for the (⇐) direction
+of Laman's theorem (Henneberg induction needs to apply IH to a Laman `G'`).
+Phase 3 delivered the iso-only half (`IsLaman.exists_typeI_or_typeII_iso`)
+but punted on the Laman claim because the typeII reverse fails for an
+arbitrary non-adjacent neighbor pair (counter-example in
+`notes/Phase3.md`). Two ways forward:
+
+1. **Henneberg blocker argument.** Classical proof: among the three
+   pairs of `v`'s neighbors at least one is non-adjacent (already proven
+   as `IsLaman.exists_nonadj_among_three_neighbors`); show that *if every
+   non-adjacent pair fails to give a Laman `G'`*, then a tight set in `G`
+   is forced to violate sparsity, contradiction. Several pages of graph
+   theory, but a self-contained combinatorial argument.
+2. **Bypass via the matroid route.** Reformulate (⇐) without strong
+   induction on `G'`. E.g., prove "every Laman graph is generically rigid"
+   by induction on edge count rather than vertex count, or by using the
+   (2,3)-count matroid directly.
+
+Path 1 is closer to mathlib's existing graph theory style; path 2 might be
+more elegant if Phase 4 produces a clean rigidity-matroid API.
 
 ## Engineering conventions
 
