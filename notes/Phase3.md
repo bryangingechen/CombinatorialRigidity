@@ -215,14 +215,20 @@ there.
   mirror, after which both `edgeSet` decompositions close in three
   lines. See FRICTION.md (resolved entry).
 
-- **Inline the `edgesIn` decomposition in each `_isLaman` proof,
-  don't factor it.** The `(typeI G a b).edgesIn ↑s = … ∪ T` equality
+- **Factor the `edgesIn` decomposition out of each `_isLaman` proof.**
+  Originally inlined: the `(typeI G a b).edgesIn ↑s = … ∪ T` equality
   is shaped slightly differently per move (T is 2-element for typeI,
   3-element for typeII; typeII also carries the `\ {s(a, b)}` on the
-  image side). Factoring out a generic `_edgesIn_decomp` lemma would
-  not be reused enough to pay for itself, and would force consumers
-  to also reason about `s.eraseNone` -- which is more natural to set
-  up in-context.
+  image side), so a single shared helper wasn't natural and the
+  per-move duplication seemed not to pay for itself. After the
+  `eraseNone` refactor cleaned up the surrounding `set s'` / `hcoe`
+  plumbing, the residual duplication (~14 lines per branch of
+  `h_decomp` / `h_disj` / `h_ncard` setup) became the dominant cost.
+  Resolved by extracting `typeI_edgesIn_ncard_decomp` and the typeII
+  analogue (each placed between the corresponding `_edgeSet_ncard`
+  and `_isLaman`), which collapsed each sparsity branch to ~9 lines
+  of `set` + bound declaration before the math case-split. Logged in
+  FRICTION.md (resolved).
 
 - **`s'.card = 1` sub-case needs explicit subset reasoning.** The
   uniform bound `T.ncard ≤ 2` (resp. `T'.ncard ≤ 3`) is one too loose

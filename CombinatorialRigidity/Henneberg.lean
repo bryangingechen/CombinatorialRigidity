@@ -199,6 +199,28 @@ lemma typeI_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b : V} (hab : a ≠ 
   rw [typeI_edgeSet, Set.ncard_union_eq hDisj,
     Set.ncard_image_of_injective _ Sym2.map_some_injective, Set.ncard_pair (by simp [hab])]
 
+/-- Cardinality decomposition of `(typeI G a b).edgesIn ↑s`: the old `G`-edges with both endpoints
+in `s.eraseNone`, plus the fresh edges `{s(none, some a), s(none, some b)}` that lie in `↑s`. The
+two summands are disjoint by `Sym2.disjoint_image_map_some`. -/
+private lemma typeI_edgesIn_ncard_decomp [Finite V] (G : SimpleGraph V) (a b : V)
+    (s : Finset (Option V)) :
+    ((typeI G a b).edgesIn (↑s : Set (Option V))).ncard =
+      (G.edgesIn (↑s.eraseNone : Set V)).ncard +
+      (({s(none, some a), s(none, some b)} : Set (Sym2 (Option V))) ∩
+        ((↑s : Set (Option V)).sym2)).ncard := by
+  classical
+  set T : Set (Sym2 (Option V)) :=
+    ({s(none, some a), s(none, some b)} : Set _) ∩ ((↑s : Set (Option V)).sym2)
+  have h_decomp : (typeI G a b).edgesIn (↑s : Set (Option V)) =
+      Sym2.map some '' G.edgesIn (↑s.eraseNone : Set V) ∪ T := by
+    ext e
+    induction e with | h x y => ?_
+    rcases x with _ | u <;> rcases y with _ | v <;> simp [edgesIn, T]
+  have h_disj : Disjoint (Sym2.map some '' G.edgesIn (↑s.eraseNone : Set V)) T :=
+    Sym2.disjoint_image_map_some fun _ ⟨hpair, _⟩ => by rcases hpair with rfl | rfl <;> simp
+  rw [h_decomp, Set.ncard_union_eq h_disj,
+    Set.ncard_image_of_injective _ Sym2.map_some_injective]
+
 /-! ### Type I preserves the Laman property -/
 
 /-- The Type I Henneberg move preserves the Laman property: if `G` is Laman and `a ≠ b`, then
@@ -210,25 +232,13 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
   classical
   have : Fintype V := Fintype.ofFinite V
   refine ⟨fun s hs_pre => ?_, ?_⟩
-  · -- Sparsity. `s' := s.eraseNone` is the some-preimage (the "old" vertices in `s`).
-    set s' : Finset V := s.eraseNone with hs'_def
-    -- Decompose `(typeI G a b).edgesIn ↑s` as old edges (image of `G.edgesIn ↑s'`) plus new edges
-    -- (a subset of `{s(none, some a), s(none, some b)}` constrained to lie in `(↑s).sym2`).
+  · -- Sparsity. `s' := s.eraseNone` is the some-preimage; `T` is the fresh edges in `↑s`.
+    set s' : Finset V := s.eraseNone
     set T : Set (Sym2 (Option V)) :=
-      ({s(none, some a), s(none, some b)} : Set _) ∩ ((↑s : Set (Option V)).sym2) with hT_def
-    have h_decomp : (typeI G a b).edgesIn (↑s : Set (Option V)) =
-        Sym2.map some '' G.edgesIn (↑s' : Set V) ∪ T := by
-      ext e
-      induction e with | h x y => ?_
-      rcases x with _ | u <;> rcases y with _ | v <;>
-        simp [hs'_def, edgesIn, T]
-    have h_disj : Disjoint (Sym2.map some '' G.edgesIn (↑s' : Set V)) T :=
-      Sym2.disjoint_image_map_some fun _ ⟨hpair, _⟩ => by rcases hpair with rfl | rfl <;> simp
+      ({s(none, some a), s(none, some b)} : Set _) ∩ ((↑s : Set (Option V)).sym2)
     have h_ncard : ((typeI G a b).edgesIn (↑s : Set (Option V))).ncard =
-        (G.edgesIn (↑s' : Set V)).ncard + T.ncard := by
-      rw [h_decomp, Set.ncard_union_eq h_disj,
-        Set.ncard_image_of_injective _ Sym2.map_some_injective]
-    -- `T.ncard ≤ 2`: `T` is a subset of a 2-element set.
+        (G.edgesIn (↑s' : Set V)).ncard + T.ncard :=
+      typeI_edgesIn_ncard_decomp G a b s
     have hT_le_2 : T.ncard ≤ 2 :=
       (Set.ncard_le_ncard Set.inter_subset_left).trans (Set.ncard_pair_le _ _)
     -- Case-split on whether `none ∈ s`.
@@ -291,6 +301,32 @@ lemma typeII_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b c : V}
     Set.ncard_insert_of_notMem (by simp [hab, hca.symm]) (by simp),
     Set.ncard_pair (by simp [hcb.symm])]
 
+/-- Cardinality decomposition of `(typeII G a b c).edgesIn ↑s`: the old `G`-edges (less `s(a, b)`)
+with both endpoints in `s.eraseNone`, plus the fresh edges
+`{s(none, some a), s(none, some b), s(none, some c)}` that lie in `↑s`. The two summands are
+disjoint by `Sym2.disjoint_image_map_some`. -/
+private lemma typeII_edgesIn_ncard_decomp [Finite V] (G : SimpleGraph V) (a b c : V)
+    (s : Finset (Option V)) :
+    ((typeII G a b c).edgesIn (↑s : Set (Option V))).ncard =
+      (G.edgesIn (↑s.eraseNone : Set V) \ {s(a, b)}).ncard +
+      (({s(none, some a), s(none, some b), s(none, some c)} : Set (Sym2 (Option V))) ∩
+        ((↑s : Set (Option V)).sym2)).ncard := by
+  classical
+  set T' : Set (Sym2 (Option V)) :=
+    ({s(none, some a), s(none, some b), s(none, some c)} : Set _) ∩
+      ((↑s : Set (Option V)).sym2)
+  have h_decomp : (typeII G a b c).edgesIn (↑s : Set (Option V)) =
+      Sym2.map some '' (G.edgesIn (↑s.eraseNone : Set V) \ {s(a, b)}) ∪ T' := by
+    ext e
+    induction e with | h x y => ?_
+    rcases x with _ | u <;> rcases y with _ | v <;>
+      (simp [edgesIn, T']; try tauto)
+  have h_disj : Disjoint (Sym2.map some '' (G.edgesIn (↑s.eraseNone : Set V) \ {s(a, b)})) T' :=
+    Sym2.disjoint_image_map_some
+      fun _ ⟨hpair, _⟩ => by rcases hpair with rfl | rfl | rfl <;> simp
+  rw [h_decomp, Set.ncard_union_eq h_disj,
+    Set.ncard_image_of_injective _ Sym2.map_some_injective]
+
 /-! ### Type II preserves the Laman property -/
 
 /-- The Type II Henneberg move preserves the Laman property: if `G` is Laman, `a, b, c` are
@@ -304,28 +340,14 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
   classical
   have : Fintype V := Fintype.ofFinite V
   refine ⟨fun s hs_pre => ?_, ?_⟩
-  · -- Sparsity. `s' := s.eraseNone` is the some-preimage (the "old" vertices in `s`).
-    set s' : Finset V := s.eraseNone with hs'_def
-    -- Decompose `(typeII G a b c).edgesIn ↑s` as deleted-old-edges (image of `G.edgesIn ↑s'` minus
-    -- `s(a, b)`) plus new edges (a subset of `{s(none, some a), s(none, some b), s(none, some c)}`
-    -- constrained to lie in `(↑s).sym2`).
+  · -- Sparsity. `s' := s.eraseNone` is the some-preimage; `T'` is the fresh edges in `↑s`.
+    set s' : Finset V := s.eraseNone
     set T' : Set (Sym2 (Option V)) :=
       ({s(none, some a), s(none, some b), s(none, some c)} : Set _) ∩
         ((↑s : Set (Option V)).sym2) with hT'_def
-    have h_decomp : (typeII G a b c).edgesIn (↑s : Set (Option V)) =
-        Sym2.map some '' (G.edgesIn (↑s' : Set V) \ {s(a, b)}) ∪ T' := by
-      ext e
-      induction e with | h x y => ?_
-      rcases x with _ | u <;> rcases y with _ | v <;>
-        (simp [hs'_def, edgesIn, T']; try tauto)
-    have h_disj : Disjoint (Sym2.map some '' (G.edgesIn (↑s' : Set V) \ {s(a, b)})) T' :=
-      Sym2.disjoint_image_map_some
-        fun _ ⟨hpair, _⟩ => by rcases hpair with rfl | rfl | rfl <;> simp
     have h_ncard : ((typeII G a b c).edgesIn (↑s : Set (Option V))).ncard =
-        (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard + T'.ncard := by
-      rw [h_decomp, Set.ncard_union_eq h_disj,
-        Set.ncard_image_of_injective _ Sym2.map_some_injective]
-    -- `T'.ncard ≤ 3` always.
+        (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard + T'.ncard :=
+      typeII_edgesIn_ncard_decomp G a b c s
     have hT'_le_3 : T'.ncard ≤ 3 :=
       (Set.ncard_le_ncard Set.inter_subset_left).trans (Set.ncard_triple_le _ _ _)
     -- Case-split on whether `none ∈ s`.

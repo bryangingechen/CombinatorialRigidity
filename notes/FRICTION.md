@@ -102,35 +102,6 @@ can see how it was handled before.
   to Phase 3 where Henneberg gives a one-liner), but worth doing if a
   later phase wants to mechanize more concrete graphs.
 
-### [open] Potential refactor: extract per-move `_edgesIn_ncard_decomp` lemmas
-- **Where it would land:** `Henneberg.lean`, between `typeI_edgeSet_ncard`
-  and `typeI_isLaman` (and the analogous spot for typeII).
-- **Friction:** the sparsity branches of `typeI_isLaman` and
-  `typeII_isLaman` each open with ~10 lines of identical structure —
-  `h_decomp` (Sym2 case-split establishing the union decomposition),
-  `h_disj` (disjointness of the two summands), `h_ncard` (cardinality
-  identity from the disjoint union). The shapes differ only in `T`'s
-  size (2 vs 3 fresh edges) and in whether the image side carries a
-  `\ {s(a, b)}` deletion. The math case-split that follows
-  (`none ∈ s` × subcases on `s'.card`) is what the proof is *about*,
-  but it is buried under that plumbing.
-- **Proposed fix:** extract two project-internal lemmas
-  ```
-  lemma typeI_edgesIn_ncard_decomp {G : SimpleGraph V} (a b : V) (s : Finset (Option V)) :
-      ((typeI G a b).edgesIn (↑s : Set _)).ncard =
-        (G.edgesIn (↑s.eraseNone : Set V)).ncard +
-        (({s(none, some a), s(none, some b)} : Set _) ∩ ((↑s : Set _).sym2)).ncard
-  ```
-  and the typeII analogue (with `\ {s(a, b)}` on the first summand and
-  the three-element fresh-edge set on the second). Each is called
-  exactly once, but expressing the cardinality identity up front means
-  each `_isLaman` sparsity branch can lead with the math case-split.
-- **Status:** open (deferred; original Phase 3 decision was *not*
-  to factor — see Phase3.md "Inline the `edgesIn` decomposition in
-  each `_isLaman` proof". The follow-up `eraseNone` refactor reduced
-  the surrounding bookkeeping enough that the cost-benefit may have
-  flipped; revisit when next touching these proofs).
-
 ### [open] `simp` leaves and-grouping in `typeII` `edgesIn` decomposition
 - **Where it bit:** `typeII_isLaman` sparsity, `h_decomp` proof.
 - **Friction:** the `s(some u, some v)` branch of the Sym2 case-split
@@ -162,6 +133,41 @@ can see how it was handled before.
 - **Status:** wontfix (upstream concern).
 
 ## Resolved / mirrored entries
+
+### [resolved] Per-move `_edgesIn_ncard_decomp` extraction
+- **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity
+  branches in `Henneberg.lean`. Each opened with ~14 lines of
+  `h_decomp` / `h_disj` / `h_ncard` plumbing (Sym2 case-split
+  establishing the union decomposition, disjointness of the two
+  summands, cardinality identity from the disjoint union) before the
+  proof's actual math case-split (`none ∈ s` × `s'.card` cases) could
+  begin.
+- **Friction:** the original Phase 3 decision was *not* to factor (see
+  Phase3.md "Inline the `edgesIn` decomposition in each `_isLaman`
+  proof"). The reasoning was that the two shapes differ in `T`'s size
+  (2 vs 3 fresh edges) and the typeII `\ {s(a, b)}` deletion, so a
+  single shared helper wasn't natural. After the `eraseNone` refactor
+  cleaned up the surrounding `set s'` / `hcoe` plumbing, the residual
+  duplication stood out and the cost-benefit flipped: each helper is
+  called exactly once, but expressing the cardinality identity up
+  front lets each `_isLaman` sparsity branch lead with its math
+  case-split.
+- **Resolution:** extracted two private helpers in `Henneberg.lean`,
+  each placed between the corresponding `_edgeSet_ncard` and
+  `_isLaman`:
+  - `typeI_edgesIn_ncard_decomp (G : SimpleGraph V) (a b : V) (s : Finset (Option V))`:
+    `((typeI G a b).edgesIn ↑s).ncard = (G.edgesIn ↑s.eraseNone).ncard + (({s(none, some a), s(none, some b)} ∩ (↑s).sym2)).ncard`.
+  - `typeII_edgesIn_ncard_decomp` analogue with `\ {s(a, b)}` on the
+    first summand and the three-element fresh-edge set on the second.
+
+  Both helpers take `[Finite V]` (needed for the `Set.ncard_union_eq`
+  autoparam). The sparsity branches collapsed from ~22 lines of
+  plumbing each to ~9 lines (`set s'`, `set T`, `h_ncard` via helper,
+  `hT_le_*` bound), after which the math case-split leads. Net file
+  size grew slightly (helpers are longer than the inlined uses), but
+  the two `_isLaman` proofs read substantially cleaner.
+- **Status:** resolved (project-internal — `typeI`/`typeII` don't
+  exist upstream, so no mirror).
 
 ### [resolved] Lifting subtype-Sym2 equality to underlying-value equality
 - **Where it bit:** `typeII_iso_of_three_neighbors` `(some, some)` arm.
