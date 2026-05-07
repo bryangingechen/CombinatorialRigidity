@@ -7,21 +7,24 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-The foundational layer is in place: `typeI` and `typeII` are defined on
-`Option V`, with all eight adjacency lemmas as `Iff.rfl`. `typeI_edgeSet`
-gives the explicit set decomposition, and `typeI_edgeSet_ncard` proves
-the `+2` cardinality bump under `a ≠ b`.
+The foundational layer is in place. `typeI` and `typeII` are defined on
+`Option V`, with all eight adjacency lemmas as `Iff.rfl`.
+`typeI_edgeSet` and `typeII_edgeSet` give the explicit set
+decompositions; `typeI_edgeSet_ncard` and `typeII_edgeSet_ncard` give
+the corresponding cardinality formulas.
 
-The session validated the architectural choices (`Option V` for
-type-bumping; structural `Adj` definition for free `Iff.rfl` adjacency
-lemmas; no `Reachable` inductive). The cost is non-trivial Sym2
-manipulation when working with `(typeI G a b).edgeSet` — see
-`../notes/FRICTION.md` "Sym2 case analysis".
+The "Sym2 case analysis" friction logged after the previous session has
+been resolved upstream-style: the missing lemma was a predicate-form
+`Sym2.exists_and_map_eq_mk_iff`, which is what `simp` reaches after
+`Set.mem_image` fires (and after `Set.mem_diff` if the underlying set
+is a difference). With that lemma tagged `@[simp]` (mirrored under
+`Mathlib/Data/Sym/Sym2.lean`), both `edgeSet` decompositions close in
+three lines. See `../notes/FRICTION.md` (resolved entry).
 
-**Next concrete task** (one sentence): prove `typeII_edgeSet` (the
-parallel decomposition with the `\ {s(a, b)}` deletion and three new
-edges), then `typeI_isLaman` via tightness from `typeI_edgeSet_ncard`
-plus the `edgesIn` decomposition.
+**Next concrete task** (one sentence): prove `typeI_isLaman` —
+tightness follows from `typeI_edgeSet_ncard` and `Nat.card_option`;
+sparsity needs an `edgesIn` bound plus a case split on `none ∈ s` and
+`s'.card = 0/1/≥2` sub-cases. Then the analogous `typeII_isLaman`.
 
 ## Architectural choices made up front
 
@@ -59,20 +62,24 @@ there.
 - [x] `typeI_edgeSet` — `(Sym2.map some '' G.edgeSet) ∪ {s(none, some a), s(none, some b)}`.
 - [x] `typeI_edgeSet_ncard` — under `a ≠ b`, `((typeI G a b).edgeSet).ncard = G.edgeSet.ncard + 2`.
 
-### typeII API (this session — partial)
+### typeII API
 - [x] Adjacency lemmas (4, all `Iff.rfl`).
-- [ ] `typeII_edgeSet` — parallel decomposition; deferred to next session.
-- [ ] `typeII_edgeSet_ncard` — depends on `typeII_edgeSet`.
+- [x] `typeII_edgeSet` — parallel decomposition with the
+  `\ {s(a, b)}` deletion and three new edges, closed by the same
+  3-line template as `typeI_edgeSet` once
+  `Sym2.exists_and_map_eq_mk_iff` (mirror) is available.
+- [x] `typeII_edgeSet_ncard` — under `a ≠ b`, `c ≠ a`, `c ≠ b`,
+  `((typeII G a b c).edgeSet).ncard = (G.edgeSet \ {s(a, b)}).ncard + 3`.
+  Stated over the deletion-set so the lemma does not require
+  `G.Adj a b`; consumers wanting the `+ 2` form (over `G.edgeSet`)
+  specialize via `Set.ncard_diff_singleton_add_one` under
+  `s(a, b) ∈ G.edgeSet`.
 
-### Phase 1 carryover (this session)
+### Phase 1 carryover
 - [x] `edgesIn_singleton` (in `EdgesIn.lean`) — `G.edgesIn {v} = ∅`,
   needed for the `s'.card = 1` case of `typeI_isLaman` sparsity.
 
 ### Deferred to next session
-- [ ] `typeII_edgeSet` — the `\ {s(a,b)}` deletion and 3 new edges add
-  one extra layer of `\` / `≠` bookkeeping over `typeI_edgeSet`. The
-  structure is parallel; an earlier in-session attempt got stuck on
-  `tauto` and `revert`-ordering details (see `../notes/FRICTION.md`).
 - [ ] `typeI_edgesIn_ncard_le` — bound
   `((typeI G a b).edgesIn ↑s).ncard ≤ (G.edgesIn ↑s').ncard + 2`
   (where `s' = s.preimage some _`); requires extending the
@@ -101,9 +108,12 @@ there.
   lemmas become `Iff.rfl`, edgeSet decomposition becomes a one-time
   manual proof.
 - **`Sym2.eq_iff` for edgeSet equalities, not the lattice.** Working
-  with `Sym2.map some e' = s(x, y)` requires `Sym2.eq_iff` plus
-  `Option.some.injEq` and `Sym2.map_mk` — a fixed but workable idiom.
-  See FRICTION.md "Sym2 case analysis".
+  with `Sym2.map some e' = s(x, y)` originally required `Sym2.eq_iff`
+  plus `Option.some.injEq` and `Sym2.map_mk` — a fixed but workable
+  idiom. The follow-on session resolved this by adding the
+  predicate-form simp lemma `Sym2.exists_and_map_eq_mk_iff` to the
+  mirror, after which both `edgeSet` decompositions close in three
+  lines. See FRICTION.md (resolved entry).
 
 ## Blockers / open questions
 
@@ -113,8 +123,11 @@ there.
 
 (Will be written when Phase 3 finishes.)
 
-For the next agent picking this up: start with `typeII_edgeSet`,
-copying the structure of `typeI_edgeSet` and threading the
-`s(p, q) ∉ {s(a, b)}` hypothesis through. Then `typeI_isLaman`. The
-foundation has been validated; further work should not need to revisit
-the type-bumping or `Reachable` decisions.
+For the next agent picking this up: start with `typeI_isLaman`.
+Tightness is `typeI_edgeSet_ncard` + `Nat.card_option`; sparsity needs
+the `edgesIn` bound (a new lemma `typeI_edgesIn_ncard_le`) plus a case
+split on `none ∈ s` and `s'.card = 0/1/≥2`. The foundation (definitions,
+`edgeSet` decompositions, cardinality formulas, Sym2 helper API) has
+been validated; further work should not need to revisit the type-bumping
+or `Reachable` decisions, and the Sym2 friction has been resolved
+upstream-style — see FRICTION.md.

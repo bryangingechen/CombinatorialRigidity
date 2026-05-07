@@ -85,11 +85,13 @@ than an explicit `Reachable` inductive — see `notes/Phase3.md` for the
 architectural choice (and `DESIGN.md` "Choices to revisit").
 
 Phase 3 is in progress; see `notes/Phase3.md` for the lemma checklist,
-phase-local decisions, and the next concrete task. Definitions and the
-typeI edge-set decomposition (`typeI_edgeSet`, `typeI_edgeSet_ncard`) are
-landed; `typeII_edgeSet`, `typeI_isLaman`, `typeII_isLaman`, the
-decomposition theorem, and the K₄\e example are deferred to subsequent
-sessions.
+phase-local decisions, and the next concrete task. Definitions and both
+edge-set decompositions (`typeI_edgeSet`, `typeI_edgeSet_ncard`,
+`typeII_edgeSet`, `typeII_edgeSet_ncard`) are landed; `typeI_isLaman`,
+`typeII_isLaman`, the decomposition theorem, and the K₄\e example are
+deferred to subsequent sessions. The Sym2 case-analysis friction logged
+mid-Phase 3 was resolved by mirroring `Sym2.exists_and_map_eq_mk_iff`
+upstream-style; see `notes/FRICTION.md`.
 
 Both moves additionally preserve generic rigidity (proved later in
 `Framework.lean`).

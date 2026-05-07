@@ -38,30 +38,6 @@ can see how it was handled before.
 
 ## Open entries
 
-### [open] Sym2 case analysis is verbose for edge-set decompositions
-- **Where it bit:** `typeI_edgeSet` (Phase 3); aborted attempt at
-  `typeII_edgeSet`.
-- **Friction:** Proving things of the form
-  `(typeI G a b).edgeSet = (Sym2.map some '' G.edgeSet) ∪ {s(none, some a), s(none, some b)}`
-  requires `Sym2.ind` to expose the underlying pair `(x, y)`, then case
-  analysis `rcases x with _ | u <;> rcases y with _ | v` (4 cases),
-  each closed by mixed `Sym2.eq_iff` / `Option.some.injEq` /
-  `Sym2.map_mk` rewrites and `simp_all`. The pattern that closes the
-  `(some u, some v)` case (rewriting `s(some p, some q) = s(some u, some v)`
-  via `Sym2.eq_iff` + `Option.some.injEq` + `rcases ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩`)
-  was several iterations of trial-and-error to land. `aesop`, `tauto`,
-  and bare `simp` each got stuck on a different sub-goal.
-- **Proposed fix:** project-internal helper bundling the common
-  pattern, e.g. a `mem_typeI_edgeSet` characterization that hides the
-  `Sym2.map some` machinery, OR a more general
-  `Sym2.map_some_mem_iff` upstream candidate:
-  `Sym2.map some e ∈ (Sym2.map some '' S) ↔ e ∈ S` for `e : Sym2 V`
-  and `S : Set (Sym2 V)`. Could mirror under
-  `Mathlib/Data/Sym/Sym2.lean` once the right form is identified.
-- **Status:** open. Acceptable for `typeI_edgeSet` (proof landed); the
-  parallel `typeII_edgeSet` proof was abandoned mid-session pending a
-  cleaner approach. Revisit when picking up `typeII_edgeSet`.
-
 ### [open] `revert` ordering before `e'.ind` is finicky
 - **Where it bit:** `typeI_edgeSet` proof, backward direction.
 - **Friction:** To do Sym2 induction on a hypothesis `e'` while
@@ -119,6 +95,34 @@ can see how it was handled before.
 - **Status:** wontfix (upstream concern).
 
 ## Resolved / mirrored entries
+
+### [mirrored] `Sym2.exists_and_map_eq_mk_iff` (Sym2 image-membership case analysis)
+- **Where it bit:** `typeI_edgeSet` (Phase 3); aborted attempt at
+  `typeII_edgeSet`.
+- **Friction:** Proving things of the form
+  `(typeI G a b).edgeSet = (Sym2.map some '' G.edgeSet) ∪ {s(none, some a), s(none, some b)}`
+  required `Sym2.ind` to expose the underlying pair `(x, y)`, then a
+  4-way case analysis `rcases x with _ | u <;> rcases y with _ | v`,
+  each branch closed by mixed `Sym2.eq_iff` / `Option.some.injEq` /
+  `Sym2.map_mk` rewrites and `simp_all`. `aesop`, `tauto`, and bare
+  `simp` each got stuck on a different sub-goal.
+- **Resolution:** The right shape was a *predicate-form* simp lemma:
+  `(∃ e, P e ∧ Sym2.map f e = s(x, y)) ↔ ∃ p q, f p = x ∧ f q = y ∧ P s(p, q)`.
+  This is what `simp` reaches after `Set.mem_image` (a `@[simp]` lemma)
+  has fired, and after any further unfolding of `e ∈ S` (e.g.
+  `Set.mem_diff` for set differences), so the predicate `P` is whatever
+  conjunction those unfoldings produce. The earlier sketches (e.g.
+  `Sym2.map_some_mem_iff` for the `e = Sym2.map f e'` shape) didn't
+  match the simp normal form and so wouldn't fire.
+
+  With the predicate-form lemma tagged `@[simp]`, both
+  `typeI_edgeSet` and `typeII_edgeSet` close in three lines:
+  `ext e; induction e with | h x y => ?_; rcases x with _ | u <;>
+  rcases y with _ | v <;> simp`. The companion non-`simp`
+  `Sym2.mk_mem_image_map_iff` for the pre-`Set.mem_image` shape is
+  also provided, alongside `f = some` specializations.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
 
 ### [mirrored] `(G.incidenceSet v).ncard = G.degree v`
 - **Where it bit:** `IsLaman.two_le_degree` (Phase 2).

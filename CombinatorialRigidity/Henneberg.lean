@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Laman
+import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Combinatorics.SimpleGraph.Maps
 
@@ -118,41 +119,8 @@ lemma typeI_edgeSet (G : SimpleGraph V) (a b : V) :
     (typeI G a b).edgeSet =
       (Sym2.map some '' G.edgeSet) ∪ {s(none, some a), s(none, some b)} := by
   ext e
-  refine e.ind fun x y => ?_
-  simp only [mem_edgeSet, Set.mem_union, Set.mem_image, Set.mem_insert_iff,
-    Set.mem_singleton_iff]
-  constructor
-  · intro hAdj
-    rcases x with _ | u <;> rcases y with _ | v
-    · exact (hAdj : False).elim
-    · refine Or.inr ((typeI_adj_none_some.mp hAdj).imp ?_ ?_) <;>
-        rintro rfl <;> rw [Sym2.eq_iff] <;> tauto
-    · refine Or.inr ((typeI_adj_some_none.mp hAdj).imp ?_ ?_) <;>
-        rintro rfl <;> rw [Sym2.eq_iff] <;> tauto
-    · exact Or.inl ⟨s(u, v), typeI_adj_some_some.mp hAdj, rfl⟩
-  · rintro (⟨e', heG, hmap⟩ | hnew)
-    · revert hmap heG
-      refine e'.ind fun p q heG hmap => ?_
-      rw [Sym2.map_mk] at hmap
-      rcases x with _ | u <;> rcases y with _ | v <;>
-        rw [Sym2.eq_iff] at hmap
-      · simp_all
-      · simp_all
-      · simp_all
-      · simp only [Option.some.injEq] at hmap
-        rcases hmap with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
-        · exact heG
-        · exact heG.symm
-    · rcases hnew with hnew | hnew <;> rw [Sym2.eq_iff] at hnew <;>
-        rcases x with _ | u <;> rcases y with _ | v <;> simp_all
-
-/-- An edge of the form `Sym2.map some e'` cannot equal an edge with `none` as an endpoint. This is
-the keystone for disjointness arguments separating "old" and "new" edges in `typeI`/`typeII`. -/
-private lemma sym2_map_some_ne_pair_with_none {α : Type*} (e' : Sym2 α) (x : α) :
-    Sym2.map some e' ≠ s(none, some x) := by
-  refine e'.ind fun p q heq => ?_
-  rw [Sym2.map_mk, Sym2.eq_iff] at heq
-  simp at heq
+  induction e with | h x y => ?_
+  rcases x with _ | u <;> rcases y with _ | v <;> simp
 
 /-- Cardinality of `typeI G a b`'s edge set: under `a ≠ b`, two new edges are added. -/
 lemma typeI_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b : V} (hab : a ≠ b) :
@@ -165,16 +133,57 @@ lemma typeI_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b : V} (hab : a ≠ 
   have hDisj : Disjoint (Sym2.map some '' G.edgeSet)
       ({s(none, some a), s(none, some b)} : Set (Sym2 (Option V))) := by
     rw [Set.disjoint_left]
-    rintro e ⟨e', _, rfl⟩ hpair
-    rcases hpair with hpair | hpair
-    · exact sym2_map_some_ne_pair_with_none e' a hpair
-    · exact sym2_map_some_ne_pair_with_none e' b hpair
+    rintro e he hpair
+    rcases hpair with rfl | rfl <;> simp at he
   rw [typeI_edgeSet, Set.ncard_union_eq hDisj hImg_fin hPair_fin,
     Set.ncard_image_of_injective _ (Sym2.map.injective (Option.some_injective V))]
   congr 1
   refine Set.ncard_pair (fun h => hab ?_)
   rw [Sym2.eq_iff] at h
   simpa using h
+
+/-! ### Edge set of `typeII`
+
+The edge set of `typeII G a b c` decomposes into the image of `G.edgeSet \ {s(a, b)}` under `some`
+plus the three new edges joining `none` to `some a`, `some b`, and `some c`. -/
+
+/-- Edge set of `typeII G a b c`: the old edges other than `s(a, b)` (image under `some`) together
+with the three new edges joining `none` to `some a`, `some b`, and `some c`. -/
+lemma typeII_edgeSet (G : SimpleGraph V) (a b c : V) :
+    (typeII G a b c).edgeSet =
+      (Sym2.map some '' (G.edgeSet \ {s(a, b)})) ∪
+        {s(none, some a), s(none, some b), s(none, some c)} := by
+  ext e
+  induction e with | h x y => ?_
+  rcases x with _ | u <;> rcases y with _ | v <;> simp
+
+/-- Cardinality of `typeII G a b c`'s edge set: the deletion-then-`+3-new-edges` arithmetic. The
+hypotheses force the three new edges to be pairwise distinct; the deletion is recorded in the
+right-hand side as `G.edgeSet \ {s(a, b)}`, so this lemma does not assume `G.Adj a b`. -/
+lemma typeII_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b c : V}
+    (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) :
+    ((typeII G a b c).edgeSet).ncard = (G.edgeSet \ {s(a, b)}).ncard + 3 := by
+  classical
+  have hG_fin : (G.edgeSet \ {s(a, b)}).Finite := G.edgeSet.toFinite.diff
+  have hImg_fin : (Sym2.map some '' (G.edgeSet \ {s(a, b)})).Finite := hG_fin.image _
+  have hTriple_fin : ({s(none, some a), s(none, some b), s(none, some c)} :
+      Set (Sym2 (Option V))).Finite := Set.toFinite _
+  have hDisj : Disjoint (Sym2.map some '' (G.edgeSet \ {s(a, b)}))
+      ({s(none, some a), s(none, some b), s(none, some c)} :
+        Set (Sym2 (Option V))) := by
+    rw [Set.disjoint_left]
+    rintro e he hpair
+    rcases hpair with rfl | rfl | rfl <;> simp at he
+  rw [typeII_edgeSet, Set.ncard_union_eq hDisj hImg_fin hTriple_fin,
+    Set.ncard_image_of_injective _ (Sym2.map.injective (Option.some_injective V))]
+  congr 1
+  have hne_ab : s(none, some a) ≠ s(none, some b) := by simp [hab]
+  have hne_ac : s(none, some a) ≠ s(none, some c) := by simp [hca.symm]
+  have hne_bc : s(none, some b) ≠ s(none, some c) := by simp [hcb.symm]
+  rw [show ({s(none, some a), s(none, some b), s(none, some c)} : Set (Sym2 (Option V))) =
+    insert s(none, some a) (insert s(none, some b) {s(none, some c)}) from rfl,
+    Set.ncard_insert_of_notMem (by simp [hne_ab, hne_ac]) (by simp),
+    Set.ncard_insert_of_notMem (by simp [hne_bc]) (by simp), Set.ncard_singleton]
 
 end Henneberg
 
