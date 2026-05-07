@@ -24,6 +24,8 @@ reach for a mirror lemma, skim the relevant section first.
 4. **`refine ⟨?_, ?_⟩` for our `def`s** — `IsLaman`, `IsTight`,
    `IsSparse`, `edgesIn` are non-reducible; expose their structure
    manually.
+5. **Lifting Subtype-Sym2 equalities** — prefer `congrArg (Sym2.map
+   Subtype.val)` over `rw [Subtype.mk.injEq]; subst`.
 
 ---
 
@@ -355,3 +357,56 @@ hand-rolled version skips that pipeline.
 If we ever decide to make any of these `abbrev`, the proofs would
 contract further. For now they stay `def` — see `DESIGN.md`
 "Predicates as `def`s" for the trade-off.
+
+---
+
+## 5. Lifting Subtype-Sym2 equalities
+
+**Rule of thumb:** to deduce `s(u, w) = s(a, b)` (a `Sym2 V` equality)
+from `s(⟨u, _⟩, ⟨w, _⟩) = s(⟨a, _⟩, ⟨b, _⟩)` (a `Sym2 (Subtype p)`
+equality, e.g. on `{w // w ≠ v}`), use `congrArg (Sym2.map Subtype.val)
+heq` followed by `simpa`. Don't reach for `rw [Sym2.eq_iff] at heq;
+rcases …; rw [Subtype.mk.injEq] at h1 h2; subst h1; subst h2`.
+
+### Anti-pattern (don't do this)
+
+```lean
+intro heq
+rw [Sym2.eq_iff] at heq
+rcases heq with ⟨h1, h2⟩ | ⟨h1, h2⟩
+· rw [Subtype.mk.injEq] at h1 h2
+  subst h1; subst h2; exact hnab hadj
+· rw [Subtype.mk.injEq] at h1 h2
+  subst h1; subst h2; exact hnab hadj.symm
+```
+
+Six lines of bookkeeping per `Sym2`-disjunct, repeated for the swapped
+arm.
+
+### Pattern (do this)
+
+```lean
+intro heq
+have : s(u, w) = s(a, b) := by simpa using congrArg (Sym2.map Subtype.val) heq
+rcases Sym2.eq_iff.mp this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+exacts [hnab hadj, hnab hadj.symm]
+```
+
+The `congrArg` lifts the `Sym2 (Subtype p)` equality through the
+underlying-value map; `simpa` unfolds `Sym2.map Subtype.val s(⟨u, _⟩,
+⟨w, _⟩)` to `s(u, w)` via `Sym2.map_mk` + `Subtype.coe_mk`. Then
+`Sym2.eq_iff.mp` case-splits the `V`-level equality with `⟨rfl, rfl⟩`
+patterns directly.
+
+### Why this matters
+
+The `Subtype.mk.injEq` chain forces the proof-author to track which
+endpoint of which arm got which renaming, and `subst` rewrites the
+goal in two passes. The `congrArg` form keeps the proof at the level
+of the underlying type for the entire case analysis — once `s(u, w) =
+s(a, b)` is on the whiteboard, any `Sym2 V`-fact (here `¬G.Adj a b`)
+applies directly.
+
+This pattern recurs whenever `Sym2` wraps a sub-typed pair. The
+`typeII_iso_of_three_neighbors` `(some, some)` arm is the canonical
+example in this directory.

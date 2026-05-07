@@ -179,10 +179,9 @@ theorem IsLaman.exists_nonadj_among_three_neighbors [Finite V]
     rintro e he
     simp only [Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
                Set.mem_singleton_iff] at he
-    refine mem_edgesIn.mpr ⟨?_, ?_⟩
-    · rcases he with rfl | rfl | rfl | rfl | rfl | rfl <;> rwa [mem_edgeSet]
-    · rcases he with rfl | rfl | rfl | rfl | rfl | rfl <;>
-        (rw [Sym2.coe_mk]; intro x hx; simp_all <;> tauto)
+    rcases he with rfl | rfl | rfl | rfl | rfl | rfl <;>
+      exact mem_edgesIn.mpr ⟨by rwa [mem_edgeSet],
+        by rw [Sym2.coe_mk]; rintro _ (rfl | rfl) <;> simp⟩
   have hsparse := h.isSparse {v, a, b, c} (by rw [hs_card]; omega)
   rw [hs_card] at hsparse
   have h6_le : 6 ≤ (G.edgesIn (↑({v, a, b, c} : Finset V) : Set V)).ncard := by

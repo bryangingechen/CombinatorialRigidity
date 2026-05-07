@@ -294,6 +294,36 @@ there.
   case-split on Sym2 patterns. Worked examples and the don't-bother
   list are now in TACTICS.md § 1.
 
+- **Post-Phase-3 cleanup pass.** Extracted four project-internal
+  private helpers in `Henneberg.lean` to remove duplication that had
+  accumulated across the two `_isLaman` proofs and the rotation
+  block of `IsLaman.exists_typeI_or_typeII_iso`:
+  - `fresh_sym2_subset_singleton` and
+    `fresh_sym2_ncard_eq_zero_of_none_notMem` capture the `T ⊆
+    {s(none, some w)}` (`s'.card = 1` sub-case) and `T.ncard = 0`
+    (`none ∉ s` case) cardinality steps shared by `typeI_isLaman`
+    and `typeII_isLaman`. Each call site dropped from 6–8 lines of
+    explicit Sym2 case-analysis to a 2-line invocation.
+  - `typeI_branch_of_two_neighbors` and `typeII_branch_of_nonadj`
+    package the existential-witness construction of
+    `exists_typeI_or_typeII_iso`. The three rotation branches in
+    the degree-3 case collapsed from ~30 lines (each branch
+    repeating 4 `intro heq; exact …` Subtype-equality contradictions
+    and a `Or.inr ⟨rfl, _⟩` adjacency witness) to one
+    `(typeII_branch_of_nonadj …).imp fun _ => Or.inr` line per
+    branch, with the relabelling encoded in the argument order.
+  - Tightened the `(some, some)` arm of
+    `typeII_iso_of_three_neighbors`: replaced the `rw
+    [Subtype.mk.injEq] at h1 h2; subst h1; subst h2` chain with a
+    one-line subtype-equality lift `congrArg (Sym2.map
+    Subtype.val) heq` followed by `rcases Sym2.eq_iff.mp _`. Saves
+    ~5 lines and makes the underlying argument (the equality is at
+    the V-level) directly visible.
+  - Fused the double `rcases he with rfl | rfl | rfl | rfl | rfl |
+    rfl <;> …` in `IsLaman.exists_nonadj_among_three_neighbors`
+    `hE_sub` into one rcases that closes both projections in
+    parallel. Same proof, two lines shorter.
+
 ## Blockers / open questions
 
 - **typeII reverse Laman preservation needs the Henneberg blocker

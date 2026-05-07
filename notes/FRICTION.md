@@ -129,6 +129,63 @@ can see how it was handled before.
 
 ## Resolved / mirrored entries
 
+### [resolved] Lifting subtype-Sym2 equality to underlying-value equality
+- **Where it bit:** `typeII_iso_of_three_neighbors` `(some, some)` arm.
+- **Friction:** The arm needs to reject `s(⟨u, _⟩, ⟨w, _⟩) = s(⟨a, _⟩,
+  ⟨b, _⟩)` (an equality of `Sym2 (Subtype _)`) by reducing to `s(u, w) =
+  s(a, b)` (`Sym2 V`) and contradicting `¬G.Adj a b`. The original proof
+  chained `rw [Sym2.eq_iff] at heq; rcases heq with ⟨h1, h2⟩ | …; rw
+  [Subtype.mk.injEq] at h1 h2; subst h1; subst h2; …` per disjunct —
+  ~6 lines of bookkeeping per arm.
+- **Resolution:** lift the Sym2 equality through `Sym2.map Subtype.val`
+  in one step: `have : s(u, w) = s(a, b) := by simpa using congrArg
+  (Sym2.map Subtype.val) heq`. The downstream `rcases Sym2.eq_iff.mp …`
+  then case-splits the V-level equality with `⟨rfl, rfl⟩ | ⟨rfl, rfl⟩`
+  patterns directly. The `simpa` collapses `Sym2.map Subtype.val
+  s(⟨u, _⟩, ⟨w, _⟩)` to `s(u, w)` via `Sym2.map_mk` + `Subtype.coe_mk`.
+- **Status:** resolved (project-internal idiom; no upstream lemma is
+  missing). Recorded in TACTICS.md § 5.
+
+### [resolved] Recurring duplication across the two `_isLaman` proofs
+- **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity case
+  analysis — both moves had a `s'.card = 1` sub-case proving `T ⊆
+  {s(none, some w)}` by 6–8 lines of explicit Sym2 subset+`Finset.mem_singleton`
+  reasoning, and a `none ∉ s` case proving `T.ncard = 0` by another
+  6–7 lines of `Set.ncard_eq_zero` + per-edge case analysis. The
+  four blocks were textually different (different number of fresh
+  edges) but logically identical.
+- **Resolution:** extracted two private helpers in `Henneberg.lean`
+  (next to the `instDecidable*Adj` instances):
+  `fresh_sym2_subset_singleton` and
+  `fresh_sym2_ncard_eq_zero_of_none_notMem`. Both abstract over the
+  fresh-edge enumeration via `xs : Set (Sym2 (Option V))` plus a
+  one-line per-element predicate. Each of the four call sites
+  collapses to a 2-line invocation. Phase 3 cleanup pass.
+- **Status:** resolved (project-internal — these only make sense
+  for `Option V`-vertex extensions, which don't exist upstream).
+
+### [resolved] Repeated existential-witness packaging in `exists_typeI_or_typeII_iso`
+- **Where it bit:** the three rcases branches of the degree-3 case in
+  `IsLaman.exists_typeI_or_typeII_iso`. Each branch chose a
+  non-adjacent neighbor pair, relabelled `(a, b, c)` → `(α, β, γ)` so
+  the non-adjacent pair is `(α, β)`, and then unpacked the existential
+  `∃ G' a' b' c', a' ≠ b' ∧ c' ≠ a' ∧ c' ≠ b' ∧ G'.Adj a' b' ∧
+  Nonempty (G ≃g typeII G' a' b' c')` by hand: ~10 lines per branch
+  for four `intro heq; exact … (Subtype.mk.injEq .. |>.mp heq)`
+  Subtype-distinctness contradictions plus an `Or.inr ⟨rfl, _⟩`
+  adjacency witness.
+- **Resolution:** extracted a private `typeII_branch_of_nonadj`
+  helper that packages the entire existential given the neighbor
+  triple, the three pairwise-distinctness witnesses (in the order
+  `a ≠ b, c ≠ a, c ≠ b` matching the goal), the iff-form `hN_iff`,
+  and the non-adjacency hypothesis. Each rotation branch then
+  collapses to one `(typeII_branch_of_nonadj …).imp fun _ => Or.inr`
+  line, with the relabelling encoded in the argument order.
+  Companion `typeI_branch_of_two_neighbors` does the same for the
+  degree-2 case. Phase 3 cleanup pass.
+- **Status:** resolved (project-internal — these helpers are specific
+  to the iso-decomposition theorem).
+
 ### [resolved] `DecidableRel` for `typeI.Adj` / `typeII.Adj` (project-internal)
 - **Where it bit:** `Henneberg.fin4iso`'s `map_rel_iff'` proof (in
   `top_fin_four_minus_edge_isLaman`).
