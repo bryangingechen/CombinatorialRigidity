@@ -7,25 +7,28 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Both Henneberg moves now provably preserve the Laman property:
-`typeI_isLaman` (under `a ≠ b`) and `typeII_isLaman` (under `a ≠ b`,
-`c ≠ a`, `c ≠ b`, and `G.Adj a b`). Tightness in each case is a few
-lines combining the edge-count formula with `Finite.card_option`;
-sparsity is a `Finset.preimage some`-driven case-split on `none ∈ s`
-and on `s'.card = 0 / 1 / ≥ 2`. See the file for proof structure.
+Both Henneberg moves provably preserve the Laman property
+(`typeI_isLaman`, `typeII_isLaman`), and the `K₄ \ e` worked example
+(`top_fin_four_minus_edge_isLaman`) lands as a transport along an
+explicit `Option (Option (Fin 2)) ≃g K₄ \ {s(2, 3)}` iso. The iso
+construction is `decide`-driven once `DecidableRel` instances for
+`typeI.Adj` and `typeII.Adj` are in scope.
 
-The hand-rolled `edgesIn` decompositions inside each `_isLaman` proof
-(`(typeI G a b).edgesIn ↑s = Sym2.map some '' G.edgesIn ↑s' ∪ T`, and
-the `typeII` analogue with `\ {s(a, b)}` and a 3-element `T'`) are
-the workhorse: cardinality is then split as image-card plus `T.ncard`,
-with `T.ncard ≤ 2` (resp. `≤ 3`) and a tighter `≤ 1` sub-bound when
-`s' = {w}` is a singleton.
+The Laman-preservation infrastructure factored cleanly through
+`IsSparse.iso` and `IsTight.iso` in `Sparsity.lean` (with the
+`edgesIn` transport helper `SimpleGraph.Iso.image_edgesIn`), with
+`IsLaman.iso` becoming a one-line corollary of `IsTight.iso` in
+`Laman.lean`. Tightness in each `_isLaman` is a few lines combining
+the edge-count formula with `Finite.card_option`; sparsity uses the
+`Finset.preimage some`-driven case-split on `none ∈ s` and on
+`s'.card = 0 / 1 / ≥ 2`.
 
 **Next concrete task** (one sentence): prove
-`top_fin_four_minus_edge_isLaman` — `K₄ \ e` is Laman — as a one-line
-corollary of `typeI_isLaman` applied twice from `K₂` (a quick warm-up
-example before the decomposition theorem). Then take on
-`IsLaman.exists_typeI_or_typeII_reverse`.
+`IsLaman.exists_typeI_or_typeII_reverse` — the structural decomposition
+theorem (the hard remaining Phase 3 task), using
+`IsLaman.exists_two_le_degree_le_three` to pick a degree-2 or
+degree-3 vertex, then case-split on its degree to exhibit the
+Type I or Type II reverse move.
 
 ## Architectural choices made up front
 
@@ -102,11 +105,29 @@ there.
   Both proofs use `[Finite V]` plus `have : Fintype V := Fintype.ofFinite V`
   so callers don't have to manage a `Fintype` instance.
 
+### Iso-transport infrastructure (this session)
+- [x] `SimpleGraph.Iso.image_edgesIn` (in `Sparsity.lean`) —
+  `Sym2.map φ '' G.edgesIn s = H.edgesIn (φ '' s)` for any graph iso `φ`.
+  The `edgesIn` analogue of mathlib's `Iso.image_neighborSet`.
+- [x] `IsSparse.iso`, `IsTight.iso` (in `Sparsity.lean`) — `(k, ℓ)`-
+  sparsity / tightness preserved under graph isomorphism. Both are
+  one-line consumers of `image_edgesIn` plus standard `Set.ncard` /
+  `Nat.card` transport via `Iso.mapEdgeSet` and `φ.toEquiv`.
+- [x] `IsLaman.iso` (in `Laman.lean`) — one-liner specialization of
+  `IsTight.iso` at `(k, ℓ) = (2, 3)`.
+
+### K₄ \ e worked example (this session)
+- [x] `instDecidableTypeIAdj`, `instDecidableTypeIIAdj` —
+  `DecidableRel` for the move-graphs given `[DecidableEq V]` and
+  `[DecidableRel G.Adj]`. Needed so `decide` can close the `map_rel_iff'`
+  branches in the iso construction.
+- [x] `Henneberg.fin4equiv` (private), `Henneberg.fin4iso` (private) —
+  the explicit bijection and graph iso to `K₄ \ {s(2, 3)}`. The iso's
+  `map_rel_iff'` is one `rintro <;> first | decide | …` line.
+- [x] `top_fin_four_minus_edge_isLaman` — `IsLaman.iso fin4iso` applied
+  to `typeI_isLaman` doubled from `top_fin_two_isLaman`.
+
 ### Deferred to next session
-- [ ] `top_fin_four_minus_edge_isLaman` — `K₄ \ e` example, expected
-  to be a one-/two-line corollary of `typeI_isLaman` applied twice from
-  `K₂` (modulo the `Option (Option (Fin 2)) ≃ Fin 4` isomorphism). Good
-  warm-up before the decomposition theorem.
 - [ ] `IsLaman.exists_typeI_or_typeII_reverse` — the structural
   decomposition theorem (per the new architecture; replaces the original
   ROADMAP `Reachable` plan). The hard remaining Phase 3 task. Plan: use
@@ -167,6 +188,26 @@ there.
   patterns now read as one-token applications of named mirror
   lemmas. See FRICTION.md (resolved entries).
 
+- **Iso transport at `IsSparse`/`IsTight` level, not `IsLaman`.** The
+  natural place for the iso-preservation lemma is one level *below*
+  `IsLaman`: the parameters `(k, ℓ)` are inert under transport, and the
+  edge-count argument is identical. So `IsSparse.iso` and `IsTight.iso`
+  live in `Sparsity.lean`, and `IsLaman.iso = IsTight.iso` lands in
+  `Laman.lean` as a one-liner. The supporting `edgesIn`-image equality
+  (`Iso.image_edgesIn`) sits alongside `IsSparse.iso`, since `Sparsity.lean`
+  already imports `SimpleGraph.Maps` (transitively via `DeleteEdges`).
+
+- **`DecidableRel` for `typeI.Adj` / `typeII.Adj` enables `decide` for
+  the iso construction.** Lean does not auto-derive `DecidableRel` from
+  the `match`-based `Adj` on `Option V`. Adding two two-line instance
+  declarations in `Henneberg.lean` (each routes the four pattern arms
+  through `inferInstance` / `instDecidableFalse`) lets `decide` close
+  every branch of the K₄ \ e iso's `map_rel_iff'`, including the
+  4 nested `(some (some _), some (some _))` arms that previously needed
+  `simp` on `typeI_adj_some_some`. The instances are project-specific
+  (typeI/typeII don't exist upstream), so they live in `Henneberg.lean`
+  next to the definitions.
+
 - **Don't hand-pass `Set.Finite` witnesses.** The `_fin` preambles
   in front of every `Set.ncard_*` call were unnecessary: the
   relevant lemmas (`ncard_union_eq`, `ncard_le_ncard`,
@@ -203,10 +244,27 @@ there.
 (Will be written when Phase 3 finishes.)
 
 For the next agent picking this up: start with
-`top_fin_four_minus_edge_isLaman` — it should be a short corollary of
-`typeI_isLaman` applied twice from `top_fin_two_isLaman`, mediated by
-the `Option (Option (Fin 2)) ≃ Fin 4` isomorphism (and `IsLaman` is
-preserved under graph isomorphism — if that lemma doesn't exist yet,
-add it to `Laman.lean`). Then move to the decomposition theorem
-`IsLaman.exists_typeI_or_typeII_reverse`; the Phase 2 lemma
-`IsLaman.exists_two_le_degree_le_three` provides the entry point.
+`IsLaman.exists_typeI_or_typeII_reverse` — the structural decomposition
+theorem. Plan: the Phase 2 lemma `IsLaman.exists_two_le_degree_le_three`
+gives a vertex `v` of `G` with `2 ≤ G.degree v ≤ 3` (under `n ≥ 3`); case-
+split on `G.degree v`:
+
+- `G.degree v = 2`: the two `v`-neighbors `a, b` exhibit a Type I reverse
+  move. Build the underlying `G' : SimpleGraph (V \ {v})` (or via
+  `Equiv.optionEquivOfNotMem`-style transport: pick an iso
+  `V ≃ Option (V \ {v})` sending `v ↦ none`), show `G ≃g typeI G' a b`,
+  and prove `G'.IsLaman` (the inductive step) via the typeI-preservation
+  lemma in reverse (the new `Iso.image_edgesIn` plus sparsity
+  manipulations should suffice).
+- `G.degree v = 3`: pick two of the three neighbors that are
+  *non-adjacent* in `G`, call them `a, b`, and the third `c`. They give a
+  Type II reverse move at `v`. Same outline as above with `typeII`.
+
+The tricky piece is **finding non-adjacent neighbors in the
+degree-3 case**. By `IsSparse 2 3` applied to the 3-element neighbor set
+`N(v)`, the induced edge count is at most `2 · 3 − 3 = 3`, but `N(v)`
+spans `≤ 3` edges among its `(3 choose 2) = 3` possible pairs.
+Combinatorially: the average degree bound forces at least one
+non-edge among the three. Make this concrete using a sparsity
+application; see `IsLaman.two_le_degree`'s proof for the analogous
+sparsity-on-a-finset technique.

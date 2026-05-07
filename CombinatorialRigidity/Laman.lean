@@ -37,6 +37,7 @@ and Henneberg moves — is what this directory builds toward.
   a vertex of degree ≤ 3, and (when `n ≥ 3`) one of degree 2 or 3.
 * `SimpleGraph.top_fin_two_isLaman` — `K₂` is Laman. The base case for
   the Henneberg construction.
+* `SimpleGraph.IsLaman.iso` — Laman is preserved under graph isomorphism.
 
 ## Implementation notes
 
@@ -126,6 +127,12 @@ theorem IsLaman.exists_two_le_degree_le_three [Fintype V]
     ∃ v, 2 ≤ G.degree v ∧ G.degree v ≤ 3 := by
   obtain ⟨v, hv⟩ := h.exists_degree_le_three
   exact ⟨v, h.two_le_degree hV v, hv⟩
+
+/-- A graph isomorphism preserves the Laman property. Specialization of `IsTight.iso` at
+`(k, ℓ) = (2, 3)`. -/
+theorem IsLaman.iso {V W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
+    (φ : G ≃g H) (h : G.IsLaman) : H.IsLaman :=
+  IsTight.iso φ h
 
 /-! ### Base case for Henneberg: `K₂` is Laman -/
 

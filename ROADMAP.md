@@ -87,14 +87,16 @@ architectural choice (and `DESIGN.md` "Choices to revisit").
 Phase 3 is in progress; see `notes/Phase3.md` for the lemma checklist,
 phase-local decisions, and the next concrete task. Definitions, both
 edge-set decompositions (`typeI_edgeSet`, `typeI_edgeSet_ncard`,
-`typeII_edgeSet`, `typeII_edgeSet_ncard`), and both Laman-preservation
+`typeII_edgeSet`, `typeII_edgeSet_ncard`), both Laman-preservation
 theorems (`typeI_isLaman` under `a ≠ b`, `typeII_isLaman` under
-`a ≠ b`, `c ≠ a`, `c ≠ b`, and `G.Adj a b`) are landed; the K₄\e
-example and the decomposition theorem
-`IsLaman.exists_typeI_or_typeII_reverse` are deferred to subsequent
-sessions. The Sym2 case-analysis friction logged mid-Phase 3 was
-resolved by mirroring `Sym2.exists_and_map_eq_mk_iff` upstream-style;
-see `notes/FRICTION.md`.
+`a ≠ b`, `c ≠ a`, `c ≠ b`, and `G.Adj a b`), and the K₄\e worked
+example (`top_fin_four_minus_edge_isLaman`) are landed. Iso transport
+(`IsSparse.iso`, `IsTight.iso`, `IsLaman.iso`) was added to
+`Sparsity.lean`/`Laman.lean` to enable the K₄\e transport. The
+decomposition theorem `IsLaman.exists_typeI_or_typeII_reverse` is the
+last remaining Phase 3 task. The Sym2 case-analysis friction logged
+mid-Phase 3 was resolved by mirroring `Sym2.exists_and_map_eq_mk_iff`
+upstream-style; see `notes/FRICTION.md`.
 
 Both moves additionally preserve generic rigidity (proved later in
 `Framework.lean`).

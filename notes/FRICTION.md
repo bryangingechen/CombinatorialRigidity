@@ -104,6 +104,42 @@ can see how it was handled before.
 
 ## Resolved / mirrored entries
 
+### [resolved] `DecidableRel` for `typeI.Adj` / `typeII.Adj` (project-internal)
+- **Where it bit:** `Henneberg.fin4iso`'s `map_rel_iff'` proof (in
+  `top_fin_four_minus_edge_isLaman`).
+- **Friction:** `typeI.Adj` and `typeII.Adj` are defined by `match` on
+  `Option V`. Lean does not auto-derive `DecidableRel` from this shape.
+  `decide` for the iso's `map_rel_iff'` succeeded on the
+  `(none, _)` / `(_, none)` arms (which reduce to `Or` of equalities)
+  but failed on the `(some _, some _)` arms because the
+  inner-`Adj` reduction didn't fire under typeclass synthesis. `simp` on
+  `typeI_adj_some_some` partially worked but didn't close the goal.
+- **Resolution:** added two two-line instance declarations
+  `instDecidableTypeIAdj` and `instDecidableTypeIIAdj` next to the
+  `typeI` / `typeII` definitions. Each routes the four pattern arms
+  through `inferInstance` (for `(some, some)`, `(some, none)`,
+  `(none, some)`) and `instDecidableFalse` (for `(none, none)`). After
+  this, the K₄ \ e iso's `map_rel_iff'` closes by a single
+  `rintro <;> first | decide | (fin_cases _ <;> decide) | …` line.
+- **Status:** resolved (project-internal — typeI/typeII don't exist
+  upstream, so no mirror).
+
+### [resolved] `IsLaman.iso` factored through `IsSparse.iso` / `IsTight.iso`
+- **Where it bit:** designing the iso-preservation lemma for the
+  `K₄ \ e` example.
+- **Friction:** initial scoping was "add `IsLaman.iso` to `Laman.lean`"
+  with the proof inlining sparsity + tightness transport. Those
+  arguments are parametric in `(k, ℓ)` and have nothing to do with the
+  `2, 3` choice: the natural home is one level below `IsLaman`.
+- **Resolution:** added `Iso.image_edgesIn` (the `edgesIn` analogue of
+  mathlib's `Iso.image_neighborSet`), `IsSparse.iso`, and `IsTight.iso`
+  to `Sparsity.lean`. `IsLaman.iso` in `Laman.lean` is then a one-line
+  specialization `IsTight.iso φ h`. `Sparsity.lean` already imports
+  `SimpleGraph.Maps` transitively via `DeleteEdges`, so the only new
+  import is the project's `Sym2.mk_mem_image_map_iff` mirror.
+- **Status:** resolved (project-internal). Lifted as a phase-local
+  decision into `notes/Phase3.md`.
+
 ### [mirrored] `Set.ncard_pair_le` / `Set.ncard_triple_le` (unconditional pair / triple bounds)
 - **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
   `typeI_isLaman` (`hT_le_2`), `typeII_isLaman` (`hT'_le_3`,

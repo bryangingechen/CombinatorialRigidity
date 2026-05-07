@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.EdgesIn
+import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Data.Set.Card
 
@@ -35,6 +36,8 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
 * `SimpleGraph.IsSparse.edgeSet_ncard_add_le` — global edge count bound.
 * `SimpleGraph.IsSparse.deleteEdges` — sparsity preserved under edge deletion.
 * `SimpleGraph.IsTight.not_isSparse_of_lt` — proper supergraph of a tight graph is not sparse.
+* `SimpleGraph.IsSparse.iso`, `SimpleGraph.IsTight.iso` — sparsity and tightness are
+  preserved under graph isomorphism.
 
 ## Implementation notes
 
@@ -114,5 +117,60 @@ theorem IsTight.not_isSparse_of_lt [Finite V] {G H : SimpleGraph V} {k ℓ : ℕ
   have := hH.edgeSet_ncard_add_le (by grind only)
   have := Set.ncard_lt_ncard (edgeSet_ssubset_edgeSet.mpr h) (Set.toFinite H.edgeSet)
   grind only
+
+/-! ### Transport along graph isomorphism
+
+`IsSparse` and `IsTight` are preserved under graph isomorphism. The transport is mediated by
+`Sym2.map φ` between edge sets and by `φ.toEquiv` between vertex types. -/
+
+namespace Iso
+
+variable {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
+
+/-- Under a graph iso, the `Sym2.map`-image of `G.edgesIn s` is `H.edgesIn (φ '' s)`. The
+`edgesIn` analogue of `Iso.image_neighborSet`. -/
+lemma image_edgesIn (φ : G ≃g H) (s : Set V) :
+    Sym2.map φ '' G.edgesIn s = H.edgesIn (φ '' s) := by
+  ext e
+  induction e with | h u v => ?_
+  simp only [Sym2.mk_mem_image_map_iff, mem_edgesIn, mem_edgeSet, Sym2.coe_mk]
+  constructor
+  · rintro ⟨p, q, rfl, rfl, h_adj, hsub⟩
+    refine ⟨φ.map_adj_iff.mpr h_adj, ?_⟩
+    rintro x (rfl | rfl)
+    · exact ⟨p, hsub (Or.inl rfl), rfl⟩
+    · exact ⟨q, hsub (Or.inr rfl), rfl⟩
+  · rintro ⟨h_adj, hsub⟩
+    obtain ⟨p, hp, rfl⟩ := hsub (Or.inl rfl)
+    obtain ⟨q, hq, rfl⟩ := hsub (Or.inr rfl)
+    exact ⟨p, q, rfl, rfl, φ.map_adj_iff.mp h_adj,
+      fun x hx => by rcases hx with rfl | rfl <;> assumption⟩
+
+end Iso
+
+/-- A graph isomorphism preserves `(k, ℓ)`-sparsity. -/
+theorem IsSparse.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
+    (φ : G ≃g H) {k ℓ : ℕ} (h : G.IsSparse k ℓ) : H.IsSparse k ℓ := by
+  classical
+  intro s hs
+  set s' : Finset V := s.image φ.symm
+  have hs'_card : s'.card = s.card :=
+    Finset.card_image_of_injective s φ.symm.toEquiv.injective
+  have h_eq : (H.edgesIn (↑s : Set W)).ncard = (G.edgesIn (↑s' : Set V)).ncard := by
+    rw [show (↑s' : Set V) = φ.symm '' ↑s from Finset.coe_image, ← Iso.image_edgesIn φ.symm,
+      Set.ncard_image_of_injective _ (Sym2.map.injective φ.symm.injective)]
+  rw [h_eq, ← hs'_card]
+  exact h s' (hs'_card ▸ hs)
+
+/-- A graph isomorphism preserves `(k, ℓ)`-tightness. -/
+theorem IsTight.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
+    (φ : G ≃g H) {k ℓ : ℕ} (h : G.IsTight k ℓ) : H.IsTight k ℓ := by
+  refine ⟨h.1.iso φ, ?_⟩
+  have hE : H.edgeSet.ncard = G.edgeSet.ncard := by
+    simp only [← Nat.card_coe_set_eq]
+    exact Nat.card_congr φ.mapEdgeSet.symm
+  have hV : Nat.card W = Nat.card V := Nat.card_congr φ.toEquiv.symm
+  rw [hE, hV]
+  exact h.2
 
 end SimpleGraph

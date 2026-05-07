@@ -112,6 +112,22 @@ variable {G : SimpleGraph V} {a b c u v : V}
 
 @[simp] lemma typeII_not_adj_none_none : ¬ (typeII G a b c).Adj none none := id
 
+instance instDecidableTypeIAdj [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b : V) : DecidableRel (typeI G a b).Adj := fun u v =>
+  match u, v with
+  | some u, some v => (inferInstance : Decidable (G.Adj u v))
+  | some u, none => (inferInstance : Decidable (u = a ∨ u = b))
+  | none, some v => (inferInstance : Decidable (v = a ∨ v = b))
+  | none, none => instDecidableFalse
+
+instance instDecidableTypeIIAdj [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a b c : V) : DecidableRel (typeII G a b c).Adj := fun u v =>
+  match u, v with
+  | some u, some v => (inferInstance : Decidable (G.Adj u v ∧ s(u, v) ≠ s(a, b)))
+  | some u, none => (inferInstance : Decidable (u = a ∨ u = b ∨ u = c))
+  | none, some v => (inferInstance : Decidable (v = a ∨ v = b ∨ v = c))
+  | none, none => instDecidableFalse
+
 /-! ### Edge set of `typeI`
 
 The edge set of `typeI G a b` decomposes into the image of `G.edgeSet` under `some` plus the two
@@ -400,5 +416,46 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
       !Set.ncard_diff_singleton_of_mem, h.edgeSet_ncard]
 
 end Henneberg
+
+/-! ### K₄ minus one edge is Laman
+
+A worked example: `(⊤ : SimpleGraph (Fin 4)).deleteEdges {s(2, 3)}` is Laman. The proof
+applies `typeI_isLaman` twice from `top_fin_two_isLaman` to get a Laman graph on
+`Option (Option (Fin 2))`, then transports it to `Fin 4` via `IsLaman.iso`. -/
+
+private def Henneberg.fin4equiv : Option (Option (Fin 2)) ≃ Fin 4 where
+  toFun
+    | none => 3
+    | some none => 2
+    | some (some 0) => 0
+    | some (some 1) => 1
+  invFun
+    | 0 => some (some 0)
+    | 1 => some (some 1)
+    | 2 => some none
+    | 3 => none
+  left_inv := by decide
+  right_inv := by decide
+
+/-- Graph isomorphism from the iterated Type I extension of `K₂` to `K₄ \ {s(2, 3)}`. -/
+private def Henneberg.fin4iso :
+    (Henneberg.typeI (Henneberg.typeI (⊤ : SimpleGraph (Fin 2)) 0 1) (some 0) (some 1))
+      ≃g ((⊤ : SimpleGraph (Fin 4)).deleteEdges {s(2, 3)}) where
+  toEquiv := Henneberg.fin4equiv
+  map_rel_iff' := by
+    rintro (_ | _ | a) (_ | _ | b) <;> first
+      | decide
+      | (fin_cases a <;> decide)
+      | (fin_cases b <;> decide)
+      | (fin_cases a <;> fin_cases b <;> decide)
+
+/-- The complete graph on four vertices minus one edge is Laman. The witness construction is
+two iterated Type I Henneberg moves applied to `K₂`. -/
+theorem top_fin_four_minus_edge_isLaman :
+    ((⊤ : SimpleGraph (Fin 4)).deleteEdges {s(2, 3)}).IsLaman :=
+  IsLaman.iso Henneberg.fin4iso <|
+    Henneberg.typeI_isLaman
+      (Henneberg.typeI_isLaman top_fin_two_isLaman (by decide))
+      (by decide)
 
 end SimpleGraph
