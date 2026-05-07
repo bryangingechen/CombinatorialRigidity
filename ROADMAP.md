@@ -10,6 +10,10 @@ or *minimally rigid* graphs in the plane.
 The work is expected to span multiple sessions. This file is the canonical
 hand-off document: read it first when picking up the project.
 
+> Design rationale (why these choices and not others) lives in
+> `DESIGN.md`. Open it only when you actually need to question a
+> decision; otherwise this file is sufficient.
+
 ## Status
 
 We are deliberately starting **narrow**: one experimental file with the
@@ -151,25 +155,10 @@ Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
 4. Look at the Status table above and pick the leftmost active file.
 5. Search inside the active `.lean` file(s) for `TODO` markers — these are
    the concrete next steps.
-6. Update this `ROADMAP.md` (Status table + Open questions) in the *same
-   commit* as the code so the next session sees an accurate map.
-
-## Open questions / things to verify
-
-These are the design choices we are most likely to revise after we see
-how the proofs actually go. Update this list as questions are answered
-or new ones surface.
-
-- Is `Set.ncard` on `edgesIn` ergonomic, or do we want a `Finset` version
-  guarded by `[DecidableRel G.Adj] [Fintype V]`?
-- Should `IsSparse` quantify over `Set V` or `Finset V`? (Currently
-  `Finset V` to avoid finiteness side-conditions.)
-- The hypothesis `ℓ ≤ k * #s` in `IsSparse` keeps the bound in `ℕ`; is
-  there a cleaner formulation in `ℤ`?
-- Vertex insertion in Henneberg moves: keep `V` fixed and use a
-  `Fintype.card`-bumping construction, or pass to `V ⊕ Unit`/`Option V`?
-- Rigidity matrix: build via `Matrix` directly, or as a linear map and
-  then use `LinearMap.toMatrix` for rank arguments?
+6. Update this `ROADMAP.md`'s Status table in the *same commit* as the
+   code so the next session sees an accurate map. If you are revising or
+   answering one of the "Choices to revisit" entries in `DESIGN.md`,
+   update that file in the same commit too.
 
 ## References
 
