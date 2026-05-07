@@ -147,7 +147,32 @@ it for a definition that's overwhelmingly used in `ℕ` contexts.
 
 ---
 
-## Choices to revisit
+## Mirror directory for missing mathlib lemmas
+
+If, while proving something here, we hit a lemma that *should* exist in
+mathlib proper (because it's about `SimpleGraph`, `Sym2`, `Set.ncard`,
+etc., and is not specific to rigidity), we put it under
+
+```
+Archive/CombinatorialRigidity/Mathlib/<exact mathlib path>
+```
+
+For example, a missing lemma about `SimpleGraph.edgeSet` that would
+naturally live in `Mathlib/Combinatorics/SimpleGraph/Basic.lean` goes
+into `Archive/CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/Basic.lean`.
+
+The mirror keeps each candidate lemma in the file it would land in
+upstream, so promotion to mathlib is a copy-paste with the file's
+existing context. The Lean namespace stays the standard one
+(`SimpleGraph`, `Set`, …), not the project's.
+
+Each file in the mirror should open with a docstring stating that the
+contents are upstream candidates and which mathlib path they target.
+
+The directory is created lazily — don't pre-populate it. As of this
+writing the mirror is empty: Phase 1 lemmas proved without any gaps.
+
+
 
 These are *open*: we expect to revise based on how proofs actually
 unfold. Add to this list whenever a session surfaces a question; move

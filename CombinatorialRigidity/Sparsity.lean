@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.EdgesIn
+import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Data.Set.Card
 
 /-!
@@ -73,5 +74,34 @@ theorem IsTight.edgeSet_ncard {G : SimpleGraph V} {k ℓ : ℕ} (h : G.IsTight k
 @[simp] theorem bot_isTight_iff (k ℓ : ℕ) :
     (⊥ : SimpleGraph V).IsTight k ℓ ↔ ℓ = k * Nat.card V := by
   refine ⟨fun ⟨_, h⟩ ↦ by simpa using h, fun h ↦ ⟨bot_isSparse k ℓ, by simpa using h⟩⟩
+
+/-! ### The global edge bound and consequences -/
+
+/-- The global edge count of a `(k, ℓ)`-sparse graph is bounded by `k * #V − ℓ`,
+provided `ℓ ≤ k * #V`. This is sparsity applied at `s = univ`. -/
+theorem IsSparse.edgeSet_ncard_add_le [Finite V] {G : SimpleGraph V} {k ℓ : ℕ}
+    (h : G.IsSparse k ℓ) (hV : ℓ ≤ k * Nat.card V) :
+    G.edgeSet.ncard + ℓ ≤ k * Nat.card V := by
+  have : Fintype V := Fintype.ofFinite V
+  rw [Nat.card_eq_fintype_card] at hV ⊢
+  have key := h Finset.univ (by simpa using hV)
+  rwa [Finset.coe_univ, edgesIn_univ, Finset.card_univ] at key
+
+/-- Deleting edges from a `(k, ℓ)`-sparse graph yields a `(k, ℓ)`-sparse graph. -/
+theorem IsSparse.deleteEdges {G : SimpleGraph V} {k ℓ : ℕ}
+    (h : G.IsSparse k ℓ) (s : Set (Sym2 V)) : (G.deleteEdges s).IsSparse k ℓ :=
+  h.mono_left (G.deleteEdges_le s)
+
+/-- A proper supergraph of a `(k, ℓ)`-tight graph cannot be `(k, ℓ)`-sparse: the global edge bound
+is already saturated, so any extra edge violates it. -/
+theorem IsTight.not_isSparse_of_lt [Finite V] {G H : SimpleGraph V} {k ℓ : ℕ}
+    (hG : G.IsTight k ℓ) (h : G < H) : ¬ H.IsSparse k ℓ := by
+  intro hH
+  have hGcard := hG.edgeSet_ncard
+  have hℓV : ℓ ≤ k * Nat.card V := by omega
+  have hbound := hH.edgeSet_ncard_add_le hℓV
+  have hlt : G.edgeSet.ncard < H.edgeSet.ncard :=
+    Set.ncard_lt_ncard (edgeSet_ssubset_edgeSet.mpr h) (Set.toFinite _)
+  omega
 
 end SimpleGraph
