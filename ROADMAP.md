@@ -16,21 +16,22 @@ hand-off document: read it first when picking up the project.
 
 ## Status
 
-We are deliberately starting **narrow**: one experimental file with the
-core definitions and a handful of sanity-check lemmas. Once those compile
-cleanly and we trust the definitions, we expand into the file structure
-sketched below.
-
 | File | What it contains | Status |
 |---|---|---|
-| `Sparsity.lean` | `edgesIn`, `IsSparse`, `IsTight`, `IsLaman` + sanity-check lemmas | **Active — experimentation** |
-| `Laman.lean` | Lifted out of Sparsity once API stabilizes | Not yet created |
+| `EdgesIn.lean` | `edgesIn` selector + basic API | **In progress — small** |
+| `Sparsity.lean` | `IsSparse`, `IsTight` + basic API | **In progress — small** |
+| `Laman.lean` | `IsLaman` + accessors; worked example for `K₂` | **In progress — small** |
 | `Henneberg.lean` | Type I (vertex addition) and Type II (edge split) moves | Not yet created |
 | `Framework.lean` | Bar-joint frameworks, rigidity matrix, infinitesimal rigidity | Not yet created |
 | `LamanTheorem.lean` | Statement and assembly | Not yet created |
 
-When promoting code out of `Sparsity.lean`, update this table in the
-*same commit* so the next session sees an accurate map.
+The first three files exist with a small amount of content each. Their
+APIs are still likely to grow (or be revised) as downstream proofs
+demand. Add lemmas in the file that introduces the relevant definition;
+a lemma about `IsSparse` belongs in `Sparsity.lean`, not in `Laman.lean`,
+even if it is first used there.
+
+When creating a new file, update this table in the *same commit*.
 
 ## Mathematical roadmap
 
