@@ -7,24 +7,25 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-The foundational layer is in place. `typeI` and `typeII` are defined on
-`Option V`, with all eight adjacency lemmas as `Iff.rfl`.
-`typeI_edgeSet` and `typeII_edgeSet` give the explicit set
-decompositions; `typeI_edgeSet_ncard` and `typeII_edgeSet_ncard` give
-the corresponding cardinality formulas.
+Both Henneberg moves now provably preserve the Laman property:
+`typeI_isLaman` (under `a ≠ b`) and `typeII_isLaman` (under `a ≠ b`,
+`c ≠ a`, `c ≠ b`, and `G.Adj a b`). Tightness in each case is a few
+lines combining the edge-count formula with `Finite.card_option`;
+sparsity is a `Finset.preimage some`-driven case-split on `none ∈ s`
+and on `s'.card = 0 / 1 / ≥ 2`. See the file for proof structure.
 
-The "Sym2 case analysis" friction logged after the previous session has
-been resolved upstream-style: the missing lemma was a predicate-form
-`Sym2.exists_and_map_eq_mk_iff`, which is what `simp` reaches after
-`Set.mem_image` fires (and after `Set.mem_diff` if the underlying set
-is a difference). With that lemma tagged `@[simp]` (mirrored under
-`Mathlib/Data/Sym/Sym2.lean`), both `edgeSet` decompositions close in
-three lines. See `../notes/FRICTION.md` (resolved entry).
+The hand-rolled `edgesIn` decompositions inside each `_isLaman` proof
+(`(typeI G a b).edgesIn ↑s = Sym2.map some '' G.edgesIn ↑s' ∪ T`, and
+the `typeII` analogue with `\ {s(a, b)}` and a 3-element `T'`) are
+the workhorse: cardinality is then split as image-card plus `T.ncard`,
+with `T.ncard ≤ 2` (resp. `≤ 3`) and a tighter `≤ 1` sub-bound when
+`s' = {w}` is a singleton.
 
-**Next concrete task** (one sentence): prove `typeI_isLaman` —
-tightness follows from `typeI_edgeSet_ncard` and `Nat.card_option`;
-sparsity needs an `edgesIn` bound plus a case split on `none ∈ s` and
-`s'.card = 0/1/≥2` sub-cases. Then the analogous `typeII_isLaman`.
+**Next concrete task** (one sentence): prove
+`top_fin_four_minus_edge_isLaman` — `K₄ \ e` is Laman — as a one-line
+corollary of `typeI_isLaman` applied twice from `K₂` (a quick warm-up
+example before the decomposition theorem). Then take on
+`IsLaman.exists_typeI_or_typeII_reverse`.
 
 ## Architectural choices made up front
 
@@ -79,21 +80,39 @@ there.
 - [x] `edgesIn_singleton` (in `EdgesIn.lean`) — `G.edgesIn {v} = ∅`,
   needed for the `s'.card = 1` case of `typeI_isLaman` sparsity.
 
+### Preservation theorems (this session)
+- [x] `typeI_isLaman` — Type I preserves Laman, under `a ≠ b`.
+  Sparsity is by case split on `none ∈ s` and on `s'.card`; the
+  `s'.card = 1, none ∈ s` sub-case requires showing `T ⊆ {s(none, some w)}`
+  (where `s' = {w}`) since the trivial `T.ncard ≤ 2` bound is too loose.
+- [x] `typeII_isLaman` — Type II preserves Laman, under `a ≠ b`,
+  `c ≠ a`, `c ≠ b`, and `G.Adj a b`. Mirrors `typeI_isLaman` with two
+  extra wrinkles: (i) the deleted edge `s(a, b)` interacts with the
+  three new edges via a uniform `+ 2` bound — either `s(a, b)` was in
+  `G.edgesIn ↑s'` (loses 1, T'.ncard ≤ 3) or it wasn't (T'.ncard ≤ 2,
+  because `a ∉ s' ∨ b ∉ s'`); (ii) the inline `edgesIn` decomposition
+  needs a final `try tauto` to clean up conjunct re-grouping that
+  `simp` leaves for the `s(some u, some v)` case.
+
+  Note: `typeI_edgesIn_ncard_le` did not need to be factored as a
+  named lemma; the bound is inlined inside the `none ∈ s` branch of
+  `typeI_isLaman`. If a third caller materializes (e.g. for the
+  decomposition theorem), promote it then.
+
+  Both proofs use `[Finite V]` plus `have : Fintype V := Fintype.ofFinite V`
+  so callers don't have to manage a `Fintype` instance.
+
 ### Deferred to next session
-- [ ] `typeI_edgesIn_ncard_le` — bound
-  `((typeI G a b).edgesIn ↑s).ncard ≤ (G.edgesIn ↑s').ncard + 2`
-  (where `s' = s.preimage some _`); requires extending the
-  `typeI_edgeSet` decomposition through `∩ ↑s.sym2`.
-- [ ] `typeI_isLaman` — Type I preserves Laman. Tightness follows
-  immediately from `typeI_edgeSet_ncard` and `Nat.card_option`. Sparsity
-  needs the `edgesIn` bound plus a case split on `none ∈ s` and the
-  `s'.card = 0/1/≥2` sub-cases (the singleton case uses `edgesIn_singleton`).
-- [ ] `typeII_isLaman` — analogous, more delicate due to deletion.
+- [ ] `top_fin_four_minus_edge_isLaman` — `K₄ \ e` example, expected
+  to be a one-/two-line corollary of `typeI_isLaman` applied twice from
+  `K₂` (modulo the `Option (Option (Fin 2)) ≃ Fin 4` isomorphism). Good
+  warm-up before the decomposition theorem.
 - [ ] `IsLaman.exists_typeI_or_typeII_reverse` — the structural
   decomposition theorem (per the new architecture; replaces the original
-  ROADMAP `Reachable` plan).
-- [ ] `top_fin_four_minus_edge_isLaman` — `K₄ \ e` example, one-line
-  corollary of `typeI_isLaman` applied twice from `K₂`.
+  ROADMAP `Reachable` plan). The hard remaining Phase 3 task. Plan: use
+  `IsLaman.exists_two_le_degree_le_three` to find a degree-2 or
+  degree-3 vertex `v`, then case-split on its degree to produce the
+  Type I or Type II reverse move.
 
 ## Decisions made during this phase
 
@@ -115,19 +134,44 @@ there.
   mirror, after which both `edgeSet` decompositions close in three
   lines. See FRICTION.md (resolved entry).
 
+- **Inline the `edgesIn` decomposition in each `_isLaman` proof,
+  don't factor it.** The `(typeI G a b).edgesIn ↑s = … ∪ T` equality
+  is shaped slightly differently per move (T is 2-element for typeI,
+  3-element for typeII; typeII also carries the `\ {s(a, b)}` on the
+  image side). Factoring out a generic `_edgesIn_decomp` lemma would
+  not be reused enough to pay for itself, and would force consumers
+  to also reason about the `Finset.preimage some _` -- which is more
+  natural to set up in-context.
+
+- **`s'.card = 1` sub-case needs explicit subset reasoning.** The
+  uniform bound `T.ncard ≤ 2` (resp. `T'.ncard ≤ 3`) is one too loose
+  here: when `s' = {w}` and `none ∈ s` we need `T.ncard ≤ 1`. Solved by
+  showing `T ⊆ {s(none, some w)}`: each `e ∈ T` is `s(none, some v)`
+  with `some v ∈ s`, so `v ∈ s' = {w}`, so `v = w`. Same shape for
+  both `typeI` and `typeII`.
+
+- **`tauto` cleanup for `typeII` `edgesIn` decomposition.** The simp
+  normal form of `(typeII G a b c).Adj (some u) (some v)` after
+  unfolding leaves `(G.Adj u v ∧ p) ∧ q` while the RHS produces
+  `(G.Adj u v ∧ q) ∧ p` for the same conjuncts; `simp` does not
+  re-associate, so a closing `try tauto` is needed. The matching
+  `typeI` proof closes with bare `simp` because the `Adj` predicate
+  there has no extra clause. Logged in FRICTION.md.
+
 ## Blockers / open questions
 
-- None blocking next session. The deferred items are well-specified.
+- None blocking next session. Both deferred items (K₄\e and the
+  decomposition theorem) are well-specified.
 
 ## Hand-off / next phase
 
 (Will be written when Phase 3 finishes.)
 
-For the next agent picking this up: start with `typeI_isLaman`.
-Tightness is `typeI_edgeSet_ncard` + `Nat.card_option`; sparsity needs
-the `edgesIn` bound (a new lemma `typeI_edgesIn_ncard_le`) plus a case
-split on `none ∈ s` and `s'.card = 0/1/≥2`. The foundation (definitions,
-`edgeSet` decompositions, cardinality formulas, Sym2 helper API) has
-been validated; further work should not need to revisit the type-bumping
-or `Reachable` decisions, and the Sym2 friction has been resolved
-upstream-style — see FRICTION.md.
+For the next agent picking this up: start with
+`top_fin_four_minus_edge_isLaman` — it should be a short corollary of
+`typeI_isLaman` applied twice from `top_fin_two_isLaman`, mediated by
+the `Option (Option (Fin 2)) ≃ Fin 4` isomorphism (and `IsLaman` is
+preserved under graph isomorphism — if that lemma doesn't exist yet,
+add it to `Laman.lean`). Then move to the decomposition theorem
+`IsLaman.exists_typeI_or_typeII_reverse`; the Phase 2 lemma
+`IsLaman.exists_two_le_degree_le_three` provides the entry point.

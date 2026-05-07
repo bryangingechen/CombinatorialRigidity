@@ -83,6 +83,20 @@ can see how it was handled before.
   (DESIGN.md "Predicates as `def`s"). Revisit if Phase 3 proofs end
   up doing a lot of And-shuffling.
 
+### [open] `simp` leaves and-grouping in `typeII` `edgesIn` decomposition
+- **Where it bit:** `typeII_isLaman` sparsity, `h_decomp` proof.
+- **Friction:** the `s(some u, some v)` branch of the Sym2 case-split
+  reduces under `simp [edgesIn, hcoe, Set.mem_preimage, T']` to
+  `(G.Adj u v ∧ p) ∧ q ↔ (G.Adj u v ∧ q) ∧ p` for the same conjuncts
+  `p, q` — `simp` does not re-associate `∧`. The matching `typeI`
+  proof closes on bare `simp` because the `Adj` predicate there has
+  no extra `s(u, v) ≠ s(a, b)` conjunct. Adding `; try tauto` after
+  the simp closes the typeII case in one extra line per branch.
+- **Proposed fix:** none upstream-able; this is just `simp` not
+  doing classical AC. Documented so the next agent doesn't churn
+  on the `simp` set when it inevitably "almost" works.
+- **Status:** wontfix (tactic limitation, not a missing lemma).
+
 ### [open] `push_neg` deprecated in favour of `push Not`
 - **Where it bit:** `IsLaman.exists_degree_le_three`.
 - **Friction:** `push_neg` triggers a deprecation warning. The
