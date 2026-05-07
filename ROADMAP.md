@@ -312,6 +312,42 @@ Sanity check before commit: re-read the active phase's section. If
 you can't summarize the next agent's first task in one sentence, the
 section needs more compression or more pointer-discipline.
 
+### Writing phase notes
+
+`notes/PhaseN.md` is a working log, not an essay. The hand-off
+contract — ROADMAP + active Phase N notes — only holds if the file
+stays scannable.
+
+**One-screen-per-entry rule.** Each "Decisions made" entry runs at
+most ~8 lines. If you find yourself writing more, the implementation
+specifics are leaking in; lift them to FRICTION (project-internal
+idioms or mirror lemmas) or TACTICS (cross-cutting workflow rules)
+and replace the Phase entry with a one-line pointer. The decision +
+short rationale stay; the *how* lives elsewhere.
+
+**Don't duplicate FRICTION explanations.** When a decision has both
+a Phase entry and a FRICTION entry, the Phase entry is a pointer;
+the explanation lives in FRICTION. Keep one source of truth.
+
+**Sub-organize "Decisions made" for non-trivial phases.** If a phase
+has multiple cleanup passes or many small refactors, split the
+section into:
+- *Phase-local choices and proof techniques* — full entries (still
+  ≤ 8 lines each).
+- *Promoted to TACTICS / FRICTION / DESIGN* — one-line pointers, no
+  explanation. The cross-reference carries the content.
+- *Cleanup pass summaries* — list of changes by file with
+  cross-references, not explanations.
+
+For small phases, a flat list under "Decisions made" is fine.
+
+**Soft length budget.** Aim for `notes/PhaseN.md` ≤ 250 lines. If
+you exceed it, run a compression pass — most likely "Decisions" has
+accumulated cross-cutting lessons that should have been promoted.
+Phase 3 grew to ~500 lines before the rules above existed; applying
+them dropped it below 300. Phase 1 and Phase 2 (small phases) sit
+near 100 lines without sub-organization.
+
 ### Template for `notes/PhaseN.md`
 
 When starting a phase, seed the file with sections like:
@@ -324,13 +360,27 @@ When starting a phase, seed the file with sections like:
 ## Current state
 <one-paragraph: what's done, what's mid-stream, what's the next concrete step>
 
+## Architectural choices made up front
+<optional; phase-start design decisions. Cross-cutting ones go in DESIGN.md.>
+
 ## Lemma checklist
 - [x] `lemma_a` — done
 - [ ] `lemma_b` — in progress; blocked on …
 - [ ] `lemma_c`
 
 ## Decisions made during this phase
-- <phase-local trade-offs; cross-cutting ones go in DESIGN.md>
+
+<For small phases, a flat list of bullets is fine. For phases with
+cleanup passes or many small refactors, sub-organize as below.>
+
+### Phase-local choices and proof techniques
+- <decision + rationale, ≤ 8 lines per entry>
+
+### Promoted to TACTICS / FRICTION / DESIGN
+- *<lesson>* → TACTICS § N / FRICTION [tag] *<entry title>* / DESIGN.md *<section>*
+
+### Cleanup pass summaries
+<optional; per-file effect of any cleanup pass, with cross-references>
 
 ## Blockers / open questions
 - …
@@ -339,7 +389,9 @@ When starting a phase, seed the file with sections like:
 <written when the phase finishes; what unlocks the next phase>
 ```
 
-`notes/Phase1.md` is a complete-phase example.
+`notes/Phase1.md` is a complete-phase example for a small phase
+(flat "Decisions made"); `notes/Phase3.md` is the canonical example
+for a phase with the sub-organization.
 
 ## References
 
