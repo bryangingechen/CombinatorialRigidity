@@ -146,20 +146,10 @@ Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
 - **Decidability.** Add `[DecidableEq V]` / `[DecidableRel G.Adj]` only when
   needed for a specific finset construction. Many definitions can stay
   noncomputable via `Set.ncard`.
-- **Closing arithmetic / mixed-reasoning goals.** Prefer `grind` over
-  `omega` for the closing tactic of an arithmetic step. `grind` handles
-  the same linear-integer goals plus equational and propositional
-  reasoning, so it tends to absorb the surrounding `rw` / `have` chain.
-  Fall back to `omega` only if `grind` is the wrong tool for a specific
-  goal.
-- **Hint discovery for `grind`.** When `grind` fails or you suspect a
-  smaller hint set will work, write `grind?` (or `grind? [foo, bar]`).
-  It runs the tactic and prints a suggested `grind only [...]` call
-  with exactly the lemmas it actually used. Replace `grind?` with the
-  suggested call to land a deterministic, fast version. `grind only` is
-  the preferred final form: it doesn't depend on the ambient
-  `@[grind]`-annotated library beyond what's listed, so it's stable
-  under mathlib changes.
+- **Tactic notes.** Practical guidance on `grind` (preferred closing
+  tactic in this directory) lives in `GRIND.md`. When in doubt, read
+  it — the workflow recommendation in particular is short and saves
+  iteration time.
 
 ## Hand-off checklist for the next session
 
