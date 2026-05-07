@@ -32,6 +32,21 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
 * `SimpleGraph.IsSparse.mono_left` — sparsity is preserved under subgraph
   inclusion.
 * `SimpleGraph.bot_isTight_iff` — characterisation of when the empty graph is tight.
+* `SimpleGraph.IsSparse.edgeSet_ncard_add_le` — global edge count bound.
+* `SimpleGraph.IsSparse.deleteEdges` — sparsity preserved under edge deletion.
+* `SimpleGraph.IsTight.not_isSparse_of_lt` — proper supergraph of a tight graph is not sparse.
+
+## Implementation notes
+
+`IsSparse` and `IsTight` are non-reducible `def`s, so `grind` will not
+unfold them. To break a goal involving `IsTight` into its sparse and
+edge-count components, use `refine ⟨?_, ?_⟩` (or pattern-match `⟨h1, h2⟩`).
+See `GRIND.md` for related guidance.
+
+## Project context
+
+See `ROADMAP.md` for the project plan and `notes/Phase1.md` for the
+Phase 1 work log (this file's content is Phase 1).
 -/
 
 namespace SimpleGraph

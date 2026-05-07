@@ -27,6 +27,14 @@ graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
 * `SimpleGraph.edgesIn_subset_edgeSet`, `edgesIn_mono` — basic inclusions.
 * `SimpleGraph.edgesIn_univ`, `edgesIn_empty`, `edgesIn_bot` — corner cases.
 * `SimpleGraph.edgesIn_finite` — finiteness over a finite vertex set.
+* `SimpleGraph.mem_edgesIn_compl_singleton`, `edgesIn_compl_singleton` — vertex-deletion
+  identities.
+
+## Project context
+
+This file is part of the combinatorial-rigidity formalization. See
+`ROADMAP.md` for the project plan and `notes/Phase1.md` for the
+Phase 1 work log (this file's content is Phase 1).
 -/
 
 namespace SimpleGraph

@@ -27,6 +27,17 @@ and Henneberg moves — is what this directory builds toward.
   lemmas for the two components.
 * The base case for the Henneberg construction: `K₂` (the complete graph
   on `Fin 2`) is Laman. See the worked example below.
+
+## Implementation notes
+
+`IsLaman` is a non-reducible `def` (= `IsTight 2 3`); `grind` will not
+unfold it. Use `refine ⟨?_, ?_⟩` or pattern-match to break the
+And-structure inherited from `IsTight`. See `GRIND.md`.
+
+## Project context
+
+See `ROADMAP.md` for the project plan and `notes/Phase1.md` for the
+Phase 1 work log (this file's content is Phase 1).
 -/
 
 namespace SimpleGraph
