@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Laman
+import CombinatorialRigidity.Mathlib.Data.Set.Card
 import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Combinatorics.SimpleGraph.Maps
@@ -128,22 +129,13 @@ lemma typeI_edgeSet (G : SimpleGraph V) (a b : V) :
 /-- Cardinality of `typeI G a b`'s edge set: under `a ≠ b`, two new edges are added. -/
 lemma typeI_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b : V} (hab : a ≠ b) :
     ((typeI G a b).edgeSet).ncard = G.edgeSet.ncard + 2 := by
-  classical
-  have hG_fin : G.edgeSet.Finite := G.edgeSet.toFinite
-  have hImg_fin : (Sym2.map some '' G.edgeSet).Finite := hG_fin.image _
-  have hPair_fin : ({s(none, some a), s(none, some b)} :
-      Set (Sym2 (Option V))).Finite := Set.toFinite _
   have hDisj : Disjoint (Sym2.map some '' G.edgeSet)
       ({s(none, some a), s(none, some b)} : Set (Sym2 (Option V))) := by
     rw [Set.disjoint_left]
     rintro e he hpair
     rcases hpair with rfl | rfl <;> simp at he
-  rw [typeI_edgeSet, Set.ncard_union_eq hDisj hImg_fin hPair_fin,
-    Set.ncard_image_of_injective _ (Sym2.map.injective (Option.some_injective V))]
-  congr 1
-  refine Set.ncard_pair (fun h => hab ?_)
-  rw [Sym2.eq_iff] at h
-  simpa using h
+  rw [typeI_edgeSet, Set.ncard_union_eq hDisj,
+    Set.ncard_image_of_injective _ Sym2.map_some_injective, Set.ncard_pair (by simp [hab])]
 
 /-! ### Type I preserves the Laman property -/
 
@@ -173,20 +165,13 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
       rw [Set.disjoint_left]
       rintro e he ⟨hpair, _⟩
       rcases hpair with rfl | rfl <;> simp at he
-    have h_image_fin : (Sym2.map some '' G.edgesIn (↑s' : Set V)).Finite :=
-      (G.edgesIn_finite s').image _
-    have h_T_fin : T.Finite := ((Set.toFinite _ :
-      ({s(none, some a), s(none, some b)} : Set _).Finite).inter_of_left _)
     have h_ncard : ((typeI G a b).edgesIn (↑s : Set (Option V))).ncard =
         (G.edgesIn (↑s' : Set V)).ncard + T.ncard := by
-      rw [h_decomp, Set.ncard_union_eq h_disj h_image_fin h_T_fin,
-        Set.ncard_image_of_injective _ (Sym2.map.injective (Option.some_injective V))]
+      rw [h_decomp, Set.ncard_union_eq h_disj,
+        Set.ncard_image_of_injective _ Sym2.map_some_injective]
     -- `T.ncard ≤ 2`: `T` is a subset of a 2-element set.
-    have hT_le_2 : T.ncard ≤ 2 := by
-      refine (Set.ncard_le_ncard Set.inter_subset_left (Set.toFinite _)).trans ?_
-      calc ({s(none, some a), s(none, some b)} : Set _).ncard
-          ≤ ({s(none, some b)} : Set _).ncard + 1 := Set.ncard_insert_le _ _
-        _ = 2 := by rw [Set.ncard_singleton]
+    have hT_le_2 : T.ncard ≤ 2 :=
+      (Set.ncard_le_ncard Set.inter_subset_left).trans (Set.ncard_pair_le _ _)
     -- Case-split on whether `none ∈ s`.
     by_cases hnone : none ∈ s
     · -- Case `none ∈ s`. Then `s = insert none (s'.image some)`, so `s.card = s'.card + 1`.
@@ -214,8 +199,7 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
           · have hb : b ∈ s' := (hmem b).mpr (hsubV (by simp))
             rw [hw, Finset.mem_singleton] at hb; exact hb ▸ rfl
         have hT_le_1 : T.ncard ≤ 1 :=
-          (Set.ncard_le_ncard hT_sub (Set.toFinite _)).trans
-            (le_of_eq (Set.ncard_singleton _))
+          (Set.ncard_le_ncard hT_sub).trans (le_of_eq (Set.ncard_singleton _))
         omega
       · -- s'.card ≥ 2: apply `G`'s sparsity on `s'`.
         have hG := h.isSparse s' (by omega)
@@ -228,7 +212,7 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
       have hsc : s.card = s'.card := by
         rw [hs_eq, Finset.card_image_of_injective _ (Option.some_injective V)]
       have hT_empty : T.ncard = 0 := by
-        rw [Set.ncard_eq_zero h_T_fin, Set.eq_empty_iff_forall_notMem]
+        rw [Set.ncard_eq_zero, Set.eq_empty_iff_forall_notMem]
         rintro e ⟨hpair, hsub⟩
         have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
         rcases hpair with rfl | rfl
@@ -237,10 +221,7 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
       have hG := h.isSparse s' (by omega)
       omega
   · -- Tightness.
-    have hE := h.edgeSet_ncard
-    rw [Nat.card_eq_fintype_card] at hE
-    rw [typeI_edgeSet_ncard G hab, Finite.card_option, Nat.card_eq_fintype_card]
-    omega
+    grind only [!typeI_edgeSet_ncard, !Finite.card_option, h.edgeSet_ncard]
 
 /-! ### Edge set of `typeII`
 
@@ -263,27 +244,16 @@ right-hand side as `G.edgeSet \ {s(a, b)}`, so this lemma does not assume `G.Adj
 lemma typeII_edgeSet_ncard [Finite V] (G : SimpleGraph V) {a b c : V}
     (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) :
     ((typeII G a b c).edgeSet).ncard = (G.edgeSet \ {s(a, b)}).ncard + 3 := by
-  classical
-  have hG_fin : (G.edgeSet \ {s(a, b)}).Finite := G.edgeSet.toFinite.diff
-  have hImg_fin : (Sym2.map some '' (G.edgeSet \ {s(a, b)})).Finite := hG_fin.image _
-  have hTriple_fin : ({s(none, some a), s(none, some b), s(none, some c)} :
-      Set (Sym2 (Option V))).Finite := Set.toFinite _
   have hDisj : Disjoint (Sym2.map some '' (G.edgeSet \ {s(a, b)}))
       ({s(none, some a), s(none, some b), s(none, some c)} :
         Set (Sym2 (Option V))) := by
     rw [Set.disjoint_left]
     rintro e he hpair
     rcases hpair with rfl | rfl | rfl <;> simp at he
-  rw [typeII_edgeSet, Set.ncard_union_eq hDisj hImg_fin hTriple_fin,
-    Set.ncard_image_of_injective _ (Sym2.map.injective (Option.some_injective V))]
-  congr 1
-  have hne_ab : s(none, some a) ≠ s(none, some b) := by simp [hab]
-  have hne_ac : s(none, some a) ≠ s(none, some c) := by simp [hca.symm]
-  have hne_bc : s(none, some b) ≠ s(none, some c) := by simp [hcb.symm]
-  rw [show ({s(none, some a), s(none, some b), s(none, some c)} : Set (Sym2 (Option V))) =
-    insert s(none, some a) (insert s(none, some b) {s(none, some c)}) from rfl,
-    Set.ncard_insert_of_notMem (by simp [hne_ab, hne_ac]) (by simp),
-    Set.ncard_insert_of_notMem (by simp [hne_bc]) (by simp), Set.ncard_singleton]
+  rw [typeII_edgeSet, Set.ncard_union_eq hDisj,
+    Set.ncard_image_of_injective _ Sym2.map_some_injective,
+    Set.ncard_insert_of_notMem (by simp [hab, hca.symm]) (by simp),
+    Set.ncard_pair (by simp [hcb.symm])]
 
 /-! ### Type II preserves the Laman property -/
 
@@ -318,22 +288,13 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
       rw [Set.disjoint_left]
       rintro e he ⟨hpair, _⟩
       rcases hpair with rfl | rfl | rfl <;> simp at he
-    have h_image_fin : (Sym2.map some '' (G.edgesIn (↑s' : Set V) \ {s(a, b)})).Finite :=
-      ((G.edgesIn_finite s').diff).image _
-    have h_T'_fin : T'.Finite := ((Set.toFinite _ :
-      ({s(none, some a), s(none, some b), s(none, some c)} : Set _).Finite).inter_of_left _)
     have h_ncard : ((typeII G a b c).edgesIn (↑s : Set (Option V))).ncard =
         (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard + T'.ncard := by
-      rw [h_decomp, Set.ncard_union_eq h_disj h_image_fin h_T'_fin,
-        Set.ncard_image_of_injective _ (Sym2.map.injective (Option.some_injective V))]
+      rw [h_decomp, Set.ncard_union_eq h_disj,
+        Set.ncard_image_of_injective _ Sym2.map_some_injective]
     -- `T'.ncard ≤ 3` always.
-    have hT'_le_3 : T'.ncard ≤ 3 := by
-      refine (Set.ncard_le_ncard Set.inter_subset_left (Set.toFinite _)).trans ?_
-      calc ({s(none, some a), s(none, some b), s(none, some c)} : Set _).ncard
-          ≤ ({s(none, some b), s(none, some c)} : Set _).ncard + 1 := Set.ncard_insert_le _ _
-        _ ≤ ({s(none, some c)} : Set _).ncard + 1 + 1 :=
-            Nat.add_le_add_right (Set.ncard_insert_le _ _) _
-        _ = 3 := by rw [Set.ncard_singleton]
+    have hT'_le_3 : T'.ncard ≤ 3 :=
+      (Set.ncard_le_ncard Set.inter_subset_left).trans (Set.ncard_triple_le _ _ _)
     -- Case-split on whether `none ∈ s`.
     by_cases hnone : none ∈ s
     · -- Case `none ∈ s`. Then `s.card = s'.card + 1`.
@@ -363,18 +324,15 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
           · have hc : c ∈ s' := (hmem c).mpr (hsubV (by simp))
             rw [hw, Finset.mem_singleton] at hc; exact hc ▸ rfl
         have hT'_le_1 : T'.ncard ≤ 1 :=
-          (Set.ncard_le_ncard hT'_sub (Set.toFinite _)).trans
-            (le_of_eq (Set.ncard_singleton _))
+          (Set.ncard_le_ncard hT'_sub).trans (le_of_eq (Set.ncard_singleton _))
         omega
       · -- s'.card ≥ 2: case-split on whether `s(a, b) ∈ G.edgesIn ↑s'`.
         have hG := h.isSparse s' (by omega)
         by_cases h_ab_in : s(a, b) ∈ G.edgesIn (↑s' : Set V)
         · -- `s(a, b) ∈ G.edgesIn ↑s'`: deletion removes one, `T'.ncard ≤ 3` works.
-          have hdiff : (G.edgesIn (↑s' : Set V) \ {s(a, b)}).ncard =
-              (G.edgesIn (↑s' : Set V)).ncard - 1 :=
-            Set.ncard_diff_singleton_of_mem h_ab_in
-          have hG_pos : 0 < (G.edgesIn (↑s' : Set V)).ncard :=
-            (Set.ncard_pos (G.edgesIn_finite s')).mpr ⟨_, h_ab_in⟩
+          have hdiff := Set.ncard_diff_singleton_of_mem h_ab_in (s := G.edgesIn (↑s' : Set V))
+          have hG_ne_zero : (G.edgesIn (↑s' : Set V)).ncard ≠ 0 :=
+            Set.ncard_ne_zero_of_mem h_ab_in
           omega
         · -- `s(a, b) ∉ G.edgesIn ↑s'`: deletion is a no-op, but `a ∉ s'` or `b ∉ s'`, so the
           -- corresponding new edge `s(none, some a)` or `s(none, some b)` is also missing.
@@ -399,28 +357,24 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
             rcases h_or with ha | hb
             · -- `a ∉ s'`: `s(none, some a) ∉ T'`. So T' ⊆ {s(none, some b), s(none, some c)}.
               refine (Set.ncard_le_ncard (?_ : T' ⊆
-                  ({s(none, some b), s(none, some c)} : Set _)) (Set.toFinite _)).trans ?_
-              · rintro e ⟨hpair, hsub⟩
-                have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
-                rcases hpair with rfl | rfl | rfl
-                · exact (ha ((hmem a).mpr (hsubV (by simp)))).elim
-                · exact Set.mem_insert _ _
-                · exact Set.mem_insert_of_mem _ rfl
-              · calc ({s(none, some b), s(none, some c)} : Set _).ncard
-                    ≤ ({s(none, some c)} : Set _).ncard + 1 := Set.ncard_insert_le _ _
-                  _ = 2 := by rw [Set.ncard_singleton]
+                  ({s(none, some b), s(none, some c)} : Set _))).trans
+                (Set.ncard_pair_le _ _)
+              rintro e ⟨hpair, hsub⟩
+              have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
+              rcases hpair with rfl | rfl | rfl
+              · exact (ha ((hmem a).mpr (hsubV (by simp)))).elim
+              · exact Set.mem_insert _ _
+              · exact Set.mem_insert_of_mem _ rfl
             · -- `b ∉ s'`: `s(none, some b) ∉ T'`. So T' ⊆ {s(none, some a), s(none, some c)}.
               refine (Set.ncard_le_ncard (?_ : T' ⊆
-                  ({s(none, some a), s(none, some c)} : Set _)) (Set.toFinite _)).trans ?_
-              · rintro e ⟨hpair, hsub⟩
-                have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
-                rcases hpair with rfl | rfl | rfl
-                · exact Set.mem_insert _ _
-                · exact (hb ((hmem b).mpr (hsubV (by simp)))).elim
-                · exact Set.mem_insert_of_mem _ rfl
-              · calc ({s(none, some a), s(none, some c)} : Set _).ncard
-                    ≤ ({s(none, some c)} : Set _).ncard + 1 := Set.ncard_insert_le _ _
-                  _ = 2 := by rw [Set.ncard_singleton]
+                  ({s(none, some a), s(none, some c)} : Set _))).trans
+                (Set.ncard_pair_le _ _)
+              rintro e ⟨hpair, hsub⟩
+              have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
+              rcases hpair with rfl | rfl | rfl
+              · exact Set.mem_insert _ _
+              · exact (hb ((hmem b).mpr (hsubV (by simp)))).elim
+              · exact Set.mem_insert_of_mem _ rfl
           omega
     · -- Case `none ∉ s`. Then `T'.ncard = 0` and `s.card = s'.card`.
       have hs_eq : s = s'.image some := by
@@ -430,7 +384,7 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
       have hsc : s.card = s'.card := by
         rw [hs_eq, Finset.card_image_of_injective _ (Option.some_injective V)]
       have hT'_empty : T'.ncard = 0 := by
-        rw [Set.ncard_eq_zero h_T'_fin, Set.eq_empty_iff_forall_notMem]
+        rw [Set.ncard_eq_zero, Set.eq_empty_iff_forall_notMem]
         rintro e ⟨hpair, hsub⟩
         have hsubV : (e : Set (Option V)) ⊆ ↑s := Set.mem_sym2_iff_subset.mp hsub
         rcases hpair with rfl | rfl | rfl
@@ -441,16 +395,9 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
         Set.ncard_diff_singleton_le _ _
       omega
   · -- Tightness.
-    have hE := h.edgeSet_ncard
-    rw [Nat.card_eq_fintype_card] at hE
     have hab_in : s(a, b) ∈ G.edgeSet := hG_ab
-    have hG_pos : 0 < G.edgeSet.ncard :=
-      (Set.ncard_pos G.edgeSet.toFinite).mpr ⟨_, hab_in⟩
-    have hdiff : (G.edgeSet \ {s(a, b)}).ncard = G.edgeSet.ncard - 1 :=
-      Set.ncard_diff_singleton_of_mem hab_in
-    rw [typeII_edgeSet_ncard G hab hca hcb, hdiff,
-        Finite.card_option, Nat.card_eq_fintype_card]
-    omega
+    grind only [!typeII_edgeSet_ncard, !Finite.card_option,
+      !Set.ncard_diff_singleton_of_mem, h.edgeSet_ncard]
 
 end Henneberg
 

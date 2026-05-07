@@ -46,6 +46,9 @@ copy-paste alongside `Sym2.mem_map` / `Sym2.coe_map`. See
 * `Sym2.mk_mem_image_map_some_iff` — `f = some` specialization, recasting the
   `f p = x` / `f q = y` clauses with `some` on the right (the orientation that
   matches `rcases x with _ | u` case splits).
+* `Sym2.map_some_injective` — `Sym2.map (some : α → Option α)` is injective.
+  A common specialization that otherwise reads as
+  `Sym2.map.injective (Option.some_injective _)`.
 -/
 
 namespace Sym2
@@ -93,5 +96,11 @@ lemma mk_mem_image_map_some_iff {S : Set (Sym2 α)} {x y : Option α} :
       ∃ p q, x = some p ∧ y = some q ∧ s(p, q) ∈ S := by
   rw [mk_mem_image_map_iff]
   exact exists₂_congr fun _ _ => and_congr eq_comm (and_congr eq_comm Iff.rfl)
+
+/-- `Sym2.map (some : α → Option α)` is injective. The named specialization of
+`Sym2.map.injective` that arises whenever an `Option`-vertex extension counts edges
+via `Set.ncard_image_of_injective`. -/
+lemma map_some_injective : Function.Injective (Sym2.map (some : α → Option α)) :=
+  Sym2.map.injective (Option.some_injective α)
 
 end Sym2

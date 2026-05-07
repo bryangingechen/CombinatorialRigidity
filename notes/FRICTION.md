@@ -1,7 +1,7 @@
 # API and tactic friction log
 
-A long-running record of mathlib API gaps, tactic limitations, and
-proof-shape friction encountered while building this project. Each
+A long-running record of one-off mathlib API gaps, tactic limitations,
+and proof-shape friction encountered while building this project. Each
 entry is self-contained: future agents can either add new entries,
 work an open one (upstream PR / project helper / refactor), or strike
 through one that has been resolved.
@@ -11,11 +11,19 @@ strikethrough and a "Resolved by …" note rather than deleting them.
 The history is the value — a future agent picking up a similar issue
 can see how it was handled before.
 
+> **Scope.** This file holds *one-off* frictions: a specific lemma I
+> needed and mirrored, a specific bug I worked around. *Cross-cutting
+> lessons* — "always do X", "if you see pattern Y, prefer Z" — belong
+> in `TACTICS.md` instead, which is the project's tactical reference.
+> Don't bury a general rule in a `[resolved]` entry here; it won't be
+> found again.
+
 ## How this file is used
 
 - After landing a phase, review what proofs felt awkward. Did you
   reach for the same glue lemma three times? Did `grind` need an
-  unusually long hint list? File an entry.
+  unusually long hint list? File an entry — and if the lesson is
+  cross-cutting, lift it into `TACTICS.md` instead.
 - When starting a new session, optionally browse here for a small
   upstream-able item to land alongside the main work.
 - Items that turned into actual upstream candidates live under
@@ -69,20 +77,6 @@ can see how it was handled before.
   to Phase 3 where Henneberg gives a one-liner), but worth doing if a
   later phase wants to mechanize more concrete graphs.
 
-### [open] `grind` does not unfold our non-`abbrev` defs
-- **Where it bit:** every Phase 1 / Phase 2 proof involving
-  `IsSparse`, `IsTight`, `IsLaman`, `edgesIn`.
-- **Friction:** `grind` skips non-reducible `def`s, so we always
-  destructure manually with `refine ⟨?_, ?_⟩` or accessors before
-  closing with `grind`. Documented in `GRIND.md`.
-- **Proposed fix:** option A — add `@[grind =]` annotations on the
-  defs (would let `grind` unfold them automatically); option B —
-  switch the defs to `abbrev` (would also let `grind` see through);
-  option C — accept the manual destructure (current).
-- **Status:** wontfix for now. Phase 1 chose `def`s deliberately
-  (DESIGN.md "Predicates as `def`s"). Revisit if Phase 3 proofs end
-  up doing a lot of And-shuffling.
-
 ### [open] `simp` leaves and-grouping in `typeII` `edgesIn` decomposition
 - **Where it bit:** `typeII_isLaman` sparsity, `h_decomp` proof.
 - **Friction:** the `s(some u, some v)` branch of the Sym2 case-split
@@ -109,6 +103,33 @@ can see how it was handled before.
 - **Status:** wontfix (upstream concern).
 
 ## Resolved / mirrored entries
+
+### [mirrored] `Set.ncard_pair_le` / `Set.ncard_triple_le` (unconditional pair / triple bounds)
+- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
+  `typeI_isLaman` (`hT_le_2`), `typeII_isLaman` (`hT'_le_3`,
+  `hT'_le_2` ×2).
+- **Friction:** mathlib has `Set.ncard_pair` (`= 2` under `a ≠ b`)
+  but no unconditional `≤ 2` companion. Bounding the cardinality of
+  a literal pair/triple of new edges expanded to 3- and 5-line calc
+  chains via `Set.ncard_insert_le` + `Set.ncard_singleton`, repeated
+  five times across the file (the same 5-line block for each
+  `T ⊆ {…, …}` sub-bound).
+- **Resolution:** mirrored unconditional `≤` bounds. Each calc
+  chain collapses to one `Set.ncard_pair_le _ _` (resp.
+  `Set.ncard_triple_le _ _ _`) application.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Set/Card.lean`.
+
+### [mirrored] `Sym2.map_some_injective` (named specialization)
+- **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
+  `typeI_isLaman`, `typeII_isLaman` — every `Set.ncard_image_of_injective`
+  application on a `Sym2.map some` image.
+- **Friction:** the same four-token incantation
+  `Sym2.map.injective (Option.some_injective V)` was written four
+  times. It correctly typechecks but is harder to read than the
+  intent ("`Sym2.map some` is injective").
+- **Status:** mirrored as `Sym2.map_some_injective`.
+- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
 
 ### [mirrored] `Sym2.exists_and_map_eq_mk_iff` (Sym2 image-membership case analysis)
 - **Where it bit:** `typeI_edgeSet` (Phase 3); aborted attempt at

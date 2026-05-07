@@ -78,7 +78,7 @@ These are *phase-local* trade-offs. Cross-cutting decisions live in
   the other form.
 - **`grind only [...]` form for landed proofs.** Worked through one
   iteration cycle (write `grind?`, copy the suggestion). Documented
-  in `GRIND.md`.
+  in `TACTICS.md` § 1.
 
 ## Hand-off / next phase
 

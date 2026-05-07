@@ -158,6 +158,41 @@ there.
   `typeI` proof closes with bare `simp` because the `Adj` predicate
   there has no extra clause. Logged in FRICTION.md.
 
+- **Post-landing refactor: extract `Set.ncard_pair_le` / `_triple_le`
+  and `Sym2.map_some_injective` to mirrors.** Five literal-pair /
+  triple ncard bounds in this file expanded to 3- and 5-line calc
+  chains via `Set.ncard_insert_le` + `Set.ncard_singleton`; the
+  `Sym2.map some` injectivity argument was written out as
+  `Sym2.map.injective (Option.some_injective V)` four times. Both
+  patterns now read as one-token applications of named mirror
+  lemmas. See FRICTION.md (resolved entries).
+
+- **Don't hand-pass `Set.Finite` witnesses.** The `_fin` preambles
+  in front of every `Set.ncard_*` call were unnecessary: the
+  relevant lemmas (`ncard_union_eq`, `ncard_le_ncard`,
+  `ncard_eq_zero`, `ncard_pos`, …) all take `(hs : s.Finite := by
+  toFinite_tac)`, which finds the witness via `Set.toFinite` from
+  the ambient `[Finite V]`. The two `edgeSet_ncard` lemmas dropped
+  ~9 and ~10 lines of preamble respectively, and the inline
+  `_isLaman` proofs lost three more `_fin` haves each. The one
+  trap: when chaining `.mpr` on an iff lemma (`Set.ncard_pos.mpr`),
+  the autoparam can't fire — pass the witness manually there or use
+  `ncard_ne_zero_of_mem` (which is single-argument). Lifted from
+  FRICTION.md into TACTICS.md § 2 as a project-wide rule.
+
+- **Grind closes the tightness branches; arithmetic-heavy `omega`s
+  stay.** Per TACTICS.md § 1, ran `grind?` on each closing tactic.
+  Both `_isLaman` tightness branches collapsed: `typeI_isLaman` from
+  4 lines to 1 (`grind only [!typeI_edgeSet_ncard,
+  !Finite.card_option, h.edgeSet_ncard]`), `typeII_isLaman` from 7
+  to 3 (grind even pulls in `Set.ncard_ne_zero_of_mem` from a local
+  edge-membership hypothesis on its own). The pure-arithmetic
+  `omega`s in the sparsity branches stayed: each closes a chain of
+  staged `have`s with no equational reasoning to do, the canonical
+  `omega` use case. Disjointness proofs also stayed — `grind` cannot
+  case-split on Sym2 patterns. Worked examples and the don't-bother
+  list are now in TACTICS.md § 1.
+
 ## Blockers / open questions
 
 - None blocking next session. Both deferred items (K₄\e and the

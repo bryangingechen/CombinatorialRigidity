@@ -20,7 +20,7 @@ hand-off document: read it first when picking up the project.
 Archive/CombinatorialRigidity/
 ├── ROADMAP.md         this file — must-read every session
 ├── DESIGN.md          rationale for cross-cutting design choices
-├── GRIND.md           how to use the `grind` tactic in this project
+├── TACTICS.md         tactical reference: grind, ncard, mirror rule
 ├── notes/             per-phase work logs + cross-cutting logs
 │   ├── PhaseN.md      lemma checklist + decisions + hand-off for Phase N
 │   └── FRICTION.md    long-running API/tactic friction log
@@ -160,15 +160,16 @@ Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
   `IsLaman`, and `edgesIn` are non-reducible. `grind` will not unfold
   them on its own. To break an `IsTight`/`IsLaman` goal into parts use
   `refine ⟨?_, ?_⟩`; for an `edgesIn` membership use the corresponding
-  `mem_*` simp lemma. See `GRIND.md` for the full discussion.
+  `mem_*` simp lemma. See `TACTICS.md` § 4 for the full discussion.
 - **Missing mathlib lemmas.** If you need a lemma that genuinely
   belongs upstream, put it under `Mathlib/<exact mathlib path>` so
   promotion is later a copy-paste. The directory is created lazily;
   don't pre-populate. See `DESIGN.md` "Mirror directory".
 - **Tactic notes.** Practical guidance on `grind` (preferred closing
-  tactic in this directory) lives in `GRIND.md`. When in doubt, read
-  it — the workflow recommendation in particular is short and saves
-  iteration time.
+  tactic in this directory), the `Set.ncard` autoparam pattern, the
+  mirror-first rule, and other cross-cutting idioms all live in
+  `TACTICS.md`. When in doubt, read it — the section TL;DRs are
+  short and save iteration time.
 
 ## Per-session workflow
 
@@ -183,8 +184,8 @@ Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
    `notes/PhaseN.md` for that phase if it exists. If the phase has not
    started yet, open ROADMAP's planning section for that phase below
    and create `notes/PhaseN.md` in your first commit (template below).
-5. Check `GRIND.md` if you haven't seen the `grind?` → `grind only`
-   workflow before.
+5. Check `TACTICS.md` if you haven't seen the `grind?` → `grind only`
+   workflow or the `Set.ncard` autoparam pattern before.
 6. Optional: skim `notes/FRICTION.md` for an open upstream-eligible
    item to land alongside this session's main work. Small mirror PRs
    shipped here mature into mathlib upstream-able patches.

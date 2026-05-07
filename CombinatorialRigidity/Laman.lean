@@ -42,7 +42,7 @@ and Henneberg moves — is what this directory builds toward.
 
 `IsLaman` is a non-reducible `def` (= `IsTight 2 3`); `grind` will not
 unfold it. Use `refine ⟨?_, ?_⟩` or pattern-match to break the
-And-structure inherited from `IsTight`. See `GRIND.md`.
+And-structure inherited from `IsTight`. See `TACTICS.md` § 4.
 
 ## Project context
 

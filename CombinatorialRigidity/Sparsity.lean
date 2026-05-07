@@ -41,7 +41,7 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
 `IsSparse` and `IsTight` are non-reducible `def`s, so `grind` will not
 unfold them. To break a goal involving `IsTight` into its sparse and
 edge-count components, use `refine ⟨?_, ?_⟩` (or pattern-match `⟨h1, h2⟩`).
-See `GRIND.md` for related guidance.
+See `TACTICS.md` § 4 for related guidance.
 
 ## Project context
 
