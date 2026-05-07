@@ -21,9 +21,11 @@ Archive/CombinatorialRigidity/
 ├── ROADMAP.md         this file — must-read every session
 ├── DESIGN.md          rationale for cross-cutting design choices
 ├── GRIND.md           how to use the `grind` tactic in this project
-├── notes/             per-phase work logs
-│   └── PhaseN.md      lemma checklist + decisions + hand-off for Phase N
-├── Mathlib/           lazy mirror for missing-from-mathlib lemmas (see DESIGN.md)
+├── notes/             per-phase work logs + cross-cutting logs
+│   ├── PhaseN.md      lemma checklist + decisions + hand-off for Phase N
+│   └── FRICTION.md    long-running API/tactic friction log
+├── Mathlib/           mirror for upstream-eligible lemmas (see DESIGN.md)
+│   └── …/             each file mirrors its eventual upstream path
 ├── EdgesIn.lean       Phase 1 — `edgesIn` selector
 ├── Sparsity.lean      Phase 1 — `IsSparse`, `IsTight`
 ├── Laman.lean         Phase 1+2 — `IsLaman` and downstream
@@ -35,7 +37,7 @@ Archive/CombinatorialRigidity/
 | Phase | File(s) | Status |
 |---|---|---|
 | 1. Sparsity | `EdgesIn.lean`, `Sparsity.lean`, `Laman.lean` | ✓ Complete (see `notes/Phase1.md`) |
-| 2. Laman graphs | `Laman.lean` | Pending |
+| 2. Laman graphs | `Laman.lean` | ✓ Complete (see `notes/Phase2.md`) |
 | 3. Henneberg moves | `Henneberg.lean` | Not yet created |
 | 4. Frameworks | `Framework.lean` | Not yet created |
 | 5. Laman's theorem | `LamanTheorem.lean` | Not yet created |
@@ -64,15 +66,12 @@ phase-specific decisions.
 
 ### Phase 2 — Laman graphs (`Laman.lean`)
 
-Definitions:
-- `SimpleGraph.IsLaman G := IsTight 2 3`.
-
-Lemmas to develop:
-- `IsLaman G ↔ G.IsSparse 2 3 ∧ #E = 2 * #V − 3`.
-- The single-edge graph on `Fin 2` is Laman (`#V = 2`, `#E = 1 = 2·2 − 3`).
-- A Laman graph on `n ≥ 2` vertices has minimum degree at least 2 (every vertex
-  has degree at least 2) and contains a vertex of degree 2 or 3 (key for Henneberg).
-- `K₄ \ e` is Laman.
+Complete. Builds the Laman API on top of the Phase 1 `IsLaman`
+definition: the `(2, 3)`-tightness `iff` unfolding, the K₂ base case
+(promoted to a named theorem), and the degree results that feed into
+the Henneberg induction (minimum degree ≥ 2 for `n ≥ 3`; existence of
+a degree-2-or-3 vertex). See `notes/Phase2.md` for the full lemma list
+and phase-specific decisions.
 
 ### Phase 3 — Henneberg moves (`Henneberg.lean`)
 
@@ -89,11 +88,15 @@ Definitions:
   finite sequence of Type I/II moves.
 
 Lemmas to develop:
-- Both moves preserve the Laman property.
+- `Henneberg.typeI_isLaman` — Type I preserves the Laman property.
+- `Henneberg.typeII_isLaman` — Type II preserves the Laman property.
+- `K₄ \ e` is Laman (Phase 2 carryover). One-liner once `typeI_isLaman`
+  is in: `K₂` plus two Type I moves yields `K₄ \ e`.
 - Both moves preserve generic rigidity (proved later in `Framework.lean`).
 - **Henneberg's theorem**: every Laman graph is reachable from `K₂` by a
   finite sequence of Type I and II moves. (Proof: induction on `#V`; pick a
-  degree-2 or degree-3 vertex and reverse the appropriate move.)
+  degree-2 or degree-3 vertex via `IsLaman.exists_two_le_degree_le_three`
+  and reverse the appropriate move.)
 
 ### Phase 4 — Frameworks and infinitesimal rigidity (`Framework.lean`)
 
@@ -181,6 +184,9 @@ Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
    and create `notes/PhaseN.md` in your first commit (template below).
 5. Check `GRIND.md` if you haven't seen the `grind?` → `grind only`
    workflow before.
+6. Optional: skim `notes/FRICTION.md` for an open upstream-eligible
+   item to land alongside this session's main work. Small mirror PRs
+   shipped here mature into mathlib upstream-able patches.
 
 ### Working
 
@@ -197,12 +203,58 @@ Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
 
 ### Ending a session
 
-- Update `notes/PhaseN.md`'s "Current state" / "Next" / "Blockers"
-  sections so the next agent can resume cold.
-- If the phase finishes, flip its row in this file's Status table to
-  ✓ in the same commit.
-- If you answered a "Choices to revisit" entry in `DESIGN.md`, update
-  it in the same commit.
+Before committing, do a **friction review** — this is mandatory, not
+optional. It is what keeps the project's API gaps from accumulating
+silently.
+
+1. **Re-read the lemmas you proved this session.** For each one:
+   - Did any rewrite chain feel longer than it should have?
+     (Two-rewrite glue lemmas — `coe_X` then `card_X` — are the
+     usual culprit.)
+   - Did `grind` need an unusually long hint list, or fail in a way
+     you worked around rather than understood?
+   - Did you hit a deprecation, missing simp lemma, or awkward
+     typeclass dance?
+2. For each genuine instance:
+   - If the missing lemma is **upstream-eligible** (a fact about
+     `SimpleGraph`, `Set.ncard`, `Finset`, etc., not specific to
+     rigidity), mirror it under
+     `Mathlib/<exact mathlib path>` in this commit. The Lean
+     namespace stays the upstream one. See DESIGN.md "Mirror
+     directory" for the mechanics; refactor the calling proof to use
+     the new mirror lemma.
+   - If it's **project-internal** (about our `edgesIn`, `IsSparse`,
+     etc.), put it in the file that owns the relevant definition.
+   - In all cases, add an entry to `notes/FRICTION.md` (open or
+     resolved/mirrored as appropriate). Even a one-line entry is
+     valuable.
+3. **No new entries this session is fine** — but check before commit.
+
+After the friction review, **leave the project so the next agent
+can start from ROADMAP.md alone.** That is the contract: ROADMAP.md
+plus the active `notes/PhaseN.md` should be enough to identify the
+next concrete task without reading any source file or commit history.
+
+This means in the same commit:
+
+- **Update `notes/PhaseN.md`** — the active phase's "Current state",
+  "Next", and "Blockers" sections so a cold reader can resume.
+- **Move deferred items to where they will land.** A lemma punted
+  from Phase 2 to Phase 3 belongs in Phase 3's "Lemmas to develop"
+  list with a one-line rationale, not as a footnote in Phase 2.
+  Forward-looking TODOs stranded under closed phases rot.
+- **If the phase finished:**
+  - Flip its row in the Status table to ✓.
+  - **Compress its planning section in this file** to a one-paragraph
+    summary plus a pointer to `notes/PhaseN.md`. Phase 1's section is
+    the canonical model. The lemma list and decisions live in
+    `notes/PhaseN.md`; ROADMAP carries the hand-off summary.
+- **If you answered a "Choices to revisit" entry** in `DESIGN.md`,
+  update it.
+
+Sanity check before commit: re-read the active phase's section. If
+you can't summarize the next agent's first task in one sentence, the
+section needs more compression or more pointer-discipline.
 
 ### Template for `notes/PhaseN.md`
 

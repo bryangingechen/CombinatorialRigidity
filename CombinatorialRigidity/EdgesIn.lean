@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import Mathlib.Combinatorics.SimpleGraph.Basic
 import Mathlib.Data.Finset.Sym
+import Mathlib.Data.Set.Card
 
 /-!
 # `edgesIn`: edges with both endpoints in a vertex set
@@ -29,6 +30,8 @@ graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
 * `SimpleGraph.edgesIn_finite` — finiteness over a finite vertex set.
 * `SimpleGraph.mem_edgesIn_compl_singleton`, `edgesIn_compl_singleton` — vertex-deletion
   identities.
+* `SimpleGraph.ncard_edgesIn_compl_singleton_add_ncard_incidenceSet` — vertex-deletion
+  cardinality identity, the keystone for the Phase 2 minimum-degree argument.
 
 ## Project context
 
@@ -89,5 +92,13 @@ lemma edgesIn_compl_singleton (v : V) :
   ext e
   simp only [mem_edgesIn_compl_singleton, Set.mem_diff, incidenceSet, Set.mem_setOf_eq]
   tauto
+
+/-- Edges of `G` partition into "not incident to `v`" plus "incident to `v`": the cardinality
+identity `#(edgesIn {v}ᶜ) + #(incidenceSet v) = #edgeSet`. The vertex-deletion edge-count
+keystone for sparsity arguments. -/
+lemma ncard_edgesIn_compl_singleton_add_ncard_incidenceSet [Finite V] (v : V) :
+    (G.edgesIn ({v}ᶜ : Set V)).ncard + (G.incidenceSet v).ncard = G.edgeSet.ncard := by
+  rw [edgesIn_compl_singleton]
+  exact Set.ncard_diff_add_ncard_of_subset (G.incidenceSet_subset v) G.edgeSet.toFinite
 
 end SimpleGraph

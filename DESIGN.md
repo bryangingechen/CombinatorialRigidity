@@ -169,8 +169,14 @@ existing context. The Lean namespace stays the standard one
 Each file in the mirror should open with a docstring stating that the
 contents are upstream candidates and which mathlib path they target.
 
-The directory is created lazily — don't pre-populate it. As of this
-writing the mirror is empty: Phase 1 lemmas proved without any gaps.
+The directory is created lazily — don't pre-populate it. Phase 1 proved
+without gaps; Phase 2 surfaced five upstream candidates (three
+`Set.ncard` companions on `SimpleGraph`, plus the `coe`/`card` forms of
+`Finset.compl_singleton`), all currently mirrored under
+`Mathlib/Combinatorics/SimpleGraph/Finite.lean`,
+`Mathlib/Data/Finset/BooleanAlgebra.lean`, and
+`Mathlib/Data/Fintype/Card.lean`. See `notes/FRICTION.md` for
+the per-lemma rationale.
 
 
 
