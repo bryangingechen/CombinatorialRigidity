@@ -47,24 +47,12 @@ theorem IsLaman.edgeSet_ncard {G : SimpleGraph V} (h : G.IsLaman) :
 The single-edge graph on two vertices is the base case for the Henneberg construction. -/
 
 example : (⊤ : SimpleGraph (Fin 2)).IsLaman := by
-  refine ⟨?_, ?_⟩
-  · -- Sparsity. Only the case `s.card = 2`, i.e. `s = univ`, is non-vacuous.
-    intro s hs
-    have hsle : s.card ≤ 2 := by
-      simpa using Finset.card_le_card (Finset.subset_univ s)
-    have hs2 : s.card = 2 := by grind
-    have : s = Finset.univ := s.eq_univ_of_card (by simpa using hs2)
-    subst this
-    rw [show ((Finset.univ : Finset (Fin 2)) : Set (Fin 2)) = Set.univ from
-        Finset.coe_univ, edgesIn_univ]
-    rw [show ((⊤ : SimpleGraph (Fin 2)).edgeSet).ncard = 1 from by
-        rw [← coe_edgeFinset, Set.ncard_coe_finset,
-          card_edgeFinset_top_eq_card_choose_two]; rfl]
-    simp
-  · -- Edge count: `1 + 3 = 4 = 2 * Nat.card (Fin 2)`.
-    rw [show ((⊤ : SimpleGraph (Fin 2)).edgeSet).ncard = 1 from by
-        rw [← coe_edgeFinset, Set.ncard_coe_finset,
-          card_edgeFinset_top_eq_card_choose_two]; rfl]
-    simp
+  have hcard : ((⊤ : SimpleGraph (Fin 2)).edgeSet).ncard = 1 := by
+    rw [← coe_edgeFinset, Set.ncard_coe_finset, card_edgeFinset_top_eq_card_choose_two]; rfl
+  refine ⟨fun s hs => ?_, by grind only [Nat.card_eq_fintype_card, Fintype.card_fin]⟩
+  -- Sparsity. Only the case `s = Finset.univ` is non-vacuous.
+  have hsle : s.card ≤ 2 := by simpa using Finset.card_le_card (Finset.subset_univ s)
+  obtain rfl : s = Finset.univ := s.eq_univ_of_card (by grind only [Fintype.card_fin])
+  grind only [!Finset.coe_univ, edgesIn_univ]
 
 end SimpleGraph

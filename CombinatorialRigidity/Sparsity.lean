@@ -83,9 +83,8 @@ theorem IsSparse.edgeSet_ncard_add_le [Finite V] {G : SimpleGraph V} {k ℓ : �
     (h : G.IsSparse k ℓ) (hV : ℓ ≤ k * Nat.card V) :
     G.edgeSet.ncard + ℓ ≤ k * Nat.card V := by
   have : Fintype V := Fintype.ofFinite V
-  rw [Nat.card_eq_fintype_card] at hV ⊢
-  have key := h Finset.univ (by simpa using hV)
-  rwa [Finset.coe_univ, edgesIn_univ, Finset.card_univ] at key
+  have := h Finset.univ
+  grind only [= Finset.card_univ, Nat.card_eq_fintype_card, !Finset.coe_univ, edgesIn_univ]
 
 /-- Deleting edges from a `(k, ℓ)`-sparse graph yields a `(k, ℓ)`-sparse graph. -/
 theorem IsSparse.deleteEdges {G : SimpleGraph V} {k ℓ : ℕ}
@@ -95,13 +94,10 @@ theorem IsSparse.deleteEdges {G : SimpleGraph V} {k ℓ : ℕ}
 /-- A proper supergraph of a `(k, ℓ)`-tight graph cannot be `(k, ℓ)`-sparse: the global edge bound
 is already saturated, so any extra edge violates it. -/
 theorem IsTight.not_isSparse_of_lt [Finite V] {G H : SimpleGraph V} {k ℓ : ℕ}
-    (hG : G.IsTight k ℓ) (h : G < H) : ¬ H.IsSparse k ℓ := by
-  intro hH
-  have hGcard := hG.edgeSet_ncard
-  have hℓV : ℓ ≤ k * Nat.card V := by grind
-  have hbound := hH.edgeSet_ncard_add_le hℓV
-  have hlt : G.edgeSet.ncard < H.edgeSet.ncard :=
-    Set.ncard_lt_ncard (edgeSet_ssubset_edgeSet.mpr h) (Set.toFinite _)
-  grind
+    (hG : G.IsTight k ℓ) (h : G < H) : ¬ H.IsSparse k ℓ := fun hH => by
+  have := hG.edgeSet_ncard
+  have := hH.edgeSet_ncard_add_le (by grind only)
+  have := Set.ncard_lt_ncard (edgeSet_ssubset_edgeSet.mpr h) (Set.toFinite H.edgeSet)
+  grind only
 
 end SimpleGraph

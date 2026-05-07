@@ -152,6 +152,14 @@ Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
   reasoning, so it tends to absorb the surrounding `rw` / `have` chain.
   Fall back to `omega` only if `grind` is the wrong tool for a specific
   goal.
+- **Hint discovery for `grind`.** When `grind` fails or you suspect a
+  smaller hint set will work, write `grind?` (or `grind? [foo, bar]`).
+  It runs the tactic and prints a suggested `grind only [...]` call
+  with exactly the lemmas it actually used. Replace `grind?` with the
+  suggested call to land a deterministic, fast version. `grind only` is
+  the preferred final form: it doesn't depend on the ambient
+  `@[grind]`-annotated library beyond what's listed, so it's stable
+  under mathlib changes.
 
 ## Hand-off checklist for the next session
 
