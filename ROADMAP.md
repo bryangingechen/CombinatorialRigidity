@@ -29,6 +29,7 @@ Archive/CombinatorialRigidity/
 ├── EdgesIn.lean       Phase 1 — `edgesIn` selector
 ├── Sparsity.lean      Phase 1 — `IsSparse`, `IsTight`
 ├── Laman.lean         Phase 1+2 — `IsLaman` and downstream
+├── Henneberg.lean     Phase 3 — `typeI`, `typeII` and downstream
 └── …                  later phases get their own files
 ```
 
@@ -38,7 +39,7 @@ Archive/CombinatorialRigidity/
 |---|---|---|
 | 1. Sparsity | `EdgesIn.lean`, `Sparsity.lean`, `Laman.lean` | ✓ Complete (see `notes/Phase1.md`) |
 | 2. Laman graphs | `Laman.lean` | ✓ Complete (see `notes/Phase2.md`) |
-| 3. Henneberg moves | `Henneberg.lean` | Not yet created |
+| 3. Henneberg moves | `Henneberg.lean` | In progress (see `notes/Phase3.md`) |
 | 4. Frameworks | `Framework.lean` | Not yet created |
 | 5. Laman's theorem | `LamanTheorem.lean` | Not yet created |
 
@@ -75,28 +76,23 @@ and phase-specific decisions.
 
 ### Phase 3 — Henneberg moves (`Henneberg.lean`)
 
-Definitions:
-- `Henneberg.typeI G v a b` — given `G : SimpleGraph V`, a fresh vertex `v ∉ V`
-  and two distinct `a, b ∈ V`, produce a new graph on `V ⊕ {v}` with the two
-  edges `{v, a}, {v, b}` added.
-  *Implementation note:* We will likely use `SimpleGraph` over a sum / option
-  type or a concretely indexed vertex set; keep an eye on dependent types.
-- `Henneberg.typeII G e a b c` — given an edge `e = {a, b}` and a third vertex
-  `c ≠ a, b`, delete `e`, add a fresh vertex `v`, add edges
-  `{v, a}, {v, b}, {v, c}`.
-- `Henneberg.Reachable G H` — inductive reachability of `H` from `G` by a
-  finite sequence of Type I/II moves.
+Type I and Type II moves on simple graphs. The fresh vertex is represented
+as `none : Option V`, with old vertices embedded via `some`. Both moves
+preserve the Laman property, and Henneberg's theorem (every Laman graph is
+"reachable" from `K₂` by these moves) is expressed as a structural
+**decomposition** lemma `IsLaman.exists_typeI_or_typeII_reverse` rather
+than an explicit `Reachable` inductive — see `notes/Phase3.md` for the
+architectural choice (and `DESIGN.md` "Choices to revisit").
 
-Lemmas to develop:
-- `Henneberg.typeI_isLaman` — Type I preserves the Laman property.
-- `Henneberg.typeII_isLaman` — Type II preserves the Laman property.
-- `K₄ \ e` is Laman (Phase 2 carryover). One-liner once `typeI_isLaman`
-  is in: `K₂` plus two Type I moves yields `K₄ \ e`.
-- Both moves preserve generic rigidity (proved later in `Framework.lean`).
-- **Henneberg's theorem**: every Laman graph is reachable from `K₂` by a
-  finite sequence of Type I and II moves. (Proof: induction on `#V`; pick a
-  degree-2 or degree-3 vertex via `IsLaman.exists_two_le_degree_le_three`
-  and reverse the appropriate move.)
+Phase 3 is in progress; see `notes/Phase3.md` for the lemma checklist,
+phase-local decisions, and the next concrete task. Definitions and the
+typeI edge-set decomposition (`typeI_edgeSet`, `typeI_edgeSet_ncard`) are
+landed; `typeII_edgeSet`, `typeI_isLaman`, `typeII_isLaman`, the
+decomposition theorem, and the K₄\e example are deferred to subsequent
+sessions.
+
+Both moves additionally preserve generic rigidity (proved later in
+`Framework.lean`).
 
 ### Phase 4 — Frameworks and infinitesimal rigidity (`Framework.lean`)
 

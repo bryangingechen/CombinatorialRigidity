@@ -184,10 +184,29 @@ These are *open*: we expect to revise based on how proofs actually
 unfold. Add to this list whenever a session surfaces a question; move
 to a fixed section above once a question is answered.
 
-- **Vertex insertion in Henneberg moves.** Keep `V` fixed and bump
-  `Fintype.card` via a labeled new vertex, or pass to `V ⊕ Unit` /
-  `Option V`? The right call probably depends on what the induction
-  in Henneberg's theorem looks like in practice.
+- ~~**Vertex insertion in Henneberg moves.**~~ **Resolved (Phase 3 start):**
+  Use `Option V`. The fresh vertex is `none`; old vertices embed via
+  `some : V ↪ Option V`. Chosen over `V ⊕ Unit` for readability and over
+  fixed-`V`-with-`v ∉ G.support` because the latter forces every move to
+  carry a freshness side-condition. Mathlib has no precedent for "add a
+  single vertex to a `SimpleGraph`"; `Option α` is the canonical "add
+  one element" idiom (cf. `Equiv.optionEquivSumPUnit`). Cost: chained
+  moves give types `Option (Option …)`; mitigated by working modulo
+  isomorphism in the Phase 5 induction. Companion decision: drop the
+  `Reachable` inductive in favour of `IsLaman.exists_typeI_or_typeII_reverse`
+  + strong induction on `Fintype.card V`, since heterogeneous-type
+  reachability has no mathlib precedent.
+- ~~**`Reachable` inductive vs structural decomposition.**~~ **Resolved
+  (Phase 3 start):** No `Reachable`. Phase 5's Laman's-theorem proof
+  uses `IsLaman.exists_typeI_or_typeII_reverse` plus strong induction on
+  `Fintype.card V`. See `notes/Phase3.md` "Architectural choices".
+- ~~**Structural `Adj` vs lattice `G.map .some ⊔ fromEdgeSet …`.**~~
+  **Resolved (Phase 3, mid-session):** Structural. The lattice form was
+  attempted and abandoned: `(G.map .some).Adj (some u) (some v)` unfolds
+  to `∃ u' v', G.Adj u' v' ∧ some u' = some u ∧ some v' = some v` and
+  simp does not always discharge the existential cleanly. Structural
+  match-based `Adj` makes all eight adjacency lemmas `Iff.rfl`; the cost
+  is one manual `Sym2.ind`-based proof for the edgeSet decomposition.
 - **Rigidity matrix.** Build via `Matrix` directly, or as a `LinearMap`
   with `LinearMap.toMatrix` for rank arguments? Likely `LinearMap` for
   the abstract definition, `Matrix` for explicit computations on small

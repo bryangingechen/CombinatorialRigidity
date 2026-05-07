@@ -38,6 +38,47 @@ can see how it was handled before.
 
 ## Open entries
 
+### [open] Sym2 case analysis is verbose for edge-set decompositions
+- **Where it bit:** `typeI_edgeSet` (Phase 3); aborted attempt at
+  `typeII_edgeSet`.
+- **Friction:** Proving things of the form
+  `(typeI G a b).edgeSet = (Sym2.map some '' G.edgeSet) ∪ {s(none, some a), s(none, some b)}`
+  requires `Sym2.ind` to expose the underlying pair `(x, y)`, then case
+  analysis `rcases x with _ | u <;> rcases y with _ | v` (4 cases),
+  each closed by mixed `Sym2.eq_iff` / `Option.some.injEq` /
+  `Sym2.map_mk` rewrites and `simp_all`. The pattern that closes the
+  `(some u, some v)` case (rewriting `s(some p, some q) = s(some u, some v)`
+  via `Sym2.eq_iff` + `Option.some.injEq` + `rcases ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩`)
+  was several iterations of trial-and-error to land. `aesop`, `tauto`,
+  and bare `simp` each got stuck on a different sub-goal.
+- **Proposed fix:** project-internal helper bundling the common
+  pattern, e.g. a `mem_typeI_edgeSet` characterization that hides the
+  `Sym2.map some` machinery, OR a more general
+  `Sym2.map_some_mem_iff` upstream candidate:
+  `Sym2.map some e ∈ (Sym2.map some '' S) ↔ e ∈ S` for `e : Sym2 V`
+  and `S : Set (Sym2 V)`. Could mirror under
+  `Mathlib/Data/Sym/Sym2.lean` once the right form is identified.
+- **Status:** open. Acceptable for `typeI_edgeSet` (proof landed); the
+  parallel `typeII_edgeSet` proof was abandoned mid-session pending a
+  cleaner approach. Revisit when picking up `typeII_edgeSet`.
+
+### [open] `revert` ordering before `e'.ind` is finicky
+- **Where it bit:** `typeI_edgeSet` proof, backward direction.
+- **Friction:** To do Sym2 induction on a hypothesis `e'` while
+  preserving other hypotheses depending on `e'` (here: `heG : e' ∈ S`
+  and `hmap : Sym2.map some e' = s(x, y)`), we `revert` the dependent
+  hypotheses first. The order of revert determines the order of
+  hypotheses in the lambda after `refine e'.ind fun p q ... => ?_`. The
+  correct rule is **revert in reverse order of the lambda binders**:
+  for lambda `fun p q heG hne hmap`, revert `hmap hne heG`. Forgetting
+  this gave a confusing "rewrite failed" error in `typeII` because
+  `hmap` ended up bound to a different hypothesis.
+- **Proposed fix:** none needed; this is intrinsic to `revert`/`refine`
+  semantics. Documented here so the next agent doesn't redo the trial
+  and error. Alternative: use `induction e' with | h p q => …` which
+  generalizes context automatically.
+- **Status:** wontfix (tactic-semantics issue, not a missing lemma).
+
 ### [open] `IsSparse` is not `Decidable`, blocking small-example proofs by `decide`
 - **Where it bit:** Phase 2 attempt at `K₄ \ e` is Laman (deferred).
 - **Friction:** `IsSparse` is `∀ s : Finset V, ℓ ≤ k * #s → (G.edgesIn ↑s).ncard + ℓ ≤ k * #s`,

@@ -69,6 +69,18 @@ lemma edgesIn_mono {s t : Set V} (h : s ⊆ t) : G.edgesIn s ⊆ G.edgesIn t :=
 @[simp] lemma edgesIn_bot (s : Set V) : (⊥ : SimpleGraph V).edgesIn s = ∅ := by
   simp [edgesIn]
 
+/-- A singleton set spans no edges: a single vertex contains no edge of a simple graph because
+edges are non-loops. -/
+@[simp] lemma edgesIn_singleton (G : SimpleGraph V) (v : V) : G.edgesIn ({v} : Set V) = ∅ := by
+  ext e
+  refine e.ind fun x y => ?_
+  simp only [mem_edgesIn, mem_edgeSet, Set.mem_empty_iff_false, iff_false, not_and]
+  intro hadj hsub
+  have hx : x = v := hsub (Sym2.mem_mk_left x y)
+  have hy : y = v := hsub (Sym2.mem_mk_right x y)
+  rw [hx, hy] at hadj
+  exact G.loopless.irrefl _ hadj
+
 /-- For finite `s`, `G.edgesIn ↑s` is finite (it is contained in the symmetric square of `s`). -/
 lemma edgesIn_finite (G : SimpleGraph V) (s : Finset V) : (G.edgesIn ↑s).Finite := by
   refine s.sym2.finite_toSet.subset ?_
