@@ -98,10 +98,10 @@ theorem IsTight.not_isSparse_of_lt [Finite V] {G H : SimpleGraph V} {k ℓ : ℕ
     (hG : G.IsTight k ℓ) (h : G < H) : ¬ H.IsSparse k ℓ := by
   intro hH
   have hGcard := hG.edgeSet_ncard
-  have hℓV : ℓ ≤ k * Nat.card V := by omega
+  have hℓV : ℓ ≤ k * Nat.card V := by grind
   have hbound := hH.edgeSet_ncard_add_le hℓV
   have hlt : G.edgeSet.ncard < H.edgeSet.ncard :=
     Set.ncard_lt_ncard (edgeSet_ssubset_edgeSet.mpr h) (Set.toFinite _)
-  omega
+  grind
 
 end SimpleGraph

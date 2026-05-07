@@ -52,7 +52,7 @@ example : (⊤ : SimpleGraph (Fin 2)).IsLaman := by
     intro s hs
     have hsle : s.card ≤ 2 := by
       simpa using Finset.card_le_card (Finset.subset_univ s)
-    have hs2 : s.card = 2 := by omega
+    have hs2 : s.card = 2 := by grind
     have : s = Finset.univ := s.eq_univ_of_card (by simpa using hs2)
     subst this
     rw [show ((Finset.univ : Finset (Fin 2)) : Set (Fin 2)) = Set.univ from

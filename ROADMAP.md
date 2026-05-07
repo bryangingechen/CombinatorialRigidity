@@ -146,6 +146,12 @@ Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
 - **Decidability.** Add `[DecidableEq V]` / `[DecidableRel G.Adj]` only when
   needed for a specific finset construction. Many definitions can stay
   noncomputable via `Set.ncard`.
+- **Closing arithmetic / mixed-reasoning goals.** Prefer `grind` over
+  `omega` for the closing tactic of an arithmetic step. `grind` handles
+  the same linear-integer goals plus equational and propositional
+  reasoning, so it tends to absorb the surrounding `rw` / `have` chain.
+  Fall back to `omega` only if `grind` is the wrong tool for a specific
+  goal.
 
 ## Hand-off checklist for the next session
 
