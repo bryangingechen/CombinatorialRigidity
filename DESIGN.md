@@ -33,11 +33,17 @@ than the matroid-theoretic route via `Mathlib.Combinatorics.Matroid`.
   we have to prove (rather than getting it from matroid bases).
 - The proof generalizes less well beyond dimension 2.
 
-**When to reconsider:** if at Phase 4 we discover that the rigidity
-*matrix* arguments are easier as matroid arguments — specifically, if
-proving `IsGenericallyRigid → contains a Laman spanning subgraph` ends
-up needing the rigidity matroid anyway. In that case the matroid route
-might be cheaper end-to-end.
+**When to reconsider:** Phase 4 planning has confirmed the matrix
+arguments — `LinearMap.ker` / `LinearMap.range` rank-nullity, kernel
+monotonicity, edge-count bound — go through cleanly *without*
+invoking the rigidity matroid as a `Matroid` object, so the trigger
+is now **deferred to Phase 5**. The live question is whether the
+(⇒) direction of Laman's theorem (`IsGenericallyRigid → contains a
+Laman spanning subgraph`) wants the Lovász–Yemini matroid argument.
+If so, a future `RigidityMatroid.lean` would sit on top of
+`Framework.lean` (whose definitions are deliberately matroid-agnostic
+— see *Notion- and matroid-agnostic core* below); refactoring back
+into `Framework.lean` is *not* required.
 
 ---
 
@@ -147,6 +153,78 @@ it for a definition that's overwhelmingly used in `ℕ` contexts.
 
 ---
 
+## Generality of dimension `d`
+
+From Phase 4 onward, every definition and lemma is stated for
+arbitrary dimension `d : ℕ`, not specialized to `d = 2`. The
+`2 * #V - 3` Laman edge bound is the `d = 2` specialization of a
+general-`d` `d * #V ≤ #E + d(d+1)/2` statement that holds for *any*
+generically rigid graph in dimension `d` — same proof, no
+preconditions other than the existence of an infinitesimally rigid
+placement. The K₂ base case is infinitesimally rigid in any
+`d ≥ 0` for the same rank-nullity reasons.
+
+**Why:** specializing earlier hides the underlying linear algebra
+(the constant `d(d+1)/2` is just the dimension of the trivial-motions
+subspace, not a magic number) and turns any future higher-dimensional
+work into a refactor rather than a copy-paste. The boundary at which
+`d = 2` enters legitimately is **Phase 5**, where the count matroid
+is `(2, 3)` and the connection to *Laman* graphs (specifically) is
+made.
+
+**Cost:** none we can see. Phase 4's four ROADMAP lemmas all hold for
+general `d` with the same proofs they would have at `d = 2`. The
+`#V ≥ d` precondition some lemmas require is the natural
+generalization of `#V ≥ 2`; it surfaces only where it would have
+under the specialization anyway.
+
+**Practical rule for proofs in `Framework.lean` and beyond:** prefer
+`Module.finrank` arguments over coordinate arguments, and `Fintype V`
+over `V = Fin n` specializations, so that "ambient inner product
+space is `EuclideanSpace ℝ (Fin d)`" can be relaxed to "arbitrary
+finite-dim inner product space" later by replacing
+`d * (d + 1) / 2` with `finrank ℝ E * (finrank ℝ E + 1) / 2`. We do
+*not* make this generalization now (premature; no caller wants it),
+but we don't paint ourselves into a corner either.
+
+---
+
+## Notion- and matroid-agnostic core
+
+`Framework V d`, `RigidityMap`, `TrivialMotions`, and
+`IsInfinitesimallyRigid` (Phase 4) are deliberately defined without
+reference to any specific rigidity notion beyond infinitesimal, and
+without invoking `Mathlib.Combinatorics.Matroid`.
+
+**Why:** other rigidity notions — local (continuous), global,
+generic global, redundant, body-bar / body-hinge — and the abstract
+rigidity matroid are all *consumers* of these definitions. Each
+slots in as a separate file (`LocalRigidity.lean`, `GlobalRigidity.lean`,
+`RigidityMatroid.lean`, …) once needed; none requires
+`Framework.lean` to be refactored. Specifically:
+
+- The rigidity matroid (independence = row-independence of
+  `RigidityMap` for generic `p`) is a one-line definition once
+  `Framework.lean` exists, but the `Matroid` object isn't needed
+  for any Phase 4 lemma and isn't needed for the (⇐) direction of
+  Laman's theorem. A `RigidityMatroid.lean` would land only if
+  Phase 5's (⇒) direction goes via Lovász–Yemini.
+- Local rigidity needs continuous-motions API on top of
+  `Framework V d`; global rigidity is a separate `Prop` independent
+  of the infinitesimal layer; body-bar / body-hinge frameworks have
+  their own parameter spaces. None of these touch the rigidity
+  matrix as an abstract object.
+
+**Anti-pattern to avoid:** do *not* introduce a typeclass like
+`IsRigidityNotion (P : SimpleGraph V → Prop)` or factor
+`IsInfinitesimallyRigid` through an abstract base. The "right"
+abstraction will only become clear once at least one alternative
+notion is on disk; until then the typeclass would be load-bearing
+in exactly one direction. Keep things concrete; add the abstraction
+later if multiple consumers materialize.
+
+---
+
 ## Mirror directory for missing mathlib lemmas
 
 If, while proving something here, we hit a lemma that *should* exist in
@@ -169,14 +247,28 @@ existing context. The Lean namespace stays the standard one
 Each file in the mirror should open with a docstring stating that the
 contents are upstream candidates and which mathlib path they target.
 
-The directory is created lazily — don't pre-populate it. Phase 1 proved
-without gaps; Phase 2 surfaced five upstream candidates (three
-`Set.ncard` companions on `SimpleGraph`, plus the `coe`/`card` forms of
-`Finset.compl_singleton`), all currently mirrored under
-`Mathlib/Combinatorics/SimpleGraph/Finite.lean`,
-`Mathlib/Data/Finset/BooleanAlgebra.lean`, and
-`Mathlib/Data/Fintype/Card.lean`. See `notes/FRICTION.md` for
-the per-lemma rationale.
+The directory is created lazily — don't pre-populate it. Phase 1
+proved without gaps; Phases 2 and 3 together surfaced ~12 upstream
+candidates spread over six paths:
+
+- `Mathlib/Combinatorics/SimpleGraph/Finite.lean` — `Set.ncard`
+  companions of `card_incidenceSet_eq_degree` and friends
+- `Mathlib/Data/Finset/BooleanAlgebra.lean`,
+  `Mathlib/Data/Fintype/Card.lean` — `coe` / `card` forms of
+  `Finset.compl_singleton`
+- `Mathlib/Data/Set/Card.lean` — unconditional `≤ 2` and `≤ 3`
+  ncard bounds for pairs / triples
+- `Mathlib/Data/Sym/Sym2.lean` — `Sym2.map some` injectivity, the
+  predicate-form image-membership `simp` lemma, plus two helpers for
+  `none ∉ Sym2.map some _` and the disjointness pattern
+- `Mathlib/Data/Finset/Option.lean` — addition-form
+  `card_eraseNone_of_mem` (mathlib's version uses `ℕ`-subtraction,
+  forbidden by the project)
+
+See `notes/FRICTION.md` "Resolved / mirrored entries" for the
+per-lemma rationale; phases 4 and 5 will likely add more (the
+Phase 4 plan flags one open question — whether mathlib has
+`finrank` for `skewAdjointMatricesSubmodule`).
 
 
 
@@ -221,15 +313,19 @@ to a fixed section above once a question is answered.
   Laman-preservation half is the Henneberg blocker argument and can
   be approached independently (or bypassed via the matroid route —
   see ROADMAP §5 *Carryover from Phase 3*).
-- **Rigidity matrix.** Build via `Matrix` directly, or as a `LinearMap`
-  with `LinearMap.toMatrix` for rank arguments? Likely `LinearMap` for
-  the abstract definition, `Matrix` for explicit computations on small
-  examples.
-- **Generic placement.** "Generic" can be (a) a placement avoiding a
-  Zariski-closed set, (b) algebraically independent coordinates, or
-  (c) a placement at which the rigidity matrix has maximum rank.
-  Options (a) and (c) are equivalent and easier to formalize than (b);
-  pick when we get to Phase 4.
+- ~~**Rigidity matrix.**~~ **Resolved (Phase 4 plan):** `LinearMap` for the
+  abstract definition, with `LinearMap.toMatrix` deriving the matrix view
+  on demand. Rank-nullity and kernel-of-restriction arguments are
+  cleanest on the `LinearMap` side; the matrix view costs one
+  `LinearMap.toMatrix` rewrite when a `Matrix.rank` fact is needed.
+  See `notes/Phase4.md` *Architectural choices*.
+- ~~**Generic placement.**~~ **Resolved (Phase 4 plan):** option (c).
+  `G.IsGenericallyRigid d := ∃ p : Framework V d, G.IsInfinitesimallyRigid
+  p d`. Avoids algebraic-geometry prerequisites (no `MvPolynomial` /
+  Zariski-set machinery in scope). The equivalence to "rank max on a
+  Zariski-open set" is downstream and not needed for Phase 5 if (⇒) goes
+  via the rank bound directly. See `notes/Phase4.md` *Architectural
+  choices*.
 - **Promoting `edgesIn` upstream.** Once it has a few users in
   `Sparsity.lean` and elsewhere, consider whether to move it to
   `Mathlib.Combinatorics.SimpleGraph.Basic` next to `incidenceSet`.
