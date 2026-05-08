@@ -1,33 +1,21 @@
 # Phase 4 — Frameworks and infinitesimal rigidity (work log)
 
-**Status:** in progress (planning only this session — no Lean code).
+**Status:** in progress.
 
 This file is the per-phase work record. See `../ROADMAP.md` for the
 high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Plan-only session. Surveyed mathlib's `EuclideanSpace`, `LinearMap`,
-`Matrix.rank`, and `skewAdjointMatricesSubmodule` APIs and settled the
-two open Phase 4 design questions in `DESIGN.md` *Choices to revisit*:
+`Framework.lean` exists with the four core definitions (`Framework V d`,
+`RigidityMap G p`, `IsInfinitesimallyRigid G p`, `IsGenericallyRigid G d`)
+and the `RigidityMap` linearity proof landed without `sorry`. No lemmas
+yet beyond the definitions themselves.
 
-* **Rigidity matrix encoding.** Define `RigidityMap G p` as a
-  `LinearMap`; derive the matrix view via `LinearMap.toMatrix` only
-  where a concrete matrix shape is needed. Rationale: rank-nullity and
-  kernel-of-restriction arguments are cleanest on the `LinearMap`
-  side; the matrix view costs one `LinearMap.toMatrix` rewrite when a
-  `Matrix.rank` fact is needed.
-* **"Generic" placement.** `G.IsGenericallyRigid d := ∃ p,
-  G.IsInfinitesimallyRigid p d`. Avoids algebraic-geometry
-  prerequisites; the equivalence to "Zariski-open set of placements"
-  is a downstream theorem (not needed for either Laman direction in
-  Phase 5 if the (⇒) direction goes via `LinearMap.range` rank
-  bounds).
-
-**Next concrete task** (one sentence): create `Framework.lean` with
-the four definitions in *Definitions* below (no proofs yet) and
-confirm `lake build CombinatorialRigidity.Framework` succeeds
-on a stub file with `sorry` for any non-`def` content.
+**Next concrete task** (one sentence): land `Framework.finrank` (`Module.finrank
+ℝ (Framework V d) = Fintype.card V * d`) and the basic `RigidityMap`
+unfolding lemma `rigidityMap_apply` so the next agent can start chaining
+rewrites against the rigidity map without re-deriving its action on `s(u, v)`.
 
 ## Architectural choices made up front
 
@@ -78,14 +66,21 @@ wrong, revisit there.
     such a file can sit on top without refactoring back into
     `Framework.lean`.
 
-- **`Framework V d := V → EuclideanSpace ℝ (Fin d)`.** A bare type
-  alias (a `def`, not `abbrev` — same `def`-vs-`abbrev` rule as the
-  rest of the project per `../ROADMAP.md` *Engineering conventions*).
-  When `[Fintype V]`, the inner-product / module / finite-dimensional
-  instances fire automatically via `PiLp.innerProductSpace` and
-  `Module.finrank_pi_fintype`. The `finrank` is `Fintype.card V * d`
+- **`Framework V d := V → EuclideanSpace ℝ (Fin d)`, as `abbrev`.** The
+  ROADMAP `def`-vs-`abbrev` rule applies to *predicates* (`IsSparse`,
+  `IsTight`, `IsLaman`); type aliases are different. With `def`, the
+  Pi-`AddCommGroup` / `Module ℝ` instances on `V → EuclideanSpace ℝ
+  (Fin d)` do *not* propagate to `Framework V d` (Lean does not unfold
+  `def` for instance synthesis), forcing per-instance `instance ... :=
+  inferInstanceAs ...` boilerplate. `abbrev` makes the synthesis
+  transparent and is what mathlib uses for `EuclideanSpace` itself
+  (`abbrev EuclideanSpace 𝕜 n := PiLp 2 fun _ => 𝕜`). The cost
+  ("`Framework V d` may unfold in goals") is a feature here:
+  linearity proofs of `RigidityMap` rely on `(p₁ + p₂) u = p₁ u + p₂ u`
+  via `Pi.add_apply`. The `finrank` is `Fintype.card V * d`
   (one chain through `Module.finrank_pi_fintype` and
-  `finrank_euclideanSpace`).
+  `finrank_euclideanSpace`); landed as `Framework.finrank` in the next
+  commit.
 
 - **Rigidity map defined directly via the explicit entry formula —
   *not* as `fderiv` of edge-length-squared.** For an edge `e = s(u,
@@ -190,13 +185,13 @@ Tracking against the ROADMAP §4 bullets, plus what we're adding.
 
 ### Definitions (`Framework.lean`, this phase)
 
-- [ ] `Framework V d` — placement type alias
-- [ ] `RigidityMap G p` — differential of edge-length-squared
+- [x] `Framework V d` — placement type alias (as `abbrev`)
+- [x] `RigidityMap G p` — differential of edge-length-squared (no `sorry`)
+- [x] `IsInfinitesimallyRigid G p`
+- [x] `IsGenericallyRigid G d`
 - [ ] `RigidityMatrix G p` — matrix view via `LinearMap.toMatrix`
 - [ ] `trivialMotionAction p` — `(translation, skew) → motion`
 - [ ] `TrivialMotions G p` — `LinearMap.range (trivialMotionAction p)`
-- [ ] `IsInfinitesimallyRigid G p d`
-- [ ] `IsGenericallyRigid G d`
 
 ### `RigidityMap` API
 
@@ -290,8 +285,8 @@ may be upstream-eligible mirrors.
 - **Rigidity defined via `LinearMap`, matrix as derived view.** See
   *Architectural choices*. The two questions in `DESIGN.md` *Choices
   to revisit* — "Rigidity matrix" and "Generic placement" — are
-  resolved (LinearMap; max-rank-placement-exists). Will update
-  `DESIGN.md` once Phase 4 lands one usable definition.
+  resolved (LinearMap; max-rank-placement-exists). `DESIGN.md` already
+  reflects this.
 
 - **No affine-spanning side-condition in `IsInfinitesimallyRigid`.**
   Working definition uses the always-true upper bound `dim ker ≤
@@ -302,6 +297,22 @@ may be upstream-eligible mirrors.
   `IsGenericallyRigid` proof to double-witness; pulling it out keeps
   the definition tight and pushes the side-condition to where it's
   needed (the lemmas connecting trivial motions to the kernel).
+
+- **`Sym2.lift` symmetry proofs need a `change` to beta-reduce before
+  `rw`.** When defining `RigidityMap`, the symmetry obligation for
+  `Sym2.lift ⟨fun u v => f u v, hf⟩` arrives in the form
+  `(fun u v => f u v) u v = (fun u v => f u v) v u` — `rw` can't find
+  pattern matches inside the un-reduced lambda. Insert
+  `change f u v = f v u` (beta-reduced shape) before the rewrite chain;
+  same trick is needed for the `map_add'` / `map_smul'` proofs of
+  `RigidityMap`. The linter rejects `show` for goal-changing tactics —
+  use `change` (mathlib-wide style rule). Lift to `TACTICS.md` if a
+  third `Sym2.lift`-based definition lands; for now contained.
+
+- **`open scoped InnerProductSpace` in `Framework.lean`.** The `⟪x, y⟫_ℝ`
+  notation is `scoped[InnerProductSpace]`; without the open it parses
+  as token-level garbage ("expected token"). Standard mathlib idiom —
+  not worth a FRICTION entry.
 
 ## Blockers / open questions
 
@@ -315,54 +326,40 @@ may be upstream-eligible mirrors.
   (skewAdjointMatricesSubmodule (1 : Matrix (Fin n) (Fin n) R)) = n *
   (n - 1) / 2`. **Action:** look once before mirroring; if absent,
   prove via the explicit basis on upper-triangular off-diagonal
-  entries.
+  entries. Surfaces at step 4 of the lemma order below.
 
-- **`Sym2.lift`-based definition of `RigidityMap` may need a glue
-  lemma.** The map outputs `⟪p u - p v, p' u - p' v⟫`; to lift through
-  `Sym2.lift`, we need to verify symmetry under `(u, v) ↔ (v, u)`,
-  which is one `simp [Sym2.lift_mk]` line *if the inner product
-  unfolding is in the simp set*. May need an explicit `RigidityMap.symm`
-  helper if the standard simp set doesn't close it.
-
-- **Edge indexing: `↥G.edgeSet → ℝ` vs `G.edgeFinset → ℝ`.** The
-  former doesn't need `[Fintype V]` for the *definition*; the latter
-  is more natural for the matrix view. Plan: define on `↥G.edgeSet`,
-  add a `[Fintype V] [DecidableRel G.Adj]` companion that goes through
-  `G.edgeFinset` for `LinearMap.toMatrix`. Mirrors the
+- **Edge indexing: `↥G.edgeSet → ℝ` vs `G.edgeFinset → ℝ`.** Settled on
+  `↥G.edgeSet → ℝ` for the `RigidityMap` codomain (no `[Fintype V]`
+  needed for the *definition*); a `[Fintype V] [DecidableRel G.Adj]`
+  companion going through `G.edgeFinset` is deferred until the matrix
+  view (`RigidityMatrix`) actually arrives. Mirrors the
   `Set.ncard` / `Finset.card` split elsewhere in the project.
-
-- **Does mathlib have a clean `Sym2.lift` for inner products?** The
-  pattern `⟪p u - p v, p' u - p' v⟫` is common enough that there might
-  be a helper. **Action:** check `Mathlib/Analysis/InnerProductSpace/`
-  and `Mathlib/Data/Sym/Sym2.lean` once; if absent, write the lift by
-  hand.
 
 ## Hand-off / next phase
 
 (Filled in when Phase 4 closes.)
 
 The current Phase 4 entry-point for the next agent: open
-`Framework.lean` (does not yet exist — create it). The first commit
-should land the four definitions in *Definitions* above, with `sorry`
-permitted for the linearity proof of `RigidityMap` only — the other
-three are pure type definitions with no proof obligation. Confirm
-`lake build CombinatorialRigidity.Framework` succeeds before
-proceeding to lemmas.
+`Framework.lean` and land `Framework.finrank`
+(`Module.finrank ℝ (Framework V d) = Fintype.card V * d` under
+`[Fintype V]`) plus `rigidityMap_apply`. Both are short — one chain
+through `Module.finrank_pi_fintype` + `finrank_euclideanSpace`,
+respectively `Sym2.lift_mk` after destructuring the edge — and they
+unblock the rest of the lemma order.
 
 The recommended lemma order (each commit adds 2–4):
 
-1. `Framework.finrank` and the basic `Module.finrank` ledger.
-2. `RigidityMap` definition + `rigidityMap_apply`.
-3. `rigidityMap_mono` and `rigidityMap_ncard_le`.
-4. `TrivialMotions` definition + `trivialMotions_le_ker` (this is the
+1. `Framework.finrank` + `rigidityMap_apply` — the basic ledger lemma
+   and the rigidity-map unfolding lemma. Both are short.
+2. `rigidityMap_mono` and `rigidityMap_ncard_le`.
+3. `TrivialMotions` definition + `trivialMotions_le_ker` (this is the
    first non-trivial proof — check that `⟪x, A • x⟫ = 0` for skew `A`
    is a one-line mathlib fact or one-line mirror).
-5. `finrank_trivialMotions_le` (mirror lemma if needed for skew-matrix
-   dimension).
-6. `IsInfinitesimallyRigid` and `IsGenericallyRigid` definitions.
-7. `IsGenericallyRigid.mono` (one-liner from step 3).
-8. `top_fin_two_isInfinitesimallyRigid` worked example (general `d`).
-9. `IsGenericallyRigid.card_mul_le` for general `d` — closes Phase 4.
+4. `finrank_trivialMotions_le` (mirror lemma if needed for skew-matrix
+   dimension — see *Blockers*).
+5. `IsGenericallyRigid.mono` (one-liner from step 2).
+6. `top_fin_two_isInfinitesimallyRigid` worked example (general `d`).
+7. `IsGenericallyRigid.card_mul_le` for general `d` — closes Phase 4.
 
 Phase 5 is responsible for the `d = 2` specializations
 (`top_fin_two_isGenericallyRigid` and `2 * #V ≤ #E + 3`); Phase 4

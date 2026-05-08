@@ -40,7 +40,7 @@ Archive/CombinatorialRigidity/
 | 1. Sparsity | `EdgesIn.lean`, `Sparsity.lean`, `Laman.lean` | ✓ Complete (see `notes/Phase1.md`) |
 | 2. Laman graphs | `Laman.lean` | ✓ Complete (see `notes/Phase2.md`) |
 | 3. Henneberg moves | `Henneberg.lean` | ✓ Complete (see `notes/Phase3.md`) |
-| 4. Frameworks | `Framework.lean` | In progress (planning landed; see `notes/Phase4.md`) |
+| 4. Frameworks | `Framework.lean` | In progress (core definitions landed; see `notes/Phase4.md`) |
 | 5. Laman's theorem | `LamanTheorem.lean` | Not yet created |
 
 Phase-level details (per-phase lemma checklists, decisions made during
