@@ -321,10 +321,13 @@ may be upstream-eligible mirrors.
 ### Promoted to TACTICS / FRICTION / DESIGN
 
 - *`RigidityMap` built by hand instead of compositionally* → FRICTION
-  *[open]*. Three internal sites within `Framework.lean` (linearity
-  proof, K₂ inner-product computation, the `change`-then-`rw` shape
-  needed for `Sym2.lift` symmetry); compositional refactor via
-  `innerSL` + `LinearMap.proj` + `LinearMap.pi` is the proposed fix.
+  *[resolved]*. Compositional refactor landed in a follow-up commit
+  via `edgeRow` (built from `innerSL` + `LinearMap.proj` + `LinearMap.comp`)
+  + `LinearMap.pi`; linearity is now inherited and the K₂
+  inner-product computation collapses to a one-line `simp`. Surfaced
+  one new ascription friction (next item) along the way.
+- *`LinearMap.proj` Pi-codomain not inferred in subtraction context*
+  → FRICTION *[resolved]*. New entry from the `RigidityMap` refactor.
 - *`Set.ncard ↔ Fintype.card` two-rewrite glue* → FRICTION *[open]*.
   Mirror candidate alongside the existing `ncard_incidenceSet_eq_degree`
   pattern.

@@ -60,42 +60,43 @@ theorem Framework.finrank [Fintype V] :
     Module.finrank ℝ (Framework V d) = Fintype.card V * d := by
   simp [Module.finrank_pi_fintype]
 
+/-- The `(u, v)`-row of the rigidity matrix as a linear functional on framework
+motions: `x ↦ ⟪p u - p v, x u - x v⟫_ℝ`. Internal building block for
+`RigidityMap`; consumers go through `rigidityMap_apply` instead. -/
+private noncomputable def edgeRow (p : Framework V d) (u v : V) :
+    Framework V d →ₗ[ℝ] ℝ :=
+  ((innerSL ℝ (p u - p v)).toLinearMap).comp
+    ((LinearMap.proj u : Framework V d →ₗ[ℝ] EuclideanSpace ℝ (Fin d)) -
+      LinearMap.proj v)
+
+@[simp]
+private theorem edgeRow_apply (p : Framework V d) (u v : V) (x : Framework V d) :
+    edgeRow p u v x = ⟪p u - p v, x u - x v⟫_ℝ := rfl
+
+private theorem edgeRow_symm (p : Framework V d) (u v : V) :
+    edgeRow p u v = edgeRow p v u := by
+  ext x
+  rw [edgeRow_apply, edgeRow_apply, ← neg_sub (p u) (p v), ← neg_sub (x u) (x v),
+      inner_neg_neg]
+
 /-- The **rigidity map** of a framework `p`: an `ℝ`-linear map sending an
 infinitesimal motion `p' : Framework V d` to the family
-`e ↦ ⟪p u - p v, p' u - p' v⟫_ℝ` indexed by the edges `e = s(u, v) ∈ G.edgeSet`. -/
+`e ↦ ⟪p u - p v, p' u - p' v⟫_ℝ` indexed by the edges `e = s(u, v) ∈ G.edgeSet`.
+
+Built compositionally as `LinearMap.pi` over the per-edge `edgeRow`s, so
+linearity in `p'` is inherited from the existing `LinearMap` API. -/
 noncomputable def RigidityMap (G : SimpleGraph V) (p : Framework V d) :
-    Framework V d →ₗ[ℝ] (G.edgeSet → ℝ) where
-  toFun p' e := Sym2.lift
-    ⟨fun u v => ⟪p u - p v, p' u - p' v⟫_ℝ, fun u v => by
-      change ⟪p u - p v, p' u - p' v⟫_ℝ = ⟪p v - p u, p' v - p' u⟫_ℝ
-      rw [← neg_sub (p u) (p v), ← neg_sub (p' u) (p' v), inner_neg_neg]⟩
-    e.val
-  map_add' p₁ p₂ := by
-    funext e
-    obtain ⟨e, _⟩ := e
-    induction e with
-    | h u v =>
-      change ⟪p u - p v, (p₁ + p₂) u - (p₁ + p₂) v⟫_ℝ =
-          ⟪p u - p v, p₁ u - p₁ v⟫_ℝ + ⟪p u - p v, p₂ u - p₂ v⟫_ℝ
-      rw [show (p₁ + p₂) u - (p₁ + p₂) v = (p₁ u - p₁ v) + (p₂ u - p₂ v) by
-            simp only [Pi.add_apply]; abel,
-          inner_add_right]
-  map_smul' c p' := by
-    funext e
-    obtain ⟨e, _⟩ := e
-    induction e with
-    | h u v =>
-      change ⟪p u - p v, (c • p') u - (c • p') v⟫_ℝ = c * ⟪p u - p v, p' u - p' v⟫_ℝ
-      rw [show (c • p') u - (c • p') v = c • (p' u - p' v) by
-            simp [smul_sub],
-          real_inner_smul_right]
+    Framework V d →ₗ[ℝ] (G.edgeSet → ℝ) :=
+  LinearMap.pi fun e : G.edgeSet =>
+    Sym2.lift ⟨edgeRow p, edgeRow_symm p⟩ e.val
 
 /-- The rigidity map evaluated at an explicit edge `s(u, v)` is the inner product
 `⟪p u - p v, p' u - p' v⟫_ℝ`. -/
 @[simp]
 theorem rigidityMap_apply (G : SimpleGraph V) (p p' : Framework V d) (u v : V)
     (huv : s(u, v) ∈ G.edgeSet) :
-    G.RigidityMap p p' ⟨s(u, v), huv⟩ = ⟪p u - p v, p' u - p' v⟫_ℝ := rfl
+    G.RigidityMap p p' ⟨s(u, v), huv⟩ = ⟪p u - p v, p' u - p' v⟫_ℝ := by
+  simp [RigidityMap]
 
 /-- The rigidity map's kernel shrinks under graph inclusion: adding edges can only
 add constraints, never remove them. -/
@@ -194,11 +195,7 @@ theorem top_fin_two_isGenericallyRigid (d : ℕ) :
       have h_val :
           (⊤ : SimpleGraph (Fin 2)).RigidityMap p ![EuclideanSpace.single 0 1, 0]
             ⟨s(0, 1), h_edge⟩ = -1 := by
-        rw [rigidityMap_apply]
-        change ⟪(0 : EuclideanSpace ℝ (Fin (d + 1))) - EuclideanSpace.single 0 1,
-              EuclideanSpace.single 0 1 - 0⟫_ℝ = -1
-        rw [zero_sub, sub_zero, inner_neg_left, EuclideanSpace.inner_single_right]
-        simp
+        simp [rigidityMap_apply, hp_def, inner_neg_left]
       have h_zero :
           (⊤ : SimpleGraph (Fin 2)).RigidityMap p ![EuclideanSpace.single 0 1, 0]
             ⟨s(0, 1), h_edge⟩ = 0 := by rw [h_eq]; rfl

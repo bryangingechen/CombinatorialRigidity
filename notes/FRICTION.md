@@ -68,51 +68,6 @@ lemma; resolved otherwise.
 
 ## Open
 
-### [open] `RigidityMap` defined by hand instead of compositionally
-- **Where it bit:** `Framework.lean`, the `RigidityMap` definition (`def
-  RigidityMap … where toFun … map_add' … map_smul' …`) and every proof
-  that consumes it (`rigidityMap_apply`, `top_fin_two_isGenericallyRigid`).
-- **Friction:** `RigidityMap G p : Framework V d →ₗ[ℝ] (G.edgeSet → ℝ)` is
-  built by hand. `toFun p' e := Sym2.lift ⟨…, symm_proof⟩ e.val`, plus
-  explicit `map_add'` and `map_smul'` proofs. The symmetry obligation for
-  `Sym2.lift ⟨fun u v => f u v, _⟩` arrives in the un-reduced form
-  `(fun u v => f u v) u v = (fun u v => f u v) v u`, so each linearity
-  proof needs a `change` to beta-reduce the lambda before `rw`'s pattern
-  match can fire — three `change`-then-`rw`-then-`abel`/`inner_smul_right`
-  chains, ~25 lines total. Downstream `rigidityMap_apply` is `rfl` and
-  cheap, but the K₂ worked example then computes `⟪0 - e₀, e₀ - 0⟫_ℝ =
-  -1` via a four-step `rw [zero_sub, sub_zero, inner_neg_left,
-  EuclideanSpace.inner_single_right]; simp` — exactly the kind of
-  low-level inner-product manipulation a compositional `RigidityMap`
-  would automate via existing `innerSL` / `EuclideanSpace.single_*` simp
-  lemmas.
-- **Proposed fix:** rebuild compositionally. Concretely:
-  ```
-  private noncomputable def edgeRow (p : Framework V d) (u v : V) :
-      Framework V d →ₗ[ℝ] ℝ :=
-    ((innerSL ℝ (p u - p v)).toLinearMap).comp
-      (LinearMap.proj u - LinearMap.proj v)
-  ```
-  prove `edgeRow_symm : edgeRow p u v = edgeRow p v u` as a one-liner
-  (both `p u - p v = -(p v - p u)` and `LinearMap.proj u - LinearMap.proj
-  v = -(LinearMap.proj v - LinearMap.proj u)`, signs cancel through the
-  composition), and set
-  ```
-  noncomputable def RigidityMap (G : SimpleGraph V) (p : Framework V d) :
-      Framework V d →ₗ[ℝ] (G.edgeSet → ℝ) :=
-    LinearMap.pi fun e : G.edgeSet =>
-      Sym2.lift ⟨edgeRow p, edgeRow_symm p⟩ e.val
-  ```
-  Linearity is then automatic from the existing `LinearMap.pi`,
-  `LinearMap.comp`, and `LinearMap.proj` API; the only proof obligation
-  is `edgeRow_symm` (one line). Expected payoff: `RigidityMap`'s
-  definition shrinks from ~25 lines to ~8, and the K₂ proof from ~40
-  lines to ~15 (because `EuclideanSpace.inner_single_*` simp lemmas
-  fire directly on `edgeRow` without the `Sym2.lift` lambda barrier).
-- **Status:** open. Defer to a Phase 4 polish pass; revisit once
-  Phase 5 surfaces additional consumers of `RigidityMap` (each new
-  consumer reveals more about the right shape).
-
 ### [open] `Set.ncard ↔ Fintype.card` is a two-rewrite glue
 - **Where it bit:** `rigidityMap_finrank_range_le` in `Framework.lean`,
   the final calc step `_ = G.edgeSet.ncard := by rw
@@ -412,6 +367,77 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `Fintype/Card.lean`, not `Finset/BooleanAlgebra.lean`.)
 
 ## Resolved (project-internal)
+
+### [resolved] `RigidityMap` defined by hand instead of compositionally
+- **Where it bit:** `Framework.lean`, the original `RigidityMap`
+  definition (`def RigidityMap … where toFun … map_add' … map_smul' …`)
+  and the K₂ worked example (`top_fin_two_isGenericallyRigid`).
+- **Friction:** `RigidityMap G p : Framework V d →ₗ[ℝ] (G.edgeSet → ℝ)`
+  was built by hand. `toFun p' e := Sym2.lift ⟨…, symm_proof⟩ e.val`,
+  plus explicit `map_add'` and `map_smul'` proofs. The symmetry
+  obligation for `Sym2.lift ⟨fun u v => f u v, _⟩` arrived in the
+  un-reduced form `(fun u v => f u v) u v = (fun u v => f u v) v u`, so
+  each linearity proof needed a `change` to beta-reduce the lambda
+  before `rw`'s pattern match could fire — three
+  `change`-then-`rw`-then-`abel`/`inner_smul_right` chains, ~25 lines
+  total. The K₂ inner-product computation `⟪0 - e₀, e₀ - 0⟫_ℝ = -1`
+  also required a `change` line plus a four-step
+  `rw [zero_sub, sub_zero, inner_neg_left, EuclideanSpace.inner_single_right]`
+  chain.
+- **Resolution:** rebuilt compositionally via three private helpers
+  before `RigidityMap`:
+  - `edgeRow p u v : Framework V d →ₗ[ℝ] ℝ` —
+    `((innerSL ℝ (p u - p v)).toLinearMap).comp
+      ((LinearMap.proj u : Framework V d →ₗ[ℝ] EuclideanSpace ℝ (Fin d))
+        - LinearMap.proj v)`. The `LinearMap.proj u` arm needs an
+    explicit codomain ascription (Pi-codomain isn't inferred from the
+    surrounding `LinearMap.comp`); see the next entry.
+  - `edgeRow_apply` — `edgeRow p u v x = ⟪p u - p v, x u - x v⟫_ℝ`.
+    Closes by `rfl` (compositional definition reduces directly through
+    `LinearMap.comp_apply`, `LinearMap.sub_apply`, `LinearMap.proj_apply`,
+    and the `innerSL` coercion). `simp [edgeRow]` *does not* work
+    because it triggers `inner_sub_left` and over-distributes the LHS
+    past the goal's normal form.
+  - `edgeRow_symm` — three-line `LinearMap.ext` + the original
+    `← neg_sub`-twice + `inner_neg_neg` argument.
+
+  `RigidityMap` is then a one-liner: `LinearMap.pi fun e : G.edgeSet =>
+  Sym2.lift ⟨edgeRow p, edgeRow_symm p⟩ e.val`. Linearity comes free
+  from `LinearMap.pi`. `rigidityMap_apply` closes by `simp [RigidityMap]`
+  (one line; the underlying `LinearMap.pi_apply` and `Sym2.lift_mk` are
+  both `@[simp]`). The K₂ `h_val` block collapses from a 5-line
+  `rw [rigidityMap_apply]; change …; rw [zero_sub, sub_zero,
+  inner_neg_left, EuclideanSpace.inner_single_right]; simp` to one
+  `simp [rigidityMap_apply, hp_def, inner_neg_left]` line —
+  `EuclideanSpace.inner_single_right` is no longer needed (simp's
+  default set with the framework now in compositional form closes the
+  inner product directly).
+
+  Net: ~26 lines of `RigidityMap` definition + linearity proofs → 16
+  lines (4 `edgeRow*` helpers + 4-line `RigidityMap` def + 4-line
+  `rigidityMap_apply`). K₂ `h_val`: 5 lines → 1.
+- **Status:** resolved (project-internal — `RigidityMap` doesn't exist
+  upstream, so no mirror; the constituents `innerSL`, `LinearMap.proj`,
+  `LinearMap.pi`, `Sym2.lift` all sit upstream).
+
+### [resolved] `LinearMap.proj` Pi-codomain not inferred in subtraction context
+- **Where it bit:** `Framework.lean`, building `edgeRow` (the
+  compositional `RigidityMap` refactor above).
+- **Friction:** writing `(LinearMap.proj u - LinearMap.proj v) :
+  Framework V d →ₗ[ℝ] EuclideanSpace ℝ (Fin d)` as a binary subtraction
+  with the type ascription on the *whole* expression failed elaboration
+  — `typeclass instance problem is stuck: (i : V) → Module ?m (?m i)`.
+  The Pi-codomain `φ : V → Type _` of `LinearMap.proj` doesn't get
+  pinned down by the outer ascription on the subtraction. Per-leaf
+  ascription on the *first* `proj` (`(LinearMap.proj u : Framework V d
+  →ₗ[ℝ] EuclideanSpace ℝ (Fin d)) - LinearMap.proj v`) is enough — the
+  second proj's type is inferred from the `Sub` instance.
+- **Resolution:** ascribe the first `LinearMap.proj` explicitly. Build
+  cycle was 1: outer ascription failed → per-leaf ascription on the
+  first arg succeeded.
+- **Status:** resolved (no missing lemma; ascription idiom). Specific
+  enough to `LinearMap.proj`-construction proofs that it stays in
+  FRICTION rather than promoting to TACTICS.
 
 ### [resolved] Per-move `_edgesIn_ncard_decomp` extraction
 - **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity
