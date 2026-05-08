@@ -68,6 +68,68 @@ lemma; resolved otherwise.
 
 ## Open
 
+### [open] `RigidityMap` defined by hand instead of compositionally
+- **Where it bit:** `Framework.lean`, the `RigidityMap` definition (`def
+  RigidityMap … where toFun … map_add' … map_smul' …`) and every proof
+  that consumes it (`rigidityMap_apply`, `top_fin_two_isGenericallyRigid`).
+- **Friction:** `RigidityMap G p : Framework V d →ₗ[ℝ] (G.edgeSet → ℝ)` is
+  built by hand. `toFun p' e := Sym2.lift ⟨…, symm_proof⟩ e.val`, plus
+  explicit `map_add'` and `map_smul'` proofs. The symmetry obligation for
+  `Sym2.lift ⟨fun u v => f u v, _⟩` arrives in the un-reduced form
+  `(fun u v => f u v) u v = (fun u v => f u v) v u`, so each linearity
+  proof needs a `change` to beta-reduce the lambda before `rw`'s pattern
+  match can fire — three `change`-then-`rw`-then-`abel`/`inner_smul_right`
+  chains, ~25 lines total. Downstream `rigidityMap_apply` is `rfl` and
+  cheap, but the K₂ worked example then computes `⟪0 - e₀, e₀ - 0⟫_ℝ =
+  -1` via a four-step `rw [zero_sub, sub_zero, inner_neg_left,
+  EuclideanSpace.inner_single_right]; simp` — exactly the kind of
+  low-level inner-product manipulation a compositional `RigidityMap`
+  would automate via existing `innerSL` / `EuclideanSpace.single_*` simp
+  lemmas.
+- **Proposed fix:** rebuild compositionally. Concretely:
+  ```
+  private noncomputable def edgeRow (p : Framework V d) (u v : V) :
+      Framework V d →ₗ[ℝ] ℝ :=
+    ((innerSL ℝ (p u - p v)).toLinearMap).comp
+      (LinearMap.proj u - LinearMap.proj v)
+  ```
+  prove `edgeRow_symm : edgeRow p u v = edgeRow p v u` as a one-liner
+  (both `p u - p v = -(p v - p u)` and `LinearMap.proj u - LinearMap.proj
+  v = -(LinearMap.proj v - LinearMap.proj u)`, signs cancel through the
+  composition), and set
+  ```
+  noncomputable def RigidityMap (G : SimpleGraph V) (p : Framework V d) :
+      Framework V d →ₗ[ℝ] (G.edgeSet → ℝ) :=
+    LinearMap.pi fun e : G.edgeSet =>
+      Sym2.lift ⟨edgeRow p, edgeRow_symm p⟩ e.val
+  ```
+  Linearity is then automatic from the existing `LinearMap.pi`,
+  `LinearMap.comp`, and `LinearMap.proj` API; the only proof obligation
+  is `edgeRow_symm` (one line). Expected payoff: `RigidityMap`'s
+  definition shrinks from ~25 lines to ~8, and the K₂ proof from ~40
+  lines to ~15 (because `EuclideanSpace.inner_single_*` simp lemmas
+  fire directly on `edgeRow` without the `Sym2.lift` lambda barrier).
+- **Status:** open. Defer to a Phase 4 polish pass; revisit once
+  Phase 5 surfaces additional consumers of `RigidityMap` (each new
+  consumer reveals more about the right shape).
+
+### [open] `Set.ncard ↔ Fintype.card` is a two-rewrite glue
+- **Where it bit:** `rigidityMap_finrank_range_le` in `Framework.lean`,
+  the final calc step `_ = G.edgeSet.ncard := by rw
+  [Set.ncard_eq_toFinset_card', Set.toFinset_card]`.
+- **Friction:** `Fintype.card ↥s = s.ncard` is two `rw`s —
+  `Set.ncard_eq_toFinset_card'` (= `s.toFinset.card`) then
+  `Set.toFinset_card` (= `Fintype.card s`). Same shape as the already
+  [mirrored] `ncard_incidenceSet_eq_degree` (Phase 2). Expected to
+  recur in any Phase 5 lemma that bridges `LinearMap.toMatrix` /
+  `Module.finrank_pi` (Fintype-based) with the project's `edgeSet.ncard`
+  rhetoric — so once is rare, twice would mirror.
+- **Proposed fix:** mirror as `Set.ncard_eq_card_coe` (one-liner via
+  the existing two-step composition), under `Mathlib/Data/Set/Card.lean`.
+  Refactor the calc step to use it.
+- **Status:** open.
+- **Mirror file (intended):** `Mathlib/Data/Set/Card.lean`.
+
 ### [open] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
 - **Where it bit:** Phase 3 close, while planning
   `IsLaman.exists_typeI_or_typeII_reverse`.
@@ -111,6 +173,39 @@ lemma; resolved otherwise.
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
 limitations. Worth a once-over so future agents don't re-litigate.
+
+### [wontfix] `omega` doesn't auto-commute multiplication of opaque atoms
+- **Where it bit:** `IsGenericallyRigid.card_mul_le` in `Framework.lean`.
+  `Framework.finrank` returns `Fintype.card V * d`; the lemma states
+  `d * Fintype.card V ≤ G.edgeSet.ncard + d * (d + 1) / 2`. omega treats
+  `Fintype.card V` and `d` as atoms and sees `Fintype.card V * d` as a
+  different term from `d * Fintype.card V`. Without `mul_comm` it failed
+  even with all other rank-nullity facts in scope.
+- **Proposed fix:** none upstream — this is omega's intended design
+  (atomic variables don't carry commutativity). Workaround: when both
+  forms appear, normalize the `have` to the form the goal uses via a
+  one-line `rw […, mul_comm]`. The fix in `card_mul_le` was to restate
+  `h_total` directly as `Module.finrank ℝ (Framework V d) = d *
+  Fintype.card V` via `rw [Framework.finrank, mul_comm]`.
+- **Status:** wontfix.
+
+### [wontfix] `nlinarith` over ℕ struggles with quadratic bounds
+- **Where it bit:** `top_fin_two_isGenericallyRigid` in `Framework.lean`,
+  closing the arithmetic step `4 * d + 2 ≤ (d + 1) * (d + 2)` (over ℕ).
+- **Friction:** `nlinarith` over ℕ doesn't reliably close this from
+  scratch. Mathematically the bound rearranges to `d ≤ d * d` which is
+  `0 ≤ d² - d = d(d-1)`, trivial over ℝ/ℤ via `sq_nonneg (d - 1)`, but
+  ℕ-subtraction truncates and `nlinarith` can't recover the squaring.
+  Workaround: expand `(d+1)*(d+2) = d*d + 3*d + 2` via `ring` (as a
+  `have`), surface `d ≤ d*d` via `Nat.le_mul_self d`, then close with
+  `omega`.
+- **Proposed fix:** none upstream. The pattern is general: any
+  ℕ-quadratic bound where one side has `d * d` and the other is linear
+  in `d` benefits from `Nat.le_mul_self` as the bridge. Documented here
+  so future agents reach for it directly instead of iterating
+  `nlinarith` hint lists.
+- **Status:** wontfix (intrinsic to `nlinarith`-on-ℕ; workaround is a
+  one-liner once you know the trick).
 
 ### [wontfix] `revert` ordering before `e'.ind` is finicky
 - **Where it bit:** `typeI_edgeSet` proof, backward direction.

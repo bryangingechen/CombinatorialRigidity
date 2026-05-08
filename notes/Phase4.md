@@ -294,6 +294,8 @@ may be upstream-eligible mirrors.
 
 (Phase-local trade-offs; cross-cutting ones go in `../DESIGN.md`.)
 
+### Phase-local choices and proof techniques
+
 - **Rigidity defined via `LinearMap`, matrix as derived view.** See
   *Architectural choices*. The two questions in `DESIGN.md` *Choices
   to revisit* — "Rigidity matrix" and "Generic placement" — are
@@ -310,21 +312,28 @@ may be upstream-eligible mirrors.
   the definition tight and pushes the side-condition to where it's
   needed (the lemmas connecting trivial motions to the kernel).
 
-- **`Sym2.lift` symmetry proofs need a `change` to beta-reduce before
-  `rw`.** When defining `RigidityMap`, the symmetry obligation for
-  `Sym2.lift ⟨fun u v => f u v, hf⟩` arrives in the form
-  `(fun u v => f u v) u v = (fun u v => f u v) v u` — `rw` can't find
-  pattern matches inside the un-reduced lambda. Insert
-  `change f u v = f v u` (beta-reduced shape) before the rewrite chain;
-  same trick is needed for the `map_add'` / `map_smul'` proofs of
-  `RigidityMap`. The linter rejects `show` for goal-changing tactics —
-  use `change` (mathlib-wide style rule). Lift to `TACTICS.md` if a
-  third `Sym2.lift`-based definition lands; for now contained.
-
 - **`open scoped InnerProductSpace` in `Framework.lean`.** The `⟪x, y⟫_ℝ`
-  notation is `scoped[InnerProductSpace]`; without the open it parses
-  as token-level garbage ("expected token"). Standard mathlib idiom —
-  not worth a FRICTION entry.
+  notation is `scoped[InnerProductSpace]`; without the open the file
+  fails to parse with a cryptic "expected token" error. Mathlib-wide
+  idiom; the build-failure → fix iteration was a one-liner so logged
+  as a Phase-local decision rather than a FRICTION entry.
+
+### Promoted to TACTICS / FRICTION / DESIGN
+
+- *`RigidityMap` built by hand instead of compositionally* → FRICTION
+  *[open]*. Three internal sites within `Framework.lean` (linearity
+  proof, K₂ inner-product computation, the `change`-then-`rw` shape
+  needed for `Sym2.lift` symmetry); compositional refactor via
+  `innerSL` + `LinearMap.proj` + `LinearMap.pi` is the proposed fix.
+- *`Set.ncard ↔ Fintype.card` two-rewrite glue* → FRICTION *[open]*.
+  Mirror candidate alongside the existing `ncard_incidenceSet_eq_degree`
+  pattern.
+- *`omega` doesn't auto-commute opaque atoms* → FRICTION *[wontfix]*.
+  Surfaced in `card_mul_le` (`Fintype.card V * d` vs `d * Fintype.card V`).
+- *`nlinarith` over ℕ struggles with quadratic bounds* → FRICTION
+  *[wontfix]*. Surfaced in K₂ closing arithmetic
+  (`4 * d + 2 ≤ (d + 1) * (d + 2)`); workaround via `Nat.le_mul_self d`
+  + `omega`.
 
 ## Blockers / open questions
 

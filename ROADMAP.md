@@ -249,6 +249,32 @@ silently.
      you worked around rather than understood?
    - Did you hit a deprecation, missing simp lemma, or awkward
      typeclass dance?
+
+   **Concrete signals.** Friction almost certainly happened if you
+   wrote any of the following — each is a candidate FRICTION entry,
+   not a "standard idiom" to dismiss:
+   - `change` or `show` to make `rw` / `simp` find a pattern (the
+     un-reduced lambda or `def`-predicate is the gap).
+   - A multi-rewrite chain (3+ `rw` arguments) for one mathematical
+     step — usually a missing fused lemma.
+   - A manual `have h : <unfolded body> := h_predicate` to surface a
+     `def`-predicate's content for `omega` / `grind` (cf. TACTICS § 4
+     for the `IsLaman` / `IsTight` cases — `IsInfinitesimallyRigid`
+     joined the club in Phase 4).
+   - `omega` or `nlinarith` failed and you added a numeric hint, a
+     `ring`-normalized rewrite, or a manual `mul_comm`.
+   - Two `rw` lemmas to bridge a single conversion (e.g. `coe_X` then
+     `card_X`, or `Set.ncard_eq_toFinset_card'` then
+     `Set.toFinset_card`) — usually a one-line mirror.
+
+   **Bar is low.** Anything that took a build-failure → fix iteration
+   deserves at minimum a one-line FRICTION entry, even if the fix was
+   "obvious in hindsight". Phase 4 closed having logged zero entries
+   on the first pass and six on the second — the lesson is that "this
+   is just a standard mathlib idiom" is not an excuse if you spent a
+   build cycle figuring it out. The next agent doesn't have your
+   hindsight.
+
 2. For each genuine instance:
    - If the missing lemma is **upstream-eligible** (a fact about
      `SimpleGraph`, `Set.ncard`, `Finset`, etc., not specific to
@@ -262,7 +288,10 @@ silently.
    - In all cases, add an entry to `notes/FRICTION.md` (open or
      resolved/mirrored as appropriate). Even a one-line entry is
      valuable.
-3. **No new entries this session is fine** — but check before commit.
+3. **No new entries this session is fine** — but only after you've
+   walked the *Concrete signals* checklist above. "I didn't hit any"
+   is fine; "I didn't think about it" is the failure mode this rule
+   exists to prevent.
 
 After the friction review, **leave the project so the next agent
 can start from ROADMAP.md alone.** That is the contract: ROADMAP.md
