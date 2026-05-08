@@ -137,4 +137,14 @@ and not needed for either direction of Laman's theorem under the present plan. -
 def IsGenericallyRigid [Fintype V] (G : SimpleGraph V) (d : ℕ) : Prop :=
   ∃ p : Framework V d, G.IsInfinitesimallyRigid p
 
+/-- Adding edges preserves infinitesimal rigidity at the same placement. -/
+theorem IsInfinitesimallyRigid.mono [Fintype V] {G G' : SimpleGraph V} (h : G ≤ G')
+    {p : Framework V d} (hG : G.IsInfinitesimallyRigid p) : G'.IsInfinitesimallyRigid p :=
+  (Submodule.finrank_mono (rigidityMap_ker_mono h p)).trans hG
+
+/-- Adding edges preserves generic rigidity. -/
+theorem IsGenericallyRigid.mono [Fintype V] {G G' : SimpleGraph V} (h : G ≤ G')
+    (hG : G.IsGenericallyRigid d) : G'.IsGenericallyRigid d :=
+  hG.imp fun _ => IsInfinitesimallyRigid.mono h
+
 end SimpleGraph
