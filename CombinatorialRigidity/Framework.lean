@@ -54,6 +54,12 @@ into `EuclideanSpace ℝ (Fin d)`.
 instances on `V → EuclideanSpace ℝ (Fin d)` apply transparently. -/
 abbrev Framework (V : Type*) (d : ℕ) : Type _ := V → EuclideanSpace ℝ (Fin d)
 
+/-- The dimension of the framework space: `#V` copies of `EuclideanSpace ℝ (Fin d)`. -/
+@[simp]
+theorem Framework.finrank [Fintype V] :
+    Module.finrank ℝ (Framework V d) = Fintype.card V * d := by
+  simp [Module.finrank_pi_fintype]
+
 /-- The **rigidity map** of a framework `p`: an `ℝ`-linear map sending an
 infinitesimal motion `p' : Framework V d` to the family
 `e ↦ ⟪p u - p v, p' u - p' v⟫_ℝ` indexed by the edges `e = s(u, v) ∈ G.edgeSet`. -/
@@ -83,6 +89,33 @@ noncomputable def RigidityMap (G : SimpleGraph V) (p : Framework V d) :
       rw [show (c • p') u - (c • p') v = c • (p' u - p' v) by
             simp [smul_sub],
           real_inner_smul_right]
+
+/-- The rigidity map evaluated at an explicit edge `s(u, v)` is the inner product
+`⟪p u - p v, p' u - p' v⟫_ℝ`. -/
+@[simp]
+theorem rigidityMap_apply (G : SimpleGraph V) (p p' : Framework V d) (u v : V)
+    (huv : s(u, v) ∈ G.edgeSet) :
+    G.RigidityMap p p' ⟨s(u, v), huv⟩ = ⟪p u - p v, p' u - p' v⟫_ℝ := rfl
+
+/-- The rigidity map's kernel shrinks under graph inclusion: adding edges can only
+add constraints, never remove them. -/
+theorem rigidityMap_ker_mono {G G' : SimpleGraph V} (h : G ≤ G') (p : Framework V d) :
+    LinearMap.ker (G'.RigidityMap p) ≤ LinearMap.ker (G.RigidityMap p) := by
+  intro p' hp'
+  rw [LinearMap.mem_ker] at hp' ⊢
+  funext ⟨e, he⟩
+  exact congr_fun hp' ⟨e, edgeSet_mono h he⟩
+
+/-- The rank of the rigidity map is bounded by the number of edges. -/
+theorem rigidityMap_finrank_range_le [Finite V] (G : SimpleGraph V) (p : Framework V d) :
+    Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) ≤ G.edgeSet.ncard := by
+  classical
+  haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
+  calc Module.finrank ℝ (LinearMap.range (G.RigidityMap p))
+      ≤ Module.finrank ℝ (G.edgeSet → ℝ) := Submodule.finrank_le _
+    _ = Fintype.card G.edgeSet := Module.finrank_pi ℝ
+    _ = G.edgeSet.ncard := by
+        rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
 
 /-- A framework `p` is **infinitesimally rigid** for `G` if the kernel of the
 rigidity map has dimension at most `d (d+1) / 2`, the dimension of trivial

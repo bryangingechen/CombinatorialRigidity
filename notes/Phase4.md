@@ -7,15 +7,15 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-`Framework.lean` exists with the four core definitions (`Framework V d`,
-`RigidityMap G p`, `IsInfinitesimallyRigid G p`, `IsGenericallyRigid G d`)
-and the `RigidityMap` linearity proof landed without `sorry`. No lemmas
-yet beyond the definitions themselves.
+`Framework.lean` has the four core definitions and four basic lemmas
+(`Framework.finrank`, `rigidityMap_apply`, `rigidityMap_ker_mono`,
+`rigidityMap_finrank_range_le`). Linearity proof of `RigidityMap` landed
+without `sorry`. Next is the trivial-motions API (definitions +
+kernel containment).
 
-**Next concrete task** (one sentence): land `Framework.finrank` (`Module.finrank
-ℝ (Framework V d) = Fintype.card V * d`) and the basic `RigidityMap`
-unfolding lemma `rigidityMap_apply` so the next agent can start chaining
-rewrites against the rigidity map without re-deriving its action on `s(u, v)`.
+**Next concrete task** (one sentence): land `IsInfinitesimallyRigid.mono`
++ `IsGenericallyRigid.mono` (both one-liners from `rigidityMap_ker_mono`)
+so subsequent commits can lean on graph-monotonicity without rederiving it.
 
 ## Architectural choices made up front
 
@@ -195,17 +195,21 @@ Tracking against the ROADMAP §4 bullets, plus what we're adding.
 
 ### `RigidityMap` API
 
-- [ ] `rigidityMap_apply` — `(RigidityMap G p) p' ⟨e, he⟩ = …` for the
-  underlying Sym2 lift. The `Sym2.lift` discharge is the standard
-  symmetric-bilinear pattern (cf. `Sym2.lift` examples).
-- [ ] `rigidityMap_mono` — `G ≤ G' → ∃ restrict, RigidityMap G p =
-  restrict ∘ₗ RigidityMap G' p`. Concretely the codomain
-  `G'.edgeSet → ℝ` restricts to `G.edgeSet → ℝ` along the inclusion.
-  Equivalent shape: `LinearMap.ker (RigidityMap G' p) ≤
-  LinearMap.ker (RigidityMap G p)`.
-- [ ] `rigidityMap_ncard_le` — bound on rank: `Module.finrank ℝ
-  (LinearMap.range (RigidityMap G p)) ≤ G.edgeSet.ncard`. Direct from
-  the codomain dimension being `#E`.
+- [x] `Framework.finrank` — `Module.finrank ℝ (Framework V d) =
+  Fintype.card V * d` (under `[Fintype V]`). One `simp
+  [Module.finrank_pi_fintype]`.
+- [x] `rigidityMap_apply` — `(RigidityMap G p) p' ⟨s(u, v), _⟩ =
+  ⟪p u - p v, p' u - p' v⟫_ℝ`. `rfl` after `Sym2.lift_mk` reduction.
+- [x] `rigidityMap_ker_mono` — `G ≤ G' → LinearMap.ker (RigidityMap G' p) ≤
+  LinearMap.ker (RigidityMap G p)`. Renamed from the planning name
+  `rigidityMap_mono` to make the *direction* explicit (kernel shrinks
+  as graph grows). The "exists restrict" framing was redundant for
+  every downstream use, so dropped.
+- [x] `rigidityMap_finrank_range_le` — `Module.finrank ℝ
+  (LinearMap.range (RigidityMap G p)) ≤ G.edgeSet.ncard` under
+  `[Finite V]`. Renamed from `rigidityMap_ncard_le` to be mathlib-styled
+  (LHS-named). Three-step calc through `Submodule.finrank_le` +
+  `Module.finrank_pi` + `Set.ncard_eq_toFinset_card'`.
 
 ### `TrivialMotions` API
 
@@ -340,26 +344,23 @@ may be upstream-eligible mirrors.
 (Filled in when Phase 4 closes.)
 
 The current Phase 4 entry-point for the next agent: open
-`Framework.lean` and land `Framework.finrank`
-(`Module.finrank ℝ (Framework V d) = Fintype.card V * d` under
-`[Fintype V]`) plus `rigidityMap_apply`. Both are short — one chain
-through `Module.finrank_pi_fintype` + `finrank_euclideanSpace`,
-respectively `Sym2.lift_mk` after destructuring the edge — and they
-unblock the rest of the lemma order.
+`Framework.lean` and land `IsInfinitesimallyRigid.mono` and
+`IsGenericallyRigid.mono`. Both are one-liners from `rigidityMap_ker_mono`
+plus `Submodule.finrank_mono`; landing them unlocks the
+`top_fin_two_*` worked example (because supergraph rigidity follows
+once the K₂ base case is in scope) and is a natural pause point.
 
 The recommended lemma order (each commit adds 2–4):
 
-1. `Framework.finrank` + `rigidityMap_apply` — the basic ledger lemma
-   and the rigidity-map unfolding lemma. Both are short.
-2. `rigidityMap_mono` and `rigidityMap_ncard_le`.
-3. `TrivialMotions` definition + `trivialMotions_le_ker` (this is the
+1. `IsInfinitesimallyRigid.mono` + `IsGenericallyRigid.mono` — both
+   one-liners from `rigidityMap_ker_mono`.
+2. `TrivialMotions` definition + `trivialMotions_le_ker` (this is the
    first non-trivial proof — check that `⟪x, A • x⟫ = 0` for skew `A`
    is a one-line mathlib fact or one-line mirror).
-4. `finrank_trivialMotions_le` (mirror lemma if needed for skew-matrix
+3. `finrank_trivialMotions_le` (mirror lemma if needed for skew-matrix
    dimension — see *Blockers*).
-5. `IsGenericallyRigid.mono` (one-liner from step 2).
-6. `top_fin_two_isInfinitesimallyRigid` worked example (general `d`).
-7. `IsGenericallyRigid.card_mul_le` for general `d` — closes Phase 4.
+4. `top_fin_two_isInfinitesimallyRigid` worked example (general `d`).
+5. `IsGenericallyRigid.card_mul_le` for general `d` — closes Phase 4.
 
 Phase 5 is responsible for the `d = 2` specializations
 (`top_fin_two_isGenericallyRigid` and `2 * #V ≤ #E + 3`); Phase 4
