@@ -30,6 +30,8 @@ Archive/CombinatorialRigidity/
 ├── Sparsity.lean      Phase 1 — `IsSparse`, `IsTight`
 ├── Laman.lean         Phase 1+2 — `IsLaman` and downstream
 ├── Henneberg.lean     Phase 3 — `typeI`, `typeII` and downstream
+├── Framework.lean     Phase 4 — frameworks, rigidity map
+├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
 └── …                  later phases get their own files
 ```
 
@@ -41,7 +43,8 @@ Archive/CombinatorialRigidity/
 | 2. Laman graphs | `Laman.lean` | ✓ Complete (see `notes/Phase2.md`) |
 | 3. Henneberg moves | `Henneberg.lean` | ✓ Complete (see `notes/Phase3.md`) |
 | 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
-| 5. Laman's theorem | `LamanTheorem.lean` | Not yet created |
+| 5. Laman's theorem (⇐) | `LamanTheorem.lean` | In progress (planning in `notes/Phase5.md`) |
+| 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | Not yet started |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -120,29 +123,33 @@ identification of kernel with rigid motions) and the
 neither is on the critical path for Phase 5. See `notes/Phase4.md` for
 the full lemma list and phase-specific decisions.
 
-### Phase 5 — Laman's theorem (`LamanTheorem.lean`)
+### Phase 5 — Laman's theorem, (⇐) direction (`LamanTheorem.lean`)
 
 The main theorem:
 ```
-theorem SimpleGraph.IsGenericallyRigid_two_iff_hasLamanSubgraph
+theorem SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le
     {V : Type*} [Fintype V] (G : SimpleGraph V) (h : 2 ≤ Fintype.card V) :
     G.IsGenericallyRigid 2 ↔
       ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman
 ```
 
-Two directions:
-- **(⇐)** Henneberg induction: `K₂` is rigid; both Henneberg moves preserve
-  generic rigidity; hence every Laman graph is generically rigid; hence so
-  is every supergraph. Needs the strengthened decomposition theorem
-  `IsLaman.exists_typeI_or_typeII_reverse` — see *Carryover from Phase 3*
-  below.
-- **(⇒)** If `G` is generically rigid, the rigidity matroid has full rank,
-  so there is a basis (an independent edge set) of size `2n − 3`. The
-  spanning subgraph on those edges is `(2, 3)`-tight by the matroid property.
+Phase 5 delivers the **(⇐) direction** (Henneberg induction). The full
+iff statement lands in `LamanTheorem.lean` from Phase 5's first commit,
+*composed* from two named directional theorems
+(`IsLaman.isGenericallyRigid_two` for (⇐) and
+`IsGenericallyRigid.exists_isLaman_le` for (⇒)); the (⇒) named theorem
+is `sorry`-blocked and resolved in **Phase 6** (see §6 below).
 
-The hard direction needs the equality of the **rigidity matroid** and the
-**(2, 3)-count matroid** in dimension 2 — the deepest part of the proof.
-Lovász–Yemini gave a clean argument; Whiteley's polarity is another route.
+**(⇐) plan.** `K₂` is generically rigid in dim 2 (Phase 4 ships
+`top_fin_two_isGenericallyRigid 2`); both Henneberg moves preserve
+generic rigidity in dim 2; hence every Laman graph is generically
+rigid by induction on `Fintype.card V`, and hence so is every
+supergraph by `IsGenericallyRigid.mono`. Needs the strengthened
+decomposition theorem `IsLaman.exists_typeI_or_typeII_reverse` — see
+*Carryover from Phase 3* below.
+
+See `notes/Phase5.md` for the milestone breakdown (reverse
+decomposition; per-move rigidity preservation; induction).
 
 #### Carryover from Phase 3
 
@@ -152,21 +159,36 @@ of Laman's theorem (Henneberg induction needs to apply IH to a Laman `G'`).
 Phase 3 delivered the iso-only half (`IsLaman.exists_typeI_or_typeII_iso`)
 but punted on the Laman claim because the typeII reverse fails for an
 arbitrary non-adjacent neighbor pair (counter-example in
-`notes/Phase3.md`). Two ways forward:
+`notes/Phase3.md`).
 
-1. **Henneberg blocker argument.** Classical proof: among the three
-   pairs of `v`'s neighbors at least one is non-adjacent (already proven
-   as `IsLaman.exists_nonadj_among_three_neighbors`); show that *if every
-   non-adjacent pair fails to give a Laman `G'`*, then a tight set in `G`
-   is forced to violate sparsity, contradiction. Several pages of graph
-   theory, but a self-contained combinatorial argument.
-2. **Bypass via the matroid route.** Reformulate (⇐) without strong
-   induction on `G'`. E.g., prove "every Laman graph is generically rigid"
-   by induction on edge count rather than vertex count, or by using the
-   (2,3)-count matroid directly.
+Phase 5 commits to the **Henneberg blocker argument** (classical
+proof, pure graph theory): among the three pairs of `v`'s neighbors
+at least one is non-adjacent (already proven as
+`IsLaman.exists_nonadj_among_three_neighbors`); show that *if every
+non-adjacent pair fails to give a Laman `G'`*, then a tight set in
+`G` is forced to violate sparsity, contradiction. Closer to mathlib's
+existing graph theory style than the matroid-bypass alternative,
+which would force the rigidity-matroid API forward into Phase 5
+(deliberately deferred to Phase 6 — see DESIGN.md *Notion- and
+matroid-agnostic core*).
 
-Path 1 is closer to mathlib's existing graph theory style; path 2 might be
-more elegant if Phase 4 produces a clean rigidity-matroid API.
+### Phase 6 — Laman's theorem, (⇒) direction (`LamanTheorem.lean`, `RigidityMatroid.lean`)
+
+If `G` is generically rigid in dim 2, the rigidity matroid has full
+rank, so there is a basis (a row-independent edge set) of size
+`2n − 3`. The spanning subgraph on those edges is `(2, 3)`-tight by
+the matroid property; combined with Phase 5's (⇐) the iff closes.
+
+The deep step is the equality of the **rigidity matroid** and the
+**(2, 3)-count matroid** in dimension 2. Lovász–Yemini's argument is
+the standard reference; Whiteley's polarity is another route.
+
+Phase 4 deliberately kept `Framework.lean` matroid-agnostic (see
+DESIGN.md *Notion- and matroid-agnostic core*). Phase 6 stands up
+`RigidityMatroid.lean` on top, then fills in
+`IsGenericallyRigid.exists_isLaman_le` in `LamanTheorem.lean`,
+completing the iff. A concrete plan lives in `notes/Phase6.md` once
+Phase 6 starts.
 
 ## Engineering conventions
 

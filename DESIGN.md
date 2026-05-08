@@ -33,17 +33,17 @@ than the matroid-theoretic route via `Mathlib.Combinatorics.Matroid`.
   we have to prove (rather than getting it from matroid bases).
 - The proof generalizes less well beyond dimension 2.
 
-**When to reconsider:** Phase 4 planning has confirmed the matrix
-arguments — `LinearMap.ker` / `LinearMap.range` rank-nullity, kernel
-monotonicity, edge-count bound — go through cleanly *without*
-invoking the rigidity matroid as a `Matroid` object, so the trigger
-is now **deferred to Phase 5**. The live question is whether the
-(⇒) direction of Laman's theorem (`IsGenericallyRigid → contains a
-Laman spanning subgraph`) wants the Lovász–Yemini matroid argument.
-If so, a future `RigidityMatroid.lean` would sit on top of
-`Framework.lean` (whose definitions are deliberately matroid-agnostic
-— see *Notion- and matroid-agnostic core* below); refactoring back
-into `Framework.lean` is *not* required.
+**When to reconsider:** Phase 4 confirmed the matrix arguments —
+`LinearMap.ker` / `LinearMap.range` rank-nullity, kernel monotonicity,
+edge-count bound — go through cleanly *without* invoking the rigidity
+matroid as a `Matroid` object. Phase 5 follows the same line for the
+(⇐) direction (Henneberg induction). The matroid is **Phase 6's
+job**: the (⇒) direction (`IsGenericallyRigid → contains a Laman
+spanning subgraph`) wants the Lovász–Yemini argument, which is
+naturally phrased over the rigidity matroid. A `RigidityMatroid.lean`
+sits on top of `Framework.lean` (whose definitions are deliberately
+matroid-agnostic — see *Notion- and matroid-agnostic core* below);
+refactoring back into `Framework.lean` is *not* required.
 
 ---
 
@@ -206,9 +206,9 @@ slots in as a separate file (`LocalRigidity.lean`, `GlobalRigidity.lean`,
 - The rigidity matroid (independence = row-independence of
   `RigidityMap` for generic `p`) is a one-line definition once
   `Framework.lean` exists, but the `Matroid` object isn't needed
-  for any Phase 4 lemma and isn't needed for the (⇐) direction of
-  Laman's theorem. A `RigidityMatroid.lean` would land only if
-  Phase 5's (⇒) direction goes via Lovász–Yemini.
+  for any Phase 4 lemma or for Phase 5's (⇐) direction.
+  `RigidityMatroid.lean` lands in Phase 6 to support the (⇒)
+  direction (Lovász–Yemini).
 - Local rigidity needs continuous-motions API on top of
   `Framework V d`; global rigidity is a separate `Prop` independent
   of the infinitesimal layer; body-bar / body-hinge frameworks have
@@ -247,29 +247,11 @@ existing context. The Lean namespace stays the standard one
 Each file in the mirror should open with a docstring stating that the
 contents are upstream candidates and which mathlib path they target.
 
-The directory is created lazily — don't pre-populate it. Phase 1
-proved without gaps; Phases 2 and 3 together surfaced ~12 upstream
-candidates spread over six paths:
-
-- `Mathlib/Combinatorics/SimpleGraph/Finite.lean` — `Set.ncard`
-  companions of `card_incidenceSet_eq_degree` and friends
-- `Mathlib/Data/Finset/BooleanAlgebra.lean`,
-  `Mathlib/Data/Fintype/Card.lean` — `coe` / `card` forms of
-  `Finset.compl_singleton`
-- `Mathlib/Data/Set/Card.lean` — unconditional `≤ 2` and `≤ 3`
-  ncard bounds for pairs / triples; the `Set.ncard ↔ Fintype.card`
-  bridge `ncard_eq_card_coe`
-- `Mathlib/Data/Sym/Sym2.lean` — `Sym2.map some` injectivity, the
-  predicate-form image-membership `simp` lemma, plus two helpers for
-  `none ∉ Sym2.map some _` and the disjointness pattern
-- `Mathlib/Data/Finset/Option.lean` — addition-form
-  `card_eraseNone_of_mem` (mathlib's version uses `ℕ`-subtraction,
-  forbidden by the project)
-
-See `notes/FRICTION.md` "Mirrored" for the per-lemma rationale;
-phases 4 and 5 will likely add more (the Phase 4 plan flags one
-open question — whether mathlib has `finrank` for
-`skewAdjointMatricesSubmodule`).
+The directory is created lazily — don't pre-populate it. See
+`notes/FRICTION.md` "Mirrored" for the per-lemma rationale and the
+authoritative list of paths currently in use; the running tree
+under `Archive/CombinatorialRigidity/Mathlib/` is the
+ground truth.
 
 ---
 
