@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Data.Set.Card
 import CombinatorialRigidity.Sparsity
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.Dimension.Finrank
@@ -115,8 +116,7 @@ theorem rigidityMap_finrank_range_le [Finite V] (G : SimpleGraph V) (p : Framewo
   calc Module.finrank ℝ (LinearMap.range (G.RigidityMap p))
       ≤ Module.finrank ℝ (G.edgeSet → ℝ) := Submodule.finrank_le _
     _ = Fintype.card G.edgeSet := Module.finrank_pi ℝ
-    _ = G.edgeSet.ncard := by
-        rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
+    _ = G.edgeSet.ncard := (Set.ncard_eq_card_coe _).symm
 
 /-- A framework `p` is **infinitesimally rigid** for `G` if the kernel of the
 rigidity map has dimension at most `d (d+1) / 2`, the dimension of trivial

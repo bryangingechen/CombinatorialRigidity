@@ -68,23 +68,6 @@ lemma; resolved otherwise.
 
 ## Open
 
-### [open] `Set.ncard ↔ Fintype.card` is a two-rewrite glue
-- **Where it bit:** `rigidityMap_finrank_range_le` in `Framework.lean`,
-  the final calc step `_ = G.edgeSet.ncard := by rw
-  [Set.ncard_eq_toFinset_card', Set.toFinset_card]`.
-- **Friction:** `Fintype.card ↥s = s.ncard` is two `rw`s —
-  `Set.ncard_eq_toFinset_card'` (= `s.toFinset.card`) then
-  `Set.toFinset_card` (= `Fintype.card s`). Same shape as the already
-  [mirrored] `ncard_incidenceSet_eq_degree` (Phase 2). Expected to
-  recur in any Phase 5 lemma that bridges `LinearMap.toMatrix` /
-  `Module.finrank_pi` (Fintype-based) with the project's `edgeSet.ncard`
-  rhetoric — so once is rare, twice would mirror.
-- **Proposed fix:** mirror as `Set.ncard_eq_card_coe` (one-liner via
-  the existing two-step composition), under `Mathlib/Data/Set/Card.lean`.
-  Refactor the calc step to use it.
-- **Status:** open.
-- **Mirror file (intended):** `Mathlib/Data/Set/Card.lean`.
-
 ### [open] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
 - **Where it bit:** Phase 3 close, while planning
   `IsLaman.exists_typeI_or_typeII_reverse`.
@@ -283,6 +266,25 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Resolution:** mirrored unconditional `≤` bounds. Each calc
   chain collapses to one `Set.ncard_pair_le _ _` (resp.
   `Set.ncard_triple_le _ _ _`) application.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Set/Card.lean`.
+
+### [mirrored] `Set.ncard_eq_card_coe` (`Set.ncard ↔ Fintype.card` bridge)
+- **Where it bit:** `rigidityMap_finrank_range_le` in `Framework.lean`,
+  the final calc step `_ = G.edgeSet.ncard := by rw
+  [Set.ncard_eq_toFinset_card', Set.toFinset_card]`.
+- **Friction:** mathlib has `Set.ncard_eq_toFinset_card'` (`s.ncard =
+  s.toFinset.card`) and `Set.toFinset_card` (`s.toFinset.card =
+  Fintype.card s`) but no fused composite. Same shape as the existing
+  [mirrored] `ncard_incidenceSet_eq_degree` (Phase 2). Filed
+  pre-emptively at Phase 4 close because Phase 5 lemmas bridging
+  `LinearMap.toMatrix` / `Module.finrank_pi` (Fintype-based) with the
+  project's `edgeSet.ncard` rhetoric will hit it again.
+- **Resolution:** mirrored as `Set.ncard_eq_card_coe : s.ncard =
+  Fintype.card s` (under `[Fintype s]`); one-line proof via the
+  existing two-step composition. The calc step in
+  `rigidityMap_finrank_range_le` collapses to
+  `(Set.ncard_eq_card_coe _).symm` (term mode).
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Data/Set/Card.lean`.
 

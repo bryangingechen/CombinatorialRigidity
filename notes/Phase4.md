@@ -328,9 +328,10 @@ may be upstream-eligible mirrors.
   one new ascription friction (next item) along the way.
 - *`LinearMap.proj` Pi-codomain not inferred in subtraction context*
   → FRICTION *[resolved]*. New entry from the `RigidityMap` refactor.
-- *`Set.ncard ↔ Fintype.card` two-rewrite glue* → FRICTION *[open]*.
-  Mirror candidate alongside the existing `ncard_incidenceSet_eq_degree`
-  pattern.
+- *`Set.ncard ↔ Fintype.card` two-rewrite glue* → FRICTION *[mirrored]*.
+  Landed as `Set.ncard_eq_card_coe` in
+  `Mathlib/Data/Set/Card.lean` (project mirror). Refactored
+  `rigidityMap_finrank_range_le`'s calc step to use it.
 - *`omega` doesn't auto-commute opaque atoms* → FRICTION *[wontfix]*.
   Surfaced in `card_mul_le` (`Fintype.card V * d` vs `d * Fintype.card V`).
 - *`nlinarith` over ℕ struggles with quadratic bounds* → FRICTION

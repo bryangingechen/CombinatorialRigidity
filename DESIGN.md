@@ -257,7 +257,8 @@ candidates spread over six paths:
   `Mathlib/Data/Fintype/Card.lean` — `coe` / `card` forms of
   `Finset.compl_singleton`
 - `Mathlib/Data/Set/Card.lean` — unconditional `≤ 2` and `≤ 3`
-  ncard bounds for pairs / triples
+  ncard bounds for pairs / triples; the `Set.ncard ↔ Fintype.card`
+  bridge `ncard_eq_card_coe`
 - `Mathlib/Data/Sym/Sym2.lean` — `Sym2.map some` injectivity, the
   predicate-form image-membership `simp` lemma, plus two helpers for
   `none ∉ Sym2.map some _` and the disjointness pattern
