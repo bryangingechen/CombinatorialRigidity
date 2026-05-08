@@ -24,11 +24,15 @@ theorem. Phase 4 minimal closure is therefore
 `IsGenericallyRigid.card_mul_le` plus the `top_fin_two_*` worked
 example; TrivialMotions is deferred to a later polish pass.
 
+`IsGenericallyRigid.card_mul_le` is **landed**. Phase 4 just needs the
+`top_fin_two_isGenericallyRigid` worked example (existence of an
+infinitesimally rigid placement of K₂) to close.
+
 **Next concrete task** (one sentence): land
-`IsGenericallyRigid.card_mul_le` — `d * #V ≤ #E + d(d+1)/2` whenever
-`G` is generically rigid in dimension `d` — by combining
-`Framework.finrank`, `rigidityMap_finrank_range_le`, and
-`LinearMap.finrank_range_add_finrank_ker`.
+`top_fin_two_isGenericallyRigid` — for any `d`, K₂ on `Fin 2` is
+generically rigid, by exhibiting `p 0 = 0, p 1 = e₀` (with the d = 0
+edge case handled separately since the whole framework space is
+0-dimensional).
 
 ## Architectural choices made up front
 
@@ -260,16 +264,13 @@ Tracking against the ROADMAP §4 bullets, plus what we're adding.
   `rigidityMap_ker_mono` + `Submodule.finrank_mono`.
 - [x] `IsGenericallyRigid.mono` — `G ≤ G' → G.IsGenericallyRigid d →
   G'.IsGenericallyRigid d`. One-liner from `IsInfinitesimallyRigid.mono`.
-- [ ] `IsGenericallyRigid.card_mul_le` — for *any* `d`: a generically
-  rigid graph has `d * #V ≤ #E + d * (d + 1) / 2`. Pick a witness
-  `p`, then by rank-nullity `d * #V = dim ker + dim range ≤ d(d+1)/2
-  + #E`. **No precondition needed** — the rank bound is unconditional
-  on this form (no affine-spanning required because we use
-  `IsInfinitesimallyRigid` as the upper bound on `dim ker`). The
-  `d = 2` specialization (`2 * #V ≤ #E + 3`) is what feeds Laman's
-  theorem; it lives as a one-line corollary at the Phase-5 boundary,
-  not in `Framework.lean`. Phrased additively per the
-  no-`ℕ`-subtraction rule.
+- [x] `IsGenericallyRigid.card_mul_le` — for *any* `d`: a generically
+  rigid graph has `d * #V ≤ #E + d * (d + 1) / 2`. Rank-nullity proof
+  via `Framework.finrank` + `LinearMap.finrank_range_add_finrank_ker` +
+  `rigidityMap_finrank_range_le`, finished by `omega`. The `d = 2`
+  specialization (`2 * #V ≤ #E + 3`) lives at the Phase-5 boundary as
+  a one-line corollary, not in `Framework.lean`. Phrased additively
+  per the no-`ℕ`-subtraction rule.
 - [ ] `top_fin_two_isInfinitesimallyRigid` — for *any* `d`: `K₂`
   with vertices placed at two distinct points (say
   `![0, …, 0]` and `![1, 0, …, 0]`) is infinitesimally rigid. The

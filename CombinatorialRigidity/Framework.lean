@@ -147,4 +147,20 @@ theorem IsGenericallyRigid.mono [Fintype V] {G G' : SimpleGraph V} (h : G ≤ G'
     (hG : G.IsGenericallyRigid d) : G'.IsGenericallyRigid d :=
   hG.imp fun _ => IsInfinitesimallyRigid.mono h
 
+/-- A generically rigid graph in dimension `d` on `n` vertices has at least
+`d * n − d(d+1)/2` edges. Phrased additively per the no-`ℕ`-subtraction rule.
+
+The proof is rank-nullity: pick an infinitesimally rigid placement `p`; then
+`d * n = dim Framework = dim range + dim ker ≤ #E + d(d+1)/2`. -/
+theorem IsGenericallyRigid.card_mul_le [Fintype V] {G : SimpleGraph V}
+    (hG : G.IsGenericallyRigid d) :
+    d * Fintype.card V ≤ G.edgeSet.ncard + d * (d + 1) / 2 := by
+  obtain ⟨p, h_ker⟩ := hG
+  have h_ker : Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) ≤ d * (d + 1) / 2 := h_ker
+  have h_total : Module.finrank ℝ (Framework V d) = d * Fintype.card V := by
+    rw [Framework.finrank, mul_comm]
+  have h_rn := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p)
+  have h_range := G.rigidityMap_finrank_range_le p
+  omega
+
 end SimpleGraph
