@@ -1,38 +1,30 @@
 # Phase 4 — Frameworks and infinitesimal rigidity (work log)
 
-**Status:** in progress.
+**Status:** complete.
 
 This file is the per-phase work record. See `../ROADMAP.md` for the
 high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-`Framework.lean` has the four core definitions, the four basic
-`RigidityMap` API lemmas (`Framework.finrank`, `rigidityMap_apply`,
-`rigidityMap_ker_mono`, `rigidityMap_finrank_range_le`), and the two
-graph-monotonicity corollaries (`IsInfinitesimallyRigid.mono`,
-`IsGenericallyRigid.mono`). Linearity proof of `RigidityMap` landed
-without `sorry`.
+Phase 4 closed. `Framework.lean` ships:
 
-**Strategic re-plan (this session).** Closer reading shows that
+* The four core definitions (`Framework V d` as `abbrev`, `RigidityMap G p`
+  with full linearity proof, `IsInfinitesimallyRigid`, `IsGenericallyRigid`).
+* Basic `RigidityMap` API: `Framework.finrank`, `rigidityMap_apply`,
+  `rigidityMap_ker_mono`, `rigidityMap_finrank_range_le`.
+* Graph-monotonicity corollaries: `IsInfinitesimallyRigid.mono`,
+  `IsGenericallyRigid.mono`.
+* The main edge-count theorem `IsGenericallyRigid.card_mul_le`:
+  `d * #V ≤ #E + d(d+1)/2` for any generically rigid graph.
+* The K₂ worked example `top_fin_two_isGenericallyRigid` for any `d`.
+
+**Strategic re-plan (this session).** Closer reading showed that
 `IsGenericallyRigid.card_mul_le` only needs the kernel-dim bound from
-`IsInfinitesimallyRigid` plus the rank-nullity identity — **not** the
-trivial-motions API. The original lemma order interleaved the
-TrivialMotions definitions for textbook completeness, but they aren't
-on the critical path for either Phase 4 closure or Phase 5's Laman's
-theorem. Phase 4 minimal closure is therefore
-`IsGenericallyRigid.card_mul_le` plus the `top_fin_two_*` worked
-example; TrivialMotions is deferred to a later polish pass.
-
-`IsGenericallyRigid.card_mul_le` is **landed**. Phase 4 just needs the
-`top_fin_two_isGenericallyRigid` worked example (existence of an
-infinitesimally rigid placement of K₂) to close.
-
-**Next concrete task** (one sentence): land
-`top_fin_two_isGenericallyRigid` — for any `d`, K₂ on `Fin 2` is
-generically rigid, by exhibiting `p 0 = 0, p 1 = e₀` (with the d = 0
-edge case handled separately since the whole framework space is
-0-dimensional).
+`IsInfinitesimallyRigid` plus rank-nullity — **not** the trivial-motions
+API. Phase 4 closes on `card_mul_le` + K₂; `TrivialMotions` and
+`finrank_trivialMotions_le` are **deferred** as a polish pass that can
+be revisited if Phase 5 surfaces a need.
 
 ## Architectural choices made up front
 
@@ -271,11 +263,13 @@ Tracking against the ROADMAP §4 bullets, plus what we're adding.
   specialization (`2 * #V ≤ #E + 3`) lives at the Phase-5 boundary as
   a one-line corollary, not in `Framework.lean`. Phrased additively
   per the no-`ℕ`-subtraction rule.
-- [ ] `top_fin_two_isInfinitesimallyRigid` — for *any* `d`: `K₂`
-  with vertices placed at two distinct points (say
-  `![0, …, 0]` and `![1, 0, …, 0]`) is infinitesimally rigid. The
-  `RigidityMap` has rank 1 from the single edge, so `dim ker =
-  2d - 1`. We need `2d - 1 ≤ d(d+1)/2`, which holds for all `d ≥ 0`
+- [x] `top_fin_two_isGenericallyRigid` — for *any* `d`: `K₂` is generically
+  rigid. Proof case-splits on `d = 0` (framework space is 0-dim, kernel
+  is 0-dim trivially) vs `d ≥ 1` (use placement `p 0 = 0, p 1 = e₀`,
+  show rigidity map is non-zero by computing
+  `⟪0 - e₀, e₀ - 0⟫_ℝ = -1`, hence `dim range ≥ 1` and rank-nullity
+  closes with `nlinarith` / `omega` after a `Nat.le_mul_self d` hint
+  for the quadratic step `2d + 1 ≤ (d+1)(d+2)/2`).
   (`d = 0`: `-1 ≤ 0`; `d = 1`: `1 ≤ 1`; `d = 2`: `3 ≤ 3`;
   `d ≥ 3`: more slack). The Laman-flavoured corollary
   `top_fin_two_isGenericallyRigid` lives in `Laman.lean` /
@@ -355,27 +349,34 @@ may be upstream-eligible mirrors.
 
 ## Hand-off / next phase
 
-(Filled in when Phase 4 closes.)
+Phase 4 is closed. Phase 5 starts with Laman's theorem in
+`LamanTheorem.lean` (does not yet exist — create it).
 
-The current Phase 4 entry-point for the next agent: open
-`Framework.lean` and land `IsGenericallyRigid.card_mul_le`. Proof
-sketch: pick a witness placement `p` from the existential, then
-`Framework.finrank` + `LinearMap.finrank_range_add_finrank_ker` +
-`rigidityMap_finrank_range_le` + the `IsInfinitesimallyRigid` kernel
-bound, finished by `omega`.
+**(⇒) edge-count direction** is essentially trivial given Phase 4:
+specialize `IsGenericallyRigid.card_mul_le` at `d = 2`, getting
+`2 * #V ≤ #E + 3`. Combined with the (2,3)-tightness condition this
+yields a Laman spanning subgraph. The hard part is matroid-theoretic
+(Lovász–Yemini), see ROADMAP §5.
 
-The recommended lemma order (each commit adds 2–4):
+**(⇐) Henneberg-induction direction** still hinges on
+`IsLaman.exists_typeI_or_typeII_reverse` (the strengthened
+decomposition that asserts `G'.IsLaman`, not just iso to a Henneberg
+move on *some* `G'`). This is the Phase-3-carryover blocker tracked in
+ROADMAP §5 and `notes/Phase3.md`. Two routes:
 
-1. `IsGenericallyRigid.card_mul_le` for general `d` — the main edge-count
-   theorem, closes the (⇒) Laman side at the Phase 5 boundary.
-2. `top_fin_two_isInfinitesimallyRigid` worked example — confirms K₂
-   is rigid in any dimension; closes Phase 4.
+1. Henneberg blocker argument (classical, several pages).
+2. Bypass via the rigidity matroid / induction on edge count, using
+   `IsGenericallyRigid.mono` to handle supergraph rigidity.
 
-`TrivialMotions` (the textbook framing) is **deferred** — see
-*Strategic re-plan* in *Current state*. If Phase 5 surfaces a need
-for the trivial-motions identification (e.g. for the global-rigidity
-or affine-spanning argument), come back and add it under the
-*TrivialMotions API* checklist below.
+If route 2 is chosen, Phase 4's deferred `TrivialMotions` API is *not*
+needed; if Phase 5 ends up wanting it (e.g. for an affinely-spanning
+identification of the kernel), come back and fill in the *TrivialMotions
+API* checklist.
+
+The first concrete Phase 5 commit: create `LamanTheorem.lean` with the
+two-direction `theorem SimpleGraph.IsGenericallyRigid_two_iff_hasLamanSubgraph`
+stub and `notes/Phase5.md`. Likely first lemma: the (⇒) `2 * #V ≤ #E + 3`
+specialization of `IsGenericallyRigid.card_mul_le`.
 
 Phase 5 is responsible for the `d = 2` specializations
 (`top_fin_two_isGenericallyRigid` and `2 * #V ≤ #E + 3`); Phase 4

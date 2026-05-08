@@ -40,7 +40,7 @@ Archive/CombinatorialRigidity/
 | 1. Sparsity | `EdgesIn.lean`, `Sparsity.lean`, `Laman.lean` | ✓ Complete (see `notes/Phase1.md`) |
 | 2. Laman graphs | `Laman.lean` | ✓ Complete (see `notes/Phase2.md`) |
 | 3. Henneberg moves | `Henneberg.lean` | ✓ Complete (see `notes/Phase3.md`) |
-| 4. Frameworks | `Framework.lean` | In progress (core definitions landed; see `notes/Phase4.md`) |
+| 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
 | 5. Laman's theorem | `LamanTheorem.lean` | Not yet created |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -98,28 +98,27 @@ is treated as a Phase 5 prerequisite — see §5 below.
 See `notes/Phase3.md` for the full lemma list and phase-specific
 decisions.
 
-Both moves additionally preserve generic rigidity (proved later in
-`Framework.lean`).
+Both moves additionally preserve generic rigidity (TODO in Phase 5,
+because the proof needs the typeII reverse blocker argument).
 
 ### Phase 4 — Frameworks and infinitesimal rigidity (`Framework.lean`)
 
-Definitions:
-- `Framework V d := V → EuclideanSpace ℝ (Fin d)` — a `d`-dimensional placement.
-- `SimpleGraph.RigidityMatrix G p` — the `#E × d·#V` matrix encoding edge length
-  derivatives. Concretely: row indexed by edge `{u, v}` has block
-  `(p u − p v)` at columns for `u` and `−(p u − p v)` at columns for `v`.
-- `SimpleGraph.IsInfinitesimallyRigid G p d` — null space of the rigidity
-  matrix has dimension equal to the dimension of trivial motions
-  (`d + d·(d−1)/2` for `#V ≥ d`).
-- `SimpleGraph.IsGenericallyRigid G d` — there exists a placement `p` such
-  that `G` is infinitesimally rigid at `p` (equivalently, the rigidity matrix
-  has full rank for some `p`, hence on a Zariski-open set of placements).
-
-Lemmas to develop:
-- Trivial motions form a subspace of dimension `d·(d+1)/2` (when `#V ≥ d`).
-- Generic rigidity depends only on `G` (not on the chosen generic `p`).
-- Generic rigidity is monotone: `G ≤ G'` and `G` rigid → `G'` rigid.
-- For `d = 2`: a generically rigid graph on `n ≥ 2` vertices has `≥ 2n − 3` edges.
+Complete. Defines `Framework V d` as `V → EuclideanSpace ℝ (Fin d)`,
+the `RigidityMap G p` as an `ℝ`-linear map (the matrix view via
+`LinearMap.toMatrix` is deferred until needed), `IsInfinitesimallyRigid
+G p` as the kernel-dimension bound `dim ker ≤ d(d+1)/2`, and
+`IsGenericallyRigid G d` as existence of an infinitesimally rigid
+placement. Ships the basic `RigidityMap` API (`Framework.finrank`,
+`rigidityMap_apply`, `rigidityMap_ker_mono`,
+`rigidityMap_finrank_range_le`), the graph-monotonicity corollaries
+(`IsInfinitesimallyRigid.mono`, `IsGenericallyRigid.mono`), the main
+edge-count theorem `IsGenericallyRigid.card_mul_le` (`d * #V ≤ #E +
+d(d+1)/2` for any generically rigid graph), and the K₂ worked example
+`top_fin_two_isGenericallyRigid`. The `TrivialMotions` API (textbook
+identification of kernel with rigid motions) and the
+`finrank_trivialMotions_eq_of_affinelySpanning` lemma are deferred —
+neither is on the critical path for Phase 5. See `notes/Phase4.md` for
+the full lemma list and phase-specific decisions.
 
 ### Phase 5 — Laman's theorem (`LamanTheorem.lean`)
 

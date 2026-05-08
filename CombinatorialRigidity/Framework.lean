@@ -163,4 +163,51 @@ theorem IsGenericallyRigid.card_mul_le [Fintype V] {G : SimpleGraph V}
   have h_range := G.rigidityMap_finrank_range_le p
   omega
 
+/-- The K₂ worked example: the complete graph on two vertices is generically
+rigid in any dimension `d`. For `d ≥ 1` we use the placement `p 0 = 0`,
+`p 1 = e₀` (first standard basis vector); for `d = 0` the framework space is
+itself zero-dimensional and any placement is vacuously rigid. -/
+theorem top_fin_two_isGenericallyRigid (d : ℕ) :
+    (⊤ : SimpleGraph (Fin 2)).IsGenericallyRigid d := by
+  rcases d with _ | d
+  · -- d = 0: framework space is zero-dimensional, so any placement is rigid.
+    refine ⟨0, ?_⟩
+    change Module.finrank ℝ (LinearMap.ker _) ≤ 0
+    have h_total : Module.finrank ℝ (Framework (Fin 2) 0) = 0 := by
+      rw [Framework.finrank]; simp
+    exact (Submodule.finrank_le _).trans_eq h_total
+  · -- d ≥ 1: place vertices at 0 and e₀.
+    set p : Framework (Fin 2) (d + 1) := ![0, EuclideanSpace.single 0 1] with hp_def
+    refine ⟨p, ?_⟩
+    change Module.finrank ℝ (LinearMap.ker
+      ((⊤ : SimpleGraph (Fin 2)).RigidityMap p)) ≤ (d + 1) * (d + 2) / 2
+    have h_edge : s((0 : Fin 2), 1) ∈ (⊤ : SimpleGraph (Fin 2)).edgeSet := by simp
+    have h_total : Module.finrank ℝ (Framework (Fin 2) (d + 1)) = 2 * (d + 1) := by
+      rw [Framework.finrank]; simp
+    have h_rn :=
+      LinearMap.finrank_range_add_finrank_ker ((⊤ : SimpleGraph (Fin 2)).RigidityMap p)
+    have h_range_pos :
+        1 ≤ Module.finrank ℝ (LinearMap.range
+          ((⊤ : SimpleGraph (Fin 2)).RigidityMap p)) := by
+      rw [Submodule.one_le_finrank_iff, Ne, LinearMap.range_eq_bot]
+      intro h_eq
+      have h_val :
+          (⊤ : SimpleGraph (Fin 2)).RigidityMap p ![EuclideanSpace.single 0 1, 0]
+            ⟨s(0, 1), h_edge⟩ = -1 := by
+        rw [rigidityMap_apply]
+        change ⟪(0 : EuclideanSpace ℝ (Fin (d + 1))) - EuclideanSpace.single 0 1,
+              EuclideanSpace.single 0 1 - 0⟫_ℝ = -1
+        rw [zero_sub, sub_zero, inner_neg_left, EuclideanSpace.inner_single_right]
+        simp
+      have h_zero :
+          (⊤ : SimpleGraph (Fin 2)).RigidityMap p ![EuclideanSpace.single 0 1, 0]
+            ⟨s(0, 1), h_edge⟩ = 0 := by rw [h_eq]; rfl
+      linarith
+    -- bound: 2*(d+1) - 1 = 2d+1 ≤ (d+1)(d+2)/2 for all d ≥ 0
+    have h_quadratic : 4 * d + 2 ≤ (d + 1) * (d + 2) := by
+      have : (d + 1) * (d + 2) = d * d + 3 * d + 2 := by ring
+      have := Nat.le_mul_self d
+      omega
+    omega
+
 end SimpleGraph
