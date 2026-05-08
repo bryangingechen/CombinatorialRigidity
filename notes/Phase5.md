@@ -111,31 +111,25 @@ Listed by milestone. Items live in `LamanTheorem.lean` unless tagged
 otherwise. Helpers and signatures will refine as proofs open up;
 treat the names below as working names.
 
-### Milestone 0 — First commit (smallest concrete unit)
+### Milestone 0 — First commit (smallest concrete unit) — done
 
-- [ ] Create `LamanTheorem.lean`. Module docstring plus three named
-  theorems (the structured-`sorry` layout — each unproven arm gets
-  its own theorem so the phase boundary is visible from `grep`):
-  * `IsLaman.isGenericallyRigid_two` — the (⇐) direction. Body
-    `sorry`, comment `-- Phase 5 milestone 3` pointing at this file.
-  * `IsGenericallyRigid.exists_isLaman_le` — the (⇒) direction
-    (`G.IsGenericallyRigid 2 → ∃ H ≤ G, H.IsLaman`). Body `sorry`,
-    comment `-- Phase 6: Lovász–Yemini matroid duality`.
-  * `isGenericallyRigid_two_iff_exists_isLaman_le` — the iff,
-    proved by composing the two named directional theorems above
-    (`mp` is `.exists_isLaman_le`; `mpr` is the rcases'd Laman
-    subgraph routed through `.isGenericallyRigid_two.mono`). No
-    sorry of its own; both unproven content arms live in their
-    named pieces.
-- [ ] `IsGenericallyRigid.card_mul_le_two` — `d = 2` specialization
-  of `IsGenericallyRigid.card_mul_le`. One-line corollary in
-  `LamanTheorem.lean`, per Phase-4-end demarcation.
-- [ ] `IsGenericallyRigid.iso` — iso transport for generic rigidity,
-  paralleling `IsLaman.iso` and `IsInfinitesimallyRigid.mono`. Lives
-  in `Framework.lean`. Pre-emptively landed in milestone 0 because
-  milestone 3's induction step is certain to need it (an iso
-  `G ≃g typeI G' a b` lifts `(typeI G' a b).IsGenericallyRigid 2`
-  back to `G.IsGenericallyRigid 2`; same-`V` `mono` is not enough).
+- [x] `LamanTheorem.lean` created. Three named theorems per the
+  structured-`sorry` layout: `IsLaman.isGenericallyRigid_two`
+  (sorry, milestone 3), `IsGenericallyRigid.exists_isLaman_le`
+  (sorry, Phase 6), and the composed iff
+  `isGenericallyRigid_two_iff_exists_isLaman_le` (no sorry; `mp`
+  is `.exists_isLaman_le`, `mpr` rcases's the Laman subgraph and
+  routes through `.isGenericallyRigid_two.mono`).
+- [x] `IsGenericallyRigid.card_mul_le_two` — one-liner via
+  `hG.card_mul_le` (the `d = 2` specialization is defeq;
+  `2 * (2+1) / 2 = 3`).
+- [x] `IsGenericallyRigid.iso` — iso transport for generic rigidity
+  in `Framework.lean`, plus the underlying
+  `IsInfinitesimallyRigid.iso`. Built via a direct `LinearEquiv`
+  between the two rigidity-map kernels (precomposition with `φ`)
+  and `LinearEquiv.finrank_eq`. ~30 lines for the
+  `IsInfinitesimallyRigid` half plus a 3-line `obtain`-`exact` for
+  the `IsGenericallyRigid` lift.
 
 ### Milestone 1 — Reverse decomposition (`Henneberg.lean`)
 
@@ -203,9 +197,23 @@ the iff's `mpr` arm completes automatically.
 
 ## Decisions made during this phase
 
-(Empty until proofs are mid-stream. Per ROADMAP, populate as
-phase-local trade-offs surface; lift cross-cutting lessons to
-TACTICS / FRICTION / DESIGN.)
+### Phase-local choices and proof techniques
+
+- **`IsInfinitesimallyRigid.iso` proof structure: build the kernel
+  iso directly, not via `Submodule.map`.** First attempt routed the
+  proof through `(ker H).map Φ.toLinearMap = ker G` and
+  `LinearEquiv.finrank_map_eq`. Stalled on a `SetLike` membership-
+  form mismatch after `rintro` (see FRICTION). Refactored to a
+  direct `LinearEquiv` between the two kernel subtypes; the
+  membership obligations there are `q'.2`-typed and `LinearMap.mem_ker.mp/mpr`
+  works without bridging. Cleaner, ~30 lines.
+
+### Promoted to TACTICS / FRICTION / DESIGN
+
+- *`Exists.imp` doesn't transport across changing-binder-type
+  existentials* → FRICTION [resolved].
+- *`rw [LinearMap.mem_ker]` fails on `SetLike`-coerced membership
+  after `Submodule.mem_map` destructure* → FRICTION [resolved].
 
 ## Blockers / open questions
 
@@ -227,25 +235,16 @@ TACTICS / FRICTION / DESIGN.)
 
 ## Hand-off / next phase
 
-The planning commit (this file + ROADMAP / DESIGN updates) is now in
-place. The next concrete commit is **Milestone 0** (the *smallest*
-source-level commit that moves the phase forward, per ROADMAP):
+Milestones 0 (LamanTheorem stub + d=2 corollary + iso transport) is
+complete. The next session attempts **Milestone 1**: the Henneberg
+blocker proof of `IsLaman.exists_typeI_or_typeII_reverse` (in
+`Henneberg.lean`).
 
-1. Create `LamanTheorem.lean` with module docstring and three named
-   theorems per the structured-`sorry` layout in milestone 0:
-   `IsLaman.isGenericallyRigid_two` (sorry, milestone 3),
-   `IsGenericallyRigid.exists_isLaman_le` (sorry, Phase 6), and the
-   composed iff `isGenericallyRigid_two_iff_exists_isLaman_le` (no
-   own sorry).
-2. Add `IsGenericallyRigid.card_mul_le_two` (one-line corollary in
-   `LamanTheorem.lean`).
-3. Add `IsGenericallyRigid.iso` (iso transport, in `Framework.lean`).
-
-After milestone 0 lands, the next session attempts **Milestone 1**:
-the Henneberg blocker proof of `IsLaman.exists_typeI_or_typeII_reverse`.
 Read Whiteley §3.1 or Jordán §3.1 for the textbook argument before
 starting; expect 1–3 helper lemmas to surface, plausibly around
 tight-set unions in `Sparsity.lean`. Milestones 1 and 2 are
 independent — if the blocker proof stalls, milestone 2 (Type I
-preservation) is a clean parallel target. Milestone 3 (induction) is
-ready once milestone 1 *and* both move-preservation lemmas land.
+preservation in `Henneberg.lean`, which will also need to import
+`Framework.lean` for the first time) is a clean parallel target.
+Milestone 3 (induction) is ready once milestone 1 *and* both
+move-preservation lemmas land.

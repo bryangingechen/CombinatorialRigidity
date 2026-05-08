@@ -377,6 +377,39 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Resolved (project-internal)
 
+### [resolved] `Exists.imp` doesn't transport across changing-binder-type existentials
+- **Where it bit:** `IsGenericallyRigid.iso` in `Framework.lean` (Phase 5 milestone 0).
+- **Friction:** tried `h.imp fun _ => IsInfinitesimallyRigid.iso φ`,
+  paralleling `IsGenericallyRigid.mono`'s `h.imp fun _ => IsInfinitesimallyRigid.mono h`.
+  Failed with a deterministic-isDefEq timeout. Cause: `IsGenericallyRigid` on
+  `G : SimpleGraph V` is `∃ p : Framework V d, …`, whereas on `H : SimpleGraph W`
+  it's `∃ p : Framework W d, …` — different binder types. `Exists.imp` only
+  works when the binder type is preserved (`mono` keeps `V`; `iso` doesn't).
+  The elaborator burned heartbeats trying to unify the binder types.
+- **Resolution:** use explicit `obtain`+`exact` for the iso form:
+  `obtain ⟨p, hp⟩ := h; exact ⟨p ∘ φ.symm, hp.iso φ⟩`. Compiles instantly.
+- **Status:** resolved (Lean idiom, not a missing lemma — `Exists.imp`'s
+  signature is correct).
+
+### [resolved] `rw [LinearMap.mem_ker]` fails on `SetLike`-coerced membership after `Submodule.mem_map` destructure
+- **Where it bit:** first-pass `IsInfinitesimallyRigid.iso` proof in `Framework.lean`,
+  using `Submodule.map Φ.toLinearMap` to relate the two kernels.
+- **Friction:** after `rintro _ ⟨q', hq', rfl⟩` from `(ker H).map Φ ≤ ker G`,
+  the destructured `hq'` had type `q' ∈ ↑(H.RigidityMap (p ∘ φ.symm)).ker`
+  (with the SetLike `↑` coercion). `rw [LinearMap.mem_ker] at hq'` failed to
+  find a match because the lemma's LHS is `q' ∈ LinearMap.ker f` without the
+  `↑`. The two membership forms are defeq but `rw` insists on syntactic match.
+- **Resolution:** abandoned the `Submodule.map` route in favour of constructing
+  the kernel iso directly as a `LinearEquiv` between the two subtype-`Sort`s
+  `LinearMap.ker (H.RigidityMap (p ∘ φ.symm))` and `LinearMap.ker (G.RigidityMap p)`.
+  In that form, the membership obligations are field-typed (`q'.2 : q'.1 ∈ ker …`)
+  and `LinearMap.mem_ker.mp q'.2` / `.mpr` work directly. Saves the membership-
+  form bridging entirely, and `kerEquiv.finrank_eq` closes the bound.
+- **Status:** resolved (no missing lemma — `rw` not seeing through the
+  SetLike coercion is intrinsic; the project-internal idiom is "build the
+  kernel iso directly when transporting `IsInfinitesimallyRigid` across an
+  iso, instead of going via `Submodule.map`").
+
 ### [resolved] `RigidityMap` defined by hand instead of compositionally
 - **Where it bit:** `Framework.lean`, the original `RigidityMap`
   definition (`def RigidityMap … where toFun … map_add' … map_smul' …`)

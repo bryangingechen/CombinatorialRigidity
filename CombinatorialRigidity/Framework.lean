@@ -148,6 +148,64 @@ theorem IsGenericallyRigid.mono [Fintype V] {G G' : SimpleGraph V} (h : G ≤ G'
     (hG : G.IsGenericallyRigid d) : G'.IsGenericallyRigid d :=
   hG.imp fun _ => IsInfinitesimallyRigid.mono h
 
+/-- Iso transport for infinitesimal rigidity: a graph iso `φ : G ≃g H` carries
+an infinitesimally rigid placement `p` of `G` to the placement `p ∘ φ.symm` of
+`H`, which is also infinitesimally rigid.
+
+The proof builds a linear equivalence between the two rigidity-map kernels by
+precomposition with `φ` and uses `LinearEquiv.finrank_eq` to transport the
+kernel-dimension bound. -/
+theorem IsInfinitesimallyRigid.iso {V W : Type*} [Fintype V] [Fintype W]
+    {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H) {p : Framework V d}
+    (h : G.IsInfinitesimallyRigid p) : H.IsInfinitesimallyRigid (p ∘ φ.symm) := by
+  -- Per-edge correspondence: `q' ∈ ker H ↔ q' ∘ φ ∈ ker G`.
+  have hH_to_G : ∀ q' : Framework W d,
+      (H.RigidityMap (p ∘ φ.symm)) q' = 0 → (G.RigidityMap p) (q' ∘ φ.toEquiv) = 0 := by
+    intro q' hq'
+    ext ⟨e, he⟩
+    induction e with
+    | h a b =>
+      have hH : s(φ a, φ b) ∈ H.edgeSet := by
+        rw [mem_edgeSet] at he ⊢; exact φ.map_adj_iff.mpr he
+      have key := congr_fun hq' ⟨s(φ a, φ b), hH⟩
+      simp only [rigidityMap_apply, Pi.zero_apply] at key
+      change ⟪p a - p b, q' (φ a) - q' (φ b)⟫_ℝ = (0 : ℝ)
+      simpa using key
+  have hG_to_H : ∀ p' : Framework V d,
+      (G.RigidityMap p) p' = 0 →
+        (H.RigidityMap (p ∘ φ.symm)) (p' ∘ φ.symm.toEquiv) = 0 := by
+    intro p' hp'
+    ext ⟨e, he⟩
+    induction e with
+    | h u v =>
+      have hG : s(φ.symm u, φ.symm v) ∈ G.edgeSet := by
+        rw [mem_edgeSet] at he ⊢; exact φ.symm.map_adj_iff.mpr he
+      have key := congr_fun hp' ⟨s(φ.symm u, φ.symm v), hG⟩
+      simp only [rigidityMap_apply, Pi.zero_apply] at key
+      change ⟪p (φ.symm u) - p (φ.symm v), p' (φ.symm u) - p' (φ.symm v)⟫_ℝ = (0 : ℝ)
+      exact key
+  -- Linear equiv between the two kernels.
+  let kerEquiv : LinearMap.ker (H.RigidityMap (p ∘ φ.symm)) ≃ₗ[ℝ]
+      LinearMap.ker (G.RigidityMap p) :=
+    { toFun := fun q' => ⟨q'.1 ∘ φ.toEquiv,
+        LinearMap.mem_ker.mpr (hH_to_G q'.1 (LinearMap.mem_ker.mp q'.2))⟩
+      invFun := fun p' => ⟨p'.1 ∘ φ.symm.toEquiv,
+        LinearMap.mem_ker.mpr (hG_to_H p'.1 (LinearMap.mem_ker.mp p'.2))⟩
+      left_inv := fun _ => Subtype.ext <| funext fun _ => by simp
+      right_inv := fun _ => Subtype.ext <| funext fun _ => by simp
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
+  change Module.finrank ℝ (LinearMap.ker (H.RigidityMap (p ∘ φ.symm))) ≤ _
+  rw [kerEquiv.finrank_eq]
+  exact h
+
+/-- Iso transport for generic rigidity: a graph iso preserves generic rigidity. -/
+theorem IsGenericallyRigid.iso {V W : Type*} [Fintype V] [Fintype W]
+    {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H)
+    (h : G.IsGenericallyRigid d) : H.IsGenericallyRigid d := by
+  obtain ⟨p, hp⟩ := h
+  exact ⟨p ∘ φ.symm, hp.iso φ⟩
+
 /-- A generically rigid graph in dimension `d` on `n` vertices has at least
 `d * n − d(d+1)/2` edges. Phrased additively per the no-`ℕ`-subtraction rule.
 
