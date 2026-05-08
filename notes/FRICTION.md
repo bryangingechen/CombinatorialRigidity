@@ -284,7 +284,14 @@ limitations. Worth a once-over so future agents don't re-litigate.
   Fintype.card s` (under `[Fintype s]`); one-line proof via the
   existing two-step composition. The calc step in
   `rigidityMap_finrank_range_le` collapses to
-  `(Set.ncard_eq_card_coe _).symm` (term mode).
+  `(Set.ncard_eq_card_coe _).symm` (term mode). Also retroactively
+  applied to the existing `ncard_incidenceSet_eq_degree` mirror, whose
+  proof was the same shape routed through `Nat.card` (`rw [←
+  Nat.card_coe_set_eq, Nat.card_eq_fintype_card,
+  card_incidenceSet_eq_degree]` → `rw [Set.ncard_eq_card_coe,
+  card_incidenceSet_eq_degree]`); this is a mirror-importing-mirror
+  edge, fine because the upstream `Mathlib/Combinatorics/SimpleGraph/
+  Finite.lean` already imports `Mathlib/Data/Set/Card.lean`.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Data/Set/Card.lean`.
 

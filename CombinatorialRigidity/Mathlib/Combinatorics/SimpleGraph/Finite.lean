@@ -3,8 +3,8 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.Data.Set.Card
 import Mathlib.Combinatorics.SimpleGraph.Finite
-import Mathlib.Data.Set.Card
 
 /-!
 # Upstream candidates: `Set.ncard` companions for `SimpleGraph` cardinality lemmas
@@ -36,7 +36,7 @@ theorem ncard_incidenceSet_eq_degree (G : SimpleGraph V) (v : V)
     [Fintype (G.neighborSet v)] :
     (G.incidenceSet v).ncard = G.degree v := by
   classical
-  rw [← Nat.card_coe_set_eq, Nat.card_eq_fintype_card, card_incidenceSet_eq_degree]
+  rw [Set.ncard_eq_card_coe, card_incidenceSet_eq_degree]
 
 /-- The `Set.ncard` of `G.edgeSet` agrees with the `Finset.card` of `G.edgeFinset`. Companion of
 `SimpleGraph.coe_edgeFinset`. -/
