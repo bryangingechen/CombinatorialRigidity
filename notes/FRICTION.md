@@ -780,3 +780,75 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (project-internal lesson). Adds to the list of "things
   that act like Pi types but aren't literally Pi types" — alongside `Sym2 V`
   (where `Sym2.lift` is the projection, not `congr_fun`).
+
+### [resolved] `rcases ⟨rfl, rfl⟩` on `Sym2.eq_iff` eliminates the section-level variable, not the case-split variable
+
+- **Where it bit:** `typeII_isInfinitesimallyRigid_extend` in `Henneberg.lean`
+  (Phase 5 milestone 2), deleted-edge recovery. After `induction e with | h u v
+  =>` and a `by_cases h_eq : s(u, v) = s(a, b)`, the natural pattern was
+  ```
+  rcases Sym2.eq_iff.mp h_eq with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · -- u = a, v = b
+    exact h_deleted
+  · -- u = b, v = a — use h_deleted via inner-product symmetry
+    have hflip : p b - p a = -(p a - p b) := by abel
+    ...
+  ```
+- **Friction:** In the second branch, `rcases ⟨rfl, rfl⟩` substituted `b → u`
+  and `a → v` (eliminating the section-level variables `a, b` from the local
+  context) rather than `u → b` and `v → a`. The follow-up `have hflip : p b -
+  p a = ...` then failed with `Unknown identifier b`. Lean's `subst` heuristic
+  on `u = b` (both sides free variables) eliminates the *less-recently-
+  introduced* free variable when both qualify — and `b` came earlier (theorem
+  binder) than `u` (case-split intro).
+- **Resolution:** bind the equalities to named hypotheses and use `rw`, which
+  doesn't eliminate from the context:
+  ```
+  rcases Sym2.eq_iff.mp h_eq with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · rw [h1, h2]; exact h_deleted
+  · rw [h1, h2, /- sign flip -/]; exact h_deleted
+  ```
+  This keeps `a, b` in scope for the subsequent calculation. The first branch
+  closes identically to the `rfl`-form; the second branch picks up an explicit
+  sign-flip rewrite via `inner_neg_neg`.
+- **Status:** resolved (Lean idiom, not a missing lemma). General lesson: when
+  `subst` direction matters and both sides of an equation are free variables,
+  prefer named hypotheses + `rw` (or explicit `subst h` on a named hypothesis,
+  with deliberate side selection) over `rfl` patterns. Cf. line 521 of
+  `Henneberg.lean`, where `rcases ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> grind` works
+  *because* `grind` closes both branches regardless of which variables remain.
+
+### [resolved] `simp only [rigidityMap_apply, Pi.zero_apply]` leaves `he` in the elaborated goal, blocking later `rw`
+
+- **Where it bit:** `typeII_isInfinitesimallyRigid_extend` in `Henneberg.lean`
+  (Phase 5 milestone 2). After
+  ```
+  ext ⟨e, he⟩
+  induction e with | h u v => ...
+  ...
+  simp only [rigidityMap_apply, Pi.zero_apply, Function.comp_apply]
+  ```
+  the displayed goal is the clean `⟪p u - p v, x (some u) - x (some v)⟫_ℝ = 0`,
+  but a subsequent `rw [h1, h2]` (with `h1 : u = a`) failed with `motive is not
+  type correct`, citing an application `⟨s(_a, v), he⟩` that the motive couldn't
+  unify.
+- **Friction:** `simp only` simplified the surface form but the elaborated term
+  retained a residual `⟨s(u, v), he⟩` subterm (likely inside an `Eq` proof that
+  `simp` produced). `rw`'s motive synthesis then re-elaborates the goal,
+  picking up `he` with its `u`-dependent type, and the abstraction over `u`
+  fails because `he` cannot be re-typed at `_a`.
+- **Resolution:** insert a `change <clean form>` immediately after the `simp
+  only` to surface the displayed goal cleanly, dropping the residual subterm:
+  ```
+  simp only [rigidityMap_apply, Pi.zero_apply, Function.comp_apply]
+  change ⟪p u - p v, x (some u) - x (some v)⟫_ℝ = 0
+  rcases ... with ...
+  rw [h1, h2]; ...
+  ```
+  The `change` re-elaborates the goal at the surface type, discarding the
+  hidden `he` subterm. `rw` then succeeds.
+- **Status:** resolved (Lean idiom). General lesson: when `rw` fails with a
+  motive error citing a hypothesis that doesn't appear in the displayed goal,
+  suspect a `simp`-produced residual subterm and insert `change` to clean.
+  Mirrors the `Sym2`-symmetry residual issue at line 521 (where `grind`
+  papered over it).

@@ -15,7 +15,7 @@ import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Logic.Equiv.Option
 import Mathlib.Tactic.IntervalCases
 
-set_option linter.style.longFile 1700
+set_option linter.style.longFile 1900
 
 /-!
 # Henneberg moves
@@ -1580,6 +1580,218 @@ theorem typeI_isGenericallyRigidInj_two [Fintype V] {G : SimpleGraph V}
     exact (hq_notmem ⟨v, h.symm⟩).elim
   · -- `h : p u = q`, contradicts `q ∉ Set.range p`.
     exact (hq_notmem ⟨u, h⟩).elim
+  · exact congrArg some (hp_inj h)
+
+/-! ### Type II preservation of rigidity in dim 2
+
+The classical Whiteley/Jordán argument: place the new vertex `q` on the *line* through `p a` and
+`p b`. The three new edges' constraints then split into a "deleted-edge recovery" (the constraint
+`⟪p a - p b, x (some a) - x (some b)⟫ = 0` falls out of the new edges at `none ↔ some a` and
+`none ↔ some b`, both lying along the common direction `p b - p a`) and an "injectivity" piece
+(the new edge at `none ↔ some c`, in an independent direction, pins `x none`).
+
+The argument requires `p a, p b, p c` to be **non-collinear** — otherwise `q - p c` also lies in
+the `p b - p a` direction, the LI condition fails, and the extended placement is genuinely
+non-rigid (a 1-parameter family of "vertical" infinitesimal motions of `none` is unconstrained).
+The conditional theorem below takes the appropriate `q` as input; the unconditional wrapper
+strengthens the input rigid placement to one with non-collinear `(p a, p b, p c)` via the
+non-collinearity hypothesis. The remaining gap (always producing such a placement from a generic
+rigid one) needs an openness-of-rigidity / perturbation argument and is deferred — see
+`notes/Phase5.md` *Blockers*. -/
+
+/-- **Conditional Type II rigidity preservation in dim 2.** If `p` is infinitesimally rigid for
+`G`, `G.Adj a b`, and `q : EuclideanSpace ℝ (Fin 2)` is a placement of the new vertex satisfying
+the collinearity condition `q - p a = α • (p b - p a)` with `α ≠ 0, 1` (so `q` is on the line
+through `p a, p b`, distinct from both) AND the linear-independence condition
+`LinearIndependent ℝ ![q - p a, q - p c]` (the new vertex's direction to `p c` is off the line),
+then the extended placement `fun w => w.elim q p` is infinitesimally rigid for `typeII G a b c`.
+
+The rank-nullity heart of `typeII_isGenericallyRigidInj_two_of_nonCollinear`. The proof builds a
+linear injection from `ker ((typeII G a b c).RigidityMap p_ext)` into `ker (G.RigidityMap p)` via
+the restriction `x ↦ x ∘ some`. The new ingredient over typeI is that for the deleted edge
+`s(a, b)` (no corresponding typeII edge), the kernel constraint is recovered from the two
+collinear-direction new edges at `none ↔ some a` and `none ↔ some b`. -/
+theorem typeII_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
+    {p : Framework V 2} (hp : G.IsInfinitesimallyRigid p) {a b c : V}
+    {q : EuclideanSpace ℝ (Fin 2)} {α : ℝ}
+    (hα0 : α ≠ 0) (hα1 : α ≠ 1) (hcoll : q - p a = α • (p b - p a))
+    (hLI : LinearIndependent ℝ ![q - p a, q - p c]) :
+    (typeII G a b c).IsInfinitesimallyRigid (fun w : Option V => w.elim q p) := by
+  classical
+  set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p with hp_ext_def
+  -- `q - p b = (α - 1) • (p b - p a)` follows from the collinearity hypothesis.
+  have hcoll_b : q - p b = (α - 1) • (p b - p a) := by
+    have h1 : q - p b = (q - p a) - (p b - p a) := by abel
+    rw [h1, hcoll, sub_smul, one_smul]
+  -- Restriction map `x ↦ x ∘ some` lands in `ker (G.RigidityMap p)`.
+  have h_into : ∀ x : Framework (Option V) 2,
+      x ∈ LinearMap.ker ((typeII G a b c).RigidityMap p_ext) →
+        x ∘ some ∈ LinearMap.ker (G.RigidityMap p) := by
+    intro x hx
+    rw [LinearMap.mem_ker] at hx ⊢
+    -- New-edge constraints at `none ↔ some a` and `none ↔ some b`.
+    have h_a_edge : s((none : Option V), some a) ∈ (typeII G a b c).edgeSet := by simp
+    have h_b_edge : s((none : Option V), some b) ∈ (typeII G a b c).edgeSet := by simp
+    have hxa := congr_fun hx ⟨s(none, some a), h_a_edge⟩
+    have hxb := congr_fun hx ⟨s(none, some b), h_b_edge⟩
+    simp only [rigidityMap_apply, Pi.zero_apply] at hxa hxb
+    change ⟪q - p a, x none - x (some a)⟫_ℝ = 0 at hxa
+    change ⟪q - p b, x none - x (some b)⟫_ℝ = 0 at hxb
+    -- Strip the scalar to obtain `⟪p b - p a, _⟫ = 0` form.
+    have hxa' : ⟪p b - p a, x none - x (some a)⟫_ℝ = 0 := by
+      have h := hxa
+      rw [hcoll, real_inner_smul_left] at h
+      exact (mul_eq_zero.mp h).resolve_left hα0
+    have hxb' : ⟪p b - p a, x none - x (some b)⟫_ℝ = 0 := by
+      have h := hxb
+      rw [hcoll_b, real_inner_smul_left] at h
+      exact (mul_eq_zero.mp h).resolve_left (sub_ne_zero.mpr hα1)
+    -- The deleted-edge constraint: subtract the two strip results.
+    have h_deleted : ⟪p a - p b, x (some a) - x (some b)⟫_ℝ = 0 := by
+      have hsub : x (some a) - x (some b) =
+          (x none - x (some b)) - (x none - x (some a)) := by abel
+      have h_pba : ⟪p b - p a, x (some a) - x (some b)⟫_ℝ = 0 := by
+        rw [hsub, inner_sub_right, hxb', hxa', sub_zero]
+      have hflip : p a - p b = -(p b - p a) := by abel
+      rw [hflip, inner_neg_left, neg_eq_zero]; exact h_pba
+    -- Edge-membership check.
+    ext ⟨e, he⟩
+    induction e with
+    | h u v =>
+      have h_uv : G.Adj u v := he
+      by_cases h_eq : s(u, v) = s(a, b)
+      · -- Deleted edge: recover via `h_deleted` (with Sym2 symmetry). Use `rw` on named hyps
+        -- rather than `rfl`-rcases to avoid `subst` eliminating `a`/`b` from the context.
+        simp only [rigidityMap_apply, Pi.zero_apply, Function.comp_apply]
+        change ⟪p u - p v, x (some u) - x (some v)⟫_ℝ = 0
+        rcases Sym2.eq_iff.mp h_eq with ⟨h1, h2⟩ | ⟨h1, h2⟩
+        · rw [h1, h2]; exact h_deleted
+        · rw [h1, h2,
+            show p b - p a = -(p a - p b) from by abel,
+            show x (some b) - x (some a) = -(x (some a) - x (some b)) from by abel,
+            inner_neg_neg]
+          exact h_deleted
+      · -- Non-deleted edge: lift to typeII edge.
+        have h_typeII : s(some u, some v) ∈ (typeII G a b c).edgeSet :=
+          show (typeII G a b c).Adj (some u) (some v) from ⟨h_uv, h_eq⟩
+        have key := congr_fun hx ⟨s(some u, some v), h_typeII⟩
+        simp only [rigidityMap_apply, Pi.zero_apply] at key
+        simpa [rigidityMap_apply, Function.comp_apply] using key
+  -- Kernel-to-kernel linear map.
+  let restrict : LinearMap.ker ((typeII G a b c).RigidityMap p_ext) →ₗ[ℝ]
+      LinearMap.ker (G.RigidityMap p) :=
+    { toFun := fun x => ⟨x.1 ∘ some, h_into x.1 x.2⟩
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
+  -- Injectivity: the new edges at `none ↔ some a` and `none ↔ some c` orthogonalize
+  -- `x.1 none - y.1 none` against the LI pair `(q - p a, q - p c)`.
+  have h_inj : Function.Injective restrict := by
+    intro x y hxy
+    apply Subtype.ext
+    funext w
+    have h_some : ∀ v, x.1 (some v) = y.1 (some v) := fun v =>
+      congr_fun (congrArg Subtype.val hxy) v
+    rcases w with _ | v
+    swap
+    · exact h_some v
+    -- Case `w = none`. Use new-edge constraints at `none ↔ some a` and `none ↔ some c`.
+    have h_a_edge : s((none : Option V), some a) ∈ (typeII G a b c).edgeSet := by simp
+    have h_c_edge : s((none : Option V), some c) ∈ (typeII G a b c).edgeSet := by simp
+    have hxa := congr_fun (LinearMap.mem_ker.mp x.2) ⟨s(none, some a), h_a_edge⟩
+    have hxc := congr_fun (LinearMap.mem_ker.mp x.2) ⟨s(none, some c), h_c_edge⟩
+    have hya := congr_fun (LinearMap.mem_ker.mp y.2) ⟨s(none, some a), h_a_edge⟩
+    have hyc := congr_fun (LinearMap.mem_ker.mp y.2) ⟨s(none, some c), h_c_edge⟩
+    simp only [rigidityMap_apply, Pi.zero_apply] at hxa hxc hya hyc
+    change ⟪q - p a, x.1 none - x.1 (some a)⟫_ℝ = 0 at hxa
+    change ⟪q - p c, x.1 none - x.1 (some c)⟫_ℝ = 0 at hxc
+    change ⟪q - p a, y.1 none - y.1 (some a)⟫_ℝ = 0 at hya
+    change ⟪q - p c, y.1 none - y.1 (some c)⟫_ℝ = 0 at hyc
+    have h_perp_a : ⟪q - p a, x.1 none - y.1 none⟫_ℝ = 0 := by
+      have hsubst : x.1 none - y.1 none =
+          (x.1 none - x.1 (some a)) - (y.1 none - y.1 (some a)) := by
+        rw [h_some a]; abel
+      rw [hsubst, inner_sub_right, hxa, hya, sub_zero]
+    have h_perp_c : ⟪q - p c, x.1 none - y.1 none⟫_ℝ = 0 := by
+      have hsubst : x.1 none - y.1 none =
+          (x.1 none - x.1 (some c)) - (y.1 none - y.1 (some c)) := by
+        rw [h_some c]; abel
+      rw [hsubst, inner_sub_right, hxc, hyc, sub_zero]
+    exact sub_eq_zero.mp (eq_zero_of_orthogonal_dim_two hLI h_perp_a h_perp_c)
+  -- Rank-nullity: `finrank (ker (typeII _)) ≤ finrank (ker G) ≤ 3`.
+  change Module.finrank ℝ (LinearMap.ker ((typeII G a b c).RigidityMap p_ext)) ≤ 2 * (2 + 1) / 2
+  exact (LinearMap.finrank_le_finrank_of_injective h_inj).trans hp
+
+/-- In `EuclideanSpace ℝ (Fin 2)`, given distinct points `pa, pb`, a third point `pc` with
+`(pa, pb, pc)` non-collinear, and a finite "to-avoid" set `S`, there is a `q := pa + α • (pb - pa)`
+on the line through `pa, pb` (with `α ≠ 0, 1`) such that `q ∉ S` and
+`LinearIndependent ℝ ![q - pa, q - pc]`. The geometric content is: parametrize the line through
+`pa, pb` by `α`; the LI condition is automatic from `(pa, pb, pc)` non-collinearity for any
+`α ≠ 0`; the off-set and `α ≠ 1` conditions are each violated by at most finitely many `α`. -/
+private lemma exists_typeII_q_on_line_dim_two
+    (pa pb pc : EuclideanSpace ℝ (Fin 2)) (hab : pa ≠ pb)
+    (hLI_abc : LinearIndependent ℝ ![pb - pa, pc - pa])
+    (S : Set (EuclideanSpace ℝ (Fin 2))) (hS : S.Finite) :
+    ∃ (α : ℝ) (q : EuclideanSpace ℝ (Fin 2)),
+      α ≠ 0 ∧ α ≠ 1 ∧ q - pa = α • (pb - pa) ∧
+      LinearIndependent ℝ ![q - pa, q - pc] ∧ q ∉ S := by
+  have hd : pb - pa ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
+  -- Parametrize the line: `f α := pa + α • (pb - pa)`.
+  set f : ℝ → EuclideanSpace ℝ (Fin 2) := fun α => pa + α • (pb - pa) with hf_def
+  have hf_inj : Function.Injective f := fun α₁ α₂ h => by
+    have h_smul : α₁ • (pb - pa) = α₂ • (pb - pa) := add_left_cancel h
+    have h_sub : (α₁ - α₂) • (pb - pa) = 0 := by rw [sub_smul, h_smul, sub_self]
+    rcases smul_eq_zero.mp h_sub with h0 | h0
+    · linarith
+    · exact (hd h0).elim
+  -- The "bad" `α`-set: `{0, 1} ∪ f⁻¹(S)`.
+  set bad : Set ℝ := ({0, 1} : Set ℝ) ∪ (f ⁻¹' S) with hbad_def
+  have hbad_fin : bad.Finite :=
+    ((Set.finite_singleton _).insert _).union (hS.preimage hf_inj.injOn)
+  obtain ⟨α, hα⟩ := hbad_fin.exists_notMem
+  have hα0 : α ≠ 0 := fun h => hα (by simp [hbad_def, h])
+  have hα1 : α ≠ 1 := fun h => hα (by simp [hbad_def, h])
+  have hq_notmem : f α ∉ S := fun h_mem => hα (by simp [hbad_def, h_mem])
+  refine ⟨α, f α, hα0, hα1, ?_, ?_, hq_notmem⟩
+  · -- `f α - pa = α • (pb - pa)` by definition.
+    simp [hf_def]
+  · -- LI of `![q - pa, q - pc]`: stage as a row-op on `![pb - pa, pc - pa]`.
+    have h_form :
+        (![f α - pa, f α - pc] : Fin 2 → EuclideanSpace ℝ (Fin 2)) =
+          ![α • (pb - pa) + (0 : ℝ) • (pc - pa),
+            α • (pb - pa) + (-1 : ℝ) • (pc - pa)] := by
+      ext i
+      fin_cases i <;> simp [hf_def]
+      abel
+    rw [h_form, LinearIndependent.pair_add_smul_add_smul_iff]
+    refine ⟨hLI_abc, ?_⟩
+    intro h_eq
+    apply hα0
+    linarith
+
+/-- **Type II preserves injective generic rigidity in dim 2, given non-collinear neighbors.**
+Given an injectively generically rigid `G` in dim 2 *witnessed by a placement* `p` *for which*
+`(p a, p b, p c)` *is non-collinear*, the Type II extension `typeII G a b c` is again
+injectively generically rigid in dim 2.
+
+The non-collinearity hypothesis is essential — see the section docstring above. Removing it
+requires an openness-of-rigidity argument (any rigid placement can be perturbed to a non-collinear
+one while preserving rigidity); that argument is deferred. The Phase 5 (⇐) induction lifts the
+hypothesis as soon as the deferred argument lands. -/
+theorem typeII_isGenericallyRigidInj_two_of_nonCollinear [Fintype V] {G : SimpleGraph V}
+    {p : Framework V 2} (hp_rig : G.IsInfinitesimallyRigid p) (hp_inj : Function.Injective p)
+    {a b c : V} (hab : a ≠ b)
+    (hLI_abc : LinearIndependent ℝ ![p b - p a, p c - p a]) :
+    (typeII G a b c).IsGenericallyRigidInj 2 := by
+  have hpab : p a ≠ p b := fun h => hab (hp_inj h)
+  obtain ⟨α, q, hα0, hα1, hcoll, hLI, hq_notmem⟩ :=
+    exists_typeII_q_on_line_dim_two (p a) (p b) (p c) hpab hLI_abc (Set.range p)
+      (Set.finite_range p)
+  refine ⟨fun w : Option V => w.elim q p,
+    typeII_isInfinitesimallyRigid_extend hp_rig hα0 hα1 hcoll hLI, ?_⟩
+  rintro (_ | u) (_ | v) h
+  · rfl
+  · exact (hq_notmem ⟨v, h.symm⟩).elim
+  · exact (hq_notmem ⟨u, h⟩).elim
   · exact congrArg some (hp_inj h)
 
 end Henneberg
