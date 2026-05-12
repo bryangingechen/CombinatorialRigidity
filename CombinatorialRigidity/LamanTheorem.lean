@@ -54,17 +54,13 @@ theorem IsGenericallyRigid.card_mul_le_two [Fintype V] {G : SimpleGraph V}
 `Fintype.card V`: every Laman graph admits an *injective* rigid placement in
 dim 2 (`IsGenericallyRigidInj 2`).
 
-The proof is structured but leaves a single granular `sorry` at the Type II
-inductive step's collinearity obstruction: the inductive hypothesis supplies
-*some* injective rigid placement of the smaller graph `G'`, but
-`typeII_isGenericallyRigidInj_two_of_nonCollinear` requires the placement to be
-non-collinear on the specific triple `(a, b, c)` chosen by the reverse
-decomposition. Closing this gap needs either openness of infinitesimal rigidity
-(perturb `p c` off the line `(p a, p b)` while preserving rigidity) or a
-strengthened inductive invariant — see `notes/Phase5.md` *Blockers*.
-
-The Type I inductive step and the `n = 2` base case are fully proved; the gap
-is precisely the one identified in Phase 5 milestone 2.
+Both inductive moves (Type I and Type II) are handled by the unconditional
+per-move preservation theorems in `Henneberg.lean`; the Type II step's
+non-collinearity gap is discharged inside
+`typeII_isGenericallyRigidInj_two` via openness of infinitesimal rigidity
+(`IsInfinitesimallyRigid.eventually`) and a perpendicular perturbation of the
+new vertex's neighbor. Base case `n = 2` reduces to `K₂` via
+`eq_top_of_card_eq_two` plus iso transport.
 
 **Phase 5 milestone 3.** -/
 private theorem IsLaman.isGenericallyRigidInj_two_of_card :
@@ -84,17 +80,10 @@ private theorem IsLaman.isGenericallyRigidInj_two_of_card :
         exact Fintype.card_subtype_lt (p := fun w => w ≠ v) (x := v) (by simp)
       have ih_G' : G'.IsGenericallyRigidInj 2 := ih _ hcard_lt rfl hG'_lam
       rcases hbranch with
-        ⟨a, b, hab, ⟨φ⟩⟩ | ⟨a, b, c, hab, _hca, _hcb, _hG'ab, ⟨φ⟩⟩
+        ⟨a, b, hab, ⟨φ⟩⟩ | ⟨a, b, c, hab, hca, hcb, _hG'ab, ⟨φ⟩⟩
       · exact (Henneberg.typeI_isGenericallyRigidInj_two ih_G' hab).iso φ.symm
-      · -- Type II: needs `(p a, p b, p c)` non-collinear at the IH placement.
-        -- The IH gives *some* injective rigid `p`, but cannot guarantee
-        -- non-collinearity at the specific triple chosen by the reverse
-        -- decomposition. See `notes/Phase5.md` *Blockers* for the closure
-        -- strategies (openness of IR, or a strengthened inductive invariant).
-        obtain ⟨p, hp_rig, hp_inj⟩ := ih_G'
-        have hLI : LinearIndependent ℝ ![p b - p a, p c - p a] := sorry
-        exact (Henneberg.typeII_isGenericallyRigidInj_two_of_nonCollinear
-          hp_rig hp_inj hab hLI).iso φ.symm
+      · exact (Henneberg.typeII_isGenericallyRigidInj_two ih_G' hab hca.symm
+          hcb.symm).iso φ.symm
     · -- Base case: `Fintype.card V ≤ 2`. The `≤ 1` sub-cases contradict Laman
       -- tightness (a Laman graph has `#E + 3 = 2 * #V`, infeasible for #V ≤ 1
       -- in `ℕ`); `n = 2` reduces to K₂ via `eq_top_of_card_eq_two` + iso transport.
