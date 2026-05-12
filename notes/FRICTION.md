@@ -409,6 +409,19 @@ limitations. Worth a once-over so future agents don't re-litigate.
   file because `Finset.card_compl` requires `Fintype α` and lives in
   `Fintype/Card.lean`, not `Finset/BooleanAlgebra.lean`.)
 
+### [mirrored] `Finset.eq_singleton_of_mem_of_card_le_one`
+- **Where it bit:** `contradiction_two_pair` and `contradiction_three_pair`
+  in `Henneberg.lean` (Phase 5 milestone-1 blocker proofs); second cleanup
+  pass.
+- **Friction:** the `Finset.eq_of_subset_of_card_le
+  (Finset.singleton_subset_iff.mpr _) (by rw [Finset.card_singleton]; omega) |>.symm`
+  pattern recurs 4 times. The natural reading is "I have a member and a
+  ≤ 1 cardinality bound, give me the singleton equality" — but spelled out
+  it's a 3-line block per use.
+- **Status:** mirrored. Each call site now reads
+  `Finset.eq_singleton_of_mem_of_card_le_one hmem (by omega)`.
+- **Mirror file:** `Mathlib/Data/Finset/Card.lean`.
+
 ## Resolved (project-internal)
 
 ### [resolved] `Exists.imp` doesn't transport across changing-binder-type existentials

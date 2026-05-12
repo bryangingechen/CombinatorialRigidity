@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Laman
+import CombinatorialRigidity.Mathlib.Data.Finset.Card
 import CombinatorialRigidity.Mathlib.Data.Finset.Option
 import CombinatorialRigidity.Mathlib.Data.Set.Card
 import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
@@ -1016,8 +1017,7 @@ private lemma IsLaman.contradiction_two_pair
       have h_ge : 1 ≤ (Sxz ∩ Syz).card := Finset.card_pos.mpr ⟨z, hz_inter⟩
       omega
     have h_inter_eq : Sxz ∩ Syz = {z} :=
-      (Finset.eq_of_subset_of_card_le (Finset.singleton_subset_iff.mpr hz_inter)
-        (by rw [Finset.card_singleton]; omega)).symm
+      Finset.eq_singleton_of_mem_of_card_le_one hz_inter (by omega)
     have hx_nin_Syz : x ∉ Syz := by
       intro hx_in
       have : x ∈ Sxz ∩ Syz := Finset.mem_inter.mpr ⟨hxSxz, hx_in⟩
@@ -1154,17 +1154,14 @@ private lemma IsLaman.contradiction_three_pair
       Finset.card_pos.mpr ⟨c, Finset.mem_inter.mpr ⟨hcSac, hcSbc⟩⟩
     omega
   have hab_ac_eq : Sab ∩ Sac = {a} :=
-    (Finset.eq_of_subset_of_card_le
-      (Finset.singleton_subset_iff.mpr (Finset.mem_inter.mpr ⟨haSab, haSac⟩))
-      (by rw [Finset.card_singleton]; omega)).symm
+    Finset.eq_singleton_of_mem_of_card_le_one
+      (Finset.mem_inter.mpr ⟨haSab, haSac⟩) (by omega)
   have hab_bc_eq : Sab ∩ Sbc = {b} :=
-    (Finset.eq_of_subset_of_card_le
-      (Finset.singleton_subset_iff.mpr (Finset.mem_inter.mpr ⟨hbSab, hbSbc⟩))
-      (by rw [Finset.card_singleton]; omega)).symm
+    Finset.eq_singleton_of_mem_of_card_le_one
+      (Finset.mem_inter.mpr ⟨hbSab, hbSbc⟩) (by omega)
   have hac_bc_eq : Sac ∩ Sbc = {c} :=
-    (Finset.eq_of_subset_of_card_le
-      (Finset.singleton_subset_iff.mpr (Finset.mem_inter.mpr ⟨hcSac, hcSbc⟩))
-      (by rw [Finset.card_singleton]; omega)).symm
+    Finset.eq_singleton_of_mem_of_card_le_one
+      (Finset.mem_inter.mpr ⟨hcSac, hcSbc⟩) (by omega)
   -- Step 1: bound e(Sab ∪ Sac) ≥ e(Sab) + e(Sac) using e(Sab ∩ Sac) = e({a}) = 0.
   have h_e_inter_ab_ac : (G.edgesIn (↑(Sab ∩ Sac) : Set V)).ncard = 0 := by
     rw [hab_ac_eq, Finset.coe_singleton, edgesIn_singleton]
