@@ -886,6 +886,368 @@ private lemma IsLaman.no_isTightOn_excluding_three_neighbors
   unfold IsTightOn at hT
   omega
 
+/-! ### Contradiction templates for the typeII-reverse case analysis
+
+For a Laman graph with degree-3 vertex `v` and neighbors `a, b, c`, each non-adjacent pair
+either gives a typeII-reverse witness or a tight blocker via the dispatcher above. The three
+templates below absorb every combination of blockers (one, two-with-shared-vertex, or three),
+build a tight `T ⊆ V \ {v}` containing `{a, b, c}`, and contradict
+`no_isTightOn_excluding_three_neighbors`. All four helpers (the primitive + the three
+templates) are `private`: they are scaffolding for `exists_typeI_or_typeII_reverse`. -/
+
+/-- **Squeeze form of the overshoot helper.** Given `T : Finset V` containing three distinct
+neighbors `a, b, c` of `v` (with `v ∉ T`) and the squeeze inequality
+`2 * #T ≤ #(edgesIn T) + 3`, applying `IsSparse.isTightOn_of_le` upgrades to
+`T.IsTightOn 2 3` and `no_isTightOn_excluding_three_neighbors` closes. The contradiction
+templates below each reduce to this primitive after building `T` and verifying the squeeze. -/
+private lemma IsLaman.False_of_three_neighbor_squeeze
+    {G : SimpleGraph V} (h : G.IsLaman) {v a b c : V}
+    (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    {T : Finset V} (hvT : v ∉ T) (haT : a ∈ T) (hbT : b ∈ T) (hcT : c ∈ T)
+    (h_squeeze : 2 * T.card ≤ (G.edgesIn (↑T : Set V)).ncard + 3) : False := by
+  classical
+  have h3_sub_T : ({a, b, c} : Finset V) ⊆ T := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl <;> assumption
+  have h3_card : ({a, b, c} : Finset V).card = 3 := by
+    rw [show ({a, b, c} : Finset V) = insert a (insert b {c}) from rfl,
+        Finset.card_insert_of_notMem (by simp [hab, hac]),
+        Finset.card_insert_of_notMem (by simp [hbc])]
+    rfl
+  have hT_card_ge : 3 ≤ T.card := h3_card ▸ Finset.card_le_card h3_sub_T
+  have hT_tight : G.IsTightOn 2 3 T :=
+    h.isSparse.isTightOn_of_le (by omega) h_squeeze
+  exact IsLaman.no_isTightOn_excluding_three_neighbors h ha hb hc hab hac hbc
+    hvT haT hbT hcT hT_tight
+
+/-- **1-pair contradiction template.** A single blocker `S` containing two neighbors `x, y` of `v`,
+with the third neighbor `z` connected to both `x` and `y` by edges of `G`: case-split on `z ∈ S`.
+If yes, `S` already contains `{x, y, z}` and the primitive closes. If no, extend to
+`T := insert z S`; the two edges `s(x, z)` and `s(y, z)` are in `edgesIn T` but not in `edgesIn S`
+(since `z ∉ S`), giving `#(edgesIn T) ≥ #(edgesIn S) + 2`, which combined with tightness of `S`
+saturates the squeeze at `T`. -/
+private lemma IsLaman.contradiction_one_pair
+    {G : SimpleGraph V} (h : G.IsLaman) {v x y z : V}
+    (hx : G.Adj v x) (hy : G.Adj v y) (hz : G.Adj v z)
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hxz_adj : G.Adj x z) (hyz_adj : G.Adj y z)
+    {S : Finset V} (hvS : v ∉ S) (hxS : x ∈ S) (hyS : y ∈ S)
+    (hS_tight : G.IsTightOn 2 3 S) : False := by
+  classical
+  by_cases hzS : z ∈ S
+  · refine IsLaman.False_of_three_neighbor_squeeze h hx hy hz hxy hxz hyz hvS hxS hyS hzS ?_
+    unfold IsTightOn at hS_tight; omega
+  · set T : Finset V := insert z S with hT_def
+    have hvT : v ∉ T := by
+      simp only [hT_def, Finset.mem_insert, not_or]
+      exact ⟨G.ne_of_adj hz, hvS⟩
+    have hzT : z ∈ T := Finset.mem_insert_self z S
+    have hxT : x ∈ T := Finset.mem_insert_of_mem hxS
+    have hyT : y ∈ T := Finset.mem_insert_of_mem hyS
+    have hT_card : T.card = S.card + 1 := Finset.card_insert_of_notMem hzS
+    have hxz_in_T : s(x, z) ∈ G.edgesIn (↑T : Set V) := by
+      rw [mem_edgesIn]
+      refine ⟨hxz_adj, ?_⟩
+      rw [Sym2.coe_mk]
+      exact Set.insert_subset_iff.mpr ⟨hxT, Set.singleton_subset_iff.mpr hzT⟩
+    have hyz_in_T : s(y, z) ∈ G.edgesIn (↑T : Set V) := by
+      rw [mem_edgesIn]
+      refine ⟨hyz_adj, ?_⟩
+      rw [Sym2.coe_mk]
+      exact Set.insert_subset_iff.mpr ⟨hyT, Set.singleton_subset_iff.mpr hzT⟩
+    have hxz_nin_S : s(x, z) ∉ G.edgesIn (↑S : Set V) := by
+      intro hmem
+      rw [mem_edgesIn] at hmem
+      have h_z_in : z ∈ (s(x, z) : Set V) := by
+        rw [Sym2.coe_mk]; exact Set.mem_insert_of_mem _ rfl
+      exact hzS (Finset.mem_coe.mp (hmem.2 h_z_in))
+    have hyz_nin_S : s(y, z) ∉ G.edgesIn (↑S : Set V) := by
+      intro hmem
+      rw [mem_edgesIn] at hmem
+      have h_z_in : z ∈ (s(y, z) : Set V) := by
+        rw [Sym2.coe_mk]; exact Set.mem_insert_of_mem _ rfl
+      exact hzS (Finset.mem_coe.mp (hmem.2 h_z_in))
+    have hxz_ne_yz : s(x, z) ≠ s(y, z) := fun heq =>
+      (Sym2.eq_iff.mp heq).elim
+        (fun ⟨h1, _⟩ => hxy h1)
+        (fun ⟨h1, _⟩ => hxz h1)
+    set E : Set (Sym2 V) := {s(x, z), s(y, z)} with hE_def
+    have hE_card : E.ncard = 2 := by rw [hE_def, Set.ncard_pair hxz_ne_yz]
+    have hE_in_T : E ⊆ G.edgesIn (↑T : Set V) := by
+      rintro e (rfl | rfl)
+      · exact hxz_in_T
+      · exact hyz_in_T
+    have hE_disj : Disjoint E (G.edgesIn (↑S : Set V)) := by
+      rw [Set.disjoint_left]
+      rintro e (rfl | rfl)
+      · exact hxz_nin_S
+      · exact hyz_nin_S
+    have h_edgesIn_sub : G.edgesIn (↑S : Set V) ⊆ G.edgesIn (↑T : Set V) := by
+      apply edgesIn_mono
+      simp [hT_def, Finset.coe_insert, Set.subset_insert]
+    have h_count : (G.edgesIn (↑S : Set V)).ncard + 2 ≤ (G.edgesIn (↑T : Set V)).ncard := by
+      calc (G.edgesIn (↑S : Set V)).ncard + 2
+          = (G.edgesIn (↑S : Set V)).ncard + E.ncard := by rw [hE_card]
+        _ = (G.edgesIn (↑S : Set V) ∪ E).ncard :=
+            (Set.ncard_union_eq hE_disj.symm (G.edgesIn_finite S) (Set.toFinite _)).symm
+        _ ≤ (G.edgesIn (↑T : Set V)).ncard :=
+            Set.ncard_le_ncard (Set.union_subset h_edgesIn_sub hE_in_T) (G.edgesIn_finite T)
+    refine IsLaman.False_of_three_neighbor_squeeze h hx hy hz hxy hxz hyz hvT hxT hyT hzT ?_
+    unfold IsTightOn at hS_tight
+    omega
+
+/-- **2-pair contradiction template.** Two blockers sharing a vertex `z` (the third neighbor):
+`Sxz` contains `{x, z}` and `Syz` contains `{y, z}`, with the third pair `(x, y)` adjacent.
+Case-split on `2 ≤ #(Sxz ∩ Syz)`. If yes, `IsTightOn.union_inter` gives `Sxz ∪ Syz` tight,
+which contains `{x, y, z}`. If no, the intersection is exactly `{z}` (size 1, contains `z`),
+forcing `x ∉ Syz` and `y ∉ Sxz`; the cross-edge `s(x, y)` lies in `edgesIn (Sxz ∪ Syz)` but in
+neither `edgesIn Sxz` nor `edgesIn Syz`, saturating the squeeze at `T := Sxz ∪ Syz`. -/
+private lemma IsLaman.contradiction_two_pair
+    [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {v x y z : V}
+    (hx : G.Adj v x) (hy : G.Adj v y) (hz : G.Adj v z)
+    (hxy : x ≠ y) (hxz : x ≠ z) (hyz : y ≠ z)
+    (hxy_adj : G.Adj x y)
+    {Sxz : Finset V} (hvSxz : v ∉ Sxz) (hxSxz : x ∈ Sxz) (hzSxz : z ∈ Sxz)
+    (hSxz_tight : G.IsTightOn 2 3 Sxz)
+    {Syz : Finset V} (hvSyz : v ∉ Syz) (hySyz : y ∈ Syz) (hzSyz : z ∈ Syz)
+    (hSyz_tight : G.IsTightOn 2 3 Syz) : False := by
+  classical
+  set T : Finset V := Sxz ∪ Syz with hT_def
+  have hvT : v ∉ T := by
+    simp only [hT_def, Finset.mem_union, not_or]
+    exact ⟨hvSxz, hvSyz⟩
+  have hxT : x ∈ T := Finset.mem_union_left _ hxSxz
+  have hyT : y ∈ T := Finset.mem_union_right _ hySyz
+  have hzT : z ∈ T := Finset.mem_union_left _ hzSxz
+  by_cases h_big : 2 ≤ (Sxz ∩ Syz).card
+  · have ⟨hT_tight, _⟩ := hSxz_tight.union_inter hSyz_tight h.isSparse (by omega)
+    refine IsLaman.False_of_three_neighbor_squeeze h hx hy hz hxy hxz hyz hvT hxT hyT hzT ?_
+    unfold IsTightOn at hT_tight
+    rw [hT_def]; omega
+  · push Not at h_big
+    have hz_inter : z ∈ Sxz ∩ Syz := Finset.mem_inter.mpr ⟨hzSxz, hzSyz⟩
+    have h_inter_card : (Sxz ∩ Syz).card = 1 := by
+      have h_ge : 1 ≤ (Sxz ∩ Syz).card := Finset.card_pos.mpr ⟨z, hz_inter⟩
+      omega
+    have h_inter_eq : Sxz ∩ Syz = {z} :=
+      (Finset.eq_of_subset_of_card_le (Finset.singleton_subset_iff.mpr hz_inter)
+        (by rw [Finset.card_singleton]; omega)).symm
+    have hx_nin_Syz : x ∉ Syz := by
+      intro hx_in
+      have : x ∈ Sxz ∩ Syz := Finset.mem_inter.mpr ⟨hxSxz, hx_in⟩
+      rw [h_inter_eq, Finset.mem_singleton] at this
+      exact hxz this
+    have hy_nin_Sxz : y ∉ Sxz := by
+      intro hy_in
+      have : y ∈ Sxz ∩ Syz := Finset.mem_inter.mpr ⟨hy_in, hySyz⟩
+      rw [h_inter_eq, Finset.mem_singleton] at this
+      exact hyz this
+    have hT_card : T.card = Sxz.card + Syz.card - 1 := by
+      have h1 := Finset.card_union_add_card_inter Sxz Syz
+      rw [← hT_def, h_inter_card] at h1
+      omega
+    have h_e_inter : (G.edgesIn (↑(Sxz ∩ Syz) : Set V)).ncard = 0 := by
+      rw [h_inter_eq, Finset.coe_singleton, edgesIn_singleton]
+      exact Set.ncard_empty _
+    have h_super : (G.edgesIn (↑Sxz : Set V)).ncard + (G.edgesIn (↑Syz : Set V)).ncard ≤
+                   (G.edgesIn (↑T : Set V)).ncard +
+                   (G.edgesIn (↑(Sxz ∩ Syz) : Set V)).ncard := by
+      have h_ncard := G.edgesIn_ncard_add_le (↑Sxz : Set V) (↑Syz : Set V)
+      rw [show (↑T : Set V) = ↑Sxz ∪ ↑Syz from by rw [hT_def]; exact Finset.coe_union _ _,
+          show (↑(Sxz ∩ Syz) : Set V) = ↑Sxz ∩ ↑Syz from Finset.coe_inter _ _]
+      exact h_ncard
+    have hxy_in_T : s(x, y) ∈ G.edgesIn (↑T : Set V) := by
+      rw [mem_edgesIn]
+      refine ⟨hxy_adj, ?_⟩
+      rw [Sym2.coe_mk]
+      exact Set.insert_subset_iff.mpr ⟨hxT, Set.singleton_subset_iff.mpr hyT⟩
+    have hxy_nin_Sxz : s(x, y) ∉ G.edgesIn (↑Sxz : Set V) := by
+      intro hmem
+      rw [mem_edgesIn] at hmem
+      have hy_in : y ∈ (s(x, y) : Set V) := by
+        rw [Sym2.coe_mk]; exact Set.mem_insert_of_mem _ rfl
+      exact hy_nin_Sxz (Finset.mem_coe.mp (hmem.2 hy_in))
+    have hxy_nin_Syz : s(x, y) ∉ G.edgesIn (↑Syz : Set V) := by
+      intro hmem
+      rw [mem_edgesIn] at hmem
+      have hx_in : x ∈ (s(x, y) : Set V) := by
+        rw [Sym2.coe_mk]; exact Set.mem_insert _ _
+      exact hx_nin_Syz (Finset.mem_coe.mp (hmem.2 hx_in))
+    -- |edgesIn Sxz ∪ edgesIn Syz| = e(Sxz) + e(Syz) - e(Sxz ∩ Syz) = e(Sxz) + e(Syz).
+    have h_union_card : (G.edgesIn (↑Sxz : Set V) ∪ G.edgesIn (↑Syz : Set V)).ncard +
+        (G.edgesIn (↑(Sxz ∩ Syz) : Set V)).ncard =
+        (G.edgesIn (↑Sxz : Set V)).ncard + (G.edgesIn (↑Syz : Set V)).ncard := by
+      have h1 := Set.ncard_union_add_ncard_inter
+        (G.edgesIn (↑Sxz : Set V)) (G.edgesIn (↑Syz : Set V))
+      have h2 : G.edgesIn (↑Sxz : Set V) ∩ G.edgesIn (↑Syz : Set V) =
+                G.edgesIn (↑(Sxz ∩ Syz) : Set V) := by
+        rw [Finset.coe_inter, edgesIn_inter]
+      rw [h2] at h1; exact h1
+    have h_union_sub_T : G.edgesIn (↑Sxz : Set V) ∪ G.edgesIn (↑Syz : Set V)
+        ⊆ G.edgesIn (↑T : Set V) := by
+      rw [hT_def, Finset.coe_union]
+      exact Set.union_subset (edgesIn_mono Set.subset_union_left)
+                             (edgesIn_mono Set.subset_union_right)
+    have hxy_nin_union : s(x, y) ∉ G.edgesIn (↑Sxz : Set V) ∪ G.edgesIn (↑Syz : Set V) := by
+      rintro (h_in_Sxz | h_in_Syz)
+      · exact hxy_nin_Sxz h_in_Sxz
+      · exact hxy_nin_Syz h_in_Syz
+    have h_combined_sub : G.edgesIn (↑Sxz : Set V) ∪ G.edgesIn (↑Syz : Set V) ∪
+        {s(x, y)} ⊆ G.edgesIn (↑T : Set V) :=
+      Set.union_subset h_union_sub_T (Set.singleton_subset_iff.mpr hxy_in_T)
+    have h_disj_singleton : Disjoint
+        (G.edgesIn (↑Sxz : Set V) ∪ G.edgesIn (↑Syz : Set V))
+        ({s(x, y)} : Set (Sym2 V)) := by
+      rw [Set.disjoint_right]; rintro e rfl; exact hxy_nin_union
+    have h_combined_card : (G.edgesIn (↑Sxz : Set V) ∪ G.edgesIn (↑Syz : Set V) ∪
+        {s(x, y)}).ncard =
+        (G.edgesIn (↑Sxz : Set V) ∪ G.edgesIn (↑Syz : Set V)).ncard + 1 := by
+      rw [Set.ncard_union_eq h_disj_singleton
+        (Set.Finite.union (G.edgesIn_finite Sxz) (G.edgesIn_finite Syz)) (Set.toFinite _),
+        Set.ncard_singleton]
+    have h_count : (G.edgesIn (↑Sxz : Set V)).ncard + (G.edgesIn (↑Syz : Set V)).ncard + 1 ≤
+                   (G.edgesIn (↑T : Set V)).ncard := by
+      have h_card_combined_le :=
+        Set.ncard_le_ncard h_combined_sub (G.edgesIn_finite T)
+      omega
+    refine IsLaman.False_of_three_neighbor_squeeze h hx hy hz hxy hxz hyz hvT hxT hyT hzT ?_
+    unfold IsTightOn at hSxz_tight hSyz_tight
+    omega
+
+/-- **3-pair contradiction template.** Three blockers covering all three pairs of `v`'s neighbors,
+all non-adjacent in `G`. If any pairwise intersection has size `≥ 2`, that pair's union is tight
+(`IsTightOn.union_inter`) and contains `{a, b, c}`. Otherwise all three pairwise intersections are
+singletons, the pairwise-disjoint edge sets accumulate without overlap, and the third-pair
+intersection `(Sab ∪ Sac) ∩ Sbc = {b, c}` contributes zero edges (since `(b, c)` is non-adj here),
+saturating the squeeze at `T := Sab ∪ Sac ∪ Sbc`. -/
+private lemma IsLaman.contradiction_three_pair
+    [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {v a b c : V}
+    (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (hab_nadj : ¬ G.Adj a b) (hac_nadj : ¬ G.Adj a c) (hbc_nadj : ¬ G.Adj b c)
+    {Sab : Finset V} (hvSab : v ∉ Sab) (haSab : a ∈ Sab) (hbSab : b ∈ Sab)
+    (hSab_tight : G.IsTightOn 2 3 Sab)
+    {Sac : Finset V} (hvSac : v ∉ Sac) (haSac : a ∈ Sac) (hcSac : c ∈ Sac)
+    (hSac_tight : G.IsTightOn 2 3 Sac)
+    {Sbc : Finset V} (hvSbc : v ∉ Sbc) (hbSbc : b ∈ Sbc) (hcSbc : c ∈ Sbc)
+    (hSbc_tight : G.IsTightOn 2 3 Sbc) : False := by
+  classical
+  -- Sub-case A: some pairwise intersection ≥ 2. Apply union_inter and reduce to primitive.
+  by_cases h_ab_ac : 2 ≤ (Sab ∩ Sac).card
+  · have ⟨hT_tight, _⟩ := hSab_tight.union_inter hSac_tight h.isSparse (by omega)
+    refine IsLaman.False_of_three_neighbor_squeeze h ha hb hc hab hac hbc
+      (by simp only [Finset.mem_union, not_or]; exact ⟨hvSab, hvSac⟩)
+      (Finset.mem_union_left _ haSab)
+      (Finset.mem_union_left _ hbSab)
+      (Finset.mem_union_right _ hcSac) ?_
+    unfold IsTightOn at hT_tight; omega
+  by_cases h_ab_bc : 2 ≤ (Sab ∩ Sbc).card
+  · have ⟨hT_tight, _⟩ := hSab_tight.union_inter hSbc_tight h.isSparse (by omega)
+    refine IsLaman.False_of_three_neighbor_squeeze h ha hb hc hab hac hbc
+      (by simp only [Finset.mem_union, not_or]; exact ⟨hvSab, hvSbc⟩)
+      (Finset.mem_union_left _ haSab)
+      (Finset.mem_union_left _ hbSab)
+      (Finset.mem_union_right _ hcSbc) ?_
+    unfold IsTightOn at hT_tight; omega
+  by_cases h_ac_bc : 2 ≤ (Sac ∩ Sbc).card
+  · have ⟨hT_tight, _⟩ := hSac_tight.union_inter hSbc_tight h.isSparse (by omega)
+    refine IsLaman.False_of_three_neighbor_squeeze h ha hb hc hab hac hbc
+      (by simp only [Finset.mem_union, not_or]; exact ⟨hvSac, hvSbc⟩)
+      (Finset.mem_union_left _ haSac)
+      (Finset.mem_union_right _ hbSbc)
+      (Finset.mem_union_left _ hcSac) ?_
+    unfold IsTightOn at hT_tight; omega
+  -- Sub-case B: all pairwise intersections have size 1 (singletons).
+  push Not at h_ab_ac h_ab_bc h_ac_bc
+  have hab_ac_card : (Sab ∩ Sac).card = 1 := by
+    have : 1 ≤ (Sab ∩ Sac).card :=
+      Finset.card_pos.mpr ⟨a, Finset.mem_inter.mpr ⟨haSab, haSac⟩⟩
+    omega
+  have hab_bc_card : (Sab ∩ Sbc).card = 1 := by
+    have : 1 ≤ (Sab ∩ Sbc).card :=
+      Finset.card_pos.mpr ⟨b, Finset.mem_inter.mpr ⟨hbSab, hbSbc⟩⟩
+    omega
+  have hac_bc_card : (Sac ∩ Sbc).card = 1 := by
+    have : 1 ≤ (Sac ∩ Sbc).card :=
+      Finset.card_pos.mpr ⟨c, Finset.mem_inter.mpr ⟨hcSac, hcSbc⟩⟩
+    omega
+  have hab_ac_eq : Sab ∩ Sac = {a} :=
+    (Finset.eq_of_subset_of_card_le
+      (Finset.singleton_subset_iff.mpr (Finset.mem_inter.mpr ⟨haSab, haSac⟩))
+      (by rw [Finset.card_singleton]; omega)).symm
+  have hab_bc_eq : Sab ∩ Sbc = {b} :=
+    (Finset.eq_of_subset_of_card_le
+      (Finset.singleton_subset_iff.mpr (Finset.mem_inter.mpr ⟨hbSab, hbSbc⟩))
+      (by rw [Finset.card_singleton]; omega)).symm
+  have hac_bc_eq : Sac ∩ Sbc = {c} :=
+    (Finset.eq_of_subset_of_card_le
+      (Finset.singleton_subset_iff.mpr (Finset.mem_inter.mpr ⟨hcSac, hcSbc⟩))
+      (by rw [Finset.card_singleton]; omega)).symm
+  -- Step 1: bound e(Sab ∪ Sac) ≥ e(Sab) + e(Sac) using e(Sab ∩ Sac) = e({a}) = 0.
+  have h_e_inter_ab_ac : (G.edgesIn (↑(Sab ∩ Sac) : Set V)).ncard = 0 := by
+    rw [hab_ac_eq, Finset.coe_singleton, edgesIn_singleton]
+    exact Set.ncard_empty _
+  have h_super_12 : (G.edgesIn (↑Sab : Set V)).ncard + (G.edgesIn (↑Sac : Set V)).ncard
+      ≤ (G.edgesIn (↑(Sab ∪ Sac) : Set V)).ncard := by
+    have h_super := G.edgesIn_ncard_add_le (↑Sab : Set V) (↑Sac : Set V)
+    have h_eq_union : (↑(Sab ∪ Sac) : Set V) = ↑Sab ∪ ↑Sac := Finset.coe_union _ _
+    have h_eq_inter : (G.edgesIn (↑Sab ∩ ↑Sac : Set V)).ncard = 0 := by
+      rw [← Finset.coe_inter]; exact h_e_inter_ab_ac
+    rw [h_eq_union]
+    omega
+  have hT12_card : (Sab ∪ Sac).card = Sab.card + Sac.card - 1 := by
+    have h1 := Finset.card_union_add_card_inter Sab Sac
+    rw [hab_ac_card] at h1
+    omega
+  -- Step 2: (Sab ∪ Sac) ∩ Sbc = {b, c}, which has 0 edges since (b, c) is non-adjacent.
+  have h_T12_inter_Sbc_eq : (Sab ∪ Sac) ∩ Sbc = ({b, c} : Finset V) := by
+    rw [Finset.union_inter_distrib_right, hab_bc_eq, hac_bc_eq]
+    rfl
+  have h_T12_inter_Sbc_card : ((Sab ∪ Sac) ∩ Sbc).card = 2 := by
+    rw [h_T12_inter_Sbc_eq, Finset.card_pair hbc]
+  have h_e_inter_T12_Sbc : (G.edgesIn (↑((Sab ∪ Sac) ∩ Sbc) : Set V)).ncard = 0 := by
+    suffices h : G.edgesIn (↑((Sab ∪ Sac) ∩ Sbc) : Set V) = ∅ by
+      rw [h]; exact Set.ncard_empty _
+    rw [h_T12_inter_Sbc_eq]
+    ext e
+    refine e.ind fun p q => ?_
+    simp only [Finset.coe_insert, Finset.coe_singleton, mem_edgesIn, mem_edgeSet, Sym2.coe_mk,
+               Set.insert_subset_iff, Set.singleton_subset_iff, Set.mem_insert_iff,
+               Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]
+    intro h_adj h_p h_q
+    rcases h_p with rfl | rfl <;> rcases h_q with rfl | rfl
+    · exact G.loopless.irrefl _ h_adj
+    · exact hbc_nadj h_adj
+    · exact hbc_nadj h_adj.symm
+    · exact G.loopless.irrefl _ h_adj
+  set T : Finset V := (Sab ∪ Sac) ∪ Sbc with hT_def
+  have h_super_T : (G.edgesIn (↑(Sab ∪ Sac) : Set V)).ncard +
+      (G.edgesIn (↑Sbc : Set V)).ncard ≤ (G.edgesIn (↑T : Set V)).ncard := by
+    have h_super := G.edgesIn_ncard_add_le (↑(Sab ∪ Sac) : Set V) (↑Sbc : Set V)
+    have h_eq_union : (↑T : Set V) = ↑(Sab ∪ Sac) ∪ ↑Sbc := by
+      rw [hT_def]; exact Finset.coe_union _ _
+    have h_eq_inter : (G.edgesIn (↑(Sab ∪ Sac) ∩ ↑Sbc : Set V)).ncard = 0 := by
+      rw [← Finset.coe_inter]; exact h_e_inter_T12_Sbc
+    rw [h_eq_union]
+    omega
+  have hT_card : T.card = Sab.card + Sac.card + Sbc.card - 3 := by
+    have h1 := Finset.card_union_add_card_inter (Sab ∪ Sac) Sbc
+    rw [h_T12_inter_Sbc_card, hT12_card, ← hT_def] at h1
+    have hT12_ge : 1 ≤ (Sab ∪ Sac).card :=
+      Finset.card_pos.mpr ⟨a, Finset.mem_union_left _ haSab⟩
+    omega
+  have hvT : v ∉ T := by
+    simp only [hT_def, Finset.mem_union, not_or]
+    exact ⟨⟨hvSab, hvSac⟩, hvSbc⟩
+  have haT : a ∈ T := Finset.mem_union_left _ (Finset.mem_union_left _ haSab)
+  have hbT : b ∈ T := Finset.mem_union_left _ (Finset.mem_union_left _ hbSab)
+  have hcT : c ∈ T := Finset.mem_union_left _ (Finset.mem_union_right _ hcSac)
+  refine IsLaman.False_of_three_neighbor_squeeze h ha hb hc hab hac hbc hvT haT hbT hcT ?_
+  unfold IsTightOn at hSab_tight hSac_tight hSbc_tight
+  omega
+
 /-- **Strengthened decomposition theorem.** Every Laman graph on `n ≥ 3` vertices is iso to a
 Type I or Type II Henneberg move applied to a **Laman** graph `G'` on `{w : V // w ≠ v}`.
 
@@ -924,11 +1286,10 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
         (IsLaman.iso (typeI_iso_of_two_neighbors hva hvb hN_iff) h)
     · exact Or.inl ⟨⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, hab_s,
         ⟨typeI_iso_of_two_neighbors hva hvb hN_iff⟩⟩
-  · -- Degree-3 case: Type II reverse. Pick a non-adjacent neighbor pair; dispatch each via
-    -- `typeII_reverse_witness_or_blocker`. On success, return the witness; on failure, the
-    -- accumulated blockers will be combined (in the sorry'd sub-cases) into a tight set
-    -- containing `{a, b, c}` excluding `v`, contradicting
-    -- `IsLaman.no_isTightOn_excluding_three_neighbors`.
+  · -- Degree-3 case: case-split on the three pairs' adjacency. For each non-adjacent pair invoke
+    -- `typeII_reverse_witness_or_blocker`; on success return the witness; on failure collect a
+    -- blocker. Combine the accumulated blockers via the appropriate `contradiction_*_pair`
+    -- helper. The all-adjacent leaf contradicts `exists_nonadj_among_three_neighbors`.
     obtain ⟨a, b, c, hab, hac, hbc, hN_eq⟩ := Finset.card_eq_three.mp hdeg
     have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c := fun w => by
       rw [← mem_neighborFinset, hN_eq]; simp
@@ -938,34 +1299,91 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
     have hva : v ≠ a := G.ne_of_adj ha_adj
     have hvb : v ≠ b := G.ne_of_adj hb_adj
     have hvc : v ≠ c := G.ne_of_adj hc_adj
-    rcases h.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc with
-      hnab | hnac | hnbc
-    · -- (a, b) non-adjacent. Bridge `a-b`, third neighbor `c`.
+    have hN_iff_acb : ∀ w, G.Adj v w ↔ w = a ∨ w = c ∨ w = b := fun w => by
+      rw [hN_iff]; tauto
+    have hN_iff_bca : ∀ w, G.Adj v w ↔ w = b ∨ w = c ∨ w = a := fun w => by
+      rw [hN_iff]; tauto
+    by_cases hab_adj : G.Adj a b
+    · by_cases hac_adj : G.Adj a c
+      · -- (a, b), (a, c) adj → (b, c) non-adj by `exists_nonadj`.
+        have hbc_nadj : ¬ G.Adj b c := by
+          rcases h.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc with
+            h' | h' | h'
+          · exact absurd hab_adj h'
+          · exact absurd hac_adj h'
+          · exact h'
+        rcases IsLaman.typeII_reverse_witness_or_blocker h hvb.symm hvc.symm hva.symm
+            hbc hab hac hN_iff_bca hbc_nadj with
+          ⟨G', hG'_lam, hwit⟩ | ⟨S_bc, hv_bc, hb_bc, hc_bc, hSbc_tight⟩
+        · exact ⟨G', hG'_lam, Or.inr hwit⟩
+        · -- 1-pair: only (b, c) non-adj; blocker for it.
+          exact absurd
+            (IsLaman.contradiction_one_pair h hb_adj hc_adj ha_adj hbc hab.symm hac.symm
+              hab_adj.symm hac_adj.symm hv_bc hb_bc hc_bc hSbc_tight) id
+      · -- (a, b) adj, (a, c) non-adj.
+        rcases IsLaman.typeII_reverse_witness_or_blocker h hva.symm hvc.symm hvb.symm
+            hac hab.symm hbc hN_iff_acb hac_adj with
+          ⟨G', hG'_lam, hwit⟩ | ⟨S_ac, hv_ac, ha_ac, hc_ac, hSac_tight⟩
+        · exact ⟨G', hG'_lam, Or.inr hwit⟩
+        · by_cases hbc_adj : G.Adj b c
+          · -- 1-pair: only (a, c) non-adj; blocker for it.
+            exact absurd
+              (IsLaman.contradiction_one_pair h ha_adj hc_adj hb_adj hac hab hbc.symm
+                hab_adj hbc_adj.symm hv_ac ha_ac hc_ac hSac_tight) id
+          · rcases IsLaman.typeII_reverse_witness_or_blocker h hvb.symm hvc.symm hva.symm
+                hbc hab hac hN_iff_bca hbc_adj with
+              ⟨G', hG'_lam, hwit⟩ | ⟨S_bc, hv_bc, hb_bc, hc_bc, hSbc_tight⟩
+            · exact ⟨G', hG'_lam, Or.inr hwit⟩
+            · -- 2-pair: (a, c), (b, c) non-adj, c shared; (a, b) adj.
+              exact absurd
+                (IsLaman.contradiction_two_pair h ha_adj hb_adj hc_adj hab hac hbc
+                  hab_adj
+                  hv_ac ha_ac hc_ac hSac_tight
+                  hv_bc hb_bc hc_bc hSbc_tight) id
+    · -- (a, b) non-adj.
       rcases IsLaman.typeII_reverse_witness_or_blocker h hva.symm hvb.symm hvc.symm
-          hab hac.symm hbc.symm hN_iff hnab with
-        ⟨G', hG'_lam, hwit⟩ | hblock_ab
+          hab hac.symm hbc.symm hN_iff hab_adj with
+        ⟨G', hG'_lam, hwit⟩ | ⟨S_ab, hv_ab, ha_ab, hb_ab, hSab_tight⟩
       · exact ⟨G', hG'_lam, Or.inr hwit⟩
-      · -- (a, b) blocked. Combine with (a, c) / (b, c) status to derive contradiction.
-        exfalso
-        sorry
-    · -- (a, c) non-adjacent. Bridge `a-c`, third neighbor `b`.
-      have hN_iff_acb : ∀ w, G.Adj v w ↔ w = a ∨ w = c ∨ w = b := fun w => by
-        rw [hN_iff]; tauto
-      rcases IsLaman.typeII_reverse_witness_or_blocker h hva.symm hvc.symm hvb.symm
-          hac hab.symm hbc hN_iff_acb hnac with
-        ⟨G', hG'_lam, hwit⟩ | hblock_ac
-      · exact ⟨G', hG'_lam, Or.inr hwit⟩
-      · exfalso
-        sorry
-    · -- (b, c) non-adjacent. Bridge `b-c`, third neighbor `a`.
-      have hN_iff_bca : ∀ w, G.Adj v w ↔ w = b ∨ w = c ∨ w = a := fun w => by
-        rw [hN_iff]; tauto
-      rcases IsLaman.typeII_reverse_witness_or_blocker h hvb.symm hvc.symm hva.symm
-          hbc hab hac hN_iff_bca hnbc with
-        ⟨G', hG'_lam, hwit⟩ | hblock_bc
-      · exact ⟨G', hG'_lam, Or.inr hwit⟩
-      · exfalso
-        sorry
+      · by_cases hac_adj : G.Adj a c
+        · by_cases hbc_adj : G.Adj b c
+          · -- 1-pair: only (a, b) non-adj; blocker for it.
+            exact absurd
+              (IsLaman.contradiction_one_pair h ha_adj hb_adj hc_adj hab hac hbc
+                hac_adj hbc_adj hv_ab ha_ab hb_ab hSab_tight) id
+          · rcases IsLaman.typeII_reverse_witness_or_blocker h hvb.symm hvc.symm hva.symm
+                hbc hab hac hN_iff_bca hbc_adj with
+              ⟨G', hG'_lam, hwit⟩ | ⟨S_bc, hv_bc, hb_bc, hc_bc, hSbc_tight⟩
+            · exact ⟨G', hG'_lam, Or.inr hwit⟩
+            · -- 2-pair: (a, b), (b, c) non-adj, b shared; (a, c) adj.
+              exact absurd
+                (IsLaman.contradiction_two_pair h ha_adj hc_adj hb_adj hac hab hbc.symm
+                  hac_adj
+                  hv_ab ha_ab hb_ab hSab_tight
+                  hv_bc hc_bc hb_bc hSbc_tight) id
+        · -- (a, b), (a, c) non-adj.
+          rcases IsLaman.typeII_reverse_witness_or_blocker h hva.symm hvc.symm hvb.symm
+              hac hab.symm hbc hN_iff_acb hac_adj with
+            ⟨G', hG'_lam, hwit⟩ | ⟨S_ac, hv_ac, ha_ac, hc_ac, hSac_tight⟩
+          · exact ⟨G', hG'_lam, Or.inr hwit⟩
+          · by_cases hbc_adj : G.Adj b c
+            · -- 2-pair: (a, b), (a, c) non-adj, a shared; (b, c) adj.
+              exact absurd
+                (IsLaman.contradiction_two_pair h hb_adj hc_adj ha_adj hbc hab.symm hac.symm
+                  hbc_adj
+                  hv_ab hb_ab ha_ab hSab_tight
+                  hv_ac hc_ac ha_ac hSac_tight) id
+            · rcases IsLaman.typeII_reverse_witness_or_blocker h hvb.symm hvc.symm hva.symm
+                  hbc hab hac hN_iff_bca hbc_adj with
+                ⟨G', hG'_lam, hwit⟩ | ⟨S_bc, hv_bc, hb_bc, hc_bc, hSbc_tight⟩
+              · exact ⟨G', hG'_lam, Or.inr hwit⟩
+              · -- 3-pair: all three pairs non-adj.
+                exact absurd
+                  (IsLaman.contradiction_three_pair h ha_adj hb_adj hc_adj hab hac hbc
+                    hab_adj hac_adj hbc_adj
+                    hv_ab ha_ab hb_ab hSab_tight
+                    hv_ac ha_ac hc_ac hSac_tight
+                    hv_bc hb_bc hc_bc hSbc_tight) id
 
 end Henneberg
 

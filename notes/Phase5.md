@@ -7,59 +7,44 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Milestone 0 is complete, and Milestone 1's typeI half, edge-arithmetic
-infrastructure, per-pair blocker, **overshoot helper**, **per-pair
-witness-or-blocker dispatcher**, and the **degree-2 branch + degree-3
-case-split skeleton** of `IsLaman.exists_typeI_or_typeII_reverse` are
-all in place. Specifically:
+Milestones 0 and 1 are complete. `IsLaman.exists_typeI_or_typeII_reverse`
+is fully proved in `Henneberg.lean`; the only remaining sorries in the
+Phase-5 chain are milestone 3 (induction) and Phase 6.
 
 * Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport) —
   done in an earlier commit.
-* Milestone 1 partial — `typeI_reverse_isLaman` and the companion
-  `typeI_isLaman_iff` (in `Henneberg.lean`), giving the degree-2
-  branch of the structural decomposition automatically.
-* Milestone 1 typeII edge-arithmetic input — `edgesIn_inter` plus
-  `edgesIn_ncard_add_le` in `EdgesIn.lean` (supermodularity of edge
-  counts); plus `IsTightOn` + `IsTightOn.union_inter` in `Sparsity.lean`
-  (the standard tight-subset lattice closure on which the blocker
-  argument runs).
-* Milestone 1 typeII per-pair blocker — `IsLaman.typeII_reverse_blocker`
-  in `Henneberg.lean`: given a degree-3 vertex `v` with neighbors
-  `{x, y, c}` and a non-adjacent pair `(x, y)`, if the typeII-reverse
-  candidate `(G - v) + edge(x, y)` is *not* Laman, then there exists a
-  `(2, 3)`-tight `S ⊆ V \ {v}` with `{x, y} ⊆ S` in `G`. Edge count is
-  established via the typeII iso transfer (Phase 3:
-  `typeII_iso_of_three_neighbors`); sparsity violation extracts a
-  Finset `s'` whose lift to `V` is the witness, tightness via the new
-  `IsSparse.isTightOn_of_le` (`Sparsity.lean`).
-* Milestone 1 overshoot helper — `IsLaman.no_isTightOn_excluding_three_neighbors`
-  in `Henneberg.lean` (private): in a Laman `G`, no `(2, 3)`-tight
-  `T ⊆ V \ {v}` can contain three distinct neighbors `a, b, c` of `v`.
-  The contradiction primitive every blocker sub-case reduces to —
-  inserting `v` adds 1 vertex but ≥ 3 incident edges, overshooting
-  `2k − 3`.
-* Milestone 1 dispatcher — `IsLaman.typeII_reverse_witness_or_blocker`
-  in `Henneberg.lean` (private): packages "try the typeII reverse for
-  a non-adjacent pair" as a disjunction. Success branch returns the
-  full typeII decomposition witness with `G'.IsLaman`; failure branch
-  returns the `typeII_reverse_blocker` output.
-* Milestone 1 main theorem — `IsLaman.exists_typeI_or_typeII_reverse`
-  in `Henneberg.lean`. Degree-2 branch fully proved (via
-  `typeI_isLaman_iff` on the iso transport). Degree-3 branch's
-  case-split skeleton landed: `rcases exists_nonadj_among_three_neighbors`
-  picks a non-adjacent pair; in each of the three branches the
-  dispatcher is invoked, with the **success arm fully handled** (returns
-  the typeII witness directly) and the **failure arm `sorry`-blocked**
-  (3 sorries, one per first-non-adj-pair branch — each at the
-  `exfalso`-cased "all pairs blocked" contradiction).
-
-The remaining work is the **three sub-case contradictions** (1 / 2 / 3
-non-adjacent pairs among `v`'s neighbors), each constructing a tight
-`T ⊆ V \ {v}` with `{a, b, c} ⊆ T` and passing it to
-`no_isTightOn_excluding_three_neighbors`. See *Hand-off* below.
+* Milestone 1 — full strengthened decomposition theorem. Pieces:
+  * `typeI_reverse_isLaman` / `typeI_isLaman_iff` (`Henneberg.lean`) —
+    the degree-2 branch.
+  * Edge-arithmetic infrastructure: `edgesIn_inter`,
+    `edgesIn_ncard_add_le` (`EdgesIn.lean`); `IsTightOn`,
+    `IsTightOn.union_inter`, `IsSparse.isTightOn_of_le`
+    (`Sparsity.lean`).
+  * Per-pair tight-blocker witness `IsLaman.typeII_reverse_blocker`
+    (`Henneberg.lean`).
+  * Overshoot primitive `IsLaman.no_isTightOn_excluding_three_neighbors`
+    (`Henneberg.lean`, private).
+  * Per-pair witness-or-blocker dispatcher
+    `IsLaman.typeII_reverse_witness_or_blocker` (private).
+  * **Squeeze-form primitive `IsLaman.False_of_three_neighbor_squeeze`**
+    (private) — upgrades `2 * #T ≤ #(edgesIn T) + 3` to `T.IsTightOn`
+    via `isTightOn_of_le`, then closes via the overshoot helper. The
+    common tail every contradiction template reduces to.
+  * **Three contradiction templates** (private): `contradiction_one_pair`,
+    `contradiction_two_pair`, `contradiction_three_pair`. The 1/2/3-pair
+    blocker assembly arguments, each building `T ⊆ V \ {v}` containing
+    all three neighbors of `v` and verifying the squeeze, then routing
+    through `False_of_three_neighbor_squeeze`.
+  * Main theorem `IsLaman.exists_typeI_or_typeII_reverse`: degree-2
+    branch via `typeI_isLaman_iff`; degree-3 branch via nested
+    `by_cases` on the three pairs' adjacency, with each non-adjacent
+    pair dispatched (success returns the typeII witness, failure
+    accumulates a blocker) and each failure-leaf routed to the
+    appropriate contradiction template. The all-adjacent leaf
+    contradicts `exists_nonadj_among_three_neighbors`.
 
 Milestone 2 (per-move rigidity preservation, in `Henneberg.lean`) is
-independent and can be worked in parallel.
+the next concrete target; it is independent of milestone 3.
 
 Phase 5 target: the (⇐) direction of Laman's theorem,
 
@@ -259,13 +244,48 @@ The typeII half (below) is the deep step.
   inverts a Laman-or-not test, and the only place that has to package
   the typeII iso for the success branch.
 
-- [ ] `IsLaman.exists_typeI_or_typeII_reverse` — strengthened
-  decomposition. **Degree-2 branch landed** (one-line `typeI_isLaman_iff`
-  on the iso transport). **Degree-3 case-split skeleton landed**:
-  `rcases exists_nonadj_among_three_neighbors`, dispatcher per branch,
-  success returns the typeII witness. **3 sorries remaining**, one
-  per `rcases` branch, each at the dispatcher's failure arm — see
-  *Hand-off* for the sub-case structure.
+- [x] (Helper) **Squeeze-form overshoot primitive** —
+  `IsLaman.False_of_three_neighbor_squeeze` in `Henneberg.lean` (private).
+  Sits between `isTightOn_of_le` and `no_isTightOn_excluding_three_neighbors`:
+  consumes `2 * #T ≤ #(edgesIn T) + 3` plus `v ∉ T`, `{a, b, c} ⊆ T`,
+  derives tight, then derives False. Every contradiction template
+  reduces to this; the templates differ only in how they assemble `T`
+  and verify the squeeze. ~10 lines.
+
+- [x] (Helper) **1-pair contradiction template** —
+  `IsLaman.contradiction_one_pair` in `Henneberg.lean` (private). One
+  blocker `S` containing two outer neighbors `(x, y)` of `v`, with the
+  third neighbor `z` connected to both by edges of `G`. Case-split on
+  `z ∈ S`: if yes, `S` is the witness `T` directly; if no, extend to
+  `T := insert z S` and count the two new edges `s(x, z), s(y, z)` to
+  saturate the squeeze. ~50 lines.
+
+- [x] (Helper) **2-pair contradiction template** —
+  `IsLaman.contradiction_two_pair` in `Henneberg.lean` (private). Two
+  blockers sharing a third-neighbor vertex `z`; the third pair `(x, y)`
+  is adjacent in `G`. Case-split on `2 ≤ |Sxz ∩ Syz|`: if yes,
+  `IsTightOn.union_inter` directly gives tightness of the union; if no
+  (intersection is the singleton `{z}`), build `T := Sxz ∪ Syz` and
+  invoke the supermodular `edgesIn` bound plus the cross-edge `(x, y)`
+  contribution to saturate the squeeze. ~80 lines.
+
+- [x] (Helper) **3-pair contradiction template** —
+  `IsLaman.contradiction_three_pair` in `Henneberg.lean` (private).
+  All three pairs non-adjacent, three blockers covering them. Three
+  sub-cases on which pairwise intersection has size `≥ 2`: each
+  triggers `IsTightOn.union_inter` on that pair, with the union
+  already containing `{a, b, c}`. Final sub-case (all pairwise
+  intersections singletons): `T := (Sab ∪ Sac) ∪ Sbc`, supermodularity
+  twice (using `e({a}) = e({b, c}) = 0`) plus inclusion-exclusion for
+  `#T` saturates the squeeze. ~110 lines.
+
+- [x] `IsLaman.exists_typeI_or_typeII_reverse` — strengthened
+  decomposition. Degree-2 branch via `typeI_isLaman_iff` on the iso
+  transport; degree-3 branch via nested `by_cases` on adjacency of
+  each of the three pairs (eight leaves), with `typeII_reverse_witness_or_blocker`
+  invoked on each non-adjacent pair (success returns the witness,
+  failure accumulates a blocker), and contradiction templates applied
+  to the accumulated blockers. ~120 lines for the degree-3 branch.
 
 **Blocker argument (degree-3, sketch).** With `{a, b, c}` the
 neighbors of a degree-3 `v`, define for each non-adjacent pair
@@ -275,22 +295,8 @@ neighbors of a degree-3 `v`, define for each non-adjacent pair
 *some* non-adjacent pair gives `G_{xy}.IsLaman`. By contradiction,
 suppose all fail: each yields a `(2,3)`-subset-tight `S_{xy} ⊆
 V \ {v}` containing `{x, y}` (a one-inequality chase against `G`'s
-own sparsity).
-
-Case-split on how many of the three pairs are non-adjacent (≥ 1 by
-`exists_nonadj_among_three_neighbors`). The general move: combine
-the `S_{xy}`'s via the union-closure lemma to build a subset-tight
-`T ⊆ V \ {v}` containing two or three of `{a, b, c}`; then `T ∪ {v}`
-overshoots `G`'s sparsity by 1 (each extra neighbor of `v` inside
-`T` adds one edge but only one vertex). Sub-cases turn on which
-pairwise intersections have size ≥ 2 to trigger the closure; the
-one-non-adjacent-pair case may also need an expansion argument
-absorbing the adjacent third neighbor. Confirm exact structure
-against Jordán Thm 3.1.7 while writing.
-
-Expect 1–2 mirror candidates from this work — likely around
-`Set.ncard` set-arithmetic and `Sym2` membership in induced
-subgraphs.
+own sparsity). The 1/2/3-pair templates then build a tight `T ⊆ V \ {v}`
+with `{a, b, c} ⊆ T`, overshooting `G`'s sparsity at `insert v T`.
 
 ### Milestone 2 — Move preservation in dim 2 (`Henneberg.lean`)
 
@@ -411,6 +417,41 @@ the iff's `mpr` arm completes automatically.
   bridge `(G.comap Subtype.val).edgesIn ↑s'` to `G.edgesIn ↑S` via
   injectivity of `Sym2.map Subtype.val`.
 
+- **Single squeeze-form primitive consumed by every template.** The
+  three contradiction templates (1/2/3-pair) each end with the same
+  three-step tail: build `T : Finset V`; verify `2 * #T ≤ #(edgesIn T) + 3`
+  (the squeeze); apply `IsSparse.isTightOn_of_le` to get `T.IsTightOn`;
+  apply `no_isTightOn_excluding_three_neighbors` to derive `False`.
+  Factored as `IsLaman.False_of_three_neighbor_squeeze` so each template
+  body only has to assemble `T` and prove the squeeze inequality (the
+  template-specific edge accounting). Saves ~10 lines per template and
+  isolates the proof-shape decision (squeeze vs. direct tight) in one
+  place.
+
+- **Restructured degree-3 main theorem: 3-level `by_cases` over outer
+  `rcases exists_nonadj_among_three_neighbors`.** The original skeleton
+  used the outer `rcases` to pick the first non-adjacent pair, then
+  needed `exfalso` + sub-case analysis inside each of the three failure
+  arms. Problem: inside `exfalso`, additional dispatcher invocations
+  (needed to gather blockers for 2- and 3-pair templates) can return
+  witnesses that should be returned to the outer goal — but the goal
+  is `False`, blocking the return. Restructured to `by_cases` on each
+  pair's `G.Adj` (8 leaves), with `typeII_reverse_witness_or_blocker`
+  invoked only on confirmed non-adjacent pairs and the success arm
+  returning the witness immediately at the leaf level. The all-adjacent
+  leaf falls back to `exists_nonadj_among_three_neighbors` for a direct
+  contradiction. ~120 lines of straight-line case analysis; flatter than
+  the alternative.
+
+- **`Sym2.eq_iff` destructure: second case is `⟨x = z, z = y⟩`, not
+  `⟨x = y, z = z⟩`.** `Sym2.eq_iff.mp : s(a, b) = s(c, d) → (a = c ∧
+  b = d) ∨ (a = d ∧ b = c)`. So for `s(x, z) = s(y, z)`, the second
+  disjunct is `x = z ∧ z = y` — both components reference `z`, not just
+  one. Forgetting this and using the second-component `z = y` where
+  `x = z` was wanted produced a confusing type mismatch in the
+  `hxz_ne_yz` proof in `contradiction_one_pair`. Documented as a
+  one-line trap.
+
 ### Promoted to TACTICS / FRICTION / DESIGN
 
 - *`Exists.imp` doesn't transport across changing-binder-type
@@ -443,101 +484,50 @@ the iff's `mpr` arm completes automatically.
   Type I proof wants it, fill in then. Phase 4 hand-off explicitly
   flagged this as the deferred-API surface most likely to be needed.
 
-- **Henneberg-blocker proof length.** Textbook proofs of the reverse
-  decomposition are 1–2 pages; the formalization will be
-  longer. If milestone 1 sprawls past ~3 sessions, reassess: perhaps
-  an internal lemma about tight-set lattices belongs in
-  `Sparsity.lean` as a named theorem rather than a private helper, or
-  a refactor of `exists_nonadj_among_three_neighbors` is warranted.
+- *Resolved.* ~~Henneberg-blocker proof length: if milestone 1 sprawls
+  past ~3 sessions, reassess.~~ Landed in two sessions total
+  (infrastructure + helpers in the first; templates + main theorem in
+  the second) with `IsTightOn` + `IsTightOn.union_inter` already in
+  `Sparsity.lean` and the contradiction templates kept in `Henneberg.lean`
+  as private. No further refactor of `exists_nonadj_among_three_neighbors`
+  needed.
 
 ## Hand-off / next phase
 
-Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport),
-all of milestone 1's edge-arithmetic infrastructure
-(`edgesIn_inter`/`edgesIn_ncard_add_le` in `EdgesIn.lean`,
-`IsTightOn` + `IsTightOn.union_inter` + `IsSparse.isTightOn_of_le`
-in `Sparsity.lean`), and the helpers
-`IsLaman.typeII_reverse_blocker`,
-`IsLaman.no_isTightOn_excluding_three_neighbors`, and
-`IsLaman.typeII_reverse_witness_or_blocker` in `Henneberg.lean` are
-complete. The main theorem `IsLaman.exists_typeI_or_typeII_reverse`
-has its degree-2 branch fully proved and the degree-3 case-split
-skeleton in place, with **3 sorries at the dispatcher's failure arms**.
+Milestone 1 is fully complete: `IsLaman.exists_typeI_or_typeII_reverse`
+is closed, including all degree-3 sub-case contradictions. The
+contradiction templates are also general-shape enough that future
+matroid-style refactors (Phase 6) can reuse them.
 
-The next session **closes the 3 sorries** by filling in the
-contradiction sub-cases. The structure is the same across all three
-sorries (they differ only in which pair was picked first by
-`exists_nonadj_among_three_neighbors`): given one mandatory blocker
-for the named non-adjacent pair, examine the other two pairs and
-build a tight `T ⊆ V \ {v}` containing `{a, b, c}`, then close via
-`IsLaman.no_isTightOn_excluding_three_neighbors`.
+The next session lands **milestone 2: per-move rigidity preservation
+in dim 2** (`Henneberg.lean`). Two lemmas:
 
-The 3 sorries decompose into **three sub-case templates** (matched
-by case-splitting the other two pairs into adjacent/non-adjacent). In
-each non-adjacent sub-case of "the other two pairs", invoke the
-dispatcher again — on success return early (no need to reach
-contradiction), on failure accumulate a blocker.
+* `typeI_isGenericallyRigid_two` — Type I preserves generic rigidity.
+  Construction: extend a rigid placement `p'` of `G'` to a placement
+  `p` of `typeI G' a b` by placing the new vertex off the line through
+  `p' a` and `p' b`. The two new rigidity-matrix rows are linearly
+  independent; rank-nullity gives `dim ker p = dim ker p'`. ~50–80 lines.
+* `typeII_isGenericallyRigid_two` — Type II preserves generic rigidity.
+  Trickier: deletes edge `s(a, b)`, adds three new edges. Plan: pick a
+  placement extension where the new vertex's edges recover the deleted
+  constraint plus one new constraint (rotation/limit argument). Decide
+  the formalization mechanics during proof, not during planning.
 
-**Sub-case templates** (constructive sketches; classical Whiteley/
-Jordán proofs):
+These import `Framework.lean` for the first time from `Henneberg.lean`
+(forward edge in the DAG, not a cycle). Likely 1–3 mirror candidates
+around `LinearMap.ker` / `Submodule.finrank` rank-counting, plus
+possibly an "affinely-independent points off a line" / "rank of
+augmented matrix" lemma.
 
-* **1-pair** (only one pair non-adjacent, say `(a, b)`; both `(a, c)`
-  and `(b, c)` are adjacent in `G`). One blocker `S_{ab}`.
-  * If `c ∈ S_{ab}`: `T := S_{ab}` is already tight with
-    `{a, b, c} ⊆ T`; helper closes directly.
-  * If `c ∉ S_{ab}`: `T := insert c S_{ab}`. Edges of `T` count
-    `e(S_{ab}) + 2` (the edges `ac` and `bc`, with `c ∉ S_{ab}`),
-    so `e(T) + 3 ≥ 2|S_{ab}| + 2 = 2|T|`. Combined with sparsity at
-    `T`, equality — `T` is `IsTightOn 2 3`, via
-    `IsSparse.isTightOn_of_le`. Then helper.
+**Likely first concrete commit**: `typeI_isGenericallyRigid_two`. It's
+the cleaner of the two (no edge deletion) and exercises the rank-nullity
+infrastructure that both proofs will need. Once it lands, decide whether
+`typeII_isGenericallyRigid_two` needs the affine-spanning side condition
+(see *Blockers* below); fill in `finrank_trivialMotions_eq_of_affinelySpanning`
+from Phase 4 only if forced.
 
-* **2-pair** (two pairs non-adjacent, say `(a, b)` and `(a, c)`; the
-  third pair `(b, c)` is adjacent). Two blockers `S_{ab}, S_{ac}`.
-  * If `|S_{ab} ∩ S_{ac}| ≥ 2`: apply `IsTightOn.union_inter` to get
-    `T := S_{ab} ∪ S_{ac}` tight, which contains `{a, b, c}`. Helper.
-  * If `|S_{ab} ∩ S_{ac}| = 1` (just `{a}`): `T := S_{ab} ∪ S_{ac}`.
-    Edges of `T` include `e(S_{ab}) + e(S_{ac})` (disjoint, since
-    they'd share only edges of `S_{ab} ∩ S_{ac} = {a}` which has no
-    edges) **plus the crossing edge `bc`** (since `b ∈ S_{ab} \ S_{ac}`,
-    `c ∈ S_{ac} \ S_{ab}`, and `G.Adj b c` from the 2-pair sub-case
-    hypothesis). The bridging arithmetic forces `e(T) = 2|T| - 3`
-    via `isTightOn_of_le`; helper.
-
-* **3-pair** (all three pairs non-adjacent). Three blockers
-  `S_{ab}, S_{ac}, S_{bc}`.
-  * If some pairwise intersection ≥ 2 (say `|S_{ab} ∩ S_{ac}| ≥ 2`):
-    `union_inter` twice — first to get `T_1 := S_{ab} ∪ S_{ac}` tight,
-    then `T := T_1 ∪ S_{bc}` tight (since
-    `T_1 ∩ S_{bc} ⊇ {b, c}`, size ≥ 2). `T ⊇ {a, b, c}`. Helper.
-  * If all three pairwise intersections are exactly singletons
-    `{a}, {b}, {c}` respectively: the "disjoint edges" additive
-    argument. The three blockers' edge sets are pairwise disjoint
-    (edges within `S_{ij}` have both endpoints in `S_{ij}`, and
-    `S_{ij} ∩ S_{i'j'}` is a singleton for any two pairs, so no
-    shared edges). Hence `e(T) = e(S_{ab}) + e(S_{ac}) + e(S_{bc}) =
-    2(|S_{ab}| + |S_{ac}| + |S_{bc}|) - 9 = 2(|T| + 3) - 9 =
-    2|T| - 3`. Sparsity gives equality; helper.
-
-**Likely first concrete commit inside the sorries**: the 1-pair
-sub-case template (cleanest — one blocker, two intra-template
-sub-cases). It exercises both `no_isTightOn_excluding_three_neighbors`
-directly (the `c ∈ S` arm) and the `IsSparse.isTightOn_of_le` path
-(the `c ∉ S` arm), so landing it validates both downstream helpers.
-Then 2-pair (which needs a small "two singletons differ in 1 shared
-vertex" edge-disjointness argument) and 3-pair (which needs the
-generalized version of that argument plus the `union_inter` chain
-for the non-singleton sub-case).
-
-The 3-pair case is **not** uniformly via `union_inter` (as the
-previous hand-off optimistically suggested) — when all pairwise
-intersections collapse to singletons, the additive-edges argument is
-required. The 3 sorries in the main theorem are individually tractable
-but the combined effort is likely a 2-session piece. Consider
-extracting `IsLaman.contradiction_from_three_pair_blockers` etc. as
-private helpers to compress the case-split.
-
-Milestones 1 and 2 are independent — if the contradiction sub-cases
-stall, milestone 2 (Type I rigidity preservation in `Henneberg.lean`,
-which will also need to import `Framework.lean` for the first time) is
-a clean parallel target. Milestone 3 (induction) is ready once
-milestone 1 *and* both move-preservation lemmas land.
+Milestone 3 (induction) becomes ready as soon as both move-preservation
+lemmas land. The base case (`n = 2`) uses `top_fin_two_isLaman` +
+`top_fin_two_isGenericallyRigid 2` + `IsLaman.iso` / `IsGenericallyRigid.iso`;
+the step uses `exists_typeI_or_typeII_reverse` (now closed) + per-move
+preservation + iso transport.
