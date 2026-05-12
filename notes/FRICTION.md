@@ -739,3 +739,44 @@ limitations. Worth a once-over so future agents don't re-litigate.
   lines total).
 - **Status:** resolved (no missing lemma — was a `simp`-set
   oversight).
+
+### [resolved] `simp_all` rewrites backwards with equality hypotheses
+
+- **Where it bit:** the K₂ injective base case `top_fin_two_isGenericallyRigidInj`
+  in `Framework.lean`. First-attempt injectivity discharge was
+  ```
+  fin_cases i <;> fin_cases j <;> simp_all [hp_def]
+  ```
+  expecting `simp` to reduce `p 0 = p 1` to `0 = EuclideanSpace.single 0 1`
+  and then close.
+- **Friction:** in the `(0, 1)` case, `simp_all` picked up the goal-hypothesis
+  `hij : 0 = EuclideanSpace.single 0 1` and rewrote `0` to `EuclideanSpace.single 0 1`
+  *inside `hp_def`*, producing the absurd `hp_def : p = ![single 0 1, single 0 1]`
+  in the context — leaving the goal `False` open. `simp_all` is allowed to use any
+  hypothesis as a rewrite rule, including in the LHS→RHS direction of an equality;
+  with a destructively-rewriting hypothesis like `0 = X` this cross-contaminates
+  the rest of the context.
+- **Resolution:** discriminate via a derived quantity that doesn't trigger
+  cross-rewriting. Used `have h_norm : ‖p i‖ = ‖p j‖ := congrArg _ hij` then
+  `revert h_norm <;> simp [hp_def]`, closing in one `simp` per leaf.
+- **Status:** resolved (tactic semantics, not a missing lemma). General lesson:
+  when `simp_all` produces a confusing residual goal involving a hypothesis you
+  expected to eliminate, suspect cross-rewriting from an equality hypothesis.
+
+### [resolved] `congr_fun` does not apply to `EuclideanSpace`
+
+- **Where it bit:** the K₂ injective base case `top_fin_two_isGenericallyRigidInj`
+  in `Framework.lean`. First attempt at extracting a coordinate from
+  `h : EuclideanSpace.single 0 1 = 0` used `congr_fun h 0` to get
+  `(EuclideanSpace.single 0 1) 0 = (0 : EuclideanSpace _) 0`.
+- **Friction:** `EuclideanSpace ℝ ι` is `PiLp 2 (fun _ => ℝ)`, *not* `ι → ℝ`. Even
+  though the carrier types coerce, `congr_fun` needs the source type to be a Pi
+  type literally — it errors out with `Application type mismatch`. The error
+  message does not flag the type-vs-`Pi`-application mismatch as the cause.
+- **Resolution:** route equality witnesses through a continuous map (here
+  `congrArg norm hij`). `Pi`-style projections also work after explicit
+  conversion via `EuclideanSpace.equiv` or `PiLp.equiv`, but the norm route is
+  shorter when a discriminating norm is available.
+- **Status:** resolved (project-internal lesson). Adds to the list of "things
+  that act like Pi types but aren't literally Pi types" — alongside `Sym2 V`
+  (where `Sym2.lift` is the projection, not `congr_fun`).

@@ -35,6 +35,9 @@ specialization to `d = 2` happens at the Phase 5 boundary.
 * `SimpleGraph.RigidityMap G p` — the rigidity map as an `ℝ`-linear map.
 * `SimpleGraph.IsInfinitesimallyRigid G p` — kernel-dimension bound.
 * `SimpleGraph.IsGenericallyRigid G d` — existence of a rigid placement.
+* `SimpleGraph.IsGenericallyRigidInj G d` — existence of a rigid *injective*
+  placement; the strengthened predicate maintained through the Phase 5
+  Henneberg induction (see `notes/Phase5.md` *Blockers*).
 
 ## Project context
 
@@ -206,6 +209,33 @@ theorem IsGenericallyRigid.iso {V W : Type*} [Fintype V] [Fintype W]
   obtain ⟨p, hp⟩ := h
   exact ⟨p ∘ φ.symm, hp.iso φ⟩
 
+/-- A graph `G` is **generically rigid with an injective placement** in dimension `d` if some
+infinitesimally rigid placement is also injective. Strictly stronger than `IsGenericallyRigid`;
+the Phase 5 Henneberg induction maintains the injective placement at each step (the per-move
+preservation arguments need `p a ≠ p b`, which vanilla `IsGenericallyRigid` does not supply) and
+weakens to `IsGenericallyRigid` at the end via `IsGenericallyRigidInj.toIsGenericallyRigid`. -/
+def IsGenericallyRigidInj [Fintype V] (G : SimpleGraph V) (d : ℕ) : Prop :=
+  ∃ p : Framework V d, G.IsInfinitesimallyRigid p ∧ Function.Injective p
+
+/-- An injectively-generic-rigid graph is generically rigid. -/
+theorem IsGenericallyRigidInj.toIsGenericallyRigid [Fintype V] {G : SimpleGraph V}
+    (h : G.IsGenericallyRigidInj d) : G.IsGenericallyRigid d :=
+  h.imp fun _ hp => hp.1
+
+/-- Adding edges preserves injective generic rigidity at the same placement. -/
+theorem IsGenericallyRigidInj.mono [Fintype V] {G G' : SimpleGraph V} (h : G ≤ G')
+    (hG : G.IsGenericallyRigidInj d) : G'.IsGenericallyRigidInj d :=
+  hG.imp fun _ hp => ⟨hp.1.mono h, hp.2⟩
+
+/-- Iso transport for injective generic rigidity: a graph iso preserves injective generic
+rigidity. Injectivity of `p ∘ φ.symm` follows from injectivity of `p` since `φ.symm` is a
+bijection. -/
+theorem IsGenericallyRigidInj.iso {V W : Type*} [Fintype V] [Fintype W]
+    {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H)
+    (h : G.IsGenericallyRigidInj d) : H.IsGenericallyRigidInj d := by
+  obtain ⟨p, hp_rig, hp_inj⟩ := h
+  exact ⟨p ∘ φ.symm, hp_rig.iso φ, hp_inj.comp φ.symm.toEquiv.injective⟩
+
 /-- A generically rigid graph in dimension `d` on `n` vertices has at least
 `d * n − d(d+1)/2` edges. Phrased additively per the no-`ℕ`-subtraction rule.
 
@@ -222,22 +252,14 @@ theorem IsGenericallyRigid.card_mul_le [Fintype V] {G : SimpleGraph V}
   have h_range := G.rigidityMap_finrank_range_le p
   omega
 
-/-- The K₂ worked example: the complete graph on two vertices is generically
-rigid in any dimension `d`. For `d ≥ 1` we use the placement `p 0 = 0`,
-`p 1 = e₀` (first standard basis vector); for `d = 0` the framework space is
-itself zero-dimensional and any placement is vacuously rigid. -/
-theorem top_fin_two_isGenericallyRigid (d : ℕ) :
-    (⊤ : SimpleGraph (Fin 2)).IsGenericallyRigid d := by
-  rcases d with _ | d
-  · -- d = 0: framework space is zero-dimensional, so any placement is rigid.
-    refine ⟨0, ?_⟩
-    change Module.finrank ℝ (LinearMap.ker _) ≤ 0
-    have h_total : Module.finrank ℝ (Framework (Fin 2) 0) = 0 := by
-      rw [Framework.finrank]; simp
-    exact (Submodule.finrank_le _).trans_eq h_total
-  · -- d ≥ 1: place vertices at 0 and e₀.
-    set p : Framework (Fin 2) (d + 1) := ![0, EuclideanSpace.single 0 1] with hp_def
-    refine ⟨p, ?_⟩
+/-- The K₂ worked example, *injective* form: for `d ≥ 1`, the complete graph on two vertices is
+generically rigid in dimension `d + 1` with an injective placement. Witnessed by `p 0 = 0`,
+`p 1 = e₀` (first standard basis vector). -/
+theorem top_fin_two_isGenericallyRigidInj (d : ℕ) :
+    (⊤ : SimpleGraph (Fin 2)).IsGenericallyRigidInj (d + 1) := by
+  set p : Framework (Fin 2) (d + 1) := ![0, EuclideanSpace.single 0 1] with hp_def
+  refine ⟨p, ?_, ?_⟩
+  · -- Infinitesimal rigidity.
     change Module.finrank ℝ (LinearMap.ker
       ((⊤ : SimpleGraph (Fin 2)).RigidityMap p)) ≤ (d + 1) * (d + 2) / 2
     have h_edge : s((0 : Fin 2), 1) ∈ (⊤ : SimpleGraph (Fin 2)).edgeSet := by simp
@@ -258,11 +280,30 @@ theorem top_fin_two_isGenericallyRigid (d : ℕ) :
           (⊤ : SimpleGraph (Fin 2)).RigidityMap p ![EuclideanSpace.single 0 1, 0]
             ⟨s(0, 1), h_edge⟩ = 0 := by rw [h_eq]; rfl
       linarith
-    -- bound: 2*(d+1) - 1 = 2d+1 ≤ (d+1)(d+2)/2 for all d ≥ 0
+    -- Bound: `2*(d+1) - 1 = 2d+1 ≤ (d+1)(d+2)/2` for all `d ≥ 0`.
     have h_quadratic : 4 * d + 2 ≤ (d + 1) * (d + 2) := by
       have : (d + 1) * (d + 2) = d * d + 3 * d + 2 := by ring
       have := Nat.le_mul_self d
       omega
     omega
+  · -- Injectivity: `p 0 = 0` has norm 0; `p 1 = e₀` has norm 1.
+    intro i j hij
+    have h_norm : ‖p i‖ = ‖p j‖ := congrArg _ hij
+    fin_cases i <;> fin_cases j <;> revert h_norm <;> simp [hp_def]
+
+/-- The K₂ worked example: the complete graph on two vertices is generically
+rigid in any dimension `d`. For `d ≥ 1`, weakened from the injective form
+`top_fin_two_isGenericallyRigidInj`; for `d = 0` the framework space is itself
+zero-dimensional and any placement is vacuously rigid. -/
+theorem top_fin_two_isGenericallyRigid (d : ℕ) :
+    (⊤ : SimpleGraph (Fin 2)).IsGenericallyRigid d := by
+  rcases d with _ | d
+  · -- d = 0: framework space is zero-dimensional, so any placement is rigid.
+    refine ⟨0, ?_⟩
+    change Module.finrank ℝ (LinearMap.ker _) ≤ 0
+    have h_total : Module.finrank ℝ (Framework (Fin 2) 0) = 0 := by
+      rw [Framework.finrank]; simp
+    exact (Submodule.finrank_le _).trans_eq h_total
+  · exact (top_fin_two_isGenericallyRigidInj d).toIsGenericallyRigid
 
 end SimpleGraph

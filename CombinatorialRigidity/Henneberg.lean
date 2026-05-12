@@ -1504,6 +1504,84 @@ theorem typeI_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
   change Module.finrank ℝ (LinearMap.ker ((typeI G a b).RigidityMap p_ext)) ≤ 2 * (2 + 1) / 2
   exact (LinearMap.finrank_le_finrank_of_injective h_inj).trans hp
 
+/-- In `EuclideanSpace ℝ (Fin 2)`, given two distinct points `pa, pb` and a finite "to-avoid" set
+`S`, there is a point `q ∉ S` with `q - pa` and `q - pb` linearly independent. The geometric
+content is "off the line through `pa` and `pb`, and off `S`"; the one-parameter family
+`q t := pa + t • v` for any `v ∉ span ℝ {pb - pa}` realizes both conditions on a cofinite set of
+`t ∈ ℝ`. -/
+private lemma exists_off_line_off_finite_dim_two
+    (pa pb : EuclideanSpace ℝ (Fin 2)) (hab : pa ≠ pb)
+    (S : Set (EuclideanSpace ℝ (Fin 2))) (hS : S.Finite) :
+    ∃ q : EuclideanSpace ℝ (Fin 2),
+      LinearIndependent ℝ ![q - pa, q - pb] ∧ q ∉ S := by
+  have hd : pb - pa ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
+  -- Step 1. `Submodule.span ℝ {pb - pa}` is a proper subspace (finrank 1 < 2), so it has a
+  -- non-member `v`.
+  have h_span_ne_top :
+      Submodule.span ℝ ({pb - pa} : Set (EuclideanSpace ℝ (Fin 2))) ≠ ⊤ := by
+    intro h_top
+    have h1 := finrank_span_singleton (K := ℝ) hd
+    rw [h_top, finrank_top] at h1
+    have h2 := finrank_euclideanSpace_fin (𝕜 := ℝ) (n := 2)
+    omega
+  obtain ⟨v, hv_outside⟩ := SetLike.exists_not_mem_of_ne_top _ h_span_ne_top
+  have hv_ne_zero : v ≠ 0 := fun hv0 => hv_outside (hv0 ▸ zero_mem _)
+  -- Step 2. The family `f t := pa + t • v` is injective in `t`.
+  have hf_inj : Function.Injective (fun t : ℝ => pa + t • v) := fun t₁ t₂ h => by
+    have h_smul : t₁ • v = t₂ • v := add_left_cancel h
+    have h_sub : (t₁ - t₂) • v = 0 := by rw [sub_smul, h_smul, sub_self]
+    rcases smul_eq_zero.mp h_sub with h0 | h0
+    · linarith
+    · exact (hv_ne_zero h0).elim
+  -- Step 3. The "bad" `t`-set (yields `t = 0` or `f t ∈ S`) is finite; pick `t` outside.
+  set bad : Set ℝ := {0} ∪ (fun t : ℝ => pa + t • v) ⁻¹' S with hbad_def
+  have hbad_fin : bad.Finite := (Set.finite_singleton _).union (hS.preimage hf_inj.injOn)
+  obtain ⟨t, ht⟩ := hbad_fin.exists_notMem
+  have ht_ne : t ≠ 0 := fun h0 => ht (by simp [hbad_def, h0])
+  have hq_notmem : pa + t • v ∉ S := fun h_mem => ht (by simp [hbad_def, h_mem])
+  -- Step 4. Stage the LI claim as a row-op on `LinearIndependent ℝ ![v, pb - pa]`.
+  refine ⟨pa + t • v, ?_, hq_notmem⟩
+  have hLI_v_d :
+      LinearIndependent ℝ (![v, pb - pa] : Fin 2 → EuclideanSpace ℝ (Fin 2)) := by
+    rw [linearIndependent_fin2]
+    refine ⟨hd, fun a h_eq => hv_outside ?_⟩
+    rw [Submodule.mem_span_singleton]
+    exact ⟨a, h_eq⟩
+  have h_form :
+      (![pa + t • v - pa, pa + t • v - pb] : Fin 2 → EuclideanSpace ℝ (Fin 2)) =
+        ![t • v + (0 : ℝ) • (pb - pa), t • v + (-1 : ℝ) • (pb - pa)] := by
+    ext i
+    fin_cases i <;> simp
+    abel
+  rw [h_form, LinearIndependent.pair_add_smul_add_smul_iff]
+  refine ⟨hLI_v_d, ?_⟩
+  intro h_eq
+  apply ht_ne
+  linarith
+
+/-- **Type I preserves injective generic rigidity in dim 2.** Given an injectively generically
+rigid `G` in dim 2 and `a ≠ b` in `V`, the Henneberg Type I extension `typeI G a b` is again
+injectively generically rigid in dim 2. The proof picks a `q : EuclideanSpace ℝ (Fin 2)` off both
+the line through `p a, p b` (via `exists_off_line_off_finite_dim_two`) and the image of `p`, then
+appeals to `typeI_isInfinitesimallyRigid_extend` for rigidity of the extended placement
+`fun w => w.elim q p` and to the off-image condition for its injectivity. -/
+theorem typeI_isGenericallyRigidInj_two [Fintype V] {G : SimpleGraph V}
+    (hG : G.IsGenericallyRigidInj 2) {a b : V} (hab : a ≠ b) :
+    (typeI G a b).IsGenericallyRigidInj 2 := by
+  obtain ⟨p, hp_rig, hp_inj⟩ := hG
+  have hpab : p a ≠ p b := fun h => hab (hp_inj h)
+  obtain ⟨q, hLI, hq_notmem⟩ :=
+    exists_off_line_off_finite_dim_two (p a) (p b) hpab (Set.range p)
+      (Set.finite_range p)
+  refine ⟨fun w : Option V => w.elim q p, typeI_isInfinitesimallyRigid_extend hp_rig hLI, ?_⟩
+  rintro (_ | u) (_ | v) h
+  · rfl
+  · -- `h : q = p v`, contradicts `q ∉ Set.range p`.
+    exact (hq_notmem ⟨v, h.symm⟩).elim
+  · -- `h : p u = q`, contradicts `q ∉ Set.range p`.
+    exact (hq_notmem ⟨u, h⟩).elim
+  · exact congrArg some (hp_inj h)
+
 end Henneberg
 
 /-! ### K₄ minus one edge is Laman

@@ -7,11 +7,15 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Milestones 0 and 1 are complete; milestone 2's typeI rank-nullity core
-has landed (`typeI_isInfinitesimallyRigid_extend`). The remaining
-sorries in the Phase-5 chain are milestone 2's wrappers
-(`typeI_isGenericallyRigid_two`, `typeII_isGenericallyRigid_two`),
-milestone 3 (induction), and Phase 6.
+Milestones 0 and 1 are complete; milestone 2's typeI half is complete
+(`typeI_isInfinitesimallyRigid_extend` plus the unconditional wrapper
+`typeI_isGenericallyRigidInj_two`, both in `Henneberg.lean`; the
+strong predicate `IsGenericallyRigidInj` and the K₂ injective base
+case `top_fin_two_isGenericallyRigidInj` are in `Framework.lean`).
+The remaining sorries in the Phase-5 chain are milestone 2's typeII
+wrapper (`typeII_isGenericallyRigidInj_two`), milestone 3 (induction
+filling `IsLaman.isGenericallyRigid_two` in `LamanTheorem.lean`), and
+Phase 6.
 
 * Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport) —
   done in an earlier commit.
@@ -325,20 +329,44 @@ genericity in the algebraic-geometry sense).
   `x.1 none - y.1 none` against `(q - p a, q - p b)`, which by LI forces
   the difference to vanish). Apply
   `LinearMap.finrank_le_finrank_of_injective` + `hp`. ~70 lines.
-- [ ] `typeI_isGenericallyRigid_two` — the unconditional Type I
-  preservation. **Blocked on the placement-construction side condition:**
-  vanilla `G.IsGenericallyRigid 2` does not guarantee a rigid placement
-  with `p a ≠ p b` (let alone the stronger LI condition needed by
-  `typeI_isInfinitesimallyRigid_extend`). Resolution path: introduce a
-  strengthened predicate `IsGenericallyRigidInj G d := ∃ p, IsInfinitesimallyRigid G p ∧ Function.Injective p`,
-  prove move preservation in the strong form, and weaken at milestone 3.
-  See *Blockers* below.
-- [ ] `typeII_isGenericallyRigid_two` — Type II preserves generic
-  rigidity. Trickier: deletes edge `s(a, b)`, adds three new edges.
-  Plan: pick a placement extension where the new vertex's edges
-  recover the deleted constraint plus one new constraint
-  (rotation/limit argument). Decide the formalization mechanics
-  during proof, not during planning.
+- [x] **Strong predicate `IsGenericallyRigidInj` in `Framework.lean`**
+  — existence of an *injective* rigid placement, plus the basic API
+  (`.toIsGenericallyRigid`, `.mono`, `.iso`). The induction maintains
+  the strong predicate at every step and weakens to `IsGenericallyRigid`
+  at the milestone-3 boundary.
+- [x] **K₂ injective base case `top_fin_two_isGenericallyRigidInj`**
+  in `Framework.lean`. The existing K₂ proof's `d ≥ 1` branch already
+  uses the placement `![0, EuclideanSpace.single 0 1]` which is
+  injective; refactored so this branch lives in the injective theorem
+  and `top_fin_two_isGenericallyRigid` derives the `d ≥ 1` case via
+  `.toIsGenericallyRigid` (the `d = 0` case stays inline since it
+  can't be injective for two distinct vertices in a 0-dim space).
+- [x] (Helper) **`exists_off_line_off_finite_dim_two`** in
+  `Henneberg.lean` (private). Given distinct `pa, pb : EuclideanSpace ℝ (Fin 2)`
+  and a finite set `S`, exhibits `q ∉ S` with
+  `LinearIndependent ℝ ![q - pa, q - pb]`. The construction picks
+  `v ∉ Submodule.span ℝ {pb - pa}` via `SetLike.exists_not_mem_of_ne_top`
+  (the span has finrank 1 < 2 = ambient finrank, hence is a proper
+  subspace), then `q := pa + t • v` for `t` chosen outside the finite
+  bad set `{0} ∪ f⁻¹(S)` (where `f t := pa + t • v` is injective on
+  ℝ when `v ≠ 0`). LI of `![q - pa, q - pb]` reduces to LI of
+  `![v, pb - pa]` via the column-op lemma
+  `LinearIndependent.pair_add_smul_add_smul_iff`. ~50 lines, private.
+- [x] **`typeI_isGenericallyRigidInj_two`** — the unconditional
+  Type I preservation in the strong form. Glue: get an injective
+  rigid `p`, derive `p a ≠ p b` from injectivity + `a ≠ b`, build `q`
+  via `exists_off_line_off_finite_dim_two p (p a) (p b)` (with
+  `S := Set.range p`), apply `typeI_isInfinitesimallyRigid_extend` for
+  rigidity of `fun w => w.elim q p`, and check injectivity of the
+  extension by case-splitting on `Option V` (the new vertex maps to
+  `q ∉ Set.range p`, every existing vertex to `p v` and that map is
+  injective). ~20 lines.
+- [ ] `typeII_isGenericallyRigidInj_two` — Type II preserves
+  injective generic rigidity. Trickier: deletes edge `s(a, b)`, adds
+  three new edges. Plan: pick a placement extension where the new
+  vertex's edges recover the deleted constraint plus one new
+  constraint (rotation/limit argument). Decide the formalization
+  mechanics during proof, not during planning.
 
 These are the linear-algebra heart of (⇐). Likely surfaces 1–3 mirror
 candidates around `LinearMap.ker` / `Submodule.finrank` rank-counting,
@@ -348,11 +376,15 @@ augmented matrix" lemma.
 ### Milestone 3 — Induction (fills milestone-0 sorry)
 
 - [ ] Replace milestone-0's `sorry` body of
-  `IsLaman.isGenericallyRigid_two` with the actual proof. Strong
-  induction on `Fintype.card V`. Base: `n = 2` via `top_fin_two_isLaman`
-  + `top_fin_two_isGenericallyRigid 2` and `IsLaman.iso` /
-  `IsGenericallyRigid.iso`. Step: `exists_typeI_or_typeII_reverse` +
-  per-move preservation + iso transport.
+  `IsLaman.isGenericallyRigid_two` with the actual proof. The induction
+  maintains the strong predicate: prove
+  `IsLaman.isGenericallyRigidInj_two` by strong induction on
+  `Fintype.card V` (base: `n = 2` via `top_fin_two_isLaman` +
+  `top_fin_two_isGenericallyRigidInj` + `IsLaman.iso` /
+  `IsGenericallyRigidInj.iso`; step:
+  `exists_typeI_or_typeII_reverse` + per-move strong-form preservation
+  + strong-form iso transport), then conclude `IsLaman.isGenericallyRigid_two`
+  via `.toIsGenericallyRigid`.
 
 No additional theorem is needed for the iff arm: milestone 0's
 structured form already routes (⇐) through
@@ -504,6 +536,49 @@ the iff's `mpr` arm completes automatically.
   another `Adj`-defeq graph (`typeI_adj_some_some` is `Iff.rfl` too).
   See the FRICTION entry for the underlying elaboration issue.
 
+- **Refactored K₂ rigidity proof to expose the injective form.** The
+  original `top_fin_two_isGenericallyRigid (d : ℕ)` proof had two
+  branches: `d = 0` (vacuous) and `d ≥ 1` (place at `0, e₀`). Split
+  the `d ≥ 1` branch into a dedicated `top_fin_two_isGenericallyRigidInj (d : ℕ)`
+  giving `IsGenericallyRigidInj (d + 1)` (the placement is already
+  injective by inspection); `top_fin_two_isGenericallyRigid` now delegates
+  `d ≥ 1` to it via `.toIsGenericallyRigid`. The `d = 0` case stays inline
+  because there `Fin 2 → EuclideanSpace ℝ (Fin 0) = {0}` can't be
+  injective. Zero new proof text — purely a re-organization. The injective
+  form is the strong-predicate base case for milestone 3's induction.
+
+- **Dim-2 off-line construction via row-op on `LinearIndependent ℝ ![v, pb - pa]`.**
+  `exists_off_line_off_finite_dim_two` proves
+  `LinearIndependent ℝ ![q - pa, q - pb]` for `q := pa + t • v`
+  (where `v ∉ Submodule.span ℝ {pb - pa}`, `t ≠ 0`) by reducing to
+  LI of the original pair `![v, pb - pa]` via
+  `LinearIndependent.pair_add_smul_add_smul_iff` (mathlib's "row-op
+  preserves LI iff coefficient determinant is nonzero" lemma) with
+  `(a, b, c, d) = (t, 0, t, -1)` — the determinant `a*d - b*c = -t`,
+  nonzero iff `t ≠ 0`. The alternative (direct case-analysis with
+  `linearIndependent_fin2`) needed ~3 sub-cases on the scalar coefficient.
+  The row-op lemma is `@[simp]`-tagged but I invoked it with explicit
+  `rw` for readability of the proof flow.
+
+- **`SetLike.exists_not_mem_of_ne_top` is the canonical "pick a
+  non-member" lemma.** Searching for "exists element outside a proper
+  submodule" wasn't immediately fruitful (`Submodule.exists_..` doesn't
+  surface it directly). The general `SetLike` version handles any
+  set-like structure with order-top and the universe coercion, applies
+  to `Submodule` instances, and the `h_top` auto-param fires by `simp`
+  for standard cases. Used to extract `v ∉ Submodule.span ℝ {pb - pa}`
+  in the dim-2 off-line construction.
+
+- **`simp_all` cross-rewrites with equality hypotheses.** First attempt
+  at K₂ injectivity (`fin_cases ... <;> simp_all [hp_def]`) produced a
+  mangled `hp_def : p = ![single 0 1, single 0 1]` and an unsolved goal.
+  Root cause: `simp_all` used the equality `0 = single 0 1` (the goal
+  hypothesis it was trying to refute!) as a rewrite rule applied to
+  `hp_def`. Promoted to FRICTION [resolved] *simp_all rewrites
+  backwards with equality hypotheses*. Workaround: replace `simp_all`
+  with a `revert h_norm <;> simp [hp_def]` pattern that doesn't surface
+  the offending hypothesis as a rewrite rule.
+
 ### Promoted to TACTICS / FRICTION / DESIGN
 
 - *`Exists.imp` doesn't transport across changing-binder-type
@@ -524,38 +599,40 @@ the iff's `mpr` arm completes automatically.
   type is `SimpleGraph.IsLaman`)* → FRICTION [resolved] *Dot notation
   skips sub-namespaces*. Inside a sub-namespace, call by explicit
   name; the partial-prefix lookup handles the rest.
+- *`simp_all` rewrites backwards using equality hypotheses* →
+  FRICTION [resolved] *simp_all rewrites backwards with equality
+  hypotheses*.
+- *`congr_fun` does not apply to `EuclideanSpace`* → FRICTION
+  [resolved] *`congr_fun` does not apply to `EuclideanSpace`*.
 
 ## Blockers / open questions
 
-- **Placement-construction side condition for Type I preservation.**
-  `typeI_isInfinitesimallyRigid_extend` takes a hypothesis of the form
-  `LinearIndependent ℝ ![q - p a, q - p b]`, which (in dim 2) requires
-  at minimum `p a ≠ p b`. Vanilla `G.IsGenericallyRigid 2` does not
-  guarantee a rigid placement of `G` with `p a ≠ p b`, so the
-  unconditional wrapper `typeI_isGenericallyRigid_two` needs a
-  *strengthened* hypothesis on `G`. Two routes:
-  * **Strong inductive predicate `IsGenericallyRigidInj G d`**
-    (existence of an *injective* rigid placement). Both endpoints of
-    every Henneberg move are then `p a ≠ p b` for free; placing the
-    new vertex outside the line through `p a, p b` and outside the
-    finite set `p '' V` gives an injective rigid placement of the
-    extension. Forwards-compatible: the milestone-3 induction maintains
-    the strong predicate and weakens at the end.
-  * **Affinely-spanning predicate**. Stronger; requires Phase 4's
-    deferred `finrank_trivialMotions_eq_of_affinelySpanning`. Not
-    obviously needed if the injective route closes typeII too.
+- **Placement-construction side condition for Type II preservation.**
+  Type II deletes the edge `s(a, b)` and adds a new vertex of degree 3
+  joined to `a, b, c`. The rank-nullity argument for typeI lifted
+  cleanly because the two new edges through the new vertex `none`
+  orthogonalize the kernel difference at `none` against an LI pair.
+  Type II has three new edges through `none` (a redundant constraint
+  modulo Euclidean rigidity), but also drops one existing constraint
+  (the deleted edge `s(a, b)`), so the kernel-dimension accounting
+  isn't a direct increment of `2` on the new vertex's coordinates. The
+  classical proof picks a placement where the new vertex sits on the
+  line through `p a, p b` extended — making the angle at `c` open up
+  so that an infinitesimal rotation around `c` recovers the lost
+  constraint. The formalization mechanics will need a "Henneberg
+  rotation" / rank-2-substitution argument; decide during proof.
 
-  Recommended: implement `IsGenericallyRigidInj` in `Framework.lean`
-  (with `.toIsGenericallyRigid` and `.iso` companions), prove
-  `typeI_isGenericallyRigidInj_two` in `Henneberg.lean` using
-  `typeI_isInfinitesimallyRigid_extend` plus a dim-2 "exists `q`
-  off-line and off-finite-set" lemma, and defer the typeII parallel
-  to its own commit.
+- *Resolved.* ~~Placement-construction side condition for Type I
+  preservation.~~ Closed by the `IsGenericallyRigidInj` strong predicate
+  (in `Framework.lean`) plus the dim-2 `exists_off_line_off_finite_dim_two`
+  helper (in `Henneberg.lean`). The injective placement guarantees
+  `p a ≠ p b` for any chosen Henneberg endpoints, and the helper
+  constructs a `q` realizing both the `LinearIndependent`-condition
+  fed to `typeI_isInfinitesimallyRigid_extend` and the off-image
+  condition needed to preserve injectivity.
 
 - *Resolved.* ~~Affine-spanning side condition for Type I preservation.~~
-  Replaced by the broader placement-construction discussion above. The
-  affine-spanning route is one option; the injective route is likely
-  the lighter lift.
+  Superseded by the injective-predicate route above.
 
 - *Resolved.* ~~Henneberg-blocker proof length: if milestone 1 sprawls
   past ~3 sessions, reassess.~~ Landed in two sessions total
@@ -567,39 +644,48 @@ the iff's `mpr` arm completes automatically.
 
 ## Hand-off / next phase
 
-Milestone 2's rank-nullity core has landed
-(`typeI_isInfinitesimallyRigid_extend` plus the auxiliary
-`eq_zero_of_orthogonal_dim_two`). `Henneberg.lean` now imports
-`Framework.lean` (forward edge in the DAG, no cycle). The full
-unconditional wrappers `typeI_isGenericallyRigid_two` and
-`typeII_isGenericallyRigid_two` are next, but each needs a
-placement-construction side condition (see *Blockers* above).
-
-**Next concrete commit**: introduce the strong predicate
-`IsGenericallyRigidInj G d` in `Framework.lean` (existence of an
-*injective* rigid placement), plus the basic API
-(`.toIsGenericallyRigid`, `.iso`, base case
-`top_fin_two_isGenericallyRigidInj_two`), then prove
-`typeI_isGenericallyRigidInj_two` in `Henneberg.lean` using
-`typeI_isInfinitesimallyRigid_extend` plus a small dim-2
-"exists `q` off-line and off-finite-set" lemma. The typeII parallel
-gets its own commit (it requires either the "Henneberg rotation"
-rank-2-substitution argument or a similar strong-predicate-friendly
-approach).
-
-If the strong-predicate route turns out to need more bespoke API than
-expected, fall back to the affinely-spanning route via Phase 4's
-deferred `finrank_trivialMotions_eq_of_affinelySpanning`. The base
-case (K₂) is *not* affinely spanning in the plane (only two points),
-so that route would require strengthening the induction's base case
-in a non-trivial way — a downside that the injective route avoids.
-
-Milestone 3 (induction) becomes ready as soon as both move-preservation
-lemmas (in their strong forms) land. The base case (`n = 2`) needs
-`top_fin_two_isLaman` + the strong-predicate base case + `IsLaman.iso`
-+ the strong-predicate iso transport; the step uses
-`exists_typeI_or_typeII_reverse` (now closed) + per-move strong-form
-preservation + strong-form iso transport. The unconditional
-`IsLaman.isGenericallyRigid_two` (milestone-0 sorry) is then the
-weakening of `IsLaman.isGenericallyRigidInj_two` via
+Milestone 2's typeI half is fully closed. The strong predicate
+`IsGenericallyRigidInj` and its API (`.toIsGenericallyRigid`, `.mono`,
+`.iso`) and the K₂ injective base case `top_fin_two_isGenericallyRigidInj`
+live in `Framework.lean`; the dim-2 `exists_off_line_off_finite_dim_two`
+helper and the unconditional wrapper `typeI_isGenericallyRigidInj_two`
+live in `Henneberg.lean`. The induction maintains the strong form;
+milestone 3 will weaken to `IsGenericallyRigid` at the end via
 `.toIsGenericallyRigid`.
+
+**Next concrete commit**: prove `typeII_isGenericallyRigidInj_two` in
+`Henneberg.lean`. The shape mirrors the typeI wrapper:
+
+1. Obtain an injective rigid `p : Framework V 2` from
+   `G.IsGenericallyRigidInj 2`.
+2. Construct a `q : EuclideanSpace ℝ (Fin 2)` so that the extended
+   placement `fun w => w.elim q p` is (a) infinitesimally rigid for
+   `typeII G a b c` and (b) injective.
+
+Step (a) is the hard step. The typeI argument's two new edges through
+`none` pinned down `x.1 none - y.1 none` via two LI vectors `(q - p a,
+q - p b)`. Type II has *three* new edges (`none ↔ a, b, c`) plus the
+loss of one constraint (the deleted edge `s(a, b)`). The kernel-image
+accounting changes accordingly. The classical Whiteley/Jordán argument
+picks a placement where the new vertex sits on the line through
+`p a, p b` extended past `p b` — opening up a rotation around `p c`
+that recovers the deleted edge constraint. Formalization mechanics
+TBD; see *Blockers* above.
+
+Once `typeII_isGenericallyRigidInj_two` lands, milestone 3 (induction)
+is ready: prove `IsLaman.isGenericallyRigidInj_two` by strong induction
+on `Fintype.card V` (base: `K₂` via `top_fin_two_isLaman` +
+`top_fin_two_isGenericallyRigidInj` + `IsLaman.iso` /
+`IsGenericallyRigidInj.iso`; step: `exists_typeI_or_typeII_reverse` +
+the two strong-form move preservations + strong-form iso transport),
+then conclude `IsLaman.isGenericallyRigid_two` (the milestone-0 sorry)
+via `.toIsGenericallyRigid`. The iff arm `mpr` completes automatically
+through milestone 0's structured composition.
+
+If the typeII placement-construction turns out to be substantially
+harder than typeI, fall back to the affinely-spanning route via
+Phase 4's deferred `finrank_trivialMotions_eq_of_affinelySpanning`.
+The base case (K₂) is *not* affinely spanning in the plane (only two
+points), so that route would require strengthening the induction's
+base case in a non-trivial way — a downside the injective route
+avoids.
