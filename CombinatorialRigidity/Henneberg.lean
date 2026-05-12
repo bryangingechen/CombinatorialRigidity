@@ -15,7 +15,7 @@ import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Logic.Equiv.Option
 import Mathlib.Tactic.IntervalCases
 
-set_option linter.style.longFile 1900
+set_option linter.style.longFile 2100
 
 /-!
 # Henneberg moves
@@ -1402,7 +1402,7 @@ preservation argument. The existence-of-good-`q` step (a `q` with the requisite 
 independence, plus injectivity to feed into the next inductive step) is the dimension-2 placement
 ingredient; the unconditional `typeI_isGenericallyRigid_two` waits on that piece. -/
 
-open scoped InnerProductSpace
+open scoped InnerProductSpace Topology
 
 /-- In `EuclideanSpace ℝ (Fin 2)`, a vector `u` orthogonal to two linearly independent vectors is
 zero. The size-2 LI family spans (`Fin 2`'s cardinality matches `finrank`), so the orthogonal
@@ -1793,6 +1793,168 @@ theorem typeII_isGenericallyRigidInj_two_of_nonCollinear [Fintype V] {G : Simple
   · exact (hq_notmem ⟨v, h.symm⟩).elim
   · exact (hq_notmem ⟨u, h⟩).elim
   · exact congrArg some (hp_inj h)
+
+/-- **Openness-of-rigidity helper: produce a non-collinear rigid placement.** Given any injective
+generically rigid `G` in dim 2 and three distinct vertices `a, b, c`, there is an injective rigid
+placement `p` for which `(p a, p b, p c)` is non-collinear (i.e.,
+`LinearIndependent ℝ ![p b - p a, p c - p a]`).
+
+The proof: if the IH placement `p₀` already has the LI condition, use it. Otherwise
+`p₀ c - p₀ a = γ⁻¹ • (p₀ b - p₀ a)` for some nonzero `γ`; pick a direction `w ∉ span (p₀ b - p₀ a)`
+and perturb `p₀ c` to `p₀ c + t • w`. By `IsInfinitesimallyRigid.eventually` and continuity, the
+perturbed placement stays rigid and injective on an open neighborhood of `t = 0` in `ℝ`; for any
+`t ≠ 0` in this neighborhood, `p_t t c - p_t t a = γ⁻¹ • (p₀ b - p₀ a) + t • w` is no longer in
+`span (p₀ b - p₀ a)`, so LI holds. Extract a witness from `𝓝[≠] 0` (which is `NeBot` in `ℝ`).
+
+This is the openness-of-IR closure of the Phase 5 milestone 2 collinearity gap; it lifts
+`typeII_isGenericallyRigidInj_two_of_nonCollinear` to the unconditional
+`typeII_isGenericallyRigidInj_two` below. -/
+private lemma exists_nonCollinear_rigid_placement_dim_two [Fintype V] {G : SimpleGraph V}
+    (h : G.IsGenericallyRigidInj 2) {a b c : V} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ∃ p : Framework V 2, G.IsInfinitesimallyRigid p ∧ Function.Injective p ∧
+      LinearIndependent ℝ ![p b - p a, p c - p a] := by
+  classical
+  obtain ⟨p₀, hp₀_rig, hp₀_inj⟩ := h
+  by_cases hLI₀ : LinearIndependent ℝ ![p₀ b - p₀ a, p₀ c - p₀ a]
+  · exact ⟨p₀, hp₀_rig, hp₀_inj, hLI₀⟩
+  -- Perturbation branch: `(p₀ a, p₀ b, p₀ c)` is collinear.
+  have hpa_ne_pb : p₀ a ≠ p₀ b := fun heq => hab (hp₀_inj heq)
+  have hpa_ne_pc : p₀ a ≠ p₀ c := fun heq => hac (hp₀_inj heq)
+  have hd_ne_zero : p₀ b - p₀ a ≠ 0 := sub_ne_zero.mpr (Ne.symm hpa_ne_pb)
+  have hdac_ne_zero : p₀ c - p₀ a ≠ 0 := sub_ne_zero.mpr (Ne.symm hpa_ne_pc)
+  -- Collinearity coefficient `γ`: `γ • (p₀ c - p₀ a) = p₀ b - p₀ a` with `γ ≠ 0`.
+  rw [linearIndependent_fin2] at hLI₀
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hLI₀
+  push Not at hLI₀
+  obtain ⟨γ, hγ⟩ := hLI₀ hdac_ne_zero
+  have hγ_ne_zero : γ ≠ 0 := by
+    intro hg; rw [hg, zero_smul] at hγ; exact hd_ne_zero hγ.symm
+  have h_pca_decomp : p₀ c - p₀ a = γ⁻¹ • (p₀ b - p₀ a) := by
+    rw [← hγ, ← smul_assoc, smul_eq_mul, inv_mul_cancel₀ hγ_ne_zero, one_smul]
+  -- Perturbation direction `w` outside `span {p₀ b - p₀ a}` (proper subspace of `ℝ²`).
+  have h_span_ne_top :
+      Submodule.span ℝ ({p₀ b - p₀ a} : Set (EuclideanSpace ℝ (Fin 2))) ≠ ⊤ := by
+    intro h_top
+    have h1 := finrank_span_singleton (K := ℝ) hd_ne_zero
+    rw [h_top, finrank_top] at h1
+    have h2 := finrank_euclideanSpace_fin (𝕜 := ℝ) (n := 2)
+    omega
+  obtain ⟨w, hw_outside⟩ := SetLike.exists_not_mem_of_ne_top _ h_span_ne_top
+  have hw_ne_zero : w ≠ 0 := fun h0 => hw_outside (h0 ▸ zero_mem _)
+  -- The auxiliary LI `![w, p₀ b - p₀ a]`, used to invoke `pair_add_smul_add_smul_iff`.
+  have h_LI_w_d : LinearIndependent ℝ
+      (![w, p₀ b - p₀ a] : Fin 2 → EuclideanSpace ℝ (Fin 2)) := by
+    rw [linearIndependent_fin2]
+    refine ⟨hd_ne_zero, fun s heq => hw_outside ?_⟩
+    rw [Submodule.mem_span_singleton]
+    exact ⟨s, heq⟩
+  -- Perturbation `p_t t := Function.update p₀ c (p₀ c + t • w)`.
+  let p_t : ℝ → Framework V 2 := fun t => Function.update p₀ c (p₀ c + t • w)
+  have h_p_t_c : ∀ t, p_t t c = p₀ c + t • w := fun _ =>
+    Function.update_self c _ p₀
+  have h_p_t_ne : ∀ t (v : V), v ≠ c → p_t t v = p₀ v := fun _ v hvc =>
+    Function.update_of_ne hvc _ p₀
+  have h_p_t_a : ∀ t, p_t t a = p₀ a := fun t => h_p_t_ne t a hac
+  have h_p_t_b : ∀ t, p_t t b = p₀ b := fun t => h_p_t_ne t b hbc
+  have h_p_t_cont : Continuous p_t := by
+    refine continuous_pi (fun v => ?_)
+    by_cases hvc : v = c
+    · have h : (fun t : ℝ => p_t t v) = fun t => p₀ c + t • w := by
+        funext t; rw [hvc, h_p_t_c]
+      rw [h]
+      exact continuous_const.add (continuous_id.smul continuous_const)
+    · have h : (fun t : ℝ => p_t t v) = fun _ => p₀ v :=
+        funext (fun t => h_p_t_ne t v hvc)
+      rw [h]
+      exact continuous_const
+  have h_p_t_zero : p_t 0 = p₀ := by
+    funext v
+    by_cases hvc : v = c
+    · rw [hvc, h_p_t_c]; simp
+    · rw [h_p_t_ne 0 v hvc]
+  -- Rigidity: an open neighborhood of `t = 0`.
+  have h_rig_ev : ∀ᶠ t in 𝓝 (0 : ℝ), G.IsInfinitesimallyRigid (p_t t) := by
+    have h_ev_p := hp₀_rig.eventually
+    rw [← h_p_t_zero] at h_ev_p
+    exact h_p_t_cont.continuousAt.tendsto.eventually h_ev_p
+  -- Injectivity: an open neighborhood of `t = 0` (each `v ≠ c` is continuous-separated from `c`).
+  have h_inj_ev : ∀ᶠ t in 𝓝 (0 : ℝ), Function.Injective (p_t t) := by
+    have h_each : ∀ v ∈ Finset.univ.filter (fun v : V => v ≠ c),
+        ∀ᶠ t in 𝓝 (0 : ℝ), p_t t v ≠ p_t t c := by
+      intro v hv
+      rw [Finset.mem_filter] at hv
+      have hvc := hv.2
+      have h_cont : Continuous (fun t : ℝ => p_t t v - p_t t c) :=
+        ((continuous_apply v).comp h_p_t_cont).sub
+          ((continuous_apply c).comp h_p_t_cont)
+      have h_zero_ne : p_t 0 v - p_t 0 c ≠ 0 := by
+        rw [h_p_t_zero]
+        exact sub_ne_zero.mpr (fun heq => hvc (hp₀_inj heq))
+      have h_ev := h_cont.continuousAt.eventually_ne h_zero_ne
+      filter_upwards [h_ev] with t ht
+      exact sub_ne_zero.mp ht
+    have h_all := (Finset.univ.filter (fun v : V => v ≠ c)).eventually_all.mpr h_each
+    filter_upwards [h_all] with t ht
+    intro u v heq
+    by_cases huc : u = c
+    · by_cases hvc : v = c
+      · rw [huc, hvc]
+      · subst huc
+        exfalso
+        exact ht v (by simp [hvc]) heq.symm
+    · by_cases hvc : v = c
+      · subst hvc
+        exfalso
+        exact ht u (by simp [huc]) heq
+      · have hu : p_t t u = p₀ u := by simp [p_t, Function.update_of_ne huc]
+        have hv : p_t t v = p₀ v := by simp [p_t, Function.update_of_ne hvc]
+        exact hp₀_inj (hu ▸ hv ▸ heq)
+  -- LI of the perturbed pair, for any `t ≠ 0`. The collinear `p₀ c - p₀ a = γ⁻¹ • (p₀ b - p₀ a)`
+  -- plus the `t • w` perturbation become linearly independent of `p₀ b - p₀ a` for `t ≠ 0`.
+  have h_LI_perturbed : ∀ t : ℝ, t ≠ 0 →
+      LinearIndependent ℝ ![p_t t b - p_t t a, p_t t c - p_t t a] := by
+    intro t ht_ne
+    have h_form :
+        (![p_t t b - p_t t a, p_t t c - p_t t a] : Fin 2 → EuclideanSpace ℝ (Fin 2)) =
+          ![(0 : ℝ) • w + (1 : ℝ) • (p₀ b - p₀ a), t • w + γ⁻¹ • (p₀ b - p₀ a)] := by
+      funext i
+      fin_cases i
+      · change p_t t b - p_t t a = (0 : ℝ) • w + (1 : ℝ) • (p₀ b - p₀ a)
+        rw [h_p_t_a t, h_p_t_b t, zero_smul, one_smul, zero_add]
+      · change p_t t c - p_t t a = t • w + γ⁻¹ • (p₀ b - p₀ a)
+        rw [h_p_t_a t, h_p_t_c t,
+          show (p₀ c + t • w) - p₀ a = (p₀ c - p₀ a) + t • w from by abel, h_pca_decomp]
+        abel
+    rw [h_form, LinearIndependent.pair_add_smul_add_smul_iff]
+    refine ⟨h_LI_w_d, ?_⟩
+    simp [ht_ne.symm]
+  -- Combine rigid + injective into one `∀ᶠ` on `𝓝[≠] 0`, extract a witness `t ≠ 0`.
+  have h_combined : ∀ᶠ t in 𝓝[≠] (0 : ℝ),
+      G.IsInfinitesimallyRigid (p_t t) ∧ Function.Injective (p_t t) ∧ t ≠ 0 := by
+    filter_upwards [(h_rig_ev.and h_inj_ev).filter_mono nhdsWithin_le_nhds,
+      self_mem_nhdsWithin] with t ⟨hrig, hinj⟩ ht_ne
+    exact ⟨hrig, hinj, ht_ne⟩
+  obtain ⟨t, hrig, hinj, ht_ne⟩ := h_combined.exists
+  exact ⟨p_t t, hrig, hinj, h_LI_perturbed t ht_ne⟩
+
+/-- **Type II preserves injective generic rigidity in dim 2 (unconditional).** Given an injectively
+generically rigid `G` in dim 2 and three distinct vertices `a, b, c`, the Type II Henneberg
+extension `typeII G a b c` is again injectively generically rigid in dim 2.
+
+The proof passes the IH through `exists_nonCollinear_rigid_placement_dim_two` to obtain a placement
+on which `(p a, p b, p c)` is non-collinear (the original IH placement may have a collinear
+triple, in which case we perturb the placement of `c` perpendicular to the line through `p a, p b`
+to break collinearity while preserving rigidity, by openness of infinitesimal rigidity), then
+invokes the conditional `typeII_isGenericallyRigidInj_two_of_nonCollinear`.
+
+**Phase 5 milestone 2 closure.** -/
+theorem typeII_isGenericallyRigidInj_two [Fintype V] {G : SimpleGraph V}
+    (hG : G.IsGenericallyRigidInj 2) {a b c : V}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    (typeII G a b c).IsGenericallyRigidInj 2 := by
+  obtain ⟨p, hp_rig, hp_inj, hLI⟩ :=
+    exists_nonCollinear_rigid_placement_dim_two hG hab hac hbc
+  exact typeII_isGenericallyRigidInj_two_of_nonCollinear hp_rig hp_inj hab hLI
 
 end Henneberg
 
