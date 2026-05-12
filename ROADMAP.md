@@ -23,7 +23,8 @@ Archive/CombinatorialRigidity/
 ├── TACTICS.md         tactical reference: grind, ncard, mirror rule
 ├── notes/             per-phase work logs + cross-cutting logs
 │   ├── PhaseN.md      lemma checklist + decisions + hand-off for Phase N
-│   └── FRICTION.md    long-running API/tactic friction log
+│   ├── FRICTION.md    long-running API/tactic friction log
+│   └── PERFORMANCE.md build-time + profiling notes — read before a perf pass
 ├── Mathlib/           mirror for upstream-eligible lemmas (see DESIGN.md)
 │   └── …/             each file mirrors its eventual upstream path
 ├── EdgesIn.lean       Phase 1 — `edgesIn` selector

@@ -226,6 +226,30 @@ limitations. Worth a once-over so future agents don't re-litigate.
   re-litigate it.
 - **Status:** wontfix (upstream concern).
 
+### [wontfix] `lake build` of Phase 5 files is import-floor-bound and timing-noisy
+- **Where it bit:** Performance audit in Phase 5's third cleanup pass.
+- **Friction:** `Framework.lean`, `HennebergRigidity.lean`, and
+  `Laman.lean` each take 20–40 s for a from-scratch `lake build`, but
+  `lake env lean` on a stub file with just `Framework.lean`'s imports
+  is already ~27 s — so most of the wall-clock is import loading, not
+  within-file elaboration (Framework's own work is ~6 s, HR's ~19 s,
+  Laman's ~11 s). The within-file portion is *itself* highly variable
+  (10–50 s for the same source, depending on lake/OS caches). A/B
+  comparing optimization candidates needs many runs per side and still
+  often returns ambiguous results.
+- **Proposed fix:** The two structural levers that *would* help are
+  both multi-file changes: (a) convert the project + its `Mathlib/…`
+  mirrors to Lean's `module` + `public import` system, which gives
+  downstream files a smaller load surface (current beneficiary:
+  `LamanTheorem.lean` only); (b) move the analysis-heavy half of
+  `Framework.lean` behind a thinner facade so combinatorial files
+  (`Sparsity.lean`, `Laman.lean`, `Henneberg.lean`) don't import the
+  finite-dimension normed-module machinery transitively. Defer to
+  Phase 6 once more downstream files exist to amortize the cost.
+- **Status:** wontfix at the current scope; structural change is a
+  Phase 6+ decision. Phase 5 third cleanup pass (`notes/Phase5.md`)
+  records the per-candidate experiments and what trended where.
+
 ## Mirrored
 
 ### [mirrored] `Sym2.notMem_map_some` and `Sym2.disjoint_image_map_some`

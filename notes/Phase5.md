@@ -452,6 +452,90 @@ None — all milestone blockers resolved.
 
 ### Cleanup pass summaries
 
+*Third post-closure cleanup pass — performance audit.* Driven by an observation
+that a from-scratch build of `Framework.lean`, `HennebergRigidity.lean`, and
+`Laman.lean` runs ~40 s on the user's machine (~80–100 s wall on this machine).
+The pass quickly bottomed out on noise and structural import overhead:
+
+- **Established the perf floor.** Loading the imports of `Framework.lean`
+  (`Mathlib.Analysis.Normed.Module.FiniteDimension` + `…InnerProductSpace.PiL2`
+  + cohorts) takes ~27 s by itself (`lake env lean` on a stub file with only
+  the imports); `HennebergRigidity.lean`'s import closure is identical and
+  takes ~27 s; `Laman.lean`'s is smaller at ~11 s. The within-file
+  elaboration is small (Framework ~6 s, HR ~19 s, Laman ~11 s of work
+  beyond the import load). Anything we change in source affects only the
+  within-file part; the bulk of build time is the import floor.
+- **`set_option profiler true` captures only ~5 s of the 19 s HR elaboration.**
+  The cumulative profile (typeclass inference 1.7 s, linting 1.25 s, tactic
+  execution 1.0 s, `.olean` serialization 0.7 s, simp 0.3 s, type checking
+  0.2 s, elaboration 0.15 s) sums to ~5.3 s; the remaining ~14 s is
+  process-level work the profiler doesn't expose (likely instance
+  resolution, linker, IR generation that is not under `compilation (IR)`,
+  etc.). The per-declaration profile threshold was lowered to 0 with the
+  same result.
+- **Build timings are dominated by variance.** Repeated full rebuilds of the
+  same file (forced via a content-changing nudge) returned wall-clocks in
+  the 10–50 s range with no source change. A/B-comparing optimization
+  candidates requires several runs per branch *and* still leaves the result
+  ambiguous in the noise band. Net: the most reliable improvement is to
+  remove provably-unused work.
+- **Tried and reverted (no measurable benefit, or borderline regression
+  under noise):**
+  - `set p_ext := … with hp_ext_def` → `let p_ext := …` in the two
+    `_isInfinitesimallyRigid_extend` proofs. `hp_ext_def` is unreferenced,
+    so the cleanup is cosmetic; under noise the `let` form trended
+    *slightly slower* (median ~36 s vs ~25 s for `set`), probably because
+    `set`'s named alias short-circuits unification more than the
+    transparent `let` body does. Reverted.
+  - Replace the four `change ⟪q - p a, …⟫ at hxa hxb hya hyb` lines with a
+    single
+    `simp only [rigidityMap_apply, Pi.zero_apply, hp_ext_def, Option.elim_none,
+    Option.elim_some]`. Trended slower under noise too (~24 s vs ~16 s
+    median on `lake env lean`); the `simp` has to chase the lambda
+    explicitly while four `change` calls each just check defeq. Reverted.
+  - Extract `kerRestrict` helper (the `LinearMap.funLeft … codRestrict …`
+    block at the head of typeI/typeII injectivity). Drops ~5 lines of
+    duplicated builder text, but four-run sample after the change ran
+    ~46 s mean vs ~30 s baseline — another suspected regression in noise.
+    Reverted; the duplication is mild (one identical 4-line block per
+    move) and the proof line numbers are stable enough that the readability
+    win is small.
+  - Replace `nlinarith [Nat.le_mul_self d]` in
+    `top_fin_two_isGenericallyRigidInj` with
+    `have h_sq := Nat.le_mul_self d; have h_eq : (d+1)*(d+2) = d*d + 3*d + 2 := by ring; omega`.
+    Saves ~120 ms in the profile but the file timing didn't move out of
+    the noise band; left as the original `nlinarith` for now since
+    `nlinarith [Nat.le_mul_self d]` is the more idiomatic one-liner for
+    "linear-after-hinting-a-square" goals.
+  - Convert `Framework.lean` (and transitively the dependency closure)
+    from plain `import` to the new `module` + `public import` system used
+    by upstream Mathlib. Mathlib commit pinned here already uses the
+    module system (e.g. `Mathlib.Analysis.Normed.Module.FiniteDimension`
+    has `module`-header), but a `module` file *cannot* import a non-`module`
+    file, so converting `Framework.lean` requires first converting our
+    four `Mathlib/…` mirrors plus `EdgesIn.lean`, `Sparsity.lean`,
+    `Laman.lean`, `Henneberg.lean`. The build-time benefit accrues to
+    *downstream* importers of the converted file (smaller interface to
+    load), and our only downstream importer is `LamanTheorem.lean`. Not
+    worth the multi-file refactor for one file's load time. Marked as a
+    Phase 6 candidate if the rigidity-matroid work adds more downstream
+    files.
+- **Kept (safe, ambiguous-but-not-worse).** Removed two redundant imports
+  from `Framework.lean`: `Mathlib.LinearAlgebra.Dimension.Finrank` and
+  `Mathlib.LinearAlgebra.Dimension.Free`. Both are transitively pulled in
+  via `Mathlib.Analysis.InnerProductSpace.PiL2` /
+  `Mathlib.Analysis.Normed.Module.FiniteDimension`; with them gone the
+  file builds and `Module.finrank_pi_fintype` remains in scope. No
+  measurable timing change but the imports were dead code.
+
+Net effect: −2 LoC (`Framework.lean`); no measurable build-time change.
+The takeaway recorded in FRICTION below: durable performance work on
+these files requires either (a) a smaller import closure for the Lean
+*kernel* (i.e. module-system conversion of the full Archive dependency
+chain) or (b) shipping a `RigidityMap` API that doesn't pull in the
+finite-dimension normed-module machinery for files that only need the
+combinatorial half.
+
 *Second post-closure cleanup pass.* Eight small simplifications driven by a
 cold-eyes audit of the Phase 5 files:
 

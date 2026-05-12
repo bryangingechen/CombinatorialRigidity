@@ -7,8 +7,6 @@ import CombinatorialRigidity.Mathlib.Data.Set.Card
 import CombinatorialRigidity.Sparsity
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.LinearAlgebra.Dimension.Finrank
-import Mathlib.LinearAlgebra.Dimension.Free
 
 /-!
 # Frameworks and infinitesimal rigidity
