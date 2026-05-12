@@ -112,20 +112,31 @@ lemma; resolved otherwise.
 Tried-and-rejected approaches, deprecated patterns, and tactic
 limitations. Worth a once-over so future agents don't re-litigate.
 
-### [wontfix] `omega` doesn't auto-commute multiplication of opaque atoms
-- **Where it bit:** `IsGenericallyRigid.card_mul_le` in `Framework.lean`.
-  `Framework.finrank` returns `Fintype.card V * d`; the lemma states
-  `d * Fintype.card V ≤ G.edgeSet.ncard + d * (d + 1) / 2`. omega treats
-  `Fintype.card V` and `d` as atoms and sees `Fintype.card V * d` as a
-  different term from `d * Fintype.card V`. Without `mul_comm` it failed
-  even with all other rank-nullity facts in scope.
+### [wontfix] `omega` doesn't see through nonlinear algebra on opaque atoms
+- **Where it bit:**
+  - `IsGenericallyRigid.card_mul_le` in `Framework.lean` —
+    *commutativity*. `Framework.finrank = Fintype.card V * d`; the
+    lemma uses `d * Fintype.card V`. omega treats both as different
+    atoms.
+  - `IsTightOn.union_inter` in `Sparsity.lean` — *distributivity*.
+    omega has `(s ∪ t).card + (s ∩ t).card = s.card + t.card`
+    (`Finset.card_union_add_card_inter`) but needs
+    `k * #s + k * #t = k * #(s ∪ t) + k * #(s ∩ t)`; the atoms
+    `k * #s`, `k * #t`, `k * #(s ∪ t)`, `k * #(s ∩ t)` are unrelated to
+    omega without an explicit distributivity step.
 - **Proposed fix:** none upstream — this is omega's intended design
-  (atomic variables don't carry commutativity). Workaround: when both
-  forms appear, normalize the `have` to the form the goal uses via a
-  one-line `rw […, mul_comm]`. The fix in `card_mul_le` was to restate
-  `h_total` directly as `Module.finrank ℝ (Framework V d) = d *
-  Fintype.card V` via `rw [Framework.finrank, mul_comm]`.
-- **Status:** wontfix.
+  (atomic variables don't carry commutativity or distributivity).
+  Workaround: pre-normalize via `rw`/`mul_comm` so the form omega sees
+  matches the goal. For *commutativity*, `IsGenericallyRigid.card_mul_le`
+  restated `h_total` as `Module.finrank ℝ (Framework V d) = d *
+  Fintype.card V` via `rw [Framework.finrank, mul_comm]`. For
+  *distributivity*, `IsTightOn.union_inter` stages a `have h_card_mul`
+  via the 3-rewrite chain `rw [← Nat.mul_add, ← Nat.mul_add,
+  Finset.card_union_add_card_inter]` then hands the multiplied identity
+  to omega alongside the unmultiplied facts. `linear_combination k * h.symm`
+  is a one-liner alternative but requires `Mathlib.Tactic.LinearCombination`
+  which Sparsity does not currently import.
+- **Status:** wontfix (intrinsic to omega).
 
 ### [wontfix] `nlinarith` over ℕ struggles with quadratic bounds
 - **Where it bit:** `top_fin_two_isGenericallyRigid` in `Framework.lean`,

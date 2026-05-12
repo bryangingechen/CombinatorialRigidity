@@ -7,8 +7,8 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Milestone 0, the **typeI half** of milestone 1, and the first
-edge-arithmetic input of the typeII half are complete. Specifically:
+Milestone 0, the **typeI half** of milestone 1, and the tight-set
+lattice infrastructure for the typeII half are complete. Specifically:
 
 * Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport) —
   done in an earlier commit.
@@ -16,16 +16,16 @@ edge-arithmetic input of the typeII half are complete. Specifically:
   `typeI_isLaman_iff` (in `Henneberg.lean`), giving the degree-2
   branch of the structural decomposition automatically.
 * Milestone 1 typeII edge-arithmetic input — `edgesIn_inter` plus
-  `edgesIn_ncard_add_le` in `EdgesIn.lean`. The supermodular
-  inequality on edges-in counts, the only edge-arithmetic input the
-  tight-set union closure consumes.
+  `edgesIn_ncard_add_le` in `EdgesIn.lean` (supermodularity of edge
+  counts); plus `IsTightOn` + `IsTightOn.union_inter` in `Sparsity.lean`
+  (the standard tight-subset lattice closure on which the blocker
+  argument runs).
 
-The remaining typeII-half open tasks are the tight-set union-closure
-lemma in `Sparsity.lean` (consuming `edgesIn_ncard_add_le`) and then
-the blocker proof itself; once they land, `IsLaman.exists_typeI_or_typeII_reverse`
-composes the two halves and milestone 1 closes. Milestone 2 (per-move
-rigidity preservation, in `Henneberg.lean`) is independent and can be
-worked in parallel.
+The remaining typeII-half open task is the blocker proof itself; once
+it lands, `IsLaman.exists_typeI_or_typeII_reverse` composes the two
+halves and milestone 1 closes. Milestone 2 (per-move rigidity
+preservation, in `Henneberg.lean`) is independent and can be worked
+in parallel.
 
 Phase 5 target: the (⇐) direction of Laman's theorem,
 
@@ -173,16 +173,17 @@ The typeII half (below) is the deep step.
   `Set.ncard_union_add_ncard_inter` with the `∪ ⊆` containment.
   `[Finite V]` lets the `ncard_*` autoparams fire (per TACTICS § 2).
 
-- [ ] (Helper) **`(2,3)`-tight-set union closure** — for `G` `(2,3)`-
-  sparse and `S, T : Finset V` both *subset-tight*
-  (`|edgesIn(G, ↑·)| + 3 = 2 * |·|`) with `2 ≤ |S ∩ T|`, both
-  `S ∪ T` and `S ∩ T` are also subset-tight. Belongs in
-  `Sparsity.lean`. The standard tight-set lattice closure; uses the
-  modular inequality above as the only edge-arithmetic input.
-  Question to decide mid-proof: introduce a named predicate
-  `IsTightOn G k ℓ S` for the subset-tight condition, or stay
-  unpredicated and chain raw `ncard` equalities. Lean toward the
-  named predicate if it appears in 3+ places in the blocker proof.
+- [x] (Helper) **`(k, ℓ)`-tight-subset union closure** —
+  `IsTightOn.union_inter` in `Sparsity.lean`. Introduced the named
+  predicate `IsTightOn G k ℓ s := (G.edgesIn ↑s).ncard + ℓ = k * s.card`
+  (mirrors `IsTight` but localized to a Finset). The lemma generalizes
+  the size proviso to `ℓ ≤ k * (s ∩ t).card` (specializes to
+  `2 ≤ |s ∩ t|` at `(k, ℓ) = (2, 3)`). Proof: supermodularity (lower
+  bound on `e(s ∪ t) + e(s ∩ t)`) + two sparsity applications (upper
+  bound) + Finset cardinality identity, fused by `omega` once the
+  `k * #` form is staged via a 3-rewrite glue step (see FRICTION
+  extension under *omega doesn't see through nonlinear algebra on
+  opaque atoms*).
 
 - [ ] `IsLaman.exists_typeI_or_typeII_reverse` — strengthened
   decomposition. Degree-2 branch reuses `typeI_reverse_isLaman` +
@@ -286,12 +287,27 @@ the iff's `mpr` arm completes automatically.
   out as a named lemma since the `∩` equality is the half that's
   genuinely useful by itself.
 
+- **Introduced `IsTightOn` predicate up front.** The Phase 5 plan
+  punted the predicate-vs-unpredicated choice to mid-proof. Chose
+  predicate: even in the union-closure lemma alone it appears four
+  times in the signature (`hs`, `ht`, plus both conclusions). The
+  blocker will instantiate it on each candidate set `S_{x,y}`, so
+  multiplicity grows quickly. Since `IsTightOn` is `def := (eqn)`
+  (not an And), `refine ⟨?_, ?_⟩` doesn't split it directly; the
+  proof uses `unfold IsTightOn at hs ht ⊢` to surface the equation
+  for `omega`. (Extending TACTICS § 4 to mention this single-equation
+  variant if the pattern recurs in the blocker.)
+
 ### Promoted to TACTICS / FRICTION / DESIGN
 
 - *`Exists.imp` doesn't transport across changing-binder-type
   existentials* → FRICTION [resolved].
 - *`rw [LinearMap.mem_ker]` fails on `SetLike`-coerced membership
   after `Submodule.mem_map` destructure* → FRICTION [resolved].
+- *omega doesn't see through distributivity on `k * #` atoms* →
+  FRICTION [wontfix] *omega doesn't see through nonlinear algebra on
+  opaque atoms* (extended the existing commutativity entry with the
+  distributivity case the `IsTightOn.union_inter` proof hit).
 
 ## Blockers / open questions
 
@@ -315,34 +331,31 @@ the iff's `mpr` arm completes automatically.
 
 Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport), the
 typeI half of milestone 1 (`typeI_reverse_isLaman` /
-`typeI_isLaman_iff`), and the modular `edgesIn` inequality
-(`edgesIn_inter` + `edgesIn_ncard_add_le` in `EdgesIn.lean`) are
-complete.
+`typeI_isLaman_iff`), the modular `edgesIn` inequality
+(`edgesIn_inter` + `edgesIn_ncard_add_le` in `EdgesIn.lean`), and the
+tight-subset lattice closure (`IsTightOn` + `IsTightOn.union_inter`
+in `Sparsity.lean`) are complete.
 
-The next session attempts the **tight-set union-closure lemma** in
-`Sparsity.lean`: for `G` `(2, 3)`-sparse and `s, t : Finset V` both
-subset-tight (`(G.edgesIn ↑s).ncard + 3 = 2 * s.card` and similarly
-for `t`) with `2 ≤ (s ∩ t).card`, both `s ∪ t` and `s ∩ t` are also
-subset-tight. The proof chains `edgesIn_ncard_add_le` against
-`IsSparse` applied at `s ∪ t` and `s ∩ t`: each is bounded above by
-its own `(2,3)`-sparsity, the sum-of-sparsity-bounds matches
-`2 * s.card + 2 * t.card - 6 = 2 * (s ∪ t).card + 2 * (s ∩ t).card - 6`,
-and equality on both is forced. The `[Finite V]` hypothesis carries
-over from `edgesIn_ncard_add_le`.
+The next session attempts the **Henneberg blocker proof** —
+`IsLaman.exists_typeI_or_typeII_reverse` in `Henneberg.lean`. Read
+Whiteley §3.1 or Jordán §3.1 first. The case-split structure
+(3 / 2 / 1 non-adjacent pairs among `v`'s neighbors) is sketched
+under *Milestone 1* above. The degree-2 branch reuses
+`typeI_reverse_isLaman` + the existing `typeI_iso_of_two_neighbors`
+already in `Henneberg.lean`; the degree-3 branch is the blocker case
+analysis. All the edge-arithmetic inputs (`edgesIn_ncard_add_le`,
+`IsTightOn.union_inter`) are in place — the blocker proof now reduces
+to a graph-theoretic argument: assume each non-adjacent pair `(x, y)`
+of `v`'s neighbors blocks (yields a tight `S_{x,y} ⊆ V \ {v}`
+containing `{x, y}`); combine the `S_{x,y}`'s via `IsTightOn.union_inter`
+to force a tight set containing two or three of `{a, b, c}`; that
+tight set plus `v` overshoots `G`'s sparsity, contradiction.
 
-Question to decide while writing: introduce a named predicate
-`IsTightOn G k ℓ s` for the subset-tight condition, or stay
-unpredicated and chain raw `ncard` equalities. Lean toward the named
-predicate if it would appear in 3+ places in the blocker proof
-afterwards. The sparsity premise (`(G.edgesIn (↑s ∩ ↑t)).ncard + 3 ≤
-2 * (s ∩ t).card`) needs `3 ≤ 2 * (s ∩ t).card`, i.e. `2 ≤ (s ∩ t).card`
-(that's where the hypothesis enters).
-
-After the union-closure lemma, the **Henneberg blocker proof**
-proper: read Whiteley §3.1 or Jordán §3.1 first. The case-split
-structure (3 / 2 / 1 non-adjacent pairs among `v`'s neighbors) is
-sketched under *Milestone 1* above. Then
-`IsLaman.exists_typeI_or_typeII_reverse` closes milestone 1.
+Likely first concrete commit: the **per-pair tight-blocker witness**
+that says "if `G_{xy} := (G - v) + edge(x, y)` is not Laman, then
+there exists a `(2, 3)`-tight `S ⊆ V \ {v}` with `{x, y} ⊆ S` in `G`".
+That's a one-sparsity-violation argument with no case-split. The
+case-split builds on top of it.
 
 Milestones 1 and 2 are independent — if the blocker proof stalls,
 milestone 2 (Type I rigidity preservation in `Henneberg.lean`, which

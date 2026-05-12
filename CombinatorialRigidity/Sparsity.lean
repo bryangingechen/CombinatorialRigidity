@@ -26,6 +26,8 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
   `ℓ ≤ k * #s`, `(G.edgesIn ↑s).ncard + ℓ ≤ k * #s`. Phrased additively
   to avoid `ℕ`-subtraction.
 * `SimpleGraph.IsTight G k ℓ` — sparse and `(G.edgeSet).ncard + ℓ = k * Nat.card V`.
+* `SimpleGraph.IsTightOn G k ℓ s` — `s : Finset V` is a tight subset:
+  `(G.edgesIn ↑s).ncard + ℓ = k * s.card`. The localised version of `IsTight`.
 
 ## Main lemmas
 
@@ -38,13 +40,19 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
 * `SimpleGraph.IsTight.not_isSparse_of_lt` — proper supergraph of a tight graph is not sparse.
 * `SimpleGraph.IsSparse.iso`, `SimpleGraph.IsTight.iso` — sparsity and tightness are
   preserved under graph isomorphism.
+* `SimpleGraph.IsTightOn.union_inter` — tight subsets are closed under union and
+  intersection in a `(k, ℓ)`-sparse graph (subject to the standard `ℓ ≤ k * #(s ∩ t)`
+  size proviso). The tight-set lattice closure that the Phase 5 Henneberg-blocker
+  argument runs on.
 
 ## Implementation notes
 
-`IsSparse` and `IsTight` are non-reducible `def`s, so `grind` will not
-unfold them. To break a goal involving `IsTight` into its sparse and
-edge-count components, use `refine ⟨?_, ?_⟩` (or pattern-match `⟨h1, h2⟩`).
-See `TACTICS.md` § 4 for related guidance.
+`IsSparse`, `IsTight`, and `IsTightOn` are non-reducible `def`s, so `grind`
+will not unfold them. To break a goal involving `IsTight` into its sparse and
+edge-count components, use `refine ⟨?_, ?_⟩` (or pattern-match `⟨h1, h2⟩`);
+to surface the underlying equation of an `IsTightOn`, use `unfold IsTightOn`
+(it is a one-equation `def`, not an And). See `TACTICS.md` § 4 for related
+guidance.
 
 ## Project context
 
@@ -66,6 +74,12 @@ def IsSparse (k ℓ : ℕ) : Prop :=
 exactly `k * #V − ℓ`. -/
 def IsTight (k ℓ : ℕ) : Prop :=
   G.IsSparse k ℓ ∧ G.edgeSet.ncard + ℓ = k * Nat.card V
+
+/-- A finite vertex set `s` is `(k, ℓ)`-**tight in** `G` if it spans exactly `k * #s − ℓ`
+edges. Subset-tight sets form a lattice in any `(k, ℓ)`-sparse graph subject to the standard
+`ℓ ≤ k * #(s ∩ t)` size proviso; see `IsTightOn.union_inter`. -/
+def IsTightOn (k ℓ : ℕ) (s : Finset V) : Prop :=
+  (G.edgesIn (↑s : Set V)).ncard + ℓ = k * s.card
 
 variable {G}
 
@@ -171,5 +185,33 @@ theorem IsTight.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
     exact Nat.card_congr φ.mapEdgeSet.symm
   have hV : Nat.card W = Nat.card V := Nat.card_congr φ.toEquiv.symm
   grind only [h.2]
+
+/-! ### The tight-subset lattice
+
+In a `(k, ℓ)`-sparse graph, the tight subsets are closed under union and intersection
+(subject to a standard size proviso on the intersection). The squeeze is between two
+inequalities: supermodularity of edge counts (`edgesIn_ncard_add_le`) lower-bounds the
+edge sum on `s ∪ t` and `s ∩ t` by the same sum on `s` and `t`, while sparsity
+upper-bounds it by the cardinality target. The bridging identity is the standard
+Finset-cardinality fact `s.card + t.card = (s ∪ t).card + (s ∩ t).card`. -/
+
+/-- **Tight subsets are closed under union and intersection.** In a `(k, ℓ)`-sparse graph,
+if `s, t : Finset V` are both `(k, ℓ)`-tight subsets and the intersection is large enough
+that sparsity applies there (`ℓ ≤ k * #(s ∩ t)`), then so are `s ∪ t` and `s ∩ t`. The
+edge-arithmetic input is `edgesIn_ncard_add_le` (supermodularity); the cardinality input
+is `Finset.card_union_add_card_inter`. -/
+theorem IsTightOn.union_inter [Finite V] [DecidableEq V] {G : SimpleGraph V} {k ℓ : ℕ}
+    {s t : Finset V} (hs : G.IsTightOn k ℓ s) (ht : G.IsTightOn k ℓ t)
+    (hG : G.IsSparse k ℓ) (h_inter : ℓ ≤ k * (s ∩ t).card) :
+    G.IsTightOn k ℓ (s ∪ t) ∧ G.IsTightOn k ℓ (s ∩ t) := by
+  have h_super := G.edgesIn_ncard_add_le (↑s : Set V) (↑t : Set V)
+  rw [← Finset.coe_union, ← Finset.coe_inter] at h_super
+  have h_sparse_inter := hG (s ∩ t) h_inter
+  have h_sparse_union := hG (s ∪ t)
+    (h_inter.trans (Nat.mul_le_mul_left k (Finset.card_le_card Finset.inter_subset_union)))
+  have h_card_mul : k * s.card + k * t.card = k * (s ∪ t).card + k * (s ∩ t).card := by
+    rw [← Nat.mul_add, ← Nat.mul_add, Finset.card_union_add_card_inter]
+  unfold IsTightOn at hs ht ⊢
+  refine ⟨?_, ?_⟩ <;> omega
 
 end SimpleGraph
