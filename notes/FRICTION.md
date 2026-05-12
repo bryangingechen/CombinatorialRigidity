@@ -878,3 +878,88 @@ limitations. Worth a once-over so future agents don't re-litigate.
   General lesson: `interval_cases` is for free *variables*; for
   function applications, prove the equation explicitly via `omega` or
   similar and name it.
+
+### [resolved] `subst h` on `h : v = c` between two local vars can substitute the variable you want to keep
+
+- **Where it bit:** `exists_nonCollinear_rigid_placement_dim_two` in
+  `Henneberg.lean` (Phase 5 milestone 2 closure). After
+  `refine continuous_pi (fun v => ?_); by_cases hvc : v = c; · subst hvc`,
+  the goal then referenced `c` but Lean reported `Unknown identifier `c``.
+- **Friction:** `subst` between two free variables picks one to remove.
+  It removed `c` (the function-signature variable) and kept `v` (the
+  late-introduced binder), so subsequent uses of `c` (`p_t t c`, `p₀ c`,
+  etc.) failed.
+- **Resolution:** use `rw [hvc]` (or compose `funext t; rw [hvc, ...]`)
+  in place of `subst hvc`. `rw` directionally substitutes per the
+  equation hypothesis and leaves both names usable. The `c`-arm of the
+  continuity proof now reads:
+  ```
+  · have h : (fun t : ℝ => p_t t v) = fun t => p₀ c + t • w := by
+      funext t; rw [hvc, h_p_t_c]
+    rw [h]
+    exact continuous_const.add (continuous_id.smul continuous_const)
+  ```
+- **Status:** resolved (use `rw` over `subst` when both sides of the
+  equation are locals you want to keep referencing).
+
+### [resolved] `set p_t := fun t => …` + `simp [p_t]` doesn't unfold the let-binding cleanly
+
+- **Where it bit:** `exists_nonCollinear_rigid_placement_dim_two` in
+  `Henneberg.lean`. Initial draft used
+  `set p_t : ℝ → Framework V 2 := fun t => Function.update p₀ c (p₀ c + t • w) with hp_t_def`
+  and tried `simp [p_t]` to unfold `p_t t c` to `Function.update _ c _ c`
+  for follow-up `Function.update_self`. Lean's error was the cryptic
+  `⊢ sorry () c = p₀ c + t • w` (the displayed unfolded form, with
+  `sorry` indicating an elaboration glitch on the `set` body).
+- **Friction:** `simp` on a `set`-introduced name doesn't reliably
+  unfold to the body in Lean 4's current behavior; the `simp [p_t]`
+  pattern works for some `set`s and not others, especially when the
+  body is a lambda.
+- **Resolution:** replace `set` with `let`, then state per-case helper
+  lemmas explicitly via `Function.update_self` / `Function.update_of_ne`
+  and reference *those* in subsequent reasoning (don't try to round-trip
+  through `simp [p_t]`):
+  ```
+  let p_t : ℝ → Framework V 2 := fun t => Function.update p₀ c (p₀ c + t • w)
+  have h_p_t_c : ∀ t, p_t t c = p₀ c + t • w := fun _ => Function.update_self c _ p₀
+  have h_p_t_ne : ∀ t v, v ≠ c → p_t t v = p₀ v :=
+    fun _ v hvc => Function.update_of_ne hvc _ p₀
+  ```
+- **Status:** resolved (prefer explicit `have`-lemmas over `set`-name
+  unfolding when the body is a lambda and downstream goals need beta
+  reduction).
+
+### [resolved] `linearIndependent_fin2` leaves `![v₀, v₁] 0` / `![v₀, v₁] 1` unsimplified at the indexing layer
+
+- **Where it bit:** `exists_nonCollinear_rigid_placement_dim_two` in
+  `Henneberg.lean`, when extracting the collinearity coefficient from
+  the negated LI hypothesis.
+- **Friction:** `rw [linearIndependent_fin2] at hLI₀` produces
+  `hLI₀ : ¬ (![p₀ b - p₀ a, p₀ c - p₀ a] 1 ≠ 0 ∧ ∀ a, …)`. The Fin-2
+  matrix indexing `![…] 0` and `![…] 1` *isn't auto-reduced* — downstream
+  `obtain ⟨γ, hγ⟩` then carries `γ • ![v₀, v₁] 1 = ![v₀, v₁] 0` as
+  hypothesis, and follow-up `rw [← hγ, …]` fails with
+  *Did not find an occurrence of the pattern* because the goal mentions
+  `p₀ c - p₀ a` / `p₀ b - p₀ a` directly, not `![…] 1` / `![…] 0`.
+- **Resolution:** follow the `linearIndependent_fin2` rewrite with
+  `simp only [Matrix.cons_val_zero, Matrix.cons_val_one]`:
+  ```
+  rw [linearIndependent_fin2] at hLI₀
+  simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hLI₀
+  push Not at hLI₀
+  obtain ⟨γ, hγ⟩ := hLI₀ hdac_ne_zero
+  -- hγ : γ • (p₀ c - p₀ a) = p₀ b - p₀ a   (clean form)
+  ```
+- **Status:** resolved (always pair `linearIndependent_fin2` with the
+  matrix-indexing simp set if the destructured form is going to be
+  used in `rw`).
+
+### [resolved] `push_neg` deprecated in favor of `push Not`
+
+- **Where it bit:** several `push_neg at hLI₀` calls in
+  `exists_nonCollinear_rigid_placement_dim_two`.
+- **Friction:** linter warning rather than error; `push_neg` still
+  works but is deprecated. The replacement is `push Not`.
+- **Resolution:** swap `push_neg` for `push Not`. Behavior identical
+  for the use cases here.
+- **Status:** resolved (deprecation cleanup).

@@ -1,28 +1,28 @@
 # Phase 5 — Laman's theorem, (⇐) direction (work log)
 
-**Status:** in progress.
+**Status:** complete.
 
 This file is the per-phase work record. See `../ROADMAP.md` for the
 high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Milestones 0, 1, and 2's typeI half are fully complete. Milestone 2's
-typeII half is *conditionally* complete (rank-nullity core
-`typeII_isInfinitesimallyRigid_extend` and conditional wrapper
-`typeII_isGenericallyRigidInj_two_of_nonCollinear`, with non-collinearity
-passed in as hypothesis). Milestone 3 is *structurally complete*: the
-strong induction lands in `LamanTheorem.lean` as the private helper
-`IsLaman.isGenericallyRigidInj_two_of_card` (base case and typeI step
-fully proved); `IsLaman.isGenericallyRigid_two` derives via
-`.toIsGenericallyRigid`. The **sole remaining sorry** is the granular
-typeII collinearity gap inside the inductive step: the IH supplies
-*some* injective rigid placement, but
-`typeII_isGenericallyRigidInj_two_of_nonCollinear` requires the placement
-to be non-collinear on the specific `(a, b, c)` chosen by the reverse
-decomposition. Closure routes (openness-of-IR / perturbation; or a
-strengthened inductive invariant) are unchanged from milestone 2 — see
-*Blockers* and *Hand-off*. Phase 6 (⇒ direction) is unstarted.
+**All milestones complete.** Milestone 0 (named-theorem layout +
+`d = 2` specialization + iso transports); milestone 1 (reverse
+decomposition with Laman preservation, Henneberg blocker route);
+milestone 2 (Type I and Type II rigidity preservation in dim 2, both
+unconditional); milestone 3 (strong-induction closing the iff's `mpr`
+arm). The Type II collinearity gap (the milestone 2 closure point
+flagged in earlier hand-offs) is discharged via openness of
+infinitesimal rigidity (`IsInfinitesimallyRigid.eventually`) plus a
+perpendicular perturbation of the bridge-edge endpoint's third
+neighbor, packaged as the private helper
+`Henneberg.exists_nonCollinear_rigid_placement_dim_two`.
+
+The (⇐) direction `IsLaman.isGenericallyRigid_two` is fully proved.
+The iff's `mp` arm reduces to Phase 6's `IsGenericallyRigid.
+exists_isLaman_le` (Lovász–Yemini), the sole remaining `sorry` in the
+project.
 
 Phase 5 target — the (⇐) direction of Laman's theorem
 (`IsLaman.isGenericallyRigid_two`) — plus the iff composition with
@@ -125,7 +125,7 @@ decomposition asserting `G'.IsLaman` (Whiteley §3 / Jordán §3.1).
 - [x] `IsLaman.exists_typeI_or_typeII_reverse` — degree-2 via
   `typeI_isLaman_iff`, degree-3 via 8-leaf `by_cases` per pair.
 
-### Milestone 2 — Move preservation in dim 2 (`Henneberg.lean`) — typeI done, typeII conditional
+### Milestone 2 — Move preservation in dim 2 (`Henneberg.lean`) — done
 
 - [x] (Helper) `eq_zero_of_orthogonal_dim_two` — perp to two LI vectors
   is zero in `EuclideanSpace ℝ (Fin 2)`.
@@ -147,10 +147,21 @@ decomposition asserting `G'.IsLaman` (Whiteley §3 / Jordán §3.1).
 - [x] `typeII_isGenericallyRigidInj_two_of_nonCollinear` — conditional
   typeII preservation; takes non-collinearity of `(p a, p b, p c)` as
   input.
-- [ ] `typeII_isGenericallyRigidInj_two` — *unconditional* typeII
-  preservation. Open. See *Blockers* (typeII collinearity).
+- [x] `IsInfinitesimallyRigid.eventually` in `Framework.lean` —
+  openness of IR via a basis-lift of `range (RigidityMap p₀)` plus
+  `LinearIndependent.eventually` and continuity of
+  `p ↦ ⟪p u - p v, x u - x v⟫`.
+- [x] (Private) `exists_nonCollinear_rigid_placement_dim_two` in
+  `Henneberg.lean` — perturbation `Function.update p₀ c (p₀ c + t • w)`
+  with `w ∉ span {p₀ b - p₀ a}`; openness of IR + continuity of
+  injectivity give an open `t`-nhd of 0; non-collinearity strict for
+  `t ≠ 0` via `pair_add_smul_add_smul_iff` row-op; extract witness from
+  `𝓝[≠] 0` (NeBot in `ℝ`).
+- [x] `typeII_isGenericallyRigidInj_two` — *unconditional* typeII
+  preservation. Composes the perturbation helper with
+  `_of_nonCollinear`.
 
-### Milestone 3 — Induction (fills milestone-0 sorry) — structurally complete, granular sorry
+### Milestone 3 — Induction (fills milestone-0 sorry) — done
 
 - [x] `IsLaman.eq_top_of_card_eq_two` in `Laman.lean` — base-case
   helper: Laman + `card V = 2` ⇒ `G = ⊤`.
@@ -161,12 +172,12 @@ decomposition asserting `G'.IsLaman` (Whiteley §3 / Jordán §3.1).
   `top_fin_two_isGenericallyRigidInj 1`. Step (`card V ≥ 3`):
   `Henneberg.IsLaman.exists_typeI_or_typeII_reverse` + IH at
   `Fintype.card {w // w ≠ v}` (via `Fintype.card_subtype_lt`) +
-  per-move strong-form preservation + iso transport. **Granular
-  `sorry` on the typeII branch's `LinearIndependent
-  ℝ ![p b - p a, p c - p a]`** — see *Blockers*.
+  per-move strong-form preservation (`typeI_isGenericallyRigidInj_two`
+  / `typeII_isGenericallyRigidInj_two`) + iso transport. Both branches
+  fully closed.
 - [x] `IsLaman.isGenericallyRigid_two` — wired through
-  `isGenericallyRigidInj_two_of_card.toIsGenericallyRigid`. Inherits
-  the granular sorry; the iff's `mpr` arm now reduces to it.
+  `isGenericallyRigidInj_two_of_card.toIsGenericallyRigid`. Closes the
+  iff's `mpr` arm.
 
 ## Decisions made during this phase
 
@@ -315,15 +326,55 @@ decomposition asserting `G'.IsLaman` (Whiteley §3 / Jordán §3.1).
   simp)`. Inducting on `Fintype.card V` directly with
   `Nat.strong_recOn` is no cleaner — the type generalization stays.
 
-- **Milestone 3 typeII gap: granular sorry, not whole-theorem sorry.**
-  Replaced the milestone-0 single sorry on
-  `IsLaman.isGenericallyRigid_two` with the strong-induction proof,
-  leaving exactly one granular `sorry` inside the typeII branch (for
-  `LinearIndependent ℝ ![p b - p a, p c - p a]`). Benefits: base case
-  + typeI step + iso transport all land; the obstruction crystallizes
-  at a precise location; the iff's `mpr` arm now reduces to that single
-  sorry. Closure (openness-of-IR / perturbation) merits its own commit
-  cluster — see *Blockers* / *Hand-off*.
+- **Milestone 3 typeII gap closure: openness of IR + perturbation.**
+  The Phase 5 milestone 3 granular `sorry` (the typeII branch's
+  `LinearIndependent ℝ ![p b - p a, p c - p a]` requirement) lifts as
+  soon as the *unconditional* `typeII_isGenericallyRigidInj_two` lands.
+  That unconditional theorem uses `IsInfinitesimallyRigid.eventually`
+  (openness of IR in `Framework V d`) plus a perpendicular perturbation:
+  pick `w ∉ span {p₀ b - p₀ a}`, update `p₀ c ↦ p₀ c + t • w`, take the
+  intersection of the open IR-nhd, the open Inj-nhd, and `t ≠ 0`
+  (non-collinearity is strict for any `t ≠ 0`). All three sets meet
+  thanks to `NeBot (𝓝[≠] 0)` for `ℝ` (densely ordered + nontrivial).
+
+- **`IsInfinitesimallyRigid.eventually` proof structure.** Sets `r :=
+  Module.finrank ℝ (LinearMap.range (G.RigidityMap p₀))` and lifts a
+  basis of the range via `Module.finBasis` and `Classical.choose` on
+  `LinearMap.mem_range` to preimages `preimg : Fin r → Framework V d`.
+  By `LinearIndependent.eventually` on `Mathlib.Analysis.Normed.Module.
+  FiniteDimension` and continuity of `p ↦ (G.RigidityMap p (preimg i))_i`
+  (which factors through per-edge continuity of
+  `p ↦ ⟪p u - p v, preimg i u - preimg i v⟫`), the lifted images stay LI
+  on an open nhd of `p₀`. Lifting back to the range submodule via
+  `Submodule.subtype.of_comp` and applying
+  `LinearIndependent.fintype_card_le_finrank` gives the rank lower
+  bound, which combines with rank-nullity on both `p₀` and `p` to
+  bound `dim ker (G.RigidityMap p) ≤ d * (d + 1) / 2`. Needs
+  `Fintype G.edgeSet` (instantiated locally) for the codomain's
+  finite-dim normed-space structure.
+
+- **Perturbation continuity: `Function.update` + per-vertex
+  case-split.** The map `p_t : ℝ → Framework V 2 :=
+  fun t => Function.update p₀ c (p₀ c + t • w)` is `Continuous` by
+  `continuous_pi` over `V`, splitting on `v = c` vs `v ≠ c`. Helpers
+  `h_p_t_c t : p_t t c = p₀ c + t • w` (via `Function.update_self`)
+  and `h_p_t_ne t v hvc : p_t t v = p₀ v` (via `Function.update_of_ne`)
+  let each per-vertex branch reduce to either
+  `continuous_const.add (continuous_id.smul continuous_const)` or
+  `continuous_const`.
+
+- **Non-collinearity for `t ≠ 0` via `pair_add_smul_add_smul_iff`.**
+  In the collinear branch, extract the coefficient
+  `γ • (p₀ c - p₀ a) = p₀ b - p₀ a` (with `γ ≠ 0`) from
+  `¬ LinearIndependent ℝ ![p₀ b - p₀ a, p₀ c - p₀ a]` via
+  `linearIndependent_fin2` + `push Not`. Then
+  `p₀ c - p₀ a = γ⁻¹ • (p₀ b - p₀ a)`. Stage the perturbed pair
+  `![p₀ b - p₀ a, (p₀ c - p₀ a) + t • w]` as
+  `![0 • w + 1 • (p₀ b - p₀ a), t • w + γ⁻¹ • (p₀ b - p₀ a)]`; apply
+  `LinearIndependent.pair_add_smul_add_smul_iff`. The auxiliary LI
+  `![w, p₀ b - p₀ a]` follows from `linearIndependent_fin2` plus
+  `hw_outside : w ∉ span {p₀ b - p₀ a}`. The mixed-coefficient
+  condition `0 * γ⁻¹ ≠ 1 * t` reduces to `t ≠ 0`.
 
 ### Promoted to TACTICS / FRICTION / DESIGN
 
@@ -362,93 +413,55 @@ decomposition asserting `G'.IsLaman` (Whiteley §3 / Jordán §3.1).
   substitute the value into the goal context — `rfl` can't close
   `Fintype.card V = 2` afterwards* → FRICTION [resolved]
   *`interval_cases` on non-variable expression doesn't substitute*.
+- *`subst h` on `h : v = c` between two local variables can remove the
+  *wrong* variable (kept `v`, removed `c`)* → FRICTION [resolved]
+  *`subst h` on `h : v = c` between two local vars can substitute the
+  variable you want to keep*.
+- *`set p_t := fun t => …` + `simp [p_t]` doesn't unfold the let-binding
+  cleanly when the body is a lambda — produces `⊢ sorry () c = …`* →
+  FRICTION [resolved] *`set p_t := fun t => …` + `simp [p_t]` doesn't
+  unfold the let-binding cleanly*.
+- *`linearIndependent_fin2` leaves `![v₀, v₁] 0` / `![v₀, v₁] 1`
+  unsimplified — follow-up `rw` fails until paired with
+  `simp only [Matrix.cons_val_zero, Matrix.cons_val_one]`* → FRICTION
+  [resolved] *`linearIndependent_fin2` leaves indexing unsimplified*.
+- *`push_neg` is deprecated in favor of `push Not`* → FRICTION
+  [resolved] *`push_neg` deprecated in favor of `push Not`*.
 
 ## Blockers / open questions
 
-- **Unconditional typeII rigidity preservation needs non-collinear
-  `(p a, p b, p c)`.** The conditional rank-nullity argument
-  (`typeII_isInfinitesimallyRigid_extend`) places `q` on the line
-  through `p a, p b`: the deleted edge `s(a, b)` is recovered because
-  the two new edges at `none ↔ some a` and `none ↔ some b` both lie in
-  the `p b - p a` direction (subtracting them yields the deleted-edge
-  inner product). Injectivity of the kernel restriction `x ↦ x ∘ some`
-  then uses the third new edge at `none ↔ some c`, which pins `x none`
-  *iff* `q - p c` is LI from `q - p a` — equivalent to `(p a, p b, p c)`
-  being non-collinear when `q` is on the `(p a, p b)`-line. Collinear
-  placements genuinely fail rigidity (1-dim free perpendicular motion of
-  `none`); no choice of `q` works (off-line breaks deleted-edge recovery,
-  on-line fails injectivity).
+None — all milestone blockers resolved.
 
-  Two resolution routes:
-  - **(a) Openness of IR + perturbation.** Show
-    `{p : G.IsInfinitesimallyRigid p}` is open in `Framework V 2` (rank
-    of `RigidityMap p` as a continuous function of `p` is lower-
-    semicontinuous), then perturb `p c` perpendicular to `p b - p a`.
-    Substantial: needs the `LinearMap.toMatrix` view of `RigidityMap`
-    (Phase 4 deferred) + the matrix-rank lower-semicontinuity argument.
-    Estimated ~200 LoC.
-  - **(b) Strengthen milestone-3 induction invariant.** Maintain a
-    predicate stronger than `IsGenericallyRigidInj` that guarantees
-    non-collinearity at the specific `(a, b, c)` triple chosen by
-    `exists_typeI_or_typeII_reverse`. Tricky because a single placement
-    can't be non-collinear for every triple simultaneously (typeII
-    forces a collinear triple by construction); a refined invariant
-    needs to be more local than "no three collinear", and the typeI
-    wrapper would need to avoid finitely many lines.
-
-  See *Hand-off* for the decision posture and option C (defer to
-  Phase 6's matroid bypass).
-
-- *Resolved blockers (carryover from earlier milestones):*
-  Placement-construction side condition for typeI (closed by
-  `IsGenericallyRigidInj` + `exists_off_line_off_finite_dim_two`);
-  Affine-spanning side condition (superseded by the injective predicate);
-  Milestone-1 proof length (landed in 2 sessions; templates kept private
-  in `Henneberg.lean`).
+*Resolved blockers (chronological):*
+- *Placement-construction side condition for typeI* — closed by
+  `IsGenericallyRigidInj` + `exists_off_line_off_finite_dim_two`
+  (milestone 2 typeI half).
+- *Affine-spanning side condition* — superseded by the injective
+  predicate `IsGenericallyRigidInj`.
+- *Milestone-1 proof length* — landed in 2 sessions; templates kept
+  private in `Henneberg.lean`.
+- *Unconditional typeII rigidity preservation / collinearity gap* —
+  closed by `IsInfinitesimallyRigid.eventually` (openness of IR) and
+  the `exists_nonCollinear_rigid_placement_dim_two` perturbation
+  helper. Chose option A from the prior hand-off (openness +
+  perturbation), executed in ~250 LoC across `Framework.lean` and
+  `Henneberg.lean`. The conditional `_of_nonCollinear` theorem stays
+  as a named building block; the unconditional
+  `typeII_isGenericallyRigidInj_two` composes the perturbation helper
+  with it.
 
 ## Hand-off / next phase
 
-Milestone 3 ships *structurally complete*: the strong-induction skeleton,
-base case, and typeI step all land. The proof of
-`IsLaman.isGenericallyRigid_two` is wired through the private strong-form
-helper `IsLaman.isGenericallyRigidInj_two_of_card` (strong induction on
-`Fintype.card V`, IH applied at `Fintype.card {w // w ≠ v}` via
-`Fintype.card_subtype_lt`) and `.toIsGenericallyRigid`. The remaining
-sorry is granular — a single `sorry` for
-`LinearIndependent ℝ ![p b - p a, p c - p a]` inside the typeII branch
-of the inductive step, exactly the milestone-2 collinearity gap.
+Phase 5 is closed. `IsLaman.isGenericallyRigid_two` is fully proved;
+the iff's `mpr` arm reduces to it directly. The only remaining `sorry`
+in the project is `IsGenericallyRigid.exists_isLaman_le` (the iff's
+`mp` arm), which is Phase 6's responsibility (Lovász–Yemini matroid
+duality).
 
-**Next concrete commit (option A — close the gap):** implement
-openness of `IsInfinitesimallyRigid` in `Framework V 2` and the
-perturbation step. The proof builds the rigidity-matrix view
-(Phase 4's deferred `LinearMap.toMatrix` of `RigidityMap`), then
-applies lower semi-continuity of matrix rank: there's an open set
-of placements containing `p` on which rank stays ≥ the rank at `p`,
-hence kernel dimension stays ≤ `d(d+1)/2`. With openness, perturb
-`p c` along a direction perpendicular to `p b - p a` to break
-collinearity. Expected size: ~200 LoC across `Framework.lean`
-(matrix view + openness lemma) and `Henneberg.lean` (the
-`typeII_isGenericallyRigidInj_two` unconditional wrapper).
-
-**Next concrete commit (option B — strengthen the invariant):** widen
-the inductive predicate from `IsGenericallyRigidInj` to a variant
-that records enough non-collinearity to feed the typeII step. The
-challenge from milestone 2 stands: a single placement can't be
-non-collinear at every triple post-typeII (typeII forces a collinear
-triple by construction). Look for a relaxed invariant that only
-records non-collinearity for the *bridge-edge endpoints' third
-neighbor* — i.e., the Henneberg structure of derivable typeII reverses
-from this placement. Doable but invasive to the typeI wrapper.
-
-**Option C — defer to Phase 6.** Phase 6's matroid duality
-(`IsGenericallyRigid.exists_isLaman_le`) gives the (⇒) direction
-unconditionally; it might also subsume the typeII gap by exhibiting
-a rigid placement directly from the matroid basis without needing a
-Henneberg-induction witness. If Phase 6's matroid-bypass route is
-substantially less work than option A's openness argument, switching
-phases may be the better marginal investment.
-
-Decision deferred to whichever next session opens the file. The
-`IsLaman.isGenericallyRigid_two` body has exactly one sorry; the iff
-statement's `mpr` arm reduces to that sorry; Phase 6's
-`exists_isLaman_le` sorry covers the `mp` arm.
+**Next concrete commit (Phase 6 start):** seed `notes/Phase6.md` and
+plan the rigidity matroid. `RigidityMatroid.lean` stands up on top of
+the now-stable `Framework.lean` API (note: `IsInfinitesimallyRigid.
+eventually` is available if rank-stability arguments are needed
+upstream of the (⇒) direction). Lovász–Yemini's "rigidity matroid =
+(2, 3)-count matroid in dim 2" is the deep step; Whiteley's polarity
+is an alternative route. See ROADMAP §6.

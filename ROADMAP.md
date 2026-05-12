@@ -43,7 +43,7 @@ Archive/CombinatorialRigidity/
 | 2. Laman graphs | `Laman.lean` | ✓ Complete (see `notes/Phase2.md`) |
 | 3. Henneberg moves | `Henneberg.lean` | ✓ Complete (see `notes/Phase3.md`) |
 | 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
-| 5. Laman's theorem (⇐) | `LamanTheorem.lean` | In progress (planning in `notes/Phase5.md`) |
+| 5. Laman's theorem (⇐) | `LamanTheorem.lean` | ✓ Complete (see `notes/Phase5.md`) |
 | 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | Not yet started |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -125,52 +125,30 @@ the full lemma list and phase-specific decisions.
 
 ### Phase 5 — Laman's theorem, (⇐) direction (`LamanTheorem.lean`)
 
-The main theorem:
+Complete. The main iff statement lives in `LamanTheorem.lean`:
 ```
 theorem SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le
     {V : Type*} [Fintype V] (G : SimpleGraph V) (h : 2 ≤ Fintype.card V) :
     G.IsGenericallyRigid 2 ↔
       ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman
 ```
+*composed* from two named directional theorems —
+`IsLaman.isGenericallyRigid_two` for (⇐), proved in Phase 5, and
+`IsGenericallyRigid.exists_isLaman_le` for (⇒), `sorry`-blocked and
+resolved in **Phase 6** (see §6 below).
 
-Phase 5 delivers the **(⇐) direction** (Henneberg induction). The full
-iff statement lands in `LamanTheorem.lean` from Phase 5's first commit,
-*composed* from two named directional theorems
-(`IsLaman.isGenericallyRigid_two` for (⇐) and
-`IsGenericallyRigid.exists_isLaman_le` for (⇒)); the (⇒) named theorem
-is `sorry`-blocked and resolved in **Phase 6** (see §6 below).
-
-**(⇐) plan.** `K₂` is generically rigid in dim 2 (Phase 4 ships
-`top_fin_two_isGenericallyRigid 2`); both Henneberg moves preserve
-generic rigidity in dim 2; hence every Laman graph is generically
-rigid by induction on `Fintype.card V`, and hence so is every
-supergraph by `IsGenericallyRigid.mono`. Needs the strengthened
-decomposition theorem `IsLaman.exists_typeI_or_typeII_reverse` — see
-*Carryover from Phase 3* below.
-
-See `notes/Phase5.md` for the milestone breakdown (reverse
-decomposition; per-move rigidity preservation; induction).
-
-#### Carryover from Phase 3
-
-`IsLaman.exists_typeI_or_typeII_reverse` — the strengthened decomposition
-theorem that *also* asserts `G'.IsLaman` — is needed for the (⇐) direction
-of Laman's theorem (Henneberg induction needs to apply IH to a Laman `G'`).
-Phase 3 delivered the iso-only half (`IsLaman.exists_typeI_or_typeII_iso`)
-but punted on the Laman claim because the typeII reverse fails for an
-arbitrary non-adjacent neighbor pair (counter-example in
-`notes/Phase3.md`).
-
-Phase 5 commits to the **Henneberg blocker argument** (classical
-proof, pure graph theory): among the three pairs of `v`'s neighbors
-at least one is non-adjacent (already proven as
-`IsLaman.exists_nonadj_among_three_neighbors`); show that *if every
-non-adjacent pair fails to give a Laman `G'`*, then a tight set in
-`G` is forced to violate sparsity, contradiction. Closer to mathlib's
-existing graph theory style than the matroid-bypass alternative,
-which would force the rigidity-matroid API forward into Phase 5
-(deliberately deferred to Phase 6 — see DESIGN.md *Notion- and
-matroid-agnostic core*).
+**(⇐) recap.** Henneberg induction on `Fintype.card V`. K₂ base case
+via `top_fin_two_isGenericallyRigidInj 1` + iso transport. Inductive
+step via `IsLaman.exists_typeI_or_typeII_reverse` (strengthened
+decomposition with `G'.IsLaman`, proved via the Henneberg blocker
+argument) plus per-move rigidity preservation
+(`typeI_isGenericallyRigidInj_two` /
+`typeII_isGenericallyRigidInj_two`, both unconditional). The Type II
+move's collinearity gap is discharged by `IsInfinitesimallyRigid.
+eventually` (openness of IR via `LinearIndependent.eventually`) plus
+a perpendicular perturbation packaged in
+`exists_nonCollinear_rigid_placement_dim_two`. See `notes/Phase5.md`
+for the full lemma list and proof techniques.
 
 ### Phase 6 — Laman's theorem, (⇒) direction (`LamanTheorem.lean`, `RigidityMatroid.lean`)
 
