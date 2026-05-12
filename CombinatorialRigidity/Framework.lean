@@ -6,7 +6,9 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Mathlib.Data.Set.Card
 import CombinatorialRigidity.Sparsity
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.LinearAlgebra.Dimension.Finrank
+import Mathlib.LinearAlgebra.Dimension.Free
 
 /-!
 # Frameworks and infinitesimal rigidity
@@ -45,7 +47,7 @@ See `ROADMAP.md` for the project plan and `notes/Phase4.md` for the Phase 4
 work log.
 -/
 
-open scoped InnerProductSpace
+open scoped InnerProductSpace Topology
 
 namespace SimpleGraph
 
@@ -101,6 +103,23 @@ theorem rigidityMap_apply (G : SimpleGraph V) (p p' : Framework V d) (u v : V)
     (huv : s(u, v) ∈ G.edgeSet) :
     G.RigidityMap p p' ⟨s(u, v), huv⟩ = ⟪p u - p v, p' u - p' v⟫_ℝ := by
   simp [RigidityMap]
+
+/-- Continuity of `RigidityMap` in its placement: for a fixed motion `x` and edge `e`, the entry
+`G.RigidityMap p x e` is a continuous function of `p`. The entry expands to the inner product
+`⟪p u - p v, x u - x v⟫`, jointly continuous in `(p, x)` and *a fortiori* continuous in `p` alone
+with `x` fixed; the proof inducts on `e : Sym2 V` to expose `s(u, v)`.
+
+Building block for `IsInfinitesimallyRigid.eventually`. -/
+private theorem continuous_rigidityMap_apply (G : SimpleGraph V) (x : Framework V d)
+    (e : G.edgeSet) : Continuous (fun p : Framework V d => G.RigidityMap p x e) := by
+  obtain ⟨e, he⟩ := e
+  induction e with
+  | h u v =>
+    have h_eq : (fun p : Framework V d => G.RigidityMap p x ⟨s(u, v), he⟩) =
+        fun p => ⟪p u - p v, x u - x v⟫_ℝ := by
+      funext p; exact rigidityMap_apply G p x u v he
+    rw [h_eq]
+    exact ((continuous_apply u).sub (continuous_apply v)).inner continuous_const
 
 /-- The rigidity map's kernel shrinks under graph inclusion: adding edges can only
 add constraints, never remove them. -/
@@ -208,6 +227,63 @@ theorem IsGenericallyRigid.iso {V W : Type*} [Fintype V] [Fintype W]
     (h : G.IsGenericallyRigid d) : H.IsGenericallyRigid d := by
   obtain ⟨p, hp⟩ := h
   exact ⟨p ∘ φ.symm, hp.iso φ⟩
+
+/-- **Openness of infinitesimal rigidity in the placement.** If `p₀` is infinitesimally rigid for
+`G`, then every placement `p` in some neighborhood of `p₀` is also infinitesimally rigid.
+
+The proof picks a basis of `LinearMap.range (G.RigidityMap p₀)` of size `r = rank (G.RigidityMap
+p₀)`, lifts each basis vector to a preimage in `Framework V d`, and uses
+`LinearIndependent.eventually` plus continuity of `p ↦ G.RigidityMap p (preimg i)` to conclude that
+the lifted images stay linearly independent in a neighborhood of `p₀`. Combined with rank-nullity
+on both `p₀` and the nearby `p`, this gives the kernel-dim bound. -/
+theorem IsInfinitesimallyRigid.eventually [Fintype V] {G : SimpleGraph V}
+    {p₀ : Framework V d} (h₀ : G.IsInfinitesimallyRigid p₀) :
+    ∀ᶠ p in 𝓝 p₀, G.IsInfinitesimallyRigid p := by
+  classical
+  haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
+  set r := Module.finrank ℝ (LinearMap.range (G.RigidityMap p₀)) with hr_def
+  -- Lift a basis of `LinearMap.range (G.RigidityMap p₀)` to preimages.
+  let e := Module.finBasis ℝ (LinearMap.range (G.RigidityMap p₀))
+  let preimg : Fin r → Framework V d := fun i =>
+    Classical.choose (LinearMap.mem_range.mp (e i).property)
+  have h_preimg_eq : ∀ i, G.RigidityMap p₀ (preimg i) = (e i).val := fun i =>
+    Classical.choose_spec (LinearMap.mem_range.mp (e i).property)
+  -- LI of the basis ⇒ LI of `(e i).val` in the ambient space (subtype injective)
+  --                  ⇒ LI of `G.RigidityMap p₀ ∘ preimg`.
+  have h_subtype_li : LinearIndependent ℝ (fun i => (e i).val) :=
+    e.linearIndependent.map' (LinearMap.range (G.RigidityMap p₀)).subtype
+      (Submodule.ker_subtype _)
+  have h_preimg_li : LinearIndependent ℝ (fun i => G.RigidityMap p₀ (preimg i)) := by
+    convert h_subtype_li using 1
+    funext i; exact h_preimg_eq i
+  -- Continuity of `p ↦ (G.RigidityMap p (preimg i))_i` into `Fin r → (G.edgeSet → ℝ)`.
+  have h_cont : Continuous
+      (fun p : Framework V d => fun i => G.RigidityMap p (preimg i)) := by
+    refine continuous_pi (fun i => ?_)
+    refine continuous_pi (fun e_edge => ?_)
+    exact continuous_rigidityMap_apply G (preimg i) e_edge
+  -- Filter pullback of `LinearIndependent.eventually`.
+  have h_event_li : ∀ᶠ p in 𝓝 p₀,
+      LinearIndependent ℝ (fun i => G.RigidityMap p (preimg i)) :=
+    h_cont.continuousAt.tendsto.eventually h_preimg_li.eventually
+  filter_upwards [h_event_li] with p hp_li
+  -- Lift LI back to the range submodule of `RigidityMap p`, then apply
+  -- `LinearIndependent.fintypeCard_le_finrank` to get `r ≤ rank (RigidityMap p)`.
+  let lift : Fin r → LinearMap.range (G.RigidityMap p) :=
+    fun i => ⟨G.RigidityMap p (preimg i), LinearMap.mem_range_self _ _⟩
+  have h_lift_li : LinearIndependent ℝ lift := by
+    have h_eq : (fun i => G.RigidityMap p (preimg i)) =
+        (LinearMap.range (G.RigidityMap p)).subtype ∘ lift := rfl
+    rw [h_eq] at hp_li
+    exact hp_li.of_comp _
+  have h_card_le := h_lift_li.fintype_card_le_finrank
+  rw [Fintype.card_fin] at h_card_le
+  -- Combine with rank-nullity on both `p₀` and `p`.
+  unfold IsInfinitesimallyRigid
+  have h_rn₀ := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p₀)
+  have h_rn := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p)
+  have h₀_unfold : Module.finrank ℝ (LinearMap.ker (G.RigidityMap p₀)) ≤ d * (d + 1) / 2 := h₀
+  omega
 
 /-- A graph `G` is **generically rigid with an injective placement** in dimension `d` if some
 infinitesimally rigid placement is also injective. Strictly stronger than `IsGenericallyRigid`;
