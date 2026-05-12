@@ -452,7 +452,49 @@ None — all milestone blockers resolved.
 
 ### Cleanup pass summaries
 
-*Post-closure cleanup pass.* Three small extractions plus a file split:
+*Second post-closure cleanup pass.* Eight small simplifications driven by a
+cold-eyes audit of the Phase 5 files:
+
+- **Inline `restrict` LinearMap → `LinearMap.funLeft` + `codRestrict`** in
+  `typeI_isInfinitesimallyRigid_extend` and
+  `typeII_isInfinitesimallyRigid_extend` (closes deferred audit #1). The
+  anonymous-constructor LinearMap (`toFun/map_add'/map_smul'`) is replaced by
+  `(funLeft ℝ _ some).comp _.subtype |>.codRestrict _ h_into`.
+- **Affine-line `Function.Injective` → `smul_left_injective`** in
+  `exists_off_line_off_finite_dim_two` and `exists_typeII_q_on_line_dim_two`
+  (closes deferred audit #2). The 6-line hand proof collapses to
+  `fun _ _ h => smul_left_injective ℝ hv (add_left_cancel h)`.
+- **`continuous_rigidityMap_apply` tagged `@[fun_prop]`** + per-edge
+  `simp only [rigidityMap_apply]; fun_prop` lets downstream continuity
+  goals close via `fun_prop`. Cascades to three call sites:
+  `IsInfinitesimallyRigid.eventually` (multi-line `continuous_pi` block →
+  `by fun_prop`), the perturbation continuity in
+  `exists_nonCollinear_rigid_placement_dim_two`'s `h_p_t_cont`
+  (replaced with `by fun_prop`; uses `Continuous.update`), and the
+  difference continuity in `h_inj_ev` (replaced with `by fun_prop`).
+- **`inner_sub_perp_of_eq` helper** (`HennebergRigidity.lean`).
+  Factors the duplicated 5-line "orthogonal-difference recovery via shared
+  target" block at the bottom of both `typeI_isInfinitesimallyRigid_extend`
+  and `typeII_isInfinitesimallyRigid_extend`'s injectivity proofs. Each
+  call site collapses from 5 lines to 1.
+- **Sym2-symmetry inline simplification.** In
+  `typeII_isInfinitesimallyRigid_extend`'s deleted-edge case-split, replaced
+  the two `show … from by abel` rewrites with `← neg_sub` rewrites; pure
+  cosmetic readability win.
+- **`Finset.eq_singleton_of_mem_of_card_le_one`** in
+  `Mathlib/Data/Finset/Card.lean` (mirror). Collapses the
+  `Finset.eq_of_subset_of_card_le (Finset.singleton_subset_iff.mpr _)`
+  + `Finset.card_singleton` boilerplate at 4 call sites in
+  `Henneberg.lean`'s milestone-1 contradiction templates.
+- **`nlinarith [Nat.le_mul_self d]`** for the quadratic bound
+  `4 * d + 2 ≤ (d + 1) * (d + 2)` in `top_fin_two_isGenericallyRigidInj`,
+  replacing a 3-line `ring`/`omega` chain.
+
+Net effect: −36 LoC across `Framework.lean`, `Henneberg.lean`, and
+`HennebergRigidity.lean`; one new mirror file
+(`Mathlib/Data/Finset/Card.lean`).
+
+*First post-closure cleanup pass.* Three small extractions plus a file split:
 
 - **`SimpleGraph.mk_mem_edgesIn`** in `EdgesIn.lean`. Specialised
   constructor for `mem_edgesIn` at an explicit pair `s(x, y)`. Collapses
@@ -489,21 +531,31 @@ in the project is `IsGenericallyRigid.exists_isLaman_le` (the iff's
 duality).
 
 **Deferred audits (small leftover cleanups, can land alongside Phase 6
-work or independently):**
+work or independently):** none. Both audits flagged at first-cleanup-pass
+close (inline `restrict` LinearMap; affine-line injectivity) were resolved
+in the second cleanup pass — see *Cleanup pass summaries* above.
 
-- *Inline `restrict` LinearMap.* Both
-  `typeI_isInfinitesimallyRigid_extend` and
-  `typeII_isInfinitesimallyRigid_extend` build a `restrict : ker →ₗ[ℝ]
-  ker` linear map as an inline structure (`toFun`, `map_add'`,
-  `map_smul'`). Investigate whether `LinearMap.funLeft` or some
-  existing mathlib API can collapse the boilerplate. Both maps have
-  the form `(LinearMap.funLeft ℝ ℝ some).restrict h_into` modulo
-  subtype packaging.
-- *Affine-line injectivity.* `exists_off_line_off_finite_dim_two` and
-  `exists_typeII_q_on_line_dim_two` both hand-prove
-  `Function.Injective (fun t : ℝ => p + t • v)`. Audit whether
-  mathlib has this (likely composed from `Function.Injective.const_add`
-  and an `smul_right_injective`-style lemma).
+**Remaining candidate audits — judgment calls, not blockers.** Each is
+documented in the second-pass audit transcript and was deferred either
+because (a) the savings are marginal vs. the abstraction cost or (b) the
+unifying helper would have to cover too many shape variations:
+
+- *`pair_add_smul_add_smul_iff` staging.* Three call sites
+  (`exists_off_line_off_finite_dim_two`, `exists_typeII_q_on_line_dim_two`,
+  `h_LI_perturbed` in `exists_nonCollinear_rigid_placement_dim_two`) build
+  a 4-coefficient `h_form : ![…] = ![a • x + b • y, c • x + d • y]` block
+  with `ext i; fin_cases i <;> simp; abel`. The coefficient sets differ
+  enough that a unified helper would carry 4 scalars + 2 vectors + the
+  determinant condition.
+- *`IsInfinitesimallyRigid.iso` kernel iso.* The hand-built `LinearEquiv`
+  between the two kernel subtypes could plausibly be factored through
+  `LinearEquiv.funCongrLeft ℝ _ φ.symm.toEquiv` plus
+  `LinearEquiv.ofSubmodules`. Investigated; the per-vertex coercion +
+  Subtype packaging is roughly equal in line count, so left as-is.
+- *`top_fin_two_isGenericallyRigidInj` range-pos.* The "exhibit a nonzero
+  witness motion to bound `1 ≤ finrank range`" pattern would generalize to
+  *any* `IsInfinitesimallyRigid` proof that goes via rank-nullity; extract
+  if Phase 6 needs more `K_n`-style base cases.
 
 **Next concrete commit (Phase 6 start):** seed `notes/Phase6.md` and
 plan the rigidity matroid. `RigidityMatroid.lean` stands up on top of
