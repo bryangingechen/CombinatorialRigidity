@@ -271,6 +271,40 @@ theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
   · -- Tightness.
     grind only [!typeI_edgeSet_ncard, !Finite.card_option, h.edgeSet_ncard]
 
+/-- Inverse of `typeI_isLaman`: if a Type I move on `G` produces a Laman graph (with the two
+existing endpoints `a ≠ b` distinct), then `G` itself is Laman. The two facts together give
+`typeI_isLaman_iff` below.
+
+The proof is dual to `typeI_isLaman` and reuses `typeI_edgesIn_ncard_decomp`: an arbitrary
+`s' : Finset V` lifts to `s := s'.image some : Finset (Option V)`, where `none ∉ s` collapses the
+fresh-edge contribution to zero and the edges-in count of `(typeI G a b)` on `s` equals that of `G`
+on `s'`. -/
+theorem typeI_reverse_isLaman [Finite V] {G : SimpleGraph V} {a b : V} (hab : a ≠ b)
+    (h : (typeI G a b).IsLaman) : G.IsLaman := by
+  classical
+  refine ⟨fun s' hs' => ?_, ?_⟩
+  · -- Sparsity. Lift `s'` to `s := s'.image some` and apply `(typeI G a b)`'s sparsity there.
+    set s : Finset (Option V) := s'.image some
+    have hs_card : s.card = s'.card :=
+      Finset.card_image_of_injective s' (Option.some_injective _)
+    have hnone : none ∉ s := by simp [s]
+    have hT_zero : (({s(none, some a), s(none, some b)} : Set (Sym2 (Option V))) ∩
+        ((↑s : Set (Option V)).sym2)).ncard = 0 :=
+      fresh_sym2_ncard_eq_zero_of_none_notMem hnone _ (by rintro e (rfl | rfl) <;> simp)
+    have h_decomp := typeI_edgesIn_ncard_decomp G a b s
+    rw [Finset.eraseNone_image_some, hT_zero, add_zero] at h_decomp
+    have hsparse := h.isSparse s (by rw [hs_card]; exact hs')
+    rw [h_decomp, hs_card] at hsparse
+    exact hsparse
+  · -- Tightness.
+    grind only [!typeI_edgeSet_ncard, !Finite.card_option, h.edgeSet_ncard]
+
+/-- The Type I Henneberg move and its underlying graph are simultaneously Laman: under `a ≠ b`,
+`(typeI G a b).IsLaman ↔ G.IsLaman`. -/
+theorem typeI_isLaman_iff [Finite V] {G : SimpleGraph V} {a b : V} (hab : a ≠ b) :
+    (typeI G a b).IsLaman ↔ G.IsLaman :=
+  ⟨typeI_reverse_isLaman hab, fun h => typeI_isLaman h hab⟩
+
 /-! ### Edge set of `typeII`
 
 The edge set of `typeII G a b c` decomposes into the image of `G.edgeSet \ {s(a, b)}` under `some`

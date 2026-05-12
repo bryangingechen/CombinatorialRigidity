@@ -1,14 +1,28 @@
 # Phase 5 — Laman's theorem, (⇐) direction (work log)
 
-**Status:** in progress (planning only — no code yet).
+**Status:** in progress.
 
 This file is the per-phase work record. See `../ROADMAP.md` for the
 high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Phase 5 is about to begin. Target: the (⇐) direction of Laman's
-theorem,
+Milestone 0 + the **typeI half** of milestone 1 are complete.
+Specifically:
+
+* Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport) —
+  done in an earlier commit.
+* Milestone 1 partial — `typeI_reverse_isLaman` and the companion
+  `typeI_isLaman_iff` (in `Henneberg.lean`), giving the degree-2
+  branch of the structural decomposition automatically.
+
+The **typeII half** of milestone 1 — the Henneberg blocker argument —
+is the remaining open task. Once it lands, `IsLaman.exists_typeI_or_typeII_reverse`
+composes the two halves and milestone 1 closes. Milestone 2 (per-move
+rigidity preservation, in `Henneberg.lean`) is independent and can be
+worked in parallel.
+
+Phase 5 target: the (⇐) direction of Laman's theorem,
 
 ```
 theorem IsLaman.isGenericallyRigid_two {V : Type*} [Fintype V]
@@ -82,19 +96,11 @@ wrong, revisit there.
   General-`d` Henneberg is mathematically harder and not on the
   critical path.
 
-- **Reverse lemma signature.** The Phase-3 deferred theorem:
-  ```
-  theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
-      {G : SimpleGraph V} (h : G.IsLaman) (hV : 3 ≤ Fintype.card V) :
-      ∃ (v : V) (G' : SimpleGraph {w : V // w ≠ v}), G'.IsLaman ∧
-        ((∃ a b, a ≠ b ∧ Nonempty (G ≃g typeI G' a b)) ∨
-         (∃ a b c, a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ G'.Adj a b ∧
-          Nonempty (G ≃g typeII G' a b c)))
-  ```
-  The same shape as `exists_typeI_or_typeII_iso` plus the `G'.IsLaman`
-  conjunct. The iso version is *not* superseded — it stays as the
-  natural building block; the strengthened version composes the
-  Laman-claim on top.
+- **Reverse lemma signature.** Same shape as
+  `exists_typeI_or_typeII_iso` plus a `G'.IsLaman` conjunct on the
+  decomposed graph (full statement under *Milestone 1* below). The
+  iso version is *not* superseded — it stays as the natural building
+  block; the strengthened version composes the Laman-claim on top.
 
 - **Move-preservation lemmas live in `Henneberg.lean`.** The
   `typeI_isLaman` / `typeII_isLaman` lemmas already live there; the
@@ -133,29 +139,75 @@ treat the names below as working names.
 
 ### Milestone 1 — Reverse decomposition (`Henneberg.lean`)
 
-The Henneberg blocker / "good vertex" argument; cf. Whiteley
-§3 / Jordán §3.1.
+The Henneberg blocker / "good vertex" argument; cf. Whiteley §3 /
+Jordán §3.1. Target signature:
 
-- [ ] (Helper, working name) `IsTight.union_of_inter_card_ge_two` —
-  closure of the `(k, ℓ)`-tight-set lattice under union when the
-  intersection has size `≥ ⌈ℓ/k⌉ + 1` (or the Phase-5-specific form
-  needed). Belongs in `Sparsity.lean`. Refine signature once the
-  blocker proof is written.
-- [ ] (Helper, working name) `IsLaman.tight_blocking_neighborhood` —
-  if every non-adjacent pair among `v`'s degree-3 neighbors fails to
-  give a Laman `G'`, there is a `(2, 3)`-tight `S ⊆ V \ {v}`
-  containing all three neighbors. Working name; refine as the proof
-  takes shape.
+```
+theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
+    {G : SimpleGraph V} (h : G.IsLaman) (hV : 3 ≤ Fintype.card V) :
+    ∃ (v : V) (G' : SimpleGraph {w : V // w ≠ v}), G'.IsLaman ∧
+      ((∃ a b, a ≠ b ∧ Nonempty (G ≃g typeI G' a b)) ∨
+       (∃ a b c, a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ G'.Adj a b ∧
+        Nonempty (G ≃g typeII G' a b c)))
+```
+
+- [x] `typeI_reverse_isLaman` and `typeI_isLaman_iff` — the typeI half.
+  Dual of `typeI_isLaman`: lift `s' : Finset V` to `s := s'.image some`,
+  apply `(typeI G a b).IsLaman.isSparse` at `s`, collapse via
+  `typeI_edgesIn_ncard_decomp` (none ∉ s makes the fresh-edge term
+  zero; `Finset.eraseNone_image_some` finishes the bridge). Tightness
+  is a one-line `grind only` mirroring the typeI direction.
+
+The typeII half (below) is the deep step.
+
+- [ ] (Helper) **Modular `edgesIn` inequality** — for any
+  `(S T : Set V)`, `(G.edgesIn S).ncard + (G.edgesIn T).ncard ≤
+  (G.edgesIn (S ∪ T)).ncard + (G.edgesIn (S ∩ T)).ncard`. Pure fact
+  about `edgesIn`; lands in `EdgesIn.lean`. Proof: `edgesIn S ∩
+  edgesIn T = edgesIn (S ∩ T)` (set equality), `edgesIn S ∪ edgesIn T
+  ⊆ edgesIn (S ∪ T)` (proper containment in general), then chain
+  `Set.ncard_union_add_ncard_inter` with the subset bound.
+
+- [ ] (Helper) **`(2,3)`-tight-set union closure** — for `G` `(2,3)`-
+  sparse and `S, T : Finset V` both *subset-tight*
+  (`|edgesIn(G, ↑·)| + 3 = 2 * |·|`) with `2 ≤ |S ∩ T|`, both
+  `S ∪ T` and `S ∩ T` are also subset-tight. Belongs in
+  `Sparsity.lean`. The standard tight-set lattice closure; uses the
+  modular inequality above as the only edge-arithmetic input.
+  Question to decide mid-proof: introduce a named predicate
+  `IsTightOn G k ℓ S` for the subset-tight condition, or stay
+  unpredicated and chain raw `ncard` equalities. Lean toward the
+  named predicate if it appears in 3+ places in the blocker proof.
+
 - [ ] `IsLaman.exists_typeI_or_typeII_reverse` — strengthened
-  decomposition. Re-uses `IsLaman.exists_typeI_or_typeII_iso` for
-  the iso half; the new content is the `G'.IsLaman` claim, by case
-  split on degree-2 (typeI, automatic) vs degree-3 (typeII, blocker
-  argument).
+  decomposition. Degree-2 branch reuses `typeI_reverse_isLaman` +
+  the existing `typeI_iso_of_two_neighbors`; degree-3 branch is the
+  blocker case analysis below.
 
-The exact helper count and signatures will firm up only mid-proof —
-Whiteley §3.1 uses 2–3 auxiliary lemmas. Expect 1–2 mirror candidates
-(probably around `Set.ncard` set-arithmetic or `SimpleGraph.induce`
-edge counting).
+**Blocker argument (degree-3, sketch).** With `{a, b, c}` the
+neighbors of a degree-3 `v`, define for each non-adjacent pair
+`(x, y)` the candidate `G_{xy} := (G - v) + edge(x, y)` on
+`{w // w ≠ v}`. The edge count is automatic
+(`|E(G_{xy})| + 3 = 2(n − 1)`); only sparsity is at stake. Goal:
+*some* non-adjacent pair gives `G_{xy}.IsLaman`. By contradiction,
+suppose all fail: each yields a `(2,3)`-subset-tight `S_{xy} ⊆
+V \ {v}` containing `{x, y}` (a one-inequality chase against `G`'s
+own sparsity).
+
+Case-split on how many of the three pairs are non-adjacent (≥ 1 by
+`exists_nonadj_among_three_neighbors`). The general move: combine
+the `S_{xy}`'s via the union-closure lemma to build a subset-tight
+`T ⊆ V \ {v}` containing two or three of `{a, b, c}`; then `T ∪ {v}`
+overshoots `G`'s sparsity by 1 (each extra neighbor of `v` inside
+`T` adds one edge but only one vertex). Sub-cases turn on which
+pairwise intersections have size ≥ 2 to trigger the closure; the
+one-non-adjacent-pair case may also need an expansion argument
+absorbing the adjacent third neighbor. Confirm exact structure
+against Jordán Thm 3.1.7 while writing.
+
+Expect 1–2 mirror candidates from this work — likely around
+`Set.ncard` set-arithmetic and `Sym2` membership in induced
+subgraphs.
 
 ### Milestone 2 — Move preservation in dim 2 (`Henneberg.lean`)
 
@@ -208,6 +260,15 @@ the iff's `mpr` arm completes automatically.
   membership obligations there are `q'.2`-typed and `LinearMap.mem_ker.mp/mpr`
   works without bridging. Cleaner, ~30 lines.
 
+- **typeI reverse Laman lemma reuses `typeI_edgesIn_ncard_decomp`.**
+  The proof of `typeI_reverse_isLaman` lifts `s' : Finset V` to
+  `s := s'.image some` and applies `(typeI G a b).IsLaman.isSparse`
+  at `s`. The existing private helper `typeI_edgesIn_ncard_decomp`
+  (Phase 3) does the decomposition heavy lifting; `Finset.eraseNone_image_some`
+  and the `none ∉ s.image some` simp fact collapse the fresh-edge
+  contribution to zero. Tightness closes in one `grind only` line.
+  Total ~15 lines, structurally dual to `typeI_isLaman`.
+
 ### Promoted to TACTICS / FRICTION / DESIGN
 
 - *`Exists.imp` doesn't transport across changing-binder-type
@@ -235,16 +296,29 @@ the iff's `mpr` arm completes automatically.
 
 ## Hand-off / next phase
 
-Milestones 0 (LamanTheorem stub + d=2 corollary + iso transport) is
-complete. The next session attempts **Milestone 1**: the Henneberg
-blocker proof of `IsLaman.exists_typeI_or_typeII_reverse` (in
-`Henneberg.lean`).
+Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport) and
+the typeI half of milestone 1 (`typeI_reverse_isLaman` /
+`typeI_isLaman_iff`) are complete.
 
-Read Whiteley §3.1 or Jordán §3.1 for the textbook argument before
-starting; expect 1–3 helper lemmas to surface, plausibly around
-tight-set unions in `Sparsity.lean`. Milestones 1 and 2 are
-independent — if the blocker proof stalls, milestone 2 (Type I
-preservation in `Henneberg.lean`, which will also need to import
-`Framework.lean` for the first time) is a clean parallel target.
-Milestone 3 (induction) is ready once milestone 1 *and* both
-move-preservation lemmas land.
+The next session attempts the **typeII half of milestone 1** — the
+Henneberg blocker proof — and ships
+`IsLaman.exists_typeI_or_typeII_reverse` in `Henneberg.lean`. The
+smallest first concrete commit on that path is the **modular
+`edgesIn` inequality** in `EdgesIn.lean`
+(`(G.edgesIn S).ncard + (G.edgesIn T).ncard ≤ (G.edgesIn (S ∪ T)).ncard
++ (G.edgesIn (S ∩ T)).ncard`); it has no rigidity content, can be
+proved/landed in isolation, and is the only edge-arithmetic input
+the tight-set union closure consumes. After that, the union-closure
+lemma in `Sparsity.lean`, then the decomposition theorem itself.
+
+Read Whiteley §3.1 or Jordán §3.1 for the textbook blocker argument
+before starting. The case-split structure (3 / 2 / 1 non-adjacent
+pairs among `v`'s neighbors) is sketched under *Milestone 1* above;
+expect the deg-3 branch to drive the choice of intermediate
+predicates (especially whether to introduce a named `IsTightOn`).
+
+Milestones 1 and 2 are independent — if the blocker proof stalls,
+milestone 2 (Type I rigidity preservation in `Henneberg.lean`, which
+will also need to import `Framework.lean` for the first time) is a
+clean parallel target. Milestone 3 (induction) is ready once
+milestone 1 *and* both move-preservation lemmas land.
