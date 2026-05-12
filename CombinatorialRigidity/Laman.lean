@@ -173,6 +173,25 @@ theorem IsLaman.exists_nonadj_among_three_neighbors [Finite V]
 
 /-! ### Base case for Henneberg: `K₂` is Laman -/
 
+/-- A Laman graph on exactly two vertices is the complete graph K₂. The proof reads off
+`#G.edgeSet = 1` from tightness and matches with `#(⊤ : SimpleGraph V).edgeSet = 1`;
+since `G ≤ ⊤` automatically, equal cardinalities force the edge sets equal, hence
+`G = ⊤`. The (⇐) direction of Laman's theorem uses this for the base case of the
+Henneberg induction on `Fintype.card V`. -/
+theorem IsLaman.eq_top_of_card_eq_two [Fintype V]
+    {G : SimpleGraph V} (h : G.IsLaman) (hV : Fintype.card V = 2) : G = ⊤ := by
+  rw [← edgeSet_inj]
+  have hG_card : G.edgeSet.ncard = 1 := by
+    have h1 := h.edgeSet_ncard
+    rw [Nat.card_eq_fintype_card, hV] at h1
+    omega
+  have hTop_card : ((⊤ : SimpleGraph V).edgeSet).ncard = 1 := by
+    rw [ncard_edgeSet_top_eq_card_choose_two, hV]; rfl
+  refine Set.eq_of_subset_of_ncard_le (edgeSet_subset_edgeSet.mpr le_top) ?_ ?_
+  · rw [hTop_card, hG_card]
+  · classical
+    exact (Set.toFinite _)
+
 /-- The complete graph on two vertices is Laman: it has one edge, matching `2 · 2 − 3 = 1`.
 This is the base case of the Henneberg construction. -/
 theorem top_fin_two_isLaman : (⊤ : SimpleGraph (Fin 2)).IsLaman := by

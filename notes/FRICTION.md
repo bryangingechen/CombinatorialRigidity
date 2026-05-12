@@ -852,3 +852,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
   suspect a `simp`-produced residual subterm and insert `change` to clean.
   Mirrors the `Sym2`-symmetry residual issue at line 521 (where `grind`
   papered over it).
+
+### [resolved] `interval_cases` on non-variable expression doesn't substitute
+
+- **Where it bit:** `IsLaman.isGenericallyRigidInj_two_of_card` in
+  `LamanTheorem.lean` (Phase 5 milestone 3). In the base-case branch
+  (`Fintype.card V ≤ 2`), the natural tactic was `interval_cases
+  (Fintype.card V)` to enumerate `card V ∈ {0, 1, 2}` and apply the
+  K₂ base-case helper `IsLaman.eq_top_of_card_eq_two` in the `= 2`
+  arm via `h.eq_top_of_card_eq_two rfl`.
+- **Friction:** `rfl` failed to close `Fintype.card V = 2`.
+  `interval_cases` on a free variable substitutes the value everywhere
+  via `subst`; on a function application like `Fintype.card V`, it
+  enumerates the cases but does *not* rewrite the expression in the
+  context — so the case-arm's `Fintype.card V` stays abstract and `rfl`
+  can't prove it equals `2`.
+- **Resolution:** sidestep `interval_cases` entirely. Use `by_cases hV3
+  : 3 ≤ Fintype.card V` for the high/low split; in the `< 3` branch,
+  use `omega` with `IsLaman.edgeSet_ncard`'s `#E + 3 = 2 * card V`
+  (over `ℕ`, so `card V ≤ 1` is infeasible) to derive
+  `hcard2 : Fintype.card V = 2` as a named hypothesis. Then
+  `h.eq_top_of_card_eq_two hcard2` works.
+- **Status:** resolved (use `omega`-derived named hypothesis, not
+  `interval_cases`, for value equations on function applications).
+  General lesson: `interval_cases` is for free *variables*; for
+  function applications, prove the equation explicitly via `omega` or
+  similar and name it.

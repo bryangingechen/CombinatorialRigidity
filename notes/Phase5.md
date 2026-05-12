@@ -7,91 +7,32 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Milestones 0 and 1 are complete. Milestone 2's typeI half is complete;
-milestone 2's typeII half is *conditionally* complete: the rank-nullity
-core `typeII_isInfinitesimallyRigid_extend` and the wrapper-with-
-non-collinearity-hypothesis `typeII_isGenericallyRigidInj_two_of_nonCollinear`
-both live in `Henneberg.lean`. The remaining gap is the **unconditional**
-wrapper `typeII_isGenericallyRigidInj_two`, which needs an
-openness-of-rigidity / perturbation argument (see *Blockers* below) —
-or a strengthened induction invariant maintained through milestone 3.
-Plus milestone 3 (induction filling `IsLaman.isGenericallyRigid_two` in
-`LamanTheorem.lean`) and Phase 6.
+Milestones 0, 1, and 2's typeI half are fully complete. Milestone 2's
+typeII half is *conditionally* complete (rank-nullity core
+`typeII_isInfinitesimallyRigid_extend` and conditional wrapper
+`typeII_isGenericallyRigidInj_two_of_nonCollinear`, with non-collinearity
+passed in as hypothesis). Milestone 3 is *structurally complete*: the
+strong induction lands in `LamanTheorem.lean` as the private helper
+`IsLaman.isGenericallyRigidInj_two_of_card` (base case and typeI step
+fully proved); `IsLaman.isGenericallyRigid_two` derives via
+`.toIsGenericallyRigid`. The **sole remaining sorry** is the granular
+typeII collinearity gap inside the inductive step: the IH supplies
+*some* injective rigid placement, but
+`typeII_isGenericallyRigidInj_two_of_nonCollinear` requires the placement
+to be non-collinear on the specific `(a, b, c)` chosen by the reverse
+decomposition. Closure routes (openness-of-IR / perturbation; or a
+strengthened inductive invariant) are unchanged from milestone 2 — see
+*Blockers* and *Hand-off*. Phase 6 (⇒ direction) is unstarted.
 
-* Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport) —
-  done in an earlier commit.
-* Milestone 1 — full strengthened decomposition theorem. Pieces:
-  * `typeI_reverse_isLaman` / `typeI_isLaman_iff` (`Henneberg.lean`) —
-    the degree-2 branch.
-  * Edge-arithmetic infrastructure: `edgesIn_inter`,
-    `edgesIn_ncard_add_le` (`EdgesIn.lean`); `IsTightOn`,
-    `IsTightOn.union_inter`, `IsSparse.isTightOn_of_le`
-    (`Sparsity.lean`).
-  * Per-pair tight-blocker witness `IsLaman.typeII_reverse_blocker`
-    (`Henneberg.lean`).
-  * Overshoot primitive `IsLaman.no_isTightOn_excluding_three_neighbors`
-    (`Henneberg.lean`, private).
-  * Per-pair witness-or-blocker dispatcher
-    `IsLaman.typeII_reverse_witness_or_blocker` (private).
-  * **Squeeze-form primitive `IsLaman.False_of_three_neighbor_squeeze`**
-    (private) — upgrades `2 * #T ≤ #(edgesIn T) + 3` to `T.IsTightOn`
-    via `isTightOn_of_le`, then closes via the overshoot helper. The
-    common tail every contradiction template reduces to.
-  * **Three contradiction templates** (private): `contradiction_one_pair`,
-    `contradiction_two_pair`, `contradiction_three_pair`. The 1/2/3-pair
-    blocker assembly arguments, each building `T ⊆ V \ {v}` containing
-    all three neighbors of `v` and verifying the squeeze, then routing
-    through `False_of_three_neighbor_squeeze`.
-  * Main theorem `IsLaman.exists_typeI_or_typeII_reverse`: degree-2
-    branch via `typeI_isLaman_iff`; degree-3 branch via nested
-    `by_cases` on the three pairs' adjacency, with each non-adjacent
-    pair dispatched (success returns the typeII witness, failure
-    accumulates a blocker) and each failure-leaf routed to the
-    appropriate contradiction template. The all-adjacent leaf
-    contradicts `exists_nonadj_among_three_neighbors`.
-
-Milestone 2 (per-move rigidity preservation, in `Henneberg.lean`) is
-the next concrete target; it is independent of milestone 3.
-
-Phase 5 target: the (⇐) direction of Laman's theorem,
-
-```
-theorem IsLaman.isGenericallyRigid_two {V : Type*} [Fintype V]
-    {G : SimpleGraph V} (h : G.IsLaman) : G.IsGenericallyRigid 2
-```
-
-plus the bridge to the iff statement
-`isGenericallyRigid_two_iff_exists_isLaman_le` via
-`IsGenericallyRigid.mono`. The (⇒) direction (Lovász–Yemini matroid
-duality) is **deferred to Phase 6** — it requires a rigidity-matroid
-API that Phase 4 deliberately did not stand up. The iff statement
-lands in `LamanTheorem.lean` from the first commit, *composed* from
-two named directional theorems (one of which is `sorry`-blocked for
-Phase 5 milestone 3, the other for Phase 6).
-
-The proof of (⇐) is a Henneberg induction on `Fintype.card V`:
-
-* **Base.** `K₂` is generically rigid in dim 2
-  (Phase 4: `top_fin_two_isGenericallyRigid 2`).
-* **Step.** Given Laman `G` on `n ≥ 3` vertices, the strengthened
-  decomposition `IsLaman.exists_typeI_or_typeII_reverse` gives Laman
-  `G'` on `n − 1` vertices plus a Henneberg-iso `G ≃g typeI/II G' …`.
-  Induction on `G'`; the per-move rigidity-preservation lemmas
-  (`typeI_isGenericallyRigid_two`, `typeII_isGenericallyRigid_two`)
-  plus iso transport lift the conclusion back to `G`.
-
-So (⇐) breaks into three milestones, each likely a small commit
-cluster:
-
-1. **Reverse decomposition** — `IsLaman.exists_typeI_or_typeII_reverse`
-   (in `Henneberg.lean`) via the Henneberg blocker argument.
-2. **Move preservation** — `typeI_isGenericallyRigid_two` and
-   `typeII_isGenericallyRigid_two` in `Henneberg.lean`.
-3. **Induction** — fill in `IsLaman.isGenericallyRigid_two` (the
-   milestone-0 sorry); the iff's (⇐) arm completes automatically
-   thanks to the structured composition.
-
-Milestones 1 and 2 are independent and can be worked in either order.
+Phase 5 target — the (⇐) direction of Laman's theorem
+(`IsLaman.isGenericallyRigid_two`) — plus the iff composition with
+Phase 6's `IsGenericallyRigid.exists_isLaman_le`. The proof is a
+Henneberg induction on `Fintype.card V`, broken into three milestones:
+**1.** Reverse decomposition (`IsLaman.exists_typeI_or_typeII_reverse`);
+**2.** Move preservation (`typeI` / `typeII_isGenericallyRigidInj_two`);
+**3.** Induction (fills `IsLaman.isGenericallyRigid_two`). Milestones
+1 and 2 are independent; per-milestone names and proof techniques are
+under *Lemma checklist* and *Decisions made* below.
 
 ## Architectural choices made up front
 
@@ -145,522 +86,244 @@ wrong, revisit there.
 ## Lemma checklist
 
 Listed by milestone. Items live in `LamanTheorem.lean` unless tagged
-otherwise. Helpers and signatures will refine as proofs open up;
-treat the names below as working names.
+otherwise. See *Decisions made* for proof-technique discussion and the
+named theorems' own docstrings for the full statement.
 
-### Milestone 0 — First commit (smallest concrete unit) — done
+### Milestone 0 — done
 
-- [x] `LamanTheorem.lean` created. Three named theorems per the
-  structured-`sorry` layout: `IsLaman.isGenericallyRigid_two`
-  (sorry, milestone 3), `IsGenericallyRigid.exists_isLaman_le`
-  (sorry, Phase 6), and the composed iff
-  `isGenericallyRigid_two_iff_exists_isLaman_le` (no sorry; `mp`
-  is `.exists_isLaman_le`, `mpr` rcases's the Laman subgraph and
-  routes through `.isGenericallyRigid_two.mono`).
-- [x] `IsGenericallyRigid.card_mul_le_two` — one-liner via
-  `hG.card_mul_le` (the `d = 2` specialization is defeq;
-  `2 * (2+1) / 2 = 3`).
-- [x] `IsGenericallyRigid.iso` — iso transport for generic rigidity
-  in `Framework.lean`, plus the underlying
-  `IsInfinitesimallyRigid.iso`. Built via a direct `LinearEquiv`
-  between the two rigidity-map kernels (precomposition with `φ`)
-  and `LinearEquiv.finrank_eq`. ~30 lines for the
-  `IsInfinitesimallyRigid` half plus a 3-line `obtain`-`exact` for
-  the `IsGenericallyRigid` lift.
+- [x] `LamanTheorem.lean` created with the three named theorems per the
+  structured-`sorry` layout (`IsLaman.isGenericallyRigid_two`,
+  `IsGenericallyRigid.exists_isLaman_le`, composed iff
+  `isGenericallyRigid_two_iff_exists_isLaman_le`).
+- [x] `IsGenericallyRigid.card_mul_le_two` — `d = 2` specialization
+  of `IsGenericallyRigid.card_mul_le` (one-liner).
+- [x] `IsGenericallyRigid.iso` / `IsInfinitesimallyRigid.iso` in
+  `Framework.lean` — direct kernel-iso route, ~30 lines.
 
-### Milestone 1 — Reverse decomposition (`Henneberg.lean`)
+### Milestone 1 — Reverse decomposition (`Henneberg.lean`) — done
 
-The Henneberg blocker / "good vertex" argument; cf. Whiteley §3 /
-Jordán §3.1. Target signature:
+Target: `IsLaman.exists_typeI_or_typeII_reverse` — strengthened
+decomposition asserting `G'.IsLaman` (Whiteley §3 / Jordán §3.1).
 
-```
-theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
-    {G : SimpleGraph V} (h : G.IsLaman) (hV : 3 ≤ Fintype.card V) :
-    ∃ (v : V) (G' : SimpleGraph {w : V // w ≠ v}), G'.IsLaman ∧
-      ((∃ a b, a ≠ b ∧ Nonempty (G ≃g typeI G' a b)) ∨
-       (∃ a b c, a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ G'.Adj a b ∧
-        Nonempty (G ≃g typeII G' a b c)))
-```
+- [x] `typeI_reverse_isLaman` / `typeI_isLaman_iff` — typeI half.
+- [x] (Helper) `edgesIn_ncard_add_le` in `EdgesIn.lean` — modular
+  inequality `e(S) + e(T) ≤ e(S ∪ T) + e(S ∩ T)`, plus `edgesIn_inter`.
+- [x] `IsTightOn G k ℓ s` + `IsTightOn.union_inter` in `Sparsity.lean`
+  — `(k, ℓ)`-tight-subset union closure with `ℓ ≤ k · |s ∩ t|` proviso.
+- [x] `IsSparse.isTightOn_of_le` in `Sparsity.lean` — squeeze:
+  `k · #s ≤ e(s) + ℓ` plus sparsity forces tightness.
+- [x] `IsLaman.typeII_reverse_blocker` (`Henneberg.lean`) — per-pair
+  tight-blocker witness from a failed typeII candidate.
+- [x] (Private) `IsLaman.no_isTightOn_excluding_three_neighbors` —
+  overshoot contradiction primitive.
+- [x] (Private) `IsLaman.typeII_reverse_witness_or_blocker` — per-pair
+  witness-or-blocker dispatcher.
+- [x] (Private) `IsLaman.False_of_three_neighbor_squeeze` — single
+  squeeze-form primitive consumed by every contradiction template.
+- [x] (Private) `IsLaman.contradiction_{one,two,three}_pair` —
+  1/2/3-pair contradiction templates.
+- [x] `IsLaman.exists_typeI_or_typeII_reverse` — degree-2 via
+  `typeI_isLaman_iff`, degree-3 via 8-leaf `by_cases` per pair.
 
-- [x] `typeI_reverse_isLaman` and `typeI_isLaman_iff` — the typeI half.
-  Dual of `typeI_isLaman`: lift `s' : Finset V` to `s := s'.image some`,
-  apply `(typeI G a b).IsLaman.isSparse` at `s`, collapse via
-  `typeI_edgesIn_ncard_decomp` (none ∉ s makes the fresh-edge term
-  zero; `Finset.eraseNone_image_some` finishes the bridge). Tightness
-  is a one-line `grind only` mirroring the typeI direction.
+### Milestone 2 — Move preservation in dim 2 (`Henneberg.lean`) — typeI done, typeII conditional
 
-The typeII half (below) is the deep step.
+- [x] (Helper) `eq_zero_of_orthogonal_dim_two` — perp to two LI vectors
+  is zero in `EuclideanSpace ℝ (Fin 2)`.
+- [x] `typeI_isInfinitesimallyRigid_extend` — rank-nullity core for
+  typeI rigidity preservation (`LinearIndependent ℝ ![q - p a, q - p b]`).
+- [x] `IsGenericallyRigidInj` predicate + API
+  (`.toIsGenericallyRigid`, `.mono`, `.iso`) in `Framework.lean`.
+- [x] `top_fin_two_isGenericallyRigidInj` — K₂ injective base case.
+- [x] (Private) `exists_off_line_off_finite_dim_two` — produces `q`
+  off a line and off a finite set, with `![q - pa, q - pb]` LI.
+- [x] `typeI_isGenericallyRigidInj_two` — unconditional typeI
+  preservation in the strong form.
+- [x] `typeII_isInfinitesimallyRigid_extend` — rank-nullity core for
+  typeII (input: `q` collinear with `(p a, p b)`; `(q - p a, q - p c)`
+  LI).
+- [x] (Private) `exists_typeII_q_on_line_dim_two` — produces `q` on
+  the line through `(pa, pb)` (with `α ≠ 0, 1`) realizing both LI
+  conditions, off a finite set.
+- [x] `typeII_isGenericallyRigidInj_two_of_nonCollinear` — conditional
+  typeII preservation; takes non-collinearity of `(p a, p b, p c)` as
+  input.
+- [ ] `typeII_isGenericallyRigidInj_two` — *unconditional* typeII
+  preservation. Open. See *Blockers* (typeII collinearity).
 
-- [x] (Helper) **Modular `edgesIn` inequality** — `edgesIn_ncard_add_le`
-  in `EdgesIn.lean`: for any `(S T : Set V)` under `[Finite V]`,
-  `(G.edgesIn S).ncard + (G.edgesIn T).ncard ≤
-  (G.edgesIn (S ∪ T)).ncard + (G.edgesIn (S ∩ T)).ncard`. Done via
-  the named `edgesIn_inter` (the `∩` equality) plus
-  `Set.ncard_union_add_ncard_inter` with the `∪ ⊆` containment.
-  `[Finite V]` lets the `ncard_*` autoparams fire (per TACTICS § 2).
+### Milestone 3 — Induction (fills milestone-0 sorry) — structurally complete, granular sorry
 
-- [x] (Helper) **`(k, ℓ)`-tight-subset union closure** —
-  `IsTightOn.union_inter` in `Sparsity.lean`. Introduced the named
-  predicate `IsTightOn G k ℓ s := (G.edgesIn ↑s).ncard + ℓ = k * s.card`
-  (mirrors `IsTight` but localized to a Finset). The lemma generalizes
-  the size proviso to `ℓ ≤ k * (s ∩ t).card` (specializes to
-  `2 ≤ |s ∩ t|` at `(k, ℓ) = (2, 3)`). Proof: supermodularity (lower
-  bound on `e(s ∪ t) + e(s ∩ t)`) + two sparsity applications (upper
-  bound) + Finset cardinality identity, fused by `omega` once the
-  `k * #` form is staged via a 3-rewrite glue step (see FRICTION
-  extension under *omega doesn't see through nonlinear algebra on
-  opaque atoms*).
-
-- [x] (Helper) **Squeeze: sparsity bound from below ⇒ tight** —
-  `IsSparse.isTightOn_of_le` in `Sparsity.lean`: in a `(k, ℓ)`-sparse
-  graph, `k * #s ≤ (G.edgesIn ↑s).ncard + ℓ` (the lower bound matching
-  the sparsity upper bound) forces `G.IsTightOn k ℓ s`. One-line proof
-  via `unfold IsTightOn` + omega. Used by the typeII blocker to convert
-  a sparsity violation on the candidate graph into a tight set in `G`.
-
-- [x] **Per-pair tight-blocker witness** —
-  `IsLaman.typeII_reverse_blocker` in `Henneberg.lean`. Inputs: a Laman
-  graph `G` with degree-3 vertex `v` whose three neighbors are exactly
-  `{x, y, c}`, a non-adjacent pair `(x, y)`, and a *failed*
-  typeII-reverse candidate (`¬G'.IsLaman` where `G' := (G - v) ⊔
-  {bridge(x, y)}`). Output: a `(2, 3)`-tight `S ⊆ V \ {v}` with
-  `{x, y} ⊆ S` in `G`. The proof routes the edge count of `G'` through
-  the Phase 3 iso `typeII_iso_of_three_neighbors`, transferring `G`'s
-  Laman to `(typeII G' xs ys cs).IsLaman` and using `typeII_edgeSet_ncard`
-  to deduce the count; `¬G'.IsLaman` then collapses to `¬G'.IsSparse 2 3`,
-  giving a violating `s'`. Case-split on `xs, ys ∈ s'` decides between
-  tight-set extraction (both in) and contradiction with `G`'s sparsity
-  (one out).
-
-- [x] (Helper) **Overshoot contradiction primitive** —
-  `IsLaman.no_isTightOn_excluding_three_neighbors` in `Henneberg.lean`
-  (private). The False-form lemma every sub-case contradiction
-  reduces to: a Laman `G`, vertex `v` with three distinct neighbors
-  `a, b, c`, a `(2, 3)`-tight `T ⊆ V \ {v}` with `{a, b, c} ⊆ T`. The
-  proof inserts `v` into `T` (size `+1`, ≥ 3 incident edges added
-  disjoint from `G.edgesIn ↑T`) and reads off the contradiction with
-  `G`'s sparsity at `insert v T`. ~70 lines; clean.
-
-- [x] (Helper) **Per-pair witness-or-blocker dispatcher** —
-  `IsLaman.typeII_reverse_witness_or_blocker` in `Henneberg.lean`
-  (private). Wraps the by-case on `(G.comap _ ⊔ bridge).IsLaman` into
-  one disjunction: success returns the full typeII decomposition
-  witness with `G'.IsLaman` (typeII iso via `typeII_iso_of_three_neighbors`,
-  bridge edge via `sup_adj` + `fromEdgeSet_adj`); failure returns the
-  `typeII_reverse_blocker` output. Single point where the case-split
-  inverts a Laman-or-not test, and the only place that has to package
-  the typeII iso for the success branch.
-
-- [x] (Helper) **Squeeze-form overshoot primitive** —
-  `IsLaman.False_of_three_neighbor_squeeze` in `Henneberg.lean` (private).
-  Sits between `isTightOn_of_le` and `no_isTightOn_excluding_three_neighbors`:
-  consumes `2 * #T ≤ #(edgesIn T) + 3` plus `v ∉ T`, `{a, b, c} ⊆ T`,
-  derives tight, then derives False. Every contradiction template
-  reduces to this; the templates differ only in how they assemble `T`
-  and verify the squeeze. ~10 lines.
-
-- [x] (Helper) **1-pair contradiction template** —
-  `IsLaman.contradiction_one_pair` in `Henneberg.lean` (private). One
-  blocker `S` containing two outer neighbors `(x, y)` of `v`, with the
-  third neighbor `z` connected to both by edges of `G`. Case-split on
-  `z ∈ S`: if yes, `S` is the witness `T` directly; if no, extend to
-  `T := insert z S` and count the two new edges `s(x, z), s(y, z)` to
-  saturate the squeeze. ~50 lines.
-
-- [x] (Helper) **2-pair contradiction template** —
-  `IsLaman.contradiction_two_pair` in `Henneberg.lean` (private). Two
-  blockers sharing a third-neighbor vertex `z`; the third pair `(x, y)`
-  is adjacent in `G`. Case-split on `2 ≤ |Sxz ∩ Syz|`: if yes,
-  `IsTightOn.union_inter` directly gives tightness of the union; if no
-  (intersection is the singleton `{z}`), build `T := Sxz ∪ Syz` and
-  invoke the supermodular `edgesIn` bound plus the cross-edge `(x, y)`
-  contribution to saturate the squeeze. ~80 lines.
-
-- [x] (Helper) **3-pair contradiction template** —
-  `IsLaman.contradiction_three_pair` in `Henneberg.lean` (private).
-  All three pairs non-adjacent, three blockers covering them. Three
-  sub-cases on which pairwise intersection has size `≥ 2`: each
-  triggers `IsTightOn.union_inter` on that pair, with the union
-  already containing `{a, b, c}`. Final sub-case (all pairwise
-  intersections singletons): `T := (Sab ∪ Sac) ∪ Sbc`, supermodularity
-  twice (using `e({a}) = e({b, c}) = 0`) plus inclusion-exclusion for
-  `#T` saturates the squeeze. ~110 lines.
-
-- [x] `IsLaman.exists_typeI_or_typeII_reverse` — strengthened
-  decomposition. Degree-2 branch via `typeI_isLaman_iff` on the iso
-  transport; degree-3 branch via nested `by_cases` on adjacency of
-  each of the three pairs (eight leaves), with `typeII_reverse_witness_or_blocker`
-  invoked on each non-adjacent pair (success returns the witness,
-  failure accumulates a blocker), and contradiction templates applied
-  to the accumulated blockers. ~120 lines for the degree-3 branch.
-
-**Blocker argument (degree-3, sketch).** With `{a, b, c}` the
-neighbors of a degree-3 `v`, define for each non-adjacent pair
-`(x, y)` the candidate `G_{xy} := (G - v) + edge(x, y)` on
-`{w // w ≠ v}`. The edge count is automatic
-(`|E(G_{xy})| + 3 = 2(n − 1)`); only sparsity is at stake. Goal:
-*some* non-adjacent pair gives `G_{xy}.IsLaman`. By contradiction,
-suppose all fail: each yields a `(2,3)`-subset-tight `S_{xy} ⊆
-V \ {v}` containing `{x, y}` (a one-inequality chase against `G`'s
-own sparsity). The 1/2/3-pair templates then build a tight `T ⊆ V \ {v}`
-with `{a, b, c} ⊆ T`, overshooting `G`'s sparsity at `insert v T`.
-
-### Milestone 2 — Move preservation in dim 2 (`Henneberg.lean`)
-
-The classical "Henneberg moves preserve rigidity" arguments. Both go
-through a *specific* placement extension; the conclusion is then
-"`IsGenericallyRigid` in dim 2" (existence of a rigid placement, not
-genericity in the algebraic-geometry sense).
-
-- [x] (Helper) **`eq_zero_of_orthogonal_dim_two`** — in
-  `EuclideanSpace ℝ (Fin 2)`, a vector orthogonal to two linearly
-  independent vectors is zero. Proof:
-  `LinearIndependent.span_eq_top_of_card_eq_finrank` (size-2 LI in
-  dim 2 spans `⊤`) + `Submodule.top_orthogonal_eq_bot` + a one-shot
-  span-induction reducing "perp to the span" to perp to the two
-  generators. ~15 lines, private.
-- [x] **`typeI_isInfinitesimallyRigid_extend`** — the rank-nullity
-  core of typeI rigidity preservation. Given `G.IsInfinitesimallyRigid p`
-  and a point `q` with `LinearIndependent ℝ ![q - p a, q - p b]`, the
-  extension `fun w => w.elim q p` is infinitesimally rigid for
-  `typeI G a b`. Proof: build a linear map
-  `ker ((typeI G a b).RigidityMap p_ext) →ₗ[ℝ] ker (G.RigidityMap p)`
-  by `x ↦ x ∘ some`, show it lands in the right kernel (every `G`-edge
-  lifts), and is injective (the two new edges through `none` orthogonalize
-  `x.1 none - y.1 none` against `(q - p a, q - p b)`, which by LI forces
-  the difference to vanish). Apply
-  `LinearMap.finrank_le_finrank_of_injective` + `hp`. ~70 lines.
-- [x] **Strong predicate `IsGenericallyRigidInj` in `Framework.lean`**
-  — existence of an *injective* rigid placement, plus the basic API
-  (`.toIsGenericallyRigid`, `.mono`, `.iso`). The induction maintains
-  the strong predicate at every step and weakens to `IsGenericallyRigid`
-  at the milestone-3 boundary.
-- [x] **K₂ injective base case `top_fin_two_isGenericallyRigidInj`**
-  in `Framework.lean`. The existing K₂ proof's `d ≥ 1` branch already
-  uses the placement `![0, EuclideanSpace.single 0 1]` which is
-  injective; refactored so this branch lives in the injective theorem
-  and `top_fin_two_isGenericallyRigid` derives the `d ≥ 1` case via
-  `.toIsGenericallyRigid` (the `d = 0` case stays inline since it
-  can't be injective for two distinct vertices in a 0-dim space).
-- [x] (Helper) **`exists_off_line_off_finite_dim_two`** in
-  `Henneberg.lean` (private). Given distinct `pa, pb : EuclideanSpace ℝ (Fin 2)`
-  and a finite set `S`, exhibits `q ∉ S` with
-  `LinearIndependent ℝ ![q - pa, q - pb]`. The construction picks
-  `v ∉ Submodule.span ℝ {pb - pa}` via `SetLike.exists_not_mem_of_ne_top`
-  (the span has finrank 1 < 2 = ambient finrank, hence is a proper
-  subspace), then `q := pa + t • v` for `t` chosen outside the finite
-  bad set `{0} ∪ f⁻¹(S)` (where `f t := pa + t • v` is injective on
-  ℝ when `v ≠ 0`). LI of `![q - pa, q - pb]` reduces to LI of
-  `![v, pb - pa]` via the column-op lemma
-  `LinearIndependent.pair_add_smul_add_smul_iff`. ~50 lines, private.
-- [x] **`typeI_isGenericallyRigidInj_two`** — the unconditional
-  Type I preservation in the strong form. Glue: get an injective
-  rigid `p`, derive `p a ≠ p b` from injectivity + `a ≠ b`, build `q`
-  via `exists_off_line_off_finite_dim_two p (p a) (p b)` (with
-  `S := Set.range p`), apply `typeI_isInfinitesimallyRigid_extend` for
-  rigidity of `fun w => w.elim q p`, and check injectivity of the
-  extension by case-splitting on `Option V` (the new vertex maps to
-  `q ∉ Set.range p`, every existing vertex to `p v` and that map is
-  injective). ~20 lines.
-- [x] **`typeII_isInfinitesimallyRigid_extend`** — the rank-nullity
-  core of typeII rigidity preservation. Given `G.IsInfinitesimallyRigid p`,
-  `α ≠ 0, α ≠ 1`, `q - p a = α • (p b - p a)` (collinearity), and
-  `LinearIndependent ![q - p a, q - p c]`, the extension
-  `fun w => w.elim q p` is infinitesimally rigid for `typeII G a b c`.
-  Proof: restriction `x ↦ x ∘ some : ker typeII → ker G`. New ingredient
-  over typeI: the deleted edge `s(a, b)` has no corresponding typeII
-  edge, so the constraint must be *recovered* — the two new edges at
-  `none ↔ some a` and `none ↔ some b` both lie along `p b - p a`
-  (collinearity), and subtracting them yields the deleted-edge inner
-  product. Injectivity step parallels typeI but uses `q - p a, q - p c`
-  as the LI pair. ~80 lines.
-- [x] (Helper) **`exists_typeII_q_on_line_dim_two`** in
-  `Henneberg.lean` (private). Given distinct `pa, pb`, a non-collinear
-  triple `(pa, pb, pc)`, and a finite set `S`, exhibits `α ∈ ℝ` (with
-  `α ≠ 0, 1`) and `q := pa + α • (pb - pa)` such that `q ∉ S` and
-  `LinearIndependent ℝ ![q - pa, q - pc]`. The LI condition reduces
-  (via `LinearIndependent.pair_add_smul_add_smul_iff`) to the input
-  non-collinearity. ~40 lines, private.
-- [x] **`typeII_isGenericallyRigidInj_two_of_nonCollinear`** — the
-  *conditional* Type II preservation in the strong form. Takes an
-  injective rigid placement `p` *for which* `(p a, p b, p c)` is
-  non-collinear. Glue: derive `p a ≠ p b` from injectivity; build
-  `q` via `exists_typeII_q_on_line_dim_two`; apply the rank-nullity
-  core for rigidity; case-split on `Option V` for injectivity. ~15 lines.
-- [ ] **`typeII_isGenericallyRigidInj_two`** — the *unconditional*
-  Type II preservation. Blocked by: an arbitrary injective rigid
-  placement `p` of `G` may have `(p a, p b, p c)` collinear; the typeII
-  extension at any placement of the new vertex is then genuinely
-  non-rigid (1-parameter family of perpendicular motions of `none`
-  remains unconstrained — see *Blockers* below). Resolutions:
-  (a) prove openness of IR + perturb `p c` off the line through
-  `p a, p b`; or
-  (b) strengthen the milestone-3 induction invariant to a predicate
-  guaranteeing non-collinearity at the specific `(a, b, c)` triple
-  chosen by `exists_typeI_or_typeII_reverse`. Decision deferred.
-
-These are the linear-algebra heart of (⇐). Likely surfaces 1–3 mirror
-candidates around `LinearMap.ker` / `Submodule.finrank` rank-counting,
-plus possibly an "affinely-independent points off a line" or "rank of
-augmented matrix" lemma.
-
-### Milestone 3 — Induction (fills milestone-0 sorry)
-
-- [ ] Replace milestone-0's `sorry` body of
-  `IsLaman.isGenericallyRigid_two` with the actual proof. The induction
-  maintains the strong predicate: prove
-  `IsLaman.isGenericallyRigidInj_two` by strong induction on
-  `Fintype.card V` (base: `n = 2` via `top_fin_two_isLaman` +
-  `top_fin_two_isGenericallyRigidInj` + `IsLaman.iso` /
-  `IsGenericallyRigidInj.iso`; step:
-  `exists_typeI_or_typeII_reverse` + per-move strong-form preservation
-  + strong-form iso transport), then conclude `IsLaman.isGenericallyRigid_two`
-  via `.toIsGenericallyRigid`.
-
-No additional theorem is needed for the iff arm: milestone 0's
-structured form already routes (⇐) through
-`IsLaman.isGenericallyRigid_two`, so once this `sorry` is filled in
-the iff's `mpr` arm completes automatically.
+- [x] `IsLaman.eq_top_of_card_eq_two` in `Laman.lean` — base-case
+  helper: Laman + `card V = 2` ⇒ `G = ⊤`.
+- [x] (Private) `IsLaman.isGenericallyRigidInj_two_of_card` in
+  `LamanTheorem.lean` — strong induction on `Fintype.card V`. Base
+  (`card V = 2`): `eq_top_of_card_eq_two` + iso transport via
+  `Iso.completeGraph (Fintype.equivFinOfCardEq ·).symm` applied to
+  `top_fin_two_isGenericallyRigidInj 1`. Step (`card V ≥ 3`):
+  `Henneberg.IsLaman.exists_typeI_or_typeII_reverse` + IH at
+  `Fintype.card {w // w ≠ v}` (via `Fintype.card_subtype_lt`) +
+  per-move strong-form preservation + iso transport. **Granular
+  `sorry` on the typeII branch's `LinearIndependent
+  ℝ ![p b - p a, p c - p a]`** — see *Blockers*.
+- [x] `IsLaman.isGenericallyRigid_two` — wired through
+  `isGenericallyRigidInj_two_of_card.toIsGenericallyRigid`. Inherits
+  the granular sorry; the iff's `mpr` arm now reduces to it.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
-- **`IsInfinitesimallyRigid.iso` proof structure: build the kernel
-  iso directly, not via `Submodule.map`.** First attempt routed the
-  proof through `(ker H).map Φ.toLinearMap = ker G` and
-  `LinearEquiv.finrank_map_eq`. Stalled on a `SetLike` membership-
-  form mismatch after `rintro` (see FRICTION). Refactored to a
-  direct `LinearEquiv` between the two kernel subtypes; the
-  membership obligations there are `q'.2`-typed and `LinearMap.mem_ker.mp/mpr`
-  works without bridging. Cleaner, ~30 lines.
+*Milestone 0 / 2 architectural choices.*
 
-- **typeI reverse Laman lemma reuses `typeI_edgesIn_ncard_decomp`.**
-  The proof of `typeI_reverse_isLaman` lifts `s' : Finset V` to
-  `s := s'.image some` and applies `(typeI G a b).IsLaman.isSparse`
-  at `s`. The existing private helper `typeI_edgesIn_ncard_decomp`
-  (Phase 3) does the decomposition heavy lifting; `Finset.eraseNone_image_some`
-  and the `none ∉ s.image some` simp fact collapse the fresh-edge
-  contribution to zero. Tightness closes in one `grind only` line.
-  Total ~15 lines, structurally dual to `typeI_isLaman`.
+- **`IsInfinitesimallyRigid.iso`: build the kernel iso directly, not via
+  `Submodule.map`.** The `Submodule.map`-route stalls on `SetLike`
+  membership-form mismatches (see FRICTION). Direct `LinearEquiv`
+  between the kernel subtypes is ~30 lines and the membership obligations
+  are `q'.2`-typed; `LinearMap.mem_ker.mp/mpr` works without bridging.
 
-- **Modular `edgesIn` inequality requires `[Finite V]`.** The natural
-  formulation needs `(edgesIn (S ∪ T)).Finite` (otherwise `ncard = 0`
-  on the RHS lets `(edgesIn S).ncard + (edgesIn T).ncard` overshoot —
-  concrete counter-example: disjoint `S, T` joined by infinitely many
-  cross-edges). Chose `[Finite V]` over an explicit `(h : ...Finite)`
-  argument so the autoparams in `Set.ncard_union_add_ncard_inter` and
-  `Set.ncard_le_ncard` fire automatically (TACTICS § 2). Consumers
-  (tight-set union closure, then blocker) live in `[Fintype V]`
-  contexts, so `[Finite V]` is free downstream. Lifted `edgesIn_inter`
-  out as a named lemma since the `∩` equality is the half that's
-  genuinely useful by itself.
+- **K₂ rigidity refactored to expose the injective form.** Split
+  `top_fin_two_isGenericallyRigid`'s `d ≥ 1` branch into a dedicated
+  `top_fin_two_isGenericallyRigidInj` (the placement at `0, e₀` is
+  already injective); the unrefined version delegates `d ≥ 1` via
+  `.toIsGenericallyRigid`. The `d = 0` case stays inline (can't be
+  injective on `Fin 2 → EuclideanSpace ℝ (Fin 0) = {0}`). Zero new proof
+  text; the injective form is milestone 3's base case.
 
-- **Introduced `IsTightOn` predicate up front.** The Phase 5 plan
-  punted the predicate-vs-unpredicated choice to mid-proof. Chose
-  predicate: even in the union-closure lemma alone it appears four
-  times in the signature (`hs`, `ht`, plus both conclusions). The
-  blocker will instantiate it on each candidate set `S_{x,y}`, so
-  multiplicity grows quickly. Since `IsTightOn` is `def := (eqn)`
-  (not an And), `refine ⟨?_, ?_⟩` doesn't split it directly; the
-  proof uses `unfold IsTightOn at hs ht ⊢` to surface the equation
-  for `omega`. (Extending TACTICS § 4 to mention this single-equation
-  variant if the pattern recurs in the blocker.)
+- **typeII rigidity preservation: conditional core + non-collinearity-
+  conditioned wrapper.** The rank-nullity argument places `q` on the
+  line through `p a, p b` so the two new edges at `none ↔ some a/b`
+  yield the deleted edge by subtraction; the third new edge at
+  `none ↔ some c` closes injectivity *iff* `q - p a, q - p c` LI, i.e.,
+  `(p a, p b, p c)` non-collinear. Collinear inputs genuinely fail
+  rigidity (free perpendicular motion at the new vertex). Two-layer
+  API: `_of_nonCollinear` takes non-collinearity explicitly; the
+  *unconditional* wrapper is deferred — see *Blockers*.
+
+- **typeII conditional theorem doesn't need `G.Adj a b`.** The
+  deleted-edge case-split is vacuous if `s(a, b) ∉ G.edgeSet`. So
+  `hG_ab` is omittable from `typeII_isInfinitesimallyRigid_extend` and
+  its non-collinear wrapper. The milestone-3 reverse decomposition
+  *will* supply `G'.Adj a b`, but stripping it from the wrapper API
+  keeps the rigidity signatures minimal. The Laman-preservation version
+  `typeII_isLaman` still needs `G.Adj a b` (where the deletion is
+  non-vacuous).
+
+*Milestone 1 — typeII blocker proof techniques.*
+
+- **typeI reverse Laman via `typeI_edgesIn_ncard_decomp`.** Lift
+  `s' : Finset V` to `s := s'.image some`; apply
+  `(typeI G a b).IsLaman.isSparse` at `s`; the Phase 3
+  `typeI_edgesIn_ncard_decomp` plus `Finset.eraseNone_image_some`
+  collapse the fresh-edge term to zero. ~15 lines, structurally dual
+  to `typeI_isLaman`.
+
+- **`IsTightOn` predicate up front.** The Phase 5 plan punted the
+  predicate-vs-unpredicated choice; chose predicate because in the
+  union-closure lemma alone it appears 4× in the signature, and the
+  blocker instantiates it per candidate set. `IsTightOn` is `def := eqn`
+  (not `And`), so `refine ⟨?_, ?_⟩` doesn't split it; the proof uses
+  `unfold IsTightOn at hs ht ⊢` to surface the equation for `omega`.
+
+- **Modular `edgesIn` inequality requires `[Finite V]`.** Without it,
+  `ncard = 0` on infinite sets lets the supermodular bound fail
+  (counter-example: disjoint `S, T` with infinitely many cross-edges).
+  Picked `[Finite V]` over an explicit Finite arg so
+  `Set.ncard_union_add_ncard_inter` and `Set.ncard_le_ncard` autoparams
+  fire (TACTICS § 2). `edgesIn_inter` lifted out as a named lemma since
+  the `∩` equality is independently useful.
 
 - **typeII reverse blocker: edge count via the Phase 3 iso, not by
-  hand.** The natural alternative was to compute `G'.edgeSet.ncard`
-  directly via the chain `Sym2.map Subtype.val '' (G.comap Subtype.val).edgeSet
-  = G.edgesIn ({v}ᶜ)` + injectivity + the existing vertex-deletion
-  partition + the bridging edge's contribution. That route requires a
-  `Nat.card V = Nat.card {w // w ≠ v} + 1` lemma plus the explicit
-  `Sym2.map`-image transfer for the comap side. Instead, the proof
-  reuses `typeII_iso_of_three_neighbors` (Phase 3): with the third
-  neighbor `c` of `v` plus the neighbor-set characterization passed
-  in as hypothesis, build `h_iso : G ≃g typeII G' xs ys cs`, transfer
-  `G.IsLaman` via `IsLaman.iso`, and read off `G'.edgeSet.ncard + 3 =
-  2 * Nat.card {w // w ≠ v}` from `typeII_edgeSet_ncard` plus
-  `Finite.card_option`. Saves ~20 lines and the project-internal
-  `(G.comap Subtype.val).edgeSet.ncard` helper. Cost: the blocker
-  signature carries the third neighbor `c` plus the full neighbor
-  predicate `hN : ∀ w, G.Adj v w ↔ w = x ∨ w = y ∨ w = c` rather than
-  the lighter `G.degree v = 3` plus `G.Adj v x`, `G.Adj v y`. The
-  case-split argument already has `c` and `hN` in scope (from
-  `Finset.card_eq_three`), so this is free downstream.
+  hand.** The blocker proof reuses `typeII_iso_of_three_neighbors` to
+  get `h_iso : G ≃g typeII G' xs ys cs`, transfers `G.IsLaman` via
+  `IsLaman.iso`, and reads the count off `typeII_edgeSet_ncard` plus
+  `Finite.card_option`. Saves ~20 lines and the direct `comap`-edge-count
+  helper. Cost: signature carries the third neighbor and full neighbor
+  predicate, but both are in scope from `Finset.card_eq_three`.
 
 - **Per-pair blocker case structure: split on `xs, ys ∈ s'`.** The
-  sparsity violation on `G'` produces some Finset `s'` whose lift `S =
-  s'.image Subtype.val ⊆ V \ {v}` has `2 * S.card ≤ (G'.edgesIn ↑s').ncard
-  + 2`. The two cases differ in the bridging-edge contribution to
-  `G'.edgesIn ↑s'`. If both `xs, ys ∈ s'`, the bridge contributes ≤ 1,
-  giving `2 * S.card ≤ (G.edgesIn ↑S).ncard + 3` — combined with `G`'s
-  sparsity, equality, so `S` is `IsTightOn 2 3` via the new
-  `IsSparse.isTightOn_of_le`. If one of `xs, ys` is outside `s'`, the
-  bridge is excluded entirely (its endpoint set `{xs, ys}` is not a
-  subset of `↑s'`), giving `2 * S.card ≤ (G.edgesIn ↑S).ncard + 2` — a
-  direct contradiction with `G`'s sparsity. The edge-set decomposition
-  for both bounds uses the private helper `image_edgesIn_comap`
-  (`Sym2.map f '' ((G.comap f).edgesIn s') = G.edgesIn (f '' s')`) to
-  bridge `(G.comap Subtype.val).edgesIn ↑s'` to `G.edgesIn ↑S` via
-  injectivity of `Sym2.map Subtype.val`.
+  sparsity violation on `G'` gives a Finset `s'`; lift to
+  `S = s'.image Subtype.val ⊆ V \ {v}`. Two cases differ in the
+  bridge-edge contribution. Both `xs, ys ∈ s'`: bridge contributes ≤ 1,
+  squeeze gives `IsTightOn 2 3 S` via `IsSparse.isTightOn_of_le`. One
+  out: bridge contributes 0, direct sparsity contradiction. The
+  edge-set bookkeeping uses the private `image_edgesIn_comap`.
 
-- **Single squeeze-form primitive consumed by every template.** The
-  three contradiction templates (1/2/3-pair) each end with the same
-  three-step tail: build `T : Finset V`; verify `2 * #T ≤ #(edgesIn T) + 3`
-  (the squeeze); apply `IsSparse.isTightOn_of_le` to get `T.IsTightOn`;
-  apply `no_isTightOn_excluding_three_neighbors` to derive `False`.
-  Factored as `IsLaman.False_of_three_neighbor_squeeze` so each template
-  body only has to assemble `T` and prove the squeeze inequality (the
-  template-specific edge accounting). Saves ~10 lines per template and
-  isolates the proof-shape decision (squeeze vs. direct tight) in one
-  place.
+- **Single squeeze-form primitive `False_of_three_neighbor_squeeze`.**
+  Every contradiction template (1/2/3-pair) ends with the same tail:
+  assemble `T`, verify `2 * #T ≤ #(edgesIn T) + 3` (the squeeze), apply
+  `IsSparse.isTightOn_of_le`, apply
+  `no_isTightOn_excluding_three_neighbors`. Factored as one primitive;
+  templates differ only in `T` assembly and the squeeze inequality.
 
-- **Restructured degree-3 main theorem: 3-level `by_cases` over outer
-  `rcases exists_nonadj_among_three_neighbors`.** The original skeleton
-  used the outer `rcases` to pick the first non-adjacent pair, then
-  needed `exfalso` + sub-case analysis inside each of the three failure
-  arms. Problem: inside `exfalso`, additional dispatcher invocations
-  (needed to gather blockers for 2- and 3-pair templates) can return
-  witnesses that should be returned to the outer goal — but the goal
-  is `False`, blocking the return. Restructured to `by_cases` on each
-  pair's `G.Adj` (8 leaves), with `typeII_reverse_witness_or_blocker`
-  invoked only on confirmed non-adjacent pairs and the success arm
-  returning the witness immediately at the leaf level. The all-adjacent
-  leaf falls back to `exists_nonadj_among_three_neighbors` for a direct
-  contradiction. ~120 lines of straight-line case analysis; flatter than
-  the alternative.
+- **Degree-3 main theorem: 8-leaf flat `by_cases` over each pair's
+  adjacency.** First skeleton used outer `rcases
+  exists_nonadj_among_three_neighbors` + `exfalso` + sub-case analysis;
+  failed because additional dispatcher invocations inside `exfalso` can
+  return witnesses that should bubble out. Flat `by_cases` per pair
+  invokes `typeII_reverse_witness_or_blocker` only on confirmed
+  non-adjacent pairs and returns witnesses at the leaf. ~120 lines
+  straight-line; flatter than the alternatives. All-adjacent leaf
+  contradicts `exists_nonadj_among_three_neighbors`.
 
-- **`Sym2.eq_iff` destructure: second case is `⟨x = z, z = y⟩`, not
-  `⟨x = y, z = z⟩`.** `Sym2.eq_iff.mp : s(a, b) = s(c, d) → (a = c ∧
-  b = d) ∨ (a = d ∧ b = c)`. So for `s(x, z) = s(y, z)`, the second
-  disjunct is `x = z ∧ z = y` — both components reference `z`, not just
-  one. Forgetting this and using the second-component `z = y` where
-  `x = z` was wanted produced a confusing type mismatch in the
-  `hxz_ne_yz` proof in `contradiction_one_pair`. Documented as a
-  one-line trap.
+- **`Sym2.eq_iff` destructure trap.** `Sym2.eq_iff.mp` on
+  `s(x, z) = s(y, z)` gives second-disjunct `x = z ∧ z = y` (both
+  reference `z`), not `x = y ∧ z = z`. Forgetting this produced a
+  confusing type mismatch in `contradiction_one_pair`. A one-line trap.
 
-- **typeI rigidity-preservation core: factor out `eq_zero_of_orthogonal_dim_two`.**
-  The injectivity step of `typeI_isInfinitesimallyRigid_extend` boils down to:
-  in `EuclideanSpace ℝ (Fin 2)`, a vector orthogonal to two LI vectors is zero.
-  Pulling this out into a 15-line lemma keeps the main proof focused on the
-  rigidity-map plumbing (edge lifting, kernel restriction, applying the
-  rank-nullity bound). The helper uses
-  `LinearIndependent.span_eq_top_of_card_eq_finrank` plus
-  `Submodule.top_orthogonal_eq_bot` plus a single-purpose `span_induction`
-  over the two-element generating set. Dim-2-specific; generalising to dim
-  `d` would need a different argument (or extra LI vectors).
+*Milestone 2 — Henneberg rigidity preservation proof techniques.*
+
+- **Helper `eq_zero_of_orthogonal_dim_two`.** In `EuclideanSpace ℝ
+  (Fin 2)`, a vector orthogonal to two LI vectors is zero. Pulled out
+  as a 15-line lemma to keep `typeI_isInfinitesimallyRigid_extend`'s
+  main proof focused on rigidity-map plumbing. Uses
+  `LinearIndependent.span_eq_top_of_card_eq_finrank` +
+  `Submodule.top_orthogonal_eq_bot` + a `span_induction` over the
+  two-element generating set. Dim-2-specific.
 
 - **`set p_ext := fun w => w.elim q p with hp_ext_def` keeps the new
-  placement evaluable by `change`.** The two new-edge constraints come out
+  placement evaluable by `change`.** Two new-edge constraints come out
   with `p_ext none` and `p_ext (some _)`; these are defeq to `q` and
-  `p _` (by the `Option.elim` reduction). The `change` tactic surfaces the
-  unfolded form for the inner-product subtraction step. Pure `let` works
-  too — what matters is that `set` does not block the defeq.
+  `p _` (via `Option.elim`). `change` surfaces the unfolded form for
+  the inner-product subtraction step. Pure `let` works equally well —
+  what matters is that `set` doesn't block defeq.
 
-- **Lean dot notation balked on `mem_edgeSet.mp he` inside the proof of
-  `typeI_isInfinitesimallyRigid_extend`.** Errors of the form
-  `Unknown constant SimpleGraph.mem_edgeSet.mp`: dot notation looked up
-  `mem_edgeSet.mp` as a fully qualified name rather than the iff
-  projection. The cleanest workaround in our setting is that
-  `mem_edgeSet` is `Iff.rfl` — `s(u, v) ∈ G.edgeSet` and `G.Adj u v` are
-  definitionally equal — so a proof of `s(u, v) ∈ G.edgeSet` for one
-  graph is accepted (via defeq) wherever the latter forms are needed for
-  another `Adj`-defeq graph (`typeI_adj_some_some` is `Iff.rfl` too).
-  See the FRICTION entry for the underlying elaboration issue.
-
-- **Refactored K₂ rigidity proof to expose the injective form.** The
-  original `top_fin_two_isGenericallyRigid (d : ℕ)` proof had two
-  branches: `d = 0` (vacuous) and `d ≥ 1` (place at `0, e₀`). Split
-  the `d ≥ 1` branch into a dedicated `top_fin_two_isGenericallyRigidInj (d : ℕ)`
-  giving `IsGenericallyRigidInj (d + 1)` (the placement is already
-  injective by inspection); `top_fin_two_isGenericallyRigid` now delegates
-  `d ≥ 1` to it via `.toIsGenericallyRigid`. The `d = 0` case stays inline
-  because there `Fin 2 → EuclideanSpace ℝ (Fin 0) = {0}` can't be
-  injective. Zero new proof text — purely a re-organization. The injective
-  form is the strong-predicate base case for milestone 3's induction.
-
-- **Dim-2 off-line construction via row-op on `LinearIndependent ℝ ![v, pb - pa]`.**
+- **Dim-2 off-line construction via row-op on
+  `LinearIndependent ℝ ![v, pb - pa]`.**
   `exists_off_line_off_finite_dim_two` proves
-  `LinearIndependent ℝ ![q - pa, q - pb]` for `q := pa + t • v`
-  (where `v ∉ Submodule.span ℝ {pb - pa}`, `t ≠ 0`) by reducing to
-  LI of the original pair `![v, pb - pa]` via
-  `LinearIndependent.pair_add_smul_add_smul_iff` (mathlib's "row-op
-  preserves LI iff coefficient determinant is nonzero" lemma) with
-  `(a, b, c, d) = (t, 0, t, -1)` — the determinant `a*d - b*c = -t`,
-  nonzero iff `t ≠ 0`. The alternative (direct case-analysis with
-  `linearIndependent_fin2`) needed ~3 sub-cases on the scalar coefficient.
-  The row-op lemma is `@[simp]`-tagged but I invoked it with explicit
-  `rw` for readability of the proof flow.
+  `LinearIndependent ℝ ![q - pa, q - pb]` for `q := pa + t • v` (with
+  `v ∉ span {pb - pa}`, `t ≠ 0`) via
+  `LinearIndependent.pair_add_smul_add_smul_iff` with coefficients
+  `(t, 0, t, -1)`. Determinant `-t ≠ 0`, so LI transfers. Cleaner than
+  `linearIndependent_fin2` case-analysis.
 
 - **`SetLike.exists_not_mem_of_ne_top` is the canonical "pick a
   non-member" lemma.** Searching for "exists element outside a proper
-  submodule" wasn't immediately fruitful (`Submodule.exists_..` doesn't
-  surface it directly). The general `SetLike` version handles any
-  set-like structure with order-top and the universe coercion, applies
-  to `Submodule` instances, and the `h_top` auto-param fires by `simp`
-  for standard cases. Used to extract `v ∉ Submodule.span ℝ {pb - pa}`
-  in the dim-2 off-line construction.
+  submodule" doesn't surface a `Submodule.*` form; the general
+  `SetLike` lemma applies, and the `h_top` autoparam fires by `simp`
+  for standard cases. Used to extract `v ∉ span {pb - pa}` in the
+  off-line construction.
 
-- **`simp_all` cross-rewrites with equality hypotheses.** First attempt
-  at K₂ injectivity (`fin_cases ... <;> simp_all [hp_def]`) produced a
-  mangled `hp_def : p = ![single 0 1, single 0 1]` and an unsolved goal.
-  Root cause: `simp_all` used the equality `0 = single 0 1` (the goal
-  hypothesis it was trying to refute!) as a rewrite rule applied to
-  `hp_def`. Promoted to FRICTION [resolved] *simp_all rewrites
-  backwards with equality hypotheses*. Workaround: replace `simp_all`
-  with a `revert h_norm <;> simp [hp_def]` pattern that doesn't surface
-  the offending hypothesis as a rewrite rule.
+*Milestone 3 — strong-induction proof techniques.*
 
-- **typeII rigidity preservation: conditional core + non-collinearity-
-  conditioned wrapper, with unconditional wrapper deferred.** The
-  rank-nullity argument (`typeII_isInfinitesimallyRigid_extend`)
-  proceeds by placing `q` on the line through `p a, p b` so that the
-  two new edges at `none ↔ some a` and `none ↔ some b` (both along
-  `p b - p a`) yield the deleted-edge constraint by subtraction; the
-  third new edge at `none ↔ some c` (in direction `q - p c`) closes
-  injectivity. The argument requires `q - p a` and `q - p c` LI, which
-  is equivalent to `(p a, p b, p c)` non-collinear. Collinear
-  placements genuinely fail typeII rigidity (1-dim of perpendicular
-  motion at the new vertex remains free). Hence two-layer API:
-  `typeII_isGenericallyRigidInj_two_of_nonCollinear` takes the
-  non-collinearity hypothesis explicitly; the *unconditional*
-  `typeII_isGenericallyRigidInj_two` waits on either openness-of-IR
-  / perturbation (substantial) or a strengthened milestone-3
-  invariant (tricky to maintain across typeI's wrapper) — decision
-  deferred to milestone 3. See *Blockers*.
+- **Strong induction signature carries `Fintype.card V = n`.** The
+  predicate must quantify over `V` (and `[Fintype V]`) inside the
+  per-`n` body, so the IH applies to any smaller type. Signature:
+  `∀ n, ∀ {V} [Fintype V], Fintype.card V = n → ∀ {G}, G.IsLaman →
+  G.IsGenericallyRigidInj 2`. IH at the step is
+  `ih (Fintype.card {w // w ≠ v}) hcard_lt rfl hG'_lam`; `rfl` for the
+  card-eq closes when we instantiate `n` to the new card directly, and
+  `hcard_lt` is `Fintype.card_subtype_lt (p := · ≠ v) (x := v) (by
+  simp)`. Inducting on `Fintype.card V` directly with
+  `Nat.strong_recOn` is no cleaner — the type generalization stays.
 
-- **typeII conditional theorem doesn't need `G.Adj a b`.** The
-  proof case-splits on `s(u, v) = s(a, b)` for an edge `s(u, v) ∈
-  G.edgeSet`. If `s(a, b) ∉ G.edgeSet`, the case is vacuous (no `u, v`
-  satisfies both); the proof goes through. So `hG_ab` is omittable
-  from `typeII_isInfinitesimallyRigid_extend` and from
-  `typeII_isGenericallyRigidInj_two_of_nonCollinear`. Useful for the
-  milestone-3 induction: at the typeII branch, we *will* have
-  `G'.Adj a b` from the reverse decomposition, but stripping
-  `hG_ab` from the wrapper API keeps the rigidity-only signatures
-  minimal. The Laman-preservation version `typeII_isLaman` does
-  require `G.Adj a b` — that's where the deletion is non-vacuous.
-
-- **`rcases ⟨rfl, rfl⟩` direction trap for `Sym2.eq_iff` substitutions.**
-  In the typeII conditional theorem's deleted-edge branch, using
-  `rcases Sym2.eq_iff.mp h_eq with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` in the
-  second branch (`u = b, v = a`) substitutes `b → u, a → v`,
-  eliminating the section-level `a, b` instead of the case-split `u,
-  v`. The follow-up `have hflip : p b - p a = ...` then fails with
-  `Unknown identifier b`. Promoted to FRICTION [resolved] *`rcases
-  ⟨rfl, rfl⟩` on `Sym2.eq_iff` eliminates the section-level
-  variable*. Workaround: name the equalities and use `rw [h1, h2]`,
-  which doesn't eliminate from context.
-
-- **`change` after `simp only` to drop residual `he` subterm.**
-  In the typeII conditional theorem, `simp only [rigidityMap_apply,
-  Pi.zero_apply, Function.comp_apply]` simplifies the displayed goal
-  to the clean `⟪p u - p v, ...⟫ = 0` but the elaborated term retains
-  a residual `⟨s(u, v), he⟩` subterm. A subsequent `rw [h1, h2]`
-  (with `h1 : u = a`) fails with `motive is not type correct`,
-  citing `he`'s `u`-dependent type. Promoted to FRICTION [resolved]
-  *`simp only` leaves `he` in elaborated goal*. Workaround: insert
-  `change ⟪p u - p v, x (some u) - x (some v)⟫_ℝ = 0` to re-elaborate
-  the goal at the surface type before invoking `rw`.
+- **Milestone 3 typeII gap: granular sorry, not whole-theorem sorry.**
+  Replaced the milestone-0 single sorry on
+  `IsLaman.isGenericallyRigid_two` with the strong-induction proof,
+  leaving exactly one granular `sorry` inside the typeII branch (for
+  `LinearIndependent ℝ ![p b - p a, p c - p a]`). Benefits: base case
+  + typeI step + iso transport all land; the obstruction crystallizes
+  at a precise location; the iff's `mpr` arm now reduces to that single
+  sorry. Closure (openness-of-IR / perturbation) merits its own commit
+  cluster — see *Blockers* / *Hand-off*.
 
 ### Promoted to TACTICS / FRICTION / DESIGN
 
@@ -695,6 +358,10 @@ the iff's `mpr` arm completes automatically.
   elaborated goal, blocking later `rw`* → FRICTION [resolved] *`simp
   only [rigidityMap_apply, Pi.zero_apply]` leaves `he` in the
   elaborated goal*.
+- *`interval_cases (Fintype.card V)` enumerates cases but does not
+  substitute the value into the goal context — `rfl` can't close
+  `Fintype.card V = 2` afterwards* → FRICTION [resolved]
+  *`interval_cases` on non-variable expression doesn't substitute*.
 
 ## Blockers / open questions
 
@@ -702,111 +369,86 @@ the iff's `mpr` arm completes automatically.
   `(p a, p b, p c)`.** The conditional rank-nullity argument
   (`typeII_isInfinitesimallyRigid_extend`) places `q` on the line
   through `p a, p b`: the deleted edge `s(a, b)` is recovered because
-  the two new edges at `none ↔ some a` and `none ↔ some b` both lie
-  in the `p b - p a` direction, and subtracting them yields the
-  deleted-edge inner product. Injectivity of the kernel restriction
-  `x ↦ x ∘ some` then uses the third new edge at `none ↔ some c`,
-  which pins `x none` *iff* `q - p c` is LI from `q - p a` — and
-  with `q` on the `(p a, p b)`-line, this is equivalent to
-  `(p a, p b, p c)` being non-collinear.
+  the two new edges at `none ↔ some a` and `none ↔ some b` both lie in
+  the `p b - p a` direction (subtracting them yields the deleted-edge
+  inner product). Injectivity of the kernel restriction `x ↦ x ∘ some`
+  then uses the third new edge at `none ↔ some c`, which pins `x none`
+  *iff* `q - p c` is LI from `q - p a` — equivalent to `(p a, p b, p c)`
+  being non-collinear when `q` is on the `(p a, p b)`-line. Collinear
+  placements genuinely fail rigidity (1-dim free perpendicular motion of
+  `none`); no choice of `q` works (off-line breaks deleted-edge recovery,
+  on-line fails injectivity).
 
-  If `(p a, p b, p c)` is collinear, no choice of `q` works: any `q`
-  off the line breaks deleted-edge recovery (`q - p a, q - p b` are
-  no longer parallel); any `q` on the line has `q - p c` also parallel
-  to `p b - p a`, so injectivity fails. The extended placement at
-  any such `q` is genuinely non-rigid — one degree of freedom in
-  `x none ⊥ (p b - p a)` is unconstrained.
-
-  Two resolutions:
-  - **(a) Openness of IR.** Prove `{p : G.IsInfinitesimallyRigid p}`
-    is open in `Framework V 2`. Then perturb `p c` to `p c + t • δ`
-    for `δ ⊥ (p b - p a)` and small `t ≠ 0`; this breaks collinearity
-    while preserving IR. The standard analytic argument: a continuously-
-    varying matrix's rank is lower-semicontinuous (pick an `r × r`
-    submatrix with nonzero determinant; determinant continuity keeps
-    it nonzero on a neighbourhood). Mathlib has the matrix-rank
-    pieces; building the `LinearMap.toMatrix` view of `RigidityMap`
-    is the Phase-4-deferred matrix view. Substantial work (~200 LoC).
+  Two resolution routes:
+  - **(a) Openness of IR + perturbation.** Show
+    `{p : G.IsInfinitesimallyRigid p}` is open in `Framework V 2` (rank
+    of `RigidityMap p` as a continuous function of `p` is lower-
+    semicontinuous), then perturb `p c` perpendicular to `p b - p a`.
+    Substantial: needs the `LinearMap.toMatrix` view of `RigidityMap`
+    (Phase 4 deferred) + the matrix-rank lower-semicontinuity argument.
+    Estimated ~200 LoC.
   - **(b) Strengthen milestone-3 induction invariant.** Maintain a
     predicate stronger than `IsGenericallyRigidInj` that guarantees
-    non-collinearity for the specific `(a, b, c)` triple chosen by
-    `exists_typeI_or_typeII_reverse` at each step. Trickier because
-    a single placement can't be non-collinear for every triple
-    simultaneously (after typeI, the new vertex lies on whatever line
-    we placed it on — the typeI wrapper would need to *avoid finitely
-    many lines* to keep the invariant). Doable but invasive to
-    typeI's wrapper.
+    non-collinearity at the specific `(a, b, c)` triple chosen by
+    `exists_typeI_or_typeII_reverse`. Tricky because a single placement
+    can't be non-collinear for every triple simultaneously (typeII
+    forces a collinear triple by construction); a refined invariant
+    needs to be more local than "no three collinear", and the typeI
+    wrapper would need to avoid finitely many lines.
 
-  Decision deferred until milestone 3 reveals which approach is
-  cleaner. Carry the conditional theorem and the non-collinearity-
-  conditioned wrapper to milestone 3 as is.
+  See *Hand-off* for the decision posture and option C (defer to
+  Phase 6's matroid bypass).
 
-- *Resolved.* ~~Placement-construction side condition for Type I
-  preservation.~~ Closed by the `IsGenericallyRigidInj` strong predicate
-  (in `Framework.lean`) plus the dim-2 `exists_off_line_off_finite_dim_two`
-  helper (in `Henneberg.lean`). The injective placement guarantees
-  `p a ≠ p b` for any chosen Henneberg endpoints, and the helper
-  constructs a `q` realizing both the `LinearIndependent`-condition
-  fed to `typeI_isInfinitesimallyRigid_extend` and the off-image
-  condition needed to preserve injectivity.
-
-- *Resolved.* ~~Affine-spanning side condition for Type I preservation.~~
-  Superseded by the injective-predicate route above.
-
-- *Resolved.* ~~Henneberg-blocker proof length: if milestone 1 sprawls
-  past ~3 sessions, reassess.~~ Landed in two sessions total
-  (infrastructure + helpers in the first; templates + main theorem in
-  the second) with `IsTightOn` + `IsTightOn.union_inter` already in
-  `Sparsity.lean` and the contradiction templates kept in `Henneberg.lean`
-  as private. No further refactor of `exists_nonadj_among_three_neighbors`
-  needed.
+- *Resolved blockers (carryover from earlier milestones):*
+  Placement-construction side condition for typeI (closed by
+  `IsGenericallyRigidInj` + `exists_off_line_off_finite_dim_two`);
+  Affine-spanning side condition (superseded by the injective predicate);
+  Milestone-1 proof length (landed in 2 sessions; templates kept private
+  in `Henneberg.lean`).
 
 ## Hand-off / next phase
 
-Milestone 2's typeI half is fully closed. The typeII half is
-*conditionally* closed: the rank-nullity core
-`typeII_isInfinitesimallyRigid_extend` and the conditional wrapper
-`typeII_isGenericallyRigidInj_two_of_nonCollinear` live in
-`Henneberg.lean`, accepting a non-collinearity hypothesis
-`LinearIndependent ![p b - p a, p c - p a]` on the input placement.
-The strong predicate `IsGenericallyRigidInj` and its API live in
-`Framework.lean`.
+Milestone 3 ships *structurally complete*: the strong-induction skeleton,
+base case, and typeI step all land. The proof of
+`IsLaman.isGenericallyRigid_two` is wired through the private strong-form
+helper `IsLaman.isGenericallyRigidInj_two_of_card` (strong induction on
+`Fintype.card V`, IH applied at `Fintype.card {w // w ≠ v}` via
+`Fintype.card_subtype_lt`) and `.toIsGenericallyRigid`. The remaining
+sorry is granular — a single `sorry` for
+`LinearIndependent ℝ ![p b - p a, p c - p a]` inside the typeII branch
+of the inductive step, exactly the milestone-2 collinearity gap.
 
-The remaining gap is the *unconditional* typeII wrapper. See *Blockers*
-for the analysis: deferred behind either (a) openness-of-IR /
-perturbation, or (b) a strengthened milestone-3 invariant.
+**Next concrete commit (option A — close the gap):** implement
+openness of `IsInfinitesimallyRigid` in `Framework V 2` and the
+perturbation step. The proof builds the rigidity-matrix view
+(Phase 4's deferred `LinearMap.toMatrix` of `RigidityMap`), then
+applies lower semi-continuity of matrix rank: there's an open set
+of placements containing `p` on which rank stays ≥ the rank at `p`,
+hence kernel dimension stays ≤ `d(d+1)/2`. With openness, perturb
+`p c` along a direction perpendicular to `p b - p a` to break
+collinearity. Expected size: ~200 LoC across `Framework.lean`
+(matrix view + openness lemma) and `Henneberg.lean` (the
+`typeII_isGenericallyRigidInj_two` unconditional wrapper).
 
-**Next concrete commit**: start milestone 3 (induction) using the
-*conditional* typeII wrapper. The first task is to **decide between
-the two resolutions** for the typeII gap, which is best made by
-trying to write milestone 3 and seeing what the induction-step
-context naturally provides:
+**Next concrete commit (option B — strengthen the invariant):** widen
+the inductive predicate from `IsGenericallyRigidInj` to a variant
+that records enough non-collinearity to feed the typeII step. The
+challenge from milestone 2 stands: a single placement can't be
+non-collinear at every triple post-typeII (typeII forces a collinear
+triple by construction). Look for a relaxed invariant that only
+records non-collinearity for the *bridge-edge endpoints' third
+neighbor* — i.e., the Henneberg structure of derivable typeII reverses
+from this placement. Doable but invasive to the typeI wrapper.
 
-1. Strong induction on `Fintype.card V`. Base: `Fintype.card V = 2`
-   ⇒ `G = ⊤` (via `top_fin_two_isLaman.eq`?) ⇒ K₂ rigidity. Step:
-   apply `exists_typeI_or_typeII_reverse` to get `G'` plus iso witness.
-2. For the typeI branch, apply `typeI_isGenericallyRigidInj_two` directly.
-3. For the typeII branch, we have `G'.IsLaman` and a fixed `(a, b, c)`.
-   The IH gives `G'.IsGenericallyRigidInj 2`, hence some rigid+injective
-   `p̃ : V' → ℝ²`. If `(p̃ a, p̃ b, p̃ c)` is non-collinear, apply
-   `typeII_isGenericallyRigidInj_two_of_nonCollinear`. Else…
+**Option C — defer to Phase 6.** Phase 6's matroid duality
+(`IsGenericallyRigid.exists_isLaman_le`) gives the (⇒) direction
+unconditionally; it might also subsume the typeII gap by exhibiting
+a rigid placement directly from the matroid basis without needing a
+Henneberg-induction witness. If Phase 6's matroid-bypass route is
+substantially less work than option A's openness argument, switching
+phases may be the better marginal investment.
 
-The "else" is where the obstruction surfaces concretely. At that
-point: (a) implement openness-of-IR; (b) backtrack and strengthen
-the inductive predicate (changing the IH to provide a non-collinear
-witness); (c) leave milestone 3 with a `sorry` at the collinear branch
-and ship the rest, deferring the closure to a follow-up commit.
-
-If milestone 3 ends with the typeII gap still open, the
-**`IsLaman.isGenericallyRigid_two` `sorry`** in `LamanTheorem.lean`
-stays in place; only the typeI half of the induction is filled. The
-iff statement remains unprovable until the typeII rigidity gap closes
-(and Phase 6's `IsGenericallyRigid.exists_isLaman_le` for the other
-arm).
-
-If the openness route turns out to be substantially heavier than
-expected, fall back to the affinely-spanning route via Phase 4's
-deferred `finrank_trivialMotions_eq_of_affinelySpanning`. The base
-case (K₂) is *not* affinely spanning in the plane (only two points),
-so that route would require strengthening the induction's base case
-in a non-trivial way — a downside the injective route avoids.
+Decision deferred to whichever next session opens the file. The
+`IsLaman.isGenericallyRigid_two` body has exactly one sorry; the iff
+statement's `mpr` arm reduces to that sorry; Phase 6's
+`exists_isLaman_le` sorry covers the `mp` arm.
