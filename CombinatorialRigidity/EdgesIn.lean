@@ -32,6 +32,10 @@ graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
   identities.
 * `SimpleGraph.ncard_edgesIn_compl_singleton_add_ncard_incidenceSet` — vertex-deletion
   cardinality identity, the keystone for the Phase 2 minimum-degree argument.
+* `SimpleGraph.edgesIn_inter` — edges-in distributes over intersection.
+* `SimpleGraph.edgesIn_ncard_add_le` — supermodularity of edge counts:
+  `(edgesIn S).ncard + (edgesIn T).ncard ≤ (edgesIn (S ∪ T)).ncard + (edgesIn (S ∩ T)).ncard`.
+  The Phase 5 tight-set union-closure lemma's edge-arithmetic input.
 
 ## Project context
 
@@ -111,5 +115,40 @@ lemma ncard_edgesIn_compl_singleton_add_ncard_incidenceSet [Finite V] (v : V) :
     (G.edgesIn ({v}ᶜ : Set V)).ncard + (G.incidenceSet v).ncard = G.edgeSet.ncard := by
   rw [edgesIn_compl_singleton]
   exact Set.ncard_diff_add_ncard_of_subset (G.incidenceSet_subset v) G.edgeSet.toFinite
+
+/-! ### Modularity: edges-in on the intersection / union lattice
+
+`edgesIn` distributes exactly over set-intersection but only sub-distributes over union —
+an edge `{x, y}` with `x ∈ S \ T` and `y ∈ T \ S` lies in `edgesIn (S ∪ T)` but in neither
+`edgesIn S` nor `edgesIn T`. The cardinality consequence is the "supermodular edge count"
+inequality `edgesIn_ncard_add_le`, the only edge-arithmetic input of the Phase 5 tight-set
+union-closure argument. -/
+
+/-- `edgesIn` distributes over intersection: `G.edgesIn (S ∩ T) = G.edgesIn S ∩ G.edgesIn T`.
+The companion union direction is only an inclusion (cf. `edgesIn_ncard_add_le`). -/
+lemma edgesIn_inter (S T : Set V) :
+    G.edgesIn (S ∩ T) = G.edgesIn S ∩ G.edgesIn T := by
+  ext e
+  simp only [Set.mem_inter_iff, mem_edgesIn, Set.subset_inter_iff]
+  tauto
+
+/-- **Supermodularity of `edgesIn` counts.** For any two vertex sets `S, T`, the sum
+`(edgesIn S).ncard + (edgesIn T).ncard` is at most `(edgesIn (S ∪ T)).ncard +
+(edgesIn (S ∩ T)).ncard`. The "edges crossing `S \ T` to `T \ S`" are counted on the right
+but not on the left, so the inequality can be strict; intersection cancels via
+`edgesIn_inter`. The lift of `Set.ncard_union_add_ncard_inter` to `edgesIn`. -/
+lemma edgesIn_ncard_add_le [Finite V] (S T : Set V) :
+    (G.edgesIn S).ncard + (G.edgesIn T).ncard ≤
+      (G.edgesIn (S ∪ T)).ncard + (G.edgesIn (S ∩ T)).ncard := by
+  have h_union : G.edgesIn S ∪ G.edgesIn T ⊆ G.edgesIn (S ∪ T) :=
+    Set.union_subset (edgesIn_mono Set.subset_union_left)
+                     (edgesIn_mono Set.subset_union_right)
+  calc (G.edgesIn S).ncard + (G.edgesIn T).ncard
+      = (G.edgesIn S ∪ G.edgesIn T).ncard + (G.edgesIn S ∩ G.edgesIn T).ncard :=
+        (Set.ncard_union_add_ncard_inter _ _).symm
+    _ = (G.edgesIn S ∪ G.edgesIn T).ncard + (G.edgesIn (S ∩ T)).ncard := by
+        rw [← edgesIn_inter]
+    _ ≤ (G.edgesIn (S ∪ T)).ncard + (G.edgesIn (S ∩ T)).ncard :=
+        Nat.add_le_add_right (Set.ncard_le_ncard h_union) _
 
 end SimpleGraph
