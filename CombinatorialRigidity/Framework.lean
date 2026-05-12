@@ -109,17 +109,14 @@ theorem rigidityMap_apply (G : SimpleGraph V) (p p' : Framework V d) (u v : V)
 `⟪p u - p v, x u - x v⟫`, jointly continuous in `(p, x)` and *a fortiori* continuous in `p` alone
 with `x` fixed; the proof inducts on `e : Sym2 V` to expose `s(u, v)`.
 
-Building block for `IsInfinitesimallyRigid.eventually`. -/
+Building block for `IsInfinitesimallyRigid.eventually`. Tagged `@[fun_prop]` so downstream
+continuity goals involving `RigidityMap` close via the `fun_prop` tactic. -/
+@[fun_prop]
 private theorem continuous_rigidityMap_apply (G : SimpleGraph V) (x : Framework V d)
     (e : G.edgeSet) : Continuous (fun p : Framework V d => G.RigidityMap p x e) := by
   obtain ⟨e, he⟩ := e
   induction e with
-  | h u v =>
-    have h_eq : (fun p : Framework V d => G.RigidityMap p x ⟨s(u, v), he⟩) =
-        fun p => ⟪p u - p v, x u - x v⟫_ℝ := by
-      funext p; exact rigidityMap_apply G p x u v he
-    rw [h_eq]
-    exact ((continuous_apply u).sub (continuous_apply v)).inner continuous_const
+  | h u v => simp only [rigidityMap_apply G _ x u v he]; fun_prop
 
 /-- The rigidity map's kernel shrinks under graph inclusion: adding edges can only
 add constraints, never remove them. -/
@@ -258,10 +255,7 @@ theorem IsInfinitesimallyRigid.eventually [Fintype V] {G : SimpleGraph V}
     funext i; exact h_preimg_eq i
   -- Continuity of `p ↦ (G.RigidityMap p (preimg i))_i` into `Fin r → (G.edgeSet → ℝ)`.
   have h_cont : Continuous
-      (fun p : Framework V d => fun i => G.RigidityMap p (preimg i)) := by
-    refine continuous_pi (fun i => ?_)
-    refine continuous_pi (fun e_edge => ?_)
-    exact continuous_rigidityMap_apply G (preimg i) e_edge
+      (fun p : Framework V d => fun i => G.RigidityMap p (preimg i)) := by fun_prop
   -- Filter pullback of `LinearIndependent.eventually`.
   have h_event_li : ∀ᶠ p in 𝓝 p₀,
       LinearIndependent ℝ (fun i => G.RigidityMap p (preimg i)) :=
@@ -357,10 +351,7 @@ theorem top_fin_two_isGenericallyRigidInj (d : ℕ) :
             ⟨s(0, 1), h_edge⟩ = 0 := by rw [h_eq]; rfl
       linarith
     -- Bound: `2*(d+1) - 1 = 2d+1 ≤ (d+1)(d+2)/2` for all `d ≥ 0`.
-    have h_quadratic : 4 * d + 2 ≤ (d + 1) * (d + 2) := by
-      have : (d + 1) * (d + 2) = d * d + 3 * d + 2 := by ring
-      have := Nat.le_mul_self d
-      omega
+    have h_quadratic : 4 * d + 2 ≤ (d + 1) * (d + 2) := by nlinarith [Nat.le_mul_self d]
     omega
   · -- Injectivity: `p 0 = 0` has norm 0; `p 1 = e₀` has norm 1.
     intro i j hij

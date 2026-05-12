@@ -26,6 +26,9 @@ reach for a mirror lemma, skim the relevant section first.
    manually.
 5. **Lifting Subtype-Sym2 equalities** — prefer `congrArg (Sym2.map
    Subtype.val)` over `rw [Subtype.mk.injEq]; subst`.
+6. **`fun_prop` for continuity / differentiability** — replace explicit
+   `Continuous.add` / `Continuous.comp` chains with `by fun_prop` and tag
+   project helpers `@[fun_prop]` so they participate in the search.
 
 ---
 
@@ -410,3 +413,48 @@ applies directly.
 This pattern recurs whenever `Sym2` wraps a sub-typed pair. The
 `typeII_iso_of_three_neighbors` `(some, some)` arm is the canonical
 example in this directory.
+
+## 6. `fun_prop` for continuity / differentiability
+
+`fun_prop` chains continuity (and differentiability, measurability, etc.)
+facts automatically; prefer it over hand-written `Continuous.add` /
+`Continuous.comp` /`continuous_pi` chains. Local `Continuous` hypotheses
+in scope are picked up automatically.
+
+### Pattern
+
+When a project helper returns a `Continuous` fact that future continuity
+goals need to chain through (e.g. `continuous_rigidityMap_apply` in
+`Framework.lean`), tag the helper:
+
+```
+@[fun_prop]
+private theorem continuous_rigidityMap_apply ... : Continuous … := …
+```
+
+Downstream goals like `Continuous (fun p => fun i => G.RigidityMap p (preimg i))`
+then close in one line:
+
+```
+have h_cont : Continuous … := by fun_prop
+```
+
+instead of the multi-line `continuous_pi (fun i => continuous_pi (fun e => …))`
+nest. The Phase 5 milestone-2 `IsInfinitesimallyRigid.eventually` and
+`exists_nonCollinear_rigid_placement_dim_two` use this; pre-cleanup the
+continuity blocks ran 6–10 lines each, post-cleanup they're one-liners.
+
+### When the goal mentions a project-internal `def`
+
+`fun_prop` does *not* unfold non-reducible `def`s. If the goal mentions
+`G.RigidityMap p x e` (which is a `def`), surface the underlying inner
+product with a `simp only [rigidityMap_apply …]` first, then `fun_prop`.
+This is what the tagged helper itself does internally.
+
+### `Function.update` continuity
+
+`Continuous.update` (mathlib, `Topology/Constructions.lean`) directly
+closes the "pi-typed function with one coordinate replaced" pattern that
+shows up in `exists_nonCollinear_rigid_placement_dim_two`'s
+`p_t := fun t => Function.update p₀ c (p₀ c + t • w)`. `fun_prop` finds
+it automatically.

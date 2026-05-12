@@ -83,6 +83,17 @@ private lemma exists_not_mem_span_singleton_dim_two
   have h2 := finrank_euclideanSpace_fin (𝕜 := ℝ) (n := 2)
   omega
 
+/-- Inner-product perpendicularity transports across a shared "target". If `sx = sy` and the
+displacement `xn - sx` is `⟪v, ·⟫`-perpendicular and similarly for `yn - sy`, then `xn - yn` is
+too. Used in the Henneberg move-rigidity injectivity steps to recover
+`⟪direction, x none - y none⟫ = 0` from the two new-edge constraints together with the on-`some`
+agreement `x ∘ some = y ∘ some`. -/
+private lemma inner_sub_perp_of_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    {v xn yn sx sy : E} (hs : sx = sy)
+    (hx : ⟪v, xn - sx⟫_ℝ = 0) (hy : ⟪v, yn - sy⟫_ℝ = 0) : ⟪v, xn - yn⟫_ℝ = 0 := by
+  subst hs
+  rw [show xn - yn = (xn - sx) - (yn - sx) by abel, inner_sub_right, hx, hy, sub_zero]
+
 /-- In `EuclideanSpace ℝ (Fin 2)`, a vector `u` orthogonal to two linearly independent vectors is
 zero. The size-2 LI family spans (`Fin 2`'s cardinality matches `finrank`), so the orthogonal
 complement is `⊥`. -/
@@ -137,12 +148,13 @@ theorem typeI_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
       have key := congr_fun hx ⟨s(some u, some v), h_some⟩
       simp only [rigidityMap_apply, Pi.zero_apply] at key
       simpa [rigidityMap_apply] using key
-  -- Kernel-to-kernel linear map.
+  -- Kernel-to-kernel linear map: precomposition by `some`, restricted to send `ker (typeI _)`
+  -- into `ker G`.
   let restrict : LinearMap.ker ((typeI G a b).RigidityMap p_ext) →ₗ[ℝ]
       LinearMap.ker (G.RigidityMap p) :=
-    { toFun := fun x => ⟨x.1 ∘ some, h_into x.1 x.2⟩
-      map_add' := fun _ _ => rfl
-      map_smul' := fun _ _ => rfl }
+    ((LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin 2)) (some : V → Option V)).comp
+        (LinearMap.ker ((typeI G a b).RigidityMap p_ext)).subtype).codRestrict
+      (LinearMap.ker (G.RigidityMap p)) (fun x => h_into x.1 x.2)
   -- Injectivity: any two kernel elements agreeing on `some _` agree at `none` too, because the
   -- two new edges through `none` orthogonalize `x.1 none - y.1 none` against the LI pair
   -- `(q - p a, q - p b)`, forcing the difference to vanish.
@@ -168,16 +180,8 @@ theorem typeI_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
     change ⟪q - p b, x.1 none - x.1 (some b)⟫_ℝ = 0 at hxb
     change ⟪q - p a, y.1 none - y.1 (some a)⟫_ℝ = 0 at hya
     change ⟪q - p b, y.1 none - y.1 (some b)⟫_ℝ = 0 at hyb
-    have h_perp_a : ⟪q - p a, x.1 none - y.1 none⟫_ℝ = 0 := by
-      have hsubst : x.1 none - y.1 none =
-          (x.1 none - x.1 (some a)) - (y.1 none - y.1 (some a)) := by
-        rw [h_some a]; abel
-      rw [hsubst, inner_sub_right, hxa, hya, sub_zero]
-    have h_perp_b : ⟪q - p b, x.1 none - y.1 none⟫_ℝ = 0 := by
-      have hsubst : x.1 none - y.1 none =
-          (x.1 none - x.1 (some b)) - (y.1 none - y.1 (some b)) := by
-        rw [h_some b]; abel
-      rw [hsubst, inner_sub_right, hxb, hyb, sub_zero]
+    have h_perp_a := inner_sub_perp_of_eq (h_some a) hxa hya
+    have h_perp_b := inner_sub_perp_of_eq (h_some b) hxb hyb
     exact sub_eq_zero.mp (eq_zero_of_orthogonal_dim_two hLI h_perp_a h_perp_b)
   -- Rank-nullity: `finrank (ker (typeI _)) ≤ finrank (ker G) ≤ 3`.
   change Module.finrank ℝ (LinearMap.ker ((typeI G a b).RigidityMap p_ext)) ≤ 2 * (2 + 1) / 2
@@ -198,13 +202,10 @@ private lemma exists_off_line_off_finite_dim_two
   -- non-member `v`.
   obtain ⟨v, hv_outside⟩ := exists_not_mem_span_singleton_dim_two hd
   have hv_ne_zero : v ≠ 0 := fun hv0 => hv_outside (hv0 ▸ zero_mem _)
-  -- Step 2. The family `f t := pa + t • v` is injective in `t`.
-  have hf_inj : Function.Injective (fun t : ℝ => pa + t • v) := fun t₁ t₂ h => by
-    have h_smul : t₁ • v = t₂ • v := add_left_cancel h
-    have h_sub : (t₁ - t₂) • v = 0 := by rw [sub_smul, h_smul, sub_self]
-    rcases smul_eq_zero.mp h_sub with h0 | h0
-    · linarith
-    · exact (hv_ne_zero h0).elim
+  -- Step 2. The family `f t := pa + t • v` is injective in `t`: it is a translation composed with
+  -- `smul_left_injective`.
+  have hf_inj : Function.Injective (fun t : ℝ => pa + t • v) := fun _ _ h =>
+    smul_left_injective ℝ hv_ne_zero (add_left_cancel h)
   -- Step 3. The "bad" `t`-set (yields `t = 0` or `f t ∈ S`) is finite; pick `t` outside.
   set bad : Set ℝ := {0} ∪ (fun t : ℝ => pa + t • v) ⁻¹' S with hbad_def
   have hbad_fin : bad.Finite := (Set.finite_singleton _).union (hS.preimage hf_inj.injOn)
@@ -331,9 +332,7 @@ theorem typeII_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
         change ⟪p u - p v, x (some u) - x (some v)⟫_ℝ = 0
         rcases Sym2.eq_iff.mp h_eq with ⟨h1, h2⟩ | ⟨h1, h2⟩
         · rw [h1, h2]; exact h_deleted
-        · rw [h1, h2,
-            show p b - p a = -(p a - p b) from by abel,
-            show x (some b) - x (some a) = -(x (some a) - x (some b)) from by abel,
+        · rw [h1, h2, ← neg_sub (p a) (p b), ← neg_sub (x (some a)) (x (some b)),
             inner_neg_neg]
           exact h_deleted
       · -- Non-deleted edge: lift to typeII edge.
@@ -342,12 +341,13 @@ theorem typeII_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
         have key := congr_fun hx ⟨s(some u, some v), h_typeII⟩
         simp only [rigidityMap_apply, Pi.zero_apply] at key
         simpa [rigidityMap_apply, Function.comp_apply] using key
-  -- Kernel-to-kernel linear map.
+  -- Kernel-to-kernel linear map: precomposition by `some`, restricted to send
+  -- `ker (typeII _)` into `ker G`.
   let restrict : LinearMap.ker ((typeII G a b c).RigidityMap p_ext) →ₗ[ℝ]
       LinearMap.ker (G.RigidityMap p) :=
-    { toFun := fun x => ⟨x.1 ∘ some, h_into x.1 x.2⟩
-      map_add' := fun _ _ => rfl
-      map_smul' := fun _ _ => rfl }
+    ((LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin 2)) (some : V → Option V)).comp
+        (LinearMap.ker ((typeII G a b c).RigidityMap p_ext)).subtype).codRestrict
+      (LinearMap.ker (G.RigidityMap p)) (fun x => h_into x.1 x.2)
   -- Injectivity: the new edges at `none ↔ some a` and `none ↔ some c` orthogonalize
   -- `x.1 none - y.1 none` against the LI pair `(q - p a, q - p c)`.
   have h_inj : Function.Injective restrict := by
@@ -371,16 +371,8 @@ theorem typeII_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
     change ⟪q - p c, x.1 none - x.1 (some c)⟫_ℝ = 0 at hxc
     change ⟪q - p a, y.1 none - y.1 (some a)⟫_ℝ = 0 at hya
     change ⟪q - p c, y.1 none - y.1 (some c)⟫_ℝ = 0 at hyc
-    have h_perp_a : ⟪q - p a, x.1 none - y.1 none⟫_ℝ = 0 := by
-      have hsubst : x.1 none - y.1 none =
-          (x.1 none - x.1 (some a)) - (y.1 none - y.1 (some a)) := by
-        rw [h_some a]; abel
-      rw [hsubst, inner_sub_right, hxa, hya, sub_zero]
-    have h_perp_c : ⟪q - p c, x.1 none - y.1 none⟫_ℝ = 0 := by
-      have hsubst : x.1 none - y.1 none =
-          (x.1 none - x.1 (some c)) - (y.1 none - y.1 (some c)) := by
-        rw [h_some c]; abel
-      rw [hsubst, inner_sub_right, hxc, hyc, sub_zero]
+    have h_perp_a := inner_sub_perp_of_eq (h_some a) hxa hya
+    have h_perp_c := inner_sub_perp_of_eq (h_some c) hxc hyc
     exact sub_eq_zero.mp (eq_zero_of_orthogonal_dim_two hLI h_perp_a h_perp_c)
   -- Rank-nullity: `finrank (ker (typeII _)) ≤ finrank (ker G) ≤ 3`.
   change Module.finrank ℝ (LinearMap.ker ((typeII G a b c).RigidityMap p_ext)) ≤ 2 * (2 + 1) / 2
@@ -402,12 +394,8 @@ private lemma exists_typeII_q_on_line_dim_two
   have hd : pb - pa ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
   -- Parametrize the line: `f α := pa + α • (pb - pa)`.
   set f : ℝ → EuclideanSpace ℝ (Fin 2) := fun α => pa + α • (pb - pa) with hf_def
-  have hf_inj : Function.Injective f := fun α₁ α₂ h => by
-    have h_smul : α₁ • (pb - pa) = α₂ • (pb - pa) := add_left_cancel h
-    have h_sub : (α₁ - α₂) • (pb - pa) = 0 := by rw [sub_smul, h_smul, sub_self]
-    rcases smul_eq_zero.mp h_sub with h0 | h0
-    · linarith
-    · exact (hd h0).elim
+  have hf_inj : Function.Injective f := fun _ _ h =>
+    smul_left_injective ℝ hd (add_left_cancel h)
   -- The "bad" `α`-set: `{0, 1} ∪ f⁻¹(S)`.
   set bad : Set ℝ := ({0, 1} : Set ℝ) ∪ (f ⁻¹' S) with hbad_def
   have hbad_fin : bad.Finite :=
@@ -511,17 +499,7 @@ private lemma exists_nonCollinear_rigid_placement_dim_two [Fintype V] {G : Simpl
     Function.update_of_ne hvc _ p₀
   have h_p_t_a : ∀ t, p_t t a = p₀ a := fun t => h_p_t_ne t a hac
   have h_p_t_b : ∀ t, p_t t b = p₀ b := fun t => h_p_t_ne t b hbc
-  have h_p_t_cont : Continuous p_t := by
-    refine continuous_pi (fun v => ?_)
-    by_cases hvc : v = c
-    · have h : (fun t : ℝ => p_t t v) = fun t => p₀ c + t • w := by
-        funext t; rw [hvc, h_p_t_c]
-      rw [h]
-      exact continuous_const.add (continuous_id.smul continuous_const)
-    · have h : (fun t : ℝ => p_t t v) = fun _ => p₀ v :=
-        funext (fun t => h_p_t_ne t v hvc)
-      rw [h]
-      exact continuous_const
+  have h_p_t_cont : Continuous p_t := by fun_prop
   have h_p_t_zero : p_t 0 = p₀ := by
     funext v
     by_cases hvc : v = c
@@ -539,9 +517,7 @@ private lemma exists_nonCollinear_rigid_placement_dim_two [Fintype V] {G : Simpl
       intro v hv
       rw [Finset.mem_filter] at hv
       have hvc := hv.2
-      have h_cont : Continuous (fun t : ℝ => p_t t v - p_t t c) :=
-        ((continuous_apply v).comp h_p_t_cont).sub
-          ((continuous_apply c).comp h_p_t_cont)
+      have h_cont : Continuous (fun t : ℝ => p_t t v - p_t t c) := by fun_prop
       have h_zero_ne : p_t 0 v - p_t 0 c ≠ 0 := by
         rw [h_p_t_zero]
         exact sub_ne_zero.mpr (fun heq => hvc (hp₀_inj heq))

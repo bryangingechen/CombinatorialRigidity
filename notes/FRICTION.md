@@ -1014,3 +1014,38 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Resolution:** swap `push_neg` for `push Not`. Behavior identical
   for the use cases here.
 - **Status:** resolved (deprecation cleanup).
+
+### [resolved] Inline kernel-restriction LinearMap built by hand
+
+- **Where it bit:** `typeI_isInfinitesimallyRigid_extend` and
+  `typeII_isInfinitesimallyRigid_extend` in `HennebergRigidity.lean`.
+  Each builds a `restrict : ker (typeI/II G.RigidityMap p_ext) →ₗ[ℝ]
+  ker (G.RigidityMap p)` whose underlying map is `x ↦ x ∘ some`.
+- **Friction:** initially constructed as an anonymous-constructor
+  LinearMap (`{ toFun := …, map_add' := …, map_smul' := … }`), 5 lines
+  per call site with `map_add' / map_smul'` proved by `rfl`. The
+  underlying map is precomposition by `some : V → Option V`, which is
+  `LinearMap.funLeft`.
+- **Resolution:** swap the anonymous structure for
+  `((LinearMap.funLeft ℝ _ some).comp _.subtype).codRestrict _ h_into`.
+  3 lines per call site; no `rfl`-glue. `LinearMap.funLeft` is the
+  canonical "precomposition" linear map; `LinearMap.codRestrict` is
+  the canonical "land in a submodule" restriction. Second-cleanup-pass
+  resolution of a deferred audit.
+- **Status:** resolved.
+
+### [resolved] Affine-line `Function.Injective` proved by `smul_eq_zero` unpacking
+
+- **Where it bit:** `exists_off_line_off_finite_dim_two` and
+  `exists_typeII_q_on_line_dim_two` in `HennebergRigidity.lean`. Each
+  proves `Function.Injective (fun t : ℝ => p + t • v)` for `v ≠ 0`.
+- **Friction:** initial proof did `add_left_cancel`, then
+  `sub_smul ... sub_self`, then `smul_eq_zero.mp ... .elim` — 6 lines
+  to extract `t₁ = t₂` from `t₁ • v = t₂ • v`.
+- **Resolution:** mathlib has `smul_left_injective R (h : v ≠ 0) :
+  Function.Injective (fun r : R => r • v)` (in
+  `Mathlib/Algebra/Module/Torsion/Free.lean`, applies to any
+  torsion-free `R`-module). Each call site collapses to
+  `fun _ _ h => smul_left_injective ℝ hv (add_left_cancel h)`.
+  Second-cleanup-pass resolution of a deferred audit.
+- **Status:** resolved.
