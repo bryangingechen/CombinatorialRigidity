@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Framework
 import CombinatorialRigidity.Laman
 import CombinatorialRigidity.Mathlib.Data.Finset.Option
 import CombinatorialRigidity.Mathlib.Data.Set.Card
@@ -10,8 +11,11 @@ import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Combinatorics.SimpleGraph.Maps
 import Mathlib.Data.Finite.Card
+import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Logic.Equiv.Option
 import Mathlib.Tactic.IntervalCases
+
+set_option linter.style.longFile 1700
 
 /-!
 # Henneberg moves
@@ -1384,6 +1388,121 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
                     hv_ab ha_ab hb_ab hSab_tight
                     hv_ac ha_ac hc_ac hSac_tight
                     hv_bc hb_bc hc_bc hSbc_tight) id
+
+/-! ### Rigidity preservation under Henneberg moves (dim 2)
+
+Phase 5 milestone 2. The Type I move preserves generic rigidity in the plane: extend a rigid
+placement `p` of `G` by placing the new vertex (image of `none`) at a point `q` for which the
+displacements `q - p a` and `q - p b` are linearly independent. The kernel of the rigidity map
+does not grow under this extension — the two new rigidity-matrix rows pin down the new vertex's
+infinitesimal motion completely.
+
+The conditional `typeI_isInfinitesimallyRigid_extend` is the rank-nullity heart of the
+preservation argument. The existence-of-good-`q` step (a `q` with the requisite linear
+independence, plus injectivity to feed into the next inductive step) is the dimension-2 placement
+ingredient; the unconditional `typeI_isGenericallyRigid_two` waits on that piece. -/
+
+open scoped InnerProductSpace
+
+/-- In `EuclideanSpace ℝ (Fin 2)`, a vector `u` orthogonal to two linearly independent vectors is
+zero. The size-2 LI family spans (`Fin 2`'s cardinality matches `finrank`), so the orthogonal
+complement is `⊥`. -/
+private lemma eq_zero_of_orthogonal_dim_two
+    {v₁ v₂ u : EuclideanSpace ℝ (Fin 2)}
+    (hLI : LinearIndependent ℝ ![v₁, v₂])
+    (h₁ : ⟪v₁, u⟫_ℝ = 0) (h₂ : ⟪v₂, u⟫_ℝ = 0) : u = 0 := by
+  have h_span_top : Submodule.span ℝ (Set.range ![v₁, v₂]) = ⊤ :=
+    hLI.span_eq_top_of_card_eq_finrank (by simp)
+  have h_u_perp : u ∈ (Submodule.span ℝ (Set.range ![v₁, v₂]))ᗮ := by
+    rw [Submodule.mem_orthogonal]
+    intro w hw
+    induction hw using Submodule.span_induction with
+    | mem w hw =>
+      rcases hw with ⟨i, rfl⟩
+      fin_cases i
+      · simpa using h₁
+      · simpa using h₂
+    | zero => exact inner_zero_left _
+    | add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]
+    | smul c x _ hx => rw [inner_smul_left, hx]; simp
+  rwa [h_span_top, Submodule.top_orthogonal_eq_bot, Submodule.mem_bot] at h_u_perp
+
+/-- **Conditional Type I rigidity preservation in dim 2.** If `p : Framework V 2` is
+infinitesimally rigid for `G` and `q : EuclideanSpace ℝ (Fin 2)` is a placement of the new vertex
+for which the displacements `q - p a` and `q - p b` are linearly independent, then the extended
+placement `fun w => w.elim q p` is infinitesimally rigid for `typeI G a b`.
+
+The rank-nullity heart of `typeI_isGenericallyRigid_two`. The proof builds a linear injection
+from `ker ((typeI G a b).RigidityMap p_ext)` into `ker (G.RigidityMap p)` via the restriction
+`x ↦ x ∘ some`: it lands in the right kernel because every `G`-edge lifts to a `typeI G a b`-edge
+with the same rigidity-row formula, and it is injective because the two new edges through `none`
+pin down `x none` completely whenever `q - p a` and `q - p b` are linearly independent. -/
+theorem typeI_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
+    {p : Framework V 2} (hp : G.IsInfinitesimallyRigid p) {a b : V}
+    {q : EuclideanSpace ℝ (Fin 2)}
+    (hLI : LinearIndependent ℝ ![q - p a, q - p b]) :
+    (typeI G a b).IsInfinitesimallyRigid (fun w : Option V => w.elim q p) := by
+  classical
+  set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p with hp_ext_def
+  -- The restriction map `x ↦ x ∘ some` lands in `ker (G.RigidityMap p)`: every `G`-edge `s(u, v)`
+  -- lifts to `s(some u, some v) ∈ (typeI G a b).edgeSet` with the same rigidity-row formula.
+  have h_into : ∀ x : Framework (Option V) 2,
+      x ∈ LinearMap.ker ((typeI G a b).RigidityMap p_ext) →
+        x ∘ some ∈ LinearMap.ker (G.RigidityMap p) := by
+    intro x hx
+    rw [LinearMap.mem_ker] at hx ⊢
+    ext ⟨e, he⟩
+    induction e with
+    | h u v =>
+      have h_some : s(some u, some v) ∈ (typeI G a b).edgeSet := he
+      have key := congr_fun hx ⟨s(some u, some v), h_some⟩
+      simp only [rigidityMap_apply, Pi.zero_apply] at key
+      simpa [rigidityMap_apply] using key
+  -- Kernel-to-kernel linear map.
+  let restrict : LinearMap.ker ((typeI G a b).RigidityMap p_ext) →ₗ[ℝ]
+      LinearMap.ker (G.RigidityMap p) :=
+    { toFun := fun x => ⟨x.1 ∘ some, h_into x.1 x.2⟩
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
+  -- Injectivity: any two kernel elements agreeing on `some _` agree at `none` too, because the
+  -- two new edges through `none` orthogonalize `x.1 none - y.1 none` against the LI pair
+  -- `(q - p a, q - p b)`, forcing the difference to vanish.
+  have h_inj : Function.Injective restrict := by
+    intro x y hxy
+    apply Subtype.ext
+    funext w
+    have h_some : ∀ v, x.1 (some v) = y.1 (some v) := fun v =>
+      congr_fun (congrArg Subtype.val hxy) v
+    rcases w with _ | v
+    swap
+    · exact h_some v
+    -- Case `w = none`. Extract the two new-edge constraints for both `x` and `y`.
+    have h_a_edge : s((none : Option V), some a) ∈ (typeI G a b).edgeSet := by simp
+    have h_b_edge : s((none : Option V), some b) ∈ (typeI G a b).edgeSet := by simp
+    have hxa := congr_fun (LinearMap.mem_ker.mp x.2) ⟨s(none, some a), h_a_edge⟩
+    have hxb := congr_fun (LinearMap.mem_ker.mp x.2) ⟨s(none, some b), h_b_edge⟩
+    have hya := congr_fun (LinearMap.mem_ker.mp y.2) ⟨s(none, some a), h_a_edge⟩
+    have hyb := congr_fun (LinearMap.mem_ker.mp y.2) ⟨s(none, some b), h_b_edge⟩
+    simp only [rigidityMap_apply, Pi.zero_apply] at hxa hxb hya hyb
+    -- `p_ext none = q`, `p_ext (some _) = p _` by defeq through `set`.
+    change ⟪q - p a, x.1 none - x.1 (some a)⟫_ℝ = 0 at hxa
+    change ⟪q - p b, x.1 none - x.1 (some b)⟫_ℝ = 0 at hxb
+    change ⟪q - p a, y.1 none - y.1 (some a)⟫_ℝ = 0 at hya
+    change ⟪q - p b, y.1 none - y.1 (some b)⟫_ℝ = 0 at hyb
+    have h_perp_a : ⟪q - p a, x.1 none - y.1 none⟫_ℝ = 0 := by
+      have hsubst : x.1 none - y.1 none =
+          (x.1 none - x.1 (some a)) - (y.1 none - y.1 (some a)) := by
+        rw [h_some a]; abel
+      rw [hsubst, inner_sub_right, hxa, hya, sub_zero]
+    have h_perp_b : ⟪q - p b, x.1 none - y.1 none⟫_ℝ = 0 := by
+      have hsubst : x.1 none - y.1 none =
+          (x.1 none - x.1 (some b)) - (y.1 none - y.1 (some b)) := by
+        rw [h_some b]; abel
+      rw [hsubst, inner_sub_right, hxb, hyb, sub_zero]
+    exact sub_eq_zero.mp (eq_zero_of_orthogonal_dim_two hLI h_perp_a h_perp_b)
+  -- Rank-nullity: `finrank (ker (typeI _)) ≤ finrank (ker G) ≤ 3`.
+  change Module.finrank ℝ (LinearMap.ker ((typeI G a b).RigidityMap p_ext)) ≤ 2 * (2 + 1) / 2
+  exact (LinearMap.finrank_le_finrank_of_injective h_inj).trans hp
 
 end Henneberg
 

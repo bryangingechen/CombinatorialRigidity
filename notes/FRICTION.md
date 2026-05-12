@@ -691,6 +691,32 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (Lean idiom — inside a sub-namespace, use explicit names
   for sub-namespace helpers; dot notation is only for the type's own namespace).
 
+### [resolved] `mem_edgeSet.mp` / `.mpr` dot notation rejected by Lean
+- **Where it bit:** `typeI_isInfinitesimallyRigid_extend` in
+  `Henneberg.lean` (Phase 5 milestone 2). Inside an `induction e with | h u v
+  => ...` block on `e : Sym2 V` with `he : e ∈ G.edgeSet`, the natural one-liner
+  was
+  `have h_some : s(some u, some v) ∈ (typeI G a b).edgeSet := mem_edgeSet.mpr (mem_edgeSet.mp he)`.
+- **Friction:** Lean rejected the dot notation: ``Unknown constant
+  `SimpleGraph.mem_edgeSet.mp` `` / ``... .mpr``. Lean was looking for
+  `SimpleGraph.mem_edgeSet.mp` as a fully-qualified constant rather than treating
+  `mem_edgeSet : Iff _ _` as a term and projecting `Iff.mp`. The cause is unclear
+  — possibly elaboration order with no concrete arguments to disambiguate the
+  implicit `G, v, w` of `mem_edgeSet`. Surrounding uses (`rw [mem_edgeSet]`)
+  worked fine.
+- **Resolution:** `mem_edgeSet` is `Iff.rfl`; both sides are *definitionally
+  equal*. So a proof `he : s(u, v) ∈ G.edgeSet` doubles as a proof of
+  `G.Adj u v`, and since `typeI_adj_some_some` is also `Iff.rfl` (so
+  `(typeI G a b).Adj (some u) (some v)` is defeq to `G.Adj u v`), the original
+  `he` is directly usable as the goal `s(some u, some v) ∈ (typeI G a b).edgeSet`.
+  The final form is the one-liner
+  `have h_some : s(some u, some v) ∈ (typeI G a b).edgeSet := he`. Elegant
+  consequence of the chain-of-`Iff.rfl`s; no need for `mem_edgeSet` invocations
+  at all.
+- **Status:** resolved (defeq side-stepped the elaboration glitch; the underlying
+  dot-notation failure remains mysterious but is consistently reproducible
+  inside `Sym2.ind`/`induction e with` blocks).
+
 ### [resolved] `hcoe` `have` line in `_isLaman` proofs
 - **Where it bit:** both `typeI_isLaman` and `typeII_isLaman` opened
   with
