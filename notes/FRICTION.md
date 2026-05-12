@@ -671,6 +671,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (project-internal — Laman-specific application
   of an upstream `grind` tactic).
 
+### [resolved] Dot notation skips sub-namespaces (`h.typeII_reverse_blocker` from `Henneberg.IsLaman.*`)
+- **Where it bit:** `IsLaman.typeII_reverse_witness_or_blocker` in `Henneberg.lean`
+  (Phase 5 milestone 1).
+- **Friction:** the existing helper `IsLaman.typeII_reverse_blocker` is declared
+  inside `namespace SimpleGraph.Henneberg`, so its full name is
+  `SimpleGraph.Henneberg.IsLaman.typeII_reverse_blocker`. Wrote
+  `h.typeII_reverse_blocker hxv …` with `h : G.IsLaman` expecting Lean to find it
+  via the current namespace. Lean's dot notation only consults the **type's**
+  head namespace (`SimpleGraph.IsLaman`), not the surrounding namespace stack,
+  so the lookup fails. The error appears as "`And.typeII_reverse_blocker` not
+  found" because Lean unfolds `IsLaman → IsTight → And` while searching.
+- **Resolution:** call by explicit name —
+  `IsLaman.typeII_reverse_blocker h hxv …` works directly from inside the
+  `Henneberg` namespace (the partial-prefix lookup resolves
+  `Henneberg.IsLaman.typeII_reverse_blocker`). Promoting the helper to the
+  outer `SimpleGraph` namespace would also fix it, but is the wrong choice here
+  — `typeII_reverse_blocker` is conceptually a Henneberg-flavoured helper.
+- **Status:** resolved (Lean idiom — inside a sub-namespace, use explicit names
+  for sub-namespace helpers; dot notation is only for the type's own namespace).
+
 ### [resolved] `hcoe` `have` line in `_isLaman` proofs
 - **Where it bit:** both `typeI_isLaman` and `typeII_isLaman` opened
   with

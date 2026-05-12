@@ -754,6 +754,219 @@ theorem IsLaman.typeII_reverse_blocker
     rw [hS_card] at hS_sparse
     omega
 
+/-! ### Strengthened decomposition: `G'` is also Laman
+
+The main payload of Phase 5 milestone 1. Combines the iso-only decomposition
+`IsLaman.exists_typeI_or_typeII_iso` with `typeI_isLaman_iff` (degree-2 branch) and
+the typeII-reverse blocker argument (degree-3 branch, via `typeII_reverse_blocker` +
+the "no tight set in `V \ {v}` can contain three neighbors of `v`" overshoot helper). -/
+
+/-- **Per-pair witness-or-blocker dispatcher.** For a Laman graph `G` with a degree-3 vertex
+`v` whose three distinct neighbors are exactly `{x, y, c}`, and a non-adjacent pair `(x, y)`:
+either the typeII-reverse candidate `G'_xy := (G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` is Laman (yielding
+the full typeII decomposition witness with `G'.IsLaman`), or it isn't (yielding a `(2, 3)`-tight
+blocker `S ⊆ V \ {v}` with `{x, y} ⊆ S` via `IsLaman.typeII_reverse_blocker`).
+
+The case-split that drives `exists_typeI_or_typeII_reverse`'s degree-3 branch: invoke per
+non-adjacent pair; on success, return the witness; on failure, accumulate blockers and combine
+them into a tight set contradicting `IsLaman.no_isTightOn_excluding_three_neighbors`. -/
+private theorem IsLaman.typeII_reverse_witness_or_blocker
+    [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {v x y c : V}
+    (hxv : x ≠ v) (hyv : y ≠ v) (hcv : c ≠ v)
+    (hxy : x ≠ y) (hcx : c ≠ x) (hcy : c ≠ y)
+    (hN : ∀ w, G.Adj v w ↔ w = x ∨ w = y ∨ w = c)
+    (hnxy : ¬ G.Adj x y) :
+    (∃ G' : SimpleGraph {w : V // w ≠ v}, G'.IsLaman ∧
+       ∃ x' y' c' : {w : V // w ≠ v}, x' ≠ y' ∧ c' ≠ x' ∧ c' ≠ y' ∧ G'.Adj x' y' ∧
+         Nonempty (G ≃g typeII G' x' y' c')) ∨
+    (∃ S : Finset V, v ∉ S ∧ x ∈ S ∧ y ∈ S ∧ G.IsTightOn 2 3 S) := by
+  classical
+  set G' : SimpleGraph {w : V // w ≠ v} :=
+    G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+      fromEdgeSet ({s(⟨x, hxv⟩, ⟨y, hyv⟩)} : Set _) with hG'_def
+  have hxy_s : (⟨x, hxv⟩ : {w : V // w ≠ v}) ≠ ⟨y, hyv⟩ :=
+    fun heq => hxy (Subtype.mk.injEq .. |>.mp heq)
+  have hcx_s : (⟨c, hcv⟩ : {w : V // w ≠ v}) ≠ ⟨x, hxv⟩ :=
+    fun heq => hcx (Subtype.mk.injEq .. |>.mp heq)
+  have hcy_s : (⟨c, hcv⟩ : {w : V // w ≠ v}) ≠ ⟨y, hyv⟩ :=
+    fun heq => hcy (Subtype.mk.injEq .. |>.mp heq)
+  by_cases h_lam : G'.IsLaman
+  · -- Success: G'_xy is Laman; package the typeII witness.
+    refine Or.inl ⟨G', h_lam, ⟨x, hxv⟩, ⟨y, hyv⟩, ⟨c, hcv⟩, hxy_s, hcx_s, hcy_s, ?_,
+      ⟨typeII_iso_of_three_neighbors hxv.symm hyv.symm hcv.symm hxy hN hnxy⟩⟩
+    show G'.Adj _ _
+    rw [hG'_def, sup_adj]
+    exact Or.inr ((fromEdgeSet_adj _).mpr ⟨rfl, hxy_s⟩)
+  · -- Failure: G'_xy is not Laman; extract the blocker.
+    exact Or.inr (IsLaman.typeII_reverse_blocker h hxv hyv hcv hxy hcx hcy hN hnxy h_lam)
+
+/-- **Overshoot helper.** In a Laman graph `G`, no `(2, 3)`-tight set `T ⊆ V \ {v}` can
+contain three distinct neighbors `a, b, c` of `v`: inserting `v` would add 1 vertex but
+at least 3 edges (the incident edges `s(v, a), s(v, b), s(v, c)`), overshooting the
+`(2, 3)`-sparsity bound at `insert v T`.
+
+The contradiction primitive that the typeII-reverse case-split argument reduces to. -/
+private lemma IsLaman.no_isTightOn_excluding_three_neighbors
+    {G : SimpleGraph V} (h : G.IsLaman) {v a b c : V}
+    (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    {T : Finset V} (hvT : v ∉ T) (haT : a ∈ T) (hbT : b ∈ T) (hcT : c ∈ T)
+    (hT : G.IsTightOn 2 3 T) : False := by
+  classical
+  have hva : v ≠ a := G.ne_of_adj ha
+  have hvb : v ≠ b := G.ne_of_adj hb
+  have hvc : v ≠ c := G.ne_of_adj hc
+  set T' : Finset V := insert v T with hT'_def
+  have hT'_card : T'.card = T.card + 1 := Finset.card_insert_of_notMem hvT
+  -- Set of three new edges va, vb, vc.
+  set E3 : Set (Sym2 V) := {s(v, a), s(v, b), s(v, c)} with hE3_def
+  -- |E3| = 3 (pairwise distinct since a, b, c distinct from v and each other).
+  have hne_ab : s(v, a) ≠ s(v, b) := fun h => (Sym2.eq_iff.mp h).elim
+    (fun ⟨_, h2⟩ => hab h2) (fun ⟨h1, _⟩ => hvb h1)
+  have hne_ac : s(v, a) ≠ s(v, c) := fun h => (Sym2.eq_iff.mp h).elim
+    (fun ⟨_, h2⟩ => hac h2) (fun ⟨h1, _⟩ => hvc h1)
+  have hne_bc : s(v, b) ≠ s(v, c) := fun h => (Sym2.eq_iff.mp h).elim
+    (fun ⟨_, h2⟩ => hbc h2) (fun ⟨h1, _⟩ => hvc h1)
+  have hE3_card : E3.ncard = 3 := by
+    rw [hE3_def, Set.ncard_insert_of_notMem (by simp [hne_ab, hne_ac]) (Set.toFinite _),
+        Set.ncard_pair hne_bc]
+  -- Containment helpers.
+  have h_T_sub_T' : (↑T : Set V) ⊆ (↑T' : Set V) := by
+    intro x hx
+    rw [hT'_def, Finset.coe_insert]
+    exact Or.inr hx
+  have h_v_in_T' : v ∈ (↑T' : Set V) := by
+    rw [hT'_def, Finset.coe_insert]; exact Set.mem_insert _ _
+  have h_a_in_T' : a ∈ (↑T' : Set V) := h_T_sub_T' (Finset.mem_coe.mpr haT)
+  have h_b_in_T' : b ∈ (↑T' : Set V) := h_T_sub_T' (Finset.mem_coe.mpr hbT)
+  have h_c_in_T' : c ∈ (↑T' : Set V) := h_T_sub_T' (Finset.mem_coe.mpr hcT)
+  -- Each edge in E3 lies in G.edgesIn ↑T'.
+  have h_E3_in : E3 ⊆ G.edgesIn (↑T' : Set V) := by
+    rintro e (rfl | rfl | rfl) <;> refine mem_edgesIn.mpr ⟨?_, ?_⟩
+    · exact ha
+    · rw [Sym2.coe_mk]
+      exact Set.insert_subset_iff.mpr ⟨h_v_in_T', Set.singleton_subset_iff.mpr h_a_in_T'⟩
+    · exact hb
+    · rw [Sym2.coe_mk]
+      exact Set.insert_subset_iff.mpr ⟨h_v_in_T', Set.singleton_subset_iff.mpr h_b_in_T'⟩
+    · exact hc
+    · rw [Sym2.coe_mk]
+      exact Set.insert_subset_iff.mpr ⟨h_v_in_T', Set.singleton_subset_iff.mpr h_c_in_T'⟩
+  -- E3 is disjoint from G.edgesIn ↑T (since v ∉ T).
+  have h_disj : Disjoint E3 (G.edgesIn (↑T : Set V)) := by
+    rw [Set.disjoint_left]
+    rintro e he h_mem
+    obtain ⟨_, hsub⟩ := mem_edgesIn.mp h_mem
+    have hv_in_e : v ∈ (e : Set V) := by
+      rcases he with rfl | rfl | rfl <;> (rw [Sym2.coe_mk]; exact Set.mem_insert _ _)
+    exact hvT (Finset.mem_coe.mp (hsub hv_in_e))
+  -- G.edgesIn ↑T ⊆ G.edgesIn ↑T'.
+  have h_edgesIn_sub : G.edgesIn (↑T : Set V) ⊆ G.edgesIn (↑T' : Set V) :=
+    edgesIn_mono h_T_sub_T'
+  -- Combine: ncard ↑T' ≥ ncard ↑T + 3.
+  have h_ncard_ge : (G.edgesIn (↑T : Set V)).ncard + 3 ≤ (G.edgesIn (↑T' : Set V)).ncard :=
+    calc (G.edgesIn (↑T : Set V)).ncard + 3
+        = (G.edgesIn (↑T : Set V)).ncard + E3.ncard := by rw [hE3_card]
+      _ = (G.edgesIn (↑T : Set V) ∪ E3).ncard :=
+          (Set.ncard_union_eq h_disj.symm (G.edgesIn_finite T) (Set.toFinite _)).symm
+      _ ≤ (G.edgesIn (↑T' : Set V)).ncard :=
+          Set.ncard_le_ncard (Set.union_subset h_edgesIn_sub h_E3_in) (G.edgesIn_finite T')
+  -- Sparsity at T': need 3 ≤ 2 * T'.card. Since {a, b, c} ⊆ T, T.card ≥ 3, so T'.card ≥ 4.
+  have h3_sub_T : ({a, b, c} : Finset V) ⊆ T := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl <;> assumption
+  have h3_card : ({a, b, c} : Finset V).card = 3 := by
+    rw [show ({a, b, c} : Finset V) = insert a (insert b {c}) from rfl,
+        Finset.card_insert_of_notMem (by simp [hab, hac]),
+        Finset.card_insert_of_notMem (by simp [hbc])]
+    rfl
+  have hT_card_ge : 3 ≤ T.card := h3_card ▸ Finset.card_le_card h3_sub_T
+  have hT'_sparse := h.isSparse T' (by rw [hT'_card]; omega)
+  unfold IsTightOn at hT
+  omega
+
+/-- **Strengthened decomposition theorem.** Every Laman graph on `n ≥ 3` vertices is iso to a
+Type I or Type II Henneberg move applied to a **Laman** graph `G'` on `{w : V // w ≠ v}`.
+
+Strengthens `IsLaman.exists_typeI_or_typeII_iso` by additionally asserting `G'.IsLaman`. The
+degree-2 branch closes via `typeI_isLaman_iff` (iso transport from `G`'s Laman to
+`(typeI G' a b).IsLaman` then peel off typeI). The degree-3 branch is the deep step: pick a
+non-adjacent neighbor pair via `IsLaman.exists_nonadj_among_three_neighbors`; if its typeII
+reverse is Laman, return; if not, the per-pair `typeII_reverse_blocker` yields a tight
+blocker, and case analysis on the three pairs assembles a tight set in `V \ {v}` containing
+all three neighbors of `v`, contradicting `IsLaman.no_isTightOn_excluding_three_neighbors`.
+
+**Phase 5 milestone 1.** -/
+theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
+    {G : SimpleGraph V} (h : G.IsLaman)
+    (hV : 3 ≤ Fintype.card V) :
+    ∃ (v : V) (G' : SimpleGraph {w : V // w ≠ v}), G'.IsLaman ∧
+      ((∃ a b : {w : V // w ≠ v}, a ≠ b ∧ Nonempty (G ≃g typeI G' a b)) ∨
+       (∃ a b c : {w : V // w ≠ v}, a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ G'.Adj a b ∧
+        Nonempty (G ≃g typeII G' a b c))) := by
+  classical
+  obtain ⟨v, hv2, hv3⟩ := h.exists_two_le_degree_le_three hV
+  refine ⟨v, ?_⟩
+  rcases (show G.degree v = 2 ∨ G.degree v = 3 from by omega) with hdeg | hdeg
+  · -- Degree-2 case: Type I reverse on the induced subgraph.
+    obtain ⟨a, b, hab, hN_eq⟩ := Finset.card_eq_two.mp hdeg
+    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b := fun w => by
+      rw [← mem_neighborFinset, hN_eq]; simp
+    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
+    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr rfl)
+    have hva : v ≠ a := G.ne_of_adj ha_adj
+    have hvb : v ≠ b := G.ne_of_adj hb_adj
+    have hab_s : (⟨a, hva.symm⟩ : {w : V // w ≠ v}) ≠ ⟨b, hvb.symm⟩ :=
+      fun heq => hab (Subtype.mk.injEq .. |>.mp heq)
+    refine ⟨G.comap (Subtype.val : {w : V // w ≠ v} → V), ?_, ?_⟩
+    · exact (typeI_isLaman_iff hab_s).mp
+        (IsLaman.iso (typeI_iso_of_two_neighbors hva hvb hN_iff) h)
+    · exact Or.inl ⟨⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, hab_s,
+        ⟨typeI_iso_of_two_neighbors hva hvb hN_iff⟩⟩
+  · -- Degree-3 case: Type II reverse. Pick a non-adjacent neighbor pair; dispatch each via
+    -- `typeII_reverse_witness_or_blocker`. On success, return the witness; on failure, the
+    -- accumulated blockers will be combined (in the sorry'd sub-cases) into a tight set
+    -- containing `{a, b, c}` excluding `v`, contradicting
+    -- `IsLaman.no_isTightOn_excluding_three_neighbors`.
+    obtain ⟨a, b, c, hab, hac, hbc, hN_eq⟩ := Finset.card_eq_three.mp hdeg
+    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c := fun w => by
+      rw [← mem_neighborFinset, hN_eq]; simp
+    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
+    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr (Or.inl rfl))
+    have hc_adj : G.Adj v c := (hN_iff c).mpr (Or.inr (Or.inr rfl))
+    have hva : v ≠ a := G.ne_of_adj ha_adj
+    have hvb : v ≠ b := G.ne_of_adj hb_adj
+    have hvc : v ≠ c := G.ne_of_adj hc_adj
+    rcases h.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc with
+      hnab | hnac | hnbc
+    · -- (a, b) non-adjacent. Bridge `a-b`, third neighbor `c`.
+      rcases IsLaman.typeII_reverse_witness_or_blocker h hva.symm hvb.symm hvc.symm
+          hab hac.symm hbc.symm hN_iff hnab with
+        ⟨G', hG'_lam, hwit⟩ | hblock_ab
+      · exact ⟨G', hG'_lam, Or.inr hwit⟩
+      · -- (a, b) blocked. Combine with (a, c) / (b, c) status to derive contradiction.
+        exfalso
+        sorry
+    · -- (a, c) non-adjacent. Bridge `a-c`, third neighbor `b`.
+      have hN_iff_acb : ∀ w, G.Adj v w ↔ w = a ∨ w = c ∨ w = b := fun w => by
+        rw [hN_iff]; tauto
+      rcases IsLaman.typeII_reverse_witness_or_blocker h hva.symm hvc.symm hvb.symm
+          hac hab.symm hbc hN_iff_acb hnac with
+        ⟨G', hG'_lam, hwit⟩ | hblock_ac
+      · exact ⟨G', hG'_lam, Or.inr hwit⟩
+      · exfalso
+        sorry
+    · -- (b, c) non-adjacent. Bridge `b-c`, third neighbor `a`.
+      have hN_iff_bca : ∀ w, G.Adj v w ↔ w = b ∨ w = c ∨ w = a := fun w => by
+        rw [hN_iff]; tauto
+      rcases IsLaman.typeII_reverse_witness_or_blocker h hvb.symm hvc.symm hva.symm
+          hbc hab hac hN_iff_bca hnbc with
+        ⟨G', hG'_lam, hwit⟩ | hblock_bc
+      · exact ⟨G', hG'_lam, Or.inr hwit⟩
+      · exfalso
+        sorry
+
 end Henneberg
 
 /-! ### K₄ minus one edge is Laman
