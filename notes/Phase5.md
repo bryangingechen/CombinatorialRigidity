@@ -450,6 +450,36 @@ None — all milestone blockers resolved.
   `typeII_isGenericallyRigidInj_two` composes the perturbation helper
   with it.
 
+### Cleanup pass summaries
+
+*Post-closure cleanup pass.* Three small extractions plus a file split:
+
+- **`SimpleGraph.mk_mem_edgesIn`** in `EdgesIn.lean`. Specialised
+  constructor for `mem_edgesIn` at an explicit pair `s(x, y)`. Collapses
+  the `mem_edgesIn.mpr ⟨_, by rw [Sym2.coe_mk]; exact
+  Set.insert_subset_iff.mpr ⟨_, Set.singleton_subset_iff.mpr _⟩⟩`
+  boilerplate at ~6 call sites in the milestone-1 blocker proofs
+  (`no_isTightOn_excluding_three_neighbors`, `contradiction_one_pair`,
+  `contradiction_two_pair`, `typeII_isLaman`).
+- **`injective_option_elim`** (private, `HennebergRigidity.lean`).
+  Factors the identical 4-way `rintro` injectivity proof at the bottom
+  of `typeI_isGenericallyRigidInj_two` and
+  `typeII_isGenericallyRigidInj_two_of_nonCollinear`.
+- **`exists_not_mem_span_singleton_dim_two`** (private,
+  `HennebergRigidity.lean`). Consolidates the
+  `finrank_span_singleton` / `finrank_euclideanSpace_fin` /
+  `SetLike.exists_not_mem_of_ne_top` chain that occurs in both
+  `exists_off_line_off_finite_dim_two` and
+  `exists_nonCollinear_rigid_placement_dim_two`.
+- **File split**: `Henneberg.lean` → `Henneberg.lean` (1411 lines, was
+  2002) + `HennebergRigidity.lean` (616 lines). The milestone-2
+  rigidity-preservation work (everything from
+  `eq_zero_of_orthogonal_dim_two` onward) moved out. `Henneberg.lean`
+  no longer imports `Framework`, `FiniteDimensional.Lemmas`, or
+  `IntervalCases`; `LamanTheorem.lean` now imports both. Reverses the
+  *Architectural choices* decision that put move-rigidity in
+  `Henneberg.lean` — "the lemma counts are small" stopped being true.
+
 ## Hand-off / next phase
 
 Phase 5 is closed. `IsLaman.isGenericallyRigid_two` is fully proved;
@@ -457,6 +487,23 @@ the iff's `mpr` arm reduces to it directly. The only remaining `sorry`
 in the project is `IsGenericallyRigid.exists_isLaman_le` (the iff's
 `mp` arm), which is Phase 6's responsibility (Lovász–Yemini matroid
 duality).
+
+**Deferred audits (small leftover cleanups, can land alongside Phase 6
+work or independently):**
+
+- *Inline `restrict` LinearMap.* Both
+  `typeI_isInfinitesimallyRigid_extend` and
+  `typeII_isInfinitesimallyRigid_extend` build a `restrict : ker →ₗ[ℝ]
+  ker` linear map as an inline structure (`toFun`, `map_add'`,
+  `map_smul'`). Investigate whether `LinearMap.funLeft` or some
+  existing mathlib API can collapse the boilerplate. Both maps have
+  the form `(LinearMap.funLeft ℝ ℝ some).restrict h_into` modulo
+  subtype packaging.
+- *Affine-line injectivity.* `exists_off_line_off_finite_dim_two` and
+  `exists_typeII_q_on_line_dim_two` both hand-prove
+  `Function.Injective (fun t : ℝ => p + t • v)`. Audit whether
+  mathlib has this (likely composed from `Function.Injective.const_add`
+  and an `smul_right_injective`-style lemma).
 
 **Next concrete commit (Phase 6 start):** seed `notes/Phase6.md` and
 plan the rigidity matroid. `RigidityMatroid.lean` stands up on top of

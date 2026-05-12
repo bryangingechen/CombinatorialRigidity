@@ -515,6 +515,44 @@ limitations. Worth a once-over so future agents don't re-litigate.
   enough to `LinearMap.proj`-construction proofs that it stays in
   FRICTION rather than promoting to TACTICS.
 
+### [resolved] `mem_edgesIn.mpr` boilerplate at literal-pair edges
+- **Where it bit:** `no_isTightOn_excluding_three_neighbors`,
+  `contradiction_one_pair`, `contradiction_two_pair`, `typeII_isLaman`
+  (the `s(a, b) ∈ G.edgesIn ↑s'` reconstruction in the `h_or` proof)
+  in `Henneberg.lean`. Each call site wrote
+  `mem_edgesIn.mpr ⟨h_adj, by rw [Sym2.coe_mk]; exact
+  Set.insert_subset_iff.mpr ⟨hx, Set.singleton_subset_iff.mpr hy⟩⟩`
+  or a multi-line `refine ⟨h_adj, ?_⟩; rw [Sym2.coe_mk]; exact …`
+  expansion — same shape every time.
+- **Resolution:** added `SimpleGraph.mk_mem_edgesIn` to
+  `EdgesIn.lean`: `(h : G.Adj x y) (hx : x ∈ s) (hy : y ∈ s) : s(x, y)
+  ∈ G.edgesIn s`. Six call sites collapsed to one-liners. Net
+  file-size win; more importantly the milestone-1 blocker proofs read
+  considerably cleaner.
+- **Status:** resolved (project-internal — `edgesIn` is project-local,
+  so no upstream mirror).
+
+### [resolved] Identical helpers for milestone-2 proof shape (`Option.elim` injectivity, span-singleton non-member)
+- **Where it bit:** `typeI_isGenericallyRigidInj_two` /
+  `typeII_isGenericallyRigidInj_two_of_nonCollinear` (4-way `rintro
+  (_ | u) (_ | v) h` injectivity proof) and
+  `exists_off_line_off_finite_dim_two` /
+  `exists_nonCollinear_rigid_placement_dim_two` (the
+  `finrank_span_singleton` / `finrank_top` / `omega` chain showing
+  `Submodule.span ℝ {v} ≠ ⊤` so `SetLike.exists_not_mem_of_ne_top`
+  fires).
+- **Resolution:** added two private helpers at the top of
+  `HennebergRigidity.lean`:
+  - `injective_option_elim`: the `Option`-extended `fun w => w.elim q p`
+    is injective when `p` is injective and `q ∉ Set.range p`. Pure
+    `Option`/`Function.Injective` fact, dim-agnostic.
+  - `exists_not_mem_span_singleton_dim_two`: in `EuclideanSpace ℝ
+    (Fin 2)`, every `Submodule.span ℝ {v}` with `v ≠ 0` is proper.
+    Dim-2-specific.
+- **Status:** resolved (project-internal; both helpers are small and
+  not obvious upstream candidates without a slightly more general
+  framing).
+
 ### [resolved] Per-move `_edgesIn_ncard_decomp` extraction
 - **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity
   branches in `Henneberg.lean`. Each opened with ~14 lines of

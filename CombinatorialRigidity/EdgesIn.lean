@@ -25,6 +25,7 @@ graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
 ## Main lemmas
 
 * `SimpleGraph.mem_edgesIn` — membership unfolding.
+* `SimpleGraph.mk_mem_edgesIn` — specialised pair-form constructor for `mem_edgesIn`.
 * `SimpleGraph.edgesIn_subset_edgeSet`, `edgesIn_mono` — basic inclusions.
 * `SimpleGraph.edgesIn_univ`, `edgesIn_empty`, `edgesIn_bot` — corner cases.
 * `SimpleGraph.edgesIn_finite` — finiteness over a finite vertex set.
@@ -56,6 +57,16 @@ variable {G}
 @[simp] lemma mem_edgesIn {e : Sym2 V} {s : Set V} :
     e ∈ G.edgesIn s ↔ e ∈ G.edgeSet ∧ (e : Set V) ⊆ s := by
   rw [edgesIn, Set.mem_inter_iff, Set.mem_sym2_iff_subset]
+
+/-- Specialised constructor for `mem_edgesIn` at an explicit pair `s(x, y)`: an adjacent pair with
+both endpoints in `s` lies in `G.edgesIn s`. Collapses the
+`mem_edgesIn.mpr ⟨_, by rw [Sym2.coe_mk]; exact Set.insert_subset_iff.mpr ⟨_,
+Set.singleton_subset_iff.mpr _⟩⟩` boilerplate that recurs in the Phase 5 blocker proofs. -/
+lemma mk_mem_edgesIn {x y : V} {s : Set V} (h : G.Adj x y) (hx : x ∈ s) (hy : y ∈ s) :
+    s(x, y) ∈ G.edgesIn s :=
+  mem_edgesIn.mpr ⟨h, by
+    rw [Sym2.coe_mk]
+    exact Set.insert_subset_iff.mpr ⟨hx, Set.singleton_subset_iff.mpr hy⟩⟩
 
 lemma edgesIn_subset_edgeSet (s : Set V) : G.edgesIn s ⊆ G.edgeSet :=
   Set.inter_subset_left

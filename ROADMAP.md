@@ -31,6 +31,7 @@ Archive/CombinatorialRigidity/
 ├── Laman.lean         Phase 1+2 — `IsLaman` and downstream
 ├── Henneberg.lean     Phase 3 — `typeI`, `typeII` and downstream
 ├── Framework.lean     Phase 4 — frameworks, rigidity map
+├── HennebergRigidity.lean  Phase 5 milestone 2 — per-move rigidity preservation
 ├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
 └── …                  later phases get their own files
 ```
@@ -43,7 +44,7 @@ Archive/CombinatorialRigidity/
 | 2. Laman graphs | `Laman.lean` | ✓ Complete (see `notes/Phase2.md`) |
 | 3. Henneberg moves | `Henneberg.lean` | ✓ Complete (see `notes/Phase3.md`) |
 | 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
-| 5. Laman's theorem (⇐) | `LamanTheorem.lean` | ✓ Complete (see `notes/Phase5.md`) |
+| 5. Laman's theorem (⇐) | `LamanTheorem.lean`, `HennebergRigidity.lean` | ✓ Complete (see `notes/Phase5.md`) |
 | 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | Not yet started |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -123,7 +124,7 @@ identification of kernel with rigid motions) and the
 neither is on the critical path for Phase 5. See `notes/Phase4.md` for
 the full lemma list and phase-specific decisions.
 
-### Phase 5 — Laman's theorem, (⇐) direction (`LamanTheorem.lean`)
+### Phase 5 — Laman's theorem, (⇐) direction (`LamanTheorem.lean`, `HennebergRigidity.lean`)
 
 Complete. The main iff statement lives in `LamanTheorem.lean`:
 ```
