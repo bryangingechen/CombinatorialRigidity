@@ -7,8 +7,9 @@ high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
 ## Current state
 
-Milestone 0, the **typeI half** of milestone 1, and the tight-set
-lattice infrastructure for the typeII half are complete. Specifically:
+Milestone 0, the **typeI half** of milestone 1, the tight-set lattice
+infrastructure for the typeII half, *and the per-pair tight-blocker
+witness* are complete. Specifically:
 
 * Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport) —
   done in an earlier commit.
@@ -20,12 +21,22 @@ lattice infrastructure for the typeII half are complete. Specifically:
   counts); plus `IsTightOn` + `IsTightOn.union_inter` in `Sparsity.lean`
   (the standard tight-subset lattice closure on which the blocker
   argument runs).
+* Milestone 1 typeII per-pair blocker — `IsLaman.typeII_reverse_blocker`
+  in `Henneberg.lean`: given a degree-3 vertex `v` with neighbors
+  `{x, y, c}` and a non-adjacent pair `(x, y)`, if the typeII-reverse
+  candidate `(G - v) + edge(x, y)` is *not* Laman, then there exists a
+  `(2, 3)`-tight `S ⊆ V \ {v}` with `{x, y} ⊆ S` in `G`. Edge count is
+  established via the typeII iso transfer (Phase 3:
+  `typeII_iso_of_three_neighbors`); sparsity violation extracts a
+  Finset `s'` whose lift to `V` is the witness, tightness via the new
+  `IsSparse.isTightOn_of_le` (`Sparsity.lean`).
 
-The remaining typeII-half open task is the blocker proof itself; once
-it lands, `IsLaman.exists_typeI_or_typeII_reverse` composes the two
-halves and milestone 1 closes. Milestone 2 (per-move rigidity
-preservation, in `Henneberg.lean`) is independent and can be worked
-in parallel.
+The remaining typeII-half open task is the case-split that combines
+per-pair witnesses (3 / 2 / 1 non-adjacent pairs among `v`'s neighbors)
+via `IsTightOn.union_inter` to derive a contradiction with `G`'s
+sparsity, completing `IsLaman.exists_typeI_or_typeII_reverse`.
+Milestone 2 (per-move rigidity preservation, in `Henneberg.lean`) is
+independent and can be worked in parallel.
 
 Phase 5 target: the (⇐) direction of Laman's theorem,
 
@@ -185,6 +196,27 @@ The typeII half (below) is the deep step.
   extension under *omega doesn't see through nonlinear algebra on
   opaque atoms*).
 
+- [x] (Helper) **Squeeze: sparsity bound from below ⇒ tight** —
+  `IsSparse.isTightOn_of_le` in `Sparsity.lean`: in a `(k, ℓ)`-sparse
+  graph, `k * #s ≤ (G.edgesIn ↑s).ncard + ℓ` (the lower bound matching
+  the sparsity upper bound) forces `G.IsTightOn k ℓ s`. One-line proof
+  via `unfold IsTightOn` + omega. Used by the typeII blocker to convert
+  a sparsity violation on the candidate graph into a tight set in `G`.
+
+- [x] **Per-pair tight-blocker witness** —
+  `IsLaman.typeII_reverse_blocker` in `Henneberg.lean`. Inputs: a Laman
+  graph `G` with degree-3 vertex `v` whose three neighbors are exactly
+  `{x, y, c}`, a non-adjacent pair `(x, y)`, and a *failed*
+  typeII-reverse candidate (`¬G'.IsLaman` where `G' := (G - v) ⊔
+  {bridge(x, y)}`). Output: a `(2, 3)`-tight `S ⊆ V \ {v}` with
+  `{x, y} ⊆ S` in `G`. The proof routes the edge count of `G'` through
+  the Phase 3 iso `typeII_iso_of_three_neighbors`, transferring `G`'s
+  Laman to `(typeII G' xs ys cs).IsLaman` and using `typeII_edgeSet_ncard`
+  to deduce the count; `¬G'.IsLaman` then collapses to `¬G'.IsSparse 2 3`,
+  giving a violating `s'`. Case-split on `xs, ys ∈ s'` decides between
+  tight-set extraction (both in) and contradiction with `G`'s sparsity
+  (one out).
+
 - [ ] `IsLaman.exists_typeI_or_typeII_reverse` — strengthened
   decomposition. Degree-2 branch reuses `typeI_reverse_isLaman` +
   the existing `typeI_iso_of_two_neighbors`; degree-3 branch is the
@@ -298,6 +330,42 @@ the iff's `mpr` arm completes automatically.
   for `omega`. (Extending TACTICS § 4 to mention this single-equation
   variant if the pattern recurs in the blocker.)
 
+- **typeII reverse blocker: edge count via the Phase 3 iso, not by
+  hand.** The natural alternative was to compute `G'.edgeSet.ncard`
+  directly via the chain `Sym2.map Subtype.val '' (G.comap Subtype.val).edgeSet
+  = G.edgesIn ({v}ᶜ)` + injectivity + the existing vertex-deletion
+  partition + the bridging edge's contribution. That route requires a
+  `Nat.card V = Nat.card {w // w ≠ v} + 1` lemma plus the explicit
+  `Sym2.map`-image transfer for the comap side. Instead, the proof
+  reuses `typeII_iso_of_three_neighbors` (Phase 3): with the third
+  neighbor `c` of `v` plus the neighbor-set characterization passed
+  in as hypothesis, build `h_iso : G ≃g typeII G' xs ys cs`, transfer
+  `G.IsLaman` via `IsLaman.iso`, and read off `G'.edgeSet.ncard + 3 =
+  2 * Nat.card {w // w ≠ v}` from `typeII_edgeSet_ncard` plus
+  `Finite.card_option`. Saves ~20 lines and the project-internal
+  `(G.comap Subtype.val).edgeSet.ncard` helper. Cost: the blocker
+  signature carries the third neighbor `c` plus the full neighbor
+  predicate `hN : ∀ w, G.Adj v w ↔ w = x ∨ w = y ∨ w = c` rather than
+  the lighter `G.degree v = 3` plus `G.Adj v x`, `G.Adj v y`. The
+  case-split argument already has `c` and `hN` in scope (from
+  `Finset.card_eq_three`), so this is free downstream.
+
+- **Per-pair blocker case structure: split on `xs, ys ∈ s'`.** The
+  sparsity violation on `G'` produces some Finset `s'` whose lift `S =
+  s'.image Subtype.val ⊆ V \ {v}` has `2 * S.card ≤ (G'.edgesIn ↑s').ncard
+  + 2`. The two cases differ in the bridging-edge contribution to
+  `G'.edgesIn ↑s'`. If both `xs, ys ∈ s'`, the bridge contributes ≤ 1,
+  giving `2 * S.card ≤ (G.edgesIn ↑S).ncard + 3` — combined with `G`'s
+  sparsity, equality, so `S` is `IsTightOn 2 3` via the new
+  `IsSparse.isTightOn_of_le`. If one of `xs, ys` is outside `s'`, the
+  bridge is excluded entirely (its endpoint set `{xs, ys}` is not a
+  subset of `↑s'`), giving `2 * S.card ≤ (G.edgesIn ↑S).ncard + 2` — a
+  direct contradiction with `G`'s sparsity. The edge-set decomposition
+  for both bounds uses the private helper `image_edgesIn_comap`
+  (`Sym2.map f '' ((G.comap f).edgesIn s') = G.edgesIn (f '' s')`) to
+  bridge `(G.comap Subtype.val).edgesIn ↑s'` to `G.edgesIn ↑S` via
+  injectivity of `Sym2.map Subtype.val`.
+
 ### Promoted to TACTICS / FRICTION / DESIGN
 
 - *`Exists.imp` doesn't transport across changing-binder-type
@@ -308,6 +376,11 @@ the iff's `mpr` arm completes automatically.
   FRICTION [wontfix] *omega doesn't see through nonlinear algebra on
   opaque atoms* (extended the existing commutativity entry with the
   distributivity case the `IsTightOn.union_inter` proof hit).
+- *`set name := expr` creates a fresh atom for omega: hypotheses
+  derived from upstream lemmas after the `set` still mention `expr`,
+  not `name`, and omega treats `{name}` and `{expr}` as distinct
+  atoms* → FRICTION [wontfix] *omega treats `set`-aliased terms as
+  opaque atoms*.
 
 ## Blockers / open questions
 
@@ -332,32 +405,39 @@ the iff's `mpr` arm completes automatically.
 Milestone 0 (LamanTheorem stub + d=2 corollary + iso transport), the
 typeI half of milestone 1 (`typeI_reverse_isLaman` /
 `typeI_isLaman_iff`), the modular `edgesIn` inequality
-(`edgesIn_inter` + `edgesIn_ncard_add_le` in `EdgesIn.lean`), and the
+(`edgesIn_inter` + `edgesIn_ncard_add_le` in `EdgesIn.lean`), the
 tight-subset lattice closure (`IsTightOn` + `IsTightOn.union_inter`
-in `Sparsity.lean`) are complete.
+in `Sparsity.lean`), the sparsity-squeeze helper
+(`IsSparse.isTightOn_of_le` in `Sparsity.lean`), and the per-pair
+tight-blocker witness (`IsLaman.typeII_reverse_blocker` in
+`Henneberg.lean`) are complete.
 
-The next session attempts the **Henneberg blocker proof** —
-`IsLaman.exists_typeI_or_typeII_reverse` in `Henneberg.lean`. Read
-Whiteley §3.1 or Jordán §3.1 first. The case-split structure
-(3 / 2 / 1 non-adjacent pairs among `v`'s neighbors) is sketched
-under *Milestone 1* above. The degree-2 branch reuses
-`typeI_reverse_isLaman` + the existing `typeI_iso_of_two_neighbors`
-already in `Henneberg.lean`; the degree-3 branch is the blocker case
-analysis. All the edge-arithmetic inputs (`edgesIn_ncard_add_le`,
-`IsTightOn.union_inter`) are in place — the blocker proof now reduces
-to a graph-theoretic argument: assume each non-adjacent pair `(x, y)`
-of `v`'s neighbors blocks (yields a tight `S_{x,y} ⊆ V \ {v}`
-containing `{x, y}`); combine the `S_{x,y}`'s via `IsTightOn.union_inter`
-to force a tight set containing two or three of `{a, b, c}`; that
-tight set plus `v` overshoots `G`'s sparsity, contradiction.
+The next session writes the **case-split argument** —
+`IsLaman.exists_typeI_or_typeII_reverse` in `Henneberg.lean`. All
+edge-arithmetic inputs are in place. The remaining work is a pure
+graph-theory contradiction:
 
-Likely first concrete commit: the **per-pair tight-blocker witness**
-that says "if `G_{xy} := (G - v) + edge(x, y)` is not Laman, then
-there exists a `(2, 3)`-tight `S ⊆ V \ {v}` with `{x, y} ⊆ S` in `G`".
-That's a one-sparsity-violation argument with no case-split. The
-case-split builds on top of it.
+1. Pick `v` of degree 2 or 3 via `IsLaman.exists_two_le_degree_le_three`.
+2. Degree 2: reuse `typeI_reverse_isLaman` + `typeI_iso_of_two_neighbors`.
+3. Degree 3: with neighbors `{a, b, c}`, suppose for contradiction
+   that *every* non-adjacent pair blocks. By
+   `IsLaman.exists_nonadj_among_three_neighbors`, at least one pair is
+   non-adjacent. For each non-adjacent pair `(x, y) ∈ {(a,b), (a,c),
+   (b,c)}`, invoke `IsLaman.typeII_reverse_blocker` to produce a tight
+   `S_{x,y} ⊆ V \ {v}` with `{x, y} ⊆ S_{x,y}` in `G`. Combine the
+   `S_{x,y}`'s via `IsTightOn.union_inter` to force a tight set `T`
+   containing two or three of `{a, b, c}`. Then `T ∪ {v}` overshoots
+   `G`'s sparsity (each neighbor of `v` inside `T` adds an edge but
+   only one vertex), contradiction. Sub-cases split on how many of
+   the three pairs are non-adjacent (3 / 2 / 1).
 
-Milestones 1 and 2 are independent — if the blocker proof stalls,
+Likely first concrete commit inside the case-split: the **3
+non-adjacent pairs** sub-case (cleanest — all three witnesses
+available, `IsTightOn.union_inter` applies twice to merge to
+`{a, b, c} ⊆ T`). The 2- and 1-pair cases require care with
+asymmetry; sketch them after the 3-pair case lands.
+
+Milestones 1 and 2 are independent — if the case-split proof stalls,
 milestone 2 (Type I rigidity preservation in `Henneberg.lean`, which
 will also need to import `Framework.lean` for the first time) is a
 clean parallel target. Milestone 3 (induction) is ready once

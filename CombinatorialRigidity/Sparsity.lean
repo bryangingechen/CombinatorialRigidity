@@ -40,6 +40,10 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
 * `SimpleGraph.IsTight.not_isSparse_of_lt` — proper supergraph of a tight graph is not sparse.
 * `SimpleGraph.IsSparse.iso`, `SimpleGraph.IsTight.iso` — sparsity and tightness are
   preserved under graph isomorphism.
+* `SimpleGraph.IsSparse.isTightOn_of_le` — in a `(k, ℓ)`-sparse graph, a Finset whose
+  edge count meets the sparsity bound from below is exactly tight. The "squeeze" used by
+  the Phase 5 typeII-reverse blocker to extract a tight set from a sparsity violation
+  on a candidate graph.
 * `SimpleGraph.IsTightOn.union_inter` — tight subsets are closed under union and
   intersection in a `(k, ℓ)`-sparse graph (subject to the standard `ℓ ≤ k * #(s ∩ t)`
   size proviso). The tight-set lattice closure that the Phase 5 Henneberg-blocker
@@ -185,6 +189,18 @@ theorem IsTight.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
     exact Nat.card_congr φ.mapEdgeSet.symm
   have hV : Nat.card W = Nat.card V := Nat.card_congr φ.toEquiv.symm
   grind only [h.2]
+
+/-- **Squeeze: lower bound forces tight.** In a `(k, ℓ)`-sparse graph, if a Finset `s`
+attains the sparsity upper bound from below, it must be exactly `(k, ℓ)`-tight. Used by
+the Phase 5 typeII-reverse blocker to convert a sparsity violation on a candidate graph
+into a tight set in `G`. -/
+theorem IsSparse.isTightOn_of_le {G : SimpleGraph V} {k ℓ : ℕ}
+    (hG : G.IsSparse k ℓ) {s : Finset V} (hs : ℓ ≤ k * s.card)
+    (h_le : k * s.card ≤ (G.edgesIn ↑s).ncard + ℓ) :
+    G.IsTightOn k ℓ s := by
+  unfold IsTightOn
+  have := hG s hs
+  omega
 
 /-! ### The tight-subset lattice
 

@@ -138,6 +138,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
   which Sparsity does not currently import.
 - **Status:** wontfix (intrinsic to omega).
 
+### [wontfix] `omega` treats `set`-aliased terms as opaque atoms
+- **Where it bit:** `IsLaman.typeII_reverse_blocker` in `Henneberg.lean`
+  (Phase 5 milestone 1, typeII blocker).
+- **Friction:** the proof opens `set bridge := s(xs, ys)` and then
+  defines `h_diff : (G'.edgeSet \ {bridge}).ncard + 1 = G'.edgeSet.ncard`
+  from `Set.ncard_diff_singleton_add_one hbridge_in_G'`. Separately,
+  `typeII_edgeSet_ncard` produces `h_typeII_count` mentioning
+  `(G'.edgeSet \ {s(xs, ys)}).ncard` (the upstream lemma doesn't know
+  about the alias). The two `ncard` terms are *definitionally* equal,
+  but `omega` sees them as distinct atoms and can't bridge `h_diff`
+  with `h_typeII_count` to derive `G'.edgeSet.ncard + 3 = …`.
+- **Proposed fix:** none upstream. Workaround: explicit
+  `rw [← hbridge_def] at h_typeII_count` (or `rw [hbridge_def] at
+  h_diff`) to fold the literal expression back into the alias before
+  invoking omega. The fix is one line once the cause is understood.
+  Same pattern applies to `grind` and any tactic that uses syntactic
+  atoms — it's a general consequence of `set name := expr` introducing
+  a fresh local constant without globally substituting `expr` in
+  hypotheses produced by *later* tactic calls.
+- **Status:** wontfix (intrinsic to omega/grind's atomic-variable
+  model; the `set` tactic's substitution scope is bounded by current
+  goals and hypotheses, not future ones).
+
 ### [wontfix] `nlinarith` over ℕ struggles with quadratic bounds
 - **Where it bit:** `top_fin_two_isGenericallyRigid` in `Framework.lean`,
   closing the arithmetic step `4 * d + 2 ≤ (d + 1) * (d + 2)` (over ℕ).
