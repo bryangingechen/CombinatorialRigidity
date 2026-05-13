@@ -17,25 +17,35 @@ hand-off document: read it first when picking up the project.
 ## Directory layout
 
 ```
-Archive/CombinatorialRigidity/
-├── ROADMAP.md         this file — must-read every session
-├── DESIGN.md          rationale for cross-cutting design choices
-├── TACTICS.md         tactical reference: grind, ncard, mirror rule
-├── notes/             per-phase work logs + cross-cutting logs
-│   ├── PhaseN.md      lemma checklist + decisions + hand-off for Phase N
-│   ├── FRICTION.md    long-running API/tactic friction log
-│   └── PERFORMANCE.md build-time + profiling notes — read before a perf pass
-├── Mathlib/           mirror for upstream-eligible lemmas (see DESIGN.md)
-│   └── …/             each file mirrors its eventual upstream path
-├── EdgesIn.lean       Phase 1 — `edgesIn` selector
-├── Sparsity.lean      Phase 1 — `IsSparse`, `IsTight`
-├── Laman.lean         Phase 1+2 — `IsLaman` and downstream
-├── Henneberg.lean     Phase 3 — `typeI`, `typeII` and downstream
-├── Framework.lean     Phase 4 — frameworks, rigidity map
-├── HennebergRigidity.lean  Phase 5 milestone 2 — per-move rigidity preservation
-├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
-└── …                  later phases get their own files
+<repo root>/
+├── ROADMAP.md           this file — must-read every session
+├── DESIGN.md            rationale for cross-cutting design choices
+├── TACTICS.md           tactical reference: grind, ncard, mirror rule
+├── notes/               per-phase work logs + cross-cutting logs
+│   ├── PhaseN.md        lemma checklist + decisions + hand-off for Phase N
+│   ├── FRICTION.md      long-running API/tactic friction log
+│   └── PERFORMANCE.md   build-time + profiling notes — read before a perf pass
+├── CombinatorialRigidity.lean   top-level entry point (imports LamanTheorem)
+├── CombinatorialRigidity/       all Lean sources live here
+│   ├── Mathlib/         mirror for upstream-eligible lemmas (see DESIGN.md)
+│   │   └── …/           each file mirrors its eventual upstream path
+│   ├── EdgesIn.lean     Phase 1 — `edgesIn` selector
+│   ├── Sparsity.lean    Phase 1 — `IsSparse`, `IsTight`
+│   ├── Laman.lean       Phase 1+2 — `IsLaman` and downstream
+│   ├── Henneberg.lean   Phase 3 — `typeI`, `typeII` and downstream
+│   ├── Framework.lean   Phase 4 — frameworks, rigidity map
+│   ├── HennebergRigidity.lean  Phase 5 milestone 2 — per-move rigidity preservation
+│   ├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
+│   └── …                later phases get their own files
+├── lakefile.toml        Lake build config; depends on mathlib4
+├── lean-toolchain       pinned Lean version (matches mathlib4)
+└── lake-manifest.json   resolved dependency revisions
 ```
+
+The project was previously developed at `Archive/CombinatorialRigidity/` inside
+the mathlib4 tree and lifted to this standalone repository; references to
+`Archive/CombinatorialRigidity/<path>` in older commit messages and docs map
+to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 
 ## Status
 

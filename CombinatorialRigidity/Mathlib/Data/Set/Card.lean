@@ -9,7 +9,7 @@ import Mathlib.Data.Set.Card
 # Upstream candidates: small `Set.ncard` lemmas
 
 The Lean namespace is the upstream one (`Set`), so promotion to mathlib is a
-copy-paste. See `Archive/CombinatorialRigidity/DESIGN.md` "Mirror directory".
+copy-paste. See `DESIGN.md` "Mirror directory".
 
 ## Contents (target file: `Mathlib/Data/Set/Card.lean`)
 

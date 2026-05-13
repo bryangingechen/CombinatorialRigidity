@@ -19,7 +19,7 @@ positivity witness — three extra tokens at every call site.
 
 The Lean namespace is the upstream one (`Finset`), so promotion to mathlib is
 a copy-paste alongside `Finset.card_eraseNone_of_mem`. See
-`Archive/CombinatorialRigidity/DESIGN.md` "Mirror directory".
+`DESIGN.md` "Mirror directory".
 
 ## Contents (target file: `Mathlib/Data/Finset/Option.lean`)
 

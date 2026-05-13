@@ -8,7 +8,7 @@ import Mathlib.Data.Finset.Card
 /-!
 # Mirror file: `Mathlib/Data/Finset/Card.lean`
 
-Upstream-eligible lemmas about `Finset.card`. See `Archive/CombinatorialRigidity/DESIGN.md`
+Upstream-eligible lemmas about `Finset.card`. See `DESIGN.md`
 *Mirror directory* and `notes/FRICTION.md` *Mirrored* for the project convention.
 -/
 

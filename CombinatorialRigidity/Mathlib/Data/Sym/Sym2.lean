@@ -35,7 +35,7 @@ this project.
 
 The Lean namespace is the upstream one (`Sym2`), so promotion to mathlib is a
 copy-paste alongside `Sym2.mem_map` / `Sym2.coe_map`. See
-`Archive/CombinatorialRigidity/DESIGN.md` "Mirror directory".
+`DESIGN.md` "Mirror directory".
 
 ## Contents (target file: `Mathlib/Data/Sym/Sym2.lean`)
 

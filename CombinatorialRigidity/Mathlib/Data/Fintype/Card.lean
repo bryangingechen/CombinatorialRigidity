@@ -9,13 +9,13 @@ import Mathlib.Data.Fintype.Card
 # Upstream candidate: cardinality of the complement of a singleton finset
 
 Companion of `Finset.coe_compl_singleton` in
-`Archive/CombinatorialRigidity/Mathlib/Data/Finset/BooleanAlgebra.lean`. The
+`CombinatorialRigidity/Mathlib/Data/Finset/BooleanAlgebra.lean`. The
 `card` form requires `Fintype α`, so it lands next to `Finset.card_compl`
 in `Mathlib/Data/Fintype/Card.lean`.
 
 The Lean namespace is the upstream one (`Finset`), not the project's, so
 promotion is a copy-paste alongside `Finset.card_compl`. See
-`Archive/CombinatorialRigidity/DESIGN.md` "Mirror directory".
+`DESIGN.md` "Mirror directory".
 
 ## Contents (target file: `Mathlib/Data/Fintype/Card.lean`)
 

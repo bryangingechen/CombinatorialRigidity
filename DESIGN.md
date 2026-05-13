@@ -232,12 +232,12 @@ mathlib proper (because it's about `SimpleGraph`, `Sym2`, `Set.ncard`,
 etc., and is not specific to rigidity), we put it under
 
 ```
-Archive/CombinatorialRigidity/Mathlib/<exact mathlib path>
+CombinatorialRigidity/Mathlib/<exact mathlib path>
 ```
 
 For example, a missing lemma about `SimpleGraph.edgeSet` that would
 naturally live in `Mathlib/Combinatorics/SimpleGraph/Basic.lean` goes
-into `Archive/CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/Basic.lean`.
+into `CombinatorialRigidity/Mathlib/Combinatorics/SimpleGraph/Basic.lean`.
 
 The mirror keeps each candidate lemma in the file it would land in
 upstream, so promotion to mathlib is a copy-paste with the file's
@@ -250,7 +250,7 @@ contents are upstream candidates and which mathlib path they target.
 The directory is created lazily — don't pre-populate it. See
 `notes/FRICTION.md` "Mirrored" for the per-lemma rationale and the
 authoritative list of paths currently in use; the running tree
-under `Archive/CombinatorialRigidity/Mathlib/` is the
+under `CombinatorialRigidity/Mathlib/` is the
 ground truth.
 
 ---

@@ -330,7 +330,7 @@ Concretely:
   alongside it.
 - File path mirrors the upstream path exactly: a future PR is then
   copy-paste.
-- The directory `Archive/CombinatorialRigidity/Mathlib/` is created
+- The directory `CombinatorialRigidity/Mathlib/` is created
   lazily; don't pre-populate.
 - Each mirrored lemma also gets a `[mirrored]` entry in
   `notes/FRICTION.md` with its mirror-file path.

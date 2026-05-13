@@ -17,7 +17,7 @@ needs.
 
 The Lean namespace is the upstream one (`SimpleGraph`), not the project's, so
 promotion to mathlib is a copy-paste alongside the existing `card_*_eq_*`
-lemmas. See `Archive/CombinatorialRigidity/DESIGN.md` "Mirror directory".
+lemmas. See `DESIGN.md` "Mirror directory".
 
 ## Contents (target file: `Mathlib/Combinatorics/SimpleGraph/Finite.lean`)
 

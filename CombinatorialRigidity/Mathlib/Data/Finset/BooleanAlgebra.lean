@@ -14,11 +14,11 @@ lemma.
 
 Companion `card_compl_singleton` (which needs `Fintype α`) lives in
 `Mathlib/Data/Fintype/Card.lean` (mirrored at
-`Archive/CombinatorialRigidity/Mathlib/Data/Fintype/Card.lean`).
+`CombinatorialRigidity/Mathlib/Data/Fintype/Card.lean`).
 
 The Lean namespace is the upstream one (`Finset`), not the project's, so
 promotion is a copy-paste alongside `Finset.coe_compl`. See
-`Archive/CombinatorialRigidity/DESIGN.md` "Mirror directory".
+`DESIGN.md` "Mirror directory".
 
 ## Contents (target file: `Mathlib/Data/Finset/BooleanAlgebra.lean`)
 
