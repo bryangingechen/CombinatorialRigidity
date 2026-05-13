@@ -1,0 +1,153 @@
+\section{Laman graphs}
+\label{sec:laman}
+
+We now specialize the $(k,\ell)$-sparsity API to $(k, \ell) = (2, 3)$, the
+case relevant to generic rigidity in the plane. The lemmas of this section
+feed the Henneberg induction in \cref{sec:intro}: a base case ($K_2$ is
+Laman) and a degree lever (every Laman graph on $n \ge 3$ vertices has a
+vertex of degree 2 or 3).
+
+\subsection{Definition and isomorphism transport}
+
+\begin{definition}[Laman graph]
+  \label{def:isLaman}
+  \lean{SimpleGraph.IsLaman}
+  \leanok
+  \uses{def:isTight}
+  A finite simple graph $G$ is \emph{Laman} if it is $(2,3)$-tight, i.e.\
+  $G$ is $(2,3)$-sparse and the global edge count attains
+  \[
+    |E(G)| + 3 \;=\; 2\,|V|.
+  \]
+\end{definition}
+
+\begin{lemma}[Laman is preserved by isomorphism]
+  \label{lem:isLaman-iso}
+  \lean{SimpleGraph.IsLaman.iso}
+  \leanok
+  \uses{def:isLaman, lem:isTight-iso}
+  If $\varphi : G \simeq H$ is a graph isomorphism and $G$ is Laman, so is $H$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Specialization of \cref{lem:isTight-iso} at $(k, \ell) = (2, 3)$.
+\end{proof}
+
+\subsection{The base case: \texorpdfstring{$K_2$}{K2}}
+
+The Henneberg induction in \cref{sec:intro} bottoms out at the complete
+graph on two vertices. We record both halves of that fact: $K_2$ is
+Laman, and conversely every Laman graph on exactly two vertices equals
+$K_2$.
+
+\begin{theorem}[$K_2$ is Laman]
+  \label{thm:top-fin-two-isLaman}
+  \lean{SimpleGraph.top_fin_two_isLaman}
+  \leanok
+  \uses{def:isLaman, lem:edgesIn-corners}
+  The complete graph $\top : \mathrm{SimpleGraph}\,(\mathrm{Fin}\,2)$ is Laman.
+\end{theorem}
+\begin{proof}
+  \leanok
+  $K_2$ has exactly one edge, matching $2 \cdot 2 - 3 = 1$, so the global
+  edge identity holds. For sparsity, the only finite vertex set with
+  $3 \le 2\,|s|$ is $s = V$, where $|\edgesIn{V}| = 1 = 2 \cdot 2 - 3$
+  by \cref{lem:edgesIn-corners}.
+\end{proof}
+
+\begin{lemma}[Laman graphs on two vertices are $K_2$]
+  \label{lem:isLaman-eq-top-of-card-eq-two}
+  \lean{SimpleGraph.IsLaman.eq_top_of_card_eq_two}
+  \leanok
+  \uses{def:isLaman}
+  If $G$ is Laman and $|V| = 2$, then $G = \top$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Tightness gives $|E(G)| = 1$, which already matches the unique edge
+  set of $\top$. Since $G \le \top$, equality of cardinalities forces
+  $E(G) = E(\top)$, hence $G = \top$.
+\end{proof}
+
+\subsection{Degree bounds}
+\label{sec:laman-degrees}
+
+The two facts of this subsection are the Henneberg-induction lever:
+in a Laman graph on $n \ge 3$ vertices, every vertex has degree at
+least 2 (so we cannot reverse a Type~I move at a vertex of degree~1),
+and some vertex has degree at most 3 (so we can always reverse a
+Type~I or Type~II move).
+
+\begin{lemma}[Minimum degree]
+  \label{lem:isLaman-two-le-degree}
+  \lean{SimpleGraph.IsLaman.two_le_degree}
+  \leanok
+  \uses{def:isLaman, lem:ncard-edgesIn-compl-singleton}
+  Let $G$ be Laman on a finite vertex type with $|V| \ge 3$. Then every
+  vertex $v \in V$ has $G$-degree at least $2$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Apply sparsity at the vertex set $\{v\}^c$ (cardinality $|V| - 1$):
+  $|\edgesIn{\{v\}^c}| + 3 \le 2(|V| - 1)$. The
+  vertex-deletion partition (\cref{lem:ncard-edgesIn-compl-singleton})
+  rewrites the left-hand count as $|E(G)| - \deg_G(v)$. Substituting the
+  tightness identity $|E(G)| + 3 = 2|V|$ collapses to
+  $\deg_G(v) \ge 2$.
+\end{proof}
+
+\begin{lemma}[A vertex of degree at most 3]
+  \label{lem:isLaman-exists-degree-le-three}
+  \lean{SimpleGraph.IsLaman.exists_degree_le_three}
+  \leanok
+  \uses{def:isLaman}
+  Every Laman graph $G$ on a finite vertex type has a vertex of $G$-degree
+  at most $3$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By the handshake identity $\sum_v \deg_G(v) = 2|E(G)|$, and tightness
+  rewrites this as $2(2|V| - 3) < 4|V|$. If every vertex had degree
+  at least 4, the sum would be at least $4|V|$, a contradiction.
+\end{proof}
+
+\begin{lemma}[A vertex of degree 2 or 3]
+  \label{lem:isLaman-exists-two-le-degree-le-three}
+  \lean{SimpleGraph.IsLaman.exists_two_le_degree_le_three}
+  \leanok
+  \uses{lem:isLaman-two-le-degree, lem:isLaman-exists-degree-le-three}
+  Let $G$ be Laman on a finite vertex type with $|V| \ge 3$. Then there
+  exists $v \in V$ with $2 \le \deg_G(v) \le 3$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Pick a vertex of degree at most 3 by
+  \cref{lem:isLaman-exists-degree-le-three} and apply
+  \cref{lem:isLaman-two-le-degree} to lower-bound its degree by 2.
+\end{proof}
+
+\subsection{A non-adjacent pair among three neighbors}
+
+The next lemma is the combinatorial input for the Type~II Henneberg
+move in \cref{sec:intro}: given a degree-3 vertex with neighbors $a, b,
+c$, we will need to pick the two of them that are not yet adjacent in
+order to add a bridging edge. It lives in this chapter because the
+proof depends only on the Laman counts at the 4-set $\{v, a, b, c\}$.
+
+\begin{lemma}[Non-adjacent pair among three neighbors]
+  \label{lem:isLaman-exists-nonadj-among-three-neighbors}
+  \lean{SimpleGraph.IsLaman.exists_nonadj_among_three_neighbors}
+  \leanok
+  \uses{def:isLaman}
+  Let $G$ be Laman on a finite vertex type and let $v \in V$ have three
+  pairwise distinct neighbors $a, b, c$. Then at least one of the pairs
+  $\{a, b\}$, $\{a, c\}$, $\{b, c\}$ is non-adjacent in $G$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Suppose all three pairs were adjacent. Then the 4-set $\{v, a, b, c\}$
+  would span the 6 edges
+  $\{v\text{-}a, v\text{-}b, v\text{-}c, a\text{-}b, a\text{-}c, b\text{-}c\}$,
+  so $|\edgesIn{\{v, a, b, c\}}| \ge 6$. But $(2,3)$-sparsity at the
+  4-set gives $|\edgesIn{\{v, a, b, c\}}| \le 2 \cdot 4 - 3 = 5$.
+\end{proof}
