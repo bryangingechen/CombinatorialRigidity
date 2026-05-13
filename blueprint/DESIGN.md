@@ -205,7 +205,7 @@ infrastructure — leave it out.
 
 ## Open questions
 
-These are decisions to revisit, ideally before Phase 6 kicks off:
+A decision to revisit when Phase 6 kicks off:
 
 1. **Does `notes/Phase6.md` shrink under forward mode?** If the
    blueprint chapter is the authoritative todo list and dep-graph,
@@ -214,40 +214,68 @@ These are decisions to revisit, ideally before Phase 6 kicks off:
    *Current state* / *Decisions made* / *Blockers* / *Hand-off*,
    with a pointer to the blueprint chapter as the lemma index.
    Parallel checklists rot.
-2. **How do we mark "blocked / in progress" inside the blueprint?**
-   leanblueprint supports `\notready` for entries that are
-   intentionally unfinished. Carleson doesn't use it (absence of
-   `\leanok` carries the signal). For Phase 6, we may want to
-   distinguish "not yet attempted" (default red) from "attempted,
-   blocked on subgoal X" (could use `\notready` or an inline note).
-   Decide on first contact with the actual blocker.
-3. **Should `chapter/intro.tex` reference the dep-graph?** Currently
-   the intro points to the API docs and the ROADMAP; once forward
-   mode is active for Phase 6, it should probably also point readers
-   at the dep-graph as the place to see in-progress work.
-4. **At what point does a backfilled chapter get re-touched?** If a
-   later phase adds infrastructure to a Phase-N file (cf. Phase 5
-   additions to `EdgesIn.lean`), and that infrastructure clears the
-   inclusion bar, the Phase-N chapter should be updated. Current
-   answer: do it in the phase whose work adds the lemma; treat it as
-   part of that phase's blueprint chapter authoring. Revisit if this
-   produces awkward cross-phase edits.
-5. **One chapter file or two for Phases 5/6?** Laman's theorem is a
-   single biconditional but the two halves have very different
-   authoring profiles — Phase 5 is backfill (all-green when done),
-   Phase 6 is forward mode (initially mostly red). The current
-   scaffold uses one file `chapter/laman-theorem.tex`. The
-   alternative is `chapter/laman-implies.tex` (Phase 5, ⇐) and
-   `chapter/laman-converse.tex` (Phase 6, ⇒). Two files keep the
-   two workflow states visually separate in `main.tex` and let
-   Phase 6 ship before Phase 5 is fully drafted. One file keeps the
-   biconditional structure together. Decide at Phase 5 kickoff.
+
+## Resolved questions
+
+These were open at the start of the Phase 1–5 backfill series; the
+backfill produced enough evidence to close them.
+
+- **How do we mark "blocked / in progress" inside the blueprint?**
+  Resolved: follow carleson — absence of `\leanok` carries the signal,
+  no `\notready` needed. The Phase 5 backfill stated the two Phase 6
+  results (`IsGenericallyRigid.exists_isLaman_le` and the composed
+  iff) with `\lean{...}` (the Lean declaration exists, body is
+  `sorry`) but \emph{no} `\leanok` on either the theorem environment
+  or the proof. The dep-graph correctly colors them red; the
+  encoding is a clean fit for "stated in Lean, proof not yet
+  formalized." Revisit only if Phase 6 wants to distinguish "not
+  attempted" from "attempted, blocked on a specific subgoal" —
+  `\notready` is then an option, but the case has not arisen yet.
+- **Should `chapter/intro.tex` reference the dep-graph?** Resolved:
+  yes. With Phase 6's red nodes now visible after the Phase 5
+  backfill landed, the intro points readers at
+  `dep_graph_document.html` as the in-progress / not-yet-formalized
+  view. Update applied alongside this close-out.
+- **At what point does a backfilled chapter get re-touched?**
+  Resolved by experience: Phase 5's backfill commit interleaved 7
+  new entries into the existing `frameworks.tex` and 4 new entries
+  into the existing `henneberg.tex`, ordered topically (by
+  subsection) rather than appended at end. The reader does not care
+  about phase origin; the chapter reads as a coherent document.
+  Convention: chapter additions live in the same commit as the
+  phase that introduces them, interleaved into the existing
+  topical structure of the chapter. Documented in `CLAUDE.md`
+  under *Adding a new chapter*.
+- **One chapter file or two for Phases 5/6?** Resolved: one file.
+  `chapter/laman-theorem.tex` was created during the Phase 5
+  backfill and carries both the Phase 5 `⇐` direction (fully
+  formalized) and the Phase 6 `⇒` direction (stated as a
+  sorry-blocked theorem, rendered red in the dep-graph). The
+  biconditional structure stays together; the workflow-state
+  difference is signalled by the per-entry `\leanok` (or its
+  absence) rather than by file boundaries. The alternative
+  one-file-per-direction split is not adopted; revisit only if
+  Phase 6 turns out to need substantial restructuring of the
+  combined chapter.
 
 ## Project-history note
 
 Phases 1–5 of the Lean were complete before the blueprint scaffold
 was added (May 2026). The Phase 1 chapter (`chapter/sparsity.tex`)
-was authored in backfill mode and is the canonical example for that
-mode. Phase 6 is the natural place to try forward mode; the
-recommendation above is based on reasoning, not experience yet, and
-should be revised after the first Phase 6 forward-mode session lands.
+was authored first as the canonical backfill-mode example; the
+Phase 2–5 chapters were backfilled in a series of one-commit-per-phase
+sessions later that month. Phase 5's backfill was the largest:
+it touched four chapter files (extending `frameworks.tex` and
+`henneberg.tex` with new entries, and creating
+`henneberg-rigidity.tex` and `laman-theorem.tex` from scratch),
+landing 20 new entries plus two Phase 6 sorry-blocked statements.
+
+After the Phase 1–5 backfill series, the blueprint is in sync
+with the Lean: every Lean declaration that meets the selectivity
+bar in `blueprint/CLAUDE.md` has a corresponding green entry, and
+the two intentionally-red entries are exactly the Phase 6
+deliverable. Phase 6 is the natural place to try forward mode;
+the recommendation under *Recommendation for Phase 6* is based on
+the backfill experience and the Phase 6 plan in `notes/Phase5.md`'s
+hand-off section, and should be revised after the first Phase 6
+forward-mode session lands.

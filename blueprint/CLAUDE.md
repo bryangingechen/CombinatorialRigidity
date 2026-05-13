@@ -69,6 +69,31 @@ and other leanblueprint projects. Key rules:
   to leanok-only stubs. The dep-graph is the formal map; the prose
   is the human map.
 
+#### Sorry-blocked statements
+
+A theorem whose Lean declaration exists but whose body is `sorry`
+(typical for forward-mode work, or for downstream phases stated in
+an upstream chapter — cf. `IsGenericallyRigid.exists_isLaman_le` in
+`LamanTheorem.lean`, stated for Phase 6) is encoded as:
+
+```latex
+\begin{theorem}[...]
+  \label{thm:my-theorem}
+  \lean{Namespace.my_theorem}   % the Lean declaration exists
+  \uses{...}                    % dep edges to its statement-level deps
+  Statement.
+\end{theorem}
+\begin{proof}
+  Sketch of the intended proof, in prose.
+\end{proof}
+```
+
+i.e. `\lean{...}` is kept (the symbol resolves; the API doc page
+exists), but `\leanok` is omitted on **both** the theorem environment
+and the proof. The dep-graph then colors the node red. Carleson's
+convention is to rely on this absence-of-`\leanok` signal alone; no
+`\notready` macro is needed.
+
 ### Label prefixes
 
 Use semantic prefixes consistently:
@@ -286,6 +311,31 @@ the same recipe applies, but:
   dependency structure — they're the point of forward mode.
 - The dep-graph will be mostly red on first build; that's the
   to-do list.
+
+### Extending an existing chapter (later phase adds to an earlier file)
+
+When a later phase adds infrastructure to a file whose chapter
+already exists — e.g. Phase 5 added iso transport, openness, and
+the `IsGenericallyRigidInj` predicate to `Framework.lean`, and added
+the reverse-decomposition theorem to `Henneberg.lean` — the new
+entries land in the **same commit** as the phase backfill that
+introduces them, and they are **interleaved topically** into the
+existing chapter rather than appended at the end.
+
+Concretely, the Phase 5 backfill (commit `3e8d0f4`):
+- Inserted the `IsGenericallyRigidInj` definition into
+  `frameworks.tex`'s existing *Definitions* subsection.
+- Added new *Transport along graph isomorphism* and *Openness of
+  infinitesimal rigidity* subsections to `frameworks.tex`.
+- Inserted `typeI_reverse_isLaman` and `typeI_isLaman_iff` into
+  `henneberg.tex`'s existing *Preservation of the Laman property*
+  subsection, then added a new *Decomposition: Laman half*
+  subsection alongside the existing *iso half*.
+
+The reader navigating the chapter should see entries in the natural
+mathematical order, not in the order phases happened to land them.
+Phase-history information belongs in commit messages, not in chapter
+structure.
 
 ### Macros
 
