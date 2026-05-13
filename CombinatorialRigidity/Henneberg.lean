@@ -100,7 +100,7 @@ variable {G : SimpleGraph V} {a b c u v : V}
 
 @[simp] lemma typeI_adj_none_some : (typeI G a b).Adj none (some v) ↔ v = a ∨ v = b := Iff.rfl
 
-@[simp] lemma typeI_not_adj_none_none : ¬ (typeI G a b).Adj none none := id
+lemma typeI_not_adj_none_none : ¬ (typeI G a b).Adj none none := id
 
 @[simp] lemma typeII_adj_some_some :
     (typeII G a b c).Adj (some u) (some v) ↔ G.Adj u v ∧ s(u, v) ≠ s(a, b) := Iff.rfl
@@ -111,7 +111,7 @@ variable {G : SimpleGraph V} {a b c u v : V}
 @[simp] lemma typeII_adj_none_some :
     (typeII G a b c).Adj none (some v) ↔ v = a ∨ v = b ∨ v = c := Iff.rfl
 
-@[simp] lemma typeII_not_adj_none_none : ¬ (typeII G a b c).Adj none none := id
+lemma typeII_not_adj_none_none : ¬ (typeII G a b c).Adj none none := id
 
 instance instDecidableTypeIAdj [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj]
     (a b : V) : DecidableRel (typeI G a b).Adj := fun u v =>

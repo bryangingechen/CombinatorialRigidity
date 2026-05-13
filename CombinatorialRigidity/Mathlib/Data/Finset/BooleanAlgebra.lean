@@ -29,7 +29,7 @@ namespace Finset
 
 variable {α : Type*} [Fintype α] [DecidableEq α]
 
-@[simp, norm_cast]
+@[norm_cast]
 theorem coe_compl_singleton (a : α) :
     ((({a} : Finset α)ᶜ : Finset α) : Set α) = ({a} : Set α)ᶜ := by
   rw [coe_compl, coe_singleton]

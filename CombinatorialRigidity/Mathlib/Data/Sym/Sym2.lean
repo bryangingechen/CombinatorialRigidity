@@ -108,7 +108,6 @@ lemma map_some_injective : Function.Injective (Sym2.map (some : α → Option α
 
 /-- `none` is never an endpoint of `Sym2.map some e`: the image of any edge `e : Sym2 α`
 under `some : α → Option α` has both endpoints in the `some`-branch of `Option α`. -/
-@[simp]
 lemma notMem_map_some (e : Sym2 α) :
     none ∉ Sym2.map (some : α → Option α) e := by
   rw [Sym2.mem_map]

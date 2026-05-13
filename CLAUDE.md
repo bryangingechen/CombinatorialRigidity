@@ -59,11 +59,27 @@ fix it.
 - When you add a lemma, put it in the file that introduces the
   relevant *definition*, not the file that first uses it. (Lemma about
   `IsSparse` → `Sparsity.lean`, even if first invoked in `Laman.lean`.)
-- Run `lake build <leftmost active file>` before committing.
+- **Before committing, run both `lake build` and `lake lint`.** Both
+  are CI gates (see `.github/workflows/push_pr.yml`); a failing lint
+  blocks merge as surely as a failing build. The full-project linter
+  (`runLinter`) catches `simpNF` and `unusedArguments` issues that the
+  compile-time `mathlibStandardSet` linter misses, so don't skip it.
+  Newly-added `@[simp]` attributes are the usual offenders — if the
+  LHS is reducible by existing simp lemmas, drop the `@[simp]` (the
+  lemma stays callable by name) rather than working around with
+  `@[nolint simpNF]`. Reserve `@[nolint unusedArguments]` for
+  instance args that are semantically required by the definition's
+  contract but not consumed by elaboration; always add a one-line
+  comment justifying it (see `IsInfinitesimallyRigid` in
+  `Framework.lean` for the canonical example).
 - Match git author identity to existing commits when committing on
   the user's behalf — the repo has `bryangingechen@gmail.com` baked
   in. Pass `git -c user.name=… -c user.email=… commit …`; never write
   to git config.
+- **Pushing to `master` triggers a Pages deploy** (blueprint, docs,
+  upstreaming dashboard via `leanprover-community/docgen-action`). PRs
+  run the same build but skip the deploy step. There is no separate
+  "deploy when ready" knob — every green master push publishes.
 
 ### Ending — friction review (mandatory)
 

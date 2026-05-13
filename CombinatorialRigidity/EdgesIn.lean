@@ -108,7 +108,7 @@ Edges of `G` whose both endpoints differ from `v` are exactly the edges of `G` t
 incident to `v`. This bridges `edgesIn` and `incidenceSet`, and is the keystone for vertex-
 deletion edge-count arguments (Phase 2). -/
 
-@[simp] lemma mem_edgesIn_compl_singleton {v : V} {e : Sym2 V} :
+lemma mem_edgesIn_compl_singleton {v : V} {e : Sym2 V} :
     e ∈ G.edgesIn ({v}ᶜ : Set V) ↔ e ∈ G.edgeSet ∧ v ∉ e := by
   rw [mem_edgesIn, Set.subset_compl_singleton_iff]
   rfl

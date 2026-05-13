@@ -143,6 +143,11 @@ When this kernel is *equal* to the trivial motions, the framework is rigid in
 the textbook sense; the inequality formulation is the always-correct upper
 bound and is what fits naturally into the rank-nullity argument used
 downstream. -/
+-- The `[Fintype V]` instance is semantically required (otherwise `Module.finrank`
+-- of the kernel is vacuously `0` and the definition is meaningless), but is not
+-- consumed by elaboration of the body. The instance acts as a contract guard so
+-- callers cannot accidentally apply this with infinite `V`.
+@[nolint unusedArguments]
 def IsInfinitesimallyRigid [Fintype V] (G : SimpleGraph V) (p : Framework V d) : Prop :=
   Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) ≤ d * (d + 1) / 2
 

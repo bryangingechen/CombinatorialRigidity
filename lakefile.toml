@@ -1,6 +1,7 @@
 name = "CombinatorialRigidity"
 version = "0.1.0"
 defaultTargets = ["CombinatorialRigidity"]
+lintDriver = "batteries/runLinter"
 
 [leanOptions]
 # Pretty-prints `fun a ↦ b`
