@@ -3,9 +3,6 @@
 # github-actions group with N updates") so we don't get a stream of
 # one-off bumps. Lean / lake dependencies are handled by hopscotch and
 # do not flow through Dependabot.
-#
-# leanprover-community/* actions are explicitly ignored because we
-# intentionally track their @main / @v1 refs (see .github/workflows/).
 
 version: 2
 
@@ -19,5 +16,3 @@ updates:
       github-actions:
         patterns:
           - "*"
-    ignore:
-      - dependency-name: "leanprover-community/*"

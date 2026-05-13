@@ -70,7 +70,4 @@ ever renamed or moved to a different owner, update both files together.
   `master`. Opens (or refreshes) a PR if the new commit builds; opens
   a tracking issue with the bisected breaking commit if not.
 - **`.github/dependabot.yml`** — monthly grouped PR bumping any
-  third-party GitHub Actions used in `.github/workflows/` (currently
-  `actions/checkout`, `leanprover/lean-action`,
-  `jlumbroso/free-disk-space`). `leanprover-community/*` actions are
-  intentionally ignored — we track those on `@main` / `@v1`.
+  GitHub Actions used in `.github/workflows/`.
