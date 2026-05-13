@@ -43,6 +43,8 @@
 % Combinatorial-rigidity-specific notation.
 \DeclareMathOperator{\edges}{edges}
 \DeclareMathOperator{\vertices}{V}
-\newcommand{\edgesIn}[1]{E_G[#1]}      % edges of G induced on a vertex set
+% Edges of G (default) or another graph (optional first arg) induced on a vertex set.
+% Use \edgesIn{S} for E_G[S] or \edgesIn[H]{S} for E_H[S].
+\newcommand{\edgesIn}[2][G]{E_{#1}[#2]}
 \newcommand{\rk}{\operatorname{rk}}     % rank (rigidity matroid)
 \newcommand{\KK}[1]{K_{#1}}             % complete graph on #1

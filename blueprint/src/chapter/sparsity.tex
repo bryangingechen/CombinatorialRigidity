@@ -1,57 +1,373 @@
-\section{Sparsity}
+\section{Edges in a vertex set}
+\label{sec:edgesIn}
+
+Throughout, let $G$ be a simple graph on a vertex type $V$ and let
+$S, T \subseteq V$. Almost every combinatorial argument in this
+project is driven by a single selector --- the set of edges of $G$
+whose endpoints both lie in $S$ --- so we begin by collecting its
+basic properties.
+
+\subsection{Definition and basic API}
+
+\begin{definition}[Edges induced on a vertex set]
+  \label{def:edgesIn}
+  \lean{SimpleGraph.edgesIn}
+  \leanok
+  Define
+  \[
+    \edgesIn{S} \;:=\; \{\,e \in E(G) : e \subseteq S\,\}.
+  \]
+  In Lean, $\edgesIn{S}$ is implemented as
+  \texttt{G.edgeSet $\cap$ s.sym2}, where \texttt{s.sym2} is the set of
+  unordered pairs supported on $s$.
+\end{definition}
+
+\begin{lemma}[Monotonicity]
+  \label{lem:edgesIn-mono}
+  \lean{SimpleGraph.edgesIn_mono}
+  \leanok
+  \uses{def:edgesIn}
+  If $S \subseteq T$ then $\edgesIn{S} \subseteq \edgesIn{T}$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  An edge $e \subseteq S$ also satisfies $e \subseteq T$.
+\end{proof}
+
+\begin{lemma}[Corner cases]
+  \label{lem:edgesIn-corners}
+  \lean{SimpleGraph.edgesIn_univ, SimpleGraph.edgesIn_empty, SimpleGraph.edgesIn_singleton, SimpleGraph.edgesIn_bot}
+  \leanok
+  \uses{def:edgesIn}
+  $\edgesIn{V} = E(G)$, $\edgesIn{\emptyset} = \emptyset$, and
+  $\edgesIn{\{v\}} = \emptyset$ for every $v \in V$. Moreover, the empty
+  graph has no edges in any vertex set: $\edgesIn[\bot]{S} = \emptyset$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The first two are immediate from the definition. The singleton case
+  uses that $G$ is a simple graph, hence loopless: no edge has both
+  endpoints equal to a fixed $v$.
+\end{proof}
+
+\subsection{Vertex deletion}
+
+The next two lemmas describe what happens to $\edgesIn{S}$ when $S$ is
+obtained by removing a single vertex $v$. Together they yield the
+edge-count identity that feeds the minimum-degree argument for Laman
+graphs in subsequent chapters.
+
+Write $I_G(v) := \{\,e \in E(G) : v \in e\,\}$ for the set of edges of
+$G$ incident to $v$ (mathlib's \texttt{SimpleGraph.incidenceSet}).
+
+\begin{lemma}[Edges missing a vertex]
+  \label{lem:mem-edgesIn-compl-singleton}
+  \lean{SimpleGraph.mem_edgesIn_compl_singleton, SimpleGraph.edgesIn_compl_singleton}
+  \leanok
+  \uses{def:edgesIn}
+  For every $v \in V$,
+  \[
+    \edgesIn{\{v\}^{c}} \;=\; E(G) \,\setminus\, I_G(v).
+  \]
+  Equivalently, an edge $e$ avoids $v$ iff $e \in E(G)$ and $v \notin e$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  An edge has both endpoints in $\{v\}^c$ exactly when neither
+  endpoint equals $v$, i.e.\ when $v \notin e$. The set form follows by
+  taking the complement of the incidence set in $E(G)$.
+\end{proof}
+
+\begin{lemma}[Vertex-deletion partition of edges]
+  \label{lem:ncard-edgesIn-compl-singleton}
+  \lean{SimpleGraph.ncard_edgesIn_compl_singleton_add_ncard_incidenceSet}
+  \leanok
+  \uses{lem:mem-edgesIn-compl-singleton}
+  If $V$ is finite then, for every $v \in V$,
+  \[
+    \bigl|\edgesIn{\{v\}^{c}}\bigr| \;+\; |I_G(v)| \;=\; |E(G)|.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  By \cref{lem:mem-edgesIn-compl-singleton} the edge set partitions
+  as $\edgesIn{\{v\}^c} \sqcup I_G(v)$, so the cardinalities add.
+\end{proof}
+
+\subsection{Modularity: intersection, union, and supermodular counts}
+
+The selector $\edgesIn{\cdot}$ distributes exactly over intersection,
+but only sub-distributes over union: a crossing edge with one endpoint
+in $S \setminus T$ and the other in $T \setminus S$ lies in
+$\edgesIn{S \cup T}$ but in neither $\edgesIn{S}$ nor $\edgesIn{T}$. The
+cardinality consequence is the supermodular bound below, which feeds
+the tight-subset lattice in \cref{thm:isTightOn-union-inter}.
+
+\begin{lemma}[Distribution over intersection]
+  \label{lem:edgesIn-inter}
+  \lean{SimpleGraph.edgesIn_inter}
+  \leanok
+  \uses{def:edgesIn}
+  $\edgesIn{S \cap T} = \edgesIn{S} \cap \edgesIn{T}$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  An edge has both endpoints in $S \cap T$ iff both endpoints lie in
+  $S$ \emph{and} both endpoints lie in $T$.
+\end{proof}
+
+\begin{lemma}[Supermodularity of edge counts]
+  \label{lem:edgesIn-ncard-add-le}
+  \lean{SimpleGraph.edgesIn_ncard_add_le}
+  \leanok
+  \uses{lem:edgesIn-mono, lem:edgesIn-inter}
+  If $V$ is finite, then for all $S, T \subseteq V$,
+  \[
+    \bigl|\edgesIn{S}\bigr| + \bigl|\edgesIn{T}\bigr|
+    \;\le\;
+    \bigl|\edgesIn{S \cup T}\bigr| + \bigl|\edgesIn{S \cap T}\bigr|.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  By monotonicity (\cref{lem:edgesIn-mono}) we have
+  $\edgesIn{S} \cup \edgesIn{T} \subseteq \edgesIn{S \cup T}$, while
+  $\edgesIn{S} \cap \edgesIn{T} = \edgesIn{S \cap T}$ by
+  \cref{lem:edgesIn-inter}. Substituting these into the inclusion--%
+  exclusion identity
+  $|A| + |B| = |A \cup B| + |A \cap B|$ for $A = \edgesIn{S}$ and
+  $B = \edgesIn{T}$ gives
+  $|\edgesIn{S}| + |\edgesIn{T}| = |\edgesIn{S} \cup \edgesIn{T}|
+    + |\edgesIn{S \cap T}|
+    \le |\edgesIn{S \cup T}| + |\edgesIn{S \cap T}|$.
+\end{proof}
+
+\section{\texorpdfstring{$(k,\ell)$}{(k,l)}-sparsity and \texorpdfstring{$(k,\ell)$}{(k,l)}-tightness}
 \label{sec:sparsity}
 
-Throughout, $G$ denotes a simple graph on a vertex type $V$. For a finite
-set $S \subseteq V$, write $E_G[S]$ for the set of edges of $G$ whose both
-endpoints lie in $S$. In Lean this is
-\href{https://bryangingechen.github.io/CombinatorialRigidity/docs/find/?pattern=SimpleGraph.edgesIn}{\texttt{SimpleGraph.edgesIn}}.
+We now state the sparsity condition and develop its API. Throughout
+this section, $k$ and $\ell$ are non-negative integers (think
+$k = 2$, $\ell = 3$ for the Laman case in \cref{sec:intro}).
 
-\begin{definition}
+\subsection{Definitions}
+
+\begin{definition}[$(k,\ell)$-sparse]
   \label{def:isSparse}
   \lean{SimpleGraph.IsSparse}
   \leanok
-  Fix non-negative integers $k, \ell$. We say $G$ is \emph{$(k,\ell)$-sparse}
-  if for every finite $S \subseteq V$ with $|S| \ge 2$ one has
+  \uses{def:edgesIn}
+  $G$ is \emph{$(k,\ell)$-sparse} if for every finite $s \subseteq V$
+  with $\ell \le k\,|s|$ one has
   \[
-    |E_G[S]| \;\le\; k\,|S| - \ell.
+    \bigl|\edgesIn{s}\bigr| + \ell \;\le\; k\,|s|.
   \]
+  The hypothesis $\ell \le k\,|s|$ ensures the bound is non-negative;
+  phrasing the conclusion additively keeps the formalization free of
+  $\mathbb{N}$-subtraction.
 \end{definition}
 
-\begin{definition}
+\begin{definition}[$(k,\ell)$-tight]
   \label{def:isTight}
   \lean{SimpleGraph.IsTight}
   \leanok
   \uses{def:isSparse}
-  $G$ is \emph{$(k,\ell)$-tight} if it is $(k,\ell)$-sparse and, on the full
-  finite vertex set $V$, the bound is met with equality:
-  $|E(G)| = k\,|V| - \ell$.
+  $G$ is \emph{$(k,\ell)$-tight} if it is $(k,\ell)$-sparse and, on the
+  full finite vertex type, the global bound is met with equality:
+  \[
+    |E(G)| + \ell \;=\; k\,|V|.
+  \]
 \end{definition}
 
-\begin{lemma}
-  \label{lem:isTight-isSparse}
-  \lean{SimpleGraph.IsTight.isSparse}
+\begin{definition}[Tight subset]
+  \label{def:isTightOn}
+  \lean{SimpleGraph.IsTightOn}
   \leanok
-  \uses{def:isSparse,def:isTight}
-  Every $(k,\ell)$-tight graph is $(k,\ell)$-sparse.
-\end{lemma}
+  \uses{def:edgesIn}
+  A finite set $s \subseteq V$ is \emph{$(k,\ell)$-tight in $G$} if it
+  attains the sparsity bound:
+  \[
+    \bigl|\edgesIn{s}\bigr| + \ell \;=\; k\,|s|.
+  \]
+  This is the local counterpart of \cref{def:isTight} and underlies
+  the tight-subset lattice (\cref{thm:isTightOn-union-inter}).
+\end{definition}
 
+\subsection{Basic API and the global edge bound}
+
+\begin{lemma}[Subgraphs of sparse graphs are sparse]
+  \label{lem:isSparse-mono-left}
+  \lean{SimpleGraph.IsSparse.mono_left}
+  \leanok
+  \uses{def:isSparse}
+  If $G \le G'$ and $G'$ is $(k,\ell)$-sparse, so is $G$.
+\end{lemma}
 \begin{proof}
   \leanok
-  Immediate from the definition.
+  For any vertex set $s$, every edge of $G$ supported on $s$ is also
+  an edge of $G'$ supported on $s$, so
+  $|\edgesIn[G]{s}| \le |\edgesIn[G']{s}|$; the sparsity bound for
+  $G'$ then bounds the count for $G$.
 \end{proof}
 
-\begin{lemma}
+\begin{lemma}[Global edge bound]
   \label{lem:isSparse-edgeSet-bound}
   \lean{SimpleGraph.IsSparse.edgeSet_ncard_add_le}
   \leanok
   \uses{def:isSparse}
-  If $V$ is finite and $G$ is $(k,\ell)$-sparse, then
-  $|E(G)| + \ell \le k\,|V|$ provided $|V| \ge 2$ (and the trivial
-  cases $|V| \le 1$ behave as expected).
+  If $V$ is finite, $G$ is $(k,\ell)$-sparse, and $\ell \le k\,|V|$,
+  then
+  \[
+    |E(G)| + \ell \;\le\; k\,|V|.
+  \]
 \end{lemma}
+\begin{proof}
+  \leanok
+  Apply the sparsity bound at $s = V$ and use $\edgesIn{V} = E(G)$
+  (\cref{lem:edgesIn-corners}).
+\end{proof}
 
-% Add further sparsity lemmas here as they get blueprint-ified. Use
-%   \lean{Fully.Qualified.Name} \leanok
-% to link a finished Lean declaration, and
-%   \uses{label1,label2}
-% to declare logical dependencies for the dep-graph view.
+\begin{lemma}[A proper extension of a tight graph is not sparse]
+  \label{lem:isTight-not-isSparse-of-lt}
+  \lean{SimpleGraph.IsTight.not_isSparse_of_lt}
+  \leanok
+  \uses{def:isTight, lem:isSparse-edgeSet-bound}
+  If $V$ is finite, $G$ is $(k,\ell)$-tight, and $G < H$, then $H$ is
+  not $(k,\ell)$-sparse.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By tightness $|E(G)| + \ell = k\,|V|$. Since $G < H$ we have
+  $|E(G)| < |E(H)|$, and so $|E(H)| + \ell > k\,|V|$. By
+  \cref{lem:isSparse-edgeSet-bound} this rules out
+  $(k,\ell)$-sparsity of $H$.
+\end{proof}
+
+\subsection{Transport along graph isomorphism}
+
+Both sparsity and tightness are isomorphism invariants. The transport
+is mediated by \texttt{Sym2.map} on edges and by the underlying
+\texttt{Equiv} on vertices.
+
+\begin{lemma}[$\edgesIn{\cdot}$ transports along isomorphisms]
+  \label{lem:iso-image-edgesIn}
+  \lean{SimpleGraph.Iso.image_edgesIn}
+  \leanok
+  \uses{def:edgesIn}
+  Let $\varphi : G \simeq H$ be a graph isomorphism and $s \subseteq V$.
+  Then
+  $\operatorname{Sym2.map} \varphi \,[\, \edgesIn[G]{s}\,]
+   = \edgesIn[H]{\varphi(s)}$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  An unordered pair $\{u, v\}$ in the image set comes from a pair
+  $\{p, q\} \subseteq s$ in $\edgesIn[G]{s}$ with $u = \varphi(p)$ and
+  $v = \varphi(q)$. The Lean proof unfolds the
+  \texttt{Sym2.map}-image membership and uses
+  \texttt{Iso.map\_adj\_iff} to transport adjacency. Both directions
+  are by case analysis on the symmetric pair's two representatives.
+\end{proof}
+
+\begin{lemma}[Sparsity is preserved by isomorphism]
+  \label{lem:isSparse-iso}
+  \lean{SimpleGraph.IsSparse.iso}
+  \leanok
+  \uses{def:isSparse, lem:iso-image-edgesIn}
+  If $\varphi : G \simeq H$ and $G$ is $(k,\ell)$-sparse, then so is $H$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  For $s \subseteq W$ a finite set on the codomain, transport along
+  $\varphi^{-1}$ to a set $s' \subseteq V$ of the same cardinality.
+  By \cref{lem:iso-image-edgesIn},
+  $|\edgesIn[H]{s}| = |\edgesIn[G]{s'}|$. Apply $(k,\ell)$-sparsity of
+  $G$ at $s'$.
+\end{proof}
+
+\begin{lemma}[Tightness is preserved by isomorphism]
+  \label{lem:isTight-iso}
+  \lean{SimpleGraph.IsTight.iso}
+  \leanok
+  \uses{def:isTight, lem:isSparse-iso}
+  If $\varphi : G \simeq H$ and $G$ is $(k,\ell)$-tight, then so is $H$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Sparsity transports by \cref{lem:isSparse-iso}. For the global edge
+  identity, $\varphi$ induces bijections $E(G) \cong E(H)$ and
+  $V \cong W$ (the latter via \texttt{Equiv}), so
+  $|E(H)| = |E(G)|$ and $|W| = |V|$. Substituting these into the
+  tightness equation for $G$ yields the one for $H$.
+\end{proof}
+
+\subsection{The tight-subset lattice}
+
+The squeeze lemma below is a converse to the sparsity inequality
+within a single sparse graph: a vertex set that hits the bound from
+below must hit it on the nose, hence is tight. It is the
+edge-counting input used in Phase~5 to extract a tight set from a
+sparsity violation on a candidate graph.
+
+\begin{lemma}[Squeeze]
+  \label{lem:isSparse-isTightOn-of-le}
+  \lean{SimpleGraph.IsSparse.isTightOn_of_le}
+  \leanok
+  \uses{def:isSparse, def:isTightOn}
+  Let $G$ be $(k,\ell)$-sparse, $s \subseteq V$ finite with
+  $\ell \le k\,|s|$, and suppose
+  \[
+    k\,|s| \;\le\; \bigl|\edgesIn{s}\bigr| + \ell.
+  \]
+  Then $s$ is $(k,\ell)$-tight in $G$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The sparsity bound at $s$ gives the reverse inequality
+  $|\edgesIn{s}| + \ell \le k\,|s|$. The two together force equality.
+\end{proof}
+
+The main structural fact of this section is that, inside a fixed
+$(k,\ell)$-sparse graph, the family of tight subsets is closed under
+unions and intersections, modulo a standard size proviso on the
+intersection.
+
+\begin{theorem}[Tight subsets are closed under union and intersection]
+  \label{thm:isTightOn-union-inter}
+  \lean{SimpleGraph.IsTightOn.union_inter}
+  \leanok
+  \uses{def:isSparse, def:isTightOn, lem:edgesIn-ncard-add-le}
+  Let $V$ be finite and $G$ be $(k,\ell)$-sparse. Let $s, t \subseteq V$
+  be finite vertex sets, both $(k,\ell)$-tight in $G$, and suppose
+  $\ell \le k\,|s \cap t|$. Then both $s \cup t$ and $s \cap t$ are
+  $(k,\ell)$-tight in $G$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Sparsity applied to $s \cap t$ (using the size hypothesis) and to
+  $s \cup t$ (whose cardinality is at least $|s \cap t|$) gives
+  \begin{align*}
+    \bigl|\edgesIn{s \cap t}\bigr| + \ell &\le k\,|s \cap t|, \\
+    \bigl|\edgesIn{s \cup t}\bigr| + \ell &\le k\,|s \cup t|.
+  \end{align*}
+  Adding these and using
+  $|s \cup t| + |s \cap t| = |s| + |t|$
+  yields
+  \[
+    \bigl|\edgesIn{s \cup t}\bigr|
+      + \bigl|\edgesIn{s \cap t}\bigr|
+      + 2\ell
+    \;\le\; k\,|s| + k\,|t|.
+  \]
+  On the other hand, supermodularity
+  (\cref{lem:edgesIn-ncard-add-le}) gives
+  \[
+    \bigl|\edgesIn{s}\bigr| + \bigl|\edgesIn{t}\bigr|
+    \;\le\;
+    \bigl|\edgesIn{s \cup t}\bigr|
+      + \bigl|\edgesIn{s \cap t}\bigr|,
+  \]
+  and tightness of $s$ and $t$ rewrites the left side as
+  $k\,|s| + k\,|t| - 2\ell$. Chaining the two inequalities forces
+  every inequality to be an equality, i.e.\ both $s \cup t$ and
+  $s \cap t$ are tight.
+\end{proof}

@@ -23,8 +23,11 @@ def bp(ctx):
     cwd = os.getcwd()
     os.chdir(BP_DIR)
     os.makedirs("print", exist_ok=True)
-    run('cd src && xelatex -output-directory=../print print.tex')
-    run('cd src && xelatex -output-directory=../print print.tex')
+    # latexmk auto-iterates xelatex to convergence per src/latexmkrc,
+    # avoiding the "Label(s) may have changed. Rerun..." trap when two
+    # fixed passes aren't enough (e.g. when math-heavy section titles
+    # shift the TOC across passes).
+    run('cd src && latexmk')
     os.chdir(cwd)
 
 
