@@ -19,5 +19,13 @@ warn.sorry = false
 name = "mathlib"
 git = "https://github.com/leanprover-community/mathlib4.git"
 
+# `checkdecls` provides `lake exe checkdecls`, which the docgen-action
+# invokes to verify that every \lean{...} reference in the blueprint
+# points to a real declaration in our Lean sources.
+[[require]]
+name = "checkdecls"
+git = "https://github.com/PatrickMassot/checkdecls.git"
+rev = "master"
+
 [[lean_lib]]
 name = "CombinatorialRigidity"
