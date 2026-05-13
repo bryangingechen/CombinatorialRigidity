@@ -1,0 +1,232 @@
+\section{Rigidity preservation under Henneberg moves (dimension 2)}
+\label{sec:henneberg-rigidity}
+
+This section is the dimension-2 analytical complement of
+\cref{sec:henneberg}: both Henneberg moves preserve injective generic
+rigidity (\cref{def:isGenericallyRigidInj}) when applied to a
+graph that is itself injectively generically rigid in dimension 2.
+Combined with the strengthened decomposition
+\cref{thm:isLaman-exists-typeI-or-typeII-reverse} and the $K_2$ base
+case \cref{thm:top-fin-two-isGenericallyRigidInj}, this is the inductive
+step that proves the $\Leftarrow$ direction of Laman's theorem in
+\cref{sec:laman-theorem}.
+
+The preservation proofs are rank--nullity arguments on the rigidity
+map. For each move, one constructs a kernel-to-kernel linear map via
+restriction $x \mapsto x \circ \mathrm{some}$, shows it lands in
+$\ker (G.\mathrm{RigidityMap}\,p)$, and shows it is \emph{injective}
+because the new edges through $\mathrm{none}$ pin down the value of
+$x$ at $\mathrm{none}$. Injectivity transports the dimension bound
+from the underlying-graph kernel to the move-graph kernel. The
+specific dimension-2 inputs are:
+
+\begin{itemize}
+  \item Type~I: place the fresh vertex at a point $q$ for which
+    $q - p_a$ and $q - p_b$ are linearly independent (``off the line
+    through $p_a$ and $p_b$''), so that the two new edges pin
+    $x(\mathrm{none})$.
+  \item Type~II: place $q$ \emph{on} the line through $p_a$ and $p_b$
+    (so the two new edges in that direction together recover the
+    deleted-edge constraint), with $q - p_a$ and $q - p_c$ linearly
+    independent (so the third new edge still pins $x(\mathrm{none})$).
+    This forces the input triple $(p_a, p_b, p_c)$ to be
+    non-collinear; the unconditional Type~II wrapper produces such a
+    placement by perturbation, via openness of infinitesimal rigidity
+    (\cref{lem:isInfinitesimallyRigid-eventually}).
+\end{itemize}
+
+\subsection{Type~I rigidity preservation}
+
+\begin{theorem}[Type~I rank-nullity core]
+  \label{thm:typeI-isInfinitesimallyRigid-extend}
+  \lean{SimpleGraph.Henneberg.typeI_isInfinitesimallyRigid_extend}
+  \leanok
+  \uses{def:typeI, def:isInfinitesimallyRigid, lem:rigidityMap-apply}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and
+  $p : V \to \R^{2}$ a framework that is infinitesimally rigid for
+  $G$. Let $a, b \in V$ and $q \in \R^{2}$, and suppose
+  $q - p_a$ and $q - p_b$ are linearly independent. Then the extended
+  placement $\hat p : \mathrm{Option}\,V \to \R^{2}$ with
+  $\hat p(\mathrm{none}) = q$ and $\hat p(\mathrm{some}\,u) = p_u$ is
+  infinitesimally rigid for $\mathrm{typeI}\,G\,a\,b$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Define $\rho : \ker ((\mathrm{typeI}\,G\,a\,b).\mathrm{RigidityMap}\,\hat p)
+  \to_{\R} \ker (G.\mathrm{RigidityMap}\,p)$ by
+  $\rho(x) = x \circ \mathrm{some}$. The map lands in the right kernel
+  because every $G$-edge $\{u, v\}$ lifts to
+  $\{\mathrm{some}\,u, \mathrm{some}\,v\}$ in
+  $\mathrm{typeI}\,G\,a\,b$ with the same rigidity-row formula.
+
+  $\rho$ is injective: if $\rho(x) = \rho(y)$ then $x$ and $y$ agree
+  on $\mathrm{some}\,[V]$. The two new-edge constraints at
+  $\{\mathrm{none}, \mathrm{some}\,a\}$ and
+  $\{\mathrm{none}, \mathrm{some}\,b\}$ say
+  \[
+    \langle q - p_a,\, x(\mathrm{none}) - x(\mathrm{some}\,a) \rangle = 0
+    \quad\text{and}\quad
+    \langle q - p_b,\, x(\mathrm{none}) - x(\mathrm{some}\,b) \rangle = 0
+  \]
+  (and the same for $y$); subtracting gives that
+  $x(\mathrm{none}) - y(\mathrm{none})$ is orthogonal to both
+  $q - p_a$ and $q - p_b$. In $\R^{2}$ a vector orthogonal to two
+  linearly independent vectors is zero, so $x = y$.
+
+  Injectivity transports the kernel-dimension bound: $\dim
+  \ker((\mathrm{typeI}\,G\,a\,b).\mathrm{RigidityMap}\,\hat p) \le
+  \dim \ker(G.\mathrm{RigidityMap}\,p) \le 3$.
+\end{proof}
+
+\begin{theorem}[Type~I preserves injective generic rigidity in dim 2]
+  \label{thm:typeI-isGenericallyRigidInj-two}
+  \lean{SimpleGraph.Henneberg.typeI_isGenericallyRigidInj_two}
+  \leanok
+  \uses{def:typeI, def:isGenericallyRigidInj,
+    thm:typeI-isInfinitesimallyRigid-extend}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$ injectively
+  generically rigid in dimension $2$, and $a \ne b$ in $V$. Then
+  $\mathrm{typeI}\,G\,a\,b$ is injectively generically rigid in
+  dimension $2$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Pick an injective rigid placement $p : V \to \R^{2}$ for $G$.
+  Then $p_a \ne p_b$ (by injectivity and $a \ne b$), so the line
+  through $p_a$ and $p_b$ is well-defined. The set of $q \in \R^{2}$
+  that either lie on this line or coincide with some $p_v$ is a
+  union of a $1$-parameter family and a finite set, hence has empty
+  interior; pick $q$ off both. The pair $(q - p_a, q - p_b)$ is
+  linearly independent (because $q$ is off the line), so
+  \cref{thm:typeI-isInfinitesimallyRigid-extend} applies and gives
+  rigidity of the extended placement. Injectivity of the extension
+  follows from injectivity of $p$ and $q \notin p[V]$.
+\end{proof}
+
+\subsection{Type~II rigidity preservation}
+
+The Type~II proof has the same shape as Type~I, but the rigidity-map
+extension uses the new vertex placement $q$ in a more delicate way.
+Place $q$ on the line through $p_a$ and $p_b$, distinct from both.
+Then the two new edges $\{\mathrm{none}, \mathrm{some}\,a\}$ and
+$\{\mathrm{none}, \mathrm{some}\,b\}$ have rigidity-rows along the
+common direction $p_b - p_a$; combining them recovers the
+constraint of the \emph{deleted} edge $\{a, b\}$. The third new edge
+$\{\mathrm{none}, \mathrm{some}\,c\}$ then pins
+$x(\mathrm{none})$, provided $q - p_c$ is independent of the line
+direction --- equivalently, $(p_a, p_b, p_c)$ are non-collinear.
+
+\begin{theorem}[Type~II rank-nullity core, non-collinear case]
+  \label{thm:typeII-isInfinitesimallyRigid-extend}
+  \lean{SimpleGraph.Henneberg.typeII_isInfinitesimallyRigid_extend}
+  \leanok
+  \uses{def:typeII, def:isInfinitesimallyRigid, lem:rigidityMap-apply}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and
+  $p : V \to \R^{2}$ infinitesimally rigid for $G$. Let
+  $a, b, c \in V$ and $q \in \R^{2}$, and suppose:
+  \begin{enumerate}
+    \item $q - p_a = \alpha \cdot (p_b - p_a)$ for some
+      $\alpha \in \R$ with $\alpha \ne 0, 1$ (i.e.\ $q$ lies on the
+      line through $p_a, p_b$, distinct from both); and
+    \item $q - p_a$ and $q - p_c$ are linearly independent.
+  \end{enumerate}
+  Then the extended placement
+  $\hat p : \mathrm{Option}\,V \to \R^{2}$
+  with $\hat p(\mathrm{none}) = q$ and
+  $\hat p(\mathrm{some}\,u) = p_u$ is infinitesimally rigid for
+  $\mathrm{typeII}\,G\,a\,b\,c$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  As in \cref{thm:typeI-isInfinitesimallyRigid-extend}, define
+  $\rho : \ker ((\mathrm{typeII}\,G\,a\,b\,c).\mathrm{RigidityMap}\,\hat p)
+   \to_{\R} \ker (G.\mathrm{RigidityMap}\,p)$
+  by $\rho(x) = x \circ \mathrm{some}$. The map lands in the right
+  kernel: every $G$-edge $\{u, v\}$ either lifts to a
+  $\mathrm{typeII}$-edge (when $\{u, v\} \ne \{a, b\}$) with the same
+  formula, or is the deleted edge $\{a, b\}$, whose constraint is
+  recovered from the two new edges
+  $\{\mathrm{none}, \mathrm{some}\,a\}$ and
+  $\{\mathrm{none}, \mathrm{some}\,b\}$: both rigidity-rows lie along
+  the direction $p_b - p_a$ thanks to hypothesis (i), and a suitable
+  combination reproduces the $\{a, b\}$-row in $G$.
+
+  Injectivity of $\rho$ uses hypothesis (ii): the third new edge at
+  $\{\mathrm{none}, \mathrm{some}\,c\}$ together with one of the
+  $a, b$ edges pins $x(\mathrm{none}) - y(\mathrm{none})$ against an
+  LI pair, forcing it to zero. Rank--nullity then transports the
+  bound as in \cref{thm:typeI-isInfinitesimallyRigid-extend}.
+\end{proof}
+
+\begin{theorem}[Type~II preserves rigidity, non-collinear case]
+  \label{thm:typeII-isGenericallyRigidInj-two-of-nonCollinear}
+  \lean{SimpleGraph.Henneberg.typeII_isGenericallyRigidInj_two_of_nonCollinear}
+  \leanok
+  \uses{def:typeII, def:isGenericallyRigidInj,
+    thm:typeII-isInfinitesimallyRigid-extend}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and
+  $p : V \to \R^{2}$ injective and infinitesimally rigid for $G$, with
+  $(p_b - p_a, p_c - p_a)$ linearly independent (non-collinear
+  triple). Let $a, b, c \in V$ with $a \ne b$. Then
+  $\mathrm{typeII}\,G\,a\,b\,c$ is injectively generically rigid in
+  dimension $2$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Pick $q$ on the line through $p_a, p_b$ distinct from both and off
+  $p[V]$ (a cofinite $\alpha$-set of points works). The
+  non-collinearity hypothesis on $(p_a, p_b, p_c)$ ensures
+  $q - p_a$ and $q - p_c$ are linearly independent. Apply
+  \cref{thm:typeII-isInfinitesimallyRigid-extend}; the
+  extended placement is rigid for $\mathrm{typeII}\,G\,a\,b\,c$ and
+  injective because $p$ is and $q \notin p[V]$.
+\end{proof}
+
+The non-collinearity hypothesis cannot be dropped in
+\cref{thm:typeII-isInfinitesimallyRigid-extend}: a collinear placement
+of $(p_a, p_b, p_c)$ admits a free 1-parameter family of perpendicular
+infinitesimal motions of the new vertex, and rigidity genuinely fails.
+However, openness of infinitesimal rigidity
+(\cref{lem:isInfinitesimallyRigid-eventually}) lets us \emph{perturb}
+any rigid injective placement to a nearby one with the non-collinearity
+property, by moving $p_c$ slightly off the line through $p_a, p_b$.
+The result is the unconditional Type~II preservation theorem below.
+
+\begin{theorem}[Type~II preserves injective generic rigidity in dim 2]
+  \label{thm:typeII-isGenericallyRigidInj-two}
+  \lean{SimpleGraph.Henneberg.typeII_isGenericallyRigidInj_two}
+  \leanok
+  \uses{def:typeII, def:isGenericallyRigidInj,
+    thm:typeII-isGenericallyRigidInj-two-of-nonCollinear,
+    lem:isInfinitesimallyRigid-eventually}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$ injectively
+  generically rigid in dimension $2$, and $a, b, c \in V$ pairwise
+  distinct. Then $\mathrm{typeII}\,G\,a\,b\,c$ is injectively
+  generically rigid in dimension $2$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Pick an injective rigid placement $p_0 : V \to \R^{2}$ for $G$.
+  If $(p_0(b) - p_0(a), p_0(c) - p_0(a))$ is already linearly
+  independent, apply
+  \cref{thm:typeII-isGenericallyRigidInj-two-of-nonCollinear} directly.
+
+  Otherwise the triple is collinear:
+  $p_0(c) - p_0(a) = \gamma^{-1} \cdot (p_0(b) - p_0(a))$
+  for some non-zero $\gamma$. Pick a direction $w \in \R^{2}$ with
+  $w$ not parallel to $p_0(b) - p_0(a)$, and consider the
+  one-parameter family of perturbed placements
+  $p_t(v) := p_0(v)$ for $v \ne c$ and
+  $p_t(c) := p_0(c) + t \cdot w$. The map $t \mapsto p_t$ is
+  continuous, $p_0$ is rigid, and rigidity is open in the placement
+  (\cref{lem:isInfinitesimallyRigid-eventually}), so the perturbed
+  placement remains rigid for $t$ in a neighborhood of $0$.
+  Injectivity is also open (each pair $(u, v)$ with $u \ne v$ stays
+  separated under continuous perturbation). For any $t \ne 0$ in this
+  open neighborhood, the perturbed direction
+  $p_t(c) - p_t(a) = \gamma^{-1} (p_0(b) - p_0(a)) + t \cdot w$ is no
+  longer in the span of $p_0(b) - p_0(a)$, so the non-collinearity
+  condition holds. Apply
+  \cref{thm:typeII-isGenericallyRigidInj-two-of-nonCollinear} with
+  this perturbed placement.
+\end{proof}

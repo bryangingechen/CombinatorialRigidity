@@ -124,6 +124,21 @@ boundary.
   for $G$.
 \end{definition}
 
+\begin{definition}[Generically rigid graph, injective form]
+  \label{def:isGenericallyRigidInj}
+  \lean{SimpleGraph.IsGenericallyRigidInj}
+  \leanok
+  \uses{def:isInfinitesimallyRigid}
+  A graph $G$ on finite $V$ is \emph{generically rigid with an
+  injective placement} in dimension $d$ if some framework
+  $p : V \to \R^{d}$ is both infinitesimally rigid for $G$ and
+  injective. This is strictly stronger than \cref{def:isGenericallyRigid};
+  the Henneberg induction in \cref{sec:laman-theorem} maintains the
+  injective placement at each step (the per-move preservation
+  arguments need $p_a \ne p_b$, which vanilla generic rigidity does
+  not supply) and weakens to plain generic rigidity at the end.
+\end{definition}
+
 \subsection{Rigidity-map API}
 
 \begin{lemma}[Kernel monotonicity]
@@ -197,6 +212,119 @@ preserves rigidity at any fixed placement.
   witness.
 \end{proof}
 
+\begin{lemma}[Injective generic rigidity is monotone]
+  \label{lem:isGenericallyRigidInj-mono}
+  \lean{SimpleGraph.IsGenericallyRigidInj.mono}
+  \leanok
+  \uses{def:isGenericallyRigidInj, lem:isInfinitesimallyRigid-mono}
+  If $G \le G'$ and $G$ is injectively generically rigid in dimension
+  $d$, then so is $G'$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  At the same placement: rigidity transports by
+  \cref{lem:isInfinitesimallyRigid-mono}, and injectivity is a property
+  of the placement alone.
+\end{proof}
+
+\subsection{Transport along graph isomorphism}
+\label{sec:rigidity-iso-transport}
+
+A graph isomorphism $\varphi : G \simeq H$ carries a rigid placement
+of $G$ to a rigid placement of $H$ by precomposition with the
+underlying vertex bijection. This lets the Henneberg induction
+(\cref{sec:laman-theorem}) work up to graph iso rather than on
+literal equalities.
+
+\begin{lemma}[Infinitesimal rigidity transports along graph iso]
+  \label{lem:isInfinitesimallyRigid-iso}
+  \lean{SimpleGraph.IsInfinitesimallyRigid.iso}
+  \leanok
+  \uses{def:isInfinitesimallyRigid}
+  Let $\varphi : G \simeq H$ be a graph isomorphism and $p$ a
+  framework of $G$. If $p$ is infinitesimally rigid for $G$ then
+  $p \circ \varphi^{-1}$ is infinitesimally rigid for $H$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Precomposition with $\varphi$ (resp.\ $\varphi^{-1}$) gives mutually
+  inverse $\R$-linear maps between the two kernels: on edges, the
+  rigidity-map entry at $\{u, v\}$ for $H$ equals the one at
+  $\{\varphi^{-1} u, \varphi^{-1} v\}$ for $G$ (the inner-product
+  formula is the same, and $\varphi$ preserves adjacency). The
+  resulting $\R$-linear equivalence has the same finite-dimensional
+  rank, so the kernel-dim bound for $G$ at $p$ transports to the
+  one for $H$ at $p \circ \varphi^{-1}$.
+\end{proof}
+
+\begin{lemma}[Generic rigidity transports along graph iso]
+  \label{lem:isGenericallyRigid-iso}
+  \lean{SimpleGraph.IsGenericallyRigid.iso}
+  \leanok
+  \uses{def:isGenericallyRigid, lem:isInfinitesimallyRigid-iso}
+  If $\varphi : G \simeq H$ and $G$ is generically rigid in dimension
+  $d$, then so is $H$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Transport the witness placement of $G$ via \cref{lem:isInfinitesimallyRigid-iso}.
+\end{proof}
+
+\begin{lemma}[Injective generic rigidity transports along graph iso]
+  \label{lem:isGenericallyRigidInj-iso}
+  \lean{SimpleGraph.IsGenericallyRigidInj.iso}
+  \leanok
+  \uses{def:isGenericallyRigidInj, lem:isInfinitesimallyRigid-iso}
+  If $\varphi : G \simeq H$ and $G$ is injectively generically rigid
+  in dimension $d$, then so is $H$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Transport via \cref{lem:isInfinitesimallyRigid-iso}; the new
+  placement $p \circ \varphi^{-1}$ is injective because $p$ is and
+  $\varphi^{-1}$ is a bijection.
+\end{proof}
+
+\subsection{Openness of infinitesimal rigidity}
+\label{sec:rigidity-openness}
+
+Infinitesimal rigidity is an \emph{open} condition on the placement:
+if $p_0$ is infinitesimally rigid then so is every placement in some
+neighborhood of $p_0$. This is the analytic input that lets us
+strengthen a known rigid placement to one with extra side conditions
+(e.g.\ a non-collinear triple) by perturbation, used in the Phase 5
+typeII rigidity-preservation argument
+(\cref{thm:typeII-isGenericallyRigidInj-two}).
+
+\begin{lemma}[Infinitesimal rigidity is an open condition on the placement]
+  \label{lem:isInfinitesimallyRigid-eventually}
+  \lean{SimpleGraph.IsInfinitesimallyRigid.eventually}
+  \leanok
+  \uses{def:isInfinitesimallyRigid, lem:rigidityMap-apply}
+  Let $V$ be finite. If $p_0 : V \to \R^{d}$ is infinitesimally rigid
+  for $G$, then there is a neighborhood of $p_0$ in the framework
+  space on which every placement is infinitesimally rigid for $G$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Set $r = \dim\,(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p_0))$ and
+  pick a basis of the range; lift each basis vector through
+  $\mathrm{RigidityMap}\,G\,p_0$ to preimages
+  $\xi_1, \dots, \xi_r \in \mathrm{Framework}\,V\,d$. The map
+  $p \mapsto \bigl(\mathrm{RigidityMap}\,G\,p\,(\xi_i)\bigr)_{i = 1}^{r}$
+  is continuous in $p$ (each entry expands to an inner product, jointly
+  continuous in $(p, \xi)$, with the $\xi_i$ fixed; cf.\
+  \cref{lem:rigidityMap-apply}), and at $p_0$ the values
+  $\mathrm{RigidityMap}\,G\,p_0\,(\xi_i)$ form a basis of the range,
+  hence are linearly independent. By openness of linear independence
+  in finite-dimensional normed spaces, this remains true on an open
+  neighborhood of $p_0$, giving
+  $r \le \dim\,(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p))$ for $p$
+  in that neighborhood. Rank--nullity at both $p_0$ and $p$ now bounds
+  the kernel dimension of $\mathrm{RigidityMap}\,G\,p$ by
+  $d(d+1)/2$.
+\end{proof}
+
 \subsection{The edge-count bound}
 
 \begin{theorem}[Edge-count bound for generically rigid graphs]
@@ -230,31 +358,40 @@ preserves rigidity at any fixed placement.
 
 \subsection{Worked example: \texorpdfstring{$K_2$}{K2} is generically rigid in every dimension}
 
+\begin{theorem}[$K_2$ is injectively generically rigid in every positive dimension]
+  \label{thm:top-fin-two-isGenericallyRigidInj}
+  \lean{SimpleGraph.top_fin_two_isGenericallyRigidInj}
+  \leanok
+  \uses{def:isGenericallyRigidInj, lem:framework-finrank,
+    lem:rigidityMap-finrank-range-le, lem:rigidityMap-apply}
+  For every $d \ge 1$, the complete graph on two vertices is
+  injectively generically rigid in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Take $p_0 = 0$ and $p_1 = e_0$ (the first standard basis vector);
+  the placement is injective ($p_0 \ne p_1$). The single-edge image
+  evaluates at the swap motion $p' = (e_0, 0)$ to
+  $\langle 0 - e_0,\, e_0 - 0 \rangle = -1 \ne 0$
+  (\cref{lem:rigidityMap-apply}), so the range has dimension at least
+  $1$. Rank--nullity (\cref{lem:framework-finrank}) then gives
+  $\dim\,(\ker) \le 2d - 1$, and the elementary inequality
+  $2d + 1 \le (d+1)(d+2)/2$ for $d \ge 0$ closes the
+  kernel-dimension bound to $d(d+1)/2$.
+\end{proof}
+
 \begin{theorem}[$K_2$ is generically rigid in every dimension]
   \label{thm:top-fin-two-isGenericallyRigid}
   \lean{SimpleGraph.top_fin_two_isGenericallyRigid}
   \leanok
-  \uses{def:isGenericallyRigid, lem:framework-finrank,
-    lem:rigidityMap-finrank-range-le, lem:rigidityMap-apply}
+  \uses{thm:top-fin-two-isGenericallyRigidInj}
   For every $d \in \N$, the complete graph on two vertices is
   generically rigid in dimension $d$.
 \end{theorem}
 \begin{proof}
   \leanok
-  Split on $d$:
-  \begin{itemize}
-    \item If $d = 0$, the framework space itself is $0$-dimensional,
-      so every placement has rigidity-map kernel of dimension $0$
-      and the bound $0 \le 0$ holds.
-    \item If $d \ge 1$, take $p_0 = 0$ and $p_1 = e_0$ (the first
-      standard basis vector). The single-edge image
-      $(\mathrm{RigidityMap}\,K_2\,p)(p')(\{0, 1\})
-        = \langle p_0 - p_1,\, p'_0 - p'_1 \rangle$
-      evaluates at $p' = (e_0, 0)$ to $-1 \ne 0$
-      (\cref{lem:rigidityMap-apply}), so the range has dimension at
-      least $1$. Rank--nullity (\cref{lem:framework-finrank}) gives
-      $2d - 1 \ge \dim\,(\ker)$, and the elementary inequality
-      $2d + 1 \le (d+1)(d+2)/2$ for $d \ge 0$ closes the
-      kernel-dimension bound to $d(d+1)/2$.
-  \end{itemize}
+  For $d \ge 1$, weaken \cref{thm:top-fin-two-isGenericallyRigidInj}
+  by forgetting injectivity. For $d = 0$ the framework space itself
+  is $0$-dimensional, so every placement has rigidity-map kernel of
+  dimension $0$ and the bound $0 \le 0$ holds.
 \end{proof}

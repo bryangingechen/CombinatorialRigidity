@@ -1,0 +1,142 @@
+\section{Laman's theorem}
+\label{sec:laman-theorem}
+
+For $n \ge 2$ vertices, a simple graph is generically rigid in the
+plane iff it contains a Laman spanning subgraph (a $(2, 3)$-tight
+subgraph on the same vertex set). The two directions land separately:
+
+\begin{itemize}
+  \item \emph{$\Leftarrow$ (every Laman graph is generically rigid in dim 2).}
+    A Henneberg induction on $|V|$. Base case $|V| = 2$: $K_2$ is
+    generically rigid (\cref{thm:top-fin-two-isGenericallyRigidInj}).
+    Inductive step: peel off a Type~I or Type~II move via
+    \cref{thm:isLaman-exists-typeI-or-typeII-reverse} and apply the
+    move-rigidity-preservation theorem
+    (\cref{thm:typeI-isGenericallyRigidInj-two} or
+    \cref{thm:typeII-isGenericallyRigidInj-two}). This is Phase~5; the
+    induction maintains the strong predicate
+    \emph{injectively} generically rigid
+    (\cref{def:isGenericallyRigidInj}), then weakens at the end.
+  \item \emph{$\Rightarrow$ (every generically rigid graph contains a
+    Laman spanning subgraph).} The Lov\'asz--Yemini direction, which
+    identifies the rigidity matroid in dim 2 with the
+    $(2, 3)$-count matroid. This is Phase~6 and not yet formalized.
+\end{itemize}
+
+\subsection{The \texorpdfstring{$d = 2$}{d=2} edge-count corollary}
+
+\begin{lemma}[Edge-count bound in dim 2]
+  \label{lem:isGenericallyRigid-card-mul-le-two}
+  \lean{SimpleGraph.IsGenericallyRigid.card_mul_le_two}
+  \leanok
+  \uses{thm:isGenericallyRigid-card-mul-le}
+  Let $V$ be finite. If $G$ is generically rigid in dimension $2$, then
+  \[
+    2 |V| \;\le\; |E(G)| + 3.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Specialize \cref{thm:isGenericallyRigid-card-mul-le} at $d = 2$.
+\end{proof}
+
+\subsection{The \texorpdfstring{$\Leftarrow$}{<=} direction}
+
+\begin{theorem}[Every Laman graph is generically rigid in dim 2]
+  \label{thm:isLaman-isGenericallyRigid-two}
+  \lean{SimpleGraph.IsLaman.isGenericallyRigid_two}
+  \leanok
+  \uses{def:isLaman, def:isGenericallyRigid, def:isGenericallyRigidInj,
+    thm:isLaman-exists-typeI-or-typeII-reverse,
+    thm:typeI-isGenericallyRigidInj-two,
+    thm:typeII-isGenericallyRigidInj-two,
+    thm:top-fin-two-isGenericallyRigidInj,
+    lem:isLaman-eq-top-of-card-eq-two,
+    lem:isGenericallyRigidInj-iso}
+  If $G$ is a Laman graph on a finite vertex type $V$, then $G$ is
+  generically rigid in dimension $2$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Strong induction on $|V|$, proving the stronger statement: every
+  Laman graph is injectively generically rigid in dimension $2$
+  (\cref{def:isGenericallyRigidInj}); the actual theorem then weakens
+  to plain generic rigidity at the end.
+
+  \emph{Base case ($|V| \le 2$).} Tightness $|E(G)| + 3 = 2 |V|$ is
+  infeasible in $\N$ for $|V| \le 1$, so $|V| = 2$ and by
+  \cref{lem:isLaman-eq-top-of-card-eq-two} we have $G = K_2$ (on $V$).
+  Transport \cref{thm:top-fin-two-isGenericallyRigidInj} at dimension
+  $2$ along the bijection $V \simeq \mathrm{Fin}\,2$ using
+  \cref{lem:isGenericallyRigidInj-iso}.
+
+  \emph{Inductive step ($|V| \ge 3$).} By
+  \cref{thm:isLaman-exists-typeI-or-typeII-reverse} pick $v$ and a
+  Laman $G'$ on $\{w \ne v\}$ such that
+  $G \simeq \mathrm{typeI}\,G'\,a\,b$ or
+  $G \simeq \mathrm{typeII}\,G'\,a\,b\,c$. The vertex type
+  $\{w \ne v\}$ has cardinality $|V| - 1$, so the induction hypothesis
+  applies to $G'$: $G'$ is injectively generically rigid in dim $2$.
+  Applying the appropriate move-preservation theorem
+  (\cref{thm:typeI-isGenericallyRigidInj-two} or
+  \cref{thm:typeII-isGenericallyRigidInj-two}) gives the same for
+  $\mathrm{typeI}\,G'\,a\,b$ or $\mathrm{typeII}\,G'\,a\,b\,c$, and
+  iso transport (\cref{lem:isGenericallyRigidInj-iso}) carries the
+  conclusion back to $G$.
+\end{proof}
+
+\subsection{The \texorpdfstring{$\Rightarrow$}{=>} direction}
+
+The companion direction is not yet formalized; it is the subject of
+Phase~6. The statement is recorded below for reference.
+
+\begin{theorem}[Every generically rigid graph contains a Laman subgraph]
+  \label{thm:isGenericallyRigid-exists-isLaman-le}
+  \lean{SimpleGraph.IsGenericallyRigid.exists_isLaman_le}
+  \uses{def:isGenericallyRigid, def:isLaman}
+  Let $V$ be finite with $|V| \ge 2$. If $G$ is generically rigid in
+  dimension $2$, then there exists a Laman spanning subgraph
+  $H \le G$.
+\end{theorem}
+\begin{proof}
+  Take a generic placement $p$ of $V$. The rows of the rigidity matrix
+  $\mathrm{RigidityMap}\,G\,p$ form a $\R$-vector configuration
+  indexed by $E(G)$; let $H \subseteq G$ be a maximal independent
+  subfamily. By Lov\'asz--Yemini's equality of the rigidity matroid
+  and the $(2, 3)$-count matroid in dimension $2$, independence
+  equals $(2, 3)$-sparsity, so $H$ is $(2, 3)$-sparse; maximality
+  combined with $\dim\,(\mathrm{range}\,\mathrm{RigidityMap}\,G\,p) =
+  2|V| - 3$ at a generic $p$ yields $|E(H)| = 2|V| - 3$, i.e.\ $H$ is
+  $(2, 3)$-tight, hence Laman.
+
+  \textbf{Phase~6.} The Lov\'asz--Yemini step depends on a
+  \texttt{RigidityMatroid.lean} file that is not yet written; the
+  Lean statement is currently a \texttt{sorry}.
+\end{proof}
+
+\subsection{Laman's theorem}
+
+\begin{theorem}[Laman's theorem]
+  \label{thm:isGenericallyRigid-two-iff-exists-isLaman-le}
+  \lean{SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le}
+  \uses{thm:isLaman-isGenericallyRigid-two,
+    thm:isGenericallyRigid-exists-isLaman-le,
+    lem:isGenericallyRigid-mono}
+  Let $V$ be finite with $|V| \ge 2$ and $G : \mathrm{SimpleGraph}\,V$.
+  Then $G$ is generically rigid in dimension $2$ iff $G$ contains a
+  Laman spanning subgraph:
+  \[
+    G.\mathrm{IsGenericallyRigid}\,2
+    \;\iff\;
+    \exists H \le G,\; H.\mathrm{IsLaman}.
+  \]
+\end{theorem}
+\begin{proof}
+  The $\Rightarrow$ direction is
+  \cref{thm:isGenericallyRigid-exists-isLaman-le} (Phase 6, not yet
+  closed). For $\Leftarrow$: given $H \le G$ with $H$ Laman,
+  \cref{thm:isLaman-isGenericallyRigid-two} gives
+  $H.\mathrm{IsGenericallyRigid}\,2$, and monotonicity
+  \cref{lem:isGenericallyRigid-mono} along $H \le G$ extends rigidity
+  from $H$ to $G$.
+\end{proof}
