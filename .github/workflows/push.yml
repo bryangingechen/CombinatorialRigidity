@@ -24,7 +24,7 @@ jobs:
     name: Build project, blueprint, and docs
     steps:
       - name: Free up disk space on the runner
-        uses: jlumbroso/free-disk-space@main
+        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be # v1.3.1
         with:
           tool-cache: false
           android: true
@@ -35,12 +35,12 @@ jobs:
           swap-storage: false
 
       - name: Checkout project
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 1
 
       - name: Build and lint Lean project
-        uses: leanprover/lean-action@v1
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
         with:
           build: true
           lint: true
