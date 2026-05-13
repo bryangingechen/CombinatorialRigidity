@@ -1,0 +1,260 @@
+\section{Frameworks and infinitesimal rigidity}
+\label{sec:frameworks}
+
+A $d$-dimensional \emph{framework} on a vertex set $V$ is a placement
+$p : V \to \R^{d}$. Given a graph $G : \mathrm{SimpleGraph}\,V$, the
+\emph{rigidity map} at $p$ is the $\R$-linear map sending an
+infinitesimal motion $p' \in \R^{d \cdot |V|}$ to the family of
+edge-length derivatives
+$e \mapsto \langle p_u - p_v,\, p'_u - p'_v \rangle$ indexed by the
+edges $e = \{u, v\} \in E(G)$. Geometrically this is the differential
+at $p$ of the squared-edge-length map (up to a factor of $2$); we
+define it directly via the explicit entry formula to avoid the
+differentiability machinery that the rank/kernel arguments downstream
+do not need.
+
+A framework is \emph{infinitesimally rigid} when the kernel of the
+rigidity map has dimension at most $d(d+1)/2$ --- the dimension of
+trivial Euclidean motions (translations + infinitesimal rotations).
+The graph $G$ is \emph{generically rigid} in dimension $d$ when
+\emph{some} placement is infinitesimally rigid. The headline result of
+this section is the edge-count bound: every generically rigid graph in
+dimension $d$ on $n$ vertices satisfies $d \cdot n \le |E(G)| + d(d+1)/2$.
+Specializing at $d = 2$ recovers the necessary half of Laman's
+theorem.
+
+All definitions are stated for general dimension $d : \N$; the
+Laman-relevant specialization to $d = 2$ happens at the Phase~5
+boundary.
+
+\subsection{Definitions}
+
+\begin{definition}[Framework]
+  \label{def:framework}
+  \lean{SimpleGraph.Framework}
+  \leanok
+  A $d$-dimensional \emph{framework} on $V$ is a function
+  $p : V \to \mathrm{EuclideanSpace}\;\R\,(\mathrm{Fin}\,d)$. In Lean,
+  $\mathrm{Framework}\,V\,d$ is an \texttt{abbrev} for this Pi type, so
+  the Pi $\R$-module and finite-dimensional instances propagate
+  transparently.
+\end{definition}
+
+\begin{lemma}[Dimension of the framework space]
+  \label{lem:framework-finrank}
+  \lean{SimpleGraph.Framework.finrank}
+  \leanok
+  \uses{def:framework}
+  If $V$ is finite, then
+  $\dim_{\R}\,(\mathrm{Framework}\,V\,d) = |V| \cdot d$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Apply $\mathrm{Module.finrank\_pi\_fintype}$: the framework space is
+  the product of $|V|$ copies of $\R^{d}$, each of dimension $d$.
+\end{proof}
+
+\begin{definition}[Rigidity map]
+  \label{def:rigidityMap}
+  \lean{SimpleGraph.RigidityMap}
+  \leanok
+  \uses{def:framework}
+  For a graph $G$ on $V$ and a framework $p : V \to \R^{d}$, the
+  \emph{rigidity map} at $p$ is the $\R$-linear map
+  \[
+    \mathrm{RigidityMap}\,G\,p :
+    \mathrm{Framework}\,V\,d \;\to_{\R}\; \bigl(E(G) \to \R\bigr)
+  \]
+  with
+  \[
+    (\mathrm{RigidityMap}\,G\,p)(p')(\{u, v\})
+    \;=\;
+    \langle p_u - p_v,\; p'_u - p'_v \rangle.
+  \]
+  The formula is symmetric in $u, v$ (each factor flips sign under
+  swap), so it descends from an unordered pair $\{u, v\}$ to a single
+  scalar via $\mathrm{Sym2.lift}$. Linearity in $p'$ is built
+  compositionally from $\mathrm{innerSL}$ and the projection-and-
+  subtraction maps, then bundled across edges by $\mathrm{LinearMap.pi}$.
+\end{definition}
+
+\begin{lemma}[Rigidity-map entry formula]
+  \label{lem:rigidityMap-apply}
+  \lean{SimpleGraph.rigidityMap_apply}
+  \leanok
+  \uses{def:rigidityMap}
+  For $u, v \in V$ with $\{u, v\} \in E(G)$ and $p, p' : V \to \R^{d}$,
+  \[
+    (\mathrm{RigidityMap}\,G\,p)(p')(\{u, v\})
+    \;=\;
+    \langle p_u - p_v,\; p'_u - p'_v \rangle.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Definitional, by $\mathrm{Sym2.lift}$ reduction on the
+  representative pair.
+\end{proof}
+
+\begin{definition}[Infinitesimally rigid framework]
+  \label{def:isInfinitesimallyRigid}
+  \lean{SimpleGraph.IsInfinitesimallyRigid}
+  \leanok
+  \uses{def:rigidityMap}
+  For finite $V$, a framework $p$ is \emph{infinitesimally rigid} for
+  $G$ if
+  \[
+    \dim_{\R}\,\bigl(\ker (\mathrm{RigidityMap}\,G\,p)\bigr)
+    \;\le\;
+    \frac{d(d+1)}{2}.
+  \]
+  The bound is the dimension of the space of trivial Euclidean
+  motions (translations + infinitesimal rotations), so this is the
+  always-correct upper bound formulation: equality holds exactly when
+  the kernel is exhausted by trivial motions.
+\end{definition}
+
+\begin{definition}[Generically rigid graph]
+  \label{def:isGenericallyRigid}
+  \lean{SimpleGraph.IsGenericallyRigid}
+  \leanok
+  \uses{def:isInfinitesimallyRigid}
+  A graph $G$ on finite $V$ is \emph{generically rigid} in dimension
+  $d$ if some framework $p : V \to \R^{d}$ is infinitesimally rigid
+  for $G$.
+\end{definition}
+
+\subsection{Rigidity-map API}
+
+\begin{lemma}[Kernel monotonicity]
+  \label{lem:rigidityMap-ker-mono}
+  \lean{SimpleGraph.rigidityMap_ker_mono}
+  \leanok
+  \uses{def:rigidityMap}
+  If $G \le G'$ then for every framework $p$,
+  \[
+    \ker (\mathrm{RigidityMap}\,G'\,p)
+    \;\le\;
+    \ker (\mathrm{RigidityMap}\,G\,p).
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Adding edges only adds entries to the rigidity map; if $p'$ kills
+  every edge of $G'$ it certainly kills every edge of $G \subseteq G'$.
+\end{proof}
+
+\begin{lemma}[Rank is bounded by edge count]
+  \label{lem:rigidityMap-finrank-range-le}
+  \lean{SimpleGraph.rigidityMap_finrank_range_le}
+  \leanok
+  \uses{def:rigidityMap}
+  If $V$ is finite, then for every framework $p$,
+  \[
+    \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr)
+    \;\le\;
+    |E(G)|.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  The range is a submodule of $E(G) \to \R$, whose dimension is
+  $|E(G)|$ by $\mathrm{Module.finrank\_pi}$.
+\end{proof}
+
+\subsection{Graph monotonicity}
+
+Generic rigidity is a monotone property in the graph: adding edges
+preserves rigidity at any fixed placement.
+
+\begin{lemma}[Infinitesimal rigidity is monotone]
+  \label{lem:isInfinitesimallyRigid-mono}
+  \lean{SimpleGraph.IsInfinitesimallyRigid.mono}
+  \leanok
+  \uses{def:isInfinitesimallyRigid, lem:rigidityMap-ker-mono}
+  If $G \le G'$ and $p$ is infinitesimally rigid for $G$, then $p$ is
+  infinitesimally rigid for $G'$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By \cref{lem:rigidityMap-ker-mono} the kernel of
+  $\mathrm{RigidityMap}\,G'\,p$ is contained in that of
+  $\mathrm{RigidityMap}\,G\,p$, so its dimension is at most the
+  latter's, which is at most $d(d+1)/2$ by hypothesis.
+\end{proof}
+
+\begin{lemma}[Generic rigidity is monotone]
+  \label{lem:isGenericallyRigid-mono}
+  \lean{SimpleGraph.IsGenericallyRigid.mono}
+  \leanok
+  \uses{def:isGenericallyRigid, lem:isInfinitesimallyRigid-mono}
+  If $G \le G'$ and $G$ is generically rigid in dimension $d$, then so
+  is $G'$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Apply \cref{lem:isInfinitesimallyRigid-mono} at the same placement
+  witness.
+\end{proof}
+
+\subsection{The edge-count bound}
+
+\begin{theorem}[Edge-count bound for generically rigid graphs]
+  \label{thm:isGenericallyRigid-card-mul-le}
+  \lean{SimpleGraph.IsGenericallyRigid.card_mul_le}
+  \leanok
+  \uses{def:isGenericallyRigid, lem:framework-finrank,
+    lem:rigidityMap-finrank-range-le}
+  Let $V$ be finite and $G$ generically rigid in dimension $d$. Then
+  \[
+    d \cdot |V| \;\le\; |E(G)| + \frac{d(d+1)}{2}.
+  \]
+  Phrased additively to avoid $\N$-subtraction. Specializing at
+  $d = 2$ recovers $2 |V| \le |E(G)| + 3$, the necessary half of
+  Laman's theorem.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Pick an infinitesimally rigid framework $p$ witnessing generic
+  rigidity. Rank--nullity for $\mathrm{RigidityMap}\,G\,p$ reads
+  \[
+    \dim\,\mathrm{Framework}\,V\,d
+    \;=\;
+    \dim\,(\mathrm{range}) + \dim\,(\ker).
+  \]
+  By \cref{lem:framework-finrank} the left-hand side equals $d \cdot |V|$;
+  by \cref{lem:rigidityMap-finrank-range-le} the rank is at most
+  $|E(G)|$; and by definition of infinitesimal rigidity the nullity
+  is at most $d(d+1)/2$. Combining yields the claim.
+\end{proof}
+
+\subsection{Worked example: \texorpdfstring{$K_2$}{K2} is generically rigid in every dimension}
+
+\begin{theorem}[$K_2$ is generically rigid in every dimension]
+  \label{thm:top-fin-two-isGenericallyRigid}
+  \lean{SimpleGraph.top_fin_two_isGenericallyRigid}
+  \leanok
+  \uses{def:isGenericallyRigid, lem:framework-finrank,
+    lem:rigidityMap-finrank-range-le, lem:rigidityMap-apply}
+  For every $d \in \N$, the complete graph on two vertices is
+  generically rigid in dimension $d$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Split on $d$:
+  \begin{itemize}
+    \item If $d = 0$, the framework space itself is $0$-dimensional,
+      so every placement has rigidity-map kernel of dimension $0$
+      and the bound $0 \le 0$ holds.
+    \item If $d \ge 1$, take $p_0 = 0$ and $p_1 = e_0$ (the first
+      standard basis vector). The single-edge image
+      $(\mathrm{RigidityMap}\,K_2\,p)(p')(\{0, 1\})
+        = \langle p_0 - p_1,\, p'_0 - p'_1 \rangle$
+      evaluates at $p' = (e_0, 0)$ to $-1 \ne 0$
+      (\cref{lem:rigidityMap-apply}), so the range has dimension at
+      least $1$. Rank--nullity (\cref{lem:framework-finrank}) gives
+      $2d - 1 \ge \dim\,(\ker)$, and the elementary inequality
+      $2d + 1 \le (d+1)(d+2)/2$ for $d \ge 0$ closes the
+      kernel-dimension bound to $d(d+1)/2$.
+  \end{itemize}
+\end{proof}
