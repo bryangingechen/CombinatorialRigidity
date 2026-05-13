@@ -8,8 +8,11 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{enumerate}
 \usepackage[normalem]{ulem}
+% NB: don't \usepackage{enumerate} here. The print build already loads
+% enumitem (see ../print.tex), which subsumes enumerate's features;
+% loading both has caused \enit@after undefined errors during the print
+% build in the docgen-action TeX Live image.
 
 % Theorem environments. We number everything within section so that labels
 % read like 2.3 (= section 2, item 3) rather than running globally.
