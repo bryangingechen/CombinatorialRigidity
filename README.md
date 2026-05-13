@@ -63,11 +63,14 @@ workflow assume the GitHub Pages site is published at
 `https://bryangingechen.github.io/CombinatorialRigidity/`; if the repo is
 ever renamed or moved to a different owner, update both files together.
 
-## Automated mathlib bumps
+## Automation
 
-`.github/workflows/hopscotch.yml` runs daily and tries to advance the
-mathlib pin in `lake-manifest.json` to mathlib's current `master`. If
-the new commit builds cleanly, it opens (or refreshes) a PR titled
-roughly "Bump mathlib"; if it breaks, it bisects and opens a tracking
-issue identifying the breaking commit. Adjust the cron line in the
-workflow if daily is too noisy.
+- **`.github/workflows/hopscotch.yml`** — daily cron that tries to
+  advance the mathlib pin in `lake-manifest.json` to mathlib's current
+  `master`. Opens (or refreshes) a PR if the new commit builds; opens
+  a tracking issue with the bisected breaking commit if not.
+- **`.github/dependabot.yml`** — monthly grouped PR bumping any
+  third-party GitHub Actions used in `.github/workflows/` (currently
+  `actions/checkout`, `leanprover/lean-action`,
+  `jlumbroso/free-disk-space`). `leanprover-community/*` actions are
+  intentionally ignored — we track those on `@main` / `@v1`.

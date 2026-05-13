@@ -87,6 +87,12 @@ fix it.
   build broke). A tracking issue gets opened instead when the bump
   hits a regression — the issue body identifies the breaking mathlib
   commit via bisection.
+- **Automated GitHub Actions bumps** arrive as a single monthly
+  grouped PR from Dependabot (`.github/dependabot.yml`), titled
+  something like "Bump the github-actions group with N updates".
+  Merging it usually requires only running CI green; do not bump the
+  pins by hand between cycles unless there's a specific reason
+  (security fix, action removed, etc.).
 
 ### Ending — friction review (mandatory)
 
