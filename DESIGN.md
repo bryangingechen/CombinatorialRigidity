@@ -1,8 +1,9 @@
 # Combinatorial Rigidity — Design Notes
 
-This is a **reference document**, not required reading. `ROADMAP.md` is
-the must-read hand-off; consult `DESIGN.md` only when you need to
-understand or revisit a design choice.
+This is a **reference document**, not required reading. `CLAUDE.md`
+(agent operating manual) and `ROADMAP.md` (status, plan, conventions)
+are the must-read hand-offs; consult `DESIGN.md` only when you need
+to understand or revisit a design choice.
 
 Each section records *why* a particular choice was made, what was
 considered as an alternative, and the cost of switching later. New

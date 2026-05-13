@@ -15,10 +15,15 @@ project; commit history is preserved with paths rewritten.
 * Phase 6 (the (⇒) direction, via rigidity-matroid duality) not yet started;
   `IsGenericallyRigid.exists_isLaman_le` is the remaining `sorry`.
 
-See `ROADMAP.md` for the canonical hand-off doc — read it first when picking
-up the project. `DESIGN.md` carries cross-cutting design rationale and
-`TACTICS.md` carries tactical guidance. Per-phase work logs live under
-`notes/`.
+See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
+mathematical plan, and engineering conventions. `DESIGN.md` carries
+cross-cutting design rationale and `TACTICS.md` carries tactical guidance.
+Per-phase work logs live under `notes/`.
+
+`CLAUDE.md` is the operating manual for AI coding agents (Claude Code et al.)
+— it covers reading order, the per-session workflow, the end-of-session
+friction review, and the `notes/PhaseN.md` template. Human contributors can
+skim it but the primary audience is automated tooling.
 
 ## Build
 
