@@ -80,6 +80,13 @@ fix it.
   upstreaming dashboard via `leanprover-community/docgen-action`). PRs
   run the same build but skip the deploy step. There is no separate
   "deploy when ready" knob — every green master push publishes.
+- **Automated mathlib bumps** arrive as PRs from
+  `.github/workflows/hopscotch.yml` (daily cron). If you see a PR or
+  branch like `hopscotch/bump-mathlib`, that's the bot; review it like
+  any other mathlib bump (the project's lemmas may need fixups if the
+  build broke). A tracking issue gets opened instead when the bump
+  hits a regression — the issue body identifies the breaking mathlib
+  commit via bisection.
 
 ### Ending — friction review (mandatory)
 

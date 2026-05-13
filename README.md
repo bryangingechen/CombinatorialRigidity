@@ -62,3 +62,12 @@ The landing page source is in `home_page/`. Its `_config.yml` and the CI
 workflow assume the GitHub Pages site is published at
 `https://bryangingechen.github.io/CombinatorialRigidity/`; if the repo is
 ever renamed or moved to a different owner, update both files together.
+
+## Automated mathlib bumps
+
+`.github/workflows/hopscotch.yml` runs daily and tries to advance the
+mathlib pin in `lake-manifest.json` to mathlib's current `master`. If
+the new commit builds cleanly, it opens (or refreshes) a PR titled
+roughly "Bump mathlib"; if it breaks, it bisects and opens a tracking
+issue identifying the breaking commit. Adjust the cron line in the
+workflow if daily is too noisy.
