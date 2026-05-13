@@ -1,0 +1,51 @@
+\section{Introduction}
+\label{sec:intro}
+
+This blueprint accompanies the
+\href{https://github.com/bryangingechen/CombinatorialRigidity}{\texttt{CombinatorialRigidity}}
+Lean~4 / mathlib4 formalization. The goal is a proof of \textbf{Laman's
+theorem} (1970): for $n \ge 2$, a graph $G$ on $n$ vertices is generically
+rigid in the plane if and only if it contains a spanning subgraph $H$ with
+$|E(H)| = 2n - 3$ such that every subgraph $H[S]$ on $k \ge 2$ vertices
+satisfies $|E(H[S])| \le 2k - 3$. Such an $H$ is called a \emph{Laman
+graph}, or \emph{minimally rigid graph in the plane}.
+
+The Lean development follows the \emph{Henneberg-construction} route: we
+characterize Laman graphs inductively via two combinatorial moves (Type~I
+adds a vertex of degree~2; Type~II splits an edge), prove the moves
+preserve generic rigidity, and combine these facts to deduce the ``Laman
+implies generically rigid'' direction. The converse direction goes through
+the rigidity matroid.
+
+\subsection*{Phase plan}
+
+The Lean code is organized into six phases, tracked in
+\href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
+At the time of writing, Phases 1--5 are complete and Phase 6 is open.
+
+\begin{enumerate}
+  \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
+        for arbitrary $k, \ell$. (Files: \texttt{EdgesIn.lean},
+        \texttt{Sparsity.lean}.)
+  \item \textbf{Laman graphs.} The $(2,3)$-tight specialization, the
+        $K_2$ base case, and degree facts feeding the Henneberg induction.
+        (File: \texttt{Laman.lean}.)
+  \item \textbf{Henneberg moves.} Type~I and Type~II moves, Laman-preservation
+        in both directions, and the existence of an inverse move at every
+        non-base Laman graph. (File: \texttt{Henneberg.lean}.)
+  \item \textbf{Frameworks.} Frameworks, the rigidity map, infinitesimal
+        rigidity, generic rigidity. (File: \texttt{Framework.lean}.)
+  \item \textbf{Laman's theorem ($\Leftarrow$).} Per-move rigidity
+        preservation and the induction. (Files: \texttt{HennebergRigidity.lean},
+        \texttt{LamanTheorem.lean}.)
+  \item \textbf{Laman's theorem ($\Rightarrow$).} The remaining direction
+        via the planar rigidity matroid. \textit{Not yet started.}
+\end{enumerate}
+
+\subsection*{Reading this blueprint}
+
+Statements that are formalized in Lean carry a green tick and a
+\texttt{\textbackslash lean\{\}} pointer linking back to the API
+documentation. Statements without proofs are marked accordingly. The
+dependency graph view (linked from the navigation bar) shows the
+informal-to-formal connection at a glance.

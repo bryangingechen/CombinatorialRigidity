@@ -1,0 +1,25 @@
+title: Combinatorial Rigidity
+description: >-
+  A Lean 4 / mathlib4 formalization of combinatorial rigidity theory,
+  working toward Laman's theorem (1970).
+
+baseurl: "/CombinatorialRigidity"
+url: "https://bryangingechen.github.io"
+
+repository: bryangingechen/CombinatorialRigidity
+
+theme: minima
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+
+minima:
+  skin: classic
+
+# Don't process the artifacts that the docgen-action drops alongside us.
+exclude:
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - .bundle

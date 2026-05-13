@@ -1,0 +1,30 @@
+name: Pull request CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build_project:
+    runs-on: ubuntu-latest
+    name: Build project (PR check)
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Build and lint Lean project
+        uses: leanprover/lean-action@v1
+        with:
+          build: true
+          lint: true
+
+      # Build the blueprint and docs on PRs so we catch breakage before
+      # merging, but do not deploy from PRs.
+      - name: Compile blueprint and documentation (no deploy)
+        uses: leanprover-community/docgen-action@main
+        with:
+          blueprint: true
+          homepage: home_page
+          deploy: false

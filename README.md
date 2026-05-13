@@ -1,5 +1,7 @@
 # CombinatorialRigidity
 
+[![Build & deploy site](https://github.com/bryangingechen/CombinatorialRigidity/actions/workflows/push.yml/badge.svg)](https://github.com/bryangingechen/CombinatorialRigidity/actions/workflows/push.yml)
+
 A Lean 4 / mathlib4 formalization of combinatorial rigidity theory, working
 toward **Laman's theorem** (1970): for `n ≥ 2`, a graph is generically rigid
 in the plane iff it contains a `(2, 3)`-tight spanning subgraph.
@@ -7,6 +9,14 @@ in the plane iff it contains a `(2, 3)`-tight spanning subgraph.
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
 project; commit history is preserved with paths rewritten.
+
+## Links
+
+* [Project website](https://bryangingechen.github.io/CombinatorialRigidity/)
+* [Blueprint (web)](https://bryangingechen.github.io/CombinatorialRigidity/blueprint/)
+* [Blueprint (PDF)](https://bryangingechen.github.io/CombinatorialRigidity/blueprint.pdf)
+* [Dependency graph](https://bryangingechen.github.io/CombinatorialRigidity/blueprint/dep_graph_document.html)
+* [API documentation](https://bryangingechen.github.io/CombinatorialRigidity/docs/)
 
 ## Project status
 
@@ -33,3 +43,22 @@ lake build
 ```
 
 Lean toolchain version is pinned in `lean-toolchain` and tracks mathlib.
+
+## Blueprint
+
+The mathematical blueprint lives under `blueprint/`. The web and PDF
+versions are built and deployed automatically by GitHub Actions on every
+push to `master` (see `.github/workflows/push.yml`); to build it locally:
+
+```sh
+cd blueprint
+pip install -r requirements.txt
+inv web     # plastex output in blueprint/web/
+inv bp      # PDF in blueprint/print/print.pdf
+inv serve   # preview the web build at http://localhost:8000
+```
+
+The landing page source is in `home_page/`. Its `_config.yml` and the CI
+workflow assume the GitHub Pages site is published at
+`https://bryangingechen.github.io/CombinatorialRigidity/`; if the repo is
+ever renamed or moved to a different owner, update both files together.

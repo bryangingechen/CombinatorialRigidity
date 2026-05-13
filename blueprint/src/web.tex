@@ -1,0 +1,26 @@
+% Web version of the blueprint. Built with plastex via `inv web`.
+
+\documentclass{amsart}
+
+\usepackage{amsmath,amsfonts,amsthm,amssymb}
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.svg,.png,.jpg}
+\usepackage[showmore, dep_graph, project=../../]{blueprint}
+
+\usepackage{tikz-cd}
+\usepackage{tikz}
+
+\input{preamble/common}
+\input{preamble/web}
+\usepackage[capitalize]{cleveref}
+
+\github{https://github.com/bryangingechen/CombinatorialRigidity}
+\dochome{https://bryangingechen.github.io/CombinatorialRigidity/docs}
+
+\title{Combinatorial Rigidity}
+\author{Bryan Gin-ge Chen}
+
+\begin{document}
+\maketitle
+\input{chapter/main}
+\end{document}

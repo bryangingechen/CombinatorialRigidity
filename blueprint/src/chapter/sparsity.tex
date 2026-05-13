@@ -1,0 +1,57 @@
+\section{Sparsity}
+\label{sec:sparsity}
+
+Throughout, $G$ denotes a simple graph on a vertex type $V$. For a finite
+set $S \subseteq V$, write $E_G[S]$ for the set of edges of $G$ whose both
+endpoints lie in $S$. In Lean this is
+\href{https://bryangingechen.github.io/CombinatorialRigidity/docs/find/?pattern=SimpleGraph.edgesIn}{\texttt{SimpleGraph.edgesIn}}.
+
+\begin{definition}
+  \label{def:isSparse}
+  \lean{SimpleGraph.IsSparse}
+  \leanok
+  Fix non-negative integers $k, \ell$. We say $G$ is \emph{$(k,\ell)$-sparse}
+  if for every finite $S \subseteq V$ with $|S| \ge 2$ one has
+  \[
+    |E_G[S]| \;\le\; k\,|S| - \ell.
+  \]
+\end{definition}
+
+\begin{definition}
+  \label{def:isTight}
+  \lean{SimpleGraph.IsTight}
+  \leanok
+  \uses{def:isSparse}
+  $G$ is \emph{$(k,\ell)$-tight} if it is $(k,\ell)$-sparse and, on the full
+  finite vertex set $V$, the bound is met with equality:
+  $|E(G)| = k\,|V| - \ell$.
+\end{definition}
+
+\begin{lemma}
+  \label{lem:isTight-isSparse}
+  \lean{SimpleGraph.IsTight.isSparse}
+  \leanok
+  \uses{def:isSparse,def:isTight}
+  Every $(k,\ell)$-tight graph is $(k,\ell)$-sparse.
+\end{lemma}
+
+\begin{proof}
+  \leanok
+  Immediate from the definition.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:isSparse-edgeSet-bound}
+  \lean{SimpleGraph.IsSparse.edgeSet_ncard_add_le}
+  \leanok
+  \uses{def:isSparse}
+  If $V$ is finite and $G$ is $(k,\ell)$-sparse, then
+  $|E(G)| + \ell \le k\,|V|$ provided $|V| \ge 2$ (and the trivial
+  cases $|V| \le 1$ behave as expected).
+\end{lemma}
+
+% Add further sparsity lemmas here as they get blueprint-ified. Use
+%   \lean{Fully.Qualified.Name} \leanok
+% to link a finished Lean declaration, and
+%   \uses{label1,label2}
+% to declare logical dependencies for the dep-graph view.
