@@ -292,7 +292,12 @@ the strengthened theorem reuses the iso witness it produces.
   $G[\{w \ne v\}]$ (augmented for the Type~II case below). The
   underlying type-level equivalence is
   $V \simeq \mathrm{Option}\,\{w : V \mid w \ne v\}$, mapping $v$ to
-  $\mathrm{none}$.
+  $\mathrm{none}$. In the formalization the graph iso is built from
+  this $\mathrm{Equiv}$ via a small custom constructor
+  (\texttt{isoOfOptionSubtypeNe}), which case-splits on whether each
+  endpoint equals $v$ and discharges the resulting four
+  adjacency-rewrite obligations; the upgrade from a vertex
+  $\mathrm{Equiv}$ to a graph iso is not automatic.
 
   \emph{Degree~$2$.} Let $\{a, b\} = N_G(v)$; then
   $N_G(v) = \{a, b\}$ and $a \ne b$, so the type-level equivalence
@@ -360,12 +365,19 @@ sparsity of $G$ at $\{v\} \cup N_G(v)$.
   $s' \subseteq \{w \ne v\}$ violates the bound. Lift to
   $S := \{w.\mathrm{val} : w \in s'\} \subseteq V \setminus \{v\}$. The
   edges of $G'$ on $s'$ correspond to edges of $G$ on $S$, plus
-  possibly the bridge $\{x, y\}$ when $x, y \in s'$. Case-split on
-  $x, y \in s'$: in the bridge-included case, the $\le 1$ overcount
-  yields a squeeze that forces $S$ tight in $G$
-  (\cref{lem:isSparse-isTightOn-of-le}); in the bridge-excluded case,
-  the count violates $G$-sparsity directly, but the hypothesis
-  $G.\mathrm{IsLaman}$ rules this out, so this branch is vacuous.
+  possibly the bridge $\{x, y\}$ when $x, y \in s'$. (In the
+  formalization, this "correspond to" is a named project-internal
+  helper that gives the equality
+  $\mathrm{Sym2.map}\;f \,[(G.\mathrm{comap}\;f).\edgesIn{s'}]
+   = \edgesIn[G]{f[s']}$
+  for $f = \mathrm{Subtype.val}$; the cardinality version it feeds
+  needs injectivity of $\mathrm{Sym2.map}\;f$, which is itself a small
+  lift of injectivity of $f$.) Case-split on $x, y \in s'$: in the
+  bridge-included case, the $\le 1$ overcount yields a squeeze that
+  forces $S$ tight in $G$ (\cref{lem:isSparse-isTightOn-of-le}); in
+  the bridge-excluded case, the count violates $G$-sparsity directly,
+  but the hypothesis $G.\mathrm{IsLaman}$ rules this out, so this
+  branch is vacuous.
 \end{proof}
 
 \begin{theorem}[Strengthened decomposition: Laman half]

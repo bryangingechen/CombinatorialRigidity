@@ -168,10 +168,28 @@ wants the full proof clicks through to the Lean. Examples in
 - Multi-step: the proof of `thm:isTightOn-union-inter` is the most
   detailed in the chapter and runs ~10 lines.
 
-If the Lean proof is gnarly enough that the prose version would be
-multi-paragraph, consider whether the blueprint should record a
-*simpler* mathematical proof instead (the Lean proof may have
-absorbed implementation noise that doesn't belong in the doc).
+**Be honest about formalization cost.** Don't formalize Lean-tactic
+noise into the prose — the math should read as math. But don't elide
+*substantive* formalization cost either: if a one-line math step
+expands to a named infrastructure lemma or a non-obvious construction
+in Lean, note that briefly so the prose is a faithful map of the
+formal proof, not a polished version that pretends Lean was easy.
+Use judgment:
+
+- *Omit*: `omega` / `grind` automating arithmetic the prose already
+  shows; `simp` collapses; type-class elaboration; mathlib-level
+  glue that's invisible to the math.
+- *Note*: hand-rolled `Equiv`s for type-level "canonical" moves; a
+  named project-internal helper standing in for what the prose treats
+  as a one-step correspondence; case-splits the Lean had to take that
+  the math wouldn't.
+
+The failure mode to avoid is writing a clean 3-sentence proof that
+suggests "the Lean is the same shape but more verbose" when the Lean
+actually had to grow a substantive piece of infrastructure to land
+that step. A one-clause aside (e.g. *"the formalization builds this
+iso explicitly via a custom `Equiv`-on-`Option`-types"*) keeps the
+math foregrounded while signalling the real cost.
 
 ## Static checks before commit
 
