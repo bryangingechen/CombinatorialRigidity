@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Maps
 import Mathlib.Data.Finset.Sym
 import Mathlib.Data.Set.Card
 
@@ -115,6 +116,30 @@ lemma edgesIn_finite (G : SimpleGraph V) (s : Finset V) : (G.edgesIn ↑s).Finit
   refine s.sym2.finite_toSet.subset ?_
   rw [Finset.coe_sym2]
   exact Set.inter_subset_right
+
+/-- Edges of `G` with both endpoints in `S` are exactly the `Sym2.map Subtype.val`-image of the
+edges of the induced subgraph `G.induce S` on `S`. The bridge between our `edgesIn` selector
+(stated in `Sym2 V`) and mathlib's `SimpleGraph.induce` (whose edges live in `Sym2 ↥S`). -/
+lemma edgesIn_eq_image_induce_edgeSet (G : SimpleGraph V) (S : Set V) :
+    G.edgesIn S = Sym2.map (Subtype.val : ↥S → V) '' (G.induce S).edgeSet := by
+  ext e
+  simp only [mem_edgesIn, Set.mem_image]
+  refine ⟨fun ⟨he_adj, he_sub⟩ => ?_, ?_⟩
+  · induction e with | h u v =>
+      rw [Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff] at he_sub
+      exact ⟨s(⟨u, he_sub.1⟩, ⟨v, he_sub.2⟩), he_adj, rfl⟩
+  · rintro ⟨e', he', rfl⟩
+    refine e'.ind (fun u v he' => ?_) he'
+    refine ⟨he', ?_⟩
+    rw [Sym2.map_mk, Sym2.coe_mk, Set.insert_subset_iff, Set.singleton_subset_iff]
+    exact ⟨u.2, v.2⟩
+
+/-- Cardinality bridge: edges in `S` and edges of the induced subgraph have the same count.
+Follows from `edgesIn_eq_image_induce_edgeSet` and injectivity of `Sym2.map Subtype.val`. -/
+lemma ncard_edgesIn_eq_ncard_induce_edgeSet (G : SimpleGraph V) (S : Set V) :
+    (G.edgesIn S).ncard = (G.induce S).edgeSet.ncard := by
+  rw [edgesIn_eq_image_induce_edgeSet,
+    Set.ncard_image_of_injective _ (Sym2.map.injective Subtype.val_injective)]
 
 /-! ### Vertex deletion: edges avoiding a vertex
 
