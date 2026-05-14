@@ -93,6 +93,29 @@ lemma; resolved otherwise.
   matroid (see ROADMAP §5 *Carryover from Phase 3*).
 - **Status:** open (Phase-5-bound).
 
+### [open] No mathlib `LinearIndependent ![u, v] ↔ det ≠ 0` in dim 2
+- **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
+  `RigidityMatroid.lean`. Inside the per-triple finiteness argument
+  we needed: from the quadratic determinant `u 0 * v 1 - u 1 * v 0 ≠
+  0` (with `u, v : EuclideanSpace ℝ (Fin 2)`) deduce
+  `LinearIndependent ℝ ![u, v]`.
+- **Friction:** mathlib has `LinearIndependent.pair_iff` (LI of two
+  vectors via the universal-quantifier characterisation) and
+  `LinearIndependent.pair_iff'` (the field/non-zero variant), but
+  neither states the equivalence with the explicit 2×2 determinant in
+  coordinates. `Matrix.det_eq_zero_iff_linearIndependent_columns` is
+  abstract-matrix-shaped and doesn't unify cleanly with `EuclideanSpace
+  ℝ (Fin 2)` rows. We unblocked with a private project lemma
+  `linearIndependent_pair_of_det_ne_zero` (~10 lines via
+  `LinearIndependent.pair_iff` + `linear_combination`).
+- **Proposed fix:** mirror as
+  `linearIndependent_pair_iff_det_ne_zero` (the full iff) under
+  `CombinatorialRigidity/Mathlib/Analysis/InnerProductSpace/PiL2.lean`
+  or a similar dim-2 file; eventually upstream. Keeping just the
+  `_of_det_ne_zero` half (the direction we need) is fine for now.
+- **Status:** open. Acceptable as a private helper; lift if a future
+  Phase 6 lemma needs it independently.
+
 ### [open] No packaged `ℝ`-linear injection `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)`
 - **Where it bit:** `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`
   in `RigidityMatroid.lean`. We needed to bridge `LinearIndepOn` of a
@@ -117,6 +140,49 @@ lemma; resolved otherwise.
 - **Status:** open. Acceptable as a private helper for now; lift if
   Phase 6's $(2,3)$-sparsity-from-row-independence (the next
   substantive lemma) needs the bridge a second time.
+
+### [open] `Set.Finite.subset (finite_setOf ...)` leaves metavariables when leading-coeff is the only resolved unknown
+- **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
+  `RigidityMatroid.lean`. Inside the per-triple finiteness proof we
+  applied `Set.Finite.subset (finite_zeros_quadratic h_γ_ne)` to bound
+  the bad-`t` set by the polynomial zero set. `h_γ_ne : γ ≠ 0`
+  pins down `γ` in the conclusion's implicit args, but `β` and `α`
+  stay as metavariables — Lean leaves three goals (the subset relation
+  plus two `⊢ ℝ` placeholders), and the linter (multiGoal-style)
+  flags every subsequent step as touching multiple goals.
+- **Friction:** the metavariables aren't filled by unification because
+  the conclusion shape is `{t | γ * t^2 + β * t + α = 0}.Finite` and
+  the corresponding subset relation `{t | ¬ AI ...} ⊆ {t | γ * t^2 +
+  ?β * t + ?α = 0}` does not constrain `?β`, `?α` until the
+  determinant-equation rewrite later. Fix: pass `β` and `α` as named
+  arguments at apply time:
+  `apply Set.Finite.subset (finite_zeros_quadratic (γ := γ) (β := β)
+  (α := α) h_γ_ne)`.
+- **Proposed fix:** none upstream; this is a Lean unification quirk
+  around `apply` + free implicit args. Documented here so the
+  pattern (named args at the `apply` site) is reachable for the next
+  agent who hits the same multiGoal-warning cascade.
+- **Status:** open (project-internal note). Worth lifting to
+  `TACTICS.md` § *Tactics and quirks* if it bites a second time.
+
+### [open] `AffineIndependent` ↔ `LinearIndependent` reindex from `{x : Fin 3 // x ≠ 0}` to `Fin 2`
+- **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
+  `RigidityMatroid.lean`. After `affineIndependent_iff_linearIndependent_vsub
+  ℝ ![pt t a, pt t b, pt t c] 0` the goal is LI of a family
+  indexed by `{x : Fin 3 // x ≠ 0}`, but the natural witness is
+  `LinearIndependent ℝ ![u, v]` on `Fin 2`.
+- **Friction:** mathlib doesn't ship a direct
+  `AffineIndependent ℝ ![a, b, c] ↔ LinearIndependent ℝ ![b - a, c - a]`
+  bridge. We hand-coded the reindex `{x : Fin 3 // x ≠ 0} → Fin 2`
+  sending `⟨1, _⟩ ↦ 0`, `⟨2, _⟩ ↦ 1` (~10 lines including injectivity
+  via `fin_cases`) plus a `convert ... using 1` + `funext i; fin_cases
+  i` value-matching step.
+- **Proposed fix:** mirror an `affineIndependent_three_iff_linearIndependent_pair`
+  lemma under `CombinatorialRigidity/Mathlib/LinearAlgebra/AffineSpace/Independent.lean`
+  packaging this reindex; eventually upstream. Roughly 15 lines.
+- **Status:** open. Acceptable inlined for now; lift if the dim-2
+  sparsity-from-row-independence proof or the d-general lift hits the
+  same reindex.
 
 ### [open] `AffineSubspace.nonempty_of_affineSpan_eq_top` takes `(k V P)` explicit
 

@@ -262,22 +262,49 @@ below provides one.
 
 \begin{lemma}[Affinely-spanning rigid placement, dim $2$]
   \label{lem:exists-affinelySpanning-rigid-placement-two}
+  \lean{SimpleGraph.exists_affinelySpanning_rigid_placement_two}
+  \leanok
   \uses{def:isGenericallyRigid, lem:isInfinitesimallyRigid-eventually}
-  Let $V$ be finite with $|V| \ge 2$ and $G$ generically rigid in
-  dimension $2$. There exists a framework $p : V \to \R^{2}$ which is
-  infinitesimally rigid for $G$ and whose restriction $p|_{S}$
-  affinely spans $\R^{2}$ for every $S \subseteq V$ with $|S| \ge 3$.
+  Let $V$ be finite and $G$ generically rigid in dimension $2$. There
+  exists a framework $p : V \to \R^{2}$ which is infinitesimally rigid
+  for $G$ and whose restriction $p|_{S}$ affinely spans $\R^{2}$ for
+  every $S \subseteq V$ with $|S| \ge 3$.
 \end{lemma}
 \begin{proof}
-  The set of infinitesimally rigid placements is open at the
-  generic-rigidity witness by
-  \cref{lem:isInfinitesimallyRigid-eventually}; the set of placements
-  whose every size-$\ge 3$ restriction affinely spans is the
-  complement of a finite union of hyperplanes (one ``three points
-  collinear'' equation per triple in $V$), hence open and dense in
-  $\mathrm{Framework}\,V\,2$. The two open sets meet on a
-  neighborhood of the witness, giving a placement with both
-  properties.
+  \leanok
+  Pick an infinitesimally rigid witness $p_{0}$ from the
+  generic-rigidity hypothesis. Choose an injection $\phi : V \to \R$
+  via the finite-type bijection $V \simeq \mathrm{Fin}\,|V|$ composed
+  with the natural injection $\mathrm{Fin}\,n \hookrightarrow \R$, and
+  set the Vandermonde direction $w(v) := (\phi(v), \phi(v)^{2}) \in
+  \R^{2}$. For $t \in \R$ define the perturbed placement $p_{t} :=
+  p_{0} + t \cdot w$.
+
+  Openness of infinitesimal rigidity
+  (\cref{lem:isInfinitesimallyRigid-eventually}) plus the continuity
+  of $t \mapsto p_{t}$ supplies an $\varepsilon > 0$ such that $p_{t}$
+  is infinitesimally rigid for every $|t| < \varepsilon$.
+
+  For each ordered triple $(a, b, c)$ of distinct vertices, the
+  three-points-collinear determinant
+  \[
+    \det\bigl(p_{t}(b) - p_{t}(a), p_{t}(c) - p_{t}(a)\bigr)
+  \]
+  is a quadratic in $t$ whose $t^{2}$ coefficient is
+  $(\phi(b) - \phi(a)) \cdot (\phi(c) - \phi(a)) \cdot (\phi(c) -
+  \phi(b))$, nonzero by injectivity of $\phi$. The per-triple bad-$t$
+  set is therefore finite (cast through $\mathrm{Polynomial}\,\R$ and
+  the polynomial-roots cardinality bound). The global bad set is the
+  finite union of finitely many finite sets, hence finite, so any
+  point of the (uncountable) interval $(0, \varepsilon)$ outside the
+  bad set is a valid choice of $t$. The resulting $p_{t}$ is
+  infinitesimally rigid, and for every $S$ with $|S| \ge 3$ any three
+  distinct elements of $S$ give an affinely-independent triple under
+  $p_{t}$, so $p_{t}|_{S}$ affinely spans $\R^{2}$.
+
+  The formalization ships this dim-$2$-specific; a $d$-general lift
+  via the moment curve plus the Vandermonde determinant is a deferred
+  follow-up.
 \end{proof}
 
 \begin{lemma}[$(2, 3)$-sparsity from row-independence, dim $2$]

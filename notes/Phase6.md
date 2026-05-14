@@ -22,7 +22,24 @@ Phase 5 closed with the iff statement
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-**Through commit 10 (this commit):** the linear-algebra side is closed
+**Through commit 11 (this commit):** the analysis leaf
+`lem:exists-affinelySpanning-rigid-placement-two` lands in
+`RigidityMatroid.lean`. The Vandermonde-perturbation argument
+(perturb the IR witness along `w(v) = (φ v, (φ v)²)`; for each
+ordered triple the collinearity determinant is a quadratic in `t`
+with leading coefficient `(φ b − φ a)(φ c − φ a)(φ c − φ b) ≠ 0`,
+so the per-triple bad-`t` set is finite; the finite union over
+triples is finite, and any point of the open IR-neighborhood
+interval outside it works). Two private helpers ride along:
+`finite_zeros_quadratic` (zero set of a real quadratic with nonzero
+leading coefficient, via `Polynomial.finite_setOf_isRoot`) and
+`linearIndependent_pair_of_det_ne_zero` (the dim-2 LI characterization
+in coordinates). Lemma is dim-2-shaped; d-general lift via the
+moment curve + `Matrix.det_vandermonde` is deferred follow-up. The
+blueprint chapter `chapter/laman-theorem.tex` flips the leaf to
+`\leanok` with a prose proof.
+
+**Through commit 10:** the linear-algebra side is closed
 **d-general**. `CombinatorialRigidity/TrivialMotions.lean` ships the
 full d-general API: translations, infinitesimal rotations, the
 `trivialMotions` submodule, the unconditional `trivialMotions_le_ker`,
@@ -101,24 +118,13 @@ visible as a dep-graph at `blueprint/web/dep_graph_document.html`
 after `inv bp && inv web`. A red node = not yet formalized; a green
 node = formalized and `\leanok`-tagged. Pick leaf-most red.
 
-Status snapshot at commit-10 (d-general lift):
-the blueprint dep-graph now carries the d-general rank lemmas
-`lem:rigidityMap-finrank-range-{ge-of-isGenericallyRigid, le-of-affinelySpanning}`
-and the d-general kernel bound
-`lem:rigidityMap-ker-finrank-ge-of-affinelySpanning`. The retired d=2
-corollary entries
-(`...range-ge-of-isGenericallyRigid-two`, `...range-le-of-affinelySpanning-two`,
-`trivialMotions-three-le-finrank/ker-of-affinelySpanning-two`,
-`def:rotJTwo`, `lem:inner-rotJTwo-self`) are gone. The remaining red
-nodes in `chapter/laman-theorem.tex` are
-`lem:exists-affinelySpanning-rigid-placement-two` and
-`lem:isSparse-of-rowIndependent-two`, plus the target
-`thm:isGenericallyRigid-exists-isLaman-le`. The remaining
-mathematically substantial leaf is
-`lem:exists-affinelySpanning-rigid-placement-two`; the sparsity lemma
-stacks on it and on the d-general rank upper bound at `d = 2`, and
-the assembly theorem stacks on the sparsity lemma plus the
-basis-pick.
+Status snapshot at commit-11 (affinely-spanning placement lands):
+the remaining red nodes in `chapter/laman-theorem.tex` are
+`lem:isSparse-of-rowIndependent-two` and the assembly target
+`thm:isGenericallyRigid-exists-isLaman-le`. The sparsity lemma stacks
+on the d-general rank upper bound at `d = 2` plus the new
+affinely-spanning placement existence; the assembly theorem stacks on
+the sparsity lemma plus the basis-pick (commit 6).
 
 ## Decisions made during this phase
 
@@ -336,7 +342,25 @@ entries opened in commit 7 are the cross-cutting record.)*
   dropped (the affine-span hypothesis already forces `|V| ≥ 3`). No
   new FRICTION entries. *(d=2 form retired in commit 10; the d-general
   `rigidityMap_finrank_range_le_of_affinelySpanning` replaces it.)*
-- *Commit 10 (this commit):* d-general lift; d=2 corollary surface
+- *Commit 11 (this commit):* affinely-spanning rigid placement
+  (`lem:exists-affinelySpanning-rigid-placement-two`). Added to
+  `RigidityMatroid.lean` (~150 LoC) alongside two private helpers
+  `finite_zeros_quadratic` (real-quadratic zero set is finite, via
+  `Polynomial.finite_setOf_isRoot`) and
+  `linearIndependent_pair_of_det_ne_zero` (dim-2 LI from nonzero
+  determinant; mathlib has no direct version). Vandermonde
+  perturbation in dim 2: leading $t^{2}$ coefficient factors as
+  $(\phi b - \phi a)(\phi c - \phi a)(\phi c - \phi b)$ and is nonzero
+  by injectivity. Imports added: `Mathlib.Algebra.Polynomial.Roots`
+  and `Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional`. Blueprint
+  chapter `chapter/laman-theorem.tex` flips the leaf to `\leanok`
+  with a prose proof. *(d-general lift via the moment curve is
+  follow-up — see `notes/Phase6.md` *Hand-off*.)* User design
+  choice: ship dim-2 first, plan to lift later (per the
+  commit-10 design pattern, when d-general is materially harder
+  than dim-2 the dim-2 surface is the right interim).
+
+- *Commit 10:* d-general lift; d=2 corollary surface
   retired. Added `rigidityMap_ker_finrank_ge_of_affinelySpanning` in
   `TrivialMotions.lean` (~3 lines via `.trans` + `Submodule.finrank_mono`).
   Generalised commit 3's `rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`
@@ -361,40 +385,49 @@ not `Set G.edgeSet`, so the assembly proof will transport via
 than carry it through the basis lemma + sparsity lemma + every
 intermediate API.
 
-**Next session — the affinely-spanning rigid placement leaf.** With the
-rank upper bound landed (commit 9) and lifted to d-general (commit 10),
-the only mathematically substantial remaining leaf is
-`lem:exists-affinelySpanning-rigid-placement-two` — the
-affinely-spanning-on-all-subsets refinement of
-`IsInfinitesimallyRigid.eventually`. Likely closes via `IsOpen`
-intersection plus density of the affinely-spanning set (the
-*Generic-placement affine-spanning lemma* blocker has the details: the
-bad set is a finite union of hyperplanes — one "three points
-collinear" equation per triple in $V$ — hence its complement is open
-and dense, and intersects the open IR neighborhood produced by
-`IsInfinitesimallyRigid.eventually`).
+**Next session — the sparsity-side lemma
+`lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning
+placement existence landed (commit 11), the remaining substantial
+work is the combinatorial sparsity argument: for `I ⊆ G.edgeSet`
+row-independent at `p` (where `p` affinely spans on every size-`≥ 3`
+subset, as supplied by commit 11), show the spanning subgraph
+`H = fromEdgeSet (Subtype.val '' I)` is `(2, 3)`-sparse. The argument
+splits by `|s|`:
 
-After that, the remaining work stacks cleanly:
-`lem:isSparse-of-rowIndependent-two` consumes the d-general rank upper
-bound `rigidityMap_finrank_range_le_of_affinelySpanning` at `d = 2`
-applied to the induced subframework $H[S], p|_S$ plus the
-affinely-spanning placement, then the assembly theorem
+- `|s| = 2`: `H.edgesIn ↑s` has at most one edge (simple graph), so
+  `1 + 3 ≤ 4 = 2 * 2`.
+- `|s| ≥ 3`: the rows of `G.RigidityMap p` indexed by
+  `H.edgesIn ↑s` are LI (subset of `I`) and supported on `s`-columns,
+  hence factor through `H[s].RigidityMap p|_s` and are LI there too.
+  The d-general rank upper bound
+  `rigidityMap_finrank_range_le_of_affinelySpanning` at `d = 2`
+  applied to `H[s]` at `p|_s` (using the affine-span hypothesis at
+  `↑s`) bounds the rank by `2|s| - 3`, hence `|H.edgesIn ↑s| ≤ 2|s| - 3`.
+
+The technical bridge is the "row supported on columns of `s` factors
+through `Framework s 2`" argument; this likely needs a custom
+restriction linear map and the precomposition factoring trick.
+`SimpleGraph.induce` can supply `H[s]`.
+
+After the sparsity lemma, the assembly theorem
 `thm:isGenericallyRigid-exists-isLaman-le` combines it with the
-basis-pick (commit 6) to close the iff. The sparsity-side lemma is the
-last step with genuine combinatorial content; the assembly is a
-mechanical glue.
+basis-pick (commit 6) and affinely-spanning placement (commit 11)
+to close the iff. The sparsity-side lemma is the last step with
+genuine combinatorial content; the assembly is mechanical glue.
 
-Suggested order: affinely-spanning-placement existence, then
-sparsity-side lemma, then assembly theorem.
+**D-general lift of affinely-spanning placement.** Deferred
+follow-up (no current commit). The same proof structure works for
+dim $d$ via the moment curve $w(v) = (\phi v, (\phi v)^2, \ldots,
+(\phi v)^d)$ and the $(d+1) \times (d+1)$ Vandermonde determinant,
+but requires routing through `Matrix.det_vandermonde` and a
+polynomial-expansion lemma for "$t^d$-coefficient of $\det(A + tB)$
+is $\det(B)$" — not pre-built in mathlib. Roughly 150 LoC additional.
 
-**Phase 6 completion remains uncertain in scope** as of commit 10. The
-linear-algebra side is now closed *and* d-general (basis-pick + rank
-lower bound + rank upper bound + kernel bound + d-general
-trivial-motions API); the remaining substantial work is one analysis
-lemma (`lem:exists-affinelySpanning-rigid-placement-two`) plus one
-combinatorial lemma (`lem:isSparse-of-rowIndependent-two`). Plan to
-assess scope after the affinely-spanning lemma's first attempt lands;
-do not commit to a one-session full Phase 6 close.
+**Phase 6 completion remains uncertain in scope** as of commit 11.
+The analysis side is closed (affinely-spanning rigid placement);
+the linear-algebra side is closed (basis-pick + rank bounds);
+remaining substantial work is the sparsity lemma plus assembly.
+Plan to assess scope after the sparsity lemma's first attempt lands.
 
 **Design pattern established (commit 10).** When a Phase 6 helper has
 a d-general statement that holds verbatim with no extra hypotheses
