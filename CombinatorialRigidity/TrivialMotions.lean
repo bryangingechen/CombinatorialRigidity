@@ -200,6 +200,40 @@ combines:
    each rotation coefficient. With those gone, the surviving equation `t = 0` then yields the
    translation coefficients via the standard-basis coord-read. -/
 
+/-- **Cross-term vanishing for the ordered-pair indexing.** Evaluating
+`elemSkewMap s.1 ⟨s.2.val, _⟩` (the generator at ordered-pair index `s : Σ x : Fin d, Fin x.val`)
+at the standard basis vector `e_{⟨j.val, _⟩}` and reading off coordinate `i` produces `1` exactly
+when `s = ⟨i, j⟩` and `0` for every other index.
+
+The strict inequalities `s.2.val < s.1.val` and `j.val < i.val` baked into the ordered-pair type
+rule out the symmetric cross-term in `elemSkewMap_apply`: that term would require both
+`i.val = s.2.val < s.1.val` and `s.1.val = j.val < i.val`, giving `i.val < s.1.val < i.val`. This
+lemma is the substantive content of *"the other cross-terms vanish for the ordered-pair index
+range"* used in `trivialMotionFamily_linearIndependent`. -/
+theorem elemSkewMap_ofLp_inr_apply (i : Fin d) (j : Fin i.val)
+    (s : Σ x : Fin d, Fin x.val) :
+    (elemSkewMap s.1 ⟨s.2.val, s.2.isLt.trans s.1.isLt⟩
+        (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ))).ofLp i
+      = if s = ⟨i, j⟩ then 1 else 0 := by
+  obtain ⟨a, b⟩ := s
+  change (elemSkewMap a ⟨b.val, b.isLt.trans a.isLt⟩
+        (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ))) i = _
+  rw [elemSkewMap_apply]
+  simp only [PiLp.ofLp_single, Pi.single_apply]
+  rcases eq_or_ne i a with rfl | hia
+  · -- `i = a`. The cross-term outer condition `i = ⟨b.val, _⟩` fails (`b.val < i.val`).
+    have h_not_ib : i ≠ (⟨b.val, b.isLt.trans i.isLt⟩ : Fin d) := by grind only
+    rw [if_pos rfl, if_neg h_not_ib, sub_zero]
+    simp only [Sigma.mk.injEq, heq_eq_eq, Fin.ext_iff, true_and]
+  · -- `i ≠ a`. Both surviving cross-terms vanish: the right one fails by the ordering chain.
+    have h_no_both : ¬ (i = (⟨b.val, b.isLt.trans a.isLt⟩ : Fin d) ∧
+        a = (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d)) := by grind only
+    have h_RHS : (⟨a, b⟩ : Σ x : Fin d, Fin x.val) ≠ ⟨i, j⟩ := by grind only
+    rw [if_neg hia, if_neg h_RHS, zero_sub, neg_eq_zero]
+    split_ifs with h1 h2
+    · exact absurd ⟨h1, h2⟩ h_no_both
+    all_goals rfl
+
 /-- The d-general trivial-motion family at a placement `p`. The left summand of the index type
 contributes the `d` coordinate translations (one per `i : Fin d`); the right summand contributes
 one elementary skew rotation per ordered pair `⟨i, j⟩` with `j : Fin i.val` (so `j.val < i.val`),
@@ -297,59 +331,18 @@ theorem trivialMotionFamily_linearIndependent [Fintype V] {p : Framework V d}
     rw [ht_coord i] at this
     exact this
   · -- Rotation coefficient: from `S = 0`, apply at `e_{j'}` and read coord `i`.
-    set j' : Fin d := ⟨j.val, j.isLt.trans i.isLt⟩ with hj'_def
-    have hS : S (PiLp.single 2 j' (1 : ℝ)) = 0 := by rw [h_S_zero]; rfl
-    have h_extract : (S (PiLp.single 2 j' (1 : ℝ))).ofLp i = c (.inr ⟨i, j⟩) := by
+    -- The sum collapses via `elemSkewMap_ofLp_inr_apply` (cross-term vanishing) + `sum_ite_eq'`.
+    have hS : S (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ)) = 0 := by
+      rw [h_S_zero]; rfl
+    have h_extract : (S (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ))).ofLp i
+        = c (.inr ⟨i, j⟩) := by
       rw [hS_def, LinearMap.sum_apply]
       simp only [LinearMap.smul_apply, WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul,
-        Pi.smul_apply, elemSkewMap_apply, PiLp.ofLp_single, Pi.single_apply, smul_eq_mul]
-      -- Each summand is `c (.inr s) * term(s)`; only `s = ⟨i, j⟩` contributes.
-      rw [Finset.sum_eq_single ⟨i, j⟩]
-      · -- Singled-out term `s = ⟨i, j⟩` evaluates to `1`.
-        have h_ij_ne : i ≠ j' := fun h => by
-          have : i.val = j.val := congrArg Fin.val h
-          omega
-        have h_b_eq : (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) = j' := rfl
-        rw [if_pos rfl, h_b_eq, if_pos rfl, if_neg h_ij_ne]
-        simp
-      · -- Off-diagonal terms are zero.
-        rintro ⟨a, b⟩ _ hne
-        -- The two `if-then-else` branches are individually zero.
-        have h_second : (if i = (⟨b.val, b.isLt.trans a.isLt⟩ : Fin d)
-            then (if a = j' then (1 : ℝ) else 0) else 0) = 0 := by
-          split_ifs with h_outer h_inner
-          · -- i = ⟨b.val, _⟩ so i.val = b.val < a.val; a = j' means a.val = j.val < i.val.
-            have h_ib : i.val = b.val := congrArg Fin.val h_outer
-            have h_aj : a.val = j.val := congrArg Fin.val h_inner
-            have h_blt : b.val < a.val := b.isLt
-            have h_jlt : j.val < i.val := j.isLt
-            omega
-          · rfl
-          · rfl
-        have h_first : (if i = a
-            then (if (⟨b.val, b.isLt.trans a.isLt⟩ : Fin d) = j' then (1 : ℝ) else 0) else 0)
-              = 0 := by
-          split_ifs with h_outer h_inner
-          · -- i = a and b.val = j.val. Then ⟨a, b⟩ = ⟨i, j⟩, contradicting hne.
-            exfalso
-            apply hne
-            have h_ia : a = i := h_outer.symm
-            subst h_ia
-            -- Goal: (⟨a, b⟩ : Σ x : Fin d, Fin x.val) = ⟨a, j⟩ — after subst i := a
-            -- b : Fin a.val, j : Fin a.val, b.val = j.val.
-            have h_bj_val : b.val = j.val := by
-              have h := h_inner
-              rw [hj'_def] at h
-              exact Fin.mk_eq_mk.mp h
-            congr 1
-            exact Fin.ext h_bj_val
-          · rfl
-          · rfl
-        rw [h_first, h_second, sub_zero, mul_zero]
-      · intro h
-        exact absurd (Finset.mem_univ _) h
+        Pi.smul_apply, smul_eq_mul]
+      simp_rw [elemSkewMap_ofLp_inr_apply i j, mul_ite, mul_one, mul_zero]
+      rw [Finset.sum_ite_eq' Finset.univ ⟨i, j⟩ (fun s => c (.inr s))]
+      simp
     rw [hS] at h_extract
-    -- h_extract : (0 : EuclideanSpace ℝ (Fin d)).ofLp i = c (.inr ⟨i, j⟩)
     simp at h_extract
     exact h_extract.symm
 

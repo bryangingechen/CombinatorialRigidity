@@ -22,16 +22,17 @@ Phase 5 closed with the iff statement
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-**Through commit 13 (this commit):** task-2 of the Lean-simplification
-pass and its mirror follow-up are landed. The linear-algebra side is
-closed d-general (rank bounds, kernel bound, basis-pick) and the
-analysis side is closed at dim 2 (affinely-spanning rigid placement).
-The only red nodes left in `chapter/laman-theorem.tex` are
-`lem:isSparse-of-rowIndependent-two` (the substantive sparsity step)
-and the assembly target `thm:isGenericallyRigid-exists-isLaman-le`.
-See *Done* below for per-commit detail and *Hand-off / next phase* for
-the sparsity sketch + the d-general lift of the affinely-spanning
-placement that still sits in the queue.
+**Through commit 14 (this commit):** task-3 of the Lean-simplification
+pass is landed; tasks 1–3 of the pass are now all resolved (task 4 —
+the d-general lift of the affinely-spanning placement — remains in
+the queue). The linear-algebra side is closed d-general (rank bounds,
+kernel bound, basis-pick) and the analysis side is closed at dim 2
+(affinely-spanning rigid placement). The only red nodes left in
+`chapter/laman-theorem.tex` are `lem:isSparse-of-rowIndependent-two`
+(the substantive sparsity step) and the assembly target
+`thm:isGenericallyRigid-exists-isLaman-le`. See *Done* below for
+per-commit detail and *Hand-off / next phase* for the sparsity sketch
++ the d-general lift of the affinely-spanning placement.
 
 ## Architectural choices made up front
 
@@ -273,7 +274,7 @@ entries for resolution details.
   `Submodule.span_image` + `Basis.dualBasis.span_eq` +
   `Submodule.map_top` chain. FRICTION *No packaged ℝ-linear
   injection* flipped to **[resolved]**.
-- *Commit 13 (this commit):* mirror the two upstream-eligible
+- *Commit 13 (`c27c20e`):* mirror the two upstream-eligible
   linear-algebra lemmas surfaced by task 2. New file
   `CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/Basis.lean`
   carries `Pi.basisFun_dualBasis` (`@[simp]`) and
@@ -284,6 +285,26 @@ entries for resolution details.
   genuinely absent from upstream (`Dual/Basis.lean` does not even
   import `StdBasis.lean`, which is the structural reason gap #1
   was unfilled).
+- *Commit 14 (this commit):* Lean-simplification task 3
+  (*"cross-terms vanish hides a 30-line case-split"*). Hoisted
+  candidate-2 from the task list: new named lemma
+  `elemSkewMap_ofLp_inr_apply` (~33 lines) captures the
+  cross-term-vanishing fact "evaluating
+  `elemSkewMap s.1 ⟨s.2.val, _⟩` at the basis vector
+  `e_{⟨j.val, _⟩}` and reading coord `i` gives the
+  single indicator `if s = ⟨i, j⟩ then 1 else 0`". The rotation
+  branch of `trivialMotionFamily_linearIndependent` then collapses
+  from ~50 lines (`Finset.sum_eq_single` + 30-line `split_ifs` +
+  `omega` over `Fin.val` comparisons) to ~14 lines (one
+  `simp_rw [elemSkewMap_ofLp_inr_apply ...]` + `Finset.sum_ite_eq'`).
+  The helper proof uses `simp only [Sigma.mk.injEq, heq_eq_eq,
+  Fin.ext_iff, true_and]` to align the sigma- and Fin-level
+  equalities (a `rw [Fin.mk.injEq]` motive-typing issue forced the
+  `simp` route — `if-then-else` inner Props don't admit the rewrite
+  cleanly). Three `omega` closers replaced with `grind only`
+  per TACTICS § 1. The `set j' := ⟨j.val, _⟩` scaffold in the
+  outer proof is retired in favour of the explicit form so the
+  helper's literal `⟨j.val, j.isLt.trans i.isLt⟩` shape matches.
 
 **Encoding choice rationale (`I : Set G.edgeSet`).** The index type
 sits inside `G.edgeSet`, matching the blueprint's "$I \subseteq E(G)$".
@@ -325,25 +346,18 @@ Tasks, ordered by severity (heaviest first):
    `Mathlib/LinearAlgebra/Dual/Basis.lean`. See commit-12 / commit-13
    *Done* entries.
 
-3. **`trivialMotionFamily_linearIndependent` — "cross-terms vanish"
-   hides a 30-line case-split.** Lean (`TrivialMotions.lean:316-348`)
-   uses `Finset.sum_eq_single` whose off-term branch is a 30-line
-   `split_ifs` + `omega` over `Fin.val` comparisons, handling each
-   of `elemSkewMap`'s two `if-then-else` summands separately.
-   *Independent of task 4* — this proof is already d-general; the
-   d-general lift of the affinely-spanning placement doesn't touch
-   `TrivialMotions.lean`. Candidate fixes:
-   - Re-express `elemSkewMap i j x` so its application is a single
-     `Pi.single`-style expression rather than nested `if`s — e.g.
-     `x j • PiLp.single 2 i 1 - x i • PiLp.single 2 j 1`. Then
-     `simp [Finset.sum_ite_eq', Pi.single_apply]` should collapse the
-     off-diagonal case to one or two lines.
-   - Hoist "off-diagonal ordered-pair products of `elemSkewMap`
-     vanish" into a named lemma on `elemSkewMap` itself (separate
-     from the LI proof), so the LI proof reads at the level of math.
-   - If neither, expand the blueprint's terse "the other cross-terms
-     vanish for the ordered-pair index range" to one sentence naming
-     the `(i, j) ≠ (a, b)` case-split.
+3. ~~**`trivialMotionFamily_linearIndependent` — "cross-terms vanish"
+   hides a 30-line case-split.**~~ **Resolved** (commit 14). Candidate
+   2 (hoist a named lemma) won outright. New
+   `elemSkewMap_ofLp_inr_apply` (~33 lines) captures the
+   cross-term-vanishing fact directly; the rotation branch of the
+   LI proof collapses from ~50 lines to ~14 lines via
+   `simp_rw [elemSkewMap_ofLp_inr_apply ...]` +
+   `Finset.sum_ite_eq'`. The math now reads as math at both levels:
+   the helper's docstring spells out the
+   `i.val < s.1.val < i.val` contradiction once, and the LI proof
+   reads "apply the cross-term lemma, then `sum_ite_eq'`
+   collapses." See commit-14 *Done* entry.
 
 4. **D-general lift of `exists_affinelySpanning_rigid_placement_two`**
    (promoted from *Deferred follow-up*). The blueprint's "the
