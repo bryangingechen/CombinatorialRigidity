@@ -169,6 +169,13 @@ a perpendicular perturbation packaged in
 `exists_nonCollinear_rigid_placement_dim_two`. See `notes/Phase5.md`
 for the full lemma list and proof techniques.
 
+**Open refactor proposal** (not a blocker): the three contradiction
+templates in the milestone-1 blocker argument
+(`IsLaman.contradiction_{one,two,three}_pair`) plus the degree-3
+dispatcher can be unified through two reusable `(k, ℓ)`-shaped
+primitives, saving ~210 LoC. Full plan in `notes/Phase5.md`'s
+appendix.
+
 ### Phase 6 — Laman's theorem, (⇒) direction (`LamanTheorem.lean`, `RigidityMatroid.lean`)
 
 If `G` is generically rigid in dim 2, the rigidity matroid has full

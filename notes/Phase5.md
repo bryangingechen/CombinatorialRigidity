@@ -24,6 +24,15 @@ The iff's `mp` arm reduces to Phase 6's `IsGenericallyRigid.
 exists_isLaman_le` (Lovász–Yemini), the sole remaining `sorry` in the
 project.
 
+**One open refactor proposal**, surfaced during the Phase 1–5
+blueprint review and documented at the bottom of this file
+(*Appendix: degree-3 contradiction unification*): the milestone-1
+contradiction templates `IsLaman.contradiction_{one,two,three}_pair`
+(289 LoC across three private lemmas) plus the 100-LoC degree-3
+dispatcher in `exists_typeI_or_typeII_reverse` can be collapsed to
+one unified helper backed by two reusable `(k, ℓ)`-shaped primitives,
+saving ~210 LoC net. Not a blocker; standalone work item.
+
 Phase 5 target — the (⇐) direction of Laman's theorem
 (`IsLaman.isGenericallyRigid_two`) — plus the iff composition with
 Phase 6's `IsGenericallyRigid.exists_isLaman_le`. The proof is a
@@ -624,6 +633,14 @@ documented in the second-pass audit transcript and was deferred either
 because (a) the savings are marginal vs. the abstraction cost or (b) the
 unifying helper would have to cover too many shape variations:
 
+- *Degree-3 contradiction unification.* Standalone refactor candidate
+  surfaced during the blueprint review. Three contradiction templates
+  + 14-branch dispatcher collapse to one unified helper backed by two
+  `(k, ℓ)`-shaped primitives (`IsTightOn.union_with_bonus`,
+  `IsTightOn.insert_vertex_with_edges`). ~210 LoC saved, primitives
+  upstream-eligible. **Full plan in the appendix at the bottom of
+  this file**; start with the spike (item 1 of the execution plan
+  there) as the go/no-go gate.
 - *`pair_add_smul_add_smul_iff` staging.* Three call sites
   (`exists_off_line_off_finite_dim_two`, `exists_typeII_q_on_line_dim_two`,
   `h_LI_perturbed` in `exists_nonCollinear_rigid_placement_dim_two`) build
@@ -648,3 +665,253 @@ eventually` is available if rank-stability arguments are needed
 upstream of the (⇒) direction). Lovász–Yemini's "rigidity matroid =
 (2, 3)-count matroid in dim 2" is the deep step; Whiteley's polarity
 is an alternative route. See ROADMAP §6.
+
+## Appendix: degree-3 contradiction unification (proposal)
+
+Surfaced during the Phase 1–5 blueprint review. Standalone refactor
+candidate: collapses the three `IsLaman.contradiction_{one,two,three}_pair`
+templates plus the 14-branch `by_cases` dispatcher in
+`IsLaman.exists_typeI_or_typeII_reverse` into one helper backed by two
+reusable `(k, ℓ)`-shaped primitives. ~240 LoC saved if executed
+end-to-end; the two primitives are mathlib-shaped and may upstream.
+
+**Status when this appendix was written:** investigated but not
+attempted. The blueprint review session committed the analysis only
+(commit `559e71b`-era), not any Lean changes. The next agent picking
+this up should treat the spike step (item 1 of the *Execution plan*
+below) as the go/no-go gate; if `IsTightOn.union_with_bonus` lands
+cleanly and derives `contradiction_two_pair`, the rest follows.
+
+### Mathematical observation
+
+For any two finite vertex sets $S_1, S_2$ in a $(k, \ell)$-sparse
+graph $G$, write $\delta(T) := k|T| - e(T) - \ell$ for the sparsity
+deficiency of $T$ (so tight ⇔ $\delta = 0$, sparse ⇒ $\delta \ge 0$
+when $\ell \le k|T|$). Let $F$ be a set of "bonus" edges in
+$\edgesIn{S_1 \cup S_2}$ that are disjoint from
+$\edgesIn{S_1} \cup \edgesIn{S_2}$. By inclusion–exclusion on edges
+plus tightness of $S_1, S_2$,
+
+$$\delta(S_1 \cup S_2) \;\le\; e(S_1 \cap S_2) + \ell - k \cdot |S_1 \cap S_2| - |F|.$$
+
+For $(k, \ell) = (2, 3)$ this is $\delta \le e(S_1 \cap S_2) + 3 - 2|S_1 \cap S_2| - |F|$, so the union is tight iff
+
+$$|F| + 2|S_1 \cap S_2| \;\ge\; e(S_1 \cap S_2) + 3. \tag{$\star$}$$
+
+All three current contradiction templates close by a specialization of
+$(\star)$:
+
+| Template                              | $|S_1 \cap S_2|$ | $e(S_1\cap S_2)$ | Required $|F|$ | Bonus source |
+|---------------------------------------|------------------|-------------------|----------------|--------------|
+| `IsTightOn.union_inter` (exists)      | $\ge 2$          | $\le 1$           | $0$            | —            |
+| 2-pair singleton-intersection         | $1$              | $0$               | $1$            | cross-edge of the adjacent pair |
+| 3-pair singleton-chain (step 1)       | $1$              | $0$               | $0$ → 1-deficient ok | — |
+| 3-pair singleton-chain (step 2)       | $2$              | $0$ (non-adj)     | $0$            | non-adjacency saves the count |
+
+The 1-pair template uses a sibling primitive — tight extension by one
+vertex with two boundary edges — which is *not* a special case of
+$(\star)$ because the singleton $\{w\}$ isn't tight in $(2, 3)$.
+
+### Proposed primitives
+
+Both stated for general $(k, \ell)$; both should plausibly upstream to
+`Mathlib/Combinatorics/SimpleGraph/Sparsity.lean` (or wherever
+`IsTightOn` ends up) once they exist.
+
+**P1.** `IsTightOn.union_with_bonus` — generalizes the existing
+`IsTightOn.union_inter`:
+
+```
+theorem IsTightOn.union_with_bonus
+    [Finite V] {G : SimpleGraph V} (k ℓ : ℕ) {S₁ S₂ : Finset V}
+    (h₁ : G.IsTightOn k ℓ S₁) (h₂ : G.IsTightOn k ℓ S₂)
+    (hsp : G.IsSparse k ℓ) {F : Set (Sym2 V)}
+    (hF_sub : F ⊆ G.edgesIn ↑(S₁ ∪ S₂))
+    (hF_disj : Disjoint F (G.edgesIn ↑S₁ ∪ G.edgesIn ↑S₂))
+    (hF_finite : F.Finite)
+    (h_close : F.ncard + k * (S₁ ∩ S₂).card ≥
+               (G.edgesIn ↑(S₁ ∩ S₂)).ncard + ℓ) :
+    G.IsTightOn k ℓ (S₁ ∪ S₂)
+```
+
+Proof: supermodularity (`edgesIn_ncard_add_le`) plus
+`Set.ncard_union_eq` on $\edgesIn{S_1} \cup \edgesIn{S_2}$ and $F$,
+plus tightness rewrites, feeds an `omega` discharge of $(\star)$, then
+`IsSparse.isTightOn_of_le` closes. Estimate ~30 LoC. Specializes to
+the existing `IsTightOn.union_inter` when $F = \emptyset$ and
+$|S_1 \cap S_2| \ge \lceil \ell / k \rceil$.
+
+**P2.** `IsTightOn.insert_vertex_with_edges` — tight extension by a
+vertex with $k$ boundary edges:
+
+```
+theorem IsTightOn.insert_vertex_with_edges
+    [Finite V] {G : SimpleGraph V} (k ℓ : ℕ) {S : Finset V}
+    (h : G.IsTightOn k ℓ S) (hsp : G.IsSparse k ℓ)
+    {w : V} (hw : w ∉ S) {F : Set (Sym2 V)}
+    (hF_sub : F ⊆ G.edgesIn ↑(insert w S))
+    (hF_disj : Disjoint F (G.edgesIn ↑S))
+    (hF_finite : F.Finite) (h_card : k ≤ F.ncard) :
+    G.IsTightOn k ℓ (insert w S)
+```
+
+Proof: $e(\text{insert } w\, S) \ge e(S) + |F| = (k|S| - \ell) + |F|
+\ge k(|S| + 1) - \ell$, then squeeze via `IsSparse.isTightOn_of_le`.
+Estimate ~25 LoC. The $|F| \ge k$ hypothesis is exactly the number of
+"new" edges needed to absorb the extra vertex.
+
+### Proposed unified contradiction
+
+Replace `IsLaman.contradiction_{one,two,three}_pair` with one helper
+encoding the dispatcher's actual structure (3 pairs, each either
+adjacent or with a tight blocker; at least one non-adjacent):
+
+```
+private lemma IsLaman.False_of_pairwise_blocker_or_edge
+    [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {v a b c : V}
+    (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (h_ab : G.Adj a b ∨ ∃ S, v ∉ S ∧ a ∈ S ∧ b ∈ S ∧ G.IsTightOn 2 3 S)
+    (h_ac : G.Adj a c ∨ ∃ S, v ∉ S ∧ a ∈ S ∧ c ∈ S ∧ G.IsTightOn 2 3 S)
+    (h_bc : G.Adj b c ∨ ∃ S, v ∉ S ∧ b ∈ S ∧ c ∈ S ∧ G.IsTightOn 2 3 S)
+    (h_some_nonadj : ¬ G.Adj a b ∨ ¬ G.Adj a c ∨ ¬ G.Adj b c) :
+    False
+```
+
+Internally: case-split on `h_ab, h_ac, h_bc` (8 leaves, but flat, not
+nested). All-adjacent leaf contradicts `h_some_nonadj`. The remaining
+7 leaves split by blocker count:
+
+- **3 blockers (3 non-adj pairs).** Two applications of
+  `IsTightOn.union_with_bonus`: first `S_{ab} \cup S_{ac}` with
+  `|S_{ab} \cap S_{ac}| = 1`, `F = ∅`; the resulting union is at most
+  1-deficient. Then $(S_{ab} \cup S_{ac}) \cup S_{bc}$ with
+  intersection $\{b, c\}$ and $e = 0$ (non-adjacency of $\{b, c\}$),
+  again with $F = \emptyset$. (Edge case: if any pairwise intersection
+  is $\ge 2$, the existing `IsTightOn.union_inter` produces a tight
+  $T$ directly without going through the singleton chain.) The
+  resulting $T$ feeds `no_isTightOn_excluding_three_neighbors`.
+
+- **2 blockers + 1 edge.** Say $\{x, y\}$ is the edge and blockers are
+  $S_{xz}, S_{yz}$. Sub-case on $|S_{xz} \cap S_{yz}|$. If $\ge 2$,
+  `IsTightOn.union_inter`. If $= 1$ (must be $\{z\}$),
+  `IsTightOn.union_with_bonus` with $F = \{\{x, y\}\}$ (one bonus
+  edge). Both subcases produce tight $T$ containing $\{x, y, z\}$.
+
+- **1 blocker + 2 edges.** Say blocker $S \supseteq \{x, y\}$ and
+  edges $\{x, z\}, \{y, z\} \in E(G)$ with third neighbor $z$.
+  Sub-case on $z \in S$. If yes, $S$ already contains $\{x, y, z\}$
+  and feeds the primitive. If no, `IsTightOn.insert_vertex_with_edges`
+  with $w = z$ and $F = \{\{x, z\}, \{y, z\}\}$ produces tight
+  $\mathrm{insert}\, z\, S$.
+
+- **0 blockers + 3 edges.** Ruled out by `h_some_nonadj`.
+
+Each leaf is 2–4 lines of bookkeeping plus the relevant primitive
+call. Estimate ~80 LoC total for the unified lemma.
+
+### Dispatcher cleanup
+
+With the unified contradiction in hand, the degree-3 branch of
+`IsLaman.exists_typeI_or_typeII_reverse` (currently lines ~1266–1363,
+about 100 LoC of 14-branch `by_cases`) collapses to:
+
+```
+-- For each of the three pairs, get an Or:
+--   inl : edge of G (from the by_cases discriminator)
+--   inr : G' is Laman (return as witness) or blocker via
+--         typeII_reverse_witness_or_blocker.
+-- Early-return on any witness; otherwise feed the three Or's to
+-- False_of_pairwise_blocker_or_edge.
+```
+
+Estimate ~40 LoC. The pattern is uniform per pair — could probably be
+factored further into a `helper_for_pair` returning
+`Or (witness) (G.Adj _ _ ∨ blocker)` and then composing the three
+calls, but that's polish.
+
+### Size budget
+
+|                    | Before | After |
+|--------------------|--------|-------|
+| 3 templates        | 289    | —     |
+| Unified contradiction | —    | ~80   |
+| `union_with_bonus` | —      | ~30   |
+| `insert_vertex_with_edges` | —  | ~25   |
+| Dispatcher (deg-3) | 100    | ~40   |
+| **Total**          | **389** | **~175** |
+
+Net ~210 LoC saved (rough — the dispatcher's degree-2 branch and the
+overshoot primitive are unchanged), plus two reusable primitives.
+
+### Execution plan
+
+1. **Spike (go/no-go gate).** Write `IsTightOn.union_with_bonus` in
+   `Sparsity.lean` (general $(k, \ell)$). Independently re-derive
+   `IsLaman.contradiction_two_pair` from it in a scratch file or as
+   a second proof of the existing lemma. If the singleton-intersection
+   `F = \{\{x,y\}\}` case closes cleanly through the primitive, the
+   rest of the refactor is mechanical. **If it doesn't**, the issue
+   is most likely the disjointness obligation (`F` vs `edgesIn S_1 ∪
+   edgesIn S_2`); think harder about the right formulation before
+   committing to the larger refactor.
+2. **`insert_vertex_with_edges` in `Sparsity.lean`.** Derive
+   `contradiction_one_pair` from it as the validation case.
+3. **3-pair singleton chain.** This is the trickiest because it
+   chains two `union_with_bonus` calls; verify the bookkeeping for the
+   second call's intersection (`(S_{ab} \cup S_{ac}) \cap S_{bc} =
+   \{b, c\}$, $e = 0$ from $\{b, c\}$ non-adj) carries through
+   without an extra primitive. If it doesn't, may need a small
+   "$\edgesIn{\{x, y\}} = \emptyset$ when $\{x, y\} \notin E(G)$"
+   helper — but that's already implicit in `edgesIn`'s definition.
+4. **Unified `False_of_pairwise_blocker_or_edge`.** Write it; delete
+   the three private templates.
+5. **Dispatcher cleanup.** Rewrite the degree-3 branch.
+6. **Validate.** `lake build` + `lake lint` clean; spot-check
+   downstream proofs (`IsLaman.isGenericallyRigid_two`,
+   `isGenericallyRigid_two_iff_exists_isLaman_le`) still elaborate.
+
+### Risks / caveats
+
+- **Disjointness obligations.** `union_with_bonus`'s `hF_disj`
+  hypothesis is the place where the refactor could become more
+  painful than the savings warrant. Each call site needs to exhibit
+  the $F$ set explicitly and prove it's disjoint from
+  $\edgesIn{S_1} \cup \edgesIn{S_2}$. The current templates do this
+  inline as part of the proof; with the primitive it becomes an
+  explicit obligation. Expected to be manageable but worth
+  validating in the spike.
+- **Upstream-eligibility.** The new primitives are stated for general
+  $(k, \ell)$ and should plausibly upstream alongside `IsTightOn`
+  (whose current home is the project's `Sparsity.lean`). If
+  `IsTightOn` itself is upstreamed first, the primitives go with it.
+  Worth noting but not a refactor blocker.
+- **Phase 6 reuse.** Lovász–Yemini's rigidity-matroid arguments use
+  `(2, 3)`-tight set operations heavily; the new primitives are
+  candidates for reuse. Worth checking once Phase 6 has a concrete
+  plan whether they're the right shape or whether some other
+  formulation (e.g. directly on matroid circuits) is more natural.
+  Don't preemptively reshape the primitives for hypothetical Phase 6
+  needs — react to actual reuse pressure.
+- **The "$F = \emptyset$, 1-deficient OK" pattern in the 3-pair
+  singleton chain.** Step 1 of the chain produces a set that's only
+  bounded above by 1-deficiency from `union_with_bonus` ($(\star)$
+  gives $\delta \le 1$). Step 2 then closes via $|S_1 \cap S_2| = 2,
+  e = 0$ which "uses up" that deficiency. The unified primitive
+  `union_with_bonus` should still produce a tight $T$ in the chain
+  because the *combined* $(\star)$ across both steps closes; verify
+  that the formulation produces this naturally rather than needing a
+  special 1-deficient-intermediate variant. If it does need a
+  variant, the savings shrink.
+
+### Cross-references
+
+- Blueprint review discussion: commit `559e71b` (the honesty-policy
+  commit's commit message links the policy back to this proposal's
+  origin).
+- Current contradiction templates and dispatcher:
+  `CombinatorialRigidity/Henneberg.lean:802–1363`.
+- `IsTightOn.union_inter` (the existing primitive this proposal
+  generalizes): `CombinatorialRigidity/Sparsity.lean` (search
+  `IsTightOn.union_inter`).
+- `IsSparse.isTightOn_of_le` (the squeeze): same file.
