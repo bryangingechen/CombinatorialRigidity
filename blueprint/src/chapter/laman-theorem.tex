@@ -372,6 +372,8 @@ below provides one at any dimension $d$ (consumed here at $d = 2$).
 
 \begin{lemma}[$(2, 3)$-sparsity from row-independence, dim $2$]
   \label{lem:isSparse-of-rowIndependent-two}
+  \lean{SimpleGraph.isSparse_of_edgeSetRowIndependent_dim_two}
+  \leanok
   \uses{def:isSparse, def:edgeSet-rowIndependent,
     lem:rigidityMap-finrank-range-le-of-affinelySpanning,
     lem:exists-affinelySpanning-rigid-placement}
@@ -382,23 +384,29 @@ below provides one at any dimension $d$ (consumed here at $d = 2$).
   edge set $I$ is $(2, 3)$-sparse.
 \end{lemma}
 \begin{proof}
+  \leanok
   Fix $S \subseteq V$. The edges of $H$ with both endpoints in $S$
-  are exactly the edges of the induced subgraph $H[S]$; we show
+  are in $\mathrm{Sym}_{2}\,\iota$-bijection with the edges of the
+  induced subgraph $H[S]$ via the canonical lift; we show
   $|\edgesIn[H]{S}| + 3 \le 2 |S|$.
 
   For $|S| \le 1$ the proviso $3 \le 2|S|$ in the definition of
   $(2, 3)$-sparsity is false, so the bound holds vacuously. For
-  $|S| = 2$ the induced subgraph has at most one edge, and
+  $|S| = 2$ the induced subgraph $H[S]$ has at most one edge (a simple
+  graph on two vertices has at most one edge,
+  \texttt{card\_edgeFinset\_le\_card\_choose\_two}), and
   $1 + 3 \le 4 = 2 |S|$.
 
   For $|S| \ge 3$: the rows of $\mathrm{RigidityMap}\,G\,p$ indexed
   by $\edgesIn[H]{S}$ are supported on the columns indexed by $S$
   (each row's nonzero entries are at the two endpoints of the
   corresponding edge, both of which lie in $S$). Hence row-independence
-  of these rows in the full matrix is equivalent to row-independence
-  in the column-restricted matrix, which is exactly the rigidity
-  matrix $\mathrm{RigidityMap}\,(H[S])\,(p|_{S})$ (modulo identifying
-  the $S$-indexed columns with $\mathrm{Framework}\,S\,2$). By
+  of these rows in the full matrix transports through the
+  framework-restriction map $\mathrm{Framework}\,V\,2 \to
+  \mathrm{Framework}\,S\,2$ to row-independence of the
+  $S$-indexed-column matrix, which is exactly the rigidity
+  matrix $\mathrm{RigidityMap}\,(H[S])\,(p|_{S})$. The transport uses
+  \texttt{LinearIndependent.of\_comp} on the dual-map side. By
   \cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning} at
   $d = 2$ applied to $H[S]$ at the affinely-spanning placement
   $p|_{S}$, the rank of that matrix is at most $2 |S| - 3$. Since
