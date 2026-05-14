@@ -4,7 +4,7 @@
 This blueprint accompanies the
 \href{https://github.com/bryangingechen/CombinatorialRigidity}{\texttt{CombinatorialRigidity}}
 Lean~4 / mathlib4 formalization. The goal is a proof of \textbf{Laman's
-theorem} (1970): for $n \ge 2$, a graph $G$ on $n$ vertices is generically
+theorem}~\cite{laman1970}: for $n \ge 2$, a graph $G$ on $n$ vertices is generically
 rigid in the plane if and only if it contains a spanning subgraph $H$ with
 $|E(H)| = 2n - 3$ such that every subgraph $H[S]$ on $k \ge 2$ vertices
 satisfies $|E(H[S])| \le 2k - 3$. Such an $H$ is called a \emph{Laman
@@ -15,7 +15,8 @@ characterize Laman graphs inductively via two combinatorial moves (Type~I
 adds a vertex of degree~2; Type~II splits an edge), prove the moves
 preserve generic rigidity, and combine these facts to deduce the ``Laman
 implies generically rigid'' direction. The converse direction goes through
-the rigidity matroid.
+the rigidity matroid. For background on combinatorial rigidity, see
+\cite{graverServatiusServatius1993,jordan2016}.
 
 \subsection*{Phase plan}
 

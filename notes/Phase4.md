@@ -67,8 +67,8 @@ wrong, revisit there.
     "rigidity property" typeclass — premature, and the right
     abstraction will be clearer once at least one alternative
     notion is on disk.
-  * **Abstract rigidity matroid** (Whiteley) lives at the
-    matroid layer, not here; it's the natural consumer of
+  * **Abstract rigidity matroid** (Graver 1991; GSS 1993) lives at
+    the matroid layer, not here; it's the natural consumer of
     `Mathlib.Combinatorics.Matroid` and would land in a future
     `RigidityMatroid.lean` if Phase 5's hard direction wants it.
     Keep `RigidityMap` and `TrivialMotions` matroid-agnostic so

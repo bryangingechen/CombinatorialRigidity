@@ -123,7 +123,8 @@ named theorems' own docstrings for the full statement.
 ### Milestone 1 — Reverse decomposition (`Henneberg.lean`) — done
 
 Target: `IsLaman.exists_typeI_or_typeII_reverse` — strengthened
-decomposition asserting `G'.IsLaman` (Whiteley §3 / Jordán §3.1).
+decomposition asserting `G'.IsLaman` (Tay–Whiteley 1985; Jordán 2016
+§2.2).
 
 - [x] `typeI_reverse_isLaman` / `typeI_isLaman_iff` — typeI half.
 - [x] (Helper) `edgesIn_ncard_add_le` in `EdgesIn.lean` — modular
@@ -678,8 +679,9 @@ plan the rigidity matroid. `RigidityMatroid.lean` stands up on top of
 the now-stable `Framework.lean` API (note: `IsInfinitesimallyRigid.
 eventually` is available if rank-stability arguments are needed
 upstream of the (⇒) direction). Lovász–Yemini's "rigidity matroid =
-(2, 3)-count matroid in dim 2" is the deep step; Whiteley's polarity
-is an alternative route. See ROADMAP §6.
+(2, 3)-count matroid in dim 2" is the deep step; Tay's 1993 short
+proof of Laman's theorem is one alternative route to the same
+identity. See ROADMAP §6.
 
 ## Appendix: degree-3 contradiction unification (post-mortem)
 
