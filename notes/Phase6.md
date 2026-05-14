@@ -16,18 +16,43 @@ entry against the now-stable Lean.
 
 ## Current state
 
-Just opened. Phase 5 closed with the iff statement
+Phase 5 closed with the iff statement
 `isGenericallyRigid_two_iff_exists_isLaman_le` composed but
 `sorry`-blocked on `IsGenericallyRigid.exists_isLaman_le`
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-The existing blueprint chapter `chapter/laman-theorem.tex` carries
-`thm:isGenericallyRigid-exists-isLaman-le` as a sorry-blocked
-(red, no `\leanok`) statement with a one-paragraph proof sketch. The
-*first concrete Phase 6 commit after this one* (see *Hand-off* below)
-expands that proof sketch into a forward-mode dep-graph of
-intermediate definitions and lemmas.
+**Forward-mode skeleton landed** (commit `39b2152`): the
+$\Rightarrow$ subsection of `chapter/laman-theorem.tex` now carries
+six new red nodes laying out the intended proof — `def:edgeSet-rowIndependent`,
+`lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two`,
+`lem:exists-rowIndependent-edge-basis`,
+`lem:trivialMotions-three-le-ker-of-affinelySpanning-two`,
+`lem:rigidityMap-finrank-range-le-of-affinelySpanning-two`,
+`lem:exists-affinelySpanning-rigid-placement-two`,
+`lem:isSparse-of-rowIndependent-two` — plus the rewritten proof
+sketch of the target theorem referencing them. The dep-graph at
+`blueprint/web/dep_graph_document.html` is the authoritative view.
+
+**Attribution research done** (this session, not yet reflected in
+the chapter): the proof strategy is the necessary direction of
+Laman's theorem in its rigidity-matrix formulation. Attributions
+verified against Jordán 2016 §1.3.1 + §2.2 (local PDF, see
+`../CLAUDE.md` *Reading PDFs in `.refs/`*):
+- **Asimow–Roth 1978** (Trans. AMS **245**, 279–289) is the
+  standard ref for the linear-algebra framework — to be added to
+  `bibliography.bib` and cited on `def:rigidityMap`,
+  `def:isInfinitesimallyRigid`, and the trivial-motions lemma.
+- **Laman 1970** is the primary attribution for the existence of
+  the Laman spanning subgraph (necessary direction of his theorem).
+- The current "Following Lovász–Yemini" framing in the section
+  preamble overstates LY's role: LY's contribution is the harder
+  converse direction, which we do *not* prove. The prose will be
+  revised to call out Laman + Asimow–Roth + an acknowledgement of
+  LY for the matroid framing.
+- Maxwell 1864 is the historical primary for the counting argument
+  but Jordán treats it as classical; we follow Jordán and skip it
+  unless the user wants historical depth.
 
 ## Architectural choices made up front
 
@@ -147,26 +172,34 @@ forward-mode entries yet.
 
 ## Hand-off / next phase
 
-**Commit 0 (this commit):** seed this file, flip the ROADMAP Status
-row, surface the blueprint workflow in the top-level `CLAUDE.md`.
-No Lean code, no blueprint TeX changes.
+**Done:**
+- *Commit 0 (`fdbcbd9`):* Phase 6 notes seeded; ROADMAP Status row
+  flipped; forward-mode workflow surfaced in top-level `CLAUDE.md`.
+- *Commit 1 (`39b2152`):* forward-mode blueprint skeleton for the
+  $\Rightarrow$ direction. Six new red nodes in
+  `chapter/laman-theorem.tex` with `\uses{...}` chains; no
+  `\lean{...}` or `\leanok` yet. Renders cleanly under
+  `inv bp && inv web`; static checks pass.
 
-**Commit 1 (next):** forward-mode blueprint skeleton for the
-$\Rightarrow$ direction. Expand `chapter/laman-theorem.tex`'s
-$\Rightarrow$-direction subsection from a single sorry-blocked
-node into a dep-graph: target theorem,
-intermediate definition(s) (e.g.
-`def:rigidity-row-independent` or similar), key intermediate lemmas
-(rank-lower-bound, $(2,3)$-sparsity-from-row-independence,
-basis-pick), `\uses{...}` chains based on the math. **No**
-`\lean{...}` or `\leanok` on the new entries (they don't exist in
-Lean yet). Render dep-graph (`inv bp && inv web`); human reviews
-before any Lean code lands.
+**Next concrete commit candidates** (either order; both are
+docs-only and human-reviewable):
 
-**Commit 2+:** one leaf-most red node per session. Likely first leaf:
-the rank lower bound (one-liner from `IsInfinitesimallyRigid` +
-rank-nullity), implemented as the first new lemma in
-`RigidityMatroid.lean`.
+- **Bibliography + prose refinement.** Add `asimowRoth1978` to
+  `bibliography.bib`; cite it on `def:rigidityMap`,
+  `def:isInfinitesimallyRigid`, and
+  `lem:trivialMotions-three-le-ker-of-affinelySpanning-two`. Rewrite
+  the $\Rightarrow$-section preamble in `chapter/laman-theorem.tex`
+  to attribute the necessary direction to Laman 1970 + Asimow–Roth
+  1978 rather than the current overstated "Following Lovász–Yemini"
+  framing. Verification path: Jordán 2016 §1.3.1 + bib (already
+  cross-checked this session — see *Current state*).
+- **First leaf Lean lemma.** Pick the leaf-most red node and
+  formalize. Candidates by likely cost:
+  - `lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two` —
+    one-liner from `IsInfinitesimallyRigid` + rank-nullity. Lives
+    in `RigidityMatroid.lean` (new file).
+  - `def:edgeSet-rowIndependent` — definition only, no proof
+    obligation. Probably bundled with the rank-ge lemma.
 
 **Phase 6 completion is uncertain in scope.** Honest read: the rank
 lower bound and the basis-pick are linear-algebra plumbing and

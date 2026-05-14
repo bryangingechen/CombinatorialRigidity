@@ -84,6 +84,23 @@ blueprint chapter.)
   for the workflow-mode rationale. Backfill mode (Phases 1–5) writes
   the blueprint chapter end-to-end after the Lean lands; forward mode
   inverts that so the dep-graph doubles as the live to-do list.
+- **Update `notes/PhaseN.md` before each commit, not just at
+  end-of-session.** The notes file is the contract for the next
+  agent and the source of truth for the active phase's status. Each
+  commit that meaningfully changes the project state — a lemma
+  landed, a decision taken, a blocker resolved or surfaced, a piece
+  of research done — should touch the notes' *Current state*, *Hand-off*,
+  *Decisions made*, or *Blockers* section in the same commit, so
+  every commit's tree is internally consistent. Letting notes drift
+  across multiple commits is the failure mode this rule prevents:
+  by end-of-session you've forgotten which commit introduced which
+  change, and the catch-up pass either misses a decision entirely
+  or buries it under "this session". Per-commit updates are cheap
+  (often a 2-line edit) and keep the hand-off contract honest.
+  *(End-of-session work — friction review, ROADMAP-row flips on
+  phase completion, lift-on-promotion to TACTICS / DESIGN — still
+  happens at the boundary, but those are higher-level checkpoints,
+  not the per-commit baseline.)*
 - **Before committing, run both `lake build` and `lake lint`.** Both
   are CI gates (see `.github/workflows/push_pr.yml`); a failing lint
   blocks merge as surely as a failing build. The full-project linter
@@ -307,11 +324,35 @@ cleanup passes or many small refactors, sub-organize as below.>
 
 ## Referencing prior work
 
-When notes, blueprint chapters, design docs, or commit messages
-mention a named theorem, author, year, paper, section number, or
-"due to X" attribution, verify it against a primary source before
-writing it. Hallucinated section pointers (e.g. *"Whiteley §3"* with
-no paper specified) and mis-attributions (crediting a populariser or
+Cite the originator of every non-trivial mathematical claim, and
+verify each citation against a primary source before writing it.
+**Both halves matter.** The verification half is well-understood;
+the citation half is the new one — a hallucination is not the only
+way to mis-credit a result. Silently omitting an attribution
+("this is the standard approach", "by the classical Maxwell-type
+argument") is just as bad as a wrong one, because the next reader
+has no anchor to verify against and the prose reads as if the
+project owns work it doesn't.
+
+Concretely, **proactively scan your blueprint / notes / commit-
+message prose before commit** and ask, for each substantive
+mathematical step:
+
+- Whose result is this? (A named theorem, a classical lemma, a
+  technique attributed in standard references.)
+- Have I cited it? If "no", does this commit cite something else
+  that subsumes it (e.g., the blueprint chapter's section preamble),
+  or am I silently asserting the result?
+- If "yes" — verify the citation per the bar below before commit.
+
+The bar to *add* a citation is low; the bar to *leave the prose
+uncited* should be high. When in doubt, cite the standard reference
+and let the next reviewer judge whether it's needed.
+
+The verification bar:
+
+Hallucinated section pointers (e.g. *"Whiteley §3"* with no paper
+specified) and mis-attributions (crediting a populariser or
 surveyor instead of the original prover) are the failure modes — once
 written down they propagate through future sessions and read as
 authoritative.
@@ -338,6 +379,37 @@ de-facto cross-check for rigidity-theory attributions; its
 bibliography resolves most papers the blueprint or notes would cite.
 A local PDF copy under `.refs/` (gitignored) is convenient when
 present.
+
+### Reading PDFs in `.refs/`
+
+The standard `Read` tool needs `pdftoppm` (poppler) to extract text;
+poppler is **not** installed on this machine and `brew install
+poppler` has been failing with a Ruby startup error. Use the
+`pypdf` library inside the existing blueprint Python venv instead;
+it reads the PDF directly without external system tools:
+
+```sh
+cd blueprint && source .venv/bin/activate
+# pypdf is not in requirements.txt; install once per fresh venv.
+pip install pypdf >/dev/null
+
+python3 - <<'PY'
+import pypdf
+r = pypdf.PdfReader('/path/to/.refs/jordan-2016-msj-memoirs.pdf')
+print('pages:', len(r.pages))
+# Print TOC / specific pages
+print(r.pages[0].extract_text()[:4000])      # title + TOC
+print(r.pages[12].extract_text()[:4000])     # Jordán p.45 = pdf page 13
+# Or grep for keywords across the whole PDF:
+for i, page in enumerate(r.pages):
+    if 'Maxwell' in page.extract_text():
+        print(f'page {i+1} mentions Maxwell')
+PY
+```
+
+Page numbering caveat: Jordán's printed pages start at 33, so
+*Jordán p.N* corresponds to *pdf page (N − 32)*. Other refs may
+have similar offsets — check page 1 to calibrate.
 
 For formal `\cite{}` work in the blueprint, see `blueprint/CLAUDE.md`
 *Citations* and *Static checks before commit*.
