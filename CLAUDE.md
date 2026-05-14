@@ -134,11 +134,35 @@ blueprint chapter.)
   Merging it usually requires only running CI green; do not bump the
   pins by hand between cycles unless there's a specific reason
   (security fix, action removed, etc.).
-- **Lean LSP MCP available.** `.mcp.json` at the repo root registers
-  [`lean-lsp-mcp`](https://github.com/oOo0oOo/lean-lsp-mcp); approve
-  the server on first prompt. File paths resolve against the project
-  root. Tactical guidance (when to use which tool, cold-start
-  workaround, which external services are reliable) lives in
+- **Lean LSP MCP — reach for it.** `.mcp.json` at the repo root
+  registers [`lean-lsp-mcp`](https://github.com/oOo0oOo/lean-lsp-mcp);
+  approve the server on first prompt. File paths resolve against the
+  project root. **An MCP call is sub-second; an `edit + lake build`
+  cycle is 30+ seconds — the cost asymmetry is the whole point.**
+  Whenever you would otherwise:
+  - guess at a closing tactic — use `lean_multi_attempt` at the proof
+    position to A/B-test several candidates
+    (e.g. `["grind", "omega", "simp", "ring"]`) in one round-trip,
+    instead of editing-and-rebuilding for each guess. Same for
+    finding the right `simp [...]` argument set.
+  - hunt for a mathlib lemma via `grep -rn` in
+    `.lake/packages/mathlib` — use `lean_loogle` (type pattern) or
+    `lean_leanfinder` (concept) instead; both are faster and return
+    structured results.
+  - open an upstream `.lean` file to read a signature — use
+    `lean_hover_info` at the identifier's start column.
+  - insert a `sorry` and rebuild to see what the intermediate goal
+    looks like — use `lean_goal` at the line (omit `column` for
+    before/after; pass `column` for an exact position).
+  - check the project's existing API for a name match — use
+    `lean_local_search` instead of `grep -rn` on the project's
+    `.lean` files.
+
+  Run `lake build` once before the first MCP call (warms `lake
+  serve`); skip if you've built recently this session. **Do not call
+  `lean_leansearch`** — its endpoint has been down since late 2025;
+  use `lean_loogle` / `lean_leanfinder` instead. Full decision tree,
+  cold-start details, and `lean_multi_attempt` payload shape in
   `TACTICS.md` § 7.
 
 ### Before each commit — friction review (mandatory)
