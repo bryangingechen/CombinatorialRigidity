@@ -210,40 +210,16 @@ and is not formalized.
   \cref{def:edgeSet-rowIndependent}.
 \end{proof}
 
-\subsubsection{Trivial motions and the rank upper bound under affine spanning}
+\subsubsection{Rank upper bound under affine spanning}
 
-In dimension $2$, the kernel of the rigidity map always contains the
-\emph{trivial Euclidean motions}: the $2$-dimensional space of
-translations plus, at affinely-spanning placements, one additional
-infinitesimal rotation, in the sense of Asimow--Roth's identification
-of trivial infinitesimal motions with the kernel
-of $R(K_{|V|}, p)$~\cite{asimowRoth1978}. The induced rank bound
-$\rk \le 2|V| - 3$ is the converse of the rank lower bound and
-underlies the $(2, 3)$-sparsity claim below.
-
-\begin{lemma}[Three trivial motions kill the rigidity map at an affinely-spanning placement, dim $2$]
-  \label{lem:trivialMotions-three-le-ker-of-affinelySpanning-two}
-  \uses{def:rigidityMap}
-  Let $V$ be finite with $|V| \ge 2$, let $G : \mathrm{SimpleGraph}\,V$,
-  and let $p : V \to \R^{2}$ be a framework whose image affinely
-  spans $\R^{2}$. Then
-  $\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \ge 3$.
-\end{lemma}
-\begin{proof}
-  Exhibit three linearly independent motions in the kernel: the two
-  constant translations $p'_v = e_0$ and $p'_v = e_1$, and the
-  infinitesimal rotation $p'_v = R(p_v - c)$ where $R$ is the
-  $90^{\circ}$-rotation matrix and $c$ is any reference point.
-  Each is killed by the rigidity map at \emph{every} edge by the
-  entry formula $\langle p_u - p_v,\, p'_u - p'_v \rangle$ ---
-  translations cancel in the difference $p'_u - p'_v$, and the
-  rotation case reduces to $\langle p_u - p_v,\, R(p_u - p_v)
-  \rangle = 0$. Linear independence of the three motions in
-  $\mathrm{Framework}\,V\,2$ uses the affine-span hypothesis on $p$:
-  if a linear combination $\alpha e_0 + \beta e_1 + \gamma R(p_v - c)$
-  is zero at every $v$, then $\gamma = 0$ unless $p$ is contained in a
-  line, and then $\alpha = \beta = 0$ from any single vertex.
-\end{proof}
+The kernel of the rigidity map always contains the
+\emph{trivial Euclidean motions} of the framework (translations plus
+infinitesimal rotations); the unconditional $\le \ker$ inclusion and
+the dim-2 lower bound $\dim_{\R}\,\ker \ge 3$ at an affinely-spanning
+placement are developed in \cref{sec:trivial-motions} (specifically
+\cref{lem:trivialMotions-three-le-ker-of-affinelySpanning-two}). The
+induced rank bound $\rk \le 2|V| - 3$ in dim $2$ is the converse of the
+rank lower bound and underlies the $(2, 3)$-sparsity claim below.
 
 \begin{lemma}[Rank upper bound from affine spanning, dim $2$]
   \label{lem:rigidityMap-finrank-range-le-of-affinelySpanning-two}

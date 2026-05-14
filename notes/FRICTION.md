@@ -118,6 +118,66 @@ lemma; resolved otherwise.
   Phase 6's $(2,3)$-sparsity-from-row-independence (the next
   substantive lemma) needs the bridge a second time.
 
+### [open] `AffineSubspace.nonempty_of_affineSpan_eq_top` takes `(k V P)` explicit
+
+- **Where it bit:** `trivialMotions_three_le_finrank_of_affinelySpanning_two`
+  in `TrivialMotions.lean`. Extracting a vertex `v₀ : V` from
+  `hp : affineSpan ℝ (Set.range p) = ⊤` to pin down a contradiction
+  with "p constant".
+- **Friction:** the mathlib lemma sits inside an `AffineSubspace`
+  namespace section where `(k V P)` are all explicit. To call it, you
+  write `AffineSubspace.nonempty_of_affineSpan_eq_top _ _ _ hp` — three
+  underscores plus the proof. With dot notation `hp.nonempty…` would be
+  ambiguous (no syntactic anchor for the subject), so the long form is
+  the only ergonomic option.
+- **Proposed fix:** add a project helper `range_nonempty_of_affineSpan_eq_top`
+  that fixes the `(ℝ, V, P)` and exposes a one-arg call, or change the
+  upstream signature to make `(k V P)` implicit (they're recoverable
+  from `Set.range p`'s element type). Either route would land a
+  one-line site at every call.
+- **Status:** open. Worked around with `_ _ _` underscores; revisit if
+  the same pattern surfaces in the `(2, 3)`-sparsity-side proof or
+  the affinely-spanning-rigid-placement lemma.
+
+### [open] `fin_cases i` leaves `⟨n, ⋯⟩` rather than the literal `n`, blocking `rw`
+
+- **Where it bit:** `trivialMotions_three_le_finrank_of_affinelySpanning_two`,
+  `h_const : ∀ v, p v = p v₀`. After `ext i; fin_cases i` the goal was
+  `(p v).ofLp ⟨0, ⋯⟩ = (p v₀).ofLp ⟨0, ⋯⟩`, but the hypotheses
+  `h_const_pv0 v : (p v) 0 = -c 1 / c 2` carry the literal `0`. `rw`
+  failed: "did not find an occurrence of the pattern `(p v).ofLp 0`".
+- **Friction:** standard pattern-matching glitch — the `⟨0, ⋯⟩` view
+  and the literal `0` view are not syntactically equal even though
+  Lean prints them identically in some contexts. Worked around with
+  `change (p v) 0 = (p v₀) 0` before each `rw`, which forces the
+  rewrite-friendly form.
+- **Proposed fix:** none upstream; this is a tactic-quirk note. If
+  it bites again, document the `match i with | ⟨0, _⟩ => change _; rw …`
+  idiom in `TACTICS.md`.
+- **Status:** open (project-internal note). Worth promoting to
+  `TACTICS.md` if it surfaces a third time.
+
+### [open] Defining the 2×2 90° rotation via `Matrix.toEuclideanLin` blocks coordinate simp
+
+- **Where it bit:** `rotJTwo` in `TrivialMotions.lean`. The natural
+  first attempt was `noncomputable def rotJTwo := Matrix.toEuclideanLin !![0, -1; 1, 0]`,
+  which makes the simp lemmas `rotJTwo_apply_zero/one` non-`rfl`.
+  Downstream `simp` calls then had to expand
+  `Matrix.toEuclideanLin_apply`, `Matrix.mulVec`, `Matrix.dotProduct`,
+  `Fin.sum_univ_two`, plus `Matrix.cons_val_zero/one` to reach
+  `(rotJTwo v) 0 = -(v 1)`. Several iterations of "add more simp
+  lemmas" failed to close the goal cleanly.
+- **Friction:** the `Matrix.toEuclideanLin` route hides the explicit
+  coordinate values behind a `Matrix.vecHead`/`Matrix.cons_val_*`
+  chain that simp doesn't unfold uniformly without manual hints.
+- **Proposed fix:** define `rotJTwo` directly via the `LinearMap`
+  structure (`toFun := fun v => !₂[-(v 1), v 0]`, with hand-checked
+  `map_add'` and `map_smul'`); then `rotJTwo_apply_zero/one` become
+  `rfl`-simp lemmas and downstream `simp` closes coordinates without
+  matrix-unfolding hints. We switched to this and it landed cleanly.
+- **Status:** open (idiom note). Promote to `TACTICS.md` § "concrete
+  2×2 maps" if a future phase introduces another explicit 2D map.
+
 ### [open] `IsSparse` is not `Decidable`, blocking small-example proofs by `decide`
 - **Where it bit:** Phase 2 attempt at `K₄ \ e` is Laman (deferred).
 - **Friction:** `IsSparse` is `∀ s : Finset V, ℓ ≤ k * #s → (G.edgesIn ↑s).ncard + ℓ ≤ k * #s`,

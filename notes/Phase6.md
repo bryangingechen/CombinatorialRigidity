@@ -127,18 +127,26 @@ visible as a dep-graph at `blueprint/web/dep_graph_document.html`
 after `inv bp && inv web`. A red node = not yet formalized; a green
 node = formalized and `\leanok`-tagged. Pick leaf-most red.
 
-Status snapshot at commit-6 (basis-pick): three green nodes
-(`lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two`,
-`def:edgeSet-rowIndependent`, `lem:exists-rowIndependent-edge-basis`);
-the remaining four nodes —
-`lem:trivialMotions-three-le-ker-of-affinelySpanning-two`,
+Status snapshot at commit-7 (TrivialMotions API): the dim-2
+$\dim\,\ker \ge 3$ lemma at affinely-spanning placements has landed in
+a new chapter `chapter/trivial-motions.tex` covering the d-general
+trivial-motions API (translations, infinitesimal rotations, the
+`trivialMotions` submodule, `_le_ker`) plus the dim-2 specialisation
+(`rotJTwo`, $\ge 3$ lower bound, kernel corollary). The dep-graph now
+shows nine green nodes: the three from commit 6 plus the six new ones
+(`def:translationMotion`, `def:infinitesimalRotation`,
+`def:trivialMotions`, `def:rotJTwo`, all `_mem_ker` lemmas,
+`lem:trivialMotions-le-ker`, `lem:inner-rotJTwo-self`,
+`lem:trivialMotions-three-le-finrank-of-affinelySpanning-two`, and
+`lem:trivialMotions-three-le-ker-of-affinelySpanning-two`). The
+remaining red nodes —
 `lem:rigidityMap-finrank-range-le-of-affinelySpanning-two`,
 `lem:exists-affinelySpanning-rigid-placement-two`,
 `lem:isSparse-of-rowIndependent-two` — and the target
-`thm:isGenericallyRigid-exists-isLaman-le` stay red. Of the red ones,
-`lem:trivialMotions-three-le-ker-of-affinelySpanning-two` and
-`lem:exists-affinelySpanning-rigid-placement-two` are leaves; both
-hit the *Blockers* list below.
+`thm:isGenericallyRigid-exists-isLaman-le` stay red. The remaining
+leaf is `lem:exists-affinelySpanning-rigid-placement-two`; everything
+else stacks above it or the rank upper bound (which is now a
+one-liner from rank-nullity plus the trivial-motions kernel bound).
 
 ## Decisions made during this phase
 
@@ -174,9 +182,39 @@ hit the *Blockers* list below.
   *Hand-off* plan wins on cost: ~30 lines of pure linear algebra, no
   new dep, no new mirror.
 
+- **TrivialMotions API in its own file, d-general.** Per the user's
+  Phase 6 design-pivot (commit 7), the trivial-motions API lives in
+  its own `CombinatorialRigidity/TrivialMotions.lean` (parallel to
+  `Framework.lean`) rather than buried inside `RigidityMatroid.lean`.
+  Three reasons. (a) The motions are *general* infrastructure on
+  frameworks, not specifically a matroid concept. (b) The definitions
+  (`translationMotion`, `infinitesimalRotation`, `trivialMotions`) are
+  d-general; only the finrank lower bound (`rotJTwo` + the LI of three
+  motions) is dim-2-specific, and it's natural to keep the d-general
+  surface separate from the dim-2 specialisation. (c) The submodule
+  formulation lets `trivialMotions_le_ker` ship as one unconditional
+  lemma and `3 ≤ finrank ker` as a clean one-liner from
+  `Submodule.finrank_mono`, rather than inlining three motion-checks
+  in the kernel lemma. The blueprint chapter
+  `chapter/trivial-motions.tex` mirrors the Lean file's structure
+  one-to-one. The finrank lower bound is shipped dim-2-specific in
+  commit 7; *Blockers* records the d-general generalisation as
+  deferred follow-up work (the dim-2 lemma is the `d = 2` instance).
+
+- **`rotJTwo` defined directly, not via `Matrix.toEuclideanLin`.** First
+  attempt routed `rotJTwo := Matrix.toEuclideanLin !![0, -1; 1, 0]`,
+  which left downstream `simp` calls fighting `Matrix.mulVec` /
+  `Matrix.dotProduct` / `Matrix.vecHead` unfolding. Switched to a
+  direct `LinearMap.mk' (fun v => !₂[-(v 1), v 0])` so that
+  `rotJTwo_apply_zero/one` are `rfl`-simp lemmas; downstream proofs
+  then close coordinates without matrix-unfolding hints. FRICTION
+  entry filed (*Defining the 2×2 90° rotation via `Matrix.toEuclideanLin`
+  blocks coordinate simp*).
+
 ### Promoted to TACTICS / FRICTION / DESIGN
 
-*(none yet)*
+*(none yet — the trivial-motions specifics stay phase-local; the FRICTION
+entries opened in commit 7 are the cross-cutting record.)*
 
 ### Cleanup pass summaries
 
@@ -184,29 +222,46 @@ hit the *Blockers* list below.
 
 ## Blockers / open questions
 
-- **`TrivialMotions` Phase 4 deferred API.** The
-  $(2,3)$-sparsity-from-row-independence proof needs
-  $\rk\,R_{H[S]}(p|_S) \le 2|S| - 3$ for $|S| \ge 3$ via the
-  affinely-spanning identification of trivial motions
-  ($\dim\,\mathrm{TrivialMotions} = 3$ when the affine span is 2-dim).
-  Three resolution paths in increasing scope:
-  1. **Direct lemma**: prove
-     $\rk\,\mathrm{range}\,R_G(p) \le 2|V| - 3$ when $p$ affinely
-     spans, by exhibiting 3 LI motions in the kernel (translations + one
-     rotation), without naming `TrivialMotions`. Smallest scope; mirrors
-     the K$_2$ proof shape.
-  2. **Resurrect Phase 4's `TrivialMotions` API.** The original
-     Phase 4 plan (`notes/Phase4.md` *Lemma checklist*) had
-     `trivialMotionAction`, `trivialMotions_le_ker`,
-     `finrank_trivialMotions_eq_of_affinelySpanning`. Cost ~60 LoC per
-     the Phase 4 estimate; ships a named abstraction.
-  3. **Specialize via a concrete placement.** Use the moment-curve
-     $p_v = (h\,v, (h\,v)^2)$ for an injection $h : V \to \R$; verify
-     all subsets of size $\ge 3$ affinely span. Closed-form linear
-     algebra.
+- ~~**`TrivialMotions` Phase 4 deferred API.**~~ Resolved in commit 7
+  via path (2): the `TrivialMotions` API landed d-general in its own
+  file `CombinatorialRigidity/TrivialMotions.lean` with the
+  dim-2 specialisation
+  `trivialMotions_three_le_ker_of_affinelySpanning_two`. See the
+  *Done* list under *Hand-off* and the blueprint chapter
+  `chapter/trivial-motions.tex`.
 
-  No commitment yet — choose when milestone-2-equivalent dep-graph
-  nodes get attempted.
+- **D-general finrank lower bound (deferred).** Commit 7 ships only
+  the dim-2 finrank lemma
+  `trivialMotions_three_le_finrank_of_affinelySpanning_two`. The
+  natural d-general statement is
+  `d * (d + 1) / 2 ≤ finrank ℝ (trivialMotions p)` at any
+  affinely-spanning placement; our dim-2 lemma is the `d = 2` instance.
+  The d-general proof needs:
+  1. An explicit elementary skew-adjoint map
+     `elemSkewMap (i j : Fin d) : EuclideanSpace ℝ (Fin d) →ₗ[ℝ]
+      EuclideanSpace ℝ (Fin d)` with `x ↦ x[j] • e_i - x[i] • e_j`
+     (so it satisfies `⟪x, elemSkewMap i j x⟫_ℝ = 0`).
+  2. A joint LI argument for the family
+     `Fin d ⊕ Σ i : Fin d, Fin i → Framework V d`
+     (translations indexed by `Fin d`, rotations indexed by the
+     lower-triangle pairs) under affine spanning. The key step:
+     suppose the linear combination vanishes; build the matrix `M` of
+     rotation coefficients and the translation vector `T`; then for
+     all `v, w : V`, `M(p_v - p_w) = 0`, so `M = 0` by affine
+     spanning, hence rotation coefficients vanish; then `T = 0` from
+     any single `v`.
+  3. Cardinality computation
+     `Fintype.card (Fin d ⊕ Σ i : Fin d, Fin i) = d * (d + 1) / 2`
+     via `Fintype.card_sum`, `Fintype.card_sigma`,
+     `Fin.sum_univ_eq_sum_range`, and `Finset.sum_range_id`.
+  4. Final `LinearIndependent.fintype_card_le_finrank` gives the
+     bound; the existing dim-2 lemma becomes
+     `simpa using trivialMotions_finrank_ge_of_affinelySpanning hp`.
+
+  Scope estimate ~150–200 LoC. Not on the critical path for closing
+  Laman (⇒): the dim-2 case suffices for the rank upper bound that
+  feeds the $(2, 3)$-sparsity argument. Treat as an architectural
+  cleanup separable from the remaining Phase 6 leaves.
 
 - **Generic-placement affine-spanning lemma.** Phase 4 ships
   `IsInfinitesimallyRigid.eventually` (openness of IR). We may need
@@ -267,7 +322,7 @@ hit the *Blockers* list below.
   `IndepMatroid.ofFinitaryCardAugment` is already in mathlib
   (`Mathlib/Combinatorics/Matroid/IndepAxioms.lean:215`). Decision:
   branch (c) — stay matroid-agnostic.
-- *Commit 6 (this commit):* basis-pick lemma —
+- *Commit 6 (`7a687fa`):* basis-pick lemma —
   `SimpleGraph.exists_edgeSetRowIndependent_basis_dim_two` plus its
   supporting infrastructure (`rigidityRow`, `span_range_rigidityRow`,
   `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`, private
@@ -281,6 +336,28 @@ hit the *Blockers* list below.
   spot-checked). FRICTION entry filed for the missing packaged
   `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)` injection
   (`dualToFunₗ`).
+- *Commit 7 (this commit):* TrivialMotions API +
+  `lem:trivialMotions-three-le-ker-of-affinelySpanning-two`. New file
+  `CombinatorialRigidity/TrivialMotions.lean` (d-general API):
+  `translationMotion`, `infinitesimalRotation`, `trivialMotions`,
+  `trivialMotions_le_ker`. Dim-2 specialisation: `rotJTwo` (90°
+  rotation, defined directly via `LinearMap.mk'`),
+  `inner_rotJTwo_self`,
+  `trivialMotions_three_le_finrank_of_affinelySpanning_two`
+  (LI of three motions via affine-span hypothesis), and the
+  one-liner corollary
+  `trivialMotions_three_le_ker_of_affinelySpanning_two`.
+  `RigidityMatroid.lean` now imports the new file. New blueprint
+  chapter `chapter/trivial-motions.tex` mirrors the file 1:1 (9 new
+  green nodes); `chapter/laman-theorem.tex` rewired to point at it.
+  Three FRICTION entries filed: explicit `(k V P)` args for
+  `AffineSubspace.nonempty_of_affineSpan_eq_top`, `fin_cases i`
+  leaves `⟨n, ⋯⟩` blocking `rw`, and the `Matrix.toEuclideanLin`
+  coordinate-simp issue. **Deferred:** the natural d-general
+  finrank lower bound (the dim-2 lemma is its `d = 2` instance) is
+  flagged under *Blockers* below and in the Lean / blueprint files;
+  it's ~150–200 LoC of LI bookkeeping plus a cardinality
+  computation and is not on the critical path for the iff.
 
 **Encoding choice rationale (`I : Set G.edgeSet`).** The index type
 sits inside `G.edgeSet`, matching the blueprint's "$I \subseteq E(G)$".
@@ -290,38 +367,41 @@ not `Set G.edgeSet`, so the assembly proof will transport via
 than carry it through the basis lemma + sparsity lemma + every
 intermediate API.
 
-**Next session — pick one of the two remaining leaves.** Both are
-genuinely mathematical (vs.\ the basis-pick which was plumbing) and
-sit on the *Blockers* list above:
+**Next session — rank upper bound, then the remaining leaf.** Two
+independent next tasks are available; either is a reasonable starting
+point.
 
-- `lem:trivialMotions-three-le-ker-of-affinelySpanning-two` — the
-  $\dim\,\mathrm{TrivialMotions} = 3$ identification under affine
-  spanning. Three implementation paths in *Blockers*:
-  (1) direct LI-witness of three motions (translations + rotation);
-  (2) resurrect the Phase-4-deferred `TrivialMotions` API;
-  (3) specialise to a concrete moment-curve placement. (1) is the
-  smallest scope and probably the best first attempt; (2) buys reuse
-  for a hypothetical Lovász--Yemini full equality but is over-engineered
-  for what the iff needs.
-- `lem:exists-affinelySpanning-rigid-placement-two` — the
-  affinely-spanning-on-all-subsets refinement of
-  `IsInfinitesimallyRigid.eventually`. Likely closes via
-  `IsOpen` intersection plus density of the affinely-spanning set; the
-  *Generic-placement affine-spanning lemma* blocker has the details.
+The natural next step on the critical path is
+`lem:rigidityMap-finrank-range-le-of-affinelySpanning-two`, the rank
+$\le 2|V| - 3$ bound at an affinely-spanning placement. It now reduces
+to rank-nullity plus the dim-2 kernel bound we just landed: ~5 lines
+of `omega` on top of `Framework.finrank` and
+`trivialMotions_three_le_ker_of_affinelySpanning_two`. No new ideas
+required.
 
-Either can land independently of the other; they only meet at
-`lem:isSparse-of-rowIndependent-two` (the substantive content of the
-$\Rightarrow$ direction, two layers down). Suggested order: try (1)
-of `lem:trivialMotions-...` first (fewest moving parts; the explicit
-basis matches the K$_2$ proof shape already in
-`top_fin_two_isGenericallyRigid`).
+An architectural cleanup also waits: the d-general finrank lower
+bound `d * (d + 1) / 2 ≤ finrank ℝ (trivialMotions p)` (see *Blockers*
+above). Not blocking — the dim-2 case suffices for the iff — but
+addresses the design asymmetry that the definitions are d-general
+while the finrank bound is dim-2-specific.
 
-**Phase 6 completion is uncertain in scope.** Honest read: the rank
-lower bound (done), the definition (done), and the basis-pick (done)
-were linear-algebra plumbing and closed cleanly. The
-$(2,3)$-sparsity-from-row-independence lemma contains the only
-genuinely new mathematical content and depends on a to-be-chosen
-path through the *Blockers* list (`TrivialMotions` API, generic
-affine-spanning placement) — that's where most risk lives. Plan
-to assess scope after the sparsity-side lemma's first sub-node
-lands; do not commit to a one-session full Phase 6 close.
+The remaining genuine leaf is
+`lem:exists-affinelySpanning-rigid-placement-two` — the
+affinely-spanning-on-all-subsets refinement of
+`IsInfinitesimallyRigid.eventually`. Likely closes via `IsOpen`
+intersection plus density of the affinely-spanning set (the
+*Generic-placement affine-spanning lemma* blocker has the details).
+That one is the mathematically substantial step that remains, and is
+a prereq for `lem:isSparse-of-rowIndependent-two` (the
+sparsity-from-row-independence lemma carrying the actual $(2, 3)$
+combinatorics).
+
+Suggested order: rank-upper-bound (one short commit, almost mechanical
+now), then the affinely-spanning-placement existence, then the
+sparsity-side lemma, then the assembly theorem.
+
+**Phase 6 completion remains uncertain in scope** as of commit 7. Most
+remaining work is mechanical, except the affinely-spanning placement
+existence lemma, whose tactic-shape is plausible but not pre-validated.
+Plan to assess scope after that lemma's first attempt lands; do not
+commit to a one-session full Phase 6 close.

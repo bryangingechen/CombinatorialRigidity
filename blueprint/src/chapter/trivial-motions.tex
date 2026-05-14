@@ -1,0 +1,236 @@
+\section{Trivial infinitesimal motions}
+\label{sec:trivial-motions}
+
+The \emph{trivial infinitesimal motions} of a framework
+$p : V \to \R^{d}$ are the motions arising from a global Euclidean
+rigid motion of $\R^{d}$: translations and infinitesimal rotations. They
+form a finite-dimensional subspace of $\mathrm{Framework}\,V\,d$ which
+always lies in the kernel of the rigidity map
+$\mathrm{RigidityMap}\,G\,p$, regardless of the graph $G$ or the
+placement $p$. The classical dimension count is
+$\dim = d(d+1)/2$, achieved at an affinely-spanning placement
+(Asimow--Roth~\cite{asimowRoth1978}); in dimension $d = 2$ the bound
+is $\dim \ge 3$, which feeds the rank upper bound used by the
+$(\Rightarrow)$ direction of Laman's theorem.
+
+This chapter develops the API in general dimension $d$ for the
+translations and rotations, ships the unconditional
+$\mathrm{trivialMotions}\,p \le \ker\,(\mathrm{RigidityMap}\,G\,p)$
+inclusion, and specializes to dim $2$ for the lower bound
+$\dim \ge 3$ at an affinely-spanning placement.
+
+\subsection{Translations}
+
+\begin{definition}[Translation motion]
+  \label{def:translationMotion}
+  \lean{SimpleGraph.translationMotion}
+  \leanok
+  \uses{def:framework}
+  For $t \in \R^{d}$, the \emph{translation motion} by $t$ is the constant
+  framework
+  $\mathrm{translationMotion}\,t : V \to \R^{d}, \; v \mapsto t$.
+\end{definition}
+
+\begin{lemma}[Translations are in the rigidity-map kernel]
+  \label{lem:translationMotion-mem-ker}
+  \lean{SimpleGraph.translationMotion_mem_ker}
+  \leanok
+  \uses{def:translationMotion, def:rigidityMap}
+  For every graph $G$, framework $p$, and translation vector $t$,
+  $\mathrm{translationMotion}\,t \in \ker\,(\mathrm{RigidityMap}\,G\,p)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  At every edge $\{u, v\}$ the entry
+  $\langle p_u - p_v,\, t - t \rangle = \langle p_u - p_v,\, 0 \rangle = 0$.
+\end{proof}
+
+\subsection{Infinitesimal rotations}
+
+\begin{definition}[Infinitesimal rotation motion]
+  \label{def:infinitesimalRotation}
+  \lean{SimpleGraph.infinitesimalRotation}
+  \leanok
+  \uses{def:framework}
+  For a linear map $A : \R^{d} \to_{\R} \R^{d}$ and a framework
+  $p : V \to \R^{d}$, the \emph{infinitesimal-rotation motion} at $p$
+  driven by $A$ is the framework
+  $\mathrm{infinitesimalRotation}\,A\,p : V \to \R^{d}, \;
+   v \mapsto A(p_v)$.
+\end{definition}
+
+\begin{lemma}[Skew-adjoint rotations are in the rigidity-map kernel]
+  \label{lem:infinitesimalRotation-mem-ker}
+  \lean{SimpleGraph.infinitesimalRotation_mem_ker}
+  \leanok
+  \uses{def:infinitesimalRotation, def:rigidityMap}
+  Let $A : \R^{d} \to_{\R} \R^{d}$ satisfy
+  $\langle x, A x \rangle = 0$ for every $x \in \R^{d}$ (i.e.\ $A$ is
+  skew-adjoint w.r.t.\ the inner product). Then for every graph $G$
+  and framework $p$,
+  $\mathrm{infinitesimalRotation}\,A\,p \in \ker\,(\mathrm{RigidityMap}\,G\,p)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  At every edge $\{u, v\}$ the entry expands as
+  $\langle p_u - p_v,\, A(p_u) - A(p_v) \rangle =
+   \langle p_u - p_v,\, A(p_u - p_v) \rangle$
+  by linearity, and the latter vanishes by the skew-adjoint
+  hypothesis.
+\end{proof}
+
+\subsection{The submodule of trivial motions}
+
+\begin{definition}[Trivial motions submodule]
+  \label{def:trivialMotions}
+  \lean{SimpleGraph.trivialMotions}
+  \leanok
+  \uses{def:translationMotion, def:infinitesimalRotation}
+  For a framework $p : V \to \R^{d}$, the submodule of
+  \emph{trivial infinitesimal motions} at $p$ is
+  \[
+    \mathrm{trivialMotions}\,p \;=\;
+    \mathrm{span}_{\R}\,
+    \bigl(\{\mathrm{translationMotion}\,t : t \in \R^{d}\}
+      \;\cup\;
+      \{\mathrm{infinitesimalRotation}\,A\,p :
+        A \;\text{skew-adjoint}\}\bigr)
+  \]
+  inside $\mathrm{Framework}\,V\,d$.
+\end{definition}
+
+\begin{lemma}[Trivial motions lie in the rigidity-map kernel]
+  \label{lem:trivialMotions-le-ker}
+  \lean{SimpleGraph.trivialMotions_le_ker}
+  \leanok
+  \uses{def:trivialMotions, def:rigidityMap,
+    lem:translationMotion-mem-ker, lem:infinitesimalRotation-mem-ker}
+  For every graph $G$ and framework $p$,
+  $\mathrm{trivialMotions}\,p \le \ker\,(\mathrm{RigidityMap}\,G\,p)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Combine \cref{lem:translationMotion-mem-ker} and
+  \cref{lem:infinitesimalRotation-mem-ker}: both generating sets of
+  $\mathrm{trivialMotions}\,p$ are contained in the kernel, hence so
+  is their span.
+\end{proof}
+
+\subsection{The dim-2 specialization: three explicit trivial motions}
+\label{sec:trivial-motions-dim-two}
+
+In dimension $2$ the space of skew-adjoint linear maps is
+$1$-dimensional, spanned by the $90^{\circ}$-rotation
+$J : \R^{2} \to \R^{2}, \; (x, y) \mapsto (-y, x)$. We isolate this
+explicit generator and combine it with the two coordinate translations
+to land the dim-2 lower bound.
+
+\begin{remark}[Deferred d-general generalization]
+  The natural d-general statement,
+  \[
+    \dim_{\R}\,(\mathrm{trivialMotions}\,p)
+    \;\ge\;
+    \frac{d (d + 1)}{2}
+    \quad \text{at any affinely-spanning } p,
+  \]
+  has our dim-2 lemma below as the $d = 2$ instance. The d-general
+  proof needs an explicit family of $d$ coordinate translations plus
+  $d (d - 1) / 2$ elementary skew-symmetric rotations
+  (the matrices $E_{ij} - E_{ji}$ for $i \ne j$), a joint
+  linear-independence argument under affine spanning, and the
+  cardinality computation
+  $|\mathrm{Fin}\,d \sqcup \Sigma_{i : \mathrm{Fin}\,d} \mathrm{Fin}\,i|
+   = d (d + 1) / 2$.
+  The dim-2 case below avoids the skew-symmetric basis bookkeeping by
+  inspection (one rotation suffices). The d-general generalization is
+  open work; see \texttt{notes/Phase6.md} \emph{Hand-off} for the
+  decomposition plan.
+\end{remark}
+
+\begin{definition}[The $90^{\circ}$-rotation in dim $2$]
+  \label{def:rotJTwo}
+  \lean{SimpleGraph.rotJTwo}
+  \leanok
+  The linear map
+  $\mathrm{rotJTwo} : \R^{2} \to_{\R} \R^{2}, \;
+   (x, y) \mapsto (-y, x)$.
+\end{definition}
+
+\begin{lemma}[$J$ is skew-adjoint]
+  \label{lem:inner-rotJTwo-self}
+  \lean{SimpleGraph.inner_rotJTwo_self}
+  \leanok
+  \uses{def:rotJTwo}
+  For every $v \in \R^{2}$,
+  $\langle v,\, \mathrm{rotJTwo}\,v \rangle = 0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Direct computation:
+  $\langle (x, y),\, (-y, x) \rangle = x(-y) + y \cdot x = 0$.
+\end{proof}
+
+\begin{lemma}[Three trivial motions at an affinely-spanning placement, dim $2$]
+  \label{lem:trivialMotions-three-le-finrank-of-affinelySpanning-two}
+  \lean{SimpleGraph.trivialMotions_three_le_finrank_of_affinelySpanning_two}
+  \leanok
+  \uses{def:trivialMotions, def:translationMotion, def:infinitesimalRotation,
+    def:rotJTwo, lem:inner-rotJTwo-self}
+  Let $V$ be finite and let $p : V \to \R^{2}$ be a framework whose
+  image affinely spans $\R^{2}$. Then
+  \[
+    \dim_{\R}\,(\mathrm{trivialMotions}\,p) \;\ge\; 3.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  The two coordinate translations $\mathrm{translationMotion}\,e_0$
+  and $\mathrm{translationMotion}\,e_1$ lie in
+  $\mathrm{trivialMotions}\,p$ by definition; so does the rotation
+  $\mathrm{infinitesimalRotation}\,\mathrm{rotJTwo}\,p$ by
+  \cref{lem:inner-rotJTwo-self}. We claim the three are linearly
+  independent in $\mathrm{Framework}\,V\,2$, hence in the submodule.
+
+  Suppose
+  $c_0 \cdot \mathrm{translationMotion}\,e_0
+   + c_1 \cdot \mathrm{translationMotion}\,e_1
+   + c_2 \cdot \mathrm{infinitesimalRotation}\,\mathrm{rotJTwo}\,p
+   = 0$
+  in $\mathrm{Framework}\,V\,2$. Evaluating at any vertex $v$ and
+  reading coordinates $0$ and $1$ gives
+  \[
+    c_0 - c_2 \cdot p_v[1] = 0, \qquad
+    c_1 + c_2 \cdot p_v[0] = 0
+  \]
+  for every $v$. If $c_2 \ne 0$ the equations force $p_v$ to be a
+  fixed point of $\R^{2}$ for every $v$ --- but then
+  $\mathrm{affineSpan}_{\R}\,(\mathrm{range}\,p)$ is a singleton
+  affine subspace, contradicting the hypothesis that it equals
+  $\top$. Hence $c_2 = 0$, and at any single $v$ the equations then
+  reduce to $c_0 = c_1 = 0$.
+
+  Three linearly independent elements force
+  $\dim\,(\mathrm{trivialMotions}\,p) \ge 3$ by
+  $\mathrm{LinearIndependent.fintype\_card\_le\_finrank}$.
+\end{proof}
+
+\begin{lemma}[Three trivial motions kill the rigidity map at an affinely-spanning placement, dim $2$]
+  \label{lem:trivialMotions-three-le-ker-of-affinelySpanning-two}
+  \lean{SimpleGraph.trivialMotions_three_le_ker_of_affinelySpanning_two}
+  \leanok
+  \uses{lem:trivialMotions-le-ker,
+    lem:trivialMotions-three-le-finrank-of-affinelySpanning-two}
+  Let $V$ be finite with $|V| \ge 2$, let $G : \mathrm{SimpleGraph}\,V$,
+  and let $p : V \to \R^{2}$ be a framework whose image affinely
+  spans $\R^{2}$. Then
+  $\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \ge 3$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Combine \cref{lem:trivialMotions-le-ker} (always
+  $\mathrm{trivialMotions}\,p \le \ker$) with
+  \cref{lem:trivialMotions-three-le-finrank-of-affinelySpanning-two}
+  ($\dim\,\mathrm{trivialMotions}\,p \ge 3$ under affine spanning):
+  $\dim\,(\mathrm{trivialMotions}\,p) \le \dim\,(\ker)$ via
+  $\mathrm{Submodule.finrank\_mono}$.
+\end{proof}
