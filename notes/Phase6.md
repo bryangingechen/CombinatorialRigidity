@@ -1,36 +1,25 @@
 # Phase 6 — Laman's theorem, (⇒) direction (work log)
 
-**Status:** in progress.
+**Status:** ✓ complete.
 
 This file is the per-phase work record. See `../ROADMAP.md` §6 for the
 high-level plan and `../DESIGN.md` for cross-cutting design choices.
 
-**Workflow:** Phase 6 runs in **forward blueprint mode** (Option C,
+**Workflow:** Phase 6 ran in **forward blueprint mode** (Option C,
 hybrid skeleton) per `../blueprint/DESIGN.md`. The blueprint chapter
 `chapter/laman-theorem.tex` (its $\Rightarrow$-direction subsection)
-is the authoritative dep-graph and lemma index; this file does **not**
-duplicate it. Each Lean session picks a leaf-most red node from the
-dep-graph, formalizes it, and adds `\lean{...}` + `\leanok` to its
-blueprint entry. Phase-end pass: write 1–3-sentence prose proofs per
-entry against the now-stable Lean.
+was the authoritative dep-graph and lemma index throughout; this file
+does **not** duplicate it.
 
 ## Current state
 
-Phase 5 closed with the iff statement
-`isGenericallyRigid_two_iff_exists_isLaman_le` composed but
-`sorry`-blocked on `IsGenericallyRigid.exists_isLaman_le`
-(`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
-target — the project has no other unproved declarations.
-
-The linear-algebra side is closed d-general (rank bounds, kernel
-bound, basis-pick) and the analysis side is closed d-general
-(affinely-spanning rigid placement). All four Lean-simplification
-tasks (the session-start blueprint↔Lean review found four spots where
-the Lean was heavier than the math) are resolved. The remaining red
-nodes in `chapter/laman-theorem.tex` are
-`lem:isSparse-of-rowIndependent-two` (the substantive sparsity step)
-and the assembly target `thm:isGenericallyRigid-exists-isLaman-le`.
-See *Next session* for the sparsity sketch.
+Phase 6 closes. The two final substantive lemmas — the sparsity step
+`isSparse_of_edgeSetRowIndependent_dim_two` and the assembly
+`IsGenericallyRigid.exists_isLaman_le` — landed in commit 19. The iff
+`isGenericallyRigid_two_iff_exists_isLaman_le` in
+`LamanTheorem.lean` (Phase 5's composed statement) is now `sorry`-free,
+and Laman's theorem is fully formalized. The project carries no
+unproved declarations.
 
 ## Architectural choices made up front
 
@@ -117,6 +106,32 @@ placement; assembly stacks on sparsity plus the basis-pick.
   AI↔det bridge is private helper
   `affineIndependent_of_difference_det_ne_zero` (~10 LoC).
 
+- **Sparsity (commit 19) routes through `SimpleGraph.induce` rather
+  than building a custom restricted rigidity map.** The induced
+  subgraph `H.induce ↑s : SimpleGraph ↥(↑s : Set V)` plus the
+  framework restriction `LinearMap.funLeft ℝ _ Subtype.val :
+  Framework V 2 →ₗ[ℝ] Framework ↥(↑s) 2` gives a clean factoring:
+  `G.rigidityRow p (lift e') = restrict.dualMap ((H.induce ↑s).rigidityRow p_s e')`
+  for each induced-graph edge `e'` (where `lift e' : G.edgeSet` is
+  `Sym2.map Subtype.val e'.val`). `LinearIndependent.of_comp` on
+  `restrict.dualMap` transports LI of V-side rows (subfamily of `hI`
+  via injectivity of `lift`) to LI of `H.induce ↑s`-rows. The
+  helper `ncard_edgesIn_eq_ncard_induce_edgeSet` in `EdgesIn.lean`
+  bridges `H.edgesIn ↑s` and `(H.induce ↑s).edgeSet` via
+  `Sym2.map.injective Subtype.val_injective`. The `|s| = 2` corner
+  uses `card_edgeFinset_le_card_choose_two` on the induced subgraph
+  (≤ `2.choose 2 = 1`) — no separate combinatorial branch needed.
+
+- **Assembly (commit 19) splits the basis-pick.** The existing
+  `exists_edgeSetRowIndependent_basis_dim_two` (existence form: from
+  `IsGenericallyRigid`, produce both `p` and the basis) factored into
+  the placement-fixed `exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two`
+  (from a rank lower bound at a specific `p`, produce the basis) plus
+  a two-line wrapper. The assembly proof uses the placement-fixed
+  version with the IR + affinely-spanning `p` from
+  `exists_affinelySpanning_rigid_placement`, then applies sparsity
+  at that `p`. The whole assembly is ~25 lines.
+
 ### Promoted to TACTICS / FRICTION / DESIGN
 
 - *`apnelson1/Matroid` investigated, not adopted* → DESIGN.md
@@ -158,7 +173,7 @@ entries for resolution details.
 
 ## Hand-off / next phase
 
-**Done.** Commits 0–18. Setup (0–2): notes seeded, forward-mode
+**Done.** Commits 0–19. Setup (0–2): notes seeded, forward-mode
 blueprint skeleton, bibliography. Linear-algebra infrastructure
 (3–10): `EdgeSetRowIndependent`; basis-pick
 `exists_edgeSetRowIndependent_basis_dim_two` via the dual bridge;
@@ -175,7 +190,23 @@ and `LinearMap.range_dualMap_eq_span_image_dualBasis` (13);
 `Matrix.det_powerDifferences` (16). Three cleanup/golf passes:
 `elemSkewMap_ofLp_inr_apply` cross-term lemma (14); TACTICS § 1
 grind-default golf on `TrivialMotions.lean` (15); project-wide
-grind-default sweep on `Sparsity.lean` and `Laman.lean` (18). See
+grind-default sweep on `Sparsity.lean` and `Laman.lean` (18).
+**Closing commit (19): sparsity + assembly.**
+`isSparse_of_edgeSetRowIndependent_dim_two` in `RigidityMatroid.lean`
+(routes through `H.induce ↑s`, factors V-side rows through the
+framework-restriction map, applies the d-general rank upper bound at
+the affinely-spanning restricted placement). The basis-pick factored
+into a placement-fixed `_of_finrank_range_ge_dim_two` companion plus
+a two-line existence wrapper. The assembly
+`IsGenericallyRigid.exists_isLaman_le` in `LamanTheorem.lean` is ~25
+lines: IR + affinely-spanning placement, rank lower bound at it via
+rank-nullity, basis-pick at it, sparsity at it, then assemble Laman
+via the `Subtype.val '' I` transport (encoding-choice rationale below).
+The Phase 5 iff `isGenericallyRigid_two_iff_exists_isLaman_le` is now
+`sorry`-free. EdgesIn.lean gained the bridge
+`ncard_edgesIn_eq_ncard_induce_edgeSet` (and
+`edgesIn_eq_image_induce_edgeSet`) connecting our `edgesIn` to
+mathlib's `induce` via `Sym2.map Subtype.val`. See
 `git log --oneline --grep='phase6'` for commit-level detail.
 
 **Encoding choice rationale (`I : Set G.edgeSet`).** The index type
@@ -228,37 +259,19 @@ calibration lesson: the sweep is worth running once per heavy file
 the per-commit friction review remains the right ongoing mechanism
 to catch new pre-grind patterns as they're written.
 
-**Next session — the sparsity-side lemma
-`lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning
-placement existence landed (commits 11 and 17, the latter generalising
-to dimension `d`), the remaining substantial work is the combinatorial
-sparsity argument: for `I ⊆ G.edgeSet` row-independent at `p` (where
-`p` affinely spans on every size-`≥ 3` subset, as supplied by
-`exists_affinelySpanning_rigid_placement` at `d = 2`), show the spanning subgraph
-`H = fromEdgeSet (Subtype.val '' I)` is `(2, 3)`-sparse. The argument
-splits by `|s|`:
+**Encoding-choice payoff at assembly (commit 19).** Carrying
+`I : Set G.edgeSet` through Phase 6 (instead of `Set (Sym2 V)`) cost
+one adapter at assembly: `H := fromEdgeSet (Subtype.val '' I)` with
+the two-line lemma `H.edgeSet = Subtype.val '' I` (the `\ diagSet`
+collapses because `I ⊆ G.edgeSet` excludes diagonals) and a one-line
+`H ≤ G`. `H.edgeSet.ncard = I.ncard = 2|V| - 3` follows from
+`Set.ncard_image_of_injective` on `Subtype.val_injective`. The
+adapter is contained and the rest of the assembly worked with the
+clean `Set G.edgeSet` API.
 
-- `|s| = 2`: `H.edgesIn ↑s` has at most one edge (simple graph), so
-  `1 + 3 ≤ 4 = 2 * 2`.
-- `|s| ≥ 3`: the rows of `G.RigidityMap p` indexed by
-  `H.edgesIn ↑s` are LI (subset of `I`) and supported on `s`-columns,
-  hence factor through `H[s].RigidityMap p|_s` and are LI there too.
-  The d-general rank upper bound
-  `rigidityMap_finrank_range_le_of_affinelySpanning` at `d = 2`
-  applied to `H[s]` at `p|_s` (using the affine-span hypothesis at
-  `↑s`) bounds the rank by `2|s| - 3`, hence `|H.edgesIn ↑s| ≤ 2|s| - 3`.
-
-The technical bridge is the "row supported on columns of `s` factors
-through `Framework s 2`" argument; this likely needs a custom
-restriction linear map and the precomposition factoring trick.
-`SimpleGraph.induce` can supply `H[s]`.
-
-After the sparsity lemma, the assembly theorem
-`thm:isGenericallyRigid-exists-isLaman-le` combines it with the
-basis-pick and affinely-spanning placement to close the iff. Sparsity
-is the last step with genuine combinatorial content; assembly is
-mechanical glue. Reassess phase scope once sparsity's first attempt
-lands.
+**Phase complete.** Laman's theorem is fully formalized; the project
+has no `sorry`s. No "next phase" in the Phase 6 sense; future work
+options live in the *Phase-7 candidates* section below.
 
 **Design pattern established (commit 10).** When a Phase 6 helper has
 a d-general statement that holds verbatim with no extra hypotheses
@@ -269,3 +282,15 @@ d-general lemmas at `d = 2` with zero specialisation ceremony.
 Dim-2-shaped statements that *do* deserve a dedicated d=2 surface are
 those where the dim-2 conclusion is structurally specific (e.g.,
 `exists_edgeSetRowIndependent_basis_dim_two`'s `|I| = 2 * #V - 3`).
+
+## Phase-7 candidates
+
+The Lovász–Yemini identification of the rigidity matroid with the
+$(2, 3)$-count matroid in dim 2 has only its *easy direction* shipped
+(row-LI ⇒ $(2, 3)$-sparse). The deep converse — $(2, 3)$-sparse
+⇒ row-LI at some generic placement — is a separate milestone and
+would package the rigidity matroid as a `Mathlib.Combinatorics.Matroid`
+object. Other natural extensions: Whiteley's polarity route, the
+$d \ge 3$ rigidity-matroid theory (Maxwell counting + extra
+constraints), or generic-rigidity decidability via the Henneberg
+moves.

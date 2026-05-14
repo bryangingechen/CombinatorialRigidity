@@ -19,7 +19,7 @@ subgraph on the same vertex set). The two directions land separately:
   \item \emph{$\Rightarrow$ (every generically rigid graph contains a
     Laman spanning subgraph).} The Lov\'asz--Yemini~\cite{lovaszYemini1982}
     direction, which identifies the rigidity matroid in dim 2 with the
-    $(2, 3)$-count matroid. This is Phase~6 and not yet formalized.
+    $(2, 3)$-count matroid. Phase~6.
 \end{itemize}
 
 \subsection{The \texorpdfstring{$d = 2$}{d=2} edge-count corollary}
@@ -86,12 +86,7 @@ subgraph on the same vertex set). The two directions land separately:
 
 \subsection{The \texorpdfstring{$\Rightarrow$}{=>} direction}
 
-The companion direction is the subject of Phase~6, currently in
-progress. The skeleton below lays out the dependency graph: each
-intermediate definition / lemma is recorded without
-\texttt{\textbackslash lean} or \texttt{\textbackslash leanok}, so the
-dep-graph view renders them red until the corresponding Lean
-declarations land.
+The companion direction is the subject of Phase~6.
 
 \medskip
 
@@ -419,6 +414,7 @@ below provides one at any dimension $d$ (consumed here at $d = 2$).
 \begin{theorem}[Every generically rigid graph contains a Laman subgraph]
   \label{thm:isGenericallyRigid-exists-isLaman-le}
   \lean{SimpleGraph.IsGenericallyRigid.exists_isLaman_le}
+  \leanok
   \uses{def:isGenericallyRigid, def:isLaman, def:isTight,
     lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid,
     lem:exists-rowIndependent-edge-basis,
@@ -429,12 +425,16 @@ below provides one at any dimension $d$ (consumed here at $d = 2$).
   $H \le G$.
 \end{theorem}
 \begin{proof}
+  \leanok
   Pick a framework $p$ that is both infinitesimally rigid for $G$
   and affinely-spanning on every size-$\ge 3$ subset, via
-  \cref{lem:exists-affinelySpanning-rigid-placement}. Apply
-  \cref{lem:exists-rowIndependent-edge-basis} to extract
-  $I \subseteq E(G)$ with $|I| = 2 |V| - 3$ row-independent at $p$.
-  Let $H \le G$ be the spanning subgraph with edge set $I$. By
+  \cref{lem:exists-affinelySpanning-rigid-placement}. At this $p$, the
+  rank lower bound
+  \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid} (derived
+  from infinitesimal rigidity at $p$ via rank--nullity) feeds the
+  placement-fixed companion of \cref{lem:exists-rowIndependent-edge-basis}
+  to extract $I \subseteq E(G)$ with $|I| = 2 |V| - 3$ row-independent
+  at $p$. Let $H \le G$ be the spanning subgraph with edge set $I$. By
   \cref{lem:isSparse-of-rowIndependent-two}, $H$ is $(2, 3)$-sparse;
   together with $|E(H)| = 2 |V| - 3$ this makes $H$ $(2, 3)$-tight,
   i.e.\ Laman.
@@ -445,6 +445,7 @@ below provides one at any dimension $d$ (consumed here at $d = 2$).
 \begin{theorem}[Laman's theorem]
   \label{thm:isGenericallyRigid-two-iff-exists-isLaman-le}
   \lean{SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le}
+  \leanok
   \uses{thm:isLaman-isGenericallyRigid-two,
     thm:isGenericallyRigid-exists-isLaman-le,
     lem:isGenericallyRigid-mono}
@@ -458,9 +459,10 @@ below provides one at any dimension $d$ (consumed here at $d = 2$).
   \]
 \end{theorem}
 \begin{proof}
+  \leanok
   The $\Rightarrow$ direction is
-  \cref{thm:isGenericallyRigid-exists-isLaman-le} (Phase 6, not yet
-  closed). For $\Leftarrow$: given $H \le G$ with $H$ Laman,
+  \cref{thm:isGenericallyRigid-exists-isLaman-le}. For $\Leftarrow$:
+  given $H \le G$ with $H$ Laman,
   \cref{thm:isLaman-isGenericallyRigid-two} gives
   $H.\mathrm{IsGenericallyRigid}\,2$, and monotonicity
   \cref{lem:isGenericallyRigid-mono} along $H \le G$ extends rigidity

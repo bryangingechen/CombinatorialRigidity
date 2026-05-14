@@ -119,19 +119,59 @@ matroid in dimension 2 (Lovász–Yemini): row-independence of the rigidity
 matrix at a generic placement equals `(2, 3)`-sparsity, so a basis of the
 rigidity matroid (size `2n − 3`) spans a Laman subgraph.
 
+Proof: pick a placement `p` that is both infinitesimally rigid for `G`
+*and* affinely-spanning on every size-`≥ 3` subset
+(`exists_affinelySpanning_rigid_placement` at `d = 2`). At `p`, the rank
+lower bound from IR + rank-nullity feeds
+`exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two`, which extracts
+a row-independent edge set `I ⊆ G.edgeSet` of size `2|V| - 3`. The spanning
+subgraph `H = fromEdgeSet (Subtype.val '' I)` is `(2, 3)`-sparse by
+`isSparse_of_edgeSetRowIndependent_dim_two` (using affine spanning of `p`)
+and has exactly `2|V| - 3` edges by construction, hence is `(2, 3)`-tight,
+i.e.\ Laman.
+
 **Phase 6: Lovász–Yemini matroid duality.** -/
 theorem IsGenericallyRigid.exists_isLaman_le [Fintype V] {G : SimpleGraph V}
     (h : G.IsGenericallyRigid 2) (hV : 2 ≤ Fintype.card V) :
     ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman := by
-  sorry
+  classical
+  -- Step 1: pick an IR + affinely-spanning placement.
+  obtain ⟨p, hp_IR, hp_aff⟩ := exists_affinelySpanning_rigid_placement h
+  -- Step 2: rank lower bound at `p` (from IR + rank-nullity).
+  have h_rank_ge : 2 * Fintype.card V ≤
+      Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + 3 := by
+    have h_ker : Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) ≤ 3 := hp_IR
+    have h_total : Module.finrank ℝ (Framework V 2) = 2 * Fintype.card V := by
+      rw [Framework.finrank, mul_comm]
+    have h_rn := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p)
+    omega
+  -- Step 3: basis-pick at `p`.
+  obtain ⟨I, hI_card, hI⟩ :=
+    exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two h_rank_ge
+  -- Step 4: assemble the spanning subgraph and verify Laman.
+  set H : SimpleGraph V := fromEdgeSet (Subtype.val '' I) with hH_def
+  have hHG : H ≤ G := by
+    rw [hH_def, fromEdgeSet_le]
+    rintro e ⟨⟨e', _, rfl⟩, _⟩
+    exact e'.property
+  have hH_edgeSet : H.edgeSet = Subtype.val '' I := by
+    rw [hH_def, edgeSet_fromEdgeSet]
+    refine sdiff_eq_left.mpr ?_
+    rw [Set.disjoint_left]
+    rintro e ⟨e', _, rfl⟩ he_diag
+    exact not_isDiag_of_mem_edgeSet G e'.property he_diag
+  have hH_ncard : H.edgeSet.ncard = 2 * Fintype.card V - 3 := by
+    rw [hH_edgeSet, Set.ncard_image_of_injective _ Subtype.val_injective, hI_card]
+  refine ⟨H, hHG, isSparse_of_edgeSetRowIndependent_dim_two hp_aff hI, ?_⟩
+  rw [hH_ncard, Nat.card_eq_fintype_card]
+  omega
 
 /-- **Laman's theorem.** A simple graph on `n ≥ 2` vertices is generically rigid
 in the plane iff it contains a Laman spanning subgraph.
 
 The iff is composed from the two named directional theorems
-`IsLaman.isGenericallyRigid_two` and `IsGenericallyRigid.exists_isLaman_le`;
-each unproven content arm lives in its own `sorry`-blocked named theorem
-(see those for which phase resolves which arm). -/
+`IsLaman.isGenericallyRigid_two` (Phase 5) and
+`IsGenericallyRigid.exists_isLaman_le` (Phase 6). -/
 theorem isGenericallyRigid_two_iff_exists_isLaman_le [Fintype V] {G : SimpleGraph V}
     (hV : 2 ≤ Fintype.card V) :
     G.IsGenericallyRigid 2 ↔ ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman :=

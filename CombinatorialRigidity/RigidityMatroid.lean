@@ -147,25 +147,20 @@ theorem rigidityMap_finrank_range_le_of_affinelySpanning [Fintype V] {d : ℕ}
   have h_rn := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p)
   omega
 
-/-- **Row-independent edge basis at a generically rigid placement, dim 2.** If `G` is generically
-rigid in dimension 2, there is a placement `p` and a row-independent edge set `I ⊆ G.edgeSet` of
-size exactly `2 * #V - 3`.
-
-Proof outline: the rank lower bound `rigidityMap_finrank_range_ge_of_isGenericallyRigid` at
-`d = 2` gives `2 * #V ≤ finrank ℝ (range R) + 3` (with `2 * (2 + 1) / 2 = 3` reducing by `rfl`).
-Row rank equals column rank for `R` via `LinearMap.finrank_range_dualMap_eq_finrank_range` (after
-`span_range_rigidityRow` identifies the row span with the dual-map range). Applying
-`exists_linearIndepOn_extension` to the row family extracts a spanning LI subset `b`, whose
-cardinality is the row rank; truncating to size `2 * #V - 3` via `Set.exists_subset_ncard_eq`
-yields the witness. -/
-theorem exists_edgeSetRowIndependent_basis_dim_two [Fintype V] {G : SimpleGraph V}
-    (hG : G.IsGenericallyRigid 2) :
-    ∃ (p : Framework V 2) (I : Set G.edgeSet),
+/-- **Row-independent edge basis at a fixed rank-realising placement, dim 2.** If `p : Framework
+V 2` realises the rank lower bound `2 * #V ≤ finrank (range R) + 3` (e.g. at an infinitesimally
+rigid placement, via rank-nullity), then `G` has a row-independent edge set at `p` of size exactly
+`2 * #V - 3`. The placement-fixed companion to `exists_edgeSetRowIndependent_basis_dim_two` — same
+body, but `p` is supplied externally so the lemma composes with
+`exists_affinelySpanning_rigid_placement`. -/
+theorem exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two [Fintype V]
+    {G : SimpleGraph V} {p : Framework V 2}
+    (hp : 2 * Fintype.card V ≤
+      Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + 3) :
+    ∃ I : Set G.edgeSet,
       I.ncard = 2 * Fintype.card V - 3 ∧ G.EdgeSetRowIndependent p I := by
   classical
   haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
-  obtain ⟨p, hp⟩ := rigidityMap_finrank_range_ge_of_isGenericallyRigid hG
-  refine ⟨p, ?_⟩
   -- Extend ∅ to a row-LI subset `b ⊆ univ` whose image spans the whole row family.
   obtain ⟨b, _hb_sub, _, h_range_sub, hb_li⟩ :=
     exists_linearIndepOn_extension (linearIndepOn_empty ℝ (G.rigidityRow p))
@@ -195,8 +190,22 @@ theorem exists_edgeSetRowIndependent_basis_dim_two [Fintype V] {G : SimpleGraph 
     omega
   -- Truncate `b` to a subset `I ⊆ b` with `|I| = 2 * #V - 3`.
   obtain ⟨I, hI_sub, hI_card⟩ := Set.exists_subset_card_eq h_le_card
-  refine ⟨I, hI_card, ?_⟩
-  exact (edgeSetRowIndependent_iff_linearIndepOn_rigidityRow G p I).mpr (hb_li.mono hI_sub)
+  exact ⟨I, hI_card,
+    (edgeSetRowIndependent_iff_linearIndepOn_rigidityRow G p I).mpr (hb_li.mono hI_sub)⟩
+
+/-- **Row-independent edge basis at a generically rigid placement, dim 2.** If `G` is generically
+rigid in dimension 2, there is a placement `p` and a row-independent edge set `I ⊆ G.edgeSet` of
+size exactly `2 * #V - 3`.
+
+Composition of `rigidityMap_finrank_range_ge_of_isGenericallyRigid` (extracting an IR witness `p`
+and its rank lower bound) with `exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two` (basis-
+pick at any placement realising the rank lower bound). -/
+theorem exists_edgeSetRowIndependent_basis_dim_two [Fintype V] {G : SimpleGraph V}
+    (hG : G.IsGenericallyRigid 2) :
+    ∃ (p : Framework V 2) (I : Set G.edgeSet),
+      I.ncard = 2 * Fintype.card V - 3 ∧ G.EdgeSetRowIndependent p I := by
+  obtain ⟨p, hp⟩ := rigidityMap_finrank_range_ge_of_isGenericallyRigid hG
+  exact ⟨p, exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two hp⟩
 
 /-! ### Affinely-spanning rigid placement, d-general
 

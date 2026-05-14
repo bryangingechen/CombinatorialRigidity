@@ -63,7 +63,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 3. Henneberg moves | `Henneberg.lean` | ✓ Complete (see `notes/Phase3.md`) |
 | 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
 | 5. Laman's theorem (⇐) | `LamanTheorem.lean`, `HennebergRigidity.lean` | ✓ Complete (see `notes/Phase5.md`) |
-| 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | In progress — forward-mode blueprint (see `notes/Phase6.md`) |
+| 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | ✓ Complete (see `notes/Phase6.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -178,29 +178,26 @@ appendix.
 
 ### Phase 6 — Laman's theorem, (⇒) direction (`LamanTheorem.lean`, `RigidityMatroid.lean`)
 
-If `G` is generically rigid in dim 2, the rigidity matroid has full
-rank, so there is a basis (a row-independent edge set) of size
-`2n − 3`. The spanning subgraph on those edges is `(2, 3)`-tight by
-the matroid property; combined with Phase 5's (⇐) the iff closes.
+Complete. Builds the rigidity-matroid scaffolding in `RigidityMatroid.lean`
+(row-independence, dual-module bridge, rank lower bound at generic
+placement, rank upper bound at affinely-spanning placement, basis-pick),
+then ships Lovász–Yemini's easy direction in dim 2:
+`isSparse_of_edgeSetRowIndependent_dim_two` (row-independent edge sets
+yield `(2, 3)`-sparse spanning subgraphs) and the assembly
+`IsGenericallyRigid.exists_isLaman_le` (combine the affinely-spanning
+rigid placement, basis-pick, and sparsity). The iff
+`isGenericallyRigid_two_iff_exists_isLaman_le` in `LamanTheorem.lean`
+now closes both directions. Phase 4 deliberately kept `Framework.lean`
+matroid-agnostic (see DESIGN.md *Notion- and matroid-agnostic core*);
+Phase 6 stood up `RigidityMatroid.lean` on top without packaging the
+abstract `Matroid` instance, since the easy direction needs only the
+row-independence relation and two linear-algebra facts.
 
-The deep step is the equality of the **rigidity matroid** and the
-**(2, 3)-count matroid** in dimension 2. Lovász–Yemini's argument is
-the standard reference; Whiteley's polarity is another route.
-
-Phase 4 deliberately kept `Framework.lean` matroid-agnostic (see
-DESIGN.md *Notion- and matroid-agnostic core*). Phase 6 stands up
-`RigidityMatroid.lean` on top, then fills in
-`IsGenericallyRigid.exists_isLaman_le` in `LamanTheorem.lean`,
-completing the iff.
-
-Phase 6 runs in **forward blueprint mode** (Option C, hybrid skeleton)
-per `blueprint/DESIGN.md` *Recommendation for Phase 6*. The blueprint
-chapter `blueprint/src/chapter/laman-theorem.tex` (its $\Rightarrow$
-subsection) is the authoritative dep-graph and lemma index; each Lean
-session picks a leaf-most red node, formalizes it, and adds
-`\lean{...}` + `\leanok` to its blueprint entry. The companion phase
-log `notes/Phase6.md` carries current state, decisions, blockers, and
-hand-off — **not** a parallel lemma checklist.
+The chapter ran in **forward blueprint mode** per `blueprint/DESIGN.md`
+*Recommendation for Phase 6*: the blueprint chapter
+`blueprint/src/chapter/laman-theorem.tex` (its $\Rightarrow$ subsection)
+served as the authoritative dep-graph and lemma index throughout. See
+`notes/Phase6.md` for the full lemma list and phase-specific decisions.
 
 ## Engineering conventions
 
