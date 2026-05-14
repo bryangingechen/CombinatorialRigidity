@@ -26,12 +26,24 @@ Every session, in order:
    decision. The default answer is *don't*.
 6. **`notes/FRICTION.md`** — optional skim for an open upstream-eligible
    item to land alongside the session's main work.
+7. **`blueprint/CLAUDE.md`** — only when the session touches blueprint
+   TeX (writing a new chapter, updating a `\lean{...}` pin, flipping
+   `\leanok` on a forward-mode entry as a lemma lands). The blueprint
+   has its own operating manual; this file does not duplicate it.
+   `blueprint/DESIGN.md` carries the backfill-vs-forward workflow
+   discussion. Phase 6 onward runs in **forward mode** by default —
+   the blueprint chapter for the active phase is the authoritative
+   dep-graph / lemma index, and `notes/PhaseN.md` does not duplicate
+   it.
 
 The hand-off contract is: **`ROADMAP.md` + the active `notes/PhaseN.md`
 should be enough to identify the next concrete task** without reading
 any source file or commit history. If either drifts from that
 guarantee, the friction-review step at end-of-session is where you
-fix it.
+fix it. (In forward-mode phases, the *lemma index* itself lives in
+the blueprint dep-graph; `notes/PhaseN.md` carries everything else —
+current state, decisions, blockers, hand-off — and points at the
+blueprint chapter.)
 
 ## Per-session workflow
 
@@ -59,6 +71,19 @@ fix it.
 - When you add a lemma, put it in the file that introduces the
   relevant *definition*, not the file that first uses it. (Lemma about
   `IsSparse` → `Sparsity.lean`, even if first invoked in `Laman.lean`.)
+- **Forward-mode blueprint phases (Phase 6 onward by default).** The
+  active phase's blueprint chapter — typically a section of
+  `blueprint/src/chapter/*.tex` — is the authoritative dep-graph and
+  lemma index. Pick the leaf-most red node (no `\leanok`, dependencies
+  all `\leanok` or mathlib facts), formalize it in Lean, then
+  add/flip `\lean{...}` and `\leanok` on its blueprint entry in the
+  same commit. Re-render with `cd blueprint && inv bp && inv web` and
+  spot-check `web/dep_graph_document.html` before committing. See
+  `blueprint/CLAUDE.md` for authoring conventions (annotation order,
+  label prefixes, sorry-blocked encoding) and `blueprint/DESIGN.md`
+  for the workflow-mode rationale. Backfill mode (Phases 1–5) writes
+  the blueprint chapter end-to-end after the Lean lands; forward mode
+  inverts that so the dep-graph doubles as the live to-do list.
 - **Before committing, run both `lake build` and `lake lint`.** Both
   are CI gates (see `.github/workflows/push_pr.yml`); a failing lint
   blocks merge as surely as a failing build. The full-project linter

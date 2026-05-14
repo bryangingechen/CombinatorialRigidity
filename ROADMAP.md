@@ -63,7 +63,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 3. Henneberg moves | `Henneberg.lean` | ✓ Complete (see `notes/Phase3.md`) |
 | 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
 | 5. Laman's theorem (⇐) | `LamanTheorem.lean`, `HennebergRigidity.lean` | ✓ Complete (see `notes/Phase5.md`) |
-| 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | Not yet started |
+| 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | In progress — forward-mode blueprint (see `notes/Phase6.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -191,8 +191,16 @@ Phase 4 deliberately kept `Framework.lean` matroid-agnostic (see
 DESIGN.md *Notion- and matroid-agnostic core*). Phase 6 stands up
 `RigidityMatroid.lean` on top, then fills in
 `IsGenericallyRigid.exists_isLaman_le` in `LamanTheorem.lean`,
-completing the iff. A concrete plan lives in `notes/Phase6.md` once
-Phase 6 starts.
+completing the iff.
+
+Phase 6 runs in **forward blueprint mode** (Option C, hybrid skeleton)
+per `blueprint/DESIGN.md` *Recommendation for Phase 6*. The blueprint
+chapter `blueprint/src/chapter/laman-theorem.tex` (its $\Rightarrow$
+subsection) is the authoritative dep-graph and lemma index; each Lean
+session picks a leaf-most red node, formalizes it, and adds
+`\lean{...}` + `\leanok` to its blueprint entry. The companion phase
+log `notes/Phase6.md` carries current state, decisions, blockers, and
+hand-off — **not** a parallel lemma checklist.
 
 ## Engineering conventions
 
