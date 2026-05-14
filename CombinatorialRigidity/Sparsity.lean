@@ -198,9 +198,7 @@ theorem IsSparse.isTightOn_of_le {G : SimpleGraph V} {k ℓ : ℕ}
     (hG : G.IsSparse k ℓ) {s : Finset V} (hs : ℓ ≤ k * s.card)
     (h_le : k * s.card ≤ (G.edgesIn ↑s).ncard + ℓ) :
     G.IsTightOn k ℓ s := by
-  unfold IsTightOn
-  have := hG s hs
-  omega
+  grind only [IsTightOn, hG s hs]
 
 /-! ### The tight-subset lattice
 
@@ -278,8 +276,7 @@ theorem IsTightOn.union_with_bonus [Finite V] [DecidableEq V] {G : SimpleGraph V
   have h_union_size : ℓ ≤ k * (S₁ ∪ S₂).card :=
     h_S1_size.trans (Nat.mul_le_mul_left k (Finset.card_le_card Finset.subset_union_left))
   refine hG.isTightOn_of_le h_union_size ?_
-  unfold IsTightOn at h₁ h₂
-  omega
+  grind only [IsTightOn]
 
 /-- **Tight extension by a vertex with `k` boundary edges.** If `S` is `(k, ℓ)`-tight and a fresh
 vertex `w ∉ S` can be added with at least `k` "new" edges `F ⊆ edgesIn (insert w S)` disjoint from
@@ -306,8 +303,7 @@ theorem IsTightOn.insert_vertex_with_edges [Finite V] [DecidableEq V] {G : Simpl
     unfold IsTightOn at h
     rw [h_card_insert, Nat.mul_add, Nat.mul_one]; omega
   refine hG.isTightOn_of_le h_size ?_
-  unfold IsTightOn at h
-  rw [h_card_insert, Nat.mul_add, Nat.mul_one]
-  omega
+  rw [h_card_insert, Nat.mul_add, Nat.mul_one] at h_size ⊢
+  grind only [IsTightOn]
 
 end SimpleGraph

@@ -135,6 +135,18 @@ placement; assembly stacks on sparsity plus the basis-pick.
   `inner_elemSkewMap_self`'s `i ≠ j` branch closes with `grind`;
   `trivialMotionFamily_linearIndependent`'s Steps 1–5 rewritten in
   term-mode `simpa` style.
+- *Commit 18 (`Sparsity.lean`, `Laman.lean`):* project-wide
+  grind-default sweep on Phase 1–5 files. 6 lines net. Four wins,
+  all of shape "multi-step `unfold P at h; ...; omega` body collapses
+  to `grind only [P]`": `IsSparse.isTightOn_of_le` (4→2),
+  `IsTightOn.union_with_bonus` final block (3→2),
+  `IsTightOn.insert_vertex_with_edges` final block (4→3),
+  `IsLaman.eq_top_of_card_eq_two`'s `hG_card` have-body (4→2). Most
+  bare `omega`/`simp` closers in Phases 1–5 are correctly `omega`
+  per TACTICS § 1 (pure linear arithmetic after staged `have`s);
+  the sweep yield concentrated where the def `IsTightOn` had to be
+  unfolded to expose arithmetic. See *Future polish — resolved
+  (continued)* below for the calibration note.
 
 ## Blockers / open questions
 
@@ -146,7 +158,7 @@ entries for resolution details.
 
 ## Hand-off / next phase
 
-**Done.** Commits 0–17. Setup (0–2): notes seeded, forward-mode
+**Done.** Commits 0–18. Setup (0–2): notes seeded, forward-mode
 blueprint skeleton, bibliography. Linear-algebra infrastructure
 (3–10): `EdgeSetRowIndependent`; basis-pick
 `exists_edgeSetRowIndependent_basis_dim_two` via the dual bridge;
@@ -160,10 +172,11 @@ affinely-spanning rigid placement via moment-curve perturbation;
 commit 11 shipped dim-2; commit 17 lifted to d-general via
 matrix-determinant route. Four mirrors landed: `Pi.basisFun_dualBasis`
 and `LinearMap.range_dualMap_eq_span_image_dualBasis` (13);
-`Matrix.det_powerDifferences` (16). Two cleanup/golf passes:
+`Matrix.det_powerDifferences` (16). Three cleanup/golf passes:
 `elemSkewMap_ofLp_inr_apply` cross-term lemma (14); TACTICS § 1
-grind-default golf on `TrivialMotions.lean` (15). See `git log
---oneline --grep='phase6'` for commit-level detail.
+grind-default golf on `TrivialMotions.lean` (15); project-wide
+grind-default sweep on `Sparsity.lean` and `Laman.lean` (18). See
+`git log --oneline --grep='phase6'` for commit-level detail.
 
 **Encoding choice rationale (`I : Set G.edgeSet`).** The index type
 sits inside `G.edgeSet`, matching the blueprint's "$I \subseteq E(G)$".
@@ -193,21 +206,27 @@ and ready to reuse in the upcoming sparsity lemma), and the
 `LinearMap.ext_on` retargeting in `trivialMotionFamily_linearIndependent`
 (no mirror needed — the lemma was already upstream).
 
-**Future polish (low-priority, not blocking).** One cleanup remains
-deferred behind the sparsity lemma:
-
-- *Project-wide grind-default sweep.* TACTICS § 1's "default to
-  `grind` for closing `simp`/`omega`/`linarith`" rule landed (in
-  current form) after most Phases 1–5 work was written. The
-  commit-15 pass on `TrivialMotions.lean` netted 37 lines deleted
-  with no logic changes; a similar pass on other phase files
-  (`Sparsity.lean`, `Henneberg.lean`, `Framework.lean`, …) is
-  likely to find comparable wins. Method: `grep -n` for bare
-  `omega` / `simp` / `simp; ring` / `linarith` closers, then
-  `lean_multi_attempt` with `["grind", "grind only", <current>]`
-  at each, and apply when grind succeeds and the current tactic
-  is multi-line. Cost: ~1 session; risk: low (every change is
-  verified by `lake build` and `lake lint`).
+**Future polish — resolved (continued).** The project-wide
+grind-default sweep landed in commit 18 (`Sparsity.lean` and
+`Laman.lean`; 6 lines net). The yield was much smaller than
+commit-15's 37 lines on `TrivialMotions.lean` because the Phase 1–5
+files were already written with cleaner staging discipline: most
+bare `omega` closers in those files sit at the end of pure
+arithmetic chains where TACTICS § 1 explicitly prefers `omega` over
+`grind` (faster and more readable). The wins concentrated in three
+spots where a multi-step `unfold IsTightOn at h; ...; omega` body
+collapsed to `grind only [IsTightOn]` (`IsSparse.isTightOn_of_le`,
+`IsTightOn.union_with_bonus`, `IsTightOn.insert_vertex_with_edges`)
+plus one 4-line `have ...; rw ...; omega` body in
+`IsLaman.eq_top_of_card_eq_two`'s `hG_card`. Other candidates
+(`Henneberg.lean`'s tightly-staged branch closers, `Framework.lean`'s
+rank-nullity omegas, the `Sym2`-induction `<;> simp` patterns) were
+tested with `lean_multi_attempt` and rejected — either grind
+couldn't subsume the staging, or the body was already minimal. The
+calibration lesson: the sweep is worth running once per heavy file
+(commit 15's pattern was specific to `TrivialMotions.lean`), and
+the per-commit friction review remains the right ongoing mechanism
+to catch new pre-grind patterns as they're written.
 
 **Next session — the sparsity-side lemma
 `lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning

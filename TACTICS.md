@@ -364,6 +364,18 @@ If we ever decide to make any of these `abbrev`, the proofs would
 contract further. For now they stay `def` — see `DESIGN.md`
 "Predicates as `def`s" for the trade-off.
 
+### Unfold via `grind only [DefName]` hint
+
+`grind only [IsTightOn]` (passing the `def` name as a hint) tells
+`grind` to unfold the def on the whiteboard. This collapses
+`unfold IsTightOn at h; ...; omega`-shaped bodies to one line — the
+commit-18 grind-default sweep landed three such collapses on
+`IsSparse.isTightOn_of_le`, `IsTightOn.union_with_bonus`, and
+`IsTightOn.insert_vertex_with_edges`. Use this when the only thing
+the `unfold` step does is expose the def's arithmetic content for
+the closer; the explicit `refine ⟨?_, ?_⟩` is still needed when the
+def has structural cases `grind` needs to dispatch separately.
+
 ---
 
 ## 5. Lifting Subtype-Sym2 equalities

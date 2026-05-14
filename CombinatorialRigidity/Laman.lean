@@ -182,9 +182,7 @@ theorem IsLaman.eq_top_of_card_eq_two [Fintype V]
     {G : SimpleGraph V} (h : G.IsLaman) (hV : Fintype.card V = 2) : G = ⊤ := by
   rw [← edgeSet_inj]
   have hG_card : G.edgeSet.ncard = 1 := by
-    have h1 := h.edgeSet_ncard
-    rw [Nat.card_eq_fintype_card, hV] at h1
-    omega
+    grind only [h.edgeSet_ncard, Nat.card_eq_fintype_card]
   have hTop_card : ((⊤ : SimpleGraph V).edgeSet).ncard = 1 := by
     rw [ncard_edgeSet_top_eq_card_choose_two, hV]; rfl
   refine Set.eq_of_subset_of_ncard_le (edgeSet_subset_edgeSet.mpr le_top) ?_ ?_
