@@ -135,18 +135,274 @@ theorem trivialMotions_le_ker (G : SimpleGraph V) (p : Framework V d) :
   · exact translationMotion_mem_ker G p t
   · exact infinitesimalRotation_mem_ker G p hA
 
+/-! ### The d-general finrank lower bound at an affinely-spanning placement
+
+This section ships the d-general statement
+`d * (d + 1) / 2 ≤ finrank ℝ (trivialMotions p)` at an affinely-spanning placement, via an
+explicit family of `d` translations (the coordinate translations) and `d (d - 1) / 2` elementary
+skew-symmetric rotations (one per ordered pair `(i, j)` with `j < i`). The dim-2 case below is its
+`d = 2` instance. -/
+
+/-- The "elementary skew-adjoint" linear map indexed by a pair `i, j : Fin d`, sending
+`x ↦ x_j • e_i - x_i • e_j` (where `e_k = EuclideanSpace.single k 1`). Skew-adjoint:
+`⟪x, elemSkewMap i j x⟫_ℝ = 0` (`inner_elemSkewMap_self`). For `i = j` it is the zero map; for
+`i ≠ j` it corresponds to the elementary skew-symmetric matrix `E_{i, j} - E_{j, i}`. The
+collection of `elemSkewMap i j` for `j < i` spans the `d (d - 1) / 2`-dim space of skew-symmetric
+linear maps and supplies the rotation generators of `trivialMotions`. -/
+noncomputable def elemSkewMap (i j : Fin d) :
+    EuclideanSpace ℝ (Fin d) →ₗ[ℝ] EuclideanSpace ℝ (Fin d) where
+  toFun x := x j • PiLp.single 2 i (1 : ℝ) - x i • PiLp.single 2 j (1 : ℝ)
+  map_add' u v := by
+    ext k
+    simp only [PiLp.add_apply, PiLp.sub_apply, PiLp.smul_apply, smul_eq_mul,
+      PiLp.ofLp_single, Pi.single_apply]
+    split_ifs <;> ring
+  map_smul' c v := by
+    ext k
+    simp only [PiLp.smul_apply, PiLp.sub_apply, smul_eq_mul, PiLp.ofLp_single,
+      Pi.single_apply, RingHom.id_apply]
+    split_ifs <;> ring
+
+@[simp] theorem elemSkewMap_apply (i j : Fin d) (x : EuclideanSpace ℝ (Fin d)) (k : Fin d) :
+    (elemSkewMap i j x) k = (if k = i then x j else 0) - (if k = j then x i else 0) := by
+  simp only [elemSkewMap, LinearMap.coe_mk, AddHom.coe_mk, PiLp.sub_apply, PiLp.smul_apply,
+    smul_eq_mul, PiLp.ofLp_single, Pi.single_apply]
+  split_ifs <;> ring
+
+/-- **`elemSkewMap i j` is skew-adjoint.** The inner product `⟪x, elemSkewMap i j x⟫_ℝ` vanishes
+for every `x`, so `infinitesimalRotation (elemSkewMap i j) p` lies in the rigidity-map kernel
+(`infinitesimalRotation_mem_ker`). -/
+theorem inner_elemSkewMap_self (i j : Fin d) (x : EuclideanSpace ℝ (Fin d)) :
+    ⟪x, elemSkewMap i j x⟫_ℝ = 0 := by
+  rcases eq_or_ne i j with rfl | hij
+  · suffices h : elemSkewMap i i x = 0 by simp [h]
+    ext k
+    simp [elemSkewMap_apply]
+  · simp only [PiLp.inner_apply, RCLike.inner_apply, conj_trivial, elemSkewMap_apply,
+      sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul]
+    rw [Finset.sum_ite_eq' Finset.univ i, Finset.sum_ite_eq' Finset.univ j]
+    simp
+    ring
+
+/-! ### The d-general motion family and linear independence
+
+The d-general trivial-motion family is indexed by `Fin d ⊕ Σ i : Fin d, Fin i.val`: the left half
+contributes the `d` coordinate translations, and the right half contributes one elementary skew
+rotation per ordered pair `(i, j)` with `j < i` (so `j : Fin i.val`). Linear independence holds
+whenever the placement `p` affinely spans `EuclideanSpace ℝ (Fin d)`; the joint LI argument
+combines:
+
+1. *Translation/rotation split.* The combination at vertex `v` decomposes as `t + S(p v)` in
+   `EuclideanSpace ℝ (Fin d)`, where `t = ∑ i, c.inl i • e_i` is the translation vector and
+   `S = ∑ ⟨i, j⟩, c.inr ⟨i, j⟩ • elemSkewMap i j'` is the rotation linear map (`j' : Fin d` is the
+   embedding of `j : Fin i.val`).
+2. *Rotation kill via affine spanning.* Subtracting `t + S(p v) = 0` and `t + S(p w) = 0` gives
+   `S(p v - p w) = 0`; affine spanning implies the vector span of `{p v - p w}` is `⊤`, so `S = 0`
+   as a linear map (`LinearMap.eqOn_span`).
+3. *Coefficient extraction.* From `S = 0`, evaluating `S` at the standard basis vectors picks out
+   each rotation coefficient. With those gone, the surviving equation `t = 0` then yields the
+   translation coefficients via the standard-basis coord-read. -/
+
+/-- The d-general trivial-motion family at a placement `p`. The left summand of the index type
+contributes the `d` coordinate translations (one per `i : Fin d`); the right summand contributes
+one elementary skew rotation per ordered pair `⟨i, j⟩` with `j : Fin i.val` (so `j.val < i.val`),
+using `elemSkewMap i ⟨j.val, _⟩` for the skew generator. Each value lies in `trivialMotions p`
+(`trivialMotionFamily_mem_trivialMotions`). -/
+noncomputable def trivialMotionFamily (p : Framework V d) :
+    (Fin d ⊕ Σ i : Fin d, Fin i.val) → Framework V d
+  | .inl i => translationMotion (PiLp.single 2 i (1 : ℝ))
+  | .inr ⟨i, j⟩ =>
+      infinitesimalRotation (elemSkewMap i ⟨j.val, j.isLt.trans i.isLt⟩) p
+
+@[simp] theorem trivialMotionFamily_inl (p : Framework V d) (i : Fin d) :
+    trivialMotionFamily p (.inl i) = translationMotion (PiLp.single 2 i (1 : ℝ)) := rfl
+
+@[simp] theorem trivialMotionFamily_inr (p : Framework V d) (i : Fin d) (j : Fin i.val) :
+    trivialMotionFamily p (.inr ⟨i, j⟩) =
+      infinitesimalRotation (elemSkewMap i ⟨j.val, j.isLt.trans i.isLt⟩) p := rfl
+
+theorem trivialMotionFamily_mem_trivialMotions (p : Framework V d)
+    (s : Fin d ⊕ Σ i : Fin d, Fin i.val) :
+    trivialMotionFamily p s ∈ trivialMotions p := by
+  rcases s with i | ⟨i, j⟩
+  · exact translationMotion_mem_trivialMotions p _
+  · exact infinitesimalRotation_mem_trivialMotions p (inner_elemSkewMap_self _ _)
+
+-- `[Fintype V]` is semantically required: it derives `Module.Finite ℝ (Framework V d)` via the
+-- Pi-fintype chain. The linter sees the binder as unused because the use is purely through
+-- typeclass derivation.
+set_option linter.unusedFintypeInType false in
+/-- **Joint linear independence** of the d-general trivial-motion family at an affinely-spanning
+placement. The translation/rotation split combined with affine spanning kills the rotation part,
+leaving the translation part identifiable coord-by-coord. -/
+theorem trivialMotionFamily_linearIndependent [Fintype V] {p : Framework V d}
+    (hp : affineSpan ℝ (Set.range p) = ⊤) :
+    LinearIndependent ℝ (trivialMotionFamily p) := by
+  obtain ⟨_, v₀, rfl⟩ := AffineSubspace.nonempty_of_affineSpan_eq_top _ _ _ hp
+  rw [Fintype.linearIndependent_iff]
+  intro c hc
+  -- The "skew sum" linear map and "translation vector" assembled from coefficients.
+  set S : EuclideanSpace ℝ (Fin d) →ₗ[ℝ] EuclideanSpace ℝ (Fin d) :=
+    ∑ s : Σ i : Fin d, Fin i.val,
+      c (.inr s) • elemSkewMap s.1 ⟨s.2.val, s.2.isLt.trans s.1.isLt⟩ with hS_def
+  set t : EuclideanSpace ℝ (Fin d) :=
+    ∑ i : Fin d, c (.inl i) • PiLp.single 2 i (1 : ℝ) with ht_def
+  -- Coordinate `m` of `t` is the translation coefficient `c (.inl m)`.
+  have ht_coord : ∀ m : Fin d, t.ofLp m = c (.inl m) := by
+    intro m
+    change (∑ i : Fin d, c (.inl i) • PiLp.single 2 i (1 : ℝ)).ofLp m = _
+    simp only [WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul, Pi.smul_apply,
+      PiLp.ofLp_single, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]
+    rw [Finset.sum_ite_eq Finset.univ m]
+    simp
+  -- Step 1: at every `v`, `t + S (p v) = 0`.
+  have h_combine : ∀ v : V, t + S (p v) = 0 := by
+    intro v
+    have h1 := congrFun hc v
+    simp only [Finset.sum_apply, Pi.smul_apply, Fintype.sum_sum_type,
+      trivialMotionFamily_inl, translationMotion_apply] at h1
+    -- Now h1 : ∑ i, c (.inl i) • PiLp.single 2 i 1
+    --      + ∑ ⟨i,j⟩, c (.inr ⟨i,j⟩) • elemSkewMap _ _ (p v) = 0
+    rw [hS_def, LinearMap.sum_apply]
+    simp only [LinearMap.smul_apply]
+    rw [ht_def]
+    exact h1
+  -- Step 2: `S` vanishes on differences `p v - p w`.
+  have h_S_diff : ∀ v w : V, S (p v - p w) = 0 := by
+    intro v w
+    rw [map_sub]
+    have hv : S (p v) = -t := eq_neg_of_add_eq_zero_right (h_combine v)
+    have hw : S (p w) = -t := eq_neg_of_add_eq_zero_right (h_combine w)
+    rw [hv, hw, sub_self]
+  -- Step 3: `S = 0` as a linear map (vanishes on the vector span of `Set.range p`).
+  haveI : Nonempty V := ⟨v₀⟩
+  have h_S_zero : S = 0 := by
+    refine LinearMap.ext fun x => ?_
+    have hvspan : vectorSpan ℝ (Set.range p) = ⊤ :=
+      (AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nonempty ℝ _ _
+        (Set.range_nonempty p)).mp hp
+    have hx : x ∈ Submodule.span ℝ ((Set.range p) -ᵥ (Set.range p)) := by
+      rw [← vectorSpan_def, hvspan]; trivial
+    refine LinearMap.eqOn_span (s := (Set.range p) -ᵥ (Set.range p)) (g := 0) ?_ hx
+    rintro y ⟨_, ⟨v, rfl⟩, _, ⟨w, rfl⟩, rfl⟩
+    simpa [vsub_eq_sub] using h_S_diff v w
+  -- Step 4: `t = 0`.
+  have h_t_zero : t = 0 := by
+    have := h_combine v₀
+    rw [h_S_zero, LinearMap.zero_apply, add_zero] at this
+    exact this
+  -- Step 5: extract coefficients.
+  intro s
+  rcases s with i | ⟨i, j⟩
+  · -- Translation coefficient: from `t = 0`, read coordinate `i`.
+    have := congrArg (·.ofLp i) h_t_zero
+    simp only at this
+    rw [ht_coord i] at this
+    exact this
+  · -- Rotation coefficient: from `S = 0`, apply at `e_{j'}` and read coord `i`.
+    set j' : Fin d := ⟨j.val, j.isLt.trans i.isLt⟩ with hj'_def
+    have hS : S (PiLp.single 2 j' (1 : ℝ)) = 0 := by rw [h_S_zero]; rfl
+    have h_extract : (S (PiLp.single 2 j' (1 : ℝ))).ofLp i = c (.inr ⟨i, j⟩) := by
+      rw [hS_def, LinearMap.sum_apply]
+      simp only [LinearMap.smul_apply, WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul,
+        Pi.smul_apply, elemSkewMap_apply, PiLp.ofLp_single, Pi.single_apply, smul_eq_mul]
+      -- Each summand is `c (.inr s) * term(s)`; only `s = ⟨i, j⟩` contributes.
+      rw [Finset.sum_eq_single ⟨i, j⟩]
+      · -- Singled-out term `s = ⟨i, j⟩` evaluates to `1`.
+        have h_ij_ne : i ≠ j' := fun h => by
+          have : i.val = j.val := congrArg Fin.val h
+          omega
+        have h_b_eq : (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) = j' := rfl
+        rw [if_pos rfl, h_b_eq, if_pos rfl, if_neg h_ij_ne]
+        simp
+      · -- Off-diagonal terms are zero.
+        rintro ⟨a, b⟩ _ hne
+        -- The two `if-then-else` branches are individually zero.
+        have h_second : (if i = (⟨b.val, b.isLt.trans a.isLt⟩ : Fin d)
+            then (if a = j' then (1 : ℝ) else 0) else 0) = 0 := by
+          split_ifs with h_outer h_inner
+          · -- i = ⟨b.val, _⟩ so i.val = b.val < a.val; a = j' means a.val = j.val < i.val.
+            have h_ib : i.val = b.val := congrArg Fin.val h_outer
+            have h_aj : a.val = j.val := congrArg Fin.val h_inner
+            have h_blt : b.val < a.val := b.isLt
+            have h_jlt : j.val < i.val := j.isLt
+            omega
+          · rfl
+          · rfl
+        have h_first : (if i = a
+            then (if (⟨b.val, b.isLt.trans a.isLt⟩ : Fin d) = j' then (1 : ℝ) else 0) else 0)
+              = 0 := by
+          split_ifs with h_outer h_inner
+          · -- i = a and b.val = j.val. Then ⟨a, b⟩ = ⟨i, j⟩, contradicting hne.
+            exfalso
+            apply hne
+            have h_ia : a = i := h_outer.symm
+            subst h_ia
+            -- Goal: (⟨a, b⟩ : Σ x : Fin d, Fin x.val) = ⟨a, j⟩ — after subst i := a
+            -- b : Fin a.val, j : Fin a.val, b.val = j.val.
+            have h_bj_val : b.val = j.val := by
+              have h := h_inner
+              rw [hj'_def] at h
+              exact Fin.mk_eq_mk.mp h
+            congr 1
+            exact Fin.ext h_bj_val
+          · rfl
+          · rfl
+        rw [h_first, h_second, sub_zero, mul_zero]
+      · intro h
+        exact absurd (Finset.mem_univ _) h
+    rw [hS] at h_extract
+    -- h_extract : (0 : EuclideanSpace ℝ (Fin d)).ofLp i = c (.inr ⟨i, j⟩)
+    simp at h_extract
+    exact h_extract.symm
+
+/-- Cardinality of the d-general trivial-motion index: `d` coordinate translations plus
+`d * (d - 1) / 2 = ∑_{i < d} i` skew rotations gives `d * (d + 1) / 2`. -/
+theorem fintype_card_trivialMotionFamilyIndex :
+    Fintype.card (Fin d ⊕ Σ i : Fin d, Fin i.val) = d * (d + 1) / 2 := by
+  rw [Fintype.card_sum, Fintype.card_fin, Fintype.card_sigma]
+  simp only [Fintype.card_fin]
+  rw [show (∑ i : Fin d, i.val) = ∑ i ∈ Finset.range d, i from Fin.sum_univ_eq_sum_range id d]
+  rw [show d + ∑ i ∈ Finset.range d, i = ∑ i ∈ Finset.range (d + 1), i by
+    rw [Finset.sum_range_succ]; ring]
+  rw [Finset.sum_range_id]
+  rw [show d + 1 - 1 = d from rfl]
+  rw [Nat.mul_comm]
+
+-- `[Fintype V]` is semantically required: it derives `Module.Finite ℝ (Framework V d)` via the
+-- Pi-fintype chain, which `LinearIndependent.fintype_card_le_finrank` needs. The linter sees the
+-- binder as unused because the use goes through a typeclass-derivation chain.
+set_option linter.unusedFintypeInType false in
+/-- **The d-general finrank lower bound for trivial motions at an affinely-spanning placement.**
+At any placement `p : Framework V d` whose image affinely spans `EuclideanSpace ℝ (Fin d)`, the
+trivial-motions submodule has dimension at least `d (d + 1) / 2` (the textbook dimension of
+Euclidean rigid motions). The argument exhibits an explicit family of `d` coordinate translations
+and `d (d - 1) / 2` elementary skew rotations and shows it is linearly independent. -/
+theorem trivialMotions_finrank_ge_of_affinelySpanning [Fintype V]
+    {p : Framework V d} (hp : affineSpan ℝ (Set.range p) = ⊤) :
+    d * (d + 1) / 2 ≤ Module.finrank ℝ (trivialMotions p) := by
+  -- Lift the trivial-motion family into the `trivialMotions p` submodule.
+  let f : (Fin d ⊕ Σ i : Fin d, Fin i.val) → (trivialMotions p) :=
+    fun s => ⟨trivialMotionFamily p s, trivialMotionFamily_mem_trivialMotions p s⟩
+  have h_LI : LinearIndependent ℝ f := by
+    have h_amb : LinearIndependent ℝ (trivialMotionFamily p) :=
+      trivialMotionFamily_linearIndependent hp
+    have h_eq : (fun s => (f s).val) = trivialMotionFamily p := by
+      funext s; rfl
+    rw [← h_eq] at h_amb
+    exact h_amb.of_comp (trivialMotions p).subtype
+  have h_card := h_LI.fintype_card_le_finrank
+  rw [fintype_card_trivialMotionFamilyIndex] at h_card
+  exact h_card
+
 /-! ### The dim-2 specialisation: three explicit trivial motions
 
-This section ships the dim-2 finrank lower bound
-`trivialMotions_three_le_finrank_of_affinelySpanning_two`. The natural d-general statement is
-`d * (d + 1) / 2 ≤ finrank ℝ (trivialMotions p)` at an affinely-spanning placement, of which our
-dim-2 lemma is the d=2 instance; the d-general proof needs an explicit family of `d` translations
-plus `d (d - 1) / 2` elementary skew-symmetric rotations (the matrices `E_{ij} - E_{ji}` for
-`i ≠ j`), a joint LI argument under affine spanning, and the cardinality computation
-`Fintype.card (Fin d ⊕ Σ i : Fin d, Fin i) = d (d + 1) / 2`. The dim-2 case avoids the
-skew-symmetric basis bookkeeping by inspection (one rotation suffices). The d-general
-generalisation is deferred — see `notes/Phase6.md` *Hand-off* and the open task in
-`blueprint/src/chapter/trivial-motions.tex`. -/
+In dimension 2 there is exactly one nontrivial elementary skew map up to scalar — the
+$90^\circ$-rotation `rotJTwo = elemSkewMap 1 0`. The dim-2 finrank lower bound
+`trivialMotions_three_le_finrank_of_affinelySpanning_two` falls out as the `d = 2` instance of
+`trivialMotions_finrank_ge_of_affinelySpanning`. The standalone `rotJTwo` definition + its
+`@[simp]` apply-lemmas are retained because they show up cleanly in coordinate computations
+elsewhere; the d-general API does not displace them. -/
 
 /-- The 90°-rotation linear map on `EuclideanSpace ℝ (Fin 2)`, sending `!₂[x, y] ↦ !₂[-y, x]`. The
 key property `⟪v, rotJTwo v⟫_ℝ = 0` (`inner_rotJTwo_self`) makes it skew-adjoint in the sense
@@ -170,116 +426,12 @@ theorem inner_rotJTwo_self (v : EuclideanSpace ℝ (Fin 2)) : ⟪v, rotJTwo v⟫
 -- typeclass-derivation chain.
 set_option linter.unusedFintypeInType false in
 /-- **At least three linearly independent trivial motions at an affinely-spanning placement,
-dim 2.** The two coordinate translations and the 90°-rotation motion are linearly independent in
-`trivialMotions p` whenever `p : Framework V 2` affinely spans `ℝ²`; hence
-`3 ≤ finrank ℝ (trivialMotions p)`.
-
-In dimension 2, $d (d + 1)/2 = 3$ — the bound is in fact sharp (trivialMotions equals exactly the
-3-dim span of these motions, modulo scaling) but we only need `≥ 3` to close the rank upper
-bound feeding the `(⇒)` direction of Laman's theorem. -/
+dim 2.** A direct corollary of the d-general `trivialMotions_finrank_ge_of_affinelySpanning` at
+`d = 2`, since $d (d + 1)/2 = 3$. -/
 theorem trivialMotions_three_le_finrank_of_affinelySpanning_two [Fintype V]
     {p : Framework V 2} (hp : affineSpan ℝ (Set.range p) = ⊤) :
-    3 ≤ Module.finrank ℝ (trivialMotions p) := by
-  -- The three motions.
-  let m₀ : Framework V 2 := translationMotion (EuclideanSpace.single 0 1)
-  let m₁ : Framework V 2 := translationMotion (EuclideanSpace.single 1 1)
-  let m₂ : Framework V 2 := infinitesimalRotation rotJTwo p
-  -- Each lies in `trivialMotions p`.
-  have h_m₀_mem : m₀ ∈ trivialMotions p := translationMotion_mem_trivialMotions p _
-  have h_m₁_mem : m₁ ∈ trivialMotions p := translationMotion_mem_trivialMotions p _
-  have h_m₂_mem : m₂ ∈ trivialMotions p :=
-    infinitesimalRotation_mem_trivialMotions p inner_rotJTwo_self
-  -- Build a `Fin 3 → trivialMotions p` family of three subtype elements.
-  let m_sub : Fin 3 → trivialMotions p := ![⟨m₀, h_m₀_mem⟩, ⟨m₁, h_m₁_mem⟩, ⟨m₂, h_m₂_mem⟩]
-  -- Linear independence of the ambient family `m : Fin 3 → Framework V 2`.
-  let m : Fin 3 → Framework V 2 := ![m₀, m₁, m₂]
-  have h_LI : LinearIndependent ℝ m := by
-    rw [Fintype.linearIndependent_iff]
-    intro c hc
-    -- Evaluate `∑ i, c i • m i = 0` at each vertex `v` and read off coordinates `0` and `1`.
-    have h_at_v : ∀ v : V,
-        c 0 - c 2 * (p v) 1 = 0 ∧
-        c 1 + c 2 * (p v) 0 = 0 := by
-      intro v
-      have h_eval := congrFun hc v
-      have h_expand : (∑ i, c i • m i) v = c 0 • m₀ v + c 1 • m₁ v + c 2 • m₂ v := by
-        rw [Fin.sum_univ_three]; rfl
-      rw [h_expand] at h_eval
-      -- h_eval : c 0 • m₀ v + c 1 • m₁ v + c 2 • m₂ v = 0 in EuclideanSpace ℝ (Fin 2)
-      have h_coord0 : (c 0 • m₀ v + c 1 • m₁ v + c 2 • m₂ v) 0 = 0 := by rw [h_eval]; rfl
-      have h_coord1 : (c 0 • m₀ v + c 1 • m₁ v + c 2 • m₂ v) 1 = 0 := by rw [h_eval]; rfl
-      refine ⟨?_, ?_⟩
-      · -- Coord 0: m₀ v 0 = 1, m₁ v 0 = 0, m₂ v 0 = -(p v) 1.
-        have h := h_coord0
-        simp [m₀, m₁, m₂, EuclideanSpace.single, PiLp.smul_apply, PiLp.add_apply] at h
-        linarith
-      · -- Coord 1: m₀ v 1 = 0, m₁ v 1 = 1, m₂ v 1 = (p v) 0.
-        have h := h_coord1
-        simp [m₀, m₁, m₂, EuclideanSpace.single, PiLp.smul_apply, PiLp.add_apply] at h
-        linarith
-    -- Show `c 2 = 0`. If not, `p` is constant — but `affineSpan = ⊤` forbids that.
-    have h_c2 : c 2 = 0 := by
-      by_contra hc2
-      -- From `h_at_v`: `c 2 * (p v) 1 = c 0` and `c 2 * (p v) 0 = -c 1`, both for all `v`.
-      have h_const_pv0 : ∀ v : V, (p v) 0 = -c 1 / c 2 := by
-        intro v
-        have h := (h_at_v v).2
-        field_simp
-        linarith
-      have h_const_pv1 : ∀ v : V, (p v) 1 = c 0 / c 2 := by
-        intro v
-        have h := (h_at_v v).1
-        field_simp
-        linarith
-      -- `p` is constant. So `affineSpan ℝ (Set.range p)` is a singleton; but `= ⊤`, contradiction.
-      obtain ⟨_, v₀, rfl⟩ := AffineSubspace.nonempty_of_affineSpan_eq_top _ _ _ hp
-      have h_const : ∀ v : V, p v = p v₀ := by
-        intro v
-        ext i
-        match i with
-        | ⟨0, _⟩ =>
-          change (p v) 0 = (p v₀) 0
-          rw [h_const_pv0 v, h_const_pv0 v₀]
-        | ⟨1, _⟩ =>
-          change (p v) 1 = (p v₀) 1
-          rw [h_const_pv1 v, h_const_pv1 v₀]
-      have h_range_singleton : Set.range p = {p v₀} := by
-        ext x
-        constructor
-        · rintro ⟨v, rfl⟩; exact (h_const v).symm ▸ rfl
-        · rintro rfl; exact ⟨v₀, rfl⟩
-      rw [h_range_singleton] at hp
-      -- `affineSpan ℝ {p v₀} = ⊤` would force `EuclideanSpace ℝ (Fin 2)` to be a subsingleton.
-      have h_nontrivial : Nontrivial (EuclideanSpace ℝ (Fin 2)) :=
-        ⟨EuclideanSpace.single 0 1, EuclideanSpace.single 1 1, by
-          intro heq
-          have h0 := congrFun (congrArg WithLp.ofLp heq) 0
-          simp at h0⟩
-      obtain ⟨a, b, hab⟩ := h_nontrivial.exists_pair_ne
-      have ha : a ∈ affineSpan ℝ ({p v₀} : Set _) :=
-        hp.symm ▸ AffineSubspace.mem_top _ _ a
-      have hb : b ∈ affineSpan ℝ ({p v₀} : Set _) :=
-        hp.symm ▸ AffineSubspace.mem_top _ _ b
-      rw [AffineSubspace.mem_affineSpan_singleton] at ha hb
-      exact hab (ha.trans hb.symm)
-    -- Then `c 0 = c 1 = 0` from `h_at_v` at any vertex.
-    obtain ⟨_, v₀, rfl⟩ := AffineSubspace.nonempty_of_affineSpan_eq_top _ _ _ hp
-    obtain ⟨h0_eq, h1_eq⟩ := h_at_v v₀
-    rw [h_c2, zero_mul] at h0_eq h1_eq
-    have h_c0 : c 0 = 0 := by linarith
-    have h_c1 : c 1 = 0 := by linarith
-    intro i
-    fin_cases i <;> assumption
-  -- Lift LI from `Framework V 2` to the subtype `trivialMotions p`.
-  have h_sub_LI : LinearIndependent ℝ m_sub := by
-    have h_eq : (fun i => (m_sub i).val) = m := by
-      funext i; fin_cases i <;> simp [m_sub, m]
-    have := h_LI
-    rw [← h_eq] at this
-    exact this.of_comp (trivialMotions p).subtype
-  have h_card_le := h_sub_LI.fintype_card_le_finrank
-  rw [Fintype.card_fin] at h_card_le
-  exact h_card_le
+    3 ≤ Module.finrank ℝ (trivialMotions p) :=
+  trivialMotions_finrank_ge_of_affinelySpanning hp
 
 -- `[Fintype V]` is semantically required (see the same-shaped note on
 -- `trivialMotions_three_le_finrank_of_affinelySpanning_two`); the linter sees it as unused at

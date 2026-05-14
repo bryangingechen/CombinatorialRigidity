@@ -116,36 +116,139 @@ $\dim \ge 3$ at an affinely-spanning placement.
   is their span.
 \end{proof}
 
+\subsection{The d-general finrank lower bound at an affinely-spanning placement}
+\label{sec:trivial-motions-d-general}
+
+We exhibit an explicit family of $d + d(d-1)/2 = d(d+1)/2$ trivial
+motions and show it is linearly independent at any affinely-spanning
+placement, recovering the textbook dimension count.
+
+\begin{definition}[Elementary skew-adjoint linear map]
+  \label{def:elemSkewMap}
+  \lean{SimpleGraph.elemSkewMap}
+  \leanok
+  For indices $i, j \in \{0, \dots, d-1\}$, the \emph{elementary
+  skew-adjoint linear map}
+  $\mathrm{elemSkewMap}\,i\,j : \R^{d} \to_{\R} \R^{d}$ is
+  $x \mapsto x_{j} e_{i} - x_{i} e_{j}$, where $e_{k}$ is the
+  standard basis vector. It is anti-symmetric in $(i, j)$ and vanishes
+  when $i = j$; for $i \neq j$ it corresponds to the elementary
+  skew-symmetric matrix $E_{i, j} - E_{j, i}$.
+\end{definition}
+
+\begin{lemma}[$\mathrm{elemSkewMap}\,i\,j$ is skew-adjoint]
+  \label{lem:inner-elemSkewMap-self}
+  \lean{SimpleGraph.inner_elemSkewMap_self}
+  \leanok
+  \uses{def:elemSkewMap}
+  For every $i, j$ and every $x \in \R^{d}$,
+  $\langle x,\, \mathrm{elemSkewMap}\,i\,j\,x \rangle = 0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  When $i = j$ the map is zero; otherwise the only nonzero coordinates
+  of $\mathrm{elemSkewMap}\,i\,j\,x$ are coordinate $i$ (value $x_{j}$)
+  and coordinate $j$ (value $-x_{i}$), so the inner product reduces to
+  $x_{i} \cdot x_{j} + x_{j} \cdot (-x_{i}) = 0$.
+\end{proof}
+
+\begin{definition}[d-general trivial-motion family]
+  \label{def:trivialMotionFamily}
+  \lean{SimpleGraph.trivialMotionFamily}
+  \leanok
+  \uses{def:translationMotion, def:infinitesimalRotation, def:elemSkewMap}
+  At a placement $p : V \to \R^{d}$, the \emph{trivial-motion family}
+  is the map indexed by
+  $\mathrm{Fin}\,d \sqcup \Sigma_{i : \mathrm{Fin}\,d} \mathrm{Fin}\,i$
+  that sends each left-summand $i$ to
+  $\mathrm{translationMotion}\,e_{i}$ (the $i$-th coordinate
+  translation) and each right-summand $\langle i, j \rangle$ (with
+  $j : \mathrm{Fin}\,i.\mathrm{val}$, so $j < i$) to
+  $\mathrm{infinitesimalRotation}\,(\mathrm{elemSkewMap}\,i\,j')\,p$
+  where $j' : \mathrm{Fin}\,d$ is the embedding of $j$.
+\end{definition}
+
+\begin{lemma}[Trivial-motion family lies in the trivial-motions submodule]
+  \label{lem:trivialMotionFamily-mem-trivialMotions}
+  \lean{SimpleGraph.trivialMotionFamily_mem_trivialMotions}
+  \leanok
+  \uses{def:trivialMotionFamily, def:trivialMotions,
+    lem:inner-elemSkewMap-self}
+  Each value of the trivial-motion family lies in
+  $\mathrm{trivialMotions}\,p$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Each translation is a generator of $\mathrm{trivialMotions}\,p$;
+  each rotation $\mathrm{infinitesimalRotation}\,(\mathrm{elemSkewMap}\,i\,j')\,p$
+  is a generator because $\mathrm{elemSkewMap}\,i\,j'$ is skew-adjoint
+  by \cref{lem:inner-elemSkewMap-self}.
+\end{proof}
+
+\begin{lemma}[Joint linear independence of the trivial-motion family]
+  \label{lem:trivialMotionFamily-linearIndependent}
+  \lean{SimpleGraph.trivialMotionFamily_linearIndependent}
+  \leanok
+  \uses{def:trivialMotionFamily}
+  Let $V$ be finite and let $p : V \to \R^{d}$ have affine span
+  $\top$. Then the trivial-motion family is linearly independent in
+  $\mathrm{Framework}\,V\,d$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Write a vanishing linear combination as
+  $t + S(p_{v}) = 0$ for every vertex $v$, where $t \in \R^{d}$ is the
+  translation vector $\sum_{i} c_{\mathrm{inl}\,i} \cdot e_{i}$ and
+  $S : \R^{d} \to_{\R} \R^{d}$ is the skew sum
+  $\sum_{\langle i, j \rangle} c_{\mathrm{inr}\,\langle i, j\rangle}
+   \cdot \mathrm{elemSkewMap}\,i\,j'$.
+  Subtracting at two vertices kills $t$ and shows $S(p_{v} - p_{w}) = 0$
+  for all $v, w$; affine spanning gives
+  $\mathrm{vectorSpan}_{\R}\,(\mathrm{range}\,p) = \top$, so
+  $S$ vanishes on a spanning set, hence $S = 0$. Then $t = 0$ as well.
+  Reading off the coordinates of $t$ recovers the translation
+  coefficients, and reading off
+  $(S\,e_{j'})_{i}$ recovers each rotation coefficient
+  $c_{\mathrm{inr}\,\langle i, j \rangle}$ (the other cross-terms
+  vanish for the ordered-pair index range).
+\end{proof}
+
+\begin{lemma}[d-general finrank lower bound for trivial motions]
+  \label{lem:trivialMotions-finrank-ge-of-affinelySpanning}
+  \lean{SimpleGraph.trivialMotions_finrank_ge_of_affinelySpanning}
+  \leanok
+  \uses{def:trivialMotions, lem:trivialMotionFamily-mem-trivialMotions,
+    lem:trivialMotionFamily-linearIndependent}
+  Let $V$ be finite and $p : V \to \R^{d}$ affinely spanning. Then
+  \[
+    \dim_{\R}\,(\mathrm{trivialMotions}\,p) \;\ge\; \frac{d(d+1)}{2}.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Lift the trivial-motion family
+  (\cref{def:trivialMotionFamily}) into the submodule
+  $\mathrm{trivialMotions}\,p$ using
+  \cref{lem:trivialMotionFamily-mem-trivialMotions}; the result is
+  linearly independent by
+  \cref{lem:trivialMotionFamily-linearIndependent}. The index type
+  has cardinality
+  $d + \sum_{i < d} i = \sum_{i \le d} i = d(d+1)/2$, so
+  $\mathrm{LinearIndependent.fintype\_card\_le\_finrank}$ gives the
+  bound.
+\end{proof}
+
 \subsection{The dim-2 specialization: three explicit trivial motions}
 \label{sec:trivial-motions-dim-two}
 
 In dimension $2$ the space of skew-adjoint linear maps is
 $1$-dimensional, spanned by the $90^{\circ}$-rotation
-$J : \R^{2} \to \R^{2}, \; (x, y) \mapsto (-y, x)$. We isolate this
-explicit generator and combine it with the two coordinate translations
-to land the dim-2 lower bound.
-
-\begin{remark}[Deferred d-general generalization]
-  The natural d-general statement,
-  \[
-    \dim_{\R}\,(\mathrm{trivialMotions}\,p)
-    \;\ge\;
-    \frac{d (d + 1)}{2}
-    \quad \text{at any affinely-spanning } p,
-  \]
-  has our dim-2 lemma below as the $d = 2$ instance. The d-general
-  proof needs an explicit family of $d$ coordinate translations plus
-  $d (d - 1) / 2$ elementary skew-symmetric rotations
-  (the matrices $E_{ij} - E_{ji}$ for $i \ne j$), a joint
-  linear-independence argument under affine spanning, and the
-  cardinality computation
-  $|\mathrm{Fin}\,d \sqcup \Sigma_{i : \mathrm{Fin}\,d} \mathrm{Fin}\,i|
-   = d (d + 1) / 2$.
-  The dim-2 case below avoids the skew-symmetric basis bookkeeping by
-  inspection (one rotation suffices). The d-general generalization is
-  open work; see \texttt{notes/Phase6.md} \emph{Hand-off} for the
-  decomposition plan.
-\end{remark}
+$J : \R^{2} \to \R^{2}, \; (x, y) \mapsto (-y, x)$. The dim-2 finrank
+lower bound is the $d = 2$ instance of
+\cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}, since
+$d(d+1)/2 = 3$. We retain the explicit $\mathrm{rotJTwo}$ generator and
+its $@[simp]$ apply-lemmas because they show up cleanly in coordinate
+computations elsewhere.
 
 \begin{definition}[The $90^{\circ}$-rotation in dim $2$]
   \label{def:rotJTwo}
@@ -174,8 +277,7 @@ to land the dim-2 lower bound.
   \label{lem:trivialMotions-three-le-finrank-of-affinelySpanning-two}
   \lean{SimpleGraph.trivialMotions_three_le_finrank_of_affinelySpanning_two}
   \leanok
-  \uses{def:trivialMotions, def:translationMotion, def:infinitesimalRotation,
-    def:rotJTwo, lem:inner-rotJTwo-self}
+  \uses{lem:trivialMotions-finrank-ge-of-affinelySpanning}
   Let $V$ be finite and let $p : V \to \R^{2}$ be a framework whose
   image affinely spans $\R^{2}$. Then
   \[
@@ -184,34 +286,9 @@ to land the dim-2 lower bound.
 \end{lemma}
 \begin{proof}
   \leanok
-  The two coordinate translations $\mathrm{translationMotion}\,e_0$
-  and $\mathrm{translationMotion}\,e_1$ lie in
-  $\mathrm{trivialMotions}\,p$ by definition; so does the rotation
-  $\mathrm{infinitesimalRotation}\,\mathrm{rotJTwo}\,p$ by
-  \cref{lem:inner-rotJTwo-self}. We claim the three are linearly
-  independent in $\mathrm{Framework}\,V\,2$, hence in the submodule.
-
-  Suppose
-  $c_0 \cdot \mathrm{translationMotion}\,e_0
-   + c_1 \cdot \mathrm{translationMotion}\,e_1
-   + c_2 \cdot \mathrm{infinitesimalRotation}\,\mathrm{rotJTwo}\,p
-   = 0$
-  in $\mathrm{Framework}\,V\,2$. Evaluating at any vertex $v$ and
-  reading coordinates $0$ and $1$ gives
-  \[
-    c_0 - c_2 \cdot p_v[1] = 0, \qquad
-    c_1 + c_2 \cdot p_v[0] = 0
-  \]
-  for every $v$. If $c_2 \ne 0$ the equations force $p_v$ to be a
-  fixed point of $\R^{2}$ for every $v$ --- but then
-  $\mathrm{affineSpan}_{\R}\,(\mathrm{range}\,p)$ is a singleton
-  affine subspace, contradicting the hypothesis that it equals
-  $\top$. Hence $c_2 = 0$, and at any single $v$ the equations then
-  reduce to $c_0 = c_1 = 0$.
-
-  Three linearly independent elements force
-  $\dim\,(\mathrm{trivialMotions}\,p) \ge 3$ by
-  $\mathrm{LinearIndependent.fintype\_card\_le\_finrank}$.
+  The $d = 2$ instance of
+  \cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}, since
+  $d(d+1)/2 = 3$.
 \end{proof}
 
 \begin{lemma}[Three trivial motions kill the rigidity map at an affinely-spanning placement, dim $2$]
