@@ -367,3 +367,61 @@ intersection.
   every inequality to be an equality, i.e.\ both $s \cup t$ and
   $s \cap t$ are tight.
 \end{proof}
+
+Two refinements of \cref{thm:isTightOn-union-inter}'s union half drop
+the size proviso on $s \cap t$ in exchange for an explicit set $F$ of
+extra edges that closes the accounting. They specialize to the union
+half of \cref{thm:isTightOn-union-inter} at $F = \emptyset$.
+
+\begin{theorem}[Tight union with bonus edges]
+  \label{thm:isTightOn-union-with-bonus}
+  \lean{SimpleGraph.IsTightOn.union_with_bonus}
+  \leanok
+  \uses{def:isSparse, def:isTightOn, lem:edgesIn-ncard-add-le}
+  Let $V$ be finite and $G$ be $(k,\ell)$-sparse. Let
+  $s_1, s_2 \subseteq V$ be both $(k,\ell)$-tight, and let
+  $F \subseteq \edgesIn{s_1 \cup s_2}$ be a finite set of edges
+  disjoint from $\edgesIn{s_1} \cup \edgesIn{s_2}$, satisfying
+  \[
+    |\edgesIn{s_1 \cap s_2}| + \ell \;\le\; |F| + k\,|s_1 \cap s_2|.
+  \]
+  Then $s_1 \cup s_2$ is $(k,\ell)$-tight.
+\end{theorem}
+\begin{proof}
+  \leanok
+  Refined supermodularity packages the disjoint inclusion
+  $\edgesIn{s_1} \cup \edgesIn{s_2} \cup F \subseteq \edgesIn{s_1 \cup s_2}$
+  with $\edgesIn{s_1} \cap \edgesIn{s_2} = \edgesIn{s_1 \cap s_2}$
+  to give
+  \[
+    |\edgesIn{s_1}| + |\edgesIn{s_2}| + |F|
+    \;\le\;
+    |\edgesIn{s_1 \cup s_2}| + |\edgesIn{s_1 \cap s_2}|.
+  \]
+  Tightness of $s_1$ and $s_2$ rewrites the left side as
+  $k\,|s_1| + k\,|s_2| - 2\ell + |F|$. Combined with the
+  $|s_1| + |s_2| = |s_1 \cup s_2| + |s_1 \cap s_2|$ identity and the
+  hypothesis on $F$, this lower-bounds $|\edgesIn{s_1 \cup s_2}|$ by
+  $k\,|s_1 \cup s_2| - \ell$, which against sparsity forces equality.
+\end{proof}
+
+\begin{theorem}[Tight extension by a vertex with $k$ boundary edges]
+  \label{thm:isTightOn-insert-vertex-with-edges}
+  \lean{SimpleGraph.IsTightOn.insert_vertex_with_edges}
+  \leanok
+  \uses{def:isSparse, def:isTightOn}
+  Let $V$ be finite and $G$ be $(k,\ell)$-sparse. Let
+  $s \subseteq V$ be $(k,\ell)$-tight, $w \notin s$, and let
+  $F \subseteq \edgesIn{s \cup \{w\}}$ be a finite set of edges
+  disjoint from $\edgesIn{s}$ with $|F| \ge k$. Then $s \cup \{w\}$
+  is $(k,\ell)$-tight.
+\end{theorem}
+\begin{proof}
+  \leanok
+  The disjoint inclusion
+  $\edgesIn{s} \cup F \subseteq \edgesIn{s \cup \{w\}}$ gives
+  $|\edgesIn{s \cup \{w\}}| \ge |\edgesIn{s}| + |F|$. Tightness of $s$
+  and $|F| \ge k$ rewrite this as
+  $|\edgesIn{s \cup \{w\}}| \ge k\,|s| - \ell + k = k\,|s \cup \{w\}| - \ell$,
+  which against sparsity at $s \cup \{w\}$ forces equality.
+\end{proof}

@@ -68,6 +68,20 @@ lemma mk_mem_edgesIn {x y : V} {s : Set V} (h : G.Adj x y) (hx : x ∈ s) (hy : 
     rw [Sym2.coe_mk]
     exact Set.insert_subset_iff.mpr ⟨hx, Set.singleton_subset_iff.mpr hy⟩⟩
 
+/-- Companion to `mk_mem_edgesIn`: an edge `s(x, y)` whose **left** endpoint lies outside `s`
+cannot lie in `G.edgesIn s`. -/
+lemma notMem_edgesIn_mk_of_left_notMem {x y : V} {s : Set V} (hxs : x ∉ s) :
+    s(x, y) ∉ G.edgesIn s := fun hmem => by
+  rw [mem_edgesIn, Sym2.coe_mk] at hmem
+  exact hxs (hmem.2 (Set.mem_insert _ _))
+
+/-- Companion to `mk_mem_edgesIn`: an edge `s(x, y)` whose **right** endpoint lies outside `s`
+cannot lie in `G.edgesIn s`. -/
+lemma notMem_edgesIn_mk_of_right_notMem {x y : V} {s : Set V} (hys : y ∉ s) :
+    s(x, y) ∉ G.edgesIn s := fun hmem => by
+  rw [mem_edgesIn, Sym2.coe_mk] at hmem
+  exact hys (hmem.2 (Set.mem_insert_of_mem _ rfl))
+
 lemma edgesIn_subset_edgeSet (s : Set V) : G.edgesIn s ⊆ G.edgeSet :=
   Set.inter_subset_left
 

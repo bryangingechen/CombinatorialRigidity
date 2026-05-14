@@ -230,4 +230,84 @@ theorem IsTightOn.union_inter [Finite V] [DecidableEq V] {G : SimpleGraph V} {k 
   unfold IsTightOn at hs ht ⊢
   refine ⟨?_, ?_⟩ <;> omega
 
+/-- **Tight union with bonus edges.** Generalizes `IsTightOn.union_inter`'s union half: instead of
+requiring `ℓ ≤ k * #(s ∩ t)` to extract sparsity at the intersection, allow the user to supply a
+finite set `F` of "bonus" edges in `edgesIn (S₁ ∪ S₂)` disjoint from `edgesIn S₁ ∪ edgesIn S₂` and
+ask only that `F` plus the intersection accounting close the gap, i.e.
+`|F| + k * #(S₁ ∩ S₂) ≥ |edgesIn (S₁ ∩ S₂)| + ℓ`. Specializes to
+`IsTightOn.union_inter`'s union conclusion at `F = ∅` (the size proviso then provides the
+close-the-gap inequality via sparsity at `S₁ ∩ S₂`). -/
+theorem IsTightOn.union_with_bonus [Finite V] [DecidableEq V] {G : SimpleGraph V} {k ℓ : ℕ}
+    {S₁ S₂ : Finset V} (h₁ : G.IsTightOn k ℓ S₁) (h₂ : G.IsTightOn k ℓ S₂)
+    (hG : G.IsSparse k ℓ) {F : Set (Sym2 V)}
+    (hF_sub : F ⊆ G.edgesIn (↑(S₁ ∪ S₂) : Set V))
+    (hF_disj : Disjoint F (G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V)))
+    (hF_finite : F.Finite)
+    (h_close : (G.edgesIn (↑(S₁ ∩ S₂) : Set V)).ncard + ℓ ≤
+               F.ncard + k * (S₁ ∩ S₂).card) :
+    G.IsTightOn k ℓ (S₁ ∪ S₂) := by
+  -- Step 1: refined supermodular bound. The bonus edges enlarge the union side by `|F|`.
+  have h_un_sub :
+      G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V) ⊆ G.edgesIn (↑(S₁ ∪ S₂) : Set V) := by
+    rw [Finset.coe_union]
+    exact Set.union_subset (edgesIn_mono Set.subset_union_left)
+                           (edgesIn_mono Set.subset_union_right)
+  have h_combined_sub :
+      G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V) ∪ F ⊆ G.edgesIn (↑(S₁ ∪ S₂) : Set V) :=
+    Set.union_subset h_un_sub hF_sub
+  have h_inter_eq : G.edgesIn (↑S₁ : Set V) ∩ G.edgesIn (↑S₂ : Set V) =
+                    G.edgesIn (↑(S₁ ∩ S₂) : Set V) := by
+    rw [Finset.coe_inter]; exact (edgesIn_inter _ _).symm
+  have h_un_card :
+      (G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V)).ncard +
+        (G.edgesIn (↑(S₁ ∩ S₂) : Set V)).ncard =
+        (G.edgesIn (↑S₁ : Set V)).ncard + (G.edgesIn (↑S₂ : Set V)).ncard := by
+    rw [← h_inter_eq]; exact Set.ncard_union_add_ncard_inter _ _
+  have h_combined_card :
+      (G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V) ∪ F).ncard =
+        (G.edgesIn (↑S₁ : Set V) ∪ G.edgesIn (↑S₂ : Set V)).ncard + F.ncard :=
+    Set.ncard_union_eq hF_disj.symm
+      ((G.edgesIn_finite S₁).union (G.edgesIn_finite S₂)) hF_finite
+  have h_le_union :=
+    Set.ncard_le_ncard h_combined_sub (G.edgesIn_finite (S₁ ∪ S₂))
+  -- Step 2: cardinality identity for the union/intersection split.
+  have h_card_mul : k * S₁.card + k * S₂.card = k * (S₁ ∪ S₂).card + k * (S₁ ∩ S₂).card := by
+    rw [← Nat.mul_add, ← Nat.mul_add, Finset.card_union_add_card_inter]
+  -- Step 3: squeeze to tightness via `IsSparse.isTightOn_of_le`.
+  have h_S1_size : ℓ ≤ k * S₁.card := by unfold IsTightOn at h₁; omega
+  have h_union_size : ℓ ≤ k * (S₁ ∪ S₂).card :=
+    h_S1_size.trans (Nat.mul_le_mul_left k (Finset.card_le_card Finset.subset_union_left))
+  refine hG.isTightOn_of_le h_union_size ?_
+  unfold IsTightOn at h₁ h₂
+  omega
+
+/-- **Tight extension by a vertex with `k` boundary edges.** If `S` is `(k, ℓ)`-tight and a fresh
+vertex `w ∉ S` can be added with at least `k` "new" edges `F ⊆ edgesIn (insert w S)` disjoint from
+`edgesIn S`, then `insert w S` is itself `(k, ℓ)`-tight. The `|F| ≥ k` hypothesis is exactly the
+edge-count needed to absorb the extra vertex while staying on the sparsity locus. -/
+theorem IsTightOn.insert_vertex_with_edges [Finite V] [DecidableEq V] {G : SimpleGraph V}
+    {k ℓ : ℕ} {S : Finset V} (h : G.IsTightOn k ℓ S) (hG : G.IsSparse k ℓ)
+    {w : V} (hw : w ∉ S) {F : Set (Sym2 V)}
+    (hF_sub : F ⊆ G.edgesIn (↑(insert w S) : Set V))
+    (hF_disj : Disjoint F (G.edgesIn (↑S : Set V)))
+    (hF_finite : F.Finite) (h_card : k ≤ F.ncard) :
+    G.IsTightOn k ℓ (insert w S) := by
+  have h_S_sub : G.edgesIn (↑S : Set V) ⊆ G.edgesIn (↑(insert w S) : Set V) := by
+    refine edgesIn_mono ?_; rw [Finset.coe_insert]; exact Set.subset_insert _ _
+  have h_combined_sub :
+      G.edgesIn (↑S : Set V) ∪ F ⊆ G.edgesIn (↑(insert w S) : Set V) :=
+    Set.union_subset h_S_sub hF_sub
+  have h_combined_card :
+      (G.edgesIn (↑S : Set V) ∪ F).ncard = (G.edgesIn (↑S : Set V)).ncard + F.ncard :=
+    Set.ncard_union_eq hF_disj.symm (G.edgesIn_finite S) hF_finite
+  have h_le := Set.ncard_le_ncard h_combined_sub (G.edgesIn_finite (insert w S))
+  have h_card_insert : (insert w S).card = S.card + 1 := Finset.card_insert_of_notMem hw
+  have h_size : ℓ ≤ k * (insert w S).card := by
+    unfold IsTightOn at h
+    rw [h_card_insert, Nat.mul_add, Nat.mul_one]; omega
+  refine hG.isTightOn_of_le h_size ?_
+  unfold IsTightOn at h
+  rw [h_card_insert, Nat.mul_add, Nat.mul_one]
+  omega
+
 end SimpleGraph

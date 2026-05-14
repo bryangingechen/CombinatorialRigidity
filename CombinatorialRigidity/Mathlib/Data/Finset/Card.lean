@@ -26,4 +26,20 @@ lemma eq_singleton_of_mem_of_card_le_one {s : Finset α} {z : α}
   (Finset.eq_of_subset_of_card_le (Finset.singleton_subset_iff.mpr hz)
     (h.trans_eq (Finset.card_singleton z).symm)).symm
 
+/-- Three distinct elements of a finset force its cardinality to be at least three. -/
+lemma three_le_card_of_three_distinct_mem {s : Finset α} {a b c : α}
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    (ha : a ∈ s) (hb : b ∈ s) (hc : c ∈ s) : 3 ≤ s.card := by
+  classical
+  have h3 : ({a, b, c} : Finset α).card = 3 := by
+    rw [show ({a, b, c} : Finset α) = insert a (insert b {c}) from rfl,
+        Finset.card_insert_of_notMem (by simp [hab, hac]),
+        Finset.card_insert_of_notMem (by simp [hbc])]
+    rfl
+  have hsub : ({a, b, c} : Finset α) ⊆ s := by
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl | rfl <;> assumption
+  exact h3 ▸ Finset.card_le_card hsub
+
 end Finset
