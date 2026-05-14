@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Framework
-import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
 import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs
 
@@ -18,10 +17,10 @@ span of (i) all translations `motion v = t` for `t : EuclideanSpace ℝ (Fin d)`
 `G.RigidityMap p` for every graph `G` (`trivialMotions_le_ker`) and is the textbook
 $d (d + 1)/2$-dimensional subspace of "rigid motions" at an affinely-spanning placement.
 
-This file ships the `d`-general definition plus the dim-2 specialisation needed by the `(⇒)`
-direction of Laman's theorem: an explicit 90°-rotation generator (`rotJTwo`) and the lower bound
-`3 ≤ finrank ℝ (trivialMotions p)` at an affinely-spanning placement
-(`trivialMotions_three_le_finrank_of_affinelySpanning_two`).
+All API is `d`-general. The Phase 6 `(⇒)` direction of Laman's theorem consumes
+`rigidityMap_ker_finrank_ge_of_affinelySpanning` at `d = 2`, where `d (d + 1) / 2 = 3` reduces by
+`rfl` on `Nat` literals so callers can apply the d-general lemma directly with no specialisation
+ceremony.
 
 ## Main definitions
 
@@ -33,16 +32,14 @@ direction of Laman's theorem: an explicit 90°-rotation generator (`rotJTwo`) an
 
 * `SimpleGraph.translationMotion_mem_ker`, `SimpleGraph.infinitesimalRotation_mem_ker`,
   `SimpleGraph.trivialMotions_le_ker` — trivial motions lie in the rigidity-map kernel.
-* `SimpleGraph.trivialMotions_three_le_finrank_of_affinelySpanning_two` — in dim 2 the trivial
-  motions submodule has dimension at least 3 at any affinely-spanning placement.
-* `SimpleGraph.trivialMotions_three_le_ker_of_affinelySpanning_two` — the corresponding
-  rigidity-map-kernel bound (corollary).
+* `SimpleGraph.trivialMotions_finrank_ge_of_affinelySpanning` — at any affinely-spanning
+  placement, the trivial-motions submodule has dimension at least `d (d + 1) / 2`.
+* `SimpleGraph.rigidityMap_ker_finrank_ge_of_affinelySpanning` — corresponding kernel bound.
 
 ## Project context
 
 See `ROADMAP.md` §6, `notes/Phase6.md`, and the `(⇒)` subsection of
-`blueprint/src/chapter/laman-theorem.tex` (specifically
-`lem:trivialMotions-three-le-ker-of-affinelySpanning-two`).
+`blueprint/src/chapter/laman-theorem.tex`.
 -/
 
 open scoped InnerProductSpace
@@ -395,62 +392,23 @@ theorem trivialMotions_finrank_ge_of_affinelySpanning [Fintype V]
   rw [fintype_card_trivialMotionFamilyIndex] at h_card
   exact h_card
 
-/-! ### The dim-2 specialisation: three explicit trivial motions
-
-In dimension 2 there is exactly one nontrivial elementary skew map up to scalar — the
-$90^\circ$-rotation `rotJTwo = elemSkewMap 1 0`. The dim-2 finrank lower bound
-`trivialMotions_three_le_finrank_of_affinelySpanning_two` falls out as the `d = 2` instance of
-`trivialMotions_finrank_ge_of_affinelySpanning`. The standalone `rotJTwo` definition + its
-`@[simp]` apply-lemmas are retained because they show up cleanly in coordinate computations
-elsewhere; the d-general API does not displace them. -/
-
-/-- The 90°-rotation linear map on `EuclideanSpace ℝ (Fin 2)`, sending `!₂[x, y] ↦ !₂[-y, x]`. The
-key property `⟪v, rotJTwo v⟫_ℝ = 0` (`inner_rotJTwo_self`) makes it skew-adjoint in the sense
-required by `infinitesimalRotation_mem_ker`. -/
-noncomputable def rotJTwo : EuclideanSpace ℝ (Fin 2) →ₗ[ℝ] EuclideanSpace ℝ (Fin 2) where
-  toFun v := !₂[-(v 1), v 0]
-  map_add' u v := by ext i; fin_cases i <;> simp [neg_add_rev, add_comm]
-  map_smul' c v := by ext i; fin_cases i <;> simp [mul_neg]
-
-@[simp] theorem rotJTwo_apply_zero (v : EuclideanSpace ℝ (Fin 2)) : (rotJTwo v) 0 = -(v 1) := rfl
-
-@[simp] theorem rotJTwo_apply_one (v : EuclideanSpace ℝ (Fin 2)) : (rotJTwo v) 1 = v 0 := rfl
-
-theorem inner_rotJTwo_self (v : EuclideanSpace ℝ (Fin 2)) : ⟪v, rotJTwo v⟫_ℝ = 0 := by
-  simp [PiLp.inner_apply, Fin.sum_univ_two]
-  ring
-
--- `[Fintype V]` is semantically required: it derives `Module.Finite ℝ (Framework V 2)` (via the
--- Pi instance over a fintype), which `LinearIndependent.fintype_card_le_finrank` needs at the last
--- step. The linter sees the binder as unused at the binder site because the use goes through a
--- typeclass-derivation chain.
+-- `[Fintype V]` is semantically required: `trivialMotions_finrank_ge_of_affinelySpanning`
+-- consumes it for `Module.Finite ℝ (Framework V d)` via the Pi-fintype chain. The linter sees
+-- the binder as unused because the use is purely through typeclass derivation.
 set_option linter.unusedFintypeInType false in
-/-- **At least three linearly independent trivial motions at an affinely-spanning placement,
-dim 2.** A direct corollary of the d-general `trivialMotions_finrank_ge_of_affinelySpanning` at
-`d = 2`, since $d (d + 1)/2 = 3$. -/
-theorem trivialMotions_three_le_finrank_of_affinelySpanning_two [Fintype V]
-    {p : Framework V 2} (hp : affineSpan ℝ (Set.range p) = ⊤) :
-    3 ≤ Module.finrank ℝ (trivialMotions p) :=
-  trivialMotions_finrank_ge_of_affinelySpanning hp
+/-- **d-general finrank lower bound for the rigidity-map kernel at an affinely-spanning placement.**
+For any graph `G`, any dimension `d`, and any placement `p` whose image affinely spans
+`EuclideanSpace ℝ (Fin d)`, the kernel of `G.RigidityMap p` has dimension at least
+`d (d + 1) / 2` (the textbook Asimow--Roth trivial-motions dimension count).
 
--- `[Fintype V]` is semantically required (see the same-shaped note on
--- `trivialMotions_three_le_finrank_of_affinelySpanning_two`); the linter sees it as unused at
--- the binder because the use goes through a typeclass-derivation chain.
-set_option linter.unusedFintypeInType false in
-/-- **Three trivial motions kill the rigidity map at an affinely-spanning placement, dim 2.** The
-kernel of `G.RigidityMap p` contains the trivial-motions submodule (`trivialMotions_le_ker`,
-unconditional in any dimension); at an affinely-spanning placement in dim 2 the latter has dimension
-at least 3 (`trivialMotions_three_le_finrank_of_affinelySpanning_two`). Hence
-`3 ≤ finrank ℝ (ker (G.RigidityMap p))`.
-
-This is the structural input to the rank upper bound
-`rigidityMap_finrank_range_le_of_affinelySpanning_two`, which together with the rank lower bound
-underlies the $(2, 3)$-sparsity claim feeding the `(⇒)` direction of Laman's theorem. -/
-theorem trivialMotions_three_le_ker_of_affinelySpanning_two [Fintype V]
-    (G : SimpleGraph V) {p : Framework V 2}
+Combines the d-general `trivialMotions_finrank_ge_of_affinelySpanning` with the unconditional
+inclusion `trivialMotions_le_ker`. Plugs into rank-nullity to give the d-general rank upper
+bound `rigidityMap_finrank_range_le_of_affinelySpanning` on `G.RigidityMap p`'s range. -/
+theorem rigidityMap_ker_finrank_ge_of_affinelySpanning [Fintype V]
+    (G : SimpleGraph V) {p : Framework V d}
     (hp : affineSpan ℝ (Set.range p) = ⊤) :
-    3 ≤ Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) :=
-  (trivialMotions_three_le_finrank_of_affinelySpanning_two hp).trans
+    d * (d + 1) / 2 ≤ Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) :=
+  (trivialMotions_finrank_ge_of_affinelySpanning hp).trans
     (Submodule.finrank_mono (trivialMotions_le_ker G p))
 
 end SimpleGraph

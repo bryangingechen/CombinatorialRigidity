@@ -151,30 +151,33 @@ and is not formalized.
 
 \subsubsection{Rank of the rigidity map at a generically rigid placement}
 
-\begin{lemma}[Rank lower bound at a generically rigid placement, dim $2$]
-  \label{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}
-  \lean{SimpleGraph.rigidityMap_finrank_range_ge_of_isGenericallyRigid_two}
+\begin{lemma}[Rank lower bound at a generically rigid placement, d-general]
+  \label{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid}
+  \lean{SimpleGraph.rigidityMap_finrank_range_ge_of_isGenericallyRigid}
   \leanok
   \uses{def:isGenericallyRigid, lem:framework-finrank,
     def:isInfinitesimallyRigid}
   Let $V$ be finite and $G : \mathrm{SimpleGraph}\,V$. If $G$ is
-  generically rigid in dimension $2$, there exists a framework
-  $p : V \to \R^{2}$ with
+  generically rigid in dimension $d$, there exists a framework
+  $p : V \to \R^{d}$ with
   \[
-    2 |V| \;\le\; \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr) + 3.
+    d \cdot |V| \;\le\; \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr)
+      + \frac{d(d+1)}{2}.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
   Pick an infinitesimally rigid framework $p$ witnessing generic
   rigidity. Rank--nullity for $\mathrm{RigidityMap}\,G\,p$ gives
-  $\dim\,\mathrm{Framework}\,V\,2 = \dim\,\mathrm{range} + \dim\,\ker$;
-  by \cref{lem:framework-finrank} the left-hand side equals $2 |V|$,
-  and by the definition of infinitesimal rigidity in dim $2$ the
-  nullity is at most $3$. (The lemma is the rank-half of the
-  edge-count theorem \cref{thm:isGenericallyRigid-card-mul-le} with
-  the edge-count bound \cref{lem:rigidityMap-finrank-range-le}
-  replaced by the rank itself.)
+  $\dim\,\mathrm{Framework}\,V\,d = \dim\,\mathrm{range} + \dim\,\ker$;
+  by \cref{lem:framework-finrank} the left-hand side equals $d \cdot |V|$,
+  and by the definition of infinitesimal rigidity the nullity is at most
+  $d(d+1)/2$. (The lemma is the rank-half of the edge-count theorem
+  \cref{thm:isGenericallyRigid-card-mul-le} with the edge-count bound
+  \cref{lem:rigidityMap-finrank-range-le} replaced by the rank itself.)
+  The $(\Rightarrow)$ direction of Laman's theorem consumes this at
+  $d = 2$, where $d(d+1)/2 = 3$ reduces by $\mathit{rfl}$ on the
+  literal $\mathrm{Nat}$ arithmetic.
 \end{proof}
 
 \begin{lemma}[Row-independent edge basis from rank lower bound]
@@ -182,7 +185,7 @@ and is not formalized.
   \lean{SimpleGraph.exists_edgeSetRowIndependent_basis_dim_two}
   \leanok
   \uses{def:edgeSet-rowIndependent,
-    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}
+    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid}
   Let $V$ be finite. If $G$ is generically rigid in dimension $2$, then
   there exists a framework $p$ and an edge set $I \subseteq E(G)$ with
   $|I| = 2 |V| - 3$ which is row-independent at $p$.
@@ -190,7 +193,8 @@ and is not formalized.
 \begin{proof}
   \leanok
   Pick $p$ realising the rank lower bound
-  \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}, so
+  \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid} at
+  $d = 2$, so
   $\dim\,\mathrm{range}\,\mathrm{RigidityMap}\,G\,p \ge 2|V| - 3$. The
   edge-indexed rows of $\mathrm{RigidityMap}\,G\,p$ span the range of
   its transpose, which has the same dimension as the range itself by
@@ -215,31 +219,34 @@ and is not formalized.
 The kernel of the rigidity map always contains the
 \emph{trivial Euclidean motions} of the framework (translations plus
 infinitesimal rotations); the unconditional $\le \ker$ inclusion and
-the dim-2 lower bound $\dim_{\R}\,\ker \ge 3$ at an affinely-spanning
+the $d(d+1)/2$ lower bound on $\dim_{\R}\,\ker$ at an affinely-spanning
 placement are developed in \cref{sec:trivial-motions} (specifically
-\cref{lem:trivialMotions-three-le-ker-of-affinelySpanning-two}). The
-induced rank bound $\rk \le 2|V| - 3$ in dim $2$ is the converse of the
-rank lower bound and underlies the $(2, 3)$-sparsity claim below.
+\cref{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning}). The
+induced rank upper bound $\rk \le d \cdot |V| - d(d+1)/2$ is the
+converse of the rank lower bound; specialised at $d = 2$ it underlies
+the $(2, 3)$-sparsity claim below.
 
-\begin{lemma}[Rank upper bound from affine spanning, dim $2$]
-  \label{lem:rigidityMap-finrank-range-le-of-affinelySpanning-two}
-  \lean{SimpleGraph.rigidityMap_finrank_range_le_of_affinelySpanning_two}
+\begin{lemma}[Rank upper bound from affine spanning, d-general]
+  \label{lem:rigidityMap-finrank-range-le-of-affinelySpanning}
+  \lean{SimpleGraph.rigidityMap_finrank_range_le_of_affinelySpanning}
   \leanok
-  \uses{lem:trivialMotions-three-le-ker-of-affinelySpanning-two,
+  \uses{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning,
     lem:framework-finrank}
   Let $V$ be finite, let $G$ be a graph on $V$, and let
-  $p : V \to \R^{2}$ affinely span. Then
+  $p : V \to \R^{d}$ affinely span. Then
   \[
-    \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr) + 3
-    \;\le\; 2 |V|.
+    \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr)
+      + \frac{d(d+1)}{2} \;\le\; d \cdot |V|.
   \]
 \end{lemma}
 \begin{proof}
   \leanok
   Combine
-  \cref{lem:trivialMotions-three-le-ker-of-affinelySpanning-two} with
+  \cref{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning} with
   rank--nullity and the framework-space dimension
-  \cref{lem:framework-finrank}.
+  \cref{lem:framework-finrank}. The $(\Rightarrow)$ direction
+  consumes this at $d = 2$ where $d(d+1)/2 = 3$ reduces by
+  $\mathit{rfl}$.
 \end{proof}
 
 \subsubsection{Sparsity from row-independence (Lov\'asz--Yemini, easy direction)}
@@ -276,7 +283,7 @@ below provides one.
 \begin{lemma}[$(2, 3)$-sparsity from row-independence, dim $2$]
   \label{lem:isSparse-of-rowIndependent-two}
   \uses{def:isSparse, def:edgeSet-rowIndependent,
-    lem:rigidityMap-finrank-range-le-of-affinelySpanning-two,
+    lem:rigidityMap-finrank-range-le-of-affinelySpanning,
     lem:exists-affinelySpanning-rigid-placement-two}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $p$ a framework
   on $V$ in dimension $2$ such that $p|_{S}$ affinely spans for every
@@ -302,11 +309,11 @@ below provides one.
   in the column-restricted matrix, which is exactly the rigidity
   matrix $\mathrm{RigidityMap}\,(H[S])\,(p|_{S})$ (modulo identifying
   the $S$-indexed columns with $\mathrm{Framework}\,S\,2$). By
-  \cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning-two}
-  applied to $H[S]$ at the affinely-spanning placement $p|_{S}$, the
-  rank of that matrix is at most $2 |S| - 3$. Since row-independence
-  forces the row count $|\edgesIn[H]{S}|$ to equal the rank,
-  $|\edgesIn[H]{S}| \le 2 |S| - 3$.
+  \cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning} at
+  $d = 2$ applied to $H[S]$ at the affinely-spanning placement
+  $p|_{S}$, the rank of that matrix is at most $2 |S| - 3$. Since
+  row-independence forces the row count $|\edgesIn[H]{S}|$ to equal
+  the rank, $|\edgesIn[H]{S}| \le 2 |S| - 3$.
 \end{proof}
 
 \subsubsection{Assembly}
@@ -315,7 +322,7 @@ below provides one.
   \label{thm:isGenericallyRigid-exists-isLaman-le}
   \lean{SimpleGraph.IsGenericallyRigid.exists_isLaman_le}
   \uses{def:isGenericallyRigid, def:isLaman, def:isTight,
-    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two,
+    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid,
     lem:exists-rowIndependent-edge-basis,
     lem:isSparse-of-rowIndependent-two,
     lem:exists-affinelySpanning-rigid-placement-two}

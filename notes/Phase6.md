@@ -22,25 +22,27 @@ Phase 5 closed with the iff statement
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-**Through commit 9 (this commit):** `CombinatorialRigidity/RigidityMatroid.lean`
-ships the rank lower bound, `EdgeSetRowIndependent` predicate, the
-basis-pick `exists_edgeSetRowIndependent_basis_dim_two` (commit 6),
-and now the rank upper bound
-`rigidityMap_finrank_range_le_of_affinelySpanning_two` (commit 9) —
-`finrank range + 3 ≤ 2 * #V` at any affinely-spanning placement, via
-the same rank-nullity + `Framework.finrank` template as the lower
-bound, with the kernel side fed by commit 7's
-`trivialMotions_three_le_ker_of_affinelySpanning_two`.
-`CombinatorialRigidity/TrivialMotions.lean` ships the full d-general
-trivial-motions API: translations, infinitesimal rotations, the
-`trivialMotions` submodule (commit 7), and the d-general finrank lower
-bound `trivialMotions_finrank_ge_of_affinelySpanning` (commit 8) —
-`d * (d + 1) / 2 ≤ finrank ℝ (trivialMotions p)` at any
-affinely-spanning placement, with the dim-2 lemma a one-line
-corollary. The blueprint chapters `chapter/laman-theorem.tex` and
-`chapter/trivial-motions.tex` carry the forward-mode dep-graph, with
-all landed lemmas tagged `\lean{...}` + `\leanok`; see
-`blueprint/web/dep_graph_document.html` after `inv bp && inv web`.
+**Through commit 10 (this commit):** the linear-algebra side is closed
+**d-general**. `CombinatorialRigidity/TrivialMotions.lean` ships the
+full d-general API: translations, infinitesimal rotations, the
+`trivialMotions` submodule, the unconditional `trivialMotions_le_ker`,
+the finrank lower bound `trivialMotions_finrank_ge_of_affinelySpanning`
+(`d * (d + 1) / 2 ≤ finrank ℝ (trivialMotions p)` under affine
+spanning), and the kernel bound `rigidityMap_ker_finrank_ge_of_affinelySpanning`.
+`CombinatorialRigidity/RigidityMatroid.lean` ships
+`EdgeSetRowIndependent`, the row-rank-column-rank identification, the
+d-general rank lower bound
+`rigidityMap_finrank_range_ge_of_isGenericallyRigid`, the d-general
+rank upper bound `rigidityMap_finrank_range_le_of_affinelySpanning`,
+and the basis-pick `exists_edgeSetRowIndependent_basis_dim_two`
+(latter is dim-2-specific because the conclusion `|I| = 2 * #V - 3`
+is dim-2-shaped; the rank lemma it consumes is d-general). Commit 10
+also retired the d=2 corollary chain
+(`trivialMotions_three_le_finrank/ker_of_affinelySpanning_two`,
+`rigidityMap_finrank_range_ge/le_..._two`, `rotJTwo` + apply lemmas):
+`2 * (2 + 1) / 2` reduces to `3` by `rfl` on `Nat` literals, so
+d=2 callers consume the d-general lemmas with zero specialisation
+ceremony. The blueprint chapters mirror this state.
 Citations chain (Laman 1970 → Asimow–Roth 1978 → Jordán 2016) was
 researched and added in commit 2; we stay matroid-agnostic per the
 commit-5 investigation.
@@ -99,21 +101,50 @@ visible as a dep-graph at `blueprint/web/dep_graph_document.html`
 after `inv bp && inv web`. A red node = not yet formalized; a green
 node = formalized and `\leanok`-tagged. Pick leaf-most red.
 
-Status snapshot at commit-9 (rank upper bound):
-`lem:rigidityMap-finrank-range-le-of-affinelySpanning-two` is now
-green (~5-line rank-nullity proof, same shape as the lower bound). The
-remaining red nodes in `chapter/laman-theorem.tex` are
+Status snapshot at commit-10 (d-general lift):
+the blueprint dep-graph now carries the d-general rank lemmas
+`lem:rigidityMap-finrank-range-{ge-of-isGenericallyRigid, le-of-affinelySpanning}`
+and the d-general kernel bound
+`lem:rigidityMap-ker-finrank-ge-of-affinelySpanning`. The retired d=2
+corollary entries
+(`...range-ge-of-isGenericallyRigid-two`, `...range-le-of-affinelySpanning-two`,
+`trivialMotions-three-le-finrank/ker-of-affinelySpanning-two`,
+`def:rotJTwo`, `lem:inner-rotJTwo-self`) are gone. The remaining red
+nodes in `chapter/laman-theorem.tex` are
 `lem:exists-affinelySpanning-rigid-placement-two` and
 `lem:isSparse-of-rowIndependent-two`, plus the target
 `thm:isGenericallyRigid-exists-isLaman-le`. The remaining
 mathematically substantial leaf is
 `lem:exists-affinelySpanning-rigid-placement-two`; the sparsity lemma
-stacks on it and on the rank upper bound, and the assembly theorem
-stacks on the sparsity lemma plus the basis-pick.
+stacks on it and on the d-general rank upper bound at `d = 2`, and
+the assembly theorem stacks on the sparsity lemma plus the
+basis-pick.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+
+- **d-general only; no d=2 corollary surface.** Commit 10 retired the
+  d=2 corollaries of the rank bounds and the kernel bound after the
+  user's design pivot. `2 * (2 + 1) / 2` reduces to `3` by `rfl` on
+  `Nat` literals (verified via `lean_multi_attempt`: `example (n : ℕ)
+  (h : 2 * n ≤ 5 + 2 * (2 + 1) / 2) : 2 * n ≤ 5 + 3 := h` typechecks),
+  so d=2 callers consume the d-general lemmas with no ceremony.
+  Concretely deleted: `trivialMotions_three_le_finrank_of_affinelySpanning_two`,
+  `trivialMotions_three_le_ker_of_affinelySpanning_two`,
+  `rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`,
+  `rigidityMap_finrank_range_le_of_affinelySpanning_two`, and the
+  orphaned `rotJTwo` + `rotJTwo_apply_zero/one` + `inner_rotJTwo_self`
+  (the dim-2 explicit generator was infrastructure for commit 7's
+  direct-coord proof, which commit 8 retired). The basis-pick
+  `exists_edgeSetRowIndependent_basis_dim_two` stays dim-2-shaped
+  because its *conclusion* `|I| = 2 * #V - 3` is dim-2-specific; only
+  its body switched to the d-general rank lemma. Asymmetry rationale:
+  the rank/kernel bounds are general infrastructure where the constant
+  `d (d + 1) / 2` is parametric; the basis-pick and the downstream
+  sparsity / assembly lemmas live on the Phase 6 dim-2 critical path
+  where `2 * #V - 3` is the structural shape, not a `d`-parametrised
+  expression.
 
 - **Dual-bridge for the basis-pick.** `EdgeSetRowIndependent` is stated
   as `LinearIndepOn` of a family of plain functions `Framework V d →
@@ -207,11 +238,11 @@ entries opened in commit 7 are the cross-cutting record.)*
 
 - ~~**`TrivialMotions` Phase 4 deferred API.**~~ Resolved in commit 7
   via path (2): the `TrivialMotions` API landed d-general in its own
-  file `CombinatorialRigidity/TrivialMotions.lean` with the
-  dim-2 specialisation
-  `trivialMotions_three_le_ker_of_affinelySpanning_two`. See the
-  *Done* list under *Hand-off* and the blueprint chapter
-  `chapter/trivial-motions.tex`.
+  file `CombinatorialRigidity/TrivialMotions.lean` with a dim-2
+  specialisation. *(Commit 10 retired the dim-2 specialisation in
+  favour of d-general callers; `rigidityMap_ker_finrank_ge_of_affinelySpanning`
+  is now the canonical kernel bound.)* See the *Done* list under
+  *Hand-off* and the blueprint chapter `chapter/trivial-motions.tex`.
 
 - ~~**D-general finrank lower bound (deferred).**~~ Resolved in
   commit 8. `trivialMotions_finrank_ge_of_affinelySpanning` ships
@@ -292,7 +323,7 @@ entries opened in commit 7 are the cross-cutting record.)*
   to a one-line corollary (~100 LoC of direct-coord argument
   retired). Six new green blueprint nodes in
   `chapter/trivial-motions.tex`. No new FRICTION entries.
-- *Commit 9 (this commit):* rank upper bound. Added
+- *Commit 9 (`f87c09f`):* rank upper bound (d=2 form). Added
   `rigidityMap_finrank_range_le_of_affinelySpanning_two` in
   `RigidityMatroid.lean` — `finrank range + 3 ≤ 2 * #V` at any
   affinely-spanning placement, via the same rank-nullity +
@@ -303,7 +334,24 @@ entries opened in commit 7 are the cross-cutting record.)*
   `lem:rigidityMap-finrank-range-le-of-affinelySpanning-two` flipped
   green; the `|V| ≥ 2` hypothesis on the blueprint statement was
   dropped (the affine-span hypothesis already forces `|V| ≥ 3`). No
-  new FRICTION entries.
+  new FRICTION entries. *(d=2 form retired in commit 10; the d-general
+  `rigidityMap_finrank_range_le_of_affinelySpanning` replaces it.)*
+- *Commit 10 (this commit):* d-general lift; d=2 corollary surface
+  retired. Added `rigidityMap_ker_finrank_ge_of_affinelySpanning` in
+  `TrivialMotions.lean` (~3 lines via `.trans` + `Submodule.finrank_mono`).
+  Generalised commit 3's `rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`
+  and commit 9's `rigidityMap_finrank_range_le_of_affinelySpanning_two`
+  to their d-general statements (`d * #V ≤ finrank range + d (d + 1) / 2`
+  / `finrank range + d (d + 1) / 2 ≤ d * #V`); the d=2 corollaries
+  are deleted. `exists_edgeSetRowIndependent_basis_dim_two`'s call
+  switches to the d-general lower bound with zero ceremony (the
+  `+ 2 * (2 + 1) / 2` term is definitionally `+ 3`).
+  `trivialMotions_three_le_finrank/ker_of_affinelySpanning_two` and
+  `rotJTwo` + apply lemmas + `inner_rotJTwo_self` all deleted (no
+  callers). `EuclideanDist` import dropped from `TrivialMotions.lean`
+  (it was rotJTwo-only). Blueprint chapters `chapter/trivial-motions.tex`
+  and `chapter/laman-theorem.tex` updated to mirror the new state.
+  No new FRICTION entries.
 
 **Encoding choice rationale (`I : Set G.edgeSet`).** The index type
 sits inside `G.edgeSet`, matching the blueprint's "$I \subseteq E(G)$".
@@ -314,8 +362,8 @@ than carry it through the basis lemma + sparsity lemma + every
 intermediate API.
 
 **Next session — the affinely-spanning rigid placement leaf.** With the
-rank upper bound landed (commit 9), the only mathematically
-substantial remaining leaf is
+rank upper bound landed (commit 9) and lifted to d-general (commit 10),
+the only mathematically substantial remaining leaf is
 `lem:exists-affinelySpanning-rigid-placement-two` — the
 affinely-spanning-on-all-subsets refinement of
 `IsInfinitesimallyRigid.eventually`. Likely closes via `IsOpen`
@@ -327,8 +375,9 @@ and dense, and intersects the open IR neighborhood produced by
 `IsInfinitesimallyRigid.eventually`).
 
 After that, the remaining work stacks cleanly:
-`lem:isSparse-of-rowIndependent-two` consumes the rank upper bound
-(commit 9) at the induced subframework $H[S], p|_S$ plus the
+`lem:isSparse-of-rowIndependent-two` consumes the d-general rank upper
+bound `rigidityMap_finrank_range_le_of_affinelySpanning` at `d = 2`
+applied to the induced subframework $H[S], p|_S$ plus the
 affinely-spanning placement, then the assembly theorem
 `thm:isGenericallyRigid-exists-isLaman-le` combines it with the
 basis-pick (commit 6) to close the iff. The sparsity-side lemma is the
@@ -338,11 +387,23 @@ mechanical glue.
 Suggested order: affinely-spanning-placement existence, then
 sparsity-side lemma, then assembly theorem.
 
-**Phase 6 completion remains uncertain in scope** as of commit 9. The
-linear-algebra side is now closed (basis-pick + rank lower bound + rank
-upper bound + d-general trivial-motions API); the remaining
-substantial work is one analysis lemma
-(`lem:exists-affinelySpanning-rigid-placement-two`) plus one
+**Phase 6 completion remains uncertain in scope** as of commit 10. The
+linear-algebra side is now closed *and* d-general (basis-pick + rank
+lower bound + rank upper bound + kernel bound + d-general
+trivial-motions API); the remaining substantial work is one analysis
+lemma (`lem:exists-affinelySpanning-rigid-placement-two`) plus one
 combinatorial lemma (`lem:isSparse-of-rowIndependent-two`). Plan to
 assess scope after the affinely-spanning lemma's first attempt lands;
 do not commit to a one-session full Phase 6 close.
+
+**Design pattern established (commit 10).** When a Phase 6 helper has
+a d-general statement that holds verbatim with no extra hypotheses
+beyond what the d=2 critical path already provides, ship it
+d-general and skip the d=2 corollary. The `rfl` reduction
+`2 * (2 + 1) / 2 → 3` on `Nat` literals means callers consume
+d-general lemmas at `d = 2` with zero specialisation ceremony. The
+dim-2-shaped statements that *do* deserve a dedicated d=2 surface are
+those where the dim-2 conclusion is structurally specific (e.g.,
+`exists_edgeSetRowIndependent_basis_dim_two`'s `|I| = 2 * #V - 3`).
+Apply this rule going forward when adding helpers for the remaining
+two leaves.

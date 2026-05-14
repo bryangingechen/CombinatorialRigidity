@@ -9,15 +9,17 @@ always lies in the kernel of the rigidity map
 $\mathrm{RigidityMap}\,G\,p$, regardless of the graph $G$ or the
 placement $p$. The classical dimension count is
 $\dim = d(d+1)/2$, achieved at an affinely-spanning placement
-(Asimow--Roth~\cite{asimowRoth1978}); in dimension $d = 2$ the bound
-is $\dim \ge 3$, which feeds the rank upper bound used by the
-$(\Rightarrow)$ direction of Laman's theorem.
+(Asimow--Roth~\cite{asimowRoth1978}); the Phase 6 $(\Rightarrow)$
+direction of Laman's theorem consumes this at $d = 2$, where
+$d(d+1)/2 = 3$.
 
-This chapter develops the API in general dimension $d$ for the
-translations and rotations, ships the unconditional
+This chapter develops the API in general dimension $d$: definitions
+for translations and rotations, the unconditional
 $\mathrm{trivialMotions}\,p \le \ker\,(\mathrm{RigidityMap}\,G\,p)$
-inclusion, and specializes to dim $2$ for the lower bound
-$\dim \ge 3$ at an affinely-spanning placement.
+inclusion, and the $d(d+1)/2$ lower bound on
+$\dim_{\R}\,\mathrm{trivialMotions}\,p$ (and hence on
+$\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p)$) at an
+affinely-spanning placement.
 
 \subsection{Translations}
 
@@ -238,76 +240,23 @@ placement, recovering the textbook dimension count.
   bound.
 \end{proof}
 
-\subsection{The dim-2 specialization: three explicit trivial motions}
-\label{sec:trivial-motions-dim-two}
-
-In dimension $2$ the space of skew-adjoint linear maps is
-$1$-dimensional, spanned by the $90^{\circ}$-rotation
-$J : \R^{2} \to \R^{2}, \; (x, y) \mapsto (-y, x)$. The dim-2 finrank
-lower bound is the $d = 2$ instance of
-\cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}, since
-$d(d+1)/2 = 3$. We retain the explicit $\mathrm{rotJTwo}$ generator and
-its $@[simp]$ apply-lemmas because they show up cleanly in coordinate
-computations elsewhere.
-
-\begin{definition}[The $90^{\circ}$-rotation in dim $2$]
-  \label{def:rotJTwo}
-  \lean{SimpleGraph.rotJTwo}
-  \leanok
-  The linear map
-  $\mathrm{rotJTwo} : \R^{2} \to_{\R} \R^{2}, \;
-   (x, y) \mapsto (-y, x)$.
-\end{definition}
-
-\begin{lemma}[$J$ is skew-adjoint]
-  \label{lem:inner-rotJTwo-self}
-  \lean{SimpleGraph.inner_rotJTwo_self}
-  \leanok
-  \uses{def:rotJTwo}
-  For every $v \in \R^{2}$,
-  $\langle v,\, \mathrm{rotJTwo}\,v \rangle = 0$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Direct computation:
-  $\langle (x, y),\, (-y, x) \rangle = x(-y) + y \cdot x = 0$.
-\end{proof}
-
-\begin{lemma}[Three trivial motions at an affinely-spanning placement, dim $2$]
-  \label{lem:trivialMotions-three-le-finrank-of-affinelySpanning-two}
-  \lean{SimpleGraph.trivialMotions_three_le_finrank_of_affinelySpanning_two}
-  \leanok
-  \uses{lem:trivialMotions-finrank-ge-of-affinelySpanning}
-  Let $V$ be finite and let $p : V \to \R^{2}$ be a framework whose
-  image affinely spans $\R^{2}$. Then
-  \[
-    \dim_{\R}\,(\mathrm{trivialMotions}\,p) \;\ge\; 3.
-  \]
-\end{lemma}
-\begin{proof}
-  \leanok
-  The $d = 2$ instance of
-  \cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}, since
-  $d(d+1)/2 = 3$.
-\end{proof}
-
-\begin{lemma}[Three trivial motions kill the rigidity map at an affinely-spanning placement, dim $2$]
-  \label{lem:trivialMotions-three-le-ker-of-affinelySpanning-two}
-  \lean{SimpleGraph.trivialMotions_three_le_ker_of_affinelySpanning_two}
+\begin{lemma}[d-general finrank lower bound for the rigidity-map kernel]
+  \label{lem:rigidityMap-ker-finrank-ge-of-affinelySpanning}
+  \lean{SimpleGraph.rigidityMap_ker_finrank_ge_of_affinelySpanning}
   \leanok
   \uses{lem:trivialMotions-le-ker,
-    lem:trivialMotions-three-le-finrank-of-affinelySpanning-two}
-  Let $V$ be finite with $|V| \ge 2$, let $G : \mathrm{SimpleGraph}\,V$,
-  and let $p : V \to \R^{2}$ be a framework whose image affinely
-  spans $\R^{2}$. Then
-  $\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \ge 3$.
+    lem:trivialMotions-finrank-ge-of-affinelySpanning}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $p : V \to \R^{d}$
+  affinely spanning. Then
+  \[
+    \dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \;\ge\; \frac{d(d+1)}{2}.
+  \]
 \end{lemma}
 \begin{proof}
   \leanok
   Combine \cref{lem:trivialMotions-le-ker} (always
   $\mathrm{trivialMotions}\,p \le \ker$) with
-  \cref{lem:trivialMotions-three-le-finrank-of-affinelySpanning-two}
-  ($\dim\,\mathrm{trivialMotions}\,p \ge 3$ under affine spanning):
-  $\dim\,(\mathrm{trivialMotions}\,p) \le \dim\,(\ker)$ via
-  $\mathrm{Submodule.finrank\_mono}$.
+  \cref{lem:trivialMotions-finrank-ge-of-affinelySpanning}
+  ($\dim\,\mathrm{trivialMotions}\,p \ge d(d+1)/2$ under affine
+  spanning), via $\mathrm{Submodule.finrank\_mono}$.
 \end{proof}

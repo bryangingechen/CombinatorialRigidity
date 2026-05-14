@@ -130,43 +130,44 @@ theorem span_range_rigidityRow (G : SimpleGraph V) [Finite G.edgeSet] (p : Frame
     simp [h_row_eq, Set.mem_range, Set.mem_image]
   rw [h_range, Submodule.span_image, h_range_dualBasis, Submodule.map_top]
 
-/-- **Rank lower bound at a generically rigid placement, dim 2.** If `G` is
-generically rigid in dimension 2, some framework `p` realises the bound
-`2 * #V ≤ rank (G.RigidityMap p) + 3`.
+/-- **Rank lower bound at a generically rigid placement, d-general.** If `G` is generically
+rigid in dimension `d`, some framework `p` realises
+`d * #V ≤ finrank (range (G.RigidityMap p)) + d (d + 1) / 2`.
 
-This is the rank half of `IsGenericallyRigid.card_mul_le_two`: the same
-rank-nullity argument that gives `2 * #V ≤ #E + 3`, stopping one step
-earlier (before replacing `rank` by `#E` via `rigidityMap_finrank_range_le`).
-The Phase 6 `(⇒)` direction uses this lemma to extract a row-independent
-edge basis of size `2 * #V - 3` from the rigidity matrix's rows. -/
-theorem rigidityMap_finrank_range_ge_of_isGenericallyRigid_two [Fintype V]
-    {G : SimpleGraph V} (hG : G.IsGenericallyRigid 2) :
-    ∃ p : Framework V 2,
-      2 * Fintype.card V ≤ Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + 3 := by
+This is the rank half of `IsGenericallyRigid.card_mul_le`: the same rank-nullity argument that
+gives `d * #V ≤ #E + d (d + 1) / 2`, stopping one step earlier (before replacing `rank` by
+`#E` via `rigidityMap_finrank_range_le`). The Phase 6 `(⇒)` direction consumes this at `d = 2`,
+where `2 * (2 + 1) / 2 = 3` reduces by `rfl` so callers can use the d-general lemma directly. -/
+theorem rigidityMap_finrank_range_ge_of_isGenericallyRigid [Fintype V] {d : ℕ}
+    {G : SimpleGraph V} (hG : G.IsGenericallyRigid d) :
+    ∃ p : Framework V d,
+      d * Fintype.card V ≤
+        Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + d * (d + 1) / 2 := by
   obtain ⟨p, h_ker⟩ := hG
   refine ⟨p, ?_⟩
-  have h_ker : Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) ≤ 3 := h_ker
-  have h_total : Module.finrank ℝ (Framework V 2) = 2 * Fintype.card V := by
+  have h_ker : Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) ≤ d * (d + 1) / 2 := h_ker
+  have h_total : Module.finrank ℝ (Framework V d) = d * Fintype.card V := by
     rw [Framework.finrank, mul_comm]
   have h_rn := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p)
   omega
 
-/-- **Rank upper bound at an affinely-spanning placement, dim 2.** If `p : Framework V 2`
-affinely spans `EuclideanSpace ℝ (Fin 2)`, then the rigidity map's range has dimension at
-most `2 * #V - 3`.
+/-- **Rank upper bound at an affinely-spanning placement, d-general.** If `p : Framework V d`
+affinely spans `EuclideanSpace ℝ (Fin d)`, then
+`finrank (range (G.RigidityMap p)) + d (d + 1) / 2 ≤ d * #V`.
 
-Combine the dim-2 kernel bound `trivialMotions_three_le_ker_of_affinelySpanning_two`
-(`3 ≤ finrank ker`) with rank-nullity and `Framework.finrank`. Companion to
-`rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`; at a placement that is both
+Combine the d-general kernel bound `rigidityMap_ker_finrank_ge_of_affinelySpanning`
+(`d (d + 1) / 2 ≤ finrank ker`) with rank-nullity and `Framework.finrank`. Companion to
+`rigidityMap_finrank_range_ge_of_isGenericallyRigid`; at a placement that is both
 infinitesimally rigid and affinely spanning the two bounds pin the row rank to exactly
-`2 * #V - 3`. -/
-theorem rigidityMap_finrank_range_le_of_affinelySpanning_two [Fintype V]
-    (G : SimpleGraph V) {p : Framework V 2}
+`d * #V - d (d + 1) / 2`. -/
+theorem rigidityMap_finrank_range_le_of_affinelySpanning [Fintype V] {d : ℕ}
+    (G : SimpleGraph V) {p : Framework V d}
     (hp : affineSpan ℝ (Set.range p) = ⊤) :
-    Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + 3 ≤ 2 * Fintype.card V := by
-  have h_ker : 3 ≤ Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) :=
-    G.trivialMotions_three_le_ker_of_affinelySpanning_two hp
-  have h_total : Module.finrank ℝ (Framework V 2) = 2 * Fintype.card V := by
+    Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + d * (d + 1) / 2 ≤
+      d * Fintype.card V := by
+  have h_ker : d * (d + 1) / 2 ≤ Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) :=
+    G.rigidityMap_ker_finrank_ge_of_affinelySpanning hp
+  have h_total : Module.finrank ℝ (Framework V d) = d * Fintype.card V := by
     rw [Framework.finrank, mul_comm]
   have h_rn := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p)
   omega
@@ -175,19 +176,20 @@ theorem rigidityMap_finrank_range_le_of_affinelySpanning_two [Fintype V]
 rigid in dimension 2, there is a placement `p` and a row-independent edge set `I ⊆ G.edgeSet` of
 size exactly `2 * #V - 3`.
 
-Proof outline: the rank lower bound `rigidityMap_finrank_range_ge_of_isGenericallyRigid_two` gives
-`2 * #V ≤ finrank ℝ (range R) + 3`. Row rank equals column rank for `R` via
-`LinearMap.finrank_range_dualMap_eq_finrank_range` (after `span_range_rigidityRow` identifies the
-row span with the dual-map range). Applying `exists_linearIndepOn_extension` to the row family
-extracts a spanning LI subset `b`, whose cardinality is the row rank; truncating to size
-`2 * #V - 3` via `Set.exists_subset_ncard_eq` yields the witness. -/
+Proof outline: the rank lower bound `rigidityMap_finrank_range_ge_of_isGenericallyRigid` at
+`d = 2` gives `2 * #V ≤ finrank ℝ (range R) + 3` (with `2 * (2 + 1) / 2 = 3` reducing by `rfl`).
+Row rank equals column rank for `R` via `LinearMap.finrank_range_dualMap_eq_finrank_range` (after
+`span_range_rigidityRow` identifies the row span with the dual-map range). Applying
+`exists_linearIndepOn_extension` to the row family extracts a spanning LI subset `b`, whose
+cardinality is the row rank; truncating to size `2 * #V - 3` via `Set.exists_subset_ncard_eq`
+yields the witness. -/
 theorem exists_edgeSetRowIndependent_basis_dim_two [Fintype V] {G : SimpleGraph V}
     (hG : G.IsGenericallyRigid 2) :
     ∃ (p : Framework V 2) (I : Set G.edgeSet),
       I.ncard = 2 * Fintype.card V - 3 ∧ G.EdgeSetRowIndependent p I := by
   classical
   haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
-  obtain ⟨p, hp⟩ := rigidityMap_finrank_range_ge_of_isGenericallyRigid_two hG
+  obtain ⟨p, hp⟩ := rigidityMap_finrank_range_ge_of_isGenericallyRigid hG
   refine ⟨p, ?_⟩
   -- Extend ∅ to a row-LI subset `b ⊆ univ` whose image spans the whole row family.
   obtain ⟨b, _hb_sub, _, h_range_sub, hb_li⟩ :=
