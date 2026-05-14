@@ -1,5 +1,6 @@
 import os
 import random
+import shutil
 from pathlib import Path
 import http.server
 import socketserver
@@ -28,6 +29,12 @@ def bp(ctx):
     # fixed passes aren't enough (e.g. when math-heavy section titles
     # shift the TOC across passes).
     run('cd src && latexmk')
+    # Mirror leanblueprint's behavior: copy print/print.bbl to
+    # src/web.bbl so the subsequent `inv web` plastex run sees a
+    # bibliography. plastex does not run bibtex itself.
+    bbl = BP_DIR / "print" / "print.bbl"
+    if bbl.exists():
+        shutil.copy(bbl, BP_DIR / "src" / "web.bbl")
     os.chdir(cwd)
 
 

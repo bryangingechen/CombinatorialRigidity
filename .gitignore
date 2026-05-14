@@ -14,3 +14,6 @@ home_page/_includes/_upstreaming_dashboard/
 # Blueprint artifacts (TeX build is gitignored separately under blueprint/.gitignore).
 blueprint/print/
 blueprint/web/
+
+# Local-only reference PDFs (papers pulled for citation verification).
+.refs/
