@@ -95,20 +95,30 @@ declarations land.
 
 \medskip
 
-Following Lov\'asz--Yemini~\cite{lovaszYemini1982}, the argument
-identifies a Laman spanning subgraph as the support of a row-basis of
-the rigidity matrix at a sufficiently generic placement. We isolate
-the row-independence relation between an edge set and a placement,
-then prove two facts about it: (a)~independence implies the
-$(2, 3)$-sparsity required by the Laman definition (the ``easy''
-direction of the Lov\'asz--Yemini identity), and (b)~a row-basis of
-size $2|V| - 3$ exists whenever $G$ is generically rigid (rank
-lower bound + linear-algebra extension). Combining (a) and (b) gives
-a $(2, 3)$-tight spanning subgraph, i.e.\ a Laman subgraph.
+The statement we are proving is the necessary direction of Laman's
+original theorem~\cite{laman1970}: every graph generically rigid in
+the plane contains a Laman spanning subgraph. We work in the
+linear-algebraic formulation of infinitesimal rigidity due to
+Asimow--Roth~\cite{asimowRoth1978}: a row-basis of the rigidity
+matrix at a sufficiently generic placement supports the desired Laman
+subgraph.
 
-The harder converse direction of Lov\'asz--Yemini --- $(2,
-3)$-sparse $\Rightarrow$ row-independent at a generic placement ---
-is \emph{not} needed for the iff and is not formalized.
+We isolate the row-independence relation between an edge set and a
+placement, then prove two facts about it: (a)~row-independence implies
+the $(2, 3)$-sparsity required by the Laman definition (a classical
+Maxwell-type counting argument; see Jord\'an~\cite{jordan2016} Lemma
+1.3.1 for the modern presentation we follow); and (b)~a row-basis of
+size $2|V| - 3$ exists whenever $G$ is generically rigid (rank lower
+bound + linear-algebra extension). Combining (a) and (b) gives a
+$(2, 3)$-tight spanning subgraph, i.e.\ a Laman subgraph.
+
+The two facts together amount to the ``easy'' direction of an
+identity due to Lov\'asz--Yemini~\cite{lovaszYemini1982}: in
+dimension $2$, an edge set is row-independent at a generic placement
+if and only if its underlying subgraph is $(2, 3)$-sparse. The harder
+converse direction of that identity --- $(2, 3)$-sparse
+$\Rightarrow$ row-independent --- is \emph{not} needed for the iff
+and is not formalized.
 
 \subsubsection{Row-independence in the rigidity matroid}
 
@@ -189,7 +199,9 @@ is \emph{not} needed for the iff and is not formalized.
 In dimension $2$, the kernel of the rigidity map always contains the
 \emph{trivial Euclidean motions}: the $2$-dimensional space of
 translations plus, at affinely-spanning placements, one additional
-infinitesimal rotation. The induced rank bound
+infinitesimal rotation, in the sense of Asimow--Roth's identification
+of trivial infinitesimal motions with the kernel
+of $R(K_{|V|}, p)$~\cite{asimowRoth1978}. The induced rank bound
 $\rk \le 2|V| - 3$ is the converse of the rank lower bound and
 underlies the $(2, 3)$-sparsity claim below.
 

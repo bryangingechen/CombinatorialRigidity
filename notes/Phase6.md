@@ -34,25 +34,24 @@ six new red nodes laying out the intended proof — `def:edgeSet-rowIndependent`
 sketch of the target theorem referencing them. The dep-graph at
 `blueprint/web/dep_graph_document.html` is the authoritative view.
 
-**Attribution research done** (this session, not yet reflected in
-the chapter): the proof strategy is the necessary direction of
-Laman's theorem in its rigidity-matrix formulation. Attributions
-verified against Jordán 2016 §1.3.1 + §2.2 (local PDF, see
+**Attribution research and prose refinement landed.** Jordán 2016
+§1.3.1 + §2.2 cross-checked the citation chain (local PDF, see
 `../CLAUDE.md` *Reading PDFs in `.refs/`*):
-- **Asimow–Roth 1978** (Trans. AMS **245**, 279–289) is the
-  standard ref for the linear-algebra framework — to be added to
-  `bibliography.bib` and cited on `def:rigidityMap`,
-  `def:isInfinitesimallyRigid`, and the trivial-motions lemma.
-- **Laman 1970** is the primary attribution for the existence of
-  the Laman spanning subgraph (necessary direction of his theorem).
-- The current "Following Lovász–Yemini" framing in the section
-  preamble overstates LY's role: LY's contribution is the harder
-  converse direction, which we do *not* prove. The prose will be
-  revised to call out Laman + Asimow–Roth + an acknowledgement of
-  LY for the matroid framing.
-- Maxwell 1864 is the historical primary for the counting argument
-  but Jordán treats it as classical; we follow Jordán and skip it
-  unless the user wants historical depth.
+- **Asimow–Roth 1978** (Trans. AMS **245**, 279–289) added to
+  `bibliography.bib`; cited at the `frameworks.tex` section preamble
+  (covers `def:rigidityMap`, `def:isInfinitesimallyRigid`, and the
+  trivial-motions identification all at once) and again in the
+  trivial-motions lemma preamble.
+- The $\Rightarrow$ section preamble of `chapter/laman-theorem.tex`
+  now attributes the necessary direction to Laman 1970 in its
+  Asimow–Roth 1978 linear-algebraic formulation; Lov\'asz--Yemini
+  1982 is acknowledged as the matroid framing (the easy direction
+  of their identity is what facts (a) and (b) together prove).
+  Jord\'an 2016 Lemma 1.3.1 is cited as the modern presentation we
+  follow for the sparsity-from-row-independence step.
+- Maxwell 1864 is the historical primary for the counting argument;
+  Jord\'an treats it as classical without citing it. We follow
+  Jord\'an and skip Maxwell unless the user wants historical depth.
 
 ## Architectural choices made up front
 
@@ -178,28 +177,25 @@ forward-mode entries yet.
 - *Commit 1 (`39b2152`):* forward-mode blueprint skeleton for the
   $\Rightarrow$ direction. Six new red nodes in
   `chapter/laman-theorem.tex` with `\uses{...}` chains; no
-  `\lean{...}` or `\leanok` yet. Renders cleanly under
-  `inv bp && inv web`; static checks pass.
+  `\lean{...}` or `\leanok` yet.
+- *Commit 2 (this commit):* bibliography + prose refinement.
+  `asimowRoth1978` added to `bibliography.bib` and cited in
+  `frameworks.tex` (section preamble) and `laman-theorem.tex` (both
+  the $\Rightarrow$ section preamble and the trivial-motions lemma
+  preamble). The $\Rightarrow$ section preamble retitled the
+  attribution chain: Laman 1970 (the result we prove), Asimow--Roth
+  1978 (the linear-algebraic formulation), Jord\'an 2016 Lemma
+  1.3.1 (the sparsity step), and Lov\'asz--Yemini 1982 acknowledged
+  for the matroid framing of which our (a)+(b) is the easy
+  direction. Renders cleanly; [AR78] resolves in both web and print.
 
-**Next concrete commit candidates** (either order; both are
-docs-only and human-reviewable):
-
-- **Bibliography + prose refinement.** Add `asimowRoth1978` to
-  `bibliography.bib`; cite it on `def:rigidityMap`,
-  `def:isInfinitesimallyRigid`, and
-  `lem:trivialMotions-three-le-ker-of-affinelySpanning-two`. Rewrite
-  the $\Rightarrow$-section preamble in `chapter/laman-theorem.tex`
-  to attribute the necessary direction to Laman 1970 + Asimow–Roth
-  1978 rather than the current overstated "Following Lovász–Yemini"
-  framing. Verification path: Jordán 2016 §1.3.1 + bib (already
-  cross-checked this session — see *Current state*).
-- **First leaf Lean lemma.** Pick the leaf-most red node and
-  formalize. Candidates by likely cost:
-  - `lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two` —
-    one-liner from `IsInfinitesimallyRigid` + rank-nullity. Lives
-    in `RigidityMatroid.lean` (new file).
-  - `def:edgeSet-rowIndependent` — definition only, no proof
-    obligation. Probably bundled with the rank-ge lemma.
+**Next concrete commit:** first leaf Lean lemma. Pick the leaf-most
+red node in the dep-graph and formalize. Candidates by likely cost:
+- `lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two` —
+  one-liner from `IsInfinitesimallyRigid` + rank-nullity. Lives in
+  `RigidityMatroid.lean` (new file).
+- `def:edgeSet-rowIndependent` — definition only, no proof
+  obligation. Probably bundled with the rank-ge lemma.
 
 **Phase 6 completion is uncertain in scope.** Honest read: the rank
 lower bound and the basis-pick are linear-algebra plumbing and
