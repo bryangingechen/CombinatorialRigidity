@@ -22,17 +22,21 @@ Phase 5 closed with the iff statement
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-**Through commit 14 (this commit):** task-3 of the Lean-simplification
-pass is landed; tasks 1–3 of the pass are now all resolved (task 4 —
-the d-general lift of the affinely-spanning placement — remains in
-the queue). The linear-algebra side is closed d-general (rank bounds,
-kernel bound, basis-pick) and the analysis side is closed at dim 2
+**Through commit 15 (this commit):** task-3 of the Lean-simplification
+pass is landed (commit 14) and `TrivialMotions.lean` got a TACTICS § 1
+grind-default golf pass alongside (commit 15, this commit). Tasks 1–3
+of the simplification pass are now all resolved; task 4 (the
+d-general lift of the affinely-spanning placement) remains in the
+queue. The linear-algebra side is closed d-general (rank bounds,
+kernel bound, basis-pick); the analysis side is closed at dim 2
 (affinely-spanning rigid placement). The only red nodes left in
 `chapter/laman-theorem.tex` are `lem:isSparse-of-rowIndependent-two`
 (the substantive sparsity step) and the assembly target
 `thm:isGenericallyRigid-exists-isLaman-le`. See *Done* below for
-per-commit detail and *Hand-off / next phase* for the sparsity sketch
-+ the d-general lift of the affinely-spanning placement.
+per-commit detail and *Hand-off / next phase* for the sparsity sketch,
+the d-general lift of the affinely-spanning placement (task 4), and a
+low-priority "project-wide grind sweep" note added under *Future
+polish*.
 
 ## Architectural choices made up front
 
@@ -285,7 +289,7 @@ entries for resolution details.
   genuinely absent from upstream (`Dual/Basis.lean` does not even
   import `StdBasis.lean`, which is the structural reason gap #1
   was unfilled).
-- *Commit 14 (this commit):* Lean-simplification task 3
+- *Commit 14 (`f6a24b5`):* Lean-simplification task 3
   (*"cross-terms vanish hides a 30-line case-split"*). Hoisted
   candidate-2 from the task list: new named lemma
   `elemSkewMap_ofLp_inr_apply` (~33 lines) captures the
@@ -305,6 +309,28 @@ entries for resolution details.
   per TACTICS § 1. The `set j' := ⟨j.val, _⟩` scaffold in the
   outer proof is retired in favour of the explicit form so the
   helper's literal `⟨j.val, j.isLt.trans i.isLt⟩` shape matches.
+- *Commit 15 (this commit):* TACTICS § 1 golf pass over
+  `TrivialMotions.lean` (this file did most of its proof work
+  before TACTICS § 1's "default to `grind`" rule landed in current
+  form). Net 37 lines deleted, no logic changes:
+  * `elemSkewMap_ofLp_inr_apply` body collapses from ~17 lines
+    (`rcases` + two case-bodies with three `have`s + `split_ifs` +
+    `absurd` + `all_goals rfl`) to a single one-liner:
+    `rcases eq_or_ne i a with rfl | hia <;> split_ifs <;> grind`.
+    `grind` solves every leaf of the case-tree using `b.isLt` /
+    `j.isLt` directly from the ordered-pair-type subtyping.
+  * `inner_elemSkewMap_self`'s `i ≠ j` branch: closing `simp; ring`
+    becomes `grind`.
+  * `trivialMotionFamily_linearIndependent`'s Steps 1–5 are
+    rewritten in `fun … => by simpa [...]` / `simpa [...] using …`
+    term-mode style; `ht_coord` / `h_combine` / `h_S_diff` /
+    `h_t_zero` / the rotation extraction all shrink to one or two
+    lines. The redundant `Finset.sum_ite_eq` rewrites (it's a
+    `simp` lemma) are dropped from `ht_coord` and the rotation
+    extraction. The intermediate `hS` (`S (e_{j'}) = 0`)
+    disappears: `rw [h_S_zero] at h_extract` substitutes `S = 0`
+    directly into the closed-form extraction, then `simpa using
+    h_extract.symm` finishes.
 
 **Encoding choice rationale (`I : Set G.edgeSet`).** The index type
 sits inside `G.edgeSet`, matching the blueprint's "$I \subseteq E(G)$".
@@ -427,6 +453,33 @@ likely 2–3 sessions) subsumes the residual task-1 cleanup work; do
 before it lands. Task 4 itself can interleave with or follow the
 sparsity lemma; sparsity consumes the *existence* of the affinely-
 spanning placement, not its proof internals.
+
+**Future polish (low-priority, not blocking).** Two cleanup
+opportunities surfaced during the commit-15 TACTICS § 1 golf pass
+on `TrivialMotions.lean`; both are deliberately deferred behind the
+sparsity lemma and task 4:
+
+- *Project-wide grind-default sweep.* TACTICS § 1's "default to
+  `grind` for closing `simp`/`omega`/`linarith`" rule landed (in
+  current form) after most Phases 1–5 work was written. The
+  commit-15 pass on `TrivialMotions.lean` netted 37 lines deleted
+  with no logic changes; a similar pass on other phase files
+  (`Sparsity.lean`, `Henneberg.lean`, `Framework.lean`, …) is
+  likely to find comparable wins. Method: `grep -n` for bare
+  `omega` / `simp` / `simp; ring` / `linarith` closers, then
+  `lean_multi_attempt` with `["grind", "grind only", <current>]`
+  at each, and apply when grind succeeds and the current tactic
+  is multi-line. Cost: ~1 session for a thorough pass; risk: low
+  (every change is verified by `lake build` and `lake lint`).
+- *Mathlib gap: `LinearMap.eq_zero_iff_eqOn_spanning`.*
+  `trivialMotionFamily_linearIndependent`'s `h_S_zero` block goes
+  `LinearMap.ext` → `LinearMap.eqOn_span` → close on generators,
+  with an explicit `vectorSpan = ⊤` + `vectorSpan_def` detour.
+  A direct lemma "if `S = 0` on a set `s` with
+  `Submodule.span R s = ⊤`, then `S = 0`" would collapse the
+  ~10-line block to ~3 lines. Likely already exists upstream
+  under a different name (`Submodule.eq_top_iff_…` / `LinearMap.ext_on`);
+  worth a `lean_loogle` search before mirroring.
 
 **Next session — the sparsity-side lemma
 `lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning

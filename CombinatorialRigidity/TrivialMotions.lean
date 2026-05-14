@@ -178,8 +178,7 @@ theorem inner_elemSkewMap_self (i j : Fin d) (x : EuclideanSpace ℝ (Fin d)) :
   · simp only [PiLp.inner_apply, RCLike.inner_apply, conj_trivial, elemSkewMap_apply,
       sub_mul, Finset.sum_sub_distrib, ite_mul, zero_mul]
     rw [Finset.sum_ite_eq' Finset.univ i, Finset.sum_ite_eq' Finset.univ j]
-    simp
-    ring
+    grind
 
 /-! ### The d-general motion family and linear independence
 
@@ -220,19 +219,10 @@ theorem elemSkewMap_ofLp_inr_apply (i : Fin d) (j : Fin i.val)
         (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ))) i = _
   rw [elemSkewMap_apply]
   simp only [PiLp.ofLp_single, Pi.single_apply]
-  rcases eq_or_ne i a with rfl | hia
-  · -- `i = a`. The cross-term outer condition `i = ⟨b.val, _⟩` fails (`b.val < i.val`).
-    have h_not_ib : i ≠ (⟨b.val, b.isLt.trans i.isLt⟩ : Fin d) := by grind only
-    rw [if_pos rfl, if_neg h_not_ib, sub_zero]
-    simp only [Sigma.mk.injEq, heq_eq_eq, Fin.ext_iff, true_and]
-  · -- `i ≠ a`. Both surviving cross-terms vanish: the right one fails by the ordering chain.
-    have h_no_both : ¬ (i = (⟨b.val, b.isLt.trans a.isLt⟩ : Fin d) ∧
-        a = (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d)) := by grind only
-    have h_RHS : (⟨a, b⟩ : Σ x : Fin d, Fin x.val) ≠ ⟨i, j⟩ := by grind only
-    rw [if_neg hia, if_neg h_RHS, zero_sub, neg_eq_zero]
-    split_ifs with h1 h2
-    · exact absurd ⟨h1, h2⟩ h_no_both
-    all_goals rfl
+  -- Split on whether `i = a`; in each case the four sub-conditions in the two nested `if`s
+  -- and the sigma-equality RHS are simultaneously decidable for `grind` using `b.isLt` /
+  -- `j.isLt`. The full case-split runs through `split_ifs` and closes by `grind`.
+  rcases eq_or_ne i a with rfl | hia <;> split_ifs <;> grind
 
 /-- The d-general trivial-motion family at a placement `p`. The left summand of the index type
 contributes the `d` coordinate translations (one per `i : Fin d`); the right summand contributes
@@ -279,32 +269,15 @@ theorem trivialMotionFamily_linearIndependent [Fintype V] {p : Framework V d}
   set t : EuclideanSpace ℝ (Fin d) :=
     ∑ i : Fin d, c (.inl i) • PiLp.single 2 i (1 : ℝ) with ht_def
   -- Coordinate `m` of `t` is the translation coefficient `c (.inl m)`.
-  have ht_coord : ∀ m : Fin d, t.ofLp m = c (.inl m) := by
-    intro m
-    change (∑ i : Fin d, c (.inl i) • PiLp.single 2 i (1 : ℝ)).ofLp m = _
-    simp only [WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul, Pi.smul_apply,
-      PiLp.ofLp_single, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]
-    rw [Finset.sum_ite_eq Finset.univ m]
-    simp
-  -- Step 1: at every `v`, `t + S (p v) = 0`.
-  have h_combine : ∀ v : V, t + S (p v) = 0 := by
-    intro v
-    have h1 := congrFun hc v
-    simp only [Finset.sum_apply, Pi.smul_apply, Fintype.sum_sum_type,
-      trivialMotionFamily_inl, translationMotion_apply] at h1
-    -- Now h1 : ∑ i, c (.inl i) • PiLp.single 2 i 1
-    --      + ∑ ⟨i,j⟩, c (.inr ⟨i,j⟩) • elemSkewMap _ _ (p v) = 0
-    rw [hS_def, LinearMap.sum_apply]
-    simp only [LinearMap.smul_apply]
-    rw [ht_def]
-    exact h1
+  have ht_coord : ∀ m : Fin d, t.ofLp m = c (.inl m) := fun m => by
+    simp [ht_def, Pi.single_apply]
+  -- Step 1: at every `v`, `t + S (p v) = 0`. Evaluate `hc` at `v` and split the index sum.
+  have h_combine : ∀ v : V, t + S (p v) = 0 := fun v => by
+    simpa [hS_def, ht_def, Fintype.sum_sum_type, LinearMap.sum_apply] using congrFun hc v
   -- Step 2: `S` vanishes on differences `p v - p w`.
-  have h_S_diff : ∀ v w : V, S (p v - p w) = 0 := by
-    intro v w
-    rw [map_sub]
-    have hv : S (p v) = -t := eq_neg_of_add_eq_zero_right (h_combine v)
-    have hw : S (p w) = -t := eq_neg_of_add_eq_zero_right (h_combine w)
-    rw [hv, hw, sub_self]
+  have h_S_diff : ∀ v w : V, S (p v - p w) = 0 := fun v w => by
+    rw [map_sub, eq_neg_of_add_eq_zero_right (h_combine v),
+      eq_neg_of_add_eq_zero_right (h_combine w), sub_self]
   -- Step 3: `S = 0` as a linear map (vanishes on the vector span of `Set.range p`).
   haveI : Nonempty V := ⟨v₀⟩
   have h_S_zero : S = 0 := by
@@ -318,33 +291,23 @@ theorem trivialMotionFamily_linearIndependent [Fintype V] {p : Framework V d}
     rintro y ⟨_, ⟨v, rfl⟩, _, ⟨w, rfl⟩, rfl⟩
     simpa [vsub_eq_sub] using h_S_diff v w
   -- Step 4: `t = 0`.
-  have h_t_zero : t = 0 := by
-    have := h_combine v₀
-    rw [h_S_zero, LinearMap.zero_apply, add_zero] at this
-    exact this
+  have h_t_zero : t = 0 := by simpa [h_S_zero] using h_combine v₀
   -- Step 5: extract coefficients.
   intro s
   rcases s with i | ⟨i, j⟩
   · -- Translation coefficient: from `t = 0`, read coordinate `i`.
-    have := congrArg (·.ofLp i) h_t_zero
-    simp only at this
-    rw [ht_coord i] at this
-    exact this
+    simpa [ht_coord i] using congrArg (·.ofLp i) h_t_zero
   · -- Rotation coefficient: from `S = 0`, apply at `e_{j'}` and read coord `i`.
     -- The sum collapses via `elemSkewMap_ofLp_inr_apply` (cross-term vanishing) + `sum_ite_eq'`.
-    have hS : S (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ)) = 0 := by
-      rw [h_S_zero]; rfl
     have h_extract : (S (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ))).ofLp i
         = c (.inr ⟨i, j⟩) := by
       rw [hS_def, LinearMap.sum_apply]
       simp only [LinearMap.smul_apply, WithLp.ofLp_sum, Finset.sum_apply, WithLp.ofLp_smul,
         Pi.smul_apply, smul_eq_mul]
       simp_rw [elemSkewMap_ofLp_inr_apply i j, mul_ite, mul_one, mul_zero]
-      rw [Finset.sum_ite_eq' Finset.univ ⟨i, j⟩ (fun s => c (.inr s))]
       simp
-    rw [hS] at h_extract
-    simp at h_extract
-    exact h_extract.symm
+    rw [h_S_zero] at h_extract
+    simpa using h_extract.symm
 
 /-- Cardinality of the d-general trivial-motion index: `d` coordinate translations plus
 `d * (d - 1) / 2 = ∑_{i < d} i` skew rotations gives `d * (d + 1) / 2`. -/
