@@ -319,18 +319,18 @@ $H[S]$-rows in $\mathrm{RigidityMap}\,G\,p$. The two sides match
 exactly because edges in $H[S]$ have both endpoints in $S$, so the
 corresponding rows are supported on the columns indexed by $S$.
 We need the witness placement to affinely span on every
-size-$\ge 3$ subset; \cref{lem:exists-affinelySpanning-rigid-placement-two}
-below provides one.
+size-$\ge 3$ subset; \cref{lem:exists-affinelySpanning-rigid-placement}
+below provides one at any dimension $d$ (consumed here at $d = 2$).
 
-\begin{lemma}[Affinely-spanning rigid placement, dim $2$]
-  \label{lem:exists-affinelySpanning-rigid-placement-two}
-  \lean{SimpleGraph.exists_affinelySpanning_rigid_placement_two}
+\begin{lemma}[Affinely-spanning rigid placement, dimension $d$]
+  \label{lem:exists-affinelySpanning-rigid-placement}
+  \lean{SimpleGraph.exists_affinelySpanning_rigid_placement}
   \leanok
   \uses{def:isGenericallyRigid, lem:isInfinitesimallyRigid-eventually}
-  Let $V$ be finite and $G$ generically rigid in dimension $2$. There
-  exists a framework $p : V \to \R^{2}$ which is infinitesimally rigid
-  for $G$ and whose restriction $p|_{S}$ affinely spans $\R^{2}$ for
-  every $S \subseteq V$ with $|S| \ge 3$.
+  Let $V$ be finite and $G$ generically rigid in dimension $d$. There
+  exists a framework $p : V \to \R^{d}$ which is infinitesimally rigid
+  for $G$ and whose restriction $p|_{S}$ affinely spans $\R^{d}$ for
+  every $S \subseteq V$ with $|S| \ge d + 1$.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -338,42 +338,43 @@ below provides one.
   generic-rigidity hypothesis. Choose an injection $\phi : V \to \R$
   via the finite-type bijection $V \simeq \mathrm{Fin}\,|V|$ composed
   with the natural injection $\mathrm{Fin}\,n \hookrightarrow \R$, and
-  set the Vandermonde direction $w(v) := (\phi(v), \phi(v)^{2}) \in
-  \R^{2}$. For $t \in \R$ define the perturbed placement $p_{t} :=
-  p_{0} + t \cdot w$.
+  set the moment-curve direction $w(v) := (\phi(v), \phi(v)^{2},
+  \ldots, \phi(v)^{d}) \in \R^{d}$. For $t \in \R$ define the
+  perturbed placement $p_{t} := p_{0} + t \cdot w$.
 
   Openness of infinitesimal rigidity
   (\cref{lem:isInfinitesimallyRigid-eventually}) plus the continuity
   of $t \mapsto p_{t}$ supplies an $\varepsilon > 0$ such that $p_{t}$
   is infinitesimally rigid for every $|t| < \varepsilon$.
 
-  For each ordered triple $(a, b, c)$ of distinct vertices, the
-  three-points-collinear determinant
+  For each ordered $(d+1)$-tuple $(v_{0}, \ldots, v_{d})$ of distinct
+  vertices, the affine-dependence determinant of the perturbed
+  difference matrix
   \[
-    \det\bigl(p_{t}(b) - p_{t}(a), p_{t}(c) - p_{t}(a)\bigr)
+    \det\bigl(p_{t}(v_{1}) - p_{t}(v_{0}),\, \ldots,\,
+      p_{t}(v_{d}) - p_{t}(v_{0})\bigr)
   \]
-  is a quadratic in $t$ whose $t^{2}$ coefficient is
-  $(\phi(b) - \phi(a)) \cdot (\phi(c) - \phi(a)) \cdot (\phi(c) -
-  \phi(b))$, nonzero by injectivity of $\phi$. The per-triple bad-$t$
-  set is therefore finite (cast through $\mathrm{Polynomial}\,\R$ and
-  the polynomial-roots cardinality bound). The global bad set is the
-  finite union of finitely many finite sets, hence finite, so any
+  is a polynomial in $t$ of degree at most $d$
+  (\texttt{Polynomial.natDegree\_det\_X\_add\_C\_le}) whose top
+  coefficient (\texttt{Polynomial.coeff\_det\_X\_add\_C\_card}) is the
+  Vandermonde-difference determinant
+  $\prod_{0 \le i < j \le d} (\phi(v_{j}) - \phi(v_{i}))$
+  (\texttt{Matrix.det\_powerDifferences}), nonzero by injectivity of
+  $\phi$. The per-tuple bad-$t$ set is therefore finite
+  (\texttt{Polynomial.finite\_setOf\_isRoot}). The global bad set is
+  the finite union of finitely many finite sets, hence finite, so any
   point of the (uncountable) interval $(0, \varepsilon)$ outside the
   bad set is a valid choice of $t$. The resulting $p_{t}$ is
-  infinitesimally rigid, and for every $S$ with $|S| \ge 3$ any three
-  distinct elements of $S$ give an affinely-independent triple under
-  $p_{t}$, so $p_{t}|_{S}$ affinely spans $\R^{2}$.
-
-  The formalization ships this dim-$2$-specific; a $d$-general lift
-  via the moment curve plus the Vandermonde determinant is a deferred
-  follow-up.
+  infinitesimally rigid, and for every $S$ with $|S| \ge d + 1$ any
+  $d + 1$ distinct elements of $S$ give an affinely-independent tuple
+  under $p_{t}$, so $p_{t}|_{S}$ affinely spans $\R^{d}$.
 \end{proof}
 
 \begin{lemma}[$(2, 3)$-sparsity from row-independence, dim $2$]
   \label{lem:isSparse-of-rowIndependent-two}
   \uses{def:isSparse, def:edgeSet-rowIndependent,
     lem:rigidityMap-finrank-range-le-of-affinelySpanning,
-    lem:exists-affinelySpanning-rigid-placement-two}
+    lem:exists-affinelySpanning-rigid-placement}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $p$ a framework
   on $V$ in dimension $2$ such that $p|_{S}$ affinely spans for every
   $S \subseteq V$ with $|S| \ge 3$. If $I \subseteq E(G)$ is
@@ -414,7 +415,7 @@ below provides one.
     lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid,
     lem:exists-rowIndependent-edge-basis,
     lem:isSparse-of-rowIndependent-two,
-    lem:exists-affinelySpanning-rigid-placement-two}
+    lem:exists-affinelySpanning-rigid-placement}
   Let $V$ be finite with $|V| \ge 2$. If $G$ is generically rigid in
   dimension $2$, then there exists a Laman spanning subgraph
   $H \le G$.
@@ -422,7 +423,7 @@ below provides one.
 \begin{proof}
   Pick a framework $p$ that is both infinitesimally rigid for $G$
   and affinely-spanning on every size-$\ge 3$ subset, via
-  \cref{lem:exists-affinelySpanning-rigid-placement-two}. Apply
+  \cref{lem:exists-affinelySpanning-rigid-placement}. Apply
   \cref{lem:exists-rowIndependent-edge-basis} to extract
   $I \subseteq E(G)$ with $|I| = 2 |V| - 3$ row-independent at $p$.
   Let $H \le G$ be the spanning subgraph with edge set $I$. By

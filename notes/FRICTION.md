@@ -68,6 +68,29 @@ lemma; resolved otherwise.
 
 ## Open
 
+### [open] `Polynomial.X` in a `set := ... .det` binding needs an explicit type ascription
+- **Where it bit:** `exists_affinelySpanning_rigid_placement` in
+  `RigidityMatroid.lean`. Writing
+  `set P : Polynomial ℝ := (Polynomial.X • M₁.map C + M₀.map C).det`
+  fails with `typeclass instance problem is stuck: Semiring ?m`
+  because the elaborator picks the type of `Polynomial.X`
+  bottom-up from the body without consulting the outer `: Polynomial ℝ`
+  ascription.
+- **Friction:** the matrix entries `M₁.map C` *do* live in
+  `Polynomial ℝ`, so the `•` action is well-typed once the scalar's
+  ring is fixed; but the parser commits to elaborating `Polynomial.X`
+  before unifying with the action's scalar type. Workaround: annotate
+  the `X` literal explicitly:
+  `set P : Polynomial ℝ :=
+    ((Polynomial.X : Polynomial ℝ) • M₁.map C + M₀.map C).det`.
+- **Proposed fix:** none upstream; standard Lean 4 elaboration order
+  quirk. If you see this exact error message on a `Polynomial`-valued
+  expression, look first for a bare `Polynomial.X` (or `1`, `0`)
+  whose containing ring is set by the surrounding context but not
+  by the local syntax.
+- **Status:** open (project-internal note). Promote to TACTICS.md
+  *Tactics and quirks* if the same shape bites in a second proof.
+
 ### [open] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
 - **Where it bit:** Phase 3 close, while planning
   `IsLaman.exists_typeI_or_typeII_reverse`.
@@ -93,28 +116,25 @@ lemma; resolved otherwise.
   matroid (see ROADMAP §5 *Carryover from Phase 3*).
 - **Status:** open (Phase-5-bound).
 
-### [open] No mathlib `LinearIndependent ![u, v] ↔ det ≠ 0` in dim 2
+### [resolved] No mathlib `LinearIndependent ![u, v] ↔ det ≠ 0` in dim 2
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
   `RigidityMatroid.lean`. Inside the per-triple finiteness argument
   we needed: from the quadratic determinant `u 0 * v 1 - u 1 * v 0 ≠
   0` (with `u, v : EuclideanSpace ℝ (Fin 2)`) deduce
   `LinearIndependent ℝ ![u, v]`.
-- **Friction:** mathlib has `LinearIndependent.pair_iff` (LI of two
-  vectors via the universal-quantifier characterisation) and
-  `LinearIndependent.pair_iff'` (the field/non-zero variant), but
-  neither states the equivalence with the explicit 2×2 determinant in
-  coordinates. `Matrix.det_eq_zero_iff_linearIndependent_columns` is
-  abstract-matrix-shaped and doesn't unify cleanly with `EuclideanSpace
-  ℝ (Fin 2)` rows. We unblocked with a private project lemma
-  `linearIndependent_pair_of_det_ne_zero` (~10 lines via
-  `LinearIndependent.pair_iff` + `linear_combination`).
-- **Proposed fix:** mirror as
-  `linearIndependent_pair_iff_det_ne_zero` (the full iff) under
-  `CombinatorialRigidity/Mathlib/Analysis/InnerProductSpace/PiL2.lean`
-  or a similar dim-2 file; eventually upstream. Keeping just the
-  `_of_det_ne_zero` half (the direction we need) is fine for now.
-- **Status:** open. Acceptable as a private helper; lift if a future
-  Phase 6 lemma needs it independently.
+- **Resolution:** the right primitive at d-general is
+  `Matrix.linearIndependent_rows_of_det_ne_zero` (in
+  `Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean`), bridged to
+  `EuclideanSpace` via `WithLp.linearEquiv` and
+  `LinearMap.linearIndependent_iff`. The Phase 6 task-4 d-general lift
+  replaced the dim-2 private helper `linearIndependent_pair_of_det_ne_zero`
+  with the project-private bridge `affineIndependent_of_difference_det_ne_zero`
+  that consumes the row-LI lemma directly. The dim-2 helper has been
+  retired entirely.
+- **Lesson:** same as the `finSuccAboveEquiv` and `LinearMap.ltoFun`
+  finds — mathlib's matrix-determinant API is denser than the dim-2
+  case-by-case API. When the d-general statement is available, use
+  it; the dim-2 specialisation collapses by `rfl` or one-line glue.
 
 ### [resolved] No packaged `ℝ`-linear injection `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)`
 - **Where it bit:** `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`
@@ -138,7 +158,7 @@ lemma; resolved otherwise.
   `(_ →ₗ[_] _) →ₗ[_] (_ → _)` returned `LinearMap.ltoFun` on the
   first try.
 
-### [open] `Set.Finite.subset (finite_setOf ...)` leaves metavariables when leading-coeff is the only resolved unknown
+### [resolved] `Set.Finite.subset (finite_setOf ...)` leaves metavariables when leading-coeff is the only resolved unknown
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
   `RigidityMatroid.lean`. Inside the per-triple finiteness proof we
   applied `Set.Finite.subset (finite_zeros_quadratic h_γ_ne)` to bound
@@ -147,20 +167,22 @@ lemma; resolved otherwise.
   stay as metavariables — Lean leaves three goals (the subset relation
   plus two `⊢ ℝ` placeholders), and the linter (multiGoal-style)
   flags every subsequent step as touching multiple goals.
-- **Friction:** the metavariables aren't filled by unification because
-  the conclusion shape is `{t | γ * t^2 + β * t + α = 0}.Finite` and
-  the corresponding subset relation `{t | ¬ AI ...} ⊆ {t | γ * t^2 +
-  ?β * t + ?α = 0}` does not constrain `?β`, `?α` until the
-  determinant-equation rewrite later. Fix: pass `β` and `α` as named
-  arguments at apply time:
-  `apply Set.Finite.subset (finite_zeros_quadratic (γ := γ) (β := β)
-  (α := α) h_γ_ne)`.
-- **Proposed fix:** none upstream; this is a Lean unification quirk
-  around `apply` + free implicit args. Documented here so the
-  pattern (named args at the `apply` site) is reachable for the next
-  agent who hits the same multiGoal-warning cascade.
-- **Status:** open (project-internal note). Worth lifting to
-  `TACTICS.md` § *Tactics and quirks* if it bites a second time.
+- **Resolution:** dissolved by the Phase 6 task-4 d-general lift. The
+  private `finite_zeros_quadratic` helper retired; the d-general proof
+  uses `(Polynomial.finite_setOf_isRoot hP_ne).subset h_bad_sub` with
+  a *named* `P : Polynomial ℝ` whose coefficients are fully determined
+  by the surrounding `set` bindings. The "unresolved metavariables on
+  applying a `Finite.subset (finite_…)`" symptom was a side-effect of
+  three free scalars (`γ, β, α`) being passed to a helper that did not
+  capture them; the d-general matrix form (`M₀, M₁`) bundles them
+  into named matrices, and the polynomial is a single named object.
+- **Lesson:** when reaching for a quadratic/cubic/degree-`d` zero-set
+  finiteness, prefer `Polynomial.finite_setOf_isRoot` on a fully-named
+  `P : Polynomial R` over a hand-rolled `finite_zeros_quadratic`-style
+  helper that takes free coefficients as arguments. Mathlib's
+  matrix-of-polynomial machinery (`coeff_det_X_add_C_card`,
+  `natDegree_det_X_add_C_le`) builds `P` from named matrices, which
+  pins down all the implicit arguments at the apply site.
 
 ### [resolved] `AffineIndependent` ↔ `LinearIndependent` reindex from `{x : Fin 3 // x ≠ 0}` to `Fin 2`
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in

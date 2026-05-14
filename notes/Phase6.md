@@ -22,22 +22,15 @@ Phase 5 closed with the iff statement
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-**Through commit 16 (this commit):** task-3 of the Lean-simplification
-pass is landed (commit 14) and `TrivialMotions.lean` got a TACTICS § 1
-grind-default golf pass alongside (commit 15). Tasks 1–3 of the
-simplification pass are now all resolved; task 4 (the d-general lift
-of the affinely-spanning placement) is in progress — its mirror
-infrastructure landed this commit (16); the d-general theorem body
-and the retire-dim-2 pass remain. The linear-algebra side is closed d-general (rank bounds,
-kernel bound, basis-pick); the analysis side is closed at dim 2
-(affinely-spanning rigid placement). The only red nodes left in
-`chapter/laman-theorem.tex` are `lem:isSparse-of-rowIndependent-two`
-(the substantive sparsity step) and the assembly target
-`thm:isGenericallyRigid-exists-isLaman-le`. See *Done* below for
-per-commit detail and *Hand-off / next phase* for the sparsity sketch,
-the d-general lift of the affinely-spanning placement (task 4), and a
-low-priority "project-wide grind sweep" note added under *Future
-polish*.
+The linear-algebra side is closed d-general (rank bounds, kernel
+bound, basis-pick) and the analysis side is closed d-general
+(affinely-spanning rigid placement). All four Lean-simplification
+tasks (the session-start blueprint↔Lean review found four spots where
+the Lean was heavier than the math) are resolved. The remaining red
+nodes in `chapter/laman-theorem.tex` are
+`lem:isSparse-of-rowIndependent-two` (the substantive sparsity step)
+and the assembly target `thm:isGenericallyRigid-exists-isLaman-le`.
+See *Next session* for the sparsity sketch.
 
 ## Architectural choices made up front
 
@@ -45,45 +38,28 @@ These extend `../DESIGN.md` *Choices to revisit*; if any turns out
 wrong, revisit there.
 
 - **Forward-mode blueprint authoring** (Option C). The blueprint
-  chapter's $\Rightarrow$-direction subsection becomes the
-  authoritative dep-graph from Phase 6 commit 1; `\lean{...}` and
-  `\leanok` get added as each Lean lemma lands. Prose proofs are
-  deferred to a phase-end pass. Rationale lives in
-  `../blueprint/DESIGN.md` *Recommendation for Phase 6*. We do
-  **not** maintain a parallel lemma checklist in this file — the
-  dep-graph is the single source of truth, and parallel lists rot.
+  chapter's $\Rightarrow$-direction subsection is the authoritative
+  dep-graph; `\lean{...}` and `\leanok` get added as each Lean lemma
+  lands. We do **not** maintain a parallel lemma checklist here.
+  Rationale: `../blueprint/DESIGN.md` *Recommendation for Phase 6*.
 
-- **New file `RigidityMatroid.lean`.** Per ROADMAP §6 and DESIGN.md
-  *Notion- and matroid-agnostic core* / *Why Henneberg, not matroid*.
-  Phase 4 deliberately kept the abstract rigidity matroid out of
-  `Framework.lean`; Phase 6 stands the file up alongside it. Lives
-  at `CombinatorialRigidity/RigidityMatroid.lean`; imported by
-  `LamanTheorem.lean`.
+- **New file `RigidityMatroid.lean`** (per ROADMAP §6, DESIGN.md
+  *Notion- and matroid-agnostic core*). Imported by `LamanTheorem.lean`.
 
 - **Stay matroid-agnostic in the proof body; defer the abstract
-  `Matroid` packaging.** The honest minimum surface area for closing
-  `exists_isLaman_le` is two linear-algebra ingredients
-  (a rank lower bound for generically-rigid placements, and a
-  $(2,3)$-sparsity-from-row-independence lemma); neither requires
-  `Mathlib.Combinatorics.Matroid`. Building the `Matroid` instance is
-  reusable infrastructure but not on the critical path. Defer; revisit
-  at end of Phase 6 if it ends up trivial once the supporting
-  lemmas land.
+  `Matroid` packaging.** Two linear-algebra ingredients (rank lower
+  bound at generically-rigid placement; $(2,3)$-sparsity-from-
+  row-independence) suffice for `exists_isLaman_le`; neither needs
+  `Mathlib.Combinatorics.Matroid`. Defer; revisit at phase end.
 
-- **Lovász–Yemini's "easy direction" only.** Closing
-  `exists_isLaman_le` needs only *row-independent in rigidity matroid
-  $\Rightarrow$ $(2,3)$-sparse subgraph*. The harder converse
-  $(2,3)$-sparse $\Rightarrow$ row-independent at a generic placement
-  is the deep half of Lovász–Yemini and is **not needed** for the iff;
-  Phase 6 ships without it. If a future phase wants the full
-  equality, that's a separate milestone.
+- **Lovász–Yemini's "easy direction" only.** Phase 6 ships
+  "row-LI $\Rightarrow$ $(2,3)$-sparse subgraph". The deep converse
+  is a separate milestone.
 
-- **`TrivialMotions` Phase 4 deferred API may need to land here.**
-  The $(2,3)$-sparsity argument uses the rank bound
-  $\rk\,R_{H[S]}(p|_S) \le 2|S| - 3$ for $|S| \ge 3$, which goes
-  through the affinely-spanning-implies-$\dim\,\mathrm{TrivialMotions} = 3$
-  identity (Phase 4 *Lemma checklist*, deferred). Exact form is TBD;
-  flagged under *Blockers* below.
+- **`TrivialMotions` Phase 4 deferred API landed here** (commits
+  7–8, 10): d-general `trivialMotions` submodule, the d-general
+  finrank lower bound from affine-spanning, and the kernel bound
+  feeding the d-general rank upper bound.
 
 ## Lemma checklist
 
@@ -93,98 +69,72 @@ visible as a dep-graph at `blueprint/web/dep_graph_document.html`
 after `inv bp && inv web`. A red node = not yet formalized; a green
 node = formalized and `\leanok`-tagged. Pick leaf-most red.
 
-Status snapshot at commit 13: the remaining red nodes in
-`chapter/laman-theorem.tex` are `lem:isSparse-of-rowIndependent-two`
-and the assembly target `thm:isGenericallyRigid-exists-isLaman-le`.
-Sparsity stacks on the d-general rank upper bound at `d = 2` plus
-the affinely-spanning placement (commit 11); assembly stacks on
-sparsity plus the basis-pick (commit 6).
+Two red nodes remain: `lem:isSparse-of-rowIndependent-two` (sparsity,
+the next substantial step) and the assembly target
+`thm:isGenericallyRigid-exists-isLaman-le`. Sparsity stacks on the
+d-general rank upper bound (at `d = 2`) plus the affinely-spanning
+placement; assembly stacks on sparsity plus the basis-pick.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
 
 - **d-general only; no d=2 corollary surface.** Commit 10 retired the
-  d=2 corollaries of the rank bounds and the kernel bound; callers at
-  `d = 2` consume the d-general lemmas directly because
-  `2 * (2 + 1) / 2` reduces to `3` by `rfl` on `Nat` literals. See
-  commit 10 *Done* entry for the deleted symbols and *Design pattern
-  established* (file end) for the forward-looking rule. *Asymmetry:*
-  the rank/kernel bounds are general infrastructure where
-  `d (d + 1) / 2` is parametric; the basis-pick
-  `exists_edgeSetRowIndependent_basis_dim_two` stays dim-2-shaped
-  because its conclusion `|I| = 2 * #V - 3` is structurally dim-2.
+  d=2 corollaries of the rank bounds and kernel bound; callers at
+  `d = 2` consume d-general lemmas directly via `rfl` on
+  `2 * (2 + 1) / 2 → 3`. See *Design pattern established* (file end)
+  for the forward-looking rule. *Asymmetry:* `exists_edgeSetRowIndependent_basis_dim_two`
+  stays dim-2-shaped because its conclusion `|I| = 2 * #V - 3` is
+  structurally dim-2.
 
-- **Dual-bridge for the basis-pick.** `EdgeSetRowIndependent` is stated
-  as `LinearIndepOn` of a family of plain functions `Framework V d →
-  ℝ` (matching the blueprint), but the rank identities we need
-  (`LinearMap.finrank_range_dualMap_eq_finrank_range`,
-  `Pi.basisFun.dualBasis`) require viewing the rows as linear
-  functionals (`Module.Dual ℝ (Framework V d)`). The basis-pick proof
-  works in the dual module throughout (via `rigidityRow` and
-  `span_range_rigidityRow`), then transports the LI back to the
-  function-module form via
-  `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`. The function-
-  to-dual envelope uses mathlib's `LinearMap.ltoFun ℝ _ ℝ ℝ` +
-  `DFunLike.coe_injective` (discovered in commit 12; an earlier
-  private `dualToFunₗ` scaffold has been retired).
+- **Dual-bridge for the basis-pick.** `EdgeSetRowIndependent` is
+  stated in the function module (blueprint shape), but rank
+  identities need the dual module. Proof works in the dual via
+  `rigidityRow` / `span_range_rigidityRow`, transports back via
+  `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`; envelope is
+  `LinearMap.ltoFun ℝ _ ℝ ℝ` + `DFunLike.coe_injective`.
 
-- **`apnelson1/Matroid` investigated, not adopted.** The external repo
-  ships `Module.matroid` (in `Matroid/Representation/Map.lean`) — a
-  `Matroid W` whose ground set is a vector space and whose
-  independence is linear independence — and the derived `Matroid.ofFun
-  𝔽 E f` for an arbitrary function `f : α → W`, both built on top of
-  `IndepMatroid.ofFinitaryCardAugment`. Toolchain pin
-  (`leanprover/lean4:v4.30.0-rc2`) matches ours exactly. *Not adopted*
-  because the abstraction does not collapse the hard step: the
-  basis-pick lemma needs column-rank-to-row-rank
-  (`LinearMap.finrank_range_dualMap_eq_finrank_range`,
-  `Mathlib/LinearAlgebra/Dual/Lemmas.lean:918`) either way, and going
-  through `Matroid.ofFun` would only hide that step inside
-  `Matroid.ofFun`'s rank API rather than remove it. Branch (c) of the
-  *Hand-off* plan wins on cost: ~30 lines of pure linear algebra, no
-  new dep, no new mirror.
+- **TrivialMotions API in its own file, d-general** (commit 7
+  design pivot). Lives in `CombinatorialRigidity/TrivialMotions.lean`
+  parallel to `Framework.lean`; submodule formulation lets
+  `trivialMotions_le_ker` ship unconditionally and the finrank bound
+  as a `Submodule.finrank_mono` one-liner.
 
-- **TrivialMotions API in its own file, d-general.** Per the user's
-  Phase 6 design-pivot (commit 7), the trivial-motions API lives in
-  `CombinatorialRigidity/TrivialMotions.lean` (parallel to
-  `Framework.lean`) rather than buried inside `RigidityMatroid.lean`.
-  The motions are general framework infrastructure, not matroid-
-  specific; the submodule formulation lets `trivialMotions_le_ker`
-  ship as one unconditional lemma and the finrank bound as a
-  `Submodule.finrank_mono` one-liner. The blueprint chapter
-  `chapter/trivial-motions.tex` mirrors the Lean file 1:1.
+- **Skew-sum + affine-spanning route for the d-general LI.**
+  `trivialMotionFamily_linearIndependent` (commit 8) routes through a
+  skew-sum endomorphism `S` on `EuclideanSpace ℝ (Fin d)`: vanishing
+  combination at `v` gives `t + S(p v) = 0`; subtracting at two
+  vertices kills `t`; affine spanning + `LinearMap.eqOn_span` extends
+  `S = 0` from differences to all of $\R^d$. The named-linear-map
+  abstraction is doing the affine-spanning step's work.
 
-- **`rotJTwo` defined directly, not via `Matrix.toEuclideanLin`.** First
-  attempt routed `rotJTwo := Matrix.toEuclideanLin !![0, -1; 1, 0]`,
-  which left downstream `simp` calls fighting `Matrix.mulVec` /
-  `Matrix.dotProduct` / `Matrix.vecHead` unfolding. Switched to a
-  direct `LinearMap.mk' (fun v => !₂[-(v 1), v 0])` so that
-  `rotJTwo_apply_zero/one` are `rfl`-simp lemmas; downstream proofs
-  then close coordinates without matrix-unfolding hints. FRICTION
-  entry filed (*Defining the 2×2 90° rotation via `Matrix.toEuclideanLin`
-  blocks coordinate simp*).
-
-- **Skew-sum + affine-spanning route for the d-general LI.** The
-  d-general `trivialMotionFamily_linearIndependent` (commit 8)
-  routes through an intermediate skew-sum endomorphism `S` of
-  `EuclideanSpace ℝ (Fin d)`: the vanishing combination at vertex
-  `v` reads `t + S(p v) = 0`, subtracting at two vertices kills `t`
-  and yields `S = 0` on differences, then affine spanning +
-  `LinearMap.eqOn_span` extends to `S = 0`. The named-linear-map
-  abstraction is doing real work — the affine-spanning step is
-  naturally stated about a linear map vanishing on a spanning set —
-  so the pure-coordinate alternative was rejected. See commit 8
-  *Done* entry.
+- **Matrix-determinant route for the d-general analysis leaf**
+  (commit 17). Difference matrices `M₀, M₁` of shape `Fin d × Fin d`;
+  the polynomial `P := (X • M₁.map C + M₀.map C).det ∈ ℝ[X]` has
+  `coeff P d = det M₁ = ∏_{i<j} (φ vⱼ - φ vᵢ) ≠ 0`
+  (`coeff_det_X_add_C_card` + `det_powerDifferences`); `P.eval t =
+  (t • M₁ + M₀).det` via `RingHom.map_det` on `evalRingHom t`. The
+  AI↔det bridge is private helper
+  `affineIndependent_of_difference_det_ne_zero` (~10 LoC).
 
 ### Promoted to TACTICS / FRICTION / DESIGN
 
-*(none yet — the trivial-motions specifics stay phase-local; the FRICTION
-entries opened in commit 7 are the cross-cutting record.)*
+- *`apnelson1/Matroid` investigated, not adopted* → DESIGN.md
+  *Notion- and matroid-agnostic core* (rationale recorded there).
+- *`rotJTwo` defined directly, not via `Matrix.toEuclideanLin`* →
+  FRICTION *Defining the 2×2 90° rotation via `Matrix.toEuclideanLin`
+  blocks coordinate simp*.
+- *Dim-2 → d-general lift discipline* → *Design pattern established*
+  (file end) plus FRICTION resolved entries (commit-17 d-general lift).
 
 ### Cleanup pass summaries
 
-*(none yet)*
+- *Commit 15 (`TrivialMotions.lean`):* TACTICS § 1 grind-default golf.
+  37 lines deleted, no logic changes. `elemSkewMap_ofLp_inr_apply`
+  body collapses to a one-liner `rcases ... <;> split_ifs <;> grind`;
+  `inner_elemSkewMap_self`'s `i ≠ j` branch closes with `grind`;
+  `trivialMotionFamily_linearIndependent`'s Steps 1–5 rewritten in
+  term-mode `simpa` style.
 
 ## Blockers / open questions
 
@@ -196,164 +146,24 @@ entries for resolution details.
 
 ## Hand-off / next phase
 
-**Done:**
-- *Commit 0 (`fdbcbd9`):* Phase 6 notes seeded; ROADMAP Status row
-  flipped; forward-mode workflow surfaced in top-level `CLAUDE.md`.
-- *Commit 1 (`39b2152`):* forward-mode blueprint skeleton for the
-  $\Rightarrow$ direction — six red nodes in `chapter/laman-theorem.tex`
-  with `\uses{...}` chains.
-- *Commit 2 (`cd0398f`):* bibliography + attribution chain
-  (Laman 1970 / Asimow–Roth 1978 / Jordán 2016 §1.3.1; Lovász–Yemini
-  1982 acknowledged for the matroid framing).
-- *Commit 3 (`93908d8`):* `RigidityMatroid.lean` +
-  `rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`
-  (one-liner via rank-nullity + `Framework.finrank` + `omega`).
-- *Commit 4 (`e3918d1`):* `EdgeSetRowIndependent G p I` plus
-  `.mono` / `_empty` helpers.
-- *Commit 5 (`5f11c6b`):* `apnelson1/Matroid` investigation (notes-only)
-  → branch (c), matroid-agnostic. See *Decisions*.
-- *Commit 6 (`7a687fa`):* basis-pick
-  `exists_edgeSetRowIndependent_basis_dim_two` plus `rigidityRow` /
-  `span_range_rigidityRow` /
-  `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`, with a
-  private `dualToFunₗ` bridge (later retired in commit 12). FRICTION
-  entry filed.
-- *Commit 7 (`49c693a`):* `TrivialMotions.lean` — d-general
-  `translationMotion` / `infinitesimalRotation` / `trivialMotions`,
-  the unconditional `trivialMotions_le_ker`, and dim-2 surface
-  (`rotJTwo` via direct `LinearMap.mk'`, plus the two
-  `_three_le_finrank/ker_of_affinelySpanning_two` lemmas — all
-  retired in commit 10). New blueprint chapter
-  `chapter/trivial-motions.tex` mirrors the file 1:1. Three new
-  FRICTION entries.
-- *Commit 8 (`6b104da`):* d-general finrank lower bound
-  `trivialMotions_finrank_ge_of_affinelySpanning`. Routes the LI of
-  `trivialMotionFamily` through a skew-sum endomorphism `S` that
-  vanishes on differences `p v - p w` and extends to `S = 0` via
-  affine spanning + `LinearMap.eqOn_span`; rotation coefficients
-  extracted via `(S e_{j'}).ofLp i`; cardinality from
-  `Finset.sum_range_id`. New `elemSkewMap (i j : Fin d)` +
-  `inner_elemSkewMap_self`. Subsumes the ~100 LoC dim-2 proof from
-  commit 7 (now a one-line corollary). Six new green blueprint
-  nodes in `chapter/trivial-motions.tex`.
-- *Commit 9 (`f87c09f`):* rank upper bound `_le_of_affinelySpanning_two`
-  in `RigidityMatroid.lean` — ~5 lines of `omega` over the same
-  rank-nullity + `Framework.finrank` template as commit 3, fed by
-  commit 7's kernel lemma. The `|V| ≥ 2` hypothesis on the blueprint
-  statement was dropped (affine-span forces `|V| ≥ 3`). *(d=2 form
-  retired in commit 10; the d-general
-  `rigidityMap_finrank_range_le_of_affinelySpanning` replaces it.)*
-- *Commit 10:* d-general lift; d=2 corollary surface retired. New
-  `rigidityMap_ker_finrank_ge_of_affinelySpanning` in
-  `TrivialMotions.lean`. Generalised commits 3 and 9's rank bounds
-  to their d-general statements; the d=2 corollaries are deleted
-  (callers consume the d-general lemmas at `d = 2` with zero
-  specialisation ceremony — see *Design pattern established*
-  below). Six declarations removed:
-  `trivialMotions_three_le_finrank/ker_of_affinelySpanning_two`,
-  `rigidityMap_finrank_range_ge/le_..._two`, `rotJTwo` + apply
-  lemmas + `inner_rotJTwo_self`. `EuclideanDist` import dropped
-  from `TrivialMotions.lean`. Blueprint chapters updated.
-- *Commit 11:* analysis leaf — affinely-spanning rigid placement
-  `exists_affinelySpanning_rigid_placement_two`. Vandermonde
-  perturbation `w v = (φ v, (φ v)²)`; the per-triple collinearity
-  determinant is a quadratic in `t` with leading coefficient
-  `(φ b − φ a)(φ c − φ a)(φ c − φ b) ≠ 0`; finite union of
-  per-triple bad sets avoided by a point in `(0, ε) \ bad`. ~150
-  LoC alongside two private helpers `finite_zeros_quadratic` and
-  `linearIndependent_pair_of_det_ne_zero`. Imports
-  `Mathlib.Algebra.Polynomial.Roots` + `…AffineSpace.FiniteDimensional`.
-  Dim-2-shaped; d-general lift is task 4 of the pending pass.
-- *Commit 12:* Lean-simplification task 2 (*"small dual bridge
-  isn't small"*). The ~16-line private `dualToFunₗ` scaffold
-  collapsed to `LinearMap.ltoFun ℝ _ ℝ ℝ` +
-  `DFunLike.coe_injective` (discovered via `lean_loogle` on
-  `(_ →ₗ[_] _) →ₗ[_] (_ → _)`); the matrix-level
-  `Matrix.rank_transpose` alternative was assessed and declined;
-  `rigidityRow` / `span_range_rigidityRow` /
-  `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow` promoted to
-  named blueprint concepts under new subsubsection *The rigidity
-  rows as a family in the algebraic dual* in
-  `chapter/laman-theorem.tex`; `span_range_rigidityRow` shrunk
-  from ~22 to ~10 lines via the `Set.range_comp` +
-  `Submodule.span_image` + `Basis.dualBasis.span_eq` +
-  `Submodule.map_top` chain. FRICTION *No packaged ℝ-linear
-  injection* flipped to **[resolved]**.
-- *Commit 13 (`c27c20e`):* mirror the two upstream-eligible
-  linear-algebra lemmas surfaced by task 2. New file
-  `CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/Basis.lean`
-  carries `Pi.basisFun_dualBasis` (`@[simp]`) and
-  `LinearMap.range_dualMap_eq_span_image_dualBasis` (Part 1 of
-  Strang's FTLA in span form). `span_range_rigidityRow` consumes
-  the second directly; its body shrinks from ~10 to ~4 lines.
-  FRICTION *Mirrored* gains a combined entry. Both verified
-  genuinely absent from upstream (`Dual/Basis.lean` does not even
-  import `StdBasis.lean`, which is the structural reason gap #1
-  was unfilled).
-- *Commit 14 (`f6a24b5`):* Lean-simplification task 3
-  (*"cross-terms vanish hides a 30-line case-split"*). Hoisted
-  candidate-2 from the task list: new named lemma
-  `elemSkewMap_ofLp_inr_apply` (~33 lines) captures the
-  cross-term-vanishing fact "evaluating
-  `elemSkewMap s.1 ⟨s.2.val, _⟩` at the basis vector
-  `e_{⟨j.val, _⟩}` and reading coord `i` gives the
-  single indicator `if s = ⟨i, j⟩ then 1 else 0`". The rotation
-  branch of `trivialMotionFamily_linearIndependent` then collapses
-  from ~50 lines (`Finset.sum_eq_single` + 30-line `split_ifs` +
-  `omega` over `Fin.val` comparisons) to ~14 lines (one
-  `simp_rw [elemSkewMap_ofLp_inr_apply ...]` + `Finset.sum_ite_eq'`).
-  The helper proof uses `simp only [Sigma.mk.injEq, heq_eq_eq,
-  Fin.ext_iff, true_and]` to align the sigma- and Fin-level
-  equalities (a `rw [Fin.mk.injEq]` motive-typing issue forced the
-  `simp` route — `if-then-else` inner Props don't admit the rewrite
-  cleanly). Three `omega` closers replaced with `grind only`
-  per TACTICS § 1. The `set j' := ⟨j.val, _⟩` scaffold in the
-  outer proof is retired in favour of the explicit form so the
-  helper's literal `⟨j.val, j.isLt.trans i.isLt⟩` shape matches.
-- *Commit 16 (this commit):* task-4 (d-general lift) infrastructure.
-  Mirror lemma `Matrix.det_powerDifferences` lands under
-  `CombinatorialRigidity/Mathlib/LinearAlgebra/Vandermonde.lean`: for
-  `v : Fin (n + 1) → R` over a `CommRing`, the `n × n` matrix
-  `M i j = v i.succ ^ (j.val + 1) - v 0 ^ (j.val + 1)` has
-  `det M = ∏_{0 ≤ i < j ≤ n} (v j - v i)`. The proof realises `M` as
-  the `(Fin.succ, Fin.succ)`-minor of the
-  `Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde` evaluation
-  matrix on the polynomial family `p 0 = 1`,
-  `p k.succ = X^(k.val + 1) - C (v 0 ^ (k.val + 1))`, then
-  cofactor-expands along the sparse row 0 via `det_succ_row_zero` +
-  `Finset.sum_eq_single 0`. `nontriviality R` discharges the
-  trivial-ring case. FRICTION *Mirrored* gains a combined entry.
-  Substantively, this is the *leading-coefficient* half of task 4
-  (the dim-2 `γ = (φ b − φ a)(φ c − φ a)(φ c − φ b)` factoring goes
-  d-general); the AffineIndependent ↔ det bridge and the theorem
-  assembly remain. (Task-3 search of mathlib located the
-  polynomial-of-det machinery already in
-  `Mathlib/LinearAlgebra/Matrix/Polynomial.lean`:
-  `natDegree_det_X_add_C_le`, `coeff_det_X_add_C_zero/card` — no
-  mirror needed there.)
-
-- *Commit 15 (`ac194c1`):* TACTICS § 1 golf pass over
-  `TrivialMotions.lean` (this file did most of its proof work
-  before TACTICS § 1's "default to `grind`" rule landed in current
-  form). Net 37 lines deleted, no logic changes:
-  * `elemSkewMap_ofLp_inr_apply` body collapses from ~17 lines
-    (`rcases` + two case-bodies with three `have`s + `split_ifs` +
-    `absurd` + `all_goals rfl`) to a single one-liner:
-    `rcases eq_or_ne i a with rfl | hia <;> split_ifs <;> grind`.
-    `grind` solves every leaf of the case-tree using `b.isLt` /
-    `j.isLt` directly from the ordered-pair-type subtyping.
-  * `inner_elemSkewMap_self`'s `i ≠ j` branch: closing `simp; ring`
-    becomes `grind`.
-  * `trivialMotionFamily_linearIndependent`'s Steps 1–5 are
-    rewritten in `fun … => by simpa [...]` / `simpa [...] using …`
-    term-mode style; `ht_coord` / `h_combine` / `h_S_diff` /
-    `h_t_zero` / the rotation extraction all shrink to one or two
-    lines. The redundant `Finset.sum_ite_eq` rewrites (it's a
-    `simp` lemma) are dropped from `ht_coord` and the rotation
-    extraction. The intermediate `hS` (`S (e_{j'}) = 0`)
-    disappears: `rw [h_S_zero] at h_extract` substitutes `S = 0`
-    directly into the closed-form extraction, then `simpa using
-    h_extract.symm` finishes.
+**Done.** Commits 0–17. Setup (0–2): notes seeded, forward-mode
+blueprint skeleton, bibliography. Linear-algebra infrastructure
+(3–10): `EdgeSetRowIndependent`; basis-pick
+`exists_edgeSetRowIndependent_basis_dim_two` via the dual bridge;
+`TrivialMotions.lean` with d-general translation/rotation submodules,
+the unconditional `trivialMotions_le_ker`, the d-general finrank
+lower bound via skew-sum + affine-spanning; rank upper and lower
+bounds for `G.RigidityMap p`. Commit 10 lifted everything in this
+group to d-general statements, retiring the d=2 corollary surface
+(see *Design pattern established*). Analysis leaf (11, 17):
+affinely-spanning rigid placement via moment-curve perturbation;
+commit 11 shipped dim-2; commit 17 lifted to d-general via
+matrix-determinant route. Four mirrors landed: `Pi.basisFun_dualBasis`
+and `LinearMap.range_dualMap_eq_span_image_dualBasis` (13);
+`Matrix.det_powerDifferences` (16). Two cleanup/golf passes:
+`elemSkewMap_ofLp_inr_apply` cross-term lemma (14); TACTICS § 1
+grind-default golf on `TrivialMotions.lean` (15). See `git log
+--oneline --grep='phase6'` for commit-level detail.
 
 **Encoding choice rationale (`I : Set G.edgeSet`).** The index type
 sits inside `G.edgeSet`, matching the blueprint's "$I \subseteq E(G)$".
@@ -363,118 +173,19 @@ not `Set G.edgeSet`, so the assembly proof will transport via
 than carry it through the basis lemma + sparsity lemma + every
 intermediate API.
 
-**Pending Lean-simplification pass (before or alongside the sparsity
-work).** A session-start blueprint↔Lean review flagged three points
-where the Lean is more involved than the blueprint prose suggests.
-Per the project rule (`blueprint/CLAUDE.md` *Proof verbosity*), the
-first response is to make the Lean as painless as the math — better
-proof strategy, upstreamable helper, sharper mathlib tactic /
-proof-automation use — and only on failure to add a prose aside.
-Tasks, ordered by severity (heaviest first):
+**Lean-simplification pass — resolved.** A session-start
+blueprint↔Lean review flagged four points where the Lean was more
+involved than the blueprint prose suggested. All four landed: (1)
+the dim-2 AI ↔ det reindex via `finSuccAboveEquiv` +
+`linearIndependent_equiv` (later subsumed by task 4); (2) the
+basis-pick "small dual bridge" collapsed to `LinearMap.ltoFun` (commits
+12–13); (3) the `trivialMotionFamily_linearIndependent` cross-term
+case-split hoisted to `elemSkewMap_ofLp_inr_apply` (commit 14); (4)
+the d-general lift of the analysis leaf (commits 16–17). Per-task
+detail preserved in FRICTION resolved entries and commit messages.
 
-1. ~~**`exists_affinelySpanning_rigid_placement_two` — AffineIndependent
-   $\Leftrightarrow$ nonzero $2\times 2$ det elided.**~~ **Substantially
-   resolved** (commit `48ee391`) via mathlib's `finSuccAboveEquiv` +
-   `linearIndependent_equiv` (FRICTION *AffineIndependent ↔
-   LinearIndependent reindex* now [resolved]). Two remaining
-   sub-candidates — mirror `linearIndependent_pair_of_det_ne_zero`,
-   inline the eight `set` scalars — are deliberately deferred in
-   favour of task 4 (the d-general lift subsumes both: the helper is
-   superseded by `Matrix.linearIndependent_rows_of_det_ne_zero` and
-   the scalars dissolve into `Matrix.det (M_0 + t · M_1)`).
-
-2. ~~**`exists_edgeSetRowIndependent_basis_dim_two` — "small dual
-   bridge" isn't small.**~~ **Resolved** (commits 12 and 13). The
-   ~60-line bridge dropped to ~25 lines via `LinearMap.ltoFun`
-   replacing the private `dualToFunₗ` scaffold, a tightened
-   `span_range_rigidityRow` proof, and blueprint promotion of
-   `rigidityRow` to a named concept. The matrix-level
-   `Matrix.rank_transpose` alternative was assessed and declined.
-   Two upstream-eligible lemmas (`Pi.basisFun_dualBasis`,
-   `LinearMap.range_dualMap_eq_span_image_dualBasis`) mirrored under
-   `Mathlib/LinearAlgebra/Dual/Basis.lean`. See commit-12 / commit-13
-   *Done* entries.
-
-3. ~~**`trivialMotionFamily_linearIndependent` — "cross-terms vanish"
-   hides a 30-line case-split.**~~ **Resolved** (commit 14). Candidate
-   2 (hoist a named lemma) won outright. New
-   `elemSkewMap_ofLp_inr_apply` (~33 lines) captures the
-   cross-term-vanishing fact directly; the rotation branch of the
-   LI proof collapses from ~50 lines to ~14 lines via
-   `simp_rw [elemSkewMap_ofLp_inr_apply ...]` +
-   `Finset.sum_ite_eq'`. The math now reads as math at both levels:
-   the helper's docstring spells out the
-   `i.val < s.1.val < i.val` contradiction once, and the LI proof
-   reads "apply the cross-term lemma, then `sum_ite_eq'`
-   collapses." See commit-14 *Done* entry.
-
-4. **D-general lift of `exists_affinelySpanning_rigid_placement_two`**
-   (promoted from *Deferred follow-up*). *In progress.* The blueprint's
-   "the determinant is a polynomial in $t$ whose leading coefficient is
-   the Vandermonde determinant" maps clause-for-clause to a clean
-   matrix-level proof at d-general, but our dim-2 specialization
-   expands it by hand and accumulates the bookkeeping noted in task 1.
-   **Matrix reframing.** The eight scalars $A_0, A_1, B_0, B_1, X, Y, U, Z$
-   are entries of two $2\times 2$ matrices:
-   - $M_0$ rows: $p_0(b) - p_0(a)$ and $p_0(c) - p_0(a)$ (constant offset).
-   - $M_1$ rows: $w(b) - w(a)$ and $w(c) - w(a)$ (perturbation direction).
-
-   Then $\det(M_0 + t \cdot M_1) \in \R[t]$ has degree $\le 2$ and its
-   leading coefficient is $\det M_1$. At dim-2, $\det M_1$ is the
-   Vandermonde-difference determinant on $(\phi a, \phi b, \phi c)$,
-   factoring as $(\phi b - \phi a)(\phi c - \phi a)(\phi c - \phi b)$;
-   at d-general, it is the full $d \times d$ Vandermonde-difference
-   determinant on $(\phi v_0, \ldots, \phi v_d)$, factoring as
-   $\prod_{i < j} (\phi v_j - \phi v_i)$ by `Matrix.det_vandermonde`.
-
-   **API needed — status snapshot (commit 16):**
-   - ~~**`det(M_0 + t \cdot M_1)` as a polynomial in $t$**~~. *Resolved*:
-     mathlib already ships this under
-     `Mathlib/LinearAlgebra/Matrix/Polynomial.lean` —
-     `natDegree_det_X_add_C_le` gives `natDegree ≤ Fintype.card n`, and
-     `coeff_det_X_add_C_zero` / `coeff_det_X_add_C_card` give the `t^0`
-     / `t^n` coefficients. The polynomial is
-     `(X • A.map C + B.map C).det : R[X]`; eval at `t` recovers
-     `(t • A + B).det` via `RingHom.map_det` on `Polynomial.evalRingHom`
-     (one-liner at the call site, no mirror needed).
-   - ~~**Vandermonde-difference factoring**~~. *Resolved* (this commit):
-     `Matrix.det_powerDifferences` under
-     `Mathlib/LinearAlgebra/Vandermonde.lean`.
-   - **AffineIndependent ↔ nonzero det of difference matrix** at
-     d-general: route through `affineIndependent_iff_linearIndependent_vsub`
-     + `Matrix.linearIndependent_rows_of_det_ne_zero` +
-     `WithLp.linearEquiv` to bridge `EuclideanSpace ↔ Fin d → ℝ`.
-     ~15 LoC. *Pending* — likely the next session's first piece.
-
-   **What dissolves at d-general:**
-   - The eight scratch scalars (absorbed into `M_0`, `M_1`).
-   - The private helper `linearIndependent_pair_of_det_ne_zero`
-     (superseded by `Matrix.linearIndependent_rows_of_det_ne_zero` +
-     bridge).
-   - The private helper `finite_zeros_quadratic` (superseded by
-     direct use of `Polynomial.finite_setOf_isRoot` on the degree-$d$
-     polynomial built from `coeff_det_X_add_C_card`).
-   - The hand-rolled `ring` factoring of $\gamma$ (replaced by
-     `Matrix.det_powerDifferences`).
-   - The intermediate `have hu0, hu1, hv0, hv1` decompositions
-     (absorbed into the matrix-of-differences definition).
-
-**Bar for each task:** try the candidate fixes in order; commit the
-fix that lands. If all candidates fail for a given point, file a
-FRICTION entry naming the blocker and add the blueprint aside.
-
-**Sequencing.** Task 3 is independent of task 4 and may go in either
-order, including before the sparsity lemma. Task 4 (d-general lift,
-likely 2–3 sessions) subsumes the residual task-1 cleanup work; do
-**not** inline the eight scalars or mirror the dim-2 private helpers
-before it lands. Task 4 itself can interleave with or follow the
-sparsity lemma; sparsity consumes the *existence* of the affinely-
-spanning placement, not its proof internals.
-
-**Future polish (low-priority, not blocking).** Two cleanup
-opportunities surfaced during the commit-15 TACTICS § 1 golf pass
-on `TrivialMotions.lean`; both are deliberately deferred behind the
-sparsity lemma and task 4:
+**Future polish (low-priority, not blocking).** Cleanup opportunities
+deferred behind the sparsity lemma:
 
 - *Project-wide grind-default sweep.* TACTICS § 1's "default to
   `grind` for closing `simp`/`omega`/`linarith`" rule landed (in
@@ -486,8 +197,8 @@ sparsity lemma and task 4:
   `omega` / `simp` / `simp; ring` / `linarith` closers, then
   `lean_multi_attempt` with `["grind", "grind only", <current>]`
   at each, and apply when grind succeeds and the current tactic
-  is multi-line. Cost: ~1 session for a thorough pass; risk: low
-  (every change is verified by `lake build` and `lake lint`).
+  is multi-line. Cost: ~1 session; risk: low (every change is
+  verified by `lake build` and `lake lint`).
 - *Mathlib gap: `LinearMap.eq_zero_iff_eqOn_spanning`.*
   `trivialMotionFamily_linearIndependent`'s `h_S_zero` block goes
   `LinearMap.ext` → `LinearMap.eqOn_span` → close on generators,
@@ -497,13 +208,33 @@ sparsity lemma and task 4:
   ~10-line block to ~3 lines. Likely already exists upstream
   under a different name (`Submodule.eq_top_iff_…` / `LinearMap.ext_on`);
   worth a `lean_loogle` search before mirroring.
+- *Mathlib mirror: `Polynomial.eval_det_X_smul_add`.* The d-general
+  analysis-leaf proof (commit 17) has an ~10-line `hP_eval` block
+  showing `((X • A.map C + B.map C).det).eval t = (t • A + B).det`
+  via `RingHom.map_det` on `Polynomial.evalRingHom t` plus a
+  `congr 1; ext i j; simp only [...]` cleanup over 9 simp lemmas.
+  This is a clean upstream-eligible companion to
+  `Polynomial.coeff_det_X_add_C_card` / `natDegree_det_X_add_C_le`
+  (`Mathlib/LinearAlgebra/Matrix/Polynomial.lean`); mirroring it
+  under `CombinatorialRigidity/Mathlib/LinearAlgebra/Matrix/Polynomial.lean`
+  would shrink `hP_eval` from ~10 lines to a one-liner.
+- *Project-internal helper: `Set.exists_injective_fin_of_le_ncard`.*
+  The assembly step in `exists_affinelySpanning_rigid_placement`
+  spends ~12 lines building an injective `q : Fin (d + 1) → V`
+  with range in `S` from `d + 1 ≤ S.ncard`, via `Set.exists_subset_card_eq`
+  → `Set.Finite.fintype` → `Set.ncard_eq_toFinset_card'` /
+  `Set.toFinset_card` → `Fintype.equivFinOfCardEq`. A named project
+  helper (or upstream mirror) collapsing this to one line would
+  cut the assembly step by ~10 lines; likely useful for the
+  sparsity lemma's "pick `d + 1` distinct elements of `s`" steps too.
 
 **Next session — the sparsity-side lemma
 `lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning
-placement existence landed (commit 11), the remaining substantial
-work is the combinatorial sparsity argument: for `I ⊆ G.edgeSet`
-row-independent at `p` (where `p` affinely spans on every size-`≥ 3`
-subset, as supplied by commit 11), show the spanning subgraph
+placement existence landed (commits 11 and 17, the latter generalising
+to dimension `d`), the remaining substantial work is the combinatorial
+sparsity argument: for `I ⊆ G.edgeSet` row-independent at `p` (where
+`p` affinely spans on every size-`≥ 3` subset, as supplied by
+`exists_affinelySpanning_rigid_placement` at `d = 2`), show the spanning subgraph
 `H = fromEdgeSet (Subtype.val '' I)` is `(2, 3)`-sparse. The argument
 splits by `|s|`:
 
@@ -524,24 +255,17 @@ restriction linear map and the precomposition factoring trick.
 
 After the sparsity lemma, the assembly theorem
 `thm:isGenericallyRigid-exists-isLaman-le` combines it with the
-basis-pick (commit 6) and affinely-spanning placement (commit 11)
-to close the iff. The sparsity-side lemma is the last step with
-genuine combinatorial content; the assembly is mechanical glue.
-
-**Phase 6 completion remains uncertain in scope.** The analysis side
-is closed (commit 11), the linear-algebra side is closed (commits
-6–10); the remaining substantive work is the sparsity lemma plus the
-mechanical assembly. Reassess scope once the sparsity lemma's first
-attempt lands.
+basis-pick and affinely-spanning placement to close the iff. Sparsity
+is the last step with genuine combinatorial content; assembly is
+mechanical glue. Reassess phase scope once sparsity's first attempt
+lands.
 
 **Design pattern established (commit 10).** When a Phase 6 helper has
 a d-general statement that holds verbatim with no extra hypotheses
 beyond what the d=2 critical path already provides, ship it
 d-general and skip the d=2 corollary. The `rfl` reduction
 `2 * (2 + 1) / 2 → 3` on `Nat` literals means callers consume
-d-general lemmas at `d = 2` with zero specialisation ceremony. The
-dim-2-shaped statements that *do* deserve a dedicated d=2 surface are
+d-general lemmas at `d = 2` with zero specialisation ceremony.
+Dim-2-shaped statements that *do* deserve a dedicated d=2 surface are
 those where the dim-2 conclusion is structurally specific (e.g.,
 `exists_edgeSetRowIndependent_basis_dim_two`'s `|I| = 2 * #V - 3`).
-Apply this rule going forward when adding helpers for the remaining
-two leaves.

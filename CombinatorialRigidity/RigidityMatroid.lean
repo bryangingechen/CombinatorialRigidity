@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
+import CombinatorialRigidity.Mathlib.LinearAlgebra.Vandermonde
 import CombinatorialRigidity.TrivialMotions
 import Mathlib.Algebra.Polynomial.Roots
 import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import Mathlib.LinearAlgebra.Dimension.OrzechProperty
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
+import Mathlib.LinearAlgebra.Matrix.Polynomial
 
 /-!
 # The rigidity matroid
@@ -196,83 +198,60 @@ theorem exists_edgeSetRowIndependent_basis_dim_two [Fintype V] {G : SimpleGraph 
   refine ⟨I, hI_card, ?_⟩
   exact (edgeSetRowIndependent_iff_linearIndepOn_rigidityRow G p I).mpr (hb_li.mono hI_sub)
 
-/-! ### Affinely-spanning rigid placement, dim 2
+/-! ### Affinely-spanning rigid placement, d-general
 
 The Phase 6 critical path needs a placement that is both infinitesimally rigid for `G` *and*
-affinely spanning on every size-`≥ 3` subset. Openness of infinitesimal rigidity
+affinely spanning on every size-`≥ d + 1` subset. Openness of infinitesimal rigidity
 (`IsInfinitesimallyRigid.eventually`) supplies the IR half; for the affinely-spanning half we
-perturb the IR witness along a *Vandermonde* direction `w v = (φ v, (φ v)²)` (with
-`φ : V → ℝ` injective via `Fintype.equivFin`). For each ordered triple of distinct vertices the
-collinearity determinant becomes a quadratic in the perturbation parameter `t`, whose leading
-coefficient `(φ b − φ a)(φ c − φ a)(φ c − φ b)` is nonzero by injectivity. Each per-triple bad
-set is therefore finite, the finite union of bad sets is finite, and any open interval avoids it.
+perturb the IR witness along the *moment curve* `w v = (φ(v)^1, …, φ(v)^d)` (with `φ : V → ℝ`
+injective via `Fintype.equivFin`). For each ordered `(d+1)`-tuple of distinct vertices, the
+affine-dependence determinant of the perturbed difference matrix is a polynomial in `t` of
+degree at most `d`, whose top coefficient is the Vandermonde-difference determinant
+`∏_{0 ≤ i < j ≤ d} (φ vⱼ − φ vᵢ)`, nonzero by injectivity. Each per-tuple bad set is therefore
+finite (`Polynomial.finite_setOf_isRoot`), the finite union of bad sets is finite, and any open
+interval avoids it. -/
 
-The lemma ships dim-2-specific; a d-general lift via the moment curve plus
-`Matrix.det_vandermonde` is a deferred follow-up (see `notes/Phase6.md`). -/
+/-- **Affine independence from a nonzero difference-matrix determinant, d-general.** If `q : Fin
+(d + 1) → EuclideanSpace ℝ (Fin d)` and the `d × d` matrix of differences `q i.succ - q 0` has
+nonzero determinant, then `q` is affinely independent.
 
-/-- **A real quadratic with nonzero leading coefficient has a finite zero set.** Cast via
-`Polynomial ℝ` and `Polynomial.finite_setOf_isRoot`. Local helper for the affinely-spanning rigid
-placement existence: each triple's collinearity equation is a quadratic in the perturbation
-parameter `t` with leading coefficient `(φ b − φ a)(φ c − φ a)(φ c − φ b) ≠ 0`. -/
-private lemma finite_zeros_quadratic {γ β α : ℝ} (hγ : γ ≠ 0) :
-    {t : ℝ | γ * t ^ 2 + β * t + α = 0}.Finite := by
-  classical
-  let p : Polynomial ℝ :=
-    Polynomial.C α + Polynomial.C β * Polynomial.X + Polynomial.C γ * Polynomial.X ^ 2
-  have hp_eval : ∀ t : ℝ, p.eval t = γ * t ^ 2 + β * t + α := by
-    intro t; simp [p]; ring
-  have hp_ne : p ≠ 0 := by
-    intro h
-    apply hγ
-    have h2 : p.coeff 2 = γ := by simp [p]
-    rw [h, Polynomial.coeff_zero] at h2
-    exact h2.symm
-  have h_eq : {t : ℝ | γ * t ^ 2 + β * t + α = 0} = {t | p.IsRoot t} := by
-    ext t; simp [Polynomial.IsRoot, hp_eval]
-  rw [h_eq]
-  exact Polynomial.finite_setOf_isRoot hp_ne
+Proof: row-LI of the matrix in `Fin d → ℝ` follows from
+`Matrix.linearIndependent_rows_of_det_ne_zero`; transport along `WithLp.linearEquiv` to LI of the
+EuclideanSpace differences; conclude `AffineIndependent` via
+`affineIndependent_iff_linearIndependent_vsub` and the reindex
+`finSuccAboveEquiv (0 : Fin (d + 1))`. -/
+private lemma affineIndependent_of_difference_det_ne_zero {d : ℕ}
+    (q : Fin (d + 1) → EuclideanSpace ℝ (Fin d))
+    (h : (Matrix.of fun i j : Fin d => q i.succ j - q 0 j).det ≠ 0) :
+    AffineIndependent ℝ q := by
+  have h_LI_rows : LinearIndependent ℝ
+      (fun i : Fin d => Matrix.of (fun i' j : Fin d => q i'.succ j - q 0 j) i) :=
+    Matrix.linearIndependent_rows_of_det_ne_zero h
+  rw [affineIndependent_iff_linearIndependent_vsub ℝ q 0,
+    ← linearIndependent_equiv (finSuccAboveEquiv 0),
+    ← (WithLp.linearEquiv 2 ℝ (Fin d → ℝ)).toLinearMap.linearIndependent_iff
+      (LinearEquiv.ker _)]
+  convert h_LI_rows using 1
 
-/-- **Linear independence from a nonzero 2×2 determinant**, dim 2 form. If
-`u 0 · v 1 ≠ u 1 · v 0` for `u, v : EuclideanSpace ℝ (Fin 2)`, then `![u, v]` is linearly
-independent over `ℝ`.
+/-- **Affinely-spanning rigid placement, d-general.** If `G` is generically rigid in dimension `d`
+on a finite vertex type, there exists a placement that is infinitesimally rigid *and* affinely
+spans `EuclideanSpace ℝ (Fin d)` when restricted to every size-`≥ d + 1` subset of `V`.
 
-Local helper used inside `exists_affinelySpanning_rigid_placement_two` to drive the per-triple
-finiteness via `finite_zeros_quadratic`. -/
-private lemma linearIndependent_pair_of_det_ne_zero
-    {u v : EuclideanSpace ℝ (Fin 2)} (h : u 0 * v 1 - u 1 * v 0 ≠ 0) :
-    LinearIndependent ℝ ![u, v] := by
-  rw [LinearIndependent.pair_iff]
-  intro s t hst
-  -- Apply both sides of `hst : s • u + t • v = 0` at each coordinate.
-  have h_app : ∀ i : Fin 2, s * u i + t * v i = 0 := by
-    intro i
-    have hi : (s • u + t • v) i = (0 : EuclideanSpace ℝ (Fin 2)) i := by rw [hst]
-    simpa using hi
-  have h0 := h_app 0
-  have h1 := h_app 1
-  -- `s · det = 0` and `t · det = 0` by linear combinations of `h0` and `h1`.
-  have h_s_det : s * (u 0 * v 1 - u 1 * v 0) = 0 := by linear_combination v 1 * h0 - v 0 * h1
-  have h_t_det : t * (u 0 * v 1 - u 1 * v 0) = 0 := by linear_combination u 0 * h1 - u 1 * h0
-  refine ⟨?_, ?_⟩
-  · exact (mul_eq_zero.mp h_s_det).resolve_right h
-  · exact (mul_eq_zero.mp h_t_det).resolve_right h
-
-/-- **Affinely-spanning rigid placement, dim 2.** If `G` is generically rigid in dimension 2 on a
-finite vertex type, there exists a placement that is infinitesimally rigid *and* affinely spans
-`EuclideanSpace ℝ (Fin 2)` when restricted to every size-`≥ 3` subset of `V`.
-
-The proof perturbs an infinitesimally rigid witness `p₀` (from `hG`) along a Vandermonde
-direction `w v = (φ v, (φ v)²)` with `φ : V → ℝ` injective. Openness of infinitesimal rigidity
-(`IsInfinitesimallyRigid.eventually`) gives an `ε > 0` such that `p₀ + t • w` is IR for `|t| < ε`.
-For each ordered triple of distinct vertices `(a, b, c)`, the collinearity condition at the
-perturbed placement reduces to a quadratic in `t` with leading coefficient
-`(φ b − φ a) · (φ c − φ a) · (φ c − φ b)`, nonzero by injectivity. The bad-`t` set per triple is
-finite (`finite_zeros_quadratic`); the finite union over triples is finite; and the open interval
-`(0, ε)` is infinite, so it has a point avoiding the bad set. -/
-theorem exists_affinelySpanning_rigid_placement_two [Fintype V] {G : SimpleGraph V}
-    (hG : G.IsGenericallyRigid 2) :
-    ∃ p : Framework V 2, G.IsInfinitesimallyRigid p ∧
-      ∀ S : Set V, 3 ≤ S.ncard →
+The proof perturbs an infinitesimally rigid witness `p₀` along the moment-curve direction
+`w v = (φ(v)^1, …, φ(v)^d)` with `φ : V → ℝ` injective. Openness of infinitesimal rigidity
+(`IsInfinitesimallyRigid.eventually`) gives `ε > 0` such that `p₀ + t • w` is IR for `|t| < ε`.
+For each ordered `(d+1)`-tuple of distinct vertices, the difference-matrix determinant
+`det(M₀ + t · M₁)` is a polynomial in `t` of degree at most `d`
+(`Polynomial.natDegree_det_X_add_C_le`) whose `t^d` coefficient is `det M₁`
+(`Polynomial.coeff_det_X_add_C_card`), the Vandermonde-difference determinant
+`∏_{0 ≤ i < j ≤ d} (φ vⱼ − φ vᵢ)` (`Matrix.det_powerDifferences`), nonzero by injectivity. The
+bad-`t` set per tuple is therefore finite (`Polynomial.finite_setOf_isRoot`); the finite union over
+tuples is finite; and the open interval `(0, ε)` is infinite, so it has a point avoiding the bad
+set. -/
+theorem exists_affinelySpanning_rigid_placement [Fintype V] {d : ℕ} {G : SimpleGraph V}
+    (hG : G.IsGenericallyRigid d) :
+    ∃ p : Framework V d, G.IsInfinitesimallyRigid p ∧
+      ∀ S : Set V, d + 1 ≤ S.ncard →
         affineSpan ℝ (Set.range (fun v : S => p v.val)) = ⊤ := by
   classical
   obtain ⟨p₀, hp₀⟩ := hG
@@ -285,114 +264,100 @@ theorem exists_affinelySpanning_rigid_placement_two [Fintype V] {G : SimpleGraph
     apply Fin.ext
     have h' : ((ψ a).val : ℝ) = ((ψ b).val : ℝ) := h
     exact_mod_cast h'
-  -- Step 2: Vandermonde direction `w v = (φ v, (φ v)²)`.
-  let w : V → EuclideanSpace ℝ (Fin 2) :=
-    fun v => WithLp.toLp 2 (![φ v, (φ v) ^ 2] : Fin 2 → ℝ)
-  have hw0 : ∀ v : V, (w v) 0 = φ v := fun _ => rfl
-  have hw1 : ∀ v : V, (w v) 1 = (φ v) ^ 2 := fun _ => rfl
+  -- Step 2: moment-curve direction `w v = (φ(v)^1, …, φ(v)^d)`.
+  let w : V → EuclideanSpace ℝ (Fin d) :=
+    fun v => WithLp.toLp 2 (fun j : Fin d => (φ v) ^ (j.val + 1))
+  have hw : ∀ (v : V) (j : Fin d), (w v) j = (φ v) ^ (j.val + 1) := fun _ _ => rfl
   -- Step 3: perturbed placement `pt t = p₀ + t • w`.
-  let pt : ℝ → Framework V 2 := fun t v => p₀ v + t • w v
+  let pt : ℝ → Framework V d := fun t v => p₀ v + t • w v
   have h_pt_zero : pt 0 = p₀ := by ext v i; simp [pt]
   have h_pt_cont : Continuous pt := by
     refine continuous_pi fun v => ?_
     exact continuous_const.add (continuous_id'.smul continuous_const)
   -- Step 4: pull `IsInfinitesimallyRigid.eventually` back to `t`.
   have h_event_IR : ∀ᶠ t in 𝓝 (0 : ℝ), G.IsInfinitesimallyRigid (pt t) := by
-    have h := hp₀.eventually
     have h_tendsto : Filter.Tendsto pt (𝓝 0) (𝓝 p₀) :=
       h_pt_zero ▸ h_pt_cont.tendsto 0
-    exact h_tendsto.eventually h
+    exact h_tendsto.eventually hp₀.eventually
   rw [Metric.eventually_nhds_iff] at h_event_IR
   obtain ⟨ε, hε_pos, hε_ir⟩ := h_event_IR
-  -- Step 5: for each ordered triple of distinct vertices, the per-triple bad-`t` set is finite.
-  have h_per_triple : ∀ a b c : V, a ≠ b → a ≠ c → b ≠ c →
-      {t : ℝ | ¬ AffineIndependent ℝ ![pt t a, pt t b, pt t c]}.Finite := by
-    intros a b c hab hac hbc
-    -- Coefficients of the collinearity quadratic in `t`.
-    set X := φ b - φ a with hX_def
-    set Y := φ c - φ a with hY_def
-    set U := (φ b) ^ 2 - (φ a) ^ 2 with hU_def
-    set Z := (φ c) ^ 2 - (φ a) ^ 2 with hZ_def
-    set A0 := (p₀ b) 0 - (p₀ a) 0 with hA0_def
-    set A1 := (p₀ b) 1 - (p₀ a) 1 with hA1_def
-    set B0 := (p₀ c) 0 - (p₀ a) 0 with hB0_def
-    set B1 := (p₀ c) 1 - (p₀ a) 1 with hB1_def
-    set γ := X * Z - U * Y with hγ_def
-    set β := A0 * Z + X * B1 - A1 * Y - U * B0 with hβ_def
-    set α := A0 * B1 - A1 * B0 with hα_def
-    -- Leading coefficient `γ = (φ b − φ a) · (φ c − φ a) · (φ c − φ b)` is nonzero.
-    have h_γ_factor : γ = (φ b - φ a) * (φ c - φ a) * (φ c - φ b) := by
-      simp only [hγ_def, hX_def, hY_def, hU_def, hZ_def]; ring
-    have h_γ_ne : γ ≠ 0 := by
-      rw [h_γ_factor]
-      refine mul_ne_zero (mul_ne_zero ?_ ?_) ?_
-      · intro h
-        have : φ a = φ b := by linarith
-        exact hab (hφ_inj this)
-      · intro h
-        have : φ a = φ c := by linarith
-        exact hac (hφ_inj this)
-      · intro h
-        have : φ b = φ c := by linarith
-        exact hbc (hφ_inj this)
-    -- The bad set equals the zero set of the quadratic.
-    apply Set.Finite.subset (finite_zeros_quadratic (γ := γ) (β := β) (α := α) h_γ_ne)
-    intro t ht
-    simp only [Set.mem_setOf_eq] at ht
-    -- Express `¬ AI` in coordinates. AI ⟺ LI of differences ⟸ det ≠ 0.
-    -- Contrapositive: det ≠ 0 ⇒ AI, hence ¬ AI ⇒ det = 0.
-    -- Differences at `pt t`.
-    set u := pt t b - pt t a with hu_def
-    set v := pt t c - pt t a with hv_def
-    have hu0 : u 0 = A0 + t * X := by
-      simp only [hu_def, hA0_def, hX_def, pt, PiLp.sub_apply, PiLp.add_apply, PiLp.smul_apply,
-        smul_eq_mul, hw0]
+  -- Coordinate identity: `(pt t v) j = (p₀ v) j + t * φ(v)^(j+1)`.
+  have h_pt_coord : ∀ (t : ℝ) (v : V) (j : Fin d),
+      (pt t v) j = (p₀ v) j + t * (φ v) ^ (j.val + 1) := by
+    intros t v j
+    simp [pt, hw, PiLp.add_apply, PiLp.smul_apply, smul_eq_mul]
+  -- Step 5: for each injective `q : Fin (d + 1) → V`, the per-tuple bad-`t` set is finite.
+  have h_per_tuple : ∀ q : Fin (d + 1) → V, Function.Injective q →
+      {t : ℝ | ¬ AffineIndependent ℝ (fun i : Fin (d + 1) => pt t (q i))}.Finite := by
+    intros q hq_inj
+    -- Difference matrices: `M₀` from `p₀`, `M₁` from the moment curve.
+    set M₀ : Matrix (Fin d) (Fin d) ℝ :=
+      Matrix.of (fun i j => p₀ (q i.succ) j - p₀ (q 0) j) with hM₀_def
+    set M₁ : Matrix (Fin d) (Fin d) ℝ :=
+      Matrix.of (fun i j => (φ (q i.succ)) ^ (j.val + 1) - (φ (q 0)) ^ (j.val + 1))
+      with hM₁_def
+    -- `det M₁ = ∏_{i<j} (φ(qⱼ) - φ(qᵢ)) ≠ 0` by injectivity of `φ ∘ q`.
+    have h_det_M₁_ne : M₁.det ≠ 0 := by
+      rw [hM₁_def, Matrix.det_powerDifferences (fun k : Fin (d + 1) => φ (q k))]
+      refine Finset.prod_ne_zero_iff.mpr (fun i _ => Finset.prod_ne_zero_iff.mpr ?_)
+      intros j hij
+      rw [Finset.mem_Ioi] at hij
+      refine sub_ne_zero.mpr ?_
+      intro h
+      exact (Fin.ne_of_lt hij).symm (hq_inj (hφ_inj h))
+    -- The polynomial `P(X) = det (X • M₁.map C + M₀.map C) ∈ ℝ[X]`.
+    set P : Polynomial ℝ :=
+      ((Polynomial.X : Polynomial ℝ) • M₁.map Polynomial.C + M₀.map Polynomial.C).det
+      with hP_def
+    -- `coeff P d = det M₁ ≠ 0`, so `P ≠ 0`.
+    have hP_ne : P ≠ 0 := by
+      intro h
+      apply h_det_M₁_ne
+      have := Polynomial.coeff_det_X_add_C_card M₁ M₀
+      rw [show Fintype.card (Fin d) = d from Fintype.card_fin d, ← hP_def, h] at this
+      simpa using this.symm
+    -- `P.eval t = (t • M₁ + M₀).det` via `RingHom.map_det` on `evalRingHom t`.
+    have hP_eval : ∀ t : ℝ, P.eval t = (t • M₁ + M₀).det := by
+      intro t
+      have h_det := (Polynomial.evalRingHom t).map_det
+        ((Polynomial.X : Polynomial ℝ) • M₁.map Polynomial.C + M₀.map Polynomial.C)
+      change (Polynomial.evalRingHom t) P = _
+      rw [hP_def, h_det]
+      congr 1
+      ext i j
+      simp only [RingHom.mapMatrix_apply, Polynomial.coe_evalRingHom, Matrix.map_apply,
+        Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Polynomial.eval_add,
+        Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C]
+    -- The rows of `t • M₁ + M₀` are `(pt t (q i.succ) - pt t (q 0))` coordinatewise.
+    have h_rows : ∀ t : ℝ,
+        (t • M₁ + M₀ : Matrix (Fin d) (Fin d) ℝ) =
+        Matrix.of (fun i j : Fin d => (pt t (q i.succ)) j - (pt t (q 0)) j) := by
+      intro t
+      ext i j
+      simp [Matrix.add_apply, smul_eq_mul, hM₀_def, hM₁_def, h_pt_coord]
       ring
-    have hu1 : u 1 = A1 + t * U := by
-      simp only [hu_def, hA1_def, hU_def, pt, PiLp.sub_apply, PiLp.add_apply, PiLp.smul_apply,
-        smul_eq_mul, hw1]
-      ring
-    have hv0 : v 0 = B0 + t * Y := by
-      simp only [hv_def, hB0_def, hY_def, pt, PiLp.sub_apply, PiLp.add_apply, PiLp.smul_apply,
-        smul_eq_mul, hw0]
-      ring
-    have hv1 : v 1 = B1 + t * Z := by
-      simp only [hv_def, hB1_def, hZ_def, pt, PiLp.sub_apply, PiLp.add_apply, PiLp.smul_apply,
-        smul_eq_mul, hw1]
-      ring
-    -- Determinant equation in `t`.
-    have h_det_eq : u 0 * v 1 - u 1 * v 0 = γ * t ^ 2 + β * t + α := by
-      rw [hu0, hu1, hv0, hv1, hγ_def, hβ_def, hα_def]; ring
-    -- Contradiction: assume the determinant is nonzero, derive AI, contradict `ht`.
-    by_contra h_quad_ne
-    apply ht
-    rw [affineIndependent_iff_linearIndependent_vsub ℝ ![pt t a, pt t b, pt t c] 0,
-      ← linearIndependent_equiv (finSuccAboveEquiv (0 : Fin 3))]
-    -- Composition with `finSuccAboveEquiv 0 : Fin 2 ≃ {x : Fin 3 // x ≠ 0}` reduces the
-    -- difference family to `![u, v]`; nonzero `2×2` det closes LI of the pair.
-    have h_LI_pair : LinearIndependent ℝ ![u, v] :=
-      linearIndependent_pair_of_det_ne_zero (h_det_eq ▸ h_quad_ne)
-    convert h_LI_pair using 1
-    ext i
-    fin_cases i <;> simp [finSuccAboveEquiv_apply, hu_def, hv_def]
-  -- Step 6: assemble the global bad set as a finite union.
-  let triples : Finset (V × V × V) :=
-    (Finset.univ : Finset (V × V × V)).filter
-      (fun ⟨a, b, c⟩ => a ≠ b ∧ a ≠ c ∧ b ≠ c)
+    -- The bad-`t` set is contained in the zero set of `P`.
+    have h_bad_sub : {t : ℝ | ¬ AffineIndependent ℝ (fun i => pt t (q i))} ⊆
+        {t : ℝ | P.IsRoot t} := by
+      intros t ht
+      simp only [Set.mem_setOf_eq, Polynomial.IsRoot, hP_eval] at *
+      by_contra h_det_ne
+      exact ht (affineIndependent_of_difference_det_ne_zero (fun i => pt t (q i))
+        (by rw [← h_rows t]; exact h_det_ne))
+    exact (Polynomial.finite_setOf_isRoot hP_ne).subset h_bad_sub
+  -- Step 6: assemble the global bad set as a finite union over injective `(d+1)`-tuples.
+  let tuples : Finset (Fin (d + 1) → V) :=
+    (Finset.univ : Finset (Fin (d + 1) → V)).filter Function.Injective
   let bad : Set ℝ :=
-    ⋃ tr ∈ triples,
-      {t : ℝ | ¬ AffineIndependent ℝ ![pt t tr.1, pt t tr.2.1, pt t tr.2.2]}
+    ⋃ q ∈ tuples, {t : ℝ | ¬ AffineIndependent ℝ (fun i : Fin (d + 1) => pt t (q i))}
   have h_bad_finite : bad.Finite := by
-    apply (Finset.finite_toSet triples).biUnion
-    rintro ⟨a, b, c⟩ htr
-    have : a ≠ b ∧ a ≠ c ∧ b ≠ c := by
-      have := Finset.mem_filter.mp (by exact htr : (a, b, c) ∈ triples)
-      exact this.2
-    exact h_per_triple a b c this.1 this.2.1 this.2.2
+    apply (Finset.finite_toSet tuples).biUnion
+    intros q hq
+    rw [Finset.mem_coe, Finset.mem_filter] at hq
+    exact h_per_tuple q hq.2
   -- Step 7: pick `t ∈ (0, ε) \ bad`.
-  have h_nonempty : ((Set.Ioo (0 : ℝ) ε) \ bad).Nonempty := by
-    apply Set.Infinite.nonempty
-    exact (Set.Ioo_infinite hε_pos).diff h_bad_finite
+  have h_nonempty : ((Set.Ioo (0 : ℝ) ε) \ bad).Nonempty :=
+    ((Set.Ioo_infinite hε_pos).diff h_bad_finite).nonempty
   obtain ⟨t, ⟨ht_pos, ht_lt⟩, ht_good⟩ := h_nonempty
   -- Step 8: assemble the witness.
   refine ⟨pt t, ?_, ?_⟩
@@ -400,36 +365,40 @@ theorem exists_affinelySpanning_rigid_placement_two [Fintype V] {G : SimpleGraph
     apply hε_ir
     rw [Real.dist_eq, sub_zero, abs_of_pos ht_pos]
     exact ht_lt
-  · -- Affinely spans on every size-`≥ 3` subset.
+  · -- Affinely spans on every size-`≥ d + 1` subset.
     intros S hS
-    -- Pick 3 distinct elements in `S`: pull a 3-subset out then unpack.
+    -- Pick `d + 1` distinct elements in `S` as an injective `q : Fin (d + 1) → V`.
     obtain ⟨T, hTS, hT_card⟩ := Set.exists_subset_card_eq hS
-    rcases Set.ncard_eq_three.mp hT_card with ⟨a, b, c, hab, hac, hbc, rfl⟩
-    have ha_S : a ∈ S := hTS (by simp)
-    have hb_S : b ∈ S := hTS (by simp)
-    have hc_S : c ∈ S := hTS (by simp)
-    -- The triple at `pt t` is affinely independent.
-    have h_AI : AffineIndependent ℝ ![pt t a, pt t b, pt t c] := by
+    have hT_finite : T.Finite :=
+      Set.finite_of_ncard_ne_zero (by rw [hT_card]; omega)
+    haveI : Fintype T := hT_finite.fintype
+    have hT_card_eq : Fintype.card T = d + 1 := by
+      rw [Set.ncard_eq_toFinset_card', Set.toFinset_card] at hT_card
+      exact hT_card
+    let e : Fin (d + 1) ≃ T := (Fintype.equivFinOfCardEq hT_card_eq).symm
+    let q : Fin (d + 1) → V := fun i => (e i).val
+    have hq_inj : Function.Injective q :=
+      fun i j h => e.injective (Subtype.ext h)
+    have hq_S : ∀ i, q i ∈ S := fun i => hTS (e i).property
+    -- The `(d+1)`-tuple at `pt t` is affinely independent.
+    have h_AI : AffineIndependent ℝ (fun i => pt t (q i)) := by
       by_contra h
       apply ht_good
       simp only [bad, Set.mem_iUnion]
-      refine ⟨⟨a, b, c⟩, ?_, h⟩
-      simp [triples, hab, hac, hbc]
-    -- The affine span of these 3 points is ⊤ in `EuclideanSpace ℝ (Fin 2)`.
-    have h_span_triple : affineSpan ℝ (Set.range ![pt t a, pt t b, pt t c]) = ⊤ := by
+      refine ⟨q, ?_, h⟩
+      simp [tuples, hq_inj]
+    -- The affine span of these `d + 1` points is `⊤` in `EuclideanSpace ℝ (Fin d)`.
+    have h_span_tuple : affineSpan ℝ (Set.range (fun i => pt t (q i))) = ⊤ := by
       rw [h_AI.affineSpan_eq_top_iff_card_eq_finrank_add_one]
-      simp
-    -- The triple is included in the image of `p|_S`.
-    have h_incl : Set.range ![pt t a, pt t b, pt t c] ⊆
+      simp [finrank_euclideanSpace]
+    -- The tuple is included in the image of `p|_S`.
+    have h_incl : Set.range (fun i => pt t (q i)) ⊆
         Set.range (fun v : S => pt t v.val) := by
       rintro _ ⟨i, rfl⟩
-      fin_cases i
-      · exact ⟨⟨a, ha_S⟩, rfl⟩
-      · exact ⟨⟨b, hb_S⟩, rfl⟩
-      · exact ⟨⟨c, hc_S⟩, rfl⟩
-    -- Hence the larger affine span is ⊤.
+      exact ⟨⟨q i, hq_S i⟩, rfl⟩
+    -- Hence the larger affine span is `⊤`.
     apply top_le_iff.mp
-    calc ⊤ = affineSpan ℝ (Set.range ![pt t a, pt t b, pt t c]) := h_span_triple.symm
+    calc ⊤ = affineSpan ℝ (Set.range (fun i => pt t (q i))) := h_span_tuple.symm
       _ ≤ affineSpan ℝ (Set.range (fun v : S => pt t v.val)) :=
           affineSpan_mono ℝ h_incl
 
