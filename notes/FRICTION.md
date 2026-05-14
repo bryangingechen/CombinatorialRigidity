@@ -737,6 +737,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Resolved (project-internal)
 
+### [resolved] `LinearMap.ext` + `LinearMap.eqOn_span` re-deriving what `LinearMap.ext_on` already packages
+- **Where it bit:** `trivialMotionFamily_linearIndependent`'s `h_S_zero` block
+  in `TrivialMotions.lean` (Phase 6).
+- **Friction:** to discharge `S = 0` from "`S` vanishes on `(Set.range p) -ᵥ
+  (Set.range p)`" plus "span of that set is `⊤`" (via the affine-spanning
+  hypothesis), the original proof opened up `LinearMap.ext fun x => …`, then
+  derived `x ∈ Submodule.span ℝ ((Set.range p) -ᵥ (Set.range p))` from
+  `vectorSpan = ⊤` via `← vectorSpan_def`, then closed with
+  `LinearMap.eqOn_span` — a 9-line block.
+- **Resolution:** mathlib already packages exactly this pattern as
+  `LinearMap.ext_on (hv : Submodule.span R s = ⊤) (h : Set.EqOn f g s) : f = g`
+  in `Mathlib/LinearAlgebra/Span/Basic.lean`. The block collapses to 6 lines
+  (derive the `Submodule.span … = ⊤` fact via `← vectorSpan_def`, then
+  `LinearMap.ext_on hvspan ?_` + the generators dispatch). Companion
+  `LinearMap.ext_on_range` handles the `Set.range`-of-a-function shape if
+  ever paired with `vectorSpan_range_eq_span_range_vsub_left` / `_right`.
+- **Status:** resolved (no missing lemma — `LinearMap.ext_on` was on the
+  wrong shelf; `LinearMap.eqOn_span` is the pointwise version, harder to
+  discover).
+
 ### [resolved] Dot notation inside a `Foo.bar`-named theorem resolves to itself, not the parent's `Foo.bar`
 - **Where it bit:** `EdgeSetRowIndependent.mono` in `RigidityMatroid.lean`
   (Phase 6).

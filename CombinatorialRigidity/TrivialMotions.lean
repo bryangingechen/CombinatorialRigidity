@@ -281,14 +281,12 @@ theorem trivialMotionFamily_linearIndependent [Fintype V] {p : Framework V d}
   -- Step 3: `S = 0` as a linear map (vanishes on the vector span of `Set.range p`).
   haveI : Nonempty V := ⟨v₀⟩
   have h_S_zero : S = 0 := by
-    refine LinearMap.ext fun x => ?_
-    have hvspan : vectorSpan ℝ (Set.range p) = ⊤ :=
-      (AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nonempty ℝ _ _
+    have hvspan : Submodule.span ℝ ((Set.range p) -ᵥ (Set.range p)) = ⊤ := by
+      rw [← vectorSpan_def]
+      exact (AffineSubspace.affineSpan_eq_top_iff_vectorSpan_eq_top_of_nonempty ℝ _ _
         (Set.range_nonempty p)).mp hp
-    have hx : x ∈ Submodule.span ℝ ((Set.range p) -ᵥ (Set.range p)) := by
-      rw [← vectorSpan_def, hvspan]; trivial
-    refine LinearMap.eqOn_span (s := (Set.range p) -ᵥ (Set.range p)) (g := 0) ?_ hx
-    rintro y ⟨_, ⟨v, rfl⟩, _, ⟨w, rfl⟩, rfl⟩
+    refine LinearMap.ext_on hvspan ?_
+    rintro _ ⟨_, ⟨v, rfl⟩, _, ⟨w, rfl⟩, rfl⟩
     simpa [vsub_eq_sub] using h_S_diff v w
   -- Step 4: `t = 0`.
   have h_t_zero : t = 0 := by simpa [h_S_zero] using h_combine v₀

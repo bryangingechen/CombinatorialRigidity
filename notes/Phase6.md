@@ -184,7 +184,16 @@ case-split hoisted to `elemSkewMap_ofLp_inr_apply` (commit 14); (4)
 the d-general lift of the analysis leaf (commits 16–17). Per-task
 detail preserved in FRICTION resolved entries and commit messages.
 
-**Future polish (low-priority, not blocking).** Cleanup opportunities
+**Future polish — resolved.** Three of the four originally-deferred
+cleanups landed (see FRICTION resolved/mirrored entries for details):
+the `Polynomial.eval_det_X_add_C` mirror (collapses `hP_eval` to a
+one-liner), the `Set.exists_injective_fin_of_le_ncard` mirror
+(collapses the `q`-construction in the assembly step to one `obtain`,
+and ready to reuse in the upcoming sparsity lemma), and the
+`LinearMap.ext_on` retargeting in `trivialMotionFamily_linearIndependent`
+(no mirror needed — the lemma was already upstream).
+
+**Future polish (low-priority, not blocking).** One cleanup remains
 deferred behind the sparsity lemma:
 
 - *Project-wide grind-default sweep.* TACTICS § 1's "default to
@@ -199,15 +208,7 @@ deferred behind the sparsity lemma:
   at each, and apply when grind succeeds and the current tactic
   is multi-line. Cost: ~1 session; risk: low (every change is
   verified by `lake build` and `lake lint`).
-- *Mathlib gap: `LinearMap.eq_zero_iff_eqOn_spanning`.*
-  `trivialMotionFamily_linearIndependent`'s `h_S_zero` block goes
-  `LinearMap.ext` → `LinearMap.eqOn_span` → close on generators,
-  with an explicit `vectorSpan = ⊤` + `vectorSpan_def` detour.
-  A direct lemma "if `S = 0` on a set `s` with
-  `Submodule.span R s = ⊤`, then `S = 0`" would collapse the
-  ~10-line block to ~3 lines. Likely already exists upstream
-  under a different name (`Submodule.eq_top_iff_…` / `LinearMap.ext_on`);
-  worth a `lean_loogle` search before mirroring.
+
 **Next session — the sparsity-side lemma
 `lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning
 placement existence landed (commits 11 and 17, the latter generalising
