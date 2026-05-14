@@ -405,6 +405,39 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Matrix.det_powerDifferences` (row-0-subtracted Vandermonde minor)
+- **Where it bit:** Phase 6 task 4, the `d`-general lift of the
+  affinely-spanning rigid placement. The perturbation along the
+  moment-curve direction `w(v) = (φ v, (φ v)^2, …, (φ v)^d)` produces a
+  perturbed difference matrix `M(t) = M_0 + t · M_1` whose
+  `t^d`-coefficient is `det M_1`, where `M_1` is the `d × d` matrix
+  with entries `(φ v_i)^(j+1) - (φ v_0)^(j+1)` (`i, j ∈ Fin d`). Showing
+  `det M_1 ≠ 0` for injective `φ` is the deep step in turning the bad-`t`
+  set into the root set of a degree-`d` polynomial.
+- **Friction:** mathlib's `Matrix.det_vandermonde` factors the *full*
+  `(d+1) × (d+1)` Vandermonde determinant as the symmetric product of
+  differences `∏_{i<j} (v j - v i)`. The factorization of the *row-0-
+  subtracted* `d × d` minor is the same product (by row reduction +
+  cofactor expansion), but mathlib does not ship this identity directly:
+  it's a one-step Laplace expansion away from
+  `Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde` (which sees
+  the sparse-row-0 form for free) but not packaged.
+- **Resolution:** mirrored as
+  - `Matrix.det_powerDifferences`: for `v : Fin (n + 1) → R` over a
+    `CommRing`,
+    `(Matrix.of (fun i j : Fin n => v i.succ ^ (j.val + 1) - v 0 ^ (j.val + 1))).det =
+      ∏ i : Fin (n + 1), ∏ j ∈ Finset.Ioi i, (v j - v i)`.
+    `nontriviality R` discharges the trivial-ring case; the main proof
+    instantiates the polynomial family `p 0 = 1`,
+    `p k.succ = X^(k.val + 1) - C (v 0 ^ (k.val + 1))` and applies
+    `Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde`, then
+    cofactor-expands along the sparse row 0 via `det_succ_row_zero` +
+    `Finset.sum_eq_single 0`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Vandermonde.lean`. Sits
+  naturally alongside `det_vandermonde_sub` (the additive shift) — the
+  multiplicative-style minor variant.
+
 ### [mirrored] `Pi.basisFun_dualBasis` and `LinearMap.range_dualMap_eq_span_image_dualBasis`
 - **Where it bit:** `span_range_rigidityRow` in `RigidityMatroid.lean`,
   the constructive (span) form of row-rank-equals-column-rank for the

@@ -22,12 +22,13 @@ Phase 5 closed with the iff statement
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-**Through commit 15 (this commit):** task-3 of the Lean-simplification
+**Through commit 16 (this commit):** task-3 of the Lean-simplification
 pass is landed (commit 14) and `TrivialMotions.lean` got a TACTICS § 1
-grind-default golf pass alongside (commit 15, this commit). Tasks 1–3
-of the simplification pass are now all resolved; task 4 (the
-d-general lift of the affinely-spanning placement) remains in the
-queue. The linear-algebra side is closed d-general (rank bounds,
+grind-default golf pass alongside (commit 15). Tasks 1–3 of the
+simplification pass are now all resolved; task 4 (the d-general lift
+of the affinely-spanning placement) is in progress — its mirror
+infrastructure landed this commit (16); the d-general theorem body
+and the retire-dim-2 pass remain. The linear-algebra side is closed d-general (rank bounds,
 kernel bound, basis-pick); the analysis side is closed at dim 2
 (affinely-spanning rigid placement). The only red nodes left in
 `chapter/laman-theorem.tex` are `lem:isSparse-of-rowIndependent-two`
@@ -309,7 +310,29 @@ entries for resolution details.
   per TACTICS § 1. The `set j' := ⟨j.val, _⟩` scaffold in the
   outer proof is retired in favour of the explicit form so the
   helper's literal `⟨j.val, j.isLt.trans i.isLt⟩` shape matches.
-- *Commit 15 (this commit):* TACTICS § 1 golf pass over
+- *Commit 16 (this commit):* task-4 (d-general lift) infrastructure.
+  Mirror lemma `Matrix.det_powerDifferences` lands under
+  `CombinatorialRigidity/Mathlib/LinearAlgebra/Vandermonde.lean`: for
+  `v : Fin (n + 1) → R` over a `CommRing`, the `n × n` matrix
+  `M i j = v i.succ ^ (j.val + 1) - v 0 ^ (j.val + 1)` has
+  `det M = ∏_{0 ≤ i < j ≤ n} (v j - v i)`. The proof realises `M` as
+  the `(Fin.succ, Fin.succ)`-minor of the
+  `Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde` evaluation
+  matrix on the polynomial family `p 0 = 1`,
+  `p k.succ = X^(k.val + 1) - C (v 0 ^ (k.val + 1))`, then
+  cofactor-expands along the sparse row 0 via `det_succ_row_zero` +
+  `Finset.sum_eq_single 0`. `nontriviality R` discharges the
+  trivial-ring case. FRICTION *Mirrored* gains a combined entry.
+  Substantively, this is the *leading-coefficient* half of task 4
+  (the dim-2 `γ = (φ b − φ a)(φ c − φ a)(φ c − φ b)` factoring goes
+  d-general); the AffineIndependent ↔ det bridge and the theorem
+  assembly remain. (Task-3 search of mathlib located the
+  polynomial-of-det machinery already in
+  `Mathlib/LinearAlgebra/Matrix/Polynomial.lean`:
+  `natDegree_det_X_add_C_le`, `coeff_det_X_add_C_zero/card` — no
+  mirror needed there.)
+
+- *Commit 15 (`ac194c1`):* TACTICS § 1 golf pass over
   `TrivialMotions.lean` (this file did most of its proof work
   before TACTICS § 1's "default to `grind`" rule landed in current
   form). Net 37 lines deleted, no logic changes:
@@ -386,9 +409,9 @@ Tasks, ordered by severity (heaviest first):
    collapses." See commit-14 *Done* entry.
 
 4. **D-general lift of `exists_affinelySpanning_rigid_placement_two`**
-   (promoted from *Deferred follow-up*). The blueprint's "the
-   determinant is a polynomial in $t$ whose leading coefficient is the
-   Vandermonde determinant" maps clause-for-clause to a clean
+   (promoted from *Deferred follow-up*). *In progress.* The blueprint's
+   "the determinant is a polynomial in $t$ whose leading coefficient is
+   the Vandermonde determinant" maps clause-for-clause to a clean
    matrix-level proof at d-general, but our dim-2 specialization
    expands it by hand and accumulates the bookkeeping noted in task 1.
    **Matrix reframing.** The eight scalars $A_0, A_1, B_0, B_1, X, Y, U, Z$
@@ -404,23 +427,24 @@ Tasks, ordered by severity (heaviest first):
    determinant on $(\phi v_0, \ldots, \phi v_d)$, factoring as
    $\prod_{i < j} (\phi v_j - \phi v_i)$ by `Matrix.det_vandermonde`.
 
-   **API needed (~70 LoC, all upstream-eligible):**
-   - **`det(M_0 + t \cdot M_1)` as a polynomial in $t$**: package the
-     1-parameter family `t \mapsto \det(M_0 + t \cdot M_1)` as
-     `Polynomial.eval t p` for some `p : R[X]` of degree $\le d$.
-     Mathlib has `Matrix.charpoly` and `Polynomial.det` infrastructure;
-     check what's directly usable. ~30 LoC.
-   - **Leading-coefficient lemma**: $t^d$ coefficient of
-     $\det(M_0 + t \cdot M_1)$ is $\det M_1$. Follows from
-     column-linearity of $\det$. ~10 LoC.
+   **API needed — status snapshot (commit 16):**
+   - ~~**`det(M_0 + t \cdot M_1)` as a polynomial in $t$**~~. *Resolved*:
+     mathlib already ships this under
+     `Mathlib/LinearAlgebra/Matrix/Polynomial.lean` —
+     `natDegree_det_X_add_C_le` gives `natDegree ≤ Fintype.card n`, and
+     `coeff_det_X_add_C_zero` / `coeff_det_X_add_C_card` give the `t^0`
+     / `t^n` coefficients. The polynomial is
+     `(X • A.map C + B.map C).det : R[X]`; eval at `t` recovers
+     `(t • A + B).det` via `RingHom.map_det` on `Polynomial.evalRingHom`
+     (one-liner at the call site, no mirror needed).
+   - ~~**Vandermonde-difference factoring**~~. *Resolved* (this commit):
+     `Matrix.det_powerDifferences` under
+     `Mathlib/LinearAlgebra/Vandermonde.lean`.
    - **AffineIndependent ↔ nonzero det of difference matrix** at
      d-general: route through `affineIndependent_iff_linearIndependent_vsub`
-     + `Matrix.linearIndependent_rows_iff_isUnit` +
-     `IsUnit ↔ det ≠ 0` (over a field) + `WithLp.linearEquiv` to
-     bridge `EuclideanSpace ↔ Fin d → ℝ`. ~15 LoC.
-   - **Vandermonde-difference factoring**: glue from
-     `Matrix.det_vandermonde` to the "row-0-subtracted" form we
-     actually need. ~10 LoC.
+     + `Matrix.linearIndependent_rows_of_det_ne_zero` +
+     `WithLp.linearEquiv` to bridge `EuclideanSpace ↔ Fin d → ℝ`.
+     ~15 LoC. *Pending* — likely the next session's first piece.
 
    **What dissolves at d-general:**
    - The eight scratch scalars (absorbed into `M_0`, `M_1`).
@@ -429,18 +453,11 @@ Tasks, ordered by severity (heaviest first):
      bridge).
    - The private helper `finite_zeros_quadratic` (superseded by
      direct use of `Polynomial.finite_setOf_isRoot` on the degree-$d$
-     polynomial).
+     polynomial built from `coeff_det_X_add_C_card`).
    - The hand-rolled `ring` factoring of $\gamma$ (replaced by
-     `Matrix.det_vandermonde`).
+     `Matrix.det_powerDifferences`).
    - The intermediate `have hu0, hu1, hv0, hv1` decompositions
      (absorbed into the matrix-of-differences definition).
-
-   **Cost estimate**: ~70 LoC of upstream-eligible API, ~80 LoC of
-   d-general proof body, replacing the current ~150 LoC dim-2 proof
-   plus its two private helpers. Net: comparable LoC, but the proof
-   reads exactly like the blueprint prose, and the API is generally
-   useful (a Vandermonde-difference factorization + a
-   `det(A + t \cdot B)` polynomial framework are both reusable).
 
 **Bar for each task:** try the candidate fixes in order; commit the
 fix that lands. If all candidates fail for a given point, file a
