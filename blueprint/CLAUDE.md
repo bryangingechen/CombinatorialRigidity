@@ -283,7 +283,7 @@ System dependencies (macOS, Apple Silicon assumed):
 ```sh
 brew install graphviz                    # for pygraphviz
 brew install --cask basictex             # for xelatex (~80 MB)
-eval "$(/usr/libexec/path_helper)"       # add TeX to PATH this shell
+export PATH="/Library/TeX/texbin:$PATH"  # add TeX to PATH this shell
 sudo tlmgr update --self
 sudo tlmgr install latexmk preview xkeyval \
   enumitem tikz-cd thmtools cleveref     # required by print.tex (inv bp)
@@ -308,11 +308,24 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
 ### Running builds
 
 From `blueprint/`, with the venv activated. Make sure TeX is on `PATH`
-in the current shell — the one-time setup ran
-`eval "$(/usr/libexec/path_helper)"`, but a fresh shell on another day
-won't inherit it. `which xelatex` should print
-`/Library/TeX/texbin/xelatex`; if not, re-run the `path_helper` line
-or `export PATH="/Library/TeX/texbin:$PATH"`.
+in the current shell. `which xelatex` should print
+`/Library/TeX/texbin/xelatex`; if not, run
+
+```sh
+export PATH="/Library/TeX/texbin:$PATH"
+```
+
+This is the reliable fix. **Don't rely on
+`eval "$(/usr/libexec/path_helper)"`** as the only PATH update —
+agent-tool Bash invocations (and some non-login shells) do not pick up
+`/etc/paths.d/TeX` from path_helper, so `xelatex` stays missing even
+after running it. The explicit `export PATH=…` is unconditional.
+
+Every Bash tool call from Claude Code spawns a fresh shell, so `PATH`
+does not persist across calls. Prepend the export to the same compound
+command as `inv bp` / `inv web` (e.g.,
+`export PATH=… && cd blueprint && source .venv/bin/activate && inv bp`),
+not as a separate call.
 
 ```sh
 inv bp         # latexmk drives xelatex → blueprint/print/print.pdf,
