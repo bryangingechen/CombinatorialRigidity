@@ -86,32 +86,246 @@ subgraph on the same vertex set). The two directions land separately:
 
 \subsection{The \texorpdfstring{$\Rightarrow$}{=>} direction}
 
-The companion direction is not yet formalized; it is the subject of
-Phase~6. The statement is recorded below for reference.
+The companion direction is the subject of Phase~6, currently in
+progress. The skeleton below lays out the dependency graph: each
+intermediate definition / lemma is recorded without
+\texttt{\textbackslash lean} or \texttt{\textbackslash leanok}, so the
+dep-graph view renders them red until the corresponding Lean
+declarations land.
+
+\medskip
+
+Following Lov\'asz--Yemini~\cite{lovaszYemini1982}, the argument
+identifies a Laman spanning subgraph as the support of a row-basis of
+the rigidity matrix at a sufficiently generic placement. We isolate
+the row-independence relation between an edge set and a placement,
+then prove two facts about it: (a)~independence implies the
+$(2, 3)$-sparsity required by the Laman definition (the ``easy''
+direction of the Lov\'asz--Yemini identity), and (b)~a row-basis of
+size $2|V| - 3$ exists whenever $G$ is generically rigid (rank
+lower bound + linear-algebra extension). Combining (a) and (b) gives
+a $(2, 3)$-tight spanning subgraph, i.e.\ a Laman subgraph.
+
+The harder converse direction of Lov\'asz--Yemini --- $(2,
+3)$-sparse $\Rightarrow$ row-independent at a generic placement ---
+is \emph{not} needed for the iff and is not formalized.
+
+\subsubsection{Row-independence in the rigidity matroid}
+
+\begin{definition}[Row-independent edge set at a placement]
+  \label{def:edgeSet-rowIndependent}
+  \uses{def:rigidityMap}
+  Let $G : \mathrm{SimpleGraph}\,V$, let $p : V \to \R^{d}$ be a
+  framework, and let $I \subseteq E(G)$. We say that $I$ is
+  \emph{row-independent at $p$} if the family of edge-rows
+  $\bigl(\mathrm{RigidityMap}\,G\,p\,(\cdot)\,e\bigr)_{e \in I}$,
+  viewed as linear functionals on $\mathrm{Framework}\,V\,d$, is
+  linearly independent over $\R$.
+
+  Equivalently, the composition of $\mathrm{RigidityMap}\,G\,p$ with
+  the coordinate projection $E(G) \to \R \;\to\; I \to \R$ has full
+  rank $|I|$.
+\end{definition}
+
+\begin{remark}
+  The row-independent edge sets form the independent sets of a
+  matroid on $E(G)$ --- the \emph{rigidity matroid} of $(G, p)$. We
+  do not package it as a \texttt{Mathlib.Combinatorics.Matroid}
+  object: the (\(\Rightarrow\)) direction of Laman's theorem
+  needs only the independence relation and its two named facts
+  below, and the $\mathrm{Matroid}$ packaging is reusable but
+  off the critical path.
+\end{remark}
+
+\subsubsection{Rank of the rigidity map at a generically rigid placement}
+
+\begin{lemma}[Rank lower bound at a generically rigid placement, dim $2$]
+  \label{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}
+  \uses{def:isGenericallyRigid, lem:framework-finrank,
+    def:isInfinitesimallyRigid}
+  Let $V$ be finite and $G : \mathrm{SimpleGraph}\,V$. If $G$ is
+  generically rigid in dimension $2$, there exists a framework
+  $p : V \to \R^{2}$ with
+  \[
+    2 |V| \;\le\; \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr) + 3.
+  \]
+\end{lemma}
+\begin{proof}
+  Pick an infinitesimally rigid framework $p$ witnessing generic
+  rigidity. Rank--nullity for $\mathrm{RigidityMap}\,G\,p$ gives
+  $\dim\,\mathrm{Framework}\,V\,2 = \dim\,\mathrm{range} + \dim\,\ker$;
+  by \cref{lem:framework-finrank} the left-hand side equals $2 |V|$,
+  and by the definition of infinitesimal rigidity in dim $2$ the
+  nullity is at most $3$. (The lemma is the rank-half of the
+  edge-count theorem \cref{thm:isGenericallyRigid-card-mul-le} with
+  the edge-count bound \cref{lem:rigidityMap-finrank-range-le}
+  replaced by the rank itself.)
+\end{proof}
+
+\begin{lemma}[Row-independent edge basis from rank lower bound]
+  \label{lem:exists-rowIndependent-edge-basis}
+  \uses{def:edgeSet-rowIndependent,
+    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two,
+    lem:rigidityMap-finrank-range-le}
+  Let $V$ be finite, $G$ generically rigid in dimension $2$, and $p$
+  a framework as in
+  \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}.
+  Then there exists $I \subseteq E(G)$ with $|I| = 2 |V| - 3$ which is
+  row-independent at $p$.
+\end{lemma}
+\begin{proof}
+  The edge-indexed rows of $\mathrm{RigidityMap}\,G\,p$ span its
+  range, which has dimension at least $2 |V| - 3$
+  (\cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two})
+  and at most $|E(G)|$ (\cref{lem:rigidityMap-finrank-range-le}). Extract
+  a basis from a spanning family of finite-dimensional rows --- the
+  standard \texttt{LinearIndependent.extend} / \texttt{Basis.extend}
+  construction --- and read $I$ as the edge labels indexing the chosen
+  rows.
+\end{proof}
+
+\subsubsection{Trivial motions and the rank upper bound under affine spanning}
+
+In dimension $2$, the kernel of the rigidity map always contains the
+\emph{trivial Euclidean motions}: the $2$-dimensional space of
+translations plus, at affinely-spanning placements, one additional
+infinitesimal rotation. The induced rank bound
+$\rk \le 2|V| - 3$ is the converse of the rank lower bound and
+underlies the $(2, 3)$-sparsity claim below.
+
+\begin{lemma}[Three trivial motions kill the rigidity map at an affinely-spanning placement, dim $2$]
+  \label{lem:trivialMotions-three-le-ker-of-affinelySpanning-two}
+  \uses{def:rigidityMap}
+  Let $V$ be finite with $|V| \ge 2$, let $G : \mathrm{SimpleGraph}\,V$,
+  and let $p : V \to \R^{2}$ be a framework whose image affinely
+  spans $\R^{2}$. Then
+  $\dim_{\R}\,\ker\,(\mathrm{RigidityMap}\,G\,p) \ge 3$.
+\end{lemma}
+\begin{proof}
+  Exhibit three linearly independent motions in the kernel: the two
+  constant translations $p'_v = e_0$ and $p'_v = e_1$, and the
+  infinitesimal rotation $p'_v = R(p_v - c)$ where $R$ is the
+  $90^{\circ}$-rotation matrix and $c$ is any reference point.
+  Each is killed by the rigidity map at \emph{every} edge by the
+  entry formula $\langle p_u - p_v,\, p'_u - p'_v \rangle$ ---
+  translations cancel in the difference $p'_u - p'_v$, and the
+  rotation case reduces to $\langle p_u - p_v,\, R(p_u - p_v)
+  \rangle = 0$. Linear independence of the three motions in
+  $\mathrm{Framework}\,V\,2$ uses the affine-span hypothesis on $p$:
+  if a linear combination $\alpha e_0 + \beta e_1 + \gamma R(p_v - c)$
+  is zero at every $v$, then $\gamma = 0$ unless $p$ is contained in a
+  line, and then $\alpha = \beta = 0$ from any single vertex.
+\end{proof}
+
+\begin{lemma}[Rank upper bound from affine spanning, dim $2$]
+  \label{lem:rigidityMap-finrank-range-le-of-affinelySpanning-two}
+  \uses{lem:trivialMotions-three-le-ker-of-affinelySpanning-two,
+    lem:framework-finrank}
+  Let $V$ be finite with $|V| \ge 2$, let $G$ be a graph on $V$, and
+  let $p : V \to \R^{2}$ affinely span. Then
+  \[
+    \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr) + 3
+    \;\le\; 2 |V|.
+  \]
+\end{lemma}
+\begin{proof}
+  Combine
+  \cref{lem:trivialMotions-three-le-ker-of-affinelySpanning-two} with
+  rank--nullity and the framework-space dimension
+  \cref{lem:framework-finrank}.
+\end{proof}
+
+\subsubsection{Sparsity from row-independence (Lov\'asz--Yemini, easy direction)}
+
+The sparsity claim transports the rank upper bound from the induced
+subframework $H[S]$ at $p|_{S}$ back to the row count of the
+$H[S]$-rows in $\mathrm{RigidityMap}\,G\,p$. The two sides match
+exactly because edges in $H[S]$ have both endpoints in $S$, so the
+corresponding rows are supported on the columns indexed by $S$.
+We need the witness placement to affinely span on every
+size-$\ge 3$ subset; \cref{lem:exists-affinelySpanning-rigid-placement-two}
+below provides one.
+
+\begin{lemma}[Affinely-spanning rigid placement, dim $2$]
+  \label{lem:exists-affinelySpanning-rigid-placement-two}
+  \uses{def:isGenericallyRigid, lem:isInfinitesimallyRigid-eventually}
+  Let $V$ be finite with $|V| \ge 2$ and $G$ generically rigid in
+  dimension $2$. There exists a framework $p : V \to \R^{2}$ which is
+  infinitesimally rigid for $G$ and whose restriction $p|_{S}$
+  affinely spans $\R^{2}$ for every $S \subseteq V$ with $|S| \ge 3$.
+\end{lemma}
+\begin{proof}
+  The set of infinitesimally rigid placements is open at the
+  generic-rigidity witness by
+  \cref{lem:isInfinitesimallyRigid-eventually}; the set of placements
+  whose every size-$\ge 3$ restriction affinely spans is the
+  complement of a finite union of hyperplanes (one ``three points
+  collinear'' equation per triple in $V$), hence open and dense in
+  $\mathrm{Framework}\,V\,2$. The two open sets meet on a
+  neighborhood of the witness, giving a placement with both
+  properties.
+\end{proof}
+
+\begin{lemma}[$(2, 3)$-sparsity from row-independence, dim $2$]
+  \label{lem:isSparse-of-rowIndependent-two}
+  \uses{def:isSparse, def:edgeSet-rowIndependent,
+    lem:rigidityMap-finrank-range-le-of-affinelySpanning-two,
+    lem:exists-affinelySpanning-rigid-placement-two}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $p$ a framework
+  on $V$ in dimension $2$ such that $p|_{S}$ affinely spans for every
+  $S \subseteq V$ with $|S| \ge 3$. If $I \subseteq E(G)$ is
+  row-independent at $p$, then the spanning subgraph $H \le G$ with
+  edge set $I$ is $(2, 3)$-sparse.
+\end{lemma}
+\begin{proof}
+  Fix $S \subseteq V$. The edges of $H$ with both endpoints in $S$
+  are exactly the edges of the induced subgraph $H[S]$; we show
+  $|\edgesIn[H]{S}| + 3 \le 2 |S|$.
+
+  For $|S| \le 1$ the proviso $3 \le 2|S|$ in the definition of
+  $(2, 3)$-sparsity is false, so the bound holds vacuously. For
+  $|S| = 2$ the induced subgraph has at most one edge, and
+  $1 + 3 \le 4 = 2 |S|$.
+
+  For $|S| \ge 3$: the rows of $\mathrm{RigidityMap}\,G\,p$ indexed
+  by $\edgesIn[H]{S}$ are supported on the columns indexed by $S$
+  (each row's nonzero entries are at the two endpoints of the
+  corresponding edge, both of which lie in $S$). Hence row-independence
+  of these rows in the full matrix is equivalent to row-independence
+  in the column-restricted matrix, which is exactly the rigidity
+  matrix $\mathrm{RigidityMap}\,(H[S])\,(p|_{S})$ (modulo identifying
+  the $S$-indexed columns with $\mathrm{Framework}\,S\,2$). By
+  \cref{lem:rigidityMap-finrank-range-le-of-affinelySpanning-two}
+  applied to $H[S]$ at the affinely-spanning placement $p|_{S}$, the
+  rank of that matrix is at most $2 |S| - 3$. Since row-independence
+  forces the row count $|\edgesIn[H]{S}|$ to equal the rank,
+  $|\edgesIn[H]{S}| \le 2 |S| - 3$.
+\end{proof}
+
+\subsubsection{Assembly}
 
 \begin{theorem}[Every generically rigid graph contains a Laman subgraph]
   \label{thm:isGenericallyRigid-exists-isLaman-le}
   \lean{SimpleGraph.IsGenericallyRigid.exists_isLaman_le}
-  \uses{def:isGenericallyRigid, def:isLaman}
+  \uses{def:isGenericallyRigid, def:isLaman, def:isTight,
+    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two,
+    lem:exists-rowIndependent-edge-basis,
+    lem:isSparse-of-rowIndependent-two,
+    lem:exists-affinelySpanning-rigid-placement-two}
   Let $V$ be finite with $|V| \ge 2$. If $G$ is generically rigid in
   dimension $2$, then there exists a Laman spanning subgraph
   $H \le G$.
 \end{theorem}
 \begin{proof}
-  Take a generic placement $p$ of $V$. The rows of the rigidity matrix
-  $\mathrm{RigidityMap}\,G\,p$ form a $\R$-vector configuration
-  indexed by $E(G)$; let $H \subseteq G$ be a maximal independent
-  subfamily. By Lov\'asz--Yemini's~\cite{lovaszYemini1982} equality of
-  the rigidity matroid and the $(2, 3)$-count matroid in dimension $2$,
-  independence
-  equals $(2, 3)$-sparsity, so $H$ is $(2, 3)$-sparse; maximality
-  combined with $\dim\,(\mathrm{range}\,\mathrm{RigidityMap}\,G\,p) =
-  2|V| - 3$ at a generic $p$ yields $|E(H)| = 2|V| - 3$, i.e.\ $H$ is
-  $(2, 3)$-tight, hence Laman.
-
-  \textbf{Phase~6.} The Lov\'asz--Yemini step depends on a
-  \texttt{RigidityMatroid.lean} file that is not yet written; the
-  Lean statement is currently a \texttt{sorry}.
+  Pick a framework $p$ that is both infinitesimally rigid for $G$
+  and affinely-spanning on every size-$\ge 3$ subset, via
+  \cref{lem:exists-affinelySpanning-rigid-placement-two}. Apply
+  \cref{lem:exists-rowIndependent-edge-basis} to extract
+  $I \subseteq E(G)$ with $|I| = 2 |V| - 3$ row-independent at $p$.
+  Let $H \le G$ be the spanning subgraph with edge set $I$. By
+  \cref{lem:isSparse-of-rowIndependent-two}, $H$ is $(2, 3)$-sparse;
+  together with $|E(H)| = 2 |V| - 3$ this makes $H$ $(2, 3)$-tight,
+  i.e.\ Laman.
 \end{proof}
 
 \subsection{Laman's theorem}
