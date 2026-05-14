@@ -307,13 +307,26 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
 
 ### Running builds
 
-From `blueprint/`, with the venv activated:
+From `blueprint/`, with the venv activated. Make sure TeX is on `PATH`
+in the current shell — the one-time setup ran
+`eval "$(/usr/libexec/path_helper)"`, but a fresh shell on another day
+won't inherit it. `which xelatex` should print
+`/Library/TeX/texbin/xelatex`; if not, re-run the `path_helper` line
+or `export PATH="/Library/TeX/texbin:$PATH"`.
 
 ```sh
-inv web        # plastex → blueprint/web/index.html + dep_graph_document.html
-inv bp         # latexmk drives xelatex to convergence → blueprint/print/print.pdf
+inv bp         # latexmk drives xelatex → blueprint/print/print.pdf,
+               # and copies print.bbl to src/web.bbl for plastex.
+inv web        # plastex → blueprint/web/index.html + dep_graph_document.html.
+               # Reads src/web.bbl produced by inv bp; if you run inv
+               # web standalone with no web.bbl, every \cite{} silently
+               # renders as a broken-reference fallback.
 inv serve      # preview the web build at http://localhost:8000
 ```
+
+Run `inv bp` before `inv web` — the order matters for citations. CI's
+`leanblueprint pdf` / `leanblueprint web` flow is the same, in the
+same order.
 
 After `inv web`, **open `blueprint/web/dep_graph_document.html`** in a
 browser. This is the unique value-add over plain LaTeX: every node
@@ -433,6 +446,13 @@ references.
   build that loads the blueprint plastex plugin. These are harmless
   in normal `inv web` runs but can mask real warnings — skim the
   console output, not just the exit code.
+- **`inv web` exits 0 even when every citation is broken.** If
+  `src/web.bbl` is missing (e.g. you ran `inv web` standalone), the
+  output contains `WARNING: Could not find any file named: web.bbl`
+  and one `WARNING: Bibliography item "..." has no entry` per
+  `\cite{}` — but exit code is 0 and every `\cite{}` silently renders
+  as a broken-reference fallback. `grep -i 'bibliography item' web
+  output` to catch this; the fix is to run `inv bp` first.
 - **`_` in `\texttt{...}`.** LaTeX still treats `_` as a subscript
   inside `\texttt{...}`. Escape as `\_` (e.g.
   `\texttt{mk\_mem\_edgesIn}`) or use `\verb|...|`.
