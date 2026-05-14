@@ -22,7 +22,25 @@ Phase 5 closed with the iff statement
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-**Through commit 11 (this commit):** the analysis leaf
+**Through commit 12 (this commit):** Lean-simplification task 2
+(*"small dual bridge isn't small"*) lands.
+`RigidityMatroid.lean`'s dual-bridge infrastructure (lines 71–135
+pre-pass) shrinks from ~60 lines to ~25 lines. The 16-line private
+`dualToFunₗ` + apply + injective scaffold collapses to mathlib's
+`LinearMap.ltoFun ℝ _ ℝ ℝ` + `DFunLike.coe_injective`, and
+`span_range_rigidityRow` shrinks from ~22 to ~10 lines via
+`Set.range_comp` + `Submodule.span_image` +
+`Basis.dualBasis.span_eq` + `Submodule.map_top` over the
+factorization `rigidityRow = R.dualMap ∘ (Pi.basisFun).dualBasis`.
+The blueprint `chapter/laman-theorem.tex` gains a new subsubsection
+*The rigidity rows as a family in the algebraic dual* hosting
+`def:rigidityRow`, `lem:span-range-rigidityRow`, and
+`lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`, so the
+basis-pick proof prose `\cref{}`s them rather than gesturing at "a
+small bridge lemma". FRICTION entry *No packaged ℝ-linear
+injection* flipped to **[resolved]**.
+
+**Through commit 11:** the analysis leaf
 `lem:exists-affinelySpanning-rigid-placement-two` lands in
 `RigidityMatroid.lean`. The Vandermonde-perturbation argument
 (perturb the IR witness along `w(v) = (φ v, (φ v)²)`; for each
@@ -336,7 +354,33 @@ entries opened in commit 7 are the cross-cutting record.)*
   dropped (the affine-span hypothesis already forces `|V| ≥ 3`). No
   new FRICTION entries. *(d=2 form retired in commit 10; the d-general
   `rigidityMap_finrank_range_le_of_affinelySpanning` replaces it.)*
-- *Commit 11 (this commit):* affinely-spanning rigid placement
+- *Commit 12 (this commit):* Lean-simplification pass, task 2
+  (*"small dual bridge isn't small"*). Three candidate fixes:
+  *(a) mathlib `ℝ`-linear envelope.* The 16-line private
+  `dualToFunₗ` + apply + injective scaffold deleted in favour of
+  `LinearMap.ltoFun ℝ (Framework V d) ℝ ℝ` +
+  `DFunLike.coe_injective`; discovered via `lean_loogle` on the
+  exact type `(_ →ₗ[_] _) →ₗ[_] (_ → _)`. *(b) matrix-level
+  alternative.* Assessed and declined: routing through
+  `Matrix.rank_transpose` requires `LinearMap.toMatrix` + a basis
+  choice, adds bookkeeping rather than removing the dual step.
+  *(c) blueprint promotion.* New subsubsection *The rigidity rows
+  as a family in the algebraic dual* in
+  `chapter/laman-theorem.tex` hosts `def:rigidityRow`,
+  `lem:span-range-rigidityRow`, and
+  `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow`; the
+  basis-pick lemma's proof prose now `\cref{}`s them rather than
+  gesturing at "a small bridge lemma". *Bonus tightening:*
+  `span_range_rigidityRow` shrinks from ~22 to ~10 lines via
+  `Set.range_comp` + `Submodule.span_image` +
+  `Basis.dualBasis.span_eq` + `Submodule.map_top` over the
+  factorization `rigidityRow = R.dualMap ∘ (Pi.basisFun).dualBasis`.
+  FRICTION entry *No packaged ℝ-linear injection* flipped to
+  **[resolved]** with the `LinearMap.ltoFun` discovery noted.
+  Net: ~35 lines of Lean removed; the bridge prose ceased to
+  apologise for itself.
+
+- *Commit 11:* affinely-spanning rigid placement
   (`lem:exists-affinelySpanning-rigid-placement-two`). Added to
   `RigidityMatroid.lean` (~150 LoC) alongside two private helpers
   `finite_zeros_quadratic` (real-quadratic zero set is finite, via
@@ -418,26 +462,39 @@ Tasks, ordered by severity (heaviest first):
      would save ~12 LoC but would be discarded by task 4. **Hold off**
      — don't clean d=2 proofs that the d-general lift will rewrite.
 
-2. **`exists_edgeSetRowIndependent_basis_dim_two` — "small dual
-   bridge" isn't small.** ~60 lines of infrastructure
-   (`dualToFunₗ` + 2 helpers, `rigidityRow` + apply, the bridge
-   `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`,
-   `span_range_rigidityRow`). Candidate fixes:
-   - Re-check whether mathlib now ships an $\R$-linear envelope of
-     `FunLike.coe` for `(M →ₗ[ℝ] ℝ) → (M → ℝ)` (the commit-6 FRICTION
-     entry *No packaged ℝ-linear injection* flagged the absence;
-     mathlib has had a year of churn since). If yes, delete
-     `dualToFunₗ` + apply + injectivity.
-   - Search for row-rank-equals-column-rank phrased *without*
-     `LinearMap.dualMap` (e.g. via `Matrix.rank` /
-     `Matrix.toLinearMap'`, or `Matrix.rank_transpose`). A
-     matrix-level route may avoid the dual bridge entirely.
-   - If the dual bridge stays, promote `rigidityRow` /
-     `span_range_rigidityRow` to a named blueprint concept (its own
-     `\begin{definition}` + `\begin{lemma}`) rather than gesturing at
-     it as "a small bridge lemma" — the abstraction is real and
-     reusable, and earning its own dep-graph node is more honest than
-     a one-clause aside.
+2. ~~**`exists_edgeSetRowIndependent_basis_dim_two` — "small dual
+   bridge" isn't small.**~~ **Resolved.** All three candidate fixes
+   landed in one pass; the bridge dropped from ~60 lines to ~25 lines
+   of infrastructure and the prose ceased to apologise for it.
+   - *Candidate (a) — mathlib `ℝ`-linear envelope of `FunLike.coe`.*
+     `LinearMap.ltoFun R M N A : (M →ₗ[R] N) →ₗ[A] M → N` (in
+     `Mathlib.Algebra.Module.LinearMap.Basic`) instantiated at
+     `R = N = A = ℝ` is exactly what was needed. Injectivity comes
+     from `DFunLike.coe_injective`. Discovered via
+     `lean_loogle` on the type pattern `(_ →ₗ[_] _) →ₗ[_] (_ → _)`.
+     The private `dualToFunₗ` + apply + injective scaffold (~16
+     lines) deleted; FRICTION entry *No packaged ℝ-linear injection*
+     flipped to **[resolved]**.
+   - *Candidate (b) — matrix-level row-rank = column-rank route.*
+     Assessed and declined. Routing through `Matrix.rank_transpose`
+     would require picking a basis of `Framework V d` and bridging
+     through `LinearMap.toMatrix`, which adds bookkeeping rather
+     than removing the abstract-dual step. The dual route is the
+     right tool; the goal is to make it tight, not avoid it.
+   - *Candidate (c) — promote `rigidityRow` to a named blueprint
+     concept.* Done. New `def:rigidityRow`,
+     `lem:span-range-rigidityRow`, and
+     `lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow` in
+     `chapter/laman-theorem.tex` (new subsubsection *The rigidity
+     rows as a family in the algebraic dual*); the proof of
+     `lem:exists-rowIndependent-edge-basis` now `\cref{}`s them
+     directly instead of gesturing at "a small bridge lemma".
+   - *Bonus tightening — `span_range_rigidityRow`.* Shortened from
+     ~22 to ~10 lines via
+     `Set.range_comp` + `Submodule.span_image` +
+     `Basis.dualBasis.span_eq` + `Submodule.map_top` over the
+     factorization `rigidityRow = R.dualMap ∘ (Pi.basisFun).dualBasis`,
+     dropping the explicit `h_dualBasis_eq` / `h_range` helpers.
 
 3. **`trivialMotionFamily_linearIndependent` — "cross-terms vanish"
    hides a 30-line case-split.** Lean (`TrivialMotions.lean:316-348`)

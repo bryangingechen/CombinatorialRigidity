@@ -116,30 +116,27 @@ lemma; resolved otherwise.
 - **Status:** open. Acceptable as a private helper; lift if a future
   Phase 6 lemma needs it independently.
 
-### [open] No packaged `ℝ`-linear injection `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)`
+### [resolved] No packaged `ℝ`-linear injection `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)`
 - **Where it bit:** `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`
   in `RigidityMatroid.lean`. We needed to bridge `LinearIndepOn` of a
   family in `(Framework V d → ℝ)` (the blueprint's set-of-functions
   formulation of `EdgeSetRowIndependent`) with `LinearIndepOn` of the
   same family viewed in `Module.Dual ℝ (Framework V d)` (where
   `LinearMap.dualMap` rank identities apply).
-- **Friction:** mathlib has `LinearMap.linearIndepOn_iff_of_injOn`
-  shaped around an `ℝ`-linear `f : M →ₗ[ℝ] M'`. The "forget linearity"
-  map `(M →ₗ[ℝ] ℝ) → (M → ℝ)` is `FunLike.coe`; it preserves `+` and
-  `•` definitionally, and is injective by `LinearMap.ext`. But mathlib
-  doesn't ship it packaged as a `LinearMap`, so the LI-transfer lemma
-  doesn't apply directly. We unblocked by introducing a `private
-  noncomputable def dualToFunₗ` with body `⟨⇑·, rfl, rfl⟩` (4 lines)
-  plus a `dualToFunₗ_injective` helper.
-- **Proposed fix:** mirror as
-  `Module.Dual.toLinearMap : Module.Dual R M →ₗ[R] (M → R)` (4 lines)
-  under `CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/Defs.lean`,
-  matching the existing `Module.Dual` namespace, and PR upstream.
-  Sidesteps re-deriving the helper if the Phase 6 sparsity-side proof
-  also needs the bridge.
-- **Status:** open. Acceptable as a private helper for now; lift if
-  Phase 6's $(2,3)$-sparsity-from-row-independence (the next
-  substantive lemma) needs the bridge a second time.
+- **Resolution:** mathlib *does* ship this — as
+  `LinearMap.ltoFun R M N A : (M →ₗ[R] N) →ₗ[A] M → N`
+  (`Mathlib.Algebra.Module.LinearMap.Basic`). Instantiate
+  `R = N = A = ℝ` for the dual case. Injectivity is
+  `DFunLike.coe_injective`. The original ~16-line private
+  `dualToFunₗ` + `dualToFunₗ_apply` + `dualToFunₗ_injective` scaffold
+  collapses to a single call. The Phase 6 task-2 simplification pass
+  pulled this in (commit landing alongside the task-2 cleanup);
+  the bridge lemma is now 7 lines total.
+- **Lesson:** same as the `finSuccAboveEquiv` find — sweep
+  `lean_loogle` against the type signature you actually need before
+  rolling a project-local helper. The exact type
+  `(_ →ₗ[_] _) →ₗ[_] (_ → _)` returned `LinearMap.ltoFun` on the
+  first try.
 
 ### [open] `Set.Finite.subset (finite_setOf ...)` leaves metavariables when leading-coeff is the only resolved unknown
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in

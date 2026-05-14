@@ -68,23 +68,6 @@ theorem edgeSetRowIndependent_empty (G : SimpleGraph V) (p : Framework V d) :
     G.EdgeSetRowIndependent p ∅ :=
   linearIndepOn_empty ℝ _
 
-/-- The natural injection from linear functionals to plain functions, packaged as an `ℝ`-linear
-map. Mathlib provides `FunLike.coe` but not this `ℝ`-linear envelope; we use it to bridge the
-function-valued `EdgeSetRowIndependent` predicate to the linear-functional `rigidityRow` family,
-which lives in the finite-dimensional dual where the `dualMap` rank identities apply. -/
-private noncomputable def dualToFunₗ (M : Type*) [AddCommGroup M] [Module ℝ M] :
-    Module.Dual ℝ M →ₗ[ℝ] (M → ℝ) where
-  toFun f := ⇑f
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-
-@[simp]
-private theorem dualToFunₗ_apply (M : Type*) [AddCommGroup M] [Module ℝ M]
-    (f : Module.Dual ℝ M) : dualToFunₗ M f = ⇑f := rfl
-
-private theorem dualToFunₗ_injective (M : Type*) [AddCommGroup M] [Module ℝ M] :
-    Function.Injective (dualToFunₗ M) := fun _ _ h => LinearMap.ext (congrFun h)
-
 /-- The `e`-th row of the rigidity matrix at placement `p`, viewed as a linear functional
 `Framework V d →ₗ[ℝ] ℝ`. As a function, it sends `motion ↦ G.RigidityMap p motion e`. -/
 noncomputable def rigidityRow (G : SimpleGraph V) (p : Framework V d) :
@@ -102,9 +85,9 @@ theorem edgeSetRowIndependent_iff_linearIndepOn_rigidityRow
     (G : SimpleGraph V) (p : Framework V d) (I : Set G.edgeSet) :
     G.EdgeSetRowIndependent p I ↔ LinearIndepOn ℝ (G.rigidityRow p) I := by
   change LinearIndepOn ℝ
-      (fun e : G.edgeSet => dualToFunₗ (Framework V d) (G.rigidityRow p e)) I ↔ _
-  exact (dualToFunₗ (Framework V d)).linearIndepOn_iff_of_injOn
-    ((dualToFunₗ_injective _).injOn)
+      (fun e : G.edgeSet => LinearMap.ltoFun ℝ (Framework V d) ℝ ℝ (G.rigidityRow p e)) I ↔ _
+  exact (LinearMap.ltoFun ℝ (Framework V d) ℝ ℝ).linearIndepOn_iff_of_injOn
+    DFunLike.coe_injective.injOn
 
 /-- The rigidity rows span the range of the transpose map. Combined with
 `LinearMap.finrank_range_dualMap_eq_finrank_range` this is the row-rank-equals-column-rank
@@ -114,25 +97,15 @@ theorem span_range_rigidityRow (G : SimpleGraph V) [Finite G.edgeSet] (p : Frame
       LinearMap.range (G.RigidityMap p).dualMap := by
   classical
   haveI : Fintype G.edgeSet := Fintype.ofFinite _
-  -- Each rigidityRow e is `R.dualMap ((Pi.basisFun ℝ G.edgeSet).dualBasis e)`; the dual basis
-  -- spans the whole dual; so the image under `R.dualMap` of the dual basis spans `range R.dualMap`.
-  set b : Basis G.edgeSet ℝ (G.edgeSet → ℝ) := Pi.basisFun ℝ G.edgeSet
-  have h_dualBasis_eq : ∀ e : G.edgeSet,
-      b.dualBasis e = (LinearMap.proj e : (G.edgeSet → ℝ) →ₗ[ℝ] ℝ) := by
-    intro e
+  -- Each `rigidityRow e` is `R.dualMap ((Pi.basisFun ℝ G.edgeSet).dualBasis e)`; the dual basis
+  -- spans the whole dual, so its image under `R.dualMap` spans `range R.dualMap`.
+  have h_row : G.rigidityRow p =
+      (G.RigidityMap p).dualMap ∘ (Pi.basisFun ℝ G.edgeSet).dualBasis := by
+    funext e
     refine LinearMap.ext fun x => ?_
-    simp [b, Pi.basisFun_repr]
-  have h_row_eq : ∀ e : G.edgeSet,
-      G.rigidityRow p e = (G.RigidityMap p).dualMap (b.dualBasis e) := by
-    intro e
-    refine LinearMap.ext fun x => ?_
-    simp [rigidityRow, h_dualBasis_eq]
-  have h_range_dualBasis : Submodule.span ℝ (Set.range b.dualBasis) = ⊤ := b.dualBasis.span_eq
-  have h_range : Set.range (G.rigidityRow p) =
-      (G.RigidityMap p).dualMap '' Set.range b.dualBasis := by
-    ext x
-    simp [h_row_eq, Set.mem_range, Set.mem_image]
-  rw [h_range, Submodule.span_image, h_range_dualBasis, Submodule.map_top]
+    simp [rigidityRow, Pi.basisFun_repr]
+  rw [h_row, Set.range_comp, Submodule.span_image,
+    (Pi.basisFun ℝ G.edgeSet).dualBasis.span_eq, Submodule.map_top]
 
 /-- **Rank lower bound at a generically rigid placement, d-general.** If `G` is generically
 rigid in dimension `d`, some framework `p` realises

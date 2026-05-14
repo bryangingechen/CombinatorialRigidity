@@ -149,6 +149,69 @@ and is not formalized.
   off the critical path.
 \end{remark}
 
+\subsubsection{The rigidity rows as a family in the algebraic dual}
+
+The basis-pick (\cref{lem:exists-rowIndependent-edge-basis}) works in
+the algebraic dual $(\mathrm{Framework}\,V\,d)^{*}$ throughout, where
+the row-rank-equals-column-rank identity
+\texttt{LinearMap.finrank\_range\_dualMap\_eq\_finrank\_range} applies
+directly. The function-module presentation of
+\cref{def:edgeSet-rowIndependent} and the dual-module presentation
+agree on linear independence, by linearity and injectivity of the
+forgetful $(M \to_{\R} \R) \to (M \to \R)$ map.
+
+\begin{definition}[Rigidity row at a placement]
+  \label{def:rigidityRow}
+  \lean{SimpleGraph.rigidityRow}
+  \leanok
+  \uses{def:rigidityMap}
+  The \emph{rigidity row} indexed by an edge $e \in E(G)$ at a
+  placement $p$ is the linear functional
+  $\mathrm{rigidityRow}\,G\,p\,e \in (\mathrm{Framework}\,V\,d)^{*}$
+  obtained by composing $\mathrm{RigidityMap}\,G\,p$ with the
+  coordinate projection $E(G) \to \R \;\to\; \R$ at $e$. As a
+  function, $\mathrm{rigidityRow}\,G\,p\,e\,(\dot p) =
+  \mathrm{RigidityMap}\,G\,p\,(\dot p)\,e$.
+\end{definition}
+
+\begin{lemma}[Row span equals dualMap range]
+  \label{lem:span-range-rigidityRow}
+  \lean{SimpleGraph.span_range_rigidityRow}
+  \leanok
+  \uses{def:rigidityRow, def:rigidityMap}
+  Let $V$ be finite. The $\R$-linear span of the rigidity rows
+  $\{\mathrm{rigidityRow}\,G\,p\,e\}_{e \in E(G)}$ equals the range of
+  $(\mathrm{RigidityMap}\,G\,p)^{*}$ (the algebraic transpose).
+\end{lemma}
+\begin{proof}
+  \leanok
+  Each row is the image under
+  $(\mathrm{RigidityMap}\,G\,p)^{*}$ of the dual-basis element
+  $b^{*}_{e}$ of $\R^{E(G)}$, and the dual basis spans the whole
+  dual; hence the image of its range under
+  $(\mathrm{RigidityMap}\,G\,p)^{*}$ is the range of that
+  transpose.
+\end{proof}
+
+\begin{lemma}[Row-independence equals dual-module linear independence]
+  \label{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}
+  \lean{SimpleGraph.edgeSetRowIndependent_iff_linearIndepOn_rigidityRow}
+  \leanok
+  \uses{def:edgeSet-rowIndependent, def:rigidityRow}
+  An edge set $I \subseteq E(G)$ is row-independent at $p$ if and
+  only if the family
+  $\{\mathrm{rigidityRow}\,G\,p\,e\}_{e \in I}$ is linearly
+  independent in $(\mathrm{Framework}\,V\,d)^{*}$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The forgetful map $(\mathrm{Framework}\,V\,d)^{*} \to
+  (\mathrm{Framework}\,V\,d \to \R)$ is $\R$-linear and injective,
+  so it transports linear independence in both directions; both
+  sides reduce to the same linear-independence statement on the
+  same family of underlying functions.
+\end{proof}
+
 \subsubsection{Rank of the rigidity map at a generically rigid placement}
 
 \begin{lemma}[Rank lower bound at a generically rigid placement, d-general]
@@ -184,8 +247,10 @@ and is not formalized.
   \label{lem:exists-rowIndependent-edge-basis}
   \lean{SimpleGraph.exists_edgeSetRowIndependent_basis_dim_two}
   \leanok
-  \uses{def:edgeSet-rowIndependent,
-    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid}
+  \uses{def:edgeSet-rowIndependent, def:rigidityRow,
+    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid,
+    lem:span-range-rigidityRow,
+    lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}
   Let $V$ be finite. If $G$ is generically rigid in dimension $2$, then
   there exists a framework $p$ and an edge set $I \subseteq E(G)$ with
   $|I| = 2 |V| - 3$ which is row-independent at $p$.
@@ -195,22 +260,19 @@ and is not formalized.
   Pick $p$ realising the rank lower bound
   \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid} at
   $d = 2$, so
-  $\dim\,\mathrm{range}\,\mathrm{RigidityMap}\,G\,p \ge 2|V| - 3$. The
-  edge-indexed rows of $\mathrm{RigidityMap}\,G\,p$ span the range of
-  its transpose, which has the same dimension as the range itself by
+  $\dim\,\mathrm{range}\,\mathrm{RigidityMap}\,G\,p \ge 2|V| - 3$. By
+  \cref{lem:span-range-rigidityRow} the rigidity rows span the range
+  of the dual map, which has the same dimension as
+  $\mathrm{range}\,\mathrm{RigidityMap}\,G\,p$ by
   row-rank-equals-column-rank
   (\texttt{LinearMap.finrank\_range\_dualMap\_eq\_finrank\_range}).
   Extend $\emptyset$ to a linearly independent spanning subset of the
   row family via \texttt{exists\_linearIndepOn\_extension}; its
   cardinality equals the dimension and so is at least $2|V| - 3$.
   Truncate via \texttt{Set.exists\_subset\_card\_eq} and read $I$ as
-  the edge labels indexing the chosen rows. The formalization works
-  with rows packaged as elements of the algebraic dual
-  $\mathrm{Framework}\,V\,d \to_{\R} \R$ (so that
-  \texttt{dualMap} rank identities apply); a small bridge lemma
-  \texttt{edgeSetRowIndependent\_iff\_linearIndepOn\_rigidityRow}
-  transports the resulting linear independence back to the
-  function-valued formulation in
+  the edge labels indexing the chosen rows;
+  \cref{lem:edgeSetRowIndependent-iff-linearIndepOn-rigidityRow}
+  transports the dual-module linear independence back to
   \cref{def:edgeSet-rowIndependent}.
 \end{proof}
 
