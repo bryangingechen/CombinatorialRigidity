@@ -427,6 +427,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Polynomial.eval_det_X_add_C` (eval-at-scalar of `det (X • A.map C + B.map C)`)
+- **Where it bit:** `exists_affinelySpanning_rigid_placement` in
+  `RigidityMatroid.lean`, the `hP_eval` block bridging the polynomial-form
+  bad-`t` set `{t | P.IsRoot t}` to the matrix-form bad-`t` set
+  `{t | det (t • M₁ + M₀) = 0}`.
+- **Friction:** mathlib's `Mathlib/LinearAlgebra/Matrix/Polynomial.lean`
+  carries `natDegree_det_X_add_C_le`, `coeff_det_X_add_C_zero`, and
+  `coeff_det_X_add_C_card` (degree and 0/card coefficients of the
+  matrix-polynomial determinant `det (X • A.map C + B.map C) ∈ α[X]`) but no
+  companion `eval`-at-scalar identity. The first pass went `RingHom.map_det`
+  on `evalRingHom t` + `change` to massage the goal + `congr 1; ext i j` +
+  nine-lemma `simp only` (~11 lines).
+- **Resolution:** mirrored as
+  `Polynomial.eval_det_X_add_C (A B : Matrix n n α) (t : α) :
+    eval t (det ((X : α[X]) • A.map C + B.map C)) = (t • A + B).det`.
+  Proof: rewrite `eval t = evalRingHom t`, apply `RingHom.map_det`, then
+  `congr 1; ext i j; simp only [...]` over a focused set of `coe_evalRingHom`
+  / `eval_*` / matrix-coordinate lemmas. `hP_eval` collapses to
+  `fun t => by rw [hP_def, Polynomial.eval_det_X_add_C]`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Polynomial.lean`. Sits
+  naturally alongside the existing `coeff_*` and `natDegree_*` siblings.
+
 ### [mirrored] `Matrix.det_powerDifferences` (row-0-subtracted Vandermonde minor)
 - **Where it bit:** Phase 6 task 4, the `d`-general lift of the
   affinely-spanning rigid placement. The perturbation along the

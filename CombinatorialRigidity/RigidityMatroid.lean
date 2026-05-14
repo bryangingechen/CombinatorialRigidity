@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
+import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Polynomial
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Vandermonde
 import CombinatorialRigidity.TrivialMotions
 import Mathlib.Algebra.Polynomial.Roots
@@ -11,7 +12,6 @@ import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import Mathlib.LinearAlgebra.Dimension.OrzechProperty
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
-import Mathlib.LinearAlgebra.Matrix.Polynomial
 
 /-!
 # The rigidity matroid
@@ -316,18 +316,9 @@ theorem exists_affinelySpanning_rigid_placement [Fintype V] {d : ℕ} {G : Simpl
       have := Polynomial.coeff_det_X_add_C_card M₁ M₀
       rw [show Fintype.card (Fin d) = d from Fintype.card_fin d, ← hP_def, h] at this
       simpa using this.symm
-    -- `P.eval t = (t • M₁ + M₀).det` via `RingHom.map_det` on `evalRingHom t`.
-    have hP_eval : ∀ t : ℝ, P.eval t = (t • M₁ + M₀).det := by
-      intro t
-      have h_det := (Polynomial.evalRingHom t).map_det
-        ((Polynomial.X : Polynomial ℝ) • M₁.map Polynomial.C + M₀.map Polynomial.C)
-      change (Polynomial.evalRingHom t) P = _
-      rw [hP_def, h_det]
-      congr 1
-      ext i j
-      simp only [RingHom.mapMatrix_apply, Polynomial.coe_evalRingHom, Matrix.map_apply,
-        Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Polynomial.eval_add,
-        Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C]
+    -- `P.eval t = (t • M₁ + M₀).det` via `Polynomial.eval_det_X_add_C`.
+    have hP_eval : ∀ t : ℝ, P.eval t = (t • M₁ + M₀).det := fun t => by
+      rw [hP_def, Polynomial.eval_det_X_add_C]
     -- The rows of `t • M₁ + M₀` are `(pt t (q i.succ) - pt t (q 0))` coordinatewise.
     have h_rows : ∀ t : ℝ,
         (t • M₁ + M₀ : Matrix (Fin d) (Fin d) ℝ) =

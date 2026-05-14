@@ -208,16 +208,6 @@ deferred behind the sparsity lemma:
   ~10-line block to ~3 lines. Likely already exists upstream
   under a different name (`Submodule.eq_top_iff_…` / `LinearMap.ext_on`);
   worth a `lean_loogle` search before mirroring.
-- *Mathlib mirror: `Polynomial.eval_det_X_smul_add`.* The d-general
-  analysis-leaf proof (commit 17) has an ~10-line `hP_eval` block
-  showing `((X • A.map C + B.map C).det).eval t = (t • A + B).det`
-  via `RingHom.map_det` on `Polynomial.evalRingHom t` plus a
-  `congr 1; ext i j; simp only [...]` cleanup over 9 simp lemmas.
-  This is a clean upstream-eligible companion to
-  `Polynomial.coeff_det_X_add_C_card` / `natDegree_det_X_add_C_le`
-  (`Mathlib/LinearAlgebra/Matrix/Polynomial.lean`); mirroring it
-  under `CombinatorialRigidity/Mathlib/LinearAlgebra/Matrix/Polynomial.lean`
-  would shrink `hP_eval` from ~10 lines to a one-liner.
 - *Project-internal helper: `Set.exists_injective_fin_of_le_ncard`.*
   The assembly step in `exists_affinelySpanning_rigid_placement`
   spends ~12 lines building an injective `q : Fin (d + 1) → V`
