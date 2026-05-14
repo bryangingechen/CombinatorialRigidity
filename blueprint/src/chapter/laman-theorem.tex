@@ -151,6 +151,8 @@ and is not formalized.
 
 \begin{lemma}[Rank lower bound at a generically rigid placement, dim $2$]
   \label{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}
+  \lean{SimpleGraph.rigidityMap_finrank_range_ge_of_isGenericallyRigid_two}
+  \leanok
   \uses{def:isGenericallyRigid, lem:framework-finrank,
     def:isInfinitesimallyRigid}
   Let $V$ be finite and $G : \mathrm{SimpleGraph}\,V$. If $G$ is
@@ -161,6 +163,7 @@ and is not formalized.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   Pick an infinitesimally rigid framework $p$ witnessing generic
   rigidity. Rank--nullity for $\mathrm{RigidityMap}\,G\,p$ gives
   $\dim\,\mathrm{Framework}\,V\,2 = \dim\,\mathrm{range} + \dim\,\ker$;

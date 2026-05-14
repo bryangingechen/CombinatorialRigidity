@@ -34,6 +34,12 @@ six new red nodes laying out the intended proof — `def:edgeSet-rowIndependent`
 sketch of the target theorem referencing them. The dep-graph at
 `blueprint/web/dep_graph_document.html` is the authoritative view.
 
+**First leaf landed:** `CombinatorialRigidity/RigidityMatroid.lean`
+exists, imported from `LamanTheorem.lean`. The rank lower bound
+`SimpleGraph.rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`
+is proved and the corresponding blueprint entry carries
+`\lean{...}` + `\leanok` on both the statement and the proof.
+
 **Attribution research and prose refinement landed.** Jordán 2016
 §1.3.1 + §2.2 cross-checked the citation chain (local PDF, see
 `../CLAUDE.md` *Reading PDFs in `.refs/`*):
@@ -107,10 +113,15 @@ visible as a dep-graph at `blueprint/web/dep_graph_document.html`
 after `inv bp && inv web`. A red node = not yet formalized; a green
 node = formalized and `\leanok`-tagged. Pick leaf-most red.
 
-The first Phase 6 code commit lays out the dep-graph structure; until
-then, the only red node is `thm:isGenericallyRigid-exists-isLaman-le`
-(the Phase 6 target) and its proof sketch references no intermediate
-forward-mode entries yet.
+Status snapshot at commit-3 (rank-ge lemma): one green node
+(`lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two`); the
+remaining six nodes — `def:edgeSet-rowIndependent`,
+`lem:exists-rowIndependent-edge-basis`,
+`lem:trivialMotions-three-le-ker-of-affinelySpanning-two`,
+`lem:rigidityMap-finrank-range-le-of-affinelySpanning-two`,
+`lem:exists-affinelySpanning-rigid-placement-two`,
+`lem:isSparse-of-rowIndependent-two` — and the target
+`thm:isGenericallyRigid-exists-isLaman-le` stay red.
 
 ## Decisions made during this phase
 
@@ -178,7 +189,7 @@ forward-mode entries yet.
   $\Rightarrow$ direction. Six new red nodes in
   `chapter/laman-theorem.tex` with `\uses{...}` chains; no
   `\lean{...}` or `\leanok` yet.
-- *Commit 2 (this commit):* bibliography + prose refinement.
+- *Commit 2 (`cd0398f`):* bibliography + prose refinement.
   `asimowRoth1978` added to `bibliography.bib` and cited in
   `frameworks.tex` (section preamble) and `laman-theorem.tex` (both
   the $\Rightarrow$ section preamble and the trivial-motions lemma
@@ -188,18 +199,35 @@ forward-mode entries yet.
   1.3.1 (the sparsity step), and Lov\'asz--Yemini 1982 acknowledged
   for the matroid framing of which our (a)+(b) is the easy
   direction. Renders cleanly; [AR78] resolves in both web and print.
+- *Commit 3 (this commit):* first leaf Lean lemma —
+  `CombinatorialRigidity/RigidityMatroid.lean` with
+  `SimpleGraph.rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`.
+  One-liner from `IsInfinitesimallyRigid` + rank-nullity + the
+  `Framework.finrank` fact already proved in `Framework.lean`; closes
+  via `omega`. Wired through `LamanTheorem.lean`'s import list.
+  Blueprint entry `lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two`
+  flipped green (`\lean{...}` + `\leanok` on statement and proof).
 
-**Next concrete commit:** first leaf Lean lemma. Pick the leaf-most
-red node in the dep-graph and formalize. Candidates by likely cost:
-- `lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two` —
-  one-liner from `IsInfinitesimallyRigid` + rank-nullity. Lives in
-  `RigidityMatroid.lean` (new file).
+**Next concrete commit:** the row-independence definition plus the
+basis-extraction lemma. Two candidates, by ordering:
 - `def:edgeSet-rowIndependent` — definition only, no proof
-  obligation. Probably bundled with the rank-ge lemma.
+  obligation. Encoding choice TBD: most natural in Lean is to fix
+  `I : Set G.edgeSet` (the row indices) and require
+  `LinearIndependent ℝ (fun e : I => fun motion => G.RigidityMap p motion e.val)`,
+  i.e. LI of the family of edge-rows viewed as functionals on
+  `Framework V d`. Alternative: package as
+  `Set.Range` /`Submodule.subtype` of the row-projection. Pick
+  whichever feeds `LinearIndependent.extend` cleanly for the
+  basis-extraction lemma immediately downstream.
+- `lem:exists-rowIndependent-edge-basis` — extract a row-independent
+  edge set of size $2 |V| - 3$ from the rank lower bound (now green)
+  plus `lem:rigidityMap-finrank-range-le` (also green). Standard
+  `LinearIndependent.extend` / `Basis.extend` argument on the
+  edge-indexed family.
 
 **Phase 6 completion is uncertain in scope.** Honest read: the rank
-lower bound and the basis-pick are linear-algebra plumbing and
-likely close in one session each. The $(2,3)$-sparsity-from-
+lower bound (now done) and the basis-pick are linear-algebra plumbing
+and likely close in one session each. The $(2,3)$-sparsity-from-
 row-independence lemma contains the only genuinely new mathematical
 content and depends on a to-be-chosen path through the *Blockers*
 list — that's where most risk lives. Plan to assess scope after the

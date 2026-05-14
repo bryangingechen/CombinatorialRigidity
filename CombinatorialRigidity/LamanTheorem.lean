@@ -7,6 +7,7 @@ import CombinatorialRigidity.Framework
 import CombinatorialRigidity.Henneberg
 import CombinatorialRigidity.HennebergRigidity
 import CombinatorialRigidity.Laman
+import CombinatorialRigidity.RigidityMatroid
 
 /-!
 # Laman's theorem
