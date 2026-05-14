@@ -280,6 +280,43 @@ cleanup passes or many small refactors, sub-organize as below.>
 <written when the phase finishes; what unlocks the next phase>
 ```
 
+## Referencing prior work
+
+When notes, blueprint chapters, design docs, or commit messages
+mention a named theorem, author, year, paper, section number, or
+"due to X" attribution, verify it against a primary source before
+writing it. Hallucinated section pointers (e.g. *"Whiteley §3"* with
+no paper specified) and mis-attributions (crediting a populariser or
+surveyor instead of the original prover) are the failure modes — once
+written down they propagate through future sessions and read as
+authoritative.
+
+The minimum bar:
+
+- **Author + year resolve to a real publication.** Confirm title,
+  journal/series, volume, and page range against a primary source
+  (DOI landing page, publisher metadata, NASA ADS).
+- **"X §N" references hold.** §N must exist in X and contain what
+  you claim. A previous-session "Jordán §3.1" was actually about
+  M-circuits, not the Henneberg decomposition the prose claimed —
+  if you cannot quickly verify, write *"classical"* or *"see X for a
+  survey"* without a section number rather than guess one.
+- **Attribution names who proved the result.** A survey or textbook
+  is fine as a *"presentation we follow"* pointer alongside the
+  primary citation, not in place of it. *"Abstract rigidity matroid
+  (Whiteley)"* was wrong — Graver 1991 introduced the concept; the
+  Servatius SIAM survey explicitly says so.
+
+Jordán 2016 (*Combinatorial Rigidity: Graphs and Matroids in the
+Theory of Rigid Frameworks*, MSJ Memoirs 34) is the project's
+de-facto cross-check for rigidity-theory attributions; its
+bibliography resolves most papers the blueprint or notes would cite.
+A local PDF copy under `.refs/` (gitignored) is convenient when
+present.
+
+For formal `\cite{}` work in the blueprint, see `blueprint/CLAUDE.md`
+*Citations* and *Static checks before commit*.
+
 ## Project-history reminder
 
 This project was originally developed at `Archive/CombinatorialRigidity/`

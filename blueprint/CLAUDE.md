@@ -113,6 +113,41 @@ Use `\cref{...}` / `\Cref{...}` (cleveref), never bare `\ref`. Both
 `print.tex` and `web.tex` load cleveref with `capitalize`, so
 `\Cref{lem:foo}` produces "Lemma 1.2" with the right capitalization.
 
+### Citations
+
+The blueprint loads a BibTeX bibliography from `src/bibliography.bib`
+in both entry points (`print.tex`, `web.tex`) with the `amsalpha`
+style. Cite published work with `\cite{key}`, combining multiple
+citations with comma separation: `\cite{tayWhiteley1985,jordan2016}`.
+
+Key convention: `firstAuthorYear` for single-author works
+(`laman1970`), camelCased authors for multi-author works
+(`tayWhiteley1985`, `graverServatiusServatius1993`). Match what's
+already in `bibliography.bib`.
+
+Top-level `CLAUDE.md → Referencing prior work` has the accuracy bar.
+For the blueprint specifically:
+
+- **Before adding a new bib entry**, verify title, authors,
+  journal/series, volume, year, and page range against a primary
+  source — DOI landing page, publisher metadata, or NASA ADS for
+  older journals. Don't copy from second-hand citations without
+  cross-checking.
+- **Match attribution to who proved it.** When the modern
+  presentation matters, name both: *"classical strategy of
+  Tay--Whiteley 1985, in the modern presentation of Jord\'an 2016
+  §2.2"* (`chapter/intro.tex` is the canonical example).
+- **Verify any §N pointers** — §N must exist in the cited work and
+  contain what you claim. Drop the section pointer rather than
+  guess.
+
+`leanblueprint pdf` (CI) and `inv bp` (local) drive `latexmk`, which
+runs `bibtex` and produces `print/print.bbl`. `inv bp` also copies
+that file to `src/web.bbl` so the subsequent `inv web` plastex run
+renders the bibliography page and resolves in-prose `\cite{}`s. Both
+formats use the same `amsalpha` style, so labels like `[TW85]`,
+`[Jor16]` are stable across formats.
+
 ### What to include vs. skip
 
 **Be selective.** The blueprint is a reader's doc for a human
@@ -218,6 +253,22 @@ comm -23 /tmp/uses.txt /tmp/labels.txt   # should be empty
 
 Same idea for `\Cref{...}` / `\cref{...}`. Any output from `comm -23`
 is a broken reference.
+
+**All `\cite{...}` keys resolve, and every bib entry is used:**
+
+```sh
+grep -hoE '\\cite\{[^}]+\}' chapter/*.tex \
+  | sed 's/\\cite{//;s/}$//' | tr ',' '\n' | sed 's/^ *//;s/ *$//' \
+  | sort -u > /tmp/cite-keys.txt
+grep -hoE '^@[a-z]+\{[^,]+' bibliography.bib | sed 's/^@[a-z]*{//' \
+  | sort -u > /tmp/bib-keys.txt
+comm -23 /tmp/cite-keys.txt /tmp/bib-keys.txt  # cites without entries
+comm -13 /tmp/cite-keys.txt /tmp/bib-keys.txt  # entries never cited
+```
+
+Both `comm` outputs should be empty. The first signals a typo or
+missing entry; the second signals a defined-but-unused entry —
+either cite it or remove it.
 
 ## Local build
 
