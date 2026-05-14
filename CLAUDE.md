@@ -134,6 +134,12 @@ blueprint chapter.)
   Merging it usually requires only running CI green; do not bump the
   pins by hand between cycles unless there's a specific reason
   (security fix, action removed, etc.).
+- **Lean LSP MCP available.** `.mcp.json` at the repo root registers
+  [`lean-lsp-mcp`](https://github.com/oOo0oOo/lean-lsp-mcp); approve
+  the server on first prompt. File paths resolve against the project
+  root. Tactical guidance (when to use which tool, cold-start
+  workaround, which external services are reliable) lives in
+  `TACTICS.md` § 7.
 
 ### Before each commit — friction review (mandatory)
 
