@@ -398,20 +398,25 @@ Tasks, ordered by severity (heaviest first):
    *AffineIndependent ↔ LinearIndependent reindex* is now [resolved];
    key lesson: mathlib's `Fin`-indexed-family API is denser than it
    looks, sweep `lean_loogle` / `lean_leanfinder` before mirroring.
-   *Two remaining candidate fixes assessed but not landed:*
+   *Two remaining candidate fixes assessed; both deliberately deferred
+   in favor of task 4 below (the d-general lift subsumes them):*
    - Mirror `linearIndependent_pair_of_det_ne_zero` (17 lines, private)
      under `CombinatorialRigidity/Mathlib/LinearAlgebra/` as a
-     `Fin 2 → R` version. Cost/benefit: relocates the helper without
-     reducing the calling proof's line count (the `EuclideanSpace ↔
-     Fin 2 → ℝ` bridge it'd require at the call site negates the
-     code-motion savings). Leave as a private helper; lift only if a
-     second caller emerges.
+     `Fin 2 → R` version. Cost/benefit at d=2: relocates the helper
+     without reducing the calling proof's line count (the
+     `EuclideanSpace ↔ Fin 2 → ℝ` bridge it'd require at the call site
+     negates the code-motion savings). *At d-general*: the helper
+     dissolves entirely — superseded by mathlib's
+     `Matrix.linearIndependent_rows_of_det_ne_zero`. Defer until task 4.
    - Eliminate the eight `set` scalars $A_0, A_1, B_0, B_1, X, Y, U, Z$
-     by inlining + `ring`. Assessment: rejected. The eight names are
-     not Lean noise — they name the eight independent quantities
-     entering the determinant decomposition; a math reader would also
-     introduce them mentally. The `set` block reads as math, not
-     boilerplate.
+     by inlining + `ring`. *Revised assessment* (after the d-general
+     question): the eight scalars are the entries of two $2\times 2$
+     matrices $M_0$ (constant offset) and $M_1$ (perturbation
+     direction); their existence is symptomatic of *premature dim-2
+     specialization*, not math-faithfulness. At d-general they
+     dissolve into `Matrix.det (M_0 + t \cdot M_1)`. Inlining at d=2
+     would save ~12 LoC but would be discarded by task 4. **Hold off**
+     — don't clean d=2 proofs that the d-general lift will rewrite.
 
 2. **`exists_edgeSetRowIndependent_basis_dim_two` — "small dual
    bridge" isn't small.** ~60 lines of infrastructure
@@ -439,7 +444,9 @@ Tasks, ordered by severity (heaviest first):
    uses `Finset.sum_eq_single` whose off-term branch is a 30-line
    `split_ifs` + `omega` over `Fin.val` comparisons, handling each
    of `elemSkewMap`'s two `if-then-else` summands separately.
-   Candidate fixes:
+   *Independent of task 4* — this proof is already d-general; the
+   d-general lift of the affinely-spanning placement doesn't touch
+   `TrivialMotions.lean`. Candidate fixes:
    - Re-express `elemSkewMap i j x` so its application is a single
      `Pi.single`-style expression rather than nested `if`s — e.g.
      `x j • PiLp.single 2 i 1 - x i • PiLp.single 2 j 1`. Then
@@ -452,12 +459,76 @@ Tasks, ordered by severity (heaviest first):
      vanish for the ordered-pair index range" to one sentence naming
      the `(i, j) ≠ (a, b)` case-split.
 
+4. **D-general lift of `exists_affinelySpanning_rigid_placement_two`**
+   (promoted from *Deferred follow-up*). The blueprint's "the
+   determinant is a polynomial in $t$ whose leading coefficient is the
+   Vandermonde determinant" maps clause-for-clause to a clean
+   matrix-level proof at d-general, but our dim-2 specialization
+   expands it by hand and accumulates the bookkeeping noted in task 1.
+   **Matrix reframing.** The eight scalars $A_0, A_1, B_0, B_1, X, Y, U, Z$
+   are entries of two $2\times 2$ matrices:
+   - $M_0$ rows: $p_0(b) - p_0(a)$ and $p_0(c) - p_0(a)$ (constant offset).
+   - $M_1$ rows: $w(b) - w(a)$ and $w(c) - w(a)$ (perturbation direction).
+
+   Then $\det(M_0 + t \cdot M_1) \in \R[t]$ has degree $\le 2$ and its
+   leading coefficient is $\det M_1$. At dim-2, $\det M_1$ is the
+   Vandermonde-difference determinant on $(\phi a, \phi b, \phi c)$,
+   factoring as $(\phi b - \phi a)(\phi c - \phi a)(\phi c - \phi b)$;
+   at d-general, it is the full $d \times d$ Vandermonde-difference
+   determinant on $(\phi v_0, \ldots, \phi v_d)$, factoring as
+   $\prod_{i < j} (\phi v_j - \phi v_i)$ by `Matrix.det_vandermonde`.
+
+   **API needed (~70 LoC, all upstream-eligible):**
+   - **`det(M_0 + t \cdot M_1)` as a polynomial in $t$**: package the
+     1-parameter family `t \mapsto \det(M_0 + t \cdot M_1)` as
+     `Polynomial.eval t p` for some `p : R[X]` of degree $\le d$.
+     Mathlib has `Matrix.charpoly` and `Polynomial.det` infrastructure;
+     check what's directly usable. ~30 LoC.
+   - **Leading-coefficient lemma**: $t^d$ coefficient of
+     $\det(M_0 + t \cdot M_1)$ is $\det M_1$. Follows from
+     column-linearity of $\det$. ~10 LoC.
+   - **AffineIndependent ↔ nonzero det of difference matrix** at
+     d-general: route through `affineIndependent_iff_linearIndependent_vsub`
+     + `Matrix.linearIndependent_rows_iff_isUnit` +
+     `IsUnit ↔ det ≠ 0` (over a field) + `WithLp.linearEquiv` to
+     bridge `EuclideanSpace ↔ Fin d → ℝ`. ~15 LoC.
+   - **Vandermonde-difference factoring**: glue from
+     `Matrix.det_vandermonde` to the "row-0-subtracted" form we
+     actually need. ~10 LoC.
+
+   **What dissolves at d-general:**
+   - The eight scratch scalars (absorbed into `M_0`, `M_1`).
+   - The private helper `linearIndependent_pair_of_det_ne_zero`
+     (superseded by `Matrix.linearIndependent_rows_of_det_ne_zero` +
+     bridge).
+   - The private helper `finite_zeros_quadratic` (superseded by
+     direct use of `Polynomial.finite_setOf_isRoot` on the degree-$d$
+     polynomial).
+   - The hand-rolled `ring` factoring of $\gamma$ (replaced by
+     `Matrix.det_vandermonde`).
+   - The intermediate `have hu0, hu1, hv0, hv1` decompositions
+     (absorbed into the matrix-of-differences definition).
+
+   **Cost estimate**: ~70 LoC of upstream-eligible API, ~80 LoC of
+   d-general proof body, replacing the current ~150 LoC dim-2 proof
+   plus its two private helpers. Net: comparable LoC, but the proof
+   reads exactly like the blueprint prose, and the API is generally
+   useful (a Vandermonde-difference factorization + a
+   `det(A + t \cdot B)` polynomial framework are both reusable).
+
 **Bar for each task:** try the candidate fixes in order; commit the
 fix that lands. If all candidates fail for a given point, file a
 FRICTION entry naming the blocker and add the blueprint aside.
-Tasks are independent of (and may interleave with) the sparsity-lemma
-work below; doing (1)–(3) first keeps the established proofs honest
-before the next layer lands on top of them.
+
+**Sequencing.** Tasks 2 and 3 are independent of task 4 and may be
+tackled in any order, including before the sparsity lemma. Task 4
+(the d-general lift) is heavier (likely 2–3 sessions) and subsumes
+the remaining task-1 cleanup work; do **not** inline the eight
+scalars or mirror the private helpers at dim-2 before task 4 lands,
+since they'd be discarded immediately. Task 4 itself can interleave
+with or follow the sparsity-side lemma; sparsity consumes the
+*existence* of the affinely-spanning rigid placement, not its proof
+internals.
 
 **Next session — the sparsity-side lemma
 `lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning
@@ -489,13 +560,10 @@ basis-pick (commit 6) and affinely-spanning placement (commit 11)
 to close the iff. The sparsity-side lemma is the last step with
 genuine combinatorial content; the assembly is mechanical glue.
 
-**D-general lift of affinely-spanning placement.** Deferred
-follow-up (no current commit). The same proof structure works for
-dim $d$ via the moment curve $w(v) = (\phi v, (\phi v)^2, \ldots,
-(\phi v)^d)$ and the $(d+1) \times (d+1)$ Vandermonde determinant,
-but requires routing through `Matrix.det_vandermonde` and a
-polynomial-expansion lemma for "$t^d$-coefficient of $\det(A + tB)$
-is $\det(B)$" — not pre-built in mathlib. Roughly 150 LoC additional.
+**D-general lift of affinely-spanning placement.** Tracked as task 4
+of the *Pending Lean-simplification pass* above (promoted from this
+former *deferred follow-up* slot). See that task for the matrix
+reframing, API sketch, and "what dissolves at d-general" list.
 
 **Phase 6 completion remains uncertain in scope** as of commit 11.
 The analysis side is closed (affinely-spanning rigid placement);
