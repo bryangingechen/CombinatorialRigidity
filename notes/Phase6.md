@@ -181,8 +181,14 @@ Status snapshot at commit-4 (definition): two green nodes
 
 - **Linear-algebra basis-pick.** Standard `LinearIndependent.extend`
   or `Basis.extend` should let us pick $2|V| - 3$ LI rows out of the
-  rigidity matrix's edge-indexed row family. No-op until the rank
-  lower bound lands.
+  rigidity matrix's edge-indexed row family. The straightforward
+  route through `exists_linearIndepOn_extension` requires
+  identifying row rank with column rank
+  (`LinearMap.finrank_range_dualMap_eq_finrank_range` plus a
+  standard-basis-of-dual identification). **Next-session plan:**
+  investigate `apnelson1/Matroid` first — see *Hand-off / next phase*
+  below. A linear-matroid bridge would collapse this proof to one
+  line.
 
 ## Hand-off / next phase
 
@@ -226,26 +232,64 @@ not `Set G.edgeSet`, so the assembly proof will transport via
 than carry it through the basis lemma + sparsity lemma + every
 intermediate API.
 
-**Next concrete commit:** `lem:exists-rowIndependent-edge-basis` —
-extract a row-independent edge set of size $2 |V| - 3$ from the rank
-lower bound. The key ingredient is `exists_linearIndepOn_extension`
-(in `Mathlib/LinearAlgebra/LinearIndependent/Lemmas.lean`) seeded
-with the empty LI set and the universe of edges; the resulting `b`
-is an LI subset of `G.edgeSet` spanning the row space. Then one
-needs $\dim\,\mathrm{span}(\mathrm{rows}) = \dim\,\mathrm{range}\,R$
-(row rank = column rank): mathlib has
-`LinearMap.finrank_range_dualMap_eq_finrank_range`, but plugging it
-in requires identifying `Set.range v` (rows as elements of
-`Framework V d →ₗ[ℝ] ℝ`) with `Set.range (R.dualMap)` via the
-standard-basis-as-dual-basis identification. Once $|b| \ge 2|V|-3$
-is established, extract an exact-size subset via
-`Set.exists_subset_ncard_eq` + `EdgeSetRowIndependent.mono`.
+**Next session — start with a linear-matroid investigation.** Before
+attempting `lem:exists-rowIndependent-edge-basis`, look into Peter
+Nelson's external matroid library
+[`apnelson1/Matroid`](https://github.com/apnelson1/Matroid) (some of
+the authors overlap with mathlib's matroid module) for a more
+developed matroid API than mainline mathlib's. The question is
+whether it already carries a `Matroid.ofLinearIndepOn` bridge (or
+similar "vector matroid" constructor) that would make the three
+remaining `(⇒)`-direction leaves substantially cleaner — see the
+*Architectural choices* discussion in this file's predecessor
+sections, plus the in-session writeup that motivated this plan.
+
+Concrete investigation steps:
+
+1. *Skim repo structure.* What does `apnelson1/Matroid` ship that
+   mathlib doesn't? Look for: `Matroid.ofLinearIndepOn` (or
+   `linearMatroid`, `vectorMatroid`, `Matroid.repr`, etc.), rank
+   identities for linear matroids, basis-of-given-size lemmas. Read
+   the README and any blueprint / doc page.
+2. *Mathlib relationship.* Is it intended for upstreaming?
+   Pinned-version compatible with our toolchain? Any commits already
+   PR'd to mathlib?
+3. *Cost-benefit for Phase 6.* If the bridge exists, the basis lemma
+   becomes a one-liner (`Matroid.exists_indep_of_le_rank`) and the
+   sparsity lemma reduces to a matroid containment. If not, falling
+   back on `exists_linearIndepOn_extension` +
+   `finrank_range_dualMap_eq_finrank_range` is fine — that's the
+   in-session plan that was already partly drafted (notes preserved
+   below).
+4. *Adoption decision.* Three branches: (a) depend on `apnelson1/Matroid`
+   as a Lake dep; (b) mirror a small slice under
+   `CombinatorialRigidity/Mathlib/Combinatorics/Matroid/` and PR it;
+   (c) skip the matroid abstraction and grind through the linear-algebra
+   directly. (b) is the project's standard mirror playbook;
+   (c) is the current fallback.
+
+Likely-still-relevant draft (matroid-agnostic path, if we end up at
+branch (c)):
+
+> Apply `exists_linearIndepOn_extension`
+> (`Mathlib/LinearAlgebra/LinearIndependent/Lemmas.lean`) with the
+> empty LI set and the universe of edges; the resulting `b` is an LI
+> subset of `G.edgeSet` whose `v '' b` spans `Set.range v` (the row
+> space). Identify $\dim\,\mathrm{span}(\mathrm{rows}) =
+> \dim\,\mathrm{range}\,R$ via
+> `LinearMap.finrank_range_dualMap_eq_finrank_range` — requires
+> connecting `Set.range v` (rows as functions / dual elements) to
+> `Set.range (R.dualMap)` via the standard-basis identification
+> $(G.\mathrm{edgeSet} \to \mathbb R)^* \cong G.\mathrm{edgeSet} \to \mathbb R$.
+> Once $|b| \ge 2|V|-3$ is established, extract an exact-size subset
+> via `Set.exists_subset_ncard_eq` + `EdgeSetRowIndependent.mono`.
 
 **Phase 6 completion is uncertain in scope.** Honest read: the rank
-lower bound (now done), the definition (now done), and the basis-pick
-(next) are linear-algebra plumbing and likely close in one session
-each. The $(2,3)$-sparsity-from-row-independence lemma contains the
-only genuinely new mathematical content and depends on a to-be-chosen
-path through the *Blockers* list — that's where most risk lives. Plan
-to assess scope after the sparsity-side lemma's first sub-node lands;
-do not commit to a one-session full Phase 6 close.
+lower bound (done), the definition (done), and the basis-pick
+(blocked on the matroid investigation) are linear-algebra plumbing
+and likely close in one session each. The $(2,3)$-sparsity-from-
+row-independence lemma contains the only genuinely new mathematical
+content and depends on a to-be-chosen path through the *Blockers*
+list — that's where most risk lives. Plan to assess scope after the
+sparsity-side lemma's first sub-node lands; do not commit to a
+one-session full Phase 6 close.
