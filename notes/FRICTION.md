@@ -165,24 +165,29 @@ lemma; resolved otherwise.
 - **Status:** open (project-internal note). Worth lifting to
   `TACTICS.md` § *Tactics and quirks* if it bites a second time.
 
-### [open] `AffineIndependent` ↔ `LinearIndependent` reindex from `{x : Fin 3 // x ≠ 0}` to `Fin 2`
+### [resolved] `AffineIndependent` ↔ `LinearIndependent` reindex from `{x : Fin 3 // x ≠ 0}` to `Fin 2`
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
   `RigidityMatroid.lean`. After `affineIndependent_iff_linearIndependent_vsub
   ℝ ![pt t a, pt t b, pt t c] 0` the goal is LI of a family
   indexed by `{x : Fin 3 // x ≠ 0}`, but the natural witness is
   `LinearIndependent ℝ ![u, v]` on `Fin 2`.
-- **Friction:** mathlib doesn't ship a direct
-  `AffineIndependent ℝ ![a, b, c] ↔ LinearIndependent ℝ ![b - a, c - a]`
-  bridge. We hand-coded the reindex `{x : Fin 3 // x ≠ 0} → Fin 2`
-  sending `⟨1, _⟩ ↦ 0`, `⟨2, _⟩ ↦ 1` (~10 lines including injectivity
-  via `fin_cases`) plus a `convert ... using 1` + `funext i; fin_cases
-  i` value-matching step.
-- **Proposed fix:** mirror an `affineIndependent_three_iff_linearIndependent_pair`
-  lemma under `CombinatorialRigidity/Mathlib/LinearAlgebra/AffineSpace/Independent.lean`
-  packaging this reindex; eventually upstream. Roughly 15 lines.
-- **Status:** open. Acceptable inlined for now; lift if the dim-2
-  sparsity-from-row-independence proof or the d-general lift hits the
-  same reindex.
+- **Resolution:** mathlib *does* ship the canonical reindex — just not
+  packaged in the obvious place: `finSuccAboveEquiv (p : Fin (n + 1)) :
+  Fin n ≃ { x : Fin (n + 1) // x ≠ p }` in
+  `Mathlib.Logic.Equiv.Fin.Basic` plus `linearIndependent_equiv` in
+  `Mathlib.LinearAlgebra.LinearIndependent.Defs`. Composing the two
+  rewrites the goal directly to `LinearIndependent ℝ ![p_b -ᵥ p_a,
+  p_c -ᵥ p_a]`, no hand-rolled reindex needed. The earlier *Proposed
+  fix* (mirror a 15-line bridge under `CombinatorialRigidity/Mathlib/`)
+  was premature — the right primitives were already upstream; we just
+  hadn't searched for them. Discovery routed through
+  `EuclideanGeometry.oangle_ne_zero_and_ne_pi_iff_affineIndependent`'s
+  proof in mathlib, which uses the same pair.
+- **Lesson:** before mirror-ing a bridge under
+  `CombinatorialRigidity/Mathlib/`, sweep `lean_loogle` / `lean_leanfinder`
+  for the canonical primitives. The "mirror it ourselves" instinct
+  bloats the project surface; mathlib's API for `Fin`-indexed families
+  is denser than it looks.
 
 ### [open] `AffineSubspace.nonempty_of_affineSpan_eq_top` takes `(k V P)` explicit
 

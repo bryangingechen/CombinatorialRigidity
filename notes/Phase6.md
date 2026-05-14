@@ -388,25 +388,30 @@ proof strategy, upstreamable helper, sharper mathlib tactic /
 proof-automation use — and only on failure to add a prose aside.
 Tasks, ordered by severity (heaviest first):
 
-1. **`exists_affinelySpanning_rigid_placement_two` — AffineIndependent
-   $\Leftrightarrow$ nonzero $2\times 2$ det elided.** Prose treats
-   "collinearity = quadratic in $t$" as immediate; Lean
-   (`RigidityMatroid.lean:339-420`) expands to ~50 lines of
-   `affineIndependent_iff_linearIndependent_vsub` + a hand-rolled
-   `{x : Fin 3 // x ≠ 0} ↪ Fin 2` reindex + eight scratch scalars
-   $A_0, A_1, B_0, B_1, X, Y, U, Z$ + `PiLp.{add,sub,smul}_apply` simp.
-   Candidate fixes:
-   - `lean_loogle` / `lean_leanfinder` for a direct
-     `AffineIndependent ![a, b, c] ↔ <det of differences> ≠ 0` (dim-2
-     form, or a d-general Cayley-Menger / Gram form). If present, the
-     reindex + private helper both collapse.
-   - If absent, mirror `linearIndependent_pair_of_det_ne_zero` under
-     `CombinatorialRigidity/Mathlib/LinearAlgebra/` — it is pure
-     linear algebra and upstream-eligible. The cost stays but the
-     mirror lemma's existence makes the blueprint's silence honest.
-   - Re-express coordinate expansions with `EuclideanSpace`-level
-     `WithLp` / `PiLp.single` simp lemmas, replacing the eight `set`
-     scalars with one or two `ring`-normalised expressions.
+1. ~~**`exists_affinelySpanning_rigid_placement_two` — AffineIndependent
+   $\Leftrightarrow$ nonzero $2\times 2$ det elided.**~~ **Substantially
+   resolved.** The dominant friction (~14 lines of hand-rolled
+   `{x : Fin 3 // x ≠ 0} ↪ Fin 2` reindex + `convert ... using 1` +
+   `funext` + `fin_cases`) collapsed to 5 lines using mathlib's
+   `finSuccAboveEquiv (0 : Fin 3) : Fin 2 ≃ { x : Fin 3 // x ≠ 0 }`
+   composed with `linearIndependent_equiv`. The FRICTION entry
+   *AffineIndependent ↔ LinearIndependent reindex* is now [resolved];
+   key lesson: mathlib's `Fin`-indexed-family API is denser than it
+   looks, sweep `lean_loogle` / `lean_leanfinder` before mirroring.
+   *Two remaining candidate fixes assessed but not landed:*
+   - Mirror `linearIndependent_pair_of_det_ne_zero` (17 lines, private)
+     under `CombinatorialRigidity/Mathlib/LinearAlgebra/` as a
+     `Fin 2 → R` version. Cost/benefit: relocates the helper without
+     reducing the calling proof's line count (the `EuclideanSpace ↔
+     Fin 2 → ℝ` bridge it'd require at the call site negates the
+     code-motion savings). Leave as a private helper; lift only if a
+     second caller emerges.
+   - Eliminate the eight `set` scalars $A_0, A_1, B_0, B_1, X, Y, U, Z$
+     by inlining + `ring`. Assessment: rejected. The eight names are
+     not Lean noise — they name the eight independent quantities
+     entering the determinant decomposition; a math reader would also
+     introduce them mentally. The `set` block reads as math, not
+     boilerplate.
 
 2. **`exists_edgeSetRowIndependent_basis_dim_two` — "small dual
    bridge" isn't small.** ~60 lines of infrastructure

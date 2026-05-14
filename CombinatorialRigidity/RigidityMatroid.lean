@@ -397,27 +397,15 @@ theorem exists_affinelySpanning_rigid_placement_two [Fintype V] {G : SimpleGraph
     -- Contradiction: assume the determinant is nonzero, derive AI, contradict `ht`.
     by_contra h_quad_ne
     apply ht
-    rw [affineIndependent_iff_linearIndependent_vsub ℝ ![pt t a, pt t b, pt t c] 0]
-    -- Bridge `LinearIndependent ℝ ![u, v]` to LI on `{x : Fin 3 // x ≠ 0}`.
+    rw [affineIndependent_iff_linearIndependent_vsub ℝ ![pt t a, pt t b, pt t c] 0,
+      ← linearIndependent_equiv (finSuccAboveEquiv (0 : Fin 3))]
+    -- Composition with `finSuccAboveEquiv 0 : Fin 2 ≃ {x : Fin 3 // x ≠ 0}` reduces the
+    -- difference family to `![u, v]`; nonzero `2×2` det closes LI of the pair.
     have h_LI_pair : LinearIndependent ℝ ![u, v] :=
       linearIndependent_pair_of_det_ne_zero (h_det_eq ▸ h_quad_ne)
-    -- Reindex via the injection `{ x // x ≠ 0 } ↪ Fin 2` sending `⟨1, _⟩ ↦ 0`, `⟨2, _⟩ ↦ 1`.
-    let reindex : { x : Fin 3 // x ≠ 0 } → Fin 2 :=
-      fun i => if i.val = 1 then (0 : Fin 2) else 1
-    have h_reindex_inj : Function.Injective reindex := by
-      rintro ⟨i, hi⟩ ⟨j, hj⟩ hij
-      apply Subtype.ext
-      simp only [reindex] at hij
-      have hi0 : i ≠ 0 := hi
-      have hj0 : j ≠ 0 := hj
-      fin_cases i <;> fin_cases j <;> simp_all (config := { decide := true })
-    convert h_LI_pair.comp reindex h_reindex_inj using 1
-    funext i
-    obtain ⟨i, hi⟩ := i
-    fin_cases i
-    · exact absurd rfl hi
-    · simp [hu_def, reindex]
-    · simp [hv_def, reindex]
+    convert h_LI_pair using 1
+    ext i
+    fin_cases i <;> simp [finSuccAboveEquiv_apply, hu_def, hv_def]
   -- Step 6: assemble the global bad set as a finite union.
   let triples : Finset (V × V × V) :=
     (Finset.univ : Finset (V × V × V)).filter
