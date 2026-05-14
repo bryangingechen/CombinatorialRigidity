@@ -84,23 +84,22 @@ blueprint chapter.)
   for the workflow-mode rationale. Backfill mode (Phases 1–5) writes
   the blueprint chapter end-to-end after the Lean lands; forward mode
   inverts that so the dep-graph doubles as the live to-do list.
-- **Update `notes/PhaseN.md` before each commit, not just at
-  end-of-session.** The notes file is the contract for the next
-  agent and the source of truth for the active phase's status. Each
-  commit that meaningfully changes the project state — a lemma
-  landed, a decision taken, a blocker resolved or surfaced, a piece
-  of research done — should touch the notes' *Current state*, *Hand-off*,
-  *Decisions made*, or *Blockers* section in the same commit, so
-  every commit's tree is internally consistent. Letting notes drift
-  across multiple commits is the failure mode this rule prevents:
-  by end-of-session you've forgotten which commit introduced which
-  change, and the catch-up pass either misses a decision entirely
-  or buries it under "this session". Per-commit updates are cheap
-  (often a 2-line edit) and keep the hand-off contract honest.
-  *(End-of-session work — friction review, ROADMAP-row flips on
-  phase completion, lift-on-promotion to TACTICS / DESIGN — still
-  happens at the boundary, but those are higher-level checkpoints,
-  not the per-commit baseline.)*
+- **Every commit is a potential handoff point.** Treat each commit
+  as if the session could end on it. The pre-commit checklist below
+  (*Before each commit — friction review* and *Before each commit —
+  keep the hand-off contract honest*) runs on every commit, not just
+  the last one of a session — there is no special "session-end"
+  work that doesn't already fall out of doing those two well on each
+  commit. Phase-completion work is the one genuine exception: that
+  fires on the commit that closes a phase, whenever in the session
+  it lands, and is documented separately under *When this commit
+  closes a phase*.
+- **State the handoff state in one sentence after each commit.**
+  Once a commit lands, write one sentence to the user: either
+  *"clean handoff point; next agent picks up at X"* or
+  *"intentionally mid-step; if you stop me now, Y is the loose end."*
+  Cheap, lets the user judge whether to stop or continue without
+  the agent unilaterally drawing a session boundary.
 - **Before committing, run both `lake build` and `lake lint`.** Both
   are CI gates (see `.github/workflows/push_pr.yml`); a failing lint
   blocks merge as surely as a failing build. The full-project linter
@@ -136,12 +135,12 @@ blueprint chapter.)
   pins by hand between cycles unless there's a specific reason
   (security fix, action removed, etc.).
 
-### Ending — friction review (mandatory)
+### Before each commit — friction review (mandatory)
 
-Before committing, do a **friction review**. It is what keeps the
+Before each commit, do a **friction review**. It is what keeps the
 project's API gaps from accumulating silently.
 
-1. **Re-read the lemmas you proved this session.** For each one:
+1. **Re-read the lemmas this commit adds or changes.** For each one:
    - Did any rewrite chain feel longer than it should have?
      (Two-rewrite glue lemmas — `coe_X` then `card_X` — are the
      usual culprit.)
@@ -189,23 +188,25 @@ project's API gaps from accumulating silently.
      resolved/mirrored as appropriate). Even a one-line entry is
      valuable.
 
-3. **No new entries this session is fine** — but only after you've
+3. **No new entries this commit is fine** — but only after you've
    walked the *Concrete signals* checklist above. "I didn't hit any"
    is fine; "I didn't think about it" is the failure mode this rule
    exists to prevent.
 
-### Ending — leave the project ready for the next agent
+### Before each commit — keep the hand-off contract honest
 
 The contract: **ROADMAP.md plus the active `notes/PhaseN.md` should be
 enough to identify the next concrete task** without reading any
-source file or commit history.
+source file or commit history. Every commit's tree should satisfy
+this, since every commit is a potential session boundary.
 
 In the same commit as the friction review:
 
-- **Update `notes/PhaseN.md`** — the active phase's "Current state",
-  "Next", and "Blockers" sections so a cold reader can resume. When
-  writing the *Hand-off / next phase* section, name the **smallest
-  concrete commit** that moves the next phase forward, not the full
+- **Update `notes/PhaseN.md`** — the active phase's *Current state*,
+  *Decisions made*, *Blockers*, and *Hand-off / next phase* sections,
+  so they reflect what this commit changes. A 2-line edit is fine;
+  silence is not. When writing *Hand-off / next phase*, name the
+  **smallest concrete commit** that moves work forward, not the full
   target theorem. If you genuinely don't know whether the next lemma
   is one session's work or three, say so explicitly: "land the iso
   half; assess the Laman-preservation half once it closes" beats
@@ -221,21 +222,6 @@ In the same commit as the friction review:
   replace the Phase N entry with a one-line pointer. Cross-cutting
   lessons that stay in phase notes rot — this is the rule that
   prevents Phase notes from accumulating into 500-line documents.
-- **If the phase finished:**
-  - Flip its row in the ROADMAP Status table to ✓.
-  - **Compress its planning section in ROADMAP** to a one-paragraph
-    summary plus a pointer to `notes/PhaseN.md`. Phase 1's section
-    is the canonical model. The lemma list and decisions live in
-    `notes/PhaseN.md`; ROADMAP carries the hand-off summary.
-  - **Review project organization.** Re-skim ROADMAP.md, TACTICS.md,
-    and FRICTION.md (status sections). Have decisions in
-    `notes/PhaseN.md` accumulated past the lift-on-promotion
-    threshold? Has FRICTION.md grown unscannable? Is any DESIGN.md /
-    ROADMAP.md prose-count or section-name reference stale? Apply
-    the small fix in this commit if obvious; otherwise file a
-    project-organization friction entry to address next phase. This
-    step is what keeps the docs from drifting between phase
-    boundaries.
 - **If you answered a "Choices to revisit" entry** in `DESIGN.md`,
   update it.
 
@@ -243,6 +229,27 @@ In the same commit as the friction review:
 section. If you can't summarize the next agent's first task in one
 sentence, the section needs more compression or more pointer
 discipline.
+
+### When this commit closes a phase
+
+Phase completion fires regardless of where in a session it happens.
+The commit that takes the last red node green for a phase (or that
+otherwise discharges the phase's target) carries extra work *on top
+of* the per-commit checklist above:
+
+- Flip the phase's row in the ROADMAP Status table to ✓.
+- **Compress its planning section in ROADMAP** to a one-paragraph
+  summary plus a pointer to `notes/PhaseN.md`. Phase 1's section is
+  the canonical model. The lemma list and decisions live in
+  `notes/PhaseN.md`; ROADMAP carries the hand-off summary.
+- **Review project organization.** Re-skim ROADMAP.md, TACTICS.md,
+  and FRICTION.md (status sections). Have decisions in
+  `notes/PhaseN.md` accumulated past the lift-on-promotion threshold?
+  Has FRICTION.md grown unscannable? Is any DESIGN.md / ROADMAP.md
+  prose-count or section-name reference stale? Apply the small fix
+  in this commit if obvious; otherwise file a project-organization
+  friction entry to address next phase. This step is what keeps the
+  docs from drifting between phase boundaries.
 
 ## Phase notes
 
