@@ -223,16 +223,19 @@ rank lower bound and underlies the $(2, 3)$-sparsity claim below.
 
 \begin{lemma}[Rank upper bound from affine spanning, dim $2$]
   \label{lem:rigidityMap-finrank-range-le-of-affinelySpanning-two}
+  \lean{SimpleGraph.rigidityMap_finrank_range_le_of_affinelySpanning_two}
+  \leanok
   \uses{lem:trivialMotions-three-le-ker-of-affinelySpanning-two,
     lem:framework-finrank}
-  Let $V$ be finite with $|V| \ge 2$, let $G$ be a graph on $V$, and
-  let $p : V \to \R^{2}$ affinely span. Then
+  Let $V$ be finite, let $G$ be a graph on $V$, and let
+  $p : V \to \R^{2}$ affinely span. Then
   \[
     \dim_{\R}\,\bigl(\mathrm{range}\,(\mathrm{RigidityMap}\,G\,p)\bigr) + 3
     \;\le\; 2 |V|.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   Combine
   \cref{lem:trivialMotions-three-le-ker-of-affinelySpanning-two} with
   rank--nullity and the framework-space dimension

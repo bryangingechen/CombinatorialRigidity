@@ -151,6 +151,26 @@ theorem rigidityMap_finrank_range_ge_of_isGenericallyRigid_two [Fintype V]
   have h_rn := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p)
   omega
 
+/-- **Rank upper bound at an affinely-spanning placement, dim 2.** If `p : Framework V 2`
+affinely spans `EuclideanSpace ℝ (Fin 2)`, then the rigidity map's range has dimension at
+most `2 * #V - 3`.
+
+Combine the dim-2 kernel bound `trivialMotions_three_le_ker_of_affinelySpanning_two`
+(`3 ≤ finrank ker`) with rank-nullity and `Framework.finrank`. Companion to
+`rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`; at a placement that is both
+infinitesimally rigid and affinely spanning the two bounds pin the row rank to exactly
+`2 * #V - 3`. -/
+theorem rigidityMap_finrank_range_le_of_affinelySpanning_two [Fintype V]
+    (G : SimpleGraph V) {p : Framework V 2}
+    (hp : affineSpan ℝ (Set.range p) = ⊤) :
+    Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + 3 ≤ 2 * Fintype.card V := by
+  have h_ker : 3 ≤ Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) :=
+    G.trivialMotions_three_le_ker_of_affinelySpanning_two hp
+  have h_total : Module.finrank ℝ (Framework V 2) = 2 * Fintype.card V := by
+    rw [Framework.finrank, mul_comm]
+  have h_rn := LinearMap.finrank_range_add_finrank_ker (G.RigidityMap p)
+  omega
+
 /-- **Row-independent edge basis at a generically rigid placement, dim 2.** If `G` is generically
 rigid in dimension 2, there is a placement `p` and a row-independent edge set `I ⊆ G.edgeSet` of
 size exactly `2 * #V - 3`.
