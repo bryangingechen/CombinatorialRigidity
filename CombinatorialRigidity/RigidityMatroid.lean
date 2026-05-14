@@ -3,11 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
 import CombinatorialRigidity.TrivialMotions
 import Mathlib.Algebra.Polynomial.Roots
 import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import Mathlib.LinearAlgebra.Dimension.OrzechProperty
-import Mathlib.LinearAlgebra.Dual.Basis
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 
@@ -91,21 +91,17 @@ theorem edgeSetRowIndependent_iff_linearIndepOn_rigidityRow
 
 /-- The rigidity rows span the range of the transpose map. Combined with
 `LinearMap.finrank_range_dualMap_eq_finrank_range` this is the row-rank-equals-column-rank
-identity for the rigidity matrix. -/
+identity for the rigidity matrix; in span form, it is
+`LinearMap.range_dualMap_eq_span_image_dualBasis` applied to `Pi.basisFun ℝ G.edgeSet`. -/
 theorem span_range_rigidityRow (G : SimpleGraph V) [Finite G.edgeSet] (p : Framework V d) :
     Submodule.span ℝ (Set.range (G.rigidityRow p)) =
       LinearMap.range (G.RigidityMap p).dualMap := by
   classical
-  haveI : Fintype G.edgeSet := Fintype.ofFinite _
-  -- Each `rigidityRow e` is `R.dualMap ((Pi.basisFun ℝ G.edgeSet).dualBasis e)`; the dual basis
-  -- spans the whole dual, so its image under `R.dualMap` spans `range R.dualMap`.
   have h_row : G.rigidityRow p =
       (G.RigidityMap p).dualMap ∘ (Pi.basisFun ℝ G.edgeSet).dualBasis := by
-    funext e
-    refine LinearMap.ext fun x => ?_
-    simp [rigidityRow, Pi.basisFun_repr]
-  rw [h_row, Set.range_comp, Submodule.span_image,
-    (Pi.basisFun ℝ G.edgeSet).dualBasis.span_eq, Submodule.map_top]
+    funext e; ext _; simp [rigidityRow]
+  rw [h_row]
+  exact (LinearMap.range_dualMap_eq_span_image_dualBasis (Pi.basisFun ℝ G.edgeSet) _).symm
 
 /-- **Rank lower bound at a generically rigid placement, d-general.** If `G` is generically
 rigid in dimension `d`, some framework `p` realises

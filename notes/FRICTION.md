@@ -405,6 +405,44 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Pi.basisFun_dualBasis` and `LinearMap.range_dualMap_eq_span_image_dualBasis`
+- **Where it bit:** `span_range_rigidityRow` in `RigidityMatroid.lean`,
+  the constructive (span) form of row-rank-equals-column-rank for the
+  rigidity matrix. The original proof rolled both lemmas inline: a
+  pointwise `(Pi.basisFun ℝ G.edgeSet).dualBasis e = LinearMap.proj e`
+  identification via `LinearMap.ext` + `simp [Pi.basisFun_repr]`, then
+  a 4-rewrite chain (`Set.range_comp`, `Submodule.span_image`,
+  `b.dualBasis.span_eq`, `Submodule.map_top`) for the span identity.
+- **Friction:** both lemmas state genuinely general facts (no
+  rigidity-specific content). `Module.Basis.dualBasis` and
+  `LinearMap.dualMap` are mathlib-core, and the *dimension-level*
+  version of the second fact already exists upstream as
+  `LinearMap.finrank_range_dualMap_eq_finrank_range` — but the
+  underlying span identity that *implies* it does not. The first
+  lemma is missing because `Mathlib/LinearAlgebra/Dual/Basis.lean`
+  does not even import `StdBasis.lean` (so there is no upstream
+  file where the lemma could naturally live without a new import).
+- **Resolution:** mirrored as
+  - `Pi.basisFun_dualBasis` (`@[simp]`):
+    `(Pi.basisFun R η).dualBasis i = LinearMap.proj i` for
+    `[Finite η] [DecidableEq η]`. Two-line proof via `LinearMap.ext`
+    + `simp [Pi.basisFun_repr]`.
+  - `LinearMap.range_dualMap_eq_span_image_dualBasis` (Part 1 of
+    Strang's Fundamental Theorem of Linear Algebra in span form):
+    for any `b : Module.Basis ι R N` and `f : M →ₗ[R] N`,
+    `LinearMap.range f.dualMap =
+       Submodule.span R (Set.range (f.dualMap ∘ b.dualBasis))`.
+    One-line proof via `Set.range_comp` + `Submodule.span_image` +
+    `Basis.dualBasis.span_eq` + `Submodule.map_top`.
+
+  `span_range_rigidityRow` now consumes the second lemma directly;
+  its proof body is ~4 lines.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dual/Basis.lean` (with an
+  added `import Mathlib.LinearAlgebra.StdBasis` line; upstream PR
+  would either add that import to `Dual/Basis.lean` or split
+  `Pi.basisFun_dualBasis` to `StdBasis.lean`).
+
 ### [mirrored] `Sym2.notMem_map_some` and `Sym2.disjoint_image_map_some`
 - **Where it bit:** `typeI_edgeSet_ncard`, `typeII_edgeSet_ncard`,
   `typeI_isLaman` (`h_disj`), `typeII_isLaman` (`h_disj`) — four

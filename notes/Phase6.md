@@ -22,7 +22,19 @@ Phase 5 closed with the iff statement
 (`LamanTheorem.lean:122`). That one `sorry` is the entire Phase 6
 target — the project has no other unproved declarations.
 
-**Through commit 12 (this commit):** Lean-simplification task 2
+**Through commit 13 (this commit):** the two pieces of
+linear-algebra infrastructure inlined into `span_range_rigidityRow`
+in commit 12 are lifted to the mirror directory as upstream
+candidates: `Pi.basisFun_dualBasis` (`@[simp]`) and
+`LinearMap.range_dualMap_eq_span_image_dualBasis` (the
+constructive / span form of row-rank-equals-column-rank, i.e.\ Part 1
+of Strang's Fundamental Theorem of Linear Algebra). New mirror file
+`CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/Basis.lean`.
+`span_range_rigidityRow` now consumes the second lemma directly; its
+proof body shrinks from ~10 lines to ~4. FRICTION *Mirrored* gains a
+combined entry naming the two lemmas and the file.
+
+**Through commit 12:** Lean-simplification task 2
 (*"small dual bridge isn't small"*) lands.
 `RigidityMatroid.lean`'s dual-bridge infrastructure (lines 71–135
 pre-pass) shrinks from ~60 lines to ~25 lines. The 16-line private
@@ -354,7 +366,22 @@ entries opened in commit 7 are the cross-cutting record.)*
   dropped (the affine-span hypothesis already forces `|V| ≥ 3`). No
   new FRICTION entries. *(d=2 form retired in commit 10; the d-general
   `rigidityMap_finrank_range_le_of_affinelySpanning` replaces it.)*
-- *Commit 12 (this commit):* Lean-simplification pass, task 2
+- *Commit 13 (this commit):* mirror two upstream-eligible
+  linear-algebra lemmas discovered while doing task 2. New file
+  `CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/Basis.lean`
+  carries `Pi.basisFun_dualBasis` (`@[simp]`,
+  `(Pi.basisFun R η).dualBasis i = LinearMap.proj i`) and
+  `LinearMap.range_dualMap_eq_span_image_dualBasis` (Part 1 of
+  Strang's FTLA in span form, for arbitrary `b : Module.Basis ι R N`
+  and `f : M →ₗ[R] N`). `span_range_rigidityRow` consumes the second
+  directly, shrinking its body from ~10 to ~4 lines. FRICTION
+  *Mirrored* gains a combined entry. Verified both are genuinely
+  absent from `Mathlib/LinearAlgebra/Dual/Basis.lean` and
+  `Mathlib/LinearAlgebra/StdBasis.lean`; the latter does not even
+  import the former, which is the structural reason gap #1 has not
+  been filled upstream.
+
+- *Commit 12:* Lean-simplification pass, task 2
   (*"small dual bridge isn't small"*). Three candidate fixes:
   *(a) mathlib `ℝ`-linear envelope.* The 16-line private
   `dualToFunₗ` + apply + injective scaffold deleted in favour of
