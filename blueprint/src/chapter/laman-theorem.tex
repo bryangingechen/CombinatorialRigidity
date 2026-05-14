@@ -179,24 +179,35 @@ and is not formalized.
 
 \begin{lemma}[Row-independent edge basis from rank lower bound]
   \label{lem:exists-rowIndependent-edge-basis}
+  \lean{SimpleGraph.exists_edgeSetRowIndependent_basis_dim_two}
+  \leanok
   \uses{def:edgeSet-rowIndependent,
-    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two,
-    lem:rigidityMap-finrank-range-le}
-  Let $V$ be finite, $G$ generically rigid in dimension $2$, and $p$
-  a framework as in
-  \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}.
-  Then there exists $I \subseteq E(G)$ with $|I| = 2 |V| - 3$ which is
-  row-independent at $p$.
+    lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}
+  Let $V$ be finite. If $G$ is generically rigid in dimension $2$, then
+  there exists a framework $p$ and an edge set $I \subseteq E(G)$ with
+  $|I| = 2 |V| - 3$ which is row-independent at $p$.
 \end{lemma}
 \begin{proof}
-  The edge-indexed rows of $\mathrm{RigidityMap}\,G\,p$ span its
-  range, which has dimension at least $2 |V| - 3$
-  (\cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two})
-  and at most $|E(G)|$ (\cref{lem:rigidityMap-finrank-range-le}). Extract
-  a basis from a spanning family of finite-dimensional rows --- the
-  standard \texttt{LinearIndependent.extend} / \texttt{Basis.extend}
-  construction --- and read $I$ as the edge labels indexing the chosen
-  rows.
+  \leanok
+  Pick $p$ realising the rank lower bound
+  \cref{lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two}, so
+  $\dim\,\mathrm{range}\,\mathrm{RigidityMap}\,G\,p \ge 2|V| - 3$. The
+  edge-indexed rows of $\mathrm{RigidityMap}\,G\,p$ span the range of
+  its transpose, which has the same dimension as the range itself by
+  row-rank-equals-column-rank
+  (\texttt{LinearMap.finrank\_range\_dualMap\_eq\_finrank\_range}).
+  Extend $\emptyset$ to a linearly independent spanning subset of the
+  row family via \texttt{exists\_linearIndepOn\_extension}; its
+  cardinality equals the dimension and so is at least $2|V| - 3$.
+  Truncate via \texttt{Set.exists\_subset\_card\_eq} and read $I$ as
+  the edge labels indexing the chosen rows. The formalization works
+  with rows packaged as elements of the algebraic dual
+  $\mathrm{Framework}\,V\,d \to_{\R} \R$ (so that
+  \texttt{dualMap} rank identities apply); a small bridge lemma
+  \texttt{edgeSetRowIndependent\_iff\_linearIndepOn\_rigidityRow}
+  transports the resulting linear independence back to the
+  function-valued formulation in
+  \cref{def:edgeSet-rowIndependent}.
 \end{proof}
 
 \subsubsection{Trivial motions and the rank upper bound under affine spanning}

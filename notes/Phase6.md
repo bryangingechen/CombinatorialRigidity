@@ -34,15 +34,21 @@ six new red nodes laying out the intended proof — `def:edgeSet-rowIndependent`
 sketch of the target theorem referencing them. The dep-graph at
 `blueprint/web/dep_graph_document.html` is the authoritative view.
 
-**First two leaves landed:** `CombinatorialRigidity/RigidityMatroid.lean`
-exists, imported from `LamanTheorem.lean`. Now carries the rank lower
-bound `SimpleGraph.rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`
-plus the row-independence predicate
-`SimpleGraph.EdgeSetRowIndependent` (`LinearIndepOn` of the edge-row
-family on the index subset `I : Set G.edgeSet`) with `.mono` and
-`edgeSetRowIndependent_empty` helpers. Blueprint entries
-`lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two` and
-`def:edgeSet-rowIndependent` both carry `\lean{...}` + `\leanok`.
+**Three leaves landed:** `CombinatorialRigidity/RigidityMatroid.lean`
+exists, imported from `LamanTheorem.lean`, carrying (i) the rank
+lower bound `SimpleGraph.rigidityMap_finrank_range_ge_of_isGenericallyRigid_two`,
+(ii) the row-independence predicate `SimpleGraph.EdgeSetRowIndependent`
+(`LinearIndepOn` of the edge-row family on `I : Set G.edgeSet`) with
+`.mono` and `_empty` helpers, and (iii) the basis-pick lemma
+`SimpleGraph.exists_edgeSetRowIndependent_basis_dim_two` extracting an
+edge set of size `2 * #V - 3` that is row-independent at some
+generically rigid placement, via `exists_linearIndepOn_extension` +
+`finrank_range_dualMap_eq_finrank_range`. The supporting infrastructure
+(`rigidityRow`, `span_range_rigidityRow`,
+`edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`) lives in the
+same file. Blueprint entries `lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two`,
+`def:edgeSet-rowIndependent`, and `lem:exists-rowIndependent-edge-basis`
+all carry `\lean{...}` + `\leanok`.
 
 **Linear-matroid investigation closed.** We stay matroid-agnostic;
 see *Decisions made* for the rationale and *Hand-off / next phase*
@@ -121,19 +127,36 @@ visible as a dep-graph at `blueprint/web/dep_graph_document.html`
 after `inv bp && inv web`. A red node = not yet formalized; a green
 node = formalized and `\leanok`-tagged. Pick leaf-most red.
 
-Status snapshot at commit-4 (definition): two green nodes
+Status snapshot at commit-6 (basis-pick): three green nodes
 (`lem:rigidityMap-finrank-range-ge-of-isGenericallyRigid-two`,
-`def:edgeSet-rowIndependent`); the remaining five nodes —
-`lem:exists-rowIndependent-edge-basis`,
+`def:edgeSet-rowIndependent`, `lem:exists-rowIndependent-edge-basis`);
+the remaining four nodes —
 `lem:trivialMotions-three-le-ker-of-affinelySpanning-two`,
 `lem:rigidityMap-finrank-range-le-of-affinelySpanning-two`,
 `lem:exists-affinelySpanning-rigid-placement-two`,
 `lem:isSparse-of-rowIndependent-two` — and the target
-`thm:isGenericallyRigid-exists-isLaman-le` stay red.
+`thm:isGenericallyRigid-exists-isLaman-le` stay red. Of the red ones,
+`lem:trivialMotions-three-le-ker-of-affinelySpanning-two` and
+`lem:exists-affinelySpanning-rigid-placement-two` are leaves; both
+hit the *Blockers* list below.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+
+- **Dual-bridge for the basis-pick.** `EdgeSetRowIndependent` is stated
+  as `LinearIndepOn` of a family of plain functions `Framework V d →
+  ℝ` (matching the blueprint), but the rank identities we need
+  (`LinearMap.finrank_range_dualMap_eq_finrank_range`,
+  `Pi.basisFun.dualBasis`) require viewing the rows as linear
+  functionals (`Module.Dual ℝ (Framework V d)`). The basis-pick proof
+  works in the dual module throughout (via `rigidityRow` and
+  `span_range_rigidityRow`), then transports the resulting LI back to
+  the function-module form via `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`.
+  The bridge needed a private `dualToFunₗ : Module.Dual ℝ M →ₗ[ℝ] (M
+  → ℝ)` since mathlib doesn't ship the `ℝ`-linear envelope of
+  `FunLike.coe` directly (see FRICTION *No packaged ℝ-linear
+  injection*).
 
 - **`apnelson1/Matroid` investigated, not adopted.** The external repo
   ships `Module.matroid` (in `Matroid/Representation/Map.lean`) — a
@@ -197,14 +220,12 @@ Status snapshot at commit-4 (definition): two green nodes
   one that's also affinely-spanning-on-all-subsets), the
   sparsity-side lemma can use that same placement.
 
-- **Linear-algebra basis-pick.** Investigated and resolved to branch
-  (c) — pure linear algebra. The straightforward route through
-  `exists_linearIndepOn_extension` (`Mathlib/LinearAlgebra/
-  LinearIndependent/Lemmas.lean:737`) requires identifying row rank
-  with column rank (`LinearMap.finrank_range_dualMap_eq_finrank_range`,
-  `Mathlib/LinearAlgebra/Dual/Lemmas.lean:918`, plus the standard-basis
-  -of-dual identification on `G.edgeSet → ℝ`). Concrete shape in
-  *Hand-off / next phase* below.
+- ~~**Linear-algebra basis-pick.**~~ Resolved in commit 6 via the
+  matroid-agnostic path: `exists_linearIndepOn_extension` plus
+  `LinearMap.finrank_range_dualMap_eq_finrank_range` plus the
+  standard-basis-of-dual identification via `Pi.basisFun.dualBasis`.
+  See `exists_edgeSetRowIndependent_basis_dim_two` in
+  `RigidityMatroid.lean` and the *Done* list under *Hand-off*.
 
 ## Hand-off / next phase
 
@@ -239,15 +260,27 @@ Status snapshot at commit-4 (definition): two green nodes
   motion e) I`, indexed by `I : Set G.edgeSet`. `EdgeSetRowIndependent.mono`
   + `edgeSetRowIndependent_empty` round out the trivial helpers.
   Blueprint entry `def:edgeSet-rowIndependent` flipped green.
-- *Commit 5 (this commit):* `apnelson1/Matroid` investigation
+- *Commit 5 (`5f11c6b`):* `apnelson1/Matroid` investigation
   (notes-only). Confirmed the repo ships `Module.matroid` /
   `Matroid.ofFun` (`Matroid/Representation/Map.lean` lines 132 and
   188), toolchain pin matches, and the underlying
   `IndepMatroid.ofFinitaryCardAugment` is already in mathlib
   (`Mathlib/Combinatorics/Matroid/IndepAxioms.lean:215`). Decision:
-  branch (c) — stay matroid-agnostic. Rationale recorded in
-  *Decisions made* and *Blockers* above; concrete next-session
-  plan below.
+  branch (c) — stay matroid-agnostic.
+- *Commit 6 (this commit):* basis-pick lemma —
+  `SimpleGraph.exists_edgeSetRowIndependent_basis_dim_two` plus its
+  supporting infrastructure (`rigidityRow`, `span_range_rigidityRow`,
+  `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`, private
+  `dualToFunₗ`). Implements the 5-step plan via mathlib only:
+  `exists_linearIndepOn_extension` → dual-bridge to the row family →
+  `LinearMap.finrank_range_dualMap_eq_finrank_range` →
+  `linearIndependent_iff_card_eq_finrank_span` (`Set.finrank` form)
+  → `Set.exists_subset_card_eq` truncation. Blueprint entry
+  `lem:exists-rowIndependent-edge-basis` flipped green (`\lean{...}`
+  + `\leanok`, both on statement and proof) and re-rendered (graph
+  spot-checked). FRICTION entry filed for the missing packaged
+  `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)` injection
+  (`dualToFunₗ`).
 
 **Encoding choice rationale (`I : Set G.edgeSet`).** The index type
 sits inside `G.edgeSet`, matching the blueprint's "$I \subseteq E(G)$".
@@ -257,43 +290,35 @@ not `Set G.edgeSet`, so the assembly proof will transport via
 than carry it through the basis lemma + sparsity lemma + every
 intermediate API.
 
-**Next session — `lem:exists-rowIndependent-edge-basis` via pure
-linear algebra.** All pieces live in mathlib. Concrete shape:
+**Next session — pick one of the two remaining leaves.** Both are
+genuinely mathematical (vs.\ the basis-pick which was plumbing) and
+sit on the *Blockers* list above:
 
-1. *Row family as a named function.* Either inline
-   `fun e : G.edgeSet => fun motion : Framework V d => G.RigidityMap p
-   motion e` (matching `EdgeSetRowIndependent`) or factor a
-   `rigidityRow G p : G.edgeSet → Framework V 2 →ₗ[ℝ] ℝ` and unfold
-   on demand. The functional view buys access to
-   `LinearMap.finrank_range_dualMap_eq_finrank_range`; the function
-   view keeps `EdgeSetRowIndependent` definitionally easy. Try the
-   functional view first and see whether the unfold cost is small.
-2. *Apply `exists_linearIndepOn_extension`* with the empty set as
-   the LI seed and `Set.univ : Set G.edgeSet` as the bound. The
-   resulting subset `b` is LI and spans the whole row family.
-3. *Identify the span dimension with the column rank.* The
-   row functional at edge `e` factors as `(LinearMap.proj e).comp
-   (G.RigidityMap p)` — equivalently `(G.RigidityMap p).dualMap`
-   applied to the standard dual basis vector. So
-   `Submodule.span ℝ (Set.range rigidityRow) = LinearMap.range
-   (G.RigidityMap p).dualMap` (up to a `Pi.basisFun` identification),
-   and `finrank` matches via `finrank_range_dualMap_eq_finrank_range`.
-4. *Chain with the existing rank lower bound.*
-   `rigidityMap_finrank_range_ge_of_isGenericallyRigid_two` provides
-   `2 * #V ≤ finrank (range R) + 3`, hence `|b| ≥ 2 * #V - 3`.
-5. *Truncate to exact size.* `Set.exists_subset_ncard_eq` produces
-   `I ⊆ b` with `|I| = 2 * #V - 3`; `EdgeSetRowIndependent.mono`
-   gives row-independence of `I`.
+- `lem:trivialMotions-three-le-ker-of-affinelySpanning-two` — the
+  $\dim\,\mathrm{TrivialMotions} = 3$ identification under affine
+  spanning. Three implementation paths in *Blockers*:
+  (1) direct LI-witness of three motions (translations + rotation);
+  (2) resurrect the Phase-4-deferred `TrivialMotions` API;
+  (3) specialise to a concrete moment-curve placement. (1) is the
+  smallest scope and probably the best first attempt; (2) buys reuse
+  for a hypothetical Lovász--Yemini full equality but is over-engineered
+  for what the iff needs.
+- `lem:exists-affinelySpanning-rigid-placement-two` — the
+  affinely-spanning-on-all-subsets refinement of
+  `IsInfinitesimallyRigid.eventually`. Likely closes via
+  `IsOpen` intersection plus density of the affinely-spanning set; the
+  *Generic-placement affine-spanning lemma* blocker has the details.
 
-If step 3 turns out fiddly (the `Pi.basisFun` / dual-basis dance is
-where mathlib's API tends to need glue), file a one-line
-`CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/` mirror per the
-mirror playbook.
+Either can land independently of the other; they only meet at
+`lem:isSparse-of-rowIndependent-two` (the substantive content of the
+$\Rightarrow$ direction, two layers down). Suggested order: try (1)
+of `lem:trivialMotions-...` first (fewest moving parts; the explicit
+basis matches the K$_2$ proof shape already in
+`top_fin_two_isGenericallyRigid`).
 
 **Phase 6 completion is uncertain in scope.** Honest read: the rank
-lower bound (done), the definition (done), and the basis-pick
-(unblocked by the investigation; ~30 lines if step 3 cooperates) are
-linear-algebra plumbing and likely close in one session each. The
+lower bound (done), the definition (done), and the basis-pick (done)
+were linear-algebra plumbing and closed cleanly. The
 $(2,3)$-sparsity-from-row-independence lemma contains the only
 genuinely new mathematical content and depends on a to-be-chosen
 path through the *Blockers* list (`TrivialMotions` API, generic
