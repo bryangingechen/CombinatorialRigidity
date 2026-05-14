@@ -31,7 +31,32 @@ See `ROADMAP.md` §6, `notes/Phase6.md`, and the `(⇒)` subsection of
 
 namespace SimpleGraph
 
-variable {V : Type*}
+variable {V : Type*} {d : ℕ}
+
+/-- An edge set `I ⊆ G.edgeSet` is **row-independent at a placement `p`** when the family
+of edge-rows `(motion ↦ G.RigidityMap p motion e)_{e ∈ I}` — viewed as linear functionals
+on `Framework V d` — is linearly independent over `ℝ`.
+
+Equivalently (in finite dimension), the composition of `G.RigidityMap p` with the column
+projection `(G.edgeSet → ℝ) → (I → ℝ)` has full rank `|I|`. The Lovász–Yemini matroid
+view of rigidity declares such `I` to be the *independent sets* of the rigidity matroid of
+`(G, p)`; we keep the predicate-only formulation since the Phase 6 `(⇒)` direction does not
+need the abstract `Matroid` packaging. -/
+def EdgeSetRowIndependent (G : SimpleGraph V) (p : Framework V d) (I : Set G.edgeSet) : Prop :=
+  LinearIndepOn ℝ
+    (fun e : G.edgeSet => fun motion : Framework V d => G.RigidityMap p motion e) I
+
+/-- Row-independence at `p` is inherited by edge subsets: dropping rows from a linearly
+independent family leaves a linearly independent family. -/
+theorem EdgeSetRowIndependent.mono {G : SimpleGraph V} {p : Framework V d}
+    {I J : Set G.edgeSet} (hI : G.EdgeSetRowIndependent p I) (h : J ⊆ I) :
+    G.EdgeSetRowIndependent p J :=
+  LinearIndepOn.mono hI h
+
+/-- The empty edge set is row-independent at every placement. -/
+theorem edgeSetRowIndependent_empty (G : SimpleGraph V) (p : Framework V d) :
+    G.EdgeSetRowIndependent p ∅ :=
+  linearIndepOn_empty ℝ _
 
 /-- **Rank lower bound at a generically rigid placement, dim 2.** If `G` is
 generically rigid in dimension 2, some framework `p` realises the bound

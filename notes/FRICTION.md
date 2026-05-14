@@ -448,6 +448,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Resolved (project-internal)
 
+### [resolved] Dot notation inside a `Foo.bar`-named theorem resolves to itself, not the parent's `Foo.bar`
+- **Where it bit:** `EdgeSetRowIndependent.mono` in `RigidityMatroid.lean`
+  (Phase 6).
+- **Friction:** wrote `hI.mono h` inside the body of
+  `theorem EdgeSetRowIndependent.mono`, intending it to dispatch to
+  `LinearIndepOn.mono` via dot notation on `hI`'s unfolded type. Lean
+  resolved `.mono` to the function being defined instead (Lean's dot
+  notation prefers the head namespace of the term's *stated* type
+  before unfolding), turning the body into a recursive call with no
+  decreasing argument. Build failed with "well-founded recursion
+  cannot be used".
+- **Resolution:** spell out the upstream name —
+  `LinearIndepOn.mono hI h` — when the wrapper theorem shares a basename
+  with the upstream lemma it's calling. Dot notation works fine for
+  *other* theorems calling `hI.mono`; the trap is only inside
+  `EdgeSetRowIndependent.mono` itself.
+- **Status:** resolved (Lean idiom — when wrapping an upstream lemma
+  under your own type's namespace, dot-notation inside the wrapper
+  recurses; call the upstream name explicitly).
+
 ### [resolved] `Exists.imp` doesn't transport across changing-binder-type existentials
 - **Where it bit:** `IsGenericallyRigid.iso` in `Framework.lean` (Phase 5 milestone 0).
 - **Friction:** tried `h.imp fun _ => IsInfinitesimallyRigid.iso φ`,
