@@ -106,9 +106,11 @@ Type~I or Type~II move).
 \end{lemma}
 \begin{proof}
   \leanok
-  By the handshake identity $\sum_v \deg_G(v) = 2|E(G)|$, and tightness
-  rewrites this as $2(2|V| - 3) < 4|V|$. If every vertex had degree
-  at least 4, the sum would be at least $4|V|$, a contradiction.
+  Suppose every vertex had degree at least $4$. Then the handshake
+  identity gives
+  $2|E(G)| = \sum_v \deg_G(v) \ge 4|V|$.
+  But tightness $|E(G)| + 3 = 2|V|$ rewrites the left-hand side as
+  $2|E(G)| = 4|V| - 6 < 4|V|$, a contradiction.
 \end{proof}
 
 \begin{lemma}[A vertex of degree 2 or 3]

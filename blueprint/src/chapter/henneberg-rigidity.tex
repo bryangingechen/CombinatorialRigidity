@@ -141,21 +141,35 @@ direction --- equivalently, $(p_a, p_b, p_c)$ are non-collinear.
   As in \cref{thm:typeI-isInfinitesimallyRigid-extend}, define
   $\rho : \ker ((\mathrm{typeII}\,G\,a\,b\,c).\mathrm{RigidityMap}\,\hat p)
    \to_{\R} \ker (G.\mathrm{RigidityMap}\,p)$
-  by $\rho(x) = x \circ \mathrm{some}$. The map lands in the right
-  kernel: every $G$-edge $\{u, v\}$ either lifts to a
-  $\mathrm{typeII}$-edge (when $\{u, v\} \ne \{a, b\}$) with the same
-  formula, or is the deleted edge $\{a, b\}$, whose constraint is
-  recovered from the two new edges
-  $\{\mathrm{none}, \mathrm{some}\,a\}$ and
-  $\{\mathrm{none}, \mathrm{some}\,b\}$: both rigidity-rows lie along
-  the direction $p_b - p_a$ thanks to hypothesis (i), and a suitable
-  combination reproduces the $\{a, b\}$-row in $G$.
+  by $\rho(x) = x \circ \mathrm{some}$. We must show $\rho(x)$ kills
+  every $G$-edge. For $\{u, v\} \ne \{a, b\}$, the edge lifts to a
+  $\mathrm{typeII}$-edge with the same row formula, so the constraint
+  transports.
 
-  Injectivity of $\rho$ uses hypothesis (ii): the third new edge at
-  $\{\mathrm{none}, \mathrm{some}\,c\}$ together with one of the
-  $a, b$ edges pins $x(\mathrm{none}) - y(\mathrm{none})$ against an
-  LI pair, forcing it to zero. Rank--nullity then transports the
-  bound as in \cref{thm:typeI-isInfinitesimallyRigid-extend}.
+  The deleted edge $\{a, b\}$ is recovered from the two new-edge
+  constraints at $\{\mathrm{none}, \mathrm{some}\,a\}$ and
+  $\{\mathrm{none}, \mathrm{some}\,b\}$. Hypothesis (i) gives
+  $q - p_a = \alpha (p_b - p_a)$ and
+  $q - p_b = (\alpha - 1)(p_b - p_a)$ with $\alpha, \alpha - 1 \ne 0$,
+  so the two new-edge rows reduce, after dividing by $\alpha$ and
+  $\alpha - 1$, to
+  \[
+    \langle p_b - p_a,\, x(\mathrm{none}) - x(\mathrm{some}\,a) \rangle = 0,
+    \quad
+    \langle p_b - p_a,\, x(\mathrm{none}) - x(\mathrm{some}\,b) \rangle = 0.
+  \]
+  Subtracting the second from the first gives
+  $\langle p_b - p_a,\, x(\mathrm{some}\,a) - x(\mathrm{some}\,b)
+   \rangle = 0$, which is the $\{a, b\}$-row of $G.\mathrm{RigidityMap}$
+  applied to $\rho(x) = x \circ \mathrm{some}$.
+
+  Injectivity of $\rho$ uses hypothesis (ii): if $\rho(x) = \rho(y)$
+  then $x$ and $y$ agree on $\mathrm{some}\,[V]$, so the new-edge
+  constraints at $\{\mathrm{none}, \mathrm{some}\,a\}$ and
+  $\{\mathrm{none}, \mathrm{some}\,c\}$ force $x(\mathrm{none}) -
+  y(\mathrm{none})$ to be orthogonal to the linearly independent pair
+  $(q - p_a, q - p_c)$, hence zero. Rank--nullity then transports the
+  kernel-dim bound as in \cref{thm:typeI-isInfinitesimallyRigid-extend}.
 \end{proof}
 
 \begin{theorem}[Type~II preserves rigidity, non-collinear case]

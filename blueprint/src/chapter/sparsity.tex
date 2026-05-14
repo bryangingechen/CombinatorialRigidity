@@ -17,9 +17,6 @@ basic properties.
   \[
     \edgesIn{S} \;:=\; \{\,e \in E(G) : e \subseteq S\,\}.
   \]
-  In Lean, $\edgesIn{S}$ is implemented as
-  \texttt{G.edgeSet $\cap$ s.sym2}, where \texttt{s.sym2} is the set of
-  unordered pairs supported on $s$.
 \end{definition}
 
 \begin{lemma}[Monotonicity]
@@ -262,10 +259,8 @@ is mediated by \texttt{Sym2.map} on edges and by the underlying
   \leanok
   An unordered pair $\{u, v\}$ in the image set comes from a pair
   $\{p, q\} \subseteq s$ in $\edgesIn[G]{s}$ with $u = \varphi(p)$ and
-  $v = \varphi(q)$. The Lean proof unfolds the
-  \texttt{Sym2.map}-image membership and uses
-  \texttt{Iso.map\_adj\_iff} to transport adjacency. Both directions
-  are by case analysis on the symmetric pair's two representatives.
+  $v = \varphi(q)$, by case analysis on the symmetric pair's two
+  representatives; $\varphi$ preserves adjacency in each direction.
 \end{proof}
 
 \begin{lemma}[Sparsity is preserved by isomorphism]
@@ -305,8 +300,9 @@ is mediated by \texttt{Sym2.map} on edges and by the underlying
 The squeeze lemma below is a converse to the sparsity inequality
 within a single sparse graph: a vertex set that hits the bound from
 below must hit it on the nose, hence is tight. It is the
-edge-counting input used in Phase~5 to extract a tight set from a
-sparsity violation on a candidate graph.
+edge-counting input used in
+\cref{thm:isLaman-typeII-reverse-blocker} to extract a tight set from
+a sparsity violation on a candidate graph.
 
 \begin{lemma}[Squeeze]
   \label{lem:isSparse-isTightOn-of-le}
