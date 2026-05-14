@@ -432,13 +432,6 @@ The default-`G` form is right ~95% of the time; reach for the
 optional form only when transporting along isomorphisms or
 otherwise comparing two graphs.
 
-### Bibliography
-
-Entries go in `src/bibliography.bib`. Cite with `\cite{key}`. The
-existing entries (`laman1970`, `henneberg1911`,
-`graverServatiusServatius1993`) are the project's canonical
-references.
-
 ## Pitfalls
 
 - **plastex emits warnings, not errors, on unknown commands.**
