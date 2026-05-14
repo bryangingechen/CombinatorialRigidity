@@ -264,17 +264,11 @@ entries opened in commit 7 are the cross-cutting record.)*
   `trivialMotions_three_le_finrank_of_affinelySpanning_two` is now a
   one-line corollary at `d = 2`.
 
-- **Generic-placement affine-spanning lemma.** Phase 4 ships
-  `IsInfinitesimallyRigid.eventually` (openness of IR). We may need
-  a companion "the IR placements that *also* affinely span on every
-  size-$\ge$-3 subset form a dense / nonempty set." Subtlety: an IR
-  placement might collapse a subset to a line. Probably true
-  generically (the bad set is a finite union of hyperplanes, hence
-  meagre); the proof goes through `IsOpen` intersected with the open
-  "affinely spanning" set. Mitigation: if the witness placement
-  produced by the rank-lower-bound lemma is *customisable* (return
-  one that's also affinely-spanning-on-all-subsets), the
-  sparsity-side lemma can use that same placement.
+- ~~**Generic-placement affine-spanning lemma.**~~ Resolved in
+  commit 11. `exists_affinelySpanning_rigid_placement_two` ships the
+  combined witness (IR + affinely-spanning restriction on every
+  $|S| \ge 3$ subset) via Vandermonde perturbation of an IR witness.
+  See *Done* commit 11 entry.
 
 - ~~**Linear-algebra basis-pick.**~~ Resolved in commit 6 via the
   matroid-agnostic path: `exists_linearIndepOn_extension` plus
@@ -384,6 +378,81 @@ not `Set G.edgeSet`, so the assembly proof will transport via
 `Subtype.val '' I`. We pay that adapter cost once at assembly rather
 than carry it through the basis lemma + sparsity lemma + every
 intermediate API.
+
+**Pending Lean-simplification pass (before or alongside the sparsity
+work).** A session-start blueprint↔Lean review flagged three points
+where the Lean is more involved than the blueprint prose suggests.
+Per the project rule (`blueprint/CLAUDE.md` *Proof verbosity*), the
+first response is to make the Lean as painless as the math — better
+proof strategy, upstreamable helper, sharper mathlib tactic /
+proof-automation use — and only on failure to add a prose aside.
+Tasks, ordered by severity (heaviest first):
+
+1. **`exists_affinelySpanning_rigid_placement_two` — AffineIndependent
+   $\Leftrightarrow$ nonzero $2\times 2$ det elided.** Prose treats
+   "collinearity = quadratic in $t$" as immediate; Lean
+   (`RigidityMatroid.lean:339-420`) expands to ~50 lines of
+   `affineIndependent_iff_linearIndependent_vsub` + a hand-rolled
+   `{x : Fin 3 // x ≠ 0} ↪ Fin 2` reindex + eight scratch scalars
+   $A_0, A_1, B_0, B_1, X, Y, U, Z$ + `PiLp.{add,sub,smul}_apply` simp.
+   Candidate fixes:
+   - `lean_loogle` / `lean_leanfinder` for a direct
+     `AffineIndependent ![a, b, c] ↔ <det of differences> ≠ 0` (dim-2
+     form, or a d-general Cayley-Menger / Gram form). If present, the
+     reindex + private helper both collapse.
+   - If absent, mirror `linearIndependent_pair_of_det_ne_zero` under
+     `CombinatorialRigidity/Mathlib/LinearAlgebra/` — it is pure
+     linear algebra and upstream-eligible. The cost stays but the
+     mirror lemma's existence makes the blueprint's silence honest.
+   - Re-express coordinate expansions with `EuclideanSpace`-level
+     `WithLp` / `PiLp.single` simp lemmas, replacing the eight `set`
+     scalars with one or two `ring`-normalised expressions.
+
+2. **`exists_edgeSetRowIndependent_basis_dim_two` — "small dual
+   bridge" isn't small.** ~60 lines of infrastructure
+   (`dualToFunₗ` + 2 helpers, `rigidityRow` + apply, the bridge
+   `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`,
+   `span_range_rigidityRow`). Candidate fixes:
+   - Re-check whether mathlib now ships an $\R$-linear envelope of
+     `FunLike.coe` for `(M →ₗ[ℝ] ℝ) → (M → ℝ)` (the commit-6 FRICTION
+     entry *No packaged ℝ-linear injection* flagged the absence;
+     mathlib has had a year of churn since). If yes, delete
+     `dualToFunₗ` + apply + injectivity.
+   - Search for row-rank-equals-column-rank phrased *without*
+     `LinearMap.dualMap` (e.g. via `Matrix.rank` /
+     `Matrix.toLinearMap'`, or `Matrix.rank_transpose`). A
+     matrix-level route may avoid the dual bridge entirely.
+   - If the dual bridge stays, promote `rigidityRow` /
+     `span_range_rigidityRow` to a named blueprint concept (its own
+     `\begin{definition}` + `\begin{lemma}`) rather than gesturing at
+     it as "a small bridge lemma" — the abstraction is real and
+     reusable, and earning its own dep-graph node is more honest than
+     a one-clause aside.
+
+3. **`trivialMotionFamily_linearIndependent` — "cross-terms vanish"
+   hides a 30-line case-split.** Lean (`TrivialMotions.lean:316-348`)
+   uses `Finset.sum_eq_single` whose off-term branch is a 30-line
+   `split_ifs` + `omega` over `Fin.val` comparisons, handling each
+   of `elemSkewMap`'s two `if-then-else` summands separately.
+   Candidate fixes:
+   - Re-express `elemSkewMap i j x` so its application is a single
+     `Pi.single`-style expression rather than nested `if`s — e.g.
+     `x j • PiLp.single 2 i 1 - x i • PiLp.single 2 j 1`. Then
+     `simp [Finset.sum_ite_eq', Pi.single_apply]` should collapse the
+     off-diagonal case to one or two lines.
+   - Hoist "off-diagonal ordered-pair products of `elemSkewMap`
+     vanish" into a named lemma on `elemSkewMap` itself (separate
+     from the LI proof), so the LI proof reads at the level of math.
+   - If neither, expand the blueprint's terse "the other cross-terms
+     vanish for the ordered-pair index range" to one sentence naming
+     the `(i, j) ≠ (a, b)` case-split.
+
+**Bar for each task:** try the candidate fixes in order; commit the
+fix that lands. If all candidates fail for a given point, file a
+FRICTION entry naming the blocker and add the blueprint aside.
+Tasks are independent of (and may interleave with) the sparsity-lemma
+work below; doing (1)–(3) first keeps the established proofs honest
+before the next layer lands on top of them.
 
 **Next session — the sparsity-side lemma
 `lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning

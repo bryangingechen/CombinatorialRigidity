@@ -203,13 +203,23 @@ wants the full proof clicks through to the Lean. Examples in
 - Multi-step: the proof of `thm:isTightOn-union-inter` is the most
   detailed in the chapter and runs ~10 lines.
 
+**First make Lean as painless as the math; only then add prose
+asides.** When a math step turns out harder to formalize than to
+state, the *first* response is to fix the Lean: a better proof
+strategy, an upstreamable helper, sharper mathlib tactic /
+proof-automation use. Only when those attempts fail do we add a brief
+prose aside calling out the residual gap. "The Lean is just verbose"
+is a smell, not a fact of life — friction we accept in the blueprint
+we also accept in the Lean, and the next phase pays for it.
+
 **Be honest about formalization cost.** Don't formalize Lean-tactic
-noise into the prose — the math should read as math. But don't elide
-*substantive* formalization cost either: if a one-line math step
-expands to a named infrastructure lemma or a non-obvious construction
-in Lean, note that briefly so the prose is a faithful map of the
-formal proof, not a polished version that pretends Lean was easy.
-Use judgment:
+noise into the prose — the math should read as math. But once the
+Lean-simplification attempts above are exhausted, don't elide the
+residual *substantive* formalization cost either: if a one-line math
+step still expands to a named infrastructure lemma or a non-obvious
+construction in Lean, note that briefly so the prose is a faithful
+map of the formal proof, not a polished version that pretends Lean
+was easy. Use judgment:
 
 - *Omit*: `omega` / `grind` automating arithmetic the prose already
   shows; `simp` collapses; type-class elaboration; mathlib-level
