@@ -427,6 +427,26 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Set.exists_injective_fin_of_le_ncard` (Fin-indexing of subset elements)
+- **Where it bit:** assembly step in `exists_affinelySpanning_rigid_placement`
+  (`RigidityMatroid.lean`), the "pick `d + 1` distinct elements of `S` as
+  `q : Fin (d + 1) → V`" sub-step; will recur in the upcoming sparsity lemma's
+  "pick `d + 1` distinct elements of `s`" steps.
+- **Friction:** mathlib's `Set.exists_subset_card_eq` returns a size-`n`
+  subset `t ⊆ s` from `n ≤ s.ncard`. Promoting that to "an injective
+  `q : Fin n → α` with each `q i ∈ s`" needed `Set.exists_subset_card_eq` →
+  `Set.finite_of_ncard_ne_zero` / `Set.Finite.fintype` →
+  `Set.ncard_eq_toFinset_card'` / `Set.toFinset_card` →
+  `Fintype.equivFinOfCardEq` (~12 lines per call site).
+- **Resolution:** mirrored as `Set.exists_injective_fin_of_le_ncard
+  {s : Set α} {n : ℕ} (hns : n ≤ s.ncard) : ∃ q : Fin n → α,
+  Function.Injective q ∧ ∀ i, q i ∈ s`. The 12-line construction collapses
+  to one `obtain`. Internally uses the existing `Set.ncard_eq_card_coe`
+  mirror to fold the two-step `ncard ↔ Fintype.card` rewrite to one lemma.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Set/Card.lean`. Sits naturally alongside the
+  existing `Set.exists_subset_card_eq`.
+
 ### [mirrored] `Polynomial.eval_det_X_add_C` (eval-at-scalar of `det (X • A.map C + B.map C)`)
 - **Where it bit:** `exists_affinelySpanning_rigid_placement` in
   `RigidityMatroid.lean`, the `hP_eval` block bridging the polynomial-form

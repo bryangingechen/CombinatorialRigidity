@@ -208,16 +208,6 @@ deferred behind the sparsity lemma:
   ~10-line block to ~3 lines. Likely already exists upstream
   under a different name (`Submodule.eq_top_iff_…` / `LinearMap.ext_on`);
   worth a `lean_loogle` search before mirroring.
-- *Project-internal helper: `Set.exists_injective_fin_of_le_ncard`.*
-  The assembly step in `exists_affinelySpanning_rigid_placement`
-  spends ~12 lines building an injective `q : Fin (d + 1) → V`
-  with range in `S` from `d + 1 ≤ S.ncard`, via `Set.exists_subset_card_eq`
-  → `Set.Finite.fintype` → `Set.ncard_eq_toFinset_card'` /
-  `Set.toFinset_card` → `Fintype.equivFinOfCardEq`. A named project
-  helper (or upstream mirror) collapsing this to one line would
-  cut the assembly step by ~10 lines; likely useful for the
-  sparsity lemma's "pick `d + 1` distinct elements of `s`" steps too.
-
 **Next session — the sparsity-side lemma
 `lem:isSparse-of-rowIndependent-two`.** With the affinely-spanning
 placement existence landed (commits 11 and 17, the latter generalising

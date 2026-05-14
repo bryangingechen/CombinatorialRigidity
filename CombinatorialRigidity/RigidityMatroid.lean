@@ -359,18 +359,7 @@ theorem exists_affinelySpanning_rigid_placement [Fintype V] {d : ℕ} {G : Simpl
   · -- Affinely spans on every size-`≥ d + 1` subset.
     intros S hS
     -- Pick `d + 1` distinct elements in `S` as an injective `q : Fin (d + 1) → V`.
-    obtain ⟨T, hTS, hT_card⟩ := Set.exists_subset_card_eq hS
-    have hT_finite : T.Finite :=
-      Set.finite_of_ncard_ne_zero (by rw [hT_card]; omega)
-    haveI : Fintype T := hT_finite.fintype
-    have hT_card_eq : Fintype.card T = d + 1 := by
-      rw [Set.ncard_eq_toFinset_card', Set.toFinset_card] at hT_card
-      exact hT_card
-    let e : Fin (d + 1) ≃ T := (Fintype.equivFinOfCardEq hT_card_eq).symm
-    let q : Fin (d + 1) → V := fun i => (e i).val
-    have hq_inj : Function.Injective q :=
-      fun i j h => e.injective (Subtype.ext h)
-    have hq_S : ∀ i, q i ∈ S := fun i => hTS (e i).property
+    obtain ⟨q, hq_inj, hq_S⟩ := Set.exists_injective_fin_of_le_ncard hS
     -- The `(d+1)`-tuple at `pt t` is affinely independent.
     have h_AI : AffineIndependent ℝ (fun i => pt t (q i)) := by
       by_contra h

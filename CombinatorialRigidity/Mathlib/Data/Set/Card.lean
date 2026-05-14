@@ -23,6 +23,11 @@ copy-paste. See `DESIGN.md` "Mirror directory".
   Bridges `Set.ncard` to the `Fintype.card`-based dimension lemmas
   (`Module.finrank_pi`, `LinearMap.toMatrix`) without the
   `Set.ncard_eq_toFinset_card'` / `Set.toFinset_card` two-step rewrite.
+* `Set.exists_injective_fin_of_le_ncard` — from `n ≤ s.ncard`, index `n`
+  distinct elements of `s` by `Fin n`. Companion to `Set.exists_subset_card_eq`
+  (which returns the subset); collapses the `exists_subset_card_eq` →
+  `Set.Finite.fintype` → `Set.ncard_eq_toFinset_card'` /
+  `Set.toFinset_card` → `Fintype.equivFinOfCardEq` chain.
 -/
 
 namespace Set
@@ -46,5 +51,22 @@ under `[Fintype s]`. The `Set.ncard_eq_toFinset_card'` (`s.ncard = s.toFinset.ca
 this one lemma. -/
 theorem ncard_eq_card_coe (s : Set α) [Fintype s] : s.ncard = Fintype.card s := by
   rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
+
+/-- From `n ≤ s.ncard`, index `n` distinct elements of `s` by `Fin n`. Companion to
+`Set.exists_subset_card_eq`: that lemma returns the size-`n` subset; this one returns
+the `Fin n`-indexing of its elements. -/
+theorem exists_injective_fin_of_le_ncard {s : Set α} {n : ℕ} (hns : n ≤ s.ncard) :
+    ∃ q : Fin n → α, Function.Injective q ∧ ∀ i, q i ∈ s := by
+  classical
+  obtain ⟨t, hts, hcard⟩ := Set.exists_subset_card_eq hns
+  rcases Nat.eq_zero_or_pos n with hn | hn
+  · subst hn
+    exact ⟨Fin.elim0, fun i => i.elim0, fun i => i.elim0⟩
+  · have ht_fin : t.Finite := Set.finite_of_ncard_pos (hcard ▸ hn)
+    haveI : Fintype t := ht_fin.fintype
+    have h_card_eq : Fintype.card t = n := (Set.ncard_eq_card_coe t).symm.trans hcard
+    let e : Fin n ≃ t := (Fintype.equivFinOfCardEq h_card_eq).symm
+    exact ⟨fun i => (e i).val, fun _ _ hij => e.injective (Subtype.ext hij),
+      fun i => hts (e i).property⟩
 
 end Set
