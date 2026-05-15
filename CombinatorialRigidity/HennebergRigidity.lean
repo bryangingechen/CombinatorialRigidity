@@ -104,19 +104,13 @@ private lemma eq_zero_of_orthogonal_dim_two
     (h₁ : ⟪v₁, u⟫_ℝ = 0) (h₂ : ⟪v₂, u⟫_ℝ = 0) : u = 0 := by
   have h_span_top : Submodule.span ℝ (Set.range ![v₁, v₂]) = ⊤ :=
     hLI.span_eq_top_of_card_eq_finrank (by simp)
-  have h_u_perp : u ∈ (Submodule.span ℝ (Set.range ![v₁, v₂]))ᗮ := by
-    rw [Submodule.mem_orthogonal]
-    intro w hw
-    induction hw using Submodule.span_induction with
-    | mem w hw =>
-      rcases hw with ⟨i, rfl⟩
-      fin_cases i
-      · simpa using h₁
-      · simpa using h₂
-    | zero => exact inner_zero_left _
-    | add x y _ _ hx hy => rw [inner_add_left, hx, hy, add_zero]
-    | smul c x _ hx => rw [inner_smul_left, hx]; simp
-  rwa [h_span_top, Submodule.top_orthogonal_eq_bot, Submodule.mem_bot] at h_u_perp
+  have h_ortho : Submodule.span ℝ (Set.range ![v₁, v₂]) ⟂ Submodule.span ℝ ({u} : Set _) := by
+    rw [Submodule.isOrtho_span]
+    rintro w ⟨i, rfl⟩ v rfl
+    fin_cases i
+    · simpa using h₁
+    · simpa using h₂
+  rwa [h_span_top, Submodule.isOrtho_top_left, Submodule.span_singleton_eq_bot] at h_ortho
 
 /-- **Conditional Type I rigidity preservation in dim 2.** If `p : Framework V 2` is
 infinitesimally rigid for `G` and `q : EuclideanSpace ℝ (Fin 2)` is a placement of the new vertex

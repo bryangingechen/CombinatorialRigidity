@@ -344,7 +344,7 @@ housekeeping pass once their resolution is fully indexed.
   to Phase 3 where Henneberg gives a one-liner), but worth doing if a
   later phase wants to mechanize more concrete graphs.
 
-### [open] No dim-2 "vector orthogonal to two LI vectors is zero" helper
+### ~~[open] No dim-2 "vector orthogonal to two LI vectors is zero" helper~~
 
 - **Where it bit:** Three private helpers in `HennebergRigidity.lean`
   (`exists_not_mem_span_singleton_dim_two`,
@@ -358,14 +358,20 @@ housekeeping pass once their resolution is fully indexed.
   instead of routing through `Submodule.span_eq_top` +
   `Submodule.top_orthogonal_eq_bot`. The combined dance is heavier
   than necessary.
-- **Proposed fix:** try mathlib first — `lean_loogle` for
-  `Submodule.span ℝ _ = ⊤ → _ ∈ _ᗮ → _ = 0` or
-  `Submodule.eq_bot_of_orthogonal_eq_self` + `orthogonal_orthogonal`.
-  If no direct hit, mirror an `n`-vector version (LI family of size
-  `finrank` ⇒ orthogonal complement trivial) under
-  `CombinatorialRigidity/Mathlib/Analysis/InnerProductSpace/Orthogonal.lean`.
-- **Status:** open. **Priority: medium**. Not blocking, but the
-  helper looks like 3-5 lines using existing API rather than 30.
+- **Resolution:** `Submodule.isOrtho_span`
+  (`Mathlib.Analysis.InnerProductSpace.Orthogonal`) already packages
+  "two spans are orthogonal iff generators pairwise inner-zero", so
+  the `span_induction` is unnecessary. The rewritten proof routes
+  `span ![v₁, v₂] ⟂ span {u}` through `isOrtho_span` (generators-only
+  side-condition) then `h_span_top` + `isOrtho_top_left`
+  (`⊤ ⟂ V ↔ V = ⊥`) + `span_singleton_eq_bot` (`ℝ ∙ u = ⊥ ↔ u = 0`).
+  21-line body → 10 lines, no mirror lemma needed.
+- **Status:** resolved (2026-05-15). No mathlib mirror; pure rewrite
+  of the existing helper.
+- **Lifted to:** TACTICS-GOLF § 3 *Search mathlib before mirroring*
+  (the "spanning set ⇒ orthogonal-complement-trivial" bullet) —
+  general rule is *reach for `Submodule.isOrtho_span` before
+  `span_induction`*.
 
 ### [open] No upstream "generic point off a line in `ℝ²`" helper
 

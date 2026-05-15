@@ -373,6 +373,14 @@ upstream find:
 - `LinearMap.ext_on` already packages "linear maps agree on a
   spanning set → equal", saving the explicit `LinearMap.ext fun x =>
   …; …; LinearMap.eqOn_span` block.
+- "Vector `u` orthogonal to a spanning set is zero" → don't
+  hand-roll `Submodule.span_induction` on the orthogonal complement;
+  `Submodule.isOrtho_span` says `span 𝕜 s ⟂ span 𝕜 t ↔ ∀ u ∈ s, ∀ v
+  ∈ t, ⟪u, v⟫ = 0` directly. Combined with `isOrtho_top_left` (`⊤ ⟂
+  V ↔ V = ⊥`) and `span_singleton_eq_bot`, "orthogonal to a
+  size-`finrank` LI family ⇒ zero" closes in ~10 lines instead of
+  20+ (cf. `eq_zero_of_orthogonal_dim_two` in
+  `HennebergRigidity.lean`).
 
 Rule of thumb: search by *type pattern of what you need*, not by
 your guess of what mathlib calls it — names drift, types don't.
