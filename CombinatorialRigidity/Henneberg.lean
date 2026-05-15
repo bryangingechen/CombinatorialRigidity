@@ -517,20 +517,19 @@ def typeII_iso_of_three_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b c :
 
 Every Laman graph on `n ≥ 3` vertices admits a Henneberg reverse to another Laman graph on
 one fewer vertex. Thin shell over `IsSparse.exists_typeI_or_typeII_reverse`: applies the sparse
-flat-form decomposition to `h.isSparse`, uses `IsLaman.two_le_degree` to upgrade `G.degree v ≤ 2`
-to `= 2` in the Type I branch, and bumps `G'.IsSparse 2 3` to `G'.IsLaman` via the typeI iso
-combined with `typeI_isLaman_iff` (Type I) or the typeII iso combined with
-`typeII_edgeSet_ncard` plus the bridge-edge count (Type II).
+flat-form decomposition to `h.isSparse`, discards the pendant branch via `IsLaman.two_le_degree`,
+and bumps `G'.IsSparse 2 3` to `G'.IsLaman` via the typeI iso combined with `typeI_isLaman_iff`
+(Type I) or the typeII iso combined with `typeII_edgeSet_ncard` plus the bridge-edge count
+(Type II).
 
-**Phase 5 milestone 1.** Phase 7 (Commit 3) re-presented the result in flat form (matching
-`IsSparse.exists_typeI_or_typeII_reverse`'s shape) and deleted the operation-form variants
-`exists_typeI_or_typeII_iso`, `typeII_reverse_blocker`, `typeII_reverse_witness_or_blocker` that
-the old proof routed through. Callers reconstruct the iso to `typeI G' a b` /
-`typeII G' a b c` via `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` at the
-callsite, before invoking the operation-form forward-preservation theorems
-(`typeI_isGenericallyRigidInj_two` / `typeII_isGenericallyRigidInj_two`) and transporting along
-the iso. See `DESIGN.md` *Statement-form conventions* for the forward = operation /
-reverse = flat split. -/
+**Phase 5 milestone 1.** Phase 7 re-presented the sparse decomposition as a 3-way split (Commit
+12), so the Laman shell here drops the pendant branch (`G.degree v = 1`) by contradicting
+`IsLaman.two_le_degree`; the surviving Type I / Type II branches consume the sparse 3-way
+exactly as before. Callers reconstruct the iso to `typeI G' a b` / `typeII G' a b c` via
+`typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` at the callsite, before invoking
+the operation-form forward-preservation theorems (`typeI_isGenericallyRigidInj_two` /
+`typeII_isGenericallyRigidInj_two`) and transporting along the iso. See `DESIGN.md`
+*Statement-form conventions* for the forward = operation / reverse = flat split. -/
 
 /-- **Strengthened decomposition theorem (flat form).** Every Laman graph `G` on `n ≥ 3`
 vertices admits a Henneberg reverse to another Laman graph on the subtype `{w // w ≠ v}`:
@@ -540,12 +539,12 @@ degree exactly 3 with three distinct neighbors `x, y, c` and a non-adjacent pair
 that the induced subgraph augmented with the bridging edge `s(x, y)` is Laman (Type II reverse).
 
 The Laman analogue of `IsSparse.exists_typeI_or_typeII_reverse`. Proof: apply the sparse
-version to `h.isSparse` (`G.edgeSet` is nonempty since Laman tight gives `|E| = 2|V| - 3 ≥ 3`
-under `|V| ≥ 3`). In the Type I branch, `IsLaman.two_le_degree` forces `degree v = 2`, the two
-neighbors are extracted via `Finset.card_eq_two`, and `typeI_isLaman_iff` bumps sparsity to
-Laman after iso transport. In the Type II branch, the typeII iso transports `G`'s Laman to
-`(typeII G' x y c).IsLaman`, and `typeII_edgeSet_ncard` plus the bridge-edge presence pins
-down `G'`'s tight edge count.
+3-way version to `h.isSparse` (`G.edgeSet` is nonempty since Laman tight gives
+`|E| = 2|V| - 3 ≥ 3` under `|V| ≥ 3`). The pendant branch (`deg v = 1`) is impossible since
+`IsLaman.two_le_degree` forces `2 ≤ deg v`; dispatch via `absurd`. The Type I branch
+(`deg v = 2`) feeds directly into `typeI_isLaman_iff` after iso transport. In the Type II
+branch, the typeII iso transports `G`'s Laman to `(typeII G' x y c).IsLaman`, and
+`typeII_edgeSet_ncard` plus the bridge-edge presence pins down `G'`'s tight edge count.
 
 **Phase 5 milestone 1.** -/
 theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
@@ -571,23 +570,21 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
     exact Set.nonempty_of_ncard_ne_zero (by omega)
   obtain ⟨v, hbranch⟩ := h.isSparse.exists_typeI_or_typeII_reverse hE
   refine ⟨v, ?_⟩
-  rcases hbranch with ⟨hdeg2, hG'sparse⟩ | ⟨hdeg3, x, y, c, hxy, hcx, hcy, hN, hnxy, hG'sparse⟩
-  · -- Type I branch. Laman min-degree forces `degree v = 2`; extract the two neighbors and
+  rcases hbranch with
+    ⟨hdeg1, _, _, _⟩ |
+    ⟨hdeg2, a, b, hab, hN_iff, hG'sparse⟩ |
+    ⟨hdeg3, x, y, c, hxy, hcx, hcy, hN, hnxy, hG'sparse⟩
+  · -- Pendant branch: impossible since `IsLaman.two_le_degree` forces `2 ≤ deg v`.
+    exact absurd hdeg1 (by have := h.two_le_degree hV v; omega)
+  · -- Type I branch. Extract the two neighbours from `hN_iff` and
     -- bump `G'.IsSparse` to `G'.IsLaman` via `typeI_isLaman_iff` and the typeI iso.
-    have hdeg_eq : G.degree v = 2 := le_antisymm hdeg2 (h.two_le_degree hV v)
-    obtain ⟨a, b, hab, hN_eq⟩ := Finset.card_eq_two.mp hdeg_eq
-    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b := fun w => by
-      rw [← mem_neighborFinset, hN_eq]; simp
-    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
-    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr rfl)
-    have hva : v ≠ a := G.ne_of_adj ha_adj
-    have hvb : v ≠ b := G.ne_of_adj hb_adj
-    have hab_s : (⟨a, hva.symm⟩ : {w : V // w ≠ v}) ≠ ⟨b, hvb.symm⟩ :=
-      fun heq => hab (Subtype.mk.injEq .. |>.mp heq)
+    have ha_adj : G.Adj v a.val := (hN_iff a.val).mpr (Or.inl rfl)
+    have hb_adj : G.Adj v b.val := (hN_iff b.val).mpr (Or.inr rfl)
     have hG'_laman : (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsLaman :=
-      (typeI_isLaman_iff hab_s).mp
-        (IsLaman.iso (typeI_iso_of_two_neighbors hva hvb hN_iff) h)
-    exact Or.inl ⟨hdeg_eq, ⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, hab_s, hN_iff, hG'_laman⟩
+      (typeI_isLaman_iff hab).mp
+        (IsLaman.iso (typeI_iso_of_two_neighbors (G.ne_of_adj ha_adj) (G.ne_of_adj hb_adj)
+          hN_iff) h)
+    exact Or.inl ⟨hdeg2, a, b, hab, hN_iff, hG'_laman⟩
   · -- Type II branch. Build the typeII iso, transport `G.IsLaman` to `(typeII G' x y c).IsLaman`,
     -- and reconstruct `G'`'s tight edge count from `typeII_edgeSet_ncard` plus the bridge.
     refine Or.inr ⟨hdeg3, x, y, c, hxy, hcx, hcy, hN, hnxy, ?_⟩

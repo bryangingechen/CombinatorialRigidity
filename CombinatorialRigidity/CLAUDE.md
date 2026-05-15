@@ -63,6 +63,9 @@ bullets. If one matches, jump to the named section of
   expected to eliminate → § 10 *`simp_all` cross-contaminates*
 - `linearIndependent_fin2` rewrite leaves `![v₀, v₁] 0` blocking a
   pattern match → § 11 *unsimplified at the indexing layer*
+- `set V₊ := …` / `let V₊ := …` (or any identifier with `₊ ₋ ₌`)
+  errors with *"expected token"* at the subscript column → § 13
+  *Subscript `₊` (U+208A) is not a valid identifier character*
 
 ## Starting a Lean-touching session
 

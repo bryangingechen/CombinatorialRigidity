@@ -13,12 +13,15 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Eleven commits in. The first six lifted Laman-only machinery to
+Twelve commits in. The first six lifted Laman-only machinery to
 `IsSparse` and landed `IsSparse.exists_typeI_or_typeII_reverse` in
 flat form (entry points `60a2176..6d59be2`); the next five landed the
 four operation-form row-LI lifts plus the row-LI openness lemma in
-`MatroidIdentification.lean` (entry points `91403e7..57f8f1f`). The
+`MatroidIdentification.lean` (entry points `91403e7..57f8f1f`); the
+latest commit refines the sparse reverse to a 3-way split (pendant /
+Type I / Type II) and reflows the Laman shell to consume it. The
 chapter dep-graph in `chapter/rigidity-matroid.tex` has only the
+pendant row-LI lift `lem:pendant-rowIndependent-lift`, the
 `|E|`-induction theorem `thm:isSparse-exists-rowIndependent-placement`,
 the iff `thm:edgeSet-rowIndependent-iff-isSparse`, and the `Matroid`
 packaging left to discharge.
@@ -31,20 +34,22 @@ packaging left to discharge.
 - **Commits 7–11** [✓ done]: Type I / Type II row-LI conditional
   cores + unconditional wrappers + row-LI openness lemma. Entry
   points `91403e7..57f8f1f`.
-- **Next: refine sparse reverse decomp + pendant lift** —
-  strengthen `IsSparse.exists_typeI_or_typeII_reverse` to a 3-way
-  split (pendant / Type I / Type II, with `deg v ≥ 1` enforced
-  inside the proof by restricting to the induced subgraph on
-  positive-degree vertices); add a new pendant lift
+- **Commit 12** [✓ done]: refine sparse reverse to 3-way split
+  (pendant / Type I / Type II); reflow the Laman shell to discard
+  the pendant branch via `IsLaman.two_le_degree`. The
+  positive-degree restriction is via a new
+  `IsSparse.exists_one_le_degree_le_three` helper in `Sparsity.lean`
+  (handshake + sparsity on `S := {v | 1 ≤ deg v}`; assume for
+  contradiction every `v ∈ S` has `deg v ≥ 4`, then
+  `4 |S| ≤ 2 |E| ≤ 4 |S| − 6`).
+- **Next: pendant row-LI lift** — add
   `typeI_pendant_edgeSetRowIndependent_lift` (or similar) in
-  `MatroidIdentification.lean`. Update the Laman shell
-  `IsLaman.exists_typeI_or_typeII_reverse` in `Henneberg.lean` to
-  consume the strengthened form. Blueprint statement of
-  `thm:isSparse-exists-typeI-or-typeII-reverse` already updated
-  (this commit) and `\leanok` removed until Lean catches up;
-  pendant lift entry `lem:pendant-rowIndependent-lift` added
-  alongside the typeI lift. See *3-way reverse decomposition*
-  decision below for the rationale.
+  `MatroidIdentification.lean`, then pin `\lean{...}` and `\leanok`
+  on the blueprint's `lem:pendant-rowIndependent-lift`. The
+  pendant case lifts row-LI through `typeI G' a a` (the new vertex
+  joins to a single old vertex); `q` only needs `q ≠ p' a`,
+  vastly simpler than the `q - p' a, q - p' b` LI condition of the
+  general typeI lift.
 - **Then: `IsSparse.exists_rowIndependent_placement`** — the
   `|E|`-induction theorem. With the 3-way split landed, the
   induction matches the blueprint sketch directly: each branch
@@ -186,21 +191,18 @@ A red node = not yet formalized; a green node = formalized and
   `continuous_rigidityMap_apply`; transport back via
   `LinearMap.linearIndependent_iff` + `LinearEquiv.ker`.
 
-- **3-way reverse decomposition (planned for Commit 12).** The
-  original sparse reverse decomp returned `deg v ≤ 2` (Type I) or
-  `= 3` (Type II); the `deg ≤ 2` branch silently lumped together
-  pendant (`deg = 1`), Type I proper (`deg = 2`), and the
-  degenerate `deg = 0` case. K₁,₅ (sparse with only deg-1 leaves
-  and one deg-5 centre) shows that the reverse will pick a pendant
-  vertex, so the `|E|`-induction consumer cannot avoid the deg-1
-  case. Strengthening the reverse to a 3-way split (pendant /
-  Type I / Type II, with `deg v ≥ 1` enforced internally by
-  restricting to the induced subgraph on positive-degree vertices)
-  puts the complexity in the structure theorem instead of every
-  consumer, exposes neighbour data uniformly across all three
-  branches, and matches the blueprint's `|E|`-induction proof
-  sketch verbatim. A new pendant lift
-  `lem:pendant-rowIndependent-lift` lands alongside.
+- **3-way reverse decomposition (Commit 12).**
+  `IsSparse.exists_typeI_or_typeII_reverse` now splits on
+  `G.degree v ∈ {1, 2, 3}` (pendant / Type I / Type II) and exposes
+  neighbour data uniformly across all three branches. The degree
+  positivity (`deg v ≥ 1`) comes from a new helper
+  `IsSparse.exists_one_le_degree_le_three` in `Sparsity.lean`: assume
+  for contradiction every `v ∈ S := {v | 1 ≤ deg v}` has `deg v ≥ 4`,
+  then handshake gives `4 |S| ≤ 2 |E|`, and sparsity at `S`
+  (size ≥ 2 from any edge) gives `|E| + 3 ≤ 2 |S|`, contradicting
+  `4 |S| ≤ 4 |S| − 6`. The Laman shell discards the pendant branch
+  via `IsLaman.two_le_degree`; Type I / Type II consumers are
+  unchanged. Pendant row-LI lift lands separately.
 
 - **Type II row-LI unconditional wrapper (Commit 11).**
   `typeII_edgeSetRowIndependent_lift` mirrors Phase 5's
@@ -238,11 +240,13 @@ A red node = not yet formalized; a green node = formalized and
   branch helpers; `typeI_iso_of_two_neighbors` /
   `typeII_iso_of_three_neighbors` un-privatized.
 - `Sparsity.lean`: gained `exists_degree_le_three`,
+  `exists_one_le_degree_le_three` (Commit 12),
   `exists_nonadj_among_three_neighbors`, the five
   `IsSparse.contradiction_*_pair` blocker primitives,
   `IsSparse.typeII_reverse_blocker`, and `image_edgesIn_comap` (all
   lifted from `Henneberg.lean`); plus the flat-form
-  `IsSparse.exists_typeI_or_typeII_reverse`.
+  `IsSparse.exists_typeI_or_typeII_reverse`, refined to a 3-way
+  split (pendant / Type I / Type II) in Commit 12.
 - `HennebergRigidity.lean`: `exists_off_line_off_finite_dim_two` and
   `exists_not_mem_span_singleton_dim_two` un-privatized for cross-file
   reuse from `MatroidIdentification.lean`.

@@ -291,3 +291,18 @@ fall under *"acts like a function but isn't literally one."* The
 error message is identical (`Application type mismatch`), so
 recognize the symptom: any failed `congr_fun` whose target is a
 bundled morphism wants `DFunLike.congr_fun` instead.
+
+## 13. Subscript `₊` (U+208A) is not a valid identifier character
+
+Pasting an identifier like `V₊` or `s₊` from blueprint / notes prose
+into Lean produces a baffling `expected token` error at the column
+of the subscript-plus, and the parser then dumps the local context
+with the partial name as `V : ?m.… := sorry`. Lean's identifier
+rules (per Unicode XID_Continue) accept letters and digit-like
+subscripts (`₁ ₂ ₃ … ₀`) but classify `₊` (U+208A "subscript plus
+sign") as a math symbol, not a letter — it cannot continue an
+identifier. Same for `₋` (U+208B), `₌` (U+208C), `₍ ₎`.
+
+Replace with an alphanumeric suffix (`V_pos`, `Vpos`, `Vp`, `S`)
+when binding via `set` / `let` / `intro`. Blueprint prose can keep
+the `₊` notation; only the Lean identifier needs to change.

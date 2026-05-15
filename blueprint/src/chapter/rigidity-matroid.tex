@@ -39,6 +39,7 @@ three-pair tight-union (Jord\'an Lemma~2.1.3) is
 \begin{theorem}[Sparse-graph reverse decomposition]
   \label{thm:isSparse-exists-typeI-or-typeII-reverse}
   \lean{SimpleGraph.IsSparse.exists_typeI_or_typeII_reverse}
+  \leanok
   \uses{def:isSparse, def:typeI, def:typeII}
   Let $V$ be finite and $G : \mathrm{SimpleGraph}\,V$ be $(2, 3)$-sparse
   with at least one edge. Then there exists $v \in V$ with
@@ -58,6 +59,7 @@ three-pair tight-union (Jord\'an Lemma~2.1.3) is
   \end{enumerate}
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter}
   Restrict attention to $V_{+} := \{v \in V : d_{G}(v) \ge 1\}$; the
   endpoints of any edge lie in $V_{+}$, so $|V_{+}| \ge 2$ and

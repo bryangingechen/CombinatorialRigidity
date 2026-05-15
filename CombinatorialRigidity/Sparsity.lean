@@ -39,6 +39,8 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
   inclusion.
 * `SimpleGraph.bot_isTight_iff` — characterisation of when the empty graph is tight.
 * `SimpleGraph.IsSparse.edgeSet_ncard_add_le` — global edge count bound.
+* `SimpleGraph.IsSparse.exists_one_le_degree_le_three` — strengthening for sparse graphs
+  with at least one edge: some vertex has degree in `{1, 2, 3}`.
 * `SimpleGraph.IsSparse.exists_degree_le_three` — every `(2, 3)`-sparse graph on
   `n ≥ 2` vertices has a vertex of degree at most 3.
 * `SimpleGraph.IsSparse.exists_nonadj_among_three_neighbors` — in a `(2, 3)`-sparse
@@ -169,6 +171,65 @@ theorem IsSparse.exists_degree_le_three [Fintype V]
   have hEcoe := G.ncard_edgeSet_eq_card_edgeFinset
   have hE := h.edgeSet_ncard_add_le (by rw [Nat.card_eq_fintype_card]; omega)
   grind only [Nat.card_eq_fintype_card]
+
+/-- In a `(2, 3)`-sparse graph with at least one edge, some vertex has degree in `{1, 2, 3}`.
+Strengthens `exists_degree_le_three` by ruling out the isolated case (`G.degree v = 0`):
+restricting the handshake / sparsity bound to `S := {v | 1 ≤ G.degree v}` gives
+`∑_{v ∈ S} G.degree v = ∑_v G.degree v = 2 |E|`, all edges sit inside `edgesIn ↑S`, and
+sparsity at `S` (size ≥ 2 from any edge) gives `|E| + 3 ≤ 2 |S|`. If every vertex in `S`
+had degree ≥ 4 the sum would be `≥ 4 |S|`, contradicting `2 |E| ≤ 4 |S| − 6`. The
+positive-degree restriction is what the Phase 7 3-way sparse reverse decomposition needs
+to distinguish pendant (`deg = 1`) from Type I proper (`deg = 2`). -/
+theorem IsSparse.exists_one_le_degree_le_three [Fintype V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsSparse 2 3)
+    (hE : G.edgeSet.Nonempty) :
+    ∃ v, 1 ≤ G.degree v ∧ G.degree v ≤ 3 := by
+  classical
+  by_contra hcontra
+  push Not at hcontra
+  -- `S`: positive-degree vertices. By `hcontra`, every `v ∈ S` has `G.degree v ≥ 4`.
+  set S : Finset V := Finset.univ.filter (fun v => 1 ≤ G.degree v) with hS_def
+  -- An edge gives two distinct positive-degree vertices, hence `|S| ≥ 2`.
+  obtain ⟨e, he⟩ := hE
+  induction e with | h u v => ?_
+  rw [mem_edgeSet] at he
+  have huv : u ≠ v := G.ne_of_adj he
+  have hdu : 1 ≤ G.degree u := (G.degree_pos_iff_exists_adj u).mpr ⟨v, he⟩
+  have hdv : 1 ≤ G.degree v := (G.degree_pos_iff_exists_adj v).mpr ⟨u, he.symm⟩
+  have hu_in : u ∈ S := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdu⟩
+  have hv_in : v ∈ S := Finset.mem_filter.mpr ⟨Finset.mem_univ _, hdv⟩
+  have hS_ge2 : 2 ≤ S.card := by
+    rw [show (2 : ℕ) = ({u, v} : Finset V).card from (Finset.card_pair huv).symm]
+    refine Finset.card_le_card ?_
+    intro x hx
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> assumption
+  -- Every edge has both endpoints in `S`, so `edgesIn ↑S = edgeSet`.
+  have h_edgesIn : G.edgesIn (↑S : Set V) = G.edgeSet := by
+    refine Set.eq_of_subset_of_subset (fun _ he => he.1) (fun e he => mem_edgesIn.mpr ⟨he, ?_⟩)
+    induction e with | h x y => ?_
+    rw [mem_edgeSet] at he
+    rw [Sym2.coe_mk]
+    rintro w (rfl | rfl)
+    · exact Finset.mem_coe.mpr (Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, (G.degree_pos_iff_exists_adj _).mpr ⟨_, he⟩⟩)
+    · exact Finset.mem_coe.mpr (Finset.mem_filter.mpr
+        ⟨Finset.mem_univ _, (G.degree_pos_iff_exists_adj _).mpr ⟨_, he.symm⟩⟩)
+  -- Sum-of-degrees ≥ 4 |S| from the by-contradiction hypothesis.
+  have h_deg_4 : ∀ w ∈ S, 4 ≤ G.degree w := fun w hw => by
+    have h1 := (Finset.mem_filter.mp hw).2
+    have := hcontra w h1; omega
+  have h_sum_4 : (∑ _ ∈ S, (4 : ℕ)) ≤ ∑ w ∈ S, G.degree w :=
+    Finset.sum_le_sum h_deg_4
+  simp at h_sum_4
+  -- Restriction is harmless: vertices outside `S` have degree 0.
+  have h_sum_eq : ∑ w ∈ S, G.degree w = ∑ w, G.degree w := by
+    rw [hS_def]; exact Finset.sum_filter_of_ne fun w _ hw => by omega
+  have hsum := G.sum_degrees_eq_twice_card_edges
+  have hEcoe := G.ncard_edgeSet_eq_card_edgeFinset
+  have h_sparse_S := h S (by omega)
+  rw [h_edgesIn] at h_sparse_S
+  omega
 
 /-! ### Non-adjacent pair among three neighbors
 
@@ -929,39 +990,55 @@ theorem IsSparse.typeII_reverse_blocker
 
 /-! ### Flat-form Henneberg reverse decomposition
 
-In a `(2, 3)`-sparse graph with at least one edge, a Henneberg reverse step exists: either a
-low-degree vertex can be deleted (Type I reverse) or a degree-3 vertex with a non-adjacent
-neighbor pair can be split (Type II reverse). The sparse analogue of Phase 5 milestone 1
-(`IsLaman.exists_typeI_or_typeII_reverse` in `Henneberg.lean`), stated in **flat form** per
-`DESIGN.md` *Statement-form conventions*: the conclusion describes the smaller graph by its
-edges directly (`G - v` as `G.comap Subtype.val`, the typeII candidate as
-`G.comap Subtype.val ⊔ fromEdgeSet {bridge}`) rather than via the `typeI` / `typeII` Henneberg
-operations.
+In a `(2, 3)`-sparse graph with at least one edge, a Henneberg reverse step exists distinguished
+by `G.degree v ∈ {1, 2, 3}`: pendant reverse (delete a degree-1 vertex), Type I reverse (delete
+a degree-2 vertex), or Type II reverse (split a degree-3 vertex with a non-adjacent neighbour
+pair). The sparse analogue of Phase 5 milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse` in
+`Henneberg.lean`), stated in **flat form** per `DESIGN.md` *Statement-form conventions*: the
+conclusion describes the smaller graph by its edges directly (`G - v` as `G.comap Subtype.val`,
+the typeII candidate as `G.comap Subtype.val ⊔ fromEdgeSet {bridge}`) rather than via the
+`typeI` / `typeII` Henneberg operations.
 
-Proof structure (Jordán Lemma 2.1.4): pick a degree-`≤ 3` vertex `v` via
-`IsSparse.exists_degree_le_three`; if `G.degree v ≤ 2`, the Type I branch closes via
-`IsSparse.comap`; if `G.degree v = 3`, run the per-pair witness-or-blocker dispatch using
-`IsSparse.typeII_reverse_blocker` and combine three blockers via
+Proof structure (Jordán Lemma 2.1.4): pick a vertex `v` with `1 ≤ G.degree v ≤ 3` via
+`IsSparse.exists_one_le_degree_le_three`; split on `G.degree v ∈ {1, 2, 3}`. The pendant
+(`= 1`) and Type I (`= 2`) cases close via `IsSparse.comap` after extracting neighbour data
+from `card_eq_one` / `card_eq_two`. The `= 3` case runs the per-pair witness-or-blocker
+dispatch using `IsSparse.typeII_reverse_blocker` and combines three blockers via
 `IsSparse.False_of_pairwise_blocker_or_edge`. -/
 
 /-- **Flat-form Henneberg reverse decomposition (Jordán Lemma 2.1.4).** Every `(2, 3)`-sparse
-graph with at least one edge admits a Henneberg reverse: either some vertex `v` has degree
-`≤ 2` and the induced subgraph on `{w // w ≠ v}` is `(2, 3)`-sparse (Type I reverse), or some
-vertex `v` has degree exactly `3` with three neighbors `x, y, c` and a non-adjacent pair
-`(x, y)` such that the induced subgraph augmented with the bridging edge `s(x, y)` is
-`(2, 3)`-sparse (Type II reverse).
+graph with at least one edge admits a Henneberg reverse to a smaller `(2, 3)`-sparse graph,
+distinguished by `G.degree v ∈ {1, 2, 3}`:
+
+* **Pendant reverse** (`G.degree v = 1`): the unique neighbour `a` of `v` is exposed and
+  the induced subgraph on `{w // w ≠ v}` is `(2, 3)`-sparse.
+* **Type I reverse** (`G.degree v = 2`): the two distinct neighbours `a ≠ b` of `v` are
+  exposed and the induced subgraph on `{w // w ≠ v}` is `(2, 3)`-sparse.
+* **Type II reverse** (`G.degree v = 3`): three neighbours `x, y, c` of `v` are exposed,
+  along with a non-adjacent pair `(x, y)`, such that the induced subgraph augmented with the
+  bridging edge `s(x, y)` is `(2, 3)`-sparse.
 
 The sparse analogue of Phase 5 milestone 1's `IsLaman.exists_typeI_or_typeII_reverse`. Stated
 in flat form: the smaller graphs are described by their explicit edge constructions rather
 than via the typeI / typeII Henneberg operations (see `DESIGN.md` *Statement-form
 conventions*). Phase 7's row-LI lift consumers reconstruct the operation form at each step
-via `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` in `Henneberg.lean`. -/
+via `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` in `Henneberg.lean`. The
+pendant branch invokes `typeI_iso_of_two_neighbors` at `a = b` (the unique neighbour);
+`typeI G' a a` joins the new vertex to a single old vertex, modelling the pendant
+attachment used by Lovász–Yemini to reverse a degree-1 vertex. -/
 theorem IsSparse.exists_typeI_or_typeII_reverse [Fintype V]
     {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsSparse 2 3)
     (hE : G.edgeSet.Nonempty) :
     ∃ v : V,
-      (G.degree v ≤ 2 ∧
-        (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsSparse 2 3)
+      (G.degree v = 1 ∧
+        ∃ a : {w : V // w ≠ v},
+          (∀ w : V, G.Adj v w ↔ w = a.val) ∧
+          (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsSparse 2 3)
+      ∨
+      (G.degree v = 2 ∧
+        ∃ a b : {w : V // w ≠ v}, a ≠ b ∧
+          (∀ w : V, G.Adj v w ↔ w = a.val ∨ w = b.val) ∧
+          (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsSparse 2 3)
       ∨
       (G.degree v = 3 ∧
         ∃ x y c : {w : V // w ≠ v}, x ≠ y ∧ c ≠ x ∧ c ≠ y ∧
@@ -970,25 +1047,36 @@ theorem IsSparse.exists_typeI_or_typeII_reverse [Fintype V]
           (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
             fromEdgeSet ({s(x, y)} : Set _)).IsSparse 2 3) := by
   classical
-  -- Derive `2 ≤ |V|` from `|E| ≥ 1`: any edge connects two distinct vertices.
-  have hV : 2 ≤ Fintype.card V := by
-    obtain ⟨e, he⟩ := hE
-    refine e.ind (fun a b he => ?_) he
-    rw [mem_edgeSet] at he
-    calc 2 = ({a, b} : Finset V).card := (Finset.card_pair (G.ne_of_adj he)).symm
-      _ ≤ Fintype.card V := Finset.card_le_univ _
-  obtain ⟨v, hvdeg⟩ := h.exists_degree_le_three hV
+  obtain ⟨v, hv1, hv3⟩ := h.exists_one_le_degree_le_three hE
   refine ⟨v, ?_⟩
-  by_cases hdeg2 : G.degree v ≤ 2
-  · -- Type I branch: G' = G.comap Subtype.val is sparse via `IsSparse.comap`.
-    exact Or.inl ⟨hdeg2, h.comap Subtype.val_injective⟩
+  -- Case split on `G.degree v ∈ {1, 2, 3}`. Pendant and Type I close via `IsSparse.comap` after
+  -- extracting neighbour data; Type II runs the existing per-pair witness/blocker dispatch.
+  rcases (show G.degree v = 1 ∨ G.degree v = 2 ∨ G.degree v = 3 from by omega)
+    with hdeg1 | hdeg2 | hdeg3
+  · -- Pendant branch: `card_eq_one` extracts the unique neighbour `a`.
+    obtain ⟨a, hN_eq⟩ := Finset.card_eq_one.mp hdeg1
+    have hN_iff : ∀ w, G.Adj v w ↔ w = a := fun w => by
+      rw [← mem_neighborFinset, hN_eq]; simp
+    have ha_adj : G.Adj v a := (hN_iff a).mpr rfl
+    have hva : v ≠ a := G.ne_of_adj ha_adj
+    exact Or.inl ⟨hdeg1, ⟨a, hva.symm⟩, hN_iff, h.comap Subtype.val_injective⟩
+  · -- Type I branch: `card_eq_two` extracts the two distinct neighbours `a, b`.
+    obtain ⟨a, b, hab, hN_eq⟩ := Finset.card_eq_two.mp hdeg2
+    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b := fun w => by
+      rw [← mem_neighborFinset, hN_eq]; simp
+    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
+    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr rfl)
+    have hva : v ≠ a := G.ne_of_adj ha_adj
+    have hvb : v ≠ b := G.ne_of_adj hb_adj
+    have hab_s : (⟨a, hva.symm⟩ : {w : V // w ≠ v}) ≠ ⟨b, hvb.symm⟩ :=
+      fun heq => hab (Subtype.mk.injEq .. |>.mp heq)
+    exact Or.inr (Or.inl ⟨hdeg2, ⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, hab_s, hN_iff,
+      h.comap Subtype.val_injective⟩)
   · -- Type II branch: degree v = 3. For each pair of neighbors, dispatch
     -- `witness ∨ Adj ∨ blocker`; short-circuit on any witness; otherwise feed the three
     -- `Adj ∨ blocker` disjunctions to `IsSparse.False_of_pairwise_blocker_or_edge` together
     -- with the non-adj disjunction from `IsSparse.exists_nonadj_among_three_neighbors`.
-    push Not at hdeg2
-    have hdeg3 : G.degree v = 3 := by omega
-    refine Or.inr ⟨hdeg3, ?_⟩
+    refine Or.inr (Or.inr ⟨hdeg3, ?_⟩)
     obtain ⟨a, b, c, hab, hac, hbc, hN_eq⟩ := Finset.card_eq_three.mp hdeg3
     have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c := fun w => by
       rw [← mem_neighborFinset, hN_eq]; simp
