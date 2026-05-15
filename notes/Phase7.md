@@ -222,6 +222,17 @@ A red node = not yet formalized; a green node = formalized and
   `funext fun _ => rfl`. Flips `\leanok` on
   `lem:typeI-rowIndependent-lift`.
 
+- **Mirror `LinearIndependent.dualMap_of_surjective`.** The old-row
+  LI half of `typeI_edgeSetRowIndependent_extend` was building the
+  `funLeft_surjective_of_injective` → `dualMap_injective_of_surjective`
+  → `ker_eq_bot.mpr` → `LinearIndependent.map'` chain by hand. Mirrored
+  the fused upstream-candidate at `Mathlib/LinearAlgebra/Dual/Lemmas.lean`
+  (Type II row-LI lift will be the third caller); the proof block
+  collapsed to one term-mode application. RigidityMatroid's companion
+  big→small direction (`isSparse_of_edgeSetRowIndependent_dim_two`)
+  uses `LinearIndependent.of_comp` without surjectivity and did not
+  benefit. See the mirrored FRICTION entry.
+
 ## Blockers / open questions
 
 - **Type II row-LI lift collinearity gap.** The Type II move places

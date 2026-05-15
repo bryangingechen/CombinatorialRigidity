@@ -384,28 +384,11 @@ housekeeping pass once their resolution is fully indexed.
   excluded-finite-α argument, naturally `Set.Finite.exists_notMem` in
   `ℝ`, not an affine-cover application — and stays project-internal.
 
-### [open] No `LinearIndepOn` "row-restriction transports LI through dual" helper
+### ~~[open] No `LinearIndepOn` "row-restriction transports LI through dual" helper~~
 
-- **Where it bit:** `isSparse_of_edgeSetRowIndependent_dim_two`
-  (`RigidityMatroid.lean:413–519`, ~107 lines) and
-  `typeI_edgeSetRowIndependent_extend` (`MatroidIdentification.lean:64–188`,
-  ~130 lines). Both build a `restrictMap.dualMap` between framework
-  dual spaces, prove a `h_factor` identity (row in big graph =
-  `restrictMap.dualMap` of row in small graph) by `LinearMap.ext +
-  Sym2.induction + rfl`, then close LI via `LinearIndependent.of_comp`
-  / `LinearIndepOn.map'` with `LinearMap.ker_eq_bot`.
-- **Friction:** the `restrictMap = LinearMap.funLeft ℝ _ some` /
-  `LinearMap.funLeft_surjective_of_injective` /
-  `LinearMap.dualMap_injective_of_surjective` factoring chain
-  recurs verbatim in both. The blueprint treats it as a one-step
-  "factor through the restriction map" claim.
-- **Proposed fix:** mirror `LinearIndepOn.comp_dualMap_of_surjective`
-  (or similar) under `CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/Lemmas.lean`.
-  Statement sketch: if `f : M →ₗ[R] N` is surjective and `v : ι → Dual R N`
-  is `LinearIndepOn` on `s`, then `f.dualMap ∘ v` is `LinearIndepOn`
-  on `s`. Two callers immediately benefit; Phase 7 Type II will be
-  a third.
-- **Status:** open. **Priority: medium**.
+Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
+`LinearIndepOn.dualMap_of_surjective` — see the corresponding entry in
+[Mirrored](#mirrored) below.
 
 ### [open] `Function.Injective.option_elim` would clean up Henneberg-move injectivity
 
@@ -1041,6 +1024,37 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored. Each call site now reads
   `Finset.eq_singleton_of_mem_of_card_le_one hmem (by omega)`.
 - **Mirror file:** `Mathlib/Data/Finset/Card.lean`.
+
+### [mirrored] `LinearIndependent.dualMap_of_surjective` / `LinearIndepOn.dualMap_of_surjective`
+- **Where it bit:** `typeI_edgeSetRowIndependent_extend`
+  (`MatroidIdentification.lean`, Phase 7). The blueprint claims a one-step
+  "factor through the restriction map" for old-row LI: linear independence
+  of `G'.rigidityRow p'` transports through `restrictMap.dualMap` (where
+  `restrictMap = LinearMap.funLeft ℝ _ some`) to linear independence of
+  the lifted `(typeI G' a b).rigidityRow p_ext ∘ lift_some`. The original
+  Lean expanded this into a four-step chain: `LinearMap.funLeft_surjective_of_injective` →
+  `LinearMap.dualMap_injective_of_surjective` → `LinearMap.ker_eq_bot.mpr` →
+  `LinearIndependent.map'`. Phase 7's forthcoming Type II row-LI lift will
+  hit the same chain.
+- **Friction:** mathlib has each link (`dualMap_injective_of_surjective`
+  in `Dual/Defs.lean`, `LinearIndependent.map'` in `LinearIndependent/Basic.lean`)
+  but no fused `LinearIndependent.dualMap_of_surjective`. The
+  `LinearIndepOn`-level companion is also absent.
+  The companion big→small direction in `isSparse_of_edgeSetRowIndependent_dim_two`
+  (`RigidityMatroid.lean`) uses `LinearIndependent.of_comp restrict.dualMap`
+  with no surjectivity hypothesis — already a one-liner upstream, so it
+  did not benefit from the new helper.
+- **Resolution:** mirrored as
+  - `LinearIndependent.dualMap_of_surjective`: `Surjective f → LI v → LI (f.dualMap ∘ v)`.
+  - `LinearIndepOn.dualMap_of_surjective`: the `LinearIndepOn` companion.
+
+  The Phase 7 caller collapsed the four-step chain to one
+  `h_li_G'.dualMap_of_surjective h_restrict_surj` application; the
+  intermediate `h_dualMap_inj` and `with hRest_def` bindings dropped.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dual/Lemmas.lean` (with an
+  added `import Mathlib.LinearAlgebra.LinearIndependent.Basic` line;
+  upstream would slot under existing surjective-dual API in that file).
 
 ## Archived: Resolved (project-internal)
 
