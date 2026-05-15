@@ -21,23 +21,22 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
+All six phases are complete; the project carries no `sorry`s. The
+main theorem
+[`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
+in `LamanTheorem.lean` is fully formalized in both directions.
+
 The development is divided into six phases, each in its own file under
 [`CombinatorialRigidity/`](https://github.com/bryangingechen/CombinatorialRigidity/tree/master/CombinatorialRigidity).
 
-| Phase | Topic                       | File(s)                                  | Status |
-|------:|-----------------------------|------------------------------------------|:------:|
-|     1 | Sparsity                    | `EdgesIn.lean`, `Sparsity.lean`          |   ✓    |
-|     2 | Laman graphs                | `Laman.lean`                             |   ✓    |
-|     3 | Henneberg moves             | `Henneberg.lean`                         |   ✓    |
-|     4 | Frameworks                  | `Framework.lean`                         |   ✓    |
-|     5 | Laman's theorem (⇐)         | `HennebergRigidity.lean`, `LamanTheorem.lean` |   ✓    |
-|     6 | Laman's theorem (⇒)         | (rigidity matroid; not yet started)      |        |
-
-The remaining `sorry` is
-`SimpleGraph.IsGenericallyRigid.exists_isLaman_le` in
-[`LamanTheorem.lean`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean) —
-the ⇒-direction of Laman's theorem, which routes through the planar
-rigidity matroid.
+| Phase | Topic                       | File(s)                                                        | Status |
+|------:|-----------------------------|----------------------------------------------------------------|:------:|
+|     1 | Sparsity                    | `EdgesIn.lean`, `Sparsity.lean`                                |   ✓    |
+|     2 | Laman graphs                | `Laman.lean`                                                   |   ✓    |
+|     3 | Henneberg moves             | `Henneberg.lean`                                               |   ✓    |
+|     4 | Frameworks                  | `Framework.lean`                                               |   ✓    |
+|     5 | Laman's theorem (⇐)         | `HennebergRigidity.lean`, `LamanTheorem.lean`                  |   ✓    |
+|     6 | Laman's theorem (⇒)         | `RigidityMatroid.lean`, `LamanTheorem.lean`                    |   ✓    |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
