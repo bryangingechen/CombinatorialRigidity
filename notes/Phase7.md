@@ -13,10 +13,11 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Fifteen commits in. The first six lifted Laman-only machinery to
-`IsSparse` and landed `IsSparse.exists_typeI_or_typeII_reverse` in
-flat form (entry points `60a2176..6d59be2`); the next five landed the
-four operation-form row-LI lifts plus the row-LI openness lemma in
+Sixteen commits in (Commit 16 = this scope-expansion commit). The
+first six lifted Laman-only machinery to `IsSparse` and landed
+`IsSparse.exists_typeI_or_typeII_reverse` in flat form (entry points
+`60a2176..6d59be2`); the next five landed the four operation-form
+row-LI lifts plus the row-LI openness lemma in
 `MatroidIdentification.lean` (entry points `91403e7..57f8f1f`); Commit
 12 refined the sparse reverse to a 3-way split (pendant / Type I /
 Type II) and reflowed the Laman shell to consume it; Commit 13 added
@@ -34,11 +35,23 @@ property-polymorphic `exists_affinelySpanning_of_eventually`
 `thm:isSparse-exists-rowIndependent-placement`,
 `lem:edgeSet-rowIndependent-iso`, the renamed
 `lem:exists-affinelySpanning-of-eventually`, and
-`thm:edgeSet-rowIndependent-iff-isSparse` are all `\leanok`. The
-chapter dep-graph in `chapter/rigidity-matroid.tex` has only the
-`cor:isLaman-exists-rowIndependent` and the `Matroid` packaging
-(`def:rigidityMatroid` and `thm:rigidityMatroid-indep-iff-isSparse`)
-left to discharge.
+`thm:edgeSet-rowIndependent-iff-isSparse` are all `\leanok`.
+
+**Scope expanded in Commit 16.** Following user direction, Phase 7
+now closes on the **general $(k, \ell)$-count matroid** in the
+matroidal regime $\ell < 2k$ (Whiteley 1996, Lee--Streinu 2008) rather than packaging the planar rigidity matroid as
+a one-off. Concretely: build `SimpleGraph.countMatroid V k ℓ : Matroid
+(Sym2 V)` once, with the combinatorial $(k, \ell)$-augmentation as
+its only non-trivial axiom; then specialize
+`SimpleGraph.rigidityMatroid V := countMatroid V 2 3 ...` and bridge
+to row-LI via the existing iff. The linear-matroid framing of
+Lovász--Yemini (`Matroid.ofFun` at a generic placement; matroid-iso
+identification) is **deferred to Phase 8** — that phase will add
+`apnelson1/Matroid` as a dependency and ship the iso
+`linearRigidityMatroid V 2 = rigidityMatroid V`. The blueprint chapter
+splits to match (new `chapter/count-matroid.tex` for the abstract
+construction; `chapter/rigidity-matroid.tex` retains the row-LI
+machinery and the specialization).
 
 **Multi-session plan** for the forward-blueprint work:
 
@@ -94,8 +107,41 @@ left to discharge.
   → `lem:exists-affinelySpanning-of-eventually` (restated
   property-polymorphically with prose aside about the factoring);
   pin `thm:edgeSet-rowIndependent-iff-isSparse` `\leanok`.
-- **Next: the `Matroid` packaging** via `IndepMatroid` (~100 LoC
-  expected; see Blockers).
+- **Commit 16** [this commit]: scope expansion to the general
+  $(k, \ell)$-count matroid (docs + blueprint scaffold only; no Lean
+  yet). Notes / ROADMAP §7 / new blueprint chapter
+  `count-matroid.tex` + restructured `rigidity-matroid.tex`;
+  Whiteley 1996 and Lee--Streinu 2008 bibliography entries.
+- **Commit 17** [planned]: combinatorial augmentation lemma
+  `IsSparse.exists_aug_of_lt_two_mul` (or similarly named) in
+  `Sparsity.lean`. Statement: for `0 ≤ ℓ < 2k`, finite `V`,
+  `I, J ⊆ Sym2 V` both `(fromEdgeSet · ).IsSparse k ℓ` with
+  `|I| < |J|`, $\exists\, e \in J \setminus I$ with
+  `fromEdgeSet (insert e I)` $(k, \ell)$-sparse. Proof: by
+  contradiction, build a tight-set saturation $S^* \subseteq V$
+  containing endpoints of all $e \in J \setminus I$ via iterated
+  `IsTightOn.union_inter` / `union_with_bonus`, derive
+  $|J| \le |I|$ from the saturation and the two sparsity bounds.
+- **Commit 18** [planned]: new file
+  `CombinatorialRigidity/CountMatroid.lean`. Defines
+  `SimpleGraph.countMatroid V k ℓ (h : ℓ < 2 * k) : Matroid (Sym2 V)`
+  via `IndepMatroid.ofFinite`. `@[simp] countMatroid_E`,
+  `@[simp] countMatroid_indep_iff`. Pins
+  `def:countMatroid` and
+  `thm:countMatroid-indep-iff` `\leanok` in the new
+  blueprint chapter.
+- **Commit 19** [planned]: in `MatroidIdentification.lean`, define
+  `SimpleGraph.rigidityMatroid V := countMatroid V 2 3 (by omega)`
+  and the matroid-form Lovász--Yemini
+  `rigidityMatroid_indep_iff_edgeSetRowIndependent` bridging through
+  `edgeSet_rowIndependent_iff_isSparse_dim_two`. Pins
+  `def:rigidityMatroid` and
+  `thm:rigidityMatroid-indep-iff-rowIndependent` `\leanok`.
+  Closes Phase 7.
+
+Deferred to **Phase 8** (own work log): linear-matroid framework via
+`apnelson1/Matroid`; `genericRigidityMatroid V d`; matroid-iso
+`genericRigidityMatroid V 2 = rigidityMatroid V`.
 
 ## Architectural choices made up front
 
@@ -121,12 +167,25 @@ wrong, revisit there.
   ~600 LoC mid-phase, split into `MatroidHenneberg.lean` +
   `MatroidIdentification.lean` (the Phase 5 / Phase 6 split pattern).
 
-- **Package as `Matroid`, defer the count-matroid construction.**
-  Phase 7 builds `SimpleGraph.rigidityMatroid V d : Matroid (Sym2 V)`
-  via `IndepMatroid`. The Lov–Yem identification is stated as
-  "rigidity-matroid independent sets in dim 2 = $(2, 3)$-sparse
-  subsets of $E(K_V)$", **not** as `Matroid` equality, because the
-  general $(k, \ell)$-count matroid is not in mathlib.
+- **General $(k, \ell)$-count matroid; specialize to $(2, 3)$
+  for Lovász--Yemini.** *Updated in Commit 16.* Standard
+  matroid-theory result (Whiteley 1996; Lee--Streinu 2008; survey
+  presentation Nixon--Ross 2012 §5): for $0 \le \ell < 2k$ and finite
+  $V$, the $(k, \ell)$-sparse subsets of $E(K_V)$ are the
+  independent sets of a matroid on $\mathrm{Sym}_2 V$. Phase 7
+  ships this general construction
+  `SimpleGraph.countMatroid V k ℓ` with the combinatorial
+  $(k, \ell)$-augmentation as its only non-trivial
+  `IndepMatroid` axiom; specializes
+  `SimpleGraph.rigidityMatroid V := countMatroid V 2 3 ...` and
+  bridges to row-LI via
+  `edgeSet_rowIndependent_iff_isSparse_dim_two`.
+  *Originally planned* (Commits 1--15) as a one-off rigidity
+  matroid construction; expanded in Commit 16 on user direction
+  because the matroidal regime is a coherent abstract object
+  whose augmentation proof generalises without extra cost, and
+  the linear-matroid iso framing (deferred to Phase 8) wants a
+  named matroid on the count side to talk about.
 
 - **"Some generic placement" formulation.** The hard direction's
   conclusion is $\exists p, \mathrm{EdgeSetRowIndependent}\,p\,I$.
@@ -347,13 +406,37 @@ A red node = not yet formalized; a green node = formalized and
 
 ## Blockers / open questions
 
-- **Matroid `IndepMatroid` axioms in dim 2.** Once the iff
-  *row-LI at some $p$* ↔ *$(2, 3)$-sparse* is in hand, the
-  augmentation axiom factors through the (purely combinatorial)
-  matroid structure on $(2, 3)$-sparse sets. The four matroid axioms
-  need to be discharged for the rigidity-matroid `IndepMatroid`
-  builder; expect ~100 LoC. Open: how cleanly does
-  `IndepMatroid.ofExistsMatroid` or a similar mathlib pattern apply.
+- **$(k, \ell)$-count matroid augmentation in the matroidal regime
+  $\ell < 2k$.** *Updated in Commit 16 — see *Architectural choices*
+  for the scope expansion to the general count matroid.* The
+  combinatorial heart of the matroid construction. Standard proof
+  (Whiteley 1996 / Lee--Streinu 2008): suppose $I, J$ are both
+  $(k, \ell)$-sparse with $|I| < |J|$ and no $e \in J \setminus I$
+  extends $I$ to sparse. Then for every such $e$ there is an
+  $I$-tight set $S_e$ containing both endpoints of $e$. Iterate
+  `IsTightOn.union_inter` (size proviso
+  $\ell \le k \cdot |S \cap S_e|$, i.e.,
+  $|S \cap S_e| \ge \lceil \ell / k \rceil$) to build an $I$-tight
+  $S^*$ containing endpoints of every $e \in J \setminus I$; then
+  $J \setminus I \subseteq E_{K_V}(S^*)$ and the two sparsity bounds
+  squeeze $|J| \le |I|$, contradiction. Existing input:
+  `IsTightOn.union_inter`, `IsTightOn.union_with_bonus` in
+  `Sparsity.lean`. New work: handle the case `|S ∩ S_e| < ⌈ℓ/k⌉`
+  during iteration — likely via `union_with_bonus` with the
+  $J \setminus I$ edges as the "bonus" $F$. Open: cleanest
+  Lean-level formulation of the iteration (recursion on
+  `J \ I` as a Finset, vs. picking $S^*$ as the maximal
+  $I$-tight superset of $\bigcup\,\mathrm{endpoints}\,(J \setminus
+  I)$ via an existence-by-saturation argument).
+
+- **Matroid `IndepMatroid` packaging.** Uses
+  `IndepMatroid.ofFinite` from
+  `Mathlib.Combinatorics.Matroid.IndepAxioms`. Trivial axioms:
+  `indep_empty` (`fromEdgeSet ∅ = ⊥`, vacuously sparse);
+  `indep_subset` (`(fromEdgeSet I).IsSparse k ℓ` is monotone in
+  `I`); `subset_ground` (baked into the predicate). The
+  augmentation axiom is the lemma above. Expected ~30 LoC for the
+  packaging itself plus the simp-lemmas.
 
 - **Unify the Phase 5 IR + Phase 7 row-LI typeII conditional cores.**
   `typeII_isInfinitesimallyRigid_extend` and

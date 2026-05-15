@@ -1,0 +1,115 @@
+\section{The $(k, \ell)$-count matroid}
+\label{sec:count-matroid}
+
+The proof-of-Lov\'asz--Yemini machinery in
+\cref{sec:rigidity-matroid} characterises planar row-independence by
+$(2, 3)$-sparsity. Before we package the result as a
+\texttt{Matroid} in \cref{sec:rigidity-matroid-instance}, we record
+the abstract object the characterisation eventually maps into:
+the \emph{$(k, \ell)$-count matroid} on the edge set of $K_{V}$,
+defined whenever $\ell < 2k$ and finite $V$. The matroid has no
+linear-algebra content; it is determined entirely by the
+combinatorial $(k, \ell)$-sparsity predicate of
+\cref{def:isSparse}. Its independent sets are exactly the
+$(k, \ell)$-sparse subgraphs; the planar rigidity matroid is the
+$(k, \ell) = (2, 3)$ specialisation, identified with the linear
+matroid of the rigidity matrix via \cref{thm:edgeSet-rowIndependent-iff-isSparse}.
+
+This is the standard $(k, \ell)$-count matroid construction
+introduced by Whiteley~\cite{whiteley1996} and developed in the
+``pebble game'' framework of Lee--Streinu~\cite{leeStreinu2008}; the
+range $\ell < 2k$ is the maximal regime in which the
+$(k, \ell)$-sparse subsets are exactly the independent sets of a
+matroid on $E(K_{V})$. Outside this regime the bases need not
+agree in cardinality (e.g.\ $(3, 6)$-tight graphs in $3$-dimensional
+rigidity).
+
+\subsection{Augmentation in the matroidal regime}
+\label{sec:count-matroid-aug}
+
+The combinatorial heart of the matroid construction. The augmentation
+proof builds, from the assumption that no extension exists, an
+$I$-tight superset $S^{*} \subseteq V$ containing the endpoints of
+every $e \in J \setminus I$ by iterated tight-set lattice closure
+(\cref{thm:isTightOn-union-inter}); the two sparsity bounds at
+$S^{*}$ then squeeze $|J| \le |I|$.
+
+\begin{lemma}[$(k, \ell)$-sparsity augmentation, matroidal regime]
+  \label{lem:isSparse-aug}
+  \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter}
+  Let $V$ be finite, $k \ge 1$ and $0 \le \ell < 2k$, and let
+  $I, J \subseteq \mathrm{Sym}_{2}V$ be off-diagonal edge sets such
+  that both $\mathrm{fromEdgeSet}\,I$ and $\mathrm{fromEdgeSet}\,J$
+  are $(k, \ell)$-sparse and $|I| < |J|$. Then there exists
+  $e \in J \setminus I$ such that
+  $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is $(k, \ell)$-sparse.
+\end{lemma}
+\begin{proof}
+  \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter}
+  Suppose for contradiction that for every $e \in J \setminus I$
+  the set $I \cup \{e\}$ is not $(k, \ell)$-sparse. Then for each
+  such $e$ there is a Finset $S_{e} \subseteq V$ with
+  $|S_{e}| \ge \lceil \ell / k \rceil$ containing both endpoints of
+  $e$ and with $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S_{e}}| =
+  k|S_{e}| - \ell$ (i.e.\ $S_{e}$ is $I$-tight in the sense of
+  \cref{def:isTightOn}). Iterate \cref{thm:isTightOn-union-inter}
+  (and \cref{thm:isTightOn-union-with-bonus} when the intersection
+  size proviso $\ell \le k \cdot |S \cap S_{e}|$ fails on a single
+  step, using the as-yet-unaccounted edges of $J \setminus I$ as
+  ``bonus'' edges) to build a single $I$-tight set $S^{*}$ containing
+  the endpoints of every $e \in J \setminus I$.
+
+  At $S^{*}$ we have $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S^{*}}| =
+  k|S^{*}| - \ell$ ($S^{*}$ is $I$-tight) and
+  $|\edgesIn[\mathrm{fromEdgeSet}\,J]{S^{*}}| \le k|S^{*}| - \ell$
+  ($J$-sparsity at $S^{*}$). Since $J \setminus I \subseteq
+  \edgesIn[K_{V}]{S^{*}}$ by construction, we have $J \setminus
+  \edgesIn[K_{V}]{S^{*}} \subseteq I \cap J \subseteq I$, hence
+  \[
+    |J| = |J \cap \edgesIn[K_{V}]{S^{*}}| + |J \setminus
+    \edgesIn[K_{V}]{S^{*}}| \le (k|S^{*}| - \ell) + (|I| - (k|S^{*}|
+    - \ell)) = |I|,
+  \]
+  contradicting $|I| < |J|$.
+\end{proof}
+
+\subsection{The matroid}
+\label{sec:count-matroid-def}
+
+Now we package the augmentation as a \texttt{Matroid} via mathlib's
+\texttt{IndepMatroid.ofFinite}. The three trivial axioms
+($\mathrm{indep\_empty}$, $\mathrm{indep\_subset}$,
+$\mathrm{subset\_ground}$) are immediate from the sparsity
+predicate; the $\mathrm{indep\_aug}$ axiom is \cref{lem:isSparse-aug}.
+
+\begin{definition}[$(k, \ell)$-count matroid]
+  \label{def:countMatroid}
+  \uses{def:isSparse, lem:isSparse-aug}
+  For finite $V$ and integers $k \ge 1$ with $\ell < 2k$, the
+  \emph{$(k, \ell)$-count matroid on $V$} is the matroid on the
+  ground set $E(K_{V})$ (the off-diagonal symmetric pairs over $V$)
+  whose independent sets are exactly the
+  $(k, \ell)$-sparse edge sets:
+  \[
+    \mathrm{Indep}(I) \;\Longleftrightarrow\; I \subseteq E(K_{V})
+    \wedge (\mathrm{fromEdgeSet}\,I).\mathrm{IsSparse}\,k\,\ell.
+  \]
+  Existence as a matroid is by mathlib's
+  \texttt{IndepMatroid.ofFinite} applied to
+  \cref{lem:isSparse-aug}.
+\end{definition}
+
+\begin{theorem}[Independent sets of the count matroid]
+  \label{thm:countMatroid-indep-iff}
+  \uses{def:countMatroid, def:isSparse}
+  For finite $V$, $k \ge 1$, $\ell < 2k$ and
+  $I \subseteq \mathrm{Sym}_{2}V$:
+  $I$ is independent in the $(k, \ell)$-count matroid on $V$ if and
+  only if $I \subseteq E(K_{V})$ and $\mathrm{fromEdgeSet}\,I$ is
+  $(k, \ell)$-sparse.
+\end{theorem}
+\begin{proof}
+  \uses{def:countMatroid}
+  Immediate from the definition (definitional in Lean via
+  \texttt{IndepMatroid.ofFinite\_indep}).
+\end{proof}

@@ -476,34 +476,46 @@ row-independent.
 \subsection{The rigidity matroid (dim 2)}
 \label{sec:rigidity-matroid-instance}
 
-The relation ``row-LI at some placement'' defines a matroid structure
-on the off-diagonal symmetric pairs over $V$. Building it as a mathlib
-\texttt{Matroid} requires verifying the four \texttt{IndepMatroid}
-axioms; the augmentation axiom is exactly where the combinatorial
-$(2, 3)$-count matroid structure does its work, transported through
-\cref{thm:edgeSet-rowIndependent-iff-isSparse}.
+We are now in a position to define the planar rigidity matroid and
+identify its independent sets with the $(2, 3)$-sparse edge subsets
+of $K_{V}$ (Lov\'asz--Yemini~\cite{lovaszYemini1982}). The matroid
+structure itself --- the four \texttt{IndepMatroid} axioms --- is
+delegated to the abstract $(k, \ell)$-count matroid
+(\cref{sec:count-matroid}): the rigidity matroid is the $(k, \ell) =
+(2, 3)$ specialisation, and Lov\'asz--Yemini becomes the statement
+that this combinatorial matroid coincides with the
+linear-algebra-flavoured ``row-LI at some placement'' relation. The
+linear-matroid framing of the rigidity matroid (the matroid
+\texttt{Matroid.ofFun} of the rigidity-row function at a generic
+placement, with Lov\'asz--Yemini as a matroid isomorphism) is left
+to a follow-up phase.
 
-\begin{definition}[Rigidity matroid in dim $2$]
+\begin{definition}[Planar rigidity matroid]
   \label{def:rigidityMatroid}
-  \uses{def:edgeSet-rowIndependent}
-  Let $V$ be finite. The \emph{rigidity matroid} of $V$ in dimension
-  $2$ is the matroid on the ground set $E(K_{V})$ (the off-diagonal
-  symmetric pairs over $V$) whose independent sets are the edge sets
-  $I \subseteq E(K_{V})$ that are row-independent at some placement
-  $p : V \to \R^{2}$.
+  \uses{def:countMatroid}
+  For finite $V$, the \emph{planar rigidity matroid}
+  $\mathcal{R}(V)$ is the $(2, 3)$-count matroid on $V$ of
+  \cref{def:countMatroid} (which is a matroid since $3 < 4 = 2k$ at
+  $k = 2$). Equivalently, its independent sets are exactly the
+  $(2, 3)$-sparse edge subsets of $K_{V}$.
 \end{definition}
 
-\begin{theorem}[Independent sets of the rigidity matroid are exactly the $(2, 3)$-sparse sets]
-  \label{thm:rigidityMatroid-indep-iff-isSparse}
-  \uses{def:rigidityMatroid, def:isSparse,
+\begin{theorem}[Lov\'asz--Yemini, matroid form]
+  \label{thm:rigidityMatroid-indep-iff-rowIndependent}
+  \uses{def:rigidityMatroid, def:edgeSet-rowIndependent,
     thm:edgeSet-rowIndependent-iff-isSparse}
-  Let $V$ be finite with $|V| \ge 2$ and $I \subseteq E(K_{V})$. Then
-  $I$ is independent in the rigidity matroid of $V$ in dimension $2$
-  if and only if the spanning subgraph $\mathrm{fromEdgeSet}\,I$ of
-  $K_{V}$ is $(2, 3)$-sparse.
+  Let $V$ be finite with $|V| \ge 2$ and $I \subseteq
+  \mathrm{Sym}_{2}V$. Then $I$ is independent in the planar rigidity
+  matroid $\mathcal{R}(V)$ if and only if there exists a placement
+  $p : V \to \R^{2}$ at which $I$ is row-independent.
 \end{theorem}
 \begin{proof}
-  \uses{thm:edgeSet-rowIndependent-iff-isSparse}
-  Immediate from \cref{thm:edgeSet-rowIndependent-iff-isSparse} at
-  $G = K_{V}$.
+  \uses{thm:countMatroid-indep-iff,
+    thm:edgeSet-rowIndependent-iff-isSparse}
+  By \cref{thm:countMatroid-indep-iff}, $I$ is independent iff
+  $I \subseteq E(K_{V})$ and $\mathrm{fromEdgeSet}\,I$ is
+  $(2, 3)$-sparse. By \cref{thm:edgeSet-rowIndependent-iff-isSparse}
+  at $G = K_{V}$ (every off-diagonal pair is an edge of $K_{V}$, so
+  $I \subseteq E(K_{V})$ is the carrier condition for the row-LI
+  side), the latter holds iff $I$ is row-LI at some placement.
 \end{proof}

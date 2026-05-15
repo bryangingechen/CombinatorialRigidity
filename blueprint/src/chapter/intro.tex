@@ -50,10 +50,19 @@ the Lov\'asz--Yemini matroid identification.
         (Files: \texttt{RigidityMatroid.lean}, \texttt{LamanTheorem.lean}.)
   \item \textbf{Lov\'asz--Yemini matroid identification.} The harder
         converse: $(2,3)$-sparse $\Rightarrow$ row-independent at some
-        placement, packaged with Phase~6 into a `Matroid` instance for
-        the rigidity matroid in dimension~$2$.
-        (File: \texttt{MatroidIdentification.lean}.)
+        placement; together with Phase~6 this gives the
+        Lov\'asz--Yemini~\cite{lovaszYemini1982} row-LI $\Leftrightarrow$
+        $(2,3)$-sparse identification. Packaged as a mathlib
+        \texttt{Matroid} via the general $(k, \ell)$-count matroid in
+        the matroidal regime $\ell < 2k$
+        (Whiteley~\cite{whiteley1996}, Lee--Streinu~\cite{leeStreinu2008}).
+        (Files: \texttt{CountMatroid.lean}, \texttt{MatroidIdentification.lean}.)
 \end{enumerate}
+
+The \emph{linear-matroid} framing of the planar rigidity matroid (the
+matroid of the rigidity-row function at a generic placement, with
+Lov\'asz--Yemini as a matroid isomorphism with the
+$(2, 3)$-count matroid) is left to a follow-up phase.
 
 \subsection*{Reading this blueprint}
 
@@ -61,4 +70,7 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from
 the navigation bar) is the best place to see at a glance which
-nodes are green and which are red; every node is currently green.
+nodes are green and which are red. All Phase~1--6 nodes are green;
+the Phase~7 dep-graph (under \cref{sec:rigidity-matroid} and
+\cref{sec:count-matroid}) still has red leaves --- those are the
+in-progress targets.

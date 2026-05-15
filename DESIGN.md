@@ -375,3 +375,14 @@ to a fixed section above once a question is answered.
   `Sparsity.lean` and elsewhere, consider whether to move it to
   `Mathlib.Combinatorics.SimpleGraph.Basic` next to `incidenceSet`.
   Wait until the API has stabilized.
+- **Phase 8: `apnelson1/Matroid` dependency.** Phase 7 ships the
+  combinatorial $(k, \ell)$-count matroid using only mathlib's
+  `IndepMatroid.ofFinite`; Phase 8 will package the planar rigidity
+  matroid in its linear-algebra form (the `Matroid.ofFun` at a
+  generic placement, with Lov\'asz--Yemini as a matroid iso). The
+  linear-matroid framework lives in `apnelson1/Matroid` (cf. the
+  Phase 6 investigation in `notes/Phase6.md` *Architectural choices*,
+  closed at commit `5f11c6b`). Open: pin a specific revision when
+  the dep lands; track upstream merges into mathlib as they happen.
+  Risk: extra toolchain pin to track, though the Phase 6 audit found
+  the pin matched ours exactly.

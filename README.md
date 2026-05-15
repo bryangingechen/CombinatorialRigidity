@@ -4,7 +4,10 @@
 
 A Lean 4 / mathlib4 formalization of combinatorial rigidity theory, working
 toward **Laman's theorem** (1970): for `n ≥ 2`, a graph is generically rigid
-in the plane iff it contains a `(2, 3)`-tight spanning subgraph.
+in the plane iff it contains a `(2, 3)`-tight spanning subgraph. Phase 7
+extends the development to the **Lovász–Yemini matroid identification**:
+the planar rigidity matroid coincides with the `(2, 3)`-count matroid on
+`E(K_V)`, packaged as a mathlib `Matroid` instance.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -20,10 +23,18 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* All six phases complete: sparsity / Laman / Henneberg / frameworks /
-  the (⇐) and (⇒) directions of Laman's theorem. The project carries
-  no `sorry`s; Laman's theorem (`isGenericallyRigid_two_iff_exists_isLaman_le`)
-  is fully formalized.
+* **Phases 1–6 complete** — sparsity, Laman, Henneberg, frameworks,
+  and both directions of Laman's theorem
+  (`isGenericallyRigid_two_iff_exists_isLaman_le`). The project carries
+  no `sorry`s; Laman's theorem is fully formalized.
+* **Phase 7 in progress** — the Lovász–Yemini matroid identification.
+  The hard direction (every `(2, 3)`-sparse subset of `E(K_V)` is
+  row-independent at some planar placement) has landed; the matroid
+  packaging via the general `(k, ℓ)`-count matroid (matroidal regime
+  `ℓ < 2k`, Whiteley 1996 / Lee–Streinu 2008) is the closing step.
+* **Phase 8 planned** — linear-matroid framing of the rigidity matroid
+  via `apnelson1/Matroid`, with Lovász–Yemini stated as a matroid
+  isomorphism.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
