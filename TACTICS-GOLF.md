@@ -197,6 +197,22 @@ construction, the minimal hint set that works for the current proof.
 The `=`/`←`/`→`/`!` prefixes in the suggestion are syntactically valid
 in `grind only` calls — paste verbatim.
 
+**Default `simp` before `grind` can subsume `change` + multi-`rw` staging.**
+If you find yourself writing `change ... ; rw [lemma_A] ; simp only [B, C]
+; split_ifs <;> grind` to shape a goal into `grind`-ready form, try
+collapsing the prologue to `simp [lemma_A]` (default simp set, not
+`simp only`, and with just the lemma that's not in `@[simp]`). The
+default set tends to absorb the wrapper / coercion boilerplate that
+`change` was unfolding by hand, and `grind` itself does the `split_ifs`
+work. `elemSkewMap_ofLp_inr_apply` in `TrivialMotions.lean` went from
+6 tactic lines to 1 this way:
+
+```lean
+-- Was: change ... ; rw [elemSkewMap_apply] ; simp only [PiLp.ofLp_single,
+--      Pi.single_apply] ; rcases ... <;> split_ifs <;> grind
+rcases eq_or_ne i a with rfl | hia <;> simp [elemSkewMap_apply] <;> grind
+```
+
 **Keep `omega` in the back pocket.** For goals that are pure linear
 integer arithmetic with no equational reasoning to do (and where you
 don't need any lemma hints), `omega` is faster and more readable. We

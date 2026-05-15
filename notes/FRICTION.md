@@ -472,21 +472,35 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   blueprint matches the structure of the formal proof.
 - **Status:** resolved (2026-05-15).
 
-### [open] `elemSkewMap_ofLp_inr_apply` may already exist as `Matrix.stdBasisMatrix` difference
+### [resolved] `elemSkewMap_ofLp_inr_apply` proof collapse via wider simp + grind
 
 - **Where it bit:** `trivialMotionFamily_linearIndependent`
-  (`TrivialMotions.lean:212`). The `elemSkewMap_ofLp_inr_apply`
-  helper unpacks a `Eᵢⱼ - Eⱼᵢ`-style entry into specific coordinate
+  (`TrivialMotions.lean`). The `elemSkewMap_ofLp_inr_apply`
+  helper unpacked a `Eᵢⱼ - Eⱼᵢ`-style entry into specific coordinate
   cases, closed by `grind`.
-- **Friction:** the "skew-symmetric basis matrix" pattern is
-  generic linear algebra; the project-internal helper does the
-  case analysis from scratch.
-- **Proposed fix:** search mathlib (`lean_loogle` for
-  `(Matrix.stdBasisMatrix _ _ 1) - (Matrix.stdBasisMatrix _ _ 1)`)
-  for an existing API. If found, the helper collapses to one or
-  two `simp` calls.
-- **Status:** open. **Priority: low–medium**. Cosmetic; affects a
-  finished phase.
+- **Friction:** the original proof ran `change` (to unfold `⟨a, b⟩.fst`
+  and `.ofLp i`) → `rw [elemSkewMap_apply]` → `simp only [...]` →
+  `rcases ... <;> split_ifs <;> grind`. Six tactic lines for what's
+  ultimately one case analysis.
+- **Resolution:** stripped to `rcases eq_or_ne i a with rfl | hia <;>
+  simp [elemSkewMap_apply] <;> grind`. The `simp [elemSkewMap_apply]`
+  (rather than `simp only [...]`) lets the default simp set drop
+  `⟨a, b⟩.fst` / `.ofLp i` / `PiLp.single` boilerplate that previously
+  needed manual rewrites, and `grind` absorbs the `split_ifs` step.
+  Net 6 tactic lines → 1. Tried the `Matrix.stdBasisMatrix`-difference
+  framing as the friction entry proposed; not a clean simplification
+  (would require an `elemSkewMap = Matrix.toEuclideanLin (E_{ij} -
+  E_{ji})` rewrite, which adds `WithLp` / `toLin` bridge overhead and
+  changes the rest of the API).
+- **Lesson:** when a proof leans on `change` + multi-step `rw` to set
+  up a tightly-shaped goal for `grind`, try a wider `simp` (default
+  set, not `simp only [...]`) first — the default simp set often
+  absorbs the same boilerplate without the explicit bookkeeping. The
+  `split_ifs` step is also usually redundant when `grind` follows.
+- **Status:** resolved (2026-05-15).
+- **Lifted to:** TACTICS-GOLF § 1 *Tricks we've found useful* →
+  "Default `simp` before `grind` can subsume `change` + multi-`rw`
+  staging".
 
 ## Anti-patterns / known dead ends
 

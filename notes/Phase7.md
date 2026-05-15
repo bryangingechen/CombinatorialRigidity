@@ -259,6 +259,18 @@ A red node = not yet formalized; a green node = formalized and
   disjointness explicitly cite the same construction. FRICTION entry
   closed.
 
+- **Friction cleanup: `elemSkewMap_ofLp_inr_apply` proof collapse.**
+  The Phase-6 helper in `TrivialMotions.lean` had a 6-tactic-line
+  proof (`change` + `rw [elemSkewMap_apply]` + `simp only [...]` +
+  `rcases ... <;> split_ifs <;> grind`). Collapsed to one line:
+  `rcases eq_or_ne i a with rfl | hia <;> simp [elemSkewMap_apply]
+  <;> grind`. The default simp set absorbs the `⟨a,b⟩.fst` / `.ofLp i`
+  / `PiLp.single` boilerplate that the `change` was setting up by
+  hand, and `grind` absorbs the `split_ifs`. The `Matrix.stdBasisMatrix`-
+  difference framing the FRICTION entry suggested wasn't the win;
+  the win is the wider simp set. Lesson lifted to TACTICS-GOLF § 1
+  (Tricks); FRICTION entry closed.
+
 ## Blockers / open questions
 
 - **Type II row-LI lift collinearity gap.** The Type II move places

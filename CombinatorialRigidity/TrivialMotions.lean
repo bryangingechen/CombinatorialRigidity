@@ -215,14 +215,9 @@ theorem elemSkewMap_ofLp_inr_apply (i : Fin d) (j : Fin i.val)
         (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ))).ofLp i
       = if s = ⟨i, j⟩ then 1 else 0 := by
   obtain ⟨a, b⟩ := s
-  change (elemSkewMap a ⟨b.val, b.isLt.trans a.isLt⟩
-        (PiLp.single 2 (⟨j.val, j.isLt.trans i.isLt⟩ : Fin d) (1 : ℝ))) i = _
-  rw [elemSkewMap_apply]
-  simp only [PiLp.ofLp_single, Pi.single_apply]
-  -- Split on whether `i = a`; in each case the four sub-conditions in the two nested `if`s
-  -- and the sigma-equality RHS are simultaneously decidable for `grind` using `b.isLt` /
-  -- `j.isLt`. The full case-split runs through `split_ifs` and closes by `grind`.
-  rcases eq_or_ne i a with rfl | hia <;> split_ifs <;> grind
+  -- Case-split on `i = a`; `grind` then dispatches the nested `if`s plus the sigma-equality
+  -- RHS using `b.isLt` / `j.isLt` to rule out the symmetric cross-term in `elemSkewMap_apply`.
+  rcases eq_or_ne i a with rfl | hia <;> simp [elemSkewMap_apply] <;> grind
 
 /-- The d-general trivial-motion family at a placement `p`. The left summand of the index type
 contributes the `d` coordinate translations (one per `i : Fin d`); the right summand contributes
