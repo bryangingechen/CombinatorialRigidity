@@ -135,6 +135,8 @@ lemma; resolved otherwise.
   finds — mathlib's matrix-determinant API is denser than the dim-2
   case-by-case API. When the d-general statement is available, use
   it; the dim-2 specialisation collapses by `rfl` or one-line glue.
+- **Lifted to:** TACTICS § 3 *Search mathlib before mirroring* (one
+  of three case studies cited there).
 
 ### [resolved] No packaged `ℝ`-linear injection `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)`
 - **Where it bit:** `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`
@@ -157,6 +159,7 @@ lemma; resolved otherwise.
   rolling a project-local helper. The exact type
   `(_ →ₗ[_] _) →ₗ[_] (_ → _)` returned `LinearMap.ltoFun` on the
   first try.
+- **Lifted to:** TACTICS § 3 *Search mathlib before mirroring*.
 
 ### [resolved] `Set.Finite.subset (finite_setOf ...)` leaves metavariables when leading-coeff is the only resolved unknown
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
@@ -207,6 +210,7 @@ lemma; resolved otherwise.
   for the canonical primitives. The "mirror it ourselves" instinct
   bloats the project surface; mathlib's API for `Fin`-indexed families
   is denser than it looks.
+- **Lifted to:** TACTICS § 3 *Search mathlib before mirroring*.
 
 ### [open] `AffineSubspace.nonempty_of_affineSpan_eq_top` takes `(k V P)` explicit
 
@@ -312,6 +316,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   is a one-liner alternative but requires `Mathlib.Tactic.LinearCombination`
   which Sparsity does not currently import.
 - **Status:** wontfix (intrinsic to omega).
+- **Lifted to:** TACTICS § 1 *Tricks we've found useful* —
+  *`omega` doesn't carry commutativity or distributivity on atoms*.
 
 ### [wontfix] `omega` treats `set`-aliased terms as opaque atoms
 - **Where it bit:** `IsLaman.typeII_reverse_blocker` in `Henneberg.lean`
@@ -335,6 +341,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** wontfix (intrinsic to omega/grind's atomic-variable
   model; the `set` tactic's substitution scope is bounded by current
   goals and hypotheses, not future ones).
+- **Lifted to:** TACTICS § 1 *Tricks we've found useful* —
+  *`omega`/`grind` treat `set`-aliased terms as opaque atoms*.
 
 ### [wontfix] `nlinarith` over ℕ struggles with quadratic bounds
 - **Where it bit:** `top_fin_two_isGenericallyRigid` in `Framework.lean`,
@@ -353,6 +361,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `nlinarith` hint lists.
 - **Status:** wontfix (intrinsic to `nlinarith`-on-ℕ; workaround is a
   one-liner once you know the trick).
+- **Lifted to:** TACTICS § 1 *Tricks we've found useful* —
+  *ℕ-quadratic bounds: `Nat.le_mul_self`*.
 
 ### [wontfix] `revert` ordering before `e'.ind` is finicky
 - **Where it bit:** `typeI_edgeSet` proof, backward direction.
@@ -761,6 +771,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (no missing lemma — `LinearMap.ext_on` was on the
   wrong shelf; `LinearMap.eqOn_span` is the pointwise version, harder to
   discover).
+- **Lifted to:** TACTICS § 3 *Search mathlib before mirroring* (cited
+  as a case where `lean_leanfinder` would have found the packaged form).
 
 ### [resolved] Dot notation inside a `Foo.bar`-named theorem resolves to itself, not the parent's `Foo.bar`
 - **Where it bit:** `EdgeSetRowIndependent.mono` in `RigidityMatroid.lean`
@@ -781,6 +793,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (Lean idiom — when wrapping an upstream lemma
   under your own type's namespace, dot-notation inside the wrapper
   recurses; call the upstream name explicitly).
+- **Lifted to:** TACTICS § 8 *Dot notation only consults the type's
+  head namespace* (the "same-name wrapper recurses" trap).
 
 ### [resolved] `Exists.imp` doesn't transport across changing-binder-type existentials
 - **Where it bit:** `IsGenericallyRigid.iso` in `Framework.lean` (Phase 5 milestone 0).
@@ -1099,6 +1113,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   — `typeII_reverse_blocker` is conceptually a Henneberg-flavoured helper.
 - **Status:** resolved (Lean idiom — inside a sub-namespace, use explicit names
   for sub-namespace helpers; dot notation is only for the type's own namespace).
+- **Lifted to:** TACTICS § 8 *Dot notation only consults the type's
+  head namespace* (the "sub-namespace lookup fails" trap).
 
 ### [resolved] `mem_edgeSet.mp` / `.mpr` dot notation rejected by Lean
 - **Where it bit:** `typeI_isInfinitesimallyRigid_extend` in
@@ -1171,6 +1187,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (tactic semantics, not a missing lemma). General lesson:
   when `simp_all` produces a confusing residual goal involving a hypothesis you
   expected to eliminate, suspect cross-rewriting from an equality hypothesis.
+- **Lifted to:** TACTICS § 8 *`simp_all` can cross-contaminate with
+  destructive equality hypotheses*.
 
 ### [resolved] `congr_fun` does not apply to `EuclideanSpace`
 
@@ -1189,6 +1207,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (project-internal lesson). Adds to the list of "things
   that act like Pi types but aren't literally Pi types" — alongside `Sym2 V`
   (where `Sym2.lift` is the projection, not `congr_fun`).
+- **Lifted to:** TACTICS § 8 *`congr_fun` does not apply to
+  `EuclideanSpace`*.
 
 ### [resolved] `rcases ⟨rfl, rfl⟩` on `Sym2.eq_iff` eliminates the section-level variable, not the case-split variable
 
@@ -1226,6 +1246,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   with deliberate side selection) over `rfl` patterns. Cf. line 521 of
   `Henneberg.lean`, where `rcases ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> grind` works
   *because* `grind` closes both branches regardless of which variables remain.
+- **Lifted to:** TACTICS § 8 *`subst` between two free variables picks
+  the wrong one* (the `Sym2.eq_iff` case is one of two cited traps).
 
 ### [resolved] `simp only [rigidityMap_apply, Pi.zero_apply]` leaves `he` in the elaborated goal, blocking later `rw`
 
@@ -1261,6 +1283,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   suspect a `simp`-produced residual subterm and insert `change` to clean.
   Mirrors the `Sym2`-symmetry residual issue at line 521 (where `grind`
   papered over it).
+- **Lifted to:** TACTICS § 8 *`simp only` leaves residual subterms
+  that block `rw` motives*.
 
 ### [resolved] `interval_cases` on non-variable expression doesn't substitute
 
@@ -1287,6 +1311,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   General lesson: `interval_cases` is for free *variables*; for
   function applications, prove the equation explicitly via `omega` or
   similar and name it.
+- **Lifted to:** TACTICS § 8 *`interval_cases` is for free variables,
+  not function applications*.
 
 ### [resolved] `subst h` on `h : v = c` between two local vars can substitute the variable you want to keep
 
@@ -1310,6 +1336,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   ```
 - **Status:** resolved (use `rw` over `subst` when both sides of the
   equation are locals you want to keep referencing).
+- **Lifted to:** TACTICS § 8 *`subst` between two free variables picks
+  the wrong one* (the `hvc : v = c` case is one of two cited traps).
 
 ### [resolved] `set p_t := fun t => …` + `simp [p_t]` doesn't unfold the let-binding cleanly
 
@@ -1337,6 +1365,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (prefer explicit `have`-lemmas over `set`-name
   unfolding when the body is a lambda and downstream goals need beta
   reduction).
+- **Lifted to:** TACTICS § 8 *`set name := fun t => …` + `simp [name]`
+  doesn't unfold lambdas*.
 
 ### [resolved] `linearIndependent_fin2` leaves `![v₀, v₁] 0` / `![v₀, v₁] 1` unsimplified at the indexing layer
 
@@ -1362,6 +1392,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** resolved (always pair `linearIndependent_fin2` with the
   matrix-indexing simp set if the destructured form is going to be
   used in `rw`).
+- **Lifted to:** TACTICS § 8 *`linearIndependent_fin2` leaves
+  `![v₀, v₁] 0 / 1` unsimplified*.
 
 ### [resolved] `push_neg` deprecated in favor of `push Not`
 

@@ -201,6 +201,36 @@ default to `grind` because most of our goals mix arithmetic with
 equational steps, but `omega` is the right call for purely arithmetic
 ones.
 
+**`omega`/`grind` treat `set`-aliased terms as opaque atoms.** When a
+proof opens `set name := expr with name_def` and later receives a
+hypothesis mentioning `expr` literally (typically from a downstream
+lemma call), the two views are defeq but `omega`/`grind` see them as
+distinct atoms and won't bridge across. Fix with one explicit
+`rw [← name_def] at h_expr_form` (or `rw [name_def] at h_alias_form`)
+before invoking the tactic. The `set` tactic's substitution scope is
+bounded by *current* goals/hypotheses, not future tactic outputs —
+this is intrinsic, not a bug. Same pattern bites `grind`. See
+`IsLaman.typeII_reverse_blocker` in `Henneberg.lean` for a worked
+case.
+
+**`omega` doesn't carry commutativity or distributivity on atoms.**
+If `omega` has `k * #s` on one side and `#s * k` on the other (or
+`k * #(s ∪ t) + k * #(s ∩ t)` vs. `k * #s + k * #t`), it sees four
+unrelated atoms and fails. Pre-normalize: `rw [mul_comm]` for
+commutativity, or stage a `have h_mul : … := by rw [← Nat.mul_add,
+← Nat.mul_add, Finset.card_union_add_card_inter]` for distributivity,
+then hand the multiplied identity to omega alongside the unmultiplied
+facts. (One-liner alternative: `linear_combination k * h.symm`, but
+this requires `Mathlib.Tactic.LinearCombination`.) `IsTightOn.union_inter`
+in `Sparsity.lean` is the canonical worked case.
+
+**ℕ-quadratic bounds: `Nat.le_mul_self`.** `nlinarith` over ℕ
+doesn't reliably close `4 * d + 2 ≤ (d + 1) * (d + 2)`-shaped goals
+from scratch — ℕ-subtraction truncates and it can't recover the
+squaring. Expand the quadratic with `ring`-via-`have`, surface
+`d ≤ d * d` via `Nat.le_mul_self d`, then close with `omega`.
+Worked case: `top_fin_two_isGenericallyRigid` in `Framework.lean`.
+
 ### Examples in this directory
 
 Search the `.lean` files for `grind only` to see worked instances. The
@@ -344,6 +374,30 @@ Why we go to this trouble: the resolved entries in
 `notes/FRICTION.md` are the running list of "lemmas the project found
 mathlib should have." They mature into upstream PRs. Inlining a
 hand-rolled version skips that pipeline.
+
+### Search mathlib before mirroring
+
+Before reaching for a mirror, sweep `lean_loogle` (type pattern) or
+`lean_leanfinder` (concept). The "mirror it ourselves" instinct
+bloats the project surface, and mathlib's API is denser than it
+looks. Cases where a planned mirror dissolved into a one-line
+upstream find:
+
+- `linearIndependent_pair_of_det_ne_zero` (dim-2 LI from determinant
+  ≠ 0) → mathlib already ships
+  `Matrix.linearIndependent_rows_of_det_ne_zero` (d-general).
+- A bridge `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)` → mathlib ships
+  `LinearMap.ltoFun R M N A`, instantiate with `R = N = A = ℝ`.
+  `lean_loogle` against `(_ →ₗ[_] _) →ₗ[_] (_ → _)` returned it on
+  the first try.
+- An `{x : Fin 3 // x ≠ 0} ≃ Fin 2` reindex → mathlib ships
+  `finSuccAboveEquiv` (`Mathlib.Logic.Equiv.Fin.Basic`).
+- `LinearMap.ext_on` already packages "linear maps agree on a
+  spanning set → equal", saving the explicit `LinearMap.ext fun x =>
+  …; …; LinearMap.eqOn_span` block.
+
+Rule of thumb: search by *type pattern of what you need*, not by
+your guess of what mathlib calls it — names drift, types don't.
 
 ---
 
@@ -552,3 +606,157 @@ reach PyPI, or the LSP refuses to start, or you're working from an
 environment without network, the standard `Read` + `lake build`
 workflow remains the source of truth: read the relevant `.lean` file,
 edit, rebuild, inspect the compiler output. Don't block on MCP issues.
+
+---
+
+## 8. Tactic quirks and Lean idioms
+
+A reference table of "you'll hit this once and lose a build cycle,
+then never again." Skim the headers when a proof goes sideways with a
+confusing error.
+
+### `subst` between two free variables picks the wrong one
+
+When `h : a = b` has both sides free in scope, `subst h` eliminates
+one — and Lean's heuristic is "the *less-recently-introduced* free
+variable when both qualify." Two recurring traps:
+
+- `rcases Sym2.eq_iff.mp h_eq with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩` inside
+  an `induction e with | h u v => …` after a `by_cases h_eq : s(u, v)
+  = s(a, b)`: the `rfl` patterns substitute *the theorem binders
+  `a, b`* (older) rather than the case-split intros `u, v` (newer).
+  A follow-up `have hflip : p b - p a = …` then fails with `Unknown
+  identifier b`.
+- `by_cases hvc : v = c; · subst hvc`: substitutes `c` (the function
+  signature variable, older) and leaves `v`. Subsequent uses of `c`
+  fail.
+
+**Fix:** bind the equalities to named hypotheses and use `rw`, which
+doesn't eliminate from the context:
+
+```lean
+rcases Sym2.eq_iff.mp h_eq with ⟨h1, h2⟩ | ⟨h1, h2⟩
+· rw [h1, h2]; …
+· rw [h1, h2, /- sign flip -/]; …
+```
+
+When `grind` is the closer it papers over this — both branches close
+regardless of which variables remain. Reach for named hypotheses
+only when downstream tactics depend on a specific name.
+
+### `simp only` leaves residual subterms that block `rw` motives
+
+If you `simp only […]` and then a follow-up `rw [h]` fails with
+*motive is not type correct*, citing a hypothesis (like `he`) that
+doesn't appear in the displayed goal — suspect a `simp`-produced
+residual subterm hiding inside an `Eq` proof. Insert `change
+<displayed clean form>` between the `simp only` and the `rw`:
+
+```lean
+simp only [rigidityMap_apply, Pi.zero_apply, Function.comp_apply]
+change ⟪p u - p v, x (some u) - x (some v)⟫_ℝ = 0
+rw [h1, h2]; …
+```
+
+The `change` re-elaborates the goal at the surface type, discarding
+the residual. Canonical case: `typeII_isInfinitesimallyRigid_extend`
+in `Henneberg.lean`.
+
+### `set name := fun t => …` + `simp [name]` doesn't unfold lambdas
+
+`simp [name]` on a `set`-introduced abbreviation whose body is a
+lambda often fails (or worse, gives a `⊢ sorry () c = …`-style
+elaboration glitch). Prefer `let` plus explicit `have`-lemmas that
+state the reductions you need:
+
+```lean
+let p_t : ℝ → Framework V 2 := fun t => Function.update p₀ c (p₀ c + t • w)
+have h_p_t_c : ∀ t, p_t t c = p₀ c + t • w :=
+  fun _ => Function.update_self c _ p₀
+have h_p_t_ne : ∀ t v, v ≠ c → p_t t v = p₀ v :=
+  fun _ v hvc => Function.update_of_ne hvc _ p₀
+```
+
+Reference the `have`-lemmas in downstream reasoning rather than
+trying to round-trip through `simp [p_t]`.
+
+### `interval_cases` is for free variables, not function applications
+
+`interval_cases (Fintype.card V)` enumerates the cases but does
+**not** substitute `Fintype.card V` in the context — so an arm's
+`Fintype.card V = 2` won't close by `rfl`. `interval_cases` only
+performs `subst` on free *variables*.
+
+**Fix:** for value equations on function applications, derive the
+equation as a named hypothesis via `omega` (or `decide`, etc.) and
+hand it to downstream lemmas explicitly:
+
+```lean
+by_cases hV3 : 3 ≤ Fintype.card V
+· -- high branch
+· -- low branch
+  have hcard2 : Fintype.card V = 2 := by
+    have := IsLaman.edgeSet_ncard …
+    omega
+  exact h.eq_top_of_card_eq_two hcard2
+```
+
+Canonical case: `IsLaman.isGenericallyRigidInj_two_of_card` in
+`LamanTheorem.lean`.
+
+### Dot notation only consults the type's head namespace
+
+Two related traps:
+
+- **Sub-namespace lookup fails.** Inside `namespace SimpleGraph.Henneberg`,
+  with `h : G.IsLaman`, writing `h.typeII_reverse_blocker …` looks up
+  `SimpleGraph.IsLaman.typeII_reverse_blocker`, **not**
+  `SimpleGraph.Henneberg.IsLaman.typeII_reverse_blocker`. Error
+  appears as ``And.typeII_reverse_blocker not found`` because Lean
+  unfolds `IsLaman → IsTight → And` while searching. Fix: call by
+  explicit name from inside the sub-namespace —
+  `IsLaman.typeII_reverse_blocker h …` resolves correctly via the
+  partial-prefix lookup.
+- **Same-name wrapper recurses.** Inside `theorem
+  EdgeSetRowIndependent.mono`, writing `hI.mono h` resolves `.mono`
+  to *the function being defined* (Lean prefers the head namespace
+  of the term's *stated* type before unfolding), not the upstream
+  `LinearIndepOn.mono` you intended. Spell out the upstream name
+  explicitly when wrapping a same-named upstream lemma.
+
+### `congr_fun` does not apply to `EuclideanSpace`
+
+`EuclideanSpace ℝ ι` is `PiLp 2 (fun _ => ℝ)`, not `ι → ℝ`. Even
+though the carrier coerces, `congr_fun h 0` errors out with
+`Application type mismatch`. To extract a coordinate, route through
+a continuous map (norm, inner product) or use `EuclideanSpace.equiv`
+/ `PiLp.equiv` for an explicit conversion. Same caveat for `Sym2 V` —
+projection there goes through `Sym2.lift`, not `congr_fun`.
+
+### `simp_all` can cross-contaminate with destructive equality hypotheses
+
+If `simp_all` encounters `hij : 0 = X`, it may rewrite *every*
+occurrence of `0` in the context to `X` — including inside
+hypotheses you wanted to keep. When `simp_all` produces a confusing
+residual goal involving a hypothesis you expected to eliminate,
+suspect cross-rewriting. Route through a derived quantity that
+doesn't trigger it:
+
+```lean
+have h_norm : ‖p i‖ = ‖p j‖ := congrArg _ hij
+revert h_norm <;> simp [hp_def]
+```
+
+### `linearIndependent_fin2` leaves `![v₀, v₁] 0 / 1` unsimplified
+
+After `rw [linearIndependent_fin2] at hLI`, the destructured form
+carries `![v₀, v₁] 0` and `![v₀, v₁] 1` at the indexing layer, which
+won't match patterns like `p₀ c - p₀ a` in downstream goals. Always
+pair with the matrix-indexing simp set:
+
+```lean
+rw [linearIndependent_fin2] at hLI
+simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hLI
+```
+
+then `push Not`, `obtain`, etc.
