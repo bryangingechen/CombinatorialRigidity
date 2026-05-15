@@ -694,7 +694,12 @@ limitations. Worth a once-over so future agents don't re-litigate.
   the Lean expanded to ~107 lines. The bulk of the gap was a hand-rolled
   "injectivity is eventually preserved" `∀ᶠ`-argument via
   `Finset.eventually_all` + componentwise `ContinuousAt.eventually_ne`, taking
-  ~25 lines. Phase 7's Type II row-LI lift will need the same shape.
+  ~25 lines. (Originally noted that "Phase 7's Type II row-LI lift will need
+  the same shape" — that prediction was wrong: the matroid hard direction does
+  not require an *injective* placement, so the row-LI Type II lift's
+  perpendicular-perturbation step uses
+  `EdgeSetRowIndependent.eventually` — openness of *row-LI*, not of
+  injectivity — instead. Meta-pattern is the same, closing lemma is different.)
 - **Friction:** mathlib has `Set.InjOn.exists_mem_nhdsSet` (in
   `Mathlib/Topology/Separation/Hausdorff.lean`) — compactness + neighborhood-of-
   a-set form — but no "componentwise-continuous finite-domain family,

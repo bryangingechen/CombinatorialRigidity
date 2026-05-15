@@ -236,6 +236,34 @@ row-independent.
   and the entire combination vanishes.
 \end{proof}
 
+\begin{lemma}[Row-independence is open in the placement]
+  \label{lem:edgeSet-rowIndependent-eventually}
+  \lean{SimpleGraph.EdgeSetRowIndependent.eventually}
+  \leanok
+  \uses{def:edgeSet-rowIndependent, def:rigidityRow,
+    lem:isInfinitesimallyRigid-eventually}
+  Let $V$ be finite and $G : \mathrm{SimpleGraph}\,V$. If
+  $p_0 : V \to \R^{d}$ makes an edge subset $I \subseteq E(G)$
+  row-independent, then so does every placement in some neighborhood
+  of $p_0$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Row-LI analogue of \cref{lem:isInfinitesimallyRigid-eventually}.
+  Since $\mathrm{Module.Dual}\,\R\,(\mathrm{Framework}\,V\,d)$ carries no
+  canonical norm, transport the LI assertion to $\R^{n}$
+  (with $n = \dim\,\mathrm{Framework}\,V\,d$) along the basis isomorphism
+  $\psi : \mathrm{Dual} \to \R^{n}$,
+  $\psi\,l\,i = l(b\,i)$ for a fixed basis $b$ of
+  $\mathrm{Framework}\,V\,d$. The matrix family
+  $p \mapsto (i, k) \mapsto \mathrm{rigidityRow}\,G\,p\,i\,(b\,k)$ is
+  continuous in $p$ (each entry is an inner product, jointly continuous
+  in $(p, b\,k)$ with $b\,k$ fixed); equals the $\psi$-image of an LI
+  family at $p_0$; openness of linear independence in finite-dimensional
+  normed spaces preserves LI on a neighborhood; transport back along
+  $\psi^{-1}$ (a linear equivalence preserves LI in both directions).
+\end{proof}
+
 \begin{lemma}[Type~II lift of row-independence]
   \label{lem:typeII-rowIndependent-lift}
   \uses{def:typeII, def:edgeSet-rowIndependent,
@@ -250,14 +278,13 @@ row-independent.
 \end{lemma}
 \begin{proof}
   \uses{lem:typeII-rowIndependent-extend,
-    lem:isInfinitesimallyRigid-eventually}
+    lem:edgeSet-rowIndependent-eventually}
   Apply \cref{lem:typeII-rowIndependent-extend} to a placement $p'$
   perturbed to make $p'(u), p'(w), p'(z)$ non-collinear (otherwise
   the third new row $\{\star, z\}$ would collapse into the span of
   the first two). The perturbation in the kernel of the rigidity map,
-  permitted by the row-independence analogue of
-  \cref{lem:isInfinitesimallyRigid-eventually}, preserves row-LI of
-  $E(G')$. With the non-collinear placement in hand, pick
+  permitted by \cref{lem:edgeSet-rowIndependent-eventually}, preserves
+  row-LI of $E(G')$. With the non-collinear placement in hand, pick
   $p(\star)$ on the line through $p(u)$ and $p(w)$ with collinearity
   scalar $s \ne 0, 1$ (so $p(\star)$ is distinct from both) and with
   $p(\star) - p(u), p(\star) - p(z)$ linearly independent; the bad

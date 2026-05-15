@@ -91,6 +91,52 @@ theorem edgeSetRowIndependent_iff_linearIndepOn_rigidityRow
   exact (LinearMap.ltoFun ℝ (Framework V d) ℝ ℝ).linearIndepOn_iff_of_injOn
     DFunLike.coe_injective.injOn
 
+/-- **Openness of row-independence in the placement.** If `p₀` makes an edge subset `I`
+row-independent, then so does every placement in some neighborhood of `p₀`.
+
+Row-LI analogue of `IsInfinitesimallyRigid.eventually` (in `Framework.lean`). The proof
+transports the LI assertion from `Module.Dual ℝ (Framework V d)` — which carries no canonical
+norm — to the normed space `Fin n → ℝ` (`n = finrank ℝ (Framework V d)`) along the basis
+isomorphism `b.dualBasis.equivFun : Module.Dual ℝ (Framework V d) ≃ₗ[ℝ] Fin n → ℝ` (which sends
+`l ↦ fun i => l (b i)` by `Basis.dualBasis_equivFun`). The matrix family
+`p ↦ (i, k) ↦ G.rigidityRow p i.val (b k)` is continuous in `p` (each entry is an inner product,
+already tagged `@[fun_prop]` via `continuous_rigidityMap_apply`); equals an LI family at `p₀`
+under the transport; `LinearIndependent.eventually` preserves LI on a neighborhood; transport
+back. -/
+theorem EdgeSetRowIndependent.eventually [Finite V] {G : SimpleGraph V}
+    {p₀ : Framework V d} {I : Set G.edgeSet}
+    (h₀ : G.EdgeSetRowIndependent p₀ I) :
+    ∀ᶠ p in 𝓝 p₀, G.EdgeSetRowIndependent p I := by
+  classical
+  haveI : Fintype V := Fintype.ofFinite V
+  haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
+  haveI : Fintype I := Fintype.ofFinite _
+  rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow] at h₀
+  set n := Module.finrank ℝ (Framework V d)
+  set b := Module.finBasis ℝ (Framework V d) with hb_def
+  set ψ : Module.Dual ℝ (Framework V d) ≃ₗ[ℝ] Fin n → ℝ := b.dualBasis.equivFun
+  set M : Framework V d → I → Fin n → ℝ := fun p i k => G.rigidityRow p i.val (b k) with hM_def
+  have h_cont : Continuous M := by
+    refine continuous_pi fun i => continuous_pi fun k => ?_
+    change Continuous fun p : Framework V d => G.RigidityMap p (b k) i.val
+    fun_prop
+  have h_M_eq_ψ : ∀ p : Framework V d,
+      (fun i : I => M p i) = (ψ : _ →ₗ[ℝ] _) ∘ (fun i : I => G.rigidityRow p i.val) := by
+    intro p
+    funext i k
+    exact (Basis.dualBasis_equivFun b _ _).symm
+  have h_iff : ∀ p : Framework V d,
+      LinearIndependent ℝ (fun i : I => M p i) ↔
+      LinearIndependent ℝ (fun i : I => G.rigidityRow p i.val) := by
+    intro p
+    rw [h_M_eq_ψ p, LinearMap.linearIndependent_iff _ (LinearEquiv.ker _)]
+  have hM₀_li : LinearIndependent ℝ (M p₀) := (h_iff p₀).mpr h₀
+  have h_event : ∀ᶠ p in 𝓝 p₀, LinearIndependent ℝ (M p) :=
+    h_cont.continuousAt.tendsto.eventually hM₀_li.eventually
+  filter_upwards [h_event] with p hp_li
+  rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
+  exact (h_iff p).mp hp_li
+
 /-- The rigidity rows span the range of the transpose map. Combined with
 `LinearMap.finrank_range_dualMap_eq_finrank_range` this is the row-rank-equals-column-rank
 identity for the rigidity matrix; in span form, it is

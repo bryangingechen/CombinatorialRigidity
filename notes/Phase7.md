@@ -21,7 +21,7 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-Nine commits in so far. The **first three** lifted Phase 5 Laman
+Ten commits in so far. The **first three** lifted Phase 5 Laman
 machinery to `IsSparse` (degree-≤-3 existence, non-adjacent triple,
 the five blocker contradiction primitives, the per-pair typeII
 tight-blocker). The **fourth** was a docs-only commit pinning the
@@ -46,9 +46,17 @@ the LI hypothesis, picks `q` off the line through `p' a, p' b` via
 the un-privatized `exists_off_line_off_finite_dim_two`
 (`S = ∅`, since the matroid hard direction needs no injectivity
 constraint), then composes with the conditional core. The **ninth**
-(this commit) lands the **conditional Type II row-LI lift**
-`typeII_edgeSetRowIndependent_extend` and adds the matching
+landed the **conditional Type II row-LI lift**
+`typeII_edgeSetRowIndependent_extend` and added the matching
 blueprint entry `lem:typeII-rowIndependent-extend` with `\leanok`.
+The **tenth** (this commit) lands the **row-LI openness lemma**
+`EdgeSetRowIndependent.eventually` in `RigidityMatroid.lean` — the
+row-LI analogue of `IsInfinitesimallyRigid.eventually`, prerequisite
+for the upcoming Type II row-LI *unconditional* wrapper's
+perpendicular-perturbation step. Adds the blueprint entry
+`lem:edgeSet-rowIndependent-eventually` with `\leanok` and re-wires
+the proof of `lem:typeII-rowIndependent-lift` to cite it instead of
+the rigidity-side openness lemma.
 Mirrors Phase 5's `typeII_isInfinitesimallyRigid_extend` on the
 row-LI / dual side: places `q` on the line through `p' a, p' b`
 (collinearity scalar `s ≠ 0, 1`) with `(q - p' a, q - p' c)` LI,
@@ -80,16 +88,21 @@ lifted-old span by G'-LI + T-injectivity.
   `exists_off_line_off_finite_dim_two` in `HennebergRigidity.lean`
   so the wrapper can reuse it with `S = ∅`.
 - **Session 4 — Commit 6 ("Type II row-LI conditional core")**
-  [✓ done in this commit]: landed
-  `typeII_edgeSetRowIndependent_extend` in
+  [✓ done]: landed `typeII_edgeSetRowIndependent_extend` in
   `MatroidIdentification.lean`; added blueprint entry
   `lem:typeII-rowIndependent-extend` with `\leanok`.
-- **Session 4+:** Type II row-LI unconditional wrapper (needs the
-  row-LI analogue of openness, i.e. `EdgeSetRowIndependent.eventually`
-  or similar, plus the perpendicular-perturbation pattern from
-  `exists_nonCollinear_rigid_placement_dim_two`); then
-  `IsSparse.exists_rowIndependent_placement` (the |E|-induction);
-  then the iff and the `Matroid` packaging.
+- **Session 4 — Commit 7 ("row-LI openness")** [✓ done in this
+  commit]: landed `EdgeSetRowIndependent.eventually` in
+  `RigidityMatroid.lean` (basis-transport to `Fin n → ℝ` then
+  `LinearIndependent.eventually` on the normed side); added
+  blueprint entry `lem:edgeSet-rowIndependent-eventually` with
+  `\leanok`; re-wired `lem:typeII-rowIndependent-lift`'s proof to
+  cite it. This is the analytic prerequisite for the upcoming Type
+  II row-LI unconditional wrapper.
+- **Session 4+:** Type II row-LI unconditional wrapper (compose
+  perpendicular-perturbation via row-LI openness + the conditional
+  core); then `IsSparse.exists_rowIndependent_placement` (the
+  |E|-induction); then the iff and the `Matroid` packaging.
 
 ## Architectural choices made up front
 
@@ -266,6 +279,40 @@ A red node = not yet formalized; a green node = formalized and
   chaining three `LinearIndepOn.insert` calls; resolved by rewriting
   the singleton as `insert c ∅` via `LawfulSingleton.insert_empty_eq`
   before the chain.
+
+- **Row-LI openness (Commit 10).**
+  `EdgeSetRowIndependent.eventually` lands in `RigidityMatroid.lean`
+  alongside the basic row-LI API. Row-LI analogue of
+  `IsInfinitesimallyRigid.eventually` in `Framework.lean`. The
+  obstacle: `Module.Dual ℝ (Framework V d)` carries no canonical
+  norm, so `LinearIndependent.eventually` (mathlib, in
+  `Mathlib.Analysis.Normed.Module.FiniteDimension`) cannot be invoked
+  directly on the row family. Resolution: transport the LI assertion
+  to the normed space `Fin n → ℝ` (`n = finrank ℝ (Framework V d)`)
+  along the basis isomorphism `b.dualBasis.equivFun`, which
+  `Basis.dualBasis_equivFun` evaluates as `ψ l i = l (b i)`. The
+  matrix family `p ↦ (i, k) ↦ rigidityRow p i.val (b k)` is
+  continuous in `p` (each entry expands to an inner product, closed
+  by the `@[fun_prop]`-tagged `continuous_rigidityMap_apply` from
+  Phase 4); the codomain `I → Fin n → ℝ` is a finite-dim normed
+  space; `LinearIndependent.eventually` applies; transport back via
+  `LinearMap.linearIndependent_iff` + `LinearEquiv.ker`. The
+  proof is ~25 lines and mirrors Phase 4's IR-openness scaffolding
+  almost verbatim modulo the codomain swap.
+
+  *Anticipated alternative ruled out.* The FRICTION-mirrored
+  `Function.Injective.eventually_of_continuousAt` and its `.update`
+  corollary (used in Phase 5's `exists_nonCollinear_rigid_placement_dim_two`)
+  do **not** transfer to the row-LI side: their content is
+  "componentwise-continuous family is *injective* eventually" — a
+  Hausdorff-diagonal argument — which encodes preservation of
+  injectivity (`Function.Injective p`), not preservation of row-LI
+  (`EdgeSetRowIndependent p I`). The matroid hard direction needs no
+  injectivity, so the row-LI Type II wrapper's perpendicular-
+  perturbation step composes `EdgeSetRowIndependent.eventually` with
+  `Continuous.tendsto.eventually` (no diagonal argument), not the
+  injectivity mirror. The pre-Phase-7 FRICTION note that predicted
+  re-use of the mirror was updated to record this.
 
 - **Mirror `LinearIndependent.dualMap_of_surjective`.** The old-row
   LI half of `typeI_edgeSetRowIndependent_extend` was building the
