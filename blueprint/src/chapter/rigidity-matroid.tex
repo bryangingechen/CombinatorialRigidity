@@ -20,7 +20,18 @@ admits either a Type~I reverse (delete a degree-${\le}2$ vertex) or a
 Type~II reverse (split a degree-$3$ vertex) yielding a smaller sparse
 graph --- is the sparse-graph analogue of Phase~5 milestone~1
 (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}) and reuses the same
-critical-set machinery.
+tight-subset machinery (\cref{thm:isTightOn-union-inter}).
+
+\emph{Terminology.} Throughout this chapter we use the project's
+\emph{$(2, 3)$-tight subset} (\cref{def:isTightOn}) in place of
+Jord\'an's \emph{critical set}. The two are interchangeable: a
+critical set in a $(2, 3)$-sparse graph $G$ is exactly a subset
+$X \subseteq V$ with $\bigl|\edgesIn{X}\bigr| = 2|X| - 3$, i.e.\
+\texttt{G.IsTightOn 2 3 X}. Likewise Jord\'an's Lemma~2.1.2
+(critical sets are union/intersection-closed when intersections have
+$\ge 2$ vertices) is our \cref{thm:isTightOn-union-inter}; the
+three-pair tight-union (Jord\'an Lemma~2.1.3) is
+\cref{thm:isTightOn-union-with-bonus} composed twice.
 
 \subsection{Sparse-graph reverse decomposition}
 \label{sec:rigidity-matroid-sparse-reverse}

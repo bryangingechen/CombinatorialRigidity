@@ -234,8 +234,10 @@ generically on the line through the split edge's endpoints, with the
 third new row independent by non-collinearity). Combine with Phase
 6's easy direction for the iff; package as a `Matroid` via
 `IndepMatroid`. The sparse reverse decomposition reuses Phase 5's
-critical-set machinery (`IsTightOn.union_inter`) without the
-Laman-specific blocker complications.
+tight-subset machinery (`IsTightOn.union_inter`) without the
+Laman-specific blocker complications. (Jordán's "critical set" is
+our `IsTightOn`; the synonym is documented in `IsTightOn`'s blueprint
+definition and again in the new chapter's *Terminology* aside.)
 
 **Forward mode.** Per `blueprint/DESIGN.md`, the blueprint chapter
 `blueprint/src/chapter/rigidity-matroid.tex` is the authoritative

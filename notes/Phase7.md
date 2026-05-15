@@ -75,8 +75,11 @@ wrong, revisit there.
   the row-LI placement of the smaller sparse graph back along the
   Henneberg move via the Type I / Type II row-LI lifts. This avoids
   a separate sparse-to-Laman extension lemma and reuses Phase 5's
-  critical-set machinery (`IsTightOn.union_inter`) for the
-  reverse-decomposition step.
+  tight-subset machinery (`IsTightOn.union_inter` — Jordán Lemma
+  2.1.2) for the reverse-decomposition step. (Jordán's "critical set"
+  ↔ our `IsTightOn` synonym, plus the Lemma 2.1.2 / 2.1.3 ↔ our
+  tight-subset-lattice correspondence, are documented in the new
+  chapter's *Terminology* aside.)
 
 ## Lemma checklist
 
@@ -95,7 +98,7 @@ _None yet — phase just starting._
 - **Sparse-graph reverse decomposition** (`IsSparse.exists_typeI_or_typeII_reverse`,
   Jordán Lemma 2.1.4). The sparse-graph analogue of Phase 5
   milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse`). Should reuse
-  the same critical-set machinery (`IsTightOn.union_inter`, Phase 5's
+  the same tight-subset machinery (`IsTightOn.union_inter`, Phase 5's
   three-pair tight-union argument) but without the Laman-specific
   blocker complications, since we only need sparsity-preservation
   not tightness-preservation. Open: how much of Phase 5's milestone-1
