@@ -53,6 +53,17 @@ splits to match (new `chapter/count-matroid.tex` for the abstract
 construction; `chapter/rigidity-matroid.tex` retains the row-LI
 machinery and the specialization).
 
+**Commit 17 proof route resolved (this commit).** Research-only:
+the original `union_with_bonus` sketch doesn't close (bonus edges
+must be I-edges; J\\I edges aren't). Replaced with the Lee--Streinu
+component-based proof; split into Commits 17a (block intersection
+closure + minimum I-block), 17b (I-components + edge partition),
+17c (augmentation assembly). See *Blockers / open questions* for
+the full proof outline and *Multi-session plan* for the 17a/b/c
+decomposition. No Lean changes this commit. The blueprint
+`lem:isSparse-aug` proof sketch in `count-matroid.tex` is updated
+to match.
+
 **Multi-session plan** for the forward-blueprint work:
 
 - **Commits 2–6** [✓ done]: sparse-side lifting + flat-form sparse
@@ -112,16 +123,40 @@ machinery and the specialization).
   yet). Notes / ROADMAP §7 / new blueprint chapter
   `count-matroid.tex` + restructured `rigidity-matroid.tex`;
   Whiteley 1996 and Lee--Streinu 2008 bibliography entries.
-- **Commit 17** [planned]: combinatorial augmentation lemma
-  `IsSparse.exists_aug_of_lt_two_mul` (or similarly named) in
-  `Sparsity.lean`. Statement: for `0 ≤ ℓ < 2k`, finite `V`,
-  `I, J ⊆ Sym2 V` both `(fromEdgeSet · ).IsSparse k ℓ` with
-  `|I| < |J|`, $\exists\, e \in J \setminus I$ with
-  `fromEdgeSet (insert e I)` $(k, \ell)$-sparse. Proof: by
-  contradiction, build a tight-set saturation $S^* \subseteq V$
-  containing endpoints of all $e \in J \setminus I$ via iterated
-  `IsTightOn.union_inter` / `union_with_bonus`, derive
-  $|J| \le |I|$ from the saturation and the two sparsity bounds.
+- **Commits 17a / 17b / 17c** [planned]: combinatorial augmentation
+  lemma `IsSparse.exists_aug_of_lt_two_mul` (final name TBD) in
+  `Sparsity.lean`. *Updated Commit 17 plan*: the original sketch
+  ("iterate `union_inter` / `union_with_bonus`") doesn't close in
+  the matroidal regime because `union_with_bonus` requires bonus
+  edges `F ⊆ G.edgesIn`, i.e. *I-edges*, whereas the natural bonus
+  edges (J \\ I) aren't in `G = fromEdgeSet I`. The replacement
+  route follows Lee--Streinu 2008 (Theorem 5(1,2,4)) via I-block /
+  I-component structure:
+  - **Commit 17a** [planned]: in matroidal regime ℓ < 2k, two
+    I-tight (= block-of-I) sets containing a common 2-vertex
+    {u, v} have I-tight intersection. Corollary of
+    `IsTightOn.union_inter` with `|S ∩ T| ≥ 2 ≥ ⌈ℓ/k⌉`. Define
+    `IsSparse.minBlockOn (h : ¬ (fromEdgeSet (insert e I)).IsSparse k ℓ) :
+    Finset V` — the minimum I-block containing endpoints of e —
+    via `Finset.inf` over the (finite) family of I-blocks
+    containing `{u, v}`.
+  - **Commit 17b** [planned]: I-component theory in
+    `Sparsity.lean`. A maximal I-block; lemma that I-components are
+    pairwise edge-disjoint (for matroidal regime they overlap in
+    `≤ 1` vertex by Lee--Streinu Theorem 5(2)); lemma that each
+    non-free I-edge lives in a unique I-component; the partition
+    identity `|I| = Σ_C |I ∩ C.sym2| + |I, free|`. The free-edge
+    case is non-trivial only for the lower range ℓ ∈ [0, k); for
+    the upper range ℓ ∈ [k, 2k) every edge is in a component.
+  - **Commit 17c** [planned]: augmentation assembly. For each
+    e ∈ J\\I, the contradiction hypothesis "no augmentation"
+    forces endpoints of e into some I-component. J-sparsity at
+    each I-component C gives `|J ∩ C.sym2| ≤ |I ∩ C.sym2|`.
+    Per-component sum: `|J in-component| ≤ |I in-component|`.
+    Free J-edges are in `J ∩ I` (since J \\ I edges are all
+    in-component), so `|J ∩ I, free| ≤ |I, free|`. Combine:
+    `|J| ≤ |I|`, contradicting `|I| < |J|`. Estimated total
+    ~340--390 LoC across the three commits.
 - **Commit 18** [planned]: new file
   `CombinatorialRigidity/CountMatroid.lean`. Defines
   `SimpleGraph.countMatroid V k ℓ (h : ℓ < 2 * k) : Matroid (Sym2 V)`
@@ -407,27 +442,53 @@ A red node = not yet formalized; a green node = formalized and
 ## Blockers / open questions
 
 - **$(k, \ell)$-count matroid augmentation in the matroidal regime
-  $\ell < 2k$.** *Updated in Commit 16 — see *Architectural choices*
-  for the scope expansion to the general count matroid.* The
-  combinatorial heart of the matroid construction. Standard proof
-  (Whiteley 1996 / Lee--Streinu 2008): suppose $I, J$ are both
-  $(k, \ell)$-sparse with $|I| < |J|$ and no $e \in J \setminus I$
-  extends $I$ to sparse. Then for every such $e$ there is an
-  $I$-tight set $S_e$ containing both endpoints of $e$. Iterate
-  `IsTightOn.union_inter` (size proviso
-  $\ell \le k \cdot |S \cap S_e|$, i.e.,
-  $|S \cap S_e| \ge \lceil \ell / k \rceil$) to build an $I$-tight
-  $S^*$ containing endpoints of every $e \in J \setminus I$; then
-  $J \setminus I \subseteq E_{K_V}(S^*)$ and the two sparsity bounds
-  squeeze $|J| \le |I|$, contradiction. Existing input:
-  `IsTightOn.union_inter`, `IsTightOn.union_with_bonus` in
-  `Sparsity.lean`. New work: handle the case `|S ∩ S_e| < ⌈ℓ/k⌉`
-  during iteration — likely via `union_with_bonus` with the
-  $J \setminus I$ edges as the "bonus" $F$. Open: cleanest
-  Lean-level formulation of the iteration (recursion on
-  `J \ I` as a Finset, vs. picking $S^*$ as the maximal
-  $I$-tight superset of $\bigcup\,\mathrm{endpoints}\,(J \setminus
-  I)$ via an existence-by-saturation argument).
+  $\ell < 2k$.** *Updated post Commit 16: proof route resolved to
+  Lee--Streinu component-based argument; cost-estimated; split into
+  Commits 17a/b/c (see multi-session plan).* The original sketch
+  ("iterate `union_inter` / `union_with_bonus` to build a saturating
+  $I$-tight $S^*$") doesn't close in the matroidal regime: in the
+  $|S \cap S_e| = 1$ case the close-the-gap inequality of
+  `union_with_bonus` requires $\lceil (\ell - k|S \cap S_e|)
+  / 1 \rceil$ bonus *I-edges* between $S \setminus S_e$ and
+  $S_e \setminus S$ — but the natural bonus edges
+  ($J \setminus I$ edges with endpoints in $S \cup S_e$) live in
+  $J$, not $I$, so they don't contribute to
+  `(fromEdgeSet I).edgesIn (S ∪ S_e)` and can't satisfy
+  `union_with_bonus`'s `hF_sub`.
+
+  **Replacement route (Lee--Streinu 2008 / Whiteley 1996), via
+  I-component theory:** for each $e \in J \setminus I$ failing
+  augmentation, endpoints of $e$ lie in some I-block, hence in
+  some I-component (= maximal I-block). I-components are pairwise
+  edge-disjoint (Lee--Streinu Theorem 5(2)); in the upper range
+  $\ell \in [k, 2k)$ they additionally overlap in $\le 1$ vertex
+  and have no free edges, in the lower range $\ell \in [0, k)$
+  free I-edges are possible but free $J \setminus I$ edges are
+  excluded by the contradiction hypothesis. J-sparsity at each
+  I-component $C$ gives $|J \cap C^{\otimes 2}| \le k|C| - \ell =
+  |I \cap C^{\otimes 2}|$. Summing across the component partition
+  of edges and adding the (J-free, I-free) edges of $J \cap I$
+  gives $|J| \le |I|$, contradiction. See the *Commits 17a/b/c*
+  entries in the multi-session plan for the lemma split; total
+  estimate ~340--390 LoC. The block intersection closure
+  (Lee--Streinu Theorem 5(1)) is the existing
+  `IsTightOn.union_inter` specialized to two blocks sharing a
+  $\ge \lceil \ell/k \rceil$-size set of vertices, so no new
+  upstream-style lemma is needed there — only project-internal
+  block/component scaffolding.
+
+- **Future-friction: a pebble-game algorithm.** Lee--Streinu's
+  $(k, \ell)$-pebble game is the algorithmic complement to the
+  block/component proof above: an explicit greedy procedure that
+  certifies $(k, \ell)$-sparsity by maintaining $k$ pebbles per
+  vertex and a directed orientation, accepting edges when
+  $\mathrm{peb}(u) + \mathrm{peb}(v) \ge \ell + 1$. Formalizing
+  it would yield a decision algorithm and an alternative proof
+  route for the augmentation axiom (rejected edges $\leftrightarrow$
+  tight components). Phase 7 does **not** depend on it — the
+  component-based proof above closes the matroid axiom directly
+  via `union_inter`. Logged here as an interesting future
+  deliverable; not on the critical path.
 
 - **Matroid `IndepMatroid` packaging.** Uses
   `IndepMatroid.ofFinite` from

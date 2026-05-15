@@ -27,12 +27,17 @@ rigidity).
 \subsection{Augmentation in the matroidal regime}
 \label{sec:count-matroid-aug}
 
-The combinatorial heart of the matroid construction. The augmentation
-proof builds, from the assumption that no extension exists, an
-$I$-tight superset $S^{*} \subseteq V$ containing the endpoints of
-every $e \in J \setminus I$ by iterated tight-set lattice closure
-(\cref{thm:isTightOn-union-inter}); the two sparsity bounds at
-$S^{*}$ then squeeze $|J| \le |I|$.
+The combinatorial heart of the matroid construction. The proof
+follows Lee--Streinu~\cite{leeStreinu2008} (also Whiteley's appendix
+of~\cite{whiteley1996}), via the \emph{$I$-component} decomposition
+of a sparse graph: the maximal $I$-tight subsets partition the
+non-free $I$-edges, are pairwise edge-disjoint, and (in the upper
+range $\ell \in [k, 2k)$) overlap in at most one vertex. Two
+$I$-tight sets sharing $\ge \lceil \ell / k \rceil$ vertices have
+$I$-tight intersection (specialisation of
+\cref{thm:isTightOn-union-inter}), so the family of $I$-tight sets
+containing any fixed pair $\{u, v\}$ has a unique minimum, the
+\emph{minimum $I$-block} containing $\{u, v\}$.
 
 \begin{lemma}[$(k, \ell)$-sparsity augmentation, matroidal regime]
   \label{lem:isSparse-aug}
@@ -46,32 +51,72 @@ $S^{*}$ then squeeze $|J| \le |I|$.
 \end{lemma}
 \begin{proof}
   \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter}
-  Suppose for contradiction that for every $e \in J \setminus I$
-  the set $I \cup \{e\}$ is not $(k, \ell)$-sparse. Then for each
-  such $e$ there is a Finset $S_{e} \subseteq V$ with
-  $|S_{e}| \ge \lceil \ell / k \rceil$ containing both endpoints of
-  $e$ and with $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S_{e}}| =
-  k|S_{e}| - \ell$ (i.e.\ $S_{e}$ is $I$-tight in the sense of
-  \cref{def:isTightOn}). Iterate \cref{thm:isTightOn-union-inter}
-  (and \cref{thm:isTightOn-union-with-bonus} when the intersection
-  size proviso $\ell \le k \cdot |S \cap S_{e}|$ fails on a single
-  step, using the as-yet-unaccounted edges of $J \setminus I$ as
-  ``bonus'' edges) to build a single $I$-tight set $S^{*}$ containing
-  the endpoints of every $e \in J \setminus I$.
+  Suppose for contradiction that for every $e = uv \in J \setminus I$
+  the set $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is not
+  $(k, \ell)$-sparse. Since
+  $|\edgesIn[\mathrm{fromEdgeSet}\,(I\cup\{e\})]{S}| =
+   |\edgesIn[\mathrm{fromEdgeSet}\,I]{S}| + [u, v \in S]$, the
+  sparsity violation at some $S \ni u, v$ pins $S$ to an
+  $I$-block (\cref{def:isTightOn}) with $\{u, v\} \subseteq S$ and
+  $|S| \ge 2$.
 
-  At $S^{*}$ we have $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S^{*}}| =
-  k|S^{*}| - \ell$ ($S^{*}$ is $I$-tight) and
-  $|\edgesIn[\mathrm{fromEdgeSet}\,J]{S^{*}}| \le k|S^{*}| - \ell$
-  ($J$-sparsity at $S^{*}$). Since $J \setminus I \subseteq
-  \edgesIn[K_{V}]{S^{*}}$ by construction, we have $J \setminus
-  \edgesIn[K_{V}]{S^{*}} \subseteq I \cap J \subseteq I$, hence
+  The family of $I$-blocks containing $\{u, v\}$ is closed under
+  pairwise intersection: two $I$-blocks $S, T \supseteq \{u, v\}$
+  satisfy $|S \cap T| \ge 2 \ge \lceil \ell / k \rceil$ for
+  $\ell < 2k$, so \cref{thm:isTightOn-union-inter} applies and
+  $S \cap T$ is itself $I$-tight. Iterating gives a unique minimum
+  $I$-block $T_{e} \supseteq \{u, v\}$. Define the
+  \emph{$I$-component of $e$}, $C_{e} \supseteq T_{e}$, as the
+  maximal $I$-tight superset of $T_{e}$ obtained by iterating
+  \cref{thm:isTightOn-union-inter}'s union conclusion against
+  every $I$-tight set sharing $\ge \lceil \ell / k \rceil$
+  vertices with the current iterate.
+
+  Two $I$-components $C_{1}, C_{2}$ share at most
+  $\lceil \ell / k \rceil - 1$ vertices (else union closure
+  would merge them, contradicting maximality), so each
+  off-diagonal edge of $K_{V}$ with both endpoints in
+  $C_{1} \cap C_{2}$ would have both endpoints in a shared
+  $<\lceil \ell / k \rceil$-vertex set, which contains no
+  off-diagonal edges in matroidal regime. Hence $I$-components
+  are \emph{edge-disjoint}: each non-free $I$- (and $J$-) edge
+  lies in a unique $I$-component.
+
+  Now compute. Let $\mathrm{Comps}$ be the family of $I$-components
+  and let $I_{\mathrm{free}} \subseteq I$ (resp.\
+  $J_{\mathrm{free}} \subseteq J$) be the $I$- (resp.\ $J$-) edges
+  with at least one endpoint outside every $I$-component. By the
+  contradiction hypothesis, every $e \in J \setminus I$ has both
+  endpoints in $C_{e} \in \mathrm{Comps}$, so $J_{\mathrm{free}}
+  \subseteq J \cap I \subseteq I$, hence
+  $|J_{\mathrm{free}}| \le |I_{\mathrm{free}}|$. At each
+  $C \in \mathrm{Comps}$, $J$-sparsity at $C$ gives
+  $|\edgesIn[\mathrm{fromEdgeSet}\,J]{C}| \le k|C| - \ell =
+  |\edgesIn[\mathrm{fromEdgeSet}\,I]{C}|$. Summing over the
+  edge-disjoint $I$-component partition:
   \[
-    |J| = |J \cap \edgesIn[K_{V}]{S^{*}}| + |J \setminus
-    \edgesIn[K_{V}]{S^{*}}| \le (k|S^{*}| - \ell) + (|I| - (k|S^{*}|
-    - \ell)) = |I|,
+    |J| = \sum_{C \in \mathrm{Comps}}
+    |\edgesIn[\mathrm{fromEdgeSet}\,J]{C}| + |J_{\mathrm{free}}|
+    \le \sum_{C \in \mathrm{Comps}}
+    |\edgesIn[\mathrm{fromEdgeSet}\,I]{C}| + |I_{\mathrm{free}}|
+    = |I|,
   \]
   contradicting $|I| < |J|$.
+
+  In the upper range $\ell \in [k, 2k)$ the $I_{\mathrm{free}}$,
+  $J_{\mathrm{free}}$ accounting vanishes since every edge is
+  in a component (\cite[Theorem 5(4)]{leeStreinu2008}); the
+  argument is uniform.
 \end{proof}
+
+The component-based proof above closes the matroid axiom directly.
+Lee--Streinu also give an algorithmic proof via the
+\emph{$(k, \ell)$-pebble game}: a greedy procedure that maintains
+$k$ pebbles per vertex and a directed orientation, accepting edges
+when $\mathrm{peb}(u) + \mathrm{peb}(v) \ge \ell + 1$. Formalising
+the pebble game would yield a decision algorithm and an alternative
+augmentation proof (rejected edges $\leftrightarrow$ tight
+components); this project does not pursue it.
 
 \subsection{The matroid}
 \label{sec:count-matroid-def}
