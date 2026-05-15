@@ -25,7 +25,7 @@ See `ROADMAP.md` §7, `notes/Phase7.md`, and the blueprint chapter
 `blueprint/src/chapter/rigidity-matroid.tex`.
 -/
 
-open scoped InnerProductSpace
+open scoped InnerProductSpace Topology
 
 namespace SimpleGraph
 
@@ -592,6 +592,159 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
       have h_eAB_notin : eAB ∉ {e : G'.edgeSet | e.val ≠ s(a, b)} := by
         simp [heAB_def]
       exact h_li_G'.notMem_span_image h_eAB_notin hg_inner_mem
+
+/-! ### Type II row-LI lift, unconditional wrapper
+
+Row-LI analogue of Phase 5's `typeII_isGenericallyRigidInj_two` minus the
+injectivity-preservation half. The non-collinearity gap on `(p' a, p' b, p' c)` is discharged
+by a perpendicular perturbation of `p' c` (preserving row-LI of `G'` via
+`EdgeSetRowIndependent.eventually`), after which a generic collinearity scalar `s` recovers
+the conditional core. -/
+
+/-- **Existence of a non-collinear row-independent placement in dim 2.** Given a placement `p₀`
+of `G'` at which every edge of `G'` is row-independent, an edge `G'.Adj a b`, and a third vertex
+`c` with `a ≠ c, b ≠ c`, there exists a placement `p` of `V` with `G'`-row-LI at `p` and
+`(p a, p b, p c)` non-collinear, i.e. `LinearIndependent ℝ ![p b - p a, p c - p a]`.
+
+Row-LI analogue of Phase 5's `exists_nonCollinear_rigid_placement_dim_two`. If `p₀` itself is
+already non-collinear, return `p₀`. Otherwise perturb `p₀ c` by `t • w` with `w` outside the
+line through `p₀ a, p₀ b`: for any `t ≠ 0`, the perturbed pair `(p₀ b - p₀ a, p₀ c - p₀ a +
+t • w)` is linearly independent (row-op via `pair_add_smul_add_smul_iff`); row-LI of `G'` is
+preserved on a neighborhood of `t = 0` by `EdgeSetRowIndependent.eventually`; pick a `t` in the
+intersection (nonempty since `𝓝[≠] 0` is `NeBot` in `ℝ`). The `p₀ a ≠ p₀ b` requirement of the
+perpendicular helper is itself supplied by `h_ab` plus row-LI (a zero row at the edge `s(a, b)`
+would contradict LI). -/
+private lemma exists_nonCollinear_rowIndependent_placement_dim_two [Finite V]
+    {G' : SimpleGraph V} {p₀ : Framework V 2}
+    (h : G'.EdgeSetRowIndependent p₀ Set.univ)
+    {a b c : V} (h_ab : G'.Adj a b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ∃ p : Framework V 2, G'.EdgeSetRowIndependent p Set.univ ∧
+      LinearIndependent ℝ ![p b - p a, p c - p a] := by
+  classical
+  -- `p₀ a ≠ p₀ b` from row-LI: the row at `s(a, b)` would be zero, contradicting LI.
+  have h_row_ab_ne : G'.rigidityRow p₀ ⟨s(a, b), h_ab⟩ ≠ 0 := by
+    rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow] at h
+    exact h.ne_zero (Set.mem_univ _)
+  have hab_distinct : p₀ a ≠ p₀ b := by
+    intro heq
+    apply h_row_ab_ne
+    ext motion
+    simp [rigidityRow_apply, rigidityMap_apply, heq]
+  have hd_ne_zero : p₀ b - p₀ a ≠ 0 := sub_ne_zero.mpr (Ne.symm hab_distinct)
+  by_cases hLI₀ : LinearIndependent ℝ ![p₀ b - p₀ a, p₀ c - p₀ a]
+  · exact ⟨p₀, h, hLI₀⟩
+  -- Collinear branch: `p₀ c - p₀ a = δ • (p₀ b - p₀ a)` for some `δ`.
+  obtain ⟨δ, hδ⟩ : ∃ δ : ℝ, p₀ c - p₀ a = δ • (p₀ b - p₀ a) := by
+    by_cases hpac : p₀ c - p₀ a = 0
+    · exact ⟨0, by rw [hpac, zero_smul]⟩
+    · rw [linearIndependent_fin2] at hLI₀
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hLI₀
+      push Not at hLI₀
+      obtain ⟨γ, hγ⟩ := hLI₀ hpac
+      -- `hγ : γ • (p₀ c - p₀ a) = p₀ b - p₀ a`.
+      have hγ_ne_zero : γ ≠ 0 := by
+        intro hg
+        rw [hg, zero_smul] at hγ
+        exact hd_ne_zero hγ.symm
+      exact ⟨γ⁻¹, (eq_inv_smul_iff₀ hγ_ne_zero).mpr hγ⟩
+  -- Perpendicular direction `w` outside `span {p₀ b - p₀ a}`.
+  obtain ⟨w, hw_outside⟩ := exists_not_mem_span_singleton_dim_two hd_ne_zero
+  have h_LI_w_d : LinearIndependent ℝ
+      (![w, p₀ b - p₀ a] : Fin 2 → EuclideanSpace ℝ (Fin 2)) := by
+    rw [linearIndependent_fin2]
+    refine ⟨hd_ne_zero, fun s heq => hw_outside ?_⟩
+    rw [Submodule.mem_span_singleton]
+    exact ⟨s, heq⟩
+  -- Perturbation `p_t t := Function.update p₀ c (p₀ c + t • w)`.
+  let p_t : ℝ → Framework V 2 := fun t => Function.update p₀ c (p₀ c + t • w)
+  have h_p_t_c : ∀ t, p_t t c = p₀ c + t • w := fun _ =>
+    Function.update_self c _ p₀
+  have h_p_t_ne : ∀ t (v : V), v ≠ c → p_t t v = p₀ v := fun _ v hvc =>
+    Function.update_of_ne hvc _ p₀
+  have h_p_t_a : ∀ t, p_t t a = p₀ a := fun t => h_p_t_ne t a hac
+  have h_p_t_b : ∀ t, p_t t b = p₀ b := fun t => h_p_t_ne t b hbc
+  have h_p_t_cont : Continuous p_t := by fun_prop
+  have h_p_t_zero : p_t 0 = p₀ := by
+    funext v
+    by_cases hvc : v = c
+    · rw [hvc, h_p_t_c]; simp
+    · rw [h_p_t_ne 0 v hvc]
+  -- Row-LI eventually around `t = 0`, by pulling back the placement-side `eventually` along
+  -- the continuous `p_t`.
+  have h_rowLI_ev : ∀ᶠ t in 𝓝 (0 : ℝ), G'.EdgeSetRowIndependent (p_t t) Set.univ := by
+    have h_ev_p := h.eventually
+    rw [← h_p_t_zero] at h_ev_p
+    exact h_p_t_cont.continuousAt.tendsto.eventually h_ev_p
+  -- LI of the perturbed pair for any `t ≠ 0`, via `pair_add_smul_add_smul_iff`.
+  have h_LI_perturbed : ∀ t : ℝ, t ≠ 0 →
+      LinearIndependent ℝ ![p_t t b - p_t t a, p_t t c - p_t t a] := by
+    intro t ht_ne
+    have h_form :
+        (![p_t t b - p_t t a, p_t t c - p_t t a] : Fin 2 → EuclideanSpace ℝ (Fin 2)) =
+          ![(0 : ℝ) • w + (1 : ℝ) • (p₀ b - p₀ a),
+            t • w + δ • (p₀ b - p₀ a)] := by
+      funext i
+      fin_cases i
+      · change p_t t b - p_t t a = (0 : ℝ) • w + (1 : ℝ) • (p₀ b - p₀ a)
+        rw [h_p_t_a t, h_p_t_b t, zero_smul, one_smul, zero_add]
+      · change p_t t c - p_t t a = t • w + δ • (p₀ b - p₀ a)
+        rw [h_p_t_a t, h_p_t_c t,
+          show (p₀ c + t • w) - p₀ a = (p₀ c - p₀ a) + t • w from by abel, hδ]
+        abel
+    rw [h_form, LinearIndependent.pair_add_smul_add_smul_iff]
+    refine ⟨h_LI_w_d, ?_⟩
+    simp [ht_ne.symm]
+  -- Pick a `t ≠ 0` in the row-LI neighborhood.
+  have h_combined : ∀ᶠ t in 𝓝[≠] (0 : ℝ),
+      G'.EdgeSetRowIndependent (p_t t) Set.univ ∧ t ≠ 0 := by
+    filter_upwards [h_rowLI_ev.filter_mono nhdsWithin_le_nhds, self_mem_nhdsWithin]
+      with t hrow ht_ne
+    exact ⟨hrow, ht_ne⟩
+  obtain ⟨t, hrow, ht_ne⟩ := h_combined.exists
+  exact ⟨p_t t, hrow, h_LI_perturbed t ht_ne⟩
+
+/-- **Unconditional Type II row-LI lift in dim 2.** Given a placement `p'` of `G'` at which every
+edge of `G'` is row-independent, an edge `G'.Adj a b`, and a third vertex `c` with `a ≠ c, b ≠ c`,
+there exists an extended placement `p : Framework (Option V) 2` at which every edge of
+`typeII G' a b c` is row-independent.
+
+Row-LI analogue of Phase 5's `typeII_isGenericallyRigidInj_two` minus the injectivity. The proof
+passes the input through `exists_nonCollinear_rowIndependent_placement_dim_two` to obtain a
+placement `p''` at which `(p'' a, p'' b, p'' c)` is non-collinear (perturbing `p' c` perpendicular
+to the line through `p' a, p' b` if needed; row-LI openness via `EdgeSetRowIndependent.eventually`
+preserves row-LI through the perturbation). With the non-collinear placement in hand, pick
+`s = 1/2` and set `q := p'' a + s • (p'' b - p'' a)`; the conditional core
+`typeII_edgeSetRowIndependent_extend` then applies. Unlike Phase 5, we do *not* maintain
+`p ∘ some = p'`, because the helper may have perturbed `p'` itself. -/
+theorem typeII_edgeSetRowIndependent_lift [Finite V] {G' : SimpleGraph V}
+    {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ)
+    {a b c : V} (h_ab : G'.Adj a b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ∃ p : Framework (Option V) 2,
+      (typeII G' a b c).EdgeSetRowIndependent p Set.univ := by
+  obtain ⟨p'', hp''_rowLI, hp''_LI⟩ :=
+    exists_nonCollinear_rowIndependent_placement_dim_two h h_ab hac hbc
+  set s : ℝ := 1 / 2 with hs_def
+  set q : EuclideanSpace ℝ (Fin 2) := p'' a + s • (p'' b - p'' a) with hq_def
+  have hs0 : s ≠ 0 := by norm_num [hs_def]
+  have hs1 : s ≠ 1 := by norm_num [hs_def]
+  have hcoll : q - p'' a = s • (p'' b - p'' a) := by simp [hq_def]
+  have hLI : LinearIndependent ℝ ![q - p'' a, q - p'' c] := by
+    have h_form :
+        (![q - p'' a, q - p'' c] : Fin 2 → EuclideanSpace ℝ (Fin 2)) =
+          ![s • (p'' b - p'' a) + (0 : ℝ) • (p'' c - p'' a),
+            s • (p'' b - p'' a) + (-1 : ℝ) • (p'' c - p'' a)] := by
+      funext i
+      fin_cases i
+      · change q - p'' a = s • (p'' b - p'' a) + (0 : ℝ) • (p'' c - p'' a)
+        rw [hcoll, zero_smul, add_zero]
+      · change q - p'' c = s • (p'' b - p'' a) + (-1 : ℝ) • (p'' c - p'' a)
+        have hqc : q - p'' c = (q - p'' a) - (p'' c - p'' a) := by abel
+        rw [hqc, hcoll, neg_smul, one_smul, sub_eq_add_neg]
+    rw [h_form, LinearIndependent.pair_add_smul_add_smul_iff]
+    refine ⟨hp''_LI, ?_⟩
+    simp [hs0]
+  exact ⟨fun w : Option V => w.elim q p'',
+    typeII_edgeSetRowIndependent_extend hp''_rowLI h_ab hs0 hs1 hcoll hLI⟩
 
 end Henneberg
 

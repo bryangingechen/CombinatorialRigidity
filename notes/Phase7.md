@@ -21,88 +21,50 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-Ten commits in so far. The **first three** lifted Phase 5 Laman
-machinery to `IsSparse` (degree-≤-3 existence, non-adjacent triple,
-the five blocker contradiction primitives, the per-pair typeII
-tight-blocker). The **fourth** was a docs-only commit pinning the
-statement-form convention (forward preservation = operation form;
-reverse decomposition = flat form) and prepping the blueprint for
-the upcoming sparse-reverse landing. The **fifth** landed
-`IsSparse.exists_typeI_or_typeII_reverse` in `Sparsity.lean` in
-flat form. The **sixth** refactored
-`IsLaman.exists_typeI_or_typeII_reverse` to a flat-form shell over
-the sparse version, deleting the operation-form intermediates and
-promoting `typeI_iso_of_two_neighbors` /
-`typeII_iso_of_three_neighbors` to public. The **seventh** opened
-Phase 7 forward: created `CombinatorialRigidity/MatroidIdentification.lean`
-with the **conditional Type I row-LI lift**
-`typeI_edgeSetRowIndependent_extend` (operation-form, row-LI
-analogue of Phase 5's `typeI_isInfinitesimallyRigid_extend`), wired
-the new file into the top-level entry, and flipped `\leanok` on the
-blueprint entry `lem:typeI-rowIndependent-extend`. The **eighth**
-landed the **unconditional Type I row-LI wrapper**
-`typeI_edgeSetRowIndependent_lift`: takes `p' a ≠ p' b` instead of
-the LI hypothesis, picks `q` off the line through `p' a, p' b` via
-the un-privatized `exists_off_line_off_finite_dim_two`
-(`S = ∅`, since the matroid hard direction needs no injectivity
-constraint), then composes with the conditional core. The **ninth**
-landed the **conditional Type II row-LI lift**
-`typeII_edgeSetRowIndependent_extend` and added the matching
-blueprint entry `lem:typeII-rowIndependent-extend` with `\leanok`.
-The **tenth** (this commit) lands the **row-LI openness lemma**
-`EdgeSetRowIndependent.eventually` in `RigidityMatroid.lean` — the
-row-LI analogue of `IsInfinitesimallyRigid.eventually`, prerequisite
-for the upcoming Type II row-LI *unconditional* wrapper's
-perpendicular-perturbation step. Adds the blueprint entry
-`lem:edgeSet-rowIndependent-eventually` with `\leanok` and re-wires
-the proof of `lem:typeII-rowIndependent-lift` to cite it instead of
-the rigidity-side openness lemma.
-Mirrors Phase 5's `typeII_isInfinitesimallyRigid_extend` on the
-row-LI / dual side: places `q` on the line through `p' a, p' b`
-(collinearity scalar `s ≠ 0, 1`) with `(q - p' a, q - p' c)` LI,
-shows row-LI of `(typeII G' a b c).edgeSet` at the extended
-placement. Proof structure follows the Type I conditional core
-(`LinearIndepOn.union` with `oldSet = (G'\\{s(a,b)})`-image and
-`newSet = {newA, newB, newC}`), with the new wrinkle being the
-disjoint-spans argument: the Whiteley row identity
-`(s-1) row_a - s row_b = s(s-1) T(rowG'(s(a,b)))` (`T =
-restrictMap.dualMap`) lets the new-row combination
-`c_a row_a + c_b row_b` (after `c_c = 0` and `s c_a + (s-1) c_b = 0`
-from the `none`-only test motion) be rewritten as `s c_a` times the
-T-pullback of the *deleted* G'-row, which is independent from the
-lifted-old span by G'-LI + T-injectivity.
+Eleven commits in. The first six lifted Laman-only machinery to
+`IsSparse` (commits 1–3), then landed `IsSparse.exists_typeI_or_typeII_reverse`
+in flat form and refactored the Laman version on top of it (commits
+4–6). The next four landed the four operation-form row-LI lifts in
+`MatroidIdentification.lean`: Type I conditional core + unconditional
+wrapper (commits 7–8), Type II conditional core (commit 9), and the
+row-LI openness lemma `EdgeSetRowIndependent.eventually` (commit 10,
+prerequisite for the perpendicular-perturbation step of the Type II
+wrapper). **This commit (11)** lands the **unconditional Type II
+row-LI wrapper** `typeII_edgeSetRowIndependent_lift`: composes
+`exists_nonCollinear_rowIndependent_placement_dim_two` (private
+row-LI analogue of Phase 5's perturbation helper) with the
+conditional core via `s = 1/2`, dropping the `p ∘ some = p'`
+constraint since the helper may perturb. With this the four
+Henneberg row-LI lifts are complete and the chapter dep-graph in
+`chapter/rigidity-matroid.tex` has only the `|E|`-induction theorem
+`thm:isSparse-exists-rowIndependent-placement`, the iff
+`thm:edgeSet-rowIndependent-iff-isSparse`, and the `Matroid`
+packaging left to discharge. See the multi-session plan below.
 
 **Multi-session plan** for the forward-blueprint work:
 
-- **Session 2 — Commit 2 ("flat-form sparse reverse")** [✓ done]:
-  landed `IsSparse.exists_typeI_or_typeII_reverse`.
-- **Session 2 — Commit 3 ("Laman reverse cleanup")** [✓ done]:
-  refactored `IsLaman.exists_typeI_or_typeII_reverse` to flat form.
-- **Session 3 — Commit 4 ("Type I row-LI conditional core")** [✓
-  done]: landed `typeI_edgeSetRowIndependent_extend` in
-  `MatroidIdentification.lean`. Mirrors Phase 5's conditional core
-  convention; the unconditional wrapper is next.
-- **Session 3 — Commit 5 ("Type I row-LI unconditional wrapper")**
-  [✓ done]: landed `typeI_edgeSetRowIndependent_lift`
-  in `MatroidIdentification.lean`; un-privatized
-  `exists_off_line_off_finite_dim_two` in `HennebergRigidity.lean`
-  so the wrapper can reuse it with `S = ∅`.
-- **Session 4 — Commit 6 ("Type II row-LI conditional core")**
-  [✓ done]: landed `typeII_edgeSetRowIndependent_extend` in
-  `MatroidIdentification.lean`; added blueprint entry
-  `lem:typeII-rowIndependent-extend` with `\leanok`.
-- **Session 4 — Commit 7 ("row-LI openness")** [✓ done in this
-  commit]: landed `EdgeSetRowIndependent.eventually` in
-  `RigidityMatroid.lean` (basis-transport to `Fin n → ℝ` then
-  `LinearIndependent.eventually` on the normed side); added
-  blueprint entry `lem:edgeSet-rowIndependent-eventually` with
-  `\leanok`; re-wired `lem:typeII-rowIndependent-lift`'s proof to
-  cite it. This is the analytic prerequisite for the upcoming Type
-  II row-LI unconditional wrapper.
-- **Session 4+:** Type II row-LI unconditional wrapper (compose
-  perpendicular-perturbation via row-LI openness + the conditional
-  core); then `IsSparse.exists_rowIndependent_placement` (the
-  |E|-induction); then the iff and the `Matroid` packaging.
+- **Commits 2–6** [✓ done]: sparse-side lifting + flat-form sparse
+  reverse + Laman reverse cleanup. See commit log
+  `60a2176..6d59be2` for entry points.
+- **Commits 7–10** [✓ done]: Type I row-LI conditional + wrapper,
+  Type II row-LI conditional, row-LI openness lemma. Entry points
+  `91403e7..c751b8d`.
+- **Commit 11 ("Type II row-LI unconditional wrapper")** [✓ done
+  in this commit]: landed `typeII_edgeSetRowIndependent_lift` in
+  `MatroidIdentification.lean`; un-privatized
+  `exists_not_mem_span_singleton_dim_two` in `HennebergRigidity.lean`
+  so the new perturbation helper can reuse it; flipped `\lean{...}`
+  + `\leanok` on `lem:typeII-rowIndependent-lift`.
+- **Next: `IsSparse.exists_rowIndependent_placement`** — the
+  `|E|`-induction theorem, lifting row-LI through Type I / Type II
+  reverses along `IsSparse.exists_typeI_or_typeII_reverse`. Lives in
+  `MatroidIdentification.lean`. Inductive case uses the new lifts;
+  base case is the empty edge family.
+- **Then the iff** `edgeSet_rowIndependent_iff_isSparse_dim_two`
+  (combine the hard direction with Phase 6's easy direction
+  `isSparse_of_edgeSetRowIndependent_dim_two`).
+- **Then the `Matroid` packaging** via `IndepMatroid` (~100 LoC
+  expected; see Blockers).
 
 ## Architectural choices made up front
 
@@ -362,6 +324,51 @@ A red node = not yet formalized; a green node = formalized and
   difference framing the FRICTION entry suggested wasn't the win;
   the win is the wider simp set. Lesson lifted to TACTICS-GOLF § 1
   (Tricks); FRICTION entry closed.
+
+- **Type II row-LI unconditional wrapper (Commit 11).**
+  `typeII_edgeSetRowIndependent_lift` lands in
+  `MatroidIdentification.lean`. Structure mirrors Phase 5's
+  `typeII_isGenericallyRigidInj_two` minus the injectivity half:
+  a private helper `exists_nonCollinear_rowIndependent_placement_dim_two`
+  perturbs `p' c` perpendicular to the `(p' a, p' b)` line if
+  `(p' a, p' b, p' c)` is collinear, using row-LI openness
+  (`EdgeSetRowIndependent.eventually`); then the wrapper picks
+  `s = 1/2` (any `s ≠ 0, 1` works) and `q := p'' a + s • (p'' b -
+  p'' a)`, derives `LI ![q - p'' a, q - p'' c]` from non-collinearity
+  via `pair_add_smul_add_smul_iff`, and invokes the conditional core.
+  `p' a ≠ p' b` is supplied internally from row-LI alone (a zero row
+  at `s(a, b)` would contradict LI). The blueprint statement of
+  `lem:typeII-rowIndependent-lift` was relaxed to drop the
+  `p|_V = p'` constraint, since the perturbation branch genuinely
+  changes `p'|_c`; the prose was updated to note this. Un-privatized
+  `exists_not_mem_span_singleton_dim_two` in `HennebergRigidity.lean`
+  for cross-file reuse (second un-privatization in Phase 7, after
+  `exists_off_line_off_finite_dim_two` in Commit 8).
+
+- **Phase 5 + Phase 7 golf: replace 5-step `γ • _ = _` rewrite chain with
+  `eq_inv_smul_iff₀`.** Both
+  `exists_nonCollinear_rigid_placement_dim_two` (Phase 5) and the new
+  helper (this commit) had the chain
+  `rw [← hγ, ← smul_assoc, smul_eq_mul, inv_mul_cancel₀ hγ_ne_zero, one_smul]`
+  for converting `γ • x = y` (with `γ ≠ 0`) to `x = γ⁻¹ • y`. Mathlib
+  ships the fused `eq_inv_smul_iff₀ : a ≠ 0 → x = a⁻¹ • y ↔ a • x = y`
+  in `Mathlib.Algebra.GroupWithZero.Action.Units`; both callsites
+  collapsed to one term-mode `(eq_inv_smul_iff₀ _).mpr _` application.
+  The general "search for fused `_iff` lemmas before writing
+  multi-rewrite chains" lesson is already covered by TACTICS-GOLF
+  § 7's search decision tree; no new section needed.
+
+## Decisions section is over the 250-line soft budget
+
+This section has grown past the per-commit decision-log granularity
+recommended by `notes/CLAUDE.md`. A compression pass should sub-
+organize "Decisions made" into *Phase-local choices / techniques* (≤
+8 lines each, full entries) + *Promoted to TACTICS-GOLF / TACTICS-
+QUIRKS / FRICTION / DESIGN* (one-line pointers) + *Cleanup pass
+summaries* (file-by-file lists). Defer until the next commit (the
+sparse `|E|`-induction theorem) where the inevitable additional
+decision will exceed the soft budget further. This entry is the
+trigger for next session's first action.
 
 ## Blockers / open questions
 

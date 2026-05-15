@@ -266,6 +266,8 @@ row-independent.
 
 \begin{lemma}[Type~II lift of row-independence]
   \label{lem:typeII-rowIndependent-lift}
+  \lean{SimpleGraph.Henneberg.typeII_edgeSetRowIndependent_lift}
+  \leanok
   \uses{def:typeII, def:edgeSet-rowIndependent,
     lem:typeII-rowIndependent-extend}
   Let $V$ be finite, $G'$ a simple graph on $V$, $\{u, w\} \in E(G')$,
@@ -273,25 +275,33 @@ row-independent.
   V \to \R^{2}$ be a placement at which $E(G')$ is row-independent.
   Let $G$ be the Type~II extension of $G'$ deleting $\{u, w\}$ and
   adding a fresh vertex $\star$ adjacent to $u, w, z$. Then there
-  exists a placement $p$ of $V \sqcup \{\star\}$ with $p|_{V} = p'$
-  such that $E(G)$ is row-independent at $p$.
+  exists a placement $p$ of $V \sqcup \{\star\}$ at which $E(G)$ is
+  row-independent. (The restriction $p|_{V}$ agrees with $p'$ when
+  $p'(u), p'(w), p'(z)$ are non-collinear; otherwise $p|_{V}$ is a
+  perpendicular perturbation of $p'$ that is still row-independent
+  for $E(G')$, by \cref{lem:edgeSet-rowIndependent-eventually}.)
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:typeII-rowIndependent-extend,
     lem:edgeSet-rowIndependent-eventually}
   Apply \cref{lem:typeII-rowIndependent-extend} to a placement $p'$
   perturbed to make $p'(u), p'(w), p'(z)$ non-collinear (otherwise
   the third new row $\{\star, z\}$ would collapse into the span of
-  the first two). The perturbation in the kernel of the rigidity map,
-  permitted by \cref{lem:edgeSet-rowIndependent-eventually}, preserves
-  row-LI of $E(G')$. With the non-collinear placement in hand, pick
-  $p(\star)$ on the line through $p(u)$ and $p(w)$ with collinearity
-  scalar $s \ne 0, 1$ (so $p(\star)$ is distinct from both) and with
-  $p(\star) - p(u), p(\star) - p(z)$ linearly independent; the bad
-  set is a finite union of two values of $s$ plus a single value of
-  $s$ for the LI condition (the latter from non-collinearity), so a
-  generic $s$ works. \Cref{lem:typeII-rowIndependent-extend} then
-  applies.
+  the first two). The perturbation translates $p'(z)$ along a
+  direction outside the line through $p'(u), p'(w)$;
+  \cref{lem:edgeSet-rowIndependent-eventually} permits the
+  perturbation magnitude to be taken arbitrarily small, preserving
+  row-LI of $E(G')$. With the non-collinear placement in hand, set
+  $s := 1/2$ and place $p(\star) := p(u) + s \cdot (p(w) - p(u))$.
+  Then $s \ne 0, 1$ and the auxiliary linear independence
+  $p(\star) - p(u), p(\star) - p(z)$ follows from non-collinearity
+  (row operations on $(s \cdot (p(w) - p(u)), s \cdot (p(w) - p(u))
+  - (p(z) - p(u)))$ produce $(p(w) - p(u), p(z) - p(u))$).
+  \Cref{lem:typeII-rowIndependent-extend} then applies. The
+  $p'(u) \ne p'(w)$ requirement of the perpendicular direction is
+  supplied by row-LI of $E(G')$: a zero rigidity row at the edge
+  $\{u, w\}$ would contradict linear independence.
 \end{proof}
 
 \subsection{The hard direction}

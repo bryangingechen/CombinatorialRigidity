@@ -74,7 +74,7 @@ subspace, so admits a non-member. The off-line construction in `exists_off_line_
 and the perpendicular-perturbation direction in `exists_nonCollinear_rigid_placement_dim_two` both
 need this; the helper consolidates the `finrank_span_singleton` / `finrank_euclideanSpace_fin` /
 `SetLike.exists_not_mem_of_ne_top` chain. -/
-private lemma exists_not_mem_span_singleton_dim_two
+lemma exists_not_mem_span_singleton_dim_two
     {v : EuclideanSpace ℝ (Fin 2)} (hv : v ≠ 0) :
     ∃ w : EuclideanSpace ℝ (Fin 2),
       w ∉ Submodule.span ℝ ({v} : Set _) := by
@@ -503,8 +503,8 @@ private lemma exists_nonCollinear_rigid_placement_dim_two [Fintype V] {G : Simpl
   obtain ⟨γ, hγ⟩ := hLI₀ hdac_ne_zero
   have hγ_ne_zero : γ ≠ 0 := by
     intro hg; rw [hg, zero_smul] at hγ; exact hd_ne_zero hγ.symm
-  have h_pca_decomp : p₀ c - p₀ a = γ⁻¹ • (p₀ b - p₀ a) := by
-    rw [← hγ, ← smul_assoc, smul_eq_mul, inv_mul_cancel₀ hγ_ne_zero, one_smul]
+  have h_pca_decomp : p₀ c - p₀ a = γ⁻¹ • (p₀ b - p₀ a) :=
+    (eq_inv_smul_iff₀ hγ_ne_zero).mpr hγ
   -- Perturbation direction `w` outside `span {p₀ b - p₀ a}` (proper subspace of `ℝ²`).
   obtain ⟨w, hw_outside⟩ := exists_not_mem_span_singleton_dim_two hd_ne_zero
   have hw_ne_zero : w ≠ 0 := fun h0 => hw_outside (h0 ▸ zero_mem _)
