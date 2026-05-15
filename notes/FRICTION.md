@@ -99,6 +99,30 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** open (project-internal note). Promote to
   `TACTICS-QUIRKS.md` if the same shape bites in a second proof.
 
+### [open] `h ▸ ...` substitutes through ambient terms, oversubstituting when the goal already mentions the rewritten side
+- **Where it bit:** `Function.Injective.eventually_update_of_continuousAt`
+  in the new `Mathlib/Topology/Separation/Hausdorff.lean` mirror. I had
+  `h_eq0 : update p₀ c (f x₀) = p₀` and wanted to produce
+  `Injective (update p₀ c (f x₀))` from `hp₀ : Injective p₀` via
+  `h_eq0 ▸ hp₀` (or `.symm ▸ hp₀`). Lean inferred a motive that *also*
+  rewrote `p₀` inside the surrounding expected type, producing the
+  oversubstituted `Injective (update (update p₀ c (f x₀)) c (f x₀))`.
+- **Friction:** `▸` in term mode picks the most general motive against
+  the expected type from the calling context. When that expected type
+  itself contains both sides of the rewrite, `▸` ambiguity bites and
+  produces an "oversubstituted" type.
+- **Proposed fix / workaround:** isolate the rewrite into a `have`
+  whose stated type fixes the motive:
+  `have hinj₀ : Injective (update p₀ c (f x₀)) := by rw [h_eq0]; exact hp₀`.
+  Then pass `hinj₀` into the outer term. The tactic-mode `rw` does not
+  suffer from motive ambiguity because the goal at that point is just
+  the stated type, not the surrounding calling context.
+- **Status:** open (project-internal note). Promote to
+  `TACTICS-QUIRKS.md` if the same shape bites in a second proof.
+  Recognition: `▸ ...` errors with "expected type" showing a
+  doubly-substituted term (the rewrite target appears nested inside
+  itself).
+
 ### [resolved] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
 - **Where it bit:** Phase 3 close, while planning
   `IsLaman.exists_typeI_or_typeII_reverse`.
@@ -319,33 +343,6 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** open. Acceptable for now (the K₄ \ e example was deferred
   to Phase 3 where Henneberg gives a one-liner), but worth doing if a
   later phase wants to mechanize more concrete graphs.
-
-### [open] Openness of `Function.Injective` under finite-domain perturbation
-
-- **Where it bit:** `exists_nonCollinear_rigid_placement_dim_two`
-  (`HennebergRigidity.lean:466–573`, the perpendicular-perturbation
-  helper underneath `typeII_isGenericallyRigidInj_two`). The
-  blueprint runs ~15 lines of prose; the Lean expands to ~107 lines.
-  The bulk of the gap is a hand-rolled "injectivity is eventually
-  preserved" `∀ᶠ`-argument via `Finset.eventually_all` +
-  `nhdsWithin_le_nhds`, taking ~25 lines.
-- **Friction:** there is no project- or mathlib-level lemma stating
-  *"if `p₀ : V → α` is injective on a `Fintype` and we update one
-  coordinate continuously, the resulting family is eventually
-  injective"*. Each Henneberg-rigidity move that goes through a
-  perturbation has to re-prove this in place. Phase 7's Type II
-  row-LI lift will need the same shape.
-- **Proposed fix:** mirror as `Function.Injective.eventually_of_update_continuous`
-  (or similar) under `CombinatorialRigidity/Mathlib/Topology/Algebra/...`.
-  Statement sketch: `[TopologicalSpace α] [T2Space α] {V : Type*}
-  [Fintype V] {p₀ : V → α} (hp₀ : Function.Injective p₀) {c : V}
-  {f : ℝ → α} (hf : Continuous f) (hf0 : f 0 = p₀ c) : ∀ᶠ t in 𝓝 0,
-  Function.Injective (Function.update p₀ c (f t))`. Reusable by
-  both `exists_nonCollinear_rigid_placement_dim_two` and Phase 7's
-  Type II row-LI wrapper. **Priority: high** (reusable across two
-  callers).
-- **Status:** open. Phase 7 Type II row-LI wrapper is the natural
-  reuse point.
 
 ### [open] No dim-2 "vector orthogonal to two LI vectors is zero" helper
 
@@ -645,6 +642,41 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `PERFORMANCE.md` *Module-system conversion*.
 
 ## Mirrored
+
+### [mirrored] `Function.Injective.eventually_of_continuousAt` and `eventually_update_of_continuousAt` (openness of injectivity)
+- **Where it bit:** `exists_nonCollinear_rigid_placement_dim_two`
+  (`HennebergRigidity.lean`, the perpendicular-perturbation helper underneath
+  `typeII_isGenericallyRigidInj_two`). The blueprint runs ~15 lines of prose;
+  the Lean expanded to ~107 lines. The bulk of the gap was a hand-rolled
+  "injectivity is eventually preserved" `∀ᶠ`-argument via
+  `Finset.eventually_all` + componentwise `ContinuousAt.eventually_ne`, taking
+  ~25 lines. Phase 7's Type II row-LI lift will need the same shape.
+- **Friction:** mathlib has `Set.InjOn.exists_mem_nhdsSet` (in
+  `Mathlib/Topology/Separation/Hausdorff.lean`) — compactness + neighborhood-of-
+  a-set form — but no "componentwise-continuous finite-domain family,
+  injective at a point, is eventually injective" form. Each Henneberg-rigidity
+  move that goes through a perturbation had to re-prove this in place.
+- **Resolution:** mirrored as
+  - `Function.Injective.eventually_of_continuousAt`: for
+    `[Finite V]`, `[T2Space α]`, a family `F : X → V → α` componentwise
+    `ContinuousAt` at `x₀` with `Injective (F x₀)` is eventually injective in
+    `𝓝 x₀`. Each `(u, v)` with `u ≠ v` contributes a
+    `ContinuousAt.prodMk`-driven eventuality that `(F x u, F x v)` stays off
+    the diagonal (closed in `α × α` by Hausdorffness); `Finset.eventually_all`
+    aggregates.
+  - `Function.Injective.eventually_update_of_continuousAt`: corollary for
+    `update p₀ c (f x)` with `f x₀ = p₀ c` and `ContinuousAt f x₀`. The
+    one-vertex perturbation shape that arises in Henneberg generic-placement
+    arguments collapses to one term-mode call.
+
+  The `h_inj_ev` block in `exists_nonCollinear_rigid_placement_dim_two` is now
+  a four-line term-mode application of `eventually_update_of_continuousAt`
+  (down from ~30 lines).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Topology/Separation/Hausdorff.lean`. Sits naturally
+  alongside `Set.InjOn.exists_mem_nhdsSet` as a dual ("evaluate a parametric
+  family at finitely many points" vs. "InjOn on a compact set") perspective on
+  openness-of-injectivity.
 
 ### [mirrored] `Set.exists_injective_fin_of_le_ncard` (Fin-indexing of subset elements)
 - **Where it bit:** assembly step in `exists_affinelySpanning_rigid_placement`

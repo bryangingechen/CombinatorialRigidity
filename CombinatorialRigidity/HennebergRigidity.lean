@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Framework
 import CombinatorialRigidity.Henneberg
+import CombinatorialRigidity.Mathlib.Topology.Separation.Hausdorff
 
 /-!
 # Rigidity preservation under Henneberg moves (dim 2)
@@ -514,36 +515,11 @@ private lemma exists_nonCollinear_rigid_placement_dim_two [Fintype V] {G : Simpl
     have h_ev_p := hp₀_rig.eventually
     rw [← h_p_t_zero] at h_ev_p
     exact h_p_t_cont.continuousAt.tendsto.eventually h_ev_p
-  -- Injectivity: an open neighborhood of `t = 0` (each `v ≠ c` is continuous-separated from `c`).
-  have h_inj_ev : ∀ᶠ t in 𝓝 (0 : ℝ), Function.Injective (p_t t) := by
-    have h_each : ∀ v ∈ Finset.univ.filter (fun v : V => v ≠ c),
-        ∀ᶠ t in 𝓝 (0 : ℝ), p_t t v ≠ p_t t c := by
-      intro v hv
-      rw [Finset.mem_filter] at hv
-      have hvc := hv.2
-      have h_cont : Continuous (fun t : ℝ => p_t t v - p_t t c) := by fun_prop
-      have h_zero_ne : p_t 0 v - p_t 0 c ≠ 0 := by
-        rw [h_p_t_zero]
-        exact sub_ne_zero.mpr (fun heq => hvc (hp₀_inj heq))
-      have h_ev := h_cont.continuousAt.eventually_ne h_zero_ne
-      filter_upwards [h_ev] with t ht
-      exact sub_ne_zero.mp ht
-    have h_all := (Finset.univ.filter (fun v : V => v ≠ c)).eventually_all.mpr h_each
-    filter_upwards [h_all] with t ht
-    intro u v heq
-    by_cases huc : u = c
-    · by_cases hvc : v = c
-      · rw [huc, hvc]
-      · subst huc
-        exfalso
-        exact ht v (by simp [hvc]) heq.symm
-    · by_cases hvc : v = c
-      · subst hvc
-        exfalso
-        exact ht u (by simp [huc]) heq
-      · have hu : p_t t u = p₀ u := by simp [p_t, Function.update_of_ne huc]
-        have hv : p_t t v = p₀ v := by simp [p_t, Function.update_of_ne hvc]
-        exact hp₀_inj (hu ▸ hv ▸ heq)
+  -- Injectivity: open near `t = 0` via the `Function.Injective.eventually_update_of_continuousAt`
+  -- mirror lemma (the `c`-th coordinate `p₀ c + t • w` deforms continuously through `p₀ c`).
+  have h_inj_ev : ∀ᶠ t in 𝓝 (0 : ℝ), Function.Injective (p_t t) :=
+    hp₀_inj.eventually_update_of_continuousAt (f := fun t => p₀ c + t • w)
+      (by fun_prop) (by simp)
   -- LI of the perturbed pair, for any `t ≠ 0`. The collinear `p₀ c - p₀ a = γ⁻¹ • (p₀ b - p₀ a)`
   -- plus the `t • w` perturbation become linearly independent of `p₀ b - p₀ a` for `t ≠ 0`.
   have h_LI_perturbed : ∀ t : ℝ, t ≠ 0 →

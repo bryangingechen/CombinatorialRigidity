@@ -232,6 +232,11 @@ A red node = not yet formalized; a green node = formalized and
   is the obvious template, adapted to row-LI rather than IR. Open:
   whether row-LI is itself open (it is, via `LinearIndependent.eventually`
   or similar), which makes the perturbation argument the same shape.
+  The injectivity-preservation piece of the template is now mirrored
+  as `Function.Injective.eventually_update_of_continuousAt` in
+  `Mathlib/Topology/Separation/Hausdorff.lean` — see the mirrored
+  FRICTION entry — so the row-LI wrapper can reuse it instead of
+  rebuilding the `∀ᶠ`-injectivity argument inline.
 
 - **Matroid `IndepMatroid` axioms in dim 2.** Once the iff
   *row-LI at some $p$* ↔ *$(2, 3)$-sparse* is in hand, the
