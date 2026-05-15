@@ -248,7 +248,7 @@ V 2` realises the rank lower bound `2 * #V ≤ finrank (range R) + 3` (e.g. at a
 rigid placement, via rank-nullity), then `G` has a row-independent edge set at `p` of size exactly
 `2 * #V - 3`. The placement-fixed companion to `exists_edgeSetRowIndependent_basis_dim_two` — same
 body, but `p` is supplied externally so the lemma composes with
-`exists_affinelySpanning_rigid_placement`. -/
+`exists_affinelySpanning_of_eventually` (at `IsInfinitesimallyRigid.eventually`). -/
 theorem exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two [Fintype V]
     {G : SimpleGraph V} {p : Framework V 2}
     (hp : 2 * Fintype.card V ≤
@@ -338,28 +338,36 @@ private lemma affineIndependent_of_difference_det_ne_zero {d : ℕ}
       (LinearEquiv.ker _)]
   convert h_LI_rows using 1
 
-/-- **Affinely-spanning rigid placement, d-general.** If `G` is generically rigid in dimension `d`
-on a finite vertex type, there exists a placement that is infinitesimally rigid *and* affinely
-spans `EuclideanSpace ℝ (Fin d)` when restricted to every size-`≥ d + 1` subset of `V`.
+/-- **Affinely-spanning perturbation under an eventually-true placement property, d-general.**
+Given any property `P : Framework V d → Prop` that holds on a neighborhood of some placement
+`p₀`, there exists a placement satisfying `P` and affinely spanning `EuclideanSpace ℝ (Fin d)`
+when restricted to every size-`≥ d + 1` subset of `V`.
 
-The proof perturbs an infinitesimally rigid witness `p₀` along the moment-curve direction
-`w v = (φ(v)^1, …, φ(v)^d)` with `φ : V → ℝ` injective. Openness of infinitesimal rigidity
-(`IsInfinitesimallyRigid.eventually`) gives `ε > 0` such that `p₀ + t • w` is IR for `|t| < ε`.
-For each ordered `(d+1)`-tuple of distinct vertices, the difference-matrix determinant
-`det(M₀ + t · M₁)` is a polynomial in `t` of degree at most `d`
+Specialised twice in the project: at `P = G.IsInfinitesimallyRigid` (the Phase 6 `(⇒)` direction
+of Laman's theorem, in `LamanTheorem.lean`, where `hP` comes from
+`IsInfinitesimallyRigid.eventually`), and at `P = G.EdgeSetRowIndependent · I` in dimension 2
+(the Phase 7 iff `edgeSet_rowIndependent_iff_isSparse_dim_two`, in `MatroidIdentification.lean`,
+where `hP` comes from `EdgeSetRowIndependent.eventually`). The shared moment-curve perturbation
+is genuinely property-agnostic — only the openness premise differs between the two callers.
+
+The proof perturbs `p₀` along the moment-curve direction `w v = (φ(v)^1, …, φ(v)^d)` with
+`φ : V → ℝ` injective. The openness premise `hP` gives `ε > 0` such that `P (p₀ + t • w)` holds
+for `|t| < ε`. For each ordered `(d+1)`-tuple of distinct vertices, the difference-matrix
+determinant `det(M₀ + t · M₁)` is a polynomial in `t` of degree at most `d`
 (`Polynomial.natDegree_det_X_add_C_le`) whose `t^d` coefficient is `det M₁`
 (`Polynomial.coeff_det_X_add_C_card`), the Vandermonde-difference determinant
 `∏_{0 ≤ i < j ≤ d} (φ vⱼ − φ vᵢ)` (`Matrix.det_powerDifferences`), nonzero by injectivity. The
 bad-`t` set per tuple is therefore finite (`Polynomial.finite_setOf_isRoot`); the finite union over
 tuples is finite; and the open interval `(0, ε)` is infinite, so it has a point avoiding the bad
 set. -/
-theorem exists_affinelySpanning_rigid_placement [Fintype V] {d : ℕ} {G : SimpleGraph V}
-    (hG : G.IsGenericallyRigid d) :
-    ∃ p : Framework V d, G.IsInfinitesimallyRigid p ∧
+theorem exists_affinelySpanning_of_eventually [Finite V] {d : ℕ}
+    {P : Framework V d → Prop} {p₀ : Framework V d}
+    (hP : ∀ᶠ p in 𝓝 p₀, P p) :
+    ∃ p : Framework V d, P p ∧
       ∀ S : Set V, d + 1 ≤ S.ncard →
         affineSpan ℝ (Set.range (fun v : S => p v.val)) = ⊤ := by
   classical
-  obtain ⟨p₀, hp₀⟩ := hG
+  haveI : Fintype V := Fintype.ofFinite V
   -- Step 1: pick `φ : V → ℝ` injective.
   let ψ : V ≃ Fin (Fintype.card V) := Fintype.equivFin V
   let φ : V → ℝ := fun v => ((ψ v).val : ℝ)
@@ -379,13 +387,13 @@ theorem exists_affinelySpanning_rigid_placement [Fintype V] {d : ℕ} {G : Simpl
   have h_pt_cont : Continuous pt := by
     refine continuous_pi fun v => ?_
     exact continuous_const.add (continuous_id'.smul continuous_const)
-  -- Step 4: pull `IsInfinitesimallyRigid.eventually` back to `t`.
-  have h_event_IR : ∀ᶠ t in 𝓝 (0 : ℝ), G.IsInfinitesimallyRigid (pt t) := by
+  -- Step 4: pull the openness premise back to `t`.
+  have h_event_P : ∀ᶠ t in 𝓝 (0 : ℝ), P (pt t) := by
     have h_tendsto : Filter.Tendsto pt (𝓝 0) (𝓝 p₀) :=
       h_pt_zero ▸ h_pt_cont.tendsto 0
-    exact h_tendsto.eventually hp₀.eventually
-  rw [Metric.eventually_nhds_iff] at h_event_IR
-  obtain ⟨ε, hε_pos, hε_ir⟩ := h_event_IR
+    exact h_tendsto.eventually hP
+  rw [Metric.eventually_nhds_iff] at h_event_P
+  obtain ⟨ε, hε_pos, hε_P⟩ := h_event_P
   -- Coordinate identity: `(pt t v) j = (p₀ v) j + t * φ(v)^(j+1)`.
   have h_pt_coord : ∀ (t : ℝ) (v : V) (j : Fin d),
       (pt t v) j = (p₀ v) j + t * (φ v) ^ (j.val + 1) := by
@@ -457,8 +465,8 @@ theorem exists_affinelySpanning_rigid_placement [Fintype V] {d : ℕ} {G : Simpl
   obtain ⟨t, ⟨ht_pos, ht_lt⟩, ht_good⟩ := h_nonempty
   -- Step 8: assemble the witness.
   refine ⟨pt t, ?_, ?_⟩
-  · -- IR at `pt t`.
-    apply hε_ir
+  · -- `P (pt t)` since `t` is in the openness neighborhood.
+    apply hε_P
     rw [Real.dist_eq, sub_zero, abs_of_pos ht_pos]
     exact ht_lt
   · -- Affinely spans on every size-`≥ d + 1` subset.
@@ -505,7 +513,7 @@ rigidity row in the induced subgraph composed with the restriction.
 
 **Blueprint:** the $(\Rightarrow)$ direction's sparsity step, `lem:isSparse-of-rowIndependent-two`.
 The hypothesis `hp` is supplied at dimension `2` by
-`exists_affinelySpanning_rigid_placement`. -/
+`exists_affinelySpanning_of_eventually` (Phase 6 specialises it at IR; Phase 7's iff at row-LI). -/
 theorem isSparse_of_edgeSetRowIndependent_dim_two {V : Type*} {G : SimpleGraph V}
     {p : Framework V 2}
     (hp : ∀ S : Set V, 3 ≤ S.ncard →

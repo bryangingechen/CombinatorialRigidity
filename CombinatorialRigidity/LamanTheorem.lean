@@ -136,8 +136,9 @@ matrix at a generic placement equals `(2, 3)`-sparsity, so a basis of the
 rigidity matroid (size `2n − 3`) spans a Laman subgraph.
 
 Proof: pick a placement `p` that is both infinitesimally rigid for `G`
-*and* affinely-spanning on every size-`≥ 3` subset
-(`exists_affinelySpanning_rigid_placement` at `d = 2`). At `p`, the rank
+*and* affinely-spanning on every size-`≥ 3` subset, via the
+property-polymorphic perturbation `exists_affinelySpanning_of_eventually`
+specialised at `IsInfinitesimallyRigid.eventually` and `d = 2`. At `p`, the rank
 lower bound from IR + rank-nullity feeds
 `exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two`, which extracts
 a row-independent edge set `I ⊆ G.edgeSet` of size `2|V| - 3`. The spanning
@@ -152,7 +153,8 @@ theorem IsGenericallyRigid.exists_isLaman_le [Fintype V] {G : SimpleGraph V}
     ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman := by
   classical
   -- Step 1: pick an IR + affinely-spanning placement.
-  obtain ⟨p, hp_IR, hp_aff⟩ := exists_affinelySpanning_rigid_placement h
+  obtain ⟨p₀, hp₀⟩ := h
+  obtain ⟨p, hp_IR, hp_aff⟩ := exists_affinelySpanning_of_eventually hp₀.eventually
   -- Step 2: rank lower bound at `p` (from IR + rank-nullity).
   have h_rank_ge : 2 * Fintype.card V ≤
       Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + 3 := by

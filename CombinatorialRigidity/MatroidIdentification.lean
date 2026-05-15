@@ -1005,4 +1005,64 @@ theorem IsSparse.exists_rowIndependent_placement :
       rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff]
       exact linearIndependent_empty_type
 
+/-! ### Lovász–Yemini: row-independent iff `(2, 3)`-sparse, dim 2
+
+Combining the easy direction (Phase 6's `isSparse_of_edgeSetRowIndependent_dim_two`) with the
+hard direction `IsSparse.exists_rowIndependent_placement` yields the matroid identification of
+Lovász–Yemini in dimension 2: an edge subset of `G` is row-independent at some placement iff
+its spanning subgraph is `(2, 3)`-sparse. -/
+
+/-- **Lovász–Yemini: row-LI iff `(2, 3)`-sparse, dim 2.** Let `V` be finite and
+`G : SimpleGraph V`. An edge set `I ⊆ G.edgeSet` is row-independent at some placement
+`p : Framework V 2` iff the spanning subgraph of `G` with edge set `I` (i.e.
+`fromEdgeSet (Subtype.val '' I)`) is `(2, 3)`-sparse.
+
+The matroid identification of the planar rigidity matroid with the `(2, 3)`-count matroid on
+`E(K_V)`. The `(⇒)` direction perturbs the row-LI witness to an affinely-spanning placement via
+`exists_affinelySpanning_of_eventually` (at row-LI's openness, `EdgeSetRowIndependent.eventually`),
+then applies Phase 6's easy direction `isSparse_of_edgeSetRowIndependent_dim_two`. The `(⇐)`
+direction is `IsSparse.exists_rowIndependent_placement` on the spanning subgraph
+`H := fromEdgeSet (Subtype.val '' I)`, followed by a bridge from
+`H.EdgeSetRowIndependent p Set.univ` to `G.EdgeSetRowIndependent p I`: the natural reindex
+`I → H.edgeSet`, `e_I ↦ ⟨e_I.val.val, …⟩`, is injective, and the rigidity rows at corresponding
+edges coincide (both reduce to `⟪p u - p v, motion u - motion v⟫_ℝ` on the same `Sym2`-value), so
+LI transports via `LinearIndependent.comp`. -/
+theorem edgeSet_rowIndependent_iff_isSparse_dim_two {V : Type*} [Finite V]
+    (G : SimpleGraph V) (I : Set G.edgeSet) :
+    (∃ p : Framework V 2, G.EdgeSetRowIndependent p I) ↔
+      (fromEdgeSet (Subtype.val '' I) : SimpleGraph V).IsSparse 2 3 := by
+  classical
+  haveI : Fintype V := Fintype.ofFinite V
+  refine ⟨?_, ?_⟩
+  · -- (⇒) Perturb the row-LI witness to be affinely-spanning, then apply the easy direction.
+    rintro ⟨p, hp⟩
+    obtain ⟨p', hp'_LI, hp'_aff⟩ := exists_affinelySpanning_of_eventually hp.eventually
+    exact isSparse_of_edgeSetRowIndependent_dim_two hp'_aff hp'_LI
+  · -- (⇐) Apply the hard direction on the spanning subgraph, then bridge LI back to `G` on `I`.
+    intro hSparse
+    set H : SimpleGraph V := fromEdgeSet (Subtype.val '' I) with hH_def
+    have hH_edgeSet : H.edgeSet = Subtype.val '' I := by
+      rw [hH_def, edgeSet_fromEdgeSet]
+      refine sdiff_eq_left.mpr ?_
+      rw [Set.disjoint_left]
+      rintro e ⟨e', _, rfl⟩ he_diag
+      exact not_isDiag_of_mem_edgeSet G e'.property he_diag
+    obtain ⟨p, hp⟩ := IsSparse.exists_rowIndependent_placement _ rfl hSparse
+    refine ⟨p, ?_⟩
+    -- Reindex `I → H.edgeSet`, `e_I ↦ e_I.val.val`, injective.
+    let toH : I → H.edgeSet := fun e_I =>
+      ⟨e_I.val.val, by rw [hH_edgeSet]; exact ⟨e_I.val, e_I.property, rfl⟩⟩
+    have htoH_inj : Function.Injective toH := by
+      intro a b hab
+      have h1 : (toH a).val = (toH b).val := congrArg Subtype.val hab
+      exact Subtype.ext (Subtype.ext h1)
+    rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow,
+        linearIndepOn_univ_iff] at hp
+    rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
+    -- `LinearIndepOn ℝ (G.rigidityRow p) I` unfolds to subtype LI; `G`- and `H`-rows at
+    -- corresponding edges are definitionally equal (both reduce through `Sym2.lift` to the
+    -- same `edgeRow p (u, v)` on the same `Sym2`-value), so `convert ... using 1` closes both
+    -- the LI carrier and the index reindex via `toH`.
+    convert hp.comp toH htoH_inj using 1
+
 end SimpleGraph

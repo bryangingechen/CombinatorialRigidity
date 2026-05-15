@@ -425,24 +425,38 @@ row-independent.
 
 \begin{theorem}[Lov\'asz--Yemini: row-LI iff sparse, dim $2$]
   \label{thm:edgeSet-rowIndependent-iff-isSparse}
+  \lean{SimpleGraph.edgeSet_rowIndependent_iff_isSparse_dim_two}
+  \leanok
   \uses{def:edgeSet-rowIndependent, def:isSparse,
     thm:isSparse-exists-rowIndependent-placement,
     lem:isSparse-of-rowIndependent-two,
-    lem:exists-affinelySpanning-rigid-placement}
-  Let $V$ be finite with $|V| \ge 2$ and $G : \mathrm{SimpleGraph}\,V$.
-  An edge set $I \subseteq E(G)$ is row-independent at some placement
+    lem:exists-affinelySpanning-of-eventually,
+    lem:edgeSet-rowIndependent-eventually}
+  Let $V$ be finite and $G : \mathrm{SimpleGraph}\,V$. An edge set
+  $I \subseteq E(G)$ is row-independent at some placement
   $p : V \to \R^{2}$ if and only if the spanning subgraph of $G$ with
   edge set $I$ is $(2, 3)$-sparse.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:isSparse-exists-rowIndependent-placement,
     lem:isSparse-of-rowIndependent-two,
-    lem:exists-affinelySpanning-rigid-placement}
+    lem:exists-affinelySpanning-of-eventually,
+    lem:edgeSet-rowIndependent-eventually}
   $(\Rightarrow)$ is the easy direction
-  \cref{lem:isSparse-of-rowIndependent-two}, after combining the
-  witness placement with the affinely-spanning perturbation of
-  \cref{lem:exists-affinelySpanning-rigid-placement} on every triple.
-  $(\Leftarrow)$ is \cref{thm:isSparse-exists-rowIndependent-placement}.
+  \cref{lem:isSparse-of-rowIndependent-two}, after perturbing the
+  witness placement to one that affinely spans every triple via
+  \cref{lem:exists-affinelySpanning-of-eventually} specialised at
+  row-independence (using
+  \cref{lem:edgeSet-rowIndependent-eventually} as the openness
+  witness). $(\Leftarrow)$ is
+  \cref{thm:isSparse-exists-rowIndependent-placement} applied to the
+  spanning subgraph $H = \mathrm{fromEdgeSet}(I)$, bridged back to a
+  row-LI placement of $E(G)$ on $I$ via the per-edge equality of
+  rigidity rows (both reduce to $\langle p u - p v, \mathrm{motion}\,u
+  - \mathrm{motion}\,v\rangle$ on the same $\mathrm{Sym}_{2}$-value,
+  so the equation closes by $\mathtt{rfl}$ after $\mathrm{Sym}_{2}$
+  induction).
 \end{proof}
 
 \begin{corollary}[Every Laman graph admits a row-independent placement]

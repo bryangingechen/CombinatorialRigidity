@@ -13,7 +13,7 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Fourteen commits in. The first six lifted Laman-only machinery to
+Fifteen commits in. The first six lifted Laman-only machinery to
 `IsSparse` and landed `IsSparse.exists_typeI_or_typeII_reverse` in
 flat form (entry points `60a2176..6d59be2`); the next five landed the
 four operation-form row-LI lifts plus the row-LI openness lemma in
@@ -25,12 +25,18 @@ Commit 14 landed the hard-direction `|E|`-induction theorem
 `IsSparse.exists_rowIndependent_placement` (`MatroidIdentification.lean`),
 the supporting iso transport `EdgeSetRowIndependent.iso`
 (`RigidityMatroid.lean`), and the private perturbation helper
-`exists_distinct_rowIndependent_placement_dim_two`; the blueprint
-nodes `thm:isSparse-exists-rowIndependent-placement` and
-`lem:edgeSet-rowIndependent-iso` are now `\leanok`. The chapter
-dep-graph in `chapter/rigidity-matroid.tex` has only the iff
-`thm:edgeSet-rowIndependent-iff-isSparse`, the
-`cor:isLaman-exists-rowIndependent`, and the `Matroid` packaging
+`exists_distinct_rowIndependent_placement_dim_two`; Commit 15
+generalised `exists_affinelySpanning_rigid_placement` to the
+property-polymorphic `exists_affinelySpanning_of_eventually`
+(retiring the IR-specific wrapper), then landed the iff
+`edgeSet_rowIndependent_iff_isSparse_dim_two` in
+`MatroidIdentification.lean`. The blueprint nodes
+`thm:isSparse-exists-rowIndependent-placement`,
+`lem:edgeSet-rowIndependent-iso`, the renamed
+`lem:exists-affinelySpanning-of-eventually`, and
+`thm:edgeSet-rowIndependent-iff-isSparse` are all `\leanok`. The
+chapter dep-graph in `chapter/rigidity-matroid.tex` has only the
+`cor:isLaman-exists-rowIndependent` and the `Matroid` packaging
 (`def:rigidityMatroid` and `thm:rigidityMatroid-indep-iff-isSparse`)
 left to discharge.
 
@@ -75,10 +81,20 @@ left to discharge.
   preserving row-LI via `EdgeSetRowIndependent.eventually`). The
   blueprint `thm:isSparse-exists-rowIndependent-placement` and
   `lem:edgeSet-rowIndependent-iso` are pinned `\leanok`.
-- **Next: the iff** `edgeSet_rowIndependent_iff_isSparse_dim_two`
-  (combine the hard direction with Phase 6's easy direction
-  `isSparse_of_edgeSetRowIndependent_dim_two`).
-- **Then the `Matroid` packaging** via `IndepMatroid` (~100 LoC
+- **Commit 15** [✓ done]: refactor + iff. Generalise
+  `exists_affinelySpanning_rigid_placement` to the property-polymorphic
+  `exists_affinelySpanning_of_eventually` (takes `∀ᶠ p in 𝓝 p₀, P p`
+  for arbitrary `P`); inline the IR existential at the single Phase 6
+  caller in `LamanTheorem.lean`; specialise at row-LI's openness
+  (`EdgeSetRowIndependent.eventually`) in the iff's `(⇒)` direction.
+  Land `edgeSet_rowIndependent_iff_isSparse_dim_two` in
+  `MatroidIdentification.lean` combining the hard direction with
+  Phase 6's easy direction `isSparse_of_edgeSetRowIndependent_dim_two`.
+  Blueprint: rename `lem:exists-affinelySpanning-rigid-placement`
+  → `lem:exists-affinelySpanning-of-eventually` (restated
+  property-polymorphically with prose aside about the factoring);
+  pin `thm:edgeSet-rowIndependent-iff-isSparse` `\leanok`.
+- **Next: the `Matroid` packaging** via `IndepMatroid` (~100 LoC
   expected; see Blockers).
 
 ## Architectural choices made up front
@@ -210,6 +226,20 @@ A red node = not yet formalized; a green node = formalized and
   `continuous_rigidityMap_apply`; transport back via
   `LinearMap.linearIndependent_iff` + `LinearEquiv.ker`.
 
+- **Property-polymorphic affinely-spanning + iff (Commit 15).**
+  `exists_affinelySpanning_rigid_placement`'s moment-curve /
+  Vandermonde body was IR-specific only at the `obtain ⟨p₀, hp₀⟩`
+  and the `hp₀.eventually` pullback. Generalised to
+  `exists_affinelySpanning_of_eventually` consuming
+  `∀ᶠ p in 𝓝 p₀, P p`; no wrapper kept (row-LI would be a pure
+  alias, IR saved one `obtain` at one call site). Iff `(⇒)` calls
+  it with `hp.eventually` from `EdgeSetRowIndependent.eventually`;
+  iff `(⇐)` is the hard direction on
+  `H = fromEdgeSet (Subtype.val '' I)` then `LinearIndependent.comp`
+  along an injective reindex `toH : I → H.edgeSet` (row-equality is
+  `rfl` after `Sym2` induction; `convert ... using 1` closes via
+  defeq through `Sym2.lift`).
+
 - **Hard-direction `|E|`-induction (Commit 14).**
   `IsSparse.exists_rowIndependent_placement` runs strong induction on
   `Fintype.card V`: base case `H.edgeSet = ∅` returns the zero
@@ -298,14 +328,20 @@ A red node = not yet formalized; a green node = formalized and
   `exists_not_mem_span_singleton_dim_two` un-privatized for cross-file
   reuse from `MatroidIdentification.lean`.
 - `RigidityMatroid.lean`: `EdgeSetRowIndependent.eventually` (Commit 10);
-  `EdgeSetRowIndependent.iso` (Commit 14).
+  `EdgeSetRowIndependent.iso` (Commit 14);
+  `exists_affinelySpanning_rigid_placement` → property-polymorphic
+  `exists_affinelySpanning_of_eventually` (Commit 15).
 - `MatroidIdentification.lean`: new file (Commit 7); cumulatively
   holds the four operation-form row-LI lifts (typeI / typeII × extend
   / lift), `exists_nonCollinear_rowIndependent_placement_dim_two`,
   the pendant row-LI lift `typeI_pendant_edgeSetRowIndependent_extend`
   + `..._lift` (Commit 13), `exists_distinct_rowIndependent_placement_dim_two`,
-  and the hard-direction `|E|`-induction theorem
-  `IsSparse.exists_rowIndependent_placement` (Commit 14).
+  the hard-direction `|E|`-induction theorem
+  `IsSparse.exists_rowIndependent_placement` (Commit 14), and the iff
+  `edgeSet_rowIndependent_iff_isSparse_dim_two` (Commit 15).
+- `LamanTheorem.lean`: Phase 6 caller inlined the `obtain` of the
+  IR witness and now calls
+  `exists_affinelySpanning_of_eventually hp₀.eventually` (Commit 15).
 - `TrivialMotions.lean`: `elemSkewMap_ofLp_inr_apply` collapsed to
   one line (Commit 10's cleanup pass).
 
