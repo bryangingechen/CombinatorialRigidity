@@ -21,7 +21,7 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-Eight commits in so far. The **first three** lifted Phase 5 Laman
+Nine commits in so far. The **first three** lifted Phase 5 Laman
 machinery to `IsSparse` (degree-≤-3 existence, non-adjacent triple,
 the five blocker contradiction primitives, the per-pair typeII
 tight-blocker). The **fourth** was a docs-only commit pinning the
@@ -40,13 +40,29 @@ with the **conditional Type I row-LI lift**
 analogue of Phase 5's `typeI_isInfinitesimallyRigid_extend`), wired
 the new file into the top-level entry, and flipped `\leanok` on the
 blueprint entry `lem:typeI-rowIndependent-extend`. The **eighth**
-(this commit) lands the **unconditional Type I row-LI wrapper**
+landed the **unconditional Type I row-LI wrapper**
 `typeI_edgeSetRowIndependent_lift`: takes `p' a ≠ p' b` instead of
 the LI hypothesis, picks `q` off the line through `p' a, p' b` via
 the un-privatized `exists_off_line_off_finite_dim_two`
 (`S = ∅`, since the matroid hard direction needs no injectivity
-constraint), then composes with the conditional core. Flips
-`\leanok` on `lem:typeI-rowIndependent-lift`.
+constraint), then composes with the conditional core. The **ninth**
+(this commit) lands the **conditional Type II row-LI lift**
+`typeII_edgeSetRowIndependent_extend` and adds the matching
+blueprint entry `lem:typeII-rowIndependent-extend` with `\leanok`.
+Mirrors Phase 5's `typeII_isInfinitesimallyRigid_extend` on the
+row-LI / dual side: places `q` on the line through `p' a, p' b`
+(collinearity scalar `s ≠ 0, 1`) with `(q - p' a, q - p' c)` LI,
+shows row-LI of `(typeII G' a b c).edgeSet` at the extended
+placement. Proof structure follows the Type I conditional core
+(`LinearIndepOn.union` with `oldSet = (G'\\{s(a,b)})`-image and
+`newSet = {newA, newB, newC}`), with the new wrinkle being the
+disjoint-spans argument: the Whiteley row identity
+`(s-1) row_a - s row_b = s(s-1) T(rowG'(s(a,b)))` (`T =
+restrictMap.dualMap`) lets the new-row combination
+`c_a row_a + c_b row_b` (after `c_c = 0` and `s c_a + (s-1) c_b = 0`
+from the `none`-only test motion) be rewritten as `s c_a` times the
+T-pullback of the *deleted* G'-row, which is independent from the
+lifted-old span by G'-LI + T-injectivity.
 
 **Multi-session plan** for the forward-blueprint work:
 
@@ -59,14 +75,18 @@ constraint), then composes with the conditional core. Flips
   `MatroidIdentification.lean`. Mirrors Phase 5's conditional core
   convention; the unconditional wrapper is next.
 - **Session 3 — Commit 5 ("Type I row-LI unconditional wrapper")**
-  [✓ done in this commit]: landed `typeI_edgeSetRowIndependent_lift`
+  [✓ done]: landed `typeI_edgeSetRowIndependent_lift`
   in `MatroidIdentification.lean`; un-privatized
   `exists_off_line_off_finite_dim_two` in `HennebergRigidity.lean`
   so the wrapper can reuse it with `S = ∅`.
-- **Session 3+:** Type II row-LI conditional core + unconditional
-  wrapper (the latter needs the row-LI analogue of openness, i.e.
-  `EdgeSetRowIndependent.eventually` or similar, plus the
-  perpendicular-perturbation pattern from
+- **Session 4 — Commit 6 ("Type II row-LI conditional core")**
+  [✓ done in this commit]: landed
+  `typeII_edgeSetRowIndependent_extend` in
+  `MatroidIdentification.lean`; added blueprint entry
+  `lem:typeII-rowIndependent-extend` with `\leanok`.
+- **Session 4+:** Type II row-LI unconditional wrapper (needs the
+  row-LI analogue of openness, i.e. `EdgeSetRowIndependent.eventually`
+  or similar, plus the perpendicular-perturbation pattern from
   `exists_nonCollinear_rigid_placement_dim_two`); then
   `IsSparse.exists_rowIndependent_placement` (the |E|-induction);
   then the iff and the `Matroid` packaging.
@@ -221,6 +241,31 @@ A red node = not yet formalized; a green node = formalized and
   `S = ∅` use). The `p ∘ some = p'` constraint discharges by
   `funext fun _ => rfl`. Flips `\leanok` on
   `lem:typeI-rowIndependent-lift`.
+
+- **Type II row-LI conditional core (Commit 9).**
+  `typeII_edgeSetRowIndependent_extend` lands in
+  `MatroidIdentification.lean`, mirroring Phase 5's
+  `typeII_isInfinitesimallyRigid_extend` on the row-LI / dual side
+  but with an additional `G'.Adj a b` hypothesis (so the deleted
+  G'-row at `s(a, b)` is part of the family). Proof partitions the
+  typeII edges via `LinearIndepOn.union` into the
+  `Sym2.map some '' (G'.edgeSet \ {s(a, b)})` image (old) and
+  `{newA, newB, newC}` (new). New-row LI: three-step
+  `LinearIndepOn.insert` peeling, using two test motions per step
+  (`none`-only `x_α` and `some a → q - p' a` else `0`), routed
+  through a `typeII_new_rows_coeff_zero` helper that rescales the
+  helper's `q - p' b` evaluation back to `q - p' a` via `hcoll` so
+  the Type I `typeI_new_rows_coeff_zero` applies. Disjoint spans:
+  the same `x_α` argument peels `c_c = 0` and `s c_a + (s-1) c_b = 0`,
+  after which the row identity
+  `(s-1) row newA - s row newB = s(s-1) T(G'.rigidityRow p' eAB)`
+  (proved inline via `linear_combination`) collapses
+  `c_a row newA + c_b row newB` to `s c_a · T(G'.rigidityRow p' eAB)`.
+  G'-LI + dualMap-injectivity rule out a nonzero `s c_a`, forcing
+  `c_a = c_b = 0`. The `{c} ↔ insert c ∅` defeq gap surfaced when
+  chaining three `LinearIndepOn.insert` calls; resolved by rewriting
+  the singleton as `insert c ∅` via `LawfulSingleton.insert_empty_eq`
+  before the chain.
 
 - **Mirror `LinearIndependent.dualMap_of_surjective`.** The old-row
   LI half of `typeI_edgeSetRowIndependent_extend` was building the

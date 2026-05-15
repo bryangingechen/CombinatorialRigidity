@@ -179,9 +179,67 @@ row-independent.
   placement.
 \end{proof}
 
+\begin{lemma}[Type~II row-LI conditional core]
+  \label{lem:typeII-rowIndependent-extend}
+  \lean{SimpleGraph.Henneberg.typeII_edgeSetRowIndependent_extend}
+  \leanok
+  \uses{def:typeII, def:edgeSet-rowIndependent}
+  Let $V$ be finite, $G' : \mathrm{SimpleGraph}\,V$ with
+  $\{a, b\} \in E(G')$, and $p' : V \to \R^{2}$ a placement at which
+  $E(G')$ is row-independent. Let $a, b, c \in V$ and
+  $q \in \R^{2}$ with $q$ collinear with $p'_a, p'_b$ but distinct
+  from both --- that is, $q - p'_a = s \cdot (p'_b - p'_a)$ for some
+  $s \ne 0, 1$ --- and suppose $q - p'_a, q - p'_c$ are linearly
+  independent. Then the extended placement
+  $\hat p : \mathrm{Option}\,V \to \R^{2}$ with $\hat p(\mathrm{none})
+  = q$ and $\hat p(\mathrm{some}\,u) = p'_u$ makes
+  $E(\mathrm{typeII}\,G'\,a\,b\,c)$ row-independent.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Row-LI analogue of \cref{thm:typeII-isInfinitesimallyRigid-extend}.
+  The edge set of $\mathrm{typeII}\,G'\,a\,b\,c$ partitions into the
+  image of $E(G') \setminus \{\{a, b\}\}$ under $\mathrm{some}$
+  (``old'' edges) and the three new edges
+  $\{\mathrm{none}, \mathrm{some}\,a\}$,
+  $\{\mathrm{none}, \mathrm{some}\,b\}$,
+  $\{\mathrm{none}, \mathrm{some}\,c\}$. The two new rows for
+  $\{\mathrm{none}, \mathrm{some}\,a\}$ and
+  $\{\mathrm{none}, \mathrm{some}\,b\}$ are scalar multiples of
+  $p'_b - p'_a$ in their $\mathrm{some}\,a$- and
+  $\mathrm{some}\,b$-columns: collinearity of $q$ with $p'_a, p'_b$
+  forces $q - p'_a = s(p'_b - p'_a)$ and $q - p'_b = (s-1)(p'_b -
+  p'_a)$. A direct computation gives the identity
+  \[ s \cdot \mathrm{row}_b - (s-1) \cdot \mathrm{row}_a
+      = -s(s-1) \cdot T(\mathrm{row}_{G'}\{a, b\}) \]
+  where $T = (\cdot \circ \mathrm{some}).\mathrm{dualMap}$ pulls
+  back $G'$-rows along the restriction map (injective since
+  $\mathrm{some}$ is, so $\mathrm{dualMap}$ is injective via
+  surjectivity of the restriction). Thus the linear-functional
+  $\mathrm{span}\{\mathrm{row}_a, \mathrm{row}_b\}$ contains
+  $T(\mathrm{row}_{G'}\{a, b\})$, recovering the deleted $G'$-row.
+  Linear independence of the three new rows uses two test motions:
+  the $\mathrm{none}$-only motion $x_\alpha$ pins
+  $sc_a + (s-1)c_b = 0$ and $c_c = 0$; a motion with
+  $\mathrm{some}\,a \mapsto q - p'_a$ and all other coordinates zero
+  pins $c_a = 0$ (using $s \ne 0$ and $q \ne p'_a$). Disjointness
+  between the lifted-old span (image of $T$ on $E(G') \setminus
+  \{\{a, b\}\}$-rows) and the new-row span runs the same test-motion
+  argument to produce $sc_a + (s-1)c_b = 0$ and $c_c = 0$; the
+  surviving combination $c_a \cdot \mathrm{row}_a + c_b \cdot
+  \mathrm{row}_b$ then equals $s c_a \cdot T(\mathrm{row}_{G'}\{a,
+  b\})$ by the identity above. If $s c_a \ne 0$, dividing recovers
+  $T(\mathrm{row}_{G'}\{a, b\})$ from the lifted-old span, hence
+  (by injectivity of $T$) $\mathrm{row}_{G'}\{a, b\}$ from the
+  $G'$-row span on $E(G') \setminus \{\{a, b\}\}$, contradicting
+  $G'$-row-LI. So $c_a = 0$, then $c_b = 0$ by the first equation,
+  and the entire combination vanishes.
+\end{proof}
+
 \begin{lemma}[Type~II lift of row-independence]
   \label{lem:typeII-rowIndependent-lift}
-  \uses{def:typeII, def:edgeSet-rowIndependent}
+  \uses{def:typeII, def:edgeSet-rowIndependent,
+    lem:typeII-rowIndependent-extend}
   Let $V$ be finite, $G'$ a simple graph on $V$, $\{u, w\} \in E(G')$,
   and $z \in V$ a third vertex distinct from $u$ and $w$. Let $p' :
   V \to \R^{2}$ be a placement at which $E(G')$ is row-independent.
@@ -191,24 +249,22 @@ row-independent.
   such that $E(G)$ is row-independent at $p$.
 \end{lemma}
 \begin{proof}
-  \uses{def:typeII, def:edgeSet-rowIndependent,
+  \uses{lem:typeII-rowIndependent-extend,
     lem:isInfinitesimallyRigid-eventually}
-  Place $p(\star)$ on the line through $p(u)$ and $p(w)$, generically
-  --- specifically away from $p(u), p(w)$, and away from the line
-  through $p(z)$ in directions where the third new row would
-  collapse. The two new rows $\{\star, u\}$ and $\{\star, w\}$ are
-  scalar multiples of the deleted row $\{u, w\}$ (the difference
-  vectors $p(\star) - p(u)$ and $p(\star) - p(w)$ are anti-parallel,
-  hence each anti-parallel to $p(u) - p(w)$); together they span the
-  same one-dimensional row space modulo the $\star$-column structure.
-  The third new row $\{\star, z\}$ is independent of the two by
-  non-collinearity of $p(u), p(w), p(z)$, which we may arrange by
-  perturbing $p'$ in the kernel of the rigidity map (using openness of
-  row-independence, the row-independence analogue of
-  \cref{lem:isInfinitesimallyRigid-eventually}) if necessary. The net
-  effect is to replace the deleted $\{u, w\}$ row by two equivalent
-  rows in its span, plus one genuinely new row from $\{\star, z\}$, so
-  the rank goes up by exactly $2$ as required by sparsity.
+  Apply \cref{lem:typeII-rowIndependent-extend} to a placement $p'$
+  perturbed to make $p'(u), p'(w), p'(z)$ non-collinear (otherwise
+  the third new row $\{\star, z\}$ would collapse into the span of
+  the first two). The perturbation in the kernel of the rigidity map,
+  permitted by the row-independence analogue of
+  \cref{lem:isInfinitesimallyRigid-eventually}, preserves row-LI of
+  $E(G')$. With the non-collinear placement in hand, pick
+  $p(\star)$ on the line through $p(u)$ and $p(w)$ with collinearity
+  scalar $s \ne 0, 1$ (so $p(\star)$ is distinct from both) and with
+  $p(\star) - p(u), p(\star) - p(z)$ linearly independent; the bad
+  set is a finite union of two values of $s$ plus a single value of
+  $s$ for the LI condition (the latter from non-collinearity), so a
+  generic $s$ works. \Cref{lem:typeII-rowIndependent-extend} then
+  applies.
 \end{proof}
 
 \subsection{The hard direction}

@@ -76,6 +76,33 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
+- **Where it bit:** Case-2 (LI on the three new edges) of
+  `typeII_edgeSetRowIndependent_extend` in `MatroidIdentification.lean`.
+  Three `LinearIndepOn.insert` calls chained on
+  `linearIndepOn_empty ℝ ((typeII G' a b c).rigidityRow p_ext)`
+  produce a `LinearIndepOn ℝ row (insert _ (insert _ (insert _ ∅)))`
+  result. Lean's set notation `{newA, newB, newC}` desugars to
+  `insert newA (insert newB {newC})` — the innermost is
+  `Set.singleton newC`, not `insert newC ∅`, and the two are
+  *propositionally* equal but not defeq (`Set.singleton c = {x | x =
+  c}` while `Set.insert c ∅ = {x | x = c ∨ False}`). The chain's
+  elaboration fails with a "Type mismatch" error citing the
+  metavariable-laden `insert ?m (insert ?m (insert ?m ∅))`.
+- **Friction:** workaround is to rewrite the inner `{newC}` to
+  `insert newC ∅` before the chain via
+  `rw [← LawfulSingleton.insert_empty_eq newEdgeC]`. With the goal
+  in the all-`insert`-with-`∅` form, the chain elaborates cleanly.
+  Pair-of-set rewrites later (`Submodule.mem_span_singleton`,
+  `Submodule.mem_span_pair`) then need `Set.image_insert_eq`,
+  `Set.image_empty`, `Set.image_singleton`,
+  `LawfulSingleton.insert_empty_eq` in the simp set to undo the
+  `insert _ ∅` form back to `{_}` form.
+- **Proposed fix:** none upstream — this is a defeq edge of Set's
+  `Insert` / `Singleton` instances. Worth lifting to TACTICS-QUIRKS
+  if a third caller hits it.
+- **Status:** open (project-internal note).
+
 ### [open] `Polynomial.X` in a `set := ... .det` binding needs an explicit type ascription
 - **Where it bit:** `exists_affinelySpanning_rigid_placement` in
   `RigidityMatroid.lean`. Writing
