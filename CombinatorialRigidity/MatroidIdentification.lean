@@ -170,17 +170,16 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     -- `f x_α = 0` since `f ∈ span (row '' oldSet)` and every old row vanishes at `x_α`
     -- (the formula `⟪p' u - p' v, x (some u) - x (some v)⟫` evaluates to `⟪_, 0 - 0⟫ = 0`).
     have hf_zero_at_x : f x_α = 0 := by
+      -- Test motion `x_α` kills old rigidity rows (since `x_α (some u) = 0`); `Submodule.span_le`
+      -- propagates this from generators to `f` via the kernel of `Module.Dual.eval _ _ x_α`.
       have h_le : Submodule.span ℝ ((typeI G' a b).rigidityRow p_ext '' oldSet) ≤
           LinearMap.ker (Module.Dual.eval ℝ (Framework (Option V) 2) x_α) := by
-        rw [Submodule.span_le]
-        rintro g ⟨e, ⟨e', rfl⟩, rfl⟩
-        obtain ⟨e0, he0⟩ := e'
+        refine Submodule.span_le.mpr ?_
+        rintro _ ⟨e, ⟨⟨e0, he0⟩, rfl⟩, rfl⟩
         induction e0 with
-        | h u v =>
-          rw [SetLike.mem_coe, LinearMap.mem_ker, Module.Dual.eval_apply, hlift_def]
-          simp [rigidityRow_apply, rigidityMap_apply, hxα_def, hp_ext_def]
-      have := h_le hf_old
-      rwa [LinearMap.mem_ker, Module.Dual.eval_apply] at this
+        | h u v => simp [hlift_def, rigidityRow_apply, rigidityMap_apply, hxα_def, hp_ext_def,
+            LinearMap.mem_ker, Module.Dual.eval_apply]
+      simpa using h_le hf_old
     have hcd_eval := DFunLike.congr_fun hcd x_α
     simp only [LinearMap.add_apply, LinearMap.smul_apply, rigidityRow_apply,
       rigidityMap_apply, sub_zero, Option.elim_none, Option.elim_some,

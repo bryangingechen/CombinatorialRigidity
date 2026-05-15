@@ -246,6 +246,19 @@ A red node = not yet formalized; a green node = formalized and
   Pattern lifted to TACTICS-GOLF § 5 (new subsection "the other
   direction"); FRICTION entry closed.
 
+- **Friction cleanup: test-motion gadget named in blueprint, Lean
+  tightened.** The blueprint prose for `typeI_edgeSetRowIndependent_
+  extend` used to invoke "the same trick" for both new-row LI and
+  old/new disjointness; the Lean expanded the trick into a `set x_α`
+  binding plus a 12-line `Submodule.span_le` / `LinearMap.mem_ker`
+  argument. Resolved two ways: (a) consolidated the Lean to 9 lines
+  by folding `SetLike.mem_coe`, `LinearMap.mem_ker`, and
+  `Module.Dual.eval_apply` into a single `simp` set and tightening
+  the destructure; (b) restructured the blueprint sketch around a
+  named parametric *test motion* $x_\alpha$, so both new-row LI and
+  disjointness explicitly cite the same construction. FRICTION entry
+  closed.
+
 ## Blockers / open questions
 
 - **Type II row-LI lift collinearity gap.** The Type II move places

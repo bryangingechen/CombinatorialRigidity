@@ -437,24 +437,40 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   subsection "Pattern (the other direction): `Sym2 V` equality →
   `G.edgeSet` subtype equality".
 
-### [open] "Test motion `x_α`" gadget in Phase 7 understated by blueprint prose
+### [resolved] "Test motion `x_α`" gadget in Phase 7 understated by blueprint prose
 
 - **Where it bit:** `typeI_edgeSetRowIndependent_extend`
-  (`MatroidIdentification.lean:64`). The blueprint prose for new-row
-  LI and old-vs-new disjointness invokes "the same trick" — but the
-  Lean expands "the trick" into a `set x_α := fun w => w.elim α 0`
-  binding plus a 15-line `Submodule.span_le` /
-  `LinearMap.mem_ker` argument that the old-row span vanishes at
-  `x_α`. The private helper `typeI_new_rows_coeff_zero` packages the
+  (`MatroidIdentification.lean`). The blueprint prose for new-row LI
+  and old-vs-new disjointness invoked "the same trick" — but the Lean
+  expanded "the trick" into a `set x_α := fun w => w.elim α 0`
+  binding plus a 12-line `Submodule.span_le` / `LinearMap.mem_ker`
+  argument that the old-row span vanishes at `x_α`. The private
+  helper `typeI_new_rows_coeff_zero` packages the
   coefficient-extraction.
 - **Friction:** prose-to-Lean gap; the test-motion gadget is a
   substantive construction that should appear in the blueprint
   prose as a named gadget, not as "the same trick".
-- **Proposed fix:** *first*, try simplifying the Lean — possibly
-  via `Module.Dual.eval`-level API or a "evaluate a span at a
-  vector" mathlib lemma. *If not*, add a brief aside to the
-  blueprint prose acknowledging the explicit `x_α` test motion.
-- **Status:** open. **Priority: medium**.
+- **Resolution:** two-pronged.
+  - **Lean (12 lines → 9):** consolidated the `Submodule.span_le`
+    block by folding `SetLike.mem_coe` + `LinearMap.mem_ker` +
+    `Module.Dual.eval_apply` into a single `simp` set and tightening
+    the destructure (`rintro _ ⟨e, ⟨⟨e0, he0⟩, rfl⟩, rfl⟩` skips the
+    intermediate `obtain` of the old `g`-binding). The trailing
+    `have := h_le hf_old; rwa [...]` collapses to `simpa using h_le
+    hf_old`. Cosmetic-ish but the proof now fits on screen as a
+    single visual unit.
+  - **Blueprint:** named the gadget as a parametric **test motion**
+    $x_\alpha$ with $x_\alpha(\mathrm{none}) = \alpha$ and
+    $x_\alpha \circ \mathrm{some} = 0$; restructured the proof
+    sketch around it so both the new-row LI and the disjointness
+    claim cite the same construction explicitly, rather than
+    invoking "the same trick".
+- **Lesson:** the "span vanishes if generators vanish" pattern has no
+  packaged mathlib lemma — `Submodule.span_le` + a kernel-of-`Module.
+  Dual.eval` framing is the idiomatic chain. The friction was less
+  about Lean depth and more about *naming* the gadget so the
+  blueprint matches the structure of the formal proof.
+- **Status:** resolved (2026-05-15).
 
 ### [open] `elemSkewMap_ofLp_inr_apply` may already exist as `Matrix.stdBasisMatrix` difference
 

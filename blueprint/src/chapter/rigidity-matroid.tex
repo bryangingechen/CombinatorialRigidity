@@ -136,15 +136,23 @@ row-independent.
   $(\cdot \circ \mathrm{some}) : \mathrm{Framework}\,(\mathrm{Option}\,V)\,2
   \to \mathrm{Framework}\,V\,2$ of the $G'$ rigidity-rows at $p'$;
   surjectivity of this restriction map makes its dual injective, so
-  row-LI of the $G'$ family transfers. The two new rows are linearly
-  independent as functionals because for any motion $x$ with $x \circ
-  \mathrm{some} = 0$ the equation $c \cdot \langle q - p_a, x(\mathrm{none})
-  \rangle + d \cdot \langle q - p_b, x(\mathrm{none}) \rangle = 0$ for all
-  $x(\mathrm{none}) \in \R^{2}$ forces $c (q - p_a) + d (q - p_b) = 0$,
-  hence $c = d = 0$ by hypothesis. The same trick proves disjointness of
-  the old-row and new-row spans: any joint element vanishes when
-  evaluated on motions with $x \circ \mathrm{some} = 0$, so its new-row
-  representation must be zero.
+  row-LI of the $G'$ family transfers. The remaining linear-independence
+  and disjointness facts both follow from a parametric \emph{test
+  motion} $x_\alpha : \mathrm{Option}\,V \to \R^{2}$ defined by
+  $x_\alpha(\mathrm{none}) = \alpha$ and $x_\alpha \circ \mathrm{some} = 0$.
+  Evaluating any new row at $x_\alpha$ produces $\langle q - p_a, \alpha
+  \rangle$ or $\langle q - p_b, \alpha \rangle$; old rows evaluate to
+  zero (their inner-product arguments only see $x_\alpha \circ \mathrm{some}
+  = 0$), and the latter property extends to the entire old-row span by
+  linearity. Linear independence of the new rows: a vanishing combination
+  $c \cdot \mathrm{row}_a + d \cdot \mathrm{row}_b$ evaluated at $x_\alpha$
+  reads $c \langle q - p_a, \alpha\rangle + d \langle q - p_b, \alpha
+  \rangle = 0$ for all $\alpha$, forcing $c(q - p_a) + d(q - p_b) = 0$
+  and hence $c = d = 0$ by hypothesis. Disjointness of the spans: a
+  joint element with new-row representation $c \cdot \mathrm{row}_a + d
+  \cdot \mathrm{row}_b$ vanishes on every $x_\alpha$ (because it lies in
+  the old-row span), so the same coefficient-extraction forces $c = d =
+  0$ and the element is zero.
 \end{proof}
 
 \begin{lemma}[Type~I lift of row-independence]
