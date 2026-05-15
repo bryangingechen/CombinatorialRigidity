@@ -21,26 +21,43 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-The first commit (this one) lifts two Phase 5 Laman lemmas to
-`IsSparse` versions in `Sparsity.lean` —
+Two commits in so far. The **first** lifted two Phase 5 Laman lemmas
+to `IsSparse` versions in `Sparsity.lean` —
 `IsSparse.exists_degree_le_three` and
-`IsSparse.exists_nonadj_among_three_neighbors`. The Laman wrappers
-(`IsLaman.exists_degree_le_three`,
-`IsLaman.exists_nonadj_among_three_neighbors`) are deleted; the
-former's one caller (`IsLaman.exists_two_le_degree_le_three`) and the
-latter's two callers (in `Henneberg.lean`) now invoke
-`h.isSparse.foo` directly. Blueprint follows: the two entries move
-from `chapter/laman.tex` to `chapter/sparsity.tex` under a new
-*Low-degree vertex and non-adjacency consequences* subsection.
+`IsSparse.exists_nonadj_among_three_neighbors` — and moved their
+blueprint entries from `chapter/laman.tex` to `chapter/sparsity.tex`.
 
-Next: lift Phase 5's private `IsLaman.*` blocker machinery in
-`Henneberg.lean` (`no_isTightOn_excluding_three_neighbors`,
-`typeII_reverse_witness_or_blocker`, the three contradiction
-templates, `False_of_pairwise_blocker_or_edge`) to `IsSparse`. Then
-land `IsSparse.exists_typeI_or_typeII_reverse` (Jordán Lemma 2.1.4)
-and re-derive `IsLaman.exists_typeI_or_typeII_reverse` from it.
-Downstream: Type I and Type II row-LI lifts, the inductive existence
-theorem, and the `IndepMatroid` packaging.
+The **second** (this one) lifts the five Phase 5 Laman-only blocker
+contradiction primitives in `Henneberg.lean` to `IsSparse` versions in
+`Sparsity.lean`:
+
+- `IsSparse.no_isTightOn_excluding_three_neighbors` (three-neighbor
+  overshoot helper).
+- `IsSparse.contradiction_one_pair`, `IsSparse.contradiction_two_pair`,
+  `IsSparse.contradiction_three_pair` (the three blocker-count
+  contradiction templates).
+- `IsSparse.False_of_pairwise_blocker_or_edge` (the unified 8-leaf
+  dispatcher).
+
+The `IsLaman.*` private versions are deleted; the only caller
+(`IsLaman.exists_typeI_or_typeII_reverse`) now invokes
+`IsSparse.False_of_pairwise_blocker_or_edge h.isSparse` directly. The
+remaining Phase 5 private machinery (`typeII_reverse_blocker`,
+`typeII_reverse_witness_or_blocker`) stays Laman-only for now: both
+need the tight global edge count to convert `¬ G'.IsLaman` into
+`¬ G'.IsSparse` on the typeII-reverse candidate `G'`. Refactoring
+them by factoring out a sparse-flavored inner blocker lemma is the
+next step.
+
+Next: factor `typeII_reverse_blocker` into an `IsSparse`-flavored
+inner lemma taking `¬ G'.IsSparse 2 3` directly, with the existing
+Laman shell staying as a one-line wrapper. Then land
+`IsSparse.exists_typeI_or_typeII_reverse` (Jordán Lemma 2.1.4)
+using the lifted contradiction templates plus the sparse-flavored
+typeII-reverse blocker, and re-derive
+`IsLaman.exists_typeI_or_typeII_reverse` from it. Downstream:
+Type I and Type II row-LI lifts, the inductive existence theorem,
+and the `IndepMatroid` packaging.
 
 ## Architectural choices made up front
 
@@ -106,26 +123,34 @@ A red node = not yet formalized; a green node = formalized and
 - **Generalize, do not duplicate.** Where Phase 5's Laman-only lemmas
   actually use sparsity (not tightness) in their proof, lift the
   hypothesis from `IsLaman` to `IsSparse` and delete the Laman
-  wrapper; rewrite callers to use `h.isSparse.foo` directly. First
-  pass: `exists_degree_le_three` and
-  `exists_nonadj_among_three_neighbors` moved to `Sparsity.lean`.
-  Next pass will do the same for the private Henneberg blocker
-  machinery. Rationale: a one-line forwarder `IsLaman.foo (h : ...) := h.isSparse.foo` is
-  just duplication at the API level; eliminating it keeps the
-  Laman/sparse split honest about which lemmas genuinely need
-  tightness.
+  wrapper; rewrite callers to use `h.isSparse.foo` directly. Two
+  passes so far: (1) `exists_degree_le_three` and
+  `exists_nonadj_among_three_neighbors` moved to `Sparsity.lean`;
+  (2) the five blocker-contradiction primitives
+  (`no_isTightOn_excluding_three_neighbors`, the three
+  `contradiction_*_pair` templates, `False_of_pairwise_blocker_or_edge`)
+  likewise moved. Rationale: a one-line forwarder
+  `IsLaman.foo (h : ...) := h.isSparse.foo` is just duplication at the
+  API level; eliminating it keeps the Laman/sparse split honest about
+  which lemmas genuinely need tightness. The remaining Laman-only
+  pieces (`typeII_reverse_blocker`, `typeII_reverse_witness_or_blocker`)
+  *do* need the tight global edge count — see *Blockers* below for
+  the factoring plan.
 
 ## Blockers / open questions
 
 - **Sparse-graph reverse decomposition** (`IsSparse.exists_typeI_or_typeII_reverse`,
   Jordán Lemma 2.1.4). The sparse-graph analogue of Phase 5
-  milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse`). Should reuse
-  the same tight-subset machinery (`IsTightOn.union_inter`, Phase 5's
-  three-pair tight-union argument) but without the Laman-specific
-  blocker complications, since we only need sparsity-preservation
-  not tightness-preservation. Open: how much of Phase 5's milestone-1
-  Lean code generalizes by dropping `IsLaman` hypotheses to `IsSparse`,
-  versus needing a fresh implementation.
+  milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse`). The
+  contradiction primitives (`no_isTightOn_excluding_three_neighbors`,
+  three `contradiction_*_pair` templates, `False_of_pairwise_blocker_or_edge`)
+  are now in `Sparsity.lean` as `IsSparse.*` (second commit), so the
+  Phase 5 milestone-1 framework is already partly reusable for the
+  sparse setting. Remaining open: factor `typeII_reverse_blocker` so
+  the sparse version takes `¬ G'.IsSparse 2 3` directly (current
+  proof routes through `¬ G'.IsLaman` + tight count). The right
+  shape is an inner sparse lemma plus a thin Laman wrapper that
+  derives `¬ G'.IsSparse` via the typeII edge-count iso.
 
 - **Type II row-LI lift collinearity gap.** The Type II move places
   the new vertex on the line through `u, w`; for row-LI we also need
