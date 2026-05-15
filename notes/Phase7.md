@@ -21,13 +21,13 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-Two commits in so far. The **first** lifted two Phase 5 Laman lemmas
+Three commits in so far. The **first** lifted two Phase 5 Laman lemmas
 to `IsSparse` versions in `Sparsity.lean` —
 `IsSparse.exists_degree_le_three` and
 `IsSparse.exists_nonadj_among_three_neighbors` — and moved their
 blueprint entries from `chapter/laman.tex` to `chapter/sparsity.tex`.
 
-The **second** (this one) lifts the five Phase 5 Laman-only blocker
+The **second** lifted the five Phase 5 Laman-only blocker
 contradiction primitives in `Henneberg.lean` to `IsSparse` versions in
 `Sparsity.lean`:
 
@@ -39,22 +39,20 @@ contradiction primitives in `Henneberg.lean` to `IsSparse` versions in
 - `IsSparse.False_of_pairwise_blocker_or_edge` (the unified 8-leaf
   dispatcher).
 
-The `IsLaman.*` private versions are deleted; the only caller
-(`IsLaman.exists_typeI_or_typeII_reverse`) now invokes
-`IsSparse.False_of_pairwise_blocker_or_edge h.isSparse` directly. The
-remaining Phase 5 private machinery (`typeII_reverse_blocker`,
-`typeII_reverse_witness_or_blocker`) stays Laman-only for now: both
-need the tight global edge count to convert `¬ G'.IsLaman` into
-`¬ G'.IsSparse` on the typeII-reverse candidate `G'`. Refactoring
-them by factoring out a sparse-flavored inner blocker lemma is the
-next step.
+The **third** (this one) factors `IsLaman.typeII_reverse_blocker`
+into an `IsSparse`-flavored inner lemma plus a thin Laman shell.
+`IsSparse.typeII_reverse_blocker` in `Sparsity.lean` takes
+`¬ G'.IsSparse 2 3` directly and produces the tight blocker; the
+supporting `image_edgesIn_comap` is promoted from private in
+`Henneberg.lean` to public in `Sparsity.lean`. The Laman shell in
+`Henneberg.lean` shrinks to just the iso+count conversion
+(`¬ G'.IsLaman` → `¬ G'.IsSparse 2 3` via `typeII_iso_of_three_neighbors`
++ `typeII_edgeSet_ncard`) followed by a call to the sparse lemma —
+~125 LoC removed from `Henneberg.lean`.
 
-Next: factor `typeII_reverse_blocker` into an `IsSparse`-flavored
-inner lemma taking `¬ G'.IsSparse 2 3` directly, with the existing
-Laman shell staying as a one-line wrapper. Then land
-`IsSparse.exists_typeI_or_typeII_reverse` (Jordán Lemma 2.1.4)
-using the lifted contradiction templates plus the sparse-flavored
-typeII-reverse blocker, and re-derive
+Next: land `IsSparse.exists_typeI_or_typeII_reverse` (Jordán
+Lemma 2.1.4) using the lifted contradiction templates plus the
+sparse-flavored typeII-reverse blocker; re-derive
 `IsLaman.exists_typeI_or_typeII_reverse` from it. Downstream:
 Type I and Type II row-LI lifts, the inductive existence theorem,
 and the `IndepMatroid` packaging.
@@ -123,34 +121,40 @@ A red node = not yet formalized; a green node = formalized and
 - **Generalize, do not duplicate.** Where Phase 5's Laman-only lemmas
   actually use sparsity (not tightness) in their proof, lift the
   hypothesis from `IsLaman` to `IsSparse` and delete the Laman
-  wrapper; rewrite callers to use `h.isSparse.foo` directly. Two
+  wrapper; rewrite callers to use `h.isSparse.foo` directly. Three
   passes so far: (1) `exists_degree_le_three` and
   `exists_nonadj_among_three_neighbors` moved to `Sparsity.lean`;
   (2) the five blocker-contradiction primitives
   (`no_isTightOn_excluding_three_neighbors`, the three
   `contradiction_*_pair` templates, `False_of_pairwise_blocker_or_edge`)
-  likewise moved. Rationale: a one-line forwarder
-  `IsLaman.foo (h : ...) := h.isSparse.foo` is just duplication at the
-  API level; eliminating it keeps the Laman/sparse split honest about
-  which lemmas genuinely need tightness. The remaining Laman-only
-  pieces (`typeII_reverse_blocker`, `typeII_reverse_witness_or_blocker`)
-  *do* need the tight global edge count — see *Blockers* below for
-  the factoring plan.
+  likewise moved; (3) `typeII_reverse_blocker` factored into a sparse
+  inner lemma in `Sparsity.lean` plus a thin Laman shell in
+  `Henneberg.lean` that does only the iso+edge-count conversion
+  `¬ G'.IsLaman → ¬ G'.IsSparse 2 3` (the one step that genuinely needs
+  the tight global edge count). The supporting `image_edgesIn_comap`
+  was promoted from private in `Henneberg.lean` to public in
+  `Sparsity.lean` at the same time. The remaining Laman-only piece
+  (`typeII_reverse_witness_or_blocker`) is now a thin dispatcher over
+  the factored blocker; sparse-graph reverse decomposition can reuse
+  `IsSparse.typeII_reverse_blocker` directly without going through
+  Laman.
 
 ## Blockers / open questions
 
 - **Sparse-graph reverse decomposition** (`IsSparse.exists_typeI_or_typeII_reverse`,
   Jordán Lemma 2.1.4). The sparse-graph analogue of Phase 5
-  milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse`). The
-  contradiction primitives (`no_isTightOn_excluding_three_neighbors`,
-  three `contradiction_*_pair` templates, `False_of_pairwise_blocker_or_edge`)
-  are now in `Sparsity.lean` as `IsSparse.*` (second commit), so the
-  Phase 5 milestone-1 framework is already partly reusable for the
-  sparse setting. Remaining open: factor `typeII_reverse_blocker` so
-  the sparse version takes `¬ G'.IsSparse 2 3` directly (current
-  proof routes through `¬ G'.IsLaman` + tight count). The right
-  shape is an inner sparse lemma plus a thin Laman wrapper that
-  derives `¬ G'.IsSparse` via the typeII edge-count iso.
+  milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse`). All the
+  blocker contradiction primitives plus `typeII_reverse_blocker`
+  itself now live in `Sparsity.lean` as `IsSparse.*`, so the Phase 5
+  framework is fully reusable for the sparse setting. Remaining open:
+  port the degree-3 dispatcher (`typeII_reverse_witness_or_blocker`)
+  and the outer existence theorem (`exists_typeI_or_typeII_reverse`)
+  themselves — these are currently Laman-stated in `Henneberg.lean`
+  and need sparse analogues that drop the `G'.IsLaman` conclusion in
+  favor of `G'.IsSparse`. The natural shape is to land
+  `IsSparse.exists_typeI_or_typeII_reverse` directly (returning
+  `G'.IsSparse 2 3`) and re-derive the Laman version as a wrapper
+  that re-establishes `G'`'s tight edge count.
 
 - **Type II row-LI lift collinearity gap.** The Type II move places
   the new vertex on the line through `u, w`; for row-LI we also need

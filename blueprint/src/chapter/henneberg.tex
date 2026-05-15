@@ -342,7 +342,8 @@ sparsity of $G$ at $\{v\} \cup N_G(v)$.
   \lean{SimpleGraph.Henneberg.IsLaman.typeII_reverse_blocker}
   \leanok
   \uses{def:isLaman, def:typeII, def:isTightOn,
-    lem:typeII-edgeSet-ncard, lem:isSparse-isTightOn-of-le,
+    lem:typeII-edgeSet-ncard,
+    lem:isSparse-typeII-reverse-blocker,
     lem:isLaman-iso}
   Let $G$ be Laman with finite vertex type $V$. Suppose $v \in V$ has
   three pairwise distinct neighbors $\{x, y, c\}$, that $\{x, y\}$ is
@@ -362,23 +363,9 @@ sparsity of $G$ at $\{v\} \cup N_G(v)$.
   \cref{lem:typeII-edgeSet-ncard} and
   $|\mathrm{Option}\,\{w \ne v\}| = |V|$ gives the global edge identity
   $|E(G')| + 3 = 2 |\{w \ne v\}|$. So the failure of $G'$ to be Laman
-  is a failure of $(2, 3)$-sparsity: some finite
-  $s' \subseteq \{w \ne v\}$ violates the bound. Lift to
-  $S := \{w.\mathrm{val} : w \in s'\} \subseteq V \setminus \{v\}$. The
-  edges of $G'$ on $s'$ correspond to edges of $G$ on $S$, plus
-  possibly the bridge $\{x, y\}$ when $x, y \in s'$. (In the
-  formalization, this "correspond to" is a named project-internal
-  helper that gives the equality
-  $\mathrm{Sym2.map}\;f \,[(G.\mathrm{comap}\;f).\edgesIn{s'}]
-   = \edgesIn[G]{f[s']}$
-  for $f = \mathrm{Subtype.val}$; the cardinality version it feeds
-  needs injectivity of $\mathrm{Sym2.map}\;f$, which is itself a small
-  lift of injectivity of $f$.) Case-split on $x, y \in s'$: in the
-  bridge-included case, the $\le 1$ overcount yields a squeeze that
-  forces $S$ tight in $G$ (\cref{lem:isSparse-isTightOn-of-le}); in
-  the bridge-excluded case, the count violates $G$-sparsity directly,
-  but the hypothesis $G.\mathrm{IsLaman}$ rules this out, so this
-  branch is vacuous.
+  is a failure of $(2, 3)$-sparsity, and
+  \cref{lem:isSparse-typeII-reverse-blocker} extracts the tight set
+  $S$ directly.
 \end{proof}
 
 \begin{theorem}[Strengthened decomposition: Laman half]

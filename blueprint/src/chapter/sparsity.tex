@@ -352,7 +352,7 @@ The squeeze lemma below is a converse to the sparsity inequality
 within a single sparse graph: a vertex set that hits the bound from
 below must hit it on the nose, hence is tight. It is the
 edge-counting input used in
-\cref{thm:isLaman-typeII-reverse-blocker} to extract a tight set from
+\cref{lem:isSparse-typeII-reverse-blocker} to extract a tight set from
 a sparsity violation on a candidate graph.
 
 \begin{lemma}[Squeeze]
@@ -475,4 +475,51 @@ half of \cref{thm:isTightOn-union-inter} at $F = \emptyset$.
   and $|F| \ge k$ rewrite this as
   $|\edgesIn{s \cup \{w\}}| \ge k\,|s| - \ell + k = k\,|s \cup \{w\}| - \ell$,
   which against sparsity at $s \cup \{w\}$ forces equality.
+\end{proof}
+
+\subsection{Per-pair tight-blocker witness (typeII reverse, sparse form)}
+\label{sec:isSparse-typeII-reverse-blocker}
+
+The combinatorial heart of the typeII Henneberg reverse: a sparsity
+violation on the bridge-augmented candidate graph
+$G' := G[\{w \ne v\}] \cup \{\{x, y\}\}$ extracts a $(2, 3)$-tight
+blocker in $G$ containing both $x$ and $y$. This is the sparse-graph
+fact behind both the Laman strengthened decomposition
+(\cref{thm:isLaman-typeII-reverse-blocker}) and the Phase~7
+sparse-graph reverse decomposition
+(\cref{thm:isSparse-exists-typeI-or-typeII-reverse}). The Laman shell
+adds only the iso~+~edge-count conversion
+$\neg G'.\mathrm{IsLaman} \to \neg G'.\mathrm{IsSparse}$ on top.
+
+\begin{lemma}[Per-pair tight blocker, sparse form]
+  \label{lem:isSparse-typeII-reverse-blocker}
+  \lean{SimpleGraph.IsSparse.typeII_reverse_blocker}
+  \leanok
+  \uses{def:isSparse, def:isTightOn,
+    lem:isSparse-isTightOn-of-le}
+  Let $V$ be finite, let $G$ be $(2, 3)$-sparse on $V$, and fix
+  $v \in V$ and $x, y \in V$ both $\ne v$. Suppose the bridge-augmented
+  candidate $G' := G[\{w \ne v\}] \cup \{\{x, y\}\}$ is \emph{not}
+  $(2, 3)$-sparse. Then there exists a finite $S \subseteq V$ with
+  $v \notin S$, $x, y \in S$, and $S$ $(2, 3)$-tight in $G$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Extract a violating finite $s' \subseteq \{w \ne v\}$ from
+  $\neg G'.\mathrm{IsSparse}$. Lift to
+  $S := \{w.\mathrm{val} : w \in s'\} \subseteq V \setminus \{v\}$.
+  The edges of $G'$ on $s'$ correspond to edges of $G$ on $S$, plus
+  possibly the bridge $\{x, y\}$ when $x, y \in s'$. (In the
+  formalization, this ``correspond to'' is a named project-internal
+  helper that gives the equality
+  $\mathrm{Sym2.map}\;f \,[(G.\mathrm{comap}\;f).\edgesIn{s'}]
+   = \edgesIn[G]{f[s']}$
+  for $f = \mathrm{Subtype.val}$; the cardinality version it feeds
+  needs injectivity of $\mathrm{Sym2.map}\;f$, which is itself a small
+  lift of injectivity of $f$.) Case-split on $x, y \in s'$: in the
+  bridge-included case, the $\le 1$ overcount yields a squeeze that
+  forces $S$ tight in $G$ (\cref{lem:isSparse-isTightOn-of-le}); in
+  the bridge-excluded case, the bridge contributes nothing and the
+  count violates $G$-sparsity directly, contradicting the hypothesis
+  (a vacuous branch).
 \end{proof}

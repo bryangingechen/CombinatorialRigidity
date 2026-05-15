@@ -55,6 +55,14 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
   intersection in a `(k, ℓ)`-sparse graph (subject to the standard `ℓ ≤ k * #(s ∩ t)`
   size proviso). The tight-set lattice closure that the Phase 5 Henneberg-blocker
   argument runs on.
+* `SimpleGraph.image_edgesIn_comap` — `Sym2.map`-image of `(G.comap f).edgesIn s'` is
+  `G.edgesIn (f '' s')`; the comap analogue of `Iso.image_edgesIn`, used by the typeII-
+  reverse blocker to pump edge counts back along the subtype embedding.
+* `SimpleGraph.IsSparse.typeII_reverse_blocker` — per-pair tight-blocker witness for the
+  typeII Henneberg reverse, sparse form: a sparsity violation on the candidate graph
+  `(G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` extracts a tight set in `G` containing both `x` and `y`.
+  The Laman version (`IsLaman.typeII_reverse_blocker` in `Henneberg.lean`) is a thin
+  wrapper.
 
 ## Implementation notes
 
@@ -246,6 +254,24 @@ lemma image_edgesIn (φ : G ≃g H) (s : Set V) :
       fun x hx => by rcases hx with rfl | rfl <;> assumption⟩
 
 end Iso
+
+/-- Under graph comap, the `Sym2.map`-image of `(G.comap f).edgesIn s'` is `G.edgesIn (f '' s')`.
+The image-form equality holds without an injectivity hypothesis on `f`; injectivity lifts to the
+ncard equality used downstream (via `Set.ncard_image_of_injective` on `Sym2.map f`). The
+non-iso analogue of `Iso.image_edgesIn`; the Phase 5 / Phase 7 typeII-reverse blocker pumps the
+candidate graph's edge count back through `G` along the subtype embedding via this lemma. -/
+lemma image_edgesIn_comap (G : SimpleGraph V) {V' : Type*} (f : V' → V) (s' : Set V') :
+    Sym2.map f '' ((G.comap f).edgesIn s') = G.edgesIn (f '' s') := by
+  ext e
+  refine e.ind fun p q => ?_
+  rw [Sym2.mk_mem_image_map_iff]
+  simp only [mem_edgesIn, mem_edgeSet, comap_adj, Sym2.coe_mk, Set.insert_subset_iff,
+             Set.singleton_subset_iff, Set.mem_image]
+  constructor
+  · rintro ⟨u, w, rfl, rfl, hadj, hu, hw⟩
+    exact ⟨hadj, ⟨u, hu, rfl⟩, ⟨w, hw, rfl⟩⟩
+  · rintro ⟨hadj, ⟨u, hu, rfl⟩, ⟨w, hw, rfl⟩⟩
+    exact ⟨u, w, rfl, rfl, hadj, hu, hw⟩
 
 /-- A graph isomorphism preserves `(k, ℓ)`-sparsity. -/
 theorem IsSparse.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
@@ -763,5 +789,121 @@ theorem IsSparse.False_of_pairwise_blocker_or_edge
             hvSab haSab hbSab hSab_tight
             hvSac haSac hcSac hSac_tight
             hvSbc hbSbc hcSbc hSbc_tight
+
+/-! ### Per-pair tight-blocker witness (typeII reverse, sparse form)
+
+The combinatorial heart of the typeII Henneberg reverse: given a `(2, 3)`-sparse graph `G`,
+a vertex `v`, a pair of distinct vertices `x, y` both `≠ v`, and a *failed* candidate
+`G' := (G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` — i.e. `¬ G'.IsSparse 2 3` — extract a `(2, 3)`-tight set
+`S ⊆ V \ {v}` in `G` containing both `x` and `y`. The proof lifts a sparsity-violating Finset
+of `G'` along `Subtype.val` to a Finset of `V \ {v}`, then case-splits on whether the bridge
+edge survives the lift (`xs, ys ∈ s'`): on the bridge-surviving side the squeeze closes via
+`IsSparse.isTightOn_of_le`; on the other side the bridge is forced out and `G`'s sparsity
+contradicts directly.
+
+The Laman-flavored shell (`IsLaman.typeII_reverse_blocker` in `Henneberg.lean`) is a thin
+wrapper: it derives `¬ G'.IsSparse 2 3` from `¬ G'.IsLaman` via the typeII iso plus the global
+edge count, then calls this lemma. Phase 7's sparse-graph reverse decomposition
+(Jordán Lemma 2.1.4(b)) consumes this directly. -/
+
+/-- **Per-pair tight-blocker witness for the typeII Henneberg reverse (sparse form).**
+
+Inputs: a `(2, 3)`-sparse graph `G`; distinct vertices `x, y` both `≠ v`; a sparsity violation
+on the typeII-reverse candidate `G' := (G ↾ {v}ᶜ) ⊔ {bridge(x, y)}`.
+
+Output: a `(2, 3)`-tight set `S` in `G` with `v ∉ S` and `{x, y} ⊆ S`.
+
+The proof extracts a violating Finset `s'` from `¬ G'.IsSparse 2 3` and lifts it to
+`S := s'.image Subtype.val ⊆ V \ {v}`. The bound `(G'.edgesIn ↑s').ncard ≤ (G.edgesIn ↑S).ncard
++ 1` (case `xs, ys ∈ s'`) combined with `G`'s sparsity at `S` gives tightness via
+`IsSparse.isTightOn_of_le`; the remaining case (one of `xs, ys` outside `s'`) drops the `+1` and
+contradicts `G`'s sparsity directly. -/
+theorem IsSparse.typeII_reverse_blocker
+    [Finite V] {G : SimpleGraph V} (h : G.IsSparse 2 3) {v x y : V}
+    (hxv : x ≠ v) (hyv : y ≠ v)
+    (h_not_sparse : ¬ (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+                       fromEdgeSet ({s(⟨x, hxv⟩, ⟨y, hyv⟩)} : Set (Sym2 _))).IsSparse 2 3) :
+    ∃ S : Finset V, v ∉ S ∧ x ∈ S ∧ y ∈ S ∧ G.IsTightOn 2 3 S := by
+  classical
+  set f : {w : V // w ≠ v} → V := Subtype.val with hf_def
+  set xs : {w : V // w ≠ v} := ⟨x, hxv⟩ with hxs_def
+  set ys : {w : V // w ≠ v} := ⟨y, hyv⟩ with hys_def
+  set bridge : Sym2 {w : V // w ≠ v} := s(xs, ys) with hbridge_def
+  set G' : SimpleGraph {w : V // w ≠ v} :=
+    G.comap f ⊔ fromEdgeSet ({bridge} : Set _) with hG'_def
+  -- Extract violating Finset from `¬ G'.IsSparse 2 3`.
+  unfold IsSparse at h_not_sparse
+  push Not at h_not_sparse
+  obtain ⟨s', hs'_card, hviol⟩ := h_not_sparse
+  -- Lift to S = s'.image Subtype.val ⊆ V \ {v}.
+  set S : Finset V := s'.image f with hS_def
+  have hS_card : S.card = s'.card :=
+    Finset.card_image_of_injective s' Subtype.val_injective
+  have hvS : v ∉ S := by
+    intro hmem
+    obtain ⟨w, _, hw⟩ := Finset.mem_image.mp hmem
+    exact w.2 hw
+  -- (G.comap f).edgesIn ↑s' has the same ncard as G.edgesIn ↑S.
+  have h_link : ((G.comap f).edgesIn (↑s' : Set _)).ncard = (G.edgesIn (↑S : Set V)).ncard := by
+    rw [hS_def, Finset.coe_image, ← image_edgesIn_comap,
+        Set.ncard_image_of_injective _ (Sym2.map.injective Subtype.val_injective)]
+  -- G's sparsity at S.
+  have hS_sparse : (G.edgesIn (↑S : Set V)).ncard + 3 ≤ 2 * S.card := by
+    have := h S (by rw [hS_card]; exact hs'_card)
+    exact this
+  -- Case-split on whether both xs, ys ∈ s'.
+  by_cases h_both : xs ∈ s' ∧ ys ∈ s'
+  · -- Case 1: bridge potentially in G'.edgesIn ↑s'. Bound by (G.edgesIn ↑S).ncard + 1.
+    obtain ⟨hxs_in, hys_in⟩ := h_both
+    have h_subset : G'.edgesIn (↑s' : Set _) ⊆
+        (G.comap f).edgesIn (↑s' : Set _) ∪ ({bridge} : Set _) := by
+      intro e he
+      rw [mem_edgesIn] at he
+      obtain ⟨he_edge, he_sub⟩ := he
+      rw [hG'_def, edgeSet_sup] at he_edge
+      rcases he_edge with hin_comap | hin_bridge
+      · exact Or.inl (mem_edgesIn.mpr ⟨hin_comap, he_sub⟩)
+      · rw [edgeSet_fromEdgeSet] at hin_bridge
+        exact Or.inr (Set.diff_subset hin_bridge)
+    have h_ncard_bound : (G'.edgesIn (↑s' : Set _)).ncard ≤
+        (G.edgesIn (↑S : Set V)).ncard + 1 :=
+      calc (G'.edgesIn (↑s' : Set _)).ncard
+          ≤ ((G.comap f).edgesIn (↑s' : Set _) ∪ ({bridge} : Set _)).ncard :=
+            Set.ncard_le_ncard h_subset (Set.toFinite _)
+        _ ≤ ((G.comap f).edgesIn (↑s' : Set _)).ncard + ({bridge} : Set _).ncard :=
+            Set.ncard_union_le _ _
+        _ = (G.edgesIn (↑S : Set V)).ncard + 1 := by
+            rw [h_link, Set.ncard_singleton]
+    have hx_in_S : x ∈ S := by
+      simp only [hS_def, Finset.mem_image]
+      exact ⟨xs, hxs_in, rfl⟩
+    have hy_in_S : y ∈ S := by
+      simp only [hS_def, Finset.mem_image]
+      exact ⟨ys, hys_in, rfl⟩
+    refine ⟨S, hvS, hx_in_S, hy_in_S, ?_⟩
+    refine h.isTightOn_of_le ?_ ?_
+    · rw [hS_card]; exact hs'_card
+    · rw [hS_card]; omega
+  · -- Case 2: one of xs, ys not in s'. Bridge excluded; bound by (G.edgesIn ↑S).ncard.
+    have h_subset : G'.edgesIn (↑s' : Set _) ⊆ (G.comap f).edgesIn (↑s' : Set _) := by
+      intro e he
+      rw [mem_edgesIn] at he ⊢
+      obtain ⟨he_edge, he_sub⟩ := he
+      refine ⟨?_, he_sub⟩
+      rw [hG'_def, edgeSet_sup] at he_edge
+      rcases he_edge with hin_comap | hin_bridge
+      · exact hin_comap
+      · rw [edgeSet_fromEdgeSet, Set.mem_diff, Set.mem_singleton_iff] at hin_bridge
+        obtain ⟨rfl, _⟩ := hin_bridge
+        rw [hbridge_def, Sym2.coe_mk, Set.insert_subset_iff,
+            Set.singleton_subset_iff, Finset.mem_coe, Finset.mem_coe] at he_sub
+        exact absurd he_sub h_both
+    have h_ncard_bound : (G'.edgesIn (↑s' : Set _)).ncard ≤
+        (G.edgesIn (↑S : Set V)).ncard := by
+      rw [← h_link]
+      exact Set.ncard_le_ncard h_subset (Set.toFinite _)
+    exfalso
+    rw [hS_card] at hS_sparse
+    omega
 
 end SimpleGraph
