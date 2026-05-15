@@ -297,6 +297,23 @@ theorem IsTight.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
   have hV : Nat.card W = Nat.card V := Nat.card_congr φ.toEquiv.symm
   grind only [h.2]
 
+/-- The comap of a `(k, ℓ)`-sparse graph along an injective vertex map is `(k, ℓ)`-sparse.
+The proof transports a candidate Finset on the source side to its `f`-image on the target,
+and reads off `(G.comap f)`'s edge count via `image_edgesIn_comap`. The directional analogue
+of `IsSparse.iso`; specialized to `Subtype.val : {w // w ≠ v} → V` by the Phase 7 sparse-graph
+reverse decomposition. -/
+theorem IsSparse.comap {V' : Type*} {G : SimpleGraph V} {k ℓ : ℕ} (h : G.IsSparse k ℓ)
+    {f : V' → V} (hf : Function.Injective f) : (G.comap f).IsSparse k ℓ := by
+  classical
+  intro s' hs'
+  set S : Finset V := s'.image f with hS_def
+  have hS_card : S.card = s'.card := Finset.card_image_of_injective s' hf
+  have h_link : ((G.comap f).edgesIn (↑s' : Set V')).ncard = (G.edgesIn (↑S : Set V)).ncard := by
+    rw [hS_def, Finset.coe_image, ← image_edgesIn_comap,
+        Set.ncard_image_of_injective _ (Sym2.map.injective hf)]
+  rw [h_link, ← hS_card]
+  exact h S (hS_card ▸ hs')
+
 /-- **Squeeze: lower bound forces tight.** In a `(k, ℓ)`-sparse graph, if a Finset `s`
 attains the sparsity upper bound from below, it must be exactly `(k, ℓ)`-tight. Used by
 the Phase 5 typeII-reverse blocker to convert a sparsity violation on a candidate graph
@@ -905,5 +922,134 @@ theorem IsSparse.typeII_reverse_blocker
     exfalso
     rw [hS_card] at hS_sparse
     omega
+
+/-! ### Flat-form Henneberg reverse decomposition
+
+In a `(2, 3)`-sparse graph with at least one edge, a Henneberg reverse step exists: either a
+low-degree vertex can be deleted (Type I reverse) or a degree-3 vertex with a non-adjacent
+neighbor pair can be split (Type II reverse). The sparse analogue of Phase 5 milestone 1
+(`IsLaman.exists_typeI_or_typeII_reverse` in `Henneberg.lean`), stated in **flat form** per
+`DESIGN.md` *Statement-form conventions*: the conclusion describes the smaller graph by its
+edges directly (`G - v` as `G.comap Subtype.val`, the typeII candidate as
+`G.comap Subtype.val ⊔ fromEdgeSet {bridge}`) rather than via the `typeI` / `typeII` Henneberg
+operations.
+
+Proof structure (Jordán Lemma 2.1.4): pick a degree-`≤ 3` vertex `v` via
+`IsSparse.exists_degree_le_three`; if `G.degree v ≤ 2`, the Type I branch closes via
+`IsSparse.comap`; if `G.degree v = 3`, run the per-pair witness-or-blocker dispatch using
+`IsSparse.typeII_reverse_blocker` and combine three blockers via
+`IsSparse.False_of_pairwise_blocker_or_edge`. -/
+
+/-- **Flat-form Henneberg reverse decomposition (Jordán Lemma 2.1.4).** Every `(2, 3)`-sparse
+graph with at least one edge admits a Henneberg reverse: either some vertex `v` has degree
+`≤ 2` and the induced subgraph on `{w // w ≠ v}` is `(2, 3)`-sparse (Type I reverse), or some
+vertex `v` has degree exactly `3` with three neighbors `x, y, c` and a non-adjacent pair
+`(x, y)` such that the induced subgraph augmented with the bridging edge `s(x, y)` is
+`(2, 3)`-sparse (Type II reverse).
+
+The sparse analogue of Phase 5 milestone 1's `IsLaman.exists_typeI_or_typeII_reverse`. Stated
+in flat form: the smaller graphs are described by their explicit edge constructions rather
+than via the typeI / typeII Henneberg operations (see `DESIGN.md` *Statement-form
+conventions*). Phase 7's row-LI lift consumers reconstruct the operation form at each step
+via `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` in `Henneberg.lean`. -/
+theorem IsSparse.exists_typeI_or_typeII_reverse [Fintype V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsSparse 2 3)
+    (hE : G.edgeSet.Nonempty) :
+    ∃ v : V,
+      (G.degree v ≤ 2 ∧
+        (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsSparse 2 3)
+      ∨
+      (G.degree v = 3 ∧
+        ∃ x y c : {w : V // w ≠ v}, x ≠ y ∧ c ≠ x ∧ c ≠ y ∧
+          (∀ w : V, G.Adj v w ↔ w = x.val ∨ w = y.val ∨ w = c.val) ∧
+          ¬ G.Adj x.val y.val ∧
+          (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+            fromEdgeSet ({s(x, y)} : Set _)).IsSparse 2 3) := by
+  classical
+  -- Derive `2 ≤ |V|` from `|E| ≥ 1`: any edge connects two distinct vertices.
+  have hV : 2 ≤ Fintype.card V := by
+    obtain ⟨e, he⟩ := hE
+    refine e.ind (fun a b he => ?_) he
+    rw [mem_edgeSet] at he
+    calc 2 = ({a, b} : Finset V).card := (Finset.card_pair (G.ne_of_adj he)).symm
+      _ ≤ Fintype.card V := Finset.card_le_univ _
+  obtain ⟨v, hvdeg⟩ := h.exists_degree_le_three hV
+  refine ⟨v, ?_⟩
+  by_cases hdeg2 : G.degree v ≤ 2
+  · -- Type I branch: G' = G.comap Subtype.val is sparse via `IsSparse.comap`.
+    exact Or.inl ⟨hdeg2, h.comap Subtype.val_injective⟩
+  · -- Type II branch: degree v = 3. For each pair of neighbors, dispatch
+    -- `witness ∨ Adj ∨ blocker`; short-circuit on any witness; otherwise feed the three
+    -- `Adj ∨ blocker` disjunctions to `IsSparse.False_of_pairwise_blocker_or_edge` together
+    -- with the non-adj disjunction from `IsSparse.exists_nonadj_among_three_neighbors`.
+    push Not at hdeg2
+    have hdeg3 : G.degree v = 3 := by omega
+    refine Or.inr ⟨hdeg3, ?_⟩
+    obtain ⟨a, b, c, hab, hac, hbc, hN_eq⟩ := Finset.card_eq_three.mp hdeg3
+    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c := fun w => by
+      rw [← mem_neighborFinset, hN_eq]; simp
+    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
+    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr (Or.inl rfl))
+    have hc_adj : G.Adj v c := (hN_iff c).mpr (Or.inr (Or.inr rfl))
+    have hva : v ≠ a := G.ne_of_adj ha_adj
+    have hvb : v ≠ b := G.ne_of_adj hb_adj
+    have hvc : v ≠ c := G.ne_of_adj hc_adj
+    have hN_iff_acb : ∀ w, G.Adj v w ↔ w = a ∨ w = c ∨ w = b := fun w => by
+      rw [hN_iff]; tauto
+    have hN_iff_bca : ∀ w, G.Adj v w ↔ w = b ∨ w = c ∨ w = a := fun w => by
+      rw [hN_iff]; tauto
+    -- Result type for a non-adjacent-pair typeII reverse witness.
+    let WitnessType := ∃ x y c' : {w : V // w ≠ v}, x ≠ y ∧ c' ≠ x ∧ c' ≠ y ∧
+      (∀ w : V, G.Adj v w ↔ w = x.val ∨ w = y.val ∨ w = c'.val) ∧
+      ¬ G.Adj x.val y.val ∧
+      (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+        fromEdgeSet ({s(x, y)} : Set _)).IsSparse 2 3
+    -- Per-pair dispatch: `witness ∨ Adj ∨ blocker`. The blocker side feeds into
+    -- `False_of_pairwise_blocker_or_edge`; the witness side short-circuits.
+    have h_ab : WitnessType ∨ G.Adj a b ∨
+        ∃ S : Finset V, v ∉ S ∧ a ∈ S ∧ b ∈ S ∧ G.IsTightOn 2 3 S := by
+      by_cases hab_adj : G.Adj a b
+      · exact Or.inr (Or.inl hab_adj)
+      · by_cases hsparse : (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+            fromEdgeSet ({s(⟨a, hva.symm⟩, ⟨b, hvb.symm⟩)} : Set _)).IsSparse 2 3
+        · exact Or.inl ⟨⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩,
+            fun heq => hab (Subtype.mk.injEq .. |>.mp heq),
+            fun heq => hac.symm (Subtype.mk.injEq .. |>.mp heq),
+            fun heq => hbc.symm (Subtype.mk.injEq .. |>.mp heq),
+            hN_iff, hab_adj, hsparse⟩
+        · exact Or.inr (Or.inr (h.typeII_reverse_blocker hva.symm hvb.symm hsparse))
+    have h_ac : WitnessType ∨ G.Adj a c ∨
+        ∃ S : Finset V, v ∉ S ∧ a ∈ S ∧ c ∈ S ∧ G.IsTightOn 2 3 S := by
+      by_cases hac_adj : G.Adj a c
+      · exact Or.inr (Or.inl hac_adj)
+      · by_cases hsparse : (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+            fromEdgeSet ({s(⟨a, hva.symm⟩, ⟨c, hvc.symm⟩)} : Set _)).IsSparse 2 3
+        · exact Or.inl ⟨⟨a, hva.symm⟩, ⟨c, hvc.symm⟩, ⟨b, hvb.symm⟩,
+            fun heq => hac (Subtype.mk.injEq .. |>.mp heq),
+            fun heq => hab.symm (Subtype.mk.injEq .. |>.mp heq),
+            fun heq => hbc (Subtype.mk.injEq .. |>.mp heq),
+            hN_iff_acb, hac_adj, hsparse⟩
+        · exact Or.inr (Or.inr (h.typeII_reverse_blocker hva.symm hvc.symm hsparse))
+    have h_bc : WitnessType ∨ G.Adj b c ∨
+        ∃ S : Finset V, v ∉ S ∧ b ∈ S ∧ c ∈ S ∧ G.IsTightOn 2 3 S := by
+      by_cases hbc_adj : G.Adj b c
+      · exact Or.inr (Or.inl hbc_adj)
+      · by_cases hsparse : (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+            fromEdgeSet ({s(⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩)} : Set _)).IsSparse 2 3
+        · exact Or.inl ⟨⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩, ⟨a, hva.symm⟩,
+            fun heq => hbc (Subtype.mk.injEq .. |>.mp heq),
+            fun heq => hab (Subtype.mk.injEq .. |>.mp heq),
+            fun heq => hac (Subtype.mk.injEq .. |>.mp heq),
+            hN_iff_bca, hbc_adj, hsparse⟩
+        · exact Or.inr (Or.inr (h.typeII_reverse_blocker hvb.symm hvc.symm hsparse))
+    rcases h_ab with witness | h_ab
+    · exact witness
+    rcases h_ac with witness | h_ac
+    · exact witness
+    rcases h_bc with witness | h_bc
+    · exact witness
+    exact absurd
+      (h.False_of_pairwise_blocker_or_edge ha_adj hb_adj hc_adj hab hac hbc h_ab h_ac h_bc
+        (h.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc)) id
 
 end SimpleGraph
