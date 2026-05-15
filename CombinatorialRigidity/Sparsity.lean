@@ -4,7 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.EdgesIn
+import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Finite
 import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
+import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Data.Set.Card
 
@@ -36,6 +38,10 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
   inclusion.
 * `SimpleGraph.bot_isTight_iff` — characterisation of when the empty graph is tight.
 * `SimpleGraph.IsSparse.edgeSet_ncard_add_le` — global edge count bound.
+* `SimpleGraph.IsSparse.exists_degree_le_three` — every `(2, 3)`-sparse graph on
+  `n ≥ 2` vertices has a vertex of degree at most 3.
+* `SimpleGraph.IsSparse.exists_nonadj_among_three_neighbors` — in a `(2, 3)`-sparse
+  graph, three pairwise distinct neighbors of any vertex contain a non-adjacent pair.
 * `SimpleGraph.IsSparse.deleteEdges` — sparsity preserved under edge deletion.
 * `SimpleGraph.IsTight.not_isSparse_of_lt` — proper supergraph of a tight graph is not sparse.
 * `SimpleGraph.IsSparse.iso`, `SimpleGraph.IsTight.iso` — sparsity and tightness are
@@ -126,6 +132,80 @@ theorem IsSparse.edgeSet_ncard_add_le [Finite V] {G : SimpleGraph V} {k ℓ : �
 theorem IsSparse.deleteEdges {G : SimpleGraph V} {k ℓ : ℕ}
     (h : G.IsSparse k ℓ) (s : Set (Sym2 V)) : (G.deleteEdges s).IsSparse k ℓ :=
   h.mono_left (G.deleteEdges_le s)
+
+/-! ### Low-degree vertex in `(2, 3)`-sparse graphs
+
+A `(2, 3)`-sparse graph on `n ≥ 2` vertices has `#E ≤ 2n − 3`, so by handshake the
+average degree is `< 4` and some vertex has degree at most 3. Both the Phase 5 Henneberg
+induction on Laman graphs (`IsLaman.exists_two_le_degree_le_three`) and the Phase 7
+sparse-graph reverse decomposition (Jordán Lemma 2.1.4) depend on this. -/
+
+/-- In a `(2, 3)`-sparse graph on `n ≥ 2` vertices, some vertex has degree at most 3.
+The handshake identity gives `∑ deg = 2 #E ≤ 4n − 6`, so the average is `< 4` and some
+vertex has degree `≤ 3`. -/
+theorem IsSparse.exists_degree_le_three [Fintype V]
+    {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsSparse 2 3)
+    (hV : 2 ≤ Fintype.card V) :
+    ∃ v, G.degree v ≤ 3 := by
+  by_contra hcontra
+  push Not at hcontra
+  -- Sum of degrees ≥ 4n; handshake + sparsity gives sum ≤ 4n - 6 < 4n.
+  have h4n : ∑ _ : V, (4 : ℕ) ≤ ∑ v, G.degree v :=
+    Finset.sum_le_sum (fun v _ => by have := hcontra v; omega)
+  simp at h4n
+  have hsum := G.sum_degrees_eq_twice_card_edges
+  have hEcoe := G.ncard_edgeSet_eq_card_edgeFinset
+  have hE := h.edgeSet_ncard_add_le (by rw [Nat.card_eq_fintype_card]; omega)
+  grind only [Nat.card_eq_fintype_card]
+
+/-! ### Non-adjacent pair among three neighbors
+
+In a `(2, 3)`-sparse graph, any three neighbors of a single vertex contain a non-adjacent
+pair. This is the combinatorial input for the Type II Henneberg reverse move: given a
+degree-3 vertex with neighbors `a, b, c`, we use this lemma to pick the two non-adjacent
+ones to bridge with a fresh edge. Both `IsLaman.exists_typeI_or_typeII_reverse`
+(Phase 5 milestone 1) and `IsSparse.exists_typeI_or_typeII_reverse` (Phase 7) depend on
+this; the proof uses sparsity, not tightness. -/
+
+/-- In a `(2, 3)`-sparse graph, three pairwise distinct neighbors of any vertex contain
+a non-adjacent pair. Apply sparsity to the 4-set `{v, a, b, c}` (size 4, so at most
+`2·4 − 3 = 5` edges); the three edges `v-a`, `v-b`, `v-c` are present, so among
+`{a, b, c}` there are at most 2 edges, hence at least one of the three possible pairs is
+missing. -/
+theorem IsSparse.exists_nonadj_among_three_neighbors [Finite V]
+    {G : SimpleGraph V} (h : G.IsSparse 2 3) {v a b c : V}
+    (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
+    ¬ G.Adj a b ∨ ¬ G.Adj a c ∨ ¬ G.Adj b c := by
+  classical
+  have : Fintype V := Fintype.ofFinite V
+  by_contra hall
+  push Not at hall
+  obtain ⟨hab_e, hac_e, hbc_e⟩ := hall
+  have hva : v ≠ a := G.ne_of_adj ha
+  have hvb : v ≠ b := G.ne_of_adj hb
+  have hvc : v ≠ c := G.ne_of_adj hc
+  -- The 4-set `{v, a, b, c}` has cardinality 4.
+  have hs_card : ({v, a, b, c} : Finset V).card = 4 := by
+    grind [Finset.card_insert_of_notMem, Finset.card_singleton]
+  -- The 6 candidate edges form a 6-element Finset, all contained in `G.edgesIn ↑{v,a,b,c}`.
+  set E : Finset (Sym2 V) :=
+    {s(v, a), s(v, b), s(v, c), s(a, b), s(a, c), s(b, c)} with hE_def
+  have hE_card : E.card = 6 := by
+    rw [hE_def]
+    grind [Finset.card_insert_of_notMem, Finset.card_singleton, Sym2.eq_iff]
+  have hE_sub : (↑E : Set (Sym2 V)) ⊆ G.edgesIn (↑({v, a, b, c} : Finset V) : Set V) := by
+    intro e he
+    simp only [hE_def, Finset.coe_insert, Finset.coe_singleton, Set.mem_insert_iff,
+               Set.mem_singleton_iff] at he
+    rcases he with rfl | rfl | rfl | rfl | rfl | rfl <;>
+      exact mem_edgesIn.mpr ⟨by rwa [mem_edgeSet],
+        by rw [Sym2.coe_mk]; rintro _ (rfl | rfl) <;> simp⟩
+  have hsparse := h {v, a, b, c} (by omega)
+  have h6_le : 6 ≤ (G.edgesIn (↑({v, a, b, c} : Finset V) : Set V)).ncard := by
+    rw [← hE_card, ← Set.ncard_coe_finset]
+    exact Set.ncard_le_ncard hE_sub
+  omega
 
 /-- A proper supergraph of a `(k, ℓ)`-tight graph cannot be `(k, ℓ)`-sparse: the global edge bound
 is already saturated, so any extra edge violates it. -/

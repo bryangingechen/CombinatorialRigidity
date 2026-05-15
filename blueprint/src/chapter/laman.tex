@@ -75,8 +75,9 @@ $K_2$.
 The two facts of this subsection are the Henneberg-induction lever:
 in a Laman graph on $n \ge 3$ vertices, every vertex has degree at
 least 2 (so we cannot reverse a Type~I move at a vertex of degree~1),
-and some vertex has degree at most 3 (so we can always reverse a
-Type~I or Type~II move).
+and some vertex has degree at most 3 (the general
+$(2,3)$-sparse fact \cref{lem:isSparse-exists-degree-le-three}), so we
+can always reverse a Type~I or Type~II move.
 
 \begin{lemma}[Minimum degree]
   \label{lem:isLaman-two-le-degree}
@@ -96,60 +97,18 @@ Type~I or Type~II move).
   $\deg_G(v) \ge 2$.
 \end{proof}
 
-\begin{lemma}[A vertex of degree at most 3]
-  \label{lem:isLaman-exists-degree-le-three}
-  \lean{SimpleGraph.IsLaman.exists_degree_le_three}
-  \leanok
-  \uses{def:isLaman}
-  Every Laman graph $G$ on a finite vertex type has a vertex of $G$-degree
-  at most $3$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Suppose every vertex had degree at least $4$. Then the handshake
-  identity gives
-  $2|E(G)| = \sum_v \deg_G(v) \ge 4|V|$.
-  But tightness $|E(G)| + 3 = 2|V|$ rewrites the left-hand side as
-  $2|E(G)| = 4|V| - 6 < 4|V|$, a contradiction.
-\end{proof}
-
 \begin{lemma}[A vertex of degree 2 or 3]
   \label{lem:isLaman-exists-two-le-degree-le-three}
   \lean{SimpleGraph.IsLaman.exists_two_le_degree_le_three}
   \leanok
-  \uses{lem:isLaman-two-le-degree, lem:isLaman-exists-degree-le-three}
+  \uses{lem:isLaman-two-le-degree, lem:isSparse-exists-degree-le-three}
   Let $G$ be Laman on a finite vertex type with $|V| \ge 3$. Then there
   exists $v \in V$ with $2 \le \deg_G(v) \le 3$.
 \end{lemma}
 \begin{proof}
   \leanok
   Pick a vertex of degree at most 3 by
-  \cref{lem:isLaman-exists-degree-le-three} and apply
-  \cref{lem:isLaman-two-le-degree} to lower-bound its degree by 2.
-\end{proof}
-
-\subsection{A non-adjacent pair among three neighbors}
-
-The next lemma is the combinatorial input for the Type~II Henneberg
-move in \cref{sec:intro}: given a degree-3 vertex with neighbors $a, b,
-c$, we will need to pick the two of them that are not yet adjacent in
-order to add a bridging edge. It lives in this chapter because the
-proof depends only on the Laman counts at the 4-set $\{v, a, b, c\}$.
-
-\begin{lemma}[Non-adjacent pair among three neighbors]
-  \label{lem:isLaman-exists-nonadj-among-three-neighbors}
-  \lean{SimpleGraph.IsLaman.exists_nonadj_among_three_neighbors}
-  \leanok
-  \uses{def:isLaman}
-  Let $G$ be Laman on a finite vertex type and let $v \in V$ have three
-  pairwise distinct neighbors $a, b, c$. Then at least one of the pairs
-  $\{a, b\}$, $\{a, c\}$, $\{b, c\}$ is non-adjacent in $G$.
-\end{lemma}
-\begin{proof}
-  \leanok
-  Suppose all three pairs were adjacent. Then the 4-set $\{v, a, b, c\}$
-  would span the 6 edges
-  $\{v\text{-}a, v\text{-}b, v\text{-}c, a\text{-}b, a\text{-}c, b\text{-}c\}$,
-  so $|\edgesIn{\{v, a, b, c\}}| \ge 6$. But $(2,3)$-sparsity at the
-  4-set gives $|\edgesIn{\{v, a, b, c\}}| \le 2 \cdot 4 - 3 = 5$.
+  \cref{lem:isSparse-exists-degree-le-three} (Laman implies $(2,3)$-sparse;
+  $|V| \ge 3 \ge 2$) and apply \cref{lem:isLaman-two-le-degree} to
+  lower-bound its degree by 2.
 \end{proof}

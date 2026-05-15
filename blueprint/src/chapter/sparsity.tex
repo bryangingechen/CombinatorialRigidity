@@ -245,6 +245,51 @@ $k = 2$, $\ell = 3$ for the Laman case in \cref{sec:intro}).
   $(k,\ell)$-sparsity of $H$.
 \end{proof}
 
+\subsection{Low-degree vertex and non-adjacency consequences}
+
+Two specializations of the global edge bound at $(k, \ell) = (2, 3)$
+feed the Henneberg constructions for both Laman graphs (Phase~5
+milestone~1) and arbitrary $(2,3)$-sparse graphs (Phase~7 sparse-graph
+reverse decomposition). The first uses the handshake identity to show
+that some vertex has degree $\le 3$; the second applies the sparsity
+bound at a 4-vertex subset to show that any three neighbors of a vertex
+contain a non-adjacent pair.
+
+\begin{lemma}[A vertex of degree at most 3]
+  \label{lem:isSparse-exists-degree-le-three}
+  \lean{SimpleGraph.IsSparse.exists_degree_le_three}
+  \leanok
+  \uses{def:isSparse, lem:isSparse-edgeSet-bound}
+  Let $V$ be finite with $|V| \ge 2$ and let $G$ be $(2,3)$-sparse. Then
+  there exists $v \in V$ with $G$-degree at most $3$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Suppose every vertex had degree at least $4$. Then the handshake
+  identity gives $2|E(G)| = \sum_v \deg_G(v) \ge 4|V|$. But the
+  global edge bound (\cref{lem:isSparse-edgeSet-bound} at
+  $(k, \ell) = (2, 3)$, valid because $|V| \ge 2$) rewrites the
+  left-hand side as $2|E(G)| \le 4|V| - 6 < 4|V|$, a contradiction.
+\end{proof}
+
+\begin{lemma}[Non-adjacent pair among three neighbors]
+  \label{lem:isSparse-exists-nonadj-among-three-neighbors}
+  \lean{SimpleGraph.IsSparse.exists_nonadj_among_three_neighbors}
+  \leanok
+  \uses{def:isSparse}
+  Let $V$ be finite and let $G$ be $(2,3)$-sparse. Suppose $v \in V$ has
+  three pairwise distinct neighbors $a, b, c$. Then at least one of the
+  pairs $\{a, b\}$, $\{a, c\}$, $\{b, c\}$ is non-adjacent in $G$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Suppose all three pairs were adjacent. Then the 4-set $\{v, a, b, c\}$
+  would span the 6 edges
+  $\{v\text{-}a, v\text{-}b, v\text{-}c, a\text{-}b, a\text{-}c, b\text{-}c\}$,
+  so $|\edgesIn{\{v, a, b, c\}}| \ge 6$. But $(2,3)$-sparsity at the
+  4-set gives $|\edgesIn{\{v, a, b, c\}}| \le 2 \cdot 4 - 3 = 5$.
+\end{proof}
+
 \subsection{Transport along graph isomorphism}
 
 Both sparsity and tightness are isomorphism invariants. The transport

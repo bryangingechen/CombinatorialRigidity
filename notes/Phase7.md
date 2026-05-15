@@ -13,22 +13,34 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Just started. Phase 6 closed Laman's theorem in both directions; the
-project carries no `sorry`s. Phase 7 builds on top of Phase 6's
-row-LI infrastructure (`RigidityMatroid.lean`) to ship the converse
-of the Lovász–Yemini "easy direction" already in place, completing
-the rigidity-matroid ↔ $(2, 3)$-count matroid identification in
-dim 2 and packaging the rigidity matroid as a
+Phase 6 closed Laman's theorem in both directions; the project
+carries no `sorry`s. Phase 7 builds on top of Phase 6's row-LI
+infrastructure (`RigidityMatroid.lean`) to ship the converse of the
+Lovász–Yemini "easy direction" already in place, completing the
+rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
+and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-The first concrete commits will be the Henneberg-style row-LI
-lifting lemmas (Type I and Type II) on which the inductive structure
-rests. The leaf-most red nodes in the dep-graph at session start are
-the Type I row-LI lift, the Type II row-LI lift, and the
-sparse-graph reverse decomposition
-`IsSparse.exists_typeI_or_typeII_reverse` (Jordán Lemma 2.1.4); all
-three stack only on Phase 1–6 infrastructure and can proceed in
-parallel.
+The first commit (this one) lifts two Phase 5 Laman lemmas to
+`IsSparse` versions in `Sparsity.lean` —
+`IsSparse.exists_degree_le_three` and
+`IsSparse.exists_nonadj_among_three_neighbors`. The Laman wrappers
+(`IsLaman.exists_degree_le_three`,
+`IsLaman.exists_nonadj_among_three_neighbors`) are deleted; the
+former's one caller (`IsLaman.exists_two_le_degree_le_three`) and the
+latter's two callers (in `Henneberg.lean`) now invoke
+`h.isSparse.foo` directly. Blueprint follows: the two entries move
+from `chapter/laman.tex` to `chapter/sparsity.tex` under a new
+*Low-degree vertex and non-adjacency consequences* subsection.
+
+Next: lift Phase 5's private `IsLaman.*` blocker machinery in
+`Henneberg.lean` (`no_isTightOn_excluding_three_neighbors`,
+`typeII_reverse_witness_or_blocker`, the three contradiction
+templates, `False_of_pairwise_blocker_or_edge`) to `IsSparse`. Then
+land `IsSparse.exists_typeI_or_typeII_reverse` (Jordán Lemma 2.1.4)
+and re-derive `IsLaman.exists_typeI_or_typeII_reverse` from it.
+Downstream: Type I and Type II row-LI lifts, the inductive existence
+theorem, and the `IndepMatroid` packaging.
 
 ## Architectural choices made up front
 
@@ -91,7 +103,17 @@ A red node = not yet formalized; a green node = formalized and
 
 ## Decisions made during this phase
 
-_None yet — phase just starting._
+- **Generalize, do not duplicate.** Where Phase 5's Laman-only lemmas
+  actually use sparsity (not tightness) in their proof, lift the
+  hypothesis from `IsLaman` to `IsSparse` and delete the Laman
+  wrapper; rewrite callers to use `h.isSparse.foo` directly. First
+  pass: `exists_degree_le_three` and
+  `exists_nonadj_among_three_neighbors` moved to `Sparsity.lean`.
+  Next pass will do the same for the private Henneberg blocker
+  machinery. Rationale: a one-line forwarder `IsLaman.foo (h : ...) := h.isSparse.foo` is
+  just duplication at the API level; eliminating it keeps the
+  Laman/sparse split honest about which lemmas genuinely need
+  tightness.
 
 ## Blockers / open questions
 

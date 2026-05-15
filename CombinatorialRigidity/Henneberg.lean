@@ -554,7 +554,7 @@ Proof outline:
 * Pick a vertex `v` of degree 2 or 3 via `IsLaman.exists_two_le_degree_le_three`.
 * Degree 2: `G'` is the induced subgraph and `a, b` are the two `v`-neighbors.
 * Degree 3: pick a non-adjacent neighbor pair `{a, b}` (via
-  `IsLaman.exists_nonadj_among_three_neighbors`) and the third neighbor `c`; `G'` is the induced
+  `IsSparse.exists_nonadj_among_three_neighbors`) and the third neighbor `c`; `G'` is the induced
   subgraph augmented with the bridging edge `s(a, b)`. -/
 theorem IsLaman.exists_typeI_or_typeII_iso [Fintype V]
     {G : SimpleGraph V} (h : G.IsLaman)
@@ -587,7 +587,7 @@ theorem IsLaman.exists_typeI_or_typeII_iso [Fintype V]
     have hva : v ≠ a := G.ne_of_adj ha_adj
     have hvb : v ≠ b := G.ne_of_adj hb_adj
     have hvc : v ≠ c := G.ne_of_adj hc_adj
-    rcases h.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc with
+    rcases h.isSparse.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc with
       hnab | hnac | hnbc
     · exact (typeII_branch_of_nonadj hva hvb hvc hab hac.symm hbc.symm hN_iff hnab).imp
         fun _ => Or.inr
@@ -1203,7 +1203,7 @@ Type I or Type II Henneberg move applied to a **Laman** graph `G'` on `{w : V //
 Strengthens `IsLaman.exists_typeI_or_typeII_iso` by additionally asserting `G'.IsLaman`. The
 degree-2 branch closes via `typeI_isLaman_iff` (iso transport from `G`'s Laman to
 `(typeI G' a b).IsLaman` then peel off typeI). The degree-3 branch is the deep step: pick a
-non-adjacent neighbor pair via `IsLaman.exists_nonadj_among_three_neighbors`; if its typeII
+non-adjacent neighbor pair via `IsSparse.exists_nonadj_among_three_neighbors`; if its typeII
 reverse is Laman, return; if not, the per-pair `typeII_reverse_blocker` yields a tight
 blocker, and case analysis on the three pairs assembles a tight set in `V \ {v}` containing
 all three neighbors of `v`, contradicting `IsLaman.no_isTightOn_excluding_three_neighbors`.
@@ -1295,7 +1295,7 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
     exact absurd
       (IsLaman.False_of_pairwise_blocker_or_edge h ha_adj hb_adj hc_adj hab hac hbc
         h_ab h_ac h_bc
-        (h.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc)) id
+        (h.isSparse.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc)) id
 
 end Henneberg
 

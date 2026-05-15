@@ -273,7 +273,7 @@ the strengthened theorem reuses the iso witness it produces.
   \leanok
   \uses{def:isLaman, def:typeI, def:typeII,
     lem:isLaman-exists-two-le-degree-le-three,
-    lem:isLaman-exists-nonadj-among-three-neighbors}
+    lem:isSparse-exists-nonadj-among-three-neighbors}
   Let $G$ be Laman on a finite vertex type $V$ with $|V| \ge 3$. Then
   there exist $v \in V$ and a graph $G'$ on $\{w : V \mid w \ne v\}$
   such that either
@@ -304,7 +304,7 @@ the strengthened theorem reuses the iso witness it produces.
   upgrades to a graph iso $G \simeq \mathrm{typeI}\,G'\,a\,b$.
 
   \emph{Degree~$3$.} Let $\{a, b, c\} = N_G(v)$. By
-  \cref{lem:isLaman-exists-nonadj-among-three-neighbors} at least one
+  \cref{lem:isSparse-exists-nonadj-among-three-neighbors} at least one
   pair among $\{a, b\}, \{a, c\}, \{b, c\}$ is non-adjacent in $G$;
   relabel so this is $\{a, b\}$. Let $G'$ be the induced subgraph
   $G[\{w \ne v\}]$ \emph{augmented} with the bridging edge
@@ -390,7 +390,7 @@ sparsity of $G$ at $\{v\} \cup N_G(v)$.
     thm:isLaman-typeII-reverse-blocker,
     thm:isTightOn-union-inter,
     lem:isLaman-exists-two-le-degree-le-three,
-    lem:isLaman-exists-nonadj-among-three-neighbors}
+    lem:isSparse-exists-nonadj-among-three-neighbors}
   Let $G$ be Laman on a finite vertex type $V$ with $|V| \ge 3$. Then
   there exist $v \in V$ and a \textbf{Laman} graph $G'$ on
   $\{w : V \mid w \ne v\}$ such that either
@@ -417,7 +417,7 @@ sparsity of $G$ at $\{v\} \cup N_G(v)$.
   Type~II candidate built from that pair is either Laman (return it)
   or, by \cref{thm:isLaman-typeII-reverse-blocker}, yields a tight set
   $S \subseteq V \setminus \{v\}$ containing the pair. By
-  \cref{lem:isLaman-exists-nonadj-among-three-neighbors} at least one
+  \cref{lem:isSparse-exists-nonadj-among-three-neighbors} at least one
   pair is non-adjacent, so the all-adjacent leaf is vacuous; what
   remains is the contradiction step from the accumulated blockers,
   which splits on how many of the three pairs are non-adjacent.
