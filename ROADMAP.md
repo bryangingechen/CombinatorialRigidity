@@ -109,17 +109,21 @@ decompositions land (`typeI_edgeSet[_ncard]`, `typeII_edgeSet[_ncard]`).
 Iso transport (`IsSparse.iso`, `IsTight.iso`, `IsLaman.iso`, plus
 `Iso.image_edgesIn`) lifts Laman across graph isomorphisms. The
 `K₄ \ e` worked example (`top_fin_four_minus_edge_isLaman`) ties
-these together. The structural decomposition iso
-`IsLaman.exists_typeI_or_typeII_iso` says every Laman graph on
-`n ≥ 3` vertices is iso to a Type I or Type II move on *some* `G'`;
-`G'` is the induced subgraph (plus a bridging edge for typeII).
+these together. The canonical iso constructors
+`typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors`
+package the iso `G ≃g typeI G' a b` (resp. `…typeII…`) from
+neighborhood data at a chosen vertex; downstream phases consume these
+to bridge flat-form reverse decompositions with operation-form forward
+preservation theorems.
 
-The strengthened "the same `G'` is Laman" version
-(`IsLaman.exists_typeI_or_typeII_reverse`) is **not** delivered: it
-requires the classical Henneberg blocker argument, since the typeII
-reverse can fail for an arbitrary non-adjacent pair (concrete
-6-vertex counter-example in `notes/Phase3.md` "Decisions made"). It
-is treated as a Phase 5 prerequisite — see §5 below.
+The structural decomposition theorem
+(`IsLaman.exists_typeI_or_typeII_reverse`, now in flat form per Phase 7
+Commit 6) lives in `Henneberg.lean`. Phase 3 originally shipped only
+the iso-only half (no `G'.IsLaman` claim) because the typeII reverse
+can fail for an arbitrary non-adjacent pair (concrete 6-vertex
+counter-example in `notes/Phase3.md`); the strengthened claim with
+`G'.IsLaman` was deferred to Phase 5 — see §5 below — and re-presented
+in flat form in Phase 7.
 
 See `notes/Phase3.md` for the full lemma list and phase-specific
 decisions.

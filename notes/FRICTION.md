@@ -99,14 +99,14 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** open (project-internal note). Promote to
   `TACTICS-QUIRKS.md` if the same shape bites in a second proof.
 
-### [open] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
+### [resolved] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
 - **Where it bit:** Phase 3 close, while planning
   `IsLaman.exists_typeI_or_typeII_reverse`.
 - **Friction:** The Phase-3-start hand-off identified "find non-adjacent
   neighbors among the three degree-3 neighbors" as the tricky piece.
   That part is straightforward (sparsity at `{v, a, b, c}` ⇒ ≤ 2 edges
   among `{a, b, c}` ⇒ a non-adjacent pair exists; see
-  `IsLaman.exists_nonadj_among_three_neighbors`). The genuinely hard
+  `IsSparse.exists_nonadj_among_three_neighbors`). The genuinely hard
   piece is showing that *for some* non-adjacent pair `{a, b}`, the
   reconstructed `G' := (G - v) + edge(a, b)` is Laman. An arbitrary
   non-adjacent pair does **not** suffice: concrete counter-example,
@@ -117,12 +117,18 @@ housekeeping pass once their resolution is fully indexed.
   the other non-adjacent pair `{y, z}` does work — but the
   combinatorial choice is the heart of Henneberg's classical theorem
   and requires several pages of contradiction/blocker reasoning.
-- **Proposed fix:** Phase 3 ships the iso-only half
-  (`IsLaman.exists_typeI_or_typeII_iso`); the
-  Laman-preservation half is deferred to Phase 5 and may either be
-  proved directly (Henneberg blocker) or bypassed via the rigidity
-  matroid (see ROADMAP §5 *Carryover from Phase 3*).
-- **Status:** open (Phase-5-bound).
+- **Resolution:** Phase 5 delivered the Laman-preservation half via
+  the Henneberg blocker argument (the per-pair tight-blocker witness
+  combined via `IsTightOn.union_inter`); Phase 7 lifted the proof
+  core to `IsSparse` (`IsSparse.typeII_reverse_blocker` +
+  `IsSparse.exists_typeI_or_typeII_reverse`) and re-presented the
+  Laman conclusion in flat form
+  (`IsLaman.exists_typeI_or_typeII_reverse`, Henneberg.lean) as a thin
+  shell over the sparse version. The operation-form intermediates that
+  Phase 5 routed through (`exists_typeI_or_typeII_iso`,
+  `IsLaman.typeII_reverse_blocker`, `typeII_reverse_witness_or_blocker`)
+  were deleted in Phase 7 Commit 6.
+- **Status:** resolved (Phase 5 + Phase 7 Commit 6).
 
 ### [resolved] No mathlib `LinearIndependent ![u, v] ↔ det ≠ 0` in dim 2
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
@@ -329,8 +335,10 @@ limitations. Worth a once-over so future agents don't re-litigate.
   commutativity or distributivity on atoms*.
 
 ### [wontfix] `omega` treats `set`-aliased terms as opaque atoms
-- **Where it bit:** `IsLaman.typeII_reverse_blocker` in `Henneberg.lean`
-  (Phase 5 milestone 1, typeII blocker).
+- **Where it bit:** `IsSparse.typeII_reverse_blocker` in `Sparsity.lean`
+  (originally the Laman shell `IsLaman.typeII_reverse_blocker` in
+  `Henneberg.lean`, Phase 5 milestone 1; the friction was retained when
+  Phase 7 lifted the core to `IsSparse`).
 - **Friction:** the proof opens `set bridge := s(xs, ys)` and then
   defines `h_diff : (G'.edgeSet \ {bridge}).ncard + 1 = G'.edgeSet.ncard`
   from `Set.ncard_diff_singleton_add_one hbridge_in_G'`. Separately,

@@ -21,36 +21,33 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-Five commits in so far. The **first three** lifted Phase 5 Laman
+Six commits in so far. The **first three** lifted Phase 5 Laman
 machinery to `IsSparse` (degree-≤-3 existence, non-adjacent triple,
 the five blocker contradiction primitives, the per-pair typeII
 tight-blocker). The **fourth** was a docs-only commit pinning the
 statement-form convention (forward preservation = operation form;
 reverse decomposition = flat form) and prepping the blueprint for
-the upcoming sparse-reverse landing. The **fifth** (this commit)
-lands `IsSparse.exists_typeI_or_typeII_reverse` in `Sparsity.lean`
-in flat form per the blueprint statement at
-`chapter/rigidity-matroid.tex` §3.1, and re-flips `\leanok` on its
-blueprint entry. Adds the small helper `IsSparse.comap` (sparsity
-transports along an injective vertex map) that the Type I branch of
-the new theorem uses to assert sparsity of the induced subgraph
-`G.comap Subtype.val`.
+the upcoming sparse-reverse landing. The **fifth** landed
+`IsSparse.exists_typeI_or_typeII_reverse` in `Sparsity.lean` in
+flat form per the blueprint statement at
+`chapter/rigidity-matroid.tex` §3.1. The **sixth** (this commit)
+refactors `IsLaman.exists_typeI_or_typeII_reverse` to a flat-form
+shell over the sparse version, deletes the operation-form
+intermediates (`exists_typeI_or_typeII_iso`, `typeII_reverse_blocker`,
+`typeII_reverse_witness_or_blocker`; ~280 LoC net deletion in
+`Henneberg.lean`), promotes `typeI_iso_of_two_neighbors` /
+`typeII_iso_of_three_neighbors` to public, updates the
+`LamanTheorem.lean` callsite to reconstruct the iso locally, and
+re-flips `\leanok` on `thm:isLaman-exists-typeI-or-typeII-reverse`.
 
 **Multi-session plan** for the forward-blueprint work:
 
-- **Session 2 — Commit 2 ("flat-form sparse reverse")** [✓ done in
-  this commit]: landed `IsSparse.exists_typeI_or_typeII_reverse`.
-- **Session 2 — Commit 3 ("Laman reverse cleanup")** [next]:
-  Refactor `IsLaman.exists_typeI_or_typeII_reverse` in
-  `Henneberg.lean` to flat form, calling the new sparse version and
-  bumping `G'.IsSparse` → `G'.IsLaman` via the global edge count.
-  Delete the now-unused `IsLaman.exists_typeI_or_typeII_iso`,
-  `IsLaman.typeII_reverse_blocker`, and
-  `IsLaman.typeII_reverse_witness_or_blocker` (~140 LoC removal).
-  Update the callsite in `LamanTheorem.lean` to reconstruct the iso
-  via `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors`
-  before invoking the operation-form forward preservation. Re-flip
-  `\leanok` on `thm:isLaman-exists-typeI-or-typeII-reverse`.
+- **Session 2 — Commit 2 ("flat-form sparse reverse")** [✓ done]:
+  landed `IsSparse.exists_typeI_or_typeII_reverse`.
+- **Session 2 — Commit 3 ("Laman reverse cleanup")** [✓ done in
+  this commit]: refactored `IsLaman.exists_typeI_or_typeII_reverse`
+  to flat form, deleted the operation-form shells, updated the
+  `LamanTheorem.lean` callsite.
 - **Session 3+ — Phase 7 forward:** Row-LI lifts in **operation
   form** (about `Henneberg.typeI G' a b`, etc.), matching Phase 5's
   forward preservation convention. Then
@@ -168,18 +165,21 @@ A red node = not yet formalized; a green node = formalized and
   already produce isos at that subtype. A `SimpleGraph V`-side
   description would require a separate iso layer at every consumer.
 
-## Blockers / open questions
+- **Laman reverse cleanup (Commit 6).**
+  `IsLaman.exists_typeI_or_typeII_reverse` becomes a flat-form shell
+  over `IsSparse.exists_typeI_or_typeII_reverse`:
+  `IsLaman.two_le_degree` bumps `deg v ≤ 2` to `= 2`;
+  `typeI_isLaman_iff` and `typeII_edgeSet_ncard` + bridge presence
+  bump `G'.IsSparse 2 3` to `G'.IsLaman`. Statement mirrors the sparse
+  shape and additionally exposes the two Type I neighbors. Net ~280
+  LoC deleted in `Henneberg.lean` (`exists_typeI_or_typeII_iso`,
+  `typeII_reverse_blocker`, `typeII_reverse_witness_or_blocker`, plus
+  private branch helpers); `typeI_iso_of_two_neighbors` /
+  `typeII_iso_of_three_neighbors` go public so the
+  `LamanTheorem.lean` callsite reconstructs the iso before the
+  operation-form forward preservation.
 
-- **Laman reverse cleanup** — Commit 3 of the multi-session plan in
-  *Current state*. With `IsSparse.exists_typeI_or_typeII_reverse`
-  landed, the Phase 5 `IsLaman.exists_typeI_or_typeII_reverse`
-  becomes a thin shell that lifts `G'.IsSparse 2 3` to `G'.IsLaman`
-  via the global edge count, plus reconstruction of the iso witnesses
-  for the consumers. The supporting Laman-shell lemmas
-  (`exists_typeI_or_typeII_iso`, `typeII_reverse_blocker`,
-  `typeII_reverse_witness_or_blocker`) can then be deleted (~140
-  LoC), and the `LamanTheorem.lean` callsite updated to rebuild the
-  typeI / typeII iso from the flat-form data.
+## Blockers / open questions
 
 - **Type II row-LI lift collinearity gap.** The Type II move places
   the new vertex on the line through `u, w`; for row-LI we also need

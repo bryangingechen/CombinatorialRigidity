@@ -58,7 +58,7 @@ The `set` tactic's substitution scope is bounded by *current*
 goals/hypotheses, not future tactic outputs — this is intrinsic, not
 a bug. Same pattern bites `grind`.
 
-Canonical case: `IsLaman.typeII_reverse_blocker` in `Henneberg.lean`.
+Canonical case: `IsSparse.typeII_reverse_blocker` in `Sparsity.lean`.
 
 ---
 
@@ -217,13 +217,13 @@ Canonical case: `IsLaman.isGenericallyRigidInj_two_of_card` in
 Two related traps:
 
 - **Sub-namespace lookup fails.** Inside `namespace SimpleGraph.Henneberg`,
-  with `h : G.IsLaman`, writing `h.typeII_reverse_blocker …` looks up
-  `SimpleGraph.IsLaman.typeII_reverse_blocker`, **not**
-  `SimpleGraph.Henneberg.IsLaman.typeII_reverse_blocker`. Error
-  appears as ``And.typeII_reverse_blocker not found`` because Lean
+  with `h : G.IsLaman`, writing `h.exists_typeI_or_typeII_reverse …` looks
+  up `SimpleGraph.IsLaman.exists_typeI_or_typeII_reverse`, **not**
+  `SimpleGraph.Henneberg.IsLaman.exists_typeI_or_typeII_reverse`. Error
+  appears as ``And.exists_typeI_or_typeII_reverse not found`` because Lean
   unfolds `IsLaman → IsTight → And` while searching. Fix: call by
   explicit name from inside the sub-namespace —
-  `IsLaman.typeII_reverse_blocker h …` resolves correctly via the
+  `IsLaman.exists_typeI_or_typeII_reverse h …` resolves correctly via the
   partial-prefix lookup.
 - **Same-name wrapper recurses.** Inside `theorem
   EdgeSetRowIndependent.mono`, writing `hI.mono h` resolves `.mono`

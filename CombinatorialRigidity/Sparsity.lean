@@ -61,8 +61,11 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
 * `SimpleGraph.IsSparse.typeII_reverse_blocker` — per-pair tight-blocker witness for the
   typeII Henneberg reverse, sparse form: a sparsity violation on the candidate graph
   `(G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` extracts a tight set in `G` containing both `x` and `y`.
-  The Laman version (`IsLaman.typeII_reverse_blocker` in `Henneberg.lean`) is a thin
-  wrapper.
+  Phase 5 originally shipped a Laman wrapper (`IsLaman.typeII_reverse_blocker`) routing
+  the edge count through the typeII iso; Phase 7 lifted the core to `IsSparse` and the
+  Laman wrapper was deleted in favor of the flat-form
+  `IsLaman.exists_typeI_or_typeII_reverse` consuming `IsSparse.typeII_reverse_blocker`
+  directly.
 
 ## Implementation notes
 
@@ -818,10 +821,11 @@ edge survives the lift (`xs, ys ∈ s'`): on the bridge-surviving side the squee
 `IsSparse.isTightOn_of_le`; on the other side the bridge is forced out and `G`'s sparsity
 contradicts directly.
 
-The Laman-flavored shell (`IsLaman.typeII_reverse_blocker` in `Henneberg.lean`) is a thin
-wrapper: it derives `¬ G'.IsSparse 2 3` from `¬ G'.IsLaman` via the typeII iso plus the global
-edge count, then calls this lemma. Phase 7's sparse-graph reverse decomposition
-(Jordán Lemma 2.1.4(b)) consumes this directly. -/
+The Phase-5 Laman-flavored shell `IsLaman.typeII_reverse_blocker` (in `Henneberg.lean`)
+routed `¬ G'.IsLaman` through the typeII iso + global edge count to derive
+`¬ G'.IsSparse 2 3` and call this lemma; Phase 7 lifted the entire reverse-decomposition
+pipeline (Jordán Lemma 2.1.4) to the sparse layer and the shell was deleted in Commit 6 of
+that phase. -/
 
 /-- **Per-pair tight-blocker witness for the typeII Henneberg reverse (sparse form).**
 

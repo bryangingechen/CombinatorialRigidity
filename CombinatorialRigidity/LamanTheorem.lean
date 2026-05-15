@@ -74,18 +74,34 @@ private theorem IsLaman.isGenericallyRigidInj_two_of_card :
     intro V _ hV G h
     classical
     by_cases hV3 : 3 ≤ Fintype.card V
-    · -- Inductive step: apply `exists_typeI_or_typeII_reverse`, then IH on `G'`.
-      obtain ⟨v, G', hG'_lam, hbranch⟩ :=
-        Henneberg.IsLaman.exists_typeI_or_typeII_reverse h hV3
+    · -- Inductive step: apply the flat-form `exists_typeI_or_typeII_reverse`, reconstruct the
+      -- iso to `typeI G' a b` / `typeII G' x y c` at this callsite (the flat form describes the
+      -- smaller graph directly via `comap` and `fromEdgeSet`), then IH + operation-form forward
+      -- preservation + iso transport.
+      obtain ⟨v, hbranch⟩ := Henneberg.IsLaman.exists_typeI_or_typeII_reverse h hV3
       have hcard_lt : Fintype.card {w : V // w ≠ v} < n := by
         rw [← hV]
         exact Fintype.card_subtype_lt (p := fun w => w ≠ v) (x := v) (by simp)
-      have ih_G' : G'.IsGenericallyRigidInj 2 := ih _ hcard_lt rfl hG'_lam
       rcases hbranch with
-        ⟨a, b, hab, ⟨φ⟩⟩ | ⟨a, b, c, hab, hca, hcb, _hG'ab, ⟨φ⟩⟩
-      · exact (Henneberg.typeI_isGenericallyRigidInj_two ih_G' hab).iso φ.symm
-      · exact (Henneberg.typeII_isGenericallyRigidInj_two ih_G' hab hca.symm
-          hcb.symm).iso φ.symm
+        ⟨_hdeg, a, b, hab, hN_iff, hG'_lam⟩ |
+        ⟨_hdeg, x, y, c, hxy, hcx, hcy, hN_iff, hnxy, hG'_lam⟩
+      · -- Type I: build `G ≃g typeI (G.comap _) a b` and transport.
+        have ih_G' : (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsGenericallyRigidInj 2 :=
+          ih _ hcard_lt rfl hG'_lam
+        have φ : G ≃g Henneberg.typeI (G.comap (Subtype.val : {w : V // w ≠ v} → V)) a b :=
+          Henneberg.typeI_iso_of_two_neighbors a.property.symm b.property.symm hN_iff
+        exact (Henneberg.typeI_isGenericallyRigidInj_two ih_G' hab).iso φ.symm
+      · -- Type II: build `G ≃g typeII (G.comap _ ⊔ fromEdgeSet {s(x, y)}) x y c` and transport.
+        have ih_G' :
+            (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+              fromEdgeSet ({s(x, y)} : Set _)).IsGenericallyRigidInj 2 :=
+          ih _ hcard_lt rfl hG'_lam
+        have φ : G ≃g Henneberg.typeII
+            (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+              fromEdgeSet ({s(x, y)} : Set _)) x y c :=
+          Henneberg.typeII_iso_of_three_neighbors x.property.symm y.property.symm c.property.symm
+            (fun heq => hxy (Subtype.ext heq)) hN_iff hnxy
+        exact (Henneberg.typeII_isGenericallyRigidInj_two ih_G' hxy hcx.symm hcy.symm).iso φ.symm
     · -- Base case: `Fintype.card V ≤ 2`. The `≤ 1` sub-cases contradict Laman
       -- tightness (a Laman graph has `#E + 3 = 2 * #V`, infeasible for #V ≤ 1
       -- in `ℕ`); `n = 2` reduces to K₂ via `eq_top_of_card_eq_two` + iso transport.

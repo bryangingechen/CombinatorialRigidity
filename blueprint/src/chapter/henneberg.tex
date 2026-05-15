@@ -298,6 +298,7 @@ union-closure \cref{thm:isTightOn-union-inter}.
 \begin{theorem}[Laman reverse decomposition]
   \label{thm:isLaman-exists-typeI-or-typeII-reverse}
   \lean{SimpleGraph.Henneberg.IsLaman.exists_typeI_or_typeII_reverse}
+  \leanok
   \uses{def:isLaman, def:typeI, def:typeII,
     thm:isSparse-exists-typeI-or-typeII-reverse,
     thm:typeI-isLaman-iff,
@@ -316,18 +317,20 @@ union-closure \cref{thm:isTightOn-union-inter}.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
+  \leanok
   Apply \cref{thm:isSparse-exists-typeI-or-typeII-reverse} to $G$'s
   sparsity (Laman implies sparse with $|E| = 2|V| - 3 \ge 1$). The
   Laman degree-lower-bound \cref{lem:isLaman-two-le-degree} forces
   $\deg_G(v) \ge 2$ on every vertex, so the sparse decomposition's
-  degree-$\le 2$ branch collapses to $\deg_G(v) = 2$. In each branch,
-  the corresponding move's edge-count identity
-  (\cref{lem:typeI-edgeSet-ncard} or \cref{lem:typeII-edgeSet-ncard})
-  combined with $G$'s tight global count
-  $|E(G)| + 3 = 2 |V|$ forces $G'$'s edge count to be $2 |\{w \ne v\}|
-  - 3$, upgrading $G'$'s sparsity from
-  \cref{thm:isSparse-exists-typeI-or-typeII-reverse} to tightness,
-  hence Laman.
+  degree-$\le 2$ branch collapses to $\deg_G(v) = 2$. In the Type~I
+  branch, the two neighbors are extracted from $\deg_G(v) = 2$ and
+  \cref{thm:typeI-isLaman-iff} (combined with the canonical typeI iso)
+  bumps $G'$'s sparsity to Laman. In the Type~II branch, the typeII
+  iso transports $G$'s Laman to $\mathrm{typeII}\,G'\,x\,y\,c$, and
+  \cref{lem:typeII-edgeSet-ncard} combined with $G$'s tight global
+  count $|E(G)| + 3 = 2 |V|$ and the presence of the bridge in $G'$
+  forces $|E(G')| + 3 = 2 |\{w \ne v\}|$, upgrading $G'$'s sparsity to
+  tightness, hence Laman.
 \end{proof}
 
 \subsection{Worked example: \texorpdfstring{$K_4 \setminus e$}{K4 minus e}}

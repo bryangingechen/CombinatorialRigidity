@@ -445,18 +445,16 @@ theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V
     grind only [!typeII_edgeSet_ncard, !Finite.card_option,
       !Set.ncard_diff_singleton_of_mem, h.edgeSet_ncard]
 
-/-! ### Decomposition iso (without a Laman claim about `G'`)
+/-! ### Decomposition iso constructors
 
-A Laman graph on `n ≥ 3` vertices is, up to canonical relabelling, the result of a Type I or
-Type II Henneberg move applied to *some* underlying graph `G'` on one fewer vertex. The graph `G'`
-is the natural choice (the induced subgraph on `{w | w ≠ v}`, plus the bridging edge `s(a, b)` for
-Type II). The underlying equivalence is `(Equiv.optionSubtypeNe v).symm : V ≃ Option {w // w ≠ v}`,
-which sends the chosen low-degree vertex `v` to `none`.
-
-This statement does **not** claim `G'.IsLaman`; the Laman-preservation half of Henneberg's
-theorem is the deeper combinatorial direction (the choice of which non-adjacent neighbor pair to
-bridge in the Type II case is not arbitrary). It is deferred to a future phase. See
-`notes/Phase3.md` and `notes/FRICTION.md` for details. -/
+`typeI_iso_of_two_neighbors` and `typeII_iso_of_three_neighbors` package, given neighborhood
+data at a chosen vertex `v`, the canonical iso `G ≃g typeI G' a b` (resp.
+`G ≃g typeII G' a b c`) along the equivalence `(Equiv.optionSubtypeNe v).symm`. They are the
+bridge between flat-form reverse decomposition theorems (which describe the smaller graph
+`G'` directly via `G.comap Subtype.val` and `fromEdgeSet`) and operation-form forward-
+preservation theorems (`typeI_isGenericallyRigidInj_two` / `typeII_isGenericallyRigidInj_two`,
+which operate on `typeI G' a b` / `typeII G' a b c`). The forward = operation / reverse = flat
+split is documented in `DESIGN.md` *Statement-form conventions*. -/
 
 /-- Build a graph iso `G ≃g H` along the canonical `V ≃ Option {w : V // w ≠ v}` equivalence,
 given the adjacency-equivalence at each of the four `(u, w)` cases w.r.t. `v`. The `(none, none)`
@@ -488,7 +486,7 @@ private def isoOfOptionSubtypeNe [DecidableEq V] {G : SimpleGraph V} (v : V)
 
 /-- Iso from `G` to a Type I move applied to its induced subgraph on `{w // w ≠ v}`, when `v` is a
 degree-2 vertex with neighbors `a, b`. The membership-style hypothesis `hN` says `N(v) = {a, b}`. -/
-private def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
+def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
     (hva : v ≠ a) (hvb : v ≠ b) (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b) :
     G ≃g typeI (G.comap (Subtype.val : {w : V // w ≠ v} → V))
       ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ :=
@@ -498,7 +496,7 @@ private def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a 
 
 /-- Iso from `G` to a Type II move applied to (induced subgraph + bridging edge `s(a, b)`), when
 `v` has degree 3 with neighbors `a, b, c` and `a, b` are non-adjacent in `G`. -/
-private def typeII_iso_of_three_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
+def typeII_iso_of_three_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}
     (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c) (hab : a ≠ b)
     (hN : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c) (hnab : ¬ G.Adj a b) :
     G ≃g typeII (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
@@ -515,228 +513,69 @@ private def typeII_iso_of_three_neighbors [DecidableEq V] {G : SimpleGraph V} {v
       have : s(u, w) = s(a, b) := by simpa using congrArg (Sym2.map Subtype.val) heq
       rcases Sym2.eq_iff.mp this with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> grind [G.adj_symm])
 
-/-- The typeI side of `IsLaman.exists_typeI_or_typeII_iso`: package the iso witness for a
-degree-2 vertex `v` with neighbors `{a, b}`. -/
-private theorem typeI_branch_of_two_neighbors {G : SimpleGraph V} {v a b : V}
-    (hva : v ≠ a) (hvb : v ≠ b) (hab : a ≠ b)
-    (hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b) :
-    ∃ G' : SimpleGraph {w : V // w ≠ v},
-      ∃ a' b' : {w : V // w ≠ v}, a' ≠ b' ∧ Nonempty (G ≃g typeI G' a' b') := by
-  classical
-  exact ⟨_, ⟨a, hva.symm⟩, ⟨b, hvb.symm⟩,
-    fun heq => hab (Subtype.mk.injEq .. |>.mp heq),
-    ⟨typeI_iso_of_two_neighbors hva hvb hN_iff⟩⟩
+/-! ### Flat-form Henneberg reverse decomposition for Laman graphs
 
-/-- The typeII side of `IsLaman.exists_typeI_or_typeII_iso`: package the iso witness for a
-degree-3 vertex `v` with neighbors `{a, b, c}` and a known non-adjacent pair `{a, b}`. The three
-distinctness assumptions are taken in the order matching the goal `a' ≠ b' ∧ c' ≠ a' ∧ c' ≠ b'`. -/
-private theorem typeII_branch_of_nonadj {G : SimpleGraph V} {v a b c : V}
-    (hva : v ≠ a) (hvb : v ≠ b) (hvc : v ≠ c)
-    (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b)
-    (hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c)
-    (hnab : ¬ G.Adj a b) :
-    ∃ G' : SimpleGraph {w : V // w ≠ v},
-      ∃ a' b' c' : {w : V // w ≠ v}, a' ≠ b' ∧ c' ≠ a' ∧ c' ≠ b' ∧ G'.Adj a' b' ∧
-        Nonempty (G ≃g typeII G' a' b' c') := by
-  classical
-  exact ⟨_, ⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩,
-    fun heq => hab (Subtype.mk.injEq .. |>.mp heq),
-    fun heq => hca (Subtype.mk.injEq .. |>.mp heq),
-    fun heq => hcb (Subtype.mk.injEq .. |>.mp heq),
-    Or.inr ⟨rfl, fun heq => hab (Subtype.mk.injEq .. |>.mp heq)⟩,
-    ⟨typeII_iso_of_three_neighbors hva hvb hvc hab hN_iff hnab⟩⟩
+Every Laman graph on `n ≥ 3` vertices admits a Henneberg reverse to another Laman graph on
+one fewer vertex. Thin shell over `IsSparse.exists_typeI_or_typeII_reverse`: applies the sparse
+flat-form decomposition to `h.isSparse`, uses `IsLaman.two_le_degree` to upgrade `G.degree v ≤ 2`
+to `= 2` in the Type I branch, and bumps `G'.IsSparse 2 3` to `G'.IsLaman` via the typeI iso
+combined with `typeI_isLaman_iff` (Type I) or the typeII iso combined with
+`typeII_edgeSet_ncard` plus the bridge-edge count (Type II).
 
-/-- Every Laman graph on `n ≥ 3` vertices is isomorphic to a Type I or Type II Henneberg move
-applied to some graph `G'` on `{w : V // w ≠ v}` (for some chosen `v`). The Laman-ness of `G'` is
-**not** asserted; that is the deeper Henneberg-reverse direction, deferred to a later phase.
+**Phase 5 milestone 1.** Phase 7 (Commit 3) re-presented the result in flat form (matching
+`IsSparse.exists_typeI_or_typeII_reverse`'s shape) and deleted the operation-form variants
+`exists_typeI_or_typeII_iso`, `typeII_reverse_blocker`, `typeII_reverse_witness_or_blocker` that
+the old proof routed through. Callers reconstruct the iso to `typeI G' a b` /
+`typeII G' a b c` via `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` at the
+callsite, before invoking the operation-form forward-preservation theorems
+(`typeI_isGenericallyRigidInj_two` / `typeII_isGenericallyRigidInj_two`) and transporting along
+the iso. See `DESIGN.md` *Statement-form conventions* for the forward = operation /
+reverse = flat split. -/
 
-Proof outline:
-* Pick a vertex `v` of degree 2 or 3 via `IsLaman.exists_two_le_degree_le_three`.
-* Degree 2: `G'` is the induced subgraph and `a, b` are the two `v`-neighbors.
-* Degree 3: pick a non-adjacent neighbor pair `{a, b}` (via
-  `IsSparse.exists_nonadj_among_three_neighbors`) and the third neighbor `c`; `G'` is the induced
-  subgraph augmented with the bridging edge `s(a, b)`. -/
-theorem IsLaman.exists_typeI_or_typeII_iso [Fintype V]
-    {G : SimpleGraph V} (h : G.IsLaman)
-    (hV : 3 ≤ Fintype.card V) :
-    ∃ (v : V) (G' : SimpleGraph {w : V // w ≠ v}),
-      ((∃ a b : {w : V // w ≠ v}, a ≠ b ∧ Nonempty (G ≃g typeI G' a b)) ∨
-       (∃ a b c : {w : V // w ≠ v}, a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ G'.Adj a b ∧
-        Nonempty (G ≃g typeII G' a b c))) := by
-  classical
-  obtain ⟨v, hv2, hv3⟩ := h.exists_two_le_degree_le_three hV
-  refine ⟨v, ?_⟩
-  rcases (show G.degree v = 2 ∨ G.degree v = 3 from by omega) with hdeg | hdeg
-  · -- Degree-2 case: Type I reverse.
-    obtain ⟨a, b, hab, hN_eq⟩ := Finset.card_eq_two.mp hdeg
-    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b := fun w => by
-      rw [← mem_neighborFinset, hN_eq]; simp
-    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
-    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr rfl)
-    exact (typeI_branch_of_two_neighbors (G.ne_of_adj ha_adj) (G.ne_of_adj hb_adj) hab hN_iff).imp
-      fun _ => Or.inl
-  · -- Degree-3 case: Type II reverse. Pick a non-adjacent pair among `{a, b, c}` and rotate
-    -- the names so it is `(a, b)`; each rcases branch invokes `typeII_branch_of_nonadj` with
-    -- the appropriate relabelling.
-    obtain ⟨a, b, c, hab, hac, hbc, hN_eq⟩ := Finset.card_eq_three.mp hdeg
-    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c := fun w => by
-      rw [← mem_neighborFinset, hN_eq]; simp
-    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
-    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr (Or.inl rfl))
-    have hc_adj : G.Adj v c := (hN_iff c).mpr (Or.inr (Or.inr rfl))
-    have hva : v ≠ a := G.ne_of_adj ha_adj
-    have hvb : v ≠ b := G.ne_of_adj hb_adj
-    have hvc : v ≠ c := G.ne_of_adj hc_adj
-    rcases h.isSparse.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc with
-      hnab | hnac | hnbc
-    · exact (typeII_branch_of_nonadj hva hvb hvc hab hac.symm hbc.symm hN_iff hnab).imp
-        fun _ => Or.inr
-    · exact (typeII_branch_of_nonadj hva hvc hvb hac hab.symm hbc
-        (fun w => by rw [hN_iff]; tauto) hnac).imp fun _ => Or.inr
-    · exact (typeII_branch_of_nonadj hvb hvc hva hbc hab hac
-        (fun w => by rw [hN_iff]; tauto) hnbc).imp fun _ => Or.inr
+/-- **Strengthened decomposition theorem (flat form).** Every Laman graph `G` on `n ≥ 3`
+vertices admits a Henneberg reverse to another Laman graph on the subtype `{w // w ≠ v}`:
+either some vertex `v` has degree exactly 2 with two distinct neighbors `a, b` such that the
+induced subgraph `G.comap Subtype.val` is Laman (Type I reverse), or some vertex `v` has
+degree exactly 3 with three distinct neighbors `x, y, c` and a non-adjacent pair `(x, y)` such
+that the induced subgraph augmented with the bridging edge `s(x, y)` is Laman (Type II reverse).
 
-/-! ### Per-pair tight-blocker witness (typeII reverse, Laman claim)
-
-The Phase 5 milestone-1 deep step. The lemma `IsLaman.typeII_reverse_blocker` says: in a Laman
-graph `G` with a degree-3 vertex `v` and non-adjacent pair `(x, y)` among `v`'s neighbors, if the
-typeII-reverse candidate `G' := (G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` is *not* Laman, then there exists a
-`(2, 3)`-tight set `S ⊆ V \ {v}` containing both `x` and `y` in `G`. (The third neighbor `c`
-plus the full neighbor-set characterization is taken explicitly to allow the typeII iso transfer
-from `G` to `typeII G' xs ys cs`, which is how `G'`'s correct edge count is established.)
-
-The case-split on how many of the three pairs `{(x,y), (x,c), (y,c)}` are non-adjacent will then
-combine such per-pair witnesses via `IsTightOn.union_inter` to force a contradiction with `G`'s
-sparsity, completing the strengthened decomposition
-`IsLaman.exists_typeI_or_typeII_reverse`.
-
-The deep combinatorial step lives in `Sparsity.lean` as `IsSparse.typeII_reverse_blocker` —
-which takes `¬ G'.IsSparse 2 3` directly. The Laman wrapper below only does the conversion
-`¬ G'.IsLaman → ¬ G'.IsSparse 2 3` via the typeII iso and edge count; the lift-and-case-split
-extraction of the tight blocker is sparse-only. -/
-
-/-- **Per-pair tight-blocker witness for the typeII Henneberg reverse (Laman shell).**
-
-Inputs: a Laman graph `G`; a vertex `v` whose three distinct neighbors are exactly `{x, y, c}`;
-a non-adjacent pair `(x, y)` among the neighbors; a *failed* candidate `G'` (the induced subgraph
-on `{w // w ≠ v}` plus the bridging edge `s(⟨x⟩, ⟨y⟩)`) — i.e. `¬ G'.IsLaman`.
-
-Output: a `(2, 3)`-tight set `S` in `G` with `v ∉ S` and `{x, y} ⊆ S`.
-
-Thin shell over `IsSparse.typeII_reverse_blocker`: route `G'`'s edge count through the typeII
-iso `G ≃g typeII G' xs ys cs`, transfer Laman, and use `typeII_edgeSet_ncard` to deduce
-`G'.edgeSet.ncard + 3 = 2 * Nat.card {w // w ≠ v}`. Hence `¬ G'.IsLaman` collapses to
-`¬ G'.IsSparse 2 3`, and the sparse blocker lemma extracts the tight set. -/
-theorem IsLaman.typeII_reverse_blocker
-    [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {v : V}
-    {x y c : V} (hxv : x ≠ v) (hyv : y ≠ v) (hcv : c ≠ v)
-    (hxy : x ≠ y) (hcx : c ≠ x) (hcy : c ≠ y)
-    (hN : ∀ w, G.Adj v w ↔ w = x ∨ w = y ∨ w = c)
-    (hnxy : ¬ G.Adj x y)
-    (h_not_laman : ¬ (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
-                       fromEdgeSet ({s(⟨x, hxv⟩, ⟨y, hyv⟩)} : Set (Sym2 _))).IsLaman) :
-    ∃ S : Finset V, v ∉ S ∧ x ∈ S ∧ y ∈ S ∧ G.IsTightOn 2 3 S := by
-  classical
-  set xs : {w : V // w ≠ v} := ⟨x, hxv⟩ with hxs_def
-  set ys : {w : V // w ≠ v} := ⟨y, hyv⟩ with hys_def
-  set cs : {w : V // w ≠ v} := ⟨c, hcv⟩
-  set bridge : Sym2 {w : V // w ≠ v} := s(xs, ys) with hbridge_def
-  set G' : SimpleGraph {w : V // w ≠ v} :=
-    G.comap Subtype.val ⊔ fromEdgeSet ({bridge} : Set _) with hG'_def
-  have hxs_ne_ys : xs ≠ ys := fun heq => hxy (Subtype.mk.injEq .. |>.mp heq)
-  have hcs_ne_xs : cs ≠ xs := fun heq => hcx (Subtype.mk.injEq .. |>.mp heq)
-  have hcs_ne_ys : cs ≠ ys := fun heq => hcy (Subtype.mk.injEq .. |>.mp heq)
-  -- Bridge is an edge of G'.
-  have hbridge_in_G' : bridge ∈ G'.edgeSet := by
-    change G'.Adj xs ys
-    rw [hG'_def, sup_adj]
-    exact Or.inr ((fromEdgeSet_adj _).mpr ⟨rfl, hxs_ne_ys⟩)
-  -- Edge count of G' via the typeII iso: G ≃g typeII G' xs ys cs.
-  have h_iso : G ≃g typeII G' xs ys cs :=
-    typeII_iso_of_three_neighbors hxv.symm hyv.symm hcv.symm hxy hN hnxy
-  have h_typeII_laman : (typeII G' xs ys cs).IsLaman := IsLaman.iso h_iso h
-  have h_typeII_count := h_typeII_laman.edgeSet_ncard
-  rw [typeII_edgeSet_ncard G' hxs_ne_ys hcs_ne_xs hcs_ne_ys,
-      Finite.card_option, ← hbridge_def] at h_typeII_count
-  have h_diff : (G'.edgeSet \ {bridge}).ncard + 1 = G'.edgeSet.ncard :=
-    Set.ncard_diff_singleton_add_one hbridge_in_G' (Set.toFinite _)
-  have hG'_count : G'.edgeSet.ncard + 3 = 2 * Nat.card {w : V // w ≠ v} := by omega
-  -- ¬G'.IsLaman + edge count → ¬G'.IsSparse 2 3 → sparse blocker.
-  exact h.isSparse.typeII_reverse_blocker hxv hyv
-    (fun hsp => h_not_laman ⟨hsp, hG'_count⟩)
-
-/-! ### Strengthened decomposition: `G'` is also Laman
-
-The main payload of Phase 5 milestone 1. Combines the iso-only decomposition
-`IsLaman.exists_typeI_or_typeII_iso` with `typeI_isLaman_iff` (degree-2 branch) and
-the typeII-reverse blocker argument (degree-3 branch, via `typeII_reverse_blocker` +
-`IsSparse.no_isTightOn_excluding_three_neighbors` plus the contradiction templates and
-unified dispatcher `IsSparse.False_of_pairwise_blocker_or_edge`, all in `Sparsity.lean`). -/
-
-/-- **Per-pair witness-or-blocker dispatcher.** For a Laman graph `G` with a degree-3 vertex
-`v` whose three distinct neighbors are exactly `{x, y, c}`, and a non-adjacent pair `(x, y)`:
-either the typeII-reverse candidate `G'_xy := (G ↾ {v}ᶜ) ⊔ {bridge(x, y)}` is Laman (yielding
-the full typeII decomposition witness with `G'.IsLaman`), or it isn't (yielding a `(2, 3)`-tight
-blocker `S ⊆ V \ {v}` with `{x, y} ⊆ S` via `IsLaman.typeII_reverse_blocker`).
-
-The case-split that drives `exists_typeI_or_typeII_reverse`'s degree-3 branch: invoke per
-non-adjacent pair; on success, return the witness; on failure, accumulate blockers and combine
-them into a tight set contradicting `IsSparse.no_isTightOn_excluding_three_neighbors`. -/
-private theorem IsLaman.typeII_reverse_witness_or_blocker
-    [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {v x y c : V}
-    (hxv : x ≠ v) (hyv : y ≠ v) (hcv : c ≠ v)
-    (hxy : x ≠ y) (hcx : c ≠ x) (hcy : c ≠ y)
-    (hN : ∀ w, G.Adj v w ↔ w = x ∨ w = y ∨ w = c)
-    (hnxy : ¬ G.Adj x y) :
-    (∃ G' : SimpleGraph {w : V // w ≠ v}, G'.IsLaman ∧
-       ∃ x' y' c' : {w : V // w ≠ v}, x' ≠ y' ∧ c' ≠ x' ∧ c' ≠ y' ∧ G'.Adj x' y' ∧
-         Nonempty (G ≃g typeII G' x' y' c')) ∨
-    (∃ S : Finset V, v ∉ S ∧ x ∈ S ∧ y ∈ S ∧ G.IsTightOn 2 3 S) := by
-  classical
-  set G' : SimpleGraph {w : V // w ≠ v} :=
-    G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
-      fromEdgeSet ({s(⟨x, hxv⟩, ⟨y, hyv⟩)} : Set _) with hG'_def
-  have hxy_s : (⟨x, hxv⟩ : {w : V // w ≠ v}) ≠ ⟨y, hyv⟩ :=
-    fun heq => hxy (Subtype.mk.injEq .. |>.mp heq)
-  have hcx_s : (⟨c, hcv⟩ : {w : V // w ≠ v}) ≠ ⟨x, hxv⟩ :=
-    fun heq => hcx (Subtype.mk.injEq .. |>.mp heq)
-  have hcy_s : (⟨c, hcv⟩ : {w : V // w ≠ v}) ≠ ⟨y, hyv⟩ :=
-    fun heq => hcy (Subtype.mk.injEq .. |>.mp heq)
-  by_cases h_lam : G'.IsLaman
-  · -- Success: G'_xy is Laman; package the typeII witness.
-    refine Or.inl ⟨G', h_lam, ⟨x, hxv⟩, ⟨y, hyv⟩, ⟨c, hcv⟩, hxy_s, hcx_s, hcy_s, ?_,
-      ⟨typeII_iso_of_three_neighbors hxv.symm hyv.symm hcv.symm hxy hN hnxy⟩⟩
-    show G'.Adj _ _
-    rw [hG'_def, sup_adj]
-    exact Or.inr ((fromEdgeSet_adj _).mpr ⟨rfl, hxy_s⟩)
-  · -- Failure: G'_xy is not Laman; extract the blocker.
-    exact Or.inr (IsLaman.typeII_reverse_blocker h hxv hyv hcv hxy hcx hcy hN hnxy h_lam)
-
-/-- **Strengthened decomposition theorem.** Every Laman graph on `n ≥ 3` vertices is iso to a
-Type I or Type II Henneberg move applied to a **Laman** graph `G'` on `{w : V // w ≠ v}`.
-
-Strengthens `IsLaman.exists_typeI_or_typeII_iso` by additionally asserting `G'.IsLaman`. The
-degree-2 branch closes via `typeI_isLaman_iff` (iso transport from `G`'s Laman to
-`(typeI G' a b).IsLaman` then peel off typeI). The degree-3 branch is the deep step: pick a
-non-adjacent neighbor pair via `IsSparse.exists_nonadj_among_three_neighbors`; if its typeII
-reverse is Laman, return; if not, the per-pair `typeII_reverse_blocker` yields a tight
-blocker, and case analysis on the three pairs assembles a tight set in `V \ {v}` containing
-all three neighbors of `v`, contradicting `IsSparse.no_isTightOn_excluding_three_neighbors`.
+The Laman analogue of `IsSparse.exists_typeI_or_typeII_reverse`. Proof: apply the sparse
+version to `h.isSparse` (`G.edgeSet` is nonempty since Laman tight gives `|E| = 2|V| - 3 ≥ 3`
+under `|V| ≥ 3`). In the Type I branch, `IsLaman.two_le_degree` forces `degree v = 2`, the two
+neighbors are extracted via `Finset.card_eq_two`, and `typeI_isLaman_iff` bumps sparsity to
+Laman after iso transport. In the Type II branch, the typeII iso transports `G`'s Laman to
+`(typeII G' x y c).IsLaman`, and `typeII_edgeSet_ncard` plus the bridge-edge presence pins
+down `G'`'s tight edge count.
 
 **Phase 5 milestone 1.** -/
 theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
-    {G : SimpleGraph V} (h : G.IsLaman)
+    {G : SimpleGraph V} [DecidableRel G.Adj] (h : G.IsLaman)
     (hV : 3 ≤ Fintype.card V) :
-    ∃ (v : V) (G' : SimpleGraph {w : V // w ≠ v}), G'.IsLaman ∧
-      ((∃ a b : {w : V // w ≠ v}, a ≠ b ∧ Nonempty (G ≃g typeI G' a b)) ∨
-       (∃ a b c : {w : V // w ≠ v}, a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ G'.Adj a b ∧
-        Nonempty (G ≃g typeII G' a b c))) := by
+    ∃ v : V,
+      (G.degree v = 2 ∧
+        ∃ a b : {w : V // w ≠ v}, a ≠ b ∧
+          (∀ w : V, G.Adj v w ↔ w = a.val ∨ w = b.val) ∧
+          (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsLaman)
+      ∨
+      (G.degree v = 3 ∧
+        ∃ x y c : {w : V // w ≠ v}, x ≠ y ∧ c ≠ x ∧ c ≠ y ∧
+          (∀ w : V, G.Adj v w ↔ w = x.val ∨ w = y.val ∨ w = c.val) ∧
+          ¬ G.Adj x.val y.val ∧
+          (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+            fromEdgeSet ({s(x, y)} : Set _)).IsLaman) := by
   classical
-  obtain ⟨v, hv2, hv3⟩ := h.exists_two_le_degree_le_three hV
+  -- `G` has at least one edge: Laman tightness + `|V| ≥ 3` gives `|E| = 2|V| - 3 ≥ 3 ≥ 1`.
+  have hE : G.edgeSet.Nonempty := by
+    have h_eq := h.edgeSet_ncard
+    rw [Nat.card_eq_fintype_card] at h_eq
+    exact Set.nonempty_of_ncard_ne_zero (by omega)
+  obtain ⟨v, hbranch⟩ := h.isSparse.exists_typeI_or_typeII_reverse hE
   refine ⟨v, ?_⟩
-  rcases (show G.degree v = 2 ∨ G.degree v = 3 from by omega) with hdeg | hdeg
-  · -- Degree-2 case: Type I reverse on the induced subgraph.
-    obtain ⟨a, b, hab, hN_eq⟩ := Finset.card_eq_two.mp hdeg
+  rcases hbranch with ⟨hdeg2, hG'sparse⟩ | ⟨hdeg3, x, y, c, hxy, hcx, hcy, hN, hnxy, hG'sparse⟩
+  · -- Type I branch. Laman min-degree forces `degree v = 2`; extract the two neighbors and
+    -- bump `G'.IsSparse` to `G'.IsLaman` via `typeI_isLaman_iff` and the typeI iso.
+    have hdeg_eq : G.degree v = 2 := le_antisymm hdeg2 (h.two_le_degree hV v)
+    obtain ⟨a, b, hab, hN_eq⟩ := Finset.card_eq_two.mp hdeg_eq
     have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b := fun w => by
       rw [← mem_neighborFinset, hN_eq]; simp
     have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
@@ -745,72 +584,29 @@ theorem IsLaman.exists_typeI_or_typeII_reverse [Fintype V]
     have hvb : v ≠ b := G.ne_of_adj hb_adj
     have hab_s : (⟨a, hva.symm⟩ : {w : V // w ≠ v}) ≠ ⟨b, hvb.symm⟩ :=
       fun heq => hab (Subtype.mk.injEq .. |>.mp heq)
-    refine ⟨G.comap (Subtype.val : {w : V // w ≠ v} → V), ?_, ?_⟩
-    · exact (typeI_isLaman_iff hab_s).mp
+    have hG'_laman : (G.comap (Subtype.val : {w : V // w ≠ v} → V)).IsLaman :=
+      (typeI_isLaman_iff hab_s).mp
         (IsLaman.iso (typeI_iso_of_two_neighbors hva hvb hN_iff) h)
-    · exact Or.inl ⟨⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, hab_s,
-        ⟨typeI_iso_of_two_neighbors hva hvb hN_iff⟩⟩
-  · -- Degree-3 case. For each of the three pairs `(a, b), (a, c), (b, c)`, compute a
-    -- three-way Or `witness ∨ G.Adj pair ∨ blocker` via `by_cases` on adjacency plus
-    -- `typeII_reverse_witness_or_blocker`. Short-circuit on any witness; otherwise feed the
-    -- three Or's to `IsSparse.False_of_pairwise_blocker_or_edge` together with the
-    -- non-adjacency disjunction from `exists_nonadj_among_three_neighbors`.
-    obtain ⟨a, b, c, hab, hac, hbc, hN_eq⟩ := Finset.card_eq_three.mp hdeg
-    have hN_iff : ∀ w, G.Adj v w ↔ w = a ∨ w = b ∨ w = c := fun w => by
-      rw [← mem_neighborFinset, hN_eq]; simp
-    have ha_adj : G.Adj v a := (hN_iff a).mpr (Or.inl rfl)
-    have hb_adj : G.Adj v b := (hN_iff b).mpr (Or.inr (Or.inl rfl))
-    have hc_adj : G.Adj v c := (hN_iff c).mpr (Or.inr (Or.inr rfl))
-    have hva : v ≠ a := G.ne_of_adj ha_adj
-    have hvb : v ≠ b := G.ne_of_adj hb_adj
-    have hvc : v ≠ c := G.ne_of_adj hc_adj
-    have hN_iff_acb : ∀ w, G.Adj v w ↔ w = a ∨ w = c ∨ w = b := fun w => by
-      rw [hN_iff]; tauto
-    have hN_iff_bca : ∀ w, G.Adj v w ↔ w = b ∨ w = c ∨ w = a := fun w => by
-      rw [hN_iff]; tauto
-    -- Result type alias for readability.
-    let WitnessType := ∃ (G' : SimpleGraph {w : V // w ≠ v}), G'.IsLaman ∧
-      ∃ a b c : {w : V // w ≠ v}, a ≠ b ∧ c ≠ a ∧ c ≠ b ∧ G'.Adj a b ∧
-        Nonempty (G ≃g typeII G' a b c)
-    -- Per-pair dispatcher: `witness ∨ Adj pair ∨ blocker for pair`.
-    have h_ab : WitnessType ∨ G.Adj a b ∨
-        ∃ S : Finset V, v ∉ S ∧ a ∈ S ∧ b ∈ S ∧ G.IsTightOn 2 3 S := by
-      by_cases hab_adj : G.Adj a b
-      · exact Or.inr (Or.inl hab_adj)
-      · rcases IsLaman.typeII_reverse_witness_or_blocker h hva.symm hvb.symm hvc.symm
-            hab hac.symm hbc.symm hN_iff hab_adj with
-          ⟨G', hG'_lam, hwit⟩ | blocker
-        · exact Or.inl ⟨G', hG'_lam, hwit⟩
-        · exact Or.inr (Or.inr blocker)
-    have h_ac : WitnessType ∨ G.Adj a c ∨
-        ∃ S : Finset V, v ∉ S ∧ a ∈ S ∧ c ∈ S ∧ G.IsTightOn 2 3 S := by
-      by_cases hac_adj : G.Adj a c
-      · exact Or.inr (Or.inl hac_adj)
-      · rcases IsLaman.typeII_reverse_witness_or_blocker h hva.symm hvc.symm hvb.symm
-            hac hab.symm hbc hN_iff_acb hac_adj with
-          ⟨G', hG'_lam, hwit⟩ | blocker
-        · exact Or.inl ⟨G', hG'_lam, hwit⟩
-        · exact Or.inr (Or.inr blocker)
-    have h_bc : WitnessType ∨ G.Adj b c ∨
-        ∃ S : Finset V, v ∉ S ∧ b ∈ S ∧ c ∈ S ∧ G.IsTightOn 2 3 S := by
-      by_cases hbc_adj : G.Adj b c
-      · exact Or.inr (Or.inl hbc_adj)
-      · rcases IsLaman.typeII_reverse_witness_or_blocker h hvb.symm hvc.symm hva.symm
-            hbc hab hac hN_iff_bca hbc_adj with
-          ⟨G', hG'_lam, hwit⟩ | blocker
-        · exact Or.inl ⟨G', hG'_lam, hwit⟩
-        · exact Or.inr (Or.inr blocker)
-    -- Short-circuit on any witness, else feed Or's to the unified contradiction.
-    rcases h_ab with ⟨G', hG'_lam, hwit⟩ | h_ab
-    · exact ⟨G', hG'_lam, Or.inr hwit⟩
-    rcases h_ac with ⟨G', hG'_lam, hwit⟩ | h_ac
-    · exact ⟨G', hG'_lam, Or.inr hwit⟩
-    rcases h_bc with ⟨G', hG'_lam, hwit⟩ | h_bc
-    · exact ⟨G', hG'_lam, Or.inr hwit⟩
-    exact absurd
-      (IsSparse.False_of_pairwise_blocker_or_edge h.isSparse ha_adj hb_adj hc_adj hab hac hbc
-        h_ab h_ac h_bc
-        (h.isSparse.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc)) id
+    exact Or.inl ⟨hdeg_eq, ⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, hab_s, hN_iff, hG'_laman⟩
+  · -- Type II branch. Build the typeII iso, transport `G.IsLaman` to `(typeII G' x y c).IsLaman`,
+    -- and reconstruct `G'`'s tight edge count from `typeII_edgeSet_ncard` plus the bridge.
+    refine Or.inr ⟨hdeg3, x, y, c, hxy, hcx, hcy, hN, hnxy, ?_⟩
+    set G' : SimpleGraph {w : V // w ≠ v} :=
+      G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+        fromEdgeSet ({s(x, y)} : Set _) with hG'_def
+    have h_iso : G ≃g typeII G' x y c :=
+      typeII_iso_of_three_neighbors x.property.symm y.property.symm c.property.symm
+        (fun heq => hxy (Subtype.ext heq)) hN hnxy
+    have h_typeII_laman : (typeII G' x y c).IsLaman := IsLaman.iso h_iso h
+    have h_count := h_typeII_laman.edgeSet_ncard
+    rw [typeII_edgeSet_ncard G' hxy hcx hcy, Finite.card_option] at h_count
+    have hbridge : s(x, y) ∈ G'.edgeSet := by
+      change G'.Adj x y
+      rw [hG'_def, sup_adj]
+      exact Or.inr ((fromEdgeSet_adj _).mpr ⟨rfl, hxy⟩)
+    have h_diff : (G'.edgeSet \ {s(x, y)}).ncard + 1 = G'.edgeSet.ncard :=
+      Set.ncard_diff_singleton_add_one hbridge (Set.toFinite _)
+    exact ⟨hG'sparse, by omega⟩
 
 end Henneberg
 
