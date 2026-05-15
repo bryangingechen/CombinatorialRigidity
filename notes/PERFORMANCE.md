@@ -26,8 +26,12 @@ file is to save the next agent from re-litigating the same dead ends.
   often swallows the signal.
 - The two **structural** levers (module-system conversion of the full
   archive dependency chain; splitting `Framework.lean`'s analysis-heavy
-  half behind a thinner facade) are real options but multi-file. Defer
-  until Phase 6+ has more downstream files to amortize the cost.
+  half behind a thinner facade) are real options but multi-file. The
+  Phase-6 downstream additions (`TrivialMotions.lean`,
+  `HennebergRigidity.lean`, `RigidityMatroid.lean`, `LamanTheorem.lean`)
+  have now grown the beneficiary count enough that conversion would
+  amortize; still unmeasured against the noise band — pick up as a
+  dedicated perf pass.
 - The **safe** local levers are: remove dead imports; replace bare `simp`
   with `simp only` when the rewrite set is fixed and small; extract a
   helper *only when* the duplication is ≥ ~3 lines × ≥ 2 sites *and* the
@@ -158,15 +162,19 @@ visible to importers. The downstream benefit is a smaller load surface —
 files importing module M only need M's public interface, not its full
 elaboration state.
 
-**For this project, conversion isn't a win yet.** A `module` file cannot
-import a non-`module` file (build error: *"cannot import non-`module` X from
-`module`"*). To convert `Framework.lean`, we'd need to convert all
-transitive imports first: the four `Mathlib/…` mirror files plus
-`EdgesIn.lean`, `Sparsity.lean`, `Laman.lean`, `Henneberg.lean`. The
-downstream beneficiary today is `LamanTheorem.lean` only — a multi-file
-refactor for one importer's load time. **Defer until Phase 6+ adds more
-downstream files** (a `RigidityMatroid.lean` would double the beneficiary
-count; that's the right moment to convert).
+**For this project, conversion is plausibly a win post-Phase-6, but
+still unmeasured.** A `module` file cannot import a non-`module`
+file (build error: *"cannot import non-`module` X from `module`"*).
+To convert `Framework.lean`, we'd need to convert all transitive
+imports first: the `Mathlib/…` mirror files plus `EdgesIn.lean`,
+`Sparsity.lean`, `Laman.lean`, `Henneberg.lean`. After Phase 6, the
+downstream beneficiaries are `TrivialMotions.lean`,
+`HennebergRigidity.lean`, `RigidityMatroid.lean`, and
+`LamanTheorem.lean` — four importers, enough to amortize. The
+conversion remains a multi-file refactor and the gain is still
+unmeasured against the build-time noise band (see *Headline lessons
+from Phase 5*); pick up as a dedicated perf pass when the time
+arrives.
 
 Sample upstream pattern, in `Mathlib/Analysis/InnerProductSpace/PiL2.lean`:
 

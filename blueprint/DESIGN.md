@@ -11,8 +11,9 @@ and discussion rather than operational rules. Operational rules
 `blueprint/CLAUDE.md`.
 
 This is also a "living" file. Decisions made here can — and should —
-be revisited as we get more experience with forward-mode authoring
-in Phase 6 and beyond.
+be revisited as we get more experience with forward-mode authoring.
+Phase 6 was the first forward-mode phase; the outcomes are folded
+back into *Resolved questions* below.
 
 ## What the blueprint is for
 
@@ -54,7 +55,7 @@ When to use:
 Concrete recipe lives in `blueprint/CLAUDE.md` (and the Phase 1
 chapter `chapter/sparsity.tex` is the canonical example).
 
-### Forward mode (proposed for Phase 6)
+### Forward mode (used for Phase 6)
 
 The blueprint chapter is written as a *plan* before the Lean exists:
 target definitions and theorems, intermediate lemma statements, and
@@ -109,28 +110,35 @@ cleanly along the bar in `blueprint/CLAUDE.md`: a tautology
 base-case characterizations (`bot_isSparse`, `bot_isTight_iff`).
 The case for selectivity is **strongest in forward mode**: when you
 haven't yet written the small bridge helpers, the question of
-whether to blueprint them doesn't arise. Phase 6 should plan to
-blueprint ~10–20 mathematical landmarks (definitions, key
-intermediate lemmas, the final theorem) and let the supporting Lean
-infrastructure stay out of the doc.
+whether to blueprint them doesn't arise. Phase 6 (the project's
+first forward-mode phase) blueprinted ~20 mathematical landmarks
+(definitions, the row-independence relation, the rank lemmas, the
+two named facts, the assembly theorem, and the Laman's-theorem
+biconditional) and left the supporting infrastructure — coordinate
+unfoldings, small bridge helpers, mirror lemmas — out of the doc.
 
-### Recommendation for Phase 6: Option C (hybrid skeleton)
+### Hybrid skeleton (Option C) — the forward-mode default
 
-- Phase 6's mathematical structure (planar rigidity matroid, generic
-  dimension, rank function for the (⇒) direction) is complex enough
-  that an upfront dep-graph beats a flat ROADMAP list as a planning
+Phase 6 adopted Option C and the recipe below worked end-to-end with
+no mid-phase restructuring. The pattern is now the project's default
+for any forward-mode phase.
+
+- The phase's mathematical structure (planar rigidity matroid, generic
+  dimension, rank function for the (⇒) direction) was complex enough
+  that an upfront dep-graph beat a flat ROADMAP list as a planning
   artefact.
-- Phase 6 will likely span multiple sessions; a shared visual plan
-  across sessions amortizes the upfront cost.
+- The phase spanned multiple sessions; the shared visual plan
+  amortized the upfront cost.
 - Deferring `\lean{...}` and prose proofs to the moment of landing
-  means each piece is written once, against stable artefacts.
-- The human (project owner) can audit the skeleton dep-graph at
+  meant each piece was written once, against stable artefacts.
+- The human (project owner) could audit the skeleton dep-graph at
   phase start — higher signal than auditing prose ROADMAP bullets.
 
-Proposed workflow if Phase 6 adopts C:
+Workflow:
 
-1. **Phase 6 kickoff.** Agent drafts `chapter/laman-theorem-mp.tex`
-   (or similar) covering only the (⇒) direction. Draft carries:
+1. **Phase kickoff.** Agent drafts the chapter (Phase 6 extended the
+   existing `chapter/laman-theorem.tex` rather than creating a new
+   file) covering the phase's target direction. Draft carries:
    target theorem statement, intermediate definitions/lemmas,
    `\uses{...}` populated from the math, **no** `\lean{...}`,
    **no** `\leanok`, **no** prose proofs (or one-line gestures
@@ -205,15 +213,8 @@ infrastructure — leave it out.
 
 ## Open questions
 
-A decision to revisit when Phase 6 kicks off:
-
-1. **Does `notes/Phase6.md` shrink under forward mode?** If the
-   blueprint chapter is the authoritative todo list and dep-graph,
-   then `notes/PhaseN.md`'s "Lemma checklist" section becomes
-   redundant for that phase. Lean recommendation: shrink to just
-   *Current state* / *Decisions made* / *Blockers* / *Hand-off*,
-   with a pointer to the blueprint chapter as the lemma index.
-   Parallel checklists rot.
+(None currently open. Forward-mode questions resolved after Phase 6;
+see *Resolved questions* below.)
 
 ## Resolved questions
 
@@ -226,11 +227,12 @@ backfill produced enough evidence to close them.
   results (`IsGenericallyRigid.exists_isLaman_le` and the composed
   iff) with `\lean{...}` (the Lean declaration exists, body is
   `sorry`) but \emph{no} `\leanok` on either the theorem environment
-  or the proof. The dep-graph correctly colors them red; the
+  or the proof. The dep-graph correctly colored them red; the
   encoding is a clean fit for "stated in Lean, proof not yet
-  formalized." Revisit only if Phase 6 wants to distinguish "not
-  attempted" from "attempted, blocked on a specific subgoal" —
-  `\notready` is then an option, but the case has not arisen yet.
+  formalized." Phase 6's forward-mode session used the same encoding
+  for every newly-stated intermediate lemma; the case for a
+  `\notready` macro distinguishing "not attempted" from "attempted,
+  blocked on a specific subgoal" did not arise.
 - **Should `chapter/intro.tex` reference the dep-graph?** Resolved:
   yes. With Phase 6's red nodes now visible after the Phase 5
   backfill landed, the intro points readers at
@@ -248,15 +250,22 @@ backfill produced enough evidence to close them.
   under *Adding a new chapter*.
 - **One chapter file or two for Phases 5/6?** Resolved: one file.
   `chapter/laman-theorem.tex` was created during the Phase 5
-  backfill and carries both the Phase 5 `⇐` direction (fully
-  formalized) and the Phase 6 `⇒` direction (stated as a
-  sorry-blocked theorem, rendered red in the dep-graph). The
+  backfill and carries both the Phase 5 `⇐` direction (formalized
+  first) and the Phase 6 `⇒` direction (stated first as
+  sorry-blocked, then filled in across the Phase 6 sessions). The
   biconditional structure stays together; the workflow-state
   difference is signalled by the per-entry `\leanok` (or its
-  absence) rather than by file boundaries. The alternative
-  one-file-per-direction split is not adopted; revisit only if
-  Phase 6 turns out to need substantial restructuring of the
-  combined chapter.
+  absence) rather than by file boundaries. Phase 6 did *not* need
+  to restructure the combined chapter; the one-file convention
+  held end-to-end.
+- **Does `notes/Phase6.md` shrink under forward mode?** Resolved:
+  yes. `notes/Phase6.md` omits the per-lemma checklist (a pointer
+  to the blueprint chapter's $\Rightarrow$-direction subsection
+  takes its place) and carries only *Current state*, *Decisions
+  made*, *Blockers*, and *Hand-off*. The blueprint dep-graph was
+  the authoritative todo list throughout the phase; the parallel
+  checklist would have rotted. Convention now documented in the
+  top-level `CLAUDE.md` *Forward-mode blueprint phases*.
 
 ## Project-history note
 
@@ -270,12 +279,13 @@ it touched four chapter files (extending `frameworks.tex` and
 `henneberg-rigidity.tex` and `laman-theorem.tex` from scratch),
 landing 20 new entries plus two Phase 6 sorry-blocked statements.
 
-After the Phase 1–5 backfill series, the blueprint is in sync
-with the Lean: every Lean declaration that meets the selectivity
-bar in `blueprint/CLAUDE.md` has a corresponding green entry, and
-the two intentionally-red entries are exactly the Phase 6
-deliverable. Phase 6 is the natural place to try forward mode;
-the recommendation under *Recommendation for Phase 6* is based on
-the backfill experience and the Phase 6 plan in `notes/Phase5.md`'s
-hand-off section, and should be revised after the first Phase 6
-forward-mode session lands.
+Phase 6 ran in forward mode (Option C, hybrid skeleton) per the
+recipe above: the blueprint chapter
+`chapter/laman-theorem.tex`'s $\Rightarrow$-direction subsection was
+extended with the dep-graph skeleton at phase start, and lemmas
+acquired `\lean{...}` + `\leanok` as they landed across the phase's
+sessions. The new chapter `chapter/trivial-motions.tex` (developing
+the $d$-general trivial-motions API) was created mid-phase when the
+material outgrew its inlined slot in `frameworks.tex`. Phase 6
+closed with every blueprint node green; the blueprint and the Lean
+are in sync.

@@ -241,7 +241,26 @@ math foregrounded while signalling the real cost.
 Run these from `blueprint/src/`. They catch the failure modes that
 the plastex build would catch later, but faster.
 
-**All `\lean{...}` names resolve to real Lean declarations:**
+**All `\lean{...}` names resolve to real Lean declarations.** The
+authoritative check is `checkdecls`, which loads every project import
+and looks up each name in the Lean environment. Run it from the repo
+root after a fresh `inv web` (the latter regenerates
+`blueprint/lean_decls` from the current `\lean{...}` set; the file
+is gitignored):
+
+```sh
+( cd blueprint && source .venv/bin/activate && inv web )
+lake exe checkdecls blueprint/lean_decls   # exit 0 = all names resolve
+```
+
+CI runs the same `checkdecls` command (via `docgen-action`) after
+`leanblueprint web` regenerates `lean_decls`; a missing-declaration
+failure is a hard merge blocker. The most common cause is forgetting
+an enclosing `namespace Foo` in the `\lean{...}` pointer — e.g.
+declarations inside `namespace Henneberg` need
+`SimpleGraph.Henneberg.IsLaman.foo`, not `SimpleGraph.IsLaman.foo`.
+
+A faster local check (grep-only, useful while editing) is:
 
 ```sh
 grep -hoE '\\lean\{[^}]+\}' chapter/*.tex \
@@ -250,6 +269,10 @@ grep -hoE '\\lean\{[^}]+\}' chapter/*.tex \
 # Then for each name in /tmp/lean-names.txt, grep the corresponding
 # basename in the relevant Lean file under ../../CombinatorialRigidity/.
 ```
+
+This won't catch namespace-prefix bugs (the basename matches either
+way); reserve it for fast smoke-tests and rely on `checkdecls` as
+the authoritative gate.
 
 **All `\uses{...}` and `\Cref{...}` labels are defined:**
 

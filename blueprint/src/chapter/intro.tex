@@ -25,7 +25,7 @@ combinatorial rigidity, see
 
 The Lean code is organized into six phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-At the time of writing, Phases 1--5 are complete and Phase 6 is open.
+All six phases are complete; Laman's theorem is fully formalized.
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -42,19 +42,16 @@ At the time of writing, Phases 1--5 are complete and Phase 6 is open.
   \item \textbf{Laman's theorem ($\Leftarrow$).} Per-move rigidity
         preservation and the induction. (Files: \texttt{HennebergRigidity.lean},
         \texttt{LamanTheorem.lean}.)
-  \item \textbf{Laman's theorem ($\Rightarrow$).} The remaining direction
-        via the planar rigidity matroid. \textit{Not yet started.}
+  \item \textbf{Laman's theorem ($\Rightarrow$).} The companion direction
+        via the planar rigidity matroid (Lov\'asz--Yemini's easy
+        identification of row-independence with $(2,3)$-sparsity).
+        (Files: \texttt{RigidityMatroid.lean}, \texttt{LamanTheorem.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
 
 Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
-documentation. Statements without a Lean proof yet --- currently the
-Phase~6 $\Rightarrow$ direction
-(\cref{thm:isGenericallyRigid-exists-isLaman-le}) and the composed
-iff (\cref{thm:isGenericallyRigid-two-iff-exists-isLaman-le}) --- are
-left without the tick. The \emph{dependency graph view} (linked from
+documentation. The \emph{dependency graph view} (linked from
 the navigation bar) is the best place to see at a glance which
-nodes are green and which are red; the red nodes are the project's
-remaining to-do list.
+nodes are green and which are red; every node is currently green.

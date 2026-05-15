@@ -415,15 +415,20 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Proposed fix:** The two structural levers that *would* help are
   both multi-file changes: (a) convert the project + its `Mathlib/…`
   mirrors to Lean's `module` + `public import` system, which gives
-  downstream files a smaller load surface (current beneficiary:
-  `LamanTheorem.lean` only); (b) move the analysis-heavy half of
+  downstream files a smaller load surface (Phase 6 added four more
+  importers — `TrivialMotions.lean`, `HennebergRigidity.lean`,
+  `RigidityMatroid.lean`, `LamanTheorem.lean` — so the amortization
+  is plausible now); (b) move the analysis-heavy half of
   `Framework.lean` behind a thinner facade so combinatorial files
   (`Sparsity.lean`, `Laman.lean`, `Henneberg.lean`) don't import the
-  finite-dimension normed-module machinery transitively. Defer to
-  Phase 6 once more downstream files exist to amortize the cost.
-- **Status:** wontfix at the current scope; structural change is a
-  Phase 6+ decision. Phase 5 third cleanup pass (`notes/Phase5.md`)
-  records the per-candidate experiments and what trended where.
+  finite-dimension normed-module machinery transitively.
+- **Status:** wontfix at the current scope; deferred to a dedicated
+  perf pass post-Phase-6. The Phase-6 downstream additions cleared
+  the "not enough beneficiaries to amortize" objection, but the
+  structural change itself remains unmeasured against the noise band.
+  Phase 5 third cleanup pass (`notes/Phase5.md`) records the
+  per-candidate experiments and what trended where; see also
+  `PERFORMANCE.md` *Module-system conversion*.
 
 ## Mirrored
 

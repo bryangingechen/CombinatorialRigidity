@@ -20,10 +20,10 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* Phases 1–5 complete: sparsity / Laman / Henneberg / frameworks / the (⇐)
-  direction of Laman's theorem.
-* Phase 6 (the (⇒) direction, via rigidity-matroid duality) not yet started;
-  `IsGenericallyRigid.exists_isLaman_le` is the remaining `sorry`.
+* All six phases complete: sparsity / Laman / Henneberg / frameworks /
+  the (⇐) and (⇒) directions of Laman's theorem. The project carries
+  no `sorry`s; Laman's theorem (`isGenericallyRigid_two_iff_exists_isLaman_le`)
+  is fully formalized.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

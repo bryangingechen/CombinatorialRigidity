@@ -41,9 +41,10 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── Laman.lean       Phase 1+2 — `IsLaman` and downstream
 │   ├── Henneberg.lean   Phase 3 — `typeI`, `typeII` and downstream
 │   ├── Framework.lean   Phase 4 — frameworks, rigidity map
+│   ├── TrivialMotions.lean  Phase 6 — d-general translations + infinitesimal rotations
 │   ├── HennebergRigidity.lean  Phase 5 milestone 2 — per-move rigidity preservation
-│   ├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
-│   └── …                later phases get their own files
+│   ├── RigidityMatroid.lean  Phase 6 — row-independence, basis-pick, sparsity bridge
+│   └── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
 └── lake-manifest.json   resolved dependency revisions
@@ -138,9 +139,10 @@ edge-count theorem `IsGenericallyRigid.card_mul_le` (`d * #V ≤ #E +
 d(d+1)/2` for any generically rigid graph), and the K₂ worked example
 `top_fin_two_isGenericallyRigid`. The `TrivialMotions` API (textbook
 identification of kernel with rigid motions) and the
-`finrank_trivialMotions_eq_of_affinelySpanning` lemma are deferred —
-neither is on the critical path for Phase 5. See `notes/Phase4.md` for
-the full lemma list and phase-specific decisions.
+`finrank_trivialMotions_eq_of_affinelySpanning` lemma were deferred
+in Phase 4 (neither was on the critical path for Phase 5) and landed
+in Phase 6's `TrivialMotions.lean`. See `notes/Phase4.md` for the full
+lemma list and phase-specific decisions.
 
 ### Phase 5 — Laman's theorem, (⇐) direction (`LamanTheorem.lean`, `HennebergRigidity.lean`)
 
