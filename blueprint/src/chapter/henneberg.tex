@@ -5,12 +5,20 @@ Henneberg's theorem~\cite{henneberg1911} characterises Laman graphs as
 the graphs obtained from $K_2$ by iterating two combinatorial moves ---
 the \emph{Type~I} and \emph{Type~II} extensions described below. This section formalises
 the two moves, proves each preserves the Laman property in both
-directions, and develops the \emph{decomposition theorem}: every Laman
-graph on $n \ge 3$ vertices is isomorphic to a Type~I or Type~II
-extension of \emph{some Laman graph} $G'$ on $n - 1$ vertices
-(\cref{thm:isLaman-exists-typeI-or-typeII-reverse}). This is the
-inductive lever for the $\Leftarrow$ direction of Laman's theorem in
-\cref{sec:laman-theorem}.
+directions, and develops the \emph{reverse decomposition theorem}: every
+Laman graph on $n \ge 3$ vertices admits a degree-$2$ Type~I reverse or
+a degree-$3$ Type~II reverse yielding a Laman graph $G'$ on $n - 1$
+vertices (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}). This is
+the inductive lever for the $\Leftarrow$ direction of Laman's theorem
+in \cref{sec:laman-theorem}.
+
+The decomposition theorem is stated in \emph{flat} form (describing
+$G'$ by its edges, not by naming it as the image of a Henneberg
+constructor); the chosen vertex's neighborhood data is what callers
+need to reconstruct an iso $G \simeq \mathrm{typeI}\,G'\,a\,b$ (or
+$\ldots\,\mathrm{typeII}\ldots$) when invoking the operation-form
+preservation theorems below. See the statement-form aside in
+\cref{sec:rigidity-matroid-lifts} for the rationale.
 
 Throughout, the fresh vertex introduced by either move is encoded as
 $\mathrm{none} : \mathrm{Option}\,V$, with the old vertices embedded
@@ -217,9 +225,11 @@ half of the preservation theorems below.
 \end{proof}
 
 For the Type~I move, preservation is even tight: $\mathrm{typeI}\,G\,a\,b$
-is Laman \emph{iff} $G$ is. The converse direction is used in
-\cref{thm:isLaman-exists-typeI-or-typeII-reverse} below to peel a
-Type~I extension back to its underlying graph.
+is Laman \emph{iff} $G$ is. The converse direction is consumed in
+\cref{thm:isLaman-exists-typeI-or-typeII-reverse}'s reduction to the
+sparse reverse: after \cref{thm:isSparse-exists-typeI-or-typeII-reverse}
+produces a $(2, 3)$-sparse $G' = G[\{w \ne v\}]$, the typeI-reverse
+direction bumps $G'$ from sparse to Laman via $G$'s global edge count.
 
 \begin{theorem}[Type~I reflects Laman]
   \label{thm:typeI-reverse-isLaman}
@@ -255,212 +265,69 @@ Type~I extension back to its underlying graph.
   \cref{thm:typeI-reverse-isLaman}.
 \end{proof}
 
-\subsection{Decomposition: iso half}
+\subsection{Reverse decomposition}
 \label{sec:henneberg-decomp}
 
-A Laman graph on $n \ge 3$ vertices is, up to canonical relabelling,
-the result of either a Type~I or a Type~II move applied to \emph{some}
-graph $G'$ on $\{w \in V : w \ne v\}$, where $v$ is a chosen vertex of
-degree $2$ or $3$. The statement below does \textbf{not} assert
-$G'$ is itself Laman; the strengthened version
-\cref{thm:isLaman-exists-typeI-or-typeII-reverse} does. We isolate the
-iso-only version because the underlying construction is shared, and
-the strengthened theorem reuses the iso witness it produces.
+The headline structural result: every Laman graph on $n \ge 3$
+vertices admits a Type~I reverse (at some degree-$2$ vertex) or a
+Type~II reverse (at some degree-$3$ vertex with a suitable
+non-adjacent neighbor pair) yielding a Laman graph $G'$ on $n - 1$
+vertices. This is the combinatorial heart of the $\Leftarrow$
+direction of Laman's theorem in \cref{sec:laman-theorem}.
 
-\begin{theorem}[Iso decomposition]
-  \label{thm:isLaman-exists-typeI-or-typeII-iso}
-  \lean{SimpleGraph.Henneberg.IsLaman.exists_typeI_or_typeII_iso}
-  \leanok
-  \uses{def:isLaman, def:typeI, def:typeII,
-    lem:isLaman-exists-two-le-degree-le-three,
-    lem:isSparse-exists-nonadj-among-three-neighbors}
-  Let $G$ be Laman on a finite vertex type $V$ with $|V| \ge 3$. Then
-  there exist $v \in V$ and a graph $G'$ on $\{w : V \mid w \ne v\}$
-  such that either
-  \begin{enumerate}
-    \item there exist $a, b$ with $a \ne b$ and a graph isomorphism
-      $G \simeq \mathrm{typeI}\,G'\,a\,b$; or
-    \item there exist $a, b, c$ with $a \ne b$, $c \ne a$, $c \ne b$,
-      $\{a, b\} \in E(G')$, and a graph isomorphism
-      $G \simeq \mathrm{typeII}\,G'\,a\,b\,c$.
-  \end{enumerate}
-\end{theorem}
-\begin{proof}
-  \leanok
-  By \cref{lem:isLaman-exists-two-le-degree-le-three} pick $v$ with
-  $2 \le \deg_G(v) \le 3$, and let $G'$ be the induced subgraph
-  $G[\{w \ne v\}]$ (augmented for the Type~II case below). The
-  underlying type-level equivalence is
-  $V \simeq \mathrm{Option}\,\{w : V \mid w \ne v\}$, mapping $v$ to
-  $\mathrm{none}$. In the formalization the graph iso is built from
-  this $\mathrm{Equiv}$ via a small custom constructor
-  (\texttt{isoOfOptionSubtypeNe}), which case-splits on whether each
-  endpoint equals $v$ and discharges the resulting four
-  adjacency-rewrite obligations; the upgrade from a vertex
-  $\mathrm{Equiv}$ to a graph iso is not automatic.
+The statement is in \emph{flat} form: $G'$ is given as the
+$\{w \ne v\}$-induced subgraph of $G$ (Type~I) or that subgraph
+augmented with a bridging edge (Type~II), and the chosen vertex's
+neighborhood data is laid out alongside. Callers reconstruct the iso
+$G \simeq \mathrm{typeI}\,G'\,a\,b$ (or $\ldots\,\mathrm{typeII}\ldots$)
+via the project-internal constructors \texttt{typeI\_iso\_of\_two\_neighbors}
+and \texttt{typeII\_iso\_of\_three\_neighbors} as needed; see the
+statement-form aside in \cref{sec:rigidity-matroid-lifts} for why
+reverse decompositions take this form.
 
-  \emph{Degree~$2$.} Let $\{a, b\} = N_G(v)$; then
-  $N_G(v) = \{a, b\}$ and $a \ne b$, so the type-level equivalence
-  upgrades to a graph iso $G \simeq \mathrm{typeI}\,G'\,a\,b$.
+The proof reduces to the sparse-graph reverse
+(\cref{thm:isSparse-exists-typeI-or-typeII-reverse}) plus an edge-count
+upgrade from sparse to Laman. The substantive combinatorial work ---
+the per-pair tight-blocker argument that handles the Type~II branch's
+choice of non-adjacent neighbor pair --- lives in
+\cref{thm:isSparse-exists-typeI-or-typeII-reverse} itself, which
+reuses the tight-blocker witness
+\cref{lem:isSparse-typeII-reverse-blocker} and the tight-subset
+union-closure \cref{thm:isTightOn-union-inter}.
 
-  \emph{Degree~$3$.} Let $\{a, b, c\} = N_G(v)$. By
-  \cref{lem:isSparse-exists-nonadj-among-three-neighbors} at least one
-  pair among $\{a, b\}, \{a, c\}, \{b, c\}$ is non-adjacent in $G$;
-  relabel so this is $\{a, b\}$. Let $G'$ be the induced subgraph
-  $G[\{w \ne v\}]$ \emph{augmented} with the bridging edge
-  $\{a, b\}$. The type-level equivalence again gives a graph iso
-  $G \simeq \mathrm{typeII}\,G'\,a\,b\,c$: the bridging edge in $G'$
-  is exactly the one the Type~II definition removes.
-\end{proof}
-
-\subsection{Decomposition: Laman half}
-\label{sec:henneberg-decomp-laman}
-
-The Type~II branch of \cref{thm:isLaman-exists-typeI-or-typeII-iso}
-makes a \emph{choice}: which non-adjacent neighbor pair of $v$ to
-bridge with the new edge in $G'$. For arbitrary choices, the resulting
-$G'$ need not be Laman; a 6-vertex counter-example forces a $K_4$
-sub-structure on a bad bridge choice. The headline result of this
-subsection (\cref{thm:isLaman-exists-typeI-or-typeII-reverse}) says
-\emph{some} choice does produce a Laman $G'$. This is the
-combinatorial heart of the $\Leftarrow$ direction of Laman's theorem
-in \cref{sec:laman-theorem}.
-
-The strategy is
-classical~\cite{tayWhiteley1985,jordan2016}: for each non-adjacent
-pair $\{x, y\}$, either the corresponding $G'$ is Laman (return it),
-or one obtains a \emph{tight blocker} --- a $(2, 3)$-tight subset of
-$V$ disjoint from $v$ that contains both $x$ and $y$. Case analysis on
-how many of the three pairs $\{a, b\}, \{a, c\}, \{b, c\}$ are
-non-adjacent then combines the blockers via
-\cref{thm:isTightOn-union-inter} into a tight subset of $V \setminus
-\{v\}$ containing all three neighbors of $v$, which contradicts
-sparsity of $G$ at $\{v\} \cup N_G(v)$.
-
-\begin{theorem}[Per-pair tight blocker]
-  \label{thm:isLaman-typeII-reverse-blocker}
-  \lean{SimpleGraph.Henneberg.IsLaman.typeII_reverse_blocker}
-  \leanok
-  \uses{def:isLaman, def:typeII, def:isTightOn,
-    lem:typeII-edgeSet-ncard,
-    lem:isSparse-typeII-reverse-blocker,
-    lem:isLaman-iso}
-  Let $G$ be Laman with finite vertex type $V$. Suppose $v \in V$ has
-  three pairwise distinct neighbors $\{x, y, c\}$, that $\{x, y\}$ is
-  non-adjacent in $G$, and that the candidate $G'$ ---
-  the induced subgraph on $\{w \in V : w \ne v\}$ augmented with the
-  bridging edge $\{x, y\}$ --- is \textbf{not} Laman. Then there exists
-  a finite $S \subseteq V$ with $v \notin S$, $x, y \in S$, and $S$
-  $(2, 3)$-tight in $G$.
-\end{theorem}
-\begin{proof}
-  \leanok
-  By the iso half (the underlying construction of
-  \cref{thm:isLaman-exists-typeI-or-typeII-iso}) we have an iso
-  $G \simeq \mathrm{typeII}\,G'\,x\,y\,c$. Iso transport
-  (\cref{lem:isLaman-iso}) carries $G$'s Laman property over to
-  $\mathrm{typeII}\,G'\,x\,y\,c$; combining with
-  \cref{lem:typeII-edgeSet-ncard} and
-  $|\mathrm{Option}\,\{w \ne v\}| = |V|$ gives the global edge identity
-  $|E(G')| + 3 = 2 |\{w \ne v\}|$. So the failure of $G'$ to be Laman
-  is a failure of $(2, 3)$-sparsity, and
-  \cref{lem:isSparse-typeII-reverse-blocker} extracts the tight set
-  $S$ directly.
-\end{proof}
-
-\begin{theorem}[Strengthened decomposition: Laman half]
+\begin{theorem}[Laman reverse decomposition]
   \label{thm:isLaman-exists-typeI-or-typeII-reverse}
   \lean{SimpleGraph.Henneberg.IsLaman.exists_typeI_or_typeII_reverse}
-  \leanok
   \uses{def:isLaman, def:typeI, def:typeII,
+    thm:isSparse-exists-typeI-or-typeII-reverse,
     thm:typeI-isLaman-iff,
-    thm:isLaman-typeII-reverse-blocker,
-    thm:isTightOn-union-inter,
-    lem:isLaman-exists-two-le-degree-le-three,
-    lem:isSparse-exists-nonadj-among-three-neighbors}
+    lem:typeII-edgeSet-ncard,
+    lem:isLaman-two-le-degree}
   Let $G$ be Laman on a finite vertex type $V$ with $|V| \ge 3$. Then
-  there exist $v \in V$ and a \textbf{Laman} graph $G'$ on
-  $\{w : V \mid w \ne v\}$ such that either
+  there exists $v \in V$ such that either
   \begin{enumerate}
-    \item there exist $a, b$ with $a \ne b$ and a graph isomorphism
-      $G \simeq \mathrm{typeI}\,G'\,a\,b$; or
-    \item there exist $a, b, c$ with $a \ne b$, $c \ne a$, $c \ne b$,
-      $\{a, b\} \in E(G')$, and a graph isomorphism
-      $G \simeq \mathrm{typeII}\,G'\,a\,b\,c$.
+    \item $\deg_G(v) = 2$, the two neighbors $a, b$ of $v$ are
+      distinct, and the induced subgraph $G' := G[\{w \ne v\}]$ is
+      Laman; or
+    \item $\deg_G(v) = 3$ with three pairwise distinct neighbors
+      $\{a, b, c\}$, the pair $\{a, b\}$ is non-adjacent in $G$, and
+      the bridge-augmented subgraph
+      $G' := G[\{w \ne v\}] \cup \{\{a, b\}\}$ is Laman.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
-  \leanok
-  Pick $v$ with $2 \le \deg_G(v) \le 3$ as in
-  \cref{thm:isLaman-exists-typeI-or-typeII-iso}.
-
-  \emph{Degree~$2$.} The induced subgraph $G' = G[\{w \ne v\}]$ inherits
-  Laman from $G$ by iso transport plus
-  \cref{thm:typeI-isLaman-iff}: $\mathrm{typeI}\,G'\,a\,b$ is Laman
-  (because $G$ is, by the underlying iso), so $G'$ itself is.
-
-  \emph{Degree~$3$.} Let $N_G(v) = \{a, b, c\}$. For each pair among
-  $\{a, b\}, \{a, c\}, \{b, c\}$ that is non-adjacent in $G$, the
-  Type~II candidate built from that pair is either Laman (return it)
-  or, by \cref{thm:isLaman-typeII-reverse-blocker}, yields a tight set
-  $S \subseteq V \setminus \{v\}$ containing the pair. By
-  \cref{lem:isSparse-exists-nonadj-among-three-neighbors} at least one
-  pair is non-adjacent, so the all-adjacent leaf is vacuous; what
-  remains is the contradiction step from the accumulated blockers,
-  which splits on how many of the three pairs are non-adjacent.
-
-  In each subcase the goal is the same: build a finite
-  $T \subseteq V \setminus \{v\}$ containing $a, b, c$ with
-  \[
-    2|T| \;\le\; |\edgesIn{T}| + 3.
-  \]
-  Combined with $G$-sparsity at $T$ this forces $T$ to be
-  $(2, 3)$-tight by \cref{lem:isSparse-isTightOn-of-le}. The set
-  $\{v\} \cup T$ then carries the $|\edgesIn{T}|$ edges of $T$, plus
-  the three edges $\{v, a\}, \{v, b\}, \{v, c\}$ from $v$ to its
-  neighbors, and $G$-sparsity at $\{v\} \cup T$ is violated:
-  $|\edgesIn{\{v\} \cup T}| \ge |\edgesIn{T}| + 3 = 2|T| = 2(|\{v\}
-  \cup T| - 1) = 2|\{v\} \cup T| - 2$, exceeding the bound $2|\{v\}
-  \cup T| - 3$.
-
-  \begin{itemize}
-    \item \emph{One non-adjacent pair.} Say $\{b, c\}$ is the only
-      non-adjacent pair (so $\{a, b\}, \{a, c\} \in E(G)$). The
-      blocker $S$ contains $b, c$ but possibly not $a$. If $a \in S$,
-      take $T := S$ and the squeeze comes from tightness directly. If
-      $a \notin S$, take $T := S \cup \{a\}$: the two edges
-      $\{a, b\}, \{a, c\}$ lie in
-      $\edgesIn{T} \setminus \edgesIn{S}$, so
-      $|\edgesIn{T}| \ge |\edgesIn{S}| + 2$, and the squeeze at $T$
-      follows from tightness of $S$ and $|T| = |S| + 1$.
-    \item \emph{Two non-adjacent pairs.} Say $\{x, z\}$ and $\{y, z\}$
-      are non-adjacent with shared neighbor $z$, so
-      $\{x, y\} \in E(G)$. The blockers $S_1 \supseteq \{x, z\}$ and
-      $S_2 \supseteq \{y, z\}$ both contain $z$. Sub-case on
-      $|S_1 \cap S_2|$. If $\ge 2$, \cref{thm:isTightOn-union-inter}
-      gives $T := S_1 \cup S_2$ tight, and $T$ contains $\{x, y, z\}$.
-      If $= 1$, the intersection is exactly $\{z\}$, hence
-      $x \notin S_2$ and $y \notin S_1$; the cross-edge $\{x, y\}$
-      lies in $\edgesIn{T}$ but in neither $\edgesIn{S_1}$ nor
-      $\edgesIn{S_2}$ for $T := S_1 \cup S_2$. Combining supermodularity
-      (\cref{lem:edgesIn-ncard-add-le}) with $|S_1 \cap S_2| = 1$ (so
-      $\edgesIn{S_1 \cap S_2} = \emptyset$) gives
-      $|\edgesIn{S_1}| + |\edgesIn{S_2}| + 1 \le |\edgesIn{T}|$, and
-      tightness of $S_1, S_2$ saturates the squeeze at $T$.
-    \item \emph{Three non-adjacent pairs.} Three blockers
-      $S_{ab}, S_{ac}, S_{bc}$. If any pairwise intersection has size
-      $\ge 2$, \cref{thm:isTightOn-union-inter} applied to that pair
-      gives a tight $T$ containing all three neighbors. Otherwise each
-      pairwise intersection is the singleton of its shared neighbor
-      ($S_{ab} \cap S_{ac} = \{a\}$, $S_{ab} \cap S_{bc} = \{b\}$,
-      $S_{ac} \cap S_{bc} = \{c\}$). Two applications of supermodularity
-      (\cref{lem:edgesIn-ncard-add-le}) bound $|\edgesIn{T}|$ from below
-      by $|\edgesIn{S_{ab}}| + |\edgesIn{S_{ac}}| + |\edgesIn{S_{bc}}|$,
-      using $\edgesIn{\{a\}} = \emptyset$ in the first step and
-      $\edgesIn{\{b, c\}} = \emptyset$ (since $\{b, c\} \notin E(G)$)
-      in the second; cardinality bookkeeping yields the squeeze at
-      $T := S_{ab} \cup S_{ac} \cup S_{bc}$.
-  \end{itemize}
+  Apply \cref{thm:isSparse-exists-typeI-or-typeII-reverse} to $G$'s
+  sparsity (Laman implies sparse with $|E| = 2|V| - 3 \ge 1$). The
+  Laman degree-lower-bound \cref{lem:isLaman-two-le-degree} forces
+  $\deg_G(v) \ge 2$ on every vertex, so the sparse decomposition's
+  degree-$\le 2$ branch collapses to $\deg_G(v) = 2$. In each branch,
+  the corresponding move's edge-count identity
+  (\cref{lem:typeI-edgeSet-ncard} or \cref{lem:typeII-edgeSet-ncard})
+  combined with $G$'s tight global count
+  $|E(G)| + 3 = 2 |V|$ forces $G'$'s edge count to be $2 |\{w \ne v\}|
+  - 3$, upgrading $G'$'s sparsity from
+  \cref{thm:isSparse-exists-typeI-or-typeII-reverse} to tightness,
+  hence Laman.
 \end{proof}
 
 \subsection{Worked example: \texorpdfstring{$K_4 \setminus e$}{K4 minus e}}

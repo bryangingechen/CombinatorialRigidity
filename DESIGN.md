@@ -229,6 +229,62 @@ later if multiple consumers materialize.
 
 ---
 
+## Statement-form conventions: forward (operation) vs reverse (flat)
+
+Theorems about Henneberg moves split into two categories, and we
+state them in different forms. The split is principled, not a
+mixture; the principle below pins it down so the next session can
+land lemmas without re-litigating the call.
+
+**Forward preservation theorems** — *"`Henneberg.typeI G' a b`
+preserves property P"*: `typeI_isLaman`, `typeI_isLaman_iff`,
+`typeI_isGenericallyRigidInj_two`, the upcoming row-independence
+lifts. Statement form: **operation form** — the named operation
+appears in the conclusion. Mathlib analogue: `Finset.image_disjoint`,
+`Polynomial.degree_C_mul`. The theorem is *about* the operation; the
+operation's name is the subject and must be in the statement.
+
+**Reverse decomposition theorems** — *"every G with property X
+admits a smaller G' with property Y"*: `IsLaman.exists_typeI_or_typeII_reverse`,
+`IsSparse.exists_typeI_or_typeII_reverse`. Statement form: **flat
+form** — the smaller G' is given by its edges (`G.comap` /
+`fromEdgeSet`), not via a Henneberg constructor. Mathlib analogue:
+`Finset.exists_max_image`, `Polynomial.exists_root_of_natDegree_pos`.
+The theorem is *about an arbitrary G* and produces a witness; the
+operation is incidental.
+
+**Iso constructors** — `typeI_iso_of_two_neighbors`,
+`typeII_iso_of_three_neighbors`. These genuinely *are* iso content;
+they live in Henneberg.lean as project-internal bridges between the
+two forms.
+
+**Bridging.** A callsite that combines a flat reverse with an
+operation-form forward lift (e.g. Phase 5's `IsLaman.isGenericallyRigid_two`
+induction, Phase 7's `IsSparse.exists_rowIndependent_placement`
+induction) does *one* iso construction per inductive step, via the
+project-internal constructors above. This is not a "mixture" — it is
+how a "G has structure" claim hands off to an "operation preserves
+property" claim, no different in shape from any other point in
+mathlib where `Finset.exists_max_image` is followed by a fact about
+`Finset.image`.
+
+**Why this split is not a mixture.** Forcing operation form on
+reverse decompositions costs strength: `IsSparse.exists_typeI_or_typeII_reverse`
+in iso form would need a side hypothesis ruling out matchings +
+isolated vertices ($K_{1,5}$ is sparse but iso to no Henneberg move),
+weakening the theorem. Forcing flat form on forward preservation
+costs reusability: a caller who already has `typeI G' a b` in hand
+would have to manually re-verify vertex / neighborhood conditions
+that are tautological from the operation. Each form fits its
+category; the categories are different.
+
+The full rationale, including the K_{1,5} obstruction and a few more
+mathlib analogues, lives in the *Statement-form aside* in
+`blueprint/src/chapter/rigidity-matroid.tex` (just before
+\S\,\emph{Lifting row-independence through Henneberg moves}).
+
+---
+
 ## Mirror directory for missing mathlib lemmas
 
 If, while proving something here, we hit a lemma that *should* exist in

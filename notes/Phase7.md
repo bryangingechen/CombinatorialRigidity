@@ -21,46 +21,61 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-Three commits in so far. The **first** lifted two Phase 5 Laman lemmas
-to `IsSparse` versions in `Sparsity.lean` —
-`IsSparse.exists_degree_le_three` and
-`IsSparse.exists_nonadj_among_three_neighbors` — and moved their
-blueprint entries from `chapter/laman.tex` to `chapter/sparsity.tex`.
+Four commits in so far. The **first three** lifted Phase 5 Laman
+machinery to `IsSparse` (degree-≤-3 existence, non-adjacent triple,
+the five blocker contradiction primitives, the per-pair typeII
+tight-blocker). The **fourth** (this one) is a docs-only commit:
+documents the **statement-form convention** (forward preservation =
+operation form; reverse decomposition = flat form) and updates the
+blueprint for the upcoming `IsSparse.exists_typeI_or_typeII_reverse`
+landing. No Lean changes this commit. (Several blueprint nodes
+temporarily lose `\leanok` until the next-session Lean refactor
+catches up — `thm:isLaman-exists-typeI-or-typeII-reverse` will be
+green again after Commit 2 of the multi-session plan below.)
 
-The **second** lifted the five Phase 5 Laman-only blocker
-contradiction primitives in `Henneberg.lean` to `IsSparse` versions in
-`Sparsity.lean`:
+**Multi-session plan** for the forward-blueprint work:
 
-- `IsSparse.no_isTightOn_excluding_three_neighbors` (three-neighbor
-  overshoot helper).
-- `IsSparse.contradiction_one_pair`, `IsSparse.contradiction_two_pair`,
-  `IsSparse.contradiction_three_pair` (the three blocker-count
-  contradiction templates).
-- `IsSparse.False_of_pairwise_blocker_or_edge` (the unified 8-leaf
-  dispatcher).
+- **Session 2 — Commit 2 ("flat-form sparse reverse"):**
+  Land `IsSparse.exists_typeI_or_typeII_reverse` in `Sparsity.lean`
+  in flat form per the blueprint statement at
+  `chapter/rigidity-matroid.tex` §3.1. Re-flip `\leanok` on its
+  blueprint entry.
+- **Session 2 — Commit 3 ("Laman reverse cleanup"):**
+  Refactor `IsLaman.exists_typeI_or_typeII_reverse` in
+  `Henneberg.lean` to flat form, calling the new sparse version and
+  bumping `G'.IsSparse` → `G'.IsLaman` via the global edge count.
+  Delete the now-unused `IsLaman.exists_typeI_or_typeII_iso`,
+  `IsLaman.typeII_reverse_blocker`, and
+  `IsLaman.typeII_reverse_witness_or_blocker` (~140 LoC removal).
+  Update the callsite in `LamanTheorem.lean` to reconstruct the iso
+  via `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors`
+  before invoking the operation-form forward preservation. Re-flip
+  `\leanok` on `thm:isLaman-exists-typeI-or-typeII-reverse`.
+- **Session 3+ — Phase 7 forward:** Row-LI lifts in **operation
+  form** (about `Henneberg.typeI G' a b`, etc.), matching Phase 5's
+  forward preservation convention. Then
+  `IsSparse.exists_rowIndependent_placement` (bridges flat reverse →
+  operation forward at each inductive step) and matroid identification.
 
-The **third** (this one) factors `IsLaman.typeII_reverse_blocker`
-into an `IsSparse`-flavored inner lemma plus a thin Laman shell.
-`IsSparse.typeII_reverse_blocker` in `Sparsity.lean` takes
-`¬ G'.IsSparse 2 3` directly and produces the tight blocker; the
-supporting `image_edgesIn_comap` is promoted from private in
-`Henneberg.lean` to public in `Sparsity.lean`. The Laman shell in
-`Henneberg.lean` shrinks to just the iso+count conversion
-(`¬ G'.IsLaman` → `¬ G'.IsSparse 2 3` via `typeII_iso_of_three_neighbors`
-+ `typeII_edgeSet_ncard`) followed by a call to the sparse lemma —
-~125 LoC removed from `Henneberg.lean`.
-
-Next: land `IsSparse.exists_typeI_or_typeII_reverse` (Jordán
-Lemma 2.1.4) using the lifted contradiction templates plus the
-sparse-flavored typeII-reverse blocker; re-derive
-`IsLaman.exists_typeI_or_typeII_reverse` from it. Downstream:
-Type I and Type II row-LI lifts, the inductive existence theorem,
-and the `IndepMatroid` packaging.
+Downstream after the multi-session plan completes: Type I and Type II
+row-LI lifts, the inductive existence theorem, and the `IndepMatroid`
+packaging.
 
 ## Architectural choices made up front
 
 These extend `../DESIGN.md` *Choices to revisit*; if any turns out
 wrong, revisit there.
+
+- **Statement form: reverse = flat, forward = operation form.**
+  See `../DESIGN.md` *Statement-form conventions* and the blueprint
+  aside at `chapter/rigidity-matroid.tex` §3.1 (just before
+  *Lifting row-independence through Henneberg moves*). Phase 7's
+  `IsSparse.exists_typeI_or_typeII_reverse` lands flat; the row-LI
+  lifts land in operation form (about `Henneberg.typeI G' a b`); the
+  inductive proof bridges the two via `typeI_iso_of_two_neighbors`
+  per step. Phase 5's existing `IsLaman.exists_typeI_or_typeII_reverse`
+  gets converted from operation form (its current state) to flat
+  form in Commit 3 of this phase's multi-session plan.
 
 - **Forward-mode blueprint authoring** (Option C). The blueprint
   chapter `chapter/rigidity-matroid.tex` is the authoritative
@@ -141,20 +156,14 @@ A red node = not yet formalized; a green node = formalized and
 
 ## Blockers / open questions
 
-- **Sparse-graph reverse decomposition** (`IsSparse.exists_typeI_or_typeII_reverse`,
-  Jordán Lemma 2.1.4). The sparse-graph analogue of Phase 5
-  milestone 1 (`IsLaman.exists_typeI_or_typeII_reverse`). All the
-  blocker contradiction primitives plus `typeII_reverse_blocker`
-  itself now live in `Sparsity.lean` as `IsSparse.*`, so the Phase 5
-  framework is fully reusable for the sparse setting. Remaining open:
-  port the degree-3 dispatcher (`typeII_reverse_witness_or_blocker`)
-  and the outer existence theorem (`exists_typeI_or_typeII_reverse`)
-  themselves — these are currently Laman-stated in `Henneberg.lean`
-  and need sparse analogues that drop the `G'.IsLaman` conclusion in
-  favor of `G'.IsSparse`. The natural shape is to land
-  `IsSparse.exists_typeI_or_typeII_reverse` directly (returning
-  `G'.IsSparse 2 3`) and re-derive the Laman version as a wrapper
-  that re-establishes `G'`'s tight edge count.
+- **Sparse-graph reverse decomposition + Laman cleanup** — the
+  multi-session plan in *Current state* (Commits 2 and 3) covers
+  this. All blocker contradiction primitives plus
+  `typeII_reverse_blocker` already live in `Sparsity.lean` as
+  `IsSparse.*`, so the Phase 5 framework is fully reusable.
+  Remaining Lean work: the outer existence theorem
+  `IsSparse.exists_typeI_or_typeII_reverse` (Commit 2) and the
+  flat-form Laman re-derivation (Commit 3).
 
 - **Type II row-LI lift collinearity gap.** The Type II move places
   the new vertex on the line through `u, w`; for row-LI we also need

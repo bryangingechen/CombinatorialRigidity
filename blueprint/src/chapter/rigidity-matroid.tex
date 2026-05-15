@@ -72,6 +72,35 @@ three-pair tight-union (Jord\'an Lemma~2.1.3) is
   $X_{uw} \cup X_{uz} \cup X_{wz} \cup \{v\}$.
 \end{proof}
 
+\emph{Statement-form aside.} The reverse decomposition above and the
+forward lifts below are stated in different forms by design. The
+reverse is \emph{flat}: it describes the smaller graph $G'$ by its
+edges directly (``$G - v$ is sparse'', ``$G^{u,w}_v$ is sparse''),
+without naming a Henneberg constructor. Each forward lift, by
+contrast, is in \emph{operation form}: it states a property of the
+named extension $\mathrm{typeI}\,G'\,a\,b$ or
+$\mathrm{typeII}\,G'\,a\,b\,c$. The asymmetry tracks what each kind
+of theorem is \emph{about}. A reverse decomposition takes an
+arbitrary $G$ and produces a smaller witness; the named operation is
+incidental, so we omit it (mathlib analogue:
+\texttt{Finset.exists\_max\_image}). A forward lift is a statement
+about the operation itself --- \emph{``$\mathrm{typeI}$ preserves
+row-independence''} --- so the operation belongs in the statement
+(mathlib analogue: \texttt{Finset.image\_disjoint}). The same split
+governs the rest of the project: Phase~5's rigidity-preservation
+lemmas (\cref{thm:typeI-isGenericallyRigidInj-two},
+\cref{thm:typeII-isGenericallyRigidInj-two}) are operation-form, and
+Phase~5's Laman reverse decomposition
+(\cref{thm:isLaman-exists-typeI-or-typeII-reverse}) is flat. The two
+forms meet only at callsites that combine a reverse decomposition
+with a forward lift: the flat reverse produces a
+vertex-with-neighborhood witness, and the forward lift is invoked on
+the corresponding $\mathrm{typeI}$ / $\mathrm{typeII}$ extension
+after a small iso construction (\texttt{typeI\_iso\_of\_two\_neighbors}
+or \texttt{typeII\_iso\_of\_three\_neighbors}, both project-internal).
+See \texttt{DESIGN.md} \emph{Statement-form conventions} for the
+project-wide statement of this principle.
+
 \subsection{Lifting row-independence through Henneberg moves}
 \label{sec:rigidity-matroid-lifts}
 
