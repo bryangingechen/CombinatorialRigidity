@@ -357,6 +357,35 @@ housekeeping pass once their resolution is fully indexed.
   "concrete 2×2 maps" subsection if a future phase introduces
   another explicit 2D map.
 
+### [resolved] `Finset.univ.filter`-of-`Finset V` over `[Finite V]` triggers cascading instance synthesis friction
+- **Where it bit:** Phase 7 Commit 17b's `IsSparse.maxBlock`
+  (`Sparsity.lean`). Initial attempt defined `maxBlock X` as
+  `(Finset.univ : Finset (Finset V)).filter (...).sup id` with
+  `letI := Fintype.ofFinite V` inside the `by` body. Cascade:
+  (a) `Finset.univ : Finset (Finset V)` needs `Fintype V` (via
+  `Fintype.ofFinite`); (b) the `filter` predicate isn't auto-Decidable
+  so needs `Classical.decPred`; (c) `Finset.sup` over `Finset V`
+  needs `SemilatticeSup (Finset V)` which requires `DecidableEq V`;
+  (d) `unfold IsSparse.maxBlock` in proofs exposes the `letI` /
+  `Classical`-derived instance terms, and matching against
+  proof-side `letI` / `classical` instances either fails defeq or
+  times out at `whnf`.
+- **Friction:** burned several iterations on `letI`/`haveI` and
+  `open Classical in` variants before the `change` tactic timed out
+  at 200000 heartbeats trying to match `hI.maxBlock X = F.sup id`.
+- **Proposed fix:** define the family as a `Set V`-valued union
+  (`⋃ S, ⋃ _, (↑S : Set V)`) — no `Finset.univ`, no `Fintype`, no
+  `DecidablePred` — and convert to `Finset V` via
+  `Set.Finite.toFinset` (justified by `[Finite V]` + subset of
+  univ). The I-tightness proof then bridges to a Finset-join form
+  in *one* spot, via `Finset.ext` + a local `Fintype.ofFinite V` +
+  `classical`, isolating the instance friction. `mem_maxBlock`
+  becomes the standard `Set.Finite.mem_toFinset` + `Set.mem_iUnion`
+  + `and_assoc` simp recipe.
+- **Status:** resolved (see `IsSparse.maxBlock` and surrounding
+  lemmas in `Sparsity.lean`). **Lifted to:** TACTICS-QUIRKS § new
+  *Finset-of-Finsets over `[Finite V]`*.
+
 ### [open] `IsSparse` is not `Decidable`, blocking small-example proofs by `decide`
 - **Where it bit:** Phase 2 attempt at `K₄ \ e` is Laman (deferred).
 - **Friction:** `IsSparse` is `∀ s : Finset V, ℓ ≤ k * #s → (G.edgesIn ↑s).ncard + ℓ ≤ k * #s`,

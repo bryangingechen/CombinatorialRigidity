@@ -24,6 +24,25 @@ matroid on $E(K_{V})$. Outside this regime the bases need not
 agree in cardinality (e.g.\ $(3, 6)$-tight graphs in $3$-dimensional
 rigidity).
 
+\emph{Terminology.} Lee--Streinu and Whiteley call our
+$\mathtt{(fromEdgeSet\ I).IsTightOn}\,k\,\ell\,S$
+(\cref{def:isTightOn}) an \emph{$I$-block} (or \emph{$(k, \ell)$-block}
+of $I$); Jord\'an~\cite{jordan2016} uses \emph{critical set} for the
+same notion in the $(2, 3)$ regime (already cross-referenced in
+\cref{sec:rigidity-matroid}'s Terminology aside). The maximal $I$-block
+containing a fixed Finset $X \subseteq V$ --- our
+$\mathrm{maxBlock}\,X$ (\cref{def:isSparse-maxBlock}) --- is also
+known, when $|X| \ge 2$, as the \emph{$(k, \ell)$-tight component} or
+\emph{$I$-component} containing $X$. The augmentation argument
+specialises to two-vertex anchors $X = \{u, v\}$, but the proof is
+uniform in $X$ once $|X| \ge 2$. These vertex-subset blocks /
+components should not be confused with Jord\'an's \emph{$M$-circuit}
+(a minimal dependent edge set of the matroid, e.g.\ $K_{4}$,
+$K_{3, 3} + e$) or \emph{$M$-connected component} (matroid
+connectivity at the edge level via shared circuits) --- those are
+matroid-side objects of a different flavour, and the chapter does not
+use them.
+
 \subsection{Augmentation in the matroidal regime}
 \label{sec:count-matroid-aug}
 
@@ -32,18 +51,20 @@ follows Lee--Streinu~\cite{leeStreinu2008} (also Whiteley's appendix
 of~\cite{whiteley1996}), via the \emph{$I$-component} decomposition
 of a sparse graph: the maximal $I$-tight subsets partition the
 non-free $I$-edges, are pairwise edge-disjoint, and (in the upper
-range $\ell \in [k, 2k)$) overlap in at most one vertex. Two
-$I$-tight sets sharing $\ge \lceil \ell / k \rceil$ vertices have
-$I$-tight intersection (specialisation of
-\cref{thm:isTightOn-union-inter}), so the family of $I$-tight sets
-containing any fixed pair $\{u, v\}$ has a unique minimum, the
-\emph{minimum $I$-block} containing $\{u, v\}$.
+range $\ell \in [k, 2k)$) overlap in at most one vertex. In the
+matroidal regime $\ell < 2k$, two $I$-tight sets sharing $\ge 2$
+vertices have $I$-tight union and intersection
+(\cref{lem:isTightOn-union-inter-of-pair}), so for any Finset
+$X \subseteq V$ with $|X| \ge 2$, the family of $I$-tight Finsets
+containing $X$ is pairwise-union closed; its union is the unique
+maximum element, the \emph{$I$-component of $X$}.
 
-The two preliminary lemmas below set up the block-closure scaffolding
-that the augmentation argument runs on: a matroidal-regime
-specialisation of the tight-set union/intersection closure, and the
+The preliminary lemmas below set up the block / $I$-component
+scaffolding that the augmentation argument runs on: a matroidal-regime
+specialisation of the tight-set union/intersection closure, the
 extraction lemma that turns a sparsity violation into a witnessing
-$I$-block.
+$I$-block, the maximal $I$-block / $I$-component construction
+itself, and edge-disjointness of distinct $I$-components.
 
 \begin{lemma}[Block closure under a shared pair, matroidal regime]
   \label{lem:isTightOn-union-inter-of-pair}
@@ -93,11 +114,90 @@ $I$-block.
   $S$ is $I$-tight.
 \end{proof}
 
+\begin{definition}[Maximal $I$-block / $I$-component containing a Finset]
+  \label{def:isSparse-maxBlock}
+  \lean{SimpleGraph.IsSparse.maxBlock}
+  \leanok
+  \uses{def:isSparse, def:isTightOn}
+  Let $V$ be finite, $I \subseteq \mathrm{Sym}_{2}V$ with
+  $\mathrm{fromEdgeSet}\,I$ $(k, \ell)$-sparse, and $X \subseteq V$
+  a Finset. The \emph{maximal $I$-block containing $X$}, written
+  $\mathrm{maxBlock}\,X$, is the Finset-lattice join (i.e.\ union) of
+  all $I$-tight Finsets $S$ with $X \subseteq S$; it is the empty
+  Finset when no such $S$ exists. In the matroidal regime, and
+  provided $|X| \ge 2$ (\cref{lem:isSparse-maxBlock-isTightOn}
+  below), $\mathrm{maxBlock}\,X$ is itself $I$-tight whenever it is
+  non-empty, and is the largest $I$-tight Finset containing $X$ ---
+  the \emph{$I$-component of $X$}. The augmentation argument consumes
+  this object at two-vertex anchors $X = \{u, v\}$.
+\end{definition}
+
+\begin{lemma}[$\mathrm{maxBlock}$ is $I$-tight in the matroidal regime]
+  \label{lem:isSparse-maxBlock-isTightOn}
+  \lean{SimpleGraph.IsSparse.maxBlock_isTightOn}
+  \leanok
+  \uses{def:isSparse-maxBlock, lem:isTightOn-union-inter-of-pair}
+  Let $V$ be finite, $\mathrm{fromEdgeSet}\,I$ be $(k, \ell)$-sparse
+  with $\ell < 2k$, and $X \subseteq V$ a Finset with $|X| \ge 2$.
+  If some $I$-tight Finset contains $X$, then $\mathrm{maxBlock}\,X$
+  is $I$-tight and contains every $I$-tight Finset that contains $X$
+  (in particular it contains $X$).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:isTightOn-union-inter-of-pair}
+  Pick $u \neq v$ in $X$ (possible since $|X| \ge 2$). The family
+  $\mathcal{F}$ of $I$-tight Finsets containing $X$ all share the
+  pair $\{u, v\}$, so by \cref{lem:isTightOn-union-inter-of-pair}
+  $\mathcal{F}$ is pairwise-union-closed. The Finset-lattice join
+  $\mathrm{maxBlock}\,X = \bigsqcup \mathcal{F}$ therefore lies in
+  $\mathcal{F}$ (induction on $|\mathcal{F}|$: a single element is
+  in $\mathcal{F}$ trivially; adjoining a fresh $T \in \mathcal{F}$
+  to an in-$\mathcal{F}$ join $T'$ produces $T \cup T' \in
+  \mathcal{F}$ by pairwise closure).
+\end{proof}
+
+\begin{lemma}[Edge-disjointness of distinct $I$-components]
+  \label{lem:isSparse-maxBlock-edge-disjoint}
+  \lean{SimpleGraph.IsSparse.maxBlock_eq_of_subset_maxBlock}
+  \leanok
+  \uses{def:isSparse-maxBlock, lem:isSparse-maxBlock-isTightOn,
+        lem:isTightOn-union-inter-of-pair}
+  Let $V$ be finite, $\mathrm{fromEdgeSet}\,I$ be $(k, \ell)$-sparse
+  with $\ell < 2k$, and let $X, Y \subseteq V$ be Finsets with
+  $|X|, |Y| \ge 2$. If $\mathrm{maxBlock}\,X$ is non-empty and
+  $Y \subseteq \mathrm{maxBlock}\,X$, then
+  $\mathrm{maxBlock}\,Y = \mathrm{maxBlock}\,X$. In particular,
+  distinct non-empty $I$-components are edge-disjoint: two of them
+  share at most one vertex (and therefore no off-diagonal edge of
+  $K_{V}$).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:isTightOn-union-inter-of-pair,
+        lem:isSparse-maxBlock-isTightOn}
+  By \cref{lem:isSparse-maxBlock-isTightOn} $\mathrm{maxBlock}\,X$
+  is itself an $I$-tight superset of $Y$, so by definition of
+  $\mathrm{maxBlock}\,Y$ as a union, $\mathrm{maxBlock}\,X
+  \subseteq \mathrm{maxBlock}\,Y$. Conversely,
+  $\mathrm{maxBlock}\,Y$ is $I$-tight
+  (\cref{lem:isSparse-maxBlock-isTightOn} applied at $Y$, using
+  that the non-empty $I$-tight $\mathrm{maxBlock}\,X$ witnesses
+  $Y$'s embeddability), shares the $\ge 2$-vertex Finset $Y$ with
+  $\mathrm{maxBlock}\,X$; by
+  \cref{lem:isTightOn-union-inter-of-pair} their union is $I$-tight
+  and contains $X$. Maximality of $\mathrm{maxBlock}\,X$ forces
+  $\mathrm{maxBlock}\,Y \subseteq \mathrm{maxBlock}\,X$.
+\end{proof}
+
 \begin{lemma}[$(k, \ell)$-sparsity augmentation, matroidal regime]
   \label{lem:isSparse-aug}
-  \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter,
+  \uses{def:isSparse, def:isTightOn,
         lem:isTightOn-union-inter-of-pair,
-        lem:exists-isTightOn-of-insert-not-sparse}
+        lem:exists-isTightOn-of-insert-not-sparse,
+        def:isSparse-maxBlock,
+        lem:isSparse-maxBlock-isTightOn,
+        lem:isSparse-maxBlock-edge-disjoint}
   Let $V$ be finite, $k \ge 1$ and $0 \le \ell < 2k$, and let
   $I, J \subseteq \mathrm{Sym}_{2}V$ be off-diagonal edge sets such
   that both $\mathrm{fromEdgeSet}\,I$ and $\mathrm{fromEdgeSet}\,J$
@@ -106,36 +206,28 @@ $I$-block.
   $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is $(k, \ell)$-sparse.
 \end{lemma}
 \begin{proof}
-  \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter,
+  \uses{def:isSparse, def:isTightOn,
         lem:isTightOn-union-inter-of-pair,
-        lem:exists-isTightOn-of-insert-not-sparse}
+        lem:exists-isTightOn-of-insert-not-sparse,
+        def:isSparse-maxBlock,
+        lem:isSparse-maxBlock-isTightOn,
+        lem:isSparse-maxBlock-edge-disjoint}
   Suppose for contradiction that for every $e = uv \in J \setminus I$
   the set $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is not
   $(k, \ell)$-sparse. By
-  \cref{lem:exists-isTightOn-of-insert-not-sparse} the sparsity
-  violation pins down an $I$-block (\cref{def:isTightOn})
-  $S \supseteq \{u, v\}$ with $|S| \ge 2$.
+  \cref{lem:exists-isTightOn-of-insert-not-sparse} this furnishes,
+  for each such $e$, an $I$-tight Finset containing $\{u, v\}$.
 
-  The family of $I$-blocks containing $\{u, v\}$ is closed under
-  pairwise intersection
-  (\cref{lem:isTightOn-union-inter-of-pair} applied to two
-  $I$-blocks both containing $\{u, v\}$). Iterating gives a unique minimum
-  $I$-block $T_{e} \supseteq \{u, v\}$. Define the
-  \emph{$I$-component of $e$}, $C_{e} \supseteq T_{e}$, as the
-  maximal $I$-tight superset of $T_{e}$ obtained by iterating
-  \cref{thm:isTightOn-union-inter}'s union conclusion against
-  every $I$-tight set sharing $\ge \lceil \ell / k \rceil$
-  vertices with the current iterate.
-
-  Two $I$-components $C_{1}, C_{2}$ share at most
-  $\lceil \ell / k \rceil - 1$ vertices (else union closure
-  would merge them, contradicting maximality), so each
-  off-diagonal edge of $K_{V}$ with both endpoints in
-  $C_{1} \cap C_{2}$ would have both endpoints in a shared
-  $<\lceil \ell / k \rceil$-vertex set, which contains no
-  off-diagonal edges in matroidal regime. Hence $I$-components
-  are \emph{edge-disjoint}: each non-free $I$- (and $J$-) edge
-  lies in a unique $I$-component.
+  Define $C_{e} := \mathrm{maxBlock}\,\{u, v\}$
+  (\cref{def:isSparse-maxBlock}). By
+  \cref{lem:isSparse-maxBlock-isTightOn} each $C_{e}$ is non-empty
+  and $I$-tight; it is the \emph{$I$-component} of $e$. By
+  \cref{lem:isSparse-maxBlock-edge-disjoint} distinct
+  $I$-components share at most one vertex (any shared pair would
+  force them to coincide via union-closure), so each off-diagonal
+  edge of $K_{V}$ sits in at most one $I$-component. Hence
+  $I$-components are \emph{edge-disjoint}: each non-free $I$- (and
+  $J$-) edge lies in a unique $I$-component.
 
   Now compute. Let $\mathrm{Comps}$ be the family of $I$-components
   and let $I_{\mathrm{free}} \subseteq I$ (resp.\

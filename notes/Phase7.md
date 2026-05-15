@@ -13,9 +13,8 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Eighteen commits in (this commit = Commit 17a; the prior commit
-`a8f3e42` was the research-only docs revision of the augmentation
-proof route). The
+Nineteen commits in (this commit = Commit 17b; the prior
+`8fde567` landed Commit 17a's block-closure scaffolding). The
 first six lifted Laman-only machinery to `IsSparse` and landed
 `IsSparse.exists_typeI_or_typeII_reverse` in flat form (entry points
 `60a2176..6d59be2`); the next five landed the four operation-form
@@ -55,12 +54,12 @@ splits to match (new `chapter/count-matroid.tex` for the abstract
 construction; `chapter/rigidity-matroid.tex` retains the row-LI
 machinery and the specialization).
 
-**Commit 17 proof route resolved (this commit).** Research-only:
-the original `union_with_bonus` sketch doesn't close (bonus edges
-must be I-edges; J\\I edges aren't). Replaced with the Lee--Streinu
-component-based proof; split into Commits 17a (block intersection
-closure + minimum I-block), 17b (I-components + edge partition),
-17c (augmentation assembly). See *Blockers / open questions* for
+**Commit 17 proof route resolved.** The original `union_with_bonus`
+sketch doesn't close (bonus edges must be I-edges; J\\I edges aren't).
+Replaced with the Lee--Streinu component-based proof; split into
+Commits 17a (block intersection closure), 17b (I-components and
+edge-disjointness — this commit), 17c (augmentation assembly).
+See *Blockers / open questions* for
 the full proof outline and *Multi-session plan* for the 17a/b/c
 decomposition. No Lean changes this commit. The blueprint
 `lem:isSparse-aug` proof sketch in `count-matroid.tex` is updated
@@ -153,23 +152,33 @@ to match.
     `{u, v}`); the *maximum* I-block is what 17b's I-component
     needs, and union closure from `union_inter_of_pair` builds it
     directly without going through a minimum.
-  - **Commit 17b** [planned]: I-component theory in
-    `Sparsity.lean`. A maximal I-block; lemma that I-components are
-    pairwise edge-disjoint (for matroidal regime they overlap in
-    `≤ 1` vertex by Lee--Streinu Theorem 5(2)); lemma that each
-    non-free I-edge lives in a unique I-component; the partition
-    identity `|I| = Σ_C |I ∩ C.sym2| + |I, free|`. The free-edge
-    case is non-trivial only for the lower range ℓ ∈ [0, k); for
-    the upper range ℓ ∈ [k, 2k) every edge is in a component.
-  - **Commit 17c** [planned]: augmentation assembly. For each
-    e ∈ J\\I, the contradiction hypothesis "no augmentation"
-    forces endpoints of e into some I-component. J-sparsity at
-    each I-component C gives `|J ∩ C.sym2| ≤ |I ∩ C.sym2|`.
-    Per-component sum: `|J in-component| ≤ |I in-component|`.
-    Free J-edges are in `J ∩ I` (since J \\ I edges are all
-    in-component), so `|J ∩ I, free| ≤ |I, free|`. Combine:
-    `|J| ≤ |I|`, contradicting `|I| < |J|`. Estimated total
-    ~340--390 LoC across the three commits.
+  - **Commit 17b** [✓ done, this commit]: Finset-anchored maximal
+    I-block and edge-disjointness in `Sparsity.lean`. Landed
+    `IsSparse.HasBlock`, `IsSparse.maxBlockSet`, `IsSparse.maxBlock`,
+    `IsSparse.subset_maxBlock`, `IsSparse.mem_maxBlock`,
+    `IsSparse.maxBlock_isTightOn` (the main result — `maxBlock X` is
+    `(fromEdgeSet I)`-tight when `|X| ≥ 2` and `HasBlock X`, via
+    `Finset.sup_mem` over a `∅`-extended I-tightness predicate),
+    `IsSparse.subset_maxBlock_of_hasBlock`, and
+    `IsSparse.maxBlock_eq_of_subset_maxBlock` (edge-disjointness:
+    `Y ⊆ maxBlock X ∧ |Y| ≥ 2 → maxBlock Y = maxBlock X`). The
+    blueprint nodes `def:isSparse-maxBlock`,
+    `lem:isSparse-maxBlock-isTightOn`,
+    `lem:isSparse-maxBlock-edge-disjoint` (Finset-anchored,
+    user-directed change from a pair-anchored sketch — see
+    *Architectural choices made up front* below) are pinned `\leanok`.
+    The partition identity `|I| = Σ_C |I ∩ C.sym2| + |I-free|`
+    deferred to 17c so the augmentation assembly carries the
+    bookkeeping in one focused commit.
+  - **Commit 17c** [planned]: augmentation assembly + partition
+    identity. For each e ∈ J\\I, the contradiction hypothesis "no
+    augmentation" forces endpoints of e into some I-component via
+    `subset_maxBlock_of_hasBlock`. J-sparsity at each I-component
+    `C` gives `|J ∩ C.sym2| ≤ |I ∩ C.sym2|`. Edge-disjointness of
+    distinct I-components partitions `I` and `J` over the finite
+    family of components plus free edges; by-component sum +
+    free-edge accounting then yields `|J| ≤ |I|`, contradicting
+    `|I| < |J|`. Estimated total ~150--200 LoC.
 - **Commit 18** [planned]: new file
   `CombinatorialRigidity/CountMatroid.lean`. Defines
   `SimpleGraph.countMatroid V k ℓ (h : ℓ < 2 * k) : Matroid (Sym2 V)`
@@ -214,6 +223,29 @@ wrong, revisit there.
   predicate / easy-direction file. If the Henneberg lifts grow beyond
   ~600 LoC mid-phase, split into `MatroidHenneberg.lean` +
   `MatroidIdentification.lean` (the Phase 5 / Phase 6 split pattern).
+
+- **`maxBlock` anchored on a Finset, not on a pair** (Commit 17b,
+  user-directed). `IsSparse.maxBlock` takes `X : Finset V` rather
+  than `(u v : V)`. The augmentation argument specialises at
+  $X = \{u, v\}$; the general form is no harder to prove and reads
+  as math (*"the maximal $I$-tight Finset containing $X$"*) rather
+  than as a Lean function. Skips the Sym2-symmetry boilerplate of
+  a pair-anchored definition. Side condition $|X| \ge 2$ on the
+  I-tightness theorem matches the matroidal-regime closure
+  requirement.
+
+- **`maxBlock` body via `Set` + `Set.Finite.toFinset`, not
+  `Finset.univ.filter`.** Commit 17b initially tried the
+  Finset-filter route but hit `DecidablePred`/`SemilatticeSup`
+  instance-synthesis friction (the `letI := Fintype.ofFinite V` /
+  `Classical.decPred` chain produced instance terms that didn't
+  reduce cleanly under `unfold`). Switched to a `Set`-based
+  definition (`⋃ S, ...` with `Set.Finite.toFinset` via
+  `[Finite V]`); the I-tightness proof now bridges to the
+  Finset-join form locally via a single set-extensionality lemma,
+  isolating the instance friction to one spot. The pattern is
+  worth remembering for future "Finset of Finsets" constructions
+  over a `[Finite V]` ambient type.
 
 - **General $(k, \ell)$-count matroid; specialize to $(2, 3)$
   for Lovász--Yemini.** *Updated in Commit 16.* Standard
@@ -433,7 +465,13 @@ A red node = not yet formalized; a green node = formalized and
   split (pendant / Type I / Type II) in Commit 12. New matroidal-
   regime block-closure scaffolding in Commit 17a:
   `IsTightOn.union_inter_of_pair`, `edgeSet_fromEdgeSet_insert`,
-  and `IsSparse.exists_isTightOn_of_insert_not_sparse`.
+  and `IsSparse.exists_isTightOn_of_insert_not_sparse`. New
+  `IComponents` section (Commit 17b): `IsSparse.HasBlock`,
+  `IsSparse.maxBlockSet` / `_finite`, `IsSparse.maxBlock`,
+  `IsSparse.mem_maxBlock`, `IsSparse.subset_maxBlock`,
+  `IsSparse.maxBlock_isTightOn`,
+  `IsSparse.subset_maxBlock_of_hasBlock`, and
+  `IsSparse.maxBlock_eq_of_subset_maxBlock`.
 - `HennebergRigidity.lean`: `exists_off_line_off_finite_dim_two` and
   `exists_not_mem_span_singleton_dim_two` un-privatized for cross-file
   reuse from `MatroidIdentification.lean`.

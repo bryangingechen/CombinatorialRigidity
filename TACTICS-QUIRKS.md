@@ -306,3 +306,34 @@ identifier. Same for `₋` (U+208B), `₌` (U+208C), `₍ ₎`.
 Replace with an alphanumeric suffix (`V_pos`, `Vpos`, `Vp`, `S`)
 when binding via `set` / `let` / `intro`. Blueprint prose can keep
 the `₊` notation; only the Lean identifier needs to change.
+
+## 14. `Finset.univ.filter` of `Finset V` under `[Finite V]` triggers cascading instance synthesis friction
+
+Defining a `Finset (Finset V)` via `Finset.univ.filter p` requires
+in order: `Fintype V` (for the outer `Finset.univ`, derived from
+`[Finite V]` via `Fintype.ofFinite`), `DecidablePred p` (rarely
+`Decidable` for a custom predicate involving `Set.ncard` /
+`IsTightOn`, so use `Classical.decPred`), and `DecidableEq V` (to
+get `SemilatticeSup (Finset V)` for `Finset.sup`). When the
+definition is wrapped in a `noncomputable def` body that the
+elaborator must unfold during a downstream proof, the chain of
+`letI` / `haveI` / `Classical.decPred` / `open Classical in`
+choices in the def *do not always reduce to the proof-side
+instances picked by `classical`*. Symptom: `change` or `unfold`
+followed by `Finset.sup_mem` either fails with "Invalid `⟨...⟩`
+notation" or times out at `whnf`.
+
+**Resolution.** Define the family as a `Set V` first
+(`⋃ S, ⋃ (_ : p S), (↑S : Set V)`) — no `Finset.univ`, no
+`Fintype`, no `DecidablePred` — then convert to `Finset V` via
+`Set.Finite.toFinset` (the finiteness proof is
+`(Set.toFinite Set.univ).subset (Set.subset_univ _)` under
+`[Finite V]`). Membership unfolds via `Set.Finite.mem_toFinset`
++ `Set.mem_iUnion` + `and_assoc`. When the proof genuinely needs
+the Finset-join form (e.g.\ for `Finset.sup_mem`), bridge with a
+single `Finset.ext`-driven equality `maxBlock X = F.sup id` that
+isolates the instance friction to one spot.
+
+Worked example: `IsSparse.maxBlock` / `IsSparse.maxBlock_isTightOn`
+in `Sparsity.lean` (Phase 7 Commit 17b). Pattern is useful for any
+"Finset of Finsets" construction over a `[Finite V]` ambient.

@@ -59,6 +59,10 @@ bullets. If one matches, jump to the named section of
 - *"Application type mismatch"* on `congr_fun h` where `h` is an
   equation between `LinearMap`s / `Module.Dual`s / bundled
   morphisms → § 12 *`congr_fun` doesn't apply to `LinearMap`*
+- `(deterministic) timeout at whnf` or "Invalid `⟨...⟩` notation"
+  after `unfold`/`change` of a `Finset.univ.filter`-of-`Finset V`
+  definition over `[Finite V]` → § 14 *`Finset.univ.filter` of
+  `Finset V` under `[Finite V]`* (switch to `Set` + `toFinset`)
 - `simp_all` produces a confusing residual with a hypothesis you
   expected to eliminate → § 10 *`simp_all` cross-contaminates*
 - `linearIndependent_fin2` rewrite leaves `![v₀, v₁] 0` blocking a

@@ -1242,4 +1242,176 @@ theorem IsSparse.exists_typeI_or_typeII_reverse [Fintype V]
       (h.False_of_pairwise_blocker_or_edge ha_adj hb_adj hc_adj hab hac hbc h_ab h_ac h_bc
         (h.exists_nonadj_among_three_neighbors ha_adj hb_adj hc_adj hab hac hbc)) id
 
+/-! ### Matroidal-regime maximal I-blocks (I-components)
+
+For a `(k, ℓ)`-sparse edge set `I` in the matroidal regime `ℓ < 2 * k`, the family of
+`(fromEdgeSet I)`-tight Finsets containing a fixed Finset `X ⊆ V` with `|X| ≥ 2` is
+closed under pairwise union (`IsTightOn.union_inter_of_pair`); the union of the whole
+family — `IsSparse.maxBlock X` — is therefore itself `(fromEdgeSet I)`-tight when
+non-empty, the maximal `I`-block containing `X` (or *I-component* of `X`, in
+Lee–Streinu's terminology). Distinct I-components share at most one vertex, hence are
+edge-disjoint: each non-free I-edge lies in a unique I-component. This scaffolding
+drives Phase 7's `(k, ℓ)`-augmentation lemma `IsSparse.exists_aug_of_lt_two_mul`
+(Commit 17c). -/
+
+section IComponents
+
+variable [Finite V]
+
+-- The maxBlock + edge-disjointness lemmas in this section take `[DecidableEq V]`
+-- in their signatures (needed in the proofs for `IsTightOn.union_inter_of_pair`
+-- and `Finset.union` / `Finset.le_sup`) even though the statements don't mention
+-- it directly. Disable the linter for the section.
+set_option linter.unusedDecidableInType false
+
+/-- Predicate: some `(fromEdgeSet I)`-tight Finset contains `X`. The `maxBlock X`
+is non-empty exactly when this holds.
+
+The `(fromEdgeSet I).IsSparse k ℓ` arg is unused in the body but kept for
+dot-notation ergonomics (`hI.HasBlock X`) — the predicate is meaningful only in
+the sparse regime where the augmentation argument runs. -/
+@[nolint unusedArguments]
+def IsSparse.HasBlock {k ℓ : ℕ} {I : Set (Sym2 V)}
+    (_ : (fromEdgeSet I).IsSparse k ℓ) (X : Finset V) : Prop :=
+  ∃ S : Finset V, (fromEdgeSet I).IsTightOn k ℓ S ∧ X ⊆ S
+
+/-- **Maximal I-block at a Finset `X`** (a.k.a. *I-component of `X`* in the
+matroidal regime), as a Set. The union of all `(fromEdgeSet I)`-tight Finsets
+containing `X`, viewed as vertices of `V`. The `Finset`-valued version (after
+finiteness) is `IsSparse.maxBlock` below.
+
+The `(fromEdgeSet I).IsSparse k ℓ` arg is unused in the body but kept for
+dot-notation ergonomics — see `IsSparse.HasBlock`. -/
+@[nolint unusedArguments]
+def IsSparse.maxBlockSet {k ℓ : ℕ} {I : Set (Sym2 V)}
+    (_ : (fromEdgeSet I).IsSparse k ℓ) (X : Finset V) : Set V :=
+  ⋃ (S : Finset V) (_ : (fromEdgeSet I).IsTightOn k ℓ S ∧ X ⊆ S), (↑S : Set V)
+
+/-- `maxBlockSet` is finite when `V` is. -/
+lemma IsSparse.maxBlockSet_finite {k ℓ : ℕ} {I : Set (Sym2 V)}
+    (hI : (fromEdgeSet I).IsSparse k ℓ) (X : Finset V) :
+    (hI.maxBlockSet X).Finite :=
+  (Set.toFinite (Set.univ : Set V)).subset (Set.subset_univ _)
+
+/-- **Maximal I-block at `X`**, as a `Finset`. -/
+noncomputable def IsSparse.maxBlock {k ℓ : ℕ} {I : Set (Sym2 V)}
+    (hI : (fromEdgeSet I).IsSparse k ℓ) (X : Finset V) : Finset V :=
+  (hI.maxBlockSet_finite X).toFinset
+
+/-- Membership in `maxBlock`. -/
+lemma IsSparse.mem_maxBlock {k ℓ : ℕ} {I : Set (Sym2 V)}
+    (hI : (fromEdgeSet I).IsSparse k ℓ) {X : Finset V} {x : V} :
+    x ∈ hI.maxBlock X ↔ ∃ S : Finset V,
+      (fromEdgeSet I).IsTightOn k ℓ S ∧ X ⊆ S ∧ x ∈ S := by
+  unfold IsSparse.maxBlock
+  rw [Set.Finite.mem_toFinset]
+  unfold IsSparse.maxBlockSet
+  simp [Set.mem_iUnion, and_assoc]
+
+/-- Every `I`-tight Finset containing `X` is contained in `maxBlock X`. -/
+lemma IsSparse.subset_maxBlock {k ℓ : ℕ} {I : Set (Sym2 V)}
+    (hI : (fromEdgeSet I).IsSparse k ℓ) {X S : Finset V}
+    (hS : (fromEdgeSet I).IsTightOn k ℓ S) (hXS : X ⊆ S) :
+    S ⊆ hI.maxBlock X := fun x hxS => by
+  rw [hI.mem_maxBlock]
+  exact ⟨S, hS, hXS, hxS⟩
+
+/-- **`maxBlock X` is `(fromEdgeSet I)`-tight** in the matroidal regime `ℓ < 2*k`,
+provided `|X| ≥ 2` and some `I`-tight Finset contains `X`. The proof reduces to
+"the Set-union of pairwise-union-closed I-tight Finsets is itself an I-tight Finset"
+— a Finset-level closure argument. -/
+lemma IsSparse.maxBlock_isTightOn {k ℓ : ℕ} {I : Set (Sym2 V)} [DecidableEq V]
+    (hI : (fromEdgeSet I).IsSparse k ℓ) (hℓ : ℓ < 2 * k)
+    {X : Finset V} (hX_card : 2 ≤ X.card) (hB : hI.HasBlock X) :
+    (fromEdgeSet I).IsTightOn k ℓ (hI.maxBlock X) := by
+  obtain ⟨u, hu, v, hv, huv⟩ := Finset.one_lt_card.mp hX_card
+  -- The maxBlock equals the join of the Finset family {S | I-tight ∧ X ⊆ S}.
+  -- We prove the equality `maxBlock X = F.sup id` for an explicit Finset F via
+  -- a separate auxiliary lemma path, then run `Finset.sup_mem`.
+  -- Strategy: use a noncomputable Fintype instance to express the family as a
+  -- `Finset (Finset V)`, then prove the maxBlock coincides with its `Finset.sup`.
+  letI : Fintype V := Fintype.ofFinite V
+  classical
+  set F : Finset (Finset V) := (Finset.univ : Finset (Finset V)).filter
+    (fun S => (fromEdgeSet I).IsTightOn k ℓ S ∧ X ⊆ S) with hF_def
+  -- maxBlock X = F.sup id as Finsets (set extensionality).
+  have h_maxBlock_eq : hI.maxBlock X = F.sup id := by
+    apply Finset.ext
+    intro x
+    rw [hI.mem_maxBlock]
+    simp only [Finset.mem_sup, hF_def, Finset.mem_filter, Finset.mem_univ, true_and,
+      id_eq]
+    constructor
+    · rintro ⟨S, hS, hXS, hxS⟩; exact ⟨S, ⟨hS, hXS⟩, hxS⟩
+    · rintro ⟨S, ⟨hS, hXS⟩, hxS⟩; exact ⟨S, hS, hXS, hxS⟩
+  rw [h_maxBlock_eq]
+  -- Auxiliary predicate P closed under (∅, ⊔) containing every I-tight S ⊇ X.
+  let P : Set (Finset V) :=
+    { T | T = ∅ ∨ ((fromEdgeSet I).IsTightOn k ℓ T ∧ X ⊆ T) }
+  have hP_bot : (∅ : Finset V) ∈ P := Or.inl rfl
+  have hP_join : ∀ T₁ ∈ P, ∀ T₂ ∈ P, T₁ ⊔ T₂ ∈ P := by
+    intro T₁ hT₁ T₂ hT₂
+    rcases hT₁ with hT₁ | ⟨hT₁_tight, hT₁_X⟩
+    · subst hT₁; simpa using hT₂
+    · rcases hT₂ with hT₂ | ⟨hT₂_tight, hT₂_X⟩
+      · subst hT₂; simpa using Or.inr ⟨hT₁_tight, hT₁_X⟩
+      · refine Or.inr ⟨?_, hT₁_X.trans Finset.subset_union_left⟩
+        exact (hT₁_tight.union_inter_of_pair hℓ hT₂_tight hI huv
+          (hT₁_X hu) (hT₁_X hv) (hT₂_X hu) (hT₂_X hv)).1
+  have hP_id : ∀ S ∈ F, (id S) ∈ P := by
+    intro S hS
+    rcases Finset.mem_filter.mp hS with ⟨_, hS_tight, hS_X⟩
+    exact Or.inr ⟨hS_tight, hS_X⟩
+  have h_sup_in_P : F.sup id ∈ P := Finset.sup_mem P hP_bot hP_join F id hP_id
+  -- F.sup id is non-empty since hB witnesses non-emptiness.
+  obtain ⟨S₀, hS₀_tight, hS₀_X⟩ := hB
+  have h_S₀_in_F : S₀ ∈ F :=
+    Finset.mem_filter.mpr ⟨Finset.mem_univ _, hS₀_tight, hS₀_X⟩
+  have h_u_in_sup : u ∈ F.sup id :=
+    (Finset.le_sup (f := id) h_S₀_in_F) (hS₀_X hu)
+  rcases h_sup_in_P with h_empty | ⟨h_tight, _⟩
+  · rw [h_empty] at h_u_in_sup
+    exact absurd h_u_in_sup (Finset.notMem_empty u)
+  · exact h_tight
+
+/-- `X ⊆ maxBlock X` whenever `HasBlock X`. -/
+lemma IsSparse.subset_maxBlock_of_hasBlock {k ℓ : ℕ} {I : Set (Sym2 V)}
+    (hI : (fromEdgeSet I).IsSparse k ℓ) {X : Finset V} (hB : hI.HasBlock X) :
+    X ⊆ hI.maxBlock X := by
+  obtain ⟨S, hS, hXS⟩ := hB
+  exact hXS.trans (hI.subset_maxBlock hS hXS)
+
+/-- **Edge-disjointness of distinct I-components.** If `Y ⊆ maxBlock X` with both
+`|X|, |Y| ≥ 2` and the `maxBlock X` non-empty, then `maxBlock Y = maxBlock X`.
+Two distinct non-empty I-components therefore share at most one vertex (and so
+contain no common off-diagonal edge of `K_V`). -/
+lemma IsSparse.maxBlock_eq_of_subset_maxBlock {k ℓ : ℕ} {I : Set (Sym2 V)}
+    [DecidableEq V]
+    (hI : (fromEdgeSet I).IsSparse k ℓ) (hℓ : ℓ < 2 * k)
+    {X Y : Finset V} (hX_card : 2 ≤ X.card) (hY_card : 2 ≤ Y.card)
+    (hBX : hI.HasBlock X) (hY_sub : Y ⊆ hI.maxBlock X) :
+    hI.maxBlock Y = hI.maxBlock X := by
+  have h_X_in_maxX : X ⊆ hI.maxBlock X := hI.subset_maxBlock_of_hasBlock hBX
+  have h_maxX_tight : (fromEdgeSet I).IsTightOn k ℓ (hI.maxBlock X) :=
+    hI.maxBlock_isTightOn hℓ hX_card hBX
+  -- `maxBlock X` itself is an I-tight Finset ⊇ Y, hence ⊆ maxBlock Y.
+  have h_maxX_sub_maxY : hI.maxBlock X ⊆ hI.maxBlock Y :=
+    hI.subset_maxBlock h_maxX_tight hY_sub
+  -- Reverse: maxBlock Y is I-tight (HasBlock Y witnessed by maxBlock X), and shares
+  -- ≥ 2 vertices with maxBlock X, so their union is I-tight + ⊇ X + ⊆ maxBlock X.
+  have h_BY : hI.HasBlock Y := ⟨hI.maxBlock X, h_maxX_tight, hY_sub⟩
+  have h_maxY_tight : (fromEdgeSet I).IsTightOn k ℓ (hI.maxBlock Y) :=
+    hI.maxBlock_isTightOn hℓ hY_card h_BY
+  have h_Y_in_maxY : Y ⊆ hI.maxBlock Y := hI.subset_maxBlock_of_hasBlock h_BY
+  obtain ⟨u, hu, v, hv, huv⟩ := Finset.one_lt_card.mp hY_card
+  have h_union := (h_maxX_tight.union_inter_of_pair hℓ h_maxY_tight hI huv
+    (hY_sub hu) (hY_sub hv) (h_Y_in_maxY hu) (h_Y_in_maxY hv)).1
+  have h_union_X : X ⊆ hI.maxBlock X ∪ hI.maxBlock Y :=
+    h_X_in_maxX.trans Finset.subset_union_left
+  have h_maxY_sub_maxX : hI.maxBlock Y ⊆ hI.maxBlock X :=
+    Finset.subset_union_right.trans (hI.subset_maxBlock h_union h_union_X)
+  exact Finset.Subset.antisymm h_maxY_sub_maxX h_maxX_sub_maxY
+
+end IComponents
+
 end SimpleGraph
