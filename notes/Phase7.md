@@ -13,19 +13,25 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Thirteen commits in. The first six lifted Laman-only machinery to
+Fourteen commits in. The first six lifted Laman-only machinery to
 `IsSparse` and landed `IsSparse.exists_typeI_or_typeII_reverse` in
 flat form (entry points `60a2176..6d59be2`); the next five landed the
 four operation-form row-LI lifts plus the row-LI openness lemma in
 `MatroidIdentification.lean` (entry points `91403e7..57f8f1f`); Commit
 12 refined the sparse reverse to a 3-way split (pendant / Type I /
 Type II) and reflowed the Laman shell to consume it; Commit 13 added
-the pendant row-LI lift (`typeI_pendant_edgeSetRowIndependent_lift`
-in `MatroidIdentification.lean`, pinning `lem:pendant-rowIndependent-lift`
-in the blueprint). The chapter dep-graph in `chapter/rigidity-matroid.tex`
-has only the `|E|`-induction theorem
-`thm:isSparse-exists-rowIndependent-placement`, the iff
-`thm:edgeSet-rowIndependent-iff-isSparse`, and the `Matroid` packaging
+the pendant row-LI lift (`typeI_pendant_edgeSetRowIndependent_lift`);
+Commit 14 landed the hard-direction `|E|`-induction theorem
+`IsSparse.exists_rowIndependent_placement` (`MatroidIdentification.lean`),
+the supporting iso transport `EdgeSetRowIndependent.iso`
+(`RigidityMatroid.lean`), and the private perturbation helper
+`exists_distinct_rowIndependent_placement_dim_two`; the blueprint
+nodes `thm:isSparse-exists-rowIndependent-placement` and
+`lem:edgeSet-rowIndependent-iso` are now `\leanok`. The chapter
+dep-graph in `chapter/rigidity-matroid.tex` has only the iff
+`thm:edgeSet-rowIndependent-iff-isSparse`, the
+`cor:isLaman-exists-rowIndependent`, and the `Matroid` packaging
+(`def:rigidityMatroid` and `thm:rigidityMatroid-indep-iff-isSparse`)
 left to discharge.
 
 **Multi-session plan** for the forward-blueprint work:
@@ -52,14 +58,24 @@ left to discharge.
   `exists_ne`), vastly simpler than the `q - p' a, q - p' b` LI
   condition of the general typeI lift. The blueprint
   `lem:pendant-rowIndependent-lift` is pinned.
-- **Next: `IsSparse.exists_rowIndependent_placement`** — the
-  `|E|`-induction theorem. With the 3-way split + pendant lift
-  landed, the induction matches the blueprint sketch directly: each
-  branch strictly decreases `|E|`; the pendant case uses the new
-  lift via `typeI_iso_of_two_neighbors` at `a = b`, the Type I and
-  Type II cases use the existing lifts via the existing iso
-  constructors. Lives in `MatroidIdentification.lean`.
-- **Then the iff** `edgeSet_rowIndependent_iff_isSparse_dim_two`
+- **Commit 14** [✓ done]: `|E|`-induction theorem
+  `IsSparse.exists_rowIndependent_placement` in
+  `MatroidIdentification.lean`. Strong induction on `Fintype.card V`
+  (each Henneberg reverse strictly decreases `card V`, and the base
+  case covers `H.edgeSet = ∅` uniformly — including `card V ≤ 1`).
+  Each branch: apply IH to the smaller subtype graph, invoke the
+  branch's row-LI lift, reconstruct the iso to
+  `typeI / typeII H' ...` via `typeI_iso_of_two_neighbors` /
+  `typeII_iso_of_three_neighbors`, and transport row-LI back via
+  the new iso-transport lemma `EdgeSetRowIndependent.iso`
+  (`RigidityMatroid.lean`). The Type I branch needs `p' a ≠ p' b`
+  for `typeI_edgeSetRowIndependent_lift`, supplied by the new
+  private helper `exists_distinct_rowIndependent_placement_dim_two`
+  (perturbs `p' a` along `t • v` with `v ≠ 0` and small `t ≠ 0`,
+  preserving row-LI via `EdgeSetRowIndependent.eventually`). The
+  blueprint `thm:isSparse-exists-rowIndependent-placement` and
+  `lem:edgeSet-rowIndependent-iso` are pinned `\leanok`.
+- **Next: the iff** `edgeSet_rowIndependent_iff_isSparse_dim_two`
   (combine the hard direction with Phase 6's easy direction
   `isSparse_of_edgeSetRowIndependent_dim_two`).
 - **Then the `Matroid` packaging** via `IndepMatroid` (~100 LoC
@@ -194,6 +210,21 @@ A red node = not yet formalized; a green node = formalized and
   `continuous_rigidityMap_apply`; transport back via
   `LinearMap.linearIndependent_iff` + `LinearEquiv.ker`.
 
+- **Hard-direction `|E|`-induction (Commit 14).**
+  `IsSparse.exists_rowIndependent_placement` runs strong induction on
+  `Fintype.card V`: base case `H.edgeSet = ∅` returns the zero
+  placement; inductive step applies the 3-way sparse reverse, picks
+  the row-LI lift for the branch (pendant / Type I / Type II), and
+  transports back via `EdgeSetRowIndependent.iso` after the iso
+  constructor recovers the operation form. The Type I branch routes
+  `p'` through `exists_distinct_rowIndependent_placement_dim_two` to
+  satisfy `p' a ≠ p' b`. The new iso-transport lemma
+  `EdgeSetRowIndependent.iso` factors `G.rigidityRow (q ∘ φ)` as
+  `Lφ.toLinearMap.dualMap ∘ H.rigidityRow q ∘ φ.mapEdgeSet`, where
+  `Lφ : Framework V d ≃ₗ[ℝ] Framework W d` is precomposition with
+  `φ.symm` (the framework-side `LinearEquiv` analogue of `motion ∘
+  φ.symm`); LI transports along the bijection + injective dualMap.
+
 - **Pendant row-LI lift (Commit 13).**
   `typeI_pendant_edgeSetRowIndependent_extend` + `..._lift` handle the
   `b = a` degeneracy of the Type I lift (parallel edges collapse to a
@@ -266,12 +297,15 @@ A red node = not yet formalized; a green node = formalized and
 - `HennebergRigidity.lean`: `exists_off_line_off_finite_dim_two` and
   `exists_not_mem_span_singleton_dim_two` un-privatized for cross-file
   reuse from `MatroidIdentification.lean`.
-- `RigidityMatroid.lean`: `EdgeSetRowIndependent.eventually` (Commit 10).
+- `RigidityMatroid.lean`: `EdgeSetRowIndependent.eventually` (Commit 10);
+  `EdgeSetRowIndependent.iso` (Commit 14).
 - `MatroidIdentification.lean`: new file (Commit 7); cumulatively
   holds the four operation-form row-LI lifts (typeI / typeII × extend
   / lift), `exists_nonCollinear_rowIndependent_placement_dim_two`,
-  and (Commit 13) the pendant row-LI lift
-  `typeI_pendant_edgeSetRowIndependent_extend` + `..._lift`.
+  the pendant row-LI lift `typeI_pendant_edgeSetRowIndependent_extend`
+  + `..._lift` (Commit 13), `exists_distinct_rowIndependent_placement_dim_two`,
+  and the hard-direction `|E|`-induction theorem
+  `IsSparse.exists_rowIndependent_placement` (Commit 14).
 - `TrivialMotions.lean`: `elemSkewMap_ofLp_inr_apply` collapsed to
   one line (Commit 10's cleanup pass).
 

@@ -91,6 +91,56 @@ theorem edgeSetRowIndependent_iff_linearIndepOn_rigidityRow
   exact (LinearMap.ltoFun ℝ (Framework V d) ℝ ℝ).linearIndepOn_iff_of_injOn
     DFunLike.coe_injective.injOn
 
+/-- **Iso transport for row-independence.** A graph iso `φ : G ≃g H` carries a row-independent
+placement `q` of `H` to the placement `q ∘ φ` of `G`, which is row-independent on `Set.univ`.
+
+Row-LI analogue of `IsInfinitesimallyRigid.iso` in `Framework.lean`. The G-rows at `q ∘ φ`
+factor as `Lφ.toLinearMap.dualMap ∘ H.rigidityRow q ∘ φ.mapEdgeSet`, where
+`Lφ : Framework V d ≃ₗ[ℝ] Framework W d` is precomposition with `φ.symm` (motion ↦ motion ∘
+φ.symm). LI of the H-rows transports through the bijection `φ.mapEdgeSet` and the injective
+linear map `Lφ.toLinearMap.dualMap` (dualMap of a linear equiv). Used by Phase 7's
+`|E|`-induction at each Henneberg branch (`MatroidIdentification.lean`). -/
+theorem EdgeSetRowIndependent.iso {V W : Type*} [Finite V] [Finite W] {d : ℕ}
+    {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H)
+    {q : Framework W d} (h : H.EdgeSetRowIndependent q Set.univ) :
+    G.EdgeSetRowIndependent (q ∘ φ) Set.univ := by
+  classical
+  rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff] at h ⊢
+  -- Precomposition linear equiv `Framework V d ≃ₗ[ℝ] Framework W d`, `motion ↦ motion ∘ φ.symm`.
+  let Lφ : Framework V d ≃ₗ[ℝ] Framework W d :=
+    { toFun := fun motion => motion ∘ φ.symm
+      invFun := fun motion' => motion' ∘ φ
+      left_inv := fun motion => by ext v; simp
+      right_inv := fun motion' => by ext w; simp
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
+  -- G-rows at `q ∘ φ` factor through `Lφ.dualMap` and the edge-set bijection.
+  have h_factor : ∀ e : G.edgeSet,
+      G.rigidityRow (q ∘ φ) e =
+        Lφ.toLinearMap.dualMap (H.rigidityRow q (φ.mapEdgeSet e)) := by
+    rintro ⟨e, he⟩
+    induction e with
+    | h u w =>
+      refine LinearMap.ext fun motion => ?_
+      have hH : s(φ u, φ w) ∈ H.edgeSet := by
+        rw [mem_edgeSet] at he ⊢; exact φ.map_adj_iff.mpr he
+      change G.RigidityMap (q ∘ φ) motion ⟨s(u, w), he⟩ =
+        H.RigidityMap q (motion ∘ φ.symm) ⟨s(φ u, φ w), hH⟩
+      rw [rigidityMap_apply _ _ _ u w he, rigidityMap_apply _ _ _ (φ u) (φ w) hH]
+      simp
+  -- Conclude: LI transports along the dualMap of a linear equiv (injective) and the edge-set
+  -- bijection (injective reindexing).
+  have h_reindex : LinearIndependent ℝ (H.rigidityRow q ∘ φ.mapEdgeSet) :=
+    h.comp _ φ.mapEdgeSet.injective
+  have h_inj : LinearMap.ker (Lφ.toLinearMap.dualMap) = ⊥ :=
+    LinearMap.ker_eq_bot.mpr Lφ.dualMap.injective
+  have h_compose : LinearIndependent ℝ
+      (Lφ.toLinearMap.dualMap ∘ (H.rigidityRow q ∘ φ.mapEdgeSet)) :=
+    h_reindex.map' _ h_inj
+  convert h_compose using 1
+  funext e
+  exact h_factor e
+
 /-- **Openness of row-independence in the placement.** If `p₀` makes an edge subset `I`
 row-independent, then so does every placement in some neighborhood of `p₀`.
 

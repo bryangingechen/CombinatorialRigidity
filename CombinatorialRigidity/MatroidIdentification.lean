@@ -870,6 +870,139 @@ theorem typeII_edgeSetRowIndependent_lift [Finite V] {G' : SimpleGraph V}
   exact ⟨fun w : Option V => w.elim q p'',
     typeII_edgeSetRowIndependent_extend hp''_rowLI h_ab hs0 hs1 hcoll hLI⟩
 
+/-- **Existence of a row-independent placement separating two vertices in dim 2.** Given a
+placement `p₀` of `G'` at which every edge of `G'` is row-independent and two distinct vertices
+`a, b`, there exists a row-LI placement `p` with `p a ≠ p b`. If `p₀ a ≠ p₀ b` already, return
+`p₀`; otherwise perturb `p₀ a` by `t • v` for `v ≠ 0` and small `t ≠ 0`, preserving row-LI via
+`EdgeSetRowIndependent.eventually`. Phase 7's `|E|`-induction Type I branch feeds this to
+`typeI_edgeSetRowIndependent_lift` (which requires `p' a ≠ p' b`). -/
+private lemma exists_distinct_rowIndependent_placement_dim_two [Finite V]
+    {G' : SimpleGraph V} {p₀ : Framework V 2}
+    (h : G'.EdgeSetRowIndependent p₀ Set.univ) {a b : V} (hab : a ≠ b) :
+    ∃ p : Framework V 2, G'.EdgeSetRowIndependent p Set.univ ∧ p a ≠ p b := by
+  classical
+  by_cases hab_p : p₀ a = p₀ b
+  · -- Collapsed branch: perturb `p₀ a` by `t • v` with `v ≠ 0` and small `t ≠ 0`.
+    obtain ⟨v, hv_ne⟩ := exists_ne (0 : EuclideanSpace ℝ (Fin 2))
+    set p_t : ℝ → Framework V 2 := fun t => Function.update p₀ a (p₀ a + t • v)
+      with hp_t_def
+    have h_p_t_a : ∀ t, p_t t a = p₀ a + t • v := fun _ => Function.update_self a _ p₀
+    have h_p_t_b : ∀ t, p_t t b = p₀ b :=
+      fun _ => Function.update_of_ne hab.symm _ p₀
+    have h_p_t_cont : Continuous p_t := by fun_prop
+    have h_p_t_zero : p_t 0 = p₀ := by
+      funext x
+      change Function.update p₀ a (p₀ a + (0 : ℝ) • v) x = p₀ x
+      by_cases hxa : x = a
+      · rw [hxa, Function.update_self]; simp
+      · rw [Function.update_of_ne hxa]
+    have h_rowLI_ev : ∀ᶠ t in 𝓝 (0 : ℝ), G'.EdgeSetRowIndependent (p_t t) Set.univ := by
+      have h_ev_p := h.eventually
+      rw [← h_p_t_zero] at h_ev_p
+      exact h_p_t_cont.continuousAt.tendsto.eventually h_ev_p
+    have h_diff : ∀ t : ℝ, t ≠ 0 → p_t t a ≠ p_t t b := by
+      intro t ht_ne hp_eq
+      rw [h_p_t_a, h_p_t_b, ← hab_p, add_eq_left, smul_eq_zero] at hp_eq
+      exact hp_eq.elim ht_ne hv_ne
+    have h_combined : ∀ᶠ t in 𝓝[≠] (0 : ℝ),
+        G'.EdgeSetRowIndependent (p_t t) Set.univ ∧ t ≠ 0 := by
+      filter_upwards [h_rowLI_ev.filter_mono nhdsWithin_le_nhds, self_mem_nhdsWithin]
+        with t hrow ht_ne
+      exact ⟨hrow, ht_ne⟩
+    obtain ⟨t, hrow, ht_ne⟩ := h_combined.exists
+    exact ⟨p_t t, hrow, h_diff t ht_ne⟩
+  · exact ⟨p₀, h, hab_p⟩
+
 end Henneberg
+
+/-! ### `|E|`-induction: every sparse graph has a row-independent placement
+
+The hard direction of Lovász–Yemini's matroid identification (Jordán §2.2 Theorem 2.2.1):
+in dimension 2, every `(2, 3)`-sparse graph admits a placement at which its edge set is
+row-independent. The proof is strong induction on `Fintype.card V`: each Henneberg reverse
+strictly decreases `card V`, and the corresponding row-LI lift (pendant / Type I / Type II)
+reconstructs a placement of the larger graph. -/
+
+/-- **Sparse ⇒ row-independent at some placement, dim 2.** Every `(2, 3)`-sparse graph `H` on a
+finite vertex set admits a placement `p : Framework V 2` at which the entire edge set of `H` is
+row-independent.
+
+The hard direction of Lovász–Yemini's matroid identification (Jordán §2.2 Theorem 2.2.1).
+Strong induction on `Fintype.card V`. Base case: when `H.edgeSet` is empty (in particular when
+`card V ≤ 1`), the empty family of rows is linearly independent at any placement. Inductive
+step: apply `IsSparse.exists_typeI_or_typeII_reverse` to obtain a vertex `v` with `H.degree v ∈
+{1, 2, 3}` and a smaller sparse graph `H'` on `{w // w ≠ v}` via one of three Henneberg
+reverses (pendant / Type I / Type II). The IH gives a row-LI placement `p'` of `H'`; in each
+branch, the corresponding row-LI lift (`typeI_pendant_edgeSetRowIndependent_lift` /
+`typeI_edgeSetRowIndependent_lift` / `typeII_edgeSetRowIndependent_lift`) reconstructs a
+row-LI placement of the Henneberg extension `typeI H' a a` (or `typeI H' a b`, or
+`typeII H' x y c`), and `EdgeSetRowIndependent.iso` transports back to `H` via the iso from
+`Henneberg.typeI_iso_of_two_neighbors` / `Henneberg.typeII_iso_of_three_neighbors`. The Type I
+branch additionally feeds `p'` through `exists_distinct_rowIndependent_placement_dim_two` to
+ensure `p' a ≠ p' b` (the LI hypothesis of `typeI_edgeSetRowIndependent_lift`). -/
+theorem IsSparse.exists_rowIndependent_placement :
+    ∀ (n : ℕ) {V : Type*} [Fintype V], Fintype.card V = n →
+      ∀ {H : SimpleGraph V}, H.IsSparse 2 3 →
+        ∃ p : Framework V 2, H.EdgeSetRowIndependent p Set.univ := by
+  intro n
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    intro V _ hV H h
+    classical
+    by_cases hE : H.edgeSet.Nonempty
+    · -- Inductive step: apply the flat-form sparse reverse, reconstruct the iso to
+      -- `typeI H' a b` / `typeI H' a a` / `typeII H' x y c` via the iso constructors in
+      -- `Henneberg.lean`, then apply IH + row-LI lift + iso transport.
+      obtain ⟨v, hbranch⟩ := h.exists_typeI_or_typeII_reverse hE
+      have hcard_lt : Fintype.card {w : V // w ≠ v} < n := by
+        rw [← hV]
+        exact Fintype.card_subtype_lt (p := fun w => w ≠ v) (x := v) (by simp)
+      rcases hbranch with
+        ⟨_hdeg, a, hN_iff, hG'sparse⟩ |
+        ⟨_hdeg, a, b, hab, hN_iff, hG'sparse⟩ |
+        ⟨_hdeg, x, y, c, hxy, hcx, hcy, hN_iff, hnxy, hG'sparse⟩
+      · -- Pendant branch (degree 1): the unique neighbour `a` of `v` is exposed.
+        obtain ⟨p', hp'⟩ := ih _ hcard_lt rfl hG'sparse
+        obtain ⟨p_lift, _hp_lift_some, hp_lift_LI⟩ :=
+          Henneberg.typeI_pendant_edgeSetRowIndependent_lift hp' a
+        have ha_adj : H.Adj v a.val := (hN_iff a.val).mpr rfl
+        have hN_iff_aa : ∀ w : V, H.Adj v w ↔ w = a.val ∨ w = a.val := fun w => by
+          rw [hN_iff]; tauto
+        have φ : H ≃g Henneberg.typeI (H.comap (Subtype.val : {w : V // w ≠ v} → V)) a a :=
+          Henneberg.typeI_iso_of_two_neighbors (H.ne_of_adj ha_adj) (H.ne_of_adj ha_adj)
+            hN_iff_aa
+        exact ⟨p_lift ∘ φ, EdgeSetRowIndependent.iso φ hp_lift_LI⟩
+      · -- Type I branch (degree 2): two distinct neighbours `a ≠ b` of `v`.
+        obtain ⟨p', hp'⟩ := ih _ hcard_lt rfl hG'sparse
+        obtain ⟨p'', hp'', hp''_ne⟩ :=
+          Henneberg.exists_distinct_rowIndependent_placement_dim_two hp' hab
+        obtain ⟨p_lift, _hp_lift_some, hp_lift_LI⟩ :=
+          Henneberg.typeI_edgeSetRowIndependent_lift hp'' hp''_ne
+        have ha_adj : H.Adj v a.val := (hN_iff a.val).mpr (Or.inl rfl)
+        have hb_adj : H.Adj v b.val := (hN_iff b.val).mpr (Or.inr rfl)
+        have φ : H ≃g Henneberg.typeI (H.comap (Subtype.val : {w : V // w ≠ v} → V)) a b :=
+          Henneberg.typeI_iso_of_two_neighbors (H.ne_of_adj ha_adj) (H.ne_of_adj hb_adj)
+            hN_iff
+        exact ⟨p_lift ∘ φ, EdgeSetRowIndependent.iso φ hp_lift_LI⟩
+      · -- Type II branch (degree 3): three neighbours `x, y, c` with non-adj `(x, y)`.
+        set H' : SimpleGraph {w : V // w ≠ v} :=
+          H.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+            fromEdgeSet ({s(x, y)} : Set _) with hH'_def
+        obtain ⟨p', hp'⟩ := ih _ hcard_lt rfl hG'sparse
+        have h_bridge : H'.Adj x y := by
+          rw [hH'_def, sup_adj]
+          exact Or.inr ((fromEdgeSet_adj _).mpr ⟨rfl, hxy⟩)
+        obtain ⟨p_lift, hp_lift_LI⟩ :=
+          Henneberg.typeII_edgeSetRowIndependent_lift hp' h_bridge hcx.symm hcy.symm
+        have φ : H ≃g Henneberg.typeII H' x y c :=
+          Henneberg.typeII_iso_of_three_neighbors x.property.symm y.property.symm c.property.symm
+            (fun heq => hxy (Subtype.ext heq)) hN_iff hnxy
+        exact ⟨p_lift ∘ φ, EdgeSetRowIndependent.iso φ hp_lift_LI⟩
+    · -- Base case: `H.edgeSet = ∅`, the empty family of rows is LI.
+      rw [Set.not_nonempty_iff_eq_empty] at hE
+      haveI : IsEmpty (H.edgeSet : Type _) := Set.isEmpty_coe_sort.mpr hE
+      refine ⟨0, ?_⟩
+      rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff]
+      exact linearIndependent_empty_type
 
 end SimpleGraph

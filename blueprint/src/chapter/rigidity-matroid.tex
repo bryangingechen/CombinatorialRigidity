@@ -308,6 +308,31 @@ row-independent.
   $\psi^{-1}$ (a linear equivalence preserves LI in both directions).
 \end{proof}
 
+\begin{lemma}[Row-independence transports along graph iso]
+  \label{lem:edgeSet-rowIndependent-iso}
+  \lean{SimpleGraph.EdgeSetRowIndependent.iso}
+  \leanok
+  \uses{def:edgeSet-rowIndependent, def:rigidityRow}
+  Let $\varphi : G \simeq H$ be a graph isomorphism between finite
+  graphs and $q$ a framework of $H$. If every edge of $H$ is
+  row-independent at $q$, then every edge of $G$ is row-independent at
+  the pulled-back placement $q \circ \varphi$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Row-LI analogue of \cref{lem:isInfinitesimallyRigid-iso}. Precomposition
+  with $\varphi^{-1}$ is an $\R$-linear equivalence
+  $L_\varphi : \mathrm{Framework}\,V\,d \xrightarrow{\sim}
+  \mathrm{Framework}\,W\,d$, $m \mapsto m \circ \varphi^{-1}$. A direct
+  computation on $e = \{u, w\} \in E(G)$ gives
+  $\mathrm{rigidityRow}\,G\,(q \circ \varphi)\,e =
+  L_\varphi^{*}\bigl(\mathrm{rigidityRow}\,H\,q\,(\varphi\,e)\bigr)$,
+  where $\varphi$ acts on edges via $\mathrm{Sym2.map}$. The $H$-row
+  family is LI by hypothesis; reindexing along the edge-set bijection
+  $\varphi_E : E(G) \xrightarrow{\sim} E(H)$ preserves LI; applying the
+  dual of a linear equivalence (an injective linear map) preserves LI.
+\end{proof}
+
 \begin{lemma}[Type~II lift of row-independence]
   \label{lem:typeII-rowIndependent-lift}
   \lean{SimpleGraph.Henneberg.typeII_edgeSetRowIndependent_lift}
@@ -353,32 +378,49 @@ row-independent.
 
 \begin{theorem}[$(2, 3)$-sparse $\Rightarrow$ row-independent at some placement]
   \label{thm:isSparse-exists-rowIndependent-placement}
+  \lean{SimpleGraph.IsSparse.exists_rowIndependent_placement}
+  \leanok
   \uses{def:isSparse, def:edgeSet-rowIndependent,
     thm:isSparse-exists-typeI-or-typeII-reverse,
     lem:pendant-rowIndependent-lift,
     lem:typeI-rowIndependent-lift,
-    lem:typeII-rowIndependent-lift}
+    lem:typeII-rowIndependent-lift,
+    lem:edgeSet-rowIndependent-iso}
   Let $V$ be finite and let $H : \mathrm{SimpleGraph}\,V$ be
   $(2, 3)$-sparse. Then there exists a placement $p : V \to \R^{2}$ at
   which $E(H)$ is row-independent.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:isSparse-exists-typeI-or-typeII-reverse,
     lem:pendant-rowIndependent-lift,
     lem:typeI-rowIndependent-lift,
-    lem:typeII-rowIndependent-lift}
-  Induction on $|E(H)|$. Base case $|E(H)| = 0$: the empty family of
-  rows is linearly independent at any placement. Inductive step
-  $|E(H)| \ge 1$: \cref{thm:isSparse-exists-typeI-or-typeII-reverse}
-  supplies a vertex $v$ with $d_H(v) \in \{1, 2, 3\}$ and a smaller
-  sparse graph $H' \le H$ via one of three reverses (pendant, Type~I,
-  or Type~II); each strictly decreases $|E|$. The inductive
-  hypothesis gives a row-independent placement $p'$ of $H'$, which we
-  lift via \cref{lem:pendant-rowIndependent-lift} (pendant case),
-  \cref{lem:typeI-rowIndependent-lift} (Type~I case), or
-  \cref{lem:typeII-rowIndependent-lift} (Type~II case). In each case
-  the lift produces a placement of $H$ at which $E(H)$ is
-  row-independent.
+    lem:typeII-rowIndependent-lift,
+    lem:edgeSet-rowIndependent-iso,
+    lem:edgeSet-rowIndependent-eventually}
+  Strong induction on $|V|$ (each Henneberg reverse strictly decreases
+  $|V|$, and the base case below covers $|E(H)| = 0$ uniformly). Base
+  case: when $E(H)$ is empty (in particular when $|V| \le 1$) the empty
+  family of rows is linearly independent at any placement. Inductive
+  step: \cref{thm:isSparse-exists-typeI-or-typeII-reverse} supplies a
+  vertex $v$ with $d_H(v) \in \{1, 2, 3\}$ and a smaller sparse graph
+  $H'$ on $V \setminus \{v\}$ via one of three reverses (pendant,
+  Type~I, or Type~II); the IH gives a row-independent placement $p'$ of
+  $H'$. The corresponding row-LI lift
+  (\cref{lem:pendant-rowIndependent-lift},
+  \cref{lem:typeI-rowIndependent-lift}, or
+  \cref{lem:typeII-rowIndependent-lift}) reconstructs a row-independent
+  placement of the Henneberg extension $\mathrm{typeI}\,H'\,a\,a$,
+  $\mathrm{typeI}\,H'\,a\,b$, or $\mathrm{typeII}\,H'\,x\,y\,c$, which
+  is graph-isomorphic to $H$ via
+  \texttt{typeI\_iso\_of\_two\_neighbors} /
+  \texttt{typeII\_iso\_of\_three\_neighbors} (project-internal);
+  \cref{lem:edgeSet-rowIndependent-iso} transports row-LI back to $H$.
+  The Type~I branch additionally feeds $p'$ through a small
+  perturbation helper (combining a step-along-$\delta a$ deformation
+  with \cref{lem:edgeSet-rowIndependent-eventually}) to ensure
+  $p'(a) \ne p'(b)$, the linear-independence input of
+  \cref{lem:typeI-rowIndependent-lift}.
 \end{proof}
 
 \begin{theorem}[Lov\'asz--Yemini: row-LI iff sparse, dim $2$]
