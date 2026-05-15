@@ -230,6 +230,16 @@ project's API gaps from accumulating silently.
    - In all cases, add an entry to `notes/FRICTION.md` (open or
      resolved/mirrored as appropriate). Even a one-line entry is
      valuable.
+   - **If the entry carries a *general lesson*** (a rule that
+     applies beyond this proof — a `subst`-direction trap, an
+     `omega`-atomicity gotcha, a "search before mirroring"
+     reminder, etc.), lift it to `TACTICS.md` *in the same commit*
+     and add a `**Lifted to:** TACTICS § X` cross-reference on the
+     FRICTION entry. Don't bury the general rule in a `[resolved]`
+     body — past phases hit recurrent friction because lessons were
+     filed but never promoted (the post-Phase-6 audit lifted 12
+     such buried lessons). The cross-reference rule is what
+     prevents recurrence of the recurrence problem.
 
 3. **No new entries this commit is fine** — but only after you've
    walked the *Concrete signals* checklist above. "I didn't hit any"
