@@ -1,0 +1,227 @@
+\section{The planar rigidity matroid}
+\label{sec:rigidity-matroid}
+
+\Cref{sec:laman-theorem} proved the ``easy direction'' of
+Lov\'asz--Yemini~\cite{lovaszYemini1982}: in dimension $2$, a
+row-independent edge set is automatically $(2, 3)$-sparse
+(\cref{lem:isSparse-of-rowIndependent-two}). This chapter completes
+the matroid identification by proving the harder converse --- every
+$(2, 3)$-sparse edge set is row-independent at some placement --- and
+packages the resulting independence structure as a \texttt{Matroid}
+instance on the off-diagonal symmetric pairs over $V$.
+
+The proof follows the classical strategy of Lov\'asz--Yemini, in the
+modern presentation of Jord\'an~\cite{jordan2016}~\S 2.2 (Theorem
+2.2.1): induction on $|E|$, with each Henneberg move on a sparse graph
+lifting row-independence to a fresh placement of the larger graph by
+placing the new vertex generically. The combinatorial reverse step
+(Jord\'an Lemma 2.1.4) --- a sparse graph on $|V| \ge 1$ with $|E| \ge 1$
+admits either a Type~I reverse (delete a degree-${\le}2$ vertex) or a
+Type~II reverse (split a degree-$3$ vertex) yielding a smaller sparse
+graph --- is the sparse-graph analogue of Phase~5 milestone~1
+(\cref{thm:isLaman-exists-typeI-or-typeII-reverse}) and reuses the same
+critical-set machinery.
+
+\subsection{Sparse-graph reverse decomposition}
+\label{sec:rigidity-matroid-sparse-reverse}
+
+\begin{theorem}[Sparse-graph reverse decomposition]
+  \label{thm:isSparse-exists-typeI-or-typeII-reverse}
+  \uses{def:isSparse, def:typeI, def:typeII}
+  Let $V$ be finite and $G : \mathrm{SimpleGraph}\,V$ be $(2, 3)$-sparse
+  with at least one edge. Then either
+  \begin{enumerate}
+    \item there exists $v \in V$ with $d_{G}(v) \le 2$ such that
+      $G - v$ is $(2, 3)$-sparse (Type~I reverse), or
+    \item there exists $v \in V$ with $d_{G}(v) = 3$, neighbours
+      $\{u, w, z\} = N_{G}(v)$, and a non-adjacent pair (say
+      $\{u, w\}$) such that the graph $G^{u,w}_{v}$ obtained by
+      deleting $v$ and adding edge $\{u, w\}$ is $(2, 3)$-sparse
+      (Type~II reverse).
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \uses{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter}
+  Since $G$ is sparse with $|E| \ge 1$ we have $|E| \le 2|V| - 3$, so
+  the average degree is $2|E|/|V| < 4$, hence some vertex has degree
+  $\le 3$. (When $|V| < 2$, sparsity is vacuous and $|E| = 0$, so the
+  hypothesis $|E| \ge 1$ forces $|V| \ge 2$.) Pick such a $v$. The
+  case $d_{G}(v) \le 2$ gives the Type~I reverse: deleting $v$ removes
+  at most $2$ edges, and sparsity is preserved (sparse minus edges is
+  sparse). The case $d_{G}(v) = 3$ requires a suitable splitting, the
+  sparse-graph analogue of Jord\'an Lemma 2.1.4(b): if no splitting at
+  $v$ is suitable then there exist three maximal $(2, 3)$-tight sets
+  $X_{uw}, X_{uz}, X_{wz} \subseteq V \setminus \{v\}$ each containing
+  exactly two neighbours of $v$, with pairwise singleton intersections;
+  Phase~1's tight-union closure (\cref{thm:isTightOn-union-inter}) and
+  the three-pair tight-union analogue (Jord\'an Lemma 2.1.3) make
+  $X_{uw} \cup X_{uz} \cup X_{wz}$ tight, forcing
+  $d_{G}(v, X_{uw} \cup X_{uz} \cup X_{wz}) \ge 3$, which then
+  contradicts the sparsity bound on
+  $X_{uw} \cup X_{uz} \cup X_{wz} \cup \{v\}$.
+\end{proof}
+
+\subsection{Lifting row-independence through Henneberg moves}
+\label{sec:rigidity-matroid-lifts}
+
+The two Henneberg lifts are the technical heart of the converse. Each
+states: given a placement $p'$ of a smaller graph $G'$ at which the
+edge set is row-independent, the larger graph $G$ obtained by a
+Henneberg move admits a placement at which its edge set is
+row-independent.
+
+\begin{lemma}[Type~I lift of row-independence]
+  \label{lem:typeI-rowIndependent-lift}
+  \uses{def:typeI, def:edgeSet-rowIndependent}
+  Let $V$ be finite, $G'$ a simple graph on $V$, and $p' : V \to \R^{2}$
+  a placement at which $E(G')$ is row-independent. Let $G$ be the
+  Type~I extension of $G'$ adding a fresh vertex $\star$ adjacent to
+  two distinct old vertices $a, b \in V$. Then there exists a
+  placement $p$ of $V \sqcup \{\star\}$ with $p|_{V} = p'$ such that
+  $E(G)$ is row-independent at $p$.
+\end{lemma}
+\begin{proof}
+  \uses{def:typeI, def:edgeSet-rowIndependent}
+  The rigidity matrix of $G$ at $p$ decomposes block-triangularly: the
+  rows indexed by the old edges of $G'$ vanish on the $\star$-column
+  and reproduce the rigidity matrix of $G'$ at $p'$; the two new rows
+  ($\{\star, a\}$ and $\{\star, b\}$) are supported on the $\star$,
+  $a$, and $b$ columns. Row-independence of the old block holds by
+  hypothesis. Choosing $p(\star)$ so that the two new rows are linearly
+  independent on the $\star$-column --- i.e.\ so that
+  $p(\star) - p(a)$ and $p(\star) - p(b)$ are linearly independent in
+  $\R^{2}$ --- is generic: the bad set is a finite union of one or two
+  lines in $\R^{2}$. Block-triangularity then yields row-independence
+  at $p$.
+\end{proof}
+
+\begin{lemma}[Type~II lift of row-independence]
+  \label{lem:typeII-rowIndependent-lift}
+  \uses{def:typeII, def:edgeSet-rowIndependent}
+  Let $V$ be finite, $G'$ a simple graph on $V$, $\{u, w\} \in E(G')$,
+  and $z \in V$ a third vertex distinct from $u$ and $w$. Let $p' :
+  V \to \R^{2}$ be a placement at which $E(G')$ is row-independent.
+  Let $G$ be the Type~II extension of $G'$ deleting $\{u, w\}$ and
+  adding a fresh vertex $\star$ adjacent to $u, w, z$. Then there
+  exists a placement $p$ of $V \sqcup \{\star\}$ with $p|_{V} = p'$
+  such that $E(G)$ is row-independent at $p$.
+\end{lemma}
+\begin{proof}
+  \uses{def:typeII, def:edgeSet-rowIndependent,
+    lem:isInfinitesimallyRigid-eventually}
+  Place $p(\star)$ on the line through $p(u)$ and $p(w)$, generically
+  --- specifically away from $p(u), p(w)$, and away from the line
+  through $p(z)$ in directions where the third new row would
+  collapse. The two new rows $\{\star, u\}$ and $\{\star, w\}$ are
+  scalar multiples of the deleted row $\{u, w\}$ (the difference
+  vectors $p(\star) - p(u)$ and $p(\star) - p(w)$ are anti-parallel,
+  hence each anti-parallel to $p(u) - p(w)$); together they span the
+  same one-dimensional row space modulo the $\star$-column structure.
+  The third new row $\{\star, z\}$ is independent of the two by
+  non-collinearity of $p(u), p(w), p(z)$, which we may arrange by
+  perturbing $p'$ in the kernel of the rigidity map (using openness of
+  row-independence, the row-independence analogue of
+  \cref{lem:isInfinitesimallyRigid-eventually}) if necessary. The net
+  effect is to replace the deleted $\{u, w\}$ row by two equivalent
+  rows in its span, plus one genuinely new row from $\{\star, z\}$, so
+  the rank goes up by exactly $2$ as required by sparsity.
+\end{proof}
+
+\subsection{The hard direction}
+\label{sec:rigidity-matroid-hard-direction}
+
+\begin{theorem}[$(2, 3)$-sparse $\Rightarrow$ row-independent at some placement]
+  \label{thm:isSparse-exists-rowIndependent-placement}
+  \uses{def:isSparse, def:edgeSet-rowIndependent,
+    thm:isSparse-exists-typeI-or-typeII-reverse,
+    lem:typeI-rowIndependent-lift,
+    lem:typeII-rowIndependent-lift}
+  Let $V$ be finite and let $H : \mathrm{SimpleGraph}\,V$ be
+  $(2, 3)$-sparse. Then there exists a placement $p : V \to \R^{2}$ at
+  which $E(H)$ is row-independent.
+\end{theorem}
+\begin{proof}
+  \uses{thm:isSparse-exists-typeI-or-typeII-reverse,
+    lem:typeI-rowIndependent-lift,
+    lem:typeII-rowIndependent-lift}
+  Induction on $|E(H)|$. Base case $|E(H)| = 0$: the empty family of
+  rows is linearly independent at any placement. Inductive step
+  $|E(H)| \ge 1$: \cref{thm:isSparse-exists-typeI-or-typeII-reverse}
+  supplies a smaller sparse graph $H' \le H$ (deletion of a
+  degree-${\le}2$ vertex or splitting of a degree-$3$ vertex). The
+  inductive hypothesis gives a row-independent placement $p'$ of $H'$;
+  \cref{lem:typeI-rowIndependent-lift} or
+  \cref{lem:typeII-rowIndependent-lift} (according to the case) lifts
+  to a row-independent placement of $H$.
+\end{proof}
+
+\begin{theorem}[Lov\'asz--Yemini: row-LI iff sparse, dim $2$]
+  \label{thm:edgeSet-rowIndependent-iff-isSparse}
+  \uses{def:edgeSet-rowIndependent, def:isSparse,
+    thm:isSparse-exists-rowIndependent-placement,
+    lem:isSparse-of-rowIndependent-two,
+    lem:exists-affinelySpanning-rigid-placement}
+  Let $V$ be finite with $|V| \ge 2$ and $G : \mathrm{SimpleGraph}\,V$.
+  An edge set $I \subseteq E(G)$ is row-independent at some placement
+  $p : V \to \R^{2}$ if and only if the spanning subgraph of $G$ with
+  edge set $I$ is $(2, 3)$-sparse.
+\end{theorem}
+\begin{proof}
+  \uses{thm:isSparse-exists-rowIndependent-placement,
+    lem:isSparse-of-rowIndependent-two,
+    lem:exists-affinelySpanning-rigid-placement}
+  $(\Rightarrow)$ is the easy direction
+  \cref{lem:isSparse-of-rowIndependent-two}, after combining the
+  witness placement with the affinely-spanning perturbation of
+  \cref{lem:exists-affinelySpanning-rigid-placement} on every triple.
+  $(\Leftarrow)$ is \cref{thm:isSparse-exists-rowIndependent-placement}.
+\end{proof}
+
+\begin{corollary}[Every Laman graph admits a row-independent placement]
+  \label{cor:isLaman-exists-rowIndependent}
+  \uses{def:isLaman, def:edgeSet-rowIndependent,
+    thm:isSparse-exists-rowIndependent-placement}
+  Let $V$ be finite with $|V| \ge 2$ and $H : \mathrm{SimpleGraph}\,V$
+  Laman. Then there exists a placement $p : V \to \R^{2}$ at which
+  $E(H)$ is row-independent.
+\end{corollary}
+\begin{proof}
+  \uses{thm:isSparse-exists-rowIndependent-placement}
+  Laman implies $(2, 3)$-sparse;
+  \cref{thm:isSparse-exists-rowIndependent-placement} applies directly.
+\end{proof}
+
+\subsection{The rigidity matroid (dim 2)}
+\label{sec:rigidity-matroid-instance}
+
+The relation ``row-LI at some placement'' defines a matroid structure
+on the off-diagonal symmetric pairs over $V$. Building it as a mathlib
+\texttt{Matroid} requires verifying the four \texttt{IndepMatroid}
+axioms; the augmentation axiom is exactly where the combinatorial
+$(2, 3)$-count matroid structure does its work, transported through
+\cref{thm:edgeSet-rowIndependent-iff-isSparse}.
+
+\begin{definition}[Rigidity matroid in dim $2$]
+  \label{def:rigidityMatroid}
+  \uses{def:edgeSet-rowIndependent}
+  Let $V$ be finite. The \emph{rigidity matroid} of $V$ in dimension
+  $2$ is the matroid on the ground set $E(K_{V})$ (the off-diagonal
+  symmetric pairs over $V$) whose independent sets are the edge sets
+  $I \subseteq E(K_{V})$ that are row-independent at some placement
+  $p : V \to \R^{2}$.
+\end{definition}
+
+\begin{theorem}[Independent sets of the rigidity matroid are exactly the $(2, 3)$-sparse sets]
+  \label{thm:rigidityMatroid-indep-iff-isSparse}
+  \uses{def:rigidityMatroid, def:isSparse,
+    thm:edgeSet-rowIndependent-iff-isSparse}
+  Let $V$ be finite with $|V| \ge 2$ and $I \subseteq E(K_{V})$. Then
+  $I$ is independent in the rigidity matroid of $V$ in dimension $2$
+  if and only if the spanning subgraph $\mathrm{fromEdgeSet}\,I$ of
+  $K_{V}$ is $(2, 3)$-sparse.
+\end{theorem}
+\begin{proof}
+  \uses{thm:edgeSet-rowIndependent-iff-isSparse}
+  Immediate from \cref{thm:edgeSet-rowIndependent-iff-isSparse} at
+  $G = K_{V}$.
+\end{proof}

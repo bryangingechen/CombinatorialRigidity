@@ -109,9 +109,11 @@ The two facts together amount to the ``easy'' direction of an
 identity due to Lov\'asz--Yemini~\cite{lovaszYemini1982}: in
 dimension $2$, an edge set is row-independent at a generic placement
 if and only if its underlying subgraph is $(2, 3)$-sparse. The harder
-converse direction of that identity --- $(2, 3)$-sparse
-$\Rightarrow$ row-independent --- is \emph{not} needed for the iff
-and is not formalized.
+converse direction of that identity --- $(2, 3)$-sparse $\Rightarrow$
+row-independent --- is not needed for the iff itself; it ships
+separately in \cref{sec:rigidity-matroid}, where it combines with the
+easy direction to package the rigidity matroid as a \texttt{Matroid}
+instance.
 
 \subsubsection{Row-independence in the rigidity matroid}
 

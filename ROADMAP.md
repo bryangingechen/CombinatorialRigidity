@@ -45,7 +45,8 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── TrivialMotions.lean  Phase 6 — d-general translations + infinitesimal rotations
 │   ├── HennebergRigidity.lean  Phase 5 milestone 2 — per-move rigidity preservation
 │   ├── RigidityMatroid.lean  Phase 6 — row-independence, basis-pick, sparsity bridge
-│   └── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
+│   ├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
+│   └── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + matroid
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
 └── lake-manifest.json   resolved dependency revisions
@@ -66,6 +67,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
 | 5. Laman's theorem (⇐) | `LamanTheorem.lean`, `HennebergRigidity.lean` | ✓ Complete (see `notes/Phase5.md`) |
 | 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | ✓ Complete (see `notes/Phase6.md`) |
+| 7. Lovász–Yemini matroid identification | `MatroidIdentification.lean` | In progress (see `notes/Phase7.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -201,6 +203,45 @@ The chapter ran in **forward blueprint mode** per `blueprint/DESIGN.md`
 `blueprint/src/chapter/laman-theorem.tex` (its $\Rightarrow$ subsection)
 served as the authoritative dep-graph and lemma index throughout. See
 `notes/Phase6.md` for the full lemma list and phase-specific decisions.
+
+### Phase 7 — Lovász–Yemini matroid identification (`MatroidIdentification.lean`)
+
+In progress. Phase 6 shipped *one* direction of Lovász–Yemini in dim 2
+(row-independent $\Rightarrow$ $(2, 3)$-sparse, via
+`isSparse_of_edgeSetRowIndependent_dim_two`). Phase 7 ships the
+converse and packages the resulting matroid identity.
+
+**Mathematical target.** For finite $V$ with $|V| \ge 2$, an edge set
+$I \subseteq E(K_V)$ is row-independent at some generic placement
+$p : V \to \R^{2}$ if and only if the spanning subgraph on $I$ is
+$(2, 3)$-sparse. Packaged as a `Matroid` instance
+`SimpleGraph.rigidityMatroid V 2 : Matroid (Sym2 V)` whose independent
+sets are exactly the $(2, 3)$-sparse edge subsets of $K_V$.
+
+**Proof route (forward-mode dep-graph in `blueprint/src/chapter/rigidity-matroid.tex`).**
+The classical Henneberg induction (Lovász–Yemini 1982; modern
+presentation Jordán 2016 §2.2, Theorem 2.2.1): induct on $|E|$. The
+inductive step picks a min-degree-$\le 3$ vertex in the sparse graph
+(its existence follows from $|E| \le 2|V| - 3$) and reverses the
+corresponding Henneberg move — Jordán Lemma 2.1.4(a) for degree
+$\le 2$ (Type I reverse: delete the vertex) or Lemma 2.1.4(b) for
+degree $3$ (Type II reverse: replace the vertex by an edge between
+two of its neighbours). Both reverses yield a smaller sparse graph;
+the row-LI placement of the smaller graph lifts back along the
+Henneberg move (Type I — new vertex placed generically off the lines
+through its two neighbours' images; Type II — new vertex placed
+generically on the line through the split edge's endpoints, with the
+third new row independent by non-collinearity). Combine with Phase
+6's easy direction for the iff; package as a `Matroid` via
+`IndepMatroid`. The sparse reverse decomposition reuses Phase 5's
+critical-set machinery (`IsTightOn.union_inter`) without the
+Laman-specific blocker complications.
+
+**Forward mode.** Per `blueprint/DESIGN.md`, the blueprint chapter
+`blueprint/src/chapter/rigidity-matroid.tex` is the authoritative
+dep-graph and lemma index for Phase 7; the lemma list is **not**
+duplicated in `notes/Phase7.md`. See `notes/Phase7.md` for current
+state, architectural decisions, and hand-off.
 
 ## Engineering conventions
 
