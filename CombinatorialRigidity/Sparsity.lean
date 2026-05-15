@@ -57,6 +57,14 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
   intersection in a `(k, ℓ)`-sparse graph (subject to the standard `ℓ ≤ k * #(s ∩ t)`
   size proviso). The tight-set lattice closure that the Phase 5 Henneberg-blocker
   argument runs on.
+* `SimpleGraph.IsTightOn.union_inter_of_pair` — matroidal-regime specialization
+  (`ℓ < 2 * k`): two tight sets sharing a pair of distinct vertices have tight union
+  and intersection. The size proviso of `IsTightOn.union_inter` is auto-discharged.
+* `SimpleGraph.IsSparse.exists_isTightOn_of_insert_not_sparse` — violation extraction:
+  if `fromEdgeSet I` is `(k, ℓ)`-sparse but inserting an off-diagonal edge `s(u, v) ∉ I`
+  breaks sparsity, then some Finset containing `u` and `v` is `(fromEdgeSet I)`-tight.
+  Builds the "I-block" that anchors the `(k, ℓ)`-count matroid augmentation argument
+  (Phase 7).
 * `SimpleGraph.image_edgesIn_comap` — `Sym2.map`-image of `(G.comap f).edgesIn s'` is
   `G.edgesIn (f '' s')`; the comap analogue of `Iso.image_edgesIn`, used by the typeII-
   reverse blocker to pump edge counts back along the subtype embedding.
@@ -493,6 +501,96 @@ theorem IsTightOn.insert_vertex_with_edges [Finite V] [DecidableEq V] {G : Simpl
   refine hG.isTightOn_of_le h_size ?_
   rw [h_card_insert, Nat.mul_add, Nat.mul_one] at h_size ⊢
   grind only [IsTightOn]
+
+/-! ### Matroidal-regime block closure (`ℓ < 2 * k`)
+
+In the matroidal regime `ℓ < 2 * k`, the size proviso `ℓ ≤ k * #(s ∩ t)` of
+`IsTightOn.union_inter` is automatically discharged for two tight sets sharing a common pair
+of distinct vertices: `#(s ∩ t) ≥ 2 ≥ ⌈ℓ/k⌉` for any `ℓ < 2k`. This is the combinatorial
+foundation of the `(k, ℓ)`-count matroid (Whiteley 1996, Lee–Streinu 2008): blocks of an
+edge set `I` containing a fixed pair `{u, v}` are closed under intersection and union,
+so the family has a unique maximum element — the *I-component* of `{u, v}` —
+that drives the augmentation argument of Phase 7. -/
+
+/-- **Block closure under a shared pair (matroidal regime).** For `ℓ < 2 * k` and two
+`(k, ℓ)`-tight finite sets `s, t` both containing distinct vertices `u ≠ v`, both `s ∪ t` and
+`s ∩ t` are `(k, ℓ)`-tight. Specialization of `IsTightOn.union_inter` whose size proviso
+`ℓ ≤ k * #(s ∩ t)` is auto-discharged via `#(s ∩ t) ≥ #{u, v} = 2` and `ℓ < 2k = k * 2`. -/
+theorem IsTightOn.union_inter_of_pair [Finite V] [DecidableEq V] {G : SimpleGraph V}
+    {k ℓ : ℕ} (hℓ : ℓ < 2 * k) {s t : Finset V}
+    (hs : G.IsTightOn k ℓ s) (ht : G.IsTightOn k ℓ t) (hG : G.IsSparse k ℓ)
+    {u v : V} (huv : u ≠ v)
+    (hu_s : u ∈ s) (hv_s : v ∈ s) (hu_t : u ∈ t) (hv_t : v ∈ t) :
+    G.IsTightOn k ℓ (s ∪ t) ∧ G.IsTightOn k ℓ (s ∩ t) := by
+  refine hs.union_inter ht hG ?_
+  have h_uv_sub : ({u, v} : Finset V) ⊆ s ∩ t := by
+    intro x hx
+    rw [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl
+    · exact Finset.mem_inter.mpr ⟨hu_s, hu_t⟩
+    · exact Finset.mem_inter.mpr ⟨hv_s, hv_t⟩
+  have h_card : 2 ≤ (s ∩ t).card :=
+    (Finset.card_pair huv).symm ▸ Finset.card_le_card h_uv_sub
+  calc ℓ ≤ 2 * k := hℓ.le
+       _ = k * 2 := Nat.mul_comm 2 k
+       _ ≤ k * (s ∩ t).card := Nat.mul_le_mul_left k h_card
+
+/-- **Add-an-edge identity for `fromEdgeSet.edgeSet`.** Adding an off-diagonal edge `s(u, v)`
+to an edge set `I` inserts exactly the singleton `{s(u, v)}` into the resulting `edgeSet`
+of `fromEdgeSet`. The `fromEdgeSet` constructor drops diagonals; the `u ≠ v` hypothesis keeps
+`s(u, v)` off the diagonal. -/
+lemma edgeSet_fromEdgeSet_insert {I : Set (Sym2 V)} {u v : V} (huv : u ≠ v) :
+    (fromEdgeSet (insert s(u, v) I)).edgeSet = insert s(u, v) (fromEdgeSet I).edgeSet := by
+  rw [edgeSet_fromEdgeSet, edgeSet_fromEdgeSet,
+      Set.insert_diff_of_notMem _ (Sym2.mem_diagSet.not.mpr (Sym2.mk_isDiag_iff.not.mpr huv))]
+
+/-- **I-block extraction from a sparsity violation (matroidal building block).** If
+`fromEdgeSet I` is `(k, ℓ)`-sparse but adding a single off-diagonal edge `s(u, v) ∉ I`
+breaks sparsity, then there is a `(fromEdgeSet I)`-tight Finset containing both `u` and `v`
+— the "I-block" that the `(k, ℓ)`-count matroid augmentation argument anchors on. -/
+theorem IsSparse.exists_isTightOn_of_insert_not_sparse [Finite V]
+    {k ℓ : ℕ} {I : Set (Sym2 V)} (hI : (fromEdgeSet I).IsSparse k ℓ)
+    {u v : V} (huv : u ≠ v) (he_notin : s(u, v) ∉ I)
+    (h_violation : ¬ (fromEdgeSet (insert s(u, v) I)).IsSparse k ℓ) :
+    ∃ S : Finset V, u ∈ S ∧ v ∈ S ∧ (fromEdgeSet I).IsTightOn k ℓ S := by
+  unfold IsSparse at h_violation
+  push Not at h_violation
+  obtain ⟨S, h_size, h_lt⟩ := h_violation
+  have hI_at_S := hI S h_size
+  have h_new_notin_old : s(u, v) ∉ (fromEdgeSet I).edgeSet :=
+    fun h => he_notin ((edgeSet_fromEdgeSet I) ▸ h).1
+  have h_edgeSet_eq := edgeSet_fromEdgeSet_insert (I := I) huv
+  -- Case-split on `{u, v} ⊆ S`. The "⊄" case contradicts `I`-sparsity at `S`; the "⊆"
+  -- case extracts the I-block.
+  by_cases h_uv : u ∈ S ∧ v ∈ S
+  · obtain ⟨hu, hv⟩ := h_uv
+    refine ⟨S, hu, hv, ?_⟩
+    have h_uv_in_sym2 : s(u, v) ∈ (↑S : Set V).sym2 := by
+      rw [Set.mem_sym2_iff_subset, Sym2.coe_mk]
+      exact Set.insert_subset_iff.mpr ⟨hu, Set.singleton_subset_iff.mpr hv⟩
+    have h_edges_eq : (fromEdgeSet (insert s(u, v) I)).edgesIn (↑S : Set V) =
+        insert s(u, v) ((fromEdgeSet I).edgesIn (↑S : Set V)) := by
+      unfold edgesIn
+      rw [h_edgeSet_eq, Set.insert_inter_of_mem h_uv_in_sym2]
+    have h_new_notin_old_edgesIn : s(u, v) ∉ (fromEdgeSet I).edgesIn (↑S : Set V) :=
+      fun h => h_new_notin_old h.1
+    have h_ncard_eq : ((fromEdgeSet (insert s(u, v) I)).edgesIn (↑S : Set V)).ncard =
+        ((fromEdgeSet I).edgesIn (↑S : Set V)).ncard + 1 := by
+      rw [h_edges_eq, Set.ncard_insert_of_notMem h_new_notin_old_edgesIn
+        ((fromEdgeSet I).edgesIn_finite S)]
+    unfold IsTightOn
+    omega
+  · exfalso
+    have h_uv_notin_sym2 : s(u, v) ∉ (↑S : Set V).sym2 := by
+      rw [Set.mem_sym2_iff_subset, Sym2.coe_mk]
+      exact fun h_sub => h_uv
+        ⟨h_sub (Set.mem_insert _ _), h_sub (Set.mem_insert_of_mem _ rfl)⟩
+    have h_edges_eq : (fromEdgeSet (insert s(u, v) I)).edgesIn (↑S : Set V) =
+        (fromEdgeSet I).edgesIn (↑S : Set V) := by
+      unfold edgesIn
+      rw [h_edgeSet_eq, Set.insert_inter_of_notMem h_uv_notin_sym2]
+    rw [h_edges_eq] at h_lt
+    omega
 
 /-! ### Three-neighbor obstruction and contradiction templates
 

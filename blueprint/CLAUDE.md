@@ -508,6 +508,17 @@ otherwise comparing two graphs.
   HTML build (each links separately) but produces only one link
   target in the PDF. Reserve multi-name `\lean{}` for closely-
   related corner cases the reader genuinely thinks of as a unit.
+- **Math in section / subsection titles breaks `inv bp` (xelatex).**
+  hyperref errors with *"Improper alphabetic constant"* and
+  Emergency-stops the run when a section title contains raw
+  `$math$` (e.g. `\ell`, `\Leftarrow`). Wrap with
+  `\texorpdfstring{$math$}{ASCII fallback}` — the existing
+  convention. Sample: `\section{The \texorpdfstring{$(k, \ell)$}{(k,
+  l)}-count matroid}`. Symptom: a failed `inv bp` cascades to
+  unresolved cross-refs and missing bibliography entries on the
+  *next* `inv web` (because `print.bbl` never got generated and
+  copied to `src/web.bbl`); fix the section title and re-run `inv
+  bp` then `inv web`.
 - **No `.md` interference.** plastex parses only what `web.tex`
   `\input{}`s. xelatex parses only what `print.tex` `\input{}`s.
   Adding `.md` files anywhere under `blueprint/` is safe.

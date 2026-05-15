@@ -13,7 +13,9 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Sixteen commits in (Commit 16 = this scope-expansion commit). The
+Eighteen commits in (this commit = Commit 17a; the prior commit
+`a8f3e42` was the research-only docs revision of the augmentation
+proof route). The
 first six lifted Laman-only machinery to `IsSparse` and landed
 `IsSparse.exists_typeI_or_typeII_reverse` in flat form (entry points
 `60a2176..6d59be2`); the next five landed the four operation-form
@@ -123,7 +125,7 @@ to match.
   yet). Notes / ROADMAP §7 / new blueprint chapter
   `count-matroid.tex` + restructured `rigidity-matroid.tex`;
   Whiteley 1996 and Lee--Streinu 2008 bibliography entries.
-- **Commits 17a / 17b / 17c** [planned]: combinatorial augmentation
+- **Commits 17a / 17b / 17c**: combinatorial augmentation
   lemma `IsSparse.exists_aug_of_lt_two_mul` (final name TBD) in
   `Sparsity.lean`. *Updated Commit 17 plan*: the original sketch
   ("iterate `union_inter` / `union_with_bonus`") doesn't close in
@@ -132,14 +134,25 @@ to match.
   edges (J \\ I) aren't in `G = fromEdgeSet I`. The replacement
   route follows Lee--Streinu 2008 (Theorem 5(1,2,4)) via I-block /
   I-component structure:
-  - **Commit 17a** [planned]: in matroidal regime ℓ < 2k, two
-    I-tight (= block-of-I) sets containing a common 2-vertex
-    {u, v} have I-tight intersection. Corollary of
-    `IsTightOn.union_inter` with `|S ∩ T| ≥ 2 ≥ ⌈ℓ/k⌉`. Define
-    `IsSparse.minBlockOn (h : ¬ (fromEdgeSet (insert e I)).IsSparse k ℓ) :
-    Finset V` — the minimum I-block containing endpoints of e —
-    via `Finset.inf` over the (finite) family of I-blocks
-    containing `{u, v}`.
+  - **Commit 17a** [✓ done, this commit]: matroidal-regime block
+    closure scaffolding in `Sparsity.lean`. Landed
+    `IsTightOn.union_inter_of_pair` (`ℓ < 2 * k` corollary of
+    `IsTightOn.union_inter`: two I-tight sets sharing a common
+    pair `{u, v}` have I-tight intersection and union; the size
+    proviso `ℓ ≤ k * #(s ∩ t)` is auto-discharged via
+    `#(s ∩ t) ≥ 2`) and
+    `IsSparse.exists_isTightOn_of_insert_not_sparse` (violation
+    extraction: from `¬ (fromEdgeSet (insert s(u,v) I)).IsSparse k ℓ`
+    plus I-sparsity, extract a Finset `S` with `{u, v} ⊆ S` that
+    is `(fromEdgeSet I)`-tight). The intermediate
+    `edgeSet_fromEdgeSet_insert` glue lemma (`u ≠ v` → adding
+    `s(u, v)` to `I` inserts exactly the singleton into
+    `fromEdgeSet`'s edgeSet) is private to the section.
+    *Deviation from the plan*: dropped the `IsSparse.minBlockOn`
+    definition (Finset.inf over the family of I-blocks containing
+    `{u, v}`); the *maximum* I-block is what 17b's I-component
+    needs, and union closure from `union_inter_of_pair` builds it
+    directly without going through a minimum.
   - **Commit 17b** [planned]: I-component theory in
     `Sparsity.lean`. A maximal I-block; lemma that I-components are
     pairwise edge-disjoint (for matroidal regime they overlap in
@@ -417,7 +430,10 @@ A red node = not yet formalized; a green node = formalized and
   `IsSparse.typeII_reverse_blocker`, and `image_edgesIn_comap` (all
   lifted from `Henneberg.lean`); plus the flat-form
   `IsSparse.exists_typeI_or_typeII_reverse`, refined to a 3-way
-  split (pendant / Type I / Type II) in Commit 12.
+  split (pendant / Type I / Type II) in Commit 12. New matroidal-
+  regime block-closure scaffolding in Commit 17a:
+  `IsTightOn.union_inter_of_pair`, `edgeSet_fromEdgeSet_insert`,
+  and `IsSparse.exists_isTightOn_of_insert_not_sparse`.
 - `HennebergRigidity.lean`: `exists_off_line_off_finite_dim_two` and
   `exists_not_mem_span_singleton_dim_two` un-privatized for cross-file
   reuse from `MatroidIdentification.lean`.

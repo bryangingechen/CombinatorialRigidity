@@ -1,4 +1,4 @@
-\section{The $(k, \ell)$-count matroid}
+\section{The \texorpdfstring{$(k, \ell)$}{(k, l)}-count matroid}
 \label{sec:count-matroid}
 
 The proof-of-Lov\'asz--Yemini machinery in
@@ -39,9 +39,65 @@ $I$-tight intersection (specialisation of
 containing any fixed pair $\{u, v\}$ has a unique minimum, the
 \emph{minimum $I$-block} containing $\{u, v\}$.
 
+The two preliminary lemmas below set up the block-closure scaffolding
+that the augmentation argument runs on: a matroidal-regime
+specialisation of the tight-set union/intersection closure, and the
+extraction lemma that turns a sparsity violation into a witnessing
+$I$-block.
+
+\begin{lemma}[Block closure under a shared pair, matroidal regime]
+  \label{lem:isTightOn-union-inter-of-pair}
+  \lean{SimpleGraph.IsTightOn.union_inter_of_pair}
+  \leanok
+  \uses{def:isTightOn, thm:isTightOn-union-inter}
+  Let $G$ be a $(k, \ell)$-sparse simple graph on a finite vertex
+  set $V$ with $\ell < 2k$, let $s, t \subseteq V$ be two
+  $(k, \ell)$-tight subsets, and let $u \neq v$ be vertices with
+  $u, v \in s$ and $u, v \in t$. Then both $s \cup t$ and $s \cap t$
+  are $(k, \ell)$-tight.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{thm:isTightOn-union-inter}
+  Apply \cref{thm:isTightOn-union-inter} whose size proviso
+  $\ell \le k \cdot |s \cap t|$ is discharged by
+  $|s \cap t| \ge |\{u, v\}| = 2$ and $\ell < 2k = k \cdot 2$.
+\end{proof}
+
+\begin{lemma}[$I$-block extraction from a sparsity violation]
+  \label{lem:exists-isTightOn-of-insert-not-sparse}
+  \lean{SimpleGraph.IsSparse.exists_isTightOn_of_insert_not_sparse}
+  \leanok
+  \uses{def:isSparse, def:isTightOn}
+  Let $V$ be finite, $I \subseteq \mathrm{Sym}_{2} V$, and suppose
+  $\mathrm{fromEdgeSet}\,I$ is $(k, \ell)$-sparse. If $u \neq v$ are
+  vertices with $s(u, v) \notin I$ and
+  $\mathrm{fromEdgeSet}\,(\mathrm{insert}\,s(u, v)\,I)$ is not
+  $(k, \ell)$-sparse, then there is a finite set $S \subseteq V$
+  containing both $u$ and $v$ that is $(k, \ell)$-tight in
+  $\mathrm{fromEdgeSet}\,I$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:isSparse, def:isTightOn}
+  The sparsity violation furnishes some $S \subseteq V$ with
+  $\ell \le k|S|$ and
+  $|\edgesIn[\mathrm{fromEdgeSet}\,(\mathrm{insert}\,s(u, v)\,I)]{S}| + \ell > k|S|$.
+  Adding $s(u, v)$ to $I$ either leaves
+  $\edgesIn{\,\cdot\,}{S}$ unchanged (when $\{u, v\} \not\subseteq S$)
+  or increases it by exactly one (when $\{u, v\} \subseteq S$, using
+  $s(u, v) \notin I$ and $u \neq v$). In the first case the
+  violation contradicts $I$-sparsity at $S$; in the second case the
+  violation forces
+  $|\edgesIn[\mathrm{fromEdgeSet}\,I]{S}| + \ell = k|S|$, i.e.
+  $S$ is $I$-tight.
+\end{proof}
+
 \begin{lemma}[$(k, \ell)$-sparsity augmentation, matroidal regime]
   \label{lem:isSparse-aug}
-  \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter}
+  \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter,
+        lem:isTightOn-union-inter-of-pair,
+        lem:exists-isTightOn-of-insert-not-sparse}
   Let $V$ be finite, $k \ge 1$ and $0 \le \ell < 2k$, and let
   $I, J \subseteq \mathrm{Sym}_{2}V$ be off-diagonal edge sets such
   that both $\mathrm{fromEdgeSet}\,I$ and $\mathrm{fromEdgeSet}\,J$
@@ -50,21 +106,20 @@ containing any fixed pair $\{u, v\}$ has a unique minimum, the
   $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is $(k, \ell)$-sparse.
 \end{lemma}
 \begin{proof}
-  \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter}
+  \uses{def:isSparse, def:isTightOn, thm:isTightOn-union-inter,
+        lem:isTightOn-union-inter-of-pair,
+        lem:exists-isTightOn-of-insert-not-sparse}
   Suppose for contradiction that for every $e = uv \in J \setminus I$
   the set $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is not
-  $(k, \ell)$-sparse. Since
-  $|\edgesIn[\mathrm{fromEdgeSet}\,(I\cup\{e\})]{S}| =
-   |\edgesIn[\mathrm{fromEdgeSet}\,I]{S}| + [u, v \in S]$, the
-  sparsity violation at some $S \ni u, v$ pins $S$ to an
-  $I$-block (\cref{def:isTightOn}) with $\{u, v\} \subseteq S$ and
-  $|S| \ge 2$.
+  $(k, \ell)$-sparse. By
+  \cref{lem:exists-isTightOn-of-insert-not-sparse} the sparsity
+  violation pins down an $I$-block (\cref{def:isTightOn})
+  $S \supseteq \{u, v\}$ with $|S| \ge 2$.
 
   The family of $I$-blocks containing $\{u, v\}$ is closed under
-  pairwise intersection: two $I$-blocks $S, T \supseteq \{u, v\}$
-  satisfy $|S \cap T| \ge 2 \ge \lceil \ell / k \rceil$ for
-  $\ell < 2k$, so \cref{thm:isTightOn-union-inter} applies and
-  $S \cap T$ is itself $I$-tight. Iterating gives a unique minimum
+  pairwise intersection
+  (\cref{lem:isTightOn-union-inter-of-pair} applied to two
+  $I$-blocks both containing $\{u, v\}$). Iterating gives a unique minimum
   $I$-block $T_{e} \supseteq \{u, v\}$. Define the
   \emph{$I$-component of $e$}, $C_{e} \supseteq T_{e}$, as the
   maximal $I$-tight superset of $T_{e}$ obtained by iterating
