@@ -206,6 +206,130 @@ theorem typeI_edgeSetRowIndependent_lift {G' : SimpleGraph V}
   exact ⟨fun w : Option V => w.elim q p', funext fun _ => rfl,
     typeI_edgeSetRowIndependent_extend h hLI⟩
 
+/-! ### Pendant row-LI lift
+
+The pendant case is the `b = a` degeneracy of the Type I lift: `typeI G' a a` joins the new
+vertex to a single old vertex `a` (the parallel edges collapse), so the lift consumes only
+`q ≠ p' a` (no linear-independence condition between two displacements). The conditional core
+mirrors `typeI_edgeSetRowIndependent_extend` with the `newSet = {newA}` singleton in place of
+the pair `{newA, newB}`. -/
+
+/-- **Conditional pendant row-LI lift in dim 2.** If `p' : Framework V 2` makes every edge of
+`G'` row-independent and `q ≠ p' a`, then every edge of `typeI G' a a` is row-independent at
+the extended placement `fun w : Option V => w.elim q p'`.
+
+Degenerate `b = a` case of `typeI_edgeSetRowIndependent_extend`: the parallel edges of
+`typeI G' a a` collapse to the single new edge `s(none, some a)`, so the LI condition
+`![q - p' a, q - p' b]` (impossible at `b = a`) is replaced by `q ≠ p' a`. Used by Phase 7's
+`|E|`-induction pendant branch (degree-1 reverse) — see
+`IsSparse.exists_typeI_or_typeII_reverse`. -/
+theorem typeI_pendant_edgeSetRowIndependent_extend {G' : SimpleGraph V}
+    {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ)
+    {a : V} {q : EuclideanSpace ℝ (Fin 2)} (hq : q ≠ p' a) :
+    (typeI G' a a).EdgeSetRowIndependent (fun w : Option V => w.elim q p') Set.univ := by
+  classical
+  set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p' with hp_ext_def
+  rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
+  -- Lift G' edges to typeI edges via `Sym2.map some`.
+  have hlift_mem : ∀ e' : G'.edgeSet,
+      Sym2.map (some : V → Option V) e'.val ∈ (typeI G' a a).edgeSet := by
+    rintro ⟨e, he⟩
+    induction e with
+    | h u v => rw [Sym2.map_mk, mem_edgeSet]; exact he
+  set lift_some : G'.edgeSet → (typeI G' a a).edgeSet := fun e' =>
+    ⟨Sym2.map some e'.val, hlift_mem e'⟩ with hlift_def
+  have hlift_some_inj : Function.Injective lift_some := fun _ _ heq =>
+    Subtype.ext (Sym2.map.injective (Option.some_injective V) (Subtype.ext_iff.mp heq))
+  set restrictMap : Framework (Option V) 2 →ₗ[ℝ] Framework V 2 :=
+    LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin 2)) (some : V → Option V)
+  have h_restrict_surj : Function.Surjective restrictMap :=
+    LinearMap.funLeft_surjective_of_injective _ _ _ (Option.some_injective V)
+  have h_factor : ∀ e' : G'.edgeSet,
+      (typeI G' a a).rigidityRow p_ext (lift_some e') =
+        restrictMap.dualMap (G'.rigidityRow p' e') := by
+    intro e'
+    refine LinearMap.ext fun x => ?_
+    obtain ⟨e, he⟩ := e'
+    induction e with | h u v => rfl
+  -- The single new edge.
+  have hnewA_mem : s((none : Option V), some a) ∈ (typeI G' a a).edgeSet := by simp
+  set newEdgeA : (typeI G' a a).edgeSet := ⟨s(none, some a), hnewA_mem⟩ with hA_def
+  -- Cover: typeI.edgeSet ⊆ oldSet ∪ {newA}.
+  set oldSet : Set (typeI G' a a).edgeSet := Set.range lift_some with holdSet_def
+  set newSet : Set (typeI G' a a).edgeSet := {newEdgeA} with hnewSet_def
+  have h_cover : (Set.univ : Set (typeI G' a a).edgeSet) ⊆ oldSet ∪ newSet := by
+    rintro ⟨e, he⟩ _
+    rw [typeI_edgeSet] at he
+    rcases he with ⟨e0, he0_mem, h_some⟩ | h_new
+    · left; exact ⟨⟨e0, he0_mem⟩, Subtype.ext h_some⟩
+    · right
+      rcases h_new with h_eq | h_eq <;> exact Subtype.ext h_eq
+  refine LinearIndepOn.mono ?_ h_cover
+  refine LinearIndepOn.union ?_ ?_ ?_
+  · -- LI on `oldSet`: factor through `restrictMap.dualMap`.
+    rw [linearIndepOn_range_iff hlift_some_inj]
+    have h_eq : (typeI G' a a).rigidityRow p_ext ∘ lift_some =
+        restrictMap.dualMap ∘ G'.rigidityRow p' := funext h_factor
+    rw [h_eq]
+    have h_li_G' : LinearIndependent ℝ (G'.rigidityRow p') := by
+      rw [← linearIndepOn_univ_iff,
+          ← edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
+      exact h
+    exact h_li_G'.dualMap_of_surjective h_restrict_surj
+  · -- LI on the singleton `{newA}`: `row newA ≠ 0` via the motion
+    -- `none ↦ q - p' a, some _ ↦ 0` evaluating the row to `‖q - p' a‖² > 0`.
+    rw [hnewSet_def, linearIndepOn_singleton_iff]
+    intro h_zero
+    have h_apply := DFunLike.congr_fun h_zero
+        (fun w : Option V => w.elim (q - p' a) (fun _ => 0))
+    simp only [rigidityRow_apply, rigidityMap_apply, LinearMap.zero_apply,
+      Option.elim_none, Option.elim_some, sub_zero, hp_ext_def, hA_def] at h_apply
+    exact (sub_ne_zero.mpr hq) (inner_self_eq_zero.mp h_apply)
+  · -- Disjoint spans: standard test-motion argument.
+    rw [Submodule.disjoint_def]
+    intro f hf_old hf_new
+    rw [hnewSet_def, Set.image_singleton, Submodule.mem_span_singleton] at hf_new
+    obtain ⟨c, hc⟩ := hf_new
+    rw [← hc]
+    suffices h_c : c = 0 by simp [h_c]
+    -- Apply at `x_α` with `α = q - p' a`: old span vanishes; new row gives `c * ‖q - p' a‖²`.
+    set x_α : Framework (Option V) 2 :=
+      fun w : Option V => w.elim (q - p' a) (fun _ => 0) with hxα_def
+    have hf_zero_at_x : f x_α = 0 := by
+      have h_le : Submodule.span ℝ ((typeI G' a a).rigidityRow p_ext '' oldSet) ≤
+          LinearMap.ker (Module.Dual.eval ℝ (Framework (Option V) 2) x_α) := by
+        refine Submodule.span_le.mpr ?_
+        rintro _ ⟨_, ⟨⟨e0, he0⟩, rfl⟩, rfl⟩
+        induction e0 with
+        | h u v => simp [hlift_def, rigidityRow_apply, rigidityMap_apply, hxα_def,
+            hp_ext_def, LinearMap.mem_ker, Module.Dual.eval_apply]
+      simpa using h_le hf_old
+    have hc_eval := DFunLike.congr_fun hc x_α
+    simp only [LinearMap.smul_apply, rigidityRow_apply, rigidityMap_apply, sub_zero,
+      Option.elim_none, Option.elim_some, hp_ext_def, hA_def, hxα_def, smul_eq_mul] at hc_eval
+    have hqa_ne : ⟪q - p' a, q - p' a⟫_ℝ ≠ 0 :=
+      fun h => sub_ne_zero.mpr hq (inner_self_eq_zero.mp h)
+    have h_prod : c * ⟪q - p' a, q - p' a⟫_ℝ = 0 := by linarith [hf_zero_at_x]
+    exact (mul_eq_zero.mp h_prod).resolve_right hqa_ne
+
+/-- **Unconditional pendant row-LI lift in dim 2.** Given a placement `p'` of `G'` at which
+every edge of `G'` is row-independent and an old vertex `a : V`, there exists an extended
+placement `p : Framework (Option V) 2` with `p ∘ some = p'` at which every edge of
+`typeI G' a a` is row-independent.
+
+The blueprint statement `lem:pendant-rowIndependent-lift`: picks any `q ≠ p' a` (exists since
+`EuclideanSpace ℝ (Fin 2)` is nontrivial) and applies
+`typeI_pendant_edgeSetRowIndependent_extend`. Consumed by Phase 7's `|E|`-induction pendant
+branch alongside the canonical iso `typeI_iso_of_two_neighbors` at `a = b` (the unique
+neighbour of the degree-1 vertex). -/
+theorem typeI_pendant_edgeSetRowIndependent_lift {G' : SimpleGraph V}
+    {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ) (a : V) :
+    ∃ p : Framework (Option V) 2, p ∘ some = p' ∧
+      (typeI G' a a).EdgeSetRowIndependent p Set.univ := by
+  obtain ⟨q, hq⟩ := exists_ne (p' a)
+  exact ⟨fun w : Option V => w.elim q p', funext fun _ => rfl,
+    typeI_pendant_edgeSetRowIndependent_extend h hq⟩
+
 /-! ### Type II row-LI lift, conditional core
 
 Row-LI analogue of Phase 5's `typeII_isInfinitesimallyRigid_extend`. The new vertex `q` is

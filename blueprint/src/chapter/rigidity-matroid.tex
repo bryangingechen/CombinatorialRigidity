@@ -190,6 +190,8 @@ row-independent.
 
 \begin{lemma}[Pendant lift of row-independence]
   \label{lem:pendant-rowIndependent-lift}
+  \lean{SimpleGraph.Henneberg.typeI_pendant_edgeSetRowIndependent_lift}
+  \leanok
   \uses{def:edgeSet-rowIndependent}
   Let $V$ be finite, $G' : \mathrm{SimpleGraph}\,V$, and $p' : V \to
   \R^{2}$ a placement at which $E(G')$ is row-independent. Let
@@ -202,6 +204,7 @@ row-independent.
   reverse a degree-$1$ vertex.)
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:edgeSet-rowIndependent}
   Pick $q \in \R^{2}$ with $q \ne p'_{a}$ (such $q$ exists since
   $\R^{2}$ is uncountable). The edge set of $\mathrm{typeI}\,G'\,a\,a$

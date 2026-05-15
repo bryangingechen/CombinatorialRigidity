@@ -13,18 +13,20 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Twelve commits in. The first six lifted Laman-only machinery to
+Thirteen commits in. The first six lifted Laman-only machinery to
 `IsSparse` and landed `IsSparse.exists_typeI_or_typeII_reverse` in
 flat form (entry points `60a2176..6d59be2`); the next five landed the
 four operation-form row-LI lifts plus the row-LI openness lemma in
-`MatroidIdentification.lean` (entry points `91403e7..57f8f1f`); the
-latest commit refines the sparse reverse to a 3-way split (pendant /
-Type I / Type II) and reflows the Laman shell to consume it. The
-chapter dep-graph in `chapter/rigidity-matroid.tex` has only the
-pendant row-LI lift `lem:pendant-rowIndependent-lift`, the
-`|E|`-induction theorem `thm:isSparse-exists-rowIndependent-placement`,
-the iff `thm:edgeSet-rowIndependent-iff-isSparse`, and the `Matroid`
-packaging left to discharge.
+`MatroidIdentification.lean` (entry points `91403e7..57f8f1f`); Commit
+12 refined the sparse reverse to a 3-way split (pendant / Type I /
+Type II) and reflowed the Laman shell to consume it; Commit 13 added
+the pendant row-LI lift (`typeI_pendant_edgeSetRowIndependent_lift`
+in `MatroidIdentification.lean`, pinning `lem:pendant-rowIndependent-lift`
+in the blueprint). The chapter dep-graph in `chapter/rigidity-matroid.tex`
+has only the `|E|`-induction theorem
+`thm:isSparse-exists-rowIndependent-placement`, the iff
+`thm:edgeSet-rowIndependent-iff-isSparse`, and the `Matroid` packaging
+left to discharge.
 
 **Multi-session plan** for the forward-blueprint work:
 
@@ -42,20 +44,21 @@ packaging left to discharge.
   (handshake + sparsity on `S := {v | 1 ≤ deg v}`; assume for
   contradiction every `v ∈ S` has `deg v ≥ 4`, then
   `4 |S| ≤ 2 |E| ≤ 4 |S| − 6`).
-- **Next: pendant row-LI lift** — add
-  `typeI_pendant_edgeSetRowIndependent_lift` (or similar) in
-  `MatroidIdentification.lean`, then pin `\lean{...}` and `\leanok`
-  on the blueprint's `lem:pendant-rowIndependent-lift`. The
-  pendant case lifts row-LI through `typeI G' a a` (the new vertex
-  joins to a single old vertex); `q` only needs `q ≠ p' a`,
-  vastly simpler than the `q - p' a, q - p' b` LI condition of the
-  general typeI lift.
-- **Then: `IsSparse.exists_rowIndependent_placement`** — the
-  `|E|`-induction theorem. With the 3-way split landed, the
-  induction matches the blueprint sketch directly: each branch
-  strictly decreases `|E|`; the pendant case uses the new lift, the
-  Type I and Type II cases use the existing lifts via the existing
-  iso constructors. Lives in `MatroidIdentification.lean`.
+- **Commit 13** [✓ done]: pendant row-LI lift
+  (`typeI_pendant_edgeSetRowIndependent_lift` +
+  `_extend` in `MatroidIdentification.lean`). The pendant case
+  lifts row-LI through `typeI G' a a` (the new vertex joins to a
+  single old vertex); `q` only needs `q ≠ p' a` (via mathlib's
+  `exists_ne`), vastly simpler than the `q - p' a, q - p' b` LI
+  condition of the general typeI lift. The blueprint
+  `lem:pendant-rowIndependent-lift` is pinned.
+- **Next: `IsSparse.exists_rowIndependent_placement`** — the
+  `|E|`-induction theorem. With the 3-way split + pendant lift
+  landed, the induction matches the blueprint sketch directly: each
+  branch strictly decreases `|E|`; the pendant case uses the new
+  lift via `typeI_iso_of_two_neighbors` at `a = b`, the Type I and
+  Type II cases use the existing lifts via the existing iso
+  constructors. Lives in `MatroidIdentification.lean`.
 - **Then the iff** `edgeSet_rowIndependent_iff_isSparse_dim_two`
   (combine the hard direction with Phase 6's easy direction
   `isSparse_of_edgeSetRowIndependent_dim_two`).
@@ -191,6 +194,19 @@ A red node = not yet formalized; a green node = formalized and
   `continuous_rigidityMap_apply`; transport back via
   `LinearMap.linearIndependent_iff` + `LinearEquiv.ker`.
 
+- **Pendant row-LI lift (Commit 13).**
+  `typeI_pendant_edgeSetRowIndependent_extend` + `..._lift` handle the
+  `b = a` degeneracy of the Type I lift (parallel edges collapse to a
+  single new edge `s(none, some a)`). Structure mirrors
+  `typeI_edgeSetRowIndependent_extend` with the new-edge `Set` shrunk
+  from `{newA, newB}` to `{newA}`: LI on the singleton via
+  `linearIndepOn_singleton_iff` (row newA ≠ 0 by the
+  `none ↦ q - p' a, some _ ↦ 0` test motion evaluating to
+  `‖q - p' a‖² > 0`), disjoint spans via the standard `x_α`
+  argument with `α = q - p' a`. The unconditional lift wraps with
+  `exists_ne (p' a)` over `Nontrivial (EuclideanSpace ℝ (Fin 2))`.
+  No `[Finite V]` needed (pendant doesn't go through `eventually`).
+
 - **3-way reverse decomposition (Commit 12).**
   `IsSparse.exists_typeI_or_typeII_reverse` now splits on
   `G.degree v ∈ {1, 2, 3}` (pendant / Type I / Type II) and exposes
@@ -253,7 +269,9 @@ A red node = not yet formalized; a green node = formalized and
 - `RigidityMatroid.lean`: `EdgeSetRowIndependent.eventually` (Commit 10).
 - `MatroidIdentification.lean`: new file (Commit 7); cumulatively
   holds the four operation-form row-LI lifts (typeI / typeII × extend
-  / lift) and `exists_nonCollinear_rowIndependent_placement_dim_two`.
+  / lift), `exists_nonCollinear_rowIndependent_placement_dim_two`,
+  and (Commit 13) the pendant row-LI lift
+  `typeI_pendant_edgeSetRowIndependent_extend` + `..._lift`.
 - `TrivialMotions.lean`: `elemSkewMap_ofLp_inr_apply` collapsed to
   one line (Commit 10's cleanup pass).
 
