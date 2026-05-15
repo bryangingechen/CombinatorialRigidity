@@ -21,7 +21,7 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-Seven commits in so far. The **first three** lifted Phase 5 Laman
+Eight commits in so far. The **first three** lifted Phase 5 Laman
 machinery to `IsSparse` (degree-≤-3 existence, non-adjacent triple,
 the five blocker contradiction primitives, the per-pair typeII
 tight-blocker). The **fourth** was a docs-only commit pinning the
@@ -33,17 +33,20 @@ flat form. The **sixth** refactored
 `IsLaman.exists_typeI_or_typeII_reverse` to a flat-form shell over
 the sparse version, deleting the operation-form intermediates and
 promoting `typeI_iso_of_two_neighbors` /
-`typeII_iso_of_three_neighbors` to public. The **seventh** (this
-commit) opens Phase 7 forward: creates
-`CombinatorialRigidity/MatroidIdentification.lean` with the
-**conditional Type I row-LI lift**
+`typeII_iso_of_three_neighbors` to public. The **seventh** opened
+Phase 7 forward: created `CombinatorialRigidity/MatroidIdentification.lean`
+with the **conditional Type I row-LI lift**
 `typeI_edgeSetRowIndependent_extend` (operation-form, row-LI
-analogue of Phase 5's `typeI_isInfinitesimallyRigid_extend`), wires
-the new file into the top-level entry, and flips `\leanok` on a new
-blueprint entry `lem:typeI-rowIndependent-extend`. The blueprint's
-existential wrapper `lem:typeI-rowIndependent-lift` now `\uses{}`
-the conditional core; its `\leanok` flip is for the next commit
-when the unconditional wrapper lands.
+analogue of Phase 5's `typeI_isInfinitesimallyRigid_extend`), wired
+the new file into the top-level entry, and flipped `\leanok` on the
+blueprint entry `lem:typeI-rowIndependent-extend`. The **eighth**
+(this commit) lands the **unconditional Type I row-LI wrapper**
+`typeI_edgeSetRowIndependent_lift`: takes `p' a ≠ p' b` instead of
+the LI hypothesis, picks `q` off the line through `p' a, p' b` via
+the un-privatized `exists_off_line_off_finite_dim_two`
+(`S = ∅`, since the matroid hard direction needs no injectivity
+constraint), then composes with the conditional core. Flips
+`\leanok` on `lem:typeI-rowIndependent-lift`.
 
 **Multi-session plan** for the forward-blueprint work:
 
@@ -52,15 +55,21 @@ when the unconditional wrapper lands.
 - **Session 2 — Commit 3 ("Laman reverse cleanup")** [✓ done]:
   refactored `IsLaman.exists_typeI_or_typeII_reverse` to flat form.
 - **Session 3 — Commit 4 ("Type I row-LI conditional core")** [✓
-  done in this commit]: landed `typeI_edgeSetRowIndependent_extend`
-  in `MatroidIdentification.lean`. Mirrors Phase 5's conditional
-  core convention; the unconditional wrapper is next.
-- **Session 3+:** the unconditional Type I wrapper (turning
-  `p' a ≠ p' b` into a `q` via the existing `exists_off_line_off_finite_dim_two`
-  pattern, possibly promoted out of `HennebergRigidity.lean`); then
-  the Type II conditional core + wrapper; then
-  `IsSparse.exists_rowIndependent_placement` (the |E|-induction) and
-  matroid identification.
+  done]: landed `typeI_edgeSetRowIndependent_extend` in
+  `MatroidIdentification.lean`. Mirrors Phase 5's conditional core
+  convention; the unconditional wrapper is next.
+- **Session 3 — Commit 5 ("Type I row-LI unconditional wrapper")**
+  [✓ done in this commit]: landed `typeI_edgeSetRowIndependent_lift`
+  in `MatroidIdentification.lean`; un-privatized
+  `exists_off_line_off_finite_dim_two` in `HennebergRigidity.lean`
+  so the wrapper can reuse it with `S = ∅`.
+- **Session 3+:** Type II row-LI conditional core + unconditional
+  wrapper (the latter needs the row-LI analogue of openness, i.e.
+  `EdgeSetRowIndependent.eventually` or similar, plus the
+  perpendicular-perturbation pattern from
+  `exists_nonCollinear_rigid_placement_dim_two`); then
+  `IsSparse.exists_rowIndependent_placement` (the |E|-induction);
+  then the iff and the `Matroid` packaging.
 
 ## Architectural choices made up front
 
@@ -201,6 +210,17 @@ A red node = not yet formalized; a green node = formalized and
   new span: forces both coefficients to zero by the same argument).
   Conditional core has no `\leanok` on the existential blueprint
   entry yet; the wrapper lands next commit and flips both.
+
+- **Type I row-LI unconditional wrapper (Commit 8).**
+  `typeI_edgeSetRowIndependent_lift` composes
+  `exists_off_line_off_finite_dim_two` with the conditional core,
+  passing `S = ∅` since the matroid hard direction needs no
+  injectivity. The helper was promoted from private to public in
+  `HennebergRigidity.lean` in the same commit (its docstring now
+  cross-references both Phase 5's `S = Set.range p` use and Phase 7's
+  `S = ∅` use). The `p ∘ some = p'` constraint discharges by
+  `funext fun _ => rfl`. Flips `\leanok` on
+  `lem:typeI-rowIndependent-lift`.
 
 ## Blockers / open questions
 

@@ -187,6 +187,25 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     -- `hcd_eval : c * ⟪q - p' a, α⟫ + d * ⟪q - p' b, α⟫ = f x_α`; combine with `hf_zero_at_x`.
     linarith [hcd_eval, hf_zero_at_x]
 
+/-- **Unconditional Type I row-LI lift in dim 2.** Given a placement `p'` of `G'` at which every
+edge of `G'` is row-independent, and two old vertices `a, b` with distinct images
+`p' a ≠ p' b`, there exists an extended placement `p : Framework (Option V) 2` with
+`p ∘ some = p'` at which every edge of `typeI G' a b` is row-independent.
+
+Row-LI analogue of Phase 5's `typeI_isGenericallyRigidInj_two`. The proof uses
+`exists_off_line_off_finite_dim_two` (with empty avoidance set, since the row-LI matroid hard
+direction needs *some* placement, not an *injective* one) to pick `q` so that `q - p' a` and
+`q - p' b` are linearly independent, then applies `typeI_edgeSetRowIndependent_extend`. -/
+theorem typeI_edgeSetRowIndependent_lift {G' : SimpleGraph V}
+    {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ)
+    {a b : V} (hab : p' a ≠ p' b) :
+    ∃ p : Framework (Option V) 2, p ∘ some = p' ∧
+      (typeI G' a b).EdgeSetRowIndependent p Set.univ := by
+  obtain ⟨q, hLI, _⟩ :=
+    exists_off_line_off_finite_dim_two (p' a) (p' b) hab ∅ Set.finite_empty
+  exact ⟨fun w : Option V => w.elim q p', funext fun _ => rfl,
+    typeI_edgeSetRowIndependent_extend h hLI⟩
+
 end Henneberg
 
 end SimpleGraph

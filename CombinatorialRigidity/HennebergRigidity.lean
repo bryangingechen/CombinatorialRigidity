@@ -191,8 +191,12 @@ theorem typeI_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
 `S`, there is a point `q ∉ S` with `q - pa` and `q - pb` linearly independent. The geometric
 content is "off the line through `pa` and `pb`, and off `S`"; the one-parameter family
 `q t := pa + t • v` for any `v ∉ span ℝ {pb - pa}` realizes both conditions on a cofinite set of
-`t ∈ ℝ`. -/
-private lemma exists_off_line_off_finite_dim_two
+`t ∈ ℝ`.
+
+Used by `typeI_isGenericallyRigidInj_two` (Phase 5) with `S = Set.range p` to get a `q` outside
+the image of `p`, and by Phase 7's `typeI_edgeSetRowIndependent_lift` with `S = ∅` (the matroid
+hard direction does not need injectivity of the extended placement). -/
+lemma exists_off_line_off_finite_dim_two
     (pa pb : EuclideanSpace ℝ (Fin 2)) (hab : pa ≠ pb)
     (S : Set (EuclideanSpace ℝ (Fin 2))) (hS : S.Finite) :
     ∃ q : EuclideanSpace ℝ (Fin 2),

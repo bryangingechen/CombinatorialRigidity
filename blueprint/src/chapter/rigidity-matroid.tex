@@ -149,6 +149,8 @@ row-independent.
 
 \begin{lemma}[Type~I lift of row-independence]
   \label{lem:typeI-rowIndependent-lift}
+  \lean{SimpleGraph.Henneberg.typeI_edgeSetRowIndependent_lift}
+  \leanok
   \uses{def:typeI, def:edgeSet-rowIndependent,
     lem:typeI-rowIndependent-extend}
   Let $V$ be finite, $G' : \mathrm{SimpleGraph}\,V$, and $p' : V \to \R^{2}$
@@ -158,6 +160,7 @@ row-independent.
   such that $E(\mathrm{typeI}\,G'\,a\,b)$ is row-independent at $p$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:typeI-rowIndependent-extend}
   Pick $q$ off both the lines through $p'_a$ and through $p'_b$ in the
   direction $p'_b - p'_a$ (equivalently, $q - p'_a$ and $q - p'_b$
