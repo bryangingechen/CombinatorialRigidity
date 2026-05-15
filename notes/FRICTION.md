@@ -320,6 +320,174 @@ housekeeping pass once their resolution is fully indexed.
   to Phase 3 where Henneberg gives a one-liner), but worth doing if a
   later phase wants to mechanize more concrete graphs.
 
+### [open] Openness of `Function.Injective` under finite-domain perturbation
+
+- **Where it bit:** `exists_nonCollinear_rigid_placement_dim_two`
+  (`HennebergRigidity.lean:466–573`, the perpendicular-perturbation
+  helper underneath `typeII_isGenericallyRigidInj_two`). The
+  blueprint runs ~15 lines of prose; the Lean expands to ~107 lines.
+  The bulk of the gap is a hand-rolled "injectivity is eventually
+  preserved" `∀ᶠ`-argument via `Finset.eventually_all` +
+  `nhdsWithin_le_nhds`, taking ~25 lines.
+- **Friction:** there is no project- or mathlib-level lemma stating
+  *"if `p₀ : V → α` is injective on a `Fintype` and we update one
+  coordinate continuously, the resulting family is eventually
+  injective"*. Each Henneberg-rigidity move that goes through a
+  perturbation has to re-prove this in place. Phase 7's Type II
+  row-LI lift will need the same shape.
+- **Proposed fix:** mirror as `Function.Injective.eventually_of_update_continuous`
+  (or similar) under `CombinatorialRigidity/Mathlib/Topology/Algebra/...`.
+  Statement sketch: `[TopologicalSpace α] [T2Space α] {V : Type*}
+  [Fintype V] {p₀ : V → α} (hp₀ : Function.Injective p₀) {c : V}
+  {f : ℝ → α} (hf : Continuous f) (hf0 : f 0 = p₀ c) : ∀ᶠ t in 𝓝 0,
+  Function.Injective (Function.update p₀ c (f t))`. Reusable by
+  both `exists_nonCollinear_rigid_placement_dim_two` and Phase 7's
+  Type II row-LI wrapper. **Priority: high** (reusable across two
+  callers).
+- **Status:** open. Phase 7 Type II row-LI wrapper is the natural
+  reuse point.
+
+### [open] No dim-2 "vector orthogonal to two LI vectors is zero" helper
+
+- **Where it bit:** Three private helpers in `HennebergRigidity.lean`
+  (`exists_not_mem_span_singleton_dim_two`,
+  `inner_sub_perp_of_eq`, `eq_zero_of_orthogonal_dim_two`,
+  lines 75–118) supporting the typeI/typeII rigidity-preservation
+  proofs. The blueprint prose treats "orthogonal to two LI vectors
+  in `ℝ²` is zero" as a one-clause math step; the Lean walks
+  `Submodule.span_induction` on the orthogonal complement (~20 lines).
+- **Friction:** the existing helper rebuilds "orthogonal complement
+  of a spanning set is `⊥`" from scratch via `span_induction`
+  instead of routing through `Submodule.span_eq_top` +
+  `Submodule.top_orthogonal_eq_bot`. The combined dance is heavier
+  than necessary.
+- **Proposed fix:** try mathlib first — `lean_loogle` for
+  `Submodule.span ℝ _ = ⊤ → _ ∈ _ᗮ → _ = 0` or
+  `Submodule.eq_bot_of_orthogonal_eq_self` + `orthogonal_orthogonal`.
+  If no direct hit, mirror an `n`-vector version (LI family of size
+  `finrank` ⇒ orthogonal complement trivial) under
+  `CombinatorialRigidity/Mathlib/Analysis/InnerProductSpace/Orthogonal.lean`.
+- **Status:** open. **Priority: medium**. Not blocking, but the
+  helper looks like 3-5 lines using existing API rather than 30.
+
+### [open] No upstream "generic point off a line in `ℝ²`" helper
+
+- **Where it bit:** `exists_off_line_off_finite_dim_two`
+  (`HennebergRigidity.lean:195`, used by both Phase 5
+  `typeI_isGenericallyRigidInj_two` and Phase 7
+  `typeI_edgeSetRowIndependent_lift`); a sibling
+  `exists_typeII_q_on_line_dim_two` (line 391) plays the dual role
+  for Type II. Both helpers do a `pa + t • v` parametric construction
+  with a `LinearIndependent.pair_add_smul_add_smul_iff` row-op step
+  and a `Set.Finite`-bad-set selection.
+- **Friction:** the same construction shape ("pick a generic point
+  in `EuclideanSpace ℝ (Fin 2)` away from a finite set, with a
+  linear-independence side condition") recurs across all the
+  Henneberg-move generic-placement wrappers. The current dim-2
+  forms are project-internal.
+- **Proposed fix:** mirror an upstream-eligible "generic point off
+  a line / off a finite set" pair of lemmas under
+  `CombinatorialRigidity/Mathlib/Analysis/InnerProductSpace/EuclideanDist.lean`
+  (or the appropriate path). Likely two lemmas:
+  (a) `exists_lineIndep_pair_off_finite` (off-line + off-finite),
+  (b) `exists_smul_on_line_off_finite` (on-line + off-finite, the
+  Type II shape). Both are generic linear-algebra over `ℝ²`.
+- **Status:** open. **Priority: medium**. Phase 7 Type II row-LI
+  wrapper will hit the same pattern, making this the natural moment.
+
+### [open] No `LinearIndepOn` "row-restriction transports LI through dual" helper
+
+- **Where it bit:** `isSparse_of_edgeSetRowIndependent_dim_two`
+  (`RigidityMatroid.lean:413–519`, ~107 lines) and
+  `typeI_edgeSetRowIndependent_extend` (`MatroidIdentification.lean:64–188`,
+  ~130 lines). Both build a `restrictMap.dualMap` between framework
+  dual spaces, prove a `h_factor` identity (row in big graph =
+  `restrictMap.dualMap` of row in small graph) by `LinearMap.ext +
+  Sym2.induction + rfl`, then close LI via `LinearIndependent.of_comp`
+  / `LinearIndepOn.map'` with `LinearMap.ker_eq_bot`.
+- **Friction:** the `restrictMap = LinearMap.funLeft ℝ _ some` /
+  `LinearMap.funLeft_surjective_of_injective` /
+  `LinearMap.dualMap_injective_of_surjective` factoring chain
+  recurs verbatim in both. The blueprint treats it as a one-step
+  "factor through the restriction map" claim.
+- **Proposed fix:** mirror `LinearIndepOn.comp_dualMap_of_surjective`
+  (or similar) under `CombinatorialRigidity/Mathlib/LinearAlgebra/Dual/Lemmas.lean`.
+  Statement sketch: if `f : M →ₗ[R] N` is surjective and `v : ι → Dual R N`
+  is `LinearIndepOn` on `s`, then `f.dualMap ∘ v` is `LinearIndepOn`
+  on `s`. Two callers immediately benefit; Phase 7 Type II will be
+  a third.
+- **Status:** open. **Priority: medium**.
+
+### [open] `Function.Injective.option_elim` would clean up Henneberg-move injectivity
+
+- **Where it bit:** `injective_option_elim` (`HennebergRigidity.lean:61`,
+  private, ~5 lines). Used in `typeI_isGenericallyRigidInj_two` and
+  `typeII_isGenericallyRigidInj_two_of_nonCollinear`. The "4-way
+  rintro" shape recurs whenever a Henneberg iso constructor pairs
+  an injective old placement with a fresh `q ∉ Set.range`.
+- **Friction:** trivial proof, but project-internal and unnamed.
+- **Proposed fix:** mirror `Function.Injective.option_elim` under
+  `CombinatorialRigidity/Mathlib/Data/Option/Basic.lean`. Statement:
+  `{f : α → β} (hf : Function.Injective f) {b : β} (hb : b ∉ Set.range f) :
+  Function.Injective (fun o : Option α => o.elim b f)`.
+- **Status:** open. **Priority: low**. Cosmetic — only mirror when
+  there's a third caller.
+
+### [open] Sym2-symmetry case split in `typeII_isInfinitesimallyRigid_extend` understated by blueprint
+
+- **Where it bit:** `typeII_isInfinitesimallyRigid_extend`
+  (`HennebergRigidity.lean:284`). The blueprint prose calls the
+  deleted-edge recovery "subtract the second from the first";
+  the Lean has to handle a `Sym2.eq_iff` case split on
+  `s(u, v) = s(a, b)` *both ways*, and explicitly avoid
+  `rcases ⟨rfl, rfl⟩` because the `subst` would eliminate `a`/`b`
+  from the context (an in-source comment explains this).
+- **Friction:** prose-to-Lean gap. The case split + `subst`
+  avoidance isn't substantive math but is substantive Lean
+  infrastructure.
+- **Proposed fix:** *first*, check whether a `Sym2`-level
+  "symmetric pair equality strips" lemma already exists in mathlib
+  that would let the proof handle both orientations in one move.
+  *If not*, mirror it. *If neither path works*, add a one-clause
+  blueprint aside acknowledging the orientation case split.
+- **Status:** open. **Priority: medium** (mostly a documentation
+  fidelity issue; doesn't block).
+
+### [open] "Test motion `x_α`" gadget in Phase 7 understated by blueprint prose
+
+- **Where it bit:** `typeI_edgeSetRowIndependent_extend`
+  (`MatroidIdentification.lean:64`). The blueprint prose for new-row
+  LI and old-vs-new disjointness invokes "the same trick" — but the
+  Lean expands "the trick" into a `set x_α := fun w => w.elim α 0`
+  binding plus a 15-line `Submodule.span_le` /
+  `LinearMap.mem_ker` argument that the old-row span vanishes at
+  `x_α`. The private helper `typeI_new_rows_coeff_zero` packages the
+  coefficient-extraction.
+- **Friction:** prose-to-Lean gap; the test-motion gadget is a
+  substantive construction that should appear in the blueprint
+  prose as a named gadget, not as "the same trick".
+- **Proposed fix:** *first*, try simplifying the Lean — possibly
+  via `Module.Dual.eval`-level API or a "evaluate a span at a
+  vector" mathlib lemma. *If not*, add a brief aside to the
+  blueprint prose acknowledging the explicit `x_α` test motion.
+- **Status:** open. **Priority: medium**.
+
+### [open] `elemSkewMap_ofLp_inr_apply` may already exist as `Matrix.stdBasisMatrix` difference
+
+- **Where it bit:** `trivialMotionFamily_linearIndependent`
+  (`TrivialMotions.lean:212`). The `elemSkewMap_ofLp_inr_apply`
+  helper unpacks a `Eᵢⱼ - Eⱼᵢ`-style entry into specific coordinate
+  cases, closed by `grind`.
+- **Friction:** the "skew-symmetric basis matrix" pattern is
+  generic linear algebra; the project-internal helper does the
+  case analysis from scratch.
+- **Proposed fix:** search mathlib (`lean_loogle` for
+  `(Matrix.stdBasisMatrix _ _ 1) - (Matrix.stdBasisMatrix _ _ 1)`)
+  for an existing API. If found, the helper collapses to one or
+  two `simp` calls.
+- **Status:** open. **Priority: low–medium**. Cosmetic; affects a
+  finished phase.
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
