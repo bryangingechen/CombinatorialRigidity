@@ -469,6 +469,36 @@ This pattern recurs whenever `Sym2` wraps a sub-typed pair. The
 `typeII_iso_of_three_neighbors` `(some, some)` arm is the canonical
 example in this directory.
 
+### Pattern (the other direction): `Sym2 V` equality → `G.edgeSet` subtype equality
+
+Inverse situation: given `h_eq : s(u, v) = s(a, b)` (a `Sym2 V` equality)
+and a function on `G.edgeSet` that is **Sym2-symmetric by construction**
+(e.g., `RigidityMap`, built via `Sym2.lift`), lift `h_eq` to a subtype
+equality on `G.edgeSet` and rewrite — *don't* unfold first and then case-
+split the two orientations.
+
+```lean
+-- Goal: `(G.RigidityMap p) p' ⟨s(u, v), he⟩ = 0` given `h_eq : s(u, v) = s(a, b)`
+-- and `h_target : (G.RigidityMap p) p' ⟨s(a, b), _⟩ = 0` (or its unfolded form).
+rw [show (⟨s(u, v), he⟩ : G.edgeSet) = ⟨s(a, b), h_eq ▸ he⟩ from Subtype.ext h_eq]
+-- now apply `h_target`
+```
+
+The anti-pattern this replaces: `simp only [rigidityMap_apply]` first
+(unfolding to `⟪p u - p v, p' u - p' v⟫_ℝ = 0`), then
+`rcases Sym2.eq_iff.mp h_eq with ⟨h1, h2⟩ | ⟨h1, h2⟩` to handle the two
+orientations, with the swapped-orientation arm closing via `← neg_sub`
++ `inner_neg_neg`. That re-derives the Sym2-symmetry that `Sym2.lift`
+already gave you for free, and forces the `subst`-direction workaround
+(see TACTICS-QUIRKS § 4 — `rcases ⟨rfl, rfl⟩` would `subst` over
+`a`/`b`).
+
+Diagnostic for when this applies: the goal involves `f ⟨e, he⟩` where
+`f`'s definition factors through `Sym2.lift`. In this project
+`RigidityMap` is the headline case (`Framework.lean`). Canonical site:
+`typeII_isInfinitesimallyRigid_extend` deleted-edge branch
+(`HennebergRigidity.lean`).
+
 ## 6. `fun_prop` for continuity / differentiability
 
 `fun_prop` chains continuity (and differentiability, measurability, etc.)

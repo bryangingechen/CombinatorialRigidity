@@ -405,25 +405,37 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 - **Status:** open. **Priority: low**. Cosmetic — only mirror when
   there's a third caller.
 
-### [open] Sym2-symmetry case split in `typeII_isInfinitesimallyRigid_extend` understated by blueprint
+### [resolved] Sym2-symmetry case split in `typeII_isInfinitesimallyRigid_extend` understated by blueprint
 
 - **Where it bit:** `typeII_isInfinitesimallyRigid_extend`
-  (`HennebergRigidity.lean:284`). The blueprint prose calls the
+  (`HennebergRigidity.lean`). The blueprint prose calls the
   deleted-edge recovery "subtract the second from the first";
-  the Lean has to handle a `Sym2.eq_iff` case split on
-  `s(u, v) = s(a, b)` *both ways*, and explicitly avoid
+  the Lean originally handled a `Sym2.eq_iff` case split on
+  `s(u, v) = s(a, b)` *both ways*, and explicitly avoided
   `rcases ⟨rfl, rfl⟩` because the `subst` would eliminate `a`/`b`
-  from the context (an in-source comment explains this).
+  from the context.
 - **Friction:** prose-to-Lean gap. The case split + `subst`
   avoidance isn't substantive math but is substantive Lean
   infrastructure.
-- **Proposed fix:** *first*, check whether a `Sym2`-level
-  "symmetric pair equality strips" lemma already exists in mathlib
-  that would let the proof handle both orientations in one move.
-  *If not*, mirror it. *If neither path works*, add a one-clause
-  blueprint aside acknowledging the orientation case split.
-- **Status:** open. **Priority: medium** (mostly a documentation
-  fidelity issue; doesn't block).
+- **Resolution:** the case split was unnecessary — `RigidityMap` is
+  defined via `Sym2.lift` (`Framework.lean`), so Sym2-symmetry is
+  baked in at the edge-subtype level. Rewriting
+  `⟨s(u, v), he⟩ = ⟨s(a, b), h_eq ▸ he⟩` via `Subtype.ext h_eq` *before*
+  unfolding the rigidity-map application lets the deleted-edge branch
+  close in three lines (rewrite, `simp [rigidityMap_apply, …]`,
+  `exact h_deleted`) rather than nine. No mirror needed; no blueprint
+  prose change needed (the blueprint's "subtract the second from the
+  first" reading is accurate — the orientation case split was a
+  Lean-side artefact of un-lifting too early).
+- **Lesson:** when a function is built via `Sym2.lift`, push
+  `Sym2 V`-equalities through the subtype layer (`Subtype.ext`) rather
+  than `Sym2.eq_iff`-case-splitting after unfolding. The orientation
+  symmetry is encoded in the lift's symmetry proof — recovering it
+  manually in the unfolded inner-product form duplicates work.
+- **Status:** resolved (2026-05-15).
+- **Lifted to:** TACTICS-GOLF § 5 *Lifting Subtype-Sym2 equalities*,
+  subsection "Pattern (the other direction): `Sym2 V` equality →
+  `G.edgeSet` subtype equality".
 
 ### [open] "Test motion `x_α`" gadget in Phase 7 understated by blueprint prose
 

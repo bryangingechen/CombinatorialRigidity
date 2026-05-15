@@ -352,15 +352,13 @@ theorem typeII_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
     | h u v =>
       have h_uv : G.Adj u v := he
       by_cases h_eq : s(u, v) = s(a, b)
-      · -- Deleted edge: recover via `h_deleted` (with Sym2 symmetry). Use `rw` on named hyps
-        -- rather than `rfl`-rcases to avoid `subst` eliminating `a`/`b` from the context.
+      · -- Deleted edge. `RigidityMap` is built via `Sym2.lift` (`Framework.lean`), so it's
+        -- already Sym2-invariant in the edge: rewriting the edge subtype `⟨s(u, v), he⟩ =
+        -- ⟨s(a, b), _⟩` via `Subtype.ext h_eq` replaces what would otherwise be a two-way
+        -- `Sym2.eq_iff` orientation case split in the unfolded inner-product form.
+        rw [show (⟨s(u, v), he⟩ : G.edgeSet) = ⟨s(a, b), h_eq ▸ he⟩ from Subtype.ext h_eq]
         simp only [rigidityMap_apply, Pi.zero_apply, Function.comp_apply]
-        change ⟪p u - p v, x (some u) - x (some v)⟫_ℝ = 0
-        rcases Sym2.eq_iff.mp h_eq with ⟨h1, h2⟩ | ⟨h1, h2⟩
-        · rw [h1, h2]; exact h_deleted
-        · rw [h1, h2, ← neg_sub (p a) (p b), ← neg_sub (x (some a)) (x (some b)),
-            inner_neg_neg]
-          exact h_deleted
+        exact h_deleted
       · -- Non-deleted edge: lift to typeII edge.
         have h_typeII : s(some u, some v) ∈ (typeII G a b c).edgeSet :=
           show (typeII G a b c).Adj (some u) (some v) from ⟨h_uv, h_eq⟩

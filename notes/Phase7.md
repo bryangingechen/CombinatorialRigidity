@@ -233,6 +233,19 @@ A red node = not yet formalized; a green node = formalized and
   uses `LinearIndependent.of_comp` without surjectivity and did not
   benefit. See the mirrored FRICTION entry.
 
+- **Friction cleanup: Sym2-eq case split in
+  `typeII_isInfinitesimallyRigid_extend`.** The deleted-edge branch
+  was unfolding `(G.RigidityMap p) (x ∘ some) ⟨s(u, v), he⟩ = 0` via
+  `rigidityMap_apply` *before* applying `h_eq : s(u, v) = s(a, b)`,
+  then `rcases Sym2.eq_iff.mp h_eq` to handle both orientations (the
+  swap arm closed via `← neg_sub` + `inner_neg_neg`). But `RigidityMap`
+  is built via `Sym2.lift` (Framework.lean) so Sym2-symmetry is baked
+  in at the edge-subtype level: lifting `h_eq` to `Subtype.ext h_eq :
+  (⟨s(u, v), he⟩ : G.edgeSet) = ⟨s(a, b), h_eq ▸ he⟩` and rewriting
+  *before* the unfold collapses the two-arm case split to three lines.
+  Pattern lifted to TACTICS-GOLF § 5 (new subsection "the other
+  direction"); FRICTION entry closed.
+
 ## Blockers / open questions
 
 - **Type II row-LI lift collinearity gap.** The Type II move places
