@@ -318,7 +318,7 @@ may be upstream-eligible mirrors.
   idiom; the build-failure → fix iteration was a one-liner so logged
   as a Phase-local decision rather than a FRICTION entry.
 
-### Promoted to TACTICS / FRICTION / DESIGN
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *`RigidityMap` built by hand instead of compositionally* → FRICTION
   *[resolved]*. Compositional refactor landed in a follow-up commit

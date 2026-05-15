@@ -1,49 +1,65 @@
 # CLAUDE.md — agent operating manual
 
-This file is the **agent-facing operating manual** for working on this
-project. Claude Code reads it automatically at session start. Humans
-should start from `README.md` and `ROADMAP.md` instead.
+This file is the **agent-facing operating manual** for working on
+this project. Claude Code reads it automatically at session start.
+Humans should start from `README.md` and `ROADMAP.md` instead.
 
-Keep this file short. The project conventions (what the code looks
-like) live in `ROADMAP.md` and `DESIGN.md`; the tactical advice lives
-in `TACTICS.md`. This file only carries the *process* of how to
-sequence a session and what discipline to apply when ending one.
+This file covers project-wide process — reading order, hand-off
+contract, citations, project history. Three subdirectory `CLAUDE.md`
+files auto-load on demand when their subtree is touched and carry
+the area-specific discipline:
+
+- `CombinatorialRigidity/CLAUDE.md` — Lean source ops (build/lint
+  gates, friction review, MCP guidance, the symptom-indexed quirks
+  index for build-failure rescue).
+- `notes/CLAUDE.md` — phase-notes and friction-log discipline.
+- `blueprint/CLAUDE.md` — blueprint TeX (authoring conventions,
+  `checkdecls`, local builds, dep-graph spot-check, forward-mode
+  rendering mechanics).
+
+Project conventions (what the code looks like) live in `ROADMAP.md`
+and `DESIGN.md`; tactical advice for Lean proofs lives in
+`TACTICS-GOLF.md` (idioms / golfing) and `TACTICS-QUIRKS.md`
+(symptom-indexed rescue).
 
 ## Reading order
 
 Every session, in order:
 
 1. **CLAUDE.md** (this file) — process.
-2. **ROADMAP.md** — current status, directory layout, phase plan, and
-   engineering conventions. The canonical hand-off doc.
+2. **ROADMAP.md** — current status, directory layout, phase plan,
+   and engineering conventions. The canonical hand-off doc.
 3. **`notes/PhaseN.md`** for the active phase — lemma checklist,
-   decisions made during that phase, hand-off notes. Required reading
-   when picking up or finishing a phase.
-4. **TACTICS.md** — read whenever you're about to write a non-trivial
-   proof and haven't seen the `grind?` → `grind only` workflow or the
-   `Set.ncard` autoparam pattern recently.
-5. **DESIGN.md** — only when you're about to question a cross-cutting
-   decision. The default answer is *don't*.
-6. **`notes/FRICTION.md`** — optional skim for an open upstream-eligible
-   item to land alongside the session's main work.
-7. **`blueprint/CLAUDE.md`** — only when the session touches blueprint
-   TeX (writing a new chapter, updating a `\lean{...}` pin, flipping
-   `\leanok` on a forward-mode entry as a lemma lands). The blueprint
-   has its own operating manual; this file does not duplicate it.
-   `blueprint/DESIGN.md` carries the backfill-vs-forward workflow
-   discussion. Phase 6 onward runs in **forward mode** by default —
-   the blueprint chapter for the active phase is the authoritative
-   dep-graph / lemma index, and `notes/PhaseN.md` does not duplicate
-   it.
+   decisions made during that phase, hand-off notes. Required
+   reading when picking up or finishing a phase. Reading this
+   triggers `notes/CLAUDE.md` auto-load.
+4. **`CombinatorialRigidity/CLAUDE.md`** — auto-loads when an agent
+   reads any `.lean` file under the subtree. Carries Lean-specific
+   discipline; its inline *Quirks index* is the first place to look
+   when a `lake build` fails with an unfamiliar error.
+5. **DESIGN.md** — only when you're about to question a
+   cross-cutting decision. The default answer is *don't*.
+6. **`notes/FRICTION.md`** — optional skim for an open
+   upstream-eligible item to land alongside the session's main
+   work. (Auto-loaded via `notes/CLAUDE.md` when an agent reads
+   `notes/PhaseN.md`.)
+7. **`blueprint/CLAUDE.md`** — auto-loads when the session reads
+   blueprint TeX (writing a new chapter, updating a `\lean{...}`
+   pin, flipping `\leanok` on a forward-mode entry as a lemma
+   lands). `blueprint/DESIGN.md` carries the backfill-vs-forward
+   workflow discussion. Phase 6 onward runs in **forward mode** by
+   default — the blueprint chapter for the active phase is the
+   authoritative dep-graph / lemma index, and `notes/PhaseN.md`
+   does not duplicate it.
 
-The hand-off contract is: **`ROADMAP.md` + the active `notes/PhaseN.md`
-should be enough to identify the next concrete task** without reading
-any source file or commit history. If either drifts from that
-guarantee, the friction-review step at end-of-session is where you
-fix it. (In forward-mode phases, the *lemma index* itself lives in
-the blueprint dep-graph; `notes/PhaseN.md` carries everything else —
-current state, decisions, blockers, hand-off — and points at the
-blueprint chapter.)
+The hand-off contract is: **`ROADMAP.md` + the active
+`notes/PhaseN.md` should be enough to identify the next concrete
+task** without reading any source file or commit history. If either
+drifts from that guarantee, the friction-review step at end-of-
+session is where you fix it. (In forward-mode phases, the *lemma
+index* itself lives in the blueprint dep-graph; `notes/PhaseN.md`
+carries everything else — current state, decisions, blockers,
+hand-off — and points at the blueprint chapter.)
 
 ## Per-session workflow
 
@@ -52,208 +68,76 @@ blueprint chapter.)
 1. Read CLAUDE.md, ROADMAP.md, the active `notes/PhaseN.md` (see
    *Reading order*).
 2. `git log --oneline -20` to see what the last session did.
-3. `lake build CombinatorialRigidity.Laman` (or the leftmost active
-   phase's file) to confirm the tree still compiles cleanly on its
-   own before touching anything.
-4. Identify the active phase from ROADMAP's Status table. If the phase
-   has not started yet, open ROADMAP's planning section for that phase
-   and create `notes/PhaseN.md` in your first commit (template at the
-   bottom of this file).
+3. Identify the active phase from ROADMAP's Status table. If the
+   phase has not started yet, open ROADMAP's planning section for
+   that phase and create `notes/PhaseN.md` in your first commit
+   (template in `notes/CLAUDE.md`).
+
+> **Lean-touching sessions** also run a `lake build` sanity check
+> on the leftmost active phase's file before editing — see
+> `CombinatorialRigidity/CLAUDE.md` *Starting a Lean-touching
+> session*. Lean-specific working bullets (engineering conventions,
+> friction review, build/lint gates, MCP guidance) live there too.
 
 ### Working
 
 - Use `TaskCreate` for short-lived intra-session todos. They don't
   persist across sessions; use `notes/PhaseN.md` for anything that
   needs to outlast the session.
-- Engineering conventions (where lemmas live, namespace policy,
-  `Set.ncard` vs `Finset.card`, decidability, etc.) are in ROADMAP.md
-  "Engineering conventions". Follow them.
-- When you add a lemma, put it in the file that introduces the
-  relevant *definition*, not the file that first uses it. (Lemma about
-  `IsSparse` → `Sparsity.lean`, even if first invoked in `Laman.lean`.)
 - **Forward-mode blueprint phases (Phase 6 onward by default).** The
   active phase's blueprint chapter — typically a section of
-  `blueprint/src/chapter/*.tex` — is the authoritative dep-graph and
-  lemma index. Pick the leaf-most red node (no `\leanok`, dependencies
-  all `\leanok` or mathlib facts), formalize it in Lean, then
-  add/flip `\lean{...}` and `\leanok` on its blueprint entry in the
-  same commit. Re-render with `cd blueprint && inv bp && inv web` and
-  spot-check `web/dep_graph_document.html` before committing. See
-  `blueprint/CLAUDE.md` for authoring conventions (annotation order,
-  label prefixes, sorry-blocked encoding) and `blueprint/DESIGN.md`
-  for the workflow-mode rationale. Backfill mode (Phases 1–5) writes
-  the blueprint chapter end-to-end after the Lean lands; forward mode
-  inverts that so the dep-graph doubles as the live to-do list.
-- **When a commit touches `\lean{...}` pointers, run `checkdecls`.**
-  Every `\lean{...}` name must resolve to a real Lean declaration.
-  CI runs `lake exe checkdecls blueprint/lean_decls` (the file is
-  regenerated by `inv web` / the docgen-action), and a stale or
-  mis-namespaced pointer fails the pipeline. Run locally with
-  `inv web && lake exe checkdecls blueprint/lean_decls` before
-  committing; the most common breakage is forgetting an enclosing
-  `namespace Foo` (e.g. `SimpleGraph.Henneberg.IsLaman.foo`, not
-  `SimpleGraph.IsLaman.foo`).
+  `blueprint/src/chapter/*.tex` — is the authoritative dep-graph
+  and lemma index. Pick the leaf-most red node (no `\leanok`,
+  dependencies all `\leanok` or mathlib facts), formalize it in
+  Lean, then add/flip `\lean{...}` and `\leanok` on its blueprint
+  entry in the same commit. Backfill mode (Phases 1–5) writes the
+  blueprint chapter end-to-end after the Lean lands; forward mode
+  inverts that so the dep-graph doubles as the live to-do list. See
+  `blueprint/CLAUDE.md` for rendering mechanics (`inv bp && inv
+  web`), `checkdecls`, dep-graph spot-check, and authoring
+  conventions; `blueprint/DESIGN.md` for the workflow-mode
+  rationale.
 - **Every commit is a potential handoff point.** Treat each commit
-  as if the session could end on it. The pre-commit checklist below
-  (*Before each commit — friction review* and *Before each commit —
-  keep the hand-off contract honest*) runs on every commit, not just
-  the last one of a session — there is no special "session-end"
-  work that doesn't already fall out of doing those two well on each
-  commit. Phase-completion work is the one genuine exception: that
-  fires on the commit that closes a phase, whenever in the session
-  it lands, and is documented separately under *When this commit
-  closes a phase*.
+  as if the session could end on it. The pre-commit checklists
+  below (*keep the hand-off contract honest*) and the Lean-side
+  one (*friction review* in `CombinatorialRigidity/CLAUDE.md`) run
+  on every commit, not just the last one of a session — there is
+  no special "session-end" work that doesn't already fall out of
+  doing those well on each commit. Phase-completion work is the one
+  genuine exception: that fires on the commit that closes a phase,
+  whenever in the session it lands, and is documented separately
+  under *When this commit closes a phase*.
 - **State the handoff state in one sentence after each commit.**
   Once a commit lands, write one sentence to the user: either
   *"clean handoff point; next agent picks up at X"* or
   *"intentionally mid-step; if you stop me now, Y is the loose end."*
   Cheap, lets the user judge whether to stop or continue without
   the agent unilaterally drawing a session boundary.
-- **Before committing, run both `lake build` and `lake lint`.** Both
-  are CI gates (see `.github/workflows/push_pr.yml`); a failing lint
-  blocks merge as surely as a failing build. The full-project linter
-  (`runLinter`) catches `simpNF` and `unusedArguments` issues that the
-  compile-time `mathlibStandardSet` linter misses, so don't skip it.
-  If the commit touches any `\lean{...}` pointer in the blueprint,
-  also run `lake exe checkdecls blueprint/lean_decls` (after a fresh
-  `inv web` to regenerate `lean_decls`); CI runs the same command
-  and a missing-declaration failure is a hard merge blocker.
-  Newly-added `@[simp]` attributes are the usual offenders — if the
-  LHS is reducible by existing simp lemmas, drop the `@[simp]` (the
-  lemma stays callable by name) rather than working around with
-  `@[nolint simpNF]`. Reserve `@[nolint unusedArguments]` for
-  instance args that are semantically required by the definition's
-  contract but not consumed by elaboration; always add a one-line
-  comment justifying it (see `IsInfinitesimallyRigid` in
-  `Framework.lean` for the canonical example).
 - Match git author identity to existing commits when committing on
   the user's behalf — the repo has `bryangingechen@gmail.com` baked
-  in. Pass `git -c user.name=… -c user.email=… commit …`; never write
-  to git config.
+  in. Pass `git -c user.name=… -c user.email=… commit …`; never
+  write to git config.
 - **Pushing to `master` triggers a Pages deploy** (blueprint, docs,
-  upstreaming dashboard via `leanprover-community/docgen-action`). PRs
-  run the same build but skip the deploy step. There is no separate
-  "deploy when ready" knob — every green master push publishes.
-- **Automated mathlib bumps** arrive as PRs from
-  `.github/workflows/hopscotch.yml` (daily cron). If you see a PR or
-  branch like `hopscotch/bump-mathlib`, that's the bot; review it like
-  any other mathlib bump (the project's lemmas may need fixups if the
-  build broke). A tracking issue gets opened instead when the bump
-  hits a regression — the issue body identifies the breaking mathlib
-  commit via bisection.
+  upstreaming dashboard via `leanprover-community/docgen-action`).
+  PRs run the same build but skip the deploy step. There is no
+  separate "deploy when ready" knob — every green master push
+  publishes.
 - **Automated GitHub Actions bumps** arrive as a single monthly
   grouped PR from Dependabot (`.github/dependabot.yml`), titled
   something like "Bump the github-actions group with N updates".
-  Merging it usually requires only running CI green; do not bump the
-  pins by hand between cycles unless there's a specific reason
+  Merging it usually requires only running CI green; do not bump
+  the pins by hand between cycles unless there's a specific reason
   (security fix, action removed, etc.).
-- **Lean LSP MCP — reach for it.** `.mcp.json` at the repo root
-  registers [`lean-lsp-mcp`](https://github.com/oOo0oOo/lean-lsp-mcp);
-  approve the server on first prompt. File paths resolve against the
-  project root. **An MCP call is sub-second; an `edit + lake build`
-  cycle is 30+ seconds — the cost asymmetry is the whole point.**
-  Whenever you would otherwise:
-  - guess at a closing tactic — use `lean_multi_attempt` at the proof
-    position to A/B-test several candidates
-    (e.g. `["grind", "omega", "simp", "ring"]`) in one round-trip,
-    instead of editing-and-rebuilding for each guess. Same for
-    finding the right `simp [...]` argument set.
-  - hunt for a mathlib lemma via `grep -rn` in
-    `.lake/packages/mathlib` — use `lean_loogle` (type pattern) or
-    `lean_leanfinder` (concept) instead; both are faster and return
-    structured results.
-  - open an upstream `.lean` file to read a signature — use
-    `lean_hover_info` at the identifier's start column.
-  - insert a `sorry` and rebuild to see what the intermediate goal
-    looks like — use `lean_goal` at the line (omit `column` for
-    before/after; pass `column` for an exact position).
-  - check the project's existing API for a name match — use
-    `lean_local_search` instead of `grep -rn` on the project's
-    `.lean` files.
-
-  Run `lake build` once before the first MCP call (warms `lake
-  serve`); skip if you've built recently this session. **Do not call
-  `lean_leansearch`** — its endpoint has been down since late 2025;
-  use `lean_loogle` / `lean_leanfinder` instead. Full decision tree,
-  cold-start details, and `lean_multi_attempt` payload shape in
-  `TACTICS.md` § 7.
-
-### Before each commit — friction review (mandatory)
-
-Before each commit, do a **friction review**. It is what keeps the
-project's API gaps from accumulating silently.
-
-1. **Re-read the lemmas this commit adds or changes.** For each one:
-   - Did any rewrite chain feel longer than it should have?
-     (Two-rewrite glue lemmas — `coe_X` then `card_X` — are the
-     usual culprit.)
-   - Did `grind` need an unusually long hint list, or fail in a way
-     you worked around rather than understood?
-   - Did you hit a deprecation, missing simp lemma, or awkward
-     typeclass dance?
-
-   **Concrete signals.** Friction almost certainly happened if you
-   wrote any of the following — each is a candidate FRICTION entry,
-   not a "standard idiom" to dismiss:
-   - `change` or `show` to make `rw` / `simp` find a pattern (the
-     un-reduced lambda or `def`-predicate is the gap).
-   - A multi-rewrite chain (3+ `rw` arguments) for one mathematical
-     step — usually a missing fused lemma.
-   - A manual `have h : <unfolded body> := h_predicate` to surface a
-     `def`-predicate's content for `omega` / `grind` (cf. TACTICS § 4
-     for the `IsLaman` / `IsTight` cases — `IsInfinitesimallyRigid`
-     joined the club in Phase 4).
-   - `omega` or `nlinarith` failed and you added a numeric hint, a
-     `ring`-normalized rewrite, or a manual `mul_comm`.
-   - Two `rw` lemmas to bridge a single conversion (e.g. `coe_X` then
-     `card_X`, or `Set.ncard_eq_toFinset_card'` then
-     `Set.toFinset_card`) — usually a one-line mirror.
-
-   **Bar is low.** Anything that took a build-failure → fix iteration
-   deserves at minimum a one-line FRICTION entry, even if the fix was
-   "obvious in hindsight". Phase 4 closed having logged zero entries
-   on the first pass and six on the second — the lesson is that "this
-   is just a standard mathlib idiom" is not an excuse if you spent a
-   build cycle figuring it out. The next agent doesn't have your
-   hindsight.
-
-2. For each genuine instance:
-   - If the missing lemma is **upstream-eligible** (a fact about
-     `SimpleGraph`, `Set.ncard`, `Finset`, etc., not specific to
-     rigidity), mirror it under `CombinatorialRigidity/Mathlib/<exact
-     mathlib path>` in this commit. The Lean namespace stays the
-     upstream one. See DESIGN.md "Mirror directory" for the
-     mechanics; refactor the calling proof to use the new mirror
-     lemma.
-   - If it's **project-internal** (about our `edgesIn`, `IsSparse`,
-     etc.), put it in the file that owns the relevant definition.
-   - In all cases, add an entry to `notes/FRICTION.md` (open or
-     resolved/mirrored as appropriate). Even a one-line entry is
-     valuable.
-   - **If the entry carries a *general lesson*** (a rule that
-     applies beyond this proof — a `subst`-direction trap, an
-     `omega`-atomicity gotcha, a "search before mirroring"
-     reminder, etc.), lift it to `TACTICS.md` *in the same commit*
-     and add a `**Lifted to:** TACTICS § X` cross-reference on the
-     FRICTION entry. Don't bury the general rule in a `[resolved]`
-     body — past phases hit recurrent friction because lessons were
-     filed but never promoted (the post-Phase-6 audit lifted 12
-     such buried lessons). The cross-reference rule is what
-     prevents recurrence of the recurrence problem.
-
-3. **No new entries this commit is fine** — but only after you've
-   walked the *Concrete signals* checklist above. "I didn't hit any"
-   is fine; "I didn't think about it" is the failure mode this rule
-   exists to prevent.
 
 ### Before each commit — keep the hand-off contract honest
 
-The contract: **ROADMAP.md plus the active `notes/PhaseN.md` should be
-enough to identify the next concrete task** without reading any
+The contract: **ROADMAP.md plus the active `notes/PhaseN.md` should
+be enough to identify the next concrete task** without reading any
 source file or commit history. Every commit's tree should satisfy
 this, since every commit is a potential session boundary.
 
-In the same commit as the friction review:
+In the same commit as the friction review (Lean commits) or the
+content change (docs commits):
 
 - **Update `notes/PhaseN.md`** — the active phase's *Current state*,
   *Decisions made*, *Blockers*, and *Hand-off / next phase* sections,
@@ -270,11 +154,12 @@ In the same commit as the friction review:
   list with a one-line rationale, not as a footnote in Phase 2.
   Forward-looking TODOs stranded under closed phases rot.
 - **Lift on promotion.** If a `notes/PhaseN.md` decision has been
-  referenced in 2+ files or by 2+ phases, promote it to `TACTICS.md`
-  (general idiom) or `DESIGN.md` (cross-cutting rationale) and
-  replace the Phase N entry with a one-line pointer. Cross-cutting
-  lessons that stay in phase notes rot — this is the rule that
-  prevents Phase notes from accumulating into 500-line documents.
+  referenced in 2+ files or by 2+ phases, promote it to
+  `TACTICS-GOLF.md` (general idiom), `TACTICS-QUIRKS.md` (rescue
+  pattern), or `DESIGN.md` (cross-cutting rationale) and replace
+  the Phase N entry with a one-line pointer. Cross-cutting lessons
+  that stay in phase notes rot — this is the rule that prevents
+  Phase notes from accumulating into 500-line documents.
 - **If you answered a "Choices to revisit" entry** in `DESIGN.md`,
   update it.
 
@@ -288,99 +173,22 @@ discipline.
 Phase completion fires regardless of where in a session it happens.
 The commit that takes the last red node green for a phase (or that
 otherwise discharges the phase's target) carries extra work *on top
-of* the per-commit checklist above:
+of* the per-commit checklists above:
 
 - Flip the phase's row in the ROADMAP Status table to ✓.
 - **Compress its planning section in ROADMAP** to a one-paragraph
   summary plus a pointer to `notes/PhaseN.md`. Phase 1's section is
   the canonical model. The lemma list and decisions live in
   `notes/PhaseN.md`; ROADMAP carries the hand-off summary.
-- **Review project organization.** Re-skim ROADMAP.md, TACTICS.md,
-  and FRICTION.md (status sections). Have decisions in
-  `notes/PhaseN.md` accumulated past the lift-on-promotion threshold?
-  Has FRICTION.md grown unscannable? Is any DESIGN.md / ROADMAP.md
-  prose-count or section-name reference stale? Apply the small fix
-  in this commit if obvious; otherwise file a project-organization
-  friction entry to address next phase. This step is what keeps the
-  docs from drifting between phase boundaries.
-
-## Phase notes
-
-`notes/PhaseN.md` is a working log, not an essay. The hand-off
-contract holds only if the file stays scannable.
-
-- **One-screen-per-entry rule.** Each "Decisions made" entry runs at
-  most ~8 lines. If you find yourself writing more, the
-  implementation specifics are leaking in; lift them to FRICTION
-  (project-internal idioms or mirror lemmas) or TACTICS
-  (cross-cutting workflow rules) and replace the Phase entry with a
-  one-line pointer. The decision + short rationale stay; the *how*
-  lives elsewhere.
-- **Don't duplicate FRICTION explanations.** When a decision has both
-  a Phase entry and a FRICTION entry, the Phase entry is a pointer;
-  the explanation lives in FRICTION. One source of truth.
-- **Sub-organize "Decisions made" for non-trivial phases.** If a phase
-  has multiple cleanup passes or many small refactors, split the
-  section into:
-  - *Phase-local choices and proof techniques* — full entries (still
-    ≤ 8 lines each).
-  - *Promoted to TACTICS / FRICTION / DESIGN* — one-line pointers, no
-    explanation. The cross-reference carries the content.
-  - *Cleanup pass summaries* — list of changes by file with
-    cross-references, not explanations.
-
-  For small phases, a flat list under "Decisions made" is fine.
-- **Soft length budget.** Aim for `notes/PhaseN.md` ≤ 250 lines. If
-  you exceed it, run a compression pass — most likely "Decisions"
-  has accumulated cross-cutting lessons that should have been
-  promoted. Phase 3 grew to ~500 lines before the rules above
-  existed; applying them dropped it below 300. Phase 1 and Phase 2
-  (small phases) sit near 100 lines without sub-organization.
-
-`notes/Phase1.md` is a complete-phase example for a small phase
-(flat "Decisions made"); `notes/Phase3.md` is the canonical example
-for a phase with the sub-organization.
-
-### Template for `notes/PhaseN.md`
-
-When starting a phase, seed the file with sections like:
-
-```markdown
-# Phase N — <name> (work log)
-
-**Status:** in progress.
-
-## Current state
-<one-paragraph: what's done, what's mid-stream, what's the next concrete step>
-
-## Architectural choices made up front
-<optional; phase-start design decisions. Cross-cutting ones go in DESIGN.md.>
-
-## Lemma checklist
-- [x] `lemma_a` — done
-- [ ] `lemma_b` — in progress; blocked on …
-- [ ] `lemma_c`
-
-## Decisions made during this phase
-
-<For small phases, a flat list of bullets is fine. For phases with
-cleanup passes or many small refactors, sub-organize as below.>
-
-### Phase-local choices and proof techniques
-- <decision + rationale, ≤ 8 lines per entry>
-
-### Promoted to TACTICS / FRICTION / DESIGN
-- *<lesson>* → TACTICS § N / FRICTION [tag] *<entry title>* / DESIGN.md *<section>*
-
-### Cleanup pass summaries
-<optional; per-file effect of any cleanup pass, with cross-references>
-
-## Blockers / open questions
-- …
-
-## Hand-off / next phase
-<written when the phase finishes; what unlocks the next phase>
-```
+- **Review project organization.** Re-skim ROADMAP.md,
+  `TACTICS-GOLF.md`, `TACTICS-QUIRKS.md`, and `notes/FRICTION.md`
+  (status sections). Have decisions in `notes/PhaseN.md` accumulated
+  past the lift-on-promotion threshold? Has FRICTION.md grown
+  unscannable? Is any DESIGN.md / ROADMAP.md prose-count or
+  section-name reference stale? Apply the small fix in this commit
+  if obvious; otherwise file a project-organization friction entry
+  to address next phase. This step is what keeps the docs from
+  drifting between phase boundaries.
 
 ## Referencing prior work
 

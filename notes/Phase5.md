@@ -272,7 +272,7 @@ decomposition asserting `G'.IsLaman` (Tay–Whiteley 1985; Jordán 2016
   (counter-example: disjoint `S, T` with infinitely many cross-edges).
   Picked `[Finite V]` over an explicit Finite arg so
   `Set.ncard_union_add_ncard_inter` and `Set.ncard_le_ncard` autoparams
-  fire (TACTICS § 2). `edgesIn_inter` lifted out as a named lemma since
+  fire (TACTICS-GOLF § 2). `edgesIn_inter` lifted out as a named lemma since
   the `∩` equality is independently useful.
 
 - **typeII reverse blocker: edge count via the Phase 3 iso, not by
@@ -409,7 +409,7 @@ decomposition asserting `G'.IsLaman` (Tay–Whiteley 1985; Jordán 2016
   `hw_outside : w ∉ span {p₀ b - p₀ a}`. The mixed-coefficient
   condition `0 * γ⁻¹ ≠ 1 * t` reduces to `t ≠ 0`.
 
-### Promoted to TACTICS / FRICTION / DESIGN
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *`Exists.imp` doesn't transport across changing-binder-type
   existentials* → FRICTION [resolved].

@@ -27,7 +27,8 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 ├── CLAUDE.md            agent operating manual — must-read first every session
 ├── ROADMAP.md           this file — directory layout, status, plan, conventions
 ├── DESIGN.md            rationale for cross-cutting design choices
-├── TACTICS.md           tactical reference: grind, ncard, mirror rule
+├── TACTICS-GOLF.md      golf reference: grind, ncard, mirror rule, fun_prop
+├── TACTICS-QUIRKS.md    rescue reference: subst, simp residuals, dot notation
 ├── notes/               per-phase work logs + cross-cutting logs
 │   ├── PhaseN.md        lemma checklist + decisions + hand-off for Phase N
 │   ├── FRICTION.md      long-running API/tactic friction log
@@ -220,7 +221,7 @@ served as the authoritative dep-graph and lemma index throughout. See
   `IsLaman`, and `edgesIn` are non-reducible. `grind` will not unfold
   them on its own. To break an `IsTight`/`IsLaman` goal into parts use
   `refine ⟨?_, ?_⟩`; for an `edgesIn` membership use the corresponding
-  `mem_*` simp lemma. See `TACTICS.md` § 4 for the full discussion.
+  `mem_*` simp lemma. See `TACTICS-GOLF.md` § 4 for the full discussion.
 - **Missing mathlib lemmas.** If you need a lemma that genuinely
   belongs upstream, put it under `Mathlib/<exact mathlib path>` so
   promotion is later a copy-paste. The directory is created lazily;
@@ -228,11 +229,11 @@ served as the authoritative dep-graph and lemma index throughout. See
 - **Tactic notes.** Practical guidance on `grind` (preferred closing
   tactic in this directory), the `Set.ncard` autoparam pattern, the
   mirror-first rule, and other cross-cutting idioms all live in
-  `TACTICS.md`. When in doubt, read it — the section TL;DRs are
+  `TACTICS-GOLF.md`. When in doubt, read it — the section TL;DRs are
   short and save iteration time.
 - **No prose counts in shared docs.** Don't write "Phase X surfaced
   N upstream candidates" or similar in `ROADMAP.md`, `DESIGN.md`, or
-  `TACTICS.md` — counts drift the moment a new phase mirrors more
+  `TACTICS-GOLF.md` — counts drift the moment a new phase mirrors more
   lemmas. Link to `notes/FRICTION.md` "Mirrored" (or the mirror
   directory listing) as the source of truth instead.
 

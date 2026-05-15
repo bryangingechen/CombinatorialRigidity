@@ -7,9 +7,11 @@ either neutral or actively worse under measurement noise. The point of this
 file is to save the next agent from re-litigating the same dead ends.
 
 > **Scope.** This is project-specific. Cross-cutting tactical idioms live
-> in `TACTICS.md`; one-off API gaps live in `notes/FRICTION.md`. If a
+> in `TACTICS-GOLF.md` (idioms) or `TACTICS-QUIRKS.md` (rescue);
+> one-off API gaps live in `notes/FRICTION.md`. If a
 > performance lesson generalizes ("always prefer X over Y in this
-> codebase"), promote it to TACTICS and leave a one-line pointer here.
+> codebase"), promote it to TACTICS-GOLF or TACTICS-QUIRKS and leave
+> a one-line pointer here.
 
 ## TL;DR
 
@@ -204,7 +206,7 @@ the trend was either flat or slightly worse:
 | `change ⟪q - p a, …⟫ at hxa hxb hya hyb` (×4) → `simp only [hp_ext_def, Option.elim_none, Option.elim_some, …]` (×1) | Same two theorems' kernel-injectivity blocks | `lake env lean` median ~24 s with `simp` vs ~16 s with four `change`s. `change` does pure defeq; `simp` has to chase the lambda explicitly. Reverted. |
 | Extract `kerRestrict` helper for the `LinearMap.funLeft … codRestrict …` builder duplicated in typeI/typeII | New private `def` near the top of `HennebergRigidity.lean`; two `let restrict := kerRestrict …` call sites | 4-run mean ~46 s vs ~30 s baseline. Suspected regression from the abstraction layer; in any case the duplication is only one identical 4-line block per move. Reverted. |
 | `nlinarith [Nat.le_mul_self d]` → `have h_sq := Nat.le_mul_self d; have : (d+1)*(d+2) = d*d + 3*d + 2 := by ring; omega` | `top_fin_two_isGenericallyRigidInj` in `Framework.lean` | Saved 120 ms in the per-decl profile; file timing didn't move out of the noise band. Reverted; `nlinarith` is the more idiomatic one-liner for "linear-after-hinting-a-square" goals. |
-| Replace `fun_prop` with an explicit `continuous_pi fun _ => continuous_pi fun e => continuous_rigidityMap_apply …` chain | `IsInfinitesimallyRigid.eventually` in `Framework.lean` | Within noise band (median ~24 s vs ~27 s baseline). Reverted — `fun_prop` is the project convention (cf. TACTICS § 6). |
+| Replace `fun_prop` with an explicit `continuous_pi fun _ => continuous_pi fun e => continuous_rigidityMap_apply …` chain | `IsInfinitesimallyRigid.eventually` in `Framework.lean` | Within noise band (median ~24 s vs ~27 s baseline). Reverted — `fun_prop` is the project convention (cf. TACTICS-GOLF § 6). |
 
 ## Experiments that *did* pay (or are at least defensible)
 
@@ -245,6 +247,6 @@ the trend was either flat or slightly worse:
   back to this file.
 - `notes/Phase5.md` *Cleanup pass summaries* — the per-pass log of what
   shipped and what didn't.
-- `TACTICS.md` § 6 *`fun_prop` for continuity / differentiability* — the
+- `TACTICS-GOLF.md` § 6 *`fun_prop` for continuity / differentiability* — the
   project's convention for continuity goals (don't unroll into explicit
   `Continuous.*` chains for perf reasons).

@@ -148,7 +148,7 @@ there.
 
 (Phase-local trade-offs. Cross-cutting lessons surfaced during the
 phase are listed under *Promoted to cross-cutting docs* below; their
-explanations live in TACTICS, FRICTION, or DESIGN.)
+explanations live in TACTICS-GOLF / TACTICS-QUIRKS, FRICTION, or DESIGN.)
 
 ### Phase-local choices and proof techniques
 
@@ -196,7 +196,7 @@ explanations live in TACTICS, FRICTION, or DESIGN.)
   `typeII_iso_of_three_neighbors` keeps the bridging-edge logic in
   its `(some, some)` argument. Net 14 lines saved.
 
-### Promoted to TACTICS / FRICTION / DESIGN
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 The lessons below surfaced during the phase but proved cross-cutting;
 their explanations now live elsewhere. The line is the locus + a
@@ -229,11 +229,11 @@ pointer.
 - *Repeated existential-witness packaging in
   `exists_typeI_or_typeII_iso`* → FRICTION [resolved].
 - *Don't hand-pass `Set.Finite` witnesses; use the autoparam* →
-  TACTICS § 2.
+  TACTICS-GOLF § 2.
 - *`grind only` closes tightness branches; pure-arithmetic `omega`s
-  stay* → TACTICS § 1.
+  stay* → TACTICS-GOLF § 1.
 - *Lifting Subtype-Sym2 equalities via
-  `congrArg (Sym2.map Subtype.val)`* → TACTICS § 5 (and FRICTION
+  `congrArg (Sym2.map Subtype.val)`* → TACTICS-GOLF § 5 (and FRICTION
   [resolved] *Lifting subtype-Sym2 equality to underlying-value
   equality*).
 
@@ -252,7 +252,7 @@ per-file effect.
   and `typeII_branch_of_nonadj` (the existential-witness construction
   in `IsLaman.exists_typeI_or_typeII_iso`). Plus tightening of the
   `(some, some)` arm of `typeII_iso_of_three_neighbors` via
-  `congrArg (Sym2.map Subtype.val)` (TACTICS § 5).
+  `congrArg (Sym2.map Subtype.val)` (TACTICS-GOLF § 5).
 - **Pass 2 (`grind` workflow).** ~15 lines saved across four files
   by replacing closing `omega` / `simp` / `tauto` with `grind only`
   and the right hints. Worked targets: `IsLaman.two_le_degree`,
@@ -263,7 +263,7 @@ per-file effect.
   `typeII_iso_of_three_neighbors`. Things `grind` did *not* close
   (and where the proof reverted): full `Iso.image_edgesIn`
   (existentials need a named witness; grind picks the wrong one),
-  Sym2-pattern disjointness (TACTICS § 1).
+  Sym2-pattern disjointness (TACTICS-GOLF § 1).
 
 ## Blockers / open questions
 

@@ -132,7 +132,7 @@ placement; assembly stacks on sparsity plus the basis-pick.
   `exists_affinelySpanning_rigid_placement`, then applies sparsity
   at that `p`. The whole assembly is ~25 lines.
 
-### Promoted to TACTICS / FRICTION / DESIGN
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *`apnelson1/Matroid` investigated, not adopted* → DESIGN.md
   *Notion- and matroid-agnostic core* (rationale recorded there).
@@ -144,7 +144,7 @@ placement; assembly stacks on sparsity plus the basis-pick.
 
 ### Cleanup pass summaries
 
-- *Commit 15 (`TrivialMotions.lean`):* TACTICS § 1 grind-default golf.
+- *Commit 15 (`TrivialMotions.lean`):* TACTICS-GOLF § 1 grind-default golf.
   37 lines deleted, no logic changes. `elemSkewMap_ofLp_inr_apply`
   body collapses to a one-liner `rcases ... <;> split_ifs <;> grind`;
   `inner_elemSkewMap_self`'s `i ≠ j` branch closes with `grind`;
@@ -158,7 +158,7 @@ placement; assembly stacks on sparsity plus the basis-pick.
   `IsTightOn.insert_vertex_with_edges` final block (4→3),
   `IsLaman.eq_top_of_card_eq_two`'s `hG_card` have-body (4→2). Most
   bare `omega`/`simp` closers in Phases 1–5 are correctly `omega`
-  per TACTICS § 1 (pure linear arithmetic after staged `have`s);
+  per TACTICS-GOLF § 1 (pure linear arithmetic after staged `have`s);
   the sweep yield concentrated where the def `IsTightOn` had to be
   unfolded to expose arithmetic. See *Future polish — resolved
   (continued)* below for the calibration note.
@@ -188,7 +188,7 @@ commit 11 shipped dim-2; commit 17 lifted to d-general via
 matrix-determinant route. Four mirrors landed: `Pi.basisFun_dualBasis`
 and `LinearMap.range_dualMap_eq_span_image_dualBasis` (13);
 `Matrix.det_powerDifferences` (16). Three cleanup/golf passes:
-`elemSkewMap_ofLp_inr_apply` cross-term lemma (14); TACTICS § 1
+`elemSkewMap_ofLp_inr_apply` cross-term lemma (14); TACTICS-GOLF § 1
 grind-default golf on `TrivialMotions.lean` (15); project-wide
 grind-default sweep on `Sparsity.lean` and `Laman.lean` (18).
 **Closing commit (19): sparsity + assembly.**
@@ -243,7 +243,7 @@ grind-default sweep landed in commit 18 (`Sparsity.lean` and
 commit-15's 37 lines on `TrivialMotions.lean` because the Phase 1–5
 files were already written with cleaner staging discipline: most
 bare `omega` closers in those files sit at the end of pure
-arithmetic chains where TACTICS § 1 explicitly prefers `omega` over
+arithmetic chains where TACTICS-GOLF § 1 explicitly prefers `omega` over
 `grind` (faster and more readable). The wins concentrated in three
 spots where a multi-step `unfold IsTightOn at h; ...; omega` body
 collapsed to `grind only [IsTightOn]` (`IsSparse.isTightOn_of_le`,

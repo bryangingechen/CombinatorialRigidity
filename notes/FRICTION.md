@@ -14,7 +14,9 @@ can see how it was handled before.
 > **Scope.** This file holds *one-off* frictions: a specific lemma I
 > needed and mirrored, a specific bug I worked around. *Cross-cutting
 > lessons* — "always do X", "if you see pattern Y, prefer Z" — belong
-> in `TACTICS.md` instead, which is the project's tactical reference.
+> in `TACTICS-GOLF.md` (idioms / golf) or `TACTICS-QUIRKS.md`
+> (rescue / build-failure recovery) instead — together they are the
+> project's tactical reference.
 > Don't bury a general rule in a `[resolved]` entry here; it won't be
 > found again.
 
@@ -23,7 +25,8 @@ can see how it was handled before.
 - After landing a phase, review what proofs felt awkward. Did you
   reach for the same glue lemma three times? Did `grind` need an
   unusually long hint list? File an entry — and if the lesson is
-  cross-cutting, lift it into `TACTICS.md` instead.
+  cross-cutting, lift it into `TACTICS-GOLF.md` (idioms) or
+  `TACTICS-QUIRKS.md` (rescue) instead.
 - When starting a new session, optionally browse [Open](#open) for a
   small upstream-able item to land alongside the main work. Skim
   [Anti-patterns / known dead ends](#anti-patterns--known-dead-ends)
@@ -61,8 +64,8 @@ can see how it was handled before.
   resolved project-internal entries (helper extraction, refactor,
   simp-set tweak). Search-target only, not read-on-load. Moved out
   of this file post-Phase-6 audit once each entry's resolution had a
-  real index elsewhere (mirror lemma, project helper, or TACTICS §
-  cross-reference).
+  real index elsewhere (mirror lemma, project helper, or
+  TACTICS-GOLF / TACTICS-QUIRKS § cross-reference).
 
 **Filing rule for new entries.** Pick by what the *next agent* would
 do with it: open if you'd act on it; anti-pattern if you wouldn't but
@@ -93,8 +96,8 @@ housekeeping pass once their resolution is fully indexed.
   expression, look first for a bare `Polynomial.X` (or `1`, `0`)
   whose containing ring is set by the surrounding context but not
   by the local syntax.
-- **Status:** open (project-internal note). Promote to TACTICS.md
-  *Tactics and quirks* if the same shape bites in a second proof.
+- **Status:** open (project-internal note). Promote to
+  `TACTICS-QUIRKS.md` if the same shape bites in a second proof.
 
 ### [open] typeII reverse Henneberg move: Laman preservation requires a non-trivial choice
 - **Where it bit:** Phase 3 close, while planning
@@ -140,8 +143,8 @@ housekeeping pass once their resolution is fully indexed.
   finds — mathlib's matrix-determinant API is denser than the dim-2
   case-by-case API. When the d-general statement is available, use
   it; the dim-2 specialisation collapses by `rfl` or one-line glue.
-- **Lifted to:** TACTICS § 3 *Search mathlib before mirroring* (one
-  of three case studies cited there).
+- **Lifted to:** TACTICS-GOLF § 3 *Search mathlib before mirroring*
+  (one of three case studies cited there).
 
 ### [resolved] No packaged `ℝ`-linear injection `Module.Dual ℝ M →ₗ[ℝ] (M → ℝ)`
 - **Where it bit:** `edgeSetRowIndependent_iff_linearIndepOn_rigidityRow`
@@ -164,7 +167,7 @@ housekeeping pass once their resolution is fully indexed.
   rolling a project-local helper. The exact type
   `(_ →ₗ[_] _) →ₗ[_] (_ → _)` returned `LinearMap.ltoFun` on the
   first try.
-- **Lifted to:** TACTICS § 3 *Search mathlib before mirroring*.
+- **Lifted to:** TACTICS-GOLF § 3 *Search mathlib before mirroring*.
 
 ### [resolved] `Set.Finite.subset (finite_setOf ...)` leaves metavariables when leading-coeff is the only resolved unknown
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
@@ -215,7 +218,7 @@ housekeeping pass once their resolution is fully indexed.
   for the canonical primitives. The "mirror it ourselves" instinct
   bloats the project surface; mathlib's API for `Fin`-indexed families
   is denser than it looks.
-- **Lifted to:** TACTICS § 3 *Search mathlib before mirroring*.
+- **Lifted to:** TACTICS-GOLF § 3 *Search mathlib before mirroring*.
 
 ### [open] `AffineSubspace.nonempty_of_affineSpan_eq_top` takes `(k V P)` explicit
 
@@ -252,9 +255,9 @@ housekeeping pass once their resolution is fully indexed.
   rewrite-friendly form.
 - **Proposed fix:** none upstream; this is a tactic-quirk note. If
   it bites again, document the `match i with | ⟨0, _⟩ => change _; rw …`
-  idiom in `TACTICS.md`.
+  idiom in `TACTICS-QUIRKS.md`.
 - **Status:** open (project-internal note). Worth promoting to
-  `TACTICS.md` if it surfaces a third time.
+  `TACTICS-QUIRKS.md` if it surfaces a third time.
 
 ### [open] Defining the 2×2 90° rotation via `Matrix.toEuclideanLin` blocks coordinate simp
 
@@ -274,8 +277,9 @@ housekeeping pass once their resolution is fully indexed.
   `map_add'` and `map_smul'`); then `rotJTwo_apply_zero/one` become
   `rfl`-simp lemmas and downstream `simp` closes coordinates without
   matrix-unfolding hints. We switched to this and it landed cleanly.
-- **Status:** open (idiom note). Promote to `TACTICS.md` § "concrete
-  2×2 maps" if a future phase introduces another explicit 2D map.
+- **Status:** open (idiom note). Promote to `TACTICS-GOLF.md` as a
+  "concrete 2×2 maps" subsection if a future phase introduces
+  another explicit 2D map.
 
 ### [open] `IsSparse` is not `Decidable`, blocking small-example proofs by `decide`
 - **Where it bit:** Phase 2 attempt at `K₄ \ e` is Laman (deferred).
@@ -321,8 +325,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   is a one-liner alternative but requires `Mathlib.Tactic.LinearCombination`
   which Sparsity does not currently import.
 - **Status:** wontfix (intrinsic to omega).
-- **Lifted to:** TACTICS § 1 *Tricks we've found useful* —
-  *`omega` doesn't carry commutativity or distributivity on atoms*.
+- **Lifted to:** TACTICS-QUIRKS § 2 *`omega` doesn't carry
+  commutativity or distributivity on atoms*.
 
 ### [wontfix] `omega` treats `set`-aliased terms as opaque atoms
 - **Where it bit:** `IsLaman.typeII_reverse_blocker` in `Henneberg.lean`
@@ -346,8 +350,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** wontfix (intrinsic to omega/grind's atomic-variable
   model; the `set` tactic's substitution scope is bounded by current
   goals and hypotheses, not future ones).
-- **Lifted to:** TACTICS § 1 *Tricks we've found useful* —
-  *`omega`/`grind` treat `set`-aliased terms as opaque atoms*.
+- **Lifted to:** TACTICS-QUIRKS § 1 *`omega`/`grind` treat
+  `set`-aliased terms as opaque atoms*.
 
 ### [wontfix] `nlinarith` over ℕ struggles with quadratic bounds
 - **Where it bit:** `top_fin_two_isGenericallyRigid` in `Framework.lean`,
@@ -366,8 +370,8 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `nlinarith` hint lists.
 - **Status:** wontfix (intrinsic to `nlinarith`-on-ℕ; workaround is a
   one-liner once you know the trick).
-- **Lifted to:** TACTICS § 1 *Tricks we've found useful* —
-  *ℕ-quadratic bounds: `Nat.le_mul_self`*.
+- **Lifted to:** TACTICS-QUIRKS § 3 *`nlinarith` over ℕ on
+  quadratic bounds: `Nat.le_mul_self`*.
 
 ### [wontfix] `revert` ordering before `e'.ind` is finicky
 - **Where it bit:** `typeI_edgeSet` proof, backward direction.
@@ -762,9 +766,11 @@ The body of this section was moved to
 housekeeping pass. Each archived entry's resolution is indexed
 elsewhere — as a named mirror lemma under
 `CombinatorialRigidity/Mathlib/`, a named project-internal helper,
-or a `**Lifted to:** TACTICS § X` cross-reference — so the archive
+or a `**Lifted to:** TACTICS-GOLF § X` / `TACTICS-QUIRKS § X`
+cross-reference — so the archive
 is a search target, not a read-on-load file.
 
 Grep the archive when investigating how a specific past friction
 was handled; reach for the indexed resolution (via
-`lean_local_search` or TACTICS) for normal mid-proof discovery.
+`lean_local_search` or TACTICS-GOLF / TACTICS-QUIRKS) for normal
+mid-proof discovery.

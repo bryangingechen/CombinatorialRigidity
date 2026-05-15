@@ -10,8 +10,9 @@ once each entry's resolution had a real index elsewhere:
   via `lean_local_search` / `lean_loogle`), or
 - A named project-internal helper in the file that owns the relevant
   definition (also discoverable via `lean_local_search`), or
-- A `**Lifted to:** TACTICS § X` cross-reference for any general
-  Lean-idiom lesson.
+- A `**Lifted to:** TACTICS-GOLF § X` (idiom / golf) or
+  `**Lifted to:** TACTICS-QUIRKS § X` (rescue / build-failure
+  recovery) cross-reference for any general Lean-idiom lesson.
 
 The entries below are **search targets, not read-on-load.** Grep
 when you want to know how a specific past friction was handled; the
@@ -43,8 +44,9 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
 - **Status:** resolved (no missing lemma — `LinearMap.ext_on` was on the
   wrong shelf; `LinearMap.eqOn_span` is the pointwise version, harder to
   discover).
-- **Lifted to:** TACTICS § 3 *Search mathlib before mirroring* (cited
-  as a case where `lean_leanfinder` would have found the packaged form).
+- **Lifted to:** TACTICS-GOLF § 3 *Search mathlib before mirroring*
+  (cited as a case where `lean_leanfinder` would have found the
+  packaged form).
 
 ### [resolved] Dot notation inside a `Foo.bar`-named theorem resolves to itself, not the parent's `Foo.bar`
 - **Where it bit:** `EdgeSetRowIndependent.mono` in `RigidityMatroid.lean`
@@ -65,8 +67,8 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
 - **Status:** resolved (Lean idiom — when wrapping an upstream lemma
   under your own type's namespace, dot-notation inside the wrapper
   recurses; call the upstream name explicitly).
-- **Lifted to:** TACTICS § 8 *Dot notation only consults the type's
-  head namespace* (the "same-name wrapper recurses" trap).
+- **Lifted to:** TACTICS-QUIRKS § 8 *Dot notation only consults the
+  type's head namespace* (the "same-name wrapper recurses" trap).
 
 ### [resolved] `Exists.imp` doesn't transport across changing-binder-type existentials
 - **Where it bit:** `IsGenericallyRigid.iso` in `Framework.lean` (Phase 5 milestone 0).
@@ -260,7 +262,7 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   patterns directly. The `simpa` collapses `Sym2.map Subtype.val
   s(⟨u, _⟩, ⟨w, _⟩)` to `s(u, w)` via `Sym2.map_mk` + `Subtype.coe_mk`.
 - **Status:** resolved (project-internal idiom; no upstream lemma is
-  missing). Recorded in TACTICS.md § 5.
+  missing). Recorded in TACTICS-GOLF.md § 5.
 
 ### [resolved] Recurring duplication across the two `_isLaman` proofs
 - **Where it bit:** `typeI_isLaman` and `typeII_isLaman` sparsity case
@@ -385,8 +387,8 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   — `typeII_reverse_blocker` is conceptually a Henneberg-flavoured helper.
 - **Status:** resolved (Lean idiom — inside a sub-namespace, use explicit names
   for sub-namespace helpers; dot notation is only for the type's own namespace).
-- **Lifted to:** TACTICS § 8 *Dot notation only consults the type's
-  head namespace* (the "sub-namespace lookup fails" trap).
+- **Lifted to:** TACTICS-QUIRKS § 8 *Dot notation only consults the
+  type's head namespace* (the "sub-namespace lookup fails" trap).
 
 ### [resolved] `mem_edgeSet.mp` / `.mpr` dot notation rejected by Lean
 - **Where it bit:** `typeI_isInfinitesimallyRigid_extend` in
@@ -459,8 +461,8 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
 - **Status:** resolved (tactic semantics, not a missing lemma). General lesson:
   when `simp_all` produces a confusing residual goal involving a hypothesis you
   expected to eliminate, suspect cross-rewriting from an equality hypothesis.
-- **Lifted to:** TACTICS § 8 *`simp_all` can cross-contaminate with
-  destructive equality hypotheses*.
+- **Lifted to:** TACTICS-QUIRKS § 10 *`simp_all` can
+  cross-contaminate with destructive equality hypotheses*.
 
 ### [resolved] `congr_fun` does not apply to `EuclideanSpace`
 
@@ -479,7 +481,7 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
 - **Status:** resolved (project-internal lesson). Adds to the list of "things
   that act like Pi types but aren't literally Pi types" — alongside `Sym2 V`
   (where `Sym2.lift` is the projection, not `congr_fun`).
-- **Lifted to:** TACTICS § 8 *`congr_fun` does not apply to
+- **Lifted to:** TACTICS-QUIRKS § 9 *`congr_fun` does not apply to
   `EuclideanSpace`*.
 
 ### [resolved] `rcases ⟨rfl, rfl⟩` on `Sym2.eq_iff` eliminates the section-level variable, not the case-split variable
@@ -518,8 +520,9 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   with deliberate side selection) over `rfl` patterns. Cf. line 521 of
   `Henneberg.lean`, where `rcases ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> grind` works
   *because* `grind` closes both branches regardless of which variables remain.
-- **Lifted to:** TACTICS § 8 *`subst` between two free variables picks
-  the wrong one* (the `Sym2.eq_iff` case is one of two cited traps).
+- **Lifted to:** TACTICS-QUIRKS § 4 *`subst` between two free
+  variables picks the wrong one* (the `Sym2.eq_iff` case is one of
+  two cited traps).
 
 ### [resolved] `simp only [rigidityMap_apply, Pi.zero_apply]` leaves `he` in the elaborated goal, blocking later `rw`
 
@@ -555,8 +558,8 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   suspect a `simp`-produced residual subterm and insert `change` to clean.
   Mirrors the `Sym2`-symmetry residual issue at line 521 (where `grind`
   papered over it).
-- **Lifted to:** TACTICS § 8 *`simp only` leaves residual subterms
-  that block `rw` motives*.
+- **Lifted to:** TACTICS-QUIRKS § 5 *`simp only` leaves residual
+  subterms that block `rw` motives*.
 
 ### [resolved] `interval_cases` on non-variable expression doesn't substitute
 
@@ -583,8 +586,8 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   General lesson: `interval_cases` is for free *variables*; for
   function applications, prove the equation explicitly via `omega` or
   similar and name it.
-- **Lifted to:** TACTICS § 8 *`interval_cases` is for free variables,
-  not function applications*.
+- **Lifted to:** TACTICS-QUIRKS § 7 *`interval_cases` is for free
+  variables, not function applications*.
 
 ### [resolved] `subst h` on `h : v = c` between two local vars can substitute the variable you want to keep
 
@@ -608,8 +611,9 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   ```
 - **Status:** resolved (use `rw` over `subst` when both sides of the
   equation are locals you want to keep referencing).
-- **Lifted to:** TACTICS § 8 *`subst` between two free variables picks
-  the wrong one* (the `hvc : v = c` case is one of two cited traps).
+- **Lifted to:** TACTICS-QUIRKS § 4 *`subst` between two free
+  variables picks the wrong one* (the `hvc : v = c` case is one of
+  two cited traps).
 
 ### [resolved] `set p_t := fun t => …` + `simp [p_t]` doesn't unfold the let-binding cleanly
 
@@ -637,8 +641,8 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
 - **Status:** resolved (prefer explicit `have`-lemmas over `set`-name
   unfolding when the body is a lambda and downstream goals need beta
   reduction).
-- **Lifted to:** TACTICS § 8 *`set name := fun t => …` + `simp [name]`
-  doesn't unfold lambdas*.
+- **Lifted to:** TACTICS-QUIRKS § 6 *`set name := fun t => …` +
+  `simp [name]` doesn't unfold lambdas*.
 
 ### [resolved] `linearIndependent_fin2` leaves `![v₀, v₁] 0` / `![v₀, v₁] 1` unsimplified at the indexing layer
 
@@ -664,8 +668,8 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
 - **Status:** resolved (always pair `linearIndependent_fin2` with the
   matrix-indexing simp set if the destructured form is going to be
   used in `rw`).
-- **Lifted to:** TACTICS § 8 *`linearIndependent_fin2` leaves
-  `![v₀, v₁] 0 / 1` unsimplified*.
+- **Lifted to:** TACTICS-QUIRKS § 11 *`linearIndependent_fin2`
+  leaves `![v₀, v₁] 0 / 1` unsimplified*.
 
 ### [resolved] `push_neg` deprecated in favor of `push Not`
 

@@ -27,7 +27,7 @@ project; commit history is preserved with paths rewritten.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
-cross-cutting design rationale and `TACTICS.md` carries tactical guidance.
+cross-cutting design rationale; `TACTICS-GOLF.md` carries idiom / golfing guidance and `TACTICS-QUIRKS.md` covers build-failure rescue.
 Per-phase work logs live under `notes/`.
 
 `CLAUDE.md` is the operating manual for AI coding agents (Claude Code et al.)

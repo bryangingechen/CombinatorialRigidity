@@ -2,8 +2,17 @@
 
 This file is the **agent-facing operating manual** for working on the
 blueprint (the LaTeX/plastex doc under `blueprint/src/`). It is the
-blueprint analogue of the top-level `CLAUDE.md`; the top-level one
-covers Lean development.
+blueprint analogue of the top-level `CLAUDE.md`; the project uses a
+four-way split:
+
+- `../CLAUDE.md` (root, always loaded) — project-wide process: reading
+  order, hand-off contract, citations, project history.
+- `../CombinatorialRigidity/CLAUDE.md` — Lean source ops: build/lint
+  gates, friction review, MCP tool guidance, quirks index.
+- `../notes/CLAUDE.md` — phase-notes and friction-log discipline.
+- This file — blueprint TeX ops: authoring conventions, static checks
+  (including `checkdecls`), local builds (`inv bp` / `inv web`),
+  dep-graph spot-check, forward-mode mechanics.
 
 Read this file when a session involves writing or revising blueprint
 TeX — typically when a new phase lands and needs a chapter, or when an
