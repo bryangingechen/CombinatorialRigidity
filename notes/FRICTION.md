@@ -373,30 +373,16 @@ housekeeping pass once their resolution is fully indexed.
   general rule is *reach for `Submodule.isOrtho_span` before
   `span_induction`*.
 
-### [open] No upstream "generic point off a line in `ℝ²`" helper
+### ~~[open] No upstream "generic point off a line in `ℝ²`" helper~~
 
 - **Where it bit:** `exists_off_line_off_finite_dim_two`
-  (`HennebergRigidity.lean:195`, used by both Phase 5
-  `typeI_isGenericallyRigidInj_two` and Phase 7
-  `typeI_edgeSetRowIndependent_lift`); a sibling
-  `exists_typeII_q_on_line_dim_two` (line 391) plays the dual role
-  for Type II. Both helpers do a `pa + t • v` parametric construction
-  with a `LinearIndependent.pair_add_smul_add_smul_iff` row-op step
-  and a `Set.Finite`-bad-set selection.
-- **Friction:** the same construction shape ("pick a generic point
-  in `EuclideanSpace ℝ (Fin 2)` away from a finite set, with a
-  linear-independence side condition") recurs across all the
-  Henneberg-move generic-placement wrappers. The current dim-2
-  forms are project-internal.
-- **Proposed fix:** mirror an upstream-eligible "generic point off
-  a line / off a finite set" pair of lemmas under
-  `CombinatorialRigidity/Mathlib/Analysis/InnerProductSpace/EuclideanDist.lean`
-  (or the appropriate path). Likely two lemmas:
-  (a) `exists_lineIndep_pair_off_finite` (off-line + off-finite),
-  (b) `exists_smul_on_line_off_finite` (on-line + off-finite, the
-  Type II shape). Both are generic linear-algebra over `ℝ²`.
-- **Status:** open. **Priority: medium**. Phase 7 Type II row-LI
-  wrapper will hit the same pattern, making this the natural moment.
+  (`HennebergRigidity.lean:195`).
+- **Resolution:** mirrored as `AffineSubspace.biUnion_ne_univ_of_top_notMem`.
+  See [Mirrored](#mirrored) for the full entry. The sibling
+  `exists_typeII_q_on_line_dim_two` (Type II shape) is **not** covered
+  by this approach — placing `q` *on* the line is a 1-parameter
+  excluded-finite-α argument, naturally `Set.Finite.exists_notMem` in
+  `ℝ`, not an affine-cover application — and stays project-internal.
 
 ### [open] No `LinearIndepOn` "row-restriction transports LI through dual" helper
 
@@ -683,6 +669,70 @@ limitations. Worth a once-over so future agents don't re-litigate.
   alongside `Set.InjOn.exists_mem_nhdsSet` as a dual ("evaluate a parametric
   family at finitely many points" vs. "InjOn on a compact set") perspective on
   openness-of-injectivity.
+
+### [mirrored] `AffineSubspace.biUnion_ne_univ_of_top_notMem` + `affineSpan_ne_top_of_ncard_le_finrank` (affine analogue of `Subspace.biUnion_ne_univ_of_top_notMem` plus a cardinality side-condition)
+- **Where it bit:** `exists_off_line_off_finite_dim_two`
+  (`HennebergRigidity.lean`, used by Phase 5 `typeI_isGenericallyRigidInj_two`
+  and Phase 7 `typeI_edgeSetRowIndependent_lift`). The prose claim "pick a
+  point off the line through `pa, pb` and off a finite avoid-set `S`" is one
+  geometric step (over an infinite field, a proper line ∪ finitely many
+  points doesn't cover the plane). The Lean wrapper expanded to a 35-line
+  `pa + t • v` parametric construction with a
+  `LinearIndependent.pair_add_smul_add_smul_iff` row-op and a
+  `Set.Finite`-bad-set selection.
+- **Friction:** mathlib has the linear-subspace cover theorem
+  `Subspace.biUnion_ne_univ_of_top_notMem` (in `Mathlib/GroupTheory/CosetCover`)
+  — over an infinite division ring, a vector space is not a finite union
+  of proper *linear* subspaces — but no affine analogue. The affine version
+  uniformly subsumes "proper subspace + finitely many points" as a single
+  cover (points are 0-dim affine subspaces), which matches the prose
+  one-step argument.
+- **Resolution:** mirrored two lemmas.
+  - `AffineSubspace.biUnion_ne_univ_of_top_notMem`: for `[DivisionRing k]
+    [Infinite k] [AddCommGroup V] [Module k V]` and `{s : Finset
+    (AffineSubspace k V)}` with `⊤ ∉ s`, `⋃ p ∈ s, (p : Set V) ≠ Set.univ`.
+    Proof drops empty affine subspaces, then writes each non-empty `p` as a
+    coset `b p +ᵥ p.direction` (basepoint chosen via `choose`), lifting the
+    affine cover to an additive-coset cover;
+    `AddSubgroup.exists_finiteIndex_of_leftCoset_cover` then produces a
+    `p.direction` with finite index, contradicting infinite `V /
+    p.direction` (`Module.Free.infinite k` over an infinite division ring
+    with `Nontrivial`).
+  - `AffineSubspace.affineSpan_ne_top_of_ncard_le_finrank`: for
+    `[FiniteDimensional k V] [Nontrivial V]` and `s : Set V` finite with
+    `s.ncard ≤ finrank k V`, `affineSpan k s ≠ ⊤`. Subsumes "a single point
+    spans no more than itself" and "two points span at most a line" and
+    generalizes to triples in dim 3, etc. — the natural ergonomic way to
+    discharge the `⊤ ∉ s_cover` side-condition of the cover lemma when the
+    cover is built from a small concrete set. Proof routes through
+    `finrank_vectorSpan_image_finset_le` after a `Set.ncard ↔ toFinset.card`
+    bridge.
+- **Consumer side:** `exists_off_line_off_finite_dim_two` builds the cover
+  `{affineSpan {pa, pb}} ∪ {affineSpan {s} | s ∈ S}` (line + finite
+  singletons, all proper in dim 2), discharges the `⊤ ∉ s_cover`
+  side-condition by two calls to `affineSpan_ne_top_of_ncard_le_finrank`
+  (one with `Set.ncard_pair`, one with `Set.ncard_singleton`), applies the
+  cover lemma, extracts a `q` outside, and converts off-line to `q - pa ∉
+  ℝ ∙ (pb - pa)` followed by one `pair_add_smul_add_smul_iff` row-op.
+  Parametric `pa + t • v` machinery is gone.
+- **Scope note.** The sibling `exists_typeII_q_on_line_dim_two` (place `q`
+  *on* the line) does **not** fit this approach — it's a one-parameter
+  `Set.Finite.exists_notMem` in `ℝ`, not an affine-cover application — and
+  stays as-is.
+- **Status:** mirrored.
+- **Mirror file:**
+  `Mathlib/LinearAlgebra/AffineSpace/AffineSubspace/Cover.lean`. Parallels
+  `Mathlib/GroupTheory/CosetCover.lean` but in the affine-space hierarchy:
+  the new file imports `GroupTheory.CosetCover` for the underlying
+  `AddSubgroup.exists_finiteIndex_of_leftCoset_cover` machinery and
+  `AffineSpace.AffineSubspace.Basic` for the affine API. Putting the affine
+  application here (rather than extending CosetCover) respects the
+  current import direction (linear-algebra basics → affine-space) and
+  keeps CosetCover's scope unchanged. The
+  `affineSpan_ne_top_of_ncard_le_finrank` helper would naturally land
+  upstream in `Mathlib/LinearAlgebra/AffineSpace/FiniteDimensional.lean`
+  (alongside `finrank_vectorSpan_image_finset_le`); bundling here keeps
+  the project mirror to a single file for now.
 
 ### [mirrored] `Set.exists_injective_fin_of_le_ncard` (Fin-indexing of subset elements)
 - **Where it bit:** assembly step in `exists_affinelySpanning_rigid_placement`

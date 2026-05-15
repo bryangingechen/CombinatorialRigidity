@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Framework
 import CombinatorialRigidity.Henneberg
+import CombinatorialRigidity.Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Cover
 import CombinatorialRigidity.Mathlib.Topology.Separation.Hausdorff
 
 /-!
@@ -184,9 +185,15 @@ theorem typeI_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
 
 /-- In `EuclideanSpace ℝ (Fin 2)`, given two distinct points `pa, pb` and a finite "to-avoid" set
 `S`, there is a point `q ∉ S` with `q - pa` and `q - pb` linearly independent. The geometric
-content is "off the line through `pa` and `pb`, and off `S`"; the one-parameter family
-`q t := pa + t • v` for any `v ∉ span ℝ {pb - pa}` realizes both conditions on a cofinite set of
-`t ∈ ℝ`.
+content is "off the line through `pa` and `pb`, and off `S`".
+
+The argument routes through `AffineSubspace.biUnion_ne_univ_of_top_notMem`
+(mirrored under `CombinatorialRigidity/Mathlib/.../Cover.lean`, the affine analogue of
+mathlib's `Subspace.biUnion_ne_univ_of_top_notMem`): a vector space over an infinite
+division ring is not covered by finitely many proper affine subspaces, applied to the
+cover `{affineSpan {pa, pb}} ∪ {affineSpan {s} | s ∈ S}`. The LI condition
+`(q - pa, q - pb)` then follows from `q` being off the line via a single row-op on
+`(q - pa, pb - pa)`.
 
 Used by `typeI_isGenericallyRigidInj_two` (Phase 5) with `S = Set.range p` to get a `q` outside
 the image of `p`, and by Phase 7's `typeI_edgeSetRowIndependent_lift` with `S = ∅` (the matroid
@@ -196,40 +203,60 @@ lemma exists_off_line_off_finite_dim_two
     (S : Set (EuclideanSpace ℝ (Fin 2))) (hS : S.Finite) :
     ∃ q : EuclideanSpace ℝ (Fin 2),
       LinearIndependent ℝ ![q - pa, q - pb] ∧ q ∉ S := by
+  classical
   have hd : pb - pa ≠ 0 := sub_ne_zero.mpr (Ne.symm hab)
-  -- Step 1. `Submodule.span ℝ {pb - pa}` is a proper subspace (finrank 1 < 2), so it has a
-  -- non-member `v`.
-  obtain ⟨v, hv_outside⟩ := exists_not_mem_span_singleton_dim_two hd
-  have hv_ne_zero : v ≠ 0 := fun hv0 => hv_outside (hv0 ▸ zero_mem _)
-  -- Step 2. The family `f t := pa + t • v` is injective in `t`: it is a translation composed with
-  -- `smul_left_injective`.
-  have hf_inj : Function.Injective (fun t : ℝ => pa + t • v) := fun _ _ h =>
-    smul_left_injective ℝ hv_ne_zero (add_left_cancel h)
-  -- Step 3. The "bad" `t`-set (yields `t = 0` or `f t ∈ S`) is finite; pick `t` outside.
-  set bad : Set ℝ := {0} ∪ (fun t : ℝ => pa + t • v) ⁻¹' S with hbad_def
-  have hbad_fin : bad.Finite := (Set.finite_singleton _).union (hS.preimage hf_inj.injOn)
-  obtain ⟨t, ht⟩ := hbad_fin.exists_notMem
-  have ht_ne : t ≠ 0 := fun h0 => ht (by simp [hbad_def, h0])
-  have hq_notmem : pa + t • v ∉ S := fun h_mem => ht (by simp [hbad_def, h_mem])
-  -- Step 4. Stage the LI claim as a row-op on `LinearIndependent ℝ ![v, pb - pa]`.
-  refine ⟨pa + t • v, ?_, hq_notmem⟩
-  have hLI_v_d :
-      LinearIndependent ℝ (![v, pb - pa] : Fin 2 → EuclideanSpace ℝ (Fin 2)) := by
+  -- Build the cover `{affineSpan {pa, pb}} ∪ {affineSpan {s} | s ∈ S}` of proper affine
+  -- subspaces, and apply the affine analogue of `Subspace.biUnion_ne_univ_of_top_notMem`.
+  set L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)) :=
+    affineSpan ℝ ({pa, pb} : Set _) with hL_def
+  set s_cover : Finset (AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2))) :=
+    insert L (hS.toFinset.image (fun s => affineSpan ℝ ({s} : Set _)))
+  have hno_top : ⊤ ∉ s_cover := by
+    have h_fr : Module.finrank ℝ (EuclideanSpace ℝ (Fin 2)) = 2 := finrank_euclideanSpace_fin
+    rw [Finset.mem_insert]
+    rintro (h_L | h_sing)
+    · -- Pair: `({pa, pb} : Set _).ncard = 2 ≤ 2 = finrank`.
+      exact AffineSubspace.affineSpan_ne_top_of_ncard_le_finrank
+        (Set.toFinite _) (by rw [Set.ncard_pair hab, h_fr]) h_L.symm
+    · rcases Finset.mem_image.mp h_sing with ⟨s, _, hs_eq⟩
+      exact AffineSubspace.affineSpan_ne_top_of_ncard_le_finrank
+        (Set.toFinite _) (by rw [Set.ncard_singleton s, h_fr]; omega) hs_eq
+  have h_cover := AffineSubspace.biUnion_ne_univ_of_top_notMem hno_top
+  rw [Set.ne_univ_iff_exists_notMem] at h_cover
+  obtain ⟨q, hq⟩ := h_cover
+  rw [Set.mem_iUnion₂] at hq
+  push Not at hq
+  have hqL : q ∉ L := hq L (Finset.mem_insert_self _ _)
+  have hqS : q ∉ S := fun h_in =>
+    hq (affineSpan ℝ ({q} : Set _))
+      (Finset.mem_insert_of_mem
+        (Finset.mem_image.mpr ⟨q, hS.mem_toFinset.mpr h_in, rfl⟩))
+      ((AffineSubspace.mem_affineSpan_singleton _ _).mpr rfl)
+  refine ⟨q, ?_, hqS⟩
+  -- LI of `![q - pa, q - pb]`: from off-line, get `q - pa ∉ ℝ ∙ (pb - pa)`,
+  -- then row-op via `LinearIndependent.pair_add_smul_add_smul_iff`.
+  have hq_off : (q - pa) ∉ Submodule.span ℝ ({pb - pa} : Set _) := by
+    intro h_in
+    rw [Submodule.mem_span_singleton] at h_in
+    obtain ⟨r, hr⟩ := h_in
+    apply hqL
+    rw [hL_def, show q = (q - pa) +ᵥ pa from by simp, vadd_left_mem_affineSpan_pair]
+    exact ⟨r, hr⟩
+  have hLI_qpa_d :
+      LinearIndependent ℝ (![q - pa, pb - pa] : Fin 2 → EuclideanSpace ℝ (Fin 2)) := by
     rw [linearIndependent_fin2]
-    refine ⟨hd, fun a h_eq => hv_outside ?_⟩
+    refine ⟨hd, fun a h_eq => hq_off ?_⟩
     rw [Submodule.mem_span_singleton]
+    simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at h_eq
     exact ⟨a, h_eq⟩
   have h_form :
-      (![pa + t • v - pa, pa + t • v - pb] : Fin 2 → EuclideanSpace ℝ (Fin 2)) =
-        ![t • v + (0 : ℝ) • (pb - pa), t • v + (-1 : ℝ) • (pb - pa)] := by
+      (![q - pa, q - pb] : Fin 2 → EuclideanSpace ℝ (Fin 2)) =
+        ![(1 : ℝ) • (q - pa) + (0 : ℝ) • (pb - pa),
+          (1 : ℝ) • (q - pa) + (-1 : ℝ) • (pb - pa)] := by
     ext i
     fin_cases i <;> simp
-    abel
   rw [h_form, LinearIndependent.pair_add_smul_add_smul_iff]
-  refine ⟨hLI_v_d, ?_⟩
-  intro h_eq
-  apply ht_ne
-  linarith
+  exact ⟨hLI_qpa_d, by norm_num⟩
 
 /-- **Type I preserves injective generic rigidity in dim 2.** Given an injectively generically
 rigid `G` in dim 2 and `a ≠ b` in `V`, the Henneberg Type I extension `typeI G a b` is again
