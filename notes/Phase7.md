@@ -340,6 +340,44 @@ A red node = not yet formalized; a green node = formalized and
   builder; expect ~100 LoC. Open: how cleanly does
   `IndepMatroid.ofExistsMatroid` or a similar mathlib pattern apply.
 
+- **Unify the Phase 5 IR + Phase 7 row-LI typeII conditional cores.**
+  `typeII_isInfinitesimallyRigid_extend` (Phase 5, `HennebergRigidity.lean`)
+  and `typeII_edgeSetRowIndependent_extend` (Phase 7,
+  `MatroidIdentification.lean`) share the same algebraic backbone: the
+  row identity
+  ```
+  (s-1) · rigidityRow newA − s · rigidityRow newB
+      = s(s-1) · restrictMap.dualMap (G'.rigidityRow ⟨s(a,b), h_ab⟩)
+  ```
+  is used in the IR proof in **kernel** form (the two new-edge
+  constraints recover the deleted-edge constraint, pulled back along
+  `x ↦ x ∘ some`) and in the row-LI proof in **dual / span** form (the
+  new-row span contains the T-pullback of the deleted G'-row). The same
+  duality applies to the Type I cores (simpler, no deleted row). Three
+  factoring options, increasing in ambition:
+  1. *Cheap.* Extract the row identity (typeI and typeII, ~30 LoC each)
+     as shared lemmas in `Henneberg.lean`. Both `extend` proofs shrink
+     by ~15 LoC each; parallel structure becomes visible.
+  2. *Medium.* Extract a "Henneberg row-decomposition" lemma stating
+     the full block factorisation of `R_typeII p_ext` into
+     `[T(R_{G' \ {s(a,b)}} p'); three new-row blocks]` plus the row
+     identity. Both `extend` proofs become "compose decomposition with
+     kernel/span argument". Likely subsumed by option 3.
+  3. *Principled.* Prove
+     `rank R_typeII p_ext = rank R_{G'} p' + 2` (and the typeI
+     analogue with `+2`) once, then derive IR (rank-nullity to the
+     `≤ d(d+1)/2` bound) and row-LI (`rank = #E`) as corollaries.
+     This is the right *mathematical* unification — IR and row-LI are
+     dual sides of the same rank fact — but requires more rank-of-
+     `RigidityMap` API than we currently have. Best done after the
+     Type II row-LI unconditional wrapper and the `Matroid` packaging
+     close, since those pin down what other rank lemmas the project
+     ends up wanting.
+
+  Recommendation: do option 1 once option 3 is ruled out or
+  postponed; option 2 is a half-step that would get redone under
+  option 3.
+
 ## Hand-off / next phase
 
 _Written when the phase finishes._
