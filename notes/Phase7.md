@@ -31,11 +31,26 @@ packaging left to discharge.
 - **Commits 7–11** [✓ done]: Type I / Type II row-LI conditional
   cores + unconditional wrappers + row-LI openness lemma. Entry
   points `91403e7..57f8f1f`.
-- **Next: `IsSparse.exists_rowIndependent_placement`** — the
-  `|E|`-induction theorem, lifting row-LI through Type I / Type II
-  reverses along `IsSparse.exists_typeI_or_typeII_reverse`. Lives in
-  `MatroidIdentification.lean`. Inductive case uses the new lifts;
-  base case is the empty edge family.
+- **Next: refine sparse reverse decomp + pendant lift** —
+  strengthen `IsSparse.exists_typeI_or_typeII_reverse` to a 3-way
+  split (pendant / Type I / Type II, with `deg v ≥ 1` enforced
+  inside the proof by restricting to the induced subgraph on
+  positive-degree vertices); add a new pendant lift
+  `typeI_pendant_edgeSetRowIndependent_lift` (or similar) in
+  `MatroidIdentification.lean`. Update the Laman shell
+  `IsLaman.exists_typeI_or_typeII_reverse` in `Henneberg.lean` to
+  consume the strengthened form. Blueprint statement of
+  `thm:isSparse-exists-typeI-or-typeII-reverse` already updated
+  (this commit) and `\leanok` removed until Lean catches up;
+  pendant lift entry `lem:pendant-rowIndependent-lift` added
+  alongside the typeI lift. See *3-way reverse decomposition*
+  decision below for the rationale.
+- **Then: `IsSparse.exists_rowIndependent_placement`** — the
+  `|E|`-induction theorem. With the 3-way split landed, the
+  induction matches the blueprint sketch directly: each branch
+  strictly decreases `|E|`; the pendant case uses the new lift, the
+  Type I and Type II cases use the existing lifts via the existing
+  iso constructors. Lives in `MatroidIdentification.lean`.
 - **Then the iff** `edgeSet_rowIndependent_iff_isSparse_dim_two`
   (combine the hard direction with Phase 6's easy direction
   `isSparse_of_edgeSetRowIndependent_dim_two`).
@@ -170,6 +185,22 @@ A red node = not yet formalized; a green node = formalized and
   continuity comes from `@[fun_prop]`-tagged
   `continuous_rigidityMap_apply`; transport back via
   `LinearMap.linearIndependent_iff` + `LinearEquiv.ker`.
+
+- **3-way reverse decomposition (planned for Commit 12).** The
+  original sparse reverse decomp returned `deg v ≤ 2` (Type I) or
+  `= 3` (Type II); the `deg ≤ 2` branch silently lumped together
+  pendant (`deg = 1`), Type I proper (`deg = 2`), and the
+  degenerate `deg = 0` case. K₁,₅ (sparse with only deg-1 leaves
+  and one deg-5 centre) shows that the reverse will pick a pendant
+  vertex, so the `|E|`-induction consumer cannot avoid the deg-1
+  case. Strengthening the reverse to a 3-way split (pendant /
+  Type I / Type II, with `deg v ≥ 1` enforced internally by
+  restricting to the induced subgraph on positive-degree vertices)
+  puts the complexity in the structure theorem instead of every
+  consumer, exposes neighbour data uniformly across all three
+  branches, and matches the blueprint's `|E|`-induction proof
+  sketch verbatim. A new pendant lift
+  `lem:pendant-rowIndependent-lift` lands alongside.
 
 - **Type II row-LI unconditional wrapper (Commit 11).**
   `typeII_edgeSetRowIndependent_lift` mirrors Phase 5's

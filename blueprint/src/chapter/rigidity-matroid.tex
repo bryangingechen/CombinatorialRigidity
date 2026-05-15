@@ -39,40 +39,47 @@ three-pair tight-union (Jord\'an Lemma~2.1.3) is
 \begin{theorem}[Sparse-graph reverse decomposition]
   \label{thm:isSparse-exists-typeI-or-typeII-reverse}
   \lean{SimpleGraph.IsSparse.exists_typeI_or_typeII_reverse}
-  \leanok
   \uses{def:isSparse, def:typeI, def:typeII}
   Let $V$ be finite and $G : \mathrm{SimpleGraph}\,V$ be $(2, 3)$-sparse
-  with at least one edge. Then either
+  with at least one edge. Then there exists $v \in V$ with
+  $d_{G}(v) \ge 1$ exhibiting one of three reverses, distinguished by
+  $d_{G}(v) \in \{1, 2, 3\}$:
   \begin{enumerate}
-    \item there exists $v \in V$ with $d_{G}(v) \le 2$ such that
-      $G - v$ is $(2, 3)$-sparse (Type~I reverse), or
-    \item there exists $v \in V$ with $d_{G}(v) = 3$, neighbours
-      $\{u, w, z\} = N_{G}(v)$, and a non-adjacent pair (say
-      $\{u, w\}$) such that the graph $G^{u,w}_{v}$ obtained by
-      deleting $v$ and adding edge $\{u, w\}$ is $(2, 3)$-sparse
-      (Type~II reverse).
+    \item ($d_{G}(v) = 1$, \emph{pendant reverse}) The unique
+      neighbour $a$ of $v$ is exposed and $G - v$ is $(2, 3)$-sparse.
+    \item ($d_{G}(v) = 2$, \emph{Type~I reverse}) The two distinct
+      neighbours $a \ne b$ of $v$ are exposed and $G - v$ is
+      $(2, 3)$-sparse.
+    \item ($d_{G}(v) = 3$, \emph{Type~II reverse}) Three neighbours
+      $\{u, w, z\} = N_{G}(v)$ are exposed along with a non-adjacent
+      pair (say $\{u, w\}$) such that the graph $G^{u,w}_{v}$
+      obtained by deleting $v$ and adding edge $\{u, w\}$ is
+      $(2, 3)$-sparse.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
-  \leanok
   \uses{def:isSparse, def:typeI, def:typeII, thm:isTightOn-union-inter}
-  Since $G$ is sparse with $|E| \ge 1$ we have $|E| \le 2|V| - 3$, so
-  the average degree is $2|E|/|V| < 4$, hence some vertex has degree
-  $\le 3$. (When $|V| < 2$, sparsity is vacuous and $|E| = 0$, so the
-  hypothesis $|E| \ge 1$ forces $|V| \ge 2$.) Pick such a $v$. The
-  case $d_{G}(v) \le 2$ gives the Type~I reverse: deleting $v$ removes
-  at most $2$ edges, and sparsity is preserved (sparse minus edges is
-  sparse). The case $d_{G}(v) = 3$ requires a suitable splitting, the
-  sparse-graph analogue of Jord\'an Lemma 2.1.4(b): if no splitting at
-  $v$ is suitable then there exist three maximal $(2, 3)$-tight sets
-  $X_{uw}, X_{uz}, X_{wz} \subseteq V \setminus \{v\}$ each containing
-  exactly two neighbours of $v$, with pairwise singleton intersections;
-  Phase~1's tight-union closure (\cref{thm:isTightOn-union-inter}) and
-  the three-pair tight-union analogue (Jord\'an Lemma 2.1.3) make
-  $X_{uw} \cup X_{uz} \cup X_{wz}$ tight, forcing
-  $d_{G}(v, X_{uw} \cup X_{uz} \cup X_{wz}) \ge 3$, which then
-  contradicts the sparsity bound on
-  $X_{uw} \cup X_{uz} \cup X_{wz} \cup \{v\}$.
+  Restrict attention to $V_{+} := \{v \in V : d_{G}(v) \ge 1\}$; the
+  endpoints of any edge lie in $V_{+}$, so $|V_{+}| \ge 2$ and
+  $E(G[V_{+}]) = E(G)$. Since $G[V_{+}]$ is sparse (subgraph of
+  sparse) with $|V_{+}| \ge 2$ vertices and the same edge set, the
+  handshake / sparsity bound on $G[V_{+}]$ supplies a vertex $v$ with
+  $d_{G[V_{+}]}(v) \le 3$, hence the same $d_{G}(v) \le 3$ (no edges
+  to isolated vertices). In particular $d_{G}(v) \in \{1, 2, 3\}$.
+  The case $d_{G}(v) \le 2$ yields a pendant or Type~I reverse:
+  deleting $v$ removes $d_{G}(v)$ edges and sparsity is preserved
+  (sparse minus edges is sparse); the neighbour data is read off from
+  $|N_{G}(v)| = d_{G}(v)$ by cardinality. The case $d_{G}(v) = 3$
+  requires a suitable splitting (Jord\'an Lemma 2.1.4(b)): if no
+  splitting at $v$ is suitable then there exist three maximal
+  $(2, 3)$-tight sets $X_{uw}, X_{uz}, X_{wz} \subseteq V \setminus
+  \{v\}$ each containing exactly two neighbours of $v$, with pairwise
+  singleton intersections; Phase~1's tight-union closure
+  (\cref{thm:isTightOn-union-inter}) and the three-pair tight-union
+  analogue (Jord\'an Lemma 2.1.3) make $X_{uw} \cup X_{uz} \cup
+  X_{wz}$ tight, forcing $d_{G}(v, X_{uw} \cup X_{uz} \cup X_{wz})
+  \ge 3$, which then contradicts the sparsity bound on $X_{uw} \cup
+  X_{uz} \cup X_{wz} \cup \{v\}$.
 \end{proof}
 
 \emph{Statement-form aside.} The reverse decomposition above and the
@@ -177,6 +184,38 @@ row-independent.
   \Cref{lem:typeI-rowIndependent-extend} applies and gives
   row-independence of $E(\mathrm{typeI}\,G'\,a\,b)$ at the extended
   placement.
+\end{proof}
+
+\begin{lemma}[Pendant lift of row-independence]
+  \label{lem:pendant-rowIndependent-lift}
+  \uses{def:edgeSet-rowIndependent}
+  Let $V$ be finite, $G' : \mathrm{SimpleGraph}\,V$, and $p' : V \to
+  \R^{2}$ a placement at which $E(G')$ is row-independent. Let
+  $a \in V$ be an old vertex. Then there exists a placement
+  $p : \mathrm{Option}\,V \to \R^{2}$ with $p \circ \mathrm{some} = p'$
+  such that $E(\mathrm{typeI}\,G'\,a\,a)$ is row-independent at $p$.
+  (The graph $\mathrm{typeI}\,G'\,a\,a$ joins the new vertex to a
+  single old vertex $a$; it models the degenerate Type~I move with
+  $b = a$, i.e.\ the pendant attachment used by Lov\'asz--Yemini to
+  reverse a degree-$1$ vertex.)
+\end{lemma}
+\begin{proof}
+  \uses{def:edgeSet-rowIndependent}
+  Pick $q \in \R^{2}$ with $q \ne p'_{a}$ (such $q$ exists since
+  $\R^{2}$ is uncountable). The edge set of $\mathrm{typeI}\,G'\,a\,a$
+  partitions into the image of $E(G')$ under $\mathrm{some}$ and the
+  single new edge $\{\mathrm{none}, \mathrm{some}\,a\}$. The old
+  rigidity-rows at the extended $\hat p$ pull back under
+  $(\cdot \circ \mathrm{some})$, whose dualMap is injective
+  (restriction is surjective), so old-row LI transfers. The single
+  new row is non-zero (witnessed by the motion $\mathrm{none} \mapsto
+  q - p'_{a}, \mathrm{some}\,u \mapsto 0$, which evaluates the new
+  row to $\|q - p'_{a}\|^2 > 0$). Disjointness of spans uses the
+  same test motion $x_\alpha(\mathrm{none}) = \alpha,
+  x_\alpha \circ \mathrm{some} = 0$ as in
+  \cref{lem:typeI-rowIndependent-extend}: any joint element vanishes
+  at $x_\alpha$, forcing $c \cdot \langle q - p'_{a}, \alpha \rangle
+  = 0$ for all $\alpha$, hence $c = 0$.
 \end{proof}
 
 \begin{lemma}[Type~II row-LI conditional core]
@@ -311,6 +350,7 @@ row-independent.
   \label{thm:isSparse-exists-rowIndependent-placement}
   \uses{def:isSparse, def:edgeSet-rowIndependent,
     thm:isSparse-exists-typeI-or-typeII-reverse,
+    lem:pendant-rowIndependent-lift,
     lem:typeI-rowIndependent-lift,
     lem:typeII-rowIndependent-lift}
   Let $V$ be finite and let $H : \mathrm{SimpleGraph}\,V$ be
@@ -319,17 +359,21 @@ row-independent.
 \end{theorem}
 \begin{proof}
   \uses{thm:isSparse-exists-typeI-or-typeII-reverse,
+    lem:pendant-rowIndependent-lift,
     lem:typeI-rowIndependent-lift,
     lem:typeII-rowIndependent-lift}
   Induction on $|E(H)|$. Base case $|E(H)| = 0$: the empty family of
   rows is linearly independent at any placement. Inductive step
   $|E(H)| \ge 1$: \cref{thm:isSparse-exists-typeI-or-typeII-reverse}
-  supplies a smaller sparse graph $H' \le H$ (deletion of a
-  degree-${\le}2$ vertex or splitting of a degree-$3$ vertex). The
-  inductive hypothesis gives a row-independent placement $p'$ of $H'$;
-  \cref{lem:typeI-rowIndependent-lift} or
-  \cref{lem:typeII-rowIndependent-lift} (according to the case) lifts
-  to a row-independent placement of $H$.
+  supplies a vertex $v$ with $d_H(v) \in \{1, 2, 3\}$ and a smaller
+  sparse graph $H' \le H$ via one of three reverses (pendant, Type~I,
+  or Type~II); each strictly decreases $|E|$. The inductive
+  hypothesis gives a row-independent placement $p'$ of $H'$, which we
+  lift via \cref{lem:pendant-rowIndependent-lift} (pendant case),
+  \cref{lem:typeI-rowIndependent-lift} (Type~I case), or
+  \cref{lem:typeII-rowIndependent-lift} (Type~II case). In each case
+  the lift produces a placement of $H$ at which $E(H)$ is
+  row-independent.
 \end{proof}
 
 \begin{theorem}[Lov\'asz--Yemini: row-LI iff sparse, dim $2$]
