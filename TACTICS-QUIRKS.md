@@ -274,3 +274,20 @@ simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hLI
 ```
 
 then `push Not`, `obtain`, etc.
+
+---
+
+## 12. `congr_fun` does not apply to `LinearMap` (or any `FunLike`)
+
+`LinearMap` (and `Module.Dual R M = M →ₗ[R] R`, and other `FunLike`
+types) is *not* a raw `Function`, even though it coerces to one. So
+`congr_fun (hcd : f = g)` errors with `Application type mismatch`
+when `f, g : M →ₗ[R] N`. Use `DFunLike.congr_fun hcd x` (works for
+any `FunLike`) or `LinearMap.congr_fun hcd x` (specific). Same caveat
+for `LinearEquiv`, `AlgHom`, `ContinuousLinearMap`, etc.
+
+This is a sibling of §9 (`EuclideanSpace` is `PiLp`, not `Pi`); both
+fall under *"acts like a function but isn't literally one."* The
+error message is identical (`Application type mismatch`), so
+recognize the symptom: any failed `congr_fun` whose target is a
+bundled morphism wants `DFunLike.congr_fun` instead.

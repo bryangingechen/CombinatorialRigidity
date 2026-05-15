@@ -21,7 +21,7 @@ rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
 and packaging the rigidity matroid as a
 `Mathlib.Combinatorics.Matroid` instance.
 
-Six commits in so far. The **first three** lifted Phase 5 Laman
+Seven commits in so far. The **first three** lifted Phase 5 Laman
 machinery to `IsSparse` (degree-≤-3 existence, non-adjacent triple,
 the five blocker contradiction primitives, the per-pair typeII
 tight-blocker). The **fourth** was a docs-only commit pinning the
@@ -29,34 +29,38 @@ statement-form convention (forward preservation = operation form;
 reverse decomposition = flat form) and prepping the blueprint for
 the upcoming sparse-reverse landing. The **fifth** landed
 `IsSparse.exists_typeI_or_typeII_reverse` in `Sparsity.lean` in
-flat form per the blueprint statement at
-`chapter/rigidity-matroid.tex` §3.1. The **sixth** (this commit)
-refactors `IsLaman.exists_typeI_or_typeII_reverse` to a flat-form
-shell over the sparse version, deletes the operation-form
-intermediates (`exists_typeI_or_typeII_iso`, `typeII_reverse_blocker`,
-`typeII_reverse_witness_or_blocker`; ~280 LoC net deletion in
-`Henneberg.lean`), promotes `typeI_iso_of_two_neighbors` /
-`typeII_iso_of_three_neighbors` to public, updates the
-`LamanTheorem.lean` callsite to reconstruct the iso locally, and
-re-flips `\leanok` on `thm:isLaman-exists-typeI-or-typeII-reverse`.
+flat form. The **sixth** refactored
+`IsLaman.exists_typeI_or_typeII_reverse` to a flat-form shell over
+the sparse version, deleting the operation-form intermediates and
+promoting `typeI_iso_of_two_neighbors` /
+`typeII_iso_of_three_neighbors` to public. The **seventh** (this
+commit) opens Phase 7 forward: creates
+`CombinatorialRigidity/MatroidIdentification.lean` with the
+**conditional Type I row-LI lift**
+`typeI_edgeSetRowIndependent_extend` (operation-form, row-LI
+analogue of Phase 5's `typeI_isInfinitesimallyRigid_extend`), wires
+the new file into the top-level entry, and flips `\leanok` on a new
+blueprint entry `lem:typeI-rowIndependent-extend`. The blueprint's
+existential wrapper `lem:typeI-rowIndependent-lift` now `\uses{}`
+the conditional core; its `\leanok` flip is for the next commit
+when the unconditional wrapper lands.
 
 **Multi-session plan** for the forward-blueprint work:
 
 - **Session 2 — Commit 2 ("flat-form sparse reverse")** [✓ done]:
   landed `IsSparse.exists_typeI_or_typeII_reverse`.
-- **Session 2 — Commit 3 ("Laman reverse cleanup")** [✓ done in
-  this commit]: refactored `IsLaman.exists_typeI_or_typeII_reverse`
-  to flat form, deleted the operation-form shells, updated the
-  `LamanTheorem.lean` callsite.
-- **Session 3+ — Phase 7 forward:** Row-LI lifts in **operation
-  form** (about `Henneberg.typeI G' a b`, etc.), matching Phase 5's
-  forward preservation convention. Then
-  `IsSparse.exists_rowIndependent_placement` (bridges flat reverse →
-  operation forward at each inductive step) and matroid identification.
-
-Downstream after the multi-session plan completes: Type I and Type II
-row-LI lifts, the inductive existence theorem, and the `IndepMatroid`
-packaging.
+- **Session 2 — Commit 3 ("Laman reverse cleanup")** [✓ done]:
+  refactored `IsLaman.exists_typeI_or_typeII_reverse` to flat form.
+- **Session 3 — Commit 4 ("Type I row-LI conditional core")** [✓
+  done in this commit]: landed `typeI_edgeSetRowIndependent_extend`
+  in `MatroidIdentification.lean`. Mirrors Phase 5's conditional
+  core convention; the unconditional wrapper is next.
+- **Session 3+:** the unconditional Type I wrapper (turning
+  `p' a ≠ p' b` into a `q` via the existing `exists_off_line_off_finite_dim_two`
+  pattern, possibly promoted out of `HennebergRigidity.lean`); then
+  the Type II conditional core + wrapper; then
+  `IsSparse.exists_rowIndependent_placement` (the |E|-induction) and
+  matroid identification.
 
 ## Architectural choices made up front
 
@@ -178,6 +182,25 @@ A red node = not yet formalized; a green node = formalized and
   `typeII_iso_of_three_neighbors` go public so the
   `LamanTheorem.lean` callsite reconstructs the iso before the
   operation-form forward preservation.
+
+- **Type I row-LI conditional core (Commit 7).**
+  `MatroidIdentification.lean` opens with
+  `typeI_edgeSetRowIndependent_extend`. Mirrors Phase 5's
+  `typeI_isInfinitesimallyRigid_extend` structure: same hypothesis
+  on `q` (linear independence of `(q - p' a, q - p' b)`), but on the
+  row-LI / dual side instead of the kernel side. Proof partitions
+  `(typeI G' a b).edgeSet` via `LinearIndepOn.union` into
+  `Sym2.map some '' G'.edgeSet` (old) + `{s(none, some a), s(none, some b)}`
+  (new). Old LI: factor through
+  `restrictMap.dualMap : Dual ℝ (Framework V 2) →ₗ Dual ℝ (Framework (Option V) 2)`,
+  injective since `restrictMap = LinearMap.funLeft ℝ _ some` is
+  surjective (some is injective). New LI: extract coefficients via
+  test motions `x_α = (none ↦ α, some _ ↦ 0)`, then use
+  `LinearIndependent.pair_iff` on `hLI`. Disjoint spans: any joint
+  element vanishes when evaluated on `x_α` (old span: trivially;
+  new span: forces both coefficients to zero by the same argument).
+  Conditional core has no `\leanok` on the existential blueprint
+  entry yet; the wrapper lands next commit and flips both.
 
 ## Blockers / open questions
 

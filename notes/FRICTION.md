@@ -175,6 +175,25 @@ housekeeping pass once their resolution is fully indexed.
   first try.
 - **Lifted to:** TACTICS-GOLF § 3 *Search mathlib before mirroring*.
 
+### [resolved] `congr_fun` does not apply to `LinearMap` (`Module.Dual` instance)
+- **Where it bit:** `typeI_edgeSetRowIndependent_extend` in
+  `MatroidIdentification.lean`. The hypothesis `hcd : c • row newEdgeA +
+  d • row newEdgeB = 0` is an equation in
+  `Module.Dual ℝ (Framework (Option V) 2) = Framework (Option V) 2 →ₗ[ℝ] ℝ`,
+  i.e., a `LinearMap`, not a raw `Function`. The first instinct
+  `congr_fun hcd test_motion` to extract the per-input equation
+  errored with `Application type mismatch`.
+- **Resolution:** `DFunLike.congr_fun hcd test_motion`. `LinearMap`
+  is `FunLike`, not literally `Function`; even though it coerces to
+  one, `congr_fun` needs a literal `Pi`-typed equation. The error
+  message does not flag the `FunLike`-vs-`Function` distinction.
+  Sibling of the EuclideanSpace = PiLp gotcha (TACTICS-QUIRKS § 9):
+  both fall under "acts like a function but isn't literally one."
+- **Status:** resolved (project-internal lesson). Same gotcha applies
+  to `LinearEquiv`, `AlgHom`, `ContinuousLinearMap`, etc.
+- **Lifted to:** TACTICS-QUIRKS § 12 *`congr_fun` does not apply to
+  `LinearMap` (or any `FunLike`)*.
+
 ### [resolved] `Set.Finite.subset (finite_setOf ...)` leaves metavariables when leading-coeff is the only resolved unknown
 - **Where it bit:** `exists_affinelySpanning_rigid_placement_two` in
   `RigidityMatroid.lean`. Inside the per-triple finiteness proof we

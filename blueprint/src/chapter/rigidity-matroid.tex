@@ -113,29 +113,59 @@ edge set is row-independent, the larger graph $G$ obtained by a
 Henneberg move admits a placement at which its edge set is
 row-independent.
 
-\begin{lemma}[Type~I lift of row-independence]
-  \label{lem:typeI-rowIndependent-lift}
+\begin{lemma}[Type~I row-LI conditional core]
+  \label{lem:typeI-rowIndependent-extend}
+  \lean{SimpleGraph.Henneberg.typeI_edgeSetRowIndependent_extend}
+  \leanok
   \uses{def:typeI, def:edgeSet-rowIndependent}
-  Let $V$ be finite, $G'$ a simple graph on $V$, and $p' : V \to \R^{2}$
-  a placement at which $E(G')$ is row-independent. Let $G$ be the
-  Type~I extension of $G'$ adding a fresh vertex $\star$ adjacent to
-  two distinct old vertices $a, b \in V$. Then there exists a
-  placement $p$ of $V \sqcup \{\star\}$ with $p|_{V} = p'$ such that
-  $E(G)$ is row-independent at $p$.
+  Let $V$ be finite, $G' : \mathrm{SimpleGraph}\,V$, and $p' : V \to \R^{2}$
+  a placement at which $E(G')$ is row-independent. Let $a, b \in V$ and
+  $q \in \R^{2}$, and suppose $q - p_a$ and $q - p_b$ are linearly
+  independent. Then the extended placement
+  $\hat p : \mathrm{Option}\,V \to \R^{2}$ with
+  $\hat p(\mathrm{none}) = q$ and $\hat p(\mathrm{some}\,u) = p'_u$ makes
+  $E(\mathrm{typeI}\,G'\,a\,b)$ row-independent.
 \end{lemma}
 \begin{proof}
-  \uses{def:typeI, def:edgeSet-rowIndependent}
-  The rigidity matrix of $G$ at $p$ decomposes block-triangularly: the
-  rows indexed by the old edges of $G'$ vanish on the $\star$-column
-  and reproduce the rigidity matrix of $G'$ at $p'$; the two new rows
-  ($\{\star, a\}$ and $\{\star, b\}$) are supported on the $\star$,
-  $a$, and $b$ columns. Row-independence of the old block holds by
-  hypothesis. Choosing $p(\star)$ so that the two new rows are linearly
-  independent on the $\star$-column --- i.e.\ so that
-  $p(\star) - p(a)$ and $p(\star) - p(b)$ are linearly independent in
-  $\R^{2}$ --- is generic: the bad set is a finite union of one or two
-  lines in $\R^{2}$. Block-triangularity then yields row-independence
-  at $p$.
+  \leanok
+  Row-LI analogue of \cref{thm:typeI-isInfinitesimallyRigid-extend}.
+  Partition $E(\mathrm{typeI}\,G'\,a\,b)$ into the image of $E(G')$ under
+  $\mathrm{some}$ (``old'' edges) and the two new edges
+  $\{\mathrm{none}, \mathrm{some}\,a\}$, $\{\mathrm{none}, \mathrm{some}\,b\}$.
+  The old rigidity-rows at $\hat p$ are pullbacks under
+  $(\cdot \circ \mathrm{some}) : \mathrm{Framework}\,(\mathrm{Option}\,V)\,2
+  \to \mathrm{Framework}\,V\,2$ of the $G'$ rigidity-rows at $p'$;
+  surjectivity of this restriction map makes its dual injective, so
+  row-LI of the $G'$ family transfers. The two new rows are linearly
+  independent as functionals because for any motion $x$ with $x \circ
+  \mathrm{some} = 0$ the equation $c \cdot \langle q - p_a, x(\mathrm{none})
+  \rangle + d \cdot \langle q - p_b, x(\mathrm{none}) \rangle = 0$ for all
+  $x(\mathrm{none}) \in \R^{2}$ forces $c (q - p_a) + d (q - p_b) = 0$,
+  hence $c = d = 0$ by hypothesis. The same trick proves disjointness of
+  the old-row and new-row spans: any joint element vanishes when
+  evaluated on motions with $x \circ \mathrm{some} = 0$, so its new-row
+  representation must be zero.
+\end{proof}
+
+\begin{lemma}[Type~I lift of row-independence]
+  \label{lem:typeI-rowIndependent-lift}
+  \uses{def:typeI, def:edgeSet-rowIndependent,
+    lem:typeI-rowIndependent-extend}
+  Let $V$ be finite, $G' : \mathrm{SimpleGraph}\,V$, and $p' : V \to \R^{2}$
+  a placement at which $E(G')$ is row-independent. Let $a, b \in V$ be
+  two old vertices with $p'_a \ne p'_b$. Then there exists a placement
+  $p : \mathrm{Option}\,V \to \R^{2}$ with $p \circ \mathrm{some} = p'$
+  such that $E(\mathrm{typeI}\,G'\,a\,b)$ is row-independent at $p$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:typeI-rowIndependent-extend}
+  Pick $q$ off both the lines through $p'_a$ and through $p'_b$ in the
+  direction $p'_b - p'_a$ (equivalently, $q - p'_a$ and $q - p'_b$
+  linearly independent); the bad set is a finite union of one or two
+  lines in $\R^{2}$, so a generic $q$ works.
+  \Cref{lem:typeI-rowIndependent-extend} applies and gives
+  row-independence of $E(\mathrm{typeI}\,G'\,a\,b)$ at the extended
+  placement.
 \end{proof}
 
 \begin{lemma}[Type~II lift of row-independence]

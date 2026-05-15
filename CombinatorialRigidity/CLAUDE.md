@@ -56,6 +56,9 @@ bullets. If one matches, jump to the named section of
 - *"Application type mismatch"* on `congr_fun h` over
   `EuclideanSpace` → § 9 *`congr_fun` doesn't apply to
   `EuclideanSpace`*
+- *"Application type mismatch"* on `congr_fun h` where `h` is an
+  equation between `LinearMap`s / `Module.Dual`s / bundled
+  morphisms → § 12 *`congr_fun` doesn't apply to `LinearMap`*
 - `simp_all` produces a confusing residual with a hypothesis you
   expected to eliminate → § 10 *`simp_all` cross-contaminates*
 - `linearIndependent_fin2` rewrite leaves `![v₀, v₁] 0` blocking a
