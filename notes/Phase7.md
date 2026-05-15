@@ -13,48 +13,24 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Phase 6 closed Laman's theorem in both directions; the project
-carries no `sorry`s. Phase 7 builds on top of Phase 6's row-LI
-infrastructure (`RigidityMatroid.lean`) to ship the converse of the
-Lovász–Yemini "easy direction" already in place, completing the
-rigidity-matroid ↔ $(2, 3)$-count matroid identification in dim 2
-and packaging the rigidity matroid as a
-`Mathlib.Combinatorics.Matroid` instance.
-
 Eleven commits in. The first six lifted Laman-only machinery to
-`IsSparse` (commits 1–3), then landed `IsSparse.exists_typeI_or_typeII_reverse`
-in flat form and refactored the Laman version on top of it (commits
-4–6). The next four landed the four operation-form row-LI lifts in
-`MatroidIdentification.lean`: Type I conditional core + unconditional
-wrapper (commits 7–8), Type II conditional core (commit 9), and the
-row-LI openness lemma `EdgeSetRowIndependent.eventually` (commit 10,
-prerequisite for the perpendicular-perturbation step of the Type II
-wrapper). **This commit (11)** lands the **unconditional Type II
-row-LI wrapper** `typeII_edgeSetRowIndependent_lift`: composes
-`exists_nonCollinear_rowIndependent_placement_dim_two` (private
-row-LI analogue of Phase 5's perturbation helper) with the
-conditional core via `s = 1/2`, dropping the `p ∘ some = p'`
-constraint since the helper may perturb. With this the four
-Henneberg row-LI lifts are complete and the chapter dep-graph in
-`chapter/rigidity-matroid.tex` has only the `|E|`-induction theorem
-`thm:isSparse-exists-rowIndependent-placement`, the iff
-`thm:edgeSet-rowIndependent-iff-isSparse`, and the `Matroid`
-packaging left to discharge. See the multi-session plan below.
+`IsSparse` and landed `IsSparse.exists_typeI_or_typeII_reverse` in
+flat form (entry points `60a2176..6d59be2`); the next five landed the
+four operation-form row-LI lifts plus the row-LI openness lemma in
+`MatroidIdentification.lean` (entry points `91403e7..57f8f1f`). The
+chapter dep-graph in `chapter/rigidity-matroid.tex` has only the
+`|E|`-induction theorem `thm:isSparse-exists-rowIndependent-placement`,
+the iff `thm:edgeSet-rowIndependent-iff-isSparse`, and the `Matroid`
+packaging left to discharge.
 
 **Multi-session plan** for the forward-blueprint work:
 
 - **Commits 2–6** [✓ done]: sparse-side lifting + flat-form sparse
-  reverse + Laman reverse cleanup. See commit log
-  `60a2176..6d59be2` for entry points.
-- **Commits 7–10** [✓ done]: Type I row-LI conditional + wrapper,
-  Type II row-LI conditional, row-LI openness lemma. Entry points
-  `91403e7..c751b8d`.
-- **Commit 11 ("Type II row-LI unconditional wrapper")** [✓ done
-  in this commit]: landed `typeII_edgeSetRowIndependent_lift` in
-  `MatroidIdentification.lean`; un-privatized
-  `exists_not_mem_span_singleton_dim_two` in `HennebergRigidity.lean`
-  so the new perturbation helper can reuse it; flipped `\lean{...}`
-  + `\leanok` on `lem:typeII-rowIndependent-lift`.
+  reverse + Laman reverse cleanup. Entry points
+  `60a2176..6d59be2`.
+- **Commits 7–11** [✓ done]: Type I / Type II row-LI conditional
+  cores + unconditional wrappers + row-LI openness lemma. Entry
+  points `91403e7..57f8f1f`.
 - **Next: `IsSparse.exists_rowIndependent_placement`** — the
   `|E|`-induction theorem, lifting row-LI through Type I / Type II
   reverses along `IsSparse.exists_typeI_or_typeII_reverse`. Lives in
@@ -76,24 +52,17 @@ wrong, revisit there.
   aside at `chapter/rigidity-matroid.tex` §3.1 (just before
   *Lifting row-independence through Henneberg moves*). Phase 7's
   `IsSparse.exists_typeI_or_typeII_reverse` lands flat; the row-LI
-  lifts land in operation form (about `Henneberg.typeI G' a b`); the
-  inductive proof bridges the two via `typeI_iso_of_two_neighbors`
-  per step. Phase 5's existing `IsLaman.exists_typeI_or_typeII_reverse`
-  gets converted from operation form (its current state) to flat
-  form in Commit 3 of this phase's multi-session plan.
+  lifts land in operation form; the inductive proof bridges the two
+  via `typeI_iso_of_two_neighbors` per step.
 
 - **Forward-mode blueprint authoring** (Option C). The blueprint
   chapter `chapter/rigidity-matroid.tex` is the authoritative
   dep-graph; `\lean{...}` and `\leanok` get added as each Lean
-  lemma lands. We do **not** maintain a parallel lemma checklist
-  here. Rationale: `../blueprint/DESIGN.md` *Recommendation for
-  Phase 6* (proved out by Phase 6).
+  lemma lands. No parallel lemma checklist here.
 
 - **New file `MatroidIdentification.lean`.** Phase 7's Lean content
-  lives in its own file imported by nothing yet (Phase 7 is a
-  terminal chapter). `RigidityMatroid.lean` stays as the row-LI
-  predicate / easy-direction file; growing it past ~1000 LoC mixes
-  conceptually distinct content. If the Henneberg lifts grow beyond
+  lives in its own file. `RigidityMatroid.lean` stays as the row-LI
+  predicate / easy-direction file. If the Henneberg lifts grow beyond
   ~600 LoC mid-phase, split into `MatroidHenneberg.lean` +
   `MatroidIdentification.lean` (the Phase 5 / Phase 6 split pattern).
 
@@ -102,31 +71,22 @@ wrong, revisit there.
   via `IndepMatroid`. The Lov–Yem identification is stated as
   "rigidity-matroid independent sets in dim 2 = $(2, 3)$-sparse
   subsets of $E(K_V)$", **not** as `Matroid` equality, because the
-  general $(k, \ell)$-count matroid is not in mathlib and packaging
-  it is parallel work (a worthy upstream contribution but not
-  Phase 7's deliverable).
+  general $(k, \ell)$-count matroid is not in mathlib.
 
 - **"Some generic placement" formulation.** The hard direction's
   conclusion is $\exists p, \mathrm{EdgeSetRowIndependent}\,p\,I$.
-  Avoid introducing a "generic placement" notion (Zariski-open
-  subset, measure-zero exclusion); the existential suffices for the
-  matroid axioms and for the iff. This mirrors Phase 6's choice to
-  stay matroid-agnostic until needed.
+  No "generic placement" notion (Zariski-open, measure-zero); the
+  existential suffices.
 
-- **Proof route: Jordán §2.2 induction on $|E|$.** Follow Jordán's
-  modern presentation of Lovász–Yemini (Theorem 2.2.1): induct on
-  the edge count, with each step picking a min-degree-$\le 3$ vertex
-  in the sparse graph and reversing the corresponding Henneberg
-  move (Lemma 2.1.4(a) for degree $\le 2$ — Type I reverse; Lemma
-  2.1.4(b) for degree $3$ — Type II reverse). Inductive case: lift
-  the row-LI placement of the smaller sparse graph back along the
-  Henneberg move via the Type I / Type II row-LI lifts. This avoids
-  a separate sparse-to-Laman extension lemma and reuses Phase 5's
+- **Proof route: Jordán §2.2 induction on $|E|$.** Each step picks a
+  min-degree-$\le 3$ vertex in the sparse graph and reverses the
+  corresponding Henneberg move (Lemma 2.1.4(a) for degree $\le 2$ —
+  Type I reverse; Lemma 2.1.4(b) for degree $3$ — Type II reverse).
+  Inductive case: lift the row-LI placement via the Type I / Type II
+  row-LI lifts. Reverse-decomposition step reuses Phase 5's
   tight-subset machinery (`IsTightOn.union_inter` — Jordán Lemma
-  2.1.2) for the reverse-decomposition step. (Jordán's "critical set"
-  ↔ our `IsTightOn` synonym, plus the Lemma 2.1.2 / 2.1.3 ↔ our
-  tight-subset-lattice correspondence, are documented in the new
-  chapter's *Terminology* aside.)
+  2.1.2). (Jordán's "critical set" ↔ our `IsTightOn`; documented in
+  the chapter's *Terminology* aside.)
 
 ## Lemma checklist
 
@@ -138,295 +98,158 @@ A red node = not yet formalized; a green node = formalized and
 
 ## Decisions made during this phase
 
-- **Generalize, do not duplicate.** Where Phase 5's Laman-only lemmas
-  actually use sparsity (not tightness) in their proof, lift the
-  hypothesis from `IsLaman` to `IsSparse` and delete the Laman
-  wrapper; rewrite callers to use `h.isSparse.foo` directly. Three
-  passes so far: (1) `exists_degree_le_three` and
-  `exists_nonadj_among_three_neighbors` moved to `Sparsity.lean`;
-  (2) the five blocker-contradiction primitives
-  (`no_isTightOn_excluding_three_neighbors`, the three
-  `contradiction_*_pair` templates, `False_of_pairwise_blocker_or_edge`)
-  likewise moved; (3) `typeII_reverse_blocker` factored into a sparse
-  inner lemma in `Sparsity.lean` plus a thin Laman shell in
-  `Henneberg.lean` that does only the iso+edge-count conversion
-  `¬ G'.IsLaman → ¬ G'.IsSparse 2 3` (the one step that genuinely needs
-  the tight global edge count). The supporting `image_edgesIn_comap`
-  was promoted from private in `Henneberg.lean` to public in
-  `Sparsity.lean` at the same time. The remaining Laman-only piece
-  (`typeII_reverse_witness_or_blocker`) is now a thin dispatcher over
-  the factored blocker; sparse-graph reverse decomposition can reuse
-  `IsSparse.typeII_reverse_blocker` directly without going through
-  Laman.
+### Phase-local choices and proof techniques
 
-- **Flat-form sparse reverse: subtype `{w // w ≠ v}` instead of
-  `Sym2 V` predicate.** The flat conclusion of
+- **Generalize, do not duplicate.** Where Phase 5's Laman-only lemmas
+  actually use sparsity (not tightness), lift the hypothesis from
+  `IsLaman` to `IsSparse` and delete the Laman wrapper. Three passes:
+  (1) `exists_degree_le_three` and `exists_nonadj_among_three_neighbors`
+  moved to `Sparsity.lean`; (2) the five blocker-contradiction
+  primitives moved likewise; (3) `typeII_reverse_blocker` factored into
+  a sparse inner lemma + thin Laman shell (the iso+edge-count
+  conversion `¬ G'.IsLaman → ¬ G'.IsSparse 2 3` is the one step that
+  genuinely needs the tight global edge count). `image_edgesIn_comap`
+  was promoted from private in `Henneberg.lean` to public in
+  `Sparsity.lean` at the same time.
+
+- **Flat-form sparse reverse: subtype `{w // w ≠ v}` instead of `Sym2 V`
+  predicate.** The flat conclusion of
   `IsSparse.exists_typeI_or_typeII_reverse` could in principle describe
-  `G - v` and `G^{u,w}_v` via predicates on `V` (e.g. `G' ≤ G` with
-  `G'.Adj` agreeing on edges not incident to `v`). Instead it uses
-  `G.comap (Subtype.val : {w // w ≠ v} → V)` (and the same plus a
-  bridging `fromEdgeSet`) — explicitly describing the smaller graph on
-  the smaller vertex type. The reason is consumer ergonomics: the
-  downstream row-LI lifts will work on `G' : SimpleGraph {w // w ≠ v}`,
-  and Phase 5's existing iso constructors
-  (`typeI_iso_of_two_neighbors`, `typeII_iso_of_three_neighbors`)
-  already produce isos at that subtype. A `SimpleGraph V`-side
-  description would require a separate iso layer at every consumer.
+  `G - v` and `G^{u,w}_v` via `SimpleGraph V`-predicates, but instead
+  uses `G.comap (Subtype.val : {w // w ≠ v} → V)`. Reason: consumer
+  ergonomics — the downstream row-LI lifts work on
+  `G' : SimpleGraph {w // w ≠ v}`, and Phase 5's existing iso
+  constructors already produce isos at that subtype.
 
 - **Laman reverse cleanup (Commit 6).**
   `IsLaman.exists_typeI_or_typeII_reverse` becomes a flat-form shell
-  over `IsSparse.exists_typeI_or_typeII_reverse`:
-  `IsLaman.two_le_degree` bumps `deg v ≤ 2` to `= 2`;
-  `typeI_isLaman_iff` and `typeII_edgeSet_ncard` + bridge presence
-  bump `G'.IsSparse 2 3` to `G'.IsLaman`. Statement mirrors the sparse
-  shape and additionally exposes the two Type I neighbors. Net ~280
-  LoC deleted in `Henneberg.lean` (`exists_typeI_or_typeII_iso`,
-  `typeII_reverse_blocker`, `typeII_reverse_witness_or_blocker`, plus
-  private branch helpers); `typeI_iso_of_two_neighbors` /
-  `typeII_iso_of_three_neighbors` go public so the
-  `LamanTheorem.lean` callsite reconstructs the iso before the
-  operation-form forward preservation.
+  over `IsSparse.exists_typeI_or_typeII_reverse`: `IsLaman.two_le_degree`
+  bumps `deg v ≤ 2` to `= 2`; `typeI_isLaman_iff` and
+  `typeII_edgeSet_ncard` + bridge presence bump `G'.IsSparse 2 3` to
+  `G'.IsLaman`. Net ~280 LoC deleted in `Henneberg.lean`
+  (`exists_typeI_or_typeII_iso`, `typeII_reverse_blocker`,
+  `typeII_reverse_witness_or_blocker`, branch helpers);
+  `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors` go
+  public so the `LamanTheorem.lean` callsite reconstructs the iso
+  before the operation-form forward preservation.
 
 - **Type I row-LI conditional core (Commit 7).**
-  `MatroidIdentification.lean` opens with
-  `typeI_edgeSetRowIndependent_extend`. Mirrors Phase 5's
-  `typeI_isInfinitesimallyRigid_extend` structure: same hypothesis
-  on `q` (linear independence of `(q - p' a, q - p' b)`), but on the
-  row-LI / dual side instead of the kernel side. Proof partitions
-  `(typeI G' a b).edgeSet` via `LinearIndepOn.union` into
-  `Sym2.map some '' G'.edgeSet` (old) + `{s(none, some a), s(none, some b)}`
-  (new). Old LI: factor through
-  `restrictMap.dualMap : Dual ℝ (Framework V 2) →ₗ Dual ℝ (Framework (Option V) 2)`,
-  injective since `restrictMap = LinearMap.funLeft ℝ _ some` is
-  surjective (some is injective). New LI: extract coefficients via
-  test motions `x_α = (none ↦ α, some _ ↦ 0)`, then use
-  `LinearIndependent.pair_iff` on `hLI`. Disjoint spans: any joint
-  element vanishes when evaluated on `x_α` (old span: trivially;
-  new span: forces both coefficients to zero by the same argument).
-  Conditional core has no `\leanok` on the existential blueprint
-  entry yet; the wrapper lands next commit and flips both.
+  `typeI_edgeSetRowIndependent_extend` mirrors Phase 5's
+  `typeI_isInfinitesimallyRigid_extend` on the row-LI / dual side.
+  Partitions `(typeI G' a b).edgeSet` via `LinearIndepOn.union` into
+  `Sym2.map some '' G'.edgeSet` (old) + the two new edges (new). Old
+  LI: factor through `restrictMap.dualMap` (injective since
+  `restrictMap = LinearMap.funLeft ℝ _ some` is surjective). New LI
+  + disjoint spans: extract coefficients via test motions
+  `x_α = (none ↦ α, some _ ↦ 0)` plus `LinearIndependent.pair_iff`
+  on `hLI`.
 
 - **Type I row-LI unconditional wrapper (Commit 8).**
   `typeI_edgeSetRowIndependent_lift` composes
-  `exists_off_line_off_finite_dim_two` with the conditional core,
-  passing `S = ∅` since the matroid hard direction needs no
-  injectivity. The helper was promoted from private to public in
-  `HennebergRigidity.lean` in the same commit (its docstring now
-  cross-references both Phase 5's `S = Set.range p` use and Phase 7's
-  `S = ∅` use). The `p ∘ some = p'` constraint discharges by
-  `funext fun _ => rfl`. Flips `\leanok` on
-  `lem:typeI-rowIndependent-lift`.
+  `exists_off_line_off_finite_dim_two` (with `S = ∅` — the matroid
+  hard direction needs no injectivity) and the conditional core. The
+  helper was un-privatized in `HennebergRigidity.lean` for cross-file
+  reuse.
 
 - **Type II row-LI conditional core (Commit 9).**
-  `typeII_edgeSetRowIndependent_extend` lands in
-  `MatroidIdentification.lean`, mirroring Phase 5's
-  `typeII_isInfinitesimallyRigid_extend` on the row-LI / dual side
-  but with an additional `G'.Adj a b` hypothesis (so the deleted
-  G'-row at `s(a, b)` is part of the family). Proof partitions the
-  typeII edges via `LinearIndepOn.union` into the
-  `Sym2.map some '' (G'.edgeSet \ {s(a, b)})` image (old) and
-  `{newA, newB, newC}` (new). New-row LI: three-step
-  `LinearIndepOn.insert` peeling, using two test motions per step
-  (`none`-only `x_α` and `some a → q - p' a` else `0`), routed
-  through a `typeII_new_rows_coeff_zero` helper that rescales the
-  helper's `q - p' b` evaluation back to `q - p' a` via `hcoll` so
-  the Type I `typeI_new_rows_coeff_zero` applies. Disjoint spans:
-  the same `x_α` argument peels `c_c = 0` and `s c_a + (s-1) c_b = 0`,
-  after which the row identity
+  `typeII_edgeSetRowIndependent_extend` mirrors Phase 5's
+  `typeII_isInfinitesimallyRigid_extend` with an additional
+  `G'.Adj a b` hypothesis. Partition via `LinearIndepOn.union`. New-row
+  LI: three-step `LinearIndepOn.insert` peeling, routed through a
+  `typeII_new_rows_coeff_zero` helper that rescales `q - p' b`
+  evaluations back to `q - p' a` via `hcoll`. Disjointness: same
+  `x_α` argument plus the row identity
   `(s-1) row newA - s row newB = s(s-1) T(G'.rigidityRow p' eAB)`
-  (proved inline via `linear_combination`) collapses
-  `c_a row newA + c_b row newB` to `s c_a · T(G'.rigidityRow p' eAB)`.
-  G'-LI + dualMap-injectivity rule out a nonzero `s c_a`, forcing
-  `c_a = c_b = 0`. The `{c} ↔ insert c ∅` defeq gap surfaced when
-  chaining three `LinearIndepOn.insert` calls; resolved by rewriting
-  the singleton as `insert c ∅` via `LawfulSingleton.insert_empty_eq`
-  before the chain.
+  closes via G'-LI + dualMap-injectivity.
 
 - **Row-LI openness (Commit 10).**
-  `EdgeSetRowIndependent.eventually` lands in `RigidityMatroid.lean`
-  alongside the basic row-LI API. Row-LI analogue of
-  `IsInfinitesimallyRigid.eventually` in `Framework.lean`. The
-  obstacle: `Module.Dual ℝ (Framework V d)` carries no canonical
-  norm, so `LinearIndependent.eventually` (mathlib, in
-  `Mathlib.Analysis.Normed.Module.FiniteDimension`) cannot be invoked
-  directly on the row family. Resolution: transport the LI assertion
-  to the normed space `Fin n → ℝ` (`n = finrank ℝ (Framework V d)`)
-  along the basis isomorphism `b.dualBasis.equivFun`, which
-  `Basis.dualBasis_equivFun` evaluates as `ψ l i = l (b i)`. The
-  matrix family `p ↦ (i, k) ↦ rigidityRow p i.val (b k)` is
-  continuous in `p` (each entry expands to an inner product, closed
-  by the `@[fun_prop]`-tagged `continuous_rigidityMap_apply` from
-  Phase 4); the codomain `I → Fin n → ℝ` is a finite-dim normed
-  space; `LinearIndependent.eventually` applies; transport back via
-  `LinearMap.linearIndependent_iff` + `LinearEquiv.ker`. The
-  proof is ~25 lines and mirrors Phase 4's IR-openness scaffolding
-  almost verbatim modulo the codomain swap.
-
-  *Anticipated alternative ruled out.* The FRICTION-mirrored
-  `Function.Injective.eventually_of_continuousAt` and its `.update`
-  corollary (used in Phase 5's `exists_nonCollinear_rigid_placement_dim_two`)
-  do **not** transfer to the row-LI side: their content is
-  "componentwise-continuous family is *injective* eventually" — a
-  Hausdorff-diagonal argument — which encodes preservation of
-  injectivity (`Function.Injective p`), not preservation of row-LI
-  (`EdgeSetRowIndependent p I`). The matroid hard direction needs no
-  injectivity, so the row-LI Type II wrapper's perpendicular-
-  perturbation step composes `EdgeSetRowIndependent.eventually` with
-  `Continuous.tendsto.eventually` (no diagonal argument), not the
-  injectivity mirror. The pre-Phase-7 FRICTION note that predicted
-  re-use of the mirror was updated to record this.
-
-- **Mirror `LinearIndependent.dualMap_of_surjective`.** The old-row
-  LI half of `typeI_edgeSetRowIndependent_extend` was building the
-  `funLeft_surjective_of_injective` → `dualMap_injective_of_surjective`
-  → `ker_eq_bot.mpr` → `LinearIndependent.map'` chain by hand. Mirrored
-  the fused upstream-candidate at `Mathlib/LinearAlgebra/Dual/Lemmas.lean`
-  (Type II row-LI lift will be the third caller); the proof block
-  collapsed to one term-mode application. RigidityMatroid's companion
-  big→small direction (`isSparse_of_edgeSetRowIndependent_dim_two`)
-  uses `LinearIndependent.of_comp` without surjectivity and did not
-  benefit. See the mirrored FRICTION entry.
-
-- **Friction cleanup: Sym2-eq case split in
-  `typeII_isInfinitesimallyRigid_extend`.** The deleted-edge branch
-  was unfolding `(G.RigidityMap p) (x ∘ some) ⟨s(u, v), he⟩ = 0` via
-  `rigidityMap_apply` *before* applying `h_eq : s(u, v) = s(a, b)`,
-  then `rcases Sym2.eq_iff.mp h_eq` to handle both orientations (the
-  swap arm closed via `← neg_sub` + `inner_neg_neg`). But `RigidityMap`
-  is built via `Sym2.lift` (Framework.lean) so Sym2-symmetry is baked
-  in at the edge-subtype level: lifting `h_eq` to `Subtype.ext h_eq :
-  (⟨s(u, v), he⟩ : G.edgeSet) = ⟨s(a, b), h_eq ▸ he⟩` and rewriting
-  *before* the unfold collapses the two-arm case split to three lines.
-  Pattern lifted to TACTICS-GOLF § 5 (new subsection "the other
-  direction"); FRICTION entry closed.
-
-- **Friction cleanup: test-motion gadget named in blueprint, Lean
-  tightened.** The blueprint prose for `typeI_edgeSetRowIndependent_
-  extend` used to invoke "the same trick" for both new-row LI and
-  old/new disjointness; the Lean expanded the trick into a `set x_α`
-  binding plus a 12-line `Submodule.span_le` / `LinearMap.mem_ker`
-  argument. Resolved two ways: (a) consolidated the Lean to 9 lines
-  by folding `SetLike.mem_coe`, `LinearMap.mem_ker`, and
-  `Module.Dual.eval_apply` into a single `simp` set and tightening
-  the destructure; (b) restructured the blueprint sketch around a
-  named parametric *test motion* $x_\alpha$, so both new-row LI and
-  disjointness explicitly cite the same construction. FRICTION entry
-  closed.
-
-- **Friction cleanup: `elemSkewMap_ofLp_inr_apply` proof collapse.**
-  The Phase-6 helper in `TrivialMotions.lean` had a 6-tactic-line
-  proof (`change` + `rw [elemSkewMap_apply]` + `simp only [...]` +
-  `rcases ... <;> split_ifs <;> grind`). Collapsed to one line:
-  `rcases eq_or_ne i a with rfl | hia <;> simp [elemSkewMap_apply]
-  <;> grind`. The default simp set absorbs the `⟨a,b⟩.fst` / `.ofLp i`
-  / `PiLp.single` boilerplate that the `change` was setting up by
-  hand, and `grind` absorbs the `split_ifs`. The `Matrix.stdBasisMatrix`-
-  difference framing the FRICTION entry suggested wasn't the win;
-  the win is the wider simp set. Lesson lifted to TACTICS-GOLF § 1
-  (Tricks); FRICTION entry closed.
+  `EdgeSetRowIndependent.eventually` is the row-LI analogue of
+  `IsInfinitesimallyRigid.eventually`. Obstacle:
+  `Module.Dual ℝ (Framework V d)` carries no canonical norm.
+  Resolution: transport along `b.dualBasis.equivFun` to `Fin n → ℝ`;
+  continuity comes from `@[fun_prop]`-tagged
+  `continuous_rigidityMap_apply`; transport back via
+  `LinearMap.linearIndependent_iff` + `LinearEquiv.ker`.
 
 - **Type II row-LI unconditional wrapper (Commit 11).**
-  `typeII_edgeSetRowIndependent_lift` lands in
-  `MatroidIdentification.lean`. Structure mirrors Phase 5's
-  `typeII_isGenericallyRigidInj_two` minus the injectivity half:
-  a private helper `exists_nonCollinear_rowIndependent_placement_dim_two`
-  perturbs `p' c` perpendicular to the `(p' a, p' b)` line if
-  `(p' a, p' b, p' c)` is collinear, using row-LI openness
-  (`EdgeSetRowIndependent.eventually`); then the wrapper picks
-  `s = 1/2` (any `s ≠ 0, 1` works) and `q := p'' a + s • (p'' b -
-  p'' a)`, derives `LI ![q - p'' a, q - p'' c]` from non-collinearity
-  via `pair_add_smul_add_smul_iff`, and invokes the conditional core.
-  `p' a ≠ p' b` is supplied internally from row-LI alone (a zero row
-  at `s(a, b)` would contradict LI). The blueprint statement of
-  `lem:typeII-rowIndependent-lift` was relaxed to drop the
-  `p|_V = p'` constraint, since the perturbation branch genuinely
-  changes `p'|_c`; the prose was updated to note this. Un-privatized
-  `exists_not_mem_span_singleton_dim_two` in `HennebergRigidity.lean`
-  for cross-file reuse (second un-privatization in Phase 7, after
-  `exists_off_line_off_finite_dim_two` in Commit 8).
+  `typeII_edgeSetRowIndependent_lift` mirrors Phase 5's
+  `typeII_isGenericallyRigidInj_two` minus injectivity. A private
+  helper `exists_nonCollinear_rowIndependent_placement_dim_two`
+  perturbs `p' c` perpendicular to `(p' a, p' b)` if collinear (using
+  row-LI openness); the wrapper picks `s = 1/2` and
+  `q := p'' a + s • (p'' b - p'' a)`. `p' a ≠ p' b` from row-LI alone
+  (zero row at `s(a, b)` would contradict LI). Blueprint statement of
+  `lem:typeII-rowIndependent-lift` relaxed to drop the `p|_V = p'`
+  constraint (the perturbation genuinely changes `p'|_c`).
 
-- **Phase 5 + Phase 7 golf: replace 5-step `γ • _ = _` rewrite chain with
-  `eq_inv_smul_iff₀`.** Both
-  `exists_nonCollinear_rigid_placement_dim_two` (Phase 5) and the new
-  helper (this commit) had the chain
-  `rw [← hγ, ← smul_assoc, smul_eq_mul, inv_mul_cancel₀ hγ_ne_zero, one_smul]`
-  for converting `γ • x = y` (with `γ ≠ 0`) to `x = γ⁻¹ • y`. Mathlib
-  ships the fused `eq_inv_smul_iff₀ : a ≠ 0 → x = a⁻¹ • y ↔ a • x = y`
-  in `Mathlib.Algebra.GroupWithZero.Action.Units`; both callsites
-  collapsed to one term-mode `(eq_inv_smul_iff₀ _).mpr _` application.
-  The general "search for fused `_iff` lemmas before writing
-  multi-rewrite chains" lesson is already covered by TACTICS-GOLF
-  § 7's search decision tree; no new section needed.
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
-## Decisions section is over the 250-line soft budget
+- *Mirror `LinearIndependent.dualMap_of_surjective`* → FRICTION
+  [mirrored] *`Function.Injective.eventually_of_continuousAt`* and
+  related (the post-Phase-5 mirror landed in commit `757e4d5`).
+- *Sym2-eq case split in `typeII_isInfinitesimallyRigid_extend`* →
+  FRICTION [resolved] *"Sym2-symmetry case split … understated by
+  blueprint"* + TACTICS-GOLF § 5 *Lifting Subtype-Sym2 equalities*,
+  subsection "the other direction".
+- *Test-motion gadget named in blueprint; Lean tightened* → FRICTION
+  [resolved] *"Test motion `x_α` gadget in Phase 7 understated by
+  blueprint prose"*.
+- *`elemSkewMap_ofLp_inr_apply` proof collapse via wider simp + grind*
+  → FRICTION [resolved] + TACTICS-GOLF § 1 *Tricks*.
+- *Phase 5 + Phase 7 golf: replace 5-step `γ • _ = _` rewrite chain
+  with `eq_inv_smul_iff₀`* → already covered by TACTICS-GOLF § 7's
+  search decision tree (no new section needed).
 
-This section has grown past the per-commit decision-log granularity
-recommended by `notes/CLAUDE.md`. A compression pass should sub-
-organize "Decisions made" into *Phase-local choices / techniques* (≤
-8 lines each, full entries) + *Promoted to TACTICS-GOLF / TACTICS-
-QUIRKS / FRICTION / DESIGN* (one-line pointers) + *Cleanup pass
-summaries* (file-by-file lists). Defer until the next commit (the
-sparse `|E|`-induction theorem) where the inevitable additional
-decision will exceed the soft budget further. This entry is the
-trigger for next session's first action.
+### Cleanup pass summaries
+
+- `Henneberg.lean`: ~280 LoC net deletion across `exists_typeI_or_typeII_iso`,
+  `typeII_reverse_blocker`, `typeII_reverse_witness_or_blocker`, and
+  branch helpers; `typeI_iso_of_two_neighbors` /
+  `typeII_iso_of_three_neighbors` un-privatized.
+- `Sparsity.lean`: gained `exists_degree_le_three`,
+  `exists_nonadj_among_three_neighbors`, the five
+  `IsSparse.contradiction_*_pair` blocker primitives,
+  `IsSparse.typeII_reverse_blocker`, and `image_edgesIn_comap` (all
+  lifted from `Henneberg.lean`); plus the flat-form
+  `IsSparse.exists_typeI_or_typeII_reverse`.
+- `HennebergRigidity.lean`: `exists_off_line_off_finite_dim_two` and
+  `exists_not_mem_span_singleton_dim_two` un-privatized for cross-file
+  reuse from `MatroidIdentification.lean`.
+- `RigidityMatroid.lean`: `EdgeSetRowIndependent.eventually` (Commit 10).
+- `MatroidIdentification.lean`: new file (Commit 7); cumulatively
+  holds the four operation-form row-LI lifts (typeI / typeII × extend
+  / lift) and `exists_nonCollinear_rowIndependent_placement_dim_two`.
+- `TrivialMotions.lean`: `elemSkewMap_ofLp_inr_apply` collapsed to
+  one line (Commit 10's cleanup pass).
 
 ## Blockers / open questions
-
-- **Type II row-LI lift collinearity gap.** The Type II move places
-  the new vertex on the line through `u, w`; for row-LI we also need
-  `p(u), p(w), p(z)` not collinear (or the third new row collapses
-  into the span of the first two). Phase 5's `IsInfinitesimallyRigid.
-  eventually` + perpendicular-perturbation approach (`exists_nonCollinear_rigid_placement_dim_two`)
-  is the obvious template, adapted to row-LI rather than IR. Open:
-  whether row-LI is itself open (it is, via `LinearIndependent.eventually`
-  or similar), which makes the perturbation argument the same shape.
-  The injectivity-preservation piece of the template is now mirrored
-  as `Function.Injective.eventually_update_of_continuousAt` in
-  `Mathlib/Topology/Separation/Hausdorff.lean` — see the mirrored
-  FRICTION entry — so the row-LI wrapper can reuse it instead of
-  rebuilding the `∀ᶠ`-injectivity argument inline.
 
 - **Matroid `IndepMatroid` axioms in dim 2.** Once the iff
   *row-LI at some $p$* ↔ *$(2, 3)$-sparse* is in hand, the
   augmentation axiom factors through the (purely combinatorial)
-  matroid structure on $(2, 3)$-sparse sets. The four matroid
-  axioms need to be discharged for the rigidity-matroid `IndepMatroid`
+  matroid structure on $(2, 3)$-sparse sets. The four matroid axioms
+  need to be discharged for the rigidity-matroid `IndepMatroid`
   builder; expect ~100 LoC. Open: how cleanly does
   `IndepMatroid.ofExistsMatroid` or a similar mathlib pattern apply.
 
 - **Unify the Phase 5 IR + Phase 7 row-LI typeII conditional cores.**
-  `typeII_isInfinitesimallyRigid_extend` (Phase 5, `HennebergRigidity.lean`)
-  and `typeII_edgeSetRowIndependent_extend` (Phase 7,
-  `MatroidIdentification.lean`) share the same algebraic backbone: the
-  row identity
-  ```
-  (s-1) · rigidityRow newA − s · rigidityRow newB
-      = s(s-1) · restrictMap.dualMap (G'.rigidityRow ⟨s(a,b), h_ab⟩)
-  ```
-  is used in the IR proof in **kernel** form (the two new-edge
-  constraints recover the deleted-edge constraint, pulled back along
-  `x ↦ x ∘ some`) and in the row-LI proof in **dual / span** form (the
-  new-row span contains the T-pullback of the deleted G'-row). The same
-  duality applies to the Type I cores (simpler, no deleted row). Three
-  factoring options, increasing in ambition:
-  1. *Cheap.* Extract the row identity (typeI and typeII, ~30 LoC each)
-     as shared lemmas in `Henneberg.lean`. Both `extend` proofs shrink
-     by ~15 LoC each; parallel structure becomes visible.
+  `typeII_isInfinitesimallyRigid_extend` and
+  `typeII_edgeSetRowIndependent_extend` share the same algebraic
+  backbone — the row identity
+  `(s-1) · rigidityRow newA − s · rigidityRow newB =
+   s(s-1) · restrictMap.dualMap (G'.rigidityRow ⟨s(a,b), h_ab⟩)`
+  — used in **kernel** form (IR) and **dual / span** form (row-LI).
+  The same duality applies to the Type I cores (simpler, no deleted
+  row). Three factoring options:
+  1. *Cheap.* Extract the row identity as shared lemmas in
+     `Henneberg.lean`. Both `extend` proofs shrink by ~15 LoC each.
   2. *Medium.* Extract a "Henneberg row-decomposition" lemma stating
-     the full block factorisation of `R_typeII p_ext` into
-     `[T(R_{G' \ {s(a,b)}} p'); three new-row blocks]` plus the row
-     identity. Both `extend` proofs become "compose decomposition with
-     kernel/span argument". Likely subsumed by option 3.
+     the full block factorisation. Likely subsumed by option 3.
   3. *Principled.* Prove
-     `rank R_typeII p_ext = rank R_{G'} p' + 2` (and the typeI
-     analogue with `+2`) once, then derive IR (rank-nullity to the
-     `≤ d(d+1)/2` bound) and row-LI (`rank = #E`) as corollaries.
-     This is the right *mathematical* unification — IR and row-LI are
-     dual sides of the same rank fact — but requires more rank-of-
-     `RigidityMap` API than we currently have. Best done after the
-     Type II row-LI unconditional wrapper and the `Matroid` packaging
-     close, since those pin down what other rank lemmas the project
-     ends up wanting.
+     `rank R_typeII p_ext = rank R_{G'} p' + 2` once, derive IR and
+     row-LI as corollaries. Requires more rank-of-`RigidityMap` API
+     than we currently have. Best done after the `Matroid` packaging
+     pins down what other rank lemmas the project ends up wanting.
 
   Recommendation: do option 1 once option 3 is ruled out or
   postponed; option 2 is a half-step that would get redone under
