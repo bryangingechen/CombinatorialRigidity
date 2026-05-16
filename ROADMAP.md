@@ -47,7 +47,8 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── RigidityMatroid.lean  Phase 6 — row-independence, basis-pick, sparsity bridge
 │   ├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
 │   ├── CountMatroid.lean  Phase 7 — abstract (k, ℓ)-count matroid (ℓ < 2k)
-│   └── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
+│   ├── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
+│   └── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
 └── lake-manifest.json   resolved dependency revisions
@@ -69,7 +70,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 5. Laman's theorem (⇐) | `LamanTheorem.lean`, `HennebergRigidity.lean` | ✓ Complete (see `notes/Phase5.md`) |
 | 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | ✓ Complete (see `notes/Phase6.md`) |
 | 7. Lovász–Yemini matroid identification | `CountMatroid.lean`, `MatroidIdentification.lean` | ✓ Complete (see `notes/Phase7.md`) |
-| ⋮ Cleanup round (pre-Phase-8) | project-wide | in progress (see `notes/Phase7-cleanup.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (pre-Phase-8) | project-wide | ✓ Complete (see `notes/Phase7-cleanup.md`; round manual: `CLEANUP.md`) |
+| 8. Linear-matroid framing | `LinearRigidityMatroid.lean` | in progress (see `notes/Phase8.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -236,6 +238,28 @@ generic-placement matroid $M_p$ on $E(K_V)$ via `Matroid.ofFun` for
 some generic $p$, with Lovász--Yemini stated as a matroid iso
 $M_{p_{\text{gen}}} \cong \mathrm{rigidityMatroid}\,V$) is deferred to
 **Phase 8**, which will add `apnelson1/Matroid` as a dependency.
+
+### Phase 8 — Linear-matroid framing (`LinearRigidityMatroid.lean`)
+
+In progress. Packages the planar rigidity matroid in its
+linear-algebra form via `Matroid.ofFun` of the rigidity-row function
+at a generic placement, and identifies it with the combinatorial
+$(2, 3)$-count matroid of Phase 7. The target lemma is
+Lovász--Yemini stated as a matroid isomorphism
+
+```
+linearRigidityMatroid V 2 ≅ rigidityMatroid V
+```
+
+rather than just an independence iff (the latter is
+`SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent`, landed
+in Phase 7). The phase adds `apnelson1/Matroid` as a `lakefile.toml`
+dependency for `Matroid.ofFun` and `Module.matroid`; the matching
+toolchain pin was confirmed in the Phase 6 investigation (commit
+`5f11c6b`). Runs in **forward blueprint mode** with the existing
+`blueprint/src/chapter/rigidity-matroid.tex` extended to host the
+linear-matroid section. See `notes/Phase8.md` for the live lemma
+checklist, decisions made, and hand-off.
 
 ## Engineering conventions
 
