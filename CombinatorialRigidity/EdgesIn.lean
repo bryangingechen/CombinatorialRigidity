@@ -29,6 +29,10 @@ graph rather than a `Set (Sym2 V)`. See `DESIGN.md` for the rationale.
 * `SimpleGraph.mk_mem_edgesIn` — specialised pair-form constructor for `mem_edgesIn`.
 * `SimpleGraph.edgesIn_subset_edgeSet`, `edgesIn_mono` — basic inclusions.
 * `SimpleGraph.edgesIn_univ`, `edgesIn_empty`, `edgesIn_bot` — corner cases.
+* `SimpleGraph.edgeSet_fromEdgeSet_of_off_diag`,
+  `SimpleGraph.edgesIn_fromEdgeSet_of_off_diag` — for off-diagonal `X`
+  (i.e. `X ⊆ ⊤.edgeSet`), `fromEdgeSet X`'s `edgeSet` is already `X`, and
+  consequently `(fromEdgeSet X).edgesIn S = X ∩ S.sym2`.
 * `SimpleGraph.edgesIn_finite` — finiteness over a finite vertex set.
 * `SimpleGraph.mem_edgesIn_compl_singleton`, `edgesIn_compl_singleton` — vertex-deletion
   identities.
@@ -98,6 +102,23 @@ lemma edgesIn_mono {s t : Set V} (h : s ⊆ t) : G.edgesIn s ⊆ G.edgesIn t :=
 
 @[simp] lemma edgesIn_bot (s : Set V) : (⊥ : SimpleGraph V).edgesIn s = ∅ := by
   simp [edgesIn]
+
+/-- For an off-diagonal edge set `X` (i.e. `X ⊆ ⊤.edgeSet`), `fromEdgeSet X` already
+has `X` as its edge set — no `sdiff Sym2.diagSet` to clear. -/
+lemma edgeSet_fromEdgeSet_of_off_diag {X : Set (Sym2 V)}
+    (hX : X ⊆ (⊤ : SimpleGraph V).edgeSet) : (fromEdgeSet X).edgeSet = X := by
+  rw [edgeSet_fromEdgeSet, sdiff_eq_left, Set.disjoint_left]
+  intro e he_X he_diag
+  exact (edgeSet_top (V := V) ▸ hX he_X) he_diag
+
+/-- Combined `edgesIn` + off-diagonal `fromEdgeSet` simplification: for `X ⊆ ⊤.edgeSet`,
+`(fromEdgeSet X).edgesIn S = X ∩ S.sym2`. Composes `edgeSet_fromEdgeSet_of_off_diag` with
+the definition of `edgesIn`. -/
+lemma edgesIn_fromEdgeSet_of_off_diag {X : Set (Sym2 V)}
+    (hX : X ⊆ (⊤ : SimpleGraph V).edgeSet) (S : Set V) :
+    (fromEdgeSet X).edgesIn S = X ∩ S.sym2 := by
+  unfold edgesIn
+  rw [edgeSet_fromEdgeSet_of_off_diag hX]
 
 /-- A singleton set spans no edges: a single vertex contains no edge of a simple graph because
 edges are non-loops. -/

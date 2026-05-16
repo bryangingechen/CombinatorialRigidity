@@ -1426,21 +1426,12 @@ section Augmentation
 
 variable [Finite V]
 
-/-- **Off-diagonality of edges gives `u ≠ v`.** Convenience unfold of
-`(⊤ : SimpleGraph V).edgeSet = Sym2.diagSetᶜ` at a pair edge. -/
+/-- **Off-diagonality of edges gives `u ≠ v`.** Pair-form specialization of
+mathlib's `SimpleGraph.not_isDiag_of_mem_edgeSet` (applied to `⊤`) through
+`Sym2.mk_isDiag_iff`. -/
 private lemma ne_of_mem_top_edgeSet {V : Type*} {u v : V}
-    (he : s(u, v) ∈ (⊤ : SimpleGraph V).edgeSet) : u ≠ v := by
-  rw [edgeSet_top, Set.mem_compl_iff, Sym2.mem_diagSet, Sym2.mk_isDiag_iff] at he
-  exact he
-
-/-- **`(fromEdgeSet I).edgeSet = I` for off-diagonal `I`.** -/
-private lemma edgeSet_fromEdgeSet_of_off_diag {V : Type*} {I : Set (Sym2 V)}
-    (hI_off : I ⊆ (⊤ : SimpleGraph V).edgeSet) :
-    (fromEdgeSet I).edgeSet = I := by
-  rw [edgeSet_fromEdgeSet, sdiff_eq_left, Set.disjoint_left]
-  intro e he_I he_diag
-  have he_off : e ∈ Sym2.diagSetᶜ := edgeSet_top (V := V) ▸ hI_off he_I
-  exact he_off he_diag
+    (he : s(u, v) ∈ (⊤ : SimpleGraph V).edgeSet) : u ≠ v :=
+  Sym2.mk_isDiag_iff.not.mp ((⊤ : SimpleGraph V).not_isDiag_of_mem_edgeSet he)
 
 /-- **Matroid augmentation in the matroidal regime.** For finite `V` and `ℓ < 2 * k`,
 if `I, J ⊆ E(K_V)` are both `(k, ℓ)`-sparse with `|I| < |J|`, then some `e ∈ J \ I`
@@ -1480,11 +1471,9 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
     rw [Finset.mem_insert, Finset.mem_singleton] at hx
     rcases hx with rfl | rfl <;> assumption
   -- Anchor finset of an edge: `{u, v}` for `e = s(u, v)`. Has card 2 off-diag.
-  have h_toFinset_card_two : ∀ {e : Sym2 V}, e ∈ J \ I → 2 ≤ e.toFinset.card := by
-    intro e he_diff
-    have he_off : e ∈ (⊤ : SimpleGraph V).edgeSet := hJ_off he_diff.1
-    rw [edgeSet_top, Set.mem_compl_iff] at he_off
-    rw [Sym2.card_toFinset_of_not_isDiag e (fun h => he_off (Sym2.mem_diagSet.mpr h))]
+  have h_toFinset_card_two : ∀ {e : Sym2 V}, e ∈ J \ I → 2 ≤ e.toFinset.card := fun he_diff =>
+    (Sym2.card_toFinset_of_not_isDiag _
+      ((⊤ : SimpleGraph V).not_isDiag_of_mem_edgeSet (hJ_off he_diff.1))).ge
   -- (Step 2) Comps: the Finset of distinct I-components of edges in J \ I.
   -- Using J as the indexing source; for e ∉ J\I we'll see this never matters.
   have hdiff_fin : (J \ I).Finite := hJ_fin.subset Set.diff_subset
@@ -1521,9 +1510,8 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
     obtain ⟨e₂, he₂_diff, rfl⟩ := hC₂
     rw [hmem_diff] at he₁_diff he₂_diff
     -- Reduce both equalities to `maxBlock e.toFinset`.
-    have he_card_two : 2 ≤ e.toFinset.card := by
-      rw [edgeSet_top, Set.mem_compl_iff] at he_top
-      rw [Sym2.card_toFinset_of_not_isDiag e (fun h => he_top (Sym2.mem_diagSet.mpr h))]
+    have he_card_two : 2 ≤ e.toFinset.card :=
+      (Sym2.card_toFinset_of_not_isDiag _ ((⊤ : SimpleGraph V).not_isDiag_of_mem_edgeSet he_top)).ge
     have h_eq₁ : (fromEdgeSet I).maxBlock k ℓ e.toFinset
         = (fromEdgeSet I).maxBlock k ℓ e₁.toFinset :=
       hI.maxBlock_eq_of_subset_maxBlock hℓ (h_toFinset_card_two he₁_diff) he_card_two
@@ -1533,25 +1521,14 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
       hI.maxBlock_eq_of_subset_maxBlock hℓ (h_toFinset_card_two he₂_diff) he_card_two
         (hBlock he₂_diff) h2
     rw [← h_eq₁, ← h_eq₂]
-  -- (Step 5) "edgesIn(fromEdgeSet X) C = X ∩ (↑C).sym2" for X off-diag.
-  have h_edgesIn_eq : ∀ {X : Set (Sym2 V)}, X ⊆ (⊤ : SimpleGraph V).edgeSet →
-      ∀ (S : Set V), (fromEdgeSet X).edgesIn S = X ∩ S.sym2 := by
-    intro X hX S
-    unfold edgesIn
-    rw [edgeSet_fromEdgeSet_of_off_diag hX]
-  -- (Step 6) Partition pieces and disjointness.
+  -- (Step 5) Partition pieces and disjointness.
   -- The "components piece" for X: ⋃_{C ∈ Comps} X ∩ ↑C.sym2.
-  -- For e off-diag in C.sym2, e.toFinset ⊆ C.
+  -- For e off-diag in C.sym2, e.toFinset ⊆ C. (The off-diag hypothesis is not needed;
+  -- `Sym2.coe_toFinset` bridges the Sym2-to-Set coercion to the Finset.toFinset version.)
   have h_toFinset_sub_iff : ∀ {e : Sym2 V} {C : Finset V},
-      e ∈ (⊤ : SimpleGraph V).edgeSet → (e ∈ ((↑C : Set V).sym2) ↔ e.toFinset ⊆ C) := by
-    intro e C _
-    rw [Set.mem_sym2_iff_subset]
-    constructor
-    · intro h_sub x hx
-      rw [Sym2.mem_toFinset] at hx
-      exact_mod_cast h_sub hx
-    · intro h_sub x hx
-      exact_mod_cast h_sub (Sym2.mem_toFinset.mpr hx)
+      e ∈ ((↑C : Set V).sym2) ↔ e.toFinset ⊆ C := by
+    intro e C
+    rw [Set.mem_sym2_iff_subset, ← Sym2.coe_toFinset, Finset.coe_subset]
   -- The components partition: pairwise disjoint X ∩ ↑C.sym2.
   have h_pairwiseDisjoint : ∀ {X : Set (Sym2 V)}, X ⊆ (⊤ : SimpleGraph V).edgeSet →
       (↑Comps : Set (Finset V)).PairwiseDisjoint (fun C : Finset V => X ∩ (↑C : Set V).sym2) := by
@@ -1559,10 +1536,8 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
     refine Set.disjoint_left.mpr ?_
     intro e ⟨he_X, he_C₁⟩ ⟨_, he_C₂⟩
     refine hC12 ?_
-    have he_top := hX he_X
-    have h1 := (h_toFinset_sub_iff he_top).mp he_C₁
-    have h2 := (h_toFinset_sub_iff he_top).mp he_C₂
-    exact h_edge_uniq he_top C₁ hC₁ C₂ hC₂ h1 h2
+    exact h_edge_uniq (hX he_X) C₁ hC₁ C₂ hC₂
+      (h_toFinset_sub_iff.mp he_C₁) (h_toFinset_sub_iff.mp he_C₂)
   -- (Step 7) For each C ∈ Comps: J-card on C ≤ I-card on C (I-tightness + J-sparsity).
   have h_C_ineq : ∀ C ∈ Comps,
       (J ∩ (↑C : Set V).sym2).ncard ≤ (I ∩ (↑C : Set V).sym2).ncard := by
@@ -1570,8 +1545,8 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
     have hC_I_tight := hC_tight C hC
     have hC_size : ℓ ≤ k * C.card := by unfold IsTightOn at hC_I_tight; omega
     have hC_J_sparse := hJ C hC_size
-    rw [h_edgesIn_eq hJ_off (↑C : Set V)] at hC_J_sparse
-    rw [← h_edgesIn_eq hI_off (↑C : Set V)]
+    rw [edgesIn_fromEdgeSet_of_off_diag hJ_off (↑C : Set V)] at hC_J_sparse
+    rw [← edgesIn_fromEdgeSet_of_off_diag hI_off (↑C : Set V)]
     unfold IsTightOn at hC_I_tight
     omega
   -- (Step 8) Decompose I and J into "in some component" + "free", and count.
@@ -1611,9 +1586,8 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
     have h_block := hBlock he_diff
     have h_sub : e.toFinset ⊆ (fromEdgeSet I).maxBlock k ℓ e.toFinset :=
       subset_maxBlock_of_hasBlock h_block
-    have he_top : e ∈ (⊤ : SimpleGraph V).edgeSet := hJ_off he_J
     have he_in : e ∈ (↑((fromEdgeSet I).maxBlock k ℓ e.toFinset) : Set V).sym2 :=
-      (h_toFinset_sub_iff he_top).mpr h_sub
+      h_toFinset_sub_iff.mpr h_sub
     apply he_notIn
     rw [hCU_def]
     refine Set.mem_iUnion.mpr ⟨(fromEdgeSet I).maxBlock k ℓ e.toFinset, ?_⟩

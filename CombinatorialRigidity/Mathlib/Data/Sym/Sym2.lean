@@ -52,6 +52,10 @@ copy-paste alongside `Sym2.mem_map` / `Sym2.coe_map`. See
 * `Sym2.notMem_map_some` — `none ∉ Sym2.map some e`. Tagged `@[simp]`.
 * `Sym2.disjoint_image_map_some` — disjointness packaging: `Sym2.map some '' S`
   is disjoint from any `T` whose elements all contain `none`.
+* `Sym2.coe_toFinset` — the `Set`-coercion of `z.toFinset` equals the
+  `SetLike` coercion of `z`. Tagged `@[simp]` so `e.toFinset ⊆ C` and
+  `(↑e : Set α) ⊆ (↑C : Set α)` interconvert in one rewrite (paired with
+  `Finset.coe_subset`).
 -/
 
 namespace Sym2
@@ -122,5 +126,15 @@ theorem disjoint_image_map_some {S : Set (Sym2 α)} {T : Set (Sym2 (Option α))}
   rw [Set.disjoint_left]
   rintro _ ⟨e, _, rfl⟩ heT
   exact notMem_map_some e (hT _ heT)
+
+/-- The `Set`-coercion of `z.toFinset` equals the `SetLike` coercion of `z` itself.
+Tagged `@[simp]` so the `Sym2.toFinset` cast canonicalizes to the underlying `SetLike`
+coercion in goals like `e.toFinset ⊆ C ↔ (↑e : Set α) ⊆ (↑C : Set α)`. Not `norm_cast`
+because both sides are coe functions; `norm_cast`'s direction-of-simplification heuristic
+requires the RHS to have strictly fewer coes than the LHS. -/
+@[simp]
+lemma coe_toFinset [DecidableEq α] (z : Sym2 α) : (z.toFinset : Set α) = (↑z : Set α) := by
+  ext x
+  rw [Finset.mem_coe, Sym2.mem_toFinset, SetLike.mem_coe]
 
 end Sym2

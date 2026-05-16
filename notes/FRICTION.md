@@ -1099,6 +1099,28 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
 
+### [mirrored] `Sym2.coe_toFinset` (Sym2-to-Set coercion of `toFinset`)
+- **Where it bit:** Phase 7 cleanup C4 walk of
+  `IsSparse.exists_aug_of_lt_two_mul` (`Sparsity.lean`:1445), local
+  `have h_toFinset_sub_iff : e ∈ (↑C : Set V).sym2 ↔ e.toFinset ⊆ C`
+  (~10-line manual proof via `Set.mem_sym2_iff_subset` + per-direction
+  `Sym2.mem_toFinset` rewrites + `exact_mod_cast`).
+- **Friction:** mathlib has `Sym2.mem_toFinset : x ∈ z.toFinset ↔ x ∈ z`
+  and `Set.mem_sym2_iff_subset : z ∈ s.sym2 ↔ (↑z : Set α) ⊆ s`, but no
+  direct equality between the two `Set α`-valued coercions
+  `(↑z.toFinset : Set α)` and `(↑z : Set α)`. Each callsite that wants
+  to bridge `(↑z : Set α) ⊆ s` and `z.toFinset ⊆ s` re-proves the
+  pointwise equivalence by hand.
+- **Resolution:** mirrored as
+  `Sym2.coe_toFinset (z : Sym2 α) [DecidableEq α] : (z.toFinset : Set α) = ↑z`.
+  Tagged `@[simp]` (not `@[norm_cast]` — Lean's `norm_cast` heuristic
+  rejects when both sides are coes, requiring the RHS to strictly drop
+  coes). With the mirror, the `h_toFinset_sub_iff` proof collapses to a
+  3-token `rw [Set.mem_sym2_iff_subset, ← Sym2.coe_toFinset, Finset.coe_subset]`
+  chain.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
+
 ### [mirrored] `(G.incidenceSet v).ncard = G.degree v`
 - **Where it bit:** `IsLaman.two_le_degree` (Phase 2).
 - **Friction:** mathlib has `card_incidenceSet_eq_degree` for

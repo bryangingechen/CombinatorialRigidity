@@ -2,7 +2,8 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
-commits (a/b/c/d). The audit found 6 of 8
+commits (a/b/c/d). Bucket C in progress (C1–C4 closed; C5–C10
+open as discrete task items). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
 style; the Zulip thread *Unused Decidable Instances linter*
@@ -64,10 +65,14 @@ the **lift+restrict+factor+oldSet-LI pattern** shared verbatim across
 follow-up extraction candidates have been opened as discrete task
 items **C5–C10** in the Bucket C checklist below (with C4's pre-flagged
 helpers absorbing the seventh); future sessions can pick them up
-independently. Subsequent work order: **C4 (focused
-`exists_aug_of_lt_two_mul` walk) → C5 (cross-cutting
-`linearIndepOn_image_rigidityRow_of_injective` extraction) → C6–C10
-in priority order → D**.
+independently. C4 closed 2026-05-16: focused walk of
+`IsSparse.exists_aug_of_lt_two_mul` landed all three pre-flagged
+extractions (mirror `Sym2.coe_toFinset`, public `edgesIn_fromEdgeSet_of_off_diag`,
+collapsed `h_toFinset_sub_iff` via the new mirror), plus a bonus
+mathlib-miss `SimpleGraph.not_isDiag_of_mem_edgeSet` that subsumed a
+planned private helper. Body LoC: 184 → 167. Subsequent work order:
+**C5 (cross-cutting `linearIndepOn_image_rigidityRow_of_injective`
+extraction) → C6–C10 in priority order → D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -1002,19 +1007,44 @@ Each is a separate commit, root-cause fix preferred.
   Option 3 of the Phase 7 blocker (the principled
   `rank R_typeII = rank R_{G'} + 2` API) remains deferred; option 1's
   ~24-line incremental savings on each typeII core has now landed.
-- [ ] C4: **Specific candidate — `IsSparse.exists_aug_of_lt_two_mul`**
-  (Phase 7 Commit 17c). ~210 LoC (184 by current awk count). Walk the
-  proof for API extraction candidates: the off-diag helpers
-  `ne_of_mem_top_edgeSet` / `edgeSet_fromEdgeSet_of_off_diag` are
-  already extracted; are there more sub-blocks that would be cleaner
-  as named lemmas? The C2 walk pre-flagged three: extract
-  `edgesIn_fromEdgeSet_of_off_diag` to `EdgesIn.lean` (used 4× locally,
-  lines 1537-1541); a `Sym2.card_toFinset_of_mem_top_edgeSet`
-  convenience wrapper (lines 1483-1487 + 1524-1526 duplicate); and the
-  off-diag-edge variant of `e ∈ (↑C).sym2 ↔ e.toFinset ⊆ C` (lines
-  1545-1554). Walking the rest of the proof end-to-end is C4's
-  task; the three pre-flagged extractions are the expected core
-  output.
+- [x] C4: **Specific candidate — `IsSparse.exists_aug_of_lt_two_mul`**
+  (Phase 7 Commit 17c). **Closed 2026-05-16.** Body LoC 184 → 167
+  (saved 17 ≈ 9%). The three pre-flagged extractions all landed:
+  - **`Sym2.coe_toFinset` mirror** (new `@[simp]` lemma in
+    `CombinatorialRigidity/Mathlib/Data/Sym/Sym2.lean`): bridges the
+    `Sym2 → Set` and `Sym2.toFinset → Set` coercions; not `norm_cast`
+    because both sides are coes (the heuristic requires strict-fewer
+    coes on the RHS). Consumed by the new `h_toFinset_sub_iff` body
+    (3-line `rw` chain `Set.mem_sym2_iff_subset, ← Sym2.coe_toFinset,
+    Finset.coe_subset`; replaces the original 10-line manual proof).
+  - **`SimpleGraph.edgeSet_fromEdgeSet_of_off_diag` +
+    `edgesIn_fromEdgeSet_of_off_diag`** (new lemmas in `EdgesIn.lean`):
+    public versions of the former `private`-in-Sparsity helper, with
+    the `edgesIn`-extended composite delivered for direct use. The
+    local `h_edgesIn_eq` 4-line `have` block deleted; the two
+    rewrite call sites now consume `edgesIn_fromEdgeSet_of_off_diag`
+    directly.
+  - **`Sym2.card_toFinset_of_not_isDiag` direct calls** (no helper
+    introduced): the two duplicate 3-line blocks deriving
+    `2 ≤ e.toFinset.card` from `e ∈ ⊤.edgeSet` both collapse to a
+    single term-mode line `(Sym2.card_toFinset_of_not_isDiag _ (...
+    .not_isDiag_of_mem_edgeSet (hJ_off he_diff.1))).ge` once the
+    mathlib `SimpleGraph.not_isDiag_of_mem_edgeSet` is in hand (see
+    next bullet).
+  
+  **One bonus mathlib-miss discovered mid-walk.** The planned private
+  helper `not_isDiag_of_mem_top_edgeSet` was redundant —
+  `SimpleGraph.not_isDiag_of_mem_edgeSet` already exists in mathlib
+  (`Mathlib/Combinatorics/SimpleGraph/Basic.lean`:474) for any `G`,
+  not just `⊤`. Direct use at the two `Sym2.card_toFinset_of_not_isDiag`
+  call sites; the private wrapper `ne_of_mem_top_edgeSet`
+  (pair-form specialization) now composes through it.
+  
+  End-to-end walk surfaced no further high-leverage extractions. The
+  remaining proof structure — Steps 2–9 of the I-component partition
+  argument — is specific to this proof and doesn't share patterns
+  with other long proofs in the project (cross-checked against the C2
+  cross-cutting candidate inventory).
 - [ ] C5: **Cross-cutting extraction — `linearIndepOn_image_rigidityRow_of_injective`.**
   Highest-leverage finding from C2 (~80-100 LoC compound savings).
   Generic shape:
@@ -1274,6 +1304,25 @@ checkbox.)*
   finding; none surfaced a pure tactic-substitution win at this
   depth (the C3 `linear_combination (norm := …)` move was the
   last of those).
+
+- **C4 — focused walk of `IsSparse.exists_aug_of_lt_two_mul`.** All
+  three pre-flagged extractions landed; body LoC 184 → 167 (saved
+  17 ≈ 9%). New `Sym2.coe_toFinset` `@[simp]` lemma mirrored under
+  `CombinatorialRigidity/Mathlib/Data/Sym/Sym2.lean` bridges the
+  `Sym2 → Set` and `Sym2.toFinset → Set` coercions; not `norm_cast`
+  because both sides are coes (the heuristic rejects when the RHS
+  doesn't strictly drop coes). New public `edgeSet_fromEdgeSet_of_off_diag`
+  + `edgesIn_fromEdgeSet_of_off_diag` in `EdgesIn.lean` consume the
+  former `private`-in-Sparsity helper and add the `edgesIn`-extended
+  composite. Two duplicate `Sym2.card_toFinset_of_not_isDiag` blocks
+  collapsed to term-mode 1-liners. **Bonus mathlib-miss avoided.** A
+  planned `not_isDiag_of_mem_top_edgeSet` private helper was scrapped
+  on discovering mathlib's existing `SimpleGraph.not_isDiag_of_mem_edgeSet`
+  (`Mathlib/Combinatorics/SimpleGraph/Basic.lean`:474), which works
+  for any `G`, not just `⊤`. End-to-end walk surfaced no further
+  high-leverage extractions; the rest of the proof (Steps 2–9 of
+  the I-component partition argument) is specific to this proof and
+  doesn't pattern-match other long proofs.
 
 - **C3 — typeII conditional core unification.** Extracted
   `typeII_collinear_inner_combo` in `HennebergRigidity.lean` (just
