@@ -1,6 +1,19 @@
 # Phase 8 — perf pass (work log)
 
-**Status:** in progress.
+**Status:** in progress (F1 closed; F2/F3 pending).
+
+## Current state
+
+F1 (Sparsity L1267 split) closed: `Sparsity.lean` 1620 → 1273 LoC;
+`SparsityIComponents.lean` new at 392 LoC; `CountMatroid.lean` swapped
+its import. Build + lint clean. 4-run A/B: each target's median moved
+≤ 6 s with inconsistent signs across targets, project-total essentially
+flat — the audit's "1-3 s/file, in the noise band" prediction held.
+**Verdict: structurally clean, perf-neutral.** Next: F2 (Henneberg
+L444 split), reusing F1.4's post-split numbers as F2.1's baseline
+per the *Reuse adjacent baselines* architectural choice.
+
+## Pass overview
 
 This is the post-Phase-8 perf pass discharging the structural-refactor
 carry-over from the Phase 8-cleanup round's *Hand-off / next phase*
@@ -56,23 +69,60 @@ executed) during Phase 8-cleanup's bucket E:
 
 ### F1 — `Sparsity.lean` split at L1267
 
-- [ ] **F1.1:** Establish baseline. 4-run A/B per
-  `PERFORMANCE.md` *Measurement protocol* on the three analysis-heavy
-  targets + `lake build` project total. Record medians in this
-  work log under *Decisions made → F1.1 baseline*.
-- [ ] **F1.2:** Execute the split. Move the IComponents+Augmentation
-  block (lines 1267+ of `Sparsity.lean` — see the split-line
-  inventory in `PERFORMANCE.md` *Split candidates ranked by
-  leverage* §1) to a new file
-  `CombinatorialRigidity/SparsityIComponents.lean`. Add a header
-  matching the project's file-header convention; update
-  `CountMatroid.lean` to import the new module.
-- [ ] **F1.3:** Verify everything still builds + lints clean.
-  Project-wide grep for `import .*Sparsity` confirms only the
-  expected consumers; update imports as needed.
-- [ ] **F1.4:** Post-split measurement. 4-run A/B on the same
-  targets. Record medians; flag whether each target's median
-  moves out of the ±5 s noise band.
+- [x] **F1.1:** Baseline established. 4-run medians (commit `43a2b84`,
+  toshiba M-series arm64, macOS 26.4.1):
+
+  | Target | run 1 | run 2 | run 3 | run 4 | median |
+  |---|---|---|---|---|---|
+  | `HennebergRigidity` | 80.6 | 66.6 | 38.8 | 47.9 | **57.3 s** |
+  | `RigidityMatroid` | 51.5 | 52.6 | 54.9 | 64.3 | **53.7 s** |
+  | `LinearRigidityMatroid` | 101.3 | 60.8 | 59.6 | 63.8 | **62.3 s** |
+  | `lake build` (project) | 74.7 | 19.7 | 18.7 | 22.8 | **21.2 s** |
+
+  Per-target rows nudge the target file directly (measures
+  elaboration of that file with cached deps). Project-total nudges
+  `EdgesIn.lean` (top of the import chain), forcing a chain
+  invalidation; runs 2-4 show `Replayed` semantics (downstream
+  oleans byte-identical despite source nudge), so the project-
+  total median primarily reflects the EdgesIn+Sparsity rebuild
+  cost rather than full-chain elaboration. The same protocol is
+  used post-split, so the comparison stays apples-to-apples.
+
+- [x] **F1.2:** Split executed. `Sparsity.lean` 1620 → 1273 LoC;
+  new file `CombinatorialRigidity/SparsityIComponents.lean` at
+  367 LoC carries the IComponents + Augmentation block (sections
+  preserved, `variable {V : Type*}` redeclared at the new file's
+  `namespace SimpleGraph`). `CountMatroid.lean` switched its
+  `import` from `.Sparsity` to `.SparsityIComponents` (the new
+  file transitively imports `.Sparsity`, so the rest of the
+  base API stays in scope).
+- [x] **F1.3:** Build + lint clean. Project-wide grep confirms
+  only `CountMatroid` directly imports `.SparsityIComponents`;
+  the seven non-matroid downstream files (`Laman`, `Framework`,
+  `Henneberg`, `TrivialMotions`, `HennebergRigidity`,
+  `RigidityMatroid`, `LamanTheorem`) drop the moved block from
+  their transitive import set. Top-level `CombinatorialRigidity.lean`
+  pulls both halves via its existing `CountMatroid` import.
+- [x] **F1.4:** Post-split medians:
+
+  | Target | run 1 | run 2 | run 3 | run 4 | median | Δ vs baseline |
+  |---|---|---|---|---|---|---|
+  | `HennebergRigidity` | 60.0 | 51.8 | 50.6 | 51.0 | **51.4 s** | −5.9 s |
+  | `RigidityMatroid` | 61.0 | 57.6 | 61.2 | 55.4 | **59.3 s** | +5.6 s |
+  | `LinearRigidityMatroid` | 98.9 | 54.3 | 57.9 | 53.1 | **56.1 s** | −6.2 s |
+  | `lake build` (project) | 70.1 | 21.3 | 14.0 | 20.5 | **20.9 s** | −0.3 s |
+
+  Each Δ sits right at the ±5 s noise band; signs are inconsistent
+  (HR and LRM down, RM up); project-total essentially flat. Audit
+  prediction held ("1–3 s per file, in the noise band").
+
+  **F1 verdict: structurally clean, perf-neutral.** The win is the
+  module organization — the Phase-7 matroid-side machinery now lives
+  in its own file, matching the blueprint chapter split (`sparsity.tex`
+  vs `count-matroid.tex`) and the audit's single-downstream-consumer
+  finding. No measurable wall-clock improvement on the analysis-heavy
+  targets; the audit's predicted ~1-3 s/file savings sit below the
+  noise floor of the 4-run protocol.
 
 ### F2 — `Henneberg.lean` split at L444
 
@@ -113,7 +163,16 @@ executed) during Phase 8-cleanup's bucket E:
 
 ### Phase-local choices and proof techniques
 
-*(Empty — populate as F1 / F2 / F3 land.)*
+- **`variable {V : Type*}` redeclared in `SparsityIComponents`.** The
+  base `Sparsity.lean` declared `variable {V : Type*} (G : SimpleGraph V)`
+  at L107 (just under `namespace SimpleGraph`); since `V` is implicit
+  and `G` was made implicit again at L126 (`variable {G}`), only `V`
+  actually flowed forward into the moved sections. The new file's
+  `namespace SimpleGraph` therefore redeclares `variable {V : Type*}`
+  alone — first build attempt failed with *"Unknown identifier `V`"* at
+  the `private lemma ne_of_mem_top_edgeSet {V : Type*}` site (which
+  re-introduces `V` explicitly but downstream lemmas without an explicit
+  `V` binder need the section-level variable). One-shot fix.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -121,11 +180,23 @@ executed) during Phase 8-cleanup's bucket E:
 
 ### Cleanup pass summaries
 
-*(Empty — populate as each lever closes.)*
+**F1 — Sparsity.lean L1267 split.** `Sparsity.lean` 1620 → 1273 LoC;
+new file `SparsityIComponents.lean` at 392 LoC carries the
+IComponents (`HasBlock`, `maxBlock(Set)`, `IsSparse.maxBlock_isTightOn`,
+`IsSparse.maxBlock_eq_of_subset_maxBlock`) + Augmentation
+(`ne_of_mem_top_edgeSet`, `IsSparse.exists_aug_of_lt_two_mul`) blocks.
+`CountMatroid.lean` (the sole downstream consumer) swapped its
+`.Sparsity` import for `.SparsityIComponents`. Build + lint clean.
+4-run A/B baseline vs post-split: HR -5.9 s, RM +5.6 s, LRM -6.2 s,
+project-total -0.3 s — each individual Δ sits at the ±5 s noise band
+threshold with inconsistent signs. **Verdict: structurally clean,
+perf-neutral.** Audit's prediction held ("1-3 s/file, in the noise
+band"). The durable win is module organization (Phase-7 matroid-side
+machinery in its own file, matching the blueprint chapter split).
 
 ## Blockers / open questions
 
-*(None at pass open.)*
+*(None at F1 close.)*
 
 ## Hand-off / next phase
 
