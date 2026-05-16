@@ -1,6 +1,6 @@
 # Phase 8 cleanup round — work log
 
-**Status:** in progress (round just opened).
+**Status:** complete.
 
 This is the inter-phase cleanup round after Phase 8 closed. See
 `../CLEANUP.md` for the round-level operating manual: when to run a
@@ -31,17 +31,28 @@ structural-refactor round.
 
 ## Current state
 
-Buckets A (blueprint audit, 4 sub-tasks), B (5 sub-tasks), C
-(1 sub-task), and D (4 sub-tasks) all closed. Remaining: bucket E
-(import / file-structure audit, audit-only). Findings landed:
-B1 deleted one vestigial `classical`; B4 dropped two
-`show … from rfl` workarounds via `RingHom.mapMatrix_apply` and
-added a new `CLEANUP.md` smell row for the pattern; C1 saved
-~20 lines on the uniform-genericity proof via parallel-case
-unification + `Set.Finite.exists_notMem`; D1 compressed
-`Phase8.md` 253 → 236 LoC; D2 promoted the `Polynomial.X`
-ascription quirk to TACTICS-QUIRKS § 15. Bucket E is audit-only
-per the round-open scoping decision.
+**Round complete.** All buckets A-E closed. Findings landed:
+
+- **A** (blueprint↔Lean audit, 4 sub-tasks): all five Phase 8
+  dep-graph nodes verified clean; `checkdecls` passes; statement
+  forms faithful; honest formalization asides.
+- **B** (code-smell sweep, 5 sub-tasks): one vestigial `classical`
+  deleted (B1); two `show … from rfl` workarounds dropped via
+  `RingHom.mapMatrix_apply` (B4); the pattern got a new CLEANUP.md
+  smell row; the two new mirror lemmas stay deferred (B5).
+- **C** (long-proof audit, 1 sub-task): saved ~20 lines on
+  `exists_uniform_rowIndependent_placement_dim_two` via parallel-
+  case unification + `Set.Finite.exists_notMem`.
+- **D** (project-org compression, 4 sub-tasks): `Phase8.md` 253
+  → 236 LoC; `Polynomial.X` ascription quirk promoted to
+  TACTICS-QUIRKS § 15.
+- **E** (import / file-structure audit-only, 5 sub-tasks): written
+  into PERFORMANCE.md; headline is the cleanest-possible
+  `Sparsity.lean` split at L1267 (single-downstream consumer
+  verified); module-system conversion is now ripe.
+
+No follow-up phase queued per the round-open default. Carry-overs
+listed under *Hand-off / next phase* below.
 
 ## Architectural choices made up front
 
@@ -253,62 +264,45 @@ File-size inventory (project source, descending; commit `2f3f036`):
 - `Laman.lean` 143 LoC
 - `CountMatroid.lean` 93 LoC
 
-- [ ] **E1:** Build an explicit import-graph + downstream-impact
-  map. Each file's direct importers (already gathered) plus the
-  transitive importer set. Headline target: identify which files,
-  if split, reduce the transitive-import surface of how many
-  downstream files. Per PERFORMANCE.md, the dominant cost is
-  import loading (~25–27 s for analysis-heavy files); reducing
-  transitive imports is the lever.
-- [ ] **E2:** For each file > ~600 LoC, identify the natural cut
-  line. Concrete starting candidates per a first-pass file
-  outline:
-  - **`Sparsity.lean` (1620 LoC):** plausibly splits into a base
-    (`IsSparse` / `IsTight` definitions + monotonicity) and an
-    `IComponents` half (the `IsSparse.maxBlock` + I-component
-    matroidal-regime scaffolding added during Phase 7). The
-    base is what `Laman.lean` / `EdgesIn.lean`'s downstream needs
-    most; `IComponents` is Phase 7's matroid-side need and only
-    `MatroidIdentification.lean` / `CountMatroid.lean` use it.
-  - **`MatroidIdentification.lean` (975 LoC):** the typeI/typeII
-    *extends* lemmas (Phase 7) and the rigidity-matroid
-    instantiation could plausibly split. Check the natural cut
-    against the Phase 7-cleanup C5/C10 extracted helpers' homes.
-  - **`Henneberg.lean` (647 LoC):** the typeI/typeII move
-    *definitions* + edge-set decomps vs the iso constructors +
-    flat-form reverse decomposition. Possibly natural; possibly
-    not (the reverse decomposition consumes a lot of the API).
-  - **`HennebergRigidity.lean` (638 LoC):** per-move IR
-    preservation theorems are the body; possibly one file per
-    move (typeI / typeII) given how independent they are.
-  - **`RigidityMatroid.lean` (709 LoC):** the row-LI / span /
-    rank API vs the affinely-spanning perturbation + basis-pick
-    half. Check the natural cut.
-- [ ] **E3:** For each candidate split: estimate the build-graph
-  benefit. Concrete metric — how many downstream files'
-  transitive-import set shrinks, and by what (LoC of moved
-  declarations). The biggest single win is plausibly the
-  `Framework.lean → Sparsity.lean` edge, since `Framework`
-  imports all 1620 LoC of `Sparsity.lean` for what is mostly
-  `edgesIn` / `IsTight 2 3`-level usage in the rigidity bound;
-  if `Framework` only needs the *base* half, splitting
-  `Sparsity.lean` shrinks the analysis-side import floor.
-- [ ] **E4:** Module-system conversion option. PERFORMANCE.md
-  *Module system* notes the conversion is "plausibly a win
-  post-Phase-6, but still unmeasured" and is multi-file
-  (must convert every transitively-imported file first). Audit:
-  is mathlib's module-system conversion mature enough on
-  `v4.X` that this is now a one-session refactor, or is it still
-  multi-session? (Spot-check mathlib's `Mathlib/Analysis` /
-  `Mathlib/Combinatorics/SimpleGraph` for `module` markers.) Don't
-  execute; recommend.
-- [ ] **E5:** Write recommendations to PERFORMANCE.md as concrete
-  split proposals (with the E1–E4 findings). If any
-  recommendation rises to a project-policy question (e.g.
-  "should we split files at the 800-LoC threshold as a
-  convention?"), add a DESIGN.md *Choices to revisit* entry.
-  Update ROADMAP.md *Directory layout* only if a split actually
-  ships — for an audit-only round, ROADMAP stays unchanged.
+- [x] **E1:** Import graph + downstream-impact table written into
+  PERFORMANCE.md *Post-Phase-8 file-structure audit → Import
+  graph*. Headline insight: `EdgesIn` and `Sparsity` both reach
+  all 10 downstream files; `Framework`/`Laman`/`Henneberg`
+  reach 4-6 each; everything else 1-3.
+- [x] **E2:** Cut-line analysis done; results in PERFORMANCE.md
+  *Split candidates ranked by leverage*. Headline: **`Sparsity.lean`
+  at line 1267** is the cleanest split — the IComponents+
+  Augmentation block (354 LoC) has exactly *one* downstream
+  consumer (`CountMatroid.lean` uses `IsSparse.exists_aug_of_lt_two_mul`
+  once, line 77), verified by project-wide grep. Secondary: split
+  `Henneberg.lean` at L444 (forward vs reverse, medium leverage).
+  Tertiary: `MatroidIdentification.lean` at L776 (low leverage —
+  single downstream importer). Skip `RigidityMatroid` and
+  `HennebergRigidity` (downstream needs both halves of any natural
+  cut).
+- [x] **E3:** Per-split benefit estimates in PERFORMANCE.md. The
+  Sparsity split helps 8 downstream files drop ~354 LoC of Phase-7
+  combinatorial machinery (likely 1-3 s per file, in the noise band
+  — measure with the 4-run A/B protocol). The Henneberg split helps
+  `HennebergRigidity` and its downstream avoid ~200 LoC of reverse-
+  decomposition machinery. The MatroidIdentification split has no
+  transitive-import benefit (single downstream); style win only.
+- [x] **E4:** Module-system conversion is now **ripe**. Mathlib
+  v4.30.0-rc2 (our pin) is ~98.6 % converted (7943 / 8053 files
+  with `module` marker). `Analysis/InnerProductSpace` is 100 %
+  converted; `Combinatorics/SimpleGraph` ~99 %. The earlier
+  "multi-file refactor, must convert every transitive import
+  first" assessment is obsolete — upstream is essentially done,
+  so our 12 source files are the entire remaining scope.
+  Plausibly a one-session refactor; recommendation written into
+  PERFORMANCE.md *Module-system conversion: now ripe*.
+- [x] **E5:** PERFORMANCE.md updated with full bucket-E findings
+  (Import graph + downstream-impact table; Split candidates
+  ranked by leverage; Module-system conversion: now ripe). No
+  DESIGN.md *Choices to revisit* entry needed — the
+  recommendations are concrete proposals for a future
+  structural-refactor pass, not project-policy questions.
+  ROADMAP.md unchanged (audit-only round).
 
 ## Decisions made during this phase
 
@@ -398,18 +392,44 @@ no other needs Phase-8 touch.
 **D4 — No-residual-lifts audit clean.** The single Phase 8 lift
 entry resolves to `notes/FRICTION.md:619`.
 
+**E1-E5 — File-structure audit.** Written into PERFORMANCE.md as
+the *Post-Phase-8 file-structure audit* section. Headline finding:
+**`Sparsity.lean` at L1267** is the cleanest split candidate in the
+project — the IComponents+Augmentation block (354 LoC) has exactly
+one downstream consumer (`CountMatroid.lean` line 77). Eight of ten
+downstream files would drop the IComponents block from their
+transitive import set after the split. Secondary candidate:
+`Henneberg.lean` at L444 (forward vs reverse, medium leverage).
+Module-system conversion is now ripe — mathlib v4.30.0-rc2 is
+~98.6 % converted; the project's 12 source files are the entire
+remaining scope, plausibly a one-session refactor. **None executed
+this round** per the audit-only scoping decision.
+
 ## Blockers / open questions
 
 *(None at round open.)*
 
 ## Hand-off / next phase
 
-Round just opened; hand-off section to be populated at round close.
-Default expectation: no follow-up phase queued — Phase 8 closed the
-planned ROADMAP and this round is hygiene. Possible carry-overs:
+Round closes hygiene-only; Phase 8 already closed the planned
+ROADMAP and no follow-up phase is queued. Carry-overs from the
+round (none are critical-path):
 
-- Any E5 recommendation that the project decides to actually
-  execute spawns its own dedicated structural-refactor pass with
-  the PERFORMANCE.md 4-run A/B protocol.
-- Any B5 upstream-PR-eligible lemma filed against mathlib.
-- Any D2 promote-to-TACTICS-QUIRKS triggered by a second site.
+- **Structural-refactor pass.** PERFORMANCE.md *Post-Phase-8 file-
+  structure audit* recommends two splits ranked by leverage
+  (Sparsity at L1267, Henneberg at L444) plus the module-system
+  conversion (now ripe). Pick up as a dedicated perf pass with the
+  4-run A/B protocol; combine all three since they all touch the
+  import graph and one A/B campaign can measure the joint effect.
+- **`show … from rfl` project-wide sweep.** CLEANUP.md bucket B has
+  a new smell row; project-wide grep finds 4 additional sites
+  (RigidityMatroid L647, MatroidIdentification L119, TrivialMotions
+  L312, Mathlib/Data/Finset/Card L45). Next inter-phase cleanup
+  picks these up via the existing pattern.
+- **Upstream-PR work on the two new Rank.lean mirrors.** Deferred
+  per B5; revisit if mathlib refactors `Matrix.rank_self_mul_transpose`
+  or `Polynomial.finite_setOf_isRoot` in a way that makes the iff
+  packaging obviously missing.
+- **Continued FRICTION watch.** Two open Phase-8-era entries
+  (`LinearIndepOn.insert` chain shape, `h ▸` oversubstitution)
+  stay open; promote to TACTICS-QUIRKS on second-site hit.

@@ -223,6 +223,155 @@ the trend was either flat or slightly worse:
   + codRestrict`) extractions were all kept because they shortened multiple
   call sites and the abstraction was natural.
 
+## Post-Phase-8 file-structure audit (audit-only, no Lean changes)
+
+The post-Phase-8 cleanup round's bucket E surveyed the project's import
+graph and file sizes for split candidates. **Findings remain
+recommendations, not executed splits** — splits change the public API
+surface and warrant a dedicated structural-refactor pass with the 4-run
+A/B protocol below.
+
+### Import graph (project files, post-Phase-8)
+
+```
+EdgesIn  ──►  Sparsity  ──┬──►  Framework  ──┬──►  TrivialMotions  ──►  RigidityMatroid  ──┐
+                          │                   │                                              │
+                          │                   └──►  HennebergRigidity  ◄── Henneberg  ◄──┐  │
+                          │                                                              │  │
+                          ├──►  Laman  ──►  Henneberg                                    │  │
+                          │                                                              │  │
+                          └──►  CountMatroid  ──►  MatroidIdentification ◄──┴──┴──┴──────┘  │
+                                                          │                                  │
+                                                          └──►  LinearRigidityMatroid       │
+                                                          
+                          LamanTheorem  ◄──────────────────────────────────────────────────┘
+```
+
+(Linear-only project-internal arrows; transitive mathlib imports add
+the analysis floor.) Each file's transitive downstream-importer set:
+
+| File | LoC | Downstream importers (transitive) |
+|---|---|---|
+| `EdgesIn.lean` | 225 | 10 (all) |
+| `Sparsity.lean` | 1620 | 10 (all) |
+| `Framework.lean` | 376 | 6 |
+| `Laman.lean` | 143 | 5 |
+| `Henneberg.lean` | 647 | 4 |
+| `TrivialMotions.lean` | 353 | 4 |
+| `RigidityMatroid.lean` | 709 | 3 |
+| `HennebergRigidity.lean` | 638 | 3 |
+| `CountMatroid.lean` | 93 | 2 |
+| `MatroidIdentification.lean` | 975 | 1 |
+| `LamanTheorem.lean` | 199 | 0 (terminal) |
+| `LinearRigidityMatroid.lean` | 232 | 0 (terminal) |
+
+### Split candidates ranked by leverage
+
+1. **`Sparsity.lean` split (highest leverage).** Natural cut at line
+   1267, splitting `Sparsity.lean` into:
+   - **`SparsityBase`** (~1266 LoC): `IsSparse` / `IsTight` defs,
+     monotonicity, global edge bound, low-degree-vertex, non-adjacent-
+     pair-among-three-neighbors, `Iso` transport, the tight-subset
+     lattice, matroidal-regime block closure, three-neighbor
+     contradiction templates, per-pair tight-blocker (sparse form),
+     flat-form Henneberg reverse decomposition.
+   - **`SparsityIComponents`** (~354 LoC): matroidal-regime maximal
+     I-blocks (`HasBlock`, `maxBlockSet`, `maxBlock`, `IsSparse.maxBlock_*`)
+     and the augmentation lemma `IsSparse.exists_aug_of_lt_two_mul`.
+
+   **The IComponents+Augmentation block has exactly one downstream
+   consumer**, verified by a project-wide grep: `CountMatroid.lean`
+   uses `IsSparse.exists_aug_of_lt_two_mul` once (line 77) for the
+   matroidal-regime augmentation axiom. After the split:
+   - `EdgesIn`, `Framework`, `Laman`, `Henneberg`, `HennebergRigidity`,
+     `TrivialMotions`, `RigidityMatroid`, `LamanTheorem` (8 files)
+     drop ~354 LoC of Phase-7 combinatorial machinery from their
+     transitive import set.
+   - `CountMatroid` (and downstream `MatroidIdentification`,
+     `LinearRigidityMatroid`) imports both halves — same load as
+     today.
+
+   Expected savings: hard to predict without measurement. The 354 LoC
+   moved are combinatorial / `Finset`-heavy (`maxBlock` is a
+   `Finset.sup`-based construction), so per-file elaboration savings
+   are modest. The TL;DR's "import loading is ~25–27 s of shared
+   overhead" pertains mostly to the analysis floor, not the
+   combinatorial subtree. Likely savings: 1–3 s per downstream file,
+   well within the noise band; the structural-clarity gain (Phase-7
+   matroid-side machinery sits in its own file, matching the chapter
+   structure in `chapter/sparsity.tex` vs `chapter/count-matroid.tex`)
+   may matter more than the wall-clock.
+
+2. **`Henneberg.lean` split (medium leverage).** Natural cut at line
+   444, splitting into:
+   - **`HennebergForward`** (~400 LoC): adjacency unfolding, sparsity
+     helpers, typeI/typeII move definitions, edge-set decomps, Laman
+     preservation per move.
+   - **`HennebergReverse`** (~200 LoC): iso constructors, flat-form
+     Henneberg reverse decomposition (Phase 7 Commit 6), K₄-minus-edge
+     example.
+
+   `HennebergRigidity.lean` (which is large + analysis-heavy + reused
+   by 3 downstream files) only needs the forward half. Splitting
+   would shave ~200 LoC of Phase-3+7 reverse-decomp machinery off
+   `HennebergRigidity`'s transitive import set (and indirectly its
+   downstream files `MatroidIdentification`, `LinearRigidityMatroid`).
+   But `MatroidIdentification` and `LamanTheorem` need both halves
+   directly. Modest leverage.
+
+3. **`MatroidIdentification.lean` split (low leverage).** Natural cut
+   at line 776, splitting into:
+   - **`MatroidIdentificationExtends`** (~745 LoC): typeI / typeII
+     row-LI lift (extends lemmas).
+   - **`MatroidIdentification`** (~200 LoC): `|E|`-induction,
+     Lovász–Yemini iff, rigidity matroid instantiation.
+
+   The only downstream importer is `LinearRigidityMatroid.lean`,
+   which uses both halves. Splitting saves no transitive-import
+   surface for downstream; the win is faster incremental rebuilds
+   when iterating on the matroid-instantiation half without touching
+   extends lemmas. Worth doing on style grounds, not perf.
+
+4. **Skip: `RigidityMatroid.lean` (709 LoC), `HennebergRigidity.lean`
+   (638 LoC).** Both have plausible internal cut lines (RigidityMatroid
+   at L595 between rank/spanning machinery and Phase-6 easy-direction
+   sparsity; HennebergRigidity at L273 between typeI and typeII
+   rigidity preservation), but downstream files generally need both
+   halves. Per-move file organization is cleaner but provides
+   minimal transitive-import savings.
+
+### Module-system conversion: now ripe
+
+Mathlib `v4.30.0-rc2` (the project's current pin) is essentially
+fully converted:
+
+- Total `Mathlib/**/*.lean`: 8053 files. Files with `module` marker:
+  7943 (~98.6 %).
+- `Mathlib/Analysis`: 791 files, ~766 with `module` (~97 %).
+- `Mathlib/Analysis/InnerProductSpace`: 52 files, **100 %** with
+  `module`.
+- `Mathlib/Combinatorics/SimpleGraph`: 73 files, 72 with `module`
+  (~99 %).
+
+This is a step-change from the earlier *Module system* assessment
+("multi-file refactor, all transitive imports first"). Today the
+upstream transitive-imports-first problem is solved by mathlib's own
+conversion campaign — our 12 project files are the entire remaining
+scope. Conversion is plausibly a one-session refactor:
+
+1. Convert `Mathlib/` mirror files first (10 files; all import
+   already-converted upstream mathlib).
+2. Convert project files in topo order from `EdgesIn` outward.
+3. Each file gets `module` + `public import` lines + an
+   `@[expose] public section` marker per `Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
+4. Measure pre/post via 4-run A/B on the analysis-heavy targets
+   (`HennebergRigidity.lean`, `RigidityMatroid.lean`,
+   `LinearRigidityMatroid.lean`).
+
+Recommendation: pick up as a dedicated perf pass alongside the
+`Sparsity.lean` split, since both touch the import graph and a single
+A/B campaign can measure their combined effect.
+
 ## Recommendations for future perf work
 
 1. **Don't trust a single A/B run.** Run ≥ 4 trials per side and compare
@@ -231,7 +380,10 @@ the trend was either flat or slightly worse:
    analysis-heavy half of `Framework.lean` behind a facade (so
    `Sparsity.lean`/`Laman.lean`/`Henneberg.lean` don't transitively load
    `FiniteDimension`) would shrink ~15 s off most builds. Module-system
-   conversion is the other structural lever; see *Module system* above.
+   conversion is the other structural lever; see *Module system* above
+   (now ripe per the post-Phase-8 audit). The `Sparsity.lean` split
+   above is the third structural lever, with a single-downstream-
+   consumer audit confirming the cleanest possible cut line.
 3. **The profiler is most useful as a sanity check, not a guide.** Use it
    to spot a single declaration taking > 100 ms or a `simp` ballooning, but
    don't expect the cumulative numbers to predict wall-clock movement.
