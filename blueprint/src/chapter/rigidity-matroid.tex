@@ -461,16 +461,23 @@ row-independent.
 
 \begin{corollary}[Every Laman graph admits a row-independent placement]
   \label{cor:isLaman-exists-rowIndependent}
+  \lean{SimpleGraph.IsLaman.exists_rowIndependent_placement}
+  \leanok
   \uses{def:isLaman, def:edgeSet-rowIndependent,
     thm:isSparse-exists-rowIndependent-placement}
-  Let $V$ be finite with $|V| \ge 2$ and $H : \mathrm{SimpleGraph}\,V$
-  Laman. Then there exists a placement $p : V \to \R^{2}$ at which
-  $E(H)$ is row-independent.
+  Let $V$ be finite and $H : \mathrm{SimpleGraph}\,V$ Laman. Then there
+  exists a placement $p : V \to \R^{2}$ at which $E(H)$ is
+  row-independent.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:isSparse-exists-rowIndependent-placement}
   Laman implies $(2, 3)$-sparse;
   \cref{thm:isSparse-exists-rowIndependent-placement} applies directly.
+  (The Lean witness is marked \texttt{@[deprecated]} pointing at the
+  general \texttt{IsSparse.exists\_rowIndependent\_placement}: callers
+  should prefer the sparse-level form, while the Laman-specialized
+  shim remains as the formal anchor for this narrative corollary.)
 \end{proof}
 
 \subsection{The rigidity matroid (dim 2)}

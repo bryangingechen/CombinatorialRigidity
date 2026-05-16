@@ -200,6 +200,57 @@ statement is likely to change as the API stabilizes, that's a sign
 it's churn-prone internal infrastructure — skip it.* See
 `blueprint/DESIGN.md` for the rationale.
 
+#### Narrative-bridge corollaries (the `@[deprecated]` shim pattern)
+
+There is a hybrid case between *Include* and *Skip*: a corollary
+that has real value as a **named consequence for the project's
+central object** (e.g. a Laman-specialised form of a sparse-level
+theorem), but whose Lean version is a **one-line composition with
+no downstream Lean caller**. Leaving it prose-only invites silent
+drift (the underlying theorem renames or restates, the prose claim
+silently breaks); landing it as a normal Lean lemma proliferates
+the API surface in a way that competes with the general form.
+
+The pattern: keep the corollary as a full `\begin{corollary}` with
+`\lean{...}` and `\leanok` in the blueprint, formalize the Lean
+shim under
+`@[deprecated <general-form> (since := "narrative-bridge")]`,
+and explain the intent in the Lean doc-comment. The
+build-checks-the-prose property is preserved (any rename of the
+general form breaks the shim's body); the deprecation warning
+discourages new callsites; the dep-graph turns green.
+
+The `(since := "narrative-bridge")` value is a **non-date
+sentinel** chosen for two reasons: (i) Lean's attribute warning
+text says `since` may be "the date or library version," so a
+version-shaped string is explicitly sanctioned and silences the
+attribute-time warning + the `deprecatedNoSince` env-linter; (ii)
+mathlib's date-range cleanup tooling (e.g. `#clear_deprecations
+date₁ date₂ really`) walks declarations whose `since` lex-compares
+inside `YYYY-MM-DD`-shaped bounds — `"narrative-bridge"` is
+lex-greater than any realistic upper bound and so is invisible to
+that tooling. See `CombinatorialRigidity/CLAUDE.md`
+*Engineering conventions* for the rationale.
+
+Canonical example (Phase 7 cleanup):
+`cor:isLaman-exists-rowIndependent` (in `rigidity-matroid.tex`)
+↔ `SimpleGraph.IsLaman.exists_rowIndependent_placement` (in
+`MatroidIdentification.lean`, marked
+`@[deprecated SimpleGraph.IsSparse.exists_rowIndependent_placement (since := "narrative-bridge")]`).
+
+**Distinguishing this from genuine specialization API.** Many
+Laman- or dim-2-specialized lemmas in the project — `IsLaman.iso`,
+`IsLaman.exists_two_le_degree_le_three`,
+`IsGenericallyRigid.card_mul_le_two`, etc. — are *real API
+surfaces* with downstream Lean callers, formalized eagerly without
+`@[deprecated]`. Only reach for the shim pattern when the Lean
+genuinely has zero expected callers and exists solely to anchor the
+blueprint's narrative claim. If you find yourself wanting to write
+`@[deprecated]` on a lemma that has callers, the right move is
+either to refactor the callers onto the general form (then deprecate
+the specialization) or to drop the deprecation marker (then it's
+genuine API).
+
 ### Proof verbosity
 
 Match the carleson style: one to three sentences, in English, that

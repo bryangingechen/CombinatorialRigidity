@@ -1104,4 +1104,17 @@ theorem _root_.SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent
   rintro e ⟨e', _, rfl⟩
   exact e'.property
 
+/-- **Every Laman graph admits a row-independent placement, dim 2.**
+A trivial composition `IsLaman.isSparse ∘ IsSparse.exists_rowIndependent_placement`,
+exposed as a Lean anchor for the blueprint corollary `cor:isLaman-exists-rowIndependent`.
+The `@[deprecated]` shim pattern (including the `(since := "narrative-bridge")`
+sentinel) is documented in `CombinatorialRigidity/CLAUDE.md` *Engineering conventions*. -/
+@[deprecated IsSparse.exists_rowIndependent_placement (since := "narrative-bridge")]
+theorem _root_.SimpleGraph.IsLaman.exists_rowIndependent_placement
+    {V : Type*} [Finite V] {H : SimpleGraph V} (h : H.IsLaman) :
+    ∃ p : Framework V 2, H.EdgeSetRowIndependent p Set.univ := by
+  classical
+  haveI : Fintype V := Fintype.ofFinite V
+  exact IsSparse.exists_rowIndependent_placement _ rfl h.isSparse
+
 end SimpleGraph

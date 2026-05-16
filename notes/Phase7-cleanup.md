@@ -1,7 +1,7 @@
 # Phase 7 cleanup round — work log
 
-**Status:** in progress. A1 (fix) + A3/A4/A5/A6/A7/A8/A10 (no-fix
-audits) done; A2/A9/A11, B*, C*, D* outstanding.
+**Status:** in progress. A1 + A9 (fixes) + A2/A3/A4/A5/A6/A7/A8/A10
+(no-fix audits) done; A11, B*, C*, D* outstanding.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -12,10 +12,9 @@ cleanly.
 
 ## Current state
 
-Working through bucket A. A1 fixed; A3 / A4 / A5 / A6 / A7 / A8 /
-A10 audited clean (no divergence). Remaining A-tasks: A2 (largest),
-A9 (`cor:isLaman-exists-rowIndependent` orphan red node already
-flagged), A11. Then B/C/D.
+Working through bucket A. A1 + A9 fixed; A2 / A3 / A4 / A5 / A6 /
+A7 / A8 / A10 audited clean (no divergence). Remaining A-task:
+A11. Then B/C/D.
 
 ## Architectural choices made up front
 
@@ -49,16 +48,27 @@ attempt for any flagged divergence.
   progress" → "All seven phases are complete", and "Phase 7 dep-graph
   still has red leaves" → narrowed to "main Laman line and through
   the Phase 7 matroid identification are all green" (honest about
-  the single orphan `cor:isLaman-exists-rowIndependent`).
-- [ ] A2: `chapter/sparsity.tex` ↔ `Sparsity.lean` + `EdgesIn.lean`.
-  Largest chapter; Phase 1 + Phase 7 additions (`maxBlock` +
-  augmentation) layered. Specific watch: `IsTightOn.union_inter_of_pair`
-  vs. the chapter's pair-anchored phrasing; the new I-component prose
-  (Commit 17b) against the Finset-anchored Lean. The maxBlock
-  body-via-`Set.Finite.toFinset` discussion (Phase 7 *Architectural
-  choices* re. `DecidablePred`/`SemilatticeSup` friction) is a
-  candidate "prose aside" — does the chapter currently elide it,
-  flag it, or get it wrong?
+  the single orphan `cor:isLaman-exists-rowIndependent`, since
+  removed in A9).
+- [x] A2: `chapter/sparsity.tex` ↔ `Sparsity.lean` + `EdgesIn.lean`.
+  All 27 pinned declarations resolve. The Phase 7 additions
+  `IsTightOn.union_with_bonus` and `IsTightOn.insert_vertex_with_edges`
+  are described faithfully (chapter lines 432-440, 464-468); statement
+  forms match the Lean hypotheses (`F ⊆ edgesIn (s ∪ t)`, disjointness,
+  finite, the close-the-gap inequality). The `typeII_reverse_blocker`
+  prose at lines 504-523 correctly flags the project-internal helper
+  `image_edgesIn_comap` and its Sym2.map injectivity lift — the
+  canonical *"named project-internal helper standing in for what the
+  prose treats as a one-step correspondence"* aside from blueprint/
+  CLAUDE.md *Proof verbosity*. Watch items in the original A2 task
+  description (`IsTightOn.union_inter_of_pair`, the I-component prose,
+  the `maxBlock` body-via-`Set.Finite.toFinset` discussion) were
+  *misfiled*: all three pin in `count-matroid.tex` (A10), not
+  `sparsity.tex`. The Set-vs-Finset maxBlock body is `DecidablePred`
+  / type-class-elaboration friction (invisible to the math per
+  blueprint/CLAUDE.md *Proof verbosity*: "Omit ... type-class
+  elaboration") and is correctly elided in count-matroid.tex's prose.
+  No fix required.
 - [x] A3: `chapter/laman.tex` ↔ `Laman.lean`. Small chapter. Six
   pinned declarations all present in Laman.lean; statement forms
   (`IsLaman = IsTight 2 3` unfolds to "sparse + global tightness"),
@@ -129,15 +139,45 @@ attempt for any flagged divergence.
   packages IR-extraction + companion, but the inlined caller wants
   IR + affine spanning at the *same* `p` and so calls the
   companion directly). No fix required.
-- [ ] A9: `chapter/rigidity-matroid.tex` ↔ `RigidityMatroid.lean` +
-  `MatroidIdentification.lean`. The newest chapter; high churn during
-  Phase 7. Likely highest density of divergence candidates.
-  *Pre-flagged by A1 sweep:* `cor:isLaman-exists-rowIndependent`
-  (line ~462) is an orphan red node — no `\lean{...}`, never used
-  in any `\uses{}`. The corollary is a trivial composition
-  (`IsLaman.isSparse` ∘ `IsSparse.exists_rowIndependent_placement`)
-  serving only as a narrative bridge before the matroid subsection.
-  Decision in A9: keep + materialise as a Lean one-liner, or remove.
+- [x] A9: `chapter/rigidity-matroid.tex` ↔ `RigidityMatroid.lean` +
+  `MatroidIdentification.lean`. All 12 pinned declarations resolve;
+  statement forms (`IsSparse.exists_typeI_or_typeII_reverse` flat-form
+  three-branch reverse; the typeI/pendant/typeII conditional cores
+  and unconditional lifts; `EdgeSetRowIndependent.{eventually,iso}`;
+  the hard direction `IsSparse.exists_rowIndependent_placement`; the
+  full iff `edgeSet_rowIndependent_iff_isSparse_dim_two`; the matroid
+  definition + Lovász–Yemini matroid-form iff) match the chapter
+  prose; the typeII-lift parenthetical aside ("$p|_V$ agrees with
+  $p'$ when non-collinear; otherwise perpendicular perturbation")
+  honestly describes the internal proof choice without overselling
+  the conclusion (Lean is just `∃ p, …`). One fix: materialised the
+  previously orphan `cor:isLaman-exists-rowIndependent` as a Lean
+  shim under `@[deprecated IsSparse.exists_rowIndependent_placement
+  (since := "narrative-bridge")]` in `MatroidIdentification.lean`
+  (a one-line composition `IsLaman.isSparse
+  ∘ IsSparse.exists_rowIndependent_placement`). Investigation
+  surfaced two design forks worth recording: (i) `private` would
+  have broken `checkdecls` (kernel name becomes
+  `_private.<file>.0.<name>`, not the natural name), so the
+  `@[deprecated]` route is the only one that keeps the blueprint
+  anchor resolvable while discouraging callsite use; (ii) the
+  attribute-time warning emitted by Lean core when `since` is
+  missing is unconditional (no `set_option` silences it — verified
+  against `Lean/Linter/Deprecated.lean` line 44-45 in elan) and the
+  mathlib `deprecatedNoSince` env-linter is a hard `lake lint`
+  error, so `since` *must* be present. We picked the non-date
+  sentinel `"narrative-bridge"` over a date because Lean's warning
+  text says "date *or library version*" (version-shape is
+  sanctioned) and mathlib's date-range cleanup tooling
+  (`#clear_deprecations`) lex-compares `since` against `YYYY-MM-DD`
+  bounds — `"narrative-bridge"` lex-compares above any realistic
+  date bound, making the shim structurally invisible to accidental
+  cleanup. The full pattern is documented in `blueprint/CLAUDE.md`
+  *What to include vs. skip → Narrative-bridge corollaries* and
+  cross-referenced from `CombinatorialRigidity/CLAUDE.md`
+  *Engineering conventions*. Phase 7 dep-graph node for the
+  corollary is now green; `lake build` and `lake lint` both pass
+  silently.
 - [x] A10: `chapter/count-matroid.tex` ↔ `CountMatroid.lean`. Newest;
   ~95 LoC of Lean, ~315 lines of TeX — check abstraction-level match.
   Eight pinned declarations resolve (most in `Sparsity.lean`,
@@ -254,6 +294,26 @@ checkbox.)*
   closed. Sweep also surfaced `cor:isLaman-exists-rowIndependent`
   as an orphan red node (no `\lean{...}`, no other `\uses{}` cite);
   filed under A9 rather than fixed here to keep A1 narrowly scoped.
+- **A9 — rigidity-matroid.tex audit + narrative-bridge materialisation.**
+  All 12 pinned declarations in `rigidity-matroid.tex` resolve to
+  `RigidityMatroid.lean` / `MatroidIdentification.lean`, statement
+  forms match the chapter, and the typeII-lift parenthetical aside
+  honestly describes the internal proof's perturbation-via-openness
+  choice. Materialised the previously orphan corollary
+  `cor:isLaman-exists-rowIndependent` as a `@[deprecated]` Lean
+  shim pointing at the general
+  `IsSparse.exists_rowIndependent_placement` — preserves the
+  narrative claim, mechanically verifies the prose against the
+  general theorem, and discourages callsite proliferation via the
+  deprecation warning. New pattern documented in
+  `blueprint/CLAUDE.md` *What to include vs. skip → Narrative-bridge
+  corollaries* with cross-reference from
+  `CombinatorialRigidity/CLAUDE.md`. (Investigation history: removal
+  was the first instinct; user pushed back on "narrative value vs
+  maintenance"; `private` was floated and ruled out via empirical
+  kernel-name probe — `private` decls become
+  `_private.<file>.0.<name>`, breaking `checkdecls`'s `env.contains`
+  resolution.)
 - **A3 / A4 / A6 — no-divergence sweep.** Three small/medium chapters
   audited and recorded as [x] with no fix. Each chapter's
   `\lean{...}` pins all resolve, statement forms match the Lean,
@@ -286,6 +346,21 @@ checkbox.)*
   hint is the canonical "named project-internal helper standing
   in for what the prose treats as a one-step correspondence"
   aside from blueprint/CLAUDE.md *Proof verbosity*.
+- **A2 — sparsity.tex no-divergence sweep.** All 27 pinned
+  declarations resolve to `Sparsity.lean` / `EdgesIn.lean`. Phase 7
+  additions (`IsTightOn.union_with_bonus`,
+  `IsTightOn.insert_vertex_with_edges`) match the chapter's
+  `F`-anchored phrasings. `typeII_reverse_blocker`'s prose at
+  lines 504-523 correctly flags the `image_edgesIn_comap`
+  project-internal helper + its Sym2.map injectivity lift — the
+  same *"named project-internal helper standing in for ..."* aside
+  pattern as A8. The original A2 watch list (`union_inter_of_pair`,
+  I-component prose, `maxBlock` body-via-`Set.Finite.toFinset`) was
+  misfiled — all three pin in `count-matroid.tex` (A10), not here;
+  the `Set.Finite.toFinset` body is `DecidablePred` /
+  type-class-elaboration friction (per blueprint/CLAUDE.md *Proof
+  verbosity*: omit type-class elaboration) and correctly elided in
+  the chapter prose.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

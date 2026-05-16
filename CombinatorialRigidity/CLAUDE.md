@@ -91,6 +91,41 @@ decidability, etc. — the authoritative list is in
   relevant *definition*, not the file that first uses it. (Lemma
   about `IsSparse` → `Sparsity.lean`, even if first invoked in
   `Laman.lean`.)
+- The `@[deprecated <general-form> (since := "narrative-bridge")]`
+  attribute carries a **second project-specific meaning** beyond the
+  standard "phasing out" semantics: it also marks **narrative-bridge
+  shims** — one-line composition lemmas that exist solely to anchor a
+  blueprint corollary's `\lean{...}` pin, with the deprecation
+  warning discouraging callsite proliferation in favour of the
+  general form. The canonical example is
+  `SimpleGraph.IsLaman.exists_rowIndependent_placement` in
+  `MatroidIdentification.lean` (deprecated in favour of
+  `IsSparse.exists_rowIndependent_placement`). See
+  `../blueprint/CLAUDE.md` *What to include vs. skip → Narrative-bridge
+  corollaries* for the authoring decision rule.
+
+  **The non-date `since` sentinel matters.** Mathlib's compile-time
+  `@[deprecated]` handler in `Lean/Linter/Deprecated.lean` emits an
+  unconditional `logWarning` if `since` is missing — there is no
+  `set_option` that silences it. The matching mathlib env-linter
+  `Batteries.Tactic.Lint.deprecatedNoSince` also flags it as a hard
+  `lake lint` error. Both are silenced by *any* present `since`
+  value (Lean only requires presence, with a `-- TODO: enforce
+  YYYY-MM-DD format` comment in the linter source). We pick
+  `"narrative-bridge"` over a date because:
+  1. Lean's warning text explicitly sanctions "the date or library
+     version" — a version-shaped string is documented as acceptable.
+  2. The mathlib date-range cleanup tooling
+     (`#clear_deprecations date₁ date₂ really` in
+     `Mathlib/Tactic/Linter/FindDeprecations.lean`) walks deprecations
+     whose `since` lex-compares between `date₁` and `date₂` in
+     `YYYY-MM-DD` shape. `"narrative-bridge"` lex-compares above any
+     realistic date bound (`'n'` > `'9'`), so the shim is invisible
+     to that tooling — accidental deletion by a future cleanup run
+     is structurally impossible.
+  3. Future Lean format-enforcement would have to contradict the
+     attribute's own warning text ("date *or library version*") to
+     reject this, which is unlikely.
 
 ## Lean LSP MCP — reach for it
 
