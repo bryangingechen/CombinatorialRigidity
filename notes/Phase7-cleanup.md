@@ -1,7 +1,7 @@
 # Phase 7 cleanup round — work log
 
-**Status:** in progress. A1 + A9 (fixes) + A2/A3/A4/A5/A6/A7/A8/A10
-(no-fix audits) done; A11, B*, C*, D* outstanding.
+**Status:** in progress. A1 + A9 (fixes) + A2/A3/A4/A5/A6/A7/A8/A10/A11
+(no-fix audits) done; B*, C*, D* outstanding.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -13,8 +13,7 @@ cleanly.
 ## Current state
 
 Working through bucket A. A1 + A9 fixed; A2 / A3 / A4 / A5 / A6 /
-A7 / A8 / A10 audited clean (no divergence). Remaining A-task:
-A11. Then B/C/D.
+A7 / A8 / A10 / A11 audited clean (no divergence). Next is B/C/D.
 
 ## Architectural choices made up front
 
@@ -188,10 +187,8 @@ attempt for any flagged divergence.
   math abstraction level. Chapter's "definitional in Lean via
   `IndepMatroid.ofFinite_indep`" claim for `countMatroid_indep_iff`
   matches the Lean `Iff.rfl` body. No fix required.
-- [ ] A11: Run `lake exe checkdecls blueprint/lean_decls` (after
-  `inv web`) at end; confirm every `\lean{...}` resolves. This is
-  fast and should pass; if it fails, capture which rename slipped
-  through.
+- [x] A11: Ran `lake exe checkdecls blueprint/lean_decls` (after
+  `inv web`) at end; confirmed every `\lean{...}` resolves. No fix required.
 
 ### Bucket B — Code-smell sweep
 
