@@ -1,7 +1,8 @@
 # Phase 7 cleanup round — work log
 
-**Status:** in progress. A1 + A9 (fixes) + A2/A3/A4/A5/A6/A7/A8/A10/A11
-(no-fix audits) done; B*, C*, D* outstanding.
+**Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
+no-fix audits). Bucket B opened: B1 swept (41 sites enumerated below);
+B1 fixes + B2–B7 + C/D outstanding.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -12,8 +13,11 @@ cleanly.
 
 ## Current state
 
-Working through bucket A. A1 + A9 fixed; A2 / A3 / A4 / A5 / A6 /
-A7 / A8 / A10 / A11 audited clean (no divergence). Next is B/C/D.
+Bucket A closed. Opened bucket B with the B1 sweep: 41 standalone
+`classical` tactic invocations across 9 source files, enumerated
+under B1 below. Next concrete step is the first B1 fix commit —
+walk the per-site list (likely one commit per file, possibly fewer
+if clusters share a root cause).
 
 ## Architectural choices made up front
 
@@ -194,13 +198,56 @@ attempt for any flagged divergence.
 
 Each is a separate commit, root-cause fix preferred.
 
-- [ ] B1: `classical` audit (39 sites; concentrated in `Sparsity.lean`:14,
-  `MatroidIdentification.lean`:7, `Henneberg.lean`:6,
-  `RigidityMatroid.lean`:6). For each: does adding `[DecidableEq V]`
-  or `[DecidableRel G.Adj]` at the caller boundary remove the need?
-  Or is the `classical` in a noncomputable section where there's no
-  point? Goal: eliminate decorative `classical` calls, document
-  load-bearing ones.
+- [ ] B1: `classical` audit (41 standalone-tactic sites; grep:
+  `^[[:space:]]*classical[[:space:]]*$`). For each: does adding
+  `[DecidableEq V]` / `[DecidableRel G.Adj]` at the caller boundary
+  remove the need? Or is the `classical` in a noncomputable section
+  where there's no point? Goal: eliminate decorative `classical`
+  calls, document load-bearing ones. Sites (enclosing decl named for
+  greppability):
+  - `Sparsity.lean`:205 (`IsSparse.exists_one_le_degree_le_three`),
+    271 (`exists_nonadj_among_three_neighbors`),
+    361 (`IsSparse.iso`), 389 (`IsSparse.comap`),
+    630 (`no_isTightOn_excluding_three_neighbors`),
+    695 (`contradiction_one_pair`),
+    742 (`contradiction_two_pair`),
+    809 (`contradiction_three_pair`),
+    1017 (`typeII_reverse_blocker`),
+    1157 (`exists_typeI_or_typeII_reverse`),
+    1344 (`maxBlock_isTightOn`),
+    1476 (`exists_aug_of_lt_two_mul`).
+  - `MatroidIdentification.lean`:71
+    (`typeI_edgeSetRowIndependent_extend`),
+    231 (`typeI_pendant_edgeSetRowIndependent_extend`),
+    405 (`typeII_edgeSetRowIndependent_extend`),
+    748 (`exists_nonCollinear_rowIndependent_placement_dim_two`),
+    884 (`exists_distinct_rowIndependent_placement_dim_two`),
+    952 (`IsSparse.exists_rowIndependent_placement`),
+    1035 (`edgeSet_rowIndependent_iff_isSparse_dim_two`),
+    1116 (`IsLaman.exists_rowIndependent_placement` — the A9
+    narrative-bridge shim).
+  - `Henneberg.lean`:211 (`typeI_edgesIn_ncard_decomp`),
+    232 (`typeI_isLaman`), 284 (`typeI_reverse_isLaman`),
+    348 (`typeII_edgesIn_ncard_decomp`), 374 (`typeII_isLaman`),
+    565 (`IsLaman.exists_typeI_or_typeII_reverse`).
+  - `RigidityMatroid.lean`:107 (`EdgeSetRowIndependent.iso`),
+    160 (`EdgeSetRowIndependent.eventually`),
+    197 (`span_range_rigidityRow`),
+    258 (`exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two`),
+    369 (`exists_affinelySpanning_of_eventually`),
+    523 (`isSparse_of_edgeSetRowIndependent_dim_two`).
+  - `HennebergRigidity.lean`:131
+    (`typeI_isInfinitesimallyRigid_extend`),
+    206 (`exists_off_line_off_finite_dim_two`),
+    312 (`typeII_isInfinitesimallyRigid_extend`),
+    490 (`exists_nonCollinear_rigid_placement_dim_two`).
+  - `LamanTheorem.lean`:75
+    (`IsLaman.isGenericallyRigidInj_two_of_card`),
+    154 (`IsGenericallyRigid.exists_isLaman_le`).
+  - `Framework.lean`:131 (`rigidityMap_finrank_range_le`),
+    242 (`IsInfinitesimallyRigid.eventually`).
+  - `Laman.lean`:83 (`IsLaman.two_le_degree`).
+  - `CountMatroid.lean`:74 (`countMatroid`, in the `indep_aug` field).
 - [ ] B2: `letI : Fintype V := Fintype.ofFinite V` audit (~10 sites;
   most in `Sparsity.lean` and `RigidityMatroid.lean`). Same question
   pattern: should the caller take `[Fintype V]`? If the
