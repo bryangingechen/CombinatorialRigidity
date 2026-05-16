@@ -425,17 +425,51 @@ Each is a separate commit, root-cause fix preferred.
     section docstrings, the blueprint `\lean{}` pin in
     `count-matroid.tex`, and historical pointers in `FRICTION.md` /
     `TACTICS-QUIRKS.md`.
-  - **Borderline (1 site):**
-    - `Framework.lean`:149 (`@[nolint unusedArguments]` on
-      `IsInfinitesimallyRigid`) — env-linter override on the
-      `[Fintype V]` contract guard. The Zulip discussion's
-      "extend `unusedFintypeInType` to `noncomputable def`"
-      improvement is planned-but-deferred (Thomas Murrills, Dec
-      2025), so for now this site is silenced via the env-linter,
-      not via `set_option linter.unusedFintypeInType false`. Per the
-      adopted style we relax `[Fintype V]` → `[Finite V]` (still a
-      meaningful contract guard); the `@[nolint unusedArguments]`
-      stays as the explicit guard documentation. *(B3d.)*
+  - **B3d done.** `Framework.lean`:149 (`@[nolint unusedArguments]`
+    on `IsInfinitesimallyRigid`) — env-linter override on the
+    `[Fintype V]` contract guard. The Zulip discussion's "extend
+    `unusedFintypeInType` to `noncomputable def`" improvement is
+    planned-but-deferred (Thomas Murrills, Dec 2025), so for now
+    this site is silenced via the env-linter, not via `set_option
+    linter.unusedFintypeInType false`. Relaxed `[Fintype V]` →
+    `[Finite V]` (still a meaningful contract guard); the
+    `@[nolint unusedArguments]` stays as the explicit guard
+    documentation, and the comment is updated to record the Zulip-
+    informed rationale and migration path. Scope expanded to also
+    relax all downstream theorems that picked up the resulting
+    `unusedFintypeInType` cascade — 16 sites total relaxed from
+    `[Fintype V]` (or `[Fintype V] [Fintype W]`) to `[Finite V]`
+    (resp. both `[Finite V] [Finite W]`):
+    - `Framework.lean` × 9: the two defs `IsInfinitesimallyRigid` /
+      `IsGenericallyRigid`, the def `IsGenericallyRigidInj`, and
+      the six theorems `{IsInfinitesimallyRigid,
+      IsGenericallyRigid, IsGenericallyRigidInj}.mono`,
+      `{IsInfinitesimallyRigid, IsGenericallyRigid,
+      IsGenericallyRigidInj}.iso`, plus
+      `IsInfinitesimallyRigid.eventually`, plus
+      `IsGenericallyRigidInj.toIsGenericallyRigid`.
+    - `HennebergRigidity.lean` × 6:
+      `typeI_isInfinitesimallyRigid_extend`,
+      `typeII_isInfinitesimallyRigid_extend`,
+      `typeI_isGenericallyRigidInj_two`,
+      `typeII_isGenericallyRigidInj_two_of_nonCollinear`,
+      `exists_nonCollinear_rigid_placement_dim_two`,
+      `typeII_isGenericallyRigidInj_two`.
+    - `LamanTheorem.lean` × 1: `IsLaman.isGenericallyRigid_two`
+      (also needed a body bridge `haveI : Fintype V :=
+      Fintype.ofFinite V` + tactic-mode conversion to bridge to the
+      `[Fintype V]`-typed `isGenericallyRigidInj_two_of_card`
+      private induction helper that uses `Fintype.card V` in its
+      type).
+    The four theorems that legitimately use `Fintype.card V` in
+    their conclusion type — `Framework.finrank`,
+    `IsGenericallyRigid.card_mul_le`,
+    `IsGenericallyRigid.card_mul_le_two`,
+    `IsGenericallyRigid.exists_isLaman_le` /
+    `isGenericallyRigid_two_iff_exists_isLaman_le` — keep their
+    `[Fintype V]` signatures. `IsInfinitesimallyRigid.eventually`
+    also picked up an in-body `haveI : Fintype V :=
+    Fintype.ofFinite V` for its `Fintype G.edgeSet` bridge.
 - [ ] B4: `noncomputable def` audit. List each one, classify as
   "forced" (`Classical.choose`, `Module.Dual`, unbundled `Sym2.lift`,
   …) or "vestigial". Each vestigial site: drop the keyword and see

@@ -123,7 +123,7 @@ from `ker ((typeI G a b).RigidityMap p_ext)` into `ker (G.RigidityMap p)` via th
 `x ↦ x ∘ some`: it lands in the right kernel because every `G`-edge lifts to a `typeI G a b`-edge
 with the same rigidity-row formula, and it is injective because the two new edges through `none`
 pin down `x none` completely whenever `q - p a` and `q - p b` are linearly independent. -/
-theorem typeI_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
+theorem typeI_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
     {p : Framework V 2} (hp : G.IsInfinitesimallyRigid p) {a b : V}
     {q : EuclideanSpace ℝ (Fin 2)}
     (hLI : LinearIndependent ℝ ![q - p a, q - p b]) :
@@ -263,7 +263,7 @@ injectively generically rigid in dim 2. The proof picks a `q : EuclideanSpace �
 the line through `p a, p b` (via `exists_off_line_off_finite_dim_two`) and the image of `p`, then
 appeals to `typeI_isInfinitesimallyRigid_extend` for rigidity of the extended placement
 `fun w => w.elim q p` and to the off-image condition for its injectivity. -/
-theorem typeI_isGenericallyRigidInj_two [Fintype V] {G : SimpleGraph V}
+theorem typeI_isGenericallyRigidInj_two [Finite V] {G : SimpleGraph V}
     (hG : G.IsGenericallyRigidInj 2) {a b : V} (hab : a ≠ b) :
     (typeI G a b).IsGenericallyRigidInj 2 := by
   obtain ⟨p, hp_rig, hp_inj⟩ := hG
@@ -302,7 +302,7 @@ linear injection from `ker ((typeII G a b c).RigidityMap p_ext)` into `ker (G.Ri
 the restriction `x ↦ x ∘ some`. The new ingredient over typeI is that for the deleted edge
 `s(a, b)` (no corresponding typeII edge), the kernel constraint is recovered from the two
 collinear-direction new edges at `none ↔ some a` and `none ↔ some b`. -/
-theorem typeII_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
+theorem typeII_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
     {p : Framework V 2} (hp : G.IsInfinitesimallyRigid p) {a b c : V}
     {q : EuclideanSpace ℝ (Fin 2)} {α : ℝ}
     (hα0 : α ≠ 0) (hα1 : α ≠ 1) (hcoll : q - p a = α • (p b - p a))
@@ -453,7 +453,7 @@ requires an openness-of-rigidity argument (any rigid placement can be perturbed 
 one while preserving rigidity); the perturbation is packaged in
 `exists_nonCollinear_rigid_placement_dim_two`, used to land the unconditional
 `typeII_isGenericallyRigidInj_two` below. -/
-theorem typeII_isGenericallyRigidInj_two_of_nonCollinear [Fintype V] {G : SimpleGraph V}
+theorem typeII_isGenericallyRigidInj_two_of_nonCollinear [Finite V] {G : SimpleGraph V}
     {p : Framework V 2} (hp_rig : G.IsInfinitesimallyRigid p) (hp_inj : Function.Injective p)
     {a b c : V} (hab : a ≠ b)
     (hLI_abc : LinearIndependent ℝ ![p b - p a, p c - p a]) :
@@ -481,7 +481,7 @@ perturbed placement stays rigid and injective on an open neighborhood of `t = 0`
 This is the openness-of-IR closure of the Phase 5 milestone 2 collinearity gap; it lifts
 `typeII_isGenericallyRigidInj_two_of_nonCollinear` to the unconditional
 `typeII_isGenericallyRigidInj_two` below. -/
-private lemma exists_nonCollinear_rigid_placement_dim_two [Fintype V] {G : SimpleGraph V}
+private lemma exists_nonCollinear_rigid_placement_dim_two [Finite V] {G : SimpleGraph V}
     (h : G.IsGenericallyRigidInj 2) {a b c : V} (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
     ∃ p : Framework V 2, G.IsInfinitesimallyRigid p ∧ Function.Injective p ∧
       LinearIndependent ℝ ![p b - p a, p c - p a] := by
@@ -576,7 +576,7 @@ to break collinearity while preserving rigidity, by openness of infinitesimal ri
 invokes the conditional `typeII_isGenericallyRigidInj_two_of_nonCollinear`.
 
 **Phase 5 milestone 2 closure.** -/
-theorem typeII_isGenericallyRigidInj_two [Fintype V] {G : SimpleGraph V}
+theorem typeII_isGenericallyRigidInj_two [Finite V] {G : SimpleGraph V}
     (hG : G.IsGenericallyRigidInj 2) {a b c : V}
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c) :
     (typeII G a b c).IsGenericallyRigidInj 2 := by

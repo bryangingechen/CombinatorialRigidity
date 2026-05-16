@@ -142,12 +142,17 @@ When this kernel is *equal* to the trivial motions, the framework is rigid in
 the textbook sense; the inequality formulation is the always-correct upper
 bound and is what fits naturally into the rank-nullity argument used
 downstream. -/
--- The `[Fintype V]` instance is semantically required (otherwise `Module.finrank`
+-- The `[Finite V]` instance is semantically required (otherwise `Module.finrank`
 -- of the kernel is vacuously `0` and the definition is meaningless), but is not
 -- consumed by elaboration of the body. The instance acts as a contract guard so
--- callers cannot accidentally apply this with infinite `V`.
+-- callers cannot accidentally apply this with infinite `V`. The
+-- `unusedFintypeInType` syntax linter does not yet extend to `def`s
+-- (planned upstream improvement, per Thomas Murrills's Dec-2025 Zulip message),
+-- so the env-linter's `unusedArguments` rule is what fires today; once the
+-- syntax linter extends, this site would migrate to
+-- `set_option linter.unusedFintypeInType false` instead.
 @[nolint unusedArguments]
-def IsInfinitesimallyRigid [Fintype V] (G : SimpleGraph V) (p : Framework V d) : Prop :=
+def IsInfinitesimallyRigid [Finite V] (G : SimpleGraph V) (p : Framework V d) : Prop :=
   Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) ≤ d * (d + 1) / 2
 
 /-- A graph `G` is **generically rigid** in dimension `d` if some placement is
@@ -156,16 +161,16 @@ infinitesimally rigid.
 This avoids the algebraic-geometry machinery of "generic placement"; the
 equivalence to "rank max on a Zariski-open set of placements" is downstream
 and not needed for either direction of Laman's theorem under the present plan. -/
-def IsGenericallyRigid [Fintype V] (G : SimpleGraph V) (d : ℕ) : Prop :=
+def IsGenericallyRigid [Finite V] (G : SimpleGraph V) (d : ℕ) : Prop :=
   ∃ p : Framework V d, G.IsInfinitesimallyRigid p
 
 /-- Adding edges preserves infinitesimal rigidity at the same placement. -/
-theorem IsInfinitesimallyRigid.mono [Fintype V] {G G' : SimpleGraph V} (h : G ≤ G')
+theorem IsInfinitesimallyRigid.mono [Finite V] {G G' : SimpleGraph V} (h : G ≤ G')
     {p : Framework V d} (hG : G.IsInfinitesimallyRigid p) : G'.IsInfinitesimallyRigid p :=
   (Submodule.finrank_mono (rigidityMap_ker_mono h p)).trans hG
 
 /-- Adding edges preserves generic rigidity. -/
-theorem IsGenericallyRigid.mono [Fintype V] {G G' : SimpleGraph V} (h : G ≤ G')
+theorem IsGenericallyRigid.mono [Finite V] {G G' : SimpleGraph V} (h : G ≤ G')
     (hG : G.IsGenericallyRigid d) : G'.IsGenericallyRigid d :=
   hG.imp fun _ => IsInfinitesimallyRigid.mono h
 
@@ -176,7 +181,7 @@ an infinitesimally rigid placement `p` of `G` to the placement `p ∘ φ.symm` o
 The proof builds a linear equivalence between the two rigidity-map kernels by
 precomposition with `φ` and uses `LinearEquiv.finrank_eq` to transport the
 kernel-dimension bound. -/
-theorem IsInfinitesimallyRigid.iso {V W : Type*} [Fintype V] [Fintype W]
+theorem IsInfinitesimallyRigid.iso {V W : Type*} [Finite V] [Finite W]
     {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H) {p : Framework V d}
     (h : G.IsInfinitesimallyRigid p) : H.IsInfinitesimallyRigid (p ∘ φ.symm) := by
   -- Per-edge correspondence: `q' ∈ ker H ↔ q' ∘ φ ∈ ker G`.
@@ -221,7 +226,7 @@ theorem IsInfinitesimallyRigid.iso {V W : Type*} [Fintype V] [Fintype W]
   exact h
 
 /-- Iso transport for generic rigidity: a graph iso preserves generic rigidity. -/
-theorem IsGenericallyRigid.iso {V W : Type*} [Fintype V] [Fintype W]
+theorem IsGenericallyRigid.iso {V W : Type*} [Finite V] [Finite W]
     {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H)
     (h : G.IsGenericallyRigid d) : H.IsGenericallyRigid d := by
   obtain ⟨p, hp⟩ := h
@@ -235,9 +240,10 @@ p₀)`, lifts each basis vector to a preimage in `Framework V d`, and uses
 `LinearIndependent.eventually` plus continuity of `p ↦ G.RigidityMap p (preimg i)` to conclude that
 the lifted images stay linearly independent in a neighborhood of `p₀`. Combined with rank-nullity
 on both `p₀` and the nearby `p`, this gives the kernel-dim bound. -/
-theorem IsInfinitesimallyRigid.eventually [Fintype V] {G : SimpleGraph V}
+theorem IsInfinitesimallyRigid.eventually [Finite V] {G : SimpleGraph V}
     {p₀ : Framework V d} (h₀ : G.IsInfinitesimallyRigid p₀) :
     ∀ᶠ p in 𝓝 p₀, G.IsInfinitesimallyRigid p := by
+  haveI : Fintype V := Fintype.ofFinite V
   haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
   set r := Module.finrank ℝ (LinearMap.range (G.RigidityMap p₀)) with hr_def
   -- Lift a basis of `LinearMap.range (G.RigidityMap p₀)` to preimages.
@@ -285,23 +291,23 @@ infinitesimally rigid placement is also injective. Strictly stronger than `IsGen
 the Phase 5 Henneberg induction maintains the injective placement at each step (the per-move
 preservation arguments need `p a ≠ p b`, which vanilla `IsGenericallyRigid` does not supply) and
 weakens to `IsGenericallyRigid` at the end via `IsGenericallyRigidInj.toIsGenericallyRigid`. -/
-def IsGenericallyRigidInj [Fintype V] (G : SimpleGraph V) (d : ℕ) : Prop :=
+def IsGenericallyRigidInj [Finite V] (G : SimpleGraph V) (d : ℕ) : Prop :=
   ∃ p : Framework V d, G.IsInfinitesimallyRigid p ∧ Function.Injective p
 
 /-- An injectively-generic-rigid graph is generically rigid. -/
-theorem IsGenericallyRigidInj.toIsGenericallyRigid [Fintype V] {G : SimpleGraph V}
+theorem IsGenericallyRigidInj.toIsGenericallyRigid [Finite V] {G : SimpleGraph V}
     (h : G.IsGenericallyRigidInj d) : G.IsGenericallyRigid d :=
   h.imp fun _ hp => hp.1
 
 /-- Adding edges preserves injective generic rigidity at the same placement. -/
-theorem IsGenericallyRigidInj.mono [Fintype V] {G G' : SimpleGraph V} (h : G ≤ G')
+theorem IsGenericallyRigidInj.mono [Finite V] {G G' : SimpleGraph V} (h : G ≤ G')
     (hG : G.IsGenericallyRigidInj d) : G'.IsGenericallyRigidInj d :=
   hG.imp fun _ hp => ⟨hp.1.mono h, hp.2⟩
 
 /-- Iso transport for injective generic rigidity: a graph iso preserves injective generic
 rigidity. Injectivity of `p ∘ φ.symm` follows from injectivity of `p` since `φ.symm` is a
 bijection. -/
-theorem IsGenericallyRigidInj.iso {V W : Type*} [Fintype V] [Fintype W]
+theorem IsGenericallyRigidInj.iso {V W : Type*} [Finite V] [Finite W]
     {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H)
     (h : G.IsGenericallyRigidInj d) : H.IsGenericallyRigidInj d := by
   obtain ⟨p, hp_rig, hp_inj⟩ := h
