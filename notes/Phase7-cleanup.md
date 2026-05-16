@@ -1,8 +1,14 @@
 # Phase 7 cleanup round — work log
 
-**Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
+**Status:** ✓ complete. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
-commits (a/b/c/d). Bucket C **closed** (C1–C10). The audit found 6 of 8
+commits (a/b/c/d). Bucket C **closed** (C1–C10). Bucket D **closed**
+(D1 no-residual-lifts audit; D2 Multi-session plan compression;
+D3 `notes/Phase7.md` 650 → 248 lines, under the 250-line budget).
+Post-C blueprint divergence audit re-run before D: clean (no fixes —
+all `\lean{...}` pins resolve, prose remains math-faithful, new
+C-bucket helpers correctly stay below the blueprint's *what to
+include vs. skip* bar). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
 style; the Zulip thread *Unused Decidable Instances linter*
@@ -197,9 +203,10 @@ parameterized over predicate `P` and direction `w`, consumed by
 both #9 (`exists_nonCollinear_rowIndependent_placement_dim_two`)
 and #11 (`exists_nonCollinear_rigid_placement_dim_two`); body LoC
 83 → 30 / 80 → 31 across the two sites (net project −39 LoC, matching
-the C2 estimate). Next concrete step: **D** (Phase 7 notes
-compression). Full per-site walk preserved under the C2 task entry
-for context.
+the C2 estimate). Bucket D closed 2026-05-16: D1 no-residual-lifts
+audit, D2 Multi-session plan compression, D3 `notes/Phase7.md`
+650 → 248 lines (under the 250-line soft budget). Full per-site
+walk preserved under the C2 task entry for context.
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -1290,17 +1297,33 @@ Each is a separate commit, root-cause fix preferred.
 
 ### Bucket D — Phase 7 notes compression
 
-- [ ] D1: Lift cross-cutting lessons from `notes/Phase7.md`
+- [x] D1: Lift cross-cutting lessons from `notes/Phase7.md`
   *Decisions made* to TACTICS-GOLF / TACTICS-QUIRKS / DESIGN.
-  Candidates flagged by Phase 7's own "Promoted to …" subsection
-  are already partially done; re-skim for residual entries that
-  haven't been lifted yet.
-- [ ] D2: Compress the *Multi-session plan* from a per-commit log
-  to a brief summary + pointer to the blueprint dep-graph. The
-  plan stopped being plan-relevant when Phase 7 closed.
-- [ ] D3: Target: `notes/Phase7.md` ≤ 250 lines (currently 653).
-  After D1/D2 plus removing redundant prose, check the line count;
-  if still over budget, run a second compression pass.
+  **No residual lifts identified.** Re-skim of all 12 Phase-local
+  entries against the existing "Promoted to" subsection (7 entries)
+  and TACTICS-GOLF/QUIRKS skeletons found no remaining cross-cutting
+  lessons — the existing promotions already cover the Sym2-eq case
+  split (§5), test-motion gadget (FRICTION), `γ • _ = _` chain (§7
+  search tree), `Finset.univ.filter`-of-`Finset V` instance friction
+  (QUIRKS §14), and `linear_combination` with rational coefficients
+  (§8, from C3). The remaining Phase-local entries are project-
+  specific proof structures whose detail belongs in Lean doc-comments,
+  not in cross-cutting reference docs.
+- [x] D2: Compressed the *Multi-session plan* (158 lines of per-commit
+  detail, lines 68–226 of the old file) to a brief commit-log summary
+  + pointer to `git log --oneline 60a2176..` and the blueprint chapters'
+  dep-graphs. Commit 16's scope-expansion rationale and Commit 17's
+  augmentation-route resolution kept in a 6-line *Current state* aside
+  (the only items future readers actually need from the per-commit log).
+- [x] D3: `notes/Phase7.md` 650 → 248 lines (under the 250-line soft
+  budget). Compression layered: (1) Multi-session plan collapse from
+  D2; (2) Phase-local entries trimmed to "decision + rationale" form
+  per `notes/CLAUDE.md` (proof structure → Lean doc-comments);
+  (3) Cleanup-pass file list consolidated from 8 per-file bullets to
+  3 thematic bullets (new files / Sparsity-side / Phase 5 reflows);
+  (4) merged 4 Architectural-choices entries (forward-mode authoring,
+  new file, `maxBlock` body, generic-placement scope-pointer) into
+  the surrounding entries / workflow header.
 
 ## Decisions made during this round
 
