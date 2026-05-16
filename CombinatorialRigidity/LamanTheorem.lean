@@ -3,12 +3,14 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Framework
-import CombinatorialRigidity.Henneberg
-import CombinatorialRigidity.HennebergReverse
-import CombinatorialRigidity.HennebergRigidity
-import CombinatorialRigidity.Laman
-import CombinatorialRigidity.RigidityMatroid
+module
+
+public import CombinatorialRigidity.Framework
+public import CombinatorialRigidity.Henneberg
+public import CombinatorialRigidity.HennebergReverse
+public import CombinatorialRigidity.HennebergRigidity
+public import CombinatorialRigidity.Laman
+public import CombinatorialRigidity.RigidityMatroid
 
 /-!
 # Laman's theorem
@@ -39,6 +41,12 @@ Phase 4 (`Framework.lean`) develops `IsGenericallyRigid` and ships
 `IsGenericallyRigid.card_mul_le` for general dimension. Phase 5 specializes
 that bound to `d = 2` here as `IsGenericallyRigid.card_mul_le_two`.
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 namespace SimpleGraph
 

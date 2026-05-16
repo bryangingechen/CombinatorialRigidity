@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Framework
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs
+module
+
+public import CombinatorialRigidity.Framework
+public import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
+public import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Defs
 
 /-!
 # Trivial infinitesimal motions
@@ -41,6 +43,8 @@ ceremony.
 See `ROADMAP.md` §6, `notes/Phase6.md`, and the `(⇒)` subsection of
 `blueprint/src/chapter/laman-theorem.tex`.
 -/
+
+@[expose] public section
 
 open scoped InnerProductSpace
 

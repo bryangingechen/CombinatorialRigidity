@@ -3,16 +3,18 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Polynomial
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Vandermonde
-import CombinatorialRigidity.TrivialMotions
-import Mathlib.Algebra.Polynomial.Roots
-import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
-import Mathlib.LinearAlgebra.Dimension.OrzechProperty
-import Mathlib.LinearAlgebra.Dual.Lemmas
-import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
+module
+
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Polynomial
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Vandermonde
+public import CombinatorialRigidity.TrivialMotions
+public import Mathlib.Algebra.Polynomial.Roots
+public import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
+public import Mathlib.LinearAlgebra.Dimension.OrzechProperty
+public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 
 /-!
 # The rigidity matroid
@@ -37,6 +39,12 @@ critical path.
 See `ROADMAP.md` §6, `notes/Phase6.md`, and the `(⇒)` subsection of
 `blueprint/src/chapter/laman-theorem.tex`.
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 open Module
 

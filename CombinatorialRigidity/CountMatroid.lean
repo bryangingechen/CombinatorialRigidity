@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.SparsityIComponents
-import Mathlib.Combinatorics.Matroid.IndepAxioms
+module
+
+public import CombinatorialRigidity.SparsityIComponents
+public import Mathlib.Combinatorics.Matroid.IndepAxioms
 
 /-!
 # The `(k, ℓ)`-count matroid
@@ -39,6 +41,8 @@ the matroid-form Lovász–Yemini live in `MatroidIdentification.lean` (Commit 1
 See `ROADMAP.md` §7, `notes/Phase7.md`, and the blueprint chapter
 `blueprint/src/chapter/count-matroid.tex`.
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

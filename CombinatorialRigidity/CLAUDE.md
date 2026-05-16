@@ -186,6 +186,38 @@ Constraints and gotchas:
   unchanged.
 - **No `import` line for `module` itself** — the bare keyword on its
   own line is the marker, not an import.
+- **`private` declarations need an opt-in inside `@[expose] public
+  section`.** First build fails with *"Unknown identifier X. Note: A
+  private declaration X (from the current module) exists but would
+  need to be public to access here"* — the module system treats
+  `private` as strictly non-public, so even another `public`
+  declaration in the same file can't reach it. Fix: add two
+  `set_option` lines just inside the public section
+  (file-scope, after the `@[expose] public section` marker):
+  ```
+  set_option backward.privateInPublic true
+  set_option backward.privateInPublic.warn false
+  ```
+  The first re-enables the legacy "private-callable-from-public"
+  behavior; the second silences the resulting warning. Mathlib uses
+  the per-declaration `set_option … in` form (cf.
+  `Mathlib/Data/Sym/Sym2.lean` and `Mathlib/Order/Sublocale.lean`);
+  the file-scope form is equivalent and concise when many `private`
+  declarations live in one file. Apply per-file only as needed —
+  files with no `private` declarations don't need either line.
+
+- **Some external dependencies block conversion.** The
+  `apnelson1/Matroid` package (used by `LinearRigidityMatroid.lean`)
+  is ~4 % module-converted as of 2026-05; specifically
+  `Matroid.Representation.Map` is non-`module`. A `module` file
+  cannot import a non-`module` file via `public import` *or* plain
+  `import` (the constraint applies to both forms — see
+  `notes/PERFORMANCE.md` *Module system*). `LinearRigidityMatroid.lean`
+  therefore stays non-`module` until either the upstream lib
+  converts or its Matroid usage can be refactored out. Non-`module`
+  files can freely import `module` files, so the rest of the project
+  is unaffected — `LinearRigidityMatroid` consumes the
+  module-converted `MatroidIdentification` chain normally.
 
 ## Lean LSP MCP — reach for it
 

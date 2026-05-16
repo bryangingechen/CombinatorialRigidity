@@ -3,10 +3,12 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Framework
-import CombinatorialRigidity.Henneberg
-import CombinatorialRigidity.Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Cover
-import CombinatorialRigidity.Mathlib.Topology.Separation.Hausdorff
+module
+
+public import CombinatorialRigidity.Framework
+public import CombinatorialRigidity.Henneberg
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Cover
+public import CombinatorialRigidity.Mathlib.Topology.Separation.Hausdorff
 
 /-!
 # Rigidity preservation under Henneberg moves (dim 2)
@@ -44,6 +46,12 @@ The split decouples `Henneberg.lean` from the analysis/linear-algebra imports ne
 
 See `ROADMAP.md` §5 and `notes/Phase5.md` for the Phase 5 plan.
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 open scoped InnerProductSpace Topology
 

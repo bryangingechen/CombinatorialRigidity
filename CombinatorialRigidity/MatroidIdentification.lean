@@ -3,11 +3,13 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.CountMatroid
-import CombinatorialRigidity.HennebergReverse
-import CombinatorialRigidity.HennebergRigidity
-import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
-import CombinatorialRigidity.RigidityMatroid
+module
+
+public import CombinatorialRigidity.CountMatroid
+public import CombinatorialRigidity.HennebergReverse
+public import CombinatorialRigidity.HennebergRigidity
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
+public import CombinatorialRigidity.RigidityMatroid
 
 /-!
 # Matroid identification of the planar rigidity matroid
@@ -26,6 +28,12 @@ both in operation form), the inductive existence theorem, the iff and matroid id
 See `ROADMAP.md` §7, `notes/Phase7.md`, and the blueprint chapter
 `blueprint/src/chapter/rigidity-matroid.tex`.
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 open scoped InnerProductSpace Topology
 

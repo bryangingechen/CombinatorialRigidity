@@ -3,10 +3,12 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Combinatorics.SimpleGraph.Basic
-import Mathlib.Combinatorics.SimpleGraph.Maps
-import Mathlib.Data.Finset.Sym
-import Mathlib.Data.Set.Card
+module
+
+public import Mathlib.Combinatorics.SimpleGraph.Basic
+public import Mathlib.Combinatorics.SimpleGraph.Maps
+public import Mathlib.Data.Finset.Sym
+public import Mathlib.Data.Set.Card
 
 /-!
 # `edgesIn`: edges with both endpoints in a vertex set
@@ -49,6 +51,8 @@ This file is part of the combinatorial-rigidity formalization. See
 `ROADMAP.md` for the project plan and `notes/Phase1.md` for the
 Phase 1 work log (this file's content is Phase 1).
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

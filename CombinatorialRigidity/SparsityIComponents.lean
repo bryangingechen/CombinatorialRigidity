@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Sparsity
+module
+
+public import CombinatorialRigidity.Sparsity
 
 /-!
 # Matroidal-regime I-components and augmentation for `(k, ℓ)`-sparsity
@@ -31,6 +33,12 @@ downstream consumer (`CountMatroid.lean` uses
 downstream files can drop ~354 LoC of matroid-regime machinery from
 their transitive import set.
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 namespace SimpleGraph
 

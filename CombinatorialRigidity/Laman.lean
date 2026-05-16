@@ -3,11 +3,13 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Finite
-import CombinatorialRigidity.Mathlib.Data.Finset.BooleanAlgebra
-import CombinatorialRigidity.Mathlib.Data.Fintype.Card
-import CombinatorialRigidity.Sparsity
-import Mathlib.Combinatorics.SimpleGraph.DegreeSum
+module
+
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Finite
+public import CombinatorialRigidity.Mathlib.Data.Finset.BooleanAlgebra
+public import CombinatorialRigidity.Mathlib.Data.Fintype.Card
+public import CombinatorialRigidity.Sparsity
+public import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 
 /-!
 # Laman graphs
@@ -51,6 +53,8 @@ See `ROADMAP.md` for the project plan, `notes/Phase1.md` for the
 sparsity API work log, and `notes/Phase2.md` for the Laman-specific
 work log (this file's content spans Phase 1 + Phase 2).
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

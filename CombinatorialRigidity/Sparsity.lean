@@ -3,14 +3,16 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.EdgesIn
-import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Finite
-import CombinatorialRigidity.Mathlib.Data.Finset.Card
-import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
-import Mathlib.Combinatorics.SimpleGraph.DegreeSum
-import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
-import Mathlib.Data.Set.Card
-import Mathlib.Data.Set.Card.Arithmetic
+module
+
+public import CombinatorialRigidity.EdgesIn
+public import CombinatorialRigidity.Mathlib.Combinatorics.SimpleGraph.Finite
+public import CombinatorialRigidity.Mathlib.Data.Finset.Card
+public import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
+public import Mathlib.Combinatorics.SimpleGraph.DegreeSum
+public import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
+public import Mathlib.Data.Set.Card
+public import Mathlib.Data.Set.Card.Arithmetic
 
 /-!
 # `(k, ℓ)`-sparsity and `(k, ℓ)`-tightness
@@ -101,6 +103,12 @@ guidance.
 See `ROADMAP.md` for the project plan and `notes/Phase1.md` for the
 Phase 1 work log (this file's content is Phase 1).
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 namespace SimpleGraph
 

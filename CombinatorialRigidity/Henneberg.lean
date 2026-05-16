@@ -3,15 +3,17 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Laman
-import CombinatorialRigidity.Mathlib.Data.Finset.Card
-import CombinatorialRigidity.Mathlib.Data.Finset.Option
-import CombinatorialRigidity.Mathlib.Data.Set.Card
-import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
-import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
-import Mathlib.Combinatorics.SimpleGraph.Maps
-import Mathlib.Data.Finite.Card
-import Mathlib.Logic.Equiv.Option
+module
+
+public import CombinatorialRigidity.Laman
+public import CombinatorialRigidity.Mathlib.Data.Finset.Card
+public import CombinatorialRigidity.Mathlib.Data.Finset.Option
+public import CombinatorialRigidity.Mathlib.Data.Set.Card
+public import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
+public import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
+public import Mathlib.Combinatorics.SimpleGraph.Maps
+public import Mathlib.Data.Finite.Card
+public import Mathlib.Logic.Equiv.Option
 
 /-!
 # Henneberg moves
@@ -39,6 +41,12 @@ every move and keeps the type signatures readable.
 See `ROADMAP.md` for the project plan and `notes/Phase3.md` for the
 Phase 3 work log.
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 namespace SimpleGraph
 

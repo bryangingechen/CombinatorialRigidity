@@ -3,10 +3,12 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Data.Set.Card
-import CombinatorialRigidity.Sparsity
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.Analysis.Normed.Module.FiniteDimension
+module
+
+public import CombinatorialRigidity.Mathlib.Data.Set.Card
+public import CombinatorialRigidity.Sparsity
+public import Mathlib.Analysis.InnerProductSpace.PiL2
+public import Mathlib.Analysis.Normed.Module.FiniteDimension
 
 /-!
 # Frameworks and infinitesimal rigidity
@@ -44,6 +46,12 @@ specialization to `d = 2` happens at the Phase 5 boundary.
 See `ROADMAP.md` for the project plan and `notes/Phase4.md` for the Phase 4
 work log.
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 open scoped InnerProductSpace Topology
 

@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Henneberg
+module
+
+public import CombinatorialRigidity.Henneberg
 
 /-!
 # Henneberg moves — reverse decomposition and worked example
@@ -33,6 +35,12 @@ See `ROADMAP.md` for the project plan and `notes/Phase3.md` /
 forward / reverse split was extracted in the Phase 8 perf pass; see
 `notes/Phase8-perf.md` for the structural rationale.
 -/
+
+@[expose] public section
+
+-- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
+set_option backward.privateInPublic true
+set_option backward.privateInPublic.warn false
 
 namespace SimpleGraph
 

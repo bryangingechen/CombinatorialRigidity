@@ -1,7 +1,7 @@
 # Phase 8 — perf pass (work log)
 
-**Status:** in progress (F1, F2 closed; F3 mid-stream — mirrors
-converted, project files pending).
+**Status:** in progress (F1, F2 closed; F3 structurally done modulo
+the `LinearRigidityMatroid` carve-out; F3.6 measurement pending).
 
 ## Current state
 
@@ -9,13 +9,21 @@ F1 (Sparsity L1267 split) and F2 (Henneberg L444 split) both closed
 structurally clean (verdict: project-total perf-neutral; per-target
 deltas inconclusive — see *Cleanup pass summaries* below). F3.1
 baseline reused from F2.4 medians per the *Reuse adjacent baselines*
-architectural choice (same machine, same day, no intervening source
-edits). F3.2: all 14 `CombinatorialRigidity/Mathlib/*` mirror files
-converted to the module system in one commit — `module` line,
-`import X` → `public import X`, and an unnamed `@[expose] public
-section` between the doc block and the namespace. Build + lint
-clean. Next: F3.3 (convert all 14 project files in topo order from
-`EdgesIn` outward), then F3.6 measurement.
+architectural choice. F3.2 converted all 14
+`CombinatorialRigidity/Mathlib/*` mirror files to the module system
+in one commit (mechanic in `CombinatorialRigidity/CLAUDE.md`
+*Module-system conversion*). F3.3 converted 13 of 14 project files
+in one commit; `LinearRigidityMatroid.lean` is **carved out** —
+blocked by its `Matroid.Representation.Map` dep from
+`apnelson1/Matroid` (the external lib is ~4 % `module`-converted, and
+a `module` file cannot import a non-`module` file via either
+`public import` or plain `import`). Build + lint clean. Module
+conversion surfaced one new gotcha: `private` declarations inside
+`@[expose] public section` need a `set_option
+backward.privateInPublic true` (+ matching `.warn false`)
+opt-in — folded into `CombinatorialRigidity/CLAUDE.md` *Module-system
+conversion*. Next: F3.6 (final 4-run A/B vs F1.1 baseline; promote
+headline to `PERFORMANCE.md`).
 
 ## Pass overview
 
@@ -199,15 +207,23 @@ executed) during Phase 8-cleanup's bucket E:
   inserted between the doc block and the namespace (model:
   `Mathlib/Analysis/InnerProductSpace/PiL2.lean`). Build + lint
   clean.
-- [ ] **F3.3:** Convert project files in topo order from `EdgesIn`
-  outward. Order (post-F1, post-F2): `EdgesIn`, `Sparsity`,
-  `SparsityIComponents`, `Laman`, `Henneberg`, `HennebergReverse`,
-  `Framework`, `TrivialMotions`, `CountMatroid`,
-  `HennebergRigidity`, `MatroidIdentification`,
-  `LinearRigidityMatroid`, `LamanTheorem`, `RigidityMatroid`.
+- [x] **F3.3:** 13 of 14 project files converted in topo order from
+  `EdgesIn` outward: `EdgesIn`, `Sparsity`, `SparsityIComponents`,
+  `Laman`, `Henneberg`, `HennebergReverse`, `Framework`,
+  `TrivialMotions`, `CountMatroid`, `HennebergRigidity`,
+  `RigidityMatroid`, `MatroidIdentification`, `LamanTheorem`.
+  **`LinearRigidityMatroid.lean` skipped** — its
+  `Matroid.Representation.Map` dep from `apnelson1/Matroid` is
+  non-`module` (the external lib is ~4 % converted), and a `module`
+  file can't import a non-`module` file. Non-`module` files can
+  freely import `module` files, so `LinearRigidityMatroid` still
+  consumes the converted `MatroidIdentification` chain normally.
   (F1 named the forward half `Sparsity` rather than `SparsityBase`;
   F2 named the forward half `Henneberg` rather than
-  `HennebergForward` — see *Phase-local choices* on F2.)
+  `HennebergForward` — see *Phase-local choices* on F2. The plan's
+  topo order had `RigidityMatroid` last; corrected here since
+  `MatroidIdentification` imports `RigidityMatroid`, not the other
+  way round.)
 - [ ] **F3.4:** *(folded into F3.2/F3.3 as the conversion mechanic
   rather than a separate step.)*
 - [ ] **F3.5:** *(build + lint run inline at the close of F3.2 and
@@ -270,6 +286,43 @@ executed) during Phase 8-cleanup's bucket E:
   Cross-file tip lifted to `CombinatorialRigidity/CLAUDE.md`
   *Module-system conversion*.
 
+- **`private`-in-public-section needs an opt-in.** First F3.3 build
+  failed in `Framework.lean` with *"Unknown identifier
+  `edgeRow_symm`. Note: A private declaration `edgeRow_symm` (from
+  the current module) exists but would need to be public to access
+  here"* — even though `edgeRow_symm` was used inside the same file.
+  In the module system, `private` declarations are not visible to
+  *any* `public` declaration (including ones in the same file)
+  without an explicit opt-in. The fix is two `set_option` lines just
+  inside `@[expose] public section`:
+  ```
+  set_option backward.privateInPublic true
+  set_option backward.privateInPublic.warn false
+  ```
+  Applied file-scope to 9 of the 13 converted project files (the
+  ones with `private` declarations). Mathlib uses the per-declaration
+  `set_option … in` form (cf. `Mathlib/Data/Sym/Sym2.lean`,
+  `Mathlib/Order/Sublocale.lean`); the file-scope form is equivalent
+  and concise when many `private` declarations live in one file.
+  Cross-file tip lifted to `CombinatorialRigidity/CLAUDE.md`
+  *Module-system conversion*.
+
+- **`LinearRigidityMatroid.lean` carve-out: blocked by external
+  `Matroid` lib.** `apnelson1/Matroid` is ~4 % module-converted as
+  of 2026-05; specifically `Matroid.Representation.Map`
+  (`LinearRigidityMatroid`'s dep) is non-`module`. A `module` file
+  cannot import a non-`module` file via `public import` *or* plain
+  `import` (verified by direct test: `lake env lean` reports *"cannot
+  import non-`module` Matroid.Representation.Map from `module`"*).
+  `LinearRigidityMatroid.lean` stays non-`module` until either the
+  upstream lib converts or its Matroid usage can be refactored out.
+  Non-`module` files can freely import `module` files, so the rest
+  of the project is unaffected — `LinearRigidityMatroid` still
+  consumes the module-converted `MatroidIdentification` chain
+  normally. F3.6's measurement of `LinearRigidityMatroid.lean` will
+  reflect the partial conversion (its upstream is `module`, but it
+  itself isn't).
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 *(Empty — populate as cross-cutting lessons surface.)*
@@ -321,10 +374,13 @@ at the file boundary, not just at section-header level.
 
 ## Hand-off / next phase
 
-Mid-stream: F3.2 (mirror conversion) committed. Next concrete commit
-is F3.3 — convert the 14 project `.lean` files in topo order from
-`EdgesIn` outward, same mechanic as F3.2 (model file:
-`Mathlib/Analysis/InnerProductSpace/PiL2.lean`, see also
-`CombinatorialRigidity/CLAUDE.md` *Module-system conversion*).
-Build + lint at close; commit. Then F3.6 — 4-run A/B against F1.1
-baseline; promote headline to `PERFORMANCE.md`.
+Mid-stream: F3.2 (mirrors) and F3.3 (13 of 14 project files; one
+carved out for the `apnelson1/Matroid` lib non-`module` constraint)
+committed. Next concrete commit is F3.6 — 4-run A/B on the four
+measurement targets (`HennebergRigidity`, `RigidityMatroid`,
+`LinearRigidityMatroid`, `lake build` project-total) per the
+`PERFORMANCE.md` *Measurement protocol*. Baseline for the headline
+delta is F1.1 medians (HR 57.3 s; RM 53.7 s; LRM 62.3 s; project
+21.2 s). Once the four post-conversion medians land, write the
+verdict ("did pay" / "didn't pay") + a one-paragraph promotion entry
+to `notes/PERFORMANCE.md`, then close the F3 row and the pass.
