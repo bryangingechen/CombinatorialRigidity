@@ -1,12 +1,20 @@
 # Phase 7 cleanup round — work log
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
-no-fix audits). Bucket B partial: B1 + B2 + B5 closed; B3 audit
-complete (3 of 8 overrides are legitimate `@[nolint unusedArguments]`
-sites; 6 of 8 are `set_option linter.unused{Fintype,Decidable}InType
-false` suppressions that silence advice already adopted as our style
-— refactor pass pending). Typeclass-shape design decision **resolved
-(follow mathlib style: `[Finite V]` + inline bridge as idiom)**. Two
+no-fix audits). Bucket B partial: B1 + B2 + B3 + B5 closed; B3
+landed via five commits (a/b/c/d/e). The audit found 6 of 8
+`set_option linter.unused{Fintype,Decidable}InType false`
+suppressions silenced advice already adopted as our resolved B2
+style; the Zulip thread *Unused Decidable Instances linter*
+confirmed the linter intent matches our DESIGN.md. B3a relaxed 3
+TrivialMotions theorems; B3b/c dropped `[DecidableEq V]` from 3
+Sparsity lemmas (IComponents + Augmentation); B3d cascaded the
+`[Fintype V]` → `[Finite V]` relaxation across 16 rigidity-API
+sites (Framework / HennebergRigidity / LamanTheorem); B3e
+renamespaced 7 block decls from `IsSparse` to `SimpleGraph` so they
+no longer require an unused sparsity hypothesis to enable dot
+notation. Typeclass-shape design decision **resolved (follow
+mathlib style: `[Finite V]` + inline bridge as idiom)**. Two
 earlier resolution iterations ("uniform `[Fintype V]`", then per-
 declaration "state at typeclass body uses") were considered and
 reversed once the mathlib alignment became clear — the
@@ -31,7 +39,7 @@ cleanly.
 
 ## Current state
 
-Bucket A closed. B1 + B2 + B5 closed. The B1 per-site audit
+Bucket A closed. B1 + B2 + B3 + B5 closed. The B1 per-site audit
 confirmed the design hypothesis: 29 of 49 `classical` sites
 (~59%) are load-bearing in the expected mathlib-idiom way
 (providing `DecidableEq` for `Finset` ops / `Compl` / `rcases`
@@ -40,24 +48,24 @@ on `Decidable` data, or `DecidableRel G.Adj`); the remaining 20
 `Module`/`LinearMap`/`Set`/affine-span/polynomial APIs that
 don't need decidability. All 20 vestigial sites deleted (17 in
 project source + 3 in `Mathlib/` mirror); `lake build` and
-`lake lint` pass clean. B3 audit complete: empirical override-
-disable test confirmed all 8 silenced rules still fire, but the
-Zulip discussion of `unusedFintypeInType` / `unusedDecidableInType`
-(channel `mathlib4`, topic *Unused Decidable Instances linter*,
-2025-11-19 to 2026-03-18) confirms the linter's intent matches our
-resolved B2 mathlib-style design: state at weakest typeclass; bridge
-inline in proof body. The 6 `set_option linter.* false` sites
-silence advice we have already adopted as our style; they should be
-refactored, not suppressed. The remaining 2 `@[nolint
-unusedArguments]` sites in `Sparsity.lean` are legitimate (dot-
-notation ergonomics on `IsSparse.HasBlock` / `IsSparse.maxBlockSet`).
-The third `@[nolint unusedArguments]` in `Framework.lean`
-(`IsInfinitesimallyRigid`) is a borderline contract-guard case: per
-the adopted style the `[Fintype V]` should relax to `[Finite V]`,
-and the env-linter override stays as the contract-guard rationale
-until the upstream syntax linter extends to `def`s (planned per
-Thomas Murrills's Dec-2025 message). Next concrete step: B3 refactor
-commits.
+`lake lint` pass clean. B3 closed (commits B3a–B3e):
+the Zulip thread *Unused Decidable Instances linter* (channel
+`mathlib4`, 2025-11-19 to 2026-03-18) confirmed the linter's intent
+matches our resolved B2 mathlib-style design, and 6 of the 8
+`set_option linter.* false` suppressions silenced advice we had
+already adopted as our style. B3a relaxed 3 TrivialMotions theorems
+to `[Finite V]` + body bridge. B3b/c dropped `[DecidableEq V]` from
+3 Sparsity lemmas. B3e went past the original "keep with dot-
+notation ergonomics" disposition for `IsSparse.HasBlock` /
+`IsSparse.maxBlockSet`: per the user's observation that "it's
+entirely possible to want to prove things about non-sparse edge sets
+which contain blocks", moved 7 non-`hI`-using decls to bare
+`SimpleGraph` and generalized the 2 retained `IsSparse` lemmas from
+`(fromEdgeSet I)` to abstract `G`. B3d cascaded the
+`[Fintype V]` → `[Finite V]` relaxation across 16 rigidity-API
+sites (Framework / HennebergRigidity / LamanTheorem); the 4 sites
+that legitimately use `Fintype.card V` in their conclusion stay at
+`[Fintype V]`. Next concrete step: B4 (`noncomputable def` audit).
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -352,8 +360,8 @@ Each is a separate commit, root-cause fix preferred.
   drop it in the same commit. Defer (b) / (c) until after (a) lands
   (and consider whether `Set.Finite.fintype` should be a project
   helper rather than an inline `haveI`).
-- [ ] B3: `@[nolint unusedArguments]` / `set_option linter.* false`
-  audit. **Audit complete (2026-05-16); refactor in progress.**
+- [x] B3: `@[nolint unusedArguments]` / `set_option linter.* false`
+  audit. **Closed 2026-05-16.**
   Empirical test (temp-disable each override + `lake build` + `lake
   lint`) confirmed all 8 silenced rules still fire and all have
   multi-line "why" comments. But the Zulip discussion of the
