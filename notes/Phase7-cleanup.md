@@ -382,10 +382,11 @@ Each is a separate commit, root-cause fix preferred.
 
   Sites and dispositions:
   - **Refactor (6 sites, planned commits B3a/B3b/B3c):**
-    - `TrivialMotions.lean`:250, 321, 347
-      (`set_option linter.unusedFintypeInType false`) — relax
+    - **B3a done.** `TrivialMotions.lean`:250, 321, 347
+      (`set_option linter.unusedFintypeInType false`) — relaxed
       `[Fintype V]` → `[Finite V]` + body `haveI : Fintype V :=
-      Fintype.ofFinite V`; delete the three `set_option`s. *(B3a.)*
+      Fintype.ofFinite V`; deleted the three `set_option`s. Build
+      + lint clean.
     - `Sparsity.lean`:1275 (section `set_option
       linter.unusedDecidableInType false`) — affects
       `maxBlock_isTightOn` (1329) and `maxBlock_eq_of_subset_maxBlock`

@@ -244,16 +244,13 @@ theorem trivialMotionFamily_mem_trivialMotions (p : Framework V d)
   · exact translationMotion_mem_trivialMotions p _
   · exact infinitesimalRotation_mem_trivialMotions p (inner_elemSkewMap_self _ _)
 
--- `[Fintype V]` is semantically required: it derives `Module.Finite ℝ (Framework V d)` via the
--- Pi-fintype chain. The linter sees the binder as unused because the use is purely through
--- typeclass derivation.
-set_option linter.unusedFintypeInType false in
 /-- **Joint linear independence** of the d-general trivial-motion family at an affinely-spanning
 placement. The translation/rotation split combined with affine spanning kills the rotation part,
 leaving the translation part identifiable coord-by-coord. -/
-theorem trivialMotionFamily_linearIndependent [Fintype V] {p : Framework V d}
+theorem trivialMotionFamily_linearIndependent [Finite V] {p : Framework V d}
     (hp : affineSpan ℝ (Set.range p) = ⊤) :
     LinearIndependent ℝ (trivialMotionFamily p) := by
+  haveI : Fintype V := Fintype.ofFinite V
   obtain ⟨_, v₀, rfl⟩ := AffineSubspace.nonempty_of_affineSpan_eq_top _ _ _ hp
   rw [Fintype.linearIndependent_iff]
   intro c hc
@@ -315,18 +312,15 @@ theorem fintype_card_trivialMotionFamilyIndex :
   rw [show d + 1 - 1 = d from rfl]
   rw [Nat.mul_comm]
 
--- `[Fintype V]` is semantically required: it derives `Module.Finite ℝ (Framework V d)` via the
--- Pi-fintype chain, which `LinearIndependent.fintype_card_le_finrank` needs. The linter sees the
--- binder as unused because the use goes through a typeclass-derivation chain.
-set_option linter.unusedFintypeInType false in
 /-- **The d-general finrank lower bound for trivial motions at an affinely-spanning placement.**
 At any placement `p : Framework V d` whose image affinely spans `EuclideanSpace ℝ (Fin d)`, the
 trivial-motions submodule has dimension at least `d (d + 1) / 2` (the textbook dimension of
 Euclidean rigid motions). The argument exhibits an explicit family of `d` coordinate translations
 and `d (d - 1) / 2` elementary skew rotations and shows it is linearly independent. -/
-theorem trivialMotions_finrank_ge_of_affinelySpanning [Fintype V]
+theorem trivialMotions_finrank_ge_of_affinelySpanning [Finite V]
     {p : Framework V d} (hp : affineSpan ℝ (Set.range p) = ⊤) :
     d * (d + 1) / 2 ≤ Module.finrank ℝ (trivialMotions p) := by
+  haveI : Fintype V := Fintype.ofFinite V
   -- Lift the trivial-motion family into the `trivialMotions p` submodule.
   let f : (Fin d ⊕ Σ i : Fin d, Fin i.val) → (trivialMotions p) :=
     fun s => ⟨trivialMotionFamily p s, trivialMotionFamily_mem_trivialMotions p s⟩
@@ -341,10 +335,6 @@ theorem trivialMotions_finrank_ge_of_affinelySpanning [Fintype V]
   rw [fintype_card_trivialMotionFamilyIndex] at h_card
   exact h_card
 
--- `[Fintype V]` is semantically required: `trivialMotions_finrank_ge_of_affinelySpanning`
--- consumes it for `Module.Finite ℝ (Framework V d)` via the Pi-fintype chain. The linter sees
--- the binder as unused because the use is purely through typeclass derivation.
-set_option linter.unusedFintypeInType false in
 /-- **d-general finrank lower bound for the rigidity-map kernel at an affinely-spanning placement.**
 For any graph `G`, any dimension `d`, and any placement `p` whose image affinely spans
 `EuclideanSpace ℝ (Fin d)`, the kernel of `G.RigidityMap p` has dimension at least
@@ -353,7 +343,7 @@ For any graph `G`, any dimension `d`, and any placement `p` whose image affinely
 Combines the d-general `trivialMotions_finrank_ge_of_affinelySpanning` with the unconditional
 inclusion `trivialMotions_le_ker`. Plugs into rank-nullity to give the d-general rank upper
 bound `rigidityMap_finrank_range_le_of_affinelySpanning` on `G.RigidityMap p`'s range. -/
-theorem rigidityMap_ker_finrank_ge_of_affinelySpanning [Fintype V]
+theorem rigidityMap_ker_finrank_ge_of_affinelySpanning [Finite V]
     (G : SimpleGraph V) {p : Framework V d}
     (hp : affineSpan ℝ (Set.range p) = ⊤) :
     d * (d + 1) / 2 ≤ Module.finrank ℝ (LinearMap.ker (G.RigidityMap p)) :=
