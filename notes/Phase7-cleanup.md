@@ -2,7 +2,7 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
-commits (a/b/c/d). Bucket C in progress (C1–C4 closed; C5–C10
+commits (a/b/c/d). Bucket C in progress (C1–C5 closed; C6–C10
 open as discrete task items). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
@@ -70,9 +70,20 @@ independently. C4 closed 2026-05-16: focused walk of
 extractions (mirror `Sym2.coe_toFinset`, public `edgesIn_fromEdgeSet_of_off_diag`,
 collapsed `h_toFinset_sub_iff` via the new mirror), plus a bonus
 mathlib-miss `SimpleGraph.not_isDiag_of_mem_edgeSet` that subsumed a
-planned private helper. Body LoC: 184 → 167. Subsequent work order:
-**C5 (cross-cutting `linearIndepOn_image_rigidityRow_of_injective`
-extraction) → C6–C10 in priority order → D**.
+planned private helper. Body LoC: 184 → 167. C5 closed 2026-05-16:
+extracted three helpers in `RigidityMatroid.lean` —
+`rigidityRow_lift_eq_funLeft_dualMap` (factoring identity),
+`linearIndependent_rigidityRow_lift_of_injective` (forward LI), and
+`linearIndependent_rigidityRow_of_lift` (reverse LI) — and refactored
+all four C2-flagged sites over four commits (C5b/c/d/e). Body LoC
+deltas: #4 123→103, #10 87→71, #1 313→301, #7 107→94 (net 71 LoC saved
+across sites; the helper file adds 82 LoC, so project-wide is +11 LoC,
+but the duplication is now one named lemma instead of four 20-line
+ceremonies). C2's 80-100 LoC estimate was high — #1 and #7 each kept
+some `restrictMap` / surrounding scaffolding that the helper alone
+couldn't eliminate. Subsequent work order: **C6–C10 in priority order
+(C6/C7 are aux-extraction wins; C8 is a mathlib search; C9 is a Sym2
+mirror; C10 is a perturbation shared helper) → D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -1045,39 +1056,40 @@ Each is a separate commit, root-cause fix preferred.
   argument — is specific to this proof and doesn't share patterns
   with other long proofs in the project (cross-checked against the C2
   cross-cutting candidate inventory).
-- [ ] C5: **Cross-cutting extraction — `linearIndepOn_image_rigidityRow_of_injective`.**
-  Highest-leverage finding from C2 (~80-100 LoC compound savings).
-  Generic shape:
-  ```
-  theorem linearIndepOn_image_rigidityRow_of_injective
-      {V W : Type*} {G' : SimpleGraph V} {H : SimpleGraph W}
-      {d : ℕ} {p' : Framework V d} {p_ext : Framework W d}
-      (φ : V → W) (hφ : Function.Injective φ)
-      (hcompat : ∀ v, p_ext (φ v) = p' v)
-      (hlift : ∀ e' : G'.edgeSet, Sym2.map φ e'.val ∈ H.edgeSet)
-      (h : G'.EdgeSetRowIndependent p' Set.univ) :
-      LinearIndepOn ℝ (H.rigidityRow p_ext)
-        (Set.range fun e' : G'.edgeSet =>
-          (⟨Sym2.map φ e'.val, hlift e'⟩ : H.edgeSet))
-  ```
-  Concrete refactor sites:
-  - `typeI_edgeSetRowIndependent_extend` (#4,
-    `MatroidIdentification.lean`:66; `φ = some : V → Option V`):
-    drops ~33 lines.
-  - `typeII_edgeSetRowIndependent_extend` (#1,
-    `MatroidIdentification.lean`:395; same `φ`, with subtype
-    refinement `{e' // e' ≠ s(a,b)}`): drops ~42 lines (the lemma
-    composes with `LinearIndependent.comp Subtype.val_injective` for
-    the subtype restriction).
-  - `typeI_pendant_edgeSetRowIndependent_extend` (#10,
-    `MatroidIdentification.lean`:226; same `φ`): drops ~30 lines.
-  - `isSparse_of_edgeSetRowIndependent_dim_two` (#7,
-    `RigidityMatroid.lean`:514; `φ = Subtype.val : ↥S → V`):
-    drops ~25-30 lines.
-  Place the helper in `RigidityMatroid.lean` (it sits at the
-  `EdgeSetRowIndependent` API boundary and is consumed by
-  `MatroidIdentification.lean`). Land as its own commit; each
-  refactored site is a small follow-up.
+- [x] C5: **Cross-cutting extraction — rigidityRow factoring +
+  forward/reverse LI helpers.** Landed across five commits:
+  - **C5a — helpers.** `rigidityRow_lift_eq_funLeft_dualMap` (factoring
+    identity), `linearIndependent_rigidityRow_lift_of_injective`
+    (forward; small LI → big lifted LI), and
+    `linearIndependent_rigidityRow_of_lift` (reverse; big lifted LI →
+    small LI) added to `RigidityMatroid.lean`. Forward indexed by an
+    arbitrary `s : ι → G'.edgeSet` (covers `Subtype.val` for #1's
+    subtype refinement). 82 new LoC including doc-comments; added
+    import `CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas`.
+  - **C5b — refactor #4.** `typeI_edgeSetRowIndependent_extend`'s
+    15-line ceremony (restrictMap / h_restrict_surj / h_factor) and
+    5-line LI cascade collapse to a 3-line helper invocation. Body
+    LoC 123 → 103 (saved 20).
+  - **C5c — refactor #10.** `typeI_pendant_edgeSetRowIndependent_extend`,
+    same shape. Body LoC 87 → 71 (saved 16).
+  - **C5d — refactor #1.** `typeII_edgeSetRowIndependent_extend`,
+    forward helper with `s = Subtype.val` for the `{e' // e' ≠ s(a, b)}`
+    subtype. The disjoint-spans branch below the `oldSet` LI still
+    needs `restrictMap` and `h_restrict_surj` (for the `h_f_eq` /
+    `h_old_le` / `dualMap_injective` chain), so they stay; only
+    `h_factor`'s proof gets a one-line `rigidityRow_lift_eq_funLeft_dualMap`
+    body. Body LoC 313 → 301 (saved 12, less than the C2 estimate of
+    ~42 because of the disjoint-spans dependency).
+  - **C5e — refactor #7.** `isSparse_of_edgeSetRowIndependent_dim_two`
+    consumes the reverse helper for `h_li_s` and drops the now-unused
+    `restrict` let-binding. Body LoC 107 → 94 (saved 13).
+
+  Aggregate site savings: 71 LoC. Net project change: +11 LoC after
+  accounting for the 82-line helper file, but the duplication is now
+  centralised in a single named lemma rather than spread across four
+  20-line ceremonies. C2's 80-100 LoC estimate was high because it
+  did not anticipate that sites #1 and #7 would keep some surrounding
+  scaffolding (disjoint-spans branch / `restrict` alias).
 - [ ] C6: **Extract `IsSparse.contradiction_pair_aux` for #5.**
   In `Sparsity.lean`:818-838, three near-identical 6-line
   `by_cases h_*_*: 2 ≤ (S_p ∩ S_q).card` blocks each union two tight
@@ -1304,6 +1316,29 @@ checkbox.)*
   finding; none surfaced a pure tactic-substitution win at this
   depth (the C3 `linear_combination (norm := …)` move was the
   last of those).
+
+- **C5 — cross-cutting rigidityRow factoring + LI helpers.** Extracted
+  three helpers in `RigidityMatroid.lean` (factoring identity + forward
+  LI + reverse LI) and refactored all four C2-flagged sites over five
+  commits (C5a/b/c/d/e). The forward helper takes an arbitrary
+  `s : ι → G'.edgeSet` re-indexing so it serves both `Set.univ`-style
+  callers (#4, #10) and subtype-style callers (#1 with
+  `{e' // e'.val ≠ s(a, b)}`). The reverse helper handles the
+  Lovász–Yemini easy-direction shape (#7) where V-side row-LI on `I`
+  pulls back to row-LI of the induced subgraph at the restricted
+  placement. Net site savings 71 LoC; per-site savings 12-20 LoC. Two
+  refinements vs. the original C2 sketch: (i) the LI conclusion is
+  stated as a `LinearIndependent` of a `fun` (not `LinearIndepOn` of a
+  `Set.range`) so callers can compose with `.comp _` for subtype
+  restrictions without an extra `linearIndepOn_range_iff` rewrite; (ii)
+  the forward direction's domain is generalised from `G'.edgeSet` to a
+  generic `ι` indexed via `s : ι → G'.edgeSet`, which is what makes
+  the #1 subtype variant inline rather than a separate composition
+  step. Worth a brief TACTICS-GOLF note: the
+  `LinearIndependent`-namespace dot notation breaks once `LinearIndependent`
+  gets unfolded to its `Function.Injective (Finsupp.linearCombination ...)`
+  defeq (via `rw [linearIndepOn_univ_iff]` etc.); call
+  `LinearIndependent.dualMap_of_surjective` explicitly in that case.
 
 - **C4 — focused walk of `IsSparse.exists_aug_of_lt_two_mul`.** All
   three pre-flagged extractions landed; body LoC 184 → 167 (saved
