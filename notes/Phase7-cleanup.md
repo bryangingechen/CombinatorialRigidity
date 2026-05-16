@@ -2,7 +2,7 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
-commits (a/b/c/d). Bucket C in progress (C1–C7 closed; C8–C10
+commits (a/b/c/d). Bucket C in progress (C1–C8 closed; C9–C10
 open as discrete task items). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
@@ -93,9 +93,15 @@ the three per-pair dispatch blocks (`h_ab` / `h_ac` / `h_bc`)
 collapse to three 2-line helper invocations.
 `exists_typeI_or_typeII_reverse` body LoC: 117 → 62 (saved 55,
 ≈47%); helper adds 31 LoC including docstring; net file change
--4 LoC. Subsequent work order: **C8–C10 in priority order
-(C8 is a mathlib search; C9 is a Sym2 mirror; C10 is a perturbation
-shared helper) → D**.
+-4 LoC. C8 closed 2026-05-16: direct mathlib hit
+`LinearIndependent.pair_iff'` (`x ≠ 0 ⇒ LI iff ∀ a, a • x ≠ y`)
+replaces the 14-line manual `δ` factoring at
+`MatroidIdentification.lean`:702-714 with a 6-line
+`rw … ; push Not ; exact .imp` block; the `δ = 0` case split + `γ⁻¹`
+flip both disappear because `pair_iff'` is the contrapositive that
+covers all `δ` uniformly. `exists_nonCollinear_rowIndependent_placement_dim_two`
+body LoC: 88 → 80. Subsequent work order: **C9–C10 in priority order
+(C9 is a Sym2 mirror; C10 is a perturbation shared helper) → D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -164,10 +170,10 @@ iso side (#1, #4, #7, #10; ~80-100 LoC compound savings under a
 single `linearIndepOn_image_rigidityRow_of_injective` extraction).
 Seven follow-up extraction candidates **opened as Bucket C task
 items C5–C10** (C4 absorbs the seventh — its three pre-flagged
-helpers are listed inline). C4–C7 landed 2026-05-16. Next concrete
-step: **C8** (mathlib search for collinear-pair factoring in #9),
-then C9 / C10 in priority order; full per-site walk preserved under
-the C2 task entry for context.
+helpers are listed inline). C4–C8 landed 2026-05-16. Next concrete
+step: **C9** (project-internal `Sym2.optionSome_pair_eq_iff` mirror for
+#1's three `≠` proofs, ~15 LoC saved), then C10 / D; full per-site
+walk preserved under the C2 task entry for context.
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -1167,17 +1173,24 @@ Each is a separate commit, root-cause fix preferred.
   the `WitnessType` `let` binding and the three explicit `have h_ab :
   WitnessType ∨ … ∨ …` type ascriptions also cleaned up. Build + lint
   clean.
-- [ ] C8: **Mathlib search for collinear-pair factoring in #9.**
-  `MatroidIdentification.lean`:750-762 explicitly factors
-  `∃ δ, p₀ c - p₀ a = δ • (p₀ b - p₀ a)` from
-  `¬ LinearIndependent ![p₀ b - p₀ a, p₀ c - p₀ a]` plus
-  `p₀ b - p₀ a ≠ 0`. Loogle returned no direct hit on the goal-shape
-  `¬ LinearIndependent ℝ ![v, w] → v ≠ 0 → ∃ δ, w = δ • v` at C2 time;
-  worth a closer `lean_loogle` / `lean_leanfinder` / `lean_state_search`
-  pass — the standard mathlib path (`LinearIndependent.not_iff_eq_smul`
-  composed with `Submodule.mem_span_singleton`) is ~6 lines vs. the
-  current 13. If a direct fused lemma exists, ~7 LoC saved. If not,
-  consider mirroring under `CombinatorialRigidity/Mathlib/LinearAlgebra/`.
+- [x] C8: **Mathlib search for collinear-pair factoring in #9.** Closed
+  2026-05-16. **Direct hit:** `LinearIndependent.pair_iff'`
+  (`Mathlib.LinearAlgebra.LinearIndependent.Lemmas`) — for `x ≠ 0`,
+  `LinearIndependent K ![x, y] ↔ ∀ a, a • x ≠ y`. Contrapositively, with
+  `hd_ne_zero : p₀ b - p₀ a ≠ 0` already in scope:
+  `rw [LinearIndependent.pair_iff' hd_ne_zero] at hLI₀` + `push Not at
+  hLI₀` + `exact hLI₀.imp fun _ h => h.symm` replaces the 13-line
+  manual factoring at `MatroidIdentification.lean`:702-714. The lemma
+  uniformly handles the `δ = 0` case the manual proof split on, so the
+  `by_cases hpac : p₀ c - p₀ a = 0` branch + the `γ⁻¹` flip both go
+  away. Block 14 LoC → 6 LoC (saved 8); body LoC of
+  `exists_nonCollinear_rowIndependent_placement_dim_two`: 88 → 80.
+  Build + lint clean. C2 estimate (~7 LoC under the
+  `LinearIndependent.not_iff_eq_smul` + `Submodule.mem_span_singleton`
+  composition path) was right on the saving but wrong on the lemma — the
+  `pair_iff'` `≠` formulation is shorter than the `not_iff_eq_smul`
+  contraposition, and the contrapositive avoids the `0`-case split
+  entirely.
 - [ ] C9: **Project-internal `Sym2.optionSome_pair_eq_iff` mirror.**
   Three `≠` proofs in `MatroidIdentification.lean`:462-485
   (`hAB_ne / hAC_ne / hBC_ne` for the three new typeII edges
@@ -1332,6 +1345,30 @@ checkbox.)*
   (term-mode `show ... from ...` glue, definitional unfolds of `set
   M`-style let-bindings before `fun_prop` / `rw`, one `change G'.Adj
   x y` stylistic equivalent of `rw [SimpleGraph.mem_edgeSet]`).
+
+- **C8 — collinear-pair factoring via `LinearIndependent.pair_iff'`.**
+  C2 flagged the 13-line manual factoring at
+  `MatroidIdentification.lean`:702-714 (inside
+  `exists_nonCollinear_rowIndependent_placement_dim_two`) as a likely
+  mathlib-search win and estimated ~7 LoC if a fused lemma exists.
+  Loogle on `LinearIndependent _ ![?v, ?w]` surfaces
+  `LinearIndependent.pair_iff'` in
+  `Mathlib.LinearAlgebra.LinearIndependent.Lemmas`: for `x ≠ 0`,
+  `LinearIndependent K ![x, y] ↔ ∀ a, a • x ≠ y`. The contrapositive is
+  exactly the goal-shape needed (`∃ δ, δ • (p₀ b - p₀ a) = p₀ c - p₀ a`),
+  and it covers `δ = 0` uniformly — so both the original
+  `by_cases hpac : p₀ c - p₀ a = 0` branch and the `γ⁻¹` flip from
+  the reverse pair direction (`hγ : γ • (p₀ c - p₀ a) = p₀ b - p₀ a`)
+  disappear. Block 14 LoC → 6 LoC (saved 8); enclosing-lemma body
+  88 → 80 LoC. The C2 estimate guessed the wrong lemma
+  (`LinearIndependent.not_iff_eq_smul` + `Submodule.mem_span_singleton`)
+  but the right magnitude; the `pair_iff'` `≠`-formulation is shorter
+  than the contraposition path C2 sketched, and avoids the `0`-case
+  split entirely. Worth a brief TACTICS-GOLF entry? Provisionally
+  *not* — the pattern is narrow enough (`¬ LI of pair` ↦ `∃ δ`) that
+  a future agent hitting it from the search side will land on
+  `pair_iff'` directly; promoting belongs in a future cleanup if a
+  second site appears.
 
 - **C2 — four-question walk over C1 top-10 (notes only).** Walked
   the top-10 long-proof sites against the four CLEANUP.md questions

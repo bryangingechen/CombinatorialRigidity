@@ -698,20 +698,12 @@ private lemma exists_nonCollinear_rowIndependent_placement_dim_two [Finite V]
   have hd_ne_zero : p₀ b - p₀ a ≠ 0 := sub_ne_zero.mpr (Ne.symm hab_distinct)
   by_cases hLI₀ : LinearIndependent ℝ ![p₀ b - p₀ a, p₀ c - p₀ a]
   · exact ⟨p₀, h, hLI₀⟩
-  -- Collinear branch: `p₀ c - p₀ a = δ • (p₀ b - p₀ a)` for some `δ`.
+  -- Collinear branch: `p₀ c - p₀ a = δ • (p₀ b - p₀ a)` for some `δ`, via the
+  -- contrapositive of `LinearIndependent.pair_iff'` at the non-zero direction.
   obtain ⟨δ, hδ⟩ : ∃ δ : ℝ, p₀ c - p₀ a = δ • (p₀ b - p₀ a) := by
-    by_cases hpac : p₀ c - p₀ a = 0
-    · exact ⟨0, by rw [hpac, zero_smul]⟩
-    · rw [linearIndependent_fin2] at hLI₀
-      simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hLI₀
-      push Not at hLI₀
-      obtain ⟨γ, hγ⟩ := hLI₀ hpac
-      -- `hγ : γ • (p₀ c - p₀ a) = p₀ b - p₀ a`.
-      have hγ_ne_zero : γ ≠ 0 := by
-        intro hg
-        rw [hg, zero_smul] at hγ
-        exact hd_ne_zero hγ.symm
-      exact ⟨γ⁻¹, (eq_inv_smul_iff₀ hγ_ne_zero).mpr hγ⟩
+    rw [LinearIndependent.pair_iff' hd_ne_zero] at hLI₀
+    push Not at hLI₀
+    exact hLI₀.imp fun _ h => h.symm
   -- Perpendicular direction `w` outside `span {p₀ b - p₀ a}`.
   obtain ⟨w, hw_outside⟩ := exists_not_mem_span_singleton_dim_two hd_ne_zero
   have h_LI_w_d : LinearIndependent ℝ
