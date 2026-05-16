@@ -57,8 +57,12 @@ C3 closed 2026-05-16: extracted `typeII_collinear_inner_combo` row
 identity in `HennebergRigidity.lean`; the IR-side
 `typeII_isInfinitesimallyRigid_extend` shrank 92 → 77 body LoC, the
 row-LI-side `typeII_edgeSetRowIndependent_extend` shrank 322 → 313.
-Subsequent work order: **C2 (four-question walk over the C1 list)
-→ C4 → D**.
+C2 closed 2026-05-16: four-question walk over the C1 top-10 sites
+recorded (notes-only, no Lean changes). Highest-leverage finding is
+the **lift+restrict+factor+oldSet-LI pattern** shared verbatim across
+#1 / #4 / #7 / #10 (~80-100 LoC compound savings); seven follow-up
+extraction candidates filed as Phase 8 warm-ups. Subsequent work
+order: **C4 (focused `exists_aug_of_lt_two_mul` walk) → D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -119,13 +123,16 @@ unification) landed 2026-05-16 as the shared lemma
 `typeII_collinear_inner_combo` in `HennebergRigidity.lean`, with
 the IR-side and row-LI-side proofs both consuming it (15 + 9
 body-LoC saved, plus the architectural win of factoring the
-shared algebraic backbone). Next concrete step: **C2** — walk
-each of the C1 top-10 sites against the four CLEANUP.md questions
-(API extraction / mathlib miss / tactic substitution / cross-proof
-unification) and file per-site improvement sub-bullets under the
-C2 task entry. Or **C4** (`exists_aug_of_lt_two_mul` audit) if a
-focused single-proof walk is preferred over the cross-cutting C2
-sweep.
+shared algebraic backbone). C2 closed 2026-05-16: notes-only
+four-question walk over the C1 top-10 sites; highest-leverage
+finding is the **lift+restrict+factor+oldSet-LI pattern** shared
+verbatim across the typeI/typeII extends and the row-LI⇒sparsity
+iso side (#1, #4, #7, #10; ~80-100 LoC compound savings under a
+single `linearIndepOn_image_rigidityRow_of_injective` extraction).
+Seven follow-up extraction candidates filed (Phase 8 warm-ups);
+full per-site walk under the C2 task entry. Next concrete step:
+**C4** (`exists_aug_of_lt_two_mul` focused walk) — the C2 sweep
+already flagged three project-helper candidates that feed in.
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -762,10 +769,195 @@ Each is a separate commit, root-cause fix preferred.
   `typeII_reverse_blocker`) is a separate cluster — note for C2 to
   check whether they share a common counting helper rather than each
   re-deriving the inequality.
-- [ ] C2: For each of the top 10: ask the four CLEANUP.md questions
+- [x] C2: For each of the top 10: ask the four CLEANUP.md questions
   (API extraction / mathlib miss / tactic substitution / cross-proof
-  unification). File any concrete improvement task as a follow-up
-  sub-bullet here.
+  unification). **Closed 2026-05-16.** Per-site walk recorded below;
+  cross-cutting opportunity is the **lift+restrict+factor+oldSet-LI
+  pattern** shared verbatim across the typeI/typeII extends and
+  partially the row-LI⇒sparsity iso side (#1, #4, #7, #10).
+
+  **Cross-cutting candidate (highest leverage).** The four-block sequence
+  `hlift_mem` / `lift_some` / `hlift_some_inj` (build the lift
+  `G'.edgeSet → H.edgeSet` via `Sym2.map φ`); `restrictMap :=
+  LinearMap.funLeft ℝ _ φ` + `funLeft_surjective_of_injective`;
+  `h_factor : H.rigidityRow p_ext (lift_some e') =
+  restrictMap.dualMap (G'.rigidityRow p' e')`; and the oldSet-LI
+  branch (`linearIndepOn_range_iff hlift_some_inj` → `funext h_factor`
+  → `dualMap_of_surjective`) appears in:
+  - `typeI_edgeSetRowIndependent_extend` (#4, lines 80-103 + 134-143
+    = ~33 lines).
+  - `typeII_edgeSetRowIndependent_extend` (#1, lines 426-453 + 507-520
+    = ~42 lines, with the subtype refinement `{e' // e' ≠ s(a,b)}`).
+  - `typeI_pendant_edgeSetRowIndependent_extend` (#10, lines 233-252
+    + 268-277 = ~30 lines, with `a = b` for the pendant flat-form
+    typeI).
+  - `isSparse_of_edgeSetRowIndependent_dim_two` (#7, lines 562-610
+    = ~49 lines, with `Subtype.val : ↥S → V` instead of `some`).
+  Generic shape: `H.rigidityRow p_ext ∘ Sym2.map_lift =
+  (LinearMap.funLeft ℝ _ φ).dualMap ∘ G'.rigidityRow p'` whenever
+  `φ : V → W` injective and `p_ext (φ v) = p' v`. Concrete extraction
+  target: `theorem linearIndepOn_image_rigidityRow_of_injective`
+  in `RigidityMatroid.lean` taking `(G' : SimpleGraph V) (H : SimpleGraph W)
+  (φ : V → W) (hφ : Function.Injective φ) (p_ext : Framework W d)
+  (hcompat : ∀ v, p_ext (φ v) = p' v) (hlift : ∀ e' : G'.edgeSet,
+  Sym2.map φ e'.val ∈ H.edgeSet) (h : G'.EdgeSetRowIndependent p'
+  Set.univ)` and concluding `LinearIndepOn ℝ (H.rigidityRow p_ext)
+  (Set.range fun e' => ⟨Sym2.map φ e'.val, hlift e'⟩)`. Expected
+  aggregate savings ~80-100 LoC across the four sites; the pendant
+  / typeI / typeII variants then differ only in the new-edge LI
+  branch and the disjoint-spans branch. Worth filing as a Phase 8
+  warm-up.
+
+  **Per-site notes (four questions per site).**
+  - **#1 `typeII_edgeSetRowIndependent_extend`** (313 LoC, post-C3,
+    `MatroidIdentification.lean`:395).
+    - *API extraction.* The three `hAB_ne / hAC_ne / hBC_ne` proofs
+      at lines 462-485 follow identical 6-line `s(none, some u) =
+      s(none, some v) → u = v` derivations. Candidate helper
+      `Sym2.optionSome_pair_eq_iff : s(none, some u) = s(none, some v)
+      ↔ u = v` (Sym2 mirror) collapses each to a one-line `apply h*_ne;
+      exact Sym2.optionSome_pair_eq_iff.mp …`. ~15 LoC.
+    - *Cross-proof unification.* Shared lift+restrict+factor pattern
+      (cross-cutting candidate above).
+  - **#2 `IsSparse.exists_aug_of_lt_two_mul`** (184 LoC,
+    `Sparsity.lean`:1454; also C4 candidate).
+    - *API extraction.* `h_edgesIn_eq` (lines 1537-1541, "edgesIn of
+      `fromEdgeSet X` for off-diag `X` equals `X ∩ S.sym2`") is used
+      4 times locally and looks like a generally useful project
+      helper — extract to `EdgesIn.lean` as
+      `edgesIn_fromEdgeSet_of_off_diag`.
+    - *API extraction.* `h_toFinset_card_two` (lines 1483-1487) and
+      the inline duplicate at 1524-1526 ("`e ∈ ⊤.edgeSet ⇒
+      e.toFinset.card = 2`") could be a one-line helper
+      `Sym2.card_toFinset_of_mem_top_edgeSet`. Likely already covered
+      by `Sym2.card_toFinset_of_not_isDiag` + `edgeSet_top`; just
+      missing the convenience wrapper.
+    - *API extraction.* `h_toFinset_sub_iff` (lines 1545-1554,
+      "`e ∈ (↑C).sym2 ↔ e.toFinset ⊆ C` for off-diag `e`") is also
+      a candidate for a Sym2 / Set helper.
+    - *Tactic substitution.* The `omega`-chains in step 7/9
+      (lines 1567-1576, 1634-1636) are tight as written.
+    - **Followed up under C4.** This is the dedicated focused-walk
+      target; the API-extraction candidates above feed directly into
+      it.
+  - **#3 `exists_affinelySpanning_of_eventually`** (134 LoC,
+    `RigidityMatroid.lean`:360).
+    - *API extraction.* `h_per_tuple` (lines 400-448, ~49 lines) is
+      a self-contained "for each injective tuple `q : Fin (d+1) → V`,
+      the set of bad `t` is finite via polynomial roots" lemma. Could
+      become a named private helper
+      `private lemma finite_setOf_affineDependent_perturbation`. The
+      proof would not shrink (it's the polynomial-trick machinery)
+      but the top-level proof reads as a 4-step composition.
+    - *Mathlib miss.* The polynomial-detector setup at lines 419-432
+      uses `Polynomial.coeff_det_X_add_C_card` (project mirror in
+      `Mathlib/LinearAlgebra/Vandermonde.lean`). Loogle on
+      `Matrix.det_polynomial_X_add_C` style might surface a direct
+      "leading coefficient = det of leading matrix" lemma; if so,
+      the `hP_ne` block (lines 423-428) shrinks.
+    - *Tactic substitution.* `h_rows` (lines 433-439) is a small
+      7-line `ext`/`simp`/`ring` step; tight as written.
+  - **#4 `typeI_edgeSetRowIndependent_extend`** (123 LoC,
+    `MatroidIdentification.lean`:66).
+    - *Cross-proof unification.* The lift+restrict+factor+oldSet-LI
+      block (lines 80-103 + 134-143) is the cleanest instance of the
+      shared pattern — refactor target for the cross-cutting lemma.
+      After extraction the proof drops from 123 to ~60 LoC.
+  - **#5 `IsSparse.contradiction_three_pair`** (118 LoC,
+    `Sparsity.lean`:806).
+    - *API extraction.* Lines 818-838 are three near-identical
+      6-line `by_cases h_*_*: 2 ≤ (S_p ∩ S_q).card` blocks that each
+      union the two tight sets via `union_inter` and discharge via
+      `no_isTightOn_excluding_three_neighbors`. Extract a private
+      auxiliary
+      `private lemma IsSparse.contradiction_pair_aux
+      (hS₁ : G.IsTightOn 2 3 S₁) (hS₂ : G.IsTightOn 2 3 S₂)
+      (h : G.IsSparse 2 3) (h_inter : 2 ≤ (S₁ ∩ S₂).card) … : False`.
+      Collapses three 6-line blocks to three 1-line `aux` calls.
+      ~12 LoC.
+    - *API extraction.* The three `card = 1` and three
+      `eq_singleton_of_mem_of_card_le_one` derivations
+      (lines 840-860) are tight as written; not worth fusing.
+  - **#6 `IsSparse.exists_typeI_or_typeII_reverse`** (117 LoC,
+    `Sparsity.lean`:1144).
+    - *API extraction.* Lines 1216-1251 are three nearly-identical
+      12-line per-pair dispatch blocks (`h_ab` / `h_ac` / `h_bc`)
+      doing `by_cases adj` → `by_cases sparse` → either witness or
+      blocker via `typeII_reverse_blocker`. Extract
+      `private lemma IsSparse.typeII_pair_dispatch_aux` taking the
+      pair `(x, y : {w // w ≠ v})` plus the third vertex `c` and
+      neighbour-equivalence, returning
+      `WitnessType ∨ G.Adj x.val y.val ∨ ∃ S, …`. Collapses the
+      three blocks to three 1-line calls; ~30 LoC.
+  - **#7 `isSparse_of_edgeSetRowIndependent_dim_two`** (107 LoC,
+    `RigidityMatroid.lean`:514).
+    - *API extraction.* `hH_edgeSet` derivation (lines 524-529,
+      "fromEdgeSet of image of edgeSet under `Subtype.val` is the
+      image") could mirror upstream as
+      `SimpleGraph.edgeSet_fromEdgeSet_image_subtype_val` or
+      similar; verify via loogle whether mathlib already has it.
+    - *Cross-proof unification.* The `liftEdge` / `restrict` /
+      `h_factor` block (lines 564-595) reuses the lift+restrict
+      pattern with `φ := Subtype.val : ↥S → V` instead of
+      `some : V → Option V`. Feeds into the cross-cutting lemma.
+  - **#8 `typeII_isInfinitesimallyRigid_extend`** (77 LoC,
+    post-C3, `HennebergRigidity.lean`:344). C3 has already
+    consumed the typeII-specific savings via
+    `typeII_collinear_inner_combo`. The remaining 77 lines split as
+    `h_into` (~37 lines, the orbital-edge case split using
+    `typeII_collinear_inner_combo` + Sym2 induction), `h_inj` (~21
+    lines, the kernel-injectivity via `inner_sub_perp_of_eq` and
+    `eq_zero_of_orthogonal_dim_two`), and rank-nullity (1 line).
+    No further actionable items.
+  - **#9 `exists_nonCollinear_rowIndependent_placement_dim_two`**
+    (88 LoC, private, `MatroidIdentification.lean`:730).
+    - *API extraction.* Lines 738-746 ("row-LI at `p₀` + adjacent
+      edge `s(a, b)` ⟹ `p₀ a ≠ p₀ b`") could become an
+      `EdgeSetRowIndependent.ne_of_adj` helper. Already done
+      inline; check whether `typeII_isGenericallyRigidInj_two` or
+      similar reuses this pattern.
+    - *Mathlib miss.* Lines 750-762 explicitly factor a collinear
+      pair `(v, w)` as `w = δ • v` from `¬ LinearIndependent ![v, w]`
+      plus `v ≠ 0`. Loogle returned no direct hit on the goal-shape
+      `¬ LinearIndependent ![v, w] → v ≠ 0 → ∃ δ, w = δ • v`. The
+      standard mathlib path is `Submodule.mem_span_singleton` after
+      `LinearIndependent.not_iff_eq_smul` (~6 lines, not 13). Worth
+      a closer search; a 7-line saving.
+    - *Cross-proof unification.* The "perturbation around `t = 0`
+      via `Function.update` + continuity + `filter_upwards`" pattern
+      is shared with `exists_nonCollinear_rigid_placement_dim_two`
+      in `HennebergRigidity.lean` (83 LoC, runner-up at #11) — both
+      do exactly the same `p_t := Function.update p₀ c (· + t • w)`
+      perturbation, both pull back `eventually`-row-LI / IR through
+      continuity, both choose `t ∈ nhdsWithin (≠ 0)`. Candidate
+      shared lemma
+      `exists_perturbation_with_property : ∀ᶠ p, P p → ∃ p_t, P p_t ∧
+      (perturbation property at p_t)` — feasible but the two sites
+      have slightly different "perturbation property" conclusions
+      (LI of `![p b - p a, p c - p a]` for #9 vs. injectivity + LI
+      for #11), so the helper needs care.
+  - **#10 `typeI_pendant_edgeSetRowIndependent_extend`** (87 LoC,
+    `MatroidIdentification.lean`:226).
+    - *Cross-proof unification.* Same lift+restrict+factor+oldSet-LI
+      pattern as #1, #4. Single new edge (pendant), so the LI-on-newSet
+      branch is simpler (one `linearIndepOn_singleton_iff` + nonzero
+      row check). After the cross-cutting lemma lands, the proof
+      drops from 87 to ~35 LoC.
+
+  Sub-bullet follow-up tasks filed (Phase 8 warm-up candidates, in
+  rough priority order):
+  - (a) Extract `linearIndepOn_image_rigidityRow_of_injective` and
+    refactor #1/#4/#7/#10 — highest leverage (~80-100 LoC).
+  - (b) Extract `IsSparse.contradiction_pair_aux` for #5 (~12 LoC).
+  - (c) Extract `IsSparse.typeII_pair_dispatch_aux` for #6 (~30 LoC).
+  - (d) C4 = focused #2 walk (`exists_aug_of_lt_two_mul`); the
+    `h_edgesIn_eq` / `h_toFinset_card_two` / `h_toFinset_sub_iff`
+    candidates above feed in.
+  - (e) Closer mathlib search for the collinear-pair factoring
+    helper in #9 (~7 LoC if it lands).
+  - (f) `Sym2.optionSome_pair_eq_iff` mirror for #1 (~15 LoC).
+  - (g) Shared `exists_perturbation_with_property` helper for #9
+    + #11 — design-shape work, larger ROI but more delicate.
 - [x] C3: **typeII conditional core unification (option 1 of Phase 7
   blocker).** Extracted the row identity in inner-product form as
   `SimpleGraph.Henneberg.typeII_collinear_inner_combo` in
@@ -935,6 +1127,34 @@ checkbox.)*
   (term-mode `show ... from ...` glue, definitional unfolds of `set
   M`-style let-bindings before `fun_prop` / `rw`, one `change G'.Adj
   x y` stylistic equivalent of `rw [SimpleGraph.mem_edgeSet]`).
+
+- **C2 — four-question walk over C1 top-10 (notes only).** Walked
+  the top-10 long-proof sites against the four CLEANUP.md questions
+  (API extraction / mathlib miss / tactic substitution / cross-proof
+  unification). No Lean changes this commit — the deliverable is the
+  per-site improvement-candidate list filed under the C2 task entry.
+  Highest-leverage finding: the
+  **lift+restrict+factor+oldSet-LI pattern** —
+  `Sym2.map φ` lift on `G'.edgeSet → H.edgeSet`,
+  `LinearMap.funLeft ℝ _ φ` restriction whose `dualMap` factors the
+  rigidity rows, and the `linearIndepOn_range_iff` →
+  `dualMap_of_surjective` LI pullback — appears verbatim in #1 / #4 /
+  #10 (with `φ = some : V → Option V`) and in #7 (with
+  `φ = Subtype.val : ↥S → V`). A single extracted lemma
+  `linearIndepOn_image_rigidityRow_of_injective` would compound-save
+  ~80-100 LoC across the four sites. Six smaller per-site candidates
+  filed: project helper `edgesIn_fromEdgeSet_of_off_diag` for #2,
+  pair-aux for #5 and pair-dispatch-aux for #6 (each repeats a
+  3-branch by-cases), `Sym2.optionSome_pair_eq_iff` for #1's three
+  `≠` proofs, the collinear-pair factoring mathlib search for #9,
+  and the shared `Function.update`-perturbation helper for
+  #9 + #11. The C2 walk itself is a one-shot notes pass; the
+  follow-up extractions are scheduled as Phase 8 warm-ups in
+  rough priority order. The four-question framework worked as
+  designed — every site surfaced either an API-extraction or a
+  cross-proof-unification finding; none surfaced a pure
+  tactic-substitution win at this depth (the C3 `linear_combination
+  (norm := …)` move was the last of those).
 
 - **C3 — typeII conditional core unification.** Extracted
   `typeII_collinear_inner_combo` in `HennebergRigidity.lean` (just
