@@ -376,24 +376,22 @@ to a fixed section above once a question is answered.
   `Mathlib.Combinatorics.SimpleGraph.Basic` next to `incidenceSet`.
   Wait until the API has stabilized.
 - ~~**Typeclass shape for finiteness on `V`.**~~ **Resolved (Phase 7
-  cleanup):** State each declaration at the typeclass its body
-  genuinely uses. Default to `[Finite V]` for signatures whose
-  proofs work at existence/cardinality strength; lift to `[Fintype
-  V]` (and add `[DecidableEq V]` per-site where the body builds
-  `Finset V` objects) only when the body fundamentally requires
-  `Fintype V`-strength data. The principle is to state results at
-  the *weakest reasonable typeclass* — strongest mathematical
-  claim, greatest generality. `[DecidableEq V]` / `[DecidableRel
-  G.Adj]` remain per-site (added only when a body genuinely builds
-  `Finset V` / `Adj`-iterating objects on `V`); `classical` at
-  proof-top remains the acceptable alternative when adding a
-  decidability typeclass to the signature isn't worth the API
-  noise. The Phase 7 cleanup round B2 fix pass lifts the 6
-  declarations whose bodies currently bridge `[Finite V] →
-  Fintype V` inline (`Fintype.ofFinite V`) to direct `[Fintype V]`
-  signatures; the other 27 `[Finite V]` declarations stay (their
-  bodies genuinely work at that strength). Discussion that
-  surfaced the question follows:
+  cleanup):** Follow mathlib style. State every signature at the
+  weakest typeclass its *statement* genuinely uses — typically
+  `[Finite V]`; use `[Fintype V]` in the signature only when the
+  *type* mentions `Fintype.card V`, `Finset.univ : Finset V`, or
+  similar `Fintype`-flavored objects. When the proof body needs
+  `Fintype V`-strength data, bridge inline via `haveI : Fintype V
+  := Fintype.ofFinite V`; for `Finset V` operations needing
+  `DecidableEq V`, follow with `classical` (or take `[DecidableEq
+  V]` explicitly per-site). This is the mathlib idiom — enforced
+  by the `unusedFintypeInType` env linter and visible in mathlib's
+  own use of `[Finite V]` + inline bridge throughout. The principle
+  is **strongest mathematical claim, maximum generality**: weaker
+  hypothesis = more general theorem. The project follows the
+  idiom; the Phase 7 cleanup round B1/B2/B5 audits confirmed this
+  match (no signature changes needed). Discussion of the considered
+  alternatives — and why mathlib style ultimately wins — follows:
 
   Surfaced by the Phase 7 cleanup round (B1 = 41 `classical` sites,
   B2 = 12 `[Finite V] → Fintype` bridge sites, B5 = `Set` vs
@@ -443,26 +441,42 @@ to a fixed section above once a question is answered.
   `count-matroid.tex`, `Phase7.md` as future direction, not on
   ROADMAP). `[Finite V]` footprint was 39 sites, only 12 of which
   did inline `Fintype.ofFinite V` bridges; the other 27 worked at
-  `[Finite V]` strength genuinely. Caller chains terminated at
-  `[Fintype V]` top-level results so propagation was bounded.
+  `[Finite V]` strength genuinely.
 
-  The first iteration proposed uniform `[Fintype V]`. On
-  re-examination the pebble-game forward-compatibility argument
-  turned out to be weaker than initially claimed: the pebble-game
-  *side* needs `[Fintype V] [DecidableEq V] [DecidableRel G.Adj]`
-  regardless (the procedure's definition can't work at weaker
-  strength), and cross-side bridges from `[Fintype V]` callers to
-  `[Finite V]` callees work automatically via typeclass propagation
-  — so the *matroid-side* convention is independent of pebble-game
-  scope. The uniform-`[Fintype V]` alternative would have
-  eliminated boilerplate at 12 inline-bridge + 41 `classical` sites
-  but at the cost of strengthening 27 declarations beyond what
-  their bodies require, sacrificing mathematical generality. The
-  per-declaration "state at typeclass body uses" convention keeps
-  generality, eliminates boilerplate for the 6 declarations that
-  actually want `[Fintype V]`, and accepts the remaining
-  `classical` calls (with case-by-case decisions about whether to
-  add `[DecidableEq V]` to a signature) as a manageable residue.
+  Two earlier resolution iterations were considered and reversed:
+
+  1. **Uniform `[Fintype V]`** — strengthen every signature to
+     `[Fintype V]`, eliminating all 12 inline bridges. Rejected
+     after re-weighing the pebble-game forward-compatibility
+     argument: the pebble-game *side* needs `[Fintype V]
+     [DecidableEq V] [DecidableRel G.Adj]` regardless (the
+     procedure's definition can't work at weaker strength), and
+     cross-side bridges from `[Fintype V]` callers to `[Finite V]`
+     callees work automatically via typeclass propagation, so the
+     matroid-side convention is independent of pebble-game scope.
+     Uniformity would have strengthened 27 declarations beyond
+     what their bodies require, sacrificing mathematical
+     generality.
+
+  2. **Per-declaration "state at typeclass body uses"** — lift
+     only the 10 declarations whose bodies bridge `[Finite V] →
+     Fintype V` inline (6 originally identified `letI/haveI` form
+     + 4 missed `have` form). Rejected after re-examining mathlib
+     style: this would also weaken the lifted theorems
+     (`[Fintype V]` is a stricter hypothesis than `[Finite V]`),
+     and mathlib's `unusedFintypeInType` linter exists precisely
+     to enforce the opposite direction — "if `[Fintype V]` isn't
+     used in the type, state at `[Finite V]` and bridge in the
+     proof." mathlib's own corpus follows this convention; the
+     existing `[Finite V]` + inline-bridge pattern in our 10
+     bridge sites is canonical mathlib idiom, not a smell.
+
+  **Settled resolution:** keep all `[Finite V]` signatures as-is.
+  The inline `Fintype.ofFinite V` + `classical` boilerplate is the
+  cost of stating theorems at maximum generality, and it's the
+  same cost mathlib pays. The audit's value is **verification that
+  the project already follows mathlib style**; no API changes
+  needed. The 12 bridge sites and 41 `classical` calls all stay.
 - **Phase 8: `apnelson1/Matroid` dependency.** Phase 7 ships the
   combinatorial $(k, \ell)$-count matroid using only mathlib's
   `IndepMatroid.ofFinite`; Phase 8 will package the planar rigidity

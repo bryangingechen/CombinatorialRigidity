@@ -241,15 +241,21 @@ $M_{p_{\text{gen}}} \cong \mathrm{rigidityMatroid}\,V$) is deferred to
 
 - **Namespace.** Everything sits inside `SimpleGraph` or
   `CombinatorialRigidity`. No top-level identifiers.
-- **Vertex types.** Use `V : Type*` and state each declaration at the
-  weakest typeclass its body genuinely uses: `[Finite V]` when proofs
-  work at existence/cardinality strength, `[Fintype V]` (and
-  `[DecidableEq V]` per-site if the body builds `Finset V` objects)
-  only when the body fundamentally needs `Fintype V`-strength data.
-  The principle is *strongest mathematical claim, greatest
-  generality*; see `DESIGN.md` *Typeclass shape for finiteness on `V`*
-  for the rationale (Phase 7 cleanup round resolution). Edge counts
-  use `Set.ncard` so we don't force decidability of edge predicates.
+- **Vertex types.** Use `V : Type*` and `[Finite V]` (the weakest
+  reasonable typeclass) in signatures whenever the *statement* works
+  at that strength — this is the strongest mathematical claim, the
+  one that applies most generally. When a proof body needs
+  `Fintype V`-strength data (e.g. `Finset.univ`, `Fintype.card V`),
+  bridge inline with `haveI : Fintype V := Fintype.ofFinite V`; for
+  `Finset V` operations needing `DecidableEq V`, follow with
+  `classical`. This is the mathlib idiom (enforced by the
+  `unusedFintypeInType` env linter). Use `[Fintype V]` in the
+  signature only when the *type* itself mentions `Fintype.card V`,
+  `Finset.univ : Finset V`, or similar `Fintype`-flavored objects.
+  Edge counts use `Set.ncard` so we don't force decidability of edge
+  predicates. See `DESIGN.md` *Typeclass shape for finiteness on `V`*
+  for the rationale (Phase 7 cleanup round resolution; two earlier
+  iterations were considered and reversed).
 - **Cardinalities.** Use `Set.ncard` for sets and `Finset.card` for finsets.
   Avoid `ℕ`-subtraction; rephrase `a ≤ b − c` as `a + c ≤ b`.
 - **Style.** Module docstrings at the top of each file (`/-! # Title -/`).

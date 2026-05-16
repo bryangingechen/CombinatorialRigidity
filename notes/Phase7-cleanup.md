@@ -2,15 +2,18 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B partial: B1 + B2 swept; typeclass-shape
-design decision **resolved** (per-declaration "state at typeclass
-body uses"; cf. `DESIGN.md` *Typeclass shape for finiteness on `V`*).
-First iteration of the resolution was "uniform `[Fintype V]`";
-re-examined under user push-back, reweighted pebble-game argument
-honestly, settled on per-declaration to keep strongest mathematical
-claim / greatest generality. B2 fix pass becomes the targeted lift
-of 6 (a)-bridge declarations only; the other 27 `[Finite V]` sites
-stay. Subsequent work order:
-**B2 → B5 → B1 → B3/B4/B6/B7 → C/D**.
+design decision **resolved (follow mathlib style: `[Finite V]` +
+inline bridge as idiom)**. Two earlier resolution iterations
+("uniform `[Fintype V]`", then per-declaration "state at typeclass
+body uses") were considered and reversed once the mathlib alignment
+became clear — the `unusedFintypeInType` linter enforces the
+opposite direction of both alternatives, and mathlib's own corpus
+follows the inline-bridge pattern. B2 closes as no-change (audit
+confirms the existing project pattern matches mathlib idiom).
+B5 closes similarly (the existing `Set.ncard over Finset.card`
+convention is mathlib-aligned). B1 per-site vestigial check (do any
+of the 41 `classical` calls disappear cleanly?) remains as a real
+sub-task. Subsequent work order: **B1 → B3/B4/B6/B7 → C/D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -30,37 +33,36 @@ shape produces B2 entries (`letI : Fintype V := Fintype.ofFinite V`)
 in the same declarations, with B5's Set-vs-Finset boundary as the
 third face of the same root cause.
 
-Typeclass-shape design decision **resolved (per-declaration "state at
-typeclass body uses")**: state each declaration at the weakest
-typeclass its body genuinely uses; `[Finite V]` is the default when
-proofs work at existence/cardinality strength, `[Fintype V]` (plus
-`[DecidableEq V]` per-site) when the body fundamentally requires it.
-The principle is *strongest mathematical claim, greatest generality*.
-Full discussion in `DESIGN.md` *Typeclass shape for finiteness on
-`V`*; brief in `ROADMAP.md` *Engineering conventions → Vertex types*.
-A first-pass resolution proposed uniform `[Fintype V]` but was
-reversed after re-weighting the pebble-game argument honestly (the
-pebble-game side needs `[Fintype V] [DecidableEq V] [DecidableRel
-G.Adj]` regardless, and cross-side bridges from `[Fintype V]`
-callers to `[Finite V]` callees are automatic via typeclass
-propagation; so the matroid-side convention is independent of
-pebble-game scope, and uniformity would sacrifice generality for
-the 27 minimum-strength declarations without gain).
+Typeclass-shape design decision **resolved (follow mathlib style)**:
+keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
+via `haveI : Fintype V := Fintype.ofFinite V` + `classical` when
+`Fintype V`-strength data is needed. This is the canonical mathlib
+idiom (enforced by the `unusedFintypeInType` env linter and visible
+throughout mathlib's own corpus). The principle is *strongest
+mathematical claim, maximum generality*: weaker hypothesis ⇒ more
+general theorem.
 
-Next concrete step: the **targeted lift** — for each of the 6
-(a)-bridge declarations (`IsSparse.maxBlock_isTightOn`,
-`IsSparse.exists_aug_of_lt_two_mul`,
-`edgeSet_rowIndependent_iff_isSparse_dim_two`,
-`IsLaman.exists_rowIndependent_placement` shim,
-`EdgeSetRowIndependent.eventually`,
-`exists_affinelySpanning_of_eventually`), lift its `[Finite V]`
-signature to `[Fintype V]` (plus `[DecidableEq V]` if body uses
-`Finset V` ops), drop the V-level inline `Fintype.ofFinite V`
-bridge, and update any callers that pass `[Finite V]`-only. The
-other 27 `[Finite V]` declarations stay. The B1 fix pass follows
-per-site: some `classical` calls become vestigial once their
-sibling bridge drops; others get `[DecidableEq V]` added or stay as
-`classical` per the convention's *acceptable alternative* clause.
+Resolution arc: opened as an open *Choices to revisit* entry after
+the B1+B2 sweeps surfaced 41+12 sites. First iteration proposed
+uniform `[Fintype V]` (rejected after re-weighting the pebble-game
+forward-compatibility argument). Second iteration proposed per-
+declaration "state at typeclass body uses" with targeted lift of
+10 (a)-style bridge sites (rejected after re-examining mathlib
+style — the lift would *weaken* the 10 theorems' claims and
+contradict the `unusedFintypeInType` linter). Settled on option 3:
+follow mathlib idiom. The cleanup-round audit's value is
+**verification that the project already matches mathlib style**;
+no signature changes needed. Full discussion in `DESIGN.md`
+*Typeclass shape for finiteness on `V`*; brief in `ROADMAP.md`
+*Engineering conventions → Vertex types*.
+
+Next concrete step: B1 per-site vestigial-check. Walk the 41
+`classical` sites and identify any that are not load-bearing
+(can be deleted without breaking the build). Per the mathlib
+idiom, expect most/all to be load-bearing (paired with inline
+`Fintype.ofFinite V` bridges or `Finset V` operations); cleanup
+target is just the vestigial residue. After B1, move to B3 /
+B4 / B6 / B7 / C / D.
 
 ## Architectural choices made up front
 
@@ -246,14 +248,18 @@ Each is a separate commit, root-cause fix preferred.
   `[DecidableEq V]` / `[DecidableRel G.Adj]` at the caller boundary
   remove the need? Or is the `classical` in a noncomputable section
   where there's no point? Goal: eliminate decorative `classical`
-  calls, document load-bearing ones. Fix pass runs **after** B2's
-  lift lands — many B1 sites become vestigial once the V-level
-  `Fintype.ofFinite V` bridges drop (the `classical` was providing
-  `DecidableEq V` via the bridge; with uniform `[Fintype V]` and the
-  Decidability convention's *acceptable alternative* clause, some
-  classical calls stay, others are replaced by adding `[DecidableEq
-  V]` to the signature). Sites (enclosing decl named for
-  greppability):
+  calls, document load-bearing ones. Under the resolved mathlib-
+  style convention, B2's lift didn't happen (closed as no-change),
+  so the B1 picture is: each `classical` either pairs with an
+  inline `Fintype.ofFinite V` bridge (load-bearing: provides
+  `DecidableEq V` for `Finset V` ops in the proof body) or sits
+  alone in a `[Fintype V]`-stated declaration that uses `Finset V`
+  ops (load-bearing: provides `DecidableEq V` directly). Expected
+  audit outcome: most/all sites load-bearing; the cleanup target
+  is just the vestigial residue (if any). Concrete test: per-file,
+  comment-out each `classical` and `lake build`; restore the
+  load-bearing ones, leave the vestigial ones deleted. Sites
+  (enclosing decl named for greppability):
   - `Sparsity.lean`:205 (`IsSparse.exists_one_le_degree_le_three`),
     271 (`exists_nonadj_among_three_neighbors`),
     361 (`IsSparse.iso`), 389 (`IsSparse.comap`),
@@ -297,19 +303,19 @@ Each is a separate commit, root-cause fix preferred.
     242 (`IsInfinitesimallyRigid.eventually`).
   - `Laman.lean`:83 (`IsLaman.two_le_degree`).
   - `CountMatroid.lean`:74 (`countMatroid`, in the `indep_aug` field).
-- [ ] B2: `[Finite V] → Fintype` bridge audit (12 sites; grep:
+- [x] B2: `[Finite V] → Fintype` bridge audit (12 sites; grep:
   `letI|haveI` paired with `Fintype.ofFinite|Set.Finite.fintype`,
   plus 4 `have` variants the original sweep missed at
   `Sparsity.lean`:159/272, `Henneberg.lean`:233/375 — 10 V-level
-  total). Fix pass *implements* the resolved `DESIGN.md` *Typeclass
-  shape for finiteness on `V`* convention: lift the 6 (a)-pattern
-  declarations' signatures from `[Finite V]` to `[Fintype V]` (plus
-  `[DecidableEq V]` if the body uses `Finset V` ops); drop their
-  10 V-level inline bridges (the 6 (a) form + 4 `have` form);
-  update any callers that pass `[Finite V]`-only. The 4 (b) +
-  2 (c) sub-pattern bridges (`Fintype G.edgeSet`, `Fintype I` /
-  `Fintype b`) stay since they're for proof-local subtypes, not
-  `V`. Three sub-patterns surfaced in the sweep:
+  total). **Closed as no-change**: the resolved `DESIGN.md`
+  *Typeclass shape for finiteness on `V`* convention is to follow
+  mathlib style (state at weakest typeclass; bridge inline in
+  proof body when stronger data is needed). The 10 V-level inline
+  bridges + 6 G.edgeSet/I/b subtype-level bridges are all
+  idiomatic mathlib and stay. The pebble-game-forward-compat
+  argument was reweighted out; the per-decl "state at typeclass
+  body uses" was rejected as anti-mathlib-style. Three
+  sub-patterns surfaced in the sweep (recorded for reference):
   - **(a) Type-level `Fintype V` from `[Finite V]` (6 sites)** —
     candidate for "lift signature to `[Fintype V]`":
     - `Sparsity.lean`:1343 (`IsSparse.maxBlock_isTightOn`).
@@ -365,17 +371,16 @@ Each is a separate commit, root-cause fix preferred.
   "forced" (`Classical.choose`, `Module.Dual`, unbundled `Sym2.lift`,
   …) or "vestigial". Each vestigial site: drop the keyword and see
   if `lake build` still passes.
-- [ ] B5: `Set` vs `Finset` consistency. Walk the major
-  `IsSparse.maxBlock*` infrastructure (Phase 7 Commit 17b): the
-  bridging between `maxBlockSet : Set V` and `maxBlock : Finset V`
-  is necessary for `Finset.sup_mem`. Does any caller-side proof
-  unnecessarily round-trip? Look also at `EdgesIn.lean` and
-  `Framework.lean` for `Set`/`Finset` boundary friction. Under the
-  per-declaration convention, the strongest result form prefers
-  `Set` (avoids `Fintype` requirement); the audit's question
-  becomes "are there `Finset`-shaped APIs that should be
-  `Set`-shaped to widen the typeclass requirement, or vice versa
-  where the proof site genuinely benefits from `Finset`".
+- [x] B5: `Set` vs `Finset` consistency. **Closed as no-change**
+  under the mathlib-style convention: the project's existing
+  `Set.ncard over Finset.card` convention (cf. DESIGN.md) is
+  already mathlib-aligned. `maxBlockSet : Set V` is the primary
+  form; `maxBlock : Finset V` is the proof-internal companion
+  needed for `Finset.sup_mem`. The `Set`-vs-`Finset` boundary at
+  `EdgesIn.lean` / `Framework.lean` is at definition level (Set)
+  vs. proof-internal level (Finset), which matches the principle
+  of keeping definitions at the weakest typeclass and bridging
+  inline in proofs. No round-tripping observed at audit-time.
 - [ ] B6: `change` / `show` survey (concrete signal from
   `CombinatorialRigidity/CLAUDE.md` *Friction review*). For each
   `change` / `show` in source: is it covering for an un-fused
@@ -507,14 +512,15 @@ checkbox.)*
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *B1 / B2 / B5 share one root cause: the project's heterogeneous
-  typeclass shape for finiteness on `V`. Resolved (per-declaration
-  "state at typeclass body uses"; first iteration's uniform
-  `[Fintype V]` was reversed after honest reweighting of the
-  pebble-game argument).* → `DESIGN.md` *Typeclass shape for
-  finiteness on `V`* (now under resolved entries) + `ROADMAP.md`
-  *Engineering conventions → Vertex types* (one-line brief). The
-  B2 fix pass lifts the 6 (a)-bridge declarations; B5 / B1 fix
-  passes follow.
+  typeclass shape for finiteness on `V`. Resolved (follow mathlib
+  style: `[Finite V]` + inline bridge as idiom).* → `DESIGN.md`
+  *Typeclass shape for finiteness on `V`* + `ROADMAP.md`
+  *Engineering conventions → Vertex types*. Two earlier iterations
+  ("uniform `[Fintype V]`", then per-declaration "state at
+  typeclass body uses") were considered and reversed; the third
+  iteration matches mathlib style (enforced by the
+  `unusedFintypeInType` env linter). B2 + B5 close as no-change;
+  B1 per-site vestigial-check remains as a discrete sub-task.
 
 ### Cleanup pass summaries
 
