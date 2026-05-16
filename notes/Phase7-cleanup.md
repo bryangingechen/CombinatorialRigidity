@@ -1,7 +1,7 @@
 # Phase 7 cleanup round — work log
 
-**Status:** in progress. A1 (fix) + A3/A4/A6/A7/A10 (no-fix audits)
-done; A2/A5/A8/A9/A11, B*, C*, D* outstanding.
+**Status:** in progress. A1 (fix) + A3/A4/A5/A6/A7/A10 (no-fix
+audits) done; A2/A8/A9/A11, B*, C*, D* outstanding.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -12,9 +12,9 @@ cleanly.
 
 ## Current state
 
-Working through bucket A. A1 fixed; A3 / A4 / A6 / A7 / A10 audited
-clean (no divergence). Remaining A-tasks: A2 (largest), A5, A8, A9
-(`cor:isLaman-exists-rowIndependent` orphan red node already
+Working through bucket A. A1 fixed; A3 / A4 / A5 / A6 / A7 / A10
+audited clean (no divergence). Remaining A-tasks: A2 (largest), A8,
+A9 (`cor:isLaman-exists-rowIndependent` orphan red node already
 flagged), A11. Then B/C/D.
 
 ## Architectural choices made up front
@@ -77,11 +77,23 @@ attempt for any flagged divergence.
   DESIGN.md *Statement-form conventions*. Cross-refs to
   `sec:rigidity-matroid-lifts` and `sec:laman-theorem` resolve. No
   fix required.
-- [ ] A5: `chapter/frameworks.tex` ↔ `Framework.lean`. Phase 4 + Phase
-  5 (`IsGenericallyRigidInj`, openness, iso transport) + Phase 7
-  generalisations (`exists_affinelySpanning_of_eventually` renamed,
-  property-polymorphic). Watch for the rename: blueprint label
-  `lem:exists-affinelySpanning-of-eventually` should match.
+- [x] A5: `chapter/frameworks.tex` ↔ `Framework.lean`. All 19 pinned
+  declarations resolve (`Framework`, `Framework.finrank`,
+  `RigidityMap`, `rigidityMap_apply`, the three `Is{Infinitesimally,
+  Generically}Rigid{,Inj}` defs, the three mono / three iso / one
+  eventually / range-le / ker-mono lemmas, `card_mul_le`, and the
+  two `top_fin_two_*` worked examples). The `eventually` proof
+  prose (basis of range → `Classical.choose` preimages → continuity
+  → `LinearIndependent.eventually` → rank-nullity at both points)
+  faithfully maps the Lean shape. `IsGenericallyRigidInj.toIs
+  GenericallyRigid` (`Framework.lean`:294) is a trivial
+  `And.proj`-via-`Exists.imp` accessor, justifiably skipped per
+  blueprint *What to include vs. skip*. The original A5 watch item
+  was misfiled: `exists_affinelySpanning_of_eventually` lives in
+  `RigidityMatroid.lean` (Phase 7 generalisation) and is pinned by
+  `lem:exists-affinelySpanning-of-eventually` in `laman-theorem.tex`
+  (A8) and `rigidity-matroid.tex` (A9), not in `frameworks.tex`;
+  the rename does match the blueprint label there. No fix required.
 - [x] A6: `chapter/trivial-motions.tex` ↔ `TrivialMotions.lean`.
   Phase 6 milestone; check `elemSkewMap_ofLp_inr_apply` aside if any
   (the Commit 10 collapse from 6 lines to 1 is exactly the kind of
@@ -240,6 +252,14 @@ checkbox.)*
   terminology / cross-reference exposition rather than overselling
   the formal content (the Lean's `Iff.rfl` definitional claim is
   honestly described).
+- **A5 — frameworks.tex no-divergence sweep.** All 19 pinned
+  declarations resolve in `Framework.lean`. `eventually` proof
+  prose faithfully maps the Lean (`Classical.choose` preimages +
+  `LinearIndependent.eventually`). Original A5 watch item misfiled
+  (the `exists_affinelySpanning_of_eventually` rename is pinned by
+  laman-theorem.tex / rigidity-matroid.tex, not frameworks.tex —
+  defer to A8 / A9). `IsGenericallyRigidInj.toIsGenericallyRigid`
+  is a trivial And-projection accessor, justifiably skipped.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
