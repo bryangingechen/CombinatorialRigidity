@@ -13,8 +13,10 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Nineteen commits in (this commit = Commit 17b; the prior
-`8fde567` landed Commit 17a's block-closure scaffolding). The
+Twenty commits in (this commit = Commit 17c; the prior
+`86723a5` landed Commit 17b's Finset-anchored I-component
+scaffolding, and `8fde567` landed Commit 17a's block-closure
+scaffolding). The
 first six lifted Laman-only machinery to `IsSparse` and landed
 `IsSparse.exists_typeI_or_typeII_reverse` in flat form (entry points
 `60a2176..6d59be2`); the next five landed the four operation-form
@@ -38,32 +40,28 @@ property-polymorphic `exists_affinelySpanning_of_eventually`
 `lem:exists-affinelySpanning-of-eventually`, and
 `thm:edgeSet-rowIndependent-iff-isSparse` are all `\leanok`.
 
-**Scope expanded in Commit 16.** Following user direction, Phase 7
-now closes on the **general $(k, \ell)$-count matroid** in the
-matroidal regime $\ell < 2k$ (Whiteley 1996, Lee--Streinu 2008) rather than packaging the planar rigidity matroid as
-a one-off. Concretely: build `SimpleGraph.countMatroid V k ℓ : Matroid
-(Sym2 V)` once, with the combinatorial $(k, \ell)$-augmentation as
-its only non-trivial axiom; then specialize
-`SimpleGraph.rigidityMatroid V := countMatroid V 2 3 ...` and bridge
-to row-LI via the existing iff. The linear-matroid framing of
-Lovász--Yemini (`Matroid.ofFun` at a generic placement; matroid-iso
-identification) is **deferred to Phase 8** — that phase will add
-`apnelson1/Matroid` as a dependency and ship the iso
-`linearRigidityMatroid V 2 = rigidityMatroid V`. The blueprint chapter
-splits to match (new `chapter/count-matroid.tex` for the abstract
-construction; `chapter/rigidity-matroid.tex` retains the row-LI
-machinery and the specialization).
+**Scope: general $(k, \ell)$-count matroid.** Per Commit 16, Phase 7
+closes on the **general $(k, \ell)$-count matroid** in the matroidal
+regime $\ell < 2k$ (Whiteley 1996, Lee--Streinu 2008), not just the
+planar specialization. The combinatorial augmentation axiom
+(`IsSparse.exists_aug_of_lt_two_mul`, landed this commit) is what
+Phase 8's linear-matroid framing
+(`apnelson1/Matroid`, `linearRigidityMatroid V 2 = rigidityMatroid V`)
+will reduce through. Commits 18--19 package the abstract matroid
++ the planar specialization. Blueprint chapter split is in place:
+`chapter/count-matroid.tex` for the abstract object,
+`chapter/rigidity-matroid.tex` for the row-LI machinery + the
+specialization.
 
 **Commit 17 proof route resolved.** The original `union_with_bonus`
 sketch doesn't close (bonus edges must be I-edges; J\\I edges aren't).
 Replaced with the Lee--Streinu component-based proof; split into
 Commits 17a (block intersection closure), 17b (I-components and
-edge-disjointness — this commit), 17c (augmentation assembly).
-See *Blockers / open questions* for
-the full proof outline and *Multi-session plan* for the 17a/b/c
-decomposition. No Lean changes this commit. The blueprint
-`lem:isSparse-aug` proof sketch in `count-matroid.tex` is updated
-to match.
+edge-disjointness), 17c (augmentation assembly — this commit).
+See *Blockers / open questions* for the full proof outline and
+*Multi-session plan* for the 17a/b/c decomposition. The blueprint
+node `lem:isSparse-aug` is now `\leanok` via the new
+`IsSparse.exists_aug_of_lt_two_mul` in `Sparsity.lean`.
 
 **Multi-session plan** for the forward-blueprint work:
 
@@ -119,7 +117,7 @@ to match.
   → `lem:exists-affinelySpanning-of-eventually` (restated
   property-polymorphically with prose aside about the factoring);
   pin `thm:edgeSet-rowIndependent-iff-isSparse` `\leanok`.
-- **Commit 16** [this commit]: scope expansion to the general
+- **Commit 16** [✓ done]: scope expansion to the general
   $(k, \ell)$-count matroid (docs + blueprint scaffold only; no Lean
   yet). Notes / ROADMAP §7 / new blueprint chapter
   `count-matroid.tex` + restructured `rigidity-matroid.tex`;
@@ -133,7 +131,7 @@ to match.
   edges (J \\ I) aren't in `G = fromEdgeSet I`. The replacement
   route follows Lee--Streinu 2008 (Theorem 5(1,2,4)) via I-block /
   I-component structure:
-  - **Commit 17a** [✓ done, this commit]: matroidal-regime block
+  - **Commit 17a** [✓ done]: matroidal-regime block
     closure scaffolding in `Sparsity.lean`. Landed
     `IsTightOn.union_inter_of_pair` (`ℓ < 2 * k` corollary of
     `IsTightOn.union_inter`: two I-tight sets sharing a common
@@ -152,7 +150,7 @@ to match.
     `{u, v}`); the *maximum* I-block is what 17b's I-component
     needs, and union closure from `union_inter_of_pair` builds it
     directly without going through a minimum.
-  - **Commit 17b** [✓ done, this commit]: Finset-anchored maximal
+  - **Commit 17b** [✓ done]: Finset-anchored maximal
     I-block and edge-disjointness in `Sparsity.lean`. Landed
     `IsSparse.HasBlock`, `IsSparse.maxBlockSet`, `IsSparse.maxBlock`,
     `IsSparse.subset_maxBlock`, `IsSparse.mem_maxBlock`,
@@ -170,15 +168,27 @@ to match.
     The partition identity `|I| = Σ_C |I ∩ C.sym2| + |I-free|`
     deferred to 17c so the augmentation assembly carries the
     bookkeeping in one focused commit.
-  - **Commit 17c** [planned]: augmentation assembly + partition
-    identity. For each e ∈ J\\I, the contradiction hypothesis "no
-    augmentation" forces endpoints of e into some I-component via
-    `subset_maxBlock_of_hasBlock`. J-sparsity at each I-component
-    `C` gives `|J ∩ C.sym2| ≤ |I ∩ C.sym2|`. Edge-disjointness of
-    distinct I-components partitions `I` and `J` over the finite
-    family of components plus free edges; by-component sum +
-    free-edge accounting then yields `|J| ≤ |I|`, contradicting
-    `|I| < |J|`. Estimated total ~150--200 LoC.
+  - **Commit 17c** [✓ done, this commit]: augmentation assembly +
+    partition identity. Landed `IsSparse.exists_aug_of_lt_two_mul`
+    in `Sparsity.lean` (~210 LoC including two private off-diag
+    helpers `ne_of_mem_top_edgeSet` and
+    `edgeSet_fromEdgeSet_of_off_diag`). Proof structure: (1) for
+    each `e ∈ J \\ I`, `HasBlock e.toFinset` is forced by
+    `exists_isTightOn_of_insert_not_sparse` applied at the
+    contradiction hypothesis; (2) `Comps : Finset (Finset V)` is
+    the image of `(J \\ I).toFinset` under
+    `e ↦ maxBlock e.toFinset`; (3) edge-disjointness via
+    `maxBlock_eq_of_subset_maxBlock` at the shared anchor
+    `e.toFinset`; (4) for each `C ∈ Comps`, J-sparsity + I-tightness
+    give `|J ∩ ↑C.sym2| ≤ |I ∩ ↑C.sym2|`; (5) the partition
+    `|X| = (X ∩ CompsUnion).ncard + (X \\ CompsUnion).ncard` via
+    `Set.ncard_inter_add_ncard_diff_eq_ncard` and the disjoint
+    biUnion identity via `Set.Finite.ncard_biUnion` +
+    `finsum_mem_coe_finset` give the by-component sum; (6) the free
+    part `J \\ CompsUnion ⊆ I \\ CompsUnion` because every
+    `J \\ I` edge is forced into some component. Adds the import
+    `Mathlib.Data.Set.Card.Arithmetic` for the disjoint biUnion
+    ncard identity. Blueprint `lem:isSparse-aug` pinned `\leanok`.
 - **Commit 18** [planned]: new file
   `CombinatorialRigidity/CountMatroid.lean`. Defines
   `SimpleGraph.countMatroid V k ℓ (h : ℓ < 2 * k) : Matroid (Sym2 V)`
@@ -471,7 +481,12 @@ A red node = not yet formalized; a green node = formalized and
   `IsSparse.mem_maxBlock`, `IsSparse.subset_maxBlock`,
   `IsSparse.maxBlock_isTightOn`,
   `IsSparse.subset_maxBlock_of_hasBlock`, and
-  `IsSparse.maxBlock_eq_of_subset_maxBlock`.
+  `IsSparse.maxBlock_eq_of_subset_maxBlock`. New `Augmentation`
+  section (Commit 17c): private off-diag helpers
+  `ne_of_mem_top_edgeSet`, `edgeSet_fromEdgeSet_of_off_diag`, and
+  the main theorem `IsSparse.exists_aug_of_lt_two_mul`. New import
+  `Mathlib.Data.Set.Card.Arithmetic` for the disjoint biUnion
+  ncard identity.
 - `HennebergRigidity.lean`: `exists_off_line_off_finite_dim_two` and
   `exists_not_mem_span_singleton_dim_two` un-privatized for cross-file
   reuse from `MatroidIdentification.lean`.
@@ -496,40 +511,25 @@ A red node = not yet formalized; a green node = formalized and
 ## Blockers / open questions
 
 - **$(k, \ell)$-count matroid augmentation in the matroidal regime
-  $\ell < 2k$.** *Updated post Commit 16: proof route resolved to
-  Lee--Streinu component-based argument; cost-estimated; split into
-  Commits 17a/b/c (see multi-session plan).* The original sketch
+  $\ell < 2k$.** *[resolved in Commits 17a/b/c]* The original sketch
   ("iterate `union_inter` / `union_with_bonus` to build a saturating
-  $I$-tight $S^*$") doesn't close in the matroidal regime: in the
-  $|S \cap S_e| = 1$ case the close-the-gap inequality of
-  `union_with_bonus` requires $\lceil (\ell - k|S \cap S_e|)
-  / 1 \rceil$ bonus *I-edges* between $S \setminus S_e$ and
-  $S_e \setminus S$ — but the natural bonus edges
-  ($J \setminus I$ edges with endpoints in $S \cup S_e$) live in
-  $J$, not $I$, so they don't contribute to
-  `(fromEdgeSet I).edgesIn (S ∪ S_e)` and can't satisfy
-  `union_with_bonus`'s `hF_sub`.
-
-  **Replacement route (Lee--Streinu 2008 / Whiteley 1996), via
-  I-component theory:** for each $e \in J \setminus I$ failing
-  augmentation, endpoints of $e$ lie in some I-block, hence in
-  some I-component (= maximal I-block). I-components are pairwise
-  edge-disjoint (Lee--Streinu Theorem 5(2)); in the upper range
-  $\ell \in [k, 2k)$ they additionally overlap in $\le 1$ vertex
-  and have no free edges, in the lower range $\ell \in [0, k)$
-  free I-edges are possible but free $J \setminus I$ edges are
-  excluded by the contradiction hypothesis. J-sparsity at each
-  I-component $C$ gives $|J \cap C^{\otimes 2}| \le k|C| - \ell =
-  |I \cap C^{\otimes 2}|$. Summing across the component partition
-  of edges and adding the (J-free, I-free) edges of $J \cap I$
-  gives $|J| \le |I|$, contradiction. See the *Commits 17a/b/c*
-  entries in the multi-session plan for the lemma split; total
-  estimate ~340--390 LoC. The block intersection closure
-  (Lee--Streinu Theorem 5(1)) is the existing
-  `IsTightOn.union_inter` specialized to two blocks sharing a
-  $\ge \lceil \ell/k \rceil$-size set of vertices, so no new
-  upstream-style lemma is needed there — only project-internal
-  block/component scaffolding.
+  $I$-tight $S^*$") didn't close in the matroidal regime because the
+  natural bonus edges ($J \setminus I$ edges with endpoints in
+  $S \cup S_e$) live in $J$, not $I$, and so can't satisfy
+  `union_with_bonus`'s `hF_sub` (which requires $F \subseteq
+  (\mathrm{fromEdgeSet}\,I).\mathrm{edgesIn}\,(S \cup S_e)$).
+  Replaced with the Lee--Streinu component-based argument: each
+  $e \in J \setminus I$ failing augmentation is forced into a
+  unique I-component (= maximal I-block) via
+  `subset_maxBlock_of_hasBlock`; distinct I-components share
+  $\le 1$ vertex (edge-disjointness via
+  `maxBlock_eq_of_subset_maxBlock`); J-sparsity at each I-component
+  $C$ vs I-tightness at the same gives
+  $|J \cap C^{\otimes 2}| \le |I \cap C^{\otimes 2}|$; free
+  $J$-edges (those outside every I-component) embed into
+  $J \cap I \subseteq I$ by the contradiction hypothesis,
+  delivering $|J| \le |I|$ via the partition identity. Final cost
+  ~410 LoC across the three commits.
 
 - **Future-friction: a pebble-game algorithm.** Lee--Streinu's
   $(k, \ell)$-pebble game is the algorithmic complement to the

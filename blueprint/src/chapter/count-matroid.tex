@@ -192,6 +192,8 @@ itself, and edge-disjointness of distinct $I$-components.
 
 \begin{lemma}[$(k, \ell)$-sparsity augmentation, matroidal regime]
   \label{lem:isSparse-aug}
+  \lean{SimpleGraph.IsSparse.exists_aug_of_lt_two_mul}
+  \leanok
   \uses{def:isSparse, def:isTightOn,
         lem:isTightOn-union-inter-of-pair,
         lem:exists-isTightOn-of-insert-not-sparse,
@@ -206,6 +208,7 @@ itself, and edge-disjointness of distinct $I$-components.
   $\mathrm{fromEdgeSet}\,(I \cup \{e\})$ is $(k, \ell)$-sparse.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:isSparse, def:isTightOn,
         lem:isTightOn-union-inter-of-pair,
         lem:exists-isTightOn-of-insert-not-sparse,

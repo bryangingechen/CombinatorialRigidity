@@ -10,6 +10,7 @@ import CombinatorialRigidity.Mathlib.Data.Sym.Sym2
 import Mathlib.Combinatorics.SimpleGraph.DegreeSum
 import Mathlib.Combinatorics.SimpleGraph.DeleteEdges
 import Mathlib.Data.Set.Card
+import Mathlib.Data.Set.Card.Arithmetic
 
 /-!
 # `(k, ℓ)`-sparsity and `(k, ℓ)`-tightness
@@ -65,6 +66,15 @@ matroid. The Laman case `(k, ℓ) = (2, 3)` is treated downstream in
   breaks sparsity, then some Finset containing `u` and `v` is `(fromEdgeSet I)`-tight.
   Builds the "I-block" that anchors the `(k, ℓ)`-count matroid augmentation argument
   (Phase 7).
+* `SimpleGraph.IsSparse.maxBlock`, `SimpleGraph.IsSparse.maxBlock_isTightOn`,
+  `SimpleGraph.IsSparse.maxBlock_eq_of_subset_maxBlock` — matroidal-regime maximal
+  `I`-block (a.k.a. *I-component*) anchored at a Finset; the union-closure of all
+  `I`-tight Finsets containing an anchor `X` with `|X| ≥ 2` is itself `I`-tight, and
+  distinct `I`-components are edge-disjoint.
+* `SimpleGraph.IsSparse.exists_aug_of_lt_two_mul` — the `(k, ℓ)`-count matroid
+  augmentation axiom in the matroidal regime `ℓ < 2 * k`: for `(k, ℓ)`-sparse `I, J`
+  with `|I| < |J|`, some `e ∈ J \ I` extends `I` to a `(k, ℓ)`-sparse edge set.
+  Proved by I-component decomposition (Whiteley 1996, Lee–Streinu 2008).
 * `SimpleGraph.image_edgesIn_comap` — `Sym2.map`-image of `(G.comap f).edgesIn s'` is
   `G.edgesIn (f '' s')`; the comap analogue of `Iso.image_edgesIn`, used by the typeII-
   reverse blocker to pump edge counts back along the subtype embedding.
@@ -1413,5 +1423,231 @@ lemma IsSparse.maxBlock_eq_of_subset_maxBlock {k ℓ : ℕ} {I : Set (Sym2 V)}
   exact Finset.Subset.antisymm h_maxY_sub_maxX h_maxX_sub_maxY
 
 end IComponents
+
+/-! ### Augmentation in the matroidal regime (`ℓ < 2 * k`)
+
+The combinatorial heart of the `(k, ℓ)`-count matroid (Whiteley 1996, Lee–Streinu 2008):
+for `(k, ℓ)`-sparse edge sets `I, J ⊆ E(K_V)` with `|I| < |J|`, some `e ∈ J \ I` extends
+`I` to a sparser set. The proof argues by contradiction via the *I-component* partition
+(`IsSparse.maxBlock` from the previous section): if no augmentation exists, every
+`e ∈ J \ I` forces its endpoints into a (non-trivial) I-component, which then accounts
+for `e`. J-sparsity at each I-component vs I-tightness at the same component bounds the
+J-edge count from above by the I-edge count; the free edges (no endpoints in any
+I-component) on the J-side embed into the I-side; summing gives `|J| ≤ |I|`. -/
+
+section Augmentation
+
+variable [Finite V] [DecidableEq V]
+
+set_option linter.unusedDecidableInType false
+
+/-- **Off-diagonality of edges gives `u ≠ v`.** Convenience unfold of
+`(⊤ : SimpleGraph V).edgeSet = Sym2.diagSetᶜ` at a pair edge. -/
+private lemma ne_of_mem_top_edgeSet {V : Type*} {u v : V}
+    (he : s(u, v) ∈ (⊤ : SimpleGraph V).edgeSet) : u ≠ v := by
+  rw [edgeSet_top, Set.mem_compl_iff, Sym2.mem_diagSet, Sym2.mk_isDiag_iff] at he
+  exact he
+
+/-- **`(fromEdgeSet I).edgeSet = I` for off-diagonal `I`.** -/
+private lemma edgeSet_fromEdgeSet_of_off_diag {V : Type*} {I : Set (Sym2 V)}
+    (hI_off : I ⊆ (⊤ : SimpleGraph V).edgeSet) :
+    (fromEdgeSet I).edgeSet = I := by
+  rw [edgeSet_fromEdgeSet, sdiff_eq_left, Set.disjoint_left]
+  intro e he_I he_diag
+  have he_off : e ∈ Sym2.diagSetᶜ := edgeSet_top (V := V) ▸ hI_off he_I
+  exact he_off he_diag
+
+/-- **Matroid augmentation in the matroidal regime.** For finite `V` and `ℓ < 2 * k`,
+if `I, J ⊆ E(K_V)` are both `(k, ℓ)`-sparse with `|I| < |J|`, then some `e ∈ J \ I`
+extends `I` to a `(k, ℓ)`-sparse edge set: `(fromEdgeSet (insert e I)).IsSparse k ℓ`.
+
+The combinatorial axiom of the `(k, ℓ)`-count matroid (Whiteley 1996, Lee–Streinu 2008).
+Proof via the I-component decomposition: assuming no augmentation, every `e ∈ J \ I` is
+forced into an I-component (`IsSparse.maxBlock` of its endpoints), and the partition
+identity `|J| = ∑_C |edgesIn(J) C| + |J_free| ≤ ∑_C |edgesIn(I) C| + |I_free| = |I|`
+contradicts `|I| < |J|`. -/
+theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
+    {I J : Set (Sym2 V)} (hI : (fromEdgeSet I).IsSparse k ℓ)
+    (hJ : (fromEdgeSet J).IsSparse k ℓ)
+    (hI_off : I ⊆ (⊤ : SimpleGraph V).edgeSet)
+    (hJ_off : J ⊆ (⊤ : SimpleGraph V).edgeSet)
+    (hcard : I.ncard < J.ncard) :
+    ∃ e ∈ J \ I, (fromEdgeSet (insert e I)).IsSparse k ℓ := by
+  classical
+  by_contra h_no_aug
+  push Not at h_no_aug
+  -- Setup: V is a Fintype, top.edgeSet is finite, so I, J are finite.
+  letI : Fintype V := Fintype.ofFinite V
+  have h_top_fin : ((⊤ : SimpleGraph V).edgeSet).Finite := (⊤ : SimpleGraph V).edgeSet.toFinite
+  have hI_fin : I.Finite := h_top_fin.subset hI_off
+  have hJ_fin : J.Finite := h_top_fin.subset hJ_off
+  -- (Step 1) For each e ∈ J \ I, the I-component `maxBlock e.toFinset` is well-defined.
+  -- `hBlock e he_diff : HasBlock e.toFinset`.
+  have hBlock : ∀ {e : Sym2 V}, e ∈ J \ I → hI.HasBlock e.toFinset := by
+    intro e ⟨he_J, he_I⟩
+    induction e with | h u v => ?_
+    rw [Sym2.toFinset_mk_eq]
+    have huv : u ≠ v := ne_of_mem_top_edgeSet (hJ_off he_J)
+    obtain ⟨S, hu_S, hv_S, hS_tight⟩ :=
+      hI.exists_isTightOn_of_insert_not_sparse huv he_I (h_no_aug s(u, v) ⟨he_J, he_I⟩)
+    refine ⟨S, hS_tight, ?_⟩
+    intro x hx
+    rw [Finset.mem_insert, Finset.mem_singleton] at hx
+    rcases hx with rfl | rfl <;> assumption
+  -- Anchor finset of an edge: `{u, v}` for `e = s(u, v)`. Has card 2 off-diag.
+  have h_toFinset_card_two : ∀ {e : Sym2 V}, e ∈ J \ I → 2 ≤ e.toFinset.card := by
+    intro e he_diff
+    have he_off : e ∈ (⊤ : SimpleGraph V).edgeSet := hJ_off he_diff.1
+    rw [edgeSet_top, Set.mem_compl_iff] at he_off
+    rw [Sym2.card_toFinset_of_not_isDiag e (fun h => he_off (Sym2.mem_diagSet.mpr h))]
+  -- (Step 2) Comps: the Finset of distinct I-components of edges in J \ I.
+  -- Using J as the indexing source; for e ∉ J\I we'll see this never matters.
+  have hdiff_fin : (J \ I).Finite := hJ_fin.subset Set.diff_subset
+  set diff_fin : Finset (Sym2 V) := hdiff_fin.toFinset with hdiff_def
+  set Comps : Finset (Finset V) := diff_fin.image fun e => hI.maxBlock e.toFinset with hComps_def
+  have hmem_diff : ∀ {e : Sym2 V}, e ∈ diff_fin ↔ e ∈ J \ I := by
+    intro e; rw [hdiff_def]; exact Set.Finite.mem_toFinset _
+  -- (Step 3) Each C ∈ Comps is I-tight (non-empty), has |C| ≥ 2.
+  have hC_tight : ∀ C ∈ Comps, (fromEdgeSet I).IsTightOn k ℓ C := by
+    intro C hC
+    rw [hComps_def, Finset.mem_image] at hC
+    obtain ⟨e, he_diff, rfl⟩ := hC
+    rw [hmem_diff] at he_diff
+    exact hI.maxBlock_isTightOn hℓ (h_toFinset_card_two he_diff) (hBlock he_diff)
+  have hC_card_two : ∀ C ∈ Comps, 2 ≤ C.card := by
+    intro C hC
+    rw [hComps_def, Finset.mem_image] at hC
+    obtain ⟨e, he_diff, rfl⟩ := hC
+    rw [hmem_diff] at he_diff
+    -- maxBlock contains the anchor, which has card 2.
+    have h_anchor_sub : e.toFinset ⊆ hI.maxBlock e.toFinset :=
+      hI.subset_maxBlock_of_hasBlock (hBlock he_diff)
+    exact (h_toFinset_card_two he_diff).trans (Finset.card_le_card h_anchor_sub)
+  -- (Step 4) Edge-disjointness: every off-diag e ∈ K_V is in at most one C ∈ Comps,
+  -- where "e is in C" means `e.toFinset ⊆ C`.
+  have h_edge_uniq : ∀ {e : Sym2 V}, e ∈ (⊤ : SimpleGraph V).edgeSet →
+      ∀ C₁ ∈ Comps, ∀ C₂ ∈ Comps,
+        e.toFinset ⊆ C₁ → e.toFinset ⊆ C₂ → C₁ = C₂ := by
+    intro e he_top C₁ hC₁ C₂ hC₂ h1 h2
+    -- Both C₁ and C₂ are maxBlocks; e.toFinset ⊆ both ∩ has card 2.
+    rw [hComps_def, Finset.mem_image] at hC₁ hC₂
+    obtain ⟨e₁, he₁_diff, rfl⟩ := hC₁
+    obtain ⟨e₂, he₂_diff, rfl⟩ := hC₂
+    rw [hmem_diff] at he₁_diff he₂_diff
+    -- Reduce both equalities to `maxBlock e.toFinset`.
+    have he_card_two : 2 ≤ e.toFinset.card := by
+      rw [edgeSet_top, Set.mem_compl_iff] at he_top
+      rw [Sym2.card_toFinset_of_not_isDiag e (fun h => he_top (Sym2.mem_diagSet.mpr h))]
+    have h_eq₁ : hI.maxBlock e.toFinset = hI.maxBlock e₁.toFinset :=
+      hI.maxBlock_eq_of_subset_maxBlock hℓ (h_toFinset_card_two he₁_diff) he_card_two
+        (hBlock he₁_diff) h1
+    have h_eq₂ : hI.maxBlock e.toFinset = hI.maxBlock e₂.toFinset :=
+      hI.maxBlock_eq_of_subset_maxBlock hℓ (h_toFinset_card_two he₂_diff) he_card_two
+        (hBlock he₂_diff) h2
+    rw [← h_eq₁, ← h_eq₂]
+  -- (Step 5) "edgesIn(fromEdgeSet X) C = X ∩ (↑C).sym2" for X off-diag.
+  have h_edgesIn_eq : ∀ {X : Set (Sym2 V)}, X ⊆ (⊤ : SimpleGraph V).edgeSet →
+      ∀ (S : Set V), (fromEdgeSet X).edgesIn S = X ∩ S.sym2 := by
+    intro X hX S
+    unfold edgesIn
+    rw [edgeSet_fromEdgeSet_of_off_diag hX]
+  -- (Step 6) Partition pieces and disjointness.
+  -- The "components piece" for X: ⋃_{C ∈ Comps} X ∩ ↑C.sym2.
+  -- For e off-diag in C.sym2, e.toFinset ⊆ C.
+  have h_toFinset_sub_iff : ∀ {e : Sym2 V} {C : Finset V},
+      e ∈ (⊤ : SimpleGraph V).edgeSet → (e ∈ ((↑C : Set V).sym2) ↔ e.toFinset ⊆ C) := by
+    intro e C _
+    rw [Set.mem_sym2_iff_subset]
+    constructor
+    · intro h_sub x hx
+      rw [Sym2.mem_toFinset] at hx
+      exact_mod_cast h_sub hx
+    · intro h_sub x hx
+      exact_mod_cast h_sub (Sym2.mem_toFinset.mpr hx)
+  -- The components partition: pairwise disjoint X ∩ ↑C.sym2.
+  have h_pairwiseDisjoint : ∀ {X : Set (Sym2 V)}, X ⊆ (⊤ : SimpleGraph V).edgeSet →
+      (↑Comps : Set (Finset V)).PairwiseDisjoint (fun C : Finset V => X ∩ (↑C : Set V).sym2) := by
+    intro X hX C₁ hC₁ C₂ hC₂ hC12
+    refine Set.disjoint_left.mpr ?_
+    intro e ⟨he_X, he_C₁⟩ ⟨_, he_C₂⟩
+    refine hC12 ?_
+    have he_top := hX he_X
+    have h1 := (h_toFinset_sub_iff he_top).mp he_C₁
+    have h2 := (h_toFinset_sub_iff he_top).mp he_C₂
+    exact h_edge_uniq he_top C₁ hC₁ C₂ hC₂ h1 h2
+  -- (Step 7) For each C ∈ Comps: J-card on C ≤ I-card on C (I-tightness + J-sparsity).
+  have h_C_ineq : ∀ C ∈ Comps,
+      (J ∩ (↑C : Set V).sym2).ncard ≤ (I ∩ (↑C : Set V).sym2).ncard := by
+    intro C hC
+    have hC_I_tight := hC_tight C hC
+    have hC_size : ℓ ≤ k * C.card := by unfold IsTightOn at hC_I_tight; omega
+    have hC_J_sparse := hJ C hC_size
+    rw [h_edgesIn_eq hJ_off (↑C : Set V)] at hC_J_sparse
+    rw [← h_edgesIn_eq hI_off (↑C : Set V)]
+    unfold IsTightOn at hC_I_tight
+    omega
+  -- (Step 8) Decompose I and J into "in some component" + "free", and count.
+  -- For X (= I or J), Xfree := X \ ⋃_{C ∈ Comps} (↑C).sym2.
+  set CompsUnion : Set (Sym2 V) :=
+    ⋃ (C : Finset V) (_ : C ∈ Comps), ((↑C : Set V).sym2) with hCU_def
+  -- (Step 8a) Partition each X = (X ∩ CompsUnion) ⊔ (X \ CompsUnion).
+  have h_split : ∀ {X : Set (Sym2 V)}, X.Finite →
+      X.ncard = (X ∩ CompsUnion).ncard + (X \ CompsUnion).ncard := fun {X} hX_fin =>
+    (Set.ncard_inter_add_ncard_diff_eq_ncard X CompsUnion hX_fin).symm
+  -- (Step 8b) X ∩ CompsUnion = ⋃_C (X ∩ ↑C.sym2); pairwise disjoint by edge-uniqueness.
+  -- Therefore (X ∩ CompsUnion).ncard = ∑_C (X ∩ ↑C.sym2).ncard.
+  have h_compsUnion_ncard : ∀ {X : Set (Sym2 V)}, X ⊆ (⊤ : SimpleGraph V).edgeSet → X.Finite →
+      (X ∩ CompsUnion).ncard = ∑ C ∈ Comps, (X ∩ (↑C : Set V).sym2).ncard := by
+    intro X hX hX_fin
+    have h_inter_iUnion : X ∩ CompsUnion =
+        ⋃ C ∈ (↑Comps : Set (Finset V)), X ∩ (↑C : Set V).sym2 := by
+      rw [hCU_def]
+      ext e
+      simp only [Set.mem_inter_iff, Set.mem_iUnion, Finset.mem_coe]
+      tauto
+    rw [h_inter_iUnion]
+    have h_pd : (↑Comps : Set (Finset V)).PairwiseDisjoint
+        (fun C : Finset V => X ∩ (↑C : Set V).sym2) := h_pairwiseDisjoint hX
+    have h_finset_fin : Set.Finite (↑Comps : Set (Finset V)) := Comps.finite_toSet
+    have h_each_fin : ∀ C ∈ (↑Comps : Set (Finset V)), (X ∩ (↑C : Set V).sym2).Finite :=
+      fun _ _ => hX_fin.subset Set.inter_subset_left
+    rw [Set.Finite.ncard_biUnion h_finset_fin h_each_fin h_pd, finsum_mem_coe_finset]
+  -- (Step 8c) The free part: every e ∈ J \ CompsUnion lies in I (and outside CompsUnion).
+  -- Because every e ∈ J \ I would (by contradiction hypothesis) be inside some I-component.
+  have h_free_sub : J \ CompsUnion ⊆ I \ CompsUnion := by
+    intro e ⟨he_J, he_notIn⟩
+    refine ⟨?_, he_notIn⟩
+    by_contra he_notI
+    -- e ∈ J \ I, so e.toFinset ⊆ maxBlock e.toFinset ∈ Comps, so e ∈ ↑C.sym2 ⊆ CompsUnion.
+    have he_diff : e ∈ J \ I := ⟨he_J, he_notI⟩
+    have h_block := hBlock he_diff
+    have h_sub : e.toFinset ⊆ hI.maxBlock e.toFinset :=
+      hI.subset_maxBlock_of_hasBlock h_block
+    have he_top : e ∈ (⊤ : SimpleGraph V).edgeSet := hJ_off he_J
+    have he_in : e ∈ (↑(hI.maxBlock e.toFinset) : Set V).sym2 :=
+      (h_toFinset_sub_iff he_top).mpr h_sub
+    apply he_notIn
+    rw [hCU_def]
+    refine Set.mem_iUnion.mpr ⟨hI.maxBlock e.toFinset, ?_⟩
+    refine Set.mem_iUnion.mpr ⟨?_, he_in⟩
+    rw [hComps_def]
+    refine Finset.mem_image.mpr ⟨e, ?_, rfl⟩
+    rw [hmem_diff]; exact he_diff
+  -- (Step 9) Assemble: |J| ≤ |I|.
+  have hI_compsUnion := h_compsUnion_ncard hI_off hI_fin
+  have hJ_compsUnion := h_compsUnion_ncard hJ_off hJ_fin
+  have hJ_split := h_split hJ_fin
+  have hI_split := h_split hI_fin
+  have h_diff_le : (J \ CompsUnion).ncard ≤ (I \ CompsUnion).ncard :=
+    Set.ncard_le_ncard h_free_sub (hI_fin.subset Set.diff_subset)
+  have h_sum_le : ∑ C ∈ Comps, (J ∩ (↑C : Set V).sym2).ncard ≤
+      ∑ C ∈ Comps, (I ∩ (↑C : Set V).sym2).ncard :=
+    Finset.sum_le_sum h_C_ineq
+  have h_total : J.ncard ≤ I.ncard := by
+    rw [hJ_split, hI_split, hJ_compsUnion, hI_compsUnion]
+    exact Nat.add_le_add h_sum_le h_diff_le
+  omega
+
+end Augmentation
 
 end SimpleGraph
