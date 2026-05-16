@@ -395,12 +395,17 @@ Each is a separate commit, root-cause fix preferred.
       Phase 7 instance-friction resolution; added `classical` to
       `maxBlock_eq_of_subset_maxBlock`'s body. Deleted the section
       `set_option` and its justification comment. Build + lint clean.
-    - `Sparsity.lean`:1442 (section `set_option
-      linter.unusedDecidableInType false`) — affects
-      `exists_aug_of_lt_two_mul` (1460). `[DecidableEq V]` is in the
-      section variable; either pin it on the proof bodies that need
-      it or drop from the section variable in favour of in-body
-      `classical`. *(B3c.)*
+    - **B3c done.** `Sparsity.lean`:1442 (section `set_option
+      linter.unusedDecidableInType false`) — affected
+      `exists_aug_of_lt_two_mul`. Dropped `[DecidableEq V]` from the
+      Augmentation `section variable` (kept `[Finite V]`); added
+      `classical` to `exists_aug_of_lt_two_mul`'s body alongside the
+      existing `letI : Fintype V := Fintype.ofFinite V`. Deleted the
+      section `set_option`. The two private auxiliaries
+      (`ne_of_mem_top_edgeSet`, `edgeSet_fromEdgeSet_of_off_diag`)
+      didn't depend on `DecidableEq V` (their types annotate
+      `{V : Type*}` directly), so dropping the section variable left
+      them unchanged. Build + lint clean.
   - **Renamespace (2 + 5 sites, B3e done).** Reconsidered the
     "keep with dot-notation ergonomics" disposition: per the user's
     observation *"it's entirely possible to want to prove things

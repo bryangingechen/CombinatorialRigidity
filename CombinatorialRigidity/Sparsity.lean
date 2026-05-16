@@ -1417,9 +1417,7 @@ I-component) on the J-side embed into the I-side; summing gives `|J| ≤ |I|`. -
 
 section Augmentation
 
-variable [Finite V] [DecidableEq V]
-
-set_option linter.unusedDecidableInType false
+variable [Finite V]
 
 /-- **Off-diagonality of edges gives `u ≠ v`.** Convenience unfold of
 `(⊤ : SimpleGraph V).edgeSet = Sym2.diagSetᶜ` at a pair edge. -/
@@ -1457,6 +1455,7 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
   push Not at h_no_aug
   -- Setup: V is a Fintype, top.edgeSet is finite, so I, J are finite.
   letI : Fintype V := Fintype.ofFinite V
+  classical
   have h_top_fin : ((⊤ : SimpleGraph V).edgeSet).Finite := (⊤ : SimpleGraph V).edgeSet.toFinite
   have hI_fin : I.Finite := h_top_fin.subset hI_off
   have hJ_fin : J.Finite := h_top_fin.subset hJ_off
