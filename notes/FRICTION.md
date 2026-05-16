@@ -1206,6 +1206,30 @@ limitations. Worth a once-over so future agents don't re-litigate.
   added `import Mathlib.LinearAlgebra.LinearIndependent.Basic` line;
   upstream would slot under existing surjective-dual API in that file).
 
+### [mirrored] `Sym2.mk_none_some_eq_iff` (pointwise iff for `s(none, some _)` edges)
+- **Where it bit:** four `s(none, some u) ≠ s(none, some v)` proofs in
+  `MatroidIdentification.lean` (Phase 7 cleanup C9): the typeI extend's
+  `hAB_ne` (line 94) and the typeII extend's `hAB_ne / hAC_ne / hBC_ne`
+  (lines 424-447) for the three new edges `s(none, some a/b/c)`.
+- **Friction:** each `≠` proof spent 8 lines (`intro heq + apply +
+  congrArg Subtype.val + Sym2.eq_iff + rcases + Option.some.inj/absurd`)
+  to peel the subtype, case-split on `Sym2.eq_iff`, kill the
+  contradictory `none = some _` branch, and apply `Option.some.inj`
+  to the survivor. The four sites repeated the pattern verbatim. The
+  near-neighbour `Sym2.mk_mem_image_map_some_iff` already in the
+  mirror file handles image-membership but not the bare `s(none,
+  some u) = s(none, some v) ↔ u = v` equality.
+- **Resolution:** mirrored as
+  `Sym2.mk_none_some_eq_iff : s((none : Option α), some u) =
+  s(none, some v) ↔ u = v`. Proof is `simp` alone — the second
+  `Sym2.eq_iff` disjunct's `none = some _` endpoint is killed by the
+  default simp set. Each call site collapses to one line:
+  `fun heq => h_ne (Sym2.mk_none_some_eq_iff.mp (congrArg Subtype.val heq))`.
+  Naming `mk_none_some_eq_iff` over the proposed `optionSome_pair_eq_iff`
+  matches the neighbour `Sym2.mk_mem_image_map_some_iff`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

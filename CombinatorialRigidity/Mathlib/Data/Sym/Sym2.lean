@@ -56,6 +56,10 @@ copy-paste alongside `Sym2.mem_map` / `Sym2.coe_map`. See
   `SetLike` coercion of `z`. Tagged `@[simp]` so `e.toFinset ⊆ C` and
   `(↑e : Set α) ⊆ (↑C : Set α)` interconvert in one rewrite (paired with
   `Finset.coe_subset`).
+* `Sym2.mk_none_some_eq_iff` — `s(none, some u) = s(none, some v) ↔ u = v`,
+  the pointwise iff for the "fresh edges" `s(none, some _)` of `Option`-vertex
+  extensions. Collapses the four-line `Sym2.eq_iff` case-split + `Option.some.inj`
+  ceremony at each `s(none, some a) ≠ s(none, some b)` proof.
 -/
 
 namespace Sym2
@@ -136,5 +140,12 @@ requires the RHS to have strictly fewer coes than the LHS. -/
 lemma coe_toFinset [DecidableEq α] (z : Sym2 α) : (z.toFinset : Set α) = (↑z : Set α) := by
   ext x
   rw [Finset.mem_coe, Sym2.mem_toFinset, SetLike.mem_coe]
+
+/-- Pointwise iff for "fresh edges" `s(none, some _) : Sym2 (Option α)`: two such edges agree
+iff their `some`-endpoints agree. The `Sym2.eq_iff` case split is uniformly resolved because
+the second disjunct (`none = some v ∧ some u = none`) is contradictory. -/
+lemma mk_none_some_eq_iff {u v : α} :
+    s((none : Option α), some u) = s(none, some v) ↔ u = v := by
+  simp
 
 end Sym2

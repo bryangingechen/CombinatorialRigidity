@@ -91,14 +91,8 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
   have hnewB_mem : s((none : Option V), some b) ∈ (typeI G' a b).edgeSet := by simp
   set newEdgeA : (typeI G' a b).edgeSet := ⟨s(none, some a), hnewA_mem⟩ with hA_def
   set newEdgeB : (typeI G' a b).edgeSet := ⟨s(none, some b), hnewB_mem⟩ with hB_def
-  have hAB_ne : newEdgeA ≠ newEdgeB := by
-    intro heq
-    apply hab
-    have h_eq : s((none : Option V), some a) = s(none, some b) :=
-      congrArg Subtype.val heq
-    rcases Sym2.eq_iff.mp h_eq with ⟨_, h₂⟩ | ⟨h₁, _⟩
-    · exact Option.some.inj h₂
-    · exact absurd h₁ (by simp)
+  have hAB_ne : newEdgeA ≠ newEdgeB := fun heq =>
+    hab (Sym2.mk_none_some_eq_iff.mp (congrArg Subtype.val heq))
   -- The two pieces of the cover.
   set oldSet : Set (typeI G' a b).edgeSet := Set.range lift_some with holdSet_def
   set newSet : Set (typeI G' a b).edgeSet := {newEdgeA, newEdgeB} with hnewSet_def
@@ -421,30 +415,12 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
   set newEdgeB : (typeII G' a b c).edgeSet := ⟨s(none, some b), hnewB_mem⟩ with hB_def
   set newEdgeC : (typeII G' a b c).edgeSet := ⟨s(none, some c), hnewC_mem⟩ with hC_def
   -- The three new edges are pairwise distinct.
-  have hAB_ne : newEdgeA ≠ newEdgeB := by
-    intro heq
-    apply hab_ne
-    have h_eq : s((none : Option V), some a) = s(none, some b) :=
-      congrArg Subtype.val heq
-    rcases Sym2.eq_iff.mp h_eq with ⟨_, h₂⟩ | ⟨h₁, _⟩
-    · exact Option.some.inj h₂
-    · exact absurd h₁ (by simp)
-  have hAC_ne : newEdgeA ≠ newEdgeC := by
-    intro heq
-    apply hac_ne
-    have h_eq : s((none : Option V), some a) = s(none, some c) :=
-      congrArg Subtype.val heq
-    rcases Sym2.eq_iff.mp h_eq with ⟨_, h₂⟩ | ⟨h₁, _⟩
-    · exact Option.some.inj h₂
-    · exact absurd h₁ (by simp)
-  have hBC_ne : newEdgeB ≠ newEdgeC := by
-    intro heq
-    apply hbc_ne
-    have h_eq : s((none : Option V), some b) = s(none, some c) :=
-      congrArg Subtype.val heq
-    rcases Sym2.eq_iff.mp h_eq with ⟨_, h₂⟩ | ⟨h₁, _⟩
-    · exact Option.some.inj h₂
-    · exact absurd h₁ (by simp)
+  have hAB_ne : newEdgeA ≠ newEdgeB := fun heq =>
+    hab_ne (Sym2.mk_none_some_eq_iff.mp (congrArg Subtype.val heq))
+  have hAC_ne : newEdgeA ≠ newEdgeC := fun heq =>
+    hac_ne (Sym2.mk_none_some_eq_iff.mp (congrArg Subtype.val heq))
+  have hBC_ne : newEdgeB ≠ newEdgeC := fun heq =>
+    hbc_ne (Sym2.mk_none_some_eq_iff.mp (congrArg Subtype.val heq))
   -- Cover: typeII.edgeSet ⊆ oldSet ∪ newSet.
   set oldSet : Set (typeII G' a b c).edgeSet := Set.range lift_some with holdSet_def
   set newSet : Set (typeII G' a b c).edgeSet := {newEdgeA, newEdgeB, newEdgeC}

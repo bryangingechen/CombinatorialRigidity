@@ -2,8 +2,8 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
-commits (a/b/c/d). Bucket C in progress (C1–C8 closed; C9–C10
-open as discrete task items). The audit found 6 of 8
+commits (a/b/c/d). Bucket C in progress (C1–C9 closed; C10
+open as discrete task item). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
 style; the Zulip thread *Unused Decidable Instances linter*
@@ -100,8 +100,17 @@ replaces the 14-line manual `δ` factoring at
 `rw … ; push Not ; exact .imp` block; the `δ = 0` case split + `γ⁻¹`
 flip both disappear because `pair_iff'` is the contrapositive that
 covers all `δ` uniformly. `exists_nonCollinear_rowIndependent_placement_dim_two`
-body LoC: 88 → 80. Subsequent work order: **C9–C10 in priority order
-(C9 is a Sym2 mirror; C10 is a perturbation shared helper) → D**.
+body LoC: 88 → 80. C9 closed 2026-05-16: added project-internal mirror
+`Sym2.mk_none_some_eq_iff` (`s(none, some u) = s(none, some v) ↔ u = v`)
+under `Mathlib/Data/Sym/Sym2.lean`; the three typeII `≠` proofs
+(`hAB_ne/hAC_ne/hBC_ne` for `s(none, some a/b/c)`) at lines 424-447 each
+collapse from 8 lines (`intro heq + apply + congrArg Subtype.val + Sym2.eq_iff +
+rcases + Option.some.inj/absurd`) to a 2-line `fun heq => ... mp ... congrArg
+Subtype.val heq`. The analogous typeI `hAB_ne` at line 94 was refactored
+in the same commit (same pattern). Net file change: MatroidIdentification.lean
+−24 LoC, Sym2.lean +11 LoC including docstring + `## Contents` entry; project-
+wide −13 LoC. Subsequent work order: **C10 (perturbation shared helper)
+→ D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -170,9 +179,10 @@ iso side (#1, #4, #7, #10; ~80-100 LoC compound savings under a
 single `linearIndepOn_image_rigidityRow_of_injective` extraction).
 Seven follow-up extraction candidates **opened as Bucket C task
 items C5–C10** (C4 absorbs the seventh — its three pre-flagged
-helpers are listed inline). C4–C8 landed 2026-05-16. Next concrete
-step: **C9** (project-internal `Sym2.optionSome_pair_eq_iff` mirror for
-#1's three `≠` proofs, ~15 LoC saved), then C10 / D; full per-site
+helpers are listed inline). C4–C9 landed 2026-05-16. Next concrete
+step: **C10** (`Function.update`-perturbation shared helper across
+#9 + #11, ~30-40 LoC saved if abstraction shape pans out), then D;
+full per-site
 walk preserved under the C2 task entry for context.
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
@@ -1191,17 +1201,24 @@ Each is a separate commit, root-cause fix preferred.
   `pair_iff'` `≠` formulation is shorter than the `not_iff_eq_smul`
   contraposition, and the contrapositive avoids the `0`-case split
   entirely.
-- [ ] C9: **Project-internal `Sym2.optionSome_pair_eq_iff` mirror.**
-  Three `≠` proofs in `MatroidIdentification.lean`:462-485
-  (`hAB_ne / hAC_ne / hBC_ne` for the three new typeII edges
-  `s(none, some a), s(none, some b), s(none, some c)`) each take 6
-  lines doing `s(none, some u) = s(none, some v) → u = v` via
-  `Sym2.eq_iff` case-split + `Option.some.inj`. Mirror
-  `Sym2.optionSome_pair_eq_iff : s(none, some u) = s(none, some v) ↔
-  u = v` under `CombinatorialRigidity/Mathlib/Data/Sym/Sym2/`
-  (or place in `MatroidIdentification.lean` as a project-internal
-  helper if not generally useful). Collapses each `≠` proof to one
-  line (~15 LoC saved).
+- [x] C9: **Project-internal `Sym2.mk_none_some_eq_iff` mirror.** Closed
+  2026-05-16. Added `Sym2.mk_none_some_eq_iff : s((none : Option α),
+  some u) = s(none, some v) ↔ u = v` to
+  `CombinatorialRigidity/Mathlib/Data/Sym/Sym2.lean` (proof: `simp`
+  alone — the second `Sym2.eq_iff` disjunct's `none = some _`
+  endpoint is auto-killed by the default simp set). The three typeII
+  `≠` proofs (`hAB_ne/hAC_ne/hBC_ne` at lines 424-447 for `s(none,
+  some a/b/c)`) each collapse from 8 lines (`intro heq + apply +
+  congrArg Subtype.val + Sym2.eq_iff + rcases + Option.some.inj/absurd`)
+  to 2 lines (`fun heq => h_ne (Sym2.mk_none_some_eq_iff.mp (congrArg
+  Subtype.val heq))`). The analogous typeI `hAB_ne` at line 94 was
+  refactored in the same commit (same pattern, hypothesis named `hab`
+  instead of `hab_ne`). Final naming `mk_none_some_eq_iff` instead of
+  the originally-proposed `optionSome_pair_eq_iff` follows the
+  existing `Sym2.mk_mem_image_map_some_iff` convention in the same
+  file. Net file change: MatroidIdentification.lean −24 LoC, Sym2.lean
+  +11 LoC; project-wide −13 LoC. Original estimate was ~15 LoC saved;
+  actual savings landed within rounding of that.
 - [ ] C10: **Shared `Function.update`-perturbation helper for
   #9 + #11.**
   `exists_nonCollinear_rowIndependent_placement_dim_two`
@@ -1345,6 +1362,26 @@ checkbox.)*
   (term-mode `show ... from ...` glue, definitional unfolds of `set
   M`-style let-bindings before `fun_prop` / `rw`, one `change G'.Adj
   x y` stylistic equivalent of `rw [SimpleGraph.mem_edgeSet]`).
+
+- **C9 — `Sym2.mk_none_some_eq_iff` mirror.** C2 flagged the three
+  typeII `≠` proofs (`hAB_ne/hAC_ne/hBC_ne` for the new `s(none,
+  some a/b/c)` edges) at `MatroidIdentification.lean`:462-485 — each
+  8 lines doing `Sym2.eq_iff` case-split + `Option.some.inj` to peel
+  `s(none, some u) = s(none, some v) → u = v`. The fused iff was
+  not in mathlib: closest hits (`Sym2.eq_iff`, `Sym2.mk_mem_image_map_some_iff`)
+  don't combine the case-split + `Option.some.inj` into a single rewrite.
+  Mirrored under `CombinatorialRigidity/Mathlib/Data/Sym/Sym2.lean` as
+  `Sym2.mk_none_some_eq_iff : s((none : Option α), some u) = s(none,
+  some v) ↔ u = v`, proof is `simp` alone (the second `Sym2.eq_iff`
+  disjunct's `none = some _` endpoint is auto-killed). Each `≠` proof
+  collapses to `fun heq => h_ne (Sym2.mk_none_some_eq_iff.mp (congrArg
+  Subtype.val heq))`. Also refactored the analogous typeI `hAB_ne`
+  (line 94) which shared the pattern verbatim. Net: 4 sites × ~6 LoC
+  saved + 11 LoC for the mirror including docstring/`## Contents`
+  entry = project-wide −13 LoC. C2's ~15 LoC estimate was within
+  rounding distance. Naming choice: `mk_none_some_eq_iff` (matches
+  the existing `Sym2.mk_mem_image_map_some_iff` neighbour) over the
+  proposed `optionSome_pair_eq_iff`.
 
 - **C8 — collinear-pair factoring via `LinearIndependent.pair_iff'`.**
   C2 flagged the 13-line manual factoring at
