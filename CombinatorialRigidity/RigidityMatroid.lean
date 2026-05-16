@@ -81,6 +81,24 @@ noncomputable def rigidityRow (G : SimpleGraph V) (p : Framework V d) :
 theorem rigidityRow_apply (G : SimpleGraph V) (p : Framework V d) (e : G.edgeSet)
     (motion : Framework V d) : G.rigidityRow p e motion = G.RigidityMap p motion e := rfl
 
+/-- The `e`-th rigidity row is linear in the placement: shifting `p₀` by `t • r` shifts the row
+by `t • G.rigidityRow r e`. Used by the linear-interpolation perturbation argument for the
+uniform-genericity lemma in `LinearRigidityMatroid.lean`. -/
+theorem rigidityRow_add_smul (G : SimpleGraph V) (p₀ r : Framework V d) (t : ℝ)
+    (e : G.edgeSet) :
+    G.rigidityRow (p₀ + t • r) e =
+      G.rigidityRow p₀ e + t • G.rigidityRow r e := by
+  ext motion
+  obtain ⟨e_val, he⟩ := e
+  induction e_val using Sym2.ind with
+  | h u v =>
+    have h_diff : (p₀ + t • r) u - (p₀ + t • r) v =
+        (p₀ u - p₀ v) + t • (r u - r v) := by
+      simp only [Pi.add_apply, Pi.smul_apply, smul_sub]; abel
+    simp only [rigidityRow_apply, rigidityMap_apply, h_diff, inner_add_left,
+      inner_smul_left, RCLike.conj_to_real, LinearMap.add_apply, LinearMap.smul_apply,
+      smul_eq_mul]
+
 /-- Row-independence in the function module is equivalent to linear independence in the dual
 module: the bridge between the blueprint's set-of-functions formulation and the linear-functional
 `rigidityRow` family. -/

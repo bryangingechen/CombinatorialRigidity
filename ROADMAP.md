@@ -71,7 +71,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | ✓ Complete (see `notes/Phase6.md`) |
 | 7. Lovász–Yemini matroid identification | `CountMatroid.lean`, `MatroidIdentification.lean` | ✓ Complete (see `notes/Phase7.md`) |
 | ⋮ Cleanup round (pre-Phase-8) | project-wide | ✓ Complete (see `notes/Phase7-cleanup.md`; round manual: `CLEANUP.md`) |
-| 8. Linear-matroid framing | `LinearRigidityMatroid.lean` | in progress (see `notes/Phase8.md`) |
+| 8. Linear-matroid framing | `LinearRigidityMatroid.lean` | ✓ Complete (see `notes/Phase8.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -241,25 +241,24 @@ $M_{p_{\text{gen}}} \cong \mathrm{rigidityMatroid}\,V$) is deferred to
 
 ### Phase 8 — Linear-matroid framing (`LinearRigidityMatroid.lean`)
 
-In progress. Packages the planar rigidity matroid in its
-linear-algebra form via `Matroid.ofFun` of the rigidity-row function
-at a generic placement, and identifies it with the combinatorial
-$(2, 3)$-count matroid of Phase 7. The target lemma is
-Lovász--Yemini stated as a matroid isomorphism
-
-```
-linearRigidityMatroid V 2 ≅ rigidityMatroid V
-```
-
-rather than just an independence iff (the latter is
-`SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent`, landed
-in Phase 7). The phase adds `apnelson1/Matroid` as a `lakefile.toml`
-dependency for `Matroid.ofFun` and `Module.matroid`; the matching
-toolchain pin was confirmed in the Phase 6 investigation (commit
-`5f11c6b`). Runs in **forward blueprint mode** with the existing
-`blueprint/src/chapter/rigidity-matroid.tex` extended to host the
-linear-matroid section. See `notes/Phase8.md` for the live lemma
-checklist, decisions made, and hand-off.
+Complete. Packages the planar rigidity matroid in its linear-algebra
+form via `Matroid.ofFun` (from the `apnelson1/Matroid` library) of
+the rigidity-row function at a uniformly-generic placement, and
+identifies it with the combinatorial $(2, 3)$-count matroid of
+Phase 7 (Lovász--Yemini, linear-matroid form). The target
+`linearRigidityMatroid_eq_rigidityMatroid` is package equality on
+`Matroid (Sym2 V)`, since both matroids share ground set
+$E(K_V)$; the content is uniform genericity
+(`exists_uniform_rowIndependent_placement_dim_two`), proved by
+linear-interpolation perturbation on the finite family of
+$(2, 3)$-sparse subsets routed through two new mirror lemmas under
+`Mathlib/LinearAlgebra/Matrix/Rank.lean` (rectangular Gram-det
+characterization of LI; cofiniteness of LI along an affine line via
+a one-variable real polynomial Gram determinant). The chapter ran in **forward
+blueprint mode** with `blueprint/src/chapter/rigidity-matroid.tex`'s
+*Linear-matroid framing* subsection as the authoritative dep-graph.
+See `notes/Phase8.md` for the full lemma list, decisions, and
+hand-off.
 
 ## Engineering conventions
 

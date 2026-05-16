@@ -1,6 +1,6 @@
 # Phase 8 — Linear-matroid framing (work log)
 
-**Status:** in progress.
+**Status:** complete.
 
 This file is the per-phase work record. See `../ROADMAP.md` §8 for
 the high-level plan and `../DESIGN.md` for cross-cutting design
@@ -17,37 +17,40 @@ duplicate the dep-graph.
 
 ## Current state
 
-Phase opened by a scaffolding commit (`3e7e2e5`), the dep-bump
-landing `apnelson1/Matroid` at revision `e6852cec…` (`6df664c`),
-the **skeleton commit** with `linearRigidityMatroid` + the row-LI
-bridge `linearRigidityMatroid_indep_iff_edgeSetRowIndependent`
-(`8347e54`), the **scaffolding commit** landing the
-uniform-genericity auxiliary
-`SimpleGraph.exists_uniform_rowIndependent_placement_dim_two`
-(sorry-blocked) plus the main target
-`SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid` (proof
-complete *modulo* the auxiliary), and the **mirror-infrastructure
-commit** landing the rectangular-LI ↔ Gram-det characterization and
-the polynomial-along-line cofinite helper under
-`Mathlib/LinearAlgebra/Matrix/Rank.lean`.
+**Phase 8 complete.** `SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid`
+in `LinearRigidityMatroid.lean` lands the matroid identification of
+the linear rigidity matroid with the combinatorial planar rigidity
+matroid in dimension 2 (Lovász–Yemini, linear-matroid form). The
+phase shipped:
 
-The main theorem's proof is the clean composition the blueprint
-sketches: pick the uniform-generic `p` from the auxiliary, apply
-`Matroid.ext_indep` (ground sets agree by `rfl` post-unfolding),
-and for each `J ⊆ (⊤).edgeSet` factor `J = Subtype.val '' I` via
-the subtype, apply
-`linearRigidityMatroid_indep_iff_edgeSetRowIndependent` on the LHS
-and `rigidityMatroid_indep_iff_edgeSetRowIndependent` on the RHS,
-collapse `∃ p', row-LI at p'` via `hp_uniform` composed with Phase 7's
-`edgeSet_rowIndependent_iff_isSparse_dim_two` (⇒) direction.
+- the `linearRigidityMatroid V d p` definition built on
+  `apnelson1/Matroid`'s `Matroid.ofFun`, with extension of
+  `(⊤).rigidityRow p` from `(⊤).edgeSet` to all of `Sym2 V` by zero
+  off the edge set via `Function.extend` (see FRICTION
+  *Extending a function on a subtype via `Function.extend`*).
+- the row-LI bridge
+  `linearRigidityMatroid_indep_iff_edgeSetRowIndependent` (linear-
+  matroid analogue of Phase 7's matroid-form Lovász–Yemini bridge).
+- the uniform-genericity auxiliary
+  `exists_uniform_rowIndependent_placement_dim_two`: induction on
+  the finite family of `(2, 3)`-sparse subsets via linear-interpolation
+  perturbation, closing through the polynomial-along-line cofinite helper.
+- two new mirror lemmas under
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean`:
+  `Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero`
+  (rectangular Gram-det characterization, derived from
+  `rank_self_mul_transpose`) and
+  `LinearIndependent.finite_setOf_not_along_affine_path` (cofiniteness
+  of LI along an affine line, via the polynomial-entry matrix
+  `X • C(B) + C(A)` and `Polynomial.finite_setOf_isRoot`).
+- the project-internal helper `rigidityRow_add_smul` in
+  `RigidityMatroid.lean` capturing linearity of `rigidityRow` in the
+  placement, the bridge from `Framework`-level affine paths to
+  `Module.Dual`-level affine paths.
 
-Next concrete commit: close the `sorry` in
-`exists_uniform_rowIndependent_placement_dim_two` by induction on
-the finite family of `(2, 3)`-sparse subsets, applying the polynomial-
-along-line mirror at each inductive step. The mirror infrastructure
-is already in place (see `notes/FRICTION.md` *Mirrored →
-`Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero` +
-`finite_setOf_not_linearIndependent_rows_along_affine_path`*).
+Blueprint section *Linear-matroid framing* in
+`chapter/rigidity-matroid.tex` is fully `\leanok`; the dep-graph at
+`blueprint/web/dep_graph_document.html` is fully green.
 
 ## Architectural choices made up front
 
@@ -103,36 +106,13 @@ wrong, revisit there.
 
 ## Lemma checklist
 
-**Maintained in the blueprint, not here.** The authoritative
-checklist will be `chapter/rigidity-matroid.tex`'s *Linear-matroid
-framing* section, visible as a dep-graph at
-`blueprint/web/dep_graph_document.html` after `inv bp && inv web`.
-A red node = not yet formalized; a green node = formalized and
-`\leanok`-tagged. Pick leaf-most red.
-
-Sketch of the planned nodes (the blueprint will hold the final
-list):
-
-- `def:linearRigidityMatroid` — `Matroid.ofFun (G.rigidityRow p)`
-  in dimension 2 for a chosen generic placement. **Done.**
-- `lem:linearRigidityMatroid-indep-iff` — independent iff
-  row-LI at $p$. **Done.**
-- `lem:exists-uniform-rowIndependent-placement` — existence of a
-  single placement `p` row-LI on every `(2, 3)`-sparse edge subset
-  of `K_V` simultaneously. **Statement landed, proof pending**
-  (`sorry`-blocked). Proof via linear-interpolation perturbation:
-  induct on the finite family of sparse subsets; along the
-  interpolation `p_t := (1−t) p_0 + t q` between the IH witness
-  `p_0` and a new-subset witness `q`, each "row-LI on S" condition
-  is a polynomial-in-`t` nonzero at `t = 0` or `t = 1`, so
-  cofinitely-many `t` work.
-- `thm:linearRigidityMatroid-eq-rigidityMatroid` — the matroid
-  identification. **Proof landed modulo the auxiliary**; composes
-  Phase 7's `rigidityMatroid_indep_iff_edgeSetRowIndependent` with
-  the uniform-genericity witness above via `Matroid.ext_indep`.
-
-The actual entries will land in the blueprint as the Lean lemmas
-are formalized.
+**Maintained in the blueprint, not here.** All four dep-graph nodes
+(`def:linearRigidityRow`, `def:linearRigidityMatroid`,
+`lem:linearRigidityMatroid-indep-iff`,
+`lem:exists-uniform-rowIndependent-placement`,
+`thm:linearRigidityMatroid-eq-rigidityMatroid`) are
+`\leanok`-tagged green in
+`chapter/rigidity-matroid.tex`'s *Linear-matroid framing* subsection.
 
 ## Decisions made during this phase
 
@@ -241,4 +221,33 @@ are formalized.
 
 ## Hand-off / next phase
 
-*(To be filled when Phase 8 closes.)*
+Phase 8 closes the rigidity-matroid trio (combinatorial $(2, 3)$-count
+matroid from Phase 7, linear matroid `Matroid.ofFun` at a generic
+placement from Phase 8) and ends the planned ROADMAP. No follow-up
+phase is queued. Possible next directions:
+
+- **Drop the `apnelson1/Matroid` dep** if `Matroid.ofFun` lands
+  upstream in mathlib (currently apnelson1's matroid library is being
+  upstreamed piecewise — watch the dep-bump cron PR for absorption).
+- **Upstream the two mirror lemmas**
+  (`Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero` and
+  `LinearIndependent.finite_setOf_not_along_affine_path`,
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean`). Both are direct
+  corollaries of `Matrix.rank_self_mul_transpose` and standard
+  `Polynomial` machinery — the kind of "missing iff" packaging that
+  mathlib accepts without controversy.
+- **Higher-dimensional generalization.** The Phase 8 target is
+  stated at dimension 2 because Phase 6/7's row-LI ↔ sparse iff is
+  dim-2-specific (Lovász–Yemini's $\Leftarrow$ direction at $d > 2$
+  is open in the literature). A $d$-general analogue would track the
+  rigidity-matroid-from-`Matroid.ofFun` definition; the matroid
+  identification with $(d, \binom{d+1}{2})$-sparsity is the open
+  $d$-general generic-rigidity conjecture for $d \geq 3$.
+- **Possible cleanup round.** No urgent friction items surfaced
+  during Phase 8 implementation (one `[Finite ι]` / `Fintype.ofFinite`
+  bookkeeping nudge from the linter; one `set_option maxHeartbeats`
+  almost-needed but worked around by avoiding `change` in favour of
+  `linearIndepOn_congr`). A post-Phase-8 cleanup pass would mostly
+  audit the new file `LinearRigidityMatroid.lean` (≈190 LoC) and the
+  expanded `Mathlib/LinearAlgebra/Matrix/Rank.lean` mirror for
+  consolidation opportunities; see `CLEANUP.md` for the discipline.

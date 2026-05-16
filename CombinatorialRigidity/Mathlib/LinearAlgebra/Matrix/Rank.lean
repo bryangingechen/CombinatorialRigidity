@@ -109,3 +109,40 @@ theorem finite_setOf_not_linearIndependent_rows_along_affine_path
   exact ht ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mpr h_ne)
 
 end Matrix
+
+/-- **Vector-form polynomial-along-line.** For a finite-dim ℝ-vector space `W` and an
+affine family `t ↦ fun i => a i + t • b i : ℝ → ι → W` (with `ι` finite), if the family
+is linearly independent at some `t₀ : ℝ`, then it is LI for all but finitely many `t : ℝ`.
+
+Vector analogue of `Matrix.finite_setOf_not_linearIndependent_rows_along_affine_path`,
+derived by pulling along a basis-induced isomorphism `W ≃ₗ[ℝ] (Fin (finrank ℝ W) → ℝ)`. -/
+theorem LinearIndependent.finite_setOf_not_along_affine_path
+    {ι W : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
+    {a b : ι → W} {t₀ : ℝ}
+    (h : LinearIndependent ℝ (fun i => a i + t₀ • b i)) :
+    {t : ℝ | ¬ LinearIndependent ℝ (fun i => a i + t • b i)}.Finite := by
+  classical
+  haveI : Fintype ι := Fintype.ofFinite ι
+  -- Pick a basis of `W` and identify `W` with `Fin n → ℝ`.
+  let φ : W ≃ₗ[ℝ] (Fin (Module.finrank ℝ W) → ℝ) := (Module.finBasis ℝ W).equivFun
+  let A : Matrix ι (Fin (Module.finrank ℝ W)) ℝ := Matrix.of (fun i j => φ (a i) j)
+  let B : Matrix ι (Fin (Module.finrank ℝ W)) ℝ := Matrix.of (fun i j => φ (b i) j)
+  -- The affine matrix family `A + t • B` has rows `φ ∘ (a · + t • b ·)`.
+  have h_row : ∀ t : ℝ, (A + t • B).row = ⇑φ ∘ fun i => a i + t • b i := by
+    intro t
+    funext i j
+    change A i j + t • B i j = φ (a i + t • b i) j
+    rw [map_add, map_smul]
+    rfl
+  -- LI of the affine family ↔ LI of matrix rows, via the LinearEquiv `φ`.
+  have h_iff : ∀ t : ℝ,
+      LinearIndependent ℝ (fun i => a i + t • b i) ↔
+      LinearIndependent ℝ (A + t • B).row := by
+    intro t
+    rw [h_row t]
+    exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
+  -- Apply the matrix-form helper.
+  refine (Matrix.finite_setOf_not_linearIndependent_rows_along_affine_path A B
+    ((h_iff t₀).mp h)).subset fun t ht => ?_
+  rw [Set.mem_setOf_eq] at ht ⊢
+  rwa [← h_iff]

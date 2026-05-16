@@ -602,6 +602,7 @@ matroid on the rigidity-row function at a chosen placement, via the
 \begin{lemma}[Uniformly generic placement, dim $2$]
   \label{lem:exists-uniform-rowIndependent-placement}
   \lean{SimpleGraph.exists_uniform_rowIndependent_placement_dim_two}
+  \leanok
   \uses{def:edgeSet-rowIndependent,
     thm:isSparse-exists-rowIndependent-placement}
   Let $V$ be finite. There exists a placement $p : V \to \R^{2}$ at
@@ -610,6 +611,7 @@ matroid on the rigidity-row function at a chosen placement, via the
   $\mathrm{fromEdgeSet}\,I$ $(2, 3)$-sparse, $I$ is row-LI at $p$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Induction on the cardinality of the finite family
   \[
     \mathcal{S} := \{I \subseteq E(K_V) \mid
@@ -621,22 +623,32 @@ matroid on the rigidity-row function at a chosen placement, via the
   $I_0 \in \mathcal{S} \setminus \mathcal{S}_n$,
   \cref{thm:isSparse-exists-rowIndependent-placement} yields a
   placement $q$ row-LI on $I_0$. Form the linear-interpolation
-  family $p_t := (1 - t)\,p_0 + t\,q$ for $t \in \R$. The rigidity
-  row $\mathrm{row}_{p_t}(e) \in \mathrm{Hom}_\R(\mathrm{Framework}\,V\,2, \R)$
-  is \emph{affine in $t$} at each edge $e$ (since $p_t u - p_t v$ is
-  affine in $t$). Hence for each $S \subseteq E(K_V)$, ``$S$ is
-  row-LI at $p_t$'' is the non-vanishing of a Gramian-style
-  polynomial in $t$ of degree at most $2 |S|$. For $S \in
-  \mathcal{S}_n$ this polynomial is nonzero at $t = 0$ (the IH); for
-  $S = I_0$ it is nonzero at $t = 1$. Each nonzero polynomial has
-  finitely many roots, so the union of bad-$t$ values across
-  $\mathcal{S}_n \cup \{I_0\}$ is finite; pick $t$ outside this
-  union and $p_t$ is row-LI on the enlarged subfamily.
+  family $p_t := (1 - t)\,p_0 + t\,q = p_0 + t\,(q - p_0)$ for $t \in \R$.
+  The rigidity row $\mathrm{row}_{p_t}(e) \in
+  \mathrm{Hom}_\R(\mathrm{Framework}\,V\,2, \R)$ is \emph{affine in $t$}
+  at each edge $e$ (\texttt{rigidityRow\_add\_smul}: linearity of
+  $\mathrm{row}$ in $p$). Hence for each $S \subseteq E(K_V)$,
+  ``$S$ is row-LI at $p_t$'' is the non-vanishing of a one-variable
+  polynomial in $\R[t]$ (the Gram determinant
+  $\det((A + t \cdot B)(A + t \cdot B)^\top)$ of the rigidity-row
+  matrices $A, B$ for $p_0$ and $q - p_0$ in a chosen basis of
+  $\mathrm{Framework}\,V\,2$). For $S \in \mathcal{S}_n$ this polynomial
+  is nonzero at $t = 0$ (the IH); for $S = I_0$ it is nonzero at
+  $t = 1$. Each nonzero polynomial in $\R[t]$ has finitely many roots,
+  so the union of bad-$t$ values across $\mathcal{S}_n \cup \{I_0\}$ is
+  finite; pick $t$ outside this union and $p_t$ is row-LI on the
+  enlarged subfamily. The rectangular-LI / Gram-det iff and the
+  cofiniteness-along-an-affine-line step are packaged as
+  \texttt{Matrix.linearIndependent\_rows\_iff\_det\_mul\_transpose\_ne\_zero}
+  and
+  \texttt{LinearIndependent.finite\_setOf\_not\_along\_affine\_path}
+  in the \texttt{Mathlib/LinearAlgebra/Matrix/Rank.lean} mirror.
 \end{proof}
 
 \begin{theorem}[Lov\'asz--Yemini, linear-matroid form, dim $2$]
   \label{thm:linearRigidityMatroid-eq-rigidityMatroid}
   \lean{SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid}
+  \leanok
   \uses{def:linearRigidityMatroid, def:rigidityMatroid,
     thm:rigidityMatroid-indep-iff-rowIndependent,
     lem:linearRigidityMatroid-indep-iff,
@@ -646,6 +658,7 @@ matroid on the rigidity-row function at a chosen placement, via the
   planar rigidity matroid: $\mathcal{L}_p(V) = \mathcal{R}(V)$.
 \end{theorem}
 \begin{proof}
+  \leanok
   Take $p$ from
   \cref{lem:exists-uniform-rowIndependent-placement}: every
   $(2, 3)$-sparse edge subset of $K_V$ is row-LI at $p$. The two
