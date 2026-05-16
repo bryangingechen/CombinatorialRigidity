@@ -1,11 +1,15 @@
 # Phase 7 cleanup round — work log
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
-no-fix audits). Bucket B partial: B1 + B2 swept; B1 fix pass *paused*
-pending B2/B5 outcomes (sweep showed B1 sites entangled with B2's
-`[Finite V] → Fintype` bridge and B5's Set-vs-Finset boundary — fixing
-B1 first would mean redoing it after B2/B5). Working order is
-**B2 → B5 → B1 → B3/B4/B6/B7 → C/D**.
+no-fix audits). Bucket B partial: B1 + B2 swept; **B1 / B2 / B5 fix
+passes blocked on `DESIGN.md` *Choices to revisit → Typeclass shape
+for finiteness on `V`*** (a new entry, opened mid-cleanup once the
+B2 sweep made it clear the three smells share one root cause). The
+design entry frames the `[Finite V]` vs `[Fintype V]` vs `[Fintype V]
+[DecidableEq V]` choice and connects it to a potential future
+pebble-game formalization. Subsequent work order is
+**B2 → B5 → B1 → B3/B4/B6/B7 → C/D**, all gated on the typeclass
+decision.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -26,16 +30,22 @@ in the same declarations: every one of the 12 B2 sites is in a
 declaration that *also* carries a B1 `classical` site, and several
 pairs are on adjacent lines (`Sparsity`:1343/1344, 1476/1480;
 `MatroidIdentification`:1035/1036, 1116/1117; `Framework`:131/132,
-242/243).
+242/243). B5 (Set-vs-Finset boundaries) shares this root cause —
+sites carry `Finset` shape because the API quantifies that way, but
+the proof site might prefer `Set` form (or vice versa).
 
-So the B1 fix pass is **paused**. Next concrete step is the first
-B2 fix commit — pick one declaration that does the type-level
-bridge (`Fintype.ofFinite V`), lift its signature to `[Fintype V]`
-(or `[Fintype V] [DecidableEq V]` if the body uses `DecidableEq V`
-too), and confirm the `classical` underneath becomes vestigial.
-That single fix pattern, repeated across the six type-level bridge
-sites, will then carve B1 down to a smaller residue for the
-eventual B1 fix pass.
+B1 / B2 / B5 fix passes are **blocked on a design decision** about
+the project's preferred typeclass shape for finiteness on `V`. The
+question has been opened as a new *Choices to revisit* entry in
+`DESIGN.md` (*Typeclass shape for finiteness on `V`*) connecting
+the three smells to a single root cause and flagging the
+pebble-game-formalization angle that may bias the answer toward
+`[Fintype V] [DecidableEq V]` signatures.
+
+Next concrete step: settle the design question. Once a convention
+is picked, the B2 / B5 / B1 fix passes follow mechanically. B3 /
+B4 / B6 / B7 / C* / D* are independent of this decision and can
+proceed in parallel if desired.
 
 ## Architectural choices made up front
 
@@ -272,7 +282,9 @@ Each is a separate commit, root-cause fix preferred.
   - `CountMatroid.lean`:74 (`countMatroid`, in the `indep_aug` field).
 - [ ] B2: `[Finite V] → Fintype` bridge audit (12 sites; grep:
   `letI|haveI` paired with `Fintype.ofFinite|Set.Finite.fintype`).
-  Three sub-patterns surfaced in the sweep:
+  **Fix pass blocked** on `DESIGN.md` *Choices to revisit →
+  Typeclass shape for finiteness on `V`*. Three sub-patterns
+  surfaced in the sweep:
   - **(a) Type-level `Fintype V` from `[Finite V]` (6 sites)** —
     candidate for "lift signature to `[Fintype V]`":
     - `Sparsity.lean`:1343 (`IsSparse.maxBlock_isTightOn`).
@@ -333,7 +345,11 @@ Each is a separate commit, root-cause fix preferred.
   bridging between `maxBlockSet : Set V` and `maxBlock : Finset V`
   is necessary for `Finset.sup_mem`. Does any caller-side proof
   unnecessarily round-trip? Look also at `EdgesIn.lean` and
-  `Framework.lean` for `Set`/`Finset` boundary friction.
+  `Framework.lean` for `Set`/`Finset` boundary friction. **Fix
+  pass blocked** on `DESIGN.md` *Choices to revisit → Typeclass
+  shape for finiteness on `V`* (same root cause: typeclass shape
+  drives which side of the `Set` / `Finset` boundary the API
+  naturally lives on).
 - [ ] B6: `change` / `show` survey (concrete signal from
   `CombinatorialRigidity/CLAUDE.md` *Friction review*). For each
   `change` / `show` in source: is it covering for an un-fused
@@ -463,6 +479,13 @@ checkbox.)*
   the chapter prose.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+
+- *B1 / B2 / B5 share one root cause: the project's heterogeneous
+  typeclass shape for finiteness on `V`* → `DESIGN.md` *Choices to
+  revisit → Typeclass shape for finiteness on `V`* (opened
+  mid-cleanup once the B2 sweep made the entanglement visible).
+  Blocks B1 / B2 / B5 fix passes; pebble-game-formalization angle
+  may bias the resolution.
 
 ### Cleanup pass summaries
 

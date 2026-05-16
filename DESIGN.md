@@ -375,6 +375,57 @@ to a fixed section above once a question is answered.
   `Sparsity.lean` and elsewhere, consider whether to move it to
   `Mathlib.Combinatorics.SimpleGraph.Basic` next to `incidenceSet`.
   Wait until the API has stabilized.
+- **Typeclass shape for finiteness on `V`.** Surfaced by the Phase
+  7 cleanup round (B1 = 41 `classical` sites, B2 = 12
+  `[Finite V] → Fintype` bridge sites, B5 = `Set` vs `Finset`
+  boundaries — see `notes/Phase7-cleanup.md`). The repo currently
+  mixes three forms heterogeneously:
+  - `[Finite V]` (e.g. `Sparsity.lean` section `IComponents` at
+    line 1269, `EdgeSetRowIndependent.eventually` in
+    `RigidityMatroid.lean`) — weakest typeclass. Bodies that need
+    `Fintype V`-strength data bridge inline via `haveI : Fintype V
+    := Fintype.ofFinite V`, which then needs a paired `classical`
+    for `Finset V` decidable-equality operations.
+  - `[Fintype V]` (e.g. `IsSparse.exists_rowIndependent_placement`
+    in `MatroidIdentification.lean`, much of Laman / framework
+    infrastructure) — when the body uses `Fintype.card` /
+    `Finset.univ` / `Fintype.card`-based strong induction.
+  - `[Fintype V] [DecidableEq V]` (occasional, e.g.
+    `IsLaman.two_le_degree`) — signature matches `Finset V` body
+    needs directly.
+
+  The status-quo `[Finite V]` + inline bridge idiom spares callers
+  a `Fintype` hypothesis at the cost of `haveI` + `classical`
+  boilerplate per proof body. The mathlib-style alternative is to
+  state each signature at the typeclass the body genuinely uses,
+  propagating `[Fintype V]` (and `[DecidableEq V]`) to callers; in
+  this project's caller graph (downstream-only, no third-party
+  consumers) propagation is mechanical, but it's still an API
+  change to N declarations.
+
+  **Pebble-game pointer.** A future pebble-game formalization
+  (deciding `(k, ℓ)`-sparsity computationally, the standard
+  algorithmic side of rigidity theory) requires
+  `[Fintype V] [DecidableEq V] [DecidableRel G.Adj]` end-to-end,
+  since the procedure is a state machine on `Finset V` and
+  `Finset (Sym2 V)`. So "lift signatures to `[Fintype V]
+  [DecidableEq V]`" is forward-compatible with that trajectory;
+  retaining `[Finite V]` signatures optimizes for present
+  generality at the cost of pebble-game-prep work later.
+
+  This question was foreshadowed in *Edge type: `Set (Sym2 V)`*
+  alternative §1 (line 87 above): "add a `Finset`-valued companion
+  guarded on `[Fintype V] [DecidableRel G.Adj]` once we hit proofs
+  that benefit." Phase 7's row-independence track is when that
+  surfaced concretely.
+
+  **Open.** Cleanup-round B2/B5 fix passes are blocked on this
+  entry; B1 fix pass is downstream-blocked. Likely path: audit one
+  representative section (`IComponents` in `Sparsity.lean` — its
+  six declarations are all `Finset`-shape internally, so it's the
+  cleanest test case) for caller behaviour, decide on a convention,
+  then propagate. If the pebble game is in near-term scope, the
+  decision should align with that.
 - **Phase 8: `apnelson1/Matroid` dependency.** Phase 7 ships the
   combinatorial $(k, \ell)$-count matroid using only mathlib's
   `IndepMatroid.ofFinite`; Phase 8 will package the planar rigidity
