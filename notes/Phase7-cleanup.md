@@ -27,8 +27,8 @@ per-site vestigial check **closed**: 20 of 49 standalone `classical`
 calls were vestigial and deleted (17 of 42 in project source + 3 of
 7 in `Mathlib/` mirror); the remaining 29 are load-bearing (provide
 `DecidableEq` for `Finset` ops / `Compl` / `rcases` on `Decidable`
-data, or `DecidableRel G.Adj`). Subsequent work order: **B3 refactor
-→ B4/B6/B7 → C/D**.
+data, or `DecidableRel G.Adj`). Subsequent work order: **B4 / B6 /
+B7 → C / D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
