@@ -72,6 +72,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 7. Lovász–Yemini matroid identification | `CountMatroid.lean`, `MatroidIdentification.lean` | ✓ Complete (see `notes/Phase7.md`) |
 | ⋮ Cleanup round (pre-Phase-8) | project-wide | ✓ Complete (see `notes/Phase7-cleanup.md`; round manual: `CLEANUP.md`) |
 | 8. Linear-matroid framing | `LinearRigidityMatroid.lean` | ✓ Complete (see `notes/Phase8.md`) |
+| ⋮ Cleanup round (post-Phase-8) | project-wide (light scope) + import-structure audit | in progress (see `notes/Phase8-cleanup.md`; round manual: `CLEANUP.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
