@@ -50,8 +50,11 @@ to its underlying `≤` for a downstream `omega`). B7 `rw`-chain audit
 collapse, 1 project-internal helper, 1 duplicate b-branch simp
 collapse); the remaining 60 do per-step substitution + arithmetic
 that doesn't fit either heuristic (verbatim cross-site repeat ⇒
-mirror; arithmetic tail in default simp set ⇒ simp). Subsequent
-work order: **C / D**.
+mirror; arithmetic tail in default simp set ⇒ simp). C1 closed
+2026-05-16: top 10 by body LoC range 322 → 87 LoC, headed by the
+typeI / typeII row-LI / IR extends quartet that C3 already targets.
+Subsequent work order: **C2 (four-question walk over the 10 listed
+sites) → C3 / C4 in either order → D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -105,9 +108,13 @@ goal-side unfolds of `IsInfinitesimallyRigid` were vestigial because
 the followup `exact` typechecks against the `def` directly; two
 Framework.lean `change … ; exact key` pairs collapsed to `simpa
 using key`; one `change … ; rw […]; exact h` 3-line block became
-`exact kerEquiv.finrank_eq.le.trans h`. Next concrete step: B7
-(multi-step `rw [...]` chains) and/or C1 (top-10 long-proof
-ranking).
+`exact kerEquiv.finrank_eq.le.trans h`. B7 (multi-step `rw [...]`
+chains) closed via 4 commits (a/b/c/d); C1 (top-10 long-proof
+ranking) recorded 2026-05-16. Next concrete step: **C2** — walk
+each of the C1 top-10 sites against the four CLEANUP.md questions
+(API extraction / mathlib miss / tactic substitution / cross-proof
+unification) and file per-site improvement sub-bullets under the
+C2 task entry.
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -691,9 +698,59 @@ Each is a separate commit, root-cause fix preferred.
 
 ### Bucket C — Long-proof audit
 
-- [ ] C1: Rank top ~10 proofs by body line count across all source
-  files; record the ranked list in this log so subsequent sub-tasks
-  can be filed concretely.
+- [x] C1: Ranked top-25 by body line count via the CLEANUP.md awk
+  recipe (`/^(private )?(theorem|lemma) /` → next blank or `end` /
+  `namespace`, filter to bodies > 50 lines, with file paths). Top 10
+  for C2 follow-up:
+
+  | # | Body LoC | Site | Notes |
+  |---|---|---|---|
+  | 1 | 322 | `MatroidIdentification.lean:395 typeII_edgeSetRowIndependent_extend` | C3 candidate (typeII core) |
+  | 2 | 184 | `Sparsity.lean:1454 IsSparse.exists_aug_of_lt_two_mul` | C4 candidate |
+  | 3 | 134 | `RigidityMatroid.lean:360 exists_affinelySpanning_of_eventually` | |
+  | 4 | 123 | `MatroidIdentification.lean:66 typeI_edgeSetRowIndependent_extend` | C3 candidate (typeI core) |
+  | 5 | 118 | `Sparsity.lean:806 IsSparse.contradiction_three_pair` | |
+  | 6 | 117 | `Sparsity.lean:1144 IsSparse.exists_typeI_or_typeII_reverse` | |
+  | 7 | 107 | `RigidityMatroid.lean:514 isSparse_of_edgeSetRowIndependent_dim_two` | |
+  | 8 | 92 | `HennebergRigidity.lean:301 typeII_isInfinitesimallyRigid_extend` | C3 candidate (typeII IR partner) |
+  | 9 | 88 | `MatroidIdentification.lean:739 exists_nonCollinear_rowIndependent_placement_dim_two` | private |
+  | 10 | 87 | `MatroidIdentification.lean:226 typeI_pendant_edgeSetRowIndependent_extend` | |
+
+  The next 15 (LoC 86 down to 53) are recorded inline for context but
+  not in C2 scope unless a sweep below upgrades one of them: `Sparsity.lean
+  :1019 typeII_reverse_blocker` (86), `HennebergRigidity.lean:475
+  exists_nonCollinear_rigid_placement_dim_two` (83, private),
+  `Henneberg.lean:368 typeII_isLaman` (75), `MatroidIdentification.lean
+  :941 IsSparse.exists_rowIndependent_placement` (64),
+  `HennebergRigidity.lean:196 exists_off_line_off_finite_dim_two` (59),
+  `Sparsity.lean:741 IsSparse.contradiction_two_pair` (57),
+  `Sparsity.lean:632 IsSparse.no_isTightOn_excluding_three_neighbors`
+  (57), `Henneberg.lean:546 IsLaman.exists_typeI_or_typeII_reverse`
+  (57), `MatroidIdentification.lean:1028
+  edgeSet_rowIndependent_iff_isSparse_dim_two` (56),
+  `LamanTheorem.lean:68 IsLaman.isGenericallyRigidInj_two_of_card` (56,
+  private), `Sparsity.lean:935 IsSparse.False_of_pairwise_blocker_or_edge`
+  (54), `Sparsity.lean:569 IsSparse.exists_isTightOn_of_insert_not_sparse`
+  (54), `HennebergRigidity.lean:126 typeI_isInfinitesimallyRigid_extend`
+  (54), `Sparsity.lean:1327 IsSparse.maxBlock_isTightOn` (53),
+  `Framework.lean:237 IsInfinitesimallyRigid.eventually` (53).
+
+  Cross-cutting structure visible in the ranking: 4 of the top 10
+  (#1, #4, #8, #10) and the leading runner-up
+  (`Sparsity.lean:1019 typeII_reverse_blocker`, 86 LoC, just below
+  the cutoff) are the typeI/typeII parallel pair across the IR side
+  (`HennebergRigidity.lean`) and the row-LI / `IsSparse` side
+  (`MatroidIdentification.lean` + `Sparsity.lean`). C3's typeII
+  conditional-core unification proposal addresses #1 and #8
+  directly; the typeI cores (#4, #10) carry the same algebraic
+  backbone with a deleted row dropped, so the C3 extraction may
+  cascade once landed. The Sparsity-side reverse / contradiction
+  band (#5 `contradiction_three_pair`, #6
+  `exists_typeI_or_typeII_reverse`, #7
+  `isSparse_of_edgeSetRowIndependent_dim_two`, plus the runner-up
+  `typeII_reverse_blocker`) is a separate cluster — note for C2 to
+  check whether they share a common counting helper rather than each
+  re-deriving the inequality.
 - [ ] C2: For each of the top 10: ask the four CLEANUP.md questions
   (API extraction / mathlib miss / tactic substitution / cross-proof
   unification). File any concrete improvement task as a follow-up
@@ -834,6 +891,20 @@ checkbox.)*
   (term-mode `show ... from ...` glue, definitional unfolds of `set
   M`-style let-bindings before `fun_prop` / `rw`, one `change G'.Adj
   x y` stylistic equivalent of `rw [SimpleGraph.mem_edgeSet]`).
+
+- **C1 — top-10 long-proof ranking recorded.** Ran the CLEANUP.md
+  awk recipe across all source files; top 10 by body line count
+  range from 322 LoC (`typeII_edgeSetRowIndependent_extend`) down
+  to 87 LoC (`typeI_pendant_edgeSetRowIndependent_extend`). The
+  ranking confirms C3's typeI / typeII unification candidate is
+  pointed at the right targets (#1 and #8 are the worked example
+  pair of typeII cores; #4 and #10 are the typeI partners) and
+  surfaces a second band of reverse-blocker / contradiction proofs
+  (#5–#7 plus the `typeII_reverse_blocker` runner-up) that may
+  share an extracted lemma once C3 lands. Full ranked list lives
+  in the C1 checkbox above. Next concrete step: C2 walks each
+  top-10 site against the four CLEANUP.md questions and files per-
+  site improvement sub-bullets.
 
 - **B4 — `noncomputable def` audit + 7-site cleanup.** 7 of 11
   `noncomputable def` sites in the project were vestigial: 5 in
