@@ -158,14 +158,18 @@ Phase 8 surface = `LinearRigidityMatroid.lean` + new lemmas in
   bridge has a named lemma `RingHom.mapMatrix_apply` in mathlib that
   the original proof didn't reach for. Net: 6 lines → 4 lines, no
   `show … from rfl` smell, upstream-PR-friendly.
-- [ ] **B5:** Mirror-eligibility check on the two new
-  `Mathlib/LinearAlgebra/Matrix/Rank.lean` lemmas. Phase 8
-  *Hand-off* flags both as upstream PR candidates ("direct
-  corollaries of `Matrix.rank_self_mul_transpose` and standard
-  `Polynomial` machinery"). Decide: file as upstream PRs now, or
-  defer until a "dropping the apnelson1/Matroid dep" mass-upstream
-  occasion? Update `notes/FRICTION.md` *Mirrored* entries
-  accordingly.
+- [x] **B5:** Mirror-eligibility decision: **defer upstreaming.**
+  Both lemmas are already entered in FRICTION *Mirrored* (commit
+  `53c3a25`) and the surrounding entry honestly flags them as
+  upstream-PR-friendly. Filing-now-vs-later: no natural batching
+  window with the `apnelson1/Matroid` upstreaming (the two Rank.lean
+  lemmas are standalone LA packaging — they don't pair with anything
+  in the matroid dep). The project's default for `[mirrored]`
+  entries is "sit until a specific reason to PR surfaces"; the same
+  default applies here. If/when mathlib refactors
+  `Matrix.rank_self_mul_transpose` or `Polynomial.finite_setOf_isRoot`,
+  re-check whether the iff packaging is still missing or has been
+  superseded.
 
 ### Bucket C — Long-proof audit (Phase 8 surface)
 
@@ -335,11 +339,18 @@ keyword-strip + `lake build` failure trace.
    `RingHom.mapMatrix` to the unbundled `Matrix.map`; eliminated by
    the named mathlib lemma `RingHom.mapMatrix_apply`.
 
-The lesson is upstream-friendly: when working with `f.mapMatrix M`
-vs `M.map ⇑f`, reach for `RingHom.mapMatrix_apply` instead of a
-`show … from rfl` bridge. Worth noting in `TACTICS-GOLF.md` if a
-second site surfaces; for now, a single Phase 8 instance does not
-clear the lift-on-promotion bar.
+Lifted to `CLEANUP.md` bucket B as a new smell row: `show X = Y from
+rfl` as a `rw`/`simp only` argument. Project-wide grep surfaces 4
+additional sites (RigidityMatroid L647, MatroidIdentification L119,
+TrivialMotions L312, Mathlib/Data/Finset/Card L45), out of scope for
+this Phase-8-surface round but picked up by the next inter-phase
+cleanup via the same grep pattern.
+
+**B5 — Upstream-PR decision: defer.** Both new Rank.lean lemmas are
+already entered in FRICTION *Mirrored* (commit `53c3a25`). No
+natural batching window with the `apnelson1/Matroid` upstreaming
+(disjoint LA packaging). Following the project's default for
+`[mirrored]` entries — sit until a specific reason to PR surfaces.
 
 ## Blockers / open questions
 
