@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Data.Finset.BooleanAlgebra
+module
+
+public import Mathlib.Data.Finset.BooleanAlgebra
 
 /-!
 # Upstream candidate: coercion of the complement of a singleton finset
@@ -24,6 +26,8 @@ promotion is a copy-paste alongside `Finset.coe_compl`. See
 
 * `Finset.coe_compl_singleton` — `(({a} : Finset α)ᶜ : Set α) = ({a} : Set α)ᶜ`.
 -/
+
+@[expose] public section
 
 namespace Finset
 

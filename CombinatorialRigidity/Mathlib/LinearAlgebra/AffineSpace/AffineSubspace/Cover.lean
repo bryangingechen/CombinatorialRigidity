@@ -3,9 +3,11 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.GroupTheory.CosetCover
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
-import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
+module
+
+public import Mathlib.GroupTheory.CosetCover
+public import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
+public import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 
 /-!
 # Upstream candidate: affine version of `Subspace.biUnion_ne_univ_of_top_notMem`
@@ -37,6 +39,8 @@ importing `GroupTheory.CosetCover` for the underlying `AddSubgroup` machinery an
   `Mathlib/LinearAlgebra/AffineSpace/FiniteDimensional.lean` (alongside
   `finrank_vectorSpan_image_finset_le`).
 -/
+
+@[expose] public section
 
 open scoped Pointwise
 

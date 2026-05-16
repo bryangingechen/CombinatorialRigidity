@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Data.Set.Card
+module
+
+public import Mathlib.Data.Set.Card
 
 /-!
 # Upstream candidates: small `Set.ncard` lemmas
@@ -29,6 +31,8 @@ copy-paste. See `DESIGN.md` "Mirror directory".
   `Set.Finite.fintype` → `Set.ncard_eq_toFinset_card'` /
   `Set.toFinset_card` → `Fintype.equivFinOfCardEq` chain.
 -/
+
+@[expose] public section
 
 namespace Set
 

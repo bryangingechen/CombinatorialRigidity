@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.LinearAlgebra.Matrix.Polynomial
+module
+
+public import Mathlib.LinearAlgebra.Matrix.Polynomial
 
 /-!
 # Upstream candidate: evaluating `det (X • A.map C + B.map C)` at a scalar.
@@ -31,6 +33,8 @@ Mirror path: `Mathlib/LinearAlgebra/Matrix/Polynomial.lean`. Promotion to mathli
 is copy-paste into the upstream file, alongside the existing `coeff_*` and
 `natDegree_*` siblings.
 -/
+
+@[expose] public section
 
 namespace Polynomial
 

@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Data.Fintype.Card
+module
+
+public import Mathlib.Data.Fintype.Card
 
 /-!
 # Upstream candidate: cardinality of the complement of a singleton finset
@@ -21,6 +23,8 @@ promotion is a copy-paste alongside `Finset.card_compl`. See
 
 * `Finset.card_compl_singleton` — `(({a} : Finset α)ᶜ).card = Fintype.card α - 1`.
 -/
+
+@[expose] public section
 
 namespace Finset
 

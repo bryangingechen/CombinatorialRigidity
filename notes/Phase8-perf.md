@@ -1,23 +1,21 @@
 # Phase 8 — perf pass (work log)
 
-**Status:** in progress (F1, F2 closed; F3 pending).
+**Status:** in progress (F1, F2 closed; F3 mid-stream — mirrors
+converted, project files pending).
 
 ## Current state
 
 F1 (Sparsity L1267 split) and F2 (Henneberg L444 split) both closed
-structurally clean. F2: `Henneberg.lean` 647 → 454 LoC,
-`HennebergReverse.lean` new at 246 LoC; `LamanTheorem.lean` and
-`MatroidIdentification.lean` swapped their imports. Build + lint
-clean. 4-run A/B: project-total median essentially flat (20.6 s vs
-20.9 s baseline), but per-target medians shifted upward by +0.7 to
-+13.8 s — LRM in particular sits outside the ±5 s noise band. Most
-plausibly machine-variance during the second back-to-back campaign
-(LRM runs 2-4 sit at 63-70 s vs 53-58 s in F1.4); project-total is
-the more robust signal and is flat. **Verdict: structurally clean,
-project-total perf-neutral; per-target deltas inconclusive.** Next:
-F3 (module-system conversion of all 12 project files), reusing F2.4's
-post-split numbers as F3.1's baseline per the *Reuse adjacent
-baselines* architectural choice.
+structurally clean (verdict: project-total perf-neutral; per-target
+deltas inconclusive — see *Cleanup pass summaries* below). F3.1
+baseline reused from F2.4 medians per the *Reuse adjacent baselines*
+architectural choice (same machine, same day, no intervening source
+edits). F3.2: all 14 `CombinatorialRigidity/Mathlib/*` mirror files
+converted to the module system in one commit — `module` line,
+`import X` → `public import X`, and an unnamed `@[expose] public
+section` between the doc block and the namespace. Build + lint
+clean. Next: F3.3 (convert all 14 project files in topo order from
+`EdgesIn` outward), then F3.6 measurement.
 
 ## Pass overview
 
@@ -190,9 +188,17 @@ executed) during Phase 8-cleanup's bucket E:
 
 ### F3 — Module-system conversion (12 project files)
 
-- [ ] **F3.1:** Baseline. Reuse F2.4 numbers if back-to-back.
-- [ ] **F3.2:** Convert `CombinatorialRigidity/Mathlib/*` mirror
-  files first (all import already-converted upstream mathlib).
+- [x] **F3.1:** Baseline reused from F2.4 (same machine, same day,
+  no intervening source edits) per the *Reuse adjacent baselines*
+  architectural choice. F2.4 medians: HR 58.7 s; RM 60.0 s; LRM
+  69.9 s; project-total 20.6 s.
+- [x] **F3.2:** All 14 `CombinatorialRigidity/Mathlib/*` mirror
+  files converted to the module system. Per file: `module` line
+  after the copyright header, every `import X` rewritten to
+  `public import X`, and an unnamed `@[expose] public section`
+  inserted between the doc block and the namespace (model:
+  `Mathlib/Analysis/InnerProductSpace/PiL2.lean`). Build + lint
+  clean.
 - [ ] **F3.3:** Convert project files in topo order from `EdgesIn`
   outward. Order (post-F1, post-F2): `EdgesIn`, `Sparsity`,
   `SparsityIComponents`, `Laman`, `Henneberg`, `HennebergReverse`,
@@ -202,10 +208,10 @@ executed) during Phase 8-cleanup's bucket E:
   (F1 named the forward half `Sparsity` rather than `SparsityBase`;
   F2 named the forward half `Henneberg` rather than
   `HennebergForward` — see *Phase-local choices* on F2.)
-- [ ] **F3.4:** Per file, add `module` + `public import` lines + an
-  `@[expose] public section` marker per the reference pattern in
-  `Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
-- [ ] **F3.5:** Build + lint verification.
+- [ ] **F3.4:** *(folded into F3.2/F3.3 as the conversion mechanic
+  rather than a separate step.)*
+- [ ] **F3.5:** *(build + lint run inline at the close of F3.2 and
+  F3.3 commits; no separate verification step needed.)*
 - [ ] **F3.6:** Final measurement. 4-run A/B on the analysis-heavy
   targets + project total. Record medians; compute combined delta
   against F1.1 baseline; promote the headline to
@@ -247,6 +253,22 @@ executed) during Phase 8-cleanup's bucket E:
   cross-cutting `DESIGN.md` revision needed — the existing conventions
   section already endorses the boundary; F2 just relocates it
   physically.
+
+- **Module-system conversion mechanic.** Per file: insert `module`
+  after the copyright header (with a blank line); rewrite every
+  `import X` (project mirrors and upstream alike) to `public
+  import X`; insert an unnamed `@[expose] public section` between
+  the file's doc block and the first `open` / `namespace` /
+  declaration. The section spans to end-of-file and needs no
+  matching `end` at file scope — only the existing `namespace X /
+  end X` pair still pairs as before. Model file:
+  `Mathlib/Analysis/InnerProductSpace/PiL2.lean`. Constraint: a
+  `module` file's imports must themselves be `module` (build error
+  otherwise) — this is why F3.2 (mirrors) lands before F3.3 (project
+  files), since mirrors are the leaves we control. Mathlib v4.30.0-rc2
+  is ~98.6 % converted, so upstream imports are already compliant.
+  Cross-file tip lifted to `CombinatorialRigidity/CLAUDE.md`
+  *Module-system conversion*.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -299,4 +321,10 @@ at the file boundary, not just at section-header level.
 
 ## Hand-off / next phase
 
-*(Written when the pass finishes.)*
+Mid-stream: F3.2 (mirror conversion) committed. Next concrete commit
+is F3.3 — convert the 14 project `.lean` files in topo order from
+`EdgesIn` outward, same mechanic as F3.2 (model file:
+`Mathlib/Analysis/InnerProductSpace/PiL2.lean`, see also
+`CombinatorialRigidity/CLAUDE.md` *Module-system conversion*).
+Build + lint at close; commit. Then F3.6 — 4-run A/B against F1.1
+baseline; promote headline to `PERFORMANCE.md`.

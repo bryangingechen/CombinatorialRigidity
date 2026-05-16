@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Topology.Separation.Hausdorff
+module
+
+public import Mathlib.Topology.Separation.Hausdorff
 
 /-!
 # Upstream candidates: openness of injectivity for finite-domain perturbations
@@ -36,6 +38,8 @@ The Lean namespace is the upstream one (`Function.Injective`); promotion to math
 a copy-paste alongside `Set.InjOn.exists_mem_nhdsSet`. See `DESIGN.md`
 "Mirror directory".
 -/
+
+@[expose] public section
 
 open Filter Topology
 

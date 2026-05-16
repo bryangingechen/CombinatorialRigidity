@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.LinearAlgebra.Dual.Defs
-import Mathlib.LinearAlgebra.LinearIndependent.Basic
+module
+
+public import Mathlib.LinearAlgebra.Dual.Defs
+public import Mathlib.LinearAlgebra.LinearIndependent.Basic
 
 /-!
 # Upstream candidate: surjective pullback preserves dual linear independence
@@ -24,6 +26,8 @@ namespaces (`LinearIndependent`, `LinearIndepOn`) match upstream conventions.
 
 See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
 -/
+
+@[expose] public section
 
 namespace LinearIndependent
 

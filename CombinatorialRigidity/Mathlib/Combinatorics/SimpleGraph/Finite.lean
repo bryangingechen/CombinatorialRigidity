@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import CombinatorialRigidity.Mathlib.Data.Set.Card
-import Mathlib.Combinatorics.SimpleGraph.Finite
+module
+
+public import CombinatorialRigidity.Mathlib.Data.Set.Card
+public import Mathlib.Combinatorics.SimpleGraph.Finite
 
 /-!
 # Upstream candidates: `Set.ncard` companions for `SimpleGraph` cardinality lemmas
@@ -26,6 +28,8 @@ lemmas. See `DESIGN.md` "Mirror directory".
 * `ncard_edgeSet_top_eq_card_choose_two` — `(⊤ : SimpleGraph V).edgeSet.ncard
   = (Fintype.card V).choose 2`.
 -/
+
+@[expose] public section
 
 namespace SimpleGraph
 

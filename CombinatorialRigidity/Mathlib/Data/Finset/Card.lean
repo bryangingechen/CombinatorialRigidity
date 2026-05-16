@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Data.Finset.Card
+module
+
+public import Mathlib.Data.Finset.Card
 
 /-!
 # Mirror file: `Mathlib/Data/Finset/Card.lean`
@@ -11,6 +13,8 @@ import Mathlib.Data.Finset.Card
 Upstream-eligible lemmas about `Finset.card`. See `DESIGN.md`
 *Mirror directory* and `notes/FRICTION.md` *Mirrored* for the project convention.
 -/
+
+@[expose] public section
 
 namespace Finset
 

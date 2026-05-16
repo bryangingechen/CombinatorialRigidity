@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.LinearAlgebra.Vandermonde
+module
+
+public import Mathlib.LinearAlgebra.Vandermonde
 
 /-!
 # Upstream candidate: the row-0-subtracted Vandermonde minor
@@ -34,6 +36,8 @@ the `(Fin.succ, Fin.succ)`-submatrix obtained after the row-0-subtraction
 reduction, so `det_powerDiff_succAbove_zero` would be the wordy alternative;
 `det_powerDifferences` is the project-internal call site name.)
 -/
+
+@[expose] public section
 
 namespace Matrix
 

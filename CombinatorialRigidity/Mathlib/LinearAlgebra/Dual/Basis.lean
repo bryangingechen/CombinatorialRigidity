@@ -3,8 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.LinearAlgebra.Dual.Basis
-import Mathlib.LinearAlgebra.StdBasis
+module
+
+public import Mathlib.LinearAlgebra.Dual.Basis
+public import Mathlib.LinearAlgebra.StdBasis
 
 /-!
 # Upstream candidates: standard-basis-dual lemmas and the constructive
@@ -36,6 +38,8 @@ adding the `import Mathlib.LinearAlgebra.StdBasis` line. The Lean namespaces
 
 See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
 -/
+
+@[expose] public section
 
 namespace Pi
 

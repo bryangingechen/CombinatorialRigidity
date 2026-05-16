@@ -132,6 +132,61 @@ decidability, etc. — the authoritative list is in
      attribute's own warning text ("date *or library version*") to
      reject this, which is unlikely.
 
+## Module-system conversion
+
+Project files use Lean's module system (`module` + `public import`
++ `@[expose] public section`) for the same reason mathlib does:
+downstream files only see the public interface of an imported
+module, not its full elaboration state. The conversion landed in
+the Phase 8-perf pass; the mechanic is uniform across all 28 files
+(14 `CombinatorialRigidity/Mathlib/*` mirrors + 14 project files)
+and matches the upstream reference
+`Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
+
+When converting a new file, or when fixing a file that drifted out
+of the pattern:
+
+1. **After the copyright block, insert a blank line then `module`.**
+   ```
+   /-
+   …
+   -/
+   module
+   ```
+2. **Rewrite every `import X` to `public import X`** — both upstream
+   mathlib imports and project-internal imports
+   (`CombinatorialRigidity.Mathlib.X`, `CombinatorialRigidity.Y`).
+3. **Between the doc block (`/-! … -/`) and the first
+   `open`/`namespace`/declaration, insert an unnamed `@[expose]
+   public section`.** Example:
+   ```
+   /-! # Title … -/
+
+   @[expose] public section
+
+   namespace Foo
+   ```
+   The section is unnamed and closes implicitly at end-of-file — no
+   matching `end` is needed. Existing `namespace X / end X` pairs
+   stay paired as before.
+
+Constraints and gotchas:
+
+- **A `module` file can only `import` other `module` files.** If
+  you add a new project-internal import, the imported file must
+  already be `module`-converted. (Build error: *"cannot import
+  non-`module` X from `module`"*.) This is why the Phase 8-perf
+  pass converted the mirror directory first (F3.2) and project
+  files second (F3.3).
+- **Mathlib v4.30.0-rc2 is ~98.6 % `module`-converted**, so almost
+  every `Mathlib.X` import already satisfies the constraint. The
+  remaining ~1.4 % are deep upstream files we don't depend on.
+- **Non-`module` files can freely import `module` files**, so
+  external consumers (blueprint snapshot tests, scratch files) work
+  unchanged.
+- **No `import` line for `module` itself** — the bare keyword on its
+  own line is the marker, not an import.
+
 ## Lean LSP MCP — reach for it
 
 `.mcp.json` at the repo root registers

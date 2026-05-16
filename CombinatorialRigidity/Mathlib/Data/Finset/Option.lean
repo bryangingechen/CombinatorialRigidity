@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Data.Finset.Option
+module
+
+public import Mathlib.Data.Finset.Option
 
 /-!
 # Upstream candidate: addition-form cardinality lemma for `Finset.eraseNone`
@@ -25,6 +27,8 @@ a copy-paste alongside `Finset.card_eraseNone_of_mem`. See
 
 * `Finset.card_eraseNone_add_one_of_mem` — `none ∈ s → #s.eraseNone + 1 = #s`.
 -/
+
+@[expose] public section
 
 namespace Finset
 

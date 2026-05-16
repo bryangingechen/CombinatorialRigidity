@@ -3,11 +3,13 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.LinearAlgebra.Matrix.Rank
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.LinearAlgebra.Matrix.Polynomial
-import Mathlib.Algebra.Polynomial.Roots
-import Mathlib.Data.Real.Basic
+module
+
+public import Mathlib.LinearAlgebra.Matrix.Rank
+public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.LinearAlgebra.Matrix.Polynomial
+public import Mathlib.Algebra.Polynomial.Roots
+public import Mathlib.Data.Real.Basic
 
 /-!
 # Upstream candidates: rectangular linear independence via rank and the Gram determinant
@@ -31,6 +33,8 @@ Mirror path: `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Promotion to mathlib is a
 into the upstream file, alongside `Matrix.rank_self_mul_transpose` and
 `LinearIndependent.rank_matrix`.
 -/
+
+@[expose] public section
 
 namespace Matrix
 

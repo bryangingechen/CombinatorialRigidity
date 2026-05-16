@@ -3,7 +3,9 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-import Mathlib.Data.Sym.Sym2
+module
+
+public import Mathlib.Data.Sym.Sym2
 
 /-!
 # Upstream candidates: pointwise reasoning about `Sym2.map f e = s(x, y)`
@@ -61,6 +63,8 @@ copy-paste alongside `Sym2.mem_map` / `Sym2.coe_map`. See
   extensions. Collapses the four-line `Sym2.eq_iff` case-split + `Option.some.inj`
   ceremony at each `s(none, some a) ≠ s(none, some b)` proof.
 -/
+
+@[expose] public section
 
 namespace Sym2
 
