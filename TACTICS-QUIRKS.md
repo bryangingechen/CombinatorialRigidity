@@ -334,6 +334,6 @@ the Finset-join form (e.g.\ for `Finset.sup_mem`), bridge with a
 single `Finset.ext`-driven equality `maxBlock X = F.sup id` that
 isolates the instance friction to one spot.
 
-Worked example: `IsSparse.maxBlock` / `IsSparse.maxBlock_isTightOn`
+Worked example: `SimpleGraph.maxBlock` / `SimpleGraph.IsSparse.maxBlock_isTightOn`
 in `Sparsity.lean` (Phase 7 Commit 17b). Pattern is useful for any
 "Finset of Finsets" construction over a `[Finite V]` ambient.

@@ -382,8 +382,10 @@ housekeeping pass once their resolution is fully indexed.
   `classical`, isolating the instance friction. `mem_maxBlock`
   becomes the standard `Set.Finite.mem_toFinset` + `Set.mem_iUnion`
   + `and_assoc` simp recipe.
-- **Status:** resolved (see `IsSparse.maxBlock` and surrounding
-  lemmas in `Sparsity.lean`). **Lifted to:** TACTICS-QUIRKS § new
+- **Status:** resolved (see `SimpleGraph.maxBlock` and surrounding
+  lemmas in `Sparsity.lean`; the def was renamed from
+  `IsSparse.maxBlock` to `SimpleGraph.maxBlock` in Phase 7 cleanup
+  commit B3e). **Lifted to:** TACTICS-QUIRKS § new
   *Finset-of-Finsets over `[Finite V]`*.
 
 ### [open] `IsSparse` is not `Decidable`, blocking small-example proofs by `decide`

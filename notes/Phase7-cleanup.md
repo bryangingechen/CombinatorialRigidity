@@ -399,12 +399,25 @@ Each is a separate commit, root-cause fix preferred.
       section variable; either pin it on the proof bodies that need
       it or drop from the section variable in favour of in-body
       `classical`. *(B3c.)*
-  - **Keep (2 sites, dot-notation ergonomics):**
-    - `Sparsity.lean`:1283 (`@[nolint unusedArguments]` on
-      `IsSparse.HasBlock`) — the `IsSparse k ℓ` arg is unused in the
-      body but kept for `hI.HasBlock X` dot-notation.
-    - `Sparsity.lean`:1295 (`@[nolint unusedArguments]` on
-      `IsSparse.maxBlockSet`) — same.
+  - **Renamespace (2 + 5 sites, B3e done).** Reconsidered the
+    "keep with dot-notation ergonomics" disposition: per the user's
+    observation *"it's entirely possible to want to prove things
+    about non-sparse edge sets which contain blocks"*, the two `def`s
+    `IsSparse.HasBlock` / `IsSparse.maxBlockSet` should be available
+    without an `IsSparse` proof. Moved them — plus the 5 downstream
+    lemmas (`maxBlockSet_finite`, `maxBlock`, `mem_maxBlock`,
+    `subset_maxBlock`, `subset_maxBlock_of_hasBlock`) whose bodies
+    don't use `hI` either — from `IsSparse` to `SimpleGraph`
+    namespace, with `(G : SimpleGraph V) (k ℓ : ℕ)` made explicit.
+    The two remaining IsSparse-namespaced lemmas
+    (`maxBlock_isTightOn`, `maxBlock_eq_of_subset_maxBlock`) genuinely
+    use `hI` and stayed under `IsSparse`, but were generalized from
+    `(fromEdgeSet I)` to abstract `G : SimpleGraph V`. Deletes the
+    two `@[nolint unusedArguments]` annotations. Updates
+    `Sparsity.lean` module docstring, the IComponents/Augmentation
+    section docstrings, the blueprint `\lean{}` pin in
+    `count-matroid.tex`, and historical pointers in `FRICTION.md` /
+    `TACTICS-QUIRKS.md`.
   - **Borderline (1 site):**
     - `Framework.lean`:149 (`@[nolint unusedArguments]` on
       `IsInfinitesimallyRigid`) — env-linter override on the
