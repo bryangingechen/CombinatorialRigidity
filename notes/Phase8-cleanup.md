@@ -173,18 +173,24 @@ Phase 8 surface = `LinearRigidityMatroid.lean` + new lemmas in
 
 ### Bucket C — Long-proof audit (Phase 8 surface)
 
-- [ ] **C1:** Rank top proofs in `LinearRigidityMatroid.lean` (252
-  LoC total — small) + the two new lemmas in
-  `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Walk each
-  flagged-as-long proof for: API extraction, missing mathlib hits
-  (re-run `lean_loogle` / `lean_leanfinder` on 5–10-line subblocks),
-  tactic substitution (`grind only` / `linear_combination`), and
-  definitional refactor. Phase 8 *Decisions made* already identifies
-  the cross-cutting **lift+restrict+factor** pattern (extracted in
-  Phase 7-cleanup C5–C7) and the **uniform-genericity** lemma
-  shape; check whether the new file uses the resolved patterns
-  consistently or whether any local proof re-derives a piece that
-  the resolved API now covers.
+- [x] **C1:** Long-proof audit closed. The only big proof on the
+  Phase 8 surface is `exists_uniform_rowIndependent_placement_dim_two`
+  (113 lines). Two refactors landed:
+  1. **Parallel-case unification** — the `h_bad_finite` block had two
+     `rcases`-cases (`I = I₀` at `t = 1` vs `I ∈ F'` at `t = 0`),
+     each ~13 lines of identical shape modulo the witness placement
+     (`q` vs `p₀`). Factored through a common `∃ t_w, EdgeSetRow-
+     Independent (p₀ + t_w • r) I` unpacking. Saves ~18 lines.
+  2. **`(badᶜ).Nonempty` via `Set.Finite.exists_notMem`** — the
+     existing 3-line `obtain ⟨t, ht_good⟩ : (badᶜ).Nonempty := by
+     rw [Set.nonempty_compl]; exact fun h_eq_univ => …` collapses
+     to a one-liner via the named mathlib lemma. Saves 2 lines.
+  Net: file 252 → 232 LoC; the main proof 113 → 95 lines.
+  The other Phase 8 lemmas (Rank.lean mirrors 30-38 LoC each;
+  `linearRigidityMatroid_eq_rigidityMatroid` 17 lines) are tight as
+  written. No API extraction worth doing — the `h_eqOn` + `h_iff`
+  block is a candidate `EdgeSetRowIndependent_add_smul_iff` helper
+  but currently single-use, so premature.
 
 ### Bucket D — Project-organization compression
 
@@ -351,6 +357,17 @@ already entered in FRICTION *Mirrored* (commit `53c3a25`). No
 natural batching window with the `apnelson1/Matroid` upstreaming
 (disjoint LA packaging). Following the project's default for
 `[mirrored]` entries — sit until a specific reason to PR surfaces.
+
+**C1 — long-proof audit.** Two refactors on
+`exists_uniform_rowIndependent_placement_dim_two`:
+1. **Parallel-case unification** in `h_bad_finite`: two `rcases`
+   cases (`I = I₀` at `t = 1`, `I ∈ F'` at `t = 0`) of identical
+   shape modulo the witness placement, factored through a common
+   `∃ t_w, EdgeSetRowIndependent (p₀ + t_w • r) I` unpacking.
+2. **`Set.Finite.exists_notMem`** collapses the 3-line "`badᶜ` is
+   nonempty because `bad` is finite in infinite ℝ" block to a one-
+   liner.
+Net: file 252 → 232 LoC; main proof 113 → 95 lines. Lint clean.
 
 ## Blockers / open questions
 

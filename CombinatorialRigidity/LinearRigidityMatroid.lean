@@ -170,39 +170,22 @@ theorem exists_uniform_rowIndependent_placement_dim_two {V : Type*} [Finite V] :
       rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow,
         linearIndepOn_congr ((h_eqOn t).mono (Set.subset_univ _))]
       rfl
+    -- Per-`I` bad-`t`-set finiteness via the affine-form helper. The witness
+    -- placement is `q` (at `t = 1`) for `I = I₀` and `p₀` (at `t = 0`) for `I ∈ F'`;
+    -- factor the two cases through a common `∃ t_w` unpacking.
     have h_bad_finite : ∀ I ∈ insert I₀ F',
         {t : ℝ | ¬ (⊤ : SimpleGraph V).EdgeSetRowIndependent (p₀ + t • r) I}.Finite := by
       intro I hI
-      rcases Finset.mem_insert.mp hI with rfl | hI'
-      · -- `I = I₀`: LI witness is at `t = 1` (`p₀ + 1 • r = q`, where `r = q - p₀`).
-        have hq_LI : LinearIndependent ℝ fun i : I =>
-            (⊤ : SimpleGraph V).rigidityRow q i.val :=
-          (edgeSetRowIndependent_iff_linearIndepOn_rigidityRow _ _ _).mp hq
-        have hLI_one : LinearIndependent ℝ fun i : I =>
-            (⊤ : SimpleGraph V).rigidityRow p₀ i.val +
-              (1 : ℝ) • (⊤ : SimpleGraph V).rigidityRow r i.val := by
-          convert hq_LI using 1
-          funext i
-          rw [hr_def, ← (⊤ : SimpleGraph V).rigidityRow_add_smul p₀ (q - p₀) 1 i.val, one_smul,
-            add_sub_cancel]
-        refine (LinearIndependent.finite_setOf_not_along_affine_path hLI_one).subset ?_
-        intro t ht
-        simp only [Set.mem_setOf_eq] at ht ⊢
-        exact fun hLI => ht ((h_iff t I).mpr hLI)
-      · -- `I ∈ F'`: LI witness is at `t = 0` (`p₀ + 0 • r = p₀`).
-        have hp₀_LI : LinearIndependent ℝ fun i : I =>
-            (⊤ : SimpleGraph V).rigidityRow p₀ i.val :=
-          (edgeSetRowIndependent_iff_linearIndepOn_rigidityRow _ _ _).mp (hp₀ I hI')
-        have hLI_zero : LinearIndependent ℝ fun i : I =>
-            (⊤ : SimpleGraph V).rigidityRow p₀ i.val +
-              (0 : ℝ) • (⊤ : SimpleGraph V).rigidityRow r i.val := by
-          convert hp₀_LI using 1
-          funext i
-          rw [zero_smul, add_zero]
-        refine (LinearIndependent.finite_setOf_not_along_affine_path hLI_zero).subset ?_
-        intro t ht
-        simp only [Set.mem_setOf_eq] at ht ⊢
-        exact fun hLI => ht ((h_iff t I).mpr hLI)
+      obtain ⟨t_w, h_w⟩ : ∃ t_w : ℝ,
+          (⊤ : SimpleGraph V).EdgeSetRowIndependent (p₀ + t_w • r) I := by
+        rcases Finset.mem_insert.mp hI with rfl | hI'
+        · exact ⟨1, by rw [h_pt_one]; exact hq⟩
+        · exact ⟨0, by rw [h_pt_zero]; exact hp₀ I hI'⟩
+      rw [h_iff t_w I] at h_w
+      refine (LinearIndependent.finite_setOf_not_along_affine_path h_w).subset ?_
+      intro t ht
+      simp only [Set.mem_setOf_eq] at ht ⊢
+      exact fun hLI => ht ((h_iff t I).mpr hLI)
     -- The union of bad-`t` sets across `I ∈ insert I₀ F'` is finite (finite union of finites).
     let bad : Set ℝ :=
       ⋃ I ∈ (insert I₀ F' : Finset _),
@@ -210,9 +193,7 @@ theorem exists_uniform_rowIndependent_placement_dim_two {V : Type*} [Finite V] :
     have h_bad_set_finite : bad.Finite :=
       (Finset.finite_toSet _).biUnion fun I hI => h_bad_finite I hI
     -- ℝ is infinite, so there's a `t : ℝ` outside the finite bad set.
-    obtain ⟨t, ht_good⟩ : (badᶜ).Nonempty := by
-      rw [Set.nonempty_compl]
-      exact fun h_eq_univ => Set.infinite_univ (h_bad_set_finite.subset h_eq_univ.symm.le)
+    obtain ⟨t, ht_good⟩ := h_bad_set_finite.exists_notMem
     -- The placement `p₀ + t • r` works on every `I ∈ insert I₀ F'`.
     refine ⟨p₀ + t • r, fun I hI => ?_⟩
     by_contra h_not_LI
