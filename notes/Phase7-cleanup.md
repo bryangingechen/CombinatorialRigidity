@@ -387,12 +387,14 @@ Each is a separate commit, root-cause fix preferred.
       `[Fintype V]` → `[Finite V]` + body `haveI : Fintype V :=
       Fintype.ofFinite V`; deleted the three `set_option`s. Build
       + lint clean.
-    - `Sparsity.lean`:1275 (section `set_option
-      linter.unusedDecidableInType false`) — affects
-      `maxBlock_isTightOn` (1329) and `maxBlock_eq_of_subset_maxBlock`
-      (1394). Drop `[DecidableEq V]` from the relevant signatures;
-      add `classical` (or per-decl bridge) in the proof bodies;
-      delete the section `set_option`. *(B3b.)*
+    - **B3b done.** `Sparsity.lean`:1275 (section `set_option
+      linter.unusedDecidableInType false`) — affected
+      `maxBlock_isTightOn` and `maxBlock_eq_of_subset_maxBlock`.
+      Dropped `[DecidableEq V]` from both signatures;
+      `maxBlock_isTightOn`'s body already had `classical` from the
+      Phase 7 instance-friction resolution; added `classical` to
+      `maxBlock_eq_of_subset_maxBlock`'s body. Deleted the section
+      `set_option` and its justification comment. Build + lint clean.
     - `Sparsity.lean`:1442 (section `set_option
       linter.unusedDecidableInType false`) — affects
       `exists_aug_of_lt_two_mul` (1460). `[DecidableEq V]` is in the

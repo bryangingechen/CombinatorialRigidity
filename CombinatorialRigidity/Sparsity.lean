@@ -1268,12 +1268,6 @@ section IComponents
 
 variable [Finite V]
 
--- The maxBlock + edge-disjointness lemmas in this section take `[DecidableEq V]`
--- in their signatures (needed in the proofs for `IsTightOn.union_inter_of_pair`
--- and `Finset.union` / `Finset.le_sup`) even though the statements don't mention
--- it directly. Disable the linter for the section.
-set_option linter.unusedDecidableInType false
-
 /-- Predicate: some `G`-tight Finset contains `X`. The `maxBlock X` is non-empty
 exactly when this holds. Defined for any graph; the matroidal-regime closure
 properties (`IsSparse.maxBlock_isTightOn` and friends) need additional sparsity. -/
@@ -1323,7 +1317,7 @@ lemma subset_maxBlock_of_hasBlock {G : SimpleGraph V} {k ℓ : ℕ} {X : Finset 
 `G`, provided `|X| ≥ 2` and some `G`-tight Finset contains `X`. The proof reduces
 to "the Set-union of pairwise-union-closed `G`-tight Finsets is itself a
 `G`-tight Finset" — a Finset-level closure argument. -/
-lemma IsSparse.maxBlock_isTightOn {G : SimpleGraph V} {k ℓ : ℕ} [DecidableEq V]
+lemma IsSparse.maxBlock_isTightOn {G : SimpleGraph V} {k ℓ : ℕ}
     (hI : G.IsSparse k ℓ) (hℓ : ℓ < 2 * k)
     {X : Finset V} (hX_card : 2 ≤ X.card) (hB : G.HasBlock k ℓ X) :
     G.IsTightOn k ℓ (G.maxBlock k ℓ X) := by
@@ -1382,11 +1376,11 @@ matroidal regime, if `Y ⊆ maxBlock X` with both `|X|, |Y| ≥ 2`, then
 `maxBlock Y = maxBlock X`. Two distinct non-empty components therefore share
 at most one vertex (and so contain no common off-diagonal edge of `K_V`). -/
 lemma IsSparse.maxBlock_eq_of_subset_maxBlock {G : SimpleGraph V} {k ℓ : ℕ}
-    [DecidableEq V]
     (hI : G.IsSparse k ℓ) (hℓ : ℓ < 2 * k)
     {X Y : Finset V} (hX_card : 2 ≤ X.card) (hY_card : 2 ≤ Y.card)
     (hBX : G.HasBlock k ℓ X) (hY_sub : Y ⊆ G.maxBlock k ℓ X) :
     G.maxBlock k ℓ Y = G.maxBlock k ℓ X := by
+  classical
   have h_X_in_maxX : X ⊆ G.maxBlock k ℓ X := subset_maxBlock_of_hasBlock hBX
   have h_maxX_tight : G.IsTightOn k ℓ (G.maxBlock k ℓ X) :=
     hI.maxBlock_isTightOn hℓ hX_card hBX
