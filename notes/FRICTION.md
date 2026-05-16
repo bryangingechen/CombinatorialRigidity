@@ -448,6 +448,62 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 `LinearIndepOn.dualMap_of_surjective` — see the corresponding entry in
 [Mirrored](#mirrored) below.
 
+### [open] "Open + generic via continuous perturbation" pattern recurs across non-collinear / affinely-spanning placements
+
+- **Where it bit:** Two existing callers materialize the same skeleton
+  independently:
+  - `SimpleGraph.exists_affinelySpanning_of_eventually`
+    (`RigidityMatroid.lean:442`) — perturbs `p₀` along a moment curve
+    `w v = (φ(v)^1, …, φ(v)^d)`, openness premise `∀ᶠ p in 𝓝 p₀, P p`,
+    generic conclusion *affinely-spanning* discharged via finite
+    polynomial bad-set. Used at `P = IsInfinitesimallyRigid` (Phase 6,
+    `LamanTheorem.lean`) and `P = EdgeSetRowIndependent · I` in dim 2
+    (Phase 7, `MatroidIdentification.lean`).
+  - `Henneberg.exists_nonCollinear_update_perturbation_dim_two`
+    (`HennebergRigidity.lean:507`) — perturbs `p₀ c` via
+    `Function.update p₀ c (p₀ c + t • w)`, openness premise
+    `∀ᶠ t in 𝓝 (0 : ℝ), P (Function.update p₀ c (p₀ c + t • w))`,
+    generic conclusion *non-collinear LI*. Used at
+    `P = G.IsInfinitesimallyRigid · ∧ Function.Injective ·`
+    (`exists_nonCollinear_rigid_placement_dim_two`) and
+    `P = G'.EdgeSetRowIndependent · Set.univ`
+    (`exists_nonCollinear_rowIndependent_placement_dim_two`).
+- **Friction:** both helpers roll their own filter combine + witness
+  extraction (`hP_ev.filter_mono nhdsWithin_le_nhds` + the generic
+  side, `.and`, `.exists`). The bookkeeping is ~6 lines per caller and
+  the structure is identical: pull `hP` back to `𝓝 0` via continuity
+  of the perturbation (or accept it directly in `𝓝 0`-on-`t` form),
+  conjoin with `hQ` on `𝓝[≠] 0`, extract a `t` via `NeBot`.
+- **Proposed fix:** mirror a shared
+  `Filter.Eventually.exists_with_continuous_perturbation` (working
+  name) under `CombinatorialRigidity/Mathlib/Topology/...`, signature
+  roughly
+  ```
+  {α : Type*} [TopologicalSpace α] {p₀ : α} {P Q : α → Prop}
+  (hP : ∀ᶠ p in 𝓝 p₀, P p)
+  (perturb : ℝ → α) (h_cont : ContinuousAt perturb 0) (h_zero : perturb 0 = p₀)
+  (hQ : ∀ᶠ t in 𝓝[≠] (0 : ℝ), Q (perturb t)) :
+  ∃ p, P p ∧ Q p
+  ```
+  C10's helper would replace its 6-line endgame
+  (`filter_upwards [hP_ev.filter_mono ...] with t hP_t ht_ne; ...` +
+  `.exists`) with one call.
+  `exists_affinelySpanning_of_eventually` would need its endgame
+  rewritten from the explicit `Metric.eventually_nhds_iff` + finite
+  bad-set + `Set.Infinite.Ioo.diff` form to a `𝓝[≠] 0` filter form (a
+  finite bad set is `eventually` in `𝓝[≠] 0` by cofiniteness), then
+  consume the shared lemma. Some C10 callers may also want a
+  `∀ᶠ p in 𝓝 p₀`-on-`p` variant that absorbs the continuity pullback
+  internally (cleaner for #9; useless for #11 since the injectivity
+  half is inherently `Function.update`-shaped).
+- **Status:** open. **Priority: low; defer until a third caller
+  appears.** Two callers is on the bubble — net LoC saving is ~5-10
+  across the two existing sites and requires non-trivial churn in
+  `exists_affinelySpanning_of_eventually`'s metric-style endgame.
+  Phase 8 (or a dim-`d > 2` Henneberg generalization) is the natural
+  third-caller trigger; the pattern lives in
+  [`notes/Phase7-cleanup.md` C10] in the meantime.
+
 ### [open] `Function.Injective.option_elim` would clean up Henneberg-move injectivity
 
 - **Where it bit:** `injective_option_elim` (`HennebergRigidity.lean:61`,

@@ -2,8 +2,7 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
-commits (a/b/c/d). Bucket C in progress (C1–C9 closed; C10
-open as discrete task item). The audit found 6 of 8
+commits (a/b/c/d). Bucket C **closed** (C1–C10). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
 style; the Zulip thread *Unused Decidable Instances linter*
@@ -109,8 +108,21 @@ rcases + Option.some.inj/absurd`) to a 2-line `fun heq => ... mp ... congrArg
 Subtype.val heq`. The analogous typeI `hAB_ne` at line 94 was refactored
 in the same commit (same pattern). Net file change: MatroidIdentification.lean
 −24 LoC, Sym2.lean +11 LoC including docstring + `## Contents` entry; project-
-wide −13 LoC. Subsequent work order: **C10 (perturbation shared helper)
-→ D**.
+wide −13 LoC. C10 closed 2026-05-16: extracted
+`Henneberg.exists_nonCollinear_update_perturbation_dim_two` in
+`HennebergRigidity.lean` parameterized over a predicate
+`P : Framework V 2 → Prop` and direction `w`, with the `eventually`
+premise stated at `𝓝 0`-on-`t` (not `𝓝 p₀`-on-`p`) so site #11 can
+supply the `IR ∧ Injective` conjunction whose `Injective` half from
+`eventually_update_of_continuousAt` is inherently update-shaped.
+Body LoC: #11 83 → 30 (saved 53, ≈64%); #9 80 → 31 (saved 49, ≈61%);
+helper adds 63 LoC body. Net project change −39 LoC, matching the
+C2 estimate. `{P}` is supplied explicitly at both call sites because
+higher-order unification couldn't abstract the
+`Function.update p₀ c (p₀ c + t • w)` body. Site #11 additionally
+sheds vestigial `hpa_ne_pc` / `hw_ne_zero` / `γ⁻¹`-flip ceremony
+(subsumed by the helper's `pair_iff'` extraction — C8 cascading
+uniformly). Subsequent work order: **D** (Phase 7 notes compression).
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -179,11 +191,15 @@ iso side (#1, #4, #7, #10; ~80-100 LoC compound savings under a
 single `linearIndepOn_image_rigidityRow_of_injective` extraction).
 Seven follow-up extraction candidates **opened as Bucket C task
 items C5–C10** (C4 absorbs the seventh — its three pre-flagged
-helpers are listed inline). C4–C9 landed 2026-05-16. Next concrete
-step: **C10** (`Function.update`-perturbation shared helper across
-#9 + #11, ~30-40 LoC saved if abstraction shape pans out), then D;
-full per-site
-walk preserved under the C2 task entry for context.
+helpers are listed inline). C4–C10 landed 2026-05-16. C10 extracted
+`Henneberg.exists_nonCollinear_update_perturbation_dim_two`
+parameterized over predicate `P` and direction `w`, consumed by
+both #9 (`exists_nonCollinear_rowIndependent_placement_dim_two`)
+and #11 (`exists_nonCollinear_rigid_placement_dim_two`); body LoC
+83 → 30 / 80 → 31 across the two sites (net project −39 LoC, matching
+the C2 estimate). Next concrete step: **D** (Phase 7 notes
+compression). Full per-site walk preserved under the C2 task entry
+for context.
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -1219,27 +1235,58 @@ Each is a separate commit, root-cause fix preferred.
   file. Net file change: MatroidIdentification.lean −24 LoC, Sym2.lean
   +11 LoC; project-wide −13 LoC. Original estimate was ~15 LoC saved;
   actual savings landed within rounding of that.
-- [ ] C10: **Shared `Function.update`-perturbation helper for
-  #9 + #11.**
-  `exists_nonCollinear_rowIndependent_placement_dim_two`
-  (`MatroidIdentification.lean`:730, 88 LoC) and
-  `exists_nonCollinear_rigid_placement_dim_two`
-  (`HennebergRigidity.lean`:503, 83 LoC) share the perturbation
-  pattern: `p_t := Function.update p₀ c (p₀ c + t • w)` for some
-  `w` outside `span {p₀ b - p₀ a}`, with continuity to pull back an
-  `eventually` predicate (row-LI for #9, IR for #11) and
-  `filter_upwards` against `nhdsWithin (≠ 0)` to pick a perturbed
-  witness. The two sites have slightly different "perturbation
-  property" conclusions (LI of `![p b - p a, p c - p a]` for #9 vs.
-  injectivity + LI for #11), so the helper needs care — most likely
-  shape is a parameterized
+- [x] C10: **Shared `Function.update`-perturbation helper for
+  #9 + #11.** Closed 2026-05-16. Extracted
+  `Henneberg.exists_nonCollinear_update_perturbation_dim_two` in
+  `HennebergRigidity.lean` (just before
+  `exists_nonCollinear_rigid_placement_dim_two`), parameterized over
+  a predicate `P : Framework V 2 → Prop` and the perturbation direction
+  `w`. Helper signature:
   ```
-  ∃ t ≠ 0, P (p_t t) ∧ LinearIndependent ℝ ![p_t t b - p_t t a, …]
+  lemma exists_nonCollinear_update_perturbation_dim_two
+      {V : Type*} [DecidableEq V]
+      {P : Framework V 2 → Prop} {p₀ : Framework V 2}
+      {a b c : V} (hac : a ≠ c) (hbc : b ≠ c)
+      (hd_ne_zero : p₀ b - p₀ a ≠ 0)
+      (w : EuclideanSpace ℝ (Fin 2))
+      (hw_outside : w ∉ Submodule.span ℝ ({p₀ b - p₀ a} : Set _))
+      (hP_ev : ∀ᶠ t in 𝓝 (0 : ℝ),
+          P (Function.update p₀ c (p₀ c + t • w))) :
+      ∃ p : Framework V 2, P p ∧
+        LinearIndependent ℝ ![p b - p a, p c - p a]
   ```
-  helper taking `P : Framework V 2 → Prop`, the `eventually`-around-`p₀`
-  premise, and the `Function.update`-target vertex `c`. Larger ROI
-  (~30-40 LoC across the two sites) but design-shape work, so weigh
-  the abstraction cost against the saving.
+  The `hP_ev` premise is stated **at the `𝓝 0`-on-`t` level rather
+  than `𝓝 p₀`-on-`p`** — necessary so site #11 can supply a
+  conjunction `IR ∧ Injective` whose `Injective` half (from
+  `Function.Injective.eventually_update_of_continuousAt`) is
+  inherently in `𝓝 0`-on-`t` form, not preservable under arbitrary
+  `𝓝 p₀` neighborhoods. Callers supply the corresponding `eventually`
+  themselves; they each do the one-step pullback
+  `h_p_t_cont.continuousAt.tendsto.eventually` against
+  `IsInfinitesimallyRigid.eventually` / `EdgeSetRowIndependent.eventually`
+  for the `𝓝 p₀`-natured halves.
+
+  The C2 sketch shape (`∃ t ≠ 0, P (p_t t) ∧ LI`) was tightened to
+  `∃ p, P p ∧ LI` — the explicit `p_t t` form was unhelpful since
+  callers immediately re-bind to a generic `p`. The LI branch (when
+  `p₀` is already non-collinear) returns `p₀` directly, with `P p₀`
+  extracted via `Filter.Eventually.self_of_nhds` at `t = 0` and a
+  `Function.update p₀ c (p₀ c + 0 • w) = p₀` bridge.
+
+  Higher-order unification for `{P}` implicit didn't fly (Lean
+  couldn't abstract the `Function.update p₀ c (p₀ c + t • w)` body
+  in the `hP_ev`-supplied conjunction), so both call sites pass `P`
+  explicitly via `(P := fun p => …)`.
+
+  Body LoC deltas: #11 (`exists_nonCollinear_rigid_placement_dim_two`)
+  83 → 30 (saved 53, ≈64%); #9 (`exists_nonCollinear_rowIndependent_placement_dim_two`)
+  80 → 31 (saved 49, ≈61%). Helper adds 63 LoC body (+ 22 LoC doc
+  comment). Net file change: project-wide -39 LoC. Matches the C2
+  estimate (~30-40 LoC) within rounding. Site #11 additionally drops
+  its `hpa_ne_pc` / `hw_ne_zero` / `γ⁻¹`-flip ceremony (vestigial
+  once the collinearity-coefficient extraction is delegated to
+  `LinearIndependent.pair_iff'` inside the helper, the C8 move
+  cascading uniformly to #11). Build + lint clean.
 
 ### Bucket D — Phase 7 notes compression
 
@@ -1261,6 +1308,36 @@ Each is a separate commit, root-cause fix preferred.
 checkbox.)*
 
 ### Phase-local choices and proof techniques
+
+- **C10 — shared `Function.update`-perturbation helper for non-collinear
+  placements.** Extracted
+  `Henneberg.exists_nonCollinear_update_perturbation_dim_two` in
+  `HennebergRigidity.lean`, parameterized over a predicate
+  `P : Framework V 2 → Prop` and the perturbation direction `w`. Two
+  shape decisions vs. the C2 sketch: (i) the `eventually` premise is
+  stated at the **`𝓝 0`-on-`t` level**, not `𝓝 p₀`-on-`p` — necessary
+  so site #11 can supply an `IR ∧ Injective` conjunction whose
+  injectivity half (from `Function.Injective.eventually_update_of_continuousAt`)
+  is inherently update-shaped, not preservable under arbitrary
+  `𝓝 p₀`. (ii) The conclusion is `∃ p, P p ∧ LI` rather than the
+  C2-sketched `∃ t ≠ 0, P (p_t t) ∧ LI` — callers immediately re-bind
+  to a generic `p` anyway, and this lets the LI branch (when `p₀` is
+  already non-collinear) return `p₀` directly with `P p₀` from
+  `Filter.Eventually.self_of_nhds` at `t = 0` bridged via
+  `Function.update p₀ c (p₀ c + 0 • w) = p₀`. Higher-order unification
+  on `{P}` implicit didn't fly — Lean couldn't abstract the
+  `Function.update p₀ c (p₀ c + t • w)` body from the supplied
+  `hP_ev` — so both call sites pass `P` explicitly via
+  `(P := fun p => …)`. Body LoC: #11 83 → 30 (saved 53, ≈64%);
+  #9 80 → 31 (saved 49, ≈61%); helper adds 63 LoC body (+ 22 LoC doc
+  comment). Net project −39 LoC, matching C2's ~30-40 LoC estimate.
+  Site #11 additionally drops vestigial `hpa_ne_pc` / `hw_ne_zero` /
+  `γ⁻¹`-flip ceremony (subsumed by the helper's `pair_iff'`
+  extraction — C8 cascading uniformly). Worth a brief TACTICS-GOLF
+  note? Provisionally *not* — the abstraction shape is narrow
+  (`Function.update`-perturbation at one vertex preserving an
+  `eventually` predicate); promoting belongs in a future cleanup if
+  a third site appears.
 
 - **B7 — multi-step `rw` chain audit + 4-site cleanup across 4
   commits.** Audit found 4 of 64 chains (~6%) vestigial; the remaining
