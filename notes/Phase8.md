@@ -27,17 +27,25 @@ the *Linear-matroid framing* subsection to
 `blueprint/src/chapter/rigidity-matroid.tex` (dep-graph: three
 green leaves + one red target `thm:linearRigidityMatroid-eq-rigidityMatroid`).
 
-Next concrete commit: land
-`SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid` —
-the matroid equality at a generic placement, satisfying the
-blueprint's red target `thm:linearRigidityMatroid-eq-rigidityMatroid`.
-The proof shape is in the blueprint chapter: pick a generic placement
-via `EdgeSetRowIndependent.eventually` + `exists_affinelySpanning_of_eventually`
-(both Phase 6 / 7), apply `Matroid.ext_indep` reducing to ground-set
-agreement (one rfl) and per-set independence agreement
+Next concrete commit: land the **auxiliary** uniform-genericity
+lemma `SimpleGraph.exists_uniform_rowIndependent_placement_dim_two`
+— existence of a placement `p : Framework V 2` row-LI on *every*
+`(2, 3)`-sparse edge subset of `K_V` simultaneously. This is the new
+red leaf `lem:exists-uniform-rowIndependent-placement` in the
+blueprint. The originally-sketched composition
+"`EdgeSetRowIndependent.eventually` +
+`exists_affinelySpanning_of_eventually`" gives a single `p`
+satisfying *one* row-LI property along with affine spanning, not a
+`p` uniform across the finite family of `(2, 3)`-sparse subsets —
+the genuinely new content is the linear-interpolation perturbation
+in the proof of the auxiliary (see blueprint proof sketch). Once
+the auxiliary lands, the main target
+`linearRigidityMatroid_eq_rigidityMatroid` follows via
+`Matroid.ext_indep` reducing to ground-set agreement (one `rfl`)
+and per-set independence agreement
 (`linearRigidityMatroid_indep_iff_edgeSetRowIndependent` ↔
 `rigidityMatroid_indep_iff_edgeSetRowIndependent` modulo the
-generic-placement collapse).
+uniform-genericity collapse of the existential).
 
 ## Architectural choices made up front
 
@@ -104,13 +112,21 @@ Sketch of the planned nodes (the blueprint will hold the final
 list):
 
 - `def:linearRigidityMatroid` — `Matroid.ofFun (G.rigidityRow p)`
-  in dimension 2 for a chosen generic placement.
+  in dimension 2 for a chosen generic placement. **Done.**
 - `lem:linearRigidityMatroid-indep-iff` — independent iff
-  row-LI at $p$.
+  row-LI at $p$. **Done.**
+- `lem:exists-uniform-rowIndependent-placement` — existence of a
+  single placement `p` row-LI on every `(2, 3)`-sparse edge subset
+  of `K_V` simultaneously. Proof via linear-interpolation
+  perturbation: induct on the finite family of sparse subsets;
+  along the interpolation `p_t := (1−t) p_0 + t q` between the IH
+  witness `p_0` and a new-subset witness `q`, each "row-LI on S"
+  condition is a polynomial-in-`t` nonzero at `t = 0` or `t = 1`,
+  so cofinitely-many `t` work.
 - `thm:linearRigidityMatroid-eq-rigidityMatroid` — the matroid
   identification. Composes Phase 7's
   `rigidityMatroid_indep_iff_edgeSetRowIndependent` with the
-  generic-placement existence witness.
+  uniform-genericity witness above.
 
 The actual entries will land in the blueprint as the Lean lemmas
 are formalized.
@@ -136,6 +152,23 @@ are formalized.
   convention). The matroid identification with `rigidityMatroid V`
   (red target) will pull in `[Finite V]` at its statement, since
   `rigidityMatroid V` requires it.
+
+- **Uniform-genericity as a separate auxiliary lemma.** The
+  original Phase 8 opening (commit `3e7e2e5`) sketched the matroid
+  equality as a direct composition of `EdgeSetRowIndependent.eventually`
+  with `exists_affinelySpanning_of_eventually`. On re-examination
+  those two only give *one* placement `p` simultaneously row-LI on
+  *one* edge subset and affinely-spanning — not a `p` uniformly
+  row-LI across the finitely many `(2, 3)`-sparse subsets that
+  `rigidityMatroid V`'s existential ranges over. The uniform
+  collapse needs its own lemma
+  `exists_uniform_rowIndependent_placement_dim_two` whose proof is
+  linear-interpolation perturbation on a finset (a polynomial-in-`t`
+  nonzero somewhere has finitely many roots, so the union of
+  bad-`t` sets across the finite family is finite). Blueprint
+  updated to surface this as an explicit red node
+  `lem:exists-uniform-rowIndependent-placement` and rewrite the
+  main theorem's proof sketch accordingly.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

@@ -599,33 +599,63 @@ matroid on the rigidity-row function at a chosen placement, via the
   identifies this with $K_V.\mathrm{EdgeSetRowIndependent}\,p\,I$.
 \end{proof}
 
+\begin{lemma}[Uniformly generic placement, dim $2$]
+  \label{lem:exists-uniform-rowIndependent-placement}
+  \uses{def:edgeSet-rowIndependent,
+    thm:isSparse-exists-rowIndependent-placement}
+  Let $V$ be finite. There exists a placement $p : V \to \R^{2}$ at
+  which \emph{every} $(2, 3)$-sparse edge subset of $K_V$ is
+  simultaneously row-independent: for every $I \subseteq E(K_V)$ with
+  $\mathrm{fromEdgeSet}\,I$ $(2, 3)$-sparse, $I$ is row-LI at $p$.
+\end{lemma}
+\begin{proof}
+  Induction on the cardinality of the finite family
+  \[
+    \mathcal{S} := \{I \subseteq E(K_V) \mid
+      \mathrm{fromEdgeSet}\,I\;\text{is}\;(2, 3)\text{-sparse}\}.
+  \]
+  The base case $\mathcal{S} = \emptyset$ picks any placement.
+  Inductive step: given $p_0$ row-LI on every set in an $n$-element
+  subfamily $\mathcal{S}_n \subseteq \mathcal{S}$, and a new set
+  $I_0 \in \mathcal{S} \setminus \mathcal{S}_n$,
+  \cref{thm:isSparse-exists-rowIndependent-placement} yields a
+  placement $q$ row-LI on $I_0$. Form the linear-interpolation
+  family $p_t := (1 - t)\,p_0 + t\,q$ for $t \in \R$. The rigidity
+  row $\mathrm{row}_{p_t}(e) \in \mathrm{Hom}_\R(\mathrm{Framework}\,V\,2, \R)$
+  is \emph{affine in $t$} at each edge $e$ (since $p_t u - p_t v$ is
+  affine in $t$). Hence for each $S \subseteq E(K_V)$, ``$S$ is
+  row-LI at $p_t$'' is the non-vanishing of a Gramian-style
+  polynomial in $t$ of degree at most $2 |S|$. For $S \in
+  \mathcal{S}_n$ this polynomial is nonzero at $t = 0$ (the IH); for
+  $S = I_0$ it is nonzero at $t = 1$. Each nonzero polynomial has
+  finitely many roots, so the union of bad-$t$ values across
+  $\mathcal{S}_n \cup \{I_0\}$ is finite; pick $t$ outside this
+  union and $p_t$ is row-LI on the enlarged subfamily.
+\end{proof}
+
 \begin{theorem}[Lov\'asz--Yemini, linear-matroid form, dim $2$]
   \label{thm:linearRigidityMatroid-eq-rigidityMatroid}
   \uses{def:linearRigidityMatroid, def:rigidityMatroid,
     thm:rigidityMatroid-indep-iff-rowIndependent,
     lem:linearRigidityMatroid-indep-iff,
-    lem:edgeSet-rowIndependent-eventually,
-    lem:exists-affinelySpanning-of-eventually}
+    lem:exists-uniform-rowIndependent-placement}
   Let $V$ be finite. There exists a placement $p : V \to \R^{2}$ at
   which the linear rigidity matroid coincides with the combinatorial
   planar rigidity matroid: $\mathcal{L}_p(V) = \mathcal{R}(V)$.
 \end{theorem}
 \begin{proof}
-  Pick a placement $p$ generic in the sense of
-  \cref{lem:edgeSet-rowIndependent-eventually}: any $(2, 3)$-sparse edge
-  subset of $K_V$ that is row-independent at \emph{some} placement is
-  already row-independent at $p$ (combining the openness witness with
-  \cref{lem:exists-affinelySpanning-of-eventually} to choose a single
-  $p$ uniform across the finitely many sparse subsets). Two matroids
-  on $\mathrm{Sym}_2 V$ with the same ground set
-  ($\mathcal{L}_p(V).E = E(K_V)$ by definition,
-  $\mathcal{R}(V).E = E(K_V)$ by the count-matroid construction)
-  coincide as soon as their independent sets agree. Apply
-  \cref{lem:linearRigidityMatroid-indep-iff} to characterise
-  $\mathcal{L}_p(V)$'s independent sets as exactly the edge subsets
-  row-LI at $p$; apply
-  \cref{thm:rigidityMatroid-indep-iff-rowIndependent} to characterise
-  $\mathcal{R}(V)$'s as exactly the edge subsets row-LI at \emph{some}
-  placement; the generic choice of $p$ collapses the existential to
-  ``row-LI at $p$'', giving the independent-set equality.
+  Take $p$ from
+  \cref{lem:exists-uniform-rowIndependent-placement}: every
+  $(2, 3)$-sparse edge subset of $K_V$ is row-LI at $p$. The two
+  matroids share the ground set
+  ($\mathcal{L}_p(V).E = E(K_V) = \mathcal{R}(V).E$), so by
+  \texttt{Matroid.ext\_indep} it suffices to identify their
+  independent sets. An edge set $I \subseteq E(K_V)$ is independent
+  in $\mathcal{L}_p(V)$ iff $I$ is row-LI at $p$
+  (\cref{lem:linearRigidityMatroid-indep-iff}); it is independent in
+  $\mathcal{R}(V)$ iff $I$ is row-LI at \emph{some} placement
+  (\cref{thm:rigidityMatroid-indep-iff-rowIndependent}). The
+  $(\Rightarrow)$ direction collapses by taking ``some placement''
+  to be $p$; the $(\Leftarrow)$ direction collapses by uniform
+  genericity, which carries any $(2, 3)$-sparse $I$ to row-LI at $p$.
 \end{proof}
