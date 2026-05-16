@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Basis
+import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Polynomial
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Vandermonde
 import CombinatorialRigidity.TrivialMotions
@@ -139,6 +140,87 @@ theorem EdgeSetRowIndependent.iso {V W : Type*} [Finite V] [Finite W] {d : ℕ}
   convert h_compose using 1
   funext e
   exact h_factor e
+
+/-! ### Rigidity-row factoring through an injective vertex embedding
+
+The factoring identity and its two LI consequences (forward / reverse) shared by every Phase 7
+"lift placement along an injective vertex map" proof. Specialisations:
+`some : V → Option V` (typeI / typeII / pendant Henneberg lifts in `MatroidIdentification.lean`)
+and `Subtype.val : ↥S → V` (Lovász–Yemini easy direction at `isSparse_of_edgeSetRowIndependent
+_dim_two`). Generalises the iso-only `EdgeSetRowIndependent.iso` above. -/
+
+/-- **Rigidity-row factoring through `LinearMap.funLeft φ`.** For an injective vertex map
+`φ : V → W` and a placement `p_ext : Framework W d` compatible with `p' : Framework V d`
+(`p_ext (φ v) = p' v`), the row of `H` at the lifted edge `Sym2.map φ e'` factors as the
+`dualMap` of `LinearMap.funLeft ℝ _ φ : Framework W d →ₗ Framework V d` applied to the
+`G'`-row at `e'`. -/
+theorem rigidityRow_lift_eq_funLeft_dualMap
+    {V W : Type*} {d : ℕ} (φ : V → W)
+    {G' : SimpleGraph V} {H : SimpleGraph W}
+    {p' : Framework V d} {p_ext : Framework W d}
+    (hcompat : ∀ v, p_ext (φ v) = p' v)
+    (e' : G'.edgeSet) (hlift : Sym2.map φ e'.val ∈ H.edgeSet) :
+    H.rigidityRow p_ext ⟨Sym2.map φ e'.val, hlift⟩ =
+      (LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin d)) φ).dualMap
+        (G'.rigidityRow p' e') := by
+  refine LinearMap.ext fun x => ?_
+  obtain ⟨e, he⟩ := e'
+  induction e with
+  | h u v => simp [rigidityRow_apply, rigidityMap_apply, hcompat]
+
+/-- **Forward transport of row independence along an injective vertex embedding.** If
+`G'.EdgeSetRowIndependent p' Set.univ` and every `G'`-edge lifts (along `Sym2.map φ`) to an
+`H`-edge with `p_ext` compatible (`p_ext (φ v) = p' v`), then the family of `H`-rows at
+`p_ext` indexed via any injective re-indexing `s : ι → G'.edgeSet` of (a subset of) the
+lifted edges is linearly independent. Used by the `oldSet` branches of the typeI/typeII/pendant
+Henneberg row-LI lifts (`MatroidIdentification.lean`); the `s = Subtype.val` instance handles
+the typeII subtype `{e' // e'.val ≠ s(a, b)}`. -/
+theorem linearIndependent_rigidityRow_lift_of_injective
+    {V W : Type*} {d : ℕ}
+    {G' : SimpleGraph V} {H : SimpleGraph W} (φ : V → W)
+    (hφ : Function.Injective φ)
+    {p' : Framework V d} {p_ext : Framework W d}
+    (hcompat : ∀ v, p_ext (φ v) = p' v)
+    {ι : Type*} (s : ι → G'.edgeSet) (hs : Function.Injective s)
+    (hlift : ∀ i : ι, Sym2.map φ (s i).val ∈ H.edgeSet)
+    (h : G'.EdgeSetRowIndependent p' Set.univ) :
+    LinearIndependent ℝ
+      (fun i : ι => H.rigidityRow p_ext
+        (⟨Sym2.map φ (s i).val, hlift i⟩ : H.edgeSet)) := by
+  rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow,
+      linearIndepOn_univ_iff] at h
+  have h_eq : (fun i : ι => H.rigidityRow p_ext
+        (⟨Sym2.map φ (s i).val, hlift i⟩ : H.edgeSet)) =
+      (LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin d)) φ).dualMap ∘
+        (fun i => G'.rigidityRow p' (s i)) :=
+    funext fun i =>
+      rigidityRow_lift_eq_funLeft_dualMap φ hcompat (s i) (hlift i)
+  rw [h_eq]
+  exact LinearIndependent.dualMap_of_surjective
+    (LinearMap.funLeft_surjective_of_injective _ _ _ hφ) (h.comp _ hs)
+
+/-- **Reverse transport of row independence along an injective vertex embedding.** If the
+family of `H`-rows at `p_ext` indexed via `s : ι → G'.edgeSet` (with each `Sym2.map φ (s i)`
+landing in `H.edgeSet`) is linearly independent, then so is the underlying family of
+`G'`-rows at `p'`. Used by the Lovász–Yemini easy direction
+(`isSparse_of_edgeSetRowIndependent_dim_two`) where the V-side row-LI on `I` pulls back to
+row-LI of the induced subgraph at the restricted placement. -/
+theorem linearIndependent_rigidityRow_of_lift
+    {V W : Type*} {d : ℕ}
+    {G' : SimpleGraph V} {H : SimpleGraph W} (φ : V → W)
+    {p' : Framework V d} {p_ext : Framework W d}
+    (hcompat : ∀ v, p_ext (φ v) = p' v)
+    {ι : Type*} {s : ι → G'.edgeSet}
+    (hlift : ∀ i : ι, Sym2.map φ (s i).val ∈ H.edgeSet)
+    (h : LinearIndependent ℝ
+      (fun i : ι => H.rigidityRow p_ext
+        (⟨Sym2.map φ (s i).val, hlift i⟩ : H.edgeSet))) :
+    LinearIndependent ℝ (fun i : ι => G'.rigidityRow p' (s i)) := by
+  refine LinearIndependent.of_comp
+    (LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin d)) φ).dualMap ?_
+  convert h using 1
+  funext i
+  exact (rigidityRow_lift_eq_funLeft_dualMap φ hcompat (s i) (hlift i)).symm
 
 /-- **Openness of row-independence in the placement.** If `p₀` makes an edge subset `I`
 row-independent, then so does every placement in some neighborhood of `p₀`.
