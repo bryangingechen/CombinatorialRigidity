@@ -219,17 +219,6 @@ theorem typeI_pendant_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     ⟨Sym2.map some e'.val, hlift_mem e'⟩ with hlift_def
   have hlift_some_inj : Function.Injective lift_some := fun _ _ heq =>
     Subtype.ext (Sym2.map.injective (Option.some_injective V) (Subtype.ext_iff.mp heq))
-  set restrictMap : Framework (Option V) 2 →ₗ[ℝ] Framework V 2 :=
-    LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin 2)) (some : V → Option V)
-  have h_restrict_surj : Function.Surjective restrictMap :=
-    LinearMap.funLeft_surjective_of_injective _ _ _ (Option.some_injective V)
-  have h_factor : ∀ e' : G'.edgeSet,
-      (typeI G' a a).rigidityRow p_ext (lift_some e') =
-        restrictMap.dualMap (G'.rigidityRow p' e') := by
-    intro e'
-    refine LinearMap.ext fun x => ?_
-    obtain ⟨e, he⟩ := e'
-    induction e with | h u v => rfl
   -- The single new edge.
   have hnewA_mem : s((none : Option V), some a) ∈ (typeI G' a a).edgeSet := by simp
   set newEdgeA : (typeI G' a a).edgeSet := ⟨s(none, some a), hnewA_mem⟩ with hA_def
@@ -245,16 +234,11 @@ theorem typeI_pendant_edgeSetRowIndependent_extend {G' : SimpleGraph V}
       rcases h_new with h_eq | h_eq <;> exact Subtype.ext h_eq
   refine LinearIndepOn.mono ?_ h_cover
   refine LinearIndepOn.union ?_ ?_ ?_
-  · -- LI on `oldSet`: factor through `restrictMap.dualMap`.
+  · -- LI on `oldSet`: factoring through `(LinearMap.funLeft _ some).dualMap`.
     rw [linearIndepOn_range_iff hlift_some_inj]
-    have h_eq : (typeI G' a a).rigidityRow p_ext ∘ lift_some =
-        restrictMap.dualMap ∘ G'.rigidityRow p' := funext h_factor
-    rw [h_eq]
-    have h_li_G' : LinearIndependent ℝ (G'.rigidityRow p') := by
-      rw [← linearIndepOn_univ_iff,
-          ← edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
-      exact h
-    exact h_li_G'.dualMap_of_surjective h_restrict_surj
+    exact linearIndependent_rigidityRow_lift_of_injective
+      (some : V → Option V) (Option.some_injective V) (fun _ => rfl)
+      id Function.injective_id hlift_mem h
   · -- LI on the singleton `{newA}`: `row newA ≠ 0` via the motion
     -- `none ↦ q - p' a, some _ ↦ 0` evaluating the row to `‖q - p' a‖² > 0`.
     rw [hnewSet_def, linearIndepOn_singleton_iff]
