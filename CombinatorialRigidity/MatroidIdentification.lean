@@ -1080,7 +1080,7 @@ By `countMatroid_indep_iff` its independent sets are exactly the `(2, 3)`-sparse
 of `K_V`; by `rigidityMatroid_indep_iff_edgeSetRowIndependent` (Lovász–Yemini, matroid form)
 these are equivalently the edge subsets that are row-independent at some placement
 `p : V → ℝ²`. -/
-noncomputable def _root_.SimpleGraph.rigidityMatroid (V : Type*) [Finite V] : Matroid (Sym2 V) :=
+def _root_.SimpleGraph.rigidityMatroid (V : Type*) [Finite V] : Matroid (Sym2 V) :=
   SimpleGraph.countMatroid V 2 3 (by omega)
 
 /-- **Lovász–Yemini, matroid form.** An edge subset `I ⊆ (⊤ : SimpleGraph V).edgeSet` is

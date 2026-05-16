@@ -55,7 +55,7 @@ variable {V : Type*} {d : ℕ}
 /-- The constant motion translating every vertex by `t`. Every translation lies in the kernel of
 `G.RigidityMap p` (`translationMotion_mem_ker`): edge-length derivatives all vanish because
 `p'_u - p'_v = t - t = 0` for any edge `s(u, v)`. -/
-noncomputable def translationMotion (t : EuclideanSpace ℝ (Fin d)) : Framework V d :=
+def translationMotion (t : EuclideanSpace ℝ (Fin d)) : Framework V d :=
   fun _ => t
 
 @[simp]
@@ -77,7 +77,7 @@ to lie in the rigidity-map kernel (cf.\ `infinitesimalRotation_mem_ker`), `A` mu
 "skew-adjoint" condition `⟪x, A x⟫_ℝ = 0` for every `x`; in dimension `d` such `A`'s form a
 `d (d − 1) / 2`-dimensional space (skew-symmetric matrices), recovering the textbook count
 $d + d(d - 1)/2 = d(d+1)/2$ for the trivial-motions dimension. -/
-noncomputable def infinitesimalRotation
+def infinitesimalRotation
     (A : EuclideanSpace ℝ (Fin d) →ₗ[ℝ] EuclideanSpace ℝ (Fin d)) (p : Framework V d) :
     Framework V d := fun v => A (p v)
 
@@ -107,7 +107,7 @@ For every graph `G` this submodule lies in the kernel of `G.RigidityMap p`
 (`trivialMotions_le_ker`). In dimension `d` it has dimension at most `d (d + 1) / 2` (the textbook
 dimension of Euclidean rigid motions); in dimension `2` the bound is sharp at an affinely-spanning
 placement (`trivialMotions_three_le_finrank_of_affinelySpanning_two`). -/
-noncomputable def trivialMotions (p : Framework V d) : Submodule ℝ (Framework V d) :=
+def trivialMotions (p : Framework V d) : Submodule ℝ (Framework V d) :=
   Submodule.span ℝ <|
     Set.range (translationMotion (V := V) : EuclideanSpace ℝ (Fin d) → Framework V d) ∪
     {m | ∃ A : EuclideanSpace ℝ (Fin d) →ₗ[ℝ] EuclideanSpace ℝ (Fin d),
@@ -146,7 +146,7 @@ skew-symmetric rotations (one per ordered pair `(i, j)` with `j < i`). The dim-2
 `i ≠ j` it corresponds to the elementary skew-symmetric matrix `E_{i, j} - E_{j, i}`. The
 collection of `elemSkewMap i j` for `j < i` spans the `d (d - 1) / 2`-dim space of skew-symmetric
 linear maps and supplies the rotation generators of `trivialMotions`. -/
-noncomputable def elemSkewMap (i j : Fin d) :
+def elemSkewMap (i j : Fin d) :
     EuclideanSpace ℝ (Fin d) →ₗ[ℝ] EuclideanSpace ℝ (Fin d) where
   toFun x := x j • PiLp.single 2 i (1 : ℝ) - x i • PiLp.single 2 j (1 : ℝ)
   map_add' u v := by
@@ -224,7 +224,7 @@ contributes the `d` coordinate translations (one per `i : Fin d`); the right sum
 one elementary skew rotation per ordered pair `⟨i, j⟩` with `j : Fin i.val` (so `j.val < i.val`),
 using `elemSkewMap i ⟨j.val, _⟩` for the skew generator. Each value lies in `trivialMotions p`
 (`trivialMotionFamily_mem_trivialMotions`). -/
-noncomputable def trivialMotionFamily (p : Framework V d) :
+def trivialMotionFamily (p : Framework V d) :
     (Fin d ⊕ Σ i : Fin d, Fin i.val) → Framework V d
   | .inl i => translationMotion (PiLp.single 2 i (1 : ℝ))
   | .inr ⟨i, j⟩ =>

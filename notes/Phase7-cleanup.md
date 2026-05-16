@@ -1,7 +1,7 @@
 # Phase 7 cleanup round — work log
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
-no-fix audits). Bucket B partial: B1 + B2 + B3 + B5 closed; B3
+no-fix audits). Bucket B partial: B1 + B2 + B3 + B4 + B5 closed; B3
 landed via five commits (a/b/c/d/e). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
@@ -27,8 +27,13 @@ per-site vestigial check **closed**: 20 of 49 standalone `classical`
 calls were vestigial and deleted (17 of 42 in project source + 3 of
 7 in `Mathlib/` mirror); the remaining 29 are load-bearing (provide
 `DecidableEq` for `Finset` ops / `Compl` / `rcases` on `Decidable`
-data, or `DecidableRel G.Adj`). Subsequent work order: **B4 / B6 /
-B7 → C / D**.
+data, or `DecidableRel G.Adj`). B4 `noncomputable def` audit
+**closed**: 7 of 11 sites were vestigial and the keyword dropped (5
+in `TrivialMotions.lean`, `countMatroid` in `CountMatroid.lean`, and
+`SimpleGraph.rigidityMatroid` in `MatroidIdentification.lean`); the
+4 forced sites reach `Real.instRCLike` via `innerSL` (3 in the
+rigidity-row pipeline) or `Set.Finite.toFinset` (`maxBlock`).
+Subsequent work order: **B6 / B7 → C / D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -39,7 +44,7 @@ cleanly.
 
 ## Current state
 
-Bucket A closed. B1 + B2 + B3 + B5 closed. The B1 per-site audit
+Bucket A closed. B1 + B2 + B3 + B4 + B5 closed. The B1 per-site audit
 confirmed the design hypothesis: 29 of 49 `classical` sites
 (~59%) are load-bearing in the expected mathlib-idiom way
 (providing `DecidableEq` for `Finset` ops / `Compl` / `rcases`
@@ -65,7 +70,14 @@ which contain blocks", moved 7 non-`hI`-using decls to bare
 `[Fintype V]` → `[Finite V]` relaxation across 16 rigidity-API
 sites (Framework / HennebergRigidity / LamanTheorem); the 4 sites
 that legitimately use `Fintype.card V` in their conclusion stay at
-`[Fintype V]`. Next concrete step: B4 (`noncomputable def` audit).
+`[Fintype V]`. B4 closed: 7 of 11 `noncomputable def` sites were
+vestigial (5 in `TrivialMotions.lean` covering translations,
+rotations, the span submodule, the elementary skew map, and the
+joint family; plus `countMatroid` and `SimpleGraph.rigidityMatroid`);
+the 4 forced sites all reach `Real.instRCLike` via `innerSL` (the
+rigidity-row pipeline) or `Set.Finite.toFinset` (`maxBlock`). Next
+concrete step: B6 (`change` / `show` survey) and/or C1 (top-10
+long-proof ranking).
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -96,8 +108,7 @@ mirror), 20 (~41%) were vestigial and deleted, 29 (~59%)
 confirmed load-bearing per the mathlib-idiom pattern. The 41%
 vestigial fraction was higher than the pre-audit expectation
 ("most/all load-bearing"); see *Decisions made → B1* below for
-the heuristic that emerged. Subsequent work order: B3 / B4 /
-B6 / B7 / C / D.
+the heuristic that emerged. Subsequent work order: B6 / B7 / C / D.
 
 ## Architectural choices made up front
 
@@ -478,10 +489,43 @@ Each is a separate commit, root-cause fix preferred.
     `[Fintype V]` signatures. `IsInfinitesimallyRigid.eventually`
     also picked up an in-body `haveI : Fintype V :=
     Fintype.ofFinite V` for its `Fintype G.edgeSet` bridge.
-- [ ] B4: `noncomputable def` audit. List each one, classify as
-  "forced" (`Classical.choose`, `Module.Dual`, unbundled `Sym2.lift`,
-  …) or "vestigial". Each vestigial site: drop the keyword and see
-  if `lake build` still passes.
+- [x] B4: `noncomputable def` audit. **7 of 11 sites were vestigial
+  (deleted), 4 forced (kept).** Per-site test was drop the keyword +
+  `lake build`. Vestigial sites:
+  - `TrivialMotions.lean`:58 (`translationMotion` — `fun _ => t`).
+  - `TrivialMotions.lean`:80 (`infinitesimalRotation` — `fun v => A
+    (p v)`).
+  - `TrivialMotions.lean`:110 (`trivialMotions` — `Submodule.span ℝ`
+    over a `Set.range ∪ {…}`; `Submodule.span` is itself
+    computable).
+  - `TrivialMotions.lean`:149 (`elemSkewMap` — `LinearMap` from
+    `PiLp.single`/smul/sub).
+  - `TrivialMotions.lean`:227 (`trivialMotionFamily` — pattern match
+    composing the two vestigial defs above).
+  - `CountMatroid.lean`:61 (`countMatroid` — `IndepMatroid.ofFinite
+    …).matroid`).
+  - `MatroidIdentification.lean`:1083 (`SimpleGraph.rigidityMatroid`
+    — transitively via `countMatroid`).
+
+  Forced sites (kept `noncomputable`):
+  - `Framework.lean`:70 (`edgeRow` — depends on `Real.instRCLike` via
+    `innerSL ℝ`).
+  - `Framework.lean`:92 (`RigidityMap` — transitively via `edgeRow`).
+  - `RigidityMatroid.lean`:75 (`rigidityRow` — transitively via
+    `RigidityMap`).
+  - `Sparsity.lean`:1290 (`maxBlock` — depends on `Set.Finite.toFinset`).
+
+  Heuristic that emerged: `noncomputable` is vestigial unless the
+  body either (a) reaches `Real.instRCLike` (any inner-product /
+  `innerSL ℝ` / `RCLike` arithmetic), or (b) reaches
+  `Set.Finite.toFinset` (or another classical `Finset` extraction
+  from a `Set`-side existence). `Submodule.span ℝ`,
+  `IndepMatroid.ofFinite … .matroid`, `LinearMap` constructions
+  over ℝ (without `innerSL`), and bare `fun`-formers all carry the
+  keyword decoratively. The 64% vestigial fraction (7/11) mirrors
+  the B1 surprise (41% vestigial `classical` calls) — both linters
+  fire on a "this works without me" basis, so the resulting
+  decoration accumulates silently.
 - [x] B5: `Set` vs `Finset` consistency. **Closed as no-change**
   under the mathlib-style convention: the project's existing
   `Set.ncard over Finset.card` convention (cf. DESIGN.md) is
@@ -604,6 +648,28 @@ checkbox.)*
   hint is the canonical "named project-internal helper standing
   in for what the prose treats as a one-step correspondence"
   aside from blueprint/CLAUDE.md *Proof verbosity*.
+- **B4 — `noncomputable def` audit + 7-site cleanup.** 7 of 11
+  `noncomputable def` sites in the project were vestigial: 5 in
+  `TrivialMotions.lean` (`translationMotion`, `infinitesimalRotation`,
+  `trivialMotions`, `elemSkewMap`, `trivialMotionFamily`), plus
+  `countMatroid` in `CountMatroid.lean` and `SimpleGraph.rigidityMatroid`
+  in `MatroidIdentification.lean`. The 4 forced sites partition into
+  two causes: `Real.instRCLike` reached through `innerSL ℝ` (the
+  `edgeRow` → `RigidityMap` → `rigidityRow` chain) and
+  `Set.Finite.toFinset` (`maxBlock`). Heuristic recorded in the B4
+  checkbox: `noncomputable` is vestigial unless the body reaches
+  `Real.instRCLike` (via `innerSL ℝ` / inner-product arithmetic over
+  ℝ) or a `Set.Finite.toFinset`-style classical `Finset` extraction;
+  `Submodule.span ℝ`, `IndepMatroid.ofFinite … .matroid`, and
+  `LinearMap` constructions over ℝ that don't pass through `innerSL`
+  are all computable. Left in cleanup-notes rather than promoted to
+  TACTICS-GOLF — applies only at definition-writing time, which is
+  uncommon; revisit if a future phase adds enough new `def`s that
+  the rule starts being re-derived. Both forced-site elimination
+  paths (`maxBlock` → pebble game; rigidity-row pipeline →
+  field generalization) are deferred and recorded under
+  *Blockers / open questions*.
+
 - **B3 — `@[nolint]` / `set_option linter.* false` audit + refactor
   plan.** Empirical test (temp-disable each + `lake build` / `lake
   lint`) confirms all 8 silenced rules still fire. But the
@@ -675,7 +741,40 @@ checkbox.)*
 
 ## Blockers / open questions
 
-- None yet. Open items get filed here as the round runs.
+- **B4 forced-`noncomputable` follow-ups (deferred).** The 4 forced
+  sites partition into two elimination paths, neither pursued this
+  round:
+  - **`maxBlock` (`Sparsity.lean`:1290)** — forced via
+    `Set.Finite.toFinset` (`Classical.choice` on the `Set.Finite`
+    witness). A computable refactor to `(Finset.univ.powerset.filter
+    (fun S => G.IsTightOn k ℓ S ∧ X ⊆ S)).biUnion id` form requires
+    strengthening the hypothesis from `[Finite V]` to `[Fintype V]
+    [DecidableEq V]`, which cascades to 5 lemmas that mention
+    `maxBlock` in their statement (`mem_maxBlock`, `subset_maxBlock`,
+    `subset_maxBlock_of_hasBlock`, `IsSparse.maxBlock_isTightOn`,
+    `IsSparse.maxBlock_eq_of_subset_maxBlock`) — partial revert of
+    B3b/B3c. Deferred in favour of the **pebble game** (Jacobs–
+    Hendrickson 1997 / Lee–Streinu 2008): the directed pebble graph's
+    reverse-reachability set from `X` is exactly `maxBlock X`, gives
+    a polynomial-time algorithm rather than the powerset-filter
+    brute force, and gives `Decidable (IsSparse G k ℓ)` /
+    `Decidable (G.HasBlock k ℓ X)` as side benefits. Pebble-game
+    formalization is on the forward-work radar (cf. `count-matroid.tex`
+    Lee–Streinu pointer).
+  - **`edgeRow` / `RigidityMap` / `rigidityRow`** — forced via
+    `Real.instRCLike` reached through `innerSL ℝ`. Path: generalize
+    the rigidity construction from "ℝ with inner product" to
+    "arbitrary field with non-degenerate symmetric bilinear form"
+    (Lovász–Yemini's matroid identification holds over any infinite
+    field). The abstract definition would be computable; concrete
+    ℝ-specialization sites would still carry the keyword. Cost: a
+    substantial `Framework` / `TrivialMotions` / `RigidityMatroid`
+    refactor (plus replacing the analytic genericity argument in
+    `IsInfinitesimallyRigid.eventually` with Zariski genericity).
+    Worth doing if/when the project aims at the matroid-identification
+    result over arbitrary infinite fields; not worth doing solely to
+    drop 3 `noncomputable` keywords on definitions that are never
+    executed. Deferred to a later session.
 
 ## Hand-off / next phase
 
