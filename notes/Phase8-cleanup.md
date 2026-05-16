@@ -31,8 +31,12 @@ structural-refactor round.
 
 ## Current state
 
-Round just opened (this commit). No fixes yet. The full task list
-across A–E sits under *Task checklist* below.
+Bucket A (blueprint audit, 4 sub-tasks) closed clean: every Phase 8
+`\lean{...}` pin resolves, statement forms match faithfully, the
+`Subtype.val ''` image-packaging and `rigidityRow_add_smul` bridge
+are both honestly flagged in blueprint prose. Bucket B in progress
+— B1 found one vestigial `classical` (deleted this commit). The
+full task list across A–E sits under *Task checklist* below.
 
 ## Architectural choices made up front
 
@@ -115,12 +119,15 @@ Phase 8 surface = `LinearRigidityMatroid.lean` + new lemmas in
 | `@[nolint]` / `set_option linter` | 0 | 0 | — |
 | `noncomputable def` | 2 (L39, L62) | 0 | — |
 
-- [ ] **B1:** `classical` audit. Per-site comment-out + `lake build`
-  on each of the 3 Phase 8 sites (L115 in LinearRigidityMatroid, L74
-  + L124 in Rank.lean). Expectation per Phase 7-cleanup heuristic:
-  all 3 are load-bearing (providing `DecidableEq` for `Finset` ops
-  in the polynomial-roots / cofiniteness arguments). Verify and
-  record.
+- [x] **B1:** `classical` audit closed. Comment-out + `lake build`
+  on each of the 3 Phase 8 sites: the two Rank.lean ones (L74, L124)
+  are load-bearing (failed-typeclass-synthesis errors on `Matrix.det`
+  via `linearIndependent_rows_iff_det_mul_transpose_ne_zero`,
+  multiple sites each); the one in `exists_uniform_rowIndependent_
+  placement_dim_two` (LinearRigidityMatroid L115) is **vestigial** —
+  build + lint stay green without it (likely leftover from an
+  earlier draft that used a Finset op pre-replaced with a
+  `Set.Finite`-bridged form). Deleted this commit.
 - [ ] **B2:** `Fintype.ofFinite` bridge audit. The 4 Phase 8 sites
   (1 `LinearRigidityMatroid` + 3 `Rank.lean`) — check whether each
   is the canonical mathlib-style inline bridge per `DESIGN.md`
@@ -285,7 +292,14 @@ File-size inventory (project source, descending; commit `2f3f036`):
 
 ### Cleanup pass summaries
 
-*(Empty — populate as buckets close.)*
+**B1 — vestigial `classical` deletion.** One site:
+`LinearRigidityMatroid.exists_uniform_rowIndependent_placement_dim_two`
+(L115). The two `classical`s in `Mathlib/.../Rank.lean` (L74, L124)
+are load-bearing (Matrix.det needs `DecidableEq m` / `DecidableEq ι`,
+not provided by the `[Finite m]` / `[Finite n]` / `[Finite ι]`
+signatures). No FRICTION-worthy lesson — Phase 7-cleanup B1 already
+established "vestigial classicals accumulate from draft refactors";
+the audit protocol caught a single Phase-8 instance.
 
 ## Blockers / open questions
 
