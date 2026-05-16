@@ -1,6 +1,6 @@
 # Phase 7 cleanup round — work log
 
-**Status:** scoped; no cleanup work landed yet.
+**Status:** in progress. A1 done; A2–A11, B*, C*, D* outstanding.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -11,11 +11,10 @@ cleanly.
 
 ## Current state
 
-Scoping commit only. All buckets (A) blueprint-divergence, (B)
-code-smells, (C) long-proof audit, and (D) Phase 7 notes compression
-are in scope, in that priority order. The next session picks the
-leaf-most unchecked item below; no item depends on another within
-the same bucket, so any order is fine.
+Working through bucket A. A1 (intro.tex phase-plan / red-leaves
+prose) is fixed and committed. Next: any unchecked A2–A11 item, then
+B/C/D. The A9 sweep flagged one orphan red corollary
+(`cor:isLaman-exists-rowIndependent`) — defer to that bucket.
 
 ## Architectural choices made up front
 
@@ -43,9 +42,13 @@ One sub-task per chapter; each runs the audit of `\lean{...}`
 statement-form match + prose-aside flag-finding + Lean-simplification
 attempt for any flagged divergence.
 
-- [ ] A1: `chapter/intro.tex` (overview narrative; minimal `\lean{...}`
+- [x] A1: `chapter/intro.tex` (overview narrative; minimal `\lean{...}`
   surface — mostly sanity check that the phase plan still reads
-  correctly post-Phase-7).
+  correctly post-Phase-7). Two stale claims fixed: "Phase 7 is in
+  progress" → "All seven phases are complete", and "Phase 7 dep-graph
+  still has red leaves" → narrowed to "main Laman line and through
+  the Phase 7 matroid identification are all green" (honest about
+  the single orphan `cor:isLaman-exists-rowIndependent`).
 - [ ] A2: `chapter/sparsity.tex` ↔ `Sparsity.lean` + `EdgesIn.lean`.
   Largest chapter; Phase 1 + Phase 7 additions (`maxBlock` +
   augmentation) layered. Specific watch: `IsTightOn.union_inter_of_pair`
@@ -79,6 +82,12 @@ attempt for any flagged divergence.
 - [ ] A9: `chapter/rigidity-matroid.tex` ↔ `RigidityMatroid.lean` +
   `MatroidIdentification.lean`. The newest chapter; high churn during
   Phase 7. Likely highest density of divergence candidates.
+  *Pre-flagged by A1 sweep:* `cor:isLaman-exists-rowIndependent`
+  (line ~462) is an orphan red node — no `\lean{...}`, never used
+  in any `\uses{}`. The corollary is a trivial composition
+  (`IsLaman.isSparse` ∘ `IsSparse.exists_rowIndependent_placement`)
+  serving only as a narrative bridge before the matroid subsection.
+  Decision in A9: keep + materialise as a Lean one-liner, or remove.
 - [ ] A10: `chapter/count-matroid.tex` ↔ `CountMatroid.lean`. Newest;
   ~95 LoC of Lean, ~315 lines of TeX — check abstraction-level match.
 - [ ] A11: Run `lake exe checkdecls blueprint/lean_decls` (after
@@ -181,6 +190,12 @@ Each is a separate commit, root-cause fix preferred.
 checkbox.)*
 
 ### Phase-local choices and proof techniques
+
+- **A1 — intro.tex re-statement after phase close.** Updated the
+  *Phase plan* and *Reading this blueprint* prose to reflect Phase 7
+  closed. Sweep also surfaced `cor:isLaman-exists-rowIndependent`
+  as an orphan red node (no `\lean{...}`, no other `\uses{}` cite);
+  filed under A9 rather than fixed here to keep A1 narrowly scoped.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

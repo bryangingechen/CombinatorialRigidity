@@ -25,9 +25,10 @@ combinatorial rigidity, see
 
 The Lean code is organized into seven phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-The first six phases are complete and Laman's theorem is fully
-formalized; Phase~7 is in progress and extends the development with
-the Lov\'asz--Yemini matroid identification.
+All seven phases are complete: the first six phases formalize
+Laman's theorem, and Phase~7 packages the planar rigidity matroid
+as a mathlib \texttt{Matroid} via the Lov\'asz--Yemini matroid
+identification.
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -68,9 +69,7 @@ $(2, 3)$-count matroid) is left to a follow-up phase.
 
 Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
-documentation. The \emph{dependency graph view} (linked from
-the navigation bar) is the best place to see at a glance which
-nodes are green and which are red. All Phase~1--6 nodes are green;
-the Phase~7 dep-graph (under \cref{sec:rigidity-matroid} and
-\cref{sec:count-matroid}) still has red leaves --- those are the
-in-progress targets.
+documentation. The \emph{dependency graph view} (linked from the
+navigation bar) is the best place to see at a glance how the chapters
+fit together; nodes on the main Laman line and through the
+Phase~7 matroid identification are all green.
