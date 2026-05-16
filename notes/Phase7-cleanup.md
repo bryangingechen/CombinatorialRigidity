@@ -1,8 +1,8 @@
 # Phase 7 cleanup round — work log
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
-no-fix audits). Bucket B partial: B1 + B2 + B3 + B4 + B5 closed; B3
-landed via five commits (a/b/c/d/e). The audit found 6 of 8
+no-fix audits). Bucket B partial: B1 + B2 + B3 + B4 + B5 + B6 closed;
+B3 landed via five commits (a/b/c/d/e). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
 style; the Zulip thread *Unused Decidable Instances linter*
@@ -32,8 +32,21 @@ data, or `DecidableRel G.Adj`). B4 `noncomputable def` audit
 in `TrivialMotions.lean`, `countMatroid` in `CountMatroid.lean`, and
 `SimpleGraph.rigidityMatroid` in `MatroidIdentification.lean`); the
 4 forced sites reach `Real.instRCLike` via `innerSL` (3 in the
-rigidity-row pipeline) or `Set.Finite.toFinset` (`maxBlock`).
-Subsequent work order: **B6 / B7 → C / D**.
+rigidity-row pipeline) or `Set.Finite.toFinset` (`maxBlock`). B6
+`change` / `show` survey **closed**: 16 of 26 sites were vestigial
+and refactored away (12 `change ⟪…⟫_ℝ = 0 at h…` lines in
+HennebergRigidity collapsed into the preceding `simp only` via
+`hp_ext_def, Option.elim_none, Option.elim_some`; 4 vestigial
+`change Module.finrank … ≤ …` lines deleted; 2 `change … ; exact …`
+pairs in Framework.lean collapsed to `simpa using key`; 1
+`change … ; rw […]; exact …` 3-line block in Framework.lean
+collapsed to a 1-liner via `kerEquiv.finrank_eq.le.trans`). The
+remaining 10 sites are all load-bearing (term-mode `show … from
+…` inside `simp` / `rw` arg lists; defeq unfolds in
+RigidityMatroid.lean / MatroidIdentification.lean / Henneberg.lean;
+one `change` in Framework.lean that bridges `IsInfinitesimallyRigid`
+to its underlying `≤` for a downstream `omega`). Subsequent work
+order: **B7 → C / D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -44,7 +57,7 @@ cleanly.
 
 ## Current state
 
-Bucket A closed. B1 + B2 + B3 + B4 + B5 closed. The B1 per-site audit
+Bucket A closed. B1 + B2 + B3 + B4 + B5 + B6 closed. The B1 per-site audit
 confirmed the design hypothesis: 29 of 49 `classical` sites
 (~59%) are load-bearing in the expected mathlib-idiom way
 (providing `DecidableEq` for `Finset` ops / `Compl` / `rcases`
@@ -75,9 +88,21 @@ vestigial (5 in `TrivialMotions.lean` covering translations,
 rotations, the span submodule, the elementary skew map, and the
 joint family; plus `countMatroid` and `SimpleGraph.rigidityMatroid`);
 the 4 forced sites all reach `Real.instRCLike` via `innerSL` (the
-rigidity-row pipeline) or `Set.Finite.toFinset` (`maxBlock`). Next
-concrete step: B6 (`change` / `show` survey) and/or C1 (top-10
-long-proof ranking).
+rigidity-row pipeline) or `Set.Finite.toFinset` (`maxBlock`). B6
+closed: 16 of 26 `change` / `show` sites were vestigial; the 12
+`change ⟪q - p ?, x.1 none - x.1 (some ?)⟫_ℝ = 0 at h…` lines that
+unfolded `p_ext` through the `set p_ext := fun w => w.elim q p`
+binding all collapsed into the preceding `simp only` by adding
+`hp_ext_def, Option.elim_none, Option.elim_some` to the lemma list
+(the standard TACTICS-QUIRKS § 6 `set name := fun … + simp [name]`
+move); 4 `change Module.finrank ℝ (LinearMap.ker …) ≤ d * (d + 1) / 2`
+goal-side unfolds of `IsInfinitesimallyRigid` were vestigial because
+the followup `exact` typechecks against the `def` directly; two
+Framework.lean `change … ; exact key` pairs collapsed to `simpa
+using key`; one `change … ; rw […]; exact h` 3-line block became
+`exact kerEquiv.finrank_eq.le.trans h`. Next concrete step: B7
+(multi-step `rw [...]` chains) and/or C1 (top-10 long-proof
+ranking).
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -536,12 +561,70 @@ Each is a separate commit, root-cause fix preferred.
   vs. proof-internal level (Finset), which matches the principle
   of keeping definitions at the weakest typeclass and bridging
   inline in proofs. No round-tripping observed at audit-time.
-- [ ] B6: `change` / `show` survey (concrete signal from
-  `CombinatorialRigidity/CLAUDE.md` *Friction review*). For each
-  `change` / `show` in source: is it covering for an un-fused
-  predicate lemma? Could a project-internal `simp` lemma replace
-  it? (Most `change` instances will be load-bearing; we're looking
-  for the 1-2 that aren't.)
+- [x] B6: `change` / `show` survey. **16 of 26 sites vestigial
+  (refactored), 10 load-bearing (kept).** The pre-audit expectation
+  ("most load-bearing; looking for the 1-2 that aren't") was
+  inverted — 62% were vestigial. Two distinct patterns drove the
+  bulk:
+  - **`set p_ext := fun w => w.elim q p` + chained `change` (12
+    sites).** In `HennebergRigidity.lean` three blocks
+    (`typeI_isInfinitesimallyRigid_extend` and the two halves of
+    `typeII_isInfinitesimallyRigid_extend`), the `change ⟪q - p ?,
+    x.1 none - x.1 (some ?)⟫_ℝ = 0 at hxa hxb hya hyb`-style
+    four-up rewrite was just unfolding `p_ext` through its `set`
+    binding. Adding `hp_ext_def, Option.elim_none, Option.elim_some`
+    to the preceding `simp only` does the same job in one line. This
+    is the textbook TACTICS-QUIRKS § 6 *`set name := fun … + simp
+    [name]`* move; the friction was that the original Phase 5 code
+    didn't follow it.
+  - **Goal-side `change` of `IsInfinitesimallyRigid` (4 sites).**
+    Since `IsInfinitesimallyRigid` is a `def`, the subsequent
+    `exact` typechecks directly against the unfolded body — no
+    explicit `change Module.finrank ℝ (LinearMap.ker …) ≤ d * (d +
+    1) / 2` needed. 3 sites in `Framework.lean` (`IsInfinitesimallyRigid.iso`
+    + `top_fin_two_isGenericallyRigid` `d = 0` branch) and 2 in
+    `HennebergRigidity.lean` (the two `_extend` capstones); one
+    Framework.lean `change … ; rw [kerEquiv.finrank_eq]; exact h`
+    3-liner also folded to `exact kerEquiv.finrank_eq.le.trans h`.
+  - **Two `change … ; exact key`-style pairs in Framework.lean's
+    `IsInfinitesimallyRigid.iso`** collapsed to `simpa using key`
+    once the prior `simp only [rigidityMap_apply, Pi.zero_apply]`
+    was dropped (made redundant by `simpa`).
+
+  Load-bearing sites (10) that stayed:
+  - **Term-mode `show ... from ...` inside `simp` / `rw` arg lists
+    (4 sites)**: HennebergRigidity.lean:357 (coerce
+    `(typeII G a b c).Adj` to edge-set membership),
+    HennebergRigidity.lean:545 and MatroidIdentification.lean:815
+    (`show ... from by abel` glue),
+    MatroidIdentification.lean:664 (`show ... from by abel` simp
+    arg).
+  - **Defeq unfolds in `RigidityMatroid.lean` (3 sites)**: line 89
+    (`change LinearIndepOn ℝ (... LinearMap.ltoFun ...)` to set up
+    `linearIndepOn_iff_of_injOn`), line 126 (`change G.RigidityMap
+    …` to set up the next `rw [rigidityMap_apply ...]`), line 169
+    (`change Continuous fun p => …` to unfold the `set M` for
+    `fun_prop`).
+  - **Defeq unfolds in `MatroidIdentification.lean` (1 site)**: line
+    894 (`change Function.update p₀ a …` to unfold a `set p_t`
+    let-binding).
+  - **Defeq unfold in `Henneberg.lean` (1 site)**: line 597 (`change
+    G'.Adj x y` to unfold `mem_edgeSet`; could equivalently be `rw
+    [SimpleGraph.mem_edgeSet]` but the `change` form is shorter).
+  - **One `change … ≤ …` bridge to `omega` in `Framework.lean` (1
+    site)**: line 334 in `top_fin_two_isGenericallyRigidInj` — the
+    omega step at line 356 needs the underlying `≤` form since
+    `omega` cannot unfold `IsInfinitesimallyRigid`.
+
+  Heuristic that emerged (worth a brief TACTICS-GOLF note): a
+  goal-side `change` that unfolds a `def`-predicate (like
+  `IsInfinitesimallyRigid`) is vestigial when the next tactic is
+  `exact` — `exact` already unifies through the `def`. It is
+  load-bearing when the next tactic is `omega` / `nlinarith` /
+  `linarith`, which require ground-level `Nat`/`Int` shapes.
+  Hypothesis-side `change at h` after a `set x := …` block can
+  usually be folded into the preceding `simp only` via `[hx_def,
+  ...]`.
 - [ ] B7: Multi-step `rw [..., ..., ...]` chains. Same friction-review
   signal; look for fused-lemma candidates that warrant a
   `CombinatorialRigidity/Mathlib/<path>` mirror.
@@ -648,6 +731,28 @@ checkbox.)*
   hint is the canonical "named project-internal helper standing
   in for what the prose treats as a one-step correspondence"
   aside from blueprint/CLAUDE.md *Proof verbosity*.
+- **B6 — `change` / `show` survey + 16-site cleanup.** Audit found
+  16 of 26 sites vestigial (62%); fix landed in one commit across
+  `Framework.lean` (4 sites) and `HennebergRigidity.lean` (12
+  sites). Two textbook patterns drove the bulk: (i) `change ⟪…⟫ = 0
+  at h…` chains unfolding a `set p_ext := fun w => w.elim q p`
+  binding folded back into the preceding `simp only` via
+  `[hp_ext_def, Option.elim_none, Option.elim_some]` (the
+  TACTICS-QUIRKS § 6 *`set name := fun … + simp [name]`* move
+  applied four-up); (ii) goal-side `change Module.finrank ℝ … ≤ d *
+  (d + 1) / 2` lines unfolding `IsInfinitesimallyRigid` were
+  vestigial when followed by `exact` (`exact` unifies through
+  `def`-unfolding) but load-bearing when followed by `omega` (which
+  needs a ground-level `Nat` shape). Two `change … ; exact key`
+  pairs in `IsInfinitesimallyRigid.iso` also folded to `simpa using
+  key`, with the pre-existing `simp only [rigidityMap_apply,
+  Pi.zero_apply] at key` dropped as redundant. Heuristic: a
+  goal-side `change` of a `def`-predicate is vestigial iff the next
+  tactic is `exact`. The 10 remaining sites are load-bearing
+  (term-mode `show ... from ...` glue, definitional unfolds of `set
+  M`-style let-bindings before `fun_prop` / `rw`, one `change G'.Adj
+  x y` stylistic equivalent of `rw [SimpleGraph.mem_edgeSet]`).
+
 - **B4 — `noncomputable def` audit + 7-site cleanup.** 7 of 11
   `noncomputable def` sites in the project were vestigial: 5 in
   `TrivialMotions.lean` (`translationMotion`, `infinitesimalRotation`,

@@ -169,17 +169,13 @@ theorem typeI_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
     have hxb := congr_fun (LinearMap.mem_ker.mp x.2) ⟨s(none, some b), h_b_edge⟩
     have hya := congr_fun (LinearMap.mem_ker.mp y.2) ⟨s(none, some a), h_a_edge⟩
     have hyb := congr_fun (LinearMap.mem_ker.mp y.2) ⟨s(none, some b), h_b_edge⟩
-    simp only [rigidityMap_apply, Pi.zero_apply] at hxa hxb hya hyb
-    -- `p_ext none = q`, `p_ext (some _) = p _` by defeq through `set`.
-    change ⟪q - p a, x.1 none - x.1 (some a)⟫_ℝ = 0 at hxa
-    change ⟪q - p b, x.1 none - x.1 (some b)⟫_ℝ = 0 at hxb
-    change ⟪q - p a, y.1 none - y.1 (some a)⟫_ℝ = 0 at hya
-    change ⟪q - p b, y.1 none - y.1 (some b)⟫_ℝ = 0 at hyb
+    -- Unfold `p_ext` (`none ↦ q`, `some _ ↦ p _`) inside the inner products.
+    simp only [rigidityMap_apply, Pi.zero_apply, hp_ext_def,
+      Option.elim_none, Option.elim_some] at hxa hxb hya hyb
     have h_perp_a := inner_sub_perp_of_eq (h_some a) hxa hya
     have h_perp_b := inner_sub_perp_of_eq (h_some b) hxb hyb
     exact sub_eq_zero.mp (eq_zero_of_orthogonal_dim_two hLI h_perp_a h_perp_b)
   -- Rank-nullity: `finrank (ker (typeI _)) ≤ finrank (ker G) ≤ 3`.
-  change Module.finrank ℝ (LinearMap.ker ((typeI G a b).RigidityMap p_ext)) ≤ 2 * (2 + 1) / 2
   exact (LinearMap.finrank_le_finrank_of_injective h_inj).trans hp
 
 /-- In `EuclideanSpace ℝ (Fin 2)`, given two distinct points `pa, pb` and a finite "to-avoid" set
@@ -324,9 +320,8 @@ theorem typeII_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
     have h_b_edge : s((none : Option V), some b) ∈ (typeII G a b c).edgeSet := by simp
     have hxa := congr_fun hx ⟨s(none, some a), h_a_edge⟩
     have hxb := congr_fun hx ⟨s(none, some b), h_b_edge⟩
-    simp only [rigidityMap_apply, Pi.zero_apply] at hxa hxb
-    change ⟪q - p a, x none - x (some a)⟫_ℝ = 0 at hxa
-    change ⟪q - p b, x none - x (some b)⟫_ℝ = 0 at hxb
+    simp only [rigidityMap_apply, Pi.zero_apply, hp_ext_def,
+      Option.elim_none, Option.elim_some] at hxa hxb
     -- Strip the scalar to obtain `⟪p b - p a, _⟫ = 0` form.
     have hxa' : ⟪p b - p a, x none - x (some a)⟫_ℝ = 0 := by
       have h := hxa
@@ -388,16 +383,12 @@ theorem typeII_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
     have hxc := congr_fun (LinearMap.mem_ker.mp x.2) ⟨s(none, some c), h_c_edge⟩
     have hya := congr_fun (LinearMap.mem_ker.mp y.2) ⟨s(none, some a), h_a_edge⟩
     have hyc := congr_fun (LinearMap.mem_ker.mp y.2) ⟨s(none, some c), h_c_edge⟩
-    simp only [rigidityMap_apply, Pi.zero_apply] at hxa hxc hya hyc
-    change ⟪q - p a, x.1 none - x.1 (some a)⟫_ℝ = 0 at hxa
-    change ⟪q - p c, x.1 none - x.1 (some c)⟫_ℝ = 0 at hxc
-    change ⟪q - p a, y.1 none - y.1 (some a)⟫_ℝ = 0 at hya
-    change ⟪q - p c, y.1 none - y.1 (some c)⟫_ℝ = 0 at hyc
+    simp only [rigidityMap_apply, Pi.zero_apply, hp_ext_def,
+      Option.elim_none, Option.elim_some] at hxa hxc hya hyc
     have h_perp_a := inner_sub_perp_of_eq (h_some a) hxa hya
     have h_perp_c := inner_sub_perp_of_eq (h_some c) hxc hyc
     exact sub_eq_zero.mp (eq_zero_of_orthogonal_dim_two hLI h_perp_a h_perp_c)
   -- Rank-nullity: `finrank (ker (typeII _)) ≤ finrank (ker G) ≤ 3`.
-  change Module.finrank ℝ (LinearMap.ker ((typeII G a b c).RigidityMap p_ext)) ≤ 2 * (2 + 1) / 2
   exact (LinearMap.finrank_le_finrank_of_injective h_inj).trans hp
 
 /-- In `EuclideanSpace ℝ (Fin 2)`, given distinct points `pa, pb`, a third point `pc` with

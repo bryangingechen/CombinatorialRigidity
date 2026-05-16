@@ -194,8 +194,6 @@ theorem IsInfinitesimallyRigid.iso {V W : Type*} [Finite V] [Finite W]
       have hH : s(φ a, φ b) ∈ H.edgeSet := by
         rw [mem_edgeSet] at he ⊢; exact φ.map_adj_iff.mpr he
       have key := congr_fun hq' ⟨s(φ a, φ b), hH⟩
-      simp only [rigidityMap_apply, Pi.zero_apply] at key
-      change ⟪p a - p b, q' (φ a) - q' (φ b)⟫_ℝ = (0 : ℝ)
       simpa using key
   have hG_to_H : ∀ p' : Framework V d,
       (G.RigidityMap p) p' = 0 →
@@ -207,9 +205,7 @@ theorem IsInfinitesimallyRigid.iso {V W : Type*} [Finite V] [Finite W]
       have hG : s(φ.symm u, φ.symm v) ∈ G.edgeSet := by
         rw [mem_edgeSet] at he ⊢; exact φ.symm.map_adj_iff.mpr he
       have key := congr_fun hp' ⟨s(φ.symm u, φ.symm v), hG⟩
-      simp only [rigidityMap_apply, Pi.zero_apply] at key
-      change ⟪p (φ.symm u) - p (φ.symm v), p' (φ.symm u) - p' (φ.symm v)⟫_ℝ = (0 : ℝ)
-      exact key
+      simpa using key
   -- Linear equiv between the two kernels.
   let kerEquiv : LinearMap.ker (H.RigidityMap (p ∘ φ.symm)) ≃ₗ[ℝ]
       LinearMap.ker (G.RigidityMap p) :=
@@ -221,9 +217,7 @@ theorem IsInfinitesimallyRigid.iso {V W : Type*} [Finite V] [Finite W]
       right_inv := fun _ => Subtype.ext <| funext fun _ => by simp
       map_add' := fun _ _ => rfl
       map_smul' := fun _ _ => rfl }
-  change Module.finrank ℝ (LinearMap.ker (H.RigidityMap (p ∘ φ.symm))) ≤ _
-  rw [kerEquiv.finrank_eq]
-  exact h
+  exact kerEquiv.finrank_eq.le.trans h
 
 /-- Iso transport for generic rigidity: a graph iso preserves generic rigidity. -/
 theorem IsGenericallyRigid.iso {V W : Type*} [Finite V] [Finite W]
@@ -374,7 +368,6 @@ theorem top_fin_two_isGenericallyRigid (d : ℕ) :
   rcases d with _ | d
   · -- d = 0: framework space is zero-dimensional, so any placement is rigid.
     refine ⟨0, ?_⟩
-    change Module.finrank ℝ (LinearMap.ker _) ≤ 0
     have h_total : Module.finrank ℝ (Framework (Fin 2) 0) = 0 := by
       rw [Framework.finrank]; simp
     exact (Submodule.finrank_le _).trans_eq h_total
