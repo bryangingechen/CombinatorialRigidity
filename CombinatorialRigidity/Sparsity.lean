@@ -355,6 +355,17 @@ lemma image_edgesIn_comap (G : SimpleGraph V) {V' : Type*} (f : V' → V) (s' : 
   · rintro ⟨hadj, ⟨u, hu, rfl⟩, ⟨w, hw, rfl⟩⟩
     exact ⟨u, w, rfl, rfl, hadj, hu, hw⟩
 
+/-- Cardinality form of `image_edgesIn_comap`: under an injective vertex map `f`, the edge
+count in the comap is preserved by pushing the index Finset through `f`. Combines
+`Finset.coe_image`, `image_edgesIn_comap`, and `Set.ncard_image_of_injective` (with
+`Sym2.map.injective`) into a single application. -/
+lemma ncard_edgesIn_comap [DecidableEq V] {V' : Type*} (G : SimpleGraph V)
+    {f : V' → V} (hf : Function.Injective f) (s' : Finset V') :
+    ((G.comap f).edgesIn (↑s' : Set V')).ncard =
+      (G.edgesIn (↑(s'.image f) : Set V)).ncard := by
+  rw [Finset.coe_image, ← image_edgesIn_comap,
+      Set.ncard_image_of_injective _ (Sym2.map.injective hf)]
+
 /-- A graph isomorphism preserves `(k, ℓ)`-sparsity. -/
 theorem IsSparse.iso {W : Type*} {G : SimpleGraph V} {H : SimpleGraph W}
     (φ : G ≃g H) {k ℓ : ℕ} (h : G.IsSparse k ℓ) : H.IsSparse k ℓ := by
@@ -388,11 +399,10 @@ theorem IsSparse.comap {V' : Type*} {G : SimpleGraph V} {k ℓ : ℕ} (h : G.IsS
     {f : V' → V} (hf : Function.Injective f) : (G.comap f).IsSparse k ℓ := by
   classical
   intro s' hs'
-  set S : Finset V := s'.image f with hS_def
+  set S : Finset V := s'.image f
   have hS_card : S.card = s'.card := Finset.card_image_of_injective s' hf
-  have h_link : ((G.comap f).edgesIn (↑s' : Set V')).ncard = (G.edgesIn (↑S : Set V)).ncard := by
-    rw [hS_def, Finset.coe_image, ← image_edgesIn_comap,
-        Set.ncard_image_of_injective _ (Sym2.map.injective hf)]
+  have h_link : ((G.comap f).edgesIn (↑s' : Set V')).ncard = (G.edgesIn (↑S : Set V)).ncard :=
+    G.ncard_edgesIn_comap hf s'
   rw [h_link, ← hS_card]
   exact h S (hS_card ▸ hs')
 
@@ -1032,9 +1042,8 @@ theorem IsSparse.typeII_reverse_blocker
     obtain ⟨w, _, hw⟩ := Finset.mem_image.mp hmem
     exact w.2 hw
   -- (G.comap f).edgesIn ↑s' has the same ncard as G.edgesIn ↑S.
-  have h_link : ((G.comap f).edgesIn (↑s' : Set _)).ncard = (G.edgesIn (↑S : Set V)).ncard := by
-    rw [hS_def, Finset.coe_image, ← image_edgesIn_comap,
-        Set.ncard_image_of_injective _ (Sym2.map.injective Subtype.val_injective)]
+  have h_link : ((G.comap f).edgesIn (↑s' : Set _)).ncard = (G.edgesIn (↑S : Set V)).ncard :=
+    G.ncard_edgesIn_comap Subtype.val_injective s'
   -- G's sparsity at S.
   have hS_sparse : (G.edgesIn (↑S : Set V)).ncard + 3 ≤ 2 * S.card := by
     have := h S (by rw [hS_card]; exact hs'_card)
