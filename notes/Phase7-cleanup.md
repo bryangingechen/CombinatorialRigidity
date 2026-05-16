@@ -1,8 +1,11 @@
 # Phase 7 cleanup round — work log
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
-no-fix audits). Bucket B opened: B1 swept (41 sites enumerated below);
-B1 fixes + B2–B7 + C/D outstanding.
+no-fix audits). Bucket B partial: B1 + B2 swept; B1 fix pass *paused*
+pending B2/B5 outcomes (sweep showed B1 sites entangled with B2's
+`[Finite V] → Fintype` bridge and B5's Set-vs-Finset boundary — fixing
+B1 first would mean redoing it after B2/B5). Working order is
+**B2 → B5 → B1 → B3/B4/B6/B7 → C/D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -13,11 +16,26 @@ cleanly.
 
 ## Current state
 
-Bucket A closed. Opened bucket B with the B1 sweep: 41 standalone
-`classical` tactic invocations across 9 source files, enumerated
-under B1 below. Next concrete step is the first B1 fix commit —
-walk the per-site list (likely one commit per file, possibly fewer
-if clusters share a root cause).
+Bucket A closed. B1 + B2 swept. The B1 sample (Laman:83 build
+experiment — removing `classical` fails with `failed to synthesize
+Compl (Finset V)`) confirmed the load-bearing role of `classical` is
+*specifically* to provide `DecidableEq V` for `Finset V` operations
+on graphs the proof is working at `[Finite V]` strength. That same
+shape produces B2 entries (`letI : Fintype V := Fintype.ofFinite V`)
+in the same declarations: every one of the 12 B2 sites is in a
+declaration that *also* carries a B1 `classical` site, and several
+pairs are on adjacent lines (`Sparsity`:1343/1344, 1476/1480;
+`MatroidIdentification`:1035/1036, 1116/1117; `Framework`:131/132,
+242/243).
+
+So the B1 fix pass is **paused**. Next concrete step is the first
+B2 fix commit — pick one declaration that does the type-level
+bridge (`Fintype.ofFinite V`), lift its signature to `[Fintype V]`
+(or `[Fintype V] [DecidableEq V]` if the body uses `DecidableEq V`
+too), and confirm the `classical` underneath becomes vestigial.
+That single fix pattern, repeated across the six type-level bridge
+sites, will then carve B1 down to a smaller residue for the
+eventual B1 fix pass.
 
 ## Architectural choices made up front
 
@@ -203,7 +221,11 @@ Each is a separate commit, root-cause fix preferred.
   `[DecidableEq V]` / `[DecidableRel G.Adj]` at the caller boundary
   remove the need? Or is the `classical` in a noncomputable section
   where there's no point? Goal: eliminate decorative `classical`
-  calls, document load-bearing ones. Sites (enclosing decl named for
+  calls, document load-bearing ones. **Fix pass paused** pending B2
+  / B5 outcomes — see *Current state* and B2's entry; many B1 sites
+  exist *because* the proof bridges `[Finite V] → Fintype` (B2) or
+  works `Finset`-shape where `Set`-shape would suffice (B5), so
+  fixing B1 first is premature. Sites (enclosing decl named for
   greppability):
   - `Sparsity.lean`:205 (`IsSparse.exists_one_le_degree_le_three`),
     271 (`exists_nonadj_among_three_neighbors`),
@@ -248,13 +270,47 @@ Each is a separate commit, root-cause fix preferred.
     242 (`IsInfinitesimallyRigid.eventually`).
   - `Laman.lean`:83 (`IsLaman.two_le_degree`).
   - `CountMatroid.lean`:74 (`countMatroid`, in the `indep_aug` field).
-- [ ] B2: `letI : Fintype V := Fintype.ofFinite V` audit (~10 sites;
-  most in `Sparsity.lean` and `RigidityMatroid.lean`). Same question
-  pattern: should the caller take `[Fintype V]`? If the
-  `[Finite V] → [Fintype V]` bridge happens at five sites in one
-  file, consider lifting it to a single section-opening
-  `variable [Fintype V] [DecidableEq V]` plus `[Finite V]` only
-  where the weaker hypothesis is genuinely wanted.
+- [ ] B2: `[Finite V] → Fintype` bridge audit (12 sites; grep:
+  `letI|haveI` paired with `Fintype.ofFinite|Set.Finite.fintype`).
+  Three sub-patterns surfaced in the sweep:
+  - **(a) Type-level `Fintype V` from `[Finite V]` (6 sites)** —
+    candidate for "lift signature to `[Fintype V]`":
+    - `Sparsity.lean`:1343 (`IsSparse.maxBlock_isTightOn`).
+    - `Sparsity.lean`:1480 (`IsSparse.exists_aug_of_lt_two_mul`).
+    - `MatroidIdentification.lean`:1036
+      (`edgeSet_rowIndependent_iff_isSparse_dim_two`).
+    - `MatroidIdentification.lean`:1117
+      (`IsLaman.exists_rowIndependent_placement` — the A9
+      narrative-bridge shim).
+    - `RigidityMatroid.lean`:161 (`EdgeSetRowIndependent.eventually`).
+    - `RigidityMatroid.lean`:370
+      (`exists_affinelySpanning_of_eventually`).
+  - **(b) Subtype `Fintype G.edgeSet` via `Set.Finite.fintype` (4
+    sites)** — would *not* be eliminated by lifting `[Finite V] →
+    [Fintype V]` since the bridge is for a specific subtype. Likely
+    stay as-is; check whether a mathlib instance covers it:
+    - `Framework.lean`:132 (`rigidityMap_finrank_range_le`).
+    - `Framework.lean`:243 (`IsInfinitesimallyRigid.eventually`).
+    - `RigidityMatroid.lean`:162 (`EdgeSetRowIndependent.eventually`).
+    - `RigidityMatroid.lean`:259
+      (`exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two`).
+  - **(c) Witness-level `Fintype` for a proof-local set (2 sites)**
+    — same shape as (b) but the subtype is a proof-local witness
+    (`I`, `b` for a basis-pick). Likely stay as-is:
+    - `RigidityMatroid.lean`:163 (`EdgeSetRowIndependent.eventually`,
+      `Fintype I` for the placement witness).
+    - `RigidityMatroid.lean`:264
+      (`exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two`,
+      `Fintype ↥b` for the basis).
+
+  The fix pass starts with (a): for each declaration listed there,
+  attempt to lift its `[Finite V]` hypothesis to `[Fintype V]` (plus
+  `[DecidableEq V]` if the body uses `Finset V` operations) and
+  delete the inline `haveI`. The expected secondary effect is that
+  the declaration's `classical` (B1) becomes vestigial — verify and
+  drop it in the same commit. Defer (b) / (c) until after (a) lands
+  (and consider whether `Set.Finite.fintype` should be a project
+  helper rather than an inline `haveI`).
 - [ ] B3: `@[nolint unusedArguments]` / `set_option linter.* false`
   audit. Sites:
   - `Framework.lean`:150 (`@[nolint unusedArguments]` on
