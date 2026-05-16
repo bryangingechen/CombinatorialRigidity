@@ -800,6 +800,46 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero` + `finite_setOf_not_linearIndependent_rows_along_affine_path` (rectangular Gram det + polynomial-along-line)
+- **Where it bit:** Phase 8 target `linearRigidityMatroid_eq_rigidityMatroid`
+  in `LinearRigidityMatroid.lean`, the inductive proof of
+  `exists_uniform_rowIndependent_placement_dim_two`. The blueprint sketch
+  (`lem:exists-uniform-rowIndependent-placement`) is linear-interpolation
+  perturbation over the finite family of `(2, 3)`-sparse subsets: along
+  `p_t := (1 − t) • p₀ + t • q`, each "row-LI on `S` at `p_t`" is the
+  non-vanishing of a polynomial in `t` (the rigidity rows are affine in
+  `t`, the LI/non-LI condition is a polynomial via a Gram-det), nonzero
+  at `t = 0` (IH subfamily) or `t = 1` (new subset), so cofinitely many
+  `t` work.
+- **Friction:** mathlib's `Mathlib/LinearAlgebra/Matrix/NonsingularInverse`
+  carries `Matrix.linearIndependent_rows_iff_isUnit` for **square** matrices
+  (rows LI ↔ unit ↔ det ≠ 0 over a field). The rectangular analogue —
+  "rows of `A : Matrix m n R` LI ↔ `(A * Aᵀ).det ≠ 0`" — is a direct
+  consequence of `Matrix.rank_self_mul_transpose` /
+  `Matrix.rank_eq_finrank_span_row` / `LinearIndependent.rank_matrix`
+  in `Mathlib/LinearAlgebra/Matrix/Rank.lean`, but is not packaged as an
+  iff lemma. The polynomial-along-line corollary (cofiniteness of the
+  bad-`t` set for affine `A + t • B` when LI holds at some `t₀`) similarly
+  isn't packaged.
+- **Resolution:** mirrored as
+  - `Matrix.linearIndependent_rows_iff_rank_eq_card` (iff form of
+    `LinearIndependent.rank_matrix`, over any field): rows LI ↔
+    `A.rank = Fintype.card m`.
+  - `Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero` (over
+    `LinearOrderedField` so `rank_self_mul_transpose` applies): rows
+    LI ↔ `(A * Aᵀ).det ≠ 0`.
+  - `Matrix.finite_setOf_not_linearIndependent_rows_along_affine_path`
+    (ℝ-specific): for `A B : Matrix m n ℝ` and `t₀ : ℝ`, LI of rows at
+    `A + t₀ • B` implies the bad-`t` set has finite complement. Proof
+    routes through the polynomial-entry matrix `P := X • C(B) + C(A)`
+    plus `Q := det(P * Pᵀ)`: `Q.eval t = det((A + t • B) * (A + t • B)ᵀ)`
+    via `(evalRingHom t).map_det` + `Matrix.map_mul` + `Matrix.transpose_map`;
+    `Q ≠ 0` by hypothesis at `t₀`; bad-`t` set ⊆ root set, finite by
+    `Polynomial.finite_setOf_isRoot`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Sits naturally
+  alongside `Matrix.rank_self_mul_transpose` and `LinearIndependent.rank_matrix`.
+
 ### [mirrored] `Finset.mul_card_union_add_mul_card_inter` (`k`-scaled `card_union_add_card_inter`)
 - **Where it bit:** the union-half of `IsTightOn.union_inter`
   (`Sparsity.lean`:432) and step 2 of `IsTightOn.union_with_bonus`

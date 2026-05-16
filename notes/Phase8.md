@@ -21,14 +21,17 @@ Phase opened by a scaffolding commit (`3e7e2e5`), the dep-bump
 landing `apnelson1/Matroid` at revision `e6852cec…` (`6df664c`),
 the **skeleton commit** with `linearRigidityMatroid` + the row-LI
 bridge `linearRigidityMatroid_indep_iff_edgeSetRowIndependent`
-(`8347e54`), and the **scaffolding commit** landing the
+(`8347e54`), the **scaffolding commit** landing the
 uniform-genericity auxiliary
 `SimpleGraph.exists_uniform_rowIndependent_placement_dim_two`
-(sorry-blocked) and the main target
+(sorry-blocked) plus the main target
 `SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid` (proof
-complete *modulo* the auxiliary).
+complete *modulo* the auxiliary), and the **mirror-infrastructure
+commit** landing the rectangular-LI ↔ Gram-det characterization and
+the polynomial-along-line cofinite helper under
+`Mathlib/LinearAlgebra/Matrix/Rank.lean`.
 
-The main theorem's proof is now the clean composition the blueprint
+The main theorem's proof is the clean composition the blueprint
 sketches: pick the uniform-generic `p` from the auxiliary, apply
 `Matroid.ext_indep` (ground sets agree by `rfl` post-unfolding),
 and for each `J ⊆ (⊤).edgeSet` factor `J = Subtype.val '' I` via
@@ -39,22 +42,12 @@ collapse `∃ p', row-LI at p'` via `hp_uniform` composed with Phase 7's
 `edgeSet_rowIndependent_iff_isSparse_dim_two` (⇒) direction.
 
 Next concrete commit: close the `sorry` in
-`exists_uniform_rowIndependent_placement_dim_two`. Blueprint proof
-sketch (linear-interpolation perturbation, `lem:exists-uniform-rowIndependent-placement`):
-induct on the cardinality of the finite family
-`S := {I ⊆ E(K_V) | fromEdgeSet I is (2, 3)-sparse}`; at the
-inductive step, interpolate between the IH witness `p₀` and a fresh
-`q` from `IsSparse.exists_rowIndependent_placement`; each "row-LI
-on S at `p_t`" is the non-vanishing of a polynomial in `t` (the
-rigidity rows are affine in `t`, the LI/non-LI condition is a
-polynomial via a submatrix-det or a Gram-det), nonzero at `t = 0`
-(IH subfamily) or `t = 1` (new subset), so cofinitely many `t`
-suffice. The polynomial-along-a-line input is the main new
-infrastructure: it likely lives as a helper lemma `LinearIndepOn`
-- or `LinearIndependent`-shaped, generic over the affine family,
-with the existing `Polynomial.finite_setOf_isRoot` /
-`Polynomial.eval_det_X_add_C` pattern from
-`exists_affinelySpanning_of_eventually` as the template.
+`exists_uniform_rowIndependent_placement_dim_two` by induction on
+the finite family of `(2, 3)`-sparse subsets, applying the polynomial-
+along-line mirror at each inductive step. The mirror infrastructure
+is already in place (see `notes/FRICTION.md` *Mirrored →
+`Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero` +
+`finite_setOf_not_linearIndependent_rows_along_affine_path`*).
 
 ## Architectural choices made up front
 
@@ -144,6 +137,21 @@ are formalized.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+
+- **Polynomial-along-line via rectangular Gram det, not minors.** The
+  natural form of "LI cofinitely along an affine line `M(t) = A + t • B`"
+  is "the bad-`t` set is finite when LI holds at some `t₀`". This breaks
+  into two mathlib gaps: (i) a rectangular analogue of
+  `Matrix.linearIndependent_rows_iff_isUnit`, namely "rows of `M` LI
+  ↔ `(M * Mᵀ).det ≠ 0`" over `LinearOrderedField`; (ii) the cofiniteness
+  via `Polynomial.finite_setOf_isRoot` applied to
+  `det((X • C(B) + C(A)) * (X • C(B) + C(A))ᵀ)`. The Gram-det route was
+  chosen over a minor-based "∃ |ι|×|ι| nonzero submatrix" route because
+  `Matrix.rank_self_mul_transpose` already exists in mathlib (over
+  `LinearOrderedField`), bridging rectangular rank to a square unit
+  question with no new minor-rank machinery. Both pieces landed as
+  upstream-eligible mirrors in
+  `CombinatorialRigidity/Mathlib/LinearAlgebra/Matrix/Rank.lean`.
 
 - **Extension by zero off the edge set via `Function.extend`.** The
   underlying row function of `linearRigidityMatroid V d p` extends
