@@ -1,6 +1,7 @@
 # Phase 7 cleanup round — work log
 
-**Status:** in progress. A1 done; A2–A11, B*, C*, D* outstanding.
+**Status:** in progress. A1 (fix) + A3/A4/A6 (no-fix audits) done;
+A2/A5/A7/A8/A9/A10/A11, B*, C*, D* outstanding.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -11,10 +12,10 @@ cleanly.
 
 ## Current state
 
-Working through bucket A. A1 (intro.tex phase-plan / red-leaves
-prose) is fixed and committed. Next: any unchecked A2–A11 item, then
-B/C/D. The A9 sweep flagged one orphan red corollary
-(`cor:isLaman-exists-rowIndependent`) — defer to that bucket.
+Working through bucket A. A1 fixed; A3 / A4 / A6 audited clean (no
+divergence). Remaining A-tasks: A2 (largest), A5, A7, A8, A9, A10,
+A11. Then B/C/D. The A9 sweep flagged one orphan red corollary
+(`cor:isLaman-exists-rowIndependent`) to handle in A9.
 
 ## Architectural choices made up front
 
@@ -58,22 +59,38 @@ attempt for any flagged divergence.
   choices* re. `DecidablePred`/`SemilatticeSup` friction) is a
   candidate "prose aside" — does the chapter currently elide it,
   flag it, or get it wrong?
-- [ ] A3: `chapter/laman.tex` ↔ `Laman.lean`. Small chapter.
-- [ ] A4: `chapter/henneberg.tex` ↔ `Henneberg.lean`. Phase 3 + Phase
+- [x] A3: `chapter/laman.tex` ↔ `Laman.lean`. Small chapter. Six
+  pinned declarations all present in Laman.lean; statement forms
+  (`IsLaman = IsTight 2 3` unfolds to "sparse + global tightness"),
+  iso transport (specialisation of `IsTight.iso`), `K_2` base case,
+  and the two degree lemmas all match the prose. No fix required.
+- [x] A4: `chapter/henneberg.tex` ↔ `Henneberg.lean`. Phase 3 + Phase
   7 reflow (flat-form decomposition, public iso constructors). Watch
   for: blueprint statement-form aside that DESIGN.md *Statement-form
   conventions* now codifies; check the chapter wording still matches
-  DESIGN.md's wording.
+  DESIGN.md's wording. All 12 pinned declarations resolve; statement
+  forms (`typeI_edgeSet` via `Sym2.map some ''`, both preservation
+  thms, `typeI_isLaman_iff`, the flat-form reverse decomposition with
+  iso constructors `typeI_iso_of_two_neighbors` /
+  `typeII_iso_of_three_neighbors`) match prose. Chapter's "flat /
+  operation" wording (lines 14–21, 278–286) is consistent with
+  DESIGN.md *Statement-form conventions*. Cross-refs to
+  `sec:rigidity-matroid-lifts` and `sec:laman-theorem` resolve. No
+  fix required.
 - [ ] A5: `chapter/frameworks.tex` ↔ `Framework.lean`. Phase 4 + Phase
   5 (`IsGenericallyRigidInj`, openness, iso transport) + Phase 7
   generalisations (`exists_affinelySpanning_of_eventually` renamed,
   property-polymorphic). Watch for the rename: blueprint label
   `lem:exists-affinelySpanning-of-eventually` should match.
-- [ ] A6: `chapter/trivial-motions.tex` ↔ `TrivialMotions.lean`.
+- [x] A6: `chapter/trivial-motions.tex` ↔ `TrivialMotions.lean`.
   Phase 6 milestone; check `elemSkewMap_ofLp_inr_apply` aside if any
   (the Commit 10 collapse from 6 lines to 1 is exactly the kind of
   "Lean now matches math" simplification we want — does the chapter
-  reflect the simpler proof?).
+  reflect the simpler proof?). All 13 pinned declarations resolve.
+  Chapter does not name `elemSkewMap_ofLp_inr_apply` (that helper is
+  a Lean-internal coordinate accessor); the linear-independence proof
+  prose is abstract enough that the Commit 10 collapse left no prose
+  to update. No fix required.
 - [ ] A7: `chapter/henneberg-rigidity.tex` ↔ `HennebergRigidity.lean`.
 - [ ] A8: `chapter/laman-theorem.tex` ↔ `LamanTheorem.lean`. Watch
   for: Phase 6's `LamanTheorem` ⇒ direction; the Phase 7 inlining of
@@ -196,6 +213,13 @@ checkbox.)*
   closed. Sweep also surfaced `cor:isLaman-exists-rowIndependent`
   as an orphan red node (no `\lean{...}`, no other `\uses{}` cite);
   filed under A9 rather than fixed here to keep A1 narrowly scoped.
+- **A3 / A4 / A6 — no-divergence sweep.** Three small/medium chapters
+  audited and recorded as [x] with no fix. Each chapter's
+  `\lean{...}` pins all resolve, statement forms match the Lean,
+  and proof prose stays at the math abstraction level (no leakage of
+  internal helper names like `elemSkewMap_ofLp_inr_apply`).
+  henneberg.tex's flat-form / iso-constructor wording is consistent
+  with DESIGN.md *Statement-form conventions*.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
