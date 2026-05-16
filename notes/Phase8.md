@@ -17,14 +17,18 @@ duplicate the dep-graph.
 
 ## Current state
 
-Phase opened by a scaffolding commit (this file + ROADMAP Status
-table + §8 plan; no Lean changes). Next concrete commit adds
-`apnelson1/Matroid` to `lakefile.toml` and runs `lake update` so
-the manifest pins resolve, then runs `lake build` to confirm the
-new dep imports cleanly alongside mathlib. After the dep lands, the
-first Lean commit opens `CombinatorialRigidity/LinearRigidityMatroid.lean`
+Phase opened by a scaffolding commit (`3e7e2e5`), followed by the
+dep bump landing `apnelson1/Matroid` at revision `e6852cec…` (commit
+*to land next*). `lake build Matroid.Representation.Map` and
+`lake build CombinatorialRigidity.MatroidIdentification` both green
+post-bump, so the 179-commit mathlib-pin gap (apnelson1's `1b045b9…`
+→ ours `21b745fd…`) didn't break apnelson1's API.
+
+Next concrete commit: open `CombinatorialRigidity/LinearRigidityMatroid.lean`
 with the `linearRigidityMatroid` definition skeleton via
-`Matroid.ofFun`.
+`Matroid.ofFun`, plus the *Linear-matroid framing* section in
+`blueprint/src/chapter/rigidity-matroid.tex` carrying the
+dep-graph for the new section.
 
 ## Architectural choices made up front
 
@@ -118,20 +122,25 @@ are formalized.
 
 ## Blockers / open questions
 
-- **apnelson1/Matroid pin drift.** Phase 6 confirmed matching
-  toolchain pin at commit `5f11c6b` (2026-05-13). If `lake update`
-  surfaces a pin mismatch, options are: bump our mathlib pin to
-  match, pin apnelson1 to an older revision matching ours, or
-  vendor `Matroid.ofFun` under our `Mathlib/` mirror. Track in a
-  blocker entry if this comes up.
+- ~~**apnelson1/Matroid pin drift.**~~ **Resolved at dep-bump
+  commit.** Pinned to `e6852cec…`; `lake build Matroid.Representation.Map`
+  green against our mathlib `21b745fd…` despite the 179-commit
+  forward gap. Pin-drift recurrence is now in `DESIGN.md` *Choices
+  to revisit → Phase 8: `apnelson1/Matroid` dependency* as a
+  "watch this on every mathlib bump" reminder.
 
-- **Ground-set shape of `Matroid.ofFun`.** If `Matroid.ofFun`'s
-  ground set is `Set α` (for the function's domain) and our
-  `G.rigidityRow` is indexed by `G.edgeSet : Set (Sym2 V)`, the
-  linear matroid lands on `Set (Sym2 V)` and matches
-  `rigidityMatroid V` directly — equality, not iso. If instead it
-  lands on a subtype, an extensionality / restriction step
-  intervenes. To be confirmed once the dep is in.
+- ~~**Ground-set shape of `Matroid.ofFun`.**~~ **Resolved.**
+  Signature is `Matroid.ofFun (𝔽 : Type*) [DivisionRing 𝔽]
+  [Module 𝔽 W] (E : Set α) (f : α → W) : Matroid α` (in
+  `Matroid/Representation/Map.lean`). Ground set is `E`. For our
+  purposes the linear matroid lands on `Sym2 V` with ground set
+  `(⊤ : SimpleGraph V).edgeSet`, matching `rigidityMatroid V`'s
+  ground set exactly — package equality is the right target.
+  `Matroid.ofFun` requires an `f` defined on all of `α = Sym2 V`,
+  not just `G.edgeSet`; extending `G.rigidityRow p` by zero off
+  `G.edgeSet` is the obvious move (the bridge lemma will then
+  identify the two matroids' independent sets via
+  `rigidityMatroid_indep_iff_edgeSetRowIndependent`).
 
 - **Mathlib upstream of `Matroid.ofFun`.** If `Matroid.ofFun` lands
   in mathlib during the phase (apnelson1's matroid library has been

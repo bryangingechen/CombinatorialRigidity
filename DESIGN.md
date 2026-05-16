@@ -477,14 +477,19 @@ to a fixed section above once a question is answered.
   same cost mathlib pays. The audit's value is **verification that
   the project already follows mathlib style**; no API changes
   needed. The 12 bridge sites and 41 `classical` calls all stay.
-- **Phase 8: `apnelson1/Matroid` dependency.** Phase 7 ships the
-  combinatorial $(k, \ell)$-count matroid using only mathlib's
-  `IndepMatroid.ofFinite`; Phase 8 will package the planar rigidity
-  matroid in its linear-algebra form (the `Matroid.ofFun` at a
-  generic placement, with Lov\'asz--Yemini as a matroid iso). The
-  linear-matroid framework lives in `apnelson1/Matroid` (cf. the
-  Phase 6 investigation in `notes/Phase6.md` *Architectural choices*,
-  closed at commit `5f11c6b`). Open: pin a specific revision when
-  the dep lands; track upstream merges into mathlib as they happen.
-  Risk: extra toolchain pin to track, though the Phase 6 audit found
-  the pin matched ours exactly.
+- ~~**Phase 8: `apnelson1/Matroid` dependency.**~~ **Resolved (Phase 8
+  open):** added to `lakefile.toml` at revision
+  `e6852cec65742d1ddce7a66122f842b791b1dd37` (apnelson1/Matroid
+  HEAD at the time of landing). Provides `Matroid.ofFun` and
+  `Module.matroid` in `Matroid/Representation/Map.lean`; builds
+  clean against our mathlib pin (`21b745fd…`) despite a 179-commit
+  forward gap, so the Phase 6 investigation's prediction held. The
+  alternatives — mirror `Matroid.Representation.Map` under our
+  `Mathlib/` mirror, or rebuild `Matroid.ofFun` directly on mathlib's
+  `IndepMatroid.ofFinitaryCardAugment` — were both considered and
+  rejected at the Phase 8 opener (see `notes/Phase8.md`
+  *Architectural choices made up front*). **Still open:** track
+  upstream merges of `Matroid.ofFun` into mathlib (which would
+  obsolete the dep) and re-evaluate the pin whenever mathlib is
+  bumped — apnelson1's master tracks mathlib master, so a stale pin
+  drifting behind ours is the recurrent failure mode to watch.

@@ -27,5 +27,18 @@ name = "checkdecls"
 git = "https://github.com/PatrickMassot/checkdecls.git"
 rev = "master"
 
+# Phase 8: linear-matroid framing. `apnelson1/Matroid` provides
+# `Matroid.ofFun` and `Module.matroid` (the matroid of a linear
+# function), which sit on top of mathlib's `IndepMatroid.ofFinitaryCardAugment`
+# but aren't yet upstreamed. Pinned to a specific revision so future
+# `lake update` runs are deliberate; the lakefile's mathlib pin
+# takes precedence over the transitive one from this dep. See
+# `notes/Phase8.md` *Architectural choices made up front* and
+# `DESIGN.md` *Phase 8: `apnelson1/Matroid` dependency*.
+[[require]]
+name = "Matroid"
+git = "https://github.com/apnelson1/Matroid.git"
+rev = "e6852cec65742d1ddce7a66122f842b791b1dd37"
+
 [[lean_lib]]
 name = "CombinatorialRigidity"
