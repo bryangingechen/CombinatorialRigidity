@@ -86,21 +86,6 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     ⟨Sym2.map some e'.val, hlift_mem e'⟩ with hlift_def
   have hlift_some_inj : Function.Injective lift_some := fun _ _ heq =>
     Subtype.ext (Sym2.map.injective (Option.some_injective V) (Subtype.ext_iff.mp heq))
-  -- The restriction map, surjective by injectivity of `some`. Its `dualMap` pulls linear
-  -- independence of `G'`-rows back to linear independence of the lifted `typeI`-rows
-  -- via `LinearIndependent.dualMap_of_surjective`.
-  set restrictMap : Framework (Option V) 2 →ₗ[ℝ] Framework V 2 :=
-    LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin 2)) (some : V → Option V)
-  have h_restrict_surj : Function.Surjective restrictMap :=
-    LinearMap.funLeft_surjective_of_injective _ _ _ (Option.some_injective V)
-  -- Factoring: old typeI rows = `restrictMap.dualMap` of G' rows.
-  have h_factor : ∀ e' : G'.edgeSet,
-      (typeI G' a b).rigidityRow p_ext (lift_some e') =
-        restrictMap.dualMap (G'.rigidityRow p' e') := by
-    intro e'
-    refine LinearMap.ext fun x => ?_
-    obtain ⟨e, he⟩ := e'
-    induction e with | h u v => rfl
   -- New edges in `(typeI _).edgeSet`.
   have hnewA_mem : s((none : Option V), some a) ∈ (typeI G' a b).edgeSet := by simp
   have hnewB_mem : s((none : Option V), some b) ∈ (typeI G' a b).edgeSet := by simp
@@ -131,16 +116,11 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
   refine LinearIndepOn.mono ?_ h_cover
   -- Three pieces: LI on old, LI on new, disjoint spans.
   refine LinearIndepOn.union ?_ ?_ ?_
-  · -- LI on `oldSet`: factor through `restrictMap.dualMap` and pull back G'-row LI.
+  · -- LI on `oldSet`: factoring through `(LinearMap.funLeft _ some).dualMap`.
     rw [linearIndepOn_range_iff hlift_some_inj]
-    have h_eq : (typeI G' a b).rigidityRow p_ext ∘ lift_some =
-        restrictMap.dualMap ∘ G'.rigidityRow p' := funext h_factor
-    rw [h_eq]
-    have h_li_G' : LinearIndependent ℝ (G'.rigidityRow p') := by
-      rw [← linearIndepOn_univ_iff,
-          ← edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
-      exact h
-    exact h_li_G'.dualMap_of_surjective h_restrict_surj
+    exact linearIndependent_rigidityRow_lift_of_injective
+      (some : V → Option V) (Option.some_injective V) (fun _ => rfl)
+      id Function.injective_id hlift_mem h
   · -- LI on `newSet = {newEdgeA, newEdgeB}`: derive coefficients zero via `hLI`.
     rw [show newSet = ({newEdgeA, newEdgeB} : Set _) from rfl,
       LinearIndepOn.pair_iff _ hAB_ne]
