@@ -1,7 +1,7 @@
 # Phase 7 cleanup round — work log
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
-no-fix audits). Bucket B partial: B1 + B2 swept; typeclass-shape
+no-fix audits). Bucket B partial: B1 + B2 + B5 closed; typeclass-shape
 design decision **resolved (follow mathlib style: `[Finite V]` +
 inline bridge as idiom)**. Two earlier resolution iterations
 ("uniform `[Fintype V]`", then per-declaration "state at typeclass
@@ -11,9 +11,12 @@ opposite direction of both alternatives, and mathlib's own corpus
 follows the inline-bridge pattern. B2 closes as no-change (audit
 confirms the existing project pattern matches mathlib idiom).
 B5 closes similarly (the existing `Set.ncard over Finset.card`
-convention is mathlib-aligned). B1 per-site vestigial check (do any
-of the 41 `classical` calls disappear cleanly?) remains as a real
-sub-task. Subsequent work order: **B1 → B3/B4/B6/B7 → C/D**.
+convention is mathlib-aligned). B1 per-site vestigial check
+**closed**: 20 of 49 standalone `classical` calls were vestigial and
+deleted (17 of 42 in project source + 3 of 7 in `Mathlib/` mirror);
+the remaining 29 are load-bearing (provide `DecidableEq` for
+`Finset` ops / `Compl` / `rcases` on `Decidable` data, or
+`DecidableRel G.Adj`). Subsequent work order: **B3/B4/B6/B7 → C/D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -24,14 +27,17 @@ cleanly.
 
 ## Current state
 
-Bucket A closed. B1 + B2 swept. The B1 sample (Laman:83 build
-experiment — removing `classical` fails with `failed to synthesize
-Compl (Finset V)`) confirmed the load-bearing role of `classical` is
-*specifically* to provide `DecidableEq V` for `Finset V` operations
-on graphs the proof is working at `[Finite V]` strength; the same
-shape produces B2 entries (`letI : Fintype V := Fintype.ofFinite V`)
-in the same declarations, with B5's Set-vs-Finset boundary as the
-third face of the same root cause.
+Bucket A closed. B1 + B2 + B5 closed. The B1 per-site audit
+confirmed the design hypothesis: 29 of 49 `classical` sites
+(~59%) are load-bearing in the expected mathlib-idiom way
+(providing `DecidableEq` for `Finset` ops / `Compl` / `rcases`
+on `Decidable` data, or `DecidableRel G.Adj`); the remaining 20
+(~41%) were vestigial decorative calls whose bodies only touch
+`Module`/`LinearMap`/`Set`/affine-span/polynomial APIs that
+don't need decidability. All 20 vestigial sites deleted (17 in
+project source + 3 in `Mathlib/` mirror); `lake build` and
+`lake lint` pass clean. Next concrete step: B3 (`@[nolint]`/
+`set_option linter.* false` audit).
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -43,7 +49,7 @@ mathematical claim, maximum generality*: weaker hypothesis ⇒ more
 general theorem.
 
 Resolution arc: opened as an open *Choices to revisit* entry after
-the B1+B2 sweeps surfaced 41+12 sites. First iteration proposed
+the B1+B2 sweeps surfaced 42+12 sites. First iteration proposed
 uniform `[Fintype V]` (rejected after re-weighting the pebble-game
 forward-compatibility argument). Second iteration proposed per-
 declaration "state at typeclass body uses" with targeted lift of
@@ -56,13 +62,14 @@ no signature changes needed. Full discussion in `DESIGN.md`
 *Typeclass shape for finiteness on `V`*; brief in `ROADMAP.md`
 *Engineering conventions → Vertex types*.
 
-Next concrete step: B1 per-site vestigial-check. Walk the 41
-`classical` sites and identify any that are not load-bearing
-(can be deleted without breaking the build). Per the mathlib
-idiom, expect most/all to be load-bearing (paired with inline
-`Fintype.ofFinite V` bridges or `Finset V` operations); cleanup
-target is just the vestigial residue. After B1, move to B3 /
-B4 / B6 / B7 / C / D.
+B1 per-site vestigial-check **closed**. Of the 49 standalone
+`classical` calls (42 in project source + 7 in `Mathlib/`
+mirror), 20 (~41%) were vestigial and deleted, 29 (~59%)
+confirmed load-bearing per the mathlib-idiom pattern. The 41%
+vestigial fraction was higher than the pre-audit expectation
+("most/all load-bearing"); see *Decisions made → B1* below for
+the heuristic that emerged. Subsequent work order: B3 / B4 /
+B6 / B7 / C / D.
 
 ## Architectural choices made up front
 
@@ -243,66 +250,37 @@ attempt for any flagged divergence.
 
 Each is a separate commit, root-cause fix preferred.
 
-- [ ] B1: `classical` audit (41 standalone-tactic sites; grep:
-  `^[[:space:]]*classical[[:space:]]*$`). For each: does adding
-  `[DecidableEq V]` / `[DecidableRel G.Adj]` at the caller boundary
-  remove the need? Or is the `classical` in a noncomputable section
-  where there's no point? Goal: eliminate decorative `classical`
-  calls, document load-bearing ones. Under the resolved mathlib-
-  style convention, B2's lift didn't happen (closed as no-change),
-  so the B1 picture is: each `classical` either pairs with an
-  inline `Fintype.ofFinite V` bridge (load-bearing: provides
-  `DecidableEq V` for `Finset V` ops in the proof body) or sits
-  alone in a `[Fintype V]`-stated declaration that uses `Finset V`
-  ops (load-bearing: provides `DecidableEq V` directly). Expected
-  audit outcome: most/all sites load-bearing; the cleanup target
-  is just the vestigial residue (if any). Concrete test: per-file,
-  comment-out each `classical` and `lake build`; restore the
-  load-bearing ones, leave the vestigial ones deleted. Sites
-  (enclosing decl named for greppability):
-  - `Sparsity.lean`:205 (`IsSparse.exists_one_le_degree_le_three`),
-    271 (`exists_nonadj_among_three_neighbors`),
-    361 (`IsSparse.iso`), 389 (`IsSparse.comap`),
-    630 (`no_isTightOn_excluding_three_neighbors`),
-    695 (`contradiction_one_pair`),
-    742 (`contradiction_two_pair`),
-    809 (`contradiction_three_pair`),
-    1017 (`typeII_reverse_blocker`),
-    1157 (`exists_typeI_or_typeII_reverse`),
-    1344 (`maxBlock_isTightOn`),
-    1476 (`exists_aug_of_lt_two_mul`).
-  - `MatroidIdentification.lean`:71
-    (`typeI_edgeSetRowIndependent_extend`),
-    231 (`typeI_pendant_edgeSetRowIndependent_extend`),
-    405 (`typeII_edgeSetRowIndependent_extend`),
-    748 (`exists_nonCollinear_rowIndependent_placement_dim_two`),
-    884 (`exists_distinct_rowIndependent_placement_dim_two`),
-    952 (`IsSparse.exists_rowIndependent_placement`),
-    1035 (`edgeSet_rowIndependent_iff_isSparse_dim_two`),
-    1116 (`IsLaman.exists_rowIndependent_placement` — the A9
-    narrative-bridge shim).
-  - `Henneberg.lean`:211 (`typeI_edgesIn_ncard_decomp`),
-    232 (`typeI_isLaman`), 284 (`typeI_reverse_isLaman`),
-    348 (`typeII_edgesIn_ncard_decomp`), 374 (`typeII_isLaman`),
-    565 (`IsLaman.exists_typeI_or_typeII_reverse`).
-  - `RigidityMatroid.lean`:107 (`EdgeSetRowIndependent.iso`),
-    160 (`EdgeSetRowIndependent.eventually`),
-    197 (`span_range_rigidityRow`),
-    258 (`exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two`),
-    369 (`exists_affinelySpanning_of_eventually`),
-    523 (`isSparse_of_edgeSetRowIndependent_dim_two`).
-  - `HennebergRigidity.lean`:131
-    (`typeI_isInfinitesimallyRigid_extend`),
-    206 (`exists_off_line_off_finite_dim_two`),
-    312 (`typeII_isInfinitesimallyRigid_extend`),
-    490 (`exists_nonCollinear_rigid_placement_dim_two`).
-  - `LamanTheorem.lean`:75
-    (`IsLaman.isGenericallyRigidInj_two_of_card`),
-    154 (`IsGenericallyRigid.exists_isLaman_le`).
+- [x] B1: `classical` audit (49 standalone-tactic sites; 42 in
+  project source + 7 in `Mathlib/` mirror; grep:
+  `^[[:space:]]*classical[[:space:]]*$`). **Result: 20 vestigial
+  (deleted), 29 load-bearing (kept).** Per-site test was
+  comment-out + `lake build`. Vestigial sites in project source:
+  - `LamanTheorem.lean`:154 (`exists_isLaman_le`).
   - `Framework.lean`:131 (`rigidityMap_finrank_range_le`),
     242 (`IsInfinitesimallyRigid.eventually`).
-  - `Laman.lean`:83 (`IsLaman.two_le_degree`).
-  - `CountMatroid.lean`:74 (`countMatroid`, in the `indep_aug` field).
+  - `HennebergRigidity.lean`:131 (`typeI_isInfinitesimallyRigid_extend`),
+    312 (`typeII_isInfinitesimallyRigid_extend`).
+  - `Henneberg.lean`:211 (`typeI_edgesIn_ncard_decomp`),
+    232 (`typeI_isLaman`),
+    348 (`typeII_edgesIn_ncard_decomp`),
+    374 (`typeII_isLaman`).
+  - `RigidityMatroid.lean`:107 (`EdgeSetRowIndependent.iso`),
+    160 (`EdgeSetRowIndependent.eventually`),
+    258 (`exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two`).
+  - `MatroidIdentification.lean`:71 (`typeI_edgeSetRowIndependent_extend`),
+    231 (`typeI_pendant_edgeSetRowIndependent_extend`),
+    1035 (`edgeSet_rowIndependent_iff_isSparse_dim_two`),
+    1116 (`IsLaman.exists_rowIndependent_placement` shim).
+  - `Sparsity.lean`:1476 (`exists_aug_of_lt_two_mul`).
+
+  Vestigial sites in `Mathlib/` mirror:
+  - `Mathlib/Data/Set/Card.lean`:60 (`exists_injective_fin_of_le_ncard`).
+  - `Mathlib/Data/Finset/Option.lean`:38 (`card_eraseNone_add_one_of_mem`).
+  - `Mathlib/LinearAlgebra/Vandermonde.lean`:51 (`det_powerDifferences`).
+
+  Load-bearing sites (29) provide `DecidableEq` (for `Finset` ops
+  / `Compl` / `rcases` on `Decidable` data) or `DecidableRel G.Adj`.
+  See *Decisions made → B1* below for the heuristic.
 - [x] B2: `[Finite V] → Fintype` bridge audit (12 sites; grep:
   `letI|haveI` paired with `Fintype.ofFinite|Set.Finite.fintype`,
   plus 4 `have` variants the original sweep missed at
@@ -519,8 +497,23 @@ checkbox.)*
   ("uniform `[Fintype V]`", then per-declaration "state at
   typeclass body uses") were considered and reversed; the third
   iteration matches mathlib style (enforced by the
-  `unusedFintypeInType` env linter). B2 + B5 close as no-change;
-  B1 per-site vestigial-check remains as a discrete sub-task.
+  `unusedFintypeInType` env linter). B2 + B5 closed as no-change;
+  B1 closed with 17 vestigial deletions + 25 load-bearing kept.
+
+- **B1 audit heuristic (decorative-`classical` indicator).** A
+  standalone `classical` in a proof body is vestigial iff the body
+  touches only `Module` / `LinearMap` / `Set` / affine-span /
+  topology / polynomial APIs (no `Finset` ops, no `Compl`, no
+  `rcases` / `by_cases` on `Decidable` data, no `DecidableRel G.Adj`
+  -needing graph-degree work). Where the body uses
+  `Set.Finite.fintype` to bridge to a subtype-level `Fintype
+  G.edgeSet`, the bridge is classical-internal and an outer
+  `classical` is redundant. This matches mathlib's idiom:
+  `classical` is reserved for proofs that actually need
+  `Decidable` data, not as decorative scaffolding. 20 of 49
+  audited sites (~41%) fit the vestigial pattern — a higher
+  fraction than expected pre-audit. Worth a brief note in
+  `TACTICS-GOLF.md` for future Lean writing.
 
 ### Cleanup pass summaries
 

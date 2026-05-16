@@ -128,7 +128,6 @@ theorem rigidityMap_ker_mono {G G' : SimpleGraph V} (h : G ≤ G') (p : Framewor
 /-- The rank of the rigidity map is bounded by the number of edges. -/
 theorem rigidityMap_finrank_range_le [Finite V] (G : SimpleGraph V) (p : Framework V d) :
     Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) ≤ G.edgeSet.ncard := by
-  classical
   haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
   calc Module.finrank ℝ (LinearMap.range (G.RigidityMap p))
       ≤ Module.finrank ℝ (G.edgeSet → ℝ) := Submodule.finrank_le _
@@ -239,7 +238,6 @@ on both `p₀` and the nearby `p`, this gives the kernel-dim bound. -/
 theorem IsInfinitesimallyRigid.eventually [Fintype V] {G : SimpleGraph V}
     {p₀ : Framework V d} (h₀ : G.IsInfinitesimallyRigid p₀) :
     ∀ᶠ p in 𝓝 p₀, G.IsInfinitesimallyRigid p := by
-  classical
   haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
   set r := Module.finrank ℝ (LinearMap.range (G.RigidityMap p₀)) with hr_def
   -- Lift a basis of `LinearMap.range (G.RigidityMap p₀)` to preimages.

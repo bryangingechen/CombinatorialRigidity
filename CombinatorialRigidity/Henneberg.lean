@@ -208,7 +208,6 @@ private lemma typeI_edgesIn_ncard_decomp [Finite V] (G : SimpleGraph V) (a b : V
       (G.edgesIn (↑s.eraseNone : Set V)).ncard +
       (({s(none, some a), s(none, some b)} : Set (Sym2 (Option V))) ∩
         ((↑s : Set (Option V)).sym2)).ncard := by
-  classical
   set T : Set (Sym2 (Option V)) :=
     ({s(none, some a), s(none, some b)} : Set _) ∩ ((↑s : Set (Option V)).sym2)
   have h_decomp : (typeI G a b).edgesIn (↑s : Set (Option V)) =
@@ -229,7 +228,6 @@ sparsity is by case analysis on `none ∈ s` and on the cardinality of `s.eraseN
 some-preimage `s'`). -/
 theorem typeI_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman)
     {a b : V} (hab : a ≠ b) : (typeI G a b).IsLaman := by
-  classical
   have : Fintype V := Fintype.ofFinite V
   refine ⟨fun s hs_pre => ?_, ?_⟩
   · -- Sparsity. `s' := s.eraseNone` is the some-preimage; `T` is the fresh edges in `↑s`.
@@ -345,7 +343,6 @@ private lemma typeII_edgesIn_ncard_decomp [Finite V] (G : SimpleGraph V) (a b c 
       (G.edgesIn (↑s.eraseNone : Set V) \ {s(a, b)}).ncard +
       (({s(none, some a), s(none, some b), s(none, some c)} : Set (Sym2 (Option V))) ∩
         ((↑s : Set (Option V)).sym2)).ncard := by
-  classical
   set T' : Set (Sym2 (Option V)) :=
     ({s(none, some a), s(none, some b), s(none, some c)} : Set _) ∩
       ((↑s : Set (Option V)).sym2)
@@ -371,7 +368,6 @@ to 3), or it wasn't (loses 0, but then one of `a, b` is outside `s'` so gains at
 theorem typeII_isLaman [Finite V] {G : SimpleGraph V} (h : G.IsLaman) {a b c : V}
     (hab : a ≠ b) (hca : c ≠ a) (hcb : c ≠ b) (hG_ab : G.Adj a b) :
     (typeII G a b c).IsLaman := by
-  classical
   have : Fintype V := Fintype.ofFinite V
   refine ⟨fun s hs_pre => ?_, ?_⟩
   · -- Sparsity. `s' := s.eraseNone` is the some-preimage; `T'` is the fresh edges in `↑s`.

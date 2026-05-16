@@ -68,7 +68,6 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     {a b : V} {q : EuclideanSpace ℝ (Fin 2)}
     (hLI : LinearIndependent ℝ ![q - p' a, q - p' b]) :
     (typeI G' a b).EdgeSetRowIndependent (fun w : Option V => w.elim q p') Set.univ := by
-  classical
   set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p' with hp_ext_def
   -- `hLI` implies `a ≠ b` (otherwise `![v, v]` is dependent).
   have hab : a ≠ b := by
@@ -228,7 +227,6 @@ theorem typeI_pendant_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     {p' : Framework V 2} (h : G'.EdgeSetRowIndependent p' Set.univ)
     {a : V} {q : EuclideanSpace ℝ (Fin 2)} (hq : q ≠ p' a) :
     (typeI G' a a).EdgeSetRowIndependent (fun w : Option V => w.elim q p') Set.univ := by
-  classical
   set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p' with hp_ext_def
   rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
   -- Lift G' edges to typeI edges via `Sym2.map some`.
@@ -1032,7 +1030,6 @@ theorem edgeSet_rowIndependent_iff_isSparse_dim_two {V : Type*} [Finite V]
     (G : SimpleGraph V) (I : Set G.edgeSet) :
     (∃ p : Framework V 2, G.EdgeSetRowIndependent p I) ↔
       (fromEdgeSet (Subtype.val '' I) : SimpleGraph V).IsSparse 2 3 := by
-  classical
   haveI : Fintype V := Fintype.ofFinite V
   refine ⟨?_, ?_⟩
   · -- (⇒) Perturb the row-LI witness to be affinely-spanning, then apply the easy direction.
@@ -1113,7 +1110,6 @@ sentinel) is documented in `CombinatorialRigidity/CLAUDE.md` *Engineering conven
 theorem _root_.SimpleGraph.IsLaman.exists_rowIndependent_placement
     {V : Type*} [Finite V] {H : SimpleGraph V} (h : H.IsLaman) :
     ∃ p : Framework V 2, H.EdgeSetRowIndependent p Set.univ := by
-  classical
   haveI : Fintype V := Fintype.ofFinite V
   exact IsSparse.exists_rowIndependent_placement _ rfl h.isSparse
 

@@ -48,7 +48,6 @@ R` defined by the moment curve `p i = (v i, v i^2, …, v i^n)`. -/
 theorem det_powerDifferences {n : ℕ} {R : Type*} [CommRing R] (v : Fin (n + 1) → R) :
     (Matrix.of (fun i j : Fin n => v i.succ ^ (j.val + 1) - v 0 ^ (j.val + 1))).det =
       ∏ i : Fin (n + 1), ∏ j ∈ Finset.Ioi i, (v j - v i) := by
-  classical
   -- Trivial ring: both sides are `0`.
   nontriviality R
   -- Strategy: realize `M` as the `(Fin.succ, Fin.succ)`-minor of the

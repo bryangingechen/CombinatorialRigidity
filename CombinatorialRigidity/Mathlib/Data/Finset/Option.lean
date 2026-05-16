@@ -35,7 +35,6 @@ the some-elements of `s` plus the `none` itself recover `#s`. Phrased without
 `ℕ`-subtraction so that `omega` and `grind` can chain it directly. -/
 theorem card_eraseNone_add_one_of_mem {s : Finset (Option α)} (h : none ∈ s) :
     s.eraseNone.card + 1 = s.card := by
-  classical
   rw [card_eraseNone_of_mem h, Nat.sub_add_cancel (Finset.card_pos.mpr ⟨_, h⟩)]
 
 end Finset

@@ -57,7 +57,6 @@ theorem ncard_eq_card_coe (s : Set α) [Fintype s] : s.ncard = Fintype.card s :=
 the `Fin n`-indexing of its elements. -/
 theorem exists_injective_fin_of_le_ncard {s : Set α} {n : ℕ} (hns : n ≤ s.ncard) :
     ∃ q : Fin n → α, Function.Injective q ∧ ∀ i, q i ∈ s := by
-  classical
   obtain ⟨t, hts, hcard⟩ := Set.exists_subset_card_eq hns
   rcases Nat.eq_zero_or_pos n with hn | hn
   · subst hn

@@ -128,7 +128,6 @@ theorem typeI_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
     {q : EuclideanSpace ℝ (Fin 2)}
     (hLI : LinearIndependent ℝ ![q - p a, q - p b]) :
     (typeI G a b).IsInfinitesimallyRigid (fun w : Option V => w.elim q p) := by
-  classical
   set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p with hp_ext_def
   -- The restriction map `x ↦ x ∘ some` lands in `ker (G.RigidityMap p)`: every `G`-edge `s(u, v)`
   -- lifts to `s(some u, some v) ∈ (typeI G a b).edgeSet` with the same rigidity-row formula.
@@ -309,7 +308,6 @@ theorem typeII_isInfinitesimallyRigid_extend [Fintype V] {G : SimpleGraph V}
     (hα0 : α ≠ 0) (hα1 : α ≠ 1) (hcoll : q - p a = α • (p b - p a))
     (hLI : LinearIndependent ℝ ![q - p a, q - p c]) :
     (typeII G a b c).IsInfinitesimallyRigid (fun w : Option V => w.elim q p) := by
-  classical
   set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p with hp_ext_def
   -- `q - p b = (α - 1) • (p b - p a)` follows from the collinearity hypothesis.
   have hcoll_b : q - p b = (α - 1) • (p b - p a) := by

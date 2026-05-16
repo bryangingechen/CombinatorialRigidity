@@ -151,7 +151,6 @@ i.e.\ Laman.
 theorem IsGenericallyRigid.exists_isLaman_le [Fintype V] {G : SimpleGraph V}
     (h : G.IsGenericallyRigid 2) (hV : 2 ≤ Fintype.card V) :
     ∃ H : SimpleGraph V, H ≤ G ∧ H.IsLaman := by
-  classical
   -- Step 1: pick an IR + affinely-spanning placement.
   obtain ⟨p₀, hp₀⟩ := h
   obtain ⟨p, hp_IR, hp_aff⟩ := exists_affinelySpanning_of_eventually hp₀.eventually

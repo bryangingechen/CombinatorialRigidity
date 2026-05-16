@@ -104,7 +104,6 @@ theorem EdgeSetRowIndependent.iso {V W : Type*} [Finite V] [Finite W] {d : ℕ}
     {G : SimpleGraph V} {H : SimpleGraph W} (φ : G ≃g H)
     {q : Framework W d} (h : H.EdgeSetRowIndependent q Set.univ) :
     G.EdgeSetRowIndependent (q ∘ φ) Set.univ := by
-  classical
   rw [edgeSetRowIndependent_iff_linearIndepOn_rigidityRow, linearIndepOn_univ_iff] at h ⊢
   -- Precomposition linear equiv `Framework V d ≃ₗ[ℝ] Framework W d`, `motion ↦ motion ∘ φ.symm`.
   let Lφ : Framework V d ≃ₗ[ℝ] Framework W d :=
@@ -157,7 +156,6 @@ theorem EdgeSetRowIndependent.eventually [Finite V] {G : SimpleGraph V}
     {p₀ : Framework V d} {I : Set G.edgeSet}
     (h₀ : G.EdgeSetRowIndependent p₀ I) :
     ∀ᶠ p in 𝓝 p₀, G.EdgeSetRowIndependent p I := by
-  classical
   haveI : Fintype V := Fintype.ofFinite V
   haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
   haveI : Fintype I := Fintype.ofFinite _
@@ -255,7 +253,6 @@ theorem exists_edgeSetRowIndependent_of_finrank_range_ge_dim_two [Fintype V]
       Module.finrank ℝ (LinearMap.range (G.RigidityMap p)) + 3) :
     ∃ I : Set G.edgeSet,
       I.ncard = 2 * Fintype.card V - 3 ∧ G.EdgeSetRowIndependent p I := by
-  classical
   haveI : Fintype G.edgeSet := Set.Finite.fintype G.edgeSet.toFinite
   -- Extend ∅ to a row-LI subset `b ⊆ univ` whose image spans the whole row family.
   obtain ⟨b, _hb_sub, _, h_range_sub, hb_li⟩ :=

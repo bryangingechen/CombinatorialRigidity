@@ -1473,7 +1473,6 @@ theorem IsSparse.exists_aug_of_lt_two_mul {k ℓ : ℕ} (hℓ : ℓ < 2 * k)
     (hJ_off : J ⊆ (⊤ : SimpleGraph V).edgeSet)
     (hcard : I.ncard < J.ncard) :
     ∃ e ∈ J \ I, (fromEdgeSet (insert e I)).IsSparse k ℓ := by
-  classical
   by_contra h_no_aug
   push Not at h_no_aug
   -- Setup: V is a Fintype, top.edgeSet is finite, so I, J are finite.
