@@ -640,9 +640,6 @@ theorem isSparse_of_edgeSetRowIndependent_dim_two {V : Type*} {G : SimpleGraph V
         2 * s.card := by
       have h := rigidityMap_finrank_range_le_of_affinelySpanning (H.induce S) h_affineSpan
       rwa [hS_card] at h
-    -- The framework-restriction map: `(V → E) →ₗ (s → E)` by precomposition with `Subtype.val`.
-    let restrict : Framework V 2 →ₗ[ℝ] Framework ↥S 2 :=
-      LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin 2)) (Subtype.val : ↥S → V)
     -- V-side lift of an induced-subgraph edge, landing in `H.edgeSet ⊆ G.edgeSet`.
     have hlift_mem_H : ∀ e' : (H.induce S).edgeSet,
         Sym2.map (Subtype.val : ↥S → V) e'.val ∈ H.edgeSet := by
@@ -666,15 +663,6 @@ theorem isSparse_of_edgeSetRowIndependent_dim_two {V : Type*} {G : SimpleGraph V
     -- `liftEdge` is injective.
     have hlift_inj : Function.Injective liftEdge := fun _ _ h =>
       Subtype.ext (Sym2.map.injective Subtype.val_injective (Subtype.ext_iff.mp h))
-    -- Factoring: the V-side row at the lift equals s-side row composed with restriction.
-    -- Both reduce to `⟪p u.val - p v.val, x u.val - x v.val⟫` after Sym2 induction; `rfl`.
-    have h_factor : ∀ e' : (H.induce S).edgeSet,
-        G.rigidityRow p (liftEdge e') =
-          restrict.dualMap ((H.induce S).rigidityRow p_s e') := by
-      intro e'
-      refine LinearMap.ext fun x => ?_
-      obtain ⟨e, he⟩ := e'
-      induction e with | h u v => rfl
     -- LI of rows in V-side (subfamily of `hI` indexed by `liftEdge`).
     have hI_LI : LinearIndependent ℝ (fun e : I => G.rigidityRow p e.val) :=
       (edgeSetRowIndependent_iff_linearIndepOn_rigidityRow G p I).mp hI
@@ -684,12 +672,11 @@ theorem isSparse_of_edgeSetRowIndependent_dim_two {V : Type*} {G : SimpleGraph V
     have h_li_V : LinearIndependent ℝ
         (fun e' : (H.induce S).edgeSet => G.rigidityRow p (liftEdge e')) :=
       hI_LI.comp liftToI hliftToI_inj
-    -- LI of rows in s-side via `LinearIndependent.of_comp`.
+    -- LI of rows in s-side via the reverse-direction helper (factoring + `of_comp`).
     have h_li_s : LinearIndependent ℝ
-        (fun e' : (H.induce S).edgeSet => (H.induce S).rigidityRow p_s e') := by
-      refine LinearIndependent.of_comp restrict.dualMap ?_
-      convert h_li_V using 1
-      funext e'; exact (h_factor e').symm
+        (fun e' : (H.induce S).edgeSet => (H.induce S).rigidityRow p_s e') :=
+      linearIndependent_rigidityRow_of_lift (Subtype.val : ↥S → V) (fun _ => rfl)
+        (fun i => edgeSet_mono hHG (hlift_mem_H i)) h_li_V
     -- Convert LI to a finrank identity, then chain through the dualMap rank equality.
     have h_card_eq : Fintype.card (H.induce S).edgeSet =
         Module.finrank ℝ (LinearMap.range ((H.induce S).RigidityMap p_s)) := by
