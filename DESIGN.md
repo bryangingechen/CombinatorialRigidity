@@ -375,11 +375,27 @@ to a fixed section above once a question is answered.
   `Sparsity.lean` and elsewhere, consider whether to move it to
   `Mathlib.Combinatorics.SimpleGraph.Basic` next to `incidenceSet`.
   Wait until the API has stabilized.
-- **Typeclass shape for finiteness on `V`.** Surfaced by the Phase
-  7 cleanup round (B1 = 41 `classical` sites, B2 = 12
-  `[Finite V] → Fintype` bridge sites, B5 = `Set` vs `Finset`
-  boundaries — see `notes/Phase7-cleanup.md`). The repo currently
-  mixes three forms heterogeneously:
+- ~~**Typeclass shape for finiteness on `V`.**~~ **Resolved (Phase 7
+  cleanup):** Uniform `[Fintype V]`. State every `SimpleGraph V`-
+  quantifying signature at `[Fintype V]`, even when the body works
+  at `[Finite V]` strength — uniformity over minimum-strength
+  signatures, on the basis of (i) forward-compatibility with a
+  future pebble-game algorithm (which needs `[Fintype V]
+  [DecidableEq V] [DecidableRel G.Adj]` end-to-end) and (ii)
+  elimination of the `Fintype.ofFinite V` + `classical` boilerplate
+  that inline bridges were doing repeatedly. `[DecidableEq V]` /
+  `[DecidableRel G.Adj]` remain per-site (added only when a body
+  genuinely builds `Finset V` / `Adj`-iterating objects on `V`);
+  `classical` at proof-top is the acceptable alternative when
+  adding a decidability typeclass to the signature isn't worth the
+  API noise. The Phase 7 cleanup round B2/B5/B1 fix passes execute
+  this convention on the existing corpus. Discussion that surfaced
+  the question follows:
+
+  Surfaced by the Phase 7 cleanup round (B1 = 41 `classical` sites,
+  B2 = 12 `[Finite V] → Fintype` bridge sites, B5 = `Set` vs
+  `Finset` boundaries — see `notes/Phase7-cleanup.md`). The repo
+  prior to resolution mixed three forms heterogeneously:
   - `[Finite V]` (e.g. `Sparsity.lean` section `IComponents` at
     line 1269, `EdgeSetRowIndependent.eventually` in
     `RigidityMatroid.lean`) — weakest typeclass. Bodies that need
@@ -419,13 +435,19 @@ to a fixed section above once a question is answered.
   that benefit." Phase 7's row-independence track is when that
   surfaced concretely.
 
-  **Open.** Cleanup-round B2/B5 fix passes are blocked on this
-  entry; B1 fix pass is downstream-blocked. Likely path: audit one
-  representative section (`IComponents` in `Sparsity.lean` — its
-  six declarations are all `Finset`-shape internally, so it's the
-  cleanest test case) for caller behaviour, decide on a convention,
-  then propagate. If the pebble game is in near-term scope, the
-  decision should align with that.
+  **Resolution discussion (Phase 7 cleanup).** Concrete data
+  gathered: pebble game is "someday" not "soon" (mentioned in
+  `count-matroid.tex`, `Phase7.md` as future direction, not on
+  ROADMAP), so forward-compatibility is a positive but not decisive
+  factor. `[Finite V]` footprint was 39 sites, only 12 of which did
+  inline `Fintype.ofFinite V` bridges; the other 27 worked at
+  `[Finite V]` strength genuinely. Caller chains terminated at
+  `[Fintype V]` top-level results so propagation was bounded. The
+  recommendation "state each declaration at the typeclass its body
+  uses" was considered and rejected in favour of the uniform
+  alternative because (a) uniformity has its own readability value
+  and (b) the pebble-game forward-compatibility cancels the cost of
+  lifting the 27 minimum-strength sites.
 - **Phase 8: `apnelson1/Matroid` dependency.** Phase 7 ships the
   combinatorial $(k, \ell)$-count matroid using only mathlib's
   `IndepMatroid.ofFinite`; Phase 8 will package the planar rigidity

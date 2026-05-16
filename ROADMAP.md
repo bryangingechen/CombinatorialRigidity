@@ -241,17 +241,23 @@ $M_{p_{\text{gen}}} \cong \mathrm{rigidityMatroid}\,V$) is deferred to
 
 - **Namespace.** Everything sits inside `SimpleGraph` or
   `CombinatorialRigidity`. No top-level identifiers.
-- **Vertex types.** Use `V : Type*` and add `[Fintype V]` only where needed.
-  Edge counts use `Set.ncard` so we don't force `Fintype` everywhere.
+- **Vertex types.** Use `V : Type*` with `[Fintype V]` uniformly on
+  any signature that quantifies a `SimpleGraph V` or otherwise needs
+  finiteness on `V`. Do not use `[Finite V]` in signatures (Phase 7
+  cleanup convention; see `DESIGN.md` *Typeclass shape for finiteness
+  on `V`* for the rationale). Edge counts still use `Set.ncard` so we
+  don't force decidability of edge predicates.
 - **Cardinalities.** Use `Set.ncard` for sets and `Finset.card` for finsets.
   Avoid `ℕ`-subtraction; rephrase `a ≤ b − c` as `a + c ≤ b`.
 - **Style.** Module docstrings at the top of each file (`/-! # Title -/`).
   One declaration ↔ one purpose. Comments only when *why* is non-obvious.
 - **Imports.** Each file imports the minimum it needs. `Sparsity.lean`
   should import only `SimpleGraph.Basic` + `Set.Card` + minor friends.
-- **Decidability.** Add `[DecidableEq V]` / `[DecidableRel G.Adj]` only when
-  needed for a specific finset construction. Many definitions can stay
-  noncomputable via `Set.ncard`.
+- **Decidability.** Add `[DecidableEq V]` / `[DecidableRel G.Adj]` only
+  when a body genuinely builds specific `Finset V` / `Adj`-iterating
+  objects. `classical` at the proof top is the acceptable alternative
+  when adding the typeclass to the signature isn't worth the API
+  noise. Many definitions can stay noncomputable via `Set.ncard`.
 - **Predicates are `def`s, not `abbrev`s.** `IsSparse`, `IsTight`,
   `IsLaman`, and `edgesIn` are non-reducible. `grind` will not unfold
   them on its own. To break an `IsTight`/`IsLaman` goal into parts use
