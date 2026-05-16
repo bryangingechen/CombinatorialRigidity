@@ -38,10 +38,6 @@ forward / reverse split was extracted in the Phase 8 perf pass; see
 
 @[expose] public section
 
--- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
-set_option backward.privateInPublic true
-set_option backward.privateInPublic.warn false
-
 namespace SimpleGraph
 
 variable {V : Type*}
@@ -59,6 +55,8 @@ preservation theorems (`typeI_isGenericallyRigidInj_two` / `typeII_isGenerically
 which operate on `typeI G' a b` / `typeII G' a b c`). The forward = operation / reverse = flat
 split is documented in `DESIGN.md` *Statement-form conventions*. -/
 
+set_option backward.privateInPublic true in
+set_option backward.privateInPublic.warn false in
 /-- Build a graph iso `G ≃g H` along the canonical `V ≃ Option {w : V // w ≠ v}` equivalence,
 given the adjacency-equivalence at each of the four `(u, w)` cases w.r.t. `v`. The `(none, none)`
 case is `H` losing the loop, and the `(none, some)` and `(some, none)` cases are related by
@@ -87,6 +85,8 @@ private def isoOfOptionSubtypeNe [DecidableEq V] {G : SimpleGraph V} (v : V)
     · rw [Equiv.optionSubtypeNe_symm_of_ne hu, Equiv.optionSubtypeNe_symm_of_ne hw]
       exact hss hu hw
 
+set_option backward.privateInPublic true in
+set_option backward.privateInPublic.warn false in
 /-- Iso from `G` to a Type I move applied to its induced subgraph on `{w // w ≠ v}`, when `v` is a
 degree-2 vertex with neighbors `a, b`. The membership-style hypothesis `hN` says `N(v) = {a, b}`. -/
 def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
@@ -97,6 +97,8 @@ def typeI_iso_of_two_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b : V}
     (fun w _ => by simp [hN])
     (fun _ _ => Iff.rfl)
 
+set_option backward.privateInPublic true in
+set_option backward.privateInPublic.warn false in
 /-- Iso from `G` to a Type II move applied to (induced subgraph + bridging edge `s(a, b)`), when
 `v` has degree 3 with neighbors `a, b, c` and `a, b` are non-adjacent in `G`. -/
 def typeII_iso_of_three_neighbors [DecidableEq V] {G : SimpleGraph V} {v a b c : V}

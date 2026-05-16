@@ -372,6 +372,96 @@ Recommendation: pick up as a dedicated perf pass alongside the
 `Sparsity.lean` split, since both touch the import graph and a single
 A/B campaign can measure their combined effect.
 
+### Open (next session): granular `@[expose]` / `public` audit per file
+
+**Priority: do this next session.** The 4 + 3 per-declaration
+`set_option backward.privateInPublic` lines remaining in
+`Framework.lean` and `HennebergReverse.lean` are technical debt: the
+option is a `backward.*` compat knob, and the Lean reference manual
+explicitly directs users to *"locate and eventually eliminate these
+references."* The principled elimination is the audit below — it's
+the same work as the post-conversion perf lever, so the two should
+land together.
+
+The Phase 8-perf module-system conversion (F3.3) applied a uniform
+`@[expose] public section` to all 9 + 13 project files, matching the
+upstream `Mathlib/Analysis/InnerProductSpace/PiL2.lean` reference.
+Per the Lean reference manual (*Modules and Visibility*, *Exposed
+and Unexposed Definitions*), this is the **coarsest** of the three
+visibility levels:
+
+| Section style | What's exposed |
+|---|---|
+| `private` (no `public`) | nothing; private scope only |
+| `public section` | constant *names* and *types*; **bodies stay private** (downstream can't unfold) |
+| `@[expose] public section` | names, types, **and bodies** — downstream can `simp [name]`, `rfl` across, defeq-rely |
+
+The blanket `@[expose] public section` exposes every `def` body in
+every file, which defeats most of the module system's build-time and
+API-evolution benefits — exposed bodies in module M force M's
+importers to track M's elaboration state, not just its public
+signature.
+
+**Audit work (multi-session):**
+
+1. For each project file's exposed `def`s / `instance`s, identify
+   the downstream call-sites that genuinely require the body
+   (signals: `simp [defName]`, `unfold defName`, `change <unfolded>`,
+   `rfl` across the def, defeq-dependent elaboration, `@[fun_prop]`-
+   like tactic resolution).
+2. Demote files (or specific decls) that don't need exposure from
+   `@[expose] public section` to `public section`, or from
+   section-level to per-decl `@[expose] public def`.
+3. Run a 4-run A/B per the protocol in *A/B measurement protocol*
+   on the analysis-heavy targets (`HennebergRigidity.lean`,
+   `RigidityMatroid.lean`, `LinearRigidityMatroid.lean`,
+   `MatroidIdentification.lean`).
+
+Realistic per-file expectations: predicates / structures (`IsSparse`,
+`IsLaman`, `IsTight`, `IsInfinitesimallyRigid`) are usually consumed
+opaquely via API lemmas — they're strong candidates to drop
+`@[expose]`. Data definitions used by `simp` or `rfl` downstream
+(`RigidityMap`, `edgeSetMatrix`, the Henneberg `typeI`/`typeII`
+constructors) are weak candidates — exposed bodies are part of their
+contract.
+
+**Concrete elimination targets (Framework.lean, 4 sites):**
+
+- `edgeRow` — private `noncomputable def`, referenced from
+  `RigidityMap`'s body. Two paths: (a) drop `@[expose]` from this
+  file's section so `RigidityMap`'s body stops being exposed (then
+  `edgeRow` stops being a public-scope reference); (b) make
+  `edgeRow` itself non-`private`. Path (a) is preferred if
+  downstream files don't `simp [RigidityMap]` / `unfold RigidityMap`.
+- `edgeRow_symm` — private `theorem` referenced *as a term* in
+  `RigidityMap`'s body (`Sym2.lift ⟨edgeRow p, edgeRow_symm p⟩`).
+  Same disposition as `edgeRow`.
+- `RigidityMap` — the consumer side of the above two. Eliminating
+  the opt-ins on `edgeRow` / `edgeRow_symm` removes this one
+  automatically.
+- `continuous_rigidityMap_apply` — private `@[fun_prop]` theorem
+  resolved by name from another file's `fun_prop` invocation
+  (`RigidityMatroid.lean` line 274). Preferred fix: drop `private`
+  — attribute-tagged helpers are usually better as plain public,
+  since the tactic database stores the name anyway.
+
+**Concrete elimination targets (HennebergReverse.lean, 3 sites):**
+
+- `isoOfOptionSubtypeNe` — private `def` referenced from
+  `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors`'s
+  bodies. Path (a) (demote `@[expose]`) is plausible since the
+  `IsLaman.iso` / `IsLaman.exists_typeI_or_typeII_reverse` API
+  downstream consumes these isos opaquely.
+- `typeI_iso_of_two_neighbors`, `typeII_iso_of_three_neighbors` —
+  consumer sides; eliminated automatically by path (a).
+
+Cross-reference: as of this commit, 7 of 9 project files that
+previously had file-scope `set_option backward.privateInPublic`
+were cleaned (the option is unnecessary there — their `private`
+decls participate only in proof bodies, which are always private).
+The remaining 2 files retain mathlib-style per-declaration `set_option
+… in` as a short-term bridge until the audit lands.
+
 ## Recommendations for future perf work
 
 1. **Don't trust a single A/B run.** Run ≥ 4 trials per side and compare

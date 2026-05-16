@@ -31,10 +31,6 @@ See `ROADMAP.md` §7, `notes/Phase7.md`, and the blueprint chapter
 
 @[expose] public section
 
--- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
-set_option backward.privateInPublic true
-set_option backward.privateInPublic.warn false
-
 open scoped InnerProductSpace Topology
 
 namespace SimpleGraph

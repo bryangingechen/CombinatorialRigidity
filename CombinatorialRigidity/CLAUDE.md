@@ -186,25 +186,53 @@ Constraints and gotchas:
   unchanged.
 - **No `import` line for `module` itself** — the bare keyword on its
   own line is the marker, not an import.
-- **`private` declarations need an opt-in inside `@[expose] public
-  section`.** First build fails with *"Unknown identifier X. Note: A
+- **`set_option backward.privateInPublic …` is technical debt and
+  must be eliminated, not propagated.** The option is a `backward.*`
+  compat knob that re-enables legacy "private-callable-from-public"
+  semantics — it exists to ease the module-system migration and the
+  reference manual explicitly says *"These warnings can be used to
+  locate and eventually eliminate these references, allowing
+  `backward.privateInPublic` to be disabled."* As of the latest
+  cleanup, the project carries 4 + 3 per-declaration opt-ins in
+  `Framework.lean` and `HennebergReverse.lean` only; the principled
+  fix is the granular `@[expose]` / `public` audit in
+  `notes/PERFORMANCE.md` *Open: granular `@[expose]` / `public` audit
+  per file*. Do not add new file-scope opt-ins, and prefer eliminating
+  existing per-decl opt-ins (by demoting `@[expose] public section`
+  to `public section` per the audit, or by promoting the `private`
+  helper to non-`private`) over adding more of them.
+
+  Mechanics: the opt-in is required only when a private declaration
+  participates in an *exposed* body — a `def` / `instance` body or
+  signature in `@[expose] public section`. Proof bodies of `theorem`
+  / `lemma` are in the *private scope* regardless of section
+  attributes (per the reference manual *Modules and Visibility* /
+  *Exposed and Unexposed Definitions*), so a `private lemma`
+  referenced only from public `theorem` proof bodies needs no opt-in
+  at all. When the build fails with *"Unknown identifier X. Note: A
   private declaration X (from the current module) exists but would
-  need to be public to access here"* — the module system treats
-  `private` as strictly non-public, so even another `public`
-  declaration in the same file can't reach it. Fix: add two
-  `set_option` lines just inside the public section
-  (file-scope, after the `@[expose] public section` marker):
+  need to be public to access here"*, the short-term fix is the
+  per-declaration form applied to **both** the private declaration
+  and its public consumer (matches mathlib's
+  `Mathlib/Data/Sym/Sym2.lean` and `Mathlib/Order/Sublocale.lean`):
   ```
-  set_option backward.privateInPublic true
-  set_option backward.privateInPublic.warn false
+  set_option backward.privateInPublic true in
+  set_option backward.privateInPublic.warn false in
+  private def edgeRow ...
+
+  set_option backward.privateInPublic true in
+  set_option backward.privateInPublic.warn false in
+  noncomputable def RigidityMap ...
   ```
-  The first re-enables the legacy "private-callable-from-public"
-  behavior; the second silences the resulting warning. Mathlib uses
-  the per-declaration `set_option … in` form (cf.
-  `Mathlib/Data/Sym/Sym2.lean` and `Mathlib/Order/Sublocale.lean`);
-  the file-scope form is equivalent and concise when many `private`
-  declarations live in one file. Apply per-file only as needed —
-  files with no `private` declarations don't need either line.
+  The set_option lines go *before* the doc-comment, not after — the
+  doc-comment must immediately precede the declaration it documents.
+  **A `private theorem` tagged `@[fun_prop]` / `@[simp]` / `@[ext]`
+  / etc.** that downstream tactics resolve by name also needs the
+  opt-in, because the tactic database stores the private name and
+  cross-module references then fail (cf.
+  `Framework.continuous_rigidityMap_apply`). For attribute-tagged
+  helpers, demoting from `private` to plain public is often the
+  cleaner fix and is preferred to a new opt-in.
 
 - **Some external dependencies block conversion.** The
   `apnelson1/Matroid` package (used by `LinearRigidityMatroid.lean`)

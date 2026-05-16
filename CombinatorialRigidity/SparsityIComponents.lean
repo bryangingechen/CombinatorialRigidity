@@ -36,10 +36,6 @@ their transitive import set.
 
 @[expose] public section
 
--- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
-set_option backward.privateInPublic true
-set_option backward.privateInPublic.warn false
-
 namespace SimpleGraph
 
 variable {V : Type*}

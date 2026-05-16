@@ -106,10 +106,6 @@ Phase 1 work log (this file's content is Phase 1).
 
 @[expose] public section
 
--- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
-set_option backward.privateInPublic true
-set_option backward.privateInPublic.warn false
-
 namespace SimpleGraph
 
 variable {V : Type*} (G : SimpleGraph V)

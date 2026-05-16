@@ -49,10 +49,6 @@ See `ROADMAP.md` §5 and `notes/Phase5.md` for the Phase 5 plan.
 
 @[expose] public section
 
--- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
-set_option backward.privateInPublic true
-set_option backward.privateInPublic.warn false
-
 open scoped InnerProductSpace Topology
 
 namespace SimpleGraph

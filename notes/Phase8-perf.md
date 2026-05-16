@@ -17,13 +17,17 @@ in one commit; `LinearRigidityMatroid.lean` is **carved out** —
 blocked by its `Matroid.Representation.Map` dep from
 `apnelson1/Matroid` (the external lib is ~4 % `module`-converted, and
 a `module` file cannot import a non-`module` file via either
-`public import` or plain `import`). Build + lint clean. Module
-conversion surfaced one new gotcha: `private` declarations inside
-`@[expose] public section` need a `set_option
-backward.privateInPublic true` (+ matching `.warn false`)
-opt-in — folded into `CombinatorialRigidity/CLAUDE.md` *Module-system
-conversion*. Next: F3.6 (final 4-run A/B vs F1.1 baseline; promote
-headline to `PERFORMANCE.md`).
+`public import` or plain `import`). Build + lint clean. F3.3 surfaced
+one gotcha — `private`-in-public-section needs an opt-in — initially
+patched with file-scope `set_option backward.privateInPublic` on 9
+files; the F3.3 follow-up cleanup (this commit) removed the option
+entirely from 7 of those files (their `private` decls participate
+only in proof bodies, which are always private) and left mathlib-
+style per-declaration opt-ins on 4 + 3 sites in `Framework.lean` /
+`HennebergReverse.lean`. **Next (F3.4): the principled elimination —
+granular `@[expose]` / `public` audit per file — to discharge the
+remaining `backward.*` debt.** Then F3.6 (final 4-run A/B vs F1.1
+baseline; promote headline to `PERFORMANCE.md`).
 
 ## Pass overview
 
@@ -224,14 +228,39 @@ executed) during Phase 8-cleanup's bucket E:
   topo order had `RigidityMatroid` last; corrected here since
   `MatroidIdentification` imports `RigidityMatroid`, not the other
   way round.)
-- [ ] **F3.4:** *(folded into F3.2/F3.3 as the conversion mechanic
-  rather than a separate step.)*
-- [ ] **F3.5:** *(build + lint run inline at the close of F3.2 and
-  F3.3 commits; no separate verification step needed.)*
+- [ ] **F3.4:** **Granular `@[expose]` / `public` audit (next
+  session).** Demote `@[expose] public section` to `public section`
+  on files whose `def` bodies aren't consumed downstream (signals:
+  no `simp [defName]` / `unfold` / `change <unfolded>` / `rfl`
+  across the def in any importer). Per-decl `@[expose] public def`
+  for the 1-2 defs per file that do need exposure. **Discharges the
+  remaining 4 + 3 `set_option backward.privateInPublic` lines** in
+  `Framework.lean` / `HennebergReverse.lean` (concrete elimination
+  targets enumerated in `notes/PERFORMANCE.md` *Open (next session):
+  granular `@[expose]` / `public` audit per file*). Same audit is
+  the post-conversion perf lever — see *Module-system conversion:
+  now ripe* in `PERFORMANCE.md`. The F3.3 follow-up cleanup that
+  removed file-scope opt-ins from 7 files lands first; the audit
+  proper is F3.4.
+- [x] **F3.3-followup:** Cleanup pass. Removed file-scope
+  `set_option backward.privateInPublic` from 7 of 9 affected project
+  files (their `private` decls participate only in proof bodies,
+  which are in the private scope regardless of section attributes —
+  per Lean reference manual *Modules and Visibility* / *Exposed and
+  Unexposed Definitions*). Switched the remaining 2 (`Framework.lean`,
+  `HennebergReverse.lean`) to mathlib-style per-declaration
+  `set_option … in` on the 4 + 3 cross-visibility decls. Build + lint
+  clean. The `backward.*` opt-ins still in the tree are technical
+  debt to be discharged by F3.4.
+- [ ] **F3.5:** *(build + lint run inline at the close of F3.2,
+  F3.3, F3.3-followup, and F3.4 commits; no separate verification
+  step needed.)*
 - [ ] **F3.6:** Final measurement. 4-run A/B on the analysis-heavy
   targets + project total. Record medians; compute combined delta
   against F1.1 baseline; promote the headline to
   `PERFORMANCE.md` *Experiments that did pay* or *…didn't pay*.
+  Runs on the post-F3.4 codebase, so the audit's expose-narrowing
+  effect is included in the A/B comparison.
 
 ## Decisions made during this phase
 
@@ -291,21 +320,28 @@ executed) during Phase 8-cleanup's bucket E:
   `edgeRow_symm`. Note: A private declaration `edgeRow_symm` (from
   the current module) exists but would need to be public to access
   here"* — even though `edgeRow_symm` was used inside the same file.
-  In the module system, `private` declarations are not visible to
-  *any* `public` declaration (including ones in the same file)
-  without an explicit opt-in. The fix is two `set_option` lines just
-  inside `@[expose] public section`:
+  Initial F3.3 fix was file-scope:
   ```
   set_option backward.privateInPublic true
   set_option backward.privateInPublic.warn false
   ```
-  Applied file-scope to 9 of the 13 converted project files (the
-  ones with `private` declarations). Mathlib uses the per-declaration
-  `set_option … in` form (cf. `Mathlib/Data/Sym/Sym2.lean`,
-  `Mathlib/Order/Sublocale.lean`); the file-scope form is equivalent
-  and concise when many `private` declarations live in one file.
-  Cross-file tip lifted to `CombinatorialRigidity/CLAUDE.md`
-  *Module-system conversion*.
+  applied to 9 of the 13 converted project files. **Refined in a
+  follow-up cleanup** (this commit): the opt-in is needed only when
+  a private declaration participates in an *exposed* body (a `def`
+  body or a signature in `@[expose] public section`), not when it
+  participates only in a `theorem` / `lemma` proof body — proof
+  bodies are in the private scope regardless (per the reference
+  manual's *Modules and Visibility* / *Exposed and Unexposed
+  Definitions*). Empirically, 7 of the 9 affected files (those whose
+  `private` decls were only used in proof bodies) needed no opt-in
+  at all; 2 (`Framework.lean`, `HennebergReverse.lean`) retain
+  mathlib-style per-declaration `set_option … in` on the 4 + 3
+  cross-visibility decls. The deeper *granular `@[expose]` audit*
+  follow-up — demoting `@[expose] public section` to `public
+  section` where bodies aren't consumed downstream — is open in
+  `notes/PERFORMANCE.md` *Open: granular `@[expose]` / `public`
+  audit per file*. Cross-file tip lifted to
+  `CombinatorialRigidity/CLAUDE.md` *Module-system conversion*.
 
 - **`LinearRigidityMatroid.lean` carve-out: blocked by external
   `Matroid` lib.** `apnelson1/Matroid` is ~4 % module-converted as
@@ -376,11 +412,27 @@ at the file boundary, not just at section-header level.
 
 Mid-stream: F3.2 (mirrors) and F3.3 (13 of 14 project files; one
 carved out for the `apnelson1/Matroid` lib non-`module` constraint)
-committed. Next concrete commit is F3.6 — 4-run A/B on the four
-measurement targets (`HennebergRigidity`, `RigidityMatroid`,
-`LinearRigidityMatroid`, `lake build` project-total) per the
-`PERFORMANCE.md` *Measurement protocol*. Baseline for the headline
-delta is F1.1 medians (HR 57.3 s; RM 53.7 s; LRM 62.3 s; project
-21.2 s). Once the four post-conversion medians land, write the
-verdict ("did pay" / "didn't pay") + a one-paragraph promotion entry
-to `notes/PERFORMANCE.md`, then close the F3 row and the pass.
+committed; F3.3 follow-up cleanup removed the file-scope
+`set_option backward.privateInPublic` from 7 of 9 affected files and
+left mathlib-style per-declaration `set_option … in` on 4 + 3 sites
+in `Framework.lean` / `HennebergReverse.lean` (see *Decisions made
+during this phase* → *`private`-in-public-section needs an opt-in*).
+
+**Next concrete commit — priority: granular `@[expose]` / `public`
+audit (F3.4).** The 4 + 3 remaining per-declaration `set_option`
+lines are `backward.*` technical debt and must be eliminated, per
+the reference manual's *"locate and eventually eliminate these
+references"* guidance. Follow `notes/PERFORMANCE.md` *Open (next
+session): granular `@[expose]` / `public` audit per file* — the
+concrete elimination targets and preferred paths are enumerated
+there. The audit is the same work as the post-conversion perf lever
+(`@[expose] public section` is the coarsest of three visibility
+levels and exposing every `def` body file-wide defeats most of the
+module system's build-time wins), so the cleanup and perf-lever
+land together.
+
+After F3.4 closes, F3.6 — the original final 4-run A/B vs F1.1
+baseline (HR 57.3 s; RM 53.7 s; LRM 62.3 s; project 21.2 s) — runs
+on the post-audit codebase, and the verdict + one-paragraph
+promotion entry to `notes/PERFORMANCE.md` closes the F3 row and the
+pass.

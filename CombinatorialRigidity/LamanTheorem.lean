@@ -44,10 +44,6 @@ that bound to `d = 2` here as `IsGenericallyRigid.card_mul_le_two`.
 
 @[expose] public section
 
--- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
-set_option backward.privateInPublic true
-set_option backward.privateInPublic.warn false
-
 namespace SimpleGraph
 
 variable {V : Type*}

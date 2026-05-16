@@ -49,10 +49,6 @@ work log.
 
 @[expose] public section
 
--- Module-system opt-in: allow `private` helpers inside the `@[expose] public section`.
-set_option backward.privateInPublic true
-set_option backward.privateInPublic.warn false
-
 open scoped InnerProductSpace Topology
 
 namespace SimpleGraph
@@ -72,6 +68,8 @@ theorem Framework.finrank [Fintype V] :
     Module.finrank ℝ (Framework V d) = Fintype.card V * d := by
   simp [Module.finrank_pi_fintype]
 
+set_option backward.privateInPublic true in
+set_option backward.privateInPublic.warn false in
 /-- The `(u, v)`-row of the rigidity matrix as a linear functional on framework
 motions: `x ↦ ⟪p u - p v, x u - x v⟫_ℝ`. Internal building block for
 `RigidityMap`; consumers go through `rigidityMap_apply` instead. -/
@@ -85,12 +83,16 @@ private noncomputable def edgeRow (p : Framework V d) (u v : V) :
 private theorem edgeRow_apply (p : Framework V d) (u v : V) (x : Framework V d) :
     edgeRow p u v x = ⟪p u - p v, x u - x v⟫_ℝ := rfl
 
+set_option backward.privateInPublic true in
+set_option backward.privateInPublic.warn false in
 private theorem edgeRow_symm (p : Framework V d) (u v : V) :
     edgeRow p u v = edgeRow p v u := by
   ext x
   rw [edgeRow_apply, edgeRow_apply, ← neg_sub (p u) (p v), ← neg_sub (x u) (x v),
       inner_neg_neg]
 
+set_option backward.privateInPublic true in
+set_option backward.privateInPublic.warn false in
 /-- The **rigidity map** of a framework `p`: an `ℝ`-linear map sending an
 infinitesimal motion `p' : Framework V d` to the family
 `e ↦ ⟪p u - p v, p' u - p' v⟫_ℝ` indexed by the edges `e = s(u, v) ∈ G.edgeSet`.
@@ -110,6 +112,8 @@ theorem rigidityMap_apply (G : SimpleGraph V) (p p' : Framework V d) (u v : V)
     G.RigidityMap p p' ⟨s(u, v), huv⟩ = ⟪p u - p v, p' u - p' v⟫_ℝ := by
   simp [RigidityMap]
 
+set_option backward.privateInPublic true in
+set_option backward.privateInPublic.warn false in
 /-- Continuity of `RigidityMap` in its placement: for a fixed motion `x` and edge `e`, the entry
 `G.RigidityMap p x e` is a continuous function of `p`. The entry expands to the inner product
 `⟪p u - p v, x u - x v⟫`, jointly continuous in `(p, x)` and *a fortiori* continuous in `p` alone
