@@ -42,10 +42,7 @@ lemma three_le_card_of_three_distinct_mem {s : Finset α} {a b c : α}
     (ha : a ∈ s) (hb : b ∈ s) (hc : c ∈ s) : 3 ≤ s.card := by
   classical
   have h3 : ({a, b, c} : Finset α).card = 3 := by
-    rw [show ({a, b, c} : Finset α) = insert a (insert b {c}) from rfl,
-        Finset.card_insert_of_notMem (by simp [hab, hac]),
-        Finset.card_insert_of_notMem (by simp [hbc])]
-    rfl
+    simp [Finset.card_insert_of_notMem, hab, hac, hbc]
   have hsub : ({a, b, c} : Finset α) ⊆ s := by
     intro x hx
     simp only [Finset.mem_insert, Finset.mem_singleton] at hx

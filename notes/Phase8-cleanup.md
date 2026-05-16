@@ -421,11 +421,16 @@ round (none are critical-path):
   conversion (now ripe). Pick up as a dedicated perf pass with the
   4-run A/B protocol; combine all three since they all touch the
   import graph and one A/B campaign can measure the joint effect.
-- **`show … from rfl` project-wide sweep.** CLEANUP.md bucket B has
-  a new smell row; project-wide grep finds 4 additional sites
-  (RigidityMatroid L647, MatroidIdentification L119, TrivialMotions
-  L312, Mathlib/Data/Finset/Card L45). Next inter-phase cleanup
-  picks these up via the existing pattern.
+- **`show … from rfl` project-wide sweep.** ✓ Discharged
+  post-closure. All 4 sites cleared (RigidityMatroid L647 →
+  `Nat.choose_self`; MatroidIdentification L119 → the `set ... with
+  hnewSet_def` equation; TrivialMotions L312 → `Nat.add_sub_cancel`;
+  Mathlib/Data/Finset/Card L45 → whole 5-line proof collapsed to a
+  1-line `simp [Finset.card_insert_of_notMem, ne_hyps]`). CLEANUP.md
+  smell row generalized: patterns (c) numeric/arithmetic literal and
+  (d) notation-unfold that collapses to `simp` added alongside the
+  pre-existing (a) `let`-binding and (b) bundled-morphism cases.
+  Project surface clean as of this commit.
 - **Upstream-PR work on the two new Rank.lean mirrors.** Deferred
   per B5; revisit if mathlib refactors `Matrix.rank_self_mul_transpose`
   or `Polynomial.finite_setOf_isRoot` in a way that makes the iff

@@ -116,8 +116,7 @@ theorem typeI_edgeSetRowIndependent_extend {G' : SimpleGraph V}
       (some : V → Option V) (Option.some_injective V) (fun _ => rfl)
       id Function.injective_id hlift_mem h
   · -- LI on `newSet = {newEdgeA, newEdgeB}`: derive coefficients zero via `hLI`.
-    rw [show newSet = ({newEdgeA, newEdgeB} : Set _) from rfl,
-      LinearIndepOn.pair_iff _ hAB_ne]
+    rw [hnewSet_def, LinearIndepOn.pair_iff _ hAB_ne]
     intro c d hcd
     refine typeI_new_rows_coeff_zero hLI ?_
     intro α

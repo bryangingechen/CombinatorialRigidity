@@ -309,8 +309,7 @@ theorem fintype_card_trivialMotionFamilyIndex :
   rw [show d + ∑ i ∈ Finset.range d, i = ∑ i ∈ Finset.range (d + 1), i by
     rw [Finset.sum_range_succ]; ring]
   rw [Finset.sum_range_id]
-  rw [show d + 1 - 1 = d from rfl]
-  rw [Nat.mul_comm]
+  rw [Nat.add_sub_cancel, Nat.mul_comm]
 
 /-- **The d-general finrank lower bound for trivial motions at an affinely-spanning placement.**
 At any placement `p : Framework V d` whose image affinely spans `EuclideanSpace ℝ (Fin d)`, the

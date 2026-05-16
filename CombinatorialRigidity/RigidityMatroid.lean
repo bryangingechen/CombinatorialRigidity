@@ -644,7 +644,7 @@ theorem isSparse_of_edgeSetRowIndependent_dim_two {V : Type*} {G : SimpleGraph V
   · -- `s.card = 2`: simple-graph combinatorics gives ≤ 1 edge in the induced subgraph.
     have h_card_le : (H.induce S).edgeFinset.card ≤ (Fintype.card ↥S).choose 2 :=
       card_edgeFinset_le_card_choose_two
-    rw [hS_card, hs_two, show Nat.choose 2 2 = 1 from rfl] at h_card_le
+    rw [hS_card, hs_two, Nat.choose_self] at h_card_le
     have h_ncard_eq : (H.induce S).edgeSet.ncard = (H.induce S).edgeFinset.card := by
       rw [Set.ncard_eq_card_coe, ← SimpleGraph.edgeFinset_card]
     omega
