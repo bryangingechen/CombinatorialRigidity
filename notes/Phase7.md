@@ -1,6 +1,6 @@
 # Phase 7 — Lovász–Yemini matroid identification (work log)
 
-**Status:** in progress.
+**Status:** ✓ complete.
 
 This file is the per-phase work record. See `../ROADMAP.md` §7 for the
 high-level plan and `../DESIGN.md` for cross-cutting design choices.
@@ -13,9 +13,12 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Twenty-one commits in (this commit = Commit 18; the prior
-`b301c1c` landed Commit 17c's matroidal-regime augmentation lemma).
-The
+Phase complete. Twenty-two commits in; this commit (Commit 19)
+closes the phase by defining the planar rigidity matroid as the
+`(2, 3)`-count matroid specialization and proving the matroid-form
+Lovász--Yemini. The prior `5a51017` landed Commit 18's abstract
+$(k, \ell)$-count matroid `SimpleGraph.countMatroid` via
+`IndepMatroid.ofFinite`. The
 first six lifted Laman-only machinery to `IsSparse` and landed
 `IsSparse.exists_typeI_or_typeII_reverse` in flat form (entry points
 `60a2176..6d59be2`); the next five landed the four operation-form
@@ -203,14 +206,20 @@ node `lem:isSparse-aug` is now `\leanok` via the new
   both `rfl`. Top-level `CombinatorialRigidity.lean` updated to
   import. Blueprint `def:countMatroid` and
   `thm:countMatroid-indep-iff` pinned `\leanok`.
-- **Commit 19** [planned]: in `MatroidIdentification.lean`, define
+- **Commit 19** [✓ done, this commit]: at the end of
+  `MatroidIdentification.lean`, defines
   `SimpleGraph.rigidityMatroid V := countMatroid V 2 3 (by omega)`
   and the matroid-form Lovász--Yemini
-  `rigidityMatroid_indep_iff_edgeSetRowIndependent` bridging through
-  `edgeSet_rowIndependent_iff_isSparse_dim_two`. Pins
-  `def:rigidityMatroid` and
-  `thm:rigidityMatroid-indep-iff-rowIndependent` `\leanok`.
-  Closes Phase 7.
+  `rigidityMatroid_indep_iff_edgeSetRowIndependent` (~10 LoC).
+  Parametrised by `I : Set (⊤ : SimpleGraph V).edgeSet`, with LHS
+  `(rigidityMatroid V).Indep (Subtype.val '' I)` and RHS
+  `∃ p, (⊤).EdgeSetRowIndependent p I`. Three-step proof:
+  `countMatroid_indep_iff` + `edgeSet_rowIndependent_iff_isSparse_dim_two`
+  + `and_iff_right` for the off-diag side condition (automatic since
+  `Subtype.val '' I ⊆ (⊤).edgeSet`). Blueprint `def:rigidityMatroid`
+  and `thm:rigidityMatroid-indep-iff-rowIndependent` pinned `\leanok`;
+  the blueprint statement was tightened to drop the unused
+  `|V| ≥ 2` hypothesis (the iff is unconditional). Closes Phase 7.
 
 Deferred to **Phase 8** (own work log): linear-matroid framework via
 `apnelson1/Matroid`; `genericRigidityMatroid V d`; matroid-iso
@@ -511,6 +520,10 @@ A red node = not yet formalized; a green node = formalized and
 - `CountMatroid.lean`: new file (Commit 18). Defines
   `SimpleGraph.countMatroid` via `IndepMatroid.ofFinite`; ships
   `@[simp] countMatroid_E` and `@[simp] countMatroid_indep_iff`.
+- `MatroidIdentification.lean` (Commit 19): adds
+  `SimpleGraph.rigidityMatroid` as the `(2, 3)`-count matroid
+  specialisation and the matroid-form Lovász--Yemini
+  `rigidityMatroid_indep_iff_edgeSetRowIndependent`, closing Phase 7.
 - `LamanTheorem.lean`: Phase 6 caller inlined the `obtain` of the
   IR witness and now calls
   `exists_affinelySpanning_of_eventually hp₀.eventually` (Commit 15).
@@ -587,4 +600,54 @@ A red node = not yet formalized; a green node = formalized and
 
 ## Hand-off / next phase
 
-_Written when the phase finishes._
+Phase 7 closes the matroid-side identification: the planar rigidity
+matroid is now packaged as a `Matroid (Sym2 V)` via the `(2, 3)`-count
+matroid (`SimpleGraph.rigidityMatroid` in `MatroidIdentification.lean`),
+and its independent sets are characterised both combinatorially (as
+$(2, 3)$-sparse edge subsets, by `countMatroid_indep_iff`) and
+linear-algebraically (as edge subsets row-independent at some
+placement, by `rigidityMatroid_indep_iff_edgeSetRowIndependent`).
+
+**Next phase (Phase 8).** The linear-matroid framing of the rigidity
+matroid via `apnelson1/Matroid` (`Matroid.ofFun` of the rigidity-row
+function at a generic placement). The phase target is the matroid
+isomorphism
+
+```
+linearRigidityMatroid V 2 ≅ rigidityMatroid V
+```
+
+stating that Lovász--Yemini is a matroid iso, not just an
+independence-iff. Requires adding `apnelson1/Matroid` (or an
+equivalent infrastructure) as a project dependency and developing
+the `Matroid.ofFun`-style construction. The combinatorial bridge
+already lands in this phase: the $(k, \ell)$-augmentation axiom
+(`IsSparse.exists_aug_of_lt_two_mul`) is what the linear-matroid
+identification reduces through.
+
+**Open work itemised in `notes/FRICTION.md` and DESIGN.md.** The
+Phase 5 / Phase 7 unification proposal (factor `typeII_extend` IR
+and row-LI cores through a shared row-decomposition lemma) is
+recorded above under *Blockers / open questions*; option 1 (extract
+the row identity as shared lemmas in `Henneberg.lean`) is the
+incremental win; option 3 (`rank R_typeII = rank R_{G'} + 2`) is
+the principled one and would benefit from waiting on Phase 8's
+`Matroid` infrastructure to pin down the rank API the project wants.
+
+**Pebble game.** Lee--Streinu's $(k, \ell)$-pebble game is an
+algorithmic complement to the I-component augmentation proof
+(rejected edges $\leftrightarrow$ tight components). Not on any
+critical path; logged here as an interesting future deliverable.
+
+**Project-organization carryover.** This file (640 lines) is well
+over the 250-line soft budget — Phase 7 spanned 22+ commits, and
+the *Multi-session plan* + *Decisions made* sections accumulated
+without a compression pass since Commit 12's
+`55ee5d1` (437→260). With the phase closed, the multi-session plan
+is by definition no longer plan-relevant and could collapse to a
+brief commit-log summary + pointer to the blueprint dep-graph;
+several *Decisions made* entries could lift to
+`../TACTICS-GOLF.md` / `../TACTICS-QUIRKS.md` / `../DESIGN.md` if
+they carry cross-cutting lessons. Defer to early Phase 8: file as
+the first project-organization task once Phase 8's notes file is
+created.

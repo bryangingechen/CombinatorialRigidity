@@ -68,7 +68,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 4. Frameworks | `Framework.lean` | ✓ Complete (see `notes/Phase4.md`) |
 | 5. Laman's theorem (⇐) | `LamanTheorem.lean`, `HennebergRigidity.lean` | ✓ Complete (see `notes/Phase5.md`) |
 | 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | ✓ Complete (see `notes/Phase6.md`) |
-| 7. Lovász–Yemini matroid identification | `CountMatroid.lean`, `MatroidIdentification.lean` | In progress (see `notes/Phase7.md`) |
+| 7. Lovász–Yemini matroid identification | `CountMatroid.lean`, `MatroidIdentification.lean` | ✓ Complete (see `notes/Phase7.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -211,69 +211,25 @@ served as the authoritative dep-graph and lemma index throughout. See
 
 ### Phase 7 — Lovász–Yemini matroid identification (`CountMatroid.lean`, `MatroidIdentification.lean`)
 
-In progress. Phase 6 shipped *one* direction of Lovász–Yemini in dim 2
-(row-independent $\Rightarrow$ $(2, 3)$-sparse, via
-`isSparse_of_edgeSetRowIndependent_dim_two`). Phase 7 ships the
-converse, packages the *general* $(k, \ell)$-count matroid (matroidal
-regime $\ell < 2k$), and specializes to the planar rigidity matroid.
-
-**Mathematical target.**
-- The **general $(k, \ell)$-count matroid** (Whiteley 1996,
-  Lee--Streinu 2008; modern presentation Theran 2012 §5): for
-  $0 \le \ell < 2k$ and finite $V$, the $(k, \ell)$-sparse subsets
-  of $E(K_V)$ are the independent sets of a matroid
-  `SimpleGraph.countMatroid V k ℓ : Matroid (Sym2 V)`. Combinatorial
-  (no linear algebra).
-- **Lovász--Yemini.** For finite $V$ with $|V| \ge 2$, an edge set
-  $I \subseteq E(K_V)$ is row-independent at some generic placement
-  $p : V \to \R^{2}$ if and only if the spanning subgraph on $I$ is
-  $(2, 3)$-sparse. The planar rigidity matroid
-  `SimpleGraph.rigidityMatroid V := countMatroid V 2 3 (by omega)`
-  is the specialization; the bridge from row-LI to
-  $(2, 3)$-sparsity is the iff
-  `edgeSet_rowIndependent_iff_isSparse_dim_two` (already in Phase 7).
+Complete. Phase 6 shipped the easy direction of Lovász–Yemini in dim 2
+(row-independent $\Rightarrow$ $(2, 3)$-sparse). Phase 7 shipped the
+converse, the general $(k, \ell)$-count matroid in the matroidal regime
+$\ell < 2k$ (Whiteley 1996, Lee--Streinu 2008), and the planar
+rigidity-matroid specialisation. Hard-direction induction lives in
+`MatroidIdentification.lean` and routes through the matroidal-regime
+$I$-component scaffolding in `Sparsity.lean` (`IsSparse.maxBlock` and
+edge-disjointness); the abstract `(k, \ell)`-count matroid sits in its
+own file `CountMatroid.lean` via `IndepMatroid.ofFinite`. The phase ran
+in **forward blueprint mode** with `blueprint/src/chapter/count-matroid.tex`
+and `blueprint/src/chapter/rigidity-matroid.tex` as the authoritative
+dep-graphs and lemma indices. See `notes/Phase7.md` for the full lemma
+list and phase-specific decisions.
 
 The **linear-matroid framing** of the rigidity matroid (the
 generic-placement matroid $M_p$ on $E(K_V)$ via `Matroid.ofFun` for
 some generic $p$, with Lovász--Yemini stated as a matroid iso
-$M_{p_{\text{gen}}} \cong \mathrm{countMatroid}\,V\,2\,3$) is
-deferred to **Phase 8**, which will add `apnelson1/Matroid` as a
-dependency.
-
-**Proof route (forward-mode dep-graph in `blueprint/src/chapter/count-matroid.tex` +
-`blueprint/src/chapter/rigidity-matroid.tex`).**
-
-- *Row-LI iff $(2, 3)$-sparse* (Lovász--Yemini 1982; modern
-  presentation Jordán 2016 §2.2 Theorem 2.2.1): Henneberg induction
-  on $|E|$. The inductive step picks a min-degree-$\le 3$ vertex
-  in the sparse graph (its existence follows from
-  $|E| \le 2|V| - 3$) and reverses the corresponding Henneberg
-  move; the row-LI placement of the smaller graph lifts back along
-  the Henneberg move. The sparse reverse decomposition reuses
-  Phase 5's tight-subset machinery (`IsTightOn.union_inter`).
-  *Already done in Commits 1--15.*
-- *$(k, \ell)$-count matroid augmentation* (Whiteley 1996 / Lee--Streinu
-  2008): in the matroidal regime $\ell < 2k$, if $I, J$ are both
-  $(k, \ell)$-sparse and $|I| < |J|$ then some $e \in J \setminus I$
-  extends $I$. The proof builds a single $I$-tight superset of all
-  endpoints of $J \setminus I$ via iterated `IsTightOn.union_inter`
-  / `union_with_bonus`, then squeezes $|J| \le |I|$ from the
-  $I$- and $J$-sparsity bounds. *Commit 17.*
-- *Matroid packaging.* `IndepMatroid.ofFinite` with the
-  $(k, \ell)$-sparse predicate; trivial axioms plus the
-  augmentation lemma. *Commit 18 (general) + 19 (rigidity matroid
-  specialization).*
-
-(Jordán's "critical set" is our `IsTightOn`; the synonym is
-documented in `IsTightOn`'s blueprint definition and again in the
-new chapter's *Terminology* aside.)
-
-**Forward mode.** Per `blueprint/DESIGN.md`, the blueprint chapters
-`blueprint/src/chapter/count-matroid.tex` and
-`blueprint/src/chapter/rigidity-matroid.tex` are the authoritative
-dep-graphs and lemma indices for Phase 7; the lemma list is **not**
-duplicated in `notes/Phase7.md`. See `notes/Phase7.md` for current
-state, architectural decisions, and hand-off.
+$M_{p_{\text{gen}}} \cong \mathrm{rigidityMatroid}\,V$) is deferred to
+**Phase 8**, which will add `apnelson1/Matroid` as a dependency.
 
 ## Engineering conventions
 

@@ -492,6 +492,8 @@ to a follow-up phase.
 
 \begin{definition}[Planar rigidity matroid]
   \label{def:rigidityMatroid}
+  \lean{SimpleGraph.rigidityMatroid}
+  \leanok
   \uses{def:countMatroid}
   For finite $V$, the \emph{planar rigidity matroid}
   $\mathcal{R}(V)$ is the $(2, 3)$-count matroid on $V$ of
@@ -502,20 +504,24 @@ to a follow-up phase.
 
 \begin{theorem}[Lov\'asz--Yemini, matroid form]
   \label{thm:rigidityMatroid-indep-iff-rowIndependent}
+  \lean{SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent}
+  \leanok
   \uses{def:rigidityMatroid, def:edgeSet-rowIndependent,
     thm:edgeSet-rowIndependent-iff-isSparse}
-  Let $V$ be finite with $|V| \ge 2$ and $I \subseteq
-  \mathrm{Sym}_{2}V$. Then $I$ is independent in the planar rigidity
+  Let $V$ be finite and $I \subseteq E(K_{V})$. Then the image of $I$
+  in $\mathrm{Sym}_{2}V$ is independent in the planar rigidity
   matroid $\mathcal{R}(V)$ if and only if there exists a placement
   $p : V \to \R^{2}$ at which $I$ is row-independent.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:countMatroid-indep-iff,
     thm:edgeSet-rowIndependent-iff-isSparse}
-  By \cref{thm:countMatroid-indep-iff}, $I$ is independent iff
-  $I \subseteq E(K_{V})$ and $\mathrm{fromEdgeSet}\,I$ is
+  By \cref{thm:countMatroid-indep-iff}, the image of $I$ is
+  independent in $\mathcal{R}(V) = \mathrm{countMatroid}\,V\,2\,3$
+  iff it is contained in $E(K_{V})$ (automatic, since $I \subseteq
+  E(K_{V})$ already) and $\mathrm{fromEdgeSet}\,I$ is
   $(2, 3)$-sparse. By \cref{thm:edgeSet-rowIndependent-iff-isSparse}
-  at $G = K_{V}$ (every off-diagonal pair is an edge of $K_{V}$, so
-  $I \subseteq E(K_{V})$ is the carrier condition for the row-LI
-  side), the latter holds iff $I$ is row-LI at some placement.
+  at $G = K_{V}$, the latter holds iff $I$ is row-LI at some
+  placement.
 \end{proof}

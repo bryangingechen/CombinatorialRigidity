@@ -3,6 +3,7 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
+import CombinatorialRigidity.CountMatroid
 import CombinatorialRigidity.HennebergRigidity
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
 import CombinatorialRigidity.RigidityMatroid
@@ -1064,5 +1065,43 @@ theorem edgeSet_rowIndependent_iff_isSparse_dim_two {V : Type*} [Finite V]
     -- same `edgeRow p (u, v)` on the same `Sym2`-value), so `convert ... using 1` closes both
     -- the LI carrier and the index reindex via `toH`.
     convert hp.comp toH htoH_inj using 1
+
+/-! ### The planar rigidity matroid
+
+The matroid-theoretic packaging of Lovász–Yemini for `d = 2`. The planar rigidity matroid
+`SimpleGraph.rigidityMatroid V` is the `(2, 3)`-count matroid on `V` (a matroid since
+`3 < 4 = 2k` at `k = 2`), and its independent sets are the edge subsets that are
+row-independent at some placement (`rigidityMatroid_indep_iff_edgeSetRowIndependent`),
+combining `countMatroid_indep_iff` with the row-LI ↔ sparse iff
+`edgeSet_rowIndependent_iff_isSparse_dim_two`. -/
+
+/-- The **planar rigidity matroid** on a finite vertex set `V`: the `(2, 3)`-count matroid
+(`SimpleGraph.countMatroid`). The matroidal regime condition `3 < 4 = 2 * 2` discharges by
+`omega`.
+
+By `countMatroid_indep_iff` its independent sets are exactly the `(2, 3)`-sparse edge subsets
+of `K_V`; by `rigidityMatroid_indep_iff_edgeSetRowIndependent` (Lovász–Yemini, matroid form)
+these are equivalently the edge subsets that are row-independent at some placement
+`p : V → ℝ²`. -/
+noncomputable def _root_.SimpleGraph.rigidityMatroid (V : Type*) [Finite V] : Matroid (Sym2 V) :=
+  SimpleGraph.countMatroid V 2 3 (by omega)
+
+/-- **Lovász–Yemini, matroid form.** An edge subset `I ⊆ (⊤ : SimpleGraph V).edgeSet` is
+independent in the planar rigidity matroid iff there exists a placement `p : Framework V 2` at
+which `I` is row-independent.
+
+Combines `countMatroid_indep_iff` (independent ↔ off-diagonal + `(2, 3)`-sparse) with
+`edgeSet_rowIndependent_iff_isSparse_dim_two` at `G = ⊤` (the row-LI ↔ sparse iff on the
+spanning subgraph). The off-diagonal carrier condition is automatic on the LHS since `I` is
+already typed as a subset of `(⊤).edgeSet`. -/
+theorem _root_.SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent
+    {V : Type*} [Finite V] (I : Set (⊤ : SimpleGraph V).edgeSet) :
+    (SimpleGraph.rigidityMatroid V).Indep (Subtype.val '' I) ↔
+      ∃ p : Framework V 2, (⊤ : SimpleGraph V).EdgeSetRowIndependent p I := by
+  rw [SimpleGraph.rigidityMatroid, SimpleGraph.countMatroid_indep_iff,
+    edgeSet_rowIndependent_iff_isSparse_dim_two]
+  refine and_iff_right ?_
+  rintro e ⟨e', _, rfl⟩
+  exact e'.property
 
 end SimpleGraph
