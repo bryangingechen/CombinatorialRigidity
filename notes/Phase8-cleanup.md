@@ -128,19 +128,24 @@ Phase 8 surface = `LinearRigidityMatroid.lean` + new lemmas in
   build + lint stay green without it (likely leftover from an
   earlier draft that used a Finset op pre-replaced with a
   `Set.Finite`-bridged form). Deleted this commit.
-- [ ] **B2:** `Fintype.ofFinite` bridge audit. The 4 Phase 8 sites
-  (1 `LinearRigidityMatroid` + 3 `Rank.lean`) — check whether each
-  is the canonical mathlib-style inline bridge per `DESIGN.md`
-  *Typeclass shape for finiteness on `V`* or whether the signature
-  could equivalently lift to `[Fintype …]` at no cost. Expectation:
-  all 4 stay (mirror lemmas state at `[Finite m]` / `[Finite n]` to
-  match the strongest mathematical claim).
-- [ ] **B3:** `noncomputable def` audit on the two new defs
-  (`linearRigidityRow`, `linearRigidityMatroid`). Phase 7-cleanup
-  B4 found 4 forced sites in the rigidity-row pipeline due to
-  `Real.instRCLike` via `innerSL`; these two are downstream
-  (compose with `(⊤).rigidityRow p`), so the keyword should still
-  be forced. Verify by `noncomputable`-comment-out test.
+- [x] **B2:** `Fintype.ofFinite` bridge audit closed. All 4 Phase 8
+  sites stay: each statement's type-mention is `Matrix m n ℝ` /
+  `Framework V 2` / `LinearIndependent ℝ (…)` / `Set (⊤).edgeSet`,
+  none of which require `Fintype.card …`-shaped data in the
+  signature. Bodies use `Matrix.det` / `Finset.induction_on` which
+  do need `[Fintype …]`; inline `haveI` bridges are the canonical
+  mathlib idiom per `DESIGN.md` *Typeclass shape for finiteness on
+  `V`*. For the mirror lemmas, the `[Finite m]` / `[Finite n]`
+  signature is also the upstream-PR-friendly shape.
+- [x] **B3:** `noncomputable def` audit closed. Both forced.
+  `linearRigidityRow` fails compilation as `def` with *"depends on
+  `Function.extend`, which is `noncomputable`"*; `linearRigidityMatroid`
+  fails as `def` with *"depends on `Real.instDivisionRing`, which is
+  `noncomputable`"* (via `Matroid.ofFun ℝ …`). Phase 7-cleanup B4's
+  observation extends: the new defs compose with the
+  `Real.instRCLike`-driven `(⊤).rigidityRow p` pipeline AND introduce
+  a second `noncomputable` driver (`Function.extend` for the
+  off-edge-set zero extension).
 - [ ] **B4:** Multi-step `rw [..., ..., ...]` chain survey on the
   new file + new mirror. Grep: `rw \[[^]]*,[^]]*,[^]]*,[^]]*\]`.
   For each 4+-arg chain, ask the standard *missing-fused-lemma* /
@@ -300,6 +305,16 @@ not provided by the `[Finite m]` / `[Finite n]` / `[Finite ι]`
 signatures). No FRICTION-worthy lesson — Phase 7-cleanup B1 already
 established "vestigial classicals accumulate from draft refactors";
 the audit protocol caught a single Phase-8 instance.
+
+**B2 — `Fintype.ofFinite` bridge audit.** No-edit. All 4 sites
+(LinearRigidityMatroid L115; Rank.lean L75, L76, L125) stay. Each
+is the canonical `[Finite …]`-signature + inline-`haveI` bridge per
+`DESIGN.md` *Typeclass shape for finiteness on `V`*.
+
+**B3 — `noncomputable def` audit.** No-edit. Both new defs forced.
+`linearRigidityRow` by `Function.extend`; `linearRigidityMatroid`
+by `Real.instDivisionRing` via `Matroid.ofFun ℝ …`. Verified by
+keyword-strip + `lake build` failure trace.
 
 ## Blockers / open questions
 
