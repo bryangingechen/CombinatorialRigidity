@@ -1,7 +1,7 @@
 # Phase 7 cleanup round — work log
 
-**Status:** in progress. A1 (fix) + A3/A4/A5/A6/A7/A10 (no-fix
-audits) done; A2/A8/A9/A11, B*, C*, D* outstanding.
+**Status:** in progress. A1 (fix) + A3/A4/A5/A6/A7/A8/A10 (no-fix
+audits) done; A2/A9/A11, B*, C*, D* outstanding.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -12,8 +12,8 @@ cleanly.
 
 ## Current state
 
-Working through bucket A. A1 fixed; A3 / A4 / A5 / A6 / A7 / A10
-audited clean (no divergence). Remaining A-tasks: A2 (largest), A8,
+Working through bucket A. A1 fixed; A3 / A4 / A5 / A6 / A7 / A8 /
+A10 audited clean (no divergence). Remaining A-tasks: A2 (largest),
 A9 (`cor:isLaman-exists-rowIndependent` orphan red node already
 flagged), A11. Then B/C/D.
 
@@ -109,10 +109,26 @@ attempt for any flagged divergence.
   `lem:isInfinitesimallyRigid-eventually` (frameworks.tex) and
   `thm:top-fin-two-isGenericallyRigidInj` (frameworks.tex) resolve.
   No fix required.
-- [ ] A8: `chapter/laman-theorem.tex` ↔ `LamanTheorem.lean`. Watch
-  for: Phase 6's `LamanTheorem` ⇒ direction; the Phase 7 inlining of
-  the `obtain` of the IR witness at the single Phase 6 caller — does
-  the chapter still describe the older pre-inline shape?
+- [x] A8: `chapter/laman-theorem.tex` ↔ `LamanTheorem.lean` +
+  `RigidityMatroid.lean`. All 13 pinned declarations resolve (the
+  four LamanTheorem.lean theorems + nine RigidityMatroid.lean
+  declarations — `EdgeSetRowIndependent`, `rigidityRow`, the row
+  span / iff-LI / rank-bound / basis-pick / affinely-spanning
+  perturbation / row-independence-sparsity lemmas). The Phase 7
+  inlined shape in `IsGenericallyRigid.exists_isLaman_le`
+  (`LamanTheorem.lean`:151–185) is faithfully described by the
+  chapter prose at lines 447–465: IR-witness extraction → `exists
+  _affinelySpanning_of_eventually hp₀.eventually` → inline
+  rank-nullity at the chosen `p` (the closed lemma `rigidityMap
+  _finrank_range_ge_of_isGenericallyRigid` is cited with a
+  "derived from IR at p via rank-nullity" parenthetical that
+  honestly flags the unfold) → "placement-fixed companion of
+  `lem:exists-rowIndependent-edge-basis`" (i.e. `exists_edgeSet
+  RowIndependent_of_finrank_range_ge_dim_two` at
+  `RigidityMatroid.lean`:252; the closed-form `_basis_dim_two`
+  packages IR-extraction + companion, but the inlined caller wants
+  IR + affine spanning at the *same* `p` and so calls the
+  companion directly). No fix required.
 - [ ] A9: `chapter/rigidity-matroid.tex` ↔ `RigidityMatroid.lean` +
   `MatroidIdentification.lean`. The newest chapter; high churn during
   Phase 7. Likely highest density of divergence candidates.
@@ -260,6 +276,16 @@ checkbox.)*
   laman-theorem.tex / rigidity-matroid.tex, not frameworks.tex —
   defer to A8 / A9). `IsGenericallyRigidInj.toIsGenericallyRigid`
   is a trivial And-projection accessor, justifiably skipped.
+- **A8 — laman-theorem.tex no-divergence sweep.** All 13 pinned
+  declarations resolve (across `LamanTheorem.lean` +
+  `RigidityMatroid.lean`). The Phase 7 inlining of the IR witness
+  in `IsGenericallyRigid.exists_isLaman_le` matches the chapter
+  prose: IR-extraction → affinely-spanning perturbation → inline
+  rank-nullity → "placement-fixed companion" of the closed
+  basis-pick lemma. The chapter's "placement-fixed companion"
+  hint is the canonical "named project-internal helper standing
+  in for what the prose treats as a one-step correspondence"
+  aside from blueprint/CLAUDE.md *Proof verbosity*.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
