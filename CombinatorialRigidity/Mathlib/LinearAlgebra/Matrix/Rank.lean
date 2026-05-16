@@ -87,15 +87,14 @@ theorem finite_setOf_not_linearIndependent_rows_along_affine_path
     simp only [P, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul,
       Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_X, Polynomial.eval_C]
     ring
-  -- `Q.eval t = det((A + t • B) * (A + t • B)ᵀ)`, via `RingHom.map_det` plus `Matrix.map_mul`
-  -- and `Matrix.transpose_map`.
+  -- `Q.eval t = det((A + t • B) * (A + t • B)ᵀ)`, via `RingHom.map_det` +
+  -- `RingHom.mapMatrix_apply` (the `mapMatrix → Matrix.map` bridge) + `Matrix.map_mul` +
+  -- `Matrix.transpose_map` + `hP_eval`.
   have hQ_eval : ∀ t : ℝ, Q.eval t = ((A + t • B) * (A + t • B)ᵀ).det := by
     intro t
     change (Polynomial.evalRingHom t) Q = _
-    rw [show Q = (P * Pᵀ).det from rfl, (Polynomial.evalRingHom t).map_det,
-      show (Polynomial.evalRingHom t).mapMatrix (P * Pᵀ)
-        = (P * Pᵀ).map ⇑(Polynomial.evalRingHom t) from rfl,
-      Matrix.map_mul, Matrix.transpose_map, hP_eval]
+    rw [(Polynomial.evalRingHom t).map_det, RingHom.mapMatrix_apply, Matrix.map_mul,
+      Matrix.transpose_map, hP_eval]
   -- `Q ≠ 0`: at `t = t₀`, `Q.eval t₀ = det((A + t₀ • B) * (A + t₀ • B)ᵀ) ≠ 0` by hypothesis.
   have hQ_ne : Q ≠ 0 := fun hQ_zero => by
     have := hQ_eval t₀

@@ -146,10 +146,18 @@ Phase 8 surface = `LinearRigidityMatroid.lean` + new lemmas in
   `Real.instRCLike`-driven `(⊤).rigidityRow p` pipeline AND introduce
   a second `noncomputable` driver (`Function.extend` for the
   off-edge-set zero extension).
-- [ ] **B4:** Multi-step `rw [..., ..., ...]` chain survey on the
-  new file + new mirror. Grep: `rw \[[^]]*,[^]]*,[^]]*,[^]]*\]`.
-  For each 4+-arg chain, ask the standard *missing-fused-lemma* /
-  *mirror-eligible* question per `../CLEANUP.md` §B.
+- [x] **B4:** Multi-step `rw` chain survey closed. Project surface
+  (LinearRigidityMatroid + Rank.lean): no chain with a missing
+  fused-lemma gap. Real finding: one 6-arg chain at Rank.lean L95
+  (inside `Matrix.finite_setOf_not_linearIndependent_rows_along_
+  affine_path`) used **two `show ... from rfl`** workarounds — one
+  to unfold the `let`-bound `Q`, one to bridge `(evalRingHom t)
+  .mapMatrix (P * Pᵀ)` to `(P * Pᵀ).map ⇑(evalRingHom t)`. Both
+  eliminated this commit: the `let`-unfold is unnecessary (the rw
+  chain works without exposing Q's body), and the `mapMatrix → map`
+  bridge has a named lemma `RingHom.mapMatrix_apply` in mathlib that
+  the original proof didn't reach for. Net: 6 lines → 4 lines, no
+  `show … from rfl` smell, upstream-PR-friendly.
 - [ ] **B5:** Mirror-eligibility check on the two new
   `Mathlib/LinearAlgebra/Matrix/Rank.lean` lemmas. Phase 8
   *Hand-off* flags both as upstream PR candidates ("direct
@@ -315,6 +323,23 @@ is the canonical `[Finite …]`-signature + inline-`haveI` bridge per
 `linearRigidityRow` by `Function.extend`; `linearRigidityMatroid`
 by `Real.instDivisionRing` via `Matroid.ofFun ℝ …`. Verified by
 keyword-strip + `lake build` failure trace.
+
+**B4 — Rank.lean L92-98 `hQ_eval` chain simplification.** Two
+`show … from rfl` workarounds dropped:
+1. `show Q = (P * Pᵀ).det from rfl` — unfolds the `let`-bound `Q`;
+   eliminated by reordering the rewrite chain so the `(evalRingHom
+   t).map_det` step lands on `Q` directly (a `let`-binding is `rfl`-
+   reducible at the elaboration boundary).
+2. `show (Polynomial.evalRingHom t).mapMatrix (P * Pᵀ) = (P * Pᵀ).map
+   ⇑(Polynomial.evalRingHom t) from rfl` — bridges the bundled
+   `RingHom.mapMatrix` to the unbundled `Matrix.map`; eliminated by
+   the named mathlib lemma `RingHom.mapMatrix_apply`.
+
+The lesson is upstream-friendly: when working with `f.mapMatrix M`
+vs `M.map ⇑f`, reach for `RingHom.mapMatrix_apply` instead of a
+`show … from rfl` bridge. Worth noting in `TACTICS-GOLF.md` if a
+second site surfaces; for now, a single Phase 8 instance does not
+clear the lift-on-promotion bar.
 
 ## Blockers / open questions
 
