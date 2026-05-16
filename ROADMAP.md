@@ -69,10 +69,16 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 5. Laman's theorem (⇐) | `LamanTheorem.lean`, `HennebergRigidity.lean` | ✓ Complete (see `notes/Phase5.md`) |
 | 6. Laman's theorem (⇒) | `LamanTheorem.lean`, `RigidityMatroid.lean` | ✓ Complete (see `notes/Phase6.md`) |
 | 7. Lovász–Yemini matroid identification | `CountMatroid.lean`, `MatroidIdentification.lean` | ✓ Complete (see `notes/Phase7.md`) |
+| ⋮ Cleanup round (pre-Phase-8) | project-wide | in progress (see `notes/Phase7-cleanup.md`; round manual: `CLEANUP.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
 when picking up a phase or reviewing how an earlier phase was finished.
+
+**Cleanup rounds** between phases get their own work log under
+`notes/PhaseN-cleanup.md` (named to sort next to the prior phase's
+notes) and a row in this table for visibility. Round-level discipline
+lives in `CLEANUP.md` at the repo root.
 
 Add lemmas in the file that introduces the relevant definition; a
 lemma about `IsSparse` belongs in `Sparsity.lean`, not in `Laman.lean`,

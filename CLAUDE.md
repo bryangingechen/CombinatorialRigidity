@@ -20,7 +20,11 @@ the area-specific discipline:
 Project conventions (what the code looks like) live in `ROADMAP.md`
 and `DESIGN.md`; tactical advice for Lean proofs lives in
 `TACTICS-GOLF.md` (idioms / golfing) and `TACTICS-QUIRKS.md`
-(symptom-indexed rescue).
+(symptom-indexed rescue). The discipline for **cleanup rounds**
+(between-phases or post-phase audit passes — blueprint/Lean
+divergence, code-smell sweeps, long-proof audits) lives in
+`CLEANUP.md`; read it when running such a round or before opening a
+`notes/PhaseN-cleanup.md` work log.
 
 ## Reading order
 
