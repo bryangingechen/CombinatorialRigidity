@@ -1,8 +1,8 @@
 # Phase 7 cleanup round — work log
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
-no-fix audits). Bucket B partial: B1 + B2 + B3 + B4 + B5 + B6 closed;
-B3 landed via five commits (a/b/c/d/e). The audit found 6 of 8
+no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
+commits (a/b/c/d). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
 style; the Zulip thread *Unused Decidable Instances linter*
@@ -45,8 +45,13 @@ remaining 10 sites are all load-bearing (term-mode `show … from
 …` inside `simp` / `rw` arg lists; defeq unfolds in
 RigidityMatroid.lean / MatroidIdentification.lean / Henneberg.lean;
 one `change` in Framework.lean that bridges `IsInfinitesimallyRigid`
-to its underlying `≤` for a downstream `omega`). Subsequent work
-order: **B7 → C / D**.
+to its underlying `≤` for a downstream `omega`). B7 `rw`-chain audit
+**closed**: 4 of 64 chains were vestigial (1 mirror lemma, 1 simp
+collapse, 1 project-internal helper, 1 duplicate b-branch simp
+collapse); the remaining 60 do per-step substitution + arithmetic
+that doesn't fit either heuristic (verbatim cross-site repeat ⇒
+mirror; arithmetic tail in default simp set ⇒ simp). Subsequent
+work order: **C / D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -57,7 +62,7 @@ cleanly.
 
 ## Current state
 
-Bucket A closed. B1 + B2 + B3 + B4 + B5 + B6 closed. The B1 per-site audit
+Bucket A closed. Bucket B closed (B1–B7). The B1 per-site audit
 confirmed the design hypothesis: 29 of 49 `classical` sites
 (~59%) are load-bearing in the expected mathlib-idiom way
 (providing `DecidableEq` for `Finset` ops / `Compl` / `rcases`
@@ -625,9 +630,64 @@ Each is a separate commit, root-cause fix preferred.
   Hypothesis-side `change at h` after a `set x := …` block can
   usually be folded into the preceding `simp only` via `[hx_def,
   ...]`.
-- [ ] B7: Multi-step `rw [..., ..., ...]` chains. Same friction-review
-  signal; look for fused-lemma candidates that warrant a
-  `CombinatorialRigidity/Mathlib/<path>` mirror.
+- [x] B7: Multi-step `rw [..., ..., ...]` chains. **4 of 64 sites
+  refactored across 4 commits; the remaining 60 are load-bearing.**
+  Initial sweep: 64 `rw` blocks with 3+ args in project source
+  (excluding `Mathlib/` mirror). Most are doing real per-step
+  substitution + arithmetic and stay. Four cleanups landed:
+  - **B7a — `Finset.mul_card_union_add_mul_card_inter` mirror.** The
+    same 3-rewrite chain
+    `rw [← Nat.mul_add, ← Nat.mul_add, Finset.card_union_add_card_inter]`
+    appeared at two `IsTightOn`-accounting sites (`Sparsity.lean`:432
+    in `IsTightOn.union_inter`, `Sparsity.lean`:478 in
+    `IsTightOn.union_with_bonus`) — both proving
+    `k * |s| + k * |t| = k * |s ∪ t| + k * |s ∩ t|`. Mirrored into
+    `Mathlib/Data/Finset/Card.lean` alongside the existing
+    `Finset.card_union_add_card_inter`; both sites collapse to a
+    one-line `have h_card_mul :=
+    Finset.mul_card_union_add_mul_card_inter s t k`. FRICTION entry
+    under *Mirrored*.
+  - **B7b — collapse 9-arg chain at `MatroidIdentification.lean`:692.**
+    The `s * c_a = 0` branch of `typeII_edgeSetRowIndependent_extend`
+    substituted three already-zero coefficients (`h_ca_zero, h_cb_zero,
+    h_cc`) into a `Submodule.span` decomposition and then cleaned up
+    via three `zero_smul` and two `zero_add` bookkeeping rewrites.
+    `simp [hf_decomp, h_ca_zero, h_cb_zero, h_cc]` discharges the lot.
+    9-arg chain → 4-arg `simp` call.
+  - **B7c — `SimpleGraph.ncard_edgesIn_comap` project helper.** Two
+    sites computed
+    `((G.comap f).edgesIn ↑s').ncard = (G.edgesIn ↑(s'.image f)).ncard`
+    under an injective `f` via the same 4-rewrite chain
+    `rw [hS_def, Finset.coe_image, ← image_edgesIn_comap,
+    Set.ncard_image_of_injective _ (Sym2.map.injective hf)]` — once
+    in `IsSparse.comap` (`Sparsity.lean`:393) and once in
+    `IsSparse.typeII_reverse_blocker` (`Sparsity.lean`:1035). Extracted
+    as a project-internal companion to `image_edgesIn_comap` in the
+    same file; both sites collapse to a one-line term-mode `have`.
+  - **B7d — collapse duplicate 5-arg perturbation chain.** The
+    same 5-arg chain
+    `rw [h_p_t_a t, h_p_t_b t, zero_smul, one_smul, zero_add]`
+    appeared at two perturbation-branch sites discharging
+    `p_t t b - p_t t a = (0 : ℝ) • w + (1 : ℝ) • (p₀ b - p₀ a)` after
+    substituting the perturbed-placement equalities —
+    `HennebergRigidity.lean`:542 (`typeI_isGenericallyRigidInj_two`)
+    and `MatroidIdentification.lean`:811
+    (`typeI_pendant_edgeSetRowIndependent_lift`). The
+    `zero_smul, one_smul, zero_add` tail is default simp content.
+    Collapsed to `simp [h_p_t_a t, h_p_t_b t]` at both sites (5 args →
+    2 args, same readability).
+
+  Heuristic that emerged: a 3+-arg `rw` chain is a fused-lemma /
+  helper candidate iff the chain (i) appears verbatim or near-verbatim
+  at 2+ sites, or (ii) has an arithmetic tail (`zero_smul`,
+  `one_smul`, `zero_add`, `sub_zero`, …) that lives in the default
+  simp set. The `sub_smul, one_smul` tail at `HennebergRigidity.lean`:
+  311 / `MatroidIdentification.lean`:360 / 407 *failed* the heuristic
+  (`simp [h1, hcoll]` leaves a residual `α • d - d = (α - 1) • d`
+  that needs `sub_smul` explicitly); the chain stays. Similarly for
+  the `Fintype.card_sum / card_fin / card_sigma` chain in
+  `TrivialMotions.lean`:306 (each step unrolls a distinct cardinality
+  identity rather than normalizing).
 
 ### Bucket C — Long-proof audit
 
@@ -673,6 +733,28 @@ Each is a separate commit, root-cause fix preferred.
 checkbox.)*
 
 ### Phase-local choices and proof techniques
+
+- **B7 — multi-step `rw` chain audit + 4-site cleanup across 4
+  commits.** Audit found 4 of 64 chains (~6%) vestigial; the remaining
+  60 do per-step substitution + arithmetic that doesn't fit the
+  heuristic. Fix split into four commits (a/b/c/d): one Mathlib mirror
+  (`Finset.mul_card_union_add_mul_card_inter` for two `IsTightOn`-
+  accounting sites), one `simp` collapse (9-arg chain at
+  `MatroidIdentification.lean`:692, six of the args lived in the
+  default simp set), one project-internal helper
+  (`SimpleGraph.ncard_edgesIn_comap` for two `IsSparse.comap`-style
+  sites), and one duplicate `rw → simp` collapse (5-arg perturbation
+  b-branch at `HennebergRigidity.lean`:542 and
+  `MatroidIdentification.lean`:811). Two-pattern audit heuristic
+  emerged: a 3+-arg `rw` chain is a candidate iff (i) it appears
+  verbatim or near-verbatim at 2+ sites (⇒ fused lemma / project
+  helper), or (ii) its tail lemmas live in the default simp set (⇒
+  `simp`-collapse). Counter-examples that *failed* the heuristic stay
+  as-is: `sub_smul, one_smul` tails leave a residual that needs the
+  explicit `sub_smul` rewrite (HennebergRigidity:311 / Matroid:360,
+  407); `Fintype.card_sum / card_fin / card_sigma` chains unroll
+  distinct cardinality identities, not normalize a single shape
+  (TrivialMotions:306).
 
 - **A1 — intro.tex re-statement after phase close.** Updated the
   *Phase plan* and *Reading this blueprint* prose to reflect Phase 7
