@@ -41,6 +41,16 @@ time, not first-draft.
     hypotheses** — route through a derived quantity.
 11. **`linearIndependent_fin2` leaves `![v₀, v₁] 0 / 1` unsimplified** —
     pair with `Matrix.cons_val_zero/one`.
+12. **`congr_fun` does not apply to `LinearMap`** — route through
+    `DFunLike.coe_injective` or `LinearMap.ext_iff`.
+13. **Subscript `₊` (U+208A) is not a valid identifier character** —
+    use alphanumeric suffix.
+14. **`Finset.univ.filter` of `Finset V` under `[Finite V]` triggers
+    cascading instance synthesis friction** — define on `Set V` first,
+    bridge via `Set.Finite.toFinset`.
+15. **Bare `Polynomial.X` (or `0`, `1`) needs explicit type ascription
+    in `let`/`set` of a `Polynomial`-valued expression** — annotate
+    the literal: `(Polynomial.X : Polynomial ℝ) • …`.
 
 ---
 
@@ -337,3 +347,43 @@ isolates the instance friction to one spot.
 Worked example: `SimpleGraph.maxBlock` / `SimpleGraph.IsSparse.maxBlock_isTightOn`
 in `Sparsity.lean` (Phase 7 Commit 17b). Pattern is useful for any
 "Finset of Finsets" construction over a `[Finite V]` ambient.
+
+## 15. Bare `Polynomial.X` (or `0`, `1`) needs explicit type ascription in `let`/`set` of a `Polynomial`-valued expression
+
+Writing
+
+```lean
+set P : Polynomial ℝ := (Polynomial.X • M₁.map C + M₀.map C).det
+-- or, equivalently, as a let:
+let P : Polynomial ℝ := (Polynomial.X • M₁.map C + M₀.map C).det
+```
+
+fails with `typeclass instance problem is stuck: Semiring ?m` even
+though the outer ascription `: Polynomial ℝ` *would* fix the ring if
+the elaborator consulted it. The matrix entries `M₁.map C` *do* live
+in `Polynomial ℝ`, so the `•` action is well-typed once the scalar's
+ring is fixed — but the parser commits to elaborating `Polynomial.X`
+bottom-up before unifying with the action's scalar type, and there's
+no constraint at that point telling it which `Polynomial R` to pick.
+Same trap applies to bare `0` / `1` in a `Polynomial`-valued context
+(e.g. `let p : Polynomial ℝ := 1 - X • Y` where `1` and `X` both
+need help).
+
+**Resolution.** Annotate the literal explicitly:
+
+```lean
+set P : Polynomial ℝ :=
+  ((Polynomial.X : Polynomial ℝ) • M₁.map C + M₀.map C).det
+```
+
+Recognition: when the error message says `Semiring ?m.…` /
+`Monoid ?m.…` / `Module ?m.… ?m.…` (one or more metavariables in the
+typeclass arguments) on an expression that *looks* well-typed
+because of the surrounding `: Polynomial ℝ` ascription, look first
+for a bare `Polynomial.X` (or `0`, `1`, `C r`) whose containing ring
+is set by the surrounding context but not by the local syntax.
+
+Worked examples: `exists_affinelySpanning_rigid_placement` in
+`RigidityMatroid.lean` and `finite_setOf_not_linearIndependent_rows_along_affine_path`
+in `Mathlib/LinearAlgebra/Matrix/Rank.lean` — same workaround,
+different proofs, two phases apart.

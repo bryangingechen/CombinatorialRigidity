@@ -31,12 +31,17 @@ structural-refactor round.
 
 ## Current state
 
-Bucket A (blueprint audit, 4 sub-tasks) closed clean: every Phase 8
-`\lean{...}` pin resolves, statement forms match faithfully, the
-`Subtype.val ''` image-packaging and `rigidityRow_add_smul` bridge
-are both honestly flagged in blueprint prose. Bucket B in progress
-— B1 found one vestigial `classical` (deleted this commit). The
-full task list across A–E sits under *Task checklist* below.
+Buckets A (blueprint audit, 4 sub-tasks), B (5 sub-tasks), C
+(1 sub-task), and D (4 sub-tasks) all closed. Remaining: bucket E
+(import / file-structure audit, audit-only). Findings landed:
+B1 deleted one vestigial `classical`; B4 dropped two
+`show … from rfl` workarounds via `RingHom.mapMatrix_apply` and
+added a new `CLEANUP.md` smell row for the pattern; C1 saved
+~20 lines on the uniform-genericity proof via parallel-case
+unification + `Set.Finite.exists_notMem`; D1 compressed
+`Phase8.md` 253 → 236 LoC; D2 promoted the `Polynomial.X`
+ascription quirk to TACTICS-QUIRKS § 15. Bucket E is audit-only
+per the round-open scoping decision.
 
 ## Architectural choices made up front
 
@@ -194,34 +199,36 @@ Phase 8 surface = `LinearRigidityMatroid.lean` + new lemmas in
 
 ### Bucket D — Project-organization compression
 
-- [ ] **D1:** `notes/Phase8.md` length check. Current 253 lines —
-  3 lines over the 250 soft budget. Compress: candidate targets
-  are the resolved *Blockers* section (two long resolved entries)
-  and *Decisions made → Phase-local choices and proof techniques*
-  (4 entries averaging ~13 lines each). Apply *Lift on promotion*
-  per `notes/CLAUDE.md` to any decision referenced in 2+ files.
-- [ ] **D2:** FRICTION.md *Open* re-skim — three current open
-  project-internal entries surfaced during Phase 8:
-  *Chaining `LinearIndepOn.insert`...*, *`Polynomial.X` in a
-  `set := ...` binding...*, *`h ▸ ...` substitutes through ambient
-  terms...*. For each: did a second site surface during Phase 8
-  finishing (triggering the promote-to-TACTICS-QUIRKS rule)? If
-  no — leave open. If yes — promote.
-- [ ] **D3:** `DESIGN.md` *Choices to revisit* drift check. Phase 8
-  closed `Ground-set shape of Matroid.ofFun` and `apnelson1/Matroid
-  pin drift` (both marked resolved at dep-bump commit). The new
-  `apnelson1/Matroid dependency` entry's "watch on every mathlib
-  bump" reminder remains active; the `Promoting edgesIn upstream`
-  entry remains active. Quick sanity: no other entry needs P8
-  update.
-- [ ] **D4:** No-residual-lifts audit. Phase 7-cleanup D1 was the
-  canonical example: scan every `notes/PhaseN.md`'s
-  *Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN*
-  section to confirm the targeted destination still exists and
-  carries the lifted content. Phase 8's section is single-entry
-  (`Extension by zero off a subtype` → FRICTION resolved); verify
-  the entry actually lives at the cited location in
-  `FRICTION-archive.md` (or the FRICTION *Resolved* section).
+- [x] **D1:** Phase8.md compressed 253 → 236 LoC. Three entries
+  tightened: *Uniform-genericity as a separate auxiliary lemma*
+  (16 → 10 lines, drops the now-historical "original sketch failed"
+  narrative); *Subtype factoring at Matroid.ext_indep* (13 → 8
+  lines, drops the wide-stance "may recur, idiom is worth noting"
+  prose for a tight watch-only entry); the resolved-blocker *Ground-
+  set shape of Matroid.ofFun* (12 → 7 lines, drops the full
+  signature recap that lives in the Lean code). Also tightened the
+  Hand-off *Possible cleanup round* to point at the now-active
+  `Phase8-cleanup.md`.
+- [x] **D2:** FRICTION re-skim — one promote-to-QUIRKS triggered:
+  the **`Polynomial.X` ascription quirk** hit a second site in
+  Phase 8 (`finite_setOf_not_linearIndependent_rows_along_affine_path`
+  in Rank.lean L78-79 uses the same `(Polynomial.X : Polynomial ℝ)`
+  workaround). Lifted to `TACTICS-QUIRKS.md` § 15; FRICTION entry
+  flipped to `[resolved]` with cross-reference; project CLAUDE.md
+  Quirks-index symptom table updated. The other two open Phase-8-era
+  entries (`LinearIndepOn.insert` chain, `h ▸` oversubstitution)
+  stay open — no second site surfaced in Phase 8.
+- [x] **D3:** DESIGN.md *Choices to revisit* drift check clean.
+  Two active (`apnelson1/Matroid dependency` watch + `Promoting
+  edgesIn upstream`); no other entry needs Phase-8 update. The
+  resolved-marker on `apnelson1/Matroid dependency` correctly
+  carries the "watch on every mathlib bump" reminder per the
+  Phase 8 opener (`3e7e2e5`).
+- [x] **D4:** No-residual-lifts audit clean. Phase 8's *Promoted*
+  section has one entry: *Extension by zero off a subtype* →
+  FRICTION [resolved] *Extending a function on a subtype to the
+  parent type — `dite` vs `Function.extend`*. Verified at
+  `notes/FRICTION.md:619`.
 
 ### Bucket E — Import / file-structure audit (audit-only)
 
@@ -368,6 +375,28 @@ natural batching window with the `apnelson1/Matroid` upstreaming
    nonempty because `bad` is finite in infinite ℝ" block to a one-
    liner.
 Net: file 252 → 232 LoC; main proof 113 → 95 lines. Lint clean.
+
+**D1 — Phase8.md compressed 253 → 236 LoC.** Three entries tightened:
+*Uniform-genericity* (drops historical "original sketch failed"
+narrative); *Subtype factoring* (single-site, tightened to
+watch-only); resolved-blocker *Ground-set shape* (full signature
+recap moved to Lean code only).
+
+**D2 — Promote `Polynomial.X` ascription quirk to TACTICS-QUIRKS.**
+Second site surfaced in Phase 8 (Rank.lean L78-79's
+`(Polynomial.X : Polynomial ℝ) • B.map Polynomial.C + …` repeats the
+exact workaround from `exists_affinelySpanning_rigid_placement` in
+RigidityMatroid.lean, Phase 6). Lifted to TACTICS-QUIRKS § 15;
+FRICTION entry flipped to `[resolved]` with cross-reference;
+Quirks-index symptom table in CombinatorialRigidity/CLAUDE.md gets
+the matching symptom line.
+
+**D3 — DESIGN.md drift clean.** Two active entries
+(`apnelson1/Matroid dependency` watch, `Promoting edgesIn upstream`);
+no other needs Phase-8 touch.
+
+**D4 — No-residual-lifts audit clean.** The single Phase 8 lift
+entry resolves to `notes/FRICTION.md:619`.
 
 ## Blockers / open questions
 

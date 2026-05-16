@@ -151,36 +151,26 @@ wrong, revisit there.
   (red target) will pull in `[Finite V]` at its statement, since
   `rigidityMatroid V` requires it.
 
-- **Uniform-genericity as a separate auxiliary lemma.** The
-  original Phase 8 opening (commit `3e7e2e5`) sketched the matroid
-  equality as a direct composition of `EdgeSetRowIndependent.eventually`
-  with `exists_affinelySpanning_of_eventually`. On re-examination
-  those two only give *one* placement `p` simultaneously row-LI on
-  *one* edge subset and affinely-spanning — not a `p` uniformly
-  row-LI across the finitely many `(2, 3)`-sparse subsets that
-  `rigidityMatroid V`'s existential ranges over. The uniform
-  collapse needs its own lemma
-  `exists_uniform_rowIndependent_placement_dim_two` whose proof is
-  linear-interpolation perturbation on a finset (a polynomial-in-`t`
-  nonzero somewhere has finitely many roots, so the union of
-  bad-`t` sets across the finite family is finite). Blueprint
-  updated to surface this as an explicit red node
-  `lem:exists-uniform-rowIndependent-placement` and rewrite the
-  main theorem's proof sketch accordingly.
+- **Uniform-genericity as a separate auxiliary lemma.** The Phase 8
+  opening (`3e7e2e5`) sketched the matroid equality as a direct
+  composition of `EdgeSetRowIndependent.eventually` with
+  `exists_affinelySpanning_of_eventually`, but those only give *one*
+  placement row-LI on *one* edge subset — not a placement uniformly
+  row-LI across the finite family of `(2, 3)`-sparse subsets the
+  matroid equality needs. The uniform collapse becomes its own
+  lemma `exists_uniform_rowIndependent_placement_dim_two` (linear-
+  interpolation perturbation on the finset, closing via the
+  polynomial-along-line cofinite helper). Blueprint surfaces it as
+  the explicit red node `lem:exists-uniform-rowIndependent-placement`.
 
-- **Subtype factoring at `Matroid.ext_indep`.** The matroid identity
-  `linearRigidityMatroid V 2 p = rigidityMatroid V` is proved via
-  `Matroid.ext_indep`, where the per-set independence agreement step
-  must convert `J : Set (Sym2 V)` (with `J ⊆ (⊤).edgeSet` from the
-  ground-set hypothesis) into `I : Set (⊤).edgeSet` so the two
-  pre-existing iffs `linearRigidityMatroid_indep_iff_edgeSetRowIndependent`
-  and `rigidityMatroid_indep_iff_edgeSetRowIndependent` (both keyed on
-  `I : Set (⊤).edgeSet` with `Subtype.val '' I` on the matroid side)
-  apply. The factoring is `I := Subtype.val ⁻¹' J` and
-  `hI_image : Subtype.val '' I = J` via
-  `Set.image_preimage_eq_of_subset` + `Subtype.range_coe`. The same
-  shape will likely recur at other matroid-identity sites; the idiom
-  is worth noting if it does.
+- **Subtype factoring at `Matroid.ext_indep`.** Converting
+  `J : Set (Sym2 V)` (with `J ⊆ (⊤).edgeSet`) to
+  `I : Set (⊤).edgeSet` via `I := Subtype.val ⁻¹' J` and
+  `hI_image : Subtype.val '' I = J` (`Set.image_preimage_eq_of_subset`
+  + `Subtype.range_coe`) lets the two pre-existing
+  `_indep_iff_edgeSetRowIndependent` iffs (both keyed on `Set (⊤).
+  edgeSet`) apply. Watch-only: promote to TACTICS-GOLF if the shape
+  recurs at a second matroid-identity site.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -202,17 +192,13 @@ wrong, revisit there.
   "watch this on every mathlib bump" reminder.
 
 - ~~**Ground-set shape of `Matroid.ofFun`.**~~ **Resolved.**
-  Signature is `Matroid.ofFun (𝔽 : Type*) [DivisionRing 𝔽]
-  [Module 𝔽 W] (E : Set α) (f : α → W) : Matroid α` (in
-  `Matroid/Representation/Map.lean`). Ground set is `E`. For our
-  purposes the linear matroid lands on `Sym2 V` with ground set
-  `(⊤ : SimpleGraph V).edgeSet`, matching `rigidityMatroid V`'s
-  ground set exactly — package equality is the right target.
-  `Matroid.ofFun` requires an `f` defined on all of `α = Sym2 V`,
-  not just `G.edgeSet`; extending `G.rigidityRow p` by zero off
-  `G.edgeSet` is the obvious move (the bridge lemma will then
-  identify the two matroids' independent sets via
-  `rigidityMatroid_indep_iff_edgeSetRowIndependent`).
+  Signature `Matroid.ofFun ℝ E f : Matroid α` (with `f : α → W`,
+  ground set `E`). Our linear matroid lands on `Sym2 V` with ground
+  set `(⊤ : SimpleGraph V).edgeSet`, matching `rigidityMatroid V`'s
+  ground set exactly, so package equality is the right target.
+  `Matroid.ofFun` requires `f` on all of `Sym2 V`; extending
+  `(⊤).rigidityRow p` by zero off the edge set bridges via
+  `Function.extend`.
 
 - **Mathlib upstream of `Matroid.ofFun`.** If `Matroid.ofFun` lands
   in mathlib during the phase (apnelson1's matroid library has been
@@ -243,11 +229,8 @@ phase is queued. Possible next directions:
   rigidity-matroid-from-`Matroid.ofFun` definition; the matroid
   identification with $(d, \binom{d+1}{2})$-sparsity is the open
   $d$-general generic-rigidity conjecture for $d \geq 3$.
-- **Possible cleanup round.** No urgent friction items surfaced
-  during Phase 8 implementation (one `[Finite ι]` / `Fintype.ofFinite`
-  bookkeeping nudge from the linter; one `set_option maxHeartbeats`
-  almost-needed but worked around by avoiding `change` in favour of
-  `linearIndepOn_congr`). A post-Phase-8 cleanup pass would mostly
-  audit the new file `LinearRigidityMatroid.lean` (≈190 LoC) and the
-  expanded `Mathlib/LinearAlgebra/Matrix/Rank.lean` mirror for
-  consolidation opportunities; see `CLEANUP.md` for the discipline.
+- **Post-Phase-8 cleanup round.** Opened at commit `f133a7b`,
+  scoped light (Phase 8 surface only) for buckets A–D + import-
+  structure audit-only for bucket E. See
+  `Phase8-cleanup.md` for the round's work log and round-level
+  manual `../CLEANUP.md` for discipline.

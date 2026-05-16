@@ -70,6 +70,11 @@ bullets. If one matches, jump to the named section of
 - `set V₊ := …` / `let V₊ := …` (or any identifier with `₊ ₋ ₌`)
   errors with *"expected token"* at the subscript column → § 13
   *Subscript `₊` (U+208A) is not a valid identifier character*
+- *"typeclass instance problem is stuck: Semiring ?m"* (or
+  `Monoid ?m`, `Module ?m ?m`) on a `let`/`set` of a `Polynomial`-
+  valued expression involving a bare `Polynomial.X` / `0` / `1` →
+  § 15 *Bare `Polynomial.X` (or `0`, `1`) needs explicit type
+  ascription* — annotate the literal.
 
 ## Starting a Lean-touching session
 

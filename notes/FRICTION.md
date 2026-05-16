@@ -103,28 +103,17 @@ housekeeping pass once their resolution is fully indexed.
   if a third caller hits it.
 - **Status:** open (project-internal note).
 
-### [open] `Polynomial.X` in a `set := ... .det` binding needs an explicit type ascription
+### [resolved] `Polynomial.X` in a `set := ... .det` binding needs an explicit type ascription
 - **Where it bit:** `exists_affinelySpanning_rigid_placement` in
-  `RigidityMatroid.lean`. Writing
-  `set P : Polynomial ℝ := (Polynomial.X • M₁.map C + M₀.map C).det`
-  fails with `typeclass instance problem is stuck: Semiring ?m`
-  because the elaborator picks the type of `Polynomial.X`
-  bottom-up from the body without consulting the outer `: Polynomial ℝ`
-  ascription.
-- **Friction:** the matrix entries `M₁.map C` *do* live in
-  `Polynomial ℝ`, so the `•` action is well-typed once the scalar's
-  ring is fixed; but the parser commits to elaborating `Polynomial.X`
-  before unifying with the action's scalar type. Workaround: annotate
-  the `X` literal explicitly:
-  `set P : Polynomial ℝ :=
-    ((Polynomial.X : Polynomial ℝ) • M₁.map C + M₀.map C).det`.
-- **Proposed fix:** none upstream; standard Lean 4 elaboration order
-  quirk. If you see this exact error message on a `Polynomial`-valued
-  expression, look first for a bare `Polynomial.X` (or `1`, `0`)
-  whose containing ring is set by the surrounding context but not
-  by the local syntax.
-- **Status:** open (project-internal note). Promote to
-  `TACTICS-QUIRKS.md` if the same shape bites in a second proof.
+  `RigidityMatroid.lean` (Phase 6, original site) and
+  `finite_setOf_not_linearIndependent_rows_along_affine_path` in
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean` (Phase 8, second site).
+- **Resolution:** annotate the literal explicitly,
+  `(Polynomial.X : Polynomial ℝ) • …`. Two-site recurrence triggered
+  promote-to-TACTICS-QUIRKS at post-Phase-8 cleanup D2.
+- **Lifted to:** `TACTICS-QUIRKS.md` § 15 *Bare `Polynomial.X`
+  (or `0`, `1`) needs explicit type ascription in `let`/`set` of a
+  `Polynomial`-valued expression*.
 
 ### [open] `h ▸ ...` substitutes through ambient terms, oversubstituting when the goal already mentions the rewritten side
 - **Where it bit:** `Function.Injective.eventually_update_of_continuousAt`
