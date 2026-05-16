@@ -241,12 +241,15 @@ $M_{p_{\text{gen}}} \cong \mathrm{rigidityMatroid}\,V$) is deferred to
 
 - **Namespace.** Everything sits inside `SimpleGraph` or
   `CombinatorialRigidity`. No top-level identifiers.
-- **Vertex types.** Use `V : Type*` with `[Fintype V]` uniformly on
-  any signature that quantifies a `SimpleGraph V` or otherwise needs
-  finiteness on `V`. Do not use `[Finite V]` in signatures (Phase 7
-  cleanup convention; see `DESIGN.md` *Typeclass shape for finiteness
-  on `V`* for the rationale). Edge counts still use `Set.ncard` so we
-  don't force decidability of edge predicates.
+- **Vertex types.** Use `V : Type*` and state each declaration at the
+  weakest typeclass its body genuinely uses: `[Finite V]` when proofs
+  work at existence/cardinality strength, `[Fintype V]` (and
+  `[DecidableEq V]` per-site if the body builds `Finset V` objects)
+  only when the body fundamentally needs `Fintype V`-strength data.
+  The principle is *strongest mathematical claim, greatest
+  generality*; see `DESIGN.md` *Typeclass shape for finiteness on `V`*
+  for the rationale (Phase 7 cleanup round resolution). Edge counts
+  use `Set.ncard` so we don't force decidability of edge predicates.
 - **Cardinalities.** Use `Set.ncard` for sets and `Finset.card` for finsets.
   Avoid `ℕ`-subtraction; rephrase `a ≤ b − c` as `a + c ≤ b`.
 - **Style.** Module docstrings at the top of each file (`/-! # Title -/`).

@@ -2,11 +2,14 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B partial: B1 + B2 swept; typeclass-shape
-design decision **resolved** (uniform `[Fintype V]`; cf. `DESIGN.md`
-*Typeclass shape for finiteness on `V`*). B2 fix pass is the next
-concrete step (it now becomes the implementation of the convention:
-global `[Finite V] → [Fintype V]` lift + drop V-level inline
-`Fintype.ofFinite V` bridges). Subsequent work order:
+design decision **resolved** (per-declaration "state at typeclass
+body uses"; cf. `DESIGN.md` *Typeclass shape for finiteness on `V`*).
+First iteration of the resolution was "uniform `[Fintype V]`";
+re-examined under user push-back, reweighted pebble-game argument
+honestly, settled on per-declaration to keep strongest mathematical
+claim / greatest generality. B2 fix pass becomes the targeted lift
+of 6 (a)-bridge declarations only; the other 27 `[Finite V]` sites
+stay. Subsequent work order:
 **B2 → B5 → B1 → B3/B4/B6/B7 → C/D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
@@ -27,25 +30,37 @@ shape produces B2 entries (`letI : Fintype V := Fintype.ofFinite V`)
 in the same declarations, with B5's Set-vs-Finset boundary as the
 third face of the same root cause.
 
-Typeclass-shape design decision **resolved (uniform `[Fintype V]`)**:
-state every `SimpleGraph V`-quantifying signature at `[Fintype V]`,
-even when the body works at `[Finite V]` strength; do not use
-`[Finite V]` in signatures going forward. `[DecidableEq V]` /
-`[DecidableRel G.Adj]` remain per-site. The pebble-game-formalization
-forward-compatibility argument and the elimination of inline
-`Fintype.ofFinite V` + `classical` boilerplate together biased the
-decision toward uniformity over minimum-strength signatures. Full
-discussion in `DESIGN.md` *Typeclass shape for finiteness on `V`*;
-brief in `ROADMAP.md` *Engineering conventions → Vertex types*.
+Typeclass-shape design decision **resolved (per-declaration "state at
+typeclass body uses")**: state each declaration at the weakest
+typeclass its body genuinely uses; `[Finite V]` is the default when
+proofs work at existence/cardinality strength, `[Fintype V]` (plus
+`[DecidableEq V]` per-site) when the body fundamentally requires it.
+The principle is *strongest mathematical claim, greatest generality*.
+Full discussion in `DESIGN.md` *Typeclass shape for finiteness on
+`V`*; brief in `ROADMAP.md` *Engineering conventions → Vertex types*.
+A first-pass resolution proposed uniform `[Fintype V]` but was
+reversed after re-weighting the pebble-game argument honestly (the
+pebble-game side needs `[Fintype V] [DecidableEq V] [DecidableRel
+G.Adj]` regardless, and cross-side bridges from `[Fintype V]`
+callers to `[Finite V]` callees are automatic via typeclass
+propagation; so the matroid-side convention is independent of
+pebble-game scope, and uniformity would sacrifice generality for
+the 27 minimum-strength declarations without gain).
 
-Next concrete step: the **lift commit** — global `[Finite V] →
-[Fintype V]` in source files (excluding `CombinatorialRigidity/
-Mathlib/` mirror dir, which follows upstream conventions); drop the
-V-level inline `Fintype.ofFinite V` bridges (the 6 (a) sites in B2);
-lake build + lake lint. The B1 fix pass follows: per-site `classical`
-cleanup, with sites becoming vestigial (drop them) or needing
-`[DecidableEq V]` added per the new convention's *acceptable
-alternative* clause.
+Next concrete step: the **targeted lift** — for each of the 6
+(a)-bridge declarations (`IsSparse.maxBlock_isTightOn`,
+`IsSparse.exists_aug_of_lt_two_mul`,
+`edgeSet_rowIndependent_iff_isSparse_dim_two`,
+`IsLaman.exists_rowIndependent_placement` shim,
+`EdgeSetRowIndependent.eventually`,
+`exists_affinelySpanning_of_eventually`), lift its `[Finite V]`
+signature to `[Fintype V]` (plus `[DecidableEq V]` if body uses
+`Finset V` ops), drop the V-level inline `Fintype.ofFinite V`
+bridge, and update any callers that pass `[Finite V]`-only. The
+other 27 `[Finite V]` declarations stay. The B1 fix pass follows
+per-site: some `classical` calls become vestigial once their
+sibling bridge drops; others get `[DecidableEq V]` added or stay as
+`classical` per the convention's *acceptable alternative* clause.
 
 ## Architectural choices made up front
 
@@ -283,14 +298,18 @@ Each is a separate commit, root-cause fix preferred.
   - `Laman.lean`:83 (`IsLaman.two_le_degree`).
   - `CountMatroid.lean`:74 (`countMatroid`, in the `indep_aug` field).
 - [ ] B2: `[Finite V] → Fintype` bridge audit (12 sites; grep:
-  `letI|haveI` paired with `Fintype.ofFinite|Set.Finite.fintype`).
-  Fix pass *implements* the resolved `DESIGN.md` *Typeclass shape
-  for finiteness on `V`* convention (uniform `[Fintype V]`): global
-  `[Finite V] → [Fintype V]` in source files (excluding
-  `CombinatorialRigidity/Mathlib/`); drop the 6 (a)-pattern V-level
-  inline bridges; (b)/(c) sub-pattern bridges (`Fintype G.edgeSet`,
-  `Fintype I` / `Fintype b`) stay since they're for proof-local
-  subtypes, not `V`. Three sub-patterns surfaced in the sweep:
+  `letI|haveI` paired with `Fintype.ofFinite|Set.Finite.fintype`,
+  plus 4 `have` variants the original sweep missed at
+  `Sparsity.lean`:159/272, `Henneberg.lean`:233/375 — 10 V-level
+  total). Fix pass *implements* the resolved `DESIGN.md` *Typeclass
+  shape for finiteness on `V`* convention: lift the 6 (a)-pattern
+  declarations' signatures from `[Finite V]` to `[Fintype V]` (plus
+  `[DecidableEq V]` if the body uses `Finset V` ops); drop their
+  10 V-level inline bridges (the 6 (a) form + 4 `have` form);
+  update any callers that pass `[Finite V]`-only. The 4 (b) +
+  2 (c) sub-pattern bridges (`Fintype G.edgeSet`, `Fintype I` /
+  `Fintype b`) stay since they're for proof-local subtypes, not
+  `V`. Three sub-patterns surfaced in the sweep:
   - **(a) Type-level `Fintype V` from `[Finite V]` (6 sites)** —
     candidate for "lift signature to `[Fintype V]`":
     - `Sparsity.lean`:1343 (`IsSparse.maxBlock_isTightOn`).
@@ -351,12 +370,12 @@ Each is a separate commit, root-cause fix preferred.
   bridging between `maxBlockSet : Set V` and `maxBlock : Finset V`
   is necessary for `Finset.sup_mem`. Does any caller-side proof
   unnecessarily round-trip? Look also at `EdgesIn.lean` and
-  `Framework.lean` for `Set`/`Finset` boundary friction. Now that
-  uniform `[Fintype V]` is the convention, `Finset V` form is
-  cheaper everywhere (no `Fintype.ofFinite V` bridges needed);
-  audit becomes "are there *unnecessary* `Set`-shaped APIs that
-  should be `Finset`-shaped, or vice versa", not "is there a
-  bridge problem".
+  `Framework.lean` for `Set`/`Finset` boundary friction. Under the
+  per-declaration convention, the strongest result form prefers
+  `Set` (avoids `Fintype` requirement); the audit's question
+  becomes "are there `Finset`-shaped APIs that should be
+  `Set`-shaped to widen the typeclass requirement, or vice versa
+  where the proof site genuinely benefits from `Finset`".
 - [ ] B6: `change` / `show` survey (concrete signal from
   `CombinatorialRigidity/CLAUDE.md` *Friction review*). For each
   `change` / `show` in source: is it covering for an un-fused
@@ -488,11 +507,14 @@ checkbox.)*
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *B1 / B2 / B5 share one root cause: the project's heterogeneous
-  typeclass shape for finiteness on `V`. Resolved (uniform
-  `[Fintype V]`).* → `DESIGN.md` *Typeclass shape for finiteness on
-  `V`* (now under resolved entries) + `ROADMAP.md` *Engineering
-  conventions → Vertex types* (one-line brief). The B2 fix pass
-  implements the convention; B5 / B1 fix passes follow.
+  typeclass shape for finiteness on `V`. Resolved (per-declaration
+  "state at typeclass body uses"; first iteration's uniform
+  `[Fintype V]` was reversed after honest reweighting of the
+  pebble-game argument).* → `DESIGN.md` *Typeclass shape for
+  finiteness on `V`* (now under resolved entries) + `ROADMAP.md`
+  *Engineering conventions → Vertex types* (one-line brief). The
+  B2 fix pass lifts the 6 (a)-bridge declarations; B5 / B1 fix
+  passes follow.
 
 ### Cleanup pass summaries
 

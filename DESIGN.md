@@ -376,21 +376,24 @@ to a fixed section above once a question is answered.
   `Mathlib.Combinatorics.SimpleGraph.Basic` next to `incidenceSet`.
   Wait until the API has stabilized.
 - ~~**Typeclass shape for finiteness on `V`.**~~ **Resolved (Phase 7
-  cleanup):** Uniform `[Fintype V]`. State every `SimpleGraph V`-
-  quantifying signature at `[Fintype V]`, even when the body works
-  at `[Finite V]` strength — uniformity over minimum-strength
-  signatures, on the basis of (i) forward-compatibility with a
-  future pebble-game algorithm (which needs `[Fintype V]
-  [DecidableEq V] [DecidableRel G.Adj]` end-to-end) and (ii)
-  elimination of the `Fintype.ofFinite V` + `classical` boilerplate
-  that inline bridges were doing repeatedly. `[DecidableEq V]` /
-  `[DecidableRel G.Adj]` remain per-site (added only when a body
-  genuinely builds `Finset V` / `Adj`-iterating objects on `V`);
-  `classical` at proof-top is the acceptable alternative when
-  adding a decidability typeclass to the signature isn't worth the
-  API noise. The Phase 7 cleanup round B2/B5/B1 fix passes execute
-  this convention on the existing corpus. Discussion that surfaced
-  the question follows:
+  cleanup):** State each declaration at the typeclass its body
+  genuinely uses. Default to `[Finite V]` for signatures whose
+  proofs work at existence/cardinality strength; lift to `[Fintype
+  V]` (and add `[DecidableEq V]` per-site where the body builds
+  `Finset V` objects) only when the body fundamentally requires
+  `Fintype V`-strength data. The principle is to state results at
+  the *weakest reasonable typeclass* — strongest mathematical
+  claim, greatest generality. `[DecidableEq V]` / `[DecidableRel
+  G.Adj]` remain per-site (added only when a body genuinely builds
+  `Finset V` / `Adj`-iterating objects on `V`); `classical` at
+  proof-top remains the acceptable alternative when adding a
+  decidability typeclass to the signature isn't worth the API
+  noise. The Phase 7 cleanup round B2 fix pass lifts the 6
+  declarations whose bodies currently bridge `[Finite V] →
+  Fintype V` inline (`Fintype.ofFinite V`) to direct `[Fintype V]`
+  signatures; the other 27 `[Finite V]` declarations stay (their
+  bodies genuinely work at that strength). Discussion that
+  surfaced the question follows:
 
   Surfaced by the Phase 7 cleanup round (B1 = 41 `classical` sites,
   B2 = 12 `[Finite V] → Fintype` bridge sites, B5 = `Set` vs
@@ -438,16 +441,28 @@ to a fixed section above once a question is answered.
   **Resolution discussion (Phase 7 cleanup).** Concrete data
   gathered: pebble game is "someday" not "soon" (mentioned in
   `count-matroid.tex`, `Phase7.md` as future direction, not on
-  ROADMAP), so forward-compatibility is a positive but not decisive
-  factor. `[Finite V]` footprint was 39 sites, only 12 of which did
-  inline `Fintype.ofFinite V` bridges; the other 27 worked at
+  ROADMAP). `[Finite V]` footprint was 39 sites, only 12 of which
+  did inline `Fintype.ofFinite V` bridges; the other 27 worked at
   `[Finite V]` strength genuinely. Caller chains terminated at
-  `[Fintype V]` top-level results so propagation was bounded. The
-  recommendation "state each declaration at the typeclass its body
-  uses" was considered and rejected in favour of the uniform
-  alternative because (a) uniformity has its own readability value
-  and (b) the pebble-game forward-compatibility cancels the cost of
-  lifting the 27 minimum-strength sites.
+  `[Fintype V]` top-level results so propagation was bounded.
+
+  The first iteration proposed uniform `[Fintype V]`. On
+  re-examination the pebble-game forward-compatibility argument
+  turned out to be weaker than initially claimed: the pebble-game
+  *side* needs `[Fintype V] [DecidableEq V] [DecidableRel G.Adj]`
+  regardless (the procedure's definition can't work at weaker
+  strength), and cross-side bridges from `[Fintype V]` callers to
+  `[Finite V]` callees work automatically via typeclass propagation
+  — so the *matroid-side* convention is independent of pebble-game
+  scope. The uniform-`[Fintype V]` alternative would have
+  eliminated boilerplate at 12 inline-bridge + 41 `classical` sites
+  but at the cost of strengthening 27 declarations beyond what
+  their bodies require, sacrificing mathematical generality. The
+  per-declaration "state at typeclass body uses" convention keeps
+  generality, eliminates boilerplate for the 6 declarations that
+  actually want `[Fintype V]`, and accepts the remaining
+  `classical` calls (with case-by-case decisions about whether to
+  add `[DecidableEq V]` to a signature) as a manageable residue.
 - **Phase 8: `apnelson1/Matroid` dependency.** Phase 7 ships the
   combinatorial $(k, \ell)$-count matroid using only mathlib's
   `IndepMatroid.ofFinite`; Phase 8 will package the planar rigidity
