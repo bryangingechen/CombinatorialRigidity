@@ -279,6 +279,8 @@ predicate; the $\mathrm{indep\_aug}$ axiom is \cref{lem:isSparse-aug}.
 
 \begin{definition}[$(k, \ell)$-count matroid]
   \label{def:countMatroid}
+  \lean{SimpleGraph.countMatroid}
+  \leanok
   \uses{def:isSparse, lem:isSparse-aug}
   For finite $V$ and integers $k \ge 1$ with $\ell < 2k$, the
   \emph{$(k, \ell)$-count matroid on $V$} is the matroid on the
@@ -296,6 +298,8 @@ predicate; the $\mathrm{indep\_aug}$ axiom is \cref{lem:isSparse-aug}.
 
 \begin{theorem}[Independent sets of the count matroid]
   \label{thm:countMatroid-indep-iff}
+  \lean{SimpleGraph.countMatroid_indep_iff}
+  \leanok
   \uses{def:countMatroid, def:isSparse}
   For finite $V$, $k \ge 1$, $\ell < 2k$ and
   $I \subseteq \mathrm{Sym}_{2}V$:
@@ -304,6 +308,7 @@ predicate; the $\mathrm{indep\_aug}$ axiom is \cref{lem:isSparse-aug}.
   $(k, \ell)$-sparse.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{def:countMatroid}
   Immediate from the definition (definitional in Lean via
   \texttt{IndepMatroid.ofFinite\_indep}).

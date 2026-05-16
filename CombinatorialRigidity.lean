@@ -1,2 +1,3 @@
+import CombinatorialRigidity.CountMatroid
 import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.MatroidIdentification

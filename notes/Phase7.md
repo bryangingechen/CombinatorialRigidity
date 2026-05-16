@@ -13,10 +13,9 @@ and lemma index throughout; this file does **not** duplicate it.
 
 ## Current state
 
-Twenty commits in (this commit = Commit 17c; the prior
-`86723a5` landed Commit 17b's Finset-anchored I-component
-scaffolding, and `8fde567` landed Commit 17a's block-closure
-scaffolding). The
+Twenty-one commits in (this commit = Commit 18; the prior
+`b301c1c` landed Commit 17c's matroidal-regime augmentation lemma).
+The
 first six lifted Laman-only machinery to `IsSparse` and landed
 `IsSparse.exists_typeI_or_typeII_reverse` in flat form (entry points
 `60a2176..6d59be2`); the next five landed the four operation-form
@@ -189,14 +188,21 @@ node `lem:isSparse-aug` is now `\leanok` via the new
     `J \\ I` edge is forced into some component. Adds the import
     `Mathlib.Data.Set.Card.Arithmetic` for the disjoint biUnion
     ncard identity. Blueprint `lem:isSparse-aug` pinned `\leanok`.
-- **Commit 18** [planned]: new file
-  `CombinatorialRigidity/CountMatroid.lean`. Defines
+- **Commit 18** [✓ done, this commit]: new file
+  `CombinatorialRigidity/CountMatroid.lean` (~95 LoC including module
+  docstring). Defines
   `SimpleGraph.countMatroid V k ℓ (h : ℓ < 2 * k) : Matroid (Sym2 V)`
-  via `IndepMatroid.ofFinite`. `@[simp] countMatroid_E`,
-  `@[simp] countMatroid_indep_iff`. Pins
-  `def:countMatroid` and
-  `thm:countMatroid-indep-iff` `\leanok` in the new
-  blueprint chapter.
+  via `IndepMatroid.ofFinite`. Ground set
+  `(⊤ : SimpleGraph V).edgeSet`; `Indep I ↔ I ⊆ (⊤).edgeSet ∧
+  (fromEdgeSet I).IsSparse k ℓ`. Trivial axioms close in two lines
+  each (`bot_isSparse` ∘ `fromEdgeSet_empty` for empty;
+  `IsSparse.mono_left` ∘ `fromEdgeSet_mono` for subset); augmentation
+  axiom is `IsSparse.exists_aug_of_lt_two_mul` directly (one
+  `classical` to supply `[DecidableEq V]` from `[Finite V]`).
+  `@[simp] countMatroid_E` and `@[simp] countMatroid_indep_iff` are
+  both `rfl`. Top-level `CombinatorialRigidity.lean` updated to
+  import. Blueprint `def:countMatroid` and
+  `thm:countMatroid-indep-iff` pinned `\leanok`.
 - **Commit 19** [planned]: in `MatroidIdentification.lean`, define
   `SimpleGraph.rigidityMatroid V := countMatroid V 2 3 (by omega)`
   and the matroid-form Lovász--Yemini
@@ -502,6 +508,9 @@ A red node = not yet formalized; a green node = formalized and
   the hard-direction `|E|`-induction theorem
   `IsSparse.exists_rowIndependent_placement` (Commit 14), and the iff
   `edgeSet_rowIndependent_iff_isSparse_dim_two` (Commit 15).
+- `CountMatroid.lean`: new file (Commit 18). Defines
+  `SimpleGraph.countMatroid` via `IndepMatroid.ofFinite`; ships
+  `@[simp] countMatroid_E` and `@[simp] countMatroid_indep_iff`.
 - `LamanTheorem.lean`: Phase 6 caller inlined the `obtain` of the
   IR witness and now calls
   `exists_affinelySpanning_of_eventually hp₀.eventually` (Commit 15).
