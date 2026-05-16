@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.CountMatroid
+import CombinatorialRigidity.HennebergReverse
 import CombinatorialRigidity.HennebergRigidity
 import CombinatorialRigidity.Mathlib.LinearAlgebra.Dual.Lemmas
 import CombinatorialRigidity.RigidityMatroid

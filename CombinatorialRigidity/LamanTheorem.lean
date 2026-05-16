@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Framework
 import CombinatorialRigidity.Henneberg
+import CombinatorialRigidity.HennebergReverse
 import CombinatorialRigidity.HennebergRigidity
 import CombinatorialRigidity.Laman
 import CombinatorialRigidity.RigidityMatroid

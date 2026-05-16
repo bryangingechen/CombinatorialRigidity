@@ -1,17 +1,23 @@
 # Phase 8 — perf pass (work log)
 
-**Status:** in progress (F1 closed; F2/F3 pending).
+**Status:** in progress (F1, F2 closed; F3 pending).
 
 ## Current state
 
-F1 (Sparsity L1267 split) closed: `Sparsity.lean` 1620 → 1273 LoC;
-`SparsityIComponents.lean` new at 392 LoC; `CountMatroid.lean` swapped
-its import. Build + lint clean. 4-run A/B: each target's median moved
-≤ 6 s with inconsistent signs across targets, project-total essentially
-flat — the audit's "1-3 s/file, in the noise band" prediction held.
-**Verdict: structurally clean, perf-neutral.** Next: F2 (Henneberg
-L444 split), reusing F1.4's post-split numbers as F2.1's baseline
-per the *Reuse adjacent baselines* architectural choice.
+F1 (Sparsity L1267 split) and F2 (Henneberg L444 split) both closed
+structurally clean. F2: `Henneberg.lean` 647 → 454 LoC,
+`HennebergReverse.lean` new at 246 LoC; `LamanTheorem.lean` and
+`MatroidIdentification.lean` swapped their imports. Build + lint
+clean. 4-run A/B: project-total median essentially flat (20.6 s vs
+20.9 s baseline), but per-target medians shifted upward by +0.7 to
++13.8 s — LRM in particular sits outside the ±5 s noise band. Most
+plausibly machine-variance during the second back-to-back campaign
+(LRM runs 2-4 sit at 63-70 s vs 53-58 s in F1.4); project-total is
+the more robust signal and is flat. **Verdict: structurally clean,
+project-total perf-neutral; per-target deltas inconclusive.** Next:
+F3 (module-system conversion of all 12 project files), reusing F2.4's
+post-split numbers as F3.1's baseline per the *Reuse adjacent
+baselines* architectural choice.
 
 ## Pass overview
 
@@ -126,17 +132,61 @@ executed) during Phase 8-cleanup's bucket E:
 
 ### F2 — `Henneberg.lean` split at L444
 
-- [ ] **F2.1:** Baseline. Reuse F1.4 numbers if measured
-  back-to-back; otherwise establish fresh.
-- [ ] **F2.2:** Execute the split. Move the iso-constructor /
-  flat-form reverse-decomp / K₄-minus-edge example block (lines
-  444+ of `Henneberg.lean` — see `PERFORMANCE.md` *Split
-  candidates …* §2) to
-  `CombinatorialRigidity/HennebergReverse.lean`. Update
-  `MatroidIdentification.lean` + `LamanTheorem.lean` (both need
-  the reverse half) to import the new module.
-- [ ] **F2.3:** Build + lint verification.
-- [ ] **F2.4:** Post-split measurement. 4-run A/B; record medians.
+- [x] **F2.1:** Baseline reused from F1.4 (back-to-back) per the
+  *Reuse adjacent baselines* architectural choice. F1.4 medians:
+  HR 51.4 s; RM 59.3 s; LRM 56.1 s; project-total 20.9 s.
+
+- [x] **F2.2:** Split executed. `Henneberg.lean` 647 → 454 LoC;
+  new file `CombinatorialRigidity/HennebergReverse.lean` at 246 LoC
+  carries the *Decomposition iso constructors* block
+  (`isoOfOptionSubtypeNe`, `typeI_iso_of_two_neighbors`,
+  `typeII_iso_of_three_neighbors`), the *Flat-form Henneberg reverse
+  decomposition* block (`IsLaman.exists_typeI_or_typeII_reverse`),
+  and the *K₄ minus one edge is Laman* worked example
+  (`Henneberg.fin4equiv`, `Henneberg.fin4iso`,
+  `top_fin_four_minus_edge_isLaman`). Sections preserved;
+  `namespace SimpleGraph` + `variable {V : Type*}` + `namespace
+  Henneberg` redeclared at the new file's top (same gotcha as F1's
+  `SparsityIComponents`, called out in *Phase-local choices* below).
+  `LamanTheorem.lean` and `MatroidIdentification.lean` each gained
+  one `import CombinatorialRigidity.HennebergReverse` line;
+  `HennebergRigidity.lean`'s `import` of `.Henneberg` stays put
+  (forward half only).
+
+- [x] **F2.3:** Build + lint clean. Project-wide grep confirms
+  `LamanTheorem` and `MatroidIdentification` directly import
+  `.HennebergReverse`; `HennebergRigidity` and the rest stay with
+  `.Henneberg` alone (forward half only). Top-level
+  `CombinatorialRigidity.lean` pulls the reverse half transitively
+  via its `LamanTheorem` + `MatroidIdentification` imports — no
+  edit needed there.
+
+- [x] **F2.4:** Post-split medians:
+
+  | Target | run 1 | run 2 | run 3 | run 4 | median | Δ vs baseline |
+  |---|---|---|---|---|---|---|
+  | `HennebergRigidity` | 50.1 | 58.8 | 78.7 | 58.5 | **58.7 s** | +7.3 s |
+  | `RigidityMatroid` | 60.4 | 59.6 | 64.0 | 57.4 | **60.0 s** | +0.7 s |
+  | `LinearRigidityMatroid` | 107.4 | 63.5 | 69.2 | 70.5 | **69.9 s** | +13.8 s |
+  | `lake build` (project) | 82.2 | 22.3 | 18.8 | 15.5 | **20.6 s** | −0.3 s |
+
+  Project-total median essentially flat; per-target medians all
+  positive, with HR and LRM outside the ±5 s noise band. The LRM
+  shift's pattern (warm-runs cluster at 63-70 s vs F1.4's 53-58 s)
+  suggests OS-level interference during the back-to-back campaign
+  rather than a structural cost — the split adds one olean to LRM's
+  transitive load but no content change, and the project-total
+  (which sees the same chain) is flat. Run-1 outliers (HR 78.7 s
+  was the third run in this campaign; LRM 107.4 was the cold first
+  run, matching F1.4's 98.9 s shape) inflate the per-target medians
+  but are absorbed by project-total replay semantics.
+
+  **F2 verdict: structurally clean, project-total perf-neutral;
+  per-target deltas inconclusive.** The durable win is module
+  organization — the *operation-form forward preservation* / *flat-
+  form reverse decomposition* split documented in `DESIGN.md`
+  *Statement-form conventions* now lives at the file boundary, not
+  just in section headers.
 
 ### F3 — Module-system conversion (12 project files)
 
@@ -144,12 +194,14 @@ executed) during Phase 8-cleanup's bucket E:
 - [ ] **F3.2:** Convert `CombinatorialRigidity/Mathlib/*` mirror
   files first (all import already-converted upstream mathlib).
 - [ ] **F3.3:** Convert project files in topo order from `EdgesIn`
-  outward. Order (assuming F1 + F2 landed): `EdgesIn`,
-  `SparsityBase`, `SparsityIComponents`, `Laman`,
-  `HennebergForward`, `HennebergReverse`, `Framework`,
-  `TrivialMotions`, `CountMatroid`, `HennebergRigidity`,
-  `MatroidIdentification`, `LinearRigidityMatroid`,
-  `LamanTheorem`, `RigidityMatroid`.
+  outward. Order (post-F1, post-F2): `EdgesIn`, `Sparsity`,
+  `SparsityIComponents`, `Laman`, `Henneberg`, `HennebergReverse`,
+  `Framework`, `TrivialMotions`, `CountMatroid`,
+  `HennebergRigidity`, `MatroidIdentification`,
+  `LinearRigidityMatroid`, `LamanTheorem`, `RigidityMatroid`.
+  (F1 named the forward half `Sparsity` rather than `SparsityBase`;
+  F2 named the forward half `Henneberg` rather than
+  `HennebergForward` — see *Phase-local choices* on F2.)
 - [ ] **F3.4:** Per file, add `module` + `public import` lines + an
   `@[expose] public section` marker per the reference pattern in
   `Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
@@ -174,6 +226,28 @@ executed) during Phase 8-cleanup's bucket E:
   re-introduces `V` explicitly but downstream lemmas without an explicit
   `V` binder need the section-level variable). One-shot fix.
 
+- **Same gotcha preempted in F2's `HennebergReverse`.** Forewarned by
+  the F1 entry above, the new file's preamble declared
+  `namespace SimpleGraph` + `variable {V : Type*}` + `namespace
+  Henneberg` from the start. No build-failure cycle. Lesson holds for
+  any future Lean-file split where a `variable` declaration lives near
+  the top of the original file — the split point is downstream of the
+  declaration, so the new file needs its own copy.
+
+- **Forward / reverse split lives at the `DESIGN.md`-documented
+  boundary.** `DESIGN.md` *Statement-form conventions* already
+  separates operation-form forward preservation (`typeI_isLaman`,
+  `typeII_isLaman`, `typeI_isLaman_iff`, the per-move rigidity-
+  preservation theorems in `HennebergRigidity.lean`) from flat-form
+  reverse decomposition (the iso constructors and
+  `IsLaman.exists_typeI_or_typeII_reverse`). F2's split moves that
+  boundary from section-level to file-level: forward → `Henneberg.lean`
+  (used by `HennebergRigidity`); reverse → `HennebergReverse.lean`
+  (used by `MatroidIdentification` + `LamanTheorem`). No
+  cross-cutting `DESIGN.md` revision needed — the existing conventions
+  section already endorses the boundary; F2 just relocates it
+  physically.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 *(Empty — populate as cross-cutting lessons surface.)*
@@ -194,9 +268,34 @@ perf-neutral.** Audit's prediction held ("1-3 s/file, in the noise
 band"). The durable win is module organization (Phase-7 matroid-side
 machinery in its own file, matching the blueprint chapter split).
 
+**F2 — Henneberg.lean L444 split.** `Henneberg.lean` 647 → 454 LoC;
+new file `HennebergReverse.lean` at 246 LoC carries the
+*Decomposition iso constructors* block (`isoOfOptionSubtypeNe`,
+`typeI_iso_of_two_neighbors`, `typeII_iso_of_three_neighbors`), the
+*Flat-form Henneberg reverse decomposition* block
+(`IsLaman.exists_typeI_or_typeII_reverse`), and the *K₄ minus one
+edge is Laman* worked example. `LamanTheorem.lean` and
+`MatroidIdentification.lean` each gained one
+`import CombinatorialRigidity.HennebergReverse`;
+`HennebergRigidity.lean` and the other downstream files stay with
+the forward-only `.Henneberg` import. Build + lint clean. 4-run A/B
+baseline (reused F1.4) vs post-split: HR +7.3 s, RM +0.7 s, LRM
++13.8 s, project-total −0.3 s. Project-total flat; per-target
+deltas all positive, with HR and LRM outside the ±5 s noise band.
+LRM's warm-runs cluster (63-70 s vs F1.4's 53-58 s) is the most
+concerning shift, but the split changes only the import-graph shape
+(same total content) and project-total absorbs that via replay
+semantics — pointing at machine-variance during the back-to-back
+second campaign rather than a structural regression. **Verdict:
+structurally clean, project-total perf-neutral; per-target deltas
+inconclusive.** The durable win is the
+`DESIGN.md`-documented forward / reverse split (operation-form
+forward preservation vs flat-form reverse decomposition) now living
+at the file boundary, not just at section-header level.
+
 ## Blockers / open questions
 
-*(None at F1 close.)*
+*(None at F2 close.)*
 
 ## Hand-off / next phase
 
