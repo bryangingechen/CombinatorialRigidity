@@ -689,8 +689,7 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
       have h_cb_zero : c_b = 0 := by
         have : (s - 1) * c_b = 0 := by linarith
         exact (mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hs1)
-      rw [hf_decomp, h_ca_zero, h_cb_zero, h_cc, zero_smul, zero_smul, zero_smul,
-        zero_add, zero_add]
+      simp [hf_decomp, h_ca_zero, h_cb_zero, h_cc]
     · exfalso
       -- T(rowG'(eAB)) = (s c_a)⁻¹ • f ∈ old span.
       have h_T_eAB_in : restrictMap.dualMap (G'.rigidityRow p' eAB) ∈
