@@ -89,4 +89,56 @@ theorem linearRigidityMatroid_indep_iff_edgeSetRowIndependent
     intro e _
     exact (linearRigidityRow_subtype_val p e).symm
 
+/-- **Uniformly generic placement, dim 2.** There exists a placement `p : Framework V 2` at
+which *every* `(2, 3)`-sparse edge subset of `K_V` is simultaneously row-independent.
+
+The auxiliary that powers the matroid identification `linearRigidityMatroid_eq_rigidityMatroid`
+below: a placement satisfying the conclusion makes the linear matroid's independent sets coincide
+with the combinatorial $(2, 3)$-count matroid's independent sets at a single witness, collapsing
+the existential `∃ p', row-LI at p'` in `rigidityMatroid_indep_iff_edgeSetRowIndependent` to
+`row-LI at p`.
+
+Proof sketch (linear-interpolation perturbation on the finite family of sparse subsets, per
+blueprint `lem:exists-uniform-rowIndependent-placement`): induct on the cardinality of
+`{I ⊆ E(K_V) | fromEdgeSet I is (2, 3)-sparse}`. At the inductive step, interpolate between
+the inductive-hypothesis witness `p₀` (row-LI on the `n`-element subfamily) and a fresh row-LI
+witness `q` for the new subset `I₀` (from `IsSparse.exists_rowIndependent_placement`); each
+"row-LI on `S`" condition along `p_t := (1-t) p₀ + t q` is the non-vanishing of a polynomial in
+`t`, nonzero at `t = 0` for `S` in the IH subfamily and at `t = 1` for `S = I₀`, so cofinitely
+many `t` work for the enlarged subfamily. -/
+theorem exists_uniform_rowIndependent_placement_dim_two {V : Type*} [Finite V] :
+    ∃ p : Framework V 2,
+      ∀ I : Set (⊤ : SimpleGraph V).edgeSet,
+        (SimpleGraph.fromEdgeSet (Subtype.val '' I)).IsSparse 2 3 →
+          (⊤ : SimpleGraph V).EdgeSetRowIndependent p I := by
+  sorry
+
+/-- **Lovász–Yemini, linear-matroid form, dim 2.** There exists a placement `p : Framework V 2`
+at which the linear rigidity matroid coincides with the combinatorial planar rigidity matroid:
+`linearRigidityMatroid V 2 p = SimpleGraph.rigidityMatroid V`.
+
+The Phase 8 target. Combines the uniform-genericity witness
+`exists_uniform_rowIndependent_placement_dim_two` with `Matroid.ext_indep`: both matroids have
+ground set `(⊤ : SimpleGraph V).edgeSet`, so it suffices to identify their independent sets. The
+$(\Rightarrow)$ direction collapses by taking the existential placement in
+`rigidityMatroid_indep_iff_edgeSetRowIndependent` to be `p`; the $(\Leftarrow)$ direction
+collapses by uniform genericity, which carries any $(2, 3)$-sparse `I` to row-LI at `p`. -/
+theorem linearRigidityMatroid_eq_rigidityMatroid {V : Type*} [Finite V] :
+    ∃ p : Framework V 2, linearRigidityMatroid V 2 p = SimpleGraph.rigidityMatroid V := by
+  obtain ⟨p, hp_uniform⟩ := exists_uniform_rowIndependent_placement_dim_two (V := V)
+  refine ⟨p, Matroid.ext_indep ?_ fun J hJ => ?_⟩
+  · rw [linearRigidityMatroid_ground]; rfl
+  · rw [linearRigidityMatroid_ground] at hJ
+    -- Factor `J : Set (Sym2 V)` with `J ⊆ (⊤).edgeSet` as `Subtype.val '' I` for
+    -- `I := Subtype.val ⁻¹' J : Set (⊤).edgeSet`.
+    set I : Set (⊤ : SimpleGraph V).edgeSet := Subtype.val ⁻¹' J with hI_def
+    have hI_image : Subtype.val '' I = J :=
+      Set.image_preimage_eq_of_subset (by rw [Subtype.range_coe]; exact hJ)
+    rw [← hI_image, linearRigidityMatroid_indep_iff_edgeSetRowIndependent,
+      SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent]
+    refine ⟨fun h => ⟨p, h⟩, fun ⟨_, hp'⟩ => ?_⟩
+    -- Row-LI at *some* placement ⟹ sparse spanning subgraph (Phase 7's
+    -- `edgeSet_rowIndependent_iff_isSparse_dim_two`, (⇒)) ⟹ row-LI at our uniform-generic `p`.
+    exact hp_uniform _ ((edgeSet_rowIndependent_iff_isSparse_dim_two _ _).mp ⟨_, hp'⟩)
+
 end SimpleGraph

@@ -601,6 +601,7 @@ matroid on the rigidity-row function at a chosen placement, via the
 
 \begin{lemma}[Uniformly generic placement, dim $2$]
   \label{lem:exists-uniform-rowIndependent-placement}
+  \lean{SimpleGraph.exists_uniform_rowIndependent_placement_dim_two}
   \uses{def:edgeSet-rowIndependent,
     thm:isSparse-exists-rowIndependent-placement}
   Let $V$ be finite. There exists a placement $p : V \to \R^{2}$ at
@@ -635,6 +636,7 @@ matroid on the rigidity-row function at a chosen placement, via the
 
 \begin{theorem}[Lov\'asz--Yemini, linear-matroid form, dim $2$]
   \label{thm:linearRigidityMatroid-eq-rigidityMatroid}
+  \lean{SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid}
   \uses{def:linearRigidityMatroid, def:rigidityMatroid,
     thm:rigidityMatroid-indep-iff-rowIndependent,
     lem:linearRigidityMatroid-indep-iff,

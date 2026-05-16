@@ -19,33 +19,42 @@ duplicate the dep-graph.
 
 Phase opened by a scaffolding commit (`3e7e2e5`), the dep-bump
 landing `apnelson1/Matroid` at revision `e6852cec…` (`6df664c`),
-and the **skeleton commit** that lands
-`CombinatorialRigidity/LinearRigidityMatroid.lean` with the
-`linearRigidityMatroid` def + the row-LI bridge
-(`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`) and adds
-the *Linear-matroid framing* subsection to
-`blueprint/src/chapter/rigidity-matroid.tex` (dep-graph: three
-green leaves + one red target `thm:linearRigidityMatroid-eq-rigidityMatroid`).
+the **skeleton commit** with `linearRigidityMatroid` + the row-LI
+bridge `linearRigidityMatroid_indep_iff_edgeSetRowIndependent`
+(`8347e54`), and the **scaffolding commit** landing the
+uniform-genericity auxiliary
+`SimpleGraph.exists_uniform_rowIndependent_placement_dim_two`
+(sorry-blocked) and the main target
+`SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid` (proof
+complete *modulo* the auxiliary).
 
-Next concrete commit: land the **auxiliary** uniform-genericity
-lemma `SimpleGraph.exists_uniform_rowIndependent_placement_dim_two`
-— existence of a placement `p : Framework V 2` row-LI on *every*
-`(2, 3)`-sparse edge subset of `K_V` simultaneously. This is the new
-red leaf `lem:exists-uniform-rowIndependent-placement` in the
-blueprint. The originally-sketched composition
-"`EdgeSetRowIndependent.eventually` +
-`exists_affinelySpanning_of_eventually`" gives a single `p`
-satisfying *one* row-LI property along with affine spanning, not a
-`p` uniform across the finite family of `(2, 3)`-sparse subsets —
-the genuinely new content is the linear-interpolation perturbation
-in the proof of the auxiliary (see blueprint proof sketch). Once
-the auxiliary lands, the main target
-`linearRigidityMatroid_eq_rigidityMatroid` follows via
-`Matroid.ext_indep` reducing to ground-set agreement (one `rfl`)
-and per-set independence agreement
-(`linearRigidityMatroid_indep_iff_edgeSetRowIndependent` ↔
-`rigidityMatroid_indep_iff_edgeSetRowIndependent` modulo the
-uniform-genericity collapse of the existential).
+The main theorem's proof is now the clean composition the blueprint
+sketches: pick the uniform-generic `p` from the auxiliary, apply
+`Matroid.ext_indep` (ground sets agree by `rfl` post-unfolding),
+and for each `J ⊆ (⊤).edgeSet` factor `J = Subtype.val '' I` via
+the subtype, apply
+`linearRigidityMatroid_indep_iff_edgeSetRowIndependent` on the LHS
+and `rigidityMatroid_indep_iff_edgeSetRowIndependent` on the RHS,
+collapse `∃ p', row-LI at p'` via `hp_uniform` composed with Phase 7's
+`edgeSet_rowIndependent_iff_isSparse_dim_two` (⇒) direction.
+
+Next concrete commit: close the `sorry` in
+`exists_uniform_rowIndependent_placement_dim_two`. Blueprint proof
+sketch (linear-interpolation perturbation, `lem:exists-uniform-rowIndependent-placement`):
+induct on the cardinality of the finite family
+`S := {I ⊆ E(K_V) | fromEdgeSet I is (2, 3)-sparse}`; at the
+inductive step, interpolate between the IH witness `p₀` and a fresh
+`q` from `IsSparse.exists_rowIndependent_placement`; each "row-LI
+on S at `p_t`" is the non-vanishing of a polynomial in `t` (the
+rigidity rows are affine in `t`, the LI/non-LI condition is a
+polynomial via a submatrix-det or a Gram-det), nonzero at `t = 0`
+(IH subfamily) or `t = 1` (new subset), so cofinitely many `t`
+suffice. The polynomial-along-a-line input is the main new
+infrastructure: it likely lives as a helper lemma `LinearIndepOn`
+- or `LinearIndependent`-shaped, generic over the affine family,
+with the existing `Polynomial.finite_setOf_isRoot` /
+`Polynomial.eval_det_X_add_C` pattern from
+`exists_affinelySpanning_of_eventually` as the template.
 
 ## Architectural choices made up front
 
@@ -117,16 +126,17 @@ list):
   row-LI at $p$. **Done.**
 - `lem:exists-uniform-rowIndependent-placement` — existence of a
   single placement `p` row-LI on every `(2, 3)`-sparse edge subset
-  of `K_V` simultaneously. Proof via linear-interpolation
-  perturbation: induct on the finite family of sparse subsets;
-  along the interpolation `p_t := (1−t) p_0 + t q` between the IH
-  witness `p_0` and a new-subset witness `q`, each "row-LI on S"
-  condition is a polynomial-in-`t` nonzero at `t = 0` or `t = 1`,
-  so cofinitely-many `t` work.
+  of `K_V` simultaneously. **Statement landed, proof pending**
+  (`sorry`-blocked). Proof via linear-interpolation perturbation:
+  induct on the finite family of sparse subsets; along the
+  interpolation `p_t := (1−t) p_0 + t q` between the IH witness
+  `p_0` and a new-subset witness `q`, each "row-LI on S" condition
+  is a polynomial-in-`t` nonzero at `t = 0` or `t = 1`, so
+  cofinitely-many `t` work.
 - `thm:linearRigidityMatroid-eq-rigidityMatroid` — the matroid
-  identification. Composes Phase 7's
-  `rigidityMatroid_indep_iff_edgeSetRowIndependent` with the
-  uniform-genericity witness above.
+  identification. **Proof landed modulo the auxiliary**; composes
+  Phase 7's `rigidityMatroid_indep_iff_edgeSetRowIndependent` with
+  the uniform-genericity witness above via `Matroid.ext_indep`.
 
 The actual entries will land in the blueprint as the Lean lemmas
 are formalized.
@@ -169,6 +179,20 @@ are formalized.
   updated to surface this as an explicit red node
   `lem:exists-uniform-rowIndependent-placement` and rewrite the
   main theorem's proof sketch accordingly.
+
+- **Subtype factoring at `Matroid.ext_indep`.** The matroid identity
+  `linearRigidityMatroid V 2 p = rigidityMatroid V` is proved via
+  `Matroid.ext_indep`, where the per-set independence agreement step
+  must convert `J : Set (Sym2 V)` (with `J ⊆ (⊤).edgeSet` from the
+  ground-set hypothesis) into `I : Set (⊤).edgeSet` so the two
+  pre-existing iffs `linearRigidityMatroid_indep_iff_edgeSetRowIndependent`
+  and `rigidityMatroid_indep_iff_edgeSetRowIndependent` (both keyed on
+  `I : Set (⊤).edgeSet` with `Subtype.val '' I` on the matroid side)
+  apply. The factoring is `I := Subtype.val ⁻¹' J` and
+  `hI_image : Subtype.val '' I = J` via
+  `Set.image_preimage_eq_of_subset` + `Subtype.range_coe`. The same
+  shape will likely recur at other matroid-identity sites; the idiom
+  is worth noting if it does.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
