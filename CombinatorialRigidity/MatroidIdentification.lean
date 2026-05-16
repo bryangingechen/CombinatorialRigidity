@@ -808,7 +808,7 @@ private lemma exists_nonCollinear_rowIndependent_placement_dim_two [Finite V]
       funext i
       fin_cases i
       · change p_t t b - p_t t a = (0 : ℝ) • w + (1 : ℝ) • (p₀ b - p₀ a)
-        rw [h_p_t_a t, h_p_t_b t, zero_smul, one_smul, zero_add]
+        simp [h_p_t_a t, h_p_t_b t]
       · change p_t t c - p_t t a = t • w + δ • (p₀ b - p₀ a)
         rw [h_p_t_a t, h_p_t_c t,
           show (p₀ c + t • w) - p₀ a = (p₀ c - p₀ a) + t • w from by abel, hδ]
