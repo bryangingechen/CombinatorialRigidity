@@ -1130,6 +1130,37 @@ from `card_eq_one` / `card_eq_two`. The `= 3` case runs the per-pair witness-or-
 dispatch using `IsSparse.typeII_reverse_blocker` and combines three blockers via
 `IsSparse.False_of_pairwise_blocker_or_edge`. -/
 
+/-- Per-pair Type II dispatch helper for `IsSparse.exists_typeI_or_typeII_reverse`. For a
+degree-3 vertex `v` with three distinct neighbours `x, y, c`, the pair `(x, y)` yields one of
+three mutually exclusive outcomes: a Type II witness (when `x, y` are non-adjacent and the
+augmented graph is sparse — short-circuits the outer proof), an edge `G.Adj x y` (fed into
+`False_of_pairwise_blocker_or_edge`), or a tight blocker via `typeII_reverse_blocker`. The
+three per-pair branches `h_ab` / `h_ac` / `h_bc` in `exists_typeI_or_typeII_reverse` each
+consume one application of this helper. -/
+private theorem IsSparse.typeII_pair_dispatch_aux
+    [Finite V] {G : SimpleGraph V} (h : G.IsSparse 2 3)
+    {v : V} (x y c : {w : V // w ≠ v})
+    (hxy : x.val ≠ y.val) (hcx : c.val ≠ x.val) (hcy : c.val ≠ y.val)
+    (hN_iff : ∀ w : V, G.Adj v w ↔ w = x.val ∨ w = y.val ∨ w = c.val) :
+    (∃ x' y' c' : {w : V // w ≠ v}, x' ≠ y' ∧ c' ≠ x' ∧ c' ≠ y' ∧
+        (∀ w : V, G.Adj v w ↔ w = x'.val ∨ w = y'.val ∨ w = c'.val) ∧
+        ¬ G.Adj x'.val y'.val ∧
+        (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+          fromEdgeSet ({s(x', y')} : Set _)).IsSparse 2 3)
+      ∨ G.Adj x.val y.val
+      ∨ ∃ S : Finset V, v ∉ S ∧ x.val ∈ S ∧ y.val ∈ S ∧ G.IsTightOn 2 3 S := by
+  classical
+  by_cases hxy_adj : G.Adj x.val y.val
+  · exact Or.inr (Or.inl hxy_adj)
+  · by_cases hsparse : (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+        fromEdgeSet ({s(x, y)} : Set _)).IsSparse 2 3
+    · exact Or.inl ⟨x, y, c,
+        fun heq => hxy (congrArg Subtype.val heq),
+        fun heq => hcx (congrArg Subtype.val heq),
+        fun heq => hcy (congrArg Subtype.val heq),
+        hN_iff, hxy_adj, hsparse⟩
+    · exact Or.inr (Or.inr (h.typeII_reverse_blocker x.2 y.2 hsparse))
+
 /-- **Flat-form Henneberg reverse decomposition (Jordán Lemma 2.1.4).** Every `(2, 3)`-sparse
 graph with at least one edge admits a Henneberg reverse to a smaller `(2, 3)`-sparse graph,
 distinguished by `G.degree v ∈ {1, 2, 3}`:
@@ -1214,50 +1245,15 @@ theorem IsSparse.exists_typeI_or_typeII_reverse [Fintype V]
       rw [hN_iff]; tauto
     have hN_iff_bca : ∀ w, G.Adj v w ↔ w = b ∨ w = c ∨ w = a := fun w => by
       rw [hN_iff]; tauto
-    -- Result type for a non-adjacent-pair typeII reverse witness.
-    let WitnessType := ∃ x y c' : {w : V // w ≠ v}, x ≠ y ∧ c' ≠ x ∧ c' ≠ y ∧
-      (∀ w : V, G.Adj v w ↔ w = x.val ∨ w = y.val ∨ w = c'.val) ∧
-      ¬ G.Adj x.val y.val ∧
-      (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
-        fromEdgeSet ({s(x, y)} : Set _)).IsSparse 2 3
-    -- Per-pair dispatch: `witness ∨ Adj ∨ blocker`. The blocker side feeds into
-    -- `False_of_pairwise_blocker_or_edge`; the witness side short-circuits.
-    have h_ab : WitnessType ∨ G.Adj a b ∨
-        ∃ S : Finset V, v ∉ S ∧ a ∈ S ∧ b ∈ S ∧ G.IsTightOn 2 3 S := by
-      by_cases hab_adj : G.Adj a b
-      · exact Or.inr (Or.inl hab_adj)
-      · by_cases hsparse : (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
-            fromEdgeSet ({s(⟨a, hva.symm⟩, ⟨b, hvb.symm⟩)} : Set _)).IsSparse 2 3
-        · exact Or.inl ⟨⟨a, hva.symm⟩, ⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩,
-            fun heq => hab (Subtype.mk.injEq .. |>.mp heq),
-            fun heq => hac.symm (Subtype.mk.injEq .. |>.mp heq),
-            fun heq => hbc.symm (Subtype.mk.injEq .. |>.mp heq),
-            hN_iff, hab_adj, hsparse⟩
-        · exact Or.inr (Or.inr (h.typeII_reverse_blocker hva.symm hvb.symm hsparse))
-    have h_ac : WitnessType ∨ G.Adj a c ∨
-        ∃ S : Finset V, v ∉ S ∧ a ∈ S ∧ c ∈ S ∧ G.IsTightOn 2 3 S := by
-      by_cases hac_adj : G.Adj a c
-      · exact Or.inr (Or.inl hac_adj)
-      · by_cases hsparse : (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
-            fromEdgeSet ({s(⟨a, hva.symm⟩, ⟨c, hvc.symm⟩)} : Set _)).IsSparse 2 3
-        · exact Or.inl ⟨⟨a, hva.symm⟩, ⟨c, hvc.symm⟩, ⟨b, hvb.symm⟩,
-            fun heq => hac (Subtype.mk.injEq .. |>.mp heq),
-            fun heq => hab.symm (Subtype.mk.injEq .. |>.mp heq),
-            fun heq => hbc (Subtype.mk.injEq .. |>.mp heq),
-            hN_iff_acb, hac_adj, hsparse⟩
-        · exact Or.inr (Or.inr (h.typeII_reverse_blocker hva.symm hvc.symm hsparse))
-    have h_bc : WitnessType ∨ G.Adj b c ∨
-        ∃ S : Finset V, v ∉ S ∧ b ∈ S ∧ c ∈ S ∧ G.IsTightOn 2 3 S := by
-      by_cases hbc_adj : G.Adj b c
-      · exact Or.inr (Or.inl hbc_adj)
-      · by_cases hsparse : (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
-            fromEdgeSet ({s(⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩)} : Set _)).IsSparse 2 3
-        · exact Or.inl ⟨⟨b, hvb.symm⟩, ⟨c, hvc.symm⟩, ⟨a, hva.symm⟩,
-            fun heq => hbc (Subtype.mk.injEq .. |>.mp heq),
-            fun heq => hab (Subtype.mk.injEq .. |>.mp heq),
-            fun heq => hac (Subtype.mk.injEq .. |>.mp heq),
-            hN_iff_bca, hbc_adj, hsparse⟩
-        · exact Or.inr (Or.inr (h.typeII_reverse_blocker hvb.symm hvc.symm hsparse))
+    -- Per-pair dispatch: `witness ∨ Adj ∨ blocker` via `typeII_pair_dispatch_aux`. The
+    -- blocker side feeds into `False_of_pairwise_blocker_or_edge`; the witness side short-
+    -- circuits the outer proof.
+    have h_ab := h.typeII_pair_dispatch_aux ⟨a, hva.symm⟩ ⟨b, hvb.symm⟩ ⟨c, hvc.symm⟩
+      hab hac.symm hbc.symm hN_iff
+    have h_ac := h.typeII_pair_dispatch_aux ⟨a, hva.symm⟩ ⟨c, hvc.symm⟩ ⟨b, hvb.symm⟩
+      hac hab.symm hbc hN_iff_acb
+    have h_bc := h.typeII_pair_dispatch_aux ⟨b, hvb.symm⟩ ⟨c, hvc.symm⟩ ⟨a, hva.symm⟩
+      hbc hab hac hN_iff_bca
     rcases h_ab with witness | h_ab
     · exact witness
     rcases h_ac with witness | h_ac

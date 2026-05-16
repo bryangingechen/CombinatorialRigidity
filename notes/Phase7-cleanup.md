@@ -2,7 +2,7 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
-commits (a/b/c/d). Bucket C in progress (C1–C6 closed; C7–C10
+commits (a/b/c/d). Bucket C in progress (C1–C7 closed; C8–C10
 open as discrete task items). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
@@ -87,9 +87,15 @@ generalised from the C2 sketch to take `_ ∈ S₁ ∪ S₂` membership
 proofs, so block 3's permuted `a ∈ Sac, b ∈ Sbc, c ∈ Sac` shape
 shares the helper with blocks 1 and 2; `contradiction_three_pair`'s
 21-line three-block dispatch collapses to a 12-line three-call
-dispatch. Subsequent work order: **C7–C10 in priority order
-(C7 is an aux-extraction win; C8 is a mathlib search; C9 is a Sym2
-mirror; C10 is a perturbation shared helper) → D**.
+dispatch. C7 closed 2026-05-16: extracted
+`IsSparse.typeII_pair_dispatch_aux` (private) in `Sparsity.lean`;
+the three per-pair dispatch blocks (`h_ab` / `h_ac` / `h_bc`)
+collapse to three 2-line helper invocations.
+`exists_typeI_or_typeII_reverse` body LoC: 117 → 62 (saved 55,
+≈47%); helper adds 31 LoC including docstring; net file change
+-4 LoC. Subsequent work order: **C8–C10 in priority order
+(C8 is a mathlib search; C9 is a Sym2 mirror; C10 is a perturbation
+shared helper) → D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -158,10 +164,10 @@ iso side (#1, #4, #7, #10; ~80-100 LoC compound savings under a
 single `linearIndepOn_image_rigidityRow_of_injective` extraction).
 Seven follow-up extraction candidates **opened as Bucket C task
 items C5–C10** (C4 absorbs the seventh — its three pre-flagged
-helpers are listed inline). Next concrete step: **C4**
-(`exists_aug_of_lt_two_mul` focused walk), then C5–C10 in priority
-order; full per-site walk preserved under the C2 task entry for
-context.
+helpers are listed inline). C4–C7 landed 2026-05-16. Next concrete
+step: **C8** (mathlib search for collinear-pair factoring in #9),
+then C9 / C10 in priority order; full per-site walk preserved under
+the C2 task entry for context.
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -1123,17 +1129,44 @@ Each is a separate commit, root-cause fix preferred.
   (saved 9); helper adds 18 lines (incl. docstring). Net file change +9
   LoC; the architectural win is the named pattern (three identical
   blocks → one shared lemma) — same trade as C5. Build + lint clean.
-- [ ] C7: **Extract `IsSparse.typeII_pair_dispatch_aux` for #6.**
-  In `Sparsity.lean`:1216-1251, three nearly-identical 12-line per-pair
-  dispatch blocks (`h_ab` / `h_ac` / `h_bc`) each do `by_cases adj` →
-  `by_cases sparse` → either witness construction or
-  `typeII_reverse_blocker` invocation. Extract as a private
-  auxiliary taking the pair `(x, y : {w // w ≠ v})` plus the third
-  neighbour `c`, the neighbour-equivalence, and the relevant `≠`
-  hypotheses; returning the trichotomy `WitnessType ∨ G.Adj x.val
-  y.val ∨ ∃ S, v ∉ S ∧ x.val ∈ S ∧ y.val ∈ S ∧ G.IsTightOn 2 3 S`.
-  Collapses three 12-line blocks to three 1-line calls (~30 LoC
-  saved).
+- [x] C7: **Extract `IsSparse.typeII_pair_dispatch_aux` for #6.**
+  Landed 2026-05-16. The three nearly-identical 12-line per-pair
+  dispatch blocks (`h_ab` / `h_ac` / `h_bc`) in
+  `exists_typeI_or_typeII_reverse` (each running `by_cases adj` →
+  `by_cases sparse` → witness construction / edge / blocker via
+  `typeII_reverse_blocker`) collapsed to three 2-line helper
+  invocations. Helper signature:
+  ```
+  private theorem IsSparse.typeII_pair_dispatch_aux
+      [Finite V] {G : SimpleGraph V} (h : G.IsSparse 2 3)
+      {v : V} (x y c : {w : V // w ≠ v})
+      (hxy : x.val ≠ y.val) (hcx : c.val ≠ x.val) (hcy : c.val ≠ y.val)
+      (hN_iff : ∀ w : V, G.Adj v w ↔ w = x.val ∨ w = y.val ∨ w = c.val) :
+      (∃ x' y' c' : {w : V // w ≠ v}, x' ≠ y' ∧ c' ≠ x' ∧ c' ≠ y' ∧
+          (∀ w : V, G.Adj v w ↔ w = x'.val ∨ w = y'.val ∨ w = c'.val) ∧
+          ¬ G.Adj x'.val y'.val ∧
+          (G.comap (Subtype.val : {w : V // w ≠ v} → V) ⊔
+            fromEdgeSet ({s(x', y')} : Set _)).IsSparse 2 3)
+        ∨ G.Adj x.val y.val
+        ∨ ∃ S : Finset V, v ∉ S ∧ x.val ∈ S ∧ y.val ∈ S ∧ G.IsTightOn 2 3 S
+  ```
+  Two key design choices vs. the C2 sketch:
+  (1) `≠` hypotheses taken at the **val level** (`x.val ≠ y.val` etc.)
+  rather than subtype level, with a single `congrArg Subtype.val` bridge
+  inside the helper handling the conversion to subtype-level `≠` in the
+  witness branch — so callers pass `hab` / `hac.symm` / etc. directly
+  without the `Subtype.mk.injEq` ceremony.
+  (2) Helper relaxed to `[Finite V]` (matching `typeII_reverse_blocker`)
+  rather than `[Fintype V]`; the `[DecidableRel G.Adj]` hypothesis was
+  dropped per `unusedDecidableInType` linter advice given the `classical`
+  at the top of the body (matches B3 design discipline).
+  Body LoC of `exists_typeI_or_typeII_reverse`: 117 → 62 (saved 55,
+  ≈47%); helper adds 31 LoC including docstring. Net file change -4 LoC.
+  C2 estimate (~30 LoC saved, three 1-line calls) was on the right order
+  of magnitude but the *site* savings ended up larger because removing
+  the `WitnessType` `let` binding and the three explicit `have h_ab :
+  WitnessType ∨ … ∨ …` type ascriptions also cleaned up. Build + lint
+  clean.
 - [ ] C8: **Mathlib search for collinear-pair factoring in #9.**
   `MatroidIdentification.lean`:750-762 explicitly factors
   `∃ δ, p₀ c - p₀ a = δ • (p₀ b - p₀ a)` from
