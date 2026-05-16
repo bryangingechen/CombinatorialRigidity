@@ -429,8 +429,7 @@ theorem IsTightOn.union_inter [Finite V] [DecidableEq V] {G : SimpleGraph V} {k 
   have h_sparse_inter := hG (s ∩ t) h_inter
   have h_sparse_union := hG (s ∪ t)
     (h_inter.trans (Nat.mul_le_mul_left k (Finset.card_le_card Finset.inter_subset_union)))
-  have h_card_mul : k * s.card + k * t.card = k * (s ∪ t).card + k * (s ∩ t).card := by
-    rw [← Nat.mul_add, ← Nat.mul_add, Finset.card_union_add_card_inter]
+  have h_card_mul := Finset.mul_card_union_add_mul_card_inter s t k
   unfold IsTightOn at hs ht ⊢
   refine ⟨?_, ?_⟩ <;> omega
 
@@ -475,8 +474,7 @@ theorem IsTightOn.union_with_bonus [Finite V] [DecidableEq V] {G : SimpleGraph V
   have h_le_union :=
     Set.ncard_le_ncard h_combined_sub (G.edgesIn_finite (S₁ ∪ S₂))
   -- Step 2: cardinality identity for the union/intersection split.
-  have h_card_mul : k * S₁.card + k * S₂.card = k * (S₁ ∪ S₂).card + k * (S₁ ∩ S₂).card := by
-    rw [← Nat.mul_add, ← Nat.mul_add, Finset.card_union_add_card_inter]
+  have h_card_mul := Finset.mul_card_union_add_mul_card_inter S₁ S₂ k
   -- Step 3: squeeze to tightness via `IsSparse.isTightOn_of_le`.
   have h_S1_size : ℓ ≤ k * S₁.card := by unfold IsTightOn at h₁; omega
   have h_union_size : ℓ ≤ k * (S₁ ∪ S₂).card :=

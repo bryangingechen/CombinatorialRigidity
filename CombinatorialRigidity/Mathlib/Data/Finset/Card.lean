@@ -26,6 +26,16 @@ lemma eq_singleton_of_mem_of_card_le_one {s : Finset α} {z : α}
   (Finset.eq_of_subset_of_card_le (Finset.singleton_subset_iff.mpr hz)
     (h.trans_eq (Finset.card_singleton z).symm)).symm
 
+/-- The `k`-scaled form of `Finset.card_union_add_card_inter`: multiplying both sides by a
+common `Nat` factor distributes through union/intersection-pair cardinalities.
+
+Saves three `rw` rewrites at each call site (`← Nat.mul_add` twice, then
+`Finset.card_union_add_card_inter`) — useful when an `IsTightOn`-style accounting needs
+to bridge `k * |s| + k * |t|` to `k * |s ∪ t| + k * |s ∩ t|`. -/
+lemma mul_card_union_add_mul_card_inter [DecidableEq α] (s t : Finset α) (k : ℕ) :
+    k * s.card + k * t.card = k * (s ∪ t).card + k * (s ∩ t).card := by
+  rw [← Nat.mul_add, ← Nat.mul_add, Finset.card_union_add_card_inter]
+
 /-- Three distinct elements of a finset force its cardinality to be at least three. -/
 lemma three_le_card_of_three_distinct_mem {s : Finset α} {a b c : α}
     (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)

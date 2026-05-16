@@ -718,6 +718,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Finset.mul_card_union_add_mul_card_inter` (`k`-scaled `card_union_add_card_inter`)
+- **Where it bit:** the union-half of `IsTightOn.union_inter`
+  (`Sparsity.lean`:432) and step 2 of `IsTightOn.union_with_bonus`
+  (`Sparsity.lean`:478). Both `IsTightOn`-accounting lemmas needed the
+  numeric identity `k * |s| + k * |t| = k * |s ∪ t| + k * |s ∩ t|`,
+  and both wrote the same 3-rewrite chain
+  `rw [← Nat.mul_add, ← Nat.mul_add, Finset.card_union_add_card_inter]`
+  to discharge it. Surfaced by the Phase 7 cleanup-round B7 audit.
+- **Friction:** mathlib's `Finset.card_union_add_card_inter` gives the
+  un-scaled identity `(s ∪ t).card + (s ∩ t).card = s.card + t.card`;
+  scaling by a fixed `k` requires two `← Nat.mul_add` rewrites first.
+  `omega` doesn't help (the `k *` factor is an opaque atom);
+  `linarith` similarly can't multiply hypotheses by a symbolic
+  constant. The 3-rewrite chain *is* the lemma.
+- **Resolution:** mirrored as
+  `Finset.mul_card_union_add_mul_card_inter (s t : Finset α) (k : ℕ) :
+    k * s.card + k * t.card = k * (s ∪ t).card + k * (s ∩ t).card`.
+  Both call sites collapse to a one-line `have h_card_mul :=
+  Finset.mul_card_union_add_mul_card_inter s t k`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Finset/Card.lean`. Sits naturally
+  alongside `Finset.card_union_add_card_inter`.
+
 ### [mirrored] `Function.Injective.eventually_of_continuousAt` and `eventually_update_of_continuousAt` (openness of injectivity)
 - **Where it bit:** `exists_nonCollinear_rigid_placement_dim_two`
   (`HennebergRigidity.lean`, the perpendicular-perturbation helper underneath
