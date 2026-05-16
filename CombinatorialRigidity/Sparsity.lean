@@ -796,6 +796,24 @@ theorem IsSparse.contradiction_two_pair
     exact IsSparse.no_isTightOn_excluding_three_neighbors h hx hy hz hxy hxz hyz
       hvT hxT hyT hzT hT_tight
 
+/-- **2-pair contradiction auxiliary.** Two tight blockers `S₁, S₂` (each avoiding `v`) whose
+intersection has size `≥ 2` give a tight union `S₁ ∪ S₂` via `IsTightOn.union_inter`; if that
+union covers three distinct neighbors `a, b, c` of `v`, `no_isTightOn_excluding_three_neighbors`
+closes. Used inside `IsSparse.contradiction_three_pair` to dispatch the three pair cases
+uniformly regardless of which side of the union each neighbor sits on. -/
+private theorem IsSparse.contradiction_pair_aux
+    [Finite V] [DecidableEq V] {G : SimpleGraph V} (h : G.IsSparse 2 3) {v a b c : V}
+    (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
+    (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
+    {S₁ S₂ : Finset V} (hvS₁ : v ∉ S₁) (hvS₂ : v ∉ S₂)
+    (haU : a ∈ S₁ ∪ S₂) (hbU : b ∈ S₁ ∪ S₂) (hcU : c ∈ S₁ ∪ S₂)
+    (hS₁_tight : G.IsTightOn 2 3 S₁) (hS₂_tight : G.IsTightOn 2 3 S₂)
+    (h_inter : 2 ≤ (S₁ ∩ S₂).card) : False := by
+  have ⟨hT_tight, _⟩ := hS₁_tight.union_inter hS₂_tight h (by omega)
+  exact IsSparse.no_isTightOn_excluding_three_neighbors h ha hb hc hab hac hbc
+    (by simp only [Finset.mem_union, not_or]; exact ⟨hvS₁, hvS₂⟩)
+    haU hbU hcU hT_tight
+
 /-- **3-pair contradiction template.** Three blockers covering all three pairs of `v`'s neighbors;
 non-adjacency is only required at the "outer" pair `(b, c)`. If any pairwise intersection has
 size `≥ 2`, that pair's union is tight (`IsTightOn.union_inter`) and contains `{a, b, c}`.
@@ -816,26 +834,17 @@ theorem IsSparse.contradiction_three_pair
     (hSbc_tight : G.IsTightOn 2 3 Sbc) : False := by
   classical
   by_cases h_ab_ac : 2 ≤ (Sab ∩ Sac).card
-  · have ⟨hT_tight, _⟩ := hSab_tight.union_inter hSac_tight h (by omega)
-    exact IsSparse.no_isTightOn_excluding_three_neighbors h ha hb hc hab hac hbc
-      (by simp only [Finset.mem_union, not_or]; exact ⟨hvSab, hvSac⟩)
-      (Finset.mem_union_left _ haSab)
-      (Finset.mem_union_left _ hbSab)
-      (Finset.mem_union_right _ hcSac) hT_tight
+  · exact IsSparse.contradiction_pair_aux h ha hb hc hab hac hbc hvSab hvSac
+      (Finset.mem_union_left _ haSab) (Finset.mem_union_left _ hbSab)
+      (Finset.mem_union_right _ hcSac) hSab_tight hSac_tight h_ab_ac
   by_cases h_ab_bc : 2 ≤ (Sab ∩ Sbc).card
-  · have ⟨hT_tight, _⟩ := hSab_tight.union_inter hSbc_tight h (by omega)
-    exact IsSparse.no_isTightOn_excluding_three_neighbors h ha hb hc hab hac hbc
-      (by simp only [Finset.mem_union, not_or]; exact ⟨hvSab, hvSbc⟩)
-      (Finset.mem_union_left _ haSab)
-      (Finset.mem_union_left _ hbSab)
-      (Finset.mem_union_right _ hcSbc) hT_tight
+  · exact IsSparse.contradiction_pair_aux h ha hb hc hab hac hbc hvSab hvSbc
+      (Finset.mem_union_left _ haSab) (Finset.mem_union_left _ hbSab)
+      (Finset.mem_union_right _ hcSbc) hSab_tight hSbc_tight h_ab_bc
   by_cases h_ac_bc : 2 ≤ (Sac ∩ Sbc).card
-  · have ⟨hT_tight, _⟩ := hSac_tight.union_inter hSbc_tight h (by omega)
-    exact IsSparse.no_isTightOn_excluding_three_neighbors h ha hb hc hab hac hbc
-      (by simp only [Finset.mem_union, not_or]; exact ⟨hvSac, hvSbc⟩)
-      (Finset.mem_union_left _ haSac)
-      (Finset.mem_union_right _ hbSbc)
-      (Finset.mem_union_left _ hcSac) hT_tight
+  · exact IsSparse.contradiction_pair_aux h ha hb hc hab hac hbc hvSac hvSbc
+      (Finset.mem_union_left _ haSac) (Finset.mem_union_right _ hbSbc)
+      (Finset.mem_union_left _ hcSac) hSac_tight hSbc_tight h_ac_bc
   push Not at h_ab_ac h_ab_bc h_ac_bc
   have hab_ac_card : (Sab ∩ Sac).card = 1 := by
     have : 1 ≤ (Sab ∩ Sac).card :=

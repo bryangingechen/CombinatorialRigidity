@@ -2,7 +2,7 @@
 
 **Status:** in progress. Bucket A closed (A1 + A9 fixes; A2–A8/A10/A11
 no-fix audits). Bucket B **closed** (B1–B7); B7 landed via four
-commits (a/b/c/d). Bucket C in progress (C1–C5 closed; C6–C10
+commits (a/b/c/d). Bucket C in progress (C1–C6 closed; C7–C10
 open as discrete task items). The audit found 6 of 8
 `set_option linter.unused{Fintype,Decidable}InType false`
 suppressions silenced advice already adopted as our resolved B2
@@ -81,8 +81,14 @@ across sites; the helper file adds 82 LoC, so project-wide is +11 LoC,
 but the duplication is now one named lemma instead of four 20-line
 ceremonies). C2's 80-100 LoC estimate was high — #1 and #7 each kept
 some `restrictMap` / surrounding scaffolding that the helper alone
-couldn't eliminate. Subsequent work order: **C6–C10 in priority order
-(C6/C7 are aux-extraction wins; C8 is a mathlib search; C9 is a Sym2
+couldn't eliminate. C6 closed 2026-05-16: extracted
+`IsSparse.contradiction_pair_aux` (private) in `Sparsity.lean`
+generalised from the C2 sketch to take `_ ∈ S₁ ∪ S₂` membership
+proofs, so block 3's permuted `a ∈ Sac, b ∈ Sbc, c ∈ Sac` shape
+shares the helper with blocks 1 and 2; `contradiction_three_pair`'s
+21-line three-block dispatch collapses to a 12-line three-call
+dispatch. Subsequent work order: **C7–C10 in priority order
+(C7 is an aux-extraction win; C8 is a mathlib search; C9 is a Sym2
 mirror; C10 is a perturbation shared helper) → D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
@@ -1090,25 +1096,33 @@ Each is a separate commit, root-cause fix preferred.
   20-line ceremonies. C2's 80-100 LoC estimate was high because it
   did not anticipate that sites #1 and #7 would keep some surrounding
   scaffolding (disjoint-spans branch / `restrict` alias).
-- [ ] C6: **Extract `IsSparse.contradiction_pair_aux` for #5.**
-  In `Sparsity.lean`:818-838, three near-identical 6-line
-  `by_cases h_*_*: 2 ≤ (S_p ∩ S_q).card` blocks each union two tight
-  sets via `IsTightOn.union_inter` and discharge via
-  `no_isTightOn_excluding_three_neighbors`. Extract as a private
-  auxiliary
+- [x] C6: **Extract `IsSparse.contradiction_pair_aux` for #5.**
+  Landed 2026-05-16. In `Sparsity.lean`:818-838 the three near-identical
+  7-line `by_cases h_*_*: 2 ≤ (S_p ∩ S_q).card` blocks each unioned two
+  tight sets via `IsTightOn.union_inter` and discharged via
+  `no_isTightOn_excluding_three_neighbors`. Extracted as private
   ```
-  private lemma IsSparse.contradiction_pair_aux
-      (h : G.IsSparse 2 3) {v a b c : V}
-      (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
+  private theorem IsSparse.contradiction_pair_aux
+      [Finite V] [DecidableEq V] {G : SimpleGraph V} (h : G.IsSparse 2 3)
+      {v a b c : V} (ha : G.Adj v a) (hb : G.Adj v b) (hc : G.Adj v c)
       (hab : a ≠ b) (hac : a ≠ c) (hbc : b ≠ c)
       {S₁ S₂ : Finset V} (hvS₁ : v ∉ S₁) (hvS₂ : v ∉ S₂)
-      (haS₁ : a ∈ S₁) (hbS₁ : b ∈ S₁) (hcS₂ : c ∈ S₂)
+      (haU : a ∈ S₁ ∪ S₂) (hbU : b ∈ S₁ ∪ S₂) (hcU : c ∈ S₁ ∪ S₂)
       (hS₁_tight : G.IsTightOn 2 3 S₁) (hS₂_tight : G.IsTightOn 2 3 S₂)
       (h_inter : 2 ≤ (S₁ ∩ S₂).card) : False
   ```
-  The three call sites at #5 supply `(S_pq, S_pr)` pairs in different
-  rotations; the helper collapses them to three 1-line calls (~12 LoC
-  saved).
+  Signature generalised from the C2 sketch (which had `haS₁, hbS₁, hcS₂`
+  fixed) to `_ ∈ S₁ ∪ S₂` membership proofs so block 3 (which has the
+  permuted `a ∈ Sac, b ∈ Sbc, c ∈ Sac` shape) is handled uniformly with
+  blocks 1 and 2; callers supply `Finset.mem_union_{left,right}` as
+  needed. `[DecidableEq V]` lifted to the signature because the union/inter
+  arguments require it at elaboration time (standard mathlib pattern,
+  matches `IsTightOn.union_inter`'s own signature); the caller's
+  `classical` provides it transparently, no call-site change. Body line
+  delta on `contradiction_three_pair`: 21 → 12 lines at the call sites
+  (saved 9); helper adds 18 lines (incl. docstring). Net file change +9
+  LoC; the architectural win is the named pattern (three identical
+  blocks → one shared lemma) — same trade as C5. Build + lint clean.
 - [ ] C7: **Extract `IsSparse.typeII_pair_dispatch_aux` for #6.**
   In `Sparsity.lean`:1216-1251, three nearly-identical 12-line per-pair
   dispatch blocks (`h_ab` / `h_ac` / `h_bc`) each do `by_cases adj` →
@@ -1316,6 +1330,23 @@ checkbox.)*
   finding; none surfaced a pure tactic-substitution win at this
   depth (the C3 `linear_combination (norm := …)` move was the
   last of those).
+
+- **C6 — `IsSparse.contradiction_pair_aux` extraction.** Private helper
+  added in `Sparsity.lean` just before `IsSparse.contradiction_three_pair`,
+  packaging the recurring `IsTightOn.union_inter` +
+  `no_isTightOn_excluding_three_neighbors` two-step. Signature
+  generalised from the C2 sketch — instead of `(haS₁ : a ∈ S₁)
+  (hbS₁ : b ∈ S₁) (hcS₂ : c ∈ S₂)` it takes `_ ∈ S₁ ∪ S₂` proofs, so
+  the three call sites in `contradiction_three_pair` (which include
+  block 3's permuted `a ∈ Sac, b ∈ Sbc, c ∈ Sac` shape) share the
+  helper uniformly; callers supply membership via
+  `Finset.mem_union_{left,right}` as the geometry dictates.
+  `[DecidableEq V]` had to be lifted to the helper signature because
+  the union/inter arguments require it at elaboration time (the
+  caller's `classical` covers this transparently — no change at call
+  sites). Call-site delta: 21 → 12 lines; helper adds 18 lines (incl.
+  docstring). Net +9 LoC, same architectural trade as C5 (named
+  pattern beats three identical blocks).
 
 - **C5 — cross-cutting rigidityRow factoring + LI helpers.** Extracted
   three helpers in `RigidityMatroid.lean` (factoring identity + forward
