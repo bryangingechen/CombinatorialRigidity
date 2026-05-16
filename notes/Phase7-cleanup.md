@@ -1,7 +1,7 @@
 # Phase 7 cleanup round — work log
 
-**Status:** in progress. A1 (fix) + A3/A4/A6 (no-fix audits) done;
-A2/A5/A7/A8/A9/A10/A11, B*, C*, D* outstanding.
+**Status:** in progress. A1 (fix) + A3/A4/A6/A7/A10 (no-fix audits)
+done; A2/A5/A8/A9/A11, B*, C*, D* outstanding.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -12,10 +12,10 @@ cleanly.
 
 ## Current state
 
-Working through bucket A. A1 fixed; A3 / A4 / A6 audited clean (no
-divergence). Remaining A-tasks: A2 (largest), A5, A7, A8, A9, A10,
-A11. Then B/C/D. The A9 sweep flagged one orphan red corollary
-(`cor:isLaman-exists-rowIndependent`) to handle in A9.
+Working through bucket A. A1 fixed; A3 / A4 / A6 / A7 / A10 audited
+clean (no divergence). Remaining A-tasks: A2 (largest), A5, A8, A9
+(`cor:isLaman-exists-rowIndependent` orphan red node already
+flagged), A11. Then B/C/D.
 
 ## Architectural choices made up front
 
@@ -91,7 +91,12 @@ attempt for any flagged divergence.
   a Lean-internal coordinate accessor); the linear-independence proof
   prose is abstract enough that the Commit 10 collapse left no prose
   to update. No fix required.
-- [ ] A7: `chapter/henneberg-rigidity.tex` ↔ `HennebergRigidity.lean`.
+- [x] A7: `chapter/henneberg-rigidity.tex` ↔ `HennebergRigidity.lean`.
+  Five pinned declarations all resolve; rank-nullity / kernel-via-`some`
+  proof prose matches the Lean shape; cross-refs to
+  `lem:isInfinitesimallyRigid-eventually` (frameworks.tex) and
+  `thm:top-fin-two-isGenericallyRigidInj` (frameworks.tex) resolve.
+  No fix required.
 - [ ] A8: `chapter/laman-theorem.tex` ↔ `LamanTheorem.lean`. Watch
   for: Phase 6's `LamanTheorem` ⇒ direction; the Phase 7 inlining of
   the `obtain` of the IR witness at the single Phase 6 caller — does
@@ -105,8 +110,16 @@ attempt for any flagged divergence.
   (`IsLaman.isSparse` ∘ `IsSparse.exists_rowIndependent_placement`)
   serving only as a narrative bridge before the matroid subsection.
   Decision in A9: keep + materialise as a Lean one-liner, or remove.
-- [ ] A10: `chapter/count-matroid.tex` ↔ `CountMatroid.lean`. Newest;
+- [x] A10: `chapter/count-matroid.tex` ↔ `CountMatroid.lean`. Newest;
   ~95 LoC of Lean, ~315 lines of TeX — check abstraction-level match.
+  Eight pinned declarations resolve (most in `Sparsity.lean`,
+  `countMatroid` + `countMatroid_indep_iff` in `CountMatroid.lean`).
+  TeX verbosity-vs-LoC ratio is justified by the substantial
+  exposition (Lee–Streinu/Whiteley/Jordán terminology cross-refs,
+  upper-range aside, pebble-game pointer); the prose stays at the
+  math abstraction level. Chapter's "definitional in Lean via
+  `IndepMatroid.ofFinite_indep`" claim for `countMatroid_indep_iff`
+  matches the Lean `Iff.rfl` body. No fix required.
 - [ ] A11: Run `lake exe checkdecls blueprint/lean_decls` (after
   `inv web`) at end; confirm every `\lean{...}` resolves. This is
   fast and should pass; if it fails, capture which rename slipped
@@ -220,6 +233,13 @@ checkbox.)*
   internal helper names like `elemSkewMap_ofLp_inr_apply`).
   henneberg.tex's flat-form / iso-constructor wording is consistent
   with DESIGN.md *Statement-form conventions*.
+- **A7 / A10 — second no-divergence sweep.** Two more medium
+  chapters audited [x] with no fix. henneberg-rigidity.tex's
+  rank-nullity prose matches the Lean's `ρ : ker … → ker …` shape;
+  count-matroid.tex's higher TeX-to-Lean ratio is justified by the
+  terminology / cross-reference exposition rather than overselling
+  the formal content (the Lean's `Iff.rfl` definitional claim is
+  honestly described).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
