@@ -415,12 +415,13 @@ Round closes hygiene-only; Phase 8 already closed the planned
 ROADMAP and no follow-up phase is queued. Carry-overs from the
 round (none are critical-path):
 
-- **Structural-refactor pass.** PERFORMANCE.md *Post-Phase-8 file-
-  structure audit* recommends two splits ranked by leverage
-  (Sparsity at L1267, Henneberg at L444) plus the module-system
-  conversion (now ripe). Pick up as a dedicated perf pass with the
-  4-run A/B protocol; combine all three since they all touch the
-  import graph and one A/B campaign can measure the joint effect.
+- **Structural-refactor pass.** ✓ Picked up post-closure as the
+  Phase 8 perf pass — see `notes/Phase8-perf.md` (ROADMAP Status
+  table). Scope decision: full pass (Sparsity L1267 split +
+  Henneberg L444 split + module-system conversion of all 12
+  project files) with sequential 4-run A/B measurement per lever
+  (PERFORMANCE.md recommended a combined campaign; we accepted the
+  extra measurement cost for diagnostic clarity per lever).
 - **`show … from rfl` project-wide sweep.** ✓ Discharged
   post-closure. All 4 sites cleared (RigidityMatroid L647 →
   `Nat.choose_self`; MatroidIdentification L119 → the `set ... with
