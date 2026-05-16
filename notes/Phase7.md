@@ -575,28 +575,25 @@ A red node = not yet formalized; a green node = formalized and
   augmentation axiom is the lemma above. Expected ~30 LoC for the
   packaging itself plus the simp-lemmas.
 
-- **Unify the Phase 5 IR + Phase 7 row-LI typeII conditional cores.**
-  `typeII_isInfinitesimallyRigid_extend` and
-  `typeII_edgeSetRowIndependent_extend` share the same algebraic
-  backbone — the row identity
-  `(s-1) · rigidityRow newA − s · rigidityRow newB =
-   s(s-1) · restrictMap.dualMap (G'.rigidityRow ⟨s(a,b), h_ab⟩)`
-  — used in **kernel** form (IR) and **dual / span** form (row-LI).
-  The same duality applies to the Type I cores (simpler, no deleted
-  row). Three factoring options:
-  1. *Cheap.* Extract the row identity as shared lemmas in
-     `Henneberg.lean`. Both `extend` proofs shrink by ~15 LoC each.
-  2. *Medium.* Extract a "Henneberg row-decomposition" lemma stating
-     the full block factorisation. Likely subsumed by option 3.
-  3. *Principled.* Prove
-     `rank R_typeII p_ext = rank R_{G'} p' + 2` once, derive IR and
-     row-LI as corollaries. Requires more rank-of-`RigidityMap` API
-     than we currently have. Best done after the `Matroid` packaging
-     pins down what other rank lemmas the project ends up wanting.
-
-  Recommendation: do option 1 once option 3 is ruled out or
-  postponed; option 2 is a half-step that would get redone under
-  option 3.
+- **Unify the Phase 5 IR + Phase 7 row-LI typeII conditional cores
+  — option 1 landed; option 3 remains deferred.** The two `extend`
+  proofs share the inner-product row identity
+  `(s − 1)·⟪q − p' a, …⟫ − s·⟪q − p' b, …⟫ = s(s − 1)·⟪p' a − p' b, …⟫`
+  (kernel form on the IR side, dual / span form on the row-LI side).
+  Option 1 (cheap extraction) landed during the Phase 7 cleanup
+  round (2026-05-16): the inner-product identity is now
+  `SimpleGraph.Henneberg.typeII_collinear_inner_combo` in
+  `HennebergRigidity.lean`, with both extends consuming it
+  (IR-side `typeII_isInfinitesimallyRigid_extend`: 92 → 77 body
+  LoC; row-LI-side `typeII_edgeSetRowIndependent_extend`: 322 → 313).
+  The original sketch claimed the same pattern applies to the
+  typeI cores; in fact typeI has no deleted edge, so no shared row
+  identity (the typeI cores stay as-is). See
+  `notes/Phase7-cleanup.md` *Decisions made → C3* for the full
+  record. Option 3 (principled `rank R_typeII = rank R_{G'} + 2`,
+  IR + row-LI as corollaries) remains deferred for the post-Phase-8
+  `Matroid` infrastructure that would pin down the rank-of-`RigidityMap`
+  API; option 2 was subsumed by option 3 and never pursued.
 
 ## Hand-off / next phase
 

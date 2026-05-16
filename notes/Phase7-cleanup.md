@@ -53,8 +53,12 @@ that doesn't fit either heuristic (verbatim cross-site repeat ⇒
 mirror; arithmetic tail in default simp set ⇒ simp). C1 closed
 2026-05-16: top 10 by body LoC range 322 → 87 LoC, headed by the
 typeI / typeII row-LI / IR extends quartet that C3 already targets.
-Subsequent work order: **C2 (four-question walk over the 10 listed
-sites) → C3 / C4 in either order → D**.
+C3 closed 2026-05-16: extracted `typeII_collinear_inner_combo` row
+identity in `HennebergRigidity.lean`; the IR-side
+`typeII_isInfinitesimallyRigid_extend` shrank 92 → 77 body LoC, the
+row-LI-side `typeII_edgeSetRowIndependent_extend` shrank 322 → 313.
+Subsequent work order: **C2 (four-question walk over the C1 list)
+→ C4 → D**.
 
 This is the inter-phase cleanup round between Phase 7 and Phase 8.
 See `../CLEANUP.md` for the round-level operating manual: when to
@@ -110,11 +114,18 @@ Framework.lean `change … ; exact key` pairs collapsed to `simpa
 using key`; one `change … ; rw […]; exact h` 3-line block became
 `exact kerEquiv.finrank_eq.le.trans h`. B7 (multi-step `rw [...]`
 chains) closed via 4 commits (a/b/c/d); C1 (top-10 long-proof
-ranking) recorded 2026-05-16. Next concrete step: **C2** — walk
+ranking) recorded 2026-05-16; C3 (typeII conditional core
+unification) landed 2026-05-16 as the shared lemma
+`typeII_collinear_inner_combo` in `HennebergRigidity.lean`, with
+the IR-side and row-LI-side proofs both consuming it (15 + 9
+body-LoC saved, plus the architectural win of factoring the
+shared algebraic backbone). Next concrete step: **C2** — walk
 each of the C1 top-10 sites against the four CLEANUP.md questions
 (API extraction / mathlib miss / tactic substitution / cross-proof
 unification) and file per-site improvement sub-bullets under the
-C2 task entry.
+C2 task entry. Or **C4** (`exists_aug_of_lt_two_mul` audit) if a
+focused single-proof walk is preferred over the cross-cutting C2
+sweep.
 
 Typeclass-shape design decision **resolved (follow mathlib style)**:
 keep all `[Finite V]` signatures as-is; bridge inline in proof bodies
@@ -755,15 +766,48 @@ Each is a separate commit, root-cause fix preferred.
   (API extraction / mathlib miss / tactic substitution / cross-proof
   unification). File any concrete improvement task as a follow-up
   sub-bullet here.
-- [ ] C3: **Specific candidate — typeII conditional core unification**
-  (Phase 7 *Blockers / open questions*, option 1). Extract the row
-  identity
-  `(s-1)·row newA - s·row newB = s(s-1) · restrictMap.dualMap (G'.rigidityRow ⟨s(a,b), h_ab⟩)`
-  as a shared lemma in `Henneberg.lean`; both
-  `typeII_isInfinitesimallyRigid_extend` (`HennebergRigidity.lean`)
-  and `typeII_edgeSetRowIndependent_extend`
-  (`MatroidIdentification.lean`) shrink by ~15 LoC. Apply same pattern
-  to the typeI cores (simpler — no deleted row).
+- [x] C3: **typeII conditional core unification (option 1 of Phase 7
+  blocker).** Extracted the row identity in inner-product form as
+  `SimpleGraph.Henneberg.typeII_collinear_inner_combo` in
+  `HennebergRigidity.lean` (just before the typeII section's first
+  theorem, with a 22-line doc-comment explaining the IR/row-LI
+  duality). The lemma states, for `q - p' a = s • (p' b - p' a)` and
+  any motion `x : Framework (Option V) d`:
+  `(s − 1) · ⟪q − p' a, x none − x (some a)⟫ − s · ⟪q − p' b, x none − x (some b)⟫ = s (s − 1) · ⟪p' a − p' b, x (some a) − x (some b)⟫`.
+  Both typeII extends consumed it:
+  - **IR side** (`typeII_isInfinitesimallyRigid_extend`,
+    `HennebergRigidity.lean`:344): the `h_into` block's manual
+    derivation of the deleted-edge constraint (`hxa' → hxb' →
+    h_deleted` via inner-product manipulations, ~24 lines) collapsed
+    to a 5-line `h_combo + mul_eq_zero`-resolve step; the duplicate
+    `hcoll_b` computation at line 351 was also dropped (it was only
+    used by the now-deleted `hxb'`). Body LoC: 92 → 77 (saved 15).
+  - **Row-LI side** (`typeII_edgeSetRowIndependent_extend`,
+    `MatroidIdentification.lean`:395): the `h_f_eq` block's three
+    per-row inner-product unfolds (`h_rowA, h_rowB, h_rowAB`) plus
+    the `h_sub` inner-bilinearity step and the final
+    `linear_combination ... * h_cb_rel` (~30 lines) collapsed to a
+    single `h_combo` derivation + one `linear_combination` over
+    `h_combo + h_cb_rel`. The `linear_combination`'s coefficients
+    `c_a / (s − 1)` and `B / (s − 1)` use rational-function
+    arithmetic, so the post-normalizer was overridden to
+    `(norm := (field_simp; ring))` to clear the `(s − 1)`
+    denominators. Body LoC: 322 → 313 (saved 9). Heuristic worth a
+    TACTICS-GOLF note: `linear_combination (norm := (field_simp;
+    ring))` extends the tactic to rational coefficients when there's
+    a non-zero polynomial denominator in scope.
+
+  The typeI cores (`typeI_edgeSetRowIndependent_extend` at
+  `MatroidIdentification.lean`:66, and `typeI_isInfinitesimallyRigid_extend`
+  at `HennebergRigidity.lean`:126) do **not** have a deleted edge, so
+  there's no row identity to extract — they don't benefit from the
+  same pattern. The "apply same pattern to the typeI cores" in the
+  original C3 sketch was an over-extrapolation; reverse the claim
+  in this commit's notes.
+
+  Option 3 of the Phase 7 blocker (the principled
+  `rank R_typeII = rank R_{G'} + 2` API) remains deferred; option 1's
+  ~24-line incremental savings on each typeII core has now landed.
 - [ ] C4: **Specific candidate — `IsSparse.exists_aug_of_lt_two_mul`**
   (Phase 7 Commit 17c). ~210 LoC. Walk the proof for API extraction
   candidates: the off-diag helpers `ne_of_mem_top_edgeSet` /
@@ -891,6 +935,33 @@ checkbox.)*
   (term-mode `show ... from ...` glue, definitional unfolds of `set
   M`-style let-bindings before `fun_prop` / `rw`, one `change G'.Adj
   x y` stylistic equivalent of `rw [SimpleGraph.mem_edgeSet]`).
+
+- **C3 — typeII conditional core unification.** Extracted
+  `typeII_collinear_inner_combo` in `HennebergRigidity.lean` (just
+  before the typeII section's first theorem). The lemma states the
+  inner-product identity
+  `(s−1)·⟪q−p'a, x_none − x_(some a)⟫ − s·⟪q−p'b, x_none − x_(some b)⟫ = s(s−1)·⟪p'a−p'b, x_(some a) − x_(some b)⟫`
+  for `q − p' a = s·(p' b − p' a)`, with a doc-comment explaining
+  the IR/row-LI duality. Both typeII extends consumed it: the IR
+  proof's `h_into` block dropped its manual deleted-edge derivation
+  (24 lines → 5 lines via `h_combo + mul_eq_zero`-resolve; net 92 →
+  77 body LoC); the row-LI proof's `h_f_eq` block dropped its three
+  per-row inner-product unfolds and bilinearity manipulation (30
+  lines → 14 lines via a single `linear_combination (norm := ...)`
+  with rational-function coefficients; net 322 → 313 body LoC).
+  The "apply same pattern to typeI cores" sub-goal from the
+  original C3 sketch turned out to be over-extrapolation: typeI has
+  no deleted edge, so no row identity to share. Heuristic that
+  emerged: `linear_combination (norm := (field_simp; ring))`
+  extends the tactic to rational coefficients with a non-zero
+  polynomial denominator — useful when the linear-combination
+  scaling factor itself has a `(s − 1)` in the denominator (e.g.
+  the row-LI proof needs `c_a / (s − 1)` because the c_a-c_b
+  constraint `(s − 1) c_b = −(s c_a)` doesn't admit a polynomial
+  rearrangement at the coefficient level). Worth a brief
+  TACTICS-GOLF entry. Phase 7 *Blockers / open questions* entry
+  for option 1 closes; option 3 (`rank R_typeII = rank R_{G'} + 2`)
+  remains deferred for the post-Phase-8 `Matroid` infrastructure.
 
 - **C1 — top-10 long-proof ranking recorded.** Ran the CLEANUP.md
   awk recipe across all source files; top 10 by body line count

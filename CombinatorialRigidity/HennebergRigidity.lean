@@ -286,6 +286,49 @@ strengthens the input rigid placement to one with non-collinear `(p a, p b, p c)
 perturbation helper `exists_nonCollinear_rigid_placement_dim_two`, which uses openness of
 infinitesimal rigidity (`IsInfinitesimallyRigid.eventually` in `Framework.lean`). -/
 
+/-- **Algebraic backbone of the typeII conditional cores.** Given the collinear extension
+condition `q - p' a = s • (p' b - p' a)` for the typeII new vertex, the two new-edge inner
+products at `none ↔ some a` and `none ↔ some b` combine linearly to recover the deleted-edge
+inner product at `s(a, b)`:
+
+  `(s − 1) · ⟪q − p' a, x none − x (some a)⟫_ℝ − s · ⟪q − p' b, x none − x (some b)⟫_ℝ
+   = s(s − 1) · ⟪p' a − p' b, x (some a) − x (some b)⟫_ℝ`
+
+valid for any motion `x : Framework (Option V) d`. This is the algebraic content shared by
+Phase 5's `typeII_isInfinitesimallyRigid_extend` (kernel / IR side) and Phase 7's
+`typeII_edgeSetRowIndependent_extend` (dual / row-LI side): in the IR setting both
+new-edge inner products vanish at a kernel element, and dividing by `s(s − 1) ≠ 0` recovers
+the deleted-edge G'-constraint; in the row-LI setting the equation is the row identity
+`(s−1)·rigidityRow newA − s·rigidityRow newB = s(s−1) · restrictMap.dualMap (rigidityRow eAB)`
+applied at `x`, which combined with G'-row LI and `dualMap` injectivity forces the
+typeII coefficients to vanish.
+
+Proof: derive `q - p' b = (s − 1) • (p' b - p' a)` from `hcoll` by `q − p' b = (q − p' a) −
+(p' b − p' a)`, factor both inner-product scalars via `real_inner_smul_left`, and finish by
+`linear_combination` over the `⟪p' b − p' a, ·⟫`-linearity identity that pulls the inner
+arguments together and flips the sign once. -/
+lemma typeII_collinear_inner_combo {V : Type*} {d : ℕ}
+    {p' : Framework V d} {q : EuclideanSpace ℝ (Fin d)} {s : ℝ} {a b : V}
+    (hcoll : q - p' a = s • (p' b - p' a))
+    (x : Framework (Option V) d) :
+    (s - 1) * ⟪q - p' a, x none - x (some a)⟫_ℝ
+        - s * ⟪q - p' b, x none - x (some b)⟫_ℝ
+      = s * (s - 1) * ⟪p' a - p' b, x (some a) - x (some b)⟫_ℝ := by
+  have hcoll_b : q - p' b = (s - 1) • (p' b - p' a) := by
+    have heq : q - p' b = (q - p' a) - (p' b - p' a) := by abel
+    rw [heq, hcoll, sub_smul, one_smul]
+  rw [hcoll, hcoll_b, real_inner_smul_left, real_inner_smul_left]
+  have h_eq :
+      ⟪p' b - p' a, x none - x (some a)⟫_ℝ - ⟪p' b - p' a, x none - x (some b)⟫_ℝ
+        = ⟪p' a - p' b, x (some a) - x (some b)⟫_ℝ := by
+    rw [← inner_sub_right,
+        show (x none - x (some a)) - (x none - x (some b))
+          = x (some b) - x (some a) from by abel,
+        show (p' b - p' a) = -(p' a - p' b) from by abel,
+        show (x (some b) - x (some a)) = -(x (some a) - x (some b)) from by abel,
+        inner_neg_neg]
+  linear_combination s * (s - 1) * h_eq
+
 /-- **Conditional Type II rigidity preservation in dim 2.** If `p` is infinitesimally rigid for
 `G`, `G.Adj a b`, and `q : EuclideanSpace ℝ (Fin 2)` is a placement of the new vertex satisfying
 the collinearity condition `q - p a = α • (p b - p a)` with `α ≠ 0, 1` (so `q` is on the line
@@ -305,40 +348,25 @@ theorem typeII_isInfinitesimallyRigid_extend [Finite V] {G : SimpleGraph V}
     (hLI : LinearIndependent ℝ ![q - p a, q - p c]) :
     (typeII G a b c).IsInfinitesimallyRigid (fun w : Option V => w.elim q p) := by
   set p_ext : Framework (Option V) 2 := fun w : Option V => w.elim q p with hp_ext_def
-  -- `q - p b = (α - 1) • (p b - p a)` follows from the collinearity hypothesis.
-  have hcoll_b : q - p b = (α - 1) • (p b - p a) := by
-    have h1 : q - p b = (q - p a) - (p b - p a) := by abel
-    rw [h1, hcoll, sub_smul, one_smul]
   -- Restriction map `x ↦ x ∘ some` lands in `ker (G.RigidityMap p)`.
   have h_into : ∀ x : Framework (Option V) 2,
       x ∈ LinearMap.ker ((typeII G a b c).RigidityMap p_ext) →
         x ∘ some ∈ LinearMap.ker (G.RigidityMap p) := by
     intro x hx
     rw [LinearMap.mem_ker] at hx ⊢
-    -- New-edge constraints at `none ↔ some a` and `none ↔ some b`.
-    have h_a_edge : s((none : Option V), some a) ∈ (typeII G a b c).edgeSet := by simp
-    have h_b_edge : s((none : Option V), some b) ∈ (typeII G a b c).edgeSet := by simp
-    have hxa := congr_fun hx ⟨s(none, some a), h_a_edge⟩
-    have hxb := congr_fun hx ⟨s(none, some b), h_b_edge⟩
+    -- Kernel constraints at the two collinear-direction new edges `none ↔ some a` and
+    -- `none ↔ some b`; plug into `typeII_collinear_inner_combo` to recover the deleted-edge
+    -- constraint at `s(a, b)` via `α(α - 1) ≠ 0`.
+    have hxa := congr_fun hx ⟨s(none, some a), by simp⟩
+    have hxb := congr_fun hx ⟨s(none, some b), by simp⟩
     simp only [rigidityMap_apply, Pi.zero_apply, hp_ext_def,
       Option.elim_none, Option.elim_some] at hxa hxb
-    -- Strip the scalar to obtain `⟪p b - p a, _⟫ = 0` form.
-    have hxa' : ⟪p b - p a, x none - x (some a)⟫_ℝ = 0 := by
-      have h := hxa
-      rw [hcoll, real_inner_smul_left] at h
-      exact (mul_eq_zero.mp h).resolve_left hα0
-    have hxb' : ⟪p b - p a, x none - x (some b)⟫_ℝ = 0 := by
-      have h := hxb
-      rw [hcoll_b, real_inner_smul_left] at h
-      exact (mul_eq_zero.mp h).resolve_left (sub_ne_zero.mpr hα1)
-    -- The deleted-edge constraint: subtract the two strip results.
-    have h_deleted : ⟪p a - p b, x (some a) - x (some b)⟫_ℝ = 0 := by
-      have hsub : x (some a) - x (some b) =
-          (x none - x (some b)) - (x none - x (some a)) := by abel
-      have h_pba : ⟪p b - p a, x (some a) - x (some b)⟫_ℝ = 0 := by
-        rw [hsub, inner_sub_right, hxb', hxa', sub_zero]
-      have hflip : p a - p b = -(p b - p a) := by abel
-      rw [hflip, inner_neg_left, neg_eq_zero]; exact h_pba
+    have h_combo := typeII_collinear_inner_combo hcoll x
+    rw [hxa, hxb] at h_combo
+    simp only [mul_zero, sub_zero] at h_combo
+    have h_deleted : ⟪p a - p b, x (some a) - x (some b)⟫_ℝ = 0 :=
+      (mul_eq_zero.mp h_combo.symm).resolve_left
+        (mul_ne_zero hα0 (sub_ne_zero.mpr hα1))
     -- Edge-membership check.
     ext ⟨e, he⟩
     induction e with

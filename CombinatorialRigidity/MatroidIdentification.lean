@@ -642,36 +642,27 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
     obtain ⟨h_ab_coeff, h_cc⟩ :=
       typeII_new_rows_coeff_zero hs0 hcoll hLI h_helper_eq
     -- f = (s * c_a) • restrictMap.dualMap (G'.rigidityRow p' ⟨s(a,b), h_ab⟩).
+    -- The algebraic backbone is the row identity (`typeII_collinear_inner_combo`):
+    -- `(s−1)·⟪q−p'a, ·⟫ − s·⟪q−p'b, ·⟫ = s(s−1)·⟪p'a−p'b, ·⟫`, applied with the c_a-c_b
+    -- pin from `h_ab_coeff` (rewritten as `h_cb_rel : (s−1) c_b = −(s c_a)`).
     set eAB : G'.edgeSet := ⟨s(a, b), h_ab⟩ with heAB_def
+    have h_cb_rel : (s - 1) * c_b = -(s * c_a) := by linarith
+    have hs1_ne : s - 1 ≠ 0 := sub_ne_zero.mpr hs1
     have h_f_eq : f = (s * c_a) • restrictMap.dualMap (G'.rigidityRow p' eAB) := by
       rw [hf_decomp, h_cc, zero_smul, add_zero]
       apply LinearMap.ext
       intro x
-      have h_rowA : (typeII G' a b c).rigidityRow p_ext newEdgeA x =
-          s * ⟪p' b - p' a, x none - x (some a)⟫_ℝ := by
-        simp [rigidityRow_apply, rigidityMap_apply, hp_ext_def, hA_def, hcoll,
-          real_inner_smul_left]
-      have h_rowB : (typeII G' a b c).rigidityRow p_ext newEdgeB x =
-          (s - 1) * ⟪p' b - p' a, x none - x (some b)⟫_ℝ := by
-        simp [rigidityRow_apply, rigidityMap_apply, hp_ext_def, hB_def, hcoll_b,
-          real_inner_smul_left]
+      have h_combo := typeII_collinear_inner_combo (a := a) (b := b) hcoll x
       have h_rowAB : restrictMap.dualMap (G'.rigidityRow p' eAB) x =
           ⟪p' a - p' b, x (some a) - x (some b)⟫_ℝ := by
         simp [rigidityRow_apply, rigidityMap_apply, heAB_def]
         rfl
       simp only [LinearMap.add_apply, LinearMap.smul_apply, smul_eq_mul,
-        h_rowA, h_rowB, h_rowAB,
-        show p' a - p' b = -(p' b - p' a) from by abel,
-        inner_neg_left, mul_neg]
-      have h_sub :
-          ⟪p' b - p' a, x (some a) - x (some b)⟫_ℝ =
-            ⟪p' b - p' a, x none - x (some b)⟫_ℝ -
-              ⟪p' b - p' a, x none - x (some a)⟫_ℝ := by
-        rw [← inner_sub_right]; congr 1; abel
-      rw [h_sub]
-      have h_cb_rel : (s - 1) * c_b = -(s * c_a) := by linarith
-      linear_combination
-        ⟪p' b - p' a, x none - x (some b)⟫_ℝ * h_cb_rel
+        rigidityRow_apply, rigidityMap_apply, hp_ext_def, hA_def, hB_def,
+        Option.elim_none, Option.elim_some, h_rowAB]
+      linear_combination (norm := (field_simp; ring))
+        (c_a / (s - 1)) * h_combo +
+          (⟪q - p' b, x none - x (some b)⟫_ℝ / (s - 1)) * h_cb_rel
     -- f ∈ span(row '' oldSet) ⊆ Submodule.map T.dualMap (span of G'-rows on subset).
     -- Show: T.dualMap(rowG'(eAB)) ∈ same map; then T-injectivity + G'-LI ⟹ s c_a = 0.
     have h_old_le : Submodule.span ℝ ((typeII G' a b c).rigidityRow p_ext '' oldSet) ≤

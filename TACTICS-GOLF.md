@@ -35,6 +35,10 @@ symptom-indexed and lighter.
 7. **Lean LSP MCP** — when to use `lean_*` tools vs. the `Read` + `lake
    build` workflow, the local-first search order, and known-broken
    external services.
+8. **`linear_combination` with rational coefficients** — pass
+   `(norm := (field_simp; ring))` when the combination's scaling factor
+   is a rational function (`a/(s-1)`) of an in-scope free variable; the
+   default `ring` post-check fails on such denominators.
 
 ---
 
@@ -638,3 +642,49 @@ reach PyPI, or the LSP refuses to start, or you're working from an
 environment without network, the standard `Read` + `lake build`
 workflow remains the source of truth: read the relevant `.lean` file,
 edit, rebuild, inspect the compiler output. Don't block on MCP issues.
+
+---
+
+## 8. `linear_combination` with rational coefficients
+
+`linear_combination` closes ring-level equations by accepting a linear
+combination of hypotheses whose sum equals `lhs − rhs` of the goal.
+Its default post-normalizer is `ring`, which **does not** simplify
+divisions by a free-variable polynomial like `(s − 1)`. When the
+natural scaling factor for one of the hypotheses is `c / (s − 1)`
+(for some in-scope `c`), the `ring` check rejects the proof even
+though the equation is correct as a rational identity. The fix is to
+override the normalizer:
+
+```lean
+linear_combination (norm := (field_simp; ring))
+  (c_a / (s - 1)) * h_combo + (B / (s - 1)) * h_cb_rel
+```
+
+`field_simp` clears the `(s − 1)` denominator first (using in-scope
+non-zero hypotheses); `ring` finishes the polynomial identity check.
+Pre-declare `have hs1_ne : s - 1 ≠ 0 := sub_ne_zero.mpr hs1` if
+`field_simp` can't find the witness automatically.
+
+**Worked example.** In Phase 7's row-LI side of
+`typeII_edgeSetRowIndependent_extend`
+(`MatroidIdentification.lean`), the disjoint-spans step needs to
+prove `c_a · row_A + c_b · row_B = (s · c_a) · T(rowG'(eAB))` given
+the constraint `(s − 1) · c_b = −(s · c_a)`. The natural combination
+is `(c_a/(s−1)) · h_combo + (B/(s−1)) · h_cb_rel`, where `h_combo`
+is the `(s−1)·row_A − s·row_B = s(s−1)·D` row identity from
+`typeII_collinear_inner_combo`. The `c_a / (s − 1)` coefficient is
+forced because the linear combination of `h_combo` must produce
+`c_a · row_A`, which requires `(s − 1) · coeff = c_a`. The default
+`ring`-only check fails; the `(field_simp; ring)` override closes
+the goal in one line. Without this override, the alternative is a
+~30-line manual unfold of `c_b` followed by the linear combination
+on the cleared-denominator form — the savings vs. the manual route
+were the C3 cleanup's main lever (Phase 7 cleanup round).
+
+**When to reach for it.** Whenever you'd write
+`linear_combination ... / x * h` and the post-normalizer fails: try
+`(norm := (field_simp; ring))` before pre-deriving the cleared form
+manually. The cost is one `field_simp` invocation; the win is
+keeping the proof at the level of the algebraic identity rather
+than its denominator-cleared variant.
