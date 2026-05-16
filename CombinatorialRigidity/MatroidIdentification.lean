@@ -402,19 +402,17 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
   have hlift_some_inj : Function.Injective lift_some := fun _ _ heq =>
     Subtype.ext (Subtype.ext
       (Sym2.map.injective (Option.some_injective V) (Subtype.ext_iff.mp heq)))
-  -- Restriction map; surjective by `some` injective, so its `dualMap` is injective.
+  -- Restriction map, used by the disjoint-spans branch below; its `dualMap` factors the
+  -- lifted-old typeII rows via `rigidityRow_lift_eq_funLeft_dualMap`.
   set restrictMap : Framework (Option V) 2 →ₗ[ℝ] Framework V 2 :=
     LinearMap.funLeft ℝ (EuclideanSpace ℝ (Fin 2)) (some : V → Option V)
   have h_restrict_surj : Function.Surjective restrictMap :=
     LinearMap.funLeft_surjective_of_injective _ _ _ (Option.some_injective V)
-  -- Factoring: lifted-old typeII rows = `restrictMap.dualMap` of G'-rows.
   have h_factor : ∀ e' : {e' : G'.edgeSet // e'.val ≠ s(a, b)},
       (typeII G' a b c).rigidityRow p_ext (lift_some e') =
-        restrictMap.dualMap (G'.rigidityRow p' e'.val) := by
-    intro e'
-    refine LinearMap.ext fun x => ?_
-    obtain ⟨⟨e, he⟩, hne⟩ := e'
-    induction e with | h u v => rfl
+        restrictMap.dualMap (G'.rigidityRow p' e'.val) :=
+    fun e' => rigidityRow_lift_eq_funLeft_dualMap (some : V → Option V)
+      (fun _ => rfl) e'.val (hlift_mem e'.val e'.property)
   -- The three new edges in `(typeII G' a b c).edgeSet`.
   have hnewA_mem : s((none : Option V), some a) ∈ (typeII G' a b c).edgeSet := by simp
   have hnewB_mem : s((none : Option V), some b) ∈ (typeII G' a b c).edgeSet := by simp
@@ -466,22 +464,12 @@ theorem typeII_edgeSetRowIndependent_extend {G' : SimpleGraph V}
       · exact Or.inr (Or.inr (Subtype.ext h_eqC))
   refine LinearIndepOn.mono ?_ h_cover
   refine LinearIndepOn.union ?_ ?_ ?_
-  -- LI on `oldSet`: factor through `restrictMap.dualMap` (injective by surjectivity of
-  -- `restrictMap`), pulling back the restricted G'-LI (G'-LI on the subtype `≠ s(a, b)`).
+  -- LI on `oldSet`: factoring through `(LinearMap.funLeft _ some).dualMap`, restricted to
+  -- the subtype `≠ s(a, b)` (the deleted G'-edge).
   · rw [linearIndepOn_range_iff hlift_some_inj]
-    have h_eq : (typeII G' a b c).rigidityRow p_ext ∘ lift_some =
-        restrictMap.dualMap ∘ (fun e' : {e' : G'.edgeSet // e'.val ≠ s(a, b)} =>
-          G'.rigidityRow p' e'.val) := funext h_factor
-    rw [h_eq]
-    have h_li_G' : LinearIndependent ℝ (G'.rigidityRow p') := by
-      rw [← linearIndepOn_univ_iff,
-          ← edgeSetRowIndependent_iff_linearIndepOn_rigidityRow]
-      exact h
-    have h_li_sub : LinearIndependent ℝ
-        (fun e' : {e' : G'.edgeSet // e'.val ≠ s(a, b)} =>
-          G'.rigidityRow p' e'.val) :=
-      h_li_G'.comp _ Subtype.val_injective
-    exact h_li_sub.dualMap_of_surjective h_restrict_surj
+    exact linearIndependent_rigidityRow_lift_of_injective
+      (some : V → Option V) (Option.some_injective V) (fun _ => rfl)
+      Subtype.val Subtype.val_injective (fun i => hlift_mem i.val i.property) h
   -- LI on `newSet = {newEdgeA, newEdgeB, newEdgeC}`: peel via `LinearIndepOn.insert`.
   · -- `{newA, newB, newC} = insert newA (insert newB (insert newC ∅))`: convert the
     -- inner `{newC}` to `insert newC ∅` so the chain of three `.insert` calls elaborates.
