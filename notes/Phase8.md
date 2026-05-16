@@ -17,18 +17,27 @@ duplicate the dep-graph.
 
 ## Current state
 
-Phase opened by a scaffolding commit (`3e7e2e5`), followed by the
-dep bump landing `apnelson1/Matroid` at revision `e6852cec…` (commit
-*to land next*). `lake build Matroid.Representation.Map` and
-`lake build CombinatorialRigidity.MatroidIdentification` both green
-post-bump, so the 179-commit mathlib-pin gap (apnelson1's `1b045b9…`
-→ ours `21b745fd…`) didn't break apnelson1's API.
+Phase opened by a scaffolding commit (`3e7e2e5`), the dep-bump
+landing `apnelson1/Matroid` at revision `e6852cec…` (`6df664c`),
+and the **skeleton commit** that lands
+`CombinatorialRigidity/LinearRigidityMatroid.lean` with the
+`linearRigidityMatroid` def + the row-LI bridge
+(`linearRigidityMatroid_indep_iff_edgeSetRowIndependent`) and adds
+the *Linear-matroid framing* subsection to
+`blueprint/src/chapter/rigidity-matroid.tex` (dep-graph: three
+green leaves + one red target `thm:linearRigidityMatroid-eq-rigidityMatroid`).
 
-Next concrete commit: open `CombinatorialRigidity/LinearRigidityMatroid.lean`
-with the `linearRigidityMatroid` definition skeleton via
-`Matroid.ofFun`, plus the *Linear-matroid framing* section in
-`blueprint/src/chapter/rigidity-matroid.tex` carrying the
-dep-graph for the new section.
+Next concrete commit: land
+`SimpleGraph.linearRigidityMatroid_eq_rigidityMatroid` —
+the matroid equality at a generic placement, satisfying the
+blueprint's red target `thm:linearRigidityMatroid-eq-rigidityMatroid`.
+The proof shape is in the blueprint chapter: pick a generic placement
+via `EdgeSetRowIndependent.eventually` + `exists_affinelySpanning_of_eventually`
+(both Phase 6 / 7), apply `Matroid.ext_indep` reducing to ground-set
+agreement (one rfl) and per-set independence agreement
+(`linearRigidityMatroid_indep_iff_edgeSetRowIndependent` ↔
+`rigidityMatroid_indep_iff_edgeSetRowIndependent` modulo the
+generic-placement collapse).
 
 ## Architectural choices made up front
 
@@ -110,11 +119,29 @@ are formalized.
 
 ### Phase-local choices and proof techniques
 
-*(Empty — to be filled as Phase 8 lands lemmas.)*
+- **Extension by zero off the edge set via `Function.extend`.** The
+  underlying row function of `linearRigidityMatroid V d p` extends
+  `(⊤).rigidityRow p : (⊤).edgeSet → Module.Dual …` to all of
+  `Sym2 V` by zero off the edge set. The natural dependent
+  `if h : e ∈ (⊤).edgeSet then … else 0` shape needs
+  `Decidable (e ∈ (⊤).edgeSet)` (not auto-synthesizable);
+  `Function.extend Subtype.val ((⊤).rigidityRow p) 0` avoids the
+  instance dance entirely and gives clean rewrites via
+  `Subtype.val_injective.extend_apply`. See FRICTION
+  *Extending a function on a subtype to the parent type*.
+
+- **No `[Finite V]` on `linearRigidityMatroid`.** `Matroid.ofFun`
+  doesn't require finiteness, and the unused-arguments lint
+  enforces dropping it (matching ROADMAP's weakest-typeclass
+  convention). The matroid identification with `rigidityMatroid V`
+  (red target) will pull in `[Finite V]` at its statement, since
+  `rigidityMatroid V` requires it.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
-*(Empty — to be filled at phase end.)*
+- *Extension by zero off a subtype: prefer `Function.extend` over
+  `dite`* → FRICTION [resolved] *Extending a function on a subtype
+  to the parent type — `dite` vs `Function.extend`*
 
 ### Cleanup pass summaries
 

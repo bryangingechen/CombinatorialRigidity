@@ -616,6 +616,32 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   "Default `simp` before `grind` can subsume `change` + multi-`rw`
   staging".
 
+### [resolved] Extending a function on a subtype to the parent type — `dite` vs `Function.extend`
+
+- **Where it bit:** `linearRigidityRow` (`LinearRigidityMatroid.lean`),
+  Phase 8 scaffolding. Needed a function
+  `Sym2 V → Module.Dual ℝ (Framework V d)` extending
+  `(⊤ : SimpleGraph V).rigidityRow p : (⊤).edgeSet → Module.Dual …`
+  by zero off the edge set, to feed `Matroid.ofFun`.
+- **Friction:** the dependent `if h : e ∈ (⊤).edgeSet then …⟨e, h⟩ else
+  0` shape required `Decidable (e ∈ (⊤ : SimpleGraph V).edgeSet)`,
+  which isn't synthesisable for an arbitrary `Set` membership without
+  pulling in `Classical` (or a per-graph decidability instance the
+  call site can't supply).
+- **Resolution:** switched to
+  `Function.extend Subtype.val ((⊤).rigidityRow p) 0`. Both the on-set
+  characterisation (`linearRigidityRow_subtype_val`) and the
+  membership-form (`linearRigidityRow_of_mem`) close in one line via
+  `Subtype.val_injective.extend_apply`. No `Decidable` instance
+  needed; the def stays `noncomputable` either way.
+- **Lesson:** for "extend a function on a subtype to the parent type
+  by a constant", prefer `Function.extend (Subtype.val) f c` over
+  `dite (· ∈ S) (fun h ↦ f ⟨·, h⟩) (fun _ ↦ c)`. The `dite` form
+  forces a `Decidable` instance that's typically classical-only for
+  `Set`s; the `Function.extend` form uses
+  `Function.Injective.extend_apply` for clean rewriting.
+- **Status:** resolved (2026-05-16).
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic
