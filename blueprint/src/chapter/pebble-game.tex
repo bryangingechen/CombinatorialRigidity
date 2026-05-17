@@ -58,6 +58,8 @@ out-degree budget.
 
 \begin{definition}[Partial orientation]
   \label{def:partial-orientation}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation}
+  \leanok
   Let $V$ be a finite type with decidable equality. A
   \emph{partial orientation} on $V$ is a finite set
   $D \subseteq V \times V$ of ordered pairs such that:
@@ -74,6 +76,12 @@ out-degree budget.
 
 \begin{definition}[Out-degree, pebble count, span]
   \label{def:pebble-counts}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.out,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.peb,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.span,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.outOn,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.pebOn}
+  \leanok
   \uses{def:partial-orientation}
   Fix a partial orientation $D$ and an integer $k \ge 0$. For a
   vertex $v \in V$, write

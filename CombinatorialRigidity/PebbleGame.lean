@@ -67,4 +67,111 @@ lemma index).
 
 namespace CombinatorialRigidity.PebbleGame
 
+variable {V : Type*}
+
+/-- A *partial orientation* on `V` is a finite set of directed arcs satisfying
+two structural invariants:
+
+* (no loops) no arc has equal endpoints;
+* (no antiparallel pairs) at most one of `(u, v)` and `(v, u)` is present.
+
+This is the algorithmic state of the `(k, ℓ)`-pebble game (Lee–Streinu §3,
+blueprint `def:partial-orientation`). Storing the arcs as a `Finset (V × V)`
+keeps the state fully decidable and computable, matching the style island
+described in the file header; pebble counts (the per-vertex `out`-degree
+budget remainder) are bookkeeping derived from the arcs. -/
+structure PartialOrientation (V : Type*) [DecidableEq V] where
+  /-- The underlying finite set of directed arcs. -/
+  arcs : Finset (V × V)
+  /-- No loops: no arc has equal endpoints. -/
+  no_loops : ∀ ⦃v : V⦄, (v, v) ∉ arcs
+  /-- No antiparallel pairs: at most one of `(u, v)` and `(v, u)` is an arc. -/
+  no_antiparallel : ∀ ⦃u v : V⦄, (u, v) ∈ arcs → (v, u) ∉ arcs
+
+namespace PartialOrientation
+
+variable [DecidableEq V]
+
+/-- The empty partial orientation: no arcs. The initial state of the
+pebble-game algorithm. -/
+def empty : PartialOrientation V where
+  arcs := ∅
+  no_loops _ := Finset.notMem_empty _
+  no_antiparallel _ _ h := absurd h (Finset.notMem_empty _)
+
+@[simp] lemma arcs_empty : (empty : PartialOrientation V).arcs = ∅ := rfl
+
+variable (D : PartialOrientation V)
+
+/-- The out-neighbour set of `v` in `D`: vertices `u` with `(v, u) ∈ D.arcs`. -/
+def outNbhd (v : V) : Finset V :=
+  (D.arcs.filter (·.1 = v)).image Prod.snd
+
+lemma mem_outNbhd {v u : V} : u ∈ D.outNbhd v ↔ (v, u) ∈ D.arcs := by
+  simp only [outNbhd, Finset.mem_image, Finset.mem_filter]
+  refine ⟨?_, fun h => ⟨(v, u), ⟨h, rfl⟩, rfl⟩⟩
+  rintro ⟨⟨a, b⟩, ⟨hmem, hfst⟩, hsnd⟩
+  dsimp at hfst hsnd
+  subst hfst; subst hsnd; exact hmem
+
+/-- Out-degree at `v`: number of arcs of `D` sourced at `v`. Equivalently
+`(D.outNbhd v).card`; cf. `def:pebble-counts`. -/
+def out (v : V) : ℕ := (D.outNbhd v).card
+
+/-- Pebble count at `v` with budget `k`: `k - out v` (truncated `ℕ`
+subtraction). The structural invariant `out v ≤ k`, maintained by the
+algorithm via `lem:pebble-game-invariants` (1), ensures this behaves
+additively against `out v`. -/
+def peb (k : ℕ) (v : V) : ℕ := k - D.out v
+
+/-- Arcs of `D` with both endpoints in `V'`. -/
+def spanArcs (V' : Finset V) : Finset (V × V) :=
+  D.arcs.filter (fun p => p.1 ∈ V' ∧ p.2 ∈ V')
+
+/-- Span of `V'` in `D`: number of arcs with both endpoints in `V'`. -/
+def span (V' : Finset V) : ℕ := (D.spanArcs V').card
+
+/-- Arcs of `D` with source in `V'` and head outside `V'`. -/
+def boundaryArcs (V' : Finset V) : Finset (V × V) :=
+  D.arcs.filter (fun p => p.1 ∈ V' ∧ p.2 ∉ V')
+
+/-- Out-boundary count of `V'` in `D`: number of arcs leaving `V'`. -/
+def outOn (V' : Finset V) : ℕ := (D.boundaryArcs V').card
+
+/-- Total pebble count on `V'`: sum of `peb k v` over `v ∈ V'`. -/
+def pebOn (k : ℕ) (V' : Finset V) : ℕ := ∑ v ∈ V', D.peb k v
+
+@[simp] lemma outNbhd_empty (v : V) :
+    (empty : PartialOrientation V).outNbhd v = ∅ := by
+  simp [outNbhd]
+
+@[simp] lemma out_empty (v : V) : (empty : PartialOrientation V).out v = 0 := by
+  simp [out]
+
+@[simp] lemma peb_empty (k : ℕ) (v : V) :
+    (empty : PartialOrientation V).peb k v = k := by
+  simp [peb]
+
+@[simp] lemma spanArcs_empty (V' : Finset V) :
+    (empty : PartialOrientation V).spanArcs V' = ∅ := by
+  simp [spanArcs]
+
+@[simp] lemma span_empty (V' : Finset V) :
+    (empty : PartialOrientation V).span V' = 0 := by
+  simp [span]
+
+@[simp] lemma boundaryArcs_empty (V' : Finset V) :
+    (empty : PartialOrientation V).boundaryArcs V' = ∅ := by
+  simp [boundaryArcs]
+
+@[simp] lemma outOn_empty (V' : Finset V) :
+    (empty : PartialOrientation V).outOn V' = 0 := by
+  simp [outOn]
+
+@[simp] lemma pebOn_empty (k : ℕ) (V' : Finset V) :
+    (empty : PartialOrientation V).pebOn k V' = V'.card * k := by
+  simp [pebOn, Finset.sum_const, smul_eq_mul, mul_comm]
+
+end PartialOrientation
+
 end CombinatorialRigidity.PebbleGame

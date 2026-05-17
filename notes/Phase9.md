@@ -34,14 +34,16 @@ the first Phase 9 commit.
 
 ## Current state
 
-Phase 9 is open. The forward-mode blueprint chapter
+Phase 9 is in progress. The forward-mode blueprint chapter
 `chapter/pebble-game.tex` is the authoritative dep-graph and lemma
-index (currently all red below the verified-DFS warmup); the new
-`CombinatorialRigidity/PebbleGame.lean` is scaffolded with the file
-header, `module` marker, public imports (`Mathlib.Data.Finset.Basic`,
-`Mathlib.Data.Sym.Sym2`, `CombinatorialRigidity.Sparsity`,
-`CombinatorialRigidity.Search.DFS`), and the doc-comment establishing
-the `[Fintype V] [DecidableEq V]` style island.
+index; `PebbleGame.lean` ships the leaf-most state-machine
+definitions `PartialOrientation V` (bundled `Finset (V × V)` with
+`no_loops` and `no_antiparallel` invariants) and the derived pebble
+counts `out`, `peb`, `span`, `outOn`, `pebOn` plus the empty
+constructor and basic `simp`-level lemmas (`out_empty`, `peb_empty`,
+`span_empty`, `outOn_empty`, `pebOn_empty = V'.card * k`).
+Blueprint `def:partial-orientation` and `def:pebble-counts` are
+green.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -83,14 +85,14 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: attack the leaf-most red node of the
-forward-mode dep-graph — `def:partial-orientation` (the
-`PartialOrientation V` representation itself) plus `def:pebble-counts`
-(out-degree / pebble count / span as derived `Finset.card`
-quantities). These are pure state-machine definitions with no
-mathematical content; their decisions unblock the algorithm-level
-red nodes (`def:tryReachPebble`, `def:tryAddEdge`,
-`def:runPebbleGame`) and the invariants of L-S Lemma 10. See
+Next concrete commit: attack the next leaf-most red node — either
+`def:path-reversal` (the algorithm primitive: invert every arc of
+a directed path in `D`, preserving `underlying D` and shifting
+exactly one unit of out-degree from the path's head to its tail —
+pure state-machine, no math content), or `def:blockingWitness`
+(the failure-branch certificate type, a structurally trivial
+record), which together unblock `def:tryReachPebble` and the
+substantive `lem:pebble-game-invariants` (L-S Lemma 10). See
 *Hand-off / next phase*.
 
 ## Architectural choices made up front
@@ -194,6 +196,27 @@ wrong, revisit there.
 this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Decisions made during this phase
+
+### State and counts (Phase 9 main, opening commit)
+
+- **`PartialOrientation V`: option (i), `Finset (V × V)` bundled
+  with `no_loops` + `no_antiparallel`.** Cleanest for definitions
+  and invariants — `arcs.filter`-based `out`/`span`/`outOn` and
+  `Finset.sum`-based `pebOn` derive directly. Out-adjacency for DFS
+  uses a `outNbhd : V → Finset V` view (`arcs.filter (·.1 = v) |>
+  .image Prod.snd`); the `outList : V → List V` shim lands with
+  `tryReachPebble`. Rejected (ii) `V → Finset V` (forces duplicated
+  `(u, v)` / `(v, u)` bookkeeping for `no_antiparallel`) and (iii)
+  `V → V → Bool` (hostile to `Finset.card`-based counts).
+
+- **Pebble counts: distinct Lean names per type to break the
+  `out_D(v)` / `out_D(V')` overload.** Per-vertex `out v` and
+  `peb k v`; per-subset `span V'`, `outOn V'` (arcs *leaving*
+  `V'`), `pebOn k V'`. `peb k v := k - out v` uses ℕ-subtraction
+  directly — the algorithm's structural `out v ≤ k` invariant
+  makes Invariant (1) (`peb + out = k`) follow from
+  `Nat.sub_add_cancel`. The "avoid ℕ-subtraction" project
+  convention applies to *propositions*, not *definitions*.
 
 ### DFS warmup (pre-Phase-9)
 
@@ -333,15 +356,15 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   *Current state*) exercises this pattern in isolation. Friction-
   log entry expected at the termination-proof commit.
 
-- **`PartialOrientation V` representation.** Three options:
-  (i) `Finset (V × V)` with antiparallel-free invariant;
-  (ii) `V → Finset V` (out-neighbour adjacency lists);
-  (iii) function `V → V → Bool` with finiteness via `[Fintype V]`.
-  (i) is most direct for definitions and invariants; (ii) is
-  efficient for `tryReachPebble`'s reachability search. Defer the
-  decision to the first Phase 9 coding commit — write the natural
-  one first; refactor if `tryReachPebble`'s termination proof gets
-  ugly.
+- **`PartialOrientation V` representation — resolved as (i).** Bundle
+  `arcs : Finset (V × V)` with the two invariants `no_loops` and
+  `no_antiparallel`; see *Decisions made → `PartialOrientation V`
+  representation*. Out-adjacency uses (ii) only at the DFS boundary
+  via a `outNbhd : V → Finset V` shim derived as
+  `arcs.filter (·.1 = v) |>.image Prod.snd`, with a `outList`
+  projection (List V) to follow when `tryReachPebble` lands. Refactor
+  to (ii) or (iii) only if `tryReachPebble`'s termination proof
+  surfaces a structural problem.
 
 - **Whether to land the matroidal-independence corollary in
   Phase 9 or defer.** The bridge
@@ -355,38 +378,35 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Hand-off / next phase
 
-Phase 9 is open. The ROADMAP §9 row is flipped to *in progress*;
-the three user-facing status surfaces (README / home_page /
-blueprint intro) are synced; `blueprint/src/chapter/pebble-game.tex`
-ships the forward-mode dep-graph (sections: State and moves →
-Invariants → Algorithm → Soundness → Completeness → Correctness
-theorem → Matroidal-independence corollary); and
-`CombinatorialRigidity/PebbleGame.lean` is scaffolded with header
-+ `module` + public imports + style-island doc-comment + an empty
-`namespace CombinatorialRigidity.PebbleGame` ready for declarations.
-Build clean.
+Phase 9 main is in progress. `PebbleGame.lean` now carries
+`PartialOrientation V` (option (i): `Finset (V × V)` + `no_loops` +
+`no_antiparallel`), the derived counts `out`/`peb`/`span`/`outOn`/
+`pebOn`, the `empty` constructor, and the empty-orientation `simp`
+lemmas. Blueprint `def:partial-orientation` and `def:pebble-counts`
+are green. Build + lint clean.
 
-Next concrete commit: **define `PartialOrientation V` and the
-derived `out` / `peb` / `span` quantities** (the leaf-most red
-node `def:partial-orientation` plus `def:pebble-counts`). These
-are pure state-machine definitions with no mathematical content;
-their decisions unblock everything downstream:
+Next concrete commit: **`def:path-reversal` (the algorithm's
+primitive move)** — define `PartialOrientation.reverse D p` that
+inverts every arc of a directed path `p : DirectedWalk (·∈ D.arcs)
+u_0 u_m` in `D`. Three obligations:
 
-- `def:partial-orientation` — pick one of the three representations
-  listed under *Blockers → `PartialOrientation V` representation*
-  (`Finset (V × V)` with no-loop / no-antiparallel-pair invariants;
-  `V → Finset V` out-adjacency-lists; `V → V → Bool` predicate).
-  Weak prior: option (i) `Finset (V × V)` for the most direct
-  invariant statements; refactor if `tryReachPebble`'s termination
-  proof turns ugly.
-- `def:pebble-counts` — `out`, `peb`, `span` as `Finset.card`
-  quantities derived from the orientation; one-liners.
-- Pin the corresponding `\lean{...}` in the blueprint chapter and
-  flip the two leaf nodes' `\leanok` in the same commit.
+- Construct `reverse D p : PartialOrientation V` (the new `arcs`
+  with arrows along `p` flipped). Reuse `DirectedWalk` from
+  `Search/DFS.lean` for the path; the relation is the
+  outgoing-arc relation `fun a b => (a, b) ∈ D.arcs`.
+- Prove the no-loops + no-antiparallel invariants survive the
+  reversal (the path is simple by `IsPath`, and antiparallel
+  arrival would have been blocked by the original
+  no-antiparallel).
+- Ship the structural lemmas `out_reverse` /
+  `peb_reverse` (head decreases by 1, tail increases by 1, all
+  other vertices unchanged) and `span_reverse_eq` /
+  `outOn_reverse_eq` (both invariants preserved on every subset).
+  These are the blueprint's `def:path-reversal` claim and feed
+  `lem:pebble-game-invariants` (3).
 
-Subsequent commits descend the dep-graph: `def:path-reversal` (the
-algorithm's primitive move) → `lem:pebble-game-invariants` (L-S
-Lemma 10, the substantive part — trace through both ranges
+Subsequent commits descend the dep-graph: `lem:pebble-game-invariants`
+(L-S Lemma 10, the substantive part — trace through both ranges
 `ℓ < k` and `k ≤ ℓ < 2k` on `SimpleGraph` per *Blockers →
 Simple-graph vs L-S multi-graph corner cases*) →
 `def:tryReachPebble` (the DFS-plus-path-reversal specialisation
@@ -394,9 +414,6 @@ via `reachableFinding`) → `def:tryAddEdge` → `def:runPebbleGame`
 → `thm:pebble-game-soundness` → completeness lemmas →
 `thm:pebble-game-correct` → `cor:pebble-game-countMatroid-indep`.
 
-Architectural questions still open at first contact with the Lean
-side: *`PartialOrientation V` representation* (decide in the
-defining commit; refactor allowed if downstream proofs surface a
-better option) and *whether to land the matroidal-independence
-corollary in-phase or defer* (weak preference: land — cheap, ties
-the loop to Phase 7's `countMatroid`).
+Architectural question still open: *whether to land the matroidal-
+independence corollary in-phase or defer* (weak preference: land —
+cheap, ties the loop to Phase 7's `countMatroid`).
