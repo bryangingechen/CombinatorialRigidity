@@ -20,6 +20,9 @@ on unvisited vertices.
 
 \begin{definition}[Directed walk]
   \label{def:directed-walk}
+  \lean{CombinatorialRigidity.Search.DirectedWalk,
+    CombinatorialRigidity.Search.DirectedWalk.IsPath}
+  \leanok
   Let $V$ be a finite type with decidable equality and $R : V \to V
   \to \mathrm{Prop}$ a relation. A \emph{directed $R$-walk} from
   $u$ to $w$ is a non-empty list $u = v_0, v_1, \ldots, v_m = w$ of
@@ -29,6 +32,8 @@ on unvisited vertices.
 
 \begin{definition}[Reachable-finding DFS]
   \label{def:reachable-finding}
+  \lean{CombinatorialRigidity.Search.reachableFinding}
+  \leanok
   \uses{def:directed-walk}
   Let $V$ be finite with decidable equality and $R$ a relation on $V$
   (with $R$ decidable in each argument, e.g.\ presented as an
@@ -57,6 +62,8 @@ on unvisited vertices.
 
 \begin{theorem}[Correctness of \texorpdfstring{$\mathrm{reachableFinding}$}{reachableFinding}]
   \label{thm:reachable-finding-correct}
+  \lean{CombinatorialRigidity.Search.reachableFinding_sound,
+    CombinatorialRigidity.Search.reachableFinding_complete}
   \uses{def:reachable-finding, def:directed-walk}
   Let $R$, $v$, $P$ be as in \cref{def:reachable-finding}. Then:
   \begin{enumerate}

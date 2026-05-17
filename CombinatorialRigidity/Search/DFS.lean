@@ -179,12 +179,63 @@ def reachableFinding (succ : V → List V) (P : V → Bool) (v : V) :
     Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w) :=
   reachableFindingAux succ P ∅ v
 
+/-- Strengthened soundness invariant for `reachableFindingAux`: every match
+returned from `visited`-state `s` has its witness walk entirely outside `s`.
+The extra clause is what turns the recursive case's `Nodup` obligation
+(`v` not appearing in the suffix walk) into the IH at `insert v visited`. -/
+theorem reachableFindingAux_sound (succ : V → List V) (P : V → Bool) :
+    ∀ (visited : Finset V) (v : V)
+      (wp : Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w),
+      reachableFindingAux succ P visited v = some wp →
+      P wp.1 = true ∧ wp.2.IsPath ∧ ∀ x ∈ wp.2.vertices, x ∉ visited := by
+  intro visited v
+  induction visited, v using reachableFindingAux.induct (P := P) with
+  | case1 visited v hvis =>
+    -- Visited-revisit branch returns `none`, contradicting `= some _`.
+    rintro ⟨w, p⟩ hres
+    rw [reachableFindingAux, dif_pos hvis] at hres
+    exact absurd hres (by simp)
+  | case2 visited v hvis hP =>
+    -- `P v = true` branch returns `some ⟨v, .nil v⟩`.
+    rintro ⟨w, p⟩ hres
+    rw [reachableFindingAux, dif_neg hvis, if_pos hP, Option.some.injEq,
+        Sigma.mk.injEq] at hres
+    obtain ⟨rfl, hh⟩ := hres
+    cases hh
+    refine ⟨hP, ?_, ?_⟩
+    · simp [DirectedWalk.IsPath, DirectedWalk.vertices]
+    · intro x hx
+      simp only [DirectedWalk.vertices, List.mem_singleton] at hx
+      exact hx ▸ hvis
+  | case3 visited v hvis hP ih =>
+    -- Recursive branch: `findSome?` over `(succ v).attach` returned a match.
+    rintro ⟨w, p⟩ hres
+    rw [reachableFindingAux, dif_neg hvis, if_neg hP] at hres
+    obtain ⟨⟨u, hu⟩, _, hmap⟩ := List.exists_of_findSome?_eq_some hres
+    rw [Option.map_eq_some_iff] at hmap
+    obtain ⟨⟨w', p'⟩, hrec, hwp⟩ := hmap
+    rw [Sigma.mk.injEq] at hwp
+    obtain ⟨rfl, hh⟩ := hwp
+    cases hh
+    obtain ⟨hPw, hp'Path, hp'V⟩ := ih u ⟨w', p'⟩ hrec
+    refine ⟨hPw, ?_, ?_⟩
+    · -- `(cons hu p').IsPath`: `v ∉ p'.vertices` since IH excludes `insert v visited`.
+      rw [DirectedWalk.IsPath, DirectedWalk.vertices, List.nodup_cons]
+      refine ⟨fun hv_in => hp'V v hv_in (Finset.mem_insert_self _ _), hp'Path⟩
+    · intro x hx
+      rw [DirectedWalk.vertices, List.mem_cons] at hx
+      rcases hx with rfl | hx
+      · exact hvis
+      · exact fun hxv => hp'V x hx (Finset.mem_insert_of_mem hxv)
+
 /-- **Soundness.** If `reachableFinding succ P v = some ⟨w, p⟩`, then
 `P w` holds and the returned walk `p` is simple. -/
 theorem reachableFinding_sound {succ : V → List V} {P : V → Bool} {v : V}
     {w : V} {p : DirectedWalk (fun a b => b ∈ succ a) v w}
     (hres : reachableFinding succ P v = some ⟨w, p⟩) :
-    P w = true ∧ p.IsPath := sorry
+    P w = true ∧ p.IsPath :=
+  let ⟨hP, hPath, _⟩ := reachableFindingAux_sound succ P ∅ v ⟨w, p⟩ hres
+  ⟨hP, hPath⟩
 
 /-- **Completeness.** If some vertex `w` in the `succ`-reachability
 closure of `v` satisfies `P`, then `reachableFinding` returns

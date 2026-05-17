@@ -67,14 +67,16 @@ its two nodes `def:reachable-finding` and
 inline here unless it grows beyond ~2 sessions, in which case
 promote to a dedicated `Phase9-warmup.md`.
 
-**DFS warmup progress (body fill, computable shape).**
-`reachableFinding`'s body is in: `reachableFindingAux` threads
-`visited : Finset V`, dispatches on `v ∈ visited` / `P v`, and on
-miss iterates over `(succ v).attach` via `List.findSome?`, recursing
-on `insert v visited` and `cons`-prepending the arc on success.
-Termination uses the design's `(Finset.univ \ visited).card` measure,
-proved via `Finset.card_lt_card` on the sdiff dropping exactly `v`.
-Soundness and completeness remain `sorry`-stubbed.
+**DFS warmup progress (soundness in).** `reachableFinding`'s body is
+in and `reachableFinding_sound` is proved (via a strengthened helper
+`reachableFindingAux_sound` whose extra clause says returned walks
+have all vertices outside `visited` — this turns the recursive
+`cons`-prepend's `Nodup` obligation into the IH at `insert v visited`).
+Proof routes through the auto-generated `reachableFindingAux.induct`
+(three cases: visited-revisit / `P v` hit / `findSome?` recurse), using
+`List.exists_of_findSome?_eq_some` plus `Sigma.mk.injEq` to unpack
+the recursive-branch witness. Only `reachableFinding_complete` remains
+`sorry`-stubbed.
 
 The function is **fully computable**: `succ : V → List V` (not
 `V → Finset V`) for child enumeration, with `visited : Finset V`
@@ -87,8 +89,8 @@ See *Decisions made → DFS warmup* below + DESIGN.md
 `FRICTION.md` *[resolved] `Finset.toList` is noncomputable* for the
 design history. Build + lint clean.
 
-Next commit: fill `reachableFinding_sound`. Smallest unit of forward
-progress; `reachableFinding_complete` follows in a third commit.
+Next commit: fill `reachableFinding_complete`. See *Hand-off / next
+phase* for the proof sketch.
 
 ## Architectural choices made up front
 
@@ -320,29 +322,39 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Hand-off / next phase
 
-DFS warmup body fill is in (`Search/DFS.lean`; build + lint clean).
-The `reachableFindingAux` recursion shape is settled: single function,
-`(Finset.univ \ visited).card` measure, `List.findSome?` over
-`(succ v).attach.toList` for the children loop. Function is
-`noncomputable` (forced by `Finset.toList` — see *Decisions made* and
-`FRICTION.md` for the open friction).
+DFS warmup soundness is in (`Search/DFS.lean`; build + lint clean;
+blueprint pins for the two defs + the correctness theorem flipped,
+`\leanok` on the defs only). The `reachableFindingAux` recursion
+shape is settled: single function, fully computable, `(Finset.univ
+\ visited).card` measure, `(succ v).attach.findSome?` for the
+children loop.
 
-Next concrete commit: fill `reachableFinding_sound`. By induction on
-the WF-recursion depth (matching `decreasing_by`'s measure decrease),
-or directly on `DirectedWalk` structure of the returned `p`. Both
-clauses (`P w = true` and `p.IsPath`) are paths through the same
-recursion: `P w` is established at the `some ⟨v, .nil v⟩` branch and
-preserved by `cons` since `cons` only adds the outer `v`; `IsPath`
-follows because the recursive call passes `insert v visited` and the
-returned walk's vertices are all in
-`Finset.univ \ (insert v visited)`, so prepending `v` keeps the list
-duplicate-free.
+Next concrete commit: fill `reachableFinding_complete`. Cleanest
+shape is the contrapositive helper `reachableFindingAux_complete`:
+> if `reachableFindingAux succ P visited v = none`, then for every
+> `succ`-walk from `v` avoiding `visited` ending at a `w` with
+> `P w = true`, contradiction.
 
-`reachableFinding_complete` follows in a third commit: induction on
-`Relation.ReflTransGen` of the assumed reachability witness; the
-case where the witness is `.refl` is immediate (`v` itself or its
-nil-walk satisfies `P` if it does); the `.tail` case unwraps one
-arc and delegates to the recursive call's invariant. The DFS may
-return a *different* `w'` than the witness's `w` (the DFS picks the
-first `P`-match in its traversal order), so the conclusion's `w'` is
-existentially quantified independent of the input's `w`.
+Then the user-facing statement falls out at `visited = ∅` (no walk
+avoids `∅`, so every reachable `w` is covered) by lifting the
+hypothesis from `Relation.ReflTransGen` into a `DirectedWalk` (via
+`ReflTransGen.head_induction_on` or the equivalent recursion). Same
+auto-induct (`reachableFindingAux.induct`) as soundness; the three
+cases close as:
+
+* `v ∈ visited`: walk must start outside `visited`, contradiction.
+* `v ∉ visited`, `P v = true`: DFS would have returned `some`,
+  contradicting the `none` hypothesis.
+* `v ∉ visited`, `¬P v`: the `findSome?` returns `none`, so every
+  child `u ∈ succ v` had its recursive call return `none`; apply IH
+  to the suffix-walk at `u` with `insert v visited`.
+
+The DFS may return a *different* `w'` than the witness's `w` (the
+DFS picks the first `P`-match in its traversal order), so the
+conclusion's `w'` is existentially quantified independent of the
+input's `w` — already reflected in the theorem statement.
+
+After completeness lands: flip `\leanok` on `thm:reachable-finding-
+correct` in `blueprint/src/chapter/dfs.tex`, close the DFS warmup
+section in this file, and open Phase 9 proper (ROADMAP §9 row flip,
+`chapter/pebble-game.tex` dep-graph fill).

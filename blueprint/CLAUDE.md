@@ -320,19 +320,10 @@ an enclosing `namespace Foo` in the `\lean{...}` pointer — e.g.
 declarations inside `namespace Henneberg` need
 `SimpleGraph.Henneberg.IsLaman.foo`, not `SimpleGraph.IsLaman.foo`.
 
-A faster local check (grep-only, useful while editing) is:
-
-```sh
-grep -hoE '\\lean\{[^}]+\}' chapter/*.tex \
-  | sed 's/\\lean{//;s/}$//' | tr ',' '\n' | sed 's/^ *//;s/ *$//' \
-  | sort -u > /tmp/lean-names.txt
-# Then for each name in /tmp/lean-names.txt, grep the corresponding
-# basename in the relevant Lean file under ../../CombinatorialRigidity/.
-```
-
-This won't catch namespace-prefix bugs (the basename matches either
-way); reserve it for fast smoke-tests and rely on `checkdecls` as
-the authoritative gate.
+`inv web` + `checkdecls` together run in ~15 seconds on this project
+(measured 2026-05), so this is the everyday path, not a heavy-machinery
+fallback. Don't reach for grep-only alternatives to dodge perceived
+build cost; the authoritative check is fast enough.
 
 **All `\uses{...}` and `\Cref{...}` labels are defined:**
 
