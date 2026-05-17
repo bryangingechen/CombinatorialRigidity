@@ -34,7 +34,7 @@ downstream files can drop ~354 LoC of matroid-regime machinery from
 their transitive import set.
 -/
 
-@[expose] public section
+public section
 
 namespace SimpleGraph
 

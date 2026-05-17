@@ -29,7 +29,7 @@ See `ROADMAP.md` §7, `notes/Phase7.md`, and the blueprint chapter
 `blueprint/src/chapter/rigidity-matroid.tex`.
 -/
 
-@[expose] public section
+public section
 
 open scoped InnerProductSpace Topology
 

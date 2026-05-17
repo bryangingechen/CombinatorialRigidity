@@ -104,7 +104,7 @@ See `ROADMAP.md` for the project plan and `notes/Phase1.md` for the
 Phase 1 work log (this file's content is Phase 1).
 -/
 
-@[expose] public section
+public section
 
 namespace SimpleGraph
 
@@ -113,18 +113,18 @@ variable {V : Type*} (G : SimpleGraph V)
 /-- A simple graph `G` is `(k, ℓ)`-sparse if every finite set `s` of vertices spans at most
 `k * #s − ℓ` edges. The hypothesis `ℓ ≤ k * #s` keeps the bound nonnegative; the conclusion is
 phrased additively to avoid `ℕ`-subtraction. -/
-def IsSparse (k ℓ : ℕ) : Prop :=
+@[expose] def IsSparse (k ℓ : ℕ) : Prop :=
   ∀ s : Finset V, ℓ ≤ k * s.card → (G.edgesIn ↑s).ncard + ℓ ≤ k * s.card
 
 /-- A simple graph `G` is `(k, ℓ)`-tight if it is `(k, ℓ)`-sparse and its total edge count is
 exactly `k * #V − ℓ`. -/
-def IsTight (k ℓ : ℕ) : Prop :=
+@[expose] def IsTight (k ℓ : ℕ) : Prop :=
   G.IsSparse k ℓ ∧ G.edgeSet.ncard + ℓ = k * Nat.card V
 
 /-- A finite vertex set `s` is `(k, ℓ)`-**tight in** `G` if it spans exactly `k * #s − ℓ`
 edges. Subset-tight sets form a lattice in any `(k, ℓ)`-sparse graph subject to the standard
 `ℓ ≤ k * #(s ∩ t)` size proviso; see `IsTightOn.union_inter`. -/
-def IsTightOn (k ℓ : ℕ) (s : Finset V) : Prop :=
+@[expose] def IsTightOn (k ℓ : ℕ) (s : Finset V) : Prop :=
   (G.edgesIn (↑s : Set V)).ncard + ℓ = k * s.card
 
 variable {G}

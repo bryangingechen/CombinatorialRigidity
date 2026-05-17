@@ -54,14 +54,14 @@ sparsity API work log, and `notes/Phase2.md` for the Laman-specific
 work log (this file's content spans Phase 1 + Phase 2).
 -/
 
-@[expose] public section
+public section
 
 namespace SimpleGraph
 
 variable {V : Type*}
 
 /-- A simple graph is **Laman** (or *minimally rigid in the plane*) if it is `(2, 3)`-tight. -/
-def IsLaman (G : SimpleGraph V) : Prop := G.IsTight 2 3
+@[expose] def IsLaman (G : SimpleGraph V) : Prop := G.IsTight 2 3
 
 theorem IsLaman.isSparse {G : SimpleGraph V} (h : G.IsLaman) : G.IsSparse 2 3 := h.1
 

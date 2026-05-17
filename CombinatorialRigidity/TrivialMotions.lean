@@ -44,7 +44,7 @@ See `ROADMAP.md` §6, `notes/Phase6.md`, and the `(⇒)` subsection of
 `blueprint/src/chapter/laman-theorem.tex`.
 -/
 
-@[expose] public section
+public section
 
 open scoped InnerProductSpace
 
@@ -59,7 +59,7 @@ variable {V : Type*} {d : ℕ}
 /-- The constant motion translating every vertex by `t`. Every translation lies in the kernel of
 `G.RigidityMap p` (`translationMotion_mem_ker`): edge-length derivatives all vanish because
 `p'_u - p'_v = t - t = 0` for any edge `s(u, v)`. -/
-def translationMotion (t : EuclideanSpace ℝ (Fin d)) : Framework V d :=
+@[expose] def translationMotion (t : EuclideanSpace ℝ (Fin d)) : Framework V d :=
   fun _ => t
 
 @[simp]
@@ -81,7 +81,7 @@ to lie in the rigidity-map kernel (cf.\ `infinitesimalRotation_mem_ker`), `A` mu
 "skew-adjoint" condition `⟪x, A x⟫_ℝ = 0` for every `x`; in dimension `d` such `A`'s form a
 `d (d − 1) / 2`-dimensional space (skew-symmetric matrices), recovering the textbook count
 $d + d(d - 1)/2 = d(d+1)/2$ for the trivial-motions dimension. -/
-def infinitesimalRotation
+@[expose] def infinitesimalRotation
     (A : EuclideanSpace ℝ (Fin d) →ₗ[ℝ] EuclideanSpace ℝ (Fin d)) (p : Framework V d) :
     Framework V d := fun v => A (p v)
 
@@ -228,7 +228,7 @@ contributes the `d` coordinate translations (one per `i : Fin d`); the right sum
 one elementary skew rotation per ordered pair `⟨i, j⟩` with `j : Fin i.val` (so `j.val < i.val`),
 using `elemSkewMap i ⟨j.val, _⟩` for the skew generator. Each value lies in `trivialMotions p`
 (`trivialMotionFamily_mem_trivialMotions`). -/
-def trivialMotionFamily (p : Framework V d) :
+@[expose] def trivialMotionFamily (p : Framework V d) :
     (Fin d ⊕ Σ i : Fin d, Fin i.val) → Framework V d
   | .inl i => translationMotion (PiLp.single 2 i (1 : ℝ))
   | .inr ⟨i, j⟩ =>

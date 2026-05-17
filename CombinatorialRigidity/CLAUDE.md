@@ -186,6 +186,21 @@ Constraints and gotchas:
   unchanged.
 - **No `import` line for `module` itself** — the bare keyword on its
   own line is the marker, not an import.
+- **`public section` is opaque intra-module too — not just
+  cross-module.** A `def` in `public section` (no `@[expose]`) has
+  its body hidden for elaboration-time defeq even within the same
+  file (close to `@[irreducible]` semantics). Symptoms a new
+  intra-file consumer trips: *"Not a definitional equality: the
+  left-hand side"* on a `@[simp] … := rfl` projection lemma; *"Type
+  mismatch … definitions were not unfolded because their definition
+  is not exposed: foo ↦ N"* on a `match`-arm whose result type needs
+  `foo`'s body. **Fix:** promote the specific `def` to `@[expose]
+  def …`; the surrounding section can stay `public section`. The
+  default for a new file is `public section`; reach for
+  `@[expose] public section` only when *most* of the file's defs
+  need body exposure (cf. `Framework.lean`). Project precedent and
+  per-file dispositions: see `notes/PERFORMANCE.md` *F3.5 audit
+  disposition*.
 - **`set_option backward.privateInPublic …` is technical debt and
   must be eliminated, not propagated.** The option is a `backward.*`
   compat knob that re-enables legacy "private-callable-from-public"
@@ -200,7 +215,8 @@ Constraints and gotchas:
   non-`private` and the latter by demoting the file's `@[expose]
   public section` to `public section`). Do not introduce new opt-ins;
   the principled discharges are documented in `notes/PERFORMANCE.md`
-  *Open: granular `@[expose]` / `public` audit per file*.
+  *Granular `@[expose]` / `public` audit per file* (F3.4 + F3.5
+  disposition tables).
 
   Mechanics: the opt-in is required only when a private declaration
   participates in an *exposed* body — a `def` / `instance` body or

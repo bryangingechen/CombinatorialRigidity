@@ -2,8 +2,8 @@
 
 **Status:** in progress (F1, F2 closed; F3 structurally done modulo
 the `LinearRigidityMatroid` carve-out; F3.4's
-`backward.privateInPublic` discharge committed; broader expose-
-narrowing audit and F3.6 measurement pending).
+`backward.privateInPublic` discharge committed; F3.5's broader
+expose-narrowing audit closed; F3.6 measurement pending).
 
 ## Current state
 
@@ -17,19 +17,17 @@ F3.3 converted 13 of 14 project files (`LinearRigidityMatroid.lean`
 **carved out** — blocked by its non-`module`
 `Matroid.Representation.Map` dep from `apnelson1/Matroid`). F3.3
 introduced 4 + 3 per-declaration `set_option backward.privateInPublic`
-opt-ins in `Framework.lean` / `HennebergReverse.lean`; **F3.4 (this
-commit) eliminated all 7**: HennebergReverse demoted file section
-to `public section` (path (a) — iso constructors consumed opaquely
-downstream), and Framework promoted `edgeRow` / `edgeRow_symm` /
-`continuous_rigidityMap_apply` from `private` to non-`private` (path
-(b) — the file's `@[expose] public section` must stay because
-`RigidityMap`'s body is consumed defeq-wise at MatroidIdentification
-line 927 and the `IsInfinitesimallyRigid` / `IsGenericallyRigid(Inj)`
-predicates are consumed via `≤`-coercion / `∃`-destructure).
-**Next:** broader expose-narrowing audit on the other 11 module-
-converted project files (the post-conversion perf lever — same audit
-as in `PERFORMANCE.md`, scope reduced now that the technical-debt
-half is closed); then F3.6 (final 4-run A/B vs F1.1 baseline; promote
+opt-ins in `Framework.lean` / `HennebergReverse.lean`; F3.4 eliminated
+all 7 (HennebergReverse demoted file section to `public section`,
+Framework promoted `edgeRow` / `edgeRow_symm` /
+`continuous_rigidityMap_apply` from `private` to non-`private`).
+**F3.5 (this commit) closed the broader expose-narrowing audit**:
+demoted 11 of 12 remaining `@[expose] public section` files to
+`public section`, restoring `@[expose]` per-decl on exactly the 12
+defs whose bodies are consumed downstream (or intra-module via
+`rfl` / `match`); `Framework.lean` retained `@[expose] public section`
+per the F3.4 disposition. Project carries zero `backward.privateInPublic`
+references. **Next:** F3.6 (final 4-run A/B vs F1.1 baseline; promote
 headline to `PERFORMANCE.md`).
 
 ## Pass overview
@@ -255,15 +253,32 @@ executed) during Phase 8-cleanup's bucket E:
   `set_option … in` on the 4 + 3 cross-visibility decls. Build + lint
   clean. The `backward.*` opt-ins still in the tree are technical
   debt to be discharged by F3.4.
-- [ ] **F3.5:** *(build + lint run inline at the close of F3.2,
-  F3.3, F3.3-followup, and F3.4 commits; no separate verification
-  step needed.)*
+- [x] **F3.5:** Broader expose-narrowing audit (perf-lever half;
+  F3.4 closed only the technical-debt half). All 12 remaining
+  `@[expose] public section` project files audited:
+  - 11 demoted to `public section`; 12 per-decl `@[expose]` opt-ins
+    added on the defs whose bodies are consumed downstream (or
+    intra-module via `rfl`-proof / pattern-match defeq, which the
+    new module system treats as opaque without `@[expose]` even
+    within the file). Per-file disposition table lands in
+    `PERFORMANCE.md` *F3.5 audit disposition*.
+  - 1 retained at `@[expose] public section`: `Framework.lean`, per
+    the F3.4 disposition recorded in `PERFORMANCE.md`. Of the file's
+    5 defs (`RigidityMap`, `edgeRow`, `edgeRow_symm`,
+    `continuous_rigidityMap_apply`, `IsInfinitesimallyRigid` /
+    `IsGenericallyRigid(Inj)`), per-decl narrowing would still leave
+    `RigidityMap` exposed (defeq consumption at
+    `MatroidIdentification` line 927) and `continuous_rigidityMap_apply`
+    exposed (`@[fun_prop]` resolution across modules); the file-wide
+    marker is the cleaner equivalent.
+
+  Build + lint clean.
 - [ ] **F3.6:** Final measurement. 4-run A/B on the analysis-heavy
   targets + project total. Record medians; compute combined delta
   against F1.1 baseline; promote the headline to
   `PERFORMANCE.md` *Experiments that did pay* or *…didn't pay*.
-  Runs on the post-F3.4 codebase, so the audit's expose-narrowing
-  effect is included in the A/B comparison.
+  Runs on the post-F3.5 codebase, so the combined module-conversion
+  + audit effect is in the A/B comparison.
 
 ## Decisions made during this phase
 
@@ -340,6 +355,27 @@ executed) during Phase 8-cleanup's bucket E:
   lifted to `CombinatorialRigidity/CLAUDE.md` *Module-system
   conversion*.
 
+- **F3.5 audit lesson: `public section` is opaque intra-module too.**
+  The expose-narrowing audit hit two error-shapes when demoting
+  `@[expose] public section` → `public section`:
+  (i) cross-module body consumers (`unfold edgesIn` in `Sparsity.lean`;
+  `h.1`/`h.2`-style destructure of `IsLaman` / `IsTight` in `Laman.lean`)
+  fail with *"Invalid projection: ... is not a one-constructor inductive
+  type"* or *"Tactic `unfold` failed"*. (ii) intra-file consumers also
+  fail when the def's body must be unfolded for defeq during
+  elaboration — `instDecidableTypeIAdj`'s `match | some u, some v =>
+  inferInstance` in `Henneberg.lean` and `rfl`-proved `@[simp]` lemmas
+  (e.g. `translationMotion_apply`, `countMatroid_E`, `rigidityRow_apply`,
+  `trivialMotionFamily_inl/inr`) report *"Not a definitional equality"*
+  with an explicit note *"definitions were not unfolded because their
+  definition is not exposed: typeI ↦ N"*. The lesson: in the new module
+  system, `public section` (no `@[expose]`) makes a `def` body opaque
+  even **within the same file** for elaboration-time defeq — close to
+  `@[irreducible]` semantics. Fix by promoting the specific defs to
+  `@[expose] def …`; the surrounding section stays `public section`.
+  Lifted to `CombinatorialRigidity/CLAUDE.md` *Module-system
+  conversion*.
+
 - **`LinearRigidityMatroid.lean` carve-out: blocked by external
   `Matroid` lib.** `apnelson1/Matroid` is ~4 % module-converted as
   of 2026-05; specifically `Matroid.Representation.Map`
@@ -410,24 +446,21 @@ at the file boundary, not just at section-header level.
 Mid-stream: F3.2 (mirrors), F3.3 (13 of 14 project files; one carved
 out for the `apnelson1/Matroid` lib non-`module` constraint), F3.3
 follow-up cleanup (removed file-scope opt-ins from 7 of 9 affected
-files), and F3.4's `backward.privateInPublic` discharge (the 4 + 3
-per-decl opt-ins gone) all committed. The project carries zero
-`backward.privateInPublic` references.
+files), F3.4's `backward.privateInPublic` discharge (the 4 + 3
+per-decl opt-ins gone), and F3.5's broader expose-narrowing audit (11
+of 12 files demoted to `public section` with 12 per-decl `@[expose]`
+opt-ins; Framework retained at `@[expose] public section`) all
+committed. The project carries zero `backward.privateInPublic`
+references.
 
-**Next concrete commit — priority: broader expose-narrowing audit.**
-The other 11 module-converted project files still carry the blanket
-`@[expose] public section` from F3.3, which exposes every `def` body
-file-wide (the coarsest of the three visibility levels per
-`PERFORMANCE.md` *Granular `@[expose]` / `public` audit per file*).
-Demote each file (or specific decls) to `public section` where
-bodies aren't consumed downstream. Signals: `simp [defName]`,
-`unfold defName`, `change <unfolded>`, `rfl` across the def,
-defeq-dependent elaboration, `@[fun_prop]`-like tactic resolution.
-This is the post-conversion perf lever; it lands alongside the F3.4
-technical-debt half so a single F3.6 4-run A/B picks up the combined
-effect.
-
-After the broader audit closes, F3.6 — the final 4-run A/B vs F1.1
-baseline (HR 57.3 s; RM 53.7 s; LRM 62.3 s; project 21.2 s) — runs
-on the post-audit codebase, and the verdict + one-paragraph promotion
-entry to `notes/PERFORMANCE.md` closes the F3 row and the pass.
+**Next concrete commit — priority: F3.6 final measurement.** Runs a
+4-run A/B per the *Measurement protocol* in `PERFORMANCE.md` on the
+three analysis-heavy targets (`HennebergRigidity`, `RigidityMatroid`,
+`LinearRigidityMatroid`) and project-total, against the F1.1 baseline
+(HR 57.3 s; RM 53.7 s; LRM 62.3 s; project 21.2 s). The post-F3.5
+codebase carries the combined effect of the splits (F1+F2), the
+module-system conversion (F3.2+F3.3), the technical-debt opt-in
+discharge (F3.4), and the expose-narrowing audit (F3.5) — the headline
+in `PERFORMANCE.md` *Experiments that did pay* or *…didn't pay* will
+attribute to the F3 phase as a whole. Then close the F3 row in the
+ROADMAP Status table and the pass.

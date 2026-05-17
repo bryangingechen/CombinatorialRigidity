@@ -47,7 +47,7 @@ The split decouples `Henneberg.lean` from the analysis/linear-algebra imports ne
 See `ROADMAP.md` §5 and `notes/Phase5.md` for the Phase 5 plan.
 -/
 
-@[expose] public section
+public section
 
 open scoped InnerProductSpace Topology
 

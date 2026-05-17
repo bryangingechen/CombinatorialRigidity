@@ -52,14 +52,14 @@ This file is part of the combinatorial-rigidity formalization. See
 Phase 1 work log (this file's content is Phase 1).
 -/
 
-@[expose] public section
+public section
 
 namespace SimpleGraph
 
 variable {V : Type*} (G : SimpleGraph V)
 
 /-- The set of edges of `G` whose both endpoints lie in `s`. -/
-def edgesIn (s : Set V) : Set (Sym2 V) := G.edgeSet ∩ s.sym2
+@[expose] def edgesIn (s : Set V) : Set (Sym2 V) := G.edgeSet ∩ s.sym2
 
 variable {G}
 

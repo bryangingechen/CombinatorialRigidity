@@ -40,7 +40,7 @@ See `ROADMAP.md` §6, `notes/Phase6.md`, and the `(⇒)` subsection of
 `blueprint/src/chapter/laman-theorem.tex`.
 -/
 
-@[expose] public section
+public section
 
 open Module
 
@@ -77,7 +77,7 @@ theorem edgeSetRowIndependent_empty (G : SimpleGraph V) (p : Framework V d) :
 
 /-- The `e`-th row of the rigidity matrix at placement `p`, viewed as a linear functional
 `Framework V d →ₗ[ℝ] ℝ`. As a function, it sends `motion ↦ G.RigidityMap p motion e`. -/
-noncomputable def rigidityRow (G : SimpleGraph V) (p : Framework V d) :
+@[expose] noncomputable def rigidityRow (G : SimpleGraph V) (p : Framework V d) :
     G.edgeSet → Module.Dual ℝ (Framework V d) :=
   fun e => (LinearMap.proj e).comp (G.RigidityMap p)
 

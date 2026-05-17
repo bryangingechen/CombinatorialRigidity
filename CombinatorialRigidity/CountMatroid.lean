@@ -42,7 +42,7 @@ See `ROADMAP.md` §7, `notes/Phase7.md`, and the blueprint chapter
 `blueprint/src/chapter/count-matroid.tex`.
 -/
 
-@[expose] public section
+public section
 
 namespace SimpleGraph
 
@@ -62,7 +62,7 @@ matroid on `Sym2 V`; outside the regime (`ℓ ≥ 2 * k`), the augmentation axio
 See `countMatroid_indep_iff` for the independence characterisation and
 `SimpleGraph.IsSparse.exists_aug_of_lt_two_mul` for the augmentation axiom that powers this
 construction. -/
-def countMatroid (k ℓ : ℕ) (hℓ : ℓ < 2 * k) : Matroid (Sym2 V) :=
+@[expose] def countMatroid (k ℓ : ℕ) (hℓ : ℓ < 2 * k) : Matroid (Sym2 V) :=
   (IndepMatroid.ofFinite
     (E := (⊤ : SimpleGraph V).edgeSet)
     (hE := (⊤ : SimpleGraph V).edgeSet.toFinite)

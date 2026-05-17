@@ -42,7 +42,7 @@ See `ROADMAP.md` for the project plan and `notes/Phase3.md` for the
 Phase 3 work log.
 -/
 
-@[expose] public section
+public section
 
 namespace SimpleGraph
 
@@ -56,7 +56,7 @@ on `Option V`, with the new vertex represented as `none`.
 
 When `a = b`, the new vertex has degree 1 (the parallel edges collapse); the
 move preserves the Laman property only under `a ≠ b`. -/
-def typeI (G : SimpleGraph V) (a b : V) : SimpleGraph (Option V) where
+@[expose] def typeI (G : SimpleGraph V) (a b : V) : SimpleGraph (Option V) where
   Adj
     | some u, some v => G.Adj u v
     | some u, none => u = a ∨ u = b
@@ -78,7 +78,7 @@ third vertex `c`. The output graph lives on `Option V`.
 
 The move is well-defined for any `a b c : V`. It preserves the Laman property
 only under `a ≠ b`, `c ≠ a`, `c ≠ b`, and `G.Adj a b`. -/
-def typeII (G : SimpleGraph V) (a b c : V) : SimpleGraph (Option V) where
+@[expose] def typeII (G : SimpleGraph V) (a b c : V) : SimpleGraph (Option V) where
   Adj
     | some u, some v => G.Adj u v ∧ s(u, v) ≠ s(a, b)
     | some u, none => u = a ∨ u = b ∨ u = c

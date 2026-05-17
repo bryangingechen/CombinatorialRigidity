@@ -42,7 +42,7 @@ Phase 4 (`Framework.lean`) develops `IsGenericallyRigid` and ships
 that bound to `d = 2` here as `IsGenericallyRigid.card_mul_le_two`.
 -/
 
-@[expose] public section
+public section
 
 namespace SimpleGraph
 

@@ -374,22 +374,15 @@ A/B campaign can measure their combined effect.
 
 ### Granular `@[expose]` / `public` audit per file
 
-**Status (F3.4):** technical-debt half closed; perf-lever half open.
-The 4 + 3 per-declaration `set_option backward.privateInPublic`
-lines in `Framework.lean` and `HennebergReverse.lean` were eliminated
-in F3.4: HennebergReverse's section demoted from `@[expose] public
-section` to `public section` (path (a) — its iso constructors are
-consumed opaquely by `IsLaman.iso` / Henneberg lift API downstream);
-Framework's section retained `@[expose] public section` (path (b)
-for `edgeRow` / `edgeRow_symm` / `continuous_rigidityMap_apply`,
-which were promoted from `private` to non-`private`) because the
-file's `RigidityMap` body is consumed defeq-wise at
-`MatroidIdentification.lean` line 927's `convert ... using 1` and
-`IsInfinitesimallyRigid` / `IsGenericallyRigid(Inj)` bodies are
-consumed via `≤`-coercion / `∃`-destructure downstream. The broader
-perf-lever audit (next bullets) is still open — its scope is the
-other 11 module-converted project files, each of which carries the
-blanket `@[expose] public section` from F3.3.
+**Status (F3.5):** closed. Technical-debt half discharged in F3.4
+(F3.4 disposition entries below); perf-lever half discharged in F3.5
+(F3.5 disposition table below). All 12 module-converted project
+files that started F3.3 at `@[expose] public section` were audited:
+11 demoted to `public section`, 1 (`Framework.lean`) retained per
+the F3.4 disposition. Per-decl `@[expose]` opt-ins were added on
+exactly the 12 defs whose bodies are genuinely consumed (downstream
+or intra-module via `rfl`-proved `@[simp]` lemmas, pattern-match
+defeq, or `unfold` / projection-style destructure).
 
 The Phase 8-perf module-system conversion (F3.3) applied a uniform
 `@[expose] public section` to all 9 + 13 project files, matching the
@@ -454,6 +447,56 @@ contract.
   `isoOfOptionSubtypeNe` are consumed downstream only as values
   (called for the iso, no body unfolding), so the demotion is
   net-zero for downstream and the `private` opt-ins drop out.
+
+**F3.5 audit disposition (resolved):**
+
+Per-file outcome of the broader audit. "Demoted" = section style
+changed from `@[expose] public section` to `public section`. "Per-
+decl `@[expose]`" lists the defs that required body-level exposure
+after demotion. Trigger column records the error that surfaced when
+the file was demoted without per-decl rescue (build error site +
+shape), informing the per-decl picks.
+
+| File | Section | Per-decl `@[expose]` | Trigger when demoted |
+|---|---|---|---|
+| `EdgesIn.lean` | demoted | `edgesIn` | `Sparsity.lean` destructures `G.edgesIn s x` as a Prop / `unfold edgesIn` |
+| `Sparsity.lean` | demoted | `IsSparse`, `IsTight`, `IsTightOn` | `Laman.lean` `h.1`/`h.2` on `IsTight`; intra-file `Iff.rfl` of `IsLaman` ↔ unfolded `IsTight`; `SparsityIComponents` `unfold IsTightOn at ...` |
+| `SparsityIComponents.lean` | demoted | (none) | downstream `CountMatroid` consumes only `IsSparse.exists_aug_of_lt_two_mul` (lemma, not def); intra-file `unfold maxBlock` works (intra-module name binding, not defeq) |
+| `Laman.lean` | demoted | `IsLaman` | `top_fin_two_isLaman` proof's `refine ⟨_, _⟩` destructures `IsLaman` body; downstream `Henneberg` etc. similar |
+| `Henneberg.lean` | demoted | `typeI`, `typeII` | intra-file `instDecidableTypeIAdj` / `instDecidableTypeIIAdj`'s `match`-arm defeq; Lean's error explicitly lists *"definitions were not unfolded because their definition is not exposed: typeI ↦ 10"* |
+| `HennebergReverse.lean` | demoted (F3.4) | (none) | F3.4 already verified opaque consumption downstream |
+| `Framework.lean` | retained | (file-wide) | F3.4 disposition; per-decl narrowing would still leave `RigidityMap` + `continuous_rigidityMap_apply` exposed, so file-wide marker is cleaner |
+| `TrivialMotions.lean` | demoted | `translationMotion`, `infinitesimalRotation`, `trivialMotionFamily` | intra-file `@[simp] ... := rfl` lemmas (`translationMotion_apply`, `infinitesimalRotation_apply`, `trivialMotionFamily_inl/inr`) fail simp-NF check with *"Not a definitional equality"* — proof is `rfl` which needs body |
+| `CountMatroid.lean` | demoted | `countMatroid` | intra-file `@[simp] countMatroid_E ... := rfl` |
+| `HennebergRigidity.lean` | demoted | (none; no defs) | file ships only theorems / lemmas; clean demotion |
+| `RigidityMatroid.lean` | demoted | `rigidityRow` | intra-file `@[simp] rigidityRow_apply ... := rfl` |
+| `MatroidIdentification.lean` | demoted | (none) | the only def `SimpleGraph.rigidityMatroid` is consumed by `LinearRigidityMatroid` (non-`module`) — non-module files don't see the new opacity model, so no need to expose |
+| `LamanTheorem.lean` | demoted | (none; no defs) | terminal file, theorems only; clean demotion |
+
+Lessons:
+
+- **`public section` is opaque intra-module too.** The dominant
+  per-decl trigger wasn't downstream consumption — it was *intra-file*
+  use sites that need a `def`'s body for elaboration-time defeq (the
+  `match`/`rfl` patterns above). In the new module system,
+  `public section` (no `@[expose]`) is close to `@[irreducible]`
+  semantics for the def's body: visible by name within the file, but
+  the body is not unfolded for defeq during elaboration.
+- **Prop predicates are not all alike.** `IsSparse` / `IsTight` /
+  `IsTightOn` / `IsLaman` had to expose because downstream code
+  destructures via projection (`h.1`, `h.2`) or unfolds via
+  `refine ⟨_, _⟩` or `Iff.rfl`. `EdgeSetRowIndependent` (in
+  `RigidityMatroid.lean`) and `HasBlock` (in `SparsityIComponents.lean`)
+  did *not* need exposure because downstream consumers go through
+  API lemmas (`.mono`, `mem_maxBlock`, etc.) rather than body access.
+  The mathlib-style discipline of "use the API, not the body" is
+  what makes the latter demote cleanly.
+- **`@[simp] ... := rfl` always needs `@[expose]`.** Any intra-file
+  `rfl`-proved `@[simp]` projection lemma over a `def` forces that
+  `def` to be `@[expose]`-tagged (the `@[simp]` linter runs a
+  defeq normalization on the LHS at registration time). This shows
+  up as *"Not a definitional equality"* with the *"definitions were
+  not unfolded"* note.
 
 ## Recommendations for future perf work
 
