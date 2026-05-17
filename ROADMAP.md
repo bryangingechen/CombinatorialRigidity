@@ -74,7 +74,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 8. Linear-matroid framing | `LinearRigidityMatroid.lean` | ✓ Complete (see `notes/Phase8.md`) |
 | ⋮ Cleanup round (post-Phase-8) | project-wide (light scope) + import-structure audit | ✓ Complete (see `notes/Phase8-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-8) | `Sparsity` / `Henneberg` splits + module-system conversion | ✓ Complete (see `notes/Phase8-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| ⋮ Pre-Phase-9 DFS warmup | `Search/DFS.lean` | in progress (see `notes/Phase9.md` §"Current state") |
+| ⋮ Pre-Phase-9 DFS warmup | `Search/DFS.lean` | ✓ Complete (see `notes/Phase9.md` §"DFS warmup (pre-Phase-9)") |
 | 9. Pebble game | `PebbleGame.lean` (new) | planning (see `notes/Phase9.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during

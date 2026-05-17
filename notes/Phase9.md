@@ -35,10 +35,9 @@ the first Phase 9 commit.
 
 ## Current state
 
-Planning. Pre-Phase-9 DFS warmup in progress (scaffold landed; see
-below). Architectural choices below are settled before Phase 9
-opens; the lemma index will be filled in `chapter/pebble-game.tex`
-once the chapter lands.
+Planning, with the pre-Phase-9 DFS warmup **complete**. Architectural
+choices below are settled before Phase 9 opens; the lemma index will
+be filled in `chapter/pebble-game.tex` once the chapter lands.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -47,50 +46,45 @@ a vertex subset $V'$ with $|E(G[V'])| > k|V'| - \ell$ (witness of
 non-sparsity). The matroidal-independence corollary against
 Phase 7's `CountMatroid` follows as a one-liner.
 
-**Pre-Phase-9 DFS warmup.** A tightly-scoped verified-DFS exercise
-lands as a separate small artifact
-(`CombinatorialRigidity/Search/DFS.lean`, ~200–300 LoC, 1–2
-sessions). Pattern model is `Batteries.UnionFind`
-(`termination_by self.rankMax - self.rank x` — a strictly-decreasing
-numeric measure on a finite data structure); the warmup exercises
-the `termination_by (Finset.univ \ visited).card` pattern in
-isolation and produces a reusable `reachableFinding` primitive
-(returning a witness directed walk on success) with soundness +
-completeness. The pebble game's `tryReachPebble`
-specialises this (DFS + path reversal of the returned walk). The
-dep-graph anchor is the new short chapter
-`blueprint/src/chapter/dfs.tex` (\textit{Verified DFS interlude});
-its two nodes `def:reachable-finding` and
-`thm:reachable-finding-correct` sit between `count-matroid` and
-`pebble-game` in the main chapter input order, and
-`def:tryReachPebble` `\uses{}` the correctness theorem. Logged
-inline here unless it grows beyond ~2 sessions, in which case
-promote to a dedicated `Phase9-warmup.md`.
-
-**DFS warmup progress (soundness in).** `reachableFinding`'s body is
-in and `reachableFinding_sound` is proved (via a strengthened helper
-`reachableFindingAux_sound` whose extra clause says returned walks
-have all vertices outside `visited` — this turns the recursive
-`cons`-prepend's `Nodup` obligation into the IH at `insert v visited`).
-Proof routes through the auto-generated `reachableFindingAux.induct`
-(three cases: visited-revisit / `P v` hit / `findSome?` recurse), using
-`List.exists_of_findSome?_eq_some` plus `Sigma.mk.injEq` to unpack
-the recursive-branch witness. Only `reachableFinding_complete` remains
-`sorry`-stubbed.
-
-The function is **fully computable**: `succ : V → List V` (not
-`V → Finset V`) for child enumeration, with `visited : Finset V`
-retained only for the math-layer termination measure. `#eval
-reachableFinding succEx (· == 2) 0` on a `Fin 4` example returns
-`some (2, [0, 1, 2])` — directly executable, satisfying the
-`IO`-pipeline use case (parser → DFS → emitter) raised mid-session.
-See *Decisions made → DFS warmup* below + DESIGN.md
+**Pre-Phase-9 DFS warmup — closed.** `CombinatorialRigidity/Search/DFS.lean`
+(~360 LoC) ships `reachableFinding` (the primitive itself,
+`(succ v).attach.findSome?` body + `(Finset.univ \ visited).card`
+termination measure) and the full correctness theorem
+(`reachableFinding_sound` + `reachableFinding_complete`). Build +
+lint clean. The function is **fully computable**:
+`succ : V → List V` (not `V → Finset V`) for child enumeration,
+with `visited : Finset V` retained only for the math-layer
+termination measure. `#eval reachableFinding succEx (· == 2) 0` on a
+`Fin 4` example returns `some (2, [0, 1, 2])` — directly executable,
+satisfying the `IO`-pipeline use case (parser → DFS → emitter) raised
+mid-session. See *Decisions made → DFS warmup* below + DESIGN.md
 *Pebble-game style island* (math/exec layer split paragraph) +
 `FRICTION.md` *[resolved] `Finset.toList` is noncomputable* for the
-design history. Build + lint clean.
+design history. Blueprint `def:reachable-finding`,
+`thm:reachable-finding-correct`, and `def:directed-walk` are all
+green; `chapter/dfs.tex`'s dep-graph closes.
 
-Next commit: fill `reachableFinding_complete`. See *Hand-off / next
-phase* for the proof sketch.
+**Completeness shape.** Soundness used a strengthened helper +
+`reachableFindingAux.induct` (auto-generated three-case recursor on
+visited-revisit / `P v` hit / `findSome?` recurse); completeness
+uses the same outer recursor, with an *inner* induction on a walk
+length bound `n` to handle the recursive case's two sub-cases:
+*(i)* walk revisits the current source `v` — extract a strictly
+shorter walk from `v` via `DirectedWalk.dropUntilBundle` (a
+`Subtype`-bundled truncation carrying its length-bound and
+vertex-subset witnesses) and recurse via the inner IH at the
+**same** `visited`; *(ii)* walk-tail avoids the enlarged
+`insert v visited` and the outer IH at `(insert v visited, v')`
+closes. Lifting the user-facing `ReflTransGen` hypothesis to an
+explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
+(head-first recursion, matching `DirectedWalk.cons`).
+
+Next concrete commit: open Phase 9 proper. ROADMAP §9 row flip to
+*in progress*, sync the three user-facing status surfaces (README /
+home_page / blueprint intro phase plan), and create
+`blueprint/src/chapter/pebble-game.tex` per the structure described
+in *Architectural choices made up front → Forward-mode blueprint
+chapter* below. See *Hand-off / next phase*.
 
 ## Architectural choices made up front
 
@@ -269,6 +263,38 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   V`), confusing Lean's recursive-call recognition. Pinning the
   typeclasses explicitly on the def fixes it; cheap and clear.
 
+- **`dropUntilBundle` returns a `Subtype`, not separate def +
+  lemmas.** Truncating a `DirectedWalk` at the first occurrence of a
+  target vertex needs three artefacts: the truncated walk itself
+  (changing the `(u, w)` endpoint indices), a length-bound, and a
+  vertex-subset witness. First-attempt split this into `dropUntil`
+  (def) + `dropUntil_length_le` + `mem_dropUntil_vertices` (lemmas),
+  but the def's body uses `subst h` to rewrite the index variable
+  (so the inductive case `cons` produces a walk with the *substituted*
+  endpoint), and `simp [dropUntil]` doesn't reduce through the tactic-
+  mode `subst` cleanly — the lemmas need to chase the same `subst`
+  via `rfl`-blocked equational rewrites. Bundling into a single
+  `Subtype`-returning definition with one `induction p` handles all
+  three obligations per branch (`refine ⟨walk, ?_, ?_⟩` + close each
+  with a one-liner) and avoids the equational-rewrite chase entirely.
+  Pattern is reusable wherever a dependently-indexed inductive needs
+  truncation with auxiliary witnesses.
+
+- **Inner length-induction for completeness's recursive case.**
+  Helper `reachableFindingAux_complete` proves the contrapositive:
+  if the aux returns `none`, no walk from `v` to a `P`-satisfying
+  vertex avoiding `visited` exists. Outer induction is via
+  `reachableFindingAux.induct` (same as soundness), but the recursive
+  case can't go through directly — when the walk revisits the current
+  source `v`, the walk-tail violates `∀ x ∈ p'.vertices,
+  x ∉ insert v visited`. Adding an inner induction on a length bound
+  `n` lets that branch recurse on the *same* `visited` via
+  `dropUntilBundle`, while the *no-revisit* sub-branch hands off to
+  the outer IH at `(insert v visited, v')` as expected. The
+  `ReflTransGen → DirectedWalk` lift in the user-facing theorem uses
+  `Relation.ReflTransGen.head_induction_on` (head-first recursion
+  matches `DirectedWalk.cons`'s arc-at-head shape).
+
 ## Blockers / open questions
 
 - **Simple-graph vs L-S multi-graph corner cases.** L-S's proofs
@@ -322,39 +348,40 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Hand-off / next phase
 
-DFS warmup soundness is in (`Search/DFS.lean`; build + lint clean;
-blueprint pins for the two defs + the correctness theorem flipped,
-`\leanok` on the defs only). The `reachableFindingAux` recursion
-shape is settled: single function, fully computable, `(Finset.univ
-\ visited).card` measure, `(succ v).attach.findSome?` for the
-children loop.
+DFS warmup is closed. `Search/DFS.lean` ships `reachableFinding` +
+both `reachableFinding_sound` and `reachableFinding_complete`; build
++ lint clean; all three blueprint nodes in `chapter/dfs.tex`
+(`def:directed-walk`, `def:reachable-finding`,
+`thm:reachable-finding-correct`) are `\leanok`. Pebble-game-side
+consumers (`def:tryReachPebble`) can `\uses{thm:reachable-finding-correct}`
+unconditionally.
 
-Next concrete commit: fill `reachableFinding_complete`. Cleanest
-shape is the contrapositive helper `reachableFindingAux_complete`:
-> if `reachableFindingAux succ P visited v = none`, then for every
-> `succ`-walk from `v` avoiding `visited` ending at a `w` with
-> `P w = true`, contradiction.
+Next concrete commit: **open Phase 9 proper.** That commit:
 
-Then the user-facing statement falls out at `visited = ∅` (no walk
-avoids `∅`, so every reachable `w` is covered) by lifting the
-hypothesis from `Relation.ReflTransGen` into a `DirectedWalk` (via
-`ReflTransGen.head_induction_on` or the equivalent recursion). Same
-auto-induct (`reachableFindingAux.induct`) as soundness; the three
-cases close as:
+1. Flip the ROADMAP §9 row from *planning* to *in progress*.
+2. Sync the three user-facing status surfaces (`README.md` Project
+   status, `home_page/index.md` Project status + phase table,
+   `blueprint/src/chapter/intro.tex` §Phase plan + enumerate +
+   dep-graph-status line) — Phase 9 marker flips, Phase 8 row stays ✓.
+3. Create `blueprint/src/chapter/pebble-game.tex` with the section
+   skeleton in *Architectural choices → Forward-mode blueprint
+   chapter* (State and moves → Invariants → Algorithm → Soundness →
+   Completeness → Correctness theorem → Matroidal-independence
+   corollary). Start with red `\lean{...}`-less nodes for the
+   forward-mode dep-graph; entries gain `\lean{...}` + `\leanok` as
+   Lean lemmas land.
+4. Open `CombinatorialRigidity/PebbleGame.lean` with the file
+   header + `module` + imports + the doc-comment establishing the
+   `[Fintype V] [DecidableEq V]` style island.
 
-* `v ∈ visited`: walk must start outside `visited`, contradiction.
-* `v ∉ visited`, `P v = true`: DFS would have returned `some`,
-  contradicting the `none` hypothesis.
-* `v ∉ visited`, `¬P v`: the `findSome?` returns `none`, so every
-  child `u ∈ succ v` had its recursive call return `none`; apply IH
-  to the suffix-walk at `u` with `insert v visited`.
+The leaf-most red node to attack first is *L-S Lemma 10 on
+`SimpleGraph`* — see *Blockers → Simple-graph vs L-S multi-graph
+corner cases*. Trace L-S Lemmas 10–14 through `SimpleGraph`-eyes for
+both ranges in scope (don't restrict the regime prophylactically);
+document any structural gap that genuinely forces a regime restriction.
 
-The DFS may return a *different* `w'` than the witness's `w` (the
-DFS picks the first `P`-match in its traversal order), so the
-conclusion's `w'` is existentially quantified independent of the
-input's `w` — already reflected in the theorem statement.
-
-After completeness lands: flip `\leanok` on `thm:reachable-finding-
-correct` in `blueprint/src/chapter/dfs.tex`, close the DFS warmup
-section in this file, and open Phase 9 proper (ROADMAP §9 row flip,
-`chapter/pebble-game.tex` dep-graph fill).
+Open architectural questions for the first Phase-9 coding commit:
+*`PartialOrientation V` representation* (three options listed under
+*Blockers*) and *whether to land the matroidal-independence corollary
+in-phase or defer* — both have weak preferences documented but are
+deferred to first contact with the Lean side.

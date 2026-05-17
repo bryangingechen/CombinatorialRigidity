@@ -64,6 +64,7 @@ on unvisited vertices.
   \label{thm:reachable-finding-correct}
   \lean{CombinatorialRigidity.Search.reachableFinding_sound,
     CombinatorialRigidity.Search.reachableFinding_complete}
+  \leanok
   \uses{def:reachable-finding, def:directed-walk}
   Let $R$, $v$, $P$ be as in \cref{def:reachable-finding}. Then:
   \begin{enumerate}
@@ -79,6 +80,7 @@ on unvisited vertices.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{def:reachable-finding}
   Both parts are by well-founded induction on the termination
   measure of \cref{def:reachable-finding}. Soundness: at each
@@ -86,13 +88,22 @@ on unvisited vertices.
   along an $R$-arc); the predicate is checked at each newly visited
   vertex before recursion; simplicity follows from the visited-set
   invariant (the DFS does not recurse into already-visited
-  vertices). Completeness: assume some reachable $w$ satisfies $P$
-  and the DFS returns $\mathrm{none}$. Then the visited set at
-  termination contains the entire $R$-reachability closure of $v$
-  (the recursion only stops when the frontier is empty), so it
-  contains $w$; but a $P$-satisfying vertex would have returned
-  $\mathrm{some}$ on first visit, contradicting termination by
-  $\mathrm{none}$.
+  vertices). Completeness, by contradiction: assume some reachable
+  $w$ satisfies $P$ and the DFS returns $\mathrm{none}$. The
+  reachability witness lifts to an explicit $R$-walk $p$ from $v$
+  to $w$ by head-first induction on $\mathrm{ReflTransGen}$;
+  combining $p$ with the helper invariant
+  \emph{``$\mathrm{aux}\,\mathrm{visited}\,v = \mathrm{none}$ implies
+  no $R$-walk from $v$ avoiding $\mathrm{visited}$ ends at a
+  $P$-satisfying vertex''} at $\mathrm{visited} = \varnothing$ then
+  contradicts $P(w)$. The helper is proved by outer auto-induction
+  on the DFS recursion (case-splitting on visited / $P\,v$ / else)
+  with an inner induction on the walk-length bound: when the inner
+  walk revisits the current source vertex, a sub-walk extracted via
+  \texttt{DirectedWalk.dropUntilBundle} (truncation at first
+  occurrence, bundled with its length-bound and vertex-subset
+  witnesses) recurses by the inner IH; otherwise the walk-tail
+  avoids the enlarged visited set and the outer IH closes the case.
 \end{proof}
 
 \emph{Reuse pattern.} The pebble game's \cref{def:tryReachPebble}

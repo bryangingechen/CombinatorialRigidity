@@ -114,6 +114,36 @@ def vertices : ∀ {u w : V}, DirectedWalk R u w → List V
 /-- The walk visits each vertex at most once. -/
 def IsPath (p : DirectedWalk R u w) : Prop := p.vertices.Nodup
 
+/-- Drop the prefix of a walk up to (and including) the first occurrence of
+`target`, yielding a sub-walk that starts at `target`, bundled with two
+witnesses: the truncation's length is at most the original walk's length,
+and its vertex set is a subset of the original.
+
+Bundled (rather than `dropUntil` + separate lemmas) so the recursion's
+reductions don't have to round-trip through equational simp lemmas;
+the single `induction p` handles all three obligations at once.
+Consumed by `reachableFindingAux_complete`'s inner length induction to
+shorten a walk that revisits the current source vertex. -/
+def dropUntilBundle [DecidableEq V] (target : V) :
+    ∀ {u w : V} (p : DirectedWalk R u w), target ∈ p.vertices →
+      { q : DirectedWalk R target w //
+          q.length ≤ p.length ∧ ∀ x ∈ q.vertices, x ∈ p.vertices }
+  | _, _, .nil _, h => by
+    rw [vertices, List.mem_singleton] at h
+    subst h
+    exact ⟨.nil _, Nat.le_refl _, fun _ hx => hx⟩
+  | u, _, .cons h_arc q, h => by
+    by_cases htgt : target = u
+    · subst htgt
+      exact ⟨.cons h_arc q, Nat.le_refl _, fun _ hx => hx⟩
+    · rw [vertices, List.mem_cons] at h
+      obtain ⟨q', hlen, hmem⟩ := dropUntilBundle target q (h.resolve_left htgt)
+      refine ⟨q', ?_, ?_⟩
+      · rw [length]; exact hlen.trans (Nat.le_succ _)
+      · intro x hx
+        rw [vertices, List.mem_cons]
+        exact Or.inr (hmem x hx)
+
 end DirectedWalk
 
 /-! ## The DFS primitive
@@ -237,6 +267,73 @@ theorem reachableFinding_sound {succ : V → List V} {P : V → Bool} {v : V}
   let ⟨hP, hPath, _⟩ := reachableFindingAux_sound succ P ∅ v ⟨w, p⟩ hres
   ⟨hP, hPath⟩
 
+/-- Strengthened completeness invariant for `reachableFindingAux`: if the
+DFS returns `none` from `(visited, v)`, then no `succ`-walk from `v` to a
+`P`-satisfying vertex with all vertices outside `visited` exists.
+
+The inner induction on a length bound `n` is what discharges the
+recursive case when the walk revisits the current source vertex `v`:
+`DirectedWalk.dropUntilBundle` produces a strictly shorter walk from `v`,
+re-using the same `visited` (so we recurse via the inner IH, not the
+outer one). When `v` is not revisited, the walk-tail's vertices avoid
+`insert v visited`, and the outer IH at `(insert v visited, v')` closes
+the case. -/
+private theorem reachableFindingAux_complete (succ : V → List V) (P : V → Bool) :
+    ∀ (visited : Finset V) (v : V),
+      reachableFindingAux succ P visited v = none →
+      ∀ (n : ℕ) (w : V) (p : DirectedWalk (fun a b => b ∈ succ a) v w),
+        p.length ≤ n → (∀ x ∈ p.vertices, x ∉ visited) → P w ≠ true := by
+  intro visited v
+  induction visited, v using reachableFindingAux.induct (P := P) with
+  | case1 visited v hvis =>
+    intro _ _ w p _ hpV hPw
+    have hv_in : v ∈ p.vertices := by
+      cases p <;> simp [DirectedWalk.vertices]
+    exact hpV v hv_in hvis
+  | case2 visited v hvis hP =>
+    intro hres
+    rw [reachableFindingAux, dif_neg hvis, if_pos hP] at hres
+    exact absurd hres (by simp)
+  | case3 visited v hvis hP ih =>
+    intro hres
+    rw [reachableFindingAux, dif_neg hvis, if_neg hP] at hres
+    intro n
+    induction n with
+    | zero =>
+      intro w p hlen hpV hPw
+      cases p with
+      | nil => exact hP hPw
+      | cons _ _ => simp [DirectedWalk.length] at hlen
+    | succ n ih_inner =>
+      intro w p hlen hpV hPw
+      cases p with
+      | nil => exact hP hPw
+      | @cons _ v' _ h_arc p' =>
+        rw [DirectedWalk.length] at hlen
+        have hp'_len : p'.length ≤ n := Nat.le_of_succ_le_succ hlen
+        by_cases hv_in : v ∈ p'.vertices
+        · obtain ⟨q, hq_len, hq_mem⟩ := DirectedWalk.dropUntilBundle v p' hv_in
+          have hq_n : q.length ≤ n := hq_len.trans hp'_len
+          have hq_V : ∀ x ∈ q.vertices, x ∉ visited := by
+            intro x hx
+            refine hpV x ?_
+            rw [DirectedWalk.vertices, List.mem_cons]
+            exact Or.inr (hq_mem x hx)
+          exact ih_inner w q hq_n hq_V hPw
+        · have hp'_none : reachableFindingAux succ P (insert v visited) v' = none := by
+            rw [List.findSome?_eq_none_iff] at hres
+            have hr := hres ⟨v', h_arc⟩ (List.mem_attach _ _)
+            rwa [Option.map_eq_none_iff] at hr
+          have hp'V : ∀ x ∈ p'.vertices, x ∉ insert v visited := by
+            intro x hx hx_in
+            rw [Finset.mem_insert] at hx_in
+            rcases hx_in with rfl | hx_in_visited
+            · exact hv_in hx
+            · refine hpV x ?_ hx_in_visited
+              rw [DirectedWalk.vertices, List.mem_cons]
+              exact Or.inr hx
+          exact ih v' hp'_none n w p' hp'_len hp'V hPw
+
 /-- **Completeness.** If some vertex `w` in the `succ`-reachability
 closure of `v` satisfies `P`, then `reachableFinding` returns
 `some ⟨w', p⟩` for some such `w'` (possibly `w' ≠ w`, since the DFS
@@ -244,6 +341,25 @@ returns the first match in its traversal order). -/
 theorem reachableFinding_complete {succ : V → List V} {P : V → Bool} {v : V}
     (h : ∃ w : V, Relation.ReflTransGen (fun a b => b ∈ succ a) v w ∧ P w = true) :
     ∃ (w' : V) (p : DirectedWalk (fun a b => b ∈ succ a) v w'),
-      reachableFinding succ P v = some ⟨w', p⟩ := sorry
+      reachableFinding succ P v = some ⟨w', p⟩ := by
+  -- Lift the `ReflTransGen` witness to an explicit `DirectedWalk` via
+  -- `head_induction_on` (which prepends arcs at the head, matching
+  -- `DirectedWalk.cons`), then forward-prove the conclusion by
+  -- contrapositive against `reachableFindingAux_complete`.
+  obtain ⟨w, hReach, hPw⟩ := h
+  have hwalk : ∃ p : DirectedWalk (fun a b => b ∈ succ a) v w, True := by
+    induction hReach using Relation.ReflTransGen.head_induction_on with
+    | refl => exact ⟨.nil _, trivial⟩
+    | head hab _ ih => obtain ⟨q, _⟩ := ih; exact ⟨.cons hab q, trivial⟩
+  obtain ⟨p, _⟩ := hwalk
+  -- If `reachableFinding` were `none`, the helper would forbid `p`.
+  by_contra hne
+  push Not at hne
+  have hnone : reachableFinding succ P v = none := by
+    cases h_eq : reachableFinding succ P v with
+    | none => rfl
+    | some wp => exact absurd h_eq (hne wp.1 wp.2)
+  exact absurd hPw (reachableFindingAux_complete succ P ∅ v hnone p.length w p
+    (Nat.le_refl _) (fun _ _ hx => Finset.notMem_empty _ hx))
 
 end CombinatorialRigidity.Search

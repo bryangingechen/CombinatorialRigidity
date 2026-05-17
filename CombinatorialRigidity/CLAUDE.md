@@ -81,6 +81,10 @@ bullets. If one matches, jump to the named section of
   `| visited, v => ...` pattern-match body, or `unused variable`
   lint on an `if h : ...` binder used only inside `decreasing_by` →
   § 16 *`termination_by` / `decreasing_by` elaboration rescue*.
+- *"Application type mismatch: heq has type X = some ⟨…⟩ but is
+  expected to have type some ⟨…⟩ = some ⟨…⟩"* inside the `some`
+  branch of a `match heq : <expr> with | …` term — § 17 *`match h :
+  <expr> with` substitutes `expr ↦ pat` in the goal of each branch*.
 
 ## Starting a Lean-touching session
 

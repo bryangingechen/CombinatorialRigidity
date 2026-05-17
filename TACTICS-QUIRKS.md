@@ -51,6 +51,13 @@ time, not first-draft.
 15. **Bare `Polynomial.X` (or `0`, `1`) needs explicit type ascription
     in `let`/`set` of a `Polynomial`-valued expression** — annotate
     the literal: `(Polynomial.X : Polynomial ℝ) • …`.
+16. **`termination_by` / `decreasing_by` elaboration rescue** —
+    explicit typeclass binding on the def, named def params over
+    pattern-match binders, `_h`-prefixed `if h :` binders to silence
+    the unused-variable lint.
+17. **`match h : <expr> with | pat => …` substitutes `expr ↦ pat` in
+    the *goal* of each branch** — return `rfl` when the goal collapses
+    to `pat = pat`, or restructure to `by_contra` + `cases h_eq : …`.
 
 ---
 
@@ -448,3 +455,49 @@ fill). Cross-reference: DESIGN.md *Pebble-game style island* notes
 the math/exec-layer split (`succ : V → List V` for computability,
 `visited : Finset V` for the WF measure) that ties (a) and (c)
 together.
+
+---
+
+## 17. `match h : <expr> with | pat => …` substitutes `expr ↦ pat` in the goal of each branch
+
+Using term-mode `match h : <expr> with | pat => body` introduces
+`h : <expr> = pat` *and* refines the goal of `body` by substituting
+`<expr>` with `pat`. The hypothesis `h` carries the un-substituted
+direction (`<expr> = pat`); the goal is the substituted form. The
+two are not the same expression, even though they hold the same
+information.
+
+**Symptom:** *"Application type mismatch: heq has type X = some ⟨w, p⟩
+but is expected to have type some ⟨w, p⟩ = some ⟨w, p⟩"* when trying
+to use `heq` to discharge a goal that was *itself* about `X` and now
+reads as a tautology after the substitution.
+
+**Fix.** Two options depending on what you need:
+
+- If the goal collapsed to `pat = pat`, just return `rfl`:
+  ```lean
+  match heq : reachableFinding succ P v with
+  | some ⟨w', p'⟩ => exact ⟨w', p', rfl⟩
+  | none => …
+  ```
+- If you need the un-substituted form of `heq` (e.g. to feed it to a
+  lemma that wants `X = none`), restructure to a `by_contra` over the
+  un-substituted goal and `cases h_eq : <expr> with` inside (tactic
+  mode `cases :` preserves both directions):
+  ```lean
+  by_contra hne
+  have hnone : reachableFinding … = none := by
+    cases h_eq : reachableFinding … with
+    | none => rfl
+    | some wp => exact absurd h_eq (hne wp.1 wp.2)
+  exact absurd … (helper … hnone …)
+  ```
+
+Worked case study: `reachableFinding_complete` in
+`CombinatorialRigidity/Search/DFS.lean` (Phase-9 DFS warmup). First
+attempt extracted the witness directly via `match heq:`; the `some`
+branch's `exact ⟨w', p', heq⟩` failed at the application because the
+goal had collapsed to `some ⟨w', p'⟩ = some ⟨w', p'⟩` while `heq`
+retained the original `reachableFinding … = some ⟨w', p'⟩`. The
+contrapositive `by_contra + cases h_eq:` form sidesteps both
+directions cleanly.
