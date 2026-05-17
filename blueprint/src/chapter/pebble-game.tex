@@ -177,47 +177,85 @@ reachable from the initial empty orientation through edge
 insertions and path reversals, and Invariant~(4) directly gives
 the sparsity of $\underline{D}$.
 
+\begin{definition}[Reachable orientation]
+  \label{def:reachable-orientation}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable}
+  \leanok
+  \uses{def:partial-orientation, def:pebble-counts,
+    def:path-reversal, def:arc-insertion}
+  Fix integers $k, \ell \ge 0$. The set of $(k, \ell)$-\emph{reachable}
+  partial orientations on $V$ is the smallest collection containing the
+  empty orientation and closed under:
+  \begin{itemize}
+    \item \emph{Path reversal} along a simple directed path
+      $u_0 \to \cdots \to u_m$ in $D$ with $\mathrm{out}_D(u_m) < k$
+      (\cref{def:path-reversal}).
+    \item \emph{Accepted arc insertion} of an ordered pair $(u, v)$
+      with $u \ne v$, $(u, v) \notin D$, $(v, u) \notin D$,
+      $\mathrm{out}_D(u) < k$, and the threshold condition
+      $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \ge \ell + 1$
+      (\cref{def:arc-insertion}).
+  \end{itemize}
+  Lee--Streinu Lemma 10 (\cref{lem:pebble-game-invariants} below)
+  bundles the four invariants that hold across every reachable
+  orientation.
+\end{definition}
+
 \begin{lemma}[Pebble-game invariants]
   \label{lem:pebble-game-invariants}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.out_le,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.peb_add_out_eq,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.pebOn_add_span_add_outOn,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.pebOn_add_outOn_ge,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.span_add_le}
+  \leanok
   \uses{def:partial-orientation, def:pebble-counts,
-    def:arc-insertion, def:path-reversal}
+    def:reachable-orientation, def:arc-insertion, def:path-reversal}
   Let $V$ be a finite type, $k, \ell$ integers with $\ell < 2k$,
-  and $D$ a partial orientation on $V$ reachable from the empty
-  orientation by a sequence of \emph{accepted insertions} and
-  \emph{path reversals}, where an accepted insertion of edge
-  $\{u, v\}$ is permitted only when $\mathrm{peb}_{D, k}(u) +
-  \mathrm{peb}_{D, k}(v) \ge \ell + 1$ at the moment of insertion.
-  Then for every $v \in V$ and every $V' \subseteq V$ with
-  $|V'| \ge 1$ when $\ell \le k$ and $|V'| \ge 2$ when $\ell > k$:
+  and $D$ a $(k, \ell)$-reachable partial orientation on $V$
+  (\cref{def:reachable-orientation}). Then for every $v \in V$ and
+  every $V' \subseteq V$ with $\ell \le k|V'|$ (which is implied
+  by $|V'| \ge 1$ when $\ell \le k$, and by $|V'| \ge 2$ when
+  $k < \ell < 2k$):
   \begin{enumerate}
     \item $\mathrm{peb}_{D, k}(v) + \mathrm{out}_D(v) = k$.
     \item $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') +
       \mathrm{out}_D(V') = k|V'|$.
     \item $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V') \ge \ell$.
-    \item $\mathrm{span}_D(V') \le k|V'| - \ell$.
+    \item $\mathrm{span}_D(V') \le k|V'| - \ell$ (formalised in the
+      additive form $\mathrm{span}_D(V') + \ell \le k|V'|$, per the
+      project's no-$\mathbb{N}$-subtraction-in-propositions
+      convention).
   \end{enumerate}
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:partial-orientation, def:pebble-counts,
-    def:arc-insertion, def:path-reversal}
-  Invariants (1) and (2) are bookkeeping: (1) is the definition of
-  $\mathrm{peb}_{D, k}$; (2) follows by summing (1) over $v \in V'$
-  and decomposing $\sum_{v \in V'} \mathrm{out}_D(v) =
-  \mathrm{span}_D(V') + \mathrm{out}_D(V')$ along whether the
-  arrow's head lies in $V'$. Invariant (4) is the algebraic
-  rearrangement of (2) given (3). Invariant (3) is the substantive
-  claim, proved by induction on the move sequence: the empty
-  orientation has $\mathrm{peb}_{\emptyset, k}(V') = k|V'| \ge \ell$
-  (using $|V'| \ge 1$ and $\ell \le k$, or $|V'| \ge 2$ and
-  $\ell < 2k$); accepted insertions either preserve the LHS (edge
-  inside $V'$ or outside $V'$ entirely) or trade one pebble in $V'$
-  for one outgoing edge from $V'$, leaving the sum invariant; path
-  reversals move a pebble along the path, changing
-  $\mathrm{peb}(V')$ and $\mathrm{out}(V')$ by $\pm 1$ in lockstep.
-  At an accepted insertion of an edge $\{u, v\}$ with both endpoints
-  in $V'$, the precondition gives $\mathrm{peb}(V') \ge \ell + 1$,
-  so the post-insertion $\mathrm{peb}(V') \ge \ell$. Compare
-  Lee--Streinu Lemma 10.
+    def:reachable-orientation, def:arc-insertion, def:path-reversal}
+  Invariant (1) reduces to $\mathrm{out}_D(v) \le k$ under truncated
+  $\mathbb{N}$-subtraction $\mathrm{peb}_{D, k}(v) := k -
+  \mathrm{out}_D(v)$; the latter is proved by induction on the move
+  sequence using the per-vertex shifts
+  (\cref{def:path-reversal}, \cref{def:arc-insertion}) and the
+  $\mathrm{out}_D(w) < k$ / $\mathrm{out}_D(u) < k$ preconditions
+  from \cref{def:reachable-orientation}. Invariant (2) is then the
+  unconditional algebraic identity $\sum_{v \in V'}(\mathrm{peb} +
+  \mathrm{out}) = k|V'|$ combined with the partition
+  $\sum \mathrm{out}_D(v) = \mathrm{span}_D(V') +
+  \mathrm{out}_D(V')$ (\texttt{sum\_out\_eq\_span\_add\_outOn} in the
+  Lean source). Invariant (4) is the algebraic rearrangement of (2)
+  given (3). Invariant (3) is the substantive claim, proved by
+  induction on the move sequence: the empty orientation has
+  $\mathrm{peb}_{\emptyset, k}(V') + \mathrm{out}_{\emptyset}(V') =
+  k|V'| \ge \ell$; path reversals leave the sum
+  $\mathrm{peb}(V') + \mathrm{out}(V')$ invariant
+  (\texttt{pebOn\_add\_outOn\_reverse\_eq}); accepted insertions
+  shift the sum by $-1$ exactly when both endpoints lie in $V'$
+  (\texttt{pebOn\_add\_outOn\_addArc\_add}), and on that branch the
+  threshold $\mathrm{peb}(u) + \mathrm{peb}(v) \ge \ell + 1$
+  combined with the pairwise lower bound $\mathrm{peb}(u) +
+  \mathrm{peb}(v) \le \mathrm{peb}(V')$ supplies the extra unit.
+  Compare Lee--Streinu Lemma 10.
 \end{proof}
 
 \subsection{The basic algorithm}

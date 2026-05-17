@@ -84,9 +84,22 @@ Supporting arc-swap and source-count infrastructure lives in
 general structural identities `sum_out_eq_span_add_outOn`
 (fiberwise + partition) and `pebOn_add_span_add_outOn` (L-S
 Invariant (2) algebraic form under `∀ v ∈ V', out v ≤ k`) sit in
-`PebbleGame.lean`. Blueprint `def:partial-orientation`,
-`def:pebble-counts`, `def:path-reversal`, and the new
-`def:arc-insertion` are green.
+`PebbleGame.lean`. The `Reachable k ℓ : PartialOrientation V → Prop`
+inductive predicate (empty / path-reversal / accepted-insertion
+constructors with the move-validity preconditions
+`D.out w < k` / `D.out u < k` and the L-S threshold
+`ℓ + 1 ≤ peb k u + peb k v`) packages the algorithmic state-space;
+the four invariants of L-S Lemma 10 are proved on `Reachable`
+orientations: `Reachable.out_le` and `Reachable.peb_add_out_eq`
+(Invariant (1)), `Reachable.pebOn_add_span_add_outOn`
+(Invariant (2)), `Reachable.pebOn_add_outOn_ge` (Invariant (3), the
+substantive piece, under unified size hypothesis
+`ℓ ≤ k * V'.card`), `Reachable.span_add_le` (Invariant (4),
+algebraic from (2) + (3); stated as `span + ℓ ≤ k * V'.card` per the
+project's no-ℕ-subtraction-in-propositions convention). Blueprint
+`def:partial-orientation`, `def:pebble-counts`, `def:path-reversal`,
+`def:arc-insertion`, the new `def:reachable-orientation`, and
+`lem:pebble-game-invariants` are all green.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -128,14 +141,14 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: descend toward the L-S Lemma 10 formalization
-— the substantive part of `lem:pebble-game-invariants`. Both move
-types (path reversal + arc insertion) now ship per-vertex *and*
-subset-level preservation lemmas (`span_addArc`, `outOn_addArc`,
-`pebOn_addArc`, `pebOn_add_outOn_addArc_add` for arc insertion;
-`span_reverse_eq`, `pebOn_add_outOn_reverse_eq` for path reversal);
-the remaining work is the inductive packaging of the four invariants
-over the move sequence. See *Hand-off / next phase*.
+Next concrete commit: descend to `def:tryReachPebble` — the
+DFS-plus-path-reversal specialisation that drives one pebble-search
+attempt in `def:tryAddEdge`. With L-S Lemma 10's four invariants now
+green on `Reachable` orientations, the dep-graph's substantive
+state-machine block is settled, and the remaining work is the
+algorithmic loop scaffolding (DFS into reverse, threshold check, fold
+over input edges, failure-witness extraction). See *Hand-off / next
+phase*.
 
 ## Architectural choices made up front
 
@@ -378,6 +391,69 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   on `Sym2`-induction `rfl, rfl` patterns; logged inline in the
   Lean as a single-line aside since the rule is already documented.
 
+### Reachability and the four invariants (Phase 9 main)
+
+- **`Reachable k ℓ` as an inductive predicate over `PartialOrientation V`.**
+  Three constructors: `empty`, `reverse` (with the move precondition
+  `D.out w < k` at the tail), `addArc` (with `huv : u ≠ v`,
+  `hnotin / hnotin_rev` for both directions, `hu_out : D.out u < k`,
+  and the L-S threshold `ℓ + 1 ≤ peb k u + peb k v`). The two
+  per-move out-degree preconditions are what makes Invariant (1)
+  (`out v ≤ k`) survive the move; they're algorithmically free
+  because the actual pebble game enforces them (`tryReachPebble`
+  only fires when the tail has a free pebble; `tryAddEdge` only
+  adds an arc from an endpoint with a free pebble).
+
+- **Size hypothesis on Invariants (3)/(4): unified `ℓ ≤ k * V'.card`.**
+  L-S's Lemma 10 splits the size condition into
+  `|V'| ≥ 1 ∧ ℓ ≤ k` and `|V'| ≥ 2 ∧ k < ℓ < 2k`. Both imply the
+  single inequality `ℓ ≤ k * V'.card`, which is what the empty base
+  case actually needs (`pebOn_empty V' + outOn_empty V' = k * V'.card`
+  must be `≥ ℓ`). The unified form drops the case-split at the
+  statement level; downstream callers (`thm:pebble-game-soundness`
+  etc.) can re-derive the regime-dependent form from `ℓ < 2k` and
+  the relevant `V'.card` bound. No information loss because the
+  inductive step has the same arithmetic content either way.
+
+- **Invariant (4) stated as `span V' + ℓ ≤ k * V'.card` (additive
+  form).** The blueprint says `span V' ≤ k|V'| - ℓ` (with
+  ℕ-subtraction); the Lean statement is rephrased per the project's
+  no-ℕ-subtraction-in-propositions convention
+  (ROADMAP *Engineering conventions*). The two are equivalent under
+  the implicit `ℓ ≤ k * V'.card` hypothesis. The blueprint entry
+  for `lem:pebble-game-invariants` calls out the difference inline
+  so a reader following the Lean source isn't confused by the form
+  mismatch.
+
+- **Invariant (1) reverse case: `out_reverse_add` collapses to a
+  `split_ifs` + `omega` after one `by_cases hvw : v = w` /
+  `by_cases hvu : v = u`.** The unified additive identity gives
+  `(reverse).out v + I[v ∈ p.vertices ∧ v ≠ w] = D'.out v +
+  I[v ∈ p.vertices ∧ v ≠ u]`; for `v = w` the LHS indicator is
+  always `0` (`v ≠ v` false), leaving `(reverse).out v = D'.out v +
+  I_RHS`, which `D'.out w < k` absorbs via `omega`. For `v = u`
+  symmetric (RHS indicator zero). For `v` distinct from both
+  endpoints, `out_reverse_of_not_endpoint` (no `0 < p.length`
+  precondition) reduces to the IH directly.
+
+- **`subst hvw : v = w` (with `v` outer-bound and `w` constructor-
+  bound) eliminates the older `v`.** Per TACTICS-QUIRKS § 4, the
+  older free variable goes. After subst, the goal's `v`s become
+  `w`s and the IH `D'.out v ≤ k` becomes `D'.out w ≤ k`, which
+  composes cleanly with `hw : D'.out w < k`. (Same trap shape as
+  the `no_antiparallel` subst above, but here the direction
+  happens to be what we want — no `rw`-workaround needed.)
+
+- **`peb_pair_le_pebOn` helper for the addArc inductive step of
+  Invariant (3).** When the inserted arc has both endpoints in
+  `V'`, the threshold precondition `ℓ + 1 ≤ peb u + peb v` needs to
+  be lifted to `ℓ + 1 ≤ pebOn V'` to absorb the `pebOn + outOn`
+  shift's `−1`. The helper is a one-liner around `Finset.sum_pair`
+  + `Finset.sum_le_sum_of_subset` (the latter requires
+  `CanonicallyOrderedAdd`, which ℕ satisfies). Kept as a local
+  helper in `PebbleGame.lean` rather than mirrored: it's specific
+  to `peb`/`pebOn` and not upstream-eligible.
+
 ### DFS warmup (pre-Phase-9)
 
 - **Style island formalized in DESIGN.md.** Phase 9's architectural
@@ -487,21 +563,21 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Blockers / open questions
 
-- **Simple-graph vs L-S multi-graph corner cases.** L-S's proofs
-  use loops to handle single-vertex blocks (a vertex with $k - \ell$
-  loops forms a block in the lower range $\ell < k$). In
-  `SimpleGraph`-land single vertices span $0$ edges, so single-
-  vertex blocks can't arise — Invariant (4)'s $\mathrm{span}(V')
-  \leq k|V'| - \ell$ for $|V'| = 1$ becomes $0 \leq k - \ell$,
-  automatic when $\ell \leq k$. For $\ell > k$, L-S restricts
-  subset claims to $n' \geq 2$ in Lemma 10's statement, which
-  carries over directly. **Action:** in the first Phase 9 session,
-  trace L-S Lemmas 10–14 through `SimpleGraph`-eyes for *both*
-  ranges. The lower range $\ell < k$ stays in scope (cf. choice 1
-  above); work through whatever corner-case gaps surface lemma-by-
-  lemma rather than restricting the target prophylactically. If a
-  structural gap genuinely forces a regime restriction, document
-  the specific obstruction here and revisit.
+- **Simple-graph vs L-S multi-graph corner cases — Lemma 10 cleared.**
+  L-S's Lemma 10 has `span(v)` (= loops at `v`) appearing additively
+  in Invariant (1); SimpleGraph's loop-free regime makes `span(v) = 0`
+  always, so the per-vertex invariant collapses to
+  `peb v + out v = k` with no further case-split. Invariant (3)'s
+  size condition (`|V'| ≥ 1` for `ℓ ≤ k`, `|V'| ≥ 2` for `k < ℓ < 2k`)
+  is unified in the Lean statement as `ℓ ≤ k * V'.card`, which both
+  cases imply. The substantive piece (Invariant (3)'s arc-insertion
+  step) goes through cleanly for both ranges, since the
+  `peb_pair_le_pebOn` lift of the threshold precondition doesn't
+  depend on the regime. **Remaining work** in this open question:
+  trace L-S Lemmas 13–15 through SimpleGraph-eyes for the
+  completeness side. Expected to clear similarly (Lemma 13's
+  `Reach(u) ∪ Reach(v)` is always `≥ 2`-sized when `u ≠ v`, which
+  matches the upper-range size constraint).
 
 - **Termination measure for `tryReachPebble`.** Path reversal in
   L-S is bounded informally by "at most $\ell$ DFS searches per
@@ -538,54 +614,59 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Hand-off / next phase
 
-Phase 9 main is in progress. `PebbleGame.lean` now carries both
-state-transition moves with per-vertex *and* subset-level
-preservation lemmas: path reversal (`reverse` + `out_reverse_*` /
-`peb_reverse_*` / `span_reverse_eq` / `pebOn_add_outOn_reverse_eq`)
-and arc insertion (`addArc` + `out_addArc_source` /
-`out_addArc_of_ne_source` / `peb_addArc_source` /
-`peb_addArc_of_ne_source` / `span_addArc` / `outOn_addArc` /
-`pebOn_addArc` / `pebOn_add_outOn_addArc_add`), plus the supporting
-structural identities `sum_out_eq_span_add_outOn` (fiberwise +
-partition) and `pebOn_add_span_add_outOn` (L-S Invariant (2)
-algebraic form under `∀ v ∈ V', out v ≤ k`). Supporting
-`Search/DFS.lean` infrastructure (arc-swap, endpoint membership,
-source-cardinality) is unchanged. Blueprint `def:partial-orientation`,
-`def:pebble-counts`, `def:path-reversal`, and `def:arc-insertion`
-(now noting subset-level effects as formalized) are green;
-`def:tryAddEdge`'s `\uses` already points at `def:arc-insertion`
-as the formalized insertion step. Build + lint clean.
+Phase 9 main is in progress. `PebbleGame.lean` now carries:
 
-Next concrete commit: **inductive packaging of the four invariants
-over the move sequence** — the substantive piece of L-S Lemma 10
-(`lem:pebble-game-invariants`). The four building blocks for the
-inductive step are now all in place:
+* Both state-transition moves with per-vertex *and* subset-level
+  preservation lemmas: path reversal (`reverse` + `out_reverse_*` /
+  `peb_reverse_*` / `span_reverse_eq` / `pebOn_add_outOn_reverse_eq`)
+  and arc insertion (`addArc` + `out_addArc_source` /
+  `out_addArc_of_ne_source` / `peb_addArc_source` /
+  `peb_addArc_of_ne_source` / `span_addArc` / `outOn_addArc` /
+  `pebOn_addArc` / `pebOn_add_outOn_addArc_add`).
+* The supporting general structural identities
+  `sum_out_eq_span_add_outOn` (fiberwise + partition) and
+  `pebOn_add_span_add_outOn` (L-S Invariant (2) algebraic form
+  under `∀ v ∈ V', out v ≤ k`).
+* The `Reachable k ℓ : PartialOrientation V → Prop` inductive
+  predicate packaging the algorithmic state-space (empty,
+  path-reversal under `D.out w < k`, accepted insertion under
+  `D.out u < k` + `ℓ + 1 ≤ peb k u + peb k v`).
+* The four pebble-game invariants of L-S Lemma 10 as
+  `Reachable.out_le`, `Reachable.peb_add_out_eq`,
+  `Reachable.pebOn_add_span_add_outOn`,
+  `Reachable.pebOn_add_outOn_ge` (substantive piece, under unified
+  size hypothesis `ℓ ≤ k * V'.card`), and `Reachable.span_add_le`
+  (additive form of the blueprint's `span ≤ k|V'| - ℓ` per project
+  convention).
 
-- *Empty orientation base case*: `pebOn_empty` gives `pebOn = k·|V'|`,
-  `out_empty` gives `out = 0`, so Invariants (1)–(4) all hold trivially
-  at the base, using `|V'| ≥ 1, ℓ ≤ k` or `|V'| ≥ 2, ℓ < 2k`.
-- *Path-reversal inductive step*: `span_reverse_eq` +
-  `pebOn_add_outOn_reverse_eq` preserve Invariants (2)–(4); the
-  per-vertex shift bounds (`out_reverse_head` / `out_reverse_tail`)
-  re-establish Invariant (1) at `u_0` / `u_m` under the algorithmic
-  preconditions `out u_0 ≤ k` / `out u_m < k`.
-- *Arc-insertion inductive step*: `out_addArc_source` /
-  `out_addArc_of_ne_source` and the new subset-level
-  `pebOn_add_outOn_addArc_add` discharge Invariants (1)–(3); the
-  threshold precondition `peb(u) + peb(v) ≥ ℓ + 1` is what makes
-  `pebOn(V') ≥ ℓ + 1` survive the `−1` shift to `pebOn(V') ≥ ℓ`.
-  Invariant (4) follows algebraically from (2) + (3).
+Supporting `Search/DFS.lean` infrastructure (arc-swap, endpoint
+membership, source-cardinality) is unchanged. Blueprint
+`def:partial-orientation`, `def:pebble-counts`, `def:path-reversal`,
+`def:arc-insertion`, `def:reachable-orientation`, and
+`lem:pebble-game-invariants` are all green; the substantive state-
+machine block of the dep-graph is now settled. Build + lint clean.
 
-Trace through both ranges `ℓ < k` and `k ≤ ℓ < 2k` on `SimpleGraph`
-per *Blockers → Simple-graph vs L-S multi-graph corner cases* during
-the induction; the corner case is most likely to surface in the
-inductive proof of Invariant (3).
+Next concrete commit: **`def:tryReachPebble`** — the DFS-plus-
+path-reversal specialisation that drives one pebble-search attempt
+in `def:tryAddEdge`. The interface: given `D : PartialOrientation V`,
+a source `u : V`, and a target predicate (e.g.
+`fun v => 0 < D.peb k v`), call `reachableFinding` (Phase 9 DFS
+warmup) on the out-arc relation `fun a b => (a, b) ∈ D.arcs` and the
+target predicate; on success use `DirectedWalk.IsPath`'s witness
+plus `PartialOrientation.reverse` to obtain `D'` with one
+redistributed pebble.
 
 Subsequent commits descend the dep-graph:
-`def:tryReachPebble` (the DFS-plus-path-reversal specialisation via
-`reachableFinding`) → `def:tryAddEdge` → `def:runPebbleGame` →
-`thm:pebble-game-soundness` → completeness lemmas →
-`thm:pebble-game-correct` → `cor:pebble-game-countMatroid-indep`.
+`def:tryReachPebble` → `def:tryAddEdge` (outer loop with
+termination measure `(ℓ + 1) - (peb u + peb v)`) →
+`def:runPebbleGame` (fold over `E(G)`) → `thm:pebble-game-soundness`
+(direct from Invariant (4) on the final state) → completeness side
+(`lem:pebble-game-independent-brings-pebble` /
+`lem:pebble-game-tryAddEdge-iff-independent` /
+`lem:pebble-game-failure-witness`) → `thm:pebble-game-correct` →
+`cor:pebble-game-countMatroid-indep`. The completeness-side
+SimpleGraph-vs-multigraph corner-case check (open question above)
+is the only known open structural unknown.
 
 Architectural question still open: *whether to land the matroidal-
 independence corollary in-phase or defer* (weak preference: land —

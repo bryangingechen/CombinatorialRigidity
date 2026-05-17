@@ -669,6 +669,176 @@ lemma pebOn_add_outOn_addArc_add (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) 
 
 end AddArc
 
+/-! ### Reachability and the four pebble-game invariants
+
+A partial orientation `D` is `(k, ℓ)`-*reachable* if it can be obtained from
+the empty orientation by a sequence of valid moves: path reversals
+(requiring `D.out w < k` at the path's tail, so the new arc fits without
+exceeding the out-degree budget) and accepted insertions (requiring
+`u ≠ v`, `(u, v) ∉ D.arcs`, `(v, u) ∉ D.arcs`, `D.out u < k`, and the
+threshold `ℓ + 1 ≤ peb k u + peb k v` from Lee–Streinu §3). The four
+invariants of `lem:pebble-game-invariants` hold on every reachable
+orientation:
+
+* (1) `D.out v ≤ k` (equivalently `D.peb k v + D.out v = k` under
+  truncated ℕ-subtraction) — `Reachable.out_le` / `Reachable.peb_add_out_eq`.
+* (2) `pebOn k V' + span V' + outOn V' = k * V'.card` —
+  `Reachable.pebOn_add_span_add_outOn`.
+* (3) `ℓ ≤ pebOn k V' + outOn V'` under `ℓ ≤ k * V'.card` —
+  `Reachable.pebOn_add_outOn_ge` (the substantive piece).
+* (4) `span V' + ℓ ≤ k * V'.card` (the project-style additive form of the
+  blueprint's `span V' ≤ k|V'| - ℓ`) under the same size hypothesis —
+  `Reachable.span_add_le`, an algebraic consequence of (2) and (3).
+
+The size hypothesis `ℓ ≤ k * V'.card` unifies L-S's two regime-dependent
+cases: `|V'| ≥ 1 ∧ ℓ ≤ k` and `|V'| ≥ 2 ∧ ℓ < 2k` both imply it (the
+single quantity the empty base case actually requires). -/
+
+section Reachability
+
+open CombinatorialRigidity.Search
+
+variable {k ℓ : ℕ}
+
+/-- A partial orientation `D` is `(k, ℓ)`-*reachable* if it can be obtained
+from the empty orientation by a sequence of valid path-reversal and
+accepted-insertion moves. The path-reversal constructor requires
+`D.out w < k` at the path's tail (so the new arc fits within the out-degree
+budget); the arc-insertion constructor requires `u ≠ v`, that neither
+`(u, v)` nor `(v, u)` is already in `D.arcs`, `D.out u < k` at the source,
+and the threshold `ℓ + 1 ≤ peb k u + peb k v` from Lee–Streinu §3.
+
+The four invariants of `lem:pebble-game-invariants` are proved on
+`Reachable`-orientations by induction on the move sequence. -/
+inductive Reachable (k ℓ : ℕ) : PartialOrientation V → Prop
+  | empty : Reachable k ℓ (empty : PartialOrientation V)
+  | reverse {D : PartialOrientation V} (hD : Reachable k ℓ D)
+      {u w : V} (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w)
+      (hp : p.IsPath) (hw : D.out w < k) :
+      Reachable k ℓ (D.reverse p hp)
+  | addArc {D : PartialOrientation V} (hD : Reachable k ℓ D)
+      {u v : V} (huv : u ≠ v) (hnotin : (u, v) ∉ D.arcs)
+      (hnotin_rev : (v, u) ∉ D.arcs) (hu_out : D.out u < k)
+      (hk : ℓ + 1 ≤ D.peb k u + D.peb k v) :
+      Reachable k ℓ (D.addArc u v huv hnotin_rev)
+
+/-- L-S Invariant (1), primal form: every out-degree of a `(k, ℓ)`-reachable
+orientation is bounded by `k`. By induction on the `Reachable` derivation:
+the path-reversal case uses `out_reverse_add` (only `v = w` can shift the
+count upward, and `D.out w < k` from the constructor absorbs the `+1`);
+arc insertion uses `out_addArc_source` / `out_addArc_of_ne_source` (only
+`v = u` shifts, and `D.out u < k` from the constructor absorbs the `+1`). -/
+lemma Reachable.out_le {D : PartialOrientation V} (h : Reachable k ℓ D) (v : V) :
+    D.out v ≤ k := by
+  induction h with
+  | empty => simp
+  | @reverse D' hD' u w p hp hw ih =>
+    by_cases hvw : v = w
+    · subst hvw
+      have h_add := D'.out_reverse_add p hp v
+      have h_lhs : (if v ∈ p.vertices ∧ v ≠ v then (1 : ℕ) else 0) = 0 := by simp
+      rw [h_lhs] at h_add
+      split_ifs at h_add <;> omega
+    · by_cases hvu : v = u
+      · subst hvu
+        have h_add := D'.out_reverse_add p hp v
+        have h_rhs : (if v ∈ p.vertices ∧ v ≠ v then (1 : ℕ) else 0) = 0 := by simp
+        rw [h_rhs] at h_add
+        split_ifs at h_add <;> omega
+      · rw [D'.out_reverse_of_not_endpoint p hp hvu hvw]
+        exact ih
+  | @addArc D' hD' a b hab hnotin hnotin_rev ha_out _hk ih =>
+    by_cases hva : v = a
+    · subst hva
+      rw [D'.out_addArc_source v b hab hnotin_rev hnotin]
+      omega
+    · rw [D'.out_addArc_of_ne_source a b hab hnotin_rev hva]
+      exact ih
+
+/-- L-S Invariant (1), additive form: `peb k v + out v = k` for every vertex
+of a reachable orientation. Direct from `out_le` via `Nat.sub_add_cancel`. -/
+lemma Reachable.peb_add_out_eq {D : PartialOrientation V} (h : Reachable k ℓ D)
+    (v : V) : D.peb k v + D.out v = k := by
+  rw [peb]
+  exact Nat.sub_add_cancel (h.out_le v)
+
+/-- L-S Invariant (2): on a reachable orientation, the subset-level pebble
+count, span, and out-boundary sum to `k * V'.card`. Direct consequence of the
+unconditional algebraic identity `PartialOrientation.pebOn_add_span_add_outOn`
+(whose hypothesis is exactly Invariant (1)) and `Reachable.out_le`. -/
+lemma Reachable.pebOn_add_span_add_outOn {D : PartialOrientation V}
+    (h : Reachable k ℓ D) (V' : Finset V) :
+    D.pebOn k V' + D.span V' + D.outOn V' = k * V'.card :=
+  D.pebOn_add_span_add_outOn k V' (fun v _ => h.out_le v)
+
+/-- Helper: a pair of distinct vertices inside `V'` contributes at most
+`pebOn k V'`. Used in `Reachable.pebOn_add_outOn_ge`'s arc-insertion step
+to turn the per-edge threshold `peb u + peb v ≥ ℓ + 1` into a subset-level
+lower bound when both endpoints lie in `V'`. -/
+lemma peb_pair_le_pebOn (D : PartialOrientation V) (k : ℕ) {u v : V} (huv : u ≠ v)
+    {V' : Finset V} (hu : u ∈ V') (hv : v ∈ V') :
+    D.peb k u + D.peb k v ≤ D.pebOn k V' := by
+  rw [show D.peb k u + D.peb k v = ∑ x ∈ ({u, v} : Finset V), D.peb k x from
+        (Finset.sum_pair huv).symm, pebOn]
+  refine Finset.sum_le_sum_of_subset ?_
+  intro x hx
+  rcases Finset.mem_insert.mp hx with rfl | hx
+  · exact hu
+  · rcases Finset.mem_singleton.mp hx with rfl
+    exact hv
+
+/-- L-S Invariant (3): on a reachable orientation, `ℓ ≤ pebOn V' + outOn V'`
+provided `ℓ ≤ k * V'.card`. This is the substantive piece of
+`lem:pebble-game-invariants`. The size hypothesis is the unified shape of
+L-S's two regime-dependent cases (`|V'| ≥ 1 ∧ ℓ ≤ k` or `|V'| ≥ 2 ∧ ℓ < 2k`,
+both implying `ℓ ≤ k * V'.card`).
+
+Inductive proof:
+* Empty: `pebOn V' + outOn V' = V'.card * k`, hypothesised `≥ ℓ`.
+* Reverse: `pebOn_add_outOn_reverse_eq` gives subset-level invariance.
+* AddArc: `pebOn_add_outOn_addArc_add` shifts the sum by `[u, v ∈ V']`.
+  Off the "both inside" branch, the sum is unchanged and the IH closes.
+  On the "both inside" branch, `peb_pair_le_pebOn` + the threshold
+  precondition `ℓ + 1 ≤ peb u + peb v` give `pebOn V' ≥ ℓ + 1` *before*
+  the insertion, which absorbs the `−1` shift. -/
+lemma Reachable.pebOn_add_outOn_ge {D : PartialOrientation V}
+    (h : Reachable k ℓ D) {V' : Finset V} (h_size : ℓ ≤ k * V'.card) :
+    ℓ ≤ D.pebOn k V' + D.outOn V' := by
+  induction h with
+  | empty =>
+    rw [pebOn_empty, outOn_empty, Nat.add_zero, mul_comm V'.card k]
+    exact h_size
+  | @reverse D' hD' u w p hp hw ih =>
+    have hbd : ∀ x ∈ V', D'.out x ≤ k := fun x _ => hD'.out_le x
+    have hbd' : ∀ x ∈ V', (D'.reverse p hp).out x ≤ k :=
+      fun x _ => (Reachable.reverse hD' p hp hw).out_le x
+    rw [D'.pebOn_add_outOn_reverse_eq p hp hbd hbd']
+    exact ih
+  | @addArc D' hD' a b hab hnotin hnotin_rev ha_out hk ih =>
+    have h_combined :=
+      D'.pebOn_add_outOn_addArc_add a b hab hnotin_rev hnotin ha_out V'
+    by_cases hboth : a ∈ V' ∧ b ∈ V'
+    · rw [if_pos hboth] at h_combined
+      have h_pair := peb_pair_le_pebOn D' k hab hboth.1 hboth.2
+      omega
+    · rw [if_neg hboth] at h_combined
+      omega
+
+/-- L-S Invariant (4): on a reachable orientation, `span V' + ℓ ≤ k * V'.card`
+provided `ℓ ≤ k * V'.card`. Stated additively per project convention (no
+ℕ-subtraction in propositions); equivalent to the blueprint's
+`span V' ≤ k|V'| - ℓ`. Algebraic consequence of Invariants (2) and (3):
+`pebOn + span + outOn = k|V'|` and `ℓ ≤ pebOn + outOn` give the result by
+`omega`. -/
+lemma Reachable.span_add_le {D : PartialOrientation V}
+    (h : Reachable k ℓ D) {V' : Finset V} (h_size : ℓ ≤ k * V'.card) :
+    D.span V' + ℓ ≤ k * V'.card := by
+  have h2 := h.pebOn_add_span_add_outOn V'
+  have h3 := h.pebOn_add_outOn_ge h_size
+  omega
+
+end Reachability
+
 end PartialOrientation
 
 end CombinatorialRigidity.PebbleGame
