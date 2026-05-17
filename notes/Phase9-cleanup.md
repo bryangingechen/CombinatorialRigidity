@@ -32,10 +32,23 @@ performance pass).
 
 ## Current state
 
-A1 + A2 + A2-followup + A3 closed: both blueprint chapters track
-the Lean faithfully, the iff red node is now green, and the
+A1 + A2 + A2-followup + A3 + A4 closed: both blueprint chapters
+track the Lean faithfully, the iff red node is now green, the
 SimpleGraph-vs-multi-graph regime correspondence is documented in
-the chapter prose. A2's pebble-game walk verified all 39
+the chapter prose, and the formalization-aside scan across both
+chapters surfaced no Lean-simplification candidates. Every aside in
+`chapter/dfs.tex` + `chapter/pebble-game.tex` is either A1/A2-vetted
+structural bookkeeping (`dropUntilBundle`, `DirectedWalk.mapRel`,
+`D.reach` post-composition at the failure site), a
+`DESIGN.md` *Pebble-game style island* design pin (the three
+math-layer convenience / computable-workhorse splits +
+narrative-bridge `@[deprecated]` shim), or substantive cost
+disclosure that can't be eliminated at the cleanup-round level
+(four-runtime-checks at the `runPebbleGame` wrapper, `Option`-vs-
+`Sum` return shape on the correctness theorem, subset-form
+hypothesis on `lem:pebble-game-failure-witness`, named project-
+internal helper attributions in proof prose). The bucket-A audit
+closes with no edits to blueprint TeX or Lean source. A2's pebble-game walk verified all 39
 `\lean{...}` pins resolve (`checkdecls` green post-`inv web`); the
 22 dep-graph nodes
 (`def:partial-orientation` through `cor:pebble-game-countMatroid-indep`)
@@ -307,7 +320,7 @@ wrong, revisit there.
   prose") replaced the original bullet-list audit subsection with
   the flowing-prose `\emph{Multigraphs.}` paragraph format
   matching the chapter's `\emph{Out of scope.}` convention.
-- [ ] **A4:** Formalization-aside scan. Re-skim
+- [x] **A4:** Formalization-aside scan. Re-skim
   `chapter/pebble-game.tex` (and `chapter/dfs.tex`) prose proofs for
   asides flagging Lean-side bookkeeping (custom `Equiv`s,
   named-helper one-step substitutes, case-splits the Lean had to
@@ -316,6 +329,120 @@ wrong, revisit there.
   formalization-cost note (make the residual cost honest). Per
   `../blueprint/CLAUDE.md` *Proof verbosity* the bias is *Lean
   simplification first, prose aside only if simplification fails*.
+
+  **Disposition.** Catalog of asides across both chapters, grouped
+  by classification, with the Lean-simplification analysis recorded
+  in-line so the next round doesn't re-litigate.
+
+  Group 1 — A1/A2-pre-vetted:
+  - `DirectedWalk.dropUntilBundle` truncation aside in the inner-
+    induction step of `thm:reachable-finding-correct` (`dfs.tex:103`).
+    A1 vetted: `Subtype`-bundled walk truncation is structural
+    bookkeeping (math has implicit truncation; Lean needs the bundle
+    to thread the length-bound and vertex-subset witnesses). No Lean
+    simplification surfaced.
+  - `DirectedWalk.mapRel` relation-transport aside in
+    `def:tryReachPebble` (`pebble-game.tex:330`). A2 vetted:
+    `reachableFinding` walks the out-neighbour-list relation;
+    `tryReachPebble` walks `D`'s arc relation; the two are
+    propositionally equal under the agreement witness but
+    definitionally distinct, so a transport step is needed.
+    Eliminating would require refactoring `reachableFinding` to
+    take a propositional agreement witness, restructuring the DFS
+    API; out of scope at the cleanup-round level.
+  - `D.reach` materialisation at the failure site in
+    `def:tryAddEdge` (`pebble-game.tex:399--404`). A2 carry-over fix:
+    the math-layer accessor wraps `Search.reachClosure`; merging
+    into `tryReachPebbleWith`'s return type would change the
+    algorithm's interface from `Option (PartialOrientation V)` to a
+    sum carrying the blocking-witness subset on failure. Out of
+    scope; cf. the parallel Option-vs-Sum aside below.
+
+  Group 2 — `DESIGN.md` *Pebble-game style island* design pins:
+  - `tryReachPebbleWith` / `tryReachPebble` split (`pebble-game.tex
+    :333--347`); `tryAddEdgeWith` / `tryAddEdge` split
+    (`386--405`); `runPebbleGameWith` / `runPebbleGame` split
+    (`437--455`). All three are math-layer convenience wrappers
+    around a computable workhorse parameterised by a caller-supplied
+    `succ` / `toSucc` function. The `noncomputable` wrappers plug in
+    `D.outList` / `Finset.toList` / `Quot.out`; the workhorses stay
+    fully computable for IO callers. Explicit project-wide
+    convention in `DESIGN.md`; eliminating the asides would mean
+    revising that convention, which is a forward-looking question
+    for a future phase, not a cleanup-round task.
+  - Narrative-bridge `@[deprecated]` shim aside on
+    `lem:pebble-game-tryAddEdge-iff-independent` (`pebble-game.tex
+    :810`). A2-followup, user-selected option 2; explicit project
+    convention in `blueprint/CLAUDE.md` *Narrative-bridge
+    corollaries*. No simplification candidate.
+
+  Group 3 — substantive design rationale (residual cost):
+  - Four-runtime-checks aside in `def:runPebbleGame`
+    (`pebble-game.tex:456--466`). The wrapper's public signature
+    takes only `G`, `k`, `ℓ`; preserving the `∀ x, out_D x ≤ k`
+    invariant without runtime checks would require threading a
+    `Reachable k ℓ D` instance through the input, breaking the
+    "math-layer convenience" interface. The skip-on-fail behaviour
+    is a no-op on well-formed input; the lemma
+    `runPebbleGameWith_mem_underline` carries the no-skip-fires
+    argument. Residual cost honestly disclosed; not eliminable.
+  - `Option`-vs-`Sum` aside in `thm:pebble-game-correct`
+    (`pebble-game.tex:940--944`). The wrapper returns `Option
+    (PartialOrientation V)`; the blocking-witness subset is
+    recovered by a separate post-composed theorem
+    (`runPebbleGame_eq_none_imp_exists_witness`). Switching to a
+    sum return type would change both the wrapper's signature and
+    every downstream consumer (Phase 9's `cor:pebble-game-
+    countMatroid-indep`, future `(2, 3)`-rigidity callers). Out of
+    scope at the cleanup-round level.
+  - Subset-form hypothesis rationale on
+    `lem:pebble-game-failure-witness` (`pebble-game.tex:841--846`).
+    The broadened `underline ⊆ E(G) ∧ {u, v} ∈ E(G)` form (vs the
+    tight equality `E(G) = underline ∪ {{u, v}}`) was specifically
+    chosen so the fold-level consumer can apply this lemma at an
+    intermediate `runPebbleGame` failure step. The hypothesis form
+    is load-bearing; eliminating the rationale would silently lose
+    the consumer's load-path documentation.
+  - Project-internal helper attributions in proof prose:
+    `sum_out_eq_span_add_outOn` (`pebble-game.tex:279`),
+    `pebOn_add_outOn_reverse_eq` / `pebOn_add_outOn_addArc_add`
+    (`286, 288`), `peb_reverse_head` /
+    `peb_reverse_of_not_endpoint` (`382--383`),
+    `TryReachPebbleResult.reachable_newOrient` /
+    `underline_newOrient_eq` (`860--861`),
+    `span_succ_le_edgesIn_ncard_of_subset` (`876`). Per
+    `blueprint/CLAUDE.md` *Be honest about formalization cost*,
+    these are appropriate case-by-case helper attributions in
+    multi-case proofs --- not glossing over one-step
+    correspondences, but pointing the reader at named auxiliary
+    lemmas the proof actually consumes. Appropriate cost
+    disclosure; not aside-elimination candidates.
+
+  Group 4 — math-side layering (not Lean cost):
+  - "The last is routed through the algebraic identity [Invariant
+    (2)]" in `def:path-reversal` (`pebble-game.tex:161--171`):
+    subset-level `peb + out` invariance from span invariance plus
+    Invariant (2); the routing is genuine math (subset-level `out`
+    alone is *not* invariant under reversal).
+  - Three additive identities by endpoint position in
+    `def:arc-insertion` (`191--202`): faithful description of the
+    insertion step's three subset-level shifts.
+  - "Invariant (1) reduces to `out_D(v) ≤ k` under truncated
+    $\mathbb{N}$-subtraction" in `lem:pebble-game-invariants`
+    (`269--272`): notes the truncated-$\mathbb{N}$-subtraction
+    semantics that turns the additive identity into the inequality.
+  - "(The matroidal-regime assumption `ℓ < 2k` is not used formally
+    on the Lean side ...)" in `thm:pebble-game-soundness`
+    (`635--637`): honest disclosure that the size-range constraint
+    folds into the definition of $(k, \ell)$-sparsity itself
+    (`ℓ ≤ k|V'|`).
+
+  Conclusion: audit closes with no Lean source or blueprint TeX
+  changes. Every aside is either pre-vetted, a `DESIGN.md`-pinned
+  design choice, substantive cost that can't be eliminated at the
+  cleanup-round level, or genuinely mathematical layering. The
+  catalog is recorded here so a future round (or a post-Phase 9
+  reader) doesn't re-walk the same evaluation.
 
 ### Bucket B — Code-smell sweep (Phase 9 surface)
 
@@ -498,23 +625,30 @@ the manual:
 
 ## Blockers / open questions
 
-- Round in progress; A4 (formalization-aside scan) and buckets B–D
-  remain. (`checkdecls` is the always-on per-commit gate per
-  `../blueprint/CLAUDE.md` *Static checks before commit*, not a
-  separate task.)
+- Round in progress; bucket A fully closed (A1 + A2 + A2-followup +
+  A3 + A4 all green); buckets B (code smells), C (long-proof
+  audit), and D (Phase9.md compression) remain. (`checkdecls` is
+  the always-on per-commit gate per `../blueprint/CLAUDE.md`
+  *Static checks before commit*, not a separate task.)
 
 ## Hand-off / next phase
 
 Round in progress. Phase 9 main is fully closed; this round
-addresses the post-closure hygiene. A1 (DFS chapter walk),
-A2 (pebble-game chapter walk), A2-followup
-(`lem:pebble-game-tryAddEdge-iff-independent` red node, discharged
-via the narrative-bridge `@[deprecated]` shim), and A3 (multigraph
-regime correspondence in the chapter's `\emph{Multigraphs.}` prose)
-are all closed. The natural next task is A4 (formalization-aside
-scan across `chapter/pebble-game.tex` + `chapter/dfs.tex` per
-`../CLEANUP.md` §A step 3), then buckets B (code smells), C
-(long-proof audit), and D (Phase9.md compression).
+addresses the post-closure hygiene. Bucket A is now fully closed:
+A1 (DFS chapter walk), A2 (pebble-game chapter walk),
+A2-followup (`lem:pebble-game-tryAddEdge-iff-independent` red node,
+discharged via the narrative-bridge `@[deprecated]` shim),
+A3 (multigraph regime correspondence in the chapter's
+`\emph{Multigraphs.}` prose), and A4 (formalization-aside scan,
+audit-only with the in-line catalog recording the
+Lean-simplification analysis for each aside) are all green.
+The natural next task is bucket B (code-smell sweep on the Phase 9
+surface): the initial grep summary in the *Bucket B* table above
+flags 6 `noncomputable def` sites (B1), 6 multi-step `rw` chains
+(B2), zero `classical` / `Fintype.ofFinite` hits (B3, trivially
+closed pending re-grep), plus the file-organisation review (B4)
+and `--`-comment audit (B5). Then bucket C (long-proof audit) and
+bucket D (Phase9.md compression).
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
