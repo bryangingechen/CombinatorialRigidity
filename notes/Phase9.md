@@ -382,19 +382,56 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: `lem:pebble-game-failure-witness` (blocking-
-witness extraction at the fold's failure point). On
-`tryAddEdgeWith ... = none`, both DFS attempts ran to completion with
-no free-pebble hit, so by DFS completeness (`tryReachPebbleWith_eq_none_imp`)
-plus reflexivity of `D.reach`, every vertex in `V' := D.reach u ∪
-D.reach v` distinct from `u, v` has `peb k w = 0`. Combined with
-`outOn V' = 0` (out-closure of `V'`) and Invariant~(2),
-`span V' ≥ k|V'| - ℓ`; inserting `s(u, v)` yields `(G.edgesIn ↑V').ncard
-> k|V'| - ℓ`. After the failure witness lands, the final assembly is
-`thm:pebble-game-correct` (certificate-form statement) →
-`cor:pebble-game-countMatroid-indep`. The completeness-side
-SimpleGraph-vs-multigraph corner-case check (open question below) is
-the only known open structural unknown.
+**Per-edge failure-witness lands** (blueprint
+`lem:pebble-game-failure-witness`).
+`tryAddEdgeWith_eq_none_imp_exists_witness` takes a `(k, ℓ)`-reachable
+`D`, fresh `s(u, v) ∉ D.underline`, a finite simple graph `G` with
+`G.edgeFinset = insert s(u, v) D.underline` in the matroidal regime
+`ℓ < 2*k`, and a rejection `D.tryAddEdgeWith ... = none`; it returns
+`∃ V' : Finset V, ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ`
+(non-sparsity witness for `G`). Proof by `tryAddEdgeWith.induct`'s
+five-case dispatch — the two threshold-met branches return `some` and
+contradict `h` via `absurd h (Option.some_ne_none _)`; the two
+DFS-success branches recurse on `r.newOrient` via the same IH plumbing
+(`r.reachable_newOrient` / `r.underline_newOrient_eq`) as
+`tryAddEdgeWith_isSome`; the both-DFS-fail leaf builds the witness
+`V' := D.reach u ∪ D.reach v`. At the leaf: `outOn V' = 0` via
+`outOn_reach_union_eq_zero`; both DFS rejections plus the
+`tryReachPebbleWith_eq_none_imp` lift force `peb k w = 0` for every
+`w ∈ V'` with `w ≠ u, v` (predicate `P` is true on such a `w` from
+`0 < peb k w` ∧ exclusion clauses); `Finset.sum_sdiff` decomposes
+`pebOn V' = peb u + peb v + 0`. Invariant (2) under `outOn = 0` then
+gives `span V' + (peb u + peb v) = k * V'.card`, so `span V' + ℓ ≥
+k * V'.card` (from below-threshold `peb u + peb v ≤ ℓ`). The
+`span_succ_le_edgesIn_ncard_of_insert` bridge lifts to
+`(G.edgesIn ↑V').ncard ≥ span V' + 1`, closing the strict inequality.
+Size hypothesis `ℓ ≤ k * V'.card` from `|V'| ≥ 2` (`u, v ∈ V'`, `u ≠ v`)
+plus `ℓ < 2k`. The matroidal-regime hypothesis enters only at this size
+discharge — algebraic core is regime-agnostic. Blueprint
+`lem:pebble-game-failure-witness` is now green; the completeness-side
+dep-graph's red-front advances to the wrapper-level assembly
+`thm:pebble-game-correct`.
+
+Next concrete commit: `thm:pebble-game-correct` (certificate-form
+correctness theorem). Two-part assembly on top of soundness +
+failure-witness:
+* (1) `runPebbleGame G k ℓ = some D' → G.IsSparse k ℓ`: already landed
+  as `runPebbleGame_sound`.
+* (2) `runPebbleGame G k ℓ = none → ¬ G.IsSparse k ℓ`: trace the fold
+  through `runPebbleGameWith` to a specific failure-point step where
+  `tryAddEdgeWith` returns `none` on some intermediate state `Dmid`;
+  apply `tryAddEdgeWith_eq_none_imp_exists_witness` to get a witness
+  `V'` against the intermediate graph `G' := fromEdgeSet (insert s(u,v)
+  Dmid.underline)`; lift the witness to `G` via the subgraph
+  monotonicity `Dmid.underline ⊆ G.edgeFinset` (from
+  `runPebbleGameWith_underline_subset`'s ⊆ half plus
+  `tryAddEdgeWith_underline`). Likely requires a new fold-level helper
+  `runPebbleGameWith_eq_none_imp_exists_witness` to extract the
+  intermediate failure point. After that, the matroidal-independence
+  corollary `cor:pebble-game-countMatroid-indep` is a one-liner via
+  Phase 7's `countMatroid_indep_iff_isSparse`. The completeness-side
+  SimpleGraph-vs-multigraph corner-case check (open question below)
+  is the only known open structural unknown.
 
 ## Architectural choices made up front
 
@@ -1181,6 +1218,28 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   + `span_eq_ncard_edgesIn` translate Invariant (4) on `D'` to the
   `(G.edgesIn ↑V').ncard + ℓ ≤ k * V'.card` shape of `IsSparse`. No
   `ℓ < 2k` and no freshness hypothesis required for this direction.
+* Per-edge failure-witness extraction (blueprint
+  `lem:pebble-game-failure-witness`):
+  `tryAddEdgeWith_eq_none_imp_exists_witness` — under reachability +
+  freshness + `G.edgeFinset = insert s(u, v) D.underline` in the
+  matroidal regime `ℓ < 2*k`, a rejection `tryAddEdgeWith ... = none`
+  produces `∃ V' : Finset V, ℓ ≤ k * V'.card ∧ k * V'.card <
+  (G.edgesIn ↑V').ncard + ℓ` (witnessing non-sparsity of `G`). Five-case
+  `tryAddEdgeWith.induct` dispatch parallels `tryAddEdgeWith_isSome`:
+  threshold-met branches contradict `h` via
+  `absurd h (Option.some_ne_none _)`; DFS-success branches recurse via
+  the IH on `r.newOrient` (preconditions transport via
+  `r.reachable_newOrient` / `r.underline_newOrient_eq`); the
+  both-DFS-fail leaf builds `V' := D.reach u ∪ D.reach v`. At the leaf:
+  `outOn_reach_union_eq_zero` gives `D.outOn V' = 0`; both DFS rejections
+  via `tryReachPebbleWith_eq_none_imp` plus predicate `P`'s endpoint
+  exclusion force `D.peb k w = 0` on `V' \ {u, v}`;
+  `Finset.sum_sdiff` decomposes `D.pebOn k V' = D.peb k u + D.peb k v`;
+  Invariant (2) gives `span V' + (peb u + peb v) = k * V'.card`, and
+  `peb u + peb v ≤ ℓ` from below-threshold lifts to `span V' + ℓ ≥
+  k * V'.card`; `span_succ_le_edgesIn_ncard_of_insert` bridges to the
+  `(G.edgesIn ↑V').ncard + ℓ ≥ k * V'.card + 1` strict inequality. Size
+  hypothesis `ℓ ≤ k * V'.card` from `|V'| ≥ 2` + `ℓ < 2k`.
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
@@ -1201,10 +1260,11 @@ via `Classical.decPred`) plus its three workhorse lemmas
 `thm:pebble-game-soundness`,
 `lem:pebble-game-independent-brings-pebble` (algebraic-form core),
 `lem:pebble-game-independent-brings-pebble-graph` (SimpleGraph-form
-wrapper), `lem:pebble-game-tryAddEdgeWith-isSome` (⇐ half), the new
-`lem:pebble-game-tryAddEdgeWith-isSparse` (⇒ half), and the iff
+wrapper), `lem:pebble-game-tryAddEdgeWith-isSome` (⇐ half),
+`lem:pebble-game-tryAddEdgeWith-isSparse` (⇒ half), the iff
 `lem:pebble-game-tryAddEdge-iff-independent` (a one-liner combining
-both halves in prose) are all green. Build + lint clean.
+both halves in prose), and the new `lem:pebble-game-failure-witness`
+are all green. Build + lint clean.
 
 **Note on the `(V × V)`-list vs `(Sym2 V)`-list workhorse.** An earlier
 hand-off proposed `List (Sym2 V)` for `runPebbleGameWith`'s input. The
@@ -1220,18 +1280,18 @@ adjacency. Documented in DESIGN.md *Pebble-game style island → The
 `tryReachPebble`'s `outList` shift).
 
 Next concrete commit (completeness chain, leaf-most red node):
-**`lem:pebble-game-failure-witness` — blocking-witness extraction at
-the fold's failure point**. On `tryAddEdgeWith ... = none`, both DFS
-attempts ran to completion with no free-pebble hit, so by DFS
-completeness (`tryReachPebbleWith_eq_none_imp`) plus reflexivity of
-`D.reach`, every vertex in `V' := D.reach u ∪ D.reach v` distinct from
-`u, v` has `peb k w = 0`. Combined with `outOn V' = 0` (out-closure of
-`V'` via `outOn_reach_union_eq_zero`) and Invariant~(2),
-`span V' ≥ k|V'| - ℓ`; the inserted edge `s(u, v) ∈ G.edgesIn ↑V'` then
-lifts the count to `(G.edgesIn ↑V').ncard > k|V'| - ℓ`, certifying
-that `G` (the post-insertion graph) is not `(k, ℓ)`-sparse. After
-this lands, the final assembly is `thm:pebble-game-correct`
-(certificate form) → `cor:pebble-game-countMatroid-indep`. The
+**`thm:pebble-game-correct` — certificate-form correctness theorem**.
+Part (1) (success ⇒ sparse) is already `runPebbleGame_sound`; part (2)
+(failure ⇒ not sparse) needs a fold-level helper
+`runPebbleGameWith_eq_none_imp_exists_witness` that traces a `none`
+return through the `runPebbleGameWith` structural recursion to a
+specific intermediate step where `tryAddEdgeWith` returned `none`, then
+calls `tryAddEdgeWith_eq_none_imp_exists_witness` at that point and
+lifts the witness to the full input graph `G` via the subgraph
+monotonicity `Dmid.underline ⊆ G.edgeFinset` (from
+`runPebbleGameWith_underline_subset`). The matroidal-independence
+corollary `cor:pebble-game-countMatroid-indep` then follows in one
+line via Phase 7's `countMatroid_indep_iff_isSparse`. The
 completeness-side SimpleGraph-vs-multigraph corner-case check (open
 question above) is the only known open structural unknown.
 

@@ -2137,6 +2137,161 @@ lemma tryAddEdgeWith_isSparse {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
   rw [span_eq_ncard_edgesIn D' h_und s] at h_span
   exact h_span
 
+/-- **Failure-witness extraction at the per-edge layer** (blueprint
+`lem:pebble-game-failure-witness`). Given a `(k, ℓ)`-reachable orientation `D`
+and a candidate edge `s(u, v)` fresh w.r.t. `D.underline` in the matroidal
+regime `ℓ < 2k`, if `D.tryAddEdgeWith` returns `none` and `G.edgeFinset =
+insert s(u, v) D.underline`, then there exists a vertex subset `V'` whose
+count exceeds the sparsity bound: `k * V'.card < (G.edgesIn ↑V').ncard + ℓ`
+under the size hypothesis `ℓ ≤ k * V'.card`. Equivalently, `G` is not
+`(k, ℓ)`-sparse.
+
+Proof by `tryAddEdgeWith.induct`'s five-case dispatch:
+* (case1, case2) Threshold met: function returns `some`, contradicting `h`.
+* (case3, case4) DFS success at `u` or `v`: recurse via the IH on
+  `r.newOrient`. Reachability + freshness + edge-set hypotheses transport via
+  `TryReachPebbleResult.reachable_newOrient` /
+  `TryReachPebbleResult.underline_newOrient_eq`.
+* (case5) Both DFS searches fail: take `V' := D.reach u ∪ D.reach v`. The
+  closure of reach under out-arcs gives `D.outOn V' = 0`
+  (`outOn_reach_union_eq_zero`). Both DFS failures (via
+  `tryReachPebbleWith_eq_none_imp` on the predicate `P`) plus the predicate's
+  exclusion of `u, v` force `D.peb k w = 0` for every `w ∈ V'` with
+  `w ≠ u, v`, so `D.pebOn k V' = D.peb k u + D.peb k v ≤ ℓ` (the latter from
+  the below-threshold hypothesis `¬ (ℓ + 1 ≤ D.peb k u + D.peb k v)`).
+  Invariant (2) then gives `D.span V' + (D.peb k u + D.peb k v) = k * V'.card`,
+  and `span_succ_le_edgesIn_ncard_of_insert` lifts to
+  `(G.edgesIn ↑V').ncard ≥ D.span V' + 1`. Combining:
+  `(G.edgesIn ↑V').ncard + ℓ ≥ D.span V' + 1 + ℓ ≥ k * V'.card + 1`.
+
+The size hypothesis `ℓ ≤ k * V'.card` is discharged from `|V'| ≥ 2` (since
+`u, v ∈ V'` and `u ≠ v`) plus `ℓ < 2k ≤ k * V'.card`. This is the only place
+the matroidal-regime hypothesis enters the failure-witness construction
+formally. -/
+lemma tryAddEdgeWith_eq_none_imp_exists_witness {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (h_matroidal : ℓ < 2 * k)
+    {D : PartialOrientation V}
+    (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
+    (h_outle : ∀ x, D.out x ≤ k)
+    (hD : Reachable k ℓ D)
+    (h_fresh : s(u, v) ∉ D.underline)
+    (hG : G.edgeFinset = insert s(u, v) D.underline)
+    (h : D.tryAddEdgeWith k ℓ u v huv hnotin hnotin_rev h_outle toSucc h_toSucc
+      = none) :
+    ∃ V' : Finset V, ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ := by
+  induction D, hnotin, hnotin_rev, h_outle using
+    tryAddEdgeWith.induct (k := k) (ℓ := ℓ) (huv := huv)
+      (toSucc := toSucc) (h_toSucc := h_toSucc)
+  case case1 D hnotin hnotin_rev h_outle hthr hpu_pos =>
+    rw [tryAddEdgeWith, dif_pos hthr, if_pos hpu_pos] at h
+    exact absurd h (Option.some_ne_none _)
+  case case2 D hnotin hnotin_rev h_outle hthr hpu_neg =>
+    rw [tryAddEdgeWith, dif_pos hthr, if_neg hpu_neg] at h
+    exact absurd h (Option.some_ne_none _)
+  case case3 D hnotin hnotin_rev h_outle hthr P r hr_eq ih =>
+    rw [tryAddEdgeWith, dif_neg hthr] at h
+    simp only at h
+    rw [hr_eq] at h
+    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
+      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
+    have h_target : D.out r.target < k := by
+      have h1 := h_outle r.target
+      have h2 : D.peb k r.target = k - D.out r.target := rfl
+      have := hP_decomp.1.1
+      omega
+    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
+    have h_fresh_new : s(u, v) ∉ r.newOrient.underline := by
+      rw [r.underline_newOrient_eq]; exact h_fresh
+    have hG_new : G.edgeFinset = insert s(u, v) r.newOrient.underline := by
+      rw [r.underline_newOrient_eq]; exact hG
+    exact ih hR_new h_fresh_new hG_new h
+  case case4 D hnotin hnotin_rev h_outle hthr P hu_none r hr_eq ih =>
+    rw [tryAddEdgeWith, dif_neg hthr] at h
+    simp only at h
+    rw [hu_none, hr_eq] at h
+    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
+      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
+    have h_target : D.out r.target < k := by
+      have h1 := h_outle r.target
+      have h2 : D.peb k r.target = k - D.out r.target := rfl
+      have := hP_decomp.1.1
+      omega
+    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
+    have h_fresh_new : s(u, v) ∉ r.newOrient.underline := by
+      rw [r.underline_newOrient_eq]; exact h_fresh
+    have hG_new : G.edgeFinset = insert s(u, v) r.newOrient.underline := by
+      rw [r.underline_newOrient_eq]; exact hG
+    exact ih hR_new h_fresh_new hG_new h
+  case case5 D hnotin hnotin_rev h_outle hthr P hu_none hv_none =>
+    -- Substantive case: build the witness V' := D.reach u ∪ D.reach v.
+    set V' := D.reach u ∪ D.reach v with hV'_def
+    have hu_V' : u ∈ V' := Finset.mem_union.mpr (Or.inl (D.self_mem_reach u))
+    have hv_V' : v ∈ V' := Finset.mem_union.mpr (Or.inr (D.self_mem_reach v))
+    -- |V'| ≥ 2 because {u, v} ⊆ V' and u ≠ v.
+    have h_card : 2 ≤ V'.card := by
+      have h2 : ({u, v} : Finset V).card = 2 := by
+        rw [Finset.card_insert_of_notMem (by simp [huv]), Finset.card_singleton]
+      rw [← h2]
+      apply Finset.card_le_card
+      intro x hx
+      rcases Finset.mem_insert.mp hx with rfl | hx
+      · exact hu_V'
+      · rcases Finset.mem_singleton.mp hx with rfl
+        exact hv_V'
+    -- ℓ ≤ k * V'.card via ℓ < 2k ≤ k * V'.card.
+    have h_size : ℓ ≤ k * V'.card := by
+      have h2k : 2 * k ≤ k * V'.card := by
+        rw [mul_comm 2 k]
+        exact Nat.mul_le_mul_left k h_card
+      omega
+    -- V' is out-closed under D's arcs.
+    have h_outOn : D.outOn V' = 0 := D.outOn_reach_union_eq_zero u v
+    -- DFS-failure ⇒ every w ∈ V' with w ≠ u, v has peb k w = 0.
+    have h_zero_outside : ∀ w ∈ V', w ≠ u → w ≠ v → D.peb k w = 0 := by
+      intro w hw_mem hw_u hw_v
+      by_contra hw_ne_zero
+      have hw_pos : 0 < D.peb k w := Nat.pos_of_ne_zero hw_ne_zero
+      have hPw : P w = true := by
+        simp only [P, Bool.and_eq_true, decide_eq_true_eq]
+        exact ⟨⟨hw_pos, hw_u⟩, hw_v⟩
+      rw [Finset.mem_union] at hw_mem
+      rcases hw_mem with hu_reach | hv_reach
+      · rw [mem_reach] at hu_reach
+        exact tryReachPebbleWith_eq_none_imp (h_toSucc D) hu_none hu_reach hPw
+      · rw [mem_reach] at hv_reach
+        exact tryReachPebbleWith_eq_none_imp (h_toSucc D) hv_none hv_reach hPw
+    -- Algebraic decomposition: pebOn V' = peb u + peb v.
+    have huv_sub : ({u, v} : Finset V) ⊆ V' := by
+      intro x hx
+      rcases Finset.mem_insert.mp hx with rfl | hx
+      · exact hu_V'
+      · rcases Finset.mem_singleton.mp hx with rfl
+        exact hv_V'
+    have h_sdiff : ∑ x ∈ V' \ ({u, v} : Finset V), D.peb k x +
+                     ∑ x ∈ ({u, v} : Finset V), D.peb k x =
+                   D.pebOn k V' := by
+      rw [pebOn]; exact Finset.sum_sdiff huv_sub
+    have h_pair : ∑ x ∈ ({u, v} : Finset V), D.peb k x = D.peb k u + D.peb k v :=
+      Finset.sum_pair huv
+    have h_sdiff_zero : ∑ x ∈ V' \ ({u, v} : Finset V), D.peb k x = 0 := by
+      apply Finset.sum_eq_zero
+      intro w hw
+      rw [Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton] at hw
+      exact h_zero_outside w hw.1
+        (fun heq => hw.2 (Or.inl heq))
+        (fun heq => hw.2 (Or.inr heq))
+    -- Invariant (2) gives span V' + (peb u + peb v) = k * V'.card.
+    have h_inv2 := hD.pebOn_add_span_add_outOn V'
+    -- The +1 bridge: (G.edgesIn ↑V').ncard ≥ D.span V' + 1.
+    have h_bridge := D.span_succ_le_edgesIn_ncard_of_insert h_fresh hG hu_V' hv_V'
+    refine ⟨V', h_size, ?_⟩
+    -- Below-threshold from `hthr`: peb u + peb v ≤ ℓ.
+    omega
+
 end Completeness
 
 end PartialOrientation

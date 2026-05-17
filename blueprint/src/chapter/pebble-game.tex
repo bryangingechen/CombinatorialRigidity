@@ -781,28 +781,53 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
 
 \begin{lemma}[Failure produces a blocking witness]
   \label{lem:pebble-game-failure-witness}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_eq_none_imp_exists_witness}
+  \leanok
   \uses{def:tryAddEdge, def:blockingWitness,
     lem:pebble-game-invariants}
-  Let $D$ be a partial orientation reachable as above, $\{u, v\}$
-  a candidate edge, and $V' := \mathrm{Reach}_D(u) \cup
-  \mathrm{Reach}_D(v)$. If $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}
-  = \mathrm{Sum.inr}\,V'$, then $|\{e \in \underline{D} : e
-  \subseteq V'\}| + 1 > k|V'| - \ell$ in $\mathrm{fromEdgeSet}\,
-  (\underline{D} \cup \{\{u, v\}\})$.
+  Let $D$ be a partial orientation reachable as above and $\{u, v\}$
+  a candidate edge fresh w.r.t.\ $\underline{D}$ in the matroidal
+  regime $\ell < 2k$, and write $G$ for $\mathrm{fromEdgeSet}\,
+  (\underline{D} \cup \{\{u, v\}\})$. If $\mathrm{tryAddEdge}\,k\,
+  \ell\,D\,\{u, v\}$ rejects (returns $\mathrm{none}$), then there
+  exists $V' \subseteq V$ with $\ell \le k|V'|$ and
+  $k|V'| < |\edgesIn[G]{V'}| + \ell$. The witness is
+  $V' := \mathrm{Reach}_{D_0}(u) \cup \mathrm{Reach}_{D_0}(v)$,
+  taken at the failure-point orientation $D_0$ reached from $D$
+  through the algorithm's recursive path-reversal steps.
 \end{lemma}
 \begin{proof}
-  \uses{lem:pebble-game-invariants}
-  At failure, both DFS searches return empty, so
-  $\mathrm{out}_D(V') = 0$ and $\mathrm{peb}_{D, k}(V') \le \ell$
-  (every reachable vertex from $u$ or $v$ has zero free pebbles
-  except possibly $u, v$ themselves, which together hold at most
-  $\ell$). Invariant~(2) gives $\mathrm{span}_D(V') = k|V'| -
-  \mathrm{peb}(V') - \mathrm{out}(V') \ge k|V'| - \ell$; combined
-  with Invariant~(4) ($\mathrm{span}_D(V') \le k|V'| - \ell$),
-  equality holds: $\mathrm{span}_D(V') = k|V'| - \ell$ (i.e.\ $V'$
-  is a \emph{block} of the orientation). Adding $\{u, v\}$ to
-  $\underline{D}$ adds one edge inside $V'$, producing $|\{e :
-  e \subseteq V'\}| = k|V'| - \ell + 1$.
+  \leanok
+  \uses{lem:pebble-game-invariants,
+    lem:pebble-game-tryAddEdgeWith-isSome,
+    lem:pebble-game-independent-brings-pebble-graph}
+  By the same five-case dispatch on
+  \texttt{tryAddEdgeWith.induct} as
+  \cref{lem:pebble-game-tryAddEdgeWith-isSome}. The two threshold-met
+  branches return $\mathrm{some}$ and contradict the rejection
+  hypothesis; the two DFS-success branches recurse via the IH on
+  $r.\mathrm{newOrient}$, with reachability and freshness
+  hypotheses transported by
+  \texttt{TryReachPebbleResult.reachable\_newOrient} /
+  \texttt{underline\_newOrient\_eq}. At the both-DFS-fail leaf
+  $D_0$: take $V' := \mathrm{Reach}_{D_0}(u) \cup
+  \mathrm{Reach}_{D_0}(v)$. Closure of $V'$ under $D_0$'s out-arcs
+  gives $\mathrm{out}_{D_0}(V') = 0$. Both DFS rejections force
+  $\mathrm{peb}_{D_0, k}(w) = 0$ for every $w \in V'$ with $w \neq
+  u, v$ (predicate $P$ excludes the endpoints), so
+  $\mathrm{peb}_{D_0, k}(V') = \mathrm{peb}_{D_0, k}(u) +
+  \mathrm{peb}_{D_0, k}(v) \le \ell$ from the below-threshold
+  hypothesis. Invariant~(2) then gives
+  $\mathrm{span}_{D_0}(V') + (\mathrm{peb}_{D_0, k}(u) +
+  \mathrm{peb}_{D_0, k}(v)) = k|V'|$, hence
+  $\mathrm{span}_{D_0}(V') + \ell \ge k|V'|$. Combining with the
+  post-insertion bridge $|\edgesIn[G]{V'}| \ge
+  \mathrm{span}_{D_0}(V') + 1$
+  (\cref{lem:pebble-game-independent-brings-pebble-graph}'s
+  \texttt{span\_succ\_le\_edgesIn\_ncard\_of\_insert}) yields
+  $|\edgesIn[G]{V'}| + \ell \ge k|V'| + 1$. Size hypothesis
+  $\ell \le k|V'|$ from $|V'| \ge 2$ (since $u, v \in V'$, $u \neq v$)
+  plus $\ell < 2k$.
 \end{proof}
 
 \subsection{Correctness theorem}
