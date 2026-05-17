@@ -55,12 +55,25 @@ contract holds only if the file stays scannable.
     cross-references, not explanations.
 
   For small phases, a flat list under "Decisions made" is fine.
-- **Soft length budget.** Aim for `notes/PhaseN.md` ≤ 250 lines. If
-  you exceed it, run a compression pass — most likely "Decisions"
-  has accumulated cross-cutting lessons that should have been
-  promoted. Phase 3 grew to ~500 lines before the rules above
-  existed; applying them dropped it below 300. Phase 1 and Phase 2
-  (small phases) sit near 100 lines without sub-organization.
+- **Soft length budget, adaptive to phase size.** A short phase
+  (5–10 forward-work commits) should sit near 100–200 lines; a long
+  phase (20+ forward-work commits, multiple substantive subsystems)
+  may legitimately need 350–450. The right test is **density**, not
+  absolute LoC: each *Decisions made* entry still respects the ≤8-line
+  per-entry rule above, cross-cutting lessons are still lifted via
+  *Promoted to ...*, and the *Current state* + *Hand-off* sections
+  still pass the hand-off contract from the top-level `CLAUDE.md`.
+  If those hold and you're at 400 lines, the phase was genuinely big.
+  If they don't and you're at 200 lines, the file is already drifting.
+  Phase 3 grew to ~500 lines before the rules above existed; applying
+  them dropped it below 300. Phase 1 and Phase 2 (small phases) sit
+  near 100 lines without sub-organization. Phase 9 (25 forward-work
+  commits, two new files totaling ~3300 LoC, 22 dep-graph nodes)
+  sits near 400 lines after compression — at the upper end of the
+  adaptive range, and a useful calibration point for a substantive
+  phase. If a phase looks like it's going to overshoot 500, that's
+  the cue to investigate whether *Decisions* has accumulated content
+  that should have been promoted.
 
 `notes/Phase1.md` is a complete-phase example for a small phase
 (flat "Decisions made"); `notes/Phase3.md` is the canonical example
