@@ -614,35 +614,56 @@ brought to $u$ or $v$ from within $\mathrm{Reach}_D(u) \cup
 \mathrm{Reach}_D(v)$ without disturbing the other endpoint's count.
 Iterating produces the $\ell + 1$ pebbles required to insert.
 
-\begin{lemma}[Independent edges yield reachable pebbles]
+\begin{lemma}[Independent edges yield reachable pebbles, algebraic form]
   \label{lem:pebble-game-independent-brings-pebble}
-  \uses{def:partial-orientation, def:tryAddEdge,
-    lem:pebble-game-invariants, def:isSparse}
-  Let $D$ be a partial orientation on $V$ reachable as in
-  \cref{lem:pebble-game-invariants}, $\{u, v\}$ a candidate edge
-  not in $\underline{D}$, and $V' := \mathrm{Reach}_D(u) \cup
-  \mathrm{Reach}_D(v)$. Suppose $\mathrm{fromEdgeSet}\,(\underline{D}
-  \cup \{\{u, v\}\})$ is $(k, \ell)$-sparse and
-  $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) < \ell + 1$.
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.independent_brings_pebble}
+  \leanok
+  \uses{def:partial-orientation, def:pebble-counts,
+    def:reachable-orientation, lem:pebble-game-invariants}
+  Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
+  vertices, and $V' \subseteq V$ a finset containing both $u$ and $v$
+  with $\mathrm{out}_D(V') = 0$ (i.e.\ $V'$ is closed under $D$'s
+  outgoing arcs --- the algorithmic instance has $V' = \mathrm{Reach}
+  _D(u) \cup \mathrm{Reach}_D(v)$). Suppose
+  \begin{enumerate}
+    \item $\mathrm{span}_D(V') + 1 + \ell \le k|V'|$ (the algebraic
+      form of the post-insertion sparsity bound on $V'$: adding the
+      candidate edge $\{u, v\}$ to $\underline{D}$ keeps the
+      $\le k|V'| - \ell$ count); and
+    \item $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) < \ell + 1$
+      (the below-threshold condition at which the outer algorithm
+      attempts DFS).
+  \end{enumerate}
   Then there is a vertex $w \in V' \setminus \{u, v\}$ with
   $\mathrm{peb}_{D, k}(w) \ge 1$.
 \end{lemma}
 \begin{proof}
-  \uses{lem:pebble-game-invariants, def:isSparse}
-  By the definition of reachability closure, $\mathrm{out}_D(V')
-  = 0$. Invariant~(3) of \cref{lem:pebble-game-invariants} gives
-  $\mathrm{peb}_{D, k}(V') \ge \ell$. Independence of $\{u, v\}$
-  with respect to $\underline{D}$ (the sparsity hypothesis after
-  insertion) plus the failure to immediately satisfy the
-  $\ge \ell + 1$ threshold strengthens this to $\mathrm{peb}_{D, k}
-  (V') \ge \ell + 1$ by an $I$-component / block argument analogous
-  to the Phase~7 maximal block scaffolding
-  (\cref{lem:isTightOn-union-inter-of-pair}; here applied to the
-  orientation's underlying graph in place of a static sparse graph).
-  Subtracting $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) <
-  \ell + 1$ leaves at least one pebble distributed over
-  $V' \setminus \{u, v\}$, supplying the required $w$. Compare
-  Lee--Streinu Lemma 13.
+  \leanok
+  \uses{lem:pebble-game-invariants}
+  Invariant~(2) of \cref{lem:pebble-game-invariants} gives
+  $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') + \mathrm{out}_D(V')
+  = k|V'|$. With $\mathrm{out}_D(V') = 0$ this is
+  $\mathrm{peb}_{D, k}(V') = k|V'| - \mathrm{span}_D(V')$, and the
+  post-insertion sparsity bound rearranges to $\mathrm{peb}_{D, k}(V')
+  \ge \ell + 1$. Subtracting the below-threshold hypothesis
+  $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) < \ell + 1$ leaves
+  $\sum_{w \in V' \setminus \{u, v\}} \mathrm{peb}_{D, k}(w) > 0$, so
+  some $w \in V' \setminus \{u, v\}$ has $\mathrm{peb}_{D, k}(w)
+  \ge 1$.
+
+  Compare Lee--Streinu Lemma 13. The L-S statement takes
+  $V' = \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ and uses
+  $\mathrm{fromEdgeSet}\,(\underline{D} \cup \{\{u, v\}\})$ being
+  $(k, \ell)$-sparse as the hypothesis: that converts to the present
+  algebraic form via the closure-of-reachability identity
+  $\mathrm{out}_D(\mathrm{Reach}_D(\cdot)) = 0$ and the
+  $\mathrm{span}_D \leftrightarrow |\edgesIn{}|$ bridge of
+  \cref{lem:span-eq-ncard-edgesIn} (adjusted by $+1$ for the added
+  $\{u, v\}$ edge inside $V'$, since $u, v \in V'$ by reflexivity of
+  $\mathrm{Reach}_D$). The L-S proof's appeal to an $I$-component /
+  block argument unfolds in the algebraic form to a direct
+  Invariant~(2) application, since the sparsity bound is the only
+  fact about the post-insertion graph the proof actually consumes.
 \end{proof}
 
 \begin{lemma}[Pebble game accepts iff edge is independent]

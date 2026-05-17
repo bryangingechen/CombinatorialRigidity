@@ -959,6 +959,55 @@ lemma Reachable.span_add_le {D : PartialOrientation V}
   have h3 := h.pebOn_add_outOn_ge h_size
   omega
 
+/-- L-S Lemma 13 (algebraic core): given a reachable orientation `D` and a
+candidate edge `{u, v}` whose endpoints sit inside a finset `V'` closed under
+`D`'s outgoing arcs (`D.outOn V' = 0`), if inserting `{u, v}` would still
+satisfy the span-sparsity bound on `V'` but the two endpoints together hold
+fewer than `ℓ + 1` free pebbles, then some other vertex of `V'` carries a
+free pebble.
+
+Invariant (2) under `outOn V' = 0` collapses to
+`pebOn k V' + span V' = k * V'.card`; the post-insertion span bound
+`span V' + 1 + ℓ ≤ k * V'.card` lifts `pebOn k V'` to `≥ ℓ + 1`, exceeding
+the below-threshold `peb u + peb v < ℓ + 1`. The slack lives on
+`V' \ {u, v}`, so some `w` there has positive pebble count.
+
+This is the algorithm-side algebraic core of
+`lem:pebble-game-independent-brings-pebble`. Callers
+(`tryAddEdgeWith`'s completeness side, downstream) discharge the
+post-insertion span bound from a `SimpleGraph` sparsity hypothesis via the
+`underline` / `span_eq_ncard_edgesIn` bridge; the natural `V'` is
+`Reach_D(u) ∪ Reach_D(v)`, for which `outOn V' = 0` from closure under
+out-arcs. Lee–Streinu Lemma 13. -/
+lemma Reachable.independent_brings_pebble
+    {D : PartialOrientation V} (hR : Reachable k ℓ D)
+    {u v : V} (huv : u ≠ v)
+    {V' : Finset V} (hu : u ∈ V') (hv : v ∈ V')
+    (h_closed : D.outOn V' = 0)
+    (h_sparse : D.span V' + 1 + ℓ ≤ k * V'.card)
+    (h_below : D.peb k u + D.peb k v < ℓ + 1) :
+    ∃ w ∈ V', w ≠ u ∧ w ≠ v ∧ 0 < D.peb k w := by
+  have h_inv2 := hR.pebOn_add_span_add_outOn V'
+  have h_pebOn : ℓ + 1 ≤ D.pebOn k V' := by omega
+  have huv_sub : ({u, v} : Finset V) ⊆ V' := by
+    intro x hx
+    rcases Finset.mem_insert.mp hx with rfl | hx
+    · exact hu
+    · rcases Finset.mem_singleton.mp hx with rfl
+      exact hv
+  have h_sdiff : ∑ x ∈ V' \ ({u, v} : Finset V), D.peb k x +
+                   ∑ x ∈ ({u, v} : Finset V), D.peb k x =
+                 D.pebOn k V' := by
+    rw [pebOn]; exact Finset.sum_sdiff huv_sub
+  have h_pair : ∑ x ∈ ({u, v} : Finset V), D.peb k x = D.peb k u + D.peb k v :=
+    Finset.sum_pair huv
+  have h_pos : 0 < ∑ w ∈ V' \ ({u, v} : Finset V), D.peb k w := by omega
+  obtain ⟨w, hw_mem, hw_ne⟩ := Finset.exists_ne_zero_of_sum_ne_zero h_pos.ne'
+  rw [Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton] at hw_mem
+  refine ⟨w, hw_mem.1, ?_, ?_, Nat.pos_of_ne_zero hw_ne⟩
+  · intro heq; exact hw_mem.2 (Or.inl heq)
+  · intro heq; exact hw_mem.2 (Or.inr heq)
+
 end Reachability
 
 /-! ### Try-reach-pebble: DFS with path reversal

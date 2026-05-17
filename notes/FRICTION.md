@@ -169,6 +169,37 @@ housekeeping pass once their resolution is fully indexed.
   (Phase 9 follow-up) will reuse it.
 - **Status:** resolved.
 
+### [resolved] `ring` treats alpha-renamed `Finset.sum` as distinct atoms
+- **Where it bit:** `Reachable.independent_brings_pebble` in
+  `CombinatorialRigidity/PebbleGame.lean`. After
+  `rw [pebOn, ← Finset.sum_sdiff huv_sub, Finset.sum_pair huv]` the
+  residual goal was
+  `∑ x ∈ V' \ {u, v}, peb k x + (peb u + peb v) = peb u + peb v + ∑ w ∈ V' \ {u, v}, peb k w`
+  — an `A + B = B + A` shape modulo alpha-equivalence on the
+  `Finset.sum` body (`x` vs `w`). `ring` failed with *"unsolved
+  goals"*; the atom-extractor evidently checks syntactic identity on
+  lambda bodies, not full defeq.
+- **Friction:** the natural Finset.sum-decomposition idiom (rewrite
+  via `Finset.sum_sdiff` then `Finset.sum_pair`, finish with `ring`)
+  doesn't close. Bound-variable names from the rewrite source
+  (Finset.sum_sdiff uses `x`) and from the target's `have` statement
+  (chose `w`) don't align, and `ring` doesn't normalize across.
+- **Resolved (this commit):** Bind the two pieces (`Finset.sum_sdiff`
+  and `Finset.sum_pair`) as separate `have` hypotheses and let
+  `omega` close the existence-of-witness chain directly — `omega`
+  treats each `Finset.sum` as an atomic ℕ term and the surrounding
+  linear inequality `0 < ∑ w ∈ V' \ {u, v}, peb k w` is one
+  `omega` away. Phase 9 main's *Decisions made → Completeness*
+  carries the pattern.
+- **General rule (for the next sum-decomposition that hits this):**
+  When `ring` fails on a goal that's *syntactically*
+  `Σ + B = B + Σ'` with `Σ`, `Σ'` alpha-equivalent, do not paper
+  over with `ring_nf; ring`. Switch to threading the sum identities
+  through `have`s and finishing with `omega` (linear over ℕ) or
+  `linarith` (ordered field). The atom abstraction does the work
+  `ring` won't.
+- **Status:** resolved (Phase 9 main, completeness side, Lemma 13).
+
 ### [resolved] `Finset.toList` is noncomputable — math/exec layer split
 - **Where it bit:** `reachableFindingAux` body in
   `CombinatorialRigidity/Search/DFS.lean`. Enumerating the children
