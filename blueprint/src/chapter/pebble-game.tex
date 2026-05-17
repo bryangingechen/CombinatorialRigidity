@@ -1,0 +1,454 @@
+\section{The \texorpdfstring{$(k, \ell)$}{(k, l)}-pebble game}
+\label{sec:pebble-game}
+
+The $(k, \ell)$-count matroid of \cref{sec:count-matroid} is defined
+combinatorially: a subset of $E(K_V)$ is independent precisely when
+the induced subgraph is $(k, \ell)$-sparse. \Cref{sec:count-matroid}
+established that this collection of subsets satisfies the matroid
+axioms via an augmentation / $I$-component argument, but the proof
+is not constructive: given an arbitrary edge set, it does not
+exhibit a procedure to decide whether the set is independent.
+
+The \emph{$(k, \ell)$-pebble game} of
+Lee--Streinu~\cite{leeStreinu2008} (generalising the original
+$(2, 3)$ algorithm of Jacobs--Hendrickson~\cite{jacobsHendrickson1997})
+is the missing algorithmic side. It processes a list of candidate
+edges one at a time, maintaining a partial orientation of the
+accepted edges together with a distribution of \emph{pebbles} on
+the vertices, and decides at each step whether to insert the
+candidate or reject it. We formalise the basic version of the
+algorithm (Lee--Streinu \S 3) and prove its correctness theorem
+(Lee--Streinu \S 4, Theorem 8) in the matroidal regime $\ell < 2k$
+that matches \cref{sec:count-matroid}, in a certificate form: on
+success, the algorithm returns the partial orientation as a
+witness of sparsity; on failure, it returns a vertex subset $V'$
+together with a proof that $|\edgesIn{V'}| > k|V'| - \ell$,
+witnessing non-sparsity.
+
+\emph{Out of scope.} The \emph{component pebble game} of
+Lee--Streinu \S 5 maintains the $I$-components of the partial
+orientation explicitly to reject dependent edges in $O(1)$ rather
+than $O(n)$ time, achieving an overall $O(n^2)$ bound; the
+underlying data structure (\emph{union pair-find}) was developed
+by Lee--Streinu--Theran~\cite{leeStreinuTheran2005}. The Henneberg-
+sequence application of Lee--Streinu \S 6 generalises the
+Phase~3 Henneberg construction (\cref{sec:henneberg}) from Laman
+graphs to all $(k, \ell)$-tight graphs. Neither is in scope for
+this chapter; both are candidates for follow-up phases.
+
+\emph{Multigraphs.} Lee--Streinu state results for multi-graphs
+with loops, covering $\ell \in [0, 2k)$. Following the project
+convention (\cref{sec:sparsity}), we work in $\mathrm{SimpleGraph}\,V$:
+the loop-free assumption removes the $|V'| = 1$ single-vertex
+block case of L-S Lemma 10 in the lower range $\ell < k$, but the
+matroidal-regime theory carries over otherwise. The algorithm
+state (\cref{def:partial-orientation} below) is decoupled from the
+shape of the input edge container, so retargeting to a future
+\texttt{MultiGraph} type is a relaxation of the no-parallel-pair
+invariant on the partial orientation.
+
+\subsection{State and moves}
+\label{sec:pebble-game-state}
+
+The pebble game maintains a partial orientation of a subset of
+$E(K_V)$ together with a non-negative integer of \emph{free
+pebbles} at each vertex. Both pieces of data are determined by
+the orientation: pebbles are bookkeeping for the per-vertex
+out-degree budget.
+
+\begin{definition}[Partial orientation]
+  \label{def:partial-orientation}
+  Let $V$ be a finite type with decidable equality. A
+  \emph{partial orientation} on $V$ is a finite set
+  $D \subseteq V \times V$ of ordered pairs such that:
+  \begin{enumerate}
+    \item (no loops) $(v, v) \notin D$ for all $v \in V$;
+    \item (no antiparallel pairs) $(u, v) \in D$ implies
+      $(v, u) \notin D$.
+  \end{enumerate}
+  An edge $\{u, v\} \in \mathrm{Sym}_2 V$ is \emph{oriented in $D$}
+  if either $(u, v) \in D$ or $(v, u) \in D$. The
+  \emph{underlying edge set} of $D$, written $\underline{D} \subseteq
+  E(K_V)$, is the set of oriented edges.
+\end{definition}
+
+\begin{definition}[Out-degree, pebble count, span]
+  \label{def:pebble-counts}
+  \uses{def:partial-orientation}
+  Fix a partial orientation $D$ and an integer $k \ge 0$. For a
+  vertex $v \in V$, write
+  \[
+    \mathrm{out}_D(v) := |\{u : (v, u) \in D\}|,
+    \qquad
+    \mathrm{peb}_{D,k}(v) := k - \mathrm{out}_D(v).
+  \]
+  Extend additively to subsets $V' \subseteq V$:
+  $\mathrm{peb}_{D,k}(V') := \sum_{v \in V'} \mathrm{peb}_{D, k}(v)$,
+  and write
+  \[
+    \mathrm{span}_D(V') := |\{(u, w) \in D : u, w \in V'\}|,
+    \qquad
+    \mathrm{out}_D(V') := |\{(u, w) \in D : u \in V',\ w \notin V'\}|.
+  \]
+  The pebble count is non-negative provided $\mathrm{out}_D(v) \le k$
+  for all $v$, which is preserved by the algorithm
+  (\cref{def:tryAddEdge}) as a structural invariant.
+\end{definition}
+
+\begin{definition}[Path-reversal move]
+  \label{def:path-reversal}
+  \uses{def:partial-orientation}
+  Let $D$ be a partial orientation and $u_0 \to u_1 \to \cdots \to
+  u_m$ a directed path in $D$ (a sequence of vertices with
+  $(u_i, u_{i+1}) \in D$ for $0 \le i < m$, all $u_i$ distinct).
+  The \emph{reversal} of this path replaces $D$ by
+  $D \setminus \{(u_i, u_{i+1}) : 0 \le i < m\} \cup
+  \{(u_{i+1}, u_i) : 0 \le i < m\}$. The result is again a partial
+  orientation: no loops are introduced (the path is simple), and the
+  no-antiparallel-pairs invariant is preserved by induction on $m$.
+  Path reversal preserves $\underline{D}$, $\mathrm{out}_D(v)$ for
+  all $v \neq u_0, u_m$, and decreases $\mathrm{out}_D(u_0)$ by $1$
+  while increasing $\mathrm{out}_D(u_m)$ by $1$.
+\end{definition}
+
+\subsection{Invariants}
+\label{sec:pebble-game-invariants}
+
+The four invariants of Lee--Streinu Lemma~10 are the soundness
+backbone of the algorithm: they are maintained at every state
+reachable from the initial empty orientation through edge
+insertions and path reversals, and Invariant~(4) directly gives
+the sparsity of $\underline{D}$.
+
+\begin{lemma}[Pebble-game invariants]
+  \label{lem:pebble-game-invariants}
+  \uses{def:partial-orientation, def:pebble-counts}
+  Let $V$ be a finite type, $k, \ell$ integers with $\ell < 2k$,
+  and $D$ a partial orientation on $V$ reachable from the empty
+  orientation by a sequence of \emph{accepted insertions} and
+  \emph{path reversals}, where an accepted insertion of edge
+  $\{u, v\}$ is permitted only when $\mathrm{peb}_{D, k}(u) +
+  \mathrm{peb}_{D, k}(v) \ge \ell + 1$ at the moment of insertion.
+  Then for every $v \in V$ and every $V' \subseteq V$ with
+  $|V'| \ge 1$ when $\ell \le k$ and $|V'| \ge 2$ when $\ell > k$:
+  \begin{enumerate}
+    \item $\mathrm{peb}_{D, k}(v) + \mathrm{out}_D(v) = k$.
+    \item $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') +
+      \mathrm{out}_D(V') = k|V'|$.
+    \item $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V') \ge \ell$.
+    \item $\mathrm{span}_D(V') \le k|V'| - \ell$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \uses{def:partial-orientation, def:pebble-counts, def:path-reversal}
+  Invariants (1) and (2) are bookkeeping: (1) is the definition of
+  $\mathrm{peb}_{D, k}$; (2) follows by summing (1) over $v \in V'$
+  and decomposing $\sum_{v \in V'} \mathrm{out}_D(v) =
+  \mathrm{span}_D(V') + \mathrm{out}_D(V')$ along whether the
+  arrow's head lies in $V'$. Invariant (4) is the algebraic
+  rearrangement of (2) given (3). Invariant (3) is the substantive
+  claim, proved by induction on the move sequence: the empty
+  orientation has $\mathrm{peb}_{\emptyset, k}(V') = k|V'| \ge \ell$
+  (using $|V'| \ge 1$ and $\ell \le k$, or $|V'| \ge 2$ and
+  $\ell < 2k$); accepted insertions either preserve the LHS (edge
+  inside $V'$ or outside $V'$ entirely) or trade one pebble in $V'$
+  for one outgoing edge from $V'$, leaving the sum invariant; path
+  reversals move a pebble along the path, changing
+  $\mathrm{peb}(V')$ and $\mathrm{out}(V')$ by $\pm 1$ in lockstep.
+  At an accepted insertion of an edge $\{u, v\}$ with both endpoints
+  in $V'$, the precondition gives $\mathrm{peb}(V') \ge \ell + 1$,
+  so the post-insertion $\mathrm{peb}(V') \ge \ell$. Compare
+  Lee--Streinu Lemma 10.
+\end{proof}
+
+\subsection{The basic algorithm}
+\label{sec:pebble-game-algorithm}
+
+The algorithm processes a list of candidate edges one at a time.
+For each edge it attempts to redirect pebbles in $D$ until both
+endpoints together hold at least $\ell + 1$ free pebbles, then
+inserts and consumes one pebble. If the pebble target cannot be
+reached, the edge is rejected and the algorithm halts with a
+failure witness.
+
+\begin{definition}[Try-reach-pebble: DFS with path reversal]
+  \label{def:tryReachPebble}
+  \uses{def:partial-orientation, def:pebble-counts, def:path-reversal}
+  Given a partial orientation $D$, a source vertex $v$, and a
+  predicate $P$ on $V$, the procedure $\mathrm{tryReachPebble}\,
+  D\,v\,P$ performs a depth-first search along outgoing arcs of $D$
+  from $v$, terminating either:
+  \begin{itemize}
+    \item (success) at the first reachable vertex $w$ with $P(w)$,
+      in which case it returns the pair $(D', w)$ where $D'$ is
+      obtained from $D$ by reversing the discovered $v$-to-$w$
+      path; or
+    \item (failure) when the reachability closure $\mathrm{Reach}_D(v)$
+      contains no vertex satisfying $P$, in which case it returns
+      none.
+  \end{itemize}
+  Termination measure: $(\mathrm{Finset.univ}\,V \setminus
+  \mathrm{visited}).\mathrm{card}$, where $\mathrm{visited}$ is the
+  set of vertices already explored by the DFS (strictly increases
+  per recursive call). The standalone $\mathrm{reachableFinding}$
+  helper modelled on \texttt{Batteries.UnionFind} (\emph{pre-Phase
+  9 warmup}, see \texttt{notes/Phase9.md}) supplies this primitive.
+\end{definition}
+
+\begin{definition}[Try-add-edge]
+  \label{def:tryAddEdge}
+  \uses{def:tryReachPebble, def:partial-orientation}
+  Given a partial orientation $D$, parameters $k, \ell$, and a
+  candidate edge $\{u, v\} \notin \underline{D}$ (with $u \neq v$),
+  the procedure $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}$
+  repeatedly calls $\mathrm{tryReachPebble}\,D\,u\,(\mathrm{peb}_{D,k}
+  > 0\ \text{at the vertex})$ and $\mathrm{tryReachPebble}\,D\,v\,
+  (\mathrm{peb}_{D,k} > 0)$, accumulating successful reversals into
+  $D$, until either:
+  \begin{itemize}
+    \item (accept) $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v)
+      \ge \ell + 1$ is reached; insert $(u, v)$ into $D$ and return
+      $\mathrm{Sum.inl}\,D'$ with $D'$ the updated orientation; or
+    \item (reject) both DFS attempts simultaneously fail (no free
+      pebble reachable from $u$ or $v$); return $\mathrm{Sum.inr}\,V'$
+      with $V' := \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$.
+  \end{itemize}
+  Termination of the outer loop: $(\ell + 1) - (\mathrm{peb}_{D,k}(u)
+  + \mathrm{peb}_{D, k}(v))$ strictly decreases per successful
+  reversal.
+\end{definition}
+
+\begin{definition}[Blocking witness]
+  \label{def:blockingWitness}
+  \uses{def:isSparse}
+  Given a simple graph $G : \mathrm{SimpleGraph}\,V$ and parameters
+  $k, \ell$, a \emph{blocking witness} for $G$ is a finite subset
+  $V' \subseteq V$ together with a proof that
+  $|\edgesIn[G]{V'}| > k|V'| - \ell$. Equivalently, $G$ is not
+  $(k, \ell)$-sparse on $V'$.
+\end{definition}
+
+\begin{definition}[Run-pebble-game]
+  \label{def:runPebbleGame}
+  \uses{def:tryAddEdge, def:blockingWitness, def:partial-orientation}
+  Given a simple graph $G$ on a finite vertex set $V$ and integer
+  parameters $k, \ell$ with $\ell < 2k$, the procedure
+  $\mathrm{runPebbleGame}\,k\,\ell\,G$ folds $\mathrm{tryAddEdge}$
+  over an arbitrary enumeration of $E(G)$ starting from the empty
+  partial orientation. The result is one of:
+  \begin{itemize}
+    \item (success) $\mathrm{Sum.inl}\,D$ where $D$ is a partial
+      orientation with $\underline{D} = E(G)$ satisfying the four
+      invariants of \cref{lem:pebble-game-invariants};
+    \item (failure) $\mathrm{Sum.inr}\,W$ where $W$ is a blocking
+      witness for $G$ (\cref{def:blockingWitness}).
+  \end{itemize}
+  Termination of the fold: the number of unprocessed edges of $E(G)$
+  strictly decreases per iteration. The success branch carries the
+  full $D$; partial-success states (where some edges of $E(G)$ have
+  been processed and inserted but the next one fails) are merged
+  into the failure branch, since the L-S Theorem~8 statement on
+  $G$'s sparsity uses only the existence/non-existence of $D$ with
+  $\underline{D} = E(G)$.
+\end{definition}
+
+\subsection{Soundness}
+\label{sec:pebble-game-soundness}
+
+The success branch of $\mathrm{runPebbleGame}$ is automatically a
+witness of sparsity, by Invariant~(4) applied to $\underline{D} =
+E(G)$. This is the easy half of Lee--Streinu Theorem 8
+(corresponding to L-S Corollary 12).
+
+\begin{theorem}[Soundness of the pebble game]
+  \label{thm:pebble-game-soundness}
+  \uses{def:runPebbleGame, lem:pebble-game-invariants, def:isSparse}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
+  integers with $\ell < 2k$. If $\mathrm{runPebbleGame}\,k\,\ell\,G
+  = \mathrm{Sum.inl}\,D$, then $G$ is $(k, \ell)$-sparse.
+\end{theorem}
+\begin{proof}
+  \uses{def:runPebbleGame, lem:pebble-game-invariants}
+  By \cref{lem:pebble-game-invariants} Invariant~(4) applied to
+  $D$ at termination, every subset $V' \subseteq V$ in the relevant
+  size range satisfies $\mathrm{span}_D(V') \le k|V'| - \ell$.
+  Since $\underline{D} = E(G)$, this is exactly $|\edgesIn[G]{V'}|
+  \le k|V'| - \ell$, i.e.\ $G$ is $(k, \ell)$-sparse on $V'$.
+\end{proof}
+
+\subsection{Completeness}
+\label{sec:pebble-game-completeness}
+
+The harder direction shows that the algorithm cannot reject any
+edge of a $(k, \ell)$-sparse graph. The argument routes through
+Lee--Streinu Lemma~13: if the candidate edge $\{u, v\}$ is
+independent (in the matroid sense), then a free pebble can be
+brought to $u$ or $v$ from within $\mathrm{Reach}_D(u) \cup
+\mathrm{Reach}_D(v)$ without disturbing the other endpoint's count.
+Iterating produces the $\ell + 1$ pebbles required to insert.
+
+\begin{lemma}[Independent edges yield reachable pebbles]
+  \label{lem:pebble-game-independent-brings-pebble}
+  \uses{def:partial-orientation, def:tryAddEdge,
+    lem:pebble-game-invariants, def:isSparse}
+  Let $D$ be a partial orientation on $V$ reachable as in
+  \cref{lem:pebble-game-invariants}, $\{u, v\}$ a candidate edge
+  not in $\underline{D}$, and $V' := \mathrm{Reach}_D(u) \cup
+  \mathrm{Reach}_D(v)$. Suppose $\mathrm{fromEdgeSet}\,(\underline{D}
+  \cup \{\{u, v\}\})$ is $(k, \ell)$-sparse and
+  $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) < \ell + 1$.
+  Then there is a vertex $w \in V' \setminus \{u, v\}$ with
+  $\mathrm{peb}_{D, k}(w) \ge 1$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pebble-game-invariants, def:isSparse}
+  By the definition of reachability closure, $\mathrm{out}_D(V')
+  = 0$. Invariant~(3) of \cref{lem:pebble-game-invariants} gives
+  $\mathrm{peb}_{D, k}(V') \ge \ell$. Independence of $\{u, v\}$
+  with respect to $\underline{D}$ (the sparsity hypothesis after
+  insertion) plus the failure to immediately satisfy the
+  $\ge \ell + 1$ threshold strengthens this to $\mathrm{peb}_{D, k}
+  (V') \ge \ell + 1$ by an $I$-component / block argument analogous
+  to the Phase~7 maximal block scaffolding
+  (\cref{lem:isTightOn-union-inter-of-pair}; here applied to the
+  orientation's underlying graph in place of a static sparse graph).
+  Subtracting $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) <
+  \ell + 1$ leaves at least one pebble distributed over
+  $V' \setminus \{u, v\}$, supplying the required $w$. Compare
+  Lee--Streinu Lemma 13.
+\end{proof}
+
+\begin{lemma}[Pebble game accepts iff edge is independent]
+  \label{lem:pebble-game-tryAddEdge-iff-independent}
+  \uses{def:tryAddEdge, lem:pebble-game-independent-brings-pebble,
+    lem:pebble-game-invariants, def:isSparse}
+  Let $D$ be a partial orientation reachable as above and $\{u, v\}$
+  a candidate edge with $\{u, v\} \notin \underline{D}$. Then
+  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\} = \mathrm{Sum.inl}\,D'$
+  if and only if $\mathrm{fromEdgeSet}\,(\underline{D} \cup
+  \{\{u, v\}\})$ is $(k, \ell)$-sparse.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pebble-game-independent-brings-pebble,
+    lem:pebble-game-invariants}
+  $(\Leftarrow)$: iterate
+  \cref{lem:pebble-game-independent-brings-pebble} to bring pebbles
+  into $\{u, v\}$ until the threshold is met; the outer-loop
+  termination measure of \cref{def:tryAddEdge} bounds the number
+  of iterations by $\ell + 1$, and each application preserves
+  $(k, \ell)$-sparsity of $\underline{D} \cup \{\{u, v\}\}$.
+  $(\Rightarrow)$: a successful insertion produces $D'$ with
+  $\underline{D'} = \underline{D} \cup \{\{u, v\}\}$ and $D'$
+  satisfies Invariant~(4) by \cref{lem:pebble-game-invariants}
+  (which now applies to $D'$ since the insertion was performed
+  under the threshold precondition). Compare Lee--Streinu Lemma 14.
+\end{proof}
+
+\begin{lemma}[Failure produces a blocking witness]
+  \label{lem:pebble-game-failure-witness}
+  \uses{def:tryAddEdge, def:blockingWitness,
+    lem:pebble-game-invariants}
+  Let $D$ be a partial orientation reachable as above, $\{u, v\}$
+  a candidate edge, and $V' := \mathrm{Reach}_D(u) \cup
+  \mathrm{Reach}_D(v)$. If $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}
+  = \mathrm{Sum.inr}\,V'$, then $|\{e \in \underline{D} : e
+  \subseteq V'\}| + 1 > k|V'| - \ell$ in $\mathrm{fromEdgeSet}\,
+  (\underline{D} \cup \{\{u, v\}\})$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:pebble-game-invariants}
+  At failure, both DFS searches return empty, so
+  $\mathrm{out}_D(V') = 0$ and $\mathrm{peb}_{D, k}(V') \le \ell$
+  (every reachable vertex from $u$ or $v$ has zero free pebbles
+  except possibly $u, v$ themselves, which together hold at most
+  $\ell$). Invariant~(2) gives $\mathrm{span}_D(V') = k|V'| -
+  \mathrm{peb}(V') - \mathrm{out}(V') \ge k|V'| - \ell$; combined
+  with Invariant~(4) ($\mathrm{span}_D(V') \le k|V'| - \ell$),
+  equality holds: $\mathrm{span}_D(V') = k|V'| - \ell$ (i.e.\ $V'$
+  is a \emph{block} of the orientation). Adding $\{u, v\}$ to
+  $\underline{D}$ adds one edge inside $V'$, producing $|\{e :
+  e \subseteq V'\}| = k|V'| - \ell + 1$.
+\end{proof}
+
+\subsection{Correctness theorem}
+\label{sec:pebble-game-correctness}
+
+The certificate-form statement of Lee--Streinu Theorem~8 in the
+matroidal regime: $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
+$\mathrm{Sum.inl}\,D$ exactly when $G$ is $(k, \ell)$-sparse, and
+returns $\mathrm{Sum.inr}\,W$ with $W$ a genuine blocking witness
+otherwise.
+
+\begin{theorem}[Pebble game correctness, certificate form]
+  \label{thm:pebble-game-correct}
+  \uses{def:runPebbleGame, def:blockingWitness, def:isSparse,
+    thm:pebble-game-soundness,
+    lem:pebble-game-tryAddEdge-iff-independent,
+    lem:pebble-game-failure-witness}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
+  integers with $\ell < 2k$. Then:
+  \begin{enumerate}
+    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{Sum.inl}\,
+      D$, then $G$ is $(k, \ell)$-sparse and $\underline{D} = E(G)$.
+    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{Sum.inr}\,
+      W$, then $W$ is a blocking witness for $G$, so $G$ is not
+      $(k, \ell)$-sparse.
+  \end{enumerate}
+  In particular, $G$ is $(k, \ell)$-sparse if and only if there
+  exists $D$ with $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{Sum.inl}\,D$.
+\end{theorem}
+\begin{proof}
+  \uses{thm:pebble-game-soundness,
+    lem:pebble-game-tryAddEdge-iff-independent,
+    lem:pebble-game-failure-witness}
+  Part (1) is \cref{thm:pebble-game-soundness} together with the
+  invariant $\underline{D} = E(G)$ enforced by the fold (every edge
+  of $G$ is consumed). Part (2) follows from
+  \cref{lem:pebble-game-failure-witness} applied at the failure
+  point, together with the IH that the accepted edges before
+  failure form a $(k, \ell)$-sparse subgraph $H \subseteq G$ (by
+  iterated application of
+  \cref{lem:pebble-game-tryAddEdge-iff-independent}); the union of
+  $H$'s edges within $V'$ plus the rejected edge $\{u, v\}$
+  saturates $\edgesIn[G]{V'}$ above the sparsity bound. The biconditional
+  follows by case-splitting on the disjoint $\mathrm{Sum}$ output.
+\end{proof}
+
+\subsection{Matroidal-independence corollary}
+\label{sec:pebble-game-matroid}
+
+Translating the correctness theorem through the $(k, \ell)$-count
+matroid identification of \cref{sec:count-matroid} gives the
+algorithmic characterisation of independence in the count matroid:
+the pebble game decides matroidal independence.
+
+\begin{corollary}[Pebble-game certificate of matroidal independence]
+  \label{cor:pebble-game-countMatroid-indep}
+  \uses{thm:pebble-game-correct, def:countMatroid,
+    thm:countMatroid-indep-iff}
+  Let $V$ be finite and $k, \ell$ integers with $\ell < 2k$. For
+  every $G : \mathrm{SimpleGraph}\,V$, the edge set $E(G)$ is
+  independent in the $(k, \ell)$-count matroid
+  $\mathrm{countMatroid}\,V\,k\,\ell$
+  (\cref{def:countMatroid}) if and only if
+  $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
+  $\mathrm{Sum.inl}\,D$ for some partial orientation $D$.
+\end{corollary}
+\begin{proof}
+  \uses{thm:pebble-game-correct, thm:countMatroid-indep-iff}
+  By \cref{thm:countMatroid-indep-iff}, $E(G)$ is independent in
+  the count matroid iff $G$ is $(k, \ell)$-sparse. By
+  \cref{thm:pebble-game-correct}, the latter holds iff the pebble
+  game succeeds.
+\end{proof}
+
+\emph{Special case: planar rigidity.} At $(k, \ell) = (2, 3)$,
+\cref{cor:pebble-game-countMatroid-indep} composed with the
+matroid identification of \cref{thm:rigidityMatroid-indep-iff-rowIndependent}
+gives an algorithmic decision procedure for membership in the
+planar rigidity matroid $\mathcal{R}(V)$
+(\cref{def:rigidityMatroid}). Restricting further to spanning
+subgraphs $H \subseteq G$ with $|E(H)| = 2|V| - 3$ decides the
+Laman property (\cref{def:isLaman}). This is the Jacobs--Hendrickson
+$(2, 3)$-pebble game~\cite{jacobsHendrickson1997} as the named
+algorithmic specialisation of the present chapter's main theorem.
