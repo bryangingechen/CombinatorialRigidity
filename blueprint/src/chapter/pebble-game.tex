@@ -785,16 +785,26 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   \leanok
   \uses{def:tryAddEdge, def:blockingWitness,
     lem:pebble-game-invariants}
-  Let $D$ be a partial orientation reachable as above and $\{u, v\}$
-  a candidate edge fresh w.r.t.\ $\underline{D}$ in the matroidal
-  regime $\ell < 2k$, and write $G$ for $\mathrm{fromEdgeSet}\,
-  (\underline{D} \cup \{\{u, v\}\})$. If $\mathrm{tryAddEdge}\,k\,
-  \ell\,D\,\{u, v\}$ rejects (returns $\mathrm{none}$), then there
-  exists $V' \subseteq V$ with $\ell \le k|V'|$ and
+  Let $D$ be a $(k, \ell)$-reachable partial orientation,
+  $\{u, v\}$ a candidate edge, and $G$ a finite simple graph
+  containing $\{u, v\}$ and every edge of $\underline{D}$
+  (i.e.\ $\underline{D} \subseteq E(G)$ and $\{u, v\} \in E(G)$),
+  in the matroidal regime $\ell < 2k$. If $\mathrm{tryAddEdge}\,
+  k\,\ell\,D\,\{u, v\}$ rejects (returns $\mathrm{none}$), then
+  there exists $V' \subseteq V$ with $\ell \le k|V'|$ and
   $k|V'| < |\edgesIn[G]{V'}| + \ell$. The witness is
   $V' := \mathrm{Reach}_{D_0}(u) \cup \mathrm{Reach}_{D_0}(v)$,
   taken at the failure-point orientation $D_0$ reached from $D$
-  through the algorithm's recursive path-reversal steps.
+  through the algorithm's recursive path-reversal steps. The
+  freshness $\{u, v\} \notin \underline{D}$ is derived inside
+  the proof from the algorithmic preconditions $(u, v),\,
+  (v, u) \notin D.\mathrm{arcs}$; we do not require it as a separate
+  hypothesis. The subset hypothesis is stated this way (rather
+  than the tight equality $E(G) = \underline{D} \cup \{\{u, v\}\}$)
+  so the fold-level consumer can apply this lemma at a failure
+  step of $\mathrm{runPebbleGame}$ against the full input graph,
+  whose edge set strictly extends $\underline{D}$ plus the
+  candidate at any intermediate step.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -824,7 +834,7 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   post-insertion bridge $|\edgesIn[G]{V'}| \ge
   \mathrm{span}_{D_0}(V') + 1$
   (\cref{lem:pebble-game-independent-brings-pebble-graph}'s
-  \texttt{span\_succ\_le\_edgesIn\_ncard\_of\_insert}) yields
+  \texttt{span\_succ\_le\_edgesIn\_ncard\_of\_subset}) yields
   $|\edgesIn[G]{V'}| + \ell \ge k|V'| + 1$. Size hypothesis
   $\ell \le k|V'|$ from $|V'| \ge 2$ (since $u, v \in V'$, $u \neq v$)
   plus $\ell < 2k$.

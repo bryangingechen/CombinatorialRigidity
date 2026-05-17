@@ -315,6 +315,68 @@ ground truth.
 
 ---
 
+## Strengthen the existing lemma, don't proliferate variants
+
+When a downstream proof needs a lemma close to one that already
+exists but with slightly different hypotheses — typically *weaker*
+hypotheses, e.g. a subset where the existing lemma takes an
+equality — the default move is to **broaden the existing lemma in
+place**, not to add a `_foo_of_X` variant alongside it.
+
+Concretely:
+
+- If the new hypotheses *strictly imply* the old ones, and the
+  existing proof body still works (perhaps with a one-line shim at
+  the spot where the old hypothesis was extracted), the lemma is
+  strictly more general under the new signature. Update its
+  signature, update its call sites to pass the now-broader
+  hypotheses (which the existing callers already had under the
+  tighter form), and the project's API surface stays small.
+- If the lemma's *conclusion* would weaken under the new
+  hypotheses, or if the proof needs a real change to accommodate
+  the wider input, then it's a different lemma — a new variant is
+  fine, but think first about whether the existing lemma should
+  just *call* the new general one as a one-line corollary, again
+  keeping a single authoritative statement.
+
+The failure mode this rule guards against is API drift — two near-
+identical lemmas (`foo_of_eq` and `foo_of_subset`) coexisting,
+each used by a different caller, until a third caller can't decide
+which to invoke and the project ends up with three. Phase 9's
+`span_succ_le_edgesIn_ncard_of_insert` → `_of_subset` refactor
+(equality `G.edgeFinset = insert s(u, v) D.underline` →
+membership + subset, dropping the redundant `h_fresh` parameter
+that was now derivable from existing algorithmic preconditions) is
+the canonical example: the conclusion is identical, callers pass
+slightly different but equivalent witnesses, and the fold-level
+consumer can now apply the lemma directly instead of building an
+intermediate-graph shim.
+
+This is independent of whether the new caller is in-phase or
+upstream. The same rule applies when a mathlib mirror lemma's
+signature turns out to be tighter than needed — relax in place,
+update the one or two existing callers.
+
+There are two exceptions worth calling out, both narrow:
+
+1. **Mathlib upstream candidates.** A mirror lemma whose signature
+   tries to *match* the eventual mathlib statement should not be
+   broadened past what mathlib would accept — the point of the
+   mirror is copy-paste-ability. Broaden only if the result still
+   reads as a plausible upstream addition.
+2. **Already-published API surfaces with many callers.** The cost
+   of updating dozens of callsites can outweigh the cost of one
+   variant. This is rare in this project (most "many caller"
+   lemmas are mathlib's, not ours).
+
+If you find yourself reaching for the variant route as "the easy
+path" — the friction signal is exactly the one this rule names —
+go back and broaden instead. The next agent shouldn't have to
+learn which of `foo_of_eq` / `foo_of_subset` / `foo_of_*` is the
+canonical entry point for what is mathematically one lemma.
+
+---
+
 ## Pebble-game style island: `[Fintype V] [DecidableEq V]`
 
 The pebble-game line of work — `CombinatorialRigidity/Search/DFS.lean`

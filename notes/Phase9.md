@@ -412,6 +412,25 @@ discharge — algebraic core is regime-agnostic. Blueprint
 dep-graph's red-front advances to the wrapper-level assembly
 `thm:pebble-game-correct`.
 
+**Per-edge witness extraction strengthened** (`span_succ_le_edgesIn_ncard_of_insert`
+→ `span_succ_le_edgesIn_ncard_of_subset`; `tryAddEdgeWith_eq_none_imp_exists_witness`
+relaxed in place). The post-insertion sparsity bridge and the per-edge
+failure-witness lemma both took a tight-equality hypothesis
+`G.edgeFinset = insert s(u, v) D.underline`. The proofs only used two
+consequences of that equality — `s(u, v) ∈ G.edgeFinset` and
+`D.underline ⊆ G.edgeFinset` — so both signatures broaden to take
+those directly. The redundant `h_fresh : s(u, v) ∉ D.underline`
+parameter on the per-edge lemma also drops; it is now derived inside
+the case5 leaf from the existing `(u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs`
+algorithmic preconditions via `mem_underline`. The change is a
+preparatory refactor: at the fold-level failure point, the
+running orientation's underline is a strict subset of the full
+input graph's edge set (the unconsumed list tail is still ahead),
+so the broader form can be applied directly without constructing an
+intermediate-graph + subgraph-monotonicity shim. See `../DESIGN.md`
+*Strengthen the existing lemma, don't proliferate variants* for the
+general rule this refactor exemplifies. Build + lint clean.
+
 Next concrete commit: `thm:pebble-game-correct` (certificate-form
 correctness theorem). Two-part assembly on top of soundness +
 failure-witness:
@@ -420,12 +439,12 @@ failure-witness:
 * (2) `runPebbleGame G k ℓ = none → ¬ G.IsSparse k ℓ`: trace the fold
   through `runPebbleGameWith` to a specific failure-point step where
   `tryAddEdgeWith` returns `none` on some intermediate state `Dmid`;
-  apply `tryAddEdgeWith_eq_none_imp_exists_witness` to get a witness
-  `V'` against the intermediate graph `G' := fromEdgeSet (insert s(u,v)
-  Dmid.underline)`; lift the witness to `G` via the subgraph
-  monotonicity `Dmid.underline ⊆ G.edgeFinset` (from
+  apply the now-broadened `tryAddEdgeWith_eq_none_imp_exists_witness`
+  directly against the input graph `G` (the membership `s(u, v) ∈
+  G.edgeFinset` is a one-line lookup from the input list, the subset
+  `Dmid.underline ⊆ G.edgeFinset` is preserved by the fold via
   `runPebbleGameWith_underline_subset`'s ⊆ half plus
-  `tryAddEdgeWith_underline`). Likely requires a new fold-level helper
+  `tryAddEdgeWith_underline`). Requires a new fold-level helper
   `runPebbleGameWith_eq_none_imp_exists_witness` to extract the
   intermediate failure point. After that, the matroidal-independence
   corollary `cor:pebble-game-countMatroid-indep` is a one-liner via

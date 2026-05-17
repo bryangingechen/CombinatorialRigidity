@@ -1901,16 +1901,25 @@ lemma outOn_reach_union_eq_zero (D : PartialOrientation V) (u v : V) :
 
 omit [Fintype V] in
 /-- Post-insertion sparsity bridge: when `s(u, v)` is fresh w.r.t.
-`D.underline`, both endpoints `u, v` are in `V'`, and `G.edgeFinset =
-insert s(u, v) D.underline`, the `(G.edgesIn ↑V').ncard` count exceeds
-the orientation's span on `V'` by at least one: `D.span V' + 1 ≤
-(G.edgesIn ↑V').ncard`. The `+ 1` is the candidate edge itself; the
-underlying span is included via the Sym2-image of `D.spanArcs V'`,
-which is disjoint from `s(u, v)` by freshness. -/
-lemma span_succ_le_edgesIn_ncard_of_insert (D : PartialOrientation V)
+`D.underline`, both endpoints `u, v` are in `V'`, the candidate edge
+`s(u, v)` sits in `G.edgeFinset`, and `D.underline ⊆ G.edgeFinset`,
+the `(G.edgesIn ↑V').ncard` count exceeds the orientation's span on
+`V'` by at least one: `D.span V' + 1 ≤ (G.edgesIn ↑V').ncard`. The
+`+ 1` is the candidate edge itself; the underlying span is included
+via the Sym2-image of `D.spanArcs V'`, which is disjoint from
+`s(u, v)` by freshness.
+
+Stated with `s(u, v) ∈ G.edgeFinset ∧ D.underline ⊆ G.edgeFinset`
+rather than the tight `G.edgeFinset = insert s(u, v) D.underline`: the
+proof only needs the inclusions, and the relaxed form is what
+`tryAddEdgeWith_eq_none_imp_exists_witness`'s fold-level consumer
+threads through `runPebbleGameWith`'s recursion (where `G` has more
+edges than the running orientation's underline plus the candidate). -/
+lemma span_succ_le_edgesIn_ncard_of_subset (D : PartialOrientation V)
     {u v : V} (h_fresh : s(u, v) ∉ D.underline)
     {G : SimpleGraph V} [Fintype G.edgeSet]
-    (hG : G.edgeFinset = insert s(u, v) D.underline)
+    (h_uv : s(u, v) ∈ G.edgeFinset)
+    (h_sub : D.underline ⊆ G.edgeFinset)
     {V' : Finset V} (hu : u ∈ V') (hv : v ∈ V') :
     D.span V' + 1 ≤ (G.edgesIn ↑V').ncard := by
   set S : Finset (Sym2 V) := (D.spanArcs V').image (fun p => s(p.1, p.2)) with hS
@@ -1920,15 +1929,11 @@ lemma span_succ_le_edgesIn_ncard_of_insert (D : PartialOrientation V)
     obtain ⟨⟨a, b⟩, hab, rfl⟩ := he
     simp only [spanArcs, Finset.mem_filter] at hab
     obtain ⟨h_arc, ha, hb⟩ := hab
-    have h_edge : s(a, b) ∈ G.edgeSet := by
-      rw [← G.mem_edgeFinset, hG]
-      exact Finset.mem_insert_of_mem (D.mem_underline.mpr (Or.inl h_arc))
+    have h_edge : s(a, b) ∈ G.edgeSet :=
+      G.mem_edgeFinset.mp (h_sub (D.mem_underline.mpr (Or.inl h_arc)))
     exact G.mk_mem_edgesIn h_edge ha hb
-  have h_uv_in : s(u, v) ∈ G.edgesIn ↑V' := by
-    have h_edge : s(u, v) ∈ G.edgeSet := by
-      rw [← G.mem_edgeFinset, hG]
-      exact Finset.mem_insert_self _ _
-    exact G.mk_mem_edgesIn h_edge hu hv
+  have h_uv_in : s(u, v) ∈ G.edgesIn ↑V' :=
+    G.mk_mem_edgesIn (G.mem_edgeFinset.mp h_uv) hu hv
   have h_uv_notin_S : s(u, v) ∉ S := by
     intro h_in
     rw [hS, Finset.mem_image] at h_in
@@ -1971,7 +1976,8 @@ instantiating `V' = D.reach u ∪ D.reach v`: the closure
 and the post-insertion sparsity bound `D.span V' + 1 + ℓ ≤ k * V'.card`
 combines `G.IsSparse` at `V'` (under the size hypothesis from the
 matroidal regime `ℓ < 2k` and `|V'| ≥ 2`) with the
-`span_succ_le_edgesIn_ncard_of_insert` bridge. -/
+`span_succ_le_edgesIn_ncard_of_subset` bridge (instantiated from the
+equality `hG` via `Finset.mem_insert_self` / `Finset.mem_insert_of_mem`). -/
 lemma Reachable.independent_brings_pebble_simpleGraph_form
     {k ℓ : ℕ} {D : PartialOrientation V} (hR : Reachable k ℓ D)
     {u v : V} (huv : u ≠ v) (h_fresh : s(u, v) ∉ D.underline)
@@ -1999,8 +2005,10 @@ lemma Reachable.independent_brings_pebble_simpleGraph_form
       exact Nat.mul_le_mul_left k h_card
     omega
   have h_closed : D.outOn V' = 0 := D.outOn_reach_union_eq_zero u v
+  have h_uv : s(u, v) ∈ G.edgeFinset := hG ▸ Finset.mem_insert_self _ _
+  have h_sub : D.underline ⊆ G.edgeFinset := fun _ he => hG ▸ Finset.mem_insert_of_mem he
   have h_bridge : D.span V' + 1 ≤ (G.edgesIn ↑V').ncard :=
-    D.span_succ_le_edgesIn_ncard_of_insert h_fresh hG hu hv
+    D.span_succ_le_edgesIn_ncard_of_subset h_fresh h_uv h_sub hu hv
   have h_sparse_V' : (G.edgesIn ↑V').ncard + ℓ ≤ k * V'.card := hSparse V' h_size
   have h_post_sparse : D.span V' + 1 + ℓ ≤ k * V'.card := by omega
   exact hR.independent_brings_pebble huv hu hv h_closed h_post_sparse h_below
@@ -2139,17 +2147,27 @@ lemma tryAddEdgeWith_isSparse {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
 
 /-- **Failure-witness extraction at the per-edge layer** (blueprint
 `lem:pebble-game-failure-witness`). Given a `(k, ℓ)`-reachable orientation `D`
-and a candidate edge `s(u, v)` fresh w.r.t. `D.underline` in the matroidal
-regime `ℓ < 2k`, if `D.tryAddEdgeWith` returns `none` and `G.edgeFinset =
-insert s(u, v) D.underline`, then there exists a vertex subset `V'` whose
-count exceeds the sparsity bound: `k * V'.card < (G.edgesIn ↑V').ncard + ℓ`
-under the size hypothesis `ℓ ≤ k * V'.card`. Equivalently, `G` is not
-`(k, ℓ)`-sparse.
+and a candidate edge `s(u, v)` whose underlying ambient graph `G` already
+contains `s(u, v)` and every edge of `D.underline`, in the matroidal regime
+`ℓ < 2k`, if `D.tryAddEdgeWith` returns `none` then there exists a vertex
+subset `V'` whose count exceeds the sparsity bound:
+`k * V'.card < (G.edgesIn ↑V').ncard + ℓ` under the size hypothesis
+`ℓ ≤ k * V'.card`. Equivalently, `G` is not `(k, ℓ)`-sparse.
+
+The freshness `s(u, v) ∉ D.underline` is derived from the algorithmic
+preconditions `(u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs` (via `mem_underline`); we
+do not require it as a separate hypothesis. The ambient-graph hypothesis is
+stated as `s(u, v) ∈ G.edgeFinset ∧ D.underline ⊆ G.edgeFinset` (rather than
+the tight equality `G.edgeFinset = insert s(u, v) D.underline`) so the
+fold-level consumer `runPebbleGameWith_eq_none_imp_exists_witness` can
+thread it through `runPebbleGameWith`'s structural recursion against the
+full input graph (whose edge set strictly extends `D.underline` plus the
+candidate at any intermediate step).
 
 Proof by `tryAddEdgeWith.induct`'s five-case dispatch:
 * (case1, case2) Threshold met: function returns `some`, contradicting `h`.
 * (case3, case4) DFS success at `u` or `v`: recurse via the IH on
-  `r.newOrient`. Reachability + freshness + edge-set hypotheses transport via
+  `r.newOrient`. Reachability + underline-subset transport via
   `TryReachPebbleResult.reachable_newOrient` /
   `TryReachPebbleResult.underline_newOrient_eq`.
 * (case5) Both DFS searches fail: take `V' := D.reach u ∪ D.reach v`. The
@@ -2160,7 +2178,7 @@ Proof by `tryAddEdgeWith.induct`'s five-case dispatch:
   `w ≠ u, v`, so `D.pebOn k V' = D.peb k u + D.peb k v ≤ ℓ` (the latter from
   the below-threshold hypothesis `¬ (ℓ + 1 ≤ D.peb k u + D.peb k v)`).
   Invariant (2) then gives `D.span V' + (D.peb k u + D.peb k v) = k * V'.card`,
-  and `span_succ_le_edgesIn_ncard_of_insert` lifts to
+  and `span_succ_le_edgesIn_ncard_of_subset` lifts to
   `(G.edgesIn ↑V').ncard ≥ D.span V' + 1`. Combining:
   `(G.edgesIn ↑V').ncard + ℓ ≥ D.span V' + 1 + ℓ ≥ k * V'.card + 1`.
 
@@ -2178,8 +2196,8 @@ lemma tryAddEdgeWith_eq_none_imp_exists_witness {k ℓ : ℕ} {u v : V} (huv : u
     (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
     (h_outle : ∀ x, D.out x ≤ k)
     (hD : Reachable k ℓ D)
-    (h_fresh : s(u, v) ∉ D.underline)
-    (hG : G.edgeFinset = insert s(u, v) D.underline)
+    (h_uv : s(u, v) ∈ G.edgeFinset)
+    (h_sub : D.underline ⊆ G.edgeFinset)
     (h : D.tryAddEdgeWith k ℓ u v huv hnotin hnotin_rev h_outle toSucc h_toSucc
       = none) :
     ∃ V' : Finset V, ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ := by
@@ -2204,11 +2222,9 @@ lemma tryAddEdgeWith_eq_none_imp_exists_witness {k ℓ : ℕ} {u v : V} (huv : u
       have := hP_decomp.1.1
       omega
     have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
-    have h_fresh_new : s(u, v) ∉ r.newOrient.underline := by
-      rw [r.underline_newOrient_eq]; exact h_fresh
-    have hG_new : G.edgeFinset = insert s(u, v) r.newOrient.underline := by
-      rw [r.underline_newOrient_eq]; exact hG
-    exact ih hR_new h_fresh_new hG_new h
+    have h_sub_new : r.newOrient.underline ⊆ G.edgeFinset := by
+      rw [r.underline_newOrient_eq]; exact h_sub
+    exact ih hR_new h_sub_new h
   case case4 D hnotin hnotin_rev h_outle hthr P hu_none r hr_eq ih =>
     rw [tryAddEdgeWith, dif_neg hthr] at h
     simp only at h
@@ -2221,12 +2237,15 @@ lemma tryAddEdgeWith_eq_none_imp_exists_witness {k ℓ : ℕ} {u v : V} (huv : u
       have := hP_decomp.1.1
       omega
     have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
-    have h_fresh_new : s(u, v) ∉ r.newOrient.underline := by
-      rw [r.underline_newOrient_eq]; exact h_fresh
-    have hG_new : G.edgeFinset = insert s(u, v) r.newOrient.underline := by
-      rw [r.underline_newOrient_eq]; exact hG
-    exact ih hR_new h_fresh_new hG_new h
+    have h_sub_new : r.newOrient.underline ⊆ G.edgeFinset := by
+      rw [r.underline_newOrient_eq]; exact h_sub
+    exact ih hR_new h_sub_new h
   case case5 D hnotin hnotin_rev h_outle hthr P hu_none hv_none =>
+    -- Freshness from the algorithmic preconditions on `D`'s arcs.
+    have h_fresh : s(u, v) ∉ D.underline := fun h_mem => by
+      rcases D.mem_underline.mp h_mem with hm | hm
+      · exact hnotin hm
+      · exact hnotin_rev hm
     -- Substantive case: build the witness V' := D.reach u ∪ D.reach v.
     set V' := D.reach u ∪ D.reach v with hV'_def
     have hu_V' : u ∈ V' := Finset.mem_union.mpr (Or.inl (D.self_mem_reach u))
@@ -2287,7 +2306,7 @@ lemma tryAddEdgeWith_eq_none_imp_exists_witness {k ℓ : ℕ} {u v : V} (huv : u
     -- Invariant (2) gives span V' + (peb u + peb v) = k * V'.card.
     have h_inv2 := hD.pebOn_add_span_add_outOn V'
     -- The +1 bridge: (G.edgesIn ↑V').ncard ≥ D.span V' + 1.
-    have h_bridge := D.span_succ_le_edgesIn_ncard_of_insert h_fresh hG hu_V' hv_V'
+    have h_bridge := D.span_succ_le_edgesIn_ncard_of_subset h_fresh h_uv h_sub hu_V' hv_V'
     refine ⟨V', h_size, ?_⟩
     -- Below-threshold from `hthr`: peb u + peb v ≤ ℓ.
     omega
