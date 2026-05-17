@@ -74,7 +74,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 8. Linear-matroid framing | `LinearRigidityMatroid.lean` | ✓ Complete (see `notes/Phase8.md`) |
 | ⋮ Cleanup round (post-Phase-8) | project-wide (light scope) + import-structure audit | ✓ Complete (see `notes/Phase8-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-8) | `Sparsity` / `Henneberg` splits + module-system conversion | ✓ Complete (see `notes/Phase8-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| ⋮ Pre-Phase-9 DFS warmup | `Search/DFS.lean` (new) | planning (see `notes/Phase9.md` §"Current state") |
+| ⋮ Pre-Phase-9 DFS warmup | `Search/DFS.lean` | in progress (see `notes/Phase9.md` §"Current state") |
 | 9. Pebble game | `PebbleGame.lean` (new) | planning (see `notes/Phase9.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -278,8 +278,8 @@ corollary (`countMatroid.Indep` iff pebble-game-accepts) follows
 directly from Phase 7's `countMatroid_indep_iff`. A pre-phase
 **DFS warmup** lands first (`CombinatorialRigidity/Search/DFS.lean`,
 modelled on `Batteries.UnionFind`'s `termination_by` pattern, ~200–300
-LoC) to exercise the verified-iterative-graph-search infrastructure
-that has no precedent in mathlib. Chapter runs in **forward blueprint
+LoC) to exercise the verified-iterative-graph-search pattern in
+isolation. Chapter runs in **forward blueprint
 mode** with `blueprint/src/chapter/pebble-game.tex` as the
 authoritative dep-graph. See `notes/Phase9.md` for the full
 architectural-choice list, open questions, and hand-off; the

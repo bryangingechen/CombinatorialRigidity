@@ -2,3 +2,4 @@ import CombinatorialRigidity.CountMatroid
 import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.MatroidIdentification
+import CombinatorialRigidity.Search.DFS

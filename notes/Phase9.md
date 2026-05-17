@@ -35,9 +35,10 @@ the first Phase 9 commit.
 
 ## Current state
 
-Planning. Architectural choices below are settled before Phase 9
-opens; the lemma index will be filled in
-`chapter/pebble-game.tex` once the chapter lands. No Lean code yet.
+Planning. Pre-Phase-9 DFS warmup in progress (scaffold landed; see
+below). Architectural choices below are settled before Phase 9
+opens; the lemma index will be filled in `chapter/pebble-game.tex`
+once the chapter lands.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -46,16 +47,16 @@ a vertex subset $V'$ with $|E(G[V'])| > k|V'| - \ell$ (witness of
 non-sparsity). The matroidal-independence corollary against
 Phase 7's `CountMatroid` follows as a one-liner.
 
-**Pre-Phase-9 DFS warmup.** Before Phase 9 opens, a tightly-scoped
-verified-DFS exercise lands as a separate small artifact
+**Pre-Phase-9 DFS warmup.** A tightly-scoped verified-DFS exercise
+lands as a separate small artifact
 (`CombinatorialRigidity/Search/DFS.lean`, ~200–300 LoC, 1–2
-sessions). The only precedent in the immediate ecosystem is
-`Batteries.UnionFind` (Lean core has nothing relevant; mathlib's
-two DFSes are `partial def` inside tactic metaprogramming); the
-warmup exercises the `termination_by (Finset.univ \ visited).card`
-pattern in isolation and produces a reusable `reachableFinding`
-primitive (returning a witness directed walk on success) with
-soundness + completeness. The pebble game's `tryReachPebble`
+sessions). Pattern model is `Batteries.UnionFind`
+(`termination_by self.rankMax - self.rank x` — a strictly-decreasing
+numeric measure on a finite data structure); the warmup exercises
+the `termination_by (Finset.univ \ visited).card` pattern in
+isolation and produces a reusable `reachableFinding` primitive
+(returning a witness directed walk on success) with soundness +
+completeness. The pebble game's `tryReachPebble`
 specialises this (DFS + path reversal of the returned walk). The
 dep-graph anchor is the new short chapter
 `blueprint/src/chapter/dfs.tex` (\textit{Verified DFS interlude});
@@ -65,6 +66,20 @@ its two nodes `def:reachable-finding` and
 `def:tryReachPebble` `\uses{}` the correctness theorem. Logged
 inline here unless it grows beyond ~2 sessions, in which case
 promote to a dedicated `Phase9-warmup.md`.
+
+**DFS warmup progress (signature-only commit).** `Search/DFS.lean`
+now carries the `DirectedWalk` inductive type (indexed by endpoints,
+mirroring `SimpleGraph.Walk`) with `length` / `vertices` / `IsPath`
+accessors, plus `reachableFinding` + `reachableFinding_sound` /
+`reachableFinding_complete` as `sorry`-stubbed signatures. The
+typeclass shape `[Fintype V] [DecidableEq V]` is settled
+(see DESIGN.md *Pebble-game style island*; the DFS file is the
+first instance of the style island, so the note landed here). The
+predicate is `P : V → Bool` and the relation is presented as
+`succ : V → Finset V`; completeness is stated against
+`Relation.ReflTransGen` of `fun a b => b ∈ succ a`. Next commit
+fills the DFS body + termination measure; soundness +
+completeness follow in a third commit.
 
 ## Architectural choices made up front
 
@@ -168,7 +183,37 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Decisions made during this phase
 
-*(Empty — phase has not started.)*
+### DFS warmup (pre-Phase-9)
+
+- **Style island formalized in DESIGN.md.** Phase 9's architectural
+  choice 2 (`[Fintype V] [DecidableEq V]` end-to-end for the pebble-
+  game line) is now documented as a fixed section in `../DESIGN.md`
+  *Pebble-game style island*. The DFS file is the first instance of
+  the style island, so the note landed with the scaffold commit
+  rather than waiting for `PebbleGame.lean`. Both files (DFS warmup
+  + Phase 9 main) referenced.
+
+- **`DirectedWalk` is inductive, indexed by endpoints.** Mirroring
+  `SimpleGraph.Walk`, with `nil`/`cons` constructors and `length` /
+  `vertices` / `IsPath := vertices.Nodup` accessors. Rejected
+  alternative: `{ p : List V // p ≠ [] ∧ p.Chain' R ∧ … }` subtype —
+  more compact but noisier proof-engineering at every `cons` /
+  case-split. The inductive shape matches the project / mathlib idiom
+  for walks and keeps the API surface low.
+
+- **Relation as `succ : V → Finset V` plumbed via the predicate
+  `fun a b => b ∈ succ a`.** `DirectedWalk` itself stays parametric
+  over an abstract `R : V → V → Prop`; the DFS function passes the
+  out-neighbour-membership relation to it. This keeps `DirectedWalk`
+  reusable beyond DFS while letting the algorithm side take the
+  computable `Finset`-valued representation directly.
+
+- **Predicate `P : V → Bool`, completeness against `ReflTransGen`.**
+  `P : V → Bool` matches the blueprint exactly (decidable by
+  construction; `decide` fires). The completeness theorem quantifies
+  against `Relation.ReflTransGen (fun a b => b ∈ succ a) v w` rather
+  than via the walk type itself — separates "is reachable" from
+  "carries a walk witness" cleanly.
 
 ## Blockers / open questions
 
@@ -190,10 +235,10 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 - **Termination measure for `tryReachPebble`.** Path reversal in
   L-S is bounded informally by "at most $\ell$ DFS searches per
-  edge"; for Lean, an explicit decreasing measure is needed. The
-  only ecosystem precedent for a verified iterative-graph-state
-  algorithm is `Batteries.UnionFind` (`termination_by self.rankMax
-  - self.rank x`); model on that. For the inner DFS,
+  edge"; for Lean, an explicit decreasing measure is needed. Pattern
+  model is `Batteries.UnionFind` (`termination_by self.rankMax -
+  self.rank x` — a strictly-decreasing numeric measure on a finite
+  data structure). For the inner DFS,
   `(Finset.univ \ visited).card` is the natural measure (visited
   grows monotonically, vertex set is finite). For the outer
   `tryAddEdge` loop, `(ℓ + 1) - (peb u + peb v)` decreases per
@@ -223,4 +268,10 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Hand-off / next phase
 
-*(Empty — phase in planning.)*
+DFS warmup scaffold is in (`Search/DFS.lean`, sorry-stubbed signatures
++ `DirectedWalk` API; build + lint clean). Next concrete commit:
+fill `reachableFinding`'s body with the inner recursion + visited-set
+threading + `termination_by (Finset.univ \ visited).card`, leaving
+`reachableFinding_sound` / `reachableFinding_complete` as `sorry`.
+Smallest unit of forward progress; the soundness/completeness pair
+follows in a third commit once the body's recursion shape is fixed.

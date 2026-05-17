@@ -315,6 +315,39 @@ ground truth.
 
 ---
 
+## Pebble-game style island: `[Fintype V] [DecidableEq V]`
+
+The pebble-game line of work — `CombinatorialRigidity/Search/DFS.lean`
+(pre-Phase-9 verified DFS) and the forthcoming
+`CombinatorialRigidity/PebbleGame.lean` (Phase 9 main file) — is a
+deliberate style island. Both files take `[Fintype V] [DecidableEq V]`
+directly in their algorithm signatures and use `Finset.card`
+end-to-end.
+
+The rest of the project follows the `[Finite V]` + inline
+`Fintype.ofFinite V` bridge idiom (see *Typeclass shape for finiteness
+on `V`* above). The pebble-game files depart because:
+
+- The algorithm body builds `Finset (V × V)`-backed partial
+  orientations and iterates over `Finset V` out-neighbourhoods; the
+  state machine cannot run at `[Finite V]` strength (no `Finset.univ`,
+  no enumeration).
+- `#eval` and `decide` should actually fire on extracted certificates,
+  which requires the typeclasses end-to-end.
+- The certificate-form correctness theorems bridge to the
+  noncomputable `IsSparse` / `IsTight` statements via a thin shim
+  section; bridge instances propagate one-way (caller `[Fintype V]`
+  $\Rightarrow$ callee `[Finite V]` is automatic), so the style island
+  does not contaminate the rest of the project's API.
+
+This was foreshadowed in the typeclass-shape section's *Pebble-game
+pointer*: "lift signatures to `[Fintype V] [DecidableEq V]`" is
+forward-compatible with the present trajectory. The style-island
+form keeps that lift localized to the two files that need it rather
+than propagating it across the whole project.
+
+---
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually
@@ -325,14 +358,14 @@ to a fixed section above once a question is answered.
   Use `Option V`. The fresh vertex is `none`; old vertices embed via
   `some : V ↪ Option V`. Chosen over `V ⊕ Unit` for readability and over
   fixed-`V`-with-`v ∉ G.support` because the latter forces every move to
-  carry a freshness side-condition. Mathlib has no precedent for "add a
-  single vertex to a `SimpleGraph`"; `Option α` is the canonical "add
-  one element" idiom (cf. `Equiv.optionEquivSumPUnit`). Cost: chained
-  moves give types `Option (Option …)`; mitigated by working modulo
-  isomorphism in the Phase 5 induction. Companion decision: drop the
-  `Reachable` inductive in favour of `IsLaman.exists_typeI_or_typeII_reverse`
-  + strong induction on `Fintype.card V`, since heterogeneous-type
-  reachability has no mathlib precedent.
+  carry a freshness side-condition. `Option α` is the canonical "add
+  one element" idiom (cf. `Equiv.optionEquivSumPUnit`) and we use it
+  directly here. Cost: chained moves give types `Option (Option …)`;
+  mitigated by working modulo isomorphism in the Phase 5 induction.
+  Companion decision: drop the `Reachable` inductive in favour of
+  `IsLaman.exists_typeI_or_typeII_reverse` + strong induction on
+  `Fintype.card V`, since heterogeneous-type reachability would need
+  its own infrastructure to reason about.
 - ~~**`Reachable` inductive vs structural decomposition.**~~ **Resolved
   (Phase 3 start):** No `Reachable`. Phase 5's Laman's-theorem proof
   uses `IsLaman.exists_typeI_or_typeII_reverse` plus strong induction on

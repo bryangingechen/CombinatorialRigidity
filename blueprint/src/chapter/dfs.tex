@@ -9,15 +9,14 @@ predicate-based early termination; we formalize it once here, as a
 short interlude, and consume it as a black box in
 \cref{def:tryReachPebble}.
 
-Mathlib has no verified search algorithms in its
-\texttt{Combinatorics.SimpleGraph} hierarchy: all of its
+Mathlib's \texttt{Combinatorics.SimpleGraph}
 $\mathrm{Walk}$ / $\mathrm{Reachable}$ infrastructure is declarative
-(``a walk exists'', ``a reverse exists''), not algorithmic. The only
-ecosystem precedent for a verified iterative graph-state algorithm
-is \texttt{Batteries.UnionFind}, whose termination uses a
-strictly-decreasing numeric measure on the data structure. The DFS
-here follows the same pattern, with the strictly-decreasing measure
-specialised to a $\mathrm{Finset}$-cardinality on unvisited vertices.
+(``a walk exists'', ``a reverse exists''), not algorithmic. We model
+termination on \texttt{Batteries.UnionFind}, whose
+\texttt{termination\_by self.rankMax - self.rank x} is a
+strictly-decreasing numeric measure on a finite data structure;
+here the measure is specialised to a $\mathrm{Finset}$-cardinality
+on unvisited vertices.
 
 \begin{definition}[Directed walk]
   \label{def:directed-walk}
