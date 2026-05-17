@@ -397,9 +397,18 @@ math-layer users reach for `tryReachPebble` and pay nothing extra.
 
 Subsequent pebble-game layers (`tryAddEdge`, `runPebbleGame`) follow
 the same `-With` / math-layer-wrapper split, propagating the
-caller-supplied `succ` through. See `notes/FRICTION.md` *[resolved]
-`Finset.toList` is noncomputable — math/exec layer split* for the
-design history.
+caller-supplied `succ` through. At `tryAddEdge` the recursive call's
+orientation `D'` is the path-reversal of `D` and therefore different
+from `D`; `succ : V → List V` would no longer match `D'.arcs`. The
+form generalises to an orientation-indexed
+`toSucc : PartialOrientation V → V → List V` with a universally-
+quantified agreement witness
+`∀ D' a b, b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs` — one `toSucc` good for
+the entire recursion tree. The math-layer wrapper plugs in
+`fun D' => D'.outList`; IO callers supply a list-shaped enumeration
+parametrised on `D'`. The pattern is the same, just lifted one
+abstraction level. See `notes/FRICTION.md` *[resolved] `Finset.toList`
+is noncomputable — math/exec layer split* for the design history.
 
 ---
 

@@ -498,6 +498,46 @@ lemma pebOn_add_outOn_reverse_eq
   rw [D.span_reverse_eq p hp V'] at h_D'
   omega
 
+/-- A directed pair `(a, b)` not in `D.arcs` and whose reverse `(b, a)` is also
+not in `D.arcs` remains absent from `D.reverse p hp`'s arcs. Path reversal
+removes some arcs and inserts their reverses; an arc `(a, b)` could re-enter
+only if `(b, a)` was on the path (hence in `D.arcs`), so the second hypothesis
+rules this out. Consumed by `tryAddEdge`'s recursive call to thread the
+"candidate edge fresh" preconditions across path-reversal steps. -/
+lemma notMem_arcs_reverse_of_notMem
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    {a b : V} (h : (a, b) ∉ D.arcs) (h_rev : (b, a) ∉ D.arcs) :
+    (a, b) ∉ (D.reverse p hp).arcs := by
+  rw [arcs_reverse, Finset.mem_union, Finset.mem_sdiff]
+  rintro (⟨h_in, _⟩ | h_rev')
+  · exact h h_in
+  · rw [p.mem_reversedArcsFinset_iff] at h_rev'
+    exact h_rev (p.mem_arcsFinset_imp h_rev')
+
+/-- Path reversal preserves the per-vertex out-degree bound `D.out x ≤ k`,
+provided the tail's out-degree was strictly below `k` (the algorithmic
+precondition that makes the new tail-source arc fit within budget). The only
+vertex whose out-count can rise is the path's tail `w`, and the hypothesis
+`D.out w < k` absorbs the `+1`. Consumed by `tryAddEdge`'s recursive call to
+thread Invariant (1)'s out-degree bound across path-reversal steps. -/
+lemma out_reverse_le_of_outle
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    {k : ℕ} (h_outle : ∀ x, D.out x ≤ k) (hw : D.out w < k) (x : V) :
+    (D.reverse p hp).out x ≤ k := by
+  have h_add := D.out_reverse_add p hp x
+  have h_x := h_outle x
+  -- The unified equation `(reverse).out x + L = D.out x + R` with `L, R ∈ {0, 1}`
+  -- means `(reverse).out x ≤ D.out x + 1`, with the `+1` only when `x = w`.
+  split_ifs at h_add with hL hR hR
+  all_goals try omega
+  -- The remaining case is `hL = false, hR = true`: `x ∈ vertices ∧ x ≠ u` (so on
+  -- path but ≠ u), and `¬(x ∈ vertices ∧ x ≠ w)` (so x = w, since x ∈ vertices).
+  have hxw : x = w := by
+    by_contra hne
+    exact hL ⟨hR.1, hne⟩
+  rw [hxw] at h_add ⊢
+  omega
+
 end Reverse
 
 /-! ### Arc insertion
@@ -943,6 +983,146 @@ def TryReachPebbleResult.newOrient {D : PartialOrientation V}
   D.reverse r.walk r.isPath
 
 end TryReachPebble
+
+/-! ### Try-add-edge: outer loop driving DFS + path reversal + insertion
+
+`tryAddEdgeWith D k ℓ u v ... toSucc h_toSucc` processes a candidate edge
+`{u, v}` against the orientation `D` (blueprint `def:tryAddEdge`):
+
+* If `peb k u + peb k v ≥ ℓ + 1`: insert the directed arc, orienting `(u, v)`
+  when `0 < peb k u` (free pebble at `u`) and `(v, u)` otherwise; return the
+  updated orientation.
+* Else: search for a vertex `w ≠ u, v` with a free pebble reachable from `u`
+  along `D`'s out-arcs via `tryReachPebbleWith`. On success, reverse the path
+  to send a pebble back to `u` and recurse. If `u`-search fails, try the
+  symmetric `v`-search; on success, reverse + recurse. If both DFS attempts
+  fail, return `none`.
+
+Termination measure: `(ℓ + 1) - (D.peb k u + D.peb k v)`, which strictly
+decreases per successful reversal — the predicate's `w ≠ u, v` clauses ensure
+the head endpoint of the reversed path is `u` (resp. `v`) and the tail is
+neither, so `out_reverse_head` raises `peb k u` (resp. `peb k v`) by exactly
+`1` while leaving the other endpoint's pebble count untouched.
+
+The caller supplies the out-neighbour enumeration `toSucc D'` for *every*
+intermediate orientation `D'` the recursion can encounter — necessary because
+path reversal mutates `D.arcs`. The agreement witness `h_toSucc` is the
+universally-quantified analogue of `tryReachPebbleWith`'s `h_succ`. As with
+the DFS layer, the math-layer convenience `tryAddEdge` plugs in
+`toSucc D' := D'.outList`, inheriting `noncomputable` from `outList`'s use of
+`Finset.toList`; IO callers staying inside the computable layer should invoke
+`tryAddEdgeWith` directly with a `List`-shaped adjacency they already hold.
+
+The failure branch returns `none` rather than the reach-closure subset
+described in the blueprint's prose; extracting the blocking-witness subset
+`Reach_D(u) ∪ Reach_D(v)` from the failure state is a separate computation
+(left to a follow-up: a `reachClosure` helper in `Search/DFS.lean`,
+post-composed at the failure site). This keeps the algorithm's signature
+minimal and matches the `Option`-shape of `tryReachPebbleWith`. -/
+
+section TryAddEdge
+
+variable [Fintype V]
+
+open CombinatorialRigidity.Search
+
+/-- Computable workhorse for the pebble-game's outer-loop combinator
+`tryAddEdge`. See the section docstring for the algorithm description; the
+math-layer convenience `tryAddEdge` is a one-line `noncomputable` wrapper
+plugging in `toSucc := (·.outList)`. Blueprint `def:tryAddEdge`. -/
+def tryAddEdgeWith
+    (D : PartialOrientation V) (k ℓ : ℕ) (u v : V) (huv : u ≠ v)
+    (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
+    (h_outle : ∀ x, D.out x ≤ k)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs) :
+    Option (PartialOrientation V) :=
+  if h_thr : ℓ + 1 ≤ D.peb k u + D.peb k v then
+    -- Threshold met: insert the arc. Orient based on which endpoint has a free
+    -- pebble (at least one does, since `ℓ + 1 ≥ 1`).
+    if 0 < D.peb k u then
+      some (D.addArc u v huv hnotin_rev)
+    else
+      some (D.addArc v u huv.symm hnotin)
+  else
+    -- Below threshold: try DFS for a free pebble reachable from `u`, then `v`.
+    let P : V → Bool := fun w =>
+      decide (0 < D.peb k w) && decide (w ≠ u) && decide (w ≠ v)
+    match D.tryReachPebbleWith P u (toSucc D) (h_toSucc D) with
+    | some r =>
+      tryAddEdgeWith r.newOrient k ℓ u v huv
+        (D.notMem_arcs_reverse_of_notMem r.walk r.isPath hnotin hnotin_rev)
+        (D.notMem_arcs_reverse_of_notMem r.walk r.isPath hnotin_rev hnotin)
+        (fun x => by
+          have h_target : D.out r.target < k := by
+            have h := r.hP
+            simp only [P, Bool.and_eq_true, decide_eq_true_eq] at h
+            rw [peb] at h
+            omega
+          exact D.out_reverse_le_of_outle r.walk r.isPath h_outle h_target x)
+        toSucc h_toSucc
+    | none =>
+      match D.tryReachPebbleWith P v (toSucc D) (h_toSucc D) with
+      | some r =>
+        tryAddEdgeWith r.newOrient k ℓ u v huv
+          (D.notMem_arcs_reverse_of_notMem r.walk r.isPath hnotin hnotin_rev)
+          (D.notMem_arcs_reverse_of_notMem r.walk r.isPath hnotin_rev hnotin)
+          (fun x => by
+            have h_target : D.out r.target < k := by
+              have h := r.hP
+              simp only [P, Bool.and_eq_true, decide_eq_true_eq] at h
+              rw [peb] at h
+              omega
+            exact D.out_reverse_le_of_outle r.walk r.isPath h_outle h_target x)
+          toSucc h_toSucc
+      | none => none
+  termination_by (ℓ + 1) - (D.peb k u + D.peb k v)
+  decreasing_by
+    -- u-DFS success branch: walk `u → r.target` with `r.target ≠ u, v`,
+    -- so reversal raises `peb k u` by 1 and leaves `peb k v` fixed.
+    · simp only [TryReachPebbleResult.newOrient]
+      have h := r.hP
+      simp only [P, Bool.and_eq_true, decide_eq_true_eq] at h
+      have h_ne_u : r.target ≠ u := h.1.2
+      have h_ne_v : r.target ≠ v := h.2
+      have hpos : 0 < r.walk.length :=
+        DirectedWalk.length_pos_of_ne (fun heq => h_ne_u heq.symm)
+      have h_peb_u : (D.reverse r.walk r.isPath).peb k u = D.peb k u + 1 :=
+        D.peb_reverse_head r.walk r.isPath hpos k (h_outle u)
+      have h_peb_v : (D.reverse r.walk r.isPath).peb k v = D.peb k v :=
+        D.peb_reverse_of_not_endpoint r.walk r.isPath k huv.symm
+          (fun heq => h_ne_v heq.symm)
+      omega
+    -- v-DFS success branch: walk `v → r.target` with `r.target ≠ u, v`,
+    -- so reversal raises `peb k v` by 1 and leaves `peb k u` fixed.
+    · simp only [TryReachPebbleResult.newOrient]
+      have h := r.hP
+      simp only [P, Bool.and_eq_true, decide_eq_true_eq] at h
+      have h_ne_u : r.target ≠ u := h.1.2
+      have h_ne_v : r.target ≠ v := h.2
+      have hpos : 0 < r.walk.length :=
+        DirectedWalk.length_pos_of_ne (fun heq => h_ne_v heq.symm)
+      have h_peb_v : (D.reverse r.walk r.isPath).peb k v = D.peb k v + 1 :=
+        D.peb_reverse_head r.walk r.isPath hpos k (h_outle v)
+      have h_peb_u : (D.reverse r.walk r.isPath).peb k u = D.peb k u :=
+        D.peb_reverse_of_not_endpoint r.walk r.isPath k huv h_ne_u.symm
+      omega
+
+/-- Math-layer convenience: specialise `tryAddEdgeWith` to
+`toSucc := (·.outList)`, with the agreement witness supplied uniformly by
+`mem_outList`. `noncomputable` because `outList` goes through `Finset.toList`;
+IO callers should use `tryAddEdgeWith` directly with a list-shaped adjacency to
+stay computable. Blueprint `def:tryAddEdge`. -/
+noncomputable def tryAddEdge
+    (D : PartialOrientation V) (k ℓ : ℕ) (u v : V) (huv : u ≠ v)
+    (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
+    (h_outle : ∀ x, D.out x ≤ k) :
+    Option (PartialOrientation V) :=
+  tryAddEdgeWith D k ℓ u v huv hnotin hnotin_rev h_outle
+    (fun D' => D'.outList) (fun D' {_ _} => D'.mem_outList)
+
+end TryAddEdge
 
 end PartialOrientation
 

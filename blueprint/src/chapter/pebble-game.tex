@@ -315,25 +315,56 @@ failure witness.
 
 \begin{definition}[Try-add-edge]
   \label{def:tryAddEdge}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdge}
+  \leanok
   \uses{def:tryReachPebble, def:partial-orientation, def:arc-insertion}
   Given a partial orientation $D$, parameters $k, \ell$, and a
   candidate edge $\{u, v\} \notin \underline{D}$ (with $u \neq v$),
   the procedure $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}$
-  repeatedly calls $\mathrm{tryReachPebble}\,D\,u\,(\mathrm{peb}_{D,k}
-  > 0\ \text{at the vertex})$ and $\mathrm{tryReachPebble}\,D\,v\,
-  (\mathrm{peb}_{D,k} > 0)$, accumulating successful reversals into
-  $D$, until either:
+  repeatedly calls $\mathrm{tryReachPebble}\,D\,u$ and
+  $\mathrm{tryReachPebble}\,D\,v$ with target predicate
+  $w \mapsto \mathrm{peb}_{D,k}(w) > 0 \wedge w \neq u \wedge w \neq v$
+  (free pebble at $w$, not at $\{u, v\}$ themselves --- otherwise the
+  path-reversal step would either be trivial or move a pebble between
+  the two endpoints without increasing $\mathrm{peb}_{D,k}(u) +
+  \mathrm{peb}_{D,k}(v)$). Each successful DFS at $u$ (resp.\ $v$)
+  fires a path reversal that raises $\mathrm{peb}_{D,k}(u)$ (resp.\
+  $\mathrm{peb}_{D,k}(v)$) by $1$, and the procedure recurses on the
+  updated orientation. The loop terminates as soon as either:
   \begin{itemize}
     \item (accept) $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v)
-      \ge \ell + 1$ is reached; insert $(u, v)$ into $D$ and return
-      $\mathrm{Sum.inl}\,D'$ with $D'$ the updated orientation; or
+      \ge \ell + 1$ is reached; insert the directed arc, choosing
+      $(u, v)$ when $\mathrm{peb}_{D,k}(u) > 0$ and $(v, u)$ otherwise
+      (at least one endpoint has a free pebble since the sum is
+      $\ge 1$), and return the updated orientation $D'$; or
     \item (reject) both DFS attempts simultaneously fail (no free
-      pebble reachable from $u$ or $v$); return $\mathrm{Sum.inr}\,V'$
-      with $V' := \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$.
+      pebble reachable from $u$ or $v$).
   \end{itemize}
   Termination of the outer loop: $(\ell + 1) - (\mathrm{peb}_{D,k}(u)
   + \mathrm{peb}_{D, k}(v))$ strictly decreases per successful
-  reversal.
+  reversal --- the predicate's $w \neq u, v$ clauses guarantee the
+  reversed path's head is $u$ (resp.\ $v$) and its tail is neither,
+  so \texttt{peb\_reverse\_head} raises the head's pebble count by
+  $1$ while \texttt{peb\_reverse\_of\_not\_endpoint} leaves the other
+  endpoint's untouched.
+
+  The Lean encoding splits into a computable workhorse
+  \texttt{tryAddEdgeWith} taking a caller-supplied
+  $\mathtt{toSucc} : \mathrm{PartialOrientation}\,V \to V \to
+  \mathrm{List}\,V$ with a universal agreement witness (the
+  out-neighbour enumeration must be supplied for \emph{every}
+  intermediate orientation, since path reversal mutates $D.\mathrm{arcs}$),
+  and a math-layer convenience \texttt{tryAddEdge} which is a thin
+  $\mathtt{noncomputable}$ wrapper plugging in
+  $\mathtt{toSucc}\,D' := D'.\mathtt{outList}$. The output is
+  $\mathrm{Option}\,(\mathrm{PartialOrientation}\,V)$: $\mathrm{some}\,D'$
+  on accept, $\mathrm{none}$ on simultaneous DFS failure. The blocking-
+  witness subset $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ is
+  extracted in a separate computation (a planned \texttt{reachClosure}
+  helper post-composed at the failure site), keeping the algorithm's
+  signature aligned with the $\mathrm{Option}$-shape of
+  \texttt{tryReachPebbleWith}.
 \end{definition}
 
 \begin{definition}[Blocking witness]

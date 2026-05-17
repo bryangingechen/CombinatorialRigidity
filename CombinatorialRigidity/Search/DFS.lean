@@ -158,6 +158,17 @@ count lemmas to derive endpoint inequalities under `IsPath`. -/
   | nil _ => simp [vertices]
   | cons _ _ ih => exact List.mem_cons_of_mem _ ih
 
+/-- A walk with distinct endpoints has positive length: the `nil` walk forces
+`u = w`, so an `u ≠ w` hypothesis discharges that case and leaves only the
+`cons` branch with length `≥ 1`. Used by `tryAddEdge`'s termination argument to
+turn the predicate-supplied `r.target ≠ u` into the `0 < r.walk.length`
+precondition of `peb_reverse_head`. -/
+lemma length_pos_of_ne {u w : V} {p : DirectedWalk R u w} (h : u ≠ w) :
+    0 < p.length := by
+  cases p with
+  | nil => exact absurd rfl h
+  | cons _ _ => simp [length]
+
 /-! ### Transport along a relation implication
 
 `DirectedWalk` is parameterised by the arc relation `R`. When a caller has a
