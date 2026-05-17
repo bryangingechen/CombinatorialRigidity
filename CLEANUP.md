@@ -183,10 +183,6 @@ without browsing `notes/`.
 
 ## What a cleanup round is *not*
 
-- **Not a refactor pass.** A cleanup round simplifies *existing*
-  proofs to a more idiomatic form; it does not redesign APIs or
-  restructure files. API redesigns belong in their phase's plan or
-  in `DESIGN.md` *Choices to revisit*.
 - **Not a performance pass.** Build-time tuning has its own log
   (`notes/PERFORMANCE.md`) and protocol (4-run A/B, median
   comparison). A cleanup round can incidentally reduce per-file
@@ -195,6 +191,15 @@ without browsing `notes/`.
   cleanup round doesn't have a mathematical milestone, and it
   doesn't unlock new content. Phase N+1 doesn't depend on the
   round between Phase N and N+1 — the round is hygiene.
+
+Refactor passes *are* in scope when surfaced by an A–D audit —
+§C explicitly lists "API extraction", "Definitional refactor", and
+"Cross-proof unification" as long-proof dispositions, and a B-sweep
+that surfaces a missing fused lemma is itself a small refactor.
+Land each surfaced refactor in-round as its own commit per *Workflow*
+rule 3, not as a forward-work carry-over. The exclusion is on
+*free-form* refactors started without an audit anchor — those still
+belong in a phase plan or `DESIGN.md` *Choices to revisit*.
 
 ## Workflow
 
@@ -208,7 +213,11 @@ without browsing `notes/`.
 3. **Each fix as its own commit.** The per-commit friction review
    discipline (`CombinatorialRigidity/CLAUDE.md`) still applies. A
    cleanup commit looks the same as any other commit: build/lint
-   gates, friction review, work-log update.
+   gates, friction review, work-log update. Refactor candidates
+   surfaced by an A–D audit (API extraction, cross-proof
+   unification, a fused mirror lemma, …) count as fixes — land
+   them in-round each as its own commit, not as a forward-work
+   carry-over.
 4. **Lift cross-cutting lessons in-commit.** If a sweep reveals
    "always prefer X over Y" — that goes to `TACTICS-GOLF.md` /
    `TACTICS-QUIRKS.md` in the same commit as the fix, per the

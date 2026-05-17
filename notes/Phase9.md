@@ -376,6 +376,6 @@ One forward-work carry-over from the cleanup round is parked in
 promote the let-bound predicate `P` inside `tryAddEdgeWith` to
 `PartialOrientation.tryAddEdgePred` + decoder lemma, unlocking the
 cross-proof unification helper across the three
-`tryAddEdgeWith.induct` consumers (~55 LoC net savings). Out of
-cleanup-round scope per `../CLEANUP.md` *Not a refactor pass*;
-small forward-work commit when picked up.
+`tryAddEdgeWith.induct` consumers (~55 LoC net savings). In scope
+per `../CLEANUP.md` *Workflow* rule 3 (audit-surfaced refactors
+land in-round); available for the next commit in the cleanup round.

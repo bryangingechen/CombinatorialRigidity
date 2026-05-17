@@ -1016,8 +1016,10 @@ the manual:
   hD h_outle) h`. Estimated net ~55 LoC saved (3 proofs × 12 LoC × 2
   cases, less a ~15-LoC def+lemma pair).
 
-  **Out of cleanup-round scope** per `../CLEANUP.md` *What a cleanup
-  round is not — Not a refactor pass*. Lands as a forward-work commit
+  **In scope** per `../CLEANUP.md` *Workflow* rule 3 (audit-surfaced
+  refactors land in-round; the *Not a refactor pass* exclusion that
+  initially punted this entry was relaxed at HEAD). Available for the
+  next commit
   (~30–60 min estimate including the `decreasing_by` block fixup and
   any `tryAddEdgeWith.induct` case-binder adjustments — the `P` name
   currently appears as a case-binder in all four `tryAddEdgeWith.induct`
@@ -1086,10 +1088,10 @@ One forward-work carry-over from this round is parked in
 predicate `P` inside `tryAddEdgeWith` to
 `PartialOrientation.tryAddEdgePred` + decoder lemma, unlocking
 the cross-proof unification helper analysed in C2 (~55 LoC net
-savings across the three `tryAddEdgeWith.induct` proofs). Out of
-cleanup-round scope per `../CLEANUP.md` *What a cleanup round is
-not — Not a refactor pass*; lands as a small forward-work commit
-when an agent picks it up, not a bucket-D prerequisite.
+savings across the three `tryAddEdgeWith.induct` proofs). In scope
+per `../CLEANUP.md` *Workflow* rule 3 (audit-surfaced refactors
+land in-round); available for the next commit in this round, not a
+bucket-D prerequisite.
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
