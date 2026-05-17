@@ -364,10 +364,13 @@ failure witness.
   $\mathrm{Option}\,(\mathrm{PartialOrientation}\,V)$: $\mathrm{some}\,D'$
   on accept, $\mathrm{none}$ on simultaneous DFS failure. The blocking-
   witness subset $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ is
-  extracted in a separate computation (a planned \texttt{reachClosure}
-  helper post-composed at the failure site), keeping the algorithm's
-  signature aligned with the $\mathrm{Option}$-shape of
-  \texttt{tryReachPebbleWith}.
+  extracted in a separate computation: the math-layer accessor
+  $D.\mathtt{reach}\,v$ --- a $\mathrm{Finset}\,V$-wrapped reflexive-
+  transitive closure of $D$'s arc relation, sharing the DFS-side
+  \texttt{reachClosure} of \texttt{Search/DFS.lean} --- is materialised
+  at the failure site inside \cref{lem:pebble-game-failure-witness},
+  keeping the algorithm's signature aligned with the
+  $\mathrm{Option}$-shape of \texttt{tryReachPebbleWith}.
 \end{definition}
 
 \begin{definition}[Blocking witness]
@@ -395,8 +398,8 @@ failure witness.
   \cref{lem:pebble-game-invariants}; on failure it returns
   $\mathrm{none}$, with the blocking-witness subset
   $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ recoverable from the
-  failure state via a separate post-composition step (deferred to a
-  planned $\mathtt{reachClosure}$ helper, consumed by
+  failure state via a separate post-composition step (the math-layer
+  accessor $D.\mathtt{reach}$, consumed by
   \cref{lem:pebble-game-failure-witness}). Termination of the fold:
   the number of unprocessed edges strictly decreases per iteration.
 

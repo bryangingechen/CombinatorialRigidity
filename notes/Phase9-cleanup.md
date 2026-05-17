@@ -32,14 +32,36 @@ performance pass).
 
 ## Current state
 
-A1 closed: `chapter/dfs.tex` ↔ `Search/DFS.lean` walk is faithful;
-all five pinned names resolve; prose-proof structure tracks the
-Lean. Two A2-bound carry-overs surfaced (stale "planned
-`reachClosure` helper" prose in the pebble-game chapter;
-informational notes on `DirectedWalk.mapRel` /
-`arcsFinset` family selectivity) and are recorded inline under
-A2's task body. No Lean or blueprint changes landed yet; the
-A2 commit will discharge the prose updates.
+A1 + A2 closed: both blueprint chapters track the Lean faithfully.
+A2's pebble-game walk verified all 39 `\lean{...}` pins resolve
+(`checkdecls` green post-`inv web`); the 22 dep-graph nodes
+(`def:partial-orientation` through `cor:pebble-game-countMatroid-indep`)
+match Lean signatures including the unified `ℓ ≤ k|V'|` size
+hypothesis on Invariants (3)/(4), the
+`Reachable.{empty, reverse, addArc}` constructor preconditions, and
+the broadened subset-form `\underline{D} \subseteq E(G) ∧
+\{u,v\} \in E(G)` hypothesis on the failure-witness lemma. The
+A1 carry-overs are discharged: both "planned `reachClosure`
+helper" mentions (in `def:tryAddEdge` and `def:runPebbleGame`) now
+point at the shipped math-layer accessor
+`PartialOrientation.reach` (a `Finset V`-wrapped reflexive-
+transitive closure wrapping `Search.reachClosure`). No new
+`\uses{}` edges added — the chain through `lem:pebble-game-invariants`
++ `lem:pebble-game-independent-brings-pebble-graph` already covers
+the math content; surfacing `reachClosure` as its own dep-graph
+node would add a low-content bookkeeping entry per the "What to
+include vs. skip → structural support, churn-prone" rule.
+
+A2 surfaces one small follow-up: `lem:pebble-game-tryAddEdge-iff-independent`
+(chapter line 765) is intentionally a prose-only `iff` wrapping
+the two formalised halves `tryAddEdgeWith_isSome` /
+`_isSparse`, so its dep-graph node is red without a `\lean{...}`
+pin. Two principled dispositions — drop the lemma (math fully
+covered by the two halves) or formalise a one-line
+`@[deprecated <half> (since := "narrative-bridge")]` shim per
+`blueprint/CLAUDE.md` *Narrative-bridge corollaries*. Routed as
+A2-followup below; the choice between the two is content-level
+and worth a user judgement call.
 
 ## Architectural choices made up front
 
@@ -125,7 +147,7 @@ wrong, revisit there.
   bookkeeping is structural, not friction). No Lean or blueprint
   changes from A1's own scope; two carry-overs surface for A2,
   recorded inline under A2 below.
-- [ ] **A2:** `chapter/pebble-game.tex` ↔ `PebbleGame.lean` walk.
+- [x] **A2:** `chapter/pebble-game.tex` ↔ `PebbleGame.lean` walk.
   ~20 dep-graph nodes covering: `def:partial-orientation`,
   `def:pebble-counts`, `def:path-reversal`, `def:arc-insertion`,
   `def:reachable-orientation`, `lem:pebble-game-invariants`,
@@ -177,6 +199,53 @@ wrong, revisit there.
     (structural support, churn-prone), skip dep-graph entry; flag
     only if the A2 prose walk surfaces a `\uses{}` chain that
     would benefit from one.
+
+  **Disposition.** All 39 pinned names (across 22 nodes) resolve
+  via `checkdecls` post-`inv web` against the current `module`-
+  converted Lean. Statement-form check: faithful across the board.
+  Highlights of the walk:
+  - `def:reachable-orientation`'s constructor preconditions match
+    `Reachable.{empty,reverse,addArc}` exactly (`hw : D.out w < k`
+    for reversal tail; `huv, hnotin, hnotin_rev, hu_out, hk` for
+    arc insertion).
+  - `lem:pebble-game-invariants` honestly states Invariants (1)/(2)
+    unconditionally and (3)/(4) under the unified
+    `h_size : ℓ ≤ k * V'.card` premise, matching the chapter's
+    "$\ell \le k|V'|$" prose. No regime-split form lurks in either.
+  - `lem:runPebbleGameWith-underline-subset`'s prose-level
+    "$\{s(u, v) : (u, v) \in \mathit{edges}\}$" matches the Lean's
+    `(edges.map (fun p => s(p.1, p.2))).toFinset`; the per-step
+    accept-branch glue `tryAddEdgeWith_underline` returns
+    `Dmid.underline = insert s(u, v) D.underline` exactly as the
+    prose says.
+  - `lem:pebble-game-failure-witness`'s broadened subset-form
+    hypothesis (`\underline{D} \subseteq E(G)` plus `\{u,v\} \in E(G)`,
+    not the tight equality) matches the Lean's `h_uv, h_sub`
+    arguments and supports the fold-level consumer at intermediate
+    `runPebbleGame` steps.
+  - `cor:pebble-game-countMatroid-indep`'s statement form
+    `(countMatroid V k ℓ hℓ).Indep G.edgeSet ↔ ∃ D, runPebbleGame G
+    k ℓ = some D` matches the Lean theorem at
+    `PebbleGame.lean:2489` (under `_root_.SimpleGraph`).
+
+  Prose proof structure tracks the Lean's `induct`-based
+  five-case dispatch on `tryAddEdgeWith` and the structural
+  recursion on `edges` for the fold-level lemmas.
+
+  **Carry-over fixes landed:** the two "planned `reachClosure`
+  helper" mentions are updated to point at the shipped math-layer
+  accessor `PartialOrientation.reach` (defined at
+  `PebbleGame.lean:1863` as `reachClosure (fun a b => (a, b) ∈ D.arcs) v`).
+  `DirectedWalk.mapRel` mention in `def:tryReachPebble` is
+  honestly flagged; `arcsFinset` family stays Lean-side structural.
+
+  **Surfaced follow-up:**
+  `lem:pebble-game-tryAddEdge-iff-independent` (chapter line 765)
+  has no `\lean{...}` and no `\leanok` — intentional prose-only
+  iff wrap of `tryAddEdgeWith_isSome` / `_isSparse`, so the
+  dep-graph node is red. See *Current state* for the two
+  disposition options; routed as `A2-followup` under the new
+  *Surfaced follow-ups* subsection below.
 - [ ] **A3:** Multigraph corner-case audit (audit-only, no
   refactor). Walk L--S Lemmas 10--15 statement by statement against
   the simple-graph regime. Document each lemma in the blueprint as
@@ -371,19 +440,53 @@ the manual:
   pattern (math/exec layer split for algorithms; DESIGN.md
   pin appears sufficient — verify).
 
+## Surfaced follow-ups
+
+- **A2-followup:** `lem:pebble-game-tryAddEdge-iff-independent`
+  red-node disposition. Currently a prose-only iff lemma in
+  `chapter/pebble-game.tex` (line 765), wrapping the two
+  formalised halves `tryAddEdgeWith_isSome` (the `⇐` direction)
+  and `tryAddEdgeWith_isSparse` (the `⇒` direction). Both halves
+  are referenced from the Lean docstrings at
+  `PebbleGame.lean:2018, 2112` as cross-references to this label.
+  The dep-graph marks the lemma red because no `\lean{...}` pin
+  exists. Two principled options:
+  1. *Drop the lemma.* Math content is fully covered by the two
+     halves; the iff form is rhetorical, and downstream consumers
+     (`thm:pebble-game-correct`, `cor:pebble-game-countMatroid-indep`)
+     don't actually consume it.
+  2. *Formalise as a narrative-bridge `@[deprecated]` shim per
+     `blueprint/CLAUDE.md` *Narrative-bridge corollaries*.* Land
+     a one-line `tryAddEdge_isSome_iff_sparse` (workhorse form is
+     easier than wrapper form — the wrapper form needs the
+     `noncomputable def tryAddEdge`'s `outList` plug-in), pin via
+     `\lean{...}` + `\leanok`, mark `@[deprecated <one-half> (since :=
+     "narrative-bridge")]` with a docstring pointing both ways.
+  Recommendation: option 1 (drop). The two halves are independently
+  the named L-S Lemma 14 statement form; the rhetorical iff
+  doesn't earn a Lean entry, and the chapter narrative reads fine
+  with the two halves landing next to each other under
+  *Completeness*. Worth a user judgement.
+
 ## Blockers / open questions
 
-- Round just opened; none currently. Will be populated as sweeps
-  surface deferrals.
+- Round in progress; A3 (multigraph corner-case audit), A4
+  (`checkdecls` post-hoc spot-check), A5 (formalization-aside scan)
+  and buckets B–D remain.
 
 ## Hand-off / next phase
 
 Round in progress. Phase 9 main is fully closed; this round
-addresses the post-closure hygiene. A1 (DFS chapter walk) closed;
-A2 (pebble-game chapter walk) is the natural next task and carries
-the inline carry-overs from A1 (stale `reachClosure` prose +
-informational notes). Carry-overs queue under *Blockers* above as
-they surface.
+addresses the post-closure hygiene. A1 (DFS chapter walk) and A2
+(pebble-game chapter walk) closed; the natural next task is A3
+(multigraph corner-case audit, audit-only per architectural choice
+#3 above) — that's a documented-statement-by-statement comparison
+of L--S Lemmas 10--15 against the simple-graph regime, materialised
+as a short "Multigraph regime" preamble subsection in
+`chapter/pebble-game.tex`. A2-followup
+(`lem:pebble-game-tryAddEdge-iff-independent` red node) is queued
+under *Surfaced follow-ups* above; defer to user judgement on
+disposition.
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
