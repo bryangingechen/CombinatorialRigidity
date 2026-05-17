@@ -40,40 +40,46 @@ index; `PebbleGame.lean` ships the leaf-most state-machine
 definitions `PartialOrientation V` (bundled `Finset (V × V)` with
 `no_loops` and `no_antiparallel` invariants), the derived pebble
 counts `out`, `peb`, `span`, `outOn`, `pebOn` (plus `empty` and
-basic `simp`-level lemmas), and the path-reversal move
+basic `simp`-level lemmas), the path-reversal move
 `PartialOrientation.reverse D p hp` along a simple directed path
-`p : DirectedWalk (· ∈ D.arcs) u w` with `hp : p.IsPath`. The two
-`PartialOrientation` invariants (`no_loops`, `no_antiparallel`)
-survive the reversal. Structural per-vertex / subset lemmas:
-`span_reverse_eq` (span of any subset invariant under reversal),
-`out_reverse_add` (unified additive identity for the head/tail/
-interior cases) and its three corollaries
-`out_reverse_of_not_endpoint` / `out_reverse_head` / `out_reverse_tail`,
-plus the pebble-count corollaries `peb_reverse_of_not_endpoint` /
-`peb_reverse_head` / `peb_reverse_tail` (the last two under the
-algorithmic preconditions `D.out u ≤ k` / `D.out w < k` mirroring
-`lem:pebble-game-invariants` (1)). Supporting arc-swap and source-
-count infrastructure lives in `Search/DFS.lean`:
-`mem_arcsFinset_imp`, `reversedArcsFinset_eq_image_swap`,
-`card_reversedArcsFinset`, `tail_mem_vertices`,
-`fst_mem_vertices_of_mem_reversedArcsFinset`,
+`p : DirectedWalk (· ∈ D.arcs) u w` with `hp : p.IsPath`, and the
+arc-insertion move `PartialOrientation.addArc D u v huv hnotin_rev`.
+The two `PartialOrientation` invariants (`no_loops`,
+`no_antiparallel`) survive both moves. Structural per-vertex /
+subset lemmas:
+
+- *Path reversal*: `span_reverse_eq` (span invariant on every
+  subset), `out_reverse_add` (unified additive identity for the
+  head/tail/interior cases) with three corollaries
+  `out_reverse_of_not_endpoint` / `out_reverse_head` /
+  `out_reverse_tail`; pebble-count corollaries
+  `peb_reverse_of_not_endpoint` / `peb_reverse_head` /
+  `peb_reverse_tail` (the last two under the algorithmic
+  preconditions `D.out u ≤ k` / `D.out w < k` mirroring
+  `lem:pebble-game-invariants` (1)); subset-level
+  `pebOn_add_outOn_reverse_eq` routed through
+  `pebOn_add_span_add_outOn` and `span_reverse_eq`.
+- *Arc insertion*: `out_addArc_source` (source `u` gains one out-arc,
+  under `(u, v) ∉ D.arcs`) and `out_addArc_of_ne_source`
+  (non-source vertices unaffected); pebble-count corollaries
+  `peb_addArc_source` (under `D.out u < k`) and
+  `peb_addArc_of_ne_source`.
+
+Supporting arc-swap and source-count infrastructure lives in
+`Search/DFS.lean`: `mem_arcsFinset_imp`,
+`reversedArcsFinset_eq_image_swap`, `card_reversedArcsFinset`,
+`tail_mem_vertices`, `fst_mem_vertices_of_mem_reversedArcsFinset`,
 `IsPath.notMem_snd_initial`, and the two source-cardinality lemmas
 `IsPath.card_arcsFinset_filter_fst` /
-`IsPath.card_reversedArcsFinset_filter_fst` (each counts the
-source-`v` slice of the corresponding arc set as `0` or `1`
-depending on whether `v` lies on `p.vertices` minus the relevant
-endpoint). PebbleGame-level glue (`arcsFinset_subset_arcs`,
-`disjoint_sdiff_reversedArcsFinset`, `out_eq_card_filter_fst`,
-`IsPath.head_ne_tail_of_pos`) sits in `PebbleGame.lean`. The
-subset-level structural piece `pebOn_add_outOn_reverse_eq` (closing
-the path-reversal preservation story) is now landed, together with
-two supporting helpers: `sum_out_eq_span_add_outOn` (fiberwise +
-partition identity bridging `∑ out` to `span + outOn`) and
-`pebOn_add_span_add_outOn` (algebraic form of L-S Invariant (2)
-under the `∀ v ∈ V', out v ≤ k` precondition). The reverse-equality
-falls out of the latter applied to both `D` and `D.reverse` plus
-`span_reverse_eq`. Blueprint `def:partial-orientation`,
-`def:pebble-counts`, and `def:path-reversal` are green.
+`IsPath.card_reversedArcsFinset_filter_fst`. PebbleGame-level glue
+(`arcsFinset_subset_arcs`, `disjoint_sdiff_reversedArcsFinset`,
+`out_eq_card_filter_fst`, `IsPath.head_ne_tail_of_pos`) and the two
+general structural identities `sum_out_eq_span_add_outOn`
+(fiberwise + partition) and `pebOn_add_span_add_outOn` (L-S
+Invariant (2) algebraic form under `∀ v ∈ V', out v ≤ k`) sit in
+`PebbleGame.lean`. Blueprint `def:partial-orientation`,
+`def:pebble-counts`, `def:path-reversal`, and the new
+`def:arc-insertion` are green.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -115,11 +121,14 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: open the L-S Lemma 10 formalization — the
-substantive part of `lem:pebble-game-invariants`. Path-reversal
-preservation infrastructure is now closed; the remaining work is
-edge-insertion preservation and the inductive packaging of the four
-invariants over the move sequence. See *Hand-off / next phase*.
+Next concrete commit: descend toward the L-S Lemma 10 formalization
+— the substantive part of `lem:pebble-game-invariants`. Both move
+types (path reversal + arc insertion) now ship per-vertex
+preservation lemmas; the remaining work is the subset-level
+`span`/`outOn`/`pebOn` accounting for arc insertion (mirror of
+`pebOn_add_outOn_reverse_eq`'s shape for the addArc move) and the
+inductive packaging of the four invariants over the move sequence.
+See *Hand-off / next phase*.
 
 ## Architectural choices made up front
 
@@ -308,6 +317,33 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   `span_reverse_eq`. The structural helpers are useful infrastructure
   for `lem:pebble-game-invariants` itself, so they pay forward.
 
+### Arc insertion (Phase 9 main)
+
+- **`addArc` def takes `(v, u) ∉ D.arcs` as the only non-trivial
+  precondition; `(u, v) ∉ D.arcs` is a separate hypothesis on the
+  accounting lemmas.** The `no_antiparallel` invariant requires
+  `(v, u) ∉ D.arcs`; `no_loops` requires `u ≠ v`. Both are intrinsic
+  to "this is a valid move." But the per-vertex `out_addArc_source`
+  / `peb_addArc_source` lemmas additionally need `(u, v) ∉ D.arcs`
+  so that `Finset.insert (u, v) D.arcs` is a genuine extension; if
+  the arc is already in `D.arcs`, the `out` count is unchanged and
+  the +1 conclusion fails. Putting this on the lemmas (rather than
+  on the def) keeps the move's domain wide and the accounting tight.
+  The pebble game's actual `tryAddEdge` will discharge both
+  `(u, v) ∉ D.arcs` and `(v, u) ∉ D.arcs` from the input invariant
+  "edge `{u, v}` is fresh."
+
+- **`subst h` between two free variables in `no_antiparallel`
+  eliminates `u`/`v` (older), not `a`/`b` (newer).** Inside the
+  `no_antiparallel a b hab hba` lambda body, `subst h1 : a = u`
+  was substituting `u := a` rather than `a := u` (older-wins
+  heuristic). Symptom: `Unknown identifier u` at the follow-up
+  `have h3 : v = u := …` line. Fix: replace `subst h1; subst h2`
+  with `rw [h1, h2] at hba` so the `u`/`v` names stay in scope for
+  the contradictions. This is the same trap as TACTICS-QUIRKS § 4
+  on `Sym2`-induction `rfl, rfl` patterns; logged inline in the
+  Lean as a single-line aside since the rule is already documented.
+
 ### DFS warmup (pre-Phase-9)
 
 - **Style island formalized in DESIGN.md.** Phase 9's architectural
@@ -468,32 +504,42 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Hand-off / next phase
 
-Phase 9 main is in progress. `PebbleGame.lean` now carries the full
-path-reversal preservation API: per-vertex `out_reverse_*` /
-`peb_reverse_*`, subset-level `span_reverse_eq` and
-`pebOn_add_outOn_reverse_eq`, plus the supporting structural
-identities `sum_out_eq_span_add_outOn` (fiberwise + partition) and
-`pebOn_add_span_add_outOn` (L-S Invariant (2) algebraic form under
-`∀ v ∈ V', out v ≤ k`). The latter two are general structural facts
-about `PartialOrientation`-derived counts, independent of reversal;
-they pay forward into `lem:pebble-game-invariants` itself.
+Phase 9 main is in progress. `PebbleGame.lean` now carries both
+state-transition moves with per-vertex preservation lemmas: path
+reversal (`reverse` + `out_reverse_*` / `peb_reverse_*` /
+`span_reverse_eq` / `pebOn_add_outOn_reverse_eq`) and arc insertion
+(`addArc` + `out_addArc_source` / `out_addArc_of_ne_source` /
+`peb_addArc_source` / `peb_addArc_of_ne_source`), plus the
+supporting structural identities `sum_out_eq_span_add_outOn`
+(fiberwise + partition) and `pebOn_add_span_add_outOn` (L-S
+Invariant (2) algebraic form under `∀ v ∈ V', out v ≤ k`).
 Supporting `Search/DFS.lean` infrastructure (arc-swap, endpoint
 membership, source-cardinality) is unchanged. Blueprint
-`def:partial-orientation`, `def:pebble-counts`, and
-`def:path-reversal` are green; `def:path-reversal`'s prose was
-updated to call out the algebraic identity route into the
-subset-level invariance. Build + lint clean.
+`def:partial-orientation`, `def:pebble-counts`, `def:path-reversal`,
+and `def:arc-insertion` are green; `def:tryAddEdge`'s `\uses` now
+points at `def:arc-insertion` as the formalized insertion step.
+Build + lint clean.
 
-Next concrete commit: **open `lem:pebble-game-invariants` (L-S
-Lemma 10)** — the substantive structural part of the chapter.
-Path-reversal preservation is now closed; the remaining work is
-edge-insertion preservation (a `tryAddEdge`-shaped move on
-`PartialOrientation`) and the inductive packaging of the four
-invariants over the move sequence. Trace through both ranges
-`ℓ < k` and `k ≤ ℓ < 2k` on `SimpleGraph` per *Blockers →
-Simple-graph vs L-S multi-graph corner cases* during this step;
-the corner case is most likely to surface in the inductive proof
-of Invariant (3).
+Next concrete commit: **subset-level `span` / `outOn` / `pebOn`
+accounting for `addArc`** — the arc-insertion analogue of the
+path-reversal subset-level structural lemmas. The three-way split
+keys on whether each of `u`, `v` lies in `V'`:
+
+- both in `V'`: `span` rises by `1`, `outOn` unchanged, `pebOn`
+  drops by `1` ⇒ `pebOn + outOn` drops by `1`, matching the
+  precondition's `peb(V') ≥ ℓ + 1` ⇒ `peb(V') ≥ ℓ` accounting in
+  `lem:pebble-game-invariants` (3).
+- only `u` in `V'`: `span` unchanged, `outOn` rises by `1`, `pebOn`
+  drops by `1` ⇒ `pebOn + outOn` unchanged.
+- only `v` in `V'`: `span`, `outOn`, `pebOn` all unchanged.
+- neither: same (vacuous).
+
+After that, the substantive piece is the inductive packaging of
+the four invariants over the move sequence. Trace through both
+ranges `ℓ < k` and `k ≤ ℓ < 2k` on `SimpleGraph` per *Blockers →
+Simple-graph vs L-S multi-graph corner cases* during the
+induction; the corner case is most likely to surface in the
+inductive proof of Invariant (3).
 
 Subsequent commits descend the dep-graph:
 `def:tryReachPebble` (the DFS-plus-path-reversal specialisation via

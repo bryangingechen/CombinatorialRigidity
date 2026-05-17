@@ -483,6 +483,99 @@ lemma pebOn_add_outOn_reverse_eq
 
 end Reverse
 
+/-! ### Arc insertion
+
+The arc-insertion move (Lee–Streinu §3, the edge-insertion half of
+`def:tryAddEdge`): given a directed pair `(u, v)` with `u ≠ v` and
+`(v, u) ∉ D.arcs`, extend `D` by `(u, v)`. The two `PartialOrientation`
+invariants survive directly from the preconditions. Per-vertex
+accounting lemmas additionally assume `(u, v) ∉ D.arcs` to ensure the
+`Finset.insert` is a genuine extension rather than a no-op. -/
+
+section AddArc
+
+/-- Add the directed arc `(u, v)` to `D`. The two `PartialOrientation`
+invariants survive under the preconditions: `huv : u ≠ v` rules out a
+self-loop, and `hnotin_rev : (v, u) ∉ D.arcs` rules out an antiparallel
+pair. The accounting lemmas (`out_addArc_source`, etc.) additionally
+take `(u, v) ∉ D.arcs` to ensure `Finset.insert` is a genuine extension.
+
+Cf. Lee–Streinu §3 arc-insertion move; together with `def:path-reversal`,
+the two state transitions used by the pebble game's `def:tryAddEdge`. -/
+def addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs) :
+    PartialOrientation V where
+  arcs := insert (u, v) D.arcs
+  no_loops w hw := by
+    rw [Finset.mem_insert] at hw
+    rcases hw with heq | h
+    · -- `(w, w) = (u, v)` forces `w = u` and `w = v`, hence `u = v`, against `huv`.
+      have h1 : w = u := (Prod.mk.inj heq).1
+      have h2 : w = v := (Prod.mk.inj heq).2
+      exact huv (h1.symm.trans h2)
+    · exact D.no_loops h
+  no_antiparallel a b hab hba := by
+    rw [Finset.mem_insert] at hab hba
+    -- `subst` would eliminate the *older* free variables `u`/`v` rather than
+    -- `a`/`b` (cf. TACTICS-QUIRKS § 4); rewrite into `hba`/`hab` via `rw` to
+    -- preserve `u`/`v` in scope for the contradictions.
+    rcases hab with hab | hab
+    · have h1 : a = u := (Prod.mk.inj hab).1
+      have h2 : b = v := (Prod.mk.inj hab).2
+      rw [h1, h2] at hba
+      rcases hba with hba | hba
+      · -- `(v, u) = (u, v)` forces `v = u`.
+        exact huv ((Prod.mk.inj hba).1).symm
+      · exact hnotin_rev hba
+    · rcases hba with hba | hba
+      · have h1 : b = u := (Prod.mk.inj hba).1
+        have h2 : a = v := (Prod.mk.inj hba).2
+        rw [h1, h2] at hab
+        exact hnotin_rev hab
+      · exact D.no_antiparallel hab hba
+
+@[simp] lemma arcs_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs) :
+    (D.addArc u v huv hnotin_rev).arcs = insert (u, v) D.arcs := rfl
+
+/-- Adding the arc `(u, v)` to `D` raises `out u` by `1`, provided the arc
+was not already present. The non-source vertices are unaffected
+(`out_addArc_of_ne_source`). -/
+lemma out_addArc_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
+    (hnotin : (u, v) ∉ D.arcs) :
+    (D.addArc u v huv hnotin_rev).out u = D.out u + 1 := by
+  simp only [out_eq_card_filter_fst, arcs_addArc]
+  rw [Finset.filter_insert, if_pos rfl]
+  exact Finset.card_insert_of_notMem
+    (by rw [Finset.mem_filter]; exact fun h => hnotin h.1)
+
+/-- Adding the arc `(u, v)` to `D` leaves out-degree at every non-source
+vertex unchanged. The inserted arc is sourced at `u`, so the source-`x`
+slice of `D.arcs` is unaffected for any `x ≠ u`. -/
+lemma out_addArc_of_ne_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
+    {x : V} (hxu : x ≠ u) :
+    (D.addArc u v huv hnotin_rev).out x = D.out x := by
+  simp only [out_eq_card_filter_fst, arcs_addArc]
+  rw [Finset.filter_insert, if_neg (fun h => hxu h.symm)]
+
+/-- Adding the arc `(u, v)` to `D` drops the pebble count at `u` by `1`,
+under the precondition `D.out u < k` (a free pebble at `u`; cf.
+`lem:pebble-game-invariants` (1)). The non-source pebble counts are
+unaffected (`peb_addArc_of_ne_source`). -/
+lemma peb_addArc_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
+    (hnotin : (u, v) ∉ D.arcs) {k : ℕ} (hk : D.out u < k) :
+    (D.addArc u v huv hnotin_rev).peb k u + 1 = D.peb k u := by
+  rw [peb, peb, D.out_addArc_source u v huv hnotin_rev hnotin]
+  omega
+
+/-- Adding the arc `(u, v)` to `D` leaves the pebble count at every
+non-source vertex unchanged. Direct corollary of
+`out_addArc_of_ne_source` and `peb := k - out`. -/
+lemma peb_addArc_of_ne_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
+    (k : ℕ) {x : V} (hxu : x ≠ u) :
+    (D.addArc u v huv hnotin_rev).peb k x = D.peb k x := by
+  rw [peb, peb, D.out_addArc_of_ne_source u v huv hnotin_rev hxu]
+
+end AddArc
+
 end PartialOrientation
 
 end CombinatorialRigidity.PebbleGame

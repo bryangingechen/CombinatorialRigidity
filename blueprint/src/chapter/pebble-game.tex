@@ -138,6 +138,30 @@ out-degree budget.
   in $\mathrm{peb}_{D, k}(V')$.)
 \end{definition}
 
+\begin{definition}[Arc-insertion move]
+  \label{def:arc-insertion}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.addArc}
+  \leanok
+  \uses{def:partial-orientation}
+  Let $D$ be a partial orientation and $(u, v)$ an ordered pair with
+  $u \ne v$ and $(v, u) \notin D$. The \emph{arc-insertion} of
+  $(u, v)$ replaces $D$ by $D \cup \{(u, v)\}$. The result is again
+  a partial orientation: $u \ne v$ rules out a self-loop, and
+  $(v, u) \notin D$ rules out an antiparallel pair (no other pair is
+  changed). The per-vertex effect, assuming additionally $(u, v)
+  \notin D$ so that the insertion is a genuine extension, is to
+  raise $\mathrm{out}_D(u)$ by $1$ and leave $\mathrm{out}_D(x)$
+  unchanged for all $x \ne u$; equivalently the pebble count
+  $\mathrm{peb}_{D, k}(u)$ drops by $1$ (under
+  $\mathrm{out}_D(u) < k$, the precondition for the insertion to be
+  valid). The invariant-preservation half and per-vertex
+  \texttt{out}/\texttt{peb} effects are formalised; the subset-level
+  effects on $\mathrm{span}_D(V')$ and $\mathrm{outOn}_D(V')$ split
+  three ways on the position of $\{u, v\}$ relative to $V'$ and are
+  the content of \cref{lem:pebble-game-invariants}~(3) at the
+  insertion step.
+\end{definition}
+
 \subsection{Invariants}
 \label{sec:pebble-game-invariants}
 
@@ -149,7 +173,8 @@ the sparsity of $\underline{D}$.
 
 \begin{lemma}[Pebble-game invariants]
   \label{lem:pebble-game-invariants}
-  \uses{def:partial-orientation, def:pebble-counts}
+  \uses{def:partial-orientation, def:pebble-counts,
+    def:arc-insertion, def:path-reversal}
   Let $V$ be a finite type, $k, \ell$ integers with $\ell < 2k$,
   and $D$ a partial orientation on $V$ reachable from the empty
   orientation by a sequence of \emph{accepted insertions} and
@@ -167,7 +192,8 @@ the sparsity of $\underline{D}$.
   \end{enumerate}
 \end{lemma}
 \begin{proof}
-  \uses{def:partial-orientation, def:pebble-counts, def:path-reversal}
+  \uses{def:partial-orientation, def:pebble-counts,
+    def:arc-insertion, def:path-reversal}
   Invariants (1) and (2) are bookkeeping: (1) is the definition of
   $\mathrm{peb}_{D, k}$; (2) follows by summing (1) over $v \in V'$
   and decomposing $\sum_{v \in V'} \mathrm{out}_D(v) =
@@ -217,7 +243,7 @@ failure witness.
 
 \begin{definition}[Try-add-edge]
   \label{def:tryAddEdge}
-  \uses{def:tryReachPebble, def:partial-orientation}
+  \uses{def:tryReachPebble, def:partial-orientation, def:arc-insertion}
   Given a partial orientation $D$, parameters $k, \ell$, and a
   candidate edge $\{u, v\} \notin \underline{D}$ (with $u \neq v$),
   the procedure $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}$
