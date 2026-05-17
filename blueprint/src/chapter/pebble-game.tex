@@ -58,7 +58,8 @@ out-degree budget.
 
 \begin{definition}[Partial orientation]
   \label{def:partial-orientation}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.underline}
   \leanok
   Let $V$ be a finite type with decidable equality. A
   \emph{partial orientation} on $V$ is a finite set
@@ -105,7 +106,8 @@ out-degree budget.
 
 \begin{definition}[Path-reversal move]
   \label{def:path-reversal}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.reverse}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.reverse,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.underline_reverse_eq}
   \leanok
   \uses{def:partial-orientation}
   Let $D$ be a partial orientation and $u_0 \to u_1 \to \cdots \to
@@ -140,7 +142,8 @@ out-degree budget.
 
 \begin{definition}[Arc-insertion move]
   \label{def:arc-insertion}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.addArc}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.addArc,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.underline_addArc}
   \leanok
   \uses{def:partial-orientation}
   Let $D$ be a partial orientation and $(u, v)$ an ordered pair with
@@ -435,21 +438,85 @@ failure witness.
 The success branch of $\mathrm{runPebbleGame}$ is automatically a
 witness of sparsity, by Invariant~(4) applied to $\underline{D} =
 E(G)$. This is the easy half of Lee--Streinu Theorem 8
-(corresponding to L-S Corollary 12).
+(corresponding to L-S Corollary 12). The proof routes through two
+infrastructure invariants on the fold: $\mathrm{Reachable}\,k\,\ell$-
+preservation (already established in
+\cref{lem:pebble-game-invariants}) and underlying-edge tracking
+(\cref{lem:runPebbleGameWith-underline-subset} below).
+
+\begin{lemma}[Underlying-edge tracking through the fold]
+  \label{lem:runPebbleGameWith-underline-subset}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_underline,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_underline_subset}
+  \leanok
+  \uses{def:tryAddEdge, def:runPebbleGame, def:partial-orientation,
+    def:path-reversal, def:arc-insertion}
+  Let $D$ be a partial orientation, $k, \ell$ integers, and
+  $\mathit{edges} : \mathrm{List}\,(V \times V)$ a list of candidate
+  ordered pairs. If
+  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{toSucc}\,\mathtt{h\_toSucc}\,\mathit{edges}
+   = \mathrm{some}\,D'$, then
+  \begin{enumerate}
+    \item $\underline{D} \subseteq \underline{D'}$ (no edge is ever
+      removed by the move sequence); and
+    \item $\underline{D'} \subseteq \underline{D} \cup
+      \{s(u, v) : (u, v) \in \mathit{edges}\}$ (the only new edges
+      come from list entries that hit the accept branch).
+  \end{enumerate}
+  In particular, $\underline{D'} \subseteq \underline{D} \cup
+  \mathrm{Sym}_2(\mathit{edges})$, so when $D = \mathtt{empty}$ and
+  $\mathit{edges}$ enumerates $E(G)$ for a simple graph $G$,
+  $\underline{D'} \subseteq E(G)$ at termination.
+
+  Per-step accept-branch glue: $\mathtt{tryAddEdgeWith}\,k\,\ell\,D\,
+  u\,v\ldots = \mathrm{some}\,D'$ implies $\underline{D'} = \underline{D}
+  \cup \{s(u, v)\}$. Reversal moves preserve $\underline{D}$
+  (\cref{def:path-reversal}), so any number of internal DFS-plus-
+  reversal recursions in $\mathtt{tryAddEdgeWith}$ leave the
+  underlying-edge set unchanged; the final $\mathtt{addArc}$ adds
+  exactly one edge (\cref{def:arc-insertion}). The bidirectional
+  $\subseteq$ statement is enough for soundness on the $\subseteq E(G)$
+  half; the converse $E(G) \subseteq \underline{D'}$ (every edge is
+  accepted) requires a no-skip-fires argument that is stated and
+  proved separately when needed by \cref{thm:pebble-game-soundness}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By structural induction on $\mathit{edges}$. Empty list: $D = D'$,
+  both inclusions are trivial. Cons case $(u, v) :: \mathit{es}$:
+  if the runtime checks fail, the step is a no-op and the IH on
+  $\mathit{es}$ gives both inclusions directly (the upper bound's
+  RHS only grows when we widen the candidate list). Otherwise
+  $\mathtt{tryAddEdgeWith}$ fires; on success it returns
+  $D_{\mathrm{mid}}$ with $\underline{D_{\mathrm{mid}}} = \underline{D}
+  \cup \{s(u, v)\}$ (by induction on
+  $\mathtt{tryAddEdgeWith.induct}$'s five cases, with the two
+  accept branches closing on \cref{def:arc-insertion}'s underlying-
+  edge equation and the two DFS-success branches composing the
+  reversal-preservation lemma with the IH; the both-DFS-fail branch
+  is contradictory by $\mathrm{some} \ne \mathrm{none}$). The IH on
+  $\mathit{es}$ at $D_{\mathrm{mid}}$ then gives both inclusions for
+  the full list.
+\end{proof}
 
 \begin{theorem}[Soundness of the pebble game]
   \label{thm:pebble-game-soundness}
-  \uses{def:runPebbleGame, lem:pebble-game-invariants, def:isSparse}
+  \uses{def:runPebbleGame, lem:pebble-game-invariants, def:isSparse,
+    lem:runPebbleGameWith-underline-subset}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
   integers with $\ell < 2k$. If $\mathrm{runPebbleGame}\,k\,\ell\,G
   = \mathrm{Sum.inl}\,D$, then $G$ is $(k, \ell)$-sparse.
 \end{theorem}
 \begin{proof}
-  \uses{def:runPebbleGame, lem:pebble-game-invariants}
+  \uses{def:runPebbleGame, lem:pebble-game-invariants,
+    lem:runPebbleGameWith-underline-subset}
   By \cref{lem:pebble-game-invariants} Invariant~(4) applied to
   $D$ at termination, every subset $V' \subseteq V$ in the relevant
   size range satisfies $\mathrm{span}_D(V') \le k|V'| - \ell$.
-  Since $\underline{D} = E(G)$, this is exactly $|\edgesIn[G]{V'}|
+  Since $\underline{D} = E(G)$
+  (\cref{lem:runPebbleGameWith-underline-subset} applied at $D =
+  \mathtt{empty}$, plus the converse $E(G) \subseteq \underline{D'}$
+  from the no-skip-fires argument), this is exactly $|\edgesIn[G]{V'}|
   \le k|V'| - \ell$, i.e.\ $G$ is $(k, \ell)$-sparse on $V'$.
 \end{proof}
 

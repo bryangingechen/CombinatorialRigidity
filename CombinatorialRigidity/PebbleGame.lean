@@ -171,6 +171,18 @@ def outOn (V' : Finset V) : ℕ := (D.boundaryArcs V').card
 /-- Total pebble count on `V'`: sum of `peb k v` over `v ∈ V'`. -/
 def pebOn (k : ℕ) (V' : Finset V) : ℕ := ∑ v ∈ V', D.peb k v
 
+/-- The *underlying edge set* `underline(D) ⊆ Sym₂ V` (blueprint
+`def:partial-orientation`): the set of unoriented edges of `D`, obtained by
+forgetting orientation on each arc. Both `(u, v) ∈ D.arcs` and `(v, u) ∈ D.arcs`
+project to the same `Sym2 V` element `s(u, v) = s(v, u)`, so the algorithm's
+no-antiparallel invariant means each edge of `underline D` lifts uniquely to an
+arc of `D`. Consumed by `thm:pebble-game-soundness` and the wrapper
+`runPebbleGame G k ℓ`'s correctness statement, where the invariant
+`underline D = E(G)` ties the algorithm's structural state back to the input
+graph. -/
+def underline : Finset (Sym2 V) :=
+  D.arcs.image (fun p => s(p.1, p.2))
+
 @[simp] lemma outNbhd_empty (v : V) :
     (empty : PartialOrientation V).outNbhd v = ∅ := by
   simp [outNbhd]
@@ -201,6 +213,24 @@ def pebOn (k : ℕ) (V' : Finset V) : ℕ := ∑ v ∈ V', D.peb k v
 @[simp] lemma pebOn_empty (k : ℕ) (V' : Finset V) :
     (empty : PartialOrientation V).pebOn k V' = V'.card * k := by
   simp [pebOn, Finset.sum_const, smul_eq_mul, mul_comm]
+
+@[simp] lemma underline_empty : (empty : PartialOrientation V).underline = ∅ := by
+  simp [underline]
+
+/-- Membership characterisation of `D.underline` on a `Sym2.mk` representative:
+the unoriented edge `s(a, b)` lies in `D.underline` iff at least one of its two
+orientations `(a, b)`, `(b, a)` sits in `D.arcs`. -/
+lemma mem_underline {a b : V} :
+    s(a, b) ∈ D.underline ↔ (a, b) ∈ D.arcs ∨ (b, a) ∈ D.arcs := by
+  simp only [underline, Finset.mem_image, Prod.exists]
+  constructor
+  · rintro ⟨x, y, hxy, h_eq⟩
+    rcases (Sym2.eq_iff.mp h_eq) with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+    · exact Or.inl hxy
+    · exact Or.inr hxy
+  · rintro (h | h)
+    · exact ⟨a, b, h, rfl⟩
+    · exact ⟨b, a, h, Sym2.eq_swap⟩
 
 /-- The sum of per-vertex out-degrees over a subset `V'` partitions arcs sourced
 in `V'` by their target: arcs landing in `V'` are counted by `D.span V'`, arcs
@@ -498,6 +528,28 @@ lemma pebOn_add_outOn_reverse_eq
   rw [D.span_reverse_eq p hp V'] at h_D'
   omega
 
+/-- Path reversal preserves the underlying unoriented edge set
+`underline(D) ⊆ Sym2 V` (blueprint `def:path-reversal`): every arc removed from
+`D` along the path is replaced by its reverse, and `s(a, b) = s(b, a)` so the
+two cancel under the `Sym2.mk`-image. Consumed by the fold-level
+underlying-edge invariant for `runPebbleGameWith`. -/
+lemma underline_reverse_eq
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath) :
+    (D.reverse p hp).underline = D.underline := by
+  have h_subset : p.arcsFinset ⊆ D.arcs := D.arcsFinset_subset_arcs p
+  have h_decomp : D.arcs = (D.arcs \ p.arcsFinset) ∪ p.arcsFinset :=
+    (Finset.sdiff_union_of_subset h_subset).symm
+  -- Reduce: `(reverse).arcs.image Sym2.mk = (D.arcs \ path ∪ path.reversed).image Sym2.mk`
+  -- and `path.reversed.image Sym2.mk = path.image Sym2.mk` via `Prod.swap` + `Sym2.eq_swap`.
+  have h_rev_im :
+      p.reversedArcsFinset.image (fun pp : V × V => s(pp.1, pp.2))
+        = p.arcsFinset.image (fun pp : V × V => s(pp.1, pp.2)) := by
+    rw [p.reversedArcsFinset_eq_image_swap, Finset.image_image]
+    refine Finset.image_congr (fun pp _ => ?_)
+    simp [Function.comp_apply, Sym2.eq_swap]
+  simp only [underline, arcs_reverse, Finset.image_union, h_rev_im]
+  conv_rhs => rw [h_decomp, Finset.image_union]
+
 /-- A directed pair `(a, b)` not in `D.arcs` and whose reverse `(b, a)` is also
 not in `D.arcs` remains absent from `D.reverse p hp`'s arcs. Path reversal
 removes some arcs and inserts their reverses; an arc `(a, b)` could re-enter
@@ -723,6 +775,19 @@ lemma pebOn_add_outOn_addArc_add (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) 
     · simp [hu, hv] at h_peb h_out ⊢; omega
     · simp [hu, hv] at h_peb h_out ⊢; omega
   · simp [hu] at h_peb h_out ⊢; omega
+
+/-- Arc insertion adds exactly one unoriented edge to `underline(D)`: the new
+edge `s(u, v)` (blueprint `def:arc-insertion`). The `Finset.insert` is a
+genuine extension iff the edge `s(u, v)` was absent before, which holds in the
+`tryAddEdge` context (where both `(u, v) ∉ D.arcs` and `(v, u) ∉ D.arcs` are
+preconditions, so neither orientation lifts to a representative of `s(u, v)`
+in `D.underline`); the equation itself holds unconditionally on the
+`(u, v) ∉ D.arcs` hypothesis because `Finset.image_insert` is unconditional.
+Consumed by the fold-level underlying-edge invariant for
+`runPebbleGameWith`. -/
+lemma underline_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs) :
+    (D.addArc u v huv hnotin_rev).underline = insert s(u, v) D.underline := by
+  simp [underline, arcs_addArc, Finset.image_insert]
 
 end AddArc
 
@@ -995,6 +1060,15 @@ lemma TryReachPebbleResult.reachable_newOrient {D : PartialOrientation V}
     Reachable k ℓ r.newOrient :=
   Reachable.reverse hD r.walk r.isPath h_target
 
+omit [Fintype V] in
+/-- The underlying unoriented edge set is preserved by a single
+DFS-plus-reversal step: `r.newOrient = D.reverse r.walk r.isPath` has the same
+`underline` as `D`. Direct corollary of `underline_reverse_eq`. -/
+lemma TryReachPebbleResult.underline_newOrient_eq {D : PartialOrientation V}
+    {P : V → Bool} {v : V} (r : TryReachPebbleResult D P v) :
+    r.newOrient.underline = D.underline :=
+  D.underline_reverse_eq r.walk r.isPath
+
 end TryReachPebble
 
 /-! ### Try-add-edge: outer loop driving DFS + path reversal + insertion
@@ -1216,6 +1290,56 @@ lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     rw [hu_none, hv_none] at h
     exact nomatch h
 
+/-- `tryAddEdgeWith` on accept rewrites the underlying unoriented edge set as
+`insert s(u, v) D.underline`. By the same `tryAddEdgeWith.induct` dispatch as
+`tryAddEdgeWith_reachable`: both threshold-accept branches close via
+`underline_addArc` (with `s(u, v) = s(v, u)` collapsing the orientation choice
+to the same `Sym2` element); the DFS-success branches compose
+`TryReachPebbleResult.underline_newOrient_eq` with the inductive hypothesis;
+the both-DFS-fail branch is contradictory by `nomatch`. -/
+lemma tryAddEdgeWith_underline {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    {D : PartialOrientation V}
+    (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
+    (h_outle : ∀ x, D.out x ≤ k)
+    {D' : PartialOrientation V}
+    (h : D.tryAddEdgeWith k ℓ u v huv hnotin hnotin_rev h_outle toSucc h_toSucc
+      = some D') :
+    D'.underline = insert s(u, v) D.underline := by
+  induction D, hnotin, hnotin_rev, h_outle using
+    tryAddEdgeWith.induct (k := k) (ℓ := ℓ) (huv := huv)
+      (toSucc := toSucc) (h_toSucc := h_toSucc)
+    generalizing D'
+  case case1 D hnotin hnotin_rev h_outle hthr hpu_pos =>
+    -- Threshold met, free pebble at `u`: insert `(u, v)`.
+    rw [tryAddEdgeWith, dif_pos hthr, if_pos hpu_pos] at h
+    cases h
+    exact D.underline_addArc u v huv hnotin_rev
+  case case2 D hnotin hnotin_rev h_outle hthr hpu_neg =>
+    -- Threshold met, no free pebble at `u`: insert `(v, u)`. `s(v, u) = s(u, v)`.
+    rw [tryAddEdgeWith, dif_pos hthr, if_neg hpu_neg] at h
+    cases h
+    rw [D.underline_addArc v u huv.symm hnotin, Sym2.eq_swap]
+  case case3 D hnotin hnotin_rev h_outle hthr P r hr_eq ih =>
+    -- Below threshold, u-DFS succeeds: recurse on `r.newOrient`, transport via
+    -- `underline_newOrient_eq`.
+    rw [tryAddEdgeWith, dif_neg hthr] at h
+    simp only at h
+    rw [hr_eq] at h
+    rw [ih h, r.underline_newOrient_eq]
+  case case4 D hnotin hnotin_rev h_outle hthr P hu_none r hr_eq ih =>
+    rw [tryAddEdgeWith, dif_neg hthr] at h
+    simp only at h
+    rw [hu_none, hr_eq] at h
+    rw [ih h, r.underline_newOrient_eq]
+  case case5 D hnotin hnotin_rev h_outle hthr P hu_none hv_none =>
+    rw [tryAddEdgeWith, dif_neg hthr] at h
+    dsimp only at h
+    rw [hu_none, hv_none] at h
+    exact nomatch h
+
 end TryAddEdge
 
 /-! ### Run-pebble-game: fold tryAddEdge over an edge enumeration
@@ -1324,6 +1448,71 @@ lemma runPebbleGameWith_reachable {k ℓ : ℕ}
         exact nomatch h
     · rw [dif_neg hcond] at h
       exact runPebbleGameWith_reachable toSucc h_toSucc es hD h
+
+/-- `runPebbleGameWith` tracks the underlying unoriented edge set across the
+fold (infrastructure piece (ii) for `thm:pebble-game-soundness`). On success,
+`D'.underline` lies between the input `D.underline` (monotone: nothing is ever
+removed by the move sequence — `underline_reverse_eq` shows reversal preserves
+it, `underline_addArc` shows arc insertion grows it) and the union with the
+`Sym2.mk`-image of the candidate edge list (upper bound: every edge of
+`D'.underline` either started in `D.underline` or got accepted from a list
+entry; skipped entries either were already in `D.underline` or did not
+contribute, and accept-branch hits add exactly one new `s(u, v)` per
+`tryAddEdgeWith_underline`).
+
+By structural induction on the edge list; the per-step glue is
+`tryAddEdgeWith_underline` on accept-branch hits and the IH directly on no-op
+(skipped) edges. -/
+lemma runPebbleGameWith_underline_subset {k ℓ : ℕ}
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs) :
+    ∀ (edges : List (V × V)) {D D' : PartialOrientation V},
+      D.runPebbleGameWith k ℓ toSucc h_toSucc edges = some D' →
+      D.underline ⊆ D'.underline ∧
+      D'.underline ⊆ D.underline ∪ (edges.map (fun p : V × V => s(p.1, p.2))).toFinset
+  | [], D, D', h => by
+    rw [runPebbleGameWith] at h
+    cases h
+    refine ⟨subset_refl _, ?_⟩
+    simp
+  | (u, v) :: es, D, D', h => by
+    rw [runPebbleGameWith] at h
+    by_cases hcond : u ≠ v ∧ (u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs ∧ (∀ x, D.out x ≤ k)
+    · rw [dif_pos hcond] at h
+      match heq : D.tryAddEdgeWith k ℓ u v hcond.1 hcond.2.1 hcond.2.2.1 hcond.2.2.2
+          toSucc h_toSucc with
+      | some Dmid =>
+        rw [heq] at h
+        have h_mid : Dmid.underline = insert s(u, v) D.underline :=
+          tryAddEdgeWith_underline hcond.1 toSucc h_toSucc
+            hcond.2.1 hcond.2.2.1 hcond.2.2.2 heq
+        obtain ⟨ih_mono, ih_upper⟩ :=
+          runPebbleGameWith_underline_subset toSucc h_toSucc es h
+        refine ⟨?_, ?_⟩
+        · -- D.underline ⊆ Dmid.underline (= insert s(u,v) D.underline) ⊆ D'.underline.
+          intro e he
+          exact ih_mono (h_mid ▸ Finset.mem_insert_of_mem he)
+        · -- D'.underline ⊆ Dmid.underline ∪ (es-image) ⊆ insert s(u,v) D.underline ∪ es-image
+          --               ⊆ D.underline ∪ ((u, v) :: es)-image.
+          intro e he
+          have he' := ih_upper he
+          rw [h_mid] at he'
+          simp only [List.map_cons, List.toFinset_cons, Finset.mem_union,
+            Finset.mem_insert] at he' ⊢
+          tauto
+      | none =>
+        rw [heq] at h
+        exact nomatch h
+    · rw [dif_neg hcond] at h
+      obtain ⟨ih_mono, ih_upper⟩ :=
+        runPebbleGameWith_underline_subset toSucc h_toSucc es h
+      refine ⟨ih_mono, ?_⟩
+      intro e he
+      have he' := ih_upper he
+      simp only [List.map_cons, List.toFinset_cons, Finset.mem_union,
+        Finset.mem_insert] at he' ⊢
+      tauto
 
 end RunPebbleGame
 
