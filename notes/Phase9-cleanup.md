@@ -40,17 +40,27 @@ D1's commit also lifts the soft length budget in `../notes/CLAUDE.md`
 to an adaptive form (short phases sit at 100–200 lines, long phases
 at 350–450); Phase 9 calibrates the upper end. D2–D5 still to do.
 Bucket C's long-proof audit landed
-one Lean simplification — the 11-line `|V'| ≥ 2` derivation
+two Lean simplifications. (i) The 11-line `|V'| ≥ 2` derivation
 duplicated at `independent_brings_pebble_simpleGraph_form` and
 `tryAddEdgeWith_eq_none_imp_exists_witness` case5 collapses to a
 one-liner via `Finset.one_lt_card.mpr`, lifted to TACTICS-GOLF § 3
-*Search mathlib before mirroring* as a worked example. All other
-top-10 PebbleGame entries and top-6 DFS entries cleared as
-audit-only; the most prominent candidate (the
-`tryAddEdgeWith.induct` case3/case4 shared 6-line preamble across
-three proofs, ~36 LoC) is documented but not hoisted — the
-let-bound predicate `P` inside `tryAddEdgeWith` blocks a clean
-helper at the cleanup-round level. Buckets A + B detail:
+*Search mathlib before mirroring* as a worked example.
+(ii) The `tryAddEdgeWith.induct` case3/case4 shared 8-line
+preamble across three proofs (six copies, ~48 LoC of duplication)
+collapses to one-line `r.reachable_newOrient_of_addEdgePred hD
+h_outle` calls via a new `TryReachPebbleResult` helper at
+`PebbleGame.lean:1111` — the let-bound `P` problem flagged in
+the original audit (forcing a definitional refactor of
+`tryAddEdgeWith`) was sidestepped by baking `P`'s specific
+lambda directly into the helper's parameter type, which
+defeq-unifies with the `.induct` case-binder. Net ~46 LoC saved
+across the three consumers; technique lifted to TACTICS-GOLF § 9
+*Bake let-bound predicate shapes into helper signatures*.
+Refactor (ii) landed in this round after `../CLEANUP.md`'s
+*Not a refactor pass* exclusion was relaxed mid-round per the
+*Workflow* rule-3 augmentation. All other top-10 PebbleGame
+entries and top-6 DFS entries cleared as audit-only. Buckets A + B
+detail:
 both blueprint chapters track the Lean faithfully, the iff red
 node is now green, the SimpleGraph-vs-multi-graph regime
 correspondence is documented in the chapter prose, the formalization-aside scan across both chapters surfaced
@@ -779,8 +789,11 @@ the manual:
   (just below the bar) once the awk resets on `omit`-style
   scope-opener markers.
 - [x] **C2:** Walk each of C1's top PebbleGame entries through the
-  four CLEANUP.md questions. One Lean simplification landed; the
-  rest cleared as audit-only.
+  four CLEANUP.md questions. Two Lean simplifications landed (the
+  `Finset.one_lt_card.mpr` inline collapse and the
+  `reachable_newOrient_of_addEdgePred` cross-proof unification
+  helper, the latter after the CLEANUP.md *Not a refactor pass*
+  rule relaxation); the rest cleared as audit-only.
 
   **Inline collapse landed.** The 11-line `|V'| ≥ 2` block at two
   pre-collapse sites — `Reachable.independent_brings_pebble_simpleGraph_form`
@@ -837,40 +850,32 @@ the manual:
     composed with both halves of `runPebbleGameWith_*`. Each input
     hypothesis is named and proved in 2–5 lines.
 
-  **Cross-proof unification analysis (audit-only).** The
-  `tryAddEdgeWith.induct` case3/case4 pair carries a shared 6-line
-  preamble across *three* proofs (`_reachable`, `_isSome`,
-  `_eq_none_imp_exists_witness` — six copies total, ~36 LoC):
-  ```
-  have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
-    have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
-  have h_target : D.out r.target < k := by
-    have h1 := h_outle r.target
-    have h2 : D.peb k r.target = k - D.out r.target := rfl
-    have := hP_decomp.1.1
-    omega
-  have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
-  ```
-  Not hoisted. The blocker is structural: `P` is *let-bound* inside
-  `tryAddEdgeWith`'s body (`let P : V → Bool := fun w => decide (0 <
-  D.peb k w) && decide (w ≠ u) && decide (w ≠ v)`), so the
-  `simp only [P, ...]` unfold is per-case-body — a top-level helper
-  has no way to consult `P`'s shape without taking it as a
-  hypothesis. A `TryReachPebbleResult.reachable_newOrient_of_peb_pos`
-  taking `h_peb_pos : 0 < D.peb k r.target` directly could save
-  ~3 lines per case (~18 LoC total), but each callsite still needs
-  the same `simp [P, ...]` dance to extract the positivity,
-  undermining the abstraction. Promoting `P` to a top-level
-  `private def` would enable a cleaner helper but would change
-  `tryAddEdgeWith`'s body shape and `tryAddEdgeWith.induct`'s
-  case-binder signature — a definitional refactor out of scope at
-  the cleanup-round level. The current parallel layout across the
-  three case-3/case-4 bodies makes the shared IH-step structure
-  visually inspectable; collapsing it would obscure that.
-  `tryAddEdgeWith_underline` (43 LoC, the fourth `tryAddEdgeWith.induct`
-  proof) doesn't share this preamble — it threads only
-  `r.underline_newOrient_eq`, no reachability — so the cross-proof
-  shape is 3 proofs, not 4.
+  **Cross-proof unification helper landed.** The 8-line case3/case4
+  preamble shared across `_reachable`, `_isSome`, and
+  `_eq_none_imp_exists_witness` (six copies, ~48 LoC of duplication)
+  collapses to a single
+  `r.reachable_newOrient_of_addEdgePred hD h_outle` call via a new
+  `TryReachPebbleResult` helper at `PebbleGame.lean:1111`. The helper
+  bundles the `r.hP` decode (`simp only [Bool.and_eq_true,
+  decide_eq_true_eq]`) plus the `D.out r.target < k` derivation
+  (using `peb k w = k - D.out w` definitionally and `h_outle`) plus
+  the `reachable_newOrient` application — once, instead of six times.
+  The let-bound `P` problem flagged in the original audit (forcing a
+  definitional refactor of `tryAddEdgeWith` to hoist `P` to a
+  top-level `private def`) was sidestepped by baking the predicate's
+  specific shape `fun w => decide (0 < D.peb k w) && decide (w ≠ u)
+  && decide (w ≠ v)` directly into the helper's signature — at each
+  callsite the `.induct`-generated case-binder `P` defeq-reduces to
+  the lambda, so the helper unifies without an explicit
+  `hP_def`-style equation argument or any change to `tryAddEdgeWith`
+  /`tryAddEdgeWith.induct`. Net ~46 LoC saved across the three
+  consumers; the helper itself is 11 LoC. The same trick would not
+  apply to `tryAddEdgeWith_underline` (the fourth `.induct` proof) —
+  it threads only `r.underline_newOrient_eq`, no reachability — so
+  the refactor covers 3 proofs, not 4. Lifted to
+  `../TACTICS-GOLF.md` §9 *Bake let-bound predicate shapes into
+  helper signatures* (which uses this refactor as its worked
+  example).
 - [x] **C3:** Walk DFS.lean top entries. All cleared as
   audit-only.
   - `reachableFindingAux_complete` (60 LoC): three-level nested
@@ -999,38 +1004,20 @@ the manual:
   docstrings of the two halves (`PebbleGame.lean:2018, 2112`)
   remain in place.
 
-- **C2-followup (carry-over):** Promote the let-bound predicate
-  `P` inside `tryAddEdgeWith` to a top-level `private def
-  PartialOrientation.tryAddEdgePred (D k u v w) : Bool :=
-  decide (0 < D.peb k w) && decide (w ≠ u) && decide (w ≠ v)` plus
-  a `@[simp]` decoder lemma
-  `tryAddEdgePred_eq_true : ... ↔ 0 < D.peb k w ∧ w ≠ u ∧ w ≠ v`.
-  Unlocks the cross-proof unification helper
-  `r.reachable_newOrient_of_tryAddEdgePred hD h_outle` flagged in
-  C2's *Cross-proof unification analysis*: each of the six
-  case3/case4 bodies across `tryAddEdgeWith_reachable`,
-  `tryAddEdgeWith_isSome`, and
-  `tryAddEdgeWith_eq_none_imp_exists_witness` shrinks from ~17 LoC
-  of repeated `simp [P, ...]` + `h_target` + `r.reachable_newOrient`
-  setup to ~5 LoC of `exact ih (r.reachable_newOrient_of_tryAddEdgePred
-  hD h_outle) h`. Estimated net ~55 LoC saved (3 proofs × 12 LoC × 2
-  cases, less a ~15-LoC def+lemma pair).
-
-  **In scope** per `../CLEANUP.md` *Workflow* rule 3 (audit-surfaced
-  refactors land in-round; the *Not a refactor pass* exclusion that
-  initially punted this entry was relaxed at HEAD). Available for the
-  next commit
-  (~30–60 min estimate including the `decreasing_by` block fixup and
-  any `tryAddEdgeWith.induct` case-binder adjustments — the `P` name
-  currently appears as a case-binder in all four `tryAddEdgeWith.induct`
-  proofs and may shift to the named def after the hoist). The
-  refactor touches: the function body of `tryAddEdgeWith`
-  (`PebbleGame.lean:1198`), its `decreasing_by` block
-  (L1246–1275, which also `simp only [P, ...]`s the let), and the
-  case3/case4 / case5 bindings in the four `tryAddEdgeWith.induct`
-  consumers (`_reachable`, `_underline`, `_isSome`,
-  `_eq_none_imp_exists_witness`). Pick this up as a small forward
-  task at the next opportunity; not a blocker for bucket D.
+- **C2-followup:** *closed (refactor landed)*. The cross-proof
+  unification helper analysed in C2's *Cross-proof unification
+  analysis* paragraph landed as
+  `TryReachPebbleResult.reachable_newOrient_of_addEdgePred` at
+  `PebbleGame.lean:1111`. The original audit's "out of scope"
+  reading proposed hoisting `P` to a top-level `private def` —
+  this commit took the lighter route of baking `P`'s specific
+  lambda directly into the helper's parameter type, which
+  defeq-unifies with the `.induct` case-binder without any
+  change to `tryAddEdgeWith`'s body or the `.induct` signature.
+  All six case3/case4 bodies migrated to a one-line
+  `exact ih (r.reachable_newOrient_of_addEdgePred hD h_outle) …`
+  call; net ~46 LoC saved across the three consumers. Technique
+  lifted to `../TACTICS-GOLF.md` §9.
 
 ## Blockers / open questions
 
@@ -1061,15 +1048,19 @@ PebbleGame.lean header *"scaffold"* paragraph dropped +
 `reachClosure` added to DFS.lean's *Main declarations*),
 B5 (79 `--` comments all WHY-content, retained, audit-only),
 C1 (top proofs ranked via a tightened awk over both files),
-C2 (PebbleGame.lean walk — one inline collapse landed via
-`Finset.one_lt_card.mpr` at two sites, lifted to TACTICS-GOLF
-§ 3; all other entries audit-only including the
-`tryAddEdgeWith.induct` case3/case4 cross-proof unification
-analysis), C3 (DFS.lean walk, all audit-only — the three-level
+C2 (PebbleGame.lean walk — two refactors landed: the inline
+`Finset.one_lt_card.mpr` collapse at two sites (lifted to
+TACTICS-GOLF § 3), and the `tryAddEdgeWith.induct` case3/case4
+cross-proof unification helper
+`TryReachPebbleResult.reachable_newOrient_of_addEdgePred`,
+~46 LoC saved across the three consumers (lifted to TACTICS-GOLF
+§ 9); all other walked entries audit-only),
+C3 (DFS.lean walk, all audit-only — the three-level
 nested structure of `reachableFindingAux_complete` mirrors the
 algorithm's recursion and isn't a candidate for compression),
 and C4 (cross-reference to B2's `lean_multi_attempt` sweep) are
-all green.
+all green. C2-followup *closed (refactor landed)*; see
+*Surfaced follow-ups* for the closing entry.
 
 The natural next task is bucket D (project-organization
 compression). The headline task is D1: compress `notes/Phase9.md`
@@ -1082,16 +1073,6 @@ lift to TACTICS-GOLF / TACTICS-QUIRKS / DESIGN.md), `FRICTION.md`
 housekeeping (Phase 9's 5 resolved entries' archive disposition),
 `DESIGN.md` *Choices to revisit* flips (3 Phase-9-resolved
 decisions), and `ROADMAP.md` engineering-conventions re-skim.
-
-One forward-work carry-over from this round is parked in
-*Surfaced follow-ups* as **C2-followup**: promote the let-bound
-predicate `P` inside `tryAddEdgeWith` to
-`PartialOrientation.tryAddEdgePred` + decoder lemma, unlocking
-the cross-proof unification helper analysed in C2 (~55 LoC net
-savings across the three `tryAddEdgeWith.induct` proofs). In scope
-per `../CLEANUP.md` *Workflow* rule 3 (audit-surfaced refactors
-land in-round); available for the next commit in this round, not a
-bucket-D prerequisite.
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is

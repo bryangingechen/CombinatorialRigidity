@@ -39,6 +39,12 @@ symptom-indexed and lighter.
    `(norm := (field_simp; ring))` when the combination's scaling factor
    is a rational function (`a/(s-1)`) of an in-scope free variable; the
    default `ring` post-check fails on such denominators.
+9. **Bake let-bound predicate shapes into helper signatures** — when
+   factoring a cross-`.induct`-case helper that consults a `let`-bound
+   predicate `P`, bake `P`'s specific lambda directly into the helper's
+   parameter type instead of taking `P` abstract + an `hP_def` equation.
+   The `.induct` case-binder defeq-reduces, so unification fires without
+   any explicit equation argument.
 
 ---
 
@@ -699,3 +705,62 @@ were the C3 cleanup's main lever (Phase 7 cleanup round).
 manually. The cost is one `field_simp` invocation; the win is
 keeping the proof at the level of the algebraic identity rather
 than its denominator-cleared variant.
+
+## 9. Bake let-bound predicate shapes into helper signatures
+
+When a function's body has `let P : V → Bool := fun w => …` and you
+want to factor a cross-`.induct`-case helper that consults `P`'s
+shape, the naïve extraction (a top-level helper taking `P` as a
+parameter) doesn't work: the helper's body can't `simp only [P, …]`
+unfold because `P` is a free variable from its point of view. The
+standard workaround — pass `P`'s shape as a `hP_def : ∀ w, P w = …`
+equation argument, optionally with a `:= by rfl` default — adds
+plumbing or relies on autoParam to elide it. **The shorter route**:
+bake `P`'s specific lambda directly into the helper's parameter
+type. At each `.induct` callsite the case-binder `P` (let-bound by
+`.induct` to that exact lambda) defeq-reduces, so Lean unifies the
+helper's bound `fun w => …` with the callsite's `P` without any
+explicit equation argument.
+
+### Pattern
+
+```lean
+-- Helper: bake `P`'s lambda into the parameter's type.
+lemma TryReachPebbleResult.reachable_newOrient_of_addEdgePred
+    {D : PartialOrientation V} {k ℓ : ℕ} {u v start : V}
+    (r : TryReachPebbleResult D
+           (fun w => decide (0 < D.peb k w) && decide (w ≠ u) && decide (w ≠ v))
+           start)
+    (hD : Reachable k ℓ D) (h_outle : ∀ x, D.out x ≤ k) :
+    Reachable k ℓ r.newOrient := …
+```
+
+```lean
+-- Callsite (inside a `.induct` `case` whose body let-binds `P`
+-- to exactly that lambda): no `hP_def`, no `simp [P]` plumbing.
+case case3 D hnotin hnotin_rev h_outle hthr P r hr_eq ih =>
+  …
+  exact ih (r.reachable_newOrient_of_addEdgePred hD h_outle) h
+```
+
+### Worked example
+
+Phase 9-cleanup C2 hit this with `tryAddEdgeWith`. Three `.induct`
+consumers (`tryAddEdgeWith_reachable`, `_isSome`,
+`_eq_none_imp_exists_witness`) each duplicated an 8-line case3/case4
+preamble that decoded `r.hP`, derived `D.out r.target < k`, and
+applied `r.reachable_newOrient` — six copies, ~48 LoC of
+duplication. The pre-refactor audit's "out of scope" reading
+proposed hoisting `P` to a top-level `private def`, which would have
+required changing `tryAddEdgeWith`'s body shape and the `.induct`
+case-binder signature; the bake-into-signature route landed the same
+collapse without touching either.
+
+### When it doesn't apply
+
+- If callsites need to pass *different* lambdas (a generic reusable
+  helper across multiple predicate shapes), keep `P` abstract and
+  take `hP_def` as a hypothesis.
+- If you can't get to a place where `r : TryReachPebbleResult D P …`
+  is in scope with `P` let-bound (no `.induct`-style binding), there
+  is no defeq channel for the unification.

@@ -1109,6 +1109,34 @@ lemma TryReachPebbleResult.reachable_newOrient {D : PartialOrientation V}
   Reachable.reverse hD r.walk r.isPath h_target
 
 omit [Fintype V] in
+/-- `Reachable k ℓ`-preservation specialised to the predicate `tryAddEdgeWith`
+runs the DFS with:
+`P w = decide (0 < D.peb k w) && decide (w ≠ u) && decide (w ≠ v)`.
+Decodes the conjunctive `r.hP` into `0 < D.peb k r.target`, derives
+`D.out r.target < k` (using `peb k w = k - D.out w` definitionally and
+`h_outle r.target ≤ k`), then applies `reachable_newOrient`. Bundles the
+8-line case3+case4 preamble shared across the three `tryAddEdgeWith.induct`
+proofs (`_reachable`, `_isSome`, `_eq_none_imp_exists_witness`) — at each
+callsite the case-binder `P` (let-bound by `.induct` to the specific lambda)
+unifies with the helper's signature, so the simp dance is performed once in
+the helper instead of six times across the consumers. -/
+lemma TryReachPebbleResult.reachable_newOrient_of_addEdgePred
+    {D : PartialOrientation V} {k ℓ : ℕ} {u v start : V}
+    (r : TryReachPebbleResult D
+           (fun w => decide (0 < D.peb k w) && decide (w ≠ u) && decide (w ≠ v))
+           start)
+    (hD : Reachable k ℓ D) (h_outle : ∀ x, D.out x ≤ k) :
+    Reachable k ℓ r.newOrient := by
+  have h := r.hP
+  simp only [Bool.and_eq_true, decide_eq_true_eq] at h
+  have h_target : D.out r.target < k := by
+    have h1 := h_outle r.target
+    have h2 : D.peb k r.target = k - D.out r.target := rfl
+    have := h.1.1
+    omega
+  exact r.reachable_newOrient hD h_target
+
+omit [Fintype V] in
 /-- The underlying unoriented edge set is preserved by a single
 DFS-plus-reversal step: `r.newOrient = D.reverse r.walk r.isPath` has the same
 `underline` as `D`. Direct corollary of `underline_reverse_eq`. -/
@@ -1337,30 +1365,13 @@ lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     rw [tryAddEdgeWith, dif_neg hthr] at h
     simp only at h
     rw [hr_eq] at h
-    -- Establish `Reachable k ℓ r.newOrient` from `r.hP`.
-    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
-      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
-    have h_target : D.out r.target < k := by
-      have h1 := h_outle r.target
-      have h2 : D.peb k r.target = k - D.out r.target := rfl
-      have := hP_decomp.1.1
-      omega
-    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
-    exact ih hR_new h
+    exact ih (r.reachable_newOrient_of_addEdgePred hD h_outle) h
   case case4 D hnotin hnotin_rev h_outle hthr P hu_none r hr_eq ih =>
     -- Below threshold, u-DFS fails, v-DFS succeeds: recurse on `r.newOrient`.
     rw [tryAddEdgeWith, dif_neg hthr] at h
     simp only at h
     rw [hu_none, hr_eq] at h
-    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
-      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
-    have h_target : D.out r.target < k := by
-      have h1 := h_outle r.target
-      have h2 : D.peb k r.target = k - D.out r.target := rfl
-      have := hP_decomp.1.1
-      omega
-    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
-    exact ih hR_new h
+    exact ih (r.reachable_newOrient_of_addEdgePred hD h_outle) h
   case case5 D hnotin hnotin_rev h_outle hthr P hu_none hv_none =>
     -- Both DFS attempts fail: result is `none`, contradicting `h`.
     rw [tryAddEdgeWith, dif_neg hthr] at h
@@ -2051,36 +2062,20 @@ lemma tryAddEdgeWith_isSome {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     rw [tryAddEdgeWith, dif_neg hthr]
     simp only
     rw [hr_eq]
-    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
-      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
-    have h_target : D.out r.target < k := by
-      have h1 := h_outle r.target
-      have h2 : D.peb k r.target = k - D.out r.target := rfl
-      have := hP_decomp.1.1
-      omega
-    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
     have h_fresh_new : s(u, v) ∉ r.newOrient.underline := by
       rw [r.underline_newOrient_eq]; exact h_fresh
     have hG_new : G.edgeFinset = insert s(u, v) r.newOrient.underline := by
       rw [r.underline_newOrient_eq]; exact hG
-    exact ih hR_new h_fresh_new hG_new
+    exact ih (r.reachable_newOrient_of_addEdgePred hD h_outle) h_fresh_new hG_new
   case case4 D hnotin hnotin_rev h_outle hthr P hu_none r hr_eq ih =>
     rw [tryAddEdgeWith, dif_neg hthr]
     simp only
     rw [hu_none, hr_eq]
-    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
-      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
-    have h_target : D.out r.target < k := by
-      have h1 := h_outle r.target
-      have h2 : D.peb k r.target = k - D.out r.target := rfl
-      have := hP_decomp.1.1
-      omega
-    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
     have h_fresh_new : s(u, v) ∉ r.newOrient.underline := by
       rw [r.underline_newOrient_eq]; exact h_fresh
     have hG_new : G.edgeFinset = insert s(u, v) r.newOrient.underline := by
       rw [r.underline_newOrient_eq]; exact hG
-    exact ih hR_new h_fresh_new hG_new
+    exact ih (r.reachable_newOrient_of_addEdgePred hD h_outle) h_fresh_new hG_new
   case case5 D hnotin hnotin_rev h_outle hthr P hu_none hv_none =>
     exfalso
     have h_below : D.peb k u + D.peb k v < ℓ + 1 := by omega
@@ -2233,32 +2228,16 @@ lemma tryAddEdgeWith_eq_none_imp_exists_witness {k ℓ : ℕ} {u v : V} (huv : u
     rw [tryAddEdgeWith, dif_neg hthr] at h
     simp only at h
     rw [hr_eq] at h
-    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
-      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
-    have h_target : D.out r.target < k := by
-      have h1 := h_outle r.target
-      have h2 : D.peb k r.target = k - D.out r.target := rfl
-      have := hP_decomp.1.1
-      omega
-    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
     have h_sub_new : r.newOrient.underline ⊆ G.edgeFinset := by
       rw [r.underline_newOrient_eq]; exact h_sub
-    exact ih hR_new h_sub_new h
+    exact ih (r.reachable_newOrient_of_addEdgePred hD h_outle) h_sub_new h
   case case4 D hnotin hnotin_rev h_outle hthr P hu_none r hr_eq ih =>
     rw [tryAddEdgeWith, dif_neg hthr] at h
     simp only at h
     rw [hu_none, hr_eq] at h
-    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
-      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
-    have h_target : D.out r.target < k := by
-      have h1 := h_outle r.target
-      have h2 : D.peb k r.target = k - D.out r.target := rfl
-      have := hP_decomp.1.1
-      omega
-    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
     have h_sub_new : r.newOrient.underline ⊆ G.edgeFinset := by
       rw [r.underline_newOrient_eq]; exact h_sub
-    exact ih hR_new h_sub_new h
+    exact ih (r.reachable_newOrient_of_addEdgePred hD h_outle) h_sub_new h
   case case5 D hnotin hnotin_rev h_outle hthr P hu_none hv_none =>
     -- Freshness from the algorithmic preconditions on `D`'s arcs.
     have h_fresh : s(u, v) ∉ D.underline := fun h_mem => by

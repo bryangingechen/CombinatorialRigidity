@@ -370,12 +370,3 @@ is queued. Possible next directions:
   `Phase9-cleanup.md` + `Phase9-perf.md`; see those files for status
   and round-level manual `../CLEANUP.md` / `PERFORMANCE.md` for
   discipline.
-
-One forward-work carry-over from the cleanup round is parked in
-`Phase9-cleanup.md` *Surfaced follow-ups* as **C2-followup**:
-promote the let-bound predicate `P` inside `tryAddEdgeWith` to
-`PartialOrientation.tryAddEdgePred` + decoder lemma, unlocking the
-cross-proof unification helper across the three
-`tryAddEdgeWith.induct` consumers (~55 LoC net savings). In scope
-per `../CLEANUP.md` *Workflow* rule 3 (audit-surfaced refactors
-land in-round); available for the next commit in the cleanup round.
