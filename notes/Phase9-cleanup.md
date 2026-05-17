@@ -307,11 +307,7 @@ wrong, revisit there.
   prose") replaced the original bullet-list audit subsection with
   the flowing-prose `\emph{Multigraphs.}` paragraph format
   matching the chapter's `\emph{Out of scope.}` convention.
-- [ ] **A4:** Run `lake exe checkdecls blueprint/lean_decls` (after
-  `inv web`) to confirm every Phase 9 `\lean{...}` resolves. Phase 9
-  notes claim "the chapter dep-graph is fully green" — verify
-  post-hoc.
-- [ ] **A5:** Formalization-aside scan. Re-skim
+- [ ] **A4:** Formalization-aside scan. Re-skim
   `chapter/pebble-game.tex` (and `chapter/dfs.tex`) prose proofs for
   asides flagging Lean-side bookkeeping (custom `Equiv`s,
   named-helper one-step substitutes, case-splits the Lean had to
@@ -502,9 +498,10 @@ the manual:
 
 ## Blockers / open questions
 
-- Round in progress; A4 (`checkdecls` post-hoc spot-check, mostly
-  discharged during A2/A3 inline as a sanity check on each commit),
-  A5 (formalization-aside scan) and buckets B–D remain.
+- Round in progress; A4 (formalization-aside scan) and buckets B–D
+  remain. (`checkdecls` is the always-on per-commit gate per
+  `../blueprint/CLAUDE.md` *Static checks before commit*, not a
+  separate task.)
 
 ## Hand-off / next phase
 
@@ -514,10 +511,9 @@ A2 (pebble-game chapter walk), A2-followup
 (`lem:pebble-game-tryAddEdge-iff-independent` red node, discharged
 via the narrative-bridge `@[deprecated]` shim), and A3 (multigraph
 regime correspondence in the chapter's `\emph{Multigraphs.}` prose)
-are all closed. The natural next task is A4 (a clean `checkdecls`
-spot-check run on the current tree to formally close the
-post-Phase-9 dep-graph-is-fully-green claim) followed by A5
-(formalization-aside scan), then buckets B (code smells), C
+are all closed. The natural next task is A4 (formalization-aside
+scan across `chapter/pebble-game.tex` + `chapter/dfs.tex` per
+`../CLEANUP.md` §A step 3), then buckets B (code smells), C
 (long-proof audit), and D (Phase9.md compression).
 
 The accompanying **Phase 9-perf** pass opens in parallel

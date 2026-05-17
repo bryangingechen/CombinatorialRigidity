@@ -298,8 +298,13 @@ math foregrounded while signalling the real cost.
 
 ## Static checks before commit
 
-Run these from `blueprint/src/`. They catch the failure modes that
-the plastex build would catch later, but faster.
+These are the **always-on per-commit gates** for any commit that
+touches a `\lean{...}` pointer, a `\label{...}`, a `\uses{...}` /
+`\cref{...}` reference, or a `\cite{...}` key. They catch the
+failure modes that the plastex build would catch later, but faster,
+and run in seconds. Don't carry them as a separate cleanup-round
+task — `CLEANUP.md` §A is for divergence audits, not for re-running
+gates that should already have been green on each commit.
 
 **All `\lean{...}` names resolve to real Lean declarations.** The
 authoritative check is `checkdecls`, which loads every project import

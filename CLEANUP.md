@@ -59,9 +59,14 @@ For each chapter under `blueprint/src/chapter/`:
    round's first response is to attempt a Lean simplification that
    eliminates the aside. Only if simplification fails does the aside
    stay (and become more concrete about what residual cost remains).
-4. Use `lake exe checkdecls blueprint/lean_decls` (after `inv web`)
-   to confirm every `\lean{...}` still resolves. CI runs the same
-   check; failures here mean a Lean rename never got mirrored.
+
+`checkdecls` is the always-on per-commit gate that verifies every
+`\lean{...}` still resolves; it lives in `blueprint/CLAUDE.md`
+*Static checks before commit* and runs on every commit that touches a
+blueprint pointer (cf. `CombinatorialRigidity/CLAUDE.md` *Before each
+commit — build and lint gates*). A cleanup round does not need a
+separate "run checkdecls" task — failures of that gate are caught
+in-commit, not in a post-hoc audit.
 
 The friction direction matters: we **prefer to shorten the Lean**
 rather than add a prose aside. If a Lean simplification attempt fails,
