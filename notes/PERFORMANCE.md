@@ -26,14 +26,13 @@ file is to save the next agent from re-litigating the same dead ends.
   comparing a single optimization candidate usually returns ambiguous
   results unless you run 4+ trials per side, and even then the noise
   often swallows the signal.
-- The two **structural** levers (module-system conversion of the full
-  archive dependency chain; splitting `Framework.lean`'s analysis-heavy
-  half behind a thinner facade) are real options but multi-file. The
-  Phase-6 downstream additions (`TrivialMotions.lean`,
-  `HennebergRigidity.lean`, `RigidityMatroid.lean`, `LamanTheorem.lean`)
-  have now grown the beneficiary count enough that conversion would
-  amortize; still unmeasured against the noise band — pick up as a
-  dedicated perf pass.
+- **Module-system conversion is the project's largest measured win**
+  (Phase 8-perf F3.2–F3.6): HR −36.5 s, RM −31.0 s, LRM −45.5 s,
+  project-total −12.0 s vs F1.1 baseline, each 2–9× the ±5 s noise
+  band. Mechanism in *Experiments that did pay* and *Module system*
+  below. The other structural levers audited in the post-Phase-8
+  round (Sparsity / Henneberg splits, MatroidIdentification split)
+  individually landed perf-neutral.
 - The **safe** local levers are: remove dead imports; replace bare `simp`
   with `simp only` when the rewrite set is fixed and small; extract a
   helper *only when* the duplication is ≥ ~3 lines × ≥ 2 sites *and* the
@@ -164,19 +163,23 @@ visible to importers. The downstream benefit is a smaller load surface —
 files importing module M only need M's public interface, not its full
 elaboration state.
 
-**For this project, conversion is plausibly a win post-Phase-6, but
-still unmeasured.** A `module` file cannot import a non-`module`
-file (build error: *"cannot import non-`module` X from `module`"*).
-To convert `Framework.lean`, we'd need to convert all transitive
-imports first: the `Mathlib/…` mirror files plus `EdgesIn.lean`,
-`Sparsity.lean`, `Laman.lean`, `Henneberg.lean`. After Phase 6, the
-downstream beneficiaries are `TrivialMotions.lean`,
-`HennebergRigidity.lean`, `RigidityMatroid.lean`, and
-`LamanTheorem.lean` — four importers, enough to amortize. The
-conversion remains a multi-file refactor and the gain is still
-unmeasured against the build-time noise band (see *Headline lessons
-from Phase 5*); pick up as a dedicated perf pass when the time
-arrives.
+**For this project, conversion landed in the post-Phase-8 perf pass
+(F3.2–F3.6) and is the project's largest measured win** — see
+*Experiments that did pay* above for the 4-run A/B headline. The
+mechanic and per-file disposition tables live in *Granular `@[expose]`
+/ `public` audit per file* below (F3.4 + F3.5 dispositions). One
+file remains non-`module`: `LinearRigidityMatroid.lean`, blocked
+on `apnelson1/Matroid`'s `Matroid.Representation.Map` being
+non-`module` (~4 % of `apnelson1/Matroid` is converted as of
+2026-05). A future one-commit follow-up can convert LRM when the
+upstream lands.
+
+Constraint that drives ordering: a `module` file cannot import a
+non-`module` file (build error: *"cannot import non-`module` X from
+`module`"*); non-`module` files can freely import `module` files.
+That's why F3.2 (mirrors) lands before F3.3 (project files): the
+mirrors are leaves we control, and mathlib v4.30.0-rc2 is ~98.6 %
+`module`-converted upstream.
 
 Sample upstream pattern, in `Mathlib/Analysis/InnerProductSpace/PiL2.lean`:
 
@@ -210,6 +213,29 @@ the trend was either flat or slightly worse:
 
 ## Experiments that *did* pay (or are at least defensible)
 
+- **Module-system conversion + narrowed exposure surface (Phase 8-perf
+  F3.2–F3.6).** The largest single-pass perf win measured in the
+  project's history. Post-pass 4-run A/B medians vs F1.1 baseline:
+  `HennebergRigidity` 57.3 → 20.8 s (−36.5 s); `RigidityMatroid`
+  53.7 → 22.7 s (−31.0 s); `LinearRigidityMatroid` 62.3 → 16.8 s
+  (−45.5 s); project-total 21.2 → 9.2 s (−12.0 s). Each Δ is 2–9×
+  the ±5 s noise band threshold. Mechanism: in the module system,
+  importing module M loads only M's public interface (names +
+  types of exposed declarations), not its full elaboration state
+  (unexposed `def` bodies stay opaque to importers). The pass landed
+  in five steps: (F3.2) convert 14 `Mathlib/` mirror files; (F3.3)
+  convert 13 of 14 project files (`LinearRigidityMatroid.lean`
+  carved out by upstream `apnelson1/Matroid` non-`module` dep);
+  (F3.4) discharge the 4 + 3 transient `backward.privateInPublic`
+  opt-ins; (F3.5) demote 11 of 12 `@[expose] public section` files
+  to `public section` with 12 per-decl `@[expose]` opt-ins on the
+  defs whose bodies are genuinely consumed (full disposition table:
+  *F3.5 audit disposition* above); (F3.6) measurement. Full work
+  log: `notes/Phase8-perf.md`. **The pre-pass perf estimate
+  ("1–3 s per file, in the noise band", *Module system* below) was
+  off by ~10×** — future module-system passes in mathlib-style
+  projects should expect larger savings than the prior estimate
+  predicted.
 - **Remove dead imports.** `Framework.lean` previously imported
   `Mathlib.LinearAlgebra.Dimension.Finrank` and `…Dimension.Free`; both
   are transitively pulled in via `Mathlib.Analysis.InnerProductSpace.PiL2`

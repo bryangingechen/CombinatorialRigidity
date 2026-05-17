@@ -1,34 +1,32 @@
 # Phase 8 — perf pass (work log)
 
-**Status:** in progress (F1, F2 closed; F3 structurally done modulo
-the `LinearRigidityMatroid` carve-out; F3.4's
-`backward.privateInPublic` discharge committed; F3.5's broader
-expose-narrowing audit closed; F3.6 measurement pending).
+**Status:** complete. F1, F2, F3.1–F3.6 all closed. F3.6's 4-run A/B
+vs F1.1 baseline lands as a **large perf win** (HR −36.5 s, RM
+−31.0 s, LRM −45.5 s, project −12.0 s — all 2–9× the ±5 s noise
+band), promoted to `PERFORMANCE.md` *Experiments that did pay*.
 
 ## Current state
 
-F1 (Sparsity L1267 split) and F2 (Henneberg L444 split) both closed
-structurally clean (verdict: project-total perf-neutral; per-target
-deltas inconclusive — see *Cleanup pass summaries* below). F3.1
-baseline reused from F2.4 medians per the *Reuse adjacent baselines*
-architectural choice. F3.2 converted all 14
+Pass complete. F1 (Sparsity L1267 split) and F2 (Henneberg L444
+split) both closed structurally clean and individually perf-neutral
+on their own A/Bs. F3.2 converted all 14
 `CombinatorialRigidity/Mathlib/*` mirror files to the module system;
 F3.3 converted 13 of 14 project files (`LinearRigidityMatroid.lean`
 **carved out** — blocked by its non-`module`
-`Matroid.Representation.Map` dep from `apnelson1/Matroid`). F3.3
-introduced 4 + 3 per-declaration `set_option backward.privateInPublic`
-opt-ins in `Framework.lean` / `HennebergReverse.lean`; F3.4 eliminated
-all 7 (HennebergReverse demoted file section to `public section`,
-Framework promoted `edgeRow` / `edgeRow_symm` /
-`continuous_rigidityMap_apply` from `private` to non-`private`).
-**F3.5 (this commit) closed the broader expose-narrowing audit**:
-demoted 11 of 12 remaining `@[expose] public section` files to
+`Matroid.Representation.Map` dep from `apnelson1/Matroid`). F3.4
+eliminated the 4 + 3 `backward.privateInPublic` opt-ins introduced
+by F3.3 (HennebergReverse demoted to `public section`; Framework
+promoted three helpers from `private` to non-`private`). F3.5
+demoted 11 of 12 remaining `@[expose] public section` files to plain
 `public section`, restoring `@[expose]` per-decl on exactly the 12
-defs whose bodies are consumed downstream (or intra-module via
-`rfl` / `match`); `Framework.lean` retained `@[expose] public section`
-per the F3.4 disposition. Project carries zero `backward.privateInPublic`
-references. **Next:** F3.6 (final 4-run A/B vs F1.1 baseline; promote
-headline to `PERFORMANCE.md`).
+defs whose bodies are consumed (downstream or intra-module via
+`rfl`-proved `@[simp]` lemmas / pattern-match defeq);
+`Framework.lean` retained `@[expose] public section` per the F3.4
+disposition. F3.6 (this commit) ran the final 4-run A/B vs F1.1
+baseline and landed a **large perf win** on every measured target —
+medians and Δ in *F3.6 results* below. Pass headline promoted to
+`PERFORMANCE.md` *Experiments that did pay*. Project carries zero
+`backward.privateInPublic` references.
 
 ## Pass overview
 
@@ -273,12 +271,41 @@ executed) during Phase 8-cleanup's bucket E:
     marker is the cleaner equivalent.
 
   Build + lint clean.
-- [ ] **F3.6:** Final measurement. 4-run A/B on the analysis-heavy
-  targets + project total. Record medians; compute combined delta
-  against F1.1 baseline; promote the headline to
-  `PERFORMANCE.md` *Experiments that did pay* or *…didn't pay*.
-  Runs on the post-F3.5 codebase, so the combined module-conversion
-  + audit effect is in the A/B comparison.
+- [x] **F3.6:** Final measurement. 4-run A/B on the post-F3.5
+  codebase vs F1.1 baseline (HR 57.3 s, RM 53.7 s, LRM 62.3 s,
+  project 21.2 s):
+
+  | Target | run 1 | run 2 | run 3 | run 4 | median | Δ vs F1.1 |
+  |---|---|---|---|---|---|---|
+  | `HennebergRigidity` | 19.2 | 24.0 | 22.3 | 14.4 | **20.8 s** | −36.5 s |
+  | `RigidityMatroid` | 23.0 | 22.4 | 23.3 | 20.0 | **22.7 s** | −31.0 s |
+  | `LinearRigidityMatroid` | 25.3 | 8.3 | 21.1 | 12.5 | **16.8 s** | −45.5 s |
+  | `lake build` (project) | 11.9 | 11.2 | 6.2 | 7.2 | **9.2 s** | −12.0 s |
+
+  **F3.6 verdict: structural perf win across all four targets.** Each
+  Δ is 2–9× the ±5 s noise band threshold and runs back-to-back on
+  the same machine. The win attributes to the module-system axis
+  (F3.2 mirrors + F3.3 project files + F3.5 expose-narrowing audit) —
+  the F1 and F2 split A/Bs both landed perf-neutral on their own, so
+  none of the ~30–45 s reduction is from the splits. Mechanism: in
+  the module system, importing a module loads only the public
+  interface (names + types) of its exposed declarations; non-exposed
+  `def` bodies stay opaque to the importer. With F3.5's surface
+  narrowed to the 12 defs whose bodies genuinely need exposure (plus
+  Framework's file-wide marker), most of the analysis-floor's "load
+  every transitively-imported `.olean`'s elaboration state" overhead
+  flagged in `PERFORMANCE.md` *Anatomy of a `lake build`* drops out.
+  The audit's pre-pass prediction ("1–3 s per file, in the noise
+  band", `PERFORMANCE.md` *Module system*) was off by ~10×, which
+  itself is a finding worth recording. Pass headline promoted to
+  `PERFORMANCE.md` *Experiments that did pay*; F3 row + post-Phase-8
+  perf pass row in `ROADMAP.md` Status table closed.
+
+  LRM's variance (8.3 → 25.3 s across the four runs) is larger than
+  the other targets and worth noting separately — LRM is the carved-
+  out non-`module` file, so its caching behaviour differs from the
+  `module` targets above. Median is still well outside the noise
+  band; the variance is direction-neutral.
 
 ## Decisions made during this phase
 
@@ -437,30 +464,59 @@ inconclusive.** The durable win is the
 forward preservation vs flat-form reverse decomposition) now living
 at the file boundary, not just at section-header level.
 
+**F3 — Module-system conversion + expose-narrowing audit.** F3.2
+converted all 14 `CombinatorialRigidity/Mathlib/*` mirror files to
+the module system (mechanic: `module` line after the copyright,
+`public import` on every import, `@[expose] public section` between
+the doc block and the namespace). F3.3 converted 13 of 14 project
+files (`LinearRigidityMatroid.lean` carved out — its
+`Matroid.Representation.Map` dep from `apnelson1/Matroid` is
+non-`module`). F3.4 eliminated the 4 + 3 transient
+`backward.privateInPublic` opt-ins from F3.3 (HennebergReverse
+demoted file-wide; Framework promoted three private helpers).
+F3.5 narrowed the exposure surface: 11 of 12 project files demoted
+to `public section`, 12 per-decl `@[expose]` added on the defs
+whose bodies are genuinely consumed (full table in
+`PERFORMANCE.md` *F3.5 audit disposition*); Framework retained at
+`@[expose] public section`. F3.6 measured the combined effect:
+**HR −36.5 s, RM −31.0 s, LRM −45.5 s, project-total −12.0 s** vs
+F1.1 baseline, each Δ 2–9× the ±5 s noise band threshold.
+**Verdict: large perf win; mechanism is the module system's
+"importer loads public interface, not elaboration state" axis,
+unlocked by F3.5's narrowed exposure surface.** F1 and F2 splits
+individually landed perf-neutral (see above), so essentially all
+of the wall-clock saving belongs to F3.2–F3.5. The audit's
+pre-pass prediction ("1–3 s per file, in the noise band",
+`PERFORMANCE.md` *Module system*) was off by ~10×; pre-pass perf
+estimates for module-system conversion in mathlib-style projects
+should be revised upward. Pass headline lifted to
+`PERFORMANCE.md` *Experiments that did pay*.
+
 ## Blockers / open questions
 
-*(None at F2 close.)*
+*(None at pass close.)*
 
 ## Hand-off / next phase
 
-Mid-stream: F3.2 (mirrors), F3.3 (13 of 14 project files; one carved
-out for the `apnelson1/Matroid` lib non-`module` constraint), F3.3
-follow-up cleanup (removed file-scope opt-ins from 7 of 9 affected
-files), F3.4's `backward.privateInPublic` discharge (the 4 + 3
-per-decl opt-ins gone), and F3.5's broader expose-narrowing audit (11
-of 12 files demoted to `public section` with 12 per-decl `@[expose]`
-opt-ins; Framework retained at `@[expose] public section`) all
-committed. The project carries zero `backward.privateInPublic`
-references.
+Pass complete. F1, F2, F3.2–F3.6 all closed; ROADMAP Status row for
+the post-Phase-8 perf pass flipped to ✓ in this commit. The pass's
+durable wins: (i) the F1/F2 file splits that match the blueprint
+chapter / `DESIGN.md`-documented boundaries; (ii) the module-system
+conversion of all 14 mirror files + 13 of 14 project files; (iii)
+the narrowed exposure surface (12 per-decl `@[expose]`, Framework
+file-wide) that delivered the F3.6 wall-clock win (HR −36.5 s, RM
+−31.0 s, LRM −45.5 s, project −12.0 s, all 2–9× the noise band).
 
-**Next concrete commit — priority: F3.6 final measurement.** Runs a
-4-run A/B per the *Measurement protocol* in `PERFORMANCE.md` on the
-three analysis-heavy targets (`HennebergRigidity`, `RigidityMatroid`,
-`LinearRigidityMatroid`) and project-total, against the F1.1 baseline
-(HR 57.3 s; RM 53.7 s; LRM 62.3 s; project 21.2 s). The post-F3.5
-codebase carries the combined effect of the splits (F1+F2), the
-module-system conversion (F3.2+F3.3), the technical-debt opt-in
-discharge (F3.4), and the expose-narrowing audit (F3.5) — the headline
-in `PERFORMANCE.md` *Experiments that did pay* or *…didn't pay* will
-attribute to the F3 phase as a whole. Then close the F3 row in the
-ROADMAP Status table and the pass.
+The pass leaves one structural lever still on the table — the
+`LinearRigidityMatroid.lean` module-conversion carve-out — gated on
+upstream `apnelson1/Matroid` progress (~4 % `module`-converted as
+of 2026-05). When the dep `Matroid.Representation.Map` lands as a
+`module`, a one-commit follow-up can convert LRM and pick up the
+remaining ~5–10 s likely improvement. Until then, the carve-out is
+documented in `notes/PERFORMANCE.md` *Granular `@[expose]` / public
+audit per file* and `CombinatorialRigidity/CLAUDE.md`
+*Module-system conversion*.
+
+No mid-stream state remains. The next session picks up from the
+top-level ROADMAP — no in-progress Lean / blueprint work is pending
+from this pass.

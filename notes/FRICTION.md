@@ -758,7 +758,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
   re-litigate it.
 - **Status:** wontfix (upstream concern).
 
-### [wontfix] `lake build` of Phase 5 files is import-floor-bound and timing-noisy
+### [resolved] `lake build` of Phase 5 files is import-floor-bound and timing-noisy
 - **Where it bit:** Performance audit in Phase 5's third cleanup pass.
 - **Friction:** `Framework.lean`, `HennebergRigidity.lean`, and
   `Laman.lean` each take 20–40 s for a from-scratch `lake build`, but
@@ -769,23 +769,20 @@ limitations. Worth a once-over so future agents don't re-litigate.
   (10–50 s for the same source, depending on lake/OS caches). A/B
   comparing optimization candidates needs many runs per side and still
   often returns ambiguous results.
-- **Proposed fix:** The two structural levers that *would* help are
-  both multi-file changes: (a) convert the project + its `Mathlib/…`
-  mirrors to Lean's `module` + `public import` system, which gives
-  downstream files a smaller load surface (Phase 6 added four more
-  importers — `TrivialMotions.lean`, `HennebergRigidity.lean`,
-  `RigidityMatroid.lean`, `LamanTheorem.lean` — so the amortization
-  is plausible now); (b) move the analysis-heavy half of
-  `Framework.lean` behind a thinner facade so combinatorial files
-  (`Sparsity.lean`, `Laman.lean`, `Henneberg.lean`) don't import the
-  finite-dimension normed-module machinery transitively.
-- **Status:** wontfix at the current scope; deferred to a dedicated
-  perf pass post-Phase-6. The Phase-6 downstream additions cleared
-  the "not enough beneficiaries to amortize" objection, but the
-  structural change itself remains unmeasured against the noise band.
-  Phase 5 third cleanup pass (`notes/Phase5.md`) records the
-  per-candidate experiments and what trended where; see also
-  `PERFORMANCE.md` *Module-system conversion*.
+- **Resolution:** The post-Phase-8 perf pass (F3.2–F3.6, see
+  `notes/Phase8-perf.md`) executed structural lever (a) — convert
+  the project + its `Mathlib/…` mirrors to Lean's `module` + `public
+  import` system, plus narrow the exposure surface to `public section`
+  with selective `@[expose]`. The 4-run A/B vs F1.1 baseline shows
+  `HennebergRigidity` 57.3 → 20.8 s (−36.5 s), `RigidityMatroid`
+  53.7 → 22.7 s (−31.0 s), `LinearRigidityMatroid` 62.3 → 16.8 s
+  (−45.5 s), project-total 21.2 → 9.2 s (−12.0 s); each Δ is 2–9×
+  the ±5 s noise band threshold. The project's largest measured
+  perf win; promoted to `PERFORMANCE.md` *Experiments that did pay*.
+  Lever (b) (a `Framework.lean` facade) is no longer needed — F3.6
+  showed the file-level module + narrowed-exposure axis is sufficient
+  to drop the analysis floor.
+- **Status:** resolved (post-Phase-8 perf pass).
 
 ## Mirrored
 
