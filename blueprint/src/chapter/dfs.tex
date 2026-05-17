@@ -1,0 +1,97 @@
+\section{Verified DFS interlude}
+\label{sec:dfs}
+
+The basic pebble game of \cref{sec:pebble-game} repeatedly searches a
+partial orientation for a vertex with a free pebble reachable from a
+target endpoint, returning the witness path so it can be reversed.
+The inner primitive is a depth-first search on a directed graph with
+predicate-based early termination; we formalize it once here, as a
+short interlude, and consume it as a black box in
+\cref{def:tryReachPebble}.
+
+Mathlib has no verified search algorithms in its
+\texttt{Combinatorics.SimpleGraph} hierarchy: all of its
+$\mathrm{Walk}$ / $\mathrm{Reachable}$ infrastructure is declarative
+(``a walk exists'', ``a reverse exists''), not algorithmic. The only
+ecosystem precedent for a verified iterative graph-state algorithm
+is \texttt{Batteries.UnionFind}, whose termination uses a
+strictly-decreasing numeric measure on the data structure. The DFS
+here follows the same pattern, with the strictly-decreasing measure
+specialised to a $\mathrm{Finset}$-cardinality on unvisited vertices.
+
+\begin{definition}[Directed walk]
+  \label{def:directed-walk}
+  Let $V$ be a finite type with decidable equality and $R : V \to V
+  \to \mathrm{Prop}$ a relation. A \emph{directed $R$-walk} from
+  $u$ to $w$ is a non-empty list $u = v_0, v_1, \ldots, v_m = w$ of
+  vertices satisfying $R\,v_i\,v_{i+1}$ for $0 \le i < m$. The walk
+  is \emph{simple} if all $v_i$ are distinct.
+\end{definition}
+
+\begin{definition}[Reachable-finding DFS]
+  \label{def:reachable-finding}
+  \uses{def:directed-walk}
+  Let $V$ be finite with decidable equality and $R$ a relation on $V$
+  (with $R$ decidable in each argument, e.g.\ presented as an
+  out-neighbour function $V \to \mathrm{Finset}\,V$). Given a source
+  vertex $v$ and a predicate $P : V \to \mathrm{Bool}$, the
+  procedure $\mathrm{reachableFinding}\,R\,v\,P$ performs a
+  depth-first search along $R$-arcs from $v$, terminating at one of:
+  \begin{itemize}
+    \item (success) the first reachable vertex $w$ with $P(w)$,
+      returning $\mathrm{some}\,(p, w)$ where $p$ is a simple
+      $R$-walk from $v$ to $w$; or
+    \item (failure) when the $R$-reachability closure of $v$
+      contains no vertex satisfying $P$, returning $\mathrm{none}$.
+  \end{itemize}
+  Termination measure: $(\mathrm{Finset.univ} \setminus
+  \mathrm{visited}).\mathrm{card}$, where $\mathrm{visited}$ is the
+  finite set of vertices the DFS has already explored. Each
+  recursive call expands $\mathrm{visited}$ by exactly one vertex,
+  so the measure strictly decreases. (Compare
+  \texttt{Batteries.UnionFind}'s
+  \texttt{termination\_by self.rankMax - self.rank x}: the shape is
+  the same --- a strictly-decreasing finite-domain measure --- but
+  specialised to a $\mathrm{Finset}$-cardinality on a state set.)
+\end{definition}
+
+\begin{theorem}[Correctness of \texorpdfstring{$\mathrm{reachableFinding}$}{reachableFinding}]
+  \label{thm:reachable-finding-correct}
+  \uses{def:reachable-finding, def:directed-walk}
+  Let $R$, $v$, $P$ be as in \cref{def:reachable-finding}. Then:
+  \begin{enumerate}
+    \item (soundness) If $\mathrm{reachableFinding}\,R\,v\,P =
+      \mathrm{some}\,(p, w)$, then $p$ is a simple $R$-walk from $v$
+      to $w$ and $P(w)$ holds.
+    \item (completeness) If some vertex $w$ in the $R$-reachability
+      closure of $v$ satisfies $P(w)$, then
+      $\mathrm{reachableFinding}\,R\,v\,P = \mathrm{some}\,(p, w')$
+      for some such $w'$ (possibly $w' \ne w$, since the DFS returns
+      the first match in its traversal order, not necessarily the
+      one the existence proof points at).
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \uses{def:reachable-finding}
+  Both parts are by well-founded induction on the termination
+  measure of \cref{def:reachable-finding}. Soundness: at each
+  recursive step the walk extends by one arc (the DFS advances
+  along an $R$-arc); the predicate is checked at each newly visited
+  vertex before recursion; simplicity follows from the visited-set
+  invariant (the DFS does not recurse into already-visited
+  vertices). Completeness: assume some reachable $w$ satisfies $P$
+  and the DFS returns $\mathrm{none}$. Then the visited set at
+  termination contains the entire $R$-reachability closure of $v$
+  (the recursion only stops when the frontier is empty), so it
+  contains $w$; but a $P$-satisfying vertex would have returned
+  $\mathrm{some}$ on first visit, contradicting termination by
+  $\mathrm{none}$.
+\end{proof}
+
+\emph{Reuse pattern.} The pebble game's \cref{def:tryReachPebble}
+specialises this primitive: it instantiates $R$ to be the outgoing-arc
+relation of the partial orientation, $P$ to be ``has a free pebble'',
+and on success post-composes a path-reversal step that flips every
+arc of the returned walk. The DFS itself is fully reusable across
+this and any future application that needs reachability with a
+witness path; the path-reversal is pebble-game-specific.

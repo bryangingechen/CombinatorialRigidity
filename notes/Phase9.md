@@ -47,16 +47,22 @@ non-sparsity). The matroidal-independence corollary against
 Phase 7's `CountMatroid` follows as a one-liner.
 
 **Pre-Phase-9 DFS warmup.** Before Phase 9 opens, a tightly-scoped
-verified-DFS exercise lands as a separate small artifact (likely
-`CombinatorialRigidity/Search/DFS.lean`, ~200–300 LoC, 1–2
+verified-DFS exercise lands as a separate small artifact
+(`CombinatorialRigidity/Search/DFS.lean`, ~200–300 LoC, 1–2
 sessions). The only precedent in the immediate ecosystem is
 `Batteries.UnionFind` (Lean core has nothing relevant; mathlib's
 two DFSes are `partial def` inside tactic metaprogramming); the
 warmup exercises the `termination_by (Finset.univ \ visited).card`
-pattern in isolation and produces a reusable
-`reachableFinding : Digraph V → V → (V → Bool) → Option (Walk V)`
-with soundness + completeness. The pebble game's `tryReachPebble`
-specializes this (DFS + path reversal during the walk). Logged
+pattern in isolation and produces a reusable `reachableFinding`
+primitive (returning a witness directed walk on success) with
+soundness + completeness. The pebble game's `tryReachPebble`
+specialises this (DFS + path reversal of the returned walk). The
+dep-graph anchor is the new short chapter
+`blueprint/src/chapter/dfs.tex` (\textit{Verified DFS interlude});
+its two nodes `def:reachable-finding` and
+`thm:reachable-finding-correct` sit between `count-matroid` and
+`pebble-game` in the main chapter input order, and
+`def:tryReachPebble` `\uses{}` the correctness theorem. Logged
 inline here unless it grows beyond ~2 sessions, in which case
 promote to a dedicated `Phase9-warmup.md`.
 

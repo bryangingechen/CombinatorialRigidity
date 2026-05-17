@@ -173,26 +173,19 @@ failure witness.
 
 \begin{definition}[Try-reach-pebble: DFS with path reversal]
   \label{def:tryReachPebble}
-  \uses{def:partial-orientation, def:pebble-counts, def:path-reversal}
+  \uses{def:partial-orientation, def:pebble-counts, def:path-reversal,
+    thm:reachable-finding-correct}
   Given a partial orientation $D$, a source vertex $v$, and a
   predicate $P$ on $V$, the procedure $\mathrm{tryReachPebble}\,
-  D\,v\,P$ performs a depth-first search along outgoing arcs of $D$
-  from $v$, terminating either:
-  \begin{itemize}
-    \item (success) at the first reachable vertex $w$ with $P(w)$,
-      in which case it returns the pair $(D', w)$ where $D'$ is
-      obtained from $D$ by reversing the discovered $v$-to-$w$
-      path; or
-    \item (failure) when the reachability closure $\mathrm{Reach}_D(v)$
-      contains no vertex satisfying $P$, in which case it returns
-      none.
-  \end{itemize}
-  Termination measure: $(\mathrm{Finset.univ}\,V \setminus
-  \mathrm{visited}).\mathrm{card}$, where $\mathrm{visited}$ is the
-  set of vertices already explored by the DFS (strictly increases
-  per recursive call). The standalone $\mathrm{reachableFinding}$
-  helper modelled on \texttt{Batteries.UnionFind} (\emph{pre-Phase
-  9 warmup}, see \texttt{notes/Phase9.md}) supplies this primitive.
+  D\,v\,P$ runs $\mathrm{reachableFinding}$
+  (\cref{def:reachable-finding}) with relation $R$ taken to be the
+  outgoing-arc relation of $D$. On success it receives a witness
+  walk $p$ from $v$ to a vertex $w$ with $P(w)$
+  (\cref{thm:reachable-finding-correct}) and reverses every arc of
+  $p$ in $D$ via \cref{def:path-reversal}, returning the updated
+  $(D', w)$. On failure it propagates $\mathrm{none}$. The
+  reachability closure $\mathrm{Reach}_D(v)$ used in later lemmas
+  coincides with the visited set of a fully-exhausted DFS run.
 \end{definition}
 
 \begin{definition}[Try-add-edge]
