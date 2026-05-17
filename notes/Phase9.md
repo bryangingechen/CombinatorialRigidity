@@ -188,10 +188,32 @@ and the fold-level `runPebbleGameWith_underline_subset` (bidirectional
 inclusion: `D.underline ⊆ D'.underline` monotone, plus upper bound
 `D'.underline ⊆ D.underline ∪ (edges.map s(·, ·)).toFinset`; structural
 recursion on the edge list with `tryAddEdgeWith_underline` as the
-accept-branch per-step glue). The ⊆ inclusion is enough for the
-$\subseteq E(G)$ half of soundness; the converse $E(G) \subseteq
-\underline{D'}$ (every edge in the input list is actually accepted)
-needs a separate no-skip-fires argument — see *Hand-off / next phase*.
+accept-branch per-step glue).
+
+The no-skip-fires gap on the wrapper is now closed. Workhorse
+`runPebbleGameWith_mem_underline` proves the converse inclusion under
+"good list" hypotheses (`Reachable k ℓ D`, no loops, freshness w.r.t.
+`D.underline`, pairwise Sym2-distinct entries): every entry's
+`s(p.1, p.2)` ends up in `D'.underline`. Structural recursion mirrors
+`runPebbleGameWith_underline_subset`; the four runtime checks are
+discharged from the hypotheses (loop check from no-loops; both
+`D.arcs`-checks from `mem_underline` on freshness; out-bound from
+`Reachable.out_le`), so the if-positive branch always fires and
+`tryAddEdgeWith` cannot return `none`. Hypotheses on `es` transfer to
+the recursive call via the pairwise condition (each remaining
+`s(p.1, p.2)` is `≠ s(u, v)`) and `tryAddEdgeWith_reachable` /
+`tryAddEdgeWith_underline` for the new orientation. Wrapper
+`runPebbleGame_underline_eq_edgeFinset` discharges the workhorse's
+hypotheses on `G.edgeFinset.toList.map Quot.out`: loops from
+`SimpleGraph.not_isDiag_of_mem_edgeSet` + `Sym2.mk_isDiag_iff`;
+freshness from `underline_empty = ∅`; pairwise distinctness from
+`Finset.nodup_toList` plus the Sym2 round-trip `Quot.out_eq` (so the
+Sym2-image list is exactly `G.edgeFinset.toList`). Combining with
+`runPebbleGameWith_underline_subset`'s ⊆ half gives the equality
+`D'.underline = G.edgeFinset`. Blueprint
+`lem:runPebbleGame-underline-eq` is now green and discharges the
+"no-skip-fires argument" the prose of `thm:pebble-game-soundness`
+previously referenced informally.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -233,19 +255,14 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: close the no-skip-fires gap on the wrapper
-`runPebbleGame G k ℓ`, giving `D.underline = G.edgeFinset` on success, then
-chain to `thm:pebble-game-soundness`. The ⊆ inclusion is already
-discharged by `runPebbleGameWith_underline_subset` plus
-`(empty).underline = ∅`. The ⊇ inclusion needs: on `G.edgeFinset.toList.map
-Quot.out`, every step's runtime checks (u ≠ v from G's loop-freeness, `(u,v)`
-and `(v,u)` not yet in `D.arcs` since Sym2-distinct list entries map to
-distinct `s(·, ·)`, `out ≤ k` from `Reachable k ℓ` preservation) pass, so no
-skip fires and every list entry hits the accept branch — so every
-`s(u, v)` from the list ends up in `D'.underline`. Then `D.span V' + ℓ ≤
-k * V'.card` (Invariant (4) on the final state) transfers along
-`D.underline = G.edgeFinset` to give `|edgesIn G V'| + ℓ ≤ k * V'.card`,
-i.e. `IsSparse G k ℓ`. See *Hand-off / next phase*.
+Next concrete commit: land the `span`/`edgesIn`-bridge under
+`D.underline = G.edgeFinset` and chain to `thm:pebble-game-soundness`.
+The remaining gap is a structural identity
+`D.span V' = (G.edgesIn ↑V').ncard` (when `D.underline = G.edgeFinset`):
+the map `(a, b) ∈ D.spanArcs V' ↦ s(a, b) ∈ G.edgesIn ↑V'` is a bijection,
+with `no_antiparallel` discharging injectivity and the underline
+identity discharging surjectivity. Then `Reachable.span_add_le`
+transfers to `IsSparse G k ℓ`.
 
 ## Architectural choices made up front
 
@@ -882,11 +899,15 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   `TryReachPebbleResult.underline_newOrient_eq` one-line glue;
   `tryAddEdgeWith_underline` (`= insert s(u, v) D.underline` on
   accept, mirroring `tryAddEdgeWith_reachable`'s induct dispatch);
-  and the fold-level `runPebbleGameWith_underline_subset`
-  (bidirectional inclusion). Discharges infrastructure piece (ii) for
-  `thm:pebble-game-soundness` — the ⊆ inclusion only; the converse
-  $E(G) \subseteq \underline{D'}$ on the wrapper case (every input
-  edge gets accepted, not skipped) remains.
+  the fold-level `runPebbleGameWith_underline_subset` (bidirectional
+  inclusion); and the no-skip-fires converse
+  `runPebbleGameWith_mem_underline` (every input edge ends up in
+  `D'.underline`, under "good list" hypotheses) plus the wrapper-level
+  identity `runPebbleGame_underline_eq_edgeFinset` (combines both
+  inclusions at `D = empty`, `edges = G.edgeFinset.toList.map Quot.out`,
+  via the Sym2 round-trip `s((Quot.out e).1, (Quot.out e).2) = e`).
+  Discharges infrastructure piece (ii) for `thm:pebble-game-soundness`
+  in full.
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
@@ -898,8 +919,8 @@ new `DirectedWalk.length_pos_of_ne`. Blueprint
 `underline_reverse_eq` pinned), `def:arc-insertion` (now with
 `underline_addArc` pinned), `def:reachable-orientation`,
 `lem:pebble-game-invariants`, `def:tryReachPebble`, `def:tryAddEdge`,
-`def:runPebbleGame`, and the new
-`lem:runPebbleGameWith-underline-subset` are all green. Build + lint
+`def:runPebbleGame`, `lem:runPebbleGameWith-underline-subset`, and
+the new `lem:runPebbleGame-underline-eq` are all green. Build + lint
 clean.
 
 **Note on the `(V × V)`-list vs `(Sym2 V)`-list workhorse.** An earlier
@@ -915,25 +936,22 @@ adjacency. Documented in DESIGN.md *Pebble-game style island → The
 `-With` variant pattern* (same rationale as `tryReachPebbleWith` →
 `tryReachPebble`'s `outList` shift).
 
-Next concrete commit: **close the no-skip-fires gap and land
-`thm:pebble-game-soundness`**. The ⊆ inclusion of `D.underline ⊆
-G.edgeFinset` is already discharged by
-`runPebbleGameWith_underline_subset` plus `(empty).underline = ∅`;
-the missing converse is that on `G.edgeFinset.toList.map Quot.out`,
-no skip-branch fires, so every list entry's `s(·, ·)` is in
-`D'.underline`. The four runtime checks at each fold step are:
-(a) `u ≠ v` (from G's loop-freeness and `Quot.out` of an off-diag
-Sym2), (b) `(u, v) ∉ D.arcs`, (c) `(v, u) ∉ D.arcs` (both from the
-Sym2-distinctness of `G.edgeFinset.toList.map Quot.out` plus the
-running `underline` invariant), (d) `∀ x, out x ≤ k` (from
-`Reachable k ℓ` preservation + `Reachable.out_le`). Threading these
-makes the workhorse-level lemma `D ⊆ ... = some D' → D'.underline
-⊇ (edges.map (s(·, ·))).toFinset` go through under the appropriate
-"fresh + distinct" hypothesis on `edges`. Once that lemma lands,
-`thm:pebble-game-soundness` is one-shot: Invariant (4) on the final
-`Reachable` orientation gives `D.span V' + ℓ ≤ k * V'.card` for every
-`V'` in the relevant size range, which transfers to `|edgesIn G V'|
-+ ℓ ≤ k * V'.card` via `D.underline = G.edgeFinset`.
+Next concrete commit: **land the `span`/`edgesIn`-bridge and chain
+to `thm:pebble-game-soundness`**. The wrapper identity
+`D.underline = G.edgeFinset` is now in hand
+(`runPebbleGame_underline_eq_edgeFinset`); what remains is a
+structural identity `D.span V' = (G.edgesIn ↑V').ncard` that
+transfers Invariant (4) (`Reachable.span_add_le`,
+`D.span V' + ℓ ≤ k * V'.card` under `ℓ ≤ k * V'.card`) into the
+project's `IsSparse G k ℓ` shape (`(G.edgesIn ↑V').ncard + ℓ ≤
+k * V'.card`). Bijection `D.spanArcs V' → G.edgesIn ↑V'` via
+`(a, b) ↦ s(a, b)` discharges this: `no_antiparallel` gives
+injectivity (no `(a, b)` and `(b, a)` coexist), and the underline
+identity gives surjectivity. Then `IsSparse` follows under the
+hypothesis `ℓ < 2k` (needed to verify the size-range hypothesis on
+Invariant (4) — `ℓ ≤ k * V'.card` is implied when `V'.card ≥ 2`,
+and the `V'.card < 2` case has `(G.edgesIn ↑V').ncard = 0` so
+sparsity holds trivially).
 
 Subsequent commits descend the dep-graph:
 `thm:pebble-game-soundness` → completeness side

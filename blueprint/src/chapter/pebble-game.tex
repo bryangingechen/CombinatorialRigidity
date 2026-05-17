@@ -499,25 +499,75 @@ preservation (already established in
   the full list.
 \end{proof}
 
+\begin{lemma}[No skip fires; underlying-edge identity on the wrapper]
+  \label{lem:runPebbleGame-underline-eq}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_mem_underline,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_underline_eq_edgeFinset}
+  \leanok
+  \uses{def:partial-orientation, def:tryAddEdge, def:runPebbleGame,
+    def:reachable-orientation, lem:runPebbleGameWith-underline-subset,
+    lem:pebble-game-invariants}
+  Let $D$ be a $\mathrm{Reachable}\,k\,\ell$-orientation and
+  $\mathit{edges} : \mathrm{List}\,(V \times V)$ a list of ordered
+  pairs satisfying: no entry is a loop ($p_1 \ne p_2$); every
+  $s(p_1, p_2)$ for $p \in \mathit{edges}$ lies outside $\underline{D}$;
+  and the entries are pairwise $\mathrm{Sym}_2$-distinct. If
+  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{toSucc}\,\mathtt{h\_toSucc}
+  \,\mathit{edges} = \mathrm{some}\,D'$, then every $p \in \mathit{edges}$
+  satisfies $s(p_1, p_2) \in \underline{D'}$.
+
+  In particular, the wrapper
+  $\mathrm{runPebbleGame}\,G\,k\,\ell = \mathrm{some}\,D'$ yields
+  $\underline{D'} = E(G)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Structural induction on $\mathit{edges}$. Empty: vacuous. Cons case
+  $(u, v) :: \mathit{es}$: the four runtime checks at $(u, v)$ all
+  pass — loop-freeness from the input; $(u, v), (v, u) \notin D.\mathrm{arcs}$
+  from $s(u, v) \notin \underline{D}$ via the membership characterisation
+  of $\underline{D}$; $\forall x, D.\mathrm{out}\,x \le k$ from
+  \cref{lem:pebble-game-invariants}~(1) — so $\mathtt{tryAddEdgeWith}$
+  fires; on success
+  $\underline{D_{\mathrm{mid}}} = \underline{D} \cup \{s(u, v)\}$
+  (\cref{lem:runPebbleGameWith-underline-subset}'s per-step glue)
+  and $\mathrm{Reachable}\,k\,\ell\,D_{\mathrm{mid}}$
+  (\cref{lem:pebble-game-invariants}'s preservation lemma). The
+  remaining $\mathit{es}$ inherit the three input hypotheses against
+  $D_{\mathrm{mid}}$ — freshness combines the original freshness with
+  the pairwise hypothesis (each $s(p_1, p_2)$ for $p \in \mathit{es}$
+  is distinct from $s(u, v)$). The IH on $\mathit{es}$ at
+  $D_{\mathrm{mid}}$ handles every entry; $s(u, v) \in \underline{D'}$
+  follows from the monotonicity half of
+  \cref{lem:runPebbleGameWith-underline-subset} on $\mathit{es}$.
+
+  For the wrapper, the input list
+  $E(G).\mathrm{toList}.\mathrm{map}\,\mathrm{Quot.out}$ satisfies the
+  three hypotheses: no loops ($\neg e.\mathrm{IsDiag}$ for $e \in E(G)$
+  from $G$'s loop-freeness); freshness against $\underline{\mathtt{empty}}
+  = \emptyset$; pairwise $\mathrm{Sym}_2$-distinctness from
+  $\mathrm{Finset.nodup\_toList}$ via the round-trip $s((Quot.out\,e)_1,
+  (Quot.out\,e)_2) = e$. Combining the converse subset with the
+  $\subseteq$ half of \cref{lem:runPebbleGameWith-underline-subset}
+  gives $\underline{D'} = E(G)$.
+\end{proof}
+
 \begin{theorem}[Soundness of the pebble game]
   \label{thm:pebble-game-soundness}
   \uses{def:runPebbleGame, lem:pebble-game-invariants, def:isSparse,
-    lem:runPebbleGameWith-underline-subset}
+    lem:runPebbleGame-underline-eq}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
   integers with $\ell < 2k$. If $\mathrm{runPebbleGame}\,k\,\ell\,G
   = \mathrm{Sum.inl}\,D$, then $G$ is $(k, \ell)$-sparse.
 \end{theorem}
 \begin{proof}
-  \uses{def:runPebbleGame, lem:pebble-game-invariants,
-    lem:runPebbleGameWith-underline-subset}
+  \uses{lem:pebble-game-invariants, lem:runPebbleGame-underline-eq}
   By \cref{lem:pebble-game-invariants} Invariant~(4) applied to
   $D$ at termination, every subset $V' \subseteq V$ in the relevant
   size range satisfies $\mathrm{span}_D(V') \le k|V'| - \ell$.
-  Since $\underline{D} = E(G)$
-  (\cref{lem:runPebbleGameWith-underline-subset} applied at $D =
-  \mathtt{empty}$, plus the converse $E(G) \subseteq \underline{D'}$
-  from the no-skip-fires argument), this is exactly $|\edgesIn[G]{V'}|
-  \le k|V'| - \ell$, i.e.\ $G$ is $(k, \ell)$-sparse on $V'$.
+  Since $\underline{D} = E(G)$ (\cref{lem:runPebbleGame-underline-eq}),
+  this is exactly $|\edgesIn[G]{V'}| \le k|V'| - \ell$, i.e.\ $G$ is
+  $(k, \ell)$-sparse on $V'$.
 \end{proof}
 
 \subsection{Completeness}

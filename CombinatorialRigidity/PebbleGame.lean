@@ -1514,6 +1514,130 @@ lemma runPebbleGameWith_underline_subset {k ℓ : ℕ}
         Finset.mem_insert] at he' ⊢
       tauto
 
+/-- No-skip-fires converse to `runPebbleGameWith_underline_subset`: under
+hypotheses ensuring every runtime check passes at every step (`Reachable k ℓ`
+for the out-degree bound; per-edge `p.1 ≠ p.2` for the loop check; per-edge
+freshness `s(p.1, p.2) ∉ D.underline` plus pairwise Sym2-distinctness across
+the list for the two arc-membership checks), every input edge ends up in
+`D'.underline`.
+
+Combined with `runPebbleGameWith_underline_subset` this gives the tight
+identity `D'.underline = D.underline ∪ (edges.map s(·,·)).toFinset` at
+termination; the wrapper `runPebbleGame G k ℓ` specialises at
+`D = empty` to obtain `D'.underline = G.edgeFinset`. -/
+lemma runPebbleGameWith_mem_underline {k ℓ : ℕ}
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs) :
+    ∀ (edges : List (V × V)) {D : PartialOrientation V} (_hD : Reachable k ℓ D)
+      (_hloops : ∀ p ∈ edges, p.1 ≠ p.2)
+      (_hfresh : ∀ p ∈ edges, s(p.1, p.2) ∉ D.underline)
+      (_hpairwise : edges.Pairwise
+        (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)))
+      {D' : PartialOrientation V},
+      D.runPebbleGameWith k ℓ toSucc h_toSucc edges = some D' →
+      ∀ p ∈ edges, s(p.1, p.2) ∈ D'.underline
+  | [], _D, _hD, _hloops, _hfresh, _hpairwise, _D', _h, _p, hp => by
+    simp at hp
+  | (u, v) :: es, D, hD, hloops, hfresh, hpairwise, D', h, p, hp => by
+    have h_uv_ne : u ≠ v := hloops (u, v) (List.mem_cons_self)
+    have h_uv_fresh : s(u, v) ∉ D.underline := hfresh (u, v) (List.mem_cons_self)
+    have h_uv_arc : (u, v) ∉ D.arcs := fun harc =>
+      h_uv_fresh (D.mem_underline.mpr (Or.inl harc))
+    have h_vu_arc : (v, u) ∉ D.arcs := fun harc =>
+      h_uv_fresh (D.mem_underline.mpr (Or.inr harc))
+    have h_outle : ∀ x, D.out x ≤ k := hD.out_le
+    have hcond : u ≠ v ∧ (u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs ∧ (∀ x, D.out x ≤ k) :=
+      ⟨h_uv_ne, h_uv_arc, h_vu_arc, h_outle⟩
+    obtain ⟨hpw_head, hpw_tail⟩ := List.pairwise_cons.mp hpairwise
+    rw [runPebbleGameWith, dif_pos hcond] at h
+    match heq : D.tryAddEdgeWith k ℓ u v hcond.1 hcond.2.1 hcond.2.2.1 hcond.2.2.2
+        toSucc h_toSucc with
+    | some Dmid =>
+      rw [heq] at h
+      have h_underline_mid : Dmid.underline = insert s(u, v) D.underline :=
+        tryAddEdgeWith_underline hcond.1 toSucc h_toSucc
+          hcond.2.1 hcond.2.2.1 hcond.2.2.2 heq
+      have hR_mid : Reachable k ℓ Dmid :=
+        tryAddEdgeWith_reachable hcond.1 toSucc h_toSucc
+          hcond.2.1 hcond.2.2.1 hcond.2.2.2 hD heq
+      have hloops_es : ∀ q ∈ es, q.1 ≠ q.2 :=
+        fun q hq => hloops q (List.mem_cons_of_mem _ hq)
+      have hfresh_es : ∀ q ∈ es, s(q.1, q.2) ∉ Dmid.underline := by
+        intro q hq
+        rw [h_underline_mid, Finset.mem_insert]
+        push Not
+        exact ⟨(hpw_head q hq).symm, hfresh q (List.mem_cons_of_mem _ hq)⟩
+      rcases List.mem_cons.mp hp with rfl | hp_in_es
+      · obtain ⟨h_mono, _⟩ :=
+          runPebbleGameWith_underline_subset toSucc h_toSucc es h
+        exact h_mono (h_underline_mid ▸ Finset.mem_insert_self _ _)
+      · exact runPebbleGameWith_mem_underline toSucc h_toSucc es hR_mid hloops_es
+          hfresh_es hpw_tail h p hp_in_es
+    | none =>
+      rw [heq] at h
+      exact nomatch h
+
+/-- The wrapper `runPebbleGame G k ℓ` on success produces an orientation whose
+underlying unoriented edge set equals `G.edgeFinset`. The ⊆ direction
+specialises `runPebbleGameWith_underline_subset` at `D = empty` (its
+`underline` is `∅`); the ⊇ direction discharges
+`runPebbleGameWith_mem_underline`'s four hypotheses against the input list
+`G.edgeFinset.toList.map Quot.out` — no-loops from `not_isDiag_of_mem_edgeSet`,
+freshness trivially, pairwise distinctness from `Finset.nodup_toList` and the
+Sym2 round-trip `s((Quot.out e).1, (Quot.out e).2) = e`. Closes the
+no-skip-fires gap noted in `thm:pebble-game-soundness`'s prose proof. -/
+theorem runPebbleGame_underline_eq_edgeFinset {G : SimpleGraph V}
+    [Fintype G.edgeSet] {k ℓ : ℕ} {D' : PartialOrientation V}
+    (h : runPebbleGame G k ℓ = some D') : D'.underline = G.edgeFinset := by
+  rw [runPebbleGame] at h
+  set edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V) with hedges
+  -- The Sym2-image of `edges` is `G.edgeFinset` (round-trip).
+  have h_img : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset := by
+    rw [hedges, List.map_map]
+    have h_id : (fun p : V × V => s(p.1, p.2)) ∘ (Quot.out : Sym2 V → V × V)
+        = id := by
+      funext e
+      exact Quot.out_eq e
+    rw [h_id, List.map_id, G.edgeFinset.toList_toFinset]
+  -- No loops: each `Quot.out e` for `e ∈ G.edgeFinset` has distinct components.
+  have hloops : ∀ p ∈ edges, p.1 ≠ p.2 := by
+    intro p hp h_eq
+    simp only [hedges, List.mem_map, Finset.mem_toList] at hp
+    obtain ⟨e, he, rfl⟩ := hp
+    apply G.not_isDiag_of_mem_edgeSet (G.mem_edgeFinset.mp he)
+    rw [← Quot.out_eq e]
+    exact Sym2.mk_isDiag_iff.mpr h_eq
+  -- Freshness w.r.t. `empty.underline = ∅` is trivial.
+  have hfresh : ∀ p ∈ edges, s(p.1, p.2) ∉ (empty : PartialOrientation V).underline := by
+    intro p _; simp
+  -- Pairwise Sym2-distinctness from `Finset.nodup_toList` + the round-trip.
+  have hpairwise : edges.Pairwise
+      (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)) := by
+    rw [hedges, List.pairwise_map]
+    refine G.edgeFinset.nodup_toList.imp ?_
+    intro e e' hne h_eq
+    apply hne
+    rw [← Quot.out_eq e, ← Quot.out_eq e']
+    exact h_eq
+  -- Combine both inclusions.
+  have h_supset : ∀ p ∈ edges, s(p.1, p.2) ∈ D'.underline :=
+    runPebbleGameWith_mem_underline _ _ edges Reachable.empty hloops hfresh hpairwise h
+  obtain ⟨_, h_upper⟩ :=
+    runPebbleGameWith_underline_subset _ _ edges h
+  apply le_antisymm
+  · -- D'.underline ⊆ G.edgeFinset (via the subset lemma's upper bound).
+    intro e he
+    have he' := h_upper he
+    simp only [underline_empty, Finset.empty_union] at he'
+    exact h_img ▸ he'
+  · -- G.edgeFinset ⊆ D'.underline (every `e` is hit by some `p ∈ edges`).
+    intro e he
+    rw [← h_img] at he
+    simp only [List.mem_toFinset, List.mem_map] at he
+    obtain ⟨p, hp, rfl⟩ := he
+    exact h_supset p hp
+
 end RunPebbleGame
 
 end PartialOrientation
