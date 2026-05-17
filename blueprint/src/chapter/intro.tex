@@ -25,14 +25,16 @@ combinatorial rigidity, see
 
 The Lean code is organized into nine phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--8 are complete: the first six phases formalize Laman's
+All nine phases are complete: the first six phases formalize Laman's
 theorem, Phase~7 packages the planar rigidity matroid as a mathlib
 \texttt{Matroid} via the Lov\'asz--Yemini matroid identification,
-and Phase~8 reframes it as a linear matroid via \texttt{Matroid.ofFun}
+Phase~8 reframes it as a linear matroid via \texttt{Matroid.ofFun}
 at a uniformly generic placement (Lov\'asz--Yemini, linear-matroid
-form). Phase~9 (basic $(k, \ell)$-pebble game of
-Lee--Streinu~\cite{leeStreinu2008}, in the matroidal regime
-$\ell < 2k$) is in progress, preceded by a verified-DFS warmup.
+form), and Phase~9 ships the basic $(k, \ell)$-pebble game of
+Lee--Streinu~\cite{leeStreinu2008} in the matroidal regime
+$\ell < 2k$ with a certificate-form correctness theorem and the
+matroidal-independence corollary against the Phase~7 count matroid,
+on top of a verified-DFS warmup.
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -84,7 +86,7 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from the
 navigation bar) is the best place to see at a glance how the chapters
-fit together; nodes on the main Laman line, through the Phase~8
-linear-matroid framing, and across the verified-DFS warmup
-(\cref{sec:dfs}) are all green, with the Phase~9 pebble-game chapter
-(\cref{sec:pebble-game}) still red.
+fit together; every node is now green, including the main Laman
+line, the Phase~7 / Phase~8 matroid identifications, the verified-DFS
+warmup (\cref{sec:dfs}), and the Phase~9 pebble-game chapter
+(\cref{sec:pebble-game}).

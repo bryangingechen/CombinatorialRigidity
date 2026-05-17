@@ -21,16 +21,17 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–8 are complete and carry no `sorry`s. The main theorem
+Phases 1–9 are complete and carry no `sorry`s. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
 form (Phase 7) and linear-matroid form via `Matroid.ofFun` (Phase 8,
-`linearRigidityMatroid_eq_rigidityMatroid`). Phase 9 (basic
-`(k, ℓ)`-pebble game of Lee–Streinu 2008) is in progress: the
-verified-DFS warmup under `CombinatorialRigidity/Search/` has
-landed, and the basic algorithm and correctness theorem follow in
-`PebbleGame.lean`.
+`linearRigidityMatroid_eq_rigidityMatroid`). Phase 9 ships the basic
+`(k, ℓ)`-pebble game of Lee–Streinu 2008 in the matroidal regime
+`ℓ < 2k` with certificate-form correctness theorem
+`runPebbleGame_correct` and the matroidal-independence corollary
+`countMatroid_indep_iff_runPebbleGame`, on top of a verified-DFS
+warmup under `CombinatorialRigidity/Search/`.
 
 The development is divided into the phases below, each in its own
 file under
@@ -46,7 +47,7 @@ file under
 |     6 | Laman's theorem (⇒)         | `RigidityMatroid.lean`, `LamanTheorem.lean`                      |   ✓    |
 |     7 | Lovász–Yemini matroid id.   | `CountMatroid.lean`, `MatroidIdentification.lean`                |   ✓    |
 |     8 | Linear-matroid framing      | `LinearRigidityMatroid.lean`                                     |   ✓    |
-|     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame.lean`                             |   …    |
+|     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame.lean`                             |   ✓    |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

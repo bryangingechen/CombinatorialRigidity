@@ -10,7 +10,10 @@ the planar rigidity matroid coincides with the `(2, 3)`-count matroid on
 `E(K_V)`, packaged as a mathlib `Matroid` instance. Phase 8 reframes the
 planar rigidity matroid as a linear matroid via `Matroid.ofFun` (from the
 `apnelson1/Matroid` library) at a uniformly generic placement, and states
-Lovász–Yemini in linear-matroid form.
+Lovász–Yemini in linear-matroid form. Phase 9 formalizes the basic
+`(k, ℓ)`-pebble game of Lee–Streinu 2008 in the matroidal regime
+`ℓ < 2k`, with a certificate-form correctness theorem and the matroidal-
+independence corollary against the Phase 7 count matroid.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -26,20 +29,16 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–8 complete** — sparsity, Laman, Henneberg, frameworks,
+* **Phases 1–9 complete** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
-  matroid identification (combinatorial form), and the linear-matroid
+  matroid identification (combinatorial form), the linear-matroid
   framing of the planar rigidity matroid
-  (`linearRigidityMatroid_eq_rigidityMatroid`). The project carries
-  no `sorry`s.
-* **Phase 9 in progress** — basic `(k, ℓ)`-pebble game of
-  Lee–Streinu 2008 in the matroidal regime `ℓ < 2k`, with a
-  certificate-form correctness theorem (partial orientation on
-  accept, dense vertex subset on reject). The pre-phase verified-DFS
-  warmup has landed under `CombinatorialRigidity/Search/`, exercising
-  the `termination_by (Finset.univ \ visited).card` pattern in
-  isolation; the basic algorithm and correctness theorem follow.
+  (`linearRigidityMatroid_eq_rigidityMatroid`), and the basic
+  `(k, ℓ)`-pebble game of Lee–Streinu 2008 with certificate-form
+  correctness theorem (`runPebbleGame_correct`) and matroidal-
+  independence corollary (`countMatroid_indep_iff_runPebbleGame`).
+  The project carries no `sorry`s.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

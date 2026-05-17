@@ -37,10 +37,14 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 ├── CombinatorialRigidity/       all Lean sources live here
 │   ├── Mathlib/         mirror for upstream-eligible lemmas (see DESIGN.md)
 │   │   └── …/           each file mirrors its eventual upstream path
+│   ├── Search/
+│   │   └── DFS.lean    Phase 9 — verified-iterative DFS warmup (`reachableFinding`)
 │   ├── EdgesIn.lean     Phase 1 — `edgesIn` selector
 │   ├── Sparsity.lean    Phase 1 — `IsSparse`, `IsTight`
+│   ├── SparsityIComponents.lean  Phase 7 — matroidal-regime maximal I-blocks (split off Sparsity in Phase 8-perf)
 │   ├── Laman.lean       Phase 1+2 — `IsLaman` and downstream
-│   ├── Henneberg.lean   Phase 3 — `typeI`, `typeII` and downstream
+│   ├── Henneberg.lean   Phase 3 — `typeI`, `typeII` and forward Laman preservation
+│   ├── HennebergReverse.lean  Phase 3+7 — iso constructors + flat-form reverse decomposition (split off Henneberg in Phase 8-perf)
 │   ├── Framework.lean   Phase 4 — frameworks, rigidity map
 │   ├── TrivialMotions.lean  Phase 6 — d-general translations + infinitesimal rotations
 │   ├── HennebergRigidity.lean  Phase 5 milestone 2 — per-move rigidity preservation
@@ -48,7 +52,8 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── LamanTheorem.lean  Phase 5+6 — Laman's theorem (both directions)
 │   ├── CountMatroid.lean  Phase 7 — abstract (k, ℓ)-count matroid (ℓ < 2k)
 │   ├── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
-│   └── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
+│   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
+│   └── PebbleGame.lean  Phase 9 — basic (k, ℓ)-pebble game + correctness
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
 └── lake-manifest.json   resolved dependency revisions
@@ -75,7 +80,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-8) | project-wide (light scope) + import-structure audit | ✓ Complete (see `notes/Phase8-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-8) | `Sparsity` / `Henneberg` splits + module-system conversion | ✓ Complete (see `notes/Phase8-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | ⋮ Pre-Phase-9 DFS warmup | `Search/DFS.lean` | ✓ Complete (see `notes/Phase9.md` §"DFS warmup (pre-Phase-9)") |
-| 9. Pebble game | `PebbleGame.lean` (new) | in progress (see `notes/Phase9.md`) |
+| 9. Pebble game | `PebbleGame.lean` | ✓ Complete (see `notes/Phase9.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -266,25 +271,44 @@ hand-off.
 
 ### Phase 9 — Pebble game (`PebbleGame.lean`)
 
-In progress. Formalizes the basic $(k, \ell)$-pebble game of
+Complete. Formalizes the basic $(k, \ell)$-pebble game of
 Lee--Streinu 2008 (generalising the original $(2, 3)$ algorithm of
-Jacobs--Hendrickson 1997) and its correctness theorem (L-S Theorem 8)
-in the matroidal regime $\ell < 2k$ matching Phase 7. Target shape is
-a structured `Sum`: on success, $\mathrm{runPebbleGame}\,k\,\ell\,G$
-returns a partial orientation $D$ certifying $(k, \ell)$-sparsity of
-$G$; on failure, it returns a vertex subset $V' \subseteq V$
-certifying $|\edgesIn{V'}| > k|V'| - \ell$. The matroidal-independence
-corollary (`countMatroid.Indep` iff pebble-game-accepts) follows
-directly from Phase 7's `countMatroid_indep_iff`. A pre-phase
-**DFS warmup** lands first (`CombinatorialRigidity/Search/DFS.lean`,
-modelled on `Batteries.UnionFind`'s `termination_by` pattern, ~200–300
-LoC) to exercise the verified-iterative-graph-search pattern in
-isolation. Chapter runs in **forward blueprint
-mode** with `blueprint/src/chapter/pebble-game.tex` as the
-authoritative dep-graph. See `notes/Phase9.md` for the full
-architectural-choice list, open questions, and hand-off; the
-*component pebble game* (L-S §5) and *Henneberg-sequence
-application* (L-S §6) are deferred to potential follow-up phases.
+Jacobs--Hendrickson 1997) end-to-end in the matroidal regime
+$\ell < 2k$ matching Phase 7. `PebbleGame.lean` ships the
+`PartialOrientation V` state (bundled `Finset (V × V)` with
+`no_loops` + `no_antiparallel`), the path-reversal and arc-insertion
+moves with per-vertex and subset-level accounting lemmas, the
+`Reachable k ℓ` inductive predicate packaging the algorithmic
+state space, the four pebble-game invariants of L-S Lemma 10
+(`Reachable.{out_le, peb_add_out_eq, pebOn_add_span_add_outOn,
+pebOn_add_outOn_ge, span_add_le}`), and the three-layer algorithm
+chain `tryReachPebbleWith → tryAddEdgeWith → runPebbleGameWith`
+(each as a fully-computable workhorse with a thin noncomputable
+math-layer wrapper specialising to `D.outList` / `G.edgeFinset`
+enumeration). The certificate-form correctness theorem
+`runPebbleGame_correct` (`G.IsSparse k ℓ ↔ ∃ D, runPebbleGame G k ℓ
+= some D`) combines soundness `runPebbleGame_sound` (via the
+`span_eq_ncard_edgesIn` bridge identity under
+`runPebbleGame_underline_eq_edgeFinset`) with completeness
+`runPebbleGame_eq_none_imp_exists_witness` (per-edge failure-witness
+extraction routed through Lemma 13 algebraic core
+`Reachable.independent_brings_pebble` and its SimpleGraph-form
+wrapper). The matroidal-independence corollary
+`SimpleGraph.countMatroid_indep_iff_runPebbleGame` follows as a
+three-`rw` composition with Phase 7's `countMatroid_indep_iff`. A
+pre-phase **DFS warmup** under `Search/DFS.lean` (modelled on
+`Batteries.UnionFind`'s `termination_by` pattern) exercised the
+verified-iterative-graph-search idiom in isolation; it ships the
+`DirectedWalk` inductive, the `reachableFinding` primitive with
+correctness theorem (soundness + completeness via
+`DirectedWalk.dropUntilBundle` truncation), and the abstract
+`reachClosure` over `Relation.ReflTransGen`. The chapter ran in
+**forward blueprint mode** with
+`blueprint/src/chapter/pebble-game.tex` as the authoritative
+dep-graph. See `notes/Phase9.md` for the full lemma list,
+decisions, and hand-off; the *component pebble game* (L-S §5,
+$O(n^2)$ speedup via union pair-find) and the Henneberg-sequence
+application (L-S §6) are deferred to potential follow-up phases.
 
 ## Engineering conventions
 

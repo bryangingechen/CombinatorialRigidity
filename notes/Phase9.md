@@ -1,6 +1,6 @@
 # Phase 9 — Pebble game (work log)
 
-**Status:** in progress.
+**Status:** complete.
 
 This file is the per-phase work record. See `../ROADMAP.md` §9 for
 the high-level plan and `../DESIGN.md` for cross-cutting design
@@ -1448,12 +1448,37 @@ already gates on `ℓ ≤ k * V'.card`; the regime only enters the
 completeness chain and the matroidal corollary (via `countMatroid`'s
 existence hypothesis).
 
-**Next concrete commit (phase-closure sync, deferred from the corollary
-landing per the per-commit CLAUDE.md discipline).** This commit lands the
-last red node; the phase-closing tasks (ROADMAP table flip + §9
-compression to a one-paragraph summary, sync of `README.md` /
-`home_page/index.md` / `blueprint/src/chapter/intro.tex` status surfaces,
-project-organization review per `../CLAUDE.md` *When this commit closes a
-phase*) are split off into a follow-up commit for scope clarity. The
-completeness-side SimpleGraph-vs-multigraph corner-case check (open
-question above) is the only known open structural unknown.
+**Phase 9 closes here.** All target nodes in the blueprint
+`chapter/pebble-game.tex` dep-graph are green and the basic
+`(k, ℓ)`-pebble game of Lee--Streinu 2008 is end-to-end formalized
+in the matroidal regime `ℓ < 2k`, including soundness, completeness,
+certificate-form correctness (`runPebbleGame_correct`), and the
+matroidal-independence corollary against Phase 7's count matroid
+(`SimpleGraph.countMatroid_indep_iff_runPebbleGame`).
+
+Possible next directions:
+
+- **Compress this note (~1460 LoC)** — deferred to bucket D of the
+  upcoming Phase 9 cleanup round. The *Current state* commit-narrative
+  and the *Hand-off / next phase* recap are both candidates for
+  collapse to per-blueprint-node bullets now that the chapter is
+  closed.
+- **Component pebble game (L-S §5, $O(n^2)$ speedup).** Out of scope
+  for Phase 9 by initial design; uses a union pair-find data
+  structure (Lee--Streinu--Theran 2005). A follow-up phase would
+  need new state machinery + a fresh correctness theorem on top of
+  the basic algorithm.
+- **Henneberg-sequence application (L-S §6).** Out of scope for
+  Phase 9 by initial design; would generalize Phase 3's
+  Laman-specific Henneberg construction across $(k, \ell)$-matroidal
+  regimes and connect to circuit / redundancy detection.
+- **Multigraph generalization.** Out of scope by initial design; no
+  mathlib `MultiGraph` infrastructure exists, and lifting the
+  pebble-game state machinery to handle loops + parallel edges is a
+  much larger project than the basic algorithm.
+- **Post-Phase-9 cleanup round + perf pass.** Standard
+  between-phases hygiene under `../CLEANUP.md` / `PERFORMANCE.md`.
+  Phase 9 added two new files (`Search/DFS.lean` ~770 LoC,
+  `PebbleGame.lean` ~2500 LoC) that have not been audited for
+  module-system conversion, blueprint↔Lean divergence, code smells,
+  or long-proof patterns; both rounds open in follow-up commits.
