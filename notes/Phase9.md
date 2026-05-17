@@ -464,6 +464,32 @@ in the chapter dep-graph is the matroidal-independence corollary
 The completeness-side SimpleGraph-vs-multigraph corner-case check (open
 question below) is the only known open structural unknown.
 
+**Matroidal-independence corollary lands** (blueprint
+`cor:pebble-game-countMatroid-indep`).
+`SimpleGraph.countMatroid_indep_iff_runPebbleGame` — under the matroidal
+regime `ℓ < 2k`, the edge set `G.edgeSet` is independent in the
+`(k, ℓ)`-count matroid iff `runPebbleGame G k ℓ` returns `some D`. Proof
+is a three-`rw` composition: `SimpleGraph.countMatroid_indep_iff`
+(unfolds `Indep` to off-diagonal + `(fromEdgeSet G.edgeSet).IsSparse k ℓ`)
++ `SimpleGraph.fromEdgeSet_edgeSet` (collapses `fromEdgeSet G.edgeSet`
+to `G`) + `runPebbleGame_correct` (sparse ↔ accepts), capped by
+`and_iff_right (SimpleGraph.edgeSet_subset_edgeSet.mpr le_top)` for the
+off-diagonal carrier condition. Lives in a new `section Matroidal` after
+`section Correctness` in `PebbleGame.lean`, attached to the `SimpleGraph`
+namespace via `_root_.SimpleGraph.` (matching `MatroidIdentification.lean`'s
+`SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent` precedent).
+`PebbleGame.lean` gains one import (`CombinatorialRigidity.CountMatroid`)
+— resolving the architectural choice "no matroid dependency" toward
+"land in-phase" as flagged in the open-questions list. At
+`(k, ℓ) = (2, 3)`, composes with `SimpleGraph.rigidityMatroid := countMatroid V
+2 3 _` to give the algorithmic decision procedure for the planar
+rigidity matroid (Jacobs–Hendrickson 1997). Blueprint
+`cor:pebble-game-countMatroid-indep` is now green; the
+**chapter dep-graph is fully green** and Phase 9's basic-pebble-game
+target is reached end-to-end. Phase-closure sync work (ROADMAP table
+flip + §9 compression, README / `home_page/index.md` / blueprint-intro
+status surfaces) deferred to a follow-up commit.
+
 ## Architectural choices made up front
 
 These extend `../DESIGN.md` *Choices to revisit*; if any turns out
@@ -984,6 +1010,41 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   + `exfalso`/`omega`. Same case-study shape as
   `reachableFinding_complete` (the quirk's original site).
 
+### Matroidal-independence corollary (Phase 9 main)
+
+- **Land in-phase, in `PebbleGame.lean`, with a new `CountMatroid`
+  import.** The architectural-choice "no matroid dependency" entry
+  flagged this as deferrable (`Architectural choices made up front →
+  New file PebbleGame.lean`); the open question "Whether to land the
+  matroidal-independence corollary in Phase 9 or defer" resolved as
+  *land in-phase*. PebbleGame.lean gains a single
+  `public import CombinatorialRigidity.CountMatroid` and a new
+  `section Matroidal` at the file's bottom. Project convention
+  ("Add lemmas in the file that introduces the relevant definition")
+  cuts against placing the lemma in `CountMatroid.lean` (which has
+  no pebble-game vocabulary), and for placing it in `PebbleGame.lean`
+  (which introduces `runPebbleGame`).
+
+- **Attach the corollary to the `SimpleGraph` namespace, not the
+  algorithm's namespace.** Lemma name
+  `SimpleGraph.countMatroid_indep_iff_runPebbleGame` (declared via
+  `_root_.SimpleGraph.`), mirroring `MatroidIdentification.lean`'s
+  `SimpleGraph.rigidityMatroid_indep_iff_edgeSetRowIndependent`
+  precedent. Discoverable at the `countMatroid` namespace; the LHS
+  `(countMatroid V k ℓ hℓ).Indep G.edgeSet` is a `SimpleGraph`-flavoured
+  statement, not a pebble-game one.
+
+- **Three-`rw` proof body, capped by `and_iff_right`.** The Lean is a
+  literal three-rewrite chain:
+  `[countMatroid_indep_iff, fromEdgeSet_edgeSet, runPebbleGame_correct hℓ]`.
+  The first reveals the `Indep` definition as off-diagonal +
+  `(fromEdgeSet G.edgeSet).IsSparse`; the second collapses
+  `fromEdgeSet G.edgeSet` to `G` (mathlib's standard round-trip); the
+  third routes through `runPebbleGame_correct`. The leftover trivial
+  conjunct `G.edgeSet ⊆ (⊤).edgeSet` (automatic from `G ≤ ⊤` via
+  `edgeSet_subset_edgeSet.mpr`) is dispatched by `and_iff_right`.
+  No friction logged — the proof reads exactly as the math says.
+
 ### DFS warmup (pre-Phase-9)
 
 - **Style island formalized in DESIGN.md.** Phase 9's architectural
@@ -1323,6 +1384,18 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   the `Option` output. The wrapper theorems live in a new
   `section Correctness` after `section Completeness` with explicit
   `[Fintype V]` (see *Decisions made → Correctness*).
+* Matroidal-independence corollary (blueprint
+  `cor:pebble-game-countMatroid-indep`):
+  `SimpleGraph.countMatroid_indep_iff_runPebbleGame` —
+  `(countMatroid V k ℓ hℓ).Indep G.edgeSet ↔ ∃ D, runPebbleGame G k ℓ
+  = some D`. Three-`rw` composition (`countMatroid_indep_iff` +
+  `fromEdgeSet_edgeSet` + `runPebbleGame_correct`) capped by
+  `and_iff_right` for the off-diagonal carrier condition (automatic
+  from `G ≤ ⊤`). Lives in `section Matroidal` after `section Correctness`;
+  `PebbleGame.lean` gains one import (`CombinatorialRigidity.CountMatroid`).
+  At `(k, ℓ) = (2, 3)`, this composes with `SimpleGraph.rigidityMatroid
+  := countMatroid V 2 3 _` to give the algorithmic decision procedure
+  for the planar rigidity matroid (Jacobs–Hendrickson 1997).
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
@@ -1346,8 +1419,9 @@ via `Classical.decPred`) plus its three workhorse lemmas
 wrapper), `lem:pebble-game-tryAddEdgeWith-isSome` (⇐ half),
 `lem:pebble-game-tryAddEdgeWith-isSparse` (⇒ half), the iff
 `lem:pebble-game-tryAddEdge-iff-independent` (a one-liner combining
-both halves in prose), `lem:pebble-game-failure-witness`, and
-`thm:pebble-game-correct` are all green. Build + lint clean.
+both halves in prose), `lem:pebble-game-failure-witness`,
+`thm:pebble-game-correct`, and `cor:pebble-game-countMatroid-indep` are
+all green — the chapter dep-graph closes. Build + lint clean.
 
 **Note on the `(V × V)`-list vs `(Sym2 V)`-list workhorse.** An earlier
 hand-off proposed `List (Sym2 V)` for `runPebbleGameWith`'s input. The
@@ -1362,26 +1436,24 @@ adjacency. Documented in DESIGN.md *Pebble-game style island → The
 `-With` variant pattern* (same rationale as `tryReachPebbleWith` →
 `tryReachPebble`'s `outList` shift).
 
-Next concrete commit (last red node in the chapter dep-graph):
-**`cor:pebble-game-countMatroid-indep` — matroidal-independence
-corollary**. One-liner: `runPebbleGame_correct` (this commit) plus
-Phase 7's `SimpleGraph.countMatroid_indep_iff` gives `(countMatroid V
-k ℓ hℓ).Indep G.edgeSet ↔ ∃ D, runPebbleGame G k ℓ = some D` (modulo
-the off-diagonal hypothesis built into `countMatroid_indep_iff`).
-Closes the chapter and Phase 9's basic-pebble-game target. The
+The chapter dep-graph is now fully green and Phase 9's basic-pebble-game
+target is reached end-to-end. Soundness landed via `span_eq_ncard_edgesIn`
+(bridge identity from the algorithm's `span` to the project's `(G.edgesIn
+↑V').ncard` under `D.underline = G.edgeFinset`, via the `Sym2.mk` bijection
+on `D.spanArcs V'`) and the one-`rw` assembly `runPebbleGame_sound` on
+top of `Reachable.span_add_le`, the bridge, and
+`runPebbleGame_underline_eq_edgeFinset`. The `ℓ < 2k` blueprint regime is
+not formally needed in Lean for soundness — `IsSparse`'s definition
+already gates on `ℓ ≤ k * V'.card`; the regime only enters the
+completeness chain and the matroidal corollary (via `countMatroid`'s
+existence hypothesis).
+
+**Next concrete commit (phase-closure sync, deferred from the corollary
+landing per the per-commit CLAUDE.md discipline).** This commit lands the
+last red node; the phase-closing tasks (ROADMAP table flip + §9
+compression to a one-paragraph summary, sync of `README.md` /
+`home_page/index.md` / `blueprint/src/chapter/intro.tex` status surfaces,
+project-organization review per `../CLAUDE.md` *When this commit closes a
+phase*) are split off into a follow-up commit for scope clarity. The
 completeness-side SimpleGraph-vs-multigraph corner-case check (open
 question above) is the only known open structural unknown.
-
-Soundness landed via `span_eq_ncard_edgesIn` (bridge identity from
-the algorithm's `span` to the project's `(G.edgesIn ↑V').ncard`
-under `D.underline = G.edgeFinset`, via the `Sym2.mk` bijection on
-`D.spanArcs V'`) and the one-`rw` assembly `runPebbleGame_sound` on
-top of `Reachable.span_add_le`, the bridge, and
-`runPebbleGame_underline_eq_edgeFinset`. The `ℓ < 2k` blueprint
-regime is not formally needed in Lean — `IsSparse`'s definition
-already gates on `ℓ ≤ k * V'.card`.
-
-Architectural question now resolved as *land in-phase*: the
-corollary is the next concrete commit. With both
-`runPebbleGame_correct` and `cor:pebble-game-countMatroid-indep`
-landing, Phase 9 reaches its basic-pebble-game target end-to-end.

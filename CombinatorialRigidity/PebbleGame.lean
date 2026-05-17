@@ -9,6 +9,7 @@ public import Mathlib.Data.Finset.Basic
 public import Mathlib.Data.Sym.Sym2
 public import CombinatorialRigidity.Search.DFS
 public import CombinatorialRigidity.Sparsity
+public import CombinatorialRigidity.CountMatroid
 
 /-!
 # The `(k, ℓ)`-pebble game
@@ -2460,6 +2461,41 @@ theorem runPebbleGame_correct [Fintype V] {G : SimpleGraph V} [Fintype G.edgeSet
     exact runPebbleGame_sound hD
 
 end Correctness
+
+/-! ### Matroidal-independence corollary
+
+The pebble game decides matroidal independence in the `(k, ℓ)`-count matroid
+(Phase 7's `SimpleGraph.countMatroid`): `G.edgeSet` is independent iff
+`runPebbleGame G k ℓ` accepts. Composes `countMatroid_indep_iff`
+(independent ↔ off-diagonal + `(k, ℓ)`-sparse) with `runPebbleGame_correct`
+(sparse ↔ pebble-game accepts); the off-diagonal carrier condition is
+automatic since `G ≤ ⊤`. Blueprint `cor:pebble-game-countMatroid-indep`. -/
+
+section Matroidal
+
+/-- **Pebble-game certificate of matroidal independence** (Lee–Streinu;
+blueprint `cor:pebble-game-countMatroid-indep`): in the matroidal regime
+`ℓ < 2k`, the edge set `G.edgeSet` is independent in the `(k, ℓ)`-count
+matroid `SimpleGraph.countMatroid V k ℓ hℓ` iff `runPebbleGame G k ℓ`
+returns `some D` for some partial orientation `D`. One-line composition of
+`SimpleGraph.countMatroid_indep_iff` (independent ↔ off-diagonal +
+`fromEdgeSet`-sparse) with `runPebbleGame_correct` (sparse ↔ pebble-game
+accepts); `SimpleGraph.fromEdgeSet_edgeSet` collapses
+`fromEdgeSet G.edgeSet` to `G`, and the off-diagonal carrier condition
+`G.edgeSet ⊆ (⊤).edgeSet` is automatic from `G ≤ ⊤`. At `(k, ℓ) = (2, 3)`
+this yields the algorithmic decision procedure for the planar rigidity
+matroid (Jacobs–Hendrickson 1997), via `MatroidIdentification.lean`'s
+`SimpleGraph.rigidityMatroid := countMatroid V 2 3 _`. -/
+theorem _root_.SimpleGraph.countMatroid_indep_iff_runPebbleGame
+    [Fintype V] {G : SimpleGraph V} [Fintype G.edgeSet]
+    {k ℓ : ℕ} (hℓ : ℓ < 2 * k) :
+    (SimpleGraph.countMatroid V k ℓ hℓ).Indep G.edgeSet ↔
+      ∃ D : PartialOrientation V, runPebbleGame G k ℓ = some D := by
+  rw [SimpleGraph.countMatroid_indep_iff, SimpleGraph.fromEdgeSet_edgeSet,
+    runPebbleGame_correct hℓ]
+  exact and_iff_right (SimpleGraph.edgeSet_subset_edgeSet.mpr le_top)
+
+end Matroidal
 
 end PartialOrientation
 

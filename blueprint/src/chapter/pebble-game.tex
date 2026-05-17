@@ -915,6 +915,8 @@ the pebble game decides matroidal independence.
 
 \begin{corollary}[Pebble-game certificate of matroidal independence]
   \label{cor:pebble-game-countMatroid-indep}
+  \lean{SimpleGraph.countMatroid_indep_iff_runPebbleGame}
+  \leanok
   \uses{thm:pebble-game-correct, def:countMatroid,
     thm:countMatroid-indep-iff}
   Let $V$ be finite and $k, \ell$ integers with $\ell < 2k$. For
@@ -926,6 +928,7 @@ the pebble game decides matroidal independence.
   $\mathrm{some}\,D$ for some partial orientation $D$.
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:pebble-game-correct, thm:countMatroid-indep-iff}
   By \cref{thm:countMatroid-indep-iff}, $E(G)$ is independent in
   the count matroid iff $G$ is $(k, \ell)$-sparse. By
