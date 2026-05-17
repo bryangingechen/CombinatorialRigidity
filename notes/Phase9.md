@@ -254,10 +254,54 @@ pebOn (V' \ {u, v})` and the below-threshold hypothesis force
 `pebOn (V' \ {u, v}) > 0`, so `Finset.exists_ne_zero_of_sum_ne_zero`
 picks `w`. Blueprint `lem:pebble-game-independent-brings-pebble` is
 now green; the prose proof's L-S "I-component / block" argument is
-discharged by Invariant (2) directly (the algebraic statement
-abstracts over the L-S form via the closure-of-reachability
-identity + `lem:span-eq-ncard-edgesIn` bridge — both deferred to the
-SimpleGraph-form wrapper).
+discharged by Invariant (2) directly.
+
+**SimpleGraph-form wrapper for Lemma 13 lands** (blueprint
+`lem:pebble-game-independent-brings-pebble-graph`).
+`Reachable.independent_brings_pebble_simpleGraph_form` takes the
+algebraic core's hypotheses in L-S form: a reachable `D`, distinct
+`u, v` with `s(u, v) ∉ D.underline`, a finite simple graph `G` with
+`G.edgeFinset = insert s(u, v) D.underline` and `G.IsSparse k ℓ`,
+the matroidal-regime `ℓ < 2k`, and the below-threshold
+`D.peb k u + D.peb k v < ℓ + 1`; it concludes
+`∃ w ∈ D.reach u ∪ D.reach v, w ≠ u ∧ w ≠ v ∧ 0 < D.peb k w`. The
+wrapper consumes (i) **`reach` infrastructure** in `PebbleGame.lean`:
+the noncomputable `PartialOrientation.reach D v` (wrapper around
+`Search.reachClosure (fun a b => (a, b) ∈ D.arcs) v`) plus
+reflexivity `self_mem_reach` and closure `reach_closed`; (ii) the
+**closure-to-zero** bridge `outOn_eq_zero_of_closed` (any `V'`
+closed under `D`'s out-arcs has `D.outOn V' = 0`) and the
+specialised `outOn_reach_union_eq_zero`; (iii) the
+**post-insertion sparsity bridge** `span_succ_le_edgesIn_ncard_of_insert`
+(under `s(u, v) ∉ D.underline`, `u, v ∈ V'`, and
+`G.edgeFinset = insert s(u, v) D.underline`, the count
+`(G.edgesIn ↑V').ncard ≥ D.span V' + 1` via the Sym2-image of
+`D.spanArcs V'` plus the candidate edge, disjoint by freshness, with
+`Sym2.mk`'s injOn collapsing the image to a Finset.card).
+
+Math-layer abstract `reachClosure (R : V → V → Prop) [Fintype V]
+(v : V) : Finset V` lands in `Search/DFS.lean`: defined as the
+`Finset.univ.filter` of `Relation.ReflTransGen R v ·` with classical
+decidability, marked `noncomputable`. The three workhorse lemmas
+`mem_reachClosure` (simp), `self_mem_reachClosure`, and
+`reachClosure_closed` package the API surface; the
+`PartialOrientation.reach` shim in `PebbleGame.lean` specialises to
+`R := fun a b => (a, b) ∈ D.arcs`. Algorithm side
+(`tryReachPebble`) is unaffected — it remains computable, querying
+reachability via the verified DFS without ever materialising the
+full closure.
+
+Size-hypothesis discharge for `IsSparse` at `V' = D.reach u ∪ D.reach v`:
+`u ≠ v` plus reflexivity gives `|V'| ≥ 2`, and `ℓ < 2k ≤ k * V'.card`
+discharges the gate `ℓ ≤ k * V'.card` that `Reachable.independent_brings_pebble`
+also needs. This is the only place in the SimpleGraph-form chain
+where the matroidal-regime hypothesis `ℓ < 2k` enters formally — the
+algebraic core stays regime-agnostic.
+
+Blueprint `lem:pebble-game-independent-brings-pebble-graph` is now
+green; the next concrete commit is the `tryAddEdgeWith` completeness
+recursion (`lem:pebble-game-tryAddEdge-iff-independent` ⇐), iterating
+the wrapper through the algorithm's recursive structure.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -300,14 +344,14 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: SimpleGraph-form wrapper for Lemma 13 (folds
-the `Reach_D(u) ∪ Reach_D(v)` closure and the `span_eq_ncard_edgesIn`
-bridge over the algebraic core), or directly the
-`tryAddEdgeWith` completeness recursion
-(`lem:pebble-game-tryAddEdge-iff-independent` ⇐) — both consume the
-algebraic core that just landed. The completeness-side
-SimpleGraph-vs-multigraph corner-case check (open question below) is
-the only known open structural unknown for this side.
+Next concrete commit: `tryAddEdgeWith` completeness recursion
+(`lem:pebble-game-tryAddEdge-iff-independent` ⇐), iterating the
+SimpleGraph-form Lemma 13 wrapper through `tryAddEdgeWith.induct`'s
+five-case dispatch — termination measure `(ℓ + 1) - (peb u + peb v)`
+strictly decreases per reversal, and the wrapper supplies the
+existence of a free pebble at the below-threshold step. The
+completeness-side SimpleGraph-vs-multigraph corner-case check (open
+question below) is the only known open structural unknown.
 
 ## Architectural choices made up front
 
@@ -770,6 +814,31 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   `pebOn V' = peb u + peb v + ∑_{w ∈ V' \ {u, v}}` inside
   `Reachable.independent_brings_pebble`.
 
+- **Reach closure is noncomputable, lives abstractly in
+  `Search/DFS.lean`.** `reachClosure (R : V → V → Prop) [Fintype V]
+  (v : V) : Finset V` is `Finset.univ.filter (Relation.ReflTransGen
+  R v ·)` with classical-supplied `DecidablePred` (so
+  `noncomputable`). Fine because the algorithm side never
+  materialises the full closure — it only DFS-finds single matches
+  via `tryReachPebbleWith`. Rejected: an exhausted-DFS computable
+  mirror returning the visited set; would duplicate
+  `Relation.ReflTransGen`'s reflexivity / head-tail recursor
+  machinery for no algorithm-side payoff.
+
+- **Closure-to-zero bridge stays in `PebbleGame.lean`
+  (`outOn_eq_zero_of_closed`), not Search.lean.** `outOn` is
+  partial-orientation-specific (filters `D.boundaryArcs`); the
+  generic version would need an abstract boundary-count def and pay
+  for one use site.
+
+- **`Sym2.mk`-disjointness from freshness uses the existing
+  `mem_underline`.** In `span_succ_le_edgesIn_ncard_of_insert`,
+  `s(u, v) ∉ (D.spanArcs V').image Sym2.mk` follows from `s(u, v) ∉
+  D.underline` plus the inclusion of the Sym2-image in `D.underline`
+  via `D.mem_underline.mpr (Or.inl ·)`. Three-line inline proof; not
+  lifted because the call-site cost (one direction of `mem_underline`)
+  is one line.
+
 ### DFS warmup (pre-Phase-9)
 
 - **Style island formalized in DESIGN.md.** Phase 9's architectural
@@ -1030,27 +1099,43 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   `outOn V' = 0` (lifts `pebOn V' ≥ ℓ + 1`), a `Finset.sum_sdiff`
   decomposition `pebOn V' = (peb u + peb v) + pebOn (V' \ {u, v})`,
   and `Finset.exists_ne_zero_of_sum_ne_zero` to pick `w`.
-  Algorithm-side callers (`tryAddEdgeWith` completeness recursion,
-  next commit) discharge `outOn V' = 0` from the reachability
-  closure shape and `span + 1 + ℓ ≤ k|V'|` via the
-  `span_eq_ncard_edgesIn` bridge — see *Decisions made →
-  Completeness*.
+* L-S Lemma 13 SimpleGraph-form wrapper (blueprint
+  `lem:pebble-game-independent-brings-pebble-graph`):
+  `Reachable.independent_brings_pebble_simpleGraph_form` —
+  `PartialOrientation.reach D v` (noncomputable wrapper around
+  `Search.reachClosure`, reflexivity + closure lemmas
+  `self_mem_reach` / `reach_closed`), the closure-to-zero bridge
+  `outOn_eq_zero_of_closed` plus `outOn_reach_union_eq_zero`, and
+  the post-insertion sparsity bridge
+  `span_succ_le_edgesIn_ncard_of_insert` (`(G.edgesIn ↑V').ncard ≥
+  D.span V' + 1` under `s(u, v) ∉ D.underline`, `u, v ∈ V'`, and
+  `G.edgeFinset = insert s(u, v) D.underline` — Sym2-image of
+  `D.spanArcs V'` plus the candidate edge, disjoint by freshness).
+  Size-hypothesis discharge: `|V'| ≥ 2` from `u ≠ v` plus
+  reflexivity, combined with the matroidal-regime
+  `ℓ < 2k` (the only place this hypothesis enters the chain
+  formally — algebraic core is regime-agnostic).
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
 relation-transport family `DirectedWalk.mapRel` /
-`mapRel_length` / `mapRel_vertices` / `mapRel_isPath_iff` and the
-new `DirectedWalk.length_pos_of_ne`. Blueprint
-`def:partial-orientation` (now with `underline` pinned),
-`def:pebble-counts`, `def:path-reversal` (now with
-`underline_reverse_eq` pinned), `def:arc-insertion` (now with
+`mapRel_length` / `mapRel_vertices` / `mapRel_isPath_iff`,
+`DirectedWalk.length_pos_of_ne`, and the new abstract
+**`reachClosure (R : V → V → Prop) [Fintype V] (v : V) : Finset V`**
+(noncomputable; `Finset.univ.filter` of `Relation.ReflTransGen R v ·`
+via `Classical.decPred`) plus its three workhorse lemmas
+`mem_reachClosure` (simp), `self_mem_reachClosure`,
+`reachClosure_closed`. Blueprint `def:partial-orientation` (with
+`underline` pinned), `def:pebble-counts`, `def:path-reversal` (with
+`underline_reverse_eq` pinned), `def:arc-insertion` (with
 `underline_addArc` pinned), `def:reachable-orientation`,
 `lem:pebble-game-invariants`, `def:tryReachPebble`, `def:tryAddEdge`,
 `def:runPebbleGame`, `lem:runPebbleGameWith-underline-subset`,
 `lem:runPebbleGame-underline-eq`, `lem:span-eq-ncard-edgesIn`,
-`thm:pebble-game-soundness`, and the new
-`lem:pebble-game-independent-brings-pebble` (algebraic-form core)
-are all green. Build + lint clean.
+`thm:pebble-game-soundness`,
+`lem:pebble-game-independent-brings-pebble` (algebraic-form core),
+and the new `lem:pebble-game-independent-brings-pebble-graph`
+(SimpleGraph-form wrapper) are all green. Build + lint clean.
 
 **Note on the `(V × V)`-list vs `(Sym2 V)`-list workhorse.** An earlier
 hand-off proposed `List (Sym2 V)` for `runPebbleGameWith`'s input. The
@@ -1066,24 +1151,20 @@ adjacency. Documented in DESIGN.md *Pebble-game style island → The
 `tryReachPebble`'s `outList` shift).
 
 Next concrete commit (completeness chain, leaf-most red node):
-**SimpleGraph-form wrapper for Lemma 13.** State the L-S form:
-given a reachable `D`, distinct `u, v` with `s(u, v) ∉ D.underline`,
-a finite simple graph `G` whose edge set is `D.underline ∪ {s(u,
-v)}`, and `G.IsSparse k ℓ`, plus below-threshold; conclude the same
-`∃ w` shape but with `V'` instantiated as `Reach_D(u) ∪ Reach_D(v)`.
-The wrapper consumes (i) `reachClosure` in `Search/DFS.lean` (an
-exhausted-DFS mirror of `reachableFinding` with predicate always
-`false`, yielding `Finset V` plus an "out-closed" witness); (ii)
-`span_eq_ncard_edgesIn` to convert `(G.edgesIn ↑V').ncard ≤ k|V'| -
-ℓ` to `D.span V' + 1 + ℓ ≤ k|V'|`. After this lands,
-`lem:pebble-game-tryAddEdge-iff-independent` (⇐) iterates the
-wrapper through the `tryAddEdgeWith` recursion, then
-`lem:pebble-game-failure-witness` falls out of L-S's
-Invariant-(2)-saturated-block argument with the closure subset in
-hand. Final assembly: `thm:pebble-game-correct` →
-`cor:pebble-game-countMatroid-indep`. The completeness-side
-SimpleGraph-vs-multigraph corner-case check (open question above)
-is the only known open structural unknown.
+**`tryAddEdgeWith` completeness recursion**
+(`lem:pebble-game-tryAddEdge-iff-independent` ⇐). Iterate the
+SimpleGraph-form wrapper through `tryAddEdgeWith.induct`'s five-case
+dispatch: the termination measure `(ℓ + 1) - (peb u + peb v)`
+strictly decreases per path reversal, and the wrapper supplies the
+existence of a free pebble at the below-threshold step (in the
+reach-union `D.reach u ∪ D.reach v`, distinct from `u, v`) — so the
+DFS at `u` (or fallback at `v`) must succeed and the recursive call's
+measure shrinks. After this lands, `lem:pebble-game-failure-witness`
+falls out of L-S's Invariant-(2)-saturated-block argument with the
+closure subset in hand. Final assembly:
+`thm:pebble-game-correct` → `cor:pebble-game-countMatroid-indep`.
+The completeness-side SimpleGraph-vs-multigraph corner-case check
+(open question above) is the only known open structural unknown.
 
 Soundness landed via `span_eq_ncard_edgesIn` (bridge identity from
 the algorithm's `span` to the project's `(G.edgesIn ↑V').ncard`

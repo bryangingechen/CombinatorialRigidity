@@ -666,6 +666,41 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   fact about the post-insertion graph the proof actually consumes.
 \end{proof}
 
+\begin{lemma}[Independent edges yield reachable pebbles, SimpleGraph form]
+  \label{lem:pebble-game-independent-brings-pebble-graph}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.Reachable.independent_brings_pebble_simpleGraph_form}
+  \leanok
+  \uses{def:partial-orientation, def:pebble-counts,
+    def:reachable-orientation, def:isSparse,
+    lem:pebble-game-independent-brings-pebble,
+    lem:span-eq-ncard-edgesIn}
+  Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
+  with $\{u, v\} \notin \underline{D}$, and $G$ a finite simple graph
+  with $E(G) = \underline{D} \cup \{\{u, v\}\}$ that is
+  $(k, \ell)$-sparse. Suppose the matroidal regime $\ell < 2k$ holds
+  and the algorithm's below-threshold condition fires:
+  $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) < \ell + 1$. Then
+  there is a vertex $w \in \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$
+  distinct from $u$ and $v$ with $\mathrm{peb}_{D, k}(w) \ge 1$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pebble-game-independent-brings-pebble,
+    lem:span-eq-ncard-edgesIn}
+  Instantiate $V' := \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ in
+  \cref{lem:pebble-game-independent-brings-pebble}. The reflexivity of
+  $\mathrm{Reach}_D$ puts $u, v \in V'$, the closure of $V'$ under
+  $D$'s out-arcs gives $\mathrm{out}_D(V') = 0$, and $|V'| \ge 2$
+  combined with $\ell < 2k$ yields the size hypothesis $\ell \le k|V'|$.
+  The sparsity bound $\mathrm{span}_D(V') + 1 + \ell \le k|V'|$ follows
+  from $G$-sparsity at $V'$ together with the
+  inclusion $(\text{Sym2-image of } D\text{-arcs spanning } V')
+  \cup \{\{u, v\}\} \subseteq E_G[V']$, whose cardinality equals
+  $\mathrm{span}_D(V') + 1$ by injectivity of $\mathrm{Sym2.mk}$ on
+  arcs (\cref{lem:span-eq-ncard-edgesIn}'s injOn ingredient) and
+  freshness of $\{u, v\}$ w.r.t.\ $\underline{D}$.
+\end{proof}
+
 \begin{lemma}[Pebble game accepts iff edge is independent]
   \label{lem:pebble-game-tryAddEdge-iff-independent}
   \uses{def:tryAddEdge, lem:pebble-game-independent-brings-pebble,

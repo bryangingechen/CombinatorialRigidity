@@ -1801,6 +1801,182 @@ theorem runPebbleGame_sound [Fintype V] {G : SimpleGraph V} [Fintype G.edgeSet]
 
 end Soundness
 
+/-! ### Completeness — towards the failure-witness lemma
+
+The completeness side of L-S Theorem 8 routes through Lemma 13: if the
+candidate edge `{u, v}` is independent (in the matroid sense), then a
+free pebble is reachable from within `Reach_D(u) ∪ Reach_D(v)` without
+disturbing the other endpoint's count. The algebraic core
+`Reachable.independent_brings_pebble` landed in an earlier commit; this
+section adds the closure-of-reachability infrastructure
+(`PartialOrientation.reach` and the out-arc closure lemmas) and the
+SimpleGraph-form wrapper of Lemma 13 that the upcoming `tryAddEdgeWith`
+completeness recursion will iterate.
+
+Cf. blueprint `lem:pebble-game-independent-brings-pebble` (the
+SimpleGraph-form proof body of the algebraic-core lemma, now discharged
+by the wrapper below). -/
+
+section Completeness
+
+open CombinatorialRigidity.Search
+
+variable [Fintype V]
+
+/-- `D.reach v` is the set of vertices reachable from `v` along `D`'s
+out-arcs, packaged as a `Finset V`. Noncomputable: this is the
+math-layer view, used by the pebble game's completeness side to
+construct the blocking-witness set `D.reach u ∪ D.reach v`. The
+algorithm side uses `tryReachPebble` (the verified DFS) to query
+reachability without ever materialising the full closure. -/
+noncomputable def reach (D : PartialOrientation V) (v : V) : Finset V :=
+  reachClosure (fun a b => (a, b) ∈ D.arcs) v
+
+@[simp] lemma mem_reach {D : PartialOrientation V} {v w : V} :
+    w ∈ D.reach v ↔
+      Relation.ReflTransGen (fun a b => (a, b) ∈ D.arcs) v w :=
+  mem_reachClosure
+
+lemma self_mem_reach (D : PartialOrientation V) (v : V) : v ∈ D.reach v :=
+  self_mem_reachClosure _ _
+
+lemma reach_closed {D : PartialOrientation V} {v a b : V}
+    (ha : a ∈ D.reach v) (hab : (a, b) ∈ D.arcs) : b ∈ D.reach v :=
+  reachClosure_closed ha hab
+
+omit [Fintype V] in
+/-- A finset `V'` closed under `D`'s outgoing arcs has `outOn V' = 0`:
+no arc leaves `V'`. -/
+lemma outOn_eq_zero_of_closed (D : PartialOrientation V) {V' : Finset V}
+    (h_closed : ∀ a ∈ V', ∀ b, (a, b) ∈ D.arcs → b ∈ V') :
+    D.outOn V' = 0 := by
+  have h_empty : D.boundaryArcs V' = ∅ := by
+    rw [Finset.eq_empty_iff_forall_notMem]
+    rintro ⟨a, b⟩ h
+    simp only [boundaryArcs, Finset.mem_filter] at h
+    exact h.2.2 (h_closed a h.2.1 b h.1)
+  rw [outOn, h_empty, Finset.card_empty]
+
+/-- The reach-union of two vertices is out-closed under `D.arcs`:
+`D.outOn (D.reach u ∪ D.reach v) = 0`. Direct consequence of
+`reach_closed` applied to each component. -/
+lemma outOn_reach_union_eq_zero (D : PartialOrientation V) (u v : V) :
+    D.outOn (D.reach u ∪ D.reach v) = 0 := by
+  apply D.outOn_eq_zero_of_closed
+  intro a ha b hab
+  rw [Finset.mem_union] at ha ⊢
+  rcases ha with ha | ha
+  · exact Or.inl (reach_closed ha hab)
+  · exact Or.inr (reach_closed ha hab)
+
+omit [Fintype V] in
+/-- Post-insertion sparsity bridge: when `s(u, v)` is fresh w.r.t.
+`D.underline`, both endpoints `u, v` are in `V'`, and `G.edgeFinset =
+insert s(u, v) D.underline`, the `(G.edgesIn ↑V').ncard` count exceeds
+the orientation's span on `V'` by at least one: `D.span V' + 1 ≤
+(G.edgesIn ↑V').ncard`. The `+ 1` is the candidate edge itself; the
+underlying span is included via the Sym2-image of `D.spanArcs V'`,
+which is disjoint from `s(u, v)` by freshness. -/
+lemma span_succ_le_edgesIn_ncard_of_insert (D : PartialOrientation V)
+    {u v : V} (h_fresh : s(u, v) ∉ D.underline)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (hG : G.edgeFinset = insert s(u, v) D.underline)
+    {V' : Finset V} (hu : u ∈ V') (hv : v ∈ V') :
+    D.span V' + 1 ≤ (G.edgesIn ↑V').ncard := by
+  set S : Finset (Sym2 V) := (D.spanArcs V').image (fun p => s(p.1, p.2)) with hS
+  have h_S_sub : (↑S : Set (Sym2 V)) ⊆ G.edgesIn ↑V' := by
+    intro e he
+    rw [Finset.mem_coe, hS, Finset.mem_image] at he
+    obtain ⟨⟨a, b⟩, hab, rfl⟩ := he
+    simp only [spanArcs, Finset.mem_filter] at hab
+    obtain ⟨h_arc, ha, hb⟩ := hab
+    have h_edge : s(a, b) ∈ G.edgeSet := by
+      rw [← G.mem_edgeFinset, hG]
+      exact Finset.mem_insert_of_mem (D.mem_underline.mpr (Or.inl h_arc))
+    exact G.mk_mem_edgesIn h_edge ha hb
+  have h_uv_in : s(u, v) ∈ G.edgesIn ↑V' := by
+    have h_edge : s(u, v) ∈ G.edgeSet := by
+      rw [← G.mem_edgeFinset, hG]
+      exact Finset.mem_insert_self _ _
+    exact G.mk_mem_edgesIn h_edge hu hv
+  have h_uv_notin_S : s(u, v) ∉ S := by
+    intro h_in
+    rw [hS, Finset.mem_image] at h_in
+    obtain ⟨⟨a, b⟩, hab, h_eq⟩ := h_in
+    simp only [spanArcs, Finset.mem_filter] at hab
+    exact h_fresh (h_eq ▸ D.mem_underline.mpr (Or.inl hab.1))
+  have h_combined_sub : (↑(insert s(u, v) S : Finset (Sym2 V)) : Set (Sym2 V))
+      ⊆ G.edgesIn ↑V' := by
+    rw [Finset.coe_insert, Set.insert_subset_iff]
+    exact ⟨h_uv_in, h_S_sub⟩
+  have h_card : (insert s(u, v) S).card = S.card + 1 :=
+    Finset.card_insert_of_notMem h_uv_notin_S
+  have h_S_card : S.card = D.span V' := by
+    rw [hS, span]
+    refine Finset.card_image_of_injOn ((sym2_mk_injOn_arcs D).mono ?_)
+    intro p hp
+    simp only [Finset.mem_coe, spanArcs, Finset.mem_filter] at hp
+    exact Finset.mem_coe.mpr hp.1
+  have h_finite : (G.edgesIn ↑V').Finite :=
+    G.edgeSet.toFinite.subset (fun _ he => he.1)
+  calc D.span V' + 1
+      = S.card + 1 := by rw [h_S_card]
+    _ = (insert s(u, v) S).card := h_card.symm
+    _ = (↑(insert s(u, v) S : Finset (Sym2 V)) : Set (Sym2 V)).ncard :=
+        (Set.ncard_coe_finset _).symm
+    _ ≤ (G.edgesIn ↑V').ncard := Set.ncard_le_ncard h_combined_sub h_finite
+
+/-- **L-S Lemma 13, SimpleGraph form.** Given a `(k, ℓ)`-reachable
+partial orientation `D`, a candidate edge `s(u, v)` fresh w.r.t.
+`D.underline` (with `u ≠ v`), and a finite simple graph `G` with edge
+set `insert s(u, v) D.underline` that is `(k, ℓ)`-sparse, the
+below-threshold condition `D.peb k u + D.peb k v < ℓ + 1` forces the
+existence of a vertex `w ∈ D.reach u ∪ D.reach v` distinct from `u` and
+`v` with a free pebble (`0 < D.peb k w`). Iterating this brings enough
+pebbles to `u, v` for the threshold to be met.
+
+Wraps the algebraic-core `Reachable.independent_brings_pebble` by
+instantiating `V' = D.reach u ∪ D.reach v`: the closure
+`D.outOn V' = 0` follows from `reach_closed` (`outOn_reach_union_eq_zero`),
+and the post-insertion sparsity bound `D.span V' + 1 + ℓ ≤ k * V'.card`
+combines `G.IsSparse` at `V'` (under the size hypothesis from the
+matroidal regime `ℓ < 2k` and `|V'| ≥ 2`) with the
+`span_succ_le_edgesIn_ncard_of_insert` bridge. -/
+lemma Reachable.independent_brings_pebble_simpleGraph_form
+    {k ℓ : ℕ} {D : PartialOrientation V} (hR : Reachable k ℓ D)
+    {u v : V} (huv : u ≠ v) (h_fresh : s(u, v) ∉ D.underline)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (hG : G.edgeFinset = insert s(u, v) D.underline)
+    (hSparse : G.IsSparse k ℓ) (h_matroidal : ℓ < 2 * k)
+    (h_below : D.peb k u + D.peb k v < ℓ + 1) :
+    ∃ w ∈ D.reach u ∪ D.reach v, w ≠ u ∧ w ≠ v ∧ 0 < D.peb k w := by
+  set V' := D.reach u ∪ D.reach v with hV'_def
+  have hu : u ∈ V' := Finset.mem_union.mpr (Or.inl (D.self_mem_reach u))
+  have hv : v ∈ V' := Finset.mem_union.mpr (Or.inr (D.self_mem_reach v))
+  have h_card : 2 ≤ V'.card := by
+    have : ({u, v} : Finset V).card = 2 := by
+      rw [Finset.card_insert_of_notMem (by simp [huv]), Finset.card_singleton]
+    rw [← this]
+    apply Finset.card_le_card
+    intro x hx
+    rcases Finset.mem_insert.mp hx with rfl | hx
+    · exact hu
+    · rcases Finset.mem_singleton.mp hx with rfl
+      exact hv
+  have h_size : ℓ ≤ k * V'.card := by
+    have h2k : 2 * k ≤ k * V'.card := by
+      rw [mul_comm 2 k]
+      exact Nat.mul_le_mul_left k h_card
+    omega
+  have h_closed : D.outOn V' = 0 := D.outOn_reach_union_eq_zero u v
+  have h_bridge : D.span V' + 1 ≤ (G.edgesIn ↑V').ncard :=
+    D.span_succ_le_edgesIn_ncard_of_insert h_fresh hG hu hv
+  have h_sparse_V' : (G.edgesIn ↑V').ncard + ℓ ≤ k * V'.card := hSparse V' h_size
+  have h_post_sparse : D.span V' + 1 + ℓ ≤ k * V'.card := by omega
+  exact hR.independent_brings_pebble huv hu hv h_closed h_post_sparse h_below
+
+end Completeness
+
 end PartialOrientation
 
 end CombinatorialRigidity.PebbleGame

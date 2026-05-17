@@ -731,4 +731,38 @@ theorem reachableFinding_complete {succ : V → List V} {P : V → Bool} {v : V}
   exact absurd hPw (reachableFindingAux_complete succ P ∅ v hnone p.length w p
     (Nat.le_refl _) (fun _ _ hx => Finset.notMem_empty _ hx))
 
+/-! ## Reachability closure
+
+`reachClosure R v` is the set of vertices reachable from `v` along a
+relation `R : V → V → Prop`, packaged as a `Finset V` via classical
+decidability. This is the **math-layer** view of reachability; the
+algorithm side uses `reachableFinding` to find a single match without
+ever materialising the full closure, so this helper is `noncomputable`.
+
+Used by the pebble game's completeness side: the blocking-witness set
+is built as `reachClosure (fun a b => (a, b) ∈ D.arcs) u ∪
+reachClosure … v`, for which `D.outOn` vanishes by
+`reachClosure_closed`. -/
+
+omit [DecidableEq V] in
+/-- The reachability closure of `v` along `R`, as a `Finset V`. -/
+noncomputable def reachClosure (R : V → V → Prop) (v : V) : Finset V :=
+  @Finset.filter V (Relation.ReflTransGen R v) (Classical.decPred _) Finset.univ
+
+omit [DecidableEq V] in
+@[simp] lemma mem_reachClosure {R : V → V → Prop} {v w : V} :
+    w ∈ reachClosure R v ↔ Relation.ReflTransGen R v w := by
+  simp [reachClosure, Finset.mem_filter]
+
+omit [DecidableEq V] in
+lemma self_mem_reachClosure (R : V → V → Prop) (v : V) :
+    v ∈ reachClosure R v :=
+  mem_reachClosure.mpr .refl
+
+omit [DecidableEq V] in
+lemma reachClosure_closed {R : V → V → Prop} {v w x : V}
+    (hw : w ∈ reachClosure R v) (hwx : R w x) : x ∈ reachClosure R v := by
+  rw [mem_reachClosure] at hw ⊢
+  exact hw.tail hwx
+
 end CombinatorialRigidity.Search
