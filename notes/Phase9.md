@@ -63,7 +63,14 @@ subset lemmas:
   under `(u, v) ∉ D.arcs`) and `out_addArc_of_ne_source`
   (non-source vertices unaffected); pebble-count corollaries
   `peb_addArc_source` (under `D.out u < k`) and
-  `peb_addArc_of_ne_source`.
+  `peb_addArc_of_ne_source`; subset-level unified additive
+  identities `span_addArc` (`span` rises by `1` iff both endpoints in
+  `V'`), `outOn_addArc` (`outOn` rises by `1` iff `u ∈ V'`, `v ∉ V'`),
+  `pebOn_addArc` (`pebOn` drops by `1` iff `u ∈ V'`, under
+  `D.out u < k`); combined identity `pebOn_add_outOn_addArc_add`
+  (`pebOn + outOn` drops by `1` iff both endpoints in `V'`,
+  unchanged otherwise) — direct algebraic consequence of the three
+  building-block lemmas via `omega` on a 2-way case-split.
 
 Supporting arc-swap and source-count infrastructure lives in
 `Search/DFS.lean`: `mem_arcsFinset_imp`,
@@ -123,12 +130,12 @@ explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 
 Next concrete commit: descend toward the L-S Lemma 10 formalization
 — the substantive part of `lem:pebble-game-invariants`. Both move
-types (path reversal + arc insertion) now ship per-vertex
-preservation lemmas; the remaining work is the subset-level
-`span`/`outOn`/`pebOn` accounting for arc insertion (mirror of
-`pebOn_add_outOn_reverse_eq`'s shape for the addArc move) and the
-inductive packaging of the four invariants over the move sequence.
-See *Hand-off / next phase*.
+types (path reversal + arc insertion) now ship per-vertex *and*
+subset-level preservation lemmas (`span_addArc`, `outOn_addArc`,
+`pebOn_addArc`, `pebOn_add_outOn_addArc_add` for arc insertion;
+`span_reverse_eq`, `pebOn_add_outOn_reverse_eq` for path reversal);
+the remaining work is the inductive packaging of the four invariants
+over the move sequence. See *Hand-off / next phase*.
 
 ## Architectural choices made up front
 
@@ -333,6 +340,33 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   `(u, v) ∉ D.arcs` and `(v, u) ∉ D.arcs` from the input invariant
   "edge `{u, v}` is fresh."
 
+- **Subset-level accounting: three building blocks + algebraic
+  combine, not a direct combined-identity proof.** The natural shape
+  is three independent unified additive identities
+  (`span_addArc` / `outOn_addArc` / `pebOn_addArc`, each keyed on
+  position of `u`, `v` relative to `V'`), then combine them by `omega`
+  on a 2-way case split (`u ∈ V'` × `v ∈ V'`). The arc-insertion
+  case has 4 sub-cases (vs path reversal's 3 endpoint cases), and the
+  direct boundary-crossing approach would need to track all 4 in one
+  proof. The split-then-combine pattern makes each building block
+  trivial (`Finset.filter_insert` + `Finset.card_insert_of_notMem` for
+  span/outOn; `Finset.add_sum_erase` + `peb_addArc_source` for pebOn)
+  and confines case analysis to a single 4-line `omega` block. The
+  same `pebOn + outOn` shape (drops by `1` iff both endpoints in `V'`,
+  unchanged otherwise) is what `lem:pebble-game-invariants` (3)
+  consumes at the arc-insertion step.
+
+- **`rw [Finset.sum_congr rfl h]` cross-form `omega` trap.** When
+  rewriting one of two `Finset.sum`s via `Finset.sum_congr rfl h`,
+  the rewriter produced the LHS sum in `s.sum (fun x => f x)` form
+  while the RHS sum stayed in `∑ x ∈ s, f x` notation —
+  `omega` sees these as *different atoms* and fails with a
+  counterexample suggesting two unrelated naturals. Fix: produce
+  *both* sums via the same operation (here `← Finset.add_sum_erase`
+  symmetrically on both sides, then `rw` the sum-congr equation as a
+  packaged `have`) so the atomic shapes match. Below FRICTION
+  threshold; recorded here for the pattern.
+
 - **`subst h` between two free variables in `no_antiparallel`
   eliminates `u`/`v` (older), not `a`/`b` (newer).** Inside the
   `no_antiparallel a b hab hba` lambda body, `subst h1 : a = u`
@@ -505,40 +539,46 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 ## Hand-off / next phase
 
 Phase 9 main is in progress. `PebbleGame.lean` now carries both
-state-transition moves with per-vertex preservation lemmas: path
-reversal (`reverse` + `out_reverse_*` / `peb_reverse_*` /
-`span_reverse_eq` / `pebOn_add_outOn_reverse_eq`) and arc insertion
-(`addArc` + `out_addArc_source` / `out_addArc_of_ne_source` /
-`peb_addArc_source` / `peb_addArc_of_ne_source`), plus the
-supporting structural identities `sum_out_eq_span_add_outOn`
-(fiberwise + partition) and `pebOn_add_span_add_outOn` (L-S
-Invariant (2) algebraic form under `∀ v ∈ V', out v ≤ k`).
-Supporting `Search/DFS.lean` infrastructure (arc-swap, endpoint
-membership, source-cardinality) is unchanged. Blueprint
-`def:partial-orientation`, `def:pebble-counts`, `def:path-reversal`,
-and `def:arc-insertion` are green; `def:tryAddEdge`'s `\uses` now
-points at `def:arc-insertion` as the formalized insertion step.
-Build + lint clean.
+state-transition moves with per-vertex *and* subset-level
+preservation lemmas: path reversal (`reverse` + `out_reverse_*` /
+`peb_reverse_*` / `span_reverse_eq` / `pebOn_add_outOn_reverse_eq`)
+and arc insertion (`addArc` + `out_addArc_source` /
+`out_addArc_of_ne_source` / `peb_addArc_source` /
+`peb_addArc_of_ne_source` / `span_addArc` / `outOn_addArc` /
+`pebOn_addArc` / `pebOn_add_outOn_addArc_add`), plus the supporting
+structural identities `sum_out_eq_span_add_outOn` (fiberwise +
+partition) and `pebOn_add_span_add_outOn` (L-S Invariant (2)
+algebraic form under `∀ v ∈ V', out v ≤ k`). Supporting
+`Search/DFS.lean` infrastructure (arc-swap, endpoint membership,
+source-cardinality) is unchanged. Blueprint `def:partial-orientation`,
+`def:pebble-counts`, `def:path-reversal`, and `def:arc-insertion`
+(now noting subset-level effects as formalized) are green;
+`def:tryAddEdge`'s `\uses` already points at `def:arc-insertion`
+as the formalized insertion step. Build + lint clean.
 
-Next concrete commit: **subset-level `span` / `outOn` / `pebOn`
-accounting for `addArc`** — the arc-insertion analogue of the
-path-reversal subset-level structural lemmas. The three-way split
-keys on whether each of `u`, `v` lies in `V'`:
+Next concrete commit: **inductive packaging of the four invariants
+over the move sequence** — the substantive piece of L-S Lemma 10
+(`lem:pebble-game-invariants`). The four building blocks for the
+inductive step are now all in place:
 
-- both in `V'`: `span` rises by `1`, `outOn` unchanged, `pebOn`
-  drops by `1` ⇒ `pebOn + outOn` drops by `1`, matching the
-  precondition's `peb(V') ≥ ℓ + 1` ⇒ `peb(V') ≥ ℓ` accounting in
-  `lem:pebble-game-invariants` (3).
-- only `u` in `V'`: `span` unchanged, `outOn` rises by `1`, `pebOn`
-  drops by `1` ⇒ `pebOn + outOn` unchanged.
-- only `v` in `V'`: `span`, `outOn`, `pebOn` all unchanged.
-- neither: same (vacuous).
+- *Empty orientation base case*: `pebOn_empty` gives `pebOn = k·|V'|`,
+  `out_empty` gives `out = 0`, so Invariants (1)–(4) all hold trivially
+  at the base, using `|V'| ≥ 1, ℓ ≤ k` or `|V'| ≥ 2, ℓ < 2k`.
+- *Path-reversal inductive step*: `span_reverse_eq` +
+  `pebOn_add_outOn_reverse_eq` preserve Invariants (2)–(4); the
+  per-vertex shift bounds (`out_reverse_head` / `out_reverse_tail`)
+  re-establish Invariant (1) at `u_0` / `u_m` under the algorithmic
+  preconditions `out u_0 ≤ k` / `out u_m < k`.
+- *Arc-insertion inductive step*: `out_addArc_source` /
+  `out_addArc_of_ne_source` and the new subset-level
+  `pebOn_add_outOn_addArc_add` discharge Invariants (1)–(3); the
+  threshold precondition `peb(u) + peb(v) ≥ ℓ + 1` is what makes
+  `pebOn(V') ≥ ℓ + 1` survive the `−1` shift to `pebOn(V') ≥ ℓ`.
+  Invariant (4) follows algebraically from (2) + (3).
 
-After that, the substantive piece is the inductive packaging of
-the four invariants over the move sequence. Trace through both
-ranges `ℓ < k` and `k ≤ ℓ < 2k` on `SimpleGraph` per *Blockers →
-Simple-graph vs L-S multi-graph corner cases* during the
-induction; the corner case is most likely to surface in the
+Trace through both ranges `ℓ < k` and `k ≤ ℓ < 2k` on `SimpleGraph`
+per *Blockers → Simple-graph vs L-S multi-graph corner cases* during
+the induction; the corner case is most likely to surface in the
 inductive proof of Invariant (3).
 
 Subsequent commits descend the dep-graph:

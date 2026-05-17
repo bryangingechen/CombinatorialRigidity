@@ -154,12 +154,18 @@ out-degree budget.
   unchanged for all $x \ne u$; equivalently the pebble count
   $\mathrm{peb}_{D, k}(u)$ drops by $1$ (under
   $\mathrm{out}_D(u) < k$, the precondition for the insertion to be
-  valid). The invariant-preservation half and per-vertex
-  \texttt{out}/\texttt{peb} effects are formalised; the subset-level
-  effects on $\mathrm{span}_D(V')$ and $\mathrm{outOn}_D(V')$ split
-  three ways on the position of $\{u, v\}$ relative to $V'$ and are
-  the content of \cref{lem:pebble-game-invariants}~(3) at the
-  insertion step.
+  valid). The invariant-preservation half, per-vertex
+  \texttt{out}/\texttt{peb} effects, and subset-level effects on
+  $\mathrm{span}_D(V')$, $\mathrm{outOn}_D(V')$, and
+  $\mathrm{peb}_{D, k}(V')$ are formalised. The subset-level shape
+  is three independent unified additive identities keyed on the
+  position of $u$, $v$ relative to $V'$: $\mathrm{span}_D(V')$ rises
+  by $1$ iff $u, v \in V'$; $\mathrm{outOn}_D(V')$ rises by $1$ iff
+  $u \in V'$ and $v \notin V'$; $\mathrm{peb}_{D, k}(V')$ drops by
+  $1$ iff $u \in V'$. Combining them, $\mathrm{peb}_{D, k}(V') +
+  \mathrm{out}_D(V')$ drops by $1$ iff both endpoints lie in $V'$
+  and is otherwise unchanged --- the algebraic content of
+  \cref{lem:pebble-game-invariants}~(3) at the insertion step.
 \end{definition}
 
 \subsection{Invariants}

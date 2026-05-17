@@ -574,6 +574,99 @@ lemma peb_addArc_of_ne_source (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉
     (D.addArc u v huv hnotin_rev).peb k x = D.peb k x := by
   rw [peb, peb, D.out_addArc_of_ne_source u v huv hnotin_rev hxu]
 
+/-! #### Subset-level accounting for arc insertion
+
+The next four lemmas trace how `span`, `outOn`, `pebOn` shift on a subset
+`V'` when a fresh arc `(u, v)` is inserted. Each is a unified additive
+identity keyed on the position of `u`/`v` relative to `V'`; together they
+yield the combined identity `pebOn_add_outOn_addArc_add` which feeds
+`lem:pebble-game-invariants` (3) at the arc-insertion step. -/
+
+/-- Span of `V'` rises by `1` exactly when both endpoints of the inserted arc
+lie in `V'`, and is unchanged otherwise. Unified additive identity, like
+`out_reverse_add` for the path-reversal case. -/
+lemma span_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
+    (hnotin : (u, v) ∉ D.arcs) (V' : Finset V) :
+    (D.addArc u v huv hnotin_rev).span V'
+      = D.span V' + (if u ∈ V' ∧ v ∈ V' then 1 else 0) := by
+  simp only [span, spanArcs, arcs_addArc, Finset.filter_insert]
+  by_cases h : u ∈ V' ∧ v ∈ V'
+  · rw [if_pos h, if_pos h]
+    refine Finset.card_insert_of_notMem ?_
+    rw [Finset.mem_filter]
+    exact fun ⟨h_in, _⟩ => hnotin h_in
+  · rw [if_neg h, if_neg h, Nat.add_zero]
+
+/-- Out-boundary of `V'` rises by `1` exactly when the inserted arc has its
+source in `V'` and its head outside `V'`, and is unchanged otherwise. -/
+lemma outOn_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
+    (hnotin : (u, v) ∉ D.arcs) (V' : Finset V) :
+    (D.addArc u v huv hnotin_rev).outOn V'
+      = D.outOn V' + (if u ∈ V' ∧ v ∉ V' then 1 else 0) := by
+  simp only [outOn, boundaryArcs, arcs_addArc, Finset.filter_insert]
+  by_cases h : u ∈ V' ∧ v ∉ V'
+  · rw [if_pos h, if_pos h]
+    refine Finset.card_insert_of_notMem ?_
+    rw [Finset.mem_filter]
+    exact fun ⟨h_in, _⟩ => hnotin h_in
+  · rw [if_neg h, if_neg h, Nat.add_zero]
+
+/-- Total pebble count on `V'` drops by `1` exactly when the source vertex `u`
+lies in `V'`, and is unchanged otherwise. Stated additively (so that ℕ-
+subtraction never appears) as `pebOn(new) + [u ∈ V'] = pebOn(old)`. The
+precondition `D.out u < k` keeps `peb k u` honest under truncated subtraction;
+see `peb_addArc_source`. -/
+lemma pebOn_addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
+    (hnotin : (u, v) ∉ D.arcs) {k : ℕ} (hk : D.out u < k) (V' : Finset V) :
+    (D.addArc u v huv hnotin_rev).pebOn k V' + (if u ∈ V' then 1 else 0)
+      = D.pebOn k V' := by
+  by_cases hu : u ∈ V'
+  · -- Split off the `u`-term from both sides via `Finset.add_sum_erase`. The
+    -- residual sum over `V'.erase u` agrees between `D` and `D.addArc …` by
+    -- `peb_addArc_of_ne_source`; the `u`-term shifts by `1` by
+    -- `peb_addArc_source` (under `D.out u < k`).
+    rw [if_pos hu]
+    simp only [pebOn]
+    rw [← Finset.add_sum_erase _ _ hu, ← Finset.add_sum_erase _ _ hu]
+    have h_peb_u : (D.addArc u v huv hnotin_rev).peb k u + 1 = D.peb k u := by
+      rw [peb, peb, D.out_addArc_source u v huv hnotin_rev hnotin]
+      omega
+    have h_peb_rest : ∑ x ∈ V'.erase u, (D.addArc u v huv hnotin_rev).peb k x
+        = ∑ x ∈ V'.erase u, D.peb k x :=
+      Finset.sum_congr rfl (fun x hx =>
+        D.peb_addArc_of_ne_source u v huv hnotin_rev k (Finset.ne_of_mem_erase hx))
+    rw [h_peb_rest]
+    omega
+  · -- `u ∉ V'`: every `x ∈ V'` has `x ≠ u`, so new `peb` agrees with old.
+    rw [if_neg hu, Nat.add_zero]
+    refine Finset.sum_congr rfl (fun x hx => ?_)
+    exact D.peb_addArc_of_ne_source u v huv hnotin_rev k (fun heq => hu (heq ▸ hx))
+
+/-- Combined accounting identity for `pebOn + outOn` under arc insertion: the
+sum decreases by `1` exactly when both endpoints of the inserted arc lie in
+`V'`, and is unchanged otherwise. Direct consequence of `outOn_addArc` and
+`pebOn_addArc`: in the only case where `outOn` rises (source in `V'`, head
+outside `V'`), `pebOn` drops by `1` in lockstep, cancelling the shift; in the
+"both inside" case, `outOn` is unchanged but `pebOn` still drops by `1`,
+producing the net decrease.
+Feeds `lem:pebble-game-invariants` (3) at the arc-insertion step: the
+threshold precondition `peb(u) + peb(v) ≥ ℓ + 1` for an accepted insertion
+forces `pebOn V' ≥ ℓ + 1` when `u, v ∈ V'`, so the post-insertion bound
+`pebOn(V') + outOn(V') ≥ ℓ` is preserved. -/
+lemma pebOn_add_outOn_addArc_add (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs)
+    (hnotin : (u, v) ∉ D.arcs) {k : ℕ} (hk : D.out u < k) (V' : Finset V) :
+    (D.addArc u v huv hnotin_rev).pebOn k V' + (D.addArc u v huv hnotin_rev).outOn V'
+        + (if u ∈ V' ∧ v ∈ V' then 1 else 0)
+      = D.pebOn k V' + D.outOn V' := by
+  have h_peb := D.pebOn_addArc u v huv hnotin_rev hnotin hk V'
+  have h_out := D.outOn_addArc u v huv hnotin_rev hnotin V'
+  -- Combine: the two if-indicators on `(u ∈ V', v ∈ V')` sum to `[u ∈ V']`.
+  by_cases hu : u ∈ V'
+  · by_cases hv : v ∈ V'
+    · simp [hu, hv] at h_peb h_out ⊢; omega
+    · simp [hu, hv] at h_peb h_out ⊢; omega
+  · simp [hu] at h_peb h_out ⊢; omega
+
 end AddArc
 
 end PartialOrientation
