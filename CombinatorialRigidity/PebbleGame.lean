@@ -230,6 +230,59 @@ def reverse (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w)
     (D.reverse p hp).arcs = (D.arcs \ p.arcsFinset) ∪ p.reversedArcsFinset :=
   rfl
 
+/-- The arcs of a walk along `D`'s arc relation lie in `D.arcs`. Specialises
+`DirectedWalk.mem_arcsFinset_imp` to `R := fun a b => (a, b) ∈ D.arcs`. -/
+lemma arcsFinset_subset_arcs
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) :
+    p.arcsFinset ⊆ D.arcs := fun _ h => p.mem_arcsFinset_imp h
+
+/-- The complement of a walk's arcs in `D` is disjoint from the walk's
+reversed arcs: an arc and its reverse cannot coexist in `D.arcs` by
+`D.no_antiparallel`. -/
+lemma disjoint_sdiff_reversedArcsFinset
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) :
+    Disjoint (D.arcs \ p.arcsFinset) p.reversedArcsFinset := by
+  rw [Finset.disjoint_left]
+  rintro ⟨a, b⟩ hx hy
+  rw [Finset.mem_sdiff] at hx
+  rw [p.mem_reversedArcsFinset_iff] at hy
+  exact D.no_antiparallel hx.1 (p.mem_arcsFinset_imp hy)
+
+/-- The span of `V'` is invariant under path reversal: each path arc with
+both endpoints in `V'` is removed and its reverse is inserted, and both
+sit in `spanArcs V'`. Feeds `lem:pebble-game-invariants` (2) on path-reversal
+moves. -/
+lemma span_reverse_eq
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    (V' : Finset V) :
+    (D.reverse p hp).span V' = D.span V' := by
+  -- Setup: the span predicate, its swap-symmetry, the path-arcs-in-D subset.
+  set Q : V × V → Prop := fun pp => pp.1 ∈ V' ∧ pp.2 ∈ V' with hQ
+  have hQ_swap : ∀ pp, Q (Prod.swap pp) ↔ Q pp := by
+    intro ⟨a, b⟩; simp [Q, and_comm]
+  have h_subset : p.arcsFinset ⊆ D.arcs := D.arcsFinset_subset_arcs p
+  -- Decompose D.arcs as (D.arcs \ p.arcsFinset) ⊔ p.arcsFinset, filter, sum cards.
+  have h_decomp : D.arcs = (D.arcs \ p.arcsFinset) ∪ p.arcsFinset :=
+    (Finset.sdiff_union_of_subset h_subset).symm
+  have h_disj_arcs : Disjoint (D.arcs \ p.arcsFinset) p.arcsFinset :=
+    Finset.sdiff_disjoint
+  have h_disj_rev : Disjoint (D.arcs \ p.arcsFinset) p.reversedArcsFinset :=
+    D.disjoint_sdiff_reversedArcsFinset p
+  simp only [span, spanArcs, arcs_reverse]
+  conv_rhs => rw [h_decomp]
+  rw [Finset.filter_union, Finset.filter_union,
+      Finset.card_union_of_disjoint
+        (h_disj_rev.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)),
+      Finset.card_union_of_disjoint
+        (h_disj_arcs.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _))]
+  -- Reduce to filter-card equality between p.arcsFinset and p.reversedArcsFinset.
+  congr 1
+  -- Bijection via `Prod.swap`: `p.reversedArcsFinset = p.arcsFinset.image Prod.swap`,
+  -- and `Q` is swap-symmetric, so the filtered cards match.
+  rw [p.reversedArcsFinset_eq_image_swap, Finset.filter_image,
+      Finset.card_image_of_injective _ Prod.swap_injective,
+      Finset.filter_congr (fun pp _ => hQ_swap pp)]
+
 end Reverse
 
 end PartialOrientation

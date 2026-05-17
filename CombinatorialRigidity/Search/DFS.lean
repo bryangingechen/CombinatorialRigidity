@@ -201,6 +201,42 @@ lemma mem_reversedArcsFinset_iff {u w : V} (p : DirectedWalk R u w) (a b : V) :
       Prod.mk.injEq, ih]
     tauto
 
+/-- Every arc in `p.arcsFinset` is `R`-related: arcs come from `cons`
+constructors, each of which carries an `R`-witness. Specialised by
+consumers (e.g. `PebbleGame.PartialOrientation.reverse`) to recover
+ambient containment when `R := fun a b => (a, b) ∈ D.arcs`. -/
+lemma mem_arcsFinset_imp {u w : V} (p : DirectedWalk R u w)
+    {a b : V} (h : (a, b) ∈ p.arcsFinset) : R a b := by
+  induction p with
+  | nil _ => simp at h
+  | @cons u_out u_int _ h_arc _ ih =>
+    rw [arcsFinset_cons, Finset.mem_insert] at h
+    rcases h with heq | hq
+    · have h_a : a = u_out := (Prod.mk.inj heq).1
+      have h_b : b = u_int := (Prod.mk.inj heq).2
+      rw [h_a, h_b]
+      exact h_arc
+    · exact ih hq
+
+/-- The reversed-arc finset is the image of the arc finset under
+`Prod.swap`. Consequence: `(a, b) ↦ (b, a)` is a bijection between
+`p.arcsFinset` and `p.reversedArcsFinset`, so the two have the same
+cardinality and any swap-symmetric predicate cuts out the same count
+from each. -/
+lemma reversedArcsFinset_eq_image_swap {u w : V} (p : DirectedWalk R u w) :
+    p.reversedArcsFinset = p.arcsFinset.image Prod.swap := by
+  induction p with
+  | nil _ => simp
+  | cons _ q ih =>
+    rw [arcsFinset_cons, Finset.image_insert, ← ih, reversedArcsFinset_cons]
+    rfl
+
+/-- The reversed-arc finset has the same cardinality as the arc finset. -/
+lemma card_reversedArcsFinset {u w : V} (p : DirectedWalk R u w) :
+    p.reversedArcsFinset.card = p.arcsFinset.card := by
+  rw [reversedArcsFinset_eq_image_swap]
+  exact Finset.card_image_of_injective _ Prod.swap_injective
+
 /-- The first coordinate of any arc lies in `p.vertices`. -/
 lemma fst_mem_vertices_of_mem_arcsFinset {u w : V} {p : DirectedWalk R u w}
     {a b : V} (h : (a, b) ∈ p.arcsFinset) : a ∈ p.vertices := by

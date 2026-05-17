@@ -44,11 +44,16 @@ basic `simp`-level lemmas), and the path-reversal move
 `PartialOrientation.reverse D p hp` along a simple directed path
 `p : DirectedWalk (· ∈ D.arcs) u w` with `hp : p.IsPath`. The two
 `PartialOrientation` invariants (`no_loops`, `no_antiparallel`)
-survive the reversal; structural lemmas `out_reverse`,
-`peb_reverse`, `span_reverse_eq`, `outOn_reverse_eq` are deferred
-to a follow-up commit (they feed
-`lem:pebble-game-invariants` (3)). Blueprint
-`def:partial-orientation`, `def:pebble-counts`, and
+survive the reversal. The structural lemma `span_reverse_eq`
+(span of any subset is invariant under reversal) lands together
+with its arc-swap infrastructure in `Search/DFS.lean`
+(`mem_arcsFinset_imp`, `reversedArcsFinset_eq_image_swap`,
+`card_reversedArcsFinset`) and the PebbleGame-level helpers
+`arcsFinset_subset_arcs` / `disjoint_sdiff_reversedArcsFinset`.
+The remaining structural lemmas (`out_reverse`, `peb_reverse`,
+and a `pebOn + outOn` invariant on subsets) are deferred to a
+follow-up commit (they feed `lem:pebble-game-invariants` (3)).
+Blueprint `def:partial-orientation`, `def:pebble-counts`, and
 `def:path-reversal` are green.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
@@ -91,14 +96,13 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: ship the structural lemmas about how
-`reverse` interacts with the derived counts — `out_reverse`,
-`peb_reverse` (out-degree drops by 1 at the path's head and
-increases by 1 at its tail, unchanged elsewhere) and
-`span_reverse_eq`, `outOn_reverse_eq` (both `span` and `outOn` are
-invariant on every subset). These are the bookkeeping arithmetic
-behind `lem:pebble-game-invariants` (3) and the easiest next leaf
-on the dep-graph. See *Hand-off / next phase*.
+Next concrete commit: ship `out_reverse` (case-split on whether the
+queried vertex is the path's head, tail, or neither) plus its
+`peb_reverse` corollary. `outOn` is *not* literally invariant on
+every subset — it shifts by `[u_m ∈ V'] - [u_0 ∈ V']` — but `span`
+is invariant (this commit) and `pebOn + outOn` is invariant on
+every subset, which is what `lem:pebble-game-invariants` (2)
+actually needs. See *Hand-off / next phase*.
 
 ## Architectural choices made up front
 
@@ -417,48 +421,46 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries
 `PartialOrientation V` (option (i): `Finset (V × V)` + `no_loops` +
 `no_antiparallel`), the derived counts `out`/`peb`/`span`/`outOn`/
 `pebOn`, the `empty` constructor, the empty-orientation `simp`
-lemmas, and `PartialOrientation.reverse D p hp` (path reversal,
-with the two invariants preserved). `Search/DFS.lean` grew
-`DirectedWalk.arcsFinset` / `reversedArcsFinset` plus the
-`IsPath.notMem_{loop,antiparallel}_arcsFinset` consumers that feed
-`reverse`'s invariant proofs. Blueprint `def:partial-orientation`,
-`def:pebble-counts`, and `def:path-reversal` are all green. Build
-+ lint clean.
+lemmas, `PartialOrientation.reverse D p hp` (path reversal, with
+the two invariants preserved), and the first structural lemma
+`span_reverse_eq` (span of any subset invariant under reversal).
+The supporting arc-swap infrastructure lives in `Search/DFS.lean`:
+`mem_arcsFinset_imp` (every arc of a `DirectedWalk` satisfies the
+underlying relation `R`), `reversedArcsFinset_eq_image_swap`
+(reversed arcs are the swap-image of the arc finset), and
+`card_reversedArcsFinset`. The PebbleGame-level glue
+`arcsFinset_subset_arcs` / `disjoint_sdiff_reversedArcsFinset`
+captures the two facts the structural-lemma proofs reuse: walk
+arcs lie in `D.arcs`, and `D.arcs \ p.arcsFinset` is disjoint
+from `p.reversedArcsFinset` (by `D.no_antiparallel`). Blueprint
+`def:partial-orientation`, `def:pebble-counts`, and
+`def:path-reversal` are all green. Build + lint clean.
 
-Next concrete commit: **structural lemmas for `reverse`** —
-`out_reverse`, `peb_reverse`, `span_reverse_eq`,
-`outOn_reverse_eq`. The intended shape:
+Next concrete commit: **`out_reverse` + `peb_reverse`**.
+`(D.reverse p hp).out v` equals `D.out v` for `v ≠ u, w`; for a
+non-nil path (`p.length ≥ 1`, equivalently `u ≠ w` via `IsPath`),
+`(D.reverse p hp).out u + 1 = D.out u` (head loses one out-arc)
+and `(D.reverse p hp).out w = D.out w + 1` (tail gains one).
+The arithmetic is finset-`filter` cardinality counting on
+`(D.arcs \ p.arcsFinset) ∪ p.reversedArcsFinset` source-sliced
+at `v`. Interior-vertex contributions cancel: each interior `u_i`
+appears once as source of `(u_i, u_{i+1})` in `arcsFinset`
+(removed) and once as source of `(u_i, u_{i-1})` in
+`reversedArcsFinset` (added). `peb_reverse := k - out_reverse`.
 
-- `out_reverse`: `(D.reverse p hp).out v` equals `D.out v` for
-  `v ≠ u_0, u_m`; `D.out u_0 - 1` at the head; `D.out u_m + 1` at
-  the tail. The arithmetic is finset-`filter` cardinality counting
-  — every non-endpoint vertex's contribution to `arcsFinset` and
-  `reversedArcsFinset` cancels.
-- `peb_reverse`: corollary via `peb := k - out`.
-- `span_reverse_eq V'`: `(D.reverse p hp).span V' = D.span V'` for
-  every `V' : Finset V`. The path's contribution to `spanArcs` is
-  symmetric under reversal: each `(u_i, u_{i+1})` with both
-  endpoints in `V'` is removed and `(u_{i+1}, u_i)` is added; both
-  same-cardinality.
-- `outOn_reverse_eq V'`: same shape — boundary arcs `(u_i,
-  u_{i+1})` with `u_i ∈ V', u_{i+1} ∉ V'` become reversed arcs
-  `(u_{i+1}, u_i)` with `u_{i+1} ∉ V', u_i ∈ V'`; *not* in
-  `boundaryArcs` of the reversed orientation. Wait — re-check: the
-  reversed orientation's boundary at `V'` *includes* `(u_{i+1},
-  u_i)` only when `u_{i+1} ∈ V'` and `u_i ∉ V'`. So the correct
-  claim needs care: outOn may shift by edges crossing `V'` along
-  the path. Re-derive against L-S Lemma 10 (3) before stating; the
-  cleanest formulation may be `pebOn + outOn` invariant rather
-  than each summand individually.
-
-Subsequent commits descend the dep-graph: `lem:pebble-game-invariants`
-(L-S Lemma 10, the substantive part — trace through both ranges
-`ℓ < k` and `k ≤ ℓ < 2k` on `SimpleGraph` per *Blockers →
-Simple-graph vs L-S multi-graph corner cases*) →
-`def:tryReachPebble` (the DFS-plus-path-reversal specialisation
-via `reachableFinding`) → `def:tryAddEdge` → `def:runPebbleGame`
-→ `thm:pebble-game-soundness` → completeness lemmas →
-`thm:pebble-game-correct` → `cor:pebble-game-countMatroid-indep`.
+Subsequent commits descend the dep-graph: a subset-level
+`pebOn_add_outOn_reverse_eq` (replacing the naive
+`outOn_reverse_eq` from the earlier hand-off, since `outOn` is
+*not* invariant on every subset — it shifts by `[w ∈ V'] - [u ∈
+V']`, but the sum `pebOn + outOn` is genuinely invariant) →
+`lem:pebble-game-invariants` (L-S Lemma 10, the substantive part
+— trace through both ranges `ℓ < k` and `k ≤ ℓ < 2k` on
+`SimpleGraph` per *Blockers → Simple-graph vs L-S multi-graph
+corner cases*) → `def:tryReachPebble` (the DFS-plus-path-reversal
+specialisation via `reachableFinding`) → `def:tryAddEdge` →
+`def:runPebbleGame` → `thm:pebble-game-soundness` → completeness
+lemmas → `thm:pebble-game-correct` →
+`cor:pebble-game-countMatroid-indep`.
 
 Architectural question still open: *whether to land the matroidal-
 independence corollary in-phase or defer* (weak preference: land —
