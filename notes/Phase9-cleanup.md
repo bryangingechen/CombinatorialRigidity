@@ -32,10 +32,21 @@ performance pass).
 
 ## Current state
 
-Buckets A + B fully closed. Both blueprint chapters track the Lean
-faithfully, the iff red node is now green, the SimpleGraph-vs-
-multi-graph regime correspondence is documented in the chapter
-prose, the formalization-aside scan across both chapters surfaced
+Buckets A + B + C fully closed. Bucket C's long-proof audit landed
+one Lean simplification — the 11-line `|V'| ≥ 2` derivation
+duplicated at `independent_brings_pebble_simpleGraph_form` and
+`tryAddEdgeWith_eq_none_imp_exists_witness` case5 collapses to a
+one-liner via `Finset.one_lt_card.mpr`, lifted to TACTICS-GOLF § 3
+*Search mathlib before mirroring* as a worked example. All other
+top-10 PebbleGame entries and top-6 DFS entries cleared as
+audit-only; the most prominent candidate (the
+`tryAddEdgeWith.induct` case3/case4 shared 6-line preamble across
+three proofs, ~36 LoC) is documented but not hoisted — the
+let-bound predicate `P` inside `tryAddEdgeWith` blocks a clean
+helper at the cleanup-round level. Buckets A + B detail:
+both blueprint chapters track the Lean faithfully, the iff red
+node is now green, the SimpleGraph-vs-multi-graph regime
+correspondence is documented in the chapter prose, the formalization-aside scan across both chapters surfaced
 no Lean-simplification candidates, all 6 `noncomputable def` sites
 are forced + minimal + workhorse-exposed, all 5 real 4+-arg `rw`
 chains (the *Bucket B* table over-counted PebbleGame.lean by 1 due
@@ -720,28 +731,173 @@ the manual:
 - **Definitional refactor.** Would a predicate reshape save the
   proof's manual unfolding?
 
-- [ ] **C1:** Rank top ~10 proofs in `PebbleGame.lean` by body
-  length. Expected hot spots (from Phase9.md):
-  `tryAddEdgeWith_reachable` and `tryAddEdgeWith_underline`
-  (five-case `tryAddEdgeWith.induct` dispatch — likely 50+ lines
-  each), `tryAddEdgeWith_eq_none_imp_exists_witness` and
-  `tryAddEdgeWith_isSome` (same induct shape plus DFS-completeness
-  glue, likely 80+ lines each),
-  `Reachable.pebOn_add_outOn_ge` (Invariant (3) substantive piece —
-  the induction-step subset-decomposition logic).
-- [ ] **C2:** Walk each of C1's top entries through the four
-  questions. Particular interest: the `tryAddEdgeWith.induct` 5-case
-  dispatch in `_reachable` / `_underline` / `_isSome` /
-  `_eq_none_imp_exists_witness` is **the same shape repeated four
-  times**, suggesting a possible cross-proof unification through a
-  shared pattern lemma. Phase 7's *typeII-cores unification* is the
-  analogous worked example.
-- [ ] **C3:** Same ranking + walk for `Search/DFS.lean`. Expected
-  hot spot: `reachableFindingAux_complete` (inner length-induction
-  with two sub-cases, per Phase9.md *Completeness shape*).
-- [ ] **C4:** `lean_multi_attempt` sweep on any 4+ step `rw` chain
-  flagged in B2 — A/B against `grind`/`simp`/`omega` to see if a
-  single tactic absorbs the chain.
+- [x] **C1:** Top proofs ranked via a tightened awk over both
+  files (the crude script in `../CLEANUP.md` §C overshoots when a
+  short lemma is followed by a long unrelated block before the
+  next blank line; pre-resetting on `theorem|lemma|def|...` /
+  `section` / `@[` / `/-` markers gives the body-only count).
+
+  `PebbleGame.lean` top 10, by body LoC:
+
+  | LoC | Line | Proof |
+  |---:|---:|---|
+  | 148 | 2217 | `tryAddEdgeWith_eq_none_imp_exists_witness` |
+  | 89  | 2035 | `tryAddEdgeWith_isSome` |
+  | 80  | 1298 | `tryAddEdgeWith_reachable` |
+  | 63  | 1917 | `span_succ_le_edgesIn_ncard_of_subset` |
+  | 62  | 1606 | `runPebbleGameWith_mem_underline` |
+  | 62  | 1544 | `runPebbleGameWith_underline_subset` |
+  | 59  | 2158 | `tryAddEdge_isSome_iff_sparse` (signature + docstring; real proof 5 lines) |
+  | 55  | 1980 | `Reachable.independent_brings_pebble_simpleGraph_form` |
+  | 51  | 1668 | `runPebbleGame_underline_eq_edgeFinset` |
+  | 49  | 2365 | `runPebbleGameWith_eq_none_imp_exists_witness` |
+
+  `Search/DFS.lean` top 6 (body LoC ≥ 30):
+
+  | LoC | Line | Proof |
+  |---:|---:|---|
+  | 60  | 656 | `reachableFindingAux_complete` |
+  | 49  | 350 | `IsPath.notMem_antiparallel_arcsFinset` |
+  | 47  | 591 | `reachableFindingAux_sound` |
+  | 47  | 399 | `IsPath.card_arcsFinset_filter_fst` |
+  | 46  | 474 | `IsPath.card_reversedArcsFinset_filter_fst` |
+  | 39  | 716 | `reachableFinding_complete` |
+
+  `tryAddEdgeWith_underline` (43 LoC, L1378) and
+  `Reachable.pebOn_add_outOn_ge` (the work-log-flagged "Invariant (3)
+  substantive piece") both sit just under the > 30 LoC bar in the
+  body-only count — the former tracks `_reachable`'s case3/case4
+  shape verbatim but with `r.underline_newOrient_eq` in place of
+  the reachability-preamble; the latter weighs in at 29 LoC of body
+  (just below the bar) once the awk resets on `omit`-style
+  scope-opener markers.
+- [x] **C2:** Walk each of C1's top PebbleGame entries through the
+  four CLEANUP.md questions. One Lean simplification landed; the
+  rest cleared as audit-only.
+
+  **Inline collapse landed.** The 11-line `|V'| ≥ 2` block at two
+  pre-collapse sites — `Reachable.independent_brings_pebble_simpleGraph_form`
+  and `tryAddEdgeWith_eq_none_imp_exists_witness` case5 — collapses
+  to a single line via mathlib's
+  `Finset.one_lt_card.mpr ⟨u, hu, v, hv, huv⟩`. Both blocks built
+  `({u, v} : Finset V).card = 2` by hand and then routed `{u, v} ⊆
+  V'` through `card_le_card` with a `Finset.mem_insert` case-split,
+  missing
+  `Finset.one_lt_card : 1 < s.card ↔ ∃ a ∈ s, ∃ b ∈ s, a ≠ b`
+  even though the `.mp` direction was already in use in this
+  project at `SparsityIComponents.lean:112, 184`. Saves 20 LoC.
+  Lifted to `../TACTICS-GOLF.md § 3 Search mathlib before mirroring`
+  as a worked example.
+
+  **Per-entry walk (audit-only beyond the collapse above):**
+  - `tryAddEdgeWith_eq_none_imp_exists_witness` (148 LoC) decomposes
+    naturally: case1+case2 are 5 LoC of `rw` + `absurd`, case3+case4
+    are ~30 LoC of shared IH-step preamble (see *Cross-proof
+    unification analysis* below), case5 is ~70 LoC of substantive
+    witness construction. Case5's setup — build `V'`, derive
+    `D.outOn V' = 0`, prove `D.peb k w = 0` for `w ∈ V' \ {u, v}`,
+    algebraic decomposition `pebOn V' = peb u + peb v`, bridge to
+    `span_succ_le_edgesIn_ncard_of_subset` — is already routed
+    through named auxiliaries; no further API extraction.
+  - `tryAddEdgeWith_isSome` (89 LoC) and `tryAddEdgeWith_reachable`
+    (80 LoC): same case1/2/3/4/5 dispatch. Case5 of `_isSome`
+    discharges via `independent_brings_pebble_simpleGraph_form`
+    (the named SimpleGraph wrapper around L-S Lemma 13); case5 of
+    `_reachable` closes via `nomatch h`. Tight.
+  - `span_succ_le_edgesIn_ncard_of_subset` (63 LoC): linear chain
+    through six named auxiliaries (`h_S_sub`, `h_uv_in`,
+    `h_uv_notin_S`, `h_combined_sub`, `h_card`, `h_S_card`,
+    `h_finite`) into a 4-step `calc`. Each step is one named fact.
+    No simplification.
+  - `runPebbleGameWith_mem_underline` (62 LoC),
+    `runPebbleGameWith_underline_subset` (62 LoC), and
+    `runPebbleGameWith_eq_none_imp_exists_witness` (49 LoC):
+    structural recursion on the `edges` list argument. Per-step:
+    ~10 lines of `hcond` setup + `tryAddEdgeWith` case-match +
+    invariant transport. The fold-pattern shape is intrinsic to the
+    algorithm; no API extraction surfaces.
+  - `tryAddEdge_isSome_iff_sparse` (59 LoC) is a narrative-bridge
+    `@[deprecated]` shim — the body is a one-line `⟨..., ...⟩`
+    anonymous constructor; the 59-LoC count is signature + docstring.
+    No simplification.
+  - `Reachable.independent_brings_pebble_simpleGraph_form` (55 LoC)
+    builds `V' := D.reach u ∪ D.reach v`, derives `|V'| ≥ 2`
+    (collapsed above), `D.outOn V' = 0`, the span/sparsity bound,
+    and applies `independent_brings_pebble`. The rest is tight
+    composition.
+  - `runPebbleGame_underline_eq_edgeFinset` (51 LoC) is the
+    round-trip identity for `s((Quot.out e).1, (Quot.out e).2) = e`
+    composed with both halves of `runPebbleGameWith_*`. Each input
+    hypothesis is named and proved in 2–5 lines.
+
+  **Cross-proof unification analysis (audit-only).** The
+  `tryAddEdgeWith.induct` case3/case4 pair carries a shared 6-line
+  preamble across *three* proofs (`_reachable`, `_isSome`,
+  `_eq_none_imp_exists_witness` — six copies total, ~36 LoC):
+  ```
+  have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
+    have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
+  have h_target : D.out r.target < k := by
+    have h1 := h_outle r.target
+    have h2 : D.peb k r.target = k - D.out r.target := rfl
+    have := hP_decomp.1.1
+    omega
+  have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
+  ```
+  Not hoisted. The blocker is structural: `P` is *let-bound* inside
+  `tryAddEdgeWith`'s body (`let P : V → Bool := fun w => decide (0 <
+  D.peb k w) && decide (w ≠ u) && decide (w ≠ v)`), so the
+  `simp only [P, ...]` unfold is per-case-body — a top-level helper
+  has no way to consult `P`'s shape without taking it as a
+  hypothesis. A `TryReachPebbleResult.reachable_newOrient_of_peb_pos`
+  taking `h_peb_pos : 0 < D.peb k r.target` directly could save
+  ~3 lines per case (~18 LoC total), but each callsite still needs
+  the same `simp [P, ...]` dance to extract the positivity,
+  undermining the abstraction. Promoting `P` to a top-level
+  `private def` would enable a cleaner helper but would change
+  `tryAddEdgeWith`'s body shape and `tryAddEdgeWith.induct`'s
+  case-binder signature — a definitional refactor out of scope at
+  the cleanup-round level. The current parallel layout across the
+  three case-3/case-4 bodies makes the shared IH-step structure
+  visually inspectable; collapsing it would obscure that.
+  `tryAddEdgeWith_underline` (43 LoC, the fourth `tryAddEdgeWith.induct`
+  proof) doesn't share this preamble — it threads only
+  `r.underline_newOrient_eq`, no reachability — so the cross-proof
+  shape is 3 proofs, not 4.
+- [x] **C3:** Walk DFS.lean top entries. All cleared as
+  audit-only.
+  - `reachableFindingAux_complete` (60 LoC): three-level nested
+    structure — outer `reachableFindingAux.induct` (3 cases),
+    inner `induction n` (zero/succ), inner `cases p` (nil/cons).
+    Each level is essential: outer follows the algorithm's
+    recursion, inner-n bounds the walk-length to make the proof
+    well-founded, cases p dispatches the cons head. The two inner
+    `succ` sub-cases (`hv_in : v ∈ p'.vertices` revisit branch via
+    `dropUntilBundle` vs `hv_in` fresh branch via the IH) are the
+    DFS-completeness algebra. No API extraction.
+  - `reachableFindingAux_sound` (47 LoC): mirror of `_complete`
+    for the soundness direction. Same three-level structure, tight.
+  - `IsPath.notMem_antiparallel_arcsFinset` (49 LoC) /
+    `IsPath.card_arcsFinset_filter_fst` (47 LoC) /
+    `IsPath.card_reversedArcsFinset_filter_fst` (46 LoC):
+    `cons`-pattern induction on the walk with case-dispatch on
+    whether source/sink coincides with the inserted-arc endpoints.
+    These are the structural backbone of the `out_reverse_*`
+    family in `PebbleGame.lean`; the case dispatches and the
+    `h_uout_not_in` lookups are essential. No simplification.
+  - `reachableFinding_complete` (39 LoC): `ReflTransGen` ⇒
+    `DirectedWalk` lift via `head_induction_on`, then
+    contrapositive against `reachableFindingAux_complete`. Tight.
+- [x] **C4:** Cross-reference to B2. B2's bucket-disposition
+  already ran `lean_multi_attempt` against the 5 real 4+-arg `rw`
+  chains for `simp` / `grind` / `omega` / single-tactic candidates;
+  no mirror-eligible fused lemma surfaced. Each existing `rw` form
+  was kept because it makes a specific structural step visible
+  (`Prod.swap`-defeq, `sum-of-constant` idiom under
+  `Finset.sum_congr rfl h`, the `pebOn_empty, outOn_empty, Nat.add_zero,
+  mul_comm` arithmetic chain). The C-bucket re-test would replay
+  the same A/B candidates and reach the same conclusion. Closed by
+  reference.
 
 ### Bucket D — Project-organization compression
 
@@ -821,16 +977,16 @@ the manual:
 
 ## Blockers / open questions
 
-- Round in progress; buckets A + B fully closed (A1--A4 + B1--B5
-  all green); buckets C (long-proof audit) and D (Phase9.md
-  compression) remain. (`checkdecls` is the always-on per-commit
-  gate per `../blueprint/CLAUDE.md` *Static checks before commit*,
-  not a separate task.)
+- Round in progress; buckets A + B + C fully closed (A1--A4 +
+  B1--B5 + C1--C4 all green); bucket D (Phase9.md compression and
+  project-organization sweep) remains. (`checkdecls` is the
+  always-on per-commit gate per `../blueprint/CLAUDE.md` *Static
+  checks before commit*, not a separate task.)
 
 ## Hand-off / next phase
 
 Round in progress. Phase 9 main is fully closed; this round
-addresses the post-closure hygiene. Buckets A + B are green:
+addresses the post-closure hygiene. Buckets A + B + C are green:
 A1 (DFS chapter walk), A2 (pebble-game chapter walk),
 A2-followup (`lem:pebble-game-tryAddEdge-iff-independent` red node,
 discharged via the narrative-bridge `@[deprecated]` shim),
@@ -845,21 +1001,30 @@ B2 (five real 4+-arg `rw` chains audited against
 B3 (`classical` / `Fintype.ofFinite` re-grep zero, trivially
 closed), B4 (file header + section organisation review;
 PebbleGame.lean header *"scaffold"* paragraph dropped +
-`reachClosure` added to DFS.lean's *Main declarations*), and
-B5 (79 `--` comments all WHY-content, retained, audit-only) are
+`reachClosure` added to DFS.lean's *Main declarations*),
+B5 (79 `--` comments all WHY-content, retained, audit-only),
+C1 (top proofs ranked via a tightened awk over both files),
+C2 (PebbleGame.lean walk — one inline collapse landed via
+`Finset.one_lt_card.mpr` at two sites, lifted to TACTICS-GOLF
+§ 3; all other entries audit-only including the
+`tryAddEdgeWith.induct` case3/case4 cross-proof unification
+analysis), C3 (DFS.lean walk, all audit-only — the three-level
+nested structure of `reachableFindingAux_complete` mirrors the
+algorithm's recursion and isn't a candidate for compression),
+and C4 (cross-reference to B2's `lean_multi_attempt` sweep) are
 all green.
 
-The natural next task is bucket C (long-proof audit on the Phase 9
-surface): rank top ~10 proofs by body line count and walk each
-through the four CLEANUP.md questions (API extraction, mathlib
-search, tactic substitution via `lean_multi_attempt`, definitional
-refactor). Expected hot spots per the bucket-C task list:
-`tryAddEdgeWith_reachable` / `_underline` / `_isSome` /
-`_eq_none_imp_exists_witness` (5-case `induct` dispatch shape
-repeated four times — possible cross-proof unification target),
-`Reachable.pebOn_add_outOn_ge` (Invariant (3) substantive piece),
-`reachableFindingAux_complete` (DFS inner length-induction). Then
-bucket D (Phase9.md compression from ~1459 LoC to ≤ 250 LoC).
+The natural next task is bucket D (project-organization
+compression). The headline task is D1: compress `notes/Phase9.md`
+from ~1459 LoC to ≤ 250 LoC per `../notes/CLAUDE.md` *Soft length
+budget*, sub-organizing *Decisions made* into the canonical
+*Phase-local choices and proof techniques* / *Promoted to ...* /
+*Cleanup pass summaries* layout. D2--D5 sweep
+lift-on-promotion candidates (Phase9.md decisions that should
+lift to TACTICS-GOLF / TACTICS-QUIRKS / DESIGN.md), `FRICTION.md`
+housekeeping (Phase 9's 5 resolved entries' archive disposition),
+`DESIGN.md` *Choices to revisit* flips (3 Phase-9-resolved
+decisions), and `ROADMAP.md` engineering-conventions re-skim.
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is

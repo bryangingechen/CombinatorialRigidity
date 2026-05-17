@@ -1988,16 +1988,7 @@ lemma Reachable.independent_brings_pebble_simpleGraph_form
   set V' := D.reach u ∪ D.reach v with hV'_def
   have hu : u ∈ V' := Finset.mem_union.mpr (Or.inl (D.self_mem_reach u))
   have hv : v ∈ V' := Finset.mem_union.mpr (Or.inr (D.self_mem_reach v))
-  have h_card : 2 ≤ V'.card := by
-    have : ({u, v} : Finset V).card = 2 := by
-      rw [Finset.card_insert_of_notMem (by simp [huv]), Finset.card_singleton]
-    rw [← this]
-    apply Finset.card_le_card
-    intro x hx
-    rcases Finset.mem_insert.mp hx with rfl | hx
-    · exact hu
-    · rcases Finset.mem_singleton.mp hx with rfl
-      exact hv
+  have h_card : 2 ≤ V'.card := Finset.one_lt_card.mpr ⟨u, hu, v, hv, huv⟩
   have h_size : ℓ ≤ k * V'.card := by
     have h2k : 2 * k ≤ k * V'.card := by
       rw [mul_comm 2 k]
@@ -2278,17 +2269,7 @@ lemma tryAddEdgeWith_eq_none_imp_exists_witness {k ℓ : ℕ} {u v : V} (huv : u
     set V' := D.reach u ∪ D.reach v with hV'_def
     have hu_V' : u ∈ V' := Finset.mem_union.mpr (Or.inl (D.self_mem_reach u))
     have hv_V' : v ∈ V' := Finset.mem_union.mpr (Or.inr (D.self_mem_reach v))
-    -- |V'| ≥ 2 because {u, v} ⊆ V' and u ≠ v.
-    have h_card : 2 ≤ V'.card := by
-      have h2 : ({u, v} : Finset V).card = 2 := by
-        rw [Finset.card_insert_of_notMem (by simp [huv]), Finset.card_singleton]
-      rw [← h2]
-      apply Finset.card_le_card
-      intro x hx
-      rcases Finset.mem_insert.mp hx with rfl | hx
-      · exact hu_V'
-      · rcases Finset.mem_singleton.mp hx with rfl
-        exact hv_V'
+    have h_card : 2 ≤ V'.card := Finset.one_lt_card.mpr ⟨u, hu_V', v, hv_V', huv⟩
     -- ℓ ≤ k * V'.card via ℓ < 2k ≤ k * V'.card.
     have h_size : ℓ ≤ k * V'.card := by
       have h2k : 2 * k ≤ k * V'.card := by

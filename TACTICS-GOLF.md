@@ -401,6 +401,17 @@ upstream find:
   size-`finrank` LI family ⇒ zero" closes in ~10 lines instead of
   20+ (cf. `eq_zero_of_orthogonal_dim_two` in
   `HennebergRigidity.lean`).
+- "`2 ≤ s.card` from two distinct witnesses `u ≠ v ∈ s`" → don't
+  build `({u, v} : Finset _).card = 2` by hand, then `card_le_card`
+  with a `Finset.mem_insert` case-split for `{u, v} ⊆ s`. Mathlib
+  ships `Finset.one_lt_card : 1 < s.card ↔ ∃ a ∈ s, ∃ b ∈ s, a ≠ b`
+  directly, so the entire ~10-line block collapses to
+  `Finset.one_lt_card.mpr ⟨u, hu, v, hv, huv⟩`. The Phase 9 pebble
+  game shipped two copies of the hand-rolled form in
+  `PebbleGame.lean` (`independent_brings_pebble_simpleGraph_form`
+  and the case-5 of `tryAddEdgeWith_eq_none_imp_exists_witness`),
+  collapsed in Phase 9-cleanup C2; the `.mp` direction was already
+  in use at `SparsityIComponents.lean:112, 184`.
 
 Rule of thumb: search by *type pattern of what you need*, not by
 your guess of what mathlib calls it — names drift, types don't.
