@@ -32,11 +32,18 @@ performance pass).
 
 ## Current state
 
-A1 + A2 + A2-followup + A3 + A4 closed: both blueprint chapters
+A1 + A2 + A2-followup + A3 + A4 closed (bucket A fully green) plus
+B1 + B2 + B3 closed (no-edit dispositions). Both blueprint chapters
 track the Lean faithfully, the iff red node is now green, the
 SimpleGraph-vs-multi-graph regime correspondence is documented in
-the chapter prose, and the formalization-aside scan across both
-chapters surfaced no Lean-simplification candidates. Every aside in
+the chapter prose, the formalization-aside scan across both
+chapters surfaced no Lean-simplification candidates, all 6
+`noncomputable def` sites are forced + minimal + workhorse-exposed,
+all 5 real 4+-arg `rw` chains (the *Bucket B* table over-counted
+PebbleGame.lean by 1 due to destructuring commas inside
+anonymous-constructor `rw` args) are tight structural rewrites
+with no missing fused lemma, and the `classical` /
+`Fintype.ofFinite` re-grep confirms zero hits. Every aside in
 `chapter/dfs.tex` + `chapter/pebble-game.tex` is either A1/A2-vetted
 structural bookkeeping (`dropUntilBundle`, `DirectedWalk.mapRel`,
 `D.reach` post-composition at the failure site), a
@@ -468,7 +475,7 @@ to a noncomputable enumeration (`Finset.toList` / `Quot.out` /
 confirm the wrappers are minimal (no body content beyond the
 specialisation) and the workhorses stay computable.
 
-- [ ] **B1:** `noncomputable def` audit. For each of the 6 Phase 9
+- [x] **B1:** `noncomputable def` audit. For each of the 6 Phase 9
   sites, confirm:
   - the `noncomputable` keyword is *forced* (try `def` and read the
     error — `Finset.toList`, `Classical.choice`-flavored
@@ -479,7 +486,48 @@ specialisation) and the workhorses stay computable.
     going through the noncomputable wrapper.
   Documented disposition: each site to be marked *forced* or *vestigial*
   (latter unlikely given the pattern, but worth verifying).
-- [ ] **B2:** Multi-step `rw` chain audit. 6 sites (3 in DFS.lean,
+
+  **Disposition.** All 6 sites *forced + minimal + workhorse-exposed*;
+  no edits.
+  - `Search/DFS.lean:749` — `reachClosure R v := Finset.filter
+    (Relation.ReflTransGen R v) Finset.univ` (with explicit
+    `Classical.decPred _` for the filter predicate). Forced by the
+    absence of a general `Decidable (Relation.ReflTransGen R v w)`
+    instance. One-liner; no computable workhorse needed because
+    consumers route through `reachableFinding` (the verified DFS) for
+    the algorithm side, and this finset is only used by the
+    completeness side's blocking-witness construction.
+  - `PebbleGame.lean:130` — `outList v := (D.outNbhd v).toList`.
+    Forced by `Finset.toList`'s use of `Multiset.toList`'s
+    `Classical.choice`-flavored `Quotient.lift`. One-liner; consumers
+    that need a computable form supply their own `List`-shaped
+    adjacency to the `tryReachPebbleWith` / `tryAddEdgeWith` /
+    `runPebbleGameWith` workhorses.
+  - `PebbleGame.lean:1087` — `tryReachPebble P v := tryReachPebbleWith
+    P v D.outList (fun {_ _} => D.mem_outList)`. Forced by
+    `D.outList`'s `noncomputable`. One-liner specialisation of the
+    `tryReachPebbleWith` workhorse.
+  - `PebbleGame.lean:1284` — `tryAddEdge ... := tryAddEdgeWith ...
+    (fun D' => D'.outList) (fun D' {_ _} => D'.mem_outList)`. Forced
+    by `outList`. One-liner specialisation of the `tryAddEdgeWith`
+    workhorse.
+  - `PebbleGame.lean:1491` — `runPebbleGame G k ℓ :=
+    (empty).runPebbleGameWith k ℓ (fun D' => D'.outList) (fun D'
+    {_ _} => D'.mem_outList) (G.edgeFinset.toList.map Quot.out)`.
+    Forced by *both* `Finset.toList` (under `outList` and the edge
+    enumeration) and `Quot.out` (the `Sym2 V → V × V` projection).
+    One-liner specialisation of the `runPebbleGameWith` workhorse.
+  - `PebbleGame.lean:1863` — `reach D v := reachClosure (fun a b =>
+    (a, b) ∈ D.arcs) v`. Forced via `reachClosure`. One-liner
+    specialisation of the `Search.reachClosure` math-layer accessor;
+    used only by the completeness-side blocking-witness construction
+    (`D.reach u ∪ D.reach v`).
+
+  All six docstrings explicitly call out the noncomputable source
+  and direct IO callers to the computable workhorse, consistent
+  with `DESIGN.md` *Pebble-game style island* and the `-With`
+  variant pattern. No vestigial sites.
+- [x] **B2:** Multi-step `rw` chain audit. 6 sites (3 in DFS.lean,
   3 in PebbleGame.lean). Inspect each for a missing fused lemma —
   usually a one-line mirror under `CombinatorialRigidity/Mathlib/`.
   Per `../CLEANUP.md` table row, the common pattern is "rw chain
@@ -488,12 +536,71 @@ specialisation) and the workhorses stay computable.
   (DFS: `mapRel` + `length` + `length` + `ih`; PebbleGame:
   `Finset.sum_congr rfl h` + `Finset.sum_const` + `smul_eq_mul` +
   `mul_comm`) — probably not mirror-eligible, but verify.
-- [ ] **B3:** `classical` / `haveI Fintype.ofFinite` clean-sweep
+
+  **Disposition.** 5 real 4+-arg chains (the *Bucket B* table's
+  PebbleGame count of 4 was over by 1: L413, L427, L440 are 2-arg
+  `rw`s false-matched by the regex on destructuring commas inside
+  `⟨_, _⟩` anonymous-constructor arguments — `rw [if_pos ⟨hmem,
+  hw⟩, if_pos ⟨hmem, hu⟩]` is 2 mathematical rewrites, not 4). All
+  5 real chains audited via `lean_multi_attempt` against
+  `simp`/`grind`/`omega`/single-tactic candidates; no mirror-eligible
+  chain surfaced.
+  - `Search/DFS.lean:194` — `rw [mapRel, length, length, ih]`,
+    induction step of `mapRel_length`. `simp [mapRel, length, ih]`
+    also closes; same effective length, less explicit. Existing
+    `rw` form stays.
+  - `Search/DFS.lean:200` — `rw [mapRel, vertices, vertices, ih]`,
+    induction step of `mapRel_vertices`. Same shape as L194. `simp
+    [mapRel, vertices, ih]` also closes; existing form stays.
+  - `Search/DFS.lean:285` — `rw [arcsFinset_cons, Finset.image_insert,
+    ← ih, reversedArcsFinset_cons]; rfl`, induction step of
+    `reversedArcsFinset_eq_image_swap`. `simp [arcsFinset_cons,
+    reversedArcsFinset_cons, Finset.image_insert, ih]` collapses
+    the `rw; rfl` pair to a single line; same lemma set, same step
+    count, no fused lemma. Existing form stays — the explicit `rw`
+    form makes the `Prod.swap`-defeq step (the residual `rfl`)
+    visible.
+  - `PebbleGame.lean:260` — `rw [Finset.sum_congr rfl h,
+    Finset.sum_const, smul_eq_mul, mul_comm]` in the `pebOn +
+    span + outOn = k|V'|` algebraic identity. Standard sum-of-constant
+    idiom (no `Finset.sum_const_nat` substitute available — that
+    lemma's signature doesn't fit). `simp [Finset.sum_congr rfl h,
+    Finset.sum_const, mul_comm]` also closes; same effective form.
+    Existing form stays.
+  - `PebbleGame.lean:932` — `rw [pebOn_empty, outOn_empty,
+    Nat.add_zero, mul_comm V'.card k]; exact h_size` in the empty
+    base case of `Reachable.pebOn_add_outOn_ge`. `simp [pebOn_empty,
+    outOn_empty, mul_comm V'.card k]; exact h_size` also closes;
+    same line count. Existing form stays.
+
+  False-positive sites (2-arg `rw`, regex matched on inner commas):
+  - `PebbleGame.lean:413` — `· rw [if_pos ⟨hmem, hw⟩, if_pos ⟨hmem,
+    hu⟩]` in `out_reverse_of_not_endpoint`'s `pos` branch. Two
+    matching `if_pos` rewrites with destructured boolean witnesses;
+    tight to the call site.
+  - `PebbleGame.lean:427` — `rw [if_pos ⟨h_mem, h_ne⟩, if_neg
+    (fun ⟨_, h⟩ => h rfl)] at h` in `out_reverse_head`. Paired
+    `if_pos`/`if_neg` dispatching the same `h`-equation's two
+    `if`-clauses; tight to the call site.
+  - `PebbleGame.lean:440` — `rw [if_neg (fun ⟨_, h⟩ => h rfl),
+    if_pos ⟨h_mem, h_ne⟩] at h` in `out_reverse_tail`. Mirror of
+    L427 (swapped branches); same disposition.
+
+  No mirror-eligible fused lemma surfaced; conclusion matches the
+  pre-sweep prediction "probably not mirror-eligible".
+- [x] **B3:** `classical` / `haveI Fintype.ofFinite` clean-sweep
   audit. Phase 9 chose `[Fintype V] [DecidableEq V]` as the style
   island (architectural choice #2), so we'd expect zero such
   patterns — but verify nothing crept in during the long phase.
   Initial grep returned zero hits; mark trivially closed if a
   re-grep confirms.
+
+  **Disposition.** Re-grep confirms zero hits in either file. The
+  four `grep "classical|Fintype.ofFinite"` matches are all
+  doc-comment references explaining the *absence* of these patterns
+  (`Search/DFS.lean:63, 737`; `PebbleGame.lean:41, 2426` — each
+  pointing the reader at the style-island rationale). Trivially
+  closed; no edits.
 - [ ] **B4:** Phase 9 file headers + section organisation review.
   Both new files run long (770 + 2500 LoC). Spot-check section
   organisation: are sections named consistently with the blueprint
@@ -626,29 +733,38 @@ the manual:
 ## Blockers / open questions
 
 - Round in progress; bucket A fully closed (A1 + A2 + A2-followup +
-  A3 + A4 all green); buckets B (code smells), C (long-proof
-  audit), and D (Phase9.md compression) remain. (`checkdecls` is
-  the always-on per-commit gate per `../blueprint/CLAUDE.md`
-  *Static checks before commit*, not a separate task.)
+  A3 + A4 all green); bucket B partially closed (B1 + B2 + B3 all
+  no-edit dispositions; B4 file-organisation review and B5 `--`
+  comment audit remain). Buckets C (long-proof audit) and D
+  (Phase9.md compression) remain. (`checkdecls` is the always-on
+  per-commit gate per `../blueprint/CLAUDE.md` *Static checks
+  before commit*, not a separate task.)
 
 ## Hand-off / next phase
 
 Round in progress. Phase 9 main is fully closed; this round
-addresses the post-closure hygiene. Bucket A is now fully closed:
-A1 (DFS chapter walk), A2 (pebble-game chapter walk),
+addresses the post-closure hygiene. Buckets A + B (partial) are
+green: A1 (DFS chapter walk), A2 (pebble-game chapter walk),
 A2-followup (`lem:pebble-game-tryAddEdge-iff-independent` red node,
 discharged via the narrative-bridge `@[deprecated]` shim),
 A3 (multigraph regime correspondence in the chapter's
-`\emph{Multigraphs.}` prose), and A4 (formalization-aside scan,
+`\emph{Multigraphs.}` prose), A4 (formalization-aside scan,
 audit-only with the in-line catalog recording the
-Lean-simplification analysis for each aside) are all green.
-The natural next task is bucket B (code-smell sweep on the Phase 9
-surface): the initial grep summary in the *Bucket B* table above
-flags 6 `noncomputable def` sites (B1), 6 multi-step `rw` chains
-(B2), zero `classical` / `Fintype.ofFinite` hits (B3, trivially
-closed pending re-grep), plus the file-organisation review (B4)
-and `--`-comment audit (B5). Then bucket C (long-proof audit) and
-bucket D (Phase9.md compression).
+Lean-simplification analysis for each aside), B1 (six `noncomputable
+def` sites forced + minimal + workhorse-exposed, audit-only),
+B2 (five real 4+-arg `rw` chains audited against
+`simp`/`grind`/`omega`/single-tactic candidates via
+`lean_multi_attempt`, no missing fused lemma surfaced, audit-only),
+and B3 (`classical` / `Fintype.ofFinite` re-grep zero, trivially
+closed) are all green.
+
+The natural next task is closing the rest of bucket B: B4 (file
+header / section organisation review of `Search/DFS.lean` +
+`PebbleGame.lean`, both running long at 770 + 2500 LoC) and B5
+(`--` comment audit — 79 hits across the two files; remove WHAT-
+comments per CLAUDE.md *no comments by default*, lift WHY-comments
+to docstrings where they belong). Then bucket C (long-proof audit)
+and bucket D (Phase9.md compression).
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
