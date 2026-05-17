@@ -192,15 +192,15 @@ Constraints and gotchas:
   semantics — it exists to ease the module-system migration and the
   reference manual explicitly says *"These warnings can be used to
   locate and eventually eliminate these references, allowing
-  `backward.privateInPublic` to be disabled."* As of the latest
-  cleanup, the project carries 4 + 3 per-declaration opt-ins in
-  `Framework.lean` and `HennebergReverse.lean` only; the principled
-  fix is the granular `@[expose]` / `public` audit in
-  `notes/PERFORMANCE.md` *Open: granular `@[expose]` / `public` audit
-  per file*. Do not add new file-scope opt-ins, and prefer eliminating
-  existing per-decl opt-ins (by demoting `@[expose] public section`
-  to `public section` per the audit, or by promoting the `private`
-  helper to non-`private`) over adding more of them.
+  `backward.privateInPublic` to be disabled."* The project carries
+  **zero** opt-ins as of the F3.4 audit (the F3.3-followup's 4 + 3
+  per-declaration opt-ins in `Framework.lean` / `HennebergReverse.lean`
+  were eliminated, the former by promoting the three private helpers
+  `edgeRow` / `edgeRow_symm` / `continuous_rigidityMap_apply` to
+  non-`private` and the latter by demoting the file's `@[expose]
+  public section` to `public section`). Do not introduce new opt-ins;
+  the principled discharges are documented in `notes/PERFORMANCE.md`
+  *Open: granular `@[expose]` / `public` audit per file*.
 
   Mechanics: the opt-in is required only when a private declaration
   participates in an *exposed* body — a `def` / `instance` body or

@@ -372,16 +372,24 @@ Recommendation: pick up as a dedicated perf pass alongside the
 `Sparsity.lean` split, since both touch the import graph and a single
 A/B campaign can measure their combined effect.
 
-### Open (next session): granular `@[expose]` / `public` audit per file
+### Granular `@[expose]` / `public` audit per file
 
-**Priority: do this next session.** The 4 + 3 per-declaration
-`set_option backward.privateInPublic` lines remaining in
-`Framework.lean` and `HennebergReverse.lean` are technical debt: the
-option is a `backward.*` compat knob, and the Lean reference manual
-explicitly directs users to *"locate and eventually eliminate these
-references."* The principled elimination is the audit below — it's
-the same work as the post-conversion perf lever, so the two should
-land together.
+**Status (F3.4):** technical-debt half closed; perf-lever half open.
+The 4 + 3 per-declaration `set_option backward.privateInPublic`
+lines in `Framework.lean` and `HennebergReverse.lean` were eliminated
+in F3.4: HennebergReverse's section demoted from `@[expose] public
+section` to `public section` (path (a) — its iso constructors are
+consumed opaquely by `IsLaman.iso` / Henneberg lift API downstream);
+Framework's section retained `@[expose] public section` (path (b)
+for `edgeRow` / `edgeRow_symm` / `continuous_rigidityMap_apply`,
+which were promoted from `private` to non-`private`) because the
+file's `RigidityMap` body is consumed defeq-wise at
+`MatroidIdentification.lean` line 927's `convert ... using 1` and
+`IsInfinitesimallyRigid` / `IsGenericallyRigid(Inj)` bodies are
+consumed via `≤`-coercion / `∃`-destructure downstream. The broader
+perf-lever audit (next bullets) is still open — its scope is the
+other 11 module-converted project files, each of which carries the
+blanket `@[expose] public section` from F3.3.
 
 The Phase 8-perf module-system conversion (F3.3) applied a uniform
 `@[expose] public section` to all 9 + 13 project files, matching the
@@ -425,42 +433,27 @@ opaquely via API lemmas — they're strong candidates to drop
 constructors) are weak candidates — exposed bodies are part of their
 contract.
 
-**Concrete elimination targets (Framework.lean, 4 sites):**
+**F3.4 elimination disposition (resolved):**
 
-- `edgeRow` — private `noncomputable def`, referenced from
-  `RigidityMap`'s body. Two paths: (a) drop `@[expose]` from this
-  file's section so `RigidityMap`'s body stops being exposed (then
-  `edgeRow` stops being a public-scope reference); (b) make
-  `edgeRow` itself non-`private`. Path (a) is preferred if
-  downstream files don't `simp [RigidityMap]` / `unfold RigidityMap`.
-- `edgeRow_symm` — private `theorem` referenced *as a term* in
-  `RigidityMap`'s body (`Sym2.lift ⟨edgeRow p, edgeRow_symm p⟩`).
-  Same disposition as `edgeRow`.
-- `RigidityMap` — the consumer side of the above two. Eliminating
-  the opt-ins on `edgeRow` / `edgeRow_symm` removes this one
-  automatically.
-- `continuous_rigidityMap_apply` — private `@[fun_prop]` theorem
-  resolved by name from another file's `fun_prop` invocation
-  (`RigidityMatroid.lean` line 274). Preferred fix: drop `private`
-  — attribute-tagged helpers are usually better as plain public,
-  since the tactic database stores the name anyway.
-
-**Concrete elimination targets (HennebergReverse.lean, 3 sites):**
-
-- `isoOfOptionSubtypeNe` — private `def` referenced from
-  `typeI_iso_of_two_neighbors` / `typeII_iso_of_three_neighbors`'s
-  bodies. Path (a) (demote `@[expose]`) is plausible since the
-  `IsLaman.iso` / `IsLaman.exists_typeI_or_typeII_reverse` API
-  downstream consumes these isos opaquely.
-- `typeI_iso_of_two_neighbors`, `typeII_iso_of_three_neighbors` —
-  consumer sides; eliminated automatically by path (a).
-
-Cross-reference: as of this commit, 7 of 9 project files that
-previously had file-scope `set_option backward.privateInPublic`
-were cleaned (the option is unnecessary there — their `private`
-decls participate only in proof bodies, which are always private).
-The remaining 2 files retain mathlib-style per-declaration `set_option
-… in` as a short-term bridge until the audit lands.
+- `Framework.lean` (4 sites): path (b) — `edgeRow`, `edgeRow_symm`,
+  `continuous_rigidityMap_apply` were promoted from `private` to
+  non-`private`. Path (a) was attempted first (demote
+  `@[expose] public section` → `public section`) and failed: the
+  `convert ... using 1` at `MatroidIdentification.lean` line 927
+  closes via a defeq through `Sym2.lift ⟨edgeRow p, edgeRow_symm p⟩`
+  in `RigidityMap`'s body, so `RigidityMap`'s body must stay
+  exposed. With `@[expose] public section` retained,
+  `RigidityMap`'s exposed body cannot reference `private` helpers —
+  so the helpers had to lose `private`. `continuous_rigidityMap_apply`
+  is `@[fun_prop]`-tagged and resolved by name across modules; the
+  attribute-tagged-helper convention (mathlib's preference) is to
+  ship it as non-`private` rather than via opt-in.
+- `HennebergReverse.lean` (3 sites): path (a) — file demoted to
+  `public section`. The iso constructors (`typeI_iso_of_two_neighbors`
+  / `typeII_iso_of_three_neighbors`) and their internal helper
+  `isoOfOptionSubtypeNe` are consumed downstream only as values
+  (called for the iso, no body unfolding), so the demotion is
+  net-zero for downstream and the `private` opt-ins drop out.
 
 ## Recommendations for future perf work
 
