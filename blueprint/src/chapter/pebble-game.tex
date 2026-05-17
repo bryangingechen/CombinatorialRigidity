@@ -105,6 +105,8 @@ out-degree budget.
 
 \begin{definition}[Path-reversal move]
   \label{def:path-reversal}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.reverse}
+  \leanok
   \uses{def:partial-orientation}
   Let $D$ be a partial orientation and $u_0 \to u_1 \to \cdots \to
   u_m$ a directed path in $D$ (a sequence of vertices with
@@ -116,7 +118,11 @@ out-degree budget.
   no-antiparallel-pairs invariant is preserved by induction on $m$.
   Path reversal preserves $\underline{D}$, $\mathrm{out}_D(v)$ for
   all $v \neq u_0, u_m$, and decreases $\mathrm{out}_D(u_0)$ by $1$
-  while increasing $\mathrm{out}_D(u_m)$ by $1$.
+  while increasing $\mathrm{out}_D(u_m)$ by $1$. The
+  invariant-preservation half is formalised; the structural
+  \texttt{out}/\texttt{peb}/\texttt{span}/\texttt{outOn} lemmas
+  follow in subsequent commits feeding
+  \cref{lem:pebble-game-invariants}.
 \end{definition}
 
 \subsection{Invariants}

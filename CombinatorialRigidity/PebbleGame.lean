@@ -172,6 +172,66 @@ def pebOn (k : ℕ) (V' : Finset V) : ℕ := ∑ v ∈ V', D.peb k v
     (empty : PartialOrientation V).pebOn k V' = V'.card * k := by
   simp [pebOn, Finset.sum_const, smul_eq_mul, mul_comm]
 
+/-! ### Path reversal
+
+The path-reversal move (Lee–Streinu §3, blueprint `def:path-reversal`):
+given a simple directed path `p` in `D` from `u_0` to `u_m`, invert every
+arc of `p` in `D`. The result is again a partial orientation; underlying
+edges are preserved, but out-degree at `u_0` decreases by one while
+out-degree at `u_m` increases by one (with all other vertices unchanged).
+This file lands the definition and the invariant-preservation half;
+structural lemmas about `out`/`peb`/`span`/`outOn` follow in a subsequent
+commit (feeding `lem:pebble-game-invariants` (3)). -/
+
+section Reverse
+
+open CombinatorialRigidity.Search
+
+variable {u w : V}
+
+/-- The path-reversal of `D` along the simple directed path `p` in `D`.
+Removes `p`'s arcs from `D` and inserts their reversals. The two
+structural invariants of `PartialOrientation` survive:
+
+* `no_loops`: no new self-loop arcs because `hp : p.IsPath` rules out
+  `u_i = u_{i+1}`;
+* `no_antiparallel`: the only potential conflict is between an original
+  arc `(u_i, u_{i+1}) ∈ D.arcs` and its inserted reversal
+  `(u_{i+1}, u_i)`, but the former is removed by the `sdiff`. The `IsPath`
+  hypothesis discharges the case where two distinct path arcs would be
+  reverses of each other.
+
+Cf. Lee–Streinu §3 path-reversal move, blueprint `def:path-reversal`. -/
+def reverse (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w)
+    (hp : p.IsPath) : PartialOrientation V where
+  arcs := (D.arcs \ p.arcsFinset) ∪ p.reversedArcsFinset
+  no_loops v hv := by
+    rw [Finset.mem_union, Finset.mem_sdiff] at hv
+    rcases hv with ⟨h, _⟩ | h
+    · exact D.no_loops h
+    · rw [p.mem_reversedArcsFinset_iff] at h
+      exact hp.notMem_loop_arcsFinset v h
+  no_antiparallel a b hab hba := by
+    rw [Finset.mem_union, Finset.mem_sdiff] at hab
+    rw [Finset.mem_union, Finset.mem_sdiff] at hba
+    rcases hab with ⟨hab_D, hab_notArcs⟩ | hab_revArcs
+    · rcases hba with ⟨hba_D, _⟩ | hba_revArcs
+      · exact D.no_antiparallel hab_D hba_D
+      · rw [p.mem_reversedArcsFinset_iff] at hba_revArcs
+        exact hab_notArcs hba_revArcs
+    · rw [p.mem_reversedArcsFinset_iff] at hab_revArcs
+      rcases hba with ⟨_, hba_notArcs⟩ | hba_revArcs
+      · exact hba_notArcs hab_revArcs
+      · rw [p.mem_reversedArcsFinset_iff] at hba_revArcs
+        exact hp.notMem_antiparallel_arcsFinset hab_revArcs hba_revArcs
+
+@[simp] lemma arcs_reverse
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath) :
+    (D.reverse p hp).arcs = (D.arcs \ p.arcsFinset) ∪ p.reversedArcsFinset :=
+  rfl
+
+end Reverse
+
 end PartialOrientation
 
 end CombinatorialRigidity.PebbleGame

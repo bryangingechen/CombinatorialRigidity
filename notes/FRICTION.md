@@ -76,6 +76,35 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `rw` over a cons-pattern endpoint variable trips motive on the sibling walk's type
+- **Where it bit:** `IsPath.notMem_loop_arcsFinset` and
+  `IsPath.notMem_antiparallel_arcsFinset` in
+  `CombinatorialRigidity/Search/DFS.lean`. Inside the `cons u_out
+  u_int _ _ q ih` branch of an induction on `p : DirectedWalk R u
+  w`, the path equalities `(v, v) = (u_out, u_int)` unpack via
+  `Prod.mk.inj` to `v = u_out ∧ v = u_int`. The first `rfl`
+  substitutes `u_out := v` (cf. `TACTICS-QUIRKS.md` § 4); the
+  follow-up `rw [← h_eq]` (with `h_eq : v = u_int`) on a goal `v
+  ∈ q.vertices` then fails with *motive is not type correct*,
+  because `q : DirectedWalk R u_int w` ties `u_int` to `q`'s
+  type, and Lean's motive abstraction tries to rewrite `u_int`
+  inside `q`'s type.
+- **Friction:** § 4 covers the *direction* of `subst` between two
+  free variables, but the symptom here surfaces one tactic *later*
+  on a downstream `rw`, not at the `obtain ⟨rfl, _⟩` itself. The
+  same shape blocks `cases q <;> simp [vertices]` whenever the
+  cons-pattern endpoint has already been substituted away.
+- **Resolved (this commit):** bind the pair equalities to named
+  hypotheses (`have h_uo : v = u_out := (Prod.mk.inj heq).1`),
+  compose them into a single `u_out = u_int` equation, and `rw`
+  only on `u_out` (which does not appear in `q`'s type — only
+  `u_int` does). Factor "the source vertex is in `p.vertices`"
+  through a one-line `head_mem_vertices : u ∈ (p : DirectedWalk
+  R u w).vertices` helper to skip the `cases q <;> simp` dance
+  entirely. The helper is `@[simp]`; structural-lemma commits
+  (Phase 9 follow-up) will reuse it.
+- **Status:** resolved.
+
 ### [resolved] `Finset.toList` is noncomputable — math/exec layer split
 - **Where it bit:** `reachableFindingAux` body in
   `CombinatorialRigidity/Search/DFS.lean`. Enumerating the children

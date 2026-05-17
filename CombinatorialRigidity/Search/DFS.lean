@@ -144,6 +144,150 @@ def dropUntilBundle [DecidableEq V] (target : V) :
         rw [vertices, List.mem_cons]
         exact Or.inr (hmem x hx)
 
+/-- The source vertex always sits at the head of `p.vertices`. -/
+@[simp] lemma head_mem_vertices {u w : V} (p : DirectedWalk R u w) :
+    u ∈ p.vertices := by
+  cases p <;> simp [vertices]
+
+/-! ### Arcs of a walk
+
+A walk carries an ordered list of arcs `(u_i, u_{i+1})` from each `cons`
+constructor. For path-reversal moves on a `PartialOrientation`
+(`PebbleGame.lean`'s `def:path-reversal`), we need the multiset of these
+arcs and the multiset of their reversals as `Finset (V × V)`s. For an
+`IsPath` walk, both sets have cardinality `length p`; the helpers below
+expose the key membership relationships and the consequence that a path
+traverses neither a self-loop nor both directions of any arc. -/
+
+section ArcsFinset
+
+variable [DecidableEq V]
+
+/-- The arcs of an `R`-walk as a `Finset (V × V)`. Each `cons` contributes
+its source-target pair; the empty walk contributes nothing. For an `IsPath`
+walk, the cardinality matches `length p` (consumers downstream of
+`def:path-reversal` may use this). -/
+def arcsFinset : ∀ {u w : V}, DirectedWalk R u w → Finset (V × V)
+  | _, _, .nil _ => ∅
+  | u, _, .cons (v := v) _ q => insert (u, v) q.arcsFinset
+
+/-- The arcs of an `R`-walk *with each arrow reversed*, as a `Finset (V × V)`.
+Used in `def:path-reversal` to express the moved orientation. -/
+def reversedArcsFinset : ∀ {u w : V}, DirectedWalk R u w → Finset (V × V)
+  | _, _, .nil _ => ∅
+  | u, _, .cons (v := v) _ q => insert (v, u) q.reversedArcsFinset
+
+@[simp] lemma arcsFinset_nil (u : V) :
+    (nil (R := R) u).arcsFinset = ∅ := rfl
+
+@[simp] lemma arcsFinset_cons {u v w : V} (h : R u v) (q : DirectedWalk R v w) :
+    (cons h q).arcsFinset = insert (u, v) q.arcsFinset := rfl
+
+@[simp] lemma reversedArcsFinset_nil (u : V) :
+    (nil (R := R) u).reversedArcsFinset = ∅ := rfl
+
+@[simp] lemma reversedArcsFinset_cons {u v w : V}
+    (h : R u v) (q : DirectedWalk R v w) :
+    (cons h q).reversedArcsFinset = insert (v, u) q.reversedArcsFinset := rfl
+
+/-- Membership in `reversedArcsFinset` is membership in `arcsFinset` with
+the pair swapped: `(a, b)` is a reversed arc iff `(b, a)` is an arc. -/
+lemma mem_reversedArcsFinset_iff {u w : V} (p : DirectedWalk R u w) (a b : V) :
+    (a, b) ∈ p.reversedArcsFinset ↔ (b, a) ∈ p.arcsFinset := by
+  induction p with
+  | nil _ => simp
+  | cons _ q ih =>
+    simp only [arcsFinset_cons, reversedArcsFinset_cons, Finset.mem_insert,
+      Prod.mk.injEq, ih]
+    tauto
+
+/-- The first coordinate of any arc lies in `p.vertices`. -/
+lemma fst_mem_vertices_of_mem_arcsFinset {u w : V} {p : DirectedWalk R u w}
+    {a b : V} (h : (a, b) ∈ p.arcsFinset) : a ∈ p.vertices := by
+  induction p with
+  | nil _ => simp at h
+  | cons _ q ih =>
+    rw [arcsFinset_cons, Finset.mem_insert] at h
+    rw [vertices, List.mem_cons]
+    rcases h with hab | h
+    · exact Or.inl (Prod.mk.inj hab).1
+    · exact Or.inr (ih h)
+
+/-- The second coordinate of any arc lies in `p.vertices`. -/
+lemma snd_mem_vertices_of_mem_arcsFinset {u w : V} {p : DirectedWalk R u w}
+    {a b : V} (h : (a, b) ∈ p.arcsFinset) : b ∈ p.vertices := by
+  induction p with
+  | nil _ => simp at h
+  | cons _ q ih =>
+    rw [arcsFinset_cons, Finset.mem_insert] at h
+    rw [vertices, List.mem_cons]
+    rcases h with hab | h
+    · -- `b = u_int`, which is the head of `q.vertices`.
+      refine Or.inr ?_
+      rw [(Prod.mk.inj hab).2]
+      exact head_mem_vertices q
+    · exact Or.inr (ih h)
+
+/-- A simple `R`-walk contains no self-loop arc: `(v, v) ∉ p.arcsFinset`
+for any `v`. -/
+lemma IsPath.notMem_loop_arcsFinset {u w : V} {p : DirectedWalk R u w}
+    (hp : p.IsPath) (v : V) : (v, v) ∉ p.arcsFinset := by
+  induction p with
+  | nil _ => simp
+  | @cons u_out u_int _ _ q ih =>
+    rw [IsPath, vertices, List.nodup_cons] at hp
+    obtain ⟨h_uout_not_in, hq_nodup⟩ := hp
+    rw [arcsFinset_cons, Finset.mem_insert]
+    rintro (heq | h)
+    · -- `(v, v) = (u_out, u_int)` gives `v = u_out` and `v = u_int`, so
+      -- `u_out = u_int`, but `u_out ∉ q.vertices` while `u_int` is the head
+      -- of `q.vertices`.
+      have h_uo : v = u_out := (Prod.mk.inj heq).1
+      have h_ui : v = u_int := (Prod.mk.inj heq).2
+      apply h_uout_not_in
+      rw [h_uo.symm.trans h_ui]
+      exact head_mem_vertices q
+    · exact ih hq_nodup h
+
+/-- A simple `R`-walk doesn't traverse an arc and its reverse: if `(a, b)`
+is in `p.arcsFinset`, then `(b, a)` is not. -/
+lemma IsPath.notMem_antiparallel_arcsFinset {u w : V} {p : DirectedWalk R u w}
+    (hp : p.IsPath) {a b : V} (hab : (a, b) ∈ p.arcsFinset) :
+    (b, a) ∉ p.arcsFinset := by
+  induction p with
+  | nil _ => simp at hab
+  | @cons u_out u_int _ _ q ih =>
+    rw [IsPath, vertices, List.nodup_cons] at hp
+    obtain ⟨h_uout_not_in, hq_nodup⟩ := hp
+    rw [arcsFinset_cons, Finset.mem_insert] at hab
+    rw [arcsFinset_cons, Finset.mem_insert]
+    rintro (hba | hba)
+    · -- `hba : (b, a) = (u_out, u_int)`, so `b = u_out`, `a = u_int`.
+      have h_b_uo : b = u_out := (Prod.mk.inj hba).1
+      have h_a_ui : a = u_int := (Prod.mk.inj hba).2
+      rcases hab with hab | hab
+      · -- `hab : (a, b) = (u_out, u_int)`: forces `u_out = u_int`.
+        have h_a_uo : a = u_out := (Prod.mk.inj hab).1
+        have h_uo_eq_ui : u_out = u_int := h_a_uo.symm.trans h_a_ui
+        apply h_uout_not_in
+        rw [h_uo_eq_ui]
+        exact head_mem_vertices q
+      · -- `hab : (a, b) ∈ q.arcsFinset`, so `b ∈ q.vertices` and `b = u_out`.
+        apply h_uout_not_in
+        rw [h_b_uo.symm]
+        exact snd_mem_vertices_of_mem_arcsFinset hab
+    · -- `hba : (b, a) ∈ q.arcsFinset`.
+      rcases hab with hab | hab
+      · -- `hab : (a, b) = (u_out, u_int)`, so `a = u_out` and `a ∈ q.vertices`
+        -- via `snd_mem` on `hba`.
+        have h_a_uo : a = u_out := (Prod.mk.inj hab).1
+        apply h_uout_not_in
+        rw [h_a_uo.symm]
+        exact snd_mem_vertices_of_mem_arcsFinset hba
+      · exact ih hq_nodup hab hba
+
+end ArcsFinset
+
 end DirectedWalk
 
 /-! ## The DFS primitive
