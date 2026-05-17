@@ -7,7 +7,10 @@ toward **Laman's theorem** (1970): for `n ≥ 2`, a graph is generically rigid
 in the plane iff it contains a `(2, 3)`-tight spanning subgraph. Phase 7
 extends the development to the **Lovász–Yemini matroid identification**:
 the planar rigidity matroid coincides with the `(2, 3)`-count matroid on
-`E(K_V)`, packaged as a mathlib `Matroid` instance.
+`E(K_V)`, packaged as a mathlib `Matroid` instance. Phase 8 reframes the
+planar rigidity matroid as a linear matroid via `Matroid.ofFun` (from the
+`apnelson1/Matroid` library) at a uniformly generic placement, and states
+Lovász–Yemini in linear-matroid form.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -23,18 +26,20 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–6 complete** — sparsity, Laman, Henneberg, frameworks,
-  and both directions of Laman's theorem
-  (`isGenericallyRigid_two_iff_exists_isLaman_le`). The project carries
-  no `sorry`s; Laman's theorem is fully formalized.
-* **Phase 7 in progress** — the Lovász–Yemini matroid identification.
-  The hard direction (every `(2, 3)`-sparse subset of `E(K_V)` is
-  row-independent at some planar placement) has landed; the matroid
-  packaging via the general `(k, ℓ)`-count matroid (matroidal regime
-  `ℓ < 2k`, Whiteley 1996 / Lee–Streinu 2008) is the closing step.
-* **Phase 8 planned** — linear-matroid framing of the rigidity matroid
-  via `apnelson1/Matroid`, with Lovász–Yemini stated as a matroid
-  isomorphism.
+* **Phases 1–8 complete** — sparsity, Laman, Henneberg, frameworks,
+  both directions of Laman's theorem
+  (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
+  matroid identification (combinatorial form), and the linear-matroid
+  framing of the planar rigidity matroid
+  (`linearRigidityMatroid_eq_rigidityMatroid`). The project carries
+  no `sorry`s.
+* **Phase 9 in progress** — basic `(k, ℓ)`-pebble game of
+  Lee–Streinu 2008 in the matroidal regime `ℓ < 2k`, with a
+  certificate-form correctness theorem (partial orientation on
+  accept, dense vertex subset on reject). A pre-phase verified-DFS
+  warmup lands first under `CombinatorialRigidity/Search/`,
+  exercising the `termination_by (Finset.univ \ visited).card`
+  pattern in isolation.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

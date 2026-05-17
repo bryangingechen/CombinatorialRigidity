@@ -23,12 +23,16 @@ combinatorial rigidity, see
 
 \subsection*{Phase plan}
 
-The Lean code is organized into seven phases, tracked in
+The Lean code is organized into nine phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-All seven phases are complete: the first six phases formalize
-Laman's theorem, and Phase~7 packages the planar rigidity matroid
-as a mathlib \texttt{Matroid} via the Lov\'asz--Yemini matroid
-identification.
+Phases~1--8 are complete: the first six phases formalize Laman's
+theorem, Phase~7 packages the planar rigidity matroid as a mathlib
+\texttt{Matroid} via the Lov\'asz--Yemini matroid identification,
+and Phase~8 reframes it as a linear matroid via \texttt{Matroid.ofFun}
+at a uniformly generic placement (Lov\'asz--Yemini, linear-matroid
+form). Phase~9 (basic $(k, \ell)$-pebble game of
+Lee--Streinu~\cite{leeStreinu2008}, in the matroidal regime
+$\ell < 2k$) is in progress, preceded by a verified-DFS warmup.
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -58,12 +62,21 @@ identification.
         the matroidal regime $\ell < 2k$
         (Whiteley~\cite{whiteley1996}, Lee--Streinu~\cite{leeStreinu2008}).
         (Files: \texttt{CountMatroid.lean}, \texttt{MatroidIdentification.lean}.)
+  \item \textbf{Linear-matroid framing.} The planar rigidity matroid
+        as a linear matroid via \texttt{Matroid.ofFun} (from the
+        \texttt{apnelson1/Matroid} library) of the rigidity-row
+        function at a uniformly generic placement, identified with the
+        combinatorial $(2,3)$-count matroid of Phase~7
+        (Lov\'asz--Yemini, linear-matroid form).
+        (File: \texttt{LinearRigidityMatroid.lean}.)
+  \item \textbf{Pebble game.} The basic $(k, \ell)$-pebble game of
+        Lee--Streinu~\cite{leeStreinu2008} (generalising the original
+        $(2, 3)$ algorithm of Jacobs--Hendrickson~\cite{jacobsHendrickson1997})
+        and its correctness theorem in certificate form, in the
+        matroidal regime $\ell < 2k$ matching Phase~7. Preceded by a
+        verified-DFS warmup. (Files:
+        \texttt{Search/DFS.lean}, \texttt{PebbleGame.lean}.)
 \end{enumerate}
-
-The \emph{linear-matroid} framing of the planar rigidity matroid (the
-matroid of the rigidity-row function at a generic placement, with
-Lov\'asz--Yemini as a matroid isomorphism with the
-$(2, 3)$-count matroid) is left to a follow-up phase.
 
 \subsection*{Reading this blueprint}
 
@@ -71,5 +84,6 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from the
 navigation bar) is the best place to see at a glance how the chapters
-fit together; nodes on the main Laman line and through the
-Phase~7 matroid identification are all green.
+fit together; nodes on the main Laman line and through the Phase~8
+linear-matroid framing are all green, with Phase~9 (the verified-DFS
+warmup and the pebble game) still red.

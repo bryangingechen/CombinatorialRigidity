@@ -172,6 +172,31 @@ section. If you can't summarize the next agent's first task in one
 sentence, the section needs more compression or more pointer
 discipline.
 
+### When this commit opens a phase
+
+Phase opening fires on the first commit that turns the new phase
+on — typically the commit that creates `notes/PhaseN.md` and
+(forward mode) opens the new phase's blueprint chapter. On top of
+the per-commit checklists:
+
+- Add or update the phase's row in the ROADMAP Status table (status:
+  *planning* or *in progress*) and write the §N planning section.
+- Create `notes/PhaseN.md` from the template in `notes/CLAUDE.md`.
+- **Sync the user-facing status surfaces** so the project's
+  externally-visible state reflects that Phase N is now in progress:
+  - `README.md` — *Project status* prose.
+  - `home_page/index.md` — *Project status* prose and the phase
+    table (add the new row).
+  - `blueprint/src/chapter/intro.tex` — §*Phase plan* prose and the
+    enumerate (add the new bullet); update the dep-graph-status line
+    at the end of the section if relevant.
+
+  These three are the project's public face (rendered to GitHub
+  Pages on every master push); let them drift and the website +
+  README silently misrepresent project state. Confirm Phase N-1's
+  status on each surface at the same time — if the previous phase
+  closed without flipping these, do it here.
+
 ### When this commit closes a phase
 
 Phase completion fires regardless of where in a session it happens.
@@ -184,6 +209,12 @@ of* the per-commit checklists above:
   summary plus a pointer to `notes/PhaseN.md`. Phase 1's section is
   the canonical model. The lemma list and decisions live in
   `notes/PhaseN.md`; ROADMAP carries the hand-off summary.
+- **Sync the user-facing status surfaces.** Same three surfaces as
+  the phase-open subsection above: `README.md` *Project status*,
+  `home_page/index.md` *Project status* + phase table, and
+  `blueprint/src/chapter/intro.tex` §*Phase plan* + enumerate
+  (including the dep-graph-status line at the end of the section).
+  Flip Phase N's marker to ✓ on each.
 - **Review project organization.** Re-skim ROADMAP.md,
   `TACTICS-GOLF.md`, `TACTICS-QUIRKS.md`, and `notes/FRICTION.md`
   (status sections). Have decisions in `notes/PhaseN.md` accumulated
