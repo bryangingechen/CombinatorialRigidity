@@ -32,7 +32,14 @@ performance pass).
 
 ## Current state
 
-Round just opened. Task checklist below; no work landed yet.
+A1 closed: `chapter/dfs.tex` ↔ `Search/DFS.lean` walk is faithful;
+all five pinned names resolve; prose-proof structure tracks the
+Lean. Two A2-bound carry-overs surfaced (stale "planned
+`reachClosure` helper" prose in the pebble-game chapter;
+informational notes on `DirectedWalk.mapRel` /
+`arcsFinset` family selectivity) and are recorded inline under
+A2's task body. No Lean or blueprint changes landed yet; the
+A2 commit will discharge the prose updates.
 
 ## Architectural choices made up front
 
@@ -78,7 +85,7 @@ wrong, revisit there.
 
 ### Bucket A — Blueprint ↔ Lean divergence audit (Phase 9 surface)
 
-- [ ] **A1:** `chapter/dfs.tex` ↔ `Search/DFS.lean` walk. Three
+- [x] **A1:** `chapter/dfs.tex` ↔ `Search/DFS.lean` walk. Three
   dep-graph nodes: `def:directed-walk`, `def:reachable-finding`,
   `thm:reachable-finding-correct` (plus any newer additions for the
   `reachClosure` / `DirectedWalk.mapRel` family). For each:
@@ -92,6 +99,32 @@ wrong, revisit there.
   device (math has implicit truncation, Lean needs the bundle); the
   inner length-induction in `reachableFindingAux_complete` being
   presented faithfully (not glossed over as a one-step argument).
+
+  **Disposition.** All five pinned names resolve under
+  `CombinatorialRigidity.Search` (`DirectedWalk`,
+  `DirectedWalk.IsPath`, `reachableFinding`, `reachableFinding_sound`,
+  `reachableFinding_complete`). Statement forms are faithful:
+  the inductive `DirectedWalk` realises the prose "non-empty list
+  of vertices satisfying $R\,v_i\,v_{i+1}$"; `IsPath` ≡
+  `vertices.Nodup` realises "simple"; `reachableFinding`'s
+  `Option (Σ w, DirectedWalk ... v w)` return realises the
+  "$\mathrm{some}\,(p, w)\,/\,\mathrm{none}$" prose with a harmless
+  presentation gap (prose pair-order `(p, w)` vs Lean's Σ-encoding
+  `⟨w, p⟩`); the soundness+completeness multi-pin matches the
+  prose's enumerated parts. Prose proof faithfully tracks the Lean:
+  outer `reachableFindingAux.induct` (3-case visited / `P v` / else)
+  ↔ "outer auto-induction on the DFS recursion"; inner
+  `induction n with | zero | succ ih_inner` length bound ↔
+  "inner induction on the walk-length bound"; `dropUntilBundle` in
+  the `v ∈ p'.vertices` branch honestly flagged as Lean-side
+  bookkeeping per `../CLEANUP.md` §A;
+  `Relation.ReflTransGen.head_induction_on` lifting in
+  `reachableFinding_complete` ↔ prose "lifts to an explicit
+  $R$-walk by head-first induction on $\mathrm{ReflTransGen}$".
+  No A1-internal Lean simplification opportunities (the flagged
+  bookkeeping is structural, not friction). No Lean or blueprint
+  changes from A1's own scope; two carry-overs surface for A2,
+  recorded inline under A2 below.
 - [ ] **A2:** `chapter/pebble-game.tex` ↔ `PebbleGame.lean` walk.
   ~20 dep-graph nodes covering: `def:partial-orientation`,
   `def:pebble-counts`, `def:path-reversal`, `def:arc-insertion`,
@@ -113,6 +146,37 @@ wrong, revisit there.
   `(Sym2 V)`-list `runPebbleGameWith` shape being faithfully
   described (or honestly flagged as a `-With`-pattern bookkeeping
   device).
+
+  **Carry-overs from A1 (DFS chapter walk).**
+  - `chapter/pebble-game.tex` refers to `reachClosure` twice as a
+    *"planned helper"* — once in the `def:tryAddEdge` prose
+    ("a planned `reachClosure` helper post-composed at the failure
+    site") and once in `def:runPebbleGame` ("deferred to a planned
+    `reachClosure` helper, consumed by
+    `lem:pebble-game-failure-witness`"). The helper has shipped in
+    `Search/DFS.lean` (`reachClosure` + `mem_reachClosure` /
+    `self_mem_reachClosure` / `reachClosure_closed`). Update the
+    pebble-game prose to drop the "planned" qualifier; the
+    follow-up question of whether to surface `reachClosure` as a
+    dep-graph node in `chapter/dfs.tex` (so the pebble-game prose's
+    `\uses{}` chain can thread through it) is an A2 call. Note
+    that the actual blocking-witness extraction in
+    `PebbleGame.lean` is `tryReachPebbleWith_eq_none_imp_no_reachable`
+    / `runPebbleGame_eq_none_imp_exists_witness`; the chapter's
+    *Blocking witness* machinery may have evolved past the
+    "planned helper" framing entirely.
+  - `chapter/pebble-game.tex` mentions `DirectedWalk.mapRel`
+    inline at the `def:tryReachPebble` Lean-encoding aside
+    ("transported from `reachableFinding`'s walk on the
+    out-neighbour-list relation via `DirectedWalk.mapRel`").
+    Honestly flagged, no fix needed.
+  - `DirectedWalk.arcsFinset` / `reversedArcsFinset` and their
+    `IsPath`-form filter-count lemmas are purely Lean-side
+    structural support for `def:path-reversal` and are not
+    surfaced in blueprint prose. Per *What to include vs. skip*
+    (structural support, churn-prone), skip dep-graph entry; flag
+    only if the A2 prose walk surfaces a `\uses{}` chain that
+    would benefit from one.
 - [ ] **A3:** Multigraph corner-case audit (audit-only, no
   refactor). Walk L--S Lemmas 10--15 statement by statement against
   the simple-graph regime. Document each lemma in the blueprint as
@@ -315,8 +379,11 @@ the manual:
 ## Hand-off / next phase
 
 Round in progress. Phase 9 main is fully closed; this round
-addresses the post-closure hygiene. Carry-overs queue under
-*Blockers* above as they surface.
+addresses the post-closure hygiene. A1 (DFS chapter walk) closed;
+A2 (pebble-game chapter walk) is the natural next task and carries
+the inline carry-overs from A1 (stale `reachClosure` prose +
+informational notes). Carry-overs queue under *Blockers* above as
+they surface.
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
