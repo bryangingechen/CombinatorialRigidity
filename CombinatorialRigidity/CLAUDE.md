@@ -85,6 +85,13 @@ bullets. If one matches, jump to the named section of
   expected to have type some ⟨…⟩ = some ⟨…⟩"* inside the `some`
   branch of a `match heq : <expr> with | …` term — § 17 *`match h :
   <expr> with` substitutes `expr ↦ pat` in the goal of each branch*.
+- *"Tactic `rewrite` failed: motive is not type correct"* when
+  `rw [h]` uses `h : D.field = …` and the goal contains a local
+  whose *type* references `D.field` (e.g. a `DirectedWalk
+  (fun a b => (a, b) ∈ D.arcs) u w` plus a `p.vertices`-mentioning
+  if-clause) — § 18 *`rw [h]` over a structure field whose value
+  appears in another local's type*; build the rewritten container
+  equation via `Finset.ext` and `rw` the equation as a unit.
 
 ## Starting a Lean-touching session
 

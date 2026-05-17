@@ -58,6 +58,9 @@ time, not first-draft.
 17. **`match h : <expr> with | pat => …` substitutes `expr ↦ pat` in
     the *goal* of each branch** — return `rfl` when the goal collapses
     to `pat = pat`, or restructure to `by_contra` + `cases h_eq : …`.
+18. **`rw [h]` over a structure field whose value appears in another
+    local's type** — motive failure. Build the rewritten Finset
+    equality via `Finset.ext`, then `rw` the equation as a unit.
 
 ---
 
@@ -501,3 +504,46 @@ goal had collapsed to `some ⟨w', p'⟩ = some ⟨w', p'⟩` while `heq`
 retained the original `reachableFinding … = some ⟨w', p'⟩`. The
 contrapositive `by_contra + cases h_eq:` form sidesteps both
 directions cleanly.
+
+---
+
+## 18. `rw [h]` over a structure field whose value appears in another local's type
+
+If a hypothesis `h : D.field = ...` is used with `rw [h]` (or
+`conv => rw [h]`) and the goal contains a local `p` whose *type*
+mentions `D.field`, the rewrite tries to abstract the type-level
+occurrence and fails with *motive is not type correct*.
+
+**Symptom.** *"Tactic `rewrite` failed: motive is not type correct"*
+on a goal where `D.field` appears in a Finset / membership form,
+plus a `p`-derived term (`p.foo`, `p.bar`) appears elsewhere — and
+`p`'s type references `D.field`.
+
+**Fix.** Don't use `rw [h]` to substitute the field. Instead, build
+the rewritten *Finset* (or whatever container) equation as a `have`
+via `Finset.ext`, then use that equation as a single `rw` unit
+whose motive is the trivial container-level one (e.g.
+`λ s, s.card`):
+
+```lean
+have h_decomp : D.arcs.filter P =
+    (D.arcs \ p.arcsFinset).filter P ∪ p.arcsFinset.filter P := by
+  ext x; simp only [Finset.mem_filter, Finset.mem_union,
+    Finset.mem_sdiff]
+  -- ... explicit forward/backward via by_cases on x ∈ p.arcsFinset
+rw [h_decomp, Finset.card_union_of_disjoint …]
+```
+
+The `ext` block constructs the equation pointwise, never substituting
+`D.arcs` anywhere. Once the equation exists, the subsequent `rw`
+abstracts only the container, not its underlying field. The same
+trick generalises to any container-equality-via-`rw` step that
+crosses a local with a value-dependent type.
+
+Worked case study: `PartialOrientation.out_reverse_add` in
+`CombinatorialRigidity/PebbleGame.lean` (Phase-9). The path
+`p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w` ties `D.arcs`
+into `p`'s type, and the goal contains `p.vertices` (via the
+`if v ∈ p.vertices ∧ … then 1 else 0` clauses); `rw [h_decomp]`
+with `h_decomp : D.arcs = (D.arcs \ p.arcsFinset) ∪ p.arcsFinset`
+fails. The `ext`-based replacement above closes cleanly.

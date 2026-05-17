@@ -149,6 +149,15 @@ def dropUntilBundle [DecidableEq V] (target : V) :
     u ∈ p.vertices := by
   cases p <;> simp [vertices]
 
+/-- The target vertex always sits at the tail of `p.vertices`. Mirror of
+`head_mem_vertices`; both hold without `IsPath`. Used by the path-arc source-
+count lemmas to derive endpoint inequalities under `IsPath`. -/
+@[simp] lemma tail_mem_vertices {u w : V} (p : DirectedWalk R u w) :
+    w ∈ p.vertices := by
+  induction p with
+  | nil _ => simp [vertices]
+  | cons _ _ ih => exact List.mem_cons_of_mem _ ih
+
 /-! ### Arcs of a walk
 
 A walk carries an ordered list of arcs `(u_i, u_{i+1})` from each `cons`
@@ -321,6 +330,141 @@ lemma IsPath.notMem_antiparallel_arcsFinset {u w : V} {p : DirectedWalk R u w}
         rw [h_a_uo.symm]
         exact snd_mem_vertices_of_mem_arcsFinset hba
       · exact ih hq_nodup hab hba
+
+/-! #### Source-cardinality of path arcs
+
+For a simple walk `p`, the number of arcs of `p` sourced at a vertex `v` is
+either `0` or `1`. Specifically, `v` is the source of exactly one arc when
+`v ∈ p.vertices` and `v` is not the walk's terminal (so `v` is initial or
+interior); for the reversed-arc finset, the role of the terminal is taken by
+the walk's initial vertex. These two facts drive the structural lemmas about
+`PartialOrientation.reverse`'s effect on per-vertex out-degree
+(`PebbleGame.lean`, `out_reverse_*` family). -/
+
+/-- For a simple walk `p : DirectedWalk R u w`, the source-`v` slice of
+`p.arcsFinset` has cardinality `1` exactly when `v` is on `p` and is not the
+terminal `w`; otherwise `0`. The terminal has no outgoing arc; vertices off the
+walk are not sources by `fst_mem_vertices_of_mem_arcsFinset`. -/
+lemma IsPath.card_arcsFinset_filter_fst {u w : V} {p : DirectedWalk R u w}
+    (hp : p.IsPath) (v : V) :
+    (p.arcsFinset.filter (·.1 = v)).card = if v ∈ p.vertices ∧ v ≠ w then 1 else 0 := by
+  induction p with
+  | nil _ =>
+    -- arcsFinset = ∅; vertices = [u], membership requires `v = u = w` so the
+    -- `v ≠ w` clause kills the `if`.
+    simp only [arcsFinset_nil, Finset.filter_empty, Finset.card_empty, vertices,
+      List.mem_singleton]
+    split_ifs with h
+    · exact absurd h.1 h.2
+    · rfl
+  | @cons u_out u_int u_w h_arc q ih =>
+    rw [IsPath, vertices, List.nodup_cons] at hp
+    obtain ⟨h_uout_not_in, hq_nodup⟩ := hp
+    have hq_path : q.IsPath := hq_nodup
+    rw [arcsFinset_cons, Finset.filter_insert, vertices]
+    by_cases hvu : v = u_out
+    · -- The inserted arc `(u_out, u_int)` hits the filter; `q`-part is empty
+      -- because `u_out ∉ q.vertices` rules out arcs of `q` sourced at `u_out`.
+      have h_pred : (u_out, u_int).1 = v := hvu.symm
+      rw [if_pos h_pred]
+      have hq_empty : q.arcsFinset.filter (·.1 = v) = ∅ := by
+        rw [Finset.filter_eq_empty_iff]
+        rintro ⟨a, b⟩ hmem hab
+        simp only at hab
+        subst hab
+        exact h_uout_not_in (hvu ▸ fst_mem_vertices_of_mem_arcsFinset hmem)
+      rw [hq_empty, Finset.card_insert_of_notMem (Finset.notMem_empty _),
+        Finset.card_empty]
+      have h_v_ne_w : v ≠ u_w := by
+        rw [hvu]
+        intro h_eq
+        exact h_uout_not_in (h_eq ▸ tail_mem_vertices q)
+      have h_v_mem : v ∈ u_out :: q.vertices := hvu ▸ List.mem_cons_self
+      rw [if_pos ⟨h_v_mem, h_v_ne_w⟩]
+    · -- The inserted arc misses the filter; recurse via the IH on `q`.
+      have h_pred : (u_out, u_int).1 ≠ v := fun h => hvu h.symm
+      rw [if_neg h_pred, ih hq_path]
+      -- The two `if`-conditions disagree only when `v = u_out`; we ruled that out.
+      have h_mem_iff : (v = u_out ∨ v ∈ q.vertices) ↔ v ∈ q.vertices :=
+        ⟨fun h => h.resolve_left hvu, Or.inr⟩
+      simp [h_mem_iff]
+
+/-- The first coordinate of any reversed arc lies in `p.vertices`. Mirror of
+`fst_mem_vertices_of_mem_arcsFinset` for `reversedArcsFinset`; routed through
+the swap-symmetry `mem_reversedArcsFinset_iff` and `snd_mem_vertices`. -/
+lemma fst_mem_vertices_of_mem_reversedArcsFinset {u w : V} {p : DirectedWalk R u w}
+    {a b : V} (h : (a, b) ∈ p.reversedArcsFinset) : a ∈ p.vertices := by
+  rw [mem_reversedArcsFinset_iff] at h
+  exact snd_mem_vertices_of_mem_arcsFinset h
+
+/-- A simple walk's initial vertex `u` is never the target of one of its arcs:
+the head of `vertices` doesn't reappear by `IsPath`. Mirror of "the terminal
+isn't a source" used by `IsPath.card_arcsFinset_filter_fst` at `v = w`. -/
+lemma IsPath.notMem_snd_initial {u w : V} {q : DirectedWalk R u w} (hq : q.IsPath)
+    {a : V} : (a, u) ∉ q.arcsFinset := by
+  induction q with
+  | nil _ => simp
+  | @cons u' v' _ _ q' _ =>
+    rw [IsPath, vertices, List.nodup_cons] at hq
+    obtain ⟨h_unot, _⟩ := hq
+    rw [arcsFinset_cons, Finset.mem_insert]
+    rintro (heq | hmem)
+    · -- `(a, u') = (u', v')` would force `u' = v'`, but `v' ∈ q'.vertices`
+      -- and `u' ∉ q'.vertices`.
+      exact h_unot ((Prod.mk.inj heq).2.symm ▸ head_mem_vertices q')
+    · -- `(a, u') ∈ q'.arcsFinset` forces `u' ∈ q'.vertices` (snd_mem).
+      exact h_unot (snd_mem_vertices_of_mem_arcsFinset hmem)
+
+/-- For a simple walk `p : DirectedWalk R u w`, the source-`v` slice of
+`p.reversedArcsFinset` has cardinality `1` exactly when `v` is on `p` and is
+not the initial vertex `u`; otherwise `0`. By swap-symmetry this mirrors
+`IsPath.card_arcsFinset_filter_fst`: the initial vertex has no incoming arc
+in `p`, hence no reversed arc sourced at it. -/
+lemma IsPath.card_reversedArcsFinset_filter_fst {u w : V} {p : DirectedWalk R u w}
+    (hp : p.IsPath) (v : V) :
+    (p.reversedArcsFinset.filter (·.1 = v)).card =
+      if v ∈ p.vertices ∧ v ≠ u then 1 else 0 := by
+  induction p with
+  | nil _ =>
+    simp only [reversedArcsFinset_nil, Finset.filter_empty, Finset.card_empty,
+      vertices, List.mem_singleton]
+    split_ifs with h
+    · exact absurd h.1 h.2
+    · rfl
+  | @cons u_out u_int u_w h_arc q ih =>
+    rw [IsPath, vertices, List.nodup_cons] at hp
+    obtain ⟨h_uout_not_in, hq_nodup⟩ := hp
+    have hq_path : q.IsPath := hq_nodup
+    rw [reversedArcsFinset_cons, Finset.filter_insert, vertices]
+    have h_uint_mem : u_int ∈ q.vertices := head_mem_vertices q
+    have h_uint_ne_uout : u_int ≠ u_out := fun h => h_uout_not_in (h ▸ h_uint_mem)
+    by_cases hvi : v = u_int
+    · -- The inserted reversed arc `(u_int, u_out)` hits the filter; the `q`-part
+      -- of `(·.1 = u_int)` is empty because `u_int = q.initial` is not a target.
+      have h_pred : (u_int, u_out).1 = v := hvi.symm
+      rw [if_pos h_pred]
+      have h_q_filter : q.reversedArcsFinset.filter (·.1 = v) = ∅ := by
+        rw [Finset.filter_eq_empty_iff]
+        rintro ⟨a, b⟩ hmem hab
+        simp only at hab
+        subst hab
+        rw [mem_reversedArcsFinset_iff, hvi] at hmem
+        exact hq_path.notMem_snd_initial hmem
+      rw [h_q_filter, Finset.card_insert_of_notMem (Finset.notMem_empty _),
+        Finset.card_empty]
+      have h_v_ne_u : v ≠ u_out := hvi ▸ h_uint_ne_uout
+      have h_v_mem : v ∈ u_out :: q.vertices :=
+        List.mem_cons_of_mem _ (hvi ▸ h_uint_mem)
+      rw [if_pos ⟨h_v_mem, h_v_ne_u⟩]
+    · -- The inserted reversed arc misses the filter; recurse via IH on `q`.
+      have h_pred : (u_int, u_out).1 ≠ v := fun h => hvi h.symm
+      rw [if_neg h_pred, ih hq_path]
+      by_cases hvu : v = u_out
+      · subst hvu
+        simp [h_uout_not_in]
+      · -- Both ifs simplify to `if v ∈ q.vertices ∧ v ≠ u_int then 1 else 0`
+        -- (since `v ≠ u_out` removes the `u_out`-disjunct from membership).
+        simp [hvi, hvu]
 
 end ArcsFinset
 

@@ -118,10 +118,17 @@ out-degree budget.
   no-antiparallel-pairs invariant is preserved by induction on $m$.
   Path reversal preserves $\underline{D}$, $\mathrm{out}_D(v)$ for
   all $v \neq u_0, u_m$, and decreases $\mathrm{out}_D(u_0)$ by $1$
-  while increasing $\mathrm{out}_D(u_m)$ by $1$. The
-  invariant-preservation half is formalised; the structural
-  \texttt{out}/\texttt{peb}/\texttt{span}/\texttt{outOn} lemmas
-  follow in subsequent commits feeding
+  while increasing $\mathrm{out}_D(u_m)$ by $1$; equivalently, the
+  pebble count $\mathrm{peb}_{D, k}$ rises by $1$ at $u_0$ (under
+  the precondition $\mathrm{out}_D(u_0) \le k$ from
+  \cref{lem:pebble-game-invariants}~(1)) and drops by $1$ at $u_m$
+  (under $\mathrm{out}_D(u_m) < k$, the precondition for the
+  reversal move to be valid). The invariant-preservation half,
+  span invariance ($\mathrm{span}_D(V')$ unchanged on every $V'$),
+  and the per-vertex \texttt{out}/\texttt{peb} effects are
+  formalised. The subset-level $\mathrm{out}_D(V')$ shift and the
+  $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V')$ invariant on
+  subsets follow in subsequent commits feeding
   \cref{lem:pebble-game-invariants}.
 \end{definition}
 

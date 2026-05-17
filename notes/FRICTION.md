@@ -76,6 +76,33 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `rw [D.field_eq]` fails motive when a local's type references the field
+
+- **Where it bit:** `PartialOrientation.out_reverse_add` in
+  `CombinatorialRigidity/PebbleGame.lean` (Phase-9 main). The path
+  `p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w` ties `D.arcs`
+  into `p`'s type, and the goal contains both `D.arcs.filter (·.1 = v)`
+  *and* `p.vertices` (via the `if v ∈ p.vertices ∧ … then 1 else 0`
+  clauses). The natural step "decompose `D.arcs` as `D.arcs \
+  p.arcsFinset ∪ p.arcsFinset`, then split the filter card" calls
+  `rw [h_decomp]` (or `conv_rhs => rw [h_decomp]`) with `h_decomp :
+  D.arcs = …`. Lean's motive abstraction tries to rewrite `D.arcs`
+  inside `p.vertices`'s carrier (which lives in `p`'s type) and
+  fails with *motive is not type correct*.
+- **Friction:** the existing motive entries (§ 4, § 5 in
+  `TACTICS-QUIRKS.md`, and the FRICTION `subst between two free
+  variables` neighbour below) are about *names being substituted*;
+  this case is about *a structure field being rewritten where the
+  field appears in another local's type*. Distinct shape.
+- **Resolved (this commit):** build the rewritten Finset equation
+  via `Finset.ext` + manual disjunction casework, then `rw` the
+  equation as a single unit whose motive is `λ s, s.card`
+  (trivially type-correct). Pattern is reusable for any subset-
+  level reversal lemma that filters `D.arcs` in the presence of
+  `p`. **Lifted to:** TACTICS-QUIRKS.md § 18 *`rw [h]` over a
+  structure field whose value appears in another local's type*.
+- **Status:** resolved.
+
 ### [resolved] `rw` over a cons-pattern endpoint variable trips motive on the sibling walk's type
 - **Where it bit:** `IsPath.notMem_loop_arcsFinset` and
   `IsPath.notMem_antiparallel_arcsFinset` in

@@ -118,6 +118,19 @@ lemma mem_outNbhd {v u : V} : u ∈ D.outNbhd v ↔ (v, u) ∈ D.arcs := by
 `(D.outNbhd v).card`; cf. `def:pebble-counts`. -/
 def out (v : V) : ℕ := (D.outNbhd v).card
 
+/-- The out-degree at `v` equals the cardinality of the source-`v` slice of
+`D.arcs`. Used by the `out_reverse` lemmas to reduce to set-arithmetic on the
+arc finset, bypassing the `outNbhd` `image Prod.snd` indirection. -/
+lemma out_eq_card_filter_fst (v : V) :
+    D.out v = (D.arcs.filter (·.1 = v)).card := by
+  rw [out, outNbhd, Finset.card_image_of_injOn]
+  rintro ⟨a₁, b₁⟩ h₁ ⟨a₂, b₂⟩ h₂ hsnd
+  rw [Finset.mem_coe, Finset.mem_filter] at h₁ h₂
+  obtain ⟨_, rfl⟩ := h₁
+  obtain ⟨_, rfl⟩ := h₂
+  simp only at hsnd
+  rw [hsnd]
+
 /-- Pebble count at `v` with budget `k`: `k - out v` (truncated `ℕ`
 subtraction). The structural invariant `out v ≤ k`, maintained by the
 algorithm via `lem:pebble-game-invariants` (1), ensures this behaves
@@ -247,6 +260,145 @@ lemma disjoint_sdiff_reversedArcsFinset
   rw [Finset.mem_sdiff] at hx
   rw [p.mem_reversedArcsFinset_iff] at hy
   exact D.no_antiparallel hx.1 (p.mem_arcsFinset_imp hy)
+
+/-- Unified equation for the effect of path reversal on per-vertex out-degree:
+the new out-count plus a path-arc indicator equals the old out-count plus a
+reversed-arc indicator. Every interior path vertex sits in both indicators (so
+its out-degree is unchanged), the initial vertex sits only in the path-arc
+indicator (out-degree drops by `1` at `u`), and the terminal sits only in the
+reversed-arc indicator (out-degree rises by `1` at `w`). Off-path vertices
+satisfy neither, again leaving the out-degree fixed.
+
+Three convenience corollaries (`out_reverse_of_not_endpoint`,
+`out_reverse_head`, `out_reverse_tail`) extract the head/tail/middle cases. -/
+lemma out_reverse_add
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath) (v : V) :
+    (D.reverse p hp).out v + (if v ∈ p.vertices ∧ v ≠ w then 1 else 0)
+      = D.out v + (if v ∈ p.vertices ∧ v ≠ u then 1 else 0) := by
+  -- Approach: factor the calculation through filter-cardinality equalities so
+  -- the rewrites never touch `D.arcs` directly (which appears in `p`'s type
+  -- via the relation `fun a b => (a, b) ∈ D.arcs`, breaking `rw`'s motive
+  -- abstraction).
+  simp only [out_eq_card_filter_fst]
+  have h_subset : p.arcsFinset ⊆ D.arcs := D.arcsFinset_subset_arcs p
+  have h_disj_arcs : Disjoint (D.arcs \ p.arcsFinset) p.arcsFinset :=
+    Finset.sdiff_disjoint
+  have h_disj_rev : Disjoint (D.arcs \ p.arcsFinset) p.reversedArcsFinset :=
+    D.disjoint_sdiff_reversedArcsFinset p
+  -- The two ext-based equalities sidestep the motive issue cleanly: we never
+  -- rewrite `D.arcs`, only assert finset equalities and `rw` them as units.
+  have h_arc_decomp : D.arcs.filter (·.1 = v) =
+      (D.arcs \ p.arcsFinset).filter (·.1 = v) ∪ p.arcsFinset.filter (·.1 = v) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_union, Finset.mem_sdiff]
+    constructor
+    · rintro ⟨hx, hpred⟩
+      by_cases h_path : x ∈ p.arcsFinset
+      · exact Or.inr ⟨h_path, hpred⟩
+      · exact Or.inl ⟨⟨hx, h_path⟩, hpred⟩
+    · rintro (⟨⟨hx, _⟩, hpred⟩ | ⟨hxp, hpred⟩)
+      · exact ⟨hx, hpred⟩
+      · exact ⟨h_subset hxp, hpred⟩
+  rw [h_arc_decomp, Finset.card_union_of_disjoint
+      (h_disj_arcs.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)),
+    arcs_reverse, Finset.filter_union, Finset.card_union_of_disjoint
+      (h_disj_rev.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _)),
+    hp.card_arcsFinset_filter_fst v, hp.card_reversedArcsFinset_filter_fst v]
+  omega
+
+/-- A non-nil simple walk has distinct endpoints: `IsPath` says the vertex list
+is `Nodup`, and `0 < p.length` produces an extra cons whose `Nodup` forbids the
+initial vertex `u` from reappearing as the terminal `w` (which is the head of
+the inner walk's vertex list). -/
+lemma _root_.CombinatorialRigidity.Search.DirectedWalk.IsPath.head_ne_tail_of_pos
+    {V : Type*} {R : V → V → Prop} {u w : V} {p : DirectedWalk R u w}
+    (hp : p.IsPath) (hpos : 0 < p.length) : u ≠ w := by
+  cases p with
+  | nil _ => simp [DirectedWalk.length] at hpos
+  | @cons u' v' w' h_arc q' =>
+    rw [DirectedWalk.IsPath, DirectedWalk.vertices, List.nodup_cons] at hp
+    intro h_eq
+    exact hp.1 (h_eq ▸ q'.tail_mem_vertices)
+
+/-- For a vertex distinct from both endpoints of the reversed path, the
+out-degree is unchanged. Interior path vertices fall under this case: their
+path-arc out (`(u_i, u_{i+1})`) and reversed-arc out (`(u_i, u_{i-1})`) cancel;
+off-path vertices have neither. -/
+lemma out_reverse_of_not_endpoint
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    {v : V} (hu : v ≠ u) (hw : v ≠ w) :
+    (D.reverse p hp).out v = D.out v := by
+  have h := D.out_reverse_add p hp v
+  -- Both if-clauses share `v ∈ p.vertices`; the `v ≠ w` and `v ≠ u` conjuncts
+  -- are settled by hypothesis, so the ifs take the same value either way.
+  have h_eq : (if v ∈ p.vertices ∧ v ≠ w then 1 else 0 : ℕ) =
+      (if v ∈ p.vertices ∧ v ≠ u then 1 else 0) := by
+    by_cases hmem : v ∈ p.vertices
+    · rw [if_pos ⟨hmem, hw⟩, if_pos ⟨hmem, hu⟩]
+    · rw [if_neg (fun h => hmem h.1), if_neg (fun h => hmem h.1)]
+  omega
+
+/-- Head endpoint: the initial vertex of a non-nil reversed path loses one
+out-arc. The path arc `(u, u_1)` is removed; no reversed arc is added at `u`
+(the reversed arcs all source from `u_1, …, u_m`). -/
+lemma out_reverse_head
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    (hpos : 0 < p.length) :
+    (D.reverse p hp).out u + 1 = D.out u := by
+  have h := D.out_reverse_add p hp u
+  have h_mem : u ∈ p.vertices := p.head_mem_vertices
+  have h_ne : u ≠ w := hp.head_ne_tail_of_pos hpos
+  rw [if_pos ⟨h_mem, h_ne⟩, if_neg (fun ⟨_, h⟩ => h rfl)] at h
+  omega
+
+/-- Tail endpoint: the terminal vertex of a non-nil reversed path gains one
+out-arc. The reversed arc `(u_m, u_{m-1})` is added; no path arc was sourced
+at `u_m` (the terminal has no outgoing path arc). -/
+lemma out_reverse_tail
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    (hpos : 0 < p.length) :
+    (D.reverse p hp).out w = D.out w + 1 := by
+  have h := D.out_reverse_add p hp w
+  have h_mem : w ∈ p.vertices := p.tail_mem_vertices
+  have h_ne : w ≠ u := (hp.head_ne_tail_of_pos hpos).symm
+  rw [if_neg (fun ⟨_, h⟩ => h rfl), if_pos ⟨h_mem, h_ne⟩] at h
+  omega
+
+/-- The pebble count is unchanged at vertices distinct from both endpoints of
+the reversed path. Direct corollary of `out_reverse_of_not_endpoint`: pebble
+count is `k - out`, and the underlying out-count is preserved. -/
+lemma peb_reverse_of_not_endpoint
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    (k : ℕ) {v : V} (hu : v ≠ u) (hw : v ≠ w) :
+    (D.reverse p hp).peb k v = D.peb k v := by
+  rw [peb, peb, D.out_reverse_of_not_endpoint p hp hu hw]
+
+/-- Head endpoint, under the algorithmic invariant `out u ≤ k`: the initial
+vertex of a non-nil reversed path gains one pebble (mirror of the out-count
+dropping by one). The hypothesis `D.out u ≤ k` is what
+`lem:pebble-game-invariants` (1) maintains. -/
+lemma peb_reverse_head
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    (hpos : 0 < p.length) (k : ℕ) (hbd : D.out u ≤ k) :
+    (D.reverse p hp).peb k u = D.peb k u + 1 := by
+  have h_out : (D.reverse p hp).out u + 1 = D.out u :=
+    D.out_reverse_head p hp hpos
+  rw [peb, peb]
+  omega
+
+/-- Tail endpoint, under the algorithmic precondition `D.out w < k`: the
+terminal vertex of a non-nil reversed path loses one pebble (mirror of the
+out-count rising by one). `out w < k` is the precondition for the path-reversal
+move to be valid (the head of the reachability search must have a free pebble
+to send). -/
+lemma peb_reverse_tail
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    (hpos : 0 < p.length) (k : ℕ) (hbd : D.out w < k) :
+    (D.reverse p hp).peb k w + 1 = D.peb k w := by
+  have h_out : (D.reverse p hp).out w = D.out w + 1 :=
+    D.out_reverse_tail p hp hpos
+  rw [peb, peb]
+  omega
 
 /-- The span of `V'` is invariant under path reversal: each path arc with
 both endpoints in `V'` is removed and its reverse is inserted, and both
