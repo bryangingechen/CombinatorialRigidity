@@ -431,26 +431,38 @@ intermediate-graph + subgraph-monotonicity shim. See `../DESIGN.md`
 *Strengthen the existing lemma, don't proliferate variants* for the
 general rule this refactor exemplifies. Build + lint clean.
 
-Next concrete commit: `thm:pebble-game-correct` (certificate-form
-correctness theorem). Two-part assembly on top of soundness +
-failure-witness:
-* (1) `runPebbleGame G k ℓ = some D' → G.IsSparse k ℓ`: already landed
-  as `runPebbleGame_sound`.
-* (2) `runPebbleGame G k ℓ = none → ¬ G.IsSparse k ℓ`: trace the fold
-  through `runPebbleGameWith` to a specific failure-point step where
-  `tryAddEdgeWith` returns `none` on some intermediate state `Dmid`;
-  apply the now-broadened `tryAddEdgeWith_eq_none_imp_exists_witness`
-  directly against the input graph `G` (the membership `s(u, v) ∈
-  G.edgeFinset` is a one-line lookup from the input list, the subset
-  `Dmid.underline ⊆ G.edgeFinset` is preserved by the fold via
-  `runPebbleGameWith_underline_subset`'s ⊆ half plus
-  `tryAddEdgeWith_underline`). Requires a new fold-level helper
-  `runPebbleGameWith_eq_none_imp_exists_witness` to extract the
-  intermediate failure point. After that, the matroidal-independence
-  corollary `cor:pebble-game-countMatroid-indep` is a one-liner via
-  Phase 7's `countMatroid_indep_iff_isSparse`. The completeness-side
-  SimpleGraph-vs-multigraph corner-case check (open question below)
-  is the only known open structural unknown.
+**Certificate-form correctness theorem lands** (blueprint
+`thm:pebble-game-correct`). Two new theorems in `PebbleGame.lean`:
+*(i)* fold-level `runPebbleGameWith_eq_none_imp_exists_witness` —
+structural recursion on the candidate edge list traces a `none` return
+through `runPebbleGameWith` to the step at which `tryAddEdgeWith`
+rejected, threading `Reachable k ℓ` via `tryAddEdgeWith_reachable` and
+the running underline-subset relation `D_mid.underline ⊆ G.edgeFinset`
+via `tryAddEdgeWith_underline` (`= insert s(u, v) D.underline`
+per accept-step) plus the per-edge head membership `s(u, v) ∈
+G.edgeFinset`; at the failure point, the broadened subset-form
+`tryAddEdgeWith_eq_none_imp_exists_witness` applies directly against
+`G`. *(ii)* wrapper `runPebbleGame_eq_none_imp_exists_witness`
+specialises at `D = empty` / `edges = G.edgeFinset.toList.map Quot.out`,
+with the membership hypothesis discharged by the `Quot.out_eq`
+round-trip used in `runPebbleGame_underline_eq_edgeFinset` and
+`empty.underline = ∅ ⊆ G.edgeFinset` trivially.
+
+The iff theorem `runPebbleGame_correct` combines `runPebbleGame_sound`
+(success ⇒ sparse) with the new wrapper (none ⇒ ∃ witness, contradicting
+sparsity at the witness `V'`); two-line refine + match dispatch on the
+`Option` output. Section organization: the wrapper-level theorems live
+in a new `section Correctness` after `section Completeness`; explicit
+`[Fintype V]` (not the autobound section variable) so the lint sees the
+typeclass used in the type via `runPebbleGame G k ℓ` (see *Decisions made
+→ Correctness*, below).
+
+Blueprint `thm:pebble-game-correct` is now green; the remaining red node
+in the chapter dep-graph is the matroidal-independence corollary
+`cor:pebble-game-countMatroid-indep`, a one-liner combining
+`runPebbleGame_correct` with Phase 7's `countMatroid_indep_iff_isSparse`.
+The completeness-side SimpleGraph-vs-multigraph corner-case check (open
+question below) is the only known open structural unknown.
 
 ## Architectural choices made up front
 
@@ -938,6 +950,40 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   lifted because the call-site cost (one direction of `mem_underline`)
   is one line.
 
+### Correctness theorem (Phase 9 main)
+
+- **Wrapper-level theorems land in a new `section Correctness`, not
+  inside `section Completeness`.** `runPebbleGame_eq_none_imp_exists_witness`
+  and `runPebbleGame_correct` use `runPebbleGame G k ℓ` in their
+  signatures, which transitively elaborates to needing `[Fintype V]`
+  (from `section RunPebbleGame`'s `variable [Fintype V]` autobound on
+  `runPebbleGame`). Inside `section Completeness` (which also has
+  `variable [Fintype V]`), the autobinding triggered the
+  `linter.unusedFintypeInType` + `linter.unusedSectionVars` warnings
+  even though the variable IS genuinely used (just opaquely, via
+  `runPebbleGame`'s autobound instance). `omit [Fintype V] in` failed
+  with "cannot omit referenced section variable" — the body's calls
+  still pulled it in. Moving the wrapper theorems to a fresh
+  `section Correctness` (no `variable [Fintype V]`) and stating
+  `[Fintype V]` explicitly satisfies both lints: explicit-not-autobound
+  drops `unusedSectionVars`, and the typeclass IS used in the type
+  (transitively via `runPebbleGame G k ℓ`) so `unusedFintypeInType`
+  also passes. Fold-level helper
+  `runPebbleGameWith_eq_none_imp_exists_witness` stays inside
+  `section Completeness` (its `[Fintype V]` autobound is genuinely
+  surfaced via the recursive self-call's signature, no lint fires).
+
+- **`match h_opt : runPebbleGame G k ℓ with` substitution quirk
+  forces `⟨D, rfl⟩` in the `some` arm.** Per TACTICS-QUIRKS § 17,
+  `match h : <expr> with` substitutes `expr ↦ pat` in the goal of
+  each branch. So in `| some D => ...` the goal `∃ D', runPebbleGame
+  G k ℓ = some D'` becomes `∃ D', some D = some D'`, closed by
+  `⟨D, rfl⟩` not `⟨D, h_opt⟩` (the latter still has the
+  pre-substitution type). The `none` arm uses `h_opt`'s
+  un-substituted form to feed `runPebbleGame_eq_none_imp_exists_witness`
+  + `exfalso`/`omega`. Same case-study shape as
+  `reachableFinding_complete` (the quirk's original site).
+
 ### DFS warmup (pre-Phase-9)
 
 - **Style island formalized in DESIGN.md.** Phase 9's architectural
@@ -1259,6 +1305,24 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   k * V'.card`; `span_succ_le_edgesIn_ncard_of_insert` bridges to the
   `(G.edgesIn ↑V').ncard + ℓ ≥ k * V'.card + 1` strict inequality. Size
   hypothesis `ℓ ≤ k * V'.card` from `|V'| ≥ 2` + `ℓ < 2k`.
+* Certificate-form correctness theorem (blueprint
+  `thm:pebble-game-correct`): fold-level
+  `runPebbleGameWith_eq_none_imp_exists_witness` (structural recursion
+  on the candidate edge list; threads `Reachable k ℓ` via
+  `tryAddEdgeWith_reachable`, the running underline-subset relation
+  `D_mid.underline ⊆ G.edgeFinset` via `tryAddEdgeWith_underline` plus
+  the per-edge head membership, and falls through to the broadened
+  per-edge `tryAddEdgeWith_eq_none_imp_exists_witness` at the failure
+  step); wrapper `runPebbleGame_eq_none_imp_exists_witness`
+  specialising at `D = empty` / `edges = G.edgeFinset.toList.map
+  Quot.out` (membership discharged by the `Quot.out_eq` round-trip,
+  `empty.underline = ∅ ⊆ G.edgeFinset` trivially); main iff
+  `runPebbleGame_correct` (`G.IsSparse k ℓ ↔ ∃ D, runPebbleGame G k ℓ
+  = some D`) combining `runPebbleGame_sound` (⇐) with the wrapper's
+  contrapositive (⇒) via a `match h_opt : ... with` case-split on
+  the `Option` output. The wrapper theorems live in a new
+  `section Correctness` after `section Completeness` with explicit
+  `[Fintype V]` (see *Decisions made → Correctness*).
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
@@ -1282,8 +1346,8 @@ via `Classical.decPred`) plus its three workhorse lemmas
 wrapper), `lem:pebble-game-tryAddEdgeWith-isSome` (⇐ half),
 `lem:pebble-game-tryAddEdgeWith-isSparse` (⇒ half), the iff
 `lem:pebble-game-tryAddEdge-iff-independent` (a one-liner combining
-both halves in prose), and the new `lem:pebble-game-failure-witness`
-are all green. Build + lint clean.
+both halves in prose), `lem:pebble-game-failure-witness`, and
+`thm:pebble-game-correct` are all green. Build + lint clean.
 
 **Note on the `(V × V)`-list vs `(Sym2 V)`-list workhorse.** An earlier
 hand-off proposed `List (Sym2 V)` for `runPebbleGameWith`'s input. The
@@ -1298,19 +1362,13 @@ adjacency. Documented in DESIGN.md *Pebble-game style island → The
 `-With` variant pattern* (same rationale as `tryReachPebbleWith` →
 `tryReachPebble`'s `outList` shift).
 
-Next concrete commit (completeness chain, leaf-most red node):
-**`thm:pebble-game-correct` — certificate-form correctness theorem**.
-Part (1) (success ⇒ sparse) is already `runPebbleGame_sound`; part (2)
-(failure ⇒ not sparse) needs a fold-level helper
-`runPebbleGameWith_eq_none_imp_exists_witness` that traces a `none`
-return through the `runPebbleGameWith` structural recursion to a
-specific intermediate step where `tryAddEdgeWith` returned `none`, then
-calls `tryAddEdgeWith_eq_none_imp_exists_witness` at that point and
-lifts the witness to the full input graph `G` via the subgraph
-monotonicity `Dmid.underline ⊆ G.edgeFinset` (from
-`runPebbleGameWith_underline_subset`). The matroidal-independence
-corollary `cor:pebble-game-countMatroid-indep` then follows in one
-line via Phase 7's `countMatroid_indep_iff_isSparse`. The
+Next concrete commit (last red node in the chapter dep-graph):
+**`cor:pebble-game-countMatroid-indep` — matroidal-independence
+corollary**. One-liner: `runPebbleGame_correct` (this commit) plus
+Phase 7's `SimpleGraph.countMatroid_indep_iff` gives `(countMatroid V
+k ℓ hℓ).Indep G.edgeSet ↔ ∃ D, runPebbleGame G k ℓ = some D` (modulo
+the off-diagonal hypothesis built into `countMatroid_indep_iff`).
+Closes the chapter and Phase 9's basic-pebble-game target. The
 completeness-side SimpleGraph-vs-multigraph corner-case check (open
 question above) is the only known open structural unknown.
 
@@ -1323,6 +1381,7 @@ top of `Reachable.span_add_le`, the bridge, and
 regime is not formally needed in Lean — `IsSparse`'s definition
 already gates on `ℓ ≤ k * V'.card`.
 
-Architectural question still open: *whether to land the matroidal-
-independence corollary in-phase or defer* (weak preference: land —
-cheap, ties the loop to Phase 7's `countMatroid`).
+Architectural question now resolved as *land in-phase*: the
+corollary is the next concrete commit. With both
+`runPebbleGame_correct` and `cor:pebble-game-countMatroid-indep`
+landing, Phase 9 reaches its basic-pebble-game target end-to-end.

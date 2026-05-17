@@ -586,7 +586,7 @@ preservation (already established in
     lem:runPebbleGame-underline-eq, lem:span-eq-ncard-edgesIn}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
   integers with $\ell < 2k$. If $\mathrm{runPebbleGame}\,k\,\ell\,G
-  = \mathrm{Sum.inl}\,D$, then $G$ is $(k, \ell)$-sparse.
+  = \mathrm{some}\,D$, then $G$ is $(k, \ell)$-sparse.
 \end{theorem}
 \begin{proof}
   \leanok
@@ -768,7 +768,7 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
     lem:pebble-game-tryAddEdgeWith-isSparse, def:isSparse}
   Let $D$ be a partial orientation reachable as above and $\{u, v\}$
   a candidate edge with $\{u, v\} \notin \underline{D}$. Then
-  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\} = \mathrm{Sum.inl}\,D'$
+  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\} = \mathrm{some}\,D'$
   if and only if $\mathrm{fromEdgeSet}\,(\underline{D} \cup
   \{\{u, v\}\})$ is $(k, \ell)$-sparse.
 \end{lemma}
@@ -845,43 +845,64 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
 
 The certificate-form statement of Lee--Streinu Theorem~8 in the
 matroidal regime: $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
-$\mathrm{Sum.inl}\,D$ exactly when $G$ is $(k, \ell)$-sparse, and
-returns $\mathrm{Sum.inr}\,W$ with $W$ a genuine blocking witness
-otherwise.
+$\mathrm{some}\,D$ exactly when $G$ is $(k, \ell)$-sparse, and the
+$\mathrm{none}$ branch produces a blocking-witness subset via a
+post-composed extraction.
 
 \begin{theorem}[Pebble game correctness, certificate form]
   \label{thm:pebble-game-correct}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_correct,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_eq_none_imp_exists_witness}
+  \leanok
   \uses{def:runPebbleGame, def:blockingWitness, def:isSparse,
-    thm:pebble-game-soundness,
-    lem:pebble-game-tryAddEdge-iff-independent,
+    thm:pebble-game-soundness, lem:runPebbleGame-underline-eq,
     lem:pebble-game-failure-witness}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
-  integers with $\ell < 2k$. Then:
+  integers with $\ell < 2k$. Then $G$ is $(k, \ell)$-sparse if and
+  only if there exists a partial orientation $D$ with
+  $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{some}\,D$. Concretely:
   \begin{enumerate}
-    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{Sum.inl}\,
-      D$, then $G$ is $(k, \ell)$-sparse and $\underline{D} = E(G)$.
-    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{Sum.inr}\,
-      W$, then $W$ is a blocking witness for $G$, so $G$ is not
-      $(k, \ell)$-sparse.
+    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{some}\,D$,
+      then $G$ is $(k, \ell)$-sparse and $\underline{D} = E(G)$.
+    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{none}$,
+      then there exists $V' \subseteq V$ with $\ell \le k|V'|$ and
+      $k|V'| < |\edgesIn[G]{V'}| + \ell$ — i.e.\ a blocking witness
+      for $G$.
   \end{enumerate}
-  In particular, $G$ is $(k, \ell)$-sparse if and only if there
-  exists $D$ with $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{Sum.inl}\,D$.
 \end{theorem}
 \begin{proof}
-  \uses{thm:pebble-game-soundness,
-    lem:pebble-game-tryAddEdge-iff-independent,
+  \leanok
+  \uses{thm:pebble-game-soundness, lem:runPebbleGame-underline-eq,
     lem:pebble-game-failure-witness}
-  Part (1) is \cref{thm:pebble-game-soundness} together with the
-  invariant $\underline{D} = E(G)$ enforced by the fold (every edge
-  of $G$ is consumed). Part (2) follows from
-  \cref{lem:pebble-game-failure-witness} applied at the failure
-  point, together with the IH that the accepted edges before
-  failure form a $(k, \ell)$-sparse subgraph $H \subseteq G$ (by
-  iterated application of
-  \cref{lem:pebble-game-tryAddEdge-iff-independent}); the union of
-  $H$'s edges within $V'$ plus the rejected edge $\{u, v\}$
-  saturates $\edgesIn[G]{V'}$ above the sparsity bound. The biconditional
-  follows by case-splitting on the disjoint $\mathrm{Sum}$ output.
+  Part~(1) combines \cref{thm:pebble-game-soundness} (sparsity from
+  Invariant~(4) on the final state) with
+  \cref{lem:runPebbleGame-underline-eq} ($\underline{D} = E(G)$
+  through the no-skip-fires fold).
+
+  Part~(2) is the wrapper-level theorem
+  $\mathtt{runPebbleGame\_eq\_none\_imp\_exists\_witness}$: a
+  fold-level structural recursion on the candidate edge list traces
+  a $\mathrm{none}$ return through $\mathtt{runPebbleGameWith}$ to
+  the step at which $\mathtt{tryAddEdgeWith}$ rejected, threading
+  $\mathrm{Reachable}\,k\,\ell$ via
+  $\mathtt{tryAddEdgeWith\_reachable}$ and the running subset
+  relation $\underline{D_{\mathrm{mid}}} \subseteq E(G)$ via
+  $\mathtt{tryAddEdgeWith\_underline}$ (which gives
+  $\underline{D_{\mathrm{mid}}} = \{s(u,v)\} \cup \underline{D}$
+  per step) plus the per-edge head membership $\{u, v\} \in E(G)$.
+  At the failure step, \cref{lem:pebble-game-failure-witness}
+  applies directly in its subset form (the broadened
+  $\{u, v\} \in E(G) \land \underline{D_0} \subseteq E(G)$ hypothesis
+  rather than tight equality) against the input graph $G$.
+
+  The biconditional comes from the dichotomy on the
+  $\mathrm{Option}$ output: $\mathrm{some}$ closes via~(1);
+  $\mathrm{none}$ closes via~(2) by contradicting the sparsity
+  hypothesis at the witness $V'$. The Lean encoding uses
+  $\mathrm{Option}\,(\mathrm{PartialOrientation}\,V)$ rather than
+  $\mathrm{Sum}$ (cf.\ \cref{def:runPebbleGame}); the
+  blocking-witness $V'$ is extracted by the post-composed wrapper
+  theorem rather than returned in the failure branch directly.
 \end{proof}
 
 \subsection{Matroidal-independence corollary}
@@ -902,7 +923,7 @@ the pebble game decides matroidal independence.
   $\mathrm{countMatroid}\,V\,k\,\ell$
   (\cref{def:countMatroid}) if and only if
   $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
-  $\mathrm{Sum.inl}\,D$ for some partial orientation $D$.
+  $\mathrm{some}\,D$ for some partial orientation $D$.
 \end{corollary}
 \begin{proof}
   \uses{thm:pebble-game-correct, thm:countMatroid-indep-iff}

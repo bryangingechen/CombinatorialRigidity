@@ -2311,7 +2311,155 @@ lemma tryAddEdgeWith_eq_none_imp_exists_witness {k ℓ : ℕ} {u v : V} (huv : u
     -- Below-threshold from `hthr`: peb u + peb v ≤ ℓ.
     omega
 
+/-! #### Correctness theorem -/
+
+/-- **Fold-level failure-witness extraction** for the outer pebble-game loop:
+if `runPebbleGameWith` returns `none` on a reachable orientation `D` whose
+underlying edge set sits in `G.edgeFinset` and whose candidate edge list
+ranges within `G.edgeFinset`, then there exists a vertex subset `V'`
+witnessing non-sparsity of `G`. Fold-level analogue of the per-edge witness
+`tryAddEdgeWith_eq_none_imp_exists_witness`.
+
+By structural recursion on the edge list. The empty case contradicts the
+hypothesis (the fold returns `some D`). On `(u, v) :: es`, the runtime-check
+`if`-condition either fails (no-op skip: recurse with the same `D`) or
+succeeds, in which case we match on `tryAddEdgeWith`'s output:
+* on `some Dmid`, recurse on `es` with `Dmid`, threading reachability via
+  `tryAddEdgeWith_reachable`, the underline-subset via
+  `tryAddEdgeWith_underline` (`Dmid.underline = insert s(u, v) D.underline`)
+  combined with `s(u, v) ∈ G.edgeFinset` from the head of the membership
+  hypothesis;
+* on `none`, apply `tryAddEdgeWith_eq_none_imp_exists_witness` at the
+  failure point directly — its broadened (subset-form) hypothesis matches
+  the per-step state.
+
+Cf. blueprint `thm:pebble-game-correct` part (2). -/
+lemma runPebbleGameWith_eq_none_imp_exists_witness {k ℓ : ℕ}
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (h_matroidal : ℓ < 2 * k) :
+    ∀ (edges : List (V × V)) {D : PartialOrientation V} (_hD : Reachable k ℓ D)
+      (_hmem : ∀ p ∈ edges, s(p.1, p.2) ∈ G.edgeFinset)
+      (_hsub : D.underline ⊆ G.edgeFinset),
+      D.runPebbleGameWith k ℓ toSucc h_toSucc edges = none →
+      ∃ V' : Finset V, ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ
+  | [], _D, _hD, _hmem, _hsub, h => by
+    rw [runPebbleGameWith] at h
+    exact absurd h (Option.some_ne_none _)
+  | (u, v) :: es, D, hD, hmem, hsub, h => by
+    rw [runPebbleGameWith] at h
+    by_cases hcond : u ≠ v ∧ (u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs ∧ (∀ x, D.out x ≤ k)
+    · rw [dif_pos hcond] at h
+      match heq : D.tryAddEdgeWith k ℓ u v hcond.1 hcond.2.1 hcond.2.2.1 hcond.2.2.2
+          toSucc h_toSucc with
+      | some Dmid =>
+        rw [heq] at h
+        have hR_mid : Reachable k ℓ Dmid :=
+          tryAddEdgeWith_reachable hcond.1 toSucc h_toSucc hcond.2.1 hcond.2.2.1
+            hcond.2.2.2 hD heq
+        have h_mid : Dmid.underline = insert s(u, v) D.underline :=
+          tryAddEdgeWith_underline hcond.1 toSucc h_toSucc
+            hcond.2.1 hcond.2.2.1 hcond.2.2.2 heq
+        have h_uv_in : s(u, v) ∈ G.edgeFinset := hmem (u, v) List.mem_cons_self
+        have h_sub_mid : Dmid.underline ⊆ G.edgeFinset := by
+          rw [h_mid]
+          intro e he
+          rcases Finset.mem_insert.mp he with rfl | he
+          · exact h_uv_in
+          · exact hsub he
+        have h_mem_es : ∀ p ∈ es, s(p.1, p.2) ∈ G.edgeFinset := fun p hp =>
+          hmem p (List.mem_cons_of_mem _ hp)
+        exact runPebbleGameWith_eq_none_imp_exists_witness toSucc h_toSucc h_matroidal
+          es hR_mid h_mem_es h_sub_mid h
+      | none =>
+        have h_uv_in : s(u, v) ∈ G.edgeFinset := hmem (u, v) List.mem_cons_self
+        exact tryAddEdgeWith_eq_none_imp_exists_witness hcond.1 toSucc h_toSucc
+          h_matroidal hcond.2.1 hcond.2.2.1 hcond.2.2.2 hD h_uv_in hsub heq
+    · rw [dif_neg hcond] at h
+      have h_mem_es : ∀ p ∈ es, s(p.1, p.2) ∈ G.edgeFinset := fun p hp =>
+        hmem p (List.mem_cons_of_mem _ hp)
+      exact runPebbleGameWith_eq_none_imp_exists_witness toSucc h_toSucc h_matroidal
+        es hD h_mem_es hsub h
+
 end Completeness
+
+/-! ### Correctness theorem — assembly
+
+The certificate-form correctness theorem (Lee–Streinu Theorem 8, blueprint
+`thm:pebble-game-correct`): assembled from `runPebbleGame_sound` on the
+`some` branch and the new wrapper `runPebbleGame_eq_none_imp_exists_witness`
+on the `none` branch. Stated with explicit `[Fintype V]` (rather than the
+project-default `[Finite V]`) because the signature elaborates the
+`runPebbleGame G k ℓ` term, whose body autobinds `[Fintype V]` from the
+section that defines it; `Fintype.ofFinite` cannot bridge from `[Finite V]`
+at signature-elaboration time. -/
+
+section Correctness
+
+/-- **Wrapper-level failure-witness for `runPebbleGame`**: a `none` return on
+a finite simple graph `G` in the matroidal regime produces a vertex subset
+`V'` witnessing non-sparsity of `G`. Specialises
+`runPebbleGameWith_eq_none_imp_exists_witness` to `D = empty` and
+`edges = G.edgeFinset.toList.map Quot.out`; the membership hypothesis is
+discharged by the `Quot.out_eq` round-trip already used in
+`runPebbleGame_underline_eq_edgeFinset`, and the `D.underline ⊆ G.edgeFinset`
+hypothesis is `underline_empty` plus `Finset.empty_subset`. -/
+theorem runPebbleGame_eq_none_imp_exists_witness [Fintype V]
+    {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ}
+    (h_matroidal : ℓ < 2 * k) (h : runPebbleGame G k ℓ = none) :
+    ∃ V' : Finset V, ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ := by
+  rw [runPebbleGame] at h
+  set edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V) with hedges
+  have h_img : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset := by
+    rw [hedges, List.map_map]
+    have h_id : (fun p : V × V => s(p.1, p.2)) ∘ (Quot.out : Sym2 V → V × V)
+        = id := by
+      funext e; exact Quot.out_eq e
+    rw [h_id, List.map_id, G.edgeFinset.toList_toFinset]
+  have h_mem : ∀ p ∈ edges, s(p.1, p.2) ∈ G.edgeFinset := by
+    intro p hp
+    rw [← h_img]
+    exact List.mem_toFinset.mpr (List.mem_map.mpr ⟨p, hp, rfl⟩)
+  have h_sub : (empty : PartialOrientation V).underline ⊆ G.edgeFinset := by
+    rw [underline_empty]; exact Finset.empty_subset _
+  exact runPebbleGameWith_eq_none_imp_exists_witness _ _ h_matroidal edges
+    Reachable.empty h_mem h_sub h
+
+/-- **Certificate-form correctness of the basic `(k, ℓ)`-pebble game**
+(Lee–Streinu Theorem 8, certificate form; blueprint
+`thm:pebble-game-correct`): in the matroidal regime `ℓ < 2k`, the finite
+simple graph `G` is `(k, ℓ)`-sparse iff `runPebbleGame G k ℓ` returns
+`some D` for some partial orientation `D`. Two-line assembly:
+* (⇐) `runPebbleGame_sound`: an accepted run certifies sparsity.
+* (⇒) Contrapositive: if `runPebbleGame G k ℓ = none`,
+  `runPebbleGame_eq_none_imp_exists_witness` produces a subset violating
+  `G.IsSparse k ℓ`.
+
+The matroidal hypothesis `ℓ < 2k` is needed only for the contrapositive
+direction (it discharges `ℓ ≤ k * V'.card` from `|V'| ≥ 2` in the witness
+construction); `runPebbleGame_sound` itself is regime-agnostic. Beyond this
+iff, the success branch additionally satisfies `D.underline = G.edgeFinset`
+(`runPebbleGame_underline_eq_edgeFinset`) — together this is the full
+content of the blueprint theorem. -/
+theorem runPebbleGame_correct [Fintype V] {G : SimpleGraph V} [Fintype G.edgeSet]
+    {k ℓ : ℕ} (h_matroidal : ℓ < 2 * k) :
+    G.IsSparse k ℓ ↔ ∃ D : PartialOrientation V, runPebbleGame G k ℓ = some D := by
+  refine ⟨?_, ?_⟩
+  · intro hG
+    match h_opt : runPebbleGame G k ℓ with
+    | some D => exact ⟨D, rfl⟩
+    | none =>
+      obtain ⟨V', h_size, h_lt⟩ :=
+        runPebbleGame_eq_none_imp_exists_witness h_matroidal h_opt
+      exfalso
+      have := hG V' h_size
+      omega
+  · rintro ⟨_, hD⟩
+    exact runPebbleGame_sound hD
+
+end Correctness
 
 end PartialOrientation
 
