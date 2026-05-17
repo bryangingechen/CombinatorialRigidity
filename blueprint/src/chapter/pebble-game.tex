@@ -125,11 +125,17 @@ out-degree budget.
   (under $\mathrm{out}_D(u_m) < k$, the precondition for the
   reversal move to be valid). The invariant-preservation half,
   span invariance ($\mathrm{span}_D(V')$ unchanged on every $V'$),
-  and the per-vertex \texttt{out}/\texttt{peb} effects are
-  formalised. The subset-level $\mathrm{out}_D(V')$ shift and the
-  $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V')$ invariant on
-  subsets follow in subsequent commits feeding
-  \cref{lem:pebble-game-invariants}.
+  the per-vertex \texttt{out}/\texttt{peb} effects, and the
+  subset-level $\mathrm{peb}_{D, k}(V') + \mathrm{out}_D(V')$
+  invariance under reversal are formalised. The last is routed
+  through the algebraic identity $\mathrm{peb}_{D, k}(V') +
+  \mathrm{span}_D(V') + \mathrm{out}_D(V') = k|V'|$
+  (\cref{lem:pebble-game-invariants}~(2)) applied to both $D$ and
+  $D'$: since $\mathrm{span}_D(V')$ is invariant, $\mathrm{peb}(V')
+  + \mathrm{out}(V')$ must match. (The subset-level
+  $\mathrm{out}_D(V')$ itself is *not* invariant: it shifts by
+  $[u_m \in V'] - [u_0 \in V']$, cancelling the corresponding shift
+  in $\mathrm{peb}_{D, k}(V')$.)
 \end{definition}
 
 \subsection{Invariants}

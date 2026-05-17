@@ -185,6 +185,34 @@ def pebOn (k : ℕ) (V' : Finset V) : ℕ := ∑ v ∈ V', D.peb k v
     (empty : PartialOrientation V).pebOn k V' = V'.card * k := by
   simp [pebOn, Finset.sum_const, smul_eq_mul, mul_comm]
 
+/-- The sum of per-vertex out-degrees over a subset `V'` partitions arcs sourced
+in `V'` by their target: arcs landing in `V'` are counted by `D.span V'`, arcs
+leaving `V'` by `D.outOn V'`. Bridges per-vertex `out` to the subset-level
+`span`/`outOn` accounting; consumed by `pebOn_add_span_add_outOn`. -/
+lemma sum_out_eq_span_add_outOn (V' : Finset V) :
+    ∑ v ∈ V', D.out v = D.span V' + D.outOn V' := by
+  simp_rw [out_eq_card_filter_fst]
+  rw [Finset.sum_card_fiberwise_eq_card_filter,
+    ← Finset.card_filter_add_card_filter_not (p := fun p : V × V => p.2 ∈ V'),
+    Finset.filter_filter, Finset.filter_filter]
+  rfl
+
+/-- Lee–Streinu Invariant (2) (algebraic form): under the per-vertex bound
+`D.out v ≤ k` on `V'`, the subset's pebble count, span, and out-boundary sum to
+`k|V'|`. Combines Invariant (1) (`peb v + out v = k`) summed over `V'` with the
+fiberwise identity `sum_out_eq_span_add_outOn`. Feeds
+`lem:pebble-game-invariants` (2). -/
+lemma pebOn_add_span_add_outOn (k : ℕ) (V' : Finset V)
+    (hbd : ∀ v ∈ V', D.out v ≤ k) :
+    D.pebOn k V' + D.span V' + D.outOn V' = k * V'.card := by
+  have h_peb_out : D.pebOn k V' + ∑ v ∈ V', D.out v = k * V'.card := by
+    rw [pebOn, ← Finset.sum_add_distrib]
+    have h : ∀ v ∈ V', D.peb k v + D.out v = k := fun v hv => by
+      unfold peb; exact Nat.sub_add_cancel (hbd v hv)
+    rw [Finset.sum_congr rfl h, Finset.sum_const, smul_eq_mul, mul_comm]
+  have h_sum := D.sum_out_eq_span_add_outOn V'
+  omega
+
 /-! ### Path reversal
 
 The path-reversal move (Lee–Streinu §3, blueprint `def:path-reversal`):
@@ -434,6 +462,24 @@ lemma span_reverse_eq
   rw [p.reversedArcsFinset_eq_image_swap, Finset.filter_image,
       Finset.card_image_of_injective _ Prod.swap_injective,
       Finset.filter_congr (fun pp _ => hQ_swap pp)]
+
+/-- The sum of subset-level pebble count and out-boundary is invariant under
+path reversal: span is invariant by `span_reverse_eq`, so the L-S Invariant (2)
+algebraic identity `pebOn + span + outOn = k|V'|` applied to both `D` and
+`D.reverse p hp` forces `pebOn + outOn` to match. While `outOn V'` itself
+shifts by `[w ∈ V'] - [u ∈ V']` per the head/tail accounting in
+`out_reverse_head` / `out_reverse_tail`, the corresponding shift in `pebOn k V'`
+cancels it. Feeds `lem:pebble-game-invariants` (2) on path-reversal moves. -/
+lemma pebOn_add_outOn_reverse_eq
+    (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w) (hp : p.IsPath)
+    {k : ℕ} {V' : Finset V}
+    (hbd : ∀ v ∈ V', D.out v ≤ k) (hbd' : ∀ v ∈ V', (D.reverse p hp).out v ≤ k) :
+    (D.reverse p hp).pebOn k V' + (D.reverse p hp).outOn V'
+      = D.pebOn k V' + D.outOn V' := by
+  have h_D := D.pebOn_add_span_add_outOn k V' hbd
+  have h_D' := (D.reverse p hp).pebOn_add_span_add_outOn k V' hbd'
+  rw [D.span_reverse_eq p hp V'] at h_D'
+  omega
 
 end Reverse
 
