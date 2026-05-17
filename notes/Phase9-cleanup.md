@@ -975,6 +975,37 @@ the manual:
   docstrings of the two halves (`PebbleGame.lean:2018, 2112`)
   remain in place.
 
+- **C2-followup (carry-over):** Promote the let-bound predicate
+  `P` inside `tryAddEdgeWith` to a top-level `private def
+  PartialOrientation.tryAddEdgePred (D k u v w) : Bool :=
+  decide (0 < D.peb k w) && decide (w ≠ u) && decide (w ≠ v)` plus
+  a `@[simp]` decoder lemma
+  `tryAddEdgePred_eq_true : ... ↔ 0 < D.peb k w ∧ w ≠ u ∧ w ≠ v`.
+  Unlocks the cross-proof unification helper
+  `r.reachable_newOrient_of_tryAddEdgePred hD h_outle` flagged in
+  C2's *Cross-proof unification analysis*: each of the six
+  case3/case4 bodies across `tryAddEdgeWith_reachable`,
+  `tryAddEdgeWith_isSome`, and
+  `tryAddEdgeWith_eq_none_imp_exists_witness` shrinks from ~17 LoC
+  of repeated `simp [P, ...]` + `h_target` + `r.reachable_newOrient`
+  setup to ~5 LoC of `exact ih (r.reachable_newOrient_of_tryAddEdgePred
+  hD h_outle) h`. Estimated net ~55 LoC saved (3 proofs × 12 LoC × 2
+  cases, less a ~15-LoC def+lemma pair).
+
+  **Out of cleanup-round scope** per `../CLEANUP.md` *What a cleanup
+  round is not — Not a refactor pass*. Lands as a forward-work commit
+  (~30–60 min estimate including the `decreasing_by` block fixup and
+  any `tryAddEdgeWith.induct` case-binder adjustments — the `P` name
+  currently appears as a case-binder in all four `tryAddEdgeWith.induct`
+  proofs and may shift to the named def after the hoist). The
+  refactor touches: the function body of `tryAddEdgeWith`
+  (`PebbleGame.lean:1198`), its `decreasing_by` block
+  (L1246–1275, which also `simp only [P, ...]`s the let), and the
+  case3/case4 / case5 bindings in the four `tryAddEdgeWith.induct`
+  consumers (`_reachable`, `_underline`, `_isSome`,
+  `_eq_none_imp_exists_witness`). Pick this up as a small forward
+  task at the next opportunity; not a blocker for bucket D.
+
 ## Blockers / open questions
 
 - Round in progress; buckets A + B + C fully closed (A1--A4 +
@@ -1025,6 +1056,16 @@ lift to TACTICS-GOLF / TACTICS-QUIRKS / DESIGN.md), `FRICTION.md`
 housekeeping (Phase 9's 5 resolved entries' archive disposition),
 `DESIGN.md` *Choices to revisit* flips (3 Phase-9-resolved
 decisions), and `ROADMAP.md` engineering-conventions re-skim.
+
+One forward-work carry-over from this round is parked in
+*Surfaced follow-ups* as **C2-followup**: promote the let-bound
+predicate `P` inside `tryAddEdgeWith` to
+`PartialOrientation.tryAddEdgePred` + decoder lemma, unlocking
+the cross-proof unification helper analysed in C2 (~55 LoC net
+savings across the three `tryAddEdgeWith.induct` proofs). Out of
+cleanup-round scope per `../CLEANUP.md` *What a cleanup round is
+not — Not a refactor pass*; lands as a small forward-work commit
+when an agent picks it up, not a bucket-D prerequisite.
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
