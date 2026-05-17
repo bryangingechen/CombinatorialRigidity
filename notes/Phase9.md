@@ -67,19 +67,28 @@ its two nodes `def:reachable-finding` and
 inline here unless it grows beyond ~2 sessions, in which case
 promote to a dedicated `Phase9-warmup.md`.
 
-**DFS warmup progress (signature-only commit).** `Search/DFS.lean`
-now carries the `DirectedWalk` inductive type (indexed by endpoints,
-mirroring `SimpleGraph.Walk`) with `length` / `vertices` / `IsPath`
-accessors, plus `reachableFinding` + `reachableFinding_sound` /
-`reachableFinding_complete` as `sorry`-stubbed signatures. The
-typeclass shape `[Fintype V] [DecidableEq V]` is settled
-(see DESIGN.md *Pebble-game style island*; the DFS file is the
-first instance of the style island, so the note landed here). The
-predicate is `P : V → Bool` and the relation is presented as
-`succ : V → Finset V`; completeness is stated against
-`Relation.ReflTransGen` of `fun a b => b ∈ succ a`. Next commit
-fills the DFS body + termination measure; soundness +
-completeness follow in a third commit.
+**DFS warmup progress (body fill, computable shape).**
+`reachableFinding`'s body is in: `reachableFindingAux` threads
+`visited : Finset V`, dispatches on `v ∈ visited` / `P v`, and on
+miss iterates over `(succ v).attach` via `List.findSome?`, recursing
+on `insert v visited` and `cons`-prepending the arc on success.
+Termination uses the design's `(Finset.univ \ visited).card` measure,
+proved via `Finset.card_lt_card` on the sdiff dropping exactly `v`.
+Soundness and completeness remain `sorry`-stubbed.
+
+The function is **fully computable**: `succ : V → List V` (not
+`V → Finset V`) for child enumeration, with `visited : Finset V`
+retained only for the math-layer termination measure. `#eval
+reachableFinding succEx (· == 2) 0` on a `Fin 4` example returns
+`some (2, [0, 1, 2])` — directly executable, satisfying the
+`IO`-pipeline use case (parser → DFS → emitter) raised mid-session.
+See *Decisions made → DFS warmup* below + DESIGN.md
+*Pebble-game style island* (math/exec layer split paragraph) +
+`FRICTION.md` *[resolved] `Finset.toList` is noncomputable* for the
+design history. Build + lint clean.
+
+Next commit: fill `reachableFinding_sound`. Smallest unit of forward
+progress; `reachableFinding_complete` follows in a third commit.
 
 ## Architectural choices made up front
 
@@ -201,12 +210,17 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   case-split. The inductive shape matches the project / mathlib idiom
   for walks and keeps the API surface low.
 
-- **Relation as `succ : V → Finset V` plumbed via the predicate
+- **Relation as `succ : V → List V` plumbed via the predicate
   `fun a b => b ∈ succ a`.** `DirectedWalk` itself stays parametric
   over an abstract `R : V → V → Prop`; the DFS function passes the
-  out-neighbour-membership relation to it. This keeps `DirectedWalk`
-  reusable beyond DFS while letting the algorithm side take the
-  computable `Finset`-valued representation directly.
+  out-neighbour-membership relation to it. The signature uses
+  `List V` rather than `Finset V` so the algorithm is fully
+  computable — `Finset.toList` is noncomputable in mathlib (see
+  *Decisions made → math/exec layer split*), and an enumeration-based
+  DFS body propagates that. Callers holding adjacency data in
+  `Finset` form expose a list projection at the DFS boundary; the
+  projection itself can stay noncomputable in isolation without
+  contaminating the algorithm.
 
 - **Predicate `P : V → Bool`, completeness against `ReflTransGen`.**
   `P : V → Bool` matches the blueprint exactly (decidable by
@@ -214,6 +228,44 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   against `Relation.ReflTransGen (fun a b => b ∈ succ a) v w` rather
   than via the walk type itself — separates "is reachable" from
   "carries a walk witness" cleanly.
+
+- **Body: single-function with `List.findSome?` over mutual
+  recursion.** Initial attempt used a `mutual` block with separate
+  `reachableFindingAux` / `reachableFindingChildren` helpers, but
+  structural recursion failed because the children-list parameter
+  has type `List {u // u ∈ succ v}` — depending on the function
+  parameter `v`. Restructured to a single `reachableFindingAux` that
+  iterates children inline via `(succ v).attach.findSome?`, with the
+  recursive call inside the lambda. Lean's WF tactic sees through
+  `List.findSome?` to the recursive call and the
+  `(Finset.univ \ visited).card` measure dispatches in one
+  `decreasing_by` proof.
+
+- **Math/exec layer split: `succ : V → List V`, `visited : Finset V`.**
+  `Finset.toList` is noncomputable in mathlib (it lifts through
+  `Multiset.toList`'s `Classical`-flavored `Quotient.lift`), so an
+  enumeration-based DFS body taking `succ : V → Finset V` would
+  silently force the whole algorithm `noncomputable`. The DFS warmup
+  was first drafted with `Finset` and observed the friction; we
+  refactored to `succ : V → List V` (exec layer, computable) while
+  keeping `visited : Finset V` (math layer, needed for
+  `Finset.univ \ visited`'s cardinality termination measure). Sanity
+  check: `#eval reachableFinding succEx (· == 2) 0` returns
+  `some (2, [0, 1, 2])` on a `Fin 4` example. Phase 9 main's
+  `PartialOrientation V` is expected to follow the same pattern:
+  store as `Finset (V × V)` internally for invariants, expose
+  `outList : V → List V` at the DFS boundary. See FRICTION.md
+  *[resolved] `Finset.toList` is noncomputable* + DESIGN.md
+  *Pebble-game style island*.
+
+- **`[Fintype V]` bound explicitly on `reachableFindingAux`, not just
+  via `variable`.** Adding `[Fintype V] [DecidableEq V]` as section
+  variables and letting them auto-bind to the recursive def produced
+  a confusing *"MVar does not look like a recursive call"* error —
+  `[Fintype V]`, used only in `termination_by`'s `Finset.univ`,
+  landed at the *end* of the auto-bound signature (`... → V → Fintype
+  V`), confusing Lean's recursive-call recognition. Pinning the
+  typeclasses explicitly on the def fixes it; cheap and clear.
 
 ## Blockers / open questions
 
@@ -268,10 +320,29 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Hand-off / next phase
 
-DFS warmup scaffold is in (`Search/DFS.lean`, sorry-stubbed signatures
-+ `DirectedWalk` API; build + lint clean). Next concrete commit:
-fill `reachableFinding`'s body with the inner recursion + visited-set
-threading + `termination_by (Finset.univ \ visited).card`, leaving
-`reachableFinding_sound` / `reachableFinding_complete` as `sorry`.
-Smallest unit of forward progress; the soundness/completeness pair
-follows in a third commit once the body's recursion shape is fixed.
+DFS warmup body fill is in (`Search/DFS.lean`; build + lint clean).
+The `reachableFindingAux` recursion shape is settled: single function,
+`(Finset.univ \ visited).card` measure, `List.findSome?` over
+`(succ v).attach.toList` for the children loop. Function is
+`noncomputable` (forced by `Finset.toList` — see *Decisions made* and
+`FRICTION.md` for the open friction).
+
+Next concrete commit: fill `reachableFinding_sound`. By induction on
+the WF-recursion depth (matching `decreasing_by`'s measure decrease),
+or directly on `DirectedWalk` structure of the returned `p`. Both
+clauses (`P w = true` and `p.IsPath`) are paths through the same
+recursion: `P w` is established at the `some ⟨v, .nil v⟩` branch and
+preserved by `cons` since `cons` only adds the outer `v`; `IsPath`
+follows because the recursive call passes `insert v visited` and the
+returned walk's vertices are all in
+`Finset.univ \ (insert v visited)`, so prepending `v` keeps the list
+duplicate-free.
+
+`reachableFinding_complete` follows in a third commit: induction on
+`Relation.ReflTransGen` of the assumed reachability witness; the
+case where the witness is `.refl` is immediate (`v` itself or its
+nil-walk satisfies `P` if it does); the `.tail` case unwraps one
+arc and delegates to the recursive call's invariant. The DFS may
+return a *different* `w'` than the witness's `w` (the DFS picks the
+first `P`-match in its traversal order), so the conclusion's `w'` is
+existentially quantified independent of the input's `w`.

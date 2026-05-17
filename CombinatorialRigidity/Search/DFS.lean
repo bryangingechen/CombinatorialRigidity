@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import Mathlib.Data.Finset.Basic
+public import Mathlib.Data.Finset.Card
 public import Mathlib.Data.Fintype.Basic
 public import Mathlib.Data.List.Nodup
 public import Mathlib.Data.List.Chain
@@ -15,10 +16,20 @@ public import Mathlib.Data.List.Chain
 
 A reusable depth-first search primitive on a finite type, presented as
 the relation `fun a b => b ∈ succ a` for a user-supplied out-neighbour
-function `succ : V → Finset V`. Given a source vertex `v` and a
+function `succ : V → List V`. Given a source vertex `v` and a
 predicate `P : V → Bool`, `reachableFinding succ P v` returns either
 `some ⟨w, p⟩` with `P w` and `p` a simple walk from `v` to `w`, or
 `none` when no such `w` is reachable from `v`.
+
+The out-neighbours are passed as `List V` rather than `Finset V` so
+that the algorithm is fully *computable*: `Finset.toList` is
+noncomputable in mathlib (it lifts through `Multiset.toList`'s
+`Classical`-flavored `Quotient.lift`), which would propagate to the
+DFS body if we enumerated via `(succ v).attach.toList`. Callers that
+hold their adjacency data in `Finset` form should expose a list
+projection (with optional `Nodup` invariant) at the DFS boundary; see
+`DESIGN.md` *Pebble-game style island* for the math-layer ↔ exec-layer
+split rationale.
 
 We model termination on `Batteries.UnionFind`, whose
 `termination_by self.rankMax - self.rank x` is a strictly-decreasing
@@ -47,12 +58,13 @@ witness path.
 ## Style island
 
 This file takes `[Fintype V] [DecidableEq V]` directly in algorithm
-signatures and uses `Finset.card` end-to-end, departing from the rest
-of the project's `[Finite V]` + inline `Fintype.ofFinite V` bridge
-idiom. The state machine cannot run at `[Finite V]` strength (no
-`Finset.univ`, no enumeration); `#eval` / `decide` on extracted
-certificates needs the typeclasses throughout. See
-`../../DESIGN.md` *Pebble-game style island* for the rationale.
+signatures and uses `Finset.card` end-to-end for the *termination
+measure*, departing from the rest of the project's `[Finite V]` +
+inline `Fintype.ofFinite V` bridge idiom. The state machine cannot
+run at `[Finite V]` strength (no `Finset.univ`, no enumeration); the
+DFS body is fully computable (`succ : V → List V`, no
+`Finset.toList`) so `#eval` / `decide` fire on extracted certificates.
+See `../../DESIGN.md` *Pebble-game style island* for the rationale.
 
 ## References
 
@@ -112,6 +124,46 @@ end DirectedWalk
 
 variable [Fintype V] [DecidableEq V]
 
+/-- DFS body for `reachableFinding`: search for a `P`-satisfying vertex
+reachable from `v` along `succ`-arcs, skipping vertices already in
+`visited`. Returns the first match packaged with a witness walk from
+`v`, or `none` if no such vertex is reachable without revisiting.
+
+The recursion threads `visited` as it grows: each recursive call adds
+the current `v` to `visited`, so the termination measure
+`(Finset.univ \ visited).card` strictly decreases (cf. the file
+docstring's *Batteries.UnionFind* comparison). The children of `v` are
+tried via `List.findSome?` on `(succ v).attach`; on the first
+successful sub-search the returned walk gets the arc `v → u` prepended
+via `DirectedWalk.cons`.
+
+The `visited` set stays a `Finset V` because the termination measure
+needs `Finset.univ \ visited` for cardinality; this is *math-layer*
+state, never enumerated. The *exec-layer* enumeration of children
+goes through `succ : V → List V` so the body stays computable
+(`Finset.toList` would force `noncomputable`). -/
+def reachableFindingAux [Fintype V] [DecidableEq V]
+    (succ : V → List V) (P : V → Bool)
+    (visited : Finset V) (v : V) :
+    Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w) :=
+  if _hv : v ∈ visited then
+    none
+  else if P v = true then
+    some ⟨v, .nil v⟩
+  else
+    (succ v).attach.findSome? fun ⟨u, hu⟩ =>
+      (reachableFindingAux succ P (insert v visited) u).map fun ⟨w, p⟩ =>
+        ⟨w, .cons hu p⟩
+  termination_by (Finset.univ \ visited).card
+  decreasing_by
+    -- Recursive call passes `insert v visited`; since `v ∉ visited`,
+    -- the set `Finset.univ \ visited` loses exactly `v` and shrinks.
+    apply Finset.card_lt_card
+    refine Finset.ssubset_iff_of_subset (Finset.sdiff_subset_sdiff
+      (Finset.Subset.refl _) (Finset.subset_insert _ _)) |>.mpr ⟨v, ?_, ?_⟩
+    · simp [_hv]
+    · simp
+
 /-- Depth-first search for a `P`-satisfying vertex reachable from `v`
 along the relation `fun a b => b ∈ succ a`.
 
@@ -122,15 +174,14 @@ along the relation `fun a b => b ∈ succ a`.
 
 Termination is by `(Finset.univ \ visited).card` on the internal
 recursive helper that threads a `visited` set; cf. the file
-docstring's *Batteries.UnionFind* comparison.
-
-Body deferred — this declaration is currently a scaffolding stub. -/
-noncomputable def reachableFinding (succ : V → Finset V) (P : V → Bool) (v : V) :
-    Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w) := sorry
+docstring's *Batteries.UnionFind* comparison. -/
+def reachableFinding (succ : V → List V) (P : V → Bool) (v : V) :
+    Option (Σ w : V, DirectedWalk (fun a b => b ∈ succ a) v w) :=
+  reachableFindingAux succ P ∅ v
 
 /-- **Soundness.** If `reachableFinding succ P v = some ⟨w, p⟩`, then
 `P w` holds and the returned walk `p` is simple. -/
-theorem reachableFinding_sound {succ : V → Finset V} {P : V → Bool} {v : V}
+theorem reachableFinding_sound {succ : V → List V} {P : V → Bool} {v : V}
     {w : V} {p : DirectedWalk (fun a b => b ∈ succ a) v w}
     (hres : reachableFinding succ P v = some ⟨w, p⟩) :
     P w = true ∧ p.IsPath := sorry
@@ -139,7 +190,7 @@ theorem reachableFinding_sound {succ : V → Finset V} {P : V → Bool} {v : V}
 closure of `v` satisfies `P`, then `reachableFinding` returns
 `some ⟨w', p⟩` for some such `w'` (possibly `w' ≠ w`, since the DFS
 returns the first match in its traversal order). -/
-theorem reachableFinding_complete {succ : V → Finset V} {P : V → Bool} {v : V}
+theorem reachableFinding_complete {succ : V → List V} {P : V → Bool} {v : V}
     (h : ∃ w : V, Relation.ReflTransGen (fun a b => b ∈ succ a) v w ∧ P w = true) :
     ∃ (w' : V) (p : DirectedWalk (fun a b => b ∈ succ a) v w'),
       reachableFinding succ P v = some ⟨w', p⟩ := sorry

@@ -346,6 +346,37 @@ forward-compatible with the present trajectory. The style-island
 form keeps that lift localized to the two files that need it rather
 than propagating it across the whole project.
 
+**Math layer / exec layer split.** `Finset.toList` is noncomputable
+in mathlib (it lifts through `Multiset.toList`'s `Classical`-flavored
+`Quotient.lift`; there is no canonical permutation representative of
+an unordered collection). A DFS / pebble-game body that enumerates
+out-neighbours via `(succ v).attach.toList` therefore propagates
+`noncomputable` to the whole algorithm — blocking the `#eval` and
+small-graph `decide` goals above. The style island resolves this by
+splitting:
+
+- *Exec layer* — algorithm inputs that need enumeration are typed
+  `V → List V` (and similarly `List (V × V)` for orientations,
+  `List (Sym2 V)` for edge-insertion requests). Fully computable;
+  `#eval` fires.
+- *Math layer* — internal state that needs set-semantics
+  (deduplication, membership, complement) stays `Finset V`. The DFS
+  warmup's `visited : Finset V` is the canonical instance: the
+  termination measure `(Finset.univ \ visited).card` lives on the
+  math layer, while children enumeration `(succ v).attach.findSome?`
+  lives on the exec layer.
+
+Callers that hold adjacency data in `Finset` form should expose a
+list projection at the algorithm boundary (with an optional `Nodup`
+invariant where set semantics matter for downstream proofs); the
+projection itself is the only place the `Finset`/`List`
+correspondence enters, and stays noncomputable in isolation without
+contaminating the algorithm. Phase 9 main's `PartialOrientation V` is
+expected to follow the same pattern: store as `Finset (V × V)`
+internally for invariants, expose `outList : V → List V` at the DFS
+boundary. See `notes/FRICTION.md` *[resolved] `Finset.toList` is
+noncomputable — math/exec layer split* for the design history.
+
 ---
 
 ## Choices to revisit

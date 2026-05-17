@@ -76,6 +76,37 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `Finset.toList` is noncomputable — math/exec layer split
+- **Where it bit:** `reachableFindingAux` body in
+  `CombinatorialRigidity/Search/DFS.lean`. Enumerating the children
+  of `v` for early-termination DFS via `(succ v).attach.toList` (the
+  natural shape if `succ : V → Finset V`) would force the whole
+  function `noncomputable`, because `Finset.toList` lifts through
+  `Multiset.toList`'s `Classical`-flavored `Quotient.lift` (an
+  unordered collection has no canonical permutation representative).
+- **Friction:** the pebble-game style island in `DESIGN.md`
+  aspires to *"`#eval` and `decide` should actually fire on extracted
+  certificates"*; first-attempt body fill with
+  `succ : V → Finset V` silently downgrades the algorithm to
+  `noncomputable`, defeating that goal. Lesson surfaced when the
+  user asked whether the DFS could anchor a real `IO`-driven
+  implementation (parser → algorithm → output): the answer is yes,
+  but only with computability throughout.
+- **Resolved (this commit):** Math/exec layer split. The DFS now
+  takes `succ : V → List V` for child enumeration (exec layer, fully
+  computable, `(succ v).attach.findSome?` for the inner loop) and
+  keeps `visited : Finset V` for the termination measure
+  `(Finset.univ \ visited).card` (math layer, no enumeration, just
+  membership + complement). `#eval reachableFinding succEx (· == 2) 0`
+  on a `Fin 4` example now returns `some (2, [0, 1, 2])`. Callers
+  that hold adjacency data in `Finset` form expose a list projection
+  at the DFS boundary (the projection itself can stay noncomputable
+  in isolation without contaminating the algorithm). Phase 9 main's
+  `PartialOrientation V` is expected to follow the same pattern.
+- **Lifted to:** DESIGN.md *Pebble-game style island* (math/exec
+  layer split paragraph documents the resolution).
+- **Status:** resolved.
+
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of
   `typeII_edgeSetRowIndependent_extend` in `MatroidIdentification.lean`.

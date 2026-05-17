@@ -32,10 +32,11 @@ on unvisited vertices.
   \uses{def:directed-walk}
   Let $V$ be finite with decidable equality and $R$ a relation on $V$
   (with $R$ decidable in each argument, e.g.\ presented as an
-  out-neighbour function $V \to \mathrm{Finset}\,V$). Given a source
+  out-neighbour function $\mathrm{succ} : V \to \mathrm{List}\,V$,
+  giving $R\,a\,b = (b \in \mathrm{succ}\,a)$). Given a source
   vertex $v$ and a predicate $P : V \to \mathrm{Bool}$, the
-  procedure $\mathrm{reachableFinding}\,R\,v\,P$ performs a
-  depth-first search along $R$-arcs from $v$, terminating at one of:
+  procedure $\mathrm{reachableFinding}\,\mathrm{succ}\,P\,v$ performs
+  a depth-first search along $R$-arcs from $v$, terminating at one of:
   \begin{itemize}
     \item (success) the first reachable vertex $w$ with $P(w)$,
       returning $\mathrm{some}\,(p, w)$ where $p$ is a simple

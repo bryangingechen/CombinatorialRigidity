@@ -75,6 +75,12 @@ bullets. If one matches, jump to the named section of
   valued expression involving a bare `Polynomial.X` / `0` / `1` →
   § 15 *Bare `Polynomial.X` (or `0`, `1`) needs explicit type
   ascription* — annotate the literal.
+- *"MVar does not look like a recursive call: ... → V → Fintype V"*
+  on a WF-recursive def whose `termination_by` uses `Finset.univ`,
+  or *"Unknown identifier `visited`"* from `termination_by` after a
+  `| visited, v => ...` pattern-match body, or `unused variable`
+  lint on an `if h : ...` binder used only inside `decreasing_by` →
+  § 16 *`termination_by` / `decreasing_by` elaboration rescue*.
 
 ## Starting a Lean-touching session
 

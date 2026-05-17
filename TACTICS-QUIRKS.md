@@ -387,3 +387,64 @@ Worked examples: `exists_affinelySpanning_rigid_placement` in
 `RigidityMatroid.lean` and `finite_setOf_not_linearIndependent_rows_along_affine_path`
 in `Mathlib/LinearAlgebra/Matrix/Rank.lean` — same workaround,
 different proofs, two phases apart.
+
+## 16. `termination_by` / `decreasing_by` elaboration rescue
+
+Defining a well-founded recursive function with a non-trivial
+termination measure trips three closely-related elaboration quirks.
+All three surfaced during the Phase-9 DFS warmup's
+`reachableFindingAux`; the rescues below are cheap and worth applying
+prophylactically.
+
+**a. Typeclasses used only in the termination measure must be bound
+explicitly on the def, not via `variable`.** A `variable [Fintype V]`
+auto-binds typeclasses by usage order — if the function body only
+needs `[DecidableEq V]` but the `termination_by (Finset.univ \
+visited).card` clause uses `[Fintype V]`, Lean inserts `[Fintype V]`
+at the *end* of the auto-bound signature (after the explicit args).
+The recursive-call recognizer then sees a function whose trailing
+implicit doesn't match the call site, producing the cryptic
+*"MVar does not look like a recursive call: ... → V → Fintype V"*
+(with `Fintype V` shown as a trailing argument it can't unify).
+Pinning the typeclasses explicitly on the def — `def f [Fintype V]
+[DecidableEq V] (...) : ...` — fixes the order and the error.
+
+**b. `termination_by` doesn't see pattern-match binders from
+`| pattern => body` style.** Writing the body with
+`def f : ∀ (visited : Finset V) (v : V), ... | visited, v => …` and
+then `termination_by (Finset.univ \ visited).card` errors with
+*"Unknown identifier `visited`"* — the `visited` in the pattern is
+local to the match, not visible to the trailing clauses. Restructure
+to named def params: `def f (visited : Finset V) (v : V) : ... :=
+body`; `visited` is then in scope for `termination_by` /
+`decreasing_by`.
+
+**c. Hypotheses bound by `if h : ...` and used only in `decreasing_by`
+still trigger `unused variable` lint.** Lean's WF tactic block runs
+in a context that includes the path conditions to the recursive
+call — `if hv : v ∈ visited then none else …` makes `hv : ¬ v ∈
+visited` available inside `decreasing_by` to discharge the sdiff
+strict-monotonicity proof. But the linter doesn't recognize WF-block
+usage and warns `unused variable hv`. Rename the binder to `_hv` —
+underscore-prefixed names are valid identifiers in Lean (still
+referenceable as `_hv` inside `decreasing_by`) and the linter
+silences itself.
+
+**Bonus: `mutual` recursion fails structural recursion when a
+helper's parameter type depends on the other helper's parameter.**
+The cleanest first attempt was a `mutual` block of
+`reachableFindingAux` and `reachableFindingChildren` with the
+children-list parameter typed `List {u // u ∈ succ v}` — but Lean
+rejects structural recursion because the list's element type
+depends on the function parameter `v`. Workaround: collapse into a
+single function with the children loop inlined via `List.findSome?`
+on `(succ v).attach`. Lean's WF tactic *can* see the recursive call
+inside the `findSome?` lambda; the `(Finset.univ \ visited).card`
+measure dispatches in one `decreasing_by` proof.
+
+Worked example: `reachableFindingAux` in
+`CombinatorialRigidity/Search/DFS.lean` (Phase-9 DFS warmup body
+fill). Cross-reference: DESIGN.md *Pebble-game style island* notes
+the math/exec-layer split (`succ : V → List V` for computability,
+`visited : Finset V` for the WF measure) that ties (a) and (c)
+together.
