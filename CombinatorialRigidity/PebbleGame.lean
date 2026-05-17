@@ -1124,6 +1124,80 @@ noncomputable def tryAddEdge
 
 end TryAddEdge
 
+/-! ### Run-pebble-game: fold tryAddEdge over an edge enumeration
+
+`runPebbleGameWith D k ℓ toSucc h_toSucc edges` folds `tryAddEdgeWith` over a
+caller-supplied `List (V × V)` of candidate ordered pairs starting from the
+orientation `D`, threading the orientation through each call. For each pair
+`(u, v)`:
+
+* If `u = v` (loop), or either `(u, v)` or `(v, u)` is already in `D.arcs`
+  (parallel / antiparallel duplicate of an already-accepted edge), or the
+  algorithmic invariant `∀ x, D.out x ≤ k` fails on the current `D`, the
+  step is a no-op (skip + recurse on the unchanged `D`). The first three
+  cases are decided per `[DecidableEq V]`; the fourth uses `[Fintype V]`'s
+  decidable universal quantifier.
+* Otherwise call `D.tryAddEdgeWith`; on `some D'` recurse from `D'`, on
+  `none` propagate `none` as the whole-run output.
+
+Termination is by `edges.length`, which strictly decreases per recursive call
+(cf. Lee–Streinu §3 outer fold).
+
+The math-layer convenience `runPebbleGame G k ℓ` is a noncomputable wrapper
+taking a `SimpleGraph V` (with `[Fintype G.edgeSet]`): it enumerates
+`G.edgeFinset.toList`, projects each `Sym2 V` to a representative ordered pair
+via `Quot.out`, and runs `runPebbleGameWith` from `empty` with the default
+`toSucc := (·.outList)`. The wrapper inherits `noncomputable` from `outList`
+(`Finset.toList`) and `Quot.out` (`Classical.choice`); IO-driven callers can
+invoke `runPebbleGameWith` directly with their own `List (V × V)` enumeration
+and a list-shaped adjacency and stay fully computable.
+
+The failure branch returns `none` rather than the blocking-witness subset
+described in the blueprint's prose; extracting `Reach_D(u) ∪ Reach_D(v)`
+from the failure state is a separate computation (deferred to a planned
+`reachClosure` helper in `Search/DFS.lean`, post-composed at the failure
+site). This keeps the algorithm's signature minimal and matches the
+`Option`-shape of `tryAddEdgeWith`. Blueprint `def:runPebbleGame`. -/
+
+section RunPebbleGame
+
+variable [Fintype V]
+
+open CombinatorialRigidity.Search
+
+/-- Computable workhorse for the pebble-game's outer fold. See the section
+docstring for the algorithm description; the math-layer convenience
+`runPebbleGame` is a `noncomputable` wrapper. Blueprint `def:runPebbleGame`. -/
+def runPebbleGameWith
+    (D : PartialOrientation V) (k ℓ : ℕ)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs) :
+    List (V × V) → Option (PartialOrientation V)
+  | [] => some D
+  | (u, v) :: es =>
+      if h : u ≠ v ∧ (u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs ∧ (∀ x, D.out x ≤ k) then
+        match D.tryAddEdgeWith k ℓ u v h.1 h.2.1 h.2.2.1 h.2.2.2 toSucc h_toSucc with
+        | some D' => D'.runPebbleGameWith k ℓ toSucc h_toSucc es
+        | none => none
+      else
+        D.runPebbleGameWith k ℓ toSucc h_toSucc es
+
+/-- Math-layer convenience: enumerate `G.edgeFinset` as a `List (V × V)` via
+`G.edgeFinset.toList.map Quot.out`, then run `runPebbleGameWith` from the
+empty orientation with the default `toSucc := (·.outList)`. `noncomputable`
+because of `Finset.toList` (under `outList` and the edge enumeration) and
+`Quot.out` (the `Sym2 V → V × V` projection). IO callers should call
+`runPebbleGameWith` directly with their own list-shaped data to stay
+computable. Blueprint `def:runPebbleGame`. -/
+noncomputable def runPebbleGame (G : SimpleGraph V) [Fintype G.edgeSet]
+    (k ℓ : ℕ) : Option (PartialOrientation V) :=
+  (empty : PartialOrientation V).runPebbleGameWith k ℓ
+    (fun D' => D'.outList) (fun D' {_ _} => D'.mem_outList)
+    (G.edgeFinset.toList.map Quot.out)
+
+end RunPebbleGame
+
 end PartialOrientation
 
 end CombinatorialRigidity.PebbleGame

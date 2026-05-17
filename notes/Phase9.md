@@ -141,8 +141,23 @@ Termination measure `(ℓ + 1) - (peb k u + peb k v)` decreases by `1`
 per successful reversal, certified inline via the head/non-endpoint
 peb-shift identities.
 
-Blueprint `def:tryAddEdge` is now green; the dep-graph red-front
-advances to `def:runPebbleGame` and the soundness theorem.
+The outer-fold combinator `runPebbleGameWith D k ℓ toSucc h_toSucc edges`
+(blueprint `def:runPebbleGame`) folds `tryAddEdgeWith` over a caller-supplied
+`List (V × V)` of candidate ordered pairs, threading the orientation `D`
+through each call. Each step runs four runtime checks
+(`u ≠ v`, `(u, v) ∉ D.arcs`, `(v, u) ∉ D.arcs`, `∀ x, D.out x ≤ k`) and
+either no-ops (skip and recurse) or invokes `D.tryAddEdgeWith`; success
+recurses on the updated orientation, rejection propagates `none`.
+Termination is by `edges.length` (structural on the list). The math-layer
+convenience `runPebbleGame G k ℓ` is a one-line noncomputable wrapper
+enumerating `G.edgeFinset.toList`, projecting each `Sym2 V` to an ordered
+pair via `Quot.out`, and starting from `empty` with
+`toSucc := (·.outList)`.
+
+Blueprint `def:runPebbleGame` is now green; the dep-graph red-front
+advances to the soundness side (`thm:pebble-game-soundness` directly from
+Invariant (4) on the final state, gated on threading `Reachable k ℓ` and
+the underlying-edge-set invariant through the fold).
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -184,13 +199,17 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: descend to `def:tryAddEdge` — the outer-loop
-combinator that calls `tryReachPebbleWith` on each endpoint of a
-candidate edge until the threshold `peb u + peb v ≥ ℓ + 1` is met
-(insert) or both DFS attempts fail (reject + emit blocking-witness
-subset). Outer-loop termination is measured by
-`(ℓ + 1) - (peb u + peb v)`, which strictly decreases per successful
-reversal (Lee–Streinu §3). See *Hand-off / next phase*.
+Next concrete commit: descend to `thm:pebble-game-soundness` — Lee–Streinu
+Theorem 8's easy direction. The statement says: if
+`runPebbleGameWith empty k ℓ ... edges = some D` (with `edges` enumerating
+`E(G)` and `ℓ < 2k`), then `D.Reachable k ℓ` and `D.underline = edgeSet G`,
+whence `D.span V' + ℓ ≤ k * V'.card` for every `V'` of the relevant size
+range (Invariant (4)), giving `IsSparse G k ℓ`. Two infrastructure lemmas
+required: (i) `runPebbleGameWith` preserves `Reachable` from the input
+orientation (single-step glue threading `Reachable.reverse` / `Reachable.addArc`
+through the fold), and (ii) the underlying edge set on success equals the
+input edge set (a content-tracking invariant on the fold). See *Hand-off /
+next phase*.
 
 ## Architectural choices made up front
 
@@ -771,6 +790,14 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   preservation helpers in section `Reverse` thread the per-call
   preconditions; one helper `DirectedWalk.length_pos_of_ne` in
   `Search/DFS.lean`.
+* The outer fold over edge enumerations (blueprint `def:runPebbleGame`):
+  computable workhorse `runPebbleGameWith D k ℓ toSucc h_toSucc edges`
+  taking a `List (V × V)` of candidate ordered pairs and threading the
+  orientation through each call (four runtime checks decide whether to
+  invoke `tryAddEdgeWith` or skip); math-layer convenience
+  `runPebbleGame G k ℓ` enumerating `G.edgeFinset.toList`, projecting
+  each `Sym2 V` to an ordered pair via `Quot.out`, and starting from
+  `empty`. Termination by `edges.length`.
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
@@ -779,33 +806,43 @@ relation-transport family `DirectedWalk.mapRel` /
 new `DirectedWalk.length_pos_of_ne`. Blueprint
 `def:partial-orientation`, `def:pebble-counts`, `def:path-reversal`,
 `def:arc-insertion`, `def:reachable-orientation`,
-`lem:pebble-game-invariants`, `def:tryReachPebble`, and the new
-`def:tryAddEdge` are all green. Build + lint clean.
+`lem:pebble-game-invariants`, `def:tryReachPebble`, `def:tryAddEdge`,
+and the new `def:runPebbleGame` are all green. Build + lint clean.
 
-Next concrete commit: **`def:runPebbleGame`** — fold `tryAddEdge`
-over an enumeration of `E(G)` starting from `(empty, h_outle_empty)`,
-emitting either the full orientation (when every edge accepted) or
-`none` (when some edge rejected). Termination is by the number of
-unprocessed edges of `E(G)`, which strictly decreases per iteration.
-The `-With` pattern propagates one more layer: `runPebbleGameWith`
-takes the user's `toSucc` + an enumeration of `E(G)` as
-`List (Sym2 V)`, math-layer `runPebbleGame` plugs in `(·.outList)`
-and uses `G.edgeFinset.toList` (noncomputable). Failure branch:
-`none` is preserved as the algorithm's output, with the optional
-blocking-witness `Reach_D(u) ∪ Reach_D(v)` extracted in a separate
-post-composition step against a `reachClosure` helper to land
-alongside `lem:pebble-game-failure-witness` (one possible
-implementation: a `reachClosure : (V → List V) → V → Finset V`
-function in `Search/DFS.lean` that runs an exhausted DFS — mirror of
-`reachableFinding` with the predicate always `false`).
+**Note on the `(V × V)`-list vs `(Sym2 V)`-list workhorse.** An earlier
+hand-off proposed `List (Sym2 V)` for `runPebbleGameWith`'s input. The
+actual landing uses `List (V × V)`: each `Sym2 V → V × V` projection
+goes through `Quot.out`, which is noncomputable
+(`Classical.choice`-flavored), and pushing that into the workhorse
+would silently force it `noncomputable` — defeating the
+`-With`-pattern goal. The math-layer convenience `runPebbleGame`
+absorbs the `Quot.out` step at its (noncomputable) boundary, leaving
+`runPebbleGameWith` fully computable on caller-supplied `List (V × V)`
+adjacency. Documented in DESIGN.md *Pebble-game style island → The
+`-With` variant pattern* (same rationale as `tryReachPebbleWith` →
+`tryReachPebble`'s `outList` shift).
+
+Next concrete commit: **`thm:pebble-game-soundness`** — L-S Theorem 8
+easy direction. Two infrastructure lemmas required first:
+(i) `runPebbleGameWith` preserves `Reachable k ℓ` from the input
+orientation (single-step glue threading `Reachable.reverse` /
+`Reachable.addArc` through the fold's `tryAddEdgeWith` calls, which
+in turn need analogous preservation lemmas for `tryAddEdgeWith` and
+`tryReachPebbleWith`); (ii) on success, the final `D.arcs`'s
+underlying-edge set equals the input edge set (a content-tracking
+invariant on the fold). With both in hand, Invariant (4) on the final
+`D` gives `D.span V' + ℓ ≤ k * V'.card` on every `V'` of the relevant
+size range, which transfers to `|edgesIn G V'| ≤ k|V'| - ℓ` via the
+underlying-edge equality.
 
 Subsequent commits descend the dep-graph:
-`def:runPebbleGame` → `thm:pebble-game-soundness` (direct from
-Invariant (4) on the final state) → completeness side
+`thm:pebble-game-soundness` → completeness side
 (`lem:pebble-game-independent-brings-pebble` /
 `lem:pebble-game-tryAddEdge-iff-independent` /
-`lem:pebble-game-failure-witness` — here the `reachClosure` helper
-is consumed to make the blocking-witness side type-check) →
+`lem:pebble-game-failure-witness` — here a `reachClosure` helper in
+`Search/DFS.lean` is consumed to make the blocking-witness side
+type-check; one possible implementation is an exhausted-DFS mirror of
+`reachableFinding` with predicate always `false`) →
 `thm:pebble-game-correct` → `cor:pebble-game-countMatroid-indep`.
 The completeness-side SimpleGraph-vs-multigraph corner-case check
 (open question above) is the only known open structural unknown.

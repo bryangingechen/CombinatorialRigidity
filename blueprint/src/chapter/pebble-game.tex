@@ -379,26 +379,54 @@ failure witness.
 
 \begin{definition}[Run-pebble-game]
   \label{def:runPebbleGame}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame}
+  \leanok
   \uses{def:tryAddEdge, def:blockingWitness, def:partial-orientation}
   Given a simple graph $G$ on a finite vertex set $V$ and integer
   parameters $k, \ell$ with $\ell < 2k$, the procedure
   $\mathrm{runPebbleGame}\,k\,\ell\,G$ folds $\mathrm{tryAddEdge}$
   over an arbitrary enumeration of $E(G)$ starting from the empty
-  partial orientation. The result is one of:
-  \begin{itemize}
-    \item (success) $\mathrm{Sum.inl}\,D$ where $D$ is a partial
-      orientation with $\underline{D} = E(G)$ satisfying the four
-      invariants of \cref{lem:pebble-game-invariants};
-    \item (failure) $\mathrm{Sum.inr}\,W$ where $W$ is a blocking
-      witness for $G$ (\cref{def:blockingWitness}).
-  \end{itemize}
-  Termination of the fold: the number of unprocessed edges of $E(G)$
-  strictly decreases per iteration. The success branch carries the
-  full $D$; partial-success states (where some edges of $E(G)$ have
-  been processed and inserted but the next one fails) are merged
-  into the failure branch, since the L-S Theorem~8 statement on
-  $G$'s sparsity uses only the existence/non-existence of $D$ with
-  $\underline{D} = E(G)$.
+  partial orientation. On success it returns a partial orientation
+  $D$ with $\underline{D} = E(G)$ satisfying the four invariants of
+  \cref{lem:pebble-game-invariants}; on failure it returns
+  $\mathrm{none}$, with the blocking-witness subset
+  $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ recoverable from the
+  failure state via a separate post-composition step (deferred to a
+  planned $\mathtt{reachClosure}$ helper, consumed by
+  \cref{lem:pebble-game-failure-witness}). Termination of the fold:
+  the number of unprocessed edges strictly decreases per iteration.
+
+  The Lean encoding splits into a computable workhorse
+  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{toSucc}\,\mathtt{h\_toSucc}\,\mathtt{edges}$
+  taking the orientation state, a caller-supplied
+  $\mathtt{toSucc} : \mathrm{PartialOrientation}\,V \to V \to
+  \mathrm{List}\,V$ (with universal agreement witness), and a
+  $\mathrm{List}\,(V \times V)$ of candidate ordered pairs; and a
+  math-layer convenience $\mathtt{runPebbleGame}\,G\,k\,\ell$ which is
+  a thin $\mathtt{noncomputable}$ wrapper enumerating
+  $G.\mathtt{edgeFinset}.\mathtt{toList}$, projecting each
+  $\mathrm{Sym}_2\,V$ to a representative ordered pair via
+  $\mathtt{Quot.out}$, plugging in
+  $\mathtt{toSucc}\,D' := D'.\mathtt{outList}$, and starting from
+  $\mathtt{empty}$. The workhorse stays fully computable as long as
+  $\mathtt{toSucc}$ and the input edge list do; IO callers invoke
+  $\mathtt{runPebbleGameWith}$ directly with their own
+  $\mathrm{List}$-shaped data. The output is
+  $\mathrm{Option}\,(\mathrm{PartialOrientation}\,V)$:
+  $\mathrm{some}\,D$ on accept (with $\underline{D} = E(G)$ once the
+  fold completes successfully), $\mathrm{none}$ on rejection.
+
+  Each fold step performs four runtime checks before invoking
+  $\mathtt{tryAddEdgeWith}$ — the candidate is not a loop, neither
+  orientation $(u, v)$ nor $(v, u)$ already sits in $D.\mathtt{arcs}$,
+  and the algorithmic invariant $\forall x.\ \mathrm{out}_D(x) \le k$
+  holds on the current $D$. The first three fail only on
+  malformed input (loops or duplicate edges); the fourth is
+  preserved through the move sequence by the structural invariants
+  of $\mathtt{tryAddEdgeWith}$. A failing check is a no-op (skip
+  and recurse on the unchanged $D$) — see the Lean docstring for
+  the per-check rationale.
 \end{definition}
 
 \subsection{Soundness}
