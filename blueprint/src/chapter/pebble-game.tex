@@ -552,22 +552,55 @@ preservation (already established in
   gives $\underline{D'} = E(G)$.
 \end{proof}
 
+\begin{lemma}[Span equals $\edgesIn{V'}$-count under the underline identity]
+  \label{lem:span-eq-ncard-edgesIn}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.span_eq_ncard_edgesIn}
+  \leanok
+  \uses{def:partial-orientation, def:pebble-counts,
+    lem:runPebbleGame-underline-eq, def:edgesIn}
+  Let $D$ be a partial orientation with $\underline{D} = E(G)$ for some
+  $G : \mathrm{SimpleGraph}\,V$. For every $V' \subseteq V$,
+  \[
+    \mathrm{span}_D(V') = |\edgesIn[G]{V'}|.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  The map $(a, b) \mapsto s(a, b)$ from $D.\mathrm{spanArcs}\,V'$ to
+  $\edgesIn[G]{V'}$ is a bijection. Injectivity is the no-antiparallel
+  invariant of $D$: if $s(a, b) = s(a', b')$ with both arcs in $D$,
+  then either $(a, b) = (a', b')$ outright or $(a, b) = (b', a')$,
+  but the second case puts $(a, b)$ and $(b, a)$ both in $D.\mathrm{arcs}$,
+  violating no-antiparallel. Surjectivity uses the membership
+  characterisation of $\underline{D}$: an edge
+  $e = s(a, b) \in \edgesIn[G]{V'}$ sits in $\underline{D} = E(G)$, so
+  some orientation $(a, b)$ or $(b, a)$ is in $D.\mathrm{arcs}$; both
+  endpoints lie in $V'$ by the $\edgesIn{}$ membership.
+\end{proof}
+
 \begin{theorem}[Soundness of the pebble game]
   \label{thm:pebble-game-soundness}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_sound}
+  \leanok
   \uses{def:runPebbleGame, lem:pebble-game-invariants, def:isSparse,
-    lem:runPebbleGame-underline-eq}
+    lem:runPebbleGame-underline-eq, lem:span-eq-ncard-edgesIn}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
   integers with $\ell < 2k$. If $\mathrm{runPebbleGame}\,k\,\ell\,G
   = \mathrm{Sum.inl}\,D$, then $G$ is $(k, \ell)$-sparse.
 \end{theorem}
 \begin{proof}
-  \uses{lem:pebble-game-invariants, lem:runPebbleGame-underline-eq}
+  \leanok
+  \uses{lem:pebble-game-invariants, lem:runPebbleGame-underline-eq,
+    lem:span-eq-ncard-edgesIn}
   By \cref{lem:pebble-game-invariants} Invariant~(4) applied to
   $D$ at termination, every subset $V' \subseteq V$ in the relevant
   size range satisfies $\mathrm{span}_D(V') \le k|V'| - \ell$.
   Since $\underline{D} = E(G)$ (\cref{lem:runPebbleGame-underline-eq}),
-  this is exactly $|\edgesIn[G]{V'}| \le k|V'| - \ell$, i.e.\ $G$ is
-  $(k, \ell)$-sparse on $V'$.
+  \cref{lem:span-eq-ncard-edgesIn} rewrites this as
+  $|\edgesIn[G]{V'}| \le k|V'| - \ell$, i.e.\ $G$ is $(k, \ell)$-sparse
+  on $V'$. (The matroidal-regime assumption $\ell < 2k$ is not used
+  formally on the Lean side; the size-range constraint folds into
+  the definition of $(k, \ell)$-sparsity as $\ell \le k|V'|$.)
 \end{proof}
 
 \subsection{Completeness}

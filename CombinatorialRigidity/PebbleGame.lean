@@ -1640,6 +1640,118 @@ theorem runPebbleGame_underline_eq_edgeFinset {G : SimpleGraph V}
 
 end RunPebbleGame
 
+/-! ### Soundness
+
+The basic pebble game is **sound**: if `runPebbleGame G k ℓ` succeeds on a
+finite simple graph `G`, the returned orientation `D'` certifies that `G` is
+`(k, ℓ)`-sparse. The proof is a one-step assembly of three pieces that
+landed in earlier commits:
+
+* `Reachable.span_add_le` (Invariant (4) of `lem:pebble-game-invariants`):
+  every subset satisfies `D'.span V' + ℓ ≤ k * V'.card`.
+* `runPebbleGame_underline_eq_edgeFinset`: the wrapper threads
+  `D'.underline = G.edgeFinset` through the fold.
+* The structural identity `span_eq_ncard_edgesIn` below: under the underline
+  identity, `D'.span V' = (G.edgesIn ↑V').ncard`. The bijection
+  `D.spanArcs V' → G.edgesIn ↑V'` via `(a, b) ↦ s(a, b)` has injectivity
+  from `no_antiparallel` (`sym2_mk_injOn_arcs`) and surjectivity from
+  `D.underline = G.edgeFinset` (`image_spanArcs_eq_edgesIn`).
+
+Cf. Lee–Streinu Theorem 8 (forward direction), blueprint
+`thm:pebble-game-soundness`. -/
+
+section Soundness
+
+/-- The map `(a, b) ↦ s(a, b)` from arcs to unoriented edges is injective on
+`D.arcs`: the only way two arcs share a `Sym2 V`-image is to be equal as
+ordered pairs. The `no_antiparallel` invariant blocks the antiparallel case
+`(a, b), (b, a)`. -/
+lemma sym2_mk_injOn_arcs (D : PartialOrientation V) :
+    Set.InjOn (fun p : V × V => s(p.1, p.2)) ↑D.arcs := by
+  rintro ⟨a, b⟩ hab ⟨a', b'⟩ hab' heq
+  simp only [Finset.mem_coe] at hab hab'
+  rw [Sym2.eq_iff] at heq
+  rcases heq with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+  · rfl
+  · exact absurd hab (D.no_antiparallel hab')
+
+/-- Image equation: the `Sym2.mk`-image of the arcs spanning `V'` is exactly
+`G.edgesIn ↑V'`, under the underline identity `D.underline = G.edgeFinset`.
+The ⊆ inclusion lifts an arc to its underline element (sitting in `G.edgeFinset`
+by the hypothesis) and re-packages with the in-`V'` endpoint conditions; the
+⊇ inclusion lifts an edge `e ∈ G.edgesIn ↑V'` to a span-arc via
+`mem_underline`, with both endpoints in `V'` by `(↑e : Set V) ⊆ ↑V'`. -/
+lemma image_spanArcs_eq_edgesIn (D : PartialOrientation V)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (hG : D.underline = G.edgeFinset) (V' : Finset V) :
+    (fun p : V × V => s(p.1, p.2)) '' (↑(D.spanArcs V') : Set (V × V)) =
+      G.edgesIn (↑V' : Set V) := by
+  apply Set.eq_of_subset_of_subset
+  · rintro _ ⟨⟨a, b⟩, hab, rfl⟩
+    simp only [Finset.mem_coe, spanArcs, Finset.mem_filter] at hab
+    obtain ⟨h_arc, ha, hb⟩ := hab
+    have h_edge : s(a, b) ∈ G.edgeSet := by
+      have h_underline : s(a, b) ∈ D.underline := D.mem_underline.mpr (Or.inl h_arc)
+      rw [hG, G.mem_edgeFinset] at h_underline
+      exact h_underline
+    exact SimpleGraph.mk_mem_edgesIn h_edge ha hb
+  · intro e he
+    rw [SimpleGraph.mem_edgesIn] at he
+    obtain ⟨h_edge, h_sub⟩ := he
+    have he_underline : e ∈ D.underline := by
+      rw [hG]; exact G.mem_edgeFinset.mpr h_edge
+    rw [underline, Finset.mem_image] at he_underline
+    obtain ⟨⟨a, b⟩, ha_arc, h_eq⟩ := he_underline
+    refine ⟨(a, b), ?_, h_eq⟩
+    simp only [Finset.mem_coe, spanArcs, Finset.mem_filter]
+    refine ⟨ha_arc, h_sub ?_, h_sub ?_⟩
+    · rw [← h_eq]; exact Sym2.mem_mk_left a b
+    · rw [← h_eq]; exact Sym2.mem_mk_right a b
+
+/-- Structural bridge from the algorithm's `span` count to the project's
+`edgesIn` count: under `D.underline = G.edgeFinset`, the orientation's span of
+`V'` equals `(G.edgesIn ↑V').ncard`. Combines `image_spanArcs_eq_edgesIn`
+(image equation) with `sym2_mk_injOn_arcs` (injectivity) via
+`Set.ncard_image_of_injOn`. -/
+lemma span_eq_ncard_edgesIn (D : PartialOrientation V)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (hG : D.underline = G.edgeFinset) (V' : Finset V) :
+    D.span V' = (G.edgesIn ↑V').ncard := by
+  rw [span, ← Set.ncard_coe_finset, ← image_spanArcs_eq_edgesIn D hG V']
+  refine ((sym2_mk_injOn_arcs D).mono ?_).ncard_image.symm
+  intro p hp
+  simp only [Finset.mem_coe, spanArcs, Finset.mem_filter] at hp
+  exact Finset.mem_coe.mpr hp.1
+
+/-- **Soundness of the basic `(k, ℓ)`-pebble game.** If
+`runPebbleGame G k ℓ` succeeds on a finite simple graph `G` with output
+orientation `D'`, then `G` is `(k, ℓ)`-sparse. Three-piece assembly:
+*(i)* `runPebbleGameWith_reachable` lifts the initial `Reachable.empty` to
+`Reachable k ℓ D'`; *(ii)* `Reachable.span_add_le` (Invariant (4)) gives the
+algebraic inequality `D'.span s + ℓ ≤ k * s.card` for every `s` of the right
+size; *(iii)* the span/edgesIn bridge `span_eq_ncard_edgesIn` (under
+`runPebbleGame_underline_eq_edgeFinset`) translates that into
+`(G.edgesIn ↑s).ncard + ℓ ≤ k * s.card`, which is `IsSparse`.
+
+Lee–Streinu Theorem 8 (forward direction); blueprint
+`thm:pebble-game-soundness`. The blueprint chapter states the result under
+the matroidal-regime assumption `ℓ < 2k`; Lean does not require it here,
+because `IsSparse`'s definition already gates on `ℓ ≤ k * s.card`. -/
+theorem runPebbleGame_sound [Fintype V] {G : SimpleGraph V} [Fintype G.edgeSet]
+    {k ℓ : ℕ} {D' : PartialOrientation V} (h : runPebbleGame G k ℓ = some D') :
+    G.IsSparse k ℓ := by
+  have h_eq : D'.underline = G.edgeFinset := runPebbleGame_underline_eq_edgeFinset h
+  have hR : Reachable k ℓ D' := by
+    rw [runPebbleGame] at h
+    exact runPebbleGameWith_reachable (fun D' => D'.outList)
+      (fun D' {_ _} => D'.mem_outList) _ Reachable.empty h
+  intro s hs
+  have h_span := hR.span_add_le hs
+  rw [span_eq_ncard_edgesIn D' h_eq s] at h_span
+  exact h_span
+
+end Soundness
+
 end PartialOrientation
 
 end CombinatorialRigidity.PebbleGame

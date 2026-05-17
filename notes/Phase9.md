@@ -215,11 +215,35 @@ Sym2-image list is exactly `G.edgeFinset.toList`). Combining with
 "no-skip-fires argument" the prose of `thm:pebble-game-soundness`
 previously referenced informally.
 
+**Soundness of the pebble game lands** (blueprint
+`thm:pebble-game-soundness`). Three-piece assembly on top of the
+existing infrastructure: *(i)* `runPebbleGameWith_reachable` lifts the
+initial `Reachable.empty` to `Reachable k ℓ D'` at termination;
+*(ii)* `Reachable.span_add_le` (Invariant (4)) supplies the algebraic
+inequality `D'.span s + ℓ ≤ k * s.card`; *(iii)* the new structural
+bridge `span_eq_ncard_edgesIn` (under
+`runPebbleGame_underline_eq_edgeFinset`'s underline identity) rewrites
+`D'.span s` to `(G.edgesIn ↑s).ncard`. The bridge identity itself
+factors through two helpers: `sym2_mk_injOn_arcs` (injectivity of
+`(a, b) ↦ s(a, b)` on `D.arcs` from `no_antiparallel`) and
+`image_spanArcs_eq_edgesIn` (the image equation under the underline
+identity, proved by ⊆/⊇ set extensionality). Combining via
+`Set.InjOn.ncard_image` gives the bridge identity, and the soundness
+theorem `runPebbleGame_sound` falls out by one `rw` chain.
+
+The blueprint chapter states the result under the matroidal-regime
+assumption `ℓ < 2k`; Lean does not require it formally because
+`IsSparse`'s definition already gates on `ℓ ≤ k * s.card`. Blueprint
+`thm:pebble-game-soundness` and the new `lem:span-eq-ncard-edgesIn`
+are both green; the dep-graph red-front advances to the completeness
+side.
+
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
-satisfying the four invariants (witness of $(k, \ell)$-sparsity) or
-a vertex subset $V'$ with $|E(G[V'])| > k|V'| - \ell$ (witness of
-non-sparsity). The matroidal-independence corollary against
+satisfying the four invariants (witness of $(k, \ell)$-sparsity —
+**soundness now landed**) or a vertex subset $V'$ with
+$|E(G[V'])| > k|V'| - \ell$ (witness of non-sparsity — completeness
+side, still ahead). The matroidal-independence corollary against
 Phase 7's `CountMatroid` follows as a one-liner.
 
 **Pre-Phase-9 DFS warmup — closed.** `CombinatorialRigidity/Search/DFS.lean`
@@ -255,14 +279,12 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: land the `span`/`edgesIn`-bridge under
-`D.underline = G.edgeFinset` and chain to `thm:pebble-game-soundness`.
-The remaining gap is a structural identity
-`D.span V' = (G.edgesIn ↑V').ncard` (when `D.underline = G.edgeFinset`):
-the map `(a, b) ∈ D.spanArcs V' ↦ s(a, b) ∈ G.edgesIn ↑V'` is a bijection,
-with `no_antiparallel` discharging injectivity and the underline
-identity discharging surjectivity. Then `Reachable.span_add_le`
-transfers to `IsSparse G k ℓ`.
+Next concrete commit: descend the dep-graph to the completeness side
+(`lem:pebble-game-independent-brings-pebble` /
+`lem:pebble-game-tryAddEdge-iff-independent` /
+`lem:pebble-game-failure-witness`). The completeness-side
+SimpleGraph-vs-multigraph corner-case check (open question below) is
+the only known open structural unknown for this side.
 
 ## Architectural choices made up front
 
@@ -671,6 +693,33 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   hypotheses can land, and `nomatch h` (not `Option.noConfusion h`)
   to discharge match-with-`none`-discriminee contradictions.
 
+### Soundness (Phase 9 main)
+
+- **Bridge factored into three pieces, not one combined proof.** The
+  `D.span V' = (G.edgesIn ↑V').ncard` identity (under
+  `D.underline = G.edgeFinset`) is a `Set.InjOn.ncard_image` invocation
+  on top of two independent helpers: `sym2_mk_injOn_arcs` (injectivity
+  of `(a, b) ↦ s(a, b)` on `D.arcs` from `no_antiparallel`, totally
+  generic over `G`) and `image_spanArcs_eq_edgesIn` (image equation,
+  the one place `G.edgeFinset` enters). Combining via the `ncard_image`
+  bridge keeps each component proof under 10 lines and lets the
+  injectivity helper be reused by any future "spanArcs/Sym2.mk
+  bijection"-flavoured argument.
+
+- **`ℓ < 2k` blueprint hypothesis is not propagated to Lean.** The
+  blueprint statement of `thm:pebble-game-soundness` carries
+  `ℓ < 2k` as the chapter-wide matroidal-regime assumption, but the
+  Lean theorem `runPebbleGame_sound` does not — `IsSparse`'s
+  definition already gates each subset bound on `ℓ ≤ k * V'.card`,
+  which is exactly what `Reachable.span_add_le` consumes. The Lean
+  theorem is therefore strictly more general; the blueprint chapter
+  notes the form-mismatch inline.
+
+- **`Set.ncard_image_of_injOn` is now `Set.InjOn.ncard_image`.** The
+  former is deprecated as of recent mathlib; the new name is dot-
+  callable on the `Set.InjOn` term. The proof's one-liner shape
+  `(... ).ncard_image.symm` follows naturally from the new spelling.
+
 ### DFS warmup (pre-Phase-9)
 
 - **Style island formalized in DESIGN.md.** Phase 9's architectural
@@ -908,6 +957,19 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   via the Sym2 round-trip `s((Quot.out e).1, (Quot.out e).2) = e`).
   Discharges infrastructure piece (ii) for `thm:pebble-game-soundness`
   in full.
+* Soundness of the pebble game (blueprint `thm:pebble-game-soundness`),
+  via two helpers and the bridge identity. `sym2_mk_injOn_arcs`
+  (injectivity of `(a, b) ↦ s(a, b)` on `D.arcs` from
+  `no_antiparallel`) + `image_spanArcs_eq_edgesIn` (the
+  `(D.spanArcs V').image (·) = G.edgesIn ↑V'` set equation under
+  `D.underline = G.edgeFinset`) combine via `Set.InjOn.ncard_image`
+  to give `span_eq_ncard_edgesIn`
+  (`D.span V' = (G.edgesIn ↑V').ncard` under the underline identity).
+  The soundness theorem `runPebbleGame_sound`
+  (`runPebbleGame G k ℓ = some D' → G.IsSparse k ℓ`) is then a
+  one-`rw` assembly: `Reachable.span_add_le` (Invariant (4)) for the
+  algebraic shape, `runPebbleGame_underline_eq_edgeFinset` for the
+  underline identity, `span_eq_ncard_edgesIn` for the bridge.
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
@@ -919,9 +981,9 @@ new `DirectedWalk.length_pos_of_ne`. Blueprint
 `underline_reverse_eq` pinned), `def:arc-insertion` (now with
 `underline_addArc` pinned), `def:reachable-orientation`,
 `lem:pebble-game-invariants`, `def:tryReachPebble`, `def:tryAddEdge`,
-`def:runPebbleGame`, `lem:runPebbleGameWith-underline-subset`, and
-the new `lem:runPebbleGame-underline-eq` are all green. Build + lint
-clean.
+`def:runPebbleGame`, `lem:runPebbleGameWith-underline-subset`,
+`lem:runPebbleGame-underline-eq`, the new `lem:span-eq-ncard-edgesIn`,
+and `thm:pebble-game-soundness` are all green. Build + lint clean.
 
 **Note on the `(V × V)`-list vs `(Sym2 V)`-list workhorse.** An earlier
 hand-off proposed `List (Sym2 V)` for `runPebbleGameWith`'s input. The
@@ -936,25 +998,7 @@ adjacency. Documented in DESIGN.md *Pebble-game style island → The
 `-With` variant pattern* (same rationale as `tryReachPebbleWith` →
 `tryReachPebble`'s `outList` shift).
 
-Next concrete commit: **land the `span`/`edgesIn`-bridge and chain
-to `thm:pebble-game-soundness`**. The wrapper identity
-`D.underline = G.edgeFinset` is now in hand
-(`runPebbleGame_underline_eq_edgeFinset`); what remains is a
-structural identity `D.span V' = (G.edgesIn ↑V').ncard` that
-transfers Invariant (4) (`Reachable.span_add_le`,
-`D.span V' + ℓ ≤ k * V'.card` under `ℓ ≤ k * V'.card`) into the
-project's `IsSparse G k ℓ` shape (`(G.edgesIn ↑V').ncard + ℓ ≤
-k * V'.card`). Bijection `D.spanArcs V' → G.edgesIn ↑V'` via
-`(a, b) ↦ s(a, b)` discharges this: `no_antiparallel` gives
-injectivity (no `(a, b)` and `(b, a)` coexist), and the underline
-identity gives surjectivity. Then `IsSparse` follows under the
-hypothesis `ℓ < 2k` (needed to verify the size-range hypothesis on
-Invariant (4) — `ℓ ≤ k * V'.card` is implied when `V'.card ≥ 2`,
-and the `V'.card < 2` case has `(G.edgesIn ↑V').ncard = 0` so
-sparsity holds trivially).
-
-Subsequent commits descend the dep-graph:
-`thm:pebble-game-soundness` → completeness side
+Next concrete commit: **descend to the completeness side**
 (`lem:pebble-game-independent-brings-pebble` /
 `lem:pebble-game-tryAddEdge-iff-independent` /
 `lem:pebble-game-failure-witness` — here a `reachClosure` helper in
@@ -964,6 +1008,14 @@ type-check; one possible implementation is an exhausted-DFS mirror of
 `thm:pebble-game-correct` → `cor:pebble-game-countMatroid-indep`.
 The completeness-side SimpleGraph-vs-multigraph corner-case check
 (open question above) is the only known open structural unknown.
+Soundness landed via `span_eq_ncard_edgesIn` (bridge identity from the
+algorithm's `span` to the project's `(G.edgesIn ↑V').ncard` under
+`D.underline = G.edgeFinset`, via the `Sym2.mk` bijection on
+`D.spanArcs V'`) and the one-`rw` assembly
+`runPebbleGame_sound` on top of `Reachable.span_add_le`, the bridge,
+and `runPebbleGame_underline_eq_edgeFinset`. The `ℓ < 2k` blueprint
+regime is not formally needed in Lean — `IsSparse`'s definition
+already gates on `ℓ ≤ k * V'.card`.
 
 Architectural question still open: *whether to land the matroidal-
 independence corollary in-phase or defer* (weak preference: land —
