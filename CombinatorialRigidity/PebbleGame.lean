@@ -114,6 +114,23 @@ lemma mem_outNbhd {v u : V} : u ∈ D.outNbhd v ↔ (v, u) ∈ D.arcs := by
   dsimp at hfst hsnd
   subst hfst; subst hsnd; exact hmem
 
+/-- List view of the out-neighbour set, for feeding into the verified DFS
+`Search.reachableFinding`. The DFS primitive takes a `List V`-valued `succ`
+function (computable; see `Search/DFS.lean` *Style island*); converting a
+`Finset V` to a `List V` goes through `Finset.toList`, which is
+noncomputable in mathlib because `Multiset.toList` lifts through a
+`Classical`-flavored `Quotient.lift`. The math-layer wrapper
+`tryReachPebble` therefore inherits `noncomputable` (consuming `outList`);
+IO-driven callers should call the computable workhorse
+`tryReachPebbleWith` directly with their own `List`-shaped adjacency and
+the matching membership proof, bypassing `outList` entirely. This is the
+boundary between the (noncomputable) math layer's `Finset (V × V)`
+orientation storage and the (computable) DFS exec layer. -/
+noncomputable def outList (v : V) : List V := (D.outNbhd v).toList
+
+lemma mem_outList {v u : V} : u ∈ D.outList v ↔ (v, u) ∈ D.arcs := by
+  rw [outList, Finset.mem_toList, mem_outNbhd]
+
 /-- Out-degree at `v`: number of arcs of `D` sourced at `v`. Equivalently
 `(D.outNbhd v).card`; cf. `def:pebble-counts`. -/
 def out (v : V) : ℕ := (D.outNbhd v).card
@@ -838,6 +855,94 @@ lemma Reachable.span_add_le {D : PartialOrientation V}
   omega
 
 end Reachability
+
+/-! ### Try-reach-pebble: DFS with path reversal
+
+The computable workhorse `tryReachPebbleWith D P v succ h_succ` runs the
+verified DFS `Search.reachableFinding` along a caller-supplied
+out-neighbour enumeration `succ : V → List V` (with a propositional
+witness `h_succ` that `succ` matches `D`'s outgoing-arc relation); on
+success it bundles the witness walk and target into a
+`TryReachPebbleResult D P v`, on failure it returns `none`. The math-layer
+convenience `tryReachPebble D P v` is a one-line noncomputable wrapper
+plugging in `succ := D.outList`.
+
+Splitting the API this way lets IO-driven callers (parser → algorithm →
+output pipelines, in which the user already holds adjacency data in
+`List`-shape) call `tryReachPebbleWith` directly with their own enumeration
+and stay fully computable, while abstract math-layer use of `tryReachPebble`
+remains terse. Downstream soundness/completeness theorems will live on
+`tryReachPebbleWith` and inherit to `tryReachPebble` for free.
+
+Cf. Lee–Streinu §3 (one pebble-search attempt inside `tryAddEdge`),
+blueprint `def:tryReachPebble`. -/
+
+section TryReachPebble
+
+variable [Fintype V]
+
+open CombinatorialRigidity.Search
+
+/-- Certificate-form result returned by a successful `tryReachPebble` /
+`tryReachPebbleWith` run: the target vertex `target` reached from `v` along
+`D.arcs`-arrows, the witness walk `walk`, a proof `isPath` that the walk is
+simple, and a proof `hP` that the target satisfies the predicate. The
+caller obtains the path-reversed orientation via
+`TryReachPebbleResult.newOrient`. -/
+structure TryReachPebbleResult (D : PartialOrientation V) (P : V → Bool) (v : V) where
+  /-- Target vertex reached. -/
+  target : V
+  /-- Witness walk along the outgoing-arc relation of `D`. -/
+  walk : DirectedWalk (fun a b => (a, b) ∈ D.arcs) v target
+  /-- The witness walk is simple. -/
+  isPath : walk.IsPath
+  /-- The target satisfies the predicate. -/
+  hP : P target = true
+
+/-- Computable workhorse for `tryReachPebble`. Runs the verified DFS
+`Search.reachableFinding` with a caller-supplied out-neighbour enumeration
+`succ : V → List V` plus a propositional witness `h_succ` that `succ`
+agrees with `D`'s outgoing-arc relation; transports the resulting walk to
+the orientation's arc relation via `DirectedWalk.mapRel` and packages the
+output as a `TryReachPebbleResult D P v`.
+
+Stays computable as long as `succ` is. This is the form an IO pipeline
+calls directly with a `List`-shaped adjacency built from input data;
+soundness / completeness theorems will land here and inherit to the
+math-layer wrapper `tryReachPebble`. Lee–Streinu §3, blueprint
+`def:tryReachPebble`. -/
+def tryReachPebbleWith (P : V → Bool) (v : V)
+    (succ : V → List V) (h_succ : ∀ {a b : V}, b ∈ succ a ↔ (a, b) ∈ D.arcs) :
+    Option (TryReachPebbleResult D P v) :=
+  match h_eq : reachableFinding succ P v with
+  | none => none
+  | some ⟨w, p⟩ =>
+    have hsound := reachableFinding_sound h_eq
+    some
+      { target := w
+        walk := p.mapRel (fun hab => h_succ.mp hab)
+        isPath := (DirectedWalk.mapRel_isPath_iff _ p).mpr hsound.2
+        hP := hsound.1 }
+
+/-- Math-layer convenience: specialise `tryReachPebbleWith` to
+`succ := D.outList`, with the propositional witness supplied by
+`D.mem_outList`. `noncomputable` because `D.outList` goes through
+`Finset.toList` (see `outList`); IO callers should use `tryReachPebbleWith`
+directly with a list-shaped adjacency to stay computable. -/
+noncomputable def tryReachPebble (P : V → Bool) (v : V) :
+    Option (TryReachPebbleResult D P v) :=
+  D.tryReachPebbleWith P v D.outList (fun {_ _} => D.mem_outList)
+
+/-- The orientation produced by the path-reversal move along the witness
+walk of a successful `tryReachPebble` / `tryReachPebbleWith` result.
+Convenience for callers threading the result into `tryAddEdge`'s outer
+loop; equivalent to `D.reverse r.walk r.isPath`. -/
+def TryReachPebbleResult.newOrient {D : PartialOrientation V}
+    {P : V → Bool} {v : V} (r : TryReachPebbleResult D P v) :
+    PartialOrientation V :=
+  D.reverse r.walk r.isPath
+
+end TryReachPebble
 
 end PartialOrientation
 

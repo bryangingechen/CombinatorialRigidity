@@ -42,8 +42,11 @@ definitions `PartialOrientation V` (bundled `Finset (V × V)` with
 counts `out`, `peb`, `span`, `outOn`, `pebOn` (plus `empty` and
 basic `simp`-level lemmas), the path-reversal move
 `PartialOrientation.reverse D p hp` along a simple directed path
-`p : DirectedWalk (· ∈ D.arcs) u w` with `hp : p.IsPath`, and the
-arc-insertion move `PartialOrientation.addArc D u v huv hnotin_rev`.
+`p : DirectedWalk (· ∈ D.arcs) u w` with `hp : p.IsPath`, the
+arc-insertion move `PartialOrientation.addArc D u v huv hnotin_rev`,
+and the DFS-plus-path-reversal step `tryReachPebbleWith` / the
+noncomputable convenience `tryReachPebble` (see *Decisions made →
+`-With` pattern for math/exec split*).
 The two `PartialOrientation` invariants (`no_loops`,
 `no_antiparallel`) survive both moves. Structural per-vertex /
 subset lemmas:
@@ -101,6 +104,23 @@ project's no-ℕ-subtraction-in-propositions convention). Blueprint
 `def:arc-insertion`, the new `def:reachable-orientation`, and
 `lem:pebble-game-invariants` are all green.
 
+The DFS-plus-path-reversal step `tryReachPebbleWith D P v succ h_succ`
+(blueprint `def:tryReachPebble`) runs `Search.reachableFinding` along
+a caller-supplied out-neighbour enumeration `succ : V → List V` with a
+propositional witness `h_succ : ∀ {a b}, b ∈ succ a ↔ (a, b) ∈ D.arcs`,
+transports the output walk to `D`'s arc relation via
+`DirectedWalk.mapRel`, and packages the result as a
+`TryReachPebbleResult D P v` (target vertex + walk + `IsPath` + `P`-
+witness). The `noncomputable` math-layer wrapper
+`tryReachPebble D P v` plugs in `succ := D.outList` /
+`h_succ := D.mem_outList`; IO-driven callers use
+`tryReachPebbleWith` directly with a `List`-shaped adjacency built
+from input data and stay fully computable (verified by `#eval` on a
+`Fin 3` example returning `some 1`). The new
+`DirectedWalk.mapRel` / `mapRel_length` / `mapRel_vertices` /
+`mapRel_isPath_iff` transport infrastructure lives in
+`Search/DFS.lean`.
+
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
 satisfying the four invariants (witness of $(k, \ell)$-sparsity) or
@@ -141,14 +161,13 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: descend to `def:tryReachPebble` — the
-DFS-plus-path-reversal specialisation that drives one pebble-search
-attempt in `def:tryAddEdge`. With L-S Lemma 10's four invariants now
-green on `Reachable` orientations, the dep-graph's substantive
-state-machine block is settled, and the remaining work is the
-algorithmic loop scaffolding (DFS into reverse, threshold check, fold
-over input edges, failure-witness extraction). See *Hand-off / next
-phase*.
+Next concrete commit: descend to `def:tryAddEdge` — the outer-loop
+combinator that calls `tryReachPebbleWith` on each endpoint of a
+candidate edge until the threshold `peb u + peb v ≥ ℓ + 1` is met
+(insert) or both DFS attempts fail (reject + emit blocking-witness
+subset). Outer-loop termination is measured by
+`(ℓ + 1) - (peb u + peb v)`, which strictly decreases per successful
+reversal (Lee–Streinu §3). See *Hand-off / next phase*.
 
 ## Architectural choices made up front
 
@@ -454,6 +473,34 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   helper in `PebbleGame.lean` rather than mirrored: it's specific
   to `peb`/`pebOn` and not upstream-eligible.
 
+### `tryReachPebble` (Phase 9 main)
+
+- **`-With` pattern for math/exec split.** `tryReachPebble`'s naive
+  realisation (call `reachableFinding` on `D.outList`) is
+  noncomputable because `D.outList` goes through `Finset.toList`
+  (mathlib-noncomputable; see FRICTION *[resolved] `Finset.toList` is
+  noncomputable*). The user surfaced this as a real concern: an
+  IO-driven implementation (parser → DFS → emitter) would `#eval`-fail
+  on the whole pipeline. Adopted the *`-With` variant* pattern:
+  computable workhorse `tryReachPebbleWith D P v succ h_succ` takes a
+  caller-supplied `succ : V → List V` plus a propositional agreement
+  witness `h_succ`; math-layer convenience `tryReachPebble D P v` is
+  a one-line noncomputable wrapper plugging in `succ := D.outList`.
+  Downstream sound/complete theorems will land on the workhorse and
+  inherit to the wrapper for any `succ`. Verified end-to-end on a
+  `Fin 3` example: `#eval ... |>.map (·.target) = some 1`. Promoted
+  to DESIGN.md *Pebble-game style island → The `-With` variant
+  pattern* as the general realisation rule for subsequent layers
+  (`tryAddEdge`, `runPebbleGame`).
+- **`DirectedWalk.mapRel` for relation transport.**
+  `reachableFinding` returns a walk along `fun a b => b ∈ succ a`;
+  `PartialOrientation.reverse` consumes a walk along
+  `fun a b => (a, b) ∈ D.arcs`. The `mapRel` family
+  (`mapRel` + `mapRel_length` + `mapRel_vertices` +
+  `mapRel_isPath_iff`) bridges via the `h_succ` propositional
+  witness, preserving every walk attribute. Lives in `Search/DFS.lean`
+  alongside the rest of the `DirectedWalk` API.
+
 ### DFS warmup (pre-Phase-9)
 
 - **Style island formalized in DESIGN.md.** Phase 9's architectural
@@ -638,29 +685,44 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   size hypothesis `ℓ ≤ k * V'.card`), and `Reachable.span_add_le`
   (additive form of the blueprint's `span ≤ k|V'| - ℓ` per project
   convention).
+* The DFS-plus-path-reversal step (blueprint `def:tryReachPebble`):
+  computable workhorse `tryReachPebbleWith D P v succ h_succ` taking
+  a caller-supplied `succ : V → List V` and the propositional
+  agreement witness `h_succ`, math-layer convenience
+  `tryReachPebble D P v` as a noncomputable wrapper specialising to
+  `succ := D.outList`. Output `TryReachPebbleResult` bundles
+  target / walk / `IsPath` / `P`-witness, with
+  `TryReachPebbleResult.newOrient := D.reverse r.walk r.isPath` as
+  the post-reversal-orientation accessor.
 
-Supporting `Search/DFS.lean` infrastructure (arc-swap, endpoint
-membership, source-cardinality) is unchanged. Blueprint
-`def:partial-orientation`, `def:pebble-counts`, `def:path-reversal`,
-`def:arc-insertion`, `def:reachable-orientation`, and
-`lem:pebble-game-invariants` are all green; the substantive state-
-machine block of the dep-graph is now settled. Build + lint clean.
+Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
+endpoint-membership / source-cardinality lemmas unchanged, plus new
+relation-transport family `DirectedWalk.mapRel` /
+`mapRel_length` / `mapRel_vertices` / `mapRel_isPath_iff`.
+Blueprint `def:partial-orientation`, `def:pebble-counts`,
+`def:path-reversal`, `def:arc-insertion`,
+`def:reachable-orientation`, `lem:pebble-game-invariants`, and
+`def:tryReachPebble` are all green. Build + lint clean.
 
-Next concrete commit: **`def:tryReachPebble`** — the DFS-plus-
-path-reversal specialisation that drives one pebble-search attempt
-in `def:tryAddEdge`. The interface: given `D : PartialOrientation V`,
-a source `u : V`, and a target predicate (e.g.
-`fun v => 0 < D.peb k v`), call `reachableFinding` (Phase 9 DFS
-warmup) on the out-arc relation `fun a b => (a, b) ∈ D.arcs` and the
-target predicate; on success use `DirectedWalk.IsPath`'s witness
-plus `PartialOrientation.reverse` to obtain `D'` with one
-redistributed pebble.
+Next concrete commit: **`def:tryAddEdge`** — the outer-loop
+combinator that processes one candidate edge `{u, v}` against the
+current orientation `D`. Repeatedly calls `tryReachPebbleWith` on
+`u`'s and `v`'s endpoints with the target predicate
+`fun w => 0 < D.peb k w` (free pebble at `w`), folding each
+successful reversal back into `D`, until either
+`peb k u + peb k v ≥ ℓ + 1` (insert `(u, v)` via
+`PartialOrientation.addArc`) or both DFS attempts fail (reject,
+returning the reachability closure as a blocking witness). Outer-loop
+termination is by `(ℓ + 1) - (peb k u + peb k v)`, which strictly
+decreases per successful reversal (Lee–Streinu §3). The `-With`
+pattern propagates: `tryAddEdgeWith` takes the user's `succ`, the
+math-layer `tryAddEdge` is the noncomputable wrapper.
 
 Subsequent commits descend the dep-graph:
-`def:tryReachPebble` → `def:tryAddEdge` (outer loop with
-termination measure `(ℓ + 1) - (peb u + peb v)`) →
-`def:runPebbleGame` (fold over `E(G)`) → `thm:pebble-game-soundness`
-(direct from Invariant (4) on the final state) → completeness side
+`def:tryAddEdge` → `def:runPebbleGame` (fold over `E(G)` with the
+outer-loop measure decreasing per accepted edge) →
+`thm:pebble-game-soundness` (direct from Invariant (4) on the final
+state) → completeness side
 (`lem:pebble-game-independent-brings-pebble` /
 `lem:pebble-game-tryAddEdge-iff-independent` /
 `lem:pebble-game-failure-witness`) → `thm:pebble-game-correct` →

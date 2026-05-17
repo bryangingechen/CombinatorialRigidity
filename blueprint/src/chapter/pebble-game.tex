@@ -270,6 +270,11 @@ failure witness.
 
 \begin{definition}[Try-reach-pebble: DFS with path reversal]
   \label{def:tryReachPebble}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryReachPebbleWith,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.tryReachPebble,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.TryReachPebbleResult,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.TryReachPebbleResult.newOrient}
+  \leanok
   \uses{def:partial-orientation, def:pebble-counts, def:path-reversal,
     thm:reachable-finding-correct}
   Given a partial orientation $D$, a source vertex $v$, and a
@@ -283,6 +288,29 @@ failure witness.
   $(D', w)$. On failure it propagates $\mathrm{none}$. The
   reachability closure $\mathrm{Reach}_D(v)$ used in later lemmas
   coincides with the visited set of a fully-exhausted DFS run.
+
+  The Lean encoding bundles the success branch as a
+  \texttt{TryReachPebbleResult} carrying the target vertex, the
+  witness walk on $D$'s arc relation (transported from
+  \texttt{reachableFinding}'s walk on the out-neighbour-list relation
+  via \texttt{DirectedWalk.mapRel}), the $\mathtt{IsPath}$ witness, and
+  the $P$-satisfaction proof; the post-reversal orientation $D'$ is
+  exposed as the convenience accessor
+  \texttt{TryReachPebbleResult.newOrient}. The implementation is split
+  into a computable workhorse \texttt{tryReachPebbleWith} taking a
+  caller-supplied out-neighbour enumeration
+  $\mathtt{succ} : V \to \mathrm{List}\,V$ with a propositional witness
+  that $\mathtt{succ}$ agrees with $D$'s arc relation, and a math-layer
+  convenience \texttt{tryReachPebble} which is a thin
+  $\mathtt{noncomputable}$ wrapper plugging in
+  $\mathtt{succ} := D.\mathtt{outList}$ (since
+  $\mathtt{Finset.toList}$ is noncomputable in mathlib; see the file
+  header's \emph{Style island} discussion). Downstream soundness /
+  completeness theorems will land on \texttt{tryReachPebbleWith} and
+  inherit to \texttt{tryReachPebble} for free; IO-driven callers
+  (parser $\to$ algorithm $\to$ output) call
+  \texttt{tryReachPebbleWith} directly with their own $\mathrm{List}$-
+  shaped adjacency and stay fully computable.
 \end{definition}
 
 \begin{definition}[Try-add-edge]

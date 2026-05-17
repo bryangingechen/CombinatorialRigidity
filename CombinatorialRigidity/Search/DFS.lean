@@ -158,6 +158,40 @@ count lemmas to derive endpoint inequalities under `IsPath`. -/
   | nil _ => simp [vertices]
   | cons _ _ ih => exact List.mem_cons_of_mem _ ih
 
+/-! ### Transport along a relation implication
+
+`DirectedWalk` is parameterised by the arc relation `R`. When a caller has a
+walk along one relation and an implication `R → S`, `mapRel` transports the
+walk to the implied relation, preserving length / vertex list / simplicity.
+The pebble game uses this to bridge `reachableFinding`'s output walk
+(parametrised by `fun a b => b ∈ succ a` for some out-neighbour list `succ`)
+to the orientation's arc relation (`fun a b => (a, b) ∈ D.arcs`) before
+feeding the walk to `PartialOrientation.reverse`. -/
+
+/-- Transport a walk along `R` to a walk along `S`, given a pointwise
+implication `R a b → S a b`. Endpoints, length, and vertex list are
+preserved unchanged. -/
+def mapRel {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b) :
+    ∀ {u w : V}, DirectedWalk R u w → DirectedWalk S u w
+  | _, _, .nil u => .nil u
+  | _, _, .cons hr q => .cons (h hr) (q.mapRel h)
+
+@[simp] lemma mapRel_length {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b)
+    {u w : V} (p : DirectedWalk R u w) : (p.mapRel h).length = p.length := by
+  induction p with
+  | nil _ => rfl
+  | cons _ _ ih => rw [mapRel, length, length, ih]
+
+@[simp] lemma mapRel_vertices {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b)
+    {u w : V} (p : DirectedWalk R u w) : (p.mapRel h).vertices = p.vertices := by
+  induction p with
+  | nil _ => rfl
+  | cons _ _ ih => rw [mapRel, vertices, vertices, ih]
+
+lemma mapRel_isPath_iff {S : V → V → Prop} (h : ∀ {a b : V}, R a b → S a b)
+    {u w : V} (p : DirectedWalk R u w) : (p.mapRel h).IsPath ↔ p.IsPath := by
+  rw [IsPath, IsPath, mapRel_vertices]
+
 /-! ### Arcs of a walk
 
 A walk carries an ordered list of arcs `(u_i, u_{i+1})` from each `cons`

@@ -371,11 +371,35 @@ list projection at the algorithm boundary (with an optional `Nodup`
 invariant where set semantics matter for downstream proofs); the
 projection itself is the only place the `Finset`/`List`
 correspondence enters, and stays noncomputable in isolation without
-contaminating the algorithm. Phase 9 main's `PartialOrientation V` is
-expected to follow the same pattern: store as `Finset (V × V)`
-internally for invariants, expose `outList : V → List V` at the DFS
-boundary. See `notes/FRICTION.md` *[resolved] `Finset.toList` is
-noncomputable — math/exec layer split* for the design history.
+contaminating the algorithm.
+
+**The "`-With` variant" pattern.** A naive `Finset`-derived projection
+(e.g. `outList := D.outNbhd.toList`) still propagates `noncomputable`
+to every consumer of the algorithm that calls it, which defeats the
+point of the exec layer when an IO-driven pipeline (parser →
+algorithm → output) wants `#eval` to fire end-to-end. The realised
+pattern in `PartialOrientation`'s `tryReachPebble` is to split:
+
+- a *computable workhorse* `tryReachPebbleWith D P v succ h_succ`
+  that takes the enumeration `succ : V → List V` and a propositional
+  witness `h_succ` of `succ`-vs-`D.arcs` agreement as parameters;
+- a *math-layer convenience* `tryReachPebble D P v` that is a
+  one-line `noncomputable` wrapper plugging in `succ := D.outList`
+  with `D.mem_outList` for the propositional witness.
+
+The propositional witness costs nothing at runtime (it's erased).
+Soundness / completeness theorems land on the `-With` workhorse and
+inherit to the math-layer wrapper as one-line corollaries for any
+concrete `succ`. IO-driven callers reach for `tryReachPebbleWith`
+directly with a `List`-shaped adjacency built from their input data,
+bypass `outList` entirely, and stay fully computable; abstract
+math-layer users reach for `tryReachPebble` and pay nothing extra.
+
+Subsequent pebble-game layers (`tryAddEdge`, `runPebbleGame`) follow
+the same `-With` / math-layer-wrapper split, propagating the
+caller-supplied `succ` through. See `notes/FRICTION.md` *[resolved]
+`Finset.toList` is noncomputable — math/exec layer split* for the
+design history.
 
 ---
 
