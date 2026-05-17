@@ -54,6 +54,12 @@ witness path.
   `CombinatorialRigidity.Search.reachableFinding_complete` —
   soundness and completeness against the `Relation.ReflTransGen`
   closure of the out-neighbour relation.
+* `CombinatorialRigidity.Search.reachClosure` — the
+  reflexive-transitive closure of a relation `R : V → V → Prop` as a
+  `Finset V` (noncomputable, via `Classical.decPred`). Math-layer
+  view of reachability used by the pebble game's completeness side;
+  the algorithm side uses `reachableFinding` to find a single match
+  without materialising the closure.
 
 ## Style island
 

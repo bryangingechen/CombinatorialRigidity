@@ -25,12 +25,10 @@ witnessing non-sparsity. The matroidal-independence corollary against
 Phase 7's `countMatroid` follows directly from
 `countMatroid_indep_iff`.
 
-This file is currently a **scaffold**. The forward-mode dep-graph in
-`blueprint/src/chapter/pebble-game.tex` is the authoritative lemma
-index; subsequent code commits flip one leaf-most red node green at a
-time. The leaf-most red node to attack first is L-S Lemma 10
-(the four pebble-game invariants) traced through `SimpleGraph` for
-both ranges `ℓ < k` and `k ≤ ℓ < 2k`.
+The forward-mode dep-graph in `blueprint/src/chapter/pebble-game.tex`
+is the authoritative lemma index for this file (Phase 9 closed with
+all 22 nodes from `def:partial-orientation` through
+`cor:pebble-game-countMatroid-indep` green).
 
 ## Style island
 

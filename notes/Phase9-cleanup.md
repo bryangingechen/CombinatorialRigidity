@@ -32,18 +32,22 @@ performance pass).
 
 ## Current state
 
-A1 + A2 + A2-followup + A3 + A4 closed (bucket A fully green) plus
-B1 + B2 + B3 closed (no-edit dispositions). Both blueprint chapters
-track the Lean faithfully, the iff red node is now green, the
-SimpleGraph-vs-multi-graph regime correspondence is documented in
-the chapter prose, the formalization-aside scan across both
-chapters surfaced no Lean-simplification candidates, all 6
-`noncomputable def` sites are forced + minimal + workhorse-exposed,
-all 5 real 4+-arg `rw` chains (the *Bucket B* table over-counted
-PebbleGame.lean by 1 due to destructuring commas inside
-anonymous-constructor `rw` args) are tight structural rewrites
-with no missing fused lemma, and the `classical` /
-`Fintype.ofFinite` re-grep confirms zero hits. Every aside in
+Buckets A + B fully closed. Both blueprint chapters track the Lean
+faithfully, the iff red node is now green, the SimpleGraph-vs-
+multi-graph regime correspondence is documented in the chapter
+prose, the formalization-aside scan across both chapters surfaced
+no Lean-simplification candidates, all 6 `noncomputable def` sites
+are forced + minimal + workhorse-exposed, all 5 real 4+-arg `rw`
+chains (the *Bucket B* table over-counted PebbleGame.lean by 1 due
+to destructuring commas inside anonymous-constructor `rw` args)
+are tight structural rewrites with no missing fused lemma, the
+`classical` / `Fintype.ofFinite` re-grep confirms zero hits, the
+section structure of both new files aligns with the blueprint
+chapters (with a stale Phase-9-opening *"scaffold"* paragraph
+removed from the PebbleGame.lean header + `reachClosure` added to
+DFS.lean's *Main declarations* listing), and all 79 `--` comments
+in the two files serve a WHY purpose (anonymous-case-dispatch
+label, proof-step roadmap, or TACTICS-QUIRKS rescue cross-ref). Every aside in
 `chapter/dfs.tex` + `chapter/pebble-game.tex` is either A1/A2-vetted
 structural bookkeeping (`dropUntilBundle`, `DirectedWalk.mapRel`,
 `D.reach` post-composition at the failure site), a
@@ -601,19 +605,104 @@ specialisation) and the workhorses stay computable.
   (`Search/DFS.lean:63, 737`; `PebbleGame.lean:41, 2426` — each
   pointing the reader at the style-island rationale). Trivially
   closed; no edits.
-- [ ] **B4:** Phase 9 file headers + section organisation review.
+- [x] **B4:** Phase 9 file headers + section organisation review.
   Both new files run long (770 + 2500 LoC). Spot-check section
   organisation: are sections named consistently with the blueprint
   chapter structure? Are the section transitions documented in
   module docstrings? Any section over ~400 LoC that's a candidate
   for an internal split (no file-level split, just section
   reordering)?
-- [ ] **B5:** `--` comment audit. Phase 9's long files almost
+
+  **Disposition.** Two edits landed; section organisation otherwise
+  well-aligned.
+  - **`PebbleGame.lean` header**: removed stale Phase-9-opening
+    *"This file is currently a **scaffold**"* paragraph that
+    described the file as a scaffold with red dep-graph nodes still
+    to attack. Replaced with a one-sentence pointer to the
+    forward-mode dep-graph confirming Phase 9 closed all 22 nodes.
+    The "Style island" + "References" parts of the header stay
+    unchanged.
+  - **`Search/DFS.lean` Main declarations**: added `reachClosure`
+    entry. Phase 9 added the math-layer reachability accessor
+    (used by the pebble game's completeness side to build
+    `D.reach u ∪ D.reach v`) but the *Main declarations* listing
+    in the file header was not updated. The structural support
+    (`DirectedWalk.mapRel`, `arcsFinset` / `reversedArcsFinset`
+    family) stays out of the listing per A4's *Group 1* disposition
+    (Lean-side bookkeeping, not blueprint-surfaced).
+  - **Section structure**: both files' `/-! ## ... -/` headers
+    match the blueprint chapter's section structure. DFS.lean:
+    Directed walks (`def:directed-walk`), Arcs of a walk
+    (structural support for `def:path-reversal`), DFS primitive
+    (`def:reachable-finding`), Reachability closure (math-layer for
+    the pebble-game completeness side). PebbleGame.lean: Path
+    reversal (`def:path-reversal`), Arc insertion
+    (`def:arc-insertion`), Reachability + invariants
+    (`def:reachable-orientation`, `lem:pebble-game-invariants`),
+    Try-reach-pebble (`def:tryReachPebble`), Try-add-edge
+    (`def:tryAddEdge`), Run-pebble-game (`def:runPebbleGame`),
+    Soundness (`thm:pebble-game-soundness`), Completeness (towards
+    `lem:pebble-game-failure-witness`), Correctness theorem
+    (`thm:pebble-game-correct`), Matroidal-independence corollary
+    (`cor:pebble-game-countMatroid-indep`).
+  - **Section size**: PebbleGame.lean's *Completeness* section runs
+    ~509 LoC (L1835--L2344) and is the only section over the
+    informal 400-LoC threshold. The section runs through the
+    `Reachable.pebOn_add_outOn_ge` Invariant-(3) substantive piece,
+    the `outOn_reach_union_eq_zero` blocking-witness setup, the
+    DFS-failure-implies-blocking-witness lemma, the per-edge
+    `tryAddEdgeWith_eq_none_imp_exists_witness`, and the fold-level
+    `runPebbleGameWith_eq_none_imp_exists_witness`. These are
+    tightly coupled (each builds on the previous) and the section
+    is the natural unit for the chapter's *Completeness* paragraph;
+    splitting would scatter related lemmas across two files. No
+    structural change.
+- [x] **B5:** `--` comment audit. Phase 9's long files almost
   certainly accumulated some narrative `--` comments that should
   either move to module-level docstrings (`/-! ... -/`) or be
   removed per the CLAUDE.md *no comments by default* rule. Quick
   grep + walk; remove anything explaining WHAT the code does (vs
   documenting a hidden WHY).
+
+  **Disposition.** 79 `--` comments across the two files (21 in
+  DFS.lean, 58 in PebbleGame.lean); all retained, no edits. Each
+  is one of:
+  - **Anonymous-case-dispatch label** in a `rcases` / `rintro`
+    chain or an `induction ... using funName.induct` block whose
+    auto-generated case names (`case1` / `case2` / ...) carry no
+    semantic content. DFS.lean L332--372 (cons-pattern subcases
+    in `IsPath.notMem_*_arcsFinset`), L398--511 (induction-step
+    subcases in `IsPath.card_*_filter_fst`); PebbleGame.lean
+    L1209--1407 (5-case `tryAddEdgeWith` induct dispatches across
+    `tryAddEdgeWith_reachable` / `_underline` / `_isSome` /
+    `_eq_none_imp_exists_witness`). These give the case its
+    meaning since the labels don't.
+  - **Proof-step roadmap marker** in a long substantive proof.
+    PebbleGame.lean L354--365 (motive-avoidance strategy in
+    `out_reverse_add`), L487--544 (proof-step roadmap through the
+    `D.arcs` decomposition lemmas), L1675--1703 (round-trip
+    enumeration glue inside `runPebbleGame` correctness),
+    L2274--2341 (substantive 70-line `case5` of
+    `tryAddEdgeWith_eq_none_imp_exists_witness`, the V'-construction
+    + algebraic decomposition for the blocking witness).
+  - **TACTICS-QUIRKS rescue cross-reference**. PebbleGame.lean
+    L628--630 cites the `subst`-direction trap (TACTICS-QUIRKS § 4)
+    inline at the point of use; per `../CombinatorialRigidity/CLAUDE.md`
+    *Lifted to* discipline, an in-source pointer at the use site
+    is the right idiom.
+  - **High-level proof-strategy preamble** at the top of a long
+    proof. DFS.lean L714--724 in `reachableFinding_complete`
+    (lifting `ReflTransGen` via `head_induction_on`, then
+    contrapositive against `_complete` helper). PebbleGame.lean
+    L582--587 in the `out_reverse_le` consequences (the unified
+    equation's two `{0, 1}`-valued cases).
+
+  All retained `--` comments serve a WHY purpose (explain a
+  rationale, mark a case in an anonymous dispatch, or cross-
+  reference a TACTICS-QUIRKS rescue). Removal would degrade
+  proof navigability without saving meaningful prose; no
+  candidate fits the *Default to writing no comments* /
+  *Don't explain WHAT* bar for removal.
 
 ### Bucket C — Long-proof audit (Phase 9 surface)
 
@@ -732,19 +821,17 @@ the manual:
 
 ## Blockers / open questions
 
-- Round in progress; bucket A fully closed (A1 + A2 + A2-followup +
-  A3 + A4 all green); bucket B partially closed (B1 + B2 + B3 all
-  no-edit dispositions; B4 file-organisation review and B5 `--`
-  comment audit remain). Buckets C (long-proof audit) and D
-  (Phase9.md compression) remain. (`checkdecls` is the always-on
-  per-commit gate per `../blueprint/CLAUDE.md` *Static checks
-  before commit*, not a separate task.)
+- Round in progress; buckets A + B fully closed (A1--A4 + B1--B5
+  all green); buckets C (long-proof audit) and D (Phase9.md
+  compression) remain. (`checkdecls` is the always-on per-commit
+  gate per `../blueprint/CLAUDE.md` *Static checks before commit*,
+  not a separate task.)
 
 ## Hand-off / next phase
 
 Round in progress. Phase 9 main is fully closed; this round
-addresses the post-closure hygiene. Buckets A + B (partial) are
-green: A1 (DFS chapter walk), A2 (pebble-game chapter walk),
+addresses the post-closure hygiene. Buckets A + B are green:
+A1 (DFS chapter walk), A2 (pebble-game chapter walk),
 A2-followup (`lem:pebble-game-tryAddEdge-iff-independent` red node,
 discharged via the narrative-bridge `@[deprecated]` shim),
 A3 (multigraph regime correspondence in the chapter's
@@ -755,16 +842,24 @@ def` sites forced + minimal + workhorse-exposed, audit-only),
 B2 (five real 4+-arg `rw` chains audited against
 `simp`/`grind`/`omega`/single-tactic candidates via
 `lean_multi_attempt`, no missing fused lemma surfaced, audit-only),
-and B3 (`classical` / `Fintype.ofFinite` re-grep zero, trivially
-closed) are all green.
+B3 (`classical` / `Fintype.ofFinite` re-grep zero, trivially
+closed), B4 (file header + section organisation review;
+PebbleGame.lean header *"scaffold"* paragraph dropped +
+`reachClosure` added to DFS.lean's *Main declarations*), and
+B5 (79 `--` comments all WHY-content, retained, audit-only) are
+all green.
 
-The natural next task is closing the rest of bucket B: B4 (file
-header / section organisation review of `Search/DFS.lean` +
-`PebbleGame.lean`, both running long at 770 + 2500 LoC) and B5
-(`--` comment audit — 79 hits across the two files; remove WHAT-
-comments per CLAUDE.md *no comments by default*, lift WHY-comments
-to docstrings where they belong). Then bucket C (long-proof audit)
-and bucket D (Phase9.md compression).
+The natural next task is bucket C (long-proof audit on the Phase 9
+surface): rank top ~10 proofs by body line count and walk each
+through the four CLEANUP.md questions (API extraction, mathlib
+search, tactic substitution via `lean_multi_attempt`, definitional
+refactor). Expected hot spots per the bucket-C task list:
+`tryAddEdgeWith_reachable` / `_underline` / `_isSome` /
+`_eq_none_imp_exists_witness` (5-case `induct` dispatch shape
+repeated four times — possible cross-proof unification target),
+`Reachable.pebOn_add_outOn_ge` (Invariant (3) substantive piece),
+`reachableFindingAux_complete` (DFS inner length-induction). Then
+bucket D (Phase9.md compression from ~1459 LoC to ≤ 250 LoC).
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
