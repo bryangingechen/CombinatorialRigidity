@@ -159,6 +159,19 @@ advances to the soundness side (`thm:pebble-game-soundness` directly from
 Invariant (4) on the final state, gated on threading `Reachable k ℓ` and
 the underlying-edge-set invariant through the fold).
 
+`Reachable k ℓ` preservation lands through the full algorithm chain:
+`TryReachPebbleResult.reachable_newOrient` (one-line `Reachable.reverse`
+wrapper), `tryAddEdgeWith_reachable` (via `tryAddEdgeWith.induct`,
+five-case branch dispatch — two accept branches close on
+`Reachable.addArc`, two DFS-success branches compose
+`reachable_newOrient` with the IH, the both-DFS-fail branch is
+contradictory by `nomatch`), and `runPebbleGameWith_reachable`
+(structural recursion on the edge list; per-step glue is
+`tryAddEdgeWith_reachable` on accept-branch hits, IH on no-op skips).
+Infrastructure piece (i) for `thm:pebble-game-soundness` is now in
+place; piece (ii), the underlying-edge tracking through the fold,
+remains.
+
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
 satisfying the four invariants (witness of $(k, \ell)$-sparsity) or
@@ -585,6 +598,39 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
   witness, preserving every walk attribute. Lives in `Search/DFS.lean`
   alongside the rest of the `DirectedWalk` API.
 
+### `Reachable` preservation chain (Phase 9 main)
+
+- **Lemma trio at the three algorithm layers.** One preservation
+  lemma per layer — `TryReachPebbleResult.reachable_newOrient` (a
+  one-line `Reachable.reverse` wrapper), `tryAddEdgeWith_reachable`
+  (five-case dispatch via `tryAddEdgeWith.induct`),
+  `runPebbleGameWith_reachable` (structural recursion on the edge
+  list, glued by `tryAddEdgeWith_reachable`) — mirroring the
+  blueprint's `def:tryReachPebble → def:tryAddEdge → def:runPebbleGame`
+  composition. The recursion structures genuinely differ, so a
+  combined mega-proof would obscure them; separate lemmas pay
+  forward to the soundness theorem.
+
+- **`Reachable k ℓ D` is a non-motive threading hypothesis, not part
+  of the induct motive.** `tryAddEdgeWith.induct` has motive
+  `(D, hnotin, hnotin_rev, h_outle) → Prop`. Rolling `Reachable k ℓ
+  D → ∀ D', ... = some D' → Reachable k ℓ D'` into the motive was
+  considered; landed instead with `hD` introduced before
+  `induction _ using ... generalizing D'`, so `Reachable k ℓ D` is
+  available in each case's local context. Cleaner case bodies,
+  same content.
+
+- *`induction _ using funName.induct` on a function with `let` in
+  its body trips three closely-related quirks* → FRICTION *[resolved]
+  `induction _ using funName.induct` binder count + inner-`let`
+  shadowing*; TACTICS-QUIRKS § 19. The pattern recurs whenever a
+  function's body uses `let` for an intermediate term (here, `let P
+  : V → Bool` in `tryAddEdgeWith`'s below-threshold branch); name
+  the `let`-bound parameter in each affected case's binder list,
+  `dsimp only at h` to inline the inner let before `rw`-based case
+  hypotheses can land, and `nomatch h` (not `Option.noConfusion h`)
+  to discharge match-with-`none`-discriminee contradictions.
+
 ### DFS warmup (pre-Phase-9)
 
 - **Style island formalized in DESIGN.md.** Phase 9's architectural
@@ -798,6 +844,13 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   `runPebbleGame G k ℓ` enumerating `G.edgeFinset.toList`, projecting
   each `Sym2 V` to an ordered pair via `Quot.out`, and starting from
   `empty`. Termination by `edges.length`.
+* `Reachable k ℓ` preservation through the algorithm chain:
+  `TryReachPebbleResult.reachable_newOrient` (one-line
+  `Reachable.reverse` wrapper), `tryAddEdgeWith_reachable` (five-case
+  `tryAddEdgeWith.induct`-driven dispatch), and
+  `runPebbleGameWith_reachable` (structural recursion on the edge
+  list). Discharges infrastructure piece (i) for
+  `thm:pebble-game-soundness`.
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
@@ -822,18 +875,19 @@ adjacency. Documented in DESIGN.md *Pebble-game style island → The
 `-With` variant pattern* (same rationale as `tryReachPebbleWith` →
 `tryReachPebble`'s `outList` shift).
 
-Next concrete commit: **`thm:pebble-game-soundness`** — L-S Theorem 8
-easy direction. Two infrastructure lemmas required first:
-(i) `runPebbleGameWith` preserves `Reachable k ℓ` from the input
-orientation (single-step glue threading `Reachable.reverse` /
-`Reachable.addArc` through the fold's `tryAddEdgeWith` calls, which
-in turn need analogous preservation lemmas for `tryAddEdgeWith` and
-`tryReachPebbleWith`); (ii) on success, the final `D.arcs`'s
-underlying-edge set equals the input edge set (a content-tracking
-invariant on the fold). With both in hand, Invariant (4) on the final
-`D` gives `D.span V' + ℓ ≤ k * V'.card` on every `V'` of the relevant
-size range, which transfers to `|edgesIn G V'| ≤ k|V'| - ℓ` via the
-underlying-edge equality.
+Next concrete commit: **underlying-edge tracking through the fold**
+— infrastructure piece (ii) for `thm:pebble-game-soundness`. Shape:
+on success, `D.arcs.image (fun p => s(p.1, p.2)) = edges.toFinset`
+(or the appropriate variant — `D.arcs` underlies the unoriented
+edge set of the input list). The proof is by structural induction on
+`edges`, with the per-step shift handled by an `arcs`-equation for
+each `tryAddEdgeWith` accept branch (accept inserts exactly one
+oriented arc, so the underlying edge set grows by exactly
+`s(u, v)`). Once both (i) and (ii) land, `thm:pebble-game-soundness`
+is a one-shot composition: Invariant (4) on the final `Reachable`
+orientation gives `D.span V' + ℓ ≤ k * V'.card` for every `V'` in
+the relevant size range, which transfers to
+`|edgesIn G V'| ≤ k|V'| - ℓ` via the underlying-edge equality.
 
 Subsequent commits descend the dep-graph:
 `thm:pebble-game-soundness` → completeness side

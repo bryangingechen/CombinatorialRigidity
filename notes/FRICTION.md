@@ -76,6 +76,43 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `induction _ using funName.induct` binder count + inner-`let` shadowing
+
+- **Where it bit:** `tryAddEdgeWith_reachable` in
+  `CombinatorialRigidity/PebbleGame.lean` (Phase 9, *Reachable*
+  preservation chain). `tryAddEdgeWith`'s below-threshold branch
+  binds `let P : V → Bool := fun w => …`; the auto-generated
+  `tryAddEdgeWith.induct` carries `P` as a `let`/`have` clause in
+  three of its five cases. Initial proof attempt (i) omitted `P`
+  from the case-binder list for case5 — Lean shifted the remaining
+  binders, and the `rw [tryAddEdgeWith, dif_neg hthr] at h` line
+  failed with *"Application type mismatch: argument `hthr` has
+  type V → Bool"* (the now-misaligned `hthr` was actually `P`).
+  After fixing the binder count, (ii) `rw [hu_none, hv_none] at h`
+  failed with *"Did not find an occurrence of the pattern
+  `D.tryReachPebbleWith P u (toSucc D) ⋯`"* — the inner `let P :=
+  …` inside `h` shadowed the case binder `P`, so `hu_none`'s
+  pattern (built on the case binder) didn't match. (iii) After
+  inlining the inner let with `dsimp only at h` and re-running the
+  rewrites, `Option.noConfusion h` failed: the matches with
+  `none` discriminees hadn't reduced.
+- **Friction:** three closely-related traps that all surface only
+  when the function being inducted has a `let` in its body. None
+  of TACTICS-QUIRKS § 1–18 covered this combination.
+- **Resolved (this commit):** the working pattern is (a) name the
+  `let`-bound parameter in each affected case's binder list — use
+  `#check @funName.induct` or `lean_hover_info` via MCP to see the
+  exact let / have / ∀ chain; (b) apply `dsimp only at h` after
+  the function-definition unfold to inline the inner `let` so
+  subsequent rewrites match; (c) use `nomatch h` (or `cases h`,
+  `simp at h`) rather than `Option.noConfusion h` to discharge
+  match-with-`none`-discriminee contradictions, since these match
+  tactics trigger the match reduction automatically.
+  **Lifted to:** TACTICS-QUIRKS.md § 19 *`induction … using
+  funName.induct` on a function with `let` in its body*; quirks
+  index entry added in `CombinatorialRigidity/CLAUDE.md`.
+- **Status:** resolved.
+
 ### [resolved] `rw [D.field_eq]` fails motive when a local's type references the field
 
 - **Where it bit:** `PartialOrientation.out_reverse_add` in

@@ -92,6 +92,13 @@ bullets. If one matches, jump to the named section of
   if-clause) — § 18 *`rw [h]` over a structure field whose value
   appears in another local's type*; build the rewritten container
   equation via `Finset.ext` and `rw` the equation as a unit.
+- *"Application type mismatch"* on the first hypothesis used inside
+  a `case caseN D h₁ ... =>` after `induction _ using funName.induct`,
+  or *"Did not find an occurrence of the pattern"* on a `rw [hyp] at
+  h` whose LHS visibly appears in `h` — § 19 *`induction … using
+  funName.induct` on a function with `let` in its body*; name the
+  `let`-bound parameter in the case-binder list, and apply `dsimp
+  only at h` after `rw [funName] at h` to inline the inner `let`.
 
 ## Starting a Lean-touching session
 

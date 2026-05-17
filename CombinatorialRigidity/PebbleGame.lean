@@ -982,6 +982,19 @@ def TryReachPebbleResult.newOrient {D : PartialOrientation V}
     PartialOrientation V :=
   D.reverse r.walk r.isPath
 
+omit [Fintype V] in
+/-- `Reachable k ℓ` is preserved by a single DFS-plus-reversal step: given a
+reachable input orientation `D` and a target with strictly-positive free pebble
+count (i.e. `D.out r.target < k`), the post-reversal orientation
+`r.newOrient = D.reverse r.walk r.isPath` is again reachable, via the
+`Reachable.reverse` constructor. The `h_target` hypothesis is supplied by
+`tryAddEdgeWith`'s predicate `0 < D.peb k w ∧ ...` at the recursive call. -/
+lemma TryReachPebbleResult.reachable_newOrient {D : PartialOrientation V}
+    {P : V → Bool} {v : V} (r : TryReachPebbleResult D P v) {k ℓ : ℕ}
+    (hD : Reachable k ℓ D) (h_target : D.out r.target < k) :
+    Reachable k ℓ r.newOrient :=
+  Reachable.reverse hD r.walk r.isPath h_target
+
 end TryReachPebble
 
 /-! ### Try-add-edge: outer loop driving DFS + path reversal + insertion
@@ -1122,6 +1135,87 @@ noncomputable def tryAddEdge
   tryAddEdgeWith D k ℓ u v huv hnotin hnotin_rev h_outle
     (fun D' => D'.outList) (fun D' {_ _} => D'.mem_outList)
 
+/-- `tryAddEdgeWith` preserves `Reachable k ℓ`: if the input orientation `D`
+is reachable and the call returns `some D'`, then `D'` is also reachable. By
+induction on the function's recursion structure
+(`tryAddEdgeWith.induct`); the threshold-accept branches close via the
+`Reachable.addArc` constructor (the threshold + the structural `h_outle`
+bound supply the constructor's `D.out _ < k` precondition), and the
+DFS-success branches close by composing
+`TryReachPebbleResult.reachable_newOrient` with the inductive hypothesis. -/
+lemma tryAddEdgeWith_reachable {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    {D : PartialOrientation V}
+    (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
+    (h_outle : ∀ x, D.out x ≤ k)
+    (hD : Reachable k ℓ D)
+    {D' : PartialOrientation V}
+    (h : D.tryAddEdgeWith k ℓ u v huv hnotin hnotin_rev h_outle toSucc h_toSucc
+      = some D') :
+    Reachable k ℓ D' := by
+  induction D, hnotin, hnotin_rev, h_outle using
+    tryAddEdgeWith.induct (k := k) (ℓ := ℓ) (huv := huv)
+      (toSucc := toSucc) (h_toSucc := h_toSucc)
+    generalizing D'
+  case case1 D hnotin hnotin_rev h_outle hthr hpu_pos =>
+    -- Threshold met, free pebble at `u`: result is `D.addArc u v huv hnotin_rev`.
+    rw [tryAddEdgeWith, dif_pos hthr, if_pos hpu_pos] at h
+    have h_out_u : D.out u < k := by
+      have h1 := h_outle u
+      have h2 : D.peb k u = k - D.out u := rfl
+      omega
+    cases h
+    exact Reachable.addArc hD huv hnotin hnotin_rev h_out_u hthr
+  case case2 D hnotin hnotin_rev h_outle hthr hpu_neg =>
+    -- Threshold met, no free pebble at `u`: result is `D.addArc v u huv.symm hnotin`.
+    rw [tryAddEdgeWith, dif_pos hthr, if_neg hpu_neg] at h
+    have hpu_zero : D.peb k u = 0 := Nat.eq_zero_of_not_pos hpu_neg
+    have h_out_v : D.out v < k := by
+      have h1 := h_outle v
+      have h2 : D.peb k v = k - D.out v := rfl
+      omega
+    cases h
+    refine Reachable.addArc hD huv.symm hnotin_rev hnotin h_out_v ?_
+    have : D.peb k v + D.peb k u = D.peb k u + D.peb k v := Nat.add_comm _ _
+    omega
+  case case3 D hnotin hnotin_rev h_outle hthr P r hr_eq ih =>
+    -- Below threshold, u-DFS succeeds: recurse on `r.newOrient`.
+    rw [tryAddEdgeWith, dif_neg hthr] at h
+    simp only at h
+    rw [hr_eq] at h
+    -- Establish `Reachable k ℓ r.newOrient` from `r.hP`.
+    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
+      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
+    have h_target : D.out r.target < k := by
+      have h1 := h_outle r.target
+      have h2 : D.peb k r.target = k - D.out r.target := rfl
+      have := hP_decomp.1.1
+      omega
+    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
+    exact ih hR_new h
+  case case4 D hnotin hnotin_rev h_outle hthr P hu_none r hr_eq ih =>
+    -- Below threshold, u-DFS fails, v-DFS succeeds: recurse on `r.newOrient`.
+    rw [tryAddEdgeWith, dif_neg hthr] at h
+    simp only at h
+    rw [hu_none, hr_eq] at h
+    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
+      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
+    have h_target : D.out r.target < k := by
+      have h1 := h_outle r.target
+      have h2 : D.peb k r.target = k - D.out r.target := rfl
+      have := hP_decomp.1.1
+      omega
+    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
+    exact ih hR_new h
+  case case5 D hnotin hnotin_rev h_outle hthr P hu_none hv_none =>
+    -- Both DFS attempts fail: result is `none`, contradicting `h`.
+    rw [tryAddEdgeWith, dif_neg hthr] at h
+    dsimp only at h
+    rw [hu_none, hv_none] at h
+    exact nomatch h
+
 end TryAddEdge
 
 /-! ### Run-pebble-game: fold tryAddEdge over an edge enumeration
@@ -1195,6 +1289,41 @@ noncomputable def runPebbleGame (G : SimpleGraph V) [Fintype G.edgeSet]
   (empty : PartialOrientation V).runPebbleGameWith k ℓ
     (fun D' => D'.outList) (fun D' {_ _} => D'.mem_outList)
     (G.edgeFinset.toList.map Quot.out)
+
+/-- `runPebbleGameWith` preserves `Reachable k ℓ`: if the input orientation `D`
+is reachable and the fold returns `some D'`, then `D'` is also reachable. By
+structural induction on the edge list; the per-step glue is
+`tryAddEdgeWith_reachable` on accept-branch hits and the IH directly on
+no-op (skipped) edges. -/
+lemma runPebbleGameWith_reachable {k ℓ : ℕ}
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs) :
+    ∀ (edges : List (V × V)) {D : PartialOrientation V} (_ : Reachable k ℓ D)
+      {D' : PartialOrientation V},
+      D.runPebbleGameWith k ℓ toSucc h_toSucc edges = some D' →
+      Reachable k ℓ D'
+  | [], D, hD, D', h => by
+    rw [runPebbleGameWith] at h
+    cases h
+    exact hD
+  | (u, v) :: es, D, hD, D', h => by
+    rw [runPebbleGameWith] at h
+    by_cases hcond : u ≠ v ∧ (u, v) ∉ D.arcs ∧ (v, u) ∉ D.arcs ∧ (∀ x, D.out x ≤ k)
+    · rw [dif_pos hcond] at h
+      match heq : D.tryAddEdgeWith k ℓ u v hcond.1 hcond.2.1 hcond.2.2.1 hcond.2.2.2
+          toSucc h_toSucc with
+      | some Dmid =>
+        rw [heq] at h
+        have hR_mid : Reachable k ℓ Dmid :=
+          tryAddEdgeWith_reachable hcond.1 toSucc h_toSucc hcond.2.1 hcond.2.2.1
+            hcond.2.2.2 hD heq
+        exact runPebbleGameWith_reachable toSucc h_toSucc es hR_mid h
+      | none =>
+        rw [heq] at h
+        exact nomatch h
+    · rw [dif_neg hcond] at h
+      exact runPebbleGameWith_reachable toSucc h_toSucc es hD h
 
 end RunPebbleGame
 

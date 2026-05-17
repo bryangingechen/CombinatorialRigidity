@@ -547,3 +547,78 @@ into `p`'s type, and the goal contains `p.vertices` (via the
 `if v ∈ p.vertices ∧ … then 1 else 0` clauses); `rw [h_decomp]`
 with `h_decomp : D.arcs = (D.arcs \ p.arcsFinset) ∪ p.arcsFinset`
 fails. The `ext`-based replacement above closes cleanly.
+
+---
+
+## 19. `induction … using funName.induct` on a function with `let` in its body
+
+The auto-generated `funName.induct` recursor for a function defined
+with `termination_by` faithfully mirrors the function's body — which
+means a `let x := <expr>` (or `have x := <expr>`) in the body
+becomes a `let`/`have` clause in each affected case of the recursor.
+Two related traps surface together when using `induction _ using
+funName.induct`:
+
+**a. The `let`-bound name consumes a case-binder slot.** When you
+write `case caseN D h₁ h₂ ... =>` to name the binders for a case,
+each `let x := <expr>;` in the case's hypothesis chain takes a
+slot. The displayed signature shows it as `let x := …;` rather than
+`∀ x, …`, but it elaborates as a real binder. If you skip its name,
+Lean shifts the remaining names by one and produces a confusing
+type error on whatever now-misaligned hypothesis you first try to
+use.
+
+**Symptom.** *"Application type mismatch: hypothesis `hX` has type
+`<wrong type>` but is expected to have type ..."* where the displayed
+"wrong type" matches the `let`-bound term (e.g. `V → Bool` when the
+let binds `P : V → Bool`).
+
+**Fix.** Include the let-bound name in the case's binder list. For
+a case introduced by `let P := …;` followed by `∀ (r : …), …`, write
+`case caseN D h₁ h₂ ... P r ... =>` rather than
+`case caseN D h₁ h₂ ... r ... =>`. Use `#check @funName.induct` (or
+`lean_hover_info` via MCP) to see the exact let / have / ∀ chain in
+each case before naming.
+
+**b. The inner `let`-binding shadows the case binder when rewriting.**
+After `rw [funName] at h` unfolds the function definition in a
+hypothesis, the inner `let x := <expr>;` introduces a fresh local
+binding for `x` *inside* `h`, distinct from the case binder of the
+same name. A subsequent `rw [hyp] at h` where `hyp`'s LHS references
+the case-binder `x` will fail with *"Did not find an occurrence of
+the pattern"* because the pattern uses the case-binder `x` while
+the occurrence in `h` uses the inner let-bound `x` — they're
+different terms even though they print identically.
+
+**Symptom.** `rw [hyp] at h` whose LHS visibly appears in `h`
+fails with *"Did not find an occurrence of the pattern"*; the
+displayed `h` contains a `let x := …;` clause shadowing your case
+binder.
+
+**Fix.** Apply `dsimp only at h` *after* the `rw [funName] …`
+unfold to inline the inner `let`, replacing every `x` in `h` with
+`<expr>`. The case-binder `x` and the inlined `<expr>` in `h` now
+elaborate to the same term, and the subsequent `rw [hyp] at h`
+works.
+
+**Bonus: `match c with | ... | none => none` doesn't auto-reduce
+when `c` becomes `none`.** After `rw [hu_none, hv_none] at h`
+substitutes both discriminees in a nested `match`, `h` ends up as
+`(match none with | some r => … | none => match none with | some r
+=> … | none => none) = some D'`. `Option.noConfusion h` fails
+because the LHS hasn't reduced to a constructor. Discharge with
+`exact nomatch h` (or `cases h`, or `simp at h`), all of which
+trigger the match reduction as part of pattern-matching the
+hypothesis. The fix is one tactic and never the deep-issue, but
+worth knowing so you don't reach for `Option.noConfusion` first.
+
+Worked case study: `tryAddEdgeWith_reachable` in
+`CombinatorialRigidity/PebbleGame.lean` (Phase 9). The function
+`tryAddEdgeWith`'s below-threshold branch binds `let P : V → Bool
+:= fun w => decide (0 < D.peb k w) && …`; `tryAddEdgeWith.induct`
+surfaces `P` as a binder in three of its five cases. The recursive-
+branch proofs needed `dsimp only at h` after `rw [tryAddEdgeWith,
+dif_neg hthr] at h` to inline the inner let before the
+`hu_none`/`hv_none` rewrites would land; the both-DFS-fail branch
+needed `exact nomatch h` after the rewrites to discharge the
+contradiction.
