@@ -1,0 +1,183 @@
+# Phase 9 — perf pass (work log)
+
+**Status:** in progress.
+
+This is the post-Phase-9 perf pass running in parallel with the
+`Phase9-cleanup.md` round per `../CLEANUP.md` *What a cleanup round
+is not* (cleanup rounds do not measure performance; perf passes
+have their own log + 4-run A/B protocol). See `./PERFORMANCE.md`
+for the round-level operating manual: the anatomy of a `lake build`,
+profiling switches, timing reproducibility, A/B measurement
+protocol, and the standing recommendations.
+
+## Current state
+
+Pass just opened. Task checklist below; no work landed yet.
+
+Phase 9 already shipped its two new files in `module` form
+(`Search/DFS.lean` L7 `module`, `PebbleGame.lean` L7 `module`),
+matching the Phase 8-perf F3.3 post-state — so the pass does not
+repeat the project-wide F3.2 / F3.3 conversion. Both files
+currently sit at the coarsest exposure level
+(`@[expose] public section`); the natural perf lever is the
+**F3.5-style per-decl `@[expose]` audit** that the post-Phase-8 perf
+pass ran on the original 12 project files. Phase 9 added two
+more — discharge them here.
+
+## Pass overview
+
+This pass is the natural follow-up to the Phase 8-perf F3.5 audit:
+demote the two new Phase 9 files from `@[expose] public section` to
+plain `public section`, restoring `@[expose]` per-decl only on the
+defs whose bodies are genuinely consumed (downstream or intra-file
+via `rfl`-proved `@[simp]` lemmas / pattern-match defeq /
+`unfold`-style destructure). Per `PERFORMANCE.md` *Lessons*:
+"`public section` is opaque intra-module too" — the audit is
+informed by the same intra-module elaboration-time-defeq triggers
+that surfaced during F3.5 (e.g., `@[simp] ... := rfl` always forces
+`@[expose]`).
+
+Secondary levers, all audit-only unless A/B demonstrates a win:
+
+- **F2.** `PebbleGame.lean` internal split candidates. The file is
+  2500 LoC across 13+ named sections (Reverse / AddArc /
+  Reachability / TryReachPebble / TryAddEdge / RunPebbleGame /
+  Soundness / Completeness / Correctness / Matroidal). Natural cut
+  lines exist (e.g., between *Soundness* and *Completeness* at
+  ~L1842/L1851), but the file has no downstream importers other
+  than the terminal `CombinatorialRigidity.lean` entry point, so a
+  split saves zero transitive-import surface for any consumer.
+  Audit-only; the per-incremental-rebuild benefit of split files
+  is the only motivation, and that's well within the noise band.
+- **F3.** `LinearRigidityMatroid.lean` module conversion
+  follow-up. Phase 8-perf F3.3 carved LRM out as blocked on
+  `apnelson1/Matroid`'s `Matroid.Representation.Map` being
+  non-`module`. Re-check the upstream status as part of this pass;
+  if `Map.lean` has converted, land LRM's conversion as a
+  one-commit follow-up. (Initial check at pass-open:
+  `.lake/packages/Matroid/Matroid/Representation/Map.lean` still
+  starts with `import`, not `public import`, so the block stands —
+  re-check on dep-bump.)
+
+## Task checklist
+
+### F1. Per-decl `@[expose]` audit on the two new Phase 9 files
+
+Pattern: F3.5 of Phase 8-perf. For each file, attempt
+`@[expose] public section → public section` and observe what breaks
+(intra-file or downstream); restore `@[expose]` on the per-decl
+sites whose bodies are genuinely consumed. Document the trigger +
+disposition in the file's row of an F1 table here.
+
+- [ ] **F1.1.** `Search/DFS.lean` audit. The file ships
+  `DirectedWalk` (inductive, no `@[expose]` decision — inductives
+  expose their constructors automatically),
+  `reachableFinding` / `reachableFindingAux` (the DFS body),
+  `reachableFinding.terminates` (if any termination-by data is
+  exposed), `DirectedWalk.dropUntilBundle` (the `Subtype`-bundled
+  truncation), and `reachClosure`. Demote section to `public
+  section`; observe which downstream sites (most likely
+  `PebbleGame.lean`'s uses of `reachableFinding` /
+  `reachClosure` / the `DirectedWalk` API) fail elaboration.
+  Restore `@[expose]` per-decl on the failing sites. Document the
+  table.
+- [ ] **F1.2.** `PebbleGame.lean` audit. The file ships
+  `PartialOrientation` (structure — `mk` constructor + field
+  accessors auto-exposed), the derived count defs
+  (`out`/`peb`/`span`/`outOn`/`pebOn`/`spanArcs`/`underline`),
+  the move defs (`reverse`, `addArc`), the noncomputable wrappers
+  (`outList`, `outNbhd`, `tryReachPebble`, `tryAddEdge`,
+  `runPebbleGame`, `reach`), the computable workhorses
+  (`tryReachPebbleWith`, `tryAddEdgeWith`, `runPebbleGameWith`),
+  and the `Reachable` inductive predicate. Demote + observe
+  triggers per F1.1 pattern. Likely `@[expose]` candidates: the
+  `PartialOrientation` structure (intra-file `Iff.rfl` on
+  destructured fields), any `@[simp] ... := rfl` lemma's
+  underlying def, the inductive `Reachable` (constructor pattern-
+  matching).
+- [ ] **F1.3.** Update `./PERFORMANCE.md` *Granular `@[expose]` /
+  `public` audit per file* with the F1.1 / F1.2 dispositions
+  (append rows to the existing F3.5 disposition table — same
+  columns + format, two new rows).
+
+### F2. `PebbleGame.lean` internal split candidates (audit-only)
+
+- [ ] **F2.1.** Section-level boundaries audit. Enumerate the
+  natural cut lines:
+  - L275 (Reverse) → L605 (AddArc) → L820 (Reachability)
+  - L1035 (TryReachPebble) → L1190 (TryAddEdge) → L1460
+    (RunPebbleGame)
+  - L1743 (Soundness) → L1851 (Completeness) → L2400
+    (Correctness) → L2474 (Matroidal)
+  For each candidate split point, identify what would land in each
+  half + what `Reachable` / `PartialOrientation` / algorithm names
+  cross the boundary. Output: a `PERFORMANCE.md` *Split candidates
+  ranked by leverage* table row per candidate (matching the
+  post-Phase-8 Sparsity / Henneberg / MatroidIdentification audit).
+- [ ] **F2.2.** Single-downstream-consumer verification. PebbleGame.lean
+  has zero downstream importers (terminal file modulo the top-level
+  entry). Splits therefore save zero transitive-import surface for
+  any consumer; the only argument for splitting is
+  per-incremental-rebuild speed when iterating on one half without
+  touching the other. Document this in F2's PERFORMANCE.md update.
+- [ ] **F2.3.** Recommendation: keep as a single file. Splits
+  without a downstream-import benefit fall into the "structural-
+  clarity gain, perf-neutral" bucket; the file's section
+  organisation already maps cleanly to the blueprint chapter
+  structure, and the no-`@[expose]` audit (F1.2 above) is the
+  cheaper lever for the same per-rebuild outcome. Confirm by
+  4-run A/B on a touch-and-rebuild experiment if surprised.
+
+### F3. `LinearRigidityMatroid.lean` module conversion follow-up
+
+- [ ] **F3.1.** Re-check `.lake/packages/Matroid/Matroid/Representation/Map.lean`
+  module status at pass execution time. As of Phase 9 close:
+  still `import`, not `public import` — block stands.
+- [ ] **F3.2.** If converted: land LRM's conversion as a single
+  commit (add `module` + `public import` lines + an
+  `@[expose] public section` marker, then immediately demote per
+  F1 pattern). 4-run A/B vs Phase 8-perf F3.6 baseline at the
+  HR / RM / LRM / project-total targets. If still blocked: defer
+  to the next dep-bump cron cycle.
+- [ ] **F3.3.** If converted, update PERFORMANCE.md *Module system*
+  to remove the LRM carve-out paragraph.
+
+### F4. Baseline + post-pass measurements
+
+Per `./PERFORMANCE.md` *Measurement protocol*:
+
+- [ ] **F4.1.** Baseline. 4-run A/B median on the two new Phase 9
+  targets (`Search/DFS.lean`, `PebbleGame.lean`) at the current
+  `@[expose] public section` configuration. Project-total baseline
+  on top of Phase 8-perf F3.6's 9.2 s headline.
+- [ ] **F4.2.** Post-F1 measurement. Same protocol on the same
+  targets after the per-decl `@[expose]` demotion lands. Compute
+  Δ + classify against the ±5 s noise band per PERFORMANCE.md
+  *Recommendations for future perf work* #1.
+- [ ] **F4.3.** Promotion. If F1 lands a measurable win (any Δ ≥
+  ~5 s on any individual target or project-total), promote to
+  `PERFORMANCE.md` *Experiments that did pay*. If neutral, note
+  under *Experiments that didn't pay*. Either way the F1
+  disposition table belongs in *Granular `@[expose]` / `public`
+  audit per file* irrespective of perf outcome (the bookkeeping
+  benefit is the same).
+
+## Blockers / open questions
+
+- **LRM conversion still blocked on upstream.** Re-check at next
+  `apnelson1/Matroid` dep-bump.
+
+## Hand-off / next phase
+
+Pass in progress. Phase 9 main + closure are landed; this pass
+runs alongside `Phase9-cleanup.md` per `../CLEANUP.md` *What a
+cleanup round is not*. Carry-overs queue under *Blockers* above as
+they surface.
+
+If F1 lands a measurable win, the headline in PERFORMANCE.md
+*Experiments that did pay* (Module-system conversion +
+narrowed exposure surface, Phase 8-perf F3.2–F3.6) extends with a
+Phase 9 supplement; if neutral, the F1 disposition table still
+augments the F3.5 reference for future module-system passes
+(it's the bookkeeping value, not the perf value, that justifies
+the audit).
