@@ -36,10 +36,10 @@ project; commit history is preserved with paths rewritten.
 * **Phase 9 in progress** — basic `(k, ℓ)`-pebble game of
   Lee–Streinu 2008 in the matroidal regime `ℓ < 2k`, with a
   certificate-form correctness theorem (partial orientation on
-  accept, dense vertex subset on reject). A pre-phase verified-DFS
-  warmup lands first under `CombinatorialRigidity/Search/`,
-  exercising the `termination_by (Finset.univ \ visited).card`
-  pattern in isolation.
+  accept, dense vertex subset on reject). The pre-phase verified-DFS
+  warmup has landed under `CombinatorialRigidity/Search/`, exercising
+  the `termination_by (Finset.univ \ visited).card` pattern in
+  isolation; the basic algorithm and correctness theorem follow.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

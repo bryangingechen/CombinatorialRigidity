@@ -75,7 +75,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-8) | project-wide (light scope) + import-structure audit | ✓ Complete (see `notes/Phase8-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-8) | `Sparsity` / `Henneberg` splits + module-system conversion | ✓ Complete (see `notes/Phase8-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | ⋮ Pre-Phase-9 DFS warmup | `Search/DFS.lean` | ✓ Complete (see `notes/Phase9.md` §"DFS warmup (pre-Phase-9)") |
-| 9. Pebble game | `PebbleGame.lean` (new) | planning (see `notes/Phase9.md`) |
+| 9. Pebble game | `PebbleGame.lean` (new) | in progress (see `notes/Phase9.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -266,7 +266,7 @@ hand-off.
 
 ### Phase 9 — Pebble game (`PebbleGame.lean`)
 
-Planning. Formalizes the basic $(k, \ell)$-pebble game of
+In progress. Formalizes the basic $(k, \ell)$-pebble game of
 Lee--Streinu 2008 (generalising the original $(2, 3)$ algorithm of
 Jacobs--Hendrickson 1997) and its correctness theorem (L-S Theorem 8)
 in the matroidal regime $\ell < 2k$ matching Phase 7. Target shape is

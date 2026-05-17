@@ -1,11 +1,10 @@
 # Phase 9 — Pebble game (work log)
 
-**Status:** planning.
+**Status:** in progress.
 
 This file is the per-phase work record. See `../ROADMAP.md` §9 for
-the high-level plan (**pending** — the ROADMAP Status table row and
-the §9 planning section land in the same commit that opens this
-phase) and `../DESIGN.md` for cross-cutting design choices.
+the high-level plan and `../DESIGN.md` for cross-cutting design
+choices.
 
 **Workflow:** Phase 9 runs in **forward blueprint mode** per
 `../blueprint/DESIGN.md`. The new chapter
@@ -35,9 +34,14 @@ the first Phase 9 commit.
 
 ## Current state
 
-Planning, with the pre-Phase-9 DFS warmup **complete**. Architectural
-choices below are settled before Phase 9 opens; the lemma index will
-be filled in `chapter/pebble-game.tex` once the chapter lands.
+Phase 9 is open. The forward-mode blueprint chapter
+`chapter/pebble-game.tex` is the authoritative dep-graph and lemma
+index (currently all red below the verified-DFS warmup); the new
+`CombinatorialRigidity/PebbleGame.lean` is scaffolded with the file
+header, `module` marker, public imports (`Mathlib.Data.Finset.Basic`,
+`Mathlib.Data.Sym.Sym2`, `CombinatorialRigidity.Sparsity`,
+`CombinatorialRigidity.Search.DFS`), and the doc-comment establishing
+the `[Fintype V] [DecidableEq V]` style island.
 
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
@@ -79,12 +83,15 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: open Phase 9 proper. ROADMAP §9 row flip to
-*in progress*, sync the three user-facing status surfaces (README /
-home_page / blueprint intro phase plan), and create
-`blueprint/src/chapter/pebble-game.tex` per the structure described
-in *Architectural choices made up front → Forward-mode blueprint
-chapter* below. See *Hand-off / next phase*.
+Next concrete commit: attack the leaf-most red node of the
+forward-mode dep-graph — `def:partial-orientation` (the
+`PartialOrientation V` representation itself) plus `def:pebble-counts`
+(out-degree / pebble count / span as derived `Finset.card`
+quantities). These are pure state-machine definitions with no
+mathematical content; their decisions unblock the algorithm-level
+red nodes (`def:tryReachPebble`, `def:tryAddEdge`,
+`def:runPebbleGame`) and the invariants of L-S Lemma 10. See
+*Hand-off / next phase*.
 
 ## Architectural choices made up front
 
@@ -348,40 +355,48 @@ this section becomes a pointer (cf. `Phase8.md` §"Lemma checklist").
 
 ## Hand-off / next phase
 
-DFS warmup is closed. `Search/DFS.lean` ships `reachableFinding` +
-both `reachableFinding_sound` and `reachableFinding_complete`; build
-+ lint clean; all three blueprint nodes in `chapter/dfs.tex`
-(`def:directed-walk`, `def:reachable-finding`,
-`thm:reachable-finding-correct`) are `\leanok`. Pebble-game-side
-consumers (`def:tryReachPebble`) can `\uses{thm:reachable-finding-correct}`
-unconditionally.
+Phase 9 is open. The ROADMAP §9 row is flipped to *in progress*;
+the three user-facing status surfaces (README / home_page /
+blueprint intro) are synced; `blueprint/src/chapter/pebble-game.tex`
+ships the forward-mode dep-graph (sections: State and moves →
+Invariants → Algorithm → Soundness → Completeness → Correctness
+theorem → Matroidal-independence corollary); and
+`CombinatorialRigidity/PebbleGame.lean` is scaffolded with header
++ `module` + public imports + style-island doc-comment + an empty
+`namespace CombinatorialRigidity.PebbleGame` ready for declarations.
+Build clean.
 
-Next concrete commit: **open Phase 9 proper.** That commit:
+Next concrete commit: **define `PartialOrientation V` and the
+derived `out` / `peb` / `span` quantities** (the leaf-most red
+node `def:partial-orientation` plus `def:pebble-counts`). These
+are pure state-machine definitions with no mathematical content;
+their decisions unblock everything downstream:
 
-1. Flip the ROADMAP §9 row from *planning* to *in progress*.
-2. Sync the three user-facing status surfaces (`README.md` Project
-   status, `home_page/index.md` Project status + phase table,
-   `blueprint/src/chapter/intro.tex` §Phase plan + enumerate +
-   dep-graph-status line) — Phase 9 marker flips, Phase 8 row stays ✓.
-3. Create `blueprint/src/chapter/pebble-game.tex` with the section
-   skeleton in *Architectural choices → Forward-mode blueprint
-   chapter* (State and moves → Invariants → Algorithm → Soundness →
-   Completeness → Correctness theorem → Matroidal-independence
-   corollary). Start with red `\lean{...}`-less nodes for the
-   forward-mode dep-graph; entries gain `\lean{...}` + `\leanok` as
-   Lean lemmas land.
-4. Open `CombinatorialRigidity/PebbleGame.lean` with the file
-   header + `module` + imports + the doc-comment establishing the
-   `[Fintype V] [DecidableEq V]` style island.
+- `def:partial-orientation` — pick one of the three representations
+  listed under *Blockers → `PartialOrientation V` representation*
+  (`Finset (V × V)` with no-loop / no-antiparallel-pair invariants;
+  `V → Finset V` out-adjacency-lists; `V → V → Bool` predicate).
+  Weak prior: option (i) `Finset (V × V)` for the most direct
+  invariant statements; refactor if `tryReachPebble`'s termination
+  proof turns ugly.
+- `def:pebble-counts` — `out`, `peb`, `span` as `Finset.card`
+  quantities derived from the orientation; one-liners.
+- Pin the corresponding `\lean{...}` in the blueprint chapter and
+  flip the two leaf nodes' `\leanok` in the same commit.
 
-The leaf-most red node to attack first is *L-S Lemma 10 on
-`SimpleGraph`* — see *Blockers → Simple-graph vs L-S multi-graph
-corner cases*. Trace L-S Lemmas 10–14 through `SimpleGraph`-eyes for
-both ranges in scope (don't restrict the regime prophylactically);
-document any structural gap that genuinely forces a regime restriction.
+Subsequent commits descend the dep-graph: `def:path-reversal` (the
+algorithm's primitive move) → `lem:pebble-game-invariants` (L-S
+Lemma 10, the substantive part — trace through both ranges
+`ℓ < k` and `k ≤ ℓ < 2k` on `SimpleGraph` per *Blockers →
+Simple-graph vs L-S multi-graph corner cases*) →
+`def:tryReachPebble` (the DFS-plus-path-reversal specialisation
+via `reachableFinding`) → `def:tryAddEdge` → `def:runPebbleGame`
+→ `thm:pebble-game-soundness` → completeness lemmas →
+`thm:pebble-game-correct` → `cor:pebble-game-countMatroid-indep`.
 
-Open architectural questions for the first Phase-9 coding commit:
-*`PartialOrientation V` representation* (three options listed under
-*Blockers*) and *whether to land the matroidal-independence corollary
-in-phase or defer* — both have weak preferences documented but are
-deferred to first contact with the Lean side.
+Architectural questions still open at first contact with the Lean
+side: *`PartialOrientation V` representation* (decide in the
+defining commit; refactor allowed if downstream proofs surface a
+better option) and *whether to land the matroidal-independence
+corollary in-phase or defer* (weak preference: land — cheap, ties
+the loop to Phase 7's `countMatroid`).

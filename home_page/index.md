@@ -27,8 +27,10 @@ in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
 form (Phase 7) and linear-matroid form via `Matroid.ofFun` (Phase 8,
 `linearRigidityMatroid_eq_rigidityMatroid`). Phase 9 (basic
-`(k, ℓ)`-pebble game of Lee–Streinu 2008) is in progress, preceded by
-a verified-DFS warmup under `CombinatorialRigidity/Search/`.
+`(k, ℓ)`-pebble game of Lee–Streinu 2008) is in progress: the
+verified-DFS warmup under `CombinatorialRigidity/Search/` has
+landed, and the basic algorithm and correctness theorem follow in
+`PebbleGame.lean`.
 
 The development is divided into the phases below, each in its own
 file under
@@ -44,7 +46,7 @@ file under
 |     6 | Laman's theorem (⇒)         | `RigidityMatroid.lean`, `LamanTheorem.lean`                      |   ✓    |
 |     7 | Lovász–Yemini matroid id.   | `CountMatroid.lean`, `MatroidIdentification.lean`                |   ✓    |
 |     8 | Linear-matroid framing      | `LinearRigidityMatroid.lean`                                     |   ✓    |
-|     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame.lean` (planned)                   |   …    |
+|     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame.lean`                             |   …    |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
