@@ -767,15 +767,20 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
 
 \begin{lemma}[Pebble game accepts iff edge is independent]
   \label{lem:pebble-game-tryAddEdge-iff-independent}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdge_isSome_iff_sparse}
+  \leanok
   \uses{def:tryAddEdge, lem:pebble-game-tryAddEdgeWith-isSome,
     lem:pebble-game-tryAddEdgeWith-isSparse, def:isSparse}
   Let $D$ be a partial orientation reachable as above and $\{u, v\}$
   a candidate edge with $\{u, v\} \notin \underline{D}$. Then
   $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\} = \mathrm{some}\,D'$
   if and only if $\mathrm{fromEdgeSet}\,(\underline{D} \cup
-  \{\{u, v\}\})$ is $(k, \ell)$-sparse.
+  \{\{u, v\}\})$ is $(k, \ell)$-sparse. (Formalised as a
+  narrative-bridge \texttt{@[deprecated]} shim packaging the two
+  halves; downstream Lean callers reach for the halves directly.)
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:pebble-game-tryAddEdgeWith-isSome,
     lem:pebble-game-tryAddEdgeWith-isSparse}
   $(\Leftarrow)$: \cref{lem:pebble-game-tryAddEdgeWith-isSome}.

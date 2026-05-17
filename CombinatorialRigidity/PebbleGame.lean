@@ -2146,6 +2146,35 @@ lemma tryAddEdgeWith_isSparse {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
   rw [span_eq_ncard_edgesIn D' h_und s] at h_span
   exact h_span
 
+/-- **Per-edge correctness iff (narrative-bridge shim).** Blueprint
+`lem:pebble-game-tryAddEdge-iff-independent`. On the wrapper `tryAddEdge`
+(plugging in `toSucc := outList`), the per-edge step accepts iff inserting
+`s(u, v)` preserves `(k, ℓ)`-sparsity. This is the iff form of L-S Lemma 14,
+packaging the two formalised halves `tryAddEdgeWith_isSparse` (⇒: accept ⇒
+sparse) and `tryAddEdgeWith_isSome` (⇐: sparse ⇒ accept).
+
+Marked `@[deprecated]` per the project's narrative-bridge convention (see
+`CLAUDE.md` *Engineering conventions*); downstream Lean callers should reach
+for the two halves directly. -/
+@[deprecated tryAddEdgeWith_isSparse (since := "narrative-bridge")]
+lemma tryAddEdge_isSome_iff_sparse {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (h_matroidal : ℓ < 2 * k)
+    {D : PartialOrientation V}
+    (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
+    (h_outle : ∀ x, D.out x ≤ k)
+    (hD : Reachable k ℓ D)
+    (h_fresh : s(u, v) ∉ D.underline)
+    (hG : G.edgeFinset = insert s(u, v) D.underline) :
+    (∃ D' : PartialOrientation V,
+      D.tryAddEdge k ℓ u v huv hnotin hnotin_rev h_outle = some D') ↔
+      G.IsSparse k ℓ :=
+  ⟨fun ⟨_, h⟩ => tryAddEdgeWith_isSparse huv (fun D' => D'.outList)
+      (fun D' {_ _} => D'.mem_outList) hnotin hnotin_rev h_outle hD hG h,
+    fun hSparse => tryAddEdgeWith_isSome huv (fun D' => D'.outList)
+      (fun D' {_ _} => D'.mem_outList) hSparse h_matroidal hnotin hnotin_rev
+      h_outle hD h_fresh hG⟩
+
 /-- **Failure-witness extraction at the per-edge layer** (blueprint
 `lem:pebble-game-failure-witness`). Given a `(k, ℓ)`-reachable orientation `D`
 and a candidate edge `s(u, v)` whose underlying ambient graph `G` already
