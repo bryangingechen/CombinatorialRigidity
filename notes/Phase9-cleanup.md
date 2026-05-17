@@ -32,10 +32,12 @@ performance pass).
 
 ## Current state
 
-A1 + A2 + A2-followup closed: both blueprint chapters track the
-Lean faithfully and the iff red node is now green. A2's
-pebble-game walk verified all 39 `\lean{...}` pins resolve
-(`checkdecls` green post-`inv web`); the 22 dep-graph nodes
+A1 + A2 + A2-followup + A3 closed: both blueprint chapters track
+the Lean faithfully, the iff red node is now green, and the
+SimpleGraph-vs-multi-graph regime correspondence is documented in
+the chapter prose. A2's pebble-game walk verified all 39
+`\lean{...}` pins resolve (`checkdecls` green post-`inv web`); the
+22 dep-graph nodes
 (`def:partial-orientation` through `cor:pebble-game-countMatroid-indep`)
 match Lean signatures including the unified `ℓ ≤ k|V'|` size
 hypothesis on Invariants (3)/(4), the
@@ -67,6 +69,24 @@ under the shared per-edge preconditions (matroidal regime
 `ℓ < 2k`, reachability, freshness, `G.edgeFinset = insert s(u,v)
 D.underline`). Lemma + proof environments both flipped to `\leanok`;
 dep-graph turns green for the node and the chapter is fully green.
+
+A3 discharged: the chapter's opening `\emph{Multigraphs.}`
+paragraph now walks L-S Lemma 10 through Lemma 15 in flowing prose
+(40-line paragraph), with `\cref{}` anchors into the chapter's
+individual lemma blocks rather than a separate bullet inventory.
+The user-judgement iteration on the original bullet-list audit
+subsection ("more naturally with the rest of the prose") replaced
+the inventory format with a paragraph matching the chapter's
+`\emph{Out of scope.}` convention. The Phase9.md *Blockers*
+prediction (Lemma 10 cleared, Lemmas 13–15 "expected to clear
+similarly") is discharged in writing: every L-S lemma in the
+matroidal regime specialises directly to SimpleGraph land, with
+Invariant (1)'s loop-free `span(v) = 0` collapse and the
+size-hypothesis unification `ℓ ≤ k|V'|` as the only two regime
+differences. Lemma 15's full sparse/tight/spanning classification
+and Corollary 11's block characterisation both route through the
+component pebble game (L-S §5, out of Phase 9 scope per chapter
+intro). No Lean changes — audit-only per architectural choice #3.
 
 ## Architectural choices made up front
 
@@ -249,7 +269,7 @@ wrong, revisit there.
   now pins to a narrative-bridge `@[deprecated]` shim
   `tryAddEdge_isSome_iff_sparse` at `PebbleGame.lean:2149`. See
   *Surfaced follow-ups* below for the closing entry.
-- [ ] **A3:** Multigraph corner-case audit (audit-only, no
+- [x] **A3:** Multigraph corner-case audit (audit-only, no
   refactor). Walk L--S Lemmas 10--15 statement by statement against
   the simple-graph regime. Document each lemma in the blueprint as
   *either*: (i) stated in a form whose simple-graph specialization
@@ -259,10 +279,34 @@ wrong, revisit there.
   proves a strict specialization (note the difference inline). The
   Phase9.md *Blockers* prose claims Lemma 10 already cleared and
   Lemmas 13--15 "expected to clear similarly" — this audit
-  discharges that prediction in writing. Result: a short
-  "Multigraph regime" preamble subsection in
-  `chapter/pebble-game.tex` + per-lemma `\uses{}` / prose notes
-  where regime differences matter.
+  discharges that prediction in writing.
+
+  **Disposition.** The expanded `\emph{Multigraphs.}` paragraph at
+  the head of `chapter/pebble-game.tex` (lines 39--79) walks
+  Lemma~10 through Lemma~15 in flowing prose, with `\cref{}`
+  anchors into the chapter's individual lemma blocks rather than a
+  separate bullet inventory. Disposition by L--S statement: (a)
+  Lemma~10's Invariant~(1) collapses to `peb(v) + out(v) = k` in
+  the loop-free regime (`span(v) = 0`); Invariants~(2)--(4) match
+  identically with the size split `n' ≥ 1` / `n' ≥ 2` unified to
+  `ℓ ≤ k|V'|` since both ranges of L--S imply it. (b) Lemma~13
+  matches identically; the SimpleGraph form
+  (`independent_brings_pebble_simpleGraph_form`) discharges the
+  `|V'| ≥ 2` half of the size split automatically from `u ≠ v` and
+  `ℓ < 2k`. (c) Lemma~14's iff is the narrative-bridge shim
+  `tryAddEdge_isSome_iff_sparse` (A2-followup); two halves
+  individually formalised. (d) Lemma~15's full input-graph
+  classification (under-/well-/over-constrained) specialises in
+  this chapter to `runPebbleGame_correct`'s certificate form;
+  well-/over-constrained sub-classifications need the component
+  pebble game's `I`-component apparatus (L--S~\S~5, out of Phase~9
+  scope per chapter intro). (e) Corollary~11 similarly part of the
+  component pebble game apparatus, out of scope. No Lean changes —
+  audit-only per architectural choice #3. The user-judgement
+  iteration on the prose ("more naturally with the rest of the
+  prose") replaced the original bullet-list audit subsection with
+  the flowing-prose `\emph{Multigraphs.}` paragraph format
+  matching the chapter's `\emph{Out of scope.}` convention.
 - [ ] **A4:** Run `lake exe checkdecls blueprint/lean_decls` (after
   `inv web`) to confirm every Phase 9 `\lean{...}` resolves. Phase 9
   notes claim "the chapter dep-graph is fully green" — verify
@@ -458,22 +502,23 @@ the manual:
 
 ## Blockers / open questions
 
-- Round in progress; A3 (multigraph corner-case audit), A4
-  (`checkdecls` post-hoc spot-check), A5 (formalization-aside scan)
-  and buckets B–D remain.
+- Round in progress; A4 (`checkdecls` post-hoc spot-check, mostly
+  discharged during A2/A3 inline as a sanity check on each commit),
+  A5 (formalization-aside scan) and buckets B–D remain.
 
 ## Hand-off / next phase
 
 Round in progress. Phase 9 main is fully closed; this round
 addresses the post-closure hygiene. A1 (DFS chapter walk),
-A2 (pebble-game chapter walk), and A2-followup
+A2 (pebble-game chapter walk), A2-followup
 (`lem:pebble-game-tryAddEdge-iff-independent` red node, discharged
-via the narrative-bridge `@[deprecated]` shim) are closed; the
-natural next task is A3 (multigraph corner-case audit, audit-only
-per architectural choice #3 above) — that's a documented-statement-
-by-statement comparison of L--S Lemmas 10--15 against the
-simple-graph regime, materialised as a short "Multigraph regime"
-preamble subsection in `chapter/pebble-game.tex`.
+via the narrative-bridge `@[deprecated]` shim), and A3 (multigraph
+regime correspondence in the chapter's `\emph{Multigraphs.}` prose)
+are all closed. The natural next task is A4 (a clean `checkdecls`
+spot-check run on the current tree to formally close the
+post-Phase-9 dep-graph-is-fully-green claim) followed by A5
+(formalization-aside scan), then buckets B (code smells), C
+(long-proof audit), and D (Phase9.md compression).
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is

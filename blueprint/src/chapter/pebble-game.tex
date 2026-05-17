@@ -36,16 +36,47 @@ Phase~3 Henneberg construction (\cref{sec:henneberg}) from Laman
 graphs to all $(k, \ell)$-tight graphs. Neither is in scope for
 this chapter; both are candidates for follow-up phases.
 
-\emph{Multigraphs.} Lee--Streinu state results for multi-graphs
-with loops, covering $\ell \in [0, 2k)$. Following the project
-convention (\cref{sec:sparsity}), we work in $\mathrm{SimpleGraph}\,V$:
-the loop-free assumption removes the $|V'| = 1$ single-vertex
-block case of L-S Lemma 10 in the lower range $\ell < k$, but the
-matroidal-regime theory carries over otherwise. The algorithm
-state (\cref{def:partial-orientation} below) is decoupled from the
-shape of the input edge container, so retargeting to a future
+\emph{Multigraphs.} Lee--Streinu prove the basic pebble game's
+correctness (\S~3--4, Lemma~10 through Lemma~15) for multi-graphs
+with loops and parallel edges, splitting on the size hypothesis
+$n, n' \ge 1$ in the lower range $\ell \in [0, k]$ and $n, n' \ge 2$
+in the upper range $\ell \in (k, 2k)$. Following the project
+convention (\cref{sec:sparsity}), this chapter works in
+$\mathrm{SimpleGraph}\,V$ and in the matroidal regime $\ell < 2k$.
+Two simplifications come for free under that specialisation: the
+loop-free regime forces $\mathrm{span}(v) = 0$ at every vertex, so
+Invariant~(1) of L-S Lemma~10 collapses from $\mathrm{peb}(v) +
+\mathrm{span}(v) + \mathrm{out}(v) = k$ to $\mathrm{peb}(v) +
+\mathrm{out}(v) = k$ (\cref{lem:pebble-game-invariants}, item~(1));
+and the L-S size split $n' \ge 1$ / $n' \ge 2$ unifies as a single
+premise $\ell \le k|V'|$ on Invariants~(3) and~(4), since
+$|V'| \ge 1$ together with $\ell \le k$ gives $\ell \le k|V'|$ and
+$|V'| \ge 2$ together with $k < \ell < 2k$ gives $\ell < 2k \le
+k|V'|$. The substantive content of the four invariants and of
+L-S Lemma~13's reach-pebble argument is otherwise unchanged: in
+$\mathrm{SimpleGraph}\,V$ a candidate edge $\{u, v\}$ has $u \ne v$,
+so the reachability subset $V' := \mathrm{Reach}(u) \cup
+\mathrm{Reach}(v)$ already has $|V'| \ge 2$ and the unified
+$\ell \le k|V'|$ premise is discharged directly from $\ell < 2k$ at
+the call site (\cref{lem:pebble-game-independent-brings-pebble-graph}).
+The per-edge correctness iff of L-S Lemma~14 is recorded as
+\cref{lem:pebble-game-tryAddEdge-iff-independent} (formalised as a
+narrative-bridge shim packaging the two formalised halves
+\cref{lem:pebble-game-tryAddEdgeWith-isSome,lem:pebble-game-tryAddEdgeWith-isSparse}
+under $\mathrm{toSucc} := \mathrm{outList}$). The full input-graph
+classification of L-S Lemma~15 (under-/well-/over-constrained
+according as the input is sparse-but-not-tight / tight / spanning)
+specialises in this chapter to the matroidal-regime certificate
+form \cref{thm:pebble-game-correct}; the well- and over-constrained
+sub-classifications need the $I$-component machinery of the
+component pebble game and are deferred along with that algorithm.
+L-S Corollary~11 (block characterisation) is similarly part of the
+component pebble game's apparatus. The algorithm state
+(\cref{def:partial-orientation} below) is decoupled from the shape
+of the input edge container, so retargeting to a future
 \texttt{MultiGraph} type is a relaxation of the no-parallel-pair
-invariant on the partial orientation.
+invariant on the partial orientation rather than a structural
+rewrite.
 
 \subsection{State and moves}
 \label{sec:pebble-game-state}
