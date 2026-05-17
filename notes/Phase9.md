@@ -303,6 +303,25 @@ green; the next concrete commit is the `tryAddEdgeWith` completeness
 recursion (`lem:pebble-game-tryAddEdge-iff-independent` ⇐), iterating
 the wrapper through the algorithm's recursive structure.
 
+**`tryAddEdgeWith` completeness recursion lands** (blueprint
+`lem:pebble-game-tryAddEdgeWith-isSome`, the ⇐ half of the iff
+`lem:pebble-game-tryAddEdge-iff-independent`). `tryAddEdgeWith_isSome`
+takes a reachable `D`, fresh `s(u, v) ∉ D.underline`, and a
+finite simple graph `G` with `G.edgeFinset = insert s(u, v) D.underline`
+that is `(k, ℓ)`-sparse in the matroidal regime `ℓ < 2*k`; it concludes
+`∃ D', D.tryAddEdgeWith k ℓ u v ... = some D'`. Proof by
+`tryAddEdgeWith.induct`'s five-case dispatch — the two threshold-met
+branches close trivially, the two DFS-success branches recurse via the
+IH on `r.newOrient` (preconditions transport via
+`TryReachPebbleResult.reachable_newOrient` and `underline_newOrient_eq`),
+and the both-DFS-fail branch is contradicted by Lemma 13 SimpleGraph
+form: it produces a free pebble `w ∈ D.reach u ∪ D.reach v` distinct
+from `u, v`, and DFS completeness (via the new
+`tryReachPebbleWith_eq_none_imp` helper, which lifts
+`Search.reachableFinding_complete` across the orientation/successor-
+relation bridge `h_succ`) forces at least one search to succeed.
+Blueprint `lem:pebble-game-tryAddEdgeWith-isSome` is now green.
+
 The phase target is Lee–Streinu Theorem 8 in certificate form:
 $\mathtt{runPebbleGame}\,G$ returns either a `PartialOrientation`
 satisfying the four invariants (witness of $(k, \ell)$-sparsity —
@@ -344,14 +363,20 @@ closes. Lifting the user-facing `ReflTransGen` hypothesis to an
 explicit `DirectedWalk` uses `Relation.ReflTransGen.head_induction_on`
 (head-first recursion, matching `DirectedWalk.cons`).
 
-Next concrete commit: `tryAddEdgeWith` completeness recursion
-(`lem:pebble-game-tryAddEdge-iff-independent` ⇐), iterating the
-SimpleGraph-form Lemma 13 wrapper through `tryAddEdgeWith.induct`'s
-five-case dispatch — termination measure `(ℓ + 1) - (peb u + peb v)`
-strictly decreases per reversal, and the wrapper supplies the
-existence of a free pebble at the below-threshold step. The
-completeness-side SimpleGraph-vs-multigraph corner-case check (open
-question below) is the only known open structural unknown.
+Next concrete commit: `tryAddEdgeWith` completeness ⇒ direction
+(soundness side of the iff `lem:pebble-game-tryAddEdge-iff-independent`):
+if `D.tryAddEdgeWith k ℓ u v ... = some D'`, then the post-insertion
+`fromEdgeSet (insert s(u, v) D.underline) = G` is `(k, ℓ)`-sparse.
+Direct from `tryAddEdgeWith_reachable` + `tryAddEdgeWith_underline`
+on the output `D'` (the latter gives `D'.underline = insert s(u, v)
+D.underline`, the former lifts `Reachable` and Invariant (4) applies),
+re-using the soundness chain's `span_eq_ncard_edgesIn` bridge. After
+both halves of the iff land, the completeness side assembles to
+`lem:pebble-game-failure-witness` (blocking-witness extraction at the
+fold's failure point) and `thm:pebble-game-correct` (certificate-form
+statement). The completeness-side SimpleGraph-vs-multigraph corner-
+case check (open question below) is the only known open structural
+unknown.
 
 ## Architectural choices made up front
 
@@ -1115,6 +1140,19 @@ Phase 9 main is in progress. `PebbleGame.lean` now carries:
   reflexivity, combined with the matroidal-regime
   `ℓ < 2k` (the only place this hypothesis enters the chain
   formally — algebraic core is regime-agnostic).
+* L-S Lemma 14 ⇐ direction, completeness recursion (blueprint
+  `lem:pebble-game-tryAddEdgeWith-isSome`): `tryAddEdgeWith_isSome`
+  — under reachability + freshness + matroidal-regime $G$-sparsity,
+  `tryAddEdgeWith` never returns `none`. Five-case
+  `tryAddEdgeWith.induct` dispatch: threshold-met branches return
+  `some` directly; DFS-success branches recurse via the IH on
+  `r.newOrient` (preconditions transport via
+  `TryReachPebbleResult.reachable_newOrient` /
+  `underline_newOrient_eq`); both-DFS-fail branch contradicted by
+  the SimpleGraph-form Lemma 13 wrapper combined with the new DFS
+  completeness helper `tryReachPebbleWith_eq_none_imp` (lifts
+  `Search.reachableFinding_complete` across the orientation /
+  successor-list bridge `h_succ`).
 
 Supporting `Search/DFS.lean` infrastructure: existing arc-swap /
 endpoint-membership / source-cardinality lemmas unchanged, plus the
@@ -1134,8 +1172,10 @@ via `Classical.decPred`) plus its three workhorse lemmas
 `lem:runPebbleGame-underline-eq`, `lem:span-eq-ncard-edgesIn`,
 `thm:pebble-game-soundness`,
 `lem:pebble-game-independent-brings-pebble` (algebraic-form core),
-and the new `lem:pebble-game-independent-brings-pebble-graph`
-(SimpleGraph-form wrapper) are all green. Build + lint clean.
+`lem:pebble-game-independent-brings-pebble-graph` (SimpleGraph-form
+wrapper), and the new `lem:pebble-game-tryAddEdgeWith-isSome` (⇐
+half of `lem:pebble-game-tryAddEdge-iff-independent`) are all green.
+Build + lint clean.
 
 **Note on the `(V × V)`-list vs `(Sym2 V)`-list workhorse.** An earlier
 hand-off proposed `List (Sym2 V)` for `runPebbleGameWith`'s input. The
@@ -1151,17 +1191,17 @@ adjacency. Documented in DESIGN.md *Pebble-game style island → The
 `tryReachPebble`'s `outList` shift).
 
 Next concrete commit (completeness chain, leaf-most red node):
-**`tryAddEdgeWith` completeness recursion**
-(`lem:pebble-game-tryAddEdge-iff-independent` ⇐). Iterate the
-SimpleGraph-form wrapper through `tryAddEdgeWith.induct`'s five-case
-dispatch: the termination measure `(ℓ + 1) - (peb u + peb v)`
-strictly decreases per path reversal, and the wrapper supplies the
-existence of a free pebble at the below-threshold step (in the
-reach-union `D.reach u ∪ D.reach v`, distinct from `u, v`) — so the
-DFS at `u` (or fallback at `v`) must succeed and the recursive call's
-measure shrinks. After this lands, `lem:pebble-game-failure-witness`
-falls out of L-S's Invariant-(2)-saturated-block argument with the
-closure subset in hand. Final assembly:
+**`tryAddEdgeWith` accept ⇒ post-insertion sparse** (⇒ half of
+`lem:pebble-game-tryAddEdge-iff-independent`). On `D.tryAddEdgeWith
+... = some D'`, combine `tryAddEdgeWith_reachable` (lifts `Reachable
+k ℓ` to `D'`) with `tryAddEdgeWith_underline` (gives `D'.underline =
+insert s(u, v) D.underline`) and re-apply the soundness chain's
+`span_eq_ncard_edgesIn` bridge on `G := fromEdgeSet (insert s(u, v)
+D.underline)`: Invariant (4) on `D'` then translates to
+`(G.edgesIn ↑V').ncard + ℓ ≤ k * V'.card`, i.e.\ `G.IsSparse k ℓ`.
+After this lands, `lem:pebble-game-failure-witness` follows from the
+Invariant-(2)-saturated-block argument with the closure subset
+`D.reach u ∪ D.reach v`, and the final assembly is
 `thm:pebble-game-correct` → `cor:pebble-game-countMatroid-indep`.
 The completeness-side SimpleGraph-vs-multigraph corner-case check
 (open question above) is the only known open structural unknown.

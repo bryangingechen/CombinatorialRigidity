@@ -1118,6 +1118,36 @@ lemma TryReachPebbleResult.underline_newOrient_eq {D : PartialOrientation V}
     r.newOrient.underline = D.underline :=
   D.underline_reverse_eq r.walk r.isPath
 
+/-- **Completeness of `tryReachPebbleWith`.** If the DFS-driven pebble search
+returned `none`, then no vertex `w` reachable from `v` along `D`'s out-arcs
+satisfies the predicate `P`. The orientation-side `ReflTransGen` of
+`fun a b => (a, b) ∈ D.arcs` is bridged to the algorithm-side `ReflTransGen`
+of `fun a b => b ∈ succ a` by `h_succ`, after which
+`Search.reachableFinding_complete` produces a contradiction with the `none`
+result. Used by `tryAddEdgeWith_isSome` to discharge the case where both
+endpoint-DFS searches fail. -/
+lemma tryReachPebbleWith_eq_none_imp {D : PartialOrientation V}
+    {P : V → Bool} {v : V}
+    {succ : V → List V}
+    (h_succ : ∀ {a b : V}, b ∈ succ a ↔ (a, b) ∈ D.arcs)
+    (h_none : D.tryReachPebbleWith P v succ h_succ = none)
+    {w : V}
+    (hreach : Relation.ReflTransGen (fun a b => (a, b) ∈ D.arcs) v w) :
+    P w ≠ true := by
+  have hreach' : Relation.ReflTransGen (fun a b => b ∈ succ a) v w := by
+    induction hreach with
+    | refl => exact .refl
+    | tail _ hrel ih => exact ih.tail (h_succ.mpr hrel)
+  intro hPw
+  obtain ⟨w', p', hsome⟩ := reachableFinding_complete ⟨w, hreach', hPw⟩
+  have hrf_none : reachableFinding succ P v = none := by
+    unfold tryReachPebbleWith at h_none
+    split at h_none
+    · assumption
+    · simp at h_none
+  rw [hsome] at hrf_none
+  cases hrf_none
+
 end TryReachPebble
 
 /-! ### Try-add-edge: outer loop driving DFS + path reversal + insertion
@@ -1974,6 +2004,100 @@ lemma Reachable.independent_brings_pebble_simpleGraph_form
   have h_sparse_V' : (G.edgesIn ↑V').ncard + ℓ ≤ k * V'.card := hSparse V' h_size
   have h_post_sparse : D.span V' + 1 + ℓ ≤ k * V'.card := by omega
   exact hR.independent_brings_pebble huv hu hv h_closed h_post_sparse h_below
+
+/-- **Completeness of `tryAddEdgeWith` (⇐ of L-S Lemma 14 / blueprint
+`lem:pebble-game-tryAddEdge-iff-independent`).** Given a `(k, ℓ)`-reachable
+orientation `D` and a candidate edge `s(u, v)` fresh w.r.t. `D.underline`, if
+the finite simple graph `G` with `G.edgeFinset = insert s(u, v) D.underline`
+is `(k, ℓ)`-sparse (in the matroidal regime `ℓ < 2*k`), then
+`D.tryAddEdgeWith k ℓ u v ...` returns `some D'` — it cannot return `none`.
+
+Proof by `tryAddEdgeWith.induct` over the algorithm's five-case dispatch:
+* (case1, case2) Threshold met: the function returns `some` directly.
+* (case3, case4) DFS at `u` or `v` succeeds: recurse via the IH on
+  `r.newOrient`. The IH preconditions transport via
+  `TryReachPebbleResult.reachable_newOrient` (preserves reachability) and
+  `TryReachPebbleResult.underline_newOrient_eq` (preserves the underline,
+  hence the freshness and sparsity-bridge hypotheses).
+* (case5) Both DFS searches fail: contradicted by Lemma 13 SimpleGraph form
+  (`Reachable.independent_brings_pebble_simpleGraph_form`), which produces a
+  free pebble `w ∈ D.reach u ∪ D.reach v` distinct from `u, v`; the
+  reach-membership routes through `tryReachPebbleWith_eq_none_imp` against
+  the corresponding endpoint's `= none` hypothesis, contradicting the
+  predicate `P w = true`. -/
+lemma tryAddEdgeWith_isSome {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (hSparse : G.IsSparse k ℓ) (h_matroidal : ℓ < 2 * k)
+    {D : PartialOrientation V}
+    (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
+    (h_outle : ∀ x, D.out x ≤ k)
+    (hD : Reachable k ℓ D)
+    (h_fresh : s(u, v) ∉ D.underline)
+    (hG : G.edgeFinset = insert s(u, v) D.underline) :
+    ∃ D' : PartialOrientation V,
+      D.tryAddEdgeWith k ℓ u v huv hnotin hnotin_rev h_outle toSucc h_toSucc
+        = some D' := by
+  induction D, hnotin, hnotin_rev, h_outle using
+    tryAddEdgeWith.induct (k := k) (ℓ := ℓ) (huv := huv)
+      (toSucc := toSucc) (h_toSucc := h_toSucc)
+  case case1 D hnotin hnotin_rev h_outle hthr hpu_pos =>
+    rw [tryAddEdgeWith, dif_pos hthr, if_pos hpu_pos]
+    exact ⟨_, rfl⟩
+  case case2 D hnotin hnotin_rev h_outle hthr hpu_neg =>
+    rw [tryAddEdgeWith, dif_pos hthr, if_neg hpu_neg]
+    exact ⟨_, rfl⟩
+  case case3 D hnotin hnotin_rev h_outle hthr P r hr_eq ih =>
+    rw [tryAddEdgeWith, dif_neg hthr]
+    simp only
+    rw [hr_eq]
+    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
+      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
+    have h_target : D.out r.target < k := by
+      have h1 := h_outle r.target
+      have h2 : D.peb k r.target = k - D.out r.target := rfl
+      have := hP_decomp.1.1
+      omega
+    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
+    have h_fresh_new : s(u, v) ∉ r.newOrient.underline := by
+      rw [r.underline_newOrient_eq]; exact h_fresh
+    have hG_new : G.edgeFinset = insert s(u, v) r.newOrient.underline := by
+      rw [r.underline_newOrient_eq]; exact hG
+    exact ih hR_new h_fresh_new hG_new
+  case case4 D hnotin hnotin_rev h_outle hthr P hu_none r hr_eq ih =>
+    rw [tryAddEdgeWith, dif_neg hthr]
+    simp only
+    rw [hu_none, hr_eq]
+    have hP_decomp : (0 < D.peb k r.target ∧ r.target ≠ u) ∧ r.target ≠ v := by
+      have := r.hP; simp only [P, Bool.and_eq_true, decide_eq_true_eq] at this; exact this
+    have h_target : D.out r.target < k := by
+      have h1 := h_outle r.target
+      have h2 : D.peb k r.target = k - D.out r.target := rfl
+      have := hP_decomp.1.1
+      omega
+    have hR_new : Reachable k ℓ r.newOrient := r.reachable_newOrient hD h_target
+    have h_fresh_new : s(u, v) ∉ r.newOrient.underline := by
+      rw [r.underline_newOrient_eq]; exact h_fresh
+    have hG_new : G.edgeFinset = insert s(u, v) r.newOrient.underline := by
+      rw [r.underline_newOrient_eq]; exact hG
+    exact ih hR_new h_fresh_new hG_new
+  case case5 D hnotin hnotin_rev h_outle hthr P hu_none hv_none =>
+    exfalso
+    have h_below : D.peb k u + D.peb k v < ℓ + 1 := by omega
+    obtain ⟨w, hw_mem, hw_u, hw_v, hw_pos⟩ :=
+      hD.independent_brings_pebble_simpleGraph_form huv h_fresh hG hSparse h_matroidal
+        h_below
+    have hPw : P w = true := by
+      simp only [P, Bool.and_eq_true, decide_eq_true_eq]
+      exact ⟨⟨hw_pos, hw_u⟩, hw_v⟩
+    rw [Finset.mem_union] at hw_mem
+    rcases hw_mem with hu_reach | hv_reach
+    · rw [mem_reach] at hu_reach
+      exact tryReachPebbleWith_eq_none_imp (h_toSucc D) hu_none hu_reach hPw
+    · rw [mem_reach] at hv_reach
+      exact tryReachPebbleWith_eq_none_imp (h_toSucc D) hv_none hv_reach hPw
 
 end Completeness
 

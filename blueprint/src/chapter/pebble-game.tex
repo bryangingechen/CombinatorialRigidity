@@ -701,9 +701,41 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   freshness of $\{u, v\}$ w.r.t.\ $\underline{D}$.
 \end{proof}
 
+\begin{lemma}[Pebble game accepts when edge is independent]
+  \label{lem:pebble-game-tryAddEdgeWith-isSome}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_isSome}
+  \leanok
+  \uses{def:tryAddEdge, def:reachable-orientation, def:isSparse,
+    lem:pebble-game-independent-brings-pebble-graph}
+  Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
+  with $\{u, v\} \notin \underline{D}$, and $G$ a finite simple graph
+  with $E(G) = \underline{D} \cup \{\{u, v\}\}$ that is
+  $(k, \ell)$-sparse, in the matroidal regime $\ell < 2k$. Then
+  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}$ returns a partial
+  orientation $D'$ (i.e.\ the procedure never fails).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pebble-game-independent-brings-pebble-graph}
+  Induction on the recursive structure of $\mathrm{tryAddEdge}$
+  (\cref{def:tryAddEdge}). The two threshold-met branches return some
+  $D'$ directly. The two DFS-success branches recurse on the
+  path-reversed orientation, whose reachability is preserved by the
+  reverse-constructor of \cref{def:reachable-orientation} and whose
+  underlying edge set is unchanged by reversal; the IH applies
+  ($G$-sparsity and the freshness $\{u, v\} \notin \underline{D'}$
+  carry over to the recursive call). The remaining branch — both
+  DFS searches simultaneously failing — is contradicted by
+  \cref{lem:pebble-game-independent-brings-pebble-graph}: the
+  matroidal regime $\ell < 2k$ plus $G$-sparsity force the existence
+  of a free pebble in $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$
+  distinct from $u, v$, and completeness of the DFS forces at least
+  one of the searches to succeed.
+\end{proof}
+
 \begin{lemma}[Pebble game accepts iff edge is independent]
   \label{lem:pebble-game-tryAddEdge-iff-independent}
-  \uses{def:tryAddEdge, lem:pebble-game-independent-brings-pebble,
+  \uses{def:tryAddEdge, lem:pebble-game-tryAddEdgeWith-isSome,
     lem:pebble-game-invariants, def:isSparse}
   Let $D$ be a partial orientation reachable as above and $\{u, v\}$
   a candidate edge with $\{u, v\} \notin \underline{D}$. Then
@@ -712,14 +744,9 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   \{\{u, v\}\})$ is $(k, \ell)$-sparse.
 \end{lemma}
 \begin{proof}
-  \uses{lem:pebble-game-independent-brings-pebble,
+  \uses{lem:pebble-game-tryAddEdgeWith-isSome,
     lem:pebble-game-invariants}
-  $(\Leftarrow)$: iterate
-  \cref{lem:pebble-game-independent-brings-pebble} to bring pebbles
-  into $\{u, v\}$ until the threshold is met; the outer-loop
-  termination measure of \cref{def:tryAddEdge} bounds the number
-  of iterations by $\ell + 1$, and each application preserves
-  $(k, \ell)$-sparsity of $\underline{D} \cup \{\{u, v\}\}$.
+  $(\Leftarrow)$: \cref{lem:pebble-game-tryAddEdgeWith-isSome}.
   $(\Rightarrow)$: a successful insertion produces $D'$ with
   $\underline{D'} = \underline{D} \cup \{\{u, v\}\}$ and $D'$
   satisfies Invariant~(4) by \cref{lem:pebble-game-invariants}
