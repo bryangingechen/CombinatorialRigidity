@@ -733,10 +733,39 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   one of the searches to succeed.
 \end{proof}
 
+\begin{lemma}[Pebble game accept implies independent]
+  \label{lem:pebble-game-tryAddEdgeWith-isSparse}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_isSparse}
+  \leanok
+  \uses{def:tryAddEdge, def:reachable-orientation, def:isSparse,
+    lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn}
+  Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
+  a candidate edge, and $G$ a finite simple graph with
+  $E(G) = \underline{D} \cup \{\{u, v\}\}$. If
+  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}$ returns some
+  orientation $D'$, then $G$ is $(k, \ell)$-sparse.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn}
+  A successful insertion produces $D'$ with $\underline{D'} =
+  \underline{D} \cup \{\{u, v\}\} = E(G)$ (the underline identity is
+  preserved by path-reversal and grows by the inserted edge on accept).
+  The recursive structure of \cref{def:tryAddEdge} respects
+  \cref{def:reachable-orientation}: each path-reversal and each accept
+  step matches a constructor, so $D'$ is reachable. Invariant~(4) of
+  \cref{lem:pebble-game-invariants} on $D'$ gives
+  $\mathrm{span}_{D'}(V') + \ell \le k|V'|$ for every $V'$ satisfying
+  the size hypothesis; \cref{lem:span-eq-ncard-edgesIn} under the
+  underline identity rewrites the left-hand side as
+  $|\edgesIn[G]{V'}|$, yielding $(k, \ell)$-sparsity. Compare
+  Lee--Streinu Lemma 14.
+\end{proof}
+
 \begin{lemma}[Pebble game accepts iff edge is independent]
   \label{lem:pebble-game-tryAddEdge-iff-independent}
   \uses{def:tryAddEdge, lem:pebble-game-tryAddEdgeWith-isSome,
-    lem:pebble-game-invariants, def:isSparse}
+    lem:pebble-game-tryAddEdgeWith-isSparse, def:isSparse}
   Let $D$ be a partial orientation reachable as above and $\{u, v\}$
   a candidate edge with $\{u, v\} \notin \underline{D}$. Then
   $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\} = \mathrm{Sum.inl}\,D'$
@@ -745,13 +774,9 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
 \end{lemma}
 \begin{proof}
   \uses{lem:pebble-game-tryAddEdgeWith-isSome,
-    lem:pebble-game-invariants}
+    lem:pebble-game-tryAddEdgeWith-isSparse}
   $(\Leftarrow)$: \cref{lem:pebble-game-tryAddEdgeWith-isSome}.
-  $(\Rightarrow)$: a successful insertion produces $D'$ with
-  $\underline{D'} = \underline{D} \cup \{\{u, v\}\}$ and $D'$
-  satisfies Invariant~(4) by \cref{lem:pebble-game-invariants}
-  (which now applies to $D'$ since the insertion was performed
-  under the threshold precondition). Compare Lee--Streinu Lemma 14.
+  $(\Rightarrow)$: \cref{lem:pebble-game-tryAddEdgeWith-isSparse}.
 \end{proof}
 
 \begin{lemma}[Failure produces a blocking witness]

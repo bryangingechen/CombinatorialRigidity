@@ -2099,6 +2099,44 @@ lemma tryAddEdgeWith_isSome {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
     · rw [mem_reach] at hv_reach
       exact tryReachPebbleWith_eq_none_imp (h_toSucc D) hv_none hv_reach hPw
 
+/-- **`tryAddEdgeWith` accept ⇒ post-insertion sparse** (⇒ half of
+`lem:pebble-game-tryAddEdge-iff-independent`). If `tryAddEdgeWith` on a
+`(k, ℓ)`-reachable `D` returns `some D'`, then any finite simple graph `G`
+with `G.edgeFinset = insert s(u, v) D.underline` is `(k, ℓ)`-sparse.
+
+Three-piece assembly mirroring `runPebbleGame_sound`:
+*(i)* `tryAddEdgeWith_underline` plus the hypothesis `G.edgeFinset = insert
+s(u, v) D.underline` give the underline identity `D'.underline = G.edgeFinset`.
+*(ii)* `tryAddEdgeWith_reachable` lifts `Reachable k ℓ D` to `Reachable k ℓ D'`,
+which delivers Invariant (4) `D'.span V' + ℓ ≤ k * V'.card` via
+`Reachable.span_add_le`.
+*(iii)* `span_eq_ncard_edgesIn` rewrites `D'.span V'` to `(G.edgesIn ↑V').ncard`.
+
+This is the per-step soundness of `tryAddEdgeWith`. Composed with the ⇐ half
+`tryAddEdgeWith_isSome`, it gives the full iff of L-S Lemma 14. -/
+lemma tryAddEdgeWith_isSparse {k ℓ : ℕ} {u v : V} (huv : u ≠ v)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    {D : PartialOrientation V}
+    (hnotin : (u, v) ∉ D.arcs) (hnotin_rev : (v, u) ∉ D.arcs)
+    (h_outle : ∀ x, D.out x ≤ k)
+    (hD : Reachable k ℓ D)
+    (hG : G.edgeFinset = insert s(u, v) D.underline)
+    {D' : PartialOrientation V}
+    (h : D.tryAddEdgeWith k ℓ u v huv hnotin hnotin_rev h_outle toSucc h_toSucc
+      = some D') :
+    G.IsSparse k ℓ := by
+  have h_und : D'.underline = G.edgeFinset :=
+    (tryAddEdgeWith_underline huv toSucc h_toSucc hnotin hnotin_rev h_outle h).trans hG.symm
+  have hR : Reachable k ℓ D' :=
+    tryAddEdgeWith_reachable huv toSucc h_toSucc hnotin hnotin_rev h_outle hD h
+  intro s hs
+  have h_span := hR.span_add_le hs
+  rw [span_eq_ncard_edgesIn D' h_und s] at h_span
+  exact h_span
+
 end Completeness
 
 end PartialOrientation
