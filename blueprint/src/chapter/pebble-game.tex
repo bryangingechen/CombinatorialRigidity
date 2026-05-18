@@ -412,7 +412,12 @@ failure witness.
   property and the DFS-failure "no free pebble outside $\{u, v\}$"
   assertion respectively. The $G$-shaped sparsity-violation certificate
   $\ell \le k|V'| \wedge k|V'| < |\edgesIn[G]{V'}| + \ell$ is recovered
-  at the wrapper layer via \cref{lem:workhorseWitness-certifies}.
+  at the wrapper layer via \cref{lem:workhorseWitness-certifies}; the
+  user-facing $\mathrm{runPebbleGame}$ wrapper (\cref{def:runPebbleGame})
+  consumes that recovery to populate $\mathrm{PebbleGameResult.reject}$'s
+  proof fields (Phase~11 Layer~4b — maximal reshape: the wrapper layer
+  is where the $\mathrm{Sum}$ shape collapses into the
+  $\mathrm{PebbleGameResult}$ verdict).
 \end{definition}
 
 \begin{definition}[Blocking witness]
@@ -431,19 +436,24 @@ failure witness.
     CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame}
   \leanok
   \uses{def:tryAddEdge, def:workhorseWitness, def:partial-orientation}
-  Given a simple graph $G$ on a finite vertex set $V$ and integer
-  parameters $k, \ell$ with $\ell < 2k$, the procedure
-  $\mathrm{runPebbleGame}\,k\,\ell\,G$ folds $\mathrm{tryAddEdge}$
+  Given a simple graph $G$ on a finite vertex set $V$, integer
+  parameters $k, \ell$ with $\ell < 2k$, and the matroidal-regime
+  hypothesis $h_{\mathrm{mat}} : \ell < 2k$, the procedure
+  $\mathrm{runPebbleGame}\,k\,\ell\,G\,h_{\mathrm{mat}} :
+  \mathrm{PebbleGameResult}\,G\,k\,\ell$ folds $\mathrm{tryAddEdge}$
   over an arbitrary enumeration of $E(G)$ starting from the empty
-  partial orientation. On success it returns
-  $\mathrm{.inr}\,D$ with $\underline{D} = E(G)$ satisfying the four
-  invariants of \cref{lem:pebble-game-invariants}; on failure it
-  returns $\mathrm{.inl}\,w$ carrying the workhorse-level failure
-  witness $w$ (\cref{def:workhorseWitness}) inline (Phase~11 Layer~3
-  reshape; the $G$-shaped blocking-witness subset $w.V'$ is recovered
-  via \cref{lem:workhorseWitness-certifies}). Termination of the
-  fold: the number of unprocessed edges strictly decreases per
-  iteration.
+  partial orientation, then packages the workhorse-level $\mathrm{Sum}$
+  output as a $\mathrm{PebbleGameResult}\,G\,k\,\ell$ verdict
+  (\cref{def:pebbleGameResult}). On success it returns
+  $\mathrm{.accept}\,(D, h_{\underline{}}, h_{\mathrm{reach}})$ with
+  $\underline{D} = E(G)$ and $D$ satisfying the four invariants of
+  \cref{lem:pebble-game-invariants}; on failure it returns
+  $\mathrm{.reject}\,(V', h_{\mathrm{size}}, h_{\mathrm{lt}})$ with the
+  blocking subset $V'$ and the $G$-shaped sparsity-violation pair
+  ($V' := w.V'$ for the underlying workhorse-level failure witness
+  $w$ (\cref{def:workhorseWitness}), with the pair extracted via
+  \cref{lem:workhorseWitness-certifies}). Termination of the fold:
+  the number of unprocessed edges strictly decreases per iteration.
 
   The Lean encoding splits into a computable workhorse
   $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{hD}\,\mathtt{toSucc}\,\mathtt{h\_toSucc}\,\mathtt{edges}$
@@ -452,22 +462,24 @@ failure witness.
   $\mathtt{toSucc} : \mathrm{PartialOrientation}\,V \to V \to
   \mathrm{List}\,V$ (with universal agreement witness), and a
   $\mathrm{List}\,(V \times V)$ of candidate ordered pairs; and a
-  math-layer convenience $\mathtt{runPebbleGame}\,G\,k\,\ell$ which is
-  a thin $\mathtt{noncomputable}$ wrapper enumerating
+  math-layer verdict-bearing wrapper $\mathtt{runPebbleGame}\,G\,k\,\ell
+  \,h_{\mathrm{mat}}$ (Phase~11 Layer~4b — maximal reshape;
+  $\mathtt{noncomputable}$) enumerating
   $G.\mathtt{edgeFinset}.\mathtt{toList}$, projecting each
   $\mathrm{Sym}_2\,V$ to a representative ordered pair via
   $\mathtt{Quot.out}$, plugging in
   $\mathtt{toSucc}\,D' := D'.\mathtt{outList}$, starting from
-  $\mathtt{empty}$ with $\mathtt{Reachable.empty}$. The workhorse stays
-  fully computable as long as $\mathtt{toSucc}$ and the input edge list
-  do; IO callers invoke $\mathtt{runPebbleGameWith}$ directly with their
-  own $\mathrm{List}$-shaped data. The output is
+  $\mathtt{empty}$ with $\mathtt{Reachable.empty}$, and finally packaging
+  the $\mathrm{Sum}$ output as a $\mathrm{PebbleGameResult}$ verdict via
+  an internal aux helper (avoiding the $\mathtt{match}\,h:$ substitution
+  quirk). The workhorse stays fully computable as long as $\mathtt{toSucc}$
+  and the input edge list do; IO callers invoke
+  $\mathtt{runPebbleGameWith}$ directly with their own $\mathrm{List}$-shaped
+  data. The workhorse's output is
   $\mathrm{Sum}\,(\mathrm{WorkhorseWitness}\,k\,\ell\,V)\,
-  (\mathrm{PartialOrientation}\,V)$ (Phase~11 Layer~3):
-  $\mathrm{.inr}\,D$ on accept (with $\underline{D} = E(G)$ once the
-  fold completes successfully), $\mathrm{.inl}\,w$ on rejection
-  carrying the workhorse-level failure witness $w$ produced by the
-  first $\mathtt{tryAddEdgeWith}$ call that rejected.
+  (\mathrm{PartialOrientation}\,V)$ (Phase~11 Layer~3 shape preserved at
+  the workhorse layer because $G$ is not in scope there); the wrapper
+  consumes it to build the verdict.
 
   Each fold step performs three runtime checks before invoking
   $\mathtt{tryAddEdgeWith}$ — the candidate is not a loop, and neither
@@ -553,7 +565,8 @@ preservation (already established in
 \begin{lemma}[No skip fires; underlying-edge identity on the wrapper]
   \label{lem:runPebbleGame-underline-eq}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_mem_underline,
-    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_underline_eq_edgeFinset}
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_underline_eq,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_edges_discharges}
   \leanok
   \uses{def:partial-orientation, def:tryAddEdge, def:runPebbleGame,
     def:reachable-orientation, lem:runPebbleGameWith-underline-subset,
@@ -631,13 +644,20 @@ preservation (already established in
 
 \begin{theorem}[Soundness of the pebble game]
   \label{thm:pebble-game-soundness}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_sound}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_sound}
   \leanok
   \uses{def:runPebbleGame, lem:pebble-game-invariants, def:isSparse,
     lem:runPebbleGame-underline-eq, lem:span-eq-ncard-edgesIn}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
-  integers with $\ell < 2k$. If $\mathrm{runPebbleGame}\,k\,\ell\,G
-  = \mathrm{some}\,D$, then $G$ is $(k, \ell)$-sparse.
+  integers with $\ell < 2k$. If the workhorse-level
+  $\mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,\ldots = \mathrm{.inr}\,D$
+  against an edge list whose $\mathrm{Sym}_2$-image is $E(G)$, then
+  $G$ is $(k, \ell)$-sparse. (Phase~11 Layer~4b maximal-reshape
+  retains the workhorse-level statement as the single source of
+  truth; the math-layer specialization
+  $\mathrm{runPebbleGame\_sound}$ retired alongside
+  $\mathrm{runPebbleGame\_correct}$ since the math-layer
+  $\mathrm{runPebbleGame}$ now returns the verdict directly.)
 \end{theorem}
 \begin{proof}
   \leanok
@@ -873,21 +893,36 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
 % `.inl w` branch IS the failure-witness extraction, with
 % `lem:workhorseWitness-certifies` doing the $G$-shaped discharge).
 
-\subsection{Correctness theorem}
+\subsection{Workhorse-level correctness theorem}
 \label{sec:pebble-game-correctness}
 
 The certificate-form statement of Lee--Streinu Theorem~8 in the
-matroidal regime: $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
-$\mathrm{.inr}\,D$ exactly when $G$ is $(k, \ell)$-sparse, and the
-$\mathrm{.inl}\,w$ branch carries the blocking-witness data inline
-(Phase~11 Layer~3 reshape; the Lean return type is now
+matroidal regime, stated at the workhorse layer (where the
+$\mathrm{Sum}$-shape lives): $\mathrm{runPebbleGameWith}$ from
+$\mathrm{empty}$ against an edge list whose $\mathrm{Sym}_2$-image
+is $E(G)$ returns $\mathrm{.inr}\,D$ exactly when $G$ is
+$(k, \ell)$-sparse, and the $\mathrm{.inl}\,w$ branch carries the
+blocking-witness data inline (Phase~11 Layer~3 reshape; the
+workhorse-level return type is
 $\mathrm{Sum}\,(\mathrm{WorkhorseWitness}\,k\,\ell\,V)\,
-(\mathrm{PartialOrientation}\,V)$, with the $G$-shaped sparsity-violation
-pair recovered by \cref{lem:workhorseWitness-certifies}).
+(\mathrm{PartialOrientation}\,V)$, with the $G$-shaped
+sparsity-violation pair recovered by
+\cref{lem:workhorseWitness-certifies}).
 
-\begin{theorem}[Pebble game correctness, certificate form]
+Phase~11 Layer~4b — maximal reshape — retires the math-layer
+specialization $\mathrm{runPebbleGame\_correct}$ that previously lifted
+this workhorse-level iff to a math-layer statement on
+$\mathrm{runPebbleGame}\,G\,k\,\ell$. The math-layer wrapper
+(\cref{def:runPebbleGame}) now returns the verdict
+$\mathrm{PebbleGameResult}\,G\,k\,\ell$ directly, so the iff statement
+collapses into the verdict's \emph{type}. The verdict-form correctness
+restatement lives at \cref{thm:pebbleGameResult-isAccept-iff}; the
+workhorse-level statement below is the single source of truth that
+both wrappers' verdict constructions consume.
+
+\begin{theorem}[Pebble game correctness, workhorse certificate form]
   \label{thm:pebble-game-correct}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_correct}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_correct}
   \leanok
   \uses{def:runPebbleGame, def:workhorseWitness, def:isSparse,
     thm:pebble-game-soundness, lem:runPebbleGame-underline-eq,
@@ -895,14 +930,15 @@ pair recovered by \cref{lem:workhorseWitness-certifies}).
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
   integers with $\ell < 2k$. Then $G$ is $(k, \ell)$-sparse if and
   only if there exists a partial orientation $D$ with
-  $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{.inr}\,D$.
-  Concretely (Phase~11 Layer~3 reshape):
+  $\mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,\ldots =
+  \mathrm{.inr}\,D$ against an edge list whose $\mathrm{Sym}_2$-image
+  is $E(G)$. Concretely (Phase~11 Layer~3 reshape):
   \begin{enumerate}
-    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{.inr}\,D$,
-      then $G$ is $(k, \ell)$-sparse and $\underline{D} = E(G)$.
-    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{.inl}\,w$
-      for some $w : \mathrm{WorkhorseWitness}\,k\,\ell\,V$, then
-      $w.V'$ certifies $\ell \le k|w.V'| \wedge k|w.V'| <
+    \item If the workhorse returns $\mathrm{.inr}\,D$, then $G$ is
+      $(k, \ell)$-sparse and $\underline{D} = E(G)$.
+    \item If the workhorse returns $\mathrm{.inl}\,w$ for some
+      $w : \mathrm{WorkhorseWitness}\,k\,\ell\,V$, then $w.V'$
+      certifies $\ell \le k|w.V'| \wedge k|w.V'| <
       |\edgesIn[G]{w.V'}| + \ell$ via
       \cref{lem:workhorseWitness-certifies} --- a blocking witness
       for $G$.
@@ -931,7 +967,7 @@ pair recovered by \cref{lem:workhorseWitness-certifies}).
   The biconditional comes from the dichotomy on the $\mathrm{Sum}$
   output: $\mathrm{.inr}$ closes via~(1); $\mathrm{.inl}$ closes
   via~(2) by contradicting the sparsity hypothesis at the witness
-  $w.V'$. The Phase~11 Layer~3 reshape replaces the Phase~10-era
+  $w.V'$. The Phase~11 Layer~3 reshape replaced the Phase~10-era
   $\mathrm{Option}$-shaped existence-form failure-witness extraction
   with this structural alternative; the case-5 inline construction
   inside \cref{def:tryAddEdge} produces the witness data directly,
@@ -941,19 +977,23 @@ pair recovered by \cref{lem:workhorseWitness-certifies}).
   $\mathrm{runPebbleGameWith\_eq\_none\_imp\_exists\_witness}$, and
   $\mathrm{runPebbleGame\_eq\_none\_imp\_exists\_witness}$ are
   retired (their content absorbed into the new return type and
-  $\mathrm{certifies\_against}$).
+  $\mathrm{certifies\_against}$). Phase~11 Layer~4b additionally
+  retired the math-layer specialization $\mathrm{runPebbleGame\_correct}$
+  in favour of the verdict-form correctness statement
+  \cref{thm:pebbleGameResult-isAccept-iff}.
 \end{proof}
 
 \subsection{User-facing verdict}
 \label{sec:pebble-game-verdict}
 
-The certificate-form correctness theorem
+The workhorse-level correctness theorem
 (\cref{thm:pebble-game-correct}) states an iff between sparsity and
-the algorithm's $\mathrm{Sum}$-shaped output. The Phase~11 Layer~4
-\emph{verdict} re-packages that iff structurally: instead of
-exposing the raw $\mathrm{Sum}$ result and an external iff theorem,
-the user-facing wrapper returns a two-constructor inductive whose
-constructor IS the certificate.
+the algorithm's $\mathrm{Sum}$-shaped output. The Phase~11 Layer~4b
+(maximal-reshape) \emph{verdict} re-packages that iff structurally:
+the user-facing math- and exec-layer wrappers (\cref{def:runPebbleGame}
+and \cref{def:runPebbleGameExec}) return a two-constructor inductive
+$\mathrm{PebbleGameResult}\,G\,k\,\ell$ whose constructor IS the
+certificate.
 
 \begin{definition}[Pebble-game verdict]
   \label{def:pebbleGameResult}
@@ -987,43 +1027,48 @@ constructor IS the certificate.
   $G\text{ is }(k,\ell)\text{-sparse} \iff \exists D,\, \mathrm{algorithm
   returns } \mathrm{.inr}\,D$ collapses into the verdict's TYPE.
 
-  \emph{Lean placement note (Phase 11 Layer 4):} the verdict and
-  its math-/exec-layer wrappers live in
-  \texttt{PebbleGame/Correctness.lean} (math layer:
-  \texttt{runPebbleGame\_result}) and \texttt{PebbleGame/Exec.lean}
-  (exec layer: \texttt{runPebbleGameExec\_result}). Both stay
-  additive on top of Phase~11 Layer~3's $\mathrm{Sum}$-shaped raw
-  functions $\mathrm{runPebbleGame}$ / $\mathrm{runPebbleGameExec}$,
-  which remain available; the Phase~11 Layer~4 wrappers re-package
-  the $\mathrm{Sum}$ output's constructor selection as a verdict
-  inductive while populating the verdict's proof fields from
-  $\mathrm{WorkhorseWitness.certifies\_against}$
-  (\cref{lem:workhorseWitness-certifies}) on the
-  $\mathrm{.reject}$ side and from the Phase~9 soundness chain on
-  the $\mathrm{.accept}$ side. The matroidal-regime hypothesis
-  $\ell < 2k$ is consumed by $\mathrm{certifies\_against}$.
+  \emph{Lean placement note (Phase 11 Layer 4 / Layer 4b
+  maximal reshape):} the verdict lives in
+  \texttt{PebbleGame/Correctness.lean}; the math-layer wrapper
+  \texttt{runPebbleGame} (\cref{def:runPebbleGame}) is in the same file,
+  and the exec-layer wrapper \texttt{runPebbleGameExec} lives in
+  \texttt{PebbleGame/Exec.lean}. Phase~11 Layer~4 had wrapped the
+  Layer~3 $\mathrm{Sum}$-shaped raw functions additively into
+  $\mathrm{runPebbleGame\_result}$ / $\mathrm{runPebbleGameExec\_result}$;
+  Phase~11 Layer~4b retires that additive form by collapsing the raw
+  $\mathrm{Sum}$-returning wrappers (the workhorse-level
+  $\mathrm{runPebbleGameWith}$ still returns $\mathrm{Sum}$, since
+  $G$ is not in scope there) into the verdict-returning wrappers. Both
+  wrappers re-package the workhorse-level $\mathrm{Sum}$ output's
+  constructor selection as a verdict inductive while populating the
+  verdict's proof fields from $\mathrm{WorkhorseWitness.certifies\_against}$
+  (\cref{lem:workhorseWitness-certifies}) on the $\mathrm{.reject}$
+  side and from the Phase~9 soundness chain on the $\mathrm{.accept}$
+  side. The matroidal-regime hypothesis $\ell < 2k$ is consumed by
+  $\mathrm{certifies\_against}$.
 \end{definition}
 
 \begin{theorem}[Pebble game correctness, verdict form]
   \label{thm:pebbleGameResult-isAccept-iff}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_result_isAccept_iff,
-    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_result_isAccept_iff}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_isAccept_iff,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_isAccept_iff}
   \leanok
   \uses{def:pebbleGameResult, thm:pebble-game-correct, def:isSparse}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
   integers with $\ell < 2k$. Then $G$ is $(k, \ell)$-sparse if and
   only if the verdict-bearing wrapper
-  $\mathrm{runPebbleGame\_result}\,G\,k\,\ell$ (resp.\ its exec-layer
-  sibling) returns an $\mathrm{.accept}$ verdict — equivalently, its
-  $\mathrm{.isAccept}$ Boolean projection is $\mathrm{true}$.
+  $\mathrm{runPebbleGame}\,G\,k\,\ell\,h_{\mathrm{mat}}$ (resp.\ its
+  exec-layer sibling $\mathrm{runPebbleGameExec}$) returns an
+  $\mathrm{.accept}$ verdict — equivalently, its $\mathrm{.isAccept}$
+  Boolean projection is $\mathrm{true}$.
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:pebble-game-correct}
   The verdict's $\mathrm{.isAccept}$ projection is $\mathrm{true}$
-  exactly when the underlying $\mathrm{Sum}$-shaped wrapper returned
-  $\mathrm{.inr}\,D$; by \cref{thm:pebble-game-correct} this is
-  equivalent to $(k, \ell)$-sparsity.
+  exactly when the underlying workhorse-level
+  $\mathrm{runPebbleGameWith}$ returned $\mathrm{.inr}\,D$; by
+  \cref{thm:pebble-game-correct} this is equivalent to $(k, \ell)$-sparsity.
 \end{proof}
 
 \subsection{Matroidal-independence corollary}
@@ -1036,36 +1081,32 @@ the pebble game decides matroidal independence.
 
 \begin{corollary}[Pebble-game certificate of matroidal independence]
   \label{cor:pebble-game-countMatroid-indep}
-  \lean{SimpleGraph.countMatroid_indep_iff_runPebbleGame,
-    SimpleGraph.countMatroid_indep_iff_runPebbleGame_result}
+  \lean{SimpleGraph.countMatroid_indep_iff_runPebbleGame}
   \leanok
   \uses{thm:pebble-game-correct, thm:pebbleGameResult-isAccept-iff,
-    def:countMatroid, thm:countMatroid-indep-iff}
+    def:countMatroid, thm:countMatroid-indep-iff, def:runPebbleGame}
   Let $V$ be finite and $k, \ell$ integers with $\ell < 2k$. For
   every $G : \mathrm{SimpleGraph}\,V$, the edge set $E(G)$ is
   independent in the $(k, \ell)$-count matroid
   $\mathrm{countMatroid}\,V\,k\,\ell$
-  (\cref{def:countMatroid}) if and only if any of the equivalent
-  pebble-game outputs accepts:
-  \begin{itemize}
-    \item certificate form: $\mathrm{runPebbleGame}\,k\,\ell\,G =
-      \mathrm{.inr}\,D$ for some partial orientation $D$ (Phase~11
-      Layer~3 reshape; was $\mathrm{some}\,D$);
-    \item verdict form: $\mathrm{runPebbleGame\_result}\,k\,\ell\,G
-      = \mathrm{.accept}\,(D, \dots)$ — equivalently,
-      $(\mathrm{runPebbleGame\_result}\,k\,\ell\,G).\mathrm{isAccept}
-      = \mathrm{true}$ (Phase~11 Layer~4).
-  \end{itemize}
+  (\cref{def:countMatroid}) if and only if the verdict-bearing
+  $\mathrm{runPebbleGame}\,G\,k\,\ell\,h_{\mathrm{mat}}$ returns
+  $\mathrm{.accept}\,(D, \dots)$ — equivalently,
+  $(\mathrm{runPebbleGame}\,G\,k\,\ell\,h_{\mathrm{mat}}).\mathrm{isAccept}
+  = \mathrm{true}$ (Phase~11 Layer~4b — maximal reshape; the
+  Phase~11 Layer~4 additive $\mathrm{runPebbleGame\_result}$-form
+  bullet retired alongside the parallel
+  $\mathrm{countMatroid\_indep\_iff\_runPebbleGame\_result}$).
 \end{corollary}
 \begin{proof}
   \leanok
-  \uses{thm:pebble-game-correct, thm:countMatroid-indep-iff}
+  \uses{thm:pebble-game-correct, thm:countMatroid-indep-iff,
+    thm:pebbleGameResult-isAccept-iff}
   By \cref{thm:countMatroid-indep-iff}, $E(G)$ is independent in
   the count matroid iff $G$ is $(k, \ell)$-sparse. By
-  \cref{thm:pebble-game-correct} (resp.\
-  \cref{thm:pebbleGameResult-isAccept-iff}), the latter holds iff
-  the pebble game's certificate-form output (resp.\ verdict-form
-  output) is on the accept branch.
+  \cref{thm:pebbleGameResult-isAccept-iff}, the latter holds iff
+  the verdict-bearing wrapper's $\mathrm{.isAccept}$ projection is
+  $\mathrm{true}$.
 \end{proof}
 
 \emph{Special case: planar rigidity.} At $(k, \ell) = (2, 3)$,

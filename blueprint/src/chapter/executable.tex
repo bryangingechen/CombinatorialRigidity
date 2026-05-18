@@ -213,29 +213,44 @@ Phase~9 already factored the algorithm into a computable workhorse
 wrapper plugging in \cref{def:outListSorted,def:edgeListSorted}
 instead.
 
-\begin{definition}[Computable pebble-game wrapper]
+\begin{definition}[Computable verdict-bearing pebble-game wrapper]
   \label{def:runPebbleGameExec}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec}
   \leanok
   \uses{def:runPebbleGame, def:outListSorted, def:edgeListSorted}
   Let $V$ have $[\mathrm{LinearOrder}\,V]$ and
-  $[\mathrm{DecidableEq}\,V]$, and let $G$ be a finite simple graph
-  on $V$. Define
-  \[
-    \mathrm{runPebbleGameExec}\,G\,k\,\ell
-    \;:=\; \mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,
-      (\lambda D'. \mathrm{outListSorted}_{D'}\,\cdot)\,
-      (\mathrm{mem\_outListSorted})\,
-      (\mathrm{edgeListSorted}\,G).
-  \]
-  Computable end-to-end; no \texttt{Classical} dependencies.
+  $[\mathrm{DecidableEq}\,V]$, let $G$ be a finite simple graph on
+  $V$, and let $h_{\mathrm{mat}} : \ell < 2k$ be the matroidal-regime
+  hypothesis. Define
+  $\mathrm{runPebbleGameExec}\,G\,k\,\ell\,h_{\mathrm{mat}}
+  : \mathrm{PebbleGameResult}\,G\,k\,\ell$ to invoke
+  $\mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,
+  \mathrm{Reachable.empty}\,(\lambda D'. \mathrm{outListSorted}_{D'}
+  \cdot)\,\mathrm{mem\_outListSorted}\,(\mathrm{edgeListSorted}\,G)$
+  and package the workhorse-level $\mathrm{Sum}$ output as a
+  $\mathrm{PebbleGameResult}$ verdict (\cref{def:pebbleGameResult}):
+  $\mathrm{.inr}\,D \mapsto \mathrm{.accept}\,(D, h_{\underline{}},
+  h_{\mathrm{reach}})$ (proof fields from
+  \cref{thm:runPebbleGameWith-correct}'s underline / reachability
+  components); $\mathrm{.inl}\,w \mapsto \mathrm{.reject}\,(w.V',
+  h_{\mathrm{size}}, h_{\mathrm{lt}})$ (proof fields from
+  \cref{lem:workhorseWitness-certifies} discharging the bridge facts
+  for $G.\mathrm{edgeListSorted}$). Computable end-to-end whenever
+  $V$ carries $[\mathrm{LinearOrder}\,V]$ and
+  $[\mathrm{DecidableEq}\,V]$; no \texttt{Classical} dependencies.
+  Phase~11 Layer~4b maximal-reshape: the verdict-bearing form
+  collapses the Phase~11 Layer~3 $\mathrm{Sum}$-returning
+  $\mathrm{runPebbleGameExec}$ and the Phase~11 Layer~4 additive
+  $\mathrm{runPebbleGameExec\_result}$ wrapper into a single function.
 \end{definition}
 
 The Phase~9 wrapper-level correctness theorem
-\cref{thm:pebble-game-correct} is stated against the math-layer
-$\mathrm{runPebbleGame}$. Phase~10 lifts it to a workhorse-level
-statement first, then re-derives both wrappers as one-line
-corollaries.
+\cref{thm:pebble-game-correct} is stated at the workhorse layer.
+Phase~11 Layer~4b's verdict-form analog
+\cref{thm:pebbleGameResult-isAccept-iff} is the user-facing
+restatement; the certificate iff collapses into the verdict's
+\emph{type} so no separate iff statement is needed at the math/exec
+wrapper layer.
 
 \begin{theorem}[Pebble-game correctness, workhorse form]
   \label{thm:runPebbleGameWith-correct}
@@ -281,67 +296,6 @@ corollaries.
   round-trip).
 \end{proof}
 
-\begin{theorem}[Computable wrapper correctness]
-  \label{thm:runPebbleGameExec-correct}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_correct}
-  \leanok
-  \uses{def:runPebbleGameExec, thm:runPebbleGameWith-correct,
-    lem:mem-outListSorted, lem:mem-edgeListSorted}
-  Let $V$ be finite with $[\mathrm{LinearOrder}\,V]$
-  and $[\mathrm{DecidableEq}\,V]$, and let $G$ be a finite simple
-  graph on $V$. In the matroidal regime $\ell < 2k$, $G$ is
-  $(k, \ell)$-sparse if and only if
-  $\mathrm{runPebbleGameExec}\,G\,k\,\ell$ returns
-  $\mathrm{.inr}\,D'$ for some partial orientation $D'$
-  (Phase~11 Layer~3 reshape; was $\mathrm{some}\,D'$).
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{thm:runPebbleGameWith-correct, lem:mem-outListSorted,
-    lem:mem-edgeListSorted}
-  Apply \cref{thm:runPebbleGameWith-correct} with the Phase~10
-  list views \cref{def:outListSorted,def:edgeListSorted}; the
-  agreement and round-trip hypotheses are
-  \cref{lem:mem-outListSorted,lem:mem-edgeListSorted}. The
-  formalisation additionally requires three small edge-list
-  discharges (no loops, pairwise Sym$_2$-distinct, Sym$_2$-image
-  round-trip), all packaged as one-liners against
-  \cref{lem:mem-edgeListSorted} in
-  \texttt{PebbleGame/Exec.lean}'s \texttt{SimpleGraph} section.
-\end{proof}
-
-The Phase~11 Layer~4 verdict-bearing wrapper for the exec-layer
-(sibling of the math-layer wrapper documented in
-\cref{def:pebbleGameResult,thm:pebbleGameResult-isAccept-iff})
-packages the $\mathrm{runPebbleGameExec}$ output into the same
-$\mathrm{PebbleGameResult}\,G\,k\,\ell$ verdict. It is the
-verdict-form analog of \cref{thm:runPebbleGameExec-correct}: $G$ is
-$(k, \ell)$-sparse iff the verdict-bearing exec-layer wrapper
-returns an $\mathrm{.accept}$.
-
-\begin{definition}[Verdict-bearing exec-layer wrapper]
-  \label{def:runPebbleGameExec-result}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_result}
-  \leanok
-  \uses{def:runPebbleGameExec, def:pebbleGameResult,
-    lem:workhorseWitness-certifies, thm:runPebbleGameExec-correct}
-  Under the hypotheses of \cref{def:runPebbleGameExec}, in the
-  matroidal regime $\ell < 2k$, define
-  $\mathrm{runPebbleGameExec\_result}\,G\,k\,\ell\,h_{\mathrm{mat}} :
-  \mathrm{PebbleGameResult}\,G\,k\,\ell$ by pattern-matching on
-  $\mathrm{runPebbleGameExec}\,G\,k\,\ell$:
-  $\mathrm{.inr}\,D \mapsto \mathrm{.accept}\,(D, \dots)$ (proof
-  fields from \cref{thm:runPebbleGameWith-correct}'s underline /
-  reachability components); $\mathrm{.inl}\,w \mapsto
-  \mathrm{.reject}\,(w.V', \dots)$ (proof fields from
-  \cref{lem:workhorseWitness-certifies} discharging the bridge facts
-  for $G.\mathrm{edgeListSorted}$). Computable; the reduction body
-  is the same compiled $\mathrm{runPebbleGameWith}$-on-$\mathrm{empty}$
-  chain as $\mathrm{runPebbleGameExec}$, with the verdict wrapper
-  re-packaging the $\mathrm{Sum}$ constructor as an inductive
-  constructor at zero compute cost.
-\end{definition}
-
 \subsection{Decidability of sparsity, tightness, and Laman}
 \label{sec:executable-decidable}
 
@@ -349,7 +303,7 @@ returns an $\mathrm{.accept}$.
   \label{def:isSparse-decidable}
   \lean{SimpleGraph.instDecidableIsSparse}
   \leanok
-  \uses{def:runPebbleGameExec-result, def:isSparse,
+  \uses{def:runPebbleGameExec, def:isSparse,
     thm:pebbleGameResult-isAccept-iff}
   Let $V$ have $[\mathrm{Fintype}\,V]$,
   $[\mathrm{LinearOrder}\,V]$, and $[\mathrm{DecidableEq}\,V]$, and
@@ -360,19 +314,20 @@ returns an $\mathrm{.accept}$.
   \[
     \mathrm{decide}\,(G.\mathrm{IsSparse}\,k\,\ell)
     \;=\;
-    (\mathrm{runPebbleGameExec\_result}\,G\,k\,\ell\,h_{\mathrm{mat}}).\mathrm{isAccept}.
+    (\mathrm{runPebbleGameExec}\,G\,k\,\ell\,h_{\mathrm{mat}}).\mathrm{isAccept}.
   \]
-  Phase~11 Layer~4 re-route: the reduction body was
+  Phase~11 Layer~4b maximal-reshape: the reduction body was
   $(\mathrm{runPebbleGameExec}\,G\,k\,\ell).\mathrm{isRight}$ in
-  Phase~11 Layer~3; the Layer~4 verdict wrapper
-  (\cref{def:runPebbleGameExec-result}) re-packages the
-  $\mathrm{Sum}$ constructor as the verdict inductive's constructor,
-  and $\mathrm{.isAccept}$ replaces $\mathrm{.isRight}$ at the
-  reduction site. The compiled body is unchanged (the verdict
-  wrapper is structural metadata over the $\mathrm{Sum}$).
+  Phase~11 Layer~3, then
+  $(\mathrm{runPebbleGameExec\_result}\,G\,k\,\ell\,h_{\mathrm{mat}}).\mathrm{isAccept}$
+  in Phase~11 Layer~4; the Layer~4b verdict-returning
+  $\mathrm{runPebbleGameExec}$ (\cref{def:runPebbleGameExec}) directly
+  takes the matroidal-regime argument and returns the verdict, so
+  $\mathrm{.isAccept}$ now applies to it without the $\mathrm{\_result}$
+  detour. The compiled body is unchanged (the verdict wrapper is
+  structural metadata over the workhorse-level $\mathrm{Sum}$).
   The instance is registered as the canonical $\mathrm{Decidable}$
-  for $\mathrm{IsSparse}\,k\,\ell$ in
-  \texttt{PebbleGame/Exec.lean}.
+  for $\mathrm{IsSparse}\,k\,\ell$ in \texttt{PebbleGame/Exec.lean}.
 \end{definition}
 
 \begin{remark}[Polynomial vs.\ exponential reduction]

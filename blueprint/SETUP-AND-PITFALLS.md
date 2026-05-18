@@ -83,3 +83,19 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   require 3.10+. If you hit `SyntaxError` or `ImportError` after a
   `pip install -r requirements.txt`, the fix is usually
   `python3.12 -m venv .venv` and reinstall.
+- **`RecursionError` from `plastexdepgraph.ancestors` during `inv web`.**
+  Symptom: `inv web` errors mid-run with
+  `RecursionError: maximum recursion depth exceeded` in
+  `plastexdepgraph/Packages/depgraph.py` line 112's `ancestors()` call.
+  Cause: `ancestors()` recurses through every predecessor without
+  memoization, so DAG diamonds (multiple paths to a shared ancestor)
+  trigger combinatorial blowup that hits Python's default 1000-deep
+  limit, **even with no true cycle**. Fix: identify the recently-added
+  `\uses{...}` edge(s) that created a new diamond and remove the
+  redundant edge. Phase 11 Layer 4b's first attempt at adding
+  `def:pebbleGameResult` and `lem:workhorseWitness-certifies` to
+  `def:runPebbleGame`'s `\uses{}` tripped this even though
+  `def:pebbleGameResult` itself had no path back to `def:runPebbleGame`.
+  The clean fix was to keep `\uses{...}` minimal (one path per
+  ancestor) and let cross-cutting dependencies surface through
+  downstream theorems' `\uses{}` instead.
