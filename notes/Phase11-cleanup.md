@@ -25,7 +25,13 @@ on Phase 7 + Phase 11 second-site evidence; *Blueprint reshape in-
 place per Layer* resolved as already-captured at
 blueprint/CLAUDE.md *Extending an existing chapter*; C2-close
 lift candidate → CLEANUP.md §C *Calibration* paragraph on Phase
-9-cleanup + Phase 11-cleanup C2 second-site evidence.).
+9-cleanup + Phase 11-cleanup C2 second-site evidence. **D4
+closed** as a **no-op**: both active *Choices to revisit* entries
+(`Promoting edgesIn upstream`, `apnelson1/Matroid dependency`
+"Still open" tail) unchanged by Phase 10/11; *Pebble-game style
+island* (a resolved DESIGN.md section, not a *Choices to revisit*
+entry, but called out in the D4 task spec) carries no drift after
+the Phase 11 reshape.).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -598,12 +604,15 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   *Blueprint reshape* collapsed to one-line pointers per *Lift on
   promotion*; Phase 11.md *Promoted* gains two new one-line
   pointers.
-- [ ] **D4:** DESIGN.md *Choices to revisit* drift check. The
-  active entries (`apnelson1/Matroid dependency` watch, `Promoting
-  edgesIn upstream`, *Pebble-game style island* if any drift)
-  should reflect Phase 10/11's reality. Phase 11's
-  *Architectural choices* shouldn't have left any
-  *Choices to revisit* candidate unresolved; verify.
+- [x] **D4:** DESIGN.md *Choices to revisit* drift check. Closed
+  as a **no-op**. The two active entries — `Promoting edgesIn
+  upstream` (lines 679-682) and the `apnelson1/Matroid
+  dependency` "Still open" tail (lines 785-800) — both reflect
+  Phase 10/11's reality unchanged. *Pebble-game style island* is
+  a resolved DESIGN.md section (line 455), not a *Choices to
+  revisit* entry, but the task spec called it out for drift
+  check; verified clean. Per-entry verification in *Cleanup pass
+  summaries* D4 below.
 - [ ] **D5:** No-residual-lifts audit. For each Phase 10 / 11
   *Promoted to* entry, verify the destination still carries the
   cross-reference back; verify the phase entry is a one-line
@@ -1175,6 +1184,77 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   `notes/Phase11.md` (Phase 11 *Architectural choices*: two entries
   collapsed to one-line pointers, ~28 LoC out; *Promoted*: two new
   one-line pointers, ~12 LoC in).
+- **D4: DESIGN.md *Choices to revisit* drift check** — no-op
+  closure. Walked the *Choices to revisit* section (lines 623-800)
+  end-to-end, plus the *Pebble-game style island* section (line
+  455) called out by the task spec. Per-entry verdict:
+
+  *`Promoting edgesIn upstream` (DESIGN.md lines 679-682,
+  open).* Phase 10/11 adds zero new `edgesIn` definitions and zero
+  signature changes; the call-site footprint expanded
+  (`Correctness.lean` +50 uses, `Basic.lean` +4 uses), with the
+  project-wide total now ~370+ uses across ~10 files (versus "a
+  few users" at the entry's last update). The "wait until the API
+  has stabilized" gate is *demonstrably met* but the entry's
+  prose is unchanged because Phase 10/11 didn't introduce the
+  stabilization — Phase 1 did. The entry stays open for the same
+  reason it was open at Phase 8/9/10 close: nobody has driven the
+  upstream-promotion work, and the open status is the trigger,
+  not the readiness. No drift fix needed.
+
+  *`apnelson1/Matroid dependency` "Still open" tail (DESIGN.md
+  lines 785-800).* `lakefile.toml` pin unchanged at
+  `e6852cec65742d1ddce7a66122f842b791b1dd37`. Phase 10/11 surface
+  adds zero new `apnelson1/Matroid` consumers (grep over
+  `PebbleGame/*.lean`, `Search/DFS.lean`, `Main.lean` returns
+  zero `Matroid.ofFun` / `import Matroid` hits; the dependency
+  consumer remains a single Phase 8 file, `LinearRigidityMatroid.lean`).
+  The "recurrent failure mode" (stale pin drifting behind a
+  mathlib bump) hasn't fired during the Phase 10/11 work; the
+  monthly Dependabot bumps haven't touched the `apnelson1/Matroid`
+  pin (it's a `[[require]]` with an explicit `rev = "..."`, not in
+  the `github-actions` group). No drift fix needed.
+
+  *`Pebble-game style island` (DESIGN.md line 455, resolved
+  section).* Called out by the D4 task spec "if any drift" even
+  though it's not formally a *Choices to revisit* entry. Phase
+  11's reshape preserved the `[Fintype V] [DecidableEq V]`
+  end-to-end convention (verified at B4 close: zero `letI`/`haveI
+  Fintype.ofFinite` violations on the Phase 10+11 surface) and the
+  math-layer / exec-layer split (the new `runPebbleGame.aux` in
+  `Correctness.lean` is forced `noncomputable` by the same
+  `Finset.toList`/`Quot.out` drivers, per B2 close; the new
+  `reachClosureComputable` in `Search/DFS.lean` is *strictly
+  computable* and improves on the predecessor `reachClosure`,
+  taking the DFS-warmup file's `noncomputable def` count from 1
+  to 0). The `-With` workhorse / math-layer wrapper pattern is
+  unchanged. The section's prose matches Phase 11's reality
+  verbatim; no drift fix needed.
+
+  *Earlier ~~strikethrough-resolved~~ entries.* Spot-check: each
+  resolved entry (`Vertex insertion` / `Reachable inductive` /
+  `Structural Adj` / `Decomposition theorem: split` / `Rigidity
+  matrix` / `Generic placement` / `Typeclass shape for
+  finiteness on V` / `apnelson1/Matroid` resolution body)
+  describes the resolution accurately against the current source.
+  No phase-10/11-introduced contradiction.
+
+  *Phase 10/11 *Architectural choices* sweep.* None of Phase 10's
+  six entries (Computable plug-in / Edge enumeration / One
+  Decidable instance / Runtime backend matrix / CLI Fin-n-only /
+  New files) or Phase 11's eight entries (Maximal reshape /
+  Blueprint reshape / Workhorse witness / User-facing verdict /
+  One unified `D.reach` / `PebbleGameResult` placement /
+  `reachClosureComputable` placement / CLI surface) left a
+  *Choices to revisit* candidate unresolved; D3's *Promoted to*
+  audit + spot-checks confirm each landed either as a permanent
+  DESIGN.md / TACTICS-QUIRKS section (Phase 10's *One Decidable
+  instance*, *LinearOrder.lift'* quirk, *public meta import*
+  quirk; Phase 11's *Reshape past results in place*) or as
+  phase-internal data with no project-wide drift implication
+  (CLI surface, file placement, etc.).
+
+  Files touched: none. The audit is its own deliverable.
 
 ## Blockers / open questions
 
@@ -1195,16 +1275,18 @@ in DESIGN.md *One Decidable instance* + TACTICS-QUIRKS § 17;
 three promotions — *Reshape past results in place* to DESIGN.md,
 *Blueprint reshape in-place per Layer* resolved as already-captured
 at blueprint/CLAUDE.md, *top-10 LoC ranking surfaces structural
-shape* to CLEANUP.md §C *Calibration*).
+shape* to CLEANUP.md §C *Calibration*); **D4 closed** as a
+**no-op** (both active *Choices to revisit* entries unchanged by
+Phase 10/11; *Pebble-game style island* section carries no drift
+post-reshape).
 
-Next concrete commit: **D4** — DESIGN.md *Choices to revisit* drift
-check. The active entries (`apnelson1/Matroid dependency` watch,
-`Promoting edgesIn upstream`, *Pebble-game style island* if any
-drift) should reflect Phase 10/11's reality. Phase 11's
-*Architectural choices* shouldn't have left any *Choices to revisit*
-candidate unresolved; verify and apply any small fix in place or
-record the open question. After D4, D5 (no-residual-lifts audit
-across every Phase 10 / 11 *Promoted to* entry).
+Next concrete commit: **D5** — no-residual-lifts audit. For each
+Phase 10 / Phase 11 *Promoted to* entry, verify the destination
+still carries the cross-reference back, and verify the phase
+entry is a one-line pointer per CLAUDE.md *Lift on promotion*.
+After D5, this round closes; the close hand-off defaults to
+whichever follow-up direction the user picks from Phase 11's
+three candidates.
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
