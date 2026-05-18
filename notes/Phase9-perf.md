@@ -12,7 +12,26 @@ protocol, and the standing recommendations.
 
 ## Current state
 
-Pass just opened. Task checklist below; no work landed yet.
+F4.1 baseline measured. Both Phase 9 files currently sit at
+`@[expose] public section`; F1 per-decl audit not yet started.
+
+### F4.1 baseline (4-run medians, `@[expose] public section`)
+
+Protocol per `./PERFORMANCE.md` *Measurement protocol*: per-target
+unique-content nudge then `lake build <target>`, 4 trials,
+median-of-4.
+
+| Target | run-1 | run-2 | run-3 | run-4 | median |
+|---|---|---|---|---|---|
+| `Search/DFS.lean` (`CombinatorialRigidity.Search.DFS`) | 19.78 | 8.40 | 7.46 | 7.86 | **8.13** |
+| `PebbleGame.lean` (`CombinatorialRigidity.PebbleGame`) | 22.59 | 13.28 | 13.99 | 14.87 | **14.43** |
+| project-total (`CombinatorialRigidity`, nudge `EdgesIn.lean`) | 26.10 | 7.89 | 9.69 | 8.25 | **8.97** |
+
+The run-1 outlier on each target is the canonical cold-cache trial
+(PERFORMANCE.md *Timing reproducibility*); the median excludes it
+naturally. Project-total median is within noise of Phase 8-perf
+F3.6's 9.2 s headline, confirming no regression from the Phase 9
+forward-work commits.
 
 Phase 9 already shipped its two new files in `module` form
 (`Search/DFS.lean` L7 `module`, `PebbleGame.lean` L7 `module`),
@@ -146,10 +165,11 @@ disposition in the file's row of an F1 table here.
 
 Per `./PERFORMANCE.md` *Measurement protocol*:
 
-- [ ] **F4.1.** Baseline. 4-run A/B median on the two new Phase 9
+- [x] **F4.1.** Baseline. 4-run A/B median on the two new Phase 9
   targets (`Search/DFS.lean`, `PebbleGame.lean`) at the current
   `@[expose] public section` configuration. Project-total baseline
-  on top of Phase 8-perf F3.6's 9.2 s headline.
+  on top of Phase 8-perf F3.6's 9.2 s headline. *Done; medians
+  8.13 / 14.43 / 8.97 s — see* Current state §F4.1 baseline.
 - [ ] **F4.2.** Post-F1 measurement. Same protocol on the same
   targets after the per-decl `@[expose]` demotion lands. Compute
   Δ + classify against the ±5 s noise band per PERFORMANCE.md
