@@ -552,13 +552,17 @@ retained the original `reachableFinding … = some ⟨w', p'⟩`. The
 contrapositive `by_contra + cases h_eq:` form sidesteps both
 directions cleanly.
 
-The third (data-building) fix above is canonical at Phase 11 Layer 4's
-`runPebbleGame_result.aux` + `runPebbleGame_result` pattern in
+The third (data-building) fix above is canonical at Phase 11 Layer 4b's
+`runPebbleGame.aux` + `runPebbleGame` pattern in
 `CombinatorialRigidity/PebbleGame/Correctness.lean`, and at the
-exec-layer sibling `runPebbleGameExec_result.aux` +
-`runPebbleGameExec_result` in `PebbleGame/Exec.lean`. The same lifting
-applies whenever a definition needs to pattern-match on a scrutinee
-and feed the equation to several proof-field lemmas.
+exec-layer sibling `runPebbleGameExec.aux` + `runPebbleGameExec` in
+`PebbleGame/Exec.lean`. (Layer 4 originally landed these as additive
+`runPebbleGame_result.aux` / `runPebbleGameExec_result.aux` wrappers
+alongside the `Option`-returning predecessors; Layer 4b's maximal
+reshape collapsed the `_result` suffixes into the wrappers
+themselves.) The same lifting applies whenever a definition needs to
+pattern-match on a scrutinee and feed the equation to several
+proof-field lemmas.
 
 ---
 

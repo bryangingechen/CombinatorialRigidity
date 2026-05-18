@@ -377,6 +377,81 @@ canonical entry point for what is mathematically one lemma.
 
 ---
 
+## Reshape past results in place, don't parallel-extract
+
+A sibling rule to *Strengthen the existing lemma, don't proliferate
+variants* above, but at a different scale. When a new phase needs to
+**enrich the return type or signature of an already-shipped algorithm
+or theorem** — typically extending an `Option`-shaped surface with
+verdict-carrying witness data, or lifting an iff into the conclusion
+of a wrapper — the default move is to **reshape the existing
+declaration in place**, not to ship a parallel `*_witness` / `*_with_X`
+extraction wrapper alongside the original.
+
+The friction signal is the same — two near-identical declarations
+covering what is mathematically one operation, each used by a
+different caller — but the failure mode is sharper. A parallel
+witness-extraction wrapper duplicates the entire underlying recursion
+or fold structure: every case lemma, every invariant-propagation
+helper, every workhorse-layer correctness theorem now has *two*
+callers that need to be kept in sync. The "easy" route adds an order
+of magnitude more code than the in-place reshape, because the
+algorithmic infrastructure is *not* small.
+
+Concretely:
+
+- **Phase 7** reshaped Phase 3's `IsLaman.exists_typeI_or_typeII_reverse`
+  (originally shipped with the iso-only half, no `G'.IsLaman` claim)
+  into the strengthened flat form with `G'.IsLaman`, rather than
+  shipping a separate `IsLaman.exists_typeI_or_typeII_reverse_isLaman`
+  alongside the iso-only original. Phase 3 and Phase 5 callers
+  inherit the strengthened conclusion automatically.
+- **Phase 11** reshaped Phase 9/10's
+  `runPebbleGame` / `runPebbleGameExec` (originally
+  `Option (PartialOrientation V)`-returning) into a verdict-bearing
+  `PebbleGameResult G k ℓ`, rather than shipping a parallel
+  `runPebbleGameExec_blocking_witness` extraction wrapper. The
+  Phase 9 `_isSome` / `_eq_none_imp_exists_witness` existence chain
+  (~200 LoC in `Correctness.lean`) is absorbed into the wrapper's
+  return type; the Phase 10 certificate-form
+  `runPebbleGameExec_correct` iff collapses into the verdict's *type*
+  rather than a separately-proven theorem about it. The
+  mathematical content (`independent_brings_pebble`, the `Reachable`
+  invariants) is preserved verbatim — what changes is the return
+  shape, not the math.
+
+The trade is **a phase's worth of restate work on the already-green
+surface** — workhorse lemmas, downstream wrappers, blueprint nodes —
+versus a permanent doubling of the algorithmic infrastructure plus a
+"which entry point?" decision every callsite has to make. In both
+recorded cases above, the restate work was the better trade.
+
+There are two exceptions worth calling out:
+
+1. **The reshape's per-Layer cost dominates the duplication cost.**
+   If the underlying algorithmic infrastructure is small (a
+   one-screen recursion, no fold) and the reshape would touch every
+   workhorse correctness theorem, a parallel wrapper may genuinely
+   be cheaper. Rare in this project — most algorithm-bearing
+   declarations have non-trivial infrastructure behind them.
+2. **The original surface is downstream-stable API with many
+   external callers.** A reshape would break every caller; the
+   variant route preserves backward compatibility. Also rare here —
+   the project's wrappers are mostly internal.
+
+The default presumption is reshape. If you find yourself reaching
+for the parallel-extraction route as "the easy path" while looking
+at infrastructure that took multiple Layers to build the first time,
+the rule above is the friction signal — go back and reshape in
+place. The next agent (and the blueprint dep-graph) shouldn't have
+to navigate two surfaces for what is one algorithm.
+
+This rule pairs with `blueprint/CLAUDE.md` *Extending an existing
+chapter → restating existing entries in place*, which carries the
+matching blueprint-side discipline for reshape phases.
+
+---
+
 ## Pebble-game style island: `[Fintype V] [DecidableEq V]`
 
 The pebble-game line of work — `CombinatorialRigidity/Search/DFS.lean`
@@ -517,8 +592,11 @@ docstrings. The canonical instances live in
 
 - `SimpleGraph.instDecidableIsSparse` — under
   `[Fact (ℓ < 2 * k)]`, reduces to
-  `(runPebbleGameExec G k ℓ).isSome` via the certificate-form
-  correctness theorem `runPebbleGameExec_correct`.
+  `(runPebbleGameExec G k ℓ h_matroidal.out).isAccept` via the
+  verdict-form correctness theorem
+  `runPebbleGameExec_isAccept_iff` (Phase 11 Layer 4b absorbed
+  Phase 10's `runPebbleGameExec_correct` certificate-form iff into
+  the verdict's return type).
 - `SimpleGraph.instDecidableIsTight` — conjunction of the
   `IsSparse` instance with a `Nat`-equality check on the edge count.
 - `SimpleGraph.instDecidableIsLaman` — specialisation of

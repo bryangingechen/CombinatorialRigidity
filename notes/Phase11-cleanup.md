@@ -11,20 +11,21 @@ revision (29 → 6 actual sites; conflation with docstring mentions)
 comma count over-counted `⟨_, _⟩`-tuple chains) / B4 no-op / B5
 no-op. Bucket C complete: C1 top-10 ranking + per-site question;
 C2 all ten sites *no-op* with both cross-proof unification clusters
-dissolved on inspection; C3 no-op. **D1 closed**: `notes/Phase11.md`
-compressed from 856 → ~436 LoC, within the adaptive 350-450 budget
-for a substantive phase per `../notes/CLAUDE.md` *Soft length
-budget*; pattern was *Current state* per-layer narrative → ~10-LoC
-pointer summary, *Architectural choices* inline TeX declarations →
-pointers to Lean sources and blueprint nodes, and *Decisions made*
-entries duplicating *Layer plan* dropped. **D2 closed**:
-`notes/Phase10.md` compressed from 546 → 343 LoC, within the
+dissolved on inspection; C3 no-op. **D1 closed** (`notes/Phase11.md`
+856 → ~436 LoC, within adaptive 350-450 budget for a substantive
+phase). **D2 closed** (`notes/Phase10.md` 546 → 343 LoC, within
 adaptive 250-350 budget for a shorter five-layer forward-work
-phase; same template as D1 — *Current state* narrative absorbed
-into a new *Layer plan* section, *Architectural choices* trimmed
-where entries duplicated Layer 0 audit outcomes recorded in
-*Decisions made*, *Blockers / open questions* collapsed to one
-inline paragraph with closure tags.).
+phase; same template as D1). **D3 closed**: back-pointer audit
+no-op across TACTICS-QUIRKS § 17 / § 22 / § 23 + DESIGN.md *One
+Decidable instance*; two Layer-4b drift fixes (DESIGN.md *One
+Decidable instance* reduction-body claim and TACTICS-QUIRKS § 17
+worked-case names); three promotions — *Maximal reshape* →
+DESIGN.md *Reshape past results in place, don't parallel-extract*
+on Phase 7 + Phase 11 second-site evidence; *Blueprint reshape in-
+place per Layer* resolved as already-captured at
+blueprint/CLAUDE.md *Extending an existing chapter*; C2-close
+lift candidate → CLEANUP.md §C *Calibration* paragraph on Phase
+9-cleanup + Phase 11-cleanup C2 second-site evidence.).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -135,9 +136,19 @@ dissolved on inspection (per-site verdict table in *Cleanup pass
 summaries* C2); C3 (in-round refactor candidates) closed as a no-op
 (zero candidates surfaced). **D1 closed** (`notes/Phase11.md` 856 →
 ~436 LoC); **D2 closed** (`notes/Phase10.md` 546 → 343 LoC, within
-adaptive 250-350 budget — same template as D1). Remaining: D3
-(FRICTION re-skim + open-promotion-candidate assessment), D4
-(DESIGN.md *Choices to revisit* drift check), D5
+adaptive 250-350 budget — same template as D1). **D3 closed**:
+back-pointer audit no-op across TACTICS-QUIRKS § 17 / § 22 / § 23
++ DESIGN.md *One Decidable instance per project predicate*; two
+Layer-4b drift fixes (DESIGN.md *One Decidable instance*'s
+`.isSome` / `runPebbleGameExec_correct` claims → `.isAccept` /
+`runPebbleGameExec_isAccept_iff`; TACTICS-QUIRKS § 17 worked-case
+names updated post-Layer-4b collapse); three promotions (*Maximal
+reshape* → DESIGN.md *Reshape past results in place, don't
+parallel-extract* on Phase 7 + Phase 11 second-site evidence;
+*Blueprint reshape in-place per Layer* resolved as already-captured
+at blueprint/CLAUDE.md *Extending an existing chapter*; C2-close
+lift candidate → CLEANUP.md §C *Calibration* paragraph). Remaining:
+D4 (DESIGN.md *Choices to revisit* drift check), D5
 (no-residual-lifts audit).
 Pre-sweep smell counts (Phase 10+11
 surface only —
@@ -565,19 +576,28 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   paragraph with the closure tags. *Hand-off / next phase*'s
   Phase-11-candidate paragraph collapsed to a pointer at
   `notes/Phase11.md`.
-- [ ] **D3:** FRICTION re-skim. Phase 10's *Promoted* section
-  lifted three entries (TACTICS-QUIRKS § 22, § 23, DESIGN.md
-  *One Decidable instance per project predicate*); Phase 11's
-  *Promoted* lifted one (TACTICS-QUIRKS § 17 third bullet, the
-  `match h:` quirk fix via `*.aux` helper). Verify each was a
-  one-line pointer in the phase notes after lifting, and that the
-  FRICTION/QUIRKS entries themselves carry the cross-references
-  back. The two open Phase-11 promotion candidates flagged in
-  Phase11.md *Promoted* parenthesis (*Strengthen past results to
-  reduce duplication* and *Blueprint reshape in-place per Layer*)
-  may be ripe for promotion now — assess on second-site evidence
-  (whether the principle would also have applied to Phase 7 / 8 /
-  9 / 10 in retrospect).
+- [x] **D3:** FRICTION re-skim + open-promotion-candidate
+  assessment. Closed with targeted fixes (see *Cleanup pass
+  summaries* D3 entry): back-pointer audit no-op across
+  TACTICS-QUIRKS § 17 / § 22 / § 23 + DESIGN.md *One Decidable
+  instance per project predicate* (each entry already carries a
+  worked-case back-reference to its Phase 10 / 11 originating
+  Layer); two drift fixes (DESIGN.md *One Decidable instance*'s
+  `.isSome` / `runPebbleGameExec_correct` claims now reflect Layer
+  4b's `.isAccept` / `runPebbleGameExec_isAccept_iff`; TACTICS-
+  QUIRKS § 17 worked-case names updated post-Layer-4b collapse);
+  three promotions (*Maximal reshape* → DESIGN.md *Reshape past
+  results in place, don't parallel-extract*, on Phase 7 + Phase 11
+  second-site evidence; *Blueprint reshape in-place per Layer*
+  resolved as already-captured at blueprint/CLAUDE.md *Extending
+  an existing chapter → restating existing entries in place*;
+  C2-close lesson "top-10 LoC ranking surfaces structural shape,
+  not extraction debt" → CLEANUP.md §C *Calibration* paragraph on
+  Phase 9-cleanup + Phase 11-cleanup C2 second-site evidence).
+  Phase 11.md *Architectural choices: Maximal reshape* and
+  *Blueprint reshape* collapsed to one-line pointers per *Lift on
+  promotion*; Phase 11.md *Promoted* gains two new one-line
+  pointers.
 - [ ] **D4:** DESIGN.md *Choices to revisit* drift check. The
   active entries (`apnelson1/Matroid dependency` watch, `Promoting
   edgesIn upstream`, *Pebble-game style island* if any drift)
@@ -1080,6 +1100,81 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   without reading source. No Lean / blueprint source file changed.
   *Layer plan* takes over the role *Current state* played in the
   pre-compression file (per-Layer landing record).
+- **D3: FRICTION re-skim + open-promotion-candidate assessment** —
+  targeted-fix closure with three substantive edits and two no-op
+  verifications.
+
+  *Back-pointer audit (no-op).* TACTICS-QUIRKS § 17 (Phase 11
+  Layer 4 / 4b pattern), § 22 (Phase 10 Layer 1 `LinearOrder.lift'`
+  / `SetLike` slot conflict), § 23 (Phase 10 Layer 4 `public meta
+  import`), and DESIGN.md *One `Decidable` instance per project
+  predicate* (Phase 10 Layer 3) all carry "worked case study" /
+  "canonical example" back-references to the originating phase
+  + Layer. Phase 10 and Phase 11 *Promoted* entries are one-line
+  pointers per *Lift on promotion*; the Phase-local *Decisions
+  made* entries that lifted them (Phase 10 Layer 0 audit \#1
+  outcome, Phase 10 *One Decidable instance* design choice,
+  Phase 11 Layer 4 `*.aux` helper) each carry a "Promoted to ..."
+  trailing pointer.
+
+  *Drift fix #1 (DESIGN.md).* *One `Decidable` instance per
+  project predicate*'s reduction-body description still claimed
+  `(runPebbleGameExec G k ℓ).isSome` via the Phase-10-shaped iff
+  `runPebbleGameExec_correct`. Phase 11 Layer 4b absorbed both
+  into the verdict's return type: the reduction body is now
+  `.isAccept` via `runPebbleGameExec_isAccept_iff`. Updated.
+
+  *Drift fix #2 (TACTICS-QUIRKS § 17).* The third bullet's worked-
+  case-study text named `runPebbleGame_result.aux` /
+  `runPebbleGameExec_result.aux` as the canonical sites. Layer 4b's
+  maximal reshape collapsed the `_result` suffixes into
+  `runPebbleGame` / `runPebbleGameExec`; updated to the post-Layer-4b
+  names with a one-clause parenthetical on the Layer 4 → 4b history.
+
+  *Promotion #1 (DESIGN.md).* The Phase 11 *Architectural choices:
+  Maximal reshape* decision is promotion-ripe on second-site evidence:
+  Phase 7 reshaped Phase 3's `IsLaman.exists_typeI_or_typeII_reverse`
+  from iso-only-half into flat form with `G'.IsLaman` rather than
+  shipping a parallel `..._isLaman` wrapper; Phase 11 reshaped
+  `runPebbleGame` / `runPebbleGameExec` from `Option`-returning into
+  `PebbleGameResult`-returning rather than shipping a parallel
+  `runPebbleGameExec_blocking_witness` extraction wrapper. Promoted
+  to `DESIGN.md` *Reshape past results in place, don't parallel-
+  extract*, sibling to the existing *Strengthen the existing lemma,
+  don't proliferate variants* (which covers hypothesis breadth, not
+  return-type reshapes). Phase 11.md *Architectural choices: Maximal
+  reshape* collapsed to a one-line pointer per *Lift on promotion*.
+
+  *Promotion #2 (blueprint/CLAUDE.md).* The Phase 11 *Architectural
+  choices: Blueprint reshape happens in-place, per Layer* decision is
+  already captured at the blueprint operating-manual level —
+  `blueprint/CLAUDE.md` *Extending an existing chapter → restating
+  existing entries in place* names Phase 11 as the canonical example
+  and ties the per-Layer node-level work to `notes/PhaseN.md`'s
+  *Layer plan* section in structural-edit phases. No additional
+  edit to `blueprint/DESIGN.md` needed; Phase 11.md
+  *Architectural choices: Blueprint reshape* collapsed to a one-line
+  pointer per *Lift on promotion*.
+
+  *Promotion #3 (CLEANUP.md §C).* The C2-close lift candidate
+  ("top-10 LoC ranking surfaces structural shape, not extraction
+  debt") has second-site evidence — Phase 9-cleanup C2 closed
+  no-op on a slightly different long-proof shape, and Phase 11-
+  cleanup C2 closed no-op on the Phase 10/11 surface with both
+  cross-proof unification clusters dissolving on inspection.
+  Promoted to `CLEANUP.md` §C as a *Calibration* paragraph at the
+  end of the four-question walk: framed as "expect mostly no-op;
+  when C does surface a refactor, it tends to come from outside
+  the top-10". Treats the four-question walk as a confirmation
+  gate rather than as a discovery procedure.
+
+  Files touched: `DESIGN.md` (+~70 LoC for the new section,
+  -3 / +5 LoC for the *One Decidable instance* prose fix),
+  `TACTICS-QUIRKS.md` (-2 / +4 LoC for the § 17 names fix),
+  `CLEANUP.md` (+18 LoC for the §C *Calibration* paragraph),
+  `notes/Phase11.md` (Phase 11 *Architectural choices*: two entries
+  collapsed to one-line pointers, ~28 LoC out; *Promoted*: two new
+  one-line pointers, ~12 LoC in).
 
 ## Blockers / open questions
 
@@ -1094,27 +1189,22 @@ B4 no-op / B5 no-op); Bucket C complete (C1 ranking / C2 all
 no-op + cluster dissolutions / C3 no-op); **D1 closed**
 (`notes/Phase11.md` 856 → ~436 LoC, within adaptive budget);
 **D2 closed** (`notes/Phase10.md` 546 → 343 LoC, within the
-adaptive 250-350 budget for a shorter forward-work phase).
+adaptive 250-350 budget for a shorter forward-work phase);
+**D3 closed** (back-pointer audit no-op; two Layer-4b drift fixes
+in DESIGN.md *One Decidable instance* + TACTICS-QUIRKS § 17;
+three promotions — *Reshape past results in place* to DESIGN.md,
+*Blueprint reshape in-place per Layer* resolved as already-captured
+at blueprint/CLAUDE.md, *top-10 LoC ranking surfaces structural
+shape* to CLEANUP.md §C *Calibration*).
 
-Next concrete commit: **D3** — FRICTION re-skim + open-promotion-
-candidate assessment. Phase 10's *Promoted* section lifted three
-entries (TACTICS-QUIRKS § 22, § 23, DESIGN.md *One Decidable
-instance per project predicate*); Phase 11's *Promoted* lifted one
-(TACTICS-QUIRKS § 17 third bullet, the `match h:` quirk fix via
-`*.aux` helper). Verify each was a one-line pointer in the phase
-notes after lifting and that the FRICTION/QUIRKS entries themselves
-carry the cross-references back. The two open Phase-11 promotion
-candidates flagged in Phase11.md *Promoted* parenthesis
-(*Strengthen past results to reduce duplication* and *Blueprint
-reshape in-place per Layer*) are ripe for promotion assessment on
-second-site evidence (whether the principle would also have
-applied to Phase 7 / 8 / 9 / 10 in retrospect). The lift-worthy
-lesson surfaced at C2 close (*"top-10 LoC ranking surfaces
-structural shape, not extraction debt"*) is best assessed here
-too, when the post-cleanup view is complete. After D3, D4
-(DESIGN.md *Choices to revisit* drift check), D5
-(no-residual-lifts audit on every Phase 10 / 11 *Promoted to*
-entry).
+Next concrete commit: **D4** — DESIGN.md *Choices to revisit* drift
+check. The active entries (`apnelson1/Matroid dependency` watch,
+`Promoting edgesIn upstream`, *Pebble-game style island* if any
+drift) should reflect Phase 10/11's reality. Phase 11's
+*Architectural choices* shouldn't have left any *Choices to revisit*
+candidate unresolved; verify and apply any small fix in place or
+record the open question. After D4, D5 (no-residual-lifts audit
+across every Phase 10 / 11 *Promoted to* entry).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates

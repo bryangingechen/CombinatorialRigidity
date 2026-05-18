@@ -133,6 +133,23 @@ For each long proof, ask:
   questions* records the typeII-cores unification as a worked
   example.
 
+**Calibration: long-proof rankings surface structural shape, not
+extraction debt.** The top-10 ranking is a *screening* tool, not a
+to-do list. Phase 9-cleanup C2 and Phase 11-cleanup C2 both closed
+with all top-10 sites as no-op, plus cross-proof unification
+clusters dissolving on inspection: the long bodies are forced by
+structural recursion / case-dispatch boilerplate that is shared at
+the *boilerplate* level but not at the *step* level — sibling
+lemmas look like unification candidates from the LoC ranking, but
+each pair has a per-step semantic divergence that resists a
+cross-proof combinator. Expect Bucket C to close mostly no-op
+unless a phase introduces a genuinely new long-proof shape; treat
+the four-question walk as the audit gate that confirms the
+no-extract finding rather than as a discovery procedure for
+refactor candidates. When C does surface a refactor, it tends to
+come from outside the top-10 — a smaller proof whose shape
+matches one already known to be unifiable.
+
 ### D. Project-organization compression
 
 When a `notes/PhaseN.md` is past its 250-line budget, or when a

@@ -46,26 +46,23 @@ boundary.
 These extend `../DESIGN.md` *Choices to revisit*; if any turns out
 wrong, revisit there.
 
-- **Maximal reshape, not parallel extraction.** Phase 11's central
-  design choice: replace the `Option (PartialOrientation V)` return
-  of `runPebbleGameWith` / `runPebbleGame` / `runPebbleGameExec`
-  with a verdict-bearing inductive end-to-end, rather than ship a
-  parallel `runPebbleGameExec_blocking_witness` extraction wrapper.
-  Phase 9's `_isSome` / `_eq_none_imp_exists_witness` chain
-  (~200 LoC in `Correctness.lean`) is absorbed into `tryAddEdgeWith`'s
-  case-5 inline witness construction; the `runPebbleGameExec_correct`
-  iff (Phase 10) collapses into the verdict's type. Trade: a
-  Phase-10-sized restate of the workhorse `_reachable` /
-  `_underline_*` / `_sound` lemmas plus re-routing Phase 7 /
-  Phase 10 wrappers through `.isAccept`. The mathematical content
-  (`independent_brings_pebble`, the `Reachable` invariants) is
-  preserved verbatim.
+- **Maximal reshape, not parallel extraction.** See
+  `../DESIGN.md` *Reshape past results in place, don't
+  parallel-extract* for the project-philosophy entry; this phase
+  is the second worked site (Phase 7's flat-form
+  `exists_typeI_or_typeII_reverse` reshape is the first). The
+  reshape absorbs Phase 9's `_isSome` /
+  `_eq_none_imp_exists_witness` chain into `tryAddEdgeWith`'s
+  case-5 inline witness construction and collapses Phase 10's
+  `runPebbleGameExec_correct` iff into the verdict's *type*. The
+  mathematical content (`independent_brings_pebble`, the
+  `Reachable` invariants) is preserved verbatim.
 
-- **Blueprint reshape happens in-place, per Layer.** No new chapter.
-  Each Layer commit ships its blueprint reshape in step with the
-  Lean, so the dep-graph never has a long-lived red region in a
-  chapter that was green. The per-Layer blueprint deltas are listed
-  in *Layer plan* below.
+- **Blueprint reshape happens in-place, per Layer.** See
+  `../blueprint/CLAUDE.md` *Extending an existing chapter →
+  restating existing entries in place*. No new chapter; each Layer
+  commit ships its blueprint reshape in step with the Lean. The
+  per-Layer blueprint deltas are listed in *Layer plan* below.
 
 - **Workhorse witness is algorithm-side data, no `G` parameter.** At
   the workhorse layer (`tryAddEdgeWith`, `runPebbleGameWith`), the
@@ -376,14 +373,15 @@ commit ships, blueprint and Lean.
   TACTICS-QUIRKS § 17 (third bullet of *Fix*). The Layer 4
   `*.aux` pattern takes the scrutinee `s` and its equation
   `h_opt : foo G = s` as separate explicit args.
-
-*(Likely future promotion candidates, to assess at the
-Phase11-cleanup D3 FRICTION re-skim: the *Strengthen past results
-to reduce duplication* principle that drove the maximal-reshape
-choice — a project-philosophy entry for `../DESIGN.md`; and the
-*Blueprint reshape in-place per Layer* sequencing decision — a
-workflow-mode entry for `../blueprint/DESIGN.md` if the pattern
-recurs in future structural-edit phases.)*
+- *Reshape past results in place, don't parallel-extract* →
+  `../DESIGN.md` *Reshape past results in place, don't
+  parallel-extract* (the maximal-reshape choice driving Phase 11
+  Layer 3 / Layer 4b; second-site evidence from Phase 7's
+  flat-form `exists_typeI_or_typeII_reverse` reshape).
+- *Blueprint reshape happens in-place, per Layer* →
+  `../blueprint/CLAUDE.md` *Extending an existing chapter →
+  restating existing entries in place* (the per-Layer node-level
+  blueprint discipline for structural-edit phases).
 
 ### Cleanup pass summaries
 
