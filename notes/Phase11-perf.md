@@ -21,9 +21,9 @@ shape against the prior post-Phase-9-perf baseline.
 
 ## Summary
 
-Pass open. Phase 9-perf F4.2 set the prior baseline (medians:
-`Search/DFS.lean` 8.70 s; `PebbleGame.lean` ~15.4 s; project-total
-10.04 s). Phase 10 split `PebbleGame.lean` into the
+F4.1 baseline measured. Phase 9-perf F4.2 set the prior baseline
+(medians: `Search/DFS.lean` 8.70 s; `PebbleGame.lean` ~15.4 s;
+project-total 10.04 s). Phase 10 split `PebbleGame.lean` into the
 `PebbleGame/` subdirectory (Phase 10 Layer 1 onward;
 `Basic.lean` + `Algorithm.lean` + `Correctness.lean`) and added
 `Exec.lean` + `Examples.lean` + `Main.lean`. Phase 11 reshape
@@ -36,8 +36,40 @@ Examples) — same F3.5 / Phase 9-perf F1 audit pattern. Basic and
 DFS were narrowed during Phase 9-perf F1; verify Phase 11's reshape
 didn't invalidate those dispositions, restore opt-ins if needed.
 
-Headline numbers + dispositions will land here once F1 and F4
-close.
+Headline F1 dispositions will land once the audit closes.
+
+### F4.1 baseline (4-run medians, current `@[expose] public section` / per-decl-opt-in mix)
+
+Protocol per `./PERFORMANCE.md` *Measurement protocol*: per-target
+unique-content nudge then `lake build <target>`, 4 trials,
+median-of-4.
+
+| Target | run-1 | run-2 | run-3 | run-4 | median |
+|---|---|---|---|---|---|
+| `Search/DFS.lean` (`CombinatorialRigidity.Search.DFS`) | 6.672 | 5.976 | 5.774 | 5.841 | **5.91** |
+| `PebbleGame/Basic.lean` (`CombinatorialRigidity.PebbleGame.Basic`) | 11.052 | 6.443 | 5.938 | 6.400 | **6.42** |
+| `PebbleGame/Algorithm.lean` (`CombinatorialRigidity.PebbleGame.Algorithm`) | 12.309 | 7.901 | 7.776 | 7.418 | **7.84** |
+| `PebbleGame/Correctness.lean` (`CombinatorialRigidity.PebbleGame.Correctness`) | 11.844 | 6.599 | 6.214 | 5.808 | **6.41** |
+| `PebbleGame/Exec.lean` (`CombinatorialRigidity.PebbleGame.Exec`) | 14.740 | 6.727 | 9.335 | 11.156 | **10.25** |
+| project-total (`CombinatorialRigidity`, nudge `EdgesIn.lean`) | 12.186 | 6.466 | 6.422 | 5.569 | **6.44** |
+
+The run-1 outlier on each target is the canonical cold-cache trial
+(PERFORMANCE.md *Timing reproducibility*); the median excludes it
+naturally. Project-total median 6.44 s sits comfortably under Phase
+9-perf F4.2's 10.04 s anchor — no regression from Phase 10+11
+forward work; the Phase 10 split + the Phase 11 in-place reshapes
+land net-flat-to-mild-improvement on from-scratch wall-clock.
+
+Per-file medians: DFS 5.91 s sits below Phase 9-perf F4.2's 8.70 s
+(F1.1 narrowed config carried forward unchanged by Phase 11
+reshape). Across the three `PebbleGame/` subdirectory files: Basic
+6.42 s + Algorithm 7.84 s + Correctness 6.41 s = 20.67 s total
+versus the pre-split PebbleGame.lean's 15.4 s Phase 9-perf F4.2
+median; the splits run a bit longer in aggregate because each file
+re-elaborates Basic's transitive imports independently, but each
+sits well below the original at the per-file rebuild grain. Exec at
+10.25 s reflects its Phase 10 mix of `Decidable` instance synthesis
++ Phase 11 verdict-shaped re-route.
 
 ## Pass overview
 
@@ -178,7 +210,7 @@ Per `./PERFORMANCE.md` *Measurement protocol*: per-target
 unique-content nudge then `lake build <target>`, 4 trials,
 median-of-4.
 
-- [ ] **F4.1.** Baseline. 4-run A/B median on the Phase 10+11
+- [x] **F4.1.** Baseline. 4-run A/B median on the Phase 10+11
   measurement targets at the current `@[expose] public section`
   configuration. Targets: `Search/DFS.lean`,
   `PebbleGame/Basic.lean`, `PebbleGame/Algorithm.lean`,
@@ -191,7 +223,10 @@ median-of-4.
   uptick (10–12 s); per-file medians on the four un-audited files
   at the original split-time numbers (1024 + 771 + 815 ≈ 2610
   LoC ≈ Phase 9-perf F4.1's PebbleGame.lean 14.43 s spread
-  across three smaller files).
+  across three smaller files). *Done; medians 5.91 / 6.42 / 7.84
+  / 6.41 / 10.25 / 6.44 s — see Summary §F4.1 baseline. Project-
+  total runs well under the 10.04 s anchor (no regression); per-
+  file picture matches the pre-pass shape.*
 - [ ] **F4.2.** Post-F1 / F2 measurement. 4-run A/B median vs
   F4.1 baseline. Expected (per Phase 8-perf F3.5 + Phase 9-perf
   F1's track record): perf-neutral within the ±5 s noise band —
@@ -224,7 +259,22 @@ median-of-4.
 
 ## Hand-off / next phase
 
-To be written at pass close. Default: hand off cleanly with no
-mid-stream state; the next session picks up from the top-level
-ROADMAP per the round-level *No follow-up phase queued by
-default* convention.
+**Next concrete commit:** F1.1 audit of `PebbleGame/Algorithm.lean` —
+demote `@[expose] public section` → `public section`, observe what
+breaks, restore `@[expose]` on the per-decl sites whose bodies are
+genuinely consumed (intra-file `@[simp] := rfl` projection lemmas,
+downstream defeq, pattern-match defeq). Append disposition row to
+`./PERFORMANCE.md` *F3.5 audit disposition* table. Same audit
+pattern as Phase 8-perf F3.5 and Phase 9-perf F1.
+
+After F1.1, F1.2 (`Correctness.lean`), F1.3 (`Exec.lean`), F1.4
+(`Examples.lean`); then F2.1/F2.2 re-audit of the existing per-decl
+opt-ins on `DFS` and `Basic` under the Phase 11 reshape. F4.2
+post-pass measurement closes the pass (or earlier if a measurable
+regression surfaces during F1).
+
+If the session must stop mid-stream, the F4.1 baseline anchor is
+the only persistent state added this commit; the next session can
+pick up at F1.1 from a clean tree. Final hand-off paragraph will
+be rewritten at pass close; the default close convention is *no
+follow-up phase queued* per `../CLEANUP.md`.
