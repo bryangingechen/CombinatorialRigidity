@@ -21,16 +21,14 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–10 are complete and carry no `sorry`s; Phase 11 (witness
-extraction) is in progress. The main theorem
+Phases 1–11 are complete and carry no `sorry`s. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
 form (Phase 7) and linear-matroid form via `Matroid.ofFun` (Phase 8,
 `linearRigidityMatroid_eq_rigidityMatroid`). Phase 9 ships the basic
 `(k, ℓ)`-pebble game of Lee–Streinu 2008 in the matroidal regime
-`ℓ < 2k` with certificate-form correctness theorem
-`runPebbleGame_correct` and the matroidal-independence corollary
+`ℓ < 2k` with matroidal-independence corollary
 `countMatroid_indep_iff_runPebbleGame`, on top of a verified-DFS
 warmup under `CombinatorialRigidity/Search/`. Phase 10 bridges Phase
 9's `noncomputable` `runPebbleGame` to an actually-runnable decision
@@ -41,12 +39,17 @@ reading an edge-list file. Both `#eval (decide G.IsLaman)` and the
 CLI reduce through the same compiled `runPebbleGameExec` body.
 **Phase 11** reshapes Phase 9/10's `Option`-shaped pebble-game
 algorithms (workhorses, math/exec wrappers, and `Decidable`
-instances) to return a `PebbleGameResult G k ℓ` verdict whose
-constructors carry inline witnesses — the blocking subset `V'` on
-the `NOT_SPARSE` branch, the partial orientation `D` on the accept
-branches — making the CLI externally checkable. The reshape folds
-the deferred Phase 10 witness-extraction work into the canonical
-algorithm rather than shipping it as a sibling extraction wrapper.
+instances) to return a verdict-bearing `PebbleGameResult G k ℓ`
+inductive whose constructors carry inline witnesses — the blocking
+subset `V'` on the `NOT_SPARSE` branch, the partial orientation `D`
+on the accept branches — and bumps the CLI to emit those witnesses
+as `ARCS u v` / `BLOCKING n` + `VERTEX w` lines alongside the
+trichotomy label, making the CLI's classification externally
+checkable. The maximal reshape folds Phase 9's existence-style
+failure-witness theorems into the reshaped `tryAddEdgeWith`'s
+recursion (the certificate-form correctness theorem collapses into
+the verdict's type) rather than shipping the witness work as a
+sibling extraction wrapper.
 
 The development is divided into the phases below, with Lean source
 under
@@ -66,7 +69,7 @@ existing files or refactor across several).
 |     8 | Linear-matroid framing      | `LinearRigidityMatroid.lean`                                     |   ✓    |
 |     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness}.lean` |   ✓    |
 |    10 | Executable pebble game      | `PebbleGame/{Exec,Examples}.lean`, `Main.lean`                   |   ✓    |
-|    11 | Witness extraction          | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` | ⋯ |
+|    11 | Witness extraction          | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` |   ✓    |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

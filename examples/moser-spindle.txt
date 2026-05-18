@@ -1,7 +1,19 @@
 # Moser spindle on Fin 7: two triangles sharing apex 0, two "rim"
 # vertices 5 (adj. to 1, 2) and 6 (adj. to 3, 4), and the bridging
 # edge 5-6. 7 vertices, 11 edges, Laman (2 * 7 - 3 = 11).
-# Expected: LAMAN.
+# Expected (Phase 11 Layer 5 schema):
+#   LAMAN
+#   ARCS 0 1
+#   ARCS 0 4
+#   ARCS 1 2
+#   ARCS 1 5
+#   ARCS 2 0
+#   ARCS 2 5
+#   ARCS 3 0
+#   ARCS 3 6
+#   ARCS 4 3
+#   ARCS 4 6
+#   ARCS 5 6
 7 11
 0 1
 0 2

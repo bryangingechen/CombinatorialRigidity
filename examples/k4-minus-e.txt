@@ -1,6 +1,12 @@
 # K_4 \ {2-3}: the complete graph on Fin 4 minus the edge {2, 3}.
 # Phase 3 worked example: 4 vertices, 5 edges, Laman (2 * 4 - 3 = 5).
-# Expected: LAMAN.
+# Expected (Phase 11 Layer 5 schema):
+#   LAMAN
+#   ARCS 0 1
+#   ARCS 0 3
+#   ARCS 1 3
+#   ARCS 2 0
+#   ARCS 2 1
 4 5
 0 1
 0 2

@@ -17,11 +17,12 @@ independence corollary against the Phase 7 count matroid. Phase 10
 bridges Phase 9's `noncomputable` `runPebbleGame` to an actually-runnable
 decision procedure: a `Decidable G.IsLaman` instance backed by a
 computable wrapper `runPebbleGameExec`, plus a `lake exe pebble-game` CLI
-binary. Phase 11 (in progress) reshapes Phase 9/10's `Option`-shaped
+binary. Phase 11 reshapes Phase 9/10's `Option`-shaped
 pebble-game algorithms to return a verdict-bearing inductive carrying
 inline witnesses — a blocking subset `V'` on the `NOT_SPARSE` branch,
-the partial orientation `D` on the accept branches — making the CLI's
-output externally checkable.
+the partial orientation `D` on the accept branches — and bumps the CLI
+to emit those witness lines alongside the trichotomy label, making the
+CLI's classification externally checkable.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -37,33 +38,31 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–10 complete; Phase 11 in progress** — sparsity, Laman, Henneberg, frameworks,
+* **Phases 1–11 complete** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
   matroid identification (combinatorial form), the linear-matroid
   framing of the planar rigidity matroid
   (`linearRigidityMatroid_eq_rigidityMatroid`), the basic
-  `(k, ℓ)`-pebble game of Lee–Streinu 2008 with certificate-form
-  correctness theorem (`runPebbleGame_correct`) and matroidal-
-  independence corollary (`countMatroid_indep_iff_runPebbleGame`),
-  and the executable pebble game — a computable wrapper
-  `runPebbleGameExec` under `[LinearOrder V]`, canonical `Decidable`
-  instances for `IsSparse k ℓ` / `IsTight` / `IsLaman` in the
-  matroidal regime `ℓ < 2k`, and a `lake exe pebble-game` CLI binary
-  that reads an edge-list file and prints
-  `LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE`. Both `#eval` and the
-  CLI reduce through the same compiled `runPebbleGameExec` body. The
-  project carries no `sorry`s. See `notes/Phase10.md` and
-  `blueprint/src/chapter/executable.tex` for Phase 10 details.
-  **Phase 11** reshapes the pebble-game algorithms (Phase 9
-  workhorses, Phase 10 wrappers and `Decidable` instances) to
-  return a `PebbleGameResult G k ℓ` verdict whose constructors
-  carry inline witnesses — folding the deferred witness-extraction
-  work into the canonical algorithm. The CLI then prints a
-  checkable certificate on every branch. See `notes/Phase11.md`
+  `(k, ℓ)`-pebble game of Lee–Streinu 2008 with matroidal-independence
+  corollary (`countMatroid_indep_iff_runPebbleGame`), the executable
+  pebble game (a computable wrapper `runPebbleGameExec` under
+  `[LinearOrder V]`, canonical `Decidable` instances for
+  `IsSparse k ℓ` / `IsTight` / `IsLaman` in the matroidal regime
+  `ℓ < 2k`, and a `lake exe pebble-game` CLI binary), and the
+  witness-extraction reshape that bumps `runPebbleGame` /
+  `runPebbleGameExec` to a two-constructor verdict
+  `PebbleGameResult G k ℓ` carrying inline witnesses on every branch
+  (`.accept D _ _` with `D : PartialOrientation V`; `.reject V' _ _`
+  with `V' : Finset V`). The CLI prints `LAMAN` /
+  `SPARSE_NOT_TIGHT` / `NOT_SPARSE` as before, followed by witness
+  lines (`ARCS u v` per arc on accept; `BLOCKING n` + `VERTEX w`
+  lines per blocking-subset element on reject). Both `#eval` and
+  the CLI reduce through the same compiled `runPebbleGameExec`
+  body. The project carries no `sorry`s. See `notes/Phase11.md`
   for the layer plan; the blueprint reshape lands in-place in
-  `chapter/{dfs,pebble-game,executable}.tex` alongside each
-  Layer's Lean.
+  `chapter/{dfs,pebble-game,executable}.tex`. Phase 10 details are
+  in `notes/Phase10.md` and `blueprint/src/chapter/executable.tex`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

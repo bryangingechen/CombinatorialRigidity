@@ -1,6 +1,6 @@
 # Phase 11 — Witness extraction (work log)
 
-**Status:** in progress.
+**Status:** complete (closed by Layer 5 commit).
 
 This file is the per-phase work record. See `../ROADMAP.md` §11 for
 the high-level plan and `../DESIGN.md` for cross-cutting design
@@ -183,10 +183,24 @@ The fix was to keep `def:runPebbleGame`'s `\uses{}` minimal
 let the cross-cutting verdict / workhorse-witness dependencies surface
 through the verdict-form theorem's `\uses{}` instead.
 
-Layer 5 ahead. Next concrete commit: CLI surface bump in `Main.lean`
-to pattern-match on `PebbleGameResult` and emit witness lines after the
-trichotomy label; update `examples/*.txt`'s commented expected-output
-blocks; blueprint `chapter/executable.tex` CLI subsection update.
+Layer 5 closed: `Main.lean` patten-matches on the verdict returned by
+`PartialOrientation.runPebbleGameExec G 2 3 (by omega)` directly (no
+longer routes through the `Decidable G.IsLaman` reduction, since the
+verdict's constructor structurally carries both the accept-branch
+trichotomy disambiguator and the witness data). On `.accept D _ _`:
+emit `LAMAN` (if `G.edgeFinset.card + 3 = 2 * n`) or
+`SPARSE_NOT_TIGHT`, followed by one `ARCS u v` line per arc
+`(u, v) ∈ D.arcs`, sorted lexicographically via
+`(D.arcs.image toLex).sort (· ≤ ·)` then `.map ofLex`. On
+`.reject V' _ _`: emit `NOT_SPARSE`, then `BLOCKING <V'.card>`, then
+one `VERTEX w` line per `w ∈ V'.sort (· ≤ ·)`. All four `examples/*.txt`
+fixtures' commented expected-output blocks updated to the new schema
+in full (per *Blockers / open questions* resolution below: kept
+complete rather than truncated). Blueprint
+`chapter/executable.tex`'s CLI subsection updated to describe the
+verdict-direct routing and the new output schema (with a
+three-column tabular layout matching the schema notation in
+*Architectural choices*).
 
 The phase target is a **maximal reshape** of the pebble-game return
 type: replace the `Option`-shaped output of `runPebbleGame` /
@@ -589,13 +603,24 @@ incorporates the outcomes.
   ~−150 LoC (the additive wrappers and certificate-form iff theorems
   net out larger than the merged forms).
 
-- **Layer 5.** CLI surface bump: `Main.lean` pattern-matches on
-  `PebbleGameResult` and emits witness lines. Update
-  `examples/*.txt`'s commented expected-output blocks. Confirm the
-  new format on each fixture. Blueprint: update
-  `chapter/executable.tex`'s CLI subsection to describe the
-  witness-bearing output schema. Estimated ~50–100 LoC delta to
-  `Main.lean` plus the per-fixture comment updates.
+- **Layer 5** ✓. `Main.lean` bumped: `classify` now invokes
+  `PartialOrientation.runPebbleGameExec G 2 3 (by omega)` directly
+  (was: `decide G.IsLaman` → `decide (G.IsSparse 2 3)` two-step
+  routing through the `Decidable` instances) and pattern-matches the
+  returned `PebbleGameResult G 2 3` verdict, emitting `LAMAN` /
+  `SPARSE_NOT_TIGHT` (disambiguated on the `.accept` branch by the
+  constant-time edge-count check `G.edgeFinset.card + 3 = 2 * n`)
+  with arc lines, or `NOT_SPARSE` with `BLOCKING` + `VERTEX` lines.
+  Arc-sorting via `(D.arcs.image toLex).sort (· ≤ ·)` against
+  `LinearOrder (Lex (Fin n × Fin n))`; vertex-sorting via
+  `Finset.sort (· ≤ ·)` directly on `Finset (Fin n)`. Total Lean delta
+  to `Main.lean`: ~+50 LoC (mostly schema docstring + helper sorting
+  shapes); four `examples/*.txt` fixtures updated to carry the full
+  Phase 11 Layer 5 expected output in their leading comment blocks.
+  Blueprint `chapter/executable.tex`'s CLI subsection updated with
+  the three-column output schema, the verdict-direct invocation step
+  in the algorithm-walk enumeration, and a pointer to the
+  `examples/` fixtures.
 
 Total estimated delta: ~900–1300 LoC across the pebble-game files
 plus `Search/DFS.lean` and `Main.lean`. Of that, the substantive
@@ -783,16 +808,49 @@ in future structural-edit phases.)*
   the single iff statements, each routing through `*_aux_isAccept`
   chained with `runPebbleGameWith_correct` at the workhorse level).
 
-- **Layer 5 micro-call:** the four `examples/*.txt` files'
-  commented expected-output blocks will grow visibly on the Moser
-  spindle / $K_4$ cases (11 ARCS lines and an N-vertex BLOCKING
-  block respectively). A Layer-5-time decision whether to truncate
-  the comment blocks or keep them complete.
+- **Layer 5 micro-call:** ✓ Resolved at Layer 5 by keeping the
+  comment blocks complete (no truncation) on all four fixtures. The
+  Moser spindle's 11 ARCS lines and $K_4$'s 4-vertex BLOCKING block
+  expand the comment block by 8–11 lines per file, which keeps the
+  comment-to-data ratio reasonable (each fixture still fits a single
+  screen of input). The benefit is that scripts (and human readers)
+  diff-checking the CLI's output against the documented expectation
+  see the full schema rendered next to the input — useful both as a
+  manual smoke test and as future regression-test seed data should a
+  CLI-output golden-file harness ever land.
 
 ## Hand-off / next phase
 
-*(Filled in at phase close. Phase 11 hand-off candidates:
-component pebble game (L–S §5, $O(n^2)$ speedup via union pair-find
-maintained across the fold); Henneberg-sequence extraction (L–S §6);
-benchmarks harness comparing `runPebbleGameExec` against a
-brute-force `Decidable` baseline on small graphs.)*
+Phase 11 closed at Layer 5. The pebble game's user-facing surface is
+now end-to-end witness-bearing: every accept/reject branch carries
+structurally-recoverable certificate data, and the CLI prints it. No
+deferred work; no `sorry`s; no open friction items specific to this
+phase. The dep-graph has every Phase 11 node green across
+`chapter/{dfs,pebble-game,executable}.tex`; the structural-edit work
+that Layer 3 / 4b put through the existing chapters' previously-green
+nodes is fully discharged.
+
+The next phase has no forced ordering. Hand-off candidates, ranked
+loosely by what unlocks downstream work:
+
+1. **Component pebble game** (L–S §5; $O(n^2)$ speedup via union
+   pair-find maintained across `runPebbleGameWith`'s fold). The
+   biggest standalone Phase-12 candidate: takes the Phase-11
+   verdict-bearing API as input and improves the constant factor on
+   the algorithm. Touches `PebbleGame/Algorithm.lean` (the fold) and
+   adds a sibling state structure for component tracking.
+2. **Henneberg-sequence extraction** (L–S §6). Composes Phase 11's
+   accept-branch orientation $D$ with Phase 3's
+   `IsLaman.exists_typeI_or_typeII_reverse` to produce an
+   executable Henneberg-construction sequence from a Laman graph.
+   The smallest tractable next phase; mostly composition work.
+3. **Benchmarks harness** comparing `runPebbleGameExec` against a
+   brute-force `Decidable G.IsSparse` baseline on small graphs.
+   Lighter, no new math; useful as a runtime sanity check that the
+   Phase-10 polynomial-time claim holds on real inputs and as a
+   regression detector for future algorithm changes.
+
+The candidate list above is replicated from notes for backward
+reference; the live tracking lives in the next-phase's
+`notes/PhaseN.md` if/when one opens. As of Phase 11 close, no phase
+has been selected.

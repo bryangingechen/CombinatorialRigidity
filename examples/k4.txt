@@ -1,6 +1,12 @@
 # K_4: the complete graph on Fin 4. 4 vertices, 6 edges; 6 > 2 * 4 - 3 = 5,
 # so K_4 violates (2, 3)-sparsity at the full vertex set.
-# Expected: NOT_SPARSE.
+# Expected (Phase 11 Layer 5 schema):
+#   NOT_SPARSE
+#   BLOCKING 4
+#   VERTEX 0
+#   VERTEX 1
+#   VERTEX 2
+#   VERTEX 3
 4 6
 0 1
 0 2

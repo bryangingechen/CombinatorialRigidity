@@ -418,11 +418,28 @@ sub-second wall time on a developer laptop.
 \label{sec:executable-cli}
 
 A \texttt{lake exe pebble-game} entry point reads a simple
-edge-list file and prints the classification. Input format: a
-leading line \texttt{n m} giving vertex count and edge count,
-followed by $m$ lines of two whitespace-separated integers
-$0 \le u, v < n$. Output: one of $\mathrm{LAMAN}$ /
-$\mathrm{SPARSE\_NOT\_TIGHT}$ / $\mathrm{NOT\_SPARSE}$.
+edge-list file and prints the classification together with the
+inline witness data carried by the Phase~11 Layer~4b
+\cref{def:pebbleGameResult} verdict. Input format: a leading line
+\texttt{n m} giving vertex count and edge count, followed by $m$
+lines of two whitespace-separated integers $0 \le u, v < n$. Output
+schema:
+\begin{center}
+\begin{tabular}{lll}
+$\mathrm{LAMAN}$           & $\mathrm{SPARSE\_NOT\_TIGHT}$ & $\mathrm{NOT\_SPARSE}$ \\
+$\mathrm{ARCS}\ u_0\ v_0$  & $\mathrm{ARCS}\ u_0\ v_0$     & $\mathrm{BLOCKING}\ |V'|$ \\
+$\mathrm{ARCS}\ u_1\ v_1$  & $\mathrm{ARCS}\ u_1\ v_1$     & $\mathrm{VERTEX}\ w_0$ \\
+$\vdots$                   & $\vdots$                      & $\mathrm{VERTEX}\ w_1$ \\
+                           &                               & $\vdots$ \\
+\end{tabular}
+\end{center}
+i.e.\ a verdict label on the first line, then witness lines: on
+$\mathrm{LAMAN}$ / $\mathrm{SPARSE\_NOT\_TIGHT}$, one
+$\mathrm{ARCS}\ u\ v$ line per arc $(u, v) \in D.\mathrm{arcs}$ of
+the accepting partial orientation, in lexicographic order on $(u, v)$;
+on $\mathrm{NOT\_SPARSE}$, a $\mathrm{BLOCKING}\ |V'|$ line giving the
+blocking subset's size followed by $|V'|$ lines $\mathrm{VERTEX}\ w$,
+one per $w \in V'$, in increasing order.
 
 The binary is a thin \texttt{IO} wrapper:
 \begin{enumerate}
@@ -430,24 +447,31 @@ The binary is a thin \texttt{IO} wrapper:
     diagnostic.
   \item Construct $G : \mathrm{SimpleGraph}\,(\mathrm{Fin}\,n)$
     from the parsed edge list via $\mathrm{fromEdgeSet}$.
-  \item Invoke
-    $\mathrm{runPebbleGameExec}\,G\,2\,3$ via the
-    \cref{def:isLaman-decidable} instance.
-  \item Print the classification.
+  \item Invoke $\mathrm{runPebbleGameExec}\,G\,2\,3$ directly to
+    obtain a \cref{def:pebbleGameResult} verdict (the
+    \cref{def:isLaman-decidable} instance is no longer needed at the
+    CLI's entry point — the Boolean projection it derives via
+    \cref{thm:pebbleGameResult-isAccept-iff} is recovered from the
+    verdict's constructor name).
+  \item Pattern-match on the verdict and print the schema above.
+    The trichotomy label distinguishes $\mathrm{LAMAN}$ from
+    $\mathrm{SPARSE\_NOT\_TIGHT}$ on the $\mathrm{.accept}$
+    constructor via the constant-time edge-count equation
+    $|E(G)| + 3 = 2|V|$.
 \end{enumerate}
 
 No blueprint nodes for the binary itself — it is not Lean-formal
 content but the natural delivery vehicle for the runtime claim of
-\cref{sec:executable-backends}. The Phase~11 Layer~3 reshape makes
-the $\mathrm{NOT\_SPARSE}$-branch blocking-witness subset
-structurally available from the algorithm's $\mathrm{.inl}\,w$ output
-via $w.V'$ (see \cref{def:workhorseWitness} and
-\cref{lem:workhorseWitness-certifies}), and the computable
-$\mathrm{reachClosureComputable}$ inside the case-5 inline
-construction (\cref{def:tryAddEdge}) eliminates the previous
-$\mathrm{Classical}$-machinery dependence; Phase~11 Layer~5 will
-update the CLI surface to emit witness lines alongside the
-trichotomy label.
+\cref{sec:executable-backends}. Phase~11 Layer~4b's
+\cref{def:pebbleGameResult} makes the accepting orientation $D$
+and the blocking subset $V'$ structurally available at the CLI's
+entry point: $D$ from the verdict's $\mathrm{.accept}\,D$
+constructor (its $\mathrm{arcs}$ field is the witness data on the
+accept branches) and $V'$ from $\mathrm{.reject}\,V'$ (its
+$\mathrm{h\_size}$ / $\mathrm{h\_lt}$ proof fields are unused at
+$\mathrm{IO}$-time but carry the structural certificate). Sample
+input files live under \texttt{examples/} with the expected output
+schema documented as a comment block at the top of each file.
 
 \emph{Special case: planar rigidity (continued).} The CLI binary
 at the default parameters $(k, \ell) = (2, 3)$ is, by

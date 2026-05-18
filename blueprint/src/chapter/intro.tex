@@ -25,8 +25,7 @@ combinatorial rigidity, see
 
 The Lean code is organized into eleven phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--10 are complete; Phase~11 (witness extraction) is in
-progress. The first six phases formalize Laman's
+Phases~1--11 are complete. The first six phases formalize Laman's
 theorem, Phase~7 packages the planar rigidity matroid as a mathlib
 \texttt{Matroid} via the Lov\'asz--Yemini matroid identification,
 Phase~8 reframes it as a linear matroid via \texttt{Matroid.ofFun}
@@ -48,10 +47,12 @@ to return a verdict-bearing inductive
 $\mathrm{PebbleGameResult}\,G\,k\,\ell$ whose constructors carry
 inline witnesses --- the blocking subset $V'$ on the
 $\mathrm{NOT\_SPARSE}$ branch, the partial orientation $D$ on the
-accept branches --- making the CLI externally checkable. As a
-structural-edit phase, Phase~11's blueprint reshape lands in-place
-in \cref{sec:dfs}, \cref{sec:pebble-game}, and \cref{sec:executable}
-alongside each Layer's Lean, with no new chapter opened.
+accept branches --- and bumps the CLI to print those witness lines
+alongside the trichotomy label, making the CLI's classification
+externally checkable. As a structural-edit phase, Phase~11's
+blueprint reshape lands in-place in \cref{sec:dfs},
+\cref{sec:pebble-game}, and \cref{sec:executable} alongside each
+Layer's Lean, with no new chapter opened.
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -123,9 +124,12 @@ alongside each Layer's Lean, with no new chapter opened.
         \texttt{Search/DFS.lean} (sibling of Phase~9's
         $\mathrm{reachableFinding}$), through which
         $\mathrm{PartialOrientation.reach}$ is redefined,
-        eliminating the \texttt{Classical.decPred} dependency that
-        currently blocks computable witness extraction. CLI bumps
-        to print the verdict's witness data on every branch.
+        eliminating the previous \texttt{Classical.decPred}
+        dependency that blocked computable witness extraction.
+        Layer~5 bumps the CLI surface to pattern-match on the
+        verdict and emit $\mathrm{ARCS}\,u\,v$ /
+        $\mathrm{BLOCKING}\,n$ + $\mathrm{VERTEX}\,w$ lines
+        alongside the trichotomy label.
         (Files: \texttt{Search/DFS.lean},
         \texttt{PebbleGame/\{Basic,Algorithm,Correctness,Exec\}.lean},
         \texttt{Main.lean}.)
@@ -137,12 +141,12 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from the
 navigation bar) is the best place to see at a glance how the chapters
-fit together; all Phase~1--10 nodes are green, including the main
+fit together; all Phase~1--11 nodes are green, including the main
 Laman line, the Phase~7 / Phase~8 matroid identifications, the
-verified-DFS warmup (\cref{sec:dfs}), the Phase~9 pebble-game
-chapter (\cref{sec:pebble-game}), and the Phase~10 executable
-pebble-game chapter (\cref{sec:executable}). Phase~11's reshape
-will turn selected algorithm-side nodes red in
-\cref{sec:dfs} / \cref{sec:pebble-game} / \cref{sec:executable}
-as it lands per Layer, with each Layer commit shipping its
-blueprint update alongside the Lean that backs it.
+verified-DFS warmup (\cref{sec:dfs}, with Phase~11 Layer~1's
+computable $\mathrm{reachClosureComputable}$ primitive), the
+Phase~9 + Phase~11 pebble-game chapter (\cref{sec:pebble-game},
+restated against the verdict-bearing return type of Phase~11
+Layer~4b), and the Phase~10 + Phase~11 executable pebble-game
+chapter (\cref{sec:executable}, with the Layer~5 CLI surface
+emitting witness lines alongside the trichotomy label).

@@ -6,17 +6,19 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.PebbleGame.Exec
 
 /-!
-# `lake exe pebble-game` — Phase 10 Layer 5 CLI binary
+# `lake exe pebble-game` — Phase 10 Layer 5 / Phase 11 Layer 5 CLI binary
 
 This file is the entry point for the `lake exe pebble-game` executable
 target declared in `lakefile.toml`. It reads a simple edge-list file
 and prints the Laman / sparse / non-sparse classification of the
-encoded finite simple graph on `Fin n` for some `n` given in the file.
+encoded finite simple graph on `Fin n` for some `n` given in the file,
+together with the witness data surfaced by Phase 11 Layer 4b's
+verdict-bearing `PebbleGameResult`.
 
-The classification is delivered through Phase 10 Layer 3's
-`SimpleGraph.instDecidableIsLaman` and `SimpleGraph.instDecidableIsSparse`
-(both in `CombinatorialRigidity.PebbleGame.Exec`), which reduce
-through the compiled `runPebbleGameExec` body in polynomial time in
+The classification + witness extraction is delivered through Phase 11
+Layer 4b's verdict-bearing `runPebbleGameExec` (in
+`CombinatorialRigidity.PebbleGame.Exec`), which reduces through the
+compiled `runPebbleGameWith`-on-`empty` body in polynomial time in
 `|V| + |E|`. The same compiled body underlies the `#eval (decide …)`
 worked examples in `CombinatorialRigidity/PebbleGame/Examples.lean`
 and the `native_decide` tactic; see `blueprint/src/chapter/executable.tex`
@@ -38,13 +40,33 @@ ignored anywhere in the file.
 
 ## Output
 
-Exactly one of these tokens on stdout, followed by a newline:
+A leading verdict line on stdout — one of:
 
 * `LAMAN` — `G` is `(2, 3)`-tight (i.e. `(2, 3)`-sparse with
-  `|E| = 2|V| − 3`).
+  `|E| + 3 = 2|V|`).
 * `SPARSE_NOT_TIGHT` — `G` is `(2, 3)`-sparse but the edge count does
   not hit the tightness bound.
 * `NOT_SPARSE` — `G` violates `(2, 3)`-sparsity at some vertex subset.
+
+followed by **witness lines** (Phase 11 Layer 5):
+
+* On `LAMAN` / `SPARSE_NOT_TIGHT`: one `ARCS u v` line per directed
+  arc `(u, v)` of the accepting partial orientation `D` returned by
+  `runPebbleGameExec`, in lexicographic order on `(u, v)`. The
+  `D.arcs ⊆ V × V` data is the orientation that witnesses `(2, 3)`-
+  sparsity: `D.underline = G.edgeFinset` (each edge of `G` appears as
+  exactly one arc) and the four pebble-game invariants of
+  `Reachable k ℓ D` (cf. `PartialOrientation.Reachable`).
+* On `NOT_SPARSE`: one `BLOCKING n` line giving the size of the
+  blocking subset `V' ⊆ V`, followed by `n` lines of the form
+  `VERTEX w`, one per `w ∈ V'`, in increasing order. The `V'` data
+  satisfies `3 ≤ 2 * V'.card` and
+  `2 * V'.card < (G.edgesIn ↑V').ncard + 3` (cf. the `.reject`
+  constructor of `PebbleGameResult`).
+
+Scripts that only need the trichotomy label can read the first line
+and ignore the rest; the witness lines are an additive refinement of
+the Phase-10-era trichotomy-only output.
 
 Errors (malformed input, out-of-range labels, declared edge count
 mismatch with the actual number of edge lines, …) are reported on
@@ -56,7 +78,7 @@ stderr with a non-zero exit status.
 lake exe pebble-game path/to/edge-list.txt
 ```
 
-A sample input file lives in `examples/k4-minus-e.txt`. See also
+Sample input files live in `examples/*.txt`. See also
 `CombinatorialRigidity/PebbleGame/Examples.lean` for the in-Lean
 `#eval`-style counterpart on the same set of graphs.
 -/
@@ -64,6 +86,7 @@ A sample input file lives in `examples/k4-minus-e.txt`. See also
 namespace CombinatorialRigidity.Cli
 
 open SimpleGraph
+open CombinatorialRigidity.PebbleGame
 
 /-- Strip lines that are blank or start (after leading whitespace) with `#`.
 The CLI's input format allows `# comment` lines and blank separators. -/
@@ -91,21 +114,49 @@ private def mkEdge (n u v : Nat) : Option (Sym2 (Fin n)) :=
     else none
   else none
 
-/-- **Classify a graph by Phase 10's `Decidable` instances.** Builds a
-`SimpleGraph (Fin n)` from a list of edges and consults
-`instDecidableIsLaman` then `instDecidableIsSparse` to produce one of
-`LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE`. The classification reduces
-through the compiled `runPebbleGameExec` body of
-`CombinatorialRigidity.PebbleGame.Exec`. -/
-def classify (n : Nat) (rawEdges : Array (Sym2 (Fin n))) : String :=
+/-- **Render the verdict from `runPebbleGameExec` to the CLI output schema.**
+Pattern-matches on the Phase 11 Layer 4b `PebbleGameResult G 2 3` verdict
+and emits:
+
+* On `.accept D _ _`: the trichotomy label (`LAMAN` if the edge count
+  hits the tightness bound `|E| + 3 = 2 * n`, else `SPARSE_NOT_TIGHT`)
+  followed by one `ARCS u v` line per arc of `D`, in lexicographic
+  order on `(u, v)`. Sorting is via `Finset.sort (· ≤ ·)` against
+  `LinearOrder (Lex (Fin n × Fin n))` (the `Lex` wrapping is the
+  mathlib-idiomatic way to take the lex order on a product without
+  competing with the project-wide `Prod` instance set).
+* On `.reject V' _ _`: the `NOT_SPARSE` label, then `BLOCKING <V'.card>`,
+  then one `VERTEX w` line per `w ∈ V'`, in increasing order via
+  `Finset.sort (· ≤ ·)`.
+
+Reduces through the compiled `runPebbleGameExec` body — the same body
+that drives `instDecidableIsLaman` / `#eval (decide G.IsLaman)` and the
+worked examples. -/
+def classify (n : Nat) (rawEdges : Array (Sym2 (Fin n))) : String := Id.run do
   let G : SimpleGraph (Fin n) := SimpleGraph.fromEdgeSet (rawEdges.toList.toFinset : Finset _)
-  if decide G.IsLaman then "LAMAN"
-  else if decide (G.IsSparse 2 3) then "SPARSE_NOT_TIGHT"
-  else "NOT_SPARSE"
+  -- Phase 11 Layer 4b: directly invoke the verdict-bearing exec wrapper.
+  -- `Fact (3 < 2 * 2)` is shipped as a top-level instance in `PebbleGame/Exec.lean`.
+  let verdict : PebbleGameResult G 2 3 := PartialOrientation.runPebbleGameExec G 2 3 (by omega)
+  match verdict with
+  | .accept D _ _ =>
+      let label : String :=
+        if G.edgeFinset.card + 3 = 2 * n then "LAMAN" else "SPARSE_NOT_TIGHT"
+      -- Sort `D.arcs : Finset (Fin n × Fin n)` lexicographically via `Lex`.
+      let sortedArcs : List (Fin n × Fin n) :=
+        ((D.arcs.image toLex).sort (· ≤ ·)).map ofLex
+      let arcLines : List String :=
+        sortedArcs.map fun p => s!"ARCS {p.1.val} {p.2.val}"
+      String.intercalate "\n" (label :: arcLines)
+  | .reject V' _ _ =>
+      let sortedV' : List (Fin n) := V'.sort (· ≤ ·)
+      let vertexLines : List String :=
+        sortedV'.map fun w => s!"VERTEX {w.val}"
+      String.intercalate "\n" ("NOT_SPARSE" :: s!"BLOCKING {V'.card}" :: vertexLines)
 
 /-- **Parse the input file and run the classifier.** Returns `Except`-style
-diagnostics on malformed input; on success returns the classification
-string. -/
+diagnostics on malformed input; on success returns the multi-line
+classification + witness string per the schema documented at the top of
+the file. -/
 def run (input : String) : Except String String := do
   let body := stripComments (input.splitOn "\n")
   match body with
@@ -134,8 +185,8 @@ end CombinatorialRigidity.Cli
 
 /-- **CLI entry point.** Expects exactly one positional argument: a path to
 an edge-list file (see file-level docstring for the format). Prints the
-classification on stdout and exits `0` on success; prints a diagnostic on
-stderr and exits `1` on malformed input or filesystem errors. -/
+classification + witness on stdout and exits `0` on success; prints a
+diagnostic on stderr and exits `1` on malformed input or filesystem errors. -/
 def main (args : List String) : IO UInt32 := do
   match args with
   | [path] =>
@@ -157,5 +208,6 @@ def main (args : List String) : IO UInt32 := do
     IO.eprintln "  Input: a leading `n m` line (vertex count, edge count),"
     IO.eprintln "  then `m` lines of two whitespace-separated `0 ≤ u, v < n`."
     IO.eprintln "  Blank lines and lines starting with `#` are ignored."
-    IO.eprintln "  Output: LAMAN / SPARSE_NOT_TIGHT / NOT_SPARSE."
+    IO.eprintln "  Output: LAMAN / SPARSE_NOT_TIGHT / NOT_SPARSE, then witness lines"
+    IO.eprintln "  (ARCS u v on accept; BLOCKING <n> + VERTEX w on reject)."
     return 1

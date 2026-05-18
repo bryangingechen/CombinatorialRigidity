@@ -1,6 +1,11 @@
 # Path on Fin 5: 0 - 1 - 2 - 3 - 4. 5 vertices, 4 edges; (2, 3)-sparse
 # (acyclic) but |E| = 4 < 2 * 5 - 3 = 7, so not (2, 3)-tight, not Laman.
-# Expected: SPARSE_NOT_TIGHT.
+# Expected (Phase 11 Layer 5 schema):
+#   SPARSE_NOT_TIGHT
+#   ARCS 0 1
+#   ARCS 1 2
+#   ARCS 2 3
+#   ARCS 3 4
 5 4
 0 1
 1 2
