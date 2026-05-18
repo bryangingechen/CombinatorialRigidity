@@ -181,13 +181,13 @@ $\mathrm{Finset.sort}$ under a $\mathrm{LinearOrder}$ on $V$.
     (u, v) \in \mathrm{edgeListSorted}\,G \;\iff\;
       u \le v \;\wedge\; s(u, v) \in G.\mathrm{edgeFinset}.
   \]
-  Loop-freeness ($u \ne v$ for any list entry, via
-  $\mathrm{not\_isDiag\_of\_mem\_edgeSet}$) and the
-  $\mathrm{Sym}_2$-image round-trip
-  $\big((\mathrm{edgeListSorted}\,G).\mathrm{map}\,s(\cdot,\cdot)\big).\mathrm{toFinset}
-  = G.\mathrm{edgeFinset}$ are packaged as separate blueprint nodes
-  with \cref{thm:runPebbleGameWith-correct} (the three discharges
-  the workhorse-level statement consumes).
+  The Lean side additionally ships three small bridge lemmas
+  (\texttt{edgeListSorted\_no\_loops}, \texttt{edgeListSorted\_pairwise},
+  \texttt{edgeListSorted\_map\_sym2\_toFinset}) that discharge
+  \cref{thm:runPebbleGameWith-correct}'s loop-freeness / pairwise-Sym2-
+  distinctness / Sym2-image round-trip hypotheses at the
+  $G.\mathrm{edgeListSorted}$ argument; they are pure glue and not
+  formalised as blueprint nodes.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -217,7 +217,9 @@ instead.
   \label{def:runPebbleGameExec}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec}
   \leanok
-  \uses{def:runPebbleGame, def:outListSorted, def:edgeListSorted}
+  \uses{def:runPebbleGame, def:outListSorted, def:edgeListSorted,
+    def:pebbleGameResult, thm:runPebbleGameWith-correct,
+    lem:workhorseWitness-certifies}
   Let $V$ have $[\mathrm{LinearOrder}\,V]$ and
   $[\mathrm{DecidableEq}\,V]$, let $G$ be a finite simple graph on
   $V$, and let $h_{\mathrm{mat}} : \ell < 2k$ be the matroidal-regime

@@ -2,7 +2,10 @@
 
 **Status:** in progress (A1 closed as no-op; A2 closed with Phase-9-era
 `some`/`none` → `.inr`/`.inl` cleanup in `chapter/pebble-game.tex` +
-matching docstring fix in `Algorithm.lean`; A3/A4 + B/C/D pending).
+matching docstring fix in `Algorithm.lean`; A3 closed with two
+targeted fixes in `chapter/executable.tex` — `def:runPebbleGameExec`
+`\uses{}` completion + `lem:mem-edgeListSorted` retired forward-reference
+to non-existent discharge nodes; A4 + B/C/D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -46,9 +49,35 @@ Layer 3 `\mathrm{.inr}\,D'` / `\mathrm{.inl}\,w` shape with explicit
 "three runtime checks" + parenthetical note about the absorbed bound;
 matching staleness in `Algorithm.lean`'s top-of-section `tryAddEdgeWith`
 docstring ("If both DFS attempts fail, return `none`" → "...return
-`.inl w` carrying a workhorse-level failure witness"). Remaining:
-A3–A4 blueprint walks, B/C code-smell + long-proof sweeps, D
-project-organization compression. Pre-sweep smell counts (Phase 10+11
+`.inl w` carrying a workhorse-level failure witness"). A3 closed with
+two targeted fixes in `chapter/executable.tex` (NOT a no-op): (1)
+`def:runPebbleGameExec`'s `\uses{}` was missing three statement-level
+deps that the construction prose forward-references —
+`def:pebbleGameResult` (the verdict shape returned), `thm:runPebbleGameWith-correct`
+(supplies the underline/reachability proof fields on `.accept`), and
+`lem:workhorseWitness-certifies` (supplies the size/lt proof fields on
+`.reject` after the bridge-facts discharge for `G.edgeListSorted`); now
+listed alongside `def:runPebbleGame, def:outListSorted, def:edgeListSorted`.
+(2) `lem:mem-edgeListSorted`'s prose carried a Phase-10-era forward-
+reference claim that the three discharge lemmas (`edgeListSorted_no_loops`,
+`edgeListSorted_pairwise`, `edgeListSorted_map_sym2_toFinset`) "are packaged
+as separate blueprint nodes with `thm:runPebbleGameWith-correct`" — they
+are correctly NOT in the blueprint per `blueprint/CLAUDE.md`'s *Skip*
+rule for small bridge/glue lemmas, but the prose hadn't been updated to
+match; rewritten to describe them as Lean-side glue (named, with the
+"not formalised as blueprint nodes" disposition explicit). The walk
+also confirmed: all Phase-10/Phase-11 nodes in `executable.tex` resolve
+at their current shape (verified by name + signature spot-check + the
+bundled `checkdecls` gate via `blueprint/verify.sh`); retired-node
+hygiene clean (no live `\lean{...}` for `runPebbleGameExec_correct` /
+`runPebbleGameExec_result` — these collapsed into `def:runPebbleGameExec`
+per the Layer 4b maximal reshape, and the explanatory prose in
+`def:isSparse-decidable` correctly records the Layer 3 / Layer 4 / Layer
+4b history); `examples/` directory exists with the four sample files
+described at the CLI binary node; `Main.lean`'s entry point shape matches
+the *CLI binary* subsection's flow. Remaining: A4 blueprint walk, B/C
+code-smell + long-proof sweeps, D project-organization compression.
+Pre-sweep smell counts (Phase 10+11
 surface only —
 `CombinatorialRigidity/PebbleGame/*.lean`,
 `CombinatorialRigidity/Search/DFS.lean`, `Main.lean`):
@@ -161,17 +190,36 @@ need a separate "run checkdecls" task here.
   still claimed "If both DFS attempts fail, return `none`" while
   the very next paragraph correctly described `.inl ⟨…⟩`; updated
   to the `.inl w` shape for self-consistency.
-- [ ] **A3:** `chapter/executable.tex` ↔ `PebbleGame/Exec.lean` +
-  `Main.lean` walk. Walk the Phase 10 nodes (`def:outListSorted`,
-  `lem:mem-outListSorted`, `def:edgeListSorted`,
-  `lem:mem-edgeListSorted`, `def:isSparse-decidable`,
-  `def:isTight-decidable`, `def:isLaman-decidable`, *Worked
-  examples* subsection, *CLI binary* subsection) at their current
-  Phase 11 Layer 4b/5 restated shape (verdict-direct routing,
-  `.isAccept` reductions, new output schema). Confirm
-  `def:runPebbleGameExec` repointed at the verdict-returning form;
-  `thm:runPebbleGameExec-correct` and `def:runPebbleGameExec-result`
-  retired (collapsed into `def:runPebbleGameExec`).
+- [x] **A3:** `chapter/executable.tex` ↔ `PebbleGame/Exec.lean` +
+  `Main.lean` walk. Closed with two targeted fixes (NOT a no-op): the
+  `\uses{}` of `def:runPebbleGameExec` was missing three statement-
+  level dependencies forward-referenced by its construction prose
+  (`def:pebbleGameResult`, `thm:runPebbleGameWith-correct`,
+  `lem:workhorseWitness-certifies`); now listed alongside the
+  original `def:runPebbleGame, def:outListSorted, def:edgeListSorted`.
+  `lem:mem-edgeListSorted`'s prose forward-referenced three discharge
+  lemmas as "packaged as separate blueprint nodes with
+  `thm:runPebbleGameWith-correct`" — the discharges are correctly
+  *Skip*ped per `blueprint/CLAUDE.md` (small bridge/glue lemmas), so
+  the prose was rewritten to describe them as Lean-side glue with the
+  explicit *not formalised as blueprint nodes* disposition. All other
+  Phase-10/Phase-11 nodes (`def:outListSorted`, `lem:mem-outListSorted`,
+  `def:edgeListSorted`, `def:runPebbleGameExec`, `thm:runPebbleGameWith-correct`,
+  `def:isSparse-decidable`, `def:isTight-decidable`,
+  `def:isLaman-decidable`, *Worked examples* / *CLI binary*
+  subsections) verified against the current Lean shape (verdict-direct
+  routing in `runPebbleGameExec`'s aux helper at `Exec.lean:271-303`;
+  Phase 11 Layer 4b reduction-body history in
+  `def:isSparse-decidable`'s explanatory prose is accurate;
+  `Main.lean`'s `classify` flow matches the CLI binary's enumerated
+  steps). Retired-node hygiene clean — `thm:runPebbleGameExec-correct`
+  and `def:runPebbleGameExec-result` collapsed into
+  `def:runPebbleGameExec` per Layer 4b maximal reshape, with no
+  surviving `\lean{...}` pin or `\label{...}` for either retired
+  node. `examples/` directory exists with the four sample files
+  (`k4-minus-e.txt`, `k4.txt`, `moser-spindle.txt`, `path5.txt`)
+  carrying the Phase 11 Layer 5 expected-output schema as a header
+  comment block, matching the CLI binary node's description.
 - [ ] **A4:** Formalization-aside scan across all three chapters.
   Phase 11's *Architectural choices* list noted the structural
   reshape; each `\emph{}` / `\begin{remark}` aside should still
@@ -338,6 +386,37 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   correctly described `.inl ⟨…⟩`; updated to the `.inl w` shape with
   a forward pointer to the next paragraph's witness-construction
   description.
+- **A3: `chapter/executable.tex` ↔ `PebbleGame/Exec.lean` +
+  `Main.lean` walk** — targeted-fix closure (NOT a no-op). Two
+  divergences fixed in `chapter/executable.tex`:
+  (1) `def:runPebbleGameExec`'s `\uses{}` was missing three deps that
+  its construction prose forward-references — `def:pebbleGameResult`
+  (the verdict shape returned), `thm:runPebbleGameWith-correct`
+  (supplies the underline/reachability proof fields on `.accept`),
+  and `lem:workhorseWitness-certifies` (supplies the size/lt proof
+  fields on `.reject` after the bridge-facts discharge for
+  `G.edgeListSorted`); now listed alongside the original
+  `def:runPebbleGame, def:outListSorted, def:edgeListSorted`. The
+  dep-graph edges these missing entries should have drawn were
+  silently absent from the rendered graph.
+  (2) `lem:mem-edgeListSorted`'s prose forward-referenced three
+  discharge lemmas (`edgeListSorted_no_loops`, `edgeListSorted_pairwise`,
+  `edgeListSorted_map_sym2_toFinset`) as "packaged as separate
+  blueprint nodes with `thm:runPebbleGameWith-correct`". The
+  discharges are correctly *Skip*ped per `blueprint/CLAUDE.md` —
+  they are small bridge/glue lemmas whose facts are legible from the
+  type signature; the forward-reference was a Phase-10-era plan
+  residual that didn't track the final selection decision. Rewritten
+  to describe them as Lean-side glue with the *not formalised as
+  blueprint nodes* disposition explicit, so the next reader doesn't
+  go looking for nodes that aren't there. All other Phase-10/11
+  nodes in the chapter checked out at their current Lean shape;
+  retired-node hygiene clean (the Layer 4b maximal-reshape retirees
+  `runPebbleGameExec_correct` / `runPebbleGameExec_result` carry no
+  surviving `\lean{...}` or `\label{...}` and the explanatory prose
+  in `def:isSparse-decidable` correctly records their history);
+  `examples/` directory and `Main.lean` flow verified against the
+  *Worked examples* and *CLI binary* subsections.
 
 ## Blockers / open questions
 
@@ -345,24 +424,22 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ## Hand-off / next phase
 
-Round still in progress. Next concrete commit: **A3** —
-`chapter/executable.tex` ↔ `PebbleGame/Exec.lean` + `Main.lean`
-walk. Walk the Phase~10 nodes (`def:outListSorted`,
-`lem:mem-outListSorted`, `def:edgeListSorted`,
-`lem:mem-edgeListSorted`, `def:isSparse-decidable`,
-`def:isTight-decidable`, `def:isLaman-decidable`, *Worked examples*
-subsection, *CLI binary* subsection) at their current Phase~11 Layer~4b/5
-restated shape (verdict-direct routing, `.isAccept` reductions, new
-output schema). Confirm `def:runPebbleGameExec` repointed at the
-verdict-returning form; `thm:runPebbleGameExec-correct` and
-`def:runPebbleGameExec-result` retired (collapsed into
-`def:runPebbleGameExec`). Spot-check that any proof-level prose still
-referring to the Phase-10-era `Sum`-shaped `runPebbleGameExec` /
-`runPebbleGameExec_result` additive form has been collapsed into the
-verdict; A2 surfaced two such residuals in `pebble-game.tex` (Phase-9-era
-`some D'` shapes), and `executable.tex` is the most likely site for
-parallel Phase-10/11 residuals because Phase~10 was reshaped twice
-(Layer~4 → Layer~4b).
+Round still in progress. Next concrete commit: **A4** —
+formalisation-aside scan across all three Phase 10/11 chapters
+(`chapter/dfs.tex`, `chapter/pebble-game.tex`, `chapter/executable.tex`).
+Walk each `\emph{}` / `\begin{remark}` aside and verify it still
+holds under the Phase 11 verdict-bearing shape, with no orphan
+asides documenting the Phase-9-era `Option` / Phase-10/11-Layer-3
+`Sum` return types. Apply `CLEANUP.md` §A's "first attempt is to
+shorten the Lean to retire the aside" — most asides on the
+Phase 10+11 surface are *Layer 0 audit notes* (e.g. the revised-
+outcome aside on `def:edgeListSorted` documenting why a
+`LinearOrder (Sym2 V)` mirror was infeasible; the Phase-11-Layer-4b
+shape-history aside in `def:isSparse-decidable`) — those record
+sticky design rationale and almost certainly stay; retire only the
+ones where the underlying friction has been dissolved by a later
+Layer. Closes Bucket A and unblocks Bucket B (code-smell sweep
+delta vs Phase 9-cleanup B4/B7).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
