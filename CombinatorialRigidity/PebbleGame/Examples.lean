@@ -60,7 +60,7 @@ synthesis (the alternative would be to drop this file from the
 module-converted per `PERFORMANCE.md`).
 -/
 
-@[expose] public section
+public section
 
 namespace CombinatorialRigidity.Examples
 
@@ -71,7 +71,7 @@ open SimpleGraph
 /-- The complete graph on `Fin 4` minus one edge — the Phase 3 worked
 example formalised in `SimpleGraph.top_fin_four_minus_edge_isLaman`,
 surfaced here through Phase 10's `Decidable` instance. -/
-def k4MinusE : SimpleGraph (Fin 4) :=
+@[expose] def k4MinusE : SimpleGraph (Fin 4) :=
   (⊤ : SimpleGraph (Fin 4)).deleteEdges {s(2, 3)}
 
 instance : DecidableRel k4MinusE.Adj := fun a b =>
@@ -99,7 +99,7 @@ def moserEdges : Finset (Sym2 (Fin 7)) :=
    s(5, 6)}
 
 /-- The Moser spindle on `Fin 7`. -/
-def moserSpindle : SimpleGraph (Fin 7) :=
+@[expose] def moserSpindle : SimpleGraph (Fin 7) :=
   SimpleGraph.fromEdgeSet (moserEdges : Set (Sym2 (Fin 7)))
 
 instance : DecidableRel moserSpindle.Adj := fun a b =>
@@ -139,7 +139,7 @@ def path5Edges : Finset (Sym2 (Fin 5)) :=
   {s(0, 1), s(1, 2), s(2, 3), s(3, 4)}
 
 /-- The 5-vertex path on `Fin 5`. -/
-def path5 : SimpleGraph (Fin 5) :=
+@[expose] def path5 : SimpleGraph (Fin 5) :=
   SimpleGraph.fromEdgeSet (path5Edges : Set (Sym2 (Fin 5)))
 
 instance : DecidableRel path5.Adj := fun a b =>

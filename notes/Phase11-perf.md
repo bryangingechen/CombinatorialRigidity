@@ -197,11 +197,34 @@ Current Phase 10+11 disposition (per `grep`):
   section`. Matches the F3.5 `MatroidIdentification.lean` /
   `LamanTheorem.lean` pattern. Disposition row appended to
   PERFORMANCE.md F3.5 table.*
-- [ ] **F1.4.** `PebbleGame/Examples.lean` audit. Expected
+- [x] **F1.4.** `PebbleGame/Examples.lean` audit. Expected
   closure: trivial — file has no `def`s, only `#eval` commands
   that consume the Decidable instances at meta time. Demote to
   `public section` (no per-decl opt-ins); confirm `#eval`s still
-  fire.
+  fire. *Done; demoted, **three** per-decl opt-ins
+  (`k4MinusE`, `moserSpindle`, `path5`). The pre-pass "no `def`s"
+  expectation was wrong — the file ships four worked-example graph
+  `def`s alongside the `#eval` lines, each paired with an intra-file
+  `instance : DecidableRel _.Adj` built via `decidable_of_iff` against
+  a body-mentioning iff bridge (`SimpleGraph.deleteEdges_adj.symm` for
+  `k4MinusE`; `(SimpleGraph.fromEdgeSet_adj _).symm` for
+  `moserSpindle` / `path5`). Without `@[expose]` on the graph def,
+  the bridge iff has the wrong shape (LHS mentions
+  `(⊤ : SimpleGraph (Fin 4)).Adj` etc., but Lean expects the
+  def-level `k4MinusE.Adj`), and the dependent `#eval (decide …)`
+  lines abort with the sorry-axiom guard. `k4`'s instance uses
+  `inferInstanceAs (DecidableRel (⊤ : SimpleGraph (Fin 4)).Adj)`, so
+  it routes directly through the existing `(⊤ : _).Adj` `Decidable`
+  with no body unfolding — clean demotion, no opt-in. The
+  `Finset (Sym2 _)` helper defs (`moserEdges`, `path5Edges`) also
+  demote cleanly; consumed only inside the graph defs' (now
+  `@[expose]`) bodies. All 11 `#eval` lines fire after the audit,
+  producing the documented expected values (5 / true / 11 / true /
+  6 / false / false / 4 / true / false / false). Pattern matches
+  the F3.5 `Henneberg.lean` row: a `DecidableRel _.Adj` instance
+  built via `decidable_of_iff` against a body-mentioning bridge
+  iff forces `@[expose]` on the underlying graph def. Disposition
+  row appended to PERFORMANCE.md F3.5 table.*
 - [ ] **F1.5.** Update `./PERFORMANCE.md` *Granular `@[expose]` /
   `public` audit per file* with the F1.1–F1.4 dispositions
   (append four rows to the F3.5 table; extend the status preamble
@@ -328,6 +351,34 @@ median-of-4.
   level `@[expose]`. Matches the F3.5 `MatroidIdentification.lean` /
   `LamanTheorem.lean` pattern (theorem-and-instance file with
   API-only def consumption demotes with zero per-decl opt-ins).
+- **F1.4 — `PebbleGame/Examples.lean` per-decl `@[expose]` audit.**
+  Demoted `@[expose] public section` → `public section`; **three**
+  per-decl opt-ins required on the graph defs `k4MinusE` /
+  `moserSpindle` / `path5`. The pre-pass "no `def`s, trivial closure"
+  expectation was wrong — the file ships four worked-example graph
+  `def`s alongside its `#eval` lines, three of them paired with an
+  intra-file `instance : DecidableRel _.Adj` built via
+  `decidable_of_iff` against a body-mentioning iff bridge
+  (`SimpleGraph.deleteEdges_adj.symm` for `k4MinusE`;
+  `(SimpleGraph.fromEdgeSet_adj _).symm` for `moserSpindle` /
+  `path5`). Without `@[expose]` on the graph def, Lean reports
+  *"Application type mismatch … has type `… ↔ (⊤ : SimpleGraph
+  (Fin 4)).Adj a b ∧ …` but is expected to have type `… ↔
+  k4MinusE.Adj a b`"* and dependent `#eval (decide …)` lines abort
+  with the sorry-axiom guard. `k4`'s instance uses
+  `inferInstanceAs (DecidableRel (⊤ : SimpleGraph (Fin 4)).Adj)`,
+  routing directly through the existing `(⊤ : _).Adj` `Decidable`
+  with no body unfolding — clean demotion, no opt-in. The
+  `Finset (Sym2 _)` helper defs (`moserEdges`, `path5Edges`) also
+  demote cleanly: consumed only inside the graph defs' (now
+  `@[expose]`) bodies, not by the iff-bridge instances directly.
+  All 11 `#eval` lines fire after the audit, producing the
+  documented expected values. Pattern matches the F3.5
+  `Henneberg.lean` row (intra-file `instDecidableTypeIAdj` /
+  `instDecidableTypeIIAdj` triggered `@[expose]` on `typeI` /
+  `typeII`): a `DecidableRel _.Adj` instance built via
+  `decidable_of_iff` against a body-mentioning bridge iff forces
+  `@[expose]` on the underlying graph def.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -340,29 +391,36 @@ median-of-4.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** F1.4 audit of `PebbleGame/Examples.lean` —
-demote `@[expose] public section` → `public section`. Expected
-closure per the F1.4 pre-pass note: trivial — the file has no
-`def`s, only `#eval` commands that consume the Phase 10 / Phase 11
-Layer 4b `Decidable` instances at meta time (`#eval (decide
-G.IsLaman)` and friends). The `public meta import
-CombinatorialRigidity.PebbleGame.Exec` line that gives `#eval` access
-to the sibling-module instances should stay unchanged (it's
-orthogonal to the section-style audit; see TACTICS-QUIRKS § 23).
-Append disposition row to `./PERFORMANCE.md` *F3.5 audit
-disposition* table.
+**Next concrete commit:** F2.1 re-audit of `Search/DFS.lean`'s
+existing 5 per-decl `@[expose]` opt-ins (`DirectedWalk.{length,
+vertices, IsPath, arcsFinset, reversedArcsFinset}` from Phase 9-perf
+F1.1) under the Phase 11 Layer 1 extension (~110 LoC adding
+`reachClosureComputable` + soundness + completeness +
+`DirectedWalk.toReflTransGen` bridge). Mechanic: verify each of the
+5 existing opt-ins is still triggered (try demoting each
+individually and confirm a build failure surfaces at the documented
+trigger site); then audit the Layer 1 additions for new exposure
+triggers (likely candidates: `reachClosureComputable` if any
+`@[simp] := rfl` projection appears, or any intra-file `simp [name]`
+/ `rw [name]`-as-unfold consumers). Append disposition delta row to
+`./PERFORMANCE.md` *F3.5 audit disposition* table.
 
-After F1.4, F2.1/F2.2 re-audit of the existing per-decl opt-ins on
-`DFS` and `Basic` under the Phase 11 reshape. F4.2 post-pass
-measurement closes the pass (or earlier if a measurable regression
-surfaces during F1).
+After F2.1, F2.2 re-audit of `PebbleGame/Basic.lean`'s 3 existing
+opt-ins (`PartialOrientation.{empty, reverse, addArc}`) under
+Phase 11's reach-closure absorption + `WorkhorseWitness` addition.
+F4.2 post-pass measurement (4-run A/B vs F4.1 baseline) closes the
+pass; F4.3 promotes the pass's net disposition to PERFORMANCE.md's
+*Experiments that didn't pay* (expected, per the F3.5 / Phase 9-perf
+F1 track record).
 
 If the session must stop mid-stream, the F4.1 baseline anchor + the
 F1.1 disposition for `Algorithm.lean` (`runPebbleGameWith` per-decl
 `@[expose]` only) + the F1.2 disposition for `Correctness.lean`
 (`PebbleGameResult.isAccept` per-decl `@[expose]` only) + the F1.3
 disposition for `Exec.lean` (clean demotion, zero per-decl opt-ins)
-are the persistent state added so far; the next session can pick up
-at F1.4 from a clean tree. Final hand-off paragraph will be
-rewritten at pass close; the default close convention is *no
-follow-up phase queued* per `../CLEANUP.md`.
++ the F1.4 disposition for `Examples.lean` (demoted, three per-decl
+opt-ins on `k4MinusE` / `moserSpindle` / `path5`) are the persistent
+state added so far; the next session can pick up at F2.1 from a
+clean tree. Final hand-off paragraph will be rewritten at pass
+close; the default close convention is *no follow-up phase queued*
+per `../CLEANUP.md`.
