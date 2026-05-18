@@ -367,6 +367,35 @@ the analysis floor.) Each file's transitive downstream-importer set:
    halves. Per-move file organization is cleaner but provides
    minimal transitive-import savings.
 
+5. **`PebbleGame.lean` split (Phase 9-perf F2 audit, audit-only —
+   keep as a single file).** The 2489-LoC file maps cleanly onto 10+
+   named sections — natural cut lines at L274 (Reverse) → L605
+   (AddArc) → L821 (Reachability) → L1036 (TryReachPebble) → L1219
+   (TryAddEdge) → L1472 (RunPebbleGame) → L1755 (Soundness) → L1863
+   (Completeness) → L2390 (Correctness) → L2464 (Matroidal). The
+   strongest pair of candidate splits is *Reachability + the four
+   pebble-game invariants* (L821–L1014) carved out as a "core
+   theory" file, or *Soundness + Completeness + Correctness*
+   (L1755–L2453) carved out as a "correctness" file.
+
+   **Single-downstream-consumer verification:** `PebbleGame.lean` is
+   imported only by `CombinatorialRigidity.lean` (the top-level entry,
+   `import`-statements only). Verified by `grep -rn "import.*PebbleGame"`
+   over the project tree — exactly one hit. Splitting therefore saves
+   **zero transitive-import surface** for any consumer; the only
+   benefit is per-incremental-rebuild speed when iterating on one
+   half without touching the other.
+
+   **Recommendation: keep as a single file.** Splits without a
+   downstream-import benefit fall into the "structural-clarity gain,
+   perf-neutral" bucket, and the per-decl `@[expose]` audit (F1.2,
+   above) is the cheaper lever for the same per-rebuild outcome
+   (3 per-decl opt-ins demote the section, narrowing exposure to
+   just the three `PartialOrientation`-producing defs). The file's
+   section organisation already maps cleanly to the blueprint
+   chapter structure in `chapter/pebble-game.tex`, so the
+   structural-clarity argument lands either way.
+
 ### Module-system conversion: now ripe
 
 Mathlib `v4.30.0-rc2` (the project's current pin) is essentially

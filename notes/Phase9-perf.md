@@ -179,31 +179,23 @@ disposition in the file's row of an F1 table here.
 
 ### F2. `PebbleGame.lean` internal split candidates (audit-only)
 
-- [ ] **F2.1.** Section-level boundaries audit. Enumerate the
-  natural cut lines:
-  - L275 (Reverse) → L605 (AddArc) → L820 (Reachability)
-  - L1035 (TryReachPebble) → L1190 (TryAddEdge) → L1460
-    (RunPebbleGame)
-  - L1743 (Soundness) → L1851 (Completeness) → L2400
-    (Correctness) → L2474 (Matroidal)
-  For each candidate split point, identify what would land in each
-  half + what `Reachable` / `PartialOrientation` / algorithm names
-  cross the boundary. Output: a `PERFORMANCE.md` *Split candidates
-  ranked by leverage* table row per candidate (matching the
-  post-Phase-8 Sparsity / Henneberg / MatroidIdentification audit).
-- [ ] **F2.2.** Single-downstream-consumer verification. PebbleGame.lean
-  has zero downstream importers (terminal file modulo the top-level
-  entry). Splits therefore save zero transitive-import surface for
-  any consumer; the only argument for splitting is
-  per-incremental-rebuild speed when iterating on one half without
-  touching the other. Document this in F2's PERFORMANCE.md update.
-- [ ] **F2.3.** Recommendation: keep as a single file. Splits
-  without a downstream-import benefit fall into the "structural-
-  clarity gain, perf-neutral" bucket; the file's section
-  organisation already maps cleanly to the blueprint chapter
-  structure, and the no-`@[expose]` audit (F1.2 above) is the
-  cheaper lever for the same per-rebuild outcome. Confirm by
-  4-run A/B on a touch-and-rebuild experiment if surprised.
+- [x] **F2.1.** Section-level boundaries audit. *Done; current
+  line numbers (PebbleGame.lean at 2489 LoC): L274 Reverse →
+  L605 AddArc → L821 Reachability → L1036 TryReachPebble →
+  L1219 TryAddEdge → L1472 RunPebbleGame → L1755 Soundness →
+  L1863 Completeness → L2390 Correctness → L2464 Matroidal.
+  Documented in PERFORMANCE.md* Split candidates ranked by
+  leverage *item 5.*
+- [x] **F2.2.** Single-downstream-consumer verification. *Done;
+  `grep -rn "import.*PebbleGame"` over the project tree returns
+  exactly one hit (`CombinatorialRigidity.lean`, the top-level
+  entry point, `import`-statements only). Splits save zero
+  transitive-import surface for any consumer.*
+- [x] **F2.3.** Recommendation: keep as a single file. *Done;
+  recorded in PERFORMANCE.md* Split candidates ranked by leverage
+  *item 5. The file's section organisation already maps cleanly to
+  the blueprint chapter, and F1.2's per-decl `@[expose]` audit is
+  the cheaper lever for the same per-rebuild outcome.*
 
 ### F3. `LinearRigidityMatroid.lean` module conversion follow-up
 
