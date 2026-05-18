@@ -414,8 +414,9 @@ upstream find:
   directly, so the entire ~10-line block collapses to
   `Finset.one_lt_card.mpr ⟨u, hu, v, hv, huv⟩`. The Phase 9 pebble
   game shipped two copies of the hand-rolled form in
-  `PebbleGame.lean` (`independent_brings_pebble_simpleGraph_form`
-  and the case-5 of `tryAddEdgeWith_eq_none_imp_exists_witness`),
+  `PebbleGame/Correctness.lean`
+  (`independent_brings_pebble_simpleGraph_form`
+  and case-5 of `tryAddEdgeWith_eq_none_imp_exists_witness`),
   collapsed in Phase 9-cleanup C2; the `.mp` direction was already
   in use at `SparsityIComponents.lean:112, 184`.
 

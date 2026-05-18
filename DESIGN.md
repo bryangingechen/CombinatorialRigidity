@@ -380,9 +380,10 @@ canonical entry point for what is mathematically one lemma.
 ## Pebble-game style island: `[Fintype V] [DecidableEq V]`
 
 The pebble-game line of work — `CombinatorialRigidity/Search/DFS.lean`
-(pre-Phase-9 verified DFS) and the forthcoming
-`CombinatorialRigidity/PebbleGame.lean` (Phase 9 main file) — is a
-deliberate style island. Both files take `[Fintype V] [DecidableEq V]`
+(pre-Phase-9 verified DFS) and the
+`CombinatorialRigidity/PebbleGame/{Basic, Algorithm, Correctness}.lean`
+subdirectory (Phase 9 main work, three-way split for size /
+modularity) — is a deliberate style island. Both files take `[Fintype V] [DecidableEq V]`
 directly in their algorithm signatures and use `Finset.card`
 end-to-end.
 

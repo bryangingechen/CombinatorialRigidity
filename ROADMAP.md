@@ -53,7 +53,10 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── CountMatroid.lean  Phase 7 — abstract (k, ℓ)-count matroid (ℓ < 2k)
 │   ├── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
 │   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
-│   └── PebbleGame.lean  Phase 9 — basic (k, ℓ)-pebble game + correctness
+│   └── PebbleGame/
+│       ├── Basic.lean       Phase 9 — `PartialOrientation` state + invariants
+│       ├── Algorithm.lean   Phase 9 — `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain
+│       └── Correctness.lean Phase 9 — soundness + completeness + matroidal corollary
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
 └── lake-manifest.json   resolved dependency revisions
@@ -80,7 +83,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-8) | project-wide (light scope) + import-structure audit | ✓ Complete (see `notes/Phase8-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-8) | `Sparsity` / `Henneberg` splits + module-system conversion | ✓ Complete (see `notes/Phase8-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | ⋮ Pre-Phase-9 DFS warmup | `Search/DFS.lean` | ✓ Complete (see `notes/Phase9.md` §"DFS warmup (pre-Phase-9)") |
-| 9. Pebble game | `PebbleGame.lean` | ✓ Complete (see `notes/Phase9.md`) |
+| 9. Pebble game | `PebbleGame/{Basic, Algorithm, Correctness}.lean` | ✓ Complete (see `notes/Phase9.md`) |
 | ⋮ Cleanup round (post-Phase-9) | project-wide (Phase 9 surface) | ✓ Complete (see `notes/Phase9-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-9) | `Search/DFS.lean` + `PebbleGame.lean` per-decl `@[expose]` audit | ✓ Complete (see `notes/Phase9-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 
@@ -271,12 +274,19 @@ blueprint mode** with `blueprint/src/chapter/rigidity-matroid.tex`'s
 See `notes/Phase8.md` for the full lemma list, decisions, and
 hand-off.
 
-### Phase 9 — Pebble game (`PebbleGame.lean`)
+### Phase 9 — Pebble game (`PebbleGame/{Basic, Algorithm, Correctness}.lean`)
 
 Complete. Formalizes the basic $(k, \ell)$-pebble game of
 Lee--Streinu 2008 (generalising the original $(2, 3)$ algorithm of
 Jacobs--Hendrickson 1997) end-to-end in the matroidal regime
-$\ell < 2k$ matching Phase 7. `PebbleGame.lean` ships the
+$\ell < 2k$ matching Phase 7. The pebble game lives in a
+`PebbleGame/` subdirectory split three ways post-Phase-9-perf
+(see `notes/PERFORMANCE.md` *Split candidates ranked by leverage*
+item 5 for the file-size-driven split rationale):
+`PebbleGame/Basic.lean` carries state + invariants;
+`PebbleGame/Algorithm.lean` the three-layer algorithm chain;
+`PebbleGame/Correctness.lean` the correctness theorems and the
+matroidal-independence corollary. The chapter ships the
 `PartialOrientation V` state (bundled `Finset (V × V)` with
 `no_loops` + `no_antiparallel`), the path-reversal and arc-insertion
 moves with per-vertex and subset-level accounting lemmas, the
@@ -331,7 +341,7 @@ application (L-S §6) are deferred to potential follow-up phases.
   predicates. See `DESIGN.md` *Typeclass shape for finiteness on `V`*
   for the rationale (Phase 7 cleanup round resolution; two earlier
   iterations were considered and reversed). Algorithm-bearing files
-  (`Search/DFS.lean`, `PebbleGame.lean`) deliberately depart from this
+  (`Search/DFS.lean`, `PebbleGame/`) deliberately depart from this
   rule and take `[Fintype V] [DecidableEq V]` end-to-end as a
   localized style island — the state machines iterate over
   `Finset V` / `Finset (V × V)` directly, and `#eval` / `decide`

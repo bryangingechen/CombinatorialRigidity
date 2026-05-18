@@ -556,7 +556,7 @@ trick generalises to any container-equality-via-`rw` step that
 crosses a local with a value-dependent type.
 
 Worked case study: `PartialOrientation.out_reverse_add` in
-`CombinatorialRigidity/PebbleGame.lean` (Phase-9). The path
+`CombinatorialRigidity/PebbleGame/Basic.lean` (Phase-9). The path
 `p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w` ties `D.arcs`
 into `p`'s type, and the goal contains `p.vertices` (via the
 `if v ∈ p.vertices ∧ … then 1 else 0` clauses); `rw [h_decomp]`
@@ -628,7 +628,7 @@ hypothesis. The fix is one tactic and never the deep-issue, but
 worth knowing so you don't reach for `Option.noConfusion` first.
 
 Worked case study: `tryAddEdgeWith_reachable` in
-`CombinatorialRigidity/PebbleGame.lean` (Phase 9). The function
+`CombinatorialRigidity/PebbleGame/Algorithm.lean` (Phase 9). The function
 `tryAddEdgeWith`'s below-threshold branch binds `let P : V → Bool
 := fun w => decide (0 < D.peb k w) && …`; `tryAddEdgeWith.induct`
 surfaces `P` as a binder in three of its five cases. The recursive-
@@ -738,8 +738,9 @@ surrounding identity is non-linear), the next reach is
 explicitly before `ring`.
 
 Worked case study: `Reachable.independent_brings_pebble` in
-`CombinatorialRigidity/PebbleGame.lean` (Phase 9 *Completeness*
-chain). The `pebOn V' = peb u + peb v + ∑ w ∈ V' \ {u, v}, peb k w`
+`CombinatorialRigidity/PebbleGame/Basic.lean` (Phase 9 *Reachability*
+section — Lemma 13 algebraic core, consumed by the *Completeness*
+chain in `PebbleGame/Correctness.lean`). The `pebOn V' = peb u + peb v + ∑ w ∈ V' \ {u, v}, peb k w`
 decomposition closes via the two-`have` + `omega` chain above; the
 follow-up `Finset.exists_ne_zero_of_sum_ne_zero` then extracts the
 blocking witness from `h_pos`.

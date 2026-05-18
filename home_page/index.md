@@ -47,7 +47,7 @@ file under
 |     6 | Laman's theorem (⇒)         | `RigidityMatroid.lean`, `LamanTheorem.lean`                      |   ✓    |
 |     7 | Lovász–Yemini matroid id.   | `CountMatroid.lean`, `MatroidIdentification.lean`                |   ✓    |
 |     8 | Linear-matroid framing      | `LinearRigidityMatroid.lean`                                     |   ✓    |
-|     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame.lean`                             |   ✓    |
+|     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness}.lean` |   ✓    |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

@@ -250,15 +250,24 @@ the trend was either flat or slightly worse:
   + codRestrict`) extractions were all kept because they shortened multiple
   call sites and the abstraction was natural.
 
-## Post-Phase-8 file-structure audit (audit-only, no Lean changes)
+## Post-Phase-8 file-structure audit
 
-The post-Phase-8 cleanup round's bucket E surveyed the project's import
-graph and file sizes for split candidates. **Findings remain
-recommendations, not executed splits** — splits change the public API
-surface and warrant a dedicated structural-refactor pass with the 4-run
-A/B protocol below.
+The post-Phase-8 cleanup round's bucket E originally surveyed the
+project's import graph and file sizes for split candidates as
+audit-only findings. **Three of the highest-leverage candidates have
+since landed as executed splits:** the `Sparsity.lean` /
+`SparsityIComponents.lean` split in Phase 8-perf F1 (item 1 below),
+the `Henneberg.lean` / `HennebergReverse.lean` split in Phase 8-perf
+F2 (item 2), and the `PebbleGame.lean` / `PebbleGame/{Basic,
+Algorithm, Correctness}.lean` subdirectory split landed
+post-Phase-9-perf under the revised framework (item 5). The other
+items are still recommendations.
 
-### Import graph (project files, post-Phase-8)
+The snapshot below is the post-Phase-8 state (pre-PebbleGame split);
+the import graph adds a `PebbleGame.Basic ← Algorithm ← Correctness`
+chain consumed by `CombinatorialRigidity.lean` after the split.
+
+### Import graph (project files, post-Phase-8 — pre-PebbleGame split)
 
 ```
 EdgesIn  ──►  Sparsity  ──┬──►  Framework  ──┬──►  TrivialMotions  ──►  RigidityMatroid  ──┐
@@ -453,9 +462,9 @@ from F2) is simpler and is what the project's existing splits use.
    halves. Per-move file organization is cleaner but provides
    minimal transitive-import savings.
 
-5. **`PebbleGame.lean` split (Phase 9-perf F2 audit; F2 framework
-   recommended keep-as-single-file, revised framework recommends
-   split).** The 2489-LoC file maps cleanly onto 10+
+5. **`PebbleGame.lean` split (Phase 9-perf F2 audit + executed
+   post-Phase-9-perf under revised framework).** The original
+   2489-LoC file mapped cleanly onto 10+
    named sections — natural cut lines at L274 (Reverse) → L605
    (AddArc) → L821 (Reachability) → L1036 (TryReachPebble) → L1219
    (TryAddEdge) → L1472 (RunPebbleGame) → L1755 (Soundness) → L1863
@@ -482,29 +491,59 @@ from F2) is simpler and is what the project's existing splits use.
    demoted the section, narrowing exposure to just the three
    `PartialOrientation`-producing defs).
 
-   **Recommendation under the revised framework (*Factors to weigh*
-   above): split.** Under the four-factor framework, file size and
-   incremental-rebuild speed are first-class factors. At 2489 LoC
-   the file is ~66 % over mathlib's ~1500-LoC soft cap (factor 2);
-   the file's elaboration cost is large enough that
-   incremental-rebuild speed during active iteration on one half
-   matters (factor 3); and the section organisation already maps
-   cleanly onto the blueprint chapter structure in
-   `chapter/pebble-game.tex` (factor 4). Three of the four factors
-   land on the split side; only the downstream-import axis (factor
-   1) is perf-neutral. Natural target structure: the *Mathlib
-   subdirectory pattern* above — convert `PebbleGame.lean` →
-   `PebbleGame/` directory, carve the 10+ named sections into a
-   small set of files (a likely shape is `PebbleGame/Basic.lean`
-   for the `PartialOrientation` + reachability + invariants core,
-   `PebbleGame/Algorithm.lean` for the three-layer
-   `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain, and
-   `PebbleGame/Correctness.lean` for soundness + completeness +
-   correctness + matroidal). Execute as a dedicated structural pass
-   with the 4-run A/B protocol; the headline metric is from-scratch
-   project-total build time, but the *durable* win — independent of
-   A/B outcome — is modularity + rebuild-speed during active
-   development.
+   **Executed under the revised framework (*Factors to weigh*
+   above): three-way split into `PebbleGame/` subdirectory.** Three
+   of the four framework factors recommended split: file size (2489
+   LoC ≈ 66 % over the ~1500-LoC soft cap, factor 2); incremental-
+   rebuild speed on the large analysis-heavy algorithm file (factor
+   3); structural-clarity / blueprint-chapter mapping
+   (`chapter/pebble-game.tex`'s 10+ named sections, factor 4). Only
+   the downstream-import axis (factor 1) was perf-neutral.
+
+   The split followed the *Mathlib subdirectory pattern* above:
+   `PebbleGame.lean` → `PebbleGame/` directory with three files at
+   the same level:
+
+   | File | LoC | Contents |
+   |---|---|---|
+   | `PebbleGame/Basic.lean` | 1024 | `PartialOrientation` struct, `empty` / `reverse` / `addArc` operations + accounting lemmas, `Reachable k ℓ` inductive + four pebble-game invariants |
+   | `PebbleGame/Algorithm.lean` | 771 | `TryReachPebble` + `TryAddEdge` + `RunPebbleGame` three-layer chain (computable workhorses + noncomputable math-layer wrappers) |
+   | `PebbleGame/Correctness.lean` | 815 | Soundness + Completeness + Correctness iff + matroidal-independence corollary |
+
+   All three files sit comfortably under the soft cap. Import
+   chain: `Basic` ← `Algorithm` ← `Correctness`; top-level
+   `CombinatorialRigidity.lean` imports `PebbleGame.Correctness`
+   transitively. No `Defs.lean` carve-out — `PartialOrientation`'s
+   definitional surface is tightly interleaved with the API and
+   wouldn't split cleanly.
+
+   **Section-marker disposition.** All three files use
+   `@[expose] public section` (matching `Framework.lean`'s F3.5
+   disposition, not the F1.2 narrowed `public section`-with-opt-ins
+   shape the pre-split single file carried). The cascading
+   exposure surface — once one downstream consumer needs body
+   defeq, every transitively-referenced helper does — pointed at
+   the file-wide marker as the cleaner equivalent. Trying the
+   demote-and-restore pattern from F3.5 forced ≥ 9 per-decl
+   opt-ins across Basic alone (`out`, `peb`, `span`, `outOn`,
+   `pebOn`, `underline`, plus reverse/addArc/empty already in
+   F1.2) and would have continued cascading into
+   `TryReachPebbleResult.newOrient`, `tryAddEdgeWith`, `tryAddEdge`,
+   `runPebbleGameWith`, `runPebbleGame` in Algorithm and likely
+   more in Correctness. The file-wide `@[expose] public section`
+   collapses that disposition table to a single per-file line; the
+   future per-decl narrowing audit (if it lands) can re-explore.
+
+   **Import surface narrowed per file.** Basic imports
+   `Mathlib.Algebra.BigOperators.Group.Finset.{Basic, Order.Group.Finset}`,
+   `Mathlib.Data.Finset.Basic`, `Mathlib.Data.Sym.Sym2`,
+   `CombinatorialRigidity.Search.DFS`; Algorithm imports
+   `Mathlib.Combinatorics.SimpleGraph.Finite` + Basic; Correctness
+   imports `CombinatorialRigidity.{Sparsity, CountMatroid}` +
+   Algorithm. The pre-split file pulled all of these into one
+   import set; the split lets Basic and Algorithm skip
+   `Sparsity` / `CountMatroid` (the heavier `SimpleGraph` /
+   `(k, ℓ)`-count chain).
 
 ### Module-system conversion: now ripe
 
@@ -690,18 +729,23 @@ Lessons:
    primarily by the file-size / modularity / incremental-rebuild
    factors above — see *Factors to weigh when ranking splits* and
    *Mathlib subdirectory pattern* for the framework, *Split
-   candidates ranked by leverage* for the current candidate list
-   (`PebbleGame.lean` at 2489 LoC is the open candidate under the
-   revised framework); (b) **module-system conversion**, landed in
-   Phase 8-perf F3.2–F3.5 with `LinearRigidityMatroid.lean` carved
-   out until upstream `apnelson1/Matroid`'s `Map.lean` converts
-   (re-check on next dep-bump); (c) **per-decl `@[expose]`
-   narrowing**, landed in Phase 8-perf F3.5 + Phase 9-perf F1
-   across all 16 module-converted files. Micro-optimizations
-   (tactic swaps, helper extraction, simp-set narrowing) routinely
-   sat in the ±5 s noise band (*Experiments that didn't pay*); the
-   structural axes are where every project-scale wall-clock win
-   has come from.
+   candidates ranked by leverage* for the current dispositions
+   (the largest single-file open candidate, `PebbleGame.lean` at
+   2489 LoC, landed as a three-way subdirectory split
+   post-Phase-9-perf — item 5; `Sparsity.lean` at 1277 LoC is the
+   next-biggest under the cap and not currently a split target);
+   (b) **module-system conversion**, landed in Phase 8-perf
+   F3.2–F3.5 with `LinearRigidityMatroid.lean` carved out until
+   upstream `apnelson1/Matroid`'s `Map.lean` converts (re-check on
+   next dep-bump); (c) **per-decl `@[expose]` narrowing**, landed
+   in Phase 8-perf F3.5 + Phase 9-perf F1 across the original 16
+   module-converted files (PebbleGame's three split files sit at
+   file-wide `@[expose] public section` per item 5's
+   disposition). Micro-optimizations (tactic swaps, helper
+   extraction, simp-set narrowing) routinely sat in the ±5 s
+   noise band (*Experiments that didn't pay*); the structural
+   axes are where every project-scale wall-clock win has come
+   from.
 3. **The profiler is most useful as a sanity check, not a guide.** Use it
    to spot a single declaration taking > 100 ms or a `simp` ballooning, but
    don't expect the cumulative numbers to predict wall-clock movement.
