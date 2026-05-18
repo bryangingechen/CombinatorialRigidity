@@ -81,7 +81,7 @@ See `../../DESIGN.md` *Pebble-game style island* for the rationale.
   numeric termination measure on a finite data structure.
 -/
 
-@[expose] public section
+public section
 
 namespace CombinatorialRigidity.Search
 
@@ -107,17 +107,20 @@ variable {R : V → V → Prop} {u v w : V}
 
 /-- Number of arcs in the walk. `(nil u).length = 0`; each `cons`
 extends by one. -/
+@[expose]
 def length : ∀ {u w : V}, DirectedWalk R u w → ℕ
   | _, _, nil _      => 0
   | _, _, cons _ p   => p.length + 1
 
 /-- The list of vertices visited by the walk, in order. Has length
 `p.length + 1` (every walk visits at least one vertex). -/
+@[expose]
 def vertices : ∀ {u w : V}, DirectedWalk R u w → List V
   | u, _, nil _      => [u]
   | u, _, cons _ p   => u :: p.vertices
 
 /-- The walk visits each vertex at most once. -/
+@[expose]
 def IsPath (p : DirectedWalk R u w) : Prop := p.vertices.Nodup
 
 /-- Drop the prefix of a walk up to (and including) the first occurrence of
@@ -227,12 +230,14 @@ variable [DecidableEq V]
 its source-target pair; the empty walk contributes nothing. For an `IsPath`
 walk, the cardinality matches `length p` (consumers downstream of
 `def:path-reversal` may use this). -/
+@[expose]
 def arcsFinset : ∀ {u w : V}, DirectedWalk R u w → Finset (V × V)
   | _, _, .nil _ => ∅
   | u, _, .cons (v := v) _ q => insert (u, v) q.arcsFinset
 
 /-- The arcs of an `R`-walk *with each arrow reversed*, as a `Finset (V × V)`.
 Used in `def:path-reversal` to express the moved orientation. -/
+@[expose]
 def reversedArcsFinset : ∀ {u w : V}, DirectedWalk R u w → Finset (V × V)
   | _, _, .nil _ => ∅
   | u, _, .cons (v := v) _ q => insert (v, u) q.reversedArcsFinset

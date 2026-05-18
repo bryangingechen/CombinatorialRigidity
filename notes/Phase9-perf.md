@@ -15,6 +15,26 @@ protocol, and the standing recommendations.
 F4.1 baseline measured. Both Phase 9 files currently sit at
 `@[expose] public section`; F1 per-decl audit not yet started.
 
+### F1.1 disposition — `Search/DFS.lean`
+
+| Def | Per-decl `@[expose]`? | Trigger when demoted |
+|---|---|---|
+| `DirectedWalk` (inductive) | n/a | constructors auto-exposed |
+| `DirectedWalk.length` | yes | `simp [DirectedWalk.length]` in `PebbleGame.lean` line 391; demote error: *"Invalid simp theorem `DirectedWalk.length`: Expected a definition with an exposed body"* |
+| `DirectedWalk.vertices` | yes | `rw [DirectedWalk.IsPath, DirectedWalk.vertices, …]` in `PebbleGame.lean` line 393 |
+| `DirectedWalk.IsPath` | yes | `rw [DirectedWalk.IsPath, …]` in `PebbleGame.lean` line 393; demote error: *"Invalid rewrite argument: … `DirectedWalk.IsPath ?p` is a value of type Prop"* (i.e., body not exposed for `rw`) |
+| `DirectedWalk.mapRel` | no | consumed opaquely (called as a function value); intra-file `@[simp]` lemmas (`mapRel_length`, `mapRel_vertices`) are proved by induction + `rw`, not `rfl` |
+| `DirectedWalk.arcsFinset` | yes | intra-file `@[simp] arcsFinset_{nil,cons} … := rfl` (lines 245–249); demote error: *"Not a definitional equality: `(nil u).arcsFinset` is not definitionally equal to `∅`"* |
+| `DirectedWalk.reversedArcsFinset` | yes | intra-file `@[simp] reversedArcsFinset_{nil,cons} … := rfl` (lines 251–256); same shape as `arcsFinset` |
+| `DirectedWalk.dropUntilBundle` | no | the `Subtype`-bundled truncation: consumed by `reachableFindingAux` and `reachableFinding` as a value; downstream sees it through `IsPath` / endpoint witnesses, not body |
+| `reachableFinding`, `reachableFindingAux` | no | the DFS body — consumed via the `Sum`-shaped result; soundness/completeness lemmas mediate all reasoning, no body access needed |
+| `reachClosure` | no | only the `@[simp] mem_reachClosure` lemma is consumed downstream; the `Relation.ReflTransGen` body stays opaque |
+
+The dominant trigger is the **`@[simp] ... := rfl` pattern**
+(arcsFinset / reversedArcsFinset projections) and the **`simp [name]`
+/ `rw [name]`-as-unfold** pattern (length / vertices / IsPath) — both
+matching the F3.5 *Lessons* taxonomy in `./PERFORMANCE.md`.
+
 ### F4.1 baseline (4-run medians, `@[expose] public section`)
 
 Protocol per `./PERFORMANCE.md` *Measurement protocol*: per-target
@@ -88,18 +108,14 @@ Pattern: F3.5 of Phase 8-perf. For each file, attempt
 sites whose bodies are genuinely consumed. Document the trigger +
 disposition in the file's row of an F1 table here.
 
-- [ ] **F1.1.** `Search/DFS.lean` audit. The file ships
-  `DirectedWalk` (inductive, no `@[expose]` decision — inductives
-  expose their constructors automatically),
-  `reachableFinding` / `reachableFindingAux` (the DFS body),
-  `reachableFinding.terminates` (if any termination-by data is
-  exposed), `DirectedWalk.dropUntilBundle` (the `Subtype`-bundled
-  truncation), and `reachClosure`. Demote section to `public
-  section`; observe which downstream sites (most likely
-  `PebbleGame.lean`'s uses of `reachableFinding` /
-  `reachClosure` / the `DirectedWalk` API) fail elaboration.
-  Restore `@[expose]` per-decl on the failing sites. Document the
-  table.
+- [x] **F1.1.** `Search/DFS.lean` audit. *Done; demoted to
+  `public section` with 5 per-decl `@[expose]` opt-ins on
+  `DirectedWalk.{length, vertices, IsPath, arcsFinset,
+  reversedArcsFinset}`. See* §F1.1 disposition *below for
+  triggers.* The DFS body (`reachableFinding`,
+  `reachableFindingAux`, `dropUntilBundle`, `reachClosure`, the
+  `mapRel` mapper) is consumed opaquely by `PebbleGame.lean` and
+  did not need exposure.
 - [ ] **F1.2.** `PebbleGame.lean` audit. The file ships
   `PartialOrientation` (structure — `mk` constructor + field
   accessors auto-exposed), the derived count defs
