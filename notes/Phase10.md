@@ -32,11 +32,12 @@ same first commit as this file.
 Layer 0 audits closed, Layer 1 (computable list views) landed,
 Layer 2's workhorse-level correctness restatement landed, Layer 2
 itself closed via the exec-layer wrapper `runPebbleGameExec` plus its
-certificate-form correctness theorem, and Layer 3 is now in progress:
-the canonical `Decidable (G.IsSparse k ℓ)` instance is registered,
-matching `IsTight` / `IsLaman` instances pending. Per the revised
-Layer 0 audit \#1 outcome below, there is **no `Mathlib/`
-mirror** for Phase 10: mathlib's existing
+certificate-form correctness theorem, and Layer 3 is in progress:
+the canonical `Decidable (G.IsSparse k ℓ)` and `Decidable (G.IsTight
+k ℓ)` instances are registered; the matching `IsLaman` instance is
+the next concrete commit. Per the revised Layer 0 audit \#1 outcome
+below, there is **no `Mathlib/` mirror** for Phase 10: mathlib's
+existing
 `instance : PartialOrder (Sym2 α) := .ofSetLike _ _` occupies the
 slot for an order on `Sym2 V` with the (non-total) subset order, so
 a competing `LinearOrder (Sym2 V)` cannot be registered. Layer 1
@@ -77,22 +78,42 @@ math-layer enumeration `G.edgeFinset.toList.map Quot.out` with its
 `runPebbleGame_underline_eq_edgeFinset` pays the three-discharge
 proof, the rest reuse it.
 
-Layer 3 (this commit) ships `SimpleGraph.instDecidableIsSparse`
-in the same `Exec.lean`, hypothesised on `[LinearOrder V]` /
-`[Fintype V]` / `[Fintype G.edgeSet]` plus a `[Fact (ℓ < 2 * k)]`
-matroidal-regime witness for typeclass synthesis. The instance body
-is `decidable_of_iff ((runPebbleGameExec G k ℓ).isSome = true)` of
-the iff `(runPebbleGameExec G k ℓ).isSome = true ↔ G.IsSparse k ℓ`
+Layer 3 ships `SimpleGraph.instDecidableIsSparse` in `Exec.lean`,
+hypothesised on `[LinearOrder V]` / `[Fintype V]` /
+`[Fintype G.edgeSet]` plus a `[Fact (ℓ < 2 * k)]` matroidal-regime
+witness for typeclass synthesis. The instance body is
+`decidable_of_iff ((runPebbleGameExec G k ℓ).isSome = true)` of the
+iff `(runPebbleGameExec G k ℓ).isSome = true ↔ G.IsSparse k ℓ`
 obtained by chaining `Option.isSome_iff_exists` against the
 certificate-form theorem `runPebbleGameExec_correct`. Smoke-tested
 via `#eval (decide ((⊥ : SimpleGraph (Fin 4)).IsSparse 2 3))` → `true`
 and `#eval (decide ((⊤ : SimpleGraph (Fin 4)).IsSparse 2 3))` →
 `false` (correct: $K_4$ has 6 edges, exceeds $2 \cdot 4 - 3 = 5$); both
 reduce through the compiled `runPebbleGameExec` body in well under a
-second. The blueprint node `def:isSparse-decidable` is now
+second. The blueprint node `def:isSparse-decidable` is
 `\leanok`-green. Companion DESIGN.md section *One `Decidable` instance
 per project predicate* (Phase 10 Commit *Layer 3 — open*) carries the
 project rule forbidding competing brute-force registrations.
+
+This commit additionally ships `SimpleGraph.instDecidableIsTight` in
+the same `Exec.lean`, under the same `[LinearOrder V]` / `[Fintype V]`
+/ `[Fintype G.edgeSet]` / `[Fact (ℓ < 2 * k)]` hypotheses. The instance
+body is `decidable_of_iff` against the conjunction
+`G.IsSparse k ℓ ∧ G.edgeFinset.card + ℓ = k * Fintype.card V`
+(decidable: sparsity half via `instDecidableIsSparse`, the `ℕ`
+equation as a standard `Nat.decEq`). The `IsTight` definition's
+`Set.ncard` / `Nat.card V` form bridges to the `Finset.card` /
+`Fintype.card V` form via the project mirror
+`ncard_edgeSet_eq_card_edgeFinset` (already used in
+`Sparsity.lean`'s global-edge-bound lemmas) and the mathlib lemma
+`Nat.card_eq_fintype_card` — both pure rewrites with no algorithmic
+content. Smoke-tested via `#eval (decide ((⊥ : SimpleGraph (Fin 4)).
+IsTight 2 3))` → `false` (0 edges $\ne 5$),
+`#eval (decide ((⊤ : SimpleGraph (Fin 4)).IsTight 2 3))` → `false`
+($K_4$ is not even sparse), and
+`#eval (decide ((⊤ : SimpleGraph (Fin 2)).IsTight 2 3))` → `true`
+($K_2$ has $1 = 2 \cdot 2 - 3$ edges). The blueprint node
+`def:isTight-decidable` is now `\leanok`-green.
 
 The phase target is **end-to-end executability** of the pebble game:
 a computable wrapper `runPebbleGameExec` whose body avoids
@@ -362,20 +383,18 @@ discipline.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** continue Layer 3 — register the canonical
-`Decidable (G.IsTight k ℓ)` instance in `PebbleGame/Exec.lean` (under
-the same `[Fact (ℓ < 2 * k)]` hypothesis), as the conjunction of
-`SimpleGraph.instDecidableIsSparse` (already registered) with the
-edge-count equality `G.edgeFinset.card + ℓ = k * Fintype.card V`
-(decidable as a `Nat` equation under `[Fintype V]` /
-`[Fintype G.edgeSet]`). Note that `IsTight` is stated via `Set.ncard`,
-so the bridge from `edgeFinset.card` to `G.edgeSet.ncard` needs a
-one-line `Set.ncard_eq_toFinset_card'` rewrite. Flip the
-`def:isTight-decidable` blueprint node's `\lean{...}` and `\leanok` in
-the same commit. The follow-on commit lands
-`Decidable G.IsLaman` as a one-line corollary at `(k, ℓ) = (2, 3)`,
-including a top-level `instance : Fact (3 < 2 * 2) := ⟨by omega⟩` so
-the Laman case ships without a Fact-discharge call site.
+**Next concrete commit:** close Layer 3 — register the canonical
+`Decidable G.IsLaman` instance in `PebbleGame/Exec.lean` as a one-line
+corollary at `(k, ℓ) = (2, 3)`. Since `IsLaman := IsTight 2 3` is an
+`@[expose] def`, the body unfolds to a call site of
+`instDecidableIsTight`; a top-level
+`instance : Fact (3 < 2 * 2) := ⟨by omega⟩` ships alongside so the
+Laman case is zero-hypothesis at call sites. Flip the
+`def:isLaman-decidable` blueprint node's `\lean{...}` and `\leanok` in
+the same commit. After Laman lands, Layer 3 closes and Layer 4
+(`PebbleGame/Examples.lean` — the four `#eval`-able worked examples
+from the chapter, $K_4 \setminus e$ / Moser spindle / $K_4$ / a
+5-vertex path) becomes the next concrete commit.
 
 Phase 10 closes when:
 - `chapter/executable.tex`'s dep-graph is fully `\leanok`-green;

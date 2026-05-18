@@ -356,12 +356,20 @@ corollaries.
 
 \begin{definition}[\texttt{Decidable} instance for tightness]
   \label{def:isTight-decidable}
+  \lean{SimpleGraph.instDecidableIsTight}
+  \leanok
   \uses{def:isSparse-decidable, def:isTight}
   Under the hypotheses of \cref{def:isSparse-decidable},
   $G.\mathrm{IsTight}\,k\,\ell$ is decidable: it is the conjunction
   of $G.\mathrm{IsSparse}\,k\,\ell$ (\cref{def:isSparse-decidable})
   with the edge-count equation $|E(G)| + \ell = k \cdot |V|$, the
-  latter decidable as an equality on $\mathbb{N}$.
+  latter decidable as an equality on $\mathbb{N}$. The
+  formalisation bridges the $\mathrm{Set.ncard}$ /
+  $\mathrm{Nat.card}\,V$ form of $\mathrm{IsTight}$ to the
+  $\mathrm{Finset.card}$ / $\mathrm{Fintype.card}\,V$ form via the
+  project mirror $\mathrm{ncard\_edgeSet\_eq\_card\_edgeFinset}$ and
+  the mathlib lemma $\mathrm{Nat.card\_eq\_fintype\_card}$ — both
+  pure rewrites with no algorithmic content.
 \end{definition}
 
 \begin{definition}[\texttt{Decidable} instance for Laman]

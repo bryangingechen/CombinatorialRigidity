@@ -60,8 +60,18 @@ theorem `runPebbleGameWith_correct` of Phase 10 Layer 2:
   whose reduction body is `(runPebbleGameExec G k ℓ).isSome`. Runs in
   polynomial time in `|V| + |E|`; the source forbids competing
   brute-force instances per `DESIGN.md` *One `Decidable` instance per
-  project predicate*. Subsequent commits register the matching
-  `IsTight` / `IsLaman` decidability instances on top.
+  project predicate*.
+* `SimpleGraph.instDecidableIsTight` — Layer 3. The canonical
+  `Decidable (G.IsTight k ℓ)` instance, derived from
+  `instDecidableIsSparse` plus the decidable `ℕ` equation
+  `G.edgeFinset.card + ℓ = k * Fintype.card V`. The
+  `G.edgeSet.ncard` / `Nat.card V` form in the `IsTight`
+  definition is bridged to the `Finset.card` / `Fintype.card` form
+  via the mirror `ncard_edgeSet_eq_card_edgeFinset` and
+  `Nat.card_eq_fintype_card` — both pure rewrites, decided in
+  polynomial time alongside the sparsity check. The matching
+  `IsLaman` instance is the follow-on commit, registered as a
+  one-liner at `(k, ℓ) = (2, 3)`.
 
 See `blueprint/src/chapter/executable.tex` for the authoritative
 forward-mode dep-graph and lemma index; `notes/Phase10.md` for
@@ -292,5 +302,26 @@ instance instDecidableIsSparse [LinearOrder V] [Fintype V] (G : SimpleGraph V)
     Decidable (G.IsSparse k ℓ) :=
   decidable_of_iff ((runPebbleGameExec G k ℓ).isSome = true)
     (Option.isSome_iff_exists.trans (runPebbleGameExec_correct h_matroidal.out).symm)
+
+/-- **Canonical decidability of `(k, ℓ)`-tightness in the matroidal regime**
+(Phase 10 Layer 3; blueprint `def:isTight-decidable`). Stacks on
+`instDecidableIsSparse`: `IsTight k ℓ` is the conjunction of `IsSparse k ℓ`
+with the global edge-count equation, so decidability reduces to deciding the
+sparsity half (via `runPebbleGameExec`) and a `Nat` equation. `IsTight`'s
+equation is stated via `Set.ncard` / `Nat.card V`; the bridge to the decidable
+`G.edgeFinset.card + ℓ = k * Fintype.card V` form is the project mirror
+`ncard_edgeSet_eq_card_edgeFinset` and the mathlib lemma
+`Nat.card_eq_fintype_card`.
+**One `Decidable` instance per project predicate.** Per `DESIGN.md`, do not
+register competing instances; the canonical reduction body is the same
+pebble game body as `instDecidableIsSparse`, paired with a constant-time
+`Nat` equality. -/
+instance instDecidableIsTight [LinearOrder V] [Fintype V] (G : SimpleGraph V)
+    [Fintype G.edgeSet] (k ℓ : ℕ) [Fact (ℓ < 2 * k)] :
+    Decidable (G.IsTight k ℓ) :=
+  decidable_of_iff
+    (G.IsSparse k ℓ ∧ G.edgeFinset.card + ℓ = k * Fintype.card V) <| by
+    unfold IsTight
+    rw [G.ncard_edgeSet_eq_card_edgeFinset, Nat.card_eq_fintype_card]
 
 end SimpleGraph
