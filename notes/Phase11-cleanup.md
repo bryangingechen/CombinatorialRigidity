@@ -21,7 +21,12 @@ no-op + smell-table revision — depth-aware comma count surfaces 6
 genuine 4+ arg `rw` chains (the pre-grep regex's 9 was inflated by
 inner-`⟨_, _⟩`-tuple commas at lines 421/435/448 in `Basic.lean`,
 which are 2-arg chains), each verdict per-step structural rewrite
-with no missing-fused-lemma candidate; B4/B5/C/D pending).
+with no missing-fused-lemma candidate; B4 closed as no-op —
+`grep -nE 'letI|haveI|Fintype.ofFinite|Set.Finite.fintype'` over the
+Phase 10+11 surface returns zero `letI` / `haveI` / `Set.Finite.fintype`
+hits and two `Fintype.ofFinite` hits, both in *Style island* docstrings
+documenting the deliberate *absence* of the bridge idiom; B5/C/D
+pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -401,11 +406,23 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   `simp [name list]` collapses on every site — they all close, but
   with no measurable simplification benefit (and `simp [mul_comm]`
   is a non-terminator risk). No project-mirror surfaced.
-- [ ] **B4:** `letI`/`haveI Fintype.ofFinite` audit. The style
-  island already takes `[Fintype V] [DecidableEq V]` end-to-end
-  (`../DESIGN.md` *Pebble-game style island*), so no inline bridge
-  should be needed inside the algorithm files. Re-grep confirms.
-  Expected closure: no edits.
+- [x] **B4:** `letI`/`haveI Fintype.ofFinite` audit. Closed as a
+  **no-op**. Four greps over the Phase 10+11 surface
+  (`CombinatorialRigidity/PebbleGame/{Basic,Algorithm,Correctness,Exec,
+  Examples}.lean`, `CombinatorialRigidity/Search/DFS.lean`, `Main.lean`):
+  `grep -nE 'haveI'` — zero hits; `grep -nE 'letI'` — zero hits;
+  `grep -nE 'Fintype\.ofFinite'` — **two** hits, both in *Style
+  island* docstrings (`Basic.lean:49`, `DFS.lean:73`) that document
+  the deliberate *absence* of the bridge — they are pointers to the
+  project-default `[Finite V]` + inline-bridge idiom that the
+  algorithm files explicitly *do not* use; `grep -nE 'Set\.Finite\.fintype'`
+  — zero hits. The style island convention `[Fintype V] [DecidableEq V]`
+  end-to-end (`../DESIGN.md` *Pebble-game style island*) is uniformly
+  respected; no inline `Fintype.ofFinite` / `Set.Finite.fintype`
+  bridge appears in any algorithm body. No comment-out test was
+  needed (nothing to comment out). Confirms the cross-cutting
+  expectation that algorithm-bearing files take their finiteness
+  data via the typeclass slot, not via inline derivation.
 - [ ] **B5:** `@[nolint …]` / `set_option linter …` audit. Pre-grep
   shows zero hits. Expected closure: no-op.
 
@@ -711,6 +728,28 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
   Sanity build via `lake build` clean (2467 jobs). All six sites
   remain at their current shape post-audit.
+- **B4: `letI`/`haveI Fintype.ofFinite` audit (Phase 10+11 surface)**
+  — no-op closure. Four greps over
+  `CombinatorialRigidity/PebbleGame/{Basic,Algorithm,Correctness,Exec,
+  Examples}.lean`, `CombinatorialRigidity/Search/DFS.lean`, and
+  `Main.lean`:
+  (i) `grep -nE 'haveI'` — **zero** hits.
+  (ii) `grep -nE 'letI'` — **zero** hits.
+  (iii) `grep -nE 'Fintype\.ofFinite'` — **two** hits at `Basic.lean:49`
+  and `DFS.lean:73`. Both are inside the *Style island* docstring
+  paragraphs ("This file ... departing from the project's default
+  `[Finite V]` + inline `Fintype.ofFinite V` bridge idiom") — pointers
+  *to* the project-default idiom that the algorithm files deliberately
+  do *not* use; neither is a code-level invocation.
+  (iv) `grep -nE 'Set\.Finite\.fintype'` — **zero** hits.
+  The style island convention `[Fintype V] [DecidableEq V]` end-to-end
+  (`../DESIGN.md` *Pebble-game style island*) is uniformly respected
+  across the Phase 10+11 surface; the algorithm bodies pull finiteness
+  data from the typeclass slot rather than deriving it inline. No
+  comment-out test was needed because there is nothing to comment out.
+  Confirms the expected closure noted at round open. Bucket B is now
+  80 % done (B1 no-op / B2 no-op + smell-table revision / B3 no-op +
+  smell-table revision / B4 no-op); B5 pending.
 
 ## Blockers / open questions
 
@@ -719,22 +758,17 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 ## Hand-off / next phase
 
 Round still in progress; Bucket A complete (A1 no-op / A2
-targeted fix / A3 targeted fix / A4 no-op); Bucket B 60 % done
+targeted fix / A3 targeted fix / A4 no-op); Bucket B 80 % done
 (B1 no-op / B2 no-op + smell-table revision / B3 no-op +
-smell-table revision). Next concrete commit: **B4** —
-`letI`/`haveI Fintype.ofFinite` audit, expected no-op
-re-confirmation per the style-island convention
-(`../DESIGN.md` *Pebble-game style island*: the algorithm files
-take `[Fintype V] [DecidableEq V]` end-to-end, so no inline
-`Fintype.ofFinite` bridge should be needed). Quick discharge:
-`grep -nE "letI|haveI.*(Fintype.ofFinite|Set.Finite.fintype)"
-CombinatorialRigidity/PebbleGame/*.lean
-CombinatorialRigidity/Search/DFS.lean Main.lean`. After B4: **B5**
-(`@[nolint …]` / `set_option linter` no-op re-confirmation; pre-grep
-shows zero hits). After Bucket B close, **C** (long-proof audit on
-`Algorithm.lean` and the verdict-construction bodies) and **D**
-(project-organization compression of `notes/Phase10.md` and
-`notes/Phase11.md`).
+smell-table revision / B4 no-op). Next concrete commit: **B5** —
+`@[nolint …]` / `set_option linter` audit, expected no-op
+re-confirmation per the pre-grep summary in *Current state*
+(zero hits across the Phase 10+11 surface). Quick discharge:
+`grep -nE '@\[nolint|set_option linter' CombinatorialRigidity/PebbleGame/*.lean
+CombinatorialRigidity/Search/DFS.lean Main.lean`. After B5 closes
+Bucket B, **C** (long-proof audit on `Algorithm.lean` and the
+verdict-construction bodies) and **D** (project-organization
+compression of `notes/Phase10.md` and `notes/Phase11.md`).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
