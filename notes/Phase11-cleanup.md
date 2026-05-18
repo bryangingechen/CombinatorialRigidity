@@ -8,7 +8,16 @@ targeted fixes in `chapter/executable.tex` — `def:runPebbleGameExec`
 to non-existent discharge nodes; A4 closed as no-op — Bucket A
 complete; B1 closed as no-op — zero `classical` tactic invocations
 and zero `Classical.*` term-mode references in actual code across the
-Phase 10+11 surface; B2/B3/B4/B5/C/D pending).
+Phase 10+11 surface; B2 closed as no-op — all 6 `noncomputable def`
+sites on the Phase 10+11 surface are forced by the same `Finset.toList`
+/ `Quot.out` enumeration driver Phase 9-cleanup documented, with the
+delta vs Phase 9 being a net wash (`reachClosure` retired in Phase 11
+Layer 1 in favour of computable `reachClosureComputable`;
+`runPebbleGame.aux` added in Phase 11 Layer 4b alongside
+`runPebbleGame`); pre-grep smell-count table revised — the previous
+entry's 29-site claim conflated docstring/comment mentions of
+"`noncomputable`" with actual `noncomputable def` sites;
+B3/B4/B5/C/D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -121,11 +130,20 @@ surface only —
 | Smell | DFS | Basic | Algorithm | Correctness | Exec | Examples | Main |
 |---|---|---|---|---|---|---|---|
 | `classical` (standalone) | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| `noncomputable def` | 2 | 8 | 10 | 6 | 3 | 0 | 0 |
+| `noncomputable def` | 0 | 2 | 2 | 2 | 0 | 0 | 0 |
 | `change` / `show` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | `@[nolint …]` / `set_option linter` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Multi-step `rw [..., ..., ...]` (3+ args) | 3 | 5 | 0 | 0 | 1 | 0 | 0 |
 | `show … from rfl` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+*Revised at B2 close:* the previous `noncomputable def` row's 29-site
+total was off — `grep -nE "(^|\s)noncomputable (def|abbrev|instance)"`
+returns 6 actual sites (Basic: `outList` L138, `reach` L1055;
+Algorithm: `tryReachPebble` L122, `tryAddEdge` L448;
+Correctness: `runPebbleGame.aux` L748, `runPebbleGame` L802; Exec: 0).
+The original count conflated docstring/comment mentions of
+"`noncomputable`" (e.g. `Basic.lean:130` "noncomputable in mathlib
+because `Multiset.toList` …") with actual declaration sites.
 
 Phase 9-cleanup B4 audited the `noncomputable def` sites in `DFS.lean`
 and the pre-Phase-11 `PebbleGame/*.lean`; Phase 11 reshape may have
@@ -294,18 +312,58 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   use. No comment-out test is needed because there is nothing to
   comment out. Confirms the pre-grep summary in *Current state*
   above.
-- [ ] **B2:** `noncomputable def` audit (delta vs Phase 9-cleanup
-  B4). Three categories to expect:
-  - Phase 10 additions in `Exec.lean` (3 sites): the
-    `runPebbleGameExec` wrapper + math-layer companion.
-  - Phase 11 reshape in `Basic.lean` / `Algorithm.lean` /
-    `Correctness.lean`: the `runPebbleGame` math-layer wrapper
-    moved to verdict-bearing form (Layer 4b); the workhorse-level
-    `runPebbleGameWith` stays computable; `PartialOrientation.reach`
-    Layer 1 redefinition.
-  For each: verify the `noncomputable` keyword is forced by a
-  named driver (`Finset.toList`'s `Quot.out` / `Real.instRCLike` /
-  similar) or vestigial.
+- [x] **B2:** `noncomputable def` audit (delta vs Phase 9-cleanup
+  B4). Closed as a **no-op**. Re-grep
+  (`grep -nE "(^|\s)noncomputable (def|abbrev|instance)"`) over
+  the Phase 10+11 surface returns **6 sites total** (not the 29
+  the pre-grep table claimed — see *Cleanup pass summaries* B2
+  for the conflation diagnosis):
+  - `Basic.lean:138` `outList` — root driver. `(D.outNbhd v).toList`
+    threads `Finset V → Multiset V → List V` via `Finset.toList`,
+    whose Quotient lift uses `Classical`-flavored `Quotient.lift`
+    machinery; docstring documents.
+  - `Basic.lean:1055` `reach` — inherits via
+    `reachClosureComputable D.outList v`; the wrapper is computable
+    but `D.outList` is the noncomputable input; docstring documents.
+  - `Algorithm.lean:122` `tryReachPebble` — inherits via
+    `tryReachPebbleWith … D.outList …`; one-liner math-layer
+    specialisation of the computable `tryReachPebbleWith`
+    workhorse; docstring documents.
+  - `Algorithm.lean:448` `tryAddEdge` — inherits via
+    `tryAddEdgeWith … (fun D' => D'.outList) …`; one-liner
+    math-layer specialisation of the computable `tryAddEdgeWith`
+    workhorse; docstring documents.
+  - `Correctness.lean:748` `runPebbleGame.aux` — inherits via
+    `D'.outList` + `G.edgeFinset.toList.map Quot.out`; both
+    `Finset.toList` and `Quot.out` carry the noncomputable burden;
+    docstring documents.
+  - `Correctness.lean:802` `runPebbleGame` — inherits via
+    one-line call to `runPebbleGame.aux`; docstring documents.
+
+  Delta vs Phase 9-cleanup B4 (6 sites: `outList`,
+  `tryReachPebble`, `tryAddEdge`, `runPebbleGame`, `reach`, plus
+  `DFS.reachClosure`):
+  - **Removed (−1):** `DFS.reachClosure` retired in Phase 11
+    Layer 1 in favour of the **computable**
+    `reachClosureComputable` (no `noncomputable` keyword;
+    `DFS.lean` now has 0 sites).
+  - **Added (+1):** `runPebbleGame.aux` in `Correctness.lean`,
+    introduced in Phase 11 Layer 4b to dodge the
+    `match h : <expr> with` substitution quirk (TACTICS-QUIRKS
+    § 17) by taking the `Sum`-shaped workhorse output as an
+    explicit argument.
+  - **Reshape neutral:** the two `Algorithm.lean` sites and the
+    two `Basic.lean` sites are present in both rounds (Phase 11
+    Layer 3 reshape changed `tryAddEdge`'s return type from
+    `Option` to `Sum` but did not change its `noncomputable`
+    posture).
+  Net total: 6 sites, all forced by the same `Finset.toList` /
+  `Quot.out` enumeration driver (the math-layer / exec-layer
+  split documented in `../DESIGN.md` *Pebble-game style island*).
+  No vestigial sites; no in-round refactor surfaced. Sanity build
+  via `lake build CombinatorialRigidity.PebbleGame.Correctness`
+  succeeded as expected. Pre-grep smell counts table revised in
+  *Current state*.
 - [ ] **B3:** Multi-step `rw [..., ..., ..., ...]` chain audit (9
   sites total: 3 in DFS, 5 in Basic, 1 in Exec). For each: is the
   chain a missing fused lemma (candidate for a project mirror), a
@@ -485,7 +543,7 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   | *Special case: planar rigidity (continued)* | `executable.tex` L478 | Keep — cross-chapter pointer; references resolve |
   | *Out of scope* (component pebble game / Henneberg-sequence) | `pebble-game.tex` L28 | Keep — scope statement, still accurate; both items remain candidates for follow-up phases |
   | *Multigraphs* (matroidal-regime simplification audit) | `pebble-game.tex` L39 | Keep — already updated to reference Layer 3 `Sum`-return shape and `lem:pebble-game-tryAddEdgeWith-isSparse` / `lem:workhorseWitness-certifies` |
-  | `tryReachPebble` math-layer noncomputable + *Style island* pointer | `pebble-game.tex` L341 | Keep — `tryReachPebble` is still `noncomputable` per the cleanup-round smell table (Algorithm.lean `noncomputable def` count = 10); the file-header *Style island* reference resolves to `PebbleGame/Basic.lean:43` (still present) |
+  | `tryReachPebble` math-layer noncomputable + *Style island* pointer | `pebble-game.tex` L341 | Keep — `tryReachPebble` is still `noncomputable` per the revised cleanup-round smell table (Algorithm.lean `noncomputable def` count = 2: `tryReachPebble` + `tryAddEdge`); the file-header *Style island* reference resolves to `PebbleGame/Basic.lean:43` (still present) |
   | `tryAddEdgeWith` reshape detail incorporating Layer 3 `hD` absorption | `pebble-game.tex` L388 | Keep — already verified accurate in A2 (the L398-401 paragraph documents the absorption explicitly) |
   | *Lean placement note (Phase 11 Layer 4 / Layer 4b maximal reshape)* | `pebble-game.tex` L1039 | Keep — phase-history record; sticky |
   | *Special case: planar rigidity* | `pebble-game.tex` L1121 | Keep — cross-chapter pointer; references resolve |
@@ -531,6 +589,51 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   nothing to comment out; sanity build via
   `lake build CombinatorialRigidity.PebbleGame.Exec` succeeded as
   expected. Confirms the pre-grep summary in *Current state*.
+- **B2: `noncomputable def` audit (Phase 10+11 surface)** — no-op
+  closure with **smell-table revision**. Re-grep via
+  `grep -nE "(^|\s)noncomputable (def|abbrev|instance)"` over the
+  Phase 10+11 surface returns **6 sites** — `outList` and `reach` in
+  `Basic.lean` (L138 / L1055), `tryReachPebble` and `tryAddEdge` in
+  `Algorithm.lean` (L122 / L448), and `runPebbleGame.aux` /
+  `runPebbleGame` in `Correctness.lean` (L748 / L802). Each is
+  forced by `Finset.toList` (math-layer `outList`'s `Multiset.toList`
+  → `Classical`-flavored `Quotient.lift`), and the two `Correctness`
+  sites additionally consume `G.edgeFinset.toList.map Quot.out` for
+  edge enumeration (`Quot.out` uses `Classical.choice`). Every site's
+  in-source docstring already names the driver, with the math-layer
+  / exec-layer split documented at `../DESIGN.md` *Pebble-game style
+  island*. No vestigial sites; no in-round refactor candidate
+  surfaced. Sanity build via
+  `lake build CombinatorialRigidity.PebbleGame.Correctness` clean.
+
+  **Delta vs Phase 9-cleanup B4** (Phase 9's `noncomputable def`
+  audit covered the same surface modulo the Phase 11 reshape, with 6
+  sites at the time: 5 PebbleGame + 1 DFS):
+  - **Removed (−1):** `Search.DFS.reachClosure` retired in Phase 11
+    Layer 1 in favour of computable `reachClosureComputable` (no
+    `noncomputable` keyword; `DFS.lean` now has 0 sites — a strict
+    improvement, since the predecessor had been forced
+    `noncomputable` by an undecidable `Relation.ReflTransGen`
+    membership and could not feed `#eval` / `decide`).
+  - **Added (+1):** `Correctness.runPebbleGame.aux` in Phase 11
+    Layer 4b — introduced to dodge the `match h : <expr> with`
+    substitution quirk (TACTICS-QUIRKS § 17) by taking the workhorse
+    `Sum`-shaped output as an explicit argument. The keyword on aux
+    is forced by the same drivers as the parent `runPebbleGame`.
+  - **Net total stays 6**; the structural-edit phase did not
+    introduce vestigial `noncomputable` sites.
+
+  **Smell-table revision (in-commit).** The pre-grep `noncomputable
+  def` row in *Current state* claimed DFS:2, Basic:8, Algorithm:10,
+  Correctness:6, Exec:3 = 29 sites; the actual count under
+  `^noncomputable def` (or the inclusive
+  `(^|\s)noncomputable (def|abbrev|instance)`) is **6**. The
+  29-site total was inflated by counting docstring / comment
+  mentions of the word "`noncomputable`" (e.g. `Basic.lean:130-136`
+  is a four-line docstring paragraph using the word three times
+  while declaring exactly one `noncomputable def`). Revised in
+  *Current state* alongside an explanatory note; no other row in
+  the pre-grep table is affected by the same conflation.
 
 ## Blockers / open questions
 
@@ -539,22 +642,23 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 ## Hand-off / next phase
 
 Round still in progress; Bucket A complete (A1 no-op / A2
-targeted fix / A3 targeted fix / A4 no-op); Bucket B started (B1
-closed as no-op). Next concrete commit: **B2** — `noncomputable def`
-delta audit vs Phase 9-cleanup B4. Re-audit the 22 `noncomputable def`
-sites in the Phase 10+11 surface (DFS:2, Basic:8, Algorithm:10,
-Correctness:6, Exec:3 per the *Current state* table) to confirm each
-`noncomputable` keyword is forced by a named driver (`Finset.toList`,
-`Quot.out`, `Real.instRCLike`, …) rather than vestigial. Most are
-expected to remain genuinely noncomputable per the math-layer / exec-
-layer split (`../DESIGN.md` *Pebble-game style island*); surface
-anything vestigial for an in-round refactor commit per
-`../CLEANUP.md` *Workflow* rule 3. After B2: B3 (multi-step `rw`
-audit, 9 sites), B4 (`letI`/`haveI Fintype.ofFinite` no-op
-re-confirmation), B5 (`@[nolint …]` no-op re-confirmation). After
-Bucket B close, C (long-proof audit on `Algorithm.lean` and the
-verdict-construction bodies) and D (project-organization compression
-of `notes/Phase10.md` and `notes/Phase11.md`).
+targeted fix / A3 targeted fix / A4 no-op); Bucket B halfway (B1
+no-op / B2 no-op + smell-table revision). Next concrete commit:
+**B3** — multi-step `rw [..., ..., ..., ...]` chain audit (9 sites
+per the revised pre-grep table: 3 in DFS, 5 in Basic, 1 in Exec).
+For each: is the chain a missing fused lemma (candidate for a
+project mirror under `CombinatorialRigidity/Mathlib/<path>`), a
+per-step structural rewrite (Phase 9-cleanup B7's *kept as-is*
+pattern), or a candidate for `simp only` collapse? Use
+`lean_multi_attempt` at each site to A/B-test the `simp only`
+collapse before committing to a structural rewrite verdict.
+Expect most to be the second; surface any missing-mirror cases for
+in-round refactor per `../CLEANUP.md` *Workflow* rule 3. After B3:
+B4 (`letI`/`haveI Fintype.ofFinite` no-op re-confirmation), B5
+(`@[nolint …]` no-op re-confirmation). After Bucket B close, C
+(long-proof audit on `Algorithm.lean` and the verdict-construction
+bodies) and D (project-organization compression of `notes/Phase10.md`
+and `notes/Phase11.md`).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
