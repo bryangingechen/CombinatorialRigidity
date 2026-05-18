@@ -308,14 +308,31 @@ gates that should already have been green on each commit.
 
 **All `\lean{...}` names resolve to real Lean declarations.** The
 authoritative check is `checkdecls`, which loads every project import
-and looks up each name in the Lean environment. Run it from the repo
-root after a fresh `inv web` (the latter regenerates
-`blueprint/lean_decls` from the current `\lean{...}` set; the file
-is gitignored):
+and looks up each name in the Lean environment. It must run against a
+freshly-regenerated `blueprint/lean_decls` (produced by `inv web` from
+the current `\lean{...}` set; the file is gitignored).
+
+The bundled command — and the one to use by default — is:
 
 ```sh
-( cd blueprint && source .venv/bin/activate && inv web )
-lake exe checkdecls blueprint/lean_decls   # exit 0 = all names resolve
+blueprint/verify.sh        # runs inv bp, inv web, lake exe checkdecls
+```
+
+The script handles the cd/PATH/venv plumbing (computes the repo root
+from its own location, falls back to `/Library/TeX/texbin` only if
+`xelatex` isn't already on `PATH`), so it works from any cwd. Its
+final step is `lake exe checkdecls blueprint/lean_decls`; that step
+**prints nothing on success** — silence after the `==> lake exe
+checkdecls …` banner is the green signal, not a missing output.
+Non-zero exit + diagnostic on failure (the failing `\lean{...}` name
+is named in the output).
+
+The longhand, for when the script can't apply (a half-broken venv,
+manual debug iteration, etc.):
+
+```sh
+( cd blueprint && source .venv/bin/activate && inv bp && inv web )
+lake exe checkdecls blueprint/lean_decls   # exit 0, no output, = all names resolve
 ```
 
 CI runs the same `checkdecls` command (via `docgen-action`) after
@@ -326,9 +343,10 @@ declarations inside `namespace Henneberg` need
 `SimpleGraph.Henneberg.IsLaman.foo`, not `SimpleGraph.IsLaman.foo`.
 
 `inv web` + `checkdecls` together run in ~15 seconds on this project
-(measured 2026-05), so this is the everyday path, not a heavy-machinery
-fallback. Don't reach for grep-only alternatives to dodge perceived
-build cost; the authoritative check is fast enough.
+(measured 2026-05); `blueprint/verify.sh` runs the additional `inv
+bp` pass and totals ~30–45 seconds. Either is the everyday path, not
+a heavy-machinery fallback. Don't reach for grep-only alternatives to
+dodge perceived build cost; the authoritative check is fast enough.
 
 **All `\uses{...}` and `\Cref{...}` labels are defined:**
 
@@ -429,6 +447,12 @@ inv serve      # preview the web build at http://localhost:8000
 Run `inv bp` before `inv web` — the order matters for citations. CI's
 `leanblueprint pdf` / `leanblueprint web` flow is the same, in the
 same order.
+
+When all you want is the per-commit gate (bp + web + checkdecls,
+quietly), run `blueprint/verify.sh` from any cwd — see *Static checks
+before commit* above. The standalone `inv` targets above remain the
+right tool for iterative debugging (rebuild only the web pass, serve
+locally, etc.).
 
 After `inv web`, **open `blueprint/web/dep_graph_document.html`** in a
 browser. This is the unique value-add over plain LaTeX: every node
