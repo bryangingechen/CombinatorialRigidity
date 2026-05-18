@@ -22,6 +22,7 @@ git = "https://github.com/leanprover-community/mathlib4.git"
 # `checkdecls` provides `lake exe checkdecls`, which the docgen-action
 # invokes to verify that every \lean{...} reference in the blueprint
 # points to a real declaration in our Lean sources.
+rev = "888dee733e93e5cbad6f720c51984035d80230c4"
 [[require]]
 name = "checkdecls"
 git = "https://github.com/PatrickMassot/checkdecls.git"
