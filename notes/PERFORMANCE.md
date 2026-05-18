@@ -292,6 +292,92 @@ the analysis floor.) Each file's transitive downstream-importer set:
 | `LamanTheorem.lean` | 199 | 0 (terminal) |
 | `LinearRigidityMatroid.lean` | 232 | 0 (terminal) |
 
+### Factors to weigh when ranking splits
+
+A split is the right call when *any* of the following carries enough
+weight; the audit is qualitative, not formula-driven.
+
+1. **Downstream-consumer benefit.** A file with several downstream
+   importers where a coherent block is consumed by only a subset:
+   splitting carves the block off and saves transitive import surface
+   for the other consumers. The highest-leverage axis when the
+   consumer count is large and the analysis floor is heavy.
+2. **File size against the ~1500-LoC mathlib soft cap.** Mathlib's
+   per-file size convention treats ~1500 LoC as a soft cap, flagged
+   at maintainer review rather than enforced by CI. Files materially
+   over this threshold warrant a split on modularity grounds *even
+   with a single downstream consumer*: the file is harder to
+   navigate, search, and reason about as a unit; per-edit
+   incremental rebuilds churn through unrelated halves; the
+   blueprint chapter structure usually already suggests a cleaner
+   subdivision.
+3. **Incremental-rebuild speed during active development.** Even
+   within a single-consumer transitive-import graph, splitting a
+   large file lets the next agent iterate on one half without
+   re-elaborating the other (and any of its downstream files). The
+   benefit scales with file size and elaboration cost; for
+   analysis-heavy or large algorithm files, per-edit savings can be
+   substantial even when from-scratch wall-clock builds are flat.
+   The 4-run A/B protocol above measures from-scratch builds — a
+   perf-neutral A/B result does *not* falsify the rebuild-speed
+   argument.
+4. **Structural-clarity / blueprint-chapter mapping.** A file
+   spanning multiple distinct blueprint chapters or subsystems is
+   harder to navigate as one unit. Splits matching the blueprint
+   structure (or `DESIGN.md`-documented boundaries) carry durable
+   orientation value independent of build-time effects. Phase
+   8-perf F1 + F2 (Sparsity / Henneberg) landed individually
+   perf-neutral on from-scratch wall-clock but were retained on
+   this axis — the forward / reverse boundary now lives at file
+   scope, not just section-header level.
+
+Costs to weigh against the benefits: split files multiply namespace
+/ `variable` / `import` boilerplate (cf. F1's `SparsityIComponents`
+gotcha — the new file needed its own `variable {V : Type*}`
+redeclaration when `V` flowed in from the original file's section
+variable); blueprint `\lean{...}` pins to moved declarations need
+updating in the same commit (mechanical but not free); new files
+need their own `module` markers + `@[expose]` discipline per
+`CombinatorialRigidity/CLAUDE.md` *Module-system conversion*. Below
+~700 LoC, single-file is usually cleaner unless there's a strong
+downstream-import or blueprint-chapter argument.
+
+### Mathlib subdirectory pattern
+
+The mathlib idiom for a topic too large for one file is to convert
+`Foo.lean` into a `Foo/` directory with files split inside, most
+often in a `Defs.lean` / `Basic.lean` shape:
+
+- `Foo/Defs.lean` — definitions, structures, basic typeclass
+  instances. Other files in the subdirectory import from here.
+- `Foo/Basic.lean` — the core API built on `Foo/Defs.lean`. The
+  typical entry point downstream files import.
+- `Foo/<subsystem>.lean` — specific subsystems
+  (`Foo/Operations.lean`, `Foo/Lemmas.lean`,
+  `Foo/Quotient.lean`, …), each importing `Foo/Basic.lean` (and
+  any sibling subsystem files they need).
+
+The original `Foo.lean` is usually deleted — downstream switches
+from `import Foo` to `import Foo.Basic` (or to the specific
+subsystem it needs). Keeping `Foo.lean` as a thin re-export hub
+that just imports the new pieces is a less common pattern and is
+not the mathlib default; the hub's per-file elaboration overhead
+adds cost that downstream files don't otherwise pay.
+
+Not every file warrants a separate `Defs.lean`: when most of the
+content is a coherent API on top of a small definitional surface,
+a single `Foo/Basic.lean` with the defs inlined is fine. Triggers
+for the full `Defs.lean` + `Basic.lean` + … pattern: 3+ files
+would emerge after the split; the `Defs.lean` boundary cleanly
+isolates the definitional surface from the API; the file is large
+enough (typically over the soft cap by a substantial margin) that
+a single split into two flat files at the same level won't bring
+both halves under it. For a single split that *does* bring both
+halves under the cap, two flat files at the same directory level
+(the project's `Sparsity.lean` / `SparsityIComponents.lean` pattern
+from Phase 8-perf F1, or `Henneberg.lean` / `HennebergReverse.lean`
+from F2) is simpler and is what the project's existing splits use.
+
 ### Split candidates ranked by leverage
 
 1. **`Sparsity.lean` split (highest leverage).** Natural cut at line
@@ -367,8 +453,9 @@ the analysis floor.) Each file's transitive downstream-importer set:
    halves. Per-move file organization is cleaner but provides
    minimal transitive-import savings.
 
-5. **`PebbleGame.lean` split (Phase 9-perf F2 audit, audit-only —
-   keep as a single file).** The 2489-LoC file maps cleanly onto 10+
+5. **`PebbleGame.lean` split (Phase 9-perf F2 audit; F2 framework
+   recommended keep-as-single-file, revised framework recommends
+   split).** The 2489-LoC file maps cleanly onto 10+
    named sections — natural cut lines at L274 (Reverse) → L605
    (AddArc) → L821 (Reachability) → L1036 (TryReachPebble) → L1219
    (TryAddEdge) → L1472 (RunPebbleGame) → L1755 (Soundness) → L1863
@@ -386,15 +473,38 @@ the analysis floor.) Each file's transitive downstream-importer set:
    benefit is per-incremental-rebuild speed when iterating on one
    half without touching the other.
 
-   **Recommendation: keep as a single file.** Splits without a
-   downstream-import benefit fall into the "structural-clarity gain,
-   perf-neutral" bucket, and the per-decl `@[expose]` audit (F1.2,
-   above) is the cheaper lever for the same per-rebuild outcome
-   (3 per-decl opt-ins demote the section, narrowing exposure to
-   just the three `PartialOrientation`-producing defs). The file's
-   section organisation already maps cleanly to the blueprint
-   chapter structure in `chapter/pebble-game.tex`, so the
-   structural-clarity argument lands either way.
+   **Recommendation under the original F2 framework: keep as a
+   single file.** The Phase 9-perf F2 framework weighed only the
+   downstream-import axis: splits without transitive-import savings
+   fell into the "structural-clarity gain, perf-neutral" bucket, and
+   the per-decl `@[expose]` audit (F1.2, above) was the cheaper
+   lever for the same per-rebuild outcome (3 per-decl opt-ins
+   demoted the section, narrowing exposure to just the three
+   `PartialOrientation`-producing defs).
+
+   **Recommendation under the revised framework (*Factors to weigh*
+   above): split.** Under the four-factor framework, file size and
+   incremental-rebuild speed are first-class factors. At 2489 LoC
+   the file is ~66 % over mathlib's ~1500-LoC soft cap (factor 2);
+   the file's elaboration cost is large enough that
+   incremental-rebuild speed during active iteration on one half
+   matters (factor 3); and the section organisation already maps
+   cleanly onto the blueprint chapter structure in
+   `chapter/pebble-game.tex` (factor 4). Three of the four factors
+   land on the split side; only the downstream-import axis (factor
+   1) is perf-neutral. Natural target structure: the *Mathlib
+   subdirectory pattern* above — convert `PebbleGame.lean` →
+   `PebbleGame/` directory, carve the 10+ named sections into a
+   small set of files (a likely shape is `PebbleGame/Basic.lean`
+   for the `PartialOrientation` + reachability + invariants core,
+   `PebbleGame/Algorithm.lean` for the three-layer
+   `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain, and
+   `PebbleGame/Correctness.lean` for soundness + completeness +
+   correctness + matroidal). Execute as a dedicated structural pass
+   with the 4-run A/B protocol; the headline metric is from-scratch
+   project-total build time, but the *durable* win — independent of
+   A/B outcome — is modularity + rebuild-speed during active
+   development.
 
 ### Module-system conversion: now ripe
 
@@ -575,14 +685,23 @@ Lessons:
 
 1. **Don't trust a single A/B run.** Run ≥ 4 trials per side and compare
    medians. If the medians are within ~5 s, declare neutral.
-2. **Try the structural lever before micro-optimizing.** Splitting the
-   analysis-heavy half of `Framework.lean` behind a facade (so
-   `Sparsity.lean`/`Laman.lean`/`Henneberg.lean` don't transitively load
-   `FiniteDimension`) would shrink ~15 s off most builds. Module-system
-   conversion is the other structural lever; see *Module system* above
-   (now ripe per the post-Phase-8 audit). The `Sparsity.lean` split
-   above is the third structural lever, with a single-downstream-
-   consumer audit confirming the cleanest possible cut line.
+2. **Try the structural lever before micro-optimizing.** The
+   project's three structural axes are: (a) **file splits**, driven
+   primarily by the file-size / modularity / incremental-rebuild
+   factors above — see *Factors to weigh when ranking splits* and
+   *Mathlib subdirectory pattern* for the framework, *Split
+   candidates ranked by leverage* for the current candidate list
+   (`PebbleGame.lean` at 2489 LoC is the open candidate under the
+   revised framework); (b) **module-system conversion**, landed in
+   Phase 8-perf F3.2–F3.5 with `LinearRigidityMatroid.lean` carved
+   out until upstream `apnelson1/Matroid`'s `Map.lean` converts
+   (re-check on next dep-bump); (c) **per-decl `@[expose]`
+   narrowing**, landed in Phase 8-perf F3.5 + Phase 9-perf F1
+   across all 16 module-converted files. Micro-optimizations
+   (tactic swaps, helper extraction, simp-set narrowing) routinely
+   sat in the ±5 s noise band (*Experiments that didn't pay*); the
+   structural axes are where every project-scale wall-clock win
+   has come from.
 3. **The profiler is most useful as a sanity check, not a guide.** Use it
    to spot a single declaration taking > 100 ms or a `simp` ballooning, but
    don't expect the cumulative numbers to predict wall-clock movement.
