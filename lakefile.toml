@@ -42,3 +42,17 @@ rev = "e6852cec65742d1ddce7a66122f842b791b1dd37"
 
 [[lean_lib]]
 name = "CombinatorialRigidity"
+
+# `lake exe pebble-game` — Phase 10 Layer 5 CLI binary. Reads a simple
+# edge-list file (leading `n m` line, then `m` lines of two
+# whitespace-separated integers `0 ≤ u, v < n`) and prints one of
+# `LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE` on stdout. The
+# classification routes through Phase 10 Layer 3's
+# `SimpleGraph.instDecidableIsLaman` and `instDecidableIsSparse`,
+# which reduce through the compiled `runPebbleGameExec` body in
+# polynomial time. See `blueprint/src/chapter/executable.tex`
+# *CLI binary* for the input/output spec.
+[[lean_exe]]
+name = "pebble-game"
+root = "Main"
+supportInterpreter = true

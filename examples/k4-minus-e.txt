@@ -1,0 +1,9 @@
+# K_4 \ {2-3}: the complete graph on Fin 4 minus the edge {2, 3}.
+# Phase 3 worked example: 4 vertices, 5 edges, Laman (2 * 4 - 3 = 5).
+# Expected: LAMAN.
+4 5
+0 1
+0 2
+0 3
+1 2
+1 3

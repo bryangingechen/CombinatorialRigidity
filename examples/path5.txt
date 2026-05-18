@@ -1,0 +1,8 @@
+# Path on Fin 5: 0 - 1 - 2 - 3 - 4. 5 vertices, 4 edges; (2, 3)-sparse
+# (acyclic) but |E| = 4 < 2 * 5 - 3 = 7, so not (2, 3)-tight, not Laman.
+# Expected: SPARSE_NOT_TIGHT.
+5 4
+0 1
+1 2
+2 3
+3 4

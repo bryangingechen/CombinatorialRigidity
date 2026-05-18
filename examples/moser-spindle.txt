@@ -1,0 +1,16 @@
+# Moser spindle on Fin 7: two triangles sharing apex 0, two "rim"
+# vertices 5 (adj. to 1, 2) and 6 (adj. to 3, 4), and the bridging
+# edge 5-6. 7 vertices, 11 edges, Laman (2 * 7 - 3 = 11).
+# Expected: LAMAN.
+7 11
+0 1
+0 2
+1 2
+0 3
+0 4
+3 4
+1 5
+2 5
+3 6
+4 6
+5 6

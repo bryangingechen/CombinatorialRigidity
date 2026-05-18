@@ -1,0 +1,10 @@
+# K_4: the complete graph on Fin 4. 4 vertices, 6 edges; 6 > 2 * 4 - 3 = 5,
+# so K_4 violates (2, 3)-sparsity at the full vertex set.
+# Expected: NOT_SPARSE.
+4 6
+0 1
+0 2
+0 3
+1 2
+1 3
+2 3

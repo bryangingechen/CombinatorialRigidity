@@ -150,6 +150,39 @@ pebble game. Smoke-tested via
 compiled `runPebbleGameExec` body in sub-second wall time. The
 blueprint node `def:isLaman-decidable` is now `\leanok`-green.
 
+Layer 5 — the CLI binary — closes the end-to-end-executability target.
+The new top-level `Main.lean` ships the `lake exe pebble-game` entry
+point: it parses an edge-list file (leading `n m` header, then `m`
+edge lines, with blank/`#`-commented lines tolerated anywhere), builds
+a `SimpleGraph (Fin n)` via `SimpleGraph.fromEdgeSet`, and dispatches
+on `decide G.IsLaman` then `decide (G.IsSparse 2 3)` to print one of
+`LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE`. The classification routes
+through the same compiled `runPebbleGameExec` body as the Layer 4
+`#eval`s. The Lake target is registered in `lakefile.toml` as a
+`[[lean_exe]]` block (name = `"pebble-game"`, root = `"Main"`) and
+builds against the existing `CombinatorialRigidity` library; no new
+project-internal imports beyond `PebbleGame.Exec`. Four sample input
+files ship under a new `examples/` directory matching the Layer 4
+example set: `k4-minus-e.txt` (→ `LAMAN`), `moser-spindle.txt` (→
+`LAMAN`), `k4.txt` (→ `NOT_SPARSE`), and `path5.txt` (→
+`SPARSE_NOT_TIGHT`); each runs in sub-second native wall time on a
+developer laptop. Error paths are exercised end-to-end (missing file,
+no args, malformed header, out-of-range vertex label, declared
+edge-count mismatch) and each produces a clear stderr diagnostic with
+a non-zero exit. Blocking-witness extraction on the `NOT_SPARSE`
+branch is **deferred** (Phase 10 *Architectural choices* originally
+flagged this as in-scope-to-attempt but not committed-to): the
+`Reach`-closure underlying `runPebbleGame_eq_none_imp_exists_witness`
+still uses `Classical.decPred`, so surfacing the witness computably
+would require porting that closure to a verified-iterative form
+analogous to `reachableFinding` (the Phase 9 DFS warmup). That
+follow-up is reasonable next-phase work and is recorded under
+*Blockers / open questions* below; the CLI ships `NOT_SPARSE` alone
+for now. The new `Main.lean` deliberately stays non-`module`-style
+(plain `import`s; no `module` marker) — it has no downstream Lean
+importers and module-system discipline gates only the project's
+library boundary, not the executable wrapper.
+
 The phase target is **end-to-end executability** of the pebble game:
 a computable wrapper `runPebbleGameExec` whose body avoids
 `Finset.toList` / `Quot.out` (the two `noncomputable`-introducing
@@ -398,6 +431,25 @@ discipline.
   ship a top-level `instance : Fact (3 < 2 * 2)` so callers see a
   zero-hypothesis `Decidable G.IsLaman`.
 
+- **Layer 5 `Main.lean` is non-`module`, by design.** The CLI entry
+  point uses plain `import` rather than the project's standard
+  `module` + `public import` pattern. Non-`module` files can freely
+  import `module` files (per `CombinatorialRigidity/CLAUDE.md`
+  *Module-system conversion*), so the build is unaffected; and the
+  module system's value proposition (opaque public/private interfaces
+  between library modules) does not apply to an executable wrapper
+  with no downstream Lean importers.
+
+- **Layer 5 CLI input format: blank/`#`-commented lines tolerated
+  anywhere.** The `Main.lean` `stripComments` pre-pass drops lines
+  that are blank-after-trim or start with `#`, *anywhere in the file*.
+  Matches the project's `examples/*.txt` convention (each sample
+  leads with a `#`-commented narrative giving the expected
+  classification, so the sample files double as self-documenting test
+  cases). The blueprint *CLI binary* spec was not explicit about
+  comment-line handling; the permissive read stays within its
+  *non-comment* content wording.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *`LinearOrder.lift'` on a `SetLike` type silently breaks
@@ -427,66 +479,67 @@ discipline.
   recorded under *Decisions made during this phase* above; audit
   \#1's outcome was revised at Layer 1 — see the bullet there.
 
-- **`apnelson1/Matroid` non-`module` boundary.** Phase 10's new
-  files import only `Sparsity.lean`, `CountMatroid.lean`, and the
-  `PebbleGame/` chain — none of which depend on the
-  `apnelson1/Matroid` library directly. The CLI binary (`Main.lean`)
-  imports the new `Exec.lean` but should not transitively pull in
-  the non-`module` `Matroid.Representation.Map`. Verify in the
-  lakefile audit step that the executable target builds cleanly.
+- **`apnelson1/Matroid` non-`module` boundary.** ✓ Resolved at
+  Layer 5: the `lake exe pebble-game` target builds cleanly. The new
+  `Main.lean` imports only `CombinatorialRigidity.PebbleGame.Exec`,
+  which transitively pulls in `Laman` + `Sparsity` + the `PebbleGame/`
+  chain — none of which touch `apnelson1/Matroid`. The
+  `LinearRigidityMatroid.lean` non-`module` island stays isolated.
 
-- **Blocking-witness extraction at the CLI failure branch.** Phase 9
-  deferred this; whether the failure-witness `V'` from
-  `runPebbleGame_eq_none_imp_exists_witness` extracts computably
-  depends on whether `reachClosure` (which uses
-  `Classical.decPred`) can be replaced by a computable closure
-  routine for the CLI output path. If yes, ship the witness in CLI
-  output; if no, stay with `NOT_SPARSE` and document the residual
-  gap as a follow-up.
+- **Blocking-witness extraction at the CLI failure branch.**
+  *Deferred from Phase 10.* The CLI ships `NOT_SPARSE` alone. Surfacing
+  the witness subset $V'$ from
+  `runPebbleGame_eq_none_imp_exists_witness` computably requires
+  porting `reachClosure` (currently uses `Classical.decPred`) to a
+  verified-iterative form analogous to `Search/DFS.lean`'s
+  `reachableFinding`. Tracked under *Hand-off / next phase* as a
+  possible-direction for a future phase; not in scope for Phase 10's
+  closing commit.
 
-- **Native binary entrypoint shape.** Whether `lake exe pebble-game`
-  reads from a positional file argument or stdin (or both) is a
-  small CLI choice settled at Layer 5; documented here so the next
-  agent does not re-litigate.
+- **Native binary entrypoint shape.** ✓ Settled at Layer 5: positional
+  file-path argument, no stdin support. Blank and `#`-commented lines
+  are tolerated anywhere in the file; out-of-range vertex labels and
+  edge-count mismatches are hard errors with stderr diagnostics and
+  exit 1.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** open Layer 5 — the CLI binary `lake exe
-pebble-game` plus its line-oriented edge-list parser. The commit
-ships (i) a new top-level `Main.lean` carrying the `IO Unit` entry
-point (input format per `chapter/executable.tex` *CLI binary*:
-leading `n m` line giving vertex count + edge count, then `m` lines
-of two whitespace-separated `0 ≤ u, v < n`; output one of `LAMAN` /
-`SPARSE_NOT_TIGHT` / `NOT_SPARSE` on stdout), (ii) a `lake exe
-pebble-game` lakefile target wiring `Main.lean` to the
-`CombinatorialRigidity` library, and (iii) a small sample edge-list
-input file (e.g. `examples/k4-minus-e.txt`) plus a docstring
-explaining usage. The classification reuses Layer 3's
-`instDecidableIsLaman` via `decide G.IsLaman` (then a separate
-`decide (G.IsSparse 2 3)` to distinguish `NOT_SPARSE` from
-`SPARSE_NOT_TIGHT`); no new mathematical content. Blocking-witness
-extraction on the `NOT_SPARSE` branch is in scope to attempt but
-not committed to — if the computable closure for `reachClosure` is
-non-trivial it stays deferred and the CLI ships `NOT_SPARSE` alone.
-Layer 5 is the final concrete commit before Phase 10 closes; after
-it lands, flip the four user-facing status surfaces (ROADMAP, README,
-home_page, blueprint intro) to ✓ in the closing commit.
+**Next concrete commit:** close Phase 10 — flip the four user-facing
+status surfaces (`ROADMAP.md` *Status* table, `README.md` *Project
+status*, `home_page/index.md` *Project status* + phase table,
+`blueprint/src/chapter/intro.tex` §*Phase plan* + enumerate + dep-graph
+line) to ✓ for Phase 10, and compress this phase's ROADMAP §10
+planning section to a one-paragraph summary + pointer-to-`Phase10.md`
+per the canonical Phase-1 model. The closing commit additionally runs
+the *Review project organization* step from the top-level CLAUDE.md
+(skim ROADMAP / TACTICS-GOLF / TACTICS-QUIRKS / FRICTION for staleness;
+file a project-organization friction entry if any drift requires
+follow-up). All technical content for Phase 10 is now landed; the
+closing commit is paperwork only.
 
-Phase 10 closes when:
-- `chapter/executable.tex`'s dep-graph is fully `\leanok`-green;
+Phase 10's *completion checklist* (from the prior hand-off; all four
+items are now true):
+- `chapter/executable.tex`'s dep-graph is fully `\leanok`-green ✓
+  (Layers 1–3's seven blueprint nodes;
+  `def:runPebbleGameExec` / `thm:runPebbleGameExec-correct` /
+  `def:isSparse-decidable` / `def:isTight-decidable` /
+  `def:isLaman-decidable` and friends);
 - `#eval` of `decide G.IsLaman` on a concrete `Fin n` graph
   produces the expected `Bool` and reduces through compiled
-  `runPebbleGameExec`;
+  `runPebbleGameExec` ✓ (Layer 4, eleven `#eval`s);
 - `lake exe pebble-game` reads a sample edge-list file and prints
-  the expected accept/reject;
-- the four user-facing status surfaces (ROADMAP, README,
-  home_page, blueprint intro) reflect Phase 10 ✓.
+  the expected accept/reject ✓ (Layer 5, four samples under
+  `examples/`);
+- the four user-facing status surfaces still need the ✓ flip —
+  that's the closing commit's job.
 
 No follow-up phase is queued. Possible directions surfacing during
 Phase 10:
-- **Blocking-witness extraction in CLI output** (if deferred from
-  this phase): finish the computable `reachClosure` and surface the
-  witness on `NOT_SPARSE` rejection.
+- **Blocking-witness extraction in CLI output** (deferred from Layer
+  5 per the *Architectural choices* note): finish the computable
+  `reachClosure` (port to a verified-iterative form analogous to
+  `Search/DFS.lean`'s `reachableFinding` Phase 9 warmup) and surface
+  the witness on the `NOT_SPARSE` branch.
 - **Component pebble game** (still deferred from Phase 9): the
   $O(n^2)$ speedup via union pair-find (L-S §5,
   Lee–Streinu–Theran 2005). Out of scope for Phase 10; the basic-
