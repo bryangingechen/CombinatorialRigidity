@@ -55,13 +55,27 @@ theorem `runPebbleGameWith_correct` of Phase 10 Layer 2:
   theorem `runPebbleGameExec_correct` (a one-line corollary of
   `runPebbleGameWith_correct`), it carries Phase 10's end-to-end
   executability claim.
-* `SimpleGraph.instDecidableIsSparse` — Layer 3. The canonical
-  `Decidable (G.IsSparse k ℓ)` instance in the matroidal regime
-  (packaged here as `[Fact (ℓ < 2 * k)]` for typeclass synthesis),
-  whose reduction body is `(runPebbleGameExec G k ℓ).isSome`. Runs in
-  polynomial time in `|V| + |E|`; the source forbids competing
-  brute-force instances per `DESIGN.md` *One `Decidable` instance per
-  project predicate*.
+* `runPebbleGameExec_result` — Phase 11 Layer 4. The verdict-bearing
+  exec-layer wrapper: packages `runPebbleGameExec`'s `Sum` output into
+  a `PebbleGameResult G k ℓ` verdict (`.accept` on `.inr`, `.reject` on
+  `.inl`). Takes `ℓ < 2 * k` to populate `.reject`'s `h_size` via
+  `WorkhorseWitness.certifies_against`. Sibling of the math-layer
+  `PartialOrientation.runPebbleGame_result` (in
+  `PebbleGame/Correctness.lean`).
+* `runPebbleGameExec_result_isAccept_iff` — Phase 11 Layer 4 verdict-form
+  correctness:
+  `G.IsSparse k ℓ ↔ (runPebbleGameExec_result G k ℓ h_matroidal).isAccept`.
+  Drives the Phase 11 Layer 4 re-routing of `instDecidableIsSparse`'s
+  reduction body from `Sum.isRight` to `.isAccept`.
+* `SimpleGraph.instDecidableIsSparse` — Layer 3, Phase 11 Layer 4
+  re-route. The canonical `Decidable (G.IsSparse k ℓ)` instance in the
+  matroidal regime (packaged here as `[Fact (ℓ < 2 * k)]` for typeclass
+  synthesis), whose reduction body is now
+  `(runPebbleGameExec_result G k ℓ h_matroidal.out).isAccept`
+  (Phase 11 Layer 4; was `(runPebbleGameExec G k ℓ).isRight` in
+  Phase 11 Layer 3). Runs in polynomial time in `|V| + |E|`; the
+  source forbids competing brute-force instances per `DESIGN.md`
+  *One `Decidable` instance per project predicate*.
 * `SimpleGraph.instDecidableIsTight` — Layer 3. The canonical
   `Decidable (G.IsTight k ℓ)` instance, derived from
   `instDecidableIsSparse` plus the decidable `ℕ` equation
@@ -268,6 +282,84 @@ theorem runPebbleGameExec_correct [LinearOrder V] [Fintype V]
     G.edgeListSorted G.edgeListSorted_no_loops G.edgeListSorted_pairwise
     G.edgeListSorted_map_sym2_toFinset
 
+/-- **Exec-layer verdict-bearing wrapper** (Phase 11 Layer 4). The
+computable sibling of `PartialOrientation.runPebbleGame_result` (from
+`PebbleGame/Correctness.lean`): packages the Phase 11 Layer 3
+`Sum`-shaped `runPebbleGameExec G k ℓ` output into a
+`PebbleGameResult G k ℓ` verdict. The matroidal-regime hypothesis
+`ℓ < 2 * k` is needed to construct `.reject`'s `h_size` field via
+`WorkhorseWitness.certifies_against`.
+
+Computable end-to-end whenever `V` carries `[LinearOrder V]` and
+`[DecidableEq V]`; no `Classical` dependencies. The reduction body is
+the same compiled `runPebbleGameWith`-on-`empty` as `runPebbleGameExec`;
+the verdict wrapper merely re-packages the `Sum` constructor's
+metadata, so `#eval`-time evaluation cost is identical.
+
+Phase 10's three `Decidable` instances `instDecidable{IsSparse, IsTight,
+IsLaman}` (in this file) re-route in Phase 11 Layer 4 from the
+`Sum.isRight` projection of `runPebbleGameExec` to the `.isAccept`
+projection of this `runPebbleGameExec_result`. The Phase 10 `Sum`-shape
+`runPebbleGameExec` stays as the internal raw call. Blueprint
+`def:runPebbleGameExec` (verdict-bearing form). -/
+def runPebbleGameExec_result.aux [LinearOrder V] [Fintype V]
+    (G : SimpleGraph V) [Fintype G.edgeSet] (k ℓ : ℕ) (h_matroidal : ℓ < 2 * k)
+    (s : Sum (WorkhorseWitness k ℓ V) (PartialOrientation V))
+    (h_opt : runPebbleGameExec G k ℓ = s) : PebbleGameResult G k ℓ :=
+  match s, h_opt with
+  | .inr D, h_opt =>
+      .accept D
+        (runPebbleGameWith_underline_eq _ _ G.edgeListSorted
+          G.edgeListSorted_no_loops G.edgeListSorted_pairwise
+          G.edgeListSorted_map_sym2_toFinset h_opt)
+        (runPebbleGameWith_reachable _ _ _ Reachable.empty h_opt)
+  | .inl w, h_opt =>
+      let bridge_part : s(w.uv.1, w.uv.2) ∈ G.edgeFinset ∧
+          w.D.underline ⊆ G.edgeFinset := by
+        have hmem : ∀ p ∈ G.edgeListSorted, s(p.1, p.2) ∈ G.edgeFinset := by
+          intro p hp
+          rw [← G.edgeListSorted_map_sym2_toFinset]
+          exact List.mem_toFinset.mpr (List.mem_map.mpr ⟨p, hp, rfl⟩)
+        have hsub : (empty : PartialOrientation V).underline ⊆ G.edgeFinset := by
+          rw [underline_empty]; exact Finset.empty_subset _
+        exact runPebbleGameWith_witness_bridges _ _ G.edgeListSorted
+          Reachable.empty hmem hsub h_opt
+      let pair := w.certifies_against h_matroidal bridge_part.1 bridge_part.2
+      .reject w.V' pair.1 pair.2
+
+/-- See `runPebbleGameExec_result.aux` docstring. -/
+def runPebbleGameExec_result [LinearOrder V] [Fintype V] (G : SimpleGraph V)
+    [Fintype G.edgeSet] (k ℓ : ℕ) (h_matroidal : ℓ < 2 * k) :
+    PebbleGameResult G k ℓ :=
+  runPebbleGameExec_result.aux G k ℓ h_matroidal (runPebbleGameExec G k ℓ) rfl
+
+/-- **`isAccept` of `runPebbleGameExec_result.aux` reduces along the
+`Sum`-equation** (Phase 11 Layer 4, internal lemma; exec-layer analog of
+`runPebbleGame_result_aux_isAccept` from `PebbleGame/Correctness.lean`).
+Used internally to bridge the verdict's `.isAccept` projection to the
+certificate-form `runPebbleGameExec_correct`. -/
+private lemma runPebbleGameExec_result_aux_isAccept [LinearOrder V] [Fintype V]
+    (G : SimpleGraph V) [Fintype G.edgeSet] (k ℓ : ℕ) (h_matroidal : ℓ < 2 * k)
+    (s : Sum (WorkhorseWitness k ℓ V) (PartialOrientation V))
+    (h_opt : runPebbleGameExec G k ℓ = s) :
+    (runPebbleGameExec_result.aux G k ℓ h_matroidal s h_opt).isAccept =
+      s.isRight := by
+  cases s <;>
+    simp [runPebbleGameExec_result.aux, PebbleGameResult.isAccept, Sum.isRight]
+
+/-- **Verdict-form correctness of the exec-layer pebble game** (Phase 11
+Layer 4; blueprint `thm:runPebbleGameExec-correct`, verdict-form
+restatement). In the matroidal regime `ℓ < 2 * k`, `G` is `(k, ℓ)`-sparse
+iff `runPebbleGameExec_result G k ℓ h_matroidal` returns the `.accept`
+verdict (equivalently: its `.isAccept` Boolean projection is `true`).
+Phase 11 Layer 4 verdict-form analog of `runPebbleGameExec_correct`. -/
+theorem runPebbleGameExec_result_isAccept_iff [LinearOrder V] [Fintype V]
+    {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ} (h_matroidal : ℓ < 2 * k) :
+    G.IsSparse k ℓ ↔ (runPebbleGameExec_result G k ℓ h_matroidal).isAccept := by
+  unfold runPebbleGameExec_result
+  rw [runPebbleGameExec_result_aux_isAccept]
+  rw [Sum.isRight_iff, ← runPebbleGameExec_correct h_matroidal]
+
 end PartialOrientation
 
 end CombinatorialRigidity.PebbleGame
@@ -278,20 +370,25 @@ variable {V : Type*}
 
 open CombinatorialRigidity.PebbleGame.PartialOrientation in
 /-- **Canonical decidability of `(k, ℓ)`-sparsity in the matroidal regime**
-(Phase 10 Layer 3; blueprint `def:isSparse-decidable`). In the matroidal regime
+(Phase 10 Layer 3; Phase 11 Layer 4 re-route through verdict; blueprint
+`def:isSparse-decidable`). In the matroidal regime
 `ℓ < 2 * k` — packaged as `[Fact (ℓ < 2 * k)]` for typeclass synthesis — the
 proposition `G.IsSparse k ℓ` is decidable via the rule
-`decide (G.IsSparse k ℓ) = (runPebbleGameExec G k ℓ).isSome`, where
-`runPebbleGameExec` is the Phase 10 exec-layer pebble game from this file. The
-correctness of this reduction is the Phase 10 certificate-form theorem
-`runPebbleGameExec_correct`; combined with `Option.isSome_iff_exists` it gives
-the iff `(runPebbleGameExec G k ℓ).isSome = true ↔ G.IsSparse k ℓ`, and the
-instance is `decidable_of_iff` against that.
+`decide (G.IsSparse k ℓ) = (runPebbleGameExec_result G k ℓ h_matroidal.out).isAccept`,
+where `runPebbleGameExec_result` is the Phase 11 Layer 4 verdict-bearing
+exec-layer pebble game from this file. The correctness of this reduction
+is the Phase 11 Layer 4 verdict-form theorem
+`runPebbleGameExec_result_isAccept_iff`. Phase 11 Layer 4 re-route: was
+`(runPebbleGameExec G k ℓ).isRight` (Phase 11 Layer 3); is now
+`(runPebbleGameExec_result G k ℓ _).isAccept` (Layer 4).
 
-The reduction body `runPebbleGameExec G k ℓ` runs in polynomial time in
-`|V| + |E|`; every `#eval (decide (G.IsSparse k ℓ))`, `native_decide` on a
-sparsity goal, and `lake exe pebble-game` invocation routes through the same
-compiled body.
+The reduction body still routes through the same compiled
+`runPebbleGameWith`-on-`empty` chain as Phase 10's `runPebbleGameExec`;
+the verdict wrapper is structural metadata (a `Sum` constructor
+re-packaged as an inductive constructor), so the polynomial-time
+runtime claim is unchanged. Every `#eval (decide (G.IsSparse k ℓ))`,
+`native_decide` on a sparsity goal, and `lake exe pebble-game`
+invocation routes through the same compiled body.
 
 **One `Decidable` instance per project predicate.** This is the canonical
 decidability instance for `IsSparse k ℓ` in the matroidal regime. A
@@ -304,15 +401,17 @@ to pick the slow path. Do not register competing instances. See `DESIGN.md`
 instance instDecidableIsSparse [LinearOrder V] [Fintype V] (G : SimpleGraph V)
     [Fintype G.edgeSet] (k ℓ : ℕ) [h_matroidal : Fact (ℓ < 2 * k)] :
     Decidable (G.IsSparse k ℓ) :=
-  decidable_of_iff ((runPebbleGameExec G k ℓ).isRight = true)
-    (Sum.isRight_iff.trans (runPebbleGameExec_correct h_matroidal.out).symm)
+  decidable_of_iff ((runPebbleGameExec_result G k ℓ h_matroidal.out).isAccept = true)
+    (runPebbleGameExec_result_isAccept_iff h_matroidal.out).symm
 
 /-- **Canonical decidability of `(k, ℓ)`-tightness in the matroidal regime**
-(Phase 10 Layer 3; blueprint `def:isTight-decidable`). Stacks on
-`instDecidableIsSparse`: `IsTight k ℓ` is the conjunction of `IsSparse k ℓ`
-with the global edge-count equation, so decidability reduces to deciding the
-sparsity half (via `runPebbleGameExec`) and a `Nat` equation. `IsTight`'s
-equation is stated via `Set.ncard` / `Nat.card V`; the bridge to the decidable
+(Phase 10 Layer 3; Phase 11 Layer 4 re-route via `instDecidableIsSparse`;
+blueprint `def:isTight-decidable`). Stacks on `instDecidableIsSparse`:
+`IsTight k ℓ` is the conjunction of `IsSparse k ℓ` with the global
+edge-count equation, so decidability reduces to deciding the sparsity
+half (via Phase 11 Layer 4's `runPebbleGameExec_result.isAccept`) and a
+`Nat` equation. `IsTight`'s equation is stated via `Set.ncard` /
+`Nat.card V`; the bridge to the decidable
 `G.edgeFinset.card + ℓ = k * Fintype.card V` form is the project mirror
 `ncard_edgeSet_eq_card_edgeFinset` and the mathlib lemma
 `Nat.card_eq_fintype_card`.
@@ -337,13 +436,15 @@ at the Laman parameters; `omega` closes it. -/
 instance : Fact (3 < 2 * 2) := ⟨by omega⟩
 
 /-- **Canonical decidability of the Laman property**
-(Phase 10 Layer 3; blueprint `def:isLaman-decidable`). One-line corollary of
+(Phase 10 Layer 3; Phase 11 Layer 4 re-route via `instDecidableIsTight`;
+blueprint `def:isLaman-decidable`). One-line corollary of
 `instDecidableIsTight` at `(k, ℓ) = (2, 3)`: since `IsLaman := IsTight 2 3` as an
 `@[expose] def`, the Laman case unfolds to a callsite of `instDecidableIsTight`
 with the top-level `Fact (3 < 2 * 2)` instance plugged in automatically. Reduces
-through the same compiled `runPebbleGameExec` body as `instDecidableIsSparse` /
-`instDecidableIsTight`; the only added work is the constant-time edge-count
-equation.
+through the same compiled `runPebbleGameWith`-on-`empty` body as
+`instDecidableIsSparse` / `instDecidableIsTight` (Phase 11 Layer 4
+verdict re-routing is invisible at the reduction body); the only added
+work is the constant-time edge-count equation.
 **One `Decidable` instance per project predicate.** Per `DESIGN.md`, do not
 register competing instances. -/
 instance instDecidableIsLaman [LinearOrder V] [Fintype V] (G : SimpleGraph V)

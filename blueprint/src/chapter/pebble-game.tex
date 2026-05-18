@@ -944,6 +944,88 @@ pair recovered by \cref{lem:workhorseWitness-certifies}).
   $\mathrm{certifies\_against}$).
 \end{proof}
 
+\subsection{User-facing verdict}
+\label{sec:pebble-game-verdict}
+
+The certificate-form correctness theorem
+(\cref{thm:pebble-game-correct}) states an iff between sparsity and
+the algorithm's $\mathrm{Sum}$-shaped output. The Phase~11 Layer~4
+\emph{verdict} re-packages that iff structurally: instead of
+exposing the raw $\mathrm{Sum}$ result and an external iff theorem,
+the user-facing wrapper returns a two-constructor inductive whose
+constructor IS the certificate.
+
+\begin{definition}[Pebble-game verdict]
+  \label{def:pebbleGameResult}
+  \lean{CombinatorialRigidity.PebbleGame.PebbleGameResult,
+    CombinatorialRigidity.PebbleGame.PebbleGameResult.isAccept}
+  \leanok
+  \uses{def:partial-orientation, def:reachable-orientation, def:isSparse,
+    def:edgesIn, def:workhorseWitness}
+  Fix parameters $k$ and $\ell$ and a finite simple graph
+  $G : \mathrm{SimpleGraph}\,V$. The \emph{pebble-game verdict}
+  $\mathrm{PebbleGameResult}\,G\,k\,\ell$ is the two-constructor
+  inductive
+  \begin{itemize}
+    \item $\mathrm{.accept}\,(D, h_{\underline{}}, h_{\mathrm{reach}})$:
+      $D$ is a partial orientation with $\underline{D} = E(G)$ and
+      $D$ is $(k, \ell)$-reachable
+      (\cref{def:reachable-orientation});
+    \item $\mathrm{.reject}\,(V', h_{\mathrm{size}}, h_{\mathrm{lt}})$:
+      $V' \subseteq V$ is a blocking subset carrying the
+      sparsity-violation pair
+      \[
+        \ell \le k|V'| \quad \text{and} \quad k|V'| <
+        |\edgesIn[G]{V'}| + \ell.
+      \]
+  \end{itemize}
+  The Boolean projection $\mathrm{.isAccept} :
+  \mathrm{PebbleGameResult}\,G\,k\,\ell \to \mathbb{B}$ returns
+  $\mathrm{true}$ on $\mathrm{.accept}$ and $\mathrm{false}$ on
+  $\mathrm{.reject}$. The verdict's constructor IS the certificate:
+  the Phase~9-era certificate-form iff
+  $G\text{ is }(k,\ell)\text{-sparse} \iff \exists D,\, \mathrm{algorithm
+  returns } \mathrm{.inr}\,D$ collapses into the verdict's TYPE.
+
+  \emph{Lean placement note (Phase 11 Layer 4):} the verdict and
+  its math-/exec-layer wrappers live in
+  \texttt{PebbleGame/Correctness.lean} (math layer:
+  \texttt{runPebbleGame\_result}) and \texttt{PebbleGame/Exec.lean}
+  (exec layer: \texttt{runPebbleGameExec\_result}). Both stay
+  additive on top of Phase~11 Layer~3's $\mathrm{Sum}$-shaped raw
+  functions $\mathrm{runPebbleGame}$ / $\mathrm{runPebbleGameExec}$,
+  which remain available; the Phase~11 Layer~4 wrappers re-package
+  the $\mathrm{Sum}$ output's constructor selection as a verdict
+  inductive while populating the verdict's proof fields from
+  $\mathrm{WorkhorseWitness.certifies\_against}$
+  (\cref{lem:workhorseWitness-certifies}) on the
+  $\mathrm{.reject}$ side and from the Phase~9 soundness chain on
+  the $\mathrm{.accept}$ side. The matroidal-regime hypothesis
+  $\ell < 2k$ is consumed by $\mathrm{certifies\_against}$.
+\end{definition}
+
+\begin{theorem}[Pebble game correctness, verdict form]
+  \label{thm:pebbleGameResult-isAccept-iff}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_result_isAccept_iff,
+    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_result_isAccept_iff}
+  \leanok
+  \uses{def:pebbleGameResult, thm:pebble-game-correct, def:isSparse}
+  Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
+  integers with $\ell < 2k$. Then $G$ is $(k, \ell)$-sparse if and
+  only if the verdict-bearing wrapper
+  $\mathrm{runPebbleGame\_result}\,G\,k\,\ell$ (resp.\ its exec-layer
+  sibling) returns an $\mathrm{.accept}$ verdict — equivalently, its
+  $\mathrm{.isAccept}$ Boolean projection is $\mathrm{true}$.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:pebble-game-correct}
+  The verdict's $\mathrm{.isAccept}$ projection is $\mathrm{true}$
+  exactly when the underlying $\mathrm{Sum}$-shaped wrapper returned
+  $\mathrm{.inr}\,D$; by \cref{thm:pebble-game-correct} this is
+  equivalent to $(k, \ell)$-sparsity.
+\end{proof}
+
 \subsection{Matroidal-independence corollary}
 \label{sec:pebble-game-matroid}
 
@@ -954,26 +1036,36 @@ the pebble game decides matroidal independence.
 
 \begin{corollary}[Pebble-game certificate of matroidal independence]
   \label{cor:pebble-game-countMatroid-indep}
-  \lean{SimpleGraph.countMatroid_indep_iff_runPebbleGame}
+  \lean{SimpleGraph.countMatroid_indep_iff_runPebbleGame,
+    SimpleGraph.countMatroid_indep_iff_runPebbleGame_result}
   \leanok
-  \uses{thm:pebble-game-correct, def:countMatroid,
-    thm:countMatroid-indep-iff}
+  \uses{thm:pebble-game-correct, thm:pebbleGameResult-isAccept-iff,
+    def:countMatroid, thm:countMatroid-indep-iff}
   Let $V$ be finite and $k, \ell$ integers with $\ell < 2k$. For
   every $G : \mathrm{SimpleGraph}\,V$, the edge set $E(G)$ is
   independent in the $(k, \ell)$-count matroid
   $\mathrm{countMatroid}\,V\,k\,\ell$
-  (\cref{def:countMatroid}) if and only if
-  $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
-  $\mathrm{.inr}\,D$ for some partial orientation $D$ (Phase~11
-  Layer~3 reshape; was $\mathrm{some}\,D$).
+  (\cref{def:countMatroid}) if and only if any of the equivalent
+  pebble-game outputs accepts:
+  \begin{itemize}
+    \item certificate form: $\mathrm{runPebbleGame}\,k\,\ell\,G =
+      \mathrm{.inr}\,D$ for some partial orientation $D$ (Phase~11
+      Layer~3 reshape; was $\mathrm{some}\,D$);
+    \item verdict form: $\mathrm{runPebbleGame\_result}\,k\,\ell\,G
+      = \mathrm{.accept}\,(D, \dots)$ — equivalently,
+      $(\mathrm{runPebbleGame\_result}\,k\,\ell\,G).\mathrm{isAccept}
+      = \mathrm{true}$ (Phase~11 Layer~4).
+  \end{itemize}
 \end{corollary}
 \begin{proof}
   \leanok
   \uses{thm:pebble-game-correct, thm:countMatroid-indep-iff}
   By \cref{thm:countMatroid-indep-iff}, $E(G)$ is independent in
   the count matroid iff $G$ is $(k, \ell)$-sparse. By
-  \cref{thm:pebble-game-correct}, the latter holds iff the pebble
-  game succeeds.
+  \cref{thm:pebble-game-correct} (resp.\
+  \cref{thm:pebbleGameResult-isAccept-iff}), the latter holds iff
+  the pebble game's certificate-form output (resp.\ verdict-form
+  output) is on the accept branch.
 \end{proof}
 
 \emph{Special case: planar rigidity.} At $(k, \ell) = (2, 3)$,

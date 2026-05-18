@@ -310,6 +310,38 @@ corollaries.
   \texttt{PebbleGame/Exec.lean}'s \texttt{SimpleGraph} section.
 \end{proof}
 
+The Phase~11 Layer~4 verdict-bearing wrapper for the exec-layer
+(sibling of the math-layer wrapper documented in
+\cref{def:pebbleGameResult,thm:pebbleGameResult-isAccept-iff})
+packages the $\mathrm{runPebbleGameExec}$ output into the same
+$\mathrm{PebbleGameResult}\,G\,k\,\ell$ verdict. It is the
+verdict-form analog of \cref{thm:runPebbleGameExec-correct}: $G$ is
+$(k, \ell)$-sparse iff the verdict-bearing exec-layer wrapper
+returns an $\mathrm{.accept}$.
+
+\begin{definition}[Verdict-bearing exec-layer wrapper]
+  \label{def:runPebbleGameExec-result}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_result}
+  \leanok
+  \uses{def:runPebbleGameExec, def:pebbleGameResult,
+    lem:workhorseWitness-certifies, thm:runPebbleGameExec-correct}
+  Under the hypotheses of \cref{def:runPebbleGameExec}, in the
+  matroidal regime $\ell < 2k$, define
+  $\mathrm{runPebbleGameExec\_result}\,G\,k\,\ell\,h_{\mathrm{mat}} :
+  \mathrm{PebbleGameResult}\,G\,k\,\ell$ by pattern-matching on
+  $\mathrm{runPebbleGameExec}\,G\,k\,\ell$:
+  $\mathrm{.inr}\,D \mapsto \mathrm{.accept}\,(D, \dots)$ (proof
+  fields from \cref{thm:runPebbleGameWith-correct}'s underline /
+  reachability components); $\mathrm{.inl}\,w \mapsto
+  \mathrm{.reject}\,(w.V', \dots)$ (proof fields from
+  \cref{lem:workhorseWitness-certifies} discharging the bridge facts
+  for $G.\mathrm{edgeListSorted}$). Computable; the reduction body
+  is the same compiled $\mathrm{runPebbleGameWith}$-on-$\mathrm{empty}$
+  chain as $\mathrm{runPebbleGameExec}$, with the verdict wrapper
+  re-packaging the $\mathrm{Sum}$ constructor as an inductive
+  constructor at zero compute cost.
+\end{definition}
+
 \subsection{Decidability of sparsity, tightness, and Laman}
 \label{sec:executable-decidable}
 
@@ -317,8 +349,8 @@ corollaries.
   \label{def:isSparse-decidable}
   \lean{SimpleGraph.instDecidableIsSparse}
   \leanok
-  \uses{def:runPebbleGameExec, def:isSparse,
-    thm:runPebbleGameExec-correct}
+  \uses{def:runPebbleGameExec-result, def:isSparse,
+    thm:pebbleGameResult-isAccept-iff}
   Let $V$ have $[\mathrm{Fintype}\,V]$,
   $[\mathrm{LinearOrder}\,V]$, and $[\mathrm{DecidableEq}\,V]$, and
   let $G$ be a finite simple graph on $V$. In the matroidal regime
@@ -328,8 +360,16 @@ corollaries.
   \[
     \mathrm{decide}\,(G.\mathrm{IsSparse}\,k\,\ell)
     \;=\;
-    (\mathrm{runPebbleGameExec}\,G\,k\,\ell).\mathrm{isRight}.
+    (\mathrm{runPebbleGameExec\_result}\,G\,k\,\ell\,h_{\mathrm{mat}}).\mathrm{isAccept}.
   \]
+  Phase~11 Layer~4 re-route: the reduction body was
+  $(\mathrm{runPebbleGameExec}\,G\,k\,\ell).\mathrm{isRight}$ in
+  Phase~11 Layer~3; the Layer~4 verdict wrapper
+  (\cref{def:runPebbleGameExec-result}) re-packages the
+  $\mathrm{Sum}$ constructor as the verdict inductive's constructor,
+  and $\mathrm{.isAccept}$ replaces $\mathrm{.isRight}$ at the
+  reduction site. The compiled body is unchanged (the verdict
+  wrapper is structural metadata over the $\mathrm{Sum}$).
   The instance is registered as the canonical $\mathrm{Decidable}$
   for $\mathrm{IsSparse}\,k\,\ell$ in
   \texttt{PebbleGame/Exec.lean}.

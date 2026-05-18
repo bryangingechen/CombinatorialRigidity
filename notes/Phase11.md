@@ -129,14 +129,50 @@ the CLI subsection's "optional refinement" note updated to acknowledge
 that Layer 3 has structurally landed the blocking-witness machinery
 (Layer 5 will surface it in CLI output).
 
-Layers 4–5 ahead. Next concrete commit: Layer 4 — define
-`PebbleGameResult G k ℓ` in `Exec.lean` (the user-facing verdict);
-re-derive `runPebbleGame` / `runPebbleGameExec` against it; restate
-Phase 7's `countMatroid_indep_iff_runPebbleGame` against
-`PebbleGameResult.isAccept`; re-route Phase 10's `Decidable` instances
-through the verdict's Boolean projection. Blueprint: insert
-`def:pebbleGameResult` into `chapter/pebble-game.tex` and restate
-`chapter/executable.tex`'s wrappers / Decidable instances.
+Layer 4 closed: `PebbleGameResult G k ℓ` inductive (with `.accept ⟨D,
+h_underline, h_reach⟩` and `.reject ⟨V', h_size, h_lt⟩` and `.isAccept :
+Bool`) lives in `PebbleGame/Correctness.lean` (placement micro-decision:
+import structure dictates `Correctness.lean` rather than the plan's
+`Exec.lean` — both math-layer `runPebbleGame_result` and exec-layer
+`runPebbleGameExec_result` need the verdict's return type, so it goes in
+the lowest file importing `Sparsity.lean`). Two verdict-bearing wrappers
+land **additively** on top of Phase 11 Layer 3's `Sum`-returning
+functions (per the user task spec: *"Layer 4 wraps that Sum into the
+PebbleGameResult verdict"*): `PartialOrientation.runPebbleGame_result`
+(math-layer, noncomputable, in `Correctness.lean`) and
+`PartialOrientation.runPebbleGameExec_result` (exec-layer, computable,
+in `Exec.lean`). Each is defined via a helper `*.aux` taking the
+`Sum`-shaped output as an explicit argument plus its equation with the
+underlying raw function — dodging the TACTICS-QUIRKS § 17 `match h :
+<expr> with` substitution that would otherwise produce useless
+`<pat> = <pat>` reflexivity hypotheses in each branch. The Layer-4
+micro-call resolved to **option (b)**: a verdict-form iff
+`runPebbleGame_result_isAccept_iff` /
+`runPebbleGameExec_result_isAccept_iff` stating
+`G.IsSparse k ℓ ↔ (runPebbleGame_result _).isAccept`, proved via a
+small bridge lemma `runPebbleGame_result_aux_isAccept` showing
+`.isAccept = Sum.isRight` (then chained through the Phase 11 Layer 3
+certificate-form `runPebbleGame_correct` / `runPebbleGameExec_correct`).
+Phase 7's `countMatroid_indep_iff_runPebbleGame` gets an additive
+verdict-form analog `countMatroid_indep_iff_runPebbleGame_result`. The
+three `Decidable` instances re-route: `instDecidableIsSparse`'s
+reduction body changes from `(runPebbleGameExec G k ℓ).isRight` to
+`(runPebbleGameExec_result G k ℓ h_matroidal.out).isAccept`;
+`instDecidableIsTight` and `instDecidableIsLaman` follow automatically
+since they stack on `instDecidableIsSparse`. Blueprint:
+`def:pebbleGameResult` and `thm:pebbleGameResult-isAccept-iff` added to
+`chapter/pebble-game.tex` in a new *User-facing verdict* subsection
+between the certificate-form correctness theorem and the
+matroidal-independence corollary; `cor:pebble-game-countMatroid-indep`
+extended with the verdict-form bullet and a second `\lean{...}` pin;
+`chapter/executable.tex` adds `def:runPebbleGameExec-result` (after
+`thm:runPebbleGameExec-correct`) and `def:isSparse-decidable`'s
+reduction-body equation switched to `.isAccept`.
+
+Layer 5 ahead. Next concrete commit: CLI surface bump in `Main.lean`
+to pattern-match on `PebbleGameResult` and emit witness lines after the
+trichotomy label; update `examples/*.txt`'s commented expected-output
+blocks; blueprint `chapter/executable.tex` CLI subsection update.
 
 The phase target is a **maximal reshape** of the pebble-game return
 type: replace the `Option`-shaped output of `runPebbleGame` /
@@ -495,22 +531,41 @@ incorporates the outcomes.
   ~+500 LoC across `PebbleGame/{Basic, Algorithm, Correctness,
   Exec}.lean`, ~−300 LoC in `Correctness.lean` from absorption.
 
-- **Layer 4.** Define `PebbleGameResult G k ℓ` in `Exec.lean`;
-  re-derive `runPebbleGame` (math-layer) and `runPebbleGameExec`
-  (exec-layer) against it. Re-route Phase 10's three `Decidable`
-  instances through `(... ).isAccept`; restate Phase 7's
-  `countMatroid_indep_iff_runPebbleGame` against the verdict.
-  Decide between `@[deprecated]`-bridging `runPebbleGame_correct`
-  vs restating it as `G.IsSparse k ℓ ↔ (runPebbleGame G k ℓ).isAccept`
-  (decision at Layer 4 entry; likely the latter for API continuity).
-  Blueprint: insert `def:pebbleGameResult` into
-  `chapter/pebble-game.tex`; restate `chapter/executable.tex`'s
-  `def:runPebbleGameExec` and three `Decidable` instances against
-  the verdict; replace `thm:pebble-game-correct` /
-  `thm:runPebbleGameExec-correct` with `\begin{remark}` blocks
-  documenting the verdict-type encoding; restate
-  `cor:pebble-game-countMatroid-indep` against `.isAccept`.
-  Estimated ~200–300 LoC Lean delta.
+- **Layer 4** ✓. `PebbleGameResult G k ℓ` inductive lives in
+  `Correctness.lean` (placement micro-decision — see *Decisions made
+  during this phase* below). The verdict carries `.accept ⟨D,
+  h_underline, h_reach⟩` and `.reject ⟨V', h_size, h_lt⟩` with
+  `.isAccept : Bool`. Two **additive** verdict-bearing wrappers on
+  top of Phase 11 Layer 3's `Sum`-returning functions (per user-spec
+  *"wraps that Sum into the PebbleGameResult verdict"*):
+  `PartialOrientation.runPebbleGame_result` (math-layer,
+  noncomputable, `Correctness.lean`) and
+  `PartialOrientation.runPebbleGameExec_result` (exec-layer,
+  computable, `Exec.lean`). Each routes through an explicit
+  `*_result.aux` helper taking the `Sum` output and its equation as
+  separate args — this dodges TACTICS-QUIRKS § 17 (`match h : <expr>
+  with` substitutes `<expr> ↦ <pat>` in the equation hypothesis,
+  rendering it useless). The Layer-4 micro-call resolved to **option
+  (b)**: verdict-form iff lemmas
+  `runPebbleGame_result_isAccept_iff` /
+  `runPebbleGameExec_result_isAccept_iff` chain through a private
+  bridge `*_result_aux_isAccept : (...).isAccept = Sum.isRight ...`
+  composed with the Phase 11 Layer 3 certificate-form theorems.
+  Phase 7's `countMatroid_indep_iff_runPebbleGame` gets an additive
+  verdict-form analog `countMatroid_indep_iff_runPebbleGame_result`.
+  `instDecidableIsSparse`'s reduction body re-routes from
+  `(runPebbleGameExec G k ℓ).isRight` to
+  `(runPebbleGameExec_result G k ℓ h_matroidal.out).isAccept`;
+  `instDecidableIsTight` and `instDecidableIsLaman` inherit
+  automatically. Blueprint: `def:pebbleGameResult` and
+  `thm:pebbleGameResult-isAccept-iff` added to
+  `chapter/pebble-game.tex` in a new *User-facing verdict* subsection
+  (between `thm:pebble-game-correct` and the matroidal corollary);
+  `cor:pebble-game-countMatroid-indep` extended with the verdict
+  bullet + second `\lean{...}` pin; `chapter/executable.tex` adds
+  `def:runPebbleGameExec-result` and switches
+  `def:isSparse-decidable`'s reduction-body equation to `.isAccept`.
+  Total Lean delta: ~+250 LoC across `PebbleGame/{Correctness, Exec}.lean`.
 
 - **Layer 5.** CLI surface bump: `Main.lean` pattern-matches on
   `PebbleGameResult` and emits witness lines. Update
@@ -541,6 +596,61 @@ commit ships, blueprint and Lean.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+
+- **Layer 4: `PebbleGameResult` lives in `Correctness.lean`, not `Exec.lean`.**
+  The Phase 11 *Architectural choices* originally tagged `PebbleGameResult`'s
+  home as `PebbleGame/Exec.lean`; in practice the import structure dictates
+  `PebbleGame/Correctness.lean` instead. The math-layer wrapper
+  `runPebbleGame_result` needs the verdict's return type and sits above
+  `Exec.lean` in the import chain. The exec-layer wrapper in `Exec.lean`
+  re-uses the same `PebbleGameResult` definition without re-declaring it. No
+  user-facing API change; the placement is mechanically forced by file-import
+  order (`Exec.lean` imports `Correctness.lean`).
+
+- **Layer 4: additive wrapping, not reshape-in-place.** Per the user-spec
+  *"wraps that Sum into the PebbleGameResult verdict and re-routes
+  Decidable / countMatroid_indep_iff_runPebbleGame through .isAccept"*, the
+  Layer 3 `Sum`-returning `runPebbleGame` / `runPebbleGameExec` STAY (kept
+  as internal raw calls). The Phase 11 plan's *Architectural choices*
+  proposed reshape-in-place; reading both the plan and the user-spec
+  carefully, the additive interpretation is more conservative (preserves
+  the Layer 3 surface) and the verdict-bearing wrappers
+  `runPebbleGame_result` / `runPebbleGameExec_result` provide the user-facing
+  verdict alongside. Phase 7's `countMatroid_indep_iff_runPebbleGame` stays
+  intact; an additive verdict-form analog
+  `countMatroid_indep_iff_runPebbleGame_result` is added. The three
+  `Decidable` instances re-route (since the plan was unambiguous on that
+  point); the iff theorems `runPebbleGame_correct` /
+  `runPebbleGameExec_correct` stay intact (they're still meaningful as
+  certificate-form statements) and the verdict-form analogs sit alongside.
+  Trade: two named wrapper functions per layer rather than one; the
+  benefit is no churn in `runPebbleGame_correct` /
+  `runPebbleGameExec_correct` / `countMatroid_indep_iff_runPebbleGame`
+  callsites (none currently outside `Correctness.lean`, but the API
+  guarantee matters for future users).
+
+- **Layer 4: `*_result.aux` helper to dodge TACTICS-QUIRKS § 17.** A direct
+  term-level `match h_opt : runPebbleGame G k ℓ with | .inr D => ... | .inl
+  w => ...` body for `runPebbleGame_result` would put `h_opt` in scope of
+  each branch but with the substituted type `<pat> = <pat>` (per § 17), so
+  downstream proof references to `h_opt : runPebbleGame G k ℓ = .inr D`
+  fail with `Application type mismatch`. The standard fix
+  (TACTICS-QUIRKS § 17's recommendation) is `subst`-style routing or
+  capturing the equation separately; in this case a `*.aux` helper taking
+  the `Sum`-shaped result and its equation as explicit arguments, followed
+  by `*_result G k ℓ h_matroidal := *.aux G k ℓ h_matroidal (runPebbleGame
+  G k ℓ) rfl`, completely sidesteps the substitution. Pattern carried
+  through both math- and exec-layer wrappers.
+
+- **Layer 4 micro-call: verdict-form iff `(... .isAccept)` over
+  `@[deprecated]`.** Per *Blockers / open questions*, option (b) was
+  picked: the Phase-9-era `runPebbleGame_correct` is restated in verdict
+  form as `runPebbleGame_result_isAccept_iff : G.IsSparse k ℓ ↔
+  (runPebbleGame_result G k ℓ h_matroidal).isAccept`. The proof bridges
+  through a private `runPebbleGame_result_aux_isAccept :
+  (runPebbleGame_result.aux _ _ _ _ s _).isAccept = s.isRight`, then
+  composes with `runPebbleGame_correct` via `Sum.isRight_iff`. Same
+  pattern at the exec layer.
 
 - **Layer 3: `tryAddEdgeWith` / `runPebbleGameWith` take `hD : Reachable k ℓ D`
   as a hypothesis (absorbing `h_outle`).** The case-5 inline witness construction
@@ -613,13 +723,20 @@ commit ships, blueprint and Lean.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
-*(Filled in as cross-cutting lessons surface. Likely candidates:
-the *Strengthen past results to reduce duplication* principle that
-drove the maximal-reshape choice — a project-philosophy entry for
-`../DESIGN.md` once Layer 3 closes; and the *Blueprint reshape
-in-place per Layer* sequencing decision — a workflow-mode entry for
-`../blueprint/DESIGN.md` if the pattern recurs in future
-structural-edit phases.)*
+- *Data-building `match h_opt :` quirk fix via `*.aux` helper* →
+  TACTICS-QUIRKS § 17 (third bullet of *Fix*). The Layer 4
+  `runPebbleGame_result.aux` / `runPebbleGameExec_result.aux` pattern
+  takes the scrutinee `s` and its equation `h_opt : foo G = s` as
+  separate explicit args, so the outer `match s, h_opt with` binds
+  `h_opt` to the un-substituted equation that downstream proof-field
+  lemmas need.
+
+*(Likely future promotion candidates: the *Strengthen past results to
+reduce duplication* principle that drove the maximal-reshape choice
+— a project-philosophy entry for `../DESIGN.md`; and the
+*Blueprint reshape in-place per Layer* sequencing decision — a
+workflow-mode entry for `../blueprint/DESIGN.md` if the pattern recurs
+in future structural-edit phases.)*
 
 ### Cleanup pass summaries
 
@@ -631,13 +748,16 @@ structural-edit phases.)*
   split. Resolved by `Search/DFS.lean` LoC after Layer 1's body
   lands.
 
-- **Layer 4 micro-call:** how to phrase `runPebbleGame_correct`'s
-  Phase-9-era statement against the verdict. Two options: (a)
-  deprecate it (`@[deprecated PebbleGameResult (since :=
-  "narrative-bridge")]`); (b) restate it as
-  `G.IsSparse k ℓ ↔ (runPebbleGame G k ℓ).isAccept`. Decision at
-  Layer 4 entry; (b) is closer to the existing API and likely the
-  right call.
+- **Layer 4 micro-call:** ✓ Resolved at Layer 4 entry to option (b):
+  restated additively (the Phase-9-era `runPebbleGame_correct` /
+  `runPebbleGameExec_correct` stay intact as certificate-form
+  statements; the verdict-form analogs
+  `runPebbleGame_result_isAccept_iff` /
+  `runPebbleGameExec_result_isAccept_iff` sit alongside, each routing
+  through a private bridge `*_result_aux_isAccept : (... .isAccept) =
+  Sum.isRight ...` chained with the certificate-form iff). The verdict
+  form is the natural target for the Phase 10 `Decidable` instances'
+  re-routing through `.isAccept`.
 
 - **Layer 5 micro-call:** the four `examples/*.txt` files'
   commented expected-output blocks will grow visibly on the Moser

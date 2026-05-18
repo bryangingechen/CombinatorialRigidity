@@ -28,10 +28,25 @@ algorithm layer in `PebbleGame/Algorithm.lean`:
   failure-witness extraction routed through the algebraic core
   `Reachable.independent_brings_pebble` (Lee–Streinu Lemma 13).
 * `runPebbleGame_correct` — the certificate-form iff
-  `G.IsSparse k ℓ ↔ ∃ D, runPebbleGame G k ℓ = some D`.
+  `G.IsSparse k ℓ ↔ ∃ D, runPebbleGame G k ℓ = .inr D`.
 * `SimpleGraph.countMatroid_indep_iff_runPebbleGame` — the
   matroidal-independence corollary against Phase 7's `countMatroid`,
   a three-`rw` composition with `countMatroid_indep_iff`.
+* `PebbleGameResult G k ℓ` (Phase 11 Layer 4) — the user-facing
+  verdict-bearing inductive, with `.accept ⟨D, h_underline, h_reach⟩`
+  carrying the orientation + structural certificates of acceptance
+  and `.reject ⟨V', h_size, h_lt⟩` carrying the blocking subset +
+  sparsity-violation pair. The constructor IS the certificate.
+  `.isAccept : Bool` projection.
+* `runPebbleGame_result` (math-layer; noncomputable) and
+  `runPebbleGameExec_result` (exec-layer; computable; in `Exec.lean`):
+  verdict-bearing wrappers that package the `Sum`-shaped output of
+  the Phase 11 Layer 3 reshape (`Sum (WorkhorseWitness k ℓ V)
+  (PartialOrientation V)`) into a `PebbleGameResult G k ℓ`. Both take
+  the matroidal-regime hypothesis `ℓ < 2 * k`, which is needed to
+  populate `.reject`'s `h_size` via `WorkhorseWitness.certifies_against`.
+* `runPebbleGame_result_isAccept_iff` — verdict-form correctness:
+  `G.IsSparse k ℓ ↔ (runPebbleGame_result G k ℓ h_matroidal).isAccept`.
 
 The matroidal-independence corollary is the project-level pebble-game
 deliverable: at `(k, ℓ) = (2, 3)` it specialises to the algorithmic
@@ -42,7 +57,8 @@ decision procedure for the planar rigidity matroid
 
 Cf. Lee–Streinu Theorem 8 + §3 (correctness chain),
 blueprint `thm:pebble-game-soundness`, `thm:pebble-game-completeness`,
-`thm:pebble-game-correct`, `cor:pebble-game-countMatroid-indep`.
+`thm:pebble-game-correct`, `def:pebbleGameResult`,
+`cor:pebble-game-countMatroid-indep`.
 -/
 
 @[expose] public section
@@ -650,7 +666,8 @@ section Matroidal
 blueprint `cor:pebble-game-countMatroid-indep`): in the matroidal regime
 `ℓ < 2k`, the edge set `G.edgeSet` is independent in the `(k, ℓ)`-count
 matroid `SimpleGraph.countMatroid V k ℓ hℓ` iff `runPebbleGame G k ℓ`
-returns `some D` for some partial orientation `D`. One-line composition of
+returns `.inr D` for some partial orientation `D` (Phase 11 Layer 3
+reshape; was `some D`). One-line composition of
 `SimpleGraph.countMatroid_indep_iff` (independent ↔ off-diagonal +
 `fromEdgeSet`-sparse) with `runPebbleGame_correct` (sparse ↔ pebble-game
 accepts); `SimpleGraph.fromEdgeSet_edgeSet` collapses
@@ -671,5 +688,228 @@ theorem _root_.SimpleGraph.countMatroid_indep_iff_runPebbleGame
 end Matroidal
 
 end PartialOrientation
+
+/-! ### User-facing verdict (Phase 11 Layer 4)
+
+The user-facing pebble-game outcome is a two-constructor inductive
+`PebbleGameResult G k ℓ` whose `.accept` constructor carries the
+accepting orientation alongside its structural certificates
+(`D.underline = G.edgeFinset` and `Reachable k ℓ D`) and whose
+`.reject` constructor carries the blocking subset $V'$ alongside the
+$G$-shaped sparsity-violation pair
+$\ell \le k \cdot |V'| \wedge k \cdot |V'| < |E_G[V']| + \ell$. The
+constructor *is* the certificate: the certificate-form iff theorems
+(`runPebbleGame_correct`, `runPebbleGameExec_correct`) collapse into
+the *type* of the verdict-bearing wrapper's return. The Boolean
+projection `.isAccept` drives Phase 10's three `Decidable` instances
+(`SimpleGraph.{instDecidableIsSparse, instDecidableIsTight,
+instDecidableIsLaman}` in `PebbleGame/Exec.lean`, re-routed in Phase
+11 Layer 4 from the Phase-10-era `Sum.isRight` to the verdict's
+`.isAccept`).
+
+This file ships the verdict inductive, its `.isAccept` projection,
+and the math-layer noncomputable wrapper
+`runPebbleGame_result : PebbleGameResult G k ℓ` (a `match` on the
+Phase 11 Layer 3 `Sum`-shaped `runPebbleGame` output, using
+`runPebbleGame_underline_eq_edgeFinset` + `runPebbleGameWith_reachable`
+to populate `.accept`'s proof fields and
+`runPebbleGameWith_witness_bridges` + `WorkhorseWitness.certifies_against`
+to populate `.reject`'s). The exec-layer counterpart
+`runPebbleGameExec_result` lives in `PebbleGame/Exec.lean`.
+
+**Placement micro-decision (Phase 11 Layer 4).** `notes/Phase11.md`'s
+*Architectural choices* tagged `PebbleGameResult`'s home as
+`PebbleGame/Exec.lean`; in practice the import chain dictates
+`PebbleGame/Correctness.lean` instead, because the math-layer
+`runPebbleGame_result` wrapper here needs to return the verdict and
+sits above `Exec.lean` in the import chain. The exec-layer wrapper in
+`Exec.lean` re-uses this same `PebbleGameResult` definition. No
+semantic change vs the plan; the user-facing API surface (verdict +
+both wrappers + Decidable re-routing) is unaffected.
+
+Blueprint `def:pebbleGameResult` (in `chapter/pebble-game.tex`, the
+verdict's natural mathematical position alongside
+`def:workhorseWitness` and `thm:pebble-game-correct`). -/
+
+section Verdict
+
+variable [DecidableEq V] [Fintype V]
+
+/-- **User-facing verdict** for the `(k, ℓ)`-pebble game (Phase 11 Layer 4).
+
+Two-constructor inductive whose constructor IS the certificate:
+
+* `.accept ⟨D, h_underline, h_reach⟩` carries the accepting partial
+  orientation `D : PartialOrientation V`, the underline equation
+  `D.underline = G.edgeFinset` (witness that the algorithm orients
+  exactly `G`'s edges), and the reachability proof
+  `Reachable k ℓ D` (giving access to the four pebble-game
+  invariants of Lemma 10, in particular Invariant (4) which discharges
+  sparsity).
+* `.reject ⟨V', h_size, h_lt⟩` carries the blocking subset
+  `V' : Finset V` and the `G`-shaped sparsity-violation pair
+  `ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ`. The
+  pair directly contradicts `G.IsSparse k ℓ` at `V'`.
+
+The Boolean projection `.isAccept : PebbleGameResult G k ℓ → Bool`
+drives Phase 10's three `Decidable` instances:
+`(runPebbleGameExec_result G k ℓ h_matroidal).isAccept = true ↔
+G.IsSparse k ℓ`. Cf. Lee--Streinu Theorem 8 (certificate form, with
+the failure side carrying inline witness data); blueprint
+`def:pebbleGameResult`. -/
+inductive PebbleGameResult (G : SimpleGraph V) [Fintype G.edgeSet] (k ℓ : ℕ)
+  | /-- Accept branch: partial orientation `D` of `G`'s edges, certified
+    as `(k, ℓ)`-reachable, hence (by Invariant (4)) `G` is `(k, ℓ)`-sparse. -/
+    accept (D : PartialOrientation V)
+           (h_underline : D.underline = G.edgeFinset)
+           (h_reach : PartialOrientation.Reachable k ℓ D)
+  | /-- Reject branch: blocking subset `V' ⊆ V` carrying the inline
+    sparsity-violation certificate
+    `k * V'.card < (G.edgesIn ↑V').ncard + ℓ` (with size lower bound
+    `ℓ ≤ k * V'.card`). Together these directly contradict
+    `G.IsSparse k ℓ` at `V'`. -/
+    reject (V' : Finset V)
+           (h_size : ℓ ≤ k * V'.card)
+           (h_lt : k * V'.card < (G.edgesIn (↑V' : Set V)).ncard + ℓ)
+
+namespace PebbleGameResult
+
+variable {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ}
+
+/-- **Boolean acceptance projection** (Phase 11 Layer 4): `true` on the
+`.accept` constructor, `false` on the `.reject` constructor. Drives the
+Phase 10 `Decidable` instances `SimpleGraph.{instDecidableIsSparse,
+instDecidableIsTight, instDecidableIsLaman}` (in `PebbleGame/Exec.lean`),
+which were re-routed in Phase 11 Layer 4 from the Phase-10-era
+`Sum.isRight` projection of `runPebbleGameExec` to this `.isAccept`
+projection of `runPebbleGameExec_result`. -/
+@[simp] def isAccept : PebbleGameResult G k ℓ → Bool
+  | .accept _ _ _ => true
+  | .reject _ _ _ => false
+
+end PebbleGameResult
+
+namespace PartialOrientation
+
+variable {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ}
+
+/-- **Math-layer verdict-bearing wrapper** (Phase 11 Layer 4). Packages
+the Phase 11 Layer 3 `Sum`-shaped `runPebbleGame G k ℓ` output into a
+`PebbleGameResult G k ℓ` verdict. The matroidal-regime hypothesis
+`ℓ < 2 * k` is needed to construct `.reject`'s `h_size` field via
+`WorkhorseWitness.certifies_against` (which calls
+`independent_brings_pebble_simpleGraph_form` whose size step uses
+`ℓ < 2 * k`).
+
+Body: pattern-match on `runPebbleGame G k ℓ`:
+* `.inr D` ⟶ `.accept D h_underline h_reach`, where `h_underline` is
+  `runPebbleGame_underline_eq_edgeFinset` and `h_reach` is
+  `runPebbleGameWith_reachable` against `Reachable.empty`.
+* `.inl w` ⟶ `.reject w.V' h_size h_lt`, where the pair is the output
+  of `w.certifies_against` after extracting the two bridge facts via
+  `runPebbleGameWith_witness_bridges` (which lifts the empty
+  orientation's `underline = ∅ ⊆ G.edgeFinset` and the
+  `G.edgeFinset.toList.map Quot.out` `Sym2`-image identity to the
+  witness data).
+
+`noncomputable` because the underlying `runPebbleGame` is
+(`outList` + `Quot.out`); the computable sibling
+`runPebbleGameExec_result` lives in `PebbleGame/Exec.lean`.
+
+**Implementation note.** Routed through an auxiliary
+`runPebbleGame_result_aux` taking the `Sum`-output as an explicit
+argument plus its equation with `runPebbleGame`. This avoids the
+`match h_opt :` substitution quirk (TACTICS-QUIRKS § 17) that would
+otherwise turn `h_opt` into a useless `<pat> = <pat>` reflexivity in
+each branch. Blueprint `def:runPebbleGame` (verdict-bearing form). -/
+noncomputable def runPebbleGame_result.aux (G : SimpleGraph V) [Fintype G.edgeSet]
+    (k ℓ : ℕ) (h_matroidal : ℓ < 2 * k)
+    (s : Sum (WorkhorseWitness k ℓ V) (PartialOrientation V))
+    (h_opt : runPebbleGame G k ℓ = s) : PebbleGameResult G k ℓ :=
+  match s, h_opt with
+  | .inr D, h_opt =>
+      .accept D (runPebbleGame_underline_eq_edgeFinset h_opt)
+        (by
+          rw [runPebbleGame] at h_opt
+          exact runPebbleGameWith_reachable _ _ _ Reachable.empty h_opt)
+  | .inl w, h_opt =>
+      let bridge_part : s(w.uv.1, w.uv.2) ∈ G.edgeFinset ∧
+          w.D.underline ⊆ G.edgeFinset := by
+        have h := h_opt
+        rw [runPebbleGame] at h
+        set edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V)
+          with hedges
+        have himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset =
+            G.edgeFinset := by
+          rw [hedges, List.map_map]
+          have h_id : (fun p : V × V => s(p.1, p.2)) ∘
+              (Quot.out : Sym2 V → V × V) = id := by
+            funext e; exact Quot.out_eq e
+          rw [h_id, List.map_id, G.edgeFinset.toList_toFinset]
+        have hmem : ∀ p ∈ edges, s(p.1, p.2) ∈ G.edgeFinset := by
+          intro p hp; rw [← himg]
+          exact List.mem_toFinset.mpr (List.mem_map.mpr ⟨p, hp, rfl⟩)
+        have hsub : (empty : PartialOrientation V).underline ⊆ G.edgeFinset := by
+          rw [underline_empty]; exact Finset.empty_subset _
+        exact runPebbleGameWith_witness_bridges _ _ edges
+          Reachable.empty hmem hsub h
+      let pair := w.certifies_against h_matroidal bridge_part.1 bridge_part.2
+      .reject w.V' pair.1 pair.2
+
+/-- See `runPebbleGame_result.aux` docstring. -/
+noncomputable def runPebbleGame_result (G : SimpleGraph V) [Fintype G.edgeSet]
+    (k ℓ : ℕ) (h_matroidal : ℓ < 2 * k) : PebbleGameResult G k ℓ :=
+  runPebbleGame_result.aux G k ℓ h_matroidal (runPebbleGame G k ℓ) rfl
+
+/-- **`isAccept` of `runPebbleGame_result.aux` reduces along the
+`Sum`-equation.** A `.inr`-output of `runPebbleGame` gives an `.accept`
+verdict (`isAccept = true`); a `.inl`-output gives a `.reject` verdict
+(`isAccept = false`). Used internally to bridge the verdict's
+`.isAccept` projection to the certificate-form `runPebbleGame_correct`. -/
+private lemma runPebbleGame_result_aux_isAccept (G : SimpleGraph V)
+    [Fintype G.edgeSet] (k ℓ : ℕ) (h_matroidal : ℓ < 2 * k)
+    (s : Sum (WorkhorseWitness k ℓ V) (PartialOrientation V))
+    (h_opt : runPebbleGame G k ℓ = s) :
+    (runPebbleGame_result.aux G k ℓ h_matroidal s h_opt).isAccept = s.isRight := by
+  cases s <;>
+    simp [runPebbleGame_result.aux, PebbleGameResult.isAccept, Sum.isRight]
+
+/-- **Verdict-form correctness of the math-layer pebble game**
+(Phase 11 Layer 4; blueprint `thm:pebble-game-correct`, verdict-form
+restatement). In the matroidal regime `ℓ < 2 * k`, `G` is `(k, ℓ)`-sparse
+iff `runPebbleGame_result G k ℓ h_matroidal` returns the `.accept`
+verdict (equivalently: its `.isAccept` Boolean projection is `true`).
+Phase 11 Layer 4 verdict-form analog of `runPebbleGame_correct`. -/
+theorem runPebbleGame_result_isAccept_iff (G : SimpleGraph V) [Fintype G.edgeSet]
+    (k ℓ : ℕ) (h_matroidal : ℓ < 2 * k) :
+    G.IsSparse k ℓ ↔ (runPebbleGame_result G k ℓ h_matroidal).isAccept := by
+  unfold runPebbleGame_result
+  rw [runPebbleGame_result_aux_isAccept]
+  rw [Sum.isRight_iff, ← runPebbleGame_correct h_matroidal]
+
+end PartialOrientation
+
+/-- **Pebble-game certificate of matroidal independence, verdict form**
+(Phase 11 Layer 4 restatement of `countMatroid_indep_iff_runPebbleGame`
+against `PebbleGameResult.isAccept`): in the matroidal regime `ℓ < 2k`,
+`G.edgeSet` is independent in the `(k, ℓ)`-count matroid
+`SimpleGraph.countMatroid V k ℓ hℓ` iff the verdict-bearing
+`runPebbleGame_result G k ℓ hℓ` returns an `.accept` (its `.isAccept`
+projection is `true`). One-line composition of `countMatroid_indep_iff`
+(independent ↔ off-diagonal + `fromEdgeSet`-sparse) with
+`runPebbleGame_result_isAccept_iff` (sparse ↔ verdict accepts);
+`SimpleGraph.fromEdgeSet_edgeSet` collapses `fromEdgeSet G.edgeSet` to
+`G`, and the off-diagonal carrier condition is automatic. Blueprint
+`cor:pebble-game-countMatroid-indep` (verdict-form restatement). -/
+theorem _root_.SimpleGraph.countMatroid_indep_iff_runPebbleGame_result
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    {k ℓ : ℕ} (hℓ : ℓ < 2 * k) :
+    (SimpleGraph.countMatroid V k ℓ hℓ).Indep G.edgeSet ↔
+      (PartialOrientation.runPebbleGame_result G k ℓ hℓ).isAccept := by
+  rw [SimpleGraph.countMatroid_indep_iff, SimpleGraph.fromEdgeSet_edgeSet,
+    PartialOrientation.runPebbleGame_result_isAccept_iff]
+  exact and_iff_right (SimpleGraph.edgeSet_subset_edgeSet.mpr le_top)
+
+end Verdict
 
 end CombinatorialRigidity.PebbleGame

@@ -518,6 +518,30 @@ reads as a tautology after the substitution.
     | some wp => exact absurd h_eq (hne wp.1 wp.2)
   exact absurd … (helper … hnone …)
   ```
+- If you're **building data, not proving a `Prop`**, and the data
+  construction itself needs the un-substituted equation (typical when
+  you're defining a verdict / wrapper that pattern-matches on an
+  expression and feeds the equation to a lemma to populate proof
+  fields), route through an `aux` helper that takes the scrutinee and
+  its equation as **separate** explicit arguments:
+  ```lean
+  noncomputable def foo_result.aux (... )
+      (s : Sum A B) (h_opt : foo G = s) : Result G := match s, h_opt with
+    | .inr D, h_opt => .accept D (helper_underline h_opt) (helper_reach h_opt)
+    | .inl w, h_opt => .reject w.V' (helper_size h_opt w) (helper_lt h_opt w)
+
+  noncomputable def foo_result (G : ...) : Result G :=
+    foo_result.aux G (foo G) rfl
+  ```
+  The outer `match s, h_opt with | .inr D, h_opt => ...` binds `h_opt`
+  to `runPebbleGame G k ℓ = .inr D` (the un-substituted equation; the
+  fact that `s` is now `.inr D` is the *pattern* equation, not a goal
+  substitution because the outer scrutinee `s` is an arbitrary
+  argument). The wrapper `foo_result G := foo_result.aux G (foo G) rfl`
+  then specializes the helper. **Trade:** two named declarations
+  instead of one; **benefit:** every reference to `h_opt` carries the
+  type that downstream lemmas (`runPebbleGame_underline_eq_edgeFinset`,
+  `runPebbleGameWith_witness_bridges`, etc.) actually expect.
 
 Worked case study: `reachableFinding_complete` in
 `CombinatorialRigidity/Search/DFS.lean` (Phase-9 DFS warmup). First
@@ -527,6 +551,14 @@ goal had collapsed to `some ⟨w', p'⟩ = some ⟨w', p'⟩` while `heq`
 retained the original `reachableFinding … = some ⟨w', p'⟩`. The
 contrapositive `by_contra + cases h_eq:` form sidesteps both
 directions cleanly.
+
+The third (data-building) fix above is canonical at Phase 11 Layer 4's
+`runPebbleGame_result.aux` + `runPebbleGame_result` pattern in
+`CombinatorialRigidity/PebbleGame/Correctness.lean`, and at the
+exec-layer sibling `runPebbleGameExec_result.aux` +
+`runPebbleGameExec_result` in `PebbleGame/Exec.lean`. The same lifting
+applies whenever a definition needs to pattern-match on a scrutinee
+and feed the equation to several proof-field lemmas.
 
 ---
 
