@@ -17,7 +17,14 @@ for a substantive phase per `../notes/CLAUDE.md` *Soft length
 budget*; pattern was *Current state* per-layer narrative → ~10-LoC
 pointer summary, *Architectural choices* inline TeX declarations →
 pointers to Lean sources and blueprint nodes, and *Decisions made*
-entries duplicating *Layer plan* dropped.).
+entries duplicating *Layer plan* dropped. **D2 closed**:
+`notes/Phase10.md` compressed from 546 → 343 LoC, within the
+adaptive 250-350 budget for a shorter five-layer forward-work
+phase; same template as D1 — *Current state* narrative absorbed
+into a new *Layer plan* section, *Architectural choices* trimmed
+where entries duplicated Layer 0 audit outcomes recorded in
+*Decisions made*, *Blockers / open questions* collapsed to one
+inline paragraph with closure tags.).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -126,8 +133,12 @@ with the table in §C below; C2 (four-question walk) closed with all
 ten sites as *no-op* and both cross-proof unification clusters
 dissolved on inspection (per-site verdict table in *Cleanup pass
 summaries* C2); C3 (in-round refactor candidates) closed as a no-op
-(zero candidates surfaced). Remaining: D project-organization
-compression.
+(zero candidates surfaced). **D1 closed** (`notes/Phase11.md` 856 →
+~436 LoC); **D2 closed** (`notes/Phase10.md` 546 → 343 LoC, within
+adaptive 250-350 budget — same template as D1). Remaining: D3
+(FRICTION re-skim + open-promotion-candidate assessment), D4
+(DESIGN.md *Choices to revisit* drift check), D5
+(no-residual-lifts audit).
 Pre-sweep smell counts (Phase 10+11
 surface only —
 `CombinatorialRigidity/PebbleGame/*.lean`,
@@ -534,13 +545,26 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   Maximal reshape*). Hand-off contract still passes: *Current
   state* + *Hand-off / next phase* + *Layer plan* identify the
   next-phase candidates without reading source.
-- [ ] **D2:** `notes/Phase10.md` compression. Currently 546 LoC.
-  Phase 10 was a shorter five-layer forward-work phase; adaptive
-  budget allows ~250-350. *Current state* and *Architectural
-  choices* duplicate each other in spots (e.g., the
-  `[LinearOrder V]` and `Fact (ℓ < 2 * k)` decisions appear in
-  both); collapse the *Current state* narrative to a per-layer
-  pointer. Target: ~300 LoC.
+- [x] **D2:** `notes/Phase10.md` compression. Closed: 546 → 343
+  LoC, within the adaptive 250-350 budget per
+  `../notes/CLAUDE.md` *Soft length budget* — Phase 10 is a
+  shorter five-layer forward-work phase. Compression matched the
+  Phase 11 D1 template: *Current state* collapsed from a ~170-LoC
+  per-layer narrative to a ~15-LoC summary pointing at a new
+  *Layer plan* section (per-layer landing record) and
+  *Architectural choices*; the substantive landing detail (file
+  paths, lemma names) moved into *Layer plan*. *Architectural
+  choices* trimmed where individual entries duplicated Layer 0
+  audit outcomes recorded in *Decisions made* (the
+  `LinearOrder (Sym2 V)` slot-conflict story is now
+  cross-referenced rather than restated; `Computable plug-in`,
+  `Edge enumeration`, `One Decidable instance`, `CLI is Fin n-only`
+  each shortened by 20-40%). *Decisions made* Layer 0 \#1 / \#2 /
+  \#3 outcomes shortened to ~10 LoC each (was 15-20). *Blockers /
+  open questions* collapsed from a four-bullet list to one inline
+  paragraph with the closure tags. *Hand-off / next phase*'s
+  Phase-11-candidate paragraph collapsed to a pointer at
+  `notes/Phase11.md`.
 - [ ] **D3:** FRICTION re-skim. Phase 10's *Promoted* section
   lifted three entries (TACTICS-QUIRKS § 22, § 23, DESIGN.md
   *One Decidable instance per project predicate*); Phase 11's
@@ -1019,6 +1043,43 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   without reading source. No source file changed; the *Layer plan*
   remains the authoritative phase to-do list (now post-close, a
   per-Layer landing summary).
+- **D2: `notes/Phase10.md` compression** — closure with substantive
+  edits. 546 → 343 LoC, within the adaptive 250-350 LoC budget for
+  a shorter five-layer forward-work phase per `../notes/CLAUDE.md`
+  *Soft length budget*. Compression pattern matched the D1 template
+  applied to a shorter phase, addressing the three candidates
+  listed in §D's D2 entry at round open:
+  1. *Current state* (~170 LoC of per-layer narrative duplicating
+     each commit message + the new *Layer plan* below) collapsed
+     to a ~15-LoC summary pointing at *Layer plan* (for per-layer
+     landing detail, modelled on Phase 11's compressed-form
+     section) and *Architectural choices* (for phase-shape
+     decisions). Single largest compression lever.
+  2. *Architectural choices made up front* trimmed where entries
+     duplicated Layer 0 audit outcomes recorded in *Decisions
+     made*: the `LinearOrder (Sym2 V)` slot-conflict story now
+     cross-references *Layer 0 audit \#1 outcome below* rather
+     than restating it; `Computable plug-in via [LinearOrder V]`,
+     `Edge enumeration via Finset.sort`, `One Decidable instance`,
+     `Runtime / backend matrix`, `CLI is Fin n-only` each
+     shortened by 20-40% by dropping restated rationale that
+     surfaces fully elsewhere. *New files* + *Forward-mode
+     blueprint authoring* merged into one bullet (both are now
+     landed facts post-close).
+  3. *Decisions made during this phase* Layer 0 \#1 / \#2 / \#3
+     outcomes shortened to ~10 LoC each (was 15-20). Layer 3 / 5
+     entries trimmed 10-25%. *Promoted* + *Cleanup pass summaries*
+     unchanged in structure (Promoted entries are pointers
+     already). *Blockers / open questions* (four bullets each with
+     ✓ closure tag, ~25 LoC) collapsed to one inline paragraph
+     listing the closures with their per-item closure source.
+     *Hand-off / next phase*'s Phase-11-candidate paragraph
+     collapsed to a pointer at `notes/Phase11.md`.
+  Hand-off contract still passes: *Current state* + *Layer plan* +
+  *Hand-off / next phase* identify the next-phase candidates
+  without reading source. No Lean / blueprint source file changed.
+  *Layer plan* takes over the role *Current state* played in the
+  pre-compression file (per-Layer landing record).
 
 ## Blockers / open questions
 
@@ -1031,23 +1092,29 @@ fix / A3 targeted fix / A4 no-op); Bucket B complete (B1 no-op /
 B2 no-op + smell-table revision / B3 no-op + smell-table revision /
 B4 no-op / B5 no-op); Bucket C complete (C1 ranking / C2 all
 no-op + cluster dissolutions / C3 no-op); **D1 closed**
-(`notes/Phase11.md` 856 → ~436 LoC, within adaptive budget).
+(`notes/Phase11.md` 856 → ~436 LoC, within adaptive budget);
+**D2 closed** (`notes/Phase10.md` 546 → 343 LoC, within the
+adaptive 250-350 budget for a shorter forward-work phase).
 
-Next concrete commit: **D2** — `notes/Phase10.md` compression
-(currently 546 LoC; adaptive budget allows ~250-350 LoC since
-Phase 10 was a shorter five-layer forward-work phase). Compression
-candidates from §D above: *Current state* and *Architectural
-choices* duplicate each other in spots (the `[LinearOrder V]` and
-`Fact (ℓ < 2 * k)` decisions appear in both); collapse the
-*Current state* narrative to a per-layer pointer. Target: ~300 LoC.
-After D2, D3 (FRICTION re-skim + assess the two open Phase-11
-promotion candidates `Strengthen past results to reduce duplication`
-/ `Blueprint reshape in-place per Layer` against second-site
-evidence), D4 (DESIGN.md *Choices to revisit* drift check), D5
+Next concrete commit: **D3** — FRICTION re-skim + open-promotion-
+candidate assessment. Phase 10's *Promoted* section lifted three
+entries (TACTICS-QUIRKS § 22, § 23, DESIGN.md *One Decidable
+instance per project predicate*); Phase 11's *Promoted* lifted one
+(TACTICS-QUIRKS § 17 third bullet, the `match h:` quirk fix via
+`*.aux` helper). Verify each was a one-line pointer in the phase
+notes after lifting and that the FRICTION/QUIRKS entries themselves
+carry the cross-references back. The two open Phase-11 promotion
+candidates flagged in Phase11.md *Promoted* parenthesis
+(*Strengthen past results to reduce duplication* and *Blueprint
+reshape in-place per Layer*) are ripe for promotion assessment on
+second-site evidence (whether the principle would also have
+applied to Phase 7 / 8 / 9 / 10 in retrospect). The lift-worthy
+lesson surfaced at C2 close (*"top-10 LoC ranking surfaces
+structural shape, not extraction debt"*) is best assessed here
+too, when the post-cleanup view is complete. After D3, D4
+(DESIGN.md *Choices to revisit* drift check), D5
 (no-residual-lifts audit on every Phase 10 / 11 *Promoted to*
-entry). The lift-worthy lesson surfaced at C2 close (*"top-10 LoC
-ranking surfaces structural shape, not extraction debt"*) is best
-assessed at D3 when the post-cleanup view is complete.
+entry).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
