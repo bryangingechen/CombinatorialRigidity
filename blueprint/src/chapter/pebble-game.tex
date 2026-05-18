@@ -517,8 +517,9 @@ preservation (already established in
   Let $D$ be a partial orientation, $k, \ell$ integers, and
   $\mathit{edges} : \mathrm{List}\,(V \times V)$ a list of candidate
   ordered pairs. If
-  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{toSucc}\,\mathtt{h\_toSucc}\,\mathit{edges}
-   = \mathrm{some}\,D'$, then
+  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{hD}\,\mathtt{toSucc}\,\mathtt{h\_toSucc}\,\mathit{edges}
+   = \mathrm{.inr}\,D'$ (Phase~11 Layer~3 reshape; was $\mathrm{some}\,D'$),
+  then
   \begin{enumerate}
     \item $\underline{D} \subseteq \underline{D'}$ (no edge is ever
       removed by the move sequence); and
@@ -532,7 +533,7 @@ preservation (already established in
   $\underline{D'} \subseteq E(G)$ at termination.
 
   Per-step accept-branch glue: $\mathtt{tryAddEdgeWith}\,k\,\ell\,D\,
-  u\,v\ldots = \mathrm{some}\,D'$ implies $\underline{D'} = \underline{D}
+  u\,v\ldots = \mathrm{.inr}\,D'$ implies $\underline{D'} = \underline{D}
   \cup \{s(u, v)\}$. Reversal moves preserve $\underline{D}$
   (\cref{def:path-reversal}), so any number of internal DFS-plus-
   reversal recursions in $\mathtt{tryAddEdgeWith}$ leave the
@@ -557,9 +558,9 @@ preservation (already established in
   accept branches closing on \cref{def:arc-insertion}'s underlying-
   edge equation and the two DFS-success branches composing the
   reversal-preservation lemma with the IH; the both-DFS-fail branch
-  is contradictory by $\mathrm{some} \ne \mathrm{none}$). The IH on
-  $\mathit{es}$ at $D_{\mathrm{mid}}$ then gives both inclusions for
-  the full list.
+  is contradictory by $\mathrm{.inr} \ne \mathrm{.inl}$ on the
+  $\mathrm{Sum}$ output). The IH on $\mathit{es}$ at $D_{\mathrm{mid}}$
+  then gives both inclusions for the full list.
 \end{proof}
 
 \begin{lemma}[No skip fires; underlying-edge identity on the wrapper]
@@ -576,23 +577,31 @@ preservation (already established in
   pairs satisfying: no entry is a loop ($p_1 \ne p_2$); every
   $s(p_1, p_2)$ for $p \in \mathit{edges}$ lies outside $\underline{D}$;
   and the entries are pairwise $\mathrm{Sym}_2$-distinct. If
-  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{toSucc}\,\mathtt{h\_toSucc}
-  \,\mathit{edges} = \mathrm{some}\,D'$, then every $p \in \mathit{edges}$
-  satisfies $s(p_1, p_2) \in \underline{D'}$.
+  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{hD}\,\mathtt{toSucc}\,\mathtt{h\_toSucc}
+  \,\mathit{edges} = \mathrm{.inr}\,D'$ (Phase~11 Layer~3 reshape; was
+  $\mathrm{some}\,D'$), then every $p \in \mathit{edges}$ satisfies
+  $s(p_1, p_2) \in \underline{D'}$.
 
-  In particular, the wrapper
-  $\mathrm{runPebbleGame}\,G\,k\,\ell = \mathrm{some}\,D'$ yields
-  $\underline{D'} = E(G)$.
+  In particular, the workhorse
+  $\mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,\ldots\,\mathit{edges}
+  = \mathrm{.inr}\,D'$ against an edge list whose $\mathrm{Sym}_2$-image
+  is $E(G)$ for some $G : \mathrm{SimpleGraph}\,V$ yields $\underline{D'}
+  = E(G)$; the math-layer verdict-bearing wrapper
+  $\mathrm{runPebbleGame}\,G\,k\,\ell$ (\cref{def:runPebbleGame})
+  consumes this identity to populate $\mathrm{.accept}$'s
+  $h_{\underline{}}$ proof field.
 \end{lemma}
 \begin{proof}
   \leanok
   Structural induction on $\mathit{edges}$. Empty: vacuous. Cons case
-  $(u, v) :: \mathit{es}$: the four runtime checks at $(u, v)$ all
+  $(u, v) :: \mathit{es}$: the three runtime checks at $(u, v)$ all
   pass — loop-freeness from the input; $(u, v), (v, u) \notin D.\mathrm{arcs}$
   from $s(u, v) \notin \underline{D}$ via the membership characterisation
-  of $\underline{D}$; $\forall x, D.\mathrm{out}\,x \le k$ from
-  \cref{lem:pebble-game-invariants}~(1) — so $\mathtt{tryAddEdgeWith}$
-  fires; on success
+  of $\underline{D}$ — so $\mathtt{tryAddEdgeWith}$
+  fires (the per-vertex out-degree bound $\forall x, D.\mathrm{out}\,x
+  \le k$ from \cref{lem:pebble-game-invariants}~(1) is no longer a
+  per-step runtime check after the Phase~11 Layer~3 absorption into
+  $\mathtt{hD} : \mathrm{Reachable}\,k\,\ell\,D$); on success
   $\underline{D_{\mathrm{mid}}} = \underline{D} \cup \{s(u, v)\}$
   (\cref{lem:runPebbleGameWith-underline-subset}'s per-step glue)
   and $\mathrm{Reachable}\,k\,\ell\,D_{\mathrm{mid}}$

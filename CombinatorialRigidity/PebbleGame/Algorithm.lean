@@ -226,7 +226,8 @@ end TryReachPebble
   along `D`'s out-arcs via `tryReachPebbleWith`. On success, reverse the path
   to send a pebble back to `u` and recurse. If `u`-search fails, try the
   symmetric `v`-search; on success, reverse + recurse. If both DFS attempts
-  fail, return `none`.
+  fail, return `.inl w` carrying a workhorse-level failure witness (Phase 11
+  Layer 3 reshape; see the next paragraph).
 
 Termination measure: `(ℓ + 1) - (D.peb k u + D.peb k v)`, which strictly
 decreases per successful reversal — the predicate's `w ≠ u, v` clauses ensure

@@ -1,6 +1,8 @@
 # Phase 10 + 11 cleanup round — work log
 
-**Status:** in progress (A1 closed as no-op; A2/A3/A4 + B/C/D pending).
+**Status:** in progress (A1 closed as no-op; A2 closed with Phase-9-era
+`some`/`none` → `.inr`/`.inl` cleanup in `chapter/pebble-game.tex` +
+matching docstring fix in `Algorithm.lean`; A3/A4 + B/C/D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -34,9 +36,20 @@ file additions, fresh 4-run A/B baseline) route through that pass.
 Round open. A1 closed as a no-op (the Layer 1 `chapter/dfs.tex`
 additions match `Search/DFS.lean` cleanly; no retired-predecessor
 zombie references; the reuse-pattern + proof asides are still
-accurate under the Phase 11 reshape). Remaining: A2–A4 blueprint
-walks, B/C code-smell + long-proof sweeps, D project-organization
-compression. Pre-sweep smell counts (Phase 10+11 surface only —
+accurate under the Phase 11 reshape). A2 closed with a small targeted
+edit (NOT a no-op): the `lem:runPebbleGameWith-underline-subset` and
+`lem:runPebbleGame-underline-eq` statements + proofs still mentioned
+the Phase-9-era `\mathrm{some}\,D'` / `\mathrm{none}` return shape and
+the "four runtime checks" claim (the per-vertex out-degree check is no
+longer runtime after Layer 3's `hD` absorption). Updated to the
+Layer 3 `\mathrm{.inr}\,D'` / `\mathrm{.inl}\,w` shape with explicit
+"three runtime checks" + parenthetical note about the absorbed bound;
+matching staleness in `Algorithm.lean`'s top-of-section `tryAddEdgeWith`
+docstring ("If both DFS attempts fail, return `none`" → "...return
+`.inl w` carrying a workhorse-level failure witness"). Remaining:
+A3–A4 blueprint walks, B/C code-smell + long-proof sweeps, D
+project-organization compression. Pre-sweep smell counts (Phase 10+11
+surface only —
 `CombinatorialRigidity/PebbleGame/*.lean`,
 `CombinatorialRigidity/Search/DFS.lean`, `Main.lean`):
 
@@ -115,18 +128,39 @@ need a separate "run checkdecls" task here.
   inner-induction visited-set claim in the completeness proof at
   line 96) are still accurate under the Phase 11 verdict-bearing
   reshape — neither documents a Phase-9-era `Option` return type.
-- [ ] **A2:** `chapter/pebble-game.tex` ↔ `PebbleGame/{Basic,
-  Algorithm, Correctness}.lean` walk. Per Phase 11 Layer 2-4b
-  blueprint reshape (recorded in `Phase11.md`'s *Current state*),
-  walk: `def:workhorseWitness` + `lem:workhorseWitness-certifies`
-  in *Completeness* (Layer 2); `def:tryAddEdge`,
-  `def:runPebbleGame`, `thm:pebble-game-correct` restated against
-  `Sum`-return / `hD` signature (Layer 3); `def:pebbleGameResult`
-  + `thm:pebbleGameResult-isAccept-iff` in *User-facing verdict*
-  (Layer 4); `cor:pebble-game-countMatroid-indep` restated. Check
-  retired-node hygiene (`lem:pebble-game-tryAddEdgeWith-isSome`,
-  `lem:pebble-game-tryAddEdge-iff-independent`,
-  `lem:pebble-game-failure-witness`).
+- [x] **A2:** `chapter/pebble-game.tex` ↔ `PebbleGame/{Basic,
+  Algorithm, Correctness}.lean` walk. Closed with a targeted fix
+  (not a no-op): all `\lean{...}` pins resolve and align with the
+  Lean shape (verified by name + signature spot-check, plus the
+  bundled `checkdecls` gate); retired-node hygiene clean (no live
+  `\lean{...}` for `tryAddEdgeWith_isSome` /
+  `tryAddEdge_iff_independent` / `pebble-game-failure-witness` /
+  `tryAddEdgeWith_eq_none_imp_exists_witness` /
+  `runPebbleGameWith_eq_none_imp_exists_witness` /
+  `runPebbleGame_correct` /
+  `runPebbleGame_sound` — only LaTeX-comment retirement notes,
+  which are accurate as historical record). Phase~11 Layer~2-4b
+  insertions (`def:workhorseWitness`,
+  `lem:workhorseWitness-certifies`, `def:pebbleGameResult`,
+  `thm:pebbleGameResult-isAccept-iff`) all present with correct
+  shapes; `def:tryAddEdge`, `def:runPebbleGame`,
+  `thm:pebble-game-correct`, `cor:pebble-game-countMatroid-indep`
+  restated against the `Sum`-return / `hD` signature / verdict
+  form. The fix: `lem:runPebbleGameWith-underline-subset` and
+  `lem:runPebbleGame-underline-eq` (statements + proofs) still
+  carried Phase-9-era `= \mathrm{some}\,D'` / `\mathrm{some} \ne
+  \mathrm{none}` prose plus the proof of the second one referenced
+  "the four runtime checks" (the per-vertex out-degree check is no
+  longer runtime after Layer~3 absorbed `(∀ x, D.out x ≤ k)` into
+  `hD : Reachable k ℓ D`) — updated to `= \mathrm{.inr}\,D'` /
+  `\mathrm{.inr} \ne \mathrm{.inl}` shape, "three runtime checks"
+  with a parenthetical note about the absorbed bound, and the
+  particular form `\mathtt{hD}` argument added to the workhorse
+  signature presentation. Matching Lean-side docstring fix:
+  `Algorithm.lean`'s top-of-section `tryAddEdgeWith` docstring
+  still claimed "If both DFS attempts fail, return `none`" while
+  the very next paragraph correctly described `.inl ⟨…⟩`; updated
+  to the `.inl w` shape for self-consistency.
 - [ ] **A3:** `chapter/executable.tex` ↔ `PebbleGame/Exec.lean` +
   `Main.lean` walk. Walk the Phase 10 nodes (`def:outListSorted`,
   `lem:mem-outListSorted`, `def:edgeListSorted`,
@@ -277,6 +311,33 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   visited-set claim) are still accurate under Phase 11's verdict
   reshape. Pre-checklist task A1 marked closed; no edits to either
   side.
+- **A2: `chapter/pebble-game.tex` ↔ `PebbleGame/{Basic, Algorithm,
+  Correctness}.lean` walk** — targeted-fix closure. All `\lean{...}`
+  pins resolve (verified by name + signature spot-check + the bundled
+  `checkdecls` gate); retired-node hygiene clean (Phase~11 Layer~3-4b
+  retirees appear only as LaTeX-comment retirement notes — accurate
+  historical record, no live `\lean{...}` pin). Inserted nodes
+  `def:workhorseWitness`, `lem:workhorseWitness-certifies`,
+  `def:pebbleGameResult`, `thm:pebbleGameResult-isAccept-iff` all
+  present at correct shape; existing `def:tryAddEdge` /
+  `def:runPebbleGame` / `thm:pebble-game-correct` /
+  `cor:pebble-game-countMatroid-indep` restated against the
+  `Sum`-return / `hD` signature / verdict form. Fix scope: two
+  *proof*-level Phase-9-era residuals
+  (`lem:runPebbleGameWith-underline-subset` and
+  `lem:runPebbleGame-underline-eq`) carrying `= \mathrm{some}\,D'` /
+  `\mathrm{some} \ne \mathrm{none}` shape claims plus the "four
+  runtime checks" phrasing (now three after Layer~3 absorbed
+  `(∀ x, D.out x ≤ k)` into `hD : Reachable k ℓ D`); rewritten to the
+  Layer~3 `.inr`/`.inl` shape with the workhorse `hD` argument shown
+  in the call form, plus a one-clause parenthetical on the absorbed
+  bound where Invariant~(1) was previously cited as a runtime check.
+  Matching Lean-side fix: `Algorithm.lean`'s top-of-section
+  `tryAddEdgeWith` docstring (line 229 area) still said "If both DFS
+  attempts fail, return `none`" while the very next paragraph
+  correctly described `.inl ⟨…⟩`; updated to the `.inl w` shape with
+  a forward pointer to the next paragraph's witness-construction
+  description.
 
 ## Blockers / open questions
 
@@ -284,19 +345,24 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ## Hand-off / next phase
 
-Round still in progress. Next concrete commit: **A2** —
-`chapter/pebble-game.tex` ↔ `PebbleGame/{Basic, Algorithm,
-Correctness}.lean` walk. Per Phase 11 Layer 2–4b blueprint reshape,
-verify `def:workhorseWitness` + `lem:workhorseWitness-certifies`
-(Layer 2 *Completeness* insertions); `def:tryAddEdge`,
-`def:runPebbleGame`, `thm:pebble-game-correct` restated against the
-`Sum`-return shape with `hD` hypothesis (Layer 3);
-`def:pebbleGameResult` + `thm:pebbleGameResult-isAccept-iff` in
-*User-facing verdict* (Layer 4/4b); `cor:pebble-game-countMatroid-indep`
-restated. Confirm retired-node hygiene
-(`lem:pebble-game-tryAddEdgeWith-isSome`,
-`lem:pebble-game-tryAddEdge-iff-independent`,
-`lem:pebble-game-failure-witness`) with no zombie `\lean{...}` pins.
+Round still in progress. Next concrete commit: **A3** —
+`chapter/executable.tex` ↔ `PebbleGame/Exec.lean` + `Main.lean`
+walk. Walk the Phase~10 nodes (`def:outListSorted`,
+`lem:mem-outListSorted`, `def:edgeListSorted`,
+`lem:mem-edgeListSorted`, `def:isSparse-decidable`,
+`def:isTight-decidable`, `def:isLaman-decidable`, *Worked examples*
+subsection, *CLI binary* subsection) at their current Phase~11 Layer~4b/5
+restated shape (verdict-direct routing, `.isAccept` reductions, new
+output schema). Confirm `def:runPebbleGameExec` repointed at the
+verdict-returning form; `thm:runPebbleGameExec-correct` and
+`def:runPebbleGameExec-result` retired (collapsed into
+`def:runPebbleGameExec`). Spot-check that any proof-level prose still
+referring to the Phase-10-era `Sum`-shaped `runPebbleGameExec` /
+`runPebbleGameExec_result` additive form has been collapsed into the
+verdict; A2 surfaced two such residuals in `pebble-game.tex` (Phase-9-era
+`some D'` shapes), and `executable.tex` is the most likely site for
+parallel Phase-10/11 residuals because Phase~10 was reshaped twice
+(Layer~4 → Layer~4b).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
