@@ -138,20 +138,51 @@ lemma span_eq_ncard_edgesIn (D : PartialOrientation V)
   simp only [Finset.mem_coe, spanArcs, Finset.mem_filter] at hp
   exact Finset.mem_coe.mpr hp.1
 
-/-- **Soundness of the basic `(k, ℓ)`-pebble game.** If
-`runPebbleGame G k ℓ` succeeds on a finite simple graph `G` with output
-orientation `D'`, then `G` is `(k, ℓ)`-sparse. Three-piece assembly:
+/-- **Workhorse-level soundness of the `(k, ℓ)`-pebble game** (Phase 10
+Layer 2). Starting from the empty orientation against an edge list whose
+`Sym2.mk`-image is exactly `G.edgeFinset` (`himg`), with no loops (`hloops`)
+and pairwise Sym2-distinct entries (`hpairwise`), if `runPebbleGameWith`
+returns `some D'`, then `G` is `(k, ℓ)`-sparse. Three-piece assembly:
 *(i)* `runPebbleGameWith_reachable` lifts the initial `Reachable.empty` to
 `Reachable k ℓ D'`; *(ii)* `Reachable.span_add_le` (Invariant (4)) gives the
 algebraic inequality `D'.span s + ℓ ≤ k * s.card` for every `s` of the right
 size; *(iii)* the span/edgesIn bridge `span_eq_ncard_edgesIn` (under
-`runPebbleGame_underline_eq_edgeFinset`) translates that into
+`runPebbleGameWith_underline_eq`) translates that into
 `(G.edgesIn ↑s).ncard + ℓ ≤ k * s.card`, which is `IsSparse`.
 
-Lee–Streinu Theorem 8 (forward direction); blueprint
-`thm:pebble-game-soundness`. The blueprint chapter states the result under
-the matroidal-regime assumption `ℓ < 2k`; Lean does not require it here,
-because `IsSparse`'s definition already gates on `ℓ ≤ k * s.card`. -/
+The math-layer wrapper `runPebbleGame_sound` and the Phase 10 exec-layer
+wrapper `runPebbleGameExec_sound` derive as one-line corollaries plugging
+their respective discharges. Lee–Streinu Theorem 8 (forward direction);
+blueprint `thm:pebble-game-soundness`. The blueprint chapter states the
+result under the matroidal-regime assumption `ℓ < 2k`; Lean does not require
+it here, because `IsSparse`'s definition already gates on `ℓ ≤ k * s.card`. -/
+theorem runPebbleGameWith_sound [Fintype V]
+    {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ}
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    (edges : List (V × V))
+    (hloops : ∀ p ∈ edges, p.1 ≠ p.2)
+    (hpairwise : edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)))
+    (himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset)
+    {D' : PartialOrientation V}
+    (h : (empty : PartialOrientation V).runPebbleGameWith k ℓ toSucc h_toSucc edges
+      = some D') :
+    G.IsSparse k ℓ := by
+  have h_eq : D'.underline = G.edgeFinset :=
+    runPebbleGameWith_underline_eq toSucc h_toSucc edges hloops hpairwise himg h
+  have hR : Reachable k ℓ D' :=
+    runPebbleGameWith_reachable toSucc h_toSucc _ Reachable.empty h
+  intro s hs
+  have h_span := hR.span_add_le hs
+  rw [span_eq_ncard_edgesIn D' h_eq s] at h_span
+  exact h_span
+
+/-- **Soundness of the math-layer `runPebbleGame` wrapper.** One-line
+corollary of `runPebbleGameWith_sound`: the three discharges for the
+`G.edgeFinset.toList.map Quot.out` enumeration are exactly those of
+`runPebbleGame_underline_eq_edgeFinset`. Lee–Streinu Theorem 8 (forward
+direction); blueprint `thm:pebble-game-soundness`. -/
 theorem runPebbleGame_sound [Fintype V] {G : SimpleGraph V} [Fintype G.edgeSet]
     {k ℓ : ℕ} {D' : PartialOrientation V} (h : runPebbleGame G k ℓ = some D') :
     G.IsSparse k ℓ := by
@@ -712,51 +743,108 @@ at signature-elaboration time. -/
 
 section Correctness
 
-/-- **Wrapper-level failure-witness for `runPebbleGame`**: a `none` return on
-a finite simple graph `G` in the matroidal regime produces a vertex subset
-`V'` witnessing non-sparsity of `G`. Specialises
-`runPebbleGameWith_eq_none_imp_exists_witness` to `D = empty` and
-`edges = G.edgeFinset.toList.map Quot.out`; the membership hypothesis is
-discharged by the `Quot.out_eq` round-trip already used in
-`runPebbleGame_underline_eq_edgeFinset`, and the `D.underline ⊆ G.edgeFinset`
-hypothesis is `underline_empty` plus `Finset.empty_subset`. -/
-theorem runPebbleGame_eq_none_imp_exists_witness [Fintype V]
+/-- **Workhorse-level failure-witness from the empty orientation** (Phase 10
+Layer 2). A `none` return of `runPebbleGameWith` starting from the empty
+orientation, against any edge list whose `Sym2.mk`-image equals
+`G.edgeFinset` (`himg`), produces a vertex subset `V'` witnessing
+non-sparsity. Specialises the fold-level
+`runPebbleGameWith_eq_none_imp_exists_witness` to `D = empty`: the
+membership hypothesis follows from `himg`, and `D.underline ⊆ G.edgeFinset`
+is `underline_empty` + `Finset.empty_subset`. Note that only the
+`himg` discharge is needed here — `hloops` / `hpairwise` enter only at
+soundness time to establish the underline identity. -/
+theorem runPebbleGameWith_eq_none_imp_exists_witness_empty [Fintype V]
     {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ}
-    (h_matroidal : ℓ < 2 * k) (h : runPebbleGame G k ℓ = none) :
+    (h_matroidal : ℓ < 2 * k)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    (edges : List (V × V))
+    (himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset)
+    (h : (empty : PartialOrientation V).runPebbleGameWith k ℓ toSucc h_toSucc edges
+      = none) :
     ∃ V' : Finset V, ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ := by
-  rw [runPebbleGame] at h
-  set edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V) with hedges
-  have h_img : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset := by
-    rw [hedges, List.map_map]
-    have h_id : (fun p : V × V => s(p.1, p.2)) ∘ (Quot.out : Sym2 V → V × V)
-        = id := by
-      funext e; exact Quot.out_eq e
-    rw [h_id, List.map_id, G.edgeFinset.toList_toFinset]
   have h_mem : ∀ p ∈ edges, s(p.1, p.2) ∈ G.edgeFinset := by
     intro p hp
-    rw [← h_img]
+    rw [← himg]
     exact List.mem_toFinset.mpr (List.mem_map.mpr ⟨p, hp, rfl⟩)
   have h_sub : (empty : PartialOrientation V).underline ⊆ G.edgeFinset := by
     rw [underline_empty]; exact Finset.empty_subset _
   exact runPebbleGameWith_eq_none_imp_exists_witness _ _ h_matroidal edges
     Reachable.empty h_mem h_sub h
 
-/-- **Certificate-form correctness of the basic `(k, ℓ)`-pebble game**
-(Lee–Streinu Theorem 8, certificate form; blueprint
-`thm:pebble-game-correct`): in the matroidal regime `ℓ < 2k`, the finite
-simple graph `G` is `(k, ℓ)`-sparse iff `runPebbleGame G k ℓ` returns
-`some D` for some partial orientation `D`. Two-line assembly:
-* (⇐) `runPebbleGame_sound`: an accepted run certifies sparsity.
-* (⇒) Contrapositive: if `runPebbleGame G k ℓ = none`,
-  `runPebbleGame_eq_none_imp_exists_witness` produces a subset violating
-  `G.IsSparse k ℓ`.
+/-- **Math-layer corollary**: a `none` return of `runPebbleGame G k ℓ` in the
+matroidal regime produces a vertex subset `V'` witnessing non-sparsity of
+`G`. One-line specialisation of `runPebbleGameWith_eq_none_imp_exists_witness_empty`
+to the math-layer enumeration `G.edgeFinset.toList.map Quot.out`; the
+required `himg` discharge is the `Quot.out_eq` round-trip already used in
+`runPebbleGame_underline_eq_edgeFinset`. -/
+theorem runPebbleGame_eq_none_imp_exists_witness [Fintype V]
+    {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ}
+    (h_matroidal : ℓ < 2 * k) (h : runPebbleGame G k ℓ = none) :
+    ∃ V' : Finset V, ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ := by
+  rw [runPebbleGame] at h
+  set edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V) with hedges
+  have himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset := by
+    rw [hedges, List.map_map]
+    have h_id : (fun p : V × V => s(p.1, p.2)) ∘ (Quot.out : Sym2 V → V × V) = id := by
+      funext e; exact Quot.out_eq e
+    rw [h_id, List.map_id, G.edgeFinset.toList_toFinset]
+  exact runPebbleGameWith_eq_none_imp_exists_witness_empty h_matroidal _ _ edges himg h
 
-The matroidal hypothesis `ℓ < 2k` is needed only for the contrapositive
-direction (it discharges `ℓ ≤ k * V'.card` from `|V'| ≥ 2` in the witness
-construction); `runPebbleGame_sound` itself is regime-agnostic. Beyond this
-iff, the success branch additionally satisfies `D.underline = G.edgeFinset`
-(`runPebbleGame_underline_eq_edgeFinset`) — together this is the full
-content of the blueprint theorem. -/
+/-- **Workhorse-level certificate-form correctness of the `(k, ℓ)`-pebble
+game** (Phase 10 Layer 2; blueprint `thm:runPebbleGameWith-correct`). In the
+matroidal regime `ℓ < 2k`, for any caller-supplied out-neighbour list view
+`toSucc` (agreeing with `D.arcs` uniformly) and any edge enumeration `edges`
+with no loops, pairwise Sym2-distinct entries, and Sym2-image equal to
+`G.edgeFinset`, the finite simple graph `G` is `(k, ℓ)`-sparse iff
+`runPebbleGameWith` from the empty orientation returns `some D'` for some
+partial orientation `D'`. Two-line assembly:
+* (⇐) `runPebbleGameWith_sound`: an accepted run certifies sparsity.
+* (⇒) Contrapositive via `runPebbleGameWith_eq_none_imp_exists_witness_empty`.
+
+Both `runPebbleGame_correct` (math-layer) and `runPebbleGameExec_correct`
+(Phase 10 exec-layer) derive as one-line corollaries plugging their
+respective discharges. The matroidal hypothesis `ℓ < 2k` is needed only for
+the contrapositive direction (it discharges `ℓ ≤ k * V'.card` from
+`|V'| ≥ 2` in the witness construction); `runPebbleGameWith_sound` itself is
+regime-agnostic. -/
+theorem runPebbleGameWith_correct [Fintype V]
+    {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ}
+    (h_matroidal : ℓ < 2 * k)
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    (edges : List (V × V))
+    (hloops : ∀ p ∈ edges, p.1 ≠ p.2)
+    (hpairwise : edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)))
+    (himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset) :
+    G.IsSparse k ℓ ↔
+      ∃ D' : PartialOrientation V,
+        (empty : PartialOrientation V).runPebbleGameWith k ℓ toSucc h_toSucc edges
+        = some D' := by
+  refine ⟨?_, ?_⟩
+  · intro hG
+    match h_opt :
+        (empty : PartialOrientation V).runPebbleGameWith k ℓ toSucc h_toSucc edges with
+    | some D' => exact ⟨D', rfl⟩
+    | none =>
+      obtain ⟨V', h_size, h_lt⟩ :=
+        runPebbleGameWith_eq_none_imp_exists_witness_empty h_matroidal toSucc h_toSucc
+          edges himg h_opt
+      exfalso
+      have := hG V' h_size
+      omega
+  · rintro ⟨_, hD⟩
+    exact runPebbleGameWith_sound toSucc h_toSucc edges hloops hpairwise himg hD
+
+/-- **Certificate-form correctness of the math-layer `runPebbleGame`
+wrapper** (Lee–Streinu Theorem 8, certificate form; blueprint
+`thm:pebble-game-correct`). One-line composition of `runPebbleGame_sound`
+(⇐) and the contrapositive of `runPebbleGame_eq_none_imp_exists_witness`
+(⇒). The success branch additionally satisfies
+`D.underline = G.edgeFinset` (`runPebbleGame_underline_eq_edgeFinset`) —
+together this is the full content of the blueprint theorem. -/
 theorem runPebbleGame_correct [Fintype V] {G : SimpleGraph V} [Fintype G.edgeSet]
     {k ℓ : ℕ} (h_matroidal : ℓ < 2 * k) :
     G.IsSparse k ℓ ↔ ∃ D : PartialOrientation V, runPebbleGame G k ℓ = some D := by

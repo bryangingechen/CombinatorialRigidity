@@ -704,29 +704,69 @@ lemma runPebbleGameWith_mem_underline {k ℓ : ℕ}
       rw [heq] at h
       exact nomatch h
 
-/-- The wrapper `runPebbleGame G k ℓ` on success produces an orientation whose
-underlying unoriented edge set equals `G.edgeFinset`. The ⊆ direction
-specialises `runPebbleGameWith_underline_subset` at `D = empty` (its
-`underline` is `∅`); the ⊇ direction discharges
-`runPebbleGameWith_mem_underline`'s four hypotheses against the input list
-`G.edgeFinset.toList.map Quot.out` — no-loops from `not_isDiag_of_mem_edgeSet`,
-freshness trivially, pairwise distinctness from `Finset.nodup_toList` and the
-Sym2 round-trip `s((Quot.out e).1, (Quot.out e).2) = e`. Closes the
-no-skip-fires gap noted in `thm:pebble-game-soundness`'s prose proof. -/
+/-- **Workhorse-level underline equation for `runPebbleGameWith`** (Phase 10
+Layer 2). Starting from the empty orientation against an edge list whose
+`Sym2.mk`-image is exactly `G.edgeFinset` (`himg`), with no loops (`hloops`)
+and pairwise Sym2-distinct entries (`hpairwise`), on success the output
+orientation's underline equals `G.edgeFinset`. Combines the upper bound from
+`runPebbleGameWith_underline_subset` (with `D = empty` collapsing the
+`D.underline ∪ …` clause via `underline_empty`) and the lower bound from
+`runPebbleGameWith_mem_underline` (using the empty-underline freshness). Both
+`runPebbleGame_underline_eq_edgeFinset` (math-layer) and
+`runPebbleGameExec_underline_eq` (Phase 10 exec-layer) derive as one-line
+corollaries plugging their respective discharges. Blueprint
+`thm:runPebbleGameWith-correct` part (underline-tracking piece). -/
+theorem runPebbleGameWith_underline_eq {G : SimpleGraph V}
+    [Fintype G.edgeSet] {k ℓ : ℕ}
+    (toSucc : PartialOrientation V → V → List V)
+    (h_toSucc : ∀ (D' : PartialOrientation V) {a b : V},
+        b ∈ toSucc D' a ↔ (a, b) ∈ D'.arcs)
+    (edges : List (V × V))
+    (hloops : ∀ p ∈ edges, p.1 ≠ p.2)
+    (hpairwise : edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)))
+    (himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset)
+    {D' : PartialOrientation V}
+    (h : (empty : PartialOrientation V).runPebbleGameWith k ℓ toSucc h_toSucc edges
+      = some D') :
+    D'.underline = G.edgeFinset := by
+  have hfresh : ∀ p ∈ edges, s(p.1, p.2) ∉ (empty : PartialOrientation V).underline := by
+    intro p _; simp
+  have h_supset : ∀ p ∈ edges, s(p.1, p.2) ∈ D'.underline :=
+    runPebbleGameWith_mem_underline _ _ edges Reachable.empty hloops hfresh hpairwise h
+  obtain ⟨_, h_upper⟩ := runPebbleGameWith_underline_subset _ _ edges h
+  apply le_antisymm
+  · -- D'.underline ⊆ G.edgeFinset (via the subset lemma's upper bound).
+    intro e he
+    have he' := h_upper he
+    simp only [underline_empty, Finset.empty_union] at he'
+    exact himg ▸ he'
+  · -- G.edgeFinset ⊆ D'.underline (every `e` is hit by some `p ∈ edges`).
+    intro e he
+    rw [← himg] at he
+    simp only [List.mem_toFinset, List.mem_map] at he
+    obtain ⟨p, hp, rfl⟩ := he
+    exact h_supset p hp
+
+/-- **Math-layer corollary of `runPebbleGameWith_underline_eq`**: the
+`runPebbleGame` wrapper on success produces an orientation whose underlying
+unoriented edge set equals `G.edgeFinset`. One-line specialisation of
+`runPebbleGameWith_underline_eq` to the math-layer enumeration
+`G.edgeFinset.toList.map Quot.out`; the three discharges are no-loops from
+`not_isDiag_of_mem_edgeSet`, pairwise Sym2-distinctness from
+`Finset.nodup_toList` + the `Quot.out` round-trip, and the Sym2-image
+round-trip itself. Closes the no-skip-fires gap noted in
+`thm:pebble-game-soundness`'s prose proof. -/
 theorem runPebbleGame_underline_eq_edgeFinset {G : SimpleGraph V}
     [Fintype G.edgeSet] {k ℓ : ℕ} {D' : PartialOrientation V}
     (h : runPebbleGame G k ℓ = some D') : D'.underline = G.edgeFinset := by
   rw [runPebbleGame] at h
   set edges := G.edgeFinset.toList.map (Quot.out : Sym2 V → V × V) with hedges
-  -- The Sym2-image of `edges` is `G.edgeFinset` (round-trip).
-  have h_img : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset := by
+  have himg : (edges.map (fun p : V × V => s(p.1, p.2))).toFinset = G.edgeFinset := by
     rw [hedges, List.map_map]
-    have h_id : (fun p : V × V => s(p.1, p.2)) ∘ (Quot.out : Sym2 V → V × V)
-        = id := by
+    have h_id : (fun p : V × V => s(p.1, p.2)) ∘ (Quot.out : Sym2 V → V × V) = id := by
       funext e
       exact Quot.out_eq e
     rw [h_id, List.map_id, G.edgeFinset.toList_toFinset]
-  -- No loops: each `Quot.out e` for `e ∈ G.edgeFinset` has distinct components.
   have hloops : ∀ p ∈ edges, p.1 ≠ p.2 := by
     intro p hp h_eq
     simp only [hedges, List.mem_map, Finset.mem_toList] at hp
@@ -734,35 +774,14 @@ theorem runPebbleGame_underline_eq_edgeFinset {G : SimpleGraph V}
     apply G.not_isDiag_of_mem_edgeSet (G.mem_edgeFinset.mp he)
     rw [← Quot.out_eq e]
     exact Sym2.mk_isDiag_iff.mpr h_eq
-  -- Freshness w.r.t. `empty.underline = ∅` is trivial.
-  have hfresh : ∀ p ∈ edges, s(p.1, p.2) ∉ (empty : PartialOrientation V).underline := by
-    intro p _; simp
-  -- Pairwise Sym2-distinctness from `Finset.nodup_toList` + the round-trip.
-  have hpairwise : edges.Pairwise
-      (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)) := by
+  have hpairwise : edges.Pairwise (fun p q : V × V => s(p.1, p.2) ≠ s(q.1, q.2)) := by
     rw [hedges, List.pairwise_map]
     refine G.edgeFinset.nodup_toList.imp ?_
     intro e e' hne h_eq
     apply hne
     rw [← Quot.out_eq e, ← Quot.out_eq e']
     exact h_eq
-  -- Combine both inclusions.
-  have h_supset : ∀ p ∈ edges, s(p.1, p.2) ∈ D'.underline :=
-    runPebbleGameWith_mem_underline _ _ edges Reachable.empty hloops hfresh hpairwise h
-  obtain ⟨_, h_upper⟩ :=
-    runPebbleGameWith_underline_subset _ _ edges h
-  apply le_antisymm
-  · -- D'.underline ⊆ G.edgeFinset (via the subset lemma's upper bound).
-    intro e he
-    have he' := h_upper he
-    simp only [underline_empty, Finset.empty_union] at he'
-    exact h_img ▸ he'
-  · -- G.edgeFinset ⊆ D'.underline (every `e` is hit by some `p ∈ edges`).
-    intro e he
-    rw [← h_img] at he
-    simp only [List.mem_toFinset, List.mem_map] at he
-    obtain ⟨p, hp, rfl⟩ := he
-    exact h_supset p hp
+  exact runPebbleGameWith_underline_eq _ _ edges hloops hpairwise himg h
 
 end RunPebbleGame
 

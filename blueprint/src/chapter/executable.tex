@@ -237,6 +237,8 @@ corollaries.
 
 \begin{theorem}[Pebble-game correctness, workhorse form]
   \label{thm:runPebbleGameWith-correct}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_correct}
+  \leanok
   \uses{def:runPebbleGame, thm:pebble-game-correct,
     lem:runPebbleGame-underline-eq, lem:pebble-game-failure-witness}
   Let $V$ be finite with $[\mathrm{DecidableEq}\,V]$, let
@@ -252,20 +254,32 @@ corollaries.
   $\mathrm{some}\,D'$ for some partial orientation $D'$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:pebble-game-correct}
-  The Phase~9 proof of \cref{thm:pebble-game-correct} already
-  factors through workhorse-level helpers (soundness via
-  $\mathrm{Reachable.span\_add\_le}$ plus the
-  $\mathrm{underline}$-tracking lemmas; completeness via the
-  fold-level failure-witness extraction with the running underline
-  subset). Restating those helpers' hypotheses on the workhorse's
-  caller-supplied $\mathrm{toSucc}$ / $\mathrm{edges}$ rather than
-  on the math-layer specialisation $\mathrm{outList}$ /
-  $\mathrm{G.edgeFinset.toList.map}\,\mathrm{Quot.out}$ is a
-  signature-level refactor. The proof body of
-  \cref{thm:pebble-game-correct} re-derives as a one-line
-  corollary plugging $\mathrm{outList}$ /
-  $\mathrm{G.edgeFinset.toList.map}\,\mathrm{Quot.out}$ back in.
+  The Phase~9 correctness chain already factors through workhorse-level
+  helpers, all parametrised over a caller-supplied
+  $\mathrm{toSucc}$ / $h_{\mathrm{toSucc}}$ and edge list:
+  $\mathrm{runPebbleGameWith\_reachable}$ (Invariant $(4)$ transports
+  through the fold), $\mathrm{runPebbleGameWith\_underline\_subset}$
+  / $\mathrm{runPebbleGameWith\_mem\_underline}$ (underline tracking
+  on monotone and no-skip-fires halves), and the fold-level failure-witness
+  extraction $\mathrm{runPebbleGameWith\_eq\_none\_imp\_exists\_witness}$.
+  Layer~2 packages these into three workhorse-level statements:
+  $\mathrm{runPebbleGameWith\_underline\_eq}$ (underline equation from
+  empty, given the three discharges \emph{hloops} / \emph{hpairwise} /
+  \emph{himg}), $\mathrm{runPebbleGameWith\_sound}$ (soundness from
+  empty, same three discharges), and
+  $\mathrm{runPebbleGameWith\_eq\_none\_imp\_exists\_witness\_empty}$
+  (contrapositive from empty, requiring only \emph{himg}). The iff
+  then assembles in two lines: ($\Leftarrow$) the soundness wrapper;
+  ($\Rightarrow$) contrapositive via the failure-witness lemma plus
+  $\mathrm{IsSparse}$ at the produced subset. The math-layer
+  \cref{thm:pebble-game-correct} re-derives as a one-line corollary
+  plugging the math-layer enumeration $\mathrm{outList}$ /
+  $G.\mathrm{edgeFinset.toList.map}\,\mathrm{Quot.out}$ back in (the
+  three discharges follow from $\mathrm{not\_isDiag\_of\_mem\_edgeSet}$,
+  $\mathrm{Finset.nodup\_toList}$, and the $\mathrm{Quot.out\_eq}$
+  round-trip).
 \end{proof}
 
 \begin{theorem}[Computable wrapper correctness]

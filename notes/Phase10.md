@@ -29,24 +29,38 @@ same first commit as this file.
 
 ## Current state
 
-Layer 0 audits closed and Layer 1 (computable list views) landed.
-Per the revised Layer 0 audit \#1 outcome below, there is **no
-`Mathlib/` mirror** for Phase 10: mathlib's existing
+Layer 0 audits closed, Layer 1 (computable list views) landed, and
+Layer 2's workhorse-level correctness restatement landed. Per the
+revised Layer 0 audit \#1 outcome below, there is **no `Mathlib/`
+mirror** for Phase 10: mathlib's existing
 `instance : PartialOrder (Sym2 α) := .ofSetLike _ _` occupies the
 slot for an order on `Sym2 V` with the (non-total) subset order, so
 a competing `LinearOrder (Sym2 V)` cannot be registered. Layer 1
 sorts via `Lex (V × V)` on the `(e.inf, e.sup)` projection instead.
 
-`CombinatorialRigidity/PebbleGame/Exec.lean` now ships
+`CombinatorialRigidity/PebbleGame/Exec.lean` ships
 `PartialOrientation.outListSorted` /
 `PartialOrientation.mem_outListSorted` and
 `SimpleGraph.edgeListSorted` / `SimpleGraph.mem_edgeListSorted` —
 the four blueprint nodes `def:outListSorted`,
 `lem:mem-outListSorted`, `def:edgeListSorted`,
-`lem:mem-edgeListSorted` (all `\leanok`-green). Layer 2 (the
-workhorse-level correctness restatement
-`thm:runPebbleGameWith-correct` and the three discharges feeding
-it) is unblocked and is the next concrete commit.
+`lem:mem-edgeListSorted` (all `\leanok`-green).
+`CombinatorialRigidity/PebbleGame/{Algorithm,Correctness}.lean` now
+ship the four workhorse-level theorems parametrised over a
+caller-supplied `toSucc` / `edges` plus three discharges (no-loops,
+pairwise Sym2-distinctness, Sym2-image round-trip):
+`runPebbleGameWith_underline_eq` (Algorithm.lean),
+`runPebbleGameWith_sound`,
+`runPebbleGameWith_eq_none_imp_exists_witness_empty`, and
+`runPebbleGameWith_correct` (Correctness.lean) — the blueprint node
+`thm:runPebbleGameWith-correct` is `\leanok`-green. The four
+math-layer wrappers (`runPebbleGame_underline_eq_edgeFinset`,
+`runPebbleGame_sound`, `runPebbleGame_eq_none_imp_exists_witness`,
+`runPebbleGame_correct`) re-derive cleanly: each plugs the
+math-layer enumeration `G.edgeFinset.toList.map Quot.out` with its
+`Quot.out_eq`-derived discharges; only
+`runPebbleGame_underline_eq_edgeFinset` pays the three-discharge
+proof, the rest reuse it.
 
 The phase target is **end-to-end executability** of the pebble game:
 a computable wrapper `runPebbleGameExec` whose body avoids
@@ -295,23 +309,17 @@ discipline.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** open Layer 2 — restate the Phase 9
-correctness chain at workhorse level so both `runPebbleGame` (the
-math-layer wrapper) and `runPebbleGameExec` (the new computable
-wrapper) re-derive as one-line corollaries. Concretely, lift
-`runPebbleGame_sound`, `runPebbleGame_underline_eq_edgeFinset`,
-`runPebbleGame_eq_none_imp_exists_witness`, and
-`runPebbleGame_correct` to statements parametrised over the
-caller-supplied `toSucc` and `edges : List (V × V)` plus three
-discharges (no-loops, pairwise Sym2-distinctness, Sym2-image
-round-trip). The discharges for `edgeListSorted` are then provable
-in `PebbleGame/Exec.lean` as glue lemmas. After the restatement,
-define `runPebbleGameExec G k ℓ := runPebbleGameWith empty k ℓ
+**Next concrete commit:** close Layer 2 — define
+`runPebbleGameExec G k ℓ := runPebbleGameWith empty k ℓ
 (fun D' => D'.outListSorted) mem_outListSorted (edgeListSorted G)`
-and derive `runPebbleGameExec_correct` (the
-`thm:runPebbleGameExec-correct` blueprint node). Forward-mode
-discipline: the leaf-most red node in `chapter/executable.tex` is
-`thm:runPebbleGameWith-correct`; flip its `\lean{...}` and
+in `PebbleGame/Exec.lean`, prove the three discharges for
+`edgeListSorted` as glue lemmas in the same file (no-loops via
+`not_isDiag_of_mem_edgeSet` on the inf/sup projection, pairwise
+Sym2-distinctness from `Finset.sort_nodup` + `Lex (V × V)`'s lex
+order, and the Sym2-image round-trip from `mem_edgeListSorted`),
+and derive `runPebbleGameExec_correct` as a one-line corollary of
+`runPebbleGameWith_correct` — the `thm:runPebbleGameExec-correct`
+blueprint node. Forward-mode discipline: flip its `\lean{...}` and
 `\leanok` in the same commit as the Lean lands.
 
 Phase 10 closes when:
