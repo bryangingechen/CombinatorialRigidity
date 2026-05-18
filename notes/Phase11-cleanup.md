@@ -1,37 +1,43 @@
 # Phase 10 + 11 cleanup round — work log
 
-**Status:** in progress (Bucket A complete: A1 no-op / A2 Phase-9-era
+**Status:** **closed**. Bucket A: A1 no-op / A2 Phase-9-era
 `some`/`none` → `.inr`/`.inl` fix in `chapter/pebble-game.tex` +
 matching `Algorithm.lean` docstring / A3 two targeted fixes in
 `chapter/executable.tex` — `def:runPebbleGameExec` `\uses{}`
 completion + `lem:mem-edgeListSorted` retired forward-reference /
-A4 no-op. Bucket B complete: B1 no-op / B2 no-op + smell-table
-revision (29 → 6 actual sites; conflation with docstring mentions)
-/ B3 no-op + smell-table revision (9 → 6 actual sites; depth-blind
+A4 no-op. Bucket B: B1 no-op / B2 no-op + smell-table revision
+(29 → 6 actual sites; conflation with docstring mentions) / B3
+no-op + smell-table revision (9 → 6 actual sites; depth-blind
 comma count over-counted `⟨_, _⟩`-tuple chains) / B4 no-op / B5
-no-op. Bucket C complete: C1 top-10 ranking + per-site question;
-C2 all ten sites *no-op* with both cross-proof unification clusters
-dissolved on inspection; C3 no-op. **D1 closed** (`notes/Phase11.md`
-856 → ~436 LoC, within adaptive 350-450 budget for a substantive
-phase). **D2 closed** (`notes/Phase10.md` 546 → 343 LoC, within
-adaptive 250-350 budget for a shorter five-layer forward-work
-phase; same template as D1). **D3 closed**: back-pointer audit
-no-op across TACTICS-QUIRKS § 17 / § 22 / § 23 + DESIGN.md *One
-Decidable instance*; two Layer-4b drift fixes (DESIGN.md *One
-Decidable instance* reduction-body claim and TACTICS-QUIRKS § 17
-worked-case names); three promotions — *Maximal reshape* →
-DESIGN.md *Reshape past results in place, don't parallel-extract*
-on Phase 7 + Phase 11 second-site evidence; *Blueprint reshape in-
-place per Layer* resolved as already-captured at
-blueprint/CLAUDE.md *Extending an existing chapter*; C2-close
-lift candidate → CLEANUP.md §C *Calibration* paragraph on Phase
-9-cleanup + Phase 11-cleanup C2 second-site evidence. **D4
-closed** as a **no-op**: both active *Choices to revisit* entries
-(`Promoting edgesIn upstream`, `apnelson1/Matroid dependency`
-"Still open" tail) unchanged by Phase 10/11; *Pebble-game style
-island* (a resolved DESIGN.md section, not a *Choices to revisit*
-entry, but called out in the D4 task spec) carries no drift after
-the Phase 11 reshape.).
+no-op. Bucket C: C1 top-10 ranking + per-site question; C2 all
+ten sites *no-op* with both cross-proof unification clusters
+dissolved on inspection; C3 no-op. Bucket D: **D1**
+(`notes/Phase11.md` 856 → ~436 LoC, within adaptive 350-450 budget
+for a substantive phase); **D2** (`notes/Phase10.md` 546 → 343 LoC,
+within adaptive 250-350 budget for a shorter five-layer forward-work
+phase; same template as D1); **D3**: back-pointer audit no-op across
+TACTICS-QUIRKS § 17 / § 22 / § 23 + DESIGN.md *One Decidable
+instance*; two Layer-4b drift fixes (DESIGN.md *One Decidable
+instance* reduction-body claim and TACTICS-QUIRKS § 17 worked-case
+names); three promotions — *Maximal reshape* → DESIGN.md *Reshape
+past results in place, don't parallel-extract* on Phase 7 + Phase 11
+second-site evidence; *Blueprint reshape in-place per Layer*
+resolved as already-captured at blueprint/CLAUDE.md *Extending an
+existing chapter*; C2-close lift candidate → CLEANUP.md §C
+*Calibration* paragraph on Phase 9-cleanup + Phase 11-cleanup C2
+second-site evidence; **D4** **no-op**: both active *Choices to
+revisit* entries (`Promoting edgesIn upstream`, `apnelson1/Matroid
+dependency` "Still open" tail) unchanged by Phase 10/11; *Pebble-game
+style island* (a resolved DESIGN.md section, not a *Choices to
+revisit* entry, but called out in the D4 task spec) carries no
+drift after the Phase 11 reshape; **D5** targeted-fix close
+(destination back-pointer half no-op across all six lifts; three
+phase-entry residual-lift collapses on Phase 10 *Architectural
+choices: One Decidable instance*, Phase 10 *Decisions made: Layer 0
+audit #1*, Phase 11 *Decisions made: Layer 4: `*.aux` helper* —
+each compressed to pointer-first form matching Phase 9 style and
+D3's earlier Phase 11 *Maximal reshape* / *Blueprint reshape*
+collapses).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -62,7 +68,7 @@ file additions, fresh 4-run A/B baseline) route through that pass.
 
 ## Current state
 
-Round open. A1 closed as a no-op (the Layer 1 `chapter/dfs.tex`
+Round **closed**. A1 closed as a no-op (the Layer 1 `chapter/dfs.tex`
 additions match `Search/DFS.lean` cleanly; no retired-predecessor
 zombie references; the reuse-pattern + proof asides are still
 accurate under the Phase 11 reshape). A2 closed with a small targeted
@@ -153,9 +159,15 @@ reshape* → DESIGN.md *Reshape past results in place, don't
 parallel-extract* on Phase 7 + Phase 11 second-site evidence;
 *Blueprint reshape in-place per Layer* resolved as already-captured
 at blueprint/CLAUDE.md *Extending an existing chapter*; C2-close
-lift candidate → CLEANUP.md §C *Calibration* paragraph). Remaining:
-D4 (DESIGN.md *Choices to revisit* drift check), D5
-(no-residual-lifts audit).
+lift candidate → CLEANUP.md §C *Calibration* paragraph). **D4
+closed** as a no-op (both active *Choices to revisit* entries
+unchanged by Phase 10/11; *Pebble-game style island* section
+carries no drift post-reshape). **D5 closed** with three targeted
+fixes (destination back-pointer half no-op across all six lifts;
+three phase-entry residual-lift collapses on Phase 10
+*Architectural choices: One Decidable instance*, Phase 10 *Decisions
+made: Layer 0 audit #1*, Phase 11 *Decisions made: Layer 4: `*.aux`
+helper* — each compressed to pointer-first form). Round closes.
 Pre-sweep smell counts (Phase 10+11
 surface only —
 `CombinatorialRigidity/PebbleGame/*.lean`,
@@ -613,10 +625,21 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   revisit* entry, but the task spec called it out for drift
   check; verified clean. Per-entry verification in *Cleanup pass
   summaries* D4 below.
-- [ ] **D5:** No-residual-lifts audit. For each Phase 10 / 11
-  *Promoted to* entry, verify the destination still carries the
-  cross-reference back; verify the phase entry is a one-line
-  pointer per CLAUDE.md *Lift on promotion*.
+- [x] **D5:** No-residual-lifts audit. Closed with three targeted
+  fixes (back-pointer half no-op). Walked each Phase 10 / 11
+  *Promoted to* entry; destination back-pointers all present (six
+  destinations re-verified, full per-entry walk in *Cleanup pass
+  summaries* D5 below). Phase-entry half surfaced three residual
+  lifts whose Phase-local *Decisions made* / *Architectural choices*
+  entry still carried the lifted substantive content with only a
+  trailing "Promoted to" pointer (rather than a leading pointer per
+  CLAUDE.md *Lift on promotion*): Phase 10 *Architectural choices:
+  One Decidable instance*, Phase 10 *Decisions made: Layer 0 audit
+  \#1 (revised at Layer 1)*, Phase 11 *Decisions made: Layer 4:
+  `*.aux` helper to dodge TACTICS-QUIRKS § 17*. Each collapsed to
+  pointer-first form matching Phase 9 *Promoted* style and Phase 11
+  D3 close of *Maximal reshape* / *Blueprint reshape*. Bucket D
+  complete; round closes.
 
 ## Decisions made during this phase
 
@@ -1255,6 +1278,83 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   (CLI surface, file placement, etc.).
 
   Files touched: none. The audit is its own deliverable.
+- **D5: No-residual-lifts audit (Phase 10 + Phase 11 *Promoted to*
+  entries)** — targeted-fix closure. Walked all six Phase 10 / 11
+  lifted lessons; destination back-pointers all present, three
+  residual-lift fixes on the phase-entry side.
+
+  *Destination back-pointers (no-op).* For each Phase 10 / 11
+  *Promoted to* entry, the destination section names the originating
+  Phase + Layer as a worked case:
+  - Phase 10 `TACTICS-QUIRKS § 22` (`LinearOrder.lift'`
+    on a `SetLike` type) — "Worked case study: the failed
+    `Mathlib/Data/Sym/Sym2/Order.lean` mirror in Phase 10's Layer 1
+    (see `notes/Phase10.md` *Layer 0 audit \#1 (revised at Layer 1)*)."
+  - Phase 10 `DESIGN.md` *One `Decidable` instance per project
+    predicate* — opens "Phase 10 registers `Decidable` instances ..."
+    and the reduction-body bullet names Phase 11 Layer 4b's
+    `runPebbleGameExec_isAccept_iff` (post-D3 drift fix).
+  - Phase 10 `TACTICS-QUIRKS § 23` (`#eval`-bearing `module` files
+    need `public meta import`) — "Worked case. Phase 10 Layer 4
+    (`CombinatorialRigidity/PebbleGame/Examples.lean`)..."
+  - Phase 11 `TACTICS-QUIRKS § 17` (`match h : <expr> with` substitution)
+    — third (data-building) bullet names "Phase 11 Layer 4b's
+    `runPebbleGame.aux` + `runPebbleGame` pattern in
+    `CombinatorialRigidity/PebbleGame/Correctness.lean`" + the
+    exec-layer sibling.
+  - Phase 11 `DESIGN.md` *Reshape past results in place, don't
+    parallel-extract* — names Phase 7 + Phase 11 as the two worked
+    cases in its *Concretely* enumeration.
+  - Phase 11 `blueprint/CLAUDE.md` *Extending an existing chapter →
+    restating existing entries in place* — names "Phase 11's
+    `Option` → `PebbleGameResult` reshape of `def:tryAddEdge` /
+    `def:runPebbleGame` / `def:runPebbleGameExec`" as the canonical
+    example.
+
+  *Phase-entry residual-lifts (three fixes).* Three Phase-local
+  entries still carried the lifted substantive content with only a
+  trailing "Promoted to" pointer at the end, rather than a leading
+  pointer per CLAUDE.md *Lift on promotion*. Each collapsed to
+  pointer-first form, matching Phase 9 *Promoted* style and the
+  Phase 11 D3 close of *Maximal reshape* / *Blueprint reshape*:
+  - Phase 10 *Architectural choices: One `Decidable` instance per
+    project predicate, pebble-game-backed* (9 lines → 5 lines).
+    The substantive rule (forbid competing brute-force registrations)
+    lives at `../DESIGN.md` *One `Decidable` instance per project
+    predicate*; the phase entry now names the Layer 3 worked case
+    and points at the destination.
+  - Phase 10 *Decisions made: Layer 0 audit \#1 (revised at Layer 1)*
+    (13 lines → 6 lines). The `SetLike` slot-collision rescue
+    pattern lives at `../TACTICS-QUIRKS.md` § 22; the phase entry
+    now names Layer 1's `edgeListSorted` worked case and points at
+    the destination.
+  - Phase 11 *Decisions made: Layer 4: `*.aux` helper to dodge
+    TACTICS-QUIRKS § 17* (11 lines → 5 lines). The data-building
+    fix pattern lives at `../TACTICS-QUIRKS.md` § 17 (third bullet);
+    the phase entry now names the Layer 4b `runPebbleGame.aux` /
+    `runPebbleGameExec.aux` canonical worked case and points at the
+    destination.
+
+  *Spot-checks (no-op).* The remaining Phase 10 / Phase 11 *Promoted*
+  entries had no residual Phase-local substantive content (Phase 10
+  `TACTICS-QUIRKS § 23` lifted directly to *Promoted* with no
+  parallel *Decisions made* / *Architectural choices* entry; Phase 11
+  *Maximal reshape* and *Blueprint reshape* already collapsed to
+  pointer-first form at D3 close). Phase 11's two *Architectural
+  choices* pointer-first entries (~11 and ~5 lines, retain
+  phase-specific content under the leading pointer) match the
+  intent of *Lift on promotion* — the substantive lesson lives at
+  the destination; the phase entry's tail covers what *this* phase
+  did, not what the rule says.
+
+  *Files touched.* `notes/Phase10.md` (-17 / +11 LoC across the two
+  collapses); `notes/Phase11.md` (-7 / +5 LoC for the Layer 4
+  collapse). No source-file or blueprint-file changes; D5 is a
+  notes-hygiene fix.
+
+  Bucket D complete (D1 / D2 / D3 / D4 / D5 closed). Round closes;
+  the close hand-off defaults to whichever follow-up direction the
+  user picks from Phase 11's three candidates.
 
 ## Blockers / open questions
 
@@ -1262,33 +1362,30 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ## Hand-off / next phase
 
-Round still in progress; Bucket A complete (A1 no-op / A2 targeted
-fix / A3 targeted fix / A4 no-op); Bucket B complete (B1 no-op /
-B2 no-op + smell-table revision / B3 no-op + smell-table revision /
+Round **closed**. Bucket A complete (A1 no-op / A2 targeted fix /
+A3 targeted fix / A4 no-op); Bucket B complete (B1 no-op / B2
+no-op + smell-table revision / B3 no-op + smell-table revision /
 B4 no-op / B5 no-op); Bucket C complete (C1 ranking / C2 all
-no-op + cluster dissolutions / C3 no-op); **D1 closed**
-(`notes/Phase11.md` 856 → ~436 LoC, within adaptive budget);
-**D2 closed** (`notes/Phase10.md` 546 → 343 LoC, within the
-adaptive 250-350 budget for a shorter forward-work phase);
-**D3 closed** (back-pointer audit no-op; two Layer-4b drift fixes
-in DESIGN.md *One Decidable instance* + TACTICS-QUIRKS § 17;
-three promotions — *Reshape past results in place* to DESIGN.md,
-*Blueprint reshape in-place per Layer* resolved as already-captured
-at blueprint/CLAUDE.md, *top-10 LoC ranking surfaces structural
-shape* to CLEANUP.md §C *Calibration*); **D4 closed** as a
-**no-op** (both active *Choices to revisit* entries unchanged by
-Phase 10/11; *Pebble-game style island* section carries no drift
-post-reshape).
+no-op + cluster dissolutions / C3 no-op); Bucket D complete:
+**D1** (`notes/Phase11.md` 856 → ~436 LoC, within adaptive budget),
+**D2** (`notes/Phase10.md` 546 → 343 LoC, within the adaptive
+250-350 budget for a shorter forward-work phase), **D3**
+(back-pointer audit no-op; two Layer-4b drift fixes in DESIGN.md
+*One Decidable instance* + TACTICS-QUIRKS § 17; three promotions
+— *Reshape past results in place* to DESIGN.md, *Blueprint reshape
+in-place per Layer* resolved as already-captured at
+blueprint/CLAUDE.md, *top-10 LoC ranking surfaces structural shape*
+to CLEANUP.md §C *Calibration*), **D4** no-op (both active *Choices
+to revisit* entries unchanged by Phase 10/11; *Pebble-game style
+island* section carries no drift post-reshape), **D5**
+targeted-fix close (destination back-pointers all present;
+three phase-entry residual-lift collapses in Phase 10 / Phase 11
+*Decisions made* / *Architectural choices* — full per-entry walk
+in *Cleanup pass summaries* D5).
 
-Next concrete commit: **D5** — no-residual-lifts audit. For each
-Phase 10 / Phase 11 *Promoted to* entry, verify the destination
-still carries the cross-reference back, and verify the phase
-entry is a one-line pointer per CLAUDE.md *Lift on promotion*.
-After D5, this round closes; the close hand-off defaults to
-whichever follow-up direction the user picks from Phase 11's
-three candidates.
-
-The round's close hand-off, when reached, defaults to whichever
-follow-up direction the user picks from Phase 11's three candidates
+The round's close hand-off defaults to whichever follow-up
+direction the user picks from Phase 11's three candidates
 (component pebble game / Henneberg-sequence extraction / benchmarks
 harness); cleanup-round work is hygiene, not a phase dependency.
+The accompanying perf pass (`Phase11-perf.md`) remains open and
+runs independently.

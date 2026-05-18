@@ -345,17 +345,11 @@ commit ships, blueprint and Lean.
   with a one-line `ReflTransGen` induction equating the
   `toSucc D`-shaped and `D.arcs`-shaped reachability relations.
 
-- **Layer 4: `*.aux` helper to dodge TACTICS-QUIRKS § 17.** A direct
-  term-level `match h_opt : runPebbleGame G k ℓ with ...` body for
-  the verdict-bearing wrapper would put `h_opt` in scope of each
-  branch with the substituted type `<pat> = <pat>` (per § 17), so
-  downstream proof-field references fail with
-  `Application type mismatch`. A `*.aux` helper taking the
-  `Sum`-shaped result and its equation as explicit arguments,
-  followed by `*_result G k ℓ h := *.aux G k ℓ h (runPebbleGame G k ℓ) rfl`,
-  sidesteps the substitution. Pattern carried through both
-  math- and exec-layer wrappers; promoted to TACTICS-QUIRKS § 17
-  third bullet.
+- **Layer 4: `*.aux` helper to dodge TACTICS-QUIRKS § 17.** See
+  `../TACTICS-QUIRKS.md` § 17 (third bullet, *data-building* fix); the
+  Layer 4b `runPebbleGame.aux` / `runPebbleGameExec.aux` pattern in
+  `PebbleGame/Correctness.lean` + `PebbleGame/Exec.lean` is the
+  canonical worked case.
 
 - **Layer 5: complete (not truncated) fixture comment blocks.**
   Kept the four `examples/*.txt` expected-output blocks at their

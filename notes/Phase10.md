@@ -74,14 +74,10 @@ wrong, revisit there.
   blocked — see Layer 0 audit \#1 outcome below.
 
 - **One `Decidable` instance per project predicate, pebble-game-
-  backed.** `IsSparse`, `IsTight`, `IsLaman` each get exactly one
-  registered `Decidable` instance in `PebbleGame/Exec.lean`, backed
-  by `runPebbleGameExec` via the Phase 9 correctness theorem.
-  Competing brute-force registrations (e.g. via
-  `Fintype.decidableForallFintype`) are forbidden — valid same-Prop
-  `Decidable`s, but exponential, and typeclass search would silently
-  pick the slow path. Promoted to DESIGN.md *One `Decidable`
-  instance per project predicate*.
+  backed.** See `../DESIGN.md` *One `Decidable` instance per project
+  predicate*; the Layer 3 worked case (`IsSparse k ℓ` / `IsTight k ℓ`
+  / `IsLaman`, each registered in `PebbleGame/Exec.lean`) is named
+  there.
 
 - **Runtime / backend matrix to surface in the blueprint, not in
   these notes.** Three invocation paths (`#eval decide …`, `lake
@@ -199,18 +195,11 @@ discipline.
 ### Phase-local choices and proof techniques
 
 - **Layer 0 audit #1 (revised at Layer 1) — `LinearOrder (Sym2 V)`:
-  no mirror, sort via `Lex (V × V)` instead.** Original outcome was
-  "mirror needed" via the `α × α`-lex pullback along
-  `Sym2.sortEquiv`. Implementing it surfaced a structural blocker:
-  mathlib's `Mathlib/Data/Sym/Sym2.lean` already registers
-  `instance : PartialOrder (Sym2 α) := .ofSetLike (Sym2 α) α` (the
-  non-total SetLike-derived subset order), so a competing
-  `LinearOrder (Sym2 V)` cannot land without slot collision. Layer
-  1's `edgeListSorted` composes `G.edgeFinset.image (fun e =>
-  toLex (e.inf, e.sup)) : Finset (Lex (V × V))` with `Finset.sort
-  (· ≤ ·)` and `List.map ofLex` to land in `List (V × V)`; the same
-  membership characterisation falls out, no new `Mathlib/` mirror.
-  Promoted to TACTICS-QUIRKS § 22 (see *Promoted* below).
+  no mirror, sort via `Lex (V × V)` instead.** See `../TACTICS-QUIRKS.md`
+  § 22 (`LinearOrder.lift'` on a `SetLike` type silently breaks
+  `Decidable (· ≤ ·)`); Layer 1's `edgeListSorted` in
+  `PebbleGame/Exec.lean` is the worked-case rescue (sort through
+  `Lex (V × V)` projection, no new `Mathlib/` mirror).
 
 - **Layer 0 audit #2 — workhorse-level factoring: clean.** Phase 9's
   correctness chain (`runPebbleGame_sound`,
