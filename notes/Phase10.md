@@ -32,12 +32,13 @@ same first commit as this file.
 Layer 0 audits closed, Layer 1 (computable list views) landed,
 Layer 2's workhorse-level correctness restatement landed, Layer 2
 itself closed via the exec-layer wrapper `runPebbleGameExec` plus its
-certificate-form correctness theorem, and Layer 3 is in progress:
-the canonical `Decidable (G.IsSparse k ℓ)` and `Decidable (G.IsTight
-k ℓ)` instances are registered; the matching `IsLaman` instance is
-the next concrete commit. Per the revised Layer 0 audit \#1 outcome
-below, there is **no `Mathlib/` mirror** for Phase 10: mathlib's
-existing
+certificate-form correctness theorem, and Layer 3 is **closed**: the
+canonical `Decidable (G.IsSparse k ℓ)`, `Decidable (G.IsTight k ℓ)`,
+and `Decidable G.IsLaman` instances are all registered, with a
+top-level `instance : Fact (3 < 2 * 2)` making the Laman case
+zero-hypothesis at call sites. Per the revised Layer 0 audit \#1
+outcome below, there is **no `Mathlib/` mirror** for Phase 10:
+mathlib's existing
 `instance : PartialOrder (Sym2 α) := .ofSetLike _ _` occupies the
 slot for an order on `Sym2 V` with the (non-total) subset order, so
 a competing `LinearOrder (Sym2 V)` cannot be registered. Layer 1
@@ -114,6 +115,30 @@ IsTight 2 3))` → `false` (0 edges $\ne 5$),
 `#eval (decide ((⊤ : SimpleGraph (Fin 2)).IsTight 2 3))` → `true`
 ($K_2$ has $1 = 2 \cdot 2 - 3$ edges). The blueprint node
 `def:isTight-decidable` is now `\leanok`-green.
+
+Layer 3 closes with `SimpleGraph.instDecidableIsLaman` in `Exec.lean`,
+under `[LinearOrder V]` / `[Fintype V]` / `[Fintype G.edgeSet]`
+hypotheses only — *no caller-supplied `Fact`*. Since
+`IsLaman := IsTight 2 3` as an `@[expose] def`, the instance body is
+the one-liner `inferInstanceAs (Decidable (G.IsTight 2 3))`; the
+matroidal-regime witness at the Laman parameters is supplied by a new
+top-level `instance : Fact (3 < 2 * 2) := ⟨by omega⟩` registered in
+`Exec.lean` after `instDecidableIsTight`. The combined effect: callers
+writing `#eval (decide G.IsLaman)` see a zero-hypothesis `Decidable`
+without needing to register their own `Fact`. The new top-level
+import `CombinatorialRigidity.Laman` adds no cycle — `Laman.lean`
+depends only on `Sparsity` and mathlib, neither of which touches the
+pebble game. Smoke-tested via
+`#eval (decide ((⊤ : SimpleGraph (Fin 2)).IsLaman))` → `true`
+($K_2$, $1 = 2 \cdot 2 - 3$ edges),
+`#eval (decide ((⊤ : SimpleGraph (Fin 4)).IsLaman))` → `false`
+($K_4$, $6 > 5$),
+`#eval (decide ((⊥ : SimpleGraph (Fin 2)).IsLaman))` → `false`
+(0 edges $\ne 1$), and
+`#eval (decide ((⊥ : SimpleGraph (Fin 4)).IsLaman))` → `false`
+(0 edges, not sparse, not tight). All four reduce through the
+compiled `runPebbleGameExec` body in sub-second wall time. The
+blueprint node `def:isLaman-decidable` is now `\leanok`-green.
 
 The phase target is **end-to-end executability** of the pebble game:
 a computable wrapper `runPebbleGameExec` whose body avoids
@@ -389,18 +414,21 @@ discipline.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** close Layer 3 — register the canonical
-`Decidable G.IsLaman` instance in `PebbleGame/Exec.lean` as a one-line
-corollary at `(k, ℓ) = (2, 3)`. Since `IsLaman := IsTight 2 3` is an
-`@[expose] def`, the body unfolds to a call site of
-`instDecidableIsTight`; a top-level
-`instance : Fact (3 < 2 * 2) := ⟨by omega⟩` ships alongside so the
-Laman case is zero-hypothesis at call sites. Flip the
-`def:isLaman-decidable` blueprint node's `\lean{...}` and `\leanok` in
-the same commit. After Laman lands, Layer 3 closes and Layer 4
-(`PebbleGame/Examples.lean` — the four `#eval`-able worked examples
-from the chapter, $K_4 \setminus e$ / Moser spindle / $K_4$ / a
-5-vertex path) becomes the next concrete commit.
+**Next concrete commit:** open Layer 4 — create
+`CombinatorialRigidity/PebbleGame/Examples.lean` carrying the four
+`#eval`-able worked examples from `chapter/executable.tex`
+*Worked examples* ($K_4 \setminus e$ on $\mathrm{Fin}\,4$, Moser
+spindle, $K_4$ on $\mathrm{Fin}\,4$, a 5-vertex path). Each is a
+`#eval (decide G.IsLaman)` (or `decide G.IsSparse` for the
+sparse-but-not-tight case) reducing through the compiled
+`runPebbleGameExec` body. The four-example list is small enough to
+land in a single commit; the file just needs the right `SimpleGraph`
+constructions for each (`Fin n` adjacency predicates plus
+`DecidableRel` instances). No new blueprint nodes — the worked-examples
+section in `chapter/executable.tex` is already prose-only. After
+Layer 4 lands, Layer 5 (CLI binary `lake exe pebble-game` plus its
+edge-list parser; new top-level `Main.lean` + lakefile target) is the
+final concrete commit before Phase 10 closes.
 
 Phase 10 closes when:
 - `chapter/executable.tex`'s dep-graph is fully `\leanok`-green;

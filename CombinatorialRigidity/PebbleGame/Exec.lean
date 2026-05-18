@@ -8,6 +8,7 @@ module
 public import Mathlib.Data.Finset.Sort
 public import Mathlib.Data.Sym.Sym2.Order
 public import Mathlib.Data.Prod.Lex
+public import CombinatorialRigidity.Laman
 public import CombinatorialRigidity.PebbleGame.Correctness
 
 /-!
@@ -69,9 +70,14 @@ theorem `runPebbleGameWith_correct` of Phase 10 Layer 2:
   definition is bridged to the `Finset.card` / `Fintype.card` form
   via the mirror `ncard_edgeSet_eq_card_edgeFinset` and
   `Nat.card_eq_fintype_card` — both pure rewrites, decided in
-  polynomial time alongside the sparsity check. The matching
-  `IsLaman` instance is the follow-on commit, registered as a
-  one-liner at `(k, ℓ) = (2, 3)`.
+  polynomial time alongside the sparsity check.
+* `SimpleGraph.instDecidableIsLaman` — Layer 3, closer. One-line
+  corollary of `instDecidableIsTight` at `(k, ℓ) = (2, 3)`: since
+  `IsLaman := IsTight 2 3` as an `@[expose] def`, the Laman case is
+  literally a callsite of `instDecidableIsTight` at the Laman
+  parameters. A top-level `instance : Fact (3 < 2 * 2) := ⟨by omega⟩`
+  ships alongside so the call site is zero-hypothesis —
+  `#eval (decide G.IsLaman)` fires without any caller-supplied `Fact`.
 
 See `blueprint/src/chapter/executable.tex` for the authoritative
 forward-mode dep-graph and lemma index; `notes/Phase10.md` for
@@ -323,5 +329,27 @@ instance instDecidableIsTight [LinearOrder V] [Fintype V] (G : SimpleGraph V)
     (G.IsSparse k ℓ ∧ G.edgeFinset.card + ℓ = k * Fintype.card V) <| by
     unfold IsTight
     rw [G.ncard_edgeSet_eq_card_edgeFinset, Nat.card_eq_fintype_card]
+
+/-- **Matroidal-regime witness for the Laman parameters `(k, ℓ) = (2, 3)`** (Phase 10
+Layer 3). Registered as a top-level `Fact` instance so that
+`instDecidableIsLaman` is zero-hypothesis at the Laman parameters — callers
+writing `#eval (decide G.IsLaman)` need not supply `[Fact (3 < 2 * 2)]` by hand.
+The matroidal-regime hypothesis `ℓ < 2 * k` of Phase 7 (and Phase 9) is `3 < 4`
+at the Laman parameters; `omega` closes it. -/
+instance : Fact (3 < 2 * 2) := ⟨by omega⟩
+
+/-- **Canonical decidability of the Laman property**
+(Phase 10 Layer 3; blueprint `def:isLaman-decidable`). One-line corollary of
+`instDecidableIsTight` at `(k, ℓ) = (2, 3)`: since `IsLaman := IsTight 2 3` as an
+`@[expose] def`, the Laman case unfolds to a callsite of `instDecidableIsTight`
+with the top-level `Fact (3 < 2 * 2)` instance plugged in automatically. Reduces
+through the same compiled `runPebbleGameExec` body as `instDecidableIsSparse` /
+`instDecidableIsTight`; the only added work is the constant-time edge-count
+equation.
+**One `Decidable` instance per project predicate.** Per `DESIGN.md`, do not
+register competing instances. -/
+instance instDecidableIsLaman [LinearOrder V] [Fintype V] (G : SimpleGraph V)
+    [Fintype G.edgeSet] : Decidable G.IsLaman :=
+  inferInstanceAs (Decidable (G.IsTight 2 3))
 
 end SimpleGraph

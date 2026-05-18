@@ -374,11 +374,17 @@ corollaries.
 
 \begin{definition}[\texttt{Decidable} instance for Laman]
   \label{def:isLaman-decidable}
+  \lean{SimpleGraph.instDecidableIsLaman}
+  \leanok
   \uses{def:isTight-decidable, def:isLaman}
   Under the hypotheses of \cref{def:isSparse-decidable} at
   $(k, \ell) = (2, 3)$, $G.\mathrm{IsLaman}$ is decidable: it is
   $G.\mathrm{IsTight}\,2\,3$ (\cref{def:isTight-decidable})
-  unfolded.
+  unfolded. The formalisation registers the matroidal-regime witness
+  $[\mathrm{Fact}\,(3 < 2 \cdot 2)]$ as a top-level instance, so the
+  Laman case is zero-hypothesis at the call site —
+  $\mathrm{\#eval}\,(\mathrm{decide}\,G.\mathrm{IsLaman})$ fires
+  without any caller-supplied $[\mathrm{Fact}\,\ldots]$.
 \end{definition}
 
 \subsection{Worked examples}
