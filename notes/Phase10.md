@@ -1,6 +1,6 @@
 # Phase 10 — Executable pebble game (work log)
 
-**Status:** planning.
+**Status:** in progress.
 
 This file is the per-phase work record. See `../ROADMAP.md` §10 for
 the high-level plan and `../DESIGN.md` for cross-cutting design
@@ -29,9 +29,13 @@ same first commit as this file.
 
 ## Current state
 
-Planning. Architectural choices below are settled before Phase 10
-opens; the lemma index will be filled in `chapter/executable.tex`
-once the chapter lands. No Lean code yet.
+Layer 0 audits closed (see *Decisions made during this phase*
+below): the `LinearOrder (Sym2 V)` mirror is needed under
+`Mathlib/Data/Sym/Sym2/Order.lean`; the Phase 9 correctness proof
+factors cleanly through workhorse-level statements; the
+structural-`outList` option is not needed. Layer 1 (computable
+list views `outListSorted` / `edgeListSorted` + membership lemmas)
+is unblocked and is the next concrete commit.
 
 The phase target is **end-to-end executability** of the pebble game:
 a computable wrapper `runPebbleGameExec` whose body avoids
@@ -178,11 +182,52 @@ discipline.
 
 ## Decisions made during this phase
 
-*(Empty at phase open; entries land as the phase progresses.)*
-
 ### Phase-local choices and proof techniques
 
-*(Empty at phase open.)*
+- **Layer 0 audit #1 — `LinearOrder (Sym2 V)`: mirror needed.**
+  Mathlib `Mathlib/Data/Sym/Sym2/Order.lean` provides `Sym2.inf`,
+  `Sym2.sup`, and `Sym2.sortEquiv : Sym2 α ≃ { p : α × α // p.1 ≤
+  p.2 }` from `[LinearOrder α]`, but no `LinearOrder (Sym2 V)`
+  instance. The mirror lives under
+  `CombinatorialRigidity/Mathlib/Data/Sym/Sym2/Order.lean` and
+  defines the linear order as the pullback of the `α × α`-lex
+  order along `sortEquiv.toFun` (equivalently, the lex order on
+  `(s.inf, s.sup)`). Layer 1's `edgeListSorted` then composes
+  `G.edgeFinset.sort (· ≤ ·) : List (Sym2 V)` with the `Sym2 V →
+  V × V` projection `fun e => (e.inf, e.sup)` from `sortEquiv`.
+
+- **Layer 0 audit #2 — workhorse-level factoring: clean.** The
+  substantive content of Phase 9's correctness chain
+  (`runPebbleGame_sound`, `runPebbleGame_underline_eq_edgeFinset`,
+  `runPebbleGame_eq_none_imp_exists_witness`, `runPebbleGame_correct`)
+  is already at workhorse level: each piece routes through
+  `runPebbleGameWith_*` lemmas universally-quantified over
+  `toSucc`/`h_toSucc`. The wrapper layer only adds **three
+  discharges** for the `Quot.out`-projected edge list: no-loops
+  (from `not_isDiag_of_mem_edgeSet`), pairwise Sym2-distinctness
+  (from `Finset.nodup_toList` + the `Quot.out_eq` round-trip), and
+  the Sym2-image round-trip
+  `(edges.map s(·,·)).toFinset = G.edgeFinset`. Layer 2 lifts the
+  three theorems to workhorse-level statements parametrised over
+  those three discharges; both `runPebbleGame` and the new
+  `runPebbleGameExec` re-derive as one-line corollaries plugging
+  in `Quot.out`-style and `Sym2.sortEquiv`-style discharges
+  respectively. No re-proving of the algorithm-side content.
+
+- **Layer 0 audit #3 — structural-outList option: not needed.**
+  Every workhorse in `PebbleGame/Algorithm.lean` and
+  `PebbleGame/Correctness.lean` (`tryReachPebbleWith`,
+  `tryAddEdgeWith`, `runPebbleGameWith` and their per-step /
+  per-fold reachability, underline, sparsity, isSome, and
+  failure-witness lemmas) is already universally-quantified over
+  the caller-supplied `succ`/`toSucc` and agreement witness
+  `h_succ`/`h_toSucc`. `tryReachPebbleWith` is invoked twice
+  inside `tryAddEdgeWith` and the agreement witness threads
+  uniformly through the recursion. No structural `outList` field
+  on `PartialOrientation` is needed; Layer 1's `outListSorted`
+  slots in directly as
+  `toSucc := fun D' v => (D'.outNbhd v).sort (· ≤ ·)` with the
+  agreement proof `mem_outListSorted`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -194,9 +239,8 @@ discipline.
 
 ## Blockers / open questions
 
-- **Layer 0 audits (above).** The three audits resolve in the
-  first non-opener commit; outcomes update this section to
-  *resolved*.
+- **Layer 0 audits.** ✓ Resolved by the audit-commit. Outcomes
+  recorded under *Decisions made during this phase* above.
 
 - **`apnelson1/Matroid` non-`module` boundary.** Phase 10's new
   files import only `Sparsity.lean`, `CountMatroid.lean`, and the
@@ -221,6 +265,18 @@ discipline.
   agent does not re-litigate.
 
 ## Hand-off / next phase
+
+**Next concrete commit:** open Layer 1 — mirror
+`LinearOrder (Sym2 V)` under
+`CombinatorialRigidity/Mathlib/Data/Sym/Sym2/Order.lean` (as the
+pullback of the lex order on `α × α` along `Sym2.sortEquiv`), then
+add `outListSorted` / `edgeListSorted` definitions and their
+membership / round-trip lemmas to a new
+`CombinatorialRigidity/PebbleGame/Exec.lean` (or fold the list
+views into `PebbleGame/Basic.lean` if that turns out cleaner once
+they're written). Forward-mode discipline: the leaf-most red node
+in `chapter/executable.tex` is `def:outListSorted`; flip its
+`\lean{...}` and `\leanok` in the same commit as the Lean lands.
 
 Phase 10 closes when:
 - `chapter/executable.tex`'s dep-graph is fully `\leanok`-green;

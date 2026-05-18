@@ -89,7 +89,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 9. Pebble game | `PebbleGame/{Basic, Algorithm, Correctness}.lean` | ✓ Complete (see `notes/Phase9.md`) |
 | ⋮ Cleanup round (post-Phase-9) | project-wide (Phase 9 surface) | ✓ Complete (see `notes/Phase9-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-9) | `Search/DFS.lean` + `PebbleGame.lean` per-decl `@[expose]` audit | ✓ Complete (see `notes/Phase9-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 10. Executable pebble game | `PebbleGame/{Exec, Examples}.lean` (new), `Main.lean` (new) | planning (see `notes/Phase10.md`) |
+| 10. Executable pebble game | `PebbleGame/{Exec, Examples}.lean` (new), `Main.lean` (new) | in progress (see `notes/Phase10.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
