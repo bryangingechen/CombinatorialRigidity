@@ -63,7 +63,7 @@ blueprint `thm:pebble-game-soundness`, `thm:pebble-game-completeness`,
 `def:pebbleGameResult`, `cor:pebble-game-countMatroid-indep`.
 -/
 
-@[expose] public section
+public section
 
 namespace CombinatorialRigidity.PebbleGame
 
@@ -705,7 +705,7 @@ which were re-routed in Phase 11 Layer 4b from the Phase-10-era
 `Sum.isRight` projection of the (now-retired) `Sum`-returning
 `runPebbleGameExec` to this `.isAccept` projection of the verdict-bearing
 `runPebbleGameExec`. -/
-@[simp] def isAccept : PebbleGameResult G k ℓ → Bool
+@[expose, simp] def isAccept : PebbleGameResult G k ℓ → Bool
   | .accept _ _ _ => true
   | .reject _ _ _ => false
 

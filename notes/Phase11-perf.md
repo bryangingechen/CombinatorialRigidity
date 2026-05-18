@@ -155,12 +155,29 @@ Current Phase 10+11 disposition (per `grep`):
   consumes them through `match` on the `Sum`-shaped return or
   through API lemmas, not by name-as-unfold. Disposition row
   appended to PERFORMANCE.md F3.5 table.*
-- [ ] **F1.2.** `PebbleGame/Correctness.lean` audit. Same pattern.
+- [x] **F1.2.** `PebbleGame/Correctness.lean` audit. Same pattern.
   Layer 4b added `PebbleGameResult` inductive (auto-exposed
   constructors), `runPebbleGame_isAccept_iff` /
   `runPebbleGameExec_isAccept_iff` lemmas, and
   `WorkhorseWitness.certifies_against`. Mostly theorems, so
-  expected to demote cleanly; verify.
+  expected to demote cleanly; verify. *Done; demoted, **one**
+  per-decl opt-in (`PebbleGameResult.isAccept`). Trigger:
+  downstream `simp [..., PebbleGameResult.isAccept, ...]` in
+  `Exec.lean` line 319 (inside `runPebbleGameExec_aux_isAccept`'s
+  `cases s <;> simp [...]` proof) — the `@[simp] def` taxonomy
+  needs the body for the `match`-arm reduction. Errors when
+  demoted: *"Invalid simp theorem `PebbleGameResult.isAccept`:
+  Expected a definition with an exposed body"* (×2) plus the
+  unsolved `inl` / `inr` goals that the simp call would have
+  closed. The other defs in the file (`runPebbleGame.aux`,
+  `runPebbleGame`) demote cleanly: their intra-file consumers
+  (`simp [runPebbleGame.aux, ...]` at L820, `unfold runPebbleGame`
+  at L838 — both inside same-module proofs of
+  `runPebbleGame_aux_isAccept` / `runPebbleGame_isAccept_iff`) work
+  under `public section` (intra-module `simp [defname]` /
+  `unfold defname` don't require `@[expose]`; only intra-module
+  `@[simp] := rfl` projection lemmas and downstream consumption do).
+  Disposition row appended to PERFORMANCE.md F3.5 table.*
 - [ ] **F1.3.** `PebbleGame/Exec.lean` audit. Same pattern. Phase
   10 defs `outListSorted`, `edgeListSorted`,
   `runPebbleGameExec` may have intra-file `@[simp] := rfl`
@@ -269,6 +286,19 @@ median-of-4.
   through name-as-unfold. Matches the F3.5 pattern (`@[simp] := rfl`
   / `rw [name]` / `unfold name` triggers exposure, opaque `match` /
   API-lemma consumption demotes cleanly).
+- **F1.2 — `PebbleGame/Correctness.lean` per-decl `@[expose]` audit.**
+  Demoted `@[expose] public section` → `public section`; one per-decl
+  opt-in restored on `PebbleGameResult.isAccept`. Trigger is the
+  downstream `simp [..., PebbleGameResult.isAccept, ...]` call in
+  `Exec.lean`'s `runPebbleGameExec_aux_isAccept` proof (matches F3.5's
+  `@[simp] def` taxonomy: the simp linter / elaborator needs the body
+  for the `match`-arm reduction). The two large defs in the file
+  (`runPebbleGame.aux`, `runPebbleGame`) demote cleanly even though
+  their intra-file proofs use `simp [runPebbleGame.aux, ...]` (L820)
+  and `unfold runPebbleGame` (L838) — intra-module `simp [defname]` /
+  `unfold defname` works under `public section`; only downstream
+  `simp [defname]` and intra-module `@[simp] := rfl` projection lemmas
+  force exposure. Confirms the F3.5 / F1.1 pattern.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -281,30 +311,31 @@ median-of-4.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** F1.2 audit of `PebbleGame/Correctness.lean` —
+**Next concrete commit:** F1.3 audit of `PebbleGame/Exec.lean` —
 demote `@[expose] public section` → `public section`, observe what
 breaks, restore `@[expose]` on the per-decl sites whose bodies are
-genuinely consumed. Layer 4b added `PebbleGameResult` inductive
-(auto-exposed constructors), `runPebbleGame_isAccept_iff` /
-`runPebbleGameExec_isAccept_iff` lemmas, `runPebbleGame.aux`, and
-`WorkhorseWitness.certifies_against`; mostly theorems, so expected
-to demote cleanly. Candidates if exposure is needed:
-`runPebbleGame.aux` (consumed via `simp [runPebbleGame.aux, …]` at
-L820 + an `unfold runPebbleGame` at L838 — both intra-file in
-`runPebbleGame_isAccept_iff`'s proof), `runPebbleGame` itself.
+genuinely consumed. Phase 10 surface defs: `outListSorted`,
+`edgeListSorted`, `runPebbleGameExec.aux`, `runPebbleGameExec`. The
+file also hosts the three `Decidable` instances
+(`instDecidableIsSparse`, `instDecidableIsTight`,
+`instDecidableIsLaman`) that pattern-match on `runPebbleGameExec`'s
+verdict body. Candidates if exposure is needed: `runPebbleGameExec`
+(if the `Decidable` instance bodies need its body for reduction —
+mirror of F1.1's `runPebbleGameWith` rationale); the sorted-list
+defs if intra-file or downstream `@[simp] := rfl` consumers exist.
 Append disposition row to `./PERFORMANCE.md` *F3.5 audit
 disposition* table.
 
-After F1.2, F1.3 (`Exec.lean`), F1.4 (`Examples.lean`); then
-F2.1/F2.2 re-audit of the existing per-decl opt-ins on `DFS` and
-`Basic` under the Phase 11 reshape. F4.2 post-pass measurement
-closes the pass (or earlier if a measurable regression surfaces
-during F1).
+After F1.3, F1.4 (`Examples.lean`); then F2.1/F2.2 re-audit of the
+existing per-decl opt-ins on `DFS` and `Basic` under the Phase 11
+reshape. F4.2 post-pass measurement closes the pass (or earlier if
+a measurable regression surfaces during F1).
 
-If the session must stop mid-stream, the F4.1 baseline anchor +
-the F1.1 disposition for `Algorithm.lean` (`runPebbleGameWith`
-per-decl `@[expose]` only) are the only persistent state added so
-far; the next session can pick up at F1.2 from a clean tree. Final
-hand-off paragraph will be rewritten at pass close; the default
-close convention is *no follow-up phase queued* per
-`../CLEANUP.md`.
+If the session must stop mid-stream, the F4.1 baseline anchor + the
+F1.1 disposition for `Algorithm.lean` (`runPebbleGameWith` per-decl
+`@[expose]` only) + the F1.2 disposition for `Correctness.lean`
+(`PebbleGameResult.isAccept` per-decl `@[expose]` only) are the
+persistent state added so far; the next session can pick up at F1.3
+from a clean tree. Final hand-off paragraph will be rewritten at
+pass close; the default close convention is *no follow-up phase
+queued* per `../CLEANUP.md`.
