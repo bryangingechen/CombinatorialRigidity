@@ -47,8 +47,12 @@ placement, termination measure) were never queued in `DESIGN.md`
 *Choices to revisit*'s 9 entries (8 resolved, 1 open) confirmed no
 Phase-9 flips needed, and *Pebble-game style island* was already
 Phase-9-calibrated by forward-work commits `9e0ded7` (*-With*
-variant pattern) + `b3bfe77` (orientation-indexed `toSucc`). D2,
-D3, D5 still to do.
+variant pattern) + `b3bfe77` (orientation-indexed `toSucc`). D5
+landed one edit: `ROADMAP.md` *Engineering conventions → Vertex
+types* now points at `DESIGN.md` *Pebble-game style island* for
+the algorithm-bearing-files exception (the `-With` pattern stays
+DESIGN-only — algorithm-design rather than engineering
+convention). D2, D3 still to do.
 Bucket C's long-proof audit landed
 two Lean simplifications. (i) The 11-line `|V'| ≥ 2` derivation
 duplicated at `independent_brings_pebble_simpleGraph_form` and
@@ -1018,7 +1022,7 @@ the manual:
   D5 picks up the question of whether ROADMAP should point at
   *Pebble-game style island* from its engineering-conventions
   section.
-- [ ] **D5:** `ROADMAP.md` engineering-conventions re-skim. Does
+- [x] **D5:** `ROADMAP.md` engineering-conventions re-skim. Does
   Phase 9 surface any new convention that should be documented
   there? Candidates: the `[Fintype V] [DecidableEq V]` style
   island for algorithm files (currently lives in DESIGN.md
@@ -1026,6 +1030,23 @@ the manual:
   *Engineering conventions → Vertex types*?); the `-With` variant
   pattern (math/exec layer split for algorithms; DESIGN.md
   pin appears sufficient — verify).
+
+  **Disposition.** One edit: `ROADMAP.md` *Engineering conventions →
+  Vertex types* now points at `DESIGN.md` *Pebble-game style island*
+  for the algorithm-bearing-files exception (`Search/DFS.lean` +
+  `PebbleGame.lean` take `[Fintype V] [DecidableEq V]` end-to-end).
+  A reader of ROADMAP's *Vertex types* bullet learned the project-
+  wide `[Finite V]` + inline-bridge rule but had no signal that an
+  exception lived elsewhere; the one-sentence pointer + reason
+  (state machines iterate over `Finset V` / `Finset (V × V)`,
+  `#eval` / `decide` on certificates) closes that gap without
+  duplicating DESIGN.md's body. The `-With` variant pattern is
+  algorithm-design, not an engineering convention; the DESIGN.md
+  pin is the right home. Re-skim of the other 9 conventions
+  (`Namespace`, `Cardinalities`, `Style`, `Imports`, `Decidability`,
+  `Predicates are def`, `Missing mathlib lemmas`, `Tactic notes`,
+  `No prose counts`) — none surfaced Phase-9 friction; the existing
+  pins still hold.
 
 ## Surfaced follow-ups
 
@@ -1059,10 +1080,10 @@ the manual:
 
 - Round in progress; buckets A + B + C fully closed (A1--A4 +
   B1--B5 + C1--C4 all green); bucket D in progress — D1 (Phase9.md
-  compression) + D4 (`DESIGN.md` re-skim, no-op) landed; D2, D3, D5
-  remain. (`checkdecls` is the always-on per-commit gate per
-  `../blueprint/CLAUDE.md` *Static checks before commit*, not a
-  separate task.)
+  compression) + D4 (`DESIGN.md` re-skim, no-op) + D5 (`ROADMAP.md`
+  re-skim, one pointer edit) landed; D2, D3 remain. (`checkdecls`
+  is the always-on per-commit gate per `../blueprint/CLAUDE.md`
+  *Static checks before commit*, not a separate task.)
 
 ## Hand-off / next phase
 
@@ -1108,13 +1129,14 @@ queued in `DESIGN.md` *Choices to revisit* — they lived in
 `notes/Phase9.md`'s own *Blockers / open questions* throughout
 Phase 9; the *Choices to revisit* re-skim found no Phase-9 flips
 needed, and *Pebble-game style island* was already Phase-9-
-calibrated by forward-work commits. Remaining D-bucket tasks: D2
+calibrated by forward-work commits. D5 landed one pointer edit:
+`ROADMAP.md` *Engineering conventions → Vertex types* now points
+at `DESIGN.md` *Pebble-game style island* for the algorithm-
+bearing-files exception. Remaining D-bucket tasks: D2
 (lift-on-promotion sweep — candidates: `match h : ... with` worked
 example, `Reachable k ℓ D` non-motive threading, unified additive-
 identity pattern), D3 (`FRICTION.md` housekeeping — migrate Phase
-9's 5 resolved entries to archive if indices stable), D5
-(`ROADMAP.md` engineering-conventions re-skim — `[Fintype V]
-[DecidableEq V]` style-island pointer + `-With` variant pattern).
+9's 5 resolved entries to archive if indices stable).
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is

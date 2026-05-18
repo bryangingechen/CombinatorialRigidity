@@ -330,7 +330,15 @@ application (L-S §6) are deferred to potential follow-up phases.
   Edge counts use `Set.ncard` so we don't force decidability of edge
   predicates. See `DESIGN.md` *Typeclass shape for finiteness on `V`*
   for the rationale (Phase 7 cleanup round resolution; two earlier
-  iterations were considered and reversed).
+  iterations were considered and reversed). Algorithm-bearing files
+  (`Search/DFS.lean`, `PebbleGame.lean`) deliberately depart from this
+  rule and take `[Fintype V] [DecidableEq V]` end-to-end as a
+  localized style island — the state machines iterate over
+  `Finset V` / `Finset (V × V)` directly, and `#eval` / `decide`
+  must fire on extracted certificates. See `DESIGN.md`
+  *Pebble-game style island: `[Fintype V] [DecidableEq V]`* for the
+  rationale + the math-layer / exec-layer (`-With`) split that keeps
+  the island from contaminating the rest of the project's API.
 - **Cardinalities.** Use `Set.ncard` for sets and `Finset.card` for finsets.
   Avoid `ℕ`-subtraction; rephrase `a ≤ b − c` as `a + c ≤ b`.
 - **Style.** Module docstrings at the top of each file (`/-! # Title -/`).
