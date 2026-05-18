@@ -11,9 +11,9 @@ public import Mathlib.Data.Prod.Lex
 public import CombinatorialRigidity.PebbleGame.Correctness
 
 /-!
-# Computable pebble game (Phase 10) — executable wrapper
+# Computable pebble game (Phase 10) — executable wrapper + `Decidable` instances
 
-Phase 10, exec layer (Layers 1+2). Phase 9's math-layer
+Phase 10, exec layer (Layers 1+2+3). Phase 9's math-layer
 `runPebbleGame G k ℓ` is `noncomputable`: it consumes the
 out-neighbour list `D.outList := (D.outNbhd v).toList` (noncomputable
 because `Finset.toList` lifts through a `Classical`-flavored
@@ -54,10 +54,14 @@ theorem `runPebbleGameWith_correct` of Phase 10 Layer 2:
   theorem `runPebbleGameExec_correct` (a one-line corollary of
   `runPebbleGameWith_correct`), it carries Phase 10's end-to-end
   executability claim.
-
-Subsequent commits in this file will install the project-level
-`Decidable` instances backing `#eval` of `decide G.IsLaman` and the
-`lake exe rigidity` CLI binary.
+* `SimpleGraph.instDecidableIsSparse` — Layer 3. The canonical
+  `Decidable (G.IsSparse k ℓ)` instance in the matroidal regime
+  (packaged here as `[Fact (ℓ < 2 * k)]` for typeclass synthesis),
+  whose reduction body is `(runPebbleGameExec G k ℓ).isSome`. Runs in
+  polynomial time in `|V| + |E|`; the source forbids competing
+  brute-force instances per `DESIGN.md` *One `Decidable` instance per
+  project predicate*. Subsequent commits register the matching
+  `IsTight` / `IsLaman` decidability instances on top.
 
 See `blueprint/src/chapter/executable.tex` for the authoritative
 forward-mode dep-graph and lemma index; `notes/Phase10.md` for
@@ -253,3 +257,40 @@ theorem runPebbleGameExec_correct [LinearOrder V] [Fintype V]
 end PartialOrientation
 
 end CombinatorialRigidity.PebbleGame
+
+namespace SimpleGraph
+
+variable {V : Type*}
+
+open CombinatorialRigidity.PebbleGame.PartialOrientation in
+/-- **Canonical decidability of `(k, ℓ)`-sparsity in the matroidal regime**
+(Phase 10 Layer 3; blueprint `def:isSparse-decidable`). In the matroidal regime
+`ℓ < 2 * k` — packaged as `[Fact (ℓ < 2 * k)]` for typeclass synthesis — the
+proposition `G.IsSparse k ℓ` is decidable via the rule
+`decide (G.IsSparse k ℓ) = (runPebbleGameExec G k ℓ).isSome`, where
+`runPebbleGameExec` is the Phase 10 exec-layer pebble game from this file. The
+correctness of this reduction is the Phase 10 certificate-form theorem
+`runPebbleGameExec_correct`; combined with `Option.isSome_iff_exists` it gives
+the iff `(runPebbleGameExec G k ℓ).isSome = true ↔ G.IsSparse k ℓ`, and the
+instance is `decidable_of_iff` against that.
+
+The reduction body `runPebbleGameExec G k ℓ` runs in polynomial time in
+`|V| + |E|`; every `#eval (decide (G.IsSparse k ℓ))`, `native_decide` on a
+sparsity goal, and `lake exe rigidity` invocation routes through the same
+compiled body.
+
+**One `Decidable` instance per project predicate.** This is the canonical
+decidability instance for `IsSparse k ℓ` in the matroidal regime. A
+brute-force `∀ s : Finset V, …` iteration via
+`Fintype.decidableForallFintype` would also produce a valid
+`Decidable (G.IsSparse k ℓ)`, but would reduce in exponential time;
+introducing it as a competing instance would silently cause typeclass search
+to pick the slow path. Do not register competing instances. See `DESIGN.md`
+*One `Decidable` instance per project predicate* for the project rule. -/
+instance instDecidableIsSparse [LinearOrder V] [Fintype V] (G : SimpleGraph V)
+    [Fintype G.edgeSet] (k ℓ : ℕ) [h_matroidal : Fact (ℓ < 2 * k)] :
+    Decidable (G.IsSparse k ℓ) :=
+  decidable_of_iff ((runPebbleGameExec G k ℓ).isSome = true)
+    (Option.isSome_iff_exists.trans (runPebbleGameExec_correct h_matroidal.out).symm)
+
+end SimpleGraph

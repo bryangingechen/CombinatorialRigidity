@@ -317,13 +317,16 @@ corollaries.
 
 \begin{definition}[\texttt{Decidable} instance for sparsity]
   \label{def:isSparse-decidable}
+  \lean{SimpleGraph.instDecidableIsSparse}
+  \leanok
   \uses{def:runPebbleGameExec, def:isSparse,
     thm:runPebbleGameExec-correct}
   Let $V$ have $[\mathrm{Fintype}\,V]$,
   $[\mathrm{LinearOrder}\,V]$, and $[\mathrm{DecidableEq}\,V]$, and
   let $G$ be a finite simple graph on $V$. In the matroidal regime
-  $\ell < 2k$, the proposition $G.\mathrm{IsSparse}\,k\,\ell$ is
-  decidable via the rule
+  $\ell < 2k$ — packaged in the formalisation as
+  $[\mathrm{Fact}\,(\ell < 2 \cdot k)]$ for typeclass synthesis — the
+  proposition $G.\mathrm{IsSparse}\,k\,\ell$ is decidable via the rule
   \[
     \mathrm{decide}\,(G.\mathrm{IsSparse}\,k\,\ell)
     \;=\;

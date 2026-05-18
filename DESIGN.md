@@ -475,6 +475,73 @@ is noncomputable — math/exec layer split* for the design history.
 
 ---
 
+## One `Decidable` instance per project predicate
+
+Phase 10 registers `Decidable` instances for `IsSparse k ℓ` (in the
+matroidal regime `ℓ < 2 * k`), `IsTight k ℓ`, and `IsLaman`, each
+backed by the polynomial-time pebble game `runPebbleGameExec`. The
+project rule is: **each of these predicates carries exactly one
+canonical `Decidable` instance, the pebble-game-backed one.** Do not
+register a second `Decidable` instance for the same predicate, even if
+it would type-check.
+
+This is a project-internal *convention* rather than a Lean-level
+constraint. Typeclass search picks one of the registered instances by
+its own priority logic, and many of these predicates admit multiple
+type-correct decision procedures:
+
+- `IsSparse k ℓ` unfolds to
+  `∀ s : Finset V, ℓ ≤ k * s.card → (G.edgesIn s).ncard + ℓ ≤ k * s.card`.
+  Under `[Fintype V]` plus the appropriate decidable-equality and
+  edge-count decidability, this is **brute-force decidable** via
+  `Fintype.decidableForallFintype`, iterating all
+  $2^{|V|}$ vertex subsets.
+- `IsLaman` and `IsTight` are conjunctions of such predicates with a
+  decidable arithmetic equation, so they inherit the brute-force
+  reduction.
+
+Both the pebble-game instance and the brute-force instance produce a
+valid `Decidable` of the same `Prop`; they differ only in the
+*reduction body* — what `decide` / `#eval` / `native_decide` actually
+unfolds when asked to evaluate. The pebble-game body runs in time
+polynomial in `|V| + |E|`; the brute-force body runs in time
+exponential in `|V|`. Registering both as `instance` would silently
+expose users to the slow path on any code that happened to trigger
+typeclass-search priority in the wrong direction — a regression that
+is hard to detect in normal code review and easy to introduce.
+
+The project therefore registers **exactly one** canonical instance per
+predicate and forbids competitors in the relevant source files'
+docstrings. The canonical instances live in
+`CombinatorialRigidity/PebbleGame/Exec.lean` and are:
+
+- `SimpleGraph.instDecidableIsSparse` — under
+  `[Fact (ℓ < 2 * k)]`, reduces to
+  `(runPebbleGameExec G k ℓ).isSome` via the certificate-form
+  correctness theorem `runPebbleGameExec_correct`.
+- `SimpleGraph.instDecidableIsTight` — conjunction of the
+  `IsSparse` instance with a `Nat`-equality check on the edge count.
+- `SimpleGraph.instDecidableIsLaman` — specialisation of
+  `IsTight` at $(k, \ell) = (2, 3)$.
+
+The pebble game requires the matroidal regime `ℓ < 2 * k` (Phase 7's
+hypothesis, threaded through Phase 9's correctness theorem); the
+`IsSparse` instance therefore takes a `[Fact (ℓ < 2 * k)]` typeclass
+hypothesis rather than an unconditional registration. The blueprint
+explainer for the runtime / backend matrix (`#eval` / `lake exe` /
+`by decide` / `native_decide`) lives in
+`blueprint/src/chapter/executable.tex`
+*Runtime and backends* and is the user-facing version of this
+rationale.
+
+If a future predicate genuinely needs a competing `Decidable` body
+(e.g., a faster specialised algorithm), the right shape is a single
+`Decidable` instance whose body branches on the concrete shape of its
+inputs — not two separately-registered instances racing for typeclass
+priority.
+
+---
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually
