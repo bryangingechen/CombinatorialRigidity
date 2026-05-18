@@ -35,7 +35,18 @@ clusters (three fold-traversal lemmas on `runPebbleGameWith`; three
 case-traversal lemmas on `tryAddEdgeWith`), `Correctness.lean` carries
 2 bridge-form lemmas, `DFS.lean` carries the 2 completeness halves; the
 docstring-filtered AWK ranking dropped a docstring false-positive that
-the §C-template grep would have surfaced; C2/C3, D pending).
+the §C-template grep would have surfaced; **C2 closed with all ten
+sites as *no-op* and both cross-proof unification clusters dissolved**
+— cluster (i) (three fold-traversal lemmas) dissolves on differing
+conclusion shapes (`Reachable k ℓ D'` vs. underline sandwich vs.
+per-edge membership) + differing accept-branch update rules; cluster
+(ii) (three case-traversal lemmas) dissolves on differing Sum-branch
+hypotheses (`.inr D'` vs. `.inl w` contradict in different cases) +
+differing per-case closing tactics (`exact ih h` vs. `rw [ih h,
+r.underline_newOrient_eq]`); per-site verdict table + dissolution
+analysis recorded in *Cleanup pass summaries* C2 below; **C3 closed
+as a no-op** (zero in-round refactor candidates surfaced); Bucket C
+complete; D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -139,9 +150,13 @@ headers documenting why upstream callees are `noncomputable`. The
 style island `[Fintype V] [DecidableEq V]` provides every typeclass
 the bodies need without `classical`. Bucket B (B2-B5) closed in
 subsequent commits as documented in the *Cleanup pass summaries*
-below; **C1** (long-proof top-10 ranking) closed with the table in
-§C below. Remaining: C2 four-question walk, C3 in-round refactor
-candidates, D project-organization compression.
+below; **Bucket C complete** — C1 (long-proof top-10 ranking) closed
+with the table in §C below; C2 (four-question walk) closed with all
+ten sites as *no-op* and both cross-proof unification clusters
+dissolved on inspection (per-site verdict table in *Cleanup pass
+summaries* C2); C3 (in-round refactor candidates) closed as a no-op
+(zero candidates surfaced). Remaining: D project-organization
+compression.
 Pre-sweep smell counts (Phase 10+11
 surface only —
 `CombinatorialRigidity/PebbleGame/*.lean`,
@@ -505,13 +520,23 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   to one preserved-invariant lemma. C2 dispatches each top-10
   candidate via the four-question walk and decides per cluster
   whether an in-round refactor (C3) is structurally small enough.
-- [ ] **C2:** Four-question walk over the C1 top sites (per
+- [x] **C2:** Four-question walk over the C1 top sites (per
   `../CLEANUP.md` §C — API extraction, mathlib lemma we missed,
   tactic substitution, definitional refactor, cross-proof
-  unification). Record candidates for in-round refactor; defer to
-  follow-up phases only when the refactor is structurally large.
-- [ ] **C3:** In-round refactor candidates land each as its own
-  commit, per `../CLEANUP.md` *Workflow* rule 3.
+  unification). **Closed with verdicts per site recorded below in
+  *Cleanup pass summaries* C2** — all ten sites discharged as
+  *no-op* (structurally forced, no in-round refactor surfaced); the
+  two cross-proof unification clusters identified in C1 dissolve on
+  inspection. C3 therefore has zero refactor candidates to land;
+  see *Cleanup pass summaries* C2 for the per-site verdict table
+  + cluster-dissolution analysis.
+- [x] **C3:** In-round refactor candidates land each as its own
+  commit, per `../CLEANUP.md` *Workflow* rule 3. **Closed as a
+  no-op** — C2 surfaced zero in-round refactor candidates (every
+  site dispatched as *no-op*), and the two cross-proof unification
+  clusters identified at C1 close did not survive the four-question
+  walk. Bucket C complete (C1 ranking landed / C2 walk no-op / C3
+  no-op).
 
 ### Bucket D — Project-organization compression
 
@@ -896,6 +921,89 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   recursion). C2 dispatches each top-10 entry via the four-question
   walk and decides per cluster whether an in-round refactor (C3) is
   structurally small enough to land alongside the cleanup round.
+- **C2: Four-question walk over the C1 top-10 sites** — no-op
+  closure (zero in-round refactor candidates surfaced). Per-site
+  verdicts, in C1 ranking order:
+
+  | # | Site | Audit anchor | Verdict |
+  |---|---|---|---|
+  | 1 | `tryAddEdgeWith` (Algorithm.lean L276) | *API extraction* of case-5 inline witness body | *no-op* — case-5 body is the workhorse witness constructor itself; it consumes ten locals (`hD`, `hthr`, `h_u`, `h_v`, `huv`, `hnotin`, `hnotin_rev`, the closure-defining `P`, plus `toSucc` / `h_toSucc`) and produces a `WorkhorseWitness` whose `h_pebOn_le` proof reasons by case split on `Finset.mem_union` over the closure-membership of each summand. Lifting it as `tryAddEdgeWith_case5_witness D u v ... : WorkhorseWitness k ℓ V` would force every local into an explicit argument and the call site to re-thread them at the only consumer, with no second consumer to share the API across. Net: identical LoC at the call site + a longer auxiliary signature. The size is structural friction, not extraction debt. |
+  | 2 | `tryAddEdgeWith_reachable` (Algorithm.lean L470) | *Cross-proof unification* of case-3/case-4 walk parallel | *no-op* — case 3 and case 4 do share the `arc_insert ∘ reverse_path` invariant propagation step structurally, but each is already two lines after the `subst this` (`exact ih h` in #2, `rw [ih h, r.underline_newOrient_eq]` in #6, `exact ih h` in #9). A "Reachable preserves under arc-insert ∘ path-reverse" combinator would be a re-statement of the *induction hypothesis itself*; there is no shared algebraic step that lives outside the existing `ih` call. The 86 LoC are dominated by the five `case caseN` blocks' boilerplate (`rw [tryAddEdgeWith] at h ; simp only [dif_..] at h ; split at h ; next ...`) which is `tryAddEdgeWith.induct`'s shape forced on every caller, not a missing helper. |
+  | 3 | `span_succ_le_edgesIn_ncard_of_subset` (Correctness.lean L242) | *Mathlib lemma we missed* — ncard add-cancel chain | *no-op* — `lean_loogle` / `lean_local_search` over the 5-block calc chain (`S.card + 1 = (insert s(u,v) S).card = Set.ncard (↑(insert s(u,v) S)) ≤ (G.edgesIn ↑V').ncard`) shows each step using a *different* mathlib lemma (`Finset.card_insert_of_notMem`, `Set.ncard_coe_finset`, `Set.ncard_le_ncard`) — no fused alternative exists. The 63 LoC are dominated not by the inequality chain (4 lines) but by the three setup blocks (`h_S_sub`, `h_uv_notin_S`, `h_S_card`) that each unfold `D.spanArcs V'` once via `Finset.mem_filter`. These are the project-side bridge between `span` (a `Finset.card` of an image) and `edgesIn` (a `Set.ncard`); the bridges already live at `Sparsity.lean` and the calc takes the *shortest* path through them. |
+  | 4 | `runPebbleGameWith_witness_bridges` (Correctness.lean L391) | *API extraction* — three sequential reconciliations | *no-op* — the three reconciliations (size; vertex inclusion via `tryAddEdgeWith_witness_uv`; underline via `tryAddEdgeWith_witness_underline_eq`) consume *three different* projection lemmas, each of which lives at its own `tryAddEdgeWith_witness_*` declaration. The "witness certifies sparsity-failure on `G`" packaging the per-site question proposed would have to take the three projections as hypotheses and reproduce the same three-step body — identical at the bridge but with no second consumer (`runPebbleGameWith_witness_bridges` is consumed once, in `runPebbleGame_correct`'s reject branch, which already routes through `WorkhorseWitness.certifies_against`). The 62 LoC are forced by the structural induction's three-step `cons` case (accept-recurse / reject-extract / no-op-skip), not by a missing helper. |
+  | 5 | `runPebbleGameWith_mem_underline` (Algorithm.lean L903) | *Definitional refactor* + cross-cluster unification (i) | *no-op* — see cluster (i) analysis below. The three fold-traversal lemmas (#5, #8, `runPebbleGameWith_reachable`) have *different conclusion shapes*: #5 returns `∀ p ∈ edges, s(p.1,p.2) ∈ D'.underline`; #8 returns the `D.underline ⊆ D'.underline ∧ D'.underline ⊆ D.underline ∪ …` sandwich; `_reachable` returns `Reachable k ℓ D'`. A unifying combinator would have to abstract over the invariant predicate, the accept-branch update rule (insert vs. subset-monotone vs. lift through `tryAddEdgeWith_reachable`), the no-op (skip) update rule, and the input hypothesis shape — collapsing to a recipe so generic that each instantiation re-introduces the case dispatch the recipe was supposed to absorb. |
+  | 6 | `tryAddEdgeWith_underline` (Algorithm.lean L556) | *Cross-proof unification* with #2 | *no-op* — see cluster (ii) analysis below. #2 and #6 are nominally parallel (both are `induct`-on-`tryAddEdgeWith` lemmas with `.inr D'` hypothesis), but their case bodies diverge: case 3 / case 4 in #2 use `Reachable.addArc` to grow the invariant through arc insertion; in #6 they use `D.underline_addArc` + `Sym2.eq_swap`; in case 3 / case 4 the recursive step is `exact ih h` (#2) vs. `rw [ih h, r.underline_newOrient_eq]` (#6). The shared *shape* is `tryAddEdgeWith.induct`'s seven-case dispatch boilerplate, not a shared *step*. |
+  | 7 | `reachableFindingAux_complete` (DFS.lean L677) | *Definitional refactor* of inner-induction visited boundary | *no-op* — the inner induction over the natural-number length bound `n` is *required* by the recursion structure: the outer `reachableFindingAux.induct` case3's IH increments `visited` to `insert v visited`, but the recursive call to *itself* (when the walk revisits `v` via `dropUntilBundle`) keeps `visited` fixed. Two different IHs at two different binding sites — the inner-`n` induction is the *only* mechanism that gives a separate IH for the same-visited recursion. A `DirectedWalk.dropUntil` API lemma would not change this structural fact: the inner-`n` induction is what gives access to a strictly shorter walk's IH. |
+  | 8 | `runPebbleGameWith_underline_subset` (Algorithm.lean L844) | *Cross-proof unification* — cluster (i) | *no-op* — see #5 + cluster (i) below. |
+  | 9 | `tryAddEdgeWith_witness_uv` (Algorithm.lean L617) | *API extraction* — projection through recursion | *no-op* — the "projection through the recursion" combinator the per-site question proposed would have to take `(D : PartialOrientation V) → (h : tryAddEdgeWith ... = .inl w) → projection` as a parameter family and re-walk the same five-case dispatch internally. It is `tryAddEdgeWith.induct` with a different conclusion shape; the cases 1/2 contradict via `nomatch` instead of cases 3/4/5, but the boilerplate is the same. A library-level `Sum.inl`-projection-via-induct combinator doesn't exist upstream and is not worth introducing at one consumer. |
+  | 10 | `reachableFinding_complete` (DFS.lean L737) | *Tactic substitution* — per-step bookkeeping after `head_induction_on` | *no-op* — `lean_multi_attempt`-equivalent inspection: the 56 LoC are split into a 4-line `head_induction_on` walk-construction block, a 4-line `by_contra` setup, and the 4-line `reachableFindingAux_complete` invocation with its six numeric / set arguments. Each block is already minimal. A `contrapositive`/`Decidable.byContradiction` reshape would save ≤ 2 lines at the cost of inverting the conclusion polarity, and the existing structure mirrors the *blueprint* presentation directly. |
+
+  **Cluster (i) dissolution — fold-traversal lemmas (#5 / #8 /
+  `runPebbleGameWith_reachable`).** The C1 conjecture was that a
+  single "fold over `Sum` preserves these three invariants together"
+  lemma could replace all three. On inspection the conclusions are
+  not parallel: `_reachable` gives `Reachable k ℓ D'` (a single
+  inductive predicate, propagated through `tryAddEdgeWith_reachable`
+  at each accept step); `_underline_subset` gives a sandwich
+  `D.underline ⊆ D'.underline ∧ D'.underline ⊆ D.underline ∪
+  (edges.map …).toFinset` (a two-sided set inequality, propagated
+  through `tryAddEdgeWith_underline`); `_mem_underline` gives a
+  `∀ p ∈ edges, s(p.1,p.2) ∈ D'.underline` membership statement
+  with three additional `_hloops` / `_hfresh` / `_hpairwise` runtime
+  hypotheses that *only this lemma* threads through the recursion.
+  The accept-branch update rule differs structurally (`Reachable.lift`
+  vs. `insert s(u,v)` rewriting vs. existential search via `mem_insert`);
+  the no-op (skip) update rule differs (refl vs. ⊆-refl + IH-only
+  vs. tail-IH); and `_mem_underline` carries a per-step `hpw_head` /
+  `hpw_tail` extraction that has no analogue in the other two. A
+  combinator general enough to subsume all three would have to take
+  the invariant, accept-step rule, skip-step rule, and per-edge
+  hypothesis-extraction as parameters — at which point each
+  instantiation re-introduces the bookkeeping the combinator was
+  supposed to absorb. Cluster (i) dissolves; the three lemmas stay
+  as siblings.
+
+  **Cluster (ii) dissolution — case-traversal lemmas (#2 / #6 /
+  #9).** The C1 conjecture was that a shared "tryAddEdgeWith
+  preserves these invariants" lemma could carry the case-3 /
+  case-4 walk in parallel. On inspection the three lemmas have
+  *different* input/output Sum branches: #2 (`_reachable`) and #6
+  (`_underline`) take `.inr D'` and contradict in case 5 via
+  `nomatch`; #9 (`_witness_uv`) takes `.inl w` and contradicts in
+  cases 1 / 2 via `nomatch`. The case-3 / case-4 recursive bodies
+  also differ: #2 closes via `exact ih h` (lifting `Reachable`);
+  #6 closes via `rw [ih h, r.underline_newOrient_eq]` (rewriting
+  on a path-reversal underline-preservation lemma); #9 closes via
+  `exact ih h` (lifting witness-uv equality). What *is* shared is
+  the case-dispatch boilerplate (`rw [tryAddEdgeWith] at h ; simp
+  only [dif_..] at h ; split at h ; next ...`) which is
+  `tryAddEdgeWith.induct`'s shape, not a missing project-internal
+  helper. A `tryAddEdgeWith_induct_with_Sum_branch` recipe would
+  add one parameter family per arm and not save the bookkeeping.
+  Cluster (ii) dissolves; the three lemmas stay as siblings.
+
+  **`lean_multi_attempt` budget.** No tactic substitutions tested
+  (per-site questions for #2 / #6 / #9 / #5 / #8 are structural
+  refactor questions, not tactic-level; #1 / #4 are API
+  extraction; #3 was searched via `lean_loogle` / `lean_local_search`
+  per the per-site question; #7 / #10 are inner-structure
+  questions that no tactic substitution would dissolve).
+
+  **Bucket C summary.** C1 closed with the top-10 ranking + per-
+  site question; C2 closed with all ten sites as *no-op* (and both
+  cross-proof unification clusters dissolved); C3 closed as a
+  *no-op* (no in-round refactor candidates surfaced). The Phase
+  10+11 surface's long bodies are all forced by structural
+  recursion / case-dispatch boilerplate that is shared at the
+  *boilerplate* level but not at the *step* level — they look like
+  unification candidates from the LoC ranking, but each pair of
+  sibling lemmas has a per-step semantic divergence that resists a
+  cross-proof combinator. This is the same finding as Phase
+  9-cleanup C2 (which closed C2 as no-op on a slightly different
+  long-proof shape); the lift-worthy lesson is *"top-10 LoC
+  ranking surfaces structural shape, not extraction debt"* — and
+  whether to lift to TACTICS-GOLF is best assessed at D3 (FRICTION
+  re-skim) when the post-cleanup view is complete.
 
 ## Blockers / open questions
 
@@ -906,28 +1014,31 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 Round still in progress; Bucket A complete (A1 no-op / A2 targeted
 fix / A3 targeted fix / A4 no-op); Bucket B complete (B1 no-op /
 B2 no-op + smell-table revision / B3 no-op + smell-table revision /
-B4 no-op / B5 no-op); **C1 closed** with the top-10 ranking table +
-per-site question in §C and a summary in *Cleanup pass summaries*.
+B4 no-op / B5 no-op); **Bucket C complete** — C1 closed with the
+top-10 ranking table + per-site question in §C; **C2 closed with
+all ten sites as *no-op*** and both cross-proof unification
+clusters (i) and (ii) dissolved on inspection (see *Cleanup pass
+summaries* C2 for the per-site verdict table); **C3 closed as a
+no-op** (zero in-round refactor candidates surfaced).
 
-Next concrete commit: **C2** — four-question walk over the C1
-top-10 sites. Dispatch each of the ten entries via the per-site
-question (already recorded in §C's table) and record the verdict:
-*no-op* (the long-proof body is forced by the recursion / case
-structure with no extracted sub-lemma to win), *in-round refactor*
-(the audit anchor surfaces a structurally small refactor — a fused
-mirror lemma, an extracted helper, a `lean_multi_attempt` tactic
-substitution — that should land this round per `../CLEANUP.md`
-*Refactor passes are in scope when surfaced by an A-D audit*), or
-*deferred* (the refactor is large enough that it carries into a
-follow-up phase, e.g. the typeII-cores unification from Phase 5's
-appendix). C2's primary anchors are the two cross-proof unification
-clusters identified in C1 — Algorithm.lean's three fold-traversal
-lemmas (#5 / #8 / runPebbleGameWith_reachable) and three
-case-traversal lemmas (#2 / #6 / #9). After C2, **C3** (any
-in-round refactor candidates land each as its own commit). Then
-**D** (project-organization compression of `notes/Phase10.md` and
-`notes/Phase11.md`, FRICTION re-skim, DESIGN.md drift check,
-no-residual-lifts audit).
+Next concrete commit: **D1** — `notes/Phase11.md` compression
+(currently 856 LoC vs. the adaptive 350–450 budget for a
+substantive phase per `../notes/CLAUDE.md` *Soft length budget*).
+Compression candidates listed in §D above: collapse the *Current
+state* per-layer narrative to per-layer pointers (~150 LoC ⇒ ~50
+LoC), point the *Architectural choices made up front* TeX-style
+verdict-shape duplication at `chapter/pebble-game.tex` *User-facing
+verdict* prose (~80 LoC ⇒ ~30 LoC), and dedupe the Layer 4b
+narrative between *Current state* and *Decisions made*. Target:
+~400 LoC. After D1, D2 (`notes/Phase10.md` compression), D3
+(FRICTION re-skim + assess the two open Phase-11 promotion
+candidates `Strengthen past results to reduce duplication` /
+`Blueprint reshape in-place per Layer` against second-site
+evidence), D4 (DESIGN.md *Choices to revisit* drift check), D5
+(no-residual-lifts audit on every Phase 10 / 11 *Promoted to*
+entry). The lift-worthy lesson surfaced at C2 close (*"top-10 LoC
+ranking surfaces structural shape, not extraction debt"*) is best
+assessed at D3 when the post-cleanup view is complete.
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
