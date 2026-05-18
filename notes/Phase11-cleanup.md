@@ -1,6 +1,6 @@
 # Phase 10 + 11 cleanup round — work log
 
-**Status:** in progress.
+**Status:** in progress (A1 closed as no-op; A2/A3/A4 + B/C/D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -31,9 +31,13 @@ file additions, fresh 4-run A/B baseline) route through that pass.
 
 ## Current state
 
-Round open. Task checklist populated per *Task list discipline*; no
-fixes have landed yet. Pre-sweep smell counts (Phase 10+11 surface
-only — `CombinatorialRigidity/PebbleGame/*.lean`,
+Round open. A1 closed as a no-op (the Layer 1 `chapter/dfs.tex`
+additions match `Search/DFS.lean` cleanly; no retired-predecessor
+zombie references; the reuse-pattern + proof asides are still
+accurate under the Phase 11 reshape). Remaining: A2–A4 blueprint
+walks, B/C code-smell + long-proof sweeps, D project-organization
+compression. Pre-sweep smell counts (Phase 10+11 surface only —
+`CombinatorialRigidity/PebbleGame/*.lean`,
 `CombinatorialRigidity/Search/DFS.lean`, `Main.lean`):
 
 | Smell | DFS | Basic | Algorithm | Correctness | Exec | Examples | Main |
@@ -90,14 +94,27 @@ reshape), `chapter/executable.tex` (Phase 10 + Phase 11 Layer 4b/5
 reshape). `checkdecls` is on the per-commit gate path so we don't
 need a separate "run checkdecls" task here.
 
-- [ ] **A1:** `chapter/dfs.tex` ↔ `Search/DFS.lean` walk. Verify the
-  Layer 1 additions `def:reachClosureComputable` +
-  `lem:mem-reachClosureComputable` (lines 117+, *Reachability
-  closure (computable)* subsection) match the Lean signatures.
-  Check that the retired `def:reachClosure` /
-  `lem:mem-reachClosure` predecessors are fully removed (no
-  zombie `\lean{...}` pins); cross-reference Phase 9-cleanup A1
-  finding ("planned `reachClosure` helper" mentions all repointed).
+- [x] **A1:** `chapter/dfs.tex` ↔ `Search/DFS.lean` walk. Closed as
+  a **no-op**. Layer 1 additions verified: `def:reachClosureComputable`
+  (line 134) pins `CombinatorialRigidity.Search.reachClosureComputable`
+  and its prose "tests each candidate $w : V$ via
+  $\mathrm{reachableFinding}\,\mathrm{succ}\,(\cdot = w)\,v$"
+  matches the Lean body `Finset.univ.filter fun w =>
+  (reachableFinding succ (fun x => decide (x = w)) v).isSome`. The
+  companion `lem:mem-reachClosureComputable` (line 151) groups
+  three pins (`mem_reachClosureComputable`,
+  `reachClosureComputable_sound`,
+  `reachClosureComputable_complete`); all three resolve, and the
+  iff statement matches. `\uses{}` edges (`def:reachable-finding`
+  on the def, `def:reachClosureComputable + thm:reachable-finding-correct`
+  on the lemma) are correct. No zombie references to the retired
+  `def:reachClosure` / `lem:mem-reachClosure` predecessors anywhere
+  in the blueprint or Lean (re-verified Phase 9-cleanup A1 finding
+  about "planned `reachClosure` helper" mentions). The two `\emph`
+  asides in `chapter/dfs.tex` (reuse-pattern at line 109, the
+  inner-induction visited-set claim in the completeness proof at
+  line 96) are still accurate under the Phase 11 verdict-bearing
+  reshape — neither documents a Phase-9-era `Option` return type.
 - [ ] **A2:** `chapter/pebble-game.tex` ↔ `PebbleGame/{Basic,
   Algorithm, Correctness}.lean` walk. Per Phase 11 Layer 2-4b
   blueprint reshape (recorded in `Phase11.md`'s *Current state*),
@@ -249,7 +266,17 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ### Cleanup pass summaries
 
-*(Empty — populate as buckets close.)*
+- **A1: `chapter/dfs.tex` ↔ `Search/DFS.lean` walk** — no-op closure.
+  Layer 1's *Reachability closure (computable)* subsection
+  (`def:reachClosureComputable` + `lem:mem-reachClosureComputable`,
+  the latter grouping the iff with its sound / complete halves under
+  one `\lean{...}`) matches the Lean signatures and proof-pattern
+  prose verbatim; no retired-predecessor `\lean{...}` pin survives
+  anywhere in `blueprint/` or `CombinatorialRigidity/`. The
+  `chapter/dfs.tex` asides (reuse-pattern and the inner-induction
+  visited-set claim) are still accurate under Phase 11's verdict
+  reshape. Pre-checklist task A1 marked closed; no edits to either
+  side.
 
 ## Blockers / open questions
 
@@ -257,7 +284,21 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ## Hand-off / next phase
 
-To be written at round close. Default: hand off to whichever
+Round still in progress. Next concrete commit: **A2** —
+`chapter/pebble-game.tex` ↔ `PebbleGame/{Basic, Algorithm,
+Correctness}.lean` walk. Per Phase 11 Layer 2–4b blueprint reshape,
+verify `def:workhorseWitness` + `lem:workhorseWitness-certifies`
+(Layer 2 *Completeness* insertions); `def:tryAddEdge`,
+`def:runPebbleGame`, `thm:pebble-game-correct` restated against the
+`Sum`-return shape with `hD` hypothesis (Layer 3);
+`def:pebbleGameResult` + `thm:pebbleGameResult-isAccept-iff` in
+*User-facing verdict* (Layer 4/4b); `cor:pebble-game-countMatroid-indep`
+restated. Confirm retired-node hygiene
+(`lem:pebble-game-tryAddEdgeWith-isSome`,
+`lem:pebble-game-tryAddEdge-iff-independent`,
+`lem:pebble-game-failure-witness`) with no zombie `\lean{...}` pins.
+
+The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
 (component pebble game / Henneberg-sequence extraction / benchmarks
 harness); cleanup-round work is hygiene, not a phase dependency.
