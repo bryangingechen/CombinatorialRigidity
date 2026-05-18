@@ -35,6 +35,22 @@ The dominant trigger is the **`@[simp] ... := rfl` pattern**
 / `rw [name]`-as-unfold** pattern (length / vertices / IsPath) — both
 matching the F3.5 *Lessons* taxonomy in `./PERFORMANCE.md`.
 
+### F1.2 disposition — `PebbleGame.lean`
+
+| Def | Per-decl `@[expose]`? | Trigger when demoted |
+|---|---|---|
+| `PartialOrientation` (structure) | n/a | structure `mk` + field projections auto-exposed; `D.arcs` access is the projector, not a body unfold |
+| `empty` | yes | intra-file `@[simp] arcs_empty : (empty …).arcs = ∅ := rfl` (line 101); demote error: *"Not a definitional equality: `empty.arcs` is not definitionally equal to `∅`"* |
+| `reverse` | yes | intra-file `@[simp] arcs_reverse : (D.reverse p hp).arcs = (D.arcs \ p.arcsFinset) ∪ p.reversedArcsFinset := rfl` (line 315) |
+| `addArc` | yes | intra-file `@[simp] arcs_addArc : (D.addArc u v …).arcs = insert (u, v) D.arcs := rfl` (line 644) |
+| `outNbhd`, `outList`, `out`, `peb`, `spanArcs`, `span`, `boundaryArcs`, `outOn`, `pebOn`, `underline` | no | derived count defs; all consumed via named API lemmas (`mem_outNbhd`, `out_eq_card_filter_fst`, `span_eq_ncard_edgesIn`, etc.) which carry their own proofs, never via body unfold |
+| `tryReachPebbleWith`, `tryAddEdgeWith`, `runPebbleGameWith` | no | computable workhorses; consumed by the noncomputable wrappers via call-site equation, not body |
+| `tryReachPebble`, `tryAddEdge`, `runPebbleGame`, `reach` | no | noncomputable math-layer wrappers; downstream consumes via the correctness theorems (`runPebbleGame_correct`, `tryAddEdge_correct`, etc.), not body |
+| `Reachable` (inductive) | n/a | constructors + recursor auto-exposed by the inductive declaration |
+| `TryReachPebbleResult` (structure) | n/a | `mk` + field projections auto-exposed |
+
+The trigger pattern is uniform: **the three `@[simp] D.<state-op>.arcs = … := rfl` projection lemmas** force `empty` / `reverse` / `addArc` to expose. No other def in the file has a `@[simp] := rfl` companion or a `simp [defName]` / `rw [defName]`-as-unfold call site, so the rest demote cleanly. Same F3.5 *Lessons* pattern as F1.1.
+
 ### F4.1 baseline (4-run medians, `@[expose] public section`)
 
 Protocol per `./PERFORMANCE.md` *Measurement protocol*: per-target
@@ -116,20 +132,19 @@ disposition in the file's row of an F1 table here.
   `reachableFindingAux`, `dropUntilBundle`, `reachClosure`, the
   `mapRel` mapper) is consumed opaquely by `PebbleGame.lean` and
   did not need exposure.
-- [ ] **F1.2.** `PebbleGame.lean` audit. The file ships
-  `PartialOrientation` (structure — `mk` constructor + field
-  accessors auto-exposed), the derived count defs
-  (`out`/`peb`/`span`/`outOn`/`pebOn`/`spanArcs`/`underline`),
-  the move defs (`reverse`, `addArc`), the noncomputable wrappers
-  (`outList`, `outNbhd`, `tryReachPebble`, `tryAddEdge`,
-  `runPebbleGame`, `reach`), the computable workhorses
-  (`tryReachPebbleWith`, `tryAddEdgeWith`, `runPebbleGameWith`),
-  and the `Reachable` inductive predicate. Demote + observe
-  triggers per F1.1 pattern. Likely `@[expose]` candidates: the
-  `PartialOrientation` structure (intra-file `Iff.rfl` on
-  destructured fields), any `@[simp] ... := rfl` lemma's
-  underlying def, the inductive `Reachable` (constructor pattern-
-  matching).
+- [x] **F1.2.** `PebbleGame.lean` audit. *Done; demoted to `public
+  section` with 3 per-decl `@[expose]` opt-ins on the
+  `PartialOrientation`-producing defs* `empty`, `reverse`,
+  `addArc`. *See* §F1.2 disposition *below for triggers.* The
+  derived count defs (`out`/`peb`/`span`/`outOn`/`pebOn`/
+  `spanArcs`/`boundaryArcs`/`underline`/`outList`/`outNbhd`/
+  `reach`), the algorithm workhorses (`tryReachPebbleWith`,
+  `tryAddEdgeWith`, `runPebbleGameWith`) and their noncomputable
+  math-layer wrappers, and the `Reachable` inductive +
+  `TryReachPebbleResult` structure all stayed unexposed — they're
+  consumed via the named API lemmas (`out_addArc_source`,
+  `span_eq_ncard_edgesIn`, etc.) and the `Sum`-shaped
+  `TryReachPebbleResult` accessors, never via body access.
 - [ ] **F1.3.** Update `./PERFORMANCE.md` *Granular `@[expose]` /
   `public` audit per file* with the F1.1 / F1.2 dispositions
   (append rows to the existing F3.5 disposition table — same

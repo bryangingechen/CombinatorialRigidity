@@ -62,7 +62,7 @@ questions, hand-off), and the blueprint chapter
 lemma index).
 -/
 
-@[expose] public section
+public section
 
 namespace CombinatorialRigidity.PebbleGame
 
@@ -93,6 +93,7 @@ variable [DecidableEq V]
 
 /-- The empty partial orientation: no arcs. The initial state of the
 pebble-game algorithm. -/
+@[expose]
 def empty : PartialOrientation V where
   arcs := ∅
   no_loops _ := Finset.notMem_empty _
@@ -289,6 +290,7 @@ structural invariants of `PartialOrientation` survive:
   reverses of each other.
 
 Cf. Lee–Streinu §3 path-reversal move, blueprint `def:path-reversal`. -/
+@[expose]
 def reverse (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w)
     (hp : p.IsPath) : PartialOrientation V where
   arcs := (D.arcs \ p.arcsFinset) ∪ p.reversedArcsFinset
@@ -610,6 +612,7 @@ take `(u, v) ∉ D.arcs` to ensure `Finset.insert` is a genuine extension.
 
 Cf. Lee–Streinu §3 arc-insertion move; together with `def:path-reversal`,
 the two state transitions used by the pebble game's `def:tryAddEdge`. -/
+@[expose]
 def addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs) :
     PartialOrientation V where
   arcs := insert (u, v) D.arcs
