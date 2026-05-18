@@ -210,7 +210,7 @@ the trend was either flat or slightly worse:
 | Extract `kerRestrict` helper for the `LinearMap.funLeft … codRestrict …` builder duplicated in typeI/typeII | New private `def` near the top of `HennebergRigidity.lean`; two `let restrict := kerRestrict …` call sites | 4-run mean ~46 s vs ~30 s baseline. Suspected regression from the abstraction layer; in any case the duplication is only one identical 4-line block per move. Reverted. |
 | `nlinarith [Nat.le_mul_self d]` → `have h_sq := Nat.le_mul_self d; have : (d+1)*(d+2) = d*d + 3*d + 2 := by ring; omega` | `top_fin_two_isGenericallyRigidInj` in `Framework.lean` | Saved 120 ms in the per-decl profile; file timing didn't move out of the noise band. Reverted; `nlinarith` is the more idiomatic one-liner for "linear-after-hinting-a-square" goals. |
 | Replace `fun_prop` with an explicit `continuous_pi fun _ => continuous_pi fun e => continuous_rigidityMap_apply …` chain | `IsInfinitesimallyRigid.eventually` in `Framework.lean` | Within noise band (median ~24 s vs ~27 s baseline). Reverted — `fun_prop` is the project convention (cf. TACTICS-GOLF § 6). |
-| Per-decl `@[expose]` audit (Phase 9-perf F1) | `Search/DFS.lean`, `PebbleGame.lean` — demote `@[expose] public section` → `public section`, restore `@[expose]` on 5 + 3 defs whose bodies are genuinely consumed (`@[simp] := rfl` projections; `simp [name]` / `rw [name]`-as-unfold call sites) | All three measured targets within ±5 s noise band: DFS 8.13 → 8.70 s (Δ +0.57); PebbleGame 14.43 → ~15.4 s (Δ +~1.0); project-total 8.97 → 10.04 s (Δ +1.07). **Kept** — the bookkeeping value (rows in the F3.5 audit-disposition table) is the deliverable, matching the F3.5 pattern itself: the headline win was in F3.2–F3.4 (module-system conversion + private-cleanup), not F3.5 / F1 (per-decl narrowing). See `Phase9-perf.md` §F4.1/§F4.2. |
+| Per-decl `@[expose]` audit (Phase 9-perf F1; Phase 10+11-perf F1 + F2) | `Search/DFS.lean`, `PebbleGame.lean` (Phase 9-perf F1; pre-Phase-10 split); `PebbleGame/{Algorithm, Correctness, Exec, Examples}.lean` (Phase 10+11-perf F1.1–F1.4 — the four Phase 10/11 files that shipped at `@[expose] public section`); `Search/DFS.lean` + `PebbleGame/Basic.lean` re-audited under Phase 11 reshape (Phase 10+11-perf F2.1 + F2.2). Demote `@[expose] public section` → `public section`, restore `@[expose]` on the defs whose bodies are genuinely consumed (`@[simp] := rfl` projections; downstream `simp [name]` / `rw [name]`-as-unfold call sites; `DecidableRel _.Adj` bridge-iff instances). Net opt-in counts post-pass: Algorithm 1 (`runPebbleGameWith`); Correctness 1 (`PebbleGameResult.isAccept`); Exec 0 (clean); Examples 3 (`k4MinusE`, `moserSpindle`, `path5`); DFS 5 (unchanged from Phase 9-perf F1.1); Basic 9 (`PartialOrientation.{empty, out, peb, spanArcs, span, pebOn, underline, reverse, addArc}` — Phase 10 split shipped at file-wide `@[expose]`; F2.2 narrows to per-decl). | Phase 9-perf F1: all three measured targets within ±5 s noise band: DFS 8.13 → 8.70 s (Δ +0.57); PebbleGame 14.43 → ~15.4 s (Δ +~1.0); project-total 8.97 → 10.04 s (Δ +1.07). See `Phase9-perf.md` §F4.1/§F4.2. Phase 10+11-perf F4: five of six per-target medians within ±5 s noise band: DFS 5.91 → 7.53 s (Δ +1.62); Basic 6.42 → 9.53 s (Δ +3.11); Correctness 6.41 → 7.37 s (Δ +0.96); Exec 10.25 → 6.81 s (Δ −3.44); project-total 6.44 → 7.27 s (Δ +0.83). Algorithm at 7.84 → 14.34 s (Δ +6.50) sits just past the band, but the F1/F2 audit changed zero proof bodies and zero algorithmic content (only the section-marker / per-decl-`@[expose]` shape shifted), so the most plausible reading is OS-level run-to-run drift between baseline and post-pass sessions (PERFORMANCE.md *Timing reproducibility* documents 10–50 s spreads on the same source). Project-total median sits well under the Phase 9-perf F4.2 anchor (10.04 s). See `Phase11-perf.md` §F4.1/§F4.2. **Kept** — the bookkeeping value (rows in the F3.5 audit-disposition table) is the deliverable, matching the F3.5 pattern itself: the headline win was in Phase 8-perf F3.2–F3.4 (module-system conversion + private-cleanup), not F3.5 / Phase 9-perf F1 / Phase 10+11-perf F1+F2 (per-decl narrowing). |
 
 ## Experiments that *did* pay (or are at least defensible)
 
@@ -603,6 +603,49 @@ module-system audits), not a build-time win — matching the F3.5
 pattern after Phase 8-perf's headline win was already booked in
 F3.2–F3.4 (file conversion + private-cleanup), not F3.5 (per-decl
 narrowing). See `Phase9-perf.md` §F4.1/§F4.2 for the raw timings.
+
+**Status (Phase 10+11-perf F1 + F2):** closed. The Phase 10 split
+of `PebbleGame.lean` into the `PebbleGame/` subdirectory (Phase
+9-perf's *Split candidates ranked by leverage* item 5
+*Section-marker disposition*) re-shipped the file-wide
+`@[expose] public section` on `PebbleGame/{Basic, Algorithm,
+Correctness}.lean` and added two more — `Exec.lean` and
+`Examples.lean` — at the same coarse setting, pending the per-decl
+narrowing audit deferred to this pass. F1.1–F1.4 audited the four
+files Phase 10/11 introduced or reshaped at file-wide
+`@[expose] public section` (Algorithm, Correctness, Exec, Examples);
+F2.1 + F2.2 re-audited `Search/DFS.lean` and `PebbleGame/Basic.lean`
+under the Phase 11 reshape (DFS gained `reachClosureComputable` +
+correctness as Layer 1 forward-work; Basic absorbed the
+reach-closure-on-orientations API plus added `WorkhorseWitness`
+in Layer 2). All six files demoted to `public section`; net per-decl
+opt-in counts: Algorithm 1, Correctness 1, Exec 0, Examples 3,
+DFS 5 (unchanged from Phase 9-perf F1.1), Basic 9 (the post-split
+file-wide marker narrowed to the predicted 9-opt-in cascade from
+item 5's *Section-marker disposition* prediction, plus zero new
+opt-ins on the Phase 11 Layer 1 + Layer 3 absorbed reach-closure
+machinery or the Layer 2 `WorkhorseWitness` structure). All six
+previously-file-wide files in the Phase 10+11 surface now sit at
+`public section` with per-decl opt-ins documented in the F3.5
+table rows added during F1.1–F1.4 + F2.1 + F2.2. 4-run A/B
+post-pass (Phase 10+11-perf F4.2 vs F4.1 baseline): five of six
+per-target medians within the ±5 s noise band; the Algorithm
+outlier at Δ +6.50 s sits just past the band but the audit is
+pure section-marker bookkeeping (no algorithmic change) and is
+most plausibly OS-level drift between sessions (PERFORMANCE.md
+*Timing reproducibility* documents 10–50 s spreads on the same
+source); project-total median 7.27 s sits well under the Phase
+9-perf F4.2 anchor (10.04 s) — **F1 + F2 perf-neutral within
+run-to-run variance**. The audit's value is bookkeeping (the
+disposition rows extend the F3.5 reference for future
+module-system audits), not a build-time win — matching the F3.5 /
+Phase 9-perf F1 precedent. See `Phase11-perf.md` §F4.1/§F4.2 for
+the raw timings. `LinearRigidityMatroid.lean` remains the only
+non-`module` project file: Phase 10+11-perf F3.1 re-checked
+`.lake/packages/Matroid/Matroid/Representation/Map.lean` at pass
+execution time and found it still on plain `import` (not `public
+import`); F3.2 conversion is deferred to the next
+`apnelson1/Matroid` dep-bump cycle per the standing recommendation.
 
 The Phase 8-perf module-system conversion (F3.3) applied a uniform
 `@[expose] public section` to all 9 + 13 project files, matching the

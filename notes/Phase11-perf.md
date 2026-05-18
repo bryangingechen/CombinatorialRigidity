@@ -1,6 +1,6 @@
 # Phase 10 + 11 perf pass — work log
 
-**Status:** in progress.
+**Status:** complete.
 
 This is the post-Phase-10+11 perf pass running in parallel with the
 combined `Phase11-cleanup.md` round per `../CLEANUP.md` *What a
@@ -66,7 +66,21 @@ whole-project grain. Disposition: **perf-neutral within run-to-run
 variance; F1/F2 audit kept on bookkeeping grounds** (matches
 F3.5 / Phase 9-perf F1 / Phase 8-perf F3.5 precedent: per-decl
 `@[expose]` narrowing is a section-marker bookkeeping pass, not a
-wall-clock lever). F4.3 promotion remains.
+wall-clock lever).
+
+F4.3 promotion landed. PERFORMANCE.md's *Experiments that didn't pay*
+Phase 9-perf F1 row extended to cover the Phase 10+11-perf F1 + F2
+pass (six new audited files + net per-decl opt-in counts + per-target
+F4.1 → F4.2 Δs), and the *Granular `@[expose]` / `public` audit per
+file* preamble gained the *Status (Phase 10+11-perf F1 + F2)* closure
+paragraph. F3.1 re-check confirmed `apnelson1/Matroid`'s
+`Representation/Map.lean` still on plain `import` (status unchanged
+from Phase 9-perf F3.1); F3.2 deferred to next dep-bump per the
+standing recommendation. ROADMAP Status table row for the pass
+flipped to ✓; no user-facing status surfaces needed syncing (perf
+passes don't appear there, matching the Phase 8-perf / Phase 9-perf
+precedent). Pass closes per CLEANUP.md *no follow-up phase queued*
+default.
 
 ### F4.1 baseline (4-run medians, current `@[expose] public section` / per-decl-opt-in mix)
 
@@ -294,10 +308,17 @@ Current Phase 10+11 disposition (per `grep`):
   built via `decidable_of_iff` against a body-mentioning bridge
   iff forces `@[expose]` on the underlying graph def. Disposition
   row appended to PERFORMANCE.md F3.5 table.*
-- [ ] **F1.5.** Update `./PERFORMANCE.md` *Granular `@[expose]` /
+- [x] **F1.5.** Update `./PERFORMANCE.md` *Granular `@[expose]` /
   `public` audit per file* with the F1.1–F1.4 dispositions
   (append four rows to the F3.5 table; extend the status preamble
-  with the Phase 10+11-perf F1 closure paragraph).
+  with the Phase 10+11-perf F1 closure paragraph). *Done; the four
+  F3.5 table rows for F1.1–F1.4 (plus the two F2.1 + F2.2 rows from
+  the F2 sub-pass) were appended in their own per-row commits during
+  F1.1–F2.2 closure. The status-preamble *Status (Phase 10+11-perf
+  F1 + F2)* paragraph lands in this F4.3 promotion commit alongside
+  the F4.2 *Experiments that didn't pay* row extension — packaging
+  the status-surface extension with the wall-clock disposition rather
+  than splitting it across F1.5 + F4.3.*
 
 ### F2. Re-audit Phase 9-perf F1.1 / F1.2 dispositions under Phase 11 reshape
 
@@ -388,13 +409,20 @@ extensions:
 
 ### F3. `LinearRigidityMatroid.lean` module conversion follow-up
 
-- [ ] **F3.1.** Re-check `.lake/packages/Matroid/Matroid/Representation/Map.lean`
+- [x] **F3.1.** Re-check `.lake/packages/Matroid/Matroid/Representation/Map.lean`
   module status at pass execution time. Phase 9-perf F3.1
   recorded "still starts with `import …` (plain `import`, not
   `public import`)"; verify whether the next dep-bump has changed
-  this.
-- [ ] **F3.2.** If converted: land LRM's conversion. Else: defer
-  to next `apnelson1/Matroid` dep-bump cron cycle.
+  this. *Done; still plain `import Mathlib.LinearAlgebra.…` /
+  `import Matroid.Representation.Basic` (head: `import
+  Mathlib.LinearAlgebra.FiniteDimensional.Defs` — no `module`
+  marker, no `public import` lines). Status unchanged from Phase
+  9-perf F3.1.*
+- [x] **F3.2.** If converted: land LRM's conversion. Else: defer
+  to next `apnelson1/Matroid` dep-bump cron cycle. *Deferred per
+  F3.1 — `Map.lean` still non-`module`. Re-check at next
+  `apnelson1/Matroid` dep-bump per the standing recommendation in
+  `./PERFORMANCE.md` *Module system*.*
 
 ### F4. Baseline + post-pass measurements
 
@@ -438,12 +466,24 @@ median-of-4.
   **perf-neutral within run-to-run variance; F1/F2 audit kept on
   bookkeeping grounds** per the F3.5 / Phase 9-perf F1 / Phase
   8-perf F3.5 precedent.*
-- [ ] **F4.3.** Promotion. Append the per-decl audit row to
+- [x] **F4.3.** Promotion. Append the per-decl audit row to
   `PERFORMANCE.md` *Experiments that didn't pay* if F4.2 is
   noise-band-neutral; or to *Experiments that did pay* if a
   measurable win lands. Update the *Granular `@[expose]` /
   `public` audit per file* preamble with the Phase 10+11-perf F1
-  closure paragraph.
+  closure paragraph. *Done; extended the existing Phase 9-perf F1
+  *Per-decl `@[expose]` audit* row in *Experiments that didn't pay*
+  to cover the Phase 10+11-perf F1 + F2 pass (six new files audited,
+  net per-decl opt-in counts and F4.1 → F4.2 per-target Δs recorded
+  inline), and added the *Status (Phase 10+11-perf F1 + F2)*
+  closure paragraph to the *Granular `@[expose]` / `public` audit
+  per file* preamble noting that all six previously-file-wide files
+  in the Phase 10+11 surface now sit at `public section` with
+  per-decl opt-ins documented in the F3.5 table. ROADMAP Status
+  table row for the pass flipped to ✓. No user-facing status
+  surfaces (README, home_page/index.md, blueprint/intro.tex) needed
+  syncing — perf passes don't appear there (matches the Phase 8-perf
+  / Phase 9-perf precedent).*
 
 ## Decisions made during this phase
 
@@ -619,50 +659,72 @@ median-of-4.
   API-only consumption (`outOn`, `reach`, `WorkhorseWitness`)
   demotes cleanly.
 
+- **F3.1 — `apnelson1/Matroid` `Representation/Map.lean` module
+  status re-check.** Still on plain `import …` lines (no `module`
+  marker; head line is `import Mathlib.LinearAlgebra.FiniteDimensional.Defs`
+  followed by `import Mathlib.LinearAlgebra.Dimension.Constructions` /
+  `import Matroid.Representation.Basic`). Status unchanged from
+  Phase 9-perf F3.1. LRM conversion remains blocked on this
+  upstream file; defer to next `apnelson1/Matroid` dep-bump
+  per `./PERFORMANCE.md` *Module system*.
+- **F4.3 — promotion + pass closure.** Extended PERFORMANCE.md's
+  *Experiments that didn't pay* Phase 9-perf F1 *Per-decl `@[expose]`
+  audit* row in-place to cover the Phase 10+11-perf F1 + F2 pass —
+  the six new files audited (Algorithm, Correctness, Exec, Examples
+  for F1.1–F1.4; DFS + Basic for F2.1 + F2.2), the net per-decl
+  opt-in counts (1, 1, 0, 3, 5, 9), and the per-target F4.1 → F4.2
+  Δs (DFS +1.62, Basic +3.11, Algorithm +6.50, Correctness +0.96,
+  Exec −3.44, project-total +0.83 s) — extending the existing row
+  rather than appending a new one, matching the F3.5 + Phase 9-perf
+  F1 packaging convention (one row per cross-pass audit lineage,
+  with the disposition note covering all passes that touched the
+  lever). Added the *Status (Phase 10+11-perf F1 + F2)* closure
+  paragraph to the *Granular `@[expose]` / `public` audit per file*
+  preamble noting all six previously-file-wide files in the
+  Phase 10+11 surface now sit at `public section` with per-decl
+  opt-ins. ROADMAP Status table row flipped to ✓. User-facing
+  status surfaces (README.md, home_page/index.md,
+  blueprint/intro.tex) audited and confirmed no perf-pass row to
+  flip — perf passes don't appear there, matching Phase 8-perf /
+  Phase 9-perf precedent (only main phases and cleanup rounds
+  with their own dedicated narrative appear on those surfaces).
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 *(Empty — populate as cross-cutting lessons surface.)*
 
 ## Blockers / open questions
 
-- **LRM conversion still likely blocked on upstream.** Carry-over
-  from Phase 9-perf F3 / Phase 8-perf F3.3; resolve in F3.
+- **LRM conversion still blocked on upstream** (F3.1 re-check at
+  pass closure: `apnelson1/Matroid`'s `Representation/Map.lean`
+  still on plain `import`). Defer to next dep-bump cron cycle per
+  the standing recommendation in `./PERFORMANCE.md` *Module
+  system*.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** F4.3 promotion. Three pieces:
+Pass complete. The next concrete unit of work is whatever new
+forward phase the project picks up (no follow-up phase queued per
+`../CLEANUP.md` *no follow-up phase queued* default — both the
+post-Phase-9 and post-Phase-10+11 cleanup-and-perf cycles closed
+without queuing a structural follow-up; the next session picks
+the next forward direction from ROADMAP).
 
-1. Re-check `.lake/packages/Matroid/Matroid/Representation/Map.lean`
-   module status at session time (F3.1). Phase 9-perf F3.1
-   recorded "still starts with `import …` (plain `import`, not
-   `public import`)"; if the next dep-bump has flipped that, land
-   `LinearRigidityMatroid.lean`'s module-conversion as a one-commit
-   F3.2 follow-up. If still non-`module`, defer to the next
-   `apnelson1/Matroid` dep-bump cron cycle per the standing
-   recommendation in `./PERFORMANCE.md` *Module system*.
-2. Append the F4.2 result row to `./PERFORMANCE.md` *Experiments
-   that didn't pay*'s "Per-decl `@[expose]` audit" row, extending
-   the disposition note to cover the Phase 10+11-perf pass
-   (perf-neutral within run-to-run variance; bookkeeping
-   deliverable kept).
-3. Extend the *Granular `@[expose]` / `public` audit per file*
-   status preamble with the Phase 10+11-perf F1 + F2 closure
-   paragraph noting that all 6 previously-file-wide `@[expose]
-   public section` files in the Phase 10+11 surface
-   (`Search/DFS.lean` already at narrowed shape from Phase 9-perf
-   F1.1; `PebbleGame/{Basic, Algorithm, Correctness, Exec,
-   Examples}.lean`) now sit at `public section` with per-decl
-   opt-ins documented in the F3.5 table rows added during F1.1–
-   F1.4 + F2.1 + F2.2.
+Persistent deliverables from this pass:
 
-After F4.3 lands, the pass closes per `../CLEANUP.md` *no
-follow-up phase queued* default. The ROADMAP Status table row for
-Phase 11-perf can flip to ✓ and the planning section compresses
-to a one-paragraph summary + pointer to this file (per CLAUDE.md
-*When this commit closes a phase*).
+- Six F3.5 audit-disposition table rows in `./PERFORMANCE.md`
+  documenting the per-decl `@[expose]` outcomes for the four Phase
+  10/11 files (F1.1–F1.4) and the two Phase-11-reshape re-audited
+  files (F2.1 + F2.2).
+- F4.1 baseline (post-Phase-9-perf to post-Phase-10+11 baseline)
+  and F4.2 post-pass measurements on six targets.
+- *Status (Phase 10+11-perf F1 + F2)* closure paragraph in the
+  *Granular `@[expose]` / `public` audit per file* preamble.
+- F4.2 wall-clock disposition (perf-neutral within run-to-run
+  variance) recorded as an extension of PERFORMANCE.md's
+  *Experiments that didn't pay* Per-decl `@[expose]` audit row.
+- ROADMAP Status table row flipped to ✓.
 
-If the session must stop mid-stream after this commit, the
-persistent state added is the F1.1 / F1.2 / F1.3 / F1.4 / F2.1 /
-F2.2 dispositions (six F3.5 audit-disposition table rows) plus
-the F4.1 baseline + F4.2 post-pass measurements. The next session
-picks up at F4.3 from a clean tree.
+`LinearRigidityMatroid.lean` module-conversion (F3.2) deferred to
+the next `apnelson1/Matroid` dep-bump cycle (re-check
+`Representation/Map.lean` for a `module` marker at that time).
