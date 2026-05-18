@@ -397,11 +397,13 @@ failure witness.
   witness subset $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ is
   extracted in a separate computation: the math-layer accessor
   $D.\mathtt{reach}\,v$ --- a $\mathrm{Finset}\,V$-wrapped reflexive-
-  transitive closure of $D$'s arc relation, sharing the DFS-side
-  \texttt{reachClosure} of \texttt{Search/DFS.lean} --- is materialised
-  at the failure site inside \cref{lem:pebble-game-failure-witness},
-  keeping the algorithm's signature aligned with the
-  $\mathrm{Option}$-shape of \texttt{tryReachPebbleWith}.
+  transitive closure of $D$'s arc relation, routed through
+  $\mathrm{reachClosureComputable}$ of \texttt{Search/DFS.lean}
+  (cf.\ \cref{def:reachClosureComputable}) --- is materialised at the
+  failure site inside \cref{lem:pebble-game-failure-witness}, keeping
+  the algorithm's signature aligned with the $\mathrm{Option}$-shape
+  of \texttt{tryReachPebbleWith}. (Phase~11 Layer~3 absorbs this
+  separate extraction into \texttt{tryAddEdgeWith}'s return.)
 \end{definition}
 
 \begin{definition}[Blocking witness]

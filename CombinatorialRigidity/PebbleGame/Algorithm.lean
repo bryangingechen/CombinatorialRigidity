@@ -246,9 +246,10 @@ the DFS layer, the math-layer convenience `tryAddEdge` plugs in
 The failure branch returns `none` rather than the reach-closure subset
 described in the blueprint's prose; extracting the blocking-witness subset
 `Reach_D(u) ∪ Reach_D(v)` from the failure state is a separate computation
-(left to a follow-up: a `reachClosure` helper in `Search/DFS.lean`,
-post-composed at the failure site). This keeps the algorithm's signature
-minimal and matches the `Option`-shape of `tryReachPebbleWith`. -/
+(via `reachClosureComputable` in `Search/DFS.lean`, post-composed at the
+failure site; Phase 11 Layer 3 absorbs this into `tryAddEdgeWith`'s
+return). This keeps the algorithm's signature minimal and matches the
+`Option`-shape of `tryReachPebbleWith`. -/
 
 section TryAddEdge
 
@@ -498,9 +499,10 @@ and a list-shaped adjacency and stay fully computable.
 
 The failure branch returns `none` rather than the blocking-witness subset
 described in the blueprint's prose; extracting `Reach_D(u) ∪ Reach_D(v)`
-from the failure state is a separate computation (deferred to a planned
-`reachClosure` helper in `Search/DFS.lean`, post-composed at the failure
-site). This keeps the algorithm's signature minimal and matches the
+from the failure state is a separate computation (via
+`reachClosureComputable` in `Search/DFS.lean`, post-composed at the
+failure site; Phase 11 Layer 3 absorbs this into `tryAddEdgeWith`'s
+return). This keeps the algorithm's signature minimal and matches the
 `Option`-shape of `tryAddEdgeWith`. Blueprint `def:runPebbleGame`. -/
 
 section RunPebbleGame

@@ -113,3 +113,66 @@ and on success post-composes a path-reversal step that flips every
 arc of the returned walk. The DFS itself is fully reusable across
 this and any future application that needs reachability with a
 witness path; the path-reversal is pebble-game-specific.
+
+\subsection{Reachability closure (computable)}
+\label{ssec:reach-closure-computable}
+
+The pebble game's completeness side materialises a different view
+of $\mathrm{succ}$-reachability from $v$: not the first match against
+some predicate $P$, but the \emph{full set} of vertices reachable
+from $v$, as a $\mathrm{Finset}\,V$. Phase 11's Layer 1 ships this
+view as a computable primitive
+$\mathrm{reachClosureComputable}$, eliminating the
+$\mathtt{Classical.decPred}$ dependency that an earlier
+filter-based formulation would have introduced. Its semantic
+contract --- characterisation as
+$\mathrm{Relation.ReflTransGen}$ of the
+$\mathrm{succ}$-arc relation --- is the consumer-facing iff
+relied upon by the pebble-game's $D.\mathtt{reach}$ accessor in
+\cref{sec:pebble-game}.
+
+\begin{definition}[Reachability closure]
+  \label{def:reachClosureComputable}
+  \lean{CombinatorialRigidity.Search.reachClosureComputable}
+  \leanok
+  \uses{def:reachable-finding}
+  Let $V$ be finite with decidable equality and
+  $\mathrm{succ} : V \to \mathrm{List}\,V$ an out-neighbour function.
+  Then $\mathrm{reachClosureComputable}\,\mathrm{succ}\,v :
+  \mathrm{Finset}\,V$ is the set of vertices reachable from $v$
+  along the relation $R\,a\,b = (b \in \mathrm{succ}\,a)$. The Lean
+  implementation tests each candidate $w : V$ via
+  $\mathrm{reachableFinding}\,\mathrm{succ}\,(\cdot = w)\,v$,
+  collecting those for which the DFS succeeds; this routes through
+  the iterative DFS already in scope rather than introducing a
+  second iterative state machine.
+\end{definition}
+
+\begin{lemma}[Membership in the reach closure]
+  \label{lem:mem-reachClosureComputable}
+  \lean{CombinatorialRigidity.Search.mem_reachClosureComputable,
+    CombinatorialRigidity.Search.reachClosureComputable_sound,
+    CombinatorialRigidity.Search.reachClosureComputable_complete}
+  \leanok
+  \uses{def:reachClosureComputable, thm:reachable-finding-correct}
+  For any $\mathrm{succ}$ and $v, w : V$,
+  \[
+    w \in \mathrm{reachClosureComputable}\,\mathrm{succ}\,v
+      \;\Longleftrightarrow\;
+      \mathrm{Relation.ReflTransGen}\,
+        (\lambda a\,b \mapsto b \in \mathrm{succ}\,a)\,v\,w.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:reachClosureComputable, thm:reachable-finding-correct}
+  Soundness: a successful DFS produces a witness walk by
+  \cref{thm:reachable-finding-correct}; lifting that walk to
+  $\mathrm{ReflTransGen}$ is a one-step induction
+  ($\mathtt{DirectedWalk.toReflTransGen}$). Completeness:
+  given the reachability chain, instantiate
+  $\mathrm{reachableFinding}$ at the predicate $(\cdot = w)$ with
+  $w$ as the existence witness; \cref{thm:reachable-finding-correct}
+  returns $\mathtt{some}$, so $w$ passes the
+  $\mathrm{Finset.filter}$ predicate.
+\end{proof}

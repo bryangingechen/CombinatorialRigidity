@@ -44,13 +44,30 @@ red to green.
 
 ## Current state
 
-Phase 11 is open. This first commit lays down the operating-manual
-surfaces (`notes/Phase11.md`, ROADMAP §11 + status row, README /
-home_page / intro.tex flips) but ships no new Lean and **no
-blueprint chapter changes** — the existing `chapter/pebble-game.tex`
-and `chapter/executable.tex` stay describing the Phase 9/10
-`Option`-shaped Lean. Each Phase 11 Layer commit ships its
-blueprint reshape in step with the Lean (see *Layer plan* below).
+Layer 1 closed: the verified-iterative computable
+`reachClosureComputable` lives in `Search/DFS.lean`, with soundness
+and completeness routed through the existing `reachableFinding`
+primitive (one DFS invocation per candidate vertex, filtered via
+`Finset.univ.filter`). `PartialOrientation.reach` in
+`PebbleGame/Correctness.lean` is redefined through it, with the
+`mem_reach` iff against `Relation.ReflTransGen` preserved unchanged
+so all downstream proofs (`self_mem_reach`, `reach_closed`,
+`outOn_reach_union_eq_zero`, the failure-witness chain) re-derive
+without modification. `Search.reachClosure` is retired (no external
+consumers). Blueprint: `chapter/dfs.tex` gains the
+`def:reachClosureComputable` + `lem:mem-reachClosureComputable`
+nodes in a new *Reachability closure (computable)* subsection;
+`chapter/pebble-game.tex` updates the `def:tryAddEdge` /
+`def:runPebbleGame` prose mentioning the closure primitive to refer
+to the new name.
+
+Layers 2–5 ahead. Next concrete commit: Layer 2 —
+`WorkhorseWitness k ℓ V` structure in `PebbleGame/Basic.lean` +
+`WorkhorseWitness.certifies_against` in `PebbleGame/Correctness.lean`,
+re-using `independent_brings_pebble_simpleGraph_form`'s proof body
+verbatim. Blueprint: `chapter/pebble-game.tex` gains
+`def:workhorseWitness` + `lem:workhorseWitness-certifies` in the
+existing *Completeness* subsection.
 
 The phase target is a **maximal reshape** of the pebble-game return
 type: replace the `Option`-shaped output of `runPebbleGame` /
@@ -297,39 +314,56 @@ incorporates the outcomes.
    authoritative to-do list lives in this file's *Layer plan*
    section.
 
-7. **`reachableFinding` factoring.** ✓ Independent recursion,
-   sharing only the `(Finset.univ \ visited).card` termination
-   measure pattern. The two functions diverge on return shape
-   (`Option (Σ w, DirectedWalk)` short-circuiting on first match
-   vs `Finset V` accumulating the full reach-set), children
-   traversal (`List.findSome?` vs a full fold), and path tracking
-   (`reachableFinding` builds walks via `.cons`; closure tracks
-   only the visited set). A shared inner combinator would have to
-   abstract over all three dimensions; with only two consumers it
-   absorbs the soundness/completeness obligation as combinator IH
-   plus two specializations rather than two direct inductions.
+7. **`reachableFinding` factoring.** ✓ Resolved at Layer 1: route
+   the closure through `reachableFinding` itself rather than a
+   sibling iterative recursion. Specifically,
+   `reachClosureComputable succ v := Finset.univ.filter
+   fun w => (reachableFinding succ (· = w) v).isSome`. Soundness
+   and completeness are one-step appeals to
+   `reachableFinding_sound` / `_complete`, plus a small
+   `DirectedWalk.toReflTransGen` bridge lemma. Trade-off: the
+   asymptotic cost is $O(n)$ DFS invocations (one per candidate
+   vertex), so closure construction is quadratic in the worst case.
+   The math-layer `D.reach` is rarely materialised — the algorithm
+   side queries reachability once per pending edge via
+   `tryReachPebble` — so this is acceptable, and the proof effort
+   relative to an accumulating single-DFS variant is far smaller.
+   Replacing the implementation with a single-pass accumulating
+   form is a future opportunity; the consumer-facing
+   `mem_reachClosureComputable` iff insulates downstream code from
+   the swap.
 
-8. **`Search/DFS.lean` file split.** Deferred to Layer 1: extend
-   in-file unless the addition pushes past ~1050 LoC, in which case
-   split off `Search/Reachability.lean`.
+8. **`Search/DFS.lean` file split.** ✓ Resolved at Layer 1: stayed
+   in-file. The Layer 1 addition (closure primitive + soundness +
+   completeness + bridge lemma) was ~110 LoC, keeping
+   `Search/DFS.lean` at ~830 LoC, comfortably under the ~1050-LoC
+   split threshold.
 
 ## Layer plan
 
-- **Layer 0** (this commit). Phase opener: notes, ROADMAP §11 +
+- **Layer 0** ✓. Phase opener: notes, ROADMAP §11 +
   status row, README / home_page / intro.tex flips. No Lean, no
   blueprint changes.
 
-- **Layer 1.** Verified-iterative `reachClosureComputable` in
-  `Search/DFS.lean` (or a new `Search/Reachability.lean`); soundness
-  + completeness against `Relation.ReflTransGen` (the contract of
-  the existing noncomputable `reachClosure`). Redefine
-  `PartialOrientation.reach` through it; retire
-  `Search.reachClosure` (internal to the pebble-game's completeness
-  side; no external consumers). Blueprint: update
-  `chapter/dfs.tex` to add `def:reachClosureComputable` +
-  `lem:mem-reachClosureComputable`, retire `def:reachClosure` /
-  `lem:mem-reachClosure` (or restate them as the consumer-facing
-  iff alias). Estimated ~200–300 LoC Lean.
+- **Layer 1** ✓. Verified-iterative `reachClosureComputable` in
+  `Search/DFS.lean` (in-file, ~110 LoC added — well under the
+  split threshold). Routed through `reachableFinding` rather than a
+  sibling iterative recursion (see audit point 7 above):
+  `reachClosureComputable succ v` filters `Finset.univ` by
+  `(reachableFinding succ (· = w) v).isSome`. Soundness and
+  completeness are direct appeals to the
+  `reachableFinding_sound` / `_complete` chain, plus a small bridge
+  `DirectedWalk.toReflTransGen`. `PartialOrientation.reach`
+  redefined through the new primitive (`reachClosureComputable
+  D.outList v`); stays `noncomputable` because of `outList`'s use of
+  `Finset.toList`, but the `mem_reach` iff is preserved verbatim and
+  downstream proofs (`self_mem_reach`, `reach_closed`) re-derive
+  cleanly. `Search.reachClosure` removed (no remaining consumers).
+  Blueprint: `chapter/dfs.tex` gains `def:reachClosureComputable` +
+  `lem:mem-reachClosureComputable` in a new *Reachability closure
+  (computable)* subsection; `chapter/pebble-game.tex` updates the
+  closure-primitive mentions in `def:tryAddEdge` and
+  `def:runPebbleGame` to the new name.
 
 - **Layer 2.** Define `WorkhorseWitness k ℓ V` in `Basic.lean`;
   define `WorkhorseWitness.certifies_against` in `Correctness.lean`
@@ -406,7 +440,21 @@ commit ships, blueprint and Lean.
 
 ### Phase-local choices and proof techniques
 
-*(Filled in as layers close.)*
+- **Layer 1: `reachClosureComputable` routes through
+  `reachableFinding`, not a sibling iterative DFS.** The closure
+  is defined as `Finset.univ.filter (fun w =>
+  (reachableFinding succ (· = w) v).isSome)`. The original Layer 1
+  plan envisioned a parallel accumulating DFS in `Search/DFS.lean`,
+  but the proof effort for a custom WF recursion with `foldl`-over-
+  children (correctness against `Relation.ReflTransGen`) was
+  disproportionate to its benefits at the math layer. Filtering
+  through the already-iterative `reachableFinding` (which carries
+  its own iterative DFS) gives the same iff contract in ~110 LoC
+  total. Trade-off documented in audit point 7: $O(n)$ DFS
+  invocations per closure, asymptotic cost not visible at the math
+  layer (only used for the witness-set blueprint argument). Future
+  perf work could swap the implementation behind
+  `mem_reachClosureComputable` without touching downstream.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 

@@ -54,12 +54,16 @@ witness path.
   `CombinatorialRigidity.Search.reachableFinding_complete` —
   soundness and completeness against the `Relation.ReflTransGen`
   closure of the out-neighbour relation.
-* `CombinatorialRigidity.Search.reachClosure` — the
-  reflexive-transitive closure of a relation `R : V → V → Prop` as a
-  `Finset V` (noncomputable, via `Classical.decPred`). Math-layer
-  view of reachability used by the pebble game's completeness side;
-  the algorithm side uses `reachableFinding` to find a single match
-  without materialising the closure.
+* `CombinatorialRigidity.Search.reachClosureComputable` — the
+  reflexive-transitive closure of the list-presented relation
+  `fun a b => b ∈ succ a` as a `Finset V`, fully computable. The
+  implementation queries `reachableFinding` once per candidate
+  vertex (filtering `Finset.univ` by `(reachableFinding succ (· = w)
+  v).isSome`); soundness and completeness follow from
+  `reachableFinding_sound` / `_complete`. The companion iff
+  `mem_reachClosureComputable` characterises membership in terms
+  of `Relation.ReflTransGen`, the contract consumed by the pebble
+  game's completeness side when building the blocking-witness set.
 
 ## Style island
 
@@ -524,6 +528,18 @@ lemma IsPath.card_reversedArcsFinset_filter_fst {u w : V} {p : DirectedWalk R u 
 
 end ArcsFinset
 
+/-- Lift a `DirectedWalk` along an arbitrary relation `R` to that
+relation's reflexive-transitive closure. Consumed by
+`reachClosureComputable_sound` to bridge the walk-bearing output of
+`reachableFinding` to the `Relation.ReflTransGen` contract; stated
+at the general-relation level since the walk inductive itself is
+parametric in `R`. -/
+theorem toReflTransGen {u w : V} (p : DirectedWalk R u w) :
+    Relation.ReflTransGen R u w := by
+  induction p with
+  | nil _ => exact Relation.ReflTransGen.refl
+  | cons h_arc _ ih => exact Relation.ReflTransGen.head h_arc ih
+
 end DirectedWalk
 
 /-! ## The DFS primitive
@@ -742,38 +758,96 @@ theorem reachableFinding_complete {succ : V → List V} {P : V → Bool} {v : V}
   exact absurd hPw (reachableFindingAux_complete succ P ∅ v hnone p.length w p
     (Nat.le_refl _) (fun _ _ hx => Finset.notMem_empty _ hx))
 
-/-! ## Reachability closure
+/-! ## Reachability closure (computable)
 
-`reachClosure R v` is the set of vertices reachable from `v` along a
-relation `R : V → V → Prop`, packaged as a `Finset V` via classical
-decidability. This is the **math-layer** view of reachability; the
-algorithm side uses `reachableFinding` to find a single match without
-ever materialising the full closure, so this helper is `noncomputable`.
+`reachClosureComputable succ v` is the set of vertices reachable from
+`v` along the list-presented relation `fun a b => b ∈ succ a`,
+packaged as a `Finset V`. Unlike a `Classical.decPred`-filtered
+formulation, this version is fully computable so callers can take
+`Decidable`-flavoured downstream consequences.
 
-Used by the pebble game's completeness side: the blocking-witness set
-is built as `reachClosure (fun a b => (a, b) ∈ D.arcs) u ∪
-reachClosure … v`, for which `D.outOn` vanishes by
-`reachClosure_closed`. -/
+Implementation strategy: route through the verified DFS primitive
+`reachableFinding` already in scope. A candidate vertex `w` belongs
+to the closure exactly when `reachableFinding succ (· = w) v`
+returns `some`. This re-uses the iterative DFS already proved
+sound/complete against `Relation.ReflTransGen`, lifting both
+directions to the closure with one-line proofs. The asymptotic cost
+is $O(n)$ DFS invocations — quadratic in the worst case — but the
+math-layer view of reachability is rarely materialised; the
+algorithm side queries reachability once per pending edge via
+`tryReachPebble`. Replacing this implementation with a single-DFS
+accumulating variant is a future opportunity.
 
-omit [DecidableEq V] in
-/-- The reachability closure of `v` along `R`, as a `Finset V`. -/
-noncomputable def reachClosure (R : V → V → Prop) (v : V) : Finset V :=
-  @Finset.filter V (Relation.ReflTransGen R v) (Classical.decPred _) Finset.univ
+Used by the pebble game's completeness side: the blocking-witness
+set is built as `D.reach u ∪ D.reach v` for a partial orientation
+`D`, where `D.reach v := reachClosureComputable D.outList v`; the
+out-closure of this set drives `D.outOn (...) = 0` via
+`reachClosureComputable_closed`. -/
 
-omit [DecidableEq V] in
-@[simp] lemma mem_reachClosure {R : V → V → Prop} {v w : V} :
-    w ∈ reachClosure R v ↔ Relation.ReflTransGen R v w := by
-  simp [reachClosure, Finset.mem_filter]
+/-- The reachability closure of `v` along `fun a b => b ∈ succ a`,
+as a `Finset V`. Computable: tests each candidate vertex `w` via
+`reachableFinding succ (fun x => decide (x = w)) v`, returning `w`
+when the DFS finds a match. The semantic contract is
+`mem_reachClosureComputable`. -/
+@[expose]
+def reachClosureComputable (succ : V → List V) (v : V) : Finset V :=
+  Finset.univ.filter
+    fun w => (reachableFinding succ (fun x => decide (x = w)) v).isSome
 
-omit [DecidableEq V] in
-lemma self_mem_reachClosure (R : V → V → Prop) (v : V) :
-    v ∈ reachClosure R v :=
-  mem_reachClosure.mpr .refl
+/-- Soundness for `reachClosureComputable`: every vertex in the
+returned closure is reachable from `v` along the `succ`-relation.
+Routed through `reachableFinding_sound` plus `DirectedWalk.toReflTransGen`
+to lift the returned walk to `Relation.ReflTransGen`. -/
+theorem reachClosureComputable_sound {succ : V → List V} {v w : V}
+    (hw : w ∈ reachClosureComputable succ v) :
+    Relation.ReflTransGen (fun a b => b ∈ succ a) v w := by
+  rw [reachClosureComputable, Finset.mem_filter] at hw
+  obtain ⟨_, h_some⟩ := hw
+  rw [Option.isSome_iff_exists] at h_some
+  obtain ⟨⟨w', p⟩, hres⟩ := h_some
+  obtain ⟨hP, _⟩ := reachableFinding_sound hres
+  -- `hP : decide (w' = w) = true`, so `w' = w`; transport the walk.
+  rw [decide_eq_true_eq] at hP
+  subst hP
+  exact p.toReflTransGen
 
-omit [DecidableEq V] in
-lemma reachClosure_closed {R : V → V → Prop} {v w x : V}
-    (hw : w ∈ reachClosure R v) (hwx : R w x) : x ∈ reachClosure R v := by
-  rw [mem_reachClosure] at hw ⊢
-  exact hw.tail hwx
+/-- Completeness for `reachClosureComputable`: every vertex
+reachable from `v` along the `succ`-relation ends up in the
+returned closure. Routed through `reachableFinding_complete`: the
+DFS at predicate `(· = w)` is guaranteed to succeed (the existence
+witness is `w` itself with the supplied reachability chain). -/
+theorem reachClosureComputable_complete {succ : V → List V} {v w : V}
+    (h_reach : Relation.ReflTransGen (fun a b => b ∈ succ a) v w) :
+    w ∈ reachClosureComputable succ v := by
+  rw [reachClosureComputable, Finset.mem_filter]
+  refine ⟨Finset.mem_univ _, ?_⟩
+  obtain ⟨_, _, hres⟩ :=
+    reachableFinding_complete (P := fun x => decide (x = w))
+      (v := v) (succ := succ)
+      ⟨w, h_reach, decide_eq_true rfl⟩
+  rw [hres]
+  rfl
+
+/-- Membership iff: characterizes `reachClosureComputable` as the
+reflexive-transitive closure of `fun a b => b ∈ succ a`. -/
+@[simp] lemma mem_reachClosureComputable {succ : V → List V} {v w : V} :
+    w ∈ reachClosureComputable succ v ↔
+      Relation.ReflTransGen (fun a b => b ∈ succ a) v w :=
+  ⟨reachClosureComputable_sound, reachClosureComputable_complete⟩
+
+/-- The start vertex sits in its own reach closure. -/
+lemma self_mem_reachClosureComputable (succ : V → List V) (v : V) :
+    v ∈ reachClosureComputable succ v :=
+  mem_reachClosureComputable.mpr Relation.ReflTransGen.refl
+
+/-- The reach closure is closed under the `succ`-relation: if `a` is
+in the closure of `v` and `b ∈ succ a`, then `b` is too. Used by the
+pebble game's completeness side to argue that
+`D.outOn (D.reach u ∪ D.reach v) = 0`. -/
+lemma reachClosureComputable_closed {succ : V → List V} {v a b : V}
+    (ha : a ∈ reachClosureComputable succ v) (hab : b ∈ succ a) :
+    b ∈ reachClosureComputable succ v := by
+  rw [mem_reachClosureComputable] at ha ⊢
+  exact ha.tail hab
 
 end CombinatorialRigidity.Search

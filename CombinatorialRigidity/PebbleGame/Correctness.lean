@@ -221,25 +221,41 @@ open CombinatorialRigidity.Search
 variable [Fintype V]
 
 /-- `D.reach v` is the set of vertices reachable from `v` along `D`'s
-out-arcs, packaged as a `Finset V`. Noncomputable: this is the
-math-layer view, used by the pebble game's completeness side to
-construct the blocking-witness set `D.reach u ∪ D.reach v`. The
-algorithm side uses `tryReachPebble` (the verified DFS) to query
-reachability without ever materialising the full closure. -/
+out-arcs, packaged as a `Finset V`. Routed through Phase 11's
+verified-iterative `reachClosureComputable` over the orientation's
+`outList` view of its out-neighbours; the math-layer `D.outList` is
+itself `noncomputable` (it uses `Finset.toList`), so `D.reach`
+inherits `noncomputable`. The exec-layer wrappers (Layer 4) bypass
+this by supplying their own list-shaped adjacency directly to
+`reachClosureComputable`. The `mem_reach` iff against
+`Relation.ReflTransGen` is the consumer-facing contract; downstream
+proofs depend only on this iff and are blind to the redefinition. -/
 noncomputable def reach (D : PartialOrientation V) (v : V) : Finset V :=
-  reachClosure (fun a b => (a, b) ∈ D.arcs) v
+  reachClosureComputable D.outList v
 
 @[simp] lemma mem_reach {D : PartialOrientation V} {v w : V} :
     w ∈ D.reach v ↔
-      Relation.ReflTransGen (fun a b => (a, b) ∈ D.arcs) v w :=
-  mem_reachClosure
+      Relation.ReflTransGen (fun a b => (a, b) ∈ D.arcs) v w := by
+  rw [reach, mem_reachClosureComputable]
+  -- Two `Relation.ReflTransGen` instances differ only in the relation;
+  -- `b ∈ D.outList a ↔ (a, b) ∈ D.arcs` is `D.mem_outList`.
+  constructor
+  · intro h
+    induction h with
+    | refl => exact .refl
+    | tail _ hab ih => exact ih.tail (D.mem_outList.mp hab)
+  · intro h
+    induction h with
+    | refl => exact .refl
+    | tail _ hab ih => exact ih.tail (D.mem_outList.mpr hab)
 
 lemma self_mem_reach (D : PartialOrientation V) (v : V) : v ∈ D.reach v :=
-  self_mem_reachClosure _ _
+  mem_reach.mpr .refl
 
 lemma reach_closed {D : PartialOrientation V} {v a b : V}
-    (ha : a ∈ D.reach v) (hab : (a, b) ∈ D.arcs) : b ∈ D.reach v :=
-  reachClosure_closed ha hab
+    (ha : a ∈ D.reach v) (hab : (a, b) ∈ D.arcs) : b ∈ D.reach v := by
+  rw [mem_reach] at ha ⊢
+  exact ha.tail hab
 
 omit [Fintype V] in
 /-- A finset `V'` closed under `D`'s outgoing arcs has `outOn V' = 0`:
