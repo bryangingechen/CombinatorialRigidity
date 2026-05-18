@@ -81,7 +81,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Perf pass (post-Phase-8) | `Sparsity` / `Henneberg` splits + module-system conversion | ✓ Complete (see `notes/Phase8-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | ⋮ Pre-Phase-9 DFS warmup | `Search/DFS.lean` | ✓ Complete (see `notes/Phase9.md` §"DFS warmup (pre-Phase-9)") |
 | 9. Pebble game | `PebbleGame.lean` | ✓ Complete (see `notes/Phase9.md`) |
-| ⋮ Cleanup round (post-Phase-9) | project-wide (Phase 9 surface) | in progress (see `notes/Phase9-cleanup.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (post-Phase-9) | project-wide (Phase 9 surface) | ✓ Complete (see `notes/Phase9-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-9) | `Search/DFS.lean` + `PebbleGame.lean` per-decl `@[expose]` audit | in progress (see `notes/Phase9-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during

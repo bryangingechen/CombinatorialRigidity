@@ -317,12 +317,13 @@ dep-graph closes.
 
 ### Cleanup pass summaries
 
-The post-closure cleanup round + perf pass run in parallel work logs:
-- `Phase9-cleanup.md` (buckets A–D, currently bucket D in progress —
-  see that file's *Current state* for status).
+The post-closure cleanup round + perf pass:
+- `Phase9-cleanup.md` (buckets A–D, **closed** — see that file's
+  *Current state* and *Hand-off* for the per-bucket recap).
 - `Phase9-perf.md` (module-system conversion of the two new files
   plus the broader cleanup-round-flagged structural levers, per
-  `../CLEANUP.md` *What a cleanup round is not*).
+  `../CLEANUP.md` *What a cleanup round is not* — still in
+  progress in parallel).
 
 ## Blockers / open questions
 

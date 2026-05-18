@@ -1,6 +1,6 @@
 # Phase 9 cleanup round — work log
 
-**Status:** in progress.
+**Status:** complete.
 
 This is the inter-phase cleanup round after Phase 9 closed. See
 `../CLEANUP.md` for the round-level operating manual: when to run a
@@ -32,7 +32,7 @@ performance pass).
 
 ## Current state
 
-Buckets A + B + C fully closed; bucket D in progress — D1 landed
+Round closed: all four buckets (A + B + C + D) green. D1 landed
 (notes/Phase9.md compressed 1484 → 381 LoC, sub-organized per
 `../notes/CLAUDE.md`, no remaining duplication between *Current
 state* / *Architectural choices* / *Decisions made* / *Hand-off*).
@@ -59,7 +59,16 @@ archived entry has a TACTICS-* cross-reference). Companion edits:
 TACTICS-QUIRKS *Sections* index extended to §§ 19/20/21 (§ 19 was
 previously missed when § 19's body was added during Phase 9 main);
 `CombinatorialRigidity/CLAUDE.md` quirks-index gains §§ 20 + 21
-symptom bullets; Phase9.md *Promoted to* lines updated. D2 still to do.
+symptom bullets; Phase9.md *Promoted to* lines updated. D2 landed
+as a deliberate no-op: all three round-opener candidates
+(`match h:` worked-example append, `Reachable k ℓ D` non-motive
+threading, unified additive identity for state-machine moves)
+sit below the 2+ files / 2+ phases lift threshold — each surfaces
+only in `PebbleGame.lean` and only in Phase 9. The per-candidate
+analysis is recorded in D2's *Disposition* so a future cleanup
+round (or post-Phase-10 re-evaluation) doesn't re-walk the same
+ground; both un-lifted candidates carry a "re-evaluate when the
+pattern surfaces in phase N+1" trigger.
 Bucket C's long-proof audit landed
 two Lean simplifications. (i) The 11-line `|V'| ≥ 2` derivation
 duplicated at `independent_brings_pebble_simpleGraph_form` and
@@ -965,7 +974,7 @@ the manual:
   contract surfaces as the operative tests. Phase 9 (25 forward-work
   commits, two new files totaling ~3300 LoC, 22 dep-graph nodes)
   calibrates the upper end at 381 lines.
-- [ ] **D2:** Lift-on-promotion check across Phase9.md decisions.
+- [x] **D2:** Lift-on-promotion check across Phase9.md decisions.
   The CLAUDE.md threshold is "referenced in 2+ files or by 2+
   phases." Phase 9 already lifted: 5 FRICTION entries
   ([resolved] `induction _ using funName.induct`, [resolved]
@@ -973,19 +982,74 @@ the manual:
   [resolved] `ring` alpha-renamed sums, [resolved]
   `Finset.toList` noncomputable), 1 TACTICS-QUIRKS section (§ 19),
   1 DESIGN.md section (*Pebble-game style island* + *The `-With`
-  variant pattern*). Are there others that should lift? Candidates:
-  - The `match h : ... with | pat => ...` substitution shape
-    (TACTICS-QUIRKS § 17) bit Phase 9 again in the `runPebbleGame_correct`
-    body — already a § entry, but does Phase 9's use add a worked
-    example worth appending?
-  - The `Reachable k ℓ D` non-motive threading hypothesis pattern
-    (introduced before `induction _ using ... generalizing D'`) —
-    cross-cutting enough to lift to TACTICS-GOLF?
-  - The unified additive identity pattern for state-machine moves
-    (single `if-then-else` formula keyed on the move's piecewise
-    behaviour, combined with case-analysis at the call site) —
-    surfaced twice in Phase 9 (path reversal + arc insertion); is
-    this a TACTICS-GOLF / DESIGN.md candidate?
+  variant pattern*).
+
+  **Disposition.** All three round-opener candidates evaluated; none
+  yet meets the 2+ files / 2+ phases bar. **No new lifts this
+  round.** Each candidate's analysis recorded below so a future
+  cleanup round doesn't re-litigate the same evaluation.
+
+  - **Candidate (a) — `match h : ... with | pat => ...` worked
+    example.** Phase 9's `runPebbleGame_correct` body
+    (`PebbleGame.lean:2439`) is a second Phase 9 instance of § 17's
+    substitution shape, but it lands in the *easy* `pat = pat`-`rfl`
+    branch that § 17's *Fix* sub-bullet "If the goal collapsed to
+    `pat = pat`, just return `rfl`" already documents inline. The
+    section's existing worked case study
+    (`reachableFinding_complete`, the harder `by_contra + cases h_eq:`
+    branch) covers the substantive direction. Appending
+    `runPebbleGame_correct` as a second worked example would
+    duplicate § 17's easy-branch fix bullet without adding new
+    content. No edit to § 17; the `runPebbleGame_correct` site
+    benefits silently from § 17's preventative documentation.
+
+  - **Candidate (b) — `Reachable k ℓ D` non-motive threading.**
+    Surfaced in four `tryAddEdgeWith.induct`-based proofs in
+    `PebbleGame.lean` (`_reachable` at L1326, `_isSome` at L2046,
+    `_eq_none_imp_exists_witness` at L2118 + L2212 fold-level
+    sibling) — one file, one phase. The pattern (take a preservation
+    predicate `P D` as a free-hanging hypothesis *before* the
+    `induction ... using f.induct generalizing D'`, then thread
+    `IH (h_preserve hD ...)` at the recursive call) is genuinely a
+    golfing idiom — keeps the motive on the function's "executable
+    parameters" only, avoiding the noise of a manually-named motive
+    that bakes `P` in. But it surfaces only in PebbleGame.lean and
+    only via `tryAddEdgeWith.induct`; the 2+ files / 2+ phases bar
+    is not met. Stays in `Phase9.md` *Phase-local choices →
+    `Reachable k ℓ` as an inductive predicate* (the trailing
+    paragraph already records the threading discipline). Re-evaluate
+    on the next phase that proves a preservation lemma via
+    `f.induct` — if Phase 10+ surfaces the same pattern, lift to
+    `TACTICS-GOLF.md` as "Thread preservation predicates outside
+    the `f.induct` motive".
+
+  - **Candidate (c) — unified additive identity for state-machine
+    moves.** Surfaced in `PebbleGame.lean` across both state-machine
+    moves: path reversal yields `out_reverse_add` /
+    `pebOn_add_outOn_reverse_eq` keyed on `v ∈ p.vertices ∧ v ≠ {u,
+    w}`; arc insertion yields `span_addArc` / `outOn_addArc` /
+    `pebOn_addArc` / `pebOn_add_outOn_addArc_add` keyed on
+    `{u, v} ∩ V'`. Each delta is stated as a single unconditional
+    `if-then-else` equation, then combined via `by_cases` + `omega`
+    at the call site (`out_reverse_of_not_endpoint` / `_head` /
+    `_tail`; `pebOn_add_outOn_addArc_add`'s 4-way by-cases). The
+    pattern is a substantive Phase-9 design choice — keeps each
+    building block trivial and confines case analysis to a single
+    `omega` per consumer. But it surfaces only in PebbleGame.lean
+    and only on the two pebble-game state-machine moves; the 2+
+    files / 2+ phases bar is not met. Stays in `Phase9.md`
+    *Phase-local choices → Subset-level accounting via 3 building
+    blocks + algebraic combine* where it already lives. Re-evaluate
+    on the next phase that adds a state-machine move; if Phase 10+
+    surfaces a third move or a parallel state machine, lift to
+    `DESIGN.md` *Pebble-game style island* as a sub-pin ("Per-move
+    accounting: unified additive identities + omega case-combine").
+
+  Companion check on the existing *Promoted to* pointers in
+  `Phase9.md`: all 8 pointer lines still resolve to live targets
+  (TACTICS-QUIRKS §§ 4, 17, 18, 19, 20, 21; DESIGN.md *Pebble-game
+  style island*; FRICTION-archive entries from D3). No drift; no
+  edit.
 - [x] **D3:** `FRICTION.md` housekeeping. Phase 9 added 5 resolved
   entries that all have post-resolution indices (mirror files or
   TACTICS-QUIRKS § references). Per the CLAUDE.md *Filing rule for
@@ -1134,19 +1198,15 @@ the manual:
 
 ## Blockers / open questions
 
-- Round in progress; buckets A + B + C fully closed (A1--A4 +
-  B1--B5 + C1--C4 all green); bucket D in progress — D1 (Phase9.md
-  compression) + D3 (`FRICTION.md` housekeeping + two-entry
-  lift-on-archive to TACTICS-QUIRKS §§ 20 + 21) + D4 (`DESIGN.md`
-  re-skim, no-op) + D5 (`ROADMAP.md` re-skim, one pointer edit)
-  landed; D2 remains. (`checkdecls` is the always-on per-commit
-  gate per `../blueprint/CLAUDE.md` *Static checks before commit*,
-  not a separate task.)
+- None. Round closed: all four buckets green (A1--A4 + B1--B5 +
+  C1--C4 + D1--D5). (`checkdecls` is the always-on per-commit gate
+  per `../blueprint/CLAUDE.md` *Static checks before commit*, not a
+  separate task.)
 
 ## Hand-off / next phase
 
-Round in progress. Phase 9 main is fully closed; this round
-addresses the post-closure hygiene. Buckets A + B + C are green:
+Round closed. Phase 9 main is fully closed; this round addressed
+the post-closure hygiene. All buckets green:
 A1 (DFS chapter walk), A2 (pebble-game chapter walk),
 A2-followup (`lem:pebble-game-tryAddEdge-iff-independent` red node,
 discharged via the narrative-bridge `@[deprecated]` shim),
@@ -1178,8 +1238,8 @@ and C4 (cross-reference to B2's `lean_multi_attempt` sweep) are
 all green. C2-followup *closed (refactor landed)*; see
 *Surfaced follow-ups* for the closing entry.
 
-Bucket D in progress. D1 landed (Phase9.md compression 1484 → 381
-LoC + adaptive notes-budget rule in `notes/CLAUDE.md`). D4 closed
+Bucket D closed. D1 landed (Phase9.md compression 1484 → 381 LoC
++ adaptive notes-budget rule in `notes/CLAUDE.md`). D4 closed
 no-op: the three Phase-9-resolved items the round-opener parked on
 D4 (`PartialOrientation V` representation, matroidal-corollary
 placement, termination measure for `tryReachPebble`) were never
@@ -1197,12 +1257,18 @@ lift-on-archive first to TACTICS-QUIRKS §§ 20 + 21 to meet the
 de-facto archive-stability bar. Companion edits: TACTICS-QUIRKS
 *Sections* index extended to §§ 19/20/21, quirks-index pointer
 table in `CombinatorialRigidity/CLAUDE.md` gains §§ 20 + 21
-symptom bullets, Phase9.md *Promoted to* updated. Remaining
-D-bucket task: D2 (lift-on-promotion sweep — candidates: `match
-h : ... with` worked example, `Reachable k ℓ D` non-motive
-threading, unified additive-identity pattern).
+symptom bullets, Phase9.md *Promoted to* updated. D2 closed as a
+deliberate no-op: all three round-opener candidates (`match h:`
+worked-example append; `Reachable k ℓ D` non-motive threading;
+unified additive identity for state-machine moves) sit below the
+2+ files / 2+ phases lift bar — each surfaces only in
+`PebbleGame.lean` and only in Phase 9. The per-candidate analysis
+is recorded in D2's *Disposition* so a future cleanup round
+doesn't re-walk the same evaluation; the un-lifted golfing-idiom
+candidates ((b) and (c)) carry a "re-evaluate when the pattern
+surfaces in phase N+1" trigger.
 
-The accompanying **Phase 9-perf** pass opens in parallel
+The accompanying **Phase 9-perf** pass continues in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
 not*; structural levers (module-system conversion of the two new
 files) route through that pass.
