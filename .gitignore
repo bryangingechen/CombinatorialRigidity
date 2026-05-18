@@ -17,3 +17,6 @@ blueprint/web/
 
 # Local-only reference PDFs (papers pulled for citation verification).
 .refs/
+
+# Personal Claude Code harness setup (slash commands, settings).
+.claude/
