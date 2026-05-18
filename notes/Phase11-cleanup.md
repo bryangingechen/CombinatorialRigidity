@@ -6,7 +6,9 @@ matching docstring fix in `Algorithm.lean`; A3 closed with two
 targeted fixes in `chapter/executable.tex` — `def:runPebbleGameExec`
 `\uses{}` completion + `lem:mem-edgeListSorted` retired forward-reference
 to non-existent discharge nodes; A4 closed as no-op — Bucket A
-complete; B/C/D pending).
+complete; B1 closed as no-op — zero `classical` tactic invocations
+and zero `Classical.*` term-mode references in actual code across the
+Phase 10+11 surface; B2/B3/B4/B5/C/D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -102,8 +104,15 @@ friction is structural (`SetLike.instPartialOrder` occupies the slot,
 the math-layer `runPebbleGame` is `noncomputable` by Finset.toList /
 Quot.out and that's the reason the exec wrapper exists, the
 verdict's Lean placement is determined by where the type is
-declared). Bucket A complete. Remaining: B code-smell sweep, C
-long-proof audit, D project-organization compression.
+declared). Bucket A complete. B1 closed as a **no-op**: two grep
+passes over the surface confirmed zero standalone `classical` tactic
+invocations and zero `Classical.*` term-mode references at code
+level; all nine `Classical` matches are inside docstrings or module
+headers documenting why upstream callees are `noncomputable`. The
+style island `[Fintype V] [DecidableEq V]` provides every typeclass
+the bodies need without `classical`. Remaining: B2-B5 code-smell
+sweep continuation, C long-proof audit, D project-organization
+compression.
 Pre-sweep smell counts (Phase 10+11
 surface only —
 `CombinatorialRigidity/PebbleGame/*.lean`,
@@ -269,11 +278,22 @@ Pre-grep summary in *Current state* above. Phase 9-cleanup audited
 `DFS.lean` and the pre-Phase-11 `PebbleGame/*.lean`; this sweep
 re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
-- [ ] **B1:** `classical` audit. Zero standalone hits in the
-  Phase 10+11 surface (project default style island
-  `[Fintype V] [DecidableEq V]` already provides the typeclasses).
-  Confirm by comment-out + build on any remaining sites; expected
-  to close as no-op.
+- [x] **B1:** `classical` audit. Closed as a **no-op**. Two grep
+  passes over the Phase 10+11 surface
+  (`CombinatorialRigidity/PebbleGame/{Basic,Algorithm,Correctness,
+  Exec,Examples}.lean`, `CombinatorialRigidity/Search/DFS.lean`,
+  `Main.lean`): standalone tactic `classical` — zero hits;
+  case-sensitive `Classical` — nine hits, all inside docstrings or
+  module-header explanatory prose (e.g. `Exec.lean:21` documents why
+  `Finset.toList` lifts through a `Classical`-flavored `Quotient.lift`,
+  `Exec.lean:56` documents the style-island promise of "no `Classical`
+  machinery in the body", `DFS.lean:765` contrasts `reachClosureComputable`
+  with a `Classical.decPred`-filtered formulation). No code-level
+  `classical` or `Classical.*` reference exists; the style island
+  `[Fintype V] [DecidableEq V]` provides every typeclass the bodies
+  use. No comment-out test is needed because there is nothing to
+  comment out. Confirms the pre-grep summary in *Current state*
+  above.
 - [ ] **B2:** `noncomputable def` audit (delta vs Phase 9-cleanup
   B4). Three categories to expect:
   - Phase 10 additions in `Exec.lean` (3 sites): the
@@ -487,6 +507,30 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   were also verified — each remains accurate against the current Lean
   shape per the in-source Fact-instance registration at
   `PebbleGame/Exec.lean:415` and the explanatory prose at line 412.
+- **B1: `classical` audit (Phase 10+11 surface)** — no-op closure.
+  Two grep passes over
+  `CombinatorialRigidity/PebbleGame/{Basic,Algorithm,Correctness,Exec,
+  Examples}.lean`, `CombinatorialRigidity/Search/DFS.lean`, and
+  `Main.lean`:
+  (i) `grep -nE '\bclassical\b'` (standalone tactic) — zero hits.
+  (ii) `grep -n 'Classical'` (case-sensitive, includes term-mode) —
+  nine hits, all inside docstrings or module-header explanatory prose
+  documenting why upstream callees are `noncomputable` (e.g.
+  `Exec.lean:21` documents `Finset.toList`'s `Classical`-flavored
+  `Quotient.lift`, `Exec.lean:23` documents `Quot.out`'s
+  `Classical.choice` use, `Basic.lean:131` and `DFS.lean:27` repeat
+  the same `Classical`-flavored `Quotient.lift` explanation,
+  `DFS.lean:765` contrasts `reachClosureComputable` with a
+  `Classical.decPred`-filtered formulation, three `Exec.lean` sites at
+  L56/L110/L145/L254 are the style island's positive
+  "no `Classical`" promises). No code-level `classical` or
+  `Classical.*` reference exists; the style island
+  `[Fintype V] [DecidableEq V]`
+  (`../DESIGN.md` *Pebble-game style island*) provides every typeclass
+  the bodies use. No comment-out test was needed because there is
+  nothing to comment out; sanity build via
+  `lake build CombinatorialRigidity.PebbleGame.Exec` succeeded as
+  expected. Confirms the pre-grep summary in *Current state*.
 
 ## Blockers / open questions
 
@@ -495,20 +539,22 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 ## Hand-off / next phase
 
 Round still in progress; Bucket A complete (A1 no-op / A2
-targeted fix / A3 targeted fix / A4 no-op). Next concrete commit:
-**B1** — `classical` audit. Pre-grep shows zero standalone
-`classical` hits across the Phase 10+11 surface (the style island
-`[Fintype V] [DecidableEq V]` already provides the typeclasses), so
-B1 is expected to close as a no-op confirming-by-comment-out + build.
-B2 (`noncomputable def` delta audit vs Phase 9-cleanup B4) is the
-next non-trivial item after B1: re-audit the 22 `noncomputable def`
+targeted fix / A3 targeted fix / A4 no-op); Bucket B started (B1
+closed as no-op). Next concrete commit: **B2** — `noncomputable def`
+delta audit vs Phase 9-cleanup B4. Re-audit the 22 `noncomputable def`
 sites in the Phase 10+11 surface (DFS:2, Basic:8, Algorithm:10,
 Correctness:6, Exec:3 per the *Current state* table) to confirm each
-`noncomputable` keyword is forced by a named driver (Finset.toList,
-Quot.out, Real.instRCLike, …) rather than vestigial. After Bucket B
-close, C (long-proof audit on `Algorithm.lean` and the verdict-
-construction bodies) and D (project-organization compression of
-`notes/Phase10.md` and `notes/Phase11.md`).
+`noncomputable` keyword is forced by a named driver (`Finset.toList`,
+`Quot.out`, `Real.instRCLike`, …) rather than vestigial. Most are
+expected to remain genuinely noncomputable per the math-layer / exec-
+layer split (`../DESIGN.md` *Pebble-game style island*); surface
+anything vestigial for an in-round refactor commit per
+`../CLEANUP.md` *Workflow* rule 3. After B2: B3 (multi-step `rw`
+audit, 9 sites), B4 (`letI`/`haveI Fintype.ofFinite` no-op
+re-confirmation), B5 (`@[nolint …]` no-op re-confirmation). After
+Bucket B close, C (long-proof audit on `Algorithm.lean` and the
+verdict-construction bodies) and D (project-organization compression
+of `notes/Phase10.md` and `notes/Phase11.md`).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
