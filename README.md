@@ -22,7 +22,15 @@ pebble-game algorithms to return a verdict-bearing inductive carrying
 inline witnesses — a blocking subset `V'` on the `NOT_SPARSE` branch,
 the partial orientation `D` on the accept branches — and bumps the CLI
 to emit those witness lines alongside the trichotomy label, making the
-CLI's classification externally checkable.
+CLI's classification externally checkable. **Phase 12** (in planning)
+extends the development to higher-dimensional body-bar rigidity:
+the goal is **Tay's theorem** (Tay 1984) — `G` admits an
+infinitesimally rigid body-bar framework in `Rⁿ` iff `G` is the
+edge-disjoint union of `d = n(n+1)/2` spanning trees — proved by
+Whiteley's matroid-union route (Whiteley 1988), with
+Tutte–Nash-Williams as a corollary; the eventual longer-horizon
+target beyond Phase 12 is the **molecular conjecture**
+(Katoh–Tanigawa 2011).
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -38,7 +46,8 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–11 complete** — sparsity, Laman, Henneberg, frameworks,
+* **Phases 1–11 complete; Phase 12 in planning.**
+* **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
   matroid identification (combinatorial form), the linear-matroid
@@ -59,10 +68,29 @@ project; commit history is preserved with paths rewritten.
   lines (`ARCS u v` per arc on accept; `BLOCKING n` + `VERTEX w`
   lines per blocking-subset element on reject). Both `#eval` and
   the CLI reduce through the same compiled `runPebbleGameExec`
-  body. The project carries no `sorry`s. See `notes/Phase11.md`
-  for the layer plan; the blueprint reshape lands in-place in
-  `chapter/{dfs,pebble-game,executable}.tex`. Phase 10 details are
-  in `notes/Phase10.md` and `blueprint/src/chapter/executable.tex`.
+  body. The project carries no `sorry`s through Phase 11. See
+  `notes/Phase11.md` for the layer plan; the blueprint reshape
+  lands in-place in `chapter/{dfs,pebble-game,executable}.tex`.
+  Phase 10 details are in `notes/Phase10.md` and
+  `blueprint/src/chapter/executable.tex`.
+* **Phase 12 (planning)** — **Tay's theorem** for body-bar
+  frameworks in `Rⁿ`. The proof route follows Whiteley 1988's
+  matroid-union framing: the generic `k`-frame matroid on a
+  multigraph is identified with the `k`-fold union of the cycle
+  matroid (Whiteley Theorem 1), the count characterization
+  `|E'| ≤ d|V'| − d` (Whiteley Corollary 3) drops out via
+  Edmonds' matroid-partition theorem, Tutte–Nash-Williams
+  follows, and Tay's theorem itself (existence-of-realization
+  form) is obtained by specializing two-extensor row coefficients
+  to standard-basis Plücker coordinates. Phase 12 takes a
+  dependency on the matroid-union machinery in
+  `apnelson1/Matroid`'s shelved `WIP/Union.lean` (vendored under
+  a new `CombinatorialRigidity/Matroid/` mirror) and ships its
+  own multigraph carrier + body-bar framework definitions. See
+  `notes/Phase12.md` for the full plan, prerequisites audit,
+  Layer-by-Layer breakdown, and open questions. The chapter
+  `blueprint/src/chapter/body-bar.tex` is the forward-mode
+  authoritative dep-graph and lemma index.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

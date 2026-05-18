@@ -23,9 +23,9 @@ combinatorial rigidity, see
 
 \subsection*{Phase plan}
 
-The Lean code is organized into eleven phases, tracked in
+The Lean code is organized into twelve phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--11 are complete. The first six phases formalize Laman's
+Phases~1--11 are complete; Phase~12 is in planning. The first six phases formalize Laman's
 theorem, Phase~7 packages the planar rigidity matroid as a mathlib
 \texttt{Matroid} via the Lov\'asz--Yemini matroid identification,
 Phase~8 reframes it as a linear matroid via \texttt{Matroid.ofFun}
@@ -133,6 +133,31 @@ Layer's Lean, with no new chapter opened.
         (Files: \texttt{Search/DFS.lean},
         \texttt{PebbleGame/\{Basic,Algorithm,Correctness,Exec\}.lean},
         \texttt{Main.lean}.)
+  \item \textbf{Body-bar Tay theorem (planning).} For
+        $n \ge 2$ and $d = n(n+1)/2$, a multigraph $G$ is the
+        underlying graph of an infinitesimally rigid body-bar
+        framework in $\mathbb{R}^n$ iff $G$ is the edge-disjoint
+        union of $d$ spanning trees (Tay~1984~\cite{tay1984}).
+        The chapter follows Whiteley's matroid-union
+        route~\cite{whiteley1988}: the generic $k$-frame matroid
+        on a multigraph equals the $k$-fold union of the cycle
+        matroid (Whiteley Theorem~1); the count
+        $\lvert E'\rvert \le k\lvert V'\rvert - k$
+        characterization for $k$-forest decomposability drops
+        out via Edmonds' matroid-partition
+        theorem~\cite{edmonds1965} (Tutte--Nash-Williams as a
+        corollary, recovering the original results
+        of~\cite{tutte1961,nashWilliams1961}); body-bar
+        realizations are obtained by specializing two-extensor
+        row coefficients to standard-basis Pl\"ucker
+        coordinates. The matroid-union machinery is vendored
+        from \texttt{apnelson1/Matroid}'s shelved
+        \texttt{WIP/Union.lean} into a new
+        \texttt{CombinatorialRigidity/Matroid/} mirror;
+        Whiteley's full lift via irreducible-variety machinery
+        (Proposition~6 in~\cite{whiteley1988}) is deferred out
+        of Phase~12. (Files:
+        \texttt{CombinatorialRigidity/Matroid/}, \texttt{BodyBar/}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -149,4 +174,7 @@ Phase~9 + Phase~11 pebble-game chapter (\cref{sec:pebble-game},
 restated against the verdict-bearing return type of Phase~11
 Layer~4b), and the Phase~10 + Phase~11 executable pebble-game
 chapter (\cref{sec:executable}, with the Layer~5 CLI surface
-emitting witness lines alongside the trichotomy label).
+emitting witness lines alongside the trichotomy label). The
+Phase~12 body-bar chapter (\cref{sec:body-bar}) is currently the
+to-do list: its nodes are red on first build and will turn green
+as Phase~12 lands.

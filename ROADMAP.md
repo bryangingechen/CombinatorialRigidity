@@ -93,6 +93,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 11. Witness extraction | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` | ✓ Complete (see `notes/Phase11.md`) |
 | ⋮ Cleanup round (post-Phase-10+11) | Phase 10+11 surface (`PebbleGame/`, `Search/DFS.lean`, `Main.lean`, three blueprint chapters) | ✓ Complete (see `notes/Phase11-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-10+11) | Phase 10+11 surface — per-decl `@[expose]` audit on the four new/reshaped files + Phase-11-reshape re-audit on `Basic`/`DFS` + baseline | ✓ Complete (see `notes/Phase11-perf.md`; protocol: `notes/PERFORMANCE.md`) |
+| 12. Body-bar Tay theorem | (planning) `CombinatorialRigidity/Matroid/`, `BodyBar/` | planning (see `notes/Phase12.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -385,6 +386,50 @@ Lean. See `notes/Phase11.md` for the five-layer plan, the Layer 0
 audit outcomes, architectural-choice list, and per-layer decision
 records.
 
+### Phase 12 — Body-bar Tay theorem (planning)
+
+Planning. The phase aims to formalize **Tay's theorem**
+(Tay 1984): for `n ≥ 2` and `d = n(n+1)/2`, a multigraph `G` on
+`b` bodies admits an infinitesimally rigid independent body-bar
+framework in `Rⁿ` iff `|E| = d(b − 1)` with `|E'| ≤ d|V'| − d` on
+every `m`-body sub-multigraph; equivalently (Tutte–Nash-Williams
+1961), iff `G` is the edge-disjoint union of `d` spanning trees.
+The chapter follows **Whiteley's matroid-union route** (Whiteley
+1988): the generic `k`-frame matroid is identified with the
+`k`-fold union of the graphic (cycle) matroid via the
+matroid-union theorem of Edmonds and Pym–Perfect; the count
+characterization for `k`-forest decomposability falls out as a
+corollary; body-bar realizations are obtained by specializing the
+indeterminate row coefficients to standard-basis Plücker
+coordinates of two-extensors. Whiteley's full
+*almost-all-realizations-are-rigid* lift via irreducible-variety
+machinery (Proposition 6 in Whiteley 1988) is **deferred** out of
+Phase 12 — the phase ships the existence-of-realization form of
+Tay's theorem only, witnessed by the standard-basis specialization.
+
+The matroid-union access takes a dependency on the
+`apnelson1/Matroid` package: its `WIP/Union.lean` (Edmonds matroid
+partition, `Matroid.Union (ι → Matroid α)`, `matroid_partition'`,
+`matroid_partition_eRk'`) and its dependency `WIP/Submodular.lean`
+(`PolymatroidFn`, `ofSubmodular`, polymatroid rank formula) are
+both zero-sorry but unbuilt in the package because of a renamed
+import. Layer 1 of the phase vendors both files into a new
+`CombinatorialRigidity/Matroid/Constructions/` mirror (analogous
+to the existing `CombinatorialRigidity/Mathlib/` mirror) with the
+import fixed and trimmed to the sub-API the phase actually needs;
+the mirror is upstream-eligible back to `apnelson1/Matroid`.
+
+The chapter runs in **forward blueprint mode** per
+`blueprint/DESIGN.md`. The new chapter
+`blueprint/src/chapter/body-bar.tex` serves as the authoritative
+dep-graph and lemma index throughout. The phase's working-copy
+hand-off (current state, architectural choices, Layer plan,
+prerequisites audit, open questions) lives in `notes/Phase12.md`;
+ROADMAP carries the planning summary above. The natural
+follow-on is **Phase 13** (body-hinge / panel-hinge Tay–Whiteley)
+en route to a longer-horizon **Phase 14** target — the
+**molecular conjecture** (Katoh–Tanigawa 2011).
+
 ## Engineering conventions
 
 - **Namespace.** Everything sits inside `SimpleGraph` or
@@ -461,3 +506,9 @@ first.
 - T. Jordán, *Combinatorial rigidity: graphs and matroids in the theory of
   rigid frameworks*, MSJ Memoirs, 2016. — modern survey.
 - A. Nixon, B. Schulze, W. Whiteley, surveys on rigidity matroids.
+- T.-S. Tay, *Rigidity of multi-graphs. I. Linking rigid bodies in n-space*,
+  J. Combin. Theory Ser. B **36** (1984), 95–112. — original body-bar
+  theorem; Phase 12 target.
+- W. Whiteley, *The union of matroids and the rigidity of frameworks*,
+  SIAM J. Disc. Math. **1** (1988), 237–255. — matroid-union proof of
+  Tay's theorem; the route Phase 12 follows.

@@ -1,0 +1,91 @@
+\section{Body-bar Tay theorem}
+\label{sec:body-bar}
+
+This chapter is the forward-mode authoritative dep-graph and lemma
+index for Phase~12 of the formalization. It is currently a planning
+skeleton; the section headers below correspond to the Layer plan
+in \texttt{notes/Phase12.md}, and the dependency-graph nodes will
+be added (red) and turned green as each Layer's Lean lands.
+
+The phase target is \textbf{Tay's theorem}~\cite{tay1984}: for
+$n \ge 2$ and $d = \binom{n+1}{2}$, a multigraph $G$ on $b$ bodies
+is the underlying graph of an infinitesimally rigid independent
+body-bar framework in $\mathbb{R}^n$ if and only if
+$|E| = d(b - 1)$ and every $m$-body sub-multigraph has at most
+$d(m - 1)$ edges; equivalently, by the
+Tutte--Nash-Williams~\cite{tutte1961,nashWilliams1961} tree-packing
+theorem, $G$ is the edge-disjoint union of $d$ spanning trees.
+
+The proof route follows Whiteley's matroid-union
+framing~\cite{whiteley1988} (a streamlining of Tay's original
+induction-based proof~\cite{tay1984}, surveyed in modern form
+in~\cite{whiteley1996}). Three ingredients:
+\begin{enumerate}
+  \item The generic $k$-frame matroid on a multigraph is the
+        $k$-fold union of the cycle matroid (Whiteley's
+        Theorem~1).
+  \item Edmonds' matroid-partition theorem~\cite{edmonds1965}
+        characterizes independence in this union by the count
+        $|E'| \le k|V'| - k$ on every non-empty subset.
+        Tutte--Nash-Williams~\cite{tutte1961,nashWilliams1961}
+        follows as a corollary.
+  \item Body-bar realizations are obtained by specializing
+        two-extensor row coefficients to standard-basis
+        Pl\"ucker coordinates (Whiteley's witness
+        construction).
+\end{enumerate}
+
+Whiteley's full irreducible-variety lift (Proposition~6
+in~\cite{whiteley1988}, lifting independence from the
+indeterminate setting to ``almost all'' body-bar realizations) is
+\emph{deferred} out of Phase~12. The phase ships the
+existence-of-realization form of Tay's theorem only: there exists
+a body-bar realization in $\mathbb{R}^n$ that is infinitesimally
+rigid (resp. independent) iff the count holds, witnessed by the
+standard-basis specialization.
+
+\subsection{Matroid-union machinery}
+\label{sec:body-bar-matroid-union}
+
+% Layer 1: vendored from apnelson1/Matroid's WIP/Union.lean +
+% WIP/Submodular.lean under CombinatorialRigidity/Matroid/.
+% Re-states the relevant API as cited facts: Matroid.Union of an
+% indexed family, the union-indep iff existence-of-decomposition,
+% the matroid-partition theorem (Edmonds), and the polymatroid
+% rank formula underlying it.
+
+\subsection{The $k$-frame matroid as a union of cycle matroids}
+\label{sec:body-bar-k-frame}
+
+% Layer 2: Whiteley's Theorem 1. Definition of the generic
+% k-frame matrix F(G, X) on a multigraph; statement and proof
+% that the k-frame matroid equals the k-fold union of the cycle
+% matroid via the column-reorder argument.
+
+\subsection{Tree-packing as a corollary}
+\label{sec:body-bar-tree-packing}
+
+% Layer 3: Whiteley's Corollary 3. The matroid-partition theorem
+% specialized to k copies of the cycle matroid yields the count
+% characterization of k-forest decomposability, recovering
+% Tutte--Nash-Williams.
+
+\subsection{Body-bar frameworks and the rigidity matrix}
+\label{sec:body-bar-framework}
+
+% Layer 4: definitions following Whiteley 1988 Section 3 and Tay
+% 1984 Section 5. Body-bar framework, rigidity map, infinitesimal
+% rigidity, basic API mirroring \cref{sec:frameworks} for the
+% body-bar setting.
+
+\subsection{Tay's theorem (existence-of-realization form)}
+\label{sec:body-bar-tay}
+
+% Layer 5a: Whiteley's Theorem 8 in its witness form. There
+% exists an independent (resp. rigid + independent) body-bar
+% framework on G in R^n iff |E'| <= d|V'| - d for all non-empty
+% subsets E' (equivalently, G is the union of d edge-disjoint
+% forests / spanning trees). Proof: specialize each bar's
+% two-extensor coordinate to a standard-basis Plücker vector
+% indexed by the bar's forest in a chosen Tutte--Nash-Williams
+% partition; verify independence + rigidity directly.
