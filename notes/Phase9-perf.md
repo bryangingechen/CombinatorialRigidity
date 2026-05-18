@@ -1,8 +1,8 @@
 # Phase 9 — perf pass (work log)
 
-**Status:** in progress.
+**Status:** ✓ closed.
 
-This is the post-Phase-9 perf pass running in parallel with the
+This was the post-Phase-9 perf pass running in parallel with the
 `Phase9-cleanup.md` round per `../CLEANUP.md` *What a cleanup round
 is not* (cleanup rounds do not measure performance; perf passes
 have their own log + 4-run A/B protocol). See `./PERFORMANCE.md`
@@ -10,14 +10,20 @@ for the round-level operating manual: the anatomy of a `lake build`,
 profiling switches, timing reproducibility, A/B measurement
 protocol, and the standing recommendations.
 
-## Current state
+## Summary
 
-F1 audit + measurement + PERFORMANCE.md append landed. Both Phase
-9 files now sit at `public section` with 5 + 3 per-decl `@[expose]`
-opt-ins; F1 is **perf-neutral** within the ±5 s noise band across
-DFS / PebbleGame / project-total. PERFORMANCE.md's F3.5
-disposition table now carries the two new rows. F2 split-audit,
-F3 LRM check, and round close pending.
+Closed: F1 (per-decl `@[expose]` audit on the two new Phase 9
+files), F2 (PebbleGame split-candidate audit, audit-only), F3
+(LRM module-conversion re-check), F4 (baseline + post-pass 4-run
+A/B medians). Both Phase 9 files now sit at `public section` with
+5 + 3 per-decl `@[expose]` opt-ins. F1 is **perf-neutral** within
+the ±5 s noise band across DFS / PebbleGame / project-total; the
+deliverable is the two-row append to PERFORMANCE.md's F3.5
+disposition table + the per-decl audit row in *Experiments that
+didn't pay*. F2 audit recommends keeping `PebbleGame.lean` as a
+single file (zero downstream-import surface to save). F3 LRM
+conversion stays blocked on upstream `apnelson1/Matroid`'s
+`Map.lean` being non-`module`; re-check on next dep-bump.
 
 ### F4.2 post-F1 (4-run medians, `public section` + per-decl `@[expose]` opt-ins)
 
@@ -236,15 +242,28 @@ Per `./PERFORMANCE.md` *Measurement protocol*:
 
 ## Hand-off / next phase
 
-Pass in progress. Phase 9 main + closure are landed; this pass
-runs alongside `Phase9-cleanup.md` per `../CLEANUP.md` *What a
-cleanup round is not*. Carry-overs queue under *Blockers* above as
-they surface.
+Pass closed. Phase 9 main + closure landed in earlier sessions;
+this perf pass + the parallel `Phase9-cleanup.md` round complete
+the post-Phase-9 hygiene. The pass's F1 outcome was perf-neutral
+(as predicted in the pass overview); the F1 disposition tables
+augment the F3.5 reference in PERFORMANCE.md and extend the
+audit's coverage to all 14 + 2 = 16 module-converted project files.
 
-If F1 lands a measurable win, the headline in PERFORMANCE.md
-*Experiments that did pay* (Module-system conversion +
-narrowed exposure surface, Phase 8-perf F3.2–F3.6) extends with a
-Phase 9 supplement; if neutral, the F1 disposition table still
-augments the F3.5 reference for future module-system passes
-(it's the bookkeeping value, not the perf value, that justifies
-the audit).
+**Carry-overs to the next pass / round / phase:**
+
+- **LRM module conversion (F3.2/F3.3).** Blocked on
+  `apnelson1/Matroid` upstream; fires when `Matroid/Representation/
+  Map.lean` flips to `module`. Defer to the next `apnelson1/Matroid`
+  dep-bump cron cycle (`hopscotch/bump-mathlib`-style PR).
+- **PebbleGame.lean structural split (F2).** Audit-only, perf-
+  neutral by single-downstream-consumer analysis; revisit only
+  if a downstream phase introduces a new consumer that would
+  benefit from one half of the file (none currently planned).
+
+**Next phase.** Whatever pulls in beyond Phase 9 — the deferred
+*component pebble game* (Lee–Streinu §5, $O(n^2)$ speedup via
+union pair-find) and the *Henneberg-sequence application*
+(Lee–Streinu §6) are the natural next forward-mode chapters per
+`../ROADMAP.md` *§9*. The project's perf baseline is now
+8.13 / 14.43 / 8.97 s on the Phase 9 surface (DFS / PebbleGame /
+project-total).
