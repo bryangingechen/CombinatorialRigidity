@@ -61,6 +61,21 @@ time, not first-draft.
 18. **`rw [h]` over a structure field whose value appears in another
     local's type** — motive failure. Build the rewritten Finset
     equality via `Finset.ext`, then `rw` the equation as a unit.
+19. **`induction … using funName.induct` on a function with `let` in
+    its body** — name the `let`-bound case-binder; `dsimp only at h`
+    after `rw [funName] at h` to inline the inner-let shadow; use
+    `nomatch h` (not `Option.noConfusion`) to discharge
+    match-with-`none`-discriminee contradictions.
+20. **`rw [eq]` after `obtain ⟨rfl, _⟩` on a cons-pattern endpoint
+    trips motive on the sibling walk's type** — bind both pair
+    equalities to named hypotheses; `rw` on the *un*-substituted
+    endpoint (which doesn't appear in the sibling walk's type).
+21. **`ring` fails on alpha-renamed `Finset.sum`s — `omega` /
+    `linarith` as atom extractor** — bind each sum identity as a
+    named `have` and close the surrounding linear (in)equality with
+    `omega` / `linarith`; both treat each `Finset.sum` as an opaque
+    ℕ / ordered-field atom, sidestepping `ring`'s lambda-body
+    syntactic-identity check.
 
 ---
 
@@ -622,3 +637,109 @@ dif_neg hthr] at h` to inline the inner let before the
 `hu_none`/`hv_none` rewrites would land; the both-DFS-fail branch
 needed `exact nomatch h` after the rewrites to discharge the
 contradiction.
+
+---
+
+## 20. `rw [eq]` after `obtain ⟨rfl, _⟩` on a cons-pattern endpoint trips motive on the sibling walk's type
+
+When a cons-pattern induction binds a sibling walk
+`q : DirectedWalk R u_int w` and a `Sym2.eq_iff` / `Prod.mk.inj`
+decomposition then substitutes one of the cons-pattern endpoints
+(`u_out := v` via `obtain ⟨rfl, _⟩`), a *downstream* `rw [eq]` on a
+`q.vertices`-mentioning goal can fail with *"motive is not type
+correct"*. The sibling walk's type still references the *other*
+substituted endpoint, and Lean's motive abstraction tries to rewrite
+that endpoint inside `q`'s type.
+
+This is one tactic step downstream of § 4 (*`subst` between two free
+variables picks the wrong one*): § 4 covers the *direction* of the
+substitution; § 20 covers the *motive failure on the downstream
+`rw`* after either substitution direction succeeds.
+
+**Symptom.** Inside `induction p with | cons _ _ _ _ q ih => …`
+(where `q : DirectedWalk R u_int w`), `obtain ⟨rfl, _⟩` succeeds and
+substitutes `u_out := v`. Then `rw [h_eq]` with `h_eq : v = u_int` on
+a goal `v ∈ q.vertices` fails with *"motive is not type correct"* —
+even though `v` is plainly visible in the goal.
+
+**Fix.** Don't `obtain ⟨rfl, _⟩`. Bind both pair equalities to named
+hypotheses, compose them into a single equation between the two
+endpoints, and `rw` on the *un*-substituted endpoint (which doesn't
+appear in the sibling walk's type — only the other one does):
+
+```lean
+have h_uo : v = u_out := (Prod.mk.inj heq).1
+have h_ui : v = u_int := (Prod.mk.inj heq).2
+have h_outint : u_out = u_int := h_uo.symm.trans h_ui
+rw [h_outint] -- rewrites u_out, which is NOT in q's type
+```
+
+For the canonical case of "*the source vertex is in `p.vertices`*",
+the project-internal helper `DirectedWalk.head_mem_vertices`
+(`Search/DFS.lean:154`, `@[simp]`) collapses the typical
+`cases q <;> simp [vertices]` follow-up dance:
+
+```lean
+@[simp] lemma head_mem_vertices {u w : V} (p : DirectedWalk R u w) :
+    u ∈ p.vertices := …
+```
+
+Worked case study: `IsPath.notMem_loop_arcsFinset` and
+`IsPath.notMem_antiparallel_arcsFinset` in
+`CombinatorialRigidity/Search/DFS.lean`.
+
+---
+
+## 21. `ring` fails on alpha-renamed `Finset.sum`s — `omega` / `linarith` as atom extractor
+
+A goal shaped `Σ + B = B + Σ'` where `Σ` and `Σ'` are
+alpha-equivalent `Finset.sum`s — same Finset, same body modulo a
+bound-variable rename — fails to close with `ring`. The atom
+extractor checks *syntactic* identity on lambda bodies, not full
+defeq, so `∑ x ∈ s, f x` and `∑ y ∈ s, f y` register as distinct
+atoms even though they're propositionally equal.
+
+The rescue exploits a property already documented in § 1:
+`omega` (over ℕ) and `linarith` (over ordered fields) treat each
+`Finset.sum` as an *opaque atomic term*, which means they don't care
+whether two surface forms alpha-match — both forms reduce to the
+same atom symbol in their internal representation.
+
+**Symptom.** A residual goal like
+`∑ x ∈ V' \ {u, v}, peb k x + (peb u + peb v) = peb u + peb v + ∑ w ∈ V' \ {u, v}, peb k w`
+where the LHS / RHS bound variables (`x` vs `w`) don't match,
+`ring` reports *"unsolved goals"*, `ring_nf` produces a non-closing
+form, and `omega` directly doesn't see the equation (the two sums
+are still separate atoms even after `omega` normalisation).
+
+**Fix.** Don't try to make the two sums syntactically equal. Bind
+each sum identity (e.g. `Finset.sum_sdiff`, `Finset.sum_pair`) as a
+named `have` hypothesis with the bound variable Lean prefers, then
+let `omega` / `linarith` close the surrounding linear (in)equality
+using the sum-identity `have`s as opaque facts:
+
+```lean
+have h_sdiff : ∑ x ∈ V' \ ({u, v} : Finset V), D.peb k x +
+                 ∑ x ∈ ({u, v} : Finset V), D.peb k x =
+               D.pebOn k V' := by rw [pebOn]; exact Finset.sum_sdiff huv_sub
+have h_pair : ∑ x ∈ ({u, v} : Finset V), D.peb k x = D.peb k u + D.peb k v :=
+  Finset.sum_pair huv
+have h_pos : 0 < ∑ w ∈ V' \ ({u, v} : Finset V), D.peb k w := by omega
+```
+
+The two `have`s name the two pieces; `omega` chains them through
+the linear arithmetic without needing the bound variables to align.
+
+This is the same atom-opacity property § 1 weaponises for omega
+*input* — § 21 weaponises it as a `ring` *rescue* when the alpha-
+mismatch surfaces unexpectedly. If the rescue doesn't fire (e.g. the
+surrounding identity is non-linear), the next reach is
+`Finset.sum_congr rfl (fun _ _ => rfl)` to rename the bound variable
+explicitly before `ring`.
+
+Worked case study: `Reachable.independent_brings_pebble` in
+`CombinatorialRigidity/PebbleGame.lean` (Phase 9 *Completeness*
+chain). The `pebOn V' = peb u + peb v + ∑ w ∈ V' \ {u, v}, peb k w`
+decomposition closes via the two-`have` + `omega` chain above; the
+follow-up `Finset.exists_ne_zero_of_sum_ne_zero` then extracts the
+blocking witness from `h_pos`.

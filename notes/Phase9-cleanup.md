@@ -52,7 +52,14 @@ landed one edit: `ROADMAP.md` *Engineering conventions → Vertex
 types* now points at `DESIGN.md` *Pebble-game style island* for
 the algorithm-bearing-files exception (the `-With` pattern stays
 DESIGN-only — algorithm-design rather than engineering
-convention). D2, D3 still to do.
+convention). D3 landed all 5 Phase-9-resolved FRICTION entries to
+`FRICTION-archive.md`; two needed a TACTICS-QUIRKS lift first (new
+§§ 20 + 21) to meet the de-facto archive-stability bar (every
+archived entry has a TACTICS-* cross-reference). Companion edits:
+TACTICS-QUIRKS *Sections* index extended to §§ 19/20/21 (§ 19 was
+previously missed when § 19's body was added during Phase 9 main);
+`CombinatorialRigidity/CLAUDE.md` quirks-index gains §§ 20 + 21
+symptom bullets; Phase9.md *Promoted to* lines updated. D2 still to do.
 Bucket C's long-proof audit landed
 two Lean simplifications. (i) The 11-line `|V'| ≥ 2` derivation
 duplicated at `independent_brings_pebble_simpleGraph_form` and
@@ -979,13 +986,62 @@ the manual:
     behaviour, combined with case-analysis at the call site) —
     surfaced twice in Phase 9 (path reversal + arc insertion); is
     this a TACTICS-GOLF / DESIGN.md candidate?
-- [ ] **D3:** `FRICTION.md` housekeeping. Phase 9 added 5 resolved
+- [x] **D3:** `FRICTION.md` housekeeping. Phase 9 added 5 resolved
   entries that all have post-resolution indices (mirror files or
   TACTICS-QUIRKS § references). Per the CLAUDE.md *Filing rule for
   new entries*, "migrate to `FRICTION-archive.md` on the next
   housekeeping pass once their resolution is fully indexed." Move
   Phase 9's resolved entries to archive iff their indices are stable;
   leave any whose resolution needs further eyes.
+
+  **Disposition.** All 5 entries archived. Two needed a TACTICS-QUIRKS
+  lift first (a "lift-on-archive" sub-step on this housekeeping pass)
+  to bring them to the de-facto archive-stability bar — empirically
+  every archived entry in `FRICTION-archive.md` has a
+  `**Lifted to:** TACTICS-GOLF § X` or `**Lifted to:** TACTICS-QUIRKS
+  § X` cross-reference, beyond the broader "named mirror lemma / named
+  helper / TACTICS-* lift" criterion in the archive header.
+
+  - **Entry 1** *`induction _ using funName.induct` binder count +
+    inner-`let` shadowing* — already lifted to TACTICS-QUIRKS § 19 +
+    quirks index in `CombinatorialRigidity/CLAUDE.md`. Archived
+    directly.
+  - **Entry 2** *`rw [D.field_eq]` fails motive when a local's type
+    references the field* — already lifted to TACTICS-QUIRKS § 18 +
+    quirks index. Archived directly.
+  - **Entry 3** *`rw` over a cons-pattern endpoint variable trips
+    motive on the sibling walk's type* — was un-lifted (only a named
+    project-internal helper `head_mem_vertices` at
+    `Search/DFS.lean:154`). Lifted to new TACTICS-QUIRKS § 20 *`rw
+    [eq]` after `obtain ⟨rfl, _⟩` on a cons-pattern endpoint trips
+    motive on the sibling walk's type* (the rescue is one tactic
+    downstream of § 4); quirks-index entry added; then archived.
+  - **Entry 4** *`ring` treats alpha-renamed `Finset.sum` as distinct
+    atoms* — was un-lifted (only an in-body *General rule* paragraph).
+    Lifted to new TACTICS-QUIRKS § 21 *`ring` fails on alpha-renamed
+    `Finset.sum`s — `omega` / `linarith` as atom extractor* (rescue
+    weaponises the § 1 atom-opacity property as a `ring`-failure
+    workaround); quirks-index entry added; then archived.
+  - **Entry 5** *`Finset.toList` is noncomputable — math/exec layer
+    split* — already lifted to DESIGN.md *Pebble-game style island
+    → Math layer / exec layer split + The `-With` variant pattern*
+    (DESIGN.md design pin, stable cross-reference equivalent in
+    permanence to a TACTICS-* lift for this design-bearing friction).
+    Archived.
+
+  **Companion edits.** TACTICS-QUIRKS.md *Sections* index updated to
+  include § 19 (previously missed when § 19 itself was added during
+  Phase 9 main) + new §§ 20 and 21. `CombinatorialRigidity/CLAUDE.md`
+  quirks-index pointer table extended with symptom bullets for §§ 20
+  and 21. `notes/Phase9.md` *Promoted to ...* lines for entries 3 and
+  4 updated to include the new TACTICS-QUIRKS pointers.
+
+  **Sizes:** `notes/FRICTION.md` 1510 → 1355 LoC (−155); `notes/
+  FRICTION-archive.md` 717 → 885 LoC (+168 — the +13 delta over the
+  155 removed is from prose edits adjusting "this commit" → "Phase
+  9" + consolidating "Lifted to" wording for archive form); `TACTICS-
+  QUIRKS.md` 624 → 745 LoC (+121 — 16 index lines for §§ 19/20/21 +
+  ~105 body lines for §§ 20 + 21).
 - [x] **D4:** Re-skim `../DESIGN.md` *Choices to revisit*. Phase 9
   resolved several decisions queued there:
   - `PartialOrientation V` representation (option (i) chosen,
@@ -1080,10 +1136,12 @@ the manual:
 
 - Round in progress; buckets A + B + C fully closed (A1--A4 +
   B1--B5 + C1--C4 all green); bucket D in progress — D1 (Phase9.md
-  compression) + D4 (`DESIGN.md` re-skim, no-op) + D5 (`ROADMAP.md`
-  re-skim, one pointer edit) landed; D2, D3 remain. (`checkdecls`
-  is the always-on per-commit gate per `../blueprint/CLAUDE.md`
-  *Static checks before commit*, not a separate task.)
+  compression) + D3 (`FRICTION.md` housekeeping + two-entry
+  lift-on-archive to TACTICS-QUIRKS §§ 20 + 21) + D4 (`DESIGN.md`
+  re-skim, no-op) + D5 (`ROADMAP.md` re-skim, one pointer edit)
+  landed; D2 remains. (`checkdecls` is the always-on per-commit
+  gate per `../blueprint/CLAUDE.md` *Static checks before commit*,
+  not a separate task.)
 
 ## Hand-off / next phase
 
@@ -1132,11 +1190,17 @@ needed, and *Pebble-game style island* was already Phase-9-
 calibrated by forward-work commits. D5 landed one pointer edit:
 `ROADMAP.md` *Engineering conventions → Vertex types* now points
 at `DESIGN.md` *Pebble-game style island* for the algorithm-
-bearing-files exception. Remaining D-bucket tasks: D2
-(lift-on-promotion sweep — candidates: `match h : ... with` worked
-example, `Reachable k ℓ D` non-motive threading, unified additive-
-identity pattern), D3 (`FRICTION.md` housekeeping — migrate Phase
-9's 5 resolved entries to archive if indices stable).
+bearing-files exception. D3 archived all 5 Phase-9-resolved
+FRICTION entries to `FRICTION-archive.md`; two (cons-pattern
+endpoint motive, `ring` alpha-renamed sums) needed a
+lift-on-archive first to TACTICS-QUIRKS §§ 20 + 21 to meet the
+de-facto archive-stability bar. Companion edits: TACTICS-QUIRKS
+*Sections* index extended to §§ 19/20/21, quirks-index pointer
+table in `CombinatorialRigidity/CLAUDE.md` gains §§ 20 + 21
+symptom bullets, Phase9.md *Promoted to* updated. Remaining
+D-bucket task: D2 (lift-on-promotion sweep — candidates: `match
+h : ... with` worked example, `Reachable k ℓ D` non-motive
+threading, unified additive-identity pattern).
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is

@@ -715,3 +715,171 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   `fun _ _ h => smul_left_injective ℝ hv (add_left_cancel h)`.
   Second-cleanup-pass resolution of a deferred audit.
 - **Status:** resolved.
+
+### [resolved] `induction _ using funName.induct` binder count + inner-`let` shadowing
+
+- **Where it bit:** `tryAddEdgeWith_reachable` in
+  `CombinatorialRigidity/PebbleGame.lean` (Phase 9, *Reachable*
+  preservation chain). `tryAddEdgeWith`'s below-threshold branch
+  binds `let P : V → Bool := fun w => …`; the auto-generated
+  `tryAddEdgeWith.induct` carries `P` as a `let`/`have` clause in
+  three of its five cases. Initial proof attempt (i) omitted `P`
+  from the case-binder list for case5 — Lean shifted the remaining
+  binders, and the `rw [tryAddEdgeWith, dif_neg hthr] at h` line
+  failed with *"Application type mismatch: argument `hthr` has
+  type V → Bool"* (the now-misaligned `hthr` was actually `P`).
+  After fixing the binder count, (ii) `rw [hu_none, hv_none] at h`
+  failed with *"Did not find an occurrence of the pattern
+  `D.tryReachPebbleWith P u (toSucc D) ⋯`"* — the inner `let P :=
+  …` inside `h` shadowed the case binder `P`, so `hu_none`'s
+  pattern (built on the case binder) didn't match. (iii) After
+  inlining the inner let with `dsimp only at h` and re-running the
+  rewrites, `Option.noConfusion h` failed: the matches with
+  `none` discriminees hadn't reduced.
+- **Friction:** three closely-related traps that all surface only
+  when the function being inducted has a `let` in its body. None
+  of TACTICS-QUIRKS § 1–18 covered this combination.
+- **Resolved (Phase 9):** the working pattern is (a) name the
+  `let`-bound parameter in each affected case's binder list — use
+  `#check @funName.induct` or `lean_hover_info` via MCP to see the
+  exact let / have / ∀ chain; (b) apply `dsimp only at h` after
+  the function-definition unfold to inline the inner `let` so
+  subsequent rewrites match; (c) use `nomatch h` (or `cases h`,
+  `simp at h`) rather than `Option.noConfusion h` to discharge
+  match-with-`none`-discriminee contradictions, since these match
+  tactics trigger the match reduction automatically.
+- **Lifted to:** TACTICS-QUIRKS.md § 19 *`induction … using
+  funName.induct` on a function with `let` in its body*; quirks
+  index entry added in `CombinatorialRigidity/CLAUDE.md`.
+- **Status:** resolved.
+
+### [resolved] `rw [D.field_eq]` fails motive when a local's type references the field
+
+- **Where it bit:** `PartialOrientation.out_reverse_add` in
+  `CombinatorialRigidity/PebbleGame.lean` (Phase-9 main). The path
+  `p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w` ties `D.arcs`
+  into `p`'s type, and the goal contains both `D.arcs.filter (·.1 = v)`
+  *and* `p.vertices` (via the `if v ∈ p.vertices ∧ … then 1 else 0`
+  clauses). The natural step "decompose `D.arcs` as `D.arcs \
+  p.arcsFinset ∪ p.arcsFinset`, then split the filter card" calls
+  `rw [h_decomp]` (or `conv_rhs => rw [h_decomp]`) with `h_decomp :
+  D.arcs = …`. Lean's motive abstraction tries to rewrite `D.arcs`
+  inside `p.vertices`'s carrier (which lives in `p`'s type) and
+  fails with *motive is not type correct*.
+- **Friction:** the existing motive entries (§ 4, § 5 in
+  `TACTICS-QUIRKS.md`, and the FRICTION `subst between two free
+  variables` neighbour) are about *names being substituted*;
+  this case is about *a structure field being rewritten where the
+  field appears in another local's type*. Distinct shape.
+- **Resolved (Phase 9):** build the rewritten Finset equation
+  via `Finset.ext` + manual disjunction casework, then `rw` the
+  equation as a single unit whose motive is `λ s, s.card`
+  (trivially type-correct). Pattern is reusable for any subset-
+  level reversal lemma that filters `D.arcs` in the presence of
+  `p`. **Lifted to:** TACTICS-QUIRKS.md § 18 *`rw [h]` over a
+  structure field whose value appears in another local's type*.
+- **Status:** resolved.
+
+### [resolved] `rw` over a cons-pattern endpoint variable trips motive on the sibling walk's type
+- **Where it bit:** `IsPath.notMem_loop_arcsFinset` and
+  `IsPath.notMem_antiparallel_arcsFinset` in
+  `CombinatorialRigidity/Search/DFS.lean`. Inside the `cons u_out
+  u_int _ _ q ih` branch of an induction on `p : DirectedWalk R u
+  w`, the path equalities `(v, v) = (u_out, u_int)` unpack via
+  `Prod.mk.inj` to `v = u_out ∧ v = u_int`. The first `rfl`
+  substitutes `u_out := v` (cf. `TACTICS-QUIRKS.md` § 4); the
+  follow-up `rw [← h_eq]` (with `h_eq : v = u_int`) on a goal `v
+  ∈ q.vertices` then fails with *motive is not type correct*,
+  because `q : DirectedWalk R u_int w` ties `u_int` to `q`'s
+  type, and Lean's motive abstraction tries to rewrite `u_int`
+  inside `q`'s type.
+- **Friction:** § 4 covers the *direction* of `subst` between two
+  free variables, but the symptom here surfaces one tactic *later*
+  on a downstream `rw`, not at the `obtain ⟨rfl, _⟩` itself. The
+  same shape blocks `cases q <;> simp [vertices]` whenever the
+  cons-pattern endpoint has already been substituted away.
+- **Resolved (Phase 9):** bind the pair equalities to named
+  hypotheses (`have h_uo : v = u_out := (Prod.mk.inj heq).1`),
+  compose them into a single `u_out = u_int` equation, and `rw`
+  only on `u_out` (which does not appear in `q`'s type — only
+  `u_int` does). Factor "the source vertex is in `p.vertices`"
+  through a one-line `head_mem_vertices : u ∈ (p : DirectedWalk
+  R u w).vertices` helper to skip the `cases q <;> simp` dance
+  entirely. The helper is `@[simp]`; reused across the Phase 9
+  structural-lemma chain.
+- **Lifted to:** TACTICS-QUIRKS.md § 20 *`rw [eq]` after `obtain
+  ⟨rfl, _⟩` on a cons-pattern endpoint trips motive on the sibling
+  walk's type*; quirks index entry added in
+  `CombinatorialRigidity/CLAUDE.md`. § 20 added in Phase 9-cleanup
+  D3 lift-on-archive pass.
+- **Status:** resolved.
+
+### [resolved] `ring` treats alpha-renamed `Finset.sum` as distinct atoms
+- **Where it bit:** `Reachable.independent_brings_pebble` in
+  `CombinatorialRigidity/PebbleGame.lean`. After
+  `rw [pebOn, ← Finset.sum_sdiff huv_sub, Finset.sum_pair huv]` the
+  residual goal was
+  `∑ x ∈ V' \ {u, v}, peb k x + (peb u + peb v) = peb u + peb v + ∑ w ∈ V' \ {u, v}, peb k w`
+  — an `A + B = B + A` shape modulo alpha-equivalence on the
+  `Finset.sum` body (`x` vs `w`). `ring` failed with *"unsolved
+  goals"*; the atom-extractor evidently checks syntactic identity on
+  lambda bodies, not full defeq.
+- **Friction:** the natural Finset.sum-decomposition idiom (rewrite
+  via `Finset.sum_sdiff` then `Finset.sum_pair`, finish with `ring`)
+  doesn't close. Bound-variable names from the rewrite source
+  (Finset.sum_sdiff uses `x`) and from the target's `have` statement
+  (chose `w`) don't align, and `ring` doesn't normalize across.
+- **Resolved (Phase 9):** Bind the two pieces (`Finset.sum_sdiff`
+  and `Finset.sum_pair`) as separate `have` hypotheses and let
+  `omega` close the existence-of-witness chain directly — `omega`
+  treats each `Finset.sum` as an atomic ℕ term and the surrounding
+  linear inequality `0 < ∑ w ∈ V' \ {u, v}, peb k w` is one
+  `omega` away.
+- **General rule (for the next sum-decomposition that hits this):**
+  When `ring` fails on a goal that's *syntactically*
+  `Σ + B = B + Σ'` with `Σ`, `Σ'` alpha-equivalent, do not paper
+  over with `ring_nf; ring`. Switch to threading the sum identities
+  through `have`s and finishing with `omega` (linear over ℕ) or
+  `linarith` (ordered field). The atom abstraction does the work
+  `ring` won't.
+- **Lifted to:** TACTICS-QUIRKS.md § 21 *`ring` fails on
+  alpha-renamed `Finset.sum`s — `omega` / `linarith` as atom
+  extractor*; quirks index entry added in
+  `CombinatorialRigidity/CLAUDE.md`. § 21 added in Phase 9-cleanup
+  D3 lift-on-archive pass.
+- **Status:** resolved (Phase 9 main, completeness side, Lemma 13).
+
+### [resolved] `Finset.toList` is noncomputable — math/exec layer split
+- **Where it bit:** `reachableFindingAux` body in
+  `CombinatorialRigidity/Search/DFS.lean`. Enumerating the children
+  of `v` for early-termination DFS via `(succ v).attach.toList` (the
+  natural shape if `succ : V → Finset V`) would force the whole
+  function `noncomputable`, because `Finset.toList` lifts through
+  `Multiset.toList`'s `Classical`-flavored `Quotient.lift` (an
+  unordered collection has no canonical permutation representative).
+- **Friction:** the pebble-game style island in `DESIGN.md`
+  aspires to *"`#eval` and `decide` should actually fire on extracted
+  certificates"*; first-attempt body fill with
+  `succ : V → Finset V` silently downgrades the algorithm to
+  `noncomputable`, defeating that goal. Lesson surfaced when the
+  user asked whether the DFS could anchor a real `IO`-driven
+  implementation (parser → algorithm → output): the answer is yes,
+  but only with computability throughout.
+- **Resolved (Phase 9):** Math/exec layer split. The DFS now
+  takes `succ : V → List V` for child enumeration (exec layer, fully
+  computable, `(succ v).attach.findSome?` for the inner loop) and
+  keeps `visited : Finset V` for the termination measure
+  `(Finset.univ \ visited).card` (math layer, no enumeration, just
+  membership + complement). `#eval reachableFinding succEx (· == 2) 0`
+  on a `Fin 4` example now returns `some (2, [0, 1, 2])`. Callers
+  that hold adjacency data in `Finset` form expose a list projection
+  at the DFS boundary (the projection itself can stay noncomputable
+  in isolation without contaminating the algorithm). The pebble-
+  game algorithm layers (`tryReachPebble`, `tryAddEdge`,
+  `runPebbleGame`) inherit the pattern via the `-With` variant
+  generalization.
+- **Lifted to:** DESIGN.md *Pebble-game style island → Math layer /
+  exec layer split* + *The `-With` variant pattern* (the design pin
+  documents both the splitting rationale and the orientation-
+  indexed `toSucc` generalisation that the pebble-game layers use).
+- **Status:** resolved.

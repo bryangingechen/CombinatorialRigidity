@@ -293,11 +293,13 @@ dep-graph closes.
   `rw [D.field_eq]` fails motive when a local's type references the
   field*.
 - *`rw` over a cons-pattern endpoint variable trips motive on the
-  sibling walk's type* → FRICTION *[resolved] `rw` over a cons-pattern
-  endpoint variable trips motive on the sibling walk's type*.
+  sibling walk's type* → TACTICS-QUIRKS § 20 (added in Phase 9-cleanup
+  D3); FRICTION *[resolved] `rw` over a cons-pattern endpoint variable
+  trips motive on the sibling walk's type*.
 - *`ring` treats alpha-renamed `Finset.sum`s as distinct atoms* →
-  FRICTION *[resolved] `ring` treats alpha-renamed `Finset.sum` as
-  distinct atoms*.
+  TACTICS-QUIRKS § 21 (added in Phase 9-cleanup D3); FRICTION
+  *[resolved] `ring` treats alpha-renamed `Finset.sum` as distinct
+  atoms*.
 - *`Finset.toList` is noncomputable — math/exec layer split* →
   FRICTION *[resolved] `Finset.toList` is noncomputable*; DESIGN.md
   *Pebble-game style island → Math layer / exec layer split*.

@@ -99,6 +99,21 @@ bullets. If one matches, jump to the named section of
   funName.induct` on a function with `let` in its body*; name the
   `let`-bound parameter in the case-binder list, and apply `dsimp
   only at h` after `rw [funName] at h` to inline the inner `let`.
+- *"Tactic `rewrite` failed: motive is not type correct"* on a
+  `rw [eq]` step where `eq` is a free-variable equation derived
+  *after* `obtain ⟨rfl, _⟩` substituted a cons-pattern endpoint, and
+  a sibling walk `q` in scope has the substituted endpoint in its
+  type — § 20 *`rw [eq]` after `obtain ⟨rfl, _⟩` on a cons-pattern
+  endpoint trips motive on the sibling walk's type*; bind both pair
+  equalities to named hypotheses and `rw` on the *un*-substituted
+  endpoint (the one not appearing in `q`'s type).
+- `ring` reports *"unsolved goals"* on a sum-of-sums identity
+  `Σ + B = B + Σ'` where `Σ` and `Σ'` are alpha-equivalent
+  `Finset.sum`s (same Finset and body, different bound-variable
+  name) — § 21 *`ring` fails on alpha-renamed `Finset.sum`s*; bind
+  each sum identity as a named `have` and close the surrounding
+  linear (in)equality with `omega` / `linarith`, both of which
+  treat each `Finset.sum` as an opaque atom.
 
 ## Starting a Lean-touching session
 
