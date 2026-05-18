@@ -1,52 +1,23 @@
 # Phase 10 + 11 cleanup round — work log
 
-**Status:** in progress (A1 closed as no-op; A2 closed with Phase-9-era
-`some`/`none` → `.inr`/`.inl` cleanup in `chapter/pebble-game.tex` +
-matching docstring fix in `Algorithm.lean`; A3 closed with two
-targeted fixes in `chapter/executable.tex` — `def:runPebbleGameExec`
-`\uses{}` completion + `lem:mem-edgeListSorted` retired forward-reference
-to non-existent discharge nodes; A4 closed as no-op — Bucket A
-complete; B1 closed as no-op — zero `classical` tactic invocations
-and zero `Classical.*` term-mode references in actual code across the
-Phase 10+11 surface; B2 closed as no-op — all 6 `noncomputable def`
-sites on the Phase 10+11 surface are forced by the same `Finset.toList`
-/ `Quot.out` enumeration driver Phase 9-cleanup documented, with the
-delta vs Phase 9 being a net wash (`reachClosure` retired in Phase 11
-Layer 1 in favour of computable `reachClosureComputable`;
-`runPebbleGame.aux` added in Phase 11 Layer 4b alongside
-`runPebbleGame`); pre-grep smell-count table revised — the previous
-entry's 29-site claim conflated docstring/comment mentions of
-"`noncomputable`" with actual `noncomputable def` sites; B3 closed as
-no-op + smell-table revision — depth-aware comma count surfaces 6
-genuine 4+ arg `rw` chains (the pre-grep regex's 9 was inflated by
-inner-`⟨_, _⟩`-tuple commas at lines 421/435/448 in `Basic.lean`,
-which are 2-arg chains), each verdict per-step structural rewrite
-with no missing-fused-lemma candidate; B4 closed as no-op —
-`grep -nE 'letI|haveI|Fintype.ofFinite|Set.Finite.fintype'` over the
-Phase 10+11 surface returns zero `letI` / `haveI` / `Set.Finite.fintype`
-hits and two `Fintype.ofFinite` hits, both in *Style island* docstrings
-documenting the deliberate *absence* of the bridge idiom; B5 closed as
-no-op — `grep -nE '@\[nolint|set_option linter'` and a wider
-case-insensitive `grep -nEi 'nolint|linter'` across the Phase 10+11
-surface return zero hits; Bucket B complete; **C1 closed with top-10
-ranking + per-site question** — `Algorithm.lean` (Layer 3 reshape)
-carries 6 of 10 entries split into two cross-proof unification
-clusters (three fold-traversal lemmas on `runPebbleGameWith`; three
-case-traversal lemmas on `tryAddEdgeWith`), `Correctness.lean` carries
-2 bridge-form lemmas, `DFS.lean` carries the 2 completeness halves; the
-docstring-filtered AWK ranking dropped a docstring false-positive that
-the §C-template grep would have surfaced; **C2 closed with all ten
-sites as *no-op* and both cross-proof unification clusters dissolved**
-— cluster (i) (three fold-traversal lemmas) dissolves on differing
-conclusion shapes (`Reachable k ℓ D'` vs. underline sandwich vs.
-per-edge membership) + differing accept-branch update rules; cluster
-(ii) (three case-traversal lemmas) dissolves on differing Sum-branch
-hypotheses (`.inr D'` vs. `.inl w` contradict in different cases) +
-differing per-case closing tactics (`exact ih h` vs. `rw [ih h,
-r.underline_newOrient_eq]`); per-site verdict table + dissolution
-analysis recorded in *Cleanup pass summaries* C2 below; **C3 closed
-as a no-op** (zero in-round refactor candidates surfaced); Bucket C
-complete; D pending).
+**Status:** in progress (Bucket A complete: A1 no-op / A2 Phase-9-era
+`some`/`none` → `.inr`/`.inl` fix in `chapter/pebble-game.tex` +
+matching `Algorithm.lean` docstring / A3 two targeted fixes in
+`chapter/executable.tex` — `def:runPebbleGameExec` `\uses{}`
+completion + `lem:mem-edgeListSorted` retired forward-reference /
+A4 no-op. Bucket B complete: B1 no-op / B2 no-op + smell-table
+revision (29 → 6 actual sites; conflation with docstring mentions)
+/ B3 no-op + smell-table revision (9 → 6 actual sites; depth-blind
+comma count over-counted `⟨_, _⟩`-tuple chains) / B4 no-op / B5
+no-op. Bucket C complete: C1 top-10 ranking + per-site question;
+C2 all ten sites *no-op* with both cross-proof unification clusters
+dissolved on inspection; C3 no-op. **D1 closed**: `notes/Phase11.md`
+compressed from 856 → ~436 LoC, within the adaptive 350-450 budget
+for a substantive phase per `../notes/CLAUDE.md` *Soft length
+budget*; pattern was *Current state* per-layer narrative → ~10-LoC
+pointer summary, *Architectural choices* inline TeX declarations →
+pointers to Lean sources and blueprint nodes, and *Decisions made*
+entries duplicating *Layer plan* dropped.).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -540,23 +511,29 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ### Bucket D — Project-organization compression
 
-- [ ] **D1:** `notes/Phase11.md` compression. Currently 856 LoC vs
-  the adaptive 350-450 budget for a substantive phase
-  (`../notes/CLAUDE.md` *Soft length budget*). Phase 11 was a
-  five-layer structural-edit phase with 6 forward-work commits + 2
-  opener docs commits — substantive but not at the "20+ commits"
-  scale that justifies the upper end. Compression candidates:
-  - *Current state* runs ~150 LoC of per-layer narrative that
-    re-tells what each layer commit's message + the *Layer plan*
-    section already say. Collapse to a per-layer-pointer summary.
-  - *Architectural choices made up front* is ~80 LoC of design
-    rationale; some entries (e.g., the verdict-shape inductive
-    declaration in TeX-style) duplicate `chapter/pebble-game.tex`
-    *User-facing verdict* prose and can collapse to a pointer.
-  - *Decisions made during this phase* is well-organized but a
-    few entries (e.g., *Layer 4b: collapsed to maximal reshape*)
-    duplicate the *Current state* narrative.
-  Target: ~400 LoC.
+- [x] **D1:** `notes/Phase11.md` compression. Closed: 856 LoC →
+  ~436 LoC (within the adaptive 350-450 budget per
+  `../notes/CLAUDE.md` *Soft length budget* — Phase 11 is a
+  substantive five-layer structural-edit phase but not at the
+  "20+ commits" scale that justifies the upper end). Compression
+  pattern: *Current state* collapsed from a ~150-LoC per-layer
+  narrative to a ~10-LoC hand-off summary pointing at *Layer plan*
+  (which carries the per-layer landing detail) and *Architectural
+  choices* (which carries the phase-shape decisions); *Architectural
+  choices: User-facing verdict* / *Workhorse witness* shortened by
+  dropping the inline `inductive` / `structure` TeX declarations in
+  favour of pointers to the Lean sources and the
+  `chapter/pebble-game.tex` `def:pebbleGameResult` /
+  `def:workhorseWitness` nodes; *Decisions made* trimmed by dropping
+  the *Layer 3: reach-machinery lives in Basic.lean* entry (the
+  import-order rationale is already in *Layer plan* Layer 3), the
+  *Layer 4: PebbleGameResult placement* entry (covered in
+  *Architectural choices: placement* + *Layer plan*), and the
+  *Layer 4b: collapsed to maximal reshape* entry (the substantive
+  content is in *Layer plan* Layer 4b and *Architectural choices:
+  Maximal reshape*). Hand-off contract still passes: *Current
+  state* + *Hand-off / next phase* + *Layer plan* identify the
+  next-phase candidates without reading source.
 - [ ] **D2:** `notes/Phase10.md` compression. Currently 546 LoC.
   Phase 10 was a shorter five-layer forward-work phase; adaptive
   budget allows ~250-350. *Current state* and *Architectural
@@ -1004,6 +981,44 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   ranking surfaces structural shape, not extraction debt"* — and
   whether to lift to TACTICS-GOLF is best assessed at D3 (FRICTION
   re-skim) when the post-cleanup view is complete.
+- **D1: `notes/Phase11.md` compression** — closure with substantive
+  edits. 856 → ~436 LoC, within the adaptive 350-450 LoC budget for
+  a substantive phase per `../notes/CLAUDE.md` *Soft length budget*
+  (Phase 11 is a five-layer structural-edit phase with 6
+  forward-work commits + 2 opener docs commits — substantive but
+  not at the "20+ commits" upper-end scale). Compression pattern,
+  matching the three candidates listed in §D's D1 entry at round
+  open:
+  1. *Current state* (~150 LoC of per-layer narrative) collapsed
+     to a ~10-LoC hand-off paragraph pointing at *Layer plan* (for
+     per-layer landing detail) and *Architectural choices* (for
+     phase-shape decisions). The per-layer narrative duplicated
+     each commit's message + the *Layer plan* section directly
+     below, and was the single largest compression lever.
+  2. *Architectural choices made up front: User-facing verdict* /
+     *Workhorse witness* shortened by dropping the inline `inductive`
+     / `structure` TeX declarations (which duplicate
+     `chapter/pebble-game.tex`'s `def:pebbleGameResult` /
+     `def:workhorseWitness` prose and the Lean sources) in favour
+     of pointers to the source nodes. The Phase 9/10 split-bridge
+     entry kept as-is (it states a non-obvious fact: *the math/exec
+     split survives the verdict reshape*).
+  3. *Decisions made during this phase* trimmed: dropped the
+     *Layer 3: reach-machinery lives in Basic.lean* entry (the
+     import-order rationale is already in *Layer plan* Layer 3),
+     the *Layer 4: PebbleGameResult placement* entry (covered in
+     *Architectural choices: PebbleGameResult placement* plus
+     *Layer plan*), and the *Layer 4b: collapsed to maximal
+     reshape* entry (the substantive content is in *Layer plan*
+     Layer 4b plus *Architectural choices: Maximal reshape*). The
+     remaining Layer-3 / Layer-4 / Layer-5 entries kept — each
+     carries proof-technique or trade-off content not duplicated
+     elsewhere.
+  Hand-off contract still passes: *Current state* + *Hand-off /
+  next phase* + *Layer plan* identify the next-phase candidates
+  without reading source. No source file changed; the *Layer plan*
+  remains the authoritative phase to-do list (now post-close, a
+  per-Layer landing summary).
 
 ## Blockers / open questions
 
@@ -1014,26 +1029,20 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 Round still in progress; Bucket A complete (A1 no-op / A2 targeted
 fix / A3 targeted fix / A4 no-op); Bucket B complete (B1 no-op /
 B2 no-op + smell-table revision / B3 no-op + smell-table revision /
-B4 no-op / B5 no-op); **Bucket C complete** — C1 closed with the
-top-10 ranking table + per-site question in §C; **C2 closed with
-all ten sites as *no-op*** and both cross-proof unification
-clusters (i) and (ii) dissolved on inspection (see *Cleanup pass
-summaries* C2 for the per-site verdict table); **C3 closed as a
-no-op** (zero in-round refactor candidates surfaced).
+B4 no-op / B5 no-op); Bucket C complete (C1 ranking / C2 all
+no-op + cluster dissolutions / C3 no-op); **D1 closed**
+(`notes/Phase11.md` 856 → ~436 LoC, within adaptive budget).
 
-Next concrete commit: **D1** — `notes/Phase11.md` compression
-(currently 856 LoC vs. the adaptive 350–450 budget for a
-substantive phase per `../notes/CLAUDE.md` *Soft length budget*).
-Compression candidates listed in §D above: collapse the *Current
-state* per-layer narrative to per-layer pointers (~150 LoC ⇒ ~50
-LoC), point the *Architectural choices made up front* TeX-style
-verdict-shape duplication at `chapter/pebble-game.tex` *User-facing
-verdict* prose (~80 LoC ⇒ ~30 LoC), and dedupe the Layer 4b
-narrative between *Current state* and *Decisions made*. Target:
-~400 LoC. After D1, D2 (`notes/Phase10.md` compression), D3
-(FRICTION re-skim + assess the two open Phase-11 promotion
-candidates `Strengthen past results to reduce duplication` /
-`Blueprint reshape in-place per Layer` against second-site
+Next concrete commit: **D2** — `notes/Phase10.md` compression
+(currently 546 LoC; adaptive budget allows ~250-350 LoC since
+Phase 10 was a shorter five-layer forward-work phase). Compression
+candidates from §D above: *Current state* and *Architectural
+choices* duplicate each other in spots (the `[LinearOrder V]` and
+`Fact (ℓ < 2 * k)` decisions appear in both); collapse the
+*Current state* narrative to a per-layer pointer. Target: ~300 LoC.
+After D2, D3 (FRICTION re-skim + assess the two open Phase-11
+promotion candidates `Strengthen past results to reduce duplication`
+/ `Blueprint reshape in-place per Layer` against second-site
 evidence), D4 (DESIGN.md *Choices to revisit* drift check), D5
 (no-residual-lifts audit on every Phase 10 / 11 *Promoted to*
 entry). The lift-worthy lesson surfaced at C2 close (*"top-10 LoC
