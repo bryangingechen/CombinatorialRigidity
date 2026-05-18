@@ -101,6 +101,18 @@ hand-off — and points at the blueprint chapter.)
   web`), `checkdecls`, dep-graph spot-check, and authoring
   conventions; `blueprint/DESIGN.md` for the workflow-mode
   rationale.
+
+  **Structural-edit phases** are the variant for refactor work that
+  reshapes existing definitions or signatures rather than adding new
+  ones (e.g. Phase 11's `Option` → verdict return-type reshape of
+  the Phase 9/10 pebble-game algorithms). No new chapter is opened;
+  the blueprint edits restate already-green nodes against the new
+  shape in step with the Lean, distributed across the existing
+  chapters per Layer. Forward-mode discipline still applies (the
+  dep-graph IS the lemma index), but the to-do list lives in
+  `notes/PhaseN.md`'s *Layer plan* section rather than a single
+  blueprint chapter, and the affected chapters spend a few Layer
+  commits with selected nodes red until their Lean catches up.
 - **Every commit is a potential handoff point.** Treat each commit
   as if the session could end on it. The pre-commit checklists
   below (*keep the hand-off contract honest*) and the Lean-side
@@ -175,9 +187,11 @@ discipline.
 ### When this commit opens a phase
 
 Phase opening fires on the first commit that turns the new phase
-on — typically the commit that creates `notes/PhaseN.md` and
-(forward mode) opens the new phase's blueprint chapter. On top of
-the per-commit checklists:
+on — typically the commit that creates `notes/PhaseN.md` and either
+(forward mode) opens the new phase's blueprint chapter or
+(structural-edit mode) lays down the *Layer plan* that drives the
+in-place restate of existing chapters. On top of the per-commit
+checklists:
 
 - Add or update the phase's row in the ROADMAP Status table (status:
   *planning* or *in progress*) and write the §N planning section.

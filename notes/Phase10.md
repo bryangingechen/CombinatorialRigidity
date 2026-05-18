@@ -47,7 +47,7 @@ time, recorded as `lake build` `info` diagnostics) — and Layer 5
 are all registered, with a top-level `instance : Fact (3 < 2 * 2)`
 making the Laman case zero-hypothesis at call sites. Witness
 extraction (both the failure-branch blocking subset and the
-success-branch orientation) is deferred to follow-up Phase 10.5;
+success-branch orientation) is deferred to follow-up Phase 11;
 see *Hand-off / next phase* below. Per the revised Layer 0 audit
 \#1 outcome below, there is **no `Mathlib/` mirror** for Phase 10:
 mathlib's existing
@@ -489,7 +489,7 @@ discipline.
   `LinearRigidityMatroid.lean` non-`module` island stays isolated.
 
 - **Witness extraction (both halves).** *Deferred from Phase 10 to
-  Phase 10.5.* Two halves: (a) the failure-branch blocking subset
+  Phase 11.* Two halves: (a) the failure-branch blocking subset
   $V'$ on the CLI's `NOT_SPARSE` output (the underlying
   `Reach`-closure in `runPebbleGame_eq_none_imp_exists_witness` uses
   `Classical.decPred`; surfacing the witness computably needs a
@@ -518,7 +518,7 @@ status*, `home_page/index.md` *Project status* + phase table,
 `blueprint/src/chapter/intro.tex` §*Phase plan* + enumerate +
 dep-graph line) are all flipped to ✓ in this closing commit.
 
-**Natural next direction — Phase 10.5: witness extraction.** Two
+**Natural next direction — Phase 11: witness extraction.** Two
 witness-extraction halves were left on the table during Phase 10:
 (a) the **failure-branch blocking subset $V'$** on the CLI's
 `NOT_SPARSE` output (the underlying `Reach`-closure in Phase 9's
@@ -531,7 +531,7 @@ orientation packaged into the `some` branch of
 `runPebbleGameExec`'s return; surfacing it usefully on the
 `LAMAN` / `SPARSE_NOT_TIGHT` branches likely needs API for
 inspecting / printing the orientation). The full layer plan for
-this work belongs in the Phase 10.5 opener (`notes/Phase10-5.md`),
+this work belongs in the Phase 11 opener (`notes/Phase11.md`),
 not here.
 
 **Other possible directions** (not queued, not load-bearing):

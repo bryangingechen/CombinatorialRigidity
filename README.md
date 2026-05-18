@@ -17,7 +17,11 @@ independence corollary against the Phase 7 count matroid. Phase 10
 bridges Phase 9's `noncomputable` `runPebbleGame` to an actually-runnable
 decision procedure: a `Decidable G.IsLaman` instance backed by a
 computable wrapper `runPebbleGameExec`, plus a `lake exe pebble-game` CLI
-binary.
+binary. Phase 11 (in progress) reshapes Phase 9/10's `Option`-shaped
+pebble-game algorithms to return a verdict-bearing inductive carrying
+inline witnesses — a blocking subset `V'` on the `NOT_SPARSE` branch,
+the partial orientation `D` on the accept branches — making the CLI's
+output externally checkable.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -33,7 +37,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–10 complete** — sparsity, Laman, Henneberg, frameworks,
+* **Phases 1–10 complete; Phase 11 in progress** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
   matroid identification (combinatorial form), the linear-matroid
@@ -51,6 +55,15 @@ project; commit history is preserved with paths rewritten.
   CLI reduce through the same compiled `runPebbleGameExec` body. The
   project carries no `sorry`s. See `notes/Phase10.md` and
   `blueprint/src/chapter/executable.tex` for Phase 10 details.
+  **Phase 11** reshapes the pebble-game algorithms (Phase 9
+  workhorses, Phase 10 wrappers and `Decidable` instances) to
+  return a `PebbleGameResult G k ℓ` verdict whose constructors
+  carry inline witnesses — folding the deferred witness-extraction
+  work into the canonical algorithm. The CLI then prints a
+  checkable certificate on every branch. See `notes/Phase11.md`
+  for the layer plan; the blueprint reshape lands in-place in
+  `chapter/{dfs,pebble-game,executable}.tex` alongside each
+  Layer's Lean.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

@@ -21,7 +21,8 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–10 are complete and carry no `sorry`s. The main theorem
+Phases 1–10 are complete and carry no `sorry`s; Phase 11 (witness
+extraction) is in progress. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
@@ -38,10 +39,20 @@ procedure: the computable wrapper `runPebbleGameExec` under
 / `IsTight` / `IsLaman`, and a `lake exe pebble-game` CLI binary
 reading an edge-list file. Both `#eval (decide G.IsLaman)` and the
 CLI reduce through the same compiled `runPebbleGameExec` body.
+**Phase 11** reshapes Phase 9/10's `Option`-shaped pebble-game
+algorithms (workhorses, math/exec wrappers, and `Decidable`
+instances) to return a `PebbleGameResult G k ℓ` verdict whose
+constructors carry inline witnesses — the blocking subset `V'` on
+the `NOT_SPARSE` branch, the partial orientation `D` on the accept
+branches — making the CLI externally checkable. The reshape folds
+the deferred Phase 10 witness-extraction work into the canonical
+algorithm rather than shipping it as a sibling extraction wrapper.
 
-The development is divided into the phases below, each in its own
-file under
-[`CombinatorialRigidity/`](https://github.com/bryangingechen/CombinatorialRigidity/tree/master/CombinatorialRigidity).
+The development is divided into the phases below, with Lean source
+under
+[`CombinatorialRigidity/`](https://github.com/bryangingechen/CombinatorialRigidity/tree/master/CombinatorialRigidity)
+(early phases land in their own files; later phases may extend
+existing files or refactor across several).
 
 | Phase | Topic                       | File(s)                                                          | Status |
 |------:|-----------------------------|------------------------------------------------------------------|:------:|
@@ -55,6 +66,7 @@ file under
 |     8 | Linear-matroid framing      | `LinearRigidityMatroid.lean`                                     |   ✓    |
 |     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness}.lean` |   ✓    |
 |    10 | Executable pebble game      | `PebbleGame/{Exec,Examples}.lean`, `Main.lean`                   |   ✓    |
+|    11 | Witness extraction          | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` | ⋯ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

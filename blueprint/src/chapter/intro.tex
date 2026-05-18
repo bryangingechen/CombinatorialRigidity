@@ -23,9 +23,10 @@ combinatorial rigidity, see
 
 \subsection*{Phase plan}
 
-The Lean code is organized into ten phases, tracked in
+The Lean code is organized into eleven phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--10 are complete: the first six phases formalize Laman's
+Phases~1--10 are complete; Phase~11 (witness extraction) is in
+progress. The first six phases formalize Laman's
 theorem, Phase~7 packages the planar rigidity matroid as a mathlib
 \texttt{Matroid} via the Lov\'asz--Yemini matroid identification,
 Phase~8 reframes it as a linear matroid via \texttt{Matroid.ofFun}
@@ -40,7 +41,17 @@ decision procedure: a computable wrapper
 \texttt{runPebbleGameExec} under $[\mathrm{LinearOrder}\,V]$,
 \texttt{Decidable} instances for $\mathrm{IsSparse}$ /
 $\mathrm{IsTight}$ / $\mathrm{IsLaman}$, and a
-\texttt{lake exe pebble-game} CLI binary.
+\texttt{lake exe pebble-game} CLI binary. Phase~11 reshapes
+Phase~9/10's $\mathrm{Option}$-shaped pebble-game algorithms
+(workhorses, math/exec wrappers, and \texttt{Decidable} instances)
+to return a verdict-bearing inductive
+$\mathrm{PebbleGameResult}\,G\,k\,\ell$ whose constructors carry
+inline witnesses --- the blocking subset $V'$ on the
+$\mathrm{NOT\_SPARSE}$ branch, the partial orientation $D$ on the
+accept branches --- making the CLI externally checkable. As a
+structural-edit phase, Phase~11's blueprint reshape lands in-place
+in \cref{sec:dfs}, \cref{sec:pebble-game}, and \cref{sec:executable}
+alongside each Layer's Lean, with no new chapter opened.
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -95,6 +106,29 @@ $\mathrm{IsTight}$ / $\mathrm{IsLaman}$, and a
         worked examples on $\mathrm{Fin}\,n$ graphs; a
         \texttt{lake exe pebble-game} CLI binary. (Files:
         \texttt{PebbleGame/\{Exec,Examples\}.lean}, \texttt{Main.lean}.)
+  \item \textbf{Witness extraction.} Reshape Phase~9/10's
+        $\mathrm{Option}$-shaped pebble-game algorithms to return a
+        verdict-bearing inductive
+        $\mathrm{PebbleGameResult}\,G\,k\,\ell$ carrying inline
+        witnesses on every branch. The maximal reshape folds the
+        deferred Phase~10 witness-extraction work into the canonical
+        algorithm: Phase~9's existence-style failure-witness
+        theorems are absorbed into the reshaped
+        \texttt{tryAddEdgeWith}'s recursion, the certificate-form
+        correctness theorem collapses into the verdict's type, and
+        Phase~10's \texttt{Decidable} instances re-route through
+        the verdict's \texttt{.isAccept} projection. Prerequisite:
+        a verified-iterative computable
+        $\mathrm{reachClosureComputable}$ in
+        \texttt{Search/DFS.lean} (sibling of Phase~9's
+        $\mathrm{reachableFinding}$), through which
+        $\mathrm{PartialOrientation.reach}$ is redefined,
+        eliminating the \texttt{Classical.decPred} dependency that
+        currently blocks computable witness extraction. CLI bumps
+        to print the verdict's witness data on every branch.
+        (Files: \texttt{Search/DFS.lean},
+        \texttt{PebbleGame/\{Basic,Algorithm,Correctness,Exec\}.lean},
+        \texttt{Main.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -107,4 +141,8 @@ fit together; all Phase~1--10 nodes are green, including the main
 Laman line, the Phase~7 / Phase~8 matroid identifications, the
 verified-DFS warmup (\cref{sec:dfs}), the Phase~9 pebble-game
 chapter (\cref{sec:pebble-game}), and the Phase~10 executable
-pebble-game chapter (\cref{sec:executable}).
+pebble-game chapter (\cref{sec:executable}). Phase~11's reshape
+will turn selected algorithm-side nodes red in
+\cref{sec:dfs} / \cref{sec:pebble-game} / \cref{sec:executable}
+as it lands per Layer, with each Layer commit shipping its
+blueprint update alongside the Lean that backs it.

@@ -38,7 +38,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── Mathlib/         mirror for upstream-eligible lemmas (see DESIGN.md)
 │   │   └── …/           each file mirrors its eventual upstream path
 │   ├── Search/
-│   │   └── DFS.lean    Phase 9 — verified-iterative DFS warmup (`reachableFinding`)
+│   │   └── DFS.lean    Phase 9 — verified-iterative DFS warmup (`reachableFinding`); Phase 11 extension — computable reachability closure (`reachClosureComputable`)
 │   ├── EdgesIn.lean     Phase 1 — `edgesIn` selector
 │   ├── Sparsity.lean    Phase 1 — `IsSparse`, `IsTight`
 │   ├── SparsityIComponents.lean  Phase 7 — matroidal-regime maximal I-blocks (split off Sparsity in Phase 8-perf)
@@ -90,6 +90,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-9) | project-wide (Phase 9 surface) | ✓ Complete (see `notes/Phase9-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-9) | `Search/DFS.lean` + `PebbleGame.lean` per-decl `@[expose]` audit | ✓ Complete (see `notes/Phase9-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | 10. Executable pebble game | `PebbleGame/{Exec, Examples}.lean`, `Main.lean` | ✓ Complete (see `notes/Phase10.md`) |
+| 11. Witness extraction | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` | In progress (see `notes/Phase11.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -349,8 +350,60 @@ the authoritative dep-graph. See `notes/Phase10.md` for the full
 layer-by-layer summary and the architectural-choice list. The
 blocking-witness extraction at the CLI's failure branch (which
 also blocks an analogous orientation-witness extraction on the
-success branch) was deferred during Layer 5; that follow-up is the
-natural next direction (Phase 10.5).
+success branch) was deferred during Layer 5 and is the focus of
+**Phase 11** below.
+
+### Phase 11 — Witness extraction (`Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean`)
+
+In progress. **Structural-edit phase** that reshapes Phase 9/10's
+$\mathrm{Option}$-shaped pebble-game algorithms to return a
+verdict-bearing inductive carrying inline witnesses. Phase 10's
+CLI prints only the trichotomy label
+`LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE`, which is uncheckable
+externally; Phase 11 surfaces a blocking subset $V'$ on the
+`NOT_SPARSE` branch and the partial orientation $D$ on the accept
+branches.
+
+The maximal-reshape design: replace `runPebbleGame` /
+`runPebbleGameExec`'s $\mathrm{Option}\,(\mathrm{PartialOrientation}\,V)$
+return type with a two-constructor inductive
+`PebbleGameResult G k ℓ` whose `.accept` carries
+$\langle D, h_{\mathrm{underline}}, h_{\mathrm{reach}}\rangle$ and
+whose `.reject` carries $\langle V', h_{\mathrm{size}},
+h_{\mathrm{lt}}\rangle$ — the constructor name IS the certificate.
+The workhorse-layer `tryAddEdgeWith` / `runPebbleGameWith` get a
+mirror reshape to $\mathrm{Sum}\,(\mathrm{WorkhorseWitness}\,k\,
+\ell\,V)\,(\mathrm{PartialOrientation}\,V)$, with the
+`independent_brings_pebble`-driven witness constructed inline at
+case5 of `tryAddEdgeWith`'s recursion rather than recovered later
+by a separate existence theorem. Phase 9's existence chain
+(`_isSome` / `_eq_none_imp_exists_witness`) is absorbed; the
+certificate-form correctness theorems collapse into the verdict's
+type. Phase 10's three `Decidable` instances re-route through
+`.isAccept`; Phase 7's `countMatroid_indep_iff_runPebbleGame`
+restates against the verdict. The substantive prerequisite is a
+verified-iterative *computable* `reachClosureComputable` in
+`Search/DFS.lean` (sibling of Phase 9's `reachableFinding`),
+through which `PartialOrientation.reach` is redefined,
+eliminating the `Classical.decPred` dependency that currently
+blocks computable witness extraction. The Phase 9/10 split
+between math-layer (`runPebbleGame`, noncomputable) and exec-layer
+(`runPebbleGameExec`, computable via `[LinearOrder V]`) is
+orthogonal to the reshape and stays.
+
+Phase 11 is a structural-edit phase, **not a new-chapter phase**:
+the blueprint reshape lands in-place in the existing chapters
+(`chapter/dfs.tex` for the reach primitive, `chapter/pebble-game.tex`
+for the algorithm reshape + workhorse witness + verdict,
+`chapter/executable.tex` for the wrapper reshape + Decidable
+instances + CLI subsection) alongside each Layer's Lean, so the
+dep-graph never has a long-lived red region in a previously-green
+chapter. The phase's authoritative to-do list lives in
+`notes/Phase11.md`'s *Layer plan* section. See that file for the
+full Layer 0 audit outcomes, architectural-choice list, and
+five-layer plan (Layer 1: computable reach; Layer 2: workhorse
+witness; Layer 3: algorithm reshape; Layer 4: verdict + wrappers
++ Decidable re-routing; Layer 5: CLI surface bump).
 
 ## Engineering conventions
 

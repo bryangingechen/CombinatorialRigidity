@@ -383,34 +383,10 @@ The blueprint builds in two formats:
 - **Web** (HTML + dep-graph) via plastex — primary; what CI deploys.
 - **Print** (PDF) via xelatex — secondary.
 
-### One-time setup
-
-System dependencies (macOS, Apple Silicon assumed):
-
-```sh
-brew install graphviz                    # for pygraphviz
-brew install --cask basictex             # for xelatex (~80 MB)
-export PATH="/Library/TeX/texbin:$PATH"  # add TeX to PATH this shell
-sudo tlmgr update --self
-sudo tlmgr install latexmk preview xkeyval \
-  enumitem tikz-cd thmtools cleveref     # required by print.tex (inv bp)
-```
-
-Python venv (kept under `blueprint/.venv`, gitignored):
-
-```sh
-cd blueprint
-python3 -m venv .venv
-source .venv/bin/activate
-
-# pygraphviz needs the brew-installed graphviz headers; pip won't
-# find them on Apple Silicon without explicit flags:
-CPPFLAGS="-I$(brew --prefix graphviz)/include" \
-LDFLAGS="-L$(brew --prefix graphviz)/lib" \
-  pip install pygraphviz
-
-pip install -r requirements.txt          # plastex, leanblueprint, invoke
-```
+One-time setup (Homebrew + `tlmgr` packages + a Python venv with
+`pygraphviz`'s Apple-Silicon-specific install flags) lives in
+`SETUP-AND-PITFALLS.md`. Run those once per machine; agents are not
+expected to re-read them on every session.
 
 ### Running builds
 
@@ -545,6 +521,22 @@ mathematical order, not in the order phases happened to land them.
 Phase-history information belongs in commit messages, not in chapter
 structure.
 
+A more aggressive variant is **restating existing entries in
+place**: when a phase reshapes the return type or signature of an
+already-blueprinted algorithm — e.g. Phase 11's `Option` →
+`PebbleGameResult` reshape of `def:tryAddEdge` / `def:runPebbleGame`
+/ `def:runPebbleGameExec` — the node-level edits land alongside the
+matching Lean per Layer commit, not as a phase backfill at the end.
+The affected chapter spends a few Layer commits with selected nodes
+red until their Lean catches up; this is forward-mode discipline
+applied to an existing chapter rather than a new one. The
+mathematical-order rule above still holds: a reshaped node stays
+where it was; an inserted node (e.g. Phase 11's
+`def:workhorseWitness` in `chapter/pebble-game.tex`'s *Completeness*
+subsection) goes in its natural mathematical position, not at the
+end. See `../notes/PhaseN.md`'s *Layer plan* section in
+structural-edit phases for the per-Layer node-level work.
+
 ### Macros
 
 Live in `preamble/common.tex`. Current set is intentionally minimal
@@ -560,43 +552,11 @@ otherwise comparing two graphs.
 
 ## Pitfalls
 
-- **plastex emits warnings, not errors, on unknown commands.**
-  `\github`, `\dochome`, etc. produce warnings when run outside a
-  build that loads the blueprint plastex plugin. These are harmless
-  in normal `inv web` runs but can mask real warnings — skim the
-  console output, not just the exit code.
-- **`inv web` exits 0 even when every citation is broken.** If
-  `src/web.bbl` is missing (e.g. you ran `inv web` standalone), the
-  output contains `WARNING: Could not find any file named: web.bbl`
-  and one `WARNING: Bibliography item "..." has no entry` per
-  `\cite{}` — but exit code is 0 and every `\cite{}` silently renders
-  as a broken-reference fallback. `grep -i 'bibliography item' web
-  output` to catch this; the fix is to run `inv bp` first.
-- **`_` in `\texttt{...}`.** LaTeX still treats `_` as a subscript
-  inside `\texttt{...}`. Escape as `\_` (e.g.
-  `\texttt{mk\_mem\_edgesIn}`) or use `\verb|...|`.
-- **`\lean{Name1, Name2}` with multiple names** is fine for the
-  HTML build (each links separately) but produces only one link
-  target in the PDF. Reserve multi-name `\lean{}` for closely-
-  related corner cases the reader genuinely thinks of as a unit.
-- **Math in section / subsection titles breaks `inv bp` (xelatex).**
-  hyperref errors with *"Improper alphabetic constant"* and
-  Emergency-stops the run when a section title contains raw
-  `$math$` (e.g. `\ell`, `\Leftarrow`). Wrap with
-  `\texorpdfstring{$math$}{ASCII fallback}` — the existing
-  convention. Sample: `\section{The \texorpdfstring{$(k, \ell)$}{(k,
-  l)}-count matroid}`. Symptom: a failed `inv bp` cascades to
-  unresolved cross-refs and missing bibliography entries on the
-  *next* `inv web` (because `print.bbl` never got generated and
-  copied to `src/web.bbl`); fix the section title and re-run `inv
-  bp` then `inv web`.
-- **No `.md` interference.** plastex parses only what `web.tex`
-  `\input{}`s. xelatex parses only what `print.tex` `\input{}`s.
-  Adding `.md` files anywhere under `blueprint/` is safe.
-- **Python 3.9 quirks.** Recent `leanblueprint` releases sometimes
-  require 3.10+. If you hit `SyntaxError` or `ImportError` after a
-  `pip install -r requirements.txt`, the fix is usually
-  `python3.12 -m venv .venv` and reinstall.
+Build-time pitfalls (plastex warnings vs errors, the silent
+`inv web`-without-`inv bp` citation-break trap, `_` in
+`\texttt{...}`, math in section titles, Python 3.9 quirks, etc.)
+live in `SETUP-AND-PITFALLS.md`. Skim that file when a build behaves
+unexpectedly.
 
 ## Friction review (mandatory at end of session)
 
