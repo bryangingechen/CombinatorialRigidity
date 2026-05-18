@@ -210,6 +210,7 @@ the trend was either flat or slightly worse:
 | Extract `kerRestrict` helper for the `LinearMap.funLeft … codRestrict …` builder duplicated in typeI/typeII | New private `def` near the top of `HennebergRigidity.lean`; two `let restrict := kerRestrict …` call sites | 4-run mean ~46 s vs ~30 s baseline. Suspected regression from the abstraction layer; in any case the duplication is only one identical 4-line block per move. Reverted. |
 | `nlinarith [Nat.le_mul_self d]` → `have h_sq := Nat.le_mul_self d; have : (d+1)*(d+2) = d*d + 3*d + 2 := by ring; omega` | `top_fin_two_isGenericallyRigidInj` in `Framework.lean` | Saved 120 ms in the per-decl profile; file timing didn't move out of the noise band. Reverted; `nlinarith` is the more idiomatic one-liner for "linear-after-hinting-a-square" goals. |
 | Replace `fun_prop` with an explicit `continuous_pi fun _ => continuous_pi fun e => continuous_rigidityMap_apply …` chain | `IsInfinitesimallyRigid.eventually` in `Framework.lean` | Within noise band (median ~24 s vs ~27 s baseline). Reverted — `fun_prop` is the project convention (cf. TACTICS-GOLF § 6). |
+| Per-decl `@[expose]` audit (Phase 9-perf F1) | `Search/DFS.lean`, `PebbleGame.lean` — demote `@[expose] public section` → `public section`, restore `@[expose]` on 5 + 3 defs whose bodies are genuinely consumed (`@[simp] := rfl` projections; `simp [name]` / `rw [name]`-as-unfold call sites) | All three measured targets within ±5 s noise band: DFS 8.13 → 8.70 s (Δ +0.57); PebbleGame 14.43 → ~15.4 s (Δ +~1.0); project-total 8.97 → 10.04 s (Δ +1.07). **Kept** — the bookkeeping value (rows in the F3.5 audit-disposition table) is the deliverable, matching the F3.5 pattern itself: the headline win was in F3.2–F3.4 (module-system conversion + private-cleanup), not F3.5 / F1 (per-decl narrowing). See `Phase9-perf.md` §F4.1/§F4.2. |
 
 ## Experiments that *did* pay (or are at least defensible)
 
@@ -410,6 +411,21 @@ exactly the 12 defs whose bodies are genuinely consumed (downstream
 or intra-module via `rfl`-proved `@[simp]` lemmas, pattern-match
 defeq, or `unfold` / projection-style destructure).
 
+**Status (Phase 9-perf F1):** closed. Phase 9's two new files
+(`Search/DFS.lean`, `PebbleGame.lean`) shipped at the coarsest
+exposure level (`@[expose] public section`) matching the Phase
+8-perf F3.3 post-state; the F1 audit ran the same demote-and-restore
+pattern as F3.5 on the two files. Both demoted to `public section`;
+5 + 3 per-decl `@[expose]` opt-ins added (rows appended to the
+F3.5 table below). 4-run A/B post-pass (Phase9-perf F4.2 vs F4.1
+baseline): all three measured targets within the ±5 s noise band —
+**F1 perf-neutral**. The audit's value is bookkeeping (the
+disposition rows extend the F3.5 reference for future
+module-system audits), not a build-time win — matching the F3.5
+pattern after Phase 8-perf's headline win was already booked in
+F3.2–F3.4 (file conversion + private-cleanup), not F3.5 (per-decl
+narrowing). See `Phase9-perf.md` §F4.1/§F4.2 for the raw timings.
+
 The Phase 8-perf module-system conversion (F3.3) applied a uniform
 `@[expose] public section` to all 9 + 13 project files, matching the
 upstream `Mathlib/Analysis/InnerProductSpace/PiL2.lean` reference.
@@ -498,6 +514,8 @@ shape), informing the per-decl picks.
 | `RigidityMatroid.lean` | demoted | `rigidityRow` | intra-file `@[simp] rigidityRow_apply ... := rfl` |
 | `MatroidIdentification.lean` | demoted | (none) | the only def `SimpleGraph.rigidityMatroid` is consumed by `LinearRigidityMatroid` (non-`module`) — non-module files don't see the new opacity model, so no need to expose |
 | `LamanTheorem.lean` | demoted | (none; no defs) | terminal file, theorems only; clean demotion |
+| `Search/DFS.lean` (Phase 9-perf F1.1) | demoted | `DirectedWalk.{length, vertices, IsPath, arcsFinset, reversedArcsFinset}` | downstream `PebbleGame.lean` uses `simp [DirectedWalk.length]` / `rw [DirectedWalk.IsPath, DirectedWalk.vertices, …]` (the `head_ne_tail_of_pos` case-split); intra-file `@[simp] arcsFinset_{nil,cons} … := rfl` + `@[simp] reversedArcsFinset_{nil,cons} … := rfl` |
+| `PebbleGame.lean` (Phase 9-perf F1.2) | demoted | `PartialOrientation.{empty, reverse, addArc}` | intra-file `@[simp] arcs_empty / arcs_reverse / arcs_addArc … := rfl` projection lemmas — same `@[simp] := rfl` taxonomy as `TrivialMotions` / `CountMatroid` / `RigidityMatroid` in F3.5 |
 
 Lessons:
 

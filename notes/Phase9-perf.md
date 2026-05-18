@@ -12,12 +12,12 @@ protocol, and the standing recommendations.
 
 ## Current state
 
-F1 audit landed; both Phase 9 files now sit at `public section`
-with 5 + 3 per-decl `@[expose]` opt-ins. F4.1 baseline + F4.2
-post-F1 4-run A/B medians measured; **F1 perf-neutral** within the
-±5 s noise band on all three targets. F1.3 PERFORMANCE.md
-disposition-table append pending; F2 split-audit, F3 LRM check,
-and round close pending.
+F1 audit + measurement + PERFORMANCE.md append landed. Both Phase
+9 files now sit at `public section` with 5 + 3 per-decl `@[expose]`
+opt-ins; F1 is **perf-neutral** within the ±5 s noise band across
+DFS / PebbleGame / project-total. PERFORMANCE.md's F3.5
+disposition table now carries the two new rows. F2 split-audit,
+F3 LRM check, and round close pending.
 
 ### F4.2 post-F1 (4-run medians, `public section` + per-decl `@[expose]` opt-ins)
 
@@ -170,10 +170,12 @@ disposition in the file's row of an F1 table here.
   consumed via the named API lemmas (`out_addArc_source`,
   `span_eq_ncard_edgesIn`, etc.) and the `Sum`-shaped
   `TryReachPebbleResult` accessors, never via body access.
-- [ ] **F1.3.** Update `./PERFORMANCE.md` *Granular `@[expose]` /
-  `public` audit per file* with the F1.1 / F1.2 dispositions
-  (append rows to the existing F3.5 disposition table — same
-  columns + format, two new rows).
+- [x] **F1.3.** Update `./PERFORMANCE.md` *Granular `@[expose]` /
+  `public` audit per file* with the F1.1 / F1.2 dispositions.
+  *Done; two rows appended to the F3.5 disposition table, status
+  preamble extended with the Phase 9-perf F1 closure paragraph,
+  and a per-decl `@[expose]` audit row added to* Experiments that
+  didn't pay.
 
 ### F2. `PebbleGame.lean` internal split candidates (audit-only)
 
@@ -230,11 +232,11 @@ Per `./PERFORMANCE.md` *Measurement protocol*:
   10.04 s — Δ = +0.57 / +1.0 / +1.07 s vs F4.1 baseline. All three
   targets within the ±5 s noise band — F1 perf-neutral. See*
   Current state §F4.2 post-F1 *for the raw runs.*
-- [ ] **F4.3.** Promotion. *Neutral verdict — note under
-  PERFORMANCE.md* Experiments that didn't pay; *the F1 disposition
-  tables (§F1.1, §F1.2 above) still augment* Granular `@[expose]`
-  / `public` audit per file *with two new rows. Pending the
-  PERFORMANCE.md edit in F1.3.*
+- [x] **F4.3.** Promotion. *Done in the same commit as F1.3 —
+  PERFORMANCE.md* Experiments that didn't pay *now lists the
+  per-decl audit row; the F3.5 disposition table has two new
+  rows; the F3.5 closure preamble notes the Phase 9-perf F1
+  follow-up.*
 
 ## Blockers / open questions
 
