@@ -28,7 +28,14 @@ hits and two `Fintype.ofFinite` hits, both in *Style island* docstrings
 documenting the deliberate *absence* of the bridge idiom; B5 closed as
 no-op — `grep -nE '@\[nolint|set_option linter'` and a wider
 case-insensitive `grep -nEi 'nolint|linter'` across the Phase 10+11
-surface return zero hits; Bucket B complete; C/D pending).
+surface return zero hits; Bucket B complete; **C1 closed with top-10
+ranking + per-site question** — `Algorithm.lean` (Layer 3 reshape)
+carries 6 of 10 entries split into two cross-proof unification
+clusters (three fold-traversal lemmas on `runPebbleGameWith`; three
+case-traversal lemmas on `tryAddEdgeWith`), `Correctness.lean` carries
+2 bridge-form lemmas, `DFS.lean` carries the 2 completeness halves; the
+docstring-filtered AWK ranking dropped a docstring false-positive that
+the §C-template grep would have surfaced; C2/C3, D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -130,9 +137,11 @@ invocations and zero `Classical.*` term-mode references at code
 level; all nine `Classical` matches are inside docstrings or module
 headers documenting why upstream callees are `noncomputable`. The
 style island `[Fintype V] [DecidableEq V]` provides every typeclass
-the bodies need without `classical`. Remaining: B2-B5 code-smell
-sweep continuation, C long-proof audit, D project-organization
-compression.
+the bodies need without `classical`. Bucket B (B2-B5) closed in
+subsequent commits as documented in the *Cleanup pass summaries*
+below; **C1** (long-proof top-10 ranking) closed with the table in
+§C below. Remaining: C2 four-question walk, C3 in-round refactor
+candidates, D project-organization compression.
 Pre-sweep smell counts (Phase 10+11
 surface only —
 `CombinatorialRigidity/PebbleGame/*.lean`,
@@ -444,15 +453,58 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ### Bucket C — Long-proof audit (Phase 10+11 surface)
 
-- [ ] **C1:** Top-10 by body LoC across `PebbleGame/*.lean`,
-  `Search/DFS.lean`, `Main.lean`. Phase 11 Layer 3 reshaped
-  `tryAddEdgeWith` (case-5 inline witness construction) and
-  `runPebbleGameWith` (fold over `Sum`); both likely sit near the
-  top. The new `Algorithm.lean` is 1039 LoC — the case-5 body
-  itself may be a candidate for sub-lemma extraction. Also expect:
-  the Layer 4b `runPebbleGame.aux` / `runPebbleGameExec.aux`
-  verdict-construction bodies; `runPebbleGame_edges_discharges`;
-  case-3 / case-4 `tryAddEdgeWith_reachable` propagation.
+- [x] **C1:** Top-10 by body LoC across `PebbleGame/*.lean`,
+  `Search/DFS.lean`, `Main.lean`. Ranking discharged via a
+  docstring-filtered AWK pass over the seven surface files
+  (`Algorithm`, `Basic`, `Correctness`, `Examples`, `Exec` under
+  `PebbleGame/`, plus `Search/DFS.lean` and `Main.lean`). The top
+  ten by body LoC, with one-line per-site question for C2's
+  four-question walk:
+
+  | # | Site | LoC | Per-site question |
+  |---|---|---|---|
+  | 1 | `tryAddEdgeWith` (Algorithm.lean L276) | 172 | **API extraction.** Phase 11 Layer 3 inlined the case-5 failure-witness construction (the `WorkhorseWitness` `.inl` arm) — is the case-5 body a self-contained sub-lemma other proofs would call? Or is it tied so tightly to the recursion's local state (`hD`, `path₁`, `hpath₁_no_pebble`, etc.) that lifting it would just reshuffle locals? |
+  | 2 | `tryAddEdgeWith_reachable` (Algorithm.lean L470) | 86 | **Cross-proof unification.** This is the case-by-case Reachable-propagation lemma; cases 3 and 4 walk the `arc_insert` / `reverse_path` invariants in parallel. Could a shared "Reachable preserves under arc-insert ∘ path-reverse" lemma collapse the case-3/case-4 duplication? |
+  | 3 | `span_succ_le_edgesIn_ncard_of_subset` (Correctness.lean L242) | 63 | **Mathlib lemma we missed.** This is the algebraic-core ncard inequality bridging `D.span (V'.insert u ∪ {v})` to `(G.edgesIn _).ncard + 1`. Re-run `lean_loogle` / `lean_leanfinder` against the 5-10 line subblocks — is there a `Set.ncard_insert_of_notMem` / `Finset.card_union_add_card_inter` form that collapses the manual add-cancel chain? |
+  | 4 | `runPebbleGameWith_witness_bridges` (Correctness.lean L391) | 62 | **API extraction.** This lemma routes the `WorkhorseWitness.certifies_against` payload through the bridge to `IsSparse k ℓ`'s contrapositive. The 62 LoC are essentially three sequential reconciliations (size, vertex inclusion, span bound) — is there a packaging into a single "witness certifies sparsity-failure on `G`" applied lemma that the success branch could share? |
+  | 5 | `runPebbleGameWith_mem_underline` (Algorithm.lean L903) | 61 | **Definitional refactor.** Per-edge underline-membership propagation along the fold; structure mirrors `runPebbleGameWith_underline_subset` (#8) and `runPebbleGameWith_reachable` (below top-10) — three sibling fold-traversal lemmas, each with the same case dispatch shape. Could a single "fold over Sum preserves these three invariants together" lemma replace all three? Cross-proof unification candidate spanning #5/#8/runPebbleGameWith_reachable. |
+  | 6 | `tryAddEdgeWith_underline` (Algorithm.lean L556) | 61 | **Cross-proof unification.** Sibling to #2 (`_reachable`) — same case-by-case structure tracking underline membership through `arc_insert` / `reverse_path`. Bundle with #2 if a shared "tryAddEdgeWith preserves these invariants" lemma can carry both. |
+  | 7 | `reachableFindingAux_complete` (DFS.lean L677) | 60 | **Definitional refactor.** The inner-induction over `n : ℕ` walks a `DirectedWalk` via `dropUntilBundle` truncation. Is the `visited` accumulator's lift-out at each `if h : v ∈ visited` step the right boundary, or could the proof factor through a `DirectedWalk.dropUntil` API lemma we don't have? |
+  | 8 | `runPebbleGameWith_underline_subset` (Algorithm.lean L844) | 59 | **Cross-proof unification.** See #5; sibling fold-traversal lemma. Bundle candidate. |
+  | 9 | `tryAddEdgeWith_witness_uv` (Algorithm.lean L617) | 57 | **API extraction.** Companion-projection lemma on the `WorkhorseWitness` returned by `tryAddEdgeWith` (extracts the `u ∈ V'.cell` / `v ∈ V'.cell` fields). The 57 LoC walk every recursion case to project that vertex inclusion — is there a "projection through the recursion" combinator? Or is it forced by the case-5 inline construction (#1)? |
+  | 10 | `reachableFinding_complete` (DFS.lean L737) | 56 | **Tactic substitution.** Lifts a `Relation.ReflTransGen` witness to a `DirectedWalk` via `head_induction_on`, then forward-proves the conclusion. Could `lean_multi_attempt` shrink the per-step bookkeeping? Or is this the right shape for a verified-iterative DFS completeness proof? |
+
+  Just outside the top-10 (still substantive — flagged for C2
+  bundle consideration if a sibling pattern lands above): #11
+  `pebOn_add_span_add_outOn` (Basic.lean L261, 41 LoC); #12
+  `runPebbleGameWith_reachable` (Algorithm.lean L804, 40 LoC,
+  sibling to #5/#8); #13 `tryAddEdgeWith_isSparse` (Correctness.lean
+  L351, 40 LoC).
+
+  Files at a glance: `Algorithm.lean` (Layer 3 reshape) carries 6
+  of the top-10 (#1, #2, #5, #6, #8, #9 — three case-traversal
+  lemmas + three fold-traversal lemmas, all rooted at
+  `tryAddEdgeWith` / `runPebbleGameWith`); `Correctness.lean`
+  carries 2 (#3, #4 — both bridge-form lemmas threading workhorse
+  output to `IsSparse`); `DFS.lean` carries 2 (#7, #10 — the
+  completeness halves of `reachableFindingAux` / `reachableFinding`).
+  `Basic.lean` and the smaller files (`Examples`, `Exec`, `Main`)
+  hold no top-10 entries — `Basic.lean`'s longest body
+  (`pebOn_add_span_add_outOn` at 41 LoC) sits just outside; `Exec`
+  / `Main` max at the verdict-pattern-match `classify` (25 LoC)
+  and parsing helpers.
+
+  Two cross-proof unification clusters surface as primary C2
+  candidates: **(i) Algorithm.lean's three fold-traversal lemmas**
+  (#5 `_mem_underline`, #8 `_underline_subset`, plus the
+  #12-runner-up `runPebbleGameWith_reachable`) share a fold-over-`Sum`
+  case dispatch and might collapse to one combinator; **(ii)
+  Algorithm.lean's three case-traversal lemmas** (#2 `_reachable`,
+  #6 `_underline`, plus the case-5-companion #9 `_witness_uv`) share
+  the seven-case recursion on `tryAddEdgeWith` and might collapse
+  to one preserved-invariant lemma. C2 dispatches each top-10
+  candidate via the four-question walk and decides per cluster
+  whether an in-round refactor (C3) is structurally small enough.
 - [ ] **C2:** Four-question walk over the C1 top sites (per
   `../CLEANUP.md` §C — API extraction, mathlib lemma we missed,
   tactic substitution, definitional refactor, cross-proof
@@ -802,6 +854,48 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   arg `rw` chains) — both are revisions to the pre-grep summary's
   *expectations*, not to source code; they pass through to the next
   cleanup round as accurate audit baselines.
+- **C1: Long-proof top-10 ranking (Phase 10+11 surface)** —
+  ranking landed; full table with per-site one-line question is
+  in §C above (the *Bucket C — Long-proof audit* checklist entry).
+  Ranking discharged via a docstring-filtered AWK pass over the
+  seven Phase 10+11 surface files
+  (`CombinatorialRigidity/PebbleGame/{Algorithm,Basic,Correctness,
+  Examples,Exec}.lean`, `CombinatorialRigidity/Search/DFS.lean`,
+  `Main.lean`); the docstring filter was needed because the
+  `../CLEANUP.md` §C template's naked AWK pattern picked up an
+  Exec docstring reference to "theorem `runPebbleGameWith_correct`"
+  as a 70-LoC declaration body. Total bodies ≥ 50 LoC: 10 across
+  three files (`Algorithm.lean` 6 / `Correctness.lean` 2 /
+  `DFS.lean` 2); `Basic.lean`'s longest body
+  (`pebOn_add_span_add_outOn` at 41 LoC) sits just outside; `Exec`
+  / `Examples` / `Main` carry no entries ≥ 35 LoC.
+
+  **Per-site one-line question** (full text in §C; summary by
+  question category):
+  - *API extraction* candidates: #1 `tryAddEdgeWith` (case-5 inline
+    body), #4 `runPebbleGameWith_witness_bridges` (three sequential
+    reconciliations), #9 `tryAddEdgeWith_witness_uv` (projection
+    through the recursion).
+  - *Cross-proof unification* candidates: #2 `tryAddEdgeWith_reachable`,
+    #5 `runPebbleGameWith_mem_underline`, #6 `tryAddEdgeWith_underline`,
+    #8 `runPebbleGameWith_underline_subset` — split into two clusters
+    (Algorithm.lean's three fold-traversal lemmas on `runPebbleGameWith`
+    vs. three case-traversal lemmas on `tryAddEdgeWith`).
+  - *Mathlib lemma we missed* candidate: #3
+    `span_succ_le_edgesIn_ncard_of_subset` (ncard add-cancel chain).
+  - *Definitional refactor* candidate: #7 `reachableFindingAux_complete`
+    (inner-induction's `visited` accumulator boundary).
+  - *Tactic substitution* candidate: #10 `reachableFinding_complete`
+    (per-step bookkeeping after `head_induction_on`).
+
+  Two cross-proof unification clusters are the primary C2 anchors:
+  (i) Algorithm.lean's three fold-traversal lemmas (#5 / #8 / the
+  #12-runner-up `runPebbleGameWith_reachable`) share a fold-over-`Sum`
+  case dispatch; (ii) Algorithm.lean's three case-traversal lemmas
+  (#2 / #6 / #9, all rooted at `tryAddEdgeWith`'s seven-case
+  recursion). C2 dispatches each top-10 entry via the four-question
+  walk and decides per cluster whether an in-round refactor (C3) is
+  structurally small enough to land alongside the cleanup round.
 
 ## Blockers / open questions
 
@@ -810,22 +904,28 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 ## Hand-off / next phase
 
 Round still in progress; Bucket A complete (A1 no-op / A2 targeted
-fix / A3 targeted fix / A4 no-op); **Bucket B complete** (B1 no-op /
+fix / A3 targeted fix / A4 no-op); Bucket B complete (B1 no-op /
 B2 no-op + smell-table revision / B3 no-op + smell-table revision /
-B4 no-op / B5 no-op). Next concrete commit: **C1** — top-10 by body
-LoC across `PebbleGame/*.lean`, `Search/DFS.lean`, `Main.lean`. The
-crude line-count ranking from `../CLEANUP.md` §C will surface the
-candidates; Phase 11 Layer 3's case-5 inline witness construction in
-`tryAddEdgeWith` and Layer 4b's `runPebbleGame.aux` /
-`runPebbleGameExec.aux` verdict-construction bodies are the expected
-top sites per the round-open notes. Record the top-10 with body
-LoC + one-line per-site question (per §C bullets — API extraction,
-mathlib lemma we missed, tactic substitution, definitional refactor,
-cross-proof unification) so C2's four-question walk can dispatch
-each candidate without re-scanning. After C1, **C2** (the
-four-question walk and refactor decisions) and **C3** (any in-round
-refactor candidates land each as its own commit). Then **D**
-(project-organization compression of `notes/Phase10.md` and
+B4 no-op / B5 no-op); **C1 closed** with the top-10 ranking table +
+per-site question in §C and a summary in *Cleanup pass summaries*.
+
+Next concrete commit: **C2** — four-question walk over the C1
+top-10 sites. Dispatch each of the ten entries via the per-site
+question (already recorded in §C's table) and record the verdict:
+*no-op* (the long-proof body is forced by the recursion / case
+structure with no extracted sub-lemma to win), *in-round refactor*
+(the audit anchor surfaces a structurally small refactor — a fused
+mirror lemma, an extracted helper, a `lean_multi_attempt` tactic
+substitution — that should land this round per `../CLEANUP.md`
+*Refactor passes are in scope when surfaced by an A-D audit*), or
+*deferred* (the refactor is large enough that it carries into a
+follow-up phase, e.g. the typeII-cores unification from Phase 5's
+appendix). C2's primary anchors are the two cross-proof unification
+clusters identified in C1 — Algorithm.lean's three fold-traversal
+lemmas (#5 / #8 / runPebbleGameWith_reachable) and three
+case-traversal lemmas (#2 / #6 / #9). After C2, **C3** (any
+in-round refactor candidates land each as its own commit). Then
+**D** (project-organization compression of `notes/Phase10.md` and
 `notes/Phase11.md`, FRICTION re-skim, DESIGN.md drift check,
 no-residual-lifts audit).
 
