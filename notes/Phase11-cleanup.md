@@ -25,8 +25,10 @@ with no missing-fused-lemma candidate; B4 closed as no-op —
 `grep -nE 'letI|haveI|Fintype.ofFinite|Set.Finite.fintype'` over the
 Phase 10+11 surface returns zero `letI` / `haveI` / `Set.Finite.fintype`
 hits and two `Fintype.ofFinite` hits, both in *Style island* docstrings
-documenting the deliberate *absence* of the bridge idiom; B5/C/D
-pending).
+documenting the deliberate *absence* of the bridge idiom; B5 closed as
+no-op — `grep -nE '@\[nolint|set_option linter'` and a wider
+case-insensitive `grep -nEi 'nolint|linter'` across the Phase 10+11
+surface return zero hits; Bucket B complete; C/D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -423,8 +425,22 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   needed (nothing to comment out). Confirms the cross-cutting
   expectation that algorithm-bearing files take their finiteness
   data via the typeclass slot, not via inline derivation.
-- [ ] **B5:** `@[nolint …]` / `set_option linter …` audit. Pre-grep
-  shows zero hits. Expected closure: no-op.
+- [x] **B5:** `@[nolint …]` / `set_option linter …` audit. Closed as
+  a **no-op**. Two greps over the Phase 10+11 surface
+  (`CombinatorialRigidity/PebbleGame/{Basic,Algorithm,Correctness,Exec,
+  Examples}.lean`, `CombinatorialRigidity/Search/DFS.lean`, `Main.lean`):
+  (i) `grep -nE '@\[nolint|set_option linter'` — zero hits;
+  (ii) wider case-insensitive `grep -nEi 'nolint|linter'` — zero hits
+  (no docstring or comment mentions either). The Phase 10+11 surface
+  carries no lint suppressions of any form, confirming the pre-grep
+  summary in *Current state* and the round-open expected closure.
+  Bucket B (code-smell sweep) complete: B1 no-op / B2 no-op +
+  smell-table revision / B3 no-op + smell-table revision / B4 no-op /
+  B5 no-op. No code-smell entries were converted into in-round
+  refactors — every Bucket B audit found the existing shape is forced
+  by structural drivers documented in `../DESIGN.md` (the style
+  island, the `Finset.toList` / `Quot.out` enumeration drivers) or by
+  the absence of a missing fused-lemma candidate.
 
 ### Bucket C — Long-proof audit (Phase 10+11 surface)
 
@@ -750,6 +766,42 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   Confirms the expected closure noted at round open. Bucket B is now
   80 % done (B1 no-op / B2 no-op + smell-table revision / B3 no-op +
   smell-table revision / B4 no-op); B5 pending.
+- **B5: `@[nolint …]` / `set_option linter` audit (Phase 10+11 surface)**
+  — no-op closure. Two greps over
+  `CombinatorialRigidity/PebbleGame/{Basic,Algorithm,Correctness,Exec,
+  Examples}.lean`, `CombinatorialRigidity/Search/DFS.lean`, and
+  `Main.lean`:
+  (i) `grep -nE '@\[nolint|set_option linter'` (the CLEANUP.md §B
+  pattern) — **zero** hits.
+  (ii) Wider case-insensitive `grep -nEi 'nolint|linter'` — **zero**
+  hits, including no docstring or comment mentions. The Phase 10+11
+  surface carries no lint suppressions of any form — neither
+  declaration-attached `@[nolint …]` nor file-scoped or `in`-scoped
+  `set_option linter.X false`. No comment-out test was needed because
+  there is nothing to comment out; the audit confirms the round-open
+  expected closure noted in *Current state*. The only project-wide
+  `@[nolint unusedArguments]` site (`IsInfinitesimallyRigid` in
+  `Framework.lean`, per `../CombinatorialRigidity/CLAUDE.md` *Before
+  each commit — build and lint gates*) sits outside the cleanup
+  round's Phase 10+11 scope, and no new suppression has been
+  introduced anywhere on the surface — neither Phase 11's
+  verdict-bearing return-type collapse (Layer 4 / Layer 4b) nor
+  Phase 10's `Exec` / `Examples` / `Main` forward additions needed
+  one. This is the expected outcome given the style island
+  `[Fintype V] [DecidableEq V]` already supplies the typeclass
+  density the algorithm bodies need without a `nolint` /
+  `set_option linter` workaround.
+
+  **Bucket B (code-smell sweep) complete.** B1 no-op / B2 no-op +
+  smell-table revision / B3 no-op + smell-table revision / B4 no-op /
+  B5 no-op. Every B entry closed as a no-op; the Phase 10+11 surface
+  is clean against the round's code-smell grep targets. Two smell-
+  table revisions surfaced during the sweep (B2's `noncomputable def`
+  conflation between actual sites and docstring mentions; B3's
+  depth-blind comma count over-counting `⟨_, _⟩`-tuple chains as 4+
+  arg `rw` chains) — both are revisions to the pre-grep summary's
+  *expectations*, not to source code; they pass through to the next
+  cleanup round as accurate audit baselines.
 
 ## Blockers / open questions
 
@@ -757,18 +809,25 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ## Hand-off / next phase
 
-Round still in progress; Bucket A complete (A1 no-op / A2
-targeted fix / A3 targeted fix / A4 no-op); Bucket B 80 % done
-(B1 no-op / B2 no-op + smell-table revision / B3 no-op +
-smell-table revision / B4 no-op). Next concrete commit: **B5** —
-`@[nolint …]` / `set_option linter` audit, expected no-op
-re-confirmation per the pre-grep summary in *Current state*
-(zero hits across the Phase 10+11 surface). Quick discharge:
-`grep -nE '@\[nolint|set_option linter' CombinatorialRigidity/PebbleGame/*.lean
-CombinatorialRigidity/Search/DFS.lean Main.lean`. After B5 closes
-Bucket B, **C** (long-proof audit on `Algorithm.lean` and the
-verdict-construction bodies) and **D** (project-organization
-compression of `notes/Phase10.md` and `notes/Phase11.md`).
+Round still in progress; Bucket A complete (A1 no-op / A2 targeted
+fix / A3 targeted fix / A4 no-op); **Bucket B complete** (B1 no-op /
+B2 no-op + smell-table revision / B3 no-op + smell-table revision /
+B4 no-op / B5 no-op). Next concrete commit: **C1** — top-10 by body
+LoC across `PebbleGame/*.lean`, `Search/DFS.lean`, `Main.lean`. The
+crude line-count ranking from `../CLEANUP.md` §C will surface the
+candidates; Phase 11 Layer 3's case-5 inline witness construction in
+`tryAddEdgeWith` and Layer 4b's `runPebbleGame.aux` /
+`runPebbleGameExec.aux` verdict-construction bodies are the expected
+top sites per the round-open notes. Record the top-10 with body
+LoC + one-line per-site question (per §C bullets — API extraction,
+mathlib lemma we missed, tactic substitution, definitional refactor,
+cross-proof unification) so C2's four-question walk can dispatch
+each candidate without re-scanning. After C1, **C2** (the
+four-question walk and refactor decisions) and **C3** (any in-round
+refactor candidates land each as its own commit). Then **D**
+(project-organization compression of `notes/Phase10.md` and
+`notes/Phase11.md`, FRICTION re-skim, DESIGN.md drift check,
+no-residual-lifts audit).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
