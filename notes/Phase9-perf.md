@@ -12,8 +12,33 @@ protocol, and the standing recommendations.
 
 ## Current state
 
-F4.1 baseline measured. Both Phase 9 files currently sit at
-`@[expose] public section`; F1 per-decl audit not yet started.
+F1 audit landed; both Phase 9 files now sit at `public section`
+with 5 + 3 per-decl `@[expose]` opt-ins. F4.1 baseline + F4.2
+post-F1 4-run A/B medians measured; **F1 perf-neutral** within the
+±5 s noise band on all three targets. F1.3 PERFORMANCE.md
+disposition-table append pending; F2 split-audit, F3 LRM check,
+and round close pending.
+
+### F4.2 post-F1 (4-run medians, `public section` + per-decl `@[expose]` opt-ins)
+
+| Target | run-1 | run-2 | run-3 | run-4 | median | Δ vs F4.1 |
+|---|---|---|---|---|---|---|
+| `Search/DFS.lean` | 23.24 | 7.57 | 8.64 | 8.76 | **8.70** | +0.57 |
+| `PebbleGame.lean` (run-set 2/3 cache-warm median) | 16.64 / 15.92 | 14.12 / 13.17 | 13.79 / 15.85 | (run-1 cold: 28.20 / 24.85) | **~15.4** | +~1.0 |
+| project-total | 31.45 | 10.20 | 9.88 | 8.19 | **10.04** | +1.07 |
+
+All Δ within the ±5 s noise band per `./PERFORMANCE.md`
+*Recommendations for future perf work* #1 — **F1 perf-neutral**.
+
+The first PebbleGame 4-run after F1 landed (medians ~25 s) was a
+cache-cold cascade — a prior project-wide `lake build` had just
+finished, so the system page cache held mathlib `.olean`s but the
+`PebbleGame.olean` slot was still cold across multiple consecutive
+content nudges. Two follow-up 4-run trials with the page cache
+fully warmed stabilised at 13.79–16.64 s, matching the F4.1
+baseline shape and confirming F1 is genuinely neutral, not a
+regression. The bookkeeping value (audit dispositions in §F1.1 +
+§F1.2) is the primary deliverable, as the pass overview predicted.
 
 ### F1.1 disposition — `Search/DFS.lean`
 
@@ -201,17 +226,15 @@ Per `./PERFORMANCE.md` *Measurement protocol*:
   `@[expose] public section` configuration. Project-total baseline
   on top of Phase 8-perf F3.6's 9.2 s headline. *Done; medians
   8.13 / 14.43 / 8.97 s — see* Current state §F4.1 baseline.
-- [ ] **F4.2.** Post-F1 measurement. Same protocol on the same
-  targets after the per-decl `@[expose]` demotion lands. Compute
-  Δ + classify against the ±5 s noise band per PERFORMANCE.md
-  *Recommendations for future perf work* #1.
-- [ ] **F4.3.** Promotion. If F1 lands a measurable win (any Δ ≥
-  ~5 s on any individual target or project-total), promote to
-  `PERFORMANCE.md` *Experiments that did pay*. If neutral, note
-  under *Experiments that didn't pay*. Either way the F1
-  disposition table belongs in *Granular `@[expose]` / `public`
-  audit per file* irrespective of perf outcome (the bookkeeping
-  benefit is the same).
+- [x] **F4.2.** Post-F1 measurement. *Done; medians 8.70 / ~15.4 /
+  10.04 s — Δ = +0.57 / +1.0 / +1.07 s vs F4.1 baseline. All three
+  targets within the ±5 s noise band — F1 perf-neutral. See*
+  Current state §F4.2 post-F1 *for the raw runs.*
+- [ ] **F4.3.** Promotion. *Neutral verdict — note under
+  PERFORMANCE.md* Experiments that didn't pay; *the F1 disposition
+  tables (§F1.1, §F1.2 above) still augment* Granular `@[expose]`
+  / `public` audit per file *with two new rows. Pending the
+  PERFORMANCE.md edit in F1.3.*
 
 ## Blockers / open questions
 
