@@ -36,7 +36,18 @@ Examples) — same F3.5 / Phase 9-perf F1 audit pattern. Basic and
 DFS were narrowed during Phase 9-perf F1; verify Phase 11's reshape
 didn't invalidate those dispositions, restore opt-ins if needed.
 
-Headline F1 dispositions will land once the audit closes.
+F1 + F2 audit closed. Net dispositions across the six audited
+files: `Algorithm.lean` 1 opt-in (`runPebbleGameWith`);
+`Correctness.lean` 1 opt-in (`PebbleGameResult.isAccept`);
+`Exec.lean` 0 opt-ins (clean demotion); `Examples.lean` 3 opt-ins
+(`k4MinusE` / `moserSpindle` / `path5`); `Search/DFS.lean` 5 opt-ins
+(unchanged from Phase 9-perf F1.1, less the dropped pre-pass
+`reachClosureComputable` marker); `Basic.lean` 9 opt-ins
+(`PartialOrientation.{empty, out, peb, spanArcs, span, pebOn,
+underline, reverse, addArc}`). All six previously-file-wide
+`@[expose] public section` files now narrow to per-decl opt-ins;
+the audit is complete. F4.2 post-pass measurement + F4.3 promotion
+remain.
 
 ### F4.1 baseline (4-run medians, current `@[expose] public section` / per-decl-opt-in mix)
 
@@ -268,8 +279,54 @@ extensions:
   (`reachClosureComputable`'s `@[expose]` dropped); the file
   ships at the same 5-opt-in shape Phase 9-perf F1.1 closed at.
   Disposition row appended to PERFORMANCE.md F3.5 table.*
-- [ ] **F2.2.** Basic re-audit. Same pattern; verify or extend
-  the existing 3 opt-ins. Append disposition delta row.
+- [x] **F2.2.** Basic re-audit. Same pattern; verify or extend
+  the existing 3 opt-ins. Append disposition delta row. *Done;
+  demoted `@[expose] public section` → `public section`,
+  **nine** per-decl opt-ins required: `PartialOrientation.{empty,
+  out, peb, spanArcs, span, pebOn, underline, reverse, addArc}`.
+  The pre-pass note's "3 existing F1.2 opt-ins on `empty` / `reverse`
+  / `addArc`" was a stale reference — after Phase 10's three-way
+  split the file shipped at file-wide `@[expose] public section`
+  per PERFORMANCE.md *Split candidates ranked by leverage* item 5's
+  *Section-marker disposition* note, not at the narrowed shape the
+  pre-split single-file F1.2 carried. The pre-pass-predicted
+  9-opt-in cascade (`out`, `peb`, `span`, `outOn`, `pebOn`,
+  `underline`, plus `empty`/`reverse`/`addArc`) materialised almost
+  exactly: `empty` / `reverse` / `addArc` via intra-file `@[simp]
+  arcs_{empty,reverse,addArc} := rfl` projections (same trigger as
+  Phase 9-perf F1.2's pre-split shape); `out` / `peb` via
+  downstream `:= rfl`-proved `D.peb k _ = k - D.out _` bridge
+  haves in `Algorithm.lean` (`Reachable.reachable_newOrient_apply`
+  L171, `tryAddEdgeWith_correct` L490 / L500), plus a downstream
+  `rw [pebOn]` consumer (`tryAddEdgeWith` L400) for `pebOn`;
+  `spanArcs` / `span` / `underline` via downstream `simp only
+  [..., spanArcs, ...]` / `rw [underline, ...]` / `rw [span, ...]`
+  consumers in `Correctness.lean` (`image_spanArcs_eq_edgesIn` L123
+  / L135, `span_eq_ncard_edgesIn` L152, `sym2_mk_injOn_arcs` L254 /
+  L265, `runPebbleGameWith_span_le` L274). `outOn` was on the
+  pre-pass candidate list but does **not** need exposure: all its
+  consumers (downstream `Algorithm` / `Correctness`) go through
+  the API lemmas `outOn_eq_zero_of_closed`,
+  `outOn_reach_union_eq_zero`, and `pebOn_add_span_add_outOn`, not
+  via name-as-unfold. The Phase 11 Layer 1 / Layer 3 absorbed
+  reach-closure machinery (`reach`, `mem_reach`, `self_mem_reach`,
+  `reach_closed`, `outOn_eq_zero_of_closed`,
+  `outOn_reach_union_eq_zero`) needs **no** new opt-in:
+  `reach` is consumed downstream as a value (`D.reach u`,
+  `D.reach v`) routed through the `mem_reach` iff against
+  `Relation.ReflTransGen` and the closure lemmas — API-only, no
+  body unfolding. The Layer 2 addition `WorkhorseWitness` also
+  needs **no** opt-in: it's a structure (auto-exposed
+  constructors / projections), and downstream `Correctness` consumes
+  its fields by projection, not by body unfolding of an underlying
+  `def`. Net pass-level delta from the file-wide shape: **−1**
+  file-wide `@[expose]` marker dropped, **+9** per-decl opt-ins;
+  net narrowing within the F2.2 frame: from file-wide exposure of
+  all defs in Basic to just the 9 listed (the file ships 13
+  named `def`s plus 3 structures / inductives; 4 of the named
+  defs — `outNbhd`, `outList`, `boundaryArcs`, `outOn` — and the
+  `noncomputable def reach` demote cleanly). Disposition row
+  appended to PERFORMANCE.md F3.5 table.*
 
 ### F3. `LinearRigidityMatroid.lean` module conversion follow-up
 
@@ -424,6 +481,53 @@ median-of-4.
   `typeII`): a `DecidableRel _.Adj` instance built via
   `decidable_of_iff` against a body-mentioning bridge iff forces
   `@[expose]` on the underlying graph def.
+- **F2.2 — `PebbleGame/Basic.lean` per-decl `@[expose]` re-audit
+  under Phase 11 Layer 1 + Layer 3 reach-closure absorption +
+  Layer 2 `WorkhorseWitness` addition.** Demoted file-wide
+  `@[expose] public section` → `public section`; **nine** per-decl
+  opt-ins required: `PartialOrientation.{empty, out, peb, spanArcs,
+  span, pebOn, underline, reverse, addArc}`. The pre-pass note
+  citing "3 existing Phase 9-perf F1.2 opt-ins on `empty` / `reverse`
+  / `addArc`" was a stale reference — after Phase 10's three-way
+  split the file shipped at file-wide `@[expose] public section`
+  per PERFORMANCE.md *Split candidates ranked by leverage* item 5's
+  *Section-marker disposition* note (which collapsed the pre-split
+  9-opt-in cascade to a single file-wide marker pending a future
+  per-decl narrowing audit; that audit is F2.2). The cascade
+  materialised almost exactly per item 5's prediction: `empty` /
+  `reverse` / `addArc` via intra-file `@[simp] arcs_{empty,reverse,
+  addArc} := rfl` projections (same trigger taxonomy as the
+  pre-split single-file F1.2 closed at); `out` / `peb` via
+  downstream `:= rfl`-proved `D.peb k _ = k - D.out _` bridge
+  haves at Algorithm L171 / L490 / L500; `pebOn` via downstream
+  `rw [pebOn]` at Algorithm L400; `spanArcs` / `span` / `underline`
+  via downstream `simp only [..., spanArcs, ...]` /
+  `rw [underline, ...]` / `rw [span, ...]` consumers in Correctness
+  (`image_spanArcs_eq_edgesIn`, `span_eq_ncard_edgesIn`,
+  `sym2_mk_injOn_arcs`, `runPebbleGameWith_span_le`). `outOn` was
+  on the pre-pass candidate list but does **not** need exposure —
+  all its consumers route through API lemmas (`outOn_eq_zero_of_closed`,
+  `outOn_reach_union_eq_zero`, `pebOn_add_span_add_outOn`), not by
+  name-as-unfold; pre-pass list was off-by-one. The Phase 11 Layer
+  1 + Layer 3 absorbed reach-closure machinery (`reach`, `mem_reach`,
+  `self_mem_reach`, `reach_closed`, `outOn_eq_zero_of_closed`,
+  `outOn_reach_union_eq_zero`) and the Layer 2 `WorkhorseWitness`
+  structure both need **zero** new opt-ins: `reach` is consumed as
+  a value via the `mem_reach` iff against `Relation.ReflTransGen`
+  and the closure lemmas (API-only); `WorkhorseWitness` is a
+  structure (auto-exposed constructors / projections) and downstream
+  Correctness consumes its fields by projection, not by body
+  unfolding. The other Basic defs — `outNbhd`, `outList`,
+  `boundaryArcs`, `outOn`, `reach` — all demote cleanly. Net
+  pass-level delta from the post-split file-wide shape: file-wide
+  `@[expose]` marker dropped, replaced by 9 per-decl opt-ins; the
+  audit narrows exposure from "every named def" (13 + 3 structures /
+  inductives) to "the 9 with `@[simp] := rfl` projections or
+  downstream `rw`/`simp [defname]`-as-unfold consumers". Matches
+  the F1.1–F1.4 + F2.1 pattern: the `@[simp] := rfl` projection
+  and `rw [defname]` / `simp [defname]` taxonomy is the trigger;
+  API-only consumption (`outOn`, `reach`, `WorkhorseWitness`)
+  demotes cleanly.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -436,28 +540,29 @@ median-of-4.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** F2.2 re-audit of `PebbleGame/Basic.lean`'s
-existing 3 per-decl `@[expose]` opt-ins
-(`PartialOrientation.{empty, reverse, addArc}` from Phase 9-perf
-F1.2) under Phase 11's reach-closure absorption (Layer 1 + Layer 3
-moved `reach`, `mem_reach`, `self_mem_reach`, `reach_closed`,
-`outOn_eq_zero_of_closed`, `outOn_reach_union_eq_zero` from
-Correctness into Basic) + `WorkhorseWitness` addition (Layer 2).
-Mechanic: verify each of the 3 existing opt-ins is still triggered
-(try demoting each individually and confirm a build failure
-surfaces at the documented trigger site — the intra-file
-`@[simp] arcs_empty / arcs_reverse / arcs_addArc := rfl`
-projections); then audit the Phase 11 additions for new exposure
-triggers (likely candidates: `reach` if any `@[simp] := rfl`
-projection or downstream body-unfold appears, or `WorkhorseWitness`
-if any `match`-arm defeq downstream needs the body). Append
-disposition delta row to `./PERFORMANCE.md` *F3.5 audit disposition*
-table.
+**Next concrete commit:** F4.2 post-pass measurement. 4-run A/B
+median on the same 6 measurement targets as F4.1 (`Search/DFS.lean`,
+`PebbleGame/{Basic, Algorithm, Correctness, Exec}.lean`,
+project-total via `EdgesIn.lean` nudge) at the post-F1/F2 narrowed
+configuration, comparing against the F4.1 baseline medians (5.91 /
+6.42 / 7.84 / 6.41 / 10.25 / 6.44 s). Expected per the F3.5 / Phase
+9-perf F1 track record: all six within the ±5 s noise band — the
+bookkeeping value (F3.5 table rows for F1.1–F1.4 + F2.1 + F2.2) is
+the deliverable, not a wall-clock win. Protocol per
+`./PERFORMANCE.md` *Measurement protocol*: per-target unique-content
+nudge then `lake build <target>`, 4 trials, median-of-4.
 
-After F2.2, F4.2 post-pass measurement (4-run A/B vs F4.1 baseline)
-closes the pass; F4.3 promotes the pass's net disposition to
-PERFORMANCE.md's *Experiments that didn't pay* (expected, per the
-F3.5 / Phase 9-perf F1 track record).
+After F4.2, F4.3 closes the pass by appending the per-decl audit
+result to `./PERFORMANCE.md` *Experiments that didn't pay* (if
+F4.2 lands within the noise band) or *Experiments that did pay*
+(if a measurable win lands), and extending the *Granular `@[expose]`
+/ `public` audit per file* status preamble with the Phase
+10+11-perf F1 + F2 closure paragraph.
+
+F3 (LRM module-system conversion follow-up) remains carry-over —
+recheck upstream `apnelson1/Matroid`'s `Map.lean` module status at
+F4.3 close; if still non-`module` (the Phase 9-perf F3.1 state),
+defer to the next dep-bump cron cycle per the standing recommendation.
 
 If the session must stop mid-stream, the F4.1 baseline anchor + the
 F1.1 disposition for `Algorithm.lean` (`runPebbleGameWith` per-decl
@@ -468,8 +573,11 @@ disposition for `Exec.lean` (clean demotion, zero per-decl opt-ins)
 opt-ins on `k4MinusE` / `moserSpindle` / `path5`) + the F2.1
 re-audit for `Search/DFS.lean` (net delta −1 from Phase 9-perf
 F1.1: `reachClosureComputable`'s `@[expose]` dropped; the 5
-`DirectedWalk` opt-ins all still required) are the persistent state
-added so far; the next session can pick up at F2.2 from a clean
-tree. Final hand-off paragraph will be rewritten at pass close; the
-default close convention is *no follow-up phase queued* per
+`DirectedWalk` opt-ins all still required) + the F2.2 audit for
+`PebbleGame/Basic.lean` (demoted, nine per-decl opt-ins on
+`PartialOrientation.{empty, out, peb, spanArcs, span, pebOn,
+underline, reverse, addArc}`) are the persistent state added so
+far; the next session can pick up at F4.2 from a clean tree. Final
+hand-off paragraph will be rewritten at pass close; the default
+close convention is *no follow-up phase queued* per
 `../CLEANUP.md`.

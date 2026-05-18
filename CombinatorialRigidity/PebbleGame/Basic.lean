@@ -72,7 +72,7 @@ questions, hand-off), and the blueprint chapter
 lemma index).
 -/
 
-@[expose] public section
+public section
 
 namespace CombinatorialRigidity.PebbleGame
 
@@ -103,7 +103,7 @@ variable [DecidableEq V]
 
 /-- The empty partial orientation: no arcs. The initial state of the
 pebble-game algorithm. -/
-def empty : PartialOrientation V where
+@[expose] def empty : PartialOrientation V where
   arcs := ∅
   no_loops _ := Finset.notMem_empty _
   no_antiparallel _ _ h := absurd h (Finset.notMem_empty _)
@@ -142,7 +142,7 @@ lemma mem_outList {v u : V} : u ∈ D.outList v ↔ (v, u) ∈ D.arcs := by
 
 /-- Out-degree at `v`: number of arcs of `D` sourced at `v`. Equivalently
 `(D.outNbhd v).card`; cf. `def:pebble-counts`. -/
-def out (v : V) : ℕ := (D.outNbhd v).card
+@[expose] def out (v : V) : ℕ := (D.outNbhd v).card
 
 /-- The out-degree at `v` equals the cardinality of the source-`v` slice of
 `D.arcs`. Used by the `out_reverse` lemmas to reduce to set-arithmetic on the
@@ -161,14 +161,14 @@ lemma out_eq_card_filter_fst (v : V) :
 subtraction). The structural invariant `out v ≤ k`, maintained by the
 algorithm via `lem:pebble-game-invariants` (1), ensures this behaves
 additively against `out v`. -/
-def peb (k : ℕ) (v : V) : ℕ := k - D.out v
+@[expose] def peb (k : ℕ) (v : V) : ℕ := k - D.out v
 
 /-- Arcs of `D` with both endpoints in `V'`. -/
-def spanArcs (V' : Finset V) : Finset (V × V) :=
+@[expose] def spanArcs (V' : Finset V) : Finset (V × V) :=
   D.arcs.filter (fun p => p.1 ∈ V' ∧ p.2 ∈ V')
 
 /-- Span of `V'` in `D`: number of arcs with both endpoints in `V'`. -/
-def span (V' : Finset V) : ℕ := (D.spanArcs V').card
+@[expose] def span (V' : Finset V) : ℕ := (D.spanArcs V').card
 
 /-- Arcs of `D` with source in `V'` and head outside `V'`. -/
 def boundaryArcs (V' : Finset V) : Finset (V × V) :=
@@ -178,7 +178,7 @@ def boundaryArcs (V' : Finset V) : Finset (V × V) :=
 def outOn (V' : Finset V) : ℕ := (D.boundaryArcs V').card
 
 /-- Total pebble count on `V'`: sum of `peb k v` over `v ∈ V'`. -/
-def pebOn (k : ℕ) (V' : Finset V) : ℕ := ∑ v ∈ V', D.peb k v
+@[expose] def pebOn (k : ℕ) (V' : Finset V) : ℕ := ∑ v ∈ V', D.peb k v
 
 /-- The *underlying edge set* `underline(D) ⊆ Sym₂ V` (blueprint
 `def:partial-orientation`): the set of unoriented edges of `D`, obtained by
@@ -189,7 +189,7 @@ arc of `D`. Consumed by `thm:pebble-game-soundness` and the wrapper
 `runPebbleGame G k ℓ`'s correctness statement, where the invariant
 `underline D = E(G)` ties the algorithm's structural state back to the input
 graph. -/
-def underline : Finset (Sym2 V) :=
+@[expose] def underline : Finset (Sym2 V) :=
   D.arcs.image (fun p => s(p.1, p.2))
 
 @[simp] lemma outNbhd_empty (v : V) :
@@ -299,7 +299,7 @@ structural invariants of `PartialOrientation` survive:
   reverses of each other.
 
 Cf. Lee–Streinu §3 path-reversal move, blueprint `def:path-reversal`. -/
-def reverse (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w)
+@[expose] def reverse (p : DirectedWalk (fun a b => (a, b) ∈ D.arcs) u w)
     (hp : p.IsPath) : PartialOrientation V where
   arcs := (D.arcs \ p.arcsFinset) ∪ p.reversedArcsFinset
   no_loops v hv := by
@@ -620,7 +620,7 @@ take `(u, v) ∉ D.arcs` to ensure `Finset.insert` is a genuine extension.
 
 Cf. Lee–Streinu §3 arc-insertion move; together with `def:path-reversal`,
 the two state transitions used by the pebble game's `def:tryAddEdge`. -/
-def addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs) :
+@[expose] def addArc (u v : V) (huv : u ≠ v) (hnotin_rev : (v, u) ∉ D.arcs) :
     PartialOrientation V where
   arcs := insert (u, v) D.arcs
   no_loops w hw := by
