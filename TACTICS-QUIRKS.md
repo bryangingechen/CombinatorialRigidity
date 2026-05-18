@@ -816,3 +816,66 @@ slot is claimed.
 Worked case study: the failed `Mathlib/Data/Sym/Sym2/Order.lean`
 mirror in Phase 10's Layer 1 (see `notes/Phase10.md` *Layer 0 audit
 \#1 (revised at Layer 1)*).
+
+## 23. `#eval`-bearing `module` files need `public meta import` for the imported `Decidable` / elaboration instances
+
+`#eval` elaborates its argument at **meta time**, synthesising
+`Decidable` / `Repr` / `ToExpr` / etc. instances through the
+*meta-time* environment. In a `module` file, a plain
+`public import X` exposes `X`'s declarations only to the importing
+file's compile-time and runtime layers — not to meta-time
+elaboration. Symptom on the first `#eval (decide P)` from a
+freshly-converted `module` file:
+
+```
+Invalid `meta` definition `_eval`, `instDecidableP` is not accessible
+here; consider adding `public meta import X`
+```
+
+The compiler error names exactly the module to add as a `public meta
+import`. The fix is to keep the existing `public import X` line and
+add a second-form `public meta import X` immediately after it. The
+two import lines coexist: `public import` covers runtime visibility
+(for `def` / `theorem` bodies that reference `X`'s declarations);
+`public meta import` covers meta-time visibility (for `#eval` /
+`#check` / `#reduce` / `decide`-tactic elaboration that reaches into
+`X`'s instance pool).
+
+**Worked case.** Phase 10 Layer 4
+(`CombinatorialRigidity/PebbleGame/Examples.lean`) ships `#eval
+(decide G.IsLaman)` lines that need the
+`SimpleGraph.instDecidableIsLaman` instance from
+`PebbleGame/Exec.lean`. The header is
+
+```
+public import CombinatorialRigidity.PebbleGame.Exec
+public meta import CombinatorialRigidity.PebbleGame.Exec
+```
+
+— same module imported twice in different roles. Without the second
+line, every `#eval (decide …)` reports the *"not accessible here"*
+error pointing at the missing instance.
+
+**Closest mathlib precedent.** `Mathlib/Tactic/Check.lean` and
+several other tactic-bearing files in `Mathlib/Tactic/` use `public
+meta import` for `Lean.Elab.*` / `Lean.PrettyPrinter.*` (where the
+tactic implementation needs Lean elaborator-internals at meta time).
+For pure `#eval`-bearing user files, the project's first instance is
+`PebbleGame/Examples.lean`.
+
+**When this fires vs. doesn't.** The rule is *what kind of
+visibility does the consumer need?*
+
+- `def foo := …` using `X`'s declarations in its body → `public
+  import X` is sufficient.
+- `theorem bar : … := by simp [X.lemma]` → `public import X` is
+  sufficient (the `simp` lemma database is populated at compile
+  time).
+- `#eval P` where `P` reduces through `X`'s instances → needs
+  `public meta import X`.
+- `example : … := by decide` where `decide` synthesises an instance
+  defined in `X` → needs `public meta import X`.
+
+The alternative — dropping `module` for the `#eval`-bearing file —
+works (non-`module` files can `import` `module` files freely) but
+breaks the project's uniform module convention.

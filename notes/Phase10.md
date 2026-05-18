@@ -32,7 +32,17 @@ same first commit as this file.
 Layer 0 audits closed, Layer 1 (computable list views) landed,
 Layer 2's workhorse-level correctness restatement landed, Layer 2
 itself closed via the exec-layer wrapper `runPebbleGameExec` plus its
-certificate-form correctness theorem, and Layer 3 is **closed**: the
+certificate-form correctness theorem, Layer 3 closed with the three
+canonical `Decidable` instances, and Layer 4 (worked `#eval` examples)
+is now **open**: `CombinatorialRigidity/PebbleGame/Examples.lean`
+ships the four blueprint-prescribed worked examples (`k4MinusE`,
+`moserSpindle`, `k4`, `path5`) with their `DecidableRel _.Adj`
+instances and the corresponding `#eval (decide …)` lines for
+`IsLaman` / `IsSparse` / `IsTight` plus edge-count sanity. All eleven
+`#eval`s reduce through the compiled `runPebbleGameExec` body in
+sub-second wall time and produce the expected `Bool` / `ℕ` outputs;
+the build (`lake build`) records each output as an `info` diagnostic
+so a regression would surface as a CI build-log mismatch. The
 canonical `Decidable (G.IsSparse k ℓ)`, `Decidable (G.IsTight k ℓ)`,
 and `Decidable G.IsLaman` instances are all registered, with a
 top-level `instance : Fact (3 < 2 * 2)` making the Laman case
@@ -351,6 +361,27 @@ discipline.
   `toSucc := fun D' v => (D'.outNbhd v).sort (· ≤ ·)` with the
   agreement proof `mem_outListSorted`.
 
+- **Layer 4 worked examples: `public meta import` for `#eval` access
+  to `Decidable` instances.** Phase 10's `Decidable` instances live
+  in `PebbleGame/Exec.lean` (a `module` file with
+  `@[expose] public section`), but `#eval` synthesises its decidable
+  instances at *meta time* — and a plain `public import X` does not
+  expose `X`'s declarations to the importing file's meta-time
+  elaboration. Symptom on `#eval (decide G.IsLaman)` from a `module`
+  file: *"Invalid `meta` definition `_eval`, `instDecidableIsLaman`
+  is not accessible here; consider adding `public meta import
+  CombinatorialRigidity.PebbleGame.Exec`"*. The fix is to add the
+  second-form import — a `module` file may carry both
+  `public import X` (for compile-time, runtime visibility) and
+  `public meta import X` (for `#eval` / `#check` / other elaboration
+  commands). The Layer-4 file `PebbleGame/Examples.lean` does exactly
+  this; the pattern is the closest mathlib precedent is
+  `Mathlib/Tactic/Check.lean` and friends (which carry `public meta
+  import` for tactic-bearing imports). The alternative — dropping
+  `PebbleGame/Examples.lean` from the `module` system — was rejected
+  to keep the project's uniform module convention (per
+  `PERFORMANCE.md` F3.5).
+
 - **Layer 3 IsSparse-decidability: `Fact (ℓ < 2 * k)`, not an explicit
   hypothesis.** The pebble game requires the matroidal regime
   `ℓ < 2 * k` (Phase 7 + Phase 9). For the canonical `Decidable
@@ -379,6 +410,12 @@ discipline.
   and silently expose the slow reduction path* → DESIGN.md *One
   `Decidable` instance per project predicate* (Layer 3 example:
   `SimpleGraph.instDecidableIsSparse` in `PebbleGame/Exec.lean`).
+- *`#eval`-bearing `module` files need a `public meta import` next to
+  their `public import` to expose the imported `Decidable` instances
+  to `#eval`'s meta-time elaboration* → TACTICS-QUIRKS § 23
+  *`#eval`-bearing `module` files need `public meta import` for the
+  imported `Decidable` / elaboration instances* (Layer 4 example:
+  `CombinatorialRigidity/PebbleGame/Examples.lean`).
 
 ### Cleanup pass summaries
 
@@ -414,21 +451,26 @@ discipline.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** open Layer 4 — create
-`CombinatorialRigidity/PebbleGame/Examples.lean` carrying the four
-`#eval`-able worked examples from `chapter/executable.tex`
-*Worked examples* ($K_4 \setminus e$ on $\mathrm{Fin}\,4$, Moser
-spindle, $K_4$ on $\mathrm{Fin}\,4$, a 5-vertex path). Each is a
-`#eval (decide G.IsLaman)` (or `decide G.IsSparse` for the
-sparse-but-not-tight case) reducing through the compiled
-`runPebbleGameExec` body. The four-example list is small enough to
-land in a single commit; the file just needs the right `SimpleGraph`
-constructions for each (`Fin n` adjacency predicates plus
-`DecidableRel` instances). No new blueprint nodes — the worked-examples
-section in `chapter/executable.tex` is already prose-only. After
-Layer 4 lands, Layer 5 (CLI binary `lake exe pebble-game` plus its
-edge-list parser; new top-level `Main.lean` + lakefile target) is the
-final concrete commit before Phase 10 closes.
+**Next concrete commit:** open Layer 5 — the CLI binary `lake exe
+pebble-game` plus its line-oriented edge-list parser. The commit
+ships (i) a new top-level `Main.lean` carrying the `IO Unit` entry
+point (input format per `chapter/executable.tex` *CLI binary*:
+leading `n m` line giving vertex count + edge count, then `m` lines
+of two whitespace-separated `0 ≤ u, v < n`; output one of `LAMAN` /
+`SPARSE_NOT_TIGHT` / `NOT_SPARSE` on stdout), (ii) a `lake exe
+pebble-game` lakefile target wiring `Main.lean` to the
+`CombinatorialRigidity` library, and (iii) a small sample edge-list
+input file (e.g. `examples/k4-minus-e.txt`) plus a docstring
+explaining usage. The classification reuses Layer 3's
+`instDecidableIsLaman` via `decide G.IsLaman` (then a separate
+`decide (G.IsSparse 2 3)` to distinguish `NOT_SPARSE` from
+`SPARSE_NOT_TIGHT`); no new mathematical content. Blocking-witness
+extraction on the `NOT_SPARSE` branch is in scope to attempt but
+not committed to — if the computable closure for `reachClosure` is
+non-trivial it stays deferred and the CLI ships `NOT_SPARSE` alone.
+Layer 5 is the final concrete commit before Phase 10 closes; after
+it lands, flip the four user-facing status surfaces (ROADMAP, README,
+home_page, blueprint intro) to ✓ in the closing commit.
 
 Phase 10 closes when:
 - `chapter/executable.tex`'s dep-graph is fully `\leanok`-green;

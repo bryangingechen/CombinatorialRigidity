@@ -123,6 +123,13 @@ bullets. If one matches, jump to the named section of
   `PartialOrder` slot via `SetLike.instPartialOrder`. Sort through
   `Lex (β)` for some projection target `β`, or register on
   `Lex (α)` instead.
+- *"Invalid `meta` definition `_eval`, `instFoo` is not accessible
+  here; consider adding `public meta import X`"* on a `#eval (decide
+  P)` (or any `#eval` synthesising an instance from a sibling
+  `module` file) — § 23 *`#eval`-bearing `module` files need `public
+  meta import` for the imported `Decidable` / elaboration instances*:
+  keep `public import X` for compile-time visibility and add a
+  second-form `public meta import X` for meta-time visibility.
 
 ## Starting a Lean-touching session
 
