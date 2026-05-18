@@ -5,7 +5,8 @@
 matching docstring fix in `Algorithm.lean`; A3 closed with two
 targeted fixes in `chapter/executable.tex` — `def:runPebbleGameExec`
 `\uses{}` completion + `lem:mem-edgeListSorted` retired forward-reference
-to non-existent discharge nodes; A4 + B/C/D pending).
+to non-existent discharge nodes; A4 closed as no-op — Bucket A
+complete; B/C/D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -75,8 +76,34 @@ per the Layer 4b maximal reshape, and the explanatory prose in
 `def:isSparse-decidable` correctly records the Layer 3 / Layer 4 / Layer
 4b history); `examples/` directory exists with the four sample files
 described at the CLI binary node; `Main.lean`'s entry point shape matches
-the *CLI binary* subsection's flow. Remaining: A4 blueprint walk, B/C
-code-smell + long-proof sweeps, D project-organization compression.
+the *CLI binary* subsection's flow. A4 closed as a **no-op**:
+formalisation-aside scan across all three Phase 10/11 chapters
+(`chapter/dfs.tex`, `chapter/pebble-game.tex`, `chapter/executable.tex`)
+inspected every `\emph{}` / `\begin{remark}` site. Two outcomes:
+(i) the bulk of `\emph{}` hits are italicised defined terms or local
+emphasis ("computable", "same", "type", "verdict", etc.) — not
+formalisation asides at all; (ii) every *substantive* aside (the
+*Reuse pattern* note on `def:tryReachPebble`; the *Practical
+consequence: zero `noncomputable` in the instance body* paragraph at
+`sec:executable-backends`; the *Layer 0 audit #1 (revised outcome)*
+note on `def:edgeListSorted`; the polynomial-vs-exponential
+`\begin{remark}` on `def:isSparse-decidable`; the *Out of scope* /
+*Multigraphs* paragraphs at the head of `sec:pebble-game`; the *Lean
+placement note (Phase 11 Layer 4 / Layer 4b maximal reshape)* on
+`def:pebbleGameResult`; the two *Special case: planar rigidity*
+paragraphs at the chapter foots) is *sticky design rationale* whose
+underlying friction is structural — the `Sym2.PartialOrder` slot
+conflict, the math-layer/exec-layer noncomputable boundary, the
+phase-history record on the verdict placement, or a cross-chapter
+pointer — and none has been dissolved by a later Layer. Per
+`../CLEANUP.md` §A *"first attempt is to shorten the Lean to retire
+the aside"*: no Lean-side shortening is available because the
+friction is structural (`SetLike.instPartialOrder` occupies the slot,
+the math-layer `runPebbleGame` is `noncomputable` by Finset.toList /
+Quot.out and that's the reason the exec wrapper exists, the
+verdict's Lean placement is determined by where the type is
+declared). Bucket A complete. Remaining: B code-smell sweep, C
+long-proof audit, D project-organization compression.
 Pre-sweep smell counts (Phase 10+11
 surface only —
 `CombinatorialRigidity/PebbleGame/*.lean`,
@@ -220,14 +247,21 @@ need a separate "run checkdecls" task here.
   (`k4-minus-e.txt`, `k4.txt`, `moser-spindle.txt`, `path5.txt`)
   carrying the Phase 11 Layer 5 expected-output schema as a header
   comment block, matching the CLI binary node's description.
-- [ ] **A4:** Formalization-aside scan across all three chapters.
-  Phase 11's *Architectural choices* list noted the structural
-  reshape; each `\emph{}` / `\begin{remark}` aside should still
-  hold under the verdict-bearing shape, with no orphan asides
-  documenting the Phase-9-era `Option` return type. Apply
-  CLEANUP.md §A's "first attempt is to shorten the Lean to retire
-  the aside"; record any failed-shortening attempts with the
-  residual rationale.
+- [x] **A4:** Formalization-aside scan across all three chapters.
+  Closed as a **no-op**. Walked every `\emph{}` and
+  `\begin{remark}` site in `chapter/dfs.tex`, `chapter/pebble-game.tex`,
+  `chapter/executable.tex`. Two outcomes: the majority of `\emph{}`
+  hits are italicised defined terms or local emphasis (not asides);
+  every substantive aside is sticky design rationale or a
+  cross-chapter pointer with no Lean-side shortening available
+  (structural friction: `Sym2.PartialOrder` slot conflict; the
+  math-layer/exec-layer noncomputable boundary; the Layer 4/4b
+  history record on the verdict's Lean placement; etc.). No orphan
+  asides documenting the Phase-9-era `Option` return type remain
+  anywhere on the surface — all `Option`-shape claims were updated
+  to `Sum` / verdict shape during Phase 11's per-Layer blueprint
+  restate-in-place and the A1-A3 walks. See *Cleanup pass summaries*
+  below for the per-aside disposition table.
 
 ### Bucket B — Code-smell sweep (Phase 10+11 surface)
 
@@ -417,6 +451,42 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   in `def:isSparse-decidable` correctly records their history);
   `examples/` directory and `Main.lean` flow verified against the
   *Worked examples* and *CLI binary* subsections.
+- **A4: Formalisation-aside scan across all three chapters** —
+  no-op closure. Walked every `\emph{}` and `\begin{remark}` site
+  in `chapter/dfs.tex`, `chapter/pebble-game.tex`, and
+  `chapter/executable.tex` (full enumeration via
+  `grep -nE '\\emph\{|\\begin\{remark\}'`). Per-aside disposition:
+  | Aside | Site | Disposition |
+  |---|---|---|
+  | *Reuse pattern* (DFS specialisation to `tryReachPebble`) | `dfs.tex` L109 | Keep — still accurate; verified in A1 |
+  | *Practical consequence: zero `noncomputable` in instance body* | `executable.tex` L81 | Keep — still true under Phase 11 (Layer 1 `reachClosureComputable` keeps the body `Classical`-free); operational reason `runPebbleGameExec` exists |
+  | *Layer 0 audit #1 (revised outcome)* (`Sym2.PartialOrder` slot conflict) | `executable.tex` L160 | Keep — sticky design rationale; verified in A3 |
+  | `\begin{remark}[Polynomial vs.\ exponential reduction]` | `executable.tex` L335 | Keep — still accurate; the "exactly one Decidable instance per predicate" rule is enforced in source |
+  | *Special case: planar rigidity (continued)* | `executable.tex` L478 | Keep — cross-chapter pointer; references resolve |
+  | *Out of scope* (component pebble game / Henneberg-sequence) | `pebble-game.tex` L28 | Keep — scope statement, still accurate; both items remain candidates for follow-up phases |
+  | *Multigraphs* (matroidal-regime simplification audit) | `pebble-game.tex` L39 | Keep — already updated to reference Layer 3 `Sum`-return shape and `lem:pebble-game-tryAddEdgeWith-isSparse` / `lem:workhorseWitness-certifies` |
+  | `tryReachPebble` math-layer noncomputable + *Style island* pointer | `pebble-game.tex` L341 | Keep — `tryReachPebble` is still `noncomputable` per the cleanup-round smell table (Algorithm.lean `noncomputable def` count = 10); the file-header *Style island* reference resolves to `PebbleGame/Basic.lean:43` (still present) |
+  | `tryAddEdgeWith` reshape detail incorporating Layer 3 `hD` absorption | `pebble-game.tex` L388 | Keep — already verified accurate in A2 (the L398-401 paragraph documents the absorption explicitly) |
+  | *Lean placement note (Phase 11 Layer 4 / Layer 4b maximal reshape)* | `pebble-game.tex` L1039 | Keep — phase-history record; sticky |
+  | *Special case: planar rigidity* | `pebble-game.tex` L1121 | Keep — cross-chapter pointer; references resolve |
+  All other `\emph{}` matches are italicised defined terms or local
+  emphasis — *not* formalisation asides. Per `../CLEANUP.md` §A's
+  "first attempt is to shorten the Lean to retire the aside": no
+  Lean-side shortening applies because every kept aside records
+  *structural* friction (`SetLike.instPartialOrder` occupying the
+  `Sym2.PartialOrder` slot; the math-layer/exec-layer
+  `noncomputable` boundary forced by `Finset.toList` /
+  `Quot.out`; the verdict's Lean placement determined by where the
+  type is declared) or is a cross-chapter pointer that has no
+  Lean residual. Bucket A complete; the round's blueprint-divergence
+  audit is fully discharged. Three formalisation-aside *Note*-style
+  paragraphs inside the three `def:is{Sparse,Tight,Laman}-decidable`
+  bodies ("packaged in the formalisation as `Fact (ℓ < 2 * k)`",
+  "the formalisation bridges Set.ncard / Nat.card …", "the
+  formalisation registers Fact (3 < 2 * 2) as a top-level instance")
+  were also verified — each remains accurate against the current Lean
+  shape per the in-source Fact-instance registration at
+  `PebbleGame/Exec.lean:415` and the explanatory prose at line 412.
 
 ## Blockers / open questions
 
@@ -424,22 +494,21 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 
 ## Hand-off / next phase
 
-Round still in progress. Next concrete commit: **A4** —
-formalisation-aside scan across all three Phase 10/11 chapters
-(`chapter/dfs.tex`, `chapter/pebble-game.tex`, `chapter/executable.tex`).
-Walk each `\emph{}` / `\begin{remark}` aside and verify it still
-holds under the Phase 11 verdict-bearing shape, with no orphan
-asides documenting the Phase-9-era `Option` / Phase-10/11-Layer-3
-`Sum` return types. Apply `CLEANUP.md` §A's "first attempt is to
-shorten the Lean to retire the aside" — most asides on the
-Phase 10+11 surface are *Layer 0 audit notes* (e.g. the revised-
-outcome aside on `def:edgeListSorted` documenting why a
-`LinearOrder (Sym2 V)` mirror was infeasible; the Phase-11-Layer-4b
-shape-history aside in `def:isSparse-decidable`) — those record
-sticky design rationale and almost certainly stay; retire only the
-ones where the underlying friction has been dissolved by a later
-Layer. Closes Bucket A and unblocks Bucket B (code-smell sweep
-delta vs Phase 9-cleanup B4/B7).
+Round still in progress; Bucket A complete (A1 no-op / A2
+targeted fix / A3 targeted fix / A4 no-op). Next concrete commit:
+**B1** — `classical` audit. Pre-grep shows zero standalone
+`classical` hits across the Phase 10+11 surface (the style island
+`[Fintype V] [DecidableEq V]` already provides the typeclasses), so
+B1 is expected to close as a no-op confirming-by-comment-out + build.
+B2 (`noncomputable def` delta audit vs Phase 9-cleanup B4) is the
+next non-trivial item after B1: re-audit the 22 `noncomputable def`
+sites in the Phase 10+11 surface (DFS:2, Basic:8, Algorithm:10,
+Correctness:6, Exec:3 per the *Current state* table) to confirm each
+`noncomputable` keyword is forced by a named driver (Finset.toList,
+Quot.out, Real.instRCLike, …) rather than vestigial. After Bucket B
+close, C (long-proof audit on `Algorithm.lean` and the verdict-
+construction bodies) and D (project-organization compression of
+`notes/Phase10.md` and `notes/Phase11.md`).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
