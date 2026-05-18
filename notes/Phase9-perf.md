@@ -199,17 +199,16 @@ disposition in the file's row of an F1 table here.
 
 ### F3. `LinearRigidityMatroid.lean` module conversion follow-up
 
-- [ ] **F3.1.** Re-check `.lake/packages/Matroid/Matroid/Representation/Map.lean`
-  module status at pass execution time. As of Phase 9 close:
-  still `import`, not `public import` — block stands.
-- [ ] **F3.2.** If converted: land LRM's conversion as a single
-  commit (add `module` + `public import` lines + an
-  `@[expose] public section` marker, then immediately demote per
-  F1 pattern). 4-run A/B vs Phase 8-perf F3.6 baseline at the
-  HR / RM / LRM / project-total targets. If still blocked: defer
-  to the next dep-bump cron cycle.
-- [ ] **F3.3.** If converted, update PERFORMANCE.md *Module system*
-  to remove the LRM carve-out paragraph.
+- [x] **F3.1.** Re-check `.lake/packages/Matroid/Matroid/Representation/Map.lean`
+  module status at pass execution time. *Done at session open:
+  still starts with `import Mathlib.LinearAlgebra.FiniteDimensional.Defs`
+  (plain `import`, not `public import`; no `module` marker) —
+  block stands.*
+- [x] **F3.2.** If converted: land LRM's conversion. *N/A — block
+  stands; defer to next `apnelson1/Matroid` dep-bump cron cycle.*
+- [x] **F3.3.** If converted, update PERFORMANCE.md *Module system*
+  to remove the LRM carve-out paragraph. *N/A — block stands;
+  LRM carve-out remains accurate.*
 
 ### F4. Baseline + post-pass measurements
 
