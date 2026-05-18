@@ -13,7 +13,11 @@ planar rigidity matroid as a linear matroid via `Matroid.ofFun` (from the
 Lovász–Yemini in linear-matroid form. Phase 9 formalizes the basic
 `(k, ℓ)`-pebble game of Lee–Streinu 2008 in the matroidal regime
 `ℓ < 2k`, with a certificate-form correctness theorem and the matroidal-
-independence corollary against the Phase 7 count matroid.
+independence corollary against the Phase 7 count matroid. Phase 10
+bridges Phase 9's `noncomputable` `runPebbleGame` to an actually-runnable
+decision procedure: a `Decidable G.IsLaman` instance backed by a
+computable wrapper `runPebbleGameExec`, plus a `lake exe rigidity` CLI
+binary.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -39,6 +43,13 @@ project; commit history is preserved with paths rewritten.
   correctness theorem (`runPebbleGame_correct`) and matroidal-
   independence corollary (`countMatroid_indep_iff_runPebbleGame`).
   The project carries no `sorry`s.
+* **Phase 10 in progress** — executable pebble game. Computable
+  wrapper `runPebbleGameExec` under `[LinearOrder V]` plus
+  `Decidable` instances for `IsSparse k ℓ` / `IsTight` / `IsLaman`
+  in the matroidal regime `ℓ < 2k`, backed by Phase 9's correctness
+  theorem; `#eval` and `lake exe rigidity` reduce through the same
+  compiled body. See `notes/Phase10.md` and
+  `blueprint/src/chapter/executable.tex`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

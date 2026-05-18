@@ -56,7 +56,10 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   └── PebbleGame/
 │       ├── Basic.lean       Phase 9 — `PartialOrientation` state + invariants
 │       ├── Algorithm.lean   Phase 9 — `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain
-│       └── Correctness.lean Phase 9 — soundness + completeness + matroidal corollary
+│       ├── Correctness.lean Phase 9 — soundness + completeness + matroidal corollary
+│       ├── Exec.lean        Phase 10 (planning) — `runPebbleGameExec` + `Decidable` instances
+│       └── Examples.lean    Phase 10 (planning) — `#eval` examples on `Fin n` graphs
+├── Main.lean            Phase 10 (planning) — `lake exe rigidity` CLI entry point
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
 └── lake-manifest.json   resolved dependency revisions
@@ -86,6 +89,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 9. Pebble game | `PebbleGame/{Basic, Algorithm, Correctness}.lean` | ✓ Complete (see `notes/Phase9.md`) |
 | ⋮ Cleanup round (post-Phase-9) | project-wide (Phase 9 surface) | ✓ Complete (see `notes/Phase9-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-9) | `Search/DFS.lean` + `PebbleGame.lean` per-decl `@[expose]` audit | ✓ Complete (see `notes/Phase9-perf.md`; protocol: `notes/PERFORMANCE.md`) |
+| 10. Executable pebble game | `PebbleGame/{Exec, Examples}.lean` (new), `Main.lean` (new) | planning (see `notes/Phase10.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -321,6 +325,43 @@ dep-graph. See `notes/Phase9.md` for the full lemma list,
 decisions, and hand-off; the *component pebble game* (L-S §5,
 $O(n^2)$ speedup via union pair-find) and the Henneberg-sequence
 application (L-S §6) are deferred to potential follow-up phases.
+
+### Phase 10 — Executable pebble game (`PebbleGame/{Exec, Examples}.lean`, `Main.lean`)
+
+Planning. Bridges Phase 9's certificate-form correctness theorem
+to an actually-runnable decision procedure. Phase 9's
+`runPebbleGame` is `noncomputable` (its body invokes
+`Finset.toList` and `Quot.out`); Phase 10 ships a sibling wrapper
+`runPebbleGameExec` that plugs in `Finset.sort`-based list views
+under `[LinearOrder V]`, registers `Decidable` instances backed by
+it for `IsSparse k ℓ` / `IsTight` / `IsLaman` (in the matroidal
+regime $\ell < 2k$), and surfaces the result through a tiny
+`lake exe rigidity` CLI binary that reads an edge-list file and
+prints `LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE`. Both `#eval`
+of `decide G.IsLaman` and the CLI invocation reduce through the
+same compiled `runPebbleGameExec` body (bytecode interpreter vs.
+native code respectively), with polynomial runtime in $|V| + |E|$.
+
+The phase carries six layers of work: (Layer 0) audits — does
+mathlib provide `LinearOrder (Sym2 V)` from `[LinearOrder V]`,
+does the Phase 9 correctness proof factor cleanly through a
+workhorse-level statement, can the algorithm-side proofs avoid
+the structural-`outList` refactor; (Layer 1) computable list
+views `outListSorted` / `edgeListSorted` and their membership
+lemmas; (Layer 2) `runPebbleGameExec` plus the workhorse-level
+correctness theorem and its corollary on the new wrapper;
+(Layer 3) the three `Decidable` instances, one per project
+predicate, with docstrings forbidding competing instances per
+DESIGN.md *One `Decidable` instance per project predicate*;
+(Layer 4) `#eval`-able worked examples on `Fin n` graphs ($K_4
+\setminus e$, Moser spindle, $K_4$, a 5-vertex path); (Layer 5)
+the CLI binary plus its parser. Chapter runs in **forward
+blueprint mode** with `blueprint/src/chapter/executable.tex` as
+the authoritative dep-graph; the runtime/backend explainer
+(`#eval` / `lake exe` / `by decide` / `native_decide` matrix)
+also lives there as a user-facing section. See `notes/Phase10.md`
+for the architectural-choice list, Layer 0 audit outcomes (filled
+in as the phase progresses), and hand-off.
 
 ## Engineering conventions
 

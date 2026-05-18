@@ -23,9 +23,9 @@ combinatorial rigidity, see
 
 \subsection*{Phase plan}
 
-The Lean code is organized into nine phases, tracked in
+The Lean code is organized into ten phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-All nine phases are complete: the first six phases formalize Laman's
+Phases~1--9 are complete: the first six phases formalize Laman's
 theorem, Phase~7 packages the planar rigidity matroid as a mathlib
 \texttt{Matroid} via the Lov\'asz--Yemini matroid identification,
 Phase~8 reframes it as a linear matroid via \texttt{Matroid.ofFun}
@@ -34,7 +34,13 @@ form), and Phase~9 ships the basic $(k, \ell)$-pebble game of
 Lee--Streinu~\cite{leeStreinu2008} in the matroidal regime
 $\ell < 2k$ with a certificate-form correctness theorem and the
 matroidal-independence corollary against the Phase~7 count matroid,
-on top of a verified-DFS warmup.
+on top of a verified-DFS warmup. Phase~10 (in progress) bridges
+Phase~9's \texttt{noncomputable} \texttt{runPebbleGame} to an
+actually-runnable decision procedure: a computable wrapper
+\texttt{runPebbleGameExec} under $[\mathrm{LinearOrder}\,V]$,
+\texttt{Decidable} instances for $\mathrm{IsSparse}$ /
+$\mathrm{IsTight}$ / $\mathrm{IsLaman}$, and a
+\texttt{lake exe rigidity} CLI binary.
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -78,6 +84,17 @@ on top of a verified-DFS warmup.
         matroidal regime $\ell < 2k$ matching Phase~7. Preceded by a
         verified-DFS warmup. (Files:
         \texttt{Search/DFS.lean}, \texttt{PebbleGame/\{Basic,Algorithm,Correctness\}.lean}.)
+  \item \textbf{Executable pebble game.} \emph{(In progress.)} A
+        computable wrapper \texttt{runPebbleGameExec} that plugs
+        $\mathrm{Finset.sort}$-based list views into Phase~9's
+        computable \texttt{-With} workhorses, lifting the
+        certificate-form correctness theorem to a non-\texttt{noncomputable}
+        body; \texttt{Decidable} instances for $\mathrm{IsSparse}\,k\,\ell$
+        / $\mathrm{IsTight}\,k\,\ell$ / $\mathrm{IsLaman}$ in the
+        matroidal regime $\ell < 2k$, backed by it; \texttt{\#eval}-able
+        worked examples on $\mathrm{Fin}\,n$ graphs; a
+        \texttt{lake exe rigidity} CLI binary. (Files:
+        \texttt{PebbleGame/\{Exec,Examples\}.lean}, \texttt{Main.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -86,7 +103,9 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from the
 navigation bar) is the best place to see at a glance how the chapters
-fit together; every node is now green, including the main Laman
-line, the Phase~7 / Phase~8 matroid identifications, the verified-DFS
-warmup (\cref{sec:dfs}), and the Phase~9 pebble-game chapter
-(\cref{sec:pebble-game}).
+fit together; the Phase~1--9 nodes are all green, including the main
+Laman line, the Phase~7 / Phase~8 matroid identifications, the
+verified-DFS warmup (\cref{sec:dfs}), and the Phase~9 pebble-game
+chapter (\cref{sec:pebble-game}). Phase~10
+(\cref{sec:executable}) is in progress; its nodes are currently red
+and serve as the forward-mode to-do list.

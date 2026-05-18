@@ -31,7 +31,10 @@ form (Phase 7) and linear-matroid form via `Matroid.ofFun` (Phase 8,
 `ℓ < 2k` with certificate-form correctness theorem
 `runPebbleGame_correct` and the matroidal-independence corollary
 `countMatroid_indep_iff_runPebbleGame`, on top of a verified-DFS
-warmup under `CombinatorialRigidity/Search/`.
+warmup under `CombinatorialRigidity/Search/`. Phase 10 (in progress)
+bridges to an actually-runnable decision procedure: a computable
+wrapper `runPebbleGameExec`, `Decidable` instances, and a
+`lake exe rigidity` CLI binary.
 
 The development is divided into the phases below, each in its own
 file under
@@ -48,6 +51,7 @@ file under
 |     7 | Lovász–Yemini matroid id.   | `CountMatroid.lean`, `MatroidIdentification.lean`                |   ✓    |
 |     8 | Linear-matroid framing      | `LinearRigidityMatroid.lean`                                     |   ✓    |
 |     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness}.lean` |   ✓    |
+|    10 | Executable pebble game      | `PebbleGame/{Exec,Examples}.lean`, `Main.lean`                   |   …    |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
