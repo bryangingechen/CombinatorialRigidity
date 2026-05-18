@@ -102,6 +102,8 @@ $\mathrm{Finset.sort}$ under a $\mathrm{LinearOrder}$ on $V$.
 
 \begin{definition}[Sorted out-neighbour list]
   \label{def:outListSorted}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.outListSorted}
+  \leanok
   \uses{def:partial-orientation, def:pebble-counts}
   Let $V$ be a finite type with $[\mathrm{LinearOrder}\,V]$ and
   $[\mathrm{DecidableEq}\,V]$, and let $D$ be a partial orientation
@@ -118,6 +120,8 @@ $\mathrm{Finset.sort}$ under a $\mathrm{LinearOrder}$ on $V$.
 
 \begin{lemma}[Membership in the sorted out-neighbour list]
   \label{lem:mem-outListSorted}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.mem_outListSorted}
+  \leanok
   \uses{def:outListSorted}
   Under the hypotheses of \cref{def:outListSorted}, for all $v, u
   \in V$,
@@ -126,46 +130,76 @@ $\mathrm{Finset.sort}$ under a $\mathrm{LinearOrder}$ on $V$.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   $\mathrm{Finset.sort}$ preserves membership; the result follows
   from $D.\mathrm{mem\_outNbhd}$.
 \end{proof}
 
 \begin{definition}[Sorted edge enumeration]
   \label{def:edgeListSorted}
+  \lean{SimpleGraph.edgeListSorted}
+  \leanok
   \uses{def:partial-orientation}
   Let $V$ have $[\mathrm{LinearOrder}\,V]$ and
   $[\mathrm{DecidableEq}\,V]$, and let $G$ be a finite simple graph
   on $V$. Define
   \[
     \mathrm{edgeListSorted}\,G
-    \;:=\; G.\mathrm{edgeFinset}.\mathrm{sort}\,(\cdot \le \cdot)
-    \;\text{ projected to ordered pairs via the canonical lex map}
-    \quad : \quad \mathrm{List}\,(V \times V).
+    \;:=\; \mathrm{ofLex}\,\circ\,
+      \big((G.\mathrm{edgeFinset}.\mathrm{image}\,(e \mapsto
+        \mathrm{toLex}\,(e.\inf, e.\sup))).\mathrm{sort}\,(\cdot \le \cdot)\big)
+    \quad : \quad \mathrm{List}\,(V \times V),
   \]
-  Replaces Phase~9's noncomputable
-  \texttt{G.edgeFinset.toList.map Quot.out}. The projection of each
-  $\mathrm{Sym}_2 V$ to a $V \times V$ uses the lex-smaller-first
-  rule under the ambient $\mathrm{LinearOrder}$, which is
-  computable. \emph{Audit:} verify that mathlib provides
-  $\mathrm{LinearOrder}\,(\mathrm{Sym}_2 V)$ from
-  $\mathrm{LinearOrder}\,V$; if not, mirror under
-  \texttt{Mathlib/Data/Sym/Sym2.lean}.
+  where each $e : \mathrm{Sym}_2 V$ is first imaged to its
+  lex-smaller-first ordered pair $(e.\inf, e.\sup)$ viewed as
+  $\mathrm{Lex}\,(V \times V)$, then sorted under
+  $\mathrm{Prod.Lex}$'s linear order, and finally untagged via
+  $\mathrm{ofLex}$ to recover $V \times V$. Replaces Phase~9's
+  noncomputable \texttt{G.edgeFinset.toList.map Quot.out}.
+
+  \emph{Layer~0 audit~\#1 (revised outcome).} Sorting
+  $\mathrm{Finset}\,(\mathrm{Sym}_2 V)$ directly via
+  $(\cdot \le \cdot)$ is structurally blocked: mathlib's
+  \texttt{instance : PartialOrder (Sym2 \(\alpha\))} from
+  \texttt{SetLike} already occupies the slot for an order on
+  $\mathrm{Sym}_2 V$ itself with the non-total subset order, so a
+  competing linear order on $\mathrm{Sym}_2 V$ cannot be registered.
+  Sorting via $\mathrm{Lex}\,(V \times V)$ on the
+  $\mathrm{Sym}_2.\mathrm{sortEquiv}$ projection $(e.\inf, e.\sup)$
+  is the mathlib-idiomatic alternative and requires no new
+  $\mathrm{LinearOrder}$ instance to be mirrored.
 \end{definition}
 
-\begin{lemma}[Membership and underlying-edge round-trip]
+\begin{lemma}[Membership in the sorted edge list]
   \label{lem:mem-edgeListSorted}
+  \lean{SimpleGraph.mem_edgeListSorted}
+  \leanok
   \uses{def:edgeListSorted}
-  Under the hypotheses of \cref{def:edgeListSorted}, the
-  $\mathrm{Sym}_2$-image of $\mathrm{edgeListSorted}\,G$ rounds back
-  to $G.\mathrm{edgeFinset}$; and every entry $(u, v) \in
-  \mathrm{edgeListSorted}\,G$ satisfies $u \ne v$ and
-  $\{u, v\} \in E(G)$.
+  Under the hypotheses of \cref{def:edgeListSorted}, for all
+  $u, v \in V$,
+  \[
+    (u, v) \in \mathrm{edgeListSorted}\,G \;\iff\;
+      u \le v \;\wedge\; s(u, v) \in G.\mathrm{edgeFinset}.
+  \]
+  Loop-freeness ($u \ne v$ for any list entry, via
+  $\mathrm{not\_isDiag\_of\_mem\_edgeSet}$) and the
+  $\mathrm{Sym}_2$-image round-trip
+  $\big((\mathrm{edgeListSorted}\,G).\mathrm{map}\,s(\cdot,\cdot)\big).\mathrm{toFinset}
+  = G.\mathrm{edgeFinset}$ are packaged as separate blueprint nodes
+  with \cref{thm:runPebbleGameWith-correct} (the three discharges
+  the workhorse-level statement consumes).
 \end{lemma}
 \begin{proof}
-  The pair-to-Sym2 projection is the inverse of the lex-smaller-first
-  ordered-pair extraction. Loop-freeness comes from
-  $G.\mathrm{not\_isDiag\_of\_mem\_edgeSet}$, as in
-  $\mathrm{runPebbleGame\_underline\_eq\_edgeFinset}$ of \cref{sec:pebble-game}.
+  \leanok
+  Forward: an entry $(u, v) \in \mathrm{edgeListSorted}\,G$ is
+  $\mathrm{ofLex}(\mathrm{toLex}\,(e.\inf, e.\sup))$ for some
+  $e \in G.\mathrm{edgeFinset}$, so $(u, v) = (e.\inf, e.\sup)$;
+  by case-split on $\mathrm{le\_total}\,a\,b$ for $e = s(a, b)$, this
+  identifies $s(u, v) = e$ and so $s(u, v) \in G.\mathrm{edgeFinset}$.
+  Backward: given $u \le v$ and $s(u, v) \in G.\mathrm{edgeFinset}$,
+  take $e := s(u, v)$ and use $\mathrm{inf\_of\_le\_left}$ /
+  $\mathrm{sup\_of\_le\_right}$ to compute $e.\inf = u$,
+  $e.\sup = v$.
 \end{proof}
 
 \subsection{Computable wrapper}

@@ -114,6 +114,15 @@ bullets. If one matches, jump to the named section of
   each sum identity as a named `have` and close the surrounding
   linear (in)equality with `omega` / `linarith`, both of which
   treat each `Finset.sum` as an opaque atom.
+- *"failed to synthesize instance of type class Decidable (a ≤ b)"*
+  / *"DecidableRel fun x1 x2 ↦ x1 ≤ x2"* (or `fast_instance%` reports
+  *"Provided instance ... is not defeq to inferred instance
+  ... LinearOrder.toPartialOrder"*) on a `LinearOrder.lift'`-built
+  instance — § 22 *`LinearOrder.lift'` on a `SetLike` type silently
+  breaks `Decidable (· ≤ ·)`*: the type already owns the
+  `PartialOrder` slot via `SetLike.instPartialOrder`. Sort through
+  `Lex (β)` for some projection target `β`, or register on
+  `Lex (α)` instead.
 
 ## Starting a Lean-touching session
 

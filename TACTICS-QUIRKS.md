@@ -76,6 +76,14 @@ time, not first-draft.
     `omega` / `linarith`; both treat each `Finset.sum` as an opaque
     ℕ / ordered-field atom, sidestepping `ring`'s lambda-body
     syntactic-identity check.
+22. **`LinearOrder.lift'` on a `SetLike` type silently fails to
+    propagate `DecidableLE` (and `fast_instance%` reports a
+    `PartialOrder` mismatch)** — the type already has a `PartialOrder`
+    via the `SetLike.instPartialOrder` subset order, which occupies
+    the slot. Wrap the type in `Lex` and register the linear order on
+    that, or skip the instance entirely and sort the projection
+    through `Lex (β)` for some image type `β` with `Prod.Lex`-style
+    order already in mathlib.
 
 ---
 
@@ -744,3 +752,67 @@ chain in `PebbleGame/Correctness.lean`). The `pebOn V' = peb u + peb v + ∑ w �
 decomposition closes via the two-`have` + `omega` chain above; the
 follow-up `Finset.exists_ne_zero_of_sum_ne_zero` then extracts the
 blocking witness from `h_pos`.
+
+## 22. `LinearOrder.lift'` on a `SetLike` type silently breaks `Decidable (· ≤ ·)`
+
+A type `α` that is `SetLike α β` for some `β` already has a
+`PartialOrder α` instance from `SetLike.instPartialOrder` (the
+subset order on coercions). Registering a different `LinearOrder α`
+via `LinearOrder.lift'` (or `LinearOrder.lift`) succeeds at
+elaboration time but does not actually replace the SetLike
+PartialOrder, so:
+
+- `inferInstance : Decidable (a ≤ b : α)` fails with *"failed to
+  synthesize instance of type class Decidable (a ≤ b)"*.
+- `Finset.sort (· ≤ ·) : Finset α → List α` fails with *"failed
+  to synthesize instance of type class DecidableRel fun x1 x2 ↦
+  x1 ≤ x2"*.
+- `fast_instance%` reports *"Provided instance ... is not defeq to
+  inferred instance ... LinearOrder.toPartialOrder"*.
+
+**Symptom (concrete).** Phase 10 attempted to mirror
+`LinearOrder (Sym2 V)` via the pullback of the
+`α × α`-lex order along `Sym2.sortEquiv`. The instance accepted at
+declaration time, but every `inferInstance : Decidable (s ≤ t)`
+downstream failed. `fast_instance%` surfaced the underlying problem:
+mathlib's `instance : PartialOrder (Sym2 α) := .ofSetLike (Sym2 α) α`
+(the subset order — non-total since `s({1,2})` and `s({1,3})` are
+incomparable as sets) was the inferred PartialOrder, and the lifted
+LinearOrder's `toPartialOrder` field disagreed.
+
+**Cause.** Lean's typeclass resolution finds the SetLike-derived
+`PartialOrder α` first; the new `LinearOrder α` instance's
+`toPartialOrder` field is then inconsistent with it. The two-way
+diamond on `PartialOrder α` means the resulting `LinearOrder α`
+instance never "wins" — typeclass search falls back to the SetLike
+one for `≤`, which is not the relation the LinearOrder agrees with.
+The mathlib `SetLike` design intentionally claims the
+`PartialOrder` slot for any such type.
+
+**Rescue.** Two options, in order of preference:
+
+1. **Sort through `Lex (β)`, not through a new `α` instance.** If
+   `α` projects to some type `β` (e.g. `Sym2 V` projects to `V × V`
+   via `Sym2.sortEquiv`'s `(·.inf, ·.sup)`), image into
+   `Lex (β)` (which has the `Prod.Lex.instLinearOrder` from
+   mathlib), sort there, and map back. No new instance required.
+   This is what `SimpleGraph.edgeListSorted` in
+   `CombinatorialRigidity/PebbleGame/Exec.lean` does.
+
+2. **Wrap in `Lex` and register on the wrapped type.** Register
+   `instance : LinearOrder (Lex α)` via `LinearOrder.lift'`; the
+   `Lex α` slot doesn't have the SetLike PartialOrder and so accepts
+   the lifted instance cleanly. Downstream code does
+   `s.image toLex |>.sort (· ≤ ·) |>.map ofLex` to use it. Heavier
+   than option 1 if the only use site is one sort call.
+
+**Diagnosis pattern.** A `LinearOrder.lift'`-built `LinearOrder α`
+instance whose `inferInstance : Decidable (a ≤ b)` doesn't fire is
+almost always SetLike conflict. Quick check: `#check (inferInstance
+: PartialOrder α)` — if it elaborates to a `SetLike`-derived
+PartialOrder (vs. the one your lifted LinearOrder provides), the
+slot is claimed.
+
+Worked case study: the failed `Mathlib/Data/Sym/Sym2/Order.lean`
+mirror in Phase 10's Layer 1 (see `notes/Phase10.md` *Layer 0 audit
+\#1 (revised at Layer 1)*).

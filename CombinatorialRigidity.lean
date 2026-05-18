@@ -3,4 +3,5 @@ import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.MatroidIdentification
 import CombinatorialRigidity.PebbleGame.Correctness
+import CombinatorialRigidity.PebbleGame.Exec
 import CombinatorialRigidity.Search.DFS

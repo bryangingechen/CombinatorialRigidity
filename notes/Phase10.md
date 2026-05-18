@@ -29,13 +29,24 @@ same first commit as this file.
 
 ## Current state
 
-Layer 0 audits closed (see *Decisions made during this phase*
-below): the `LinearOrder (Sym2 V)` mirror is needed under
-`Mathlib/Data/Sym/Sym2/Order.lean`; the Phase 9 correctness proof
-factors cleanly through workhorse-level statements; the
-structural-`outList` option is not needed. Layer 1 (computable
-list views `outListSorted` / `edgeListSorted` + membership lemmas)
-is unblocked and is the next concrete commit.
+Layer 0 audits closed and Layer 1 (computable list views) landed.
+Per the revised Layer 0 audit \#1 outcome below, there is **no
+`Mathlib/` mirror** for Phase 10: mathlib's existing
+`instance : PartialOrder (Sym2 α) := .ofSetLike _ _` occupies the
+slot for an order on `Sym2 V` with the (non-total) subset order, so
+a competing `LinearOrder (Sym2 V)` cannot be registered. Layer 1
+sorts via `Lex (V × V)` on the `(e.inf, e.sup)` projection instead.
+
+`CombinatorialRigidity/PebbleGame/Exec.lean` now ships
+`PartialOrientation.outListSorted` /
+`PartialOrientation.mem_outListSorted` and
+`SimpleGraph.edgeListSorted` / `SimpleGraph.mem_edgeListSorted` —
+the four blueprint nodes `def:outListSorted`,
+`lem:mem-outListSorted`, `def:edgeListSorted`,
+`lem:mem-edgeListSorted` (all `\leanok`-green). Layer 2 (the
+workhorse-level correctness restatement
+`thm:runPebbleGameWith-correct` and the three discharges feeding
+it) is unblocked and is the next concrete commit.
 
 The phase target is **end-to-end executability** of the pebble game:
 a computable wrapper `runPebbleGameExec` whose body avoids
@@ -73,15 +84,19 @@ wrong, revisit there.
   documents the structural option as considered+rejected; if the
   audit surfaces unexpected friction, revisit.
 
-- **Edge enumeration via `Finset.sort` over `Sym2 V`, not via
-  `Quot.out`.** Phase 9's `runPebbleGame` projects `Sym2 V → V × V`
-  via `Quot.out` (noncomputable, uses `Classical.choice`). For
-  `[LinearOrder V]` the right replacement is `Finset.sort`-based
-  enumeration of `G.edgeFinset` keyed on a `LinearOrder (Sym2 V)`
-  instance, projecting each edge to its lex-smallest ordered pair.
-  Whether mathlib already provides `LinearOrder (Sym2 V)` is part of
-  the Layer 0 audit; if not, mirror under
-  `Mathlib/Data/Sym/Sym2.lean`.
+- **Edge enumeration via `Finset.sort` on the `Lex (V × V)`
+  projection of `G.edgeFinset`, not via `Quot.out`.** Phase 9's
+  `runPebbleGame` projects `Sym2 V → V × V` via `Quot.out`
+  (noncomputable, uses `Classical.choice`). For `[LinearOrder V]`
+  the right replacement images each edge under
+  `Sym2.sortEquiv`'s forward direction `fun e => (e.inf, e.sup)`,
+  views the result as `Lex (V × V)` (so the `Prod.Lex` linear
+  order fires), then `Finset.sort (· ≤ ·)`s and `List.map ofLex`s
+  back to `List (V × V)`. The Layer 0 audit \#1 outcome (revised
+  at Layer 1) below documents why sorting `G.edgeFinset` directly
+  via a `LinearOrder (Sym2 V)` instance is structurally blocked:
+  mathlib's `instance : PartialOrder (Sym2 α)` from `SetLike` is
+  already in the slot with a non-total subset order.
 
 - **One `Decidable` instance per project predicate, pebble-game-
   backed.** `IsSparse`, `IsTight`, `IsLaman` each get exactly one
@@ -184,17 +199,26 @@ discipline.
 
 ### Phase-local choices and proof techniques
 
-- **Layer 0 audit #1 — `LinearOrder (Sym2 V)`: mirror needed.**
-  Mathlib `Mathlib/Data/Sym/Sym2/Order.lean` provides `Sym2.inf`,
-  `Sym2.sup`, and `Sym2.sortEquiv : Sym2 α ≃ { p : α × α // p.1 ≤
-  p.2 }` from `[LinearOrder α]`, but no `LinearOrder (Sym2 V)`
-  instance. The mirror lives under
-  `CombinatorialRigidity/Mathlib/Data/Sym/Sym2/Order.lean` and
-  defines the linear order as the pullback of the `α × α`-lex
-  order along `sortEquiv.toFun` (equivalently, the lex order on
-  `(s.inf, s.sup)`). Layer 1's `edgeListSorted` then composes
-  `G.edgeFinset.sort (· ≤ ·) : List (Sym2 V)` with the `Sym2 V →
-  V × V` projection `fun e => (e.inf, e.sup)` from `sortEquiv`.
+- **Layer 0 audit #1 (revised at Layer 1) — `LinearOrder (Sym2 V)`:
+  no mirror, sort via `Lex (V × V)` instead.** The audit's original
+  outcome was "mirror needed" via the pullback of the `α × α`-lex
+  order along `Sym2.sortEquiv`. Implementing the mirror surfaced a
+  structural blocker the audit had missed: mathlib's
+  `Mathlib/Data/Sym/Sym2.lean` already registers
+  `instance : PartialOrder (Sym2 α) := .ofSetLike (Sym2 α) α` (the
+  SetLike-derived subset order — non-total since `s({1,2})` and
+  `s({1,3})` are incomparable as sets), so a competing
+  `LinearOrder (Sym2 V)` cannot be registered without colliding with
+  the SetLike one. The principled response is to skip the mirror
+  entirely and sort the `Sym2 V → V × V` inf/sup projection through
+  `Lex (V × V)` (which has `Prod.Lex.instLinearOrder` from mathlib).
+  Layer 1's `edgeListSorted` composes
+  `G.edgeFinset.image (fun e => toLex (e.inf, e.sup))
+  : Finset (Lex (V × V))` with `Finset.sort (· ≤ ·) : List (Lex (V
+  × V))` and `List.map ofLex` to land in `List (V × V)`. The same
+  membership characterisation `(u, v) ∈ edgeListSorted G ↔ u ≤ v ∧
+  s(u, v) ∈ G.edgeFinset` falls out, without any new instance file
+  under `CombinatorialRigidity/Mathlib/`.
 
 - **Layer 0 audit #2 — workhorse-level factoring: clean.** The
   substantive content of Phase 9's correctness chain
@@ -231,7 +255,11 @@ discipline.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
-*(Empty at phase open.)*
+- *`LinearOrder.lift'` on a `SetLike` type silently breaks
+  `Decidable (· ≤ ·)`* → TACTICS-QUIRKS § 22 (rescue pattern: sort
+  through `Lex (β)` projection, or register on `Lex (α)` instead;
+  Layer 1 example: `SimpleGraph.edgeListSorted` in
+  `PebbleGame/Exec.lean`).
 
 ### Cleanup pass summaries
 
@@ -240,7 +268,8 @@ discipline.
 ## Blockers / open questions
 
 - **Layer 0 audits.** ✓ Resolved by the audit-commit. Outcomes
-  recorded under *Decisions made during this phase* above.
+  recorded under *Decisions made during this phase* above; audit
+  \#1's outcome was revised at Layer 1 — see the bullet there.
 
 - **`apnelson1/Matroid` non-`module` boundary.** Phase 10's new
   files import only `Sparsity.lean`, `CountMatroid.lean`, and the
@@ -266,17 +295,24 @@ discipline.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** open Layer 1 — mirror
-`LinearOrder (Sym2 V)` under
-`CombinatorialRigidity/Mathlib/Data/Sym/Sym2/Order.lean` (as the
-pullback of the lex order on `α × α` along `Sym2.sortEquiv`), then
-add `outListSorted` / `edgeListSorted` definitions and their
-membership / round-trip lemmas to a new
-`CombinatorialRigidity/PebbleGame/Exec.lean` (or fold the list
-views into `PebbleGame/Basic.lean` if that turns out cleaner once
-they're written). Forward-mode discipline: the leaf-most red node
-in `chapter/executable.tex` is `def:outListSorted`; flip its
-`\lean{...}` and `\leanok` in the same commit as the Lean lands.
+**Next concrete commit:** open Layer 2 — restate the Phase 9
+correctness chain at workhorse level so both `runPebbleGame` (the
+math-layer wrapper) and `runPebbleGameExec` (the new computable
+wrapper) re-derive as one-line corollaries. Concretely, lift
+`runPebbleGame_sound`, `runPebbleGame_underline_eq_edgeFinset`,
+`runPebbleGame_eq_none_imp_exists_witness`, and
+`runPebbleGame_correct` to statements parametrised over the
+caller-supplied `toSucc` and `edges : List (V × V)` plus three
+discharges (no-loops, pairwise Sym2-distinctness, Sym2-image
+round-trip). The discharges for `edgeListSorted` are then provable
+in `PebbleGame/Exec.lean` as glue lemmas. After the restatement,
+define `runPebbleGameExec G k ℓ := runPebbleGameWith empty k ℓ
+(fun D' => D'.outListSorted) mem_outListSorted (edgeListSorted G)`
+and derive `runPebbleGameExec_correct` (the
+`thm:runPebbleGameExec-correct` blueprint node). Forward-mode
+discipline: the leaf-most red node in `chapter/executable.tex` is
+`thm:runPebbleGameWith-correct`; flip its `\lean{...}` and
+`\leanok` in the same commit as the Lean lands.
 
 Phase 10 closes when:
 - `chapter/executable.tex`'s dep-graph is fully `\leanok`-green;
