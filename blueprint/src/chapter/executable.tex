@@ -242,7 +242,7 @@ corollaries.
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_correct}
   \leanok
   \uses{def:runPebbleGame, thm:pebble-game-correct,
-    lem:runPebbleGame-underline-eq, lem:pebble-game-failure-witness}
+    lem:runPebbleGame-underline-eq, lem:workhorseWitness-certifies}
   Let $V$ be finite with $[\mathrm{DecidableEq}\,V]$, let
   $\mathrm{toSucc} : \mathrm{PartialOrientation}\,V \to V \to
   \mathrm{List}\,V$ agree with the orientation's out-arc relation
@@ -252,30 +252,27 @@ corollaries.
   $G.\mathrm{edgeFinset}$). Then in the matroidal regime
   $\ell < 2k$, $G$ is $(k, \ell)$-sparse if and only if
   $\mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,
-  \mathrm{toSucc}\,h_{\mathrm{toSucc}}\,\mathrm{edges}$ returns
-  $\mathrm{some}\,D'$ for some partial orientation $D'$.
+  \mathrm{Reachable.empty}\,\mathrm{toSucc}\,h_{\mathrm{toSucc}}\,\mathrm{edges}$
+  returns $\mathrm{.inr}\,D'$ for some partial orientation $D'$
+  (Phase~11 Layer~3 reshape; was $\mathrm{some}\,D'$).
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:pebble-game-correct}
-  The Phase~9 correctness chain already factors through workhorse-level
+  The Phase~9 correctness chain factors through workhorse-level
   helpers, all parametrised over a caller-supplied
   $\mathrm{toSucc}$ / $h_{\mathrm{toSucc}}$ and edge list:
   $\mathrm{runPebbleGameWith\_reachable}$ (Invariant $(4)$ transports
   through the fold), $\mathrm{runPebbleGameWith\_underline\_subset}$
   / $\mathrm{runPebbleGameWith\_mem\_underline}$ (underline tracking
-  on monotone and no-skip-fires halves), and the fold-level failure-witness
-  extraction $\mathrm{runPebbleGameWith\_eq\_none\_imp\_exists\_witness}$.
-  Layer~2 packages these into three workhorse-level statements:
-  $\mathrm{runPebbleGameWith\_underline\_eq}$ (underline equation from
-  empty, given the three discharges \emph{hloops} / \emph{hpairwise} /
-  \emph{himg}), $\mathrm{runPebbleGameWith\_sound}$ (soundness from
-  empty, same three discharges), and
-  $\mathrm{runPebbleGameWith\_eq\_none\_imp\_exists\_witness\_empty}$
-  (contrapositive from empty, requiring only \emph{himg}). The iff
-  then assembles in two lines: ($\Leftarrow$) the soundness wrapper;
-  ($\Rightarrow$) contrapositive via the failure-witness lemma plus
-  $\mathrm{IsSparse}$ at the produced subset. The math-layer
+  on monotone and no-skip-fires halves), and Phase~11 Layer~3's
+  $\mathrm{runPebbleGameWith\_witness\_bridges}$ (fold-emitted
+  workhorse witness's bridge facts to $G.\mathrm{edgeFinset}$). The
+  iff assembles in two lines: ($\Leftarrow$) the
+  $\mathrm{runPebbleGameWith\_sound}$ wrapper; ($\Rightarrow$) on a
+  $\mathrm{.inl}\,w$ output, the bridge lemma plus
+  $\mathrm{WorkhorseWitness.certifies\_against}$ contradict the
+  sparsity hypothesis at $w.V'$. The math-layer
   \cref{thm:pebble-game-correct} re-derives as a one-line corollary
   plugging the math-layer enumeration $\mathrm{outList}$ /
   $G.\mathrm{edgeFinset.toList.map}\,\mathrm{Quot.out}$ back in (the
@@ -295,7 +292,8 @@ corollaries.
   graph on $V$. In the matroidal regime $\ell < 2k$, $G$ is
   $(k, \ell)$-sparse if and only if
   $\mathrm{runPebbleGameExec}\,G\,k\,\ell$ returns
-  $\mathrm{some}\,D'$ for some partial orientation $D'$.
+  $\mathrm{.inr}\,D'$ for some partial orientation $D'$
+  (Phase~11 Layer~3 reshape; was $\mathrm{some}\,D'$).
 \end{theorem}
 \begin{proof}
   \leanok
@@ -330,7 +328,7 @@ corollaries.
   \[
     \mathrm{decide}\,(G.\mathrm{IsSparse}\,k\,\ell)
     \;=\;
-    (\mathrm{runPebbleGameExec}\,G\,k\,\ell).\mathrm{isSome}.
+    (\mathrm{runPebbleGameExec}\,G\,k\,\ell).\mathrm{isRight}.
   \]
   The instance is registered as the canonical $\mathrm{Decidable}$
   for $\mathrm{IsSparse}\,k\,\ell$ in
@@ -445,13 +443,16 @@ The binary is a thin \texttt{IO} wrapper:
 
 No blueprint nodes for the binary itself — it is not Lean-formal
 content but the natural delivery vehicle for the runtime claim of
-\cref{sec:executable-backends}. \emph{Optional refinement:} extract
-a blocking-witness subset on the $\mathrm{NOT\_SPARSE}$ branch via
-the wrapper-level failure-witness
-\cref{lem:pebble-game-failure-witness}; whether this can be done
-without falling back to \texttt{Classical} machinery (the
-$\mathrm{Reach}$-closure uses \texttt{Classical.decPred} in
-Phase~9) is part of the Phase~10 Layer~5 work.
+\cref{sec:executable-backends}. The Phase~11 Layer~3 reshape makes
+the $\mathrm{NOT\_SPARSE}$-branch blocking-witness subset
+structurally available from the algorithm's $\mathrm{.inl}\,w$ output
+via $w.V'$ (see \cref{def:workhorseWitness} and
+\cref{lem:workhorseWitness-certifies}), and the computable
+$\mathrm{reachClosureComputable}$ inside the case-5 inline
+construction (\cref{def:tryAddEdge}) eliminates the previous
+$\mathrm{Classical}$-machinery dependence; Phase~11 Layer~5 will
+update the CLI surface to emit witness lines alongside the
+trichotomy label.
 
 \emph{Special case: planar rigidity (continued).} The CLI binary
 at the default parameters $(k, \ell) = (2, 3)$ is, by

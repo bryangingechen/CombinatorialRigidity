@@ -83,14 +83,60 @@ Blueprint: `chapter/pebble-game.tex` gains `def:workhorseWitness` +
 `lem:pebble-game-independent-brings-pebble-graph` in the *Completeness*
 subsection.
 
-Layers 3–5 ahead. Next concrete commit: Layer 3 — reshape
-`tryAddEdgeWith` to return `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)`
-with case-5 inline construction; reshape `runPebbleGameWith` to propagate
-the `Sum`; restate `_reachable` / `_underline_*` / `_underline_eq` /
-`_sound`; eliminate the existential chains. Blueprint: restate
-`chapter/pebble-game.tex`'s `def:tryAddEdge` / `def:runPebbleGame`
-against the `Sum`-return shape; retire the `_isSome` /
-`_eq_none_imp_exists_witness` nodes and their `_empty` specialisations.
+Layer 3 closed: the workhorse-level reshape landed. `tryAddEdgeWith` now
+returns `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)` with the
+case-5 inline witness construction consuming `hD : Reachable k ℓ D` (the
+old `h_outle : ∀ x, D.out x ≤ k` hypothesis absorbed via `hD.out_le`) and
+the DFS-failure data; `runPebbleGameWith` propagates the `Sum` through the
+fold (also taking `hD` and dropping its `(∀ x, D.out x ≤ k)` runtime
+check). `tryAddEdge` and `runPebbleGame` math-layer wrappers and
+`runPebbleGameExec` exec-layer wrapper restate against the new shape;
+`runPebbleGameExec`'s `Decidable` instances re-route through
+`Sum.isRight`. The reach-closure machinery (`reach`, `mem_reach`,
+`self_mem_reach`, `reach_closed`, `outOn_eq_zero_of_closed`,
+`outOn_reach_union_eq_zero`) moves from `PebbleGame/Correctness.lean`
+into `PebbleGame/Basic.lean` so the case-5 inline construction in
+`Algorithm.lean` can use them. The `tryAddEdgeWith_isSome` /
+`tryAddEdgeWith_eq_none_imp_exists_witness` /
+`runPebbleGameWith_eq_none_imp_exists_witness*` /
+`runPebbleGame_eq_none_imp_exists_witness` chain is eliminated;
+`tryAddEdge_isSome_iff_sparse` narrative-bridge shim retired.
+`tryAddEdgeWith_isSparse` (the surviving accept-implies-sparse half) and
+`runPebbleGame_correct` / `runPebbleGameWith_correct` /
+`runPebbleGameExec_correct` / `countMatroid_indep_iff_runPebbleGame`
+restated against `.inr`. Two new helper lemmas in `Algorithm.lean`
+(`tryAddEdgeWith_witness_uv`, `tryAddEdgeWith_witness_underline_eq`) and
+one new bridge lemma in `Correctness.lean`
+(`runPebbleGameWith_witness_bridges`) discharge the wrapper-level path
+from `.inl w` to `WorkhorseWitness.certifies_against`'s preconditions.
+The Phase 11 plan's `_underline_subset` /  `_mem_underline` /
+`_underline_eq` lemmas restate against `.inr` with the same proof
+structure (using `split at h` to discharge the `match heq : ... with`
+shadowing that came with `tryAddEdgeWith`'s recursive call needing
+`tryAddEdgeWith_reachable` for the reachability proof of the recursed
+orientation).
+
+Blueprint: `chapter/pebble-game.tex`'s `def:tryAddEdge` and
+`def:runPebbleGame` restated against the `Sum`-return shape and the
+`hD` signature; `lem:pebble-game-tryAddEdgeWith-isSome` and
+`lem:pebble-game-tryAddEdge-iff-independent` and
+`lem:pebble-game-failure-witness` retired; `thm:pebble-game-correct`
+restated against `.inr` / `.inl w` with `WorkhorseWitness` as the
+blocking-witness carrier; `cor:pebble-game-countMatroid-indep`
+restated. `chapter/executable.tex`'s `thm:runPebbleGameWith-correct` /
+`thm:runPebbleGameExec-correct` / `def:isSparse-decidable` restated;
+the CLI subsection's "optional refinement" note updated to acknowledge
+that Layer 3 has structurally landed the blocking-witness machinery
+(Layer 5 will surface it in CLI output).
+
+Layers 4–5 ahead. Next concrete commit: Layer 4 — define
+`PebbleGameResult G k ℓ` in `Exec.lean` (the user-facing verdict);
+re-derive `runPebbleGame` / `runPebbleGameExec` against it; restate
+Phase 7's `countMatroid_indep_iff_runPebbleGame` against
+`PebbleGameResult.isAccept`; re-route Phase 10's `Decidable` instances
+through the verdict's Boolean projection. Blueprint: insert
+`def:pebbleGameResult` into `chapter/pebble-game.tex` and restate
+`chapter/executable.tex`'s wrappers / Decidable instances.
 
 The phase target is a **maximal reshape** of the pebble-game return
 type: replace the `Option`-shaped output of `runPebbleGame` /
@@ -410,25 +456,44 @@ incorporates the outcomes.
   immediately after `lem:pebble-game-independent-brings-pebble-graph`
   in the *Completeness* subsection. Total Lean delta: ~80 LoC.
 
-- **Layer 3.** Reshape `tryAddEdgeWith` to return
-  `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)`; reshape
-  `runPebbleGameWith` to propagate the `Sum`; restate
-  `_reachable` / `_underline_*` / `_underline_eq` lemmas against
-  the new shape. Eliminate `tryAddEdgeWith_eq_none_imp_exists_witness`
-  (its body becomes the inline witness construction in case5 of
-  `tryAddEdgeWith`); eliminate
-  `runPebbleGameWith_eq_none_imp_exists_witness` (collapses to fold
-  propagation). The case5 inline construction is the
-  `tryAddEdgeWith_eq_none_imp_exists_witness` proof body verbatim,
-  packaged as a `WorkhorseWitness` value. Restate
-  `runPebbleGameWith_sound` against `.inr` instead of `some`.
-  Blueprint: restate `chapter/pebble-game.tex`'s `def:tryAddEdge` /
-  `def:runPebbleGame` against the `Sum`-return shape; retire
-  `lem:tryAddEdgeWith-isSome` /
-  `lem:tryAddEdgeWith-eq-none-imp-exists-witness` /
-  `lem:runPebbleGameWith-eq-none-imp-exists-witness` and their
-  `_empty` specializations; restate the soundness/underline-tracking
-  lemmas. Estimated ~400–500 LoC Lean delta.
+- **Layer 3** ✓. Reshape landed in a single commit. `tryAddEdgeWith`
+  returns `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)`;
+  `runPebbleGameWith` propagates the `Sum`; both take
+  `hD : Reachable k ℓ D` as a hypothesis (absorbing the old
+  `h_outle` argument and the runtime `(∀ x, D.out x ≤ k)` check in
+  the fold). The case-5 inline construction in `tryAddEdgeWith`
+  builds the `WorkhorseWitness` directly from `hD`, `hthr`, and the
+  DFS-failure data; the `V'` field uses `reachClosureComputable`
+  (not `D.reach`, which is noncomputable) so the workhorse stays
+  computable. The reach-closure-on-orientations API
+  (`reach`, `mem_reach`, `self_mem_reach`, `reach_closed`,
+  `outOn_eq_zero_of_closed`, `outOn_reach_union_eq_zero`) moved
+  from `Correctness.lean` to `Basic.lean` since the case-5
+  construction in `Algorithm.lean` needs them. The
+  `tryAddEdgeWith_isSome` / `*_eq_none_imp_exists_witness*` /
+  `tryAddEdge_isSome_iff_sparse` chain eliminated;
+  `tryAddEdgeWith_isSparse` (the surviving accept-implies-sparse
+  half) restated against `.inr`. Two new helpers in `Algorithm.lean`
+  (`tryAddEdgeWith_witness_uv`,
+  `tryAddEdgeWith_witness_underline_eq`) plus one new bridge in
+  `Correctness.lean` (`runPebbleGameWith_witness_bridges`) discharge
+  the wrapper-level path from `.inl w` to
+  `WorkhorseWitness.certifies_against`'s preconditions.
+  `runPebbleGame_correct` / `runPebbleGameWith_correct` /
+  `runPebbleGameExec_correct` / `countMatroid_indep_iff_runPebbleGame`
+  restated against `.inr` instead of `some`. Blueprint:
+  `chapter/pebble-game.tex` updated for the new return shape;
+  three obsolete `lem:` nodes retired; `thm:pebble-game-correct`
+  restated. `chapter/executable.tex`'s wrapper / Decidable nodes
+  restated. **Proof technique surfaced**: the `match heq : <expr> with`
+  pattern inside `runPebbleGameWith`'s body (needed because the
+  recursive call's `Reachable k ℓ`-hypothesis depends on the matched
+  result) shadows in downstream proofs — `rw [heq]` fails with
+  motive-not-type-correct. Workaround: use `split at h` (which
+  introduces the equation hypothesis cleanly) after a
+  `simp only [dif_pos hcond]` reduction. Total Lean delta:
+  ~+500 LoC across `PebbleGame/{Basic, Algorithm, Correctness,
+  Exec}.lean`, ~−300 LoC in `Correctness.lean` from absorption.
 
 - **Layer 4.** Define `PebbleGameResult G k ℓ` in `Exec.lean`;
   re-derive `runPebbleGame` (math-layer) and `runPebbleGameExec`
@@ -476,6 +541,40 @@ commit ships, blueprint and Lean.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+
+- **Layer 3: `tryAddEdgeWith` / `runPebbleGameWith` take `hD : Reachable k ℓ D`
+  as a hypothesis (absorbing `h_outle`).** The case-5 inline witness construction
+  needs `Reachable k ℓ D` to populate the witness's `h_reachable` field. Adding
+  `hD` to the signature also lets recursive calls (cases 3, 4) compute their
+  fresh reachability via `r.reachable_newOrient_of_addEdgePred hD hD.out_le`
+  without a separate `h_outle` argument. At the fold layer, `runPebbleGameWith`
+  takes `hD` and drops its previous `(∀ x, D.out x ≤ k)` runtime check (which
+  was always satisfied along the algorithm's actual paths). Trade: the recursive
+  call in `runPebbleGameWith` now goes through `tryAddEdgeWith_reachable` to
+  compute the updated `hD` for the next step, making the function definition use
+  a `match heq : ... with` pattern that requires `split at h` (not `rw [heq]`)
+  in downstream proofs of `_underline_subset` / `_mem_underline` / `_reachable`.
+
+- **Layer 3: case-5 inline `V' := reachClosureComputable (toSucc D) u ∪
+  reachClosureComputable (toSucc D) v`, not `D.reach u ∪ D.reach v`.**
+  `D.reach` is `noncomputable` (it goes through `outList`); using it in the
+  case-5 construction would force `tryAddEdgeWith` itself noncomputable, breaking
+  Phase 10's exec-layer claim. Using `reachClosureComputable` against the
+  caller-supplied `toSucc D` adjacency keeps the workhorse fully computable.
+  The proof obligations (`h_outOn_zero`, `h_pebOn_le`) bridge via
+  `mem_reachClosureComputable` + `h_toSucc D`, with a one-line induction on
+  `ReflTransGen` showing equivalence between the `toSucc D`-shaped and
+  `D.arcs`-shaped reachability relations.
+
+- **Layer 3: `reach`-machinery lives in `Basic.lean`, not `Correctness.lean`.**
+  The case-5 construction in `Algorithm.lean` needs
+  `outOn_eq_zero_of_closed`, `mem_reachClosureComputable`, etc.; these were
+  in `Correctness.lean` originally but `Algorithm.lean` is below
+  `Correctness.lean` in the import order. Moved the closure-of-reach API
+  (`reach`, `mem_reach`, `self_mem_reach`, `reach_closed`,
+  `outOn_eq_zero_of_closed`, `outOn_reach_union_eq_zero`) to a new
+  `ReachClosure` section at the end of `Basic.lean`'s `PartialOrientation`
+  namespace.
 
 - **Layer 2: `WorkhorseWitness` carries `h_pebOn_le : pebOn V' ≤ ℓ`,
   not the per-vertex `h_below : peb u + peb v ≤ ℓ` initially

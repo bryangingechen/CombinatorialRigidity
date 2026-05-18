@@ -1019,6 +1019,93 @@ lemma Reachable.independent_brings_pebble
 
 end Reachability
 
+/-! ### Reachability closure on partial orientations
+
+`PartialOrientation.reach D v` is the `Finset V` of vertices reachable
+from `v` along `D`'s outgoing arcs, materialised through Phase 11's
+verified-iterative `reachClosureComputable` of `Search/DFS.lean` against
+the orientation's `outList` view. The closure-of-reach lemmas
+(`self_mem_reach`, `reach_closed`, `outOn_eq_zero_of_closed`,
+`outOn_reach_union_eq_zero`) provide the algebraic content consumed by
+`tryAddEdgeWith`'s case-5 inline witness construction (Phase 11 Layer 3,
+`PebbleGame/Algorithm.lean`) and by the wrapper-layer `independent_brings_pebble_simpleGraph_form`
+in `PebbleGame/Correctness.lean`.
+
+The math-layer `D.outList` is itself `noncomputable` (it threads
+through `Finset.toList`), so `D.reach` inherits `noncomputable`. The
+exec layer bypasses this by supplying its own list-shaped adjacency
+directly to `reachClosureComputable`. The `mem_reach` iff against
+`Relation.ReflTransGen` is the consumer-facing contract; downstream
+proofs depend only on this iff and are blind to the implementation
+choice. Blueprint `def:reachClosureComputable`. -/
+
+section ReachClosure
+
+open CombinatorialRigidity.Search
+
+variable [Fintype V]
+
+/-- `D.reach v` is the set of vertices reachable from `v` along `D`'s
+out-arcs, packaged as a `Finset V`. Routed through Phase 11's
+verified-iterative `reachClosureComputable` over the orientation's
+`outList` view of its out-neighbours; `noncomputable` because `outList`
+threads through `Finset.toList`. The `mem_reach` iff against
+`Relation.ReflTransGen` is the consumer-facing contract; downstream
+proofs depend only on this iff and are blind to the redefinition. -/
+noncomputable def reach (D : PartialOrientation V) (v : V) : Finset V :=
+  reachClosureComputable D.outList v
+
+@[simp] lemma mem_reach {D : PartialOrientation V} {v w : V} :
+    w ∈ D.reach v ↔
+      Relation.ReflTransGen (fun a b => (a, b) ∈ D.arcs) v w := by
+  rw [reach, mem_reachClosureComputable]
+  -- Two `Relation.ReflTransGen` instances differ only in the relation;
+  -- `b ∈ D.outList a ↔ (a, b) ∈ D.arcs` is `D.mem_outList`.
+  constructor
+  · intro h
+    induction h with
+    | refl => exact .refl
+    | tail _ hab ih => exact ih.tail (D.mem_outList.mp hab)
+  · intro h
+    induction h with
+    | refl => exact .refl
+    | tail _ hab ih => exact ih.tail (D.mem_outList.mpr hab)
+
+lemma self_mem_reach (D : PartialOrientation V) (v : V) : v ∈ D.reach v :=
+  mem_reach.mpr .refl
+
+lemma reach_closed {D : PartialOrientation V} {v a b : V}
+    (ha : a ∈ D.reach v) (hab : (a, b) ∈ D.arcs) : b ∈ D.reach v := by
+  rw [mem_reach] at ha ⊢
+  exact ha.tail hab
+
+omit [Fintype V] in
+/-- A finset `V'` closed under `D`'s outgoing arcs has `outOn V' = 0`:
+no arc leaves `V'`. -/
+lemma outOn_eq_zero_of_closed (D : PartialOrientation V) {V' : Finset V}
+    (h_closed : ∀ a ∈ V', ∀ b, (a, b) ∈ D.arcs → b ∈ V') :
+    D.outOn V' = 0 := by
+  have h_empty : D.boundaryArcs V' = ∅ := by
+    rw [Finset.eq_empty_iff_forall_notMem]
+    rintro ⟨a, b⟩ h
+    simp only [boundaryArcs, Finset.mem_filter] at h
+    exact h.2.2 (h_closed a h.2.1 b h.1)
+  rw [outOn, h_empty, Finset.card_empty]
+
+/-- The reach-union of two vertices is out-closed under `D.arcs`:
+`D.outOn (D.reach u ∪ D.reach v) = 0`. Direct consequence of
+`reach_closed` applied to each component. -/
+lemma outOn_reach_union_eq_zero (D : PartialOrientation V) (u v : V) :
+    D.outOn (D.reach u ∪ D.reach v) = 0 := by
+  apply D.outOn_eq_zero_of_closed
+  intro a ha b hab
+  rw [Finset.mem_union] at ha ⊢
+  rcases ha with ha | ha
+  · exact Or.inl (reach_closed ha hab)
+  · exact Or.inr (reach_closed ha hab)
+
+end ReachClosure
+
 end PartialOrientation
 
 /-! ### Workhorse-level failure witness (Phase 11)

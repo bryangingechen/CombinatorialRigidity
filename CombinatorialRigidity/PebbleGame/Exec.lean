@@ -235,36 +235,34 @@ namespace PartialOrientation
 
 variable {V : Type*} [DecidableEq V]
 
-/-- **Computable pebble-game wrapper** (Phase 10 Layer 2). Plugs the
-Phase 10 Layer 1 list views `outListSorted` / `edgeListSorted` into the
-Phase 9 computable workhorse `runPebbleGameWith`, starting from the empty
-orientation. Computable end-to-end whenever `V` carries `[LinearOrder V]`
-and `[DecidableEq V]`; no `Classical` dependencies. Replaces the math-layer
-noncomputable `runPebbleGame G k ℓ` (whose body invokes `Finset.toList` via
-`outList` and `Quot.out` via the edge enumeration) with a wrapper whose
-compiled body `#eval` / `native_decide` can fire on, used downstream by the
-project-level `Decidable` instances and the `lake exe pebble-game` CLI binary.
-Blueprint `def:runPebbleGameExec`. -/
+/-- **Computable pebble-game wrapper** (Phase 10 Layer 2; Phase 11 Layer 3
+reshape). Plugs the Phase 10 Layer 1 list views `outListSorted` /
+`edgeListSorted` into the Phase 9 computable workhorse `runPebbleGameWith`,
+starting from the empty orientation. Computable end-to-end whenever `V`
+carries `[LinearOrder V]` and `[DecidableEq V]`; no `Classical`
+dependencies. Phase 11 Layer 3 reshape: return type is now
+`Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)` (was
+`Option (PartialOrientation V)`); the verdict-bearing user-facing
+`PebbleGameResult G k ℓ` will land in Layer 4. Blueprint
+`def:runPebbleGameExec`. -/
 def runPebbleGameExec [LinearOrder V] [Fintype V] (G : SimpleGraph V)
-    [Fintype G.edgeSet] (k ℓ : ℕ) : Option (PartialOrientation V) :=
-  (empty : PartialOrientation V).runPebbleGameWith k ℓ
+    [Fintype G.edgeSet] (k ℓ : ℕ) :
+    Sum (WorkhorseWitness k ℓ V) (PartialOrientation V) :=
+  (empty : PartialOrientation V).runPebbleGameWith k ℓ Reachable.empty
     (fun D' => D'.outListSorted) (fun _ {_ _} => mem_outListSorted)
     G.edgeListSorted
 
 /-- **Certificate-form correctness of the Phase 10 exec-layer wrapper**
-(Phase 10 Layer 2; blueprint `thm:runPebbleGameExec-correct`). In the
-matroidal regime `ℓ < 2k`, the finite simple graph `G` is `(k, ℓ)`-sparse iff
-`runPebbleGameExec G k ℓ` returns `some D'` for some partial orientation `D'`.
-One-line corollary of the workhorse-level `runPebbleGameWith_correct`: the
-`toSucc` / `h_toSucc` discharges are `outListSorted` / `mem_outListSorted`,
-and the three edge-list discharges are `G.edgeListSorted_no_loops` (no loops),
-`G.edgeListSorted_pairwise` (pairwise Sym2-distinct), and
-`G.edgeListSorted_map_sym2_toFinset` (Sym2-image round-trip), all from the
-`SimpleGraph` section of this file. -/
+(Phase 10 Layer 2; Phase 11 Layer 3 reshape; blueprint
+`thm:runPebbleGameExec-correct`). In the matroidal regime `ℓ < 2k`, the
+finite simple graph `G` is `(k, ℓ)`-sparse iff `runPebbleGameExec G k ℓ`
+returns `.inr D'` for some partial orientation `D'`. Phase 11 Layer 3
+reshape: the iff's right-hand side matches `.inr D'` (was `some D'`).
+One-line corollary of the workhorse-level `runPebbleGameWith_correct`. -/
 theorem runPebbleGameExec_correct [LinearOrder V] [Fintype V]
     {G : SimpleGraph V} [Fintype G.edgeSet] {k ℓ : ℕ} (h_matroidal : ℓ < 2 * k) :
     G.IsSparse k ℓ ↔
-      ∃ D : PartialOrientation V, runPebbleGameExec G k ℓ = some D :=
+      ∃ D : PartialOrientation V, runPebbleGameExec G k ℓ = .inr D :=
   runPebbleGameWith_correct h_matroidal
     (fun D' => D'.outListSorted) (fun _ {_ _} => mem_outListSorted)
     G.edgeListSorted G.edgeListSorted_no_loops G.edgeListSorted_pairwise
@@ -306,8 +304,8 @@ to pick the slow path. Do not register competing instances. See `DESIGN.md`
 instance instDecidableIsSparse [LinearOrder V] [Fintype V] (G : SimpleGraph V)
     [Fintype G.edgeSet] (k ℓ : ℕ) [h_matroidal : Fact (ℓ < 2 * k)] :
     Decidable (G.IsSparse k ℓ) :=
-  decidable_of_iff ((runPebbleGameExec G k ℓ).isSome = true)
-    (Option.isSome_iff_exists.trans (runPebbleGameExec_correct h_matroidal.out).symm)
+  decidable_of_iff ((runPebbleGameExec G k ℓ).isRight = true)
+    (Sum.isRight_iff.trans (runPebbleGameExec_correct h_matroidal.out).symm)
 
 /-- **Canonical decidability of `(k, ℓ)`-tightness in the matroidal regime**
 (Phase 10 Layer 3; blueprint `def:isTight-decidable`). Stacks on

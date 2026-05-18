@@ -59,11 +59,13 @@ so the reachability subset $V' := \mathrm{Reach}(u) \cup
 \mathrm{Reach}(v)$ already has $|V'| \ge 2$ and the unified
 $\ell \le k|V'|$ premise is discharged directly from $\ell < 2k$ at
 the call site (\cref{lem:pebble-game-independent-brings-pebble-graph}).
-The per-edge correctness iff of L-S Lemma~14 is recorded as
-\cref{lem:pebble-game-tryAddEdge-iff-independent} (formalised as a
-narrative-bridge shim packaging the two formalised halves
-\cref{lem:pebble-game-tryAddEdgeWith-isSome,lem:pebble-game-tryAddEdgeWith-isSparse}
-under $\mathrm{toSucc} := \mathrm{outList}$). The full input-graph
+The per-edge correctness iff of L-S Lemma~14 is structurally encoded
+in the Phase~11 Layer~3 reshape of \cref{def:tryAddEdge}: the
+algorithm's $\mathrm{Sum}$-return shape gives one constructor per
+direction --- $\mathrm{.inr}\,D'$ for accept (proved
+$(k, \ell)$-sparse by \cref{lem:pebble-game-tryAddEdgeWith-isSparse})
+and $\mathrm{.inl}\,w$ for reject (proved non-sparse by
+\cref{lem:workhorseWitness-certifies}). The full input-graph
 classification of L-S Lemma~15 (under-/well-/over-constrained
 according as the input is sparse-but-not-tight / tight / spanning)
 specialises in this chapter to the matroidal-regime certificate
@@ -391,19 +393,26 @@ failure witness.
   intermediate orientation, since path reversal mutates $D.\mathrm{arcs}$),
   and a math-layer convenience \texttt{tryAddEdge} which is a thin
   $\mathtt{noncomputable}$ wrapper plugging in
-  $\mathtt{toSucc}\,D' := D'.\mathtt{outList}$. The output is
-  $\mathrm{Option}\,(\mathrm{PartialOrientation}\,V)$: $\mathrm{some}\,D'$
-  on accept, $\mathrm{none}$ on simultaneous DFS failure. The blocking-
-  witness subset $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ is
-  extracted in a separate computation: the math-layer accessor
-  $D.\mathtt{reach}\,v$ --- a $\mathrm{Finset}\,V$-wrapped reflexive-
-  transitive closure of $D$'s arc relation, routed through
-  $\mathrm{reachClosureComputable}$ of \texttt{Search/DFS.lean}
-  (cf.\ \cref{def:reachClosureComputable}) --- is materialised at the
-  failure site inside \cref{lem:pebble-game-failure-witness}, keeping
-  the algorithm's signature aligned with the $\mathrm{Option}$-shape
-  of \texttt{tryReachPebbleWith}. (Phase~11 Layer~3 absorbs this
-  separate extraction into \texttt{tryAddEdgeWith}'s return.)
+  $\mathtt{toSucc}\,D' := D'.\mathtt{outList}$. The function also
+  takes the reachability witness $\mathtt{hD} :
+  \mathrm{Reachable}\,k\,\ell\,D$ as a hypothesis, which subsumes the
+  per-vertex out-degree bound previously carried as a separate
+  $\mathtt{h\_outle}$ argument (Phase~11 Layer~3).
+
+  The output is $\mathrm{Sum}\,(\mathrm{WorkhorseWitness}\,k\,\ell\,V)\,
+  (\mathrm{PartialOrientation}\,V)$ (Phase~11 Layer~3): $\mathrm{.inr}\,D'$
+  on accept, $\mathrm{.inl}\,w$ on simultaneous DFS failure carrying the
+  workhorse-level failure witness $w$ inline. The witness's $V'$ field
+  is the computable reach-union
+  $\mathrm{reachClosureComputable}\,(\mathtt{toSucc}\,D)\,u \cup
+  \mathrm{reachClosureComputable}\,(\mathtt{toSucc}\,D)\,v$
+  (cf.\ \cref{def:reachClosureComputable}), with the algebraic invariants
+  $\mathrm{outOn}_D(V') = 0$ and $\mathrm{pebOn}_{D, k}(V') \le \ell$
+  established at case-5 construction time from the closure-of-reach
+  property and the DFS-failure "no free pebble outside $\{u, v\}$"
+  assertion respectively. The $G$-shaped sparsity-violation certificate
+  $\ell \le k|V'| \wedge k|V'| < |\edgesIn[G]{V'}| + \ell$ is recovered
+  at the wrapper layer via \cref{lem:workhorseWitness-certifies}.
 \end{definition}
 
 \begin{definition}[Blocking witness]
@@ -421,24 +430,25 @@ failure witness.
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith,
     CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame}
   \leanok
-  \uses{def:tryAddEdge, def:blockingWitness, def:partial-orientation}
+  \uses{def:tryAddEdge, def:workhorseWitness, def:partial-orientation}
   Given a simple graph $G$ on a finite vertex set $V$ and integer
   parameters $k, \ell$ with $\ell < 2k$, the procedure
   $\mathrm{runPebbleGame}\,k\,\ell\,G$ folds $\mathrm{tryAddEdge}$
   over an arbitrary enumeration of $E(G)$ starting from the empty
-  partial orientation. On success it returns a partial orientation
-  $D$ with $\underline{D} = E(G)$ satisfying the four invariants of
-  \cref{lem:pebble-game-invariants}; on failure it returns
-  $\mathrm{none}$, with the blocking-witness subset
-  $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$ recoverable from the
-  failure state via a separate post-composition step (the math-layer
-  accessor $D.\mathtt{reach}$, consumed by
-  \cref{lem:pebble-game-failure-witness}). Termination of the fold:
-  the number of unprocessed edges strictly decreases per iteration.
+  partial orientation. On success it returns
+  $\mathrm{.inr}\,D$ with $\underline{D} = E(G)$ satisfying the four
+  invariants of \cref{lem:pebble-game-invariants}; on failure it
+  returns $\mathrm{.inl}\,w$ carrying the workhorse-level failure
+  witness $w$ (\cref{def:workhorseWitness}) inline (Phase~11 Layer~3
+  reshape; the $G$-shaped blocking-witness subset $w.V'$ is recovered
+  via \cref{lem:workhorseWitness-certifies}). Termination of the
+  fold: the number of unprocessed edges strictly decreases per
+  iteration.
 
   The Lean encoding splits into a computable workhorse
-  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{toSucc}\,\mathtt{h\_toSucc}\,\mathtt{edges}$
-  taking the orientation state, a caller-supplied
+  $\mathtt{runPebbleGameWith}\,D\,k\,\ell\,\mathtt{hD}\,\mathtt{toSucc}\,\mathtt{h\_toSucc}\,\mathtt{edges}$
+  taking the orientation state, the reachability witness
+  $\mathtt{hD} : \mathrm{Reachable}\,k\,\ell\,D$, a caller-supplied
   $\mathtt{toSucc} : \mathrm{PartialOrientation}\,V \to V \to
   \mathrm{List}\,V$ (with universal agreement witness), and a
   $\mathrm{List}\,(V \times V)$ of candidate ordered pairs; and a
@@ -447,25 +457,30 @@ failure witness.
   $G.\mathtt{edgeFinset}.\mathtt{toList}$, projecting each
   $\mathrm{Sym}_2\,V$ to a representative ordered pair via
   $\mathtt{Quot.out}$, plugging in
-  $\mathtt{toSucc}\,D' := D'.\mathtt{outList}$, and starting from
-  $\mathtt{empty}$. The workhorse stays fully computable as long as
-  $\mathtt{toSucc}$ and the input edge list do; IO callers invoke
-  $\mathtt{runPebbleGameWith}$ directly with their own
-  $\mathrm{List}$-shaped data. The output is
-  $\mathrm{Option}\,(\mathrm{PartialOrientation}\,V)$:
-  $\mathrm{some}\,D$ on accept (with $\underline{D} = E(G)$ once the
-  fold completes successfully), $\mathrm{none}$ on rejection.
+  $\mathtt{toSucc}\,D' := D'.\mathtt{outList}$, starting from
+  $\mathtt{empty}$ with $\mathtt{Reachable.empty}$. The workhorse stays
+  fully computable as long as $\mathtt{toSucc}$ and the input edge list
+  do; IO callers invoke $\mathtt{runPebbleGameWith}$ directly with their
+  own $\mathrm{List}$-shaped data. The output is
+  $\mathrm{Sum}\,(\mathrm{WorkhorseWitness}\,k\,\ell\,V)\,
+  (\mathrm{PartialOrientation}\,V)$ (Phase~11 Layer~3):
+  $\mathrm{.inr}\,D$ on accept (with $\underline{D} = E(G)$ once the
+  fold completes successfully), $\mathrm{.inl}\,w$ on rejection
+  carrying the workhorse-level failure witness $w$ produced by the
+  first $\mathtt{tryAddEdgeWith}$ call that rejected.
 
-  Each fold step performs four runtime checks before invoking
-  $\mathtt{tryAddEdgeWith}$ — the candidate is not a loop, neither
-  orientation $(u, v)$ nor $(v, u)$ already sits in $D.\mathtt{arcs}$,
-  and the algorithmic invariant $\forall x.\ \mathrm{out}_D(x) \le k$
-  holds on the current $D$. The first three fail only on
-  malformed input (loops or duplicate edges); the fourth is
-  preserved through the move sequence by the structural invariants
-  of $\mathtt{tryAddEdgeWith}$. A failing check is a no-op (skip
-  and recurse on the unchanged $D$) — see the Lean docstring for
-  the per-check rationale.
+  Each fold step performs three runtime checks before invoking
+  $\mathtt{tryAddEdgeWith}$ — the candidate is not a loop, and neither
+  orientation $(u, v)$ nor $(v, u)$ already sits in $D.\mathtt{arcs}$.
+  All three fail only on malformed input (loops or duplicate edges);
+  the algorithmic out-degree invariant $\forall x.\ \mathrm{out}_D(x)
+  \le k$ is no longer checked at runtime because it follows from
+  $\mathtt{hD} : \mathrm{Reachable}\,k\,\ell\,D$ (Phase~11 Layer~3
+  signature absorption). A failing check is a no-op (skip and recurse
+  on the unchanged $D$). On accept-branch hits, the recursive call
+  receives $\mathtt{tryAddEdgeWith\_reachable}\,\dots\,\mathtt{hD}$ as
+  its reachability witness for the updated orientation; on reject-branch
+  hits, the witness propagates unchanged through the first $\mathrm{.inl}$.
 \end{definition}
 
 \subsection{Soundness}
@@ -811,37 +826,16 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   i.e., $k |V'| < |\edgesIn{V'}| + \ell$.
 \end{proof}
 
-\begin{lemma}[Pebble game accepts when edge is independent]
-  \label{lem:pebble-game-tryAddEdgeWith-isSome}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_isSome}
-  \leanok
-  \uses{def:tryAddEdge, def:reachable-orientation, def:isSparse,
-    lem:pebble-game-independent-brings-pebble-graph}
-  Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
-  with $\{u, v\} \notin \underline{D}$, and $G$ a finite simple graph
-  with $E(G) = \underline{D} \cup \{\{u, v\}\}$ that is
-  $(k, \ell)$-sparse, in the matroidal regime $\ell < 2k$. Then
-  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}$ returns a partial
-  orientation $D'$ (i.e.\ the procedure never fails).
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pebble-game-independent-brings-pebble-graph}
-  Induction on the recursive structure of $\mathrm{tryAddEdge}$
-  (\cref{def:tryAddEdge}). The two threshold-met branches return some
-  $D'$ directly. The two DFS-success branches recurse on the
-  path-reversed orientation, whose reachability is preserved by the
-  reverse-constructor of \cref{def:reachable-orientation} and whose
-  underlying edge set is unchanged by reversal; the IH applies
-  ($G$-sparsity and the freshness $\{u, v\} \notin \underline{D'}$
-  carry over to the recursive call). The remaining branch — both
-  DFS searches simultaneously failing — is contradicted by
-  \cref{lem:pebble-game-independent-brings-pebble-graph}: the
-  matroidal regime $\ell < 2k$ plus $G$-sparsity force the existence
-  of a free pebble in $\mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$
-  distinct from $u, v$, and completeness of the DFS forces at least
-  one of the searches to succeed.
-\end{proof}
+% Phase 11 Layer 3: `lem:pebble-game-tryAddEdgeWith-isSome`,
+% `lem:pebble-game-tryAddEdge-iff-independent`, and
+% `lem:pebble-game-failure-witness` retired. The "tryAddEdge accepts when
+% edge is independent" / "tryAddEdge rejects produces blocking witness"
+% halves are now structurally encoded by the new return type of
+% `def:tryAddEdge`: the algorithm structurally has only two outcomes
+% (`.inr D'` and `.inl w`), with the `.inl w` branch carrying a
+% `WorkhorseWitness` whose `lem:workhorseWitness-certifies` discharge IS
+% the failure-witness extraction. Only the "accept implies independent"
+% half (below) remains as a named lemma.
 
 \begin{lemma}[Pebble game accept implies independent]
   \label{lem:pebble-game-tryAddEdgeWith-isSparse}
@@ -852,8 +846,9 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   Let $D$ be a $(k, \ell)$-reachable partial orientation, $u \ne v$
   a candidate edge, and $G$ a finite simple graph with
   $E(G) = \underline{D} \cup \{\{u, v\}\}$. If
-  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}$ returns some
-  orientation $D'$, then $G$ is $(k, \ell)$-sparse.
+  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\}$ returns $\mathrm{.inr}\,D'$
+  (Phase~11 Layer~3 reshape; was $\mathrm{some}\,D'$), then $G$ is
+  $(k, \ell)$-sparse.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -872,152 +867,81 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   Lee--Streinu Lemma 14.
 \end{proof}
 
-\begin{lemma}[Pebble game accepts iff edge is independent]
-  \label{lem:pebble-game-tryAddEdge-iff-independent}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdge_isSome_iff_sparse}
-  \leanok
-  \uses{def:tryAddEdge, lem:pebble-game-tryAddEdgeWith-isSome,
-    lem:pebble-game-tryAddEdgeWith-isSparse, def:isSparse}
-  Let $D$ be a partial orientation reachable as above and $\{u, v\}$
-  a candidate edge with $\{u, v\} \notin \underline{D}$. Then
-  $\mathrm{tryAddEdge}\,k\,\ell\,D\,\{u, v\} = \mathrm{some}\,D'$
-  if and only if $\mathrm{fromEdgeSet}\,(\underline{D} \cup
-  \{\{u, v\}\})$ is $(k, \ell)$-sparse. (Formalised as a
-  narrative-bridge \texttt{@[deprecated]} shim packaging the two
-  halves; downstream Lean callers reach for the halves directly.)
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pebble-game-tryAddEdgeWith-isSome,
-    lem:pebble-game-tryAddEdgeWith-isSparse}
-  $(\Leftarrow)$: \cref{lem:pebble-game-tryAddEdgeWith-isSome}.
-  $(\Rightarrow)$: \cref{lem:pebble-game-tryAddEdgeWith-isSparse}.
-\end{proof}
-
-\begin{lemma}[Failure produces a blocking witness]
-  \label{lem:pebble-game-failure-witness}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_eq_none_imp_exists_witness}
-  \leanok
-  \uses{def:tryAddEdge, def:blockingWitness,
-    lem:pebble-game-invariants}
-  Let $D$ be a $(k, \ell)$-reachable partial orientation,
-  $\{u, v\}$ a candidate edge, and $G$ a finite simple graph
-  containing $\{u, v\}$ and every edge of $\underline{D}$
-  (i.e.\ $\underline{D} \subseteq E(G)$ and $\{u, v\} \in E(G)$),
-  in the matroidal regime $\ell < 2k$. If $\mathrm{tryAddEdge}\,
-  k\,\ell\,D\,\{u, v\}$ rejects (returns $\mathrm{none}$), then
-  there exists $V' \subseteq V$ with $\ell \le k|V'|$ and
-  $k|V'| < |\edgesIn[G]{V'}| + \ell$. The witness is
-  $V' := \mathrm{Reach}_{D_0}(u) \cup \mathrm{Reach}_{D_0}(v)$,
-  taken at the failure-point orientation $D_0$ reached from $D$
-  through the algorithm's recursive path-reversal steps. The
-  freshness $\{u, v\} \notin \underline{D}$ is derived inside
-  the proof from the algorithmic preconditions $(u, v),\,
-  (v, u) \notin D.\mathrm{arcs}$; we do not require it as a separate
-  hypothesis. The subset hypothesis is stated this way (rather
-  than the tight equality $E(G) = \underline{D} \cup \{\{u, v\}\}$)
-  so the fold-level consumer can apply this lemma at a failure
-  step of $\mathrm{runPebbleGame}$ against the full input graph,
-  whose edge set strictly extends $\underline{D}$ plus the
-  candidate at any intermediate step.
-\end{lemma}
-\begin{proof}
-  \leanok
-  \uses{lem:pebble-game-invariants,
-    lem:pebble-game-tryAddEdgeWith-isSome,
-    lem:pebble-game-independent-brings-pebble-graph}
-  By the same five-case dispatch on
-  \texttt{tryAddEdgeWith.induct} as
-  \cref{lem:pebble-game-tryAddEdgeWith-isSome}. The two threshold-met
-  branches return $\mathrm{some}$ and contradict the rejection
-  hypothesis; the two DFS-success branches recurse via the IH on
-  $r.\mathrm{newOrient}$, with reachability and freshness
-  hypotheses transported by
-  \texttt{TryReachPebbleResult.reachable\_newOrient} /
-  \texttt{underline\_newOrient\_eq}. At the both-DFS-fail leaf
-  $D_0$: take $V' := \mathrm{Reach}_{D_0}(u) \cup
-  \mathrm{Reach}_{D_0}(v)$. Closure of $V'$ under $D_0$'s out-arcs
-  gives $\mathrm{out}_{D_0}(V') = 0$. Both DFS rejections force
-  $\mathrm{peb}_{D_0, k}(w) = 0$ for every $w \in V'$ with $w \neq
-  u, v$ (predicate $P$ excludes the endpoints), so
-  $\mathrm{peb}_{D_0, k}(V') = \mathrm{peb}_{D_0, k}(u) +
-  \mathrm{peb}_{D_0, k}(v) \le \ell$ from the below-threshold
-  hypothesis. Invariant~(2) then gives
-  $\mathrm{span}_{D_0}(V') + (\mathrm{peb}_{D_0, k}(u) +
-  \mathrm{peb}_{D_0, k}(v)) = k|V'|$, hence
-  $\mathrm{span}_{D_0}(V') + \ell \ge k|V'|$. Combining with the
-  post-insertion bridge $|\edgesIn[G]{V'}| \ge
-  \mathrm{span}_{D_0}(V') + 1$
-  (\cref{lem:pebble-game-independent-brings-pebble-graph}'s
-  \texttt{span\_succ\_le\_edgesIn\_ncard\_of\_subset}) yields
-  $|\edgesIn[G]{V'}| + \ell \ge k|V'| + 1$. Size hypothesis
-  $\ell \le k|V'|$ from $|V'| \ge 2$ (since $u, v \in V'$, $u \neq v$)
-  plus $\ell < 2k$.
-\end{proof}
+% Phase 11 Layer 3: `lem:pebble-game-tryAddEdge-iff-independent` and
+% `lem:pebble-game-failure-witness` retired (their content is now
+% structurally encoded in `def:tryAddEdge`'s reshape: the algorithm's
+% `.inl w` branch IS the failure-witness extraction, with
+% `lem:workhorseWitness-certifies` doing the $G$-shaped discharge).
 
 \subsection{Correctness theorem}
 \label{sec:pebble-game-correctness}
 
 The certificate-form statement of Lee--Streinu Theorem~8 in the
 matroidal regime: $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
-$\mathrm{some}\,D$ exactly when $G$ is $(k, \ell)$-sparse, and the
-$\mathrm{none}$ branch produces a blocking-witness subset via a
-post-composed extraction.
+$\mathrm{.inr}\,D$ exactly when $G$ is $(k, \ell)$-sparse, and the
+$\mathrm{.inl}\,w$ branch carries the blocking-witness data inline
+(Phase~11 Layer~3 reshape; the Lean return type is now
+$\mathrm{Sum}\,(\mathrm{WorkhorseWitness}\,k\,\ell\,V)\,
+(\mathrm{PartialOrientation}\,V)$, with the $G$-shaped sparsity-violation
+pair recovered by \cref{lem:workhorseWitness-certifies}).
 
 \begin{theorem}[Pebble game correctness, certificate form]
   \label{thm:pebble-game-correct}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_correct,
-    CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_eq_none_imp_exists_witness}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGame_correct}
   \leanok
-  \uses{def:runPebbleGame, def:blockingWitness, def:isSparse,
+  \uses{def:runPebbleGame, def:workhorseWitness, def:isSparse,
     thm:pebble-game-soundness, lem:runPebbleGame-underline-eq,
-    lem:pebble-game-failure-witness}
+    lem:workhorseWitness-certifies}
   Let $V$ be finite, $G : \mathrm{SimpleGraph}\,V$, and $k, \ell$
   integers with $\ell < 2k$. Then $G$ is $(k, \ell)$-sparse if and
   only if there exists a partial orientation $D$ with
-  $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{some}\,D$. Concretely:
+  $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{.inr}\,D$.
+  Concretely (Phase~11 Layer~3 reshape):
   \begin{enumerate}
-    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{some}\,D$,
+    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{.inr}\,D$,
       then $G$ is $(k, \ell)$-sparse and $\underline{D} = E(G)$.
-    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{none}$,
-      then there exists $V' \subseteq V$ with $\ell \le k|V'|$ and
-      $k|V'| < |\edgesIn[G]{V'}| + \ell$ — i.e.\ a blocking witness
+    \item If $\mathrm{runPebbleGame}\,k\,\ell\,G = \mathrm{.inl}\,w$
+      for some $w : \mathrm{WorkhorseWitness}\,k\,\ell\,V$, then
+      $w.V'$ certifies $\ell \le k|w.V'| \wedge k|w.V'| <
+      |\edgesIn[G]{w.V'}| + \ell$ via
+      \cref{lem:workhorseWitness-certifies} --- a blocking witness
       for $G$.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:pebble-game-soundness, lem:runPebbleGame-underline-eq,
-    lem:pebble-game-failure-witness}
+    lem:workhorseWitness-certifies}
   Part~(1) combines \cref{thm:pebble-game-soundness} (sparsity from
   Invariant~(4) on the final state) with
   \cref{lem:runPebbleGame-underline-eq} ($\underline{D} = E(G)$
   through the no-skip-fires fold).
 
-  Part~(2) is the wrapper-level theorem
-  $\mathtt{runPebbleGame\_eq\_none\_imp\_exists\_witness}$: a
-  fold-level structural recursion on the candidate edge list traces
-  a $\mathrm{none}$ return through $\mathtt{runPebbleGameWith}$ to
-  the step at which $\mathtt{tryAddEdgeWith}$ rejected, threading
-  $\mathrm{Reachable}\,k\,\ell$ via
-  $\mathtt{tryAddEdgeWith\_reachable}$ and the running subset
-  relation $\underline{D_{\mathrm{mid}}} \subseteq E(G)$ via
-  $\mathtt{tryAddEdgeWith\_underline}$ (which gives
-  $\underline{D_{\mathrm{mid}}} = \{s(u,v)\} \cup \underline{D}$
-  per step) plus the per-edge head membership $\{u, v\} \in E(G)$.
-  At the failure step, \cref{lem:pebble-game-failure-witness}
-  applies directly in its subset form (the broadened
-  $\{u, v\} \in E(G) \land \underline{D_0} \subseteq E(G)$ hypothesis
-  rather than tight equality) against the input graph $G$.
+  Part~(2) extracts the witness directly from the algorithm's
+  structural output: the workhorse-level
+  $\mathtt{runPebbleGameWith\_witness\_bridges}$ lemma threads the
+  fold's history to establish $s(w.uv_1, w.uv_2) \in E(G)$ (the
+  failure-pending edge sits in $G$, since $w.uv \in \mathrm{edges}$
+  and $\mathrm{edges}$'s $\mathrm{Sym}_2$-image is $E(G)$) and
+  $w.D.\underline{} \subseteq E(G)$ (the orientation-at-failure's
+  underline lies inside $G$, via accept-step monotonicity from the
+  empty input). Then \cref{lem:workhorseWitness-certifies} discharges
+  the workhorse data into the $G$-shaped sparsity-violation pair.
 
-  The biconditional comes from the dichotomy on the
-  $\mathrm{Option}$ output: $\mathrm{some}$ closes via~(1);
-  $\mathrm{none}$ closes via~(2) by contradicting the sparsity
-  hypothesis at the witness $V'$. The Lean encoding uses
-  $\mathrm{Option}\,(\mathrm{PartialOrientation}\,V)$ rather than
-  $\mathrm{Sum}$ (cf.\ \cref{def:runPebbleGame}); the
-  blocking-witness $V'$ is extracted by the post-composed wrapper
-  theorem rather than returned in the failure branch directly.
+  The biconditional comes from the dichotomy on the $\mathrm{Sum}$
+  output: $\mathrm{.inr}$ closes via~(1); $\mathrm{.inl}$ closes
+  via~(2) by contradicting the sparsity hypothesis at the witness
+  $w.V'$. The Phase~11 Layer~3 reshape replaces the Phase~10-era
+  $\mathrm{Option}$-shaped existence-form failure-witness extraction
+  with this structural alternative; the case-5 inline construction
+  inside \cref{def:tryAddEdge} produces the witness data directly,
+  and the previously-named lemmas
+  $\mathrm{tryAddEdge\_isSome\_iff\_sparse}$,
+  $\mathrm{tryAddEdgeWith\_eq\_none\_imp\_exists\_witness}$,
+  $\mathrm{runPebbleGameWith\_eq\_none\_imp\_exists\_witness}$, and
+  $\mathrm{runPebbleGame\_eq\_none\_imp\_exists\_witness}$ are
+  retired (their content absorbed into the new return type and
+  $\mathrm{certifies\_against}$).
 \end{proof}
 
 \subsection{Matroidal-independence corollary}
@@ -1040,7 +964,8 @@ the pebble game decides matroidal independence.
   $\mathrm{countMatroid}\,V\,k\,\ell$
   (\cref{def:countMatroid}) if and only if
   $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
-  $\mathrm{some}\,D$ for some partial orientation $D$.
+  $\mathrm{.inr}\,D$ for some partial orientation $D$ (Phase~11
+  Layer~3 reshape; was $\mathrm{some}\,D$).
 \end{corollary}
 \begin{proof}
   \leanok
