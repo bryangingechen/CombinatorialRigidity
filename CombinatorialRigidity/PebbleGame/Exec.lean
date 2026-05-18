@@ -96,7 +96,7 @@ sort via `Lex (V × V)` on the inf/sup projection instead), and the
 phase-completion criteria.
 -/
 
-@[expose] public section
+public section
 
 namespace CombinatorialRigidity.PebbleGame
 

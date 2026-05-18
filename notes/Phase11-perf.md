@@ -178,12 +178,25 @@ Current Phase 10+11 disposition (per `grep`):
   `unfold defname` don't require `@[expose]`; only intra-module
   `@[simp] := rfl` projection lemmas and downstream consumption do).
   Disposition row appended to PERFORMANCE.md F3.5 table.*
-- [ ] **F1.3.** `PebbleGame/Exec.lean` audit. Same pattern. Phase
+- [x] **F1.3.** `PebbleGame/Exec.lean` audit. Same pattern. Phase
   10 defs `outListSorted`, `edgeListSorted`,
   `runPebbleGameExec` may have intra-file `@[simp] := rfl`
   consumers; Layer 4b's verdict-returning `runPebbleGameExec` may
   need `@[expose]` if the three `Decidable` instances
-  pattern-match its body. Disposition row.
+  pattern-match its body. Disposition row. *Done; demoted cleanly,
+  **zero** per-decl opt-ins. The three `Decidable` instances
+  (`instDecidableIsSparse`, `instDecidableIsTight`,
+  `instDecidableIsLaman`) route through `decidable_of_iff`,
+  consuming `runPebbleGameExec` as a value via its `.isAccept`
+  projection paired with the proved iff
+  `runPebbleGameExec_isAccept_iff` — no body-unfolding required.
+  Intra-file `def` consumption is uniformly via intra-module
+  `rw [outListSorted, …]` / `simp only [edgeListSorted, …]` /
+  `unfold edgeListSorted` / `simp [runPebbleGameExec.aux, …]` /
+  `unfold runPebbleGameExec`, all of which work under `public
+  section`. Matches the F3.5 `MatroidIdentification.lean` /
+  `LamanTheorem.lean` pattern. Disposition row appended to
+  PERFORMANCE.md F3.5 table.*
 - [ ] **F1.4.** `PebbleGame/Examples.lean` audit. Expected
   closure: trivial — file has no `def`s, only `#eval` commands
   that consume the Decidable instances at meta time. Demote to
@@ -299,6 +312,22 @@ median-of-4.
   `unfold defname` works under `public section`; only downstream
   `simp [defname]` and intra-module `@[simp] := rfl` projection lemmas
   force exposure. Confirms the F3.5 / F1.1 pattern.
+- **F1.3 — `PebbleGame/Exec.lean` per-decl `@[expose]` audit.**
+  Demoted `@[expose] public section` → `public section`; **zero**
+  per-decl opt-ins required. All four defs (`outListSorted`,
+  `edgeListSorted`, `runPebbleGameExec.aux`, `runPebbleGameExec`) and
+  the three `Decidable` instances demote cleanly. The three
+  `Decidable` instances route through `decidable_of_iff`, consuming
+  `runPebbleGameExec` as a value via its `.isAccept` projection
+  paired with the proved iff `runPebbleGameExec_isAccept_iff` — no
+  body-unfolding required at the instance site. Intra-file `def`
+  consumption is uniformly intra-module `rw`/`simp [defname]`/`unfold
+  defname` patterns, all of which work under `public section`.
+  Downstream `Examples.lean` (`#eval (decide G.IsLaman)` etc.) and
+  `Main.lean` (CLI) reduce through the compiled body without source-
+  level `@[expose]`. Matches the F3.5 `MatroidIdentification.lean` /
+  `LamanTheorem.lean` pattern (theorem-and-instance file with
+  API-only def consumption demotes with zero per-decl opt-ins).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -311,31 +340,29 @@ median-of-4.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** F1.3 audit of `PebbleGame/Exec.lean` —
-demote `@[expose] public section` → `public section`, observe what
-breaks, restore `@[expose]` on the per-decl sites whose bodies are
-genuinely consumed. Phase 10 surface defs: `outListSorted`,
-`edgeListSorted`, `runPebbleGameExec.aux`, `runPebbleGameExec`. The
-file also hosts the three `Decidable` instances
-(`instDecidableIsSparse`, `instDecidableIsTight`,
-`instDecidableIsLaman`) that pattern-match on `runPebbleGameExec`'s
-verdict body. Candidates if exposure is needed: `runPebbleGameExec`
-(if the `Decidable` instance bodies need its body for reduction —
-mirror of F1.1's `runPebbleGameWith` rationale); the sorted-list
-defs if intra-file or downstream `@[simp] := rfl` consumers exist.
+**Next concrete commit:** F1.4 audit of `PebbleGame/Examples.lean` —
+demote `@[expose] public section` → `public section`. Expected
+closure per the F1.4 pre-pass note: trivial — the file has no
+`def`s, only `#eval` commands that consume the Phase 10 / Phase 11
+Layer 4b `Decidable` instances at meta time (`#eval (decide
+G.IsLaman)` and friends). The `public meta import
+CombinatorialRigidity.PebbleGame.Exec` line that gives `#eval` access
+to the sibling-module instances should stay unchanged (it's
+orthogonal to the section-style audit; see TACTICS-QUIRKS § 23).
 Append disposition row to `./PERFORMANCE.md` *F3.5 audit
 disposition* table.
 
-After F1.3, F1.4 (`Examples.lean`); then F2.1/F2.2 re-audit of the
-existing per-decl opt-ins on `DFS` and `Basic` under the Phase 11
-reshape. F4.2 post-pass measurement closes the pass (or earlier if
-a measurable regression surfaces during F1).
+After F1.4, F2.1/F2.2 re-audit of the existing per-decl opt-ins on
+`DFS` and `Basic` under the Phase 11 reshape. F4.2 post-pass
+measurement closes the pass (or earlier if a measurable regression
+surfaces during F1).
 
 If the session must stop mid-stream, the F4.1 baseline anchor + the
 F1.1 disposition for `Algorithm.lean` (`runPebbleGameWith` per-decl
 `@[expose]` only) + the F1.2 disposition for `Correctness.lean`
-(`PebbleGameResult.isAccept` per-decl `@[expose]` only) are the
-persistent state added so far; the next session can pick up at F1.3
-from a clean tree. Final hand-off paragraph will be rewritten at
-pass close; the default close convention is *no follow-up phase
-queued* per `../CLEANUP.md`.
+(`PebbleGameResult.isAccept` per-decl `@[expose]` only) + the F1.3
+disposition for `Exec.lean` (clean demotion, zero per-decl opt-ins)
+are the persistent state added so far; the next session can pick up
+at F1.4 from a clean tree. Final hand-off paragraph will be
+rewritten at pass close; the default close convention is *no
+follow-up phase queued* per `../CLEANUP.md`.
