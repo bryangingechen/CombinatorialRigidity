@@ -16,8 +16,12 @@ Layer 1 in favour of computable `reachClosureComputable`;
 `runPebbleGame.aux` added in Phase 11 Layer 4b alongside
 `runPebbleGame`); pre-grep smell-count table revised — the previous
 entry's 29-site claim conflated docstring/comment mentions of
-"`noncomputable`" with actual `noncomputable def` sites;
-B3/B4/B5/C/D pending).
+"`noncomputable`" with actual `noncomputable def` sites; B3 closed as
+no-op + smell-table revision — depth-aware comma count surfaces 6
+genuine 4+ arg `rw` chains (the pre-grep regex's 9 was inflated by
+inner-`⟨_, _⟩`-tuple commas at lines 421/435/448 in `Basic.lean`,
+which are 2-arg chains), each verdict per-step structural rewrite
+with no missing-fused-lemma candidate; B4/B5/C/D pending).
 
 This is the inter-phase cleanup round covering **both Phase 10 and
 Phase 11**. See `../CLEANUP.md` for the round-level operating manual:
@@ -133,7 +137,7 @@ surface only —
 | `noncomputable def` | 0 | 2 | 2 | 2 | 0 | 0 | 0 |
 | `change` / `show` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | `@[nolint …]` / `set_option linter` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Multi-step `rw [..., ..., ...]` (3+ args) | 3 | 5 | 0 | 0 | 1 | 0 | 0 |
+| Multi-step `rw [..., ..., ...]` (4+ args, depth-aware) | 3 | 2 | 0 | 0 | 1 | 0 | 0 |
 | `show … from rfl` | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
 *Revised at B2 close:* the previous `noncomputable def` row's 29-site
@@ -144,6 +148,20 @@ Correctness: `runPebbleGame.aux` L748, `runPebbleGame` L802; Exec: 0).
 The original count conflated docstring/comment mentions of
 "`noncomputable`" (e.g. `Basic.lean:130` "noncomputable in mathlib
 because `Multiset.toList` …") with actual declaration sites.
+
+*Revised at B3 close:* the previous multi-step `rw` row claimed 9
+sites (3 DFS + 5 Basic + 1 Exec) under a 3+ comma regex `rw
+\[[^]]*,[^]]*,[^]]*,[^]]*\]`. That regex doesn't track inner-bracket
+depth, so it captured three `Basic.lean` sites (lines 421, 435, 448)
+that are actually 2-arg `rw [if_pos ⟨a, b⟩, if_neg (fun ⟨_, h⟩ => h
+rfl)]` chains whose inner anonymous-constructor commas inflated the
+top-level comma count. A depth-aware AWK pass over the same surface
+returns 6 genuine 4+ arg sites: 3 in DFS (L207/L213/L300), 2 in Basic
+(L268/L940), 1 in Exec (L177). The table row above is revised to "4+
+args, depth-aware" with the corrected per-file counts. The original
+3-arg-and-up grep still has audit value as a Phase 9-cleanup-style
+multi-step screen — call it out separately if and when those sites
+need a re-audit.
 
 Phase 9-cleanup B4 audited the `noncomputable def` sites in `DFS.lean`
 and the pre-Phase-11 `PebbleGame/*.lean`; Phase 11 reshape may have
@@ -364,13 +382,25 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   via `lake build CombinatorialRigidity.PebbleGame.Correctness`
   succeeded as expected. Pre-grep smell counts table revised in
   *Current state*.
-- [ ] **B3:** Multi-step `rw [..., ..., ..., ...]` chain audit (9
-  sites total: 3 in DFS, 5 in Basic, 1 in Exec). For each: is the
-  chain a missing fused lemma (candidate for a project mirror), a
-  per-step structural rewrite (Phase 9-cleanup B7's *kept as-is*
-  pattern), or a candidate for `simp only` collapse? Expect most
-  to be the second; surface any missing-mirror cases for in-round
-  refactor.
+- [x] **B3:** Multi-step `rw [..., ..., ..., ...]` chain audit.
+  Closed as a **no-op** + smell-table revision. The pre-grep claimed
+  9 sites under a comma-only regex; a depth-aware AWK re-count
+  surfaces 6 genuine 4+ arg sites (the other 3 were 2-arg chains
+  with inner `⟨_, _⟩` tuple commas — see *Cleanup pass summaries* B3
+  for the diagnosis). Each of the 6 sites is a per-step structural
+  rewrite with no missing-fused-lemma candidate: DFS L207/L213 unfold
+  the WF-recursive helper definitionally (`mapRel`, `length`,
+  `length`, `ih`); DFS L300 chains three structural unfolds with the
+  IH backward (`arcsFinset_cons`, `Finset.image_insert`, `← ih`,
+  `reversedArcsFinset_cons`); Basic L268 substitutes summand →
+  folds → smul/mul → factor-order swap (`Finset.sum_congr rfl h`,
+  `Finset.sum_const`, `smul_eq_mul`, `mul_comm`); Basic L940 unfolds
+  `pebOn`/`outOn` at `empty` + drops `+ 0` + aligns multiplication
+  order; Exec L177 chains both Sym2 mk-equations with the
+  inf/sup-of-le reductions. `lean_multi_attempt`-tested
+  `simp [name list]` collapses on every site — they all close, but
+  with no measurable simplification benefit (and `simp [mul_comm]`
+  is a non-terminator risk). No project-mirror surfaced.
 - [ ] **B4:** `letI`/`haveI Fintype.ofFinite` audit. The style
   island already takes `[Fintype V] [DecidableEq V]` end-to-end
   (`../DESIGN.md` *Pebble-game style island*), so no inline bridge
@@ -634,6 +664,53 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
   while declaring exactly one `noncomputable def`). Revised in
   *Current state* alongside an explanatory note; no other row in
   the pre-grep table is affected by the same conflation.
+- **B3: Multi-step `rw [..., ..., ..., ...]` chain audit** — no-op
+  closure with **smell-table revision**. The pre-grep at round open
+  used `grep -nE "rw \[[^]]*,[^]]*,[^]]*,[^]]*\]"` (four `[^]]`
+  segments separated by three commas) and reported 9 sites. That
+  regex doesn't track inner-bracket depth, so three `Basic.lean`
+  hits (lines 421/435/448) were 2-arg `rw` chains whose top-level
+  comma count was inflated by inner `⟨_, _⟩` anonymous-constructor
+  tuples — e.g. `rw [if_pos ⟨hmem, hw⟩, if_pos ⟨hmem, hu⟩]` has 3
+  top-level commas under a depth-blind count but only 1 at depth 0.
+  A depth-aware AWK re-count on the same surface (tracking nesting
+  in `[`/`]`, `(`/`)`, `⟨`/`⟩`) returns **6 genuine 4+ arg sites**:
+  3 in DFS (L207/L213 each `[mapRel, length, length, ih]`-shaped;
+  L300 `[arcsFinset_cons, Finset.image_insert, ← ih,
+  reversedArcsFinset_cons]`), 2 in Basic (L268 sum-rewrite chain
+  `[Finset.sum_congr rfl h, Finset.sum_const, smul_eq_mul,
+  mul_comm]`; L940 `[pebOn_empty, outOn_empty, Nat.add_zero,
+  mul_comm V'.card k]`), 1 in Exec (L177 Sym2 inf/sup chain). Each
+  is a per-step structural rewrite — every step does one distinct
+  semantic normalisation (definitional unfold, fold of a constant
+  sum, smul→mul coercion, factor-order alignment) with no candidate
+  *fused* mirror lemma the combination would collapse to. The
+  Phase 9-cleanup B7 finding ("multi-step `rw` chains likely break
+  down to per-step structural rewrites") generalises through the
+  Phase 11 reshape; no new project-mirror surfaced.
+
+  `lean_multi_attempt`-tested `simp only [name list]` collapses at
+  each site close successfully, but with no measurable simplification
+  benefit (most chains land at the same goal state via the same
+  rewrites), and `simp [..., mul_comm, ...]` carries non-terminator
+  risk where `rw [mul_comm V'.card k]` is the deterministic single-
+  step. Kept as-is.
+
+  Two **observations surfaced** that aren't B3's concern but should
+  be flagged: (i) `Basic.lean` L435/L448 (inner-tuple-comma sites)
+  currently do `rw [if_pos …, if_neg …] at h` then `omega`, and
+  `simp [h_mem, h_ne] at h` produces a *cleaner* `h` (no residual
+  `+ 0`) that an `exact h` could close directly — but the existing
+  shape is correct and the audit's discharge isn't a free-form
+  refactor (cf. `../CLEANUP.md` *What a cleanup round is not*); not
+  in-scope at B3. (ii) The 9-site count drove the per-file
+  expectation in this round's open prose ("3 in DFS, 5 in Basic, 1
+  in Exec") — the revised counts (3 DFS / 2 Basic / 1 Exec = 6) are
+  the canonical numbers going forward; *Current state* smell-table
+  row revised accordingly.
+
+  Sanity build via `lake build` clean (2467 jobs). All six sites
+  remain at their current shape post-audit.
 
 ## Blockers / open questions
 
@@ -642,23 +719,22 @@ re-audits the delta only (Phase 10 additions + Phase 11 reshape).
 ## Hand-off / next phase
 
 Round still in progress; Bucket A complete (A1 no-op / A2
-targeted fix / A3 targeted fix / A4 no-op); Bucket B halfway (B1
-no-op / B2 no-op + smell-table revision). Next concrete commit:
-**B3** — multi-step `rw [..., ..., ..., ...]` chain audit (9 sites
-per the revised pre-grep table: 3 in DFS, 5 in Basic, 1 in Exec).
-For each: is the chain a missing fused lemma (candidate for a
-project mirror under `CombinatorialRigidity/Mathlib/<path>`), a
-per-step structural rewrite (Phase 9-cleanup B7's *kept as-is*
-pattern), or a candidate for `simp only` collapse? Use
-`lean_multi_attempt` at each site to A/B-test the `simp only`
-collapse before committing to a structural rewrite verdict.
-Expect most to be the second; surface any missing-mirror cases for
-in-round refactor per `../CLEANUP.md` *Workflow* rule 3. After B3:
-B4 (`letI`/`haveI Fintype.ofFinite` no-op re-confirmation), B5
-(`@[nolint …]` no-op re-confirmation). After Bucket B close, C
-(long-proof audit on `Algorithm.lean` and the verdict-construction
-bodies) and D (project-organization compression of `notes/Phase10.md`
-and `notes/Phase11.md`).
+targeted fix / A3 targeted fix / A4 no-op); Bucket B 60 % done
+(B1 no-op / B2 no-op + smell-table revision / B3 no-op +
+smell-table revision). Next concrete commit: **B4** —
+`letI`/`haveI Fintype.ofFinite` audit, expected no-op
+re-confirmation per the style-island convention
+(`../DESIGN.md` *Pebble-game style island*: the algorithm files
+take `[Fintype V] [DecidableEq V]` end-to-end, so no inline
+`Fintype.ofFinite` bridge should be needed). Quick discharge:
+`grep -nE "letI|haveI.*(Fintype.ofFinite|Set.Finite.fintype)"
+CombinatorialRigidity/PebbleGame/*.lean
+CombinatorialRigidity/Search/DFS.lean Main.lean`. After B4: **B5**
+(`@[nolint …]` / `set_option linter` no-op re-confirmation; pre-grep
+shows zero hits). After Bucket B close, **C** (long-proof audit on
+`Algorithm.lean` and the verdict-construction bodies) and **D**
+(project-organization compression of `notes/Phase10.md` and
+`notes/Phase11.md`).
 
 The round's close hand-off, when reached, defaults to whichever
 follow-up direction the user picks from Phase 11's three candidates
