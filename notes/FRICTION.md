@@ -631,6 +631,47 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
   `Function.Injective.extend_apply` for clean rewriting.
 - **Status:** resolved (2026-05-16).
 
+### [resolved] `[LinearOrder V]`-only lemma signature mismatches a caller's explicit `[DecidableEq V]` instance
+
+- **Where it bit:** `edgeListSorted_map_sym2_toFinset` in
+  `PebbleGame/Exec.lean` (Phase 10 Layer 2). The discharge's signature
+  declared `[LinearOrder V]` only; its return type
+  `(_.map _).toFinset = G.edgeFinset` elaborates with
+  `Sym2.instDecidableEq V (fun a b ↦ LinearOrder.toDecidableEq a b)`
+  (the auto-derived `DecidableEq` from `LinearOrder`). The caller
+  `runPebbleGameExec_correct` runs inside a section variable
+  `[DecidableEq V]` (`inst✝³`); the workhorse it composes with
+  (`runPebbleGameWith_correct`) expects
+  `Sym2.instDecidableEq V inst✝³`. Lean's defeq check refused
+  to unify `LinearOrder.toDecidableEq` with `inst✝³` despite both
+  proving the same proposition, surfacing as *"Application type
+  mismatch"* on the discharge argument.
+- **Friction:** the lemma is short; the fix is a one-character signature
+  change. But the error message points at the discharge's full
+  elaborated type vs. the workhorse's elaborated expectation, and the
+  divergence happens inside `Sym2.instDecidableEq`'s first explicit
+  arg — easy to misread as a `Sym2`-level instance problem when it's
+  really a `V`-level one.
+- **Resolution:** declared `[DecidableEq V] [LinearOrder V]` (in that
+  order) on the discharge. Lean then uses the explicit `[DecidableEq V]`
+  parameter inside the discharge's body, the caller passes its section
+  `[DecidableEq V]`, and the workhorse's expected `inst✝³` unifies
+  cleanly.
+- **Lesson:** when a lemma's return type involves a `DecidableEq`-
+  dependent operation (`List.toFinset`, `Finset.image`, `Finset.filter`,
+  etc.) and the lemma is called from a context with an explicit
+  `[DecidableEq V]` *separate from* its `[LinearOrder V]`, declare
+  `[DecidableEq V]` explicitly on the lemma too. Otherwise the
+  auto-derived `LinearOrder.toDecidableEq` becomes the lemma's
+  canonical instance choice, and cross-section unification fails.
+  Different manifestation of the same family as
+  `TACTICS-QUIRKS § 22` (`LinearOrder.lift'` on `SetLike` types
+  silently breaking `Decidable (· ≤ ·)`), but the *direction* of
+  the conflict is reversed: § 22 is about a missing `Decidable` after
+  a `lift'`; this is about a mismatch between two valid `DecidableEq`
+  proofs.
+- **Status:** resolved (2026-05-18).
+
 ## Anti-patterns / known dead ends
 
 Tried-and-rejected approaches, deprecated patterns, and tactic

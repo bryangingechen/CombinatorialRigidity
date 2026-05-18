@@ -29,9 +29,11 @@ same first commit as this file.
 
 ## Current state
 
-Layer 0 audits closed, Layer 1 (computable list views) landed, and
-Layer 2's workhorse-level correctness restatement landed. Per the
-revised Layer 0 audit \#1 outcome below, there is **no `Mathlib/`
+Layer 0 audits closed, Layer 1 (computable list views) landed,
+Layer 2's workhorse-level correctness restatement landed, and
+Layer 2 itself closed via the exec-layer wrapper `runPebbleGameExec`
+plus its certificate-form correctness theorem. Per the revised
+Layer 0 audit \#1 outcome below, there is **no `Mathlib/`
 mirror** for Phase 10: mathlib's existing
 `instance : PartialOrder (Sym2 α) := .ofSetLike _ _` occupies the
 slot for an order on `Sym2 V` with the (non-total) subset order, so
@@ -44,8 +46,19 @@ sorts via `Lex (V × V)` on the `(e.inf, e.sup)` projection instead.
 `SimpleGraph.edgeListSorted` / `SimpleGraph.mem_edgeListSorted` —
 the four blueprint nodes `def:outListSorted`,
 `lem:mem-outListSorted`, `def:edgeListSorted`,
-`lem:mem-edgeListSorted` (all `\leanok`-green).
-`CombinatorialRigidity/PebbleGame/{Algorithm,Correctness}.lean` now
+`lem:mem-edgeListSorted` (all `\leanok`-green). The
+`SimpleGraph` section additionally ships three discharge lemmas
+(`edgeListSorted_no_loops` / `edgeListSorted_pairwise` /
+`edgeListSorted_map_sym2_toFinset`) packaging the no-loops /
+pairwise-Sym2-distinct / Sym2-image-round-trip witnesses that
+`runPebbleGameWith_correct` consumes. The `PartialOrientation`
+section ships the exec-layer wrapper
+`runPebbleGameExec G k ℓ` plus the certificate-form
+`runPebbleGameExec_correct` — both blueprint nodes
+`def:runPebbleGameExec` and `thm:runPebbleGameExec-correct` are
+`\leanok`-green.
+
+`CombinatorialRigidity/PebbleGame/{Algorithm,Correctness}.lean`
 ship the four workhorse-level theorems parametrised over a
 caller-supplied `toSucc` / `edges` plus three discharges (no-loops,
 pairwise Sym2-distinctness, Sym2-image round-trip):
@@ -309,18 +322,17 @@ discipline.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** close Layer 2 — define
-`runPebbleGameExec G k ℓ := runPebbleGameWith empty k ℓ
-(fun D' => D'.outListSorted) mem_outListSorted (edgeListSorted G)`
-in `PebbleGame/Exec.lean`, prove the three discharges for
-`edgeListSorted` as glue lemmas in the same file (no-loops via
-`not_isDiag_of_mem_edgeSet` on the inf/sup projection, pairwise
-Sym2-distinctness from `Finset.sort_nodup` + `Lex (V × V)`'s lex
-order, and the Sym2-image round-trip from `mem_edgeListSorted`),
-and derive `runPebbleGameExec_correct` as a one-line corollary of
-`runPebbleGameWith_correct` — the `thm:runPebbleGameExec-correct`
-blueprint node. Forward-mode discipline: flip its `\lean{...}` and
-`\leanok` in the same commit as the Lean lands.
+**Next concrete commit:** open Layer 3 — register the canonical
+`Decidable (G.IsSparse k ℓ)` instance in
+`PebbleGame/Exec.lean` (in the matroidal regime `ℓ < 2k`), backed by
+`runPebbleGameExec_correct` via `(runPebbleGameExec G k ℓ).isSome`.
+Document the polynomial-time guarantee and forbid competing brute-
+force instances per DESIGN.md *One `Decidable` instance per project
+predicate*. Flip the `def:isSparse-decidable` blueprint node's
+`\lean{...}` and `\leanok` in the same commit. The follow-on commits
+land `Decidable G.IsTight` and `Decidable G.IsLaman` as one-line
+corollaries built on the sparsity instance plus the edge-count check
+(`Decidable` of an equality on `ℕ`).
 
 Phase 10 closes when:
 - `chapter/executable.tex`'s dep-graph is fully `\leanok`-green;

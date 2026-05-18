@@ -215,6 +215,8 @@ instead.
 
 \begin{definition}[Computable pebble-game wrapper]
   \label{def:runPebbleGameExec}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec}
+  \leanok
   \uses{def:runPebbleGame, def:outListSorted, def:edgeListSorted}
   Let $V$ have $[\mathrm{LinearOrder}\,V]$ and
   $[\mathrm{DecidableEq}\,V]$, and let $G$ be a finite simple graph
@@ -284,6 +286,8 @@ corollaries.
 
 \begin{theorem}[Computable wrapper correctness]
   \label{thm:runPebbleGameExec-correct}
+  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec_correct}
+  \leanok
   \uses{def:runPebbleGameExec, thm:runPebbleGameWith-correct,
     lem:mem-outListSorted, lem:mem-edgeListSorted}
   Let $V$ be finite with $[\mathrm{LinearOrder}\,V]$
@@ -294,12 +298,18 @@ corollaries.
   $\mathrm{some}\,D'$ for some partial orientation $D'$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:runPebbleGameWith-correct, lem:mem-outListSorted,
     lem:mem-edgeListSorted}
   Apply \cref{thm:runPebbleGameWith-correct} with the Phase~10
   list views \cref{def:outListSorted,def:edgeListSorted}; the
   agreement and round-trip hypotheses are
-  \cref{lem:mem-outListSorted,lem:mem-edgeListSorted}.
+  \cref{lem:mem-outListSorted,lem:mem-edgeListSorted}. The
+  formalisation additionally requires three small edge-list
+  discharges (no loops, pairwise Sym$_2$-distinct, Sym$_2$-image
+  round-trip), all packaged as one-liners against
+  \cref{lem:mem-edgeListSorted} in
+  \texttt{PebbleGame/Exec.lean}'s \texttt{SimpleGraph} section.
 \end{proof}
 
 \subsection{Decidability of sparsity, tightness, and Laman}
