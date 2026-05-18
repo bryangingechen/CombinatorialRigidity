@@ -297,11 +297,17 @@ incorporates the outcomes.
    authoritative to-do list lives in this file's *Layer plan*
    section.
 
-7. **`reachableFinding` factoring.** Deferred to Layer 1: whether
-   the new `reachClosureComputable` shares an inner recursion with
-   `reachableFinding` or runs as an independent accumulating-DFS.
-   Expected: independent recursion (simpler body); shared
-   termination measure.
+7. **`reachableFinding` factoring.** ✓ Independent recursion,
+   sharing only the `(Finset.univ \ visited).card` termination
+   measure pattern. The two functions diverge on return shape
+   (`Option (Σ w, DirectedWalk)` short-circuiting on first match
+   vs `Finset V` accumulating the full reach-set), children
+   traversal (`List.findSome?` vs a full fold), and path tracking
+   (`reachableFinding` builds walks via `.cons`; closure tracks
+   only the visited set). A shared inner combinator would have to
+   abstract over all three dimensions; with only two consumers it
+   absorbs the soundness/completeness obligation as combinator IH
+   plus two specializations rather than two direct inductions.
 
 8. **`Search/DFS.lean` file split.** Deferred to Layer 1: extend
    in-file unless the addition pushes past ~1050 LoC, in which case
@@ -417,10 +423,6 @@ structural-edit phases.)*
 *(Not applicable until after phase close.)*
 
 ## Blockers / open questions
-
-- **Layer 1 micro-call:** does `reachClosureComputable` share an
-  inner recursion with `reachableFinding`, or run as an independent
-  accumulating-DFS? Resolved at Layer 1 entry.
 
 - **Layer 1 micro-call:** in-file extension vs `Search/Reachability.lean`
   split. Resolved by `Search/DFS.lean` LoC after Layer 1's body
