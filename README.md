@@ -33,23 +33,24 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–9 complete** — sparsity, Laman, Henneberg, frameworks,
+* **Phases 1–10 complete** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
   matroid identification (combinatorial form), the linear-matroid
   framing of the planar rigidity matroid
-  (`linearRigidityMatroid_eq_rigidityMatroid`), and the basic
+  (`linearRigidityMatroid_eq_rigidityMatroid`), the basic
   `(k, ℓ)`-pebble game of Lee–Streinu 2008 with certificate-form
   correctness theorem (`runPebbleGame_correct`) and matroidal-
-  independence corollary (`countMatroid_indep_iff_runPebbleGame`).
-  The project carries no `sorry`s.
-* **Phase 10 in progress** — executable pebble game. Computable
-  wrapper `runPebbleGameExec` under `[LinearOrder V]` plus
-  `Decidable` instances for `IsSparse k ℓ` / `IsTight` / `IsLaman`
-  in the matroidal regime `ℓ < 2k`, backed by Phase 9's correctness
-  theorem; `#eval` and `lake exe pebble-game` reduce through the same
-  compiled body. See `notes/Phase10.md` and
-  `blueprint/src/chapter/executable.tex`.
+  independence corollary (`countMatroid_indep_iff_runPebbleGame`),
+  and the executable pebble game — a computable wrapper
+  `runPebbleGameExec` under `[LinearOrder V]`, canonical `Decidable`
+  instances for `IsSparse k ℓ` / `IsTight` / `IsLaman` in the
+  matroidal regime `ℓ < 2k`, and a `lake exe pebble-game` CLI binary
+  that reads an edge-list file and prints
+  `LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE`. Both `#eval` and the
+  CLI reduce through the same compiled `runPebbleGameExec` body. The
+  project carries no `sorry`s. See `notes/Phase10.md` and
+  `blueprint/src/chapter/executable.tex` for Phase 10 details.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

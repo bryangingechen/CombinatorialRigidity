@@ -1,6 +1,6 @@
 # Phase 10 — Executable pebble game (work log)
 
-**Status:** in progress.
+**Status:** complete.
 
 This file is the per-phase work record. See `../ROADMAP.md` §10 for
 the high-level plan and `../DESIGN.md` for cross-cutting design
@@ -29,25 +29,27 @@ same first commit as this file.
 
 ## Current state
 
-Layer 0 audits closed, Layer 1 (computable list views) landed,
-Layer 2's workhorse-level correctness restatement landed, Layer 2
-itself closed via the exec-layer wrapper `runPebbleGameExec` plus its
-certificate-form correctness theorem, Layer 3 closed with the three
-canonical `Decidable` instances, and Layer 4 (worked `#eval` examples)
-is now **open**: `CombinatorialRigidity/PebbleGame/Examples.lean`
-ships the four blueprint-prescribed worked examples (`k4MinusE`,
-`moserSpindle`, `k4`, `path5`) with their `DecidableRel _.Adj`
-instances and the corresponding `#eval (decide …)` lines for
-`IsLaman` / `IsSparse` / `IsTight` plus edge-count sanity. All eleven
-`#eval`s reduce through the compiled `runPebbleGameExec` body in
-sub-second wall time and produce the expected `Bool` / `ℕ` outputs;
-the build (`lake build`) records each output as an `info` diagnostic
-so a regression would surface as a CI build-log mismatch. The
-canonical `Decidable (G.IsSparse k ℓ)`, `Decidable (G.IsTight k ℓ)`,
-and `Decidable G.IsLaman` instances are all registered, with a
-top-level `instance : Fact (3 < 2 * 2)` making the Laman case
-zero-hypothesis at call sites. Per the revised Layer 0 audit \#1
-outcome below, there is **no `Mathlib/` mirror** for Phase 10:
+Phase 10 is closed. All six layers landed: Layer 0 audits closed,
+Layer 1 (computable list views) landed, Layer 2's workhorse-level
+correctness restatement landed and Layer 2 itself closed via the
+exec-layer wrapper `runPebbleGameExec` plus its certificate-form
+correctness theorem, Layer 3 closed with the three canonical
+`Decidable` instances, Layer 4 (worked `#eval` examples) closed —
+`CombinatorialRigidity/PebbleGame/Examples.lean` ships the four
+blueprint-prescribed worked examples (`k4MinusE`, `moserSpindle`,
+`k4`, `path5`) with their `DecidableRel _.Adj` instances and the
+corresponding `#eval (decide …)` lines for `IsLaman` / `IsSparse`
+/ `IsTight` plus edge-count sanity (all eleven `#eval`s reduce
+through the compiled `runPebbleGameExec` body in sub-second wall
+time, recorded as `lake build` `info` diagnostics) — and Layer 5
+(the CLI binary) closed. The canonical `Decidable (G.IsSparse k ℓ)`,
+`Decidable (G.IsTight k ℓ)`, and `Decidable G.IsLaman` instances
+are all registered, with a top-level `instance : Fact (3 < 2 * 2)`
+making the Laman case zero-hypothesis at call sites. Witness
+extraction (both the failure-branch blocking subset and the
+success-branch orientation) is deferred to follow-up Phase 10.5;
+see *Hand-off / next phase* below. Per the revised Layer 0 audit
+\#1 outcome below, there is **no `Mathlib/` mirror** for Phase 10:
 mathlib's existing
 `instance : PartialOrder (Sym2 α) := .ofSetLike _ _` occupies the
 slot for an order on `Sym2 V` with the (non-total) subset order, so
@@ -486,15 +488,16 @@ discipline.
   chain — none of which touch `apnelson1/Matroid`. The
   `LinearRigidityMatroid.lean` non-`module` island stays isolated.
 
-- **Blocking-witness extraction at the CLI failure branch.**
-  *Deferred from Phase 10.* The CLI ships `NOT_SPARSE` alone. Surfacing
-  the witness subset $V'$ from
-  `runPebbleGame_eq_none_imp_exists_witness` computably requires
-  porting `reachClosure` (currently uses `Classical.decPred`) to a
-  verified-iterative form analogous to `Search/DFS.lean`'s
-  `reachableFinding`. Tracked under *Hand-off / next phase* as a
-  possible-direction for a future phase; not in scope for Phase 10's
-  closing commit.
+- **Witness extraction (both halves).** *Deferred from Phase 10 to
+  Phase 10.5.* Two halves: (a) the failure-branch blocking subset
+  $V'$ on the CLI's `NOT_SPARSE` output (the underlying
+  `Reach`-closure in `runPebbleGame_eq_none_imp_exists_witness` uses
+  `Classical.decPred`; surfacing the witness computably needs a
+  verified-iterative port of `reachClosure` analogous to
+  `Search/DFS.lean`'s `reachableFinding`), and (b) the success-branch
+  orientation witness $D$ returned by `runPebbleGameExec`. The CLI
+  ships `LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE` alone for now.
+  See *Hand-off / next phase* below.
 
 - **Native binary entrypoint shape.** ✓ Settled at Layer 5: positional
   file-path argument, no stdin support. Blank and `#`-commented lines
@@ -504,42 +507,35 @@ discipline.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** close Phase 10 — flip the four user-facing
-status surfaces (`ROADMAP.md` *Status* table, `README.md` *Project
+Phase 10 is closed. The end-to-end-executability target is met: the
+computable wrapper `runPebbleGameExec`, the three canonical
+`Decidable` instances, Layer 4's worked `#eval` examples, and the
+`lake exe pebble-game` CLI binary all reduce through the same
+compiled body; `chapter/executable.tex`'s dep-graph is fully
+`\leanok`-green; and the four user-facing status surfaces
+(`ROADMAP.md` *Status* table + §10 prose, `README.md` *Project
 status*, `home_page/index.md` *Project status* + phase table,
-`blueprint/src/chapter/intro.tex` §*Phase plan* + enumerate + dep-graph
-line) to ✓ for Phase 10, and compress this phase's ROADMAP §10
-planning section to a one-paragraph summary + pointer-to-`Phase10.md`
-per the canonical Phase-1 model. The closing commit additionally runs
-the *Review project organization* step from the top-level CLAUDE.md
-(skim ROADMAP / TACTICS-GOLF / TACTICS-QUIRKS / FRICTION for staleness;
-file a project-organization friction entry if any drift requires
-follow-up). All technical content for Phase 10 is now landed; the
-closing commit is paperwork only.
+`blueprint/src/chapter/intro.tex` §*Phase plan* + enumerate +
+dep-graph line) are all flipped to ✓ in this closing commit.
 
-Phase 10's *completion checklist* (from the prior hand-off; all four
-items are now true):
-- `chapter/executable.tex`'s dep-graph is fully `\leanok`-green ✓
-  (Layers 1–3's seven blueprint nodes;
-  `def:runPebbleGameExec` / `thm:runPebbleGameExec-correct` /
-  `def:isSparse-decidable` / `def:isTight-decidable` /
-  `def:isLaman-decidable` and friends);
-- `#eval` of `decide G.IsLaman` on a concrete `Fin n` graph
-  produces the expected `Bool` and reduces through compiled
-  `runPebbleGameExec` ✓ (Layer 4, eleven `#eval`s);
-- `lake exe pebble-game` reads a sample edge-list file and prints
-  the expected accept/reject ✓ (Layer 5, four samples under
-  `examples/`);
-- the four user-facing status surfaces still need the ✓ flip —
-  that's the closing commit's job.
+**Natural next direction — Phase 10.5: witness extraction.** Two
+witness-extraction halves were left on the table during Phase 10:
+(a) the **failure-branch blocking subset $V'$** on the CLI's
+`NOT_SPARSE` output (the underlying `Reach`-closure in Phase 9's
+`runPebbleGame_eq_none_imp_exists_witness` currently uses
+`Classical.decPred`, so surfacing the witness computably requires
+porting `reachClosure` to a verified-iterative form analogous to
+the `Search/DFS.lean` `reachableFinding` Phase 9 warmup), and
+(b) the **success-branch orientation witness $D$** (the partial
+orientation packaged into the `some` branch of
+`runPebbleGameExec`'s return; surfacing it usefully on the
+`LAMAN` / `SPARSE_NOT_TIGHT` branches likely needs API for
+inspecting / printing the orientation). The full layer plan for
+this work belongs in the Phase 10.5 opener (`notes/Phase10-5.md`),
+not here.
 
-No follow-up phase is queued. Possible directions surfacing during
-Phase 10:
-- **Blocking-witness extraction in CLI output** (deferred from Layer
-  5 per the *Architectural choices* note): finish the computable
-  `reachClosure` (port to a verified-iterative form analogous to
-  `Search/DFS.lean`'s `reachableFinding` Phase 9 warmup) and surface
-  the witness on the `NOT_SPARSE` branch.
+**Other possible directions** (not queued, not load-bearing):
+
 - **Component pebble game** (still deferred from Phase 9): the
   $O(n^2)$ speedup via union pair-find (L-S §5,
   Lee–Streinu–Theran 2005). Out of scope for Phase 10; the basic-
