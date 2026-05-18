@@ -16,7 +16,7 @@ Lovász–Yemini in linear-matroid form. Phase 9 formalizes the basic
 independence corollary against the Phase 7 count matroid. Phase 10
 bridges Phase 9's `noncomputable` `runPebbleGame` to an actually-runnable
 decision procedure: a `Decidable G.IsLaman` instance backed by a
-computable wrapper `runPebbleGameExec`, plus a `lake exe rigidity` CLI
+computable wrapper `runPebbleGameExec`, plus a `lake exe pebble-game` CLI
 binary.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
@@ -47,7 +47,7 @@ project; commit history is preserved with paths rewritten.
   wrapper `runPebbleGameExec` under `[LinearOrder V]` plus
   `Decidable` instances for `IsSparse k ℓ` / `IsTight` / `IsLaman`
   in the matroidal regime `ℓ < 2k`, backed by Phase 9's correctness
-  theorem; `#eval` and `lake exe rigidity` reduce through the same
+  theorem; `#eval` and `lake exe pebble-game` reduce through the same
   compiled body. See `notes/Phase10.md` and
   `blueprint/src/chapter/executable.tex`.
 

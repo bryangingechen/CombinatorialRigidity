@@ -34,7 +34,7 @@ form (Phase 7) and linear-matroid form via `Matroid.ofFun` (Phase 8,
 warmup under `CombinatorialRigidity/Search/`. Phase 10 (in progress)
 bridges to an actually-runnable decision procedure: a computable
 wrapper `runPebbleGameExec`, `Decidable` instances, and a
-`lake exe rigidity` CLI binary.
+`lake exe pebble-game` CLI binary.
 
 The development is divided into the phases below, each in its own
 file under

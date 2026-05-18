@@ -237,7 +237,7 @@ and `[DecidableEq V]`; no `Classical` dependencies. Replaces the math-layer
 noncomputable `runPebbleGame G k ℓ` (whose body invokes `Finset.toList` via
 `outList` and `Quot.out` via the edge enumeration) with a wrapper whose
 compiled body `#eval` / `native_decide` can fire on, used downstream by the
-project-level `Decidable` instances and the `lake exe rigidity` CLI binary.
+project-level `Decidable` instances and the `lake exe pebble-game` CLI binary.
 Blueprint `def:runPebbleGameExec`. -/
 def runPebbleGameExec [LinearOrder V] [Fintype V] (G : SimpleGraph V)
     [Fintype G.edgeSet] (k ℓ : ℕ) : Option (PartialOrientation V) :=
@@ -286,7 +286,7 @@ instance is `decidable_of_iff` against that.
 
 The reduction body `runPebbleGameExec G k ℓ` runs in polynomial time in
 `|V| + |E|`; every `#eval (decide (G.IsSparse k ℓ))`, `native_decide` on a
-sparsity goal, and `lake exe rigidity` invocation routes through the same
+sparsity goal, and `lake exe pebble-game` invocation routes through the same
 compiled body.
 
 **One `Decidable` instance per project predicate.** This is the canonical

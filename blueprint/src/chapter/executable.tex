@@ -32,7 +32,7 @@ have polynomial-time reduction bodies; they decide the same
 propositions a brute-force $\forall$-finset iteration would
 decide, but pick a fundamentally faster reduction.
 
-A small \texttt{lake exe rigidity} CLI built on the same
+A small \texttt{lake exe pebble-game} CLI built on the same
 \texttt{Decidable} instance reads an edge-list file and prints
 $\mathrm{LAMAN}$ / $\mathrm{SPARSE}$ / $\mathrm{NOT\_SPARSE}$.
 
@@ -54,7 +54,7 @@ Three Lean-level invocations land on
     registered $\mathrm{Decidable}$ instance, whose body is the
     pebble game; runs in the bytecode interpreter. Fast in practice
     (polynomial in $|V| + |E|$, no kernel small-step overhead).
-  \item \texttt{lake exe rigidity input.txt} (built CLI binary).
+  \item \texttt{lake exe pebble-game input.txt} (built CLI binary).
     Same compiled body, but executed by Lean's native-code backend
     rather than the bytecode interpreter. Strictly faster constant
     factor; identical big-$O$.
@@ -73,7 +73,7 @@ Three Lean-level invocations land on
 
 The point of separating the chapter into these three rows is that
 Phase~10 commits to making \texttt{\#eval} and
-\texttt{lake exe rigidity} fast on real graphs (polynomial,
+\texttt{lake exe pebble-game} fast on real graphs (polynomial,
 end-to-end); \texttt{by decide} stays formally correct but its
 runtime is academic. Worked examples in Lean (\cref{sec:executable-examples})
 use \texttt{\#eval} or \texttt{native\_decide} accordingly.
@@ -418,7 +418,7 @@ sub-second wall time on a developer laptop.
 \subsection{CLI binary}
 \label{sec:executable-cli}
 
-A \texttt{lake exe rigidity} entry point reads a simple
+A \texttt{lake exe pebble-game} entry point reads a simple
 edge-list file and prints the classification. Input format: a
 leading line \texttt{n m} giving vertex count and edge count,
 followed by $m$ lines of two whitespace-separated integers

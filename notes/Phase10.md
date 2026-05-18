@@ -122,11 +122,11 @@ primitives in Phase 9's math-layer `runPebbleGame`), a `Decidable
 G.IsSparse k ℓ` instance backed by it (in the matroidal regime
 `ℓ < 2k`), the corollary instances `Decidable G.IsTight` /
 `Decidable G.IsLaman`, `#eval`-able worked examples on `Fin n`
-graphs, and a `lake exe rigidity` CLI binary that reads a graph file
-and decides.
+graphs, and a `lake exe pebble-game` CLI binary that reads a graph
+file and decides.
 
 At the end of Phase 10, `#eval (decide (G.IsLaman))` on a concrete
-small graph and `lake exe rigidity input.txt` should reduce through
+small graph and `lake exe pebble-game input.txt` should reduce through
 the same compiled `runPebbleGameExec` body (different runtimes —
 bytecode interpreter vs native code — but the same `def`).
 
@@ -180,7 +180,7 @@ wrong, revisit there.
 
 - **Runtime / backend matrix to surface in the blueprint, not in
   these notes.** Three invocation paths — `#eval decide …`, `lake
-  exe rigidity`, `by decide` — share the *function body* but route
+  exe pebble-game`, `by decide` — share the *function body* but route
   through different backends (bytecode interp / native code /
   kernel small-step reduction). All three reduce the *same*
   computable `runPebbleGameExec`; the kernel-reduction path is
@@ -191,7 +191,13 @@ wrong, revisit there.
   internal decision; it lands in `chapter/executable.tex` rather
   than here.
 
-- **CLI is `Fin n`-only and ships a tiny line-oriented parser.**
+- **CLI is `Fin n`-only and ships a tiny line-oriented parser,
+  exposed as `lake exe pebble-game`.** The Lake target name is
+  hyphenated (matching `chapter/pebble-game.tex` and the
+  `lake exe checkdecls`-style ecosystem convention) and chosen
+  over the original placeholder `rigidity` so the binary name
+  reflects what it computes — the pebble game — rather than the
+  broader topic of the project.
   Input format is one edge per line, two whitespace-separated
   integers, with a leading `n m` line giving vertex count + edge
   count. The parser rejects malformed input with a clear
@@ -211,7 +217,7 @@ wrong, revisit there.
   - `CombinatorialRigidity/PebbleGame/Examples.lean` — `#eval`
     examples on `Fin n` graphs. Optional but standard practice.
   - `Main.lean` (or `CombinatorialRigidity/Cli/Main.lean`) — `lake
-    exe rigidity` entry point.
+    exe pebble-game` entry point.
   - `blueprint/src/chapter/executable.tex` — forward-mode
     dep-graph.
 
@@ -376,7 +382,7 @@ discipline.
   output; if no, stay with `NOT_SPARSE` and document the residual
   gap as a follow-up.
 
-- **Native binary entrypoint shape.** Whether `lake exe rigidity`
+- **Native binary entrypoint shape.** Whether `lake exe pebble-game`
   reads from a positional file argument or stdin (or both) is a
   small CLI choice settled at Layer 5; documented here so the next
   agent does not re-litigate.
@@ -401,7 +407,7 @@ Phase 10 closes when:
 - `#eval` of `decide G.IsLaman` on a concrete `Fin n` graph
   produces the expected `Bool` and reduces through compiled
   `runPebbleGameExec`;
-- `lake exe rigidity` reads a sample edge-list file and prints
+- `lake exe pebble-game` reads a sample edge-list file and prints
   the expected accept/reject;
 - the four user-facing status surfaces (ROADMAP, README,
   home_page, blueprint intro) reflect Phase 10 ✓.

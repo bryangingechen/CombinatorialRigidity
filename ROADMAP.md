@@ -59,7 +59,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │       ├── Correctness.lean Phase 9 — soundness + completeness + matroidal corollary
 │       ├── Exec.lean        Phase 10 (planning) — `runPebbleGameExec` + `Decidable` instances
 │       └── Examples.lean    Phase 10 (planning) — `#eval` examples on `Fin n` graphs
-├── Main.lean            Phase 10 (planning) — `lake exe rigidity` CLI entry point
+├── Main.lean            Phase 10 (planning) — `lake exe pebble-game` CLI entry point
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
 └── lake-manifest.json   resolved dependency revisions
@@ -336,7 +336,7 @@ to an actually-runnable decision procedure. Phase 9's
 under `[LinearOrder V]`, registers `Decidable` instances backed by
 it for `IsSparse k ℓ` / `IsTight` / `IsLaman` (in the matroidal
 regime $\ell < 2k$), and surfaces the result through a tiny
-`lake exe rigidity` CLI binary that reads an edge-list file and
+`lake exe pebble-game` CLI binary that reads an edge-list file and
 prints `LAMAN` / `SPARSE_NOT_TIGHT` / `NOT_SPARSE`. Both `#eval`
 of `decide G.IsLaman` and the CLI invocation reduce through the
 same compiled `runPebbleGameExec` body (bytecode interpreter vs.
