@@ -737,6 +737,80 @@ Iterating produces the $\ell + 1$ pebbles required to insert.
   freshness of $\{u, v\}$ w.r.t.\ $\underline{D}$.
 \end{proof}
 
+\begin{definition}[Workhorse-level failure witness]
+  \label{def:workhorseWitness}
+  \lean{CombinatorialRigidity.PebbleGame.WorkhorseWitness}
+  \leanok
+  \uses{def:partial-orientation, def:pebble-counts,
+    def:reachable-orientation}
+  Fix parameters $k$ and $\ell$ and a vertex type $V$. A
+  \emph{workhorse-level failure witness} $w =
+  (D, V', (u, v), \dots)$ packages the algorithm-side data extracted at
+  $\mathtt{tryAddEdgeWith}$'s case-5 branch (both DFS searches fail) into
+  a record of the following fields, all defined relative to the
+  partial orientation $D$ at the failure point:
+  \begin{itemize}
+    \item $D$ — the partial orientation at the failure point;
+    \item $V' \subseteq V$ — the blocking subset (the algorithmic
+      instance has $V' = \mathrm{Reach}_D(u) \cup \mathrm{Reach}_D(v)$);
+    \item the pending edge $(u, v)$ with $u \ne v$, $u, v \in V'$;
+    \item $\mathrm{out}_D(V') = 0$ — $V'$ is closed under $D$'s
+      outgoing arcs;
+    \item $\mathrm{peb}_{D, k}(V') \le \ell$ — the subset-level pebble
+      bound, strictly stronger than the per-vertex below-threshold
+      $\mathrm{peb}_{D, k}(u) + \mathrm{peb}_{D, k}(v) \le \ell$:
+      combined with the DFS-failure ``no free pebble outside $\{u, v\}$
+      in $V'$'' assertion, every other $w \in V'$ has zero pebble count
+      and the subset sum collapses;
+    \item $\{u, v\} \notin \underline{D}$ — the candidate edge is fresh
+      w.r.t.\ the running orientation's underline; and
+    \item $D$ is $(k, \ell)$-reachable
+      (\cref{def:reachable-orientation}).
+  \end{itemize}
+  The witness is deliberately $G$-free: the algorithm layer does not
+  reference an ambient graph $G : \mathrm{SimpleGraph}\,V$, so the
+  witness records only algorithm-shaped data. The $G$-shaped
+  sparsity-violation certificate is recovered at the wrapper layer by
+  \cref{lem:workhorseWitness-certifies} once the bridge hypotheses
+  $\{u, v\} \in E(G)$ and $\underline{D} \subseteq E(G)$ are supplied.
+\end{definition}
+
+\begin{lemma}[Workhorse witness certifies non-sparsity]
+  \label{lem:workhorseWitness-certifies}
+  \lean{CombinatorialRigidity.PebbleGame.WorkhorseWitness.certifies_against}
+  \leanok
+  \uses{def:workhorseWitness, lem:pebble-game-invariants,
+    lem:span-eq-ncard-edgesIn}
+  Let $w$ be a workhorse-level failure witness
+  (\cref{def:workhorseWitness}) at parameters $(k, \ell)$ on a vertex
+  type $V$, in the matroidal regime $\ell < 2k$. For any finite simple
+  graph $G : \mathrm{SimpleGraph}\,V$ such that
+  $\{w.uv_1, w.uv_2\} \in E(G)$ and $\underline{w.D} \subseteq E(G)$,
+  the witness's blocking subset $V' := w.V'$ certifies non-sparsity:
+  \[
+    \ell \le k |V'| \quad \text{and} \quad k |V'| < |\edgesIn{V'}| +
+    \ell.
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:pebble-game-invariants, lem:span-eq-ncard-edgesIn}
+  The size hypothesis $\ell \le k |V'|$ follows from $|V'| \ge 2$ (the
+  two distinct endpoints $u, v$ both sit in $V'$) and the matroidal
+  regime $\ell < 2k$. Invariant~(2) of
+  \cref{lem:pebble-game-invariants} on $V'$ with $\mathrm{out}_D(V') =
+  0$ gives $\mathrm{peb}_{D, k}(V') + \mathrm{span}_D(V') = k |V'|$,
+  so the witness's bound $\mathrm{peb}_{D, k}(V') \le \ell$ rearranges
+  to $k |V'| \le \mathrm{span}_D(V') + \ell$. The
+  $+1$ bridge of \cref{lem:span-eq-ncard-edgesIn} (in the variant
+  used by \cref{lem:pebble-game-independent-brings-pebble-graph}'s
+  proof) under freshness of $\{w.uv_1, w.uv_2\}$ w.r.t.\
+  $\underline{D}$ and the subset hypothesis
+  $\underline{D} \subseteq E(G)$ gives $\mathrm{span}_D(V') + 1 \le
+  |\edgesIn{V'}|$. Combining, $k |V'| + 1 \le |\edgesIn{V'}| + \ell$,
+  i.e., $k |V'| < |\edgesIn{V'}| + \ell$.
+\end{proof}
+
 \begin{lemma}[Pebble game accepts when edge is independent]
   \label{lem:pebble-game-tryAddEdgeWith-isSome}
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.tryAddEdgeWith_isSome}

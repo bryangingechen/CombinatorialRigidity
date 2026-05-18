@@ -61,13 +61,36 @@ nodes in a new *Reachability closure (computable)* subsection;
 `def:runPebbleGame` prose mentioning the closure primitive to refer
 to the new name.
 
-Layers 2–5 ahead. Next concrete commit: Layer 2 —
-`WorkhorseWitness k ℓ V` structure in `PebbleGame/Basic.lean` +
-`WorkhorseWitness.certifies_against` in `PebbleGame/Correctness.lean`,
-re-using `independent_brings_pebble_simpleGraph_form`'s proof body
-verbatim. Blueprint: `chapter/pebble-game.tex` gains
-`def:workhorseWitness` + `lem:workhorseWitness-certifies` in the
-existing *Completeness* subsection.
+Layer 2 closed: `WorkhorseWitness k ℓ V` lives in `PebbleGame/Basic.lean`
+(outside `PartialOrientation` since it's parallel state, not derived), and
+`WorkhorseWitness.certifies_against` lives in `PebbleGame/Correctness.lean`
+(at end of file, after `PartialOrientation` namespace closes — since
+`WorkhorseWitness` is in `_root_.CombinatorialRigidity.PebbleGame`, not under
+`PartialOrientation`). The witness's `h_pebOn_le : D.pebOn k V' ≤ ℓ` field
+strengthens the originally-proposed per-vertex `h_below : peb u + peb v ≤ ℓ`
+to subsume the DFS-failure "no free pebble outside `{u, v}` in `V'`"
+assertion: Layer 3's case-5 inline witness construction will combine the
+per-vertex below-threshold with the no-free-pebble guarantee (via
+`Finset.sum_eq_zero` over `V' \ {u, v}`) to build this stronger bound at
+once, exactly mirroring the existing `h_zero_outside` step in
+`tryAddEdgeWith_eq_none_imp_exists_witness`. The `certifies_against` proof
+body is the closing algebra of that lemma, transplanted to consume the
+strengthened field; no `simpleGraph_form` proof body was reused verbatim
+(its conclusion goes the wrong direction — it builds a free pebble from
+sparsity, whereas we need to build non-sparsity from no free pebble).
+Blueprint: `chapter/pebble-game.tex` gains `def:workhorseWitness` +
+`lem:workhorseWitness-certifies` immediately after
+`lem:pebble-game-independent-brings-pebble-graph` in the *Completeness*
+subsection.
+
+Layers 3–5 ahead. Next concrete commit: Layer 3 — reshape
+`tryAddEdgeWith` to return `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)`
+with case-5 inline construction; reshape `runPebbleGameWith` to propagate
+the `Sum`; restate `_reachable` / `_underline_*` / `_underline_eq` /
+`_sound`; eliminate the existential chains. Blueprint: restate
+`chapter/pebble-game.tex`'s `def:tryAddEdge` / `def:runPebbleGame`
+against the `Sum`-return shape; retire the `_isSome` /
+`_eq_none_imp_exists_witness` nodes and their `_empty` specialisations.
 
 The phase target is a **maximal reshape** of the pebble-game return
 type: replace the `Option`-shaped output of `runPebbleGame` /
@@ -365,13 +388,27 @@ incorporates the outcomes.
   closure-primitive mentions in `def:tryAddEdge` and
   `def:runPebbleGame` to the new name.
 
-- **Layer 2.** Define `WorkhorseWitness k ℓ V` in `Basic.lean`;
-  define `WorkhorseWitness.certifies_against` in `Correctness.lean`
-  (re-using `independent_brings_pebble_simpleGraph_form`'s proof
-  body verbatim). Blueprint: update `chapter/pebble-game.tex`'s
-  *Completeness* subsection to add `def:workhorseWitness` +
-  `lem:workhorseWitness-certifies`. Estimated ~80–120 LoC Lean
-  including the certifies-against lemma.
+- **Layer 2** ✓. `WorkhorseWitness k ℓ V` lives in `Basic.lean`
+  (outside `PartialOrientation` namespace since the structure is
+  parallel state — `D : PartialOrientation V` is a field, not the
+  bundling vehicle); `WorkhorseWitness.certifies_against` lives in
+  `Correctness.lean` at end-of-file after `PartialOrientation`
+  closes (since `WorkhorseWitness` resolves under
+  `_root_.CombinatorialRigidity.PebbleGame`, not under
+  `PartialOrientation`). The witness's `h_pebOn_le : D.pebOn k V' ≤ ℓ`
+  field strengthens the originally-proposed per-vertex `h_below :
+  peb u + peb v ≤ ℓ` to absorb the DFS-failure "no free pebble outside
+  `{u, v}`" guarantee into a single field — Layer 3's case-5 inline
+  construction will build the stronger bound directly via
+  `Finset.sum_eq_zero` over `V' \ {u, v}` rather than carry both
+  fields separately. The `certifies_against` body is the closing
+  algebra of `tryAddEdgeWith_eq_none_imp_exists_witness` (not the
+  `simpleGraph_form` proof body, which goes the wrong direction —
+  builds a free pebble from sparsity, not non-sparsity from no free
+  pebble). Blueprint: `chapter/pebble-game.tex` gains
+  `def:workhorseWitness` + `lem:workhorseWitness-certifies`
+  immediately after `lem:pebble-game-independent-brings-pebble-graph`
+  in the *Completeness* subsection. Total Lean delta: ~80 LoC.
 
 - **Layer 3.** Reshape `tryAddEdgeWith` to return
   `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)`; reshape
@@ -439,6 +476,25 @@ commit ships, blueprint and Lean.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+
+- **Layer 2: `WorkhorseWitness` carries `h_pebOn_le : pebOn V' ≤ ℓ`,
+  not the per-vertex `h_below : peb u + peb v ≤ ℓ` initially
+  proposed.** The Phase 11 opener proposed the per-vertex form (as in
+  L-S Lemma 13's algebraic statement), but at the workhorse layer the
+  case-5 data is strictly stronger: the DFS-failure assertion
+  ("no free pebble outside `{u, v}` in `V'`") combines with the
+  per-vertex below-threshold to force `pebOn V' = peb u + peb v ≤ ℓ`.
+  Carrying that stronger bound as a single field (a) keeps
+  `certifies_against`'s proof to one `omega` chain (Invariant (2)
+  with `outOn V' = 0` rearranges directly to the strict bound), (b)
+  removes a redundant "no-free-pebble" field that would otherwise
+  need to be carried alongside `h_below`, and (c) doesn't lose
+  information at the case-5 construction site (which has the
+  no-free-pebble guarantee in hand from
+  `tryReachPebbleWith_eq_none_imp` and will package it into
+  `h_pebOn_le` via `Finset.sum_eq_zero` in Layer 3, mirroring the
+  existing `h_zero_outside` step in
+  `tryAddEdgeWith_eq_none_imp_exists_witness`).
 
 - **Layer 1: `reachClosureComputable` routes through
   `reachableFinding`, not a sibling iterative DFS.** The closure

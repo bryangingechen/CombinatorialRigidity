@@ -916,4 +916,75 @@ end Matroidal
 
 end PartialOrientation
 
+/-! ### Workhorse-witness wrapper-layer bridge (Phase 11)
+
+`WorkhorseWitness.certifies_against` discharges a workhorse-level failure
+witness (algorithm-shaped, `G`-free; defined in `PebbleGame/Basic.lean`)
+into the `G`-shaped sparsity-violation certificate
+`ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ` once an ambient
+`G : SimpleGraph V` and the bridge hypotheses
+`s(uv.1, uv.2) ∈ G.edgeFinset` and `D.underline ⊆ G.edgeFinset` are
+known. The proof body is the closing algebra of
+`Reachable.independent_brings_pebble_simpleGraph_form` /
+`tryAddEdgeWith_eq_none_imp_exists_witness` case 5, transplanted to consume
+the witness's strengthened `pebOn_le` field directly.
+
+Cf. blueprint `lem:workhorseWitness-certifies`. -/
+
+namespace WorkhorseWitness
+
+variable [DecidableEq V] {k ℓ : ℕ}
+
+/-- Bridge a workhorse-level failure witness to the `G`-shaped
+sparsity-violation pair: under the matroidal regime `ℓ < 2 * k` and the
+bridge hypotheses `s(uv.1, uv.2) ∈ G.edgeFinset` and
+`D.underline ⊆ G.edgeFinset`, the witness's algorithmic content forces
+`ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ`, exactly the
+sparsity-violation pair that consumers (`tryAddEdgeWith` Layer 3 reshape,
+the `runPebbleGameWith` fold) need to package as a `.reject` verdict.
+
+The proof is the algebraic-core argument of
+`Reachable.independent_brings_pebble_simpleGraph_form` reversed: the
+witness's `h_pebOn_le : D.pebOn k V' ≤ ℓ` plus Invariant (2) with
+`outOn V' = 0` give `k * V'.card ≤ D.span V' + ℓ`; the
+`span_succ_le_edgesIn_ncard_of_subset` bridge under freshness of
+`s(uv.1, uv.2)` gives `D.span V' + 1 ≤ (G.edgesIn ↑V').ncard`; combined,
+`k * V'.card < (G.edgesIn ↑V').ncard + ℓ`. The size hypothesis
+`ℓ ≤ k * V'.card` follows from `|V'| ≥ 2` (the two distinct endpoints
+sit in `V'`) and `ℓ < 2 * k`.
+
+The output is identical to Phase 9's existential
+`tryAddEdgeWith_eq_none_imp_exists_witness` /
+`runPebbleGameWith_eq_none_imp_exists_witness` content, but the witness is
+now carried as data rather than wrapped in an existential — Phase 11
+Layer 3+ will absorb the existential chain into the algorithm's return
+type. -/
+theorem certifies_against (w : WorkhorseWitness k ℓ V) (h_mat : ℓ < 2 * k)
+    {G : SimpleGraph V} [Fintype G.edgeSet]
+    (h_uv_in : s(w.uv.1, w.uv.2) ∈ G.edgeFinset)
+    (h_sub : w.D.underline ⊆ G.edgeFinset) :
+    ℓ ≤ k * w.V'.card ∧ k * w.V'.card < (G.edgesIn ↑w.V').ncard + ℓ := by
+  -- Size: ℓ ≤ k * V'.card from 2 ≤ V'.card (distinct u, v ∈ V') + ℓ < 2k.
+  have h_card : 2 ≤ w.V'.card :=
+    Finset.one_lt_card.mpr ⟨w.uv.1, w.hu_mem, w.uv.2, w.hv_mem, w.huv_ne⟩
+  have h_size : ℓ ≤ k * w.V'.card := by
+    have h2k : 2 * k ≤ k * w.V'.card := by
+      rw [mul_comm 2 k]
+      exact Nat.mul_le_mul_left k h_card
+    omega
+  refine ⟨h_size, ?_⟩
+  -- Invariant (2) at V' with outOn V' = 0 collapses to pebOn V' + span V' = k * V'.card.
+  have h_inv2 := w.h_reachable.pebOn_add_span_add_outOn w.V'
+  -- The +1 bridge under freshness: span V' + 1 ≤ (G.edgesIn V').ncard.
+  have h_bridge :=
+    w.D.span_succ_le_edgesIn_ncard_of_subset w.h_pending_fresh h_uv_in h_sub
+      w.hu_mem w.hv_mem
+  -- pebOn V' ≤ ℓ from the witness; combined with Invariant (2): k * V'.card ≤ span + ℓ.
+  -- Then k * V'.card + 1 ≤ (G.edgesIn V').ncard + ℓ, i.e., the strict bound.
+  have h_outOn := w.h_outOn_zero
+  have h_pebOn := w.h_pebOn_le
+  omega
+
+end WorkhorseWitness
+
 end CombinatorialRigidity.PebbleGame

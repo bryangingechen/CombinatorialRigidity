@@ -1021,4 +1021,82 @@ end Reachability
 
 end PartialOrientation
 
+/-! ### Workhorse-level failure witness (Phase 11)
+
+The `WorkhorseWitness k ℓ V` structure carries the failure-point data of the
+workhorse-level `tryAddEdgeWith` (and, propagated unchanged through the fold,
+of `runPebbleGameWith`). Its fields together encode the algebraic content of
+the `none` branch of `tryAddEdgeWith`'s case 5 (both DFS searches fail): a
+candidate edge `s(uv.1, uv.2)` fresh w.r.t.\ the running orientation's
+underline, a finset `V'` closed under the orientation's out-arcs and
+containing both endpoints, and the algorithmic guarantee that the subset's
+pebble sum `D.pebOn k V'` is at most `ℓ` (the strengthened form of the
+case-5 below-threshold `peb u + peb v ≤ ℓ` combined with the DFS-failure
+"no free pebble outside `{u, v}`" assertion).
+
+The wrapper-layer lemma `WorkhorseWitness.certifies_against` (in
+`PebbleGame/Correctness.lean`) discharges the workhorse data against an
+ambient `SimpleGraph` `G` to produce the sparsity-violation pair
+`ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ`. The
+workhorse layer is `G`-free — adding `G` to the witness's signature would
+propagate a `D.underline ⊆ G.edgeFinset` bridge through every call site
+for no benefit; the `G`-shaped story belongs at the wrapper layer.
+
+Cf. Lee--Streinu Lemma 13 + 14; blueprint `def:workhorseWitness`. -/
+
+/-- Workhorse-level failure witness: the data extracted by `tryAddEdgeWith`'s
+case-5 branch (both DFS searches fail) when assembling its negative verdict.
+
+Fields:
+* `D` — the partial orientation at the failure point.
+* `V'` — the blocking finset; mathematically `D.reach uv.1 ∪ D.reach uv.2`
+  at the failure site, but the structure abstracts the construction.
+* `uv` — the pending edge that triggered failure.
+* `huv_ne`, `hu_mem`, `hv_mem` — the two endpoints are distinct and both
+  sit in `V'` (`D.reach`'s reflexivity gives this at the failure site).
+* `h_outOn_zero` — `V'` is closed under `D`'s outgoing arcs (the
+  closure-of-reach identity at the failure site).
+* `h_pebOn_le` — `D.pebOn k V' ≤ ℓ`. At the failure site this combines
+  case 5's per-vertex below-threshold `peb uv.1 + peb uv.2 ≤ ℓ` (from
+  the `if h : ℓ + 1 ≤ ...`-arm being skipped) with the DFS-failure
+  guarantee that every other `w ∈ V'` has `peb k w = 0` (no free pebble
+  outside `{u, v}` reachable from either endpoint). Strictly stronger
+  than the per-vertex form `peb uv.1 + peb uv.2 ≤ ℓ` posed in the
+  Phase 11 plan; the strengthening absorbs the DFS-failure content and
+  is exactly what `certifies_against` consumes.
+* `h_pending_fresh` — `s(uv.1, uv.2) ∉ D.underline`, so the candidate edge
+  is genuinely pending; routed downstream into the `+1` bridge of
+  `span_succ_le_edgesIn_ncard_of_subset`.
+* `h_reachable` — `D` is `(k, ℓ)`-reachable, giving access to the four
+  pebble-game invariants on `V'` (used in `certifies_against`).
+
+The `G`-shaped sparsity-violation certificate
+`ℓ ≤ k * V'.card ∧ k * V'.card < (G.edgesIn ↑V').ncard + ℓ` is recovered
+at the wrapper layer via `WorkhorseWitness.certifies_against` once the
+ambient `G : SimpleGraph V` and the bridge hypotheses
+`s(uv.1, uv.2) ∈ G.edgeFinset` and `D.underline ⊆ G.edgeFinset` are
+known. -/
+structure WorkhorseWitness (k ℓ : ℕ) (V : Type*) [DecidableEq V] where
+  /-- Orientation at the failure point. -/
+  D : PartialOrientation V
+  /-- Blocking subset `V' ⊆ V`. -/
+  V' : Finset V
+  /-- The pending edge that triggered failure, as an ordered pair. -/
+  uv : V × V
+  /-- Endpoints are distinct. -/
+  huv_ne : uv.1 ≠ uv.2
+  /-- First endpoint lies in `V'`. -/
+  hu_mem : uv.1 ∈ V'
+  /-- Second endpoint lies in `V'`. -/
+  hv_mem : uv.2 ∈ V'
+  /-- `V'` is closed under `D`'s outgoing arcs. -/
+  h_outOn_zero : D.outOn V' = 0
+  /-- Subset-level pebble bound: `pebOn V' ≤ ℓ`. Combines case-5 below-threshold
+  with the DFS-failure "no free pebble outside `{u, v}`" assertion. -/
+  h_pebOn_le : D.pebOn k V' ≤ ℓ
+  /-- Candidate edge `s(uv.1, uv.2)` is fresh w.r.t.\ `D.underline`. -/
+  h_pending_fresh : s(uv.1, uv.2) ∉ D.underline
+  /-- `D` is `(k, ℓ)`-reachable. -/
+  h_reachable : PartialOrientation.Reachable k ℓ D
+
 end CombinatorialRigidity.PebbleGame
