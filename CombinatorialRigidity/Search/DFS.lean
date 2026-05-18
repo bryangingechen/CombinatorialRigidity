@@ -789,7 +789,6 @@ as a `Finset V`. Computable: tests each candidate vertex `w` via
 `reachableFinding succ (fun x => decide (x = w)) v`, returning `w`
 when the DFS finds a match. The semantic contract is
 `mem_reachClosureComputable`. -/
-@[expose]
 def reachClosureComputable (succ : V → List V) (v : V) : Finset V :=
   Finset.univ.filter
     fun w => (reachableFinding succ (fun x => decide (x = w)) v).isSome

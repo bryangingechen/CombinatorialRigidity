@@ -250,9 +250,24 @@ extensions:
   still valid (no Phase 11 change to those defs); check whether
   the absorbed reach machinery needs new opt-ins.
 
-- [ ] **F2.1.** DFS re-audit. Verify or extend the existing 5
+- [x] **F2.1.** DFS re-audit. Verify or extend the existing 5
   per-decl `@[expose]` opt-ins. Append disposition delta row to
-  PERFORMANCE.md F3.5.
+  PERFORMANCE.md F3.5. *Done; the 5 Phase 9-perf F1.1 opt-ins
+  (`DirectedWalk.{length, vertices, IsPath, arcsFinset,
+  reversedArcsFinset}`) are all still required at the same trigger
+  sites (verified by demoting each and observing the documented
+  build failure). The Phase 11 Layer 1 addition
+  `reachClosureComputable` was pre-pass marked `@[expose]` but
+  **does not need it** — its consumers are intra-file
+  `rw [reachClosureComputable]` (works under `public section` per
+  the F1.2 intra-module pattern) and downstream API-only
+  consumption (via the `mem_reachClosureComputable` iff,
+  `self_mem_reachClosureComputable`, and
+  `reachClosureComputable_closed`, all of which are lemmas not
+  affected by exposure). Net delta: −1 opt-in
+  (`reachClosureComputable`'s `@[expose]` dropped); the file
+  ships at the same 5-opt-in shape Phase 9-perf F1.1 closed at.
+  Disposition row appended to PERFORMANCE.md F3.5 table.*
 - [ ] **F2.2.** Basic re-audit. Same pattern; verify or extend
   the existing 3 opt-ins. Append disposition delta row.
 
@@ -351,6 +366,36 @@ median-of-4.
   level `@[expose]`. Matches the F3.5 `MatroidIdentification.lean` /
   `LamanTheorem.lean` pattern (theorem-and-instance file with
   API-only def consumption demotes with zero per-decl opt-ins).
+- **F2.1 — `Search/DFS.lean` per-decl `@[expose]` re-audit under
+  Phase 11 Layer 1 extension.** The 5 Phase 9-perf F1.1 opt-ins
+  (`DirectedWalk.{length, vertices, IsPath, arcsFinset,
+  reversedArcsFinset}`) are all still required at the same trigger
+  sites: `length` via `simp [DirectedWalk.length]` at
+  `PebbleGame/Basic.lean:401`; `vertices` + `IsPath` via
+  `rw [DirectedWalk.IsPath, DirectedWalk.vertices, …]` at
+  `Basic.lean:403` (inside `head_ne_tail_of_pos`); `arcsFinset` +
+  `reversedArcsFinset` via intra-file
+  `@[simp] {arcs,reversedArcs}Finset_{nil,cons} … := rfl`. Verified
+  by demoting each and observing the documented build failure. The
+  Phase 11 Layer 1 forward-work addition `reachClosureComputable`
+  was pre-pass marked `@[expose]` but does not need it — intra-file
+  `rw [reachClosureComputable, Finset.mem_filter]` in
+  `_sound` / `_complete` works under `public section` (matches the
+  F1.2 `runPebbleGame.aux` / `runPebbleGame` intra-module pattern),
+  and downstream `PebbleGame/{Basic,Algorithm}.lean` consume it via
+  the `mem_reachClosureComputable` iff (rw'd through to
+  `Relation.ReflTransGen`), `self_mem_reachClosureComputable`, and
+  `reachClosureComputable_closed` — API-only, no body unfolding.
+  The Phase 11 Layer 1 theorems `DirectedWalk.toReflTransGen`,
+  `reachClosureComputable_sound` / `_complete`, and the lemmas
+  `mem_reachClosureComputable` etc. are not `def`s and so unaffected
+  by the `@[expose]` axis. Net delta from Phase 9-perf F1.1: −1
+  opt-in (`reachClosureComputable`'s `@[expose]` dropped); the file
+  ships at the same 5-opt-in shape Phase 9-perf F1.1 closed at.
+  Matches the F1.3 `PebbleGame/Exec.lean` pattern: a Phase
+  11-reshape / Phase 11-Layer-1 forward-work file with API-only
+  intra-file def consumption demotes cleanly without adding new
+  opt-ins.
 - **F1.4 — `PebbleGame/Examples.lean` per-decl `@[expose]` audit.**
   Demoted `@[expose] public section` → `public section`; **three**
   per-decl opt-ins required on the graph defs `k4MinusE` /
@@ -391,27 +436,28 @@ median-of-4.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** F2.1 re-audit of `Search/DFS.lean`'s
-existing 5 per-decl `@[expose]` opt-ins (`DirectedWalk.{length,
-vertices, IsPath, arcsFinset, reversedArcsFinset}` from Phase 9-perf
-F1.1) under the Phase 11 Layer 1 extension (~110 LoC adding
-`reachClosureComputable` + soundness + completeness +
-`DirectedWalk.toReflTransGen` bridge). Mechanic: verify each of the
-5 existing opt-ins is still triggered (try demoting each
-individually and confirm a build failure surfaces at the documented
-trigger site); then audit the Layer 1 additions for new exposure
-triggers (likely candidates: `reachClosureComputable` if any
-`@[simp] := rfl` projection appears, or any intra-file `simp [name]`
-/ `rw [name]`-as-unfold consumers). Append disposition delta row to
-`./PERFORMANCE.md` *F3.5 audit disposition* table.
+**Next concrete commit:** F2.2 re-audit of `PebbleGame/Basic.lean`'s
+existing 3 per-decl `@[expose]` opt-ins
+(`PartialOrientation.{empty, reverse, addArc}` from Phase 9-perf
+F1.2) under Phase 11's reach-closure absorption (Layer 1 + Layer 3
+moved `reach`, `mem_reach`, `self_mem_reach`, `reach_closed`,
+`outOn_eq_zero_of_closed`, `outOn_reach_union_eq_zero` from
+Correctness into Basic) + `WorkhorseWitness` addition (Layer 2).
+Mechanic: verify each of the 3 existing opt-ins is still triggered
+(try demoting each individually and confirm a build failure
+surfaces at the documented trigger site — the intra-file
+`@[simp] arcs_empty / arcs_reverse / arcs_addArc := rfl`
+projections); then audit the Phase 11 additions for new exposure
+triggers (likely candidates: `reach` if any `@[simp] := rfl`
+projection or downstream body-unfold appears, or `WorkhorseWitness`
+if any `match`-arm defeq downstream needs the body). Append
+disposition delta row to `./PERFORMANCE.md` *F3.5 audit disposition*
+table.
 
-After F2.1, F2.2 re-audit of `PebbleGame/Basic.lean`'s 3 existing
-opt-ins (`PartialOrientation.{empty, reverse, addArc}`) under
-Phase 11's reach-closure absorption + `WorkhorseWitness` addition.
-F4.2 post-pass measurement (4-run A/B vs F4.1 baseline) closes the
-pass; F4.3 promotes the pass's net disposition to PERFORMANCE.md's
-*Experiments that didn't pay* (expected, per the F3.5 / Phase 9-perf
-F1 track record).
+After F2.2, F4.2 post-pass measurement (4-run A/B vs F4.1 baseline)
+closes the pass; F4.3 promotes the pass's net disposition to
+PERFORMANCE.md's *Experiments that didn't pay* (expected, per the
+F3.5 / Phase 9-perf F1 track record).
 
 If the session must stop mid-stream, the F4.1 baseline anchor + the
 F1.1 disposition for `Algorithm.lean` (`runPebbleGameWith` per-decl
@@ -419,8 +465,11 @@ F1.1 disposition for `Algorithm.lean` (`runPebbleGameWith` per-decl
 (`PebbleGameResult.isAccept` per-decl `@[expose]` only) + the F1.3
 disposition for `Exec.lean` (clean demotion, zero per-decl opt-ins)
 + the F1.4 disposition for `Examples.lean` (demoted, three per-decl
-opt-ins on `k4MinusE` / `moserSpindle` / `path5`) are the persistent
-state added so far; the next session can pick up at F2.1 from a
-clean tree. Final hand-off paragraph will be rewritten at pass
-close; the default close convention is *no follow-up phase queued*
-per `../CLEANUP.md`.
+opt-ins on `k4MinusE` / `moserSpindle` / `path5`) + the F2.1
+re-audit for `Search/DFS.lean` (net delta −1 from Phase 9-perf
+F1.1: `reachClosureComputable`'s `@[expose]` dropped; the 5
+`DirectedWalk` opt-ins all still required) are the persistent state
+added so far; the next session can pick up at F2.2 from a clean
+tree. Final hand-off paragraph will be rewritten at pass close; the
+default close convention is *no follow-up phase queued* per
+`../CLEANUP.md`.
