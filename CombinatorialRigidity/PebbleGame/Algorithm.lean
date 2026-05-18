@@ -36,7 +36,7 @@ Cf. Lee–Streinu §3 (pebble-search inside `tryAddEdge`),
 blueprint `def:tryReachPebble`, `def:tryAddEdge`, `def:runPebbleGame`.
 -/
 
-@[expose] public section
+public section
 
 namespace CombinatorialRigidity.PebbleGame
 
@@ -773,7 +773,7 @@ return type is `Sum (WorkhorseWitness k ℓ V) (PartialOrientation V)`
 (was `Option (PartialOrientation V)`) and the function carries
 `hD : Reachable k ℓ D` so the per-step runtime check no longer needs
 the `(∀ x, D.out x ≤ k)` clause. Blueprint `def:runPebbleGame`. -/
-def runPebbleGameWith
+@[expose] def runPebbleGameWith
     (D : PartialOrientation V) (k ℓ : ℕ)
     (hD : Reachable k ℓ D)
     (toSucc : PartialOrientation V → V → List V)

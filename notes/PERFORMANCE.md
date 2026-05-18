@@ -694,6 +694,7 @@ shape), informing the per-decl picks.
 | `LamanTheorem.lean` | demoted | (none; no defs) | terminal file, theorems only; clean demotion |
 | `Search/DFS.lean` (Phase 9-perf F1.1) | demoted | `DirectedWalk.{length, vertices, IsPath, arcsFinset, reversedArcsFinset}` | downstream `PebbleGame.lean` uses `simp [DirectedWalk.length]` / `rw [DirectedWalk.IsPath, DirectedWalk.vertices, …]` (the `head_ne_tail_of_pos` case-split); intra-file `@[simp] arcsFinset_{nil,cons} … := rfl` + `@[simp] reversedArcsFinset_{nil,cons} … := rfl` |
 | `PebbleGame.lean` (Phase 9-perf F1.2) | demoted | `PartialOrientation.{empty, reverse, addArc}` | intra-file `@[simp] arcs_empty / arcs_reverse / arcs_addArc … := rfl` projection lemmas — same `@[simp] := rfl` taxonomy as `TrivialMotions` / `CountMatroid` / `RigidityMatroid` in F3.5 |
+| `PebbleGame/Algorithm.lean` (Phase 11-perf F1.1) | demoted | `runPebbleGameWith` | downstream `Correctness.lean` uses `rw [runPebbleGameWith] at h` (×2) inside `runPebbleGameWith_witness_bridges`'s edge-list induction (nil + cons preambles) — `rw [defname]` as unfold needs the body. The other 4 defs (`tryReachPebbleWith`, `tryReachPebble`, `tryAddEdgeWith`, `tryAddEdge`, `runPebbleGame.aux`) demote cleanly; downstream consumes them through `match` on the `Sum`-shaped return or through API lemmas, not by name-as-unfold |
 
 Lessons:
 

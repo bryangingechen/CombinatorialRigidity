@@ -137,7 +137,7 @@ Current Phase 10+11 disposition (per `grep`):
 - `Main.lean`: non-`module` by Phase 10 *Decisions* — not in audit
   scope.
 
-- [ ] **F1.1.** `PebbleGame/Algorithm.lean` audit. Demote
+- [x] **F1.1.** `PebbleGame/Algorithm.lean` audit. Demote
   `@[expose] public section` → `public section`; restore
   `@[expose]` per-decl where build/lint requires it. Likely
   candidates: `tryAddEdgeWith`, `tryAddEdge`,
@@ -145,7 +145,16 @@ Current Phase 10+11 disposition (per `grep`):
   := rfl` projection lemmas or intra-file pattern-match defeq
   consumers (Phase 11 Layer 4b's `runPebbleGame.aux` discharge
   bundle is a candidate). Append disposition row to PERFORMANCE.md
-  F3.5 table.
+  F3.5 table. *Done; demoted, **one** per-decl opt-in
+  (`runPebbleGameWith`). Trigger: `rw [runPebbleGameWith] at h`
+  (×2) inside `runPebbleGameWith_witness_bridges`'s edge-list
+  induction in `Correctness.lean` (nil + cons preambles) — the
+  `rw [defname]`-as-unfold pattern needs the body. The other
+  workhorse-level defs (`tryReachPebbleWith`, `tryReachPebble`,
+  `tryAddEdgeWith`, `tryAddEdge`) demote cleanly; downstream
+  consumes them through `match` on the `Sum`-shaped return or
+  through API lemmas, not by name-as-unfold. Disposition row
+  appended to PERFORMANCE.md F3.5 table.*
 - [ ] **F1.2.** `PebbleGame/Correctness.lean` audit. Same pattern.
   Layer 4b added `PebbleGameResult` inductive (auto-exposed
   constructors), `runPebbleGame_isAccept_iff` /
@@ -246,7 +255,20 @@ median-of-4.
 
 ### Phase-local choices and proof techniques
 
-*(Empty — populate as fixes / measurements land.)*
+- **F1.1 — `PebbleGame/Algorithm.lean` per-decl `@[expose]` audit.**
+  Demoted `@[expose] public section` → `public section`; one per-decl
+  opt-in restored on `runPebbleGameWith`. Trigger is the
+  `rw [runPebbleGameWith] at h` pattern (×2) inside
+  `runPebbleGameWith_witness_bridges`'s edge-list induction in
+  `Correctness.lean` — the `rw [defname]`-as-unfold idiom needs the
+  body. The other workhorse-level defs in the file
+  (`tryReachPebbleWith`, `tryReachPebble`, `tryAddEdgeWith`,
+  `tryAddEdge`) and `TryReachPebbleResult.newOrient` demote cleanly:
+  downstream `Correctness` / `Exec` consume them via `match` on the
+  `Sum`-shaped return (Layer 3 / 4b reshape) or via API lemmas, not
+  through name-as-unfold. Matches the F3.5 pattern (`@[simp] := rfl`
+  / `rw [name]` / `unfold name` triggers exposure, opaque `match` /
+  API-lemma consumption demotes cleanly).
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
@@ -259,22 +281,30 @@ median-of-4.
 
 ## Hand-off / next phase
 
-**Next concrete commit:** F1.1 audit of `PebbleGame/Algorithm.lean` —
+**Next concrete commit:** F1.2 audit of `PebbleGame/Correctness.lean` —
 demote `@[expose] public section` → `public section`, observe what
 breaks, restore `@[expose]` on the per-decl sites whose bodies are
-genuinely consumed (intra-file `@[simp] := rfl` projection lemmas,
-downstream defeq, pattern-match defeq). Append disposition row to
-`./PERFORMANCE.md` *F3.5 audit disposition* table. Same audit
-pattern as Phase 8-perf F3.5 and Phase 9-perf F1.
+genuinely consumed. Layer 4b added `PebbleGameResult` inductive
+(auto-exposed constructors), `runPebbleGame_isAccept_iff` /
+`runPebbleGameExec_isAccept_iff` lemmas, `runPebbleGame.aux`, and
+`WorkhorseWitness.certifies_against`; mostly theorems, so expected
+to demote cleanly. Candidates if exposure is needed:
+`runPebbleGame.aux` (consumed via `simp [runPebbleGame.aux, …]` at
+L820 + an `unfold runPebbleGame` at L838 — both intra-file in
+`runPebbleGame_isAccept_iff`'s proof), `runPebbleGame` itself.
+Append disposition row to `./PERFORMANCE.md` *F3.5 audit
+disposition* table.
 
-After F1.1, F1.2 (`Correctness.lean`), F1.3 (`Exec.lean`), F1.4
-(`Examples.lean`); then F2.1/F2.2 re-audit of the existing per-decl
-opt-ins on `DFS` and `Basic` under the Phase 11 reshape. F4.2
-post-pass measurement closes the pass (or earlier if a measurable
-regression surfaces during F1).
+After F1.2, F1.3 (`Exec.lean`), F1.4 (`Examples.lean`); then
+F2.1/F2.2 re-audit of the existing per-decl opt-ins on `DFS` and
+`Basic` under the Phase 11 reshape. F4.2 post-pass measurement
+closes the pass (or earlier if a measurable regression surfaces
+during F1).
 
-If the session must stop mid-stream, the F4.1 baseline anchor is
-the only persistent state added this commit; the next session can
-pick up at F1.1 from a clean tree. Final hand-off paragraph will
-be rewritten at pass close; the default close convention is *no
-follow-up phase queued* per `../CLEANUP.md`.
+If the session must stop mid-stream, the F4.1 baseline anchor +
+the F1.1 disposition for `Algorithm.lean` (`runPebbleGameWith`
+per-decl `@[expose]` only) are the only persistent state added so
+far; the next session can pick up at F1.2 from a clean tree. Final
+hand-off paragraph will be rewritten at pass close; the default
+close convention is *no follow-up phase queued* per
+`../CLEANUP.md`.
