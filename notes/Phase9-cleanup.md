@@ -38,7 +38,17 @@ Buckets A + B + C fully closed; bucket D in progress — D1 landed
 state* / *Architectural choices* / *Decisions made* / *Hand-off*).
 D1's commit also lifts the soft length budget in `../notes/CLAUDE.md`
 to an adaptive form (short phases sit at 100–200 lines, long phases
-at 350–450); Phase 9 calibrates the upper end. D2–D5 still to do.
+at 350–450); Phase 9 calibrates the upper end. D4 closed as no-op:
+the three Phase-9-resolved items the round opener parked on D4
+(`PartialOrientation V` representation, matroidal-corollary
+placement, termination measure) were never queued in `DESIGN.md`
+*Choices to revisit* — they lived in `notes/Phase9.md`'s own
+*Blockers / open questions* from the start. The full re-skim of
+*Choices to revisit*'s 9 entries (8 resolved, 1 open) confirmed no
+Phase-9 flips needed, and *Pebble-game style island* was already
+Phase-9-calibrated by forward-work commits `9e0ded7` (*-With*
+variant pattern) + `b3bfe77` (orientation-indexed `toSucc`). D2,
+D3, D5 still to do.
 Bucket C's long-proof audit landed
 two Lean simplifications. (i) The 11-line `|V'| ≥ 2` derivation
 duplicated at `independent_brings_pebble_simpleGraph_form` and
@@ -972,7 +982,7 @@ the manual:
   housekeeping pass once their resolution is fully indexed." Move
   Phase 9's resolved entries to archive iff their indices are stable;
   leave any whose resolution needs further eyes.
-- [ ] **D4:** Re-skim `../DESIGN.md` *Choices to revisit*. Phase 9
+- [x] **D4:** Re-skim `../DESIGN.md` *Choices to revisit*. Phase 9
   resolved several decisions queued there:
   - `PartialOrientation V` representation (option (i) chosen,
     architectural-choice list);
@@ -982,6 +992,32 @@ the manual:
     warmup pattern).
   Update each entry inline; flip them to *resolved (Phase 9)* with
   a one-line pointer to the relevant Phase9.md decision section.
+
+  **Disposition.** No-op for the three named items: all three lived
+  in `notes/Phase9.md` *Blockers / open questions* from the start,
+  not in `DESIGN.md` *Choices to revisit*. The round-opening task
+  description over-predicted DESIGN.md as their parking lot;
+  rechecking `git log -S` against `DESIGN.md` confirms none of the
+  three was ever queued there. They were resolved in-phase per
+  `Phase9.md` *Blockers / open questions* (currently rendered as
+  *Resolved* during D1's compression).
+
+  **DESIGN.md *Choices to revisit* re-skim, full pass.** Nine
+  entries; eight already resolved (Phases 3, 4, 7, 8); one open
+  (*Promoting `edgesIn` upstream*) which Phase 9 doesn't touch
+  (`edgesIn` is the `Sparsity.lean` accessor; PebbleGame uses
+  `D.underline` over arcs, not `edgesIn`). No flips needed.
+
+  **DESIGN.md *Pebble-game style island* Phase-9 calibration.**
+  Already Phase-9-calibrated by forward-work commits — `9e0ded7`
+  (Phase 9 `tryReachPebble`) added the *`-With` variant pattern*
+  paragraph; `b3bfe77` (Phase 9 `tryAddEdge`) added the
+  orientation-indexed `toSucc` generalization. No cleanup-round
+  edit needed.
+
+  D5 picks up the question of whether ROADMAP should point at
+  *Pebble-game style island* from its engineering-conventions
+  section.
 - [ ] **D5:** `ROADMAP.md` engineering-conventions re-skim. Does
   Phase 9 surface any new convention that should be documented
   there? Candidates: the `[Fintype V] [DecidableEq V]` style
@@ -1022,10 +1058,11 @@ the manual:
 ## Blockers / open questions
 
 - Round in progress; buckets A + B + C fully closed (A1--A4 +
-  B1--B5 + C1--C4 all green); bucket D (Phase9.md compression and
-  project-organization sweep) remains. (`checkdecls` is the
-  always-on per-commit gate per `../blueprint/CLAUDE.md` *Static
-  checks before commit*, not a separate task.)
+  B1--B5 + C1--C4 all green); bucket D in progress — D1 (Phase9.md
+  compression) + D4 (`DESIGN.md` re-skim, no-op) landed; D2, D3, D5
+  remain. (`checkdecls` is the always-on per-commit gate per
+  `../blueprint/CLAUDE.md` *Static checks before commit*, not a
+  separate task.)
 
 ## Hand-off / next phase
 
@@ -1062,17 +1099,22 @@ and C4 (cross-reference to B2's `lean_multi_attempt` sweep) are
 all green. C2-followup *closed (refactor landed)*; see
 *Surfaced follow-ups* for the closing entry.
 
-The natural next task is bucket D (project-organization
-compression). The headline task is D1: compress `notes/Phase9.md`
-from ~1459 LoC to ≤ 250 LoC per `../notes/CLAUDE.md` *Soft length
-budget*, sub-organizing *Decisions made* into the canonical
-*Phase-local choices and proof techniques* / *Promoted to ...* /
-*Cleanup pass summaries* layout. D2--D5 sweep
-lift-on-promotion candidates (Phase9.md decisions that should
-lift to TACTICS-GOLF / TACTICS-QUIRKS / DESIGN.md), `FRICTION.md`
-housekeeping (Phase 9's 5 resolved entries' archive disposition),
-`DESIGN.md` *Choices to revisit* flips (3 Phase-9-resolved
-decisions), and `ROADMAP.md` engineering-conventions re-skim.
+Bucket D in progress. D1 landed (Phase9.md compression 1484 → 381
+LoC + adaptive notes-budget rule in `notes/CLAUDE.md`). D4 closed
+no-op: the three Phase-9-resolved items the round-opener parked on
+D4 (`PartialOrientation V` representation, matroidal-corollary
+placement, termination measure for `tryReachPebble`) were never
+queued in `DESIGN.md` *Choices to revisit* — they lived in
+`notes/Phase9.md`'s own *Blockers / open questions* throughout
+Phase 9; the *Choices to revisit* re-skim found no Phase-9 flips
+needed, and *Pebble-game style island* was already Phase-9-
+calibrated by forward-work commits. Remaining D-bucket tasks: D2
+(lift-on-promotion sweep — candidates: `match h : ... with` worked
+example, `Reachable k ℓ D` non-motive threading, unified additive-
+identity pattern), D3 (`FRICTION.md` housekeeping — migrate Phase
+9's 5 resolved entries to archive if indices stable), D5
+(`ROADMAP.md` engineering-conventions re-skim — `[Fintype V]
+[DecidableEq V]` style-island pointer + `-With` variant pattern).
 
 The accompanying **Phase 9-perf** pass opens in parallel
 (`Phase9-perf.md`) per `../CLEANUP.md` *What a cleanup round is
