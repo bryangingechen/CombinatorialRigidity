@@ -1,8 +1,46 @@
 # Verso Blueprint port — coordination plan
 
-**Status:** Stage 0 (spike) not started.
+**Status:** Stage 0 (spike) complete. **Stages 1+ deferred** pending
+verso-blueprint maturity. See *Deferral* below.
 **Audience:** the dispatching agent (this file is the runbook); each
 stage's subagent reads only this file + the linked dependencies.
+
+## Deferral
+
+The Stage 0 spike (2026-05-23) confirmed the port is technically
+viable but surfaced enough churn signals to make us wait rather than
+push forward immediately:
+
+- `leanprover/verso-blueprint`'s own `AGENTS.md` describes the project
+  as *"near release"* (not released); template + `lake exe bp new`
+  workflow are planned but unlanded.
+- Reference blueprints live in separate `ejgallego/*` repos rather than
+  upstream — the deliverable shape is still settling.
+- Citation rendering is hard-coded `LastName, Year` with no
+  `amsalpha`-style initialism; that's an upstream change we'd want
+  before sinking a port commit.
+- HTML-only output (no PDF path); whether this matters long-term is
+  not yet known.
+
+**Do not dispatch Stages 1+ without an explicit user okay.** The plan
+below stays intact as a runbook for when we resume; the Stage 0
+research is durable and worth keeping (it won't be cheaper to redo
+later).
+
+**Resume signals (any one is sufficient; user judgment is the gate):**
+- verso-blueprint reaches a stable / 1.0 release (or drops the "near
+  release" language).
+- A major formalization project (e.g. carleson upstream itself,
+  mathlib's blueprint) adopts verso-blueprint as the primary surface.
+- Upstream lands `amsalpha`-style citation labels, or we decide the
+  `LastName, Year` form is acceptable for our docs.
+- A Lean toolchain bump prompts a fresh review of the blueprint
+  toolchain (natural revisit point).
+
+When resuming: re-skim this file top to bottom; re-run the Stage 0
+spike on the then-current verso-blueprint release to refresh the
+findings (the spike report below may be stale if verso has moved); then
+dispatch Stage 1 per the existing plan.
 
 This file is the cross-phase work log for porting the LaTeX/plastex
 blueprint under `blueprint/` to
@@ -63,9 +101,11 @@ the port*.
 
 ## Stage plan
 
-### Stage 0 — Spike (next)
+### Stage 0 — Spike
 
-**Status:** not started.
+**Status:** complete (worktree discarded). See *Stage 0 — spike report*
+below for the eight-question report verbatim, and *Decisions made during
+the port* for the takeaways folded into the rest of the plan.
 **Isolation:** `isolation: "worktree"` (throwaway; discard after report).
 **Goal:** fact-find before any persistent doc/scaffolding work. Stand
 up a minimal Verso project, port one or two small chapters end-to-end,
@@ -326,14 +366,214 @@ predecessors done), and spawns one subagent at a time per stage.
 <!-- Each decision: ≤ 8 lines. Cross-cutting lessons promote to
 TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN per usual. -->
 
-- *(none yet — populated as Stage 0 lands)*
+- **Stages 1+ deferred pending verso-blueprint maturity** (2026-05-24).
+  Stage 0 spike confirmed technical viability but surfaced enough
+  pre-1.0 churn (citation format, no PDF, "near release" language,
+  reference blueprints not yet upstream) to make waiting cheaper than
+  porting now. Full rationale + resume criteria in *Deferral* above.
+- **HTML-only is the Stage 1 default; PDF call deferred to Stage 4/5.**
+  Verso-blueprint emits `html-multi/` plus a preview manifest; no PDF
+  path. Stage 1's `blueprint/DESIGN.md` rewrite treats HTML as the sole
+  artefact, with a one-line note that the PDF question is parked until
+  Stage 4 (when we can judge from Stage 3 whether anyone missed it).
+  Reversible: keeping a maintained `print.tex` post-cutover is an
+  extra-cost option; choosing HTML-only is free.
+- **Bibliography: Lean `Citable` data, not BibTeX.** Each entry becomes a
+  `Verso.Genre.Manual.Bibliography.Citable` variant
+  (`.article | .inProceedings | .thesis | .arXiv` — no `.book`; the
+  workaround is `.article` with journal=publisher) tagged
+  `@[bib "key"]`. `bibliography.bib` is manually ported in Stage 2 by a
+  one-shot script; `.bib` file dropped at Stage 4.
+- **Citation labels are `LastName, Year`, not `amsalpha`.** Hard-coded in
+  `verso/src/VersoBlueprint/Cite.lean`; the `[TW85]` / `[Jor16]`
+  initialism is unrecoverable without upstream change. Citations use
+  `{Informal.citep "key"}[]` / `{Informal.citet "key"}[]` /
+  `{Informal.citehere "key"}[]`, optional `(kind := section) (index :=
+  "2.2")` locator. **Must qualify** `Informal.cite*` — bare `{citep …}`
+  collides with `Verso.Genre.Manual.citep`.
+- **`\edgesIn[H]{S}` is split, not ported as-is.** KaTeX `\newcommand`
+  rejects the LaTeX2e `[N][default]` optional-arg form. Stage 2
+  `TeXPrelude.lean` defines `\edgesIn{S}` (default-`G`) and
+  `\edgesInOf{H}{S}` (alternate graph); Stage 3 mechanical-rewrites
+  `\edgesIn[H]{S}` → `\edgesInOf{H}{S}` across `frameworks.tex` and
+  `henneberg.tex` while porting those chapters.
+- **`lakefile.toml` → `lakefile.lean` conversion in Stage 2.** Verso's
+  package-level knobs (`precompileModules := false`, `leanOptions :=
+  #[⟨\`experimental.module, true⟩]`) aren't expressible in TOML. The
+  cleanest move is one conversion commit in Stage 2 alongside the
+  blueprint scaffolding.
+- **`\leanok` has no Verso equivalent and is not needed.** Node status
+  is derived from whether the referenced Lean declaration body is
+  `sorry`-free. Phase 6's forward-mode "absence of `\leanok` = red"
+  encoding collapses into "absence of `(lean := …)` or `sorry`-bodied
+  decl = red." `@[deprecated … "narrative-bridge"]` shims resolve
+  cleanly.
+- **Statement-deps vs. proof-deps: by block placement.** `{uses "x"}[]`
+  inside a `:::theorem` block contributes a statement-dep edge;
+  `{uses "x"}[]` inside the matching `:::proof` block contributes a
+  proof-dep edge. No marker on the role itself. `{bpref "x"}[]` is the
+  no-edge cross-reference (replaces `\Cref{...}` when the target is
+  referenced for the reader's benefit but isn't a dependency).
+- **`:::lemma_` trailing underscore.** Verso reserves `lemma` as Lean
+  syntax, so the lemma directive is `:::lemma_`. The four other base
+  blocks (`:::definition`, `:::theorem`, `:::corollary`, `:::proof`)
+  are unsurprising. No builtin `:::remark`; map our single
+  `rem:decidable-runtime` to plain prose with a `bpref`-able label.
+- **Label collisions on prefix-drop: rename the section, not the decl.**
+  Four `sec:` labels collide with same-suffix decl labels after
+  mechanical prefix drop (`sec:edgesIn` vs `def:edgesIn`,
+  `sec:isSparse-typeII-reverse-blocker` vs `lem:…`,
+  `sec:pebble-game-invariants` vs `lem:…`,
+  `sec:pebble-game-soundness` vs `thm:…`). Rename the section labels in
+  Stage 3 during the relevant chapter ports; Verso's `verso.blueprint.trimTeXLabelPrefix`
+  option handles the rest.
 
 ## Stage 0 — spike report
 
-<!-- Populated by the Stage 0 subagent. ~1 page; the eight open
-questions above each get a 1–3 sentence answer. -->
+*Verbatim subagent report, returned 2026-05-23. Worktree discarded
+after.*
 
-*(not yet started)*
+### Summary
+
+The Verso-blueprint port shape **works** for this project. A minimal
+scaffold (`lakefile.lean` + `CombinatorialRigidityBlueprint/{Blueprint,
+TeXPrelude, Bibliography, SpikeDecls, Chapters/{Intro,DFS}}.lean` +
+`BlueprintMain.lean`) built cleanly against `verso-blueprint @ v4.30.0`
+in this worktree; `lake env lean --run BlueprintMain.lean --output
+_out/site` rendered the chapters, the dep-graph, the summary, and the
+bibliography in one pass. No showstoppers; **proceed to Stage 1**, with
+the four caveats listed under *Other findings* (no PDF, no
+`\newcommand[N][default]`, no `amsalpha`-style citation initialisms, and
+`lakefile.toml` cannot remain).
+
+### Eight open questions
+
+**1. PDF output.** HTML-only. Verso-blueprint emits an `html-multi/`
+tree plus a `blueprint-preview-manifest.json`; the `lake env lean
+--run … --output _out/site` flag accepts only that target. `doc/MANUAL.md`
+*Rendering Surface* enumerates the rendered pages (chapter HTML,
+`blueprint_graph`, `blueprint_summary`, `blueprint_bibliography`); no
+PDF path. Implication: drop the "PDF artefact" half of
+`blueprint/DESIGN.md` *What the blueprint is for*, or keep `print.tex`
+on the side post-cutover as an opt-in PDF (cheap to maintain — KaTeX-
+flavour math + `\edgesIn` would need a tiny LaTeX shim).
+
+**2. Custom macros under KaTeX.** Macros work; the LaTeX2e optional-arg
+form does not. `tex_prelude r#"…"#` in `TeXPrelude.lean` correctly
+injects `\providecommand{\N}{\mathbb{N}}`, `\providecommand{\KK}{
+\mathbb{K}}`, `\providecommand{\rk}{\operatorname{rk}}` etc. into every
+page's KaTeX prelude. However, `\newcommand{\edgesIn}[2][G]{E_{#1}[#2]}`
+is rejected by KaTeX (`Expected '}', got '#'`; KaTeX implements only
+mandatory-arg `\newcommand[N]`). Workaround: split into `\edgesIn{S}`
+(default-`G`) and `\edgesInOf{H}{S}`. Stage 3 needs a small `sed` pass
+that rewrites `\edgesIn[H]{S}` → `\edgesInOf{H}{S}` in `frameworks.tex`
+and `henneberg.tex`.
+
+**3. Sorry-blocked / red-node encoding.** Yes, automatic. A `(lean :=
+"Foo.bar")` resolving to a `theorem` with a `sorry` body renders the
+dep-graph node with `fillcolor="#fef3c7"` (pale red/yellow) and tooltip
+`"Statement: formalized | Proof: Lean code incomplete"`, while a
+green-bodied decl gets `fillcolor="#166534"` and `"locally formalized +
+dependencies complete"`. Verified empirically. The only authoring
+difference between a red and green node is the *Lean* (presence or
+absence of `sorry`), not the blueprint markup. `\leanok` has no Verso
+equivalent and is not needed.
+
+**4. `@[deprecated … (since := "narrative-bridge")]` shim.** Works
+without ceremony. A `(lean := "...narrative_bridge_stub")` resolved
+against a `@[deprecated <general> (since := "narrative-bridge")]`-
+marked Lean decl: the dep-graph node rendered green ("locally
+formalized"), no deprecation warning appeared in the build log under the
+prelude (only at the decl site itself, as expected), and the chapter
+HTML carries the proper status badge. The narrative-bridge sentinel
+survives the port unchanged.
+
+**5. Bibliography format.** Verso uses Lean data, not BibTeX. Each entry
+is a `Verso.Genre.Manual.Bibliography.Citable`
+(`.article | .inProceedings | .thesis | .arXiv` — **no `book`
+variant**) tagged `@[bib "key"]`. Citations are inline roles
+`{Informal.citep "key"}[]`, `{Informal.citet "key"}[]`, or
+`{Informal.citehere "key"}[]`, with optional `(kind := section)
+(index := "2.2")` locator → `"Jordán, 2016, Section 2.2"`. Citation
+labels are **hard-coded `LastName, Year`** (verso
+`src/VersoBlueprint/Cite.lean:420 pieceText`); the `amsalpha` `[TW85]`/
+`[Jor16]` initialism is not recoverable without upstream change. The
+`bibliography.bib` cannot be reused as-is; Stage 2 (or 3) needs a
+one-shot port script. The `book` workaround in the spike was `.article`
+with journal=publisher; not ideal but acceptable.
+
+**6. Multi-name `(lean := "A, B, C")` grouping.** Confirmed working. A
+probe entry carried `(lean := "…mem_reachClosureComputable,
+…reachClosureComputable_sound, …reachClosureComputable_complete")` and
+rendered all three names in the node's Lean panel, with one shared
+dep-graph node. Upstream tests in
+`tests/VersoBlueprintTests/BlueprintInformal/LeanRefs.lean` explicitly
+verify the same form and reject duplicates with `Label «...» has
+duplicate external Lean reference 'Nat.add'`.
+
+**7. Label translation gotchas.** Drop prefixes by default; 4 collisions
+to rename, 1 atypical prefix to map. Labels are opaque
+`Name.mkSimple` identifiers in Verso — colons would be kept verbatim,
+but the `verso.blueprint.trimTeXLabelPrefix` option trims TeX-style
+`prefix:suffix`. Mechanical drop of `def:` / `lem:` / `thm:` / `cor:`
+/ `prop:` / `sec:` / `ssec:` across all 203 labels produces **4 sec-vs-
+decl collisions**: `sec:edgesIn` vs `def:edgesIn`; `sec:isSparse-
+typeII-reverse-blocker` vs `lem:…`; `sec:pebble-game-invariants` vs
+`lem:…`; `sec:pebble-game-soundness` vs `thm:…`. All four resolve
+trivially by renaming the section (Verso's `#` headings have separate
+identity from `:::definition`/`:::lemma_` labels). One non-standard
+prefix: `rem:decidable-runtime` (remark) — render as plain prose with
+a `bpref`-able label like `decidable-runtime`. No other collisions.
+
+**8. Cross-reference forms.** `{uses "x"}[]` = dependency edge in the
+graph; `{bpref "x"}[]` = link without edge. Both resolve forward; both
+emit a hover preview. Sample from `dfs.tex`:
+- LaTeX `\uses{def:reachable-finding, def:directed-walk}` on a theorem
+  *statement* → Verso prose: inline `{uses "reachable-finding"}[]` and
+  `{uses "directed-walk"}[]` calls inside the `:::theorem` block.
+- `\uses{...}` on the *proof* environment maps to `{uses}` calls inside
+  the `:::proof "label"` block — Verso distinguishes statement-deps
+  from proof-deps by *which block the role sits in*, not by a marker
+  on the role itself.
+- LaTeX `\cref{def:tryReachPebble}` to a not-yet-defined downstream
+  symbol → Verso `{bpref "tryReachPebble"}[]`. The spike's `bpref` to
+  an undefined label rendered silently (no link, no build warning);
+  Stage 2 should set `verso.blueprint.summary.debugDiagnostics := true`
+  to flag these in CI.
+
+### Other findings
+
+- **`lakefile.toml` cannot host the Verso require.** Lake's TOML
+  grammar supports `[[require]]` but not the `precompileModules :=
+  false` / `leanOptions := #[⟨\`experimental.module, true⟩]` knobs
+  verso-blueprint needs at the package level. Cleanest move: convert
+  the main `lakefile.toml` to `lakefile.lean` as part of Stage 2.
+- **Build cost was tractable.** `lake update` + first `lake build
+  CombinatorialRigidityBlueprint` took ~3 minutes total in the worktree
+  (no mathlib pulled — Verso's only mathlib-adjacent dep is
+  `proofwidgets`). The renderer pass is sub-second. Side-by-side
+  rendering in CI should cost an extra ~3–5 min cold, <30 s warm.
+- **`{citep …}` vs `{Informal.citep …}`.** A bare `{citep …}`
+  ambiguous-resolves with `Verso.Genre.Manual.citep`. Prose must use
+  the fully-qualified `Informal.citep` / `Informal.citet` /
+  `Informal.citehere`. Document in the Stage 1 `blueprint/CLAUDE.md`
+  rewrite.
+- **Double-paren trap.** `{Informal.citep "laman1970"}[]` already emits
+  `(Laman, 1970)`. Naive port of `(\cite{laman1970})` turns into
+  `((Laman, 1970))`. Stage 3 should drop the outer `(...)` when
+  porting `\cite{...}`-in-parens patterns.
+- **`:::lemma_` trailing underscore.** Verso reserves `lemma` as Lean
+  syntax; the lemma directive is `:::lemma_`. The four other base
+  blocks (`:::definition`, `:::theorem`, `:::corollary`, `:::proof`)
+  are unsurprising. No builtin `:::remark`.
+
+### Recommended next move
+
+Proceed to Stage 1 doc rewrite, with the decisions listed under
+*Decisions made during the port* (above) baked in. One user decision
+needed before Stage 1 starts: **keep `print.tex` for PDF post-cutover,
+or drop entirely?** — drives a paragraph in `blueprint/DESIGN.md`
+*What the blueprint is for*.
 
 ## Stage 3 progress
 
@@ -350,8 +590,26 @@ commit hashes (or "no commit; report only" for Stage 0), and the next
 agent's first concrete step. The dispatching agent uses this to confirm
 state before dispatching the next subagent. -->
 
-*(not yet started)*
+- **2026-05-23 — Stage 0 spike (no commit; report only).** Stood up
+  `verso-spike/` (`CombinatorialRigidityBlueprint/{Blueprint, TeXPrelude,
+  Bibliography, SpikeDecls, Chapters/{Intro, DFS}}.lean` +
+  `BlueprintMain.lean` + `lakefile.lean`) on `verso-blueprint @ v4.30.0`,
+  rendered once, answered the eight open questions empirically. All
+  eight viable; four caveats surfaced (HTML-only, no `\newcommand[N]`,
+  no `amsalpha` citations, `lakefile.toml` → `lakefile.lean`).
+  Decisions folded into *Decisions made during the port* above; full
+  report under *Stage 0 — spike report*. Worktree + branch discarded.
+- **2026-05-24 — port deferred (user decision).** Stage 0 findings
+  judged sufficient to wait on rather than push through pre-1.0
+  verso-blueprint churn. *Deferral* section at the top of this file
+  carries rationale + resume signals. No further subagent dispatch
+  until user resumes; this file is otherwise inert.
 
 ## Open questions / blockers
 
-- *(none yet; populated as Stage 0 lands)*
+- *(none blocking Stage 1.)*
+- **Deferred — PDF artefact post-cutover.** Verso emits HTML only.
+  Stage 1 default: HTML-only. Revisit at Stage 4 (or Stage 5 cleanup)
+  if anyone actually misses the PDF during chapter ports; choosing to
+  keep a maintained `print.tex` then is a small re-edit to
+  `blueprint/DESIGN.md` *What the blueprint is for*.
