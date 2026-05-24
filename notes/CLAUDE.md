@@ -27,6 +27,11 @@ for *organizing* this directory is here.
 - **`PERFORMANCE.md`** — performance investigations and structural
   options (Lean module system, import boundaries). Its own header
   explains the format.
+- **`VersoPort.md`** — cross-phase coordination plan for porting the
+  LaTeX/plastex blueprint to `leanprover/verso-blueprint`. Acts as the
+  runbook for a sequence of subagent dispatches (spike → docs →
+  scaffolding → chapter ports → cutover). Same editing discipline as
+  phase notes (≤ 8-line entries, lift cross-cutting lessons).
 
 ## Phase notes
 
