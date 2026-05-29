@@ -180,7 +180,7 @@ $\mathrm{Finset.sort}$ under a $\mathrm{LinearOrder}$ on $V$.
   The Lean side additionally ships three small bridge lemmas
   (\texttt{edgeListSorted\_no\_loops}, \texttt{edgeListSorted\_pairwise},
   \texttt{edgeListSorted\_map\_sym2\_toFinset}) that discharge
-  \cref{thm:runPebbleGameWith-correct}'s loop-freeness / pairwise-Sym2-
+  \cref{thm:pebble-game-correct}'s loop-freeness / pairwise-Sym2-
   distinctness / Sym2-image round-trip hypotheses at the
   $G.\mathrm{edgeListSorted}$ argument; they are pure glue and not
   formalised as blueprint nodes.
@@ -214,7 +214,7 @@ instead.
   \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameExec}
   \leanok
   \uses{def:runPebbleGame, def:outListSorted, def:edgeListSorted,
-    def:pebbleGameResult, thm:runPebbleGameWith-correct,
+    def:pebbleGameResult, thm:pebble-game-correct,
     lem:workhorseWitness-certifies}
   Let $V$ have $[\mathrm{LinearOrder}\,V]$ and
   $[\mathrm{DecidableEq}\,V]$, let $G$ be a finite simple graph on
@@ -229,7 +229,7 @@ instead.
   $\mathrm{PebbleGameResult}$ verdict (\cref{def:pebbleGameResult}):
   $\mathrm{.inr}\,D \mapsto \mathrm{.accept}\,(D, h_{\underline{}},
   h_{\mathrm{reach}})$ (proof fields from
-  \cref{thm:runPebbleGameWith-correct}'s underline / reachability
+  \cref{thm:pebble-game-correct}'s underline / reachability
   components); $\mathrm{.inl}\,w \mapsto \mathrm{.reject}\,(w.V',
   h_{\mathrm{size}}, h_{\mathrm{lt}})$ (proof fields from
   \cref{lem:workhorseWitness-certifies} discharging the bridge facts
@@ -238,55 +238,18 @@ instead.
   $[\mathrm{DecidableEq}\,V]$; no \texttt{Classical} dependencies.
 \end{definition}
 
-The wrapper-level correctness theorem \cref{thm:pebble-game-correct}
-is stated at the workhorse level; its verdict-form analog
+The computable wrapper inherits the workhorse correctness theorem
+\cref{thm:pebble-game-correct} with no new mathematical content. That
+theorem is parametrised over the out-neighbour enumeration and the
+candidate edge list; the only executable-specific step is checking
+that the sorted enumeration \cref{def:edgeListSorted} meets its
+hypotheses on the edge list --- loop-freeness, pairwise
+$\mathrm{Sym}_2$-distinctness, and $\mathrm{Sym}_2$-image equal to
+$G.\mathrm{edgeFinset}$ --- which is exactly what the bridge lemmas of
+\cref{lem:mem-edgeListSorted} supply. Its verdict-form analog
 \cref{thm:pebbleGameResult-isAccept-iff} is the user-facing
 restatement, with the certificate iff absorbed into the verdict's
 \emph{type}.
-
-\begin{theorem}[Pebble-game correctness, workhorse form]
-  \label{thm:runPebbleGameWith-correct}
-  \lean{CombinatorialRigidity.PebbleGame.PartialOrientation.runPebbleGameWith_correct}
-  \leanok
-  \uses{def:runPebbleGame, thm:pebble-game-correct,
-    lem:runPebbleGame-underline-eq, lem:workhorseWitness-certifies}
-  Let $V$ be finite with $[\mathrm{DecidableEq}\,V]$, let
-  $\mathrm{toSucc} : \mathrm{PartialOrientation}\,V \to V \to
-  \mathrm{List}\,V$ agree with the orientation's out-arc relation
-  uniformly, and let $\mathrm{edges} : \mathrm{List}\,(V \times V)$
-  enumerate $G.\mathrm{edgeFinset}$ via $\mathrm{Sym}_2.\mathrm{mk}$
-  (no loops, pairwise distinct, $\mathrm{Sym}_2$-image equals
-  $G.\mathrm{edgeFinset}$). Then in the matroidal regime
-  $\ell < 2k$, $G$ is $(k, \ell)$-sparse if and only if
-  $\mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,
-  \mathrm{Reachable.empty}\,\mathrm{toSucc}\,h_{\mathrm{toSucc}}\,\mathrm{edges}$
-  returns $\mathrm{.inr}\,D'$ for some partial orientation $D'$
-  (an accepting orientation).
-\end{theorem}
-\begin{proof}
-  \leanok
-  \uses{thm:pebble-game-correct}
-  The correctness chain factors through workhorse-level
-  helpers, all parametrised over a caller-supplied
-  $\mathrm{toSucc}$ / $h_{\mathrm{toSucc}}$ and edge list:
-  $\mathrm{runPebbleGameWith\_reachable}$ (Invariant $(4)$ transports
-  through the fold), $\mathrm{runPebbleGameWith\_underline\_subset}$
-  / $\mathrm{runPebbleGameWith\_mem\_underline}$ (underline tracking
-  on monotone and no-skip-fires halves), and
-  $\mathrm{runPebbleGameWith\_witness\_bridges}$ (fold-emitted
-  workhorse witness's bridge facts to $G.\mathrm{edgeFinset}$). The
-  iff assembles in two lines: ($\Leftarrow$) the
-  $\mathrm{runPebbleGameWith\_sound}$ wrapper; ($\Rightarrow$) on a
-  $\mathrm{.inl}\,w$ output, the bridge lemma plus
-  $\mathrm{WorkhorseWitness.certifies\_against}$ contradict the
-  sparsity hypothesis at $w.V'$. The math-layer
-  \cref{thm:pebble-game-correct} re-derives as a one-line corollary
-  plugging the math-layer enumeration $\mathrm{outList}$ /
-  $G.\mathrm{edgeFinset.toList.map}\,\mathrm{Quot.out}$ back in (the
-  three discharges follow from $\mathrm{not\_isDiag\_of\_mem\_edgeSet}$,
-  $\mathrm{Finset.nodup\_toList}$, and the $\mathrm{Quot.out\_eq}$
-  round-trip).
-\end{proof}
 
 \subsection{Decidability of sparsity, tightness, and Laman}
 \label{sec:executable-decidable}
