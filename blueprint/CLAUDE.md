@@ -537,6 +537,23 @@ subsection) goes in its natural mathematical position, not at the
 end. See `../notes/PhaseN.md`'s *Layer plan* section in
 structural-edit phases for the per-Layer node-level work.
 
+**Keep the reshape history out of the prose.** The per-Layer
+scheduling — "Phase 11 Layer 3 reshape; was `some D'`", "Layer 4b —
+maximal reshape", "Layer 0 audit #1" — is changelog: it belongs in
+the commit message and `../notes/PhaseN.md`, never in the chapter a
+mathematician reads. A restated node must read as if its *current*
+shape were always the shape; the reader does not care that the return
+type was an `Option` two Layers ago, or which lemmas were retired when
+it changed. Same for Lean-internal plumbing in a definition body
+(`Quot.out`, `Finset.toList`, `toSucc` agreement witnesses, the
+`match h:` substitution quirk): state the computable-wrapper /
+`noncomputable`-wrapper split in one sentence and let the reader click
+through to Lean for the rest, exactly as the carleson *Proof
+verbosity* convention prescribes. Phase 11's first pass violated this
+across `chapter/{pebble-game,executable,dfs}.tex` and `intro.tex`; the
+2026-05 readability pass stripped it. Don't re-introduce it on the
+next structural-edit phase.
+
 ### Macros
 
 Live in `preamble/common.tex`. Current set is intentionally minimal

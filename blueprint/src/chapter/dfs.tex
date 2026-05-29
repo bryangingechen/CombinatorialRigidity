@@ -120,11 +120,11 @@ witness path; the path-reversal is pebble-game-specific.
 The pebble game's completeness side materialises a different view
 of $\mathrm{succ}$-reachability from $v$: not the first match against
 some predicate $P$, but the \emph{full set} of vertices reachable
-from $v$, as a $\mathrm{Finset}\,V$. Phase 11's Layer 1 ships this
+from $v$, as a $\mathrm{Finset}\,V$. We ship this
 view as a computable primitive
-$\mathrm{reachClosureComputable}$, eliminating the
-$\mathtt{Classical.decPred}$ dependency that an earlier
-filter-based formulation would have introduced. Its semantic
+$\mathrm{reachClosureComputable}$, which avoids the
+$\mathtt{Classical.decPred}$ dependency that a
+filter-based formulation would introduce. Its semantic
 contract --- characterisation as
 $\mathrm{Relation.ReflTransGen}$ of the
 $\mathrm{succ}$-arc relation --- is the consumer-facing iff

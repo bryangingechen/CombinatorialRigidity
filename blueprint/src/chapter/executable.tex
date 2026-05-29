@@ -1,15 +1,15 @@
 \section{Executable pebble game}
 \label{sec:executable}
 
-Phase~9 (\cref{sec:pebble-game}) formalises the basic
+The previous chapter (\cref{sec:pebble-game}) formalises the basic
 $(k, \ell)$-pebble game and proves its certificate-form correctness
 theorem \cref{thm:pebble-game-correct}: in the matroidal regime
-$\ell < 2k$, the finite simple graph $G$ is $(k, \ell)$-sparse if
-and only if $\mathrm{runPebbleGame}\,k\,\ell\,G$ returns
-$\mathrm{some}\,D$. But the Phase~9 \texttt{runPebbleGame} is
-\texttt{noncomputable}: its body invokes \texttt{Finset.toList} (to
-project a partial orientation's out-neighbour finset to a list for
-the verified DFS) and \texttt{Quot.out} (to project
+$\ell < 2k$, a finite simple graph $G$ is $(k, \ell)$-sparse if and
+only if the pebble game accepts. But the convenience wrapper
+\texttt{runPebbleGame} is \texttt{noncomputable}: its body invokes
+\texttt{Finset.toList} (to project a partial orientation's
+out-neighbour finset to a list for the verified DFS) and
+\texttt{Quot.out} (to project
 $G.\mathrm{edgeFinset} : \mathrm{Finset}\,(\mathrm{Sym}_2 V)$ to an
 ordered-pair enumeration), both of which lift through
 mathlib's \texttt{Classical}-flavored
@@ -17,20 +17,19 @@ mathlib's \texttt{Classical}-flavored
 \texttt{native\_decide} fires on it.
 
 This chapter closes the gap. It surfaces the existing computable
-workhorses
-(\texttt{tryReachPebbleWith} / \texttt{tryAddEdgeWith} /
-\texttt{runPebbleGameWith}, all already computable in Phase~9
-since the math-layer / exec-layer split was anticipated) through a
-\emph{computable} wrapper \texttt{runPebbleGameExec} that plugs the
-two noncomputable primitives with \texttt{Finset.sort}-based
-analogues under $[\mathrm{LinearOrder}\,V]$. The certificate-form
-correctness theorem lifts to \texttt{runPebbleGameExec} with no
-substantive new proof; on top of it we register $\mathrm{Decidable}$
-instances for the project predicates $\mathrm{IsSparse}\,k\,\ell$,
-$\mathrm{IsTight}\,k\,\ell$, and $\mathrm{IsLaman}$. The instances
-have polynomial-time reduction bodies; they decide the same
-propositions a brute-force $\forall$-finset iteration would
-decide, but pick a fundamentally faster reduction.
+workhorses (\texttt{tryReachPebbleWith} / \texttt{tryAddEdgeWith} /
+\texttt{runPebbleGameWith}, which were factored out as computable
+from the start) through a \emph{computable} wrapper
+\texttt{runPebbleGameExec} that replaces the two noncomputable
+primitives with \texttt{Finset.sort}-based analogues under
+$[\mathrm{LinearOrder}\,V]$. The certificate-form correctness theorem
+lifts to \texttt{runPebbleGameExec} with no substantive new proof; on
+top of it we register $\mathrm{Decidable}$ instances for the project
+predicates $\mathrm{IsSparse}\,k\,\ell$, $\mathrm{IsTight}\,k\,\ell$,
+and $\mathrm{IsLaman}$. The instances have polynomial-time reduction
+bodies; they decide the same propositions a brute-force
+$\forall$-finset iteration would decide, but pick a fundamentally
+faster reduction.
 
 A small \texttt{lake exe pebble-game} CLI built on the same
 \texttt{Decidable} instance reads an edge-list file and prints
@@ -42,8 +41,8 @@ $\mathrm{LAMAN}$ / $\mathrm{SPARSE}$ / $\mathrm{NOT\_SPARSE}$.
 A reader who is new to Lean's evaluation model may be surprised
 that the same \texttt{def} can be exercised through three
 syntactically-different invocations that share the same function
-body but route through different runtimes. Phase~10 leans on this
-explicitly, so we spell it out.
+body but route through different runtimes. This chapter leans on the
+distinction explicitly, so we spell it out.
 
 Three Lean-level invocations land on
 \texttt{runPebbleGameExec}'s compiled body:
@@ -71,11 +70,10 @@ Three Lean-level invocations land on
     the CLI's.
 \end{itemize}
 
-The point of separating the chapter into these three rows is that
-Phase~10 commits to making \texttt{\#eval} and
-\texttt{lake exe pebble-game} fast on real graphs (polynomial,
-end-to-end); \texttt{by decide} stays formally correct but its
-runtime is academic. Worked examples in Lean (\cref{sec:executable-examples})
+The point of separating the chapter into these three rows is that we
+commit to making \texttt{\#eval} and \texttt{lake exe pebble-game}
+fast on real graphs (polynomial, end-to-end); \texttt{by decide}
+stays formally correct but its runtime is academic. Worked examples in Lean (\cref{sec:executable-examples})
 use \texttt{\#eval} or \texttt{native\_decide} accordingly.
 
 \emph{Practical consequence: zero \texttt{noncomputable} in the
@@ -83,16 +81,16 @@ instance body.} For \texttt{\#eval} / \texttt{native\_decide} to
 fire, the registered $\mathrm{Decidable}$ instance must reduce
 without invoking \texttt{Classical.choice}, \texttt{Quot.out},
 \texttt{Finset.toList}, or any other \texttt{noncomputable}
-primitive. This is the operational reason Phase~10 builds
-\texttt{runPebbleGameExec} from scratch rather than reusing
-Phase~9's \texttt{runPebbleGame}: the latter is the same algorithm
+primitive. This is the operational reason for building
+\texttt{runPebbleGameExec} afresh rather than reusing
+\texttt{runPebbleGame}: the latter is the same algorithm
 mathematically, but its body has unreachable \texttt{noncomputable}
 sub-terms that break native compilation.
 
 \subsection{Computable list views}
 \label{sec:executable-list-views}
 
-The two noncomputable primitives in Phase~9's
+The two noncomputable primitives in
 \texttt{runPebbleGame} are localised: an out-neighbour list of a
 partial orientation $D$ at a vertex $v$ (the input to the verified
 DFS \texttt{reachableFinding}), and an enumeration of the input
@@ -115,7 +113,7 @@ $\mathrm{Finset.sort}$ under a $\mathrm{LinearOrder}$ on $V$.
   \]
   Computable: \texttt{Finset.sort} requires only
   $\mathrm{LinearOrder}$, not \texttt{Classical} machinery. Replaces
-  Phase~9's noncomputable \texttt{D.outList}.
+  the noncomputable \texttt{D.outList}.
 \end{definition}
 
 \begin{lemma}[Membership in the sorted out-neighbour list]
@@ -154,20 +152,18 @@ $\mathrm{Finset.sort}$ under a $\mathrm{LinearOrder}$ on $V$.
   lex-smaller-first ordered pair $(e.\inf, e.\sup)$ viewed as
   $\mathrm{Lex}\,(V \times V)$, then sorted under
   $\mathrm{Prod.Lex}$'s linear order, and finally untagged via
-  $\mathrm{ofLex}$ to recover $V \times V$. Replaces Phase~9's
+  $\mathrm{ofLex}$ to recover $V \times V$. Replaces the
   noncomputable \texttt{G.edgeFinset.toList.map Quot.out}.
 
-  \emph{Layer~0 audit~\#1 (revised outcome).} Sorting
-  $\mathrm{Finset}\,(\mathrm{Sym}_2 V)$ directly via
-  $(\cdot \le \cdot)$ is structurally blocked: mathlib's
-  \texttt{instance : PartialOrder (Sym2 \(\alpha\))} from
-  \texttt{SetLike} already occupies the slot for an order on
-  $\mathrm{Sym}_2 V$ itself with the non-total subset order, so a
-  competing linear order on $\mathrm{Sym}_2 V$ cannot be registered.
-  Sorting via $\mathrm{Lex}\,(V \times V)$ on the
-  $\mathrm{Sym}_2.\mathrm{sortEquiv}$ projection $(e.\inf, e.\sup)$
-  is the mathlib-idiomatic alternative and requires no new
-  $\mathrm{LinearOrder}$ instance to be mirrored.
+  \emph{Remark.} Sorting $\mathrm{Finset}\,(\mathrm{Sym}_2 V)$
+  directly via $(\cdot \le \cdot)$ is blocked: mathlib's
+  \texttt{PartialOrder (Sym2 \(\alpha\))} instance (from
+  \texttt{SetLike}) already occupies the order slot on
+  $\mathrm{Sym}_2 V$ with the non-total subset order, so a competing
+  linear order cannot be registered. Sorting via
+  $\mathrm{Lex}\,(V \times V)$ on the projection $(e.\inf, e.\sup)$
+  is the idiomatic alternative and needs no new
+  $\mathrm{LinearOrder}$ instance.
 \end{definition}
 
 \begin{lemma}[Membership in the sorted edge list]
@@ -205,11 +201,11 @@ $\mathrm{Finset.sort}$ under a $\mathrm{LinearOrder}$ on $V$.
 \subsection{Computable wrapper}
 \label{sec:executable-wrapper}
 
-Phase~9 already factored the algorithm into a computable workhorse
+The algorithm was already factored into a computable workhorse
 \texttt{runPebbleGameWith} parametrised over a caller-supplied
-\texttt{toSucc} and edge enumeration; the math-layer wrapper
+out-neighbour enumeration and edge list; the wrapper
 \texttt{runPebbleGame} plugs in $\mathrm{outList}$ and
-\texttt{G.edgeFinset.toList.map Quot.out}. Phase~10 adds a sibling
+\texttt{G.edgeFinset.toList.map Quot.out}. We now add a sibling
 wrapper plugging in \cref{def:outListSorted,def:edgeListSorted}
 instead.
 
@@ -240,19 +236,13 @@ instead.
   for $G.\mathrm{edgeListSorted}$). Computable end-to-end whenever
   $V$ carries $[\mathrm{LinearOrder}\,V]$ and
   $[\mathrm{DecidableEq}\,V]$; no \texttt{Classical} dependencies.
-  Phase~11 Layer~4b maximal-reshape: the verdict-bearing form
-  collapses the Phase~11 Layer~3 $\mathrm{Sum}$-returning
-  $\mathrm{runPebbleGameExec}$ and the Phase~11 Layer~4 additive
-  $\mathrm{runPebbleGameExec\_result}$ wrapper into a single function.
 \end{definition}
 
-The Phase~9 wrapper-level correctness theorem
-\cref{thm:pebble-game-correct} is stated at the workhorse layer.
-Phase~11 Layer~4b's verdict-form analog
+The wrapper-level correctness theorem \cref{thm:pebble-game-correct}
+is stated at the workhorse level; its verdict-form analog
 \cref{thm:pebbleGameResult-isAccept-iff} is the user-facing
-restatement; the certificate iff collapses into the verdict's
-\emph{type} so no separate iff statement is needed at the math/exec
-wrapper layer.
+restatement, with the certificate iff absorbed into the verdict's
+\emph{type}.
 
 \begin{theorem}[Pebble-game correctness, workhorse form]
   \label{thm:runPebbleGameWith-correct}
@@ -271,18 +261,18 @@ wrapper layer.
   $\mathrm{runPebbleGameWith}\,\mathrm{empty}\,k\,\ell\,
   \mathrm{Reachable.empty}\,\mathrm{toSucc}\,h_{\mathrm{toSucc}}\,\mathrm{edges}$
   returns $\mathrm{.inr}\,D'$ for some partial orientation $D'$
-  (Phase~11 Layer~3 reshape; was $\mathrm{some}\,D'$).
+  (an accepting orientation).
 \end{theorem}
 \begin{proof}
   \leanok
   \uses{thm:pebble-game-correct}
-  The Phase~9 correctness chain factors through workhorse-level
+  The correctness chain factors through workhorse-level
   helpers, all parametrised over a caller-supplied
   $\mathrm{toSucc}$ / $h_{\mathrm{toSucc}}$ and edge list:
   $\mathrm{runPebbleGameWith\_reachable}$ (Invariant $(4)$ transports
   through the fold), $\mathrm{runPebbleGameWith\_underline\_subset}$
   / $\mathrm{runPebbleGameWith\_mem\_underline}$ (underline tracking
-  on monotone and no-skip-fires halves), and Phase~11 Layer~3's
+  on monotone and no-skip-fires halves), and
   $\mathrm{runPebbleGameWith\_witness\_bridges}$ (fold-emitted
   workhorse witness's bridge facts to $G.\mathrm{edgeFinset}$). The
   iff assembles in two lines: ($\Leftarrow$) the
@@ -318,18 +308,11 @@ wrapper layer.
     \;=\;
     (\mathrm{runPebbleGameExec}\,G\,k\,\ell\,h_{\mathrm{mat}}).\mathrm{isAccept}.
   \]
-  Phase~11 Layer~4b maximal-reshape: the reduction body was
-  $(\mathrm{runPebbleGameExec}\,G\,k\,\ell).\mathrm{isRight}$ in
-  Phase~11 Layer~3, then
-  $(\mathrm{runPebbleGameExec\_result}\,G\,k\,\ell\,h_{\mathrm{mat}}).\mathrm{isAccept}$
-  in Phase~11 Layer~4; the Layer~4b verdict-returning
-  $\mathrm{runPebbleGameExec}$ (\cref{def:runPebbleGameExec}) directly
-  takes the matroidal-regime argument and returns the verdict, so
-  $\mathrm{.isAccept}$ now applies to it without the $\mathrm{\_result}$
-  detour. The compiled body is unchanged (the verdict wrapper is
-  structural metadata over the workhorse-level $\mathrm{Sum}$).
-  The instance is registered as the canonical $\mathrm{Decidable}$
-  for $\mathrm{IsSparse}\,k\,\ell$ in \texttt{PebbleGame/Exec.lean}.
+  (The verdict wrapper is structural metadata over the workhorse's
+  raw output, so the compiled body that $\mathrm{\#eval}$ reduces is
+  the pebble game itself.) The instance is registered as the canonical
+  $\mathrm{Decidable}$ for $\mathrm{IsSparse}\,k\,\ell$ in
+  \texttt{PebbleGame/Exec.lean}.
 \end{definition}
 
 \begin{remark}[Polynomial vs.\ exponential reduction]
@@ -394,8 +377,8 @@ classification.
 
 \begin{enumerate}
   \item \textbf{$K_4 \setminus e$} on $\mathrm{Fin}\,4$. Laman: 4
-    vertices, 5 edges, $2 \cdot 4 - 3 = 5$. The Phase~3 worked
-    example (\cref{thm:top-fin-four-minus-edge-isLaman}); verifies
+    vertices, 5 edges, $2 \cdot 4 - 3 = 5$. The worked example of
+    \cref{thm:top-fin-four-minus-edge-isLaman}; verifies
     the minimal non-trivial accept path.
   \item \textbf{Moser spindle.} A 7-vertex 11-edge Laman graph
     ($2 \cdot 7 - 3 = 11$). Verifies the accept path on a graph
@@ -421,8 +404,8 @@ sub-second wall time on a developer laptop.
 
 A \texttt{lake exe pebble-game} entry point reads a simple
 edge-list file and prints the classification together with the
-inline witness data carried by the Phase~11 Layer~4b
-\cref{def:pebbleGameResult} verdict. Input format: a leading line
+inline witness data carried by the \cref{def:pebbleGameResult}
+verdict. Input format: a leading line
 \texttt{n m} giving vertex count and edge count, followed by $m$
 lines of two whitespace-separated integers $0 \le u, v < n$. Output
 schema:
@@ -464,8 +447,8 @@ The binary is a thin \texttt{IO} wrapper:
 
 No blueprint nodes for the binary itself — it is not Lean-formal
 content but the natural delivery vehicle for the runtime claim of
-\cref{sec:executable-backends}. Phase~11 Layer~4b's
-\cref{def:pebbleGameResult} makes the accepting orientation $D$
+\cref{sec:executable-backends}. The
+\cref{def:pebbleGameResult} verdict makes the accepting orientation $D$
 and the blocking subset $V'$ structurally available at the CLI's
 entry point: $D$ from the verdict's $\mathrm{.accept}\,D$
 constructor (its $\mathrm{arcs}$ field is the witness data on the
