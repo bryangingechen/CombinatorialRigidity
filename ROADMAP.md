@@ -93,7 +93,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 11. Witness extraction | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` | ✓ Complete (see `notes/Phase11.md`) |
 | ⋮ Cleanup round (post-Phase-10+11) | Phase 10+11 surface (`PebbleGame/`, `Search/DFS.lean`, `Main.lean`, three blueprint chapters) | ✓ Complete (see `notes/Phase11-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-10+11) | Phase 10+11 surface — per-decl `@[expose]` audit on the four new/reshaped files + Phase-11-reshape re-audit on `Basic`/`DFS` + baseline | ✓ Complete (see `notes/Phase11-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 12. Body-bar Tay theorem | `CombinatorialRigidity/Matroid/`, `BodyBar/` (in progress) | in progress (see `notes/Phase12.md`) |
+| 12. Body-bar Tay theorem | `CombinatorialRigidity/Matroid/`, `BodyBar/` (Layer 0 done; blocked) | blocked on upstream prereq (see `notes/Phase12.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -386,9 +386,17 @@ Lean. See `notes/Phase11.md` for the five-layer plan, the Layer 0
 audit outcomes, architectural-choice list, and per-layer decision
 records.
 
-### Phase 12 — Body-bar Tay theorem (planning)
+### Phase 12 — Body-bar Tay theorem (blocked on upstream prereq)
 
-Planning. The phase aims to formalize **Tay's theorem**
+**Status (blocked).** Layer 0 landed (the forward-mode dep-graph in
+`blueprint/src/chapter/body-bar.tex`), but the phase is blocked at
+Layer 1: the matroid-union machinery it depends on does **not** build
+at any `apnelson1/Matroid` revision (see the corrected paragraph below
+and `notes/Phase12.md` for the analysis + resume criteria). The plan
+text below is retained as the intended route for when the prerequisite
+is unblocked.
+
+The phase aims to formalize **Tay's theorem**
 (Tay 1984): for `n ≥ 2` and `d = n(n+1)/2`, a multigraph `G` on
 `b` bodies admits an infinitesimally rigid independent body-bar
 framework in `Rⁿ` iff `|E| = d(b − 1)` with `|E'| ≤ d|V'| − d` on
@@ -415,17 +423,25 @@ rigidity). See `notes/Phase12.md` *Architectural choices* and
 `DESIGN.md` *Migrating Phases 1–11 from `SimpleGraph` to mathlib's
 `Graph`* for the rationale and refactor-risk assessment.
 
-The matroid-union access takes a dependency on the
+The matroid-union access was planned as a dependency on the
 `apnelson1/Matroid` package: its `WIP/Union.lean` (Edmonds matroid
 partition, `Matroid.Union (ι → Matroid α)`, `matroid_partition'`,
 `matroid_partition_eRk'`) and its dependency `WIP/Submodular.lean`
-(`PolymatroidFn`, `ofSubmodular`, polymatroid rank formula) are
-both zero-sorry but unbuilt in the package because of a renamed
-import. Layer 1 of the phase vendors both files into a new
-`CombinatorialRigidity/Matroid/Constructions/` mirror (analogous
-to the existing `CombinatorialRigidity/Mathlib/` mirror) with the
-import fixed and trimmed to the sub-API the phase actually needs;
-the mirror is upstream-eligible back to `apnelson1/Matroid`.
+(`PolymatroidFn`, `ofSubmodular`, polymatroid rank formula),
+vendored into a new `CombinatorialRigidity/Matroid/Constructions/`
+mirror. **This is where the phase is blocked.** Contrary to the
+original prerequisites audit, these WIP files are *not* "zero-sorry,
+unbuilt only because of a renamed import" — at every `apnelson1/Matroid`
+revision (including the latest upstream `main`) `WIP/Submodular.lean`
+imports a `Matroid.Constructions.IsCircuitAxioms` module that was
+never committed, and its `ofSubmodular` rests on the
+`FinsetCircuitMatroid` API, which has been commented out upstream for
+over a year. No revision provides the matroid-union machinery as live,
+buildable code (the only branch with a live `ofSubmodular`, `galois`,
+has no union machinery and sits ~20 Lean releases behind our pin). The
+phase is therefore on hold pending that machinery building upstream,
+or a deliberate decision to formalize matroid-union locally. See
+`notes/Phase12.md` *Prerequisites audit* + *Hand-off / next phase*.
 
 The chapter runs in **forward blueprint mode** per
 `blueprint/DESIGN.md`. The new chapter

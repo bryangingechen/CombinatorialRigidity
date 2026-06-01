@@ -1,6 +1,12 @@
-# Phase 12 — Body-bar Tay theorem (planning)
+# Phase 12 — Body-bar Tay theorem (blocked on upstream prereq)
 
-**Status:** in progress. Layer 0 complete (chapter dep-graph populated).
+**Status:** BLOCKED at Layer 1. Layer 0 complete (chapter dep-graph
+populated); the phase cannot proceed because the matroid-union
+machinery it depends on does not build at any `apnelson1/Matroid`
+revision. See *Prerequisites audit* (corrected) and *Hand-off / next
+phase* (resume criteria). The original prereq audit was conducted
+against a state of `apnelson1/Matroid` that does not match any pushed
+revision and was wrong.
 
 This file is the per-phase work record. See `../ROADMAP.md` §12
 for the high-level summary and `../DESIGN.md` for cross-cutting
@@ -77,17 +83,22 @@ the pinned `apnelson1/Matroid` rev); Whiteley 1988 §2–§3 and Tay 1984
 §4–§5 read. **Multigraph carrier decided: mathlib's core `Graph α β`**
 (see *Architectural choices*).
 
-Next concrete step: **Layer 1** — vendor `WIP/Submodular.lean` +
-`WIP/Union.lean` under `CombinatorialRigidity/Matroid/Constructions/`
-(import fix `import Matroid.Constructions.Submodular` →
-`import CombinatorialRigidity.Matroid.Constructions.Submodular`; trim
-Submodular to the `PolymatroidFn` / `ofSubmodular` /
-`polymatroid_rank_eq` sub-API Union needs), flip `\leanok` on
-`def:matroid-union` / `lem:union-indep-iff` /
-`thm:matroid-partition-rank` with their `\lean{}` pointers, and open
-the `[matroid]` *Mirrored* FRICTION entry. Smallest first commit: land
-the Submodular mirror building in isolation (it has no project
-dependencies), before vendoring Union on top.
+**Layer 1 is blocked (2026-06-01).** The planned first step — vendor
+`WIP/Submodular.lean` building in isolation — fails: at the pinned rev
+`e6852ce` (and at *every* `apnelson1/Matroid` ref, incl. the latest
+upstream `main` `f3f7df3`) `WIP/Submodular.lean` imports
+`Matroid.Constructions.IsCircuitAxioms`, a module that has **never
+been committed** to the package (`git log --all` for that path is
+empty), and its `ofSubmodular` is built on the `FinsetCircuitMatroid`
+API, which is **commented out** in `Matroid/Axioms/Circuit.lean` and
+has been for >1 year. So `PolymatroidFn` / `ofSubmodular` /
+`Matroid.Union` exist nowhere as live, buildable code. The only branch
+with a live `ofSubmodular` (`galois`) has *no* union machinery at all
+and sits on Lean v4.10 (~20 releases behind our v4.30 pin). The
+original "0 sorries, unbuilt only because of a renamed import" audit
+does not match any pushed revision. See *Hand-off / next phase* for
+the resume criteria; the corrected facts are in *Prerequisites audit*
+and FRICTION `[matroid]` *WIP/{Union,Submodular} unbuildable*.
 
 ## Architectural choices made up front
 
@@ -106,23 +117,24 @@ wrong, revisit there.
   circuit-exchange) and treats tree-packing as a corollary citation,
   not a structural ingredient.
 
-- **Matroid-union access via mirror, not upstream-then-consume.**
-  `apnelson1/Matroid` ships matroid-union (`Matroid.Union`,
-  `union_indep_iff'`) and Edmonds' matroid-partition theorem
-  (`matroid_partition'`, `matroid_partition_eRk'`) in
-  `WIP/Union.lean` (597 lines, 0 active sorries — the one match is
-  a commented-out scrap from an old approach). The file is unbuilt
-  in the package only because its `import Matroid.Constructions.Submodular`
-  points to a file moved to `WIP/Submodular.lean` (1236 lines,
-  0 sorries). Both live at the package **repo root** `WIP/` (outside
-  the `Matroid/` Lean-library root), so they are not in the package's
-  build target and cannot be imported as-is — hence vendor rather than
-  consume. We vendor both files under a new
-  `CombinatorialRigidity/Matroid/` mirror directory (analogous to
-  the existing `CombinatorialRigidity/Mathlib/` mirror) so Phase 12
-  is unblocked; the mirror is marked upstream-eligible to
-  `apnelson1/Matroid` and will be retired once those files land
-  in the package's built tree.
+- **Matroid-union access via mirror, not upstream-then-consume —
+  PLAN BLOCKED, see *Prerequisites audit* (corrected).** The intent
+  was to vendor `apnelson1/Matroid`'s `WIP/Union.lean` (matroid-union
+  `Matroid.Union`, `union_indep_iff'`; Edmonds matroid partition
+  `matroid_partition'`, `matroid_partition_eRk'`) and its dependency
+  `WIP/Submodular.lean` (`PolymatroidFn`, `ofSubmodular`,
+  `polymatroid_rank_eq`) under a new `CombinatorialRigidity/Matroid/`
+  mirror, with the broken import fixed. **This does not work:** the
+  files do not build at any upstream revision — `WIP/Submodular.lean`
+  imports a never-committed `Matroid.Constructions.IsCircuitAxioms`
+  module, and its `ofSubmodular` rests on the commented-out
+  `FinsetCircuitMatroid` API (dead upstream for >1 year). The "0
+  sorries, one renamed import" reading was a mis-audit. Mirroring is
+  still the right *access pattern* once the upstream machinery builds;
+  it just is not available yet. The fallback — re-build matroid-union
+  in the mirror on top of the live API at our pin
+  (`IndepMatroid.ofFinite`/`ofFun`) — is genuine formalization, not
+  vendoring, and is a deliberate decision recorded under *Hand-off*.
 
 - **Multigraph carrier — DECIDED: mathlib's core `Graph α β`** (was
   the "M-A" option). `SimpleGraph V` (the Phase 1–11 carrier) cannot
@@ -187,8 +199,29 @@ wrong, revisit there.
 
 ## Prerequisites audit (matroid package)
 
-What's available unbuilt vs. ready in `apnelson1/Matroid`. See the
-session's earlier survey for file:line citations.
+> **CORRECTED 2026-06-01.** The "Unbuilt but proved (vendor in
+> Layer 1)" block below was wrong and is struck through. The truth,
+> verified directly against `.lake/packages/Matroid` at the pinned
+> rev `e6852ce` and against every fetched upstream ref:
+> - `WIP/Submodular.lean` imports `Matroid.Constructions.IsCircuitAxioms`,
+>   a module **never committed** to the package on any branch
+>   (`git log --all -- Matroid/Constructions/IsCircuitAxioms.lean` is
+>   empty). So the file has never built as-is.
+> - `WIP/Submodular.lean`'s `ofSubmodular` is built on
+>   `FinsetCircuitMatroid.matroid/.mk/.intro_elimination_nontrivial/.matroid_isCircuit_iff`;
+>   the entire `FinsetCircuitMatroid` structure + API is **commented
+>   out** in `Matroid/Axioms/Circuit.lean` and has been since well
+>   before our pin.
+> - Consequently `PolymatroidFn` / `ofSubmodular` / `polymatroid_rank_eq`
+>   / `Matroid.Union` / `matroid_partition'` are live, buildable code
+>   at **no** revision. Latest upstream `main` (`f3f7df3`, +7 from our
+>   pin) is identical on all three points. The only branch with a live
+>   `ofSubmodular` (`galois`, 2024) has **no** union machinery and is
+>   on Lean `v4.10` (~20 releases behind our `v4.30`), so unusable.
+>
+> Net: the matroid-union route is **blocked** until that machinery
+> builds upstream, or we formalize it locally (see *Hand-off*). The
+> "Ready (built …)" block below was re-verified and remains accurate.
 
 **Ready (built, zero sorries, just import):**
 - `Graph.cycleMatroid` and full API (`Matroid/Graphic.lean`,
@@ -206,24 +239,21 @@ session's earlier survey for file:line citations.
 - `Matroid.Intersection` — built; available as a fallback for
   matroid-union via duality if the mirror ever has issues.
 
-**Unbuilt but proved (vendor in Layer 1):**
-- `WIP/Submodular.lean` (1236 L, 0 sorries, 6 `Classical.`,
-  1 `noncomputable`) — ships `PolymatroidFn`, `ofSubmodular`,
-  `polymatroid_rank_eq`. The polymatroid-of-submodular-function
-  construction is the bridge underlying matroid-union's rank
-  formula.
-- `WIP/Union.lean` (597 L, 0 active sorries) — ships
-  `Matroid.union M₁ M₂`, `Matroid.Union (Ms : ι → Matroid α)`,
-  `union_indep_iff` / `union_indep_iff'`, `polymatroid_of_adjMap`,
-  `adjMap_rank_eq`, `matroid_partition` / `matroid_partition'` /
-  `matroid_partition_eRk'`, base-construction lemmas, and a
-  matroid-intersection alternate proof.
+**~~Unbuilt but proved (vendor in Layer 1)~~ — FALSE, see corrected
+note above. The files do NOT build at any revision:**
+- ~~`WIP/Submodular.lean` (1236 L, 0 sorries) — ships `PolymatroidFn`,
+  `ofSubmodular`, `polymatroid_rank_eq`.~~ Imports a never-committed
+  `IsCircuitAxioms` module; `ofSubmodular` depends on the
+  commented-out `FinsetCircuitMatroid` API. Unbuildable.
+- ~~`WIP/Union.lean` (597 L, 0 active sorries) — ships `Matroid.Union`,
+  `union_indep_iff'`, `matroid_partition'` / `matroid_partition_eRk'`.~~
+  Transitively depends on the unbuildable `Submodular`. Unbuildable.
 
-**Trim list for the mirror:** the Submodular file is large; only
-the polymatroid framework (`PolymatroidFn`, `ofSubmodular`,
-`polymatroid_rank_eq`) and the lemmas Union depends on are
-strictly required. Aggressive trim is a Layer 1 task — track the
-exact subset there.
+**~~Trim list for the mirror~~ — moot while blocked.** There is
+nothing buildable to trim. If the local-formalization fallback is
+chosen (see *Hand-off*), the work is to *construct* `PolymatroidFn` /
+`ofSubmodular` / `Matroid.Union` on top of the live API at our pin,
+not to trim a vendored file.
 
 ## Layer plan
 
@@ -284,25 +314,31 @@ Nodes flip green per Layer.
   `blueprint/src/chapter/intro.tex` §Phase plan enumerate +
   dep-graph-status line.
 
-### Layer 1 — Matroid-union mirror
+### Layer 1 — Matroid-union mirror — **BLOCKED (cannot vendor)**
 
-**Lean:** vendor `WIP/Submodular.lean` + `WIP/Union.lean` under
-`CombinatorialRigidity/Matroid/Constructions/`. Concretely:
-- `CombinatorialRigidity/Matroid/Constructions/Submodular.lean`
-- `CombinatorialRigidity/Matroid/Constructions/Union.lean`
+> **Blocked 2026-06-01.** The original plan (vendor `WIP/Submodular.lean`
+> + `WIP/Union.lean` with a one-line import fix) is impossible: those
+> files do not build at any `apnelson1/Matroid` revision — see the
+> corrected *Prerequisites audit* and FRICTION `[matroid]`
+> *WIP/{Union,Submodular} unbuildable*. The struck-through plan below
+> is retained for when the upstream machinery builds.
 
-Both files namespaced under `Matroid` to match upstream. The
-broken `import Matroid.Constructions.Submodular` in Union becomes
-`import CombinatorialRigidity.Matroid.Constructions.Submodular`.
-Trim Submodular to the polymatroid-of-submodular-function
-sub-API actually used by Union + downstream Phase 12 layers; the
-rest stays in the mirror but unexported (or trimmed wholesale,
-to be assessed).
+~~**Lean:** vendor `WIP/Submodular.lean` + `WIP/Union.lean` under
+`CombinatorialRigidity/Matroid/Constructions/`~~ — not possible
+(unbuildable upstream). Two ways forward, both requiring a deliberate
+decision (recorded under *Hand-off / next phase*):
+1. **Wait for upstream.** Re-attempt the vendor once `apnelson1/Matroid`
+   ships a buildable `Matroid.Union` (live `FinsetCircuitMatroid` /
+   `IsCircuitAxioms`). Lowest effort; indefinite timeline.
+2. **Formalize matroid-union locally.** Build `PolymatroidFn` /
+   `ofSubmodular` / `Matroid.Union` / Edmonds partition in the mirror
+   on top of the live API at our pin. This is the hardest single piece
+   of Phase 12 — effectively its own sub-phase — not a copy-paste.
 
-**Friction entries:** open a *Mirrored* entry in `FRICTION.md`
-tagged `[matroid]` (analogous to the existing `[mathlib]` mirror
-entries) listing the two files + the upstream issue link (to file
-against `apnelson1/Matroid`).
+**Friction entry (DONE):** filed in `FRICTION.md` under [Open] tagged
+`[matroid]` — *WIP/{Union,Submodular}.lean unbuildable at all
+`apnelson1/Matroid` refs* — recording the analysis and the upstream
+issue to file. (Not a *Mirrored* entry: nothing was mirrorable.)
 
 **Blueprint:** flip `\leanok` on the matroid-union definition + the
 union-indep-iff / matroid-partition statements (re-stated in the
@@ -443,11 +479,13 @@ red as of Layer 0; flip `\leanok` + add `\lean{}` per Layer).
 
 - [x] **L0 (chapter dep-graph):** `body-bar.tex` populated with 13
   red nodes; user-facing status surfaces synced (phase-open commit).
-- [ ] **L1 (mirror):** `Matroid.Union`, `union_indep_iff'`,
+- [ ] **L1 (mirror) — BLOCKED:** `Matroid.Union`, `union_indep_iff'`,
   `matroid_partition'`, `matroid_partition_eRk'`,
   `PolymatroidFn`, `ofSubmodular`, `polymatroid_rank_eq` —
   nodes `def:matroid-union`, `lem:union-indep-iff`,
-  `thm:matroid-partition-rank`
+  `thm:matroid-partition-rank`. Cannot be vendored: unbuildable at
+  every `apnelson1/Matroid` ref (see *Prerequisites audit*). Blocks
+  L2–L5a, which all `\uses` the union machinery.
 - [ ] **L2 (k-frame):** `Graph.kFrameMatroid`,
   `Graph.kFrameMatroid_eq_unionPow_cycleMatroid` (Whiteley Theorem 1)
   — nodes `def:k-frame-matroid`, `thm:k-frame-union-cycle`
@@ -480,19 +518,58 @@ red as of Layer 0; flip `\leanok` + add `\lean{}` per Layer).
   `Matroid.ofFun` over a polynomial ring; verify the
   `Matroid/Representation/Map.lean` API supports this. Layer 2
   blocker if it doesn't.
-- **Trim depth for the `WIP/Submodular.lean` mirror.** 1236 lines
-  is a lot to vendor. Aim to ship only the
-  `PolymatroidFn` + `ofSubmodular` + `polymatroid_rank_eq`
-  sub-API that Union needs. Layer 1 task.
-- **Mirror upstream-issue: file or wait?** Open an issue against
-  `apnelson1/Matroid` flagging that `WIP/{Union,Submodular}.lean`
-  are zero-sorry / would-build-with-a-one-line-import-fix? Helpful
-  for telegraphing the eventual upstream PR; file with the
-  mirror.
+- ~~**Trim depth for the `WIP/Submodular.lean` mirror.**~~ Moot —
+  the file is unbuildable, there is nothing to vendor/trim (see
+  *Prerequisites audit*).
+- **Upstream issue: file against `apnelson1/Matroid`.** No longer a
+  "would-build-with-a-one-line-fix" telegraph — the honest issue is
+  that `WIP/{Union,Submodular}.lean` reference a never-committed
+  `IsCircuitAxioms` module and the commented-out `FinsetCircuitMatroid`
+  API, so they do not build at any ref. Filing it asks the maintainer
+  whether the matroid-union machinery is expected to be revived
+  (and roughly when), which directly informs the resume decision
+  below. **Action item, not yet filed.**
 
 ## Hand-off / next phase
 
-Written at phase end. Anticipated direction:
+**The phase is PAUSED, blocked at Layer 1 (2026-06-01).** It is not
+closed and not complete; do not flip the ROADMAP row to ✓. The next
+agent should NOT dispatch "continue Phase 12" work until the blocker
+below is resolved by a human decision.
+
+**The blocker.** The whole Whiteley route depends on matroid-union
+(`Matroid.Union`, Edmonds partition), which the plan assumed it could
+vendor from `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean`. Those
+files do not build at any upstream revision (never-committed
+`IsCircuitAxioms`; commented-out `FinsetCircuitMatroid`). Full analysis
+in *Prerequisites audit* (corrected) and FRICTION `[matroid]`.
+
+**Resume options (a human picks one):**
+1. **Wait for upstream** to ship a buildable `Matroid.Union`, then
+   resume Layer 1 as the originally-planned vendor. Lowest effort,
+   indefinite timeline. Recommended interim default. Resume trigger:
+   `apnelson1/Matroid`'s `WIP/Union.lean` (or a relocated equivalent)
+   builds against a Lean toolchain compatible with our mathlib pin.
+2. **Formalize matroid-union locally** in the mirror on top of the
+   live API at our pin (`IndepMatroid.ofFinite`/`ofFun`): construct
+   `PolymatroidFn` / `ofSubmodular` / `Matroid.Union` / Edmonds
+   partition. This is real formalization (effectively its own
+   sub-phase, the hardest single piece of Phase 12), so it warrants a
+   Layer-plan rewrite before any Lean lands.
+3. **Switch to Tay 1984's induction route** (avoids matroid-union;
+   considered and set aside in *Architectural choices* — heavier in
+   new combinatorial scaffolding, no Phase 7/8 reuse). Full Layer-plan
+   rewrite + re-read of Tay §4–§5.
+
+**Immediate non-blocked action items** (do not require the decision):
+- File the upstream issue against `apnelson1/Matroid` (see *Open
+  questions*) — its answer informs option 1's timeline.
+
+Layer 0's dep-graph (`blueprint/src/chapter/body-bar.tex`, 13 red
+nodes) is valid forward-mode planning work and stays as-is under all
+three options.
+
+### Anticipated follow-on phases (unchanged; gated behind the above)
 
 - **Phase 13 candidate: body-hinge / panel-hinge Tay–Whiteley.**
   Whiteley 1988 §3.3 / Tay 1989. Same matroid-union scaffolding

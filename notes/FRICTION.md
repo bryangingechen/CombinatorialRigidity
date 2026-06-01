@@ -76,6 +76,33 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — blocks Phase 12 matroid-union mirror
+- **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
+  matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
+  `matroid_partition'` / `matroid_partition_eRk'`, plus its
+  `PolymatroidFn` / `ofSubmodular` / `polymatroid_rank_eq` dependency)
+  from `apnelson1/Matroid`'s repo-root `WIP/{Union,Submodular}.lean`,
+  fixing one renamed import. The Phase-12 prereq audit recorded these
+  as "0 sorries, just import."
+- **Friction:** the audit was wrong against every pushed revision.
+  Verified at our pin `e6852ce` and at the latest upstream `main`
+  (`f3f7df3`): (1) `WIP/Submodular.lean` imports
+  `Matroid.Constructions.IsCircuitAxioms`, a module that has **never**
+  been committed on any branch (`git log --all -- …/IsCircuitAxioms.lean`
+  is empty); (2) its `ofSubmodular` is built on `FinsetCircuitMatroid.*`,
+  which is **commented out** in `Matroid/Axioms/Circuit.lean` (>1 yr).
+  So `Matroid.Union` etc. are live code at no ref. The only branch with
+  a live `ofSubmodular` (`galois`, 2024) has **no** union machinery and
+  is on Lean `v4.10` (vs our `v4.30`), so unusable as a pin.
+- **Proposed fix:** (a) wait for `apnelson1/Matroid` to revive the
+  machinery in its built tree, then vendor as planned; or (b) formalize
+  `PolymatroidFn` / `ofSubmodular` / `Matroid.Union` + Edmonds partition
+  locally on top of the live API at our pin (`IndepMatroid.ofFinite`).
+  File an upstream issue asking whether/when matroid-union will build.
+- **Status:** open; blocks Phase 12 (paused). See `notes/Phase12.md`
+  *Prerequisites audit* (corrected) + *Hand-off / next phase*. Not a
+  *Mirrored* entry — nothing was mirrorable.
+
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of
   `typeII_edgeSetRowIndependent_extend` in `MatroidIdentification.lean`.

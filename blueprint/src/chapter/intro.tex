@@ -25,7 +25,10 @@ combinatorial rigidity, see
 
 The Lean code is organized into twelve phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--11 are complete; Phase~12 is in progress. The first six
+Phases~1--11 are complete; Phase~12 is blocked on an upstream
+prerequisite (its Layer~0 dep-graph has landed, but the
+matroid-union machinery it depends on does not yet build upstream;
+see the phase bullet below). The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
 \texttt{Matroid}: first combinatorially, via the Lov\'asz--Yemini
@@ -98,7 +101,7 @@ The per-phase breakdown:
         checkable. (Files: \texttt{Search/DFS.lean},
         \texttt{PebbleGame/\{Basic,Algorithm,Correctness,Exec\}.lean},
         \texttt{Main.lean}.)
-  \item \textbf{Body-bar Tay theorem (in progress).} For
+  \item \textbf{Body-bar Tay theorem (blocked on upstream).} For
         $n \ge 2$ and $d = n(n+1)/2$, a multigraph $G$ is the
         underlying graph of an infinitesimally rigid body-bar
         framework in $\mathbb{R}^n$ iff $G$ is the edge-disjoint
@@ -115,13 +118,17 @@ The per-phase breakdown:
         of~\cite{tutte1961,nashWilliams1961}); body-bar
         realizations are obtained by specializing two-extensor
         row coefficients to standard-basis Pl\"ucker
-        coordinates. The matroid-union machinery is vendored
-        from \texttt{apnelson1/Matroid}'s shelved
-        \texttt{WIP/Union.lean} into a new
-        \texttt{CombinatorialRigidity/Matroid/} mirror;
-        Whiteley's full lift via irreducible-variety machinery
-        (Proposition~6 in~\cite{whiteley1988}) is deferred out
-        of Phase~12. (Files:
+        coordinates. The route needs matroid-union machinery
+        (\texttt{Matroid.Union}, Edmonds matroid partition) that
+        Phase~12 planned to vendor from
+        \texttt{apnelson1/Matroid}'s \texttt{WIP/Union.lean};
+        \emph{the phase is currently blocked because those
+        \texttt{WIP} files do not build at any upstream revision}
+        (they transitively need a never-committed
+        \texttt{IsCircuitAxioms} module and the long-commented-out
+        \texttt{FinsetCircuitMatroid} API). Whiteley's full lift
+        via irreducible-variety machinery (Proposition~6
+        in~\cite{whiteley1988}) is deferred out of Phase~12. (Files:
         \texttt{CombinatorialRigidity/Matroid/}, \texttt{BodyBar/}.)
 \end{enumerate}
 

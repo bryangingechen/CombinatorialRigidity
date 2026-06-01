@@ -46,7 +46,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–11 complete; Phase 12 in progress.**
+* **Phases 1–11 complete; Phase 12 blocked on an upstream prerequisite.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -73,8 +73,10 @@ project; commit history is preserved with paths rewritten.
   lands in-place in `chapter/{dfs,pebble-game,executable}.tex`.
   Phase 10 details are in `notes/Phase10.md` and
   `blueprint/src/chapter/executable.tex`.
-* **Phase 12 (in progress)** — **Tay's theorem** for body-bar
-  frameworks in `Rⁿ`. The proof route follows Whiteley 1988's
+* **Phase 12 (blocked on upstream)** — **Tay's theorem** for body-bar
+  frameworks in `Rⁿ`. Layer 0 (the forward-mode dep-graph) has
+  landed, but the phase is **blocked at Layer 1**: see the upstream
+  note at the end of this bullet. The proof route follows Whiteley 1988's
   matroid-union framing: the generic `k`-frame matroid on a
   multigraph is identified with the `k`-fold union of the cycle
   matroid (Whiteley Theorem 1), the count characterization
@@ -82,14 +84,18 @@ project; commit history is preserved with paths rewritten.
   Edmonds' matroid-partition theorem, Tutte–Nash-Williams
   follows, and Tay's theorem itself (existence-of-realization
   form) is obtained by specializing two-extensor row coefficients
-  to standard-basis Plücker coordinates. Phase 12 takes a
-  dependency on the matroid-union machinery in
-  `apnelson1/Matroid`'s shelved `WIP/Union.lean` (vendored under
-  a new `CombinatorialRigidity/Matroid/` mirror) and ships its
-  own multigraph carrier + body-bar framework definitions. See
-  `notes/Phase12.md` for the full plan, prerequisites audit,
-  Layer-by-Layer breakdown, and open questions. The chapter
-  `blueprint/src/chapter/body-bar.tex` is the forward-mode
+  to standard-basis Plücker coordinates. The whole route needs the
+  matroid-union machinery (`Matroid.Union`, Edmonds matroid
+  partition), which Phase 12 planned to vendor from
+  `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean`. **Upstream
+  blocker:** those WIP files do not build at any upstream revision —
+  they transitively need `FinsetCircuitMatroid` (commented out for
+  >1 year) and a `Matroid.Constructions.IsCircuitAxioms` module that
+  was never committed. Phase 12 is on hold pending that machinery
+  building upstream (or a decision to formalize it locally). See
+  `notes/Phase12.md` for the corrected prerequisites audit, the
+  blocker analysis, and resume criteria. Layer 0's chapter
+  `blueprint/src/chapter/body-bar.tex` remains the forward-mode
   authoritative dep-graph and lemma index.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,

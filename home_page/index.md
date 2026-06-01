@@ -22,7 +22,7 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 ## Project status
 
 Phases 1–11 are complete and carry no `sorry`s; **Phase 12 (Tay's
-body-bar theorem) is in progress**, see below. The main theorem
+body-bar theorem) is blocked on an upstream prerequisite**, see below. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
@@ -52,23 +52,26 @@ recursion (the certificate-form correctness theorem collapses into
 the verdict's type) rather than shipping the witness work as a
 sibling extraction wrapper.
 
-**Phase 12** (in progress) extends the development to body-bar
-frameworks in `Rⁿ`, targeting **Tay's theorem** (Tay 1984): a
-multigraph `G` is the underlying graph of an infinitesimally
-rigid body-bar framework in `Rⁿ` iff `G` is the edge-disjoint
-union of `d = n(n+1)/2` spanning trees. The proof route follows
-Whiteley 1988's matroid-union framing — Tutte–Nash-Williams falls
-out as a corollary of Edmonds' matroid-partition theorem applied
-to `d` copies of the cycle matroid. Phase 12 vendors the
-matroid-union machinery from `apnelson1/Matroid`'s shelved
-`WIP/Union.lean` (zero sorries; unbuilt only because of a
-renamed import) into a new `CombinatorialRigidity/Matroid/`
-mirror, ships its own multigraph carrier + body-bar framework
-definitions, and concludes Tay's theorem in
-existence-of-realization form (the algebraic-geometry lift to
-"almost all realizations are rigid" is deferred). The chapter
-`blueprint/src/chapter/body-bar.tex` is the forward-mode
-authoritative dep-graph and lemma index. The longer-horizon
+**Phase 12** (blocked on an upstream prerequisite) extends the
+development to body-bar frameworks in `Rⁿ`, targeting **Tay's
+theorem** (Tay 1984): a multigraph `G` is the underlying graph of
+an infinitesimally rigid body-bar framework in `Rⁿ` iff `G` is the
+edge-disjoint union of `d = n(n+1)/2` spanning trees. The proof
+route follows Whiteley 1988's matroid-union framing —
+Tutte–Nash-Williams falls out as a corollary of Edmonds'
+matroid-partition theorem applied to `d` copies of the cycle
+matroid. Layer 0 (the forward-mode dep-graph in
+`blueprint/src/chapter/body-bar.tex`) has landed, but the phase is
+**blocked at Layer 1**: the matroid-union machinery it depends on
+(`Matroid.Union`, Edmonds matroid partition) lives only in
+`apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean`, which do **not**
+build at any upstream revision — they need a never-committed
+`IsCircuitAxioms` module and the long-commented-out
+`FinsetCircuitMatroid` API. The phase is on hold pending that
+machinery building upstream (or a decision to formalize matroid-union
+locally); Tay's theorem in existence-of-realization form (with the
+algebraic-geometry lift to "almost all realizations are rigid"
+deferred) is the eventual target. The longer-horizon
 target beyond Phase 12 is the **molecular conjecture**
 (Katoh–Tanigawa 2011).
 
@@ -91,7 +94,7 @@ existing files or refactor across several).
 |     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness}.lean` |   ✓    |
 |    10 | Executable pebble game      | `PebbleGame/{Exec,Examples}.lean`, `Main.lean`                   |   ✓    |
 |    11 | Witness extraction          | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` |   ✓    |
-|    12 | Body-bar Tay theorem        | `CombinatorialRigidity/Matroid/`, `BodyBar/` (in progress)                         |  ⋯  |
+|    12 | Body-bar Tay theorem        | `CombinatorialRigidity/Matroid/`, `BodyBar/` (Layer 0 done; blocked)               |  ⋯  |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
