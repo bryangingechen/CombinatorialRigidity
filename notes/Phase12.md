@@ -37,7 +37,16 @@ dep-graph and lemma index; this file carries everything else.
   matroid union.
 - Edmonds 1965, *Minimum partition of a matroid into independent
   subsets* — matroid partition.
-- Oxley 2011, *Matroid Theory* (2nd ed.) — textbook treatment.
+- Oxley 2011, *Matroid Theory* (2nd ed.) — textbook treatment; the
+  matroid-theory cross-check (covers all four results below).
+
+Local PDFs on the shelf (`../.refs/`): `oxley-2011-matroid-theory.pdf`,
+`schrijver-2004-combinatorial-optimization.pdf` (clean modern
+union/intersection/partition proofs — matroid material in Vol. B),
+`edmonds-1965-minimum-partition-matroid.pdf`. The Edmonds-1970 /
+Nash-Williams-1966 primaries are *not* on the shelf — Oxley and
+Schrijver subsume them, and the working proofs are the
+`apnelson1/Matroid` WIP skeleton anyway.
 
 ## Current state
 

@@ -294,7 +294,11 @@ Jordán 2016 (*Combinatorial Rigidity: Graphs and Matroids in the
 Theory of Rigid Frameworks*, MSJ Memoirs 34) is the project's
 de-facto cross-check for rigidity-theory attributions; its
 bibliography resolves most papers the blueprint or notes would cite.
-A local PDF copy under `.refs/` (gitignored) is convenient when
+For **abstract matroid-theory** attributions (matroid union,
+submodular/polymatroid, Edmonds partition — Phases 12–15), the
+cross-check is Oxley 2011 (*Matroid Theory*, 2nd ed.); Schrijver's
+*Combinatorial Optimization* (Vol. B) carries clean modern proofs.
+Local PDF copies under `.refs/` (gitignored) are convenient when
 present.
 
 ### Reading PDFs in `.refs/`
