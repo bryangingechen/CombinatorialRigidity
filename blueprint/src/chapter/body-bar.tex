@@ -2,10 +2,12 @@
 \label{sec:body-bar}
 
 This chapter is the forward-mode authoritative dep-graph and lemma
-index for Phase~12 of the formalization. It is currently a planning
-skeleton; the section headers below correspond to the Layer plan
-in \texttt{notes/Phase12.md}, and the dependency-graph nodes will
-be added (red) and turned green as each Layer's Lean lands.
+index for Phase~12 of the formalization. Its nodes are currently
+\emph{red} (stated, not yet formalized): the dependency structure
+below is the phase's to-do list, with the section headers
+corresponding to the Layer plan in \texttt{notes/Phase12.md}. Each
+node gains its \texttt{\textbackslash lean\{\}} pointer and turns
+green as the matching Layer's Lean lands.
 
 The phase target is \textbf{Tay's theorem}~\cite{tay1984}: for
 $n \ge 2$ and $d = n(n+1)/2$, a multigraph $G$ on $b$ bodies
@@ -47,45 +49,235 @@ standard-basis specialization.
 \subsection{Matroid-union machinery}
 \label{sec:body-bar-matroid-union}
 
-% Layer 1: vendored from apnelson1/Matroid's WIP/Union.lean +
-% WIP/Submodular.lean under CombinatorialRigidity/Matroid/.
-% Re-states the relevant API as cited facts: Matroid.Union of an
-% indexed family, the union-indep iff existence-of-decomposition,
-% the matroid-partition theorem (Edmonds), and the polymatroid
-% rank formula underlying it.
+The first ingredient is the matroid-union operation and Edmonds'
+matroid-partition theorem~\cite{edmonds1965}, restated here as
+\emph{cited facts}. They are vendored into the project from the
+\texttt{apnelson1/Matroid} package's shelved \texttt{WIP/Union.lean}
+and \texttt{WIP/Submodular.lean} (both zero-sorry, unbuilt in the
+package only because of a stale import) under a new
+\texttt{CombinatorialRigidity/Matroid/Constructions/} mirror, so the
+chapter does not re-prove them in prose; the nodes below pin the
+imported declarations once Layer~1 lands the mirror.
+
+\begin{definition}[Matroid union of an indexed family]
+  \label{def:matroid-union}
+  Given a finite indexed family of matroids $M_{1}, \dots, M_{k}$
+  on a common ground set $E$, their \emph{union}
+  $\bigcup_{j} M_{j}$ is the matroid on $E$ whose independent sets
+  are the unions $I_{1} \cup \dots \cup I_{k}$ of sets $I_{j}$
+  independent in $M_{j}$.
+\end{definition}
+
+\begin{lemma}[Union independence by decomposition]
+  \label{lem:union-indep-iff}
+  \uses{def:matroid-union}
+  A set $I$ is independent in $\bigcup_{j} M_{j}$ if and only if it
+  decomposes as $I = \bigcup_{j} I_{j}$ with each $I_{j}$
+  independent in $M_{j}$ (and, in the disjoint-support form used
+  downstream, the $I_{j}$ pairwise disjoint).
+\end{lemma}
+
+\begin{theorem}[Edmonds' matroid-partition rank formula]
+  \label{thm:matroid-partition-rank}
+  \uses{def:matroid-union, lem:union-indep-iff}
+  The rank of $E'$ in $\bigcup_{j} M_{j}$ equals
+  $\min_{X \subseteq E'} \bigl(|E' \setminus X| + \sum_{j}
+  r_{M_{j}}(X)\bigr)$. In particular $E'$ is independent in the
+  union iff $|E''| \le \sum_{j} r_{M_{j}}(E'')$ for every
+  $E'' \subseteq E'$, the polymatroid-of-submodular-function
+  bound underlying the count characterization.
+\end{theorem}
 
 \subsection{The $k$-frame matroid as a union of cycle matroids}
 \label{sec:body-bar-k-frame}
 
-% Layer 2: Whiteley's Theorem 1. Definition of the generic
-% k-frame matrix F(G, X) on a multigraph; statement and proof
-% that the k-frame matroid equals the k-fold union of the cycle
-% matroid via the column-reorder argument.
+The carrier throughout is mathlib's core multigraph
+$\mathtt{Graph}\,\alpha\,\beta$: bodies are vertices (type $\alpha$,
+$G.\mathrm{vertexSet}$), bars are edges (type $\beta$,
+$G.\mathrm{edgeSet}$). The graphic matroid is
+$G.\mathrm{cycleMatroid} : \mathtt{Matroid}\,\beta$ from the
+\texttt{apnelson1/Matroid} package, whose bases are the forests of
+$G$ and whose rank on $E'$ is $|V'| - c(E')$ (vertices spanned minus
+connected components).
+
+\begin{definition}[Generic $k$-frame matroid]
+  \label{def:k-frame-matroid}
+  \uses{def:matroid-union}
+  For a multigraph $G$ and $k \ge 1$, the generic \emph{$k$-frame
+  matroid} $F(G, X)$ on the edge type $\beta$ is the linear matroid
+  (via \texttt{Matroid.ofFun}) of the formal $k \cdot |V|$-column
+  matrix whose row for edge $e = (u, v)$ carries indeterminate
+  coefficients across the $k$ vertex blocks, placing the generic
+  body-bar incidence pattern in each block.
+\end{definition}
+
+\begin{theorem}[$k$-frame matroid is the $k$-fold cycle-matroid union;
+  Whiteley Theorem~1]
+  \label{thm:k-frame-union-cycle}
+  \uses{def:k-frame-matroid, def:matroid-union, lem:union-indep-iff}
+  For every multigraph $G$ and every $k \ge 1$,
+  \[
+    F(G, X) \;=\; \bigcup_{j = 1}^{k} G.\mathrm{cycleMatroid},
+  \]
+  the $k$-fold union of the cycle matroid of $G$ (both sides
+  matroids on the edge type $\beta$).
+\end{theorem}
+\begin{proof}
+  \uses{lem:union-indep-iff}
+  Whiteley's column-reorder argument~\cite{whiteley1988}. For the
+  forward inclusion, an independent set in $F(G, X)$ admits a
+  nonzero $|E|$-minor; a nonzero monomial of its determinant, with
+  its variables set to $1$ and the rest to $0$, exhibits a
+  block-diagonal matrix whose $j$-th block is a forest-incidence
+  matrix, so the edge set decomposes into $k$ forests. Conversely,
+  given a forest decomposition $E = \bigsqcup_{j} E_{j}$, setting the
+  $j$-th block's variables on $E_{j}$ and $0$ elsewhere reduces to
+  $k$ independent forest-incidence blocks, so the set is independent
+  in the union by \cref{lem:union-indep-iff}.
+\end{proof}
 
 \subsection{Tree-packing as a corollary}
 \label{sec:body-bar-tree-packing}
 
-% Layer 3: Whiteley's Corollary 3. The matroid-partition theorem
-% specialized to k copies of the cycle matroid yields the count
-% characterization of k-forest decomposability, recovering
-% Tutte--Nash-Williams.
+Specializing the matroid-partition theorem to $k$ copies of the
+cycle matroid turns \cref{thm:k-frame-union-cycle} into a count
+characterization, recovering the Tutte--Nash-Williams tree-packing
+theorem~\cite{tutte1961,nashWilliams1961}. We introduce a
+$\mathtt{Graph}$-native sparsity predicate for the statement; it is
+fresh to Phase~12 and is \emph{not} migrated from the
+$\mathtt{SimpleGraph}$ sparsity of \cref{def:isSparse}.
+
+\begin{definition}[Graph $(k, \ell)$-sparsity and tightness]
+  \label{def:graph-sparse}
+  A multigraph $G$ is \emph{$(k, \ell)$-sparse} if every non-empty
+  set of bars $E'$ spanning vertex set $V'$ satisfies
+  $|E'| \le k|V'| - \ell$, and \emph{$(k, \ell)$-tight} if it is
+  sparse with global equality $|E| = k|V| - \ell$. Body-bar Tay is
+  the $\ell = k = d$ case.
+\end{definition}
+
+\begin{theorem}[Union independence by the count;
+  Whiteley Corollary~3]
+  \label{thm:unionPow-cycle-indep-iff-sparse}
+  \uses{def:graph-sparse, thm:k-frame-union-cycle,
+    thm:matroid-partition-rank}
+  A set of bars is independent in the $k$-fold cycle-matroid union
+  $\bigcup_{j=1}^{k} G.\mathrm{cycleMatroid}$ if and only if $G$
+  restricted to that set is $(k, k)$-sparse.
+\end{theorem}
+\begin{proof}
+  \uses{thm:matroid-partition-rank}
+  Combine \cref{thm:matroid-partition-rank} with the cycle-matroid
+  rank formula $r(E') = |V'| - c(E')$: the partition bound
+  $|E''| \le \sum_{j} r(E'') = k(|V''| - c(E''))$ rearranges to the
+  $(k, k)$-sparsity inequality, since $k \cdot c(E'') \ge k$ on a
+  non-empty $E''$.
+\end{proof}
+
+\begin{theorem}[Tutte--Nash-Williams tree-packing]
+  \label{thm:tutte-nash-williams}
+  \uses{def:graph-sparse, thm:unionPow-cycle-indep-iff-sparse}
+  A multigraph $G$ is the edge-disjoint union of $k$ forests if and
+  only if $G$ is $(k, k)$-sparse.
+\end{theorem}
+\begin{proof}
+  \uses{thm:unionPow-cycle-indep-iff-sparse, lem:union-indep-iff}
+  Edge-disjoint $k$-forest decomposition is exactly independence of
+  the whole edge set in the cycle-matroid union
+  (\cref{lem:union-indep-iff}, with the forests as the per-copy
+  independent sets), which \cref{thm:unionPow-cycle-indep-iff-sparse}
+  identifies with $(k, k)$-sparsity.
+\end{proof}
+
+\begin{corollary}[Spanning-tree refinement]
+  \label{cor:k-spanning-trees}
+  \uses{def:graph-sparse, thm:tutte-nash-williams}
+  If $G$ is $(k, k)$-tight then the $k$ edge-disjoint forests of
+  \cref{thm:tutte-nash-williams} are spanning trees. This is the
+  ``union of $d$ spanning trees'' form of Tay's theorem
+  (Whiteley Theorem~13).
+\end{corollary}
+\begin{proof}
+  \uses{thm:tutte-nash-williams}
+  The tight global equality $|E| = k|V| - k$ forces each of the $k$
+  forests to have exactly $|V| - 1$ edges and to span $V$, hence to
+  be a spanning tree.
+\end{proof}
 
 \subsection{Body-bar frameworks and the rigidity matrix}
 \label{sec:body-bar-framework}
 
-% Layer 4: definitions following Whiteley 1988 Section 3 and Tay
-% 1984 Section 5. Body-bar framework, rigidity map, infinitesimal
-% rigidity, basic API mirroring \cref{sec:frameworks} for the
-% body-bar setting.
+Following Whiteley~\cite{whiteley1988} \S3 and Tay~\cite{tay1984}
+\S5, a body-bar framework assigns each bar a two-extensor (Pl\"ucker)
+coordinate in $\mathbb{R}^{d}$, $d = n(n+1)/2$; the rigidity map is
+the bar-constraint linear map analogous to the bar-joint rigidity
+map of \cref{sec:frameworks}.
+
+\begin{definition}[Body-bar framework]
+  \label{def:body-bar-framework}
+  A \emph{body-bar framework} in $\mathbb{R}^{n}$ on a multigraph
+  $G$ pairs $G$ with a placement assigning each bar
+  $e \in G.\mathrm{edgeSet}$ a two-extensor coordinate in
+  $\mathbb{R}^{d}$, $d = n(n+1)/2$ (a point of the Pl\"ucker
+  embedding of $\mathrm{Gr}(2, n+1)$, with degenerate coordinates
+  permitted).
+\end{definition}
+
+\begin{definition}[Body-bar rigidity map]
+  \label{def:rigidity-map-body-bar}
+  \uses{def:body-bar-framework}
+  The \emph{rigidity map} of a body-bar framework is the linear map
+  from body motions ($G.\mathrm{vertexSet} \to \mathbb{R}^{d}$) to
+  bar constraints ($G.\mathrm{edgeSet} \to \mathbb{R}$) with one row
+  per bar, the constraint row of Whiteley~\cite{whiteley1988} \S3.
+\end{definition}
+
+\begin{definition}[Infinitesimal rigidity of a body-bar framework]
+  \label{def:infinitesimally-rigid-body-bar}
+  \uses{def:rigidity-map-body-bar}
+  A body-bar framework on $b$ bodies is \emph{infinitesimally rigid}
+  when its rigidity map has rank $d \cdot b - d$, i.e.\ its kernel is
+  exactly the $d$-dimensional space of trivial screw motions ---
+  the body-bar analogue of \cref{def:isInfinitesimallyRigid}.
+\end{definition}
 
 \subsection{Tay's theorem (existence-of-realization form)}
 \label{sec:body-bar-tay}
 
-% Layer 5a: Whiteley's Theorem 8 in its witness form. There
-% exists an independent (resp. rigid + independent) body-bar
-% framework on G in R^n iff |E'| <= d|V'| - d for all non-empty
-% subsets E' (equivalently, G is the union of d edge-disjoint
-% forests / spanning trees). Proof: specialize each bar's
-% two-extensor coordinate to a standard-basis Plücker vector
-% indexed by the bar's forest in a chosen Tutte--Nash-Williams
-% partition; verify independence + rigidity directly.
+The chapter's target, in Whiteley's witness form~\cite{whiteley1988}
+(Theorem~8). We ship only the \emph{existence-of-realization} form:
+there exists an independent (resp.\ isostatic) body-bar framework iff
+the count holds, witnessed by the standard-basis specialization.
+Whiteley's stronger ``almost all realizations are rigid'' phrasing,
+via the irreducible-variety lift of Proposition~6
+in~\cite{whiteley1988}, is \emph{deferred} out of Phase~12
+(re-assessed at Phase~13; see \texttt{notes/Phase12.md} Layer~5b).
+
+\begin{theorem}[Tay's theorem, independent form; Whiteley Theorem~8]
+  \label{thm:tay-witness}
+  \uses{def:body-bar-framework, def:infinitesimally-rigid-body-bar,
+    def:graph-sparse, thm:tutte-nash-williams, cor:k-spanning-trees}
+  Let $n \ge 2$ and $d = n(n+1)/2$. A multigraph $G$ carries an
+  independent body-bar framework in $\mathbb{R}^{n}$ iff $G$ is
+  $(d, d)$-sparse (equivalently, by \cref{thm:tutte-nash-williams},
+  $G$ is the union of $d$ edge-disjoint forests). It carries an
+  \emph{isostatic} (independent and infinitesimally rigid) body-bar
+  framework iff $G$ is $(d, d)$-tight (equivalently, by
+  \cref{cor:k-spanning-trees}, the union of $d$ spanning trees) ---
+  the count $|E| = d(b - 1)$ of Tay~\cite{tay1984}.
+\end{theorem}
+\begin{proof}
+  \uses{thm:k-frame-union-cycle, thm:tutte-nash-williams,
+    cor:k-spanning-trees}
+  Specialize each bar's two-extensor coordinate to the standard
+  basis vector $b_{e} = e_{j(e)} \in \mathbb{R}^{d}$, where $j(e)$
+  is the index of $e$'s forest in a chosen tree-packing partition
+  (\cref{thm:tutte-nash-williams}). This is the reverse direction of
+  \cref{thm:k-frame-union-cycle} lifted from indeterminate to real
+  coefficients: the rigidity matrix becomes block-diagonal with
+  $d$ full-rank forest-incidence blocks, so the framework is
+  independent, and isostatic exactly when each block is a spanning
+  tree (\cref{cor:k-spanning-trees}). The degenerate $b_{e}$ lie on
+  the Pl\"ucker variety vacuously, so this is a valid body-bar
+  realization.
+\end{proof}

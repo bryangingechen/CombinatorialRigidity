@@ -22,7 +22,7 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 ## Project status
 
 Phases 1–11 are complete and carry no `sorry`s; **Phase 12 (Tay's
-body-bar theorem) is in planning**, see below. The main theorem
+body-bar theorem) is in progress**, see below. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
@@ -52,7 +52,7 @@ recursion (the certificate-form correctness theorem collapses into
 the verdict's type) rather than shipping the witness work as a
 sibling extraction wrapper.
 
-**Phase 12** (in planning) extends the development to body-bar
+**Phase 12** (in progress) extends the development to body-bar
 frameworks in `Rⁿ`, targeting **Tay's theorem** (Tay 1984): a
 multigraph `G` is the underlying graph of an infinitesimally
 rigid body-bar framework in `Rⁿ` iff `G` is the edge-disjoint
@@ -91,7 +91,7 @@ existing files or refactor across several).
 |     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness}.lean` |   ✓    |
 |    10 | Executable pebble game      | `PebbleGame/{Exec,Examples}.lean`, `Main.lean`                   |   ✓    |
 |    11 | Witness extraction          | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` |   ✓    |
-|    12 | Body-bar Tay theorem        | `CombinatorialRigidity/Matroid/`, `BodyBar/` (planning)                            |  ⋯  |
+|    12 | Body-bar Tay theorem        | `CombinatorialRigidity/Matroid/`, `BodyBar/` (in progress)                         |  ⋯  |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

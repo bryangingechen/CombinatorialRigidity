@@ -1,6 +1,6 @@
 # Phase 12 — Body-bar Tay theorem (planning)
 
-**Status:** planning. Not yet started.
+**Status:** in progress. Layer 0 complete (chapter dep-graph populated).
 
 This file is the per-phase work record. See `../ROADMAP.md` §12
 for the high-level summary and `../DESIGN.md` for cross-cutting
@@ -62,15 +62,32 @@ ingredients:
 
 ## Current state
 
-Planning. Nothing committed yet. References gathered; matroid-package
-survey complete (verified against the pinned `apnelson1/Matroid` rev);
-Whiteley 1988 §2–§3 and Tay 1984 §4–§5 read. **Multigraph carrier
-decided: mathlib's core `Graph α β`** (see *Architectural choices*).
-Next concrete step: Layer 0 — `blueprint/src/chapter/body-bar.tex`
-already exists as a prose skeleton (intro + section headers, wired
-into `main.tex`); populate it with the Whiteley-route dep-graph (red
-nodes) and sync the user-facing status surfaces. The carrier decision
-is pre-resolved.
+Layer 0 done. The phase-opening commit (`6b662ad`/`3676d86`) already
+synced the four user-facing status surfaces (ROADMAP Status table +
+§12, README, `home_page/index.md`, `intro.tex` Phase plan +
+dep-graph-status line) and committed the carrier decision. This commit
+populates `blueprint/src/chapter/body-bar.tex` with the full
+Whiteley-route dep-graph: 13 red nodes (no `\lean{}`/`\leanok` yet,
+forward-mode) across the five subsections, with `\uses{}` chains
+encoding the proof plan. `blueprint/verify.sh` green; all 13 nodes
+render in the dep-graph; cross-ref / cite checks clean.
+
+References gathered; matroid-package survey complete (verified against
+the pinned `apnelson1/Matroid` rev); Whiteley 1988 §2–§3 and Tay 1984
+§4–§5 read. **Multigraph carrier decided: mathlib's core `Graph α β`**
+(see *Architectural choices*).
+
+Next concrete step: **Layer 1** — vendor `WIP/Submodular.lean` +
+`WIP/Union.lean` under `CombinatorialRigidity/Matroid/Constructions/`
+(import fix `import Matroid.Constructions.Submodular` →
+`import CombinatorialRigidity.Matroid.Constructions.Submodular`; trim
+Submodular to the `PolymatroidFn` / `ofSubmodular` /
+`polymatroid_rank_eq` sub-API Union needs), flip `\leanok` on
+`def:matroid-union` / `lem:union-indep-iff` /
+`thm:matroid-partition-rank` with their `\lean{}` pointers, and open
+the `[matroid]` *Mirrored* FRICTION entry. Smallest first commit: land
+the Submodular mirror building in isolation (it has no project
+dependencies), before vendoring Union on top.
 
 ## Architectural choices made up front
 
@@ -420,22 +437,33 @@ edit phase 12.5 or as Phase 13 Layer 0.
 ## Lemma checklist
 
 High-level outline; per-Layer leaf-level lemmas live in the
-blueprint chapter's dep-graph as red nodes (forward mode).
+blueprint chapter's dep-graph as red nodes (forward mode). The
+chapter dep-graph node labels are listed alongside each Layer (all
+red as of Layer 0; flip `\leanok` + add `\lean{}` per Layer).
 
+- [x] **L0 (chapter dep-graph):** `body-bar.tex` populated with 13
+  red nodes; user-facing status surfaces synced (phase-open commit).
 - [ ] **L1 (mirror):** `Matroid.Union`, `union_indep_iff'`,
   `matroid_partition'`, `matroid_partition_eRk'`,
-  `PolymatroidFn`, `ofSubmodular`, `polymatroid_rank_eq`
+  `PolymatroidFn`, `ofSubmodular`, `polymatroid_rank_eq` —
+  nodes `def:matroid-union`, `lem:union-indep-iff`,
+  `thm:matroid-partition-rank`
 - [ ] **L2 (k-frame):** `Graph.kFrameMatroid`,
   `Graph.kFrameMatroid_eq_unionPow_cycleMatroid` (Whiteley Theorem 1)
+  — nodes `def:k-frame-matroid`, `thm:k-frame-union-cycle`
 - [ ] **L3 (tree-packing):** `Graph.IsSparse` / `Graph.IsTight`,
   `Graph.unionPow_cycleMatroid_indep_iff_isSparse` (Whiteley
   Corollary 3), `Graph.exists_kForest_partition_iff_isSparse`
   (Tutte–Nash-Williams),
-  `Graph.exists_spanningTree_partition_iff_isTight`
+  `Graph.exists_spanningTree_partition_iff_isTight` — nodes
+  `def:graph-sparse`, `thm:unionPow-cycle-indep-iff-sparse`,
+  `thm:tutte-nash-williams`, `cor:k-spanning-trees`
 - [ ] **L4 (framework):** `BodyBarFramework`, `rigidityMap`,
-  `IsInfinitesimallyRigid`, basic monotonicity API
+  `IsInfinitesimallyRigid`, basic monotonicity API — nodes
+  `def:body-bar-framework`, `def:rigidity-map-body-bar`,
+  `def:infinitesimally-rigid-body-bar`
 - [ ] **L5a (Tay):** `exists_independent_iff_isSparse`,
-  `exists_isInfinitesimallyRigid_iff_isTight`
+  `exists_isInfinitesimallyRigid_iff_isTight` — node `thm:tay-witness`
 
 ## Open questions
 

@@ -46,7 +46,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–11 complete; Phase 12 in planning.**
+* **Phases 1–11 complete; Phase 12 in progress.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -73,7 +73,7 @@ project; commit history is preserved with paths rewritten.
   lands in-place in `chapter/{dfs,pebble-game,executable}.tex`.
   Phase 10 details are in `notes/Phase10.md` and
   `blueprint/src/chapter/executable.tex`.
-* **Phase 12 (planning)** — **Tay's theorem** for body-bar
+* **Phase 12 (in progress)** — **Tay's theorem** for body-bar
   frameworks in `Rⁿ`. The proof route follows Whiteley 1988's
   matroid-union framing: the generic `k`-frame matroid on a
   multigraph is identified with the `k`-fold union of the cycle
