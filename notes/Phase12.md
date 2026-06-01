@@ -1,6 +1,7 @@
 # Phase 12 — Matroid foundations: submodular functions & matroid union (work log)
 
-**Status:** in progress (Layer 0 = phase opening).
+**Status:** in progress (Layer 1 done = route spike + decision; route
+(a) submodular-repair chosen).
 
 This phase formalizes the abstract-matroid prerequisites of the
 body-bar route: the matroid-from-submodular-function construction and
@@ -50,14 +51,22 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-Layer 0 (this commit): phase opened. `matroid-union.tex` populated
-with 8 red forward-mode nodes; user-facing status surfaces synced
-(ROADMAP table + §12–§15, README, `home_page/index.md`, `intro.tex`);
-Apache-2.0 `LICENSE` added; provenance/attribution recorded. No Lean
-yet (Layer-0 pattern).
+Layer 1 done (this commit): **route spike complete; route (a)
+submodular-repair chosen**, rationale below. The spike (throwaway
+`CombinatorialRigidity/Matroid/SpikeA.lean`, now deleted) confirmed
+`FiniteCircuitMatroid.mk` cleanly accepts the Set-lifted Finset
+circuit predicate `fun C => ∃ C₀ : Finset α, ↑C₀ = C ∧ Minimal P C₀`:
+the skeleton built green with `sorry`s only in the two hard axiom
+proofs (`circuit_antichain`, `circuit_elimination`) and the helper
+revival. No production Lean retained (spike-deliverable pattern).
 
-Next concrete step is **Layer 1, the route spike** (below): no
-production Lean lands until the route is chosen.
+Layer 0 (prior commit): phase opened. `matroid-union.tex` populated
+with 8 red forward-mode nodes; user-facing status surfaces synced;
+Apache-2.0 `LICENSE` added; provenance/attribution recorded.
+
+Next concrete step is **Layer 2a** (below): create
+`CombinatorialRigidity/Matroid/Constructions/Submodular.lean` and
+land `def:submodular`, `def:ofSubmodular`, then the polymatroid nodes.
 
 ## Architectural choices made up front
 
@@ -118,22 +127,48 @@ machinery (an over-optimistic survey claimed otherwise; it was wrong).
 Blueprint dep-graph (`matroid-union.tex`); status-surface sync;
 `LICENSE`; provenance. No Lean.
 
-### Layer 1 — route spike (decision gate; minimal throwaway Lean)
-Prototype both routes far enough to compare actual cost, then record
-the decision + rationale here (this resolves the deferred route choice):
-- **(a) Submodular-repair.** Rebase `ofSubmodular` (and the
-  `polymatroid_rank_eq` rank argument) from `FinsetCircuitMatroid` onto
-  the live `FiniteCircuitMatroid`. The `cycleMatroid` precedent (same
-  constructor) suggests this is mechanical; risk is the Finset→Set
-  circuit-axiom translation. Proofs already exist (0 sorry).
-- **(b) Union-from-intersection.** Build `Matroid.Union` from the live
-  `Matroid.Intersection` via duality, bypassing the submodular
-  machinery. Fewer vendored lines, more elegant, but a genuinely new
-  derivation to formalize.
-Spike deliverable: one of `ofSubmodular`-on-`FiniteCircuitMatroid` or
-`Matroid.Union`-from-`Intersection` building (possibly with `sorry`s in
-non-load-bearing spots) far enough to gauge effort. Pick, then delete
-the losing prototype.
+### Layer 1 — route spike (DONE; **route (a) chosen**)
+
+**Decision: route (a), submodular-repair.** Spiked in a throwaway
+`Matroid/SpikeA.lean` (deleted post-decision). The spike rebased
+`ofSubmodular` onto the live `FiniteCircuitMatroid` by keeping the
+circuit predicate `Finset`-valued internally and feeding the
+constructor a Set-valued lift `IsCircuitS C := ∃ C₀ : Finset α,
+↑C₀ = C ∧ Minimal P C₀`. It **built green** with `sorry` only in the
+two hard axiom fields and the helper. This confirmed the
+`cycleMatroid` precedent: the constructor-lift is mechanical
+(`empty_not_isCircuit` / `circuit_finite` / `circuit_subset_ground`
+all closed trivially off the `∃ C₀` lift).
+
+**Why (a) over (b) — three measured findings:**
+1. **(b) has no scaffolding and would be invent-from-scratch.** The
+   package's *only* matroid-union (`WIP/Union.lean`'s `Matroid.Union`)
+   is itself **defined via `adjMap`/`sum'` and its rank theorem
+   `matroid_partition'` routes through `ofPolymatroidFn` +
+   `polymatroid_rank_eq`** — i.e. the union construction already
+   depends on the submodular machinery. There is no
+   union-from-intersection derivation anywhere; `Matroid.Intersection`
+   exposes only `exists_common_ind` (a cardinality min-max), not a
+   rank-function union. (b) would be a genuinely new formalization
+   with zero reuse.
+2. **(b) wouldn't deliver the polymatroid rank formula** (Edmonds
+   1970) that Phase 14's k-frame argument needs — that lives only in
+   the submodular file.
+3. **(a)'s remaining work is bounded revival, not invention.** The
+   `ofSubmodular` / `polymatroid_rank_eq` proofs exist and are
+   complete; L2a is: (i) re-do the Finset→Set constructor lift
+   already validated by the spike, (ii) reconstruct ~3 helper lemmas
+   that lived in the never-committed `IsCircuitAxioms`
+   (`setOf_minimal_antichain`, `intro_elimination_nontrivial`,
+   `exists_minimal_satisfying_subset` — the last is a verbatim revival
+   of a commented `ForMathlib/Finset.lean` lemma, modulo minor
+   `Finset.exists_minimal` API drift), and (iii) chase the
+   `Matroid.r` → `Matroid.rk` rename (17 sites in `polymatroid_rank_eq`).
+
+**Two extra bit-rot points found beyond the audit** (both in scope
+for L2a, neither a blocker): the WIP imports a never-committed
+`Matroid.Constructions.IsCircuitAxioms`, and `polymatroid_rank_eq`
+uses the old `Matroid.r` (now `rk`).
 
 ### Layer 2 — execute the chosen route
 Mirror dir `CombinatorialRigidity/Matroid/`. For route (a), likely:
@@ -155,7 +190,8 @@ High-level outline; the leaf-level to-do list is the
 
 - [x] **L0:** `matroid-union.tex` populated; surfaces synced; LICENSE;
   provenance.
-- [ ] **L1:** route spike + decision (recorded here).
+- [x] **L1:** route spike + decision — **route (a) chosen** (recorded
+  above; spike built green, deleted).
 - [ ] **L2a:** `def:submodular`, `def:ofSubmodular`,
   `def:polymatroidFn`, `def:ofPolymatroidFn`, `lem:polymatroid-rank`.
 - [ ] **L2b:** `def:matroid-union`, `lem:union-indep-iff`,
@@ -163,7 +199,8 @@ High-level outline; the leaf-level to-do list is the
 
 ## Blockers / open questions
 
-- **Route choice** — resolved at L1, not before.
+- ~~**Route choice**~~ — **resolved at L1: route (a), submodular-repair**
+  (see *Layer 1* above for the three measured findings).
 - **`Matroid.ofFun` / polynomial-ring coefficient questions** belong to
   Phase 14 (k-frame), not here.
 - **Upstream issue against `apnelson1/Matroid`** — optional. We are no
@@ -174,11 +211,22 @@ High-level outline; the leaf-level to-do list is the
 
 ## Hand-off / next phase
 
-Next concrete commit: **Layer 1 route spike.** Prototype
-`ofSubmodular` on `FiniteCircuitMatroid` (route a) and
-union-from-`Intersection` (route b) far enough to compare, pick one,
-record the decision in *Layer plan → Layer 1* above, and delete the
-losing prototype. Production Lean (L2) follows once the route is fixed.
+Next concrete commit: **Layer 2a, first node `def:submodular`.**
+Create `CombinatorialRigidity/Matroid/Constructions/Submodular.lean`
+with the Peter-Nelson attribution header (see *Architectural choices*
+→ provenance), and land the `Submodular` predicate (`def:submodular`)
++ a build-green file. The spike already validated the harder
+`def:ofSubmodular` constructor-lift recipe (keep the circuit predicate
+`Finset`-valued; feed `FiniteCircuitMatroid.mk` the Set lift
+`∃ C₀ : Finset α, ↑C₀ = C ∧ Minimal P C₀`), so `def:ofSubmodular` is a
+natural same-or-next commit once `def:submodular` lands — discharge the
+two `sorry`'d axiom fields (`circuit_antichain` via
+`setOf_minimal_antichain`, `circuit_elimination` via the WIP's
+elimination calc + `intro_elimination_nontrivial`) by reconstructing
+those helpers in the file. Flip the matching `matroid-union.tex` nodes
+green in the same commits. `polymatroid_rank_eq` (with the
+`Matroid.r` → `rk` rename) and the union file are later L2a/L2b
+commits — assess scope once `ofSubmodular` closes.
 
 Phases 13–15 are scoped in `blueprint/src/chapter/{matroid-union →
 body-bar}.tex` and `../ROADMAP.md` §13–§15 but **not opened** (no
