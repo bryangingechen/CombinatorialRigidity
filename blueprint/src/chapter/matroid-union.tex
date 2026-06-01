@@ -82,6 +82,8 @@ attribution and the list of modifications.
 
 \begin{lemma}[Polymatroid rank formula]
   \label{lem:polymatroid-rank}
+  \lean{Matroid.polymatroid_rank_eq}
+  \leanok
   \uses{def:ofPolymatroidFn}
   For a polymatroid rank function $f$ and any $X \subseteq E$, the
   rank of $X$ in $M_f$ is
@@ -90,6 +92,7 @@ attribution and the list of modifications.
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:ofSubmodular}
   Edmonds~\cite{edmonds1970}. The lower bound holds since any
   independent subset of $X$ meets each $Y$ in at most $f(Y)$ elements

@@ -76,7 +76,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — blocks Phase 12 matroid-union mirror
+### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (Submodular half ported; Union half = L2b)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
   `matroid_partition'` / `matroid_partition_eRk'`, plus its
@@ -134,6 +134,29 @@ housekeeping pass once their resolution is fully indexed.
   simp-normal form (hard `simpNF` lint error). Fix: restrict to
   `@[simps! E]`, matching the `ofSubmodular` precedent in the same file —
   only the ground-set projection is wanted as a simp lemma.
+- **L2a rank lemma (2026-06):** `polymatroid_rank_eq` (+ private
+  `polymatroid_rank_eq_on_indep`) landed green, 0 sorry, closing L2a.
+  Four porting points, all bounded: (i) the WIP's `Matroid.r` is now
+  `Matroid.rk` (the def + every dot-lemma); the relevant renames were
+  `Indep.eRk → Indep.eRk_eq_encard`, `IsBasis.r`/`IsBasis.rk_eq_rk →
+  IsBasis.ncard_eq_rk` (note: the new lemma is the `ncard = rk`
+  *direction*, so the rewrite gives `(↑B).ncard`, cleared with
+  `Set.ncard_coe_finset`, lowercase `f`). (ii) The WIP's `self_eq_add_left`
+  simp lemma was removed from this mathlib; the `a = 0 + a` residual it
+  handled is closed by `simp only [zero_add, true_and]` directly (drop the
+  lemma, no replacement needed). (iii) two imports the WIP got transitively
+  are not in the minimal set: `Mathlib.Tactic.Cases` (for `induction'`,
+  here rewritten to non-prime `induction … using … with | @h₁ Y hY IH`)
+  and `Mathlib.Data.Finset.CastCard` (`cast_card_union` / `cast_card_sdiff`).
+  (iv) the WIP's two `-- thanks aesop` `simp_all only [...]` lemma lists
+  carried stale names (`ofPolymatroidFn_Indep`, `IndepMatroid.ofFinset_indep`)
+  from the old `IndepMatroid.ofFinset`-based construction — our matroid is
+  `FiniteCircuitMatroid`-built, so those projections don't exist; deleting
+  them from the lists leaves `simp_all` closing both goals unchanged. General
+  lesson: when porting an aesop-generated `simp_all only [long list]`, treat
+  construction-specific projection names in the list as the first thing to
+  prune on an "unknown identifier" — the surrounding `simp_all` is usually
+  robust to their removal.
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of
