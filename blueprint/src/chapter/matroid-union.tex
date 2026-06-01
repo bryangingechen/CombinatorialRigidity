@@ -41,6 +41,8 @@ attribution and the list of modifications.
 
 \begin{definition}[Submodular function]
   \label{def:submodular}
+  \lean{Matroid.Submodular}
+  \leanok
   An integer-valued set function $f$ on the subsets of a finite
   ground set $E$ is \emph{submodular} if
   $f(X \cap Y) + f(X \cup Y) \le f(X) + f(Y)$ for all $X, Y$.
@@ -56,6 +58,9 @@ attribution and the list of modifications.
 
 \begin{definition}[Matroid of a submodular function]
   \label{def:ofSubmodular}
+  \lean{Matroid.ofSubmodular, Matroid.circuit_ofSubmodular_iff,
+    Matroid.indep_ofSubmodular_iff}
+  \leanok
   \uses{def:submodular}
   For a non-decreasing submodular $f$, the \emph{induced matroid}
   $M_f$ on $E$ has as its circuits the minimal non-empty sets $C$

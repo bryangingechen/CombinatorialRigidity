@@ -1,7 +1,7 @@
 # Phase 12 — Matroid foundations: submodular functions & matroid union (work log)
 
-**Status:** in progress (Layer 1 done = route spike + decision; route
-(a) submodular-repair chosen).
+**Status:** in progress (Layer 2a underway: the submodular file landed
+green — `def:submodular`, `def:ofSubmodular`. Polymatroid nodes next).
 
 This phase formalizes the abstract-matroid prerequisites of the
 body-bar route: the matroid-from-submodular-function construction and
@@ -51,22 +51,38 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-Layer 1 done (this commit): **route spike complete; route (a)
-submodular-repair chosen**, rationale below. The spike (throwaway
-`CombinatorialRigidity/Matroid/SpikeA.lean`, now deleted) confirmed
-`FiniteCircuitMatroid.mk` cleanly accepts the Set-lifted Finset
-circuit predicate `fun C => ∃ C₀ : Finset α, ↑C₀ = C ∧ Minimal P C₀`:
-the skeleton built green with `sorry`s only in the two hard axiom
-proofs (`circuit_antichain`, `circuit_elimination`) and the helper
-revival. No production Lean retained (spike-deliverable pattern).
+Layer 2a underway (this commit): created
+`CombinatorialRigidity/Matroid/Constructions/Submodular.lean` (non-`module`,
+since the `apnelson1/Matroid` package is not module-converted — same
+constraint as `LinearRigidityMatroid.lean`), ported from
+`apnelson1/Matroid`'s `WIP/Submodular.lean` with the Peter-Nelson
+attribution header. Landed green, **0 sorry**: `Matroid.Submodular`
+(`def:submodular`), `Matroid.ofSubmodular` (`def:ofSubmodular`, rebased
+onto the live `FiniteCircuitMatroid` via the Set-lift
+`∃ C₀, ↑C₀ = C ∧ Minimal P C₀` validated by the L1 spike), and the API
+`circuit_ofSubmodular_iff` / `indep_ofSubmodular_iff`. The three helpers
+the WIP pulled from the never-committed `IsCircuitAxioms` /
+commented-out `ForMathlib/Finset.lean` are reconstructed as `private`
+lemmas in the file: `setOf_minimal_antichain`,
+`exists_minimal_satisfying_subset`, `intro_elimination_nontrivial`.
+Both `matroid-union.tex` nodes flipped green; `checkdecls` passes; the
+file is imported from the top-level `CombinatorialRigidity.lean`.
 
-Layer 0 (prior commit): phase opened. `matroid-union.tex` populated
-with 8 red forward-mode nodes; user-facing status surfaces synced;
-Apache-2.0 `LICENSE` added; provenance/attribution recorded.
+**Remaining L2a:** the polymatroid layer — `PolymatroidFn`
+(`def:polymatroidFn`), `ofPolymatroidFn` (`def:ofPolymatroidFn`), and
+`polymatroid_rank_eq` (`lem:polymatroid-rank`). The last needs the
+`Matroid.r` → `rk` rename chase (17 sites in the WIP) noted at L1.
 
-Next concrete step is **Layer 2a** (below): create
-`CombinatorialRigidity/Matroid/Constructions/Submodular.lean` and
-land `def:submodular`, `def:ofSubmodular`, then the polymatroid nodes.
+Layer 1 (prior commit): route spike complete; **route (a)
+submodular-repair chosen** (rationale below). Layer 0: phase opened,
+`matroid-union.tex` populated, surfaces synced, `LICENSE` + provenance.
+
+Two porting gotchas hit and resolved (see FRICTION `[matroid]` L2a
+note): the minimal import set does not transitively expose `linarith`
+(added `import Mathlib.Tactic.Linarith`); `LinearOrderedAddCommMonoid`
+was refactored out of this mathlib, so `Submodular`'s bound is
+`[AddCommMonoid β] [LinearOrder β]` (order-compat instance dropped per
+the `unusedArguments` linter).
 
 ## Architectural choices made up front
 
@@ -192,8 +208,10 @@ High-level outline; the leaf-level to-do list is the
   provenance.
 - [x] **L1:** route spike + decision — **route (a) chosen** (recorded
   above; spike built green, deleted).
-- [ ] **L2a:** `def:submodular`, `def:ofSubmodular`,
-  `def:polymatroidFn`, `def:ofPolymatroidFn`, `lem:polymatroid-rank`.
+- [~] **L2a:** `def:submodular` ✓, `def:ofSubmodular` ✓ (+
+  `circuit_ofSubmodular_iff` / `indep_ofSubmodular_iff`);
+  `def:polymatroidFn`, `def:ofPolymatroidFn`, `lem:polymatroid-rank`
+  still to land.
 - [ ] **L2b:** `def:matroid-union`, `lem:union-indep-iff`,
   `thm:matroid-partition-rank`.
 
@@ -211,22 +229,31 @@ High-level outline; the leaf-level to-do list is the
 
 ## Hand-off / next phase
 
-Next concrete commit: **Layer 2a, first node `def:submodular`.**
-Create `CombinatorialRigidity/Matroid/Constructions/Submodular.lean`
-with the Peter-Nelson attribution header (see *Architectural choices*
-→ provenance), and land the `Submodular` predicate (`def:submodular`)
-+ a build-green file. The spike already validated the harder
-`def:ofSubmodular` constructor-lift recipe (keep the circuit predicate
-`Finset`-valued; feed `FiniteCircuitMatroid.mk` the Set lift
-`∃ C₀ : Finset α, ↑C₀ = C ∧ Minimal P C₀`), so `def:ofSubmodular` is a
-natural same-or-next commit once `def:submodular` lands — discharge the
-two `sorry`'d axiom fields (`circuit_antichain` via
-`setOf_minimal_antichain`, `circuit_elimination` via the WIP's
-elimination calc + `intro_elimination_nontrivial`) by reconstructing
-those helpers in the file. Flip the matching `matroid-union.tex` nodes
-green in the same commits. `polymatroid_rank_eq` (with the
-`Matroid.r` → `rk` rename) and the union file are later L2a/L2b
-commits — assess scope once `ofSubmodular` closes.
+Next concrete commit: **continue Layer 2a, the polymatroid layer** in
+`Constructions/Submodular.lean` (same file). Port from the WIP, in
+order: `PolymatroidFn` (`def:polymatroidFn`) and `ofPolymatroidFn`
+(`def:ofPolymatroidFn`) — both light wrappers around the now-landed
+`ofSubmodular` plus `indep_ofPolymatroidFn_iff` — then the substantive
+`polymatroid_rank_eq` (`lem:polymatroid-rank`). The rank lemma is the
+one with real porting cost: the WIP's `polymatroid_rank_eq` /
+`polymatroid_rank_eq_on_indep` use the old `Matroid.r` (now `rk`), so
+chase the rename (~17 sites per the L1 audit) and re-check the
+`r`-vs-`rk`/`eRk` API names against this mathlib. Smallest forward
+commit: land `def:polymatroidFn` + `def:ofPolymatroidFn` + their indep
+iff (a clean, quick win); assess `polymatroid_rank_eq` scope once those
+close. Flip the matching `matroid-union.tex` nodes green per commit.
+
+After L2a, **L2b** is `Constructions/Union.lean`: `Matroid.Union`,
+`union_indep_iff`, `matroid_partition'` / `matroid_partition_eRk'`
+(nodes `def:matroid-union`, `lem:union-indep-iff`,
+`thm:matroid-partition-rank`). The WIP `Union.lean` routes through
+`ofPolymatroidFn` + `polymatroid_rank_eq`, so it depends on L2a closing
+first.
+
+Reusable recipe for the port (validated this commit): non-`module`
+file, Peter-Nelson header, `import Mathlib.Tactic.Linarith` explicitly
+(not transitive), and for any new constructor reuse the Set-lift
+`∃ C₀, ↑C₀ = C ∧ Minimal P C₀` pattern.
 
 Phases 13–15 are scoped in `blueprint/src/chapter/{matroid-union →
 body-bar}.tex` and `../ROADMAP.md` §13–§15 but **not opened** (no

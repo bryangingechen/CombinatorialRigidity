@@ -110,6 +110,20 @@ housekeeping pass once their resolution is fully indexed.
   foundations"). See `notes/Phase12.md` *Prerequisites audit* +
   *Layer plan*. Filing an upstream courtesy issue (offer the rebase
   back) is optional, not blocking.
+- **L2a progress (2026-06):** `Constructions/Submodular.lean` landed
+  green, 0 sorry — `Submodular`, `ofSubmodular` (rebased onto
+  `FiniteCircuitMatroid` via the Set-lift `∃ C₀, ↑C₀ = C ∧ Minimal P C₀`),
+  `circuit_ofSubmodular_iff`, `indep_ofSubmodular_iff`, plus the three
+  revived helpers (`setOf_minimal_antichain`,
+  `exists_minimal_satisfying_subset`, `intro_elimination_nontrivial`).
+  Two porting gotchas, both bounded: (i) the file's minimal import set
+  (`Matroid.*` + `Order.Lattice`) does **not** transitively expose
+  `linarith` — needed an explicit `import Mathlib.Tactic.Linarith` (the
+  WIP got it via heavier imports); (ii) `LinearOrderedAddCommMonoid` was
+  refactored out of this mathlib, so `Submodular`'s bound decomposes to
+  `[AddCommMonoid β] [LinearOrder β]` — and the `unusedArguments` linter
+  then forces dropping the order-compat `IsOrderedAddMonoid β` (the
+  predicate statement uses only `+` and `≤`).
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of
