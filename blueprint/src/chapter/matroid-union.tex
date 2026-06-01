@@ -1,0 +1,138 @@
+\section{Matroid union and Edmonds' partition theorem}
+\label{sec:matroid-union}
+
+This chapter is the forward-mode authoritative dep-graph and lemma
+index for Phase~12 of the formalization. Its nodes are currently
+\emph{red} (stated, not yet formalized): the dependency structure
+below is the phase's to-do list. Each node gains its
+\texttt{\textbackslash lean\{\}} pointer and turns green as the
+matching Lean lands.
+
+The chapter formalizes the classical \textbf{matroid-union theorem}
+of Nash-Williams~\cite{nashWilliams1966} and Edmonds, together with
+the matroid-from-submodular-function construction and polymatroid
+rank formula of Edmonds~\cite{edmonds1970} on which it rests, and
+\textbf{Edmonds' matroid-partition theorem}~\cite{edmonds1965}. These
+are the abstract-matroid prerequisites of the body-bar route
+(\cref{sec:body-bar}): the $k$-frame matroid is identified with a
+$k$-fold matroid union, and the count characterization underlying
+Tutte--Nash-Williams tree-packing falls out of the partition rank
+formula. For a textbook treatment see Oxley~\cite{oxley2011}.
+
+\paragraph{Provenance.}
+The Lean formalization of this chapter is \emph{not} written from
+scratch. It is ported from Peter Nelson's
+\href{https://github.com/apnelson1/Matroid}{\texttt{apnelson1/Matroid}}
+package (the same package that supplies \texttt{Matroid.ofFun} in
+\cref{sec:rigidity-matroid} and \texttt{Graph.cycleMatroid} in
+\cref{sec:body-bar}), whose shelved \texttt{WIP/Submodular.lean} and
+\texttt{WIP/Union.lean} already carry complete (zero-sorry) proofs of
+all the results below. Those files do not build in the package as
+shipped --- they rest on a circuit-axiom matroid constructor that has
+since been superseded upstream --- so Phase~12 vendors the proofs into
+\texttt{CombinatorialRigidity/Matroid/}, rebased onto the package's
+current constructor, retaining Nelson's authorship. The package is
+Apache-2.0 licensed (as is this project and mathlib); see the per-file
+headers under \texttt{CombinatorialRigidity/Matroid/} for the
+attribution and the list of modifications.
+
+\subsection{Matroids from submodular functions}
+\label{sec:matroid-union-submodular}
+
+\begin{definition}[Submodular function]
+  \label{def:submodular}
+  An integer-valued set function $f$ on the subsets of a finite
+  ground set $E$ is \emph{submodular} if
+  $f(X \cap Y) + f(X \cup Y) \le f(X) + f(Y)$ for all $X, Y$.
+\end{definition}
+
+\begin{definition}[Polymatroid rank function]
+  \label{def:polymatroidFn}
+  \uses{def:submodular}
+  A \emph{polymatroid (rank) function} on $E$ is a normalized,
+  non-decreasing, submodular function $f$ with $f(\emptyset) = 0$
+  (Edmonds~\cite{edmonds1970}).
+\end{definition}
+
+\begin{definition}[Matroid of a submodular function]
+  \label{def:ofSubmodular}
+  \uses{def:submodular}
+  For a non-decreasing submodular $f$, the \emph{induced matroid}
+  $M_f$ on $E$ has as its circuits the minimal non-empty sets $C$
+  with $f(C) < |C|$; equivalently, a set $I$ is independent in $M_f$
+  iff $|I'| \le f(I')$ for every non-empty $I' \subseteq I$
+  (Edmonds~\cite{edmonds1970}).
+\end{definition}
+
+\begin{definition}[Matroid of a polymatroid function]
+  \label{def:ofPolymatroidFn}
+  \uses{def:ofSubmodular, def:polymatroidFn}
+  The matroid $M_f$ of \cref{def:ofSubmodular} specialized to a
+  polymatroid rank function $f$.
+\end{definition}
+
+\begin{lemma}[Polymatroid rank formula]
+  \label{lem:polymatroid-rank}
+  \uses{def:ofPolymatroidFn}
+  For a polymatroid rank function $f$ and any $X \subseteq E$, the
+  rank of $X$ in $M_f$ is
+  \[
+    r_{M_f}(X) \;=\; \min_{Y \subseteq X}\bigl(f(Y) + |X \setminus Y|\bigr).
+  \]
+\end{lemma}
+\begin{proof}
+  \uses{def:ofSubmodular}
+  Edmonds~\cite{edmonds1970}. The lower bound holds since any
+  independent subset of $X$ meets each $Y$ in at most $f(Y)$ elements
+  and $X \setminus Y$ in at most $|X \setminus Y|$; a basis of $X$
+  attains the minimum at the $Y$ on which it is ``tight''.
+\end{proof}
+
+\subsection{Matroid union}
+\label{sec:matroid-union-union}
+
+\begin{definition}[Matroid union of an indexed family]
+  \label{def:matroid-union}
+  \uses{def:ofPolymatroidFn, lem:polymatroid-rank}
+  Given a finite indexed family of matroids $M_{1}, \dots, M_{k}$
+  on a common ground set $E$, their \emph{union}
+  $\bigcup_{j} M_{j}$ is the matroid on $E$ whose independent sets
+  are the unions $I_{1} \cup \dots \cup I_{k}$ of sets $I_{j}$
+  independent in $M_{j}$. That this is a matroid is the
+  Nash-Williams--Edmonds union theorem~\cite{nashWilliams1966}; it is
+  realized as $M_f$ for the submodular function
+  $f(X) = \sum_{j} r_{M_{j}}(X)$.
+\end{definition}
+
+\begin{lemma}[Union independence by decomposition]
+  \label{lem:union-indep-iff}
+  \uses{def:matroid-union}
+  A set $I$ is independent in $\bigcup_{j} M_{j}$ if and only if it
+  decomposes as $I = \bigcup_{j} I_{j}$ with each $I_{j}$
+  independent in $M_{j}$ (and, in the disjoint-support form used
+  downstream, the $I_{j}$ pairwise disjoint).
+\end{lemma}
+\begin{proof}
+  \uses{lem:polymatroid-rank}
+  Immediate from the construction of \cref{def:matroid-union}; the
+  disjoint-support refinement follows by deleting repeated elements
+  from a decomposition.
+\end{proof}
+
+\begin{theorem}[Edmonds' matroid-partition rank formula]
+  \label{thm:matroid-partition-rank}
+  \uses{def:matroid-union, lem:union-indep-iff, lem:polymatroid-rank}
+  The rank of $E'$ in $\bigcup_{j} M_{j}$ equals
+  $\min_{X \subseteq E'} \bigl(|E' \setminus X| + \sum_{j}
+  r_{M_{j}}(X)\bigr)$. In particular $E'$ is independent in the
+  union iff $|E''| \le \sum_{j} r_{M_{j}}(E'')$ for every
+  $E'' \subseteq E'$, the polymatroid-of-submodular-function
+  bound underlying the count characterization.
+\end{theorem}
+\begin{proof}
+  \uses{lem:polymatroid-rank}
+  Apply the polymatroid rank formula (\cref{lem:polymatroid-rank})
+  to $f(X) = \sum_{j} r_{M_{j}}(X)$, which realizes the union
+  (\cref{def:matroid-union}); this is Edmonds' matroid-partition
+  theorem~\cite{edmonds1965}.
+\end{proof}

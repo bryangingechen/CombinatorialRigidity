@@ -315,6 +315,49 @@ ground truth.
 
 ---
 
+## Local mirror of the matroid-union subsystem (Phase 12)
+
+**Decided 2026-06: formalize the matroid-union prerequisite locally,
+in-repo, under `CombinatorialRigidity/Matroid/`.** This is a deliberate
+**exception** to the mirror-directory rule above (which is for *small*,
+single-lemma upstream candidates about `SimpleGraph`/`Sym2`/`Set.ncard`).
+The matroid-union subsystem is a ~1800-line body of proof
+(matroid-from-submodular-function + polymatroid rank + matroid union +
+Edmonds partition), not a glue lemma.
+
+Context: the body-bar route (Phases 12–15) needs matroid union and
+Edmonds' partition theorem. These are **already fully formalized**
+(zero-sorry) in Peter Nelson's `apnelson1/Matroid` package, in its
+shelved `WIP/{Submodular,Union}.lean` — but those files do not build,
+because they rest on a Finset-based circuit-axiom constructor
+(`FinsetCircuitMatroid`) that the package commented out and superseded
+with the Set-based `FiniteCircuitMatroid` (the constructor
+`Graph.cycleMatroid` now uses). So the work is a **port/rebase onto the
+live constructor**, not a from-scratch formalization.
+
+Why local, not upstream-first (the user's call): full control and an
+immediate unblock, no dependence on maintainer responsiveness. The
+trade-off — owning a large chunk of matroid foundations that morally
+belongs upstream — is accepted; an upstream contribution of the rebased
+machinery can still be offered later (and the per-file headers make the
+provenance explicit, so it stays offer-able).
+
+**Route is decided by an in-phase spike** (Phase 12 Layer 1):
+submodular-repair (rebase `ofSubmodular` onto `FiniteCircuitMatroid`)
+vs. deriving union from the package's already-live `Matroid.Intersection`
+via duality. See `notes/Phase12.md`.
+
+**Attribution / license.** The package is Apache-2.0 (as is this
+project and mathlib), so there is no license issue; vendoring is
+permitted. Apache §4 obligations (retain authorship, state changes) are
+met by per-file headers crediting **Peter Nelson** with a provenance +
+modifications note, the credit paragraph in
+`blueprint/src/chapter/matroid-union.tex`, and the provenance note in
+`CLAUDE.md`. This supersedes the old Phase-12 hand-off's "wait for
+upstream" option.
+
+---
+
 ## Strengthen the existing lemma, don't proliferate variants
 
 When a downstream proof needs a lemma close to one that already

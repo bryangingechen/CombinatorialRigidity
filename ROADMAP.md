@@ -53,12 +53,14 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │   ├── CountMatroid.lean  Phase 7 — abstract (k, ℓ)-count matroid (ℓ < 2k)
 │   ├── MatroidIdentification.lean  Phase 7 — Lovász–Yemini hard direction + rigidity matroid
 │   ├── LinearRigidityMatroid.lean  Phase 8 — linear-matroid framing via `Matroid.ofFun`
-│   └── PebbleGame/
+│   ├── PebbleGame/
 │       ├── Basic.lean       Phase 9 — `PartialOrientation` state + invariants
 │       ├── Algorithm.lean   Phase 9 — `tryReachPebble` / `tryAddEdge` / `runPebbleGame` chain
 │       ├── Correctness.lean Phase 9 — soundness + completeness + matroidal corollary
 │       ├── Exec.lean        Phase 10 (planning) — `runPebbleGameExec` + `Decidable` instances
 │       └── Examples.lean    Phase 10 (planning) — `#eval` examples on `Fin n` graphs
+│   ├── Matroid/         Phase 12 — local mirror of `apnelson1/Matroid` submodular + union (ported, Apache-2.0)
+│   └── BodyBar/         Phases 13–15 (planning) — Graph-native sparsity, k-frame matroid, body-bar frameworks + Tay
 ├── Main.lean            Phase 10 (planning) — `lake exe pebble-game` CLI entry point
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
@@ -93,7 +95,10 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 11. Witness extraction | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` | ✓ Complete (see `notes/Phase11.md`) |
 | ⋮ Cleanup round (post-Phase-10+11) | Phase 10+11 surface (`PebbleGame/`, `Search/DFS.lean`, `Main.lean`, three blueprint chapters) | ✓ Complete (see `notes/Phase11-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-10+11) | Phase 10+11 surface — per-decl `@[expose]` audit on the four new/reshaped files + Phase-11-reshape re-audit on `Basic`/`DFS` + baseline | ✓ Complete (see `notes/Phase11-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 12. Body-bar Tay theorem | `CombinatorialRigidity/Matroid/`, `BodyBar/` (Layer 0 done; blocked) | blocked on upstream prereq (see `notes/Phase12.md`) |
+| 12. Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` | in progress (Layer 0 done; see `notes/Phase12.md`) |
+| 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | planning (scoped in `body-bar.tex`) |
+| 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | planning (scoped in `body-bar.tex`) |
+| 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | planning (was Phase 12; see `notes/Phase12.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -386,78 +391,100 @@ Lean. See `notes/Phase11.md` for the five-layer plan, the Layer 0
 audit outcomes, architectural-choice list, and per-layer decision
 records.
 
-### Phase 12 — Body-bar Tay theorem (blocked on upstream prereq)
+The body-bar program (Tay's theorem and beyond) was re-scoped from a
+single blocked "Phase 12" into a dependency-ordered chain of four
+phases (12–15) after a 2026-06 re-investigation. The matroid-union
+machinery the original plan intended to *vendor* from `apnelson1/Matroid`
+turned out to be already fully formalized there (zero-sorry) but
+bit-rotted onto a superseded circuit-axiom constructor — so it is
+promoted from an assumed-vendored "Layer 1" into a real local
+formalization phase. See `notes/Phase12.md` *Prerequisites audit* for
+the corrected analysis.
 
-**Status (blocked).** Layer 0 landed (the forward-mode dep-graph in
-`blueprint/src/chapter/body-bar.tex`), but the phase is blocked at
-Layer 1: the matroid-union machinery it depends on does **not** build
-at any `apnelson1/Matroid` revision (see the corrected paragraph below
-and `notes/Phase12.md` for the analysis + resume criteria). The plan
-text below is retained as the intended route for when the prerequisite
-is unblocked.
+### Phase 12 — Matroid foundations: submodular functions & matroid union
 
-The phase aims to formalize **Tay's theorem**
-(Tay 1984): for `n ≥ 2` and `d = n(n+1)/2`, a multigraph `G` on
-`b` bodies admits an infinitesimally rigid independent body-bar
-framework in `Rⁿ` iff `|E| = d(b − 1)` with `|E'| ≤ d|V'| − d` on
-every `m`-body sub-multigraph; equivalently (Tutte–Nash-Williams
-1961), iff `G` is the edge-disjoint union of `d` spanning trees.
-The chapter follows **Whiteley's matroid-union route** (Whiteley
-1988): the generic `k`-frame matroid is identified with the
-`k`-fold union of the graphic (cycle) matroid via the
-matroid-union theorem of Edmonds and Pym–Perfect; the count
-characterization for `k`-forest decomposability falls out as a
-corollary; body-bar realizations are obtained by specializing the
-indeterminate row coefficients to standard-basis Plücker
-coordinates of two-extensors. Whiteley's full
-*almost-all-realizations-are-rigid* lift via irreducible-variety
-machinery (Proposition 6 in Whiteley 1988) is **deferred** out of
-Phase 12 — the phase ships the existence-of-realization form of
-Tay's theorem only, witnessed by the standard-basis specialization.
+**Status (in progress; Layer 0 done.)** Formalizes the abstract-matroid
+prerequisites of the body-bar route, **locally** under
+`CombinatorialRigidity/Matroid/`: the matroid-from-submodular-function
+construction and polymatroid rank formula (Edmonds 1970), the
+matroid-union theorem (Nash-Williams 1966 / Edmonds), and Edmonds'
+matroid-partition rank formula (Edmonds 1965). The Lean is **ported
+from Peter Nelson's `apnelson1/Matroid`** (Apache-2.0; same license as
+this project and mathlib), whose shelved `WIP/{Submodular,Union}.lean`
+carry complete proofs, rebased onto the package's live
+`FiniteCircuitMatroid` constructor (the WIP rests on the superseded
+`FinsetCircuitMatroid`). This is an explicit exception to the "small
+upstream-eligible lemmas only" mirror convention — see `DESIGN.md`
+*Local mirror of the matroid-union subsystem*. The route (submodular-
+repair vs union-from-the-live-`Matroid.Intersection`) is chosen by an
+early spike (Layer 1); see `notes/Phase12.md` for the Layer plan, the
+prerequisites audit, and the attribution discipline. Forward-mode
+chapter: `blueprint/src/chapter/matroid-union.tex`.
 
-The multigraph carrier is mathlib's core `Graph α β`
-(`Mathlib/Combinatorics/Graph/Basic.lean`), on which the
-`apnelson1/Matroid` package's `cycleMatroid` already sits; Phases
-1–11 stay on `SimpleGraph` (the correct carrier for bar-joint
-rigidity). See `notes/Phase12.md` *Architectural choices* and
-`DESIGN.md` *Migrating Phases 1–11 from `SimpleGraph` to mathlib's
-`Graph`* for the rationale and refactor-risk assessment.
+### Phase 13 — Tutte–Nash-Williams tree-packing
 
-The matroid-union access was planned as a dependency on the
-`apnelson1/Matroid` package: its `WIP/Union.lean` (Edmonds matroid
-partition, `Matroid.Union (ι → Matroid α)`, `matroid_partition'`,
-`matroid_partition_eRk'`) and its dependency `WIP/Submodular.lean`
-(`PolymatroidFn`, `ofSubmodular`, polymatroid rank formula),
-vendored into a new `CombinatorialRigidity/Matroid/Constructions/`
-mirror. **This is where the phase is blocked.** Contrary to the
-original prerequisites audit, these WIP files are *not* "zero-sorry,
-unbuilt only because of a renamed import" — at every `apnelson1/Matroid`
-revision (including the latest upstream `main`) `WIP/Submodular.lean`
-imports a `Matroid.Constructions.IsCircuitAxioms` module that was
-never committed, and its `ofSubmodular` rests on the
-`FinsetCircuitMatroid` API, which has been commented out upstream for
-over a year. No revision provides the matroid-union machinery as live,
-buildable code (the only branch with a live `ofSubmodular`, `galois`,
-has no union machinery and sits ~20 Lean releases behind our pin). The
-phase is therefore on hold pending that machinery building upstream,
-or a deliberate decision to formalize matroid-union locally. See
-`notes/Phase12.md` *Prerequisites audit* + *Hand-off / next phase*.
+**Status (planning; scoped in `body-bar.tex`).** Specializes the
+matroid-partition theorem to `k` copies of `Graph.cycleMatroid`,
+recovering Tutte–Nash-Williams tree-packing (Tutte 1961, Nash-Williams
+1961): a multigraph is the edge-disjoint union of `k` forests iff it is
+`(k,k)`-sparse, with the spanning-tree refinement under tightness.
+Introduces a `Graph`-native `(k,ℓ)`-sparsity/tightness predicate (fresh,
+**not** migrated from the Phase 9/10 `SimpleGraph` sparsity — see
+`DESIGN.md` *Migrating Phases 1–11 …*). Carrier: mathlib core `Graph α β`.
 
-The chapter runs in **forward blueprint mode** per
-`blueprint/DESIGN.md`. The new chapter
-`blueprint/src/chapter/body-bar.tex` serves as the authoritative
-dep-graph and lemma index throughout. The phase's working-copy
-hand-off (current state, architectural choices, Layer plan,
-prerequisites audit, open questions) lives in `notes/Phase12.md`;
-ROADMAP carries the planning summary above. The natural
-follow-on is **Phase 13** (body-hinge / panel-hinge Tay–Whiteley)
-en route to a longer-horizon **Phase 14** target — the
+### Phase 14 — k-frame matroid = k-fold cycle-matroid union
+
+**Status (planning; scoped in `body-bar.tex`).** Whiteley 1988
+Theorem 1: the generic `k`-frame matroid `F(G,X)` on a multigraph (a
+linear matroid via `Matroid.ofFun` over indeterminate coefficients)
+equals the `k`-fold union of `Graph.cycleMatroid`. Column-reorder /
+monomial argument from Whiteley §2.1. Bridges Phase 12's abstract union
+to the body-bar realizations of Phase 15.
+
+### Phase 15 — Body-bar Tay theorem (existence form)
+
+**Status (planning; scoped in `body-bar.tex`).** The original Phase-12
+target. For `n ≥ 2` and `d = n(n+1)/2`, a multigraph `G` on `b` bodies
+admits an infinitesimally rigid independent body-bar framework in `Rⁿ`
+iff `|E| = d(b−1)` with `|E'| ≤ d|V'| − d` on every sub-multigraph;
+equivalently (Phase 13) iff `G` is the edge-disjoint union of `d`
+spanning trees. Whiteley's matroid-union route (Whiteley 1988):
+specialize the indeterminate row coefficients to standard-basis Plücker
+coordinates of two-extensors.
+
+Architectural decisions (migrated from the old Phase-12 notes):
+- **Carrier = mathlib's core `Graph α β`** (`Mathlib/Combinatorics/
+  Graph/Basic.lean`), on which `apnelson1/Matroid`'s `cycleMatroid`
+  sits; Phases 1–11 stay on `SimpleGraph` (the correct carrier for
+  bar-joint rigidity). See `DESIGN.md` *Migrating Phases 1–11 …* for
+  the refactor-risk assessment.
+- **Plücker / two-extensor coordinates handled inline**, standard-basis
+  specialization only — no separate phase, no irreducible-variety
+  infrastructure.
+- **Existence-of-realization form only.** Whiteley's "almost all
+  realizations are rigid" lift (Proposition 6, irreducible-variety
+  machinery) is **deferred**, re-assessed when the body-hinge phase
+  opens.
+- **Graph-level defs under `namespace Graph`** (dot-notation on
+  `G : Graph α β`, beside `Graph.cycleMatroid`); framework defs under
+  `CombinatorialRigidity` / `BodyBar`. Departs from the "everything
+  under `SimpleGraph`/`CombinatorialRigidity`" convention (Phases
+  13–15).
+
+The natural follow-on is **Phase 16** (body-hinge / panel-hinge
+Tay–Whiteley) en route to a longer-horizon **Phase 17** target — the
 **molecular conjecture** (Katoh–Tanigawa 2011).
 
 ## Engineering conventions
 
 - **Namespace.** Everything sits inside `SimpleGraph` or
-  `CombinatorialRigidity`. No top-level identifiers.
+  `CombinatorialRigidity`. No top-level identifiers. **Exception
+  (Phases 12–15):** the body-bar program adds `Matroid`-namespace defs
+  (the ported submodular/union machinery, beside `Matroid.cycleMatroid`)
+  and `Graph`-namespace defs (graph-level `kFrameMatroid` / sparsity, for
+  dot-notation on `G : Graph α β`); framework defs stay under
+  `CombinatorialRigidity`/`BodyBar`. See `notes/Phase12.md` and
+  ROADMAP §15.
 - **Vertex types.** Use `V : Type*` and `[Finite V]` (the weakest
   reasonable typeclass) in signatures whenever the *statement* works
   at that strength — this is the strongest mathematical claim, the

@@ -23,12 +23,10 @@ combinatorial rigidity, see
 
 \subsection*{Phase plan}
 
-The Lean code is organized into twelve phases, tracked in
+The Lean code is organized into fifteen phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--11 are complete; Phase~12 is blocked on an upstream
-prerequisite (its Layer~0 dep-graph has landed, but the
-matroid-union machinery it depends on does not yet build upstream;
-see the phase bullet below). The first six
+Phases~1--11 are complete; Phase~12 is in progress and Phases~13--15
+are scoped (see the phase bullets below). The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
 \texttt{Matroid}: first combinatorially, via the Lov\'asz--Yemini
@@ -38,8 +36,11 @@ $(k, \ell)$-pebble game of Lee--Streinu~\cite{leeStreinu2008} into an
 executable, machine-checked decision procedure for
 $(k, \ell)$-sparsity in the matroidal regime $\ell < 2k$, returning a
 verdict that carries an inline correctness certificate on both the
-accept and reject branches. Phase~12 targets Tay's body-bar theorem.
-The per-phase breakdown:
+accept and reject branches. Phases~12--15 build, bottom-up, toward
+Tay's body-bar theorem: the abstract matroid-union machinery
+(Phase~12), Tutte--Nash-Williams tree-packing (Phase~13), the
+$k$-frame matroid as a cycle-matroid union (Phase~14), and Tay's
+theorem itself (Phase~15). The per-phase breakdown:
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -101,35 +102,44 @@ The per-phase breakdown:
         checkable. (Files: \texttt{Search/DFS.lean},
         \texttt{PebbleGame/\{Basic,Algorithm,Correctness,Exec\}.lean},
         \texttt{Main.lean}.)
-  \item \textbf{Body-bar Tay theorem (blocked on upstream).} For
-        $n \ge 2$ and $d = n(n+1)/2$, a multigraph $G$ is the
-        underlying graph of an infinitesimally rigid body-bar
-        framework in $\mathbb{R}^n$ iff $G$ is the edge-disjoint
-        union of $d$ spanning trees (Tay~1984~\cite{tay1984}).
-        The chapter follows Whiteley's matroid-union
-        route~\cite{whiteley1988}: the generic $k$-frame matroid
-        on a multigraph equals the $k$-fold union of the cycle
-        matroid (Whiteley Theorem~1); the count
-        $\lvert E'\rvert \le k\lvert V'\rvert - k$
-        characterization for $k$-forest decomposability drops
-        out via Edmonds' matroid-partition
-        theorem~\cite{edmonds1965} (Tutte--Nash-Williams as a
-        corollary, recovering the original results
-        of~\cite{tutte1961,nashWilliams1961}); body-bar
-        realizations are obtained by specializing two-extensor
-        row coefficients to standard-basis Pl\"ucker
-        coordinates. The route needs matroid-union machinery
-        (\texttt{Matroid.Union}, Edmonds matroid partition) that
-        Phase~12 planned to vendor from
-        \texttt{apnelson1/Matroid}'s \texttt{WIP/Union.lean};
-        \emph{the phase is currently blocked because those
-        \texttt{WIP} files do not build at any upstream revision}
-        (they transitively need a never-committed
-        \texttt{IsCircuitAxioms} module and the long-commented-out
-        \texttt{FinsetCircuitMatroid} API). Whiteley's full lift
+  \item \textbf{Matroid foundations: submodular functions and
+        matroid union.} The abstract-matroid prerequisites of the
+        body-bar route, formalized \emph{locally}: the
+        matroid-from-submodular-function construction and polymatroid
+        rank formula (Edmonds~\cite{edmonds1970}), the matroid-union
+        theorem (Nash-Williams~\cite{nashWilliams1966} / Edmonds), and
+        Edmonds' matroid-partition rank formula~\cite{edmonds1965}. The
+        Lean is ported from Peter Nelson's \texttt{apnelson1/Matroid}
+        package (Apache-2.0; the same package supplying
+        \texttt{Matroid.ofFun} and \texttt{Graph.cycleMatroid}), whose
+        shelved \texttt{WIP/\{Submodular,Union\}.lean} carry complete
+        proofs, rebased onto the package's current
+        \texttt{FiniteCircuitMatroid} constructor. (Chapter:
+        \cref{sec:matroid-union}; files:
+        \texttt{CombinatorialRigidity/Matroid/}.)
+  \item \textbf{Tutte--Nash-Williams tree-packing.} Specializing the
+        matroid-partition theorem to $k$ copies of the cycle matroid
+        recovers the tree-packing theorem~\cite{tutte1961,nashWilliams1961}:
+        a multigraph is the edge-disjoint union of $k$ forests iff it
+        is $(k, k)$-sparse. Introduces a \texttt{Graph}-native
+        $(k, \ell)$-sparsity predicate. (File:
+        \texttt{BodyBar/TreePacking.lean}.)
+  \item \textbf{The $k$-frame matroid as a cycle-matroid union.}
+        Whiteley's Theorem~1~\cite{whiteley1988}: the generic
+        $k$-frame matroid on a multigraph (a linear matroid via
+        \texttt{Matroid.ofFun}) equals the $k$-fold union of the
+        cycle matroid. (File: \texttt{BodyBar/KFrame.lean}.)
+  \item \textbf{Body-bar Tay theorem.} For $n \ge 2$ and
+        $d = n(n+1)/2$, a multigraph $G$ is the underlying graph of an
+        infinitesimally rigid body-bar framework in $\mathbb{R}^n$ iff
+        $G$ is the edge-disjoint union of $d$ spanning trees
+        (Tay~1984~\cite{tay1984}). Body-bar realizations are obtained
+        by specializing two-extensor row coefficients to
+        standard-basis Pl\"ucker coordinates; the phase ships the
+        existence-of-realization form, deferring Whiteley's full lift
         via irreducible-variety machinery (Proposition~6
-        in~\cite{whiteley1988}) is deferred out of Phase~12. (Files:
-        \texttt{CombinatorialRigidity/Matroid/}, \texttt{BodyBar/}.)
+        in~\cite{whiteley1988}). (Chapter: \cref{sec:body-bar}; files:
+        \texttt{BodyBar/\{Framework,TayTheorem\}.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -143,6 +153,7 @@ fit together; all Phase~1--11 nodes are green: the main Laman line
 (\cref{sec:rigidity-matroid,sec:count-matroid}), the verified-DFS
 warmup (\cref{sec:dfs}), the pebble-game chapter
 (\cref{sec:pebble-game}), and the executable pebble-game chapter
-(\cref{sec:executable}). The Phase~12 body-bar chapter
-(\cref{sec:body-bar}) is currently the to-do list: its nodes are
-red on first build and will turn green as Phase~12 lands.
+(\cref{sec:executable}). The body-bar program is currently the to-do
+list: the Phase~12 matroid-union chapter (\cref{sec:matroid-union})
+and the Phases~13--15 body-bar chapter (\cref{sec:body-bar}) are red
+on first build and turn green as each phase lands.

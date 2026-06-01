@@ -2,12 +2,14 @@
 \label{sec:body-bar}
 
 This chapter is the forward-mode authoritative dep-graph and lemma
-index for Phase~12 of the formalization. Its nodes are currently
+index for Phases~13--15 of the formalization (tree-packing, the
+$k$-frame matroid, and the body-bar frameworks / Tay's theorem); the
+abstract matroid-union prerequisite is developed separately in
+\cref{sec:matroid-union} (Phase~12). Its nodes are currently
 \emph{red} (stated, not yet formalized): the dependency structure
-below is the phase's to-do list, with the section headers
-corresponding to the Layer plan in \texttt{notes/Phase12.md}. Each
-node gains its \texttt{\textbackslash lean\{\}} pointer and turns
-green as the matching Layer's Lean lands.
+below is the to-do list. Each node gains its
+\texttt{\textbackslash lean\{\}} pointer and turns green as the
+matching Lean lands.
 
 The phase target is \textbf{Tay's theorem}~\cite{tay1984}: for
 $n \ge 2$ and $d = n(n+1)/2$, a multigraph $G$ on $b$ bodies
@@ -40,53 +42,24 @@ in~\cite{whiteley1996}). Three ingredients:
 Whiteley's full irreducible-variety lift (Proposition~6
 in~\cite{whiteley1988}, lifting independence from the
 indeterminate setting to ``almost all'' body-bar realizations) is
-\emph{deferred} out of Phase~12. The phase ships the
+\emph{deferred} out of Phase~15. The phase ships the
 existence-of-realization form of Tay's theorem only: there exists
 a body-bar realization in $\mathbb{R}^n$ that is infinitesimally
 rigid (resp. independent) iff the count holds, witnessed by the
 standard-basis specialization.
 
-\subsection{Matroid-union machinery}
+\subsection{Matroid-union machinery (prerequisite)}
 \label{sec:body-bar-matroid-union}
 
 The first ingredient is the matroid-union operation and Edmonds'
-matroid-partition theorem~\cite{edmonds1965}, restated here as
-\emph{cited facts}. They are vendored into the project from the
-\texttt{apnelson1/Matroid} package's shelved \texttt{WIP/Union.lean}
-and \texttt{WIP/Submodular.lean} (both zero-sorry, unbuilt in the
-package only because of a stale import) under a new
-\texttt{CombinatorialRigidity/Matroid/Constructions/} mirror, so the
-chapter does not re-prove them in prose; the nodes below pin the
-imported declarations once Layer~1 lands the mirror.
-
-\begin{definition}[Matroid union of an indexed family]
-  \label{def:matroid-union}
-  Given a finite indexed family of matroids $M_{1}, \dots, M_{k}$
-  on a common ground set $E$, their \emph{union}
-  $\bigcup_{j} M_{j}$ is the matroid on $E$ whose independent sets
-  are the unions $I_{1} \cup \dots \cup I_{k}$ of sets $I_{j}$
-  independent in $M_{j}$.
-\end{definition}
-
-\begin{lemma}[Union independence by decomposition]
-  \label{lem:union-indep-iff}
-  \uses{def:matroid-union}
-  A set $I$ is independent in $\bigcup_{j} M_{j}$ if and only if it
-  decomposes as $I = \bigcup_{j} I_{j}$ with each $I_{j}$
-  independent in $M_{j}$ (and, in the disjoint-support form used
-  downstream, the $I_{j}$ pairwise disjoint).
-\end{lemma}
-
-\begin{theorem}[Edmonds' matroid-partition rank formula]
-  \label{thm:matroid-partition-rank}
-  \uses{def:matroid-union, lem:union-indep-iff}
-  The rank of $E'$ in $\bigcup_{j} M_{j}$ equals
-  $\min_{X \subseteq E'} \bigl(|E' \setminus X| + \sum_{j}
-  r_{M_{j}}(X)\bigr)$. In particular $E'$ is independent in the
-  union iff $|E''| \le \sum_{j} r_{M_{j}}(E'')$ for every
-  $E'' \subseteq E'$, the polymatroid-of-submodular-function
-  bound underlying the count characterization.
-\end{theorem}
+matroid-partition theorem~\cite{nashWilliams1966,edmonds1965}. These
+abstract-matroid prerequisites are developed in their own chapter,
+\cref{sec:matroid-union} (Phase~12, formalized locally from Peter
+Nelson's \texttt{apnelson1/Matroid} package); the body-bar route
+consumes them as the matroid union $\bigcup_{j} M_{j}$
+(\cref{def:matroid-union}), its decomposition characterization of
+independence (\cref{lem:union-indep-iff}), and the partition rank
+formula (\cref{thm:matroid-partition-rank}).
 
 \subsection{The $k$-frame matroid as a union of cycle matroids}
 \label{sec:body-bar-k-frame}
@@ -144,7 +117,7 @@ cycle matroid turns \cref{thm:k-frame-union-cycle} into a count
 characterization, recovering the Tutte--Nash-Williams tree-packing
 theorem~\cite{tutte1961,nashWilliams1961}. We introduce a
 $\mathtt{Graph}$-native sparsity predicate for the statement; it is
-fresh to Phase~12 and is \emph{not} migrated from the
+fresh to Phase~13 and is \emph{not} migrated from the
 $\mathtt{SimpleGraph}$ sparsity of \cref{def:isSparse}.
 
 \begin{definition}[Graph $(k, \ell)$-sparsity and tightness]
@@ -250,8 +223,9 @@ there exists an independent (resp.\ isostatic) body-bar framework iff
 the count holds, witnessed by the standard-basis specialization.
 Whiteley's stronger ``almost all realizations are rigid'' phrasing,
 via the irreducible-variety lift of Proposition~6
-in~\cite{whiteley1988}, is \emph{deferred} out of Phase~12
-(re-assessed at Phase~13; see \texttt{notes/Phase12.md} Layer~5b).
+in~\cite{whiteley1988}, is \emph{deferred} out of Phase~15
+(re-assessed when the body-hinge phase opens; see \texttt{ROADMAP.md}
+\S15).
 
 \begin{theorem}[Tay's theorem, independent form; Whiteley Theorem~8]
   \label{thm:tay-witness}

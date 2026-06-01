@@ -22,15 +22,18 @@ pebble-game algorithms to return a verdict-bearing inductive carrying
 inline witnesses — a blocking subset `V'` on the `NOT_SPARSE` branch,
 the partial orientation `D` on the accept branches — and bumps the CLI
 to emit those witness lines alongside the trichotomy label, making the
-CLI's classification externally checkable. **Phase 12** (in planning)
-extends the development to higher-dimensional body-bar rigidity:
-the goal is **Tay's theorem** (Tay 1984) — `G` admits an
+CLI's classification externally checkable. **Phases 12–15** (in
+progress) extend the development to higher-dimensional body-bar
+rigidity, targeting **Tay's theorem** (Tay 1984) — `G` admits an
 infinitesimally rigid body-bar framework in `Rⁿ` iff `G` is the
-edge-disjoint union of `d = n(n+1)/2` spanning trees — proved by
-Whiteley's matroid-union route (Whiteley 1988), with
-Tutte–Nash-Williams as a corollary; the eventual longer-horizon
-target beyond Phase 12 is the **molecular conjecture**
-(Katoh–Tanigawa 2011).
+edge-disjoint union of `d = n(n+1)/2` spanning trees — via Whiteley's
+matroid-union route (Whiteley 1988). The route is built bottom-up:
+Phase 12 formalizes the abstract matroid-union / Edmonds-partition
+machinery locally (ported from the `apnelson1/Matroid` library),
+Phase 13 derives Tutte–Nash-Williams tree-packing, Phase 14 identifies
+the `k`-frame matroid with the `k`-fold cycle-matroid union, and
+Phase 15 assembles Tay's theorem. The longer-horizon target beyond is
+the **molecular conjecture** (Katoh–Tanigawa 2011).
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -46,7 +49,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–11 complete; Phase 12 blocked on an upstream prerequisite.**
+* **Phases 1–11 complete; Phase 12 (matroid foundations) in progress; Phases 13–15 scoped.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -73,30 +76,33 @@ project; commit history is preserved with paths rewritten.
   lands in-place in `chapter/{dfs,pebble-game,executable}.tex`.
   Phase 10 details are in `notes/Phase10.md` and
   `blueprint/src/chapter/executable.tex`.
-* **Phase 12 (blocked on upstream)** — **Tay's theorem** for body-bar
-  frameworks in `Rⁿ`. Layer 0 (the forward-mode dep-graph) has
-  landed, but the phase is **blocked at Layer 1**: see the upstream
-  note at the end of this bullet. The proof route follows Whiteley 1988's
-  matroid-union framing: the generic `k`-frame matroid on a
-  multigraph is identified with the `k`-fold union of the cycle
-  matroid (Whiteley Theorem 1), the count characterization
-  `|E'| ≤ d|V'| − d` (Whiteley Corollary 3) drops out via
-  Edmonds' matroid-partition theorem, Tutte–Nash-Williams
-  follows, and Tay's theorem itself (existence-of-realization
-  form) is obtained by specializing two-extensor row coefficients
-  to standard-basis Plücker coordinates. The whole route needs the
-  matroid-union machinery (`Matroid.Union`, Edmonds matroid
-  partition), which Phase 12 planned to vendor from
-  `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean`. **Upstream
-  blocker:** those WIP files do not build at any upstream revision —
-  they transitively need `FinsetCircuitMatroid` (commented out for
-  >1 year) and a `Matroid.Constructions.IsCircuitAxioms` module that
-  was never committed. Phase 12 is on hold pending that machinery
-  building upstream (or a decision to formalize it locally). See
-  `notes/Phase12.md` for the corrected prerequisites audit, the
-  blocker analysis, and resume criteria. Layer 0's chapter
-  `blueprint/src/chapter/body-bar.tex` remains the forward-mode
-  authoritative dep-graph and lemma index.
+* **Phases 12–15 (body-bar program)** — re-scoped from a single
+  blocked "Phase 12" into a dependency-ordered chain after a 2026-06
+  re-investigation found the matroid-union machinery already fully
+  formalized (zero-sorry) in `apnelson1/Matroid`, just bit-rotted onto
+  a superseded constructor:
+  * **Phase 12 (in progress)** — matroid foundations: the
+    matroid-from-submodular-function construction + polymatroid rank
+    (Edmonds 1970), matroid union (Nash-Williams 1966 / Edmonds), and
+    Edmonds' matroid-partition rank formula (Edmonds 1965), formalized
+    **locally** under `CombinatorialRigidity/Matroid/`. The Lean is
+    ported from Peter Nelson's `apnelson1/Matroid` (Apache-2.0; same
+    license as this project and mathlib), rebased onto the package's
+    live `FiniteCircuitMatroid` constructor. Layer 0 (the forward-mode
+    dep-graph in `blueprint/src/chapter/matroid-union.tex`) has landed;
+    the formalization route is chosen by an early spike (Layer 1). See
+    `notes/Phase12.md` for the Layer plan, prerequisites audit, and
+    attribution discipline.
+  * **Phases 13–15 (scoped)** — Tutte–Nash-Williams tree-packing
+    (Phase 13), the `k`-frame matroid = `k`-fold cycle-matroid union
+    (Phase 14, Whiteley Theorem 1), and **Tay's theorem** itself in
+    existence-of-realization form (Phase 15, by specializing
+    two-extensor row coefficients to standard-basis Plücker
+    coordinates). Scoped in `blueprint/src/chapter/body-bar.tex` and
+    ROADMAP §13–§15; not yet opened. Whiteley's full
+    "almost-all-realizations-are-rigid" lift via irreducible-variety
+    machinery (Proposition 6) is deferred. The longer-horizon target
+    beyond is the **molecular conjecture** (Katoh–Tanigawa 2011).
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

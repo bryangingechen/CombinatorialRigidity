@@ -346,3 +346,17 @@ mathlib-downstream project` carries the scaffolding (lakefile,
 toolchain, manifest, top-level entry point) and the doc-comment
 path-reference cleanups that filter-repo couldn't handle
 context-sensitively.
+
+**Vendored provenance (Phase 12+).** The matroid-union subsystem under
+`CombinatorialRigidity/Matroid/` is **not** original to this project:
+it is ported from Peter Nelson's
+[`apnelson1/Matroid`](https://github.com/apnelson1/Matroid) package
+(Apache-2.0, the same package supplying `Matroid.ofFun` and
+`Graph.cycleMatroid`), rebased from its shelved
+`WIP/{Submodular,Union}.lean` onto the package's live
+`FiniteCircuitMatroid` constructor. Each vendored file carries a
+Peter-Nelson copyright header with a provenance + modifications note;
+the decision and Apache §4 attribution discipline are in `DESIGN.md`
+*Local mirror of the matroid-union subsystem*. This is a distinct kind
+of provenance from the mathlib-fork lift above — credit upstream
+authorship when touching these files.

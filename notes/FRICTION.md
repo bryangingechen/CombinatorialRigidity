@@ -94,14 +94,22 @@ housekeeping pass once their resolution is fully indexed.
   So `Matroid.Union` etc. are live code at no ref. The only branch with
   a live `ofSubmodular` (`galois`, 2024) has **no** union machinery and
   is on Lean `v4.10` (vs our `v4.30`), so unusable as a pin.
-- **Proposed fix:** (a) wait for `apnelson1/Matroid` to revive the
-  machinery in its built tree, then vendor as planned; or (b) formalize
-  `PolymatroidFn` / `ofSubmodular` / `Matroid.Union` + Edmonds partition
-  locally on top of the live API at our pin (`IndepMatroid.ofFinite`).
-  File an upstream issue asking whether/when matroid-union will build.
-- **Status:** open; blocks Phase 12 (paused). See `notes/Phase12.md`
-  *Prerequisites audit* (corrected) + *Hand-off / next phase*. Not a
-  *Mirrored* entry — nothing was mirrorable.
+- **Resolution (2026-06, user's call): formalize locally** (option b)
+  under `CombinatorialRigidity/Matroid/`, *not* wait for upstream.
+  Crucially, the WIP files are **0-sorry** — the proofs exist; the
+  blocker is purely that they sit on the superseded
+  `FinsetCircuitMatroid` constructor. So the work is a **rebase onto the
+  live `FiniteCircuitMatroid`** (the constructor `Graph.cycleMatroid`
+  already uses), retaining Peter Nelson's authorship — not a
+  from-scratch proof. The package's `Matroid.Intersection` is also live
+  (0 sorry), giving an alternative union-from-intersection route; the
+  choice is made by a Phase-12 Layer-1 spike. Apache-2.0 throughout, so
+  no license issue; attribution via per-file headers + blueprint credit
+  (see `DESIGN.md` *Local mirror of the matroid-union subsystem*).
+- **Status:** in progress under Phase 12 (re-scoped to "matroid
+  foundations"). See `notes/Phase12.md` *Prerequisites audit* +
+  *Layer plan*. Filing an upstream courtesy issue (offer the rebase
+  back) is optional, not blocking.
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of
