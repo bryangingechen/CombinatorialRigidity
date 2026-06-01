@@ -50,6 +50,8 @@ attribution and the list of modifications.
 
 \begin{definition}[Polymatroid rank function]
   \label{def:polymatroidFn}
+  \lean{Matroid.PolymatroidFn}
+  \leanok
   \uses{def:submodular}
   A \emph{polymatroid (rank) function} on $E$ is a normalized,
   non-decreasing, submodular function $f$ with $f(\emptyset) = 0$
@@ -71,6 +73,8 @@ attribution and the list of modifications.
 
 \begin{definition}[Matroid of a polymatroid function]
   \label{def:ofPolymatroidFn}
+  \lean{Matroid.ofPolymatroidFn, Matroid.indep_ofPolymatroidFn_iff}
+  \leanok
   \uses{def:ofSubmodular, def:polymatroidFn}
   The matroid $M_f$ of \cref{def:ofSubmodular} specialized to a
   polymatroid rank function $f$.

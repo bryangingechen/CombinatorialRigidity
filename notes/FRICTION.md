@@ -124,6 +124,16 @@ housekeeping pass once their resolution is fully indexed.
   `[AddCommMonoid β] [LinearOrder β]` — and the `unusedArguments` linter
   then forces dropping the order-compat `IsOrderedAddMonoid β` (the
   predicate statement uses only `+` and `≤`).
+- **L2a polymatroid (2026-06):** `PolymatroidFn` (as a `Prop` structure,
+  matching the `[AddCommMonoid β] [LinearOrder β]` split above instead of
+  the WIP's `LinearOrderedAddCommMonoid`), `ofPolymatroidFn`, and
+  `indep_ofPolymatroidFn_iff` + `ofPolymatroidFn_nonempty_indep_le` landed
+  green, 0 sorry. One gotcha: the WIP's `@[simps!]` on `ofPolymatroidFn`
+  generates a `..._Indep` projection simp lemma that unfolds the matroid's
+  `Indep` field, putting `indep_ofPolymatroidFn_iff`'s LHS out of
+  simp-normal form (hard `simpNF` lint error). Fix: restrict to
+  `@[simps! E]`, matching the `ofSubmodular` precedent in the same file —
+  only the ground-set projection is wanted as a simp lemma.
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of

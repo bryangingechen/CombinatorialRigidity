@@ -229,4 +229,33 @@ with `f C < C.card`. -/
     have := h C₀ hC₀I hC₀.1.1
     exact absurd (lt_of_le_of_lt (by exact_mod_cast this) hC₀.1.2) (lt_irrefl _)
 
+/-- A *polymatroid (rank) function* on a finite ground set is a normalized
+(`f ⊥ = 0`), monotone, submodular set function (Edmonds 1970, the definition at
+the bottom of p.406). -/
+structure PolymatroidFn [Lattice α] [Bot α] [AddCommMonoid β] [LinearOrder β]
+    (f : α → β) : Prop where
+  /-- A polymatroid rank function is submodular. -/
+  submodular : Submodular f
+  /-- A polymatroid rank function is monotone. -/
+  mono : Monotone f
+  /-- A polymatroid rank function is normalized: it vanishes at `⊥`. -/
+  zero_at_bot : f ⊥ = 0
+
+/-- The matroid `M_f` induced by a polymatroid rank function `f`, i.e.
+`Matroid.ofSubmodular` specialized to `f` (Edmonds 1970). -/
+@[simps! E] def ofPolymatroidFn [DecidableEq α] {f : Finset α → ℤ}
+    (h : PolymatroidFn f) : Matroid α :=
+  ofSubmodular h.submodular h.mono
+
+@[simp] theorem indep_ofPolymatroidFn_iff [DecidableEq α] {f : Finset α → ℤ}
+    (hf : PolymatroidFn f) (I : Finset α) :
+    (ofPolymatroidFn hf).Indep ↑I ↔ ∀ I' ⊆ I, I'.Nonempty → I'.card ≤ f I' := by
+  simp only [ofPolymatroidFn, indep_ofSubmodular_iff]
+
+/-- A nonempty independent set `I` of `ofPolymatroidFn hf` satisfies `I.card ≤ f I`. -/
+theorem ofPolymatroidFn_nonempty_indep_le [DecidableEq α] {f : Finset α → ℤ}
+    {hf : PolymatroidFn f} {I : Finset α} (h' : I.Nonempty)
+    (h : (ofPolymatroidFn hf).Indep ↑I) : I.card ≤ f I :=
+  (indep_ofPolymatroidFn_iff hf I).mp h I subset_rfl h'
+
 end Matroid

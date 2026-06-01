@@ -1,7 +1,8 @@
 # Phase 12 — Matroid foundations: submodular functions & matroid union (work log)
 
-**Status:** in progress (Layer 2a underway: the submodular file landed
-green — `def:submodular`, `def:ofSubmodular`. Polymatroid nodes next).
+**Status:** in progress (Layer 2a underway: submodular + polymatroid
+defs landed green — `def:submodular`, `def:ofSubmodular`,
+`def:polymatroidFn`, `def:ofPolymatroidFn`. `lem:polymatroid-rank` next).
 
 This phase formalizes the abstract-matroid prerequisites of the
 body-bar route: the matroid-from-submodular-function construction and
@@ -51,7 +52,21 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-Layer 2a underway (this commit): created
+Layer 2a polymatroid layer (this commit): added `PolymatroidFn`
+(`def:polymatroidFn`, a `Prop` structure bundling `Submodular` + `Monotone`
++ `f ⊥ = 0`), `ofPolymatroidFn` (`def:ofPolymatroidFn`, a thin wrapper of
+`ofSubmodular`), `indep_ofPolymatroidFn_iff`, and the corollary
+`ofPolymatroidFn_nonempty_indep_le` to `Constructions/Submodular.lean`.
+Landed green, **0 sorry**; both blueprint nodes flipped green; `checkdecls`
+passes. One porting gotcha (see FRICTION `[matroid]` L2a polymatroid note):
+the WIP's `@[simps!]` on `ofPolymatroidFn` breaks `simpNF` on
+`indep_ofPolymatroidFn_iff` — restricted to `@[simps! E]` per the
+`ofSubmodular` precedent. **Remaining L2a:** the substantive
+`polymatroid_rank_eq` (`lem:polymatroid-rank`) — the rank lemma with the
+`Matroid.r` → `rk` rename chase (17 sites), plus the private helper
+`polymatroid_rank_eq_on_indep`.
+
+Layer 2a submodular (prior commit): created
 `CombinatorialRigidity/Matroid/Constructions/Submodular.lean` (non-`module`,
 since the `apnelson1/Matroid` package is not module-converted — same
 constraint as `LinearRigidityMatroid.lean`), ported from
@@ -209,9 +224,10 @@ High-level outline; the leaf-level to-do list is the
 - [x] **L1:** route spike + decision — **route (a) chosen** (recorded
   above; spike built green, deleted).
 - [~] **L2a:** `def:submodular` ✓, `def:ofSubmodular` ✓ (+
-  `circuit_ofSubmodular_iff` / `indep_ofSubmodular_iff`);
-  `def:polymatroidFn`, `def:ofPolymatroidFn`, `lem:polymatroid-rank`
-  still to land.
+  `circuit_ofSubmodular_iff` / `indep_ofSubmodular_iff`),
+  `def:polymatroidFn` ✓, `def:ofPolymatroidFn` ✓ (+
+  `indep_ofPolymatroidFn_iff` / `ofPolymatroidFn_nonempty_indep_le`);
+  `lem:polymatroid-rank` still to land.
 - [ ] **L2b:** `def:matroid-union`, `lem:union-indep-iff`,
   `thm:matroid-partition-rank`.
 
@@ -229,19 +245,19 @@ High-level outline; the leaf-level to-do list is the
 
 ## Hand-off / next phase
 
-Next concrete commit: **continue Layer 2a, the polymatroid layer** in
-`Constructions/Submodular.lean` (same file). Port from the WIP, in
-order: `PolymatroidFn` (`def:polymatroidFn`) and `ofPolymatroidFn`
-(`def:ofPolymatroidFn`) — both light wrappers around the now-landed
-`ofSubmodular` plus `indep_ofPolymatroidFn_iff` — then the substantive
-`polymatroid_rank_eq` (`lem:polymatroid-rank`). The rank lemma is the
-one with real porting cost: the WIP's `polymatroid_rank_eq` /
-`polymatroid_rank_eq_on_indep` use the old `Matroid.r` (now `rk`), so
-chase the rename (~17 sites per the L1 audit) and re-check the
-`r`-vs-`rk`/`eRk` API names against this mathlib. Smallest forward
-commit: land `def:polymatroidFn` + `def:ofPolymatroidFn` + their indep
-iff (a clean, quick win); assess `polymatroid_rank_eq` scope once those
-close. Flip the matching `matroid-union.tex` nodes green per commit.
+Next concrete commit: **finish Layer 2a — port `polymatroid_rank_eq`**
+(`lem:polymatroid-rank`) into `Constructions/Submodular.lean` (same
+file). This is the one rank lemma with real porting cost: the WIP's
+`polymatroid_rank_eq` and its private helper `polymatroid_rank_eq_on_indep`
+(WIP lines 129–319) use the old `Matroid.r` (now `rk`), so chase the
+rename (~17 sites per the L1 audit) and re-check the `r`-vs-`rk`/`eRk`
+API names against this mathlib (e.g. `Indep.eRk`,
+`Set.encard_coe_eq_coe_finsetCard`, `Matroid.exists_isBasis`). The
+already-landed `ofPolymatroidFn_nonempty_indep_le` is consumed by the
+WIP proof (line 253). Flip `lem:polymatroid-rank` green when it lands;
+that closes L2a. If the rename/API drift makes it a multi-session port,
+land `polymatroid_rank_eq_on_indep` (the easier, `Indep`-restricted
+half) first and assess the full min-max half separately.
 
 After L2a, **L2b** is `Constructions/Union.lean`: `Matroid.Union`,
 `union_indep_iff`, `matroid_partition'` / `matroid_partition_eRk'`
