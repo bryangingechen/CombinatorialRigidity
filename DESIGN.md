@@ -798,3 +798,51 @@ to a fixed section above once a question is answered.
   obsolete the dep) and re-evaluate the pin whenever mathlib is
   bumped — apnelson1's master tracks mathlib master, so a stale pin
   drifting behind ours is the recurrent failure mode to watch.
+- **Migrating Phases 1–11 from `SimpleGraph` to mathlib's `Graph`.**
+  **Decided against wholesale migration (2026-06); keep Phases 1–11
+  on `SimpleGraph`.** Context: Phase 12 (body-bar) adopts mathlib's
+  core multigraph type `Graph α β` (PR
+  leanprover-community/mathlib4#24122, apnelson1, merged 2025-05-14)
+  as its carrier — see `notes/Phase12.md` *Architectural choices*.
+  That raised whether the existing ~10.9k-line `SimpleGraph` corpus
+  (20 files, 475 `SimpleGraph` occurrences) should follow.
+
+  Decided no, for four reasons: (i) `SimpleGraph` is the
+  mathematically correct carrier for bar-joint rigidity — parallel
+  edges and loops are meaningless for frameworks, so `Graph` would
+  force `Simple`/loopless side-conditions everywhere; (ii)
+  `SimpleGraph`'s mathlib API (connectivity, `Subgraph`, walks,
+  degrees, `edgeFinset`, the lattice) is far more mature than
+  `Graph`'s, whose walk/dart/`GraphLike` API is still being built
+  (Zulip #graph theory *"Set in definition of Graph"*, *HasAdj*);
+  (iii) that `Graph` API is in active flux — a poor bet for finished
+  work; (iv) cross-quote pressure is low — Phase 12 reuses the
+  matroid-union / `cycleMatroid` machinery, not the bar-joint
+  rigidity results.
+
+  **Sparsity / pebble-game sub-question.** Tay's count
+  `|E'| ≤ d(|V'|−1)` is exactly `(d,d)`-tightness, the `ℓ = k` corner
+  of the `(k,ℓ)`-sparsity matroid family (Laman is `(2,3)`);
+  `(k,k)`-tight ⟺ `k` edge-disjoint spanning trees (Nash–Williams,
+  `nashWilliams1961`). So Tay *is* a sparsity theorem. But Phase 12
+  proves it by the **matroid-union route** (Whiteley 1988,
+  `whiteley1988`): `k`-frame matroid = union of `k` cycle matroids →
+  Edmonds matroid-partition count → specialization to realizations.
+  It does **not** route through the Lee–Streinu pebble game — the
+  pebble game *decides* sparsity, whereas Tay's existence proof is
+  *handed* the tree-packing by Edmonds' partition theorem. So
+  migrating the ~3.5k-line `SimpleGraph`+`(2,3)` pebble game (Phase
+  9/10) to `Graph` buys Phase 12 nothing. The right move for the
+  sparsity *predicate* is to **define a `Graph`-native
+  `IsSparse`/`IsTight d d` fresh in Phase 12** (so Tay reads as a
+  sparsity theorem) rather than migrate Phase 9/10's `SimpleGraph`
+  sparsity out from under the Laman / executable stack.
+
+  **Revisit triggers:** (a) mathlib deprecates `SimpleGraph` or lands
+  a stable `SimpleGraph`-on-`Graph` story; (b) a phase needs
+  same-graph cross-quoting of simple-graph and multigraph rigidity,
+  or general multigraph `(k,ℓ)`-pebble games, at scale. **Bridge, not
+  phase:** when Phase 12 first needs to relate a simple graph to a
+  `Graph`, add a single `SimpleGraph.toGraph` transport (and unify
+  the two sparsity predicates by showing the `(2,3)` `SimpleGraph`
+  form is its `toGraph` pullback) — a lemma, not a refactor.

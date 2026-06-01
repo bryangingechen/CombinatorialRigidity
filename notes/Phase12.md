@@ -3,8 +3,10 @@
 **Status:** planning. Not yet started.
 
 This file is the per-phase work record. See `../ROADMAP.md` §12
-(to be added when planning lands) for the high-level summary and
-`../DESIGN.md` for cross-cutting design choices.
+for the high-level summary and `../DESIGN.md` for cross-cutting
+design choices — notably *Migrating Phases 1–11 from `SimpleGraph`
+to mathlib's `Graph`* (decided against; Phase 12 uses `Graph`, the
+rest of the project stays on `SimpleGraph`).
 
 **Workflow:** Phase 12 is a **forward-mode** new-theorem phase
 (analogous to Phases 6–10, contrasted with the structural-edit
@@ -61,11 +63,14 @@ ingredients:
 ## Current state
 
 Planning. Nothing committed yet. References gathered; matroid-package
-survey complete; Whiteley 1988 §2–§3 and Tay 1984 §4–§5 read. Next
-concrete step: Layer 0 — open `blueprint/src/chapter/body-bar.tex`
-with the Whiteley-route dep-graph (red nodes), decide on multigraph
-carrier and place a project-organization friction entry if the
-decision creates an audit surface for later phases.
+survey complete (verified against the pinned `apnelson1/Matroid` rev);
+Whiteley 1988 §2–§3 and Tay 1984 §4–§5 read. **Multigraph carrier
+decided: mathlib's core `Graph α β`** (see *Architectural choices*).
+Next concrete step: Layer 0 — `blueprint/src/chapter/body-bar.tex`
+already exists as a prose skeleton (intro + section headers, wired
+into `main.tex`); populate it with the Whiteley-route dep-graph (red
+nodes) and sync the user-facing status surfaces. The carrier decision
+is pre-resolved.
 
 ## Architectural choices made up front
 
@@ -91,42 +96,56 @@ wrong, revisit there.
   `WIP/Union.lean` (597 lines, 0 active sorries — the one match is
   a commented-out scrap from an old approach). The file is unbuilt
   in the package only because its `import Matroid.Constructions.Submodular`
-  points to a file renamed to `WIP/Submodular.lean` (1236 lines,
-  0 sorries). We vendor both files under a new
+  points to a file moved to `WIP/Submodular.lean` (1236 lines,
+  0 sorries). Both live at the package **repo root** `WIP/` (outside
+  the `Matroid/` Lean-library root), so they are not in the package's
+  build target and cannot be imported as-is — hence vendor rather than
+  consume. We vendor both files under a new
   `CombinatorialRigidity/Matroid/` mirror directory (analogous to
   the existing `CombinatorialRigidity/Mathlib/` mirror) so Phase 12
   is unblocked; the mirror is marked upstream-eligible to
   `apnelson1/Matroid` and will be retired once those files land
   in the package's built tree.
 
-- **Multigraph carrier — L0 decision, two options listed.**
-  `SimpleGraph V` (the Phase 1–11 carrier) cannot natively express
-  the multi-edges that Tay's count `d(b−1)` requires
-  (`d = n(n+1)/2 ≥ 1`; for `n ≥ 2` we have `d ≥ 3`, so most rigid
-  body-bar multigraphs have parallel edges between many pairs).
-  Two options, picked in Layer 0:
+- **Multigraph carrier — DECIDED: mathlib's core `Graph α β`** (was
+  the "M-A" option). `SimpleGraph V` (the Phase 1–11 carrier) cannot
+  natively express the multi-edges Tay's count `d(b−1)` requires
+  (`d = n(n+1)/2 ≥ 1`; for `n ≥ 2`, `d ≥ 3`, so most rigid body-bar
+  multigraphs have parallel edges). The carrier is mathlib's **core**
+  `Graph α β` (`Mathlib/Combinatorics/Graph/Basic.lean`:
+  `vertexSet : Set α`, `IsLink : β → α → α → Prop`, `edgeSet : Set β`)
+  — *not* a type vendored from `apnelson1/Matroid`. That package's
+  whole `Graph` tree is built on mathlib's `Graph` (verified at our
+  pinned rev: `Matroid/Graph/Basic.lean` imports
+  `Mathlib.Combinatorics.Graph.*` with no local `structure Graph`,
+  and `cycleMatroid (G : Graph α β) : Matroid β`), and the union
+  machinery we vendor in Layer 1 speaks the same type. Edges are
+  first-class (`edgeSet : Set β`), so the `d(b−1)` / `|E'| ≤ d|V'| − d`
+  count bookkeeping is cleaner than under a `Sym2`-multiplicity
+  wrapper, and Katoh–Tanigawa's `((d+1 choose 2)−1)G`
+  parallel-multiplication is natively expressible.
 
-  - **(M-A) Use the vendored `Graph V β` from `apnelson1/Matroid`.**
-    Already underlies `cycleMatroid`. Native multi-edge support.
-    Costs: introduces a second graph type to the project; Phase
-    1–11 lemmas stay on `SimpleGraph`, Phase 12 onward speaks
-    `Graph`. Refactor pressure on later phases that want to
-    cross-quote.
+  Refactor-risk assessment: `Graph α β` is the carrier mathlib has
+  committed to (PR leanprover-community/mathlib4#24122,
+  *feat(Combinatorics): multigraphs*, apnelson1 / Peter Nelson,
+  merged 2025-05-14; embedded-set design mirroring `Matroid`).
+  Adopting it tracks mathlib's direction rather than betting on a
+  research repo, so carrier refactor risk is near nil. Ongoing
+  graph-theory churn on Zulip (`HasAdj` / `GraphLike` unification,
+  darts/walks, retrofitting `SimpleGraph` / `Digraph` onto embedded
+  sets) is *additive* API on top of `Graph` and does not reshape its
+  fields. See Zulip #graph theory *"What kind of graphs are in
+  Mathlib already?"* and *"Set in definition of Graph"*. Lake
+  resolves one mathlib for the whole build, so the package compiles
+  against our mathlib pin — no separate pin-match check needed.
 
-  - **(M-B) Thin wrapper `BodyBarGraph V := Sym2 V → ℕ`.**
-    Edge-multiplicity function. Keeps the project's
-    `SimpleGraph`-centric idiom and stays under `Sym2 V` for
-    cardinality bookkeeping. Costs: redo a slice of the
-    `cycleMatroid` API on this wrapper (probably via a transport
-    along an `Equiv` between `BodyBarGraph V`'s edge bag and a
-    suitable `Graph` instance), and accept that the project's
-    "graphic matroid" identity is bridged rather than reused.
-
-  Recommendation pending; lean toward (M-A) because Katoh–Tanigawa's
-  `((d+1 choose 2)−1)G` parallel-multiplication operation is
-  natively expressible there and the mirror sub-directory is
-  already a precedent for taking a dependency on the package's
-  graph idioms.
+  - **(M-B) Thin wrapper `BodyBarGraph V := Sym2 V → ℕ` — considered,
+    not adopted.** Edge-multiplicity function; would keep the
+    `SimpleGraph`-centric idiom. Rejected: diverges from mathlib's
+    committed carrier, the community explicitly weighed and set aside
+    a `Sym2` / edge-labeling representation for multigraphs in favour
+    of the `β` edge-type `Graph`, and it would force re-deriving the
+    `cycleMatroid` bridge that the `Graph` carrier reuses for free.
 
 - **Plücker / extensor coordinates handled inline, no separate phase.**
   Body-bar bars carry "2-extensor" coordinates in `Rᵈ`, `d = n(n+1)/2`,
@@ -191,29 +210,55 @@ exact subset there.
 
 ## Layer plan
 
-A new chapter `blueprint/src/chapter/body-bar.tex` opens in
-Layer 0 and serves as the authoritative dep-graph for the phase.
+The chapter `blueprint/src/chapter/body-bar.tex` exists as a prose
+skeleton (wired into `main.tex`) and serves as the authoritative
+dep-graph for the phase once Layer 0 populates its nodes.
 Per-Layer dep-graph nodes referenced below as `def:foo` /
 `lem:foo` / `thm:foo` are the chapter's labels; create them as
 each Layer's Lean lands and flip `\leanok` to green when the
 matching Lean lemma names.
 
-### Layer 0 — Phase opening; multigraph carrier decided; new chapter
+**Carrier conventions (from the decided `Graph α β` carrier).**
+Bodies = vertices, type `α` (carrier `G.vertexSet : Set α`); bars =
+edges, type `β` (carrier `G.edgeSet : Set β`). The graphic matroid is
+`G.cycleMatroid : Matroid β`, so the `k`-frame matroid and its union
+are also `Matroid β` (ground type = the edge type `β`). Phase-12
+graph-level defs (`kFrameMatroid`, the sparsity predicate) live under
+`namespace Graph` so dot-notation works on `G : Graph α β` and they
+sit beside the package's `Graph.cycleMatroid`; body-bar framework
+defs live under `CombinatorialRigidity` / `BodyBar`. The `Graph`
+namespace is a deliberate departure from ROADMAP's "everything under
+`SimpleGraph` or `CombinatorialRigidity`" convention — update that
+convention's wording when the phase opens (Layer 0).
+
+### Layer 0 — Phase opening; carrier decided; populate chapter dep-graph
 
 **Lean:** (none yet) — the chapter and `Phase12.md` ship together.
 
-**Blueprint:** open `chapter/body-bar.tex`. Sections:
-- *Body-bar frameworks* (definitions; landing in L4).
-- *The general k-frame matroid* (Whiteley §2.1; landing in L2).
-- *Matroid union via submodular functions* (Whiteley §2.2;
-  landing in L1+L2 split).
-- *Tree-packing / Tutte–Nash-Williams* (landing in L3).
-- *Tay's theorem* (landing in L5a).
+**Blueprint:** `chapter/body-bar.tex` already exists as a prose
+skeleton (intro + the section headers below, wired into `main.tex`);
+Layer 0 populates each section with red dep-graph nodes (`\lean{}`
+pointers without `\leanok`, `\uses{}` chains per the proof plan).
+Sections (in chapter order):
+- *Matroid-union machinery* (Whiteley §2.2; landing in L1).
+- *The k-frame matroid as a union of cycle matroids* (Whiteley §2.1;
+  landing in L2).
+- *Tree-packing as a corollary* / Tutte–Nash-Williams (landing in L3).
+- *Body-bar frameworks and the rigidity matrix* (definitions;
+  landing in L4).
+- *Tay's theorem (existence-of-realization form)* (landing in L5a).
 
-Initial dep-graph is fully red; nodes flip green per Layer.
+Nodes flip green per Layer.
 
 **Decisions to capture in this Layer's commit:**
-- (M-A) vs (M-B) multigraph carrier (see *Architectural choices*).
+- Multigraph carrier = mathlib's core `Graph α β` (decided; see
+  *Architectural choices*). Record the `vertexSet`/`edgeSet`/`IsLink`
+  accessor idioms used downstream.
+- Namespace: graph-level defs under `namespace Graph` (dot-notation
+  on `G : Graph α β`), framework defs under `CombinatorialRigidity` /
+  `BodyBar`. Departs from ROADMAP's "everything under `SimpleGraph`
+  or `CombinatorialRigidity`" rule — update that convention's wording
+  in the same commit.
 - Mirror directory placement and naming
   (`CombinatorialRigidity/Matroid/Constructions/{Submodular,Union}.lean`).
 - Sync user-facing status surfaces per the *When this commit opens
@@ -249,16 +294,16 @@ chapter as facts cited from the mirror, not re-proven in prose).
 ### Layer 2 — `k`-frame matroid = `k`-fold union of cycle matroids (Whiteley Theorem 1)
 
 **Lean:** `CombinatorialRigidity/BodyBar/KFrame.lean` (new file):
-- `def Multigraph.kFrameMatroid (G : Multigraph V) (k : ℕ) : Matroid (Edge G × Fin k)` —
-  the generic `k`-frame matroid, defined via `Matroid.ofFun` of
-  the formal column-vector indexed by `(edge, j-th block)`, with
-  indeterminate coefficients realized as a placement
-  `Edge G × Fin k → R^(k · |V|)`. (Exact type signature decided
-  in L2; alternative: define on `Edge G` directly with a "generic
-  point" parameter.)
-- `theorem kFrameMatroid_eq_unionPow_cycleMatroid` (Whiteley
+- `def Graph.kFrameMatroid (G : Graph α β) (k : ℕ) : Matroid β` —
+  the generic `k`-frame matroid on the edge type `β`, defined via
+  `Matroid.ofFun` of the formal `k·|V|`-column matrix whose row for
+  edge `e` carries indeterminate coefficients across the `k` blocks.
+  (Exact construction — `ofFun` over which coefficient ring, and
+  whether the realization is `β → R^(k·|V|)` or restricted to
+  `G.edgeSet` — is an L2 decision; see *Open questions*.)
+- `theorem Graph.kFrameMatroid_eq_unionPow_cycleMatroid` (Whiteley
   Theorem 1): `kFrameMatroid G k = Matroid.Union (fun _ : Fin k =>
-  G.cycleMatroid)`.
+  G.cycleMatroid)` (both sides `Matroid β`).
 
 Proof: column-reorder argument from Whiteley §2.1. Forward
 (`F(G,X)` indep → forest union): identify a nonzero `|E|`-minor
@@ -275,36 +320,47 @@ forest matrices.
 ### Layer 3 — Tree-packing corollary (Tutte–Nash-Williams)
 
 **Lean:** in the same file or a sibling `BodyBar/TreePacking.lean`:
-- `theorem Multigraph.unionPow_cycleMatroid_indep_iff_count`: the
-  Whiteley Corollary 3 form — independent in `k`-fold cycle-matroid
-  union iff `|E'| ≤ k|V'| − k` on every non-empty subset.
-  Proof: combine `kFrameMatroid_eq_unionPow_cycleMatroid` with
+- `def Graph.IsSparse` / `Graph.IsTight (G : Graph α β) (k ℓ : ℕ)` —
+  the `Graph`-native `(k,ℓ)`-sparsity / tightness predicate
+  (`|E'| ≤ k|V'| − ℓ` on non-empty subsets; tight = sparse + global
+  equality). Introduced **fresh** here so Tay can be stated in
+  sparsity terms (the form we naturally think of it in); **not**
+  migrated from Phase 9/10's `SimpleGraph` sparsity — see
+  `../DESIGN.md` *Migrating Phases 1–11 …*. Body-bar Tay is the
+  `ℓ = k = d` case.
+- `theorem Graph.unionPow_cycleMatroid_indep_iff_isSparse`: the
+  Whiteley Corollary 3 form — a set is independent in the `k`-fold
+  cycle-matroid union iff `G.IsSparse k k`. Proof: combine
+  `kFrameMatroid_eq_unionPow_cycleMatroid` with
   `matroid_partition_eRk'` and the cycle-matroid rank formula
   `r(E') = |V'| − c(E')`.
-- `theorem Multigraph.exists_kForest_partition_iff_count` — the
+- `theorem Graph.exists_kForest_partition_iff_isSparse` — the
   classical Tutte–Nash-Williams: `G = ⨆ⱼ Tⱼ` with each `Tⱼ` a
-  forest iff `|E'| ≤ k|V'| − k`.
-- `corollary Multigraph.exists_spanningTree_partition_iff_count` —
+  forest iff `G.IsSparse k k`.
+- `corollary Graph.exists_spanningTree_partition_iff_isTight` —
   the spanning-tree refinement: when the count is tight on the
-  whole graph, the `k` forests are spanning trees. (Whiteley
-  Theorem 13 / Tay 5.3's "union of d spanning trees" version.)
+  whole graph (`G.IsTight k k`), the `k` forests are spanning trees.
+  (Whiteley Theorem 13 / Tay 5.3's "union of d spanning trees".)
 
-**Blueprint:** `thm:tutte-nash-williams`, `cor:k-spanning-trees`.
+**Blueprint:** `def:graph-sparse`, `thm:tutte-nash-williams`,
+`cor:k-spanning-trees`.
 
 ### Layer 4 — Body-bar framework + rigidity matrix
 
 **Lean:** `CombinatorialRigidity/BodyBar/Framework.lean`:
-- `def BodyBarFramework.{n} (G : Multigraph V) : Type` — pair of
-  the multigraph and a placement `p : Edge G → R^d` (d = n(n+1)/2)
-  with the value at each bar interpreted as Plücker / two-extensor
-  coordinates. Whether to constrain to `V(p-relations)` at the
-  type level (yes / Prop / not at all) is a Layer 4 decision.
-- `def BodyBarFramework.rigidityMap : ((V → R^d) →ₗ[ℝ] (Edge G → ℝ))` —
-  one row per edge, structured as in Whiteley §3 / Tay §2.
+- `def BodyBarFramework (n : ℕ) (G : Graph α β) : Type` — pair of
+  the multigraph and a placement assigning each bar (edge in `β`,
+  or `G.edgeSet`) a value in `R^d` (`d = n(n+1)/2`), interpreted as
+  Plücker / two-extensor coordinates. Whether to constrain to
+  `V(p-relations)` at the type level (yes / Prop / not at all) is a
+  Layer 4 decision (see *Open questions*).
+- `def BodyBarFramework.rigidityMap` — a linear map from body
+  motions (`G.vertexSet → R^d`) to bar constraints (`G.edgeSet → ℝ`),
+  one row per bar, structured as in Whiteley §3 / Tay §2.
 - `def BodyBarFramework.IsInfinitesimallyRigid` — kernel-dimension
   characterization analogous to Phase 4's
-  `Framework.IsInfinitesimallyRigid` (rank `d|V| − d`; trivial
-  motions span the `d`-dim screw-motion space).
+  `Framework.IsInfinitesimallyRigid` (rank `d·b − d`, `b = |V|`;
+  trivial motions span the `d`-dim screw-motion space).
 - Basic API mirroring Phase 4: rigidity-map monotonicity, kernel
   bounds, the trivial-motion subspace dimension fact.
 
@@ -314,16 +370,15 @@ forest matrices.
 ### Layer 5a — Tay's theorem (specialization form)
 
 **Lean:** `CombinatorialRigidity/BodyBar/TayTheorem.lean`:
-- `theorem BodyBarFramework.exists_independent_iff_count` (Whiteley
-  Theorem 8, witness form): there *exists* a body-bar framework on
-  `G` in `Rⁿ` that is independent iff `|E'| ≤ d|V'| − d` for every
-  non-empty subset (equivalently `G` is the union of `d`
-  edge-disjoint forests, by L3).
-- `theorem BodyBarFramework.exists_isInfinitesimallyRigid_iff_count`
+- `theorem BodyBarFramework.exists_independent_iff_isSparse`
+  (Whiteley Theorem 8, witness form): there *exists* an independent
+  body-bar framework on `G` in `Rⁿ` iff `G.IsSparse d d` (equivalently
+  `G` is the union of `d` edge-disjoint forests, by L3).
+- `theorem BodyBarFramework.exists_isInfinitesimallyRigid_iff_isTight`
   — the rigid + independent version of Tay's theorem (Tay
   Theorem 5.3 / Whiteley Theorem 8 combined): there exists an
-  isostatic body-bar framework iff the tight count `|E| = d(b−1)`
-  holds with `|E'| ≤ d|V'| − d` on every proper non-empty subset.
+  isostatic body-bar framework iff `G.IsTight d d` (the tight count
+  `|E| = d(b−1)` together with `G.IsSparse d d`).
 
 **Proof:** specialize each bar's two-extensor coordinate to the
 standard basis vector `b_eⱼ = e_j(e) ∈ R^d`, where `j(e)` is the
@@ -370,26 +425,27 @@ blueprint chapter's dep-graph as red nodes (forward mode).
 - [ ] **L1 (mirror):** `Matroid.Union`, `union_indep_iff'`,
   `matroid_partition'`, `matroid_partition_eRk'`,
   `PolymatroidFn`, `ofSubmodular`, `polymatroid_rank_eq`
-- [ ] **L2 (k-frame):** `Multigraph.kFrameMatroid`,
-  `kFrameMatroid_eq_unionPow_cycleMatroid` (Whiteley Theorem 1)
-- [ ] **L3 (tree-packing):**
-  `unionPow_cycleMatroid_indep_iff_count` (Whiteley Corollary 3),
-  `exists_kForest_partition_iff_count` (Tutte–Nash-Williams),
-  `exists_spanningTree_partition_iff_count`
+- [ ] **L2 (k-frame):** `Graph.kFrameMatroid`,
+  `Graph.kFrameMatroid_eq_unionPow_cycleMatroid` (Whiteley Theorem 1)
+- [ ] **L3 (tree-packing):** `Graph.IsSparse` / `Graph.IsTight`,
+  `Graph.unionPow_cycleMatroid_indep_iff_isSparse` (Whiteley
+  Corollary 3), `Graph.exists_kForest_partition_iff_isSparse`
+  (Tutte–Nash-Williams),
+  `Graph.exists_spanningTree_partition_iff_isTight`
 - [ ] **L4 (framework):** `BodyBarFramework`, `rigidityMap`,
   `IsInfinitesimallyRigid`, basic monotonicity API
-- [ ] **L5a (Tay):** `exists_independent_iff_count`,
-  `exists_isInfinitesimallyRigid_iff_count`
+- [ ] **L5a (Tay):** `exists_independent_iff_isSparse`,
+  `exists_isInfinitesimallyRigid_iff_isTight`
 
 ## Open questions
 
-- **Multigraph carrier (M-A vs M-B).** Decide in Layer 0.
-- **Plücker coordinates: typed or untyped?** Should
-  `BodyBarFramework.placement : Edge G → R^d` carry the
-  p-relation constraint at the type level (e.g.,
-  `Edge G → V(p-relations)`)? Or as a `Prop` field? Or untyped
-  with the p-relations checked only where they matter (rigidity-
-  matrix row equation)? Layer 4 decision.
+- **Multigraph carrier.** DECIDED — mathlib's core `Graph α β`
+  (see *Architectural choices made up front*).
+- **Plücker coordinates: typed or untyped?** Should the body-bar
+  placement (`β → R^d`, or on `G.edgeSet`) carry the p-relation
+  constraint at the type level (e.g., land in `V(p-relations)`)? Or
+  as a `Prop` field? Or untyped with the p-relations checked only
+  where they matter (rigidity-matrix row equation)? Layer 4 decision.
 - **`Matroid.ofFun` over what coefficient ring?** Phase 8 used
   `ℝ`; Whiteley's Theorem 1 proof is cleanest over
   `ℚ[X_{i,j}]` (or `ℤ[X_{i,j}]`). Phase 12 likely needs

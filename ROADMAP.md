@@ -407,6 +407,14 @@ machinery (Proposition 6 in Whiteley 1988) is **deferred** out of
 Phase 12 — the phase ships the existence-of-realization form of
 Tay's theorem only, witnessed by the standard-basis specialization.
 
+The multigraph carrier is mathlib's core `Graph α β`
+(`Mathlib/Combinatorics/Graph/Basic.lean`), on which the
+`apnelson1/Matroid` package's `cycleMatroid` already sits; Phases
+1–11 stay on `SimpleGraph` (the correct carrier for bar-joint
+rigidity). See `notes/Phase12.md` *Architectural choices* and
+`DESIGN.md` *Migrating Phases 1–11 from `SimpleGraph` to mathlib's
+`Graph`* for the rationale and refactor-risk assessment.
+
 The matroid-union access takes a dependency on the
 `apnelson1/Matroid` package: its `WIP/Union.lean` (Edmonds matroid
 partition, `Matroid.Union (ι → Matroid α)`, `matroid_partition'`,
