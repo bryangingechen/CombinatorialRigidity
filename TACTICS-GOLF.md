@@ -765,3 +765,29 @@ collapse without touching either.
 - If you can't get to a place where `r : TryReachPebbleResult D P …`
   is in scope with `P` let-bound (no `.induct`-style binding), there
   is no defeq channel for the unification.
+
+## 10. Collapsing indicator sums — `← Finset.mul_sum` before `Finset.sum_ite_eq'`
+
+`Finset.sum_ite_eq'` (and `Finset.sum_ite_eq`) collapses `∑ x, if x = a
+then f x else 0` to `f a`, but **only fires when the `if` is the whole
+summand** — `simp [Finset.sum_ite_eq']` silently no-ops on
+`∑ x, c * (if x = a then 1 else 0) * g x` because a constant factor `c`
+(or a trailing `g x`) sits outside the indicator. The fix is to first
+factor the constant out with `← Finset.mul_sum`, then normalize each
+summand to `if x = a then (1 * g x) else 0` via `ite_mul` / `one_mul` /
+`zero_mul` (and `mul_ite` / `mul_one` / `mul_zero` for a leading
+factor), at which point `Finset.sum_ite_eq'` collapses it.
+
+Concretely (Phase 15 `rigidityRow_eq`, expanding a signed-incidence row
+`∑ x, b·((ite_v − ite_u))·m x` to `b·(m v − m u)`):
+
+```lean
+simp only [mul_assoc, ← Finset.mul_sum, mul_sub, sub_mul, ite_mul, one_mul,
+  zero_mul, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]
+```
+
+The diagnostic that you've hit this: a `simp only [Finset.sum_ite_eq',
+…]` whose `Finset.sum_ite_eq'` argument the linter then flags as
+*unused* — the indicator never reached the collapsible shape. Reach for
+`← Finset.mul_sum` (constant factor) or restructure the summand before
+re-adding it.

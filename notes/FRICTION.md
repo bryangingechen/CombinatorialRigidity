@@ -76,6 +76,23 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `Finset.sum_ite_eq'` silently no-ops on `∑ x, c · (if x = a then 1 else 0) · g x`
+- **Where it bit:** `BodyBarFramework.rigidityRow_eq` in
+  `BodyBar/TayTheorem.lean` (Phase 15 converse rank bound). Expanding a
+  signed-incidence row `∑ x, b·((ite_v − ite_u))·m x` to `b·(m v − m u)`,
+  the `simp only [Finset.sum_ite_eq', …]` left the sum uncollapsed and
+  the linter flagged `Finset.sum_ite_eq'` (and most siblings) as
+  *unused* — the indicator was wrapped in a constant factor `b` and a
+  trailing `m x`, so it never reached the `∑ x, if x = a then f x else 0`
+  shape the lemma matches.
+- **Friction:** several build cycles tuning the simp set before realizing
+  the collapse lemma fires only on a *bare* indicator summand.
+- **Resolution:** factor the constant out with `← Finset.mul_sum` first,
+  then `ite_mul` / `one_mul` / `zero_mul` normalize the summand to a bare
+  indicator, after which `Finset.sum_ite_eq'` collapses it.
+- **Status:** resolved (cross-cutting idiom).
+- **Lifted to:** TACTICS-GOLF § 10.
+
 ### [resolved] Restating a `Pi.single`-indexed subterm in a standalone `have` fails to elaborate
 - **Where it bit:** `BodyBarFramework.stdFramework_rigidityRow_eq` in
   `BodyBar/TayTheorem.lean` (Phase 15 block-diagonal rank count). The

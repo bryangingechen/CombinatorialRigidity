@@ -556,8 +556,11 @@ in~\cite{whiteley1988}, is \emph{deferred} out of Phase~15
 
 \begin{theorem}[Tay's theorem, independent form; Whiteley Theorem~8]
   \label{thm:tay-witness}
+  \lean{Graph.BodyBarFramework.tay_witness}
+  \leanok
   \uses{def:body-bar-framework, def:infinitesimally-rigid-body-bar,
-    def:graph-sparse, thm:tutte-nash-williams, cor:k-spanning-trees}
+    def:independent-body-bar, def:graph-sparse, thm:tutte-nash-williams,
+    cor:k-spanning-trees}
   Let $n \ge 2$ and $d = n(n+1)/2$. A multigraph $G$ carries an
   independent body-bar framework in $\mathbb{R}^{n}$ iff $G$ is
   $(d, d)$-sparse (equivalently, by \cref{thm:tutte-nash-williams},
@@ -568,27 +571,22 @@ in~\cite{whiteley1988}, is \emph{deferred} out of Phase~15
   the count $|E| = d(b - 1)$ of Tay~\cite{tay1984}.
 \end{theorem}
 \begin{proof}
-  \uses{thm:k-frame-union-cycle, thm:tutte-nash-williams,
-    cor:k-spanning-trees}
-  Specialize each bar's two-extensor coordinate to the standard
-  basis vector $b_{e} = e_{j(e)} \in \mathbb{R}^{d}$, where $j(e)$
-  is the index of $e$'s forest in a chosen tree-packing partition
-  (\cref{thm:tutte-nash-williams}). This is the reverse direction of
-  \cref{thm:k-frame-union-cycle} lifted from indeterminate to real
-  coefficients: the rigidity matrix becomes block-diagonal with
-  $d$ full-rank forest-incidence blocks, so the framework is
-  independent, and isostatic exactly when each block is a spanning
-  tree (\cref{cor:k-spanning-trees}). The degenerate $b_{e}$ lie on
-  the Pl\"ucker variety vacuously, so this is a valid body-bar
-  realization.
+  \leanok
+  \uses{prop:tay-witness-exists, lem:tay-isSparse-of-independent}
+  The ($\Leftarrow$) directions are \cref{prop:tay-witness-exists};
+  the ($\Rightarrow$) sparsity converse is
+  \cref{lem:tay-isSparse-of-independent}, and the isostatic count
+  follows by substituting independence ($\mathrm{rank} = |E|$) into the
+  infinitesimal-rigidity equality $\mathrm{rank} + d = d \cdot b$ to get
+  $|E| + d = d|V|$, i.e.\ $(d, d)$-tightness.
 \end{proof}
 
-The witness ($\Leftarrow$) direction is formalized as the proposition
-below; the converse ($\Rightarrow$, an independent body-bar framework
-forces $(d, d)$-sparsity) is the body-bar analogue of the
-Lov\'asz--Yemini rank-upper-bound argument
-(\cref{lem:isSparse-of-rowIndependent-two}) and remains to be
-formalized.
+The two halves are formalized separately: the witness ($\Leftarrow$)
+direction as \cref{prop:tay-witness-exists}, and the converse
+($\Rightarrow$, an independent body-bar framework forces
+$(d, d)$-sparsity) as \cref{lem:tay-isSparse-of-independent}, the
+body-bar analogue of the Lov\'asz--Yemini rank-upper-bound argument
+(\cref{lem:isSparse-of-rowIndependent-two}).
 
 \begin{proposition}[Tay witness, existence direction]
   \label{prop:tay-witness-exists}
@@ -614,4 +612,32 @@ formalized.
   ($\mathrm{rank} = |E|$) together with the tightness equality
   $|E| + d = d|V|$ gives the infinitesimal-rigidity count
   $\mathrm{rank} + d = d \cdot b$ directly, since $b = |V(G)|$.
+\end{proof}
+
+\begin{lemma}[Tay converse: independent $\Rightarrow$ sparse]
+  \label{lem:tay-isSparse-of-independent}
+  \lean{Graph.BodyBarFramework.isSparse_of_isIndependent}
+  \leanok
+  \uses{def:body-bar-framework, def:independent-body-bar,
+    def:rigidity-map-body-bar, def:graph-sparse, def:k-frame-matroid}
+  Let $d = n(n+1)/2$. If a body-bar framework $F$ on $G$ is independent,
+  then $G$ is $(d, d)$-sparse: every non-empty bar set $E' \subseteq E(G)$
+  spanning $V'$ satisfies $|E'| + d \le d|V'|$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:k-frame-nonzero-monomial-forest}
+  The body-bar analogue of the Lov\'asz--Yemini rank-upper-bound
+  (\cref{lem:isSparse-of-rowIndependent-two}). Independence makes all
+  $|E(G)|$ rigidity rows linearly independent, so on each $E'$ the $|E'|$
+  rows span a subspace of dimension $|E'|$. The row for a bar $e$ is the
+  inner product $m \mapsto \langle b_{e}, m_{u} - m_{v}\rangle$, a
+  real-coefficient combination $\sum_{c} (b_{e})_{c}\cdot(\text{block-}c$
+  incidence row of $e)$ across the $d$ coordinate blocks --- the real
+  specialization of the indeterminate $k$-frame row of
+  \cref{lem:k-frame-nonzero-monomial-forest}. So the rows on $E'$ lie in
+  the block-diagonal product subspace of dimension $d \cdot r(E')$
+  ($r$ the cycle-matroid rank), giving $|E'| \le d\,r(E')$. With
+  $r(E') + 1 \le |V'|$ (a non-empty bar set spans at least one
+  non-trivial component), $|E'| \le d(|V'| - 1)$, i.e.\ $|E'| + d \le d|V'|$.
 \end{proof}

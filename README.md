@@ -49,7 +49,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–14 complete; Phase 15 in progress.**
+* **Phases 1–15 complete.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -108,13 +108,16 @@ project; commit history is preserved with paths rewritten.
     (`Graph.kFrameMatroid_eq_unionPow_cycleMatroid`), matching the two
     `(k,k)`-sparsity count-characterizations by matroid extensionality.
     `BodyBar/KFrame.lean`. See `notes/Phase14.md`.
-  * **Phase 15 (in progress)** — **Tay's theorem** itself in
-    existence-of-realization form (by specializing two-extensor row
-    coefficients to standard-basis Plücker coordinates). Forward-mode
-    lemma index in `blueprint/src/chapter/body-bar.tex`
-    §`sec:body-bar-framework` + §`sec:body-bar-tay`; next concrete commit
-    is `def:body-bar-framework` in a new `BodyBar/Framework.lean`. See
-    `notes/Phase15.md`. Whiteley's full
+  * **Phase 15 (complete)** — **Tay's theorem** itself in
+    existence-of-realization form (`Graph.BodyBarFramework.tay_witness`):
+    for `d = n(n+1)/2`, a multigraph `G` carries an independent body-bar
+    framework in `ℝⁿ` iff `G` is `(d,d)`-sparse, and an isostatic one iff
+    `(d,d)`-tight. The standard-basis witness (two-extensor coordinates
+    `b_e = e_{j(e)}` on a tree-packing) gives the existence directions;
+    the converse is the body-bar Lovász–Yemini rank-upper-bound
+    (`finrank (span (rows on E')) ≤ d·r(E')`, the real specialization of
+    Phase 14's `k`-frame forward count). `BodyBar/{Framework,TayTheorem}.lean`.
+    See `notes/Phase15.md`. Whiteley's full
     "almost-all-realizations-are-rigid" lift via irreducible-variety
     machinery (Proposition 6) is deferred. The longer-horizon target
     beyond is the **molecular conjecture** (Katoh–Tanigawa 2011).

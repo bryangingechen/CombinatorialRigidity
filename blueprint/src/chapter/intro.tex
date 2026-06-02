@@ -25,8 +25,7 @@ combinatorial rigidity, see
 
 The Lean code is organized into fifteen phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--14 are complete; Phase~15 is in progress (see the phase
-bullets below). The first six
+Phases~1--15 are complete (see the phase bullets below). The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
 \texttt{Matroid}: first combinatorially, via the Lov\'asz--Yemini
@@ -132,15 +131,18 @@ theorem itself (Phase~15). The per-phase breakdown:
         equals the $k$-fold union of the cycle matroid, restricted to
         the bar set $E(G)$. (File: \texttt{BodyBar/KFrame.lean}.)
   \item \textbf{Body-bar Tay theorem.} For $n \ge 2$ and
-        $d = n(n+1)/2$, a multigraph $G$ is the underlying graph of an
-        infinitesimally rigid body-bar framework in $\mathbb{R}^n$ iff
-        $G$ is the edge-disjoint union of $d$ spanning trees
-        (Tay~1984~\cite{tay1984}). Body-bar realizations are obtained
-        by specializing two-extensor row coefficients to
-        standard-basis Pl\"ucker coordinates; the phase ships the
-        existence-of-realization form, deferring Whiteley's full lift
-        via irreducible-variety machinery (Proposition~6
-        in~\cite{whiteley1988}). (Chapter: \cref{sec:body-bar}; files:
+        $d = n(n+1)/2$, a multigraph $G$ carries an independent body-bar
+        framework in $\mathbb{R}^n$ iff $G$ is $(d,d)$-sparse, and an
+        isostatic one iff $(d,d)$-tight --- equivalently the
+        edge-disjoint union of $d$ forests (resp.\ spanning trees)
+        (Tay~1984~\cite{tay1984}, \cref{thm:tay-witness}). Existence is
+        witnessed by specializing two-extensor row coefficients to
+        standard-basis Pl\"ucker coordinates on a tree packing; the
+        converse is the body-bar Lov\'asz--Yemini rank-upper-bound. The
+        phase ships the existence-of-realization form, deferring
+        Whiteley's full lift via irreducible-variety machinery
+        (Proposition~6 in~\cite{whiteley1988}). (Chapter:
+        \cref{sec:body-bar}; files:
         \texttt{BodyBar/\{Framework,TayTheorem\}.lean}.)
 \end{enumerate}
 
@@ -150,16 +152,15 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from the
 navigation bar) is the best place to see at a glance how the chapters
-fit together; all Phase~1--14 nodes are green: the main Laman line
+fit together; all Phase~1--15 nodes are green: the main Laman line
 (\cref{sec:laman-theorem}), the matroid identifications
 (\cref{sec:rigidity-matroid,sec:count-matroid}), the verified-DFS
 warmup (\cref{sec:dfs}), the pebble-game chapter
 (\cref{sec:pebble-game}), the executable pebble-game chapter
 (\cref{sec:executable}), the matroid-union / Edmonds-partition
-chapter (\cref{sec:matroid-union}), and the Tutte--Nash-Williams
-tree-packing and $k$-frame-matroid nodes of the body-bar chapter (the
-\cref{sec:body-bar-tree-packing,sec:body-bar-k-frame} subsections). The
-rest of the body-bar program is the to-do list: the Phase~15 nodes of
-the body-bar chapter (\cref{sec:body-bar}) are red and turn green as
-the phase lands, with Phase~15 (Tay's body-bar theorem) the active
-front.
+chapter (\cref{sec:matroid-union}), and the full body-bar chapter
+(\cref{sec:body-bar}) --- Tutte--Nash-Williams tree-packing, the
+$k$-frame matroid as a cycle-matroid union, and Tay's body-bar theorem
+itself (\cref{thm:tay-witness}). With Phase~15 complete the entire
+dependency graph is green; the natural follow-on (body-hinge /
+panel-hinge, then the molecular conjecture) is not yet opened.

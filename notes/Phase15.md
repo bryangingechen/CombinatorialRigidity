@@ -1,11 +1,12 @@
 # Phase 15 — Body-bar Tay theorem (existence form) (work log)
 
-**Status:** in progress. The **existence (⟸) direction** of Tay's theorem is now
-green as `prop:tay-witness-exists` (`BodyBar/TayTheorem.lean`:
-`exists_isIndependent_of_isSparse`, `exists_isIsostatic_of_isTight`). The full iff
-`thm:tay-witness` stays red — only the converse (⟹: independent framework forces
-`(d,d)`-sparse) is left, the body-bar analogue of Phase 6's
-`isSparse_of_edgeSetRowIndependent_dim_two`.
+**Status:** ✓ Complete. Tay's theorem in existence-of-realization form is green as
+`thm:tay-witness` (`Graph.BodyBarFramework.tay_witness`, `BodyBar/TayTheorem.lean`):
+the iff of the standard-basis existence directions (`prop:tay-witness-exists`:
+`exists_isIndependent_of_isSparse` / `exists_isIsostatic_of_isTight`) with the converse
+(`lem:tay-isSparse-of-independent`: `isSparse_of_isIndependent`). All
+`sec:body-bar-framework` + `sec:body-bar-tay` nodes are green; no `sorry`s, no warnings,
+`lake lint` clean. `tay_witness` checks against only `propext`/`Classical.choice`/`Quot.sound`.
 
 ## Current state
 
@@ -92,20 +93,31 @@ index `j`). The isostatic count is direct: independence gives `rank = |E|`, and
 `IsTight.2` gives `|E| + d = d·|V|`, so `rank + d = d·b`. New blueprint nodes
 `def:independent-body-bar` + `prop:tay-witness-exists` are **green**.
 
-`thm:tay-witness` (the full iff) is **still red** — only the converse (⟹) is left.
-
-**Next concrete commit (phase closer):** the **⟹ direction** + flip
-`thm:tay-witness` green. Need: an independent body-bar framework forces
-`G.IsSparse (bodyBarDim n) (bodyBarDim n)`. This is the body-bar analogue of
-Phase 6's `isSparse_of_edgeSetRowIndependent_dim_two` — it wants a *rank upper
-bound* `finrank (range (rigidityMap D)) + d ≤ d·|V'|` on every spanned
-sub-multigraph `V'` (the body-bar version of
-`rigidityMap_finrank_range_le_of_affinelySpanning`), which does **not** exist yet
-and is the substantive new infra to assess first. With it, restrict the
-independent framework's row-LI to each `E' ⊆ E(G)`, transport to the spanned
-subgraph, and read off `|E'| + d ≤ d·|V'|`. Then `thm:tay-witness` is the iff of
-`prop:tay-witness-exists` with this converse, and the isostatic half adds the
-tight global count.
+The **converse (⟹) direction** and the full iff `thm:tay-witness` now land (this
+commit). The converse `isSparse_of_isIndependent` (`lem:tay-isSparse-of-independent`)
+took the rank-upper-bound route rather than affine-spanning trivial motions:
+- `rigidityRow_eq` — **general-placement row identity**: for *any* framework `F`, the
+  rigidity row at `e` is `-(blockPairing α d (fun c ↦ (b_e c) • signedIncMatrix e))`,
+  the real-coefficient combination `∑_c (b_e)_c · (block-c incidence row)`. Generalizes
+  `stdFramework_rigidityRow_eq` (the `b_e = e_{j(e)}`, block-`single` special case).
+- `span_signedIncMatrix_image_eq_of_orientation` — the incidence-row span is
+  orientation-independent (two orientations' `dInc` agree-or-swap, so each generator is
+  `±` the other; `span` swallows the sign). Lets the rank count reuse the
+  `orientation_nonempty.some`-pinned `finrank_span_signedIncMatrix_eq_cycleMatroid_rk`.
+- `finrank_realBlockPiSpanOn` — the **real** block-diagonal subspace finrank `= d·r(E')`,
+  assembled from the *field-generic* `finrank_constPiSpan` +
+  `finrank_span_signedIncMatrix_eq_cycleMatroid_rk` (both already over an arbitrary field).
+- `finrank_rigidityRow_span_le` — the **rank upper bound** `finrank (span (rows on E')) ≤
+  d·r(E')`: each row, pushed back through injective `blockPairing`, lands in the real
+  block-diagonal subspace. The body-bar analogue of
+  `rigidityMap_finrank_range_le_of_affinelySpanning`; the real specialization of Phase 14's
+  `forest_count_of_linearIndepOn_kFrameRow`.
+- `rigidityRow_linearIndependent` — independence (`rank = |E|`) makes the full row family LI.
+- `isSparse_of_isIndependent` — restrict row-LI to `E' ⊆ E(G)` (so `finrank (span rows) =
+  |E'|`), apply the upper bound (`|E'| ≤ d·r(E')`), then
+  `cycleMatroid_rk_add_one_le_spanningVerts_ncard` (`r(E')+1 ≤ |V'|`) gives `|E'| + d ≤ d·|V'|`.
+- `tay_witness` — the iff: existence directions ↔ sparse/tight; isostatic converse adds the
+  global count `|E| + d = d·|V|` from independence substituted into rigidity.
 
 ## Architectural choices made up front
 
@@ -156,8 +168,14 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
             `IsIndependent` (`Framework.lean`),
             `exists_isIndependent_of_isSparse` /
             `exists_isIsostatic_of_isTight` (`TayTheorem.lean`).
-      - [ ] **Next:** the converse (⟹: independent ⟹ `(d,d)`-sparse), then flip
-            `thm:tay-witness` green. Phase closes here.
+      - [x] Converse (⟹: independent ⟹ `(d,d)`-sparse,
+            `lem:tay-isSparse-of-independent`): `rigidityRow_eq`,
+            `span_signedIncMatrix_image_eq_of_orientation`,
+            `finrank_realBlockPiSpanOn`, `finrank_rigidityRow_span_le`,
+            `rigidityRow_linearIndependent`, `isSparse_of_isIndependent`
+            (`TayTheorem.lean`).
+      - [x] Full iff `thm:tay-witness` (`tay_witness`, `TayTheorem.lean`) — green.
+            Phase complete.
 
 ## Decisions made during this phase
 
@@ -218,32 +236,37 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 
 ## Hand-off / next phase
 
-Green: the three `sec:body-bar-framework` defs + `def:independent-body-bar`
-(`BodyBar/Framework.lean`); the witness placement, bar-row reduction,
-block-diagonal rank count, **and the existence (⟸) direction**
-`prop:tay-witness-exists` (`BodyBar/TayTheorem.lean`). The ⟸ direction was the
-easy half — it packages `stdFramework_finrank_range` with `tutte_nash_williams`.
+**Phase 15 is complete.** Green: the three `sec:body-bar-framework` defs +
+`def:independent-body-bar` (`BodyBar/Framework.lean`); the full
+`sec:body-bar-tay` chain (`BodyBar/TayTheorem.lean`) — witness placement,
+bar-row reduction, block-diagonal rank count, existence direction
+`prop:tay-witness-exists`, the converse rank-upper-bound infra
+(`rigidityRow_eq`, `span_signedIncMatrix_image_eq_of_orientation`,
+`finrank_realBlockPiSpanOn`, `finrank_rigidityRow_span_le`,
+`rigidityRow_linearIndependent`), the converse `isSparse_of_isIndependent`
+(`lem:tay-isSparse-of-independent`), and the full iff `thm:tay-witness`
+(`tay_witness`). No `sorry`s; `lake build` warning-clean; `lake lint` clean;
+blueprint `checkdecls` passes (`blueprint/verify.sh`).
 
-**Next concrete commit (phase closer):** the **converse (⟹)**, then flip
-`thm:tay-witness` green. This is the genuinely substantive half:
-- **Need first (new infra):** a body-bar rank *upper* bound — for an arbitrary
-  framework `F` (`F.graph = G`) and `E' ⊆ E(G)` spanning `V'`,
-  `finrank (range (F.rigidityMap D restricted to E')) + d ≤ d·|V'|`. This is the
-  body-bar analogue of `rigidityMap_finrank_range_le_of_affinelySpanning`
-  (`RigidityMatroid.lean`); it does not exist yet. Assess this lemma's cost
-  before committing to the full ⟹.
-- **Then ⟹:** an independent `F` has all rows LI, so each `E' ⊆ E(G)` has LI
-  rows; restrict + transport to the spanned subgraph and apply the upper bound to
-  get `|E'| + d ≤ d·|V'|`, i.e. `G.IsSparse d d`. Mirror Phase 6's
-  `isSparse_of_edgeSetRowIndependent_dim_two` row-factoring through the induced
-  subgraph.
-- **`thm:tay-witness` iff:** `prop:tay-witness-exists` (⟸) + the converse (⟹);
-  isostatic half adds `IsTight.2`'s global count, both directions.
+**Converse-route note for the next phase:** the converse avoided the
+affine-spanning / trivial-motions machinery of Phase 6's
+`rigidityMap_finrank_range_le_of_affinelySpanning`. The body-bar rows are
+single inner-product functionals, so they factor cleanly through `blockPairing`
+as real-coefficient block combinations of incidence rows; the rank upper bound is
+then the *real specialization* of Phase 14's generic forward count
+(`forest_count_of_linearIndepOn_kFrameRow`), reusing the field-generic
+`finrank_constPiSpan` / `finrank_span_signedIncMatrix_eq_cycleMatroid_rk` at `ℝ`.
+The `−d` slack comes from `cycleMatroid_rk_add_one_le_spanningVerts_ncard`
+(`r(E')+1 ≤ |V'|`), not a trivial-motion dimension count — no body-bar
+screw-motion infrastructure was needed.
 
-The phase closes on the commit that takes `thm:tay-witness` green. Then the
-phase-completion checklist (ROADMAP Status ✓, compress §15, sync README /
-home_page / intro.tex, project-organization re-skim) fires.
+**Possible cleanup-round item (not a blocker):** `stdFramework_rigidityRow_eq` is
+now the `b_e = e_{j(e)}` special case of the general `rigidityRow_eq`. It could be
+derived from `rigidityRow_eq` (`Pi.single (j e) v = fun c ↦ (e_{j e} c) • v` after
+the std-basis collapse) rather than reproved standalone; left as-is this phase
+since both are short and the std proof predates the general one.
 
-Follow-on: **Phase 16** (body-hinge / panel-hinge Tay–Whiteley), en route
-to **Phase 17** (molecular conjecture, Katoh–Tanigawa 2011). Neither is
-opened.
+Follow-on: **Phase 16** (body-hinge / panel-hinge Tay–Whiteley), where Whiteley's
+"almost all realizations are rigid" irreducible-variety lift (deferred here) is
+re-assessed; en route to **Phase 17** (molecular conjecture, Katoh–Tanigawa 2011).
+Neither is opened.

@@ -101,7 +101,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-13) | Phase 13 surface (`BodyBar/TreePacking.lean`, Phase-13 `Matroid/Constructions/Union.lean` adders, `body-bar.tex` tree-packing nodes) | ✓ Complete (see `notes/Phase13-cleanup.md`; round manual: `CLEANUP.md`) |
 | 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | ✓ Complete (see `notes/Phase14.md`) |
 | ⋮ Cleanup round (post-Phase-14) | Phase 14 surface (`BodyBar/KFrame.lean`, Phase-14 `Mathlib/LinearAlgebra/Matrix/Rank.lean` adders, `body-bar.tex` `sec:body-bar-k-frame` nodes) | ✓ Complete (see `notes/Phase14-cleanup.md`; round manual: `CLEANUP.md`) |
-| 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | in progress (was Phase 12; see `notes/Phase15.md`) |
+| 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | ✓ Complete (was Phase 12; see `notes/Phase15.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -466,38 +466,28 @@ encoding and the ground-set restriction): `notes/Phase14.md` and the
 
 ### Phase 15 — Body-bar Tay theorem (existence form)
 
-**Status (in progress; see `notes/Phase15.md`).** The original Phase-12
-target, unblocked by the Phase 12–14 chain. Forward-mode phase: the
-lemma index is `blueprint/src/chapter/body-bar.tex`
-§`sec:body-bar-framework` + §`sec:body-bar-tay` (four red nodes); next
-concrete commit is `def:body-bar-framework` in a new
-`BodyBar/Framework.lean`. For `n ≥ 2` and `d = n(n+1)/2`, a multigraph
-`G` on `b` bodies
-admits an infinitesimally rigid independent body-bar framework in `Rⁿ`
-iff `|E| = d(b−1)` with `|E'| ≤ d|V'| − d` on every sub-multigraph;
-equivalently (Phase 13) iff `G` is the edge-disjoint union of `d`
-spanning trees. Whiteley's matroid-union route (Whiteley 1988):
-specialize the indeterminate row coefficients to standard-basis Plücker
-coordinates of two-extensors.
-
-Architectural decisions (migrated from the old Phase-12 notes):
-- **Carrier = mathlib's core `Graph α β`** (`Mathlib/Combinatorics/
-  Graph/Basic.lean`), on which `apnelson1/Matroid`'s `cycleMatroid`
-  sits; Phases 1–11 stay on `SimpleGraph` (the correct carrier for
-  bar-joint rigidity). See `DESIGN.md` *Migrating Phases 1–11 …* for
-  the refactor-risk assessment.
-- **Plücker / two-extensor coordinates handled inline**, standard-basis
-  specialization only — no separate phase, no irreducible-variety
-  infrastructure.
-- **Existence-of-realization form only.** Whiteley's "almost all
-  realizations are rigid" lift (Proposition 6, irreducible-variety
-  machinery) is **deferred**, re-assessed when the body-hinge phase
-  opens.
-- **Graph-level defs under `namespace Graph`** (dot-notation on
-  `G : Graph α β`, beside `Graph.cycleMatroid`); framework defs under
-  `CombinatorialRigidity` / `BodyBar`. Departs from the "everything
-  under `SimpleGraph`/`CombinatorialRigidity`" convention (Phases
-  13–15).
+**Status (✓ Complete; see `notes/Phase15.md`).** The original Phase-12
+target, unblocked by the Phase 12–14 chain. Tay's theorem in the
+existence-of-realization form (Whiteley 1988 Theorem 8, Tay 1984): for
+`d = bodyBarDim n = n(n+1)/2`, a multigraph `G` carries an independent
+body-bar framework in `ℝⁿ` iff `G` is `(d,d)`-sparse, and an isostatic
+one iff `(d,d)`-tight — `Graph.BodyBarFramework.tay_witness`, the iff of
+the standard-basis witness (`exists_isIndependent_of_isSparse` /
+`exists_isIsostatic_of_isTight`, via `tutte_nash_williams` +
+block-diagonal rank count `stdFramework_finrank_range`) with the
+converse (`isSparse_of_isIndependent`). The converse is the body-bar
+analogue of Phase 6's `isSparse_of_edgeSetRowIndependent_dim_two`: the
+block-diagonal rank upper bound `finrank_rigidityRow_span_le`
+(`finrank (span (rows on E')) ≤ d·r(E')`, the real specialization of
+Phase 14's `forest_count_of_linearIndepOn_kFrameRow`, via a general-
+placement row identity `rigidityRow_eq` factoring each row through
+`blockPairing`) plus the cycle-matroid bound `r(E')+1 ≤ |V'|`. Carrier:
+mathlib core `Graph α β`; Plücker/two-extensor coordinates handled
+inline (degenerate permitted, standard-basis witness only). Whiteley's
+"almost all realizations are rigid" irreducible-variety lift is
+**deferred** to the body-hinge phase. Forward-mode phase: per-node lemma
+map + decisions in `notes/Phase15.md` and the `sec:body-bar-framework` +
+`sec:body-bar-tay` dep-graph of `body-bar.tex`.
 
 The natural follow-on is **Phase 16** (body-hinge / panel-hinge
 Tay–Whiteley) en route to a longer-horizon **Phase 17** target — the
