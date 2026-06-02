@@ -44,9 +44,21 @@ those vanishing on `v`), giving `finrank (pinnedMotions v) + D =
 finrank Z(G,p)` (`finrank_pinnedMotions_add_screwDim`) — the codimension
 form of "deleting body `v`'s `D` columns preserves rank". The [29]
 pin-a-body fact is *proved* via the normalization `S u ↦ S u - S v`
-staying a motion (`isInfinitesimalMotion_sub_const`). Next: the last
-rank lemma (5.2 rotation) and the Prop 1.1 reconciliation (see
-*Hand-off*).
+staying a motion (`isInfinitesimalMotion_sub_const`).
+**Lemma 5.2 (`lem:rank-rotation-semicont`) has now landed**, basis-free
+as span-refinement monotonicity: if two frameworks share a graph and
+`F`'s hinge spans are contained in `F'`'s at every edge (`F'` the more
+general/generic realization), then `F'.infinitesimalMotions ≤
+F.infinitesimalMotions` (`infinitesimalMotions_mono_of_span_le`), hence
+`finrank Z(G,p') ≤ finrank Z(G,p)` (`finrank_infinitesimalMotions_le_of_span_le`,
+via `Submodule.finrank_mono`) — i.e. `rank R(G,p) ≤ rank R(G,p')`: the
+generic member of a rotation family has the largest supporting spans and
+the maximal rank. Carried as the monotonicity core (matching the 5.1/5.3
+basis-free treatment), not the literal analytic one-parameter
+semicontinuity — the genericity-over-perturbation choice avoids the
+parametrized polynomial-entry coordinate matrix the design defers. Only
+`prop:rigidity-matrix-prop11` (the Prop 1.1 reconciliation) remains red;
+see *Hand-off*.
 
 Landed so far:
 - `def:hinge-constraint` — `Molecular/RigidityMatrix.lean`:
@@ -223,8 +235,14 @@ the Lean lands.
       spans of linearly-independent supporting extensors meet only at `0`
       (`disjoint_span_singleton'` + `pair_iff'`), so a screw meeting both
       hinge constraints has `S u = S v`.
-- [ ] `lem:rank-rotation-semicont` — **Lemma 5.2** (rank
-      lower-semicontinuity under a panel rotation; genericity form).
+- [x] `lem:rank-rotation-semicont` — **Lemma 5.2** (rank
+      lower-semicontinuity under a panel rotation). **Landed** basis-free
+      as span-refinement monotonicity (`infinitesimalMotions_mono_of_span_le`
+      + `finrank_infinitesimalMotions_le_of_span_le`): refining the hinge
+      spans (toward general position) shrinks the motion space, so
+      `rank R(G,p) ≤ rank R(G,p')` with `p'` the generic realization. Via
+      `Submodule.finrank_mono`; the genericity-over-perturbation choice
+      (risk register item 3) resolved in the monotonicity direction.
 - [ ] `prop:rigidity-matrix-prop11` — reconcile rank form with Phase
       16's existence form (`thm:body-hinge-tay`); via Prop 2.3
       [15] + Phase 13/14 union.
@@ -336,6 +354,22 @@ the Lean lands.
   dimensions. The [29] fact is *proved*, resolving the prove-vs-hypothesize
   question (risk register item 4) for Lemma 5.1 in the prove direction.
 
+- **Lemma 5.2 (rotation semicontinuity) carried basis-free as
+  span-refinement monotonicity** (`lem:rank-rotation-semicont`). Rather
+  than a parametrized one-parameter rotation family with the rigidity
+  matrix as a polynomial-entry coordinate matrix (the analytic /
+  literal-minor form), the lemma is `infinitesimalMotions_mono_of_span_le`:
+  two frameworks `F, F'` on the same graph with `span C(p(e)) ≤ span C(p'(e))`
+  at every edge (so `F'` is the *more general* realization) have
+  `F'.infinitesimalMotions ≤ F.infinitesimalMotions` — refining the spans
+  toward general position only shrinks the motion space. The rank form
+  `finrank Z(G,p') ≤ finrank Z(G,p)` is then `Submodule.finrank_mono`
+  (`finrank_infinitesimalMotions_le_of_span_le`). This resolves risk
+  register item 3 in the genericity direction (the monotonicity core),
+  matching the basis-free treatment of 5.1/5.3 and avoiding the
+  parametrized polynomial coordinate matrix the design defers. No
+  friction (two one-liners reusing the existing motion-space API).
+
 ### Citations verified this phase
 - **[29] White, N., Whiteley, W.**, *The algebraic geometry of motions
   of bar-and-body frameworks*, SIAM J. Algebraic Discrete Methods **8**
@@ -350,7 +384,10 @@ the Lean lands.
 ## Blockers / open questions
 
 - **Lemma 5.2 perturbation vs genericity** (risk register item 3) —
-  decide when `lem:rank-rotation-semicont` lands. Leaning genericity.
+  **resolved** in the monotonicity direction: `lem:rank-rotation-semicont`
+  landed basis-free as span-refinement monotonicity
+  (`infinitesimalMotions_mono_of_span_le` + the `Submodule.finrank_mono`
+  rank corollary), not an analytic perturbation. See *Decisions*.
 - **External-fact boundary** (risk register item 4) — the [29]
   pin-a-body fact (Lemma 5.1) was **proved**, not hypothesized
   (`isInfinitesimalMotion_sub_const`, the relative-screw normalization).
@@ -408,14 +445,35 @@ of "deleting body `v`'s `D` columns preserves rank". The [29]
 White–Whiteley pin-a-body fact is *proved*, via the relative-screw
 normalization `isInfinitesimalMotion_sub_const`.
 
-Two nodes remain red: `lem:rank-rotation-semicont` (KT Lemma 5.2,
-rotation lower-semicontinuity — leaning the genericity form per the
-blocker note: entries of `R(G,p)` are polynomials in the panel
-coordinates, so a nonvanishing minor persists generically) and
-`prop:rigidity-matrix-prop11` (reconcile the rank form with Phase 16's
-existence form `thm:body-hinge-tay` via Prop 2.3 [15] + the Phase 13/14
-`D`-fold graphic union). The next concrete commit is **either of these
-two**; 5.2 is the more self-contained (genericity machinery from
-Phases 6/8), the Prop 1.1 reconciliation the heavier integration. See
-`notes/MolecularConjecture.md` *Phase 18* for the per-lemma detail and
-reuse map.
+`lem:rank-rotation-semicont` (KT Lemma 5.2) has now **landed**
+basis-free as span-refinement monotonicity
+(`infinitesimalMotions_mono_of_span_le` +
+`finrank_infinitesimalMotions_le_of_span_le`): on a shared graph,
+refining the hinge spans toward general position (the generic realization
+`p'` with the larger supporting spans) shrinks the motion space, so
+`rank R(G,p) ≤ rank R(G,p')` — the rank can only rise toward the generic
+member of a rotation family. Via `Submodule.finrank_mono`; resolves risk
+register item 3 in the monotonicity (genericity) direction.
+
+**One node remains red: `prop:rigidity-matrix-prop11`** (KT Prop 1.1),
+the reconciliation of the honest rank form (`rank R(G,p) = D(|V|−1)`,
+`def:dof-generic` / `infinitesimalMotions_eq_trivialMotions_iff`) with
+Phase 16's reduction-form existence statement `thm:body-hinge-tay`
+(`(δ−1)·G` is `(δ,δ)`-tight), `δ = D = screwDim k`. This is the next and
+final Phase-18 concrete commit. It is the heavier integration: the bridge
+is Prop 2.3 of Jackson–Jordán [15] (`jacksonJordan2009`), whose deficiency
+`def(G̃)` is the corank of the `D`-fold graphic-matroid union `M(G̃)` on
+`(D−1)·G` — exactly the Phase 13/14 `unionPow_cycleMatroid` +
+`tutte_nash_williams` machinery, with `def = 0` ⇔ `(δ,δ)`-tightness
+matching `BodyBar/BodyHinge.lean`'s `edgeMultiply_isSparse_iff`. The
+conjecture itself needs only the upper-bound half (which Phase 16 may
+already supply); decide the prove-vs-hypothesize boundary for the [15]
+(i)⇔(ii) generic-rank half when the node lands (the [29] pin-a-body half
+is already *proved*, Lemma 5.1). The smallest concrete first step is to
+state the reconciliation `iff` against the two existing forms and assess
+whether the `M(G̃)` corank bridge needs Phase 19's `M(G̃)` machinery first
+(it may — Prop 2.3's deficiency is a Phase-19 object); if so, this node
+defers to Phase 19 and **Phase 18 closes here** with the rank-matrix
+skeleton, the trivial-motion / numeric layer, and the three rank lemmas
+5.1/5.2/5.3 all green. See `notes/MolecularConjecture.md` *Phase 18* /
+*Phase 19* for the per-lemma detail and reuse map.

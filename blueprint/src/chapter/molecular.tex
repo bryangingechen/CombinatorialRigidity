@@ -455,19 +455,36 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
 
 \begin{lemma}[Lower-semicontinuity of rank under a panel rotation; KT Lemma 5.2]
   \label{lem:rank-rotation-semicont}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_mono_of_span_le,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_le_of_span_le}
+  \leanok
   \uses{def:rigidity-matrix, def:dof-generic}
   Along a one-parameter family of realizations rotating a single panel,
   the rank of $R(G,p)$ is lower-semicontinuous: it cannot drop at a
   generic parameter. Equivalently, if some realization in the family
-  attains rank $\rho$, so does the generic one.
+  attains rank $\rho$, so does the generic one. In the basis-free
+  monotonicity form: if two realizations $p, p'$ of the same multigraph
+  satisfy $\operatorname{span} C(p(e)) \subseteq \operatorname{span} C(p'(e))$
+  at every edge --- $p'$ the more general (generic) realization, with the
+  larger supporting spans --- then $Z(G,p') \subseteq Z(G,p)$ and hence
+  $\operatorname{finrank} Z(G,p') \le \operatorname{finrank} Z(G,p)$, i.e.\
+  $\operatorname{rank} R(G,p) \le \operatorname{rank} R(G,p')$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The entries of $R(G,p)$ are polynomials in the panel coordinates, so a
   nonvanishing $\rho \times \rho$ minor at one parameter is a nonzero
   polynomial and hence nonvanishing at a generic parameter; the
-  formalization is expected to run this genericity argument rather than
-  an analytic perturbation (cf.\ \texttt{notes/MolecularConjecture.md}
-  risk register).
+  genericity argument is run rather than an analytic perturbation (cf.\
+  \texttt{notes/MolecularConjecture.md} risk register). The
+  formalization carries the basis-free monotonicity core: a refinement of
+  the constraint spans ($\operatorname{span} C(p(e)) \subseteq
+  \operatorname{span} C(p'(e))$ for every edge) makes every motion of the
+  more-constrained $p'$ a motion of $p$
+  (\texttt{infinitesimalMotions\_mono\_of\_span\_le}), so $\operatorname{finrank}
+  Z$ only shrinks under refinement (\texttt{Submodule.finrank\_mono}); the
+  generic member of the rotation family has the largest supporting spans
+  and thus the maximal rank.
 \end{proof}
 
 \begin{proposition}[Reconciliation with the body-hinge existence form; KT Prop 1.1]

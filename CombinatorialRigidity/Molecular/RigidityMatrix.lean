@@ -495,6 +495,51 @@ theorem finrank_pinnedMotions_add_screwDim [Nonempty α] [Finite α]
   rw [hdisj, hsup, finrank_bot, add_zero, F.finrank_trivialMotions] at key
   omega
 
+/-- **Refining the hinge spans shrinks the motion space** (`lem:rank-rotation-semicont`,
+Katoh–Tanigawa Lemma 5.2, span/monotonicity form). If two body-hinge frameworks `F`, `F'`
+share the same underlying multigraph and at every edge the constraint span of `F` is contained
+in that of `F'` — i.e. `F'` is the *more general* (more constrained) realization, the generic
+member of a rotation family — then every infinitesimal motion of `F'` is one of `F`:
+`F'.infinitesimalMotions ≤ F.infinitesimalMotions`. The stronger (larger-span) constraints of
+`F'` cut out a smaller null space.
+
+This is the basis-free core of the lower-semicontinuity of `rank R(G,p)`: along a one-parameter
+family rotating a panel, the generic realization has the *largest* supporting spans (the hinge
+points in general position), hence the *smallest* motion space and the *largest* rank
+(`finrank_infinitesimalMotions_le_of_span_le`). We carry it as this monotonicity-under-span-
+refinement statement — matching the basis-free treatment of Lemmas 5.1/5.3 — rather than the
+literal analytic one-parameter semicontinuity, which would force the parametrized
+polynomial-entry coordinate matrix the design defers (the genericity-over-perturbation choice of
+the risk register). -/
+theorem infinitesimalMotions_mono_of_span_le (F F' : BodyHingeFramework k α β)
+    (hgraph : F.graph = F'.graph)
+    (hspan : ∀ e, Submodule.span ℝ {F'.supportExtensor e} ≤
+      Submodule.span ℝ {F.supportExtensor e}) :
+    F'.infinitesimalMotions ≤ F.infinitesimalMotions := by
+  intro S hS e u v he
+  rw [hingeConstraint]
+  exact hspan e (hS e u v (hgraph ▸ he))
+
+/-- **Rank is lower-semicontinuous under hinge-span refinement** (`lem:rank-rotation-semicont`,
+Katoh–Tanigawa Lemma 5.2, rank form). If `F'` refines `F` — same graph, every constraint span
+of `F` contained in that of `F'` — then the motion space of `F'` has no larger dimension than
+that of `F`:
+
+  `finrank Z(G, p') ≤ finrank Z(G, p)`,
+
+equivalently `rank R(G, p) ≤ rank R(G, p')` (the rank is the codimension `D|V| − finrank Z` and
+`finrank Z` only shrinks under refinement, `finrank_screwAssignment`). So the *generic* member of
+a one-parameter rotation family — the one whose hinges are in general position, with the largest
+supporting spans — attains the maximum rank, the content of Katoh–Tanigawa's Lemma 5.2: rank
+cannot drop at a generic parameter. Immediate from the span-monotonicity
+`infinitesimalMotions_mono_of_span_le` and `Submodule.finrank_mono`. -/
+theorem finrank_infinitesimalMotions_le_of_span_le [Finite α]
+    (F F' : BodyHingeFramework k α β) (hgraph : F.graph = F'.graph)
+    (hspan : ∀ e, Submodule.span ℝ {F'.supportExtensor e} ≤
+      Submodule.span ℝ {F.supportExtensor e}) :
+    Module.finrank ℝ F'.infinitesimalMotions ≤ Module.finrank ℝ F.infinitesimalMotions :=
+  Submodule.finrank_mono (F.infinitesimalMotions_mono_of_span_le F' hgraph hspan)
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular
