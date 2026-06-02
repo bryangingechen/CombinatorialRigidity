@@ -38,15 +38,16 @@ direction of `thm:k-frame-union-cycle`
 (`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`) lifted from indeterminate to
 real coefficients.
 
-## Current state (Phase 15, in progress)
+## Contents
 
 This file ships the witness placement, the bar-row reduction, the block-diagonal
-rank count (`stdFramework_finrank_range`), and the **existence (⟸) direction** of
-Tay's theorem (`prop:tay-witness-exists`): `exists_isIndependent_of_isSparse` and
-`exists_isIsostatic_of_isTight`. The converse (⟹: an independent framework forces
-`(d, d)`-sparsity) — and hence the full `thm:tay-witness` iff — is the next
-sub-step; see `ROADMAP.md` §15, `notes/Phase15.md`, and the §`sec:body-bar-tay`
-subsection of `blueprint/src/chapter/body-bar.tex`.
+rank count (`stdFramework_finrank_range`), both the **existence (⟸) direction**
+(`prop:tay-witness-exists`: `exists_isIndependent_of_isSparse` and
+`exists_isIsostatic_of_isTight`, the standard-basis witness on a tree packing) and
+the **converse (⟹) direction** (`isSparse_of_isIndependent`, the block-diagonal rank
+upper bound forcing `(d, d)`-sparsity), and hence the full `thm:tay-witness` iff
+(`tay_witness`). See `notes/Phase15.md` and the §`sec:body-bar-tay` subsection of
+`blueprint/src/chapter/body-bar.tex`.
 -/
 
 open scoped InnerProductSpace
