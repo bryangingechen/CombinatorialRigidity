@@ -1,6 +1,6 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
-**Status:** in progress (opened; no Lean landed yet).
+**Status:** in progress (first Lean node `def:matroid-MG` landed).
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -12,19 +12,21 @@ blueprint chapter `blueprint/src/chapter/deficiency.tex`
 
 ## Current state
 
-Phase opened: `notes/Phase19.md` created, `deficiency.tex` added with
-the §2.5–§3 red dep-graph nodes, ROADMAP / README / `home_page` /
-`intro.tex` status surfaces synced to *in progress*. **No Lean has
-landed yet** — the Lean for this phase lives in a new
-`Molecular/Deficiency.lean` (per the one-`.tex`-per-phase /
-one-`.lean`-per-phase convention; not appended to `RigidityMatrix.lean`).
+`Molecular/Deficiency.lean` created; the first forward-mode node
+`def:matroid-MG` is green. It defines `Graph.mulTilde G n = (D−1)·G`
+(`= G.edgeMultiply (bodyHingeMult n)`, edge type `β × Fin (D−1)`) and
+`Graph.matroidMG G n` as the `D`-fold cycle-matroid union of `G̃`
+restricted to `E(G̃)`, with `D = bodyBarDim n`. The **boundary-regime
+cleanliness check** `matroidMG_indep_iff` confirms (risk #2) that
+`M(G̃).Indep E' ↔ E' ⊆ E(G̃) ∧ (G̃ ↾ E').IsSparse D D` — the boundary
+regime `ℓ = 2k = D` is clean and routes through Phase 13's
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict` (+ Tutte–Nash-Williams),
+**not** `CountMatroid.lean` (`ℓ < 2k`).
 
-Next concrete step: formalize the leaf-most red node in
-`deficiency.tex` — the matroid `M(G̃)` itself, as the `D`-fold graphic
-union of Phase 13/14 on `(D−1)·G` at the boundary regime `ℓ = 2k = D`.
-Confirm the boundary regime is clean before relying on it (risk #2):
-`CountMatroid.lean` is built for `ℓ < 2k` and will *not* cover this —
-route through `unionPow_cycleMatroid` + `tutte_nash_williams`.
+Next concrete step: `def:D-deficiency` — `def_G̃(P) = D(|P|−1) −
+(D−1)·d_G(P)` over partitions `P` of `V(G)`, and `def(G̃) = maxₚ`.
+Then `def:k-dof`, `def:rigid-subgraph`, the structural lemmas
+(KT 3.1/3.3/3.4), and the bridge `thm:def-eq-corank`.
 
 ## Architectural choices made up front
 
@@ -52,8 +54,9 @@ Forward-mode: the authoritative node list is `deficiency.tex`
 (`sec:molecular-deficiency`). Tracked here for hand-off convenience;
 flip to `[x]` as each lands `\leanok` in the chapter.
 
-- [ ] `def:matroid-MG` — `M(G̃)`, the `D`-fold graphic union on
-  `(D−1)·G` at the boundary `ℓ = 2k = D`.
+- [x] `def:matroid-MG` — `M(G̃)`, the `D`-fold graphic union on
+  `(D−1)·G` at the boundary `ℓ = 2k = D`. (`Graph.matroidMG` +
+  boundary-regime cleanliness `Graph.matroidMG_indep_iff`.)
 - [ ] `def:D-deficiency` — `def_G̃(P) = D(|P|−1) − (D−1)·d_G(P)`;
   `def(G̃) = maxₚ def_G̃(P)`.
 - [ ] `def:k-dof` — `k`-dof / `0`-dof (= body-hinge rigid) / minimal
@@ -79,14 +82,26 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 
 ## Decisions made during this phase
 
-_(none yet; phase just opened)_
+- **`G̃` named `mulTilde`, a thin wrapper over `edgeMultiply`.**
+  `Graph.mulTilde G n := G.edgeMultiply (bodyHingeMult n)` fixes the
+  multiplication factor at `D − 1 = bodyHingeMult n` so the chapter
+  reads `G̃` directly without re-spelling the body-hinge factor at each
+  node. `matroidMG` and downstream nodes are stated over `mulTilde`.
+- **`M(G̃)` via the union-then-restrict shape of Phase 14's
+  `kFrameMatroid`.** `matroidMG = (Union (fun _ : Fin D ↦
+  G̃.cycleMatroid)) ↾ E(G̃)`. The `↾ E(G̃)` is forced the same way as
+  Phase 14: `Matroid.Union` has ground `univ`, so without it every
+  non-edge is a loop. Boundary regime confirmed clean (risk #2) by
+  `matroidMG_indep_iff` — no friction; it is a one-`rw`
+  (`Matroid.restrict_indep_iff`) reduction to Phase 13's
+  `unionPow_cycleMatroid_indep_iff_isSparse_restrict`.
 
 ## Blockers / open questions
 
-- **Boundary regime `ℓ = 2k = D`** (risk #2): confirm the project's
-  union/tree-packing covers it before relying on it; do NOT assume
-  `CountMatroid.lean` (`ℓ < 2k`) applies. First Lean node should
-  validate this.
+- ~~**Boundary regime `ℓ = 2k = D`** (risk #2)~~: **resolved** by
+  `matroidMG_indep_iff` — the `D`-fold cycle-matroid union +
+  Tutte–Nash-Williams covers the boundary regime cleanly; no
+  `CountMatroid.lean` (`ℓ < 2k`) involvement.
 - **Externals: prove vs hypothesize** (risk #4): JJ09 Thm 6.1 /
   Cor 6.2 generic-rank bridge — re-confirm per node whether to
   formalize or take as a hypothesis. The conjecture needs only the
@@ -94,11 +109,12 @@ _(none yet; phase just opened)_
 
 ## Hand-off / next phase
 
-Phase just opened. The next concrete commit is the first forward-mode
-Lean node: formalize `M(G̃)` (`def:matroid-MG`) in a new
-`Molecular/Deficiency.lean` as the `D`-fold graphic union on `(D−1)·G`
-(`unionPow_cycleMatroid` + `tutte_nash_williams`, Phases 13/14), flip
-its `deficiency.tex` node to `\leanok`, and confirm the boundary regime
-`ℓ = 2k = D` is clean as the very first step. Phase 20 (combinatorial
-induction → Theorem 4.9) is unblocked once `M(G̃)`, deficiency, and the
-def = corank bridge are green.
+`def:matroid-MG` is green (`Graph.matroidMG` + the boundary-regime
+cleanliness check `matroidMG_indep_iff`), in `Molecular/Deficiency.lean`.
+The next concrete commit is `def:D-deficiency` in the same file:
+`def_G̃(P) = D(|P|−1) − (D−1)·d_G(P)` for a partition `P` of `V(G)`
+(`d_G(P)` = edges of `G` crossing `P`), and `def(G̃) = maxₚ def_G̃(P)`.
+Phrase additively to avoid `ℕ`-subtraction (per ROADMAP conventions);
+decide how to model partitions (likely `Setoid`/`Finpartition` of
+`V(G)`). Phase 20 (combinatorial induction → Theorem 4.9) is unblocked
+once `M(G̃)`, deficiency, and the def = corank bridge are green.

@@ -29,6 +29,8 @@ phase proceeds, leaf-first.
 
 \begin{definition}[The matroid $M(\tilde G)$]
   \label{def:matroid-MG}
+  \lean{Graph.matroidMG, Graph.matroidMG_indep_iff}
+  \leanok
   \uses{thm:tay-witness}
   Let $D = \binom{d+1}{2}$. The matroid $M(\tilde G)$ is the
   \emph{$(D,D)$-count matroid} of the multiplied graph
@@ -40,6 +42,7 @@ phase proceeds, leaf-first.
   decompose into $D$ edge-disjoint forests.
 \end{definition}
 \begin{proof}
+  \leanok
   This is the \textbf{boundary regime} $\ell = 2k = D$ of the
   count-matroid family. It is \emph{not} covered by the matroidal-regime
   construction of \cref{sec:count-matroid} (built for $\ell < 2k$);

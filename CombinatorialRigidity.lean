@@ -9,6 +9,7 @@ import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Matroid.Constructions.Submodular
 import CombinatorialRigidity.Matroid.Constructions.Union
 import CombinatorialRigidity.MatroidIdentification
+import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor
 import CombinatorialRigidity.Molecular.RigidityMatrix
 import CombinatorialRigidity.PebbleGame.Correctness
