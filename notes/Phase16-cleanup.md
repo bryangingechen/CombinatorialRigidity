@@ -3,8 +3,10 @@
 **Status:** open — A landed (A2 chapter-intro destale + A1
 signature-compare no-op + A2 Lean-side `BodyHinge.lean` docstring
 destale). B closed (B1–B7 no-op confirm batch — all seven greps
-re-run zero-hit on `BodyHinge.lean`). C, D remain. Smallest concrete
-next commit named in *Hand-off / next phase*.
+re-run zero-hit on `BodyHinge.lean`). C closed (C1–C3 long-proof
+audit-gate no-op confirm batch — top three proofs forced structural
+shape, no extraction). D remains. Smallest concrete next commit named
+in *Hand-off / next phase*.
 
 Between-phases cleanup round, run after Phase 16 (body-hinge /
 panel-hinge Tay–Whiteley theorem, existence form) closed in `968e137`
@@ -22,10 +24,17 @@ leg — a second genuine doc finding, the `BodyHinge.lean` module
 docstring's *Contents* list called itself the "lower" nodes and listed
 only the two definition nodes, now reworded to all four. Build green on
 `CombinatorialRigidity.BodyBar.BodyHinge` (2673 jobs); `checkdecls`
-exit 0. Bucket **B closed** this commit: the seven code-smell greps
-re-run zero-hit on `BodyHinge.lean` (confirm-and-close, doc-only — no
-Lean touched, so no build/lint/`checkdecls` gate fires). Remaining:
-C1–C3 no-op confirms, D1/D2.
+exit 0. Bucket **B closed**: the seven code-smell greps re-run
+zero-hit on `BodyHinge.lean` (confirm-and-close, doc-only — no Lean
+touched, so no build/lint/`checkdecls` gate fires). Bucket **C closed**
+this commit: the LoC ranking re-run at close confirms none of
+`BodyHinge.lean`'s proofs reach the §C 50-line threshold (top three:
+`edgeMultiply_isSparse_iff` ~26L, `spanningVerts_edgeMultiply` ~20L,
+`exists_toBodyBar_iff` ~13L), and the four-question audit gate on each
+confirms forced structural shape — no extraction, no cross-proof
+unification candidate (disjoint per-step shapes per `CLEANUP.md`
+*Calibration*). Doc-only no-op confirm batch, no Lean touched.
+Remaining: D1/D2.
 
 The Phase-16 surface is small and uniform: a single new Lean file
 (`BodyBar/BodyHinge.lean`, 279 lines) and four `body-hinge.tex` nodes,
@@ -161,30 +170,43 @@ facts), so the mirror-directory leg of the usual sweep is empty.
   batch commit (re-run at close, exit 1 each; cf. Phase-15-cleanup
   B2/B3/B5/B7 batch).*
 
-### C. Long-proof audit
+### C. Long-proof audit (LoC ranking re-run at close — none reach the §C 50-line threshold; all three no-op)
 
-Top LoC ranking on `BodyHinge.lean` (none reach the §C 50-line
-screening threshold; the top three are the audit gate per `CLEANUP.md`
-*Calibration* — expect no-op confirming forced structural shape):
+Top LoC ranking on `BodyHinge.lean` re-run at close (awk attributes the
+`exists_toBodyBar_iff` body span to the trailing `toBodyBar_placement`
+line by its blank-line heuristic — the real proof spans are
+`edgeMultiply_isSparse_iff` ~26L, `spanningVerts_edgeMultiply` ~20L,
+`exists_toBodyBar_iff` ~13L). None reach the §C 50-line screening
+threshold; the top three are the audit gate per `CLEANUP.md`
+*Calibration* — all confirm forced structural shape (no-op):
 
-- [ ] C1 — `edgeMultiply_isSparse_iff` (~26 lines, L227). Audit gate:
+- [x] C1 — `edgeMultiply_isSparse_iff` (~26 lines, L232). Audit gate
+  walked, no-op:
   the proof is `obtain ⟨hsparse, htight⟩ := tay_witness …` then two
   symmetric `rw [← h…]; constructor; rintro …` legs bridging the
   body-hinge ⇔ body-bar existentials via `exists_toBodyBar_iff` (the
-  `.trans`-blocked transport, FRICTION → TACTICS-QUIRKS § 25). Expect
-  no-op: the two legs are the forced sparse/tight symmetric shape, no
-  cover-fusing lemma, the bijection is already a named helper.
-- [ ] C2 — `exists_toBodyBar_iff` (~21 lines, L202) /
-  `toBodyBar_placement` (~19 lines, L177). Audit gate: the
-  `exists_toBodyBar_iff` reverse direction's `cases Fb … cases hgraph;
-  rfl` placement-transport wiring — expect forced (the `hgraph ▸`
-  placement coercion is the content of the bijection, no extraction).
-- [ ] C3 — `spanningVerts_edgeMultiply` (~20 lines, L101). Audit gate:
-  the `ext x; simp only …; constructor` membership-transport with the
-  `[NeZero m]`-driven copy pick `(e, ⟨0, …⟩)` on the reverse — expect
-  forced (the `NeZero`-witness is the content). No cross-proof
-  unification candidate (C1 is the Tay transport, C2/C3 the
-  framework/spanning bookkeeping — disjoint shapes).
+  `.trans`-blocked transport, FRICTION → TACTICS-QUIRKS § 25). The two
+  legs are the forced sparse/tight symmetric shape, no cover-fusing
+  lemma, the bijection is already a named helper; no mathlib lemma
+  collapses the existential transport, `grind` cannot fire across the
+  `def`-predicate `IsIndependent` / `IsInfinitesimallyRigid` unfold.
+- [x] C2 — `exists_toBodyBar_iff` (~13 lines, L207). Audit gate walked,
+  no-op: the reverse direction's `cases Fb … cases hgraph; rfl`
+  placement-transport wiring is forced — the `hgraph ▸` placement
+  coercion is the content of the bijection, no self-contained sub-lemma
+  another proof would call (its sole consumer is C1).
+- [x] C3 — `spanningVerts_edgeMultiply` (~20 lines, L106). Audit gate
+  walked, no-op: the `ext x; simp only …; constructor`
+  membership-transport with the `[NeZero m]`-driven copy pick
+  `(e, ⟨0, …⟩)` on the reverse is forced — the `NeZero`-witness is the
+  content. No cross-proof unification candidate (C1 is the Tay
+  transport, C2 the framework bookkeeping, C3 the spanning-verts
+  bookkeeping — disjoint per-step shapes, matching `CLEANUP.md`
+  *Calibration*).
+
+  *All three C audit gates confirm forced structural shape → landed
+  C1–C3 as one no-op confirm batch commit (doc-only — no Lean touched,
+  so no build/lint/`checkdecls` gate fires; cf. the B1–B7 batch above).*
 
 ### D. Project-organization compression
 
@@ -228,24 +250,28 @@ screening threshold; the top three are the audit gate per `CLEANUP.md`
 
 ## Hand-off / next phase
 
-**Buckets A and B closed.** Build green (2673 jobs on
+**Buckets A, B, and C closed.** Build green (2673 jobs on
 `BodyBar.BodyHinge`), `checkdecls` exit 0, `lake lint` clean. Two
 genuine doc findings (both A2 — the chapter-intro destale and the
 `BodyHinge.lean` *Contents*-list destale); A1's signature compare was
-a no-op; B1–B7 were a single no-op confirm batch (all seven
-code-smell greps zero-hit on `BodyHinge.lean`, re-run at close). What
-remains is all no-op confirm work plus one FRICTION migrate.
+a no-op; B1–B7 were a single no-op confirm batch (all seven code-smell
+greps zero-hit on `BodyHinge.lean`, re-run at close); C1–C3 were a
+single no-op confirm batch (top three proofs all forced structural
+shape, no extraction, disjoint per-step shapes — `CLEANUP.md`
+*Calibration*). What remains is bucket D: one spot-check (no-op) plus
+one FRICTION migrate.
 
-**Smallest concrete next commit:** land the **C1–C3 no-op confirms**
-as one `chore` commit closing bucket C — the long-proof audit gate on
-`BodyHinge.lean`'s top three proofs (`edgeMultiply_isSparse_iff` ~26L,
-`exists_toBodyBar_iff`/`toBodyBar_placement` ~21/19L,
-`spanningVerts_edgeMultiply` ~20L; none reach the §C 50-line
-screening threshold). Walk the four-question audit gate (`CLEANUP.md`
-§C *Calibration*) confirming the forced structural shape — expect
-no-op (the Tay transport, the framework/spanning bookkeeping, disjoint
-shapes, no cross-proof unification candidate). Then D1 (Phase16.md
-spot-check, no-op) + D2 (FRICTION migrate — the one Phase-16
-`[resolved]` entry to `FRICTION-archive.md`, plus re-assess the four
-Phase-13/14 `[matroid]` entries). A fresh session can resume from this
+**Smallest concrete next commit:** land **D1 + D2** as one `chore`
+commit closing bucket D (and the round). D1: spot-check
+`notes/Phase16.md` (172 lines, under the 250 budget — confirm *Current
+state* + *Hand-off* pass the contract and *Decisions made* entries
+respect the ≤8-line rule; expect no-op). D2: migrate the one Phase-16
+`[resolved]` FRICTION entry (`refine h.trans ?_` over a
+defeq-but-not-syntactic iff side, consumer `edgeMultiply_isSparse_iff`,
+already indexed by TACTICS-QUIRKS § 25) to `FRICTION-archive.md`, and
+re-assess whether the four Phase-13/14 `[matroid]` entries
+Phase-15-cleanup D2 kept active should migrate too (keep active only if
+a Phase-17 open would forward-reference them; Phase 17 is unopened).
+On landing D, flip the ROADMAP Status row for this cleanup round to ✓
+and write the round-close summary. A fresh session can resume from this
 log alone.
