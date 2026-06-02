@@ -4,10 +4,11 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.BodyBar.TreePacking
+import CombinatorialRigidity.BodyBar.Framework
 import Mathlib.Combinatorics.Graph.Basic
 
 /-!
-# Body-hinge Tay–Whiteley theorem — edge multiplication `m · G` (`def:edge-multiply`)
+# Body-hinge Tay–Whiteley theorem — edge multiplication and body-hinge frameworks
 
 Phase 16. The body-hinge / panel-hinge Tay–Whiteley theorem in `n`-space reduces
 to the body-bar Tay theorem (Phase 15) through a single combinatorial device:
@@ -16,9 +17,13 @@ replace each hinge by a bundle of `δ - 1` coincident body-bars, where
 the underlying multigraph — the `(δ-1) · G` of Katoh–Tanigawa 2011's molecular
 conjecture statement.
 
-This file lands the leaf-most node of the `body-hinge.tex` dep-graph
-(`def:edge-multiply`): the multiplied multigraph `m · G` on the carrier
-`Graph α β` (mathlib core), and its three transport facts.
+This file lands the lower `body-hinge.tex` dep-graph nodes:
+
+- `def:edge-multiply` — the multiplied multigraph `m · G` on the carrier
+  `Graph α β` (mathlib core), and its three transport facts.
+- `def:body-hinge-framework` — the body-hinge framework `Graph.BodyHingeFramework`
+  as a thin wrapper over the induced `Graph.BodyBarFramework` on `(δ-1)·G`
+  (`toBodyBar`), with independence / infinitesimal rigidity inherited verbatim.
 
 ## `m · G` (`def:edge-multiply`)
 
@@ -99,5 +104,95 @@ lemma spanningVerts_edgeMultiply (G : Graph α β) (m : ℕ) [NeZero m] (E' : Se
   constructor
   · rintro ⟨p, hp, hinc⟩; exact ⟨p.1, hp, hinc⟩
   · rintro ⟨e, he, hinc⟩; exact ⟨(e, ⟨0, Nat.pos_of_ne_zero (NeZero.ne m)⟩), he, hinc⟩
+
+/-! ## Body-hinge frameworks (`def:body-hinge-framework`)
+
+A **body-hinge framework** in `ℝⁿ` on a multigraph `G : Graph α β` assigns each
+hinge (edge) `e` an `(δ-1)`-dimensional space of bar coordinates dual to the hinge,
+`δ = bodyBarDim n`. Following Whiteley 1988's matroid-union reduction (specialized
+to the standard-basis witness; see `notes/Phase16.md`), a hinge constrains all but
+one of the `δ` relative screw freedoms of the two bodies it joins, so it behaves
+like a bundle of `δ - 1` coincident body-bars whose two-extensor coordinates span
+the hinge's dual space. Combinatorially this is the parallel-edge multiplication
+`(δ-1)·G` (`edgeMultiply` above): the body-hinge framework is *defined* as the
+induced body-bar framework on `(δ-1)·G`, with the `δ - 1` bars of each hinge
+carrying a basis of its dual space.
+
+No new linear algebra: rigidity, independence, and infinitesimal rigidity are
+**inherited verbatim** from the induced `Graph.BodyBarFramework` on `(δ-1)·G`
+(Phase 15, `BodyBar/Framework.lean`). The standard-basis witness on `(δ-1)·G`
+routes through without glue — the only Phase-16-specific data is the
+edge-multiplication device and the per-hinge placement, both bookkeeping. -/
+
+/-- The edge-multiplication factor of the body-hinge reduction: `δ - 1`, where
+`δ = bodyBarDim n`. A hinge constrains all but one of a body's `δ` relative screw
+freedoms, so each hinge becomes `bodyHingeMult n` coincident body-bars. For `n ≥ 2`
+this is `≥ 2` (`δ ≥ 3`), so `[NeZero (bodyHingeMult n)]` is available downstream and
+`spanningVerts_edgeMultiply` applies. -/
+def bodyHingeMult (n : ℕ) : ℕ := bodyBarDim n - 1
+
+/-- A **body-hinge framework** in `ℝⁿ` on a multigraph `G : Graph α β`
+(`def:body-hinge-framework`; Whiteley 1988, Tay 1989). The combinatorial data is
+the multigraph `G`; the geometric data is a **placement** assigning each of the
+`δ - 1` parallel bars of every hinge a two-extensor (Plücker) coordinate in `ℝᵈ`,
+`d = bodyBarDim n`. Per the reduction, the `δ - 1` bars of a hinge collectively
+carry a basis of the `(δ-1)`-dimensional space dual to the hinge.
+
+The placement is typed as a placement on the multiplied multigraph `(δ-1)·G`
+(`graph.edgeMultiply (bodyHingeMult n)`, edge type `β × Fin (δ-1)`); the induced
+body-bar framework `toBodyBar` is then *literally* the `Graph.BodyBarFramework` on
+`(δ-1)·G` carrying that placement, and all rigidity notions are inherited from it.
+Degenerate two-extensors are permitted (existence-of-realization scope), matching
+`Graph.BodyBarFramework`. -/
+structure BodyHingeFramework (n : ℕ) (α β : Type*) where
+  /-- The underlying multigraph: bodies are vertices, hinges are edges. -/
+  graph : Graph α β
+  /-- The placement: each of the `δ - 1` parallel bars of every hinge gets a
+  two-extensor coordinate in `ℝᵈ`, `d = bodyBarDim n`. Equivalently a placement on
+  the multiplied multigraph `(δ-1)·G`; degenerate coordinates are permitted. -/
+  placement : E(graph.edgeMultiply (bodyHingeMult n)) →
+    EuclideanSpace ℝ (Fin (bodyBarDim n))
+
+namespace BodyHingeFramework
+
+variable {n : ℕ} {α β : Type*}
+
+/-- The **induced body-bar framework** of a body-hinge framework on `(δ-1)·G`
+(`def:body-hinge-framework`): the `Graph.BodyBarFramework` on the multiplied
+multigraph `(δ-1)·G` carrying `F`'s per-bar placement. The body-hinge rigidity map
+is *defined* as this framework's body-bar rigidity map
+(`Graph.BodyBarFramework.rigidityMap`); the hinge-to-bar reduction reads all
+rigidity data off `toBodyBar`. -/
+def toBodyBar (F : BodyHingeFramework n α β) :
+    Graph.BodyBarFramework n α (β × Fin (bodyHingeMult n)) where
+  graph := F.graph.edgeMultiply (bodyHingeMult n)
+  placement := F.placement
+
+@[simp]
+theorem toBodyBar_graph (F : BodyHingeFramework n α β) :
+    F.toBodyBar.graph = F.graph.edgeMultiply (bodyHingeMult n) := rfl
+
+@[simp]
+theorem toBodyBar_placement (F : BodyHingeFramework n α β) :
+    F.toBodyBar.placement = F.placement := rfl
+
+/-- A body-hinge framework `F` is **independent** at an orientation `D` of `(δ-1)·G`
+when its induced body-bar framework is (`def:body-hinge-framework`): the bar-constraint
+rows of the `δ - 1` bars of every hinge are linearly independent. Inherited verbatim
+from `Graph.BodyBarFramework.IsIndependent`. -/
+def IsIndependent (F : BodyHingeFramework n α β)
+    (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))) : Prop :=
+  F.toBodyBar.IsIndependent D
+
+/-- A body-hinge framework `F` is **infinitesimally rigid** at an orientation `D` of
+`(δ-1)·G` when its induced body-bar framework is (`def:body-hinge-framework`):
+`rank + δ = δ·b` for `δ = bodyBarDim n` and `b` the number of bodies. Inherited
+verbatim from `Graph.BodyBarFramework.IsInfinitesimallyRigid`; `[Finite α]` is the
+same semantic contract guard as there (finite body set). -/
+def IsInfinitesimallyRigid [Finite α] (F : BodyHingeFramework n α β)
+    (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))) : Prop :=
+  F.toBodyBar.IsInfinitesimallyRigid D
+
+end BodyHingeFramework
 
 end Graph

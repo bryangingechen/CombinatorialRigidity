@@ -1,6 +1,6 @@
 # Phase 16 — Body-hinge Tay–Whiteley theorem (existence form) (work log)
 
-**Status:** in progress (leaf node `def:edge-multiply` landed).
+**Status:** in progress (`def:edge-multiply`, `def:body-hinge-framework` landed).
 
 ## Current state
 
@@ -15,11 +15,13 @@ hinge-to-bar reduction (`def:body-hinge-framework`, `lem:edge-multiply-sparse`)
 lands.
 
 Forward-mode phase. The authoritative dep-graph and lemma index is the
-blueprint chapter `body-hinge.tex` (§`sec:body-hinge`). The leaf node
-`def:edge-multiply` is now green: `Graph.edgeMultiply` and its three transport
-facts live in `BodyBar/BodyHinge.lean` (new, in the `CombinatorialRigidity.lean`
-aggregator). Next concrete step is `def:body-hinge-framework` — the body-hinge
-framework as the induced body-bar framework on `(δ-1)·G`.
+blueprint chapter `body-hinge.tex` (§`sec:body-hinge`). Nodes `def:edge-multiply`
+and `def:body-hinge-framework` are now green: `Graph.edgeMultiply` (+3 transport
+facts) and `Graph.BodyHingeFramework` (+ `toBodyBar`, `IsIndependent`,
+`IsInfinitesimallyRigid`) live in `BodyBar/BodyHinge.lean` (in the
+`CombinatorialRigidity.lean` aggregator). Next concrete step is
+`lem:edge-multiply-sparse` — independent/isostatic body-hinge ⇔
+`(δ,δ)`-sparse/tight `(δ-1)·G`, the count `(δ-1)|E| = δ(|V|-1)`.
 
 ## Architectural choices made up front
 
@@ -59,8 +61,10 @@ checklist). Leaf-first landing order:
   `Graph α β` (`Graph.edgeMultiply`, edge type `β × Fin m`); vertex set
   preserved, `|E(m·G)| = m·|E(G)|`, spanning-vertex transport (the latter under
   `[NeZero m]`). In `BodyBar/BodyHinge.lean`.
-- [ ] `def:body-hinge-framework` — body-hinge framework as the induced body-bar
-  framework on `(δ-1)·G`; rigidity / independence inherited.
+- [x] `def:body-hinge-framework` — body-hinge framework as the induced body-bar
+  framework on `(δ-1)·G` (`Graph.BodyHingeFramework`, `.toBodyBar`,
+  `.IsIndependent`, `.IsInfinitesimallyRigid`); rigidity / independence inherited
+  verbatim (one-line wrappers, no glue). In `BodyBar/BodyHinge.lean`.
 - [ ] `lem:edge-multiply-sparse` — independent/isostatic body-hinge ⇔
   `(δ,δ)`-sparse/tight `(δ-1)·G`; the count `(δ-1)|E| = δ(|V|-1)`.
 - [ ] `thm:body-hinge-tay` — the chapter target; assemble from
@@ -82,6 +86,19 @@ checklist). Leaf-first landing order:
   `[NeZero m]`. The reduction uses `m = δ - 1 ≥ 1` (δ ≥ 3 for `n ≥ 2`), so the
   hypothesis is free downstream. Reverse direction picks the copy `(e, ⟨0,…⟩)`.
 
+- **Body-hinge framework = thin wrapper over the induced body-bar framework; no
+  glue.** `Graph.BodyHingeFramework n α β` stores `graph : Graph α β` and
+  `placement : E((δ-1)·G) → ℝᵈ` (= the placement on the multiplied multigraph);
+  `toBodyBar` is the `Graph.BodyBarFramework n α (β × Fin (δ-1))` on `(δ-1)·G`
+  carrying that placement (`graph := edgeMultiply …; placement := F.placement`,
+  no transport). `IsIndependent` / `IsInfinitesimallyRigid` are one-line
+  `F.toBodyBar.Is…` wrappers at an orientation `D` of `(δ-1)·G`. This **resolves
+  the Blockers spike** (degree of `tay_witness` reuse): the standard-basis witness
+  on `(δ-1)·G` routes through verbatim — the dual-space-basis bookkeeping the
+  blueprint describes is the *content* of `lem:edge-multiply-sparse`'s generic
+  realization, not of the framework definition. `δ-1` factored out as
+  `bodyHingeMult n` for the downstream `[NeZero]` hypothesis.
+
 - **Tay 1989 title vs body terminology — do not "harmonize".** The
   `tay1989` bib `title` is verbatim the published title, which reads
   *"…(n−2,2)-frameworks…"*. The paper's *abstract and body* instead define
@@ -101,27 +118,33 @@ checklist). Leaf-first landing order:
 
 ## Blockers / open questions
 
-- **Degree of reuse of `tay_witness`.** The reduction should make
-  `thm:body-hinge-tay` a near-`rw` of `tay_witness` on `(δ-1)·G`. If the
-  body-hinge rigidity-map *definition* (routing through the induced body-bar
-  framework) forces non-trivial glue (orientation transport across the edge
-  multiplication, dual-space basis bookkeeping), that glue is the real Phase-16
-  content — flag it once the spike lands.
+- **Degree of reuse of `tay_witness` — RESOLVED for the framework definition.**
+  `def:body-hinge-framework` routes through `tay_witness`/the body-bar predicates
+  verbatim: `BodyHingeFramework.IsIndependent` / `IsInfinitesimallyRigid` are
+  one-line `toBodyBar.Is…` wrappers, no orientation transport or basis
+  bookkeeping at the *definition* layer (see Decisions). The remaining content is
+  the count `(δ-1)|E| = δ(|V|-1)` and the generic-realization claim, both inside
+  `lem:edge-multiply-sparse`; `thm:body-hinge-tay` should then be a near-`rw` of
+  `tay_witness` on `(δ-1)·G`. Re-assess whether the sparse-side count needs a new
+  `edgeMultiply_edgeSet_ncard`-backed arithmetic lemma once that node opens.
 
 ## Hand-off / next phase
 
-**Smallest next commit:** formalize `def:body-hinge-framework` — the body-hinge
-framework as the induced body-bar framework on `(δ-1)·G`, reusing
-`Graph.edgeMultiply` (now green) plus `Graph.BodyBarFramework` (Phase 15
-`BodyBar/Framework.lean`). The body-hinge rigidity map is *defined* as the
-body-bar rigidity map of the induced framework on `(δ-1)·G`, with infinitesimal
-rigidity / independence inherited; assess whether the dual-space-basis
-bookkeeping (each hinge's `δ-1` bars carry a basis of its dual space) forces
-non-trivial glue or whether the standard-basis witness on `(δ-1)·G` routes
-through verbatim. Land it in `BodyBar/BodyHinge.lean` and flip
-`def:body-hinge-framework` green in `body-hinge.tex` in the same commit.
+**Smallest next commit:** formalize `lem:edge-multiply-sparse` — that an
+independent (resp. isostatic) body-hinge framework on `G` corresponds to
+`(δ,δ)`-sparse (resp. tight) `(δ-1)·G`, with the count
+`(δ-1)|E(G)| = δ(|V(G)|-1)`. The count side should follow from
+`edgeMultiply_edgeSet_ncard` (`|E((δ-1)·G)| = (δ-1)|E(G)|`, already green) plus
+`Graph.IsSparse`/tightness arithmetic (Phase 13 `Sparsity.lean`); the rigidity
+side from the `BodyHingeFramework.Is…` wrappers (now green) composed with the
+body-bar independence/sparsity correspondence used by `tay_witness`. Decide
+whether the count needs a small standalone `ℕ`-arithmetic lemma or folds into the
+sparse predicate directly. Land it in `BodyBar/BodyHinge.lean` and flip
+`lem:edge-multiply-sparse` green in `body-hinge.tex` in the same commit.
 
-`def:edge-multiply` is done (`Graph.edgeMultiply` + 3 transport facts).
+`def:edge-multiply` (`Graph.edgeMultiply` + 3 transport facts) and
+`def:body-hinge-framework` (`Graph.BodyHingeFramework` + `toBodyBar` +
+`IsIndependent` + `IsInfinitesimallyRigid`) are done.
 
 Follow-on after Phase 16: the **molecular conjecture** (panel-and-hinge with
 concurrent hinges; Tay–Whiteley conjecture, proved by Katoh–Tanigawa 2011) — a
