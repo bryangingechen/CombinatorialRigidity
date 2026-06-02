@@ -59,9 +59,13 @@ bridges — `[DecidableEq]` is not a cleaner boundary at any per `DESIGN.md`
 `kFrameRow_mem_blockPiSpanOn`, `Matroid.Rep.finrank_span_image_eq_rk`):
 dropped. Verified by strip-all build. Build green + warning-clean + lint clean.
 
-Next concrete step: continue (B) — B4/B5 (re-confirm `change`/`show`/3+-arg-`rw`
-and `@[nolint]`/`set_option linter.*` clean on the `Rank.lean` adders), then
-(C) the two long proofs, then (D).
+(B4+B5) re-run on the two `Rank.lean` Phase-14 adders done: `change`/`show`,
+`show … from rfl`, `@[nolint]`, `set_option linter.*` all clean (none); the
+sole 3-arg `rw` (the rank-bridge in `exists_submatrix_det_ne_zero_…`) is a
+one-off upstream-fact composition already named in its FRICTION resolution, not
+a missing fused lemma. (B) complete; no-op confirm, doc-only commit.
+
+Next concrete step: (C) the two long proofs, then (D).
 
 ## Scope
 
@@ -148,11 +152,21 @@ bounded:
   via `MvPolynomial.eval` + `Classical.decPred`). **1 accidental:**
   `constPiSpanEquiv` (explicit `toFun`/`invFun` `LinearEquiv` over generic
   `[Semiring R]`, no noncomputable data) — `noncomputable` dropped.
-- [ ] B4 — `change`/`show`, `show … from rfl`, and 3+-arg single-step
-  `rw` chains all came back **clean** on `KFrame.lean` at round open;
-  re-confirm on `Rank.lean` adders and close as no-op if so.
-- [ ] B5 — `@[nolint …]` / `set_option linter.*` came back **clean** on
-  both files; confirm no-op.
+- [x] B4 — `change`/`show`, `show … from rfl`, and 3+-arg single-step
+  `rw` chains came back **clean** on `KFrame.lean` at round open; re-run
+  on the two `Rank.lean` Phase-14 adders
+  (`linearIndependent_rows_of_specialized_submatrix_det_ne_zero`,
+  `exists_submatrix_det_ne_zero_of_linearIndependent_rows`). `change`/`show`
+  and `show … from rfl`: clean (none). **One 3-arg `rw`** in
+  `exists_submatrix_det_ne_zero_…`:
+  `rw [← Mᵀ.rank_eq_finrank_span_row, rank_transpose, h.rank_matrix]` — a
+  one-off composition of three distinct upstream facts (rank=span-finrank /
+  rank-transpose / LI-rows⟹rank=card), not a recurring glue-pattern. Already
+  named in the mirror's FRICTION resolution body; no fused mirror lemma
+  warranted. No-op confirm.
+- [x] B5 — `@[nolint …]` / `set_option linter.*` came back **clean** on
+  `KFrame.lean` at round open; re-run on the two `Rank.lean` adders —
+  clean (none). No-op confirm.
 
 ### C. Long-proof audit
 
@@ -183,6 +197,15 @@ bounded:
 ## Decisions made during this round
 
 ### Cleanup pass summaries
+- **B4+B5 (Rank.lean adders, doc-only no-op confirm).** Re-ran the
+  `change`/`show`, `show … from rfl`, 3+-arg single-step `rw`,
+  `@[nolint …]`, and `set_option linter.*` greps on the two Phase-14
+  `Rank.lean` adders (`KFrame.lean` was confirmed clean at round open).
+  All clean except one 3-arg `rw` (the rank-bridge in
+  `exists_submatrix_det_ne_zero_of_linearIndependent_rows`) — a one-off
+  composition of three distinct upstream facts, already named in that
+  mirror's FRICTION resolution; not a missing fused lemma. No code change;
+  build green + warning-clean + lint clean; no new FRICTION entry.
 - **A1+A2 (KFrame.lean, doc-only).** Corrected three reverse-section
   docstring blueprint node-anchors (`lem:k-frame-specialize-li`,
   `lem:k-frame-forest-packing-of-sparse`, `lem:k-frame-specialize-identity`
@@ -231,12 +254,14 @@ bounded:
 
 ## Hand-off / next phase
 
-Round in progress (mid-(B); B1 + B2 + B3 done). Next concrete commit:
-**B4/B5** — re-confirm the `change`/`show` / `show … from rfl` / 3+-arg
-single-step `rw` greps and the `@[nolint …]` / `set_option linter.*` greps
-come back clean on the `Rank.lean` Phase-14 adders (`KFrame.lean` already
-confirmed clean at round open); record as a no-op confirm. Then (C) the two
-long proofs (`linearIndepOn_kFrameRow_of_isSparse_restrict` ~95 LoC,
-`forest_count_of_linearIndepOn_kFrameRow` ~27 LoC) and (D) compress
-`notes/Phase14.md` (329 → under 250) + FRICTION re-skim. When (D) closes,
-write the round summary here and flip the ROADMAP Status row to ✓.
+Round in progress ((B) complete: B1–B5 done). Next concrete commit:
+**C1** — walk the four-question long-proof audit (API extraction / missed
+mathlib lemma / tactic substitution / cross-proof unification) on
+`linearIndepOn_kFrameRow_of_isSparse_restrict` (~95 LoC, reverse-half wiring)
+in `KFrame.lean`; expect a no-op per `CLEANUP.md` *Calibration* (forced
+case-dispatch / wiring boilerplate), but the walk is the gate. C2
+(`forest_count_of_linearIndepOn_kFrameRow` ~27 LoC, below the 50-line §C
+threshold) is a spot-check only if C1 surfaces a shared backbone with the
+two genericity halves. Then (D) compress `notes/Phase14.md` (329 → under 250)
++ FRICTION re-skim. When (D) closes, write the round summary here and flip the
+ROADMAP Status row to ✓.
