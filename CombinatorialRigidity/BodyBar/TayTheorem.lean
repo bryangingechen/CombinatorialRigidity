@@ -156,7 +156,7 @@ motion `m : Motion n α`, coordinate by coordinate. Injective (`blockPairing_inj
 so it carries a linearly independent family of block rows to a linearly independent family
 of row functionals. The standard-basis rigidity row factors through it
 (`stdFramework_rigidityRow_eq`). -/
-noncomputable def blockPairing (α : Type*) [Fintype α] (d : ℕ) :
+def blockPairing (α : Type*) [Fintype α] (d : ℕ) :
     (Fin d → α → ℝ) →ₗ[ℝ] Module.Dual ℝ (α → EuclideanSpace ℝ (Fin d)) where
   toFun w :=
     { toFun := fun m => ∑ x : α, ∑ c : Fin d, w c x * (m x) c

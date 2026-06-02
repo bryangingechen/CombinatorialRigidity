@@ -1,6 +1,6 @@
 # Phase 15 cleanup round (work log)
 
-**Status:** in progress (A landed; B1+B6 landed; B2–B5/B7 no-op confirms + C/D remain).
+**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms + C/D remain).
 
 Between-phases cleanup round, run after Phase 15 (body-bar Tay theorem,
 existence form) closed in `fa4cfc3` and before Phase 16 (body-hinge /
@@ -24,17 +24,18 @@ Reworded to "All three phases are complete: every node below is
 formalized (green) …". Doc-only blueprint edit; no `\lean{}` pin touched,
 so `checkdecls` not required; `inv web` builds clean.
 
-B1+B6 landed (this commit, the one substantive B-sweep finding):
+B1+B6 landed (`c1fdaf2`, the first substantive B-sweep finding):
 strip-build sweep of the 9 `classical` sites found 4 load-bearing
-(kept) and **5 stray** (`stdFramework_finrank_range`,
-`finrank_rigidityRow_span_le`, `exists_isIndependent_of_isSparse`,
-`rigidityRow_linearIndependent`, `isSparse_of_isIndependent`) — dropped
-all 5; plus B6 dropped the redundant L124 `variable {α β : Type*}`
-re-bind. Build + lint warning-clean. The remaining B items (B2 `Fintype`
-bridges, B3 `nolint`, B4 `noncomputable`, B5 `change`, B7 zero-hit
-greps) are expected no-op confirms and ride the next commit as a batch;
-then C → D. A fresh session can resume from this log alone; the smallest
-concrete next commit is named in *Hand-off / next phase*.
+(kept) and **5 stray** — dropped all 5; plus B6 dropped the redundant
+L124 `variable {α β : Type*}` re-bind. B4 landed (this commit, the
+second substantive B-sweep finding): the strip-build sweep over the 4
+`TayTheorem.lean` `noncomputable def`s found `blockPairing`'s
+`noncomputable` **accidental** (the other three forced) — dropped it.
+Build warning-clean + lint clean. The remaining B items (B2 `Fintype`
+bridges, B3 `nolint`, B5 `change`, B7 zero-hit greps) are confirmed
+no-op and ride the next commit as a batch; then C → D. A fresh session
+can resume from this log alone; the smallest concrete next commit is
+named in *Hand-off / next phase*.
 
 ## Scope
 
@@ -140,16 +141,19 @@ mirror-directory leg of the usual sweep is empty.
   `SimpleGraph.IsInfinitesimallyRigid` disposition). Confirm the
   justification still holds / matches the bar-joint precedent verbatim;
   expect no-op.
-- [ ] B4 — `noncomputable def` (6 sites: `Framework.lean` `barRow` L98,
-  `rigidityMap` L119; `TayTheorem.lean` `stdPlacement` L66, `stdFramework`
-  L74, `rigidityRow` L129, `blockPairing` L160). Confirm each is forced
-  (`innerSL`/`LinearMap.pi` for the first two, `EuclideanSpace.single` /
-  bundled-placement for `stdPlacement`/`stdFramework`, `LinearMap.proj`-comp
-  for `rigidityRow`, the explicit-`toFun` `blockPairing` may be the
-  accidental one — cf. Phase-14-cleanup B3 which found `constPiSpanEquiv`
-  accidental). Check `blockPairing` specifically: is its `noncomputable`
-  forced (it's built from explicit `toFun`/`map_add'`/`map_smul'` over
-  `ℝ`, no `Classical`/`span`/`FractionRing` ingredient)?
+- [x] B4 — `noncomputable def` (6 sites: `Framework.lean` `barRow` L98,
+  `rigidityMap` L119; `TayTheorem.lean` `stdPlacement` L67, `stdFramework`
+  L75, `rigidityRow` L128, `blockPairing` L159). **Strip-build sweep:
+  `blockPairing`'s `noncomputable` is accidental — dropped.** Removing all
+  four `TayTheorem.lean` markers and forcing a recompile errored on exactly
+  three (`stdPlacement` ← `Real.instRCLike` via `EuclideanSpace.single`;
+  `stdFramework` ← `stdPlacement`; `rigidityRow` ← `rigidityMap`), and
+  **not** `blockPairing` — it is the explicit-`toFun`/`map_add'`/`map_smul'`
+  bundling over `ℝ` with no `Classical`/`span`/`EuclideanSpace`-norm
+  ingredient, so it is computable. `barRow`/`rigidityMap` (`Framework.lean`)
+  are forced (`innerSL`/`LinearMap.pi`). Substantive change → own commit
+  (not folded with the no-op confirms). Mirrors Phase-14-cleanup B3
+  (accidental `noncomputable` on `constPiSpanEquiv`).
 - [ ] B5 — `change` tactic (1 site: `TayTheorem.lean` L535 in
   `exists_isIsostatic_of_isTight`, `change Module.finrank … = …` to
   unfold `IsInfinitesimallyRigid`). This is the `def`-predicate-unfold
@@ -284,6 +288,16 @@ mostly no-op confirming forced structural shape):
   β : Type*}` (L124, after the block-rank docstring) re-bound `α β`
   already in scope from L58's `variable {α β : Type*} {n : ℕ}`; no
   intervening `clear`/rescope, so a no-op tidy. Folded with B1.
+- **B4 (accidental `noncomputable` on `blockPairing` dropped).**
+  Strip-build sweep over the 4 `TayTheorem.lean` `noncomputable def`s:
+  recompiling with all four stripped errored on exactly `stdPlacement`
+  (`Real.instRCLike` via `EuclideanSpace.single`), `stdFramework` (depends
+  on `stdPlacement`), and `rigidityRow` (depends on `rigidityMap`) — those
+  three stay. `blockPairing` is the explicit-`toFun` bundling over `ℝ` with
+  no noncomputable ingredient, so its `noncomputable` was dead; dropped.
+  `Framework.lean`'s `barRow`/`rigidityMap` are forced. Same
+  disposition + method as Phase-14-cleanup B3 (`constPiSpanEquiv`). No
+  friction (mechanical removal, build warning-clean + lint clean).
 
 ## Blockers / open questions
 
@@ -291,31 +305,27 @@ mostly no-op confirming forced structural shape):
 
 ## Hand-off / next phase
 
-**A complete; B1+B6 landed** (the one substantive B-sweep finding —
-5 stray `classical`s + the redundant `variable` re-bind dropped; build +
-lint warning-clean).
+**A complete; B1+B6 (`c1fdaf2`) and B4 landed** (the two substantive
+B-sweep findings — 5 stray `classical`s + redundant `variable` re-bind,
+then accidental `noncomputable` on `blockPairing`; build + lint clean).
 
-**Smallest concrete next commit:** the **B2–B5 + B7 no-op confirm
+**Smallest concrete next commit:** the **B2 + B3 + B5 + B7 no-op confirm
 batch** — one commit recording each disposition in the work log (per the
 coordinator no-op-batch rule), no code change expected:
-- **B2** — 8 `haveI : Fintype … := Fintype.ofFinite _` bridges: confirm
-  each is forced (a body step needs `Finset.univ` / `Fintype.card`) and
-  that the repeated `Fintype E(F.graph)` bridge isn't a single-helper
-  candidate. *(NB the B1 commit removed the `classical` lines above
-  several of these; the bridges themselves stay — re-grep for current
-  line numbers.)*
-- **B3** — `@[nolint unusedArguments]` on `IsInfinitesimallyRigid`: the
-  6-line justification matches the bar-joint `Framework.lean` precedent
-  verbatim (semantic `[Finite α]` contract guard +
+- **B2** — 8 `haveI : Fintype … := Fintype.ofFinite _` bridges
+  (`TayTheorem.lean` L256, 304, 305, 422, 445, 545, 563, 568 after the
+  B1/B4 line shifts): confirm each is forced (a body step needs
+  `Finset.univ` / `Fintype.card` / `finrank_span_eq_card`) and that the
+  repeated `Fintype E(F.graph)` bridge isn't a single-helper candidate.
+- **B3** — `@[nolint unusedArguments]` on `IsInfinitesimallyRigid`
+  (`Framework.lean` L161): the 6-line justification (L154–160) matches
+  the bar-joint precedent verbatim (semantic `[Finite α]` contract guard +
   `unusedFintypeInType`-migration note). **Already verified this round:**
   no-op.
-- **B4** — 6 `noncomputable def` sites; check `blockPairing` specifically
-  (built from explicit `toFun`/`map_add'`/`map_smul'` over `ℝ`, no
-  `Classical`/`span` ingredient — is its `noncomputable` forced or
-  accidental, cf. Phase-14-cleanup B3's `constPiSpanEquiv`?).
 - **B5** — the 1 `change` site in `exists_isIsostatic_of_isTight`
-  (unfold `IsInfinitesimallyRigid`): accepted predicate-unfold idiom vs.
-  a project-internal unfold lemma. Likely accepted-idiom no-op.
+  (`TayTheorem.lean` L531, unfold `IsInfinitesimallyRigid`): accepted
+  predicate-unfold idiom vs. a project-internal unfold lemma. Likely
+  accepted-idiom no-op.
 - **B7** — record the zero-hit greps (3+-arg `rw` chains; `show … from
   rfl`) as no-op.
 
