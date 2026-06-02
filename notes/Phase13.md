@@ -85,11 +85,12 @@ formula `Matroid.Union_rank_eq` (the `Fin ι` generalization of
 and does **not** import `Matroid.Graphic`; the `Graph.cycleMatroid` consumer
 will apply it with `M := G.cycleMatroid` in the next commit.
 
-Three `body-bar.tex` tree-packing nodes remain red
-(`thm:unionPow-cycle-indep-iff-sparse`, `thm:tutte-nash-williams`,
-`cor:k-spanning-trees`); `def:graph-sparse` is now green. The rank adapter, both
-cycle-matroid rank formulas (`restrict` / `spanningVerts`), and the cancellation lemma are all
-internal glue with no dedicated blueprint node.
+Two `body-bar.tex` tree-packing nodes remain red
+(`thm:tutte-nash-williams`, `cor:k-spanning-trees`); `def:graph-sparse` and
+`thm:unionPow-cycle-indep-iff-sparse` are now green. The rank adapter, both
+cycle-matroid rank formulas (`restrict` / `spanningVerts`), the cancellation/edge-set lemmas, the
+component-spanningVerts identity, and the restriction bridges are all internal glue with no
+dedicated blueprint node.
 
 **Union-independence count condition landed (green build), matroid-side half of
 `thm:unionPow-cycle-indep-iff-sparse`.** `Matroid/Constructions/Union.lean` now ships
@@ -128,19 +129,37 @@ the per-set partition machinery and the count equivalence, all generic over `Mat
   condition, then feeds `isSparse_of_forall_le_cycleMatroid_rk` on `G ↾ E'`, translating each
   per-subset count back to `G` through the rank bridge.
 
-**Next concrete commit — the hard reverse `(k,k)`-sparse ⟹ count.** This is the substantive
-remaining gap and the last piece before `thm:unionPow-cycle-indep-iff-sparse` (the iff) can go
-green. Given `(G ↾ E').IsSparse k k`, show `∀ Y ⊆ E', |Y| ≤ k·r(Y)` (then assemble the iff with the
-forward half + `Union_pow_indep_iff_count`). Sparsity gives only `|Y| ≤ k(|spanV Y|−1)`, but the
-count needs `|Y| ≤ k·r(Y) = k(|spanV Y|−c'(Y))`, tighter when `c'(Y) > 1`. **Needs the
-connected-component decomposition** of `Y` into its component edge-sets `Y_i` (each `c'(Y_i)=1`),
-applying per-component sparsity and summing `|Y| = Σ|Y_i| ≤ k Σ r(Y_i) = k·r(Y)` (rank additive
-over the skew component family). Look at `Matroid.Graphic`'s `components_cycleMatroid_isSkewFamily`
-+ `IsSkewFamily.sum_eRk_eq_eRk_iUnion` (used in `eRank_cycleMatroid_add_numberOfComponents`) for the
-rank additivity, and `Graph.Components` / `connPartition` for the `Y`-decomposition. The vertex-side
-restriction bridge `(G↾E').spanningVerts Y = G.spanningVerts Y` (for `Y ⊆ E'`, immediate from
-`restrict_inc`) will be needed here; it was deferred from the forward direction (which didn't use
-it) so it lands with the consumer.
+**`thm:unionPow-cycle-indep-iff-sparse` landed (green build + blueprint node green).** The hard
+reverse `(k,k)`-sparse ⟹ count and the assembled iff now ship in `BodyBar/TreePacking.lean`:
+- `Graph.edgeSet_deleteVerts_isolatedSet_restrict` — `E((G↾Y)−Isol(G↾Y)) = Y` (edge-side companion
+  of the vertex cancellation lemma).
+- `Graph.spanningVerts_edgeSet_eq_vertexSet_of_isCompOf` — for a component `C` of `H := (G↾Y)−Isol`,
+  `G.spanningVerts E(C) = V(C)` (forward: `Inc.of_le_of_mem`; reverse: `H` no-isolated +
+  `IsClosedSubgraph.inc_congr`).
+- `Graph.spanningVerts_restrict_of_subset` — the deferred vertex-side restriction bridge
+  `(G↾E').spanningVerts Y = G.spanningVerts Y` for `Y ⊆ E'`.
+- `Graph.le_mul_cycleMatroid_rk_of_isSparse_restrict` (`[Finite α] [Finite β]`) — **the substantive
+  reverse**: `(G↾E').IsSparse k k`, `Y ⊆ E'` ⟹ `|Y| ≤ k·r(Y)`. Decomposes `Y` along the components
+  of `H`; per-component `|E(C)| ≤ k·r(E(C))` (sparsity + `r(E(C)) = |V(C)|−1` via
+  `Connected.eRank_cycleMatroid_add_one`); sums via `components_cycleMatroid_isSkewFamily` +
+  `IsSkewFamily.sum_eRk_eq_eRk_iUnion` (ranks) and `encard_iUnion` over `components_pairwise_
+  stronglyDisjoint.edge` (edges), through `H.cycleMatroid = G.cycleMatroid ↾ Y`.
+- `Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict` (`[DecidableEq β] [Finite α] [Finite β]`)
+  — **the iff** (`thm:unionPow-cycle-indep-iff-sparse`): forward = `isSparse_restrict_of_union_pow_
+  indep`, reverse = `Union_pow_indep_iff_count` fed by the count lemma. Build + lint + `verify.sh`
+  all clean. **Next:** `thm:tutte-nash-williams` (see *Next concrete commit* below).
+
+**Next concrete commit — `thm:tutte-nash-williams`.** Edge-disjoint union of `k` forests ⟺
+`(k,k)`-sparse. Per blueprint: edge-disjoint `k`-forest decomposition of `E(G)` is exactly
+independence of the *whole* edge set `E(G)` in `⋃ⱼ cycleMatroid` (via `lem:union-indep-iff` =
+`Matroid.Union_indep_iff`, forests as per-copy independent sets), which the now-green
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict` (applied with `E' := E(G)`, so `G ↾ E(G) = G`)
+identifies with `(k,k)`-sparsity of `G` itself. Two pieces: (1) restate the iff at `E' = E(G)` —
+need `(G ↾ E(G)) = G` (`restrict_edgeSet_self` or similar) and `(G ↾ E(G)).IsSparse = G.IsSparse`;
+(2) unfold `Matroid.Union_indep_iff` into the "edge-disjoint union of forests" phrasing — decide the
+Lean encoding of "`k` forests packing `G`" (likely `∃ Fs : Fin k → Set β, ⋃ Fs = E(G) ∧ pairwise
+disjoint ∧ each `Fs i` acyclic-in-`G`), and map acyclic ↔ `cycleMatroid.Indep`. Check
+`Matroid.Graphic` for `cycleMatroid_indep_iff` (acyclic characterization).
 
 ## Architectural choices made up front
 
@@ -179,16 +198,14 @@ tree-packing nodes as of phase open).
   via the cancellation lemma `Graph.vertexSet_deleteVerts_isolatedSet_restrict`
   (`V(G ↾ E') \ Isol(G ↾ E') = spanningVerts E'`). The `r(E') = |V'| − c(E')` half of
   `thm:unionPow-cycle-indep-iff-sparse`, now in `spanningVerts` shape.
-- [ ] `thm:unionPow-cycle-indep-iff-sparse` — independence in the
-  `k`-fold cycle-matroid union ⟺ `(k,k)`-sparse (Whiteley Cor 3). **Matroid-side half landed**
-  (`Matroid.Union_pow_indep_iff_count`: indep ⟺ `∀ Y ⊆ E', |Y| ≤ k·r(Y)`, via the per-set
-  `adjMap_rk_eq` / `Union_pow_rk_eq`, internal glue). **Easy graphic-side half landed**
-  (`Graph.isSparse_of_forall_le_cycleMatroid_rk`: count condition ⟹ `(k,k)`-sparse, via the
-  `c'(Y) ≥ 1` rank bound `cycleMatroid_rk_add_one_le_spanningVerts_ncard`, internal glue).
-  **Forward direction landed** (`Graph.isSparse_restrict_of_union_pow_indep`: union-indep ⟹
-  `(G↾E').IsSparse k k`, via the rank restriction bridge `cycleMatroid_rk_restrict_of_subset` +
-  `Union_pow_indep_iff_count` + the easy half). Remaining: the hard reverse `(k,k)`-sparse ⟹ count
-  via connected-component decomposition, then assemble the iff.
+- [x] `thm:unionPow-cycle-indep-iff-sparse` — independence in the
+  `k`-fold cycle-matroid union ⟺ `(k,k)`-sparse (Whiteley Cor 3), green:
+  `Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict`. Matroid-side half
+  (`Matroid.Union_pow_indep_iff_count`), easy graphic half
+  (`Graph.isSparse_of_forall_le_cycleMatroid_rk`), forward
+  (`Graph.isSparse_restrict_of_union_pow_indep`), and hard reverse via component decomposition
+  (`Graph.le_mul_cycleMatroid_rk_of_isSparse_restrict`) all landed; assembled iff composes the
+  forward half with `Union_pow_indep_iff_count` fed by the reverse count lemma.
 - [ ] `thm:tutte-nash-williams` — edge-disjoint union of `k` forests ⟺
   `(k,k)`-sparse.
 - [ ] `cor:k-spanning-trees` — under `(k,k)`-tightness the `k` forests

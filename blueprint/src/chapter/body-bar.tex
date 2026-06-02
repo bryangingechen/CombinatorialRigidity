@@ -134,19 +134,30 @@ $\mathtt{SimpleGraph}$ sparsity of \cref{def:isSparse}.
 \begin{theorem}[Union independence by the count;
   Whiteley Corollary~3]
   \label{thm:unionPow-cycle-indep-iff-sparse}
-  \uses{def:graph-sparse, thm:k-frame-union-cycle,
-    thm:matroid-partition-rank}
-  A set of bars is independent in the $k$-fold cycle-matroid union
-  $\bigcup_{j=1}^{k} G.\mathrm{cycleMatroid}$ if and only if $G$
-  restricted to that set is $(k, k)$-sparse.
+  \lean{Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict}
+  \leanok
+  \uses{def:graph-sparse, thm:matroid-partition-rank,
+    lem:union-indep-iff}
+  A set of bars $E' \subseteq E(G)$ is independent in the $k$-fold
+  cycle-matroid union $\bigcup_{j=1}^{k} G.\mathrm{cycleMatroid}$ if
+  and only if $G$ restricted to that set is $(k, k)$-sparse.
 \end{theorem}
 \begin{proof}
-  \uses{thm:matroid-partition-rank}
-  Combine \cref{thm:matroid-partition-rank} with the cycle-matroid
-  rank formula $r(E') = |V'| - c(E')$: the partition bound
-  $|E''| \le \sum_{j} r(E'') = k(|V''| - c(E''))$ rearranges to the
-  $(k, k)$-sparsity inequality, since $k \cdot c(E'') \ge k$ on a
-  non-empty $E''$.
+  \leanok
+  \uses{thm:matroid-partition-rank, lem:union-indep-iff}
+  The partition rank formula (\cref{thm:matroid-partition-rank}),
+  specialized to the constant family, characterizes independence in
+  the union by the count $|E''| \le k \cdot r(E'')$ for every
+  $E'' \subseteq E'$ (\cref{lem:union-indep-iff}). For the forward
+  direction this count combined with the cycle-matroid rank formula
+  $r(E'') = |V''| - c(E'')$ and $c(E'') \ge 1$ on a non-empty $E''$
+  gives $(k, k)$-sparsity. For the reverse, sparsity alone yields
+  only $|E''| \le k(|V''| - 1)$, weaker than the count when $E''$ has
+  several non-trivial components; decomposing $E''$ along the
+  connected components of $G \restriction E''$ (deleting isolated
+  vertices) and summing the per-component sparsity bounds, with rank
+  additive over the skew component family, recovers
+  $|E''| \le k \cdot r(E'')$.
 \end{proof}
 
 \begin{theorem}[Tutte--Nash-Williams tree-packing]

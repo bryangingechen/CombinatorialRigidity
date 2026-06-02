@@ -248,4 +248,162 @@ lemma isSparse_restrict_of_union_pow_indep [DecidableEq β] [Finite α] [Finite 
   rw [cycleMatroid_rk_restrict_of_subset hE' hYE']
   exact h Y hYE'
 
+/-- The edges of the isolated-vertex-deleted edge-restriction `(G ↾ Y) - Isol(G ↾ Y)` are exactly
+`Y` (for `Y ⊆ E(G)`): edge-restricting to `Y` keeps the bars `E(G) ∩ Y = Y`, and deleting isolated
+vertices removes no bars (`setincEdges_isolatedSet`). The edge-side companion of
+`vertexSet_deleteVerts_isolatedSet_restrict`. -/
+lemma edgeSet_deleteVerts_isolatedSet_restrict {G : Graph α β} {Y : Set β} (hY : Y ⊆ E(G)) :
+    E((G ↾ Y) - Isol(G ↾ Y)) = Y := by
+  rw [deleteVerts_edgeSet_diff, setincEdges_isolatedSet, diff_empty, edgeSet_restrict,
+    inter_eq_right.mpr hY]
+
+/-- For a connected component `C` of the isolated-vertex-deleted restriction
+`H := (G ↾ Y) - Isol(G ↾ Y)`, the vertices `G` spans with the bars `E(C)` are exactly `V(C)`. The
+forward inclusion is incidence (`spanningVerts_subset_vertexSet` on `C`, transported to `G`); the
+reverse uses that `H` has no isolated vertices, so each `x ∈ V(C)` is incident in `H` to some bar
+`e`, which lies in the closed subgraph `C` (`Inc.of_isClosedSubgraph_of_mem`) and is incident in
+`G`. -/
+lemma spanningVerts_edgeSet_eq_vertexSet_of_isCompOf {G : Graph α β} {Y : Set β} {C : Graph α β}
+    (hY : Y ⊆ E(G)) (hC : C.IsCompOf ((G ↾ Y) - Isol(G ↾ Y))) :
+    G.spanningVerts E(C) = V(C) := by
+  set H := (G ↾ Y) - Isol(G ↾ Y) with hH
+  have hHG : H ≤ G := deleteVerts_le.trans restrict_le
+  have hCG : C ≤ G := hC.le.trans hHG
+  ext x
+  simp only [mem_spanningVerts]
+  constructor
+  · rintro ⟨e, heC, hincG⟩
+    exact (hincG.of_le_of_mem hCG heC).vertex_mem
+  · intro hxC
+    have hxH : x ∈ V(H) := hC.le.vertexSet_mono hxC
+    have hxnotiso : ¬ (G ↾ Y).Isolated x := by
+      have : x ∈ V((G ↾ Y) - Isol(G ↾ Y)) := hxH
+      rw [deleteVerts_vertexSet, mem_diff, mem_isolatedSet_iff] at this
+      exact this.2
+    have hxGYmem : x ∈ V(G ↾ Y) := (deleteVerts_le.vertexSet_mono hxH)
+    obtain ⟨e, hince⟩ := (not_isolated_iff hxGYmem).mp hxnotiso
+    -- the bar `e` incident to `x` in `G ↾ Y` is also incident in `H`, hence in the component `C`
+    have heH : e ∈ E(H) := by
+      rw [hH, edgeSet_deleteVerts_isolatedSet_restrict hY, ← inter_eq_right.mpr hY,
+        ← edgeSet_restrict]
+      exact hince.edge_mem
+    have hinceH : H.Inc e x := hince.of_le_of_mem deleteVerts_le heH
+    have hincC : C.Inc e x := (hC.isClosedSubgraph.inc_congr hxC).mpr hinceH
+    exact ⟨e, hincC.edge_mem, hincC.of_le hCG⟩
+
+/-- The `spanningVerts` of a bar set `Y` are unchanged by edge-restricting to a superset `E' ⊇ Y`:
+incidence in `G ↾ E'` of a bar `e ∈ Y ⊆ E'` agrees with incidence in `G` (`restrict_inc`). The
+vertex-side companion of `cycleMatroid_rk_restrict_of_subset`, needed by the reverse direction to
+read the `(G ↾ E')`-sparsity bound on a component bar set as a bound on `G.spanningVerts`. -/
+lemma spanningVerts_restrict_of_subset {G : Graph α β} {E' Y : Set β} (hY : Y ⊆ E') :
+    (G ↾ E').spanningVerts Y = G.spanningVerts Y := by
+  ext x
+  simp only [mem_spanningVerts, restrict_inc]
+  exact ⟨fun ⟨e, heY, hinc, _⟩ ↦ ⟨e, heY, hinc⟩, fun ⟨e, heY, hinc⟩ ↦ ⟨e, heY, hinc, hY heY⟩⟩
+
+/-- **Reverse direction** of `thm:unionPow-cycle-indep-iff-sparse`'s count condition: if the
+edge-restricted subgraph `G ↾ E'` is `(k, k)`-sparse, then every bar set `Y ⊆ E'` satisfies the
+union-independence count condition `|Y| ≤ k · r(Y)` (rank in `G.cycleMatroid`).
+
+The substantive content. Sparsity alone only gives `|Y| ≤ k(|spanV Y| − 1)`, weaker than the count
+`|Y| ≤ k · r(Y) = k(|spanV Y| − c'(Y))` when `Y` has several non-trivial components `c'(Y) > 1`. We
+decompose `Y` along the connected components `C` of the isolated-vertex-deleted restriction
+`H := (G ↾ Y) − Isol(G ↾ Y)`: each `E(C)` is non-empty with `G.spanningVerts E(C) = V(C)`
+(`spanningVerts_edgeSet_eq_vertexSet_of_isCompOf`) and `r(E(C)) = |V(C)| − 1` (`C` connected), so
+per-component sparsity gives `|E(C)| ≤ k · r(E(C))`. The component edge sets partition `Y`
+(`biUnion_components_edgeSet`, strongly disjoint), and rank is additive over the skew family
+(`components_cycleMatroid_isSkewFamily`), so summing yields `|Y| ≤ k · r(Y)`. -/
+lemma le_mul_cycleMatroid_rk_of_isSparse_restrict [Finite α] [Finite β] {G : Graph α β} {k : ℕ}
+    {E' : Set β} (hE' : E' ⊆ E(G)) (hsparse : (G ↾ E').IsSparse k k) {Y : Set β} (hY : Y ⊆ E') :
+    Y.ncard ≤ k * G.cycleMatroid.rk Y := by
+  classical
+  set H := (G ↾ Y) - Isol(G ↾ Y) with hH
+  have hYG : Y ⊆ E(G) := hY.trans hE'
+  have hEH : E(H) = Y := edgeSet_deleteVerts_isolatedSet_restrict hYG
+  have hCompFin : H.Components.Finite := by
+    rw [components_eq_walkable_image]; exact (Set.toFinite V(H)).image _
+  haveI : Fintype H.Components := hCompFin.fintype
+  -- `H.cycleMatroid` is `G.cycleMatroid` restricted to `Y`; ranks agree on bar subsets of `Y`
+  have hHcm : H.cycleMatroid = G.cycleMatroid.restrict Y := by
+    rw [hH, cycleMatroid_deleteVerts_isolatedSet, cycleMatroid_restrict, inter_eq_right.mpr hYG]
+  have hHeRk : ∀ S ⊆ Y, H.cycleMatroid.eRk S = G.cycleMatroid.eRk S := fun S hS ↦ by
+    rw [hHcm, Matroid.eRk_restrict, inter_eq_left.mpr hS]
+  -- per-component count bound, proved in ℕ then cast to ℕ∞ for the skew sum
+  have hperN : ∀ C : H.Components, E(C.val).ncard ≤ k * G.cycleMatroid.rk E(C.val) := by
+    rintro ⟨C, hCmem⟩
+    rw [mem_components_iff_isCompOf] at hCmem
+    have hspan : G.spanningVerts E(C) = V(C) :=
+      spanningVerts_edgeSet_eq_vertexSet_of_isCompOf hYG hCmem
+    have hCG : C ≤ G := hCmem.le.trans (deleteVerts_le.trans restrict_le)
+    have hECE' : E(C) ⊆ E' := ((by rw [← hEH]; exact hCmem.le.edgeSet_mono : E(C) ⊆ Y)).trans hY
+    have hECne : E(C).Nonempty := by
+      obtain ⟨x, e, he, _⟩ := hspan ▸ hCmem.nonempty; exact ⟨e, he⟩
+    -- rank of E(C) in G equals eRank of C.cycleMatroid, = |V(C)| − 1 by connectivity (ℕ form)
+    have hrkeq : G.cycleMatroid.eRk E(C) = C.cycleMatroid.eRank := by
+      rw [← (cycleMatroid_isRestriction_of_le hCG).eRk_eq (by rw [cycleMatroid_E]),
+        ← Matroid.eRk_ground, cycleMatroid_E]
+    have hconn : C.cycleMatroid.eRank + 1 = V(C).encard :=
+      hCmem.connected.eRank_cycleMatroid_add_one
+    have hVnc : G.cycleMatroid.rk E(C) + 1 = V(C).ncard := by
+      have h1 : (G.cycleMatroid.rk E(C) : ℕ∞) + 1 = V(C).encard := by
+        rw [Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite _), hrkeq, hconn]
+      rw [← (Set.toFinite V(C)).cast_ncard_eq] at h1; exact_mod_cast h1
+    -- sparsity on E(C) ⊆ E' : |E(C)| + k ≤ k · |V(C)|
+    have hsp := hsparse E(C) (by rw [edgeSet_restrict, inter_eq_right.mpr hE']; exact hECE') hECne
+    rw [spanningVerts_restrict_of_subset hECE', hspan] at hsp
+    -- |E(C)| + k ≤ k|V(C)| = k(r + 1) = k·r + k ⟹ |E(C)| ≤ k·r
+    nlinarith [hsp, hVnc]
+  -- cast per-component bound to ℕ∞
+  have hper : ∀ C : H.Components, E(C.val).encard ≤ (k : ℕ∞) * H.cycleMatroid.eRk E(C.val) := by
+    intro C
+    have hECY : E(C.val) ⊆ Y := by rw [← hEH]; exact C.prop.le.edgeSet_mono
+    rw [hHeRk _ hECY]
+    have := hperN C
+    rw [← (Set.toFinite E(C.val)).cast_ncard_eq,
+      ← Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite _), ← Nat.cast_mul]
+    exact_mod_cast this
+  -- skew family: ranks add up; edge sets partition Y
+  have hskew : H.cycleMatroid.IsSkewFamily (fun C : H.Components ↦ E(C.val)) :=
+    H.components_cycleMatroid_isSkewFamily
+  have hiUnion : ⋃ C : H.Components, E((C : Graph α β)) = Y := by
+    have hbu := H.biUnion_components_edgeSet
+    rw [hEH] at hbu
+    rw [← hbu, Set.biUnion_eq_iUnion]
+  -- |Y| = ∑ |E(C)|  (disjoint partition)
+  have hYsum : Y.encard = ∑ C : H.Components, E((C : Graph α β)).encard := by
+    rw [← hiUnion, encard_iUnion]
+    exact fun i j hij ↦ (H.components_pairwise_stronglyDisjoint i.prop j.prop
+      (Subtype.coe_ne_coe.mpr hij)).edge
+  -- ∑ r(E(C)) = r(Y)
+  have hrksum : ∑ C : H.Components, H.cycleMatroid.eRk E((C : Graph α β))
+      = H.cycleMatroid.eRk Y := by
+    rw [hskew.sum_eRk_eq_eRk_iUnion, hiUnion]
+  -- assemble in ℕ∞, then cast to ℕ
+  have hYrk : H.cycleMatroid.eRk Y = G.cycleMatroid.eRk Y := hHeRk Y subset_rfl
+  have hmain : Y.encard ≤ (k : ℕ∞) * G.cycleMatroid.eRk Y := by
+    calc Y.encard = ∑ C : H.Components, E((C : Graph α β)).encard := hYsum
+      _ ≤ ∑ C : H.Components, (k : ℕ∞) * H.cycleMatroid.eRk E((C : Graph α β)) :=
+            Finset.sum_le_sum (fun C _ ↦ hper C)
+      _ = (k : ℕ∞) * ∑ C : H.Components, H.cycleMatroid.eRk E((C : Graph α β)) :=
+            (Finset.mul_sum _ _ _).symm
+      _ = (k : ℕ∞) * H.cycleMatroid.eRk Y := by rw [hrksum]
+      _ = (k : ℕ∞) * G.cycleMatroid.eRk Y := by rw [hYrk]
+  rw [← (Set.toFinite Y).cast_ncard_eq, ← Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite _),
+    ← Nat.cast_mul] at hmain
+  exact_mod_cast hmain
+
+/-- **Union independence by the count** (Whiteley 1988, Corollary 3;
+`thm:unionPow-cycle-indep-iff-sparse`): a bar set `E' ⊆ E(G)` is independent in the `k`-fold
+cycle-matroid union `⋃ⱼ G.cycleMatroid` if and only if the edge-restricted subgraph `G ↾ E'` is
+`(k, k)`-sparse. The forward direction is `isSparse_restrict_of_union_pow_indep`; the reverse
+reads the count condition `∀ Y ⊆ E', |Y| ≤ k · r(Y)` off `(k, k)`-sparsity via the
+connected-component decomposition (`le_mul_cycleMatroid_rk_of_isSparse_restrict`) and feeds it to
+`Matroid.Union_pow_indep_iff_count`. -/
+theorem unionPow_cycleMatroid_indep_iff_isSparse_restrict [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {k : ℕ} {E' : Set β} (hE' : E' ⊆ E(G)) :
+    (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E' ↔ (G ↾ E').IsSparse k k := by
+  refine ⟨isSparse_restrict_of_union_pow_indep hE', fun hsparse ↦ ?_⟩
+  rw [Matroid.Union_pow_indep_iff_count]
+  exact fun Y hY ↦ le_mul_cycleMatroid_rk_of_isSparse_restrict hE' hsparse hY
+
 end Graph

@@ -90,6 +90,21 @@ housekeeping pass once their resolution is fully indexed.
   `[Finite β]`, which does not imply `DecidableEq`). The reverse
   direction + the assembled iff will need the same binder.
 
+### [resolved] `[matroid]` `Graph.Components` (the `Set (Graph α β)` of components) has no `Finite`/`Fintype` instance under `[Finite α]`
+- **Where it bit:** `Graph.le_mul_cycleMatroid_rk_of_isSparse_restrict` in
+  `BodyBar/TreePacking.lean` (Phase 13 reverse direction). The
+  component-decomposition sum needs `[Fintype ↥H.Components]` (for the
+  skew-family rank-additivity lemma `IsSkewFamily.sum_eRk_eq_eRk_iUnion`,
+  which is `[Fintype η]`), but `[Finite α]` does not synthesize even
+  `Finite ↥H.Components` — `Set.toFinite` on a `Set (Graph α β)` needs a
+  `Finite` subtype, which isn't automatic from finite vertices.
+- **Fix:** derive it explicitly via
+  `components_eq_walkable_image : G.Components = G.walkable '' V(G)` and
+  `(Set.toFinite V(H)).image _`, then `.fintype` for the `Fintype`. Phases
+  14–15 reaching for the component sum should reuse this two-line bridge.
+- **Status:** resolved (project-local; the `apnelson1/Matroid` `Graph`
+  API has no general instance).
+
 ### [resolved] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union + L2b-rado + L2b-partition all ported; **Phase 12 complete**, all `matroid-union.tex` nodes green)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
