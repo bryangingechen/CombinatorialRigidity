@@ -411,6 +411,90 @@ theorem eq_of_hingeConstraint_two_parallel (F : BodyHingeFramework k α β)
   rw [span_inf_span_eq_bot_of_linearIndependent hgen, Submodule.mem_bot, sub_eq_zero] at hmem
   exact hmem
 
+/-- The **pinned-motion subspace** at a body `v` (`lem:rank-delete-vertex`): the infinitesimal
+motions `S` that vanish on the pinned body, `S v = 0`. Pinning a body — fixing it to the zero
+screw — is the algebraic effect of deleting the `D` columns of `v` from the rigidity matrix
+`R(G,p)`; the surviving motions are exactly this subspace. Carried as the submodule of
+`infinitesimalMotions` cut out by `S v = 0`. -/
+def pinnedMotions (F : BodyHingeFramework k α β) (v : α) :
+    Submodule ℝ (α → ScrewSpace k) where
+  carrier := {S | F.IsInfinitesimalMotion S ∧ S v = 0}
+  add_mem' {S T} hS hT :=
+    ⟨F.infinitesimalMotions.add_mem hS.1 hT.1, by rw [Pi.add_apply, hS.2, hT.2, add_zero]⟩
+  zero_mem' := ⟨F.infinitesimalMotions.zero_mem, rfl⟩
+  smul_mem' c S hS :=
+    ⟨F.infinitesimalMotions.smul_mem c hS.1, by rw [Pi.smul_apply, hS.2, smul_zero]⟩
+
+@[simp]
+theorem mem_pinnedMotions (F : BodyHingeFramework k α β) (v : α) (S : α → ScrewSpace k) :
+    S ∈ F.pinnedMotions v ↔ F.IsInfinitesimalMotion S ∧ S v = 0 :=
+  Iff.rfl
+
+/-- Subtracting the constant screw `S v` from an infinitesimal motion `S` leaves an infinitesimal
+motion (`lem:rank-delete-vertex`): the hinge constraint only sees the relative screws
+`S u - S w`, which a constant shift `S u ↦ S u - S v` leaves unchanged. This is the
+normalization underlying the pin-a-body fact of White--Whiteley~`whiteWhiteley1987`. -/
+theorem isInfinitesimalMotion_sub_const (F : BodyHingeFramework k α β)
+    {S : α → ScrewSpace k} (hS : F.IsInfinitesimalMotion S) (c : ScrewSpace k) :
+    F.IsInfinitesimalMotion (fun u => S u - c) := by
+  intro e u v he
+  have := hS e u v he
+  rw [hingeConstraint] at this ⊢
+  simpa using this
+
+/-- **The trivial and pinned motions intersect only at `0`** (`lem:rank-delete-vertex`): a
+trivial motion (constant on every body) that also vanishes on the pinned body `v` is the zero
+assignment, `trivialMotions ⊓ pinnedMotions v = ⊥`. The two `D`- and (`rank R`)-dimensional
+summands are independent. -/
+theorem trivialMotions_inf_pinnedMotions_eq_bot (F : BodyHingeFramework k α β) (v : α) :
+    F.trivialMotions ⊓ F.pinnedMotions v = ⊥ := by
+  rw [eq_bot_iff]
+  rintro S ⟨hTriv, _, hv⟩
+  rw [Submodule.mem_bot]
+  exact funext fun u => (hTriv u v).trans hv
+
+/-- **Every infinitesimal motion splits as trivial plus pinned** (`lem:rank-delete-vertex`):
+`trivialMotions ⊔ pinnedMotions v = infinitesimalMotions`. Any motion `S` is the sum of the
+trivial motion `fun _ => S v` (constant at the pinned body's screw) and the pinned motion
+`fun u => S u - S v` (which vanishes at `v` and is still a motion by
+`isInfinitesimalMotion_sub_const`). With
+`trivialMotions_inf_pinnedMotions_eq_bot` this exhibits `Z(G,p)` as the internal direct sum of
+the `D` trivial motions and the body-`v`-pinned motions. -/
+theorem trivialMotions_sup_pinnedMotions (F : BodyHingeFramework k α β) (v : α) :
+    F.trivialMotions ⊔ F.pinnedMotions v = F.infinitesimalMotions := by
+  apply le_antisymm
+  · rw [sup_le_iff]
+    exact ⟨F.trivialMotions_le_infinitesimalMotions, fun S hS => hS.1⟩
+  · intro S hS
+    refine Submodule.mem_sup.2 ⟨fun _ => S v, fun u v' => rfl, fun u => S u - S v, ?_, ?_⟩
+    · exact ⟨F.isInfinitesimalMotion_sub_const hS (S v), sub_self _⟩
+    · exact funext fun u => by rw [Pi.add_apply, add_sub_cancel]
+
+/-- **Pinning one body preserves rank** (`lem:rank-delete-vertex`, Katoh--Tanigawa Lemma 5.1):
+deleting the `D` columns of a single body `v` from the rigidity matrix `R(G,p)` drops exactly the
+`D` trivial-motion dimensions, leaving the rank unchanged. In the codimension form: the null
+space `Z(G,p)` is the internal direct sum of the `D`-dimensional trivial motions and the
+body-`v`-pinned motions, so
+
+  `finrank (pinnedMotions v) + D = finrank Z(G,p)`,
+
+equivalently `rank R(G,p) = rank R(G,p; V ∖ v)`. The `D` trivial motions
+(`lem:trivial-motions-rank-bound`) normalize any motion to vanish on the pinned body
+(`isInfinitesimalMotion_sub_const`), the pin-a-body motion-space fact of
+White--Whiteley~`whiteWhiteley1987`. -/
+theorem finrank_pinnedMotions_add_screwDim [Nonempty α] [Finite α]
+    (F : BodyHingeFramework k α β) (v : α) :
+    Module.finrank ℝ (F.pinnedMotions v) + screwDim k =
+      Module.finrank ℝ F.infinitesimalMotions := by
+  haveI : Fintype α := Fintype.ofFinite α
+  have hdisj : F.trivialMotions ⊓ F.pinnedMotions v = ⊥ :=
+    F.trivialMotions_inf_pinnedMotions_eq_bot v
+  have hsup : F.trivialMotions ⊔ F.pinnedMotions v = F.infinitesimalMotions :=
+    F.trivialMotions_sup_pinnedMotions v
+  have key := Submodule.finrank_sup_add_finrank_inf_eq F.trivialMotions (F.pinnedMotions v)
+  rw [hdisj, hsup, finrank_bot, add_zero, F.finrank_trivialMotions] at key
+  omega
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

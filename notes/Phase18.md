@@ -36,9 +36,17 @@ hinges in general position (linearly-independent supporting extensors)
 have constraint spans meeting only at `0`
 (`span_inf_span_eq_bot_of_linearIndependent`, via `disjoint_span_singleton'`
 + `pair_iff'`), so a screw meeting both forces `S u = S v`
-(`eq_of_hingeConstraint_two_parallel`) — the `|V|=2` base case. Next: the
-remaining two rank lemmas (5.1 pin-a-body, 5.2 rotation) and the Prop 1.1
-reconciliation (see *Hand-off*).
+(`eq_of_hingeConstraint_two_parallel`) — the `|V|=2` base case.
+**Lemma 5.1 (`lem:rank-delete-vertex`, pin-a-body) has now landed**: the
+null space `Z(G,p)` decomposes as the internal direct sum of the `D`
+trivial motions and the body-`v`-pinned motions (`pinnedMotions v`,
+those vanishing on `v`), giving `finrank (pinnedMotions v) + D =
+finrank Z(G,p)` (`finrank_pinnedMotions_add_screwDim`) — the codimension
+form of "deleting body `v`'s `D` columns preserves rank". The [29]
+pin-a-body fact is *proved* via the normalization `S u ↦ S u - S v`
+staying a motion (`isInfinitesimalMotion_sub_const`). Next: the last
+rank lemma (5.2 rotation) and the Prop 1.1 reconciliation (see
+*Hand-off*).
 
 Landed so far:
 - `def:hinge-constraint` — `Molecular/RigidityMatrix.lean`:
@@ -197,8 +205,17 @@ the Lean lands.
       `finrank_screwAssignment` (`= D·|V|`) now **landed** too (the
       codimension form of `rank R ≤ D(|V|−1)`). The maximum-rank *generic*
       realization condition is the only remaining red part.
-- [ ] `lem:rank-delete-vertex` — **Lemma 5.1** (pin a body, delete `D`
-      columns, rank unchanged); [29] White–Whiteley.
+- [x] `lem:rank-delete-vertex` — **Lemma 5.1** (pin a body, delete `D`
+      columns, rank unchanged); [29] White–Whiteley. **Landed**
+      (`pinnedMotions` + `trivialMotions_inf_pinnedMotions_eq_bot` +
+      `trivialMotions_sup_pinnedMotions` + `finrank_pinnedMotions_add_screwDim`):
+      the null space `Z(G,p)` is the internal direct sum of the `D`
+      trivial motions and the body-`v`-pinned motions, so
+      `finrank (pinnedMotions v) + D = finrank Z(G,p)` — the codimension
+      form of rank-preservation. The [29] pin-a-body fact is *proved*,
+      not hypothesized: the normalization `S u ↦ S u - S v` stays a
+      motion (`isInfinitesimalMotion_sub_const`) since the hinge
+      constraint only sees relative screws.
 - [x] `lem:rank-parallel-full` — **Lemma 5.3** (two general-position
       parallel hinges → full block `D`); via `lem:extensor-independence`.
       **Landed** (`span_inf_span_eq_bot_of_linearIndependent` + framework
@@ -304,6 +321,21 @@ the Lean lands.
   form); the reconciliation `prop:rigidity-matrix-prop11` is the real
   bridge, not a rename.
 
+- **Lemma 5.1 (pin-a-body) carried basis-free as an internal direct-sum
+  decomposition of `Z(G,p)`** (`lem:rank-delete-vertex`). Rather than an
+  explicit column-deletion on a coordinate matrix, "pinning body `v`" is
+  the submodule `pinnedMotions v` of motions vanishing at `v`. The
+  [29] White–Whiteley normalization is `isInfinitesimalMotion_sub_const`:
+  subtracting the constant `S v` keeps a motion (the hinge constraint only
+  sees relative screws `S u − S w`). This gives
+  `trivialMotions ⊔ pinnedMotions v = infinitesimalMotions` and
+  `trivialMotions ⊓ pinnedMotions v = ⊥`, hence (via
+  `Submodule.finrank_sup_add_finrank_inf_eq` + `finrank_trivialMotions`)
+  `finrank (pinnedMotions v) + D = finrank Z(G,p)` — rank-preservation in
+  codimension form, with the `D` pinned columns the dropped trivial-motion
+  dimensions. The [29] fact is *proved*, resolving the prove-vs-hypothesize
+  question (risk register item 4) for Lemma 5.1 in the prove direction.
+
 ### Citations verified this phase
 - **[29] White, N., Whiteley, W.**, *The algebraic geometry of motions
   of bar-and-body frameworks*, SIAM J. Algebraic Discrete Methods **8**
@@ -319,10 +351,12 @@ the Lean lands.
 
 - **Lemma 5.2 perturbation vs genericity** (risk register item 3) —
   decide when `lem:rank-rotation-semicont` lands. Leaning genericity.
-- **External-fact boundary** (risk register item 4) — per-node decision
-  whether to prove or hypothesize the [29] pin-a-body fact (Lemma 5.1)
-  and the [15] (i)⇔(ii) half of Prop 2.3. The conjecture needs only the
-  upper bound, which Phase 16 may already supply.
+- **External-fact boundary** (risk register item 4) — the [29]
+  pin-a-body fact (Lemma 5.1) was **proved**, not hypothesized
+  (`isInfinitesimalMotion_sub_const`, the relative-screw normalization).
+  Remaining open: the [15] (i)⇔(ii) half of Prop 2.3 (Prop 1.1
+  reconciliation). The conjecture needs only the upper bound, which
+  Phase 16 may already supply.
 - **Carrier compatibility** — Phase 4's `Framework V d` uses
   `EuclideanSpace ℝ (Fin d)`; Phase 17's extensors use `Fin (d+1) → ℝ`.
   The screw-space identification `⋀^(d−1) ℝ^(d+1) ≅ ℝ^D` is now landed
@@ -364,11 +398,24 @@ extensors meet only at `0`, so a screw meeting both hinge constraints has
 independence from affine-general-position of the hinge points is a small
 follow-on, deferred to where Case II/III consume it.
 
-The next concrete commit is **either of the remaining two rank lemmas**.
-`lem:rank-delete-vertex` (KT Lemma 5.1, pin-a-body) builds on the
-now-landed trivial-motion layer and the [29] White–Whiteley fact (decide
-prove-vs-hypothesize per the risk register); `lem:rank-rotation-semicont`
-(KT Lemma 5.2, rotation semicontinuity, genericity form) and the Prop 1.1
-reconciliation are the load-bearing finishers. See
+`lem:rank-delete-vertex` (KT Lemma 5.1, pin-a-body) has now **landed**
+(`pinnedMotions` + `trivialMotions_inf_pinnedMotions_eq_bot` +
+`trivialMotions_sup_pinnedMotions` + `finrank_pinnedMotions_add_screwDim`,
+basis-free): `Z(G,p)` is the internal direct sum of the `D` trivial
+motions and the body-`v`-pinned motions, so
+`finrank (pinnedMotions v) + D = finrank Z(G,p)` — the codimension form
+of "deleting body `v`'s `D` columns preserves rank". The [29]
+White–Whiteley pin-a-body fact is *proved*, via the relative-screw
+normalization `isInfinitesimalMotion_sub_const`.
+
+Two nodes remain red: `lem:rank-rotation-semicont` (KT Lemma 5.2,
+rotation lower-semicontinuity — leaning the genericity form per the
+blocker note: entries of `R(G,p)` are polynomials in the panel
+coordinates, so a nonvanishing minor persists generically) and
+`prop:rigidity-matrix-prop11` (reconcile the rank form with Phase 16's
+existence form `thm:body-hinge-tay` via Prop 2.3 [15] + the Phase 13/14
+`D`-fold graphic union). The next concrete commit is **either of these
+two**; 5.2 is the more self-contained (genericity machinery from
+Phases 6/8), the Prop 1.1 reconciliation the heavier integration. See
 `notes/MolecularConjecture.md` *Phase 18* for the per-lemma detail and
 reuse map.

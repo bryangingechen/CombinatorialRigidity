@@ -402,6 +402,10 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
 
 \begin{lemma}[Deleting one body's columns preserves rank; KT Lemma 5.1]
   \label{lem:rank-delete-vertex}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_sup_pinnedMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_inf_pinnedMotions_eq_bot,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotions_add_screwDim}
+  \leanok
   \uses{def:rigidity-matrix, lem:trivial-motions-rank-bound}
   Pinning one body (deleting the $D$ columns of a single vertex $v$ from
   $R(G,p)$) does not change the rank:
@@ -410,10 +414,20 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   reused reduction in the algebraic induction.
 \end{lemma}
 \begin{proof}
+  \leanok
   The $D$ trivial motions (\cref{lem:trivial-motions-rank-bound}) let
   any motion be normalized to vanish on the pinned body, so the column
   space is unchanged; this is the ``pinning a body preserves the motion
-  space'' fact of White--Whiteley~\cite{whiteWhiteley1987}.
+  space'' fact of White--Whiteley~\cite{whiteWhiteley1987}. Concretely,
+  the null space $Z(G,p)$ is the internal direct sum of the trivial
+  motions and the body-$v$-pinned motions (those vanishing on $v$): any
+  motion $S$ splits as the constant $u \mapsto S(v)$ plus the pinned
+  remainder $u \mapsto S(u) - S(v)$, which is again a motion because the
+  hinge constraint only sees the relative screws $S(u) - S(w)$
+  (\texttt{isInfinitesimalMotion\_sub\_const}); the two summands meet only
+  at $0$. Hence $\operatorname{finrank}(\text{pinned at } v) + D =
+  \operatorname{finrank} Z(G,p)$, the codimension form of
+  rank-preservation.
 \end{proof}
 
 \begin{lemma}[Two parallel hinges give the full block; KT Lemma 5.3]
