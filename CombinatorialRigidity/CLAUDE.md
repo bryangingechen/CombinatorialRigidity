@@ -433,14 +433,46 @@ surely as a failing build. The full-project linter (`runLinter`)
 catches `simpNF` and `unusedArguments` issues that the compile-time
 `mathlibStandardSet` linter misses, so don't skip it.
 
-Newly-added `@[simp]` attributes are the usual offenders — if the
-LHS is reducible by existing simp lemmas, drop the `@[simp]` (the
-lemma stays callable by name) rather than working around with
-`@[nolint simpNF]`. Reserve `@[nolint unusedArguments]` for instance
-args that are semantically required by the definition's contract
-but not consumed by elaboration; always add a one-line comment
-justifying it (see `IsInfinitesimallyRigid` in `Framework.lean` for
-the canonical example).
+**A green build is not enough — the build must be _warning-clean_.**
+`lake build` exits 0 even when it emits compile-time `linter.*`
+warnings (`unusedSimpArgs`, `flexible`, `unusedDecidableInType`,
+`unusedFintypeInType`, …), and these are **not** caught by `lake lint`
+/ `runLinter` — the two linter families are disjoint. So "build green
++ `lake lint` clean" can still leave warnings riding in a commit (this
+exact gap shipped warnings into a Phase 12 vendored-port commit before
+the post-commit gate caught them). **Before each commit, scan the full
+`lake build` output for `warning:`** (e.g. `lake build <module> 2>&1 |
+grep -nE 'warning:'`) and drive the count to zero. Touch the file
+first (`touch X.lean`) if the build is cached, since cached modules
+don't re-emit warnings.
+
+**Fix warnings at the source; never paper over them.** The
+fix-precedence order is:
+1. **Solve it at the source** — drop the genuinely-unused simp arg;
+   convert a `flexible` `simp […]` to `simp only […]` (or `suffices`);
+   drop an unused `[Decidable…]`/`[Fintype…]` hypothesis and open the
+   body with `classical` / `haveI := Fintype.ofFinite _` where a proof
+   step actually needs it (the WF-recursion variant is TACTICS-QUIRKS
+   § 16(d)). This is almost always the right answer, including in
+   vendored `Matroid/` ports — a style sweep there is low-risk and
+   keeps the project warning-clean.
+2. **`@[nolint …]` / `set_option linter.X false` only with a
+   justification _and_ only when the warning is a genuine false
+   positive** — i.e. the flagged construct is semantically required
+   but the linter can't see why (the canonical case is an instance arg
+   required by a definition's contract; see `IsInfinitesimallyRigid` in
+   `Framework.lean`). Always add a one-line comment stating why the
+   suppression is correct, not merely convenient. A suppression used to
+   dodge a real fix is a defect, not a workaround.
+3. **If you can neither fix it at the source nor justify a suppression**
+   — e.g. the fix would meaningfully alter a vendored proof's content,
+   or you don't understand why the warning fires — **surface it to the
+   user** rather than committing the warning or silencing it blind.
+
+Newly-added `@[simp]` attributes are the usual `lake lint` offenders —
+if the LHS is reducible by existing simp lemmas, drop the `@[simp]`
+(the lemma stays callable by name) rather than working around with
+`@[nolint simpNF]`.
 
 > **Blueprint pointer touched?** If the commit also edits any
 > `\lean{...}` pointer in `../blueprint/`, run `checkdecls` per
