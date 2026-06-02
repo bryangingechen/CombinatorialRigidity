@@ -99,14 +99,18 @@ phase proceeds, leaf-first.
 
 \begin{definition}[Rigid and proper rigid subgraphs]
   \label{def:rigid-subgraph}
+  \lean{Graph.IsRigidSubgraph, Graph.IsProperRigidSubgraph}
+  \leanok
   \uses{def:k-dof}
-  A subgraph $H \subseteq G$ is \emph{rigid} when it is $0$-dof
-  ($\operatorname{def}(\tilde H) = 0$), i.e.\ $\tilde H$ packs $D$
-  edge-disjoint spanning trees; it is a \emph{proper} rigid subgraph
-  when $\emptyset \ne V(H) \subsetneq V(G)$. A \emph{circuit} of
-  $M(\tilde G)$ is a minimal dependent edge set. Two-edge-connectivity
-  of $G$ is the structural hypothesis Case~III of the algebraic
-  induction works under.
+  A subgraph $H \subseteq G$ (the multigraph subgraph order $H \le G$)
+  is \emph{rigid} when it is $0$-dof ($\operatorname{def}(\tilde H) =
+  0$), i.e.\ $\tilde H$ packs $D$ edge-disjoint spanning trees; it is a
+  \emph{proper} rigid subgraph when additionally
+  $\emptyset \ne V(H) \subsetneq V(G)$. A \emph{circuit} of
+  $M(\tilde G)$ is a minimal dependent edge set (mathlib's
+  \texttt{Matroid.IsCircuit}). Two-edge-connectivity of $G$ is the
+  structural hypothesis Case~III of the algebraic induction works
+  under (\cref{lem:two-edge-conn}).
 \end{definition}
 
 \begin{lemma}[Two-edge-connectivity; KT Lemma 3.1]

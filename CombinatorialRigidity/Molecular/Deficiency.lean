@@ -41,10 +41,17 @@ leaf node landing here:
   parts. The deficiency is `ℤ`-valued (genuinely signed) and `≥ 0` by the trivial one-part
   partition (`partitionDef_one`).
 
+* `IsKDof` / `IsMinimalKDof` / `edgeFiber` (`def:k-dof`) — `G` is a `k`-dof-graph
+  when `def(G̃) = k`; minimal when additionally every base of `M(G̃)` meets every
+  edge-fiber `ẽ` (the `D-1` parallel copies of `e ∈ E(G)`).
+* `IsRigidSubgraph` / `IsProperRigidSubgraph` (`def:rigid-subgraph`) — a subgraph
+  `H ≤ G` is *rigid* when it is `0`-dof, *proper rigid* when additionally
+  `∅ ≠ V(H) ⊊ V(G)`. A *circuit* of `M(G̃)` is `Matroid.IsCircuit (G.matroidMG n)`.
+
 See `ROADMAP.md` §19 / `notes/Phase19.md` and the `sec:molecular-deficiency`
-dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining nodes
-(`def:k-dof`, `def:rigid-subgraph`, the structural lemmas KT 3.1/3.3/3.4, and the
-bridge `thm:def-eq-corank`) land in subsequent commits.
+dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining nodes (the
+structural lemmas KT 3.1/3.3/3.4, and the bridge `thm:def-eq-corank`) land in
+subsequent commits.
 -/
 
 namespace Graph
@@ -194,5 +201,29 @@ combinatorial induction of Phase 20 (Theorem 4.9) reduces to the two-vertex
 double edge. -/
 def IsMinimalKDof [DecidableEq β] (G : Graph α β) (n : ℕ) (k : ℤ) : Prop :=
   G.IsKDof n k ∧ ∀ B, (G.matroidMG n).IsBase B → ∀ e ∈ E(G), (B ∩ edgeFiber e n).Nonempty
+
+/-! ## Rigid subgraphs and circuits (`def:rigid-subgraph`)
+
+A subgraph `H ⊆ G` (`H ≤ G`, the multigraph `Graph.IsSubgraph` order) is *rigid*
+when it is `0`-dof — `def(H̃) = 0` — equivalently (`thm:body-hinge-tay`) `H̃` packs
+`D` edge-disjoint spanning trees. It is a *proper* rigid subgraph when its vertex
+set is a nonempty proper subset `∅ ≠ V(H) ⊊ V(G)`. A *circuit* of `M(G̃)` is a
+minimal dependent edge set; this is mathlib's `Matroid.IsCircuit (G.matroidMG n)`.
+These are the structural objects the algebraic induction of Phases 21–23 reduces
+against (rigid subgraphs feed Case I, circuits feed `lem:circuit-rigid`). -/
+
+/-- `H` is a **rigid subgraph** of `G` (`def:rigid-subgraph`; Katoh–Tanigawa 2011 §3):
+`H ≤ G` (a subgraph in the multigraph `Graph.IsSubgraph` order) and `H` is `0`-dof,
+i.e. `def(H̃) = 0` with `H̃ = (D-1)·H` and `D = bodyBarDim n`. By
+`thm:body-hinge-tay` this is exactly the body-hinge-rigid case: `H̃` packs `D`
+edge-disjoint spanning trees. -/
+def IsRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop := H ≤ G ∧ H.IsKDof n 0
+
+/-- `H` is a **proper rigid subgraph** of `G` (`def:rigid-subgraph`; Katoh–Tanigawa
+2011 §3): a rigid subgraph whose vertex set is a nonempty proper subset of `G`'s,
+`∅ ≠ V(H) ⊊ V(G)`. Proper rigid subgraphs are the case-I objects of the algebraic
+induction (Phases 21–23). -/
+def IsProperRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop :=
+  H.IsRigidSubgraph G n ∧ V(H).Nonempty ∧ V(H) ⊂ V(G)
 
 end Graph

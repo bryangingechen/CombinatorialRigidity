@@ -1,6 +1,7 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
-**Status:** in progress (`def:matroid-MG` + `def:D-deficiency` + `def:k-dof` landed).
+**Status:** in progress (`def:matroid-MG` + `def:D-deficiency` + `def:k-dof` +
+`def:rigid-subgraph` landed — all four definition nodes done; lemmas/bridge next).
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -36,9 +37,15 @@ parallel copies of `e`), and `Graph.IsMinimalKDof` = `IsKDof` plus every base
 `B` of `M(G̃)` meeting every edge-fiber of an edge `e ∈ E(G)`
 (`(B ∩ edgeFiber e n).Nonempty`, over `Matroid.IsBase`).
 
-Next concrete step: `def:rigid-subgraph` — rigid (`0`-dof) + proper rigid
-subgraph (`∅ ≠ V(H) ⊊ V(G)`); circuit of `M(G̃)`; 2-edge-connectivity. Then the
-structural lemmas (KT 3.1/3.3/3.4) and the bridge `thm:def-eq-corank`.
+`def:rigid-subgraph` is now green: `Graph.IsRigidSubgraph H G n := H ≤ G ∧ H.IsKDof n 0`
+(rigid = subgraph + `0`-dof, keyed off the multigraph `Graph.IsSubgraph`/`≤` order)
+and `Graph.IsProperRigidSubgraph H G n` = rigid plus `V(H).Nonempty ∧ V(H) ⊂ V(G)`.
+A *circuit* of `M(G̃)` is mathlib's `Matroid.IsCircuit (G.matroidMG n)` (no project
+def needed); 2-edge-connectivity is the still-red `lem:two-edge-conn` (KT 3.1), not
+this commit.
+
+Next concrete step: the structural lemmas (KT 3.1/3.3/3.4: `lem:two-edge-conn`,
+`lem:subgraph-minimality`, `lem:circuit-rigid`) and the bridge `thm:def-eq-corank`.
 
 ## Architectural choices made up front
 
@@ -76,8 +83,9 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 - [x] `def:k-dof` — `k`-dof / `0`-dof (= body-hinge rigid) / minimal
   `k`-dof (every base of `M(G̃)` meets every edge-fiber `ẽ`). (`Graph.IsKDof`,
   `Graph.edgeFiber`, `Graph.IsMinimalKDof`.)
-- [ ] `def:rigid-subgraph` — rigid + proper rigid subgraph; circuits;
-  2-edge-connectivity.
+- [x] `def:rigid-subgraph` — rigid + proper rigid subgraph (circuits via
+  mathlib's `Matroid.IsCircuit`; 2-edge-connectivity deferred to
+  `lem:two-edge-conn`). (`Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`.)
 - [ ] `thm:def-eq-corank` — the def = corank bridge (JJ09 Thm 6.1 /
   Cor 6.2): `|B| + def(G̃) = D(|V|−1)`.
 - [ ] `lem:two-edge-conn` — KT Lemma 3.1 (2-edge-connectivity).
@@ -142,6 +150,16 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   `matroidMG`) and phrases fiber-meeting as `(B ∩ edgeFiber e n).Nonempty` over
   `Matroid.IsBase`, restricted to `e ∈ E(G)`.
 
+- **Rigid subgraph keyed off `H ≤ G`, not edge-restriction.** `IsRigidSubgraph H G n
+  := H ≤ G ∧ H.IsKDof n 0` uses the mathlib multigraph subgraph order (`Graph.IsSubgraph`,
+  i.e. `≤`) so `deficiency`/`IsKDof` apply to `H` directly (both already take a bare
+  `Graph α β`). No new edge-restriction machinery. *Proper* adds `V(H).Nonempty ∧
+  V(H) ⊂ V(G)`. The *circuit* notion is mathlib's `Matroid.IsCircuit (G.matroidMG n)`
+  — no project def; only the rigid/proper-rigid `def`s are new. 2-edge-connectivity is
+  prose in the node (the lemma `lem:two-edge-conn` is separate, still red), and mathlib
+  has no edge-connectivity API for `Graph α β` (only `SimpleGraph`) — flagged for that
+  node's scoping.
+
 ## Blockers / open questions
 
 - ~~**Boundary regime `ℓ = 2k = D`** (risk #2)~~: **resolved** by
@@ -155,16 +173,20 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 
 ## Hand-off / next phase
 
-`def:matroid-MG`, `def:D-deficiency`, and `def:k-dof` are green in
-`Molecular/Deficiency.lean` (`Graph.matroidMG` / `matroidMG_indep_iff`;
+`def:matroid-MG`, `def:D-deficiency`, `def:k-dof`, and `def:rigid-subgraph` are
+green in `Molecular/Deficiency.lean` (`Graph.matroidMG` / `matroidMG_indep_iff`;
 `Graph.partitionDef` / `Graph.deficiency` / `numParts` / `crossingEdges` /
-`partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` / `Graph.IsMinimalKDof`).
-The next concrete commit is `def:rigid-subgraph` in the same file: a *rigid*
-subgraph `H ⊆ G` is `0`-dof (`deficiency H n = 0`); *proper* rigid adds
-`∅ ≠ V(H) ⊊ V(G)`; a *circuit* of `M(G̃)` is a minimal dependent edge set
-(reuse `Matroid.Circuit` / `matroidMG_indep_iff`); plus 2-edge-connectivity as
-the Case-III structural hypothesis. Likely a small cluster of `def`s
-(`IsRigidSubgraph`, `IsProperRigidSubgraph`) keyed off subgraph restriction.
-Then the structural lemmas (KT 3.1/3.3/3.4) and the bridge `thm:def-eq-corank`.
-Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once `M(G̃)`,
-deficiency, and the def = corank bridge are all green.
+`partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` / `Graph.IsMinimalKDof`;
+`Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`). All four definition nodes
+of `deficiency.tex` are now landed; the remaining nodes are lemmas/theorems.
+
+The next concrete commit is one of the structural lemmas. The cheapest is likely
+`lem:circuit-rigid` (KT 3.4: a circuit of `M(G̃)` spans a rigid subgraph) or
+`lem:subgraph-minimality` (KT 3.3: a rigid subgraph of a minimal `k`-dof-graph is a
+minimal `0`-dof-graph, via `M(G̃)|E(H̃) = M(H̃)` matroid restriction commuting with
+the union — reuse `matroidMG_indep_iff` + `Matroid.restrict`). `lem:two-edge-conn`
+(KT 3.1) needs a 2-edge-connectivity notion on the multigraph `Graph α β`, which
+mathlib has only for `SimpleGraph`; scope that node carefully (may need a project
+def). Then the bridge `thm:def-eq-corank` (decide prove-vs-hypothesize for the JJ09
+generic-rank half per risk #4). Phase 20 (combinatorial induction → Theorem 4.9) is
+unblocked once `M(G̃)`, deficiency, and the def = corank bridge are all green.
