@@ -52,10 +52,17 @@ sides through `matroidMG_indep_iff`; the `IsSparse`-agreement engine is the priv
 `E(H̃)` is shared, via `hHG.inc_congr`). New supporting lemma `edgeMultiply_mono` in
 `BodyBar/BodyHinge.lean` (`H ≤ G → m·H ≤ m·G`).
 
+`lem:subgraph-minimality` (KT 3.3) is now green: `Graph.subgraph_minimality`. A subgraph
+`H ≤ G` of a minimal `k`-dof-graph `G`, with `def(H̃) = k'`, is a minimal `k'`-dof-graph
+(rigid `k'=0` case feeds Cases I/III). The deficiency half is a hypothesis (it defines `k'`);
+the content is the base/fiber-meeting transport over the green restriction identity. A base
+`B'` of `M(H̃) = M(G̃) ↾ E(H̃)` is an `M(G̃)`-basis of `E(H̃)` (`Matroid.isBase_restrict_iff'`),
+extends to a base `B ⊇ B'` of `M(G̃)` (`Indep.exists_isBase_superset`) with `B' = B ∩ E(H̃)`
+(`IsBasis'.eq_of_subset_indep`); each fiber `ẽ` of `e ∈ E(H) ⊆ E(G)` lies in `E(H̃)`, so
+`G`'s minimality `B ∩ ẽ ≠ ∅` descends to `B' ∩ ẽ = B ∩ ẽ ≠ ∅`. No base-extension friction.
+
 Next concrete step: the remaining structural lemmas (KT 3.1/3.4: `lem:two-edge-conn`,
-`lem:circuit-rigid`), the full `lem:subgraph-minimality` node (transport the
-base/fiber-meeting minimality from `G` to `H` over the now-green restriction identity —
-needs base-extension API), and the bridge `thm:def-eq-corank`.
+`lem:circuit-rigid`) and the bridge `thm:def-eq-corank`.
 
 ## Architectural choices made up front
 
@@ -102,9 +109,9 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 - [x] `lem:matroid-restrict-subgraph` — the engine of KT 3.3:
   `M(G̃) ↾ E(H̃) = M(H̃)` for `H ≤ G`. (`Graph.matroidMG_restrict_mulTilde`,
   via `Matroid.ext_indep` + `matroidMG_indep_iff`.)
-- [ ] `lem:subgraph-minimality` — KT Lemma 3.3 (subgraph minimality
-  via restriction). Engine `lem:matroid-restrict-subgraph` is green;
-  the full node still needs the base/fiber-meeting minimality transport.
+- [x] `lem:subgraph-minimality` — KT Lemma 3.3 (subgraph minimality
+  via restriction). (`Graph.subgraph_minimality`: base/fiber-meeting
+  transport over the green restriction identity + base extension.)
 - [ ] `lem:circuit-rigid` — KT Lemma 3.4 (circuit ⇒ rigid subgraph).
 - [ ] `prop:rigidity-matrix-prop11` — KT Prop 1.1 reconciliation
   (**inherited from Phase 18**; node lives in
@@ -174,17 +181,22 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   has no edge-connectivity API for `Graph α β` (only `SimpleGraph`) — flagged for that
   node's scoping.
 
-- **KT 3.3 split into engine + node.** `lem:subgraph-minimality` (KT
-  Lemma 3.3) is two pieces: the matroid identity `M(G̃) ↾ E(H̃) = M(H̃)`
-  and the minimality transport built on it. Landed the identity first as
-  its own green node `lem:matroid-restrict-subgraph`
-  (`matroidMG_restrict_mulTilde`); `lem:subgraph-minimality` `\uses` it and
-  stays red until the base/fiber-meeting transport lands. The identity is
-  proved by `Matroid.ext_indep` through `matroidMG_indep_iff` (not a
+- **KT 3.3 split into engine + node; both green.** `lem:subgraph-minimality`
+  (KT Lemma 3.3) is two pieces: the matroid identity `M(G̃) ↾ E(H̃) = M(H̃)`
+  (engine, green as `lem:matroid-restrict-subgraph` / `matroidMG_restrict_mulTilde`)
+  and the minimality transport built on it (`subgraph_minimality`). The identity
+  is proved by `Matroid.ext_indep` through `matroidMG_indep_iff` (not a
   `Matroid.Union`-restrict-commute lemma — the vendored union has no such
   lemma and ground `univ`), so it never touches the union internals: both
   sides reduce to `(D,D)`-sparsity of `·̃ ↾ E'`, which agree by the private
-  `isSparse_restrict_mulTilde_congr`. *Lifted:* the `edgeMultiply.IsLink`
+  `isSparse_restrict_mulTilde_congr`. The transport `\uses` the engine: a base
+  `B'` of `M(H̃) = M(G̃) ↾ E(H̃)` is an `M(G̃)`-basis of `E(H̃)`
+  (`Matroid.isBase_restrict_iff'`), extends to a base `B ⊇ B'` of `M(G̃)`
+  (`Indep.exists_isBase_superset`), and equals `B ∩ E(H̃)` by maximality
+  (`IsBasis'.eq_of_subset_indep`); each fiber `ẽ` of `e ∈ E(H) ⊆ E(G)` sits in
+  `E(H̃)`, so `G`-minimality `B ∩ ẽ ≠ ∅` descends to `B'`. The Lean is the
+  general KT 3.3 form (any subgraph with `def(H̃) = k'` is minimal `k'`-dof), not
+  just the rigid `k'=0` specialization. *Lifted:* the `edgeMultiply.IsLink`
   defeq-ascription lesson → FRICTION.
 
 ## Blockers / open questions
@@ -200,20 +212,27 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 
 ## Hand-off / next phase
 
-`def:matroid-MG`, `def:D-deficiency`, `def:k-dof`, and `def:rigid-subgraph` are
-green in `Molecular/Deficiency.lean` (`Graph.matroidMG` / `matroidMG_indep_iff`;
-`Graph.partitionDef` / `Graph.deficiency` / `numParts` / `crossingEdges` /
-`partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` / `Graph.IsMinimalKDof`;
-`Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`). All four definition nodes
-of `deficiency.tex` are now landed; the remaining nodes are lemmas/theorems.
+All four definition nodes of `deficiency.tex` are green in `Molecular/Deficiency.lean`
+(`Graph.matroidMG` / `matroidMG_indep_iff`; `Graph.partitionDef` / `Graph.deficiency` /
+`numParts` / `crossingEdges` / `partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` /
+`Graph.IsMinimalKDof`; `Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`), plus two
+structural lemmas: the restriction identity `matroidMG_restrict_mulTilde`
+(`lem:matroid-restrict-subgraph`) and now the full KT 3.3 node `subgraph_minimality`
+(`lem:subgraph-minimality`).
 
-The next concrete commit is one of the structural lemmas. The cheapest is likely
-`lem:circuit-rigid` (KT 3.4: a circuit of `M(G̃)` spans a rigid subgraph) or
-`lem:subgraph-minimality` (KT 3.3: a rigid subgraph of a minimal `k`-dof-graph is a
-minimal `0`-dof-graph, via `M(G̃)|E(H̃) = M(H̃)` matroid restriction commuting with
-the union — reuse `matroidMG_indep_iff` + `Matroid.restrict`). `lem:two-edge-conn`
-(KT 3.1) needs a 2-edge-connectivity notion on the multigraph `Graph α β`, which
-mathlib has only for `SimpleGraph`; scope that node carefully (may need a project
-def). Then the bridge `thm:def-eq-corank` (decide prove-vs-hypothesize for the JJ09
-generic-rank half per risk #4). Phase 20 (combinatorial induction → Theorem 4.9) is
-unblocked once `M(G̃)`, deficiency, and the def = corank bridge are all green.
+The next concrete commit is the remaining structural work, in rough order of likely cost:
+- `lem:circuit-rigid` (KT 3.4: the edge set of a circuit `X` of `M(G̃)` spans a rigid
+  subgraph `G[V(X)]`; more precisely `X − e` partitions into `D` spanning trees on `V(X)`
+  for any `e ∈ X`). Needs a *vertex-induced-subgraph from an edge set* construction — map
+  a circuit `X ⊆ E(G̃)` back to a subgraph of `G` and show it is `0`-dof. New machinery;
+  the matroid argument itself (`|X| > D(|V(X)|−1)`, `X−e` independent ⇒ `|X−e| =
+  D(|V(X)|−1)` ⇒ base ⇒ rigid) is short once the subgraph is in hand.
+- `lem:two-edge-conn` (KT 3.1) needs a 2-edge-connectivity notion on the multigraph
+  `Graph α β`, which mathlib has only for `SimpleGraph`; scope carefully (likely a project
+  def, or phrase directly via `dG(V') ≤ 1` partition contradiction without a named
+  connectivity predicate — KT's proof only uses the partition `{V', V∖V'}`).
+- the bridge `thm:def-eq-corank` (decide prove-vs-hypothesize for the JJ09 generic-rank
+  half per risk #4).
+
+Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once `M(G̃)`, deficiency,
+and the def = corank bridge are all green.

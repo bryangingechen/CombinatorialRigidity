@@ -150,15 +150,27 @@ phase proceeds, leaf-first.
 
 \begin{lemma}[Subgraph minimality via restriction; KT Lemma 3.3]
   \label{lem:subgraph-minimality}
+  \lean{Graph.subgraph_minimality}
+  \leanok
   \uses{def:k-dof, lem:matroid-restrict-subgraph}
-  A rigid subgraph $H$ of a minimal $k$-dof-graph $G$ is itself a
-  minimal $0$-dof-graph.
+  Let $G$ be a minimal $k$-dof-graph and let $H \le G$ be a subgraph
+  with $\operatorname{def}(\tilde H) = k'$. Then $H$ is a minimal
+  $k'$-dof-graph. In particular a rigid subgraph ($k' = 0$) of a
+  minimal $k$-dof-graph is a minimal $0$-dof-graph.
 \end{lemma}
 \begin{proof}
-  By \cref{lem:matroid-restrict-subgraph}, $M(\tilde H) = M(\tilde
-  G)|E(\tilde H)$, so the base / fiber-meeting minimality property
-  descends from $G$ to $H$; Katoh--Tanigawa~\cite[Lemma
-  3.3]{katohTanigawa2011}.
+  \leanok
+  The $\operatorname{def}(\tilde H) = k'$ half is the choice of $k'$;
+  the content is the base / fiber-meeting minimality transport. By
+  \cref{lem:matroid-restrict-subgraph}, $M(\tilde H) = M(\tilde
+  G)\,|\,E(\tilde H)$, so any base $B'$ of $M(\tilde H)$ is an
+  $M(\tilde G)$-basis of $E(\tilde H)$ and extends to a base $B$ of
+  $M(\tilde G)$ with $B' = B \cap E(\tilde H)$ by maximality. Each
+  edge-fiber $\tilde e$ of an edge $e \in E(H) \subseteq E(G)$ lies
+  inside $E(\tilde H)$, so $G$'s minimality ($B \cap \tilde e \ne
+  \emptyset$) descends: $B' \cap \tilde e = (B \cap E(\tilde H)) \cap
+  \tilde e = B \cap \tilde e \ne \emptyset$. This is
+  Katoh--Tanigawa~\cite[Lemma 3.3]{katohTanigawa2011}.
 \end{proof}
 
 \begin{lemma}[A circuit yields a rigid subgraph; KT Lemma 3.4]

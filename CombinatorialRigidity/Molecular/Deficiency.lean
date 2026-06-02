@@ -47,10 +47,19 @@ leaf node landing here:
 * `IsRigidSubgraph` / `IsProperRigidSubgraph` (`def:rigid-subgraph`) — a subgraph
   `H ≤ G` is *rigid* when it is `0`-dof, *proper rigid* when additionally
   `∅ ≠ V(H) ⊊ V(G)`. A *circuit* of `M(G̃)` is `Matroid.IsCircuit (G.matroidMG n)`.
+* `matroidMG_restrict_mulTilde` (`lem:matroid-restrict-subgraph`) — the engine of
+  KT Lemma 3.3: `M(G̃) ↾ E(H̃) = M(H̃)` for `H ≤ G`, via `Matroid.ext_indep` through
+  `matroidMG_indep_iff` (so it never touches the `Matroid.Union` internals).
+* `subgraph_minimality` (`lem:subgraph-minimality`, KT Lemma 3.3) — a subgraph
+  `H ≤ G` of a minimal `k`-dof-graph `G`, with `def(H̃) = k'`, is a minimal
+  `k'`-dof-graph. The base/fiber-meeting minimality transports from `G` to `H` over
+  the restriction identity: a base `B'` of `M(H̃) = M(G̃) ↾ E(H̃)` extends to a base
+  `B` of `M(G̃)` with `B' = B ∩ E(H̃)`, and each fiber `ẽ` of `e ∈ E(H) ⊆ E(G)` lies
+  in `E(H̃)`, so `B ∩ ẽ ≠ ∅` (from `G`'s minimality) descends to `B' ∩ ẽ ≠ ∅`.
 
 See `ROADMAP.md` §19 / `notes/Phase19.md` and the `sec:molecular-deficiency`
 dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining nodes (the
-structural lemmas KT 3.1/3.3/3.4, and the bridge `thm:def-eq-corank`) land in
+structural lemmas KT 3.1/3.4, and the bridge `thm:def-eq-corank`) land in
 subsequent commits.
 -/
 
@@ -284,5 +293,42 @@ def IsRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop := H ≤ G ∧ H.IsKDof
 induction (Phases 21–23). -/
 def IsProperRigidSubgraph (H G : Graph α β) (n : ℕ) : Prop :=
   H.IsRigidSubgraph G n ∧ V(H).Nonempty ∧ V(H) ⊂ V(G)
+
+/-! ## Subgraph minimality (`lem:subgraph-minimality`; KT Lemma 3.3) -/
+
+/-- **Subgraph minimality** (`lem:subgraph-minimality`; Katoh–Tanigawa 2011 Lemma 3.3):
+a subgraph `H ≤ G` of a minimal `k`-dof-graph `G` is itself a minimal `k'`-dof-graph,
+where `k' = def(H̃)` is whatever deficiency `H` happens to have. (In particular a
+*rigid* subgraph — `k' = 0` — of a minimal `k`-dof-graph is a minimal `0`-dof-graph,
+the form used in Cases I/III of the algebraic induction.)
+
+The deficiency half (`H.IsKDof n k'`) is supplied as a hypothesis (it is the definition
+of `k'`); the content is the base/fiber-meeting minimality transport. The engine is the
+matroid identity `M(G̃) ↾ E(H̃) = M(H̃)` (`matroidMG_restrict_mulTilde`): a base `B'` of
+`M(H̃)` is an `M(G̃)`-basis of `E(H̃)` (`isBase_restrict_iff'`), so it extends to a base
+`B ⊇ B'` of `M(G̃)` (`Indep.exists_isBase_superset`) with `B' = B ∩ E(H̃)` by maximality
+(`IsBasis'.eq_of_subset_indep`). Each edge-fiber `ẽ` of an `e ∈ E(H) ⊆ E(G)` lies inside
+`E(H̃)`, so `G`'s minimality (`B ∩ ẽ ≠ ∅`) transports to `B' ∩ ẽ = (B ∩ E(H̃)) ∩ ẽ =
+B ∩ ẽ ≠ ∅`. -/
+theorem subgraph_minimality [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    (h : H ≤ G) {n : ℕ} {k k' : ℤ} (hG : G.IsMinimalKDof n k) (hH : H.IsKDof n k') :
+    H.IsMinimalKDof n k' := by
+  refine ⟨hH, fun B' hB' e he ↦ ?_⟩
+  -- `B'` is a base of `M(H̃) = M(G̃) ↾ E(H̃)`, hence an `M(G̃)`-basis of `E(H̃)`.
+  rw [← matroidMG_restrict_mulTilde h n, Matroid.isBase_restrict_iff'] at hB'
+  -- Extend the independent set `B'` to a base `B` of `M(G̃)`.
+  obtain ⟨B, hB, hB'B⟩ := hB'.indep.exists_isBase_superset
+  -- The edge-fiber of `e ∈ E(H)` lies inside `E(H̃)`.
+  have hfiber : edgeFiber e n ⊆ E(H.mulTilde n) := by
+    intro p hp
+    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, (show p.1 = e from hp)]
+    exact he
+  -- `B' = B ∩ E(H̃)` by maximality of the basis.
+  have hBeq : B' = B ∩ E(H.mulTilde n) :=
+    hB'.eq_of_subset_indep (hB.indep.inter_right _)
+      (Set.subset_inter hB'B hB'.subset) Set.inter_subset_right
+  -- `G`'s minimality gives `B ∩ ẽ ≠ ∅`; restrict to `B'`.
+  obtain ⟨p, hp⟩ := hG.2 B hB e (h.edgeSet_mono he)
+  exact ⟨p, by rw [hBeq]; exact ⟨⟨hp.1, hfiber hp.2⟩, hp.2⟩⟩
 
 end Graph
