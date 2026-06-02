@@ -28,8 +28,10 @@ The Lean code is organized into phases, tracked in
 Phases~1--18 are complete (see the phase bullets below);
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
-Katoh--Tanigawa~\cite{katohTanigawa2011}), and \textbf{Phase~18}
-builds the genuine panel-hinge rigidity matrix on top of it.
+Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
+builds the genuine panel-hinge rigidity matrix on top of it, and
+\textbf{Phase~19} (in progress) builds the matroid $M(\tilde G)$,
+the $D$-deficiency, and the $k$-degree-of-freedom combinatorics.
 The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
@@ -48,8 +50,10 @@ theorem itself (Phase~15). Phase~16 extends the body-bar theorem to
 the body-hinge / panel-hinge Tay--Whiteley theorem via a
 hinge-to-body-bar reduction. Phase~17 opens the
 molecular-conjecture program with the Grassmann--Cayley extensor-algebra
-layer, and Phase~18 builds the genuine panel-hinge rigidity matrix
-$R(G,p)$ on it. The per-phase breakdown:
+layer, Phase~18 builds the genuine panel-hinge rigidity matrix
+$R(G,p)$ on it, and Phase~19 (in progress) builds its matroidal
+substrate $M(\tilde G)$, the $D$-deficiency, and the $k$-dof
+combinatorics. The per-phase breakdown:
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -201,6 +205,23 @@ $R(G,p)$ on it. The per-phase breakdown:
         $M(\tilde G)$-deficiency machinery the bridge needs. (Chapter:
         \cref{sec:molecular-rigidity-matrix}; file:
         \texttt{Molecular/RigidityMatrix.lean}.)
+  \item \textbf{The matroid $M(\tilde G)$, deficiency, and $k$-dof
+        graphs} (in progress). Stratum~3 of the molecular program
+        (Katoh--Tanigawa~\cite[\S2.5, \S3]{katohTanigawa2011}): the
+        matroidal substrate of the conjecture's algebraic induction. The
+        matroid $M(\tilde G)$ is the $(D,D)$-count matroid of the
+        multiplied graph $\tilde G = (D-1)\cdot G$ at the boundary regime
+        $\ell = 2k = D$ --- the $D$-fold graphic-matroid union of
+        Phases~13--14 with Tutte--Nash-Williams, not the matroidal-regime
+        count matroid of Phase~7. The phase builds the $D$-deficiency
+        $\operatorname{def}(\tilde G)$, the $k$-degree-of-freedom and
+        minimal-$k$-dof hierarchy, rigid subgraphs, and the bridge
+        $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
+        (Jackson--Jord\'an~\cite{jacksonJordan2009}), which closes the
+        reconciliation node deferred from Phase~18
+        (\cref{prop:rigidity-matrix-prop11}). (Chapter:
+        \cref{sec:molecular-deficiency}; file:
+        \texttt{Molecular/Deficiency.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -230,4 +251,9 @@ the same chapter with the panel-hinge rigidity-matrix dep-graph
 (\cref{sec:molecular-rigidity-matrix}): its rank-matrix skeleton,
 trivial-motion layer, and three rank lemmas are green, with the single
 reconciliation node (\cref{prop:rigidity-matrix-prop11}) red, deferred
-to Phase~19. Phases~19--26 remain to be opened.
+to Phase~19. Phase~19 (in progress) opens the deficiency chapter
+(\cref{sec:molecular-deficiency}): the matroid $M(\tilde G)$, the
+$D$-deficiency, the $k$-dof hierarchy, and the
+$\operatorname{def} = \operatorname{corank}$ bridge that closes the
+deferred node --- all red, the forward-mode to-do list. Phases~20--26
+remain to be opened.

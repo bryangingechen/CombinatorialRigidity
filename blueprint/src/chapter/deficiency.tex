@@ -1,0 +1,171 @@
+\section{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)}, deficiency, and \texorpdfstring{$k$}{k}-dof graphs}
+\label{sec:molecular-deficiency}
+
+This chapter is the \textbf{Phase~19} dep-graph: the combinatorial
+substrate of the molecular-conjecture program ---
+Katoh--Tanigawa~\cite[\S2.5, \S3]{katohTanigawa2011}, the third
+stratum. Where \cref{sec:molecular-rigidity-matrix} built the
+\emph{analytic} side (the rigidity matrix $R(G,p)$, its rank, and the
+three rank lemmas), this chapter builds the \emph{matroidal} side: the
+matroid $M(\tilde G)$, the $D$-deficiency $\operatorname{def}(\tilde
+G)$, the $k$-degree-of-freedom hierarchy, rigid subgraphs, and the
+bridge $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde
+G)$ that ties the two sides together. With that bridge in hand, the
+reconciliation node deferred from Phase~18
+(\cref{prop:rigidity-matrix-prop11}) closes. Throughout
+$D = \binom{d+1}{2} = \delta$ is the body-bar dimension and $\tilde G$
+abbreviates the multiplied graph $(D-1)\cdot G$ of
+\cref{sec:body-hinge}, whose edge-fibers $\tilde e$ are the $D-1$
+parallel copies of each edge $e \in E(G)$.
+
+\medskip
+\noindent\emph{Status (forward mode).} All nodes in this chapter are
+red --- this dep-graph is the Phase~19 to-do list. The Lean lands in a
+new file \texttt{Molecular/Deficiency.lean}; nodes flip to green as the
+phase proceeds, leaf-first.
+
+\subsection{The matroid \texorpdfstring{$M(\tilde G)$}{M(G~)} at the boundary regime}
+\label{sec:molecular-deficiency-matroid}
+
+\begin{definition}[The matroid $M(\tilde G)$]
+  \label{def:matroid-MG}
+  \uses{thm:tay-witness}
+  Let $D = \binom{d+1}{2}$. The matroid $M(\tilde G)$ is the
+  \emph{$(D,D)$-count matroid} of the multiplied graph
+  $\tilde G = (D-1)\cdot G$ --- equivalently, the $D$-fold union of the
+  cycle (graphic) matroid of $\tilde G$, restricted to $E(\tilde G)$.
+  Its independent sets are the $(D,D)$-sparse edge subsets of
+  $\tilde G$; by Tutte--Nash-Williams (\cref{thm:tay-witness} and the
+  tree-packing chapter) these are exactly the edge subsets that
+  decompose into $D$ edge-disjoint forests.
+\end{definition}
+\begin{proof}
+  This is the \textbf{boundary regime} $\ell = 2k = D$ of the
+  count-matroid family. It is \emph{not} covered by the matroidal-regime
+  construction of \cref{sec:count-matroid} (built for $\ell < 2k$);
+  $M(\tilde G)$ is instead the $D$-fold graphic-matroid union of
+  \cref{sec:body-bar,sec:body-hinge}, whose independence
+  characterization is Tutte--Nash-Williams tree-packing. The
+  first formalization step of Phase~19 confirms this boundary regime is
+  clean before the rest of the chapter relies on it.
+\end{proof}
+
+\begin{definition}[$D$-deficiency]
+  \label{def:D-deficiency}
+  \uses{def:matroid-MG}
+  For a partition $P$ of $V(G)$ into nonempty parts, write $d_G(P)$ for
+  the number of edges of $G$ joining distinct parts of $P$. The
+  \emph{$D$-deficiency} of $P$ is
+  \[
+    \operatorname{def}_{\tilde G}(P) \;=\; D\,(|P| - 1) \;-\;
+      (D-1)\,d_G(P),
+  \]
+  and the \emph{deficiency} of $\tilde G$ is
+  $\operatorname{def}(\tilde G) = \max_{P} \operatorname{def}_{\tilde
+  G}(P)$, the maximum over all partitions. The deficiency measures how
+  far $\tilde G$ is from being independently realizable as a rigid
+  body-hinge framework.
+\end{definition}
+
+\begin{definition}[$k$-dof and minimal $k$-dof graphs]
+  \label{def:k-dof}
+  \uses{def:D-deficiency, def:matroid-MG}
+  A multigraph $G$ is a \emph{$k$-dof-graph} when
+  $\operatorname{def}(\tilde G) = k$; the $0$-dof case is exactly the
+  body-hinge-rigid case (\cref{thm:body-hinge-tay}). $G$ is a
+  \emph{minimal $k$-dof-graph} when it is $k$-dof and every base $B$ of
+  $M(\tilde G)$ meets every edge-fiber $\tilde e$ (the $D-1$ parallel
+  copies of $e \in E(G)$) --- i.e.\ no edge of $G$ can be deleted
+  without changing the deficiency. Minimal $k$-dof-graphs are the
+  objects the combinatorial induction (\cref{sec:molecular-deficiency},
+  Phase~20's Theorem~4.9) reduces to the two-vertex double edge.
+\end{definition}
+
+\subsection{Rigid subgraphs and structural lemmas}
+\label{sec:molecular-deficiency-rigid}
+
+\begin{definition}[Rigid and proper rigid subgraphs]
+  \label{def:rigid-subgraph}
+  \uses{def:k-dof}
+  A subgraph $H \subseteq G$ is \emph{rigid} when it is $0$-dof
+  ($\operatorname{def}(\tilde H) = 0$), i.e.\ $\tilde H$ packs $D$
+  edge-disjoint spanning trees; it is a \emph{proper} rigid subgraph
+  when $\emptyset \ne V(H) \subsetneq V(G)$. A \emph{circuit} of
+  $M(\tilde G)$ is a minimal dependent edge set. Two-edge-connectivity
+  of $G$ is the structural hypothesis Case~III of the algebraic
+  induction works under.
+\end{definition}
+
+\begin{lemma}[Two-edge-connectivity; KT Lemma 3.1]
+  \label{lem:two-edge-conn}
+  \uses{def:k-dof}
+  A minimal $k$-dof-graph $G$ with $|V| \ge 2$ and $k \ge 0$ is
+  $2$-edge-connected.
+\end{lemma}
+\begin{proof}
+  A bridge would split off a part contributing to the deficiency that
+  could be realized independently, contradicting minimality; this is
+  Katoh--Tanigawa~\cite[Lemma 3.1]{katohTanigawa2011}.
+\end{proof}
+
+\begin{lemma}[Subgraph minimality via restriction; KT Lemma 3.3]
+  \label{lem:subgraph-minimality}
+  \uses{def:k-dof, def:matroid-MG}
+  A rigid subgraph $H$ of a minimal $k$-dof-graph $G$ is itself a
+  minimal $0$-dof-graph, via the restriction $M(\tilde G)|E(\tilde H) =
+  M(\tilde H)$.
+\end{lemma}
+\begin{proof}
+  Matroid restriction commutes with the union construction, so the base
+  / fiber-meeting property descends to $H$; Katoh--Tanigawa~\cite[Lemma
+  3.3]{katohTanigawa2011}.
+\end{proof}
+
+\begin{lemma}[A circuit yields a rigid subgraph; KT Lemma 3.4]
+  \label{lem:circuit-rigid}
+  \uses{def:rigid-subgraph, def:matroid-MG}
+  The edge set of a circuit of $M(\tilde G)$ spans a rigid subgraph of
+  $G$.
+\end{lemma}
+\begin{proof}
+  A circuit is one element short of $D$ edge-disjoint spanning trees on
+  its vertex span, hence is $0$-dof there; Katoh--Tanigawa~\cite[Lemma
+  3.4]{katohTanigawa2011}.
+\end{proof}
+
+\subsection{The deficiency \texorpdfstring{$=$}{=} corank bridge}
+\label{sec:molecular-deficiency-bridge}
+
+\begin{theorem}[$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$; Jackson--Jord\'an]
+  \label{thm:def-eq-corank}
+  \uses{def:D-deficiency, def:matroid-MG}
+  For any base $B$ of $M(\tilde G)$,
+  \[
+    |B| + \operatorname{def}(\tilde G) \;=\; D\,(|V| - 1),
+  \]
+  i.e.\ $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde
+  G)$ inside the rank-$D(|V|-1)$ ambient. This is the project framing of
+  the generic-rank identity of Jackson--Jord\'an~\cite[Theorem
+  6.1]{jacksonJordan2009}, whose Corollary~6.2 reads off rigidity
+  ($\operatorname{def} = 0$) as $\tilde G$ packing $D$ edge-disjoint
+  spanning trees.
+\end{theorem}
+\begin{proof}
+  The rank of the $D$-fold graphic-matroid union is the partition
+  formula of Edmonds (\cref{sec:matroid-union}); the corank against the
+  ambient $D(|V|-1)$ is exactly the deficiency maximised over
+  partitions. The conjecture (Theorem~5.6) needs only the upper-bound
+  half of the generic-rank identity, which the body-hinge reduction of
+  \cref{thm:body-hinge-tay} already supplies; the prove-vs-hypothesize
+  boundary for the full Jackson--Jord\'an~\cite{jacksonJordan2009}
+  identity is decided when this node lands.
+\end{proof}
+
+This bridge closes the reconciliation node deferred from Phase~18:
+\cref{prop:rigidity-matrix-prop11} in
+\cref{sec:molecular-rigidity-matrix}, which equates the honest rank
+form $\operatorname{rank} R(G,p) = D(|V|-1)$ with the standard-basis
+existence form (\cref{thm:body-hinge-tay}) of Phase~16, routes through
+$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$ ---
+once \cref{thm:def-eq-corank} is green, the body-hinge analytic and
+combinatorial sides agree.

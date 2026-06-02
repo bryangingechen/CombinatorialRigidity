@@ -109,7 +109,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-17) | Phase 17 surface (`Molecular/Extensor.lean`, `molecular.tex` `sec:molecular` nodes) | ✓ Complete (see `notes/Phase17-cleanup.md`; round manual: `CLEANUP.md`) |
 | 18. Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` (KT §2.2–2.4 + Lemmas 5.1–5.3) | ✓ Complete (see `notes/Phase18.md`; `molecular.tex` `sec:molecular-rigidity-matrix`) |
 | ⋮ Cleanup round (post-Phase-18) | Phase 18 surface (`Molecular/RigidityMatrix.lean`, `molecular.tex` → split into `extensor.tex` + `rigidity-matrix.tex`) + readability/citation/instruction items | ✓ Complete (see `notes/Phase18-cleanup.md`; round manual: `CLEANUP.md`) |
-| 19–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
+| 19. `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` (KT §2.5, §3) | ◐ In progress (see `notes/Phase19.md`; `deficiency.tex` `sec:molecular-deficiency`) |
+| 20–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -621,6 +622,28 @@ the former `molecular.tex` into `extensor.tex` (Phase 17) +
 Per-lemma detail + decisions: `notes/Phase18.md`; the deferred node is an
 inherited Phase-19 deliverable in `notes/MolecularConjecture.md`
 *Phase 19*.
+
+### Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (KT §2.5, §3)
+
+**Status (◐ in progress; see `notes/Phase19.md`).** Stratum 3 of the
+molecular-conjecture program: the combinatorial / matroidal substrate
+the algebraic induction (Phases 21–23) runs against. Builds, in a new
+file `Molecular/Deficiency.lean`, the matroid `M(G̃)` (the `(D,D)`-count
+matroid of the multiplied graph `G̃ = (D−1)·G` at the **boundary regime
+`ℓ = 2k = D`** — the `D`-fold graphic-matroid union of Phases 13/14 +
+Tutte–Nash-Williams, **not** the `ℓ<2k` `CountMatroid.lean`), the
+`D`-deficiency `def_G̃(P) = D(|P|−1) − (D−1)·d_G(P)` with `def(G̃) =
+maxₚ def_G̃(P)`, the `k`-dof / minimal `k`-dof hierarchy, rigid + proper
+rigid subgraphs / circuits / 2-edge-connectivity (KT Lemmas 3.1/3.3/3.4
+on the Thm-4.9 critical path), and the **def = corank bridge**
+(`def(G̃) = corank M(G̃)`, project framing of Jackson–Jordán 2009
+Thm 6.1 / Cor 6.2). That bridge closes the node deferred from Phase 18
+(`prop:rigidity-matrix-prop11`, KT Prop 1.1, reconciling the honest rank
+form with Phase 16's reduction form). Forward-mode phase; the dep-graph
+is `deficiency.tex` `sec:molecular-deficiency`. Per-node lemma map +
+decisions + the boundary-regime / prove-vs-hypothesize open questions:
+`notes/Phase19.md` and `notes/MolecularConjecture.md` *Phase 19*.
+Unblocks Phase 20 (combinatorial induction → Theorem 4.9).
 
 ## Engineering conventions
 

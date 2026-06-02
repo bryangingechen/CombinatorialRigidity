@@ -27,8 +27,9 @@ program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 theorem — see below. **Phase 17 (complete)** opens the
 longer-horizon **molecular-conjecture program** (Phases 17–26;
 Katoh–Tanigawa 2011) with its Grassmann–Cayley extensor-algebra layer,
-and **Phase 18 (complete)** builds the genuine panel-hinge rigidity
-matrix `R(G,p)` on top of it.
+**Phase 18 (complete)** builds the genuine panel-hinge rigidity
+matrix `R(G,p)` on top of it, and **Phase 19 (in progress)** builds the
+matroid `M(G̃)`, the `D`-deficiency, and the `k`-dof combinatorics.
 The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
@@ -129,6 +130,19 @@ needs. Forward-mode program, one chapter per phase: `extensor.tex`
 dep-graphs (all nodes green save the deferred Prop 1.1 node, red). See
 the program-level plan in `notes/MolecularConjecture.md`.
 
+**Phase 19 (in progress)** builds stratum 3: the matroidal substrate of
+the conjecture's algebraic induction (Katoh–Tanigawa §2.5, §3). The
+matroid `M(G̃)` is the `(D,D)`-count matroid of the multiplied graph
+`G̃ = (D−1)·G` at the boundary regime `ℓ = 2k = D` — the `D`-fold
+graphic-matroid union of Phases 13/14 with Tutte–Nash-Williams, not the
+`ℓ<2k` count matroid of Phase 7. The phase builds the `D`-deficiency
+`def(G̃)`, the `k`-dof / minimal-`k`-dof hierarchy, rigid subgraphs
+(KT Lemmas 3.1/3.3/3.4), and the `def(G̃) = corank M(G̃)` bridge
+(Jackson–Jordán 2009 Thm 6.1 / Cor 6.2), which closes the reconciliation
+node deferred from Phase 18. Forward-mode; the chapter `deficiency.tex`
+is the authoritative dep-graph (all nodes red — the to-do list). See
+`notes/Phase19.md` and `notes/MolecularConjecture.md`.
+
 The development is divided into the phases below, with Lean source
 under
 [`CombinatorialRigidity/`](https://github.com/bryangingechen/CombinatorialRigidity/tree/master/CombinatorialRigidity)
@@ -155,6 +169,7 @@ existing files or refactor across several).
 |    16 | Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ |
 |    17 | Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` | ✓ |
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
+|    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ◐ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
