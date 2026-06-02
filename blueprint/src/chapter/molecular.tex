@@ -85,22 +85,34 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
 
 \begin{definition}[Extensor]
   \label{def:extensor}
+  \lean{CombinatorialRigidity.Molecular.extensor}
+  \leanok
   A \emph{$j$-extensor} in $\R^{d+1}$ is a decomposable element of the
   $j$-th exterior power $\bigwedge^{j} \R^{d+1}$, i.e.\ one of the form
   $v_1 \wedge \cdots \wedge v_j$ for vectors $v_i \in \R^{d+1}$
   (Barnabei--Brini--Rota~\cite{barnabeiBriniRota1985}). We build the
-  symbolic layer on mathlib's $\bigwedge[\R] \R^{d+1}$ and recover the
-  geometric notion of the extensor of an affine subspace below.
+  symbolic layer on mathlib's $\bigwedge[\R] \R^{d+1}$ --- the extensor is
+  the value of mathlib's alternating multilinear map into the exterior
+  algebra, landing in the graded piece $\bigwedge^{j} \R^{d+1}$ --- and
+  recover the geometric notion of the
+  extensor of an affine subspace below. Being alternating, the extensor
+  vanishes whenever two of its vectors coincide (the load-bearing fact for
+  \cref{lem:extensor-independence}).
 \end{definition}
 
 \begin{definition}[Join]
   \label{def:join}
+  \lean{CombinatorialRigidity.Molecular.join}
+  \leanok
   \uses{def:extensor}
   The \emph{join} $A \vee B$ of extensors is their exterior product
   $A \wedge B$ (the span of the corresponding subspaces, when they meet
-  only at the origin). The join is alternating and vanishes whenever a
-  vector is repeated, and is associative and graded-commutative as
-  inherited from the exterior product.
+  only at the origin). On extensors it satisfies
+  $(\bar v_1 \vee \cdots \vee \bar v_m) \vee (\bar w_1 \vee \cdots \vee \bar w_n)
+   = \bar v_1 \vee \cdots \vee \bar v_m \vee \bar w_1 \vee \cdots \vee \bar w_n$,
+  the extensor of the concatenated family. It is alternating and vanishes
+  whenever a vector is repeated (inherited from \cref{def:extensor}), and is
+  associative and graded-commutative as inherited from the exterior product.
 \end{definition}
 
 \begin{definition}[Plücker coordinates]

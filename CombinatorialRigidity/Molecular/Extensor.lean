@@ -8,6 +8,7 @@ module
 public import Mathlib.Data.Real.Basic
 public import Mathlib.LinearAlgebra.AffineSpace.Independent
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
+public import Mathlib.LinearAlgebra.ExteriorPower.Basic
 
 /-!
 # Grassmann–Cayley extensor algebra: homogeneous coordinates (`sec:molecular-homog`)
@@ -36,6 +37,37 @@ This first commit lands the leaf-most red nodes of the §2.1 dep-graph:
   form) — `d+1` points are affinely independent iff the determinant of the
   `(d+1) × (d+1)` matrix of their homogeneous coordinates is nonzero. This is
   the top-extensor (full-determinant) specialization the blueprint singles out.
+
+The symbolic Grassmann–Cayley layer (`def:extensor`, `def:join`) follows:
+
+* `extensor` (`def:extensor`) — a `j`-extensor in `ℝ^(d+1)` is the decomposable
+  element `v₁ ∧ ⋯ ∧ vⱼ` of the `j`-th exterior power, built on mathlib's
+  `ExteriorAlgebra.ιMulti` (so `extensor v ∈ ⋀[ℝ]^j (Fin (d+1) → ℝ)`, the graded
+  piece `exteriorPower`). Two facts the join needs come for free from `ιMulti`
+  being an `AlternatingMap`: it vanishes on a repeated vector
+  (`extensor_eq_zero_of_not_injective` / `extensor_eq_zero_of_eq`) — the
+  load-bearing fact for Lemma 2.1.
+* `join` (`def:join`) — the join `A ∨ B` of two extensors is their exterior
+  product `A * B` in `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`. `join_extensor`
+  records the defining identity `extensor a ∨ extensor b = extensor (a ++ b)`
+  (mathlib `ιMulti_mul_ιMulti`, with `Fin.append` the concatenation); the join
+  inherits associativity / graded-commutativity from the ring product.
+
+## Symbolic carrier (mathlib `ExteriorAlgebra` coverage)
+
+The symbolic layer reuses mathlib's `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`
+verbatim. mathlib's `Mathlib.LinearAlgebra.ExteriorPower.Basic` supplies all the
+needed scaffolding: the graded pieces `⋀[ℝ]^j M` (`exteriorPower`, a
+`Submodule`), the decomposable generators via the alternating multilinear map
+`ExteriorAlgebra.ιMulti ℝ j : M [⋀^Fin j]→ₗ[R] ExteriorAlgebra ℝ M`, the
+exterior product `*` as the join (`ExteriorAlgebra.ιMulti_mul_ιMulti`), and the
+alternating / vanishes-on-repeats facts (`ExteriorAlgebra.ιMulti_eq_zero_of_not_inj`,
+`AlternatingMap.map_eq_zero_of_eq`). Lemma 2.1 is self-contained from these plus
+the affine-independence bridge above; no new exterior-algebra infrastructure is
+required, so the symbolic-vs-coordinatized depth (risk register item 1 in
+`notes/MolecularConjecture.md`) stays shallow — the only remaining §2.1 work is
+the coordinatized Plücker bridge (`def:plucker-coords`), `C(·)`
+(`def:affine-subspace-extensor`), and Lemma 2.1 itself.
 
 ## Carrier
 
@@ -131,5 +163,72 @@ theorem affineIndependent_fin_iff_det_homogenize (p : Fin (d + 1) → Fin d → 
     Matrix.linearIndependent_rows_iff_isUnit, Matrix.isUnit_iff_isUnit_det,
     isUnit_iff_ne_zero]
   rfl
+
+/-! ## Extensors and the join
+
+The symbolic Grassmann–Cayley layer on mathlib's exterior algebra. We work in
+`ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`; a `j`-extensor is the decomposable element
+`v₁ ∧ ⋯ ∧ vⱼ`, packaged through the alternating multilinear map
+`ExteriorAlgebra.ιMulti ℝ j`, and the join is the exterior product. -/
+
+/-- **Extensor** (`def:extensor`). The `j`-extensor of a family
+`v : Fin j → ℝ^(d+1)` is the decomposable element
+`v 0 ∧ ⋯ ∧ v (j-1)` of the exterior algebra, i.e. the value of mathlib's
+alternating multilinear map `ExteriorAlgebra.ιMulti ℝ j`. It lands in the graded
+piece `⋀[ℝ]^j (Fin (d+1) → ℝ)` (see `extensor_mem_exteriorPower`). -/
+def extensor {d j : ℕ} (v : Fin j → Fin (d + 1) → ℝ) :
+    ExteriorAlgebra ℝ (Fin (d + 1) → ℝ) :=
+  ExteriorAlgebra.ιMulti ℝ j v
+
+theorem extensor_apply {d j : ℕ} (v : Fin j → Fin (d + 1) → ℝ) :
+    extensor v = ExteriorAlgebra.ιMulti ℝ j v := rfl
+
+/-- A `j`-extensor lies in the `j`-th exterior power (graded piece)
+`⋀[ℝ]^j (Fin (d+1) → ℝ)`. -/
+theorem extensor_mem_exteriorPower {d j : ℕ} (v : Fin j → Fin (d + 1) → ℝ) :
+    extensor v ∈ ⋀[ℝ]^j (Fin (d + 1) → ℝ) :=
+  ExteriorAlgebra.ιMulti_range ℝ j ⟨v, rfl⟩
+
+/-- A `j`-extensor vanishes when two of its vectors coincide (the alternating
+property of the join; `def:extensor`). This — together with
+`extensor_eq_zero_of_not_injective` — is the load-bearing fact for Lemma 2.1's
+"join the relation with a `2`-extensor to kill all but one term" argument. -/
+theorem extensor_eq_zero_of_eq {d j : ℕ} (v : Fin j → Fin (d + 1) → ℝ)
+    {a b : Fin j} (hab : v a = v b) (hne : a ≠ b) : extensor v = 0 :=
+  (ExteriorAlgebra.ιMulti ℝ j).map_eq_zero_of_eq v hab hne
+
+/-- A `j`-extensor vanishes when its family of vectors is not injective — the
+contrapositive packaging of `extensor_eq_zero_of_eq` (`def:extensor`). -/
+theorem extensor_eq_zero_of_not_injective {d j : ℕ} {v : Fin j → Fin (d + 1) → ℝ}
+    (hv : ¬Function.Injective v) : extensor v = 0 :=
+  ExteriorAlgebra.ιMulti_eq_zero_of_not_inj hv
+
+/-- **Join** (`def:join`). The join `A ∨ B` of two extensors is their exterior
+product `A * B` in `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`. Geometrically it
+represents the span of the two corresponding subspaces (when they meet only at
+the origin). The join inherits associativity and graded-commutativity from the
+ring product. -/
+def join {d : ℕ} (A B : ExteriorAlgebra ℝ (Fin (d + 1) → ℝ)) :
+    ExteriorAlgebra ℝ (Fin (d + 1) → ℝ) :=
+  A * B
+
+@[inherit_doc] scoped infixl:70 " ∨ₑ " => join
+
+theorem join_def {d : ℕ} (A B : ExteriorAlgebra ℝ (Fin (d + 1) → ℝ)) :
+    A ∨ₑ B = A * B := rfl
+
+/-- The defining identity of the join on extensors (`def:join`): joining the
+`m`-extensor of `a` with the `n`-extensor of `b` is the `(m+n)`-extensor of the
+concatenated family `Fin.append a b`. Immediate from mathlib's
+`ExteriorAlgebra.ιMulti_mul_ιMulti`. -/
+theorem join_extensor {d m n : ℕ} (a : Fin m → Fin (d + 1) → ℝ)
+    (b : Fin n → Fin (d + 1) → ℝ) :
+    extensor a ∨ₑ extensor b = extensor (Fin.append a b) :=
+  ExteriorAlgebra.ιMulti_mul_ιMulti a b
+
+/-- The join is associative (inherited from the ring product; `def:join`). -/
+theorem join_assoc {d : ℕ} (A B C : ExteriorAlgebra ℝ (Fin (d + 1) → ℝ)) :
+    (A ∨ₑ B) ∨ₑ C = A ∨ₑ (B ∨ₑ C) :=
+  mul_assoc A B C
 
 end CombinatorialRigidity.Molecular

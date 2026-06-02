@@ -89,6 +89,17 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   *next* `inv web` (because `print.bbl` never got generated and
   copied to `src/web.bbl`); fix the section title and re-run `inv
   bp` then `inv web`.
+- **Unicode letters in math mode break `inv bp` (xelatex).** A raw
+  Unicode glyph in a math expression — e.g. pasting a Lean identifier
+  like `ιMulti` into `$\mathrm{ι Multi}$` — Emergency-stops the run with
+  *"Missing character: There is no ι (U+03B9) in font
+  [lmroman10-regular]"*. The `lmroman` math font has no Greek-letter
+  glyphs at those codepoints. `inv web` (plastex) tolerates the same
+  glyph, so this only surfaces on the PDF pass. Fix: don't typeset Lean
+  identifiers in prose at all (the `\lean{}` pin already links them);
+  if you genuinely need the symbol, use its TeX command (`\iota`, not
+  `ι`). Same failure mode and cascade as the math-in-titles entry above
+  (a failed `inv bp` leaves the next `inv web` with no `print.bbl`).
 - **No `.md` interference.** plastex parses only what `web.tex`
   `\input{}`s. xelatex parses only what `print.tex` `\input{}`s.
   Adding `.md` files anywhere under `blueprint/` is safe.

@@ -1,6 +1,7 @@
 # Phase 17 — Grassmann–Cayley extensor algebra; Lemma 2.1 (work log)
 
-**Status:** in progress (opening commit; chapter dep-graph is all red).
+**Status:** in progress (§2.1 symbolic layer landed: homogeneous coords,
+affine-indep bridge, extensor, join green; Plücker / `C(·)` / Lemma 2.1 red).
 
 This phase opens the **molecular-conjecture program** (Phases 17–26).
 The program-level plan — target, source, five-strata architecture,
@@ -10,18 +11,35 @@ Phase-17 work log only.
 
 ## Current state
 
-Phase 17 is open and the **first Lean has landed**:
-`CombinatorialRigidity/Molecular/Extensor.lean` ships the two leaf-most
-§2.1 nodes — `homogenize` (`def:homogeneous-coords`, the `p ↦ (p,1)`
-coordinatization via `Fin.snoc p 1`) and the affine-independence bridge
-(`lem:affine-indep-iff`): both the linear-independence form
-(`affineIndependent_iff_linearIndependent_homogenize`) and the
-top-extensor / determinant form
-(`affineIndependent_fin_iff_det_homogenize`). Both blueprint nodes are
-now green. The forward-mode chapter `blueprint/src/chapter/molecular.tex`
-and the user-facing status surfaces remain in place. The remaining §2.1
-dep-graph (extensor, join, Plücker coords, `C(·)`, Lemma 2.1) is still
-red.
+Phase 17 is open and the **symbolic extensor layer has landed** on top
+of the homogeneous-coordinate bridge. `CombinatorialRigidity/Molecular/
+Extensor.lean` now ships, in §2.1 dependency order:
+- `homogenize` (`def:homogeneous-coords`) + the affine-independence
+  bridge (`lem:affine-indep-iff`, both the linear-independence form
+  `affineIndependent_iff_linearIndependent_homogenize` and the
+  determinant form `affineIndependent_fin_iff_det_homogenize`);
+- `extensor` (`def:extensor`) — `j`-extensors as
+  `ExteriorAlgebra.ιMulti ℝ j v` on mathlib's
+  `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`, with `extensor_mem_exteriorPower`
+  (lands in `⋀[ℝ]^j`), `extensor_eq_zero_of_eq` /
+  `extensor_eq_zero_of_not_injective` (alternating / vanishes-on-repeats
+  — the load-bearing Lemma 2.1 fact);
+- `join` (`def:join`) — the join `A ∨ₑ B := A * B` (scoped `∨ₑ`), with
+  `join_extensor` (`extensor a ∨ₑ extensor b = extensor (Fin.append a b)`
+  via `ιMulti_mul_ιMulti`) and `join_assoc`.
+
+All four blueprint nodes (`def:homogeneous-coords`, `lem:affine-indep-iff`,
+`def:extensor`, `def:join`) are green. The remaining §2.1 dep-graph
+(Plücker coords, `C(·)`, Lemma 2.1) is still red.
+
+**mathlib `ExteriorAlgebra` coverage question (Blockers) is settled:**
+mathlib's `Mathlib.LinearAlgebra.ExteriorPower.Basic` supplies everything
+needed — graded pieces `⋀[ℝ]^j`, the alternating multilinear generator
+`ExteriorAlgebra.ιMulti`, the join as `*` (`ιMulti_mul_ιMulti`), and the
+vanishes-on-repeats facts. The symbolic layer is a thin wrapper; no new
+exterior-algebra infrastructure required, so the symbolic-vs-coordinatized
+depth stays shallow (risk register item 1 resolved in favour of "shallow,
+reuse mathlib").
 
 ## Scope (Phase 17 only)
 
@@ -63,10 +81,12 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
       and the `d+1`-point top-extensor/determinant form
       (`affineIndependent_fin_iff_det_homogenize`). The join-nonvanishing
       restatement awaits `def:join` (still red).
-- [ ] `def:extensor` — `j`-extensors as decomposable elements of
-      `⋀ʲ ℝ^(d+1)` (symbolic layer on mathlib `ExteriorAlgebra`).
-- [ ] `def:join` — the join `∨` (exterior product / its dual), with
-      alternating / vanishes-on-repeats.
+- [x] `def:extensor` — `j`-extensors as decomposable elements of
+      `⋀ʲ ℝ^(d+1)` (`extensor`, on mathlib `ExteriorAlgebra.ιMulti`),
+      with `extensor_mem_exteriorPower` + the vanishes-on-repeats facts.
+- [x] `def:join` — the join `∨ₑ` (exterior product `*`), with
+      `join_extensor` (`Fin.append` concatenation) + `join_assoc`;
+      alternating / vanishes-on-repeats inherited via `def:extensor`.
 - [ ] `def:plucker-coords` — coordinatized Plücker vector of `j×j`
       minors with KT's sign `(−1)^(1+Σ iⱼ)`; the symbolic ↔ coordinate
       bridge.
@@ -100,39 +120,40 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 
 ## Blockers / open questions
 
-- **mathlib coverage of `ExteriorAlgebra`.** mathlib has
-  `ExteriorAlgebra` / `⋀[R] M` and the universal property, but not the
-  Plücker/extensor coordinatization nor `C(·)`. Confirm what's reusable
-  (graded pieces `⋀ʲ`, decomposability, the determinant ↔ top-degree
-  pairing) before committing the symbolic-layer carrier. Upstream-
-  eligible facts go under `CombinatorialRigidity/Mathlib/`.
-- **Symbolic vs coordinatized depth** — risk register item 1 in
-  `notes/MolecularConjecture.md`. Build the symbolic layer but don't
-  over-build past what Lemma 2.1's proof and the Phase-18/22/23
-  consumers need.
+- **mathlib coverage of `ExteriorAlgebra` — RESOLVED.** Confirmed
+  `Mathlib.LinearAlgebra.ExteriorPower.Basic` supplies the graded pieces
+  `⋀[ℝ]^j` (`exteriorPower`), the decomposable generator
+  `ExteriorAlgebra.ιMulti` (an `AlternatingMap`), the join as the ring
+  product (`ιMulti_mul_ιMulti`), and vanishes-on-repeats
+  (`ιMulti_eq_zero_of_not_inj`, `AlternatingMap.map_eq_zero_of_eq`). The
+  symbolic carrier is `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`. No mirror
+  lemmas were needed (the wrappers are one-liners over existing mathlib
+  facts). The remaining gap (Plücker coords, `C(·)`) is genuinely new and
+  is the next §2.1 work, not a mathlib-coverage question.
+- **Symbolic vs coordinatized depth — RESOLVED shallow** (risk register
+  item 1). The symbolic layer is a thin wrapper; build the coordinatized
+  Plücker bridge (`def:plucker-coords`) next so Lemma 2.1 / the
+  Phase-18/22/23 consumers stay concrete, exactly as planned.
 
 ## Hand-off / next phase
 
-Done: `def:homogeneous-coords` + `lem:affine-indep-iff` landed in
-`CombinatorialRigidity/Molecular/Extensor.lean` (both `molecular.tex`
-nodes green). Clean handoff point.
+Done: `def:homogeneous-coords`, `lem:affine-indep-iff`, `def:extensor`,
+`def:join` all landed in `CombinatorialRigidity/Molecular/Extensor.lean`
+(all four `molecular.tex` nodes green; symbolic carrier settled on
+mathlib `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`). Clean handoff point.
 
-Smallest next commit: start the symbolic extensor layer — land
-`def:extensor` (`j`-extensors as decomposable elements of
-`⋀ʲ (Fin (d+1) → ℝ)` on mathlib `ExteriorAlgebra` / `exteriorPower`)
-and `def:join` (the join `∨` = exterior product, with its
-alternating / vanishes-on-repeats facts). **First settle the
-mathlib `ExteriorAlgebra` coverage question** in *Blockers* below:
-confirm `exteriorPower`'s graded-piece API (`⋀[ℝ]^j`), decomposability,
-and the alternating multilinear map into `⋀ʲ` before committing the
-symbolic carrier. The join's alternating/vanishes-on-repeats property
-is the load-bearing fact for Lemma 2.1's proof; if the chosen carrier
-does not give it cheaply, that signals reconsidering the
-symbolic-vs-coordinatized depth (risk register item 1). `def:join`
-once landed also lets `lem:affine-indep-iff`'s join-nonvanishing
-restatement (currently a forward pointer in the blueprint) be tied to
-Lean if desired.
+Smallest next commit: land `def:plucker-coords` — the coordinatized
+Plücker vector of `j×j` minors of an extensor, with KT's sign convention
+`(−1)^(1+Σ iⱼ)` (KT §2.1; carry the sign in the coordinatized bridge, not
+the symbolic layer). This is the symbolic ↔ coordinate bridge that lets
+Lemma 2.1 and the downstream Phase-18/22/23 rank computations operate on
+concrete minor vectors. Likely-needed mathlib API: `Matrix.det` of the
+`j×j` submatrix picked by an increasing index set
+(`Finset.powersetCard`/`Sym`-indexed), tying back to
+`affineIndependent_fin_iff_det_homogenize`'s top-extensor determinant.
+After Plücker: `def:affine-subspace-extensor` (`C(·)`), then the hard
+core `lem:extensor-independence` (Lemma 2.1).
 
-Phase 17 completes when `lem:extensor-independence` (Lemma 2.1) is
-green; that unblocks Phase 18 (panel-hinge rigidity matrix) and is the
+Phase 17 completes when `lem:extensor-independence` (Lemma 2.1) is green;
+that unblocks Phase 18 (panel-hinge rigidity matrix) and is the
 linear-algebra foundation Case III (Phase 22/23) bottoms out on.
