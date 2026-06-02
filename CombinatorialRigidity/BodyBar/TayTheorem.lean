@@ -122,8 +122,6 @@ the map: the `e`-th `rigidityRow` is the functional `m ↦ rigidityMap D m e`, t
 the rows is the range of the map's `dualMap`, and `finrank_range_dualMap_eq_finrank_range`
 identifies the two ranks. -/
 
-variable {α β : Type*}
-
 /-- The `e`-th **row** of the body-bar rigidity matrix at orientation `D`, as a linear
 functional `m ↦ F.rigidityMap D m e` on body motions. The body-bar analogue of
 `SimpleGraph.rigidityRow` (`RigidityMatroid.lean`). -/
@@ -303,7 +301,6 @@ theorem stdFramework_finrank_range [Finite α] [Finite β] {G : Graph α β}
     (j : E(G) → Fin (bodyBarDim n)) (hj : ∀ e : E(G), (e : β) ∈ Fs (j e))
     (D : Graph.orientation G) :
     Module.finrank ℝ (LinearMap.range ((stdFramework G n j).rigidityMap D)) = E(G).ncard := by
-  classical
   haveI : Fintype E(G) := Fintype.ofFinite _
   haveI : Fintype E((stdFramework G n j).graph) := Fintype.ofFinite _
   have hLI := stdFramework_rigidityRow_linearIndependent hcover hdisj hacyc j hj D
@@ -445,7 +442,6 @@ theorem finrank_rigidityRow_span_le [Finite α] [Finite β] (F : BodyBarFramewor
     (D : Graph.orientation F.graph) (E' : Set E(F.graph)) :
     Module.finrank ℝ (span ℝ (F.rigidityRow D '' E')) ≤ bodyBarDim n * F.graph.cycleMatroid.rk
       (Subtype.val '' E') := by
-  classical
   haveI : Fintype α := Fintype.ofFinite α
   letI : DecidableEq α := Classical.decEq α
   letI : DecidablePred (· ∈ E(F.graph)) := Classical.decPred _
@@ -505,7 +501,6 @@ theorem exists_isIndependent_of_isSparse [Finite α] [Finite β] {G : Graph α �
     (hsparse : G.IsSparse (bodyBarDim n) (bodyBarDim n)) :
     ∃ (F : BodyBarFramework n α β) (_ : F.graph = G) (D : Graph.orientation F.graph),
       F.IsIndependent D := by
-  classical
   obtain ⟨Fs, hcover, hdisj, hacyc⟩ := tutte_nash_williams.mpr hsparse
   -- Choose the forest index `j e` of each bar from the cover `⋃ i, Fs i = E(G)`.
   have hmem : ∀ e : E(G), ∃ i, (e : β) ∈ Fs i := fun e => by
@@ -547,7 +542,6 @@ spanning family of `#rows` rows is a basis, hence linearly independent. -/
 theorem rigidityRow_linearIndependent [Finite α] [Finite β] {F : BodyBarFramework n α β}
     {D : Graph.orientation F.graph} (hindep : F.IsIndependent D) :
     LinearIndependent ℝ (F.rigidityRow D) := by
-  classical
   haveI : Fintype E(F.graph) := Fintype.ofFinite _
   rw [linearIndependent_iff_card_eq_finrank_span, Set.finrank, span_range_rigidityRow,
     LinearMap.finrank_range_dualMap_eq_finrank_range, hindep, ← Nat.card_coe_set_eq,
@@ -566,7 +560,6 @@ bound `cycleMatroid_rk_add_one_le_spanningVerts_ncard` gives `r(E') + 1 ≤ |V'|
 theorem isSparse_of_isIndependent [Finite α] [Finite β] {F : BodyBarFramework n α β}
     {D : Graph.orientation F.graph} (hindep : F.IsIndependent D) :
     F.graph.IsSparse (bodyBarDim n) (bodyBarDim n) := by
-  classical
   haveI : Fintype E(F.graph) := Fintype.ofFinite _
   have hLI := rigidityRow_linearIndependent hindep
   intro E' hE'G hne

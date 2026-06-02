@@ -1,6 +1,6 @@
 # Phase 15 cleanup round (work log)
 
-**Status:** in progress (A landed; B/C/D remain).
+**Status:** in progress (A landed; B1+B6 landed; B2–B5/B7 no-op confirms + C/D remain).
 
 Between-phases cleanup round, run after Phase 15 (body-bar Tay theorem,
 existence form) closed in `fa4cfc3` and before Phase 16 (body-hinge /
@@ -22,10 +22,19 @@ lands") — a forward-mode to-do snapshot left over from when the chapter
 opened, now false (Phases 13–15 all complete, every node green).
 Reworded to "All three phases are complete: every node below is
 formalized (green) …". Doc-only blueprint edit; no `\lean{}` pin touched,
-so `checkdecls` not required; `inv web` builds clean. No Lean code
-touched. B/C/D remain; all sweep findings are in the task list below, and
-a fresh session can resume from this log alone. The smallest concrete
-next commit is named in *Hand-off / next phase*.
+so `checkdecls` not required; `inv web` builds clean.
+
+B1+B6 landed (this commit, the one substantive B-sweep finding):
+strip-build sweep of the 9 `classical` sites found 4 load-bearing
+(kept) and **5 stray** (`stdFramework_finrank_range`,
+`finrank_rigidityRow_span_le`, `exists_isIndependent_of_isSparse`,
+`rigidityRow_linearIndependent`, `isSparse_of_isIndependent`) — dropped
+all 5; plus B6 dropped the redundant L124 `variable {α β : Type*}`
+re-bind. Build + lint warning-clean. The remaining B items (B2 `Fintype`
+bridges, B3 `nolint`, B4 `noncomputable`, B5 `change`, B7 zero-hit
+greps) are expected no-op confirms and ride the next commit as a batch;
+then C → D. A fresh session can resume from this log alone; the smallest
+concrete next commit is named in *Hand-off / next phase*.
 
 ## Scope
 
@@ -100,14 +109,24 @@ mirror-directory leg of the usual sweep is empty.
 
 ### B. Code-smell sweep (greps run at round open)
 
-- [ ] B1 — `classical` invocations (9 sites, all `TayTheorem.lean`:
-  L146, 197, 256, 305, 423, 447, 507, 549, 568). For each: is
-  `[DecidableEq α]` / `[DecidablePred (· ∈ E(G))]` a cleaner signature
-  boundary, or is the `classical` load-bearing (def-unfold or
-  statement-level instance needed for `Finset`/`Fintype` ops)? Expect
-  most forced per `DESIGN.md` *Typeclass shape* + the Phase-14-cleanup
-  precedent; verify by a strip build that each is genuinely needed
-  (Phase-14-cleanup B2 found 3 stray `classical`s this way).
+- [x] B1 — `classical` invocations (9 sites). **Strip-build sweep
+  (Phase-14-cleanup B2 method): 4 load-bearing, 5 stray (dropped).**
+  Commenting all 9 out and building isolated the load-bearing ones by
+  "failed to synthesize instance" errors: `span_range_rigidityRow`
+  (the `Pi.basisFun … dualBasis` needs `DecidableEq E(F.graph)`),
+  `blockPairing_injective` (the `if x' = x then … else 0` test motion),
+  `stdFramework_rigidityRow_linearIndependent`, and
+  `finrank_realBlockPiSpanOn` — these 4 keep their `classical`.
+  Re-stripping only the remaining 5 (`stdFramework_finrank_range`,
+  `finrank_rigidityRow_span_le`, `exists_isIndependent_of_isSparse`,
+  `rigidityRow_linearIndependent`, `isSparse_of_isIndependent`) built
+  warning-clean: those 5 `classical`s were **stray** — each proof's
+  decidability needs are already met by its `haveI : Fintype … :=
+  Fintype.ofFinite _` bridges plus the explicit `letI : DecidableEq α`
+  / `letI : DecidablePred …` (in `finrank_rigidityRow_span_le`), or
+  aren't needed at all. Dropped all 5. Substantive change → own commit
+  (not folded with the no-op confirms). Mirrors Phase-14-cleanup B2
+  (which found 3 stray `classical`s the same way).
 - [ ] B2 — `haveI : Fintype … := Fintype.ofFinite _` bridges (8 sites,
   all `TayTheorem.lean`: L257, 306, 307, 424, 448, 550, 569, 574). These
   are the `[Finite] → Fintype` inline bridge the `DESIGN.md` *Vertex
@@ -140,13 +159,13 @@ mirror-directory leg of the usual sweep is empty.
   replace the `change`, or is it the accepted predicate-unfold idiom
   (matching the `IsLaman`/`IsTight` precedent)? Likely accepted-idiom
   no-op, but record the disposition.
-- [ ] B6 — duplicate `variable {α β : Type*}` declaration: `TayTheorem.lean`
+- [x] B6 — duplicate `variable {α β : Type*}` declaration: `TayTheorem.lean`
   L58 (`variable {α β : Type*} {n : ℕ}`) and again L124 (`variable {α β :
-  Type*}`). The L124 redeclaration (inside the same `namespace
-  BodyBarFramework`) shadows L58's `α β` redundantly. Drop the redundant
-  L124 binder if it's genuinely a no-op re-bind (verify the block between
-  doesn't `clear`/rescope `α β`); a small tidy. *(Non-grep-target item,
-  surfaced during the B sweep.)*
+  Type*}`). **Dropped the L124 re-bind.** Verified no `clear`/rescope of
+  `α β` between L58 and L124 (only the three `stdFramework*` decls + the
+  block-rank docstring); dropping L124 leaves `α β n` all from L58.
+  Build + lint clean. Folded into the B1 commit (both are real edits in
+  the same file / same sweep, neither a no-op confirm).
 - [ ] B7 — no-op confirm: 3+-arg single-step `rw` chains and `show … from
   rfl` both came back **clean** (zero hits) on both files at round open.
   Record as no-op; no task beyond this note.
@@ -254,30 +273,53 @@ mostly no-op confirming forced structural shape):
   `isSparse_of_isIndependent`) and the full iff (`tay_witness`). Doc-only,
   build green + warning-clean. No friction (no Lean code touched).
 
+- **B1 (5 stray `classical`s dropped).** Strip-build sweep over the 9
+  sites: 4 load-bearing (`span_range_rigidityRow`,
+  `blockPairing_injective`, `stdFramework_rigidityRow_linearIndependent`,
+  `finrank_realBlockPiSpanOn`), 5 stray. The stray proofs' decidability
+  needs are already met by their `Fintype.ofFinite _` bridges / explicit
+  `letI`s, so `classical` was dead. Same disposition + method as
+  Phase-14-cleanup B2. No friction (mechanical removal, build/lint clean).
+- **B6 (redundant `variable` re-bind dropped).** The second `variable {α
+  β : Type*}` (L124, after the block-rank docstring) re-bound `α β`
+  already in scope from L58's `variable {α β : Type*} {n : ℕ}`; no
+  intervening `clear`/rescope, so a no-op tidy. Folded with B1.
+
 ## Blockers / open questions
 
 <none at round open>
 
 ## Hand-off / next phase
 
-**A complete (A1 + both A2 legs landed).** A1: all 7 Phase-15 `\lean{}`
-nodes resolve + match (no-op); the `def:rigidity-map-body-bar` motion-domain
-candidate kept as a math-reading gloss. A2 blueprint leg: the stale
-"currently red / to-do list" chapter-intro snapshot in `body-bar.tex`
-reworded to reflect the closed (all-green) phase. Doc-only blueprint edit;
-`inv web` clean; no Lean touched.
+**A complete; B1+B6 landed** (the one substantive B-sweep finding —
+5 stray `classical`s + the redundant `variable` re-bind dropped; build +
+lint warning-clean).
 
-**Smallest concrete next commit:** start **B (code-smell sweep)** at **B1**
-— the 9 `classical` sites in `TayTheorem.lean` (L146, 197, 256, 305, 423,
-447, 507, 549, 568): for each, confirm the `classical` is load-bearing
-(def-unfold or statement-level `Finset`/`Fintype` instance) vs. a cleaner
-`[DecidableEq α]` signature boundary; verify by a strip build per the
-Phase-14-cleanup B2 precedent. B1–B7 are expected mostly no-op confirms and
-may ride **one** commit together per the coordinator no-op-batch rule
-(record each disposition in the work log); B6 (drop the redundant L124
-`variable {α β : Type*}` re-bind) is the one tiny code change — keep it its
-own commit if it turns out non-trivial, else fold it in. Then C → D in
-order; D3 (the `stdFramework_rigidityRow_eq` derivation) is the one
-substantive refactor candidate and should land late, as its own commit,
-with a try-and-record fallback if the `Pi.single` reshape fights the
-elaborator.
+**Smallest concrete next commit:** the **B2–B5 + B7 no-op confirm
+batch** — one commit recording each disposition in the work log (per the
+coordinator no-op-batch rule), no code change expected:
+- **B2** — 8 `haveI : Fintype … := Fintype.ofFinite _` bridges: confirm
+  each is forced (a body step needs `Finset.univ` / `Fintype.card`) and
+  that the repeated `Fintype E(F.graph)` bridge isn't a single-helper
+  candidate. *(NB the B1 commit removed the `classical` lines above
+  several of these; the bridges themselves stay — re-grep for current
+  line numbers.)*
+- **B3** — `@[nolint unusedArguments]` on `IsInfinitesimallyRigid`: the
+  6-line justification matches the bar-joint `Framework.lean` precedent
+  verbatim (semantic `[Finite α]` contract guard +
+  `unusedFintypeInType`-migration note). **Already verified this round:**
+  no-op.
+- **B4** — 6 `noncomputable def` sites; check `blockPairing` specifically
+  (built from explicit `toFun`/`map_add'`/`map_smul'` over `ℝ`, no
+  `Classical`/`span` ingredient — is its `noncomputable` forced or
+  accidental, cf. Phase-14-cleanup B3's `constPiSpanEquiv`?).
+- **B5** — the 1 `change` site in `exists_isIsostatic_of_isTight`
+  (unfold `IsInfinitesimallyRigid`): accepted predicate-unfold idiom vs.
+  a project-internal unfold lemma. Likely accepted-idiom no-op.
+- **B7** — record the zero-hit greps (3+-arg `rw` chains; `show … from
+  rfl`) as no-op.
+
+Then C → D in order; D3 (the `stdFramework_rigidityRow_eq` derivation
+from `rigidityRow_eq`) is the one substantive refactor candidate and
+should land late, as its own commit, with a try-and-record fallback if
+the `Pi.single` reshape fights the elaborator.
