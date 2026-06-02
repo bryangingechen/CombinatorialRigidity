@@ -10,15 +10,18 @@ Phase-17 work log only.
 
 ## Current state
 
-Phase 17 is open: `notes/Phase17.md` (this file), the forward-mode
-chapter `blueprint/src/chapter/molecular.tex` (red dep-graph = to-do
-list), and the user-facing status surfaces are all in place. **No Lean
-has landed yet** — `CombinatorialRigidity/Molecular/` does not exist.
-The next concrete commit is the leaf-most red node: the homogeneous
-coordinatization `p ↦ (p, 1)` and the affine-independence ↔ nonzero
-top-extensor fact (`def:homogeneous-coords`, `lem:affine-indep-iff`),
-which has no Phase-17 dependencies and is needed by everything else in
-§2.1.
+Phase 17 is open and the **first Lean has landed**:
+`CombinatorialRigidity/Molecular/Extensor.lean` ships the two leaf-most
+§2.1 nodes — `homogenize` (`def:homogeneous-coords`, the `p ↦ (p,1)`
+coordinatization via `Fin.snoc p 1`) and the affine-independence bridge
+(`lem:affine-indep-iff`): both the linear-independence form
+(`affineIndependent_iff_linearIndependent_homogenize`) and the
+top-extensor / determinant form
+(`affineIndependent_fin_iff_det_homogenize`). Both blueprint nodes are
+now green. The forward-mode chapter `blueprint/src/chapter/molecular.tex`
+and the user-facing status surfaces remain in place. The remaining §2.1
+dep-graph (extensor, join, Plücker coords, `C(·)`, Lemma 2.1) is still
+red.
 
 ## Scope (Phase 17 only)
 
@@ -53,9 +56,13 @@ Forward-mode: the authoritative dep-graph is
 `blueprint/src/chapter/molecular.tex`. This list mirrors its §2.1 nodes
 in intended dependency order; flip each `\leanok` as the Lean lands.
 
-- [ ] `def:homogeneous-coords` — homogeneous coordinatization `p ↦ (p,1)`.
-- [ ] `lem:affine-indep-iff` — `{pᵢ}` affinely independent ⇔ the top
-      extensor `p̄₁ ∨ ⋯ ∨ p̄_k ≠ 0` (top extensor = full determinant).
+- [x] `def:homogeneous-coords` — homogeneous coordinatization `p ↦ (p,1)`
+      (`homogenize`, `Fin.snoc p 1`).
+- [x] `lem:affine-indep-iff` — `{pᵢ}` affinely independent ⇔ homogenized
+      family lin. indep. (`affineIndependent_iff_linearIndependent_homogenize`),
+      and the `d+1`-point top-extensor/determinant form
+      (`affineIndependent_fin_iff_det_homogenize`). The join-nonvanishing
+      restatement awaits `def:join` (still red).
 - [ ] `def:extensor` — `j`-extensors as decomposable elements of
       `⋀ʲ ℝ^(d+1)` (symbolic layer on mathlib `ExteriorAlgebra`).
 - [ ] `def:join` — the join `∨` (exterior product / its dual), with
@@ -74,7 +81,22 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-- (none yet — opening commit)
+- **Carrier (decided on first Lean).** Point space `Fin d → ℝ`,
+  homogenizing to `Fin (d+1) → ℝ` via `Fin.snoc p 1`. Plain coordinate
+  tuples (not `EuclideanSpace`) are the natural carrier for the
+  exterior power `⋀ʲ (Fin (d+1) → ℝ)` and the `j×j`-minor Plücker
+  vectors downstream. Phase 4's `Framework V d` uses
+  `EuclideanSpace ℝ (Fin d)`; the two agree up to the canonical
+  isometry, so Phase 18/24 reuse stays frictionless (noted in the file
+  docstring).
+- **`lem:affine-indep-iff` proof.** No join/extensor needed yet:
+  mathlib's `affineIndependent_iff` (the `V → V` self-affine-space form:
+  affine indep ⇔ every `w` with `∑w=0`, `∑ w•p=0` is zero) is exactly
+  the homogenized linear-independence condition — the last homogeneous
+  coordinate carries `∑w=0`, the first `d` carry `∑ w•p=0`. Determinant
+  form via `Matrix.linearIndependent_rows_iff_isUnit` +
+  `isUnit_iff_isUnit_det` + `isUnit_iff_ne_zero`. The join-nonvanishing
+  reformulation in the blueprint is now a forward pointer to `def:join`.
 
 ## Blockers / open questions
 
@@ -91,14 +113,25 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 
 ## Hand-off / next phase
 
-Smallest next commit: land `def:homogeneous-coords` +
-`lem:affine-indep-iff` in a new `CombinatorialRigidity/Molecular/Extensor.lean`
-(or similar), flipping `\lean{}` + `\leanok` on those two
-`molecular.tex` nodes in the same commit. These are the leaf-most red
-nodes (no Phase-17 dependencies, both feed Lemma 2.1). Assess whether
-the symbolic extensor layer (`def:extensor`, `def:join`) is one
-session's work or several once `lem:affine-indep-iff` closes and the
-mathlib `ExteriorAlgebra` coverage question above is settled.
+Done: `def:homogeneous-coords` + `lem:affine-indep-iff` landed in
+`CombinatorialRigidity/Molecular/Extensor.lean` (both `molecular.tex`
+nodes green). Clean handoff point.
+
+Smallest next commit: start the symbolic extensor layer — land
+`def:extensor` (`j`-extensors as decomposable elements of
+`⋀ʲ (Fin (d+1) → ℝ)` on mathlib `ExteriorAlgebra` / `exteriorPower`)
+and `def:join` (the join `∨` = exterior product, with its
+alternating / vanishes-on-repeats facts). **First settle the
+mathlib `ExteriorAlgebra` coverage question** in *Blockers* below:
+confirm `exteriorPower`'s graded-piece API (`⋀[ℝ]^j`), decomposability,
+and the alternating multilinear map into `⋀ʲ` before committing the
+symbolic carrier. The join's alternating/vanishes-on-repeats property
+is the load-bearing fact for Lemma 2.1's proof; if the chosen carrier
+does not give it cheaply, that signals reconsidering the
+symbolic-vs-coordinatized depth (risk register item 1). `def:join`
+once landed also lets `lem:affine-indep-iff`'s join-nonvanishing
+restatement (currently a forward pointer in the blueprint) be tied to
+Lean if desired.
 
 Phase 17 completes when `lem:extensor-independence` (Lemma 2.1) is
 green; that unblocks Phase 18 (panel-hinge rigidity matrix) and is the

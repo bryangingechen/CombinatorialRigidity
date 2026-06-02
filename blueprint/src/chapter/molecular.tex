@@ -40,6 +40,8 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
 
 \begin{definition}[Homogeneous coordinatization]
   \label{def:homogeneous-coords}
+  \lean{CombinatorialRigidity.Molecular.homogenize}
+  \leanok
   For a point $p \in \R^{d}$ write $\bar p = (p, 1) \in \R^{d+1}$ for its
   homogeneous coordinate vector. A finite family $p_1, \dots, p_k$ of
   points of $\R^{d}$ is \emph{affinely independent} when the homogenized
@@ -47,23 +49,35 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
   $\R^{d+1}$.
 \end{definition}
 
-\begin{lemma}[Affine independence via the top extensor]
+\begin{lemma}[Affine independence via homogenization and the top extensor]
   \label{lem:affine-indep-iff}
-  \uses{def:homogeneous-coords, def:extensor, def:join}
+  \lean{CombinatorialRigidity.Molecular.affineIndependent_iff_linearIndependent_homogenize,
+    CombinatorialRigidity.Molecular.affineIndependent_fin_iff_det_homogenize}
+  \leanok
+  \uses{def:homogeneous-coords}
   Points $p_1, \dots, p_k \in \R^{d}$ are affinely independent if and
-  only if the join $\bar p_1 \vee \cdots \vee \bar p_k$ is nonzero. In
-  particular $d+1$ points are affinely independent iff their top extensor
+  only if the homogenized family $\bar p_1, \dots, \bar p_k$ is linearly
+  independent in $\R^{d+1}$ --- equivalently, once the join is in hand
+  (\cref{def:join}), if and only if the join
+  $\bar p_1 \vee \cdots \vee \bar p_k$ is nonzero. In particular $d+1$
+  points are affinely independent iff their top extensor
   $\bar p_1 \vee \cdots \vee \bar p_{d+1}$ --- the determinant of the
   $(d+1)\times(d+1)$ matrix of their homogeneous coordinates --- is
   nonzero.
 \end{lemma}
 \begin{proof}
-  The join of vectors in $\R^{d+1}$ is their image in
-  $\bigwedge^{k} \R^{d+1}$, which is nonzero exactly when the vectors are
-  linearly independent. For $k = d+1$ the top exterior power is
-  one-dimensional and the coordinate of the join is the determinant of
-  the homogeneous coordinate matrix; nonvanishing of that determinant is
-  affine independence.
+  \leanok
+  Affine independence of $p_1, \dots, p_k$ means every coefficient
+  family $w$ with $\sum_i w_i = 0$ and $\sum_i w_i p_i = 0$ vanishes; a
+  vanishing combination $\sum_i w_i \bar p_i = 0$ of the homogenized
+  vectors is exactly such a family (the last coordinate gives
+  $\sum_i w_i = 0$, the first $d$ give $\sum_i w_i p_i = 0$), so affine
+  independence is linear independence of the $\bar p_i$. Once the join is
+  available it is the image in $\bigwedge^{k} \R^{d+1}$, nonzero exactly
+  when the vectors are linearly independent. For $k = d+1$ the top
+  exterior power is one-dimensional and the coordinate of the join is the
+  determinant of the homogeneous coordinate matrix; that determinant is
+  nonzero iff the rows are linearly independent.
 \end{proof}
 
 \subsection{Extensors, the join, and Plücker coordinates}

@@ -570,6 +570,28 @@ housekeeping pass once their resolution is fully indexed.
   is denser than it looks.
 - **Lifted to:** TACTICS-GOLF § 3 *Search mathlib before mirroring*.
 
+### [resolved] No mathlib bridge `AffineIndependent ℝ p ↔ LinearIndependent ℝ (p̄ = (p,1))`
+- **Where it bit:** Phase 17, `lem:affine-indep-iff` in
+  `Molecular/Extensor.lean`. KT's homogeneous coordinatization
+  `p ↦ (p,1)` needs "affinely independent ⇔ homogenized family linearly
+  independent". mathlib has the *vsub* form
+  (`affineIndependent_iff_linearIndependent_vsub`) but no `(p,1)`-snoc
+  homogenization bridge (searched: no `Homogenize`/`snoc`+`AffineIndependent`).
+- **Resolution:** no mirror needed — `affineIndependent_iff` (the
+  `V → V` self-affine-space characterization: affine indep ⇔ every `w`
+  with `∑w=0` and `∑ w•p=0` is zero) *is* the homogenized
+  linear-independence condition once you `linearIndependent_iff'` the
+  RHS: the last homogeneous coordinate of `∑ w•p̄ = 0` is `∑w=0`, the
+  first `d` are `∑ w•p=0`. Split coordinatewise via
+  `Fin.lastCases` / `homogenize_last` / `homogenize_castSucc`. The
+  `def`-bridge `homogenize := Fin.snoc p 1` is project-specific (KT
+  coordinatization), so the lemma stays project-internal in
+  `Molecular/`, not mirrored. Determinant form on top via
+  `Matrix.linearIndependent_rows_iff_isUnit` + `isUnit_iff_isUnit_det`
+  + `isUnit_iff_ne_zero` (closing the `Matrix.of (_.row)` vs
+  `Matrix.of _` residual with a bare `rfl`, both being defeq through
+  `Matrix.row`/`Matrix.of` = identity).
+
 ### [open] `AffineSubspace.nonempty_of_affineSpan_eq_top` takes `(k V P)` explicit
 
 - **Where it bit:** `trivialMotions_three_le_finrank_of_affinelySpanning_two`
