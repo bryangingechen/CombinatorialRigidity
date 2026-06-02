@@ -19,8 +19,8 @@ instruction alignment → D (process), file split → A (judgment call).
 
 ## Current state
 
-**Update (D3 landed):** Buckets A/B/C closed; D1 + D2 + D3 done.
-Remaining: **P1/P2** (instruction tweaks, next), **J1** (judgment
+**Update (P1 landed):** Buckets A/B/C closed; D1 + D2 + D3 done; P1
+done. Remaining: **P2** (instruction tweak, next), **J1** (judgment
 call). See *Hand-off*.
 
 The Phase-18 surface is the single new Lean file
@@ -168,12 +168,18 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ### Process / instruction alignment (lands in D commits)
 
-- [ ] **P1** — `blueprint/CLAUDE.md`: name the new anti-pattern in
-  *Proof verbosity* / *What to include vs skip* — "basis-free /
-  coordinatization-deferral narration is changelog, not math; one clause
-  max." The existing guidance is framed around structural-edit reshape
-  history and a forward-mode-new-chapter subagent didn't map Phase 18's
-  failure mode onto it.
+- [x] **P1** — done. Added an **"Anti-pattern: basis-free /
+  coordinatization-deferral narration"** paragraph to `blueprint/CLAUDE.md`
+  *Proof verbosity* (after the existing failure-mode paragraph, before
+  *Static checks*). Framed as the mirror failure of the *Note*-the-cost
+  case: representation-choice narration ("formalized basis-free",
+  "abstract graded piece rather than a basis") is changelog, not math —
+  one clause max and only when the modelling choice is load-bearing for a
+  later node, else cut. Names the accretion mechanism (per-commit subagent
+  narrates its own modelling choice) and the four Phase-18 §2.2–2.4 sites
+  A2 collapsed. Chose *Proof verbosity* over *What to include vs skip* — it
+  is about prose content of a node that *is* included, not about
+  inclusion. Doc-only; `verify.sh` not run (no `.tex`/`\lean{}` touched).
 - [ ] **P2** — root `CLAUDE.md` *When this commit closes a phase*: add a
   step — "re-read each new/edited blueprint chapter end-to-end as a
   domain mathematician and collapse accumulated per-commit formalization
@@ -214,16 +220,15 @@ holds, B3 both multi-arg `rw` sites genuine multi-step, C1
 `screwSpace_finrank` 4-line no-extract gate) — all confirm-only, no Lean
 edit, build re-verified warning-clean.
 
-D3 landed (FRICTION re-skim: the buried RingQuot-subtype-op rescue
-lesson lifted to TACTICS-QUIRKS § 26, the resolved case study migrated to
-`FRICTION-archive.md`, FRICTION.md Open entry struck + Phase18.md pointers
-re-aimed). Next concrete commit: **P1** (`blueprint/CLAUDE.md`: name the
-basis-free / coordinatization-deferral-narration anti-pattern in *Proof
-verbosity* / *What to include vs skip* — "changelog, not math; one clause
-max"). Then **P2** (root `CLAUDE.md` *When this commit closes a phase*:
-add the "re-read each new/edited blueprint chapter end-to-end as a domain
-mathematician and collapse accumulated per-commit formalization asides"
-step). Then **J1** last (split `molecular.tex`, a judgment call — decide
+D3 + P1 landed (P1: the basis-free / coordinatization-deferral-narration
+anti-pattern is now named in `blueprint/CLAUDE.md` *Proof verbosity*, framed
+as the mirror of the *Note*-the-cost case — representation-choice narration
+is changelog, not math, one clause max). Next concrete commit: **P2** (root
+`CLAUDE.md` *When this commit closes a phase*: add the "re-read each
+new/edited blueprint chapter end-to-end as a domain mathematician and
+collapse accumulated per-commit formalization asides" step — the step that
+would have caught the A2 narration at phase close rather than a round
+later). Then **J1** last (split `molecular.tex`, a judgment call — decide
 or defer to Phase 19's open with rationale). Each fix is its own commit
 per `CLEANUP.md` *Workflow* rule 3. Close the round by flipping the
 ROADMAP row to ✓ and writing the *Hand-off* summary; Phase 19 opens

@@ -296,6 +296,31 @@ that step. A one-clause aside (e.g. *"the formalization builds this
 iso explicitly via a custom `Equiv`-on-`Option`-types"*) keeps the
 math foregrounded while signalling the real cost.
 
+**Anti-pattern: basis-free / coordinatization-deferral narration.**
+The mirror failure of the above is *over*-noting: prose that narrates
+**how the formalization chose to model** an object — "formalized
+basis-free, deferring coordinatization", "we work in the abstract
+graded piece rather than picking a basis", "the Lean keeps this
+coordinate-free and only later identifies it with $\R^D$" — rather
+than what the object *is*. This is **changelog, not math**: it
+records a Lean-modelling decision (basis-free vs coordinatized,
+which representation a later lemma pins down) that a mathematician
+reading the statement does not need and would never write. It tends
+to accrete because each per-commit subagent, having just made that
+modelling choice, narrates it; a chapter written fast across several
+commits then carries one such aside per node. **One clause max, and
+only when the modelling choice is itself load-bearing for a later
+node** (e.g. a downstream lemma genuinely depends on the basis-free
+form); otherwise cut it entirely and state the object directly. This
+is distinct from the *Note* case above: there the aside flags a
+real formalization *cost* the prose would otherwise hide; here the
+aside flags only a *representation choice*, which is invisible to
+the math and belongs in the Lean doc-comment if anywhere. Phase 18's
+`molecular.tex` §2.2–2.4 accumulated four such asides
+(`def:hinge-row-block`, `def:rigidity-matrix`,
+`lem:trivial-motions-rank-bound`, `def:dof-generic`), collapsed in
+the Phase-18 cleanup round; don't reintroduce them.
+
 ## Static checks before commit
 
 These are the **always-on per-commit gates** for any commit that
