@@ -116,20 +116,31 @@ the per-set partition machinery and the count equivalence, all generic over `Mat
   if `∀ Y ⊆ E(G), |Y| ≤ k·r(Y)` (the `Union_pow_indep_iff_count` condition) then `G.IsSparse k k`.
   The `+1` rank bound multiplies into the `+k` slack; pure `omega`/`ring`/`gcongr` glue.
 
-**Next concrete commit — reverse direction + compose into `thm:unionPow-cycle-indep-iff-sparse`.**
-Two remaining pieces. (1) **Compose the forward direction:** apply
-`isSparse_of_forall_le_cycleMatroid_rk` to `H := G ↾ E'` and bridge `Union_pow_indep_iff_count`
-(`M := G.cycleMatroid`) to it — needs `(G↾E').cycleMatroid.rk Y = G.cycleMatroid.rk Y` for `Y ⊆ E'`
-(via `cycleMatroid_restrict` + `Matroid.rk_restrict`/`restrict_rk_eq`) and
-`(G↾E').spanningVerts Y = G.spanningVerts Y`, yielding `indep ⟹ (G↾E').IsSparse k k`.
-(2) **The hard reverse `(k,k)`-sparse ⟹ count** (the substantive remaining gap): given
-`H.IsSparse k k`, show `∀ Y ⊆ E(H), |Y| ≤ k·r(Y)`. Sparsity gives only `|Y| ≤ k(|spanV Y|−1)`,
-but the count needs `|Y| ≤ k·r(Y) = k(|spanV Y|−c'(Y))`, tighter when `c'(Y) > 1`. **Needs the
+**Forward direction landed (green build), with the rank restriction bridge.**
+`BodyBar/TreePacking.lean` now ships:
+- `Graph.cycleMatroid_rk_restrict_of_subset` (`hE' : E' ⊆ E(G)`, `hY : Y ⊆ E'`):
+  `(G ↾ E').cycleMatroid.rk Y = G.cycleMatroid.rk Y` — the matroid-side restriction bridge, via
+  `cycleMatroid_restrict` (`(G↾E').cycleMatroid = G.cycleMatroid ↾ (E(G) ∩ E')`) +
+  `Matroid.restrict_rk_eq` on `Y ⊆ E(G) ∩ E'`. Internal glue, no blueprint node.
+- `Graph.isSparse_restrict_of_union_pow_indep` (`[DecidableEq β] [Finite α] [Finite β]`): **the
+  forward half** — `(Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E'` with `E' ⊆ E(G)` ⟹
+  `(G ↾ E').IsSparse k k`. Reads `Union_pow_indep_iff_count` (`M := G.cycleMatroid`) into the count
+  condition, then feeds `isSparse_of_forall_le_cycleMatroid_rk` on `G ↾ E'`, translating each
+  per-subset count back to `G` through the rank bridge.
+
+**Next concrete commit — the hard reverse `(k,k)`-sparse ⟹ count.** This is the substantive
+remaining gap and the last piece before `thm:unionPow-cycle-indep-iff-sparse` (the iff) can go
+green. Given `(G ↾ E').IsSparse k k`, show `∀ Y ⊆ E', |Y| ≤ k·r(Y)` (then assemble the iff with the
+forward half + `Union_pow_indep_iff_count`). Sparsity gives only `|Y| ≤ k(|spanV Y|−1)`, but the
+count needs `|Y| ≤ k·r(Y) = k(|spanV Y|−c'(Y))`, tighter when `c'(Y) > 1`. **Needs the
 connected-component decomposition** of `Y` into its component edge-sets `Y_i` (each `c'(Y_i)=1`),
 applying per-component sparsity and summing `|Y| = Σ|Y_i| ≤ k Σ r(Y_i) = k·r(Y)` (rank additive
 over the skew component family). Look at `Matroid.Graphic`'s `components_cycleMatroid_isSkewFamily`
 + `IsSkewFamily.sum_eRk_eq_eRk_iUnion` (used in `eRank_cycleMatroid_add_numberOfComponents`) for the
-rank additivity, and `Graph.Components` / `connPartition` for the `Y`-decomposition.
+rank additivity, and `Graph.Components` / `connPartition` for the `Y`-decomposition. The vertex-side
+restriction bridge `(G↾E').spanningVerts Y = G.spanningVerts Y` (for `Y ⊆ E'`, immediate from
+`restrict_inc`) will be needed here; it was deferred from the forward direction (which didn't use
+it) so it lands with the consumer.
 
 ## Architectural choices made up front
 
@@ -174,8 +185,10 @@ tree-packing nodes as of phase open).
   `adjMap_rk_eq` / `Union_pow_rk_eq`, internal glue). **Easy graphic-side half landed**
   (`Graph.isSparse_of_forall_le_cycleMatroid_rk`: count condition ⟹ `(k,k)`-sparse, via the
   `c'(Y) ≥ 1` rank bound `cycleMatroid_rk_add_one_le_spanningVerts_ncard`, internal glue).
-  Remaining: compose into the forward direction (`G ↾ E'` restriction bridge) + the hard reverse
-  `(k,k)`-sparse ⟹ count via connected-component decomposition.
+  **Forward direction landed** (`Graph.isSparse_restrict_of_union_pow_indep`: union-indep ⟹
+  `(G↾E').IsSparse k k`, via the rank restriction bridge `cycleMatroid_rk_restrict_of_subset` +
+  `Union_pow_indep_iff_count` + the easy half). Remaining: the hard reverse `(k,k)`-sparse ⟹ count
+  via connected-component decomposition, then assemble the iff.
 - [ ] `thm:tutte-nash-williams` — edge-disjoint union of `k` forests ⟺
   `(k,k)`-sparse.
 - [ ] `cor:k-spanning-trees` — under `(k,k)`-tightness the `k` forests

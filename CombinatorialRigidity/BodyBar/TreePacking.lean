@@ -222,4 +222,30 @@ lemma isSparse_of_forall_le_cycleMatroid_rk [Finite α] [Finite β] {G : Graph �
     _ = k * (G.cycleMatroid.rk Y + 1) := by ring
     _ ≤ k * (G.spanningVerts Y).ncard := by gcongr
 
+/-- The rank of a bar set `Y ⊆ E'` is the same in the edge-restricted cycle matroid
+`(G ↾ E').cycleMatroid` as in `G.cycleMatroid`. The matroid-side half of the restriction bridge:
+`(G ↾ E').cycleMatroid = G.cycleMatroid ↾ (E(G) ∩ E')` (`cycleMatroid_restrict`), and restricting a
+matroid leaves the rank of subsets of the restriction ground set unchanged
+(`Matroid.restrict_rk_eq`), so on `Y ⊆ E' ⊆ E(G)` the two ranks agree. -/
+lemma cycleMatroid_rk_restrict_of_subset {G : Graph α β} {E' Y : Set β} (hE' : E' ⊆ E(G))
+    (hY : Y ⊆ E') : (G ↾ E').cycleMatroid.rk Y = G.cycleMatroid.rk Y := by
+  rw [cycleMatroid_restrict, Matroid.restrict_rk_eq G.cycleMatroid (subset_inter (hY.trans hE') hY)]
+
+/-- **Forward direction** of `thm:unionPow-cycle-indep-iff-sparse`: if a bar set `E' ⊆ E(G)` is
+independent in the `k`-fold cycle-matroid union, then the edge-restricted subgraph `G ↾ E'` is
+`(k, k)`-sparse. Reads off the matroid-side count characterization
+(`Matroid.Union_pow_indep_iff_count` with `M := G.cycleMatroid`) — `∀ Y ⊆ E', |Y| ≤ k · r(Y)` — and
+feeds it through the easy graphic half (`isSparse_of_forall_le_cycleMatroid_rk` applied to
+`G ↾ E'`), using the rank restriction bridge (`cycleMatroid_rk_restrict_of_subset`) to translate
+the per-subset count condition from `G ↾ E'` back to `G`. -/
+lemma isSparse_restrict_of_union_pow_indep [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
+    {k : ℕ} {E' : Set β} (hE' : E' ⊆ E(G))
+    (h : (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E') : (G ↾ E').IsSparse k k := by
+  rw [Matroid.Union_pow_indep_iff_count] at h
+  refine isSparse_of_forall_le_cycleMatroid_rk (fun Y hYE ↦ ?_)
+  rw [edgeSet_restrict] at hYE
+  have hYE' : Y ⊆ E' := hYE.trans inter_subset_right
+  rw [cycleMatroid_rk_restrict_of_subset hE' hYE']
+  exact h Y hYE'
+
 end Graph

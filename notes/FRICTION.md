@@ -76,6 +76,20 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [open] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
+- **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in
+  `BodyBar/TreePacking.lean` (Phase 13 forward direction). The lemma
+  *states* `(Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E'`
+  as a hypothesis; `Matroid.Union (Ms : ι → Matroid α)` carries
+  `[DecidableEq α]` (here `α := β`, the edge type), so the type itself
+  fails to elaborate without the instance. A `classical` in the *proof
+  body* does not help — the instance is needed at signature-elaboration
+  time, before the tactic block runs. **Fix:** add `[DecidableEq β]` as
+  an explicit instance binder to any lemma that *mentions*
+  `Matroid.Union`-of-`cycleMatroid` in its statement (we already have
+  `[Finite β]`, which does not imply `DecidableEq`). The reverse
+  direction + the assembled iff will need the same binder.
+
 ### [resolved] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union + L2b-rado + L2b-partition all ported; **Phase 12 complete**, all `matroid-union.tex` nodes green)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
