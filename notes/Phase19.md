@@ -61,6 +61,16 @@ extends to a base `B ⊇ B'` of `M(G̃)` (`Indep.exists_isBase_superset`) with `
 (`IsBasis'.eq_of_subset_indep`); each fiber `ẽ` of `e ∈ E(H) ⊆ E(G)` lies in `E(H̃)`, so
 `G`'s minimality `B ∩ ẽ ≠ ∅` descends to `B' ∩ ẽ = B ∩ ẽ ≠ ∅`. No base-extension friction.
 
+The deficiency-attainment API is now green: `bddAbove_range_partitionDef` (the range of
+`partitionDef` is finite under `[Finite α]`, so the `iSup` is a genuine attained max, not
+junk), `partitionDef_le_deficiency` (the `le_ciSup` half — every partition is a deficiency
+lower bound), and `deficiency_nonneg` (`def(G̃) ≥ 0` for `V(G).Nonempty`, via the trivial
+partition + `partitionDef_le_deficiency`). These are supporting lemmas (no standalone
+blueprint node — the `def ≥ 0` fact already lives in the `def:D-deficiency` prose); they
+de-risk the `iSup` model and are the prerequisite every remaining node needs (the
+`{V', V∖V'}` cut-partition lower bound for `lem:two-edge-conn`, the deficiency side of the
+corank bridge).
+
 Next concrete step: the remaining structural lemmas (KT 3.1/3.4: `lem:two-edge-conn`,
 `lem:circuit-rigid`) and the bridge `thm:def-eq-corank`.
 
@@ -217,10 +227,17 @@ All four definition nodes of `deficiency.tex` are green in `Molecular/Deficiency
 `numParts` / `crossingEdges` / `partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` /
 `Graph.IsMinimalKDof`; `Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`), plus two
 structural lemmas: the restriction identity `matroidMG_restrict_mulTilde`
-(`lem:matroid-restrict-subgraph`) and now the full KT 3.3 node `subgraph_minimality`
-(`lem:subgraph-minimality`).
+(`lem:matroid-restrict-subgraph`) and the full KT 3.3 node `subgraph_minimality`
+(`lem:subgraph-minimality`). The deficiency-attainment API
+(`bddAbove_range_partitionDef` / `partitionDef_le_deficiency` / `deficiency_nonneg`) is
+also in place — the `iSup`-model `deficiency` is now a usable attained max, and "a partition
+witnesses a deficiency lower bound" is one `partitionDef_le_deficiency` call.
 
-The next concrete commit is the remaining structural work, in rough order of likely cost:
+The next concrete commit is the remaining structural work. Likely-cost note: `lem:circuit-rigid`
+concludes `def(H̃) = 0` (rigid), which is awkward to reach from "circuit ⇒ sparse" without
+either the corank bridge or a direct partition argument — so `thm:def-eq-corank` may need to
+land first (it gives `def = corank`, turning a `(D,D)`-tight subgraph directly into `def = 0`).
+In rough order of likely cost:
 - `lem:circuit-rigid` (KT 3.4: the edge set of a circuit `X` of `M(G̃)` spans a rigid
   subgraph `G[V(X)]`; more precisely `X − e` partitions into `D` spanning trees on `V(X)`
   for any `e ∈ X`). Needs a *vertex-induced-subgraph from an edge set* construction — map

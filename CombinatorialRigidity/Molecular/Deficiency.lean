@@ -237,6 +237,34 @@ theorem partitionDef_one (G : Graph α β) (n : ℕ) (a : α) (hne : V(G).Nonemp
   rw [partitionDef, hcross, hparts]
   simp
 
+/-- Under `[Finite α]` the partition-deficiency function `f ↦ def_{\tilde G}(P_f)` ranges
+over a finite set (its domain `α → α` is finite), hence its range is bounded above. This
+is what makes the `iSup`-form `deficiency` a genuine (attained) finite maximum rather than
+the junk value `iSup` returns on an unbounded family; it feeds `le_ciSup` in
+`partitionDef_le_deficiency`. -/
+theorem bddAbove_range_partitionDef [Finite α] (G : Graph α β) (n : ℕ) :
+    BddAbove (Set.range (G.partitionDef n)) :=
+  (Set.finite_range _).bddAbove
+
+/-- Each partition's `D`-deficiency is a lower bound for `def(\tilde G)`: `def_{\tilde G}(P_f)
+≤ def(\tilde G)` for every labeling `f`. This is the `le_ciSup` half of
+`deficiency = ⨆ f, partitionDef n f` and the engine behind every "a partition witnesses a
+deficiency lower bound" step (the trivial one-part partition for `def ≥ 0`, and the
+`{V', V∖V'}` cut partition used by the structural lemmas). -/
+theorem partitionDef_le_deficiency [Finite α] (G : Graph α β) (n : ℕ) (f : α → α) :
+    G.partitionDef n f ≤ G.deficiency n :=
+  le_ciSup (G.bddAbove_range_partitionDef n) f
+
+/-- The `D`-deficiency of a nonempty graph is nonnegative, `def(\tilde G) ≥ 0`: the trivial
+one-part partition (`partitionDef_one`) has deficiency `0`, and `def` is an upper bound for
+every partition (`partitionDef_le_deficiency`). The `k` in a `k`-dof graph is therefore
+always `≥ 0` for `V(G).Nonempty`. -/
+theorem deficiency_nonneg [Finite α] (G : Graph α β) (n : ℕ) (hne : V(G).Nonempty) :
+    0 ≤ G.deficiency n := by
+  obtain ⟨a, ha⟩ := hne
+  calc (0 : ℤ) = G.partitionDef n (fun _ => a) := (G.partitionDef_one n a ⟨a, ha⟩).symm
+    _ ≤ G.deficiency n := G.partitionDef_le_deficiency n _
+
 /-! ## `k`-dof and minimal `k`-dof graphs (`def:k-dof`)
 
 A multigraph `G` is a *`k`-dof-graph* (`k` degrees of freedom) when
