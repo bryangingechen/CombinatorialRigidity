@@ -37,23 +37,31 @@ prior work* before citing in blueprint/notes):
 
 ## Current state
 
-**Just opened.** No Lean yet; the four `body-bar.tex` tree-packing nodes
-(`def:graph-sparse`, `thm:unionPow-cycle-indep-iff-sparse`,
-`thm:tutte-nash-williams`, `cor:k-spanning-trees`) are red and form the
-to-do list. The phase-open commit is docs-only (status surfaces synced;
-this file created), mirroring Phase 12's Layer-0 pattern — the blueprint
-chapter was already populated when Phase 12 scoped Phases 13–15.
+**Rank adapter landed.** `CombinatorialRigidity/BodyBar/TreePacking.lean`
+ships `Matroid.Union_pow_rank_eq` — the constant-family `Set`-side
+specialization of the partition formula for `Matroid.Union (fun _ : Fin k ↦
+M)`, in `Set`-`Y` / `ℕ` / `Set.ncard` / `[Finite]` idiom (collapses
+`∑ᵢ r(Y) = k · r(Y)`, bridges `Finset.univ \ Y`.card ↦ `(univ \ ↑Y).ncard`,
+weakens `[Fintype]` ↦ `[Finite]`). Its prerequisite, the indexed partition
+formula `Matroid.Union_rank_eq` (the `Fin ι` generalization of
+`matroid_partition'`, proved by the same `adjMap_rank_eq` +
+`sum'_rk_eq_rk_sum` route), landed beside `matroid_partition'` in
+`Matroid/Constructions/Union.lean`. The adapter is generic over `Matroid α`
+and does **not** import `Matroid.Graphic`; the `Graph.cycleMatroid` consumer
+will apply it with `M := G.cycleMatroid` in the next commit.
 
-**Next concrete commit:** the *thin rank adapter* — open a new file
-`CombinatorialRigidity/BodyBar/TreePacking.lean` that restates Phase 12's
-`matroid_partition'` (and/or `matroid_partition_eRk'`) for the `k`-fold
-union of `Graph.cycleMatroid` in `Set`-`Y` / `ℕ` / `Set.ncard` /
-`[Finite]` idiom, absorbing the `rk`/`eRk`/`ncard` + `Fintype`/
-`DecidableEq`/finite-rank plumbing once. Per `../DESIGN.md` *Set/Finset
-and rank-flavor boundary at the matroid layer (Phases 13–15)* item 2, the
-adapter is built now (at phase open, against the real first consumer),
-not speculatively earlier. Then `def:graph-sparse` (`Set`-side per that
-DESIGN note, item 1), then the two theorems + corollary.
+The four `body-bar.tex` tree-packing nodes (`def:graph-sparse`,
+`thm:unionPow-cycle-indep-iff-sparse`, `thm:tutte-nash-williams`,
+`cor:k-spanning-trees`) remain red — the adapter has no dedicated blueprint
+node (internal glue). The phase-open commit before this was docs-only.
+
+**Next concrete commit:** `def:graph-sparse` — the `Graph`-native
+`(k, ℓ)`-sparsity / tightness predicate, `Set`-side (`Set.ncard` of edge
+sets, `ℕ`, `[Finite]`) per `../DESIGN.md` *Set/Finset and rank-flavor
+boundary …* item 1, under `namespace Graph` for dot-notation. **First
+resolve the `Matroid.Graphic` import blocker** (see Blockers) — the
+sparsity predicate references `Graph α β` edge sets and the indep-iff
+theorem after it needs `cycleMatroid`, both gated behind that import.
 
 ## Architectural choices made up front
 
@@ -74,10 +82,13 @@ DESIGN note, item 1), then the two theorems + corollary.
 Leaf-level to-do list is the `body-bar.tex` dep-graph (four red
 tree-packing nodes as of phase open).
 
-- [ ] **Rank adapter** (no dedicated blueprint node; internal glue) —
-  `Set`/`ℕ`/`ncard`/`[Finite]` restatement of `matroid_partition'` for
-  the `k`-fold `Graph.cycleMatroid` union. In
-  `BodyBar/TreePacking.lean`.
+- [x] **Rank adapter** (no dedicated blueprint node; internal glue) —
+  `Matroid.Union_pow_rank_eq`, `Set`/`ℕ`/`ncard`/`[Finite]` restatement of
+  the partition formula for the constant `k`-fold union, in
+  `BodyBar/TreePacking.lean`. Built generic over `Matroid α` (cycleMatroid
+  is its first consumer, applied directly). Its prerequisite
+  `Matroid.Union_rank_eq` (indexed generalization of `matroid_partition'`)
+  landed in `Matroid/Constructions/Union.lean`.
 - [ ] `def:graph-sparse` — `Graph` `(k,ℓ)`-sparsity + tightness,
   `Set`-side.
 - [ ] `thm:unionPow-cycle-indep-iff-sparse` — independence in the
@@ -94,15 +105,32 @@ sub-organize only if it grows cleanup passes.>
 
 ## Blockers / open questions
 
+- **`Matroid.Graphic` import is currently broken (NEW, blocks next commit).**
+  Importing `Matroid.Graphic` (the `cycleMatroid` source) transitively
+  pulls `apnelson1/Matroid`'s `Matroid/Uniform/Basic.lean`, which fails to
+  build at the pinned package revision under the current mathlib pin —
+  `unifOn_rankPos_iff` (line 104) has a `simp` that no longer closes its
+  goal (`unsolved goals` + two unused-simp-arg warnings on line 105). This
+  is an upstream vendored-package breakage, not a project API gap. Options
+  for the next commit: (a) bump the `apnelson1/Matroid` pin to a revision
+  where `Uniform/Basic.lean` builds; (b) if no such revision, port the few
+  `cycleMatroid` facts we need (`cycleMatroid_indep` = `IsAcyclicSet`, the
+  rank-as-`|V|−c` form) into the local `CombinatorialRigidity/Matroid/`
+  tree against a constructor that doesn't drag in `Uniform/Basic`. The
+  rank adapter sidesteps this — it is `Matroid α`-generic and needs no
+  Graphic import — but `def:graph-sparse` and everything downstream needs
+  `Graph α β` / `cycleMatroid`.
 - **`Graph.cycleMatroid` rank formula.** `thm:unionPow-cycle-indep-iff-sparse`
-  needs `r(E') = |V'| − c(E')` on the cycle matroid. Confirm what the
-  `apnelson1/Matroid` `Graphic.lean` API exposes (rank / circuit / basis
-  = forest characterizations) before stating the bridge; may need a
-  small mirror lemma if the rank-as-`|V|−c` form isn't directly there.
-- **`k`-fold union shape.** Whether to phrase the `k`-fold union as an
-  iterated `Matroid.union` or a single `Matroid.Union` over `Fin k` of a
-  constant family — pick whichever the Phase-12 partition theorem's
-  signature consumes most cleanly when the adapter is built.
+  needs `r(E') = |V'| − c(E')` on the cycle matroid. `Graphic.lean` exposes
+  `cycleMatroid_indep` (= `IsAcyclicSet`), `cycleMatroid_isBase`
+  (= `IsMaximalAcyclicSet`), `cycleMatroid_isBasis`, and an `eRk + 1 =
+  |V|.encard` connected-component form (line ~235); confirm the precise
+  `|V'| − c(E')` shape once the import blocker above is cleared.
+- **`k`-fold union shape — RESOLVED.** The adapter phrases the `k`-fold
+  union as `Matroid.Union (fun _ : Fin k ↦ M)` (single `Matroid.Union`
+  over a constant `Fin k` family), which the `adjMap_rank_eq` +
+  `sum'_rk_eq_rk_sum` route consumes cleanly; the `∑ᵢ → k·` collapse is
+  one `Finset.sum_const` step.
 
 ## Hand-off / next phase
 <written when the phase finishes; what unlocks Phase 14.>

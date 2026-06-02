@@ -513,4 +513,18 @@ theorem matroid_partition_eRk' [DecidableEq α] [Finite α]
     Nat.cast_inj]
   refine ⟨Y, le_antisymm (by simp only [← this _, hY]) (by simp only [← this _, h Y])⟩
 
+/-- Edmonds' matroid-partition rank formula for the union of a finite indexed
+family (Edmonds 1965): the rank of `Matroid.Union Ms` attains
+`min_Y (∑ᵢ r_{Mᵢ}(Y) + |Yᶜ|)`. The indexed generalization of
+`matroid_partition'`, proved by the same `adjMap_rank_eq` + `sum'_rk_eq_rk_sum`
+route. (`thm:matroid-partition-rank`.) -/
+theorem Union_rank_eq [DecidableEq α] [Fintype α] [Fintype ι] (Ms : ι → Matroid α) :
+    (∃ Y : Finset α, (∑ i, (Ms i).rk Y) + (Finset.univ \ Y).card ≤ (Matroid.Union Ms).rank) ∧
+    (∀ Y : Finset α, (Matroid.Union Ms).rank ≤ (∑ i, (Ms i).rk Y) + (Finset.univ \ Y).card) := by
+  simp only [Matroid.Union]
+  obtain ⟨⟨Y, hY⟩, hle⟩ := adjMap_rank_eq (Matroid.sum' Ms) (fun x y ↦ x.2 = y)
+  simp_rw [sum'_rk_eq_rk_sum] at hY hle
+  simp only [exists_eq_right', preimage_setOf_eq, Finset.setOf_mem] at hY hle
+  exact ⟨⟨Y, by convert hY using 3⟩, fun Y ↦ by have := hle Y; convert this using 3⟩
+
 end Matroid
