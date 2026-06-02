@@ -2,6 +2,7 @@ import CombinatorialRigidity.CountMatroid
 import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Matroid.Constructions.Submodular
+import CombinatorialRigidity.Matroid.Constructions.Union
 import CombinatorialRigidity.MatroidIdentification
 import CombinatorialRigidity.PebbleGame.Correctness
 import CombinatorialRigidity.PebbleGame.Examples

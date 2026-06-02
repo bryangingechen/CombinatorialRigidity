@@ -76,7 +76,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (Submodular half ported; Union half = L2b)
+### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (Submodular half ported; Union construction + indep-iff ported; partition rank theorem = remaining L2b)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
   `matroid_partition'` / `matroid_partition_eRk'`, plus its
@@ -157,6 +157,32 @@ housekeeping pass once their resolution is fully indexed.
   construction-specific projection names in the list as the first thing to
   prune on an "unknown identifier" — the surrounding `simp_all` is usually
   robust to their removal.
+- **L2b union construction (2026-06):** `Constructions/Union.lean` —
+  `AdjIndep'` + `adjMap_indep_iff'`, `Matroid.Union` / `Matroid.union`,
+  `Union_empty`, `union_indep_aux{,'}`, `union_indep_iff` /
+  `union_indep_iff'` — landed green, 0 sorry (partition rank theorem
+  deferred to a follow-up commit). The construction reuses the live
+  `Matroid.Constructions.Matching` (`adjMap` / `AdjIndep` / `IsMatching`)
+  and mathlib's `Matroid.sum'`, both unchanged. Porting points, all
+  bounded: (i) `Pairwise (Disjoint on t)` failed with *"Unknown identifier
+  `on`"* — the ` on ` infix is `scoped` in `Function` (`Function.onFun`),
+  so the file needs `open Function` (the WIP got it via a broader open).
+  (ii) The WIP's `union_indep_aux'` depended on
+  `Matroid.ForMathlib.Set.exists_pairwiseDisjoint_iUnion_eq`, which is
+  *commented out* in the live `ForMathlib/Set.lean` (third bit-rot point
+  beyond the audit, matching the L2a commented-`ForMathlib/Finset.lean`
+  pattern) — reconstructed verbatim as a `private` lemma in the file.
+  (iii) The WIP's `Union_empty` (`IsEmpty ι ⇒ Union = loopyOn`) leaned on
+  two brittle `simp [adjMap, IndepMatroid.ofFinset, …]`-unfold lists that
+  no longer close post-`FiniteCircuitMatroid`; reproved cleanly via
+  `eq_loopyOn_iff` + finitarity (`adjMap` is `Finitary`), reducing to: a
+  singleton `{x}` independent set would `IsMatching`-match into the empty
+  type `ι × α`, contradicting `Set.bijOn_empty_iff_left`. (iv) Followed the
+  project `[Finite α]`-in-signature convention over the WIP's `[Fintype α]`
+  (bridge `haveI : Fintype β := Fintype.ofFinite β` inside
+  `adjMap_indep_iff'`), clearing the `unusedFintypeInType` linter; added
+  focus dots + the `simp?`-suggested `simp only` set to clear the
+  `style.{multiGoal,flexible}` compile warnings.
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of

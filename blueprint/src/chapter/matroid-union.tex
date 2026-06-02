@@ -105,6 +105,8 @@ attribution and the list of modifications.
 
 \begin{definition}[Matroid union of an indexed family]
   \label{def:matroid-union}
+  \lean{Matroid.Union, Matroid.union}
+  \leanok
   \uses{def:ofPolymatroidFn, lem:polymatroid-rank}
   Given a finite indexed family of matroids $M_{1}, \dots, M_{k}$
   on a common ground set $E$, their \emph{union}
@@ -118,6 +120,8 @@ attribution and the list of modifications.
 
 \begin{lemma}[Union independence by decomposition]
   \label{lem:union-indep-iff}
+  \lean{Matroid.union_indep_iff, Matroid.union_indep_iff'}
+  \leanok
   \uses{def:matroid-union}
   A set $I$ is independent in $\bigcup_{j} M_{j}$ if and only if it
   decomposes as $I = \bigcup_{j} I_{j}$ with each $I_{j}$
@@ -125,8 +129,11 @@ attribution and the list of modifications.
   downstream, the $I_{j}$ pairwise disjoint).
 \end{lemma}
 \begin{proof}
-  \uses{lem:polymatroid-rank}
-  Immediate from the construction of \cref{def:matroid-union}; the
+  \leanok
+  Immediate from the bipartite-matching construction of
+  \cref{def:matroid-union}: an independent set of the matching matroid
+  $\mathrm{adjMap}$ over the direct sum $\bigoplus_{j} M_{j}$ unpacks to
+  a system of representatives, one independent set per factor. The
   disjoint-support refinement follows by deleting repeated elements
   from a decomposition.
 \end{proof}

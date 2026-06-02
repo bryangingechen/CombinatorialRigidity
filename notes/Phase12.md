@@ -1,9 +1,10 @@
 # Phase 12 — Matroid foundations: submodular functions & matroid union (work log)
 
-**Status:** in progress (Layer 2a **complete**: submodular + polymatroid
-machinery all green — `def:submodular`, `def:ofSubmodular`,
-`def:polymatroidFn`, `def:ofPolymatroidFn`, `lem:polymatroid-rank`.
-Layer 2b — `Constructions/Union.lean` — is next).
+**Status:** in progress (Layer 2a **complete**; Layer 2b **underway** —
+`Constructions/Union.lean` landed the union construction + independence
+characterization green: `def:matroid-union`, `lem:union-indep-iff`. The
+partition rank theorem `thm:matroid-partition-rank` is the one remaining
+L2b node).
 
 This phase formalizes the abstract-matroid prerequisites of the
 body-bar route: the matroid-from-submodular-function construction and
@@ -53,7 +54,26 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-Layer 2a rank lemma (this commit, **closes L2a**): ported
+Layer 2b union construction (this commit, **opens L2b**): created
+`Constructions/Union.lean`, ported from `apnelson1/Matroid`'s `WIP/Union.lean`
+with the Peter-Nelson attribution header. Landed green, **0 sorry**:
+`AdjIndep'` + `adjMap_indep_iff'` (Set-valued analogue of the live
+`Matching.AdjIndep` / `adjMap_indep_iff`), `Matroid.Union` (node
+`def:matroid-union`, via `(sum' Ms).adjMap (·.2 = ·) univ`), `Matroid.union`
+(binary, over `Bool`), `Union_empty`, the two halves `union_indep_aux{,'}`,
+and `union_indep_iff` / `union_indep_iff'` (node `lem:union-indep-iff`).
+Both blueprint nodes flipped green; `checkdecls` passes; `lake build` +
+`lake lint` clean. Port hazards (full detail in FRICTION `[matroid]` *L2b
+union construction*): `open Function` for the ` on ` infix; reconstructed the
+commented-out `exists_pairwiseDisjoint_iUnion_eq` as a `private` lemma;
+reproved the brittle `Union_empty` via `eq_loopyOn_iff` + finitarity; used
+`[Finite α]` over the WIP's `[Fintype α]` per project convention. The
+partition rank theorem (`matroid_partition'` / `matroid_partition_eRk'`,
+node `thm:matroid-partition-rank`) is **deferred** to the next commit — its
+WIP proof routes through `polymatroid_of_adjMap` / `adjMap_rank_eq` /
+`sum'_rk_eq_rk_sum`, a larger sub-chain (see *Hand-off*).
+
+Layer 2a rank lemma (prior commit, **closed L2a**): ported
 `polymatroid_rank_eq` (`lem:polymatroid-rank`, Edmonds 1970 Prop. 11.1.7)
 and its private helper `polymatroid_rank_eq_on_indep` into
 `Constructions/Submodular.lean`. Landed green, **0 sorry**; blueprint node
@@ -235,8 +255,12 @@ High-level outline; the leaf-level to-do list is the
   `def:polymatroidFn` ✓, `def:ofPolymatroidFn` ✓ (+
   `indep_ofPolymatroidFn_iff` / `ofPolymatroidFn_nonempty_indep_le`),
   `lem:polymatroid-rank` ✓ (+ private `polymatroid_rank_eq_on_indep`).
-- [ ] **L2b:** `def:matroid-union`, `lem:union-indep-iff`,
-  `thm:matroid-partition-rank`.
+- [x] **L2b (union construction):** `def:matroid-union` ✓
+  (`Matroid.Union` / `Matroid.union`), `lem:union-indep-iff` ✓
+  (`union_indep_iff` / `union_indep_iff'`; + `adjMap_indep_iff'`,
+  `Union_empty`, `union_indep_aux{,'}` support).
+- [ ] **L2b (partition rank):** `thm:matroid-partition-rank`
+  (`matroid_partition'` / `matroid_partition_eRk'`).
 
 ## Blockers / open questions
 
@@ -252,24 +276,32 @@ High-level outline; the leaf-level to-do list is the
 
 ## Hand-off / next phase
 
-L2a is **complete** as of this commit (`polymatroid_rank_eq` landed,
-`lem:polymatroid-rank` green). Next concrete commit: **open Layer 2b —
-start `Constructions/Union.lean`.** Port the WIP `WIP/Union.lean`
-(`apnelson1/Matroid`, 597 L, only a commented-out sorry): `Matroid.Union`
-(node `def:matroid-union`), `union_indep_iff` / `union_indep_iff'`
-(`lem:union-indep-iff`), then `matroid_partition'` / `matroid_partition_eRk'`
-(`thm:matroid-partition-rank`). The WIP `Union` routes through
-`ofPolymatroidFn` + `polymatroid_rank_eq` — both now available in
-`Constructions/Submodular.lean` — so the dependency is satisfied.
-Same port hazards expected as L2a (see the *Reusable recipe* below and
-FRICTION `[matroid]` *L2a rank lemma* for the rename / missing-import /
-stale-aesop-simp-list patterns to re-apply). Smallest-first move: land
-`Matroid.Union` + `union_indep_iff` and flip those two nodes before
-tackling the partition rank theorem; if `Union.lean` proves multi-session,
-that split is a clean intermediate handoff. New file: Peter-Nelson
-attribution header, non-`module`, audit transitive imports up front
-(`linarith`, `Mathlib.Tactic.Cases`, `Mathlib.Data.Finset.CastCard`,
-plus whatever `Union.lean` needs), wire it into `CombinatorialRigidity.lean`.
+L2b is **underway** as of this commit: `Constructions/Union.lean` landed the
+union construction + independence characterization green
+(`def:matroid-union`, `lem:union-indep-iff`). Next concrete commit:
+**finish L2b — add the partition rank theorem** `matroid_partition'` /
+`matroid_partition_eRk'` (node `thm:matroid-partition-rank`) to
+`Constructions/Union.lean`. That closes Phase 12.
+
+The WIP chain to port (from `apnelson1/Matroid`'s `WIP/Union.lean`, all
+currently un-ported): `polymatroid_of_adjMap` (the key bridge — exhibits the
+`adjMap`-matroid as `ofPolymatroidFn` of `f Y = M.r {v | ∃ u ∈ Y, Adj v u}`,
+the longest proof in the file, uses `rado` from `Constructions/Matching`),
+`adjMap_rank_eq` (instantiates `polymatroid_rank_eq` through that bridge),
+`sum'_eRk_eq_eRk_sum{_on_indep}` + `sum'_rk_eq_rk_sum` (rank of `sum'`
+distributes over the index), then `matroid_partition'` (binary) and
+`matroid_partition_eRk'` (the `eRk` form). Dependencies satisfied:
+`ofPolymatroidFn` + `polymatroid_rank_eq` in `Submodular.lean`; `Union` +
+`union_indep_iff'` now in this file; `rado` / `Matroid.sum'` live upstream.
+Expect the same port hazards (FRICTION `[matroid]` *L2a rank lemma* +
+*L2b union construction*): `Matroid.r → rk` renames, `open Function` for
+` on ` / `onFun`, transitive-import gaps, stale aesop simp-lists, and
+`[Fintype] → [Finite]` signature conversion per project convention. This is
+a larger sub-chain than the construction (~6 supporting lemmas before the two
+targets) — if it runs long, landing `polymatroid_of_adjMap` + `adjMap_rank_eq`
+first (the matroid-theoretic core) is a clean intermediate handoff, with the
+`sum'` rank-distribution lemmas + the two `matroid_partition*` wrappers as a
+second step.
 
 Reusable recipe for the port (validated across L2a): non-`module`
 file, Peter-Nelson header, explicit `import` of tactics/lemmas the
