@@ -40,11 +40,13 @@ real coefficients.
 
 ## Current state (Phase 15, in progress)
 
-This file currently ships the **witness placement and the bar-row reduction** — the
-foundational step that exposes the block-diagonal structure. The block-diagonal
-rank count and the `thm:tay-witness` iff are the next sub-steps. See
-`ROADMAP.md` §15, `notes/Phase15.md`, and the §`sec:body-bar-tay` subsection of
-`blueprint/src/chapter/body-bar.tex`.
+This file ships the witness placement, the bar-row reduction, the block-diagonal
+rank count (`stdFramework_finrank_range`), and the **existence (⟸) direction** of
+Tay's theorem (`prop:tay-witness-exists`): `exists_isIndependent_of_isSparse` and
+`exists_isIsostatic_of_isTight`. The converse (⟹: an independent framework forces
+`(d, d)`-sparsity) — and hence the full `thm:tay-witness` iff — is the next
+sub-step; see `ROADMAP.md` §15, `notes/Phase15.md`, and the §`sec:body-bar-tay`
+subsection of `blueprint/src/chapter/body-bar.tex`.
 -/
 
 open scoped InnerProductSpace
@@ -309,6 +311,66 @@ theorem stdFramework_finrank_range [Finite α] [Finite β] {G : Graph α β}
     ← span_range_rigidityRow (stdFramework G n j) D, finrank_span_eq_card hLI,
     ← Nat.card_coe_set_eq, Nat.card_eq_fintype_card]
   exact Fintype.card_congr (Equiv.refl _)
+
+/-! ### Tay's theorem (existence-of-realization form)
+
+The chapter target, `thm:tay-witness`, in its existence-of-realization direction
+(`⟸`): a `(d, d)`-sparse multigraph carries an *independent* body-bar framework in
+`ℝⁿ`, and a `(d, d)`-tight connected multigraph carries an *isostatic* (independent
+and infinitesimally rigid) one. Both are witnessed by the standard-basis framework
+`stdFramework G n j` on a tree-packing partition (`thm:tutte-nash-williams`); the
+content is `stdFramework_finrank_range` (rank `= |E(G)|`).
+
+The converse direction (an independent framework forces `(d, d)`-sparsity) is the
+Lovász–Yemini-style rank-upper-bound argument — the body-bar analogue of Phase 6's
+`isSparse_of_edgeSetRowIndependent_dim_two` — and is deferred; see `notes/Phase15.md`. -/
+
+/-- **Tay's theorem, independent existence direction** (`thm:tay-witness` `⟸`). For
+`d = bodyBarDim n`, a `(d, d)`-sparse multigraph `G` carries an independent body-bar
+framework in `ℝⁿ`: the standard-basis framework `stdFramework G n j` on a tree-packing
+partition of `G` (`thm:tutte-nash-williams`) is independent (`IsIndependent`, rank
+`= |E(G)|`) at any orientation.
+
+By `tutte_nash_williams`, `(d, d)`-sparsity gives a disjoint acyclic cover `Fs` of
+`E(G)` by `d` forests; choosing the forest index `j e` of each bar `e` and applying
+`stdFramework_finrank_range` makes the rigidity matrix block-diagonal with full-rank
+forest-incidence blocks, so the framework is independent. -/
+theorem exists_isIndependent_of_isSparse [Finite α] [Finite β] {G : Graph α β}
+    (hsparse : G.IsSparse (bodyBarDim n) (bodyBarDim n)) :
+    ∃ (F : BodyBarFramework n α β) (_ : F.graph = G) (D : Graph.orientation F.graph),
+      F.IsIndependent D := by
+  classical
+  obtain ⟨Fs, hcover, hdisj, hacyc⟩ := tutte_nash_williams.mpr hsparse
+  -- Choose the forest index `j e` of each bar from the cover `⋃ i, Fs i = E(G)`.
+  have hmem : ∀ e : E(G), ∃ i, (e : β) ∈ Fs i := fun e => by
+    have he : (e : β) ∈ ⋃ i, Fs i := by rw [hcover]; exact e.2
+    simpa using he
+  choose j hj using hmem
+  refine ⟨stdFramework G n j, rfl, Classical.choice Graph.orientation_nonempty, ?_⟩
+  exact stdFramework_finrank_range hcover hdisj hacyc j hj _
+
+/-- **Tay's theorem, isostatic existence direction** (`thm:tay-witness` `⟸`, count
+form). For `d = bodyBarDim n`, a connected `(d, d)`-tight multigraph `G` carries an
+*isostatic* body-bar framework in `ℝⁿ` — one that is both independent (`IsIndependent`)
+and infinitesimally rigid (`IsInfinitesimallyRigid`), the count `|E| = d(b - 1)` of
+Tay 1984. The witness is again the standard-basis framework on the tree-packing (here,
+by `cor:k-spanning-trees`, a *spanning-tree* packing).
+
+Independence is `exists_isIndependent_of_isSparse` applied to `htight.isSparse`; the
+infinitesimal-rigidity count `rank + d = d·b` then follows from independence (`rank =
+|E|`) and tightness (`|E| + d = d·|V|`), since `b = |V(G)|`. -/
+theorem exists_isIsostatic_of_isTight [Finite α] [Finite β] {G : Graph α β}
+    (htight : G.IsTight (bodyBarDim n) (bodyBarDim n)) :
+    ∃ (F : BodyBarFramework n α β) (_ : F.graph = G) (D : Graph.orientation F.graph),
+      F.IsIndependent D ∧ F.IsInfinitesimallyRigid D := by
+  obtain ⟨F, hF, D, hindep⟩ := exists_isIndependent_of_isSparse htight.isSparse
+  refine ⟨F, hF, D, hindep, ?_⟩
+  -- `IsInfinitesimallyRigid`: `rank + d = d·b`. Independence gives `rank = |E(F.graph)|`;
+  -- transport across `hF : F.graph = G` and use tightness `|E(G)| + d = d·|V(G)|`.
+  change Module.finrank ℝ (LinearMap.range (F.rigidityMap D)) + bodyBarDim n
+    = bodyBarDim n * F.graph.vertexSet.ncard
+  rw [hindep, hF]
+  exact htight.2
 
 end BodyBarFramework
 

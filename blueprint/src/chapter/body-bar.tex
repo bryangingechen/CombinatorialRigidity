@@ -529,6 +529,18 @@ map of \cref{sec:frameworks}.
   the body-bar analogue of \cref{def:isInfinitesimallyRigid}.
 \end{definition}
 
+\begin{definition}[Independence of a body-bar framework]
+  \label{def:independent-body-bar}
+  \lean{Graph.BodyBarFramework.IsIndependent}
+  \leanok
+  \uses{def:rigidity-map-body-bar}
+  A body-bar framework is \emph{independent} when its rigidity map has
+  full row rank, $\mathrm{rank} = |E(G)|$ --- equivalently its bar
+  constraints are linearly independent, with no redundant bars. The
+  body-bar analogue of edge-set row independence
+  (\cref{def:edgeSet-rowIndependent}).
+\end{definition}
+
 \subsection{Tay's theorem (existence-of-realization form)}
 \label{sec:body-bar-tay}
 
@@ -569,4 +581,37 @@ in~\cite{whiteley1988}, is \emph{deferred} out of Phase~15
   tree (\cref{cor:k-spanning-trees}). The degenerate $b_{e}$ lie on
   the Pl\"ucker variety vacuously, so this is a valid body-bar
   realization.
+\end{proof}
+
+The witness ($\Leftarrow$) direction is formalized as the proposition
+below; the converse ($\Rightarrow$, an independent body-bar framework
+forces $(d, d)$-sparsity) is the body-bar analogue of the
+Lov\'asz--Yemini rank-upper-bound argument
+(\cref{lem:isSparse-of-rowIndependent-two}) and remains to be
+formalized.
+
+\begin{proposition}[Tay witness, existence direction]
+  \label{prop:tay-witness-exists}
+  \lean{Graph.BodyBarFramework.exists_isIndependent_of_isSparse,
+    Graph.BodyBarFramework.exists_isIsostatic_of_isTight}
+  \leanok
+  \uses{def:body-bar-framework, def:independent-body-bar,
+    def:infinitesimally-rigid-body-bar, def:graph-sparse,
+    thm:tutte-nash-williams}
+  Let $d = n(n+1)/2$. If a multigraph $G$ is $(d, d)$-sparse then it
+  carries an independent body-bar framework in $\mathbb{R}^{n}$, and
+  if $G$ is $(d, d)$-tight then it carries an isostatic one (the count
+  $|E| = d(b - 1)$).
+\end{proposition}
+\begin{proof}
+  \leanok
+  \uses{def:rigidity-map-body-bar, thm:tutte-nash-williams}
+  By \cref{thm:tutte-nash-williams}, $(d, d)$-sparsity gives a
+  disjoint cover of $E(G)$ by $d$ forests; take the standard-basis
+  framework $b_{e} = e_{j(e)}$ for the forest index $j(e)$ of each bar.
+  The block-diagonal rank count makes this framework independent
+  ($\mathrm{rank} = |E(G)|$). For the tight case, independence
+  ($\mathrm{rank} = |E|$) together with the tightness equality
+  $|E| + d = d|V|$ gives the infinitesimal-rigidity count
+  $\mathrm{rank} + d = d \cdot b$ directly, since $b = |V(G)|$.
 \end{proof}

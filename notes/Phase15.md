@@ -1,8 +1,11 @@
 # Phase 15 — Body-bar Tay theorem (existence form) (work log)
 
-**Status:** in progress (3 of 4 blueprint nodes green; target `thm:tay-witness`
-left). Witness placement + bar-row reduction + **block-diagonal rank count** all
-landed in `BodyBar/TayTheorem.lean`; the independent-form half is done.
+**Status:** in progress. The **existence (⟸) direction** of Tay's theorem is now
+green as `prop:tay-witness-exists` (`BodyBar/TayTheorem.lean`:
+`exists_isIndependent_of_isSparse`, `exists_isIsostatic_of_isTight`). The full iff
+`thm:tay-witness` stays red — only the converse (⟹: independent framework forces
+`(d,d)`-sparse) is left, the body-bar analogue of Phase 6's
+`isSparse_of_edgeSetRowIndependent_dim_two`.
 
 ## Current state
 
@@ -80,19 +83,29 @@ The **block-diagonal rank count** now also lives in `BodyBar/TayTheorem.lean`
   (rigidityMap D)) = |E(G)|`, via `finrank_range_dualMap_eq_finrank_range` +
   `span_range_rigidityRow` + `finrank_span_eq_card`.
 
-The blueprint node `thm:tay-witness` is **still red** (no Lean theorem
-declaration yet) — `TayTheorem.lean` is all infrastructure below it, so no
-`\lean{...}`/`\leanok` flip this commit.
+The **existence (⟸) direction** now lands (this commit): `IsIndependent` predicate
+(`Framework.lean`, `finrank (range (rigidityMap D)) = |E(G)|`) +
+`exists_isIndependent_of_isSparse` / `exists_isIsostatic_of_isTight`
+(`TayTheorem.lean`). Both package `stdFramework_finrank_range` with
+`tutte_nash_williams.mpr` (sparse → disjoint forest cover; `choose` the forest
+index `j`). The isostatic count is direct: independence gives `rank = |E|`, and
+`IsTight.2` gives `|E| + d = d·|V|`, so `rank + d = d·b`. New blueprint nodes
+`def:independent-body-bar` + `prop:tay-witness-exists` are **green**.
 
-**Next concrete commit:** the `thm:tay-witness` **iff** (the phase closer).
-Forward direction packages `stdFramework_finrank_range` with
-`def:infinitesimally-rigid-body-bar` / `def:graph-sparse`: a `(d,d)`-sparse
-(equivalently — Phase 13 `thm:tutte-nash-williams` — `d`-forest-packable) `G`
-admits an independent body-bar framework (the standard-basis witness has rank
-`|E|`). Reverse direction: rank `≤ |E|` always (rows ≤ bars), and the
-isostatic count `|E| = d(b−1)` is `cor:k-spanning-trees` (the `d`-spanning-tree
-refinement). Flip `thm:tay-witness` green (`\lean{...}` + `\leanok`) when the
-iff lands; the phase closes on that commit.
+`thm:tay-witness` (the full iff) is **still red** — only the converse (⟹) is left.
+
+**Next concrete commit (phase closer):** the **⟹ direction** + flip
+`thm:tay-witness` green. Need: an independent body-bar framework forces
+`G.IsSparse (bodyBarDim n) (bodyBarDim n)`. This is the body-bar analogue of
+Phase 6's `isSparse_of_edgeSetRowIndependent_dim_two` — it wants a *rank upper
+bound* `finrank (range (rigidityMap D)) + d ≤ d·|V'|` on every spanned
+sub-multigraph `V'` (the body-bar version of
+`rigidityMap_finrank_range_le_of_affinelySpanning`), which does **not** exist yet
+and is the substantive new infra to assess first. With it, restrict the
+independent framework's row-LI to each `E' ⊆ E(G)`, transport to the spanned
+subgraph, and read off `|E'| + d ≤ d·|V'|`. Then `thm:tay-witness` is the iff of
+`prop:tay-witness-exists` with this converse, and the isostatic half adds the
+tight global count.
 
 ## Architectural choices made up front
 
@@ -139,8 +152,12 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
             `stdFramework_finrank_range`) — `finrank (range (rigidityMap D)) =
             |E(G)|` for a disjoint forest packing, via the ℝ-instance of
             `specRow_linearIndependent`. `BodyBar/TayTheorem.lean`.
-      - [ ] **Next:** the `thm:tay-witness` iff + isostatic refinement
-            (`cor:k-spanning-trees`). Phase closes here.
+      - [x] Existence (⟸) direction (`prop:tay-witness-exists`):
+            `IsIndependent` (`Framework.lean`),
+            `exists_isIndependent_of_isSparse` /
+            `exists_isIsostatic_of_isTight` (`TayTheorem.lean`).
+      - [ ] **Next:** the converse (⟹: independent ⟹ `(d,d)`-sparse), then flip
+            `thm:tay-witness` green. Phase closes here.
 
 ## Decisions made during this phase
 
@@ -201,30 +218,27 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 
 ## Hand-off / next phase
 
-The three `sec:body-bar-framework` defs are green
-(`BodyBar/Framework.lean`); the witness placement, bar-row reduction, **and
-block-diagonal rank count** are green (`BodyBar/TayTheorem.lean`). The
-independent-form half is complete: `stdFramework_finrank_range` gives
-`finrank (range (rigidityMap D)) = |E(G)|` for a disjoint forest packing.
+Green: the three `sec:body-bar-framework` defs + `def:independent-body-bar`
+(`BodyBar/Framework.lean`); the witness placement, bar-row reduction,
+block-diagonal rank count, **and the existence (⟸) direction**
+`prop:tay-witness-exists` (`BodyBar/TayTheorem.lean`). The ⟸ direction was the
+easy half — it packages `stdFramework_finrank_range` with `tutte_nash_williams`.
 
-**Next concrete commit (phase closer):** declare and prove the
-`thm:tay-witness` iff in `BodyBar/TayTheorem.lean`, then flip the blueprint
-node green (`\lean{...}` + `\leanok` on theorem + proof). Shape:
-- **Independent ⟸ `(d,d)`-sparse.** From `(G ↾ E(G)).IsSparse d d`
-  (equivalently `G` is `d`-forest-packable, `thm:tutte-nash-williams`), get
-  the disjoint forest packing + index map `j`, build `stdFramework G n j`, and
-  use `stdFramework_finrank_range` to witness rank `= |E|` = independence.
-  (Choosing `j` from the packing: `Set.unionEqSigmaOfDisjoint` `.1`, as in
-  `stdFramework_rigidityRow_linearIndependent`.)
-- **Independent ⟹ `(d,d)`-sparse.** Any independent framework's rank `= |E|`
-  bounds sub-multigraph counts (rows of any `E' ⊆ E(G)` are LI ⟹
-  `|E'| ≤ d|V'| − d`). May want a Phase-14-style rank-count forward lemma; if
-  this turns out to need substantive new infra (vs. the existence direction
-  which is essentially done), land the ⟸ existence direction first and assess
-  ⟹ separately.
-- **Isostatic refinement** via `cor:k-spanning-trees` (`(d,d)`-tight ⟺
-  `d` spanning trees ⟺ `|E| = d(b−1)`): pins `IsInfinitesimallyRigid`
-  (rank `+ d = d·b`).
+**Next concrete commit (phase closer):** the **converse (⟹)**, then flip
+`thm:tay-witness` green. This is the genuinely substantive half:
+- **Need first (new infra):** a body-bar rank *upper* bound — for an arbitrary
+  framework `F` (`F.graph = G`) and `E' ⊆ E(G)` spanning `V'`,
+  `finrank (range (F.rigidityMap D restricted to E')) + d ≤ d·|V'|`. This is the
+  body-bar analogue of `rigidityMap_finrank_range_le_of_affinelySpanning`
+  (`RigidityMatroid.lean`); it does not exist yet. Assess this lemma's cost
+  before committing to the full ⟹.
+- **Then ⟹:** an independent `F` has all rows LI, so each `E' ⊆ E(G)` has LI
+  rows; restrict + transport to the spanned subgraph and apply the upper bound to
+  get `|E'| + d ≤ d·|V'|`, i.e. `G.IsSparse d d`. Mirror Phase 6's
+  `isSparse_of_edgeSetRowIndependent_dim_two` row-factoring through the induced
+  subgraph.
+- **`thm:tay-witness` iff:** `prop:tay-witness-exists` (⟸) + the converse (⟹);
+  isostatic half adds `IsTight.2`'s global count, both directions.
 
 The phase closes on the commit that takes `thm:tay-witness` green. Then the
 phase-completion checklist (ROADMAP Status ✓, compress §15, sync README /

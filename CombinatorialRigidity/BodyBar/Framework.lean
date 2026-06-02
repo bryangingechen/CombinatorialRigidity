@@ -130,6 +130,17 @@ theorem rigidityMap_apply {α β : Type*} (F : BodyBarFramework n α β)
     (D : Graph.orientation F.graph) (m : Motion n α) (e : E(F.graph)) :
     F.rigidityMap D m e = ⟪F.placement e, m (D.dInc e).1 - m (D.dInc e).2⟫_ℝ := rfl
 
+/-- A body-bar framework `F` is **independent** at an orientation `D` when its
+rigidity map has full row rank — `rank = |E(F.graph)|`, i.e. its bar-constraint
+rows are linearly independent (no redundant bars). This is the body-bar analogue
+of `SimpleGraph.EdgeSetRowIndependent` on the whole edge set; it is the notion of
+"independent body-bar framework" in Tay's theorem (`thm:tay-witness`). The rank is
+orientation-independent (see `rigidityMap`), so independence does not depend on the
+choice of `D`. -/
+def IsIndependent {α β : Type*} (F : BodyBarFramework n α β)
+    (D : Graph.orientation F.graph) : Prop :=
+  Module.finrank ℝ (LinearMap.range (F.rigidityMap D)) = E(F.graph).ncard
+
 /-- A body-bar framework `F` on `b = F.graph.vertexSet.ncard` bodies is
 **infinitesimally rigid** (Whiteley~1988 §3; `def:infinitesimally-rigid-body-bar`)
 when its rigidity map for an orientation `D` has rank `d·b − d`, `d = bodyBarDim n` —
