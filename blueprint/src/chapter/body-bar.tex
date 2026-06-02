@@ -209,9 +209,34 @@ and the same applies to every $Y \subseteq E'$.
   Hence $|Y| \le k \cdot r_{G.\mathrm{cycleMatroid}}(Y)$.
 \end{proof}
 
+\begin{lemma}[Block-diagonal specialization of the rows on a forest packing]
+  \label{lem:k-frame-specialize-li}
+  \lean{Graph.specRow_linearIndependent}
+  \leanok
+  \uses{def:k-frame-matroid}
+  Let $\mathrm{Fs} : \mathrm{Fin}\,k \to \mathcal P(\beta)$ be a $k$-tuple of acyclic
+  bar sets (a forest packing). The rows obtained by placing, for a bar $e \in
+  \mathrm{Fs}_j$, the signed incidence row $\mathrm{signedIncMatrix}\,e$ in block
+  $j$ and $0$ in every other block — i.e. $\mathrm{Pi.single}\,j\,
+  (\mathrm{signedIncMatrix}\,e)$ — are linearly independent over $K$, indexed by
+  the disjoint union $\bigsqcup_j \mathrm{Fs}_j$. This is the
+  specialized-to-full-rank matrix of the reverse half: setting the block-$j$
+  variable $X_{e,j}$ to $1$ on $\mathrm{Fs}_j$ and $0$ elsewhere turns each generic
+  $k$-frame row into exactly this block-single row.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Each block $j$ is the signed-incidence matrix of the forest $\mathrm{Fs}_j$,
+  whose rows are linearly independent over any field (the cycle-matroid
+  representation restricted to an acyclic set,
+  $\mathtt{Graph.orientation.isAcyclicSet\_linearIndepOn}$). A family supported on
+  disjoint blocks with each block independent is independent
+  ($\mathtt{Pi.linearIndependent\_single}$).
+\end{proof}
+
 \begin{lemma}[Forest decomposition $\Rightarrow$ generic independence]
   \label{lem:k-frame-specialize-forest}
-  \uses{def:k-frame-matroid}
+  \uses{def:k-frame-matroid, lem:k-frame-specialize-li}
   Conversely, suppose $E' \subseteq E(G)$ decomposes as
   $E' = \bigsqcup_{j} E'_j$ with each $G \restriction E'_j$ a forest
   (equivalently, the union-side count holds on $E'$). Setting the block-$j$

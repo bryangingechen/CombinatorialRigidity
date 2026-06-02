@@ -291,4 +291,39 @@ theorem forest_count_of_linearIndepOn_kFrameRow [Finite β] {E' : Set β}
 
 end Forward
 
+section Reverse
+
+open Submodule
+
+variable {G : Graph α β} {k : ℕ} {D : Graph.orientation G}
+
+/-- **Block-diagonal specialization of the `k`-frame rows on a forest packing**
+(`lem:k-frame-specialize-forest`, the linear-algebra core of the reverse half of Whiteley §2.1).
+Given a `k`-tuple of acyclic bar sets `Fs : Fin k → Set β` (a forest packing), the rows obtained
+by placing, for a bar `e ∈ Fs j`, the signed incidence row `signedIncMatrix D e` in block `j` and
+`0` elsewhere — i.e. `Pi.single j (signedIncMatrix D e)` — are linearly independent over
+`KFrameField β k`, indexed by the disjoint union `Σ j, ↥(Fs j)`.
+
+This is the specialized-to-full-rank matrix of the reverse half: setting the block-`j`
+indeterminate `X_{(e,j)}` to `1` on `Fs j` and `0` elsewhere turns each generic `k`-frame row
+`kFrameRow k D e` into exactly this block-`single` row, and the resulting block-diagonal matrix
+has full row rank because each block is the signed-incidence matrix of a forest
+(`Graph.orientation.isAcyclicSet_linearIndepOn`, linearly independent), assembled across blocks by
+`Pi.linearIndependent_single`. The remaining reverse step (a specialization of full rank witnesses
+generic linear independence over `K`) is a follow-up node. -/
+theorem specRow_linearIndependent (Fs : Fin k → Set β) (hFs : ∀ j, G.IsAcyclicSet (Fs j)) :
+    letI : DecidableEq α := Classical.decEq α
+    letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
+    LinearIndependent (KFrameField β k)
+      (fun ji : Σ j : Fin k, (Fs j : Set β) ↦
+        (Pi.single ji.1 (D.signedIncMatrix (KFrameField β k) (ji.2 : β)) :
+          Fin k → α → KFrameField β k)) :=
+  letI : DecidableEq α := Classical.decEq α
+  letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
+  Pi.linearIndependent_single
+    (fun (j : Fin k) (e : (Fs j : Set β)) ↦ D.signedIncMatrix (KFrameField β k) (e : β))
+    (fun j ↦ D.isAcyclicSet_linearIndepOn (𝔽 := KFrameField β k) (hFs j))
+
+end Reverse
+
 end Graph
