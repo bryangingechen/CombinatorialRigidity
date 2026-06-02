@@ -41,20 +41,35 @@ Populated up front per `CLEANUP.md` *Workflow* rule 2 (sweep findings
 seeded from the opening grep; verify-and-fix in subsequent commits).
 
 ### A. Blueprint ↔ Lean divergence (body-bar.tex tree-packing subsection)
-- [ ] **A1** `def:graph-sparse` (`\lean{Graph.IsSparse, Graph.IsTight}`)
-  — compare blueprint statement form vs the Lean signatures
-  (edge-subset-indexed, `Set`-side, additive count).
-- [ ] **A2** `thm:unionPow-cycle-indep-iff-sparse`
-  (`Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict`) — pointer
-  resolves + statement form (the `restrict`/`E' ⊆ E(G)` shape).
-- [ ] **A3** `thm:tutte-nash-williams` (`Graph.tutte_nash_williams`) —
-  forest-packing predicate form; prose proof (disjointify aside?).
-- [ ] **A4** `cor:k-spanning-trees`
-  (`Graph.isSpanningTreePacking_of_isTight`) — verify the **connectivity
-  hypothesis** added in Phase 13 (Decisions: per-copy maximal-acyclic-set
-  + `hconn : G.Connected`) is reflected in the blueprint statement/prose.
-- [ ] **A5** Scan all four prose proofs for "formalization aside"
-  remarks → attempt Lean simplification before letting any stand.
+**No-op (this commit).** All four nodes' blueprint statements faithfully
+match their Lean signatures; no formalization asides to discharge.
+- [x] **A1** `def:graph-sparse` (`\lean{Graph.IsSparse, Graph.IsTight}`)
+  — match. Blueprint phrases the bound subtractively (`|E'| ≤ k|V'| - ℓ`,
+  global `|E| = k|V| - ℓ`); Lean is the additive `Set`-side form
+  (`E'.ncard + ℓ ≤ k * (spanningVerts E').ncard`,
+  `E(G).ncard + ℓ = k * V(G).ncard`), edge-subset-indexed
+  (`∀ E' ⊆ E(G)`), with the additive phrasing already noted in the Lean
+  doc-comment. Standard math gloss, not a divergence.
+- [x] **A2** `thm:unionPow-cycle-indep-iff-sparse`
+  (`Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict`) — match.
+  Pointer resolves; the `restrict`/`E' ⊆ E(G)` shape (`hE' : E' ⊆ E(G)`,
+  conclusion `… .Indep E' ↔ (G ↾ E').IsSparse k k`) is reflected by
+  "a set of bars `E' ⊆ E(G)` … iff `G` restricted to that set is
+  `(k,k)`-sparse".
+- [x] **A3** `thm:tutte-nash-williams` (`Graph.tutte_nash_williams`) —
+  match. `G.IsForestPacking k ↔ G.IsSparse k k`; the disjointify remark
+  ("an acyclic cover disjointifies … a disjoint cover is a cover") is a
+  math statement faithful to the `Fintype.exists_disjointed_le` step, not
+  a Lean-cost gloss.
+- [x] **A4** `cor:k-spanning-trees`
+  (`Graph.isSpanningTreePacking_of_isTight`) — match. The Phase-13
+  connectivity hypothesis IS reflected: blueprint "If `G` is connected
+  and `(k,k)`-tight …" ↔ Lean `(hconn : G.Connected) (htight : G.IsTight
+  k k)`; the per-copy maximal-acyclic-set count argument is the proof
+  prose verbatim.
+- [x] **A5** No "formalization aside" remarks anywhere in the
+  tree-packing subsection (grep: only intro/preamble `formalized`/`Lean`
+  mentions, no proof-level asides). Nothing to simplify.
 
 ### B. Code-smell sweep (TreePacking.lean + Phase-13 Union.lean additions)
 - [ ] **B1** `classical` × 4 in TreePacking (L69, 319, 433, 483) +
@@ -102,16 +117,25 @@ seeded from the opening grep; verify-and-fix in subsequent commits).
   indexed elsewhere to `FRICTION-archive.md`.
 
 ## Decisions made during this round
-<to be filled as the round proceeds>
+
+- **A (blueprint↔Lean divergence) — no-op.** All four tree-packing
+  nodes' blueprint statements faithfully match their Lean signatures
+  (A1–A4); no formalization asides exist in the subsection (A5). Detail
+  per-task in the checklist above. The subtractive-vs-additive phrasing
+  of `def:graph-sparse` is the intended math gloss (Lean doc-comment
+  already flags the additive `Set`-side form), not drift. No `\lean{...}`
+  pointer touched, so no `checkdecls` run needed this commit.
 
 ## Blockers / open questions
-- None at open.
+- None.
 
 ## Hand-off / next phase
 
-**Round just opened (this commit).** Next concrete commit: run **audit
-category A** (blueprint↔Lean divergence, tasks A1–A5) over the four
-`body-bar.tex` tree-packing nodes; fix any divergence in the same
-commit, or record A as no-op in *Decisions made*. No-op categories may
-be batched (see *Scope* → Batching). The round closes by flipping the
-ROADMAP Status row to ✓ and writing what (if anything) carried over.
+**Clean handoff.** Audit category A is closed (no-op, recorded above).
+Next concrete commit: run **audit category B** (code-smell sweep over
+`TreePacking.lean` + the Phase-13 `Union.lean` adders, tasks B1–B5);
+the seeded checklist expects mostly no-op (`classical`/`haveI` are the
+documented `[Finite]`-bridge idiom). Per *Scope* → Batching, B and C
+no-ops may be batched into a single commit. The round closes (likely
+that same commit or the D-compression commit) by flipping the ROADMAP
+Status row to ✓ and writing what (if anything) carried over.
