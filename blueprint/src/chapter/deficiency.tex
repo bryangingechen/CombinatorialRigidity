@@ -201,9 +201,32 @@ phase proceeds, leaf-first.
 \subsection{The deficiency \texorpdfstring{$=$}{=} corank bridge}
 \label{sec:molecular-deficiency-bridge}
 
+\begin{lemma}[Rank upper bound for $M(\tilde G)$]
+  \label{lem:rank-matroidMG-le}
+  \lean{Graph.rank_matroidMG_le}
+  \leanok
+  \uses{def:matroid-MG}
+  For a multigraph $G$ with $V(G) \ne \emptyset$,
+  \[
+    \operatorname{rank} M(\tilde G) \;\le\; D\,(|V(G)| - 1).
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  Every base $B$ of $M(\tilde G)$ is independent, hence (boundary-regime
+  cleanliness, \cref{def:matroid-MG}) the bar set $B$ is $(D,D)$-sparse
+  in $\tilde G$. Applying sparsity to $B$ itself gives $|B| + D \le D
+  \cdot |V'|$, where $V' \subseteq V(\tilde G) = V(G)$ are the vertices
+  $B$ spans; since $|V'| \le |V(G)|$ and $|V(G)| \ge 1$, this rearranges
+  to $|B| \le D\,(|V(G)| - 1)$. This is the matroidal upper-bound half of
+  \cref{thm:def-eq-corank} (the codimension fact $\operatorname{rank} R
+  \le D(|V|-1)$ on the analytic side,
+  \cref{sec:molecular-rigidity-matrix}).
+\end{proof}
+
 \begin{theorem}[$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$; Jackson--Jord\'an]
   \label{thm:def-eq-corank}
-  \uses{def:D-deficiency, def:matroid-MG}
+  \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le}
   For any base $B$ of $M(\tilde G)$,
   \[
     |B| + \operatorname{def}(\tilde G) \;=\; D\,(|V| - 1),
@@ -220,10 +243,13 @@ phase proceeds, leaf-first.
   formula of Edmonds (\cref{sec:matroid-union}); the corank against the
   ambient $D(|V|-1)$ is exactly the deficiency maximised over
   partitions. The conjecture (Theorem~5.6) needs only the upper-bound
-  half of the generic-rank identity, which the body-hinge reduction of
-  \cref{thm:body-hinge-tay} already supplies; the prove-vs-hypothesize
-  boundary for the full Jackson--Jord\'an~\cite{jacksonJordan2009}
-  identity is decided when this node lands.
+  half $\operatorname{rank} M(\tilde G) \le D(|V|-1)$, which is
+  \cref{lem:rank-matroidMG-le} (matching, on the matroidal side, the
+  body-hinge reduction of \cref{thm:body-hinge-tay}); the
+  prove-vs-hypothesize boundary for the reverse direction of the full
+  Jackson--Jord\'an~\cite{jacksonJordan2009} min--max identity --- the
+  partition attaining the rank --- is therefore deferred until a
+  downstream node needs the full equality rather than the upper bound.
 \end{proof}
 
 This bridge closes the reconciliation node deferred from Phase~18:

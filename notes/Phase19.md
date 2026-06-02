@@ -1,8 +1,10 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
-**Status:** in progress (all four definition nodes + three structural lemmas landed:
-`lem:matroid-restrict-subgraph`, `lem:subgraph-minimality` (KT 3.3),
-`lem:two-edge-conn` (KT 3.1, cut form); `lem:circuit-rigid` + `thm:def-eq-corank` next).
+**Status:** in progress (all four definition nodes + three structural lemmas
++ the rank upper bound landed: `lem:matroid-restrict-subgraph`,
+`lem:subgraph-minimality` (KT 3.3), `lem:two-edge-conn` (KT 3.1, cut form),
+`lem:rank-matroidMG-le` (conjecture-relevant half of `thm:def-eq-corank`);
+`lem:circuit-rigid` + the full `thm:def-eq-corank` equality next).
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -81,7 +83,17 @@ two-part partition (`Graph.cutLabeling` / `Graph.numParts_cutLabeling`), so `def
 only `D = bodyBarDim n ≥ 1`. No new graph machinery — runs entirely on the green
 deficiency-attainment API.
 
-Next concrete step: `lem:circuit-rigid` (KT 3.4) and the bridge `thm:def-eq-corank`.
+The rank upper bound `lem:rank-matroidMG-le` (`Graph.rank_matroidMG_le`) is now green:
+`rank M(G̃) ≤ D·(|V(G)| - 1)` for `V(G).Nonempty`. Via `Matroid.rank_def` + `rk_le_iff`,
+every independent `I ⊆ E(G̃)` is `(D,D)`-sparse (`matroidMG_indep_iff`); applying sparsity
+to `I` itself gives `|I| + D ≤ D·|spanningVerts I| ≤ D·|V|`, hence `|I| ≤ D(|V|-1)`. This is
+the matroidal mirror of Phase 18's analytic `rank R ≤ D(|V|-1)` and the **upper-bound half**
+of the def = corank bridge that the conjecture (Thm 5.6) needs. The prove-vs-hypothesize
+decision (risk #4): the reverse direction of the full JJ09 min–max (a partition attaining the
+rank) is **deferred** until a downstream node needs the full equality, since the conjecture
+needs only this upper bound — so `thm:def-eq-corank` (full equality) stays red.
+
+Next concrete step: `lem:circuit-rigid` (KT 3.4) and the full `thm:def-eq-corank` equality.
 
 ## Architectural choices made up front
 
@@ -123,7 +135,11 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   mathlib's `Matroid.IsCircuit`; 2-edge-connectivity deferred to
   `lem:two-edge-conn`). (`Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`.)
 - [ ] `thm:def-eq-corank` — the def = corank bridge (JJ09 Thm 6.1 /
-  Cor 6.2): `|B| + def(G̃) = D(|V|−1)`.
+  Cor 6.2): `|B| + def(G̃) = D(|V|−1)`. Full equality still red; the
+  conjecture-relevant upper-bound half is `lem:rank-matroidMG-le` below.
+- [x] `lem:rank-matroidMG-le` — the rank upper bound `rank M(G̃) ≤ D(|V|−1)`
+  (`Graph.rank_matroidMG_le`), the conjecture-relevant half of the bridge:
+  every base is `(D,D)`-sparse, so `|B| + D ≤ D·|spanningVerts B| ≤ D·|V|`.
 - [x] `lem:two-edge-conn` — KT Lemma 3.1 (2-edge-connectivity, cut form):
   `Graph.two_le_crossingEdges_of_isKDof_zero` (+ `cutLabeling` / `numParts_cutLabeling`).
   A `0`-dof graph has `d_G(V') ≥ 2` for every separating `V' ⊊ V(G)`.
@@ -230,6 +246,15 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   just the rigid `k'=0` specialization. *Lifted:* the `edgeMultiply.IsLink`
   defeq-ascription lesson → FRICTION.
 
+- **`thm:def-eq-corank` split: prove the upper bound, defer the JJ09 reverse (risk #4).**
+  The full equality `|B| + def(G̃) = D(|V|−1)` is a min–max duality (Edmonds rank over
+  edge-subsets vs deficiency over vertex-partitions) — the hard JJ09 generic-rank content.
+  Per risk #4 the conjecture (Thm 5.6) needs only the **upper-bound half**
+  `rank M(G̃) ≤ D(|V|−1)`, which landed as `lem:rank-matroidMG-le` (`Matroid.rank_def` +
+  `rk_le_iff` + `matroidMG_indep_iff` sparsity, applied to the base itself). Decision: keep
+  `thm:def-eq-corank` (full equality) red; the reverse direction (a partition attaining the
+  rank) is deferred until a downstream node demands the full equality rather than the bound.
+
 ## Blockers / open questions
 
 - ~~**Boundary regime `ℓ = 2k = D`** (risk #2)~~: **resolved** by
@@ -237,43 +262,40 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   Tutte–Nash-Williams covers the boundary regime cleanly; no
   `CountMatroid.lean` (`ℓ < 2k`) involvement.
 - **Externals: prove vs hypothesize** (risk #4): JJ09 Thm 6.1 /
-  Cor 6.2 generic-rank bridge — re-confirm per node whether to
-  formalize or take as a hypothesis. The conjecture needs only the
-  upper-bound half.
+  Cor 6.2 generic-rank bridge — the **upper-bound half** is now proved
+  (`lem:rank-matroidMG-le`, `rank M(G̃) ≤ D(|V|−1)`); the reverse
+  direction of the full min–max equality is **deferred** until a
+  downstream node needs the full `def = corank` rather than the bound.
+  The conjecture (Thm 5.6) needs only the upper-bound half.
 
 ## Hand-off / next phase
 
 All four definition nodes of `deficiency.tex` are green in `Molecular/Deficiency.lean`
 (`Graph.matroidMG` / `matroidMG_indep_iff`; `Graph.partitionDef` / `Graph.deficiency` /
 `numParts` / `crossingEdges` / `partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` /
-`Graph.IsMinimalKDof`; `Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`), plus three
+`Graph.IsMinimalKDof`; `Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`), plus four
 structural lemmas: the restriction identity `matroidMG_restrict_mulTilde`
 (`lem:matroid-restrict-subgraph`), the full KT 3.3 node `subgraph_minimality`
-(`lem:subgraph-minimality`), and the KT 3.1 cut-form node
+(`lem:subgraph-minimality`), the KT 3.1 cut-form node
 `two_le_crossingEdges_of_isKDof_zero` (`lem:two-edge-conn`, with `cutLabeling` /
-`numParts_cutLabeling`). The deficiency-attainment API
+`numParts_cutLabeling`), and the rank upper bound `rank_matroidMG_le`
+(`lem:rank-matroidMG-le`, the conjecture-relevant half of the corank bridge). The
+deficiency-attainment API
 (`bddAbove_range_partitionDef` / `partitionDef_le_deficiency` / `deficiency_nonneg`) is
 also in place — the `iSup`-model `deficiency` is now a usable attained max, and "a partition
 witnesses a deficiency lower bound" is one `partitionDef_le_deficiency` call.
 
-The two remaining nodes are `lem:circuit-rigid` (KT 3.4) and the bridge `thm:def-eq-corank`.
-Likely-cost note: `lem:circuit-rigid`
-concludes `def(H̃) = 0` (rigid), which is awkward to reach from "circuit ⇒ sparse" without
-either the corank bridge or a direct partition argument — so `thm:def-eq-corank` may need to
-land first (it gives `def = corank`, turning a `(D,D)`-tight subgraph directly into `def = 0`).
-In rough order of likely cost:
-- `lem:circuit-rigid` (KT 3.4: the edge set of a circuit `X` of `M(G̃)` spans a rigid
-  subgraph `G[V(X)]`; more precisely `X − e` partitions into `D` spanning trees on `V(X)`
-  for any `e ∈ X`). Needs a *vertex-induced-subgraph from an edge set* construction — map
-  a circuit `X ⊆ E(G̃)` back to a subgraph of `G` and show it is `0`-dof. New machinery;
-  the matroid argument itself (`|X| > D(|V(X)|−1)`, `X−e` independent ⇒ `|X−e| =
-  D(|V(X)|−1)` ⇒ base ⇒ rigid) is short once the subgraph is in hand.
-- `lem:two-edge-conn` (KT 3.1) needs a 2-edge-connectivity notion on the multigraph
-  `Graph α β`, which mathlib has only for `SimpleGraph`; scope carefully (likely a project
-  def, or phrase directly via `dG(V') ≤ 1` partition contradiction without a named
-  connectivity predicate — KT's proof only uses the partition `{V', V∖V'}`).
-- the bridge `thm:def-eq-corank` (decide prove-vs-hypothesize for the JJ09 generic-rank
-  half per risk #4).
+The two remaining nodes are `lem:circuit-rigid` (KT 3.4) and the **full** equality
+`thm:def-eq-corank` (its conjecture-relevant upper-bound half is now green as
+`lem:rank-matroidMG-le`). Smallest next commit: `lem:circuit-rigid` (KT 3.4: the edge set of
+a circuit `X` of `M(G̃)` spans a rigid subgraph `G[V(X)]`; more precisely `X − e` partitions
+into `D` spanning trees on `V(X)` for any `e ∈ X`). It needs a *vertex-induced-subgraph from
+an edge set* construction — map a circuit `X ⊆ E(G̃)` back to a subgraph of `G` and show it is
+`0`-dof. New machinery; the matroid argument (`|X| > D(|V(X)|−1)`, `X−e` independent ⇒
+`|X−e| = D(|V(X)|−1)` ⇒ base ⇒ rigid) is short once the subgraph is in hand. Note its
+conclusion `def(H̃) = 0` may still want the *full* `thm:def-eq-corank` (not just the upper
+bound) to turn `(D,D)`-tightness into `def = 0` cleanly, or a direct partition argument; if so,
+the full bridge's reverse (JJ09 min–max, risk #4) lands first.
 
 Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once `M(G̃)`, deficiency,
 and the def = corank bridge are all green.

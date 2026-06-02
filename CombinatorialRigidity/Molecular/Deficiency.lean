@@ -65,9 +65,19 @@ leaf node landing here:
   `numParts_cutLabeling`) would otherwise witness `def ≥ D - (D-1)·d_G(V') ≥ 1 > 0`
   through `partitionDef_le_deficiency`, contradicting `def = 0`.
 
+* `rank_matroidMG_le` (`lem:rank-matroidMG-le`, the conjecture-relevant half of
+  `thm:def-eq-corank`) — the rank upper bound `rank M(G̃) ≤ D·(|V(G)| - 1)` for
+  `V(G).Nonempty`. Every base is `(D,D)`-sparse (boundary-regime cleanliness), so
+  applying sparsity to the base itself gives `|B| + D ≤ D·|spanningVerts B| ≤ D·|V|`,
+  i.e. `|B| ≤ D(|V|-1)`. This is the matroidal mirror of Phase 18's analytic
+  `rank R(G,p) ≤ D(|V|-1)`; it is the upper-bound half the molecular conjecture
+  (Thm 5.6) needs from the def = corank bridge — the reverse direction of the full
+  Jackson–Jordán min–max identity (the partition attaining the rank) is deferred until
+  a downstream node needs the full equality (risk #4, prove-vs-hypothesize).
+
 See `ROADMAP.md` §19 / `notes/Phase19.md` and the `sec:molecular-deficiency`
 dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining nodes (KT Lemma 3.4
-`lem:circuit-rigid`, and the bridge `thm:def-eq-corank`) land in subsequent commits.
+`lem:circuit-rigid`, and the full bridge `thm:def-eq-corank`) land in subsequent commits.
 -/
 
 namespace Graph
@@ -431,5 +441,32 @@ theorem two_le_crossingEdges_of_isKDof_zero [Finite α] {G : Graph α β} {n : �
   have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
   nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ (bodyBarDim n : ℤ) - 1)
     (by linarith : (0:ℤ) ≤ 1 - ((G.crossingEdges (cutLabeling V' a b)).ncard : ℤ))]
+
+/-! ## The rank upper bound (`thm:def-eq-corank`, conjecture-relevant half) -/
+
+theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)
+    (hne : V(G).Nonempty) :
+    (G.matroidMG n).rank ≤ bodyBarDim n * (V(G).ncard - 1) := by
+  rw [Matroid.rank_def, Matroid.rk_le_iff]
+  intro I hIsub hIndep
+  rw [matroidMG_indep_iff] at hIndep
+  obtain ⟨hsub, hsparse⟩ := hIndep
+  rcases I.eq_empty_or_nonempty with rfl | hIne
+  · simp
+  -- Apply `(D,D)`-sparsity to `I` itself (`E(G̃ ↾ I) = I`): `|I| + D ≤ D·|spanningVerts I|`.
+  have hIedge : E(G.mulTilde n ↾ I) = I := by rw [edgeSet_restrict, inter_eq_right.mpr hsub]
+  have hkey := hsparse I hIedge.ge hIne
+  -- The spanned vertices sit inside `V(G̃ ↾ I) = V(G̃) = V(G)`, so their count is `≤ |V|`.
+  have hspanV : (G.mulTilde n ↾ I).spanningVerts I ⊆ V(G) := by
+    refine ((G.mulTilde n ↾ I).spanningVerts_subset_vertexSet I).trans ?_
+    rw [vertexSet_restrict]; exact subset_rfl
+  have hcardV : ((G.mulTilde n ↾ I).spanningVerts I).ncard ≤ V(G).ncard :=
+    Set.ncard_le_ncard hspanV V(G).toFinite
+  -- `1 ≤ |V|` (nonempty), so `D·(|V|-1) = D·|V| - D` and the bound `|I| + D ≤ D·|V|` rearranges.
+  have hV1 : 1 ≤ V(G).ncard := hne.ncard_pos
+  calc I.ncard ≤ bodyBarDim n * V(G).ncard - bodyBarDim n := by
+        have := Nat.mul_le_mul_left (bodyBarDim n) hcardV
+        omega
+    _ = bodyBarDim n * (V(G).ncard - 1) := by rw [Nat.mul_sub, Nat.mul_one]
 
 end Graph
