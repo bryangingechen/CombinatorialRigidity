@@ -23,9 +23,10 @@ combinatorial rigidity, see
 
 \subsection*{Phase plan}
 
-The Lean code is organized into fifteen phases, tracked in
+The Lean code is organized into sixteen phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--15 are complete (see the phase bullets below). The first six
+Phases~1--15 are complete and Phase~16 is in progress (see the phase
+bullets below). The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
 \texttt{Matroid}: first combinatorially, via the Lov\'asz--Yemini
@@ -39,7 +40,9 @@ accept and reject branches. Phases~12--15 build, bottom-up, toward
 Tay's body-bar theorem: the abstract matroid-union machinery
 (Phase~12), Tutte--Nash-Williams tree-packing (Phase~13), the
 $k$-frame matroid as a cycle-matroid union (Phase~14), and Tay's
-theorem itself (Phase~15). The per-phase breakdown:
+theorem itself (Phase~15). Phase~16 extends the body-bar theorem to
+the body-hinge / panel-hinge Tay--Whiteley theorem via a
+hinge-to-body-bar reduction. The per-phase breakdown:
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -144,6 +147,23 @@ theorem itself (Phase~15). The per-phase breakdown:
         (Proposition~6 in~\cite{whiteley1988}). (Chapter:
         \cref{sec:body-bar}; files:
         \texttt{BodyBar/\{Framework,TayTheorem\}.lean}.)
+  \item \textbf{Body-hinge Tay--Whiteley theorem.} The body-hinge
+        (panel-hinge) theorem in $n$-space (Tay~1989~\cite{tay1989},
+        Whiteley~\cite{whiteley1988}), existence-of-realization form,
+        \emph{via the matroid-union reduction to Phase~15}. A hinge ---
+        an $(n-2)$-dimensional affine subspace --- constrains all but
+        one of the $\delta = n(n+1)/2$ relative screw freedoms of the
+        two bodies it joins, so it behaves like a bundle of
+        $\delta - 1$ coincident body-bars; a body-hinge framework on
+        $G$ is the induced body-bar framework on $(\delta-1)\cdot G$
+        (each hinge replaced by $\delta - 1$ parallel bars), and the
+        characterization --- $G$ carries an independent (resp.\
+        isostatic) body-hinge framework iff $(\delta-1)\cdot G$ is
+        $(\delta,\delta)$-sparse (resp.\ tight) --- reduces node-for-node
+        to \cref{thm:tay-witness} on $(\delta-1)\cdot G$. The
+        $(\delta-1)\cdot G$ device is the multiplied graph of the
+        molecular conjecture~\cite{katohTanigawa2011}. (Chapter:
+        \cref{sec:body-hinge}; file: \texttt{BodyBar/BodyHinge.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -161,6 +181,10 @@ warmup (\cref{sec:dfs}), the pebble-game chapter
 chapter (\cref{sec:matroid-union}), and the full body-bar chapter
 (\cref{sec:body-bar}) --- Tutte--Nash-Williams tree-packing, the
 $k$-frame matroid as a cycle-matroid union, and Tay's body-bar theorem
-itself (\cref{thm:tay-witness}). With Phase~15 complete the entire
-dependency graph is green; the natural follow-on (body-hinge /
-panel-hinge, then the molecular conjecture) is not yet opened.
+itself (\cref{thm:tay-witness}). With Phase~15 complete the Phase~1--15
+dependency graph is green. Phase~16 (\cref{sec:body-hinge}) is in
+progress in forward mode: its nodes --- the hinge-to-body-bar reduction
+and the body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}) ---
+are red until their Lean lands, and the chapter's dep-graph is the
+live to-do list. The longer-horizon molecular conjecture
+(\cref{sec:body-hinge}, closing remark) is not yet opened.

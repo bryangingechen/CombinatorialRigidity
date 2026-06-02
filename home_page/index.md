@@ -22,7 +22,9 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 ## Project status
 
 Phases 1–15 are complete and carry no `sorry`s; **the body-bar
-program (Phases 12–15) lands Tay's theorem**, see below. The main theorem
+program (Phases 12–15) lands Tay's theorem**, and **Phase 16 (in
+progress)** extends it to the body-hinge / panel-hinge Tay–Whiteley
+theorem — see below. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
@@ -81,7 +83,21 @@ a multigraph carries an independent (resp. isostatic) body-bar framework
 in `ℝⁿ` iff it is `(d,d)`-sparse (resp. `(d,d)`-tight), `d = n(n+1)/2` —
 the standard-basis witness for existence, the block-diagonal rank-upper-bound
 for the converse (the algebraic-geometry lift to "almost all realizations
-are rigid" deferred). The longer-horizon target beyond is the
+are rigid" deferred).
+
+**Phase 16 (in progress)** extends this to the **body-hinge /
+panel-hinge Tay–Whiteley theorem** (Tay 1989, Whiteley 1988),
+existence-of-realization form, **via the matroid-union reduction to
+Phase 15**. A hinge in `ℝⁿ` is an `(n−2)`-dimensional affine subspace
+(a pin-joint in 2-space, a line-hinge in 3-space) that constrains all
+but one of the `δ = n(n+1)/2` relative screw freedoms of the two bodies
+it joins, so it behaves like a bundle of `δ−1` coincident body-bars.
+A body-hinge framework on `G` is therefore the induced body-bar
+framework on `(δ−1)·G` (each hinge replaced by `δ−1` parallel bars),
+and the target — `G` carries an independent (resp. isostatic)
+body-hinge framework iff `(δ−1)·G` is `(δ,δ)`-sparse (resp. tight) —
+reduces node-for-node to Phase 15's `tay_witness` on `(δ−1)·G`. The
+`(δ−1)·G` device is the multiplied graph of the longer-horizon
 **molecular conjecture** (Katoh–Tanigawa 2011).
 
 The development is divided into the phases below, with Lean source
@@ -107,6 +123,7 @@ existing files or refactor across several).
 |    13 | Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | ✓ |
 |    14 | k-frame = k-fold cycle union | `BodyBar/KFrame.lean` | ✓ |
 |    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | ✓ |
+|    16 | Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` (planned) | in progress |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

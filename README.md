@@ -22,9 +22,9 @@ pebble-game algorithms to return a verdict-bearing inductive carrying
 inline witnesses — a blocking subset `V'` on the `NOT_SPARSE` branch,
 the partial orientation `D` on the accept branches — and bumps the CLI
 to emit those witness lines alongside the trichotomy label, making the
-CLI's classification externally checkable. **Phases 12–15** (in
-progress) extend the development to higher-dimensional body-bar
-rigidity, targeting **Tay's theorem** (Tay 1984) — `G` admits an
+CLI's classification externally checkable. **Phases 12–15** (complete)
+extend the development to higher-dimensional body-bar rigidity,
+culminating in **Tay's theorem** (Tay 1984) — `G` admits an
 infinitesimally rigid body-bar framework in `Rⁿ` iff `G` is the
 edge-disjoint union of `d = n(n+1)/2` spanning trees — via Whiteley's
 matroid-union route (Whiteley 1988). The route is built bottom-up:
@@ -32,8 +32,14 @@ Phase 12 formalizes the abstract matroid-union / Edmonds-partition
 machinery locally (ported from the `apnelson1/Matroid` library),
 Phase 13 derives Tutte–Nash-Williams tree-packing, Phase 14 identifies
 the `k`-frame matroid with the `k`-fold cycle-matroid union, and
-Phase 15 assembles Tay's theorem. The longer-horizon target beyond is
-the **molecular conjecture** (Katoh–Tanigawa 2011).
+Phase 15 assembles Tay's theorem. **Phase 16** (in progress) extends
+this to the **body-hinge / panel-hinge Tay–Whiteley theorem** (Tay
+1989, Whiteley 1988): a hinge behaves like a bundle of `δ−1` coincident
+body-bars (`δ = n(n+1)/2`), so a body-hinge framework on `G` reduces to
+a body-bar framework on `(δ−1)·G` (each hinge replaced by `δ−1`
+parallel bars), and the rigidity characterization reduces to Phase 15
+on `(δ−1)·G`. The longer-horizon target beyond is the **molecular
+conjecture** (Katoh–Tanigawa 2011).
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -49,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–15 complete.**
+* **Phases 1–15 complete; Phase 16 in progress.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -119,8 +125,23 @@ project; commit history is preserved with paths rewritten.
     Phase 14's `k`-frame forward count). `BodyBar/{Framework,TayTheorem}.lean`.
     See `notes/Phase15.md`. Whiteley's full
     "almost-all-realizations-are-rigid" lift via irreducible-variety
-    machinery (Proposition 6) is deferred. The longer-horizon target
-    beyond is the **molecular conjecture** (Katoh–Tanigawa 2011).
+    machinery (Proposition 6) is deferred.
+* **Phase 16 (in progress)** — the **body-hinge / panel-hinge
+  Tay–Whiteley theorem** (Tay 1989, Whiteley 1988), existence-of-
+  realization form, **via the matroid-union reduction to Phase 15**. A
+  hinge in `ℝⁿ` is an `(n−2)`-dimensional affine subspace (a pin-joint
+  in 2-space, a line-hinge in 3-space) that constrains all but one of
+  the `δ = n(n+1)/2` relative screw freedoms of the two bodies it
+  joins, so it behaves like a bundle of `δ−1` coincident body-bars.
+  Target: `G` carries an independent (resp. isostatic) body-hinge
+  framework in `ℝⁿ` iff `(δ−1)·G` (each hinge replaced by `δ−1`
+  parallel bars) is `(δ,δ)`-sparse (resp. tight) — reducing
+  node-for-node to Phase 15's `tay_witness` on `(δ−1)·G`. The `(δ−1)·G`
+  device is exactly the multiplied graph in Katoh–Tanigawa 2011's
+  molecular-conjecture statement, the longer-horizon target beyond.
+  Forward-mode phase; the new chapter `body-hinge.tex` is the
+  authoritative dep-graph. `BodyBar/BodyHinge.lean` (planned). See
+  `notes/Phase16.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

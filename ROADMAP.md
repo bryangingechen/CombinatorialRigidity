@@ -103,6 +103,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-14) | Phase 14 surface (`BodyBar/KFrame.lean`, Phase-14 `Mathlib/LinearAlgebra/Matrix/Rank.lean` adders, `body-bar.tex` `sec:body-bar-k-frame` nodes) | ✓ Complete (see `notes/Phase14-cleanup.md`; round manual: `CLEANUP.md`) |
 | 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | ✓ Complete (was Phase 12; see `notes/Phase15.md`) |
 | ⋮ Cleanup round (post-Phase-15) | Phase 15 surface (`BodyBar/{Framework,TayTheorem}.lean`, `body-bar.tex` `sec:body-bar-framework` + `sec:body-bar-tay` nodes) | ✓ Complete (see `notes/Phase15-cleanup.md`; round manual: `CLEANUP.md`) |
+| 16. Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` (planned) | In progress (see `notes/Phase16.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -490,9 +491,43 @@ inline (degenerate permitted, standard-basis witness only). Whiteley's
 map + decisions in `notes/Phase15.md` and the `sec:body-bar-framework` +
 `sec:body-bar-tay` dep-graph of `body-bar.tex`.
 
-The natural follow-on is **Phase 16** (body-hinge / panel-hinge
-Tay–Whiteley) en route to a longer-horizon **Phase 17** target — the
-**molecular conjecture** (Katoh–Tanigawa 2011).
+### Phase 16 — Body-hinge Tay–Whiteley theorem (existence form)
+
+**Status (in progress; see `notes/Phase16.md`).** The natural follow-on
+to Phase 15's body-bar Tay theorem. Target: the **body-hinge /
+panel-hinge Tay–Whiteley theorem** in `n`-space (Tay 1989, Whiteley
+1988), existence-of-realization form, **via the matroid-union reduction
+to Phase 15**. A *hinge* in `ℝⁿ` is an `(n−2)`-dimensional affine
+subspace (a pin-joint in 2-space, a line-hinge in 3-space); it
+constrains all but one of the `δ = bodyBarDim n = n(n+1)/2` relative
+screw freedoms of the two bodies it joins, so it behaves like a bundle
+of `δ−1` coincident body-bars. The chapter therefore adds *no new
+linear algebra*: a body-hinge framework on `G` is defined as the induced
+body-bar framework on `(δ−1)·G` (each hinge replaced by `δ−1` parallel
+bars), and the target
+
+> a multigraph `G` carries an independent (resp. isostatic) body-hinge
+> framework in `ℝⁿ` iff `(δ−1)·G` is `(δ,δ)`-sparse (resp. tight) —
+> equivalently the edge-disjoint union of `δ` forests (resp. spanning
+> trees)
+
+reduces node-for-node to `Graph.BodyBarFramework.tay_witness` on
+`(δ−1)·G`. The `(δ−1)·G` parallel-edge-multiplication device is exactly
+the multiplied graph in Katoh–Tanigawa 2011's molecular-conjecture
+statement. Forward-mode phase; the authoritative dep-graph is the new
+blueprint chapter `body-hinge.tex` (`sec:body-hinge`). Carrier: mathlib
+core `Graph α β`; standard-basis witness only (degenerate permitted),
+matching Phase 15. Whiteley's "almost all realizations are rigid"
+irreducible-variety lift (deferred out of Phase 15) is re-assessed and
+remains deferred — the standard-basis witness on `(δ−1)·G` suffices for
+the existence form. Per-node lemma map + decisions: `notes/Phase16.md`
+and the `sec:body-hinge` dep-graph. Leaf-first hand-off: formalize
+`def:edge-multiply` (`(δ−1)·G`) first.
+
+The longer-horizon **Phase 17** target — not opened — is the
+**molecular conjecture** (panel-and-hinge with hinges at each body
+forced concurrent; Tay–Whiteley conjecture, proved by Katoh–Tanigawa
+2011).
 
 ## Engineering conventions
 
@@ -582,3 +617,10 @@ first.
 - W. Whiteley, *The union of matroids and the rigidity of frameworks*,
   SIAM J. Disc. Math. **1** (1988), 237–255. — matroid-union proof of
   Tay's theorem; the route Phase 12 follows.
+- T.-S. Tay, *Linking (n−2)-dimensional panels in n-space II:
+  (n−2,2)-frameworks and body and hinge structures*, Graphs Combin.
+  **5** (1989), 245–273. — body-and-hinge characterization; Phase 16
+  target.
+- N. Katoh, S. Tanigawa, *A proof of the molecular conjecture*, Discrete
+  Comput. Geom. **45** (2011), 647–700. — molecular conjecture; the
+  `(δ−1)·G` device and the longer-horizon Phase 17 target.
