@@ -1,8 +1,8 @@
 # Phase 17 — Grassmann–Cayley extensor algebra; Lemma 2.1 (work log)
 
-**Status:** in progress (§2.1 symbolic layer + Plücker bridge + `C(·)` landed:
-homogeneous coords, affine-indep bridge, extensor, join, Plücker coords,
-affine-subspace extensor green; Lemma 2.1 red — the last §2.1 node).
+**Status:** ✓ Complete. All §2.1 nodes green — homogeneous coords,
+affine-indep bridge, extensor, join, Plücker coords, affine-subspace extensor,
+and **Lemma 2.1** (`lem:extensor-independence`). Unblocks Phase 18.
 
 This phase opens the **molecular-conjecture program** (Phases 17–26).
 The program-level plan — target, source, five-strata architecture,
@@ -48,10 +48,10 @@ The **affine-subspace extensor `C(·)` has now also landed**:
   `AlternatingMap.map_linearDependent`; converse via mathlib's
   `exteriorPower.ιMulti_family_linearIndependent_field`).
 
-Six blueprint nodes are now green (`def:homogeneous-coords`,
+All seven §2.1 blueprint nodes are now green (`def:homogeneous-coords`,
 `lem:affine-indep-iff`, `def:extensor`, `def:join`, `def:plucker-coords`,
-`def:affine-subspace-extensor`). Only Lemma 2.1
-(`lem:extensor-independence`) is still red — the last §2.1 node.
+`def:affine-subspace-extensor`, `lem:extensor-independence`). **Lemma 2.1**
+(`omitTwoExtensor` + `omitTwoExtensor_linearIndependent`) closes Phase 17.
 
 **mathlib `ExteriorAlgebra` coverage question (Blockers) is settled:**
 mathlib's `Mathlib.LinearAlgebra.ExteriorPower.Basic` supplies everything
@@ -118,15 +118,30 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
       (`C(p) ≠ 0 ⇔ AffineIndependent ℝ p`). Built on the extensor ↔ LI
       iff `extensor_ne_zero_iff_linearIndependent` +
       `extensor_eq_zero_of_not_linearIndependent`.
-- [ ] `lem:extensor-independence` — **Lemma 2.1** (hard core): the
+- [x] `lem:extensor-independence` — **Lemma 2.1** (hard core):
+      `omitTwoExtensor` + `omitTwoExtensor_linearIndependent`. The
       `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1` affinely
       independent points are linearly independent. Proof joins the
-      dependence relation with a `2`-extensor to kill all but one term
-      (uses join-alternating + top-extensor ≠ 0).
+      dependence relation on the left with a `2`-extensor to kill all but
+      one term (off-diagonal: `join_pair_omitTwo_other_eq_zero` via
+      `extensor_eq_zero_of_not_injective`; diagonal:
+      `join_pair_omitTwo_self_ne_zero` via the `pairAppend` bijection +
+      `extensor_ne_zero_iff_linearIndependent`).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **Lemma 2.1: reparametrize `d = e+1` to clear `d−1` subtraction.**
+  Points are `Fin (e+2) → Fin (e+1) → ℝ`, omit-two extensors are
+  `e`-extensors (`omitTwoExtensor`, the extensor of `v` along
+  `({a,b}ᶜ).orderEmbOfFin`). Index the `D` extensors by increasing pairs
+  `{q : Fin(e+2)×Fin(e+2) // q.1<q.2}`; prove LI via
+  `Fintype.linearIndependent_iff` + left-multiply by the `2`-extensor.
+  Off-diagonal vanishing and diagonal nonvanishing are split into
+  `join_pair_omitTwo_{other_eq_zero,self_ne_zero}`; the diagonal reindex
+  is the `pairAppend` bijection (`Fin.append_injective_iff`). The
+  `{a,b}≠{c,d}` finset step routes through `Set.pair_eq_pair_iff` (no
+  `Finset` analogue — FRICTION [open]).
 - **`C(·)` is `extensor ∘ homogenize`, not a fresh join chain.** Since
   `join_extensor` already proves `extensor a ∨ₑ extensor b =
   extensor (a ++ b)`, the join `p̄₁ ∨ ⋯ ∨ p̄_k` *is* the extensor of the
@@ -186,33 +201,23 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 
 ## Hand-off / next phase
 
-Done: `def:homogeneous-coords`, `lem:affine-indep-iff`, `def:extensor`,
-`def:join`, `def:plucker-coords`, `def:affine-subspace-extensor` all
-landed in `CombinatorialRigidity/Molecular/Extensor.lean` (six
-`molecular.tex` nodes green; symbolic carrier settled on mathlib
-`ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`, Plücker bridge via signed `j×j`
-submatrix determinants on `coordMatrix`, `C(·) =
-affineSubspaceExtensor` as `extensor ∘ homogenize` with
-`affineSubspaceExtensor_ne_zero_iff`). Clean handoff point — one §2.1
-node (Lemma 2.1) left.
+**Phase 17 complete.** All seven §2.1 nodes are green in
+`CombinatorialRigidity/Molecular/Extensor.lean`: homogeneous coords +
+affine-indep bridge, the symbolic extensor/join on mathlib
+`ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`, the Plücker bridge (signed `j×j`
+submatrix determinants on `coordMatrix`), `C(·) = affineSubspaceExtensor`,
+and **Lemma 2.1** (`omitTwoExtensor` + `omitTwoExtensor_linearIndependent`,
+reparametrized `d = e+1`, indexed by increasing pairs). The proof joins on
+the left with the `2`-extensor and splits per-term vanishing into
+`join_pair_omitTwo_{other_eq_zero,self_ne_zero}` (the `pairAppend`
+bijection for the surviving diagonal term).
 
-Smallest next commit: land the hard core `lem:extensor-independence`
-(Lemma 2.1) — the `D = (d+1 choose 2)` many `(d-1)`-extensors obtained
-by omitting two of `d+1` affinely independent points are linearly
-independent in `⋀^(d-1) ℝ^(d+1)`. Now-green tooling to build on:
-join the dependence relation with the `2`-extensor `p̄_a ∨ₑ p̄_b`
-(`join`, `join_extensor`); every off-diagonal term repeats a vector so
-vanishes by `extensor_eq_zero_of_eq` (or `_of_not_injective`); the
-surviving diagonal term is `± extensor (homogenize ∘ p)` = the top
-extensor, nonzero by `extensor_ne_zero_iff_linearIndependent` +
-`affineIndependent_iff_linearIndependent_homogenize` (equivalently the
-determinant form `affineIndependent_fin_iff_det_homogenize`). Indexing
-the `D` extensors by unordered pairs `{a,b} ⊆ Fin (d+1)` (a
-`Sym2`/`Finset.powersetCard 2` or `{p : Fin(d+1)×Fin(d+1) // p.1<p.2}`
-choice) and stating the omit-two family is the first design call —
-expect that to be the bulk of the work, not the per-term vanishing.
-Closing this node closes Phase 17.
-
-Phase 17 completes when `lem:extensor-independence` (Lemma 2.1) is green;
-that unblocks Phase 18 (panel-hinge rigidity matrix) and is the
-linear-algebra foundation Case III (Phase 22/23) bottoms out on.
+Next phase is **Phase 18** (panel-hinge rigidity matrix `R(G,p)`, rank
+Lemmas 5.1–5.3, reconciliation with Phase 16's reduction-form Prop 1.1;
+KT §2.2–2.4). No chapter opened yet. First concrete commit: create
+`notes/Phase18.md` from the template, open the Phase-18 blueprint chapter
+(forward mode), and pick its leaf-most red node. See
+`notes/MolecularConjecture.md` for the per-phase detail and the reuse map
+(Lemma 2.1 is consumed by Case III, Phases 22–23). Phase 17's
+`extensor` / `join` / `pluckerVector` / `affineSubspaceExtensor` are the
+building blocks Phase 18's rigidity matrix is assembled from.

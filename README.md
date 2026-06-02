@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–16 complete; Phase 17 in progress.**
+* **Phases 1–17 complete; Phases 18–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -144,7 +144,7 @@ project; commit history is preserved with paths rewritten.
   molecular-conjecture statement, the longer-horizon target beyond.
   Forward-mode phase; the chapter `body-hinge.tex` is the authoritative
   dep-graph. `BodyBar/BodyHinge.lean`. See `notes/Phase16.md`.
-* **Phase 17 (in progress)** — opens the longer-horizon **molecular
+* **Phase 17 (complete)** — opens the longer-horizon **molecular
   conjecture program** (Phases 17–26; Tay–Whiteley, proved by
   Katoh–Tanigawa 2011), the project's largest single undertaking. Phase
   17 formalizes the **Grassmann–Cayley / extensor-algebra** layer
@@ -156,7 +156,7 @@ project; commit history is preserved with paths rewritten.
   independent points are linearly independent, the linear-algebra
   foundation the conjecture's hardest case (Case III) bottoms out on.
   Forward-mode phase; the chapter `molecular.tex` is the authoritative
-  (red) dep-graph and no Lean has landed yet. See `notes/Phase17.md` and
+  dep-graph. `Molecular/Extensor.lean`. See `notes/Phase17.md` and
   the program-level plan in `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,

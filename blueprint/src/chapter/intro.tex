@@ -25,8 +25,8 @@ combinatorial rigidity, see
 
 The Lean code is organized into phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--16 are complete (see the phase bullets below), and
-\textbf{Phase~17 is in progress}, opening the longer-horizon
+Phases~1--17 are complete (see the phase bullets below);
+\textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}). The first six
 phases formalize Laman's theorem along the Henneberg route described
@@ -44,7 +44,7 @@ Tay's body-bar theorem: the abstract matroid-union machinery
 $k$-frame matroid as a cycle-matroid union (Phase~14), and Tay's
 theorem itself (Phase~15). Phase~16 extends the body-bar theorem to
 the body-hinge / panel-hinge Tay--Whiteley theorem via a
-hinge-to-body-bar reduction. Phase~17 (in progress) opens the
+hinge-to-body-bar reduction. Phase~17 opens the
 molecular-conjecture program with the Grassmann--Cayley extensor-algebra
 layer. The per-phase breakdown:
 
@@ -168,7 +168,7 @@ layer. The per-phase breakdown:
         $(\delta-1)\cdot G$ device is the multiplied graph of the
         molecular conjecture~\cite{katohTanigawa2011}. (Chapter:
         \cref{sec:body-hinge}; file: \texttt{BodyBar/BodyHinge.lean}.)
-  \item \textbf{Grassmann--Cayley extensor algebra} (in progress).
+  \item \textbf{Grassmann--Cayley extensor algebra.}
         Opens the longer-horizon molecular-conjecture program
         (Phases~17--26, Katoh--Tanigawa~\cite{katohTanigawa2011}) with
         its first stratum: the extensor algebra of
@@ -179,8 +179,8 @@ layer. The per-phase breakdown:
         $D = \binom{d+1}{2}$ many $(d-1)$-extensors of $d+1$ affinely
         independent points are linearly independent --- the
         linear-algebra foundation the conjecture's hardest case bottoms
-        out on. (Chapter: \cref{sec:molecular}; files:
-        \texttt{Molecular/} --- forward-mode, none green yet.)
+        out on. (Chapter: \cref{sec:molecular}; file:
+        \texttt{Molecular/Extensor.lean} --- all \S2.1 nodes green.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -201,8 +201,9 @@ $k$-frame matroid as a cycle-matroid union, and Tay's body-bar theorem
 itself (\cref{thm:tay-witness}) --- and the body-hinge chapter
 (\cref{sec:body-hinge}): the hinge-to-body-bar reduction and the
 body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}). With
-Phase~16 complete the Phase~1--16 dependency graph is green. The
+Phase~17 complete the Phase~1--17 dependency graph is green. The
 molecular-conjecture program (\cref{sec:molecular}, opened as Phase~17)
-runs forward-mode: its extensor-algebra chapter is the live red to-do
-list, culminating in \cref{lem:extensor-independence}
-(Katoh--Tanigawa~\cite{katohTanigawa2011} Lemma~2.1).
+runs forward-mode: its extensor-algebra chapter is fully green,
+culminating in \cref{lem:extensor-independence}
+(Katoh--Tanigawa~\cite{katohTanigawa2011} Lemma~2.1); Phases~18--26
+remain to be opened.

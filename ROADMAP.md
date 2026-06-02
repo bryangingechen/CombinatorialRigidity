@@ -105,7 +105,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-15) | Phase 15 surface (`BodyBar/{Framework,TayTheorem}.lean`, `body-bar.tex` `sec:body-bar-framework` + `sec:body-bar-tay` nodes) | ✓ Complete (see `notes/Phase15-cleanup.md`; round manual: `CLEANUP.md`) |
 | 16. Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ Complete (see `notes/Phase16.md`) |
 | ⋮ Cleanup round (post-Phase-16) | Phase 16 surface (`BodyBar/BodyHinge.lean`, `body-hinge.tex` `sec:body-hinge` nodes) | ✓ Complete (see `notes/Phase16-cleanup.md`; round manual: `CLEANUP.md`) |
-| 17. Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` (§2.1: homogeneous coords, affine-indep bridge, extensor, join, Plücker coords) | ◐ In progress (see `notes/Phase17.md`; opens the 10-phase molecular-conjecture program, `notes/MolecularConjecture.md` + §17 below) |
+| 17. Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` (full §2.1) | ✓ Complete (see `notes/Phase17.md`; opens the 10-phase molecular-conjecture program, `notes/MolecularConjecture.md` + §17 below) |
 | 18–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -523,7 +523,7 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phase 17 open (in progress); Phases 18–26 planned.** The
+**Status: Phase 17 complete; Phases 18–26 planned.** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -573,21 +573,20 @@ Phase map (floor; 18/21/22-23 may each split on contact):
 10. **26** — Corollary 5.7 (`r(G²) = 3|V| − 6 − def(G̃)`), the
     protein-flexibility / pebble-game-validity capstone.
 
-**Phase 17 is in progress** (work log: `notes/Phase17.md`; forward-mode
-chapter: `blueprint/src/chapter/molecular.tex`). It formalizes the
-Grassmann–Cayley / extensor-algebra layer (KT §2.1), culminating in
-Lemma 2.1 — the independence of the `D = (d+1 choose 2)` many
-`(d−1)`-extensors of `d+1` affinely independent points, on which the
-conjecture's hardest case (Case III, Phases 22–23) bottoms out. The §2.1
-symbolic layer has landed in `Molecular/Extensor.lean` — homogeneous
-coordinatization, the affine-independence ↔ top-extensor bridge, and the
-symbolic extensor/join on mathlib's `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`
-(`ExteriorAlgebra.ιMulti` + exterior product), plus the coordinatized
-Plücker bridge (`pluckerCoord` / `pluckerVector`, signed `j×j`-minor
-vectors with KT's sign); `C(·)` and Lemma 2.1 remain red. Phases 18–26
-remain planned —
-see `notes/MolecularConjecture.md` for the per-phase detail and the
-*Opening Phase 17* protocol.
+**Phase 17 is complete** (work log: `notes/Phase17.md`; forward-mode
+chapter: `blueprint/src/chapter/molecular.tex`). It formalized the
+Grassmann–Cayley / extensor-algebra layer (KT §2.1) in
+`Molecular/Extensor.lean` end to end: homogeneous coordinatization, the
+affine-independence ↔ top-extensor bridge, the symbolic extensor/join on
+mathlib's `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)` (`ExteriorAlgebra.ιMulti` +
+exterior product), the coordinatized Plücker bridge (`pluckerCoord` /
+`pluckerVector`, signed `j×j`-minor vectors with KT's sign), the
+affine-subspace extensor `C(·)`, and **Lemma 2.1** — the independence of
+the `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1` affinely
+independent points (`omitTwoExtensor_linearIndependent`), on which the
+conjecture's hardest case (Case III, Phases 22–23) bottoms out. Phases
+18–26 remain planned — see `notes/MolecularConjecture.md` for the
+per-phase detail and the reuse map.
 
 ## Engineering conventions
 

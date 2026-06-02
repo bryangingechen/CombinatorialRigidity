@@ -161,6 +161,9 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
 
 \begin{lemma}[Extensor independence; Katoh--Tanigawa Lemma 2.1]
   \label{lem:extensor-independence}
+  \lean{CombinatorialRigidity.Molecular.omitTwoExtensor,
+    CombinatorialRigidity.Molecular.omitTwoExtensor_linearIndependent}
+  \leanok
   \uses{def:affine-subspace-extensor, def:plucker-coords, lem:affine-indep-iff}
   Let $p_1, \dots, p_{d+1} \in \R^{d}$ be affinely independent. The
   $D = \binom{d+1}{2}$ many $(d-1)$-extensors obtained by omitting two of
@@ -173,17 +176,24 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
   are linearly independent in $\bigwedge^{d-1} \R^{d+1}$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:join, lem:affine-indep-iff}
   Suppose a linear combination of the $D$ extensors vanishes. Fix a pair
-  $\{a, b\}$ and join the relation with the $2$-extensor
+  $\{a, b\}$ and join the relation on the left with the $2$-extensor
   $\bar p_a \vee \bar p_b$. Every term whose omitted pair is not
-  $\{a, b\}$ then repeats a vector $\bar p_a$ or $\bar p_b$, so by the
-  alternating property of the join (\cref{def:join}) it vanishes; the
-  single surviving term is a nonzero multiple of the top extensor
-  $\bar p_1 \vee \cdots \vee \bar p_{d+1}$, which is nonzero by affine
-  independence (\cref{lem:affine-indep-iff}). Hence the coefficient on
-  the $\{a, b\}$-extensor is zero. As $\{a, b\}$ was arbitrary, all
-  coefficients vanish.
+  $\{a, b\}$ then repeats a vector $\bar p_a$ or $\bar p_b$ (one of $a, b$
+  survives the omission of the other pair), so by the alternating property
+  of the join (\cref{def:join}) it vanishes; the single surviving term is a
+  nonzero scalar times the top extensor $\bar p_1 \vee \cdots \vee \bar
+  p_{d+1}$, which is nonzero by affine independence
+  (\cref{lem:affine-indep-iff}). Hence the coefficient on the
+  $\{a, b\}$-extensor is zero. As $\{a, b\}$ was arbitrary, all
+  coefficients vanish. The formalization reparametrizes $d = e + 1$ (so
+  the $e + 2$ points are in $\R^{e+1}$ and each omit-two extensor is an
+  $e$-extensor, clearing the $\mathbb{N}$-subtraction $d - 1$), indexes
+  the $D$ extensors by the increasing pairs $a < b$, and reindexes the
+  surviving join via the bijection that sends the first two slots to
+  $a, b$ and the rest to the increasing enumeration of $\{a, b\}^{c}$.
 \end{proof}
 
 This independence is the linear-algebraic foundation that Case~III of

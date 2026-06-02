@@ -21,10 +21,10 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–16 are complete and carry no `sorry`s; **the body-bar
+Phases 1–17 are complete and carry no `sorry`s; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
-theorem — see below. **Phase 17 (in progress)** opens the
+theorem — see below. **Phase 17 (complete)** opens the
 longer-horizon **molecular-conjecture program** (Phases 17–26;
 Katoh–Tanigawa 2011) with its Grassmann–Cayley extensor-algebra layer.
 The main theorem
@@ -105,7 +105,7 @@ edge-disjoint union of `δ` forests — reduces node-for-node to Phase
 graph of the longer-horizon **molecular conjecture** (Katoh–Tanigawa
 2011).
 
-**Phase 17 (in progress)** opens that longer-horizon target: the
+**Phase 17 (complete)** opens that longer-horizon target: the
 **molecular-conjecture program** (Phases 17–26; Tay–Whiteley, proved by
 Katoh–Tanigawa 2011), the project's largest single undertaking. Phase
 17 formalizes the **Grassmann–Cayley / extensor-algebra** layer
@@ -116,8 +116,8 @@ coordinates, and the affine-subspace extensor `C(·)` — culminating in
 affinely independent points are linearly independent, the
 linear-algebra foundation the conjecture's hardest case bottoms out on.
 Forward-mode phase: the chapter `molecular.tex` is the authoritative
-(red) dep-graph and no Lean has landed yet. See the program-level plan
-in `notes/MolecularConjecture.md`.
+dep-graph. See the program-level plan in
+`notes/MolecularConjecture.md`.
 
 The development is divided into the phases below, with Lean source
 under
@@ -143,7 +143,7 @@ existing files or refactor across several).
 |    14 | k-frame = k-fold cycle union | `BodyBar/KFrame.lean` | ✓ |
 |    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | ✓ |
 |    16 | Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ |
-|    17 | Grassmann–Cayley extensor algebra | `Molecular/` (none green yet) | ◐ |
+|    17 | Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

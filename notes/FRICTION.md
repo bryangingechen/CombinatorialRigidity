@@ -118,6 +118,20 @@ housekeeping pass once their resolution is fully indexed.
   the bare-extensor nonvanishing fact again.
 - **Status:** open
 
+### [open] No `Finset.pair_eq_pair_iff` (only the `Set` version)
+- **Where it bit:** the off-diagonal `hne` step of
+  `omitTwoExtensor_linearIndependent` in `Molecular/Extensor.lean`
+  (Phase 17 `lem:extensor-independence`). Needed `({a,b} : Finset α) =
+  {c,d} ↔ (a = c ∧ b = d) ∨ (a = d ∧ b = c)` to turn an ordered-pair
+  inequality into a finset inequality. mathlib has `Set.pair_eq_pair_iff`
+  but no `Finset` analogue, so the bridge is `rw [← Finset.coe_inj,
+  Finset.coe_pair, Finset.coe_pair, Set.pair_eq_pair_iff]` — three glue
+  rewrites for one mathematical equivalence.
+- **Proposed fix:** upstream `Finset.pair_eq_pair_iff` next to
+  `Set.pair_eq_pair_iff` (needs `[DecidableEq α]`). Not mirrored —
+  single callsite; the `coe_inj` bridge is a clean one-liner.
+- **Status:** open
+
 ### [resolved] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
 - **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in
   `BodyBar/TreePacking.lean` (Phase 13 forward direction). The lemma

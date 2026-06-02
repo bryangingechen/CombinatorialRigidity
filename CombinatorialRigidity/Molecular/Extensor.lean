@@ -22,7 +22,7 @@ which is Lemma 2.1 (independence of the `(d-1)`-extensors of `d+1` affinely
 independent points; `blueprint/src/chapter/molecular.tex`,
 `lem:extensor-independence`).
 
-This first commit lands the leaf-most red nodes of the §2.1 dep-graph:
+This file lands the full §2.1 dep-graph, in dependency order. The leaf nodes:
 
 * `homogenize` (`def:homogeneous-coords`) — the homogeneous coordinatization
   `p ↦ (p, 1) : ℝ^d → ℝ^(d+1)`, sending a point of affine `d`-space to its
@@ -66,9 +66,21 @@ alternating / vanishes-on-repeats facts (`ExteriorAlgebra.ιMulti_eq_zero_of_not
 `AlternatingMap.map_eq_zero_of_eq`). Lemma 2.1 is self-contained from these plus
 the affine-independence bridge above; no new exterior-algebra infrastructure is
 required, so the symbolic-vs-coordinatized depth (risk register item 1 in
-`notes/MolecularConjecture.md`) stays shallow — the only remaining §2.1 work is
-the coordinatized Plücker bridge (`def:plucker-coords`), `C(·)`
-(`def:affine-subspace-extensor`), and Lemma 2.1 itself.
+`notes/MolecularConjecture.md`) stays shallow.
+
+## Lemma 2.1 (`omitTwoExtensor_linearIndependent`)
+
+The load-bearing target, the last §2.1 node. For `e + 2` affinely independent
+points (the dimension is reparametrized `d = e + 1`, clearing the `ℕ`-subtraction
+`d - 1`), the `D = (e+2 choose 2)` many omit-two extensors `omitTwoExtensor` — the
+`e`-extensors dropping two of the `e + 2` homogenized vectors — are linearly
+independent. The proof fixes a pair `{a, b}`, joins the dependence relation on the
+left with the `2`-extensor `v a ∨ₑ v b`, kills every off-diagonal term by repeated
+vector (`join_pair_omitTwo_other_eq_zero`, via `extensor_eq_zero_of_not_injective`),
+and reads off the surviving diagonal term as a nonzero scalar times the reindexed
+top extensor (`join_pair_omitTwo_self_ne_zero`, via the `pairAppend` bijection +
+`extensor_ne_zero_iff_linearIndependent`). Closing this node closes Phase 17 and is
+the linear-algebra foundation Case III (Phases 22–23) bottoms out on.
 
 ## Carrier
 
@@ -353,5 +365,172 @@ theorem pluckerCoord_univ {d : ℕ} (v : Fin (d + 1) → Fin (d + 1) → ℝ)
   have hemb : (id : Fin (d + 1) → Fin (d + 1)) = Finset.univ.orderEmbOfFin h :=
     Finset.orderEmbOfFin_unique h (fun _ => Finset.mem_univ _) strictMono_id
   rw [← hemb, Matrix.submatrix_id_id]
+
+/-! ## Independence of the `(d-1)`-extensors (Lemma 2.1)
+
+Katoh–Tanigawa Lemma 2.1: for `d+1` affinely independent points the
+`D = (d+1 choose 2)` many `(d-1)`-extensors obtained by omitting two of the
+points are linearly independent. We parametrize the dimension as `d = e + 1`,
+so there are `e + 2` points in `ℝ^(e+1)` (homogenized to `ℝ^(e+2)`) and each
+omit-two extensor is an `e`-extensor — this clears the `ℕ`-subtraction `d - 1`.
+The `D` extensors are indexed by ordered pairs `a < b` of point indices. -/
+
+/-- The complement of a two-element pair `{a, b} ⊆ Fin (e+2)` with `a ≠ b` has
+exactly `e` elements. -/
+theorem card_compl_pair {e : ℕ} {a b : Fin (e + 2)} (hab : a ≠ b) :
+    (({a, b} : Finset (Fin (e + 2)))ᶜ).card = e := by
+  classical
+  rw [Finset.card_compl, Fintype.card_fin, Finset.card_pair hab]
+  omega
+
+/-- **Omit-two extensor.** For a family `v : Fin (e+2) → ℝ^(e+2)` and a pair
+`a ≠ b`, the `e`-extensor obtained by dropping the two vectors `v a`, `v b`,
+i.e. the extensor of `v` along the increasing enumeration of `{a, b}ᶜ`. -/
+noncomputable def omitTwoExtensor {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) → ℝ)
+    {a b : Fin (e + 2)} (hab : a ≠ b) :
+    ExteriorAlgebra ℝ (Fin (e + 2) → ℝ) :=
+  extensor (v ∘ (({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab))
+
+/-- The combined index map `Fin (2 + e) → Fin (e + 2)` sending the first two
+slots to `a`, `b` and the rest to the increasing enumeration of `{a, b}ᶜ`.
+Used to reindex the join of the `2`-extensor `p̄_a ∨ₑ p̄_b` with an omit-two
+extensor. -/
+private def pairAppend {e : ℕ} (a b : Fin (e + 2)) (hab : a ≠ b) :
+    Fin (2 + e) → Fin (e + 2) :=
+  Fin.append (![a, b] : Fin 2 → Fin (e + 2))
+    (⇑((({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab)))
+
+/-- The combined index map is injective (its range is `{a} ∪ {b} ∪ {a,b}ᶜ`,
+all of `Fin (e+2)`). -/
+private theorem pairAppend_injective {e : ℕ} (a b : Fin (e + 2)) (hab : a ≠ b) :
+    Function.Injective (pairAppend a b hab) := by
+  classical
+  set emb := (({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab) with hemb
+  rw [pairAppend, Fin.append_injective_iff]
+  refine ⟨injective_pair_iff_ne.mpr hab, emb.injective, ?_⟩
+  -- the order embedding lands in `{a, b}ᶜ`, so it never equals `a` or `b`.
+  intro i j
+  have hmem : emb j ∈ ({a, b} : Finset (Fin (e + 2)))ᶜ := by
+    rw [hemb]; exact Finset.orderEmbOfFin_mem _ _ _
+  rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or] at hmem
+  fin_cases i
+  · exact fun h => hmem.1 h.symm
+  · exact fun h => hmem.2 h.symm
+
+/-- Joining the `2`-extensor `![v a, v b]` with the omit-two extensor of a pair
+`{c, d}` is the extensor of the concatenated family
+`Fin.append ![v a, v b] (v ∘ {c,d}ᶜ.orderEmbOfFin)`. -/
+private theorem join_pair_omitTwo {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) → ℝ)
+    {a b c d : Fin (e + 2)} (hcd : c ≠ d) :
+    extensor ![v a, v b] ∨ₑ omitTwoExtensor v hcd
+      = extensor (Fin.append ![v a, v b]
+          (v ∘ (({c, d} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hcd))) :=
+  by rw [omitTwoExtensor, join_extensor]
+
+/-- **Diagonal term is nonzero.** When `v` is linearly independent (the
+homogenized affinely-independent family), joining the pair `{a, b}` with its own
+omit-two extensor reindexes all `e + 2` vectors and so is nonzero. -/
+private theorem join_pair_omitTwo_self_ne_zero {e : ℕ} {v : Fin (e + 2) → Fin (e + 2) → ℝ}
+    (hv : LinearIndependent ℝ v) {a b : Fin (e + 2)} (hab : a ≠ b) :
+    extensor ![v a, v b] ∨ₑ omitTwoExtensor v hab ≠ 0 := by
+  rw [join_pair_omitTwo]
+  have happ : Fin.append (![v a, v b] : Fin 2 → Fin (e + 2) → ℝ)
+      (v ∘ (({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab))
+      = v ∘ pairAppend a b hab := by
+    funext i
+    refine Fin.addCases (fun i => ?_) (fun i => ?_) i
+    · simp only [Fin.append_left, pairAppend, Function.comp_apply]
+      fin_cases i <;> simp
+    · simp only [Fin.append_right, pairAppend, Function.comp_apply]
+  rw [happ, extensor_ne_zero_iff_linearIndependent]
+  exact hv.comp _ (pairAppend_injective a b hab)
+
+/-- **Off-diagonal term vanishes.** Joining the pair `{a, b}` with the omit-two
+extensor of a *different* pair `{c, d}` repeats a vector (`a` or `b` survives the
+omission of `{c, d}`), so the join vanishes. -/
+private theorem join_pair_omitTwo_other_eq_zero {e : ℕ} (v : Fin (e + 2) → Fin (e + 2) → ℝ)
+    {a b c d : Fin (e + 2)} (hab : a ≠ b) (hcd : c ≠ d)
+    (hne : ({a, b} : Finset (Fin (e + 2))) ≠ {c, d}) :
+    extensor ![v a, v b] ∨ₑ omitTwoExtensor v hcd = 0 := by
+  classical
+  rw [join_pair_omitTwo]
+  apply extensor_eq_zero_of_not_injective
+  -- `{a, b} ≠ {c, d}` forces `a ∈ {c,d}ᶜ` or `b ∈ {c,d}ᶜ`; that vector then appears
+  -- both as a head entry and in the tail enumeration, breaking injectivity.
+  set emb := (({c, d} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hcd) with hemb
+  have hsub : ¬ ({a, b} : Finset (Fin (e + 2))) ⊆ {c, d} := by
+    intro h
+    exact hne (Finset.eq_of_subset_of_card_le h
+      (by rw [Finset.card_pair hab, Finset.card_pair hcd]))
+  rw [Finset.subset_iff] at hsub
+  push Not at hsub
+  obtain ⟨x, hx, hxcd⟩ := hsub
+  -- `x ∈ {a, b}` and `x ∉ {c, d}`, so `x ∈ range emb`; pick its preimage.
+  have hxmem : x ∈ Set.range emb := by
+    rw [hemb, Finset.range_orderEmbOfFin]
+    exact Finset.mem_coe.mpr (Finset.mem_compl.mpr hxcd)
+  obtain ⟨k, hk⟩ := hxmem
+  -- `x` is a head entry of `![a, b]` and also `emb k`; the two indices collide.
+  rw [Finset.mem_insert, Finset.mem_singleton] at hx
+  rw [Function.not_injective_iff]
+  rcases hx with rfl | rfl
+  · refine ⟨Fin.castAdd e 0, Fin.natAdd 2 k, ?_, ?_⟩
+    · simp [hk]
+    · intro h; simp only [Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd] at h; omega
+  · refine ⟨Fin.castAdd e 1, Fin.natAdd 2 k, ?_, ?_⟩
+    · simp [hk]
+    · intro h; simp only [Fin.ext_iff, Fin.val_castAdd, Fin.val_natAdd] at h; omega
+
+/-- **Extensor independence; Katoh–Tanigawa Lemma 2.1**
+(`lem:extensor-independence`). For `e + 2` affinely independent points
+`p : Fin (e+2) → ℝ^(e+1)`, the `(e+2 choose 2)` many omit-two extensors of the
+homogenized family `v = homogenize ∘ p` are linearly independent. -/
+theorem omitTwoExtensor_linearIndependent {e : ℕ} (p : Fin (e + 2) → Fin (e + 1) → ℝ)
+    (hp : AffineIndependent ℝ p) :
+    LinearIndependent ℝ
+      (fun q : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2} =>
+        omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)) := by
+  classical
+  set v := fun i => homogenize (p i) with hvdef
+  have hv : LinearIndependent ℝ v :=
+    (affineIndependent_iff_linearIndependent_homogenize p).mp hp
+  rw [Fintype.linearIndependent_iff]
+  intro g hg q₀
+  obtain ⟨⟨a, b⟩, hablt⟩ := q₀
+  have hab : a ≠ b := ne_of_lt hablt
+  -- Join the dependence relation on the left with the `2`-extensor `v a ∨ₑ v b`.
+  have key : extensor ![v a, v b] * ∑ q, g q • omitTwoExtensor v (ne_of_lt q.2) = 0 := by
+    rw [hg, mul_zero]
+  rw [Finset.mul_sum] at key
+  -- Each term other than the `{a, b}` term repeats a vector and vanishes; the
+  -- `{a, b}` term is `g • (nonzero top extensor)`.
+  have hterm : ∀ q : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2},
+      extensor ![v a, v b] * (g q • omitTwoExtensor v (ne_of_lt q.2))
+        = if q = ⟨(a, b), hablt⟩ then
+            g q • (extensor ![v a, v b] ∨ₑ omitTwoExtensor v hab) else 0 := by
+    intro q
+    obtain ⟨⟨c, d⟩, hcdlt⟩ := q
+    rw [mul_smul_comm, ← join_def]
+    by_cases hq : (⟨(c, d), hcdlt⟩ : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2})
+        = ⟨(a, b), hablt⟩
+    · obtain ⟨rfl, rfl⟩ : c = a ∧ d = b := by
+        simpa [Subtype.ext_iff, Prod.ext_iff] using hq
+      simp [hq]
+    · rw [if_neg hq]
+      -- `{a, b} ≠ {c, d}` as finsets, since the ordered pairs differ (both increasing).
+      have hne : ({a, b} : Finset (Fin (e + 2))) ≠ {c, d} := by
+        intro h
+        apply hq
+        rw [Subtype.ext_iff, Prod.ext_iff]
+        rw [← Finset.coe_inj, Finset.coe_pair, Finset.coe_pair, Set.pair_eq_pair_iff] at h
+        rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+        · exact ⟨rfl, rfl⟩
+        · exact absurd (hablt.trans hcdlt) (lt_irrefl _)
+      rw [join_pair_omitTwo_other_eq_zero v hab (ne_of_lt hcdlt) hne, smul_zero]
+  rw [Finset.sum_congr rfl (fun q _ => hterm q), Finset.sum_ite_eq' Finset.univ
+    (⟨(a, b), hablt⟩ : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2})] at key
+  simp only [Finset.mem_univ, if_true] at key
+  -- `g q₀ • T = 0` with `T ≠ 0` forces `g q₀ = 0`.
+  exact (smul_eq_zero.mp key).resolve_right (join_pair_omitTwo_self_ne_zero hv hab)
 
 end CombinatorialRigidity.Molecular
