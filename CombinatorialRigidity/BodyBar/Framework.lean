@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import Mathlib.Combinatorics.Graph.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Matroid.Graph.Matrix
 
 /-!
 # Body-bar frameworks (`def:body-bar-framework`)
@@ -33,15 +34,20 @@ rigid" lift via the irreducible Plücker variety is deferred — see ROADMAP §1
 * `Graph.bodyBarDim` — the body-bar dimension `d = n(n+1)/2` of `ℝⁿ`.
 * `Graph.BodyBarFramework` — a body-bar framework: a multigraph `G` together
   with a placement `E(G) → EuclideanSpace ℝ (Fin (bodyBarDim n))`.
+* `Graph.BodyBarFramework.rigidityMap` — the bar-constraint rigidity map, an
+  `ℝ`-linear map from body motions (`α → ℝᵈ`) to bar constraints
+  (`E(G) → ℝ`), one row per bar (Whiteley §3).
 
 ## Project context
 
 See `ROADMAP.md` §15, `notes/Phase15.md`, and the
 §`sec:body-bar-framework` subsection of `blueprint/src/chapter/body-bar.tex`.
-The body-bar **rigidity map** (`def:rigidity-map-body-bar`) and **infinitesimal
-rigidity** (`def:infinitesimally-rigid-body-bar`) build on this definition, en
-route to **Tay's theorem** (`thm:tay-witness`).
+The body-bar **infinitesimal rigidity** (`def:infinitesimally-rigid-body-bar`)
+builds on the rigidity map, en route to **Tay's theorem**
+(`thm:tay-witness`).
 -/
+
+open scoped InnerProductSpace
 
 namespace Graph
 
@@ -70,5 +76,60 @@ structure BodyBarFramework (n : ℕ) (α β : Type*) where
   /-- The placement: each bar `e ∈ E(graph)` gets a two-extensor coordinate in
   `ℝᵈ`, `d = n(n+1)/2`. Degenerate coordinates are permitted. -/
   placement : E(graph) → EuclideanSpace ℝ (Fin (bodyBarDim n))
+
+namespace BodyBarFramework
+
+variable {n : ℕ}
+
+/-- A **body motion** of a body-bar framework in `ℝⁿ`: an assignment of a
+velocity in `ℝᵈ`, `d = n(n+1)/2`, to each body. As in the bar-joint case
+(`SimpleGraph.Framework`), the motion is a map out of the full vertex type
+`α`; only the values on `V(graph)` enter the bar constraints, but typing the
+domain as `α` avoids subtype coercions on the endpoints `Graph.orientation.dInc`
+returns. -/
+abbrev Motion (n : ℕ) (α : Type*) : Type _ := α → EuclideanSpace ℝ (Fin (bodyBarDim n))
+
+/-- The `(u, v)`-**bar row** of a body-bar framework as a linear functional on
+body motions: `m ↦ ⟪bₑ, m u - m v⟫_ℝ`, where `bₑ` is the bar's two-extensor
+coordinate. The body-bar analogue of `SimpleGraph.edgeRow`; with the
+infinitesimal-rotation factor absorbed into `bₑ`'s Plücker coordinates the
+constraint is just the inner product of `bₑ` against the relative body velocity
+(Whiteley~1988 §3). Internal building block for `rigidityMap`. -/
+noncomputable def barRow (bₑ : EuclideanSpace ℝ (Fin (bodyBarDim n))) (u v : α) :
+    Motion n α →ₗ[ℝ] ℝ :=
+  ((innerSL ℝ bₑ).toLinearMap).comp
+    ((LinearMap.proj u : Motion n α →ₗ[ℝ] EuclideanSpace ℝ (Fin (bodyBarDim n))) -
+      LinearMap.proj v)
+
+@[simp]
+theorem barRow_apply (bₑ : EuclideanSpace ℝ (Fin (bodyBarDim n))) (u v : α)
+    (m : Motion n α) : barRow bₑ u v m = ⟪bₑ, m u - m v⟫_ℝ := rfl
+
+/-- The **rigidity map** of a body-bar framework `F` for a choice of orientation
+`D` (Whiteley~1988 §3; `def:rigidity-map-body-bar`): the `ℝ`-linear map sending a
+body motion `m : Motion n α` to the family of bar constraints
+`e ↦ ⟪F.placement e, m u - m v⟫_ℝ` indexed by the bars `e ∈ E(F.graph)`, where
+`(u, v) = D.dInc e` are the bar's oriented endpoints.
+
+One row per bar. Built compositionally as `LinearMap.pi` over the per-bar
+`barRow`s, so linearity in `m` is inherited from the `LinearMap` API. The
+orientation `D` only fixes the sign of each constraint (swapping `u, v` negates
+the row); the kernel and rank — the data infinitesimal rigidity reads off — are
+orientation-independent. -/
+noncomputable def rigidityMap {α β : Type*} (F : BodyBarFramework n α β)
+    (D : Graph.orientation F.graph) :
+    Motion n α →ₗ[ℝ] (E(F.graph) → ℝ) :=
+  LinearMap.pi fun e : E(F.graph) =>
+    barRow (F.placement e) (D.dInc e).1 (D.dInc e).2
+
+/-- The rigidity map evaluated at a bar `e` is the inner product
+`⟪F.placement e, m u - m v⟫_ℝ` of the bar's two-extensor coordinate against the
+relative body velocity at its oriented endpoints `(u, v) = D.dInc e`. -/
+@[simp]
+theorem rigidityMap_apply {α β : Type*} (F : BodyBarFramework n α β)
+    (D : Graph.orientation F.graph) (m : Motion n α) (e : E(F.graph)) :
+    F.rigidityMap D m e = ⟪F.placement e, m (D.dInc e).1 - m (D.dInc e).2⟫_ℝ := rfl
+
+end BodyBarFramework
 
 end Graph

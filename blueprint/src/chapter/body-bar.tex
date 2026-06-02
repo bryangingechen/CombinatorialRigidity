@@ -504,11 +504,18 @@ map of \cref{sec:frameworks}.
 
 \begin{definition}[Body-bar rigidity map]
   \label{def:rigidity-map-body-bar}
+  \lean{Graph.BodyBarFramework.rigidityMap}
+  \leanok
   \uses{def:body-bar-framework}
-  The \emph{rigidity map} of a body-bar framework is the linear map
-  from body motions ($G.\mathrm{vertexSet} \to \mathbb{R}^{d}$) to
-  bar constraints ($G.\mathrm{edgeSet} \to \mathbb{R}$) with one row
-  per bar, the constraint row of Whiteley~\cite{whiteley1988} \S3.
+  Fix an orientation of $G$, giving each bar $e$ an ordered pair of
+  endpoints $(u, v)$. The \emph{rigidity map} of a body-bar framework
+  is the linear map from body motions ($m \colon G.\mathrm{vertexSet}
+  \to \mathbb{R}^{d}$) to bar constraints ($G.\mathrm{edgeSet} \to
+  \mathbb{R}$) sending $m$ to the family $e \mapsto \langle b_{e},\,
+  m(u) - m(v)\rangle$, with one row per bar --- the constraint row of
+  Whiteley~\cite{whiteley1988} \S3 ($b_{e}$ is $e$'s two-extensor
+  coordinate). The orientation only fixes the sign of each row; the
+  kernel and rank are orientation-independent.
 \end{definition}
 
 \begin{definition}[Infinitesimal rigidity of a body-bar framework]

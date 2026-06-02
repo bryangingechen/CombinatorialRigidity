@@ -4,35 +4,39 @@
 
 ## Current state
 
-The leaf-most red node `def:body-bar-framework` is **green**:
-`BodyBar/Framework.lean` ships `Graph.bodyBarDim n = n(n+1)/2` and the
-`Graph.BodyBarFramework n α β` structure (a multigraph `graph : Graph α β`
-paired with an unconstrained `placement : E(graph) → EuclideanSpace ℝ
-(Fin (bodyBarDim n))` — degenerate two-extensors permitted, no Plücker-
-variety constraint, per the existence-of-realization scope). Blueprint
-node flipped (`\lean{...}` + `\leanok`); file added to the top-level
-`CombinatorialRigidity.lean` import aggregator. This is the original
-Phase-12 target, unblocked by the Phase 12–14 chain. Forward-mode phase:
-the lemma index lives in `blueprint/src/chapter/body-bar.tex`
-§`sec:body-bar-framework` and §`sec:body-bar-tay`. All prerequisite nodes
-(`thm:k-frame-union-cycle`, `thm:tutte-nash-williams`,
-`cor:k-spanning-trees`, the whole `sec:body-bar-k-frame` and
-`sec:body-bar-tree-packing` subsections) are green.
+Two leaf nodes are **green** in `BodyBar/Framework.lean`:
+- `def:body-bar-framework` — `Graph.bodyBarDim n = n(n+1)/2` and the
+  `Graph.BodyBarFramework n α β` structure (a multigraph `graph : Graph α β`
+  paired with an unconstrained `placement : E(graph) → EuclideanSpace ℝ
+  (Fin (bodyBarDim n))` — degenerate two-extensors permitted, no Plücker-
+  variety constraint, per the existence-of-realization scope).
+- `def:rigidity-map-body-bar` — `Graph.BodyBarFramework.rigidityMap`, the
+  bar-constraint `ℝ`-linear map from body motions (`Motion n α = α → ℝ^d`)
+  to bar constraints (`E(graph) → ℝ`), one row per bar. Takes an explicit
+  orientation `D : Graph.orientation F.graph` (apnelson1/Matroid's
+  `Matroid.Graph.Matrix`) to supply each bar's ordered endpoints
+  `(u, v) = D.dInc e`; the row is `m ↦ ⟪placement e, m u − m v⟫`. Built
+  compositionally (`barRow` + `LinearMap.pi`) mirroring Phase 4's
+  `edgeRow`/`RigidityMap`; `barRow_apply` / `rigidityMap_apply` are
+  `@[simp] := rfl`. Blueprint node flipped (`\lean{...}` + `\leanok`).
 
-The chapter has **three red nodes** left, in dependency order:
-- `def:rigidity-map-body-bar` (`\uses{def:body-bar-framework}`)
+`BodyBar/Framework.lean` is in the top-level `CombinatorialRigidity.lean`
+import aggregator. Forward-mode phase: the lemma index lives in
+`blueprint/src/chapter/body-bar.tex` §`sec:body-bar-framework` and
+§`sec:body-bar-tay`. All `sec:body-bar-k-frame` /
+`sec:body-bar-tree-packing` prerequisites are green.
+
+The chapter has **two red nodes** left, in dependency order:
 - `def:infinitesimally-rigid-body-bar` (`\uses{def:rigidity-map-body-bar}`)
 - `thm:tay-witness` (the target; `\uses` the three defs +
   `def:graph-sparse`, `thm:tutte-nash-williams`, `cor:k-spanning-trees`;
   proof `\uses{thm:k-frame-union-cycle, …}`).
 
-**Next concrete commit:** the next leaf-most red node
-`def:rigidity-map-body-bar` in `BodyBar/Framework.lean` — the
-bar-constraint rigidity map, an `ℝ`-linear map from body motions
-(`V(graph) → ℝ^d`) to bar constraints (`E(graph) → ℝ`), one row per bar
-(Whiteley §3). Add/flip its `\lean{...}` + `\leanok` in the same commit.
-Then `def:infinitesimally-rigid-body-bar` (kernel = `d`-dim trivial screw
-motions, rank `= d·b − d`).
+**Next concrete commit:** `def:infinitesimally-rigid-body-bar` in
+`BodyBar/Framework.lean` — a body-bar framework on `b` bodies is
+infinitesimally rigid when `rigidityMap D` has rank `d·b − d` (kernel =
+the `d`-dim space of trivial screw motions). Add/flip its
+`\lean{...}` + `\leanok` in the same commit.
 
 ## Architectural choices made up front
 
@@ -63,15 +67,27 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 - [x] `def:body-bar-framework` — body-bar framework (placement = two-extensor
       per bar). `BodyBar/Framework.lean` (`Graph.bodyBarDim`,
       `Graph.BodyBarFramework`).
-- [ ] `def:rigidity-map-body-bar` — bar-constraint rigidity map.
-      **Next concrete commit.** `BodyBar/Framework.lean`.
+- [x] `def:rigidity-map-body-bar` — bar-constraint rigidity map.
+      `BodyBar/Framework.lean` (`BodyBarFramework.rigidityMap`, `barRow`).
 - [ ] `def:infinitesimally-rigid-body-bar` — rank `= d·b − d`.
+      **Next concrete commit.** `BodyBar/Framework.lean`.
 - [ ] `thm:tay-witness` — Tay's theorem, existence form (Whiteley Thm 8).
       Standard-basis specialization of `thm:k-frame-union-cycle`'s reverse
       direction lifted from indeterminate to real coefficients.
 
 ## Decisions made during this phase
 
+- **`rigidityMap` takes an explicit orientation `D`; motions are
+  `Motion n α = α → ℝ^d` over the full vertex type.** The bar row is
+  *antisymmetric* in the endpoint pair (sign flips with the order), so —
+  unlike Phase 4's `RigidityMap`, which lifts a symmetric `edgeRow` over
+  `Sym2` — there is no canonical unordered row. We reuse the apnelson1
+  `Graph.orientation` (already the Phase-14 source of ordered endpoints
+  via `dInc`) to fix the order; the orientation is a sign convention only,
+  so kernel/rank stay orientation-independent. Domain `α` (not `↥V(G)`)
+  mirrors Phase-4 `Framework V d = V → ℝ^d` and dodges subtype coercions
+  on `dInc`'s `α × α` output. Pulled in `import Matroid.Graph.Matrix`
+  (keeps the file non-`module`, as KFrame already is).
 - **`BodyBarFramework` is a bundled `structure`, not an `abbrev` for the
   placement type.** Phase-4 `SimpleGraph.Framework` is an `abbrev` for `V →
   EuclideanSpace …` because the graph `G` is a separate explicit argument
@@ -102,13 +118,18 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 
 ## Hand-off / next phase
 
-`def:body-bar-framework` is green (`BodyBar/Framework.lean`). **Next
-concrete commit:** formalize the next leaf-most red node
-`def:rigidity-map-body-bar` in `BodyBar/Framework.lean` (the bar-constraint
-rigidity map, one row per bar), then flip its blueprint node green
-(`\lean{...}` + `\leanok`) in the same commit. Proceed up the dep-graph:
-`def:infinitesimally-rigid-body-bar` → `thm:tay-witness`. The phase closes
-when `thm:tay-witness` is green.
+`def:body-bar-framework` and `def:rigidity-map-body-bar` are green
+(`BodyBar/Framework.lean`). **Next concrete commit:** formalize the next
+leaf-most red node `def:infinitesimally-rigid-body-bar` in
+`BodyBar/Framework.lean` — a body-bar framework on `b` bodies is
+infinitesimally rigid when `rigidityMap D` has rank `d·b − d` (kernel = the
+`d`-dim space of trivial screw motions; the body-bar analogue of
+`SimpleGraph.IsInfinitesimallyRigid`'s kernel bound). Likely shape: a `def`
+predicate on `(F, D)` via `Module.finrank` of the range/kernel — confirm
+whether it should be stated against rank or kernel-dim, and whether `b` is
+`Nat.card V(F.graph)` or carried as a parameter. Then flip its blueprint
+node green (`\lean{...}` + `\leanok`) in the same commit. Last red node is
+`thm:tay-witness`; the phase closes when it is green.
 
 Follow-on: **Phase 16** (body-hinge / panel-hinge Tay–Whiteley), en route
 to **Phase 17** (molecular conjecture, Katoh–Tanigawa 2011). Neither is
