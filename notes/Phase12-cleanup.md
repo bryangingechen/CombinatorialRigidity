@@ -1,12 +1,18 @@
 # Phase 12 cleanup round — work log
 
-**Status:** in progress (A–D surveys run; **A3 + B5 + D1 fixes landed** — A3
-removed the stale forward-mode chapter-intro paragraph from
+**Status:** ✓ complete. **A3 + B5 + D1 fixes landed; all other buckets
+(A1/A2, B1–B4/B6, C1/C2, D2–D5) closed no-op** under the vendored-port
+bias. A3 removed the stale forward-mode chapter-intro paragraph from
 `matroid-union.tex`; B5 added the `PolymatroidFn.zero_at_empty` fused
 accessor and applied it at four sites; D1 compressed `notes/Phase12.md`
 *Current state* from a 160-line reverse-chronological narrative to a
-Phase-11-style summary + pointers, 434 → 304 LoC; remaining buckets
-surveyed-but-unfixed, expected mostly no-op under the vendored-port bias).
+Phase-11-style summary + pointers, 434 → 304 LoC. The A1/A2
+statement/proof walks confirmed all 9 `matroid-union.tex` entries align
+with their Lean signatures and no prose carries a gloss the Lean can't
+sustain; the remaining code-smell / long-proof / org buckets confirmed
+the conventions (`[Finite]`-bridge idiom, vendored structural-recursion
+bodies, status surfaces all Phase-12-✓). Build green + warning-clean;
+`lake lint` clean.
 
 This is the inter-phase cleanup round covering **Phase 12** (matroid
 foundations: submodular functions + matroid union). See `../CLEANUP.md`
@@ -19,24 +25,26 @@ session that runs out of time can hand off cleanly.
 
 ## Current state
 
-The §A blueprint↔Lean divergence walk over `matroid-union.tex`'s nine
-`\lean{...}` entries, the §B code-smell greps over the two Matroid
-files, the §C long-proof ranking, and the §D org-compression check
-have all been **run** (results recorded under *Task checklist* below).
-**A3 landed** (the only A-bucket fix the survey surfaced): the stale
-forward-mode "currently red / to-do list" chapter-intro paragraph in
-`matroid-union.tex` was removed; `verify.sh` green. **B5 landed**: the
-shared `← bot_eq_empty, hf.zero_at_bot` polymatroid-zero-at-bot rewrite
-pair — present at four `Submodular.lean` sites (L286/297/403/463), more
-than the two the survey flagged — collapses to a single `hf.zero_at_empty`
-via a new `PolymatroidFn.zero_at_empty : f ∅ = 0` accessor (a project-side
-fused mirror, mechanical substitution, no Nelson-proof reshape). The other
-three B5 `rw` chains (L179 `Nat.cast`/`card_erase`, L375 `Nat.cast`/
-`card_insert`, L381 `biUnion_insert`) are per-step structural with no
-mirror — closed no-op. The remaining buckets (A1/A2 statement/proof walks,
-B1–B4/B6, C2, D1–D5) are surveyed but unfixed — expected mostly no-op
-under the vendored-port bias. Build of both Lean files is green,
-warning-clean; `lake lint` clean.
+**Round complete.** The §A blueprint↔Lean divergence walk over
+`matroid-union.tex`'s nine `\lean{...}` entries, the §B code-smell greps
+over the two Matroid files, the §C long-proof ranking + four-question
+walk, and the §D org-compression checks have all been **run and closed**
+(results under *Task checklist* below). Three fixes landed, each its own
+commit: **A3** (drop the stale forward-mode chapter-intro paragraph from
+`matroid-union.tex`), **B5** (`PolymatroidFn.zero_at_empty` fused accessor
+collapsing the `← bot_eq_empty, hf.zero_at_bot` pair at four
+`Submodular.lean` sites), **D1** (compress `notes/Phase12.md` *Current
+state*, 434 → 304 LoC). Everything else closed **no-op** under the
+vendored-port bias: A1/A2 confirmed all 9 entries align in
+binders/hypotheses/conclusion and no prose over-glosses the Lean; B1–B4
+confirmed the `[Finite]`-signature `classical`/`Fintype.ofFinite` idiom,
+the forced `noncomputable` `Set.encard`, and the `change` coercion bridge;
+C1/C2 confirmed the long bodies are forced structural-recursion /
+two-direction-min / rank-distribution boilerplate (incl. the reconstructed
+`intro_elimination_nontrivial`, already tight); D2–D5 confirmed the
+FRICTION `[matroid]` port-recipe stays live for Phases 13–15, no residual
+lift, no DESIGN.md drift, all status surfaces Phase-12-✓. Build of both
+Lean files green, warning-clean; `lake lint` clean.
 
 **Scope (coordinator-decided): Phase-12 surface** —
 `CombinatorialRigidity/Matroid/Constructions/Submodular.lean` (1151 L),
@@ -136,24 +144,32 @@ gate, so no separate resolve-check task here):
 `lem:rado`, `thm:matroid-partition-rank` (`matroid_partition'`,
 `matroid_partition_eRk'`).
 
-- [ ] **A1:** Statement-form walk — for each of the 9 entries, compare
-  the blueprint statement against the Lean declaration signature
-  (hypotheses, conclusion form, binders). Survey-relevant unknowns to
-  resolve in the walk: `def:ofSubmodular`'s blueprint groups three Lean
-  names; `lem:rado`'s prose pins `Matroid.rado` with a `Finset`-valued
-  family `A : ι → Finset α` — confirm the binder shape matches; the
-  blueprint `\lean{}` names omit the `Matroid.` namespace prefix in two
-  spots — confirm `checkdecls` resolution covers the actual qualified
-  names. Expected: mostly aligned (Phase 12 ran forward-mode, so the
-  blueprint tracked the Lean per node), but the walk is the gate.
-- [ ] **A2:** Prose-proof "the Lean does X via Y where Y is harder"
-  scan over the four `\begin{proof}` blocks carrying prose
-  (`lem:polymatroid-rank`, `lem:union-indep-iff`, `lem:rado`,
-  `thm:matroid-partition-rank`). For each, check the prose isn't
-  carrying a smoothness gloss the Lean can't sustain. **Vendored-port
-  bias:** the "fix Lean first" response is constrained — a Lean
-  simplification that rewrites Nelson's proof is out of scope; record
-  the residual as an aside only if no *project-side* fix exists.
+- [x] **A1:** Statement-form walk — **done, closes no-op.** All 9
+  entries align in binders / hypotheses / conclusion form. The three
+  survey-flagged unknowns resolved clean: (i) `def:ofSubmodular`'s
+  three-name group (`ofSubmodular` L122 / `circuit_ofSubmodular_iff`
+  L208 / `indep_ofSubmodular_iff` L216) — all present, the prose covers
+  both the circuit (`Minimal (X.Nonempty ∧ f X < X.card)`) and indep
+  (`∀ I' ⊆ I, I'.Nonempty → I'.card ≤ f I'`) forms; (ii) `lem:rado`'s
+  `Finset`-valued family — `rado` (L1103) takes `(A : ι → Finset α)`,
+  `[Finite ι]`, conclusion `… ↔ ∀ K : Finset ι, K.card ≤ M.rk (K.biUnion A)`,
+  matching the `⋃_{i∈K} A_i` / `K ⊆ ι` prose; (iii) the "two
+  namespace-omitted `\lean{}`" concern is **moot** — all 9 pointers
+  carry the `Matroid.` prefix (verified by grep), and the declarations
+  sit inside `namespace Matroid`, so `checkdecls` (green on the
+  per-commit gate) resolves them. The attained-min pair encoding of
+  `lem:polymatroid-rank` / `thm:matroid-partition-rank` (∃-half attains,
+  ∀-half bounds) is the faithful Lean form of the blueprint `= min`.
+- [x] **A2:** Prose-proof scan over the four `\begin{proof}` blocks —
+  **done, closes no-op.** None carries a smoothness gloss the Lean
+  can't sustain: `lem:polymatroid-rank` (Edmonds two-direction min,
+  matches `polymatroid_rank_eq`'s ∃/∀ pair), `lem:union-indep-iff`
+  (`adjMap`/`sum'` bipartite-matching, matches the Lean realization),
+  `lem:rado` ("submodular generalization of Hall", built on
+  `generalized_halls_marriage`), `thm:matroid-partition-rank`
+  (rank formula at `f = Σ rk`, matching produced by Rado) all faithful.
+  No project-side Lean simplification in scope (vendored-port bias);
+  no residual aside needed.
 - [x] **A3:** Formalization-aside scan — **done, one fix landed.** The
   stale chapter-intro paragraph (former lines 4–9: "Its nodes are
   currently \emph{red} … the phase's to-do list … turns green as the
@@ -175,32 +191,31 @@ Pre-grep counts in *Current state* above. Each smell its own commit (or
 small cluster) if it converts to a fix; the vendored-port bias means
 most are expected to close as no-op confirmations of the convention.
 
-- [ ] **B1:** `classical` audit (7 Submodular + 5 Union). Question per
-  `../CLEANUP.md` §B: is `[DecidableEq α]` a cleaner boundary, or is the
-  decidability genuinely unavailable? Expected no-op: these pair with
-  the `Fintype.ofFinite` bridges as the standard `[Finite]`-signature
-  idiom; the `classical` opens the `DecidableEq` the `Finset` ops need.
-  Confirm each site sits under a `[Finite]` (not `[Fintype]`) signature
-  so the `classical` is load-bearing.
-- [ ] **B2:** `haveI/letI … Fintype.ofFinite` bridge audit (3 + 7).
-  Question: should the caller take `[Fintype]`, or is `[Finite]`+bridge
-  right? Is the *same* `haveI` repeated across many sites suggesting a
-  single helper? Note the Union file repeats `haveI : Fintype α :=
-  Fintype.ofFinite α` at 6 sites (L248/397/464/478/506 + 249-β) — assess
-  whether that's the per-lemma convention (each lemma re-bridges, which
-  is the mathlib idiom) or a genuine extract candidate. The Submodular
-  `termination_by haveI := Fintype.ofFinite ι; …` (L632) is the
-  TACTICS-QUIRKS § 16(d) WF-recursion trick — confirm, no-op.
-- [ ] **B3:** `noncomputable def` audit (1 site: `PartialTransversal.encard`
-  L781, Submodular). Question: is the keyword forced? `encard` is
-  `ℕ∞`-valued via `Set.encard` / a `Finset.card` cast — likely forced
-  by the same enumeration driver. Confirm.
-- [ ] **B4:** `change` audit (1 site: Submodular L290
-  `change (Y : Set α) ⊆ X at hY`). Question per `../CLEANUP.md` §B / the
-  *Concrete signals* list: is the `change` covering for an un-fused
-  coercion lemma (`Finset.coe_subset` / a `↑`-membership simp lemma)?
-  Could a one-line rewrite replace it? Assess (project-side fix is in
-  scope here — it's a coercion bridge, not Nelson's argument core).
+- [x] **B1:** `classical` audit (7 Submodular + 5 Union) — **done,
+  closes no-op.** Each site sits under a `[Finite]` (not `[Fintype]`)
+  signature; the `classical` opens the `DecidableEq` the `Finset` ops
+  need (canonical: `rado` L1103-1107, `[Finite ι]` + `classical` +
+  `haveI : Fintype ι := Fintype.ofFinite ι`). Standard
+  `[Finite]`-signature idiom (ROADMAP *Engineering conventions*),
+  confirmed by the Phase 12 port decisions; `[DecidableEq α]` is the
+  pre-existing signature boundary, not a candidate to widen.
+- [x] **B2:** `Fintype.ofFinite` bridge audit (3 + 7) — **done, closes
+  no-op.** The repeated `haveI : Fintype α := Fintype.ofFinite α` is the
+  per-lemma re-bridge (the mathlib idiom under a `[Finite]` signature),
+  not an extract candidate — each lemma's `Finset.univ`/`Fintype.card`
+  step needs its own local `Fintype`. The Submodular WF-recursion
+  `termination_by haveI := Fintype.ofFinite ι; …` is TACTICS-QUIRKS
+  § 16(d) (already lifted during the phase) — confirmed.
+- [x] **B3:** `noncomputable def` audit (`PartialTransversal.encard`
+  L788) — **done, closes no-op.** Body is `(T.edges : Set (ι × α)).encard`;
+  `Set.encard` is `noncomputable` (choice-built `ℕ∞`), so the keyword is
+  forced.
+- [x] **B4:** `change` audit (Submodular L297 `change (Y : Set α) ⊆ X
+  at hY`) — **done, closes no-op.** It is a `Finset`→`Set` coercion
+  bridge: `hY : Y ⊆ X` (Finset) is lifted so `hX_indep.subset hY`
+  (Matroid `Indep.subset`, `Set`-valued) typechecks on the next line.
+  A project-side `Finset.coe_subset.mpr hY` is a lateral move, not a
+  simplification; the `change` reads clearly and stays.
 - [x] **B5:** Multi-step `rw` (4+ args) audit (5 Submodular sites:
   L179/L297/L375/L381/L403) — **done, one fix landed.** The zero-at-bot
   repeat the survey flagged at L297/L403 is actually a **four**-site
@@ -243,18 +258,19 @@ Runners-up (just outside): `union_indep_aux'` (Union L168, 46 L);
 
 - [ ] **C1:** Top-6 ranking — **done** (table above). The four-question
   lean for each site is recorded; C2 dispatches.
-- [ ] **C2:** Four-question walk over the C1 sites (API extraction,
-  mathlib-lemma-we-missed, tactic substitution, definitional refactor,
-  cross-proof unification). **Vendored-port bias:** the bar is
-  "project-side simplification that doesn't rewrite Nelson's argument";
-  `#4 intro_elimination_nontrivial` (a *reconstructed* helper, not
-  verbatim upstream) is the exception where a content refactor is in
-  scope. Per `../CLEANUP.md` §C *Calibration*, expect mostly no-op
-  (ported structural-recursion / case-dispatch bodies), with the gate
-  confirming the no-extract finding. Use `lean_loogle` / `lean_leanfinder`
-  / `lean_multi_attempt` on any 5–10 L subblock before declaring no-op.
-- [ ] **C3:** In-round refactor candidates land each as its own commit
-  (per `../CLEANUP.md` *Workflow* rule 3). Populated by C2.
+- [x] **C2:** Four-question walk over the C1 sites — **done, closes
+  no-op.** The five vendored sites (#1–3, #5, #6) are structural-recursion
+  / two-direction-min / rank-distribution bodies whose length is forced
+  at the boilerplate level, not the step level (the §C *Calibration*
+  shape): no project-side extraction without reshaping Nelson's argument.
+  The C-bucket exception #4 `intro_elimination_nontrivial` (the
+  reconstructed helper, where a content refactor *is* in scope) is
+  already a tight 20-line `private` helper with a single caller
+  (`circuit_elimination` field), a clean `by_contra!` + antichain core,
+  and uses only existing mathlib (`singleton_of_mem_card_le_one`,
+  `one_lt_card_iff_nontrivial`) — no extraction, mathlib-lemma-we-missed,
+  tactic-substitution, or unification opportunity. No refactor surfaced.
+- [x] **C3:** No in-round refactor candidates — C2 surfaced none.
 
 ### Bucket D — Project-organization compression
 
@@ -272,37 +288,38 @@ Runners-up (just outside): `union_indep_aux'` (Union L168, 46 L);
   + where the per-layer detail / port hazards live), dropping nothing not
   preserved elsewhere. **434 → 304 LoC** — mid-band, hand-off contract intact,
   per-entry ≤8-line rule holds.
-- [ ] **D2:** FRICTION re-skim. The `[matroid]` entry (FRICTION L79+) is
-  a single large `[resolved]` block with per-layer sub-bullets (L2a /
-  L2a-polymatroid / L2a-rank / L2b-union / re-scope / L2b-rado-infra /
-  L2b-rado-warnings / L2b-rado-finish / L2b-partition-finish). Now that
-  Phase 12 is **closed**, assess per `../CLEANUP.md` §D / `../notes/
-  CLAUDE.md`: does the resolved entry (with its resolution fully indexed
-  in `notes/Phase12.md` + DESIGN.md) migrate to `FRICTION-archive.md`?
-  Or is its port-recipe content (the `Matroid.r → rk` rename chase, the
-  Set-lift constructor pattern, the transitive-import gaps) still live
-  reference for Phases 13–15 and should stay in active FRICTION?
-- [ ] **D3:** Lift-on-promotion check. Have any `notes/Phase12.md`
-  decisions been referenced in 2+ files / 2+ phases (the
-  `[Finite]→[Fintype]` bridge, the Set-lift constructor pattern, the
-  `Matroid.r → rk` port recipe)? If so, promote to `TACTICS-GOLF.md` /
-  `TACTICS-QUIRKS.md` / `DESIGN.md` and replace with a one-line pointer.
-  Note: TACTICS-QUIRKS § 16(d) already absorbed the WF-recursion
-  `termination_by` bridge trick (Phase 12 lifted it during the round) —
-  confirm no residual-lift (the phase entry should be pointer-first).
-- [ ] **D4:** DESIGN.md *Choices to revisit* drift check. The
-  `apnelson1/Matroid dependency` entry and the `Set/Finset and
-  rank-flavor boundary at the matroid layer (Phases 13–15)` section
-  (added in the last commit `d5d1d8e`) — confirm they reflect Phase 12's
-  closed reality and the Phase 13 hand-off. Check the *Local mirror of
-  the matroid-union subsystem* section is consistent with what actually
-  landed.
-- [ ] **D5:** ROADMAP / status-surface consistency spot-check. Phase 12
-  is flipped ✓ on the ROADMAP Status table (confirmed at round open);
-  confirm the three public surfaces (`README.md`, `home_page/index.md`,
-  `blueprint/src/chapter/intro.tex`) also show Phase 12 ✓ — if the
-  phase-close commit missed any, fix here (per `../CLAUDE.md` *When this
-  commit closes a phase* → status-surface sync, applied retroactively).
+- [x] **D2:** FRICTION re-skim of the `[matroid]` entry (L79+) —
+  **done, closes no-op: keep in active FRICTION.** Phases 13–15 continue
+  consuming the *same* `apnelson1/Matroid` package (Phase 13's
+  `cycleMatroid` port), so the entry's port-recipe content (`Matroid.r →
+  rk` rename chase, Set-lift constructor pattern, transitive-import
+  gaps, the aesop-`simp_all only` pruning lesson) is live reference for
+  the next porter, not closed design history — does not migrate to
+  `FRICTION-archive.md`. The narrow port-specific lesson (aesop
+  `simp_all` list pruning) is stated inline and is not yet a
+  2+-phase cross-cutting rule, so it stays with the entry.
+- [x] **D3:** Lift-on-promotion check — **done, closes no-op.**
+  `notes/Phase12.md` is already pointer-first: the WF-recursion
+  `termination_by`/`Fintype.ofFinite` trick points to TACTICS-QUIRKS
+  § 16(d) (lifted during the phase), and the `Matroid.r → rk` /
+  Set-lift port recipes are kept in the FRICTION `[matroid]` entry
+  (single source of truth), not duplicated. No decision has crossed the
+  2+-phase threshold yet (the port recipes become cross-cutting if
+  Phase 13's `cycleMatroid` port re-hits them — promote then).
+- [x] **D4:** DESIGN.md drift check — **done, closes no-op.** The
+  *Local mirror of the matroid-union subsystem* (L318+) and *Set/Finset
+  and rank-flavor boundary at the matroid layer (Phases 13–15)* (L361+,
+  added in `d5d1d8e`) sections both reflect Phase 12's closed reality
+  and the Phase 13 hand-off — they describe the exact signatures the A1
+  walk verified (`matroid_partition'` ℕ/Finset-flavored,
+  `matroid_partition_eRk'` ℕ∞/Set-flavored). No drift.
+- [x] **D5:** Status-surface spot-check — **done, closes no-op.** All
+  three public surfaces show Phase 12 complete/✓: `README.md` (*Project
+  status*, "Phases 1–12 complete" + "Phase 12 (complete)"),
+  `home_page/index.md` (prose + phase table row 12 = ✓),
+  `blueprint/src/chapter/intro.tex` (§*Phase plan*). ROADMAP Status
+  table also has Phase 12 ✓ and the post-Phase-12 cleanup-round row
+  (flipped to ✓ in this closing commit).
 
 ## Blockers / open questions
 
@@ -313,17 +330,17 @@ Runners-up (just outside): `union_indep_aux'` (Union L168, 46 L);
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** dispatch the **A1/A2 statement/proof
-walks** (the last substantive un-run survey items): A1 compares each of the
-9 `matroid-union.tex` `\lean{...}` entries against its Lean signature
-(binders/hypotheses/conclusion — see the A1 survey-relevant unknowns:
-`def:ofSubmodular`'s three-name grouping, `lem:rado`'s `Finset`-valued family
-binder, the two namespace-omitted `\lean{}` names); A2 scans the four prose
-`\begin{proof}` blocks for a smoothness gloss the Lean can't sustain (vendored-port
-bias: record a residual aside only if no *project-side* fix exists). Then the
-remaining no-op confirmations (B1–B4/B6, C2, D2–D5).
+**Round closed.** All A–D buckets dispatched: A3 + B5 + D1 landed fixes
+(each its own commit); A1/A2, B1–B4/B6, C1–C3, D2–D5 closed no-op under
+the vendored-port bias (per-bucket results in *Task checklist* above).
+ROADMAP Status row flipped to ✓ in the closing commit.
 
-A3 + B5 + D1 have each landed a fix. The remaining buckets are expected to
-close no-op under the vendored-port bias; if A1/A2/B1–C2/D2–D5 all survey
-no-op, the closing commit flips the ROADMAP row to ✓ with an "A3 + B5 + D1
-fixes + all-else-no-op → close" summary.
+**Next:** Phase 13 (Tutte–Nash-Williams tree-packing, `BodyBar/
+TreePacking.lean`) is scoped but not opened — the user opens it when
+ready (ROADMAP §13). The next porter consuming the same
+`apnelson1/Matroid` package (`cycleMatroid`) should consult the FRICTION
+`[matroid]` entry's port recipe (`Matroid.r → rk` renames, Set-lift
+constructor pattern, transitive-import gaps) kept live for exactly that
+reason; if those recipes re-bite in Phase 13, promote them to a
+cross-cutting home then (D3 left them in FRICTION as a single source of
+truth, below the 2+-phase promotion threshold).
