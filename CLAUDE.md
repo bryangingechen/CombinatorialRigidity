@@ -229,6 +229,17 @@ of* the per-commit checklists above:
   `blueprint/src/chapter/intro.tex` §*Phase plan* + enumerate
   (including the dep-graph-status line at the end of the section).
   Flip Phase N's marker to ✓ on each.
+- **Re-read each new/edited blueprint chapter end-to-end as a domain
+  mathematician** and collapse accumulated per-commit formalization
+  asides. Forward-mode chapters are written one node at a time by
+  separate per-commit subagents, each of which tends to narrate its
+  own modelling choice ("formalized basis-free via …", "abstract
+  graded piece rather than a basis"); read in sequence these accrete
+  into changelog-not-math prose. One end-to-end pass at phase close
+  catches them while the chapter is fresh, rather than a cleanup
+  round later (this is the step that would have caught the Phase-18
+  §2.2–2.4 narration A2 cleaned up). The anti-pattern and the
+  one-clause-max rule are in `blueprint/CLAUDE.md` *Proof verbosity*.
 - **Review project organization.** Re-skim ROADMAP.md,
   `TACTICS-GOLF.md`, `TACTICS-QUIRKS.md`, and `notes/FRICTION.md`
   (status sections). Have decisions in `notes/PhaseN.md` accumulated
