@@ -10,114 +10,46 @@ the iff of the standard-basis existence directions (`prop:tay-witness-exists`:
 
 ## Current state
 
-Three leaf nodes are **green** in `BodyBar/Framework.lean`:
-- `def:body-bar-framework` — `Graph.bodyBarDim n = n(n+1)/2` and the
-  `Graph.BodyBarFramework n α β` structure (a multigraph `graph : Graph α β`
-  paired with an unconstrained `placement : E(graph) → EuclideanSpace ℝ
-  (Fin (bodyBarDim n))` — degenerate two-extensors permitted, no Plücker-
-  variety constraint, per the existence-of-realization scope).
-- `def:rigidity-map-body-bar` — `Graph.BodyBarFramework.rigidityMap`, the
-  bar-constraint `ℝ`-linear map from body motions (`Motion n α = α → ℝ^d`)
-  to bar constraints (`E(graph) → ℝ`), one row per bar. Takes an explicit
-  orientation `D : Graph.orientation F.graph` (apnelson1/Matroid's
-  `Matroid.Graph.Matrix`) to supply each bar's ordered endpoints
-  `(u, v) = D.dInc e`; the row is `m ↦ ⟪placement e, m u − m v⟫`. Built
-  compositionally (`barRow` + `LinearMap.pi`) mirroring Phase 4's
-  `edgeRow`/`RigidityMap`; `barRow_apply` / `rigidityMap_apply` are
-  `@[simp] := rfl`. Blueprint node flipped (`\lean{...}` + `\leanok`).
-- `def:infinitesimally-rigid-body-bar` —
-  `Graph.BodyBarFramework.IsInfinitesimallyRigid F D`, a `Prop` predicate:
-  `finrank ℝ (range (rigidityMap D)) + bodyBarDim n = bodyBarDim n *
-  F.graph.vertexSet.ncard` (the count `rank = d·b − d` phrased as `rank + d
-  = d·b` to dodge ℕ-subtraction; `b = #bodies = vertexSet.ncard`). Mirrors
-  Phase 4's `SimpleGraph.IsInfinitesimallyRigid`, incl. the `[Finite α]`
-  contract guard + `@[nolint unusedArguments]` (same disposition note).
-  Stated against **rank** (not kernel-dim) to match the blueprint's `d·b −
-  d` phrasing. Blueprint node flipped (`\lean{...}` + `\leanok`).
+**Phase 15 is complete.** Forward-mode phase; the authoritative dep-graph
+and lemma index is `body-bar.tex` §`sec:body-bar-framework` +
+§`sec:body-bar-tay` (this file does not duplicate the node list). The full
+per-node landing sequence is the commit log `e83bde2..fa4cfc3` (6
+forward-work commits). `BodyBar/{Framework,TayTheorem}.lean`, both in the
+top-level `CombinatorialRigidity.lean` aggregator; all
+`sec:body-bar-k-frame` / `sec:body-bar-tree-packing` prerequisites green.
 
-`BodyBar/Framework.lean` is in the top-level `CombinatorialRigidity.lean`
-import aggregator. Forward-mode phase: the lemma index lives in
-`blueprint/src/chapter/body-bar.tex` §`sec:body-bar-framework` and
-§`sec:body-bar-tay`. All `sec:body-bar-k-frame` /
-`sec:body-bar-tree-packing` prerequisites are green.
+Route summary (the `thm:tay-witness` iff over the standard-basis witness):
+- **Framework** (`Framework.lean`): `bodyBarDim n = n(n+1)/2`; the bundled
+  `BodyBarFramework` (unconstrained `placement : E(graph) → ℝ^d`,
+  degenerate two-extensors permitted); `rigidityMap D` (one bar row
+  `m ↦ ⟪b_e, m u − m v⟫`, endpoints `(u,v) = D.dInc e` from an explicit
+  orientation, `barRow` + `LinearMap.pi`); `IsInfinitesimallyRigid`
+  (`rank + d = d·b`, `b = vertexSet.ncard`); `IsIndependent`
+  (`rank = |E(G)|`).
+- **Witness + block-diagonal rank** (`TayTheorem.lean`): `stdPlacement` /
+  `stdFramework` (`b_e = e_{j(e)}`); `stdPlacement_rigidityMap_apply` (row
+  collapses to coordinate `j(e)`); `rigidityRow` /
+  `span_range_rigidityRow`; the injective `blockPairing`;
+  `stdFramework_rigidityRow_eq` + `_linearIndependent` (rows LI for a
+  disjoint forest packing via `specRow_linearIndependent` at `ℝ`);
+  `stdFramework_finrank_range` (`rank = |E(G)|`).
+- **Existence (⟸)** (`prop:tay-witness-exists`):
+  `exists_isIndependent_of_isSparse` / `exists_isIsostatic_of_isTight` —
+  `tutte_nash_williams.mpr` gives the disjoint forest cover, `choose` the
+  index `j`, then `stdFramework_finrank_range` + the tight count.
+- **Converse (⟹)** (`lem:tay-isSparse-of-independent`,
+  `isSparse_of_isIndependent`): the rank-upper-bound route, not
+  affine-spanning trivial motions. `rigidityRow_eq` (general-placement row
+  = real-coefficient block-combination of incidence rows) factors each row
+  through `blockPairing`; `finrank_rigidityRow_span_le` bounds
+  `finrank(span rows on E') ≤ d·r(E')` (via `finrank_realBlockPiSpanOn` +
+  `span_signedIncMatrix_image_eq_of_orientation`); restricting row-LI to
+  `E'` then `cycleMatroid_rk_add_one_le_spanningVerts_ncard`
+  (`r(E')+1 ≤ |V'|`) gives `|E'| + d ≤ d·|V'|`.
+- **Full iff** `tay_witness` (`thm:tay-witness`): existence ↔ sparse/tight;
+  the isostatic converse adds the global `|E| + d = d·|V|` count.
 
-The chapter has **one red node** left — the target:
-- `thm:tay-witness` (`\uses` the three defs + `def:graph-sparse`,
-  `thm:tutte-nash-williams`, `cor:k-spanning-trees`; proof
-  `\uses{thm:k-frame-union-cycle, …}`). The phase closes when it is green.
-
-`BodyBar/TayTheorem.lean` (new this session) holds the **witness
-placement** and the **bar-row reduction** — the foundational step toward
-`thm:tay-witness`:
-- `stdPlacement G n j` / `stdFramework G n j` — the standard-basis
-  placement `b_e = e_{j(e)} = EuclideanSpace.single (j e) 1` from a
-  forest-index map `j : E(G) → Fin (bodyBarDim n)`, and its bundled
-  `BodyBarFramework`.
-- `stdPlacement_rigidityMap_apply` — the row collapse: with `b_e = e_{j(e)}`,
-  `(stdFramework G n j).rigidityMap D m e = (m u − m v) (j e)` (single
-  coordinate `j(e)` of the relative velocity, via
-  `EuclideanSpace.inner_single_left`). This exposes the block-diagonal
-  structure: the row for `e` lives entirely in coordinate `j(e)`, where it
-  is `e`'s signed incidence row.
-
-The **block-diagonal rank count** now also lives in `BodyBar/TayTheorem.lean`
-(this commit) — the independent-form half:
-- `rigidityRow` / `rigidityRow_apply` — the `e`-th rigidity-matrix row as a
-  `Module.Dual ℝ (Motion n α)` functional (mirror of Phase-6
-  `SimpleGraph.rigidityRow`).
-- `span_range_rigidityRow` — span of rows = `range (rigidityMap D).dualMap`
-  (mirror of Phase-6 `span_range_rigidityRow`, via the project mirror
-  `LinearMap.range_dualMap_eq_span_image_dualBasis` + `Pi.basisFun`).
-- `blockPairing` / `blockPairing_apply` / `blockPairing_injective` — the
-  injective block-pairing map `(Fin d → α → ℝ) →ₗ Module.Dual ℝ (Motion n α)`,
-  `S w m = Σₓ Σ_c w c x · (m x) c`. Carries an LI family of block rows to an
-  LI family of row functionals.
-- `stdFramework_rigidityRow_eq` — the row identity: each standard-basis row is
-  `-(blockPairing (Pi.single (j e) (signedIncMatrix ℝ e)))`, the block-`single`
-  incidence row.
-- `stdFramework_rigidityRow_linearIndependent` — the rows are LI for a disjoint
-  forest packing `Fs` covering `E(G)` with `j(e) =` forest index. Via
-  `specRow_linearIndependent` (at `𝔽 = ℝ`) reindexed along the disjoint-cover
-  bijection `Set.unionEqSigmaOfDisjoint`, then `blockPairing` injective +
-  `LinearIndependent.neg`.
-- `stdFramework_finrank_range` — **the rank count**: `finrank (range
-  (rigidityMap D)) = |E(G)|`, via `finrank_range_dualMap_eq_finrank_range` +
-  `span_range_rigidityRow` + `finrank_span_eq_card`.
-
-The **existence (⟸) direction** now lands (this commit): `IsIndependent` predicate
-(`Framework.lean`, `finrank (range (rigidityMap D)) = |E(G)|`) +
-`exists_isIndependent_of_isSparse` / `exists_isIsostatic_of_isTight`
-(`TayTheorem.lean`). Both package `stdFramework_finrank_range` with
-`tutte_nash_williams.mpr` (sparse → disjoint forest cover; `choose` the forest
-index `j`). The isostatic count is direct: independence gives `rank = |E|`, and
-`IsTight.2` gives `|E| + d = d·|V|`, so `rank + d = d·b`. New blueprint nodes
-`def:independent-body-bar` + `prop:tay-witness-exists` are **green**.
-
-The **converse (⟹) direction** and the full iff `thm:tay-witness` now land (this
-commit). The converse `isSparse_of_isIndependent` (`lem:tay-isSparse-of-independent`)
-took the rank-upper-bound route rather than affine-spanning trivial motions:
-- `rigidityRow_eq` — **general-placement row identity**: for *any* framework `F`, the
-  rigidity row at `e` is `-(blockPairing α d (fun c ↦ (b_e c) • signedIncMatrix e))`,
-  the real-coefficient combination `∑_c (b_e)_c · (block-c incidence row)`. Generalizes
-  `stdFramework_rigidityRow_eq` (the `b_e = e_{j(e)}`, block-`single` special case).
-- `span_signedIncMatrix_image_eq_of_orientation` — the incidence-row span is
-  orientation-independent (two orientations' `dInc` agree-or-swap, so each generator is
-  `±` the other; `span` swallows the sign). Lets the rank count reuse the
-  `orientation_nonempty.some`-pinned `finrank_span_signedIncMatrix_eq_cycleMatroid_rk`.
-- `finrank_realBlockPiSpanOn` — the **real** block-diagonal subspace finrank `= d·r(E')`,
-  assembled from the *field-generic* `finrank_constPiSpan` +
-  `finrank_span_signedIncMatrix_eq_cycleMatroid_rk` (both already over an arbitrary field).
-- `finrank_rigidityRow_span_le` — the **rank upper bound** `finrank (span (rows on E')) ≤
-  d·r(E')`: each row, pushed back through injective `blockPairing`, lands in the real
-  block-diagonal subspace. The body-bar analogue of
-  `rigidityMap_finrank_range_le_of_affinelySpanning`; the real specialization of Phase 14's
-  `forest_count_of_linearIndepOn_kFrameRow`.
-- `rigidityRow_linearIndependent` — independence (`rank = |E|`) makes the full row family LI.
-- `isSparse_of_isIndependent` — restrict row-LI to `E' ⊆ E(G)` (so `finrank (span rows) =
-  |E'|`), apply the upper bound (`|E'| ≤ d·r(E')`), then
-  `cycleMatroid_rk_add_one_le_spanningVerts_ncard` (`r(E')+1 ≤ |V'|`) gives `|E'| + d ≤ d·|V'|`.
-- `tay_witness` — the iff: existence directions ↔ sparse/tight; isostatic converse adds the
-  global count `|E| + d = d·|V|` from independence substituted into rigidity.
+Axioms: `propext`, `Classical.choice`, `Quot.sound` (no `sorryAx`).
 
 ## Architectural choices made up front
 
@@ -139,43 +71,6 @@ Migrated from the old Phase-12 notes / ROADMAP §15:
   `BodyBar`. Departs from the "everything under `SimpleGraph`/
   `CombinatorialRigidity`" convention (Phases 13–15). See ROADMAP §15
   and the Phases-12–15 exception in ROADMAP *Engineering conventions*.
-
-## Lemma checklist
-
-Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
-§`sec:body-bar-tay` dep-graph (4 red nodes as of phase-open).
-
-- [x] `def:body-bar-framework` — body-bar framework (placement = two-extensor
-      per bar). `BodyBar/Framework.lean` (`Graph.bodyBarDim`,
-      `Graph.BodyBarFramework`).
-- [x] `def:rigidity-map-body-bar` — bar-constraint rigidity map.
-      `BodyBar/Framework.lean` (`BodyBarFramework.rigidityMap`, `barRow`).
-- [x] `def:infinitesimally-rigid-body-bar` — rank `= d·b − d`
-      (`IsInfinitesimallyRigid`). `BodyBar/Framework.lean`.
-- [ ] `thm:tay-witness` — Tay's theorem, existence form (Whiteley Thm 8).
-      Standard-basis specialization of `thm:k-frame-union-cycle`'s reverse
-      direction lifted from indeterminate to real coefficients.
-      - [x] Witness placement + bar-row reduction (`stdPlacement`,
-            `stdFramework`, `stdPlacement_rigidityMap_apply`) —
-            `BodyBar/TayTheorem.lean`. The row collapse to coordinate `j(e)`.
-      - [x] Block-diagonal rank count (`rigidityRow`, `span_range_rigidityRow`,
-            `blockPairing`(`_injective`), `stdFramework_rigidityRow_eq`,
-            `stdFramework_rigidityRow_linearIndependent`,
-            `stdFramework_finrank_range`) — `finrank (range (rigidityMap D)) =
-            |E(G)|` for a disjoint forest packing, via the ℝ-instance of
-            `specRow_linearIndependent`. `BodyBar/TayTheorem.lean`.
-      - [x] Existence (⟸) direction (`prop:tay-witness-exists`):
-            `IsIndependent` (`Framework.lean`),
-            `exists_isIndependent_of_isSparse` /
-            `exists_isIsostatic_of_isTight` (`TayTheorem.lean`).
-      - [x] Converse (⟹: independent ⟹ `(d,d)`-sparse,
-            `lem:tay-isSparse-of-independent`): `rigidityRow_eq`,
-            `span_signedIncMatrix_image_eq_of_orientation`,
-            `finrank_realBlockPiSpanOn`, `finrank_rigidityRow_span_le`,
-            `rigidityRow_linearIndependent`, `isSparse_of_isIndependent`
-            (`TayTheorem.lean`).
-      - [x] Full iff `thm:tay-witness` (`tay_witness`, `TayTheorem.lean`) — green.
-            Phase complete.
 
 ## Decisions made during this phase
 

@@ -1,6 +1,6 @@
 # Phase 15 cleanup round (work log)
 
-**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C1/C2/C3 no-op confirms landed; D remains).
+**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C1/C2/C3 no-op confirms landed; D1 landed; D2/D3 remain).
 
 Between-phases cleanup round, run after Phase 15 (body-bar Tay theorem,
 existence form) closed in `fa4cfc3` and before Phase 16 (body-hinge /
@@ -206,16 +206,18 @@ mostly no-op confirming forced structural shape):
 
 ### D. Project-organization compression
 
-- [ ] D1 — compress `notes/Phase15.md` (272 → under 250 budget). The
-  closed phase no longer needs its narrated *Current state* (lines 11–121,
-  a per-commit build-history narration restating every landed lemma) nor
-  the per-node *Lemma checklist* (lines 143–178) at full density. Collapse
-  to a commit-log pointer (`e83bde2..fa4cfc3`, the 6 forward-work commits)
-  + a witness/rank-count/existence/converse route summary, matching the
-  Phase-14-cleanup D1 model (329 → 152). Preserve *Architectural choices
-  made up front*, *Decisions made during this phase* (≤8-line entries),
-  *Blockers* (resolved), and the *Hand-off / next phase* + *Converse-route
-  note* sections.
+- [x] D1 — compress `notes/Phase15.md` (273 → **167** lines, under the 250
+  budget; matches the Phase-14-cleanup D1 model 329 → 152). Collapsed the
+  narrated *Current state* (per-commit build-history narration restating
+  every landed lemma) to a commit-log pointer (`e83bde2..fa4cfc3`, the 6
+  forward-work commits) + a five-bullet witness/rank-count/existence/
+  converse/iff route summary + the axiom line; **dropped** the per-node
+  *Lemma checklist* entirely (the leaf to-do list lives in the
+  `body-bar.tex` dep-graph, not duplicated here — Phase-14-cleanup
+  precedent). Preserved *Architectural choices made up front*, *Decisions
+  made* (all ≤8-line entries, untouched), *Blockers* (resolved), and the
+  *Hand-off* + *Converse-route note* + *Possible cleanup-round item* (the
+  D3 reference) sections verbatim.
 - [ ] D2 — re-skim `FRICTION.md` status sections. Two Phase-15 `[resolved]`
   entries are candidates (both already `Lifted to:` a TACTICS section):
   - `Finset.sum_ite_eq' silently no-ops …` (L79; Lifted to TACTICS-GOLF
@@ -331,22 +333,19 @@ mostly no-op confirming forced structural shape):
 
 ## Hand-off / next phase
 
-**A complete; all of B closed; C1/C2/C3 closed (this commit, no-op
-confirm batch).** The C long-proof audit closed entirely no-op: all three
-top-LoC proofs are forced structural shape, the C2↔C3 backbone is
-delegation (C3 calls C2) not duplication, and `loogle` found no fused
-finrank-map lemma to collapse C2's `calc`. No code touched this commit
-(notes-only).
+**A complete; all of B closed; C complete; D1 landed (this commit,
+notes-only).** D1 compressed `notes/Phase15.md` 273 → 167 lines (commit-log
+pointer + route summary, per-node *Lemma checklist* dropped to the
+blueprint dep-graph), under the 250 budget. No Lean code touched.
 
-**Smallest concrete next commit:** **D1** — compress `notes/Phase15.md`
-(272 → under 250 budget) per the Phase-14-cleanup D1 model (329 → 152):
-collapse the narrated *Current state* (L11–121) + per-node *Lemma
-checklist* (L143–178) to a commit-log pointer (`e83bde2..fa4cfc3`) + a
-witness/rank-count/existence/converse route summary; preserve
-*Architectural choices*, *Decisions made* (≤8-line entries), *Blockers*,
-*Hand-off* + *Converse-route note*. Then **D2** (re-skim FRICTION status
-sections; migrate-vs-keep the two Phase-15 `[resolved]` entries + re-confirm
-the four Phase-13/14 entries kept active for Phase 15). Then **D3** (the
+**Smallest concrete next commit:** **D2** — re-skim `FRICTION.md` status
+sections; for the two Phase-15 `[resolved]` entries (`Finset.sum_ite_eq'`
+L79, Lifted to TACTICS-GOLF §10; `Pi.single`-indexed `have` L96, Lifted to
+TACTICS-QUIRKS §24) decide migrate-to-archive vs. keep-active per the
+Phase-14-cleanup D2 criterion (fully indexed elsewhere + no Phase-16
+forward reference → archive). Also re-confirm whether the four Phase-13/14
+`[resolved]` entries kept active for Phase 15 now lose their forward
+reference with Phase 15 closed. Then **D3** (the
 `stdFramework_rigidityRow_eq` derivation from `rigidityRow_eq`) — the one
 substantive refactor candidate, as its own commit, with a try-and-record
 fallback if the `Pi.single` reshape fights the elaborator. D3 closes the
