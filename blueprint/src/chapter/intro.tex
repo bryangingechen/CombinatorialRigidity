@@ -25,7 +25,7 @@ combinatorial rigidity, see
 
 The Lean code is organized into sixteen phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--15 are complete and Phase~16 is in progress (see the phase
+Phases~1--16 are complete (see the phase
 bullets below). The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
@@ -172,19 +172,18 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from the
 navigation bar) is the best place to see at a glance how the chapters
-fit together; all Phase~1--15 nodes are green: the main Laman line
+fit together; all Phase~1--16 nodes are green: the main Laman line
 (\cref{sec:laman-theorem}), the matroid identifications
 (\cref{sec:rigidity-matroid,sec:count-matroid}), the verified-DFS
 warmup (\cref{sec:dfs}), the pebble-game chapter
 (\cref{sec:pebble-game}), the executable pebble-game chapter
 (\cref{sec:executable}), the matroid-union / Edmonds-partition
-chapter (\cref{sec:matroid-union}), and the full body-bar chapter
+chapter (\cref{sec:matroid-union}), the full body-bar chapter
 (\cref{sec:body-bar}) --- Tutte--Nash-Williams tree-packing, the
 $k$-frame matroid as a cycle-matroid union, and Tay's body-bar theorem
-itself (\cref{thm:tay-witness}). With Phase~15 complete the Phase~1--15
-dependency graph is green. Phase~16 (\cref{sec:body-hinge}) is in
-progress in forward mode: its nodes --- the hinge-to-body-bar reduction
-and the body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}) ---
-are red until their Lean lands, and the chapter's dep-graph is the
-live to-do list. The longer-horizon molecular conjecture
-(\cref{sec:body-hinge}, closing remark) is not yet opened.
+itself (\cref{thm:tay-witness}) --- and the body-hinge chapter
+(\cref{sec:body-hinge}): the hinge-to-body-bar reduction and the
+body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}). With
+Phase~16 complete the Phase~1--16 dependency graph is green. The
+longer-horizon molecular conjecture (\cref{sec:body-hinge}, closing
+remark) is not yet opened.

@@ -1,30 +1,28 @@
 # Phase 16 — Body-hinge Tay–Whiteley theorem (existence form) (work log)
 
-**Status:** in progress (`def:edge-multiply`, `def:body-hinge-framework`,
-`lem:edge-multiply-sparse` landed).
+**Status:** ✓ Complete (all `body-hinge.tex` nodes green).
 
 ## Current state
 
-The target is the **body-hinge / panel-hinge Tay–Whiteley theorem** in
-`n`-space (Tay 1989, Whiteley 1988), existence-of-realization form, **via the
-matroid-union reduction to Phase 15's body-bar theorem**: a multigraph `G`
-carries an independent (resp. isostatic) body-hinge framework in `ℝⁿ` iff
-`(δ-1)·G` is `(δ,δ)`-sparse (resp. tight), where `δ = bodyBarDim n = n(n+1)/2`
-and `(δ-1)·G` replaces each hinge by `δ-1` parallel bars. This reduces
-node-for-node to `Graph.BodyBarFramework.tay_witness` (Phase 15) once the
-hinge-to-bar reduction (`def:body-hinge-framework`, `lem:edge-multiply-sparse`)
-lands.
+The **body-hinge / panel-hinge Tay–Whiteley theorem** in `n`-space (Tay 1989,
+Whiteley 1988), existence-of-realization form, landed **via the matroid-union
+reduction to Phase 15's body-bar theorem**: a multigraph `G` carries an
+independent (resp. isostatic) body-hinge framework in `ℝⁿ` iff `(δ-1)·G` is
+`(δ,δ)`-sparse (resp. tight), where `δ = bodyBarDim n = n(n+1)/2` and `(δ-1)·G`
+replaces each hinge by `δ-1` parallel bars. This reduces node-for-node to
+`Graph.BodyBarFramework.tay_witness` (Phase 15).
 
-Forward-mode phase. The authoritative dep-graph and lemma index is the
-blueprint chapter `body-hinge.tex` (§`sec:body-hinge`). Nodes `def:edge-multiply`,
-`def:body-hinge-framework`, and `lem:edge-multiply-sparse` are now green:
-`Graph.edgeMultiply` (+3 transport facts), `Graph.BodyHingeFramework`
-(+ `toBodyBar`, `IsIndependent`, `IsInfinitesimallyRigid`), and the sparsity
-correspondence `edgeMultiply_isSparse_iff` (+ helper `exists_toBodyBar_iff`) live
-in `BodyBar/BodyHinge.lean` (in the `CombinatorialRigidity.lean` aggregator).
-`lem:edge-multiply-sparse` is the body-bar Tay theorem (`tay_witness`) applied to
-`(δ-1)·G`, transported across the body-hinge ⇔ body-bar existential bijection.
-Next (final) concrete step is the chapter target `thm:body-hinge-tay`.
+Forward-mode phase; the authoritative dep-graph and lemma index is the blueprint
+chapter `body-hinge.tex` (§`sec:body-hinge`), now fully green. All declarations
+live in `BodyBar/BodyHinge.lean` (in the `CombinatorialRigidity.lean`
+aggregator): `Graph.edgeMultiply` (+3 transport facts), `Graph.BodyHingeFramework`
+(+ `toBodyBar`, `IsIndependent`, `IsInfinitesimallyRigid`), the sparsity
+correspondence `edgeMultiply_isSparse_iff` (+ helper `exists_toBodyBar_iff`), and
+the chapter target `Graph.BodyHingeFramework.body_hinge_tay`. The target conjoins
+`edgeMultiply_isSparse_iff` with the forest-packing reformulation
+(`tutte_nash_williams` on `(δ-1)·G`); the connected-tight spanning-tree
+refinement is `isSpanningTreePacking_of_isTight` at the call site (one-directional,
+needs `((δ-1)·G).Connected`), so it is not folded into the iff.
 
 ## Architectural choices made up front
 
@@ -74,8 +72,13 @@ checklist). Leaf-first landing order:
   the count `(δ-1)|E| = δ(|V|-1)` is left as the blueprint-prose consequence of
   `edgeMultiply_edgeSet_ncard` + tightness (no standalone ℕ-lemma needed — see
   Decisions). In `BodyBar/BodyHinge.lean`.
-- [ ] `thm:body-hinge-tay` — the chapter target; assemble from
-  `lem:edge-multiply-sparse` + `tay_witness` + tree-packing reformulations.
+- [x] `thm:body-hinge-tay` — the chapter target
+  (`Graph.BodyHingeFramework.body_hinge_tay`): independent body-hinge framework
+  iff `(δ-1)·G` is `(δ,δ)`-sparse / forest-packing of `δ` forests; isostatic iff
+  `(δ,δ)`-tight. `edgeMultiply_isSparse_iff` composed (`.trans
+  tutte_nash_williams.symm`) with the forest-packing reformulation. The
+  spanning-tree leg stays a call-site application of `isSpanningTreePacking_of_isTight`
+  (needs connectivity; one-directional) rather than a third iff conjunct.
 
 ## Decisions made during this phase
 
@@ -141,34 +144,29 @@ checklist). Leaf-first landing order:
 
 ## Blockers / open questions
 
-- **Tree-packing reformulation for `thm:body-hinge-tay`.** The chapter target's
-  statement folds in the `tutte_nash_williams` / `cor:k-spanning-trees`
-  equivalence (`(δ-1)·G` = edge-disjoint union of `δ` forests / spanning trees).
-  `lem:edge-multiply-sparse` already delivers the sparse/tight half; the open
-  question is whether `thm:body-hinge-tay` restates the tree-packing leg
-  explicitly (a second iff conjunct) or just composes `edgeMultiply_isSparse_iff`
-  with the existing `tutte_nash_williams` on `(δ-1)·G` at the call site. The
-  count `(δ-1)|E| = δ(|V|-1)` needs no Lean lemma — it is `edgeMultiply_edgeSet_ncard`
-  + the additive tightness equation (resolved during `lem:edge-multiply-sparse`).
+- **Tree-packing reformulation for `thm:body-hinge-tay` (resolved).** Chosen
+  phrasing: `thm:body-hinge-tay` restates the *forest-packing* leg explicitly as
+  the RHS of the independent/sparse iff (`((δ-1)·G).IsForestPacking δ`, via
+  `.trans tutte_nash_williams.symm`) and keeps the isostatic iff on
+  `IsTight`. The spanning-tree leg (`cor:k-spanning-trees`) is *not* a third iff
+  conjunct: `isSpanningTreePacking_of_isTight` is one-directional and needs
+  `((δ-1)·G).Connected`, so it is applied at the call site, matching the
+  blueprint proof's "applied to `(δ-1)·G`" phrasing. The count
+  `(δ-1)|E| = δ(|V|-1)` needs no Lean lemma — `edgeMultiply_edgeSet_ncard` + the
+  additive tightness equation (resolved during `lem:edge-multiply-sparse`).
 
 ## Hand-off / next phase
 
-**Smallest next commit (closes the phase):** formalize `thm:body-hinge-tay`, the
-chapter target. Statement: a multigraph `G` carries an independent body-hinge
-framework iff `(δ-1)·G` is `(δ,δ)`-sparse, isostatic iff `(δ-1)·G` is
-`(δ,δ)`-tight. This is `edgeMultiply_isSparse_iff` (now green) — the two are the
-same statement, so `thm:body-hinge-tay` is essentially that lemma re-exported
-under the theorem name, optionally conjoined with the tree-packing reformulation
-via `tutte_nash_williams` / `cor:k-spanning-trees` applied to `(δ-1)·G` (see
-Blockers for the open phrasing choice). Land it in `BodyBar/BodyHinge.lean`, flip
-`thm:body-hinge-tay` green in `body-hinge.tex`, and run the phase-completion
-checklist (ROADMAP row → ✓, compress §16 planning, sync the three status
-surfaces). This is the **last red node** of the chapter.
-
-`def:edge-multiply`, `def:body-hinge-framework`, and `lem:edge-multiply-sparse`
-are done; the chapter dep-graph is green except `thm:body-hinge-tay`.
+Phase 16 is **complete**: all `body-hinge.tex` nodes are green, build + lint +
+`blueprint/verify.sh` clean. The chapter target `Graph.BodyHingeFramework.body_hinge_tay`
+landed as `edgeMultiply_isSparse_iff` (sparse/tight) composed with the forest-packing
+reformulation (`tutte_nash_williams`).
 
 Follow-on after Phase 16: the **molecular conjecture** (panel-and-hinge with
 concurrent hinges; Tay–Whiteley conjecture, proved by Katoh–Tanigawa 2011) — a
 longer-horizon **Phase 17** target, not opened. Whiteley's "almost all
-realizations are rigid" irreducible-variety lift remains deferred.
+realizations are rigid" irreducible-variety lift remains deferred. Opening
+Phase 17 would start (forward mode) by drafting a new `molecular.tex` chapter
+dep-graph and `notes/Phase17.md`; the concurrency constraint is genuinely new
+mathematics (not a reduction to existing phases), so expect a multi-session
+formalization rather than a re-export.

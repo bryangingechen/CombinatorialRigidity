@@ -251,6 +251,29 @@ theorem edgeMultiply_isSparse_iff [Finite α] [Finite β] (G : Graph α β) :
           (fun Fb => ∃ D, Fb.IsIndependent D ∧ Fb.IsInfinitesimallyRigid D)).mpr ⟨Fb, hg, D, hD⟩
       exact ⟨F, rfl, hP⟩
 
+/-- **Body-hinge Tay–Whiteley theorem, independent form** (`thm:body-hinge-tay`;
+Tay 1989 §7, Whiteley 1988). For `n ≥ 2` and `δ = bodyBarDim n = n(n+1)/2`, a multigraph
+`G` carries an *independent* body-hinge framework in `ℝⁿ` **iff** `(δ-1)·G` is
+`(δ,δ)`-sparse — equivalently the edge-disjoint union of `δ` forests
+(`Graph.IsForestPacking`) — and an *isostatic* one **iff** `(δ-1)·G` is `(δ,δ)`-tight.
+
+The chapter target of Phase 16. The sparse/tight characterizations are
+`edgeMultiply_isSparse_iff` (the body-hinge ⇔ body-bar reduction composed with the
+body-bar Tay theorem `tay_witness` on `(δ-1)·G`); the forest-packing reformulation is
+`tutte_nash_williams` applied to `(δ-1)·G`. The connected-tight spanning-tree refinement
+(each of the `δ` forests upgrades to a spanning tree) is `isSpanningTreePacking_of_isTight`
+applied to `(δ-1)·G`, available at the call site under `(δ-1)·G).Connected`. -/
+theorem body_hinge_tay [Finite α] [Finite β] (G : Graph α β) :
+    ((∃ (F : BodyHingeFramework n α β) (_ : F.graph = G)
+        (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))), F.IsIndependent D) ↔
+      (G.edgeMultiply (bodyHingeMult n)).IsForestPacking (bodyBarDim n)) ∧
+    ((∃ (F : BodyHingeFramework n α β) (_ : F.graph = G)
+        (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))),
+          F.IsIndependent D ∧ F.IsInfinitesimallyRigid D) ↔
+      (G.edgeMultiply (bodyHingeMult n)).IsTight (bodyBarDim n) (bodyBarDim n)) := by
+  obtain ⟨hsparse, htight⟩ := edgeMultiply_isSparse_iff (n := n) G
+  exact ⟨hsparse.trans tutte_nash_williams.symm, htight⟩
+
 end BodyHingeFramework
 
 end Graph

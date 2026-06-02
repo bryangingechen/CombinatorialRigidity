@@ -113,6 +113,8 @@ multiplied graph is again sufficient for the witness form.
 
 \begin{theorem}[Body-hinge Tay--Whiteley theorem, independent form]
   \label{thm:body-hinge-tay}
+  \lean{Graph.BodyHingeFramework.body_hinge_tay}
+  \leanok
   \uses{def:body-hinge-framework, lem:edge-multiply-sparse,
     thm:tay-witness, thm:tutte-nash-williams, cor:k-spanning-trees}
   Let $n \ge 2$ and $\delta = \mathrm{bodyBarDim}\,n = n(n+1)/2$. A
@@ -126,6 +128,7 @@ multiplied graph is again sufficient for the witness form.
   (Tay~\cite{tay1989}~\S7, Whiteley~\cite{whiteley1988}).
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:edge-multiply-sparse, thm:tay-witness}
   By \cref{lem:edge-multiply-sparse} a body-hinge framework on $G$ is
   independent (resp.\ isostatic) iff the induced body-bar framework on

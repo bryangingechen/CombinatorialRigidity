@@ -60,7 +60,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │       ├── Exec.lean        Phase 10 (planning) — `runPebbleGameExec` + `Decidable` instances
 │       └── Examples.lean    Phase 10 (planning) — `#eval` examples on `Fin n` graphs
 │   ├── Matroid/         Phase 12 — local mirror of `apnelson1/Matroid` submodular + union (ported, Apache-2.0)
-│   └── BodyBar/         Phase 13 (✓, `TreePacking.lean`) — Graph-native sparsity + Tutte–Nash-Williams; Phases 14–15 (planning) — k-frame matroid, body-bar frameworks + Tay
+│   └── BodyBar/         Phase 13 (✓, `TreePacking.lean`) — Graph-native sparsity + Tutte–Nash-Williams; Phase 14 (✓, `KFrame.lean`) — k-frame matroid; Phase 15 (✓, `{Framework,TayTheorem}.lean`) — body-bar frameworks + Tay; Phase 16 (✓, `BodyHinge.lean`) — body-hinge Tay–Whiteley
 ├── Main.lean            Phase 10 (planning) — `lake exe pebble-game` CLI entry point
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
@@ -103,7 +103,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-14) | Phase 14 surface (`BodyBar/KFrame.lean`, Phase-14 `Mathlib/LinearAlgebra/Matrix/Rank.lean` adders, `body-bar.tex` `sec:body-bar-k-frame` nodes) | ✓ Complete (see `notes/Phase14-cleanup.md`; round manual: `CLEANUP.md`) |
 | 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | ✓ Complete (was Phase 12; see `notes/Phase15.md`) |
 | ⋮ Cleanup round (post-Phase-15) | Phase 15 surface (`BodyBar/{Framework,TayTheorem}.lean`, `body-bar.tex` `sec:body-bar-framework` + `sec:body-bar-tay` nodes) | ✓ Complete (see `notes/Phase15-cleanup.md`; round manual: `CLEANUP.md`) |
-| 16. Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` (planned) | In progress (see `notes/Phase16.md`) |
+| 16. Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ Complete (see `notes/Phase16.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -493,36 +493,30 @@ map + decisions in `notes/Phase15.md` and the `sec:body-bar-framework` +
 
 ### Phase 16 — Body-hinge Tay–Whiteley theorem (existence form)
 
-**Status (in progress; see `notes/Phase16.md`).** The natural follow-on
-to Phase 15's body-bar Tay theorem. Target: the **body-hinge /
-panel-hinge Tay–Whiteley theorem** in `n`-space (Tay 1989, Whiteley
-1988), existence-of-realization form, **via the matroid-union reduction
-to Phase 15**. A *hinge* in `ℝⁿ` is an `(n−2)`-dimensional affine
-subspace (a pin-joint in 2-space, a line-hinge in 3-space); it
-constrains all but one of the `δ = bodyBarDim n = n(n+1)/2` relative
-screw freedoms of the two bodies it joins, so it behaves like a bundle
-of `δ−1` coincident body-bars. The chapter therefore adds *no new
-linear algebra*: a body-hinge framework on `G` is defined as the induced
-body-bar framework on `(δ−1)·G` (each hinge replaced by `δ−1` parallel
-bars), and the target
-
-> a multigraph `G` carries an independent (resp. isostatic) body-hinge
-> framework in `ℝⁿ` iff `(δ−1)·G` is `(δ,δ)`-sparse (resp. tight) —
-> equivalently the edge-disjoint union of `δ` forests (resp. spanning
-> trees)
-
-reduces node-for-node to `Graph.BodyBarFramework.tay_witness` on
-`(δ−1)·G`. The `(δ−1)·G` parallel-edge-multiplication device is exactly
-the multiplied graph in Katoh–Tanigawa 2011's molecular-conjecture
-statement. Forward-mode phase; the authoritative dep-graph is the new
-blueprint chapter `body-hinge.tex` (`sec:body-hinge`). Carrier: mathlib
-core `Graph α β`; standard-basis witness only (degenerate permitted),
-matching Phase 15. Whiteley's "almost all realizations are rigid"
-irreducible-variety lift (deferred out of Phase 15) is re-assessed and
-remains deferred — the standard-basis witness on `(δ−1)·G` suffices for
-the existence form. Per-node lemma map + decisions: `notes/Phase16.md`
-and the `sec:body-hinge` dep-graph. Leaf-first hand-off: formalize
-`def:edge-multiply` (`(δ−1)·G`) first.
+**Status (✓ Complete; see `notes/Phase16.md`).** The natural follow-on
+to Phase 15's body-bar Tay theorem. The **body-hinge / panel-hinge
+Tay–Whiteley theorem** in `n`-space (Tay 1989, Whiteley 1988),
+existence-of-realization form, **via the matroid-union reduction to
+Phase 15**: a *hinge* in `ℝⁿ` constrains all but one of the
+`δ = bodyBarDim n = n(n+1)/2` relative screw freedoms of the two bodies
+it joins, so it behaves like a bundle of `δ−1` coincident body-bars.
+The chapter adds *no new linear algebra* — parallel-edge multiplication
+`(δ−1)·G` (`Graph.edgeMultiply`, the multiplied graph of Katoh–Tanigawa
+2011's molecular conjecture) plus its three transport facts is the only
+device; a body-hinge framework on `G` (`Graph.BodyHingeFramework`) is
+*defined* as the induced body-bar framework on `(δ−1)·G`
+(`toBodyBar`), with independence / infinitesimal rigidity inherited
+verbatim. The target `Graph.BodyHingeFramework.body_hinge_tay`: `G`
+carries an independent (resp. isostatic) body-hinge framework in `ℝⁿ`
+iff `(δ−1)·G` is `(δ,δ)`-sparse (resp. tight), equivalently the
+edge-disjoint union of `δ` forests — `edgeMultiply_isSparse_iff`
+(`tay_witness` on `(δ−1)·G` transported across the body-hinge ⇔
+body-bar bijection `exists_toBodyBar_iff`) composed with
+`tutte_nash_williams`. Carrier: mathlib core `Graph α β`;
+standard-basis witness only (degenerate permitted), matching Phase 15;
+Whiteley's "almost all realizations are rigid" lift remains deferred.
+Forward-mode phase. Per-node lemma map + decisions: `notes/Phase16.md`
+and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
 The longer-horizon **Phase 17** target — not opened — is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
