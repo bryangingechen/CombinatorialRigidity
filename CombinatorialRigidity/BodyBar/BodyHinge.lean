@@ -18,13 +18,18 @@ replace each hinge by a bundle of `δ - 1` coincident body-bars, where
 the underlying multigraph — the `(δ-1) · G` of Katoh–Tanigawa 2011's molecular
 conjecture statement.
 
-This file lands the lower `body-hinge.tex` dep-graph nodes:
+This file lands all four `body-hinge.tex` dep-graph nodes of Phase 16:
 
 - `def:edge-multiply` — the multiplied multigraph `m · G` on the carrier
   `Graph α β` (mathlib core), and its three transport facts.
 - `def:body-hinge-framework` — the body-hinge framework `Graph.BodyHingeFramework`
   as a thin wrapper over the induced `Graph.BodyBarFramework` on `(δ-1)·G`
   (`toBodyBar`), with independence / infinitesimal rigidity inherited verbatim.
+- `lem:edge-multiply-sparse` — `edgeMultiply_isSparse_iff`, the body-hinge ⇔
+  body-bar existential transport (`exists_toBodyBar_iff`) composed with the
+  body-bar Tay theorem (`tay_witness`) on `(δ-1)·G`.
+- `thm:body-hinge-tay` — `body_hinge_tay`, the chapter target: the tree-packing
+  reformulation (`tutte_nash_williams` on `(δ-1)·G`) of `edgeMultiply_isSparse_iff`.
 
 ## `m · G` (`def:edge-multiply`)
 
