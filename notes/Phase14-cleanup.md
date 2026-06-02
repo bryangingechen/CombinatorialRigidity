@@ -51,8 +51,17 @@ with no `FractionRing` / `span` / `Classical` data, so it is genuinely
 computable. Dropped its `noncomputable`. Build green + warning-clean +
 lint clean.
 
-Next concrete step: continue (B) — B2 (the 14 `classical` invocations),
-then B4/B5, then (C)/(D).
+(B2) `classical`-invocation sweep done: of the 14 (`KFrame.lean` 11 +
+`Rank.lean` 3), 11 are load-bearing and forced (8 `KFrame.lean` def-unfold /
+statement-`letI` boundary sites, 3 `Rank.lean` `[Finite]`→`Fintype` matrix
+bridges — `[DecidableEq]` is not a cleaner boundary at any per `DESIGN.md`
+*Typeclass shape*) and **3 were stray** (`kFrameRow_mem_blockPiSpan`,
+`kFrameRow_mem_blockPiSpanOn`, `Matroid.Rep.finrank_span_image_eq_rk`):
+dropped. Verified by strip-all build. Build green + warning-clean + lint clean.
+
+Next concrete step: continue (B) — B4/B5 (re-confirm `change`/`show`/3+-arg-`rw`
+and `@[nolint]`/`set_option linter.*` clean on the `Rank.lean` adders), then
+(C) the two long proofs, then (D).
 
 ## Scope
 
@@ -117,10 +126,21 @@ bounded:
   viable**: an abstraction boundary cannot inject `letI` instances into
   the caller's elaboration context; only a macro could, which is not
   worth a 2-line save × 8 sites and would hide the required instances.
-- [ ] B2 — 14 `classical` invocations across `KFrame.lean` (11) +
-  `Rank.lean` (3): is `[DecidableEq …]` a cleaner boundary at each, or is
-  the decidability genuinely unavailable (mathlib `[Finite]`-bridge idiom
-  per `DESIGN.md` *Typeclass shape*)?
+- [x] B2 — 14 `classical` invocations across `KFrame.lean` (11) +
+  `Rank.lean` (3). At every load-bearing site `[DecidableEq …]` is **not**
+  a cleaner boundary: the 8 surviving `KFrame.lean` sites are the def-unfold
+  / statement-`letI` boundary already pinned by FRICTION (a `rw` of a
+  `Classical.decEq`-carrying def, or an instance that is part of the theorem
+  type), and the 3 `Rank.lean` sites are the `[Finite m]`→`Fintype`+
+  `DecidableEq` matrix/determinant bridge (`DESIGN.md` *Typeclass shape*).
+  **Finding (3 stray):** the `classical` opening `kFrameRow_mem_blockPiSpan`,
+  `kFrameRow_mem_blockPiSpanOn`, and `Matroid.Rep.finrank_span_image_eq_rk`
+  was dead — the first two `rw`-unfold defs that bake in their own
+  `Classical` instances (so the rewritten goal already carries them) and the
+  third uses no decidable operation at all. Dropped all three; verified
+  load-bearing-ness of the remaining 11 by a strip-all-`classical` build
+  (only those 3 proofs stayed error-free). Build green + warning-clean +
+  lint clean.
 - [x] B3 — 8 `noncomputable def` in `KFrame.lean`: 7 forced
   (`kFrameIndet`/`kFrameRow` via `FractionRing`, `kFrameMatroid` via
   `Matroid.ofFun`, `blockPiSpan`/`blockPiSpanOn` via `Submodule.span`,
@@ -181,6 +201,21 @@ bounded:
   noncomputable ingredient — dropped its `noncomputable`. Build green +
   warning-clean + lint clean; no FRICTION entry (pure code-smell fix the
   B-sweep is designed to catch).
+- **B2 (KFrame.lean, dead-code fix).** `classical`-invocation sweep over
+  all 14 sites (`KFrame.lean` 11 + `Rank.lean` 3). 11 load-bearing and
+  forced — the 8 `KFrame.lean` sites are the def-unfold / statement-`letI`
+  boundary (a `rw` of a `Classical.decEq`-carrying def, or an instance in
+  the theorem type) and the 3 `Rank.lean` sites are the `[Finite]`→`Fintype`
+  + `DecidableEq` matrix/determinant bridge; `[DecidableEq]` is not a cleaner
+  signature boundary at any (`DESIGN.md` *Typeclass shape*). **3 stray**
+  (`kFrameRow_mem_blockPiSpan`, `kFrameRow_mem_blockPiSpanOn`,
+  `Matroid.Rep.finrank_span_image_eq_rk`) dropped: the first two `rw`-unfold
+  defs that already carry their own `Classical` instances, the third uses no
+  decidable op. Verified by a strip-all-`classical` build (only those 3
+  proofs stayed error-free). Build green + warning-clean + lint clean; no
+  FRICTION entry (pure code-smell fix the B-sweep is designed to catch, like
+  B3; the one-off dead-`classical` lesson is below the 2+-file lift
+  threshold).
 - **B1 (KFrame.lean, no-op confirm).** The eight `DecidableEq α` +
   `DecidablePred (· ∈ E(G))` `letI`-pair sites (plus the single `letI`
   in `forestEval`) all match the FRICTION-pinned boundary and are each
@@ -196,13 +231,12 @@ bounded:
 
 ## Hand-off / next phase
 
-Round in progress (mid-(B); B1 + B3 done). Next concrete commit: **B2** —
-walk the 14 `classical` invocations across `KFrame.lean` (11) +
-`Rank.lean` (3) and decide at each whether a `[DecidableEq …]` signature
-binder is a cleaner boundary or the decidability is genuinely unavailable
-(the mathlib `[Finite]`-bridge idiom per `DESIGN.md` *Typeclass shape*);
-record as a no-op confirm or fix as found. Then B4/B5 (re-confirm the
-`change`/`show`/3+-arg-`rw` and `@[nolint]`/`set_option linter.*` greps
-clean on the `Rank.lean` adders), then (C) the two long proofs and (D)
-compress `notes/Phase14.md` + FRICTION re-skim. When (D) closes, write the
-round summary here and flip the ROADMAP Status row to ✓.
+Round in progress (mid-(B); B1 + B2 + B3 done). Next concrete commit:
+**B4/B5** — re-confirm the `change`/`show` / `show … from rfl` / 3+-arg
+single-step `rw` greps and the `@[nolint …]` / `set_option linter.*` greps
+come back clean on the `Rank.lean` Phase-14 adders (`KFrame.lean` already
+confirmed clean at round open); record as a no-op confirm. Then (C) the two
+long proofs (`linearIndepOn_kFrameRow_of_isSparse_restrict` ~95 LoC,
+`forest_count_of_linearIndepOn_kFrameRow` ~27 LoC) and (D) compress
+`notes/Phase14.md` (329 → under 250) + FRICTION re-skim. When (D) closes,
+write the round summary here and flip the ROADMAP Status row to ✓.

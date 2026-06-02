@@ -119,7 +119,6 @@ per-row half of the rank-counting bound for the forward direction of Whiteley §
 (`lem:k-frame-nonzero-monomial-forest`). -/
 theorem kFrameRow_mem_blockPiSpan (e : β) :
     kFrameRow k D e ∈ blockPiSpan G k D := by
-  classical
   rw [blockPiSpan, Submodule.mem_pi]
   intro j _
   rw [kFrameRow]
@@ -181,7 +180,6 @@ multiple `X_{(e,j)} • signedIncMatrix e`, which lies in the span of the incide
 (since `e ∈ Y`). The `Y`-restricted analogue of `kFrameRow_mem_blockPiSpan`. -/
 theorem kFrameRow_mem_blockPiSpanOn {Y : Set β} {e : β} (he : e ∈ Y) :
     kFrameRow k D e ∈ blockPiSpanOn G k D Y := by
-  classical
   rw [blockPiSpanOn, Submodule.mem_pi]
   intro j _
   rw [kFrameRow]
@@ -204,7 +202,6 @@ of the span of `v '' Y` equals the matroid rank `M.rk Y`. A basis `I` of `Y` has
 theorem _root_.Matroid.Rep.finrank_span_image_eq_rk {γ K W : Type*} [Field K] [AddCommGroup W]
     [Module K W] {M : Matroid γ} [M.RankFinite] (v : M.Rep K W) (Y : Set γ) :
     Module.finrank K (Submodule.span K (v '' Y)) = M.rk Y := by
-  classical
   obtain ⟨I, hI⟩ := M.exists_isBasis' Y
   obtain ⟨_, hindep, hsub⟩ := v.isBasis'_iff.mp hI
   have hfinI : I.Finite := hI.indep.finite
