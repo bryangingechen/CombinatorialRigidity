@@ -1,6 +1,12 @@
 # Phase 18 — Panel-hinge rigidity matrix `R(G,p)` (work log)
 
-**Status:** in progress (just opened).
+**Status:** ✓ Complete. The rank-matrix skeleton, the trivial-motion /
+numeric-dimension layer, and the three rank lemmas (KT 5.1/5.2/5.3) are
+all green in `Molecular/RigidityMatrix.lean`. The single remaining node
+`prop:rigidity-matrix-prop11` (KT Prop 1.1 reconciliation) is **deferred
+to Phase 19** — its bridge is Prop 2.3 [15]'s `def(G̃) = corank M(G̃)`,
+a Phase-19 object — and is recorded as a Phase-19 deliverable in
+`notes/MolecularConjecture.md` *Phase 19*. See *Hand-off*.
 
 This is the **second phase of the molecular-conjecture program**
 (Phases 17–26). The program-level plan — target, five-strata
@@ -11,7 +17,8 @@ is the Phase-18 work log only.
 
 ## Current state
 
-Phase 18 is **in progress**. Four nodes (`def:hinge-constraint`,
+Phase 18 is **complete** (closed by deferring the last node to Phase 19;
+see *Hand-off*). Four nodes (`def:hinge-constraint`,
 `def:hinge-row-block`, `def:rigidity-matrix`,
 `lem:trivial-motions-rank-bound`) have **landed**
 (`Molecular/RigidityMatrix.lean`), plus the rigidity-predicate half of
@@ -243,9 +250,12 @@ the Lean lands.
       `rank R(G,p) ≤ rank R(G,p')` with `p'` the generic realization. Via
       `Submodule.finrank_mono`; the genericity-over-perturbation choice
       (risk register item 3) resolved in the monotonicity direction.
-- [ ] `prop:rigidity-matrix-prop11` — reconcile rank form with Phase
+- [→] `prop:rigidity-matrix-prop11` — reconcile rank form with Phase
       16's existence form (`thm:body-hinge-tay`); via Prop 2.3
-      [15] + Phase 13/14 union.
+      [15] + Phase 13/14 union. **Deferred to Phase 19** (its bridge
+      `def(G̃) = corank M(G̃)` is a Phase-19 object). Recorded as a
+      Phase-19 deliverable in `notes/MolecularConjecture.md` *Phase 19*;
+      blueprint node red, marked deferred.
 
 ## Decisions made during this phase
 
@@ -455,25 +465,35 @@ refining the hinge spans toward general position (the generic realization
 member of a rotation family. Via `Submodule.finrank_mono`; resolves risk
 register item 3 in the monotonicity (genericity) direction.
 
-**One node remains red: `prop:rigidity-matrix-prop11`** (KT Prop 1.1),
-the reconciliation of the honest rank form (`rank R(G,p) = D(|V|−1)`,
-`def:dof-generic` / `infinitesimalMotions_eq_trivialMotions_iff`) with
-Phase 16's reduction-form existence statement `thm:body-hinge-tay`
-(`(δ−1)·G` is `(δ,δ)`-tight), `δ = D = screwDim k`. This is the next and
-final Phase-18 concrete commit. It is the heavier integration: the bridge
-is Prop 2.3 of Jackson–Jordán [15] (`jacksonJordan2009`), whose deficiency
-`def(G̃)` is the corank of the `D`-fold graphic-matroid union `M(G̃)` on
-`(D−1)·G` — exactly the Phase 13/14 `unionPow_cycleMatroid` +
-`tutte_nash_williams` machinery, with `def = 0` ⇔ `(δ,δ)`-tightness
-matching `BodyBar/BodyHinge.lean`'s `edgeMultiply_isSparse_iff`. The
-conjecture itself needs only the upper-bound half (which Phase 16 may
-already supply); decide the prove-vs-hypothesize boundary for the [15]
-(i)⇔(ii) generic-rank half when the node lands (the [29] pin-a-body half
-is already *proved*, Lemma 5.1). The smallest concrete first step is to
-state the reconciliation `iff` against the two existing forms and assess
-whether the `M(G̃)` corank bridge needs Phase 19's `M(G̃)` machinery first
-(it may — Prop 2.3's deficiency is a Phase-19 object); if so, this node
-defers to Phase 19 and **Phase 18 closes here** with the rank-matrix
-skeleton, the trivial-motion / numeric layer, and the three rank lemmas
-5.1/5.2/5.3 all green. See `notes/MolecularConjecture.md` *Phase 18* /
-*Phase 19* for the per-lemma detail and reuse map.
+**Phase 18 closes here.** The one remaining node
+`prop:rigidity-matrix-prop11` (KT Prop 1.1) — the reconciliation of the
+honest rank form (`rank R(G,p) = D(|V|−1)`, `def:dof-generic` /
+`infinitesimalMotions_eq_trivialMotions_iff`) with Phase 16's
+reduction-form existence statement `thm:body-hinge-tay` (`(δ−1)·G` is
+`(δ,δ)`-tight, `δ = D = screwDim k`) — was assessed per the prior
+hand-off's "smallest concrete first step" and **deferred to Phase 19**.
+The assessment: the bridge is Prop 2.3 of Jackson–Jordán [15]
+(`jacksonJordan2009`), whose deficiency `def(G̃)` is the corank of the
+`D`-fold graphic-matroid union `M(G̃)` on `(D−1)·G`. `M(G̃)`, the
+deficiency, and the `def = corank` bridge are **Phase-19 objects**
+(`notes/MolecularConjecture.md` *Phase 19*, KT §2.5/§3): there is no
+Phase-18-only bridge, because equating the geometric `rank R` to the
+combinatorial `(δ,δ)`-tightness of `(δ−1)·G` *requires* the
+matroid-union corank identity. So the node defers, recorded as an
+inherited Phase-19 deliverable in `notes/MolecularConjecture.md`
+*Phase 19*; the blueprint node stays red and is marked deferred in
+`sec:molecular-rigidity-matrix`. Phase 18 ships the rank-matrix skeleton,
+the trivial-motion / numeric-dimension layer, and the three rank lemmas
+5.1/5.2/5.3 all green.
+
+**Next concrete task (Phase 19, when opened):** build `M(G̃)` (the
+`(D,D)` count matroid at the boundary `ℓ = 2k = D`, routed through the
+Phase 13/14 `unionPow_cycleMatroid` + `tutte_nash_williams` union — *not*
+`CountMatroid.lean`, which is `ℓ<2k`) and the `def = corank` bridge,
+then land `prop:rigidity-matrix-prop11` against the now-available
+deficiency. The conjecture itself needs only the upper-bound half (which
+Phase 16's `edgeMultiply_isSparse_iff` may already supply); decide the
+prove-vs-hypothesize boundary for the [15] (i)⇔(ii) generic-rank half
+when the node lands (the [29] pin-a-body half is already *proved*,
+Lemma 5.1). See `notes/MolecularConjecture.md` *Phase 19* for the
+per-lemma detail and reuse map.

@@ -107,7 +107,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-16) | Phase 16 surface (`BodyBar/BodyHinge.lean`, `body-hinge.tex` `sec:body-hinge` nodes) | ✓ Complete (see `notes/Phase16-cleanup.md`; round manual: `CLEANUP.md`) |
 | 17. Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` (full §2.1) | ✓ Complete (see `notes/Phase17.md`; opens the 10-phase molecular-conjecture program, `notes/MolecularConjecture.md` + §17 below) |
 | ⋮ Cleanup round (post-Phase-17) | Phase 17 surface (`Molecular/Extensor.lean`, `molecular.tex` `sec:molecular` nodes) | ✓ Complete (see `notes/Phase17-cleanup.md`; round manual: `CLEANUP.md`) |
-| 18. Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` (planned; KT §2.2–2.4 + Lemmas 5.1–5.3) | ◷ In progress (see `notes/Phase18.md`; `molecular.tex` `sec:molecular-rigidity-matrix` nodes) |
+| 18. Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` (KT §2.2–2.4 + Lemmas 5.1–5.3) | ✓ Complete (see `notes/Phase18.md`; `molecular.tex` `sec:molecular-rigidity-matrix`) |
 | 19–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -525,7 +525,7 @@ and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
 ### Phase 17+ — The Molecular Conjecture program
 
-**Status: Phase 17 complete; Phases 18–26 planned.** The
+**Status: Phases 17–18 complete; Phases 19–26 planned.** The
 longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
@@ -592,23 +592,32 @@ per-phase detail and the reuse map.
 
 ### Phase 18 — Panel-hinge rigidity matrix `R(G,p)` (KT §2.2–2.4, §5 prep)
 
-**Status (◷ in progress; see `notes/Phase18.md`).** Stratum 2 of the
+**Status (✓ Complete; see `notes/Phase18.md`).** Stratum 2 of the
 molecular-conjecture program: the **genuine** panel-hinge / body-hinge
-rigidity matrix `R(G,p)`, building on Phase 17's extensors. A body-hinge
-framework `(G,p)` assigns a `(d−2)`-affine hinge `p(e)` to each edge;
-its supporting `(d−1)`-extensor `C(p(e))` (Phase 17) constrains the
-`D`-dimensional screw centers by `S(u) − S(v) ∈ span C(p(e))`. The phase
-builds the `(D−1)|E| × D|V|` block matrix `R(G,p)` (orthogonal-complement
-blocks `r(p(e))`), the null space `Z(G,p)`, the `D` trivial motions and
-the `rank ≤ D(|V|−1)` bound, degree of freedom and generic realizations,
-the three rank lemmas (5.1 pin-a-body / 5.3 parallel-hinges-full /
-5.2 rotation semicontinuity), and **reconciles the honest rank form with
-Phase 16's reduction-form Prop 1.1** (`thm:body-hinge-tay`). It
-supersedes Phase 16's reduction-only `BodyHingeFramework` as the rank
-form. Forward-mode: the dep-graph is `molecular.tex`'s
-`sec:molecular-rigidity-matrix` (extends the Phase-17 molecular chapter,
-not a new one). Per-lemma detail + reuse map: `notes/Phase18.md` and
-`notes/MolecularConjecture.md` *Phase 18*.
+rigidity matrix `R(G,p)` (`Molecular/RigidityMatrix.lean`), building on
+Phase 17's extensors and superseding Phase 16's reduction-only
+`BodyHingeFramework` as the rank form. A body-hinge framework `(G,p)`
+assigns a `(d−2)`-affine hinge to each edge; its supporting
+`(d−1)`-extensor `C(p(e))` constrains the screw centers (carried as the
+degree-`k` graded piece `⋀^k ℝ^(k+2)`, `finrank = D` via
+`screwSpace_finrank`) by `S(u) − S(v) ∈ span C(p(e))`. Landed basis-free:
+the hinge constraint + dual-annihilator row block + null space
+`Z(G,p) = infinitesimalMotions`; the trivial-motion layer with the
+`D`-dimensional + `D·|V|` numeric counts (the codimension form of
+`rank R ≤ D(|V|−1)`); and the three rank lemmas — 5.1 pin-a-body
+(`finrank_pinnedMotions_add_screwDim`, the [29] fact *proved* via the
+relative-screw normalization), 5.3 parallel-hinges-full
+(`eq_of_hingeConstraint_two_parallel`, the `|V|=2` base case), 5.2
+rotation semicontinuity (`finrank_infinitesimalMotions_le_of_span_le`,
+span-refinement monotonicity, genericity over analytic perturbation). The
+one remaining node `prop:rigidity-matrix-prop11` (KT Prop 1.1, reconcile
+the rank form with Phase 16's `thm:body-hinge-tay`) was **deferred to
+Phase 19**: its bridge `def(G̃) = corank M(G̃)` is a Phase-19 object.
+Forward-mode (the dep-graph is `molecular.tex`'s
+`sec:molecular-rigidity-matrix`, extending the Phase-17 chapter).
+Per-lemma detail + decisions: `notes/Phase18.md`; the deferred node is an
+inherited Phase-19 deliverable in `notes/MolecularConjecture.md`
+*Phase 19*.
 
 ## Engineering conventions
 

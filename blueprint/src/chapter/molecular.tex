@@ -234,13 +234,19 @@ $D = \binom{d+1}{2}$, matching the extensors of
 \cref{sec:molecular-homog}.
 
 \medskip
-\noindent\emph{Forward mode --- to-do list.} Every node in this section
-is red: stated with its intended \texttt{\textbackslash uses\{\}}
-dependency chain and a prose sketch of the intended proof, awaiting its
-Lean. The leaf-most node is the hinge constraint
-(\cref{def:hinge-constraint}); the load-bearing targets are the three
-rank lemmas (\cref{lem:rank-delete-vertex,lem:rank-rotation-semicont,lem:rank-parallel-full})
-and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
+\noindent\emph{Status.} The rigidity-matrix skeleton
+(\cref{def:hinge-constraint,def:hinge-row-block,def:rigidity-matrix}),
+the trivial-motion / dimension layer
+(\cref{lem:trivial-motions-rank-bound,def:dof-generic}), and the three
+rank lemmas
+(\cref{lem:rank-delete-vertex,lem:rank-rotation-semicont,lem:rank-parallel-full})
+are all green. The single remaining node, the reconciliation with
+Phase~16 (\cref{prop:rigidity-matrix-prop11}), is \textbf{deferred to
+Phase~19}: its proof routes through the deficiency
+$\operatorname{def}(\tilde G)$ and the matroid $M(\tilde G)$, which are
+Phase~19 objects (\cref{sec:molecular-rigidity-matrix} closes here in
+the rank-form skeleton; the def\,$=$\,corank bridge is built in
+Phase~19, \S2.5--\S3).
 
 \subsection{Body-hinge frameworks and the rigidity matrix}
 \label{sec:molecular-rigidity-matrix-def}
@@ -490,6 +496,13 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
 \begin{proposition}[Reconciliation with the body-hinge existence form; KT Prop 1.1]
   \label{prop:rigidity-matrix-prop11}
   \uses{def:dof-generic, lem:rank-delete-vertex, lem:rank-parallel-full}
+  \emph{(Deferred to Phase~19.)} The proof routes through the
+  deficiency $\operatorname{def}(\tilde G) = \operatorname{corank}
+  M(\tilde G)$, whose matroid $M(\tilde G)$ --- the $D$-fold graphic
+  union on $(D-1)\cdot G$ --- is constructed in Phase~19 (\S2.5--\S3);
+  the rank-form skeleton it consumes (\cref{def:dof-generic} and the
+  rank lemmas) is complete in this section.
+
   A multigraph $G$ has a realization as an infinitesimally rigid
   body-hinge framework $(G,p)$ --- in the rank sense
   $\operatorname{rank} R(G,p) = D(|V|-1)$ of \cref{def:dof-generic} ---

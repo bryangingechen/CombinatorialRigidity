@@ -261,6 +261,20 @@ eq. 2.4 `|B| + def(G̃) = D(|V|−1)`).
   boundary regime `ℓ = 2k` is clean before relying on it** —
   `CountMatroid.lean` is built for `ℓ<2k` and will *not* cover this;
   route through the union construction instead.
+- **Inherited from Phase 18:** `prop:rigidity-matrix-prop11` (KT
+  Prop 1.1, the reconciliation of the honest rank form
+  `rank R(G,p) = D(|V|−1)` =
+  `Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff`
+  with Phase 16's reduction-form `thm:body-hinge-tay` /
+  `edgeMultiply_isSparse_iff`) was **deferred from Phase 18** to here:
+  its bridge is Prop 2.3 [15]'s `def(G̃) = corank M(G̃)`, a Phase-19
+  object, so it cannot land before `M(G̃)`/deficiency. The rank-form
+  skeleton it consumes (`def:dof-generic` + the three rank lemmas
+  5.1/5.2/5.3) is all green from Phase 18. The conjecture itself needs
+  only the upper-bound half (which Phase 16 may already supply); decide
+  the prove-vs-hypothesize boundary for the [15] (i)⇔(ii) generic-rank
+  half when the node lands. Blueprint node `prop:rigidity-matrix-prop11`
+  is in `sec:molecular-rigidity-matrix` (red, marked deferred).
 - Lemmas 3.1 (2-edge-conn), 3.3 (subgraph minimality via restriction),
   3.4 (circuit ⇒ rigid subgraph) are on the Thm-4.9 critical path; 3.2
   (not 3-edge-conn) and 3.6 (partition decomposition) are off it — 3.6

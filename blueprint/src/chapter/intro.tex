@@ -25,11 +25,11 @@ combinatorial rigidity, see
 
 The Lean code is organized into phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--17 are complete (see the phase bullets below);
+Phases~1--18 are complete (see the phase bullets below);
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
-Katoh--Tanigawa~\cite{katohTanigawa2011}), and \textbf{Phase~18} (in
-progress) builds the genuine panel-hinge rigidity matrix on top of it.
+Katoh--Tanigawa~\cite{katohTanigawa2011}), and \textbf{Phase~18}
+builds the genuine panel-hinge rigidity matrix on top of it.
 The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
@@ -191,13 +191,16 @@ $R(G,p)$ on it. The per-phase breakdown:
         to each edge; its supporting $(d-1)$-extensor $C(p(e))$ (Phase~17)
         constrains the $D$-dimensional screw centers by
         $S(u) - S(v) \in \operatorname{span} C(p(e))$. The phase builds
-        the $(D-1)|E| \times D|V|$ block matrix, the trivial motions and
-        the $\operatorname{rank} \le D(|V|-1)$ bound, degree of freedom,
-        generic realizations, the rank Lemmas~5.1--5.3, and reconciles
-        the honest rank form with the body-hinge existence form of
-        Phase~16 (\cref{thm:body-hinge-tay}). (Chapter:
+        the null space $Z(G,p)$ of the block matrix (basis-free, on the
+        degree-$k$ graded screw space $\bigwedge^k \R^{k+2}$ of dimension
+        $D$), the $D$ trivial motions and the codimension form of
+        $\operatorname{rank} \le D(|V|-1)$, and the rank Lemmas~5.1--5.3
+        --- all green. The reconciliation with the body-hinge existence
+        form of Phase~16 (\cref{prop:rigidity-matrix-prop11},
+        \cref{thm:body-hinge-tay}) is deferred to Phase~19, whose
+        $M(\tilde G)$-deficiency machinery the bridge needs. (Chapter:
         \cref{sec:molecular-rigidity-matrix}; file:
-        \texttt{Molecular/RigidityMatrix.lean}, in progress.)
+        \texttt{Molecular/RigidityMatrix.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -218,12 +221,13 @@ $k$-frame matroid as a cycle-matroid union, and Tay's body-bar theorem
 itself (\cref{thm:tay-witness}) --- and the body-hinge chapter
 (\cref{sec:body-hinge}): the hinge-to-body-bar reduction and the
 body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}). With
-Phase~17 complete the Phase~1--17 dependency graph is green. The
+Phases~17--18 complete the Phase~1--18 dependency graph is green. The
 molecular-conjecture program (\cref{sec:molecular}, opened as Phase~17)
 runs forward-mode: its extensor-algebra section is fully green,
 culminating in \cref{lem:extensor-independence}
-(Katoh--Tanigawa~\cite{katohTanigawa2011} Lemma~2.1). Phase~18 (in
-progress) extends the same chapter with the panel-hinge rigidity-matrix
-dep-graph (\cref{sec:molecular-rigidity-matrix}), whose nodes are
-currently red --- the forward-mode to-do list; Phases~19--26 remain to
-be opened.
+(Katoh--Tanigawa~\cite{katohTanigawa2011} Lemma~2.1). Phase~18 extends
+the same chapter with the panel-hinge rigidity-matrix dep-graph
+(\cref{sec:molecular-rigidity-matrix}): its rank-matrix skeleton,
+trivial-motion layer, and three rank lemmas are green, with the single
+reconciliation node (\cref{prop:rigidity-matrix-prop11}) red, deferred
+to Phase~19. Phases~19--26 remain to be opened.
