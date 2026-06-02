@@ -1,9 +1,10 @@
 # Phase 12 cleanup round — work log
 
-**Status:** in progress (A–D surveys run; **A3 fix landed** — stale
-forward-mode chapter-intro paragraph removed from `matroid-union.tex`;
-remaining buckets surveyed-but-unfixed, expected mostly no-op under the
-vendored-port bias).
+**Status:** in progress (A–D surveys run; **A3 + B5 fixes landed** — A3
+removed the stale forward-mode chapter-intro paragraph from
+`matroid-union.tex`; B5 added the `PolymatroidFn.zero_at_empty` fused
+accessor and applied it at four sites; remaining buckets
+surveyed-but-unfixed, expected mostly no-op under the vendored-port bias).
 
 This is the inter-phase cleanup round covering **Phase 12** (matroid
 foundations: submodular functions + matroid union). See `../CLEANUP.md`
@@ -22,10 +23,18 @@ files, the §C long-proof ranking, and the §D org-compression check
 have all been **run** (results recorded under *Task checklist* below).
 **A3 landed** (the only A-bucket fix the survey surfaced): the stale
 forward-mode "currently red / to-do list" chapter-intro paragraph in
-`matroid-union.tex` was removed; `verify.sh` green. The remaining
-buckets (A1/A2 statement/proof walks, B1–B6, C2, D1–D5) are surveyed
-but unfixed — expected mostly no-op under the vendored-port bias.
-Build of both Lean files is cached green and warning-clean.
+`matroid-union.tex` was removed; `verify.sh` green. **B5 landed**: the
+shared `← bot_eq_empty, hf.zero_at_bot` polymatroid-zero-at-bot rewrite
+pair — present at four `Submodular.lean` sites (L286/297/403/463), more
+than the two the survey flagged — collapses to a single `hf.zero_at_empty`
+via a new `PolymatroidFn.zero_at_empty : f ∅ = 0` accessor (a project-side
+fused mirror, mechanical substitution, no Nelson-proof reshape). The other
+three B5 `rw` chains (L179 `Nat.cast`/`card_erase`, L375 `Nat.cast`/
+`card_insert`, L381 `biUnion_insert`) are per-step structural with no
+mirror — closed no-op. The remaining buckets (A1/A2 statement/proof walks,
+B1–B4/B6, C2, D1–D5) are surveyed but unfixed — expected mostly no-op
+under the vendored-port bias. Build of both Lean files is green,
+warning-clean; `lake lint` clean.
 
 **Scope (coordinator-decided): Phase-12 surface** —
 `CombinatorialRigidity/Matroid/Constructions/Submodular.lean` (1151 L),
@@ -190,19 +199,24 @@ most are expected to close as no-op confirmations of the convention.
   coercion lemma (`Finset.coe_subset` / a `↑`-membership simp lemma)?
   Could a one-line rewrite replace it? Assess (project-side fix is in
   scope here — it's a coercion bridge, not Nelson's argument core).
-- [ ] **B5:** Multi-step `rw` (4+ args) audit (5 Submodular sites:
-  L179/L297/L375/L381/L403). For each, ask if a missing fused mirror
-  lemma under `CombinatorialRigidity/Mathlib/<path>` would collapse the
-  chain (per `../CLEANUP.md` §B + `../CombinatorialRigidity/CLAUDE.md`
-  *Concrete signals*). Candidates: L179 is a `Nat.cast`/`card_erase`
-  numeric chain; L297/L403 share the `card_empty, ← bot_eq_empty,
-  hf.zero_at_bot` polymatroid-zero-at-bot pattern (possible 2-site
-  fused-lemma candidate); L375 a `Nat.cast`/`card_insert` chain; L381 a
-  `biUnion_insert` structural chain. Expected mostly per-step structural
-  with no mirror (Phase 9/11-cleanup precedent), but the zero-at-bot
-  repeat is worth a look. **Vendored-port bias:** a mirror lemma is a
-  project-side addition (in scope); rewriting the chain's *strategy* is
-  not.
+- [x] **B5:** Multi-step `rw` (4+ args) audit (5 Submodular sites:
+  L179/L297/L375/L381/L403) — **done, one fix landed.** The zero-at-bot
+  repeat the survey flagged at L297/L403 is actually a **four**-site
+  pattern (the `← bot_eq_empty, hf.zero_at_bot` pair also at L286 and the
+  2-arg L463, both below the 4+ grep threshold). Added
+  `PolymatroidFn.zero_at_empty : f ∅ = 0` (the `Finset` specialization of
+  `zero_at_bot`, `[DecidableEq α]` for the `Finset` `Lattice`/`Bot`
+  instances; lives in `Submodular.lean` beside the structure since it is
+  a `PolymatroidFn`-fact, not upstream-eligible) and applied it at all
+  four sites, collapsing each `← bot_eq_empty, hf.zero_at_bot` to a single
+  `hf.zero_at_empty`. The other three flagged chains close **no-op**: L179
+  (`← Nat.cast_one, ← Nat.cast_sub, Nat.cast_inj, card_erase_of_mem`) and
+  L375 (`← Int.lt_add_one_iff, ← Nat.cast_one, ← Nat.cast_add, ←
+  card_insert_of_notMem`) are per-step `ℤ`/`ℕ`-cast↔card numeric chains
+  with no single fused mirror; L381 (`← h, cons_eq_insert, ← hY',
+  biUnion_insert, biUnion_insert`) is a per-step structural `cons`/
+  `biUnion` chain. **Vendored-port bias:** the accessor is a project-side
+  addition (in scope); none of the chains' strategies were rewritten.
 - [ ] **B6:** `@[nolint]` / `set_option linter` / `backward.privateInPublic`
   / `show … from rfl` audit. Closes **no-op** by survey: zero sites of
   each across both files (recorded for completeness per the §B smell
@@ -294,20 +308,17 @@ Runners-up (just outside): `union_indep_aux'` (Union L168, 46 L);
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** dispatch **B5** — the multi-step
-`rw` (4+ args) audit over the 5 Submodular sites
-(L179/L297/L375/L381/L403), the most likely remaining B-bucket fix. The
-specific candidate already surfaced: L297/L403 share the `card_empty,
-← bot_eq_empty, hf.zero_at_bot` polymatroid-zero-at-bot pattern — assess
-whether a 2-site fused mirror lemma under `CombinatorialRigidity/Mathlib/`
-collapses both chains (project-side addition, in scope under the
-vendored-port bias). The other three (L179 `Nat.cast`/`card_erase`, L375
-`Nat.cast`/`card_insert`, L381 `biUnion_insert`) are expected per-step
-structural with no mirror (Phase 9/11-cleanup precedent). If B5 surveys
-no-op, fall through to **D1** (the `notes/Phase12.md` *Current state*
-compression — 434 LoC, top of band) or the A1/A2 statement/proof walks.
+**Smallest concrete next commit:** dispatch **D1** — the
+`notes/Phase12.md` *Current state* compression (434 LoC, top of the
+adaptive band): assess whether its reverse-chronological per-layer
+narrative duplicates the *Layer plan* section and can collapse to a
+hand-off summary + pointer (the D1/D2 pattern from Phase 11-cleanup). If
+the per-entry ≤8-line rule and the hand-off contract both already hold,
+D1 closes no-op-or-light. Then the A1/A2 statement/proof walks (the last
+substantive un-run survey items) and the remaining no-op confirmations
+(B1–B4/B6, C2, D2–D5).
 
-A3 landed one fix (the stale forward-mode intro paragraph). The round
-already has its non-no-op commit, so the remaining buckets may close
-no-op; if B5–D5 all survey no-op, the closing commit flips the ROADMAP
-row to ✓ with a "A3 fix + all-else-no-op → close" summary.
+A3 + B5 have each landed a fix. The remaining buckets are expected to
+close no-op under the vendored-port bias; if B1–D5 all survey no-op, the
+closing commit flips the ROADMAP row to ✓ with an "A3 + B5 fixes +
+all-else-no-op → close" summary.

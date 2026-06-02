@@ -248,6 +248,13 @@ structure PolymatroidFn [Lattice α] [Bot α] [AddCommMonoid β] [LinearOrder β
   /-- A polymatroid rank function is normalized: it vanishes at `⊥`. -/
   zero_at_bot : f ⊥ = 0
 
+/-- A `Finset`-valued polymatroid rank function vanishes at `∅`. The `Finset`
+specialization of `zero_at_bot` (`⊥ = ∅`), fusing the `← bot_eq_empty,
+zero_at_bot` rewrite pair the rank-formula proofs reach for repeatedly. -/
+theorem PolymatroidFn.zero_at_empty [DecidableEq α] {f : Finset α → ℤ}
+    (hf : PolymatroidFn f) : f ∅ = 0 := by
+  rw [← bot_eq_empty]; exact hf.zero_at_bot
+
 /-- The matroid `M_f` induced by a polymatroid rank function `f`, i.e.
 `Matroid.ofSubmodular` specialized to `f` (Edmonds 1970). -/
 @[simps! E] def ofPolymatroidFn [DecidableEq α] {f : Finset α → ℤ}
@@ -283,7 +290,7 @@ private theorem polymatroid_rank_eq_on_indep [DecidableEq α] {f : Finset α →
   rw [hX_indep.eRk_eq_encard, Set.encard_coe_eq_coe_finsetCard, ENat.toNat_coe]
   use ∅
   simp only [empty_subset, sdiff_empty, true_and]
-  rw [← bot_eq_empty, hf.zero_at_bot]
+  rw [hf.zero_at_empty]
   simp only [zero_add, true_and]
   intro Y hY
   rw [Finset.cast_card_sdiff hY]
@@ -294,7 +301,7 @@ private theorem polymatroid_rank_eq_on_indep [DecidableEq α] {f : Finset α →
   · specialize hY_indep Y subset_rfl hY_nonempty
     linarith
   simp only [not_nonempty_iff_eq_empty] at hY_nonempty
-  rw [hY_nonempty, card_empty, ← bot_eq_empty, hf.zero_at_bot]
+  rw [hY_nonempty, card_empty, hf.zero_at_empty]
   simp only [Nat.cast_zero, sub_zero, zero_add, le_refl]
 
 /-- The polymatroid rank formula (Edmonds 1970, Prop. 11.1.7): for the matroid
@@ -400,7 +407,7 @@ theorem polymatroid_rank_eq [DecidableEq α] {f : Finset α → ℤ}
             replace this := h_subset ⟨e, he⟩ <| h
             exact (mem_sdiff.mp a.2).right this
           obtain (h_empty | h_nonempty) := eq_empty_or_nonempty (Ie a ∩ Y'.biUnion Ie)
-          · rw [h_empty, card_empty, ← bot_eq_empty, hf.zero_at_bot, Nat.cast_zero]
+          · rw [h_empty, card_empty, hf.zero_at_empty, Nat.cast_zero]
           linarith [ofPolymatroidFn_nonempty_indep_le h_nonempty <|
             (h_indep a).subset <| coe_subset.mpr this]
         _ ≤ f (Ie a) + f (Y'.biUnion Ie) - (I a ∩ Y'.biUnion I).card := by
@@ -453,7 +460,7 @@ theorem polymatroid_rank_eq [DecidableEq α] {f : Finset α → ℤ}
     · simp only [sdiff_self, bot_eq_empty, notMem_empty, isEmpty_subtype, not_false_eq_true,
       implies_true, univ_eq_empty, biUnion_empty, Set.toFinset_card, card_empty, Nat.cast_zero,
       sub_zero, add_le_iff_nonpos_left, ge_iff_le]
-      rw [← bot_eq_empty, hf.zero_at_bot]
+      rw [hf.zero_at_empty]
     have h_nonempty : (@univ ↑(X \ B.toFinset) _).Nonempty := by
       have := hXB.symm.ssubset_of_subset <| Finset.coe_subset.mp hB.subset
       obtain ⟨x, hx⟩ := Finset.exists_of_ssubset this
