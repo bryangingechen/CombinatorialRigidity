@@ -24,7 +24,10 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 Phases 1–16 are complete and carry no `sorry`s; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
-theorem — see below. The main theorem
+theorem — see below. **Phase 17 (in progress)** opens the
+longer-horizon **molecular-conjecture program** (Phases 17–26;
+Katoh–Tanigawa 2011) with its Grassmann–Cayley extensor-algebra layer.
+The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
@@ -102,6 +105,20 @@ edge-disjoint union of `δ` forests — reduces node-for-node to Phase
 graph of the longer-horizon **molecular conjecture** (Katoh–Tanigawa
 2011).
 
+**Phase 17 (in progress)** opens that longer-horizon target: the
+**molecular-conjecture program** (Phases 17–26; Tay–Whiteley, proved by
+Katoh–Tanigawa 2011), the project's largest single undertaking. Phase
+17 formalizes the **Grassmann–Cayley / extensor-algebra** layer
+(Katoh–Tanigawa §2.1) — homogeneous coordinates `p ↦ (p,1)`, extensors
+as decomposable elements of `⋀ʲ ℝ^(d+1)`, the join `∨`, Plücker
+coordinates, and the affine-subspace extensor `C(·)` — culminating in
+**Lemma 2.1**: the `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1`
+affinely independent points are linearly independent, the
+linear-algebra foundation the conjecture's hardest case bottoms out on.
+Forward-mode phase: the chapter `molecular.tex` is the authoritative
+(red) dep-graph and no Lean has landed yet. See the program-level plan
+in `notes/MolecularConjecture.md`.
+
 The development is divided into the phases below, with Lean source
 under
 [`CombinatorialRigidity/`](https://github.com/bryangingechen/CombinatorialRigidity/tree/master/CombinatorialRigidity)
@@ -126,6 +143,7 @@ existing files or refactor across several).
 |    14 | k-frame = k-fold cycle union | `BodyBar/KFrame.lean` | ✓ |
 |    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | ✓ |
 |    16 | Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ |
+|    17 | Grassmann–Cayley extensor algebra | `Molecular/` (none green yet) | ◐ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

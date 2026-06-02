@@ -105,7 +105,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-15) | Phase 15 surface (`BodyBar/{Framework,TayTheorem}.lean`, `body-bar.tex` `sec:body-bar-framework` + `sec:body-bar-tay` nodes) | ✓ Complete (see `notes/Phase15-cleanup.md`; round manual: `CLEANUP.md`) |
 | 16. Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ Complete (see `notes/Phase16.md`) |
 | ⋮ Cleanup round (post-Phase-16) | Phase 16 surface (`BodyBar/BodyHinge.lean`, `body-hinge.tex` `sec:body-hinge` nodes) | ✓ Complete (see `notes/Phase16-cleanup.md`; round manual: `CLEANUP.md`) |
-| 17–26. Molecular conjecture program | (none yet — planned) | ◷ Planning (10-phase program; see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
+| 17. Grassmann–Cayley extensor algebra | `Molecular/` (none yet — forward-mode chapter open) | ◐ In progress (see `notes/Phase17.md`; opens the 10-phase molecular-conjecture program, `notes/MolecularConjecture.md` + §17 below) |
+| 18–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -520,9 +521,10 @@ Whiteley's "almost all realizations are rigid" lift remains deferred.
 Forward-mode phase. Per-node lemma map + decisions: `notes/Phase16.md`
 and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
-### Phase 17+ — The Molecular Conjecture program (planning)
+### Phase 17+ — The Molecular Conjecture program
 
-**Status: planning (not opened).** The longer-horizon target is the
+**Status: Phase 17 open (in progress); Phases 18–26 planned.** The
+longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
 forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
 2011, Discrete Comput. Geom. **45**, 647–700). It is the project's
@@ -571,10 +573,17 @@ Phase map (floor; 18/21/22-23 may each split on contact):
 10. **26** — Corollary 5.7 (`r(G²) = 3|V| − 6 − def(G̃)`), the
     protein-flexibility / pebble-game-validity capstone.
 
-No phase is open: there is no `notes/Phase17.md`, no `molecular.tex`,
-and the user-facing status surfaces are untouched. Opening Phase 17
-follows the `CLAUDE.md` phase-open protocol — see *Opening Phase 17* in
-`notes/MolecularConjecture.md`.
+**Phase 17 is now open** (work log: `notes/Phase17.md`; forward-mode
+chapter: `blueprint/src/chapter/molecular.tex`, dep-graph all red). It
+formalizes the Grassmann–Cayley / extensor-algebra layer (KT §2.1),
+culminating in Lemma 2.1 — the independence of the `D = (d+1 choose 2)`
+many `(d−1)`-extensors of `d+1` affinely independent points, on which
+the conjecture's hardest case (Case III, Phases 22–23) bottoms out. No
+Lean has landed yet; the next concrete commit is the leaf-most red node
+(homogeneous coordinatization + affine-independence ↔ top-extensor).
+Phases 18–26 remain planned — see `notes/MolecularConjecture.md` for the
+per-phase detail and the *Opening Phase 17* protocol (followed for this
+open).
 
 ## Engineering conventions
 
