@@ -1,6 +1,6 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
-**Status:** in progress (`def:matroid-MG` + `def:D-deficiency` landed).
+**Status:** in progress (`def:matroid-MG` + `def:D-deficiency` + `def:k-dof` landed).
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -30,10 +30,15 @@ clean, routing through Phase 13's
 edges with differently-labeled endpoints. `partitionDef_one` is the
 `def ≥ 0` witness (trivial one-part partition gives `0`).
 
-Next concrete step: `def:k-dof` — `k`-dof (`def(G̃) = k`) / `0`-dof
-(= body-hinge rigid) / minimal `k`-dof (every base of `M(G̃)` meets
-every edge-fiber `ẽ`). Then `def:rigid-subgraph`, the structural lemmas
-(KT 3.1/3.3/3.4), and the bridge `thm:def-eq-corank`.
+`def:k-dof` is now also green: `Graph.IsKDof G n k := deficiency G n = k`
+(`0`-dof = body-hinge rigid), `Graph.edgeFiber e n := {p | p.1 = e}` (the `D-1`
+parallel copies of `e`), and `Graph.IsMinimalKDof` = `IsKDof` plus every base
+`B` of `M(G̃)` meeting every edge-fiber of an edge `e ∈ E(G)`
+(`(B ∩ edgeFiber e n).Nonempty`, over `Matroid.IsBase`).
+
+Next concrete step: `def:rigid-subgraph` — rigid (`0`-dof) + proper rigid
+subgraph (`∅ ≠ V(H) ⊊ V(G)`); circuit of `M(G̃)`; 2-edge-connectivity. Then the
+structural lemmas (KT 3.1/3.3/3.4) and the bridge `thm:def-eq-corank`.
 
 ## Architectural choices made up front
 
@@ -68,8 +73,9 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   `def(G̃) = maxₚ def_G̃(P)`. (`Graph.partitionDef` + `Graph.deficiency`,
   partitions as labelings `f : α → α`; `numParts` / `crossingEdges` +
   `partitionDef_one` witness.)
-- [ ] `def:k-dof` — `k`-dof / `0`-dof (= body-hinge rigid) / minimal
-  `k`-dof (every base of `M(G̃)` meets every edge-fiber `ẽ`).
+- [x] `def:k-dof` — `k`-dof / `0`-dof (= body-hinge rigid) / minimal
+  `k`-dof (every base of `M(G̃)` meets every edge-fiber `ẽ`). (`Graph.IsKDof`,
+  `Graph.edgeFiber`, `Graph.IsMinimalKDof`.)
 - [ ] `def:rigid-subgraph` — rigid + proper rigid subgraph; circuits;
   2-edge-connectivity.
 - [ ] `thm:def-eq-corank` — the def = corank bridge (JJ09 Thm 6.1 /
@@ -125,6 +131,17 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   instance is dropped from the `deficiency` signature (the env linter
   flagged it as unused) and reintroduced where lemmas need attainment.
 
+- **`edgeFiber e n := {p | p.1 = e}` is not `G`-parametrized; `IsKDof`'s `k`
+  is `ℤ`.** The edge-fiber of `e` in `G̃` depends only on `e` and `n` (it is the
+  `D−1` parallel copies `{p : β × Fin (bodyHingeMult n) | p.1 = e}`), so
+  `edgeFiber` takes no `Graph` argument and is called positionally
+  (`edgeFiber e n`, not `G.edgeFiber`). `IsKDof G n k` keeps `k : ℤ` to match
+  the `ℤ`-valued `deficiency` (the trivial-partition lower bound is `≥ 0` but
+  the def is over signed `partitionDef`); callers needing `0 ≤ k` add it as a
+  hypothesis. `IsMinimalKDof` takes `[DecidableEq β]` (inherited from
+  `matroidMG`) and phrases fiber-meeting as `(B ∩ edgeFiber e n).Nonempty` over
+  `Matroid.IsBase`, restricted to `e ∈ E(G)`.
+
 ## Blockers / open questions
 
 - ~~**Boundary regime `ℓ = 2k = D`** (risk #2)~~: **resolved** by
@@ -138,16 +155,16 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 
 ## Hand-off / next phase
 
-`def:matroid-MG` and `def:D-deficiency` are green in
+`def:matroid-MG`, `def:D-deficiency`, and `def:k-dof` are green in
 `Molecular/Deficiency.lean` (`Graph.matroidMG` / `matroidMG_indep_iff`;
-`Graph.partitionDef` / `Graph.deficiency` / `numParts` / `crossingEdges`
-/ `partitionDef_one`). The next concrete commit is `def:k-dof` in the
-same file: a `k`-dof-graph is one with `deficiency G n = k` (`0`-dof =
-body-hinge rigid); a *minimal* `k`-dof-graph additionally has every base
-`B` of `M(G̃)` meeting every edge-fiber `ẽ` (the `D−1` parallel copies
-`{e} × univ : Set (β × Fin (D−1))` of `e ∈ E(G)`). Likely a `def IsKDof`
-+ `def IsMinimalKDof` pair; the base/fiber-meeting condition can reuse
-`matroidMG_indep_iff` / `Matroid.Base`. Then `def:rigid-subgraph`, the
-structural lemmas (KT 3.1/3.3/3.4), and the bridge `thm:def-eq-corank`.
-Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once
-`M(G̃)`, deficiency, and the def = corank bridge are all green.
+`Graph.partitionDef` / `Graph.deficiency` / `numParts` / `crossingEdges` /
+`partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` / `Graph.IsMinimalKDof`).
+The next concrete commit is `def:rigid-subgraph` in the same file: a *rigid*
+subgraph `H ⊆ G` is `0`-dof (`deficiency H n = 0`); *proper* rigid adds
+`∅ ≠ V(H) ⊊ V(G)`; a *circuit* of `M(G̃)` is a minimal dependent edge set
+(reuse `Matroid.Circuit` / `matroidMG_indep_iff`); plus 2-edge-connectivity as
+the Case-III structural hypothesis. Likely a small cluster of `def`s
+(`IsRigidSubgraph`, `IsProperRigidSubgraph`) keyed off subgraph restriction.
+Then the structural lemmas (KT 3.1/3.3/3.4) and the bridge `thm:def-eq-corank`.
+Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once `M(G̃)`,
+deficiency, and the def = corank bridge are all green.

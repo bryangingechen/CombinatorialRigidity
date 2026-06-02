@@ -162,4 +162,37 @@ theorem partitionDef_one (G : Graph α β) (n : ℕ) (a : α) (hne : V(G).Nonemp
   rw [partitionDef, hcross, hparts]
   simp
 
+/-! ## `k`-dof and minimal `k`-dof graphs (`def:k-dof`)
+
+A multigraph `G` is a *`k`-dof-graph* (`k` degrees of freedom) when
+`def(G̃) = k`; the `0`-dof case is exactly the body-hinge-rigid case
+(`thm:body-hinge-tay`). `G` is a *minimal `k`-dof-graph* when, additionally, no
+edge can be deleted without changing the deficiency — encoded matroidally as:
+every base `B` of `M(G̃)` meets every *edge-fiber* `ẽ` (the `D-1` parallel
+copies `{p | p.1 = e}` of an edge `e ∈ E(G)`). Minimal `k`-dof-graphs are the
+objects the combinatorial induction of Phase 20 (Theorem 4.9) reduces to the
+two-vertex double edge. -/
+
+/-- The **edge-fiber** `ẽ` of an edge `e ∈ E(G)` in the multiplied graph
+`G̃ = (D-1)·G` (`def:k-dof`): the `D - 1 = bodyHingeMult n` parallel copies of `e`,
+i.e. the set `{p : β × Fin (bodyHingeMult n) | p.1 = e}`. A base of `M(G̃)` meets
+`ẽ` exactly when it retains at least one of the `D-1` copies of `e`. -/
+def edgeFiber (e : β) (n : ℕ) : Set (β × Fin (bodyHingeMult n)) := {p | p.1 = e}
+
+/-- `G` is a **`k`-dof-graph** (`def:k-dof`; Katoh–Tanigawa 2011 §2.5): its
+multiplied graph `G̃ = (D-1)·G` has `D`-deficiency `def(G̃) = k`, with
+`D = bodyBarDim n`. The `0`-dof case is exactly the body-hinge-rigid case
+(`thm:body-hinge-tay`): `G̃` packs `D` edge-disjoint spanning trees. -/
+def IsKDof (G : Graph α β) (n : ℕ) (k : ℤ) : Prop := G.deficiency n = k
+
+/-- `G` is a **minimal `k`-dof-graph** (`def:k-dof`; Katoh–Tanigawa 2011 §2.5):
+it is a `k`-dof-graph and every base `B` of `M(G̃)` meets every edge-fiber `ẽ`
+of an edge `e ∈ E(G)` — no edge of `G` can be deleted without lowering the rank
+of `M(G̃)`, hence changing the deficiency. The base/fiber-meeting condition is
+phrased over `Matroid.IsBase` and `Graph.edgeFiber`. These are the objects the
+combinatorial induction of Phase 20 (Theorem 4.9) reduces to the two-vertex
+double edge. -/
+def IsMinimalKDof [DecidableEq β] (G : Graph α β) (n : ℕ) (k : ℤ) : Prop :=
+  G.IsKDof n k ∧ ∀ B, (G.matroidMG n).IsBase B → ∀ e ∈ E(G), (B ∩ edgeFiber e n).Nonempty
+
 end Graph
