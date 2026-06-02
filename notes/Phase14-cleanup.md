@@ -24,9 +24,23 @@ pins resolve and every blueprint statement form matches its Lean
 signature; the Rank.lean Phase-14 adders carry no blueprint node-anchor
 (correctly unpinned). Build green + warning-clean + lint clean.
 
-Next concrete step: (B) code-smell sweep — start B1 (the
-`letI`-pair sites; likely confirm-only per the FRICTION pin) or B3
-(`noncomputable def` forced-vs-accidental), then B2/B4/B5, then (C)/(D).
+(B) code-smell sweep: B1 done (no-op confirm). The eight `DecidableEq α`
++ `DecidablePred (· ∈ E(G))` `letI`-pair sites all match the FRICTION
+pin's accepted boundary and are each *forced*: four are `def` bodies
+(`kFrameRow`, `blockPiSpan`, `blockPiSpanOn`, `kFrameRowR` — a `def`
+body can't open with the `classical` tactic) and four are
+**statement-level** `letI`s where the decidability instance is part of
+the theorem's *type* (`finrank_span_signedIncMatrix_eq_cycleMatroid_rk`,
+`specRow_linearIndependent`'s statement + its term-mode-proof mirror,
+`forestEval_kFrameRowR_eq_single`) — the proof-body `classical` can't
+reach the statement. A bundling helper is not viable: a function/abbrev
+boundary cannot inject `letI` *instances* into the caller's elaboration
+context (that is precisely what `letI` does and an abstraction destroys),
+so the only mechanism would be a macro — heavy machinery that would hide
+the genuinely-required instances for a 2-line save at 8 sites. No change.
+
+Next concrete step: continue (B) — B3 (`noncomputable def`
+forced-vs-accidental), then B2/B4/B5, then (C)/(D).
 
 ## Scope
 
@@ -78,14 +92,19 @@ bounded:
 
 ### B. Code-smell sweep (greps run at round open)
 
-- [ ] B1 — repeated `letI : DecidableEq α := Classical.decEq α` +
+- [x] B1 — repeated `letI : DecidableEq α := Classical.decEq α` +
   `letI : DecidablePred (· ∈ E(G)) := Classical.decPred _` pair
-  (~7 sites in `KFrame.lean`). **Likely confirm-only:** FRICTION
-  `[resolved]` *`Graph.orientation.signedIncMatrix` needs `[DecidableEq α]`
-  + `[DecidablePred (· ∈ E(G))]` …* pins the term-level `letI` as the
-  accepted boundary (keeps the def signatures binder-free). Confirm the
-  sites match that pinned answer; consider whether a single
-  `letI`-bundling helper is worth it given the repetition count.
+  (8 paired sites in `KFrame.lean`, + one single `letI` in `forestEval`).
+  **No-op confirm.** FRICTION `[resolved]` *`Graph.orientation.signedIncMatrix`
+  needs `[DecidableEq α]` + `[DecidablePred (· ∈ E(G))]` …* pins the
+  term-level `letI` as the accepted boundary (keeps the def signatures
+  binder-free). All eight sites match: four are `def` bodies (can't open
+  with the `classical` tactic) and four are statement-level `letI`s (the
+  instance is part of the theorem type, beyond the reach of a proof-body
+  `classical`) — every site forced. A `letI`-bundling helper is **not
+  viable**: an abstraction boundary cannot inject `letI` instances into
+  the caller's elaboration context; only a macro could, which is not
+  worth a 2-line save × 8 sites and would hide the required instances.
 - [ ] B2 — 14 `classical` invocations across `KFrame.lean` (11) +
   `Rank.lean` (3): is `[DecidableEq …]` a cleaner boundary at each, or is
   the decidability genuinely unavailable (mathlib `[Finite]`-bridge idiom
@@ -137,6 +156,14 @@ bounded:
   the landed reverse half. No statement/proof changes; no FRICTION
   entry (pure divergence-audit doc fix). Blueprint TeX unchanged — the
   pins were already correct; the drift was Lean-side.
+- **B1 (KFrame.lean, no-op confirm).** The eight `DecidableEq α` +
+  `DecidablePred (· ∈ E(G))` `letI`-pair sites (plus the single `letI`
+  in `forestEval`) all match the FRICTION-pinned boundary and are each
+  forced — four `def` bodies (no `classical` tactic available) and four
+  statement-level `letI`s (instance is part of the theorem type). No
+  bundling helper: an abstraction can't inject `letI` instances into the
+  caller's context; only a macro could, not worth it. No code change; no
+  new FRICTION entry (the existing `[resolved]` pin already covers it).
 
 ## Blockers / open questions
 
@@ -144,5 +171,14 @@ bounded:
 
 ## Hand-off / next phase
 
-<written when the round closes; names what carried over and updates the
-ROADMAP Status row>
+Round in progress (mid-(B)). Next concrete commit: **B3** — walk the
+eight `noncomputable def` in `KFrame.lean` (`kFrameIndet`, `kFrameRow`,
+`kFrameMatroid`, `blockPiSpan`, `constPiSpanEquiv`, `blockPiSpanOn`,
+`kFrameRowR`, `forestEval`) and confirm each `noncomputable` is forced
+(`Matroid.ofFun` / `FractionRing` / `Classical.choose`-backed
+orientation / `MvPolynomial.eval` with no `Decidable` body) vs
+accidental; record as a no-op confirm or fix as found. Then B2 (the 14
+`classical` invocations), B4/B5 (re-confirm clean on the `Rank.lean`
+adders), then (C) the two long proofs and (D) compress `notes/Phase14.md`
++ FRICTION re-skim. When (D) closes, write the round summary here and
+flip the ROADMAP Status row to ✓.
