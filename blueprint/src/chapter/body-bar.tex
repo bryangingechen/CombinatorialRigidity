@@ -182,6 +182,10 @@ and the same applies to every $Y \subseteq E'$.
 
 \begin{lemma}[Generic independence $\Rightarrow$ forest count]
   \label{lem:k-frame-nonzero-monomial-forest}
+  \lean{Graph.forest_count_of_linearIndepOn_kFrameRow,
+    Graph.blockPiSpanOn, Graph.span_kFrameRowOn_le_blockPiSpanOn,
+    Graph.finrank_blockPiSpanOn}
+  \leanok
   \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank,
     lem:k-frame-incidence-finrank-rk}
   Let $E' \subseteq E(G)$ be a bar set whose generic $k$-frame rows
@@ -191,6 +195,7 @@ and the same applies to every $Y \subseteq E'$.
   (equivalently, $E'$ decomposes into $k$ forests of $G$).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank,
     lem:k-frame-incidence-finrank-rk}
   The forward half of Whiteley~\cite{whiteley1988} \S2.1, by the rank count.

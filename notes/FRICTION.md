@@ -110,6 +110,14 @@ housekeeping pass once their resolution is fully indexed.
   anyway, so the choice is harmless). Cleaner than threading the
   instances through the signature; reuse for any Phase-14/15 def that
   builds a `signedIncMatrix`-based row.
+- **Downstream wrinkle (Phase 14 assembly):** a lemma whose *statement*
+  carries these `letI` decidability binders (e.g.
+  `finrank_span_signedIncMatrix_eq_cycleMatroid_rk`) won't always rewrite
+  into a sibling goal via `rw [lemma]`, because the goal's synthesized
+  decidability instance need not be defeq-by-`rw` to the `Classical.dec*`
+  one in the lemma's type. Fix: peel the surrounding structure with
+  `congr 1` and discharge the residual block with `exact lemma …` (used
+  in `finrank_blockPiSpanOn`).
 - **Status:** resolved (project-local; matches how `cycleMatroidRep`
   itself opens with `classical` in a `Rep` field).
 

@@ -160,6 +160,41 @@ theorem finrank_constPiSpan {R M : Type*} [DivisionRing R] [AddCommGroup M] [Mod
   rw [(constPiSpanEquiv n W).finrank_eq, Module.finrank_pi_fintype R]
   simp
 
+/-- The `Fin k`-fold product subspace whose `j`-th block is the `KFrameField β k`-span of the
+signed incidence rows indexed by a bar set `Y` (the `Y`-restricted analogue of `blockPiSpan`).
+For `e ∈ Y` the `k`-frame row `kFrameRow k D e` lies in this subspace
+(`kFrameRow_mem_blockPiSpanOn`), so the span of the `k`-frame rows on `Y` is contained in it
+(`span_kFrameRowOn_le_blockPiSpanOn`); its `K`-dimension is `k` times the dimension of the
+`Y`-incidence-row span, i.e. `k · r_{cycleMatroid}(Y)` — the per-`Y` upper bound in
+Whiteley §2.1's rank count. -/
+noncomputable def blockPiSpanOn (G : Graph α β) (k : ℕ) (D : Graph.orientation G) (Y : Set β) :
+    Submodule (KFrameField β k) (Fin k → α → KFrameField β k) :=
+  letI : DecidableEq α := Classical.decEq α
+  letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
+  Submodule.pi Set.univ
+    (fun _ : Fin k ↦ span (KFrameField β k) ((D.signedIncMatrix (KFrameField β k)) '' Y))
+
+/-- Each `k`-frame row `kFrameRow k D e` of a bar `e ∈ Y` lies in the `Y`-restricted
+block-diagonal product subspace `blockPiSpanOn G k D Y`: in each block `j` the row is the scalar
+multiple `X_{(e,j)} • signedIncMatrix e`, which lies in the span of the incidence rows over `Y`
+(since `e ∈ Y`). The `Y`-restricted analogue of `kFrameRow_mem_blockPiSpan`. -/
+theorem kFrameRow_mem_blockPiSpanOn {Y : Set β} {e : β} (he : e ∈ Y) :
+    kFrameRow k D e ∈ blockPiSpanOn G k D Y := by
+  classical
+  rw [blockPiSpanOn, Submodule.mem_pi]
+  intro j _
+  rw [kFrameRow]
+  exact Submodule.smul_mem _ _ (subset_span ⟨e, he, rfl⟩)
+
+/-- The span of the `k`-frame rows indexed by `Y` is contained in the `Y`-restricted
+block-diagonal product subspace `blockPiSpanOn G k D Y`. The `Y`-restricted analogue of
+`span_kFrameRow_le_blockPiSpan`, with `r(Y)` in place of `r(E(G))`. -/
+theorem span_kFrameRowOn_le_blockPiSpanOn {Y : Set β} :
+    span (KFrameField β k) (kFrameRow k D '' Y) ≤ blockPiSpanOn G k D Y := by
+  rw [span_le]
+  rintro _ ⟨e, he, rfl⟩
+  exact kFrameRow_mem_blockPiSpanOn he
+
 /-- **Span finrank = matroid rank, via a representation** (`lem:k-frame-nonzero-monomial-forest`,
 piece (2)). For any finite-rank matroid `M` with a representation `v : M.Rep K W`, the `K`-dimension
 of the span of `v '' Y` equals the matroid rank `M.rk Y`. A basis `I` of `Y` has `v '' Y ⊆ span (v
@@ -201,6 +236,58 @@ theorem finrank_span_signedIncMatrix_eq_cycleMatroid_rk [Finite β] (K : Type*) 
   have he : ⇑(G.cycleMatroidRep K) = G.orientation_nonempty.some.signedIncMatrix K := rfl
   rw [he] at hrep
   exact hrep
+
+/-- The `K`-dimension of the `Y`-restricted block-diagonal product subspace is `k` times the
+dimension of the `Y`-incidence-row span, which is `k · r_{cycleMatroid}(Y)` (pieces (1) and (2)
+of the forward rank count). Assembled from `finrank_constPiSpan` and
+`finrank_span_signedIncMatrix_eq_cycleMatroid_rk`. -/
+theorem finrank_blockPiSpanOn [Finite β] (Y : Set β) :
+    Module.finrank (KFrameField β k)
+        (blockPiSpanOn G k (G.orientation_nonempty.some) Y)
+      = k * G.cycleMatroid.rk Y := by
+  classical
+  haveI : Module.Finite (KFrameField β k)
+      (span (KFrameField β k)
+        ((G.orientation_nonempty.some.signedIncMatrix (KFrameField β k)) '' Y)) :=
+    Module.Finite.span_of_finite _ ((Set.toFinite Y).image _)
+  rw [blockPiSpanOn, finrank_constPiSpan]
+  congr 1
+  exact finrank_span_signedIncMatrix_eq_cycleMatroid_rk (G := G) (KFrameField β k) Y
+
+/-- **Generic independence ⟹ forest count** (`lem:k-frame-nonzero-monomial-forest`, the forward
+half of Whiteley §2.1 by the rank count). If the generic `k`-frame rows on a bar set `E'` are
+linearly independent over `K`, then `|Y| ≤ k · r_{cycleMatroid}(Y)` for every `Y ⊆ E'`.
+
+Restricting `hLI` to `Y` keeps the `|Y|` rows independent, so `|Y| = finrank (span (kFrameRow ''
+Y))` (`finrank_span_set_eq_card`); that span sits inside the `Y`-restricted block-diagonal product
+subspace (`span_kFrameRowOn_le_blockPiSpanOn`), whose dimension is `k · r_{cycleMatroid}(Y)`
+(`finrank_blockPiSpanOn`), giving the bound by `Submodule.finrank_mono`. -/
+theorem forest_count_of_linearIndepOn_kFrameRow [Finite β] {E' : Set β}
+    (hLI : LinearIndepOn (KFrameField β k) (kFrameRow k (G.orientation_nonempty.some)) E')
+    {Y : Set β} (hYE' : Y ⊆ E') :
+    Y.ncard ≤ k * G.cycleMatroid.rk Y := by
+  classical
+  set D := G.orientation_nonempty.some with hD
+  set v := kFrameRow k (G := G) D with hv
+  have hLIY : LinearIndepOn (KFrameField β k) v Y := hLI.mono hYE'
+  -- `Y.ncard = finrank (span (v '' Y))`, via the LI image cardinality.
+  haveI : Fintype (v '' Y) := (Set.toFinite (v '' Y)).fintype
+  have hcard : Module.finrank (KFrameField β k) (span (KFrameField β k) (v '' Y)) = Y.ncard := by
+    rw [finrank_span_set_eq_card hLIY.id_image, ← Set.ncard_eq_toFinset_card',
+      hLIY.injOn.ncard_image]
+  -- The block-product subspace is finite-dimensional (transport along `constPiSpanEquiv`).
+  haveI : Module.Finite (KFrameField β k)
+      (span (KFrameField β k)
+        ((D.signedIncMatrix (KFrameField β k)) '' Y)) :=
+    Module.Finite.span_of_finite _ ((Set.toFinite Y).image _)
+  haveI : Module.Finite (KFrameField β k) (blockPiSpanOn G k D Y) := by
+    rw [blockPiSpanOn]
+    exact Module.Finite.equiv (constPiSpanEquiv k _).symm
+  -- `finrank (span (v '' Y)) ≤ finrank (blockPiSpanOn) = k · r(Y)`.
+  have hle := Submodule.finrank_mono (R := KFrameField β k)
+    (span_kFrameRowOn_le_blockPiSpanOn (D := D) (Y := Y))
+  rw [hcard, finrank_blockPiSpanOn] at hle
+  exact hle
 
 end Forward
 
