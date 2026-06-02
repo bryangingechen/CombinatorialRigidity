@@ -4,33 +4,35 @@
 
 ## Current state
 
-Phase 15 opens here (notes + status-surface sync only; no Lean this
-commit). This is the original Phase-12 target, unblocked by the
-Phase 12–14 chain (matroid foundations → tree-packing → `k`-frame =
-`k`-fold cycle union). Forward-mode phase: the lemma index lives in
-`blueprint/src/chapter/body-bar.tex` §`sec:body-bar-framework` and
-§`sec:body-bar-tay` (already scoped, nodes red — they are the to-do
-list). All prerequisite nodes (`thm:k-frame-union-cycle`,
-`thm:tutte-nash-williams`, `cor:k-spanning-trees`, the whole
-`sec:body-bar-k-frame` and `sec:body-bar-tree-packing` subsections)
-are green.
+The leaf-most red node `def:body-bar-framework` is **green**:
+`BodyBar/Framework.lean` ships `Graph.bodyBarDim n = n(n+1)/2` and the
+`Graph.BodyBarFramework n α β` structure (a multigraph `graph : Graph α β`
+paired with an unconstrained `placement : E(graph) → EuclideanSpace ℝ
+(Fin (bodyBarDim n))` — degenerate two-extensors permitted, no Plücker-
+variety constraint, per the existence-of-realization scope). Blueprint
+node flipped (`\lean{...}` + `\leanok`); file added to the top-level
+`CombinatorialRigidity.lean` import aggregator. This is the original
+Phase-12 target, unblocked by the Phase 12–14 chain. Forward-mode phase:
+the lemma index lives in `blueprint/src/chapter/body-bar.tex`
+§`sec:body-bar-framework` and §`sec:body-bar-tay`. All prerequisite nodes
+(`thm:k-frame-union-cycle`, `thm:tutte-nash-williams`,
+`cor:k-spanning-trees`, the whole `sec:body-bar-k-frame` and
+`sec:body-bar-tree-packing` subsections) are green.
 
-The chapter has **four red nodes**, in dependency order:
-- `def:body-bar-framework` (leaf — no `\uses`)
+The chapter has **three red nodes** left, in dependency order:
 - `def:rigidity-map-body-bar` (`\uses{def:body-bar-framework}`)
 - `def:infinitesimally-rigid-body-bar` (`\uses{def:rigidity-map-body-bar}`)
 - `thm:tay-witness` (the target; `\uses` the three defs +
   `def:graph-sparse`, `thm:tutte-nash-williams`, `cor:k-spanning-trees`;
   proof `\uses{thm:k-frame-union-cycle, …}`).
 
-**Next concrete commit:** the leaf-most red node `def:body-bar-framework`
-in a new `BodyBar/Framework.lean` — the body-bar framework structure
-(a multigraph `G : Graph α β` paired with a placement assigning each
-edge a two-extensor / Plücker coordinate in `ℝ^d`, `d = n(n+1)/2`,
-degenerate coordinates permitted). Add/flip its `\lean{...}` + `\leanok`
-in the same commit. Then `def:rigidity-map-body-bar` (the bar-constraint
-linear map, one row per bar) and `def:infinitesimally-rigid-body-bar`
-(kernel = `d`-dim trivial screw motions, rank `= d·b − d`).
+**Next concrete commit:** the next leaf-most red node
+`def:rigidity-map-body-bar` in `BodyBar/Framework.lean` — the
+bar-constraint rigidity map, an `ℝ`-linear map from body motions
+(`V(graph) → ℝ^d`) to bar constraints (`E(graph) → ℝ`), one row per bar
+(Whiteley §3). Add/flip its `\lean{...}` + `\leanok` in the same commit.
+Then `def:infinitesimally-rigid-body-bar` (kernel = `d`-dim trivial screw
+motions, rank `= d·b − d`).
 
 ## Architectural choices made up front
 
@@ -58,9 +60,11 @@ Migrated from the old Phase-12 notes / ROADMAP §15:
 Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 §`sec:body-bar-tay` dep-graph (4 red nodes as of phase-open).
 
-- [ ] `def:body-bar-framework` — body-bar framework (placement = two-extensor
-      per bar). **Next concrete commit.** `BodyBar/Framework.lean`.
+- [x] `def:body-bar-framework` — body-bar framework (placement = two-extensor
+      per bar). `BodyBar/Framework.lean` (`Graph.bodyBarDim`,
+      `Graph.BodyBarFramework`).
 - [ ] `def:rigidity-map-body-bar` — bar-constraint rigidity map.
+      **Next concrete commit.** `BodyBar/Framework.lean`.
 - [ ] `def:infinitesimally-rigid-body-bar` — rank `= d·b − d`.
 - [ ] `thm:tay-witness` — Tay's theorem, existence form (Whiteley Thm 8).
       Standard-basis specialization of `thm:k-frame-union-cycle`'s reverse
@@ -68,7 +72,22 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 
 ## Decisions made during this phase
 
-(none yet — phase just opened)
+- **`BodyBarFramework` is a bundled `structure`, not an `abbrev` for the
+  placement type.** Phase-4 `SimpleGraph.Framework` is an `abbrev` for `V →
+  EuclideanSpace …` because the graph `G` is a separate explicit argument
+  everywhere downstream. Here the multigraph carries the combinatorial data
+  the matroid-union route (Phases 13–14) consumes, so bundling `graph` with
+  `placement : E(graph) → ℝ^d` keeps the body-bar pair as one object and
+  matches the `Graph`-native style. Revisit if the rigidity-map def wants
+  `G` and `p` split.
+- **`bodyBarDim n := n*(n+1)/2` as a plain `def`.** ℕ-division is exact here
+  (`n(n+1)` always even), and the Tay count `|E| = d(b−1)` only needs `d` as
+  an opaque ℕ. No need for a `Nat.choose`-style reformulation yet; revisit
+  if a proof needs the evenness / closed form.
+- **Placement unconstrained (degenerate two-extensors permitted).** No
+  Plücker-variety membership in the type — the existence-of-realization
+  scope (ROADMAP §15) is witnessed by standard-basis `b_e`, themselves
+  degenerate two-extensors. The "almost all realizations" lift is deferred.
 
 ## Blockers / open questions
 
