@@ -1,7 +1,8 @@
 # Phase 17 — Grassmann–Cayley extensor algebra; Lemma 2.1 (work log)
 
-**Status:** in progress (§2.1 symbolic layer landed: homogeneous coords,
-affine-indep bridge, extensor, join green; Plücker / `C(·)` / Lemma 2.1 red).
+**Status:** in progress (§2.1 symbolic layer + Plücker bridge landed:
+homogeneous coords, affine-indep bridge, extensor, join, Plücker coords green;
+`C(·)` / Lemma 2.1 red).
 
 This phase opens the **molecular-conjecture program** (Phases 17–26).
 The program-level plan — target, source, five-strata architecture,
@@ -28,9 +29,19 @@ Extensor.lean` now ships, in §2.1 dependency order:
   `join_extensor` (`extensor a ∨ₑ extensor b = extensor (Fin.append a b)`
   via `ιMulti_mul_ιMulti`) and `join_assoc`.
 
-All four blueprint nodes (`def:homogeneous-coords`, `lem:affine-indep-iff`,
-`def:extensor`, `def:join`) are green. The remaining §2.1 dep-graph
-(Plücker coords, `C(·)`, Lemma 2.1) is still red.
+The **coordinatized Plücker bridge has now also landed**:
+- `coordMatrix` — the `j × (d+1)` row matrix `A(v)` of a family;
+- `pluckerCoord` (`def:plucker-coords`) — the signed `j × j` minor at a
+  `j`-element column set `s`, with KT's sign `(-1)^{1+∑ iₗ}` carried as
+  `1 + ∑ i ∈ s, (i.val + 1)` (KT is 1-based, mathlib `Fin (d+1)` is 0-based,
+  so `iₗ = sᵢ.val + 1`);
+- `pluckerVector` — the full `(d+1 choose j)`-vector over column subsets;
+- `pluckerCoord_univ` — the top coordinate `= ±det (coordMatrix v)`, tying
+  back to `affineIndependent_fin_iff_det_homogenize`'s determinant form.
+
+Five blueprint nodes are now green (`def:homogeneous-coords`,
+`lem:affine-indep-iff`, `def:extensor`, `def:join`, `def:plucker-coords`).
+The remaining §2.1 dep-graph (`C(·)`, Lemma 2.1) is still red.
 
 **mathlib `ExteriorAlgebra` coverage question (Blockers) is settled:**
 mathlib's `Mathlib.LinearAlgebra.ExteriorPower.Basic` supplies everything
@@ -87,9 +98,10 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 - [x] `def:join` — the join `∨ₑ` (exterior product `*`), with
       `join_extensor` (`Fin.append` concatenation) + `join_assoc`;
       alternating / vanishes-on-repeats inherited via `def:extensor`.
-- [ ] `def:plucker-coords` — coordinatized Plücker vector of `j×j`
+- [x] `def:plucker-coords` — coordinatized Plücker vector of `j×j`
       minors with KT's sign `(−1)^(1+Σ iⱼ)`; the symbolic ↔ coordinate
-      bridge.
+      bridge (`coordMatrix`, `pluckerCoord`, `pluckerVector`,
+      `pluckerCoord_univ`).
 - [ ] `def:affine-subspace-extensor` — the affine-subspace ↔ extensor
       map `C(·)`.
 - [ ] `lem:extensor-independence` — **Lemma 2.1** (hard core): the
@@ -101,6 +113,16 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **Plücker sign encoding.** KT's `P_{i₁,…,iⱼ}` uses 1-based column
+  indices `1 ≤ i₁ < ⋯ ≤ d+1`; mathlib `Fin (d+1)` is 0-based, so KT's
+  `iₗ = sᵢ.val + 1`. The exponent `1 + ∑ iₗ` is carried faithfully as
+  `1 + ∑ i ∈ s, (i.val + 1)` in `pluckerCoord`. The `j×j` submatrix is
+  `(coordMatrix v).submatrix id (s.orderEmbOfFin h)` (columns selected in
+  increasing order by the order-embedding of the `j`-element column set).
+  `def`/`noncomputable` because `Matrix.det` over `ℝ` is noncomputable.
+- **`pluckerCoord_univ` idiom** → FRICTION [open] *No mathlib
+  `Finset.univ.orderEmbOfFin = id`* (derive via `orderEmbOfFin_unique` +
+  `submatrix_id_id`).
 - **Carrier (decided on first Lean).** Point space `Fin d → ℝ`,
   homogenizing to `Fin (d+1) → ℝ` via `Fin.snoc p 1`. Plain coordinate
   tuples (not `EuclideanSpace`) are the natural carrier for the
@@ -138,21 +160,25 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 ## Hand-off / next phase
 
 Done: `def:homogeneous-coords`, `lem:affine-indep-iff`, `def:extensor`,
-`def:join` all landed in `CombinatorialRigidity/Molecular/Extensor.lean`
-(all four `molecular.tex` nodes green; symbolic carrier settled on
-mathlib `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`). Clean handoff point.
+`def:join`, `def:plucker-coords` all landed in
+`CombinatorialRigidity/Molecular/Extensor.lean` (five `molecular.tex`
+nodes green; symbolic carrier settled on mathlib
+`ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`, Plücker bridge via signed `j×j`
+submatrix determinants on `coordMatrix`). Clean handoff point.
 
-Smallest next commit: land `def:plucker-coords` — the coordinatized
-Plücker vector of `j×j` minors of an extensor, with KT's sign convention
-`(−1)^(1+Σ iⱼ)` (KT §2.1; carry the sign in the coordinatized bridge, not
-the symbolic layer). This is the symbolic ↔ coordinate bridge that lets
-Lemma 2.1 and the downstream Phase-18/22/23 rank computations operate on
-concrete minor vectors. Likely-needed mathlib API: `Matrix.det` of the
-`j×j` submatrix picked by an increasing index set
-(`Finset.powersetCard`/`Sym`-indexed), tying back to
-`affineIndependent_fin_iff_det_homogenize`'s top-extensor determinant.
-After Plücker: `def:affine-subspace-extensor` (`C(·)`), then the hard
-core `lem:extensor-independence` (Lemma 2.1).
+Smallest next commit: land `def:affine-subspace-extensor` — the
+affine-subspace ↔ extensor map `C(·)` sending affinely-independent points
+`p₁,…,p_k ∈ ℝ^d` to the join `p̄₁ ∨ ⋯ ∨ p̄_k` of their homogenizations
+(`def:homogeneous-coords` + `def:extensor` + `def:join` already green),
+with the nonvanishing characterization `C(·) ≠ 0 ⇔ affinely independent`
+following from `affineIndependent_iff_linearIndependent_homogenize` +
+the extensor/`ιMulti` nonvanishing-iff-LI fact. Likely-needed mathlib API:
+`ExteriorAlgebra.ιMulti_ne_zero` / the LI ↔ `ιMulti ≠ 0` characterization
+in `Mathlib.LinearAlgebra.ExteriorPower.Basic`. After `C(·)`: the hard
+core `lem:extensor-independence` (Lemma 2.1) — joins the dependence
+relation with a `2`-extensor `p̄_a ∨ p̄_b` to kill all but one term
+(uses `extensor_eq_zero_of_eq` / `join_extensor` + top-extensor ≠ 0 via
+`affineIndependent_fin_iff_det_homogenize`).
 
 Phase 17 completes when `lem:extensor-independence` (Lemma 2.1) is green;
 that unblocks Phase 18 (panel-hinge rigidity matrix) and is the

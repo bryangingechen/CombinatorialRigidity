@@ -231,4 +231,56 @@ theorem join_assoc {d : ℕ} (A B C : ExteriorAlgebra ℝ (Fin (d + 1) → ℝ))
     (A ∨ₑ B) ∨ₑ C = A ∨ₑ (B ∨ₑ C) :=
   mul_assoc A B C
 
+/-! ## Plücker coordinates
+
+The coordinatized bridge from the symbolic exterior-algebra layer to the concrete
+minor vectors. Following Katoh–Tanigawa §2.1, a family `v : Fin j → ℝ^(d+1)`
+assembles into the `j × (d+1)` matrix `A(v)` whose `i`-th row is `v i`; the
+Plücker coordinate at an increasing column index set is a signed `j × j` minor of
+`A(v)`. -/
+
+/-- The `j × (d+1)` coordinate matrix of a family `v : Fin j → ℝ^(d+1)`, whose
+`i`-th row is the vector `v i` (Katoh–Tanigawa's `A(p₁, …, pⱼ)`). -/
+def coordMatrix {d j : ℕ} (v : Fin j → Fin (d + 1) → ℝ) :
+    Matrix (Fin j) (Fin (d + 1)) ℝ :=
+  Matrix.of v
+
+/-- **Plücker coordinate** (`def:plucker-coords`). The Plücker coordinate
+`P_{i₁,…,iⱼ}` of the `j`-extensor of `v : Fin j → ℝ^(d+1)`, indexed by a
+`j`-element column set `s : Finset (Fin (d+1))`. Following
+Katoh–Tanigawa~`\cite{katohTanigawa2011}` §2.1 it is the Katoh–Tanigawa sign
+`(-1)^{1 + i₁ + ⋯ + iⱼ}` times the determinant of the `j × j` submatrix of
+`coordMatrix v` whose columns are `s`, taken in increasing order. The sign uses
+the **1-based** column indices `iₗ = (orderEmbOfFin) + 1` of KT's convention
+(mathlib's `Fin (d+1)` is `0`-based, so `iₗ = sᵢ.val + 1`); concretely the
+exponent is `1 + ∑_{i ∈ s} (i.val + 1)`. -/
+noncomputable def pluckerCoord {d j : ℕ} (v : Fin j → Fin (d + 1) → ℝ)
+    (s : Finset (Fin (d + 1))) (h : s.card = j) : ℝ :=
+  (-1) ^ (1 + ∑ i ∈ s, (i.val + 1)) *
+    ((coordMatrix v).submatrix id (s.orderEmbOfFin h)).det
+
+/-- **Plücker coordinate vector** (`def:plucker-coords`). The full vector of
+Plücker coordinates of the `j`-extensor of `v`, indexed by the `j`-element
+column subsets `s : {s : Finset (Fin (d+1)) // s.card = j}`. This is the
+coordinatized realization of the symbolic extensor `extensor v`; KT's
+`(d+1 choose j)`-dimensional Plücker coordinate vector. -/
+noncomputable def pluckerVector {d j : ℕ} (v : Fin j → Fin (d + 1) → ℝ) :
+    {s : Finset (Fin (d + 1)) // s.card = j} → ℝ :=
+  fun s => pluckerCoord v s.1 s.2
+
+/-- The top Plücker coordinate of `d+1` points (the unique column subset is all
+of `Fin (d+1)`) is, up to the KT sign, the full homogeneous-coordinate
+determinant of `affineIndependent_fin_iff_det_homogenize`. Concretely, taking the
+top column set `s = Finset.univ`, the submatrix is the matrix itself, so the
+Plücker coordinate is `±det (coordMatrix v)`. -/
+theorem pluckerCoord_univ {d : ℕ} (v : Fin (d + 1) → Fin (d + 1) → ℝ)
+    (h : (Finset.univ : Finset (Fin (d + 1))).card = d + 1) :
+    pluckerCoord v Finset.univ h =
+      (-1) ^ (1 + ∑ i : Fin (d + 1), (i.val + 1)) * (coordMatrix v).det := by
+  rw [pluckerCoord]
+  congr 1
+  have hemb : (id : Fin (d + 1) → Fin (d + 1)) = Finset.univ.orderEmbOfFin h :=
+    Finset.orderEmbOfFin_unique h (fun _ => Finset.mem_univ _) strictMono_id
+  rw [← hemb, Matrix.submatrix_id_id]
+
 end CombinatorialRigidity.Molecular

@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [open] No mathlib `Finset.univ.orderEmbOfFin = id` for `Fin n`
+- **Where it bit:** `pluckerCoord_univ` in `Molecular/Extensor.lean`
+  (Phase 17 `def:plucker-coords`). Reducing the top Plücker coordinate
+  (column set `= univ`) to the full determinant needs
+  `Finset.univ.orderEmbOfFin h = (id : Fin (d+1) → Fin (d+1))` to apply
+  `Matrix.submatrix_id_id`. mathlib has no direct lemma; derive it via
+  `Finset.orderEmbOfFin_unique h (fun _ => Finset.mem_univ _)
+  strictMono_id` (uniqueness of the increasing enumeration). Low-cost
+  two-step `have`; upstream-eligible (a `Finset.univ.orderEmbOfFin`
+  simp lemma) but not mirrored — single callsite, not on a recurrence
+  path. Mirror it if a downstream Plücker-vector lemma hits it again.
+
 ### [resolved] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
 - **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in
   `BodyBar/TreePacking.lean` (Phase 13 forward direction). The lemma

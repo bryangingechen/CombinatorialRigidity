@@ -105,7 +105,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-15) | Phase 15 surface (`BodyBar/{Framework,TayTheorem}.lean`, `body-bar.tex` `sec:body-bar-framework` + `sec:body-bar-tay` nodes) | ✓ Complete (see `notes/Phase15-cleanup.md`; round manual: `CLEANUP.md`) |
 | 16. Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ Complete (see `notes/Phase16.md`) |
 | ⋮ Cleanup round (post-Phase-16) | Phase 16 surface (`BodyBar/BodyHinge.lean`, `body-hinge.tex` `sec:body-hinge` nodes) | ✓ Complete (see `notes/Phase16-cleanup.md`; round manual: `CLEANUP.md`) |
-| 17. Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` (§2.1 symbolic layer: homogeneous coords, affine-indep bridge, extensor, join) | ◐ In progress (see `notes/Phase17.md`; opens the 10-phase molecular-conjecture program, `notes/MolecularConjecture.md` + §17 below) |
+| 17. Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` (§2.1: homogeneous coords, affine-indep bridge, extensor, join, Plücker coords) | ◐ In progress (see `notes/Phase17.md`; opens the 10-phase molecular-conjecture program, `notes/MolecularConjecture.md` + §17 below) |
 | 18–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -582,8 +582,10 @@ conjecture's hardest case (Case III, Phases 22–23) bottoms out. The §2.1
 symbolic layer has landed in `Molecular/Extensor.lean` — homogeneous
 coordinatization, the affine-independence ↔ top-extensor bridge, and the
 symbolic extensor/join on mathlib's `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`
-(`ExteriorAlgebra.ιMulti` + exterior product); the coordinatized Plücker
-bridge, `C(·)`, and Lemma 2.1 remain red. Phases 18–26 remain planned —
+(`ExteriorAlgebra.ιMulti` + exterior product), plus the coordinatized
+Plücker bridge (`pluckerCoord` / `pluckerVector`, signed `j×j`-minor
+vectors with KT's sign); `C(·)` and Lemma 2.1 remain red. Phases 18–26
+remain planned —
 see `notes/MolecularConjecture.md` for the per-phase detail and the
 *Opening Phase 17* protocol.
 

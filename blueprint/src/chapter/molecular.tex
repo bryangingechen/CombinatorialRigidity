@@ -117,15 +117,24 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
 
 \begin{definition}[Plücker coordinates]
   \label{def:plucker-coords}
+  \lean{CombinatorialRigidity.Molecular.pluckerCoord,
+    CombinatorialRigidity.Molecular.pluckerVector}
+  \leanok
   \uses{def:extensor, def:join}
-  The \emph{Plücker coordinate vector} of a $j$-extensor
-  $v_1 \wedge \cdots \wedge v_j$ in $\R^{d+1}$ collects its $j \times j$
-  minors over the increasing index sets
-  $1 \le i_1 < \cdots < i_j \le d+1$, with the
-  Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011} sign convention
-  $(-1)^{1 + \sum_\ell i_\ell}$. This is the coordinatized bridge from
-  the symbolic exterior-algebra layer to the concrete minor vectors on
-  which Lemma~2.1 and the downstream rank computations operate.
+  Assemble a family $v_1, \dots, v_j \in \R^{d+1}$ into the
+  $j \times (d+1)$ matrix $A(v)$ whose $i$-th row is $v_i$. The
+  \emph{Plücker coordinate} $P_{i_1, \dots, i_j}$ of the $j$-extensor
+  $v_1 \wedge \cdots \wedge v_j$, indexed by an increasing column set
+  $1 \le i_1 < \cdots < i_j \le d+1$, is the
+  Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011} sign
+  $(-1)^{1 + \sum_\ell i_\ell}$ times the determinant of the
+  $j \times j$ submatrix of $A(v)$ on those columns. The \emph{Plücker
+  coordinate vector} collects these over all $\binom{d+1}{j}$ column
+  sets. This is the coordinatized bridge from the symbolic
+  exterior-algebra layer to the concrete minor vectors on which
+  Lemma~2.1 and the downstream rank computations operate; for the top
+  case $j = d+1$ the single coordinate is, up to the sign, the full
+  homogeneous-coordinate determinant of \cref{lem:affine-indep-iff}.
 \end{definition}
 
 \begin{definition}[Extensor of an affine subspace]
