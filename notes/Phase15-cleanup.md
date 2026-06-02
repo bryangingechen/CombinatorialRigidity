@@ -1,6 +1,6 @@
 # Phase 15 cleanup round (work log)
 
-**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C/D remain).
+**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C1/C2/C3 no-op confirms landed; D remains).
 
 Between-phases cleanup round, run after Phase 15 (body-bar Tay theorem,
 existence form) closed in `fa4cfc3` and before Phase 16 (body-hinge /
@@ -180,25 +180,29 @@ Top LoC ranking (over the §C 50-line screening threshold none reach;
 top three are the audit gate per `CLEANUP.md` *Calibration* — expect
 mostly no-op confirming forced structural shape):
 
-- [ ] C1 — `stdFramework_rigidityRow_linearIndependent` (~40 lines,
-  `TayTheorem.lean` L250). Four-question walk: API extraction (the
-  `eqv`/`hsnd`/`hjeq` disjoint-cover reindex + `heq` block-single
-  rewrite — already feed named lemmas `specRow_linearIndependent` /
-  `stdFramework_rigidityRow_eq`); missed mathlib lemma; tactic
-  substitution; cross-proof unification (vs. C2/C3). Likely forced
-  reindex wiring per the Phase-14-cleanup *Calibration* precedent.
-- [ ] C2 — `finrank_rigidityRow_span_le` (~36 lines, L443). Four-question
-  walk. The `W`-subspace setup + `hmem`/`himg` membership + `calc`
-  finrank-chain. Check the `calc` for a missed `Submodule.finrank_map_le`
-  composition; check the converse partner `isSparse_of_isIndependent`
-  (C3) for cross-proof unification (they share the `E'ₛ`/`Subtype.val ''`
-  bar-set restriction backbone — likely the one genuine unification
-  spot-check this round).
-- [ ] C3 — `isSparse_of_isIndependent` (~32 lines, L565). Four-question
-  walk. The `E'ₛ` pullback + `hfin_eq` LI-span dim + the `omega`/`ring`
-  count `calc`. Cross-proof spot-check vs. C2 (shared `E'ₛ` restriction);
-  confirm the `calc` arithmetic isn't a missed `Nat.mul_le_mul` /
-  fused-bound lemma.
+- [x] C1 — `stdFramework_rigidityRow_linearIndependent` (~40 lines,
+  `TayTheorem.lean` L249). **No-op confirm.** API extraction already done
+  (`specRow_linearIndependent`, `stdFramework_rigidityRow_eq`,
+  `blockPairing_injective` are all named lemmas); the `eqv`/`hsnd`/`hjeq`/
+  `heq` block is forced disjoint-cover reindex wiring (no `Set.unionEqSigmaOfDisjoint`-
+  fusing lemma exists), matching the Phase-14-cleanup *Calibration* precedent.
+  No missed mathlib lemma; tactics already minimal (`simp only`, `funext`,
+  `.comp`/`.map'`/`.neg`). No cross-proof unification (C1 is the witness LI,
+  C2/C3 the converse bound — disjoint shapes).
+- [x] C2 — `finrank_rigidityRow_span_le` (~34 lines, L441). **No-op
+  confirm.** The `W`-subspace + `hmem`/`himg` + `calc` finrank-chain
+  (`finrank_mono` → `finrank_map_le` → `finrank_realBlockPiSpanOn`) has
+  **no** fused-lemma collapse: `loogle` for `finrank _ ≤ finrank (map _ _)
+  → finrank _ ≤ finrank _` returns empty, so the two-step `calc` is forced.
+  The C2↔C3 "shared `E'ₛ`/`Subtype.val ''` backbone" resolves as
+  **C3-delegates-to-C2** (C3 calls `finrank_rigidityRow_span_le F D E'ₛ`),
+  not duplication — already unified, no shared lemma to extract.
+- [x] C3 — `isSparse_of_isIndependent` (~30 lines, L560). **No-op
+  confirm.** The `E'ₛ` pullback + `hfin_eq` LI-span dim + the count `calc`
+  is the standard sparsity-count shape; the `omega`/`ring`/`Nat.mul_le_mul_left`
+  steps are each a distinct rewrite (no missed fused `Nat.mul_le_mul` bound).
+  Cross-proof spot-check vs. C2: delegates to C2 (see C2), so no duplicated
+  backbone.
 
 ### D. Project-organization compression
 
@@ -298,6 +302,15 @@ mostly no-op confirming forced structural shape):
   `Framework.lean`'s `barRow`/`rigidityMap` are forced. Same
   disposition + method as Phase-14-cleanup B3 (`constPiSpanEquiv`). No
   friction (mechanical removal, build warning-clean + lint clean).
+- **C1/C2/C3 (long-proof no-op confirm batch).** All three top-LoC
+  proofs closed no-op (matches `CLEANUP.md` *Calibration*: top-10 rankings
+  surface structural shape, not extraction debt). C1's reindex wiring is
+  forced (already feeds named lemmas; no cover-fusing lemma). C2's `calc`
+  has no fused `finrank (map) ≤ finrank` collapse (`loogle` empty). The
+  C2↔C3 "shared backbone" is C3-delegates-to-C2 (C3 calls C2 on the `E'ₛ`
+  pullback), already unified — not a duplicated backbone needing extraction.
+  No code change; build green + lint clean.
+
 - **B2/B3/B5/B7 (no-op confirm batch).** B2: all 8 `Fintype.ofFinite`
   bridges forced — `Fintype α` (L256/422/445) feeds the block-product
   dimension lemmas (`finrank_constPiSpan` / `finrank_realBlockPiSpanOn`)
@@ -318,24 +331,23 @@ mostly no-op confirming forced structural shape):
 
 ## Hand-off / next phase
 
-**A complete; B1+B6 (`c1fdaf2`), B4, and the B2/B3/B5/B7 no-op confirm
-batch (this commit) all landed.** All of B is closed (the two substantive
-findings — 5 stray `classical`s + redundant `variable` re-bind, then
-accidental `noncomputable` on `blockPairing`; build + lint clean — plus
-the four no-op confirms).
+**A complete; all of B closed; C1/C2/C3 closed (this commit, no-op
+confirm batch).** The C long-proof audit closed entirely no-op: all three
+top-LoC proofs are forced structural shape, the C2↔C3 backbone is
+delegation (C3 calls C2) not duplication, and `loogle` found no fused
+finrank-map lemma to collapse C2's `calc`. No code touched this commit
+(notes-only).
 
-**Smallest concrete next commit:** the **C long-proof audit**, starting
-with **C1** — `stdFramework_rigidityRow_linearIndependent` (~38 lines,
-`TayTheorem.lean` L249). Four-question walk (API extraction / missed
-mathlib lemma / tactic substitution / cross-proof unification per
-`CLEANUP.md`); likely a forced-reindex no-op confirm (cf. Phase-14-cleanup
-*Calibration*). Then C2 (`finrank_rigidityRow_span_le`, L441) and C3
-(`isSparse_of_isIndependent`, L560) — the one genuine cross-proof
-unification spot-check this round is C2↔C3 (shared `E'ₛ`/`Subtype.val ''`
-bar-set restriction backbone). C-confirm no-ops may batch per the
-coordinator rule; a real refactor stays its own commit.
-
-Then D in order; D3 (the `stdFramework_rigidityRow_eq` derivation
-from `rigidityRow_eq`) is the one substantive refactor candidate and
-should land late, as its own commit, with a try-and-record fallback if
-the `Pi.single` reshape fights the elaborator.
+**Smallest concrete next commit:** **D1** — compress `notes/Phase15.md`
+(272 → under 250 budget) per the Phase-14-cleanup D1 model (329 → 152):
+collapse the narrated *Current state* (L11–121) + per-node *Lemma
+checklist* (L143–178) to a commit-log pointer (`e83bde2..fa4cfc3`) + a
+witness/rank-count/existence/converse route summary; preserve
+*Architectural choices*, *Decisions made* (≤8-line entries), *Blockers*,
+*Hand-off* + *Converse-route note*. Then **D2** (re-skim FRICTION status
+sections; migrate-vs-keep the two Phase-15 `[resolved]` entries + re-confirm
+the four Phase-13/14 entries kept active for Phase 15). Then **D3** (the
+`stdFramework_rigidityRow_eq` derivation from `rigidityRow_eq`) — the one
+substantive refactor candidate, as its own commit, with a try-and-record
+fallback if the `Pi.single` reshape fights the elaborator. D3 closes the
+round.
