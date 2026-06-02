@@ -162,17 +162,22 @@ $\mathtt{SimpleGraph}$ sparsity of \cref{def:isSparse}.
 
 \begin{theorem}[Tutte--Nash-Williams tree-packing]
   \label{thm:tutte-nash-williams}
+  \lean{Graph.tutte_nash_williams}
+  \leanok
   \uses{def:graph-sparse, thm:unionPow-cycle-indep-iff-sparse}
   A multigraph $G$ is the edge-disjoint union of $k$ forests if and
   only if $G$ is $(k, k)$-sparse.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:unionPow-cycle-indep-iff-sparse, lem:union-indep-iff}
   Edge-disjoint $k$-forest decomposition is exactly independence of
   the whole edge set in the cycle-matroid union
   (\cref{lem:union-indep-iff}, with the forests as the per-copy
   independent sets), which \cref{thm:unionPow-cycle-indep-iff-sparse}
-  identifies with $(k, k)$-sparsity.
+  identifies with $(k, k)$-sparsity. The disjointness is free: an
+  acyclic cover disjointifies (subsets of forests are forests), and a
+  disjoint cover is a cover.
 \end{proof}
 
 \begin{corollary}[Spanning-tree refinement]

@@ -85,9 +85,9 @@ formula `Matroid.Union_rank_eq` (the `Fin ι` generalization of
 and does **not** import `Matroid.Graphic`; the `Graph.cycleMatroid` consumer
 will apply it with `M := G.cycleMatroid` in the next commit.
 
-Two `body-bar.tex` tree-packing nodes remain red
-(`thm:tutte-nash-williams`, `cor:k-spanning-trees`); `def:graph-sparse` and
-`thm:unionPow-cycle-indep-iff-sparse` are now green. The rank adapter, both
+One `body-bar.tex` tree-packing node remains red
+(`cor:k-spanning-trees`); `def:graph-sparse`, `thm:unionPow-cycle-indep-iff-sparse`,
+and `thm:tutte-nash-williams` are now green. The rank adapter, both
 cycle-matroid rank formulas (`restrict` / `spanningVerts`), the cancellation/edge-set lemmas, the
 component-spanningVerts identity, and the restriction bridges are all internal glue with no
 dedicated blueprint node.
@@ -149,17 +149,31 @@ reverse `(k,k)`-sparse ⟹ count and the assembled iff now ship in `BodyBar/Tree
   indep`, reverse = `Union_pow_indep_iff_count` fed by the count lemma. Build + lint + `verify.sh`
   all clean. **Next:** `thm:tutte-nash-williams` (see *Next concrete commit* below).
 
-**Next concrete commit — `thm:tutte-nash-williams`.** Edge-disjoint union of `k` forests ⟺
-`(k,k)`-sparse. Per blueprint: edge-disjoint `k`-forest decomposition of `E(G)` is exactly
-independence of the *whole* edge set `E(G)` in `⋃ⱼ cycleMatroid` (via `lem:union-indep-iff` =
-`Matroid.Union_indep_iff`, forests as per-copy independent sets), which the now-green
-`unionPow_cycleMatroid_indep_iff_isSparse_restrict` (applied with `E' := E(G)`, so `G ↾ E(G) = G`)
-identifies with `(k,k)`-sparsity of `G` itself. Two pieces: (1) restate the iff at `E' = E(G)` —
-need `(G ↾ E(G)) = G` (`restrict_edgeSet_self` or similar) and `(G ↾ E(G)).IsSparse = G.IsSparse`;
-(2) unfold `Matroid.Union_indep_iff` into the "edge-disjoint union of forests" phrasing — decide the
-Lean encoding of "`k` forests packing `G`" (likely `∃ Fs : Fin k → Set β, ⋃ Fs = E(G) ∧ pairwise
-disjoint ∧ each `Fs i` acyclic-in-`G`), and map acyclic ↔ `cycleMatroid.Indep`. Check
-`Matroid.Graphic` for `cycleMatroid_indep_iff` (acyclic characterization).
+**`thm:tutte-nash-williams` landed (green build + blueprint node green).** `BodyBar/TreePacking.lean`
+now ships:
+- `Graph.IsForestPacking G k` (internal glue, no blueprint node) — the "edge-disjoint union of `k`
+  forests" predicate: `∃ Fs : Fin k → Set β, ⋃ Fs = E(G) ∧ Pairwise (onFun Disjoint Fs) ∧
+  ∀ i, G.IsAcyclicSet (Fs i)`. Acyclic-set = forest via `Matroid.Graphic`'s `cycleMatroid_indep`
+  (`G.cycleMatroid.Indep = G.IsAcyclicSet`).
+- `Graph.tutte_nash_williams` (`[Finite α] [Finite β]`) — **the theorem**: `G.IsForestPacking k ↔
+  G.IsSparse k k`. Specializes `unionPow_cycleMatroid_indep_iff_isSparse_restrict` at `E' = E(G)`
+  (where `G ↾ E(G) = G` via `Graph.restrict_self`) to bridge union-independence with `(k,k)`-sparsity,
+  then unfolds union-independence through `Matroid.union_indep_iff` + `cycleMatroid_indep` into the
+  acyclic cover. Disjointness is free: a (non-disjoint) acyclic cover disjointifies via
+  `Fintype.exists_disjointed_le` (subsets of acyclic sets stay acyclic, `IsAcyclicSet.anti`); a
+  disjoint cover is in particular a cover. Build + lint + `verify.sh` all clean. **Next:**
+  `cor:k-spanning-trees` (see *Next concrete commit* below).
+
+**Next concrete commit — `cor:k-spanning-trees`.** Under `(k,k)`-tightness the `k` edge-disjoint
+forests of `tutte_nash_williams` are spanning trees. Per blueprint: the tight global equality
+`|E| = k|V| - k` forces each of the `k` forests to have exactly `|V| - 1` edges and to span `V`,
+hence to be a spanning tree. Likely shape: from `G.IsTight k k`, get a forest packing
+(`tutte_nash_williams.mpr h.isSparse`); the global edge count `|E| = k(|V|-1) = ∑ᵢ |Fs i|` together
+with each `|Fs i| ≤ |V| - 1` (a forest on `V(G)` has `≤ |V|-1` edges) forces equality per copy, i.e.
+each `Fs i` is a spanning tree. Check `Matroid.Graphic` / `Matroid.Graph.Forest` for the
+forest-edge-count bound and a spanning-tree predicate (`IsMaximalAcyclicSet`/`IsSpanningTree`?) to
+state the conclusion against. Decide the Lean encoding of "spanning tree" (likely
+`G.IsMaximalAcyclicSet (Fs i)` + connectivity, or that `G ↾ Fs i` is a spanning tree of `G`).
 
 ## Architectural choices made up front
 
@@ -206,8 +220,12 @@ tree-packing nodes as of phase open).
   (`Graph.isSparse_restrict_of_union_pow_indep`), and hard reverse via component decomposition
   (`Graph.le_mul_cycleMatroid_rk_of_isSparse_restrict`) all landed; assembled iff composes the
   forward half with `Union_pow_indep_iff_count` fed by the reverse count lemma.
-- [ ] `thm:tutte-nash-williams` — edge-disjoint union of `k` forests ⟺
-  `(k,k)`-sparse.
+- [x] `thm:tutte-nash-williams` — edge-disjoint union of `k` forests ⟺
+  `(k,k)`-sparse, green: `Graph.tutte_nash_williams` (with the internal-glue
+  packing predicate `Graph.IsForestPacking`). Bridges union-independence at
+  `E' = E(G)` (`unionPow_cycleMatroid_indep_iff_isSparse_restrict` + `restrict_self`)
+  to the acyclic cover (`Matroid.union_indep_iff` + `cycleMatroid_indep`); disjointness
+  free via `Fintype.exists_disjointed_le` + `IsAcyclicSet.anti`.
 - [ ] `cor:k-spanning-trees` — under `(k,k)`-tightness the `k` forests
   are spanning trees.
 

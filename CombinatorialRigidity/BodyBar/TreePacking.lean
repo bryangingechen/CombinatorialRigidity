@@ -406,4 +406,50 @@ theorem unionPow_cycleMatroid_indep_iff_isSparse_restrict [DecidableEq β] [Fini
   rw [Matroid.Union_pow_indep_iff_count]
   exact fun Y hY ↦ le_mul_cycleMatroid_rk_of_isSparse_restrict hE' hsparse hY
 
+/-- A **`k`-forest packing** of a multigraph `G : Graph α β`: a family of `k`
+edge-disjoint forests of `G` whose bar sets cover `E(G)`. Concretely, an indexed
+family `Fs : Fin k → Set β` of pairwise-disjoint bar sets with `⋃ᵢ Fs i = E(G)`,
+each of which is a forest in `G` (`G.IsAcyclicSet`, i.e. `G ↾ Fs i` is acyclic).
+This is the "edge-disjoint union of `k` forests" of Tutte–Nash-Williams. -/
+def IsForestPacking (G : Graph α β) (k : ℕ) : Prop :=
+  ∃ Fs : Fin k → Set β, ⋃ i, Fs i = E(G) ∧ Pairwise (Function.onFun Disjoint Fs) ∧
+    ∀ i, G.IsAcyclicSet (Fs i)
+
+/-- **Tutte–Nash-Williams tree-packing** (Tutte 1961, Nash-Williams 1961;
+`thm:tutte-nash-williams`): a multigraph `G` is the edge-disjoint union of `k`
+forests if and only if it is `(k, k)`-sparse.
+
+Edge-disjoint `k`-forest decomposition of `E(G)` is exactly independence of the
+*whole* edge set `E(G)` in the `k`-fold cycle-matroid union (`Matroid.union_indep_iff`,
+with the forests as the per-copy independent sets, via `cycleMatroid_indep`'s
+acyclic-set characterization), which `unionPow_cycleMatroid_indep_iff_isSparse_restrict`
+(applied at `E' = E(G)`, where `G ↾ E(G) = G` by `restrict_self`) identifies with
+`(k, k)`-sparsity of `G`. The disjointness in the packing is free: a (not necessarily
+disjoint) acyclic cover disjointifies via `Fintype.exists_disjointed_le` (subsets of
+acyclic sets stay acyclic, `IsAcyclicSet.anti`), and a disjoint cover is in particular
+a cover, so the two existentials agree. -/
+theorem tutte_nash_williams [Finite α] [Finite β] {G : Graph α β} {k : ℕ} :
+    G.IsForestPacking k ↔ G.IsSparse k k := by
+  classical
+  haveI : Fintype β := Fintype.ofFinite β
+  -- the union-independence iff, specialized to the full edge set `E(G)` (where `G ↾ E(G) = G`)
+  have hiff : (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E(G) ↔ G.IsSparse k k := by
+    rw [unionPow_cycleMatroid_indep_iff_isSparse_restrict subset_rfl, restrict_self]
+  rw [← hiff, Matroid.union_indep_iff]
+  constructor
+  · -- a forest packing gives an acyclic cover, hence union-independence
+    rintro ⟨Fs, hcover, _, hacyc⟩
+    exact ⟨Fs, hcover, fun i ↦ by rw [cycleMatroid_indep]; exact hacyc i⟩
+  · -- union-independence gives an acyclic cover; disjointify it into a forest packing
+    rintro ⟨Is, hcover, hindep⟩
+    have hacyc : ∀ i, G.IsAcyclicSet (Is i) := fun i ↦ by
+      rw [← cycleMatroid_indep]; exact hindep i
+    obtain ⟨g, hgle, hgsup, hgdisj⟩ := Fintype.exists_disjointed_le Is
+    refine ⟨g, ?_, hgdisj, fun i ↦ (hacyc i).anti (hgle i)⟩
+    -- `univ.sup g = univ.sup Is` (in `Set β`) is `⋃ g = ⋃ Is = E(G)`
+    have hsup : ⋃ i, g i = ⋃ i, Is i := by
+      rw [← Set.iSup_eq_iUnion, ← Set.iSup_eq_iUnion, ← Finset.sup_univ_eq_iSup,
+        ← Finset.sup_univ_eq_iSup, hgsup]
+    rw [hsup, hcover]
+
 end Graph
