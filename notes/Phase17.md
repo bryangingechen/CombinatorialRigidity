@@ -1,8 +1,8 @@
 # Phase 17 — Grassmann–Cayley extensor algebra; Lemma 2.1 (work log)
 
-**Status:** in progress (§2.1 symbolic layer + Plücker bridge landed:
-homogeneous coords, affine-indep bridge, extensor, join, Plücker coords green;
-`C(·)` / Lemma 2.1 red).
+**Status:** in progress (§2.1 symbolic layer + Plücker bridge + `C(·)` landed:
+homogeneous coords, affine-indep bridge, extensor, join, Plücker coords,
+affine-subspace extensor green; Lemma 2.1 red — the last §2.1 node).
 
 This phase opens the **molecular-conjecture program** (Phases 17–26).
 The program-level plan — target, source, five-strata architecture,
@@ -39,9 +39,19 @@ The **coordinatized Plücker bridge has now also landed**:
 - `pluckerCoord_univ` — the top coordinate `= ±det (coordMatrix v)`, tying
   back to `affineIndependent_fin_iff_det_homogenize`'s determinant form.
 
-Five blueprint nodes are now green (`def:homogeneous-coords`,
-`lem:affine-indep-iff`, `def:extensor`, `def:join`, `def:plucker-coords`).
-The remaining §2.1 dep-graph (`C(·)`, Lemma 2.1) is still red.
+The **affine-subspace extensor `C(·)` has now also landed**:
+- `affineSubspaceExtensor` (`def:affine-subspace-extensor`) — `C(p) :=
+  extensor (homogenize ∘ p)`, the join of the homogenizations;
+- `affineSubspaceExtensor_ne_zero_iff` — `C(p) ≠ 0 ⇔ AffineIndependent ℝ p`,
+  via the homogenization bridge + the extensor ↔ LI characterization
+  `extensor_ne_zero_iff_linearIndependent` (forward via
+  `AlternatingMap.map_linearDependent`; converse via mathlib's
+  `exteriorPower.ιMulti_family_linearIndependent_field`).
+
+Six blueprint nodes are now green (`def:homogeneous-coords`,
+`lem:affine-indep-iff`, `def:extensor`, `def:join`, `def:plucker-coords`,
+`def:affine-subspace-extensor`). Only Lemma 2.1
+(`lem:extensor-independence`) is still red — the last §2.1 node.
 
 **mathlib `ExteriorAlgebra` coverage question (Blockers) is settled:**
 mathlib's `Mathlib.LinearAlgebra.ExteriorPower.Basic` supplies everything
@@ -102,8 +112,12 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
       minors with KT's sign `(−1)^(1+Σ iⱼ)`; the symbolic ↔ coordinate
       bridge (`coordMatrix`, `pluckerCoord`, `pluckerVector`,
       `pluckerCoord_univ`).
-- [ ] `def:affine-subspace-extensor` — the affine-subspace ↔ extensor
-      map `C(·)`.
+- [x] `def:affine-subspace-extensor` — the affine-subspace ↔ extensor
+      map `C(·)` (`affineSubspaceExtensor`), with the nonvanishing
+      characterization `affineSubspaceExtensor_ne_zero_iff`
+      (`C(p) ≠ 0 ⇔ AffineIndependent ℝ p`). Built on the extensor ↔ LI
+      iff `extensor_ne_zero_iff_linearIndependent` +
+      `extensor_eq_zero_of_not_linearIndependent`.
 - [ ] `lem:extensor-independence` — **Lemma 2.1** (hard core): the
       `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1` affinely
       independent points are linearly independent. Proof joins the
@@ -113,6 +127,19 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **`C(·)` is `extensor ∘ homogenize`, not a fresh join chain.** Since
+  `join_extensor` already proves `extensor a ∨ₑ extensor b =
+  extensor (a ++ b)`, the join `p̄₁ ∨ ⋯ ∨ p̄_k` *is* the extensor of the
+  homogenized family, so `affineSubspaceExtensor p := extensor
+  (homogenize ∘ p)` — no iterated `∨ₑ`. The nonvanishing iff then
+  factors cleanly: homogenization bridge
+  (`affineIndependent_iff_linearIndependent_homogenize`) ∘ the extensor
+  ↔ LI fact (`extensor_ne_zero_iff_linearIndependent`).
+- **Extensor ↔ LI nonvanishing** → FRICTION [open] *No mathlib
+  `exteriorPower.ιMulti v ≠ 0 ↔ LinearIndependent v`* (forward via
+  `AlternatingMap.map_linearDependent`; converse via
+  `ιMulti_family_linearIndependent_field` + `.ne_zero` at the unique
+  `powersetCard` index, reusing the orderEmbOfFin = id trick).
 - **Plücker sign encoding.** KT's `P_{i₁,…,iⱼ}` uses 1-based column
   indices `1 ≤ i₁ < ⋯ ≤ d+1`; mathlib `Fin (d+1)` is 0-based, so KT's
   `iₗ = sᵢ.val + 1`. The exponent `1 + ∑ iₗ` is carried faithfully as
@@ -160,25 +187,31 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
 ## Hand-off / next phase
 
 Done: `def:homogeneous-coords`, `lem:affine-indep-iff`, `def:extensor`,
-`def:join`, `def:plucker-coords` all landed in
-`CombinatorialRigidity/Molecular/Extensor.lean` (five `molecular.tex`
-nodes green; symbolic carrier settled on mathlib
+`def:join`, `def:plucker-coords`, `def:affine-subspace-extensor` all
+landed in `CombinatorialRigidity/Molecular/Extensor.lean` (six
+`molecular.tex` nodes green; symbolic carrier settled on mathlib
 `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`, Plücker bridge via signed `j×j`
-submatrix determinants on `coordMatrix`). Clean handoff point.
+submatrix determinants on `coordMatrix`, `C(·) =
+affineSubspaceExtensor` as `extensor ∘ homogenize` with
+`affineSubspaceExtensor_ne_zero_iff`). Clean handoff point — one §2.1
+node (Lemma 2.1) left.
 
-Smallest next commit: land `def:affine-subspace-extensor` — the
-affine-subspace ↔ extensor map `C(·)` sending affinely-independent points
-`p₁,…,p_k ∈ ℝ^d` to the join `p̄₁ ∨ ⋯ ∨ p̄_k` of their homogenizations
-(`def:homogeneous-coords` + `def:extensor` + `def:join` already green),
-with the nonvanishing characterization `C(·) ≠ 0 ⇔ affinely independent`
-following from `affineIndependent_iff_linearIndependent_homogenize` +
-the extensor/`ιMulti` nonvanishing-iff-LI fact. Likely-needed mathlib API:
-`ExteriorAlgebra.ιMulti_ne_zero` / the LI ↔ `ιMulti ≠ 0` characterization
-in `Mathlib.LinearAlgebra.ExteriorPower.Basic`. After `C(·)`: the hard
-core `lem:extensor-independence` (Lemma 2.1) — joins the dependence
-relation with a `2`-extensor `p̄_a ∨ p̄_b` to kill all but one term
-(uses `extensor_eq_zero_of_eq` / `join_extensor` + top-extensor ≠ 0 via
-`affineIndependent_fin_iff_det_homogenize`).
+Smallest next commit: land the hard core `lem:extensor-independence`
+(Lemma 2.1) — the `D = (d+1 choose 2)` many `(d-1)`-extensors obtained
+by omitting two of `d+1` affinely independent points are linearly
+independent in `⋀^(d-1) ℝ^(d+1)`. Now-green tooling to build on:
+join the dependence relation with the `2`-extensor `p̄_a ∨ₑ p̄_b`
+(`join`, `join_extensor`); every off-diagonal term repeats a vector so
+vanishes by `extensor_eq_zero_of_eq` (or `_of_not_injective`); the
+surviving diagonal term is `± extensor (homogenize ∘ p)` = the top
+extensor, nonzero by `extensor_ne_zero_iff_linearIndependent` +
+`affineIndependent_iff_linearIndependent_homogenize` (equivalently the
+determinant form `affineIndependent_fin_iff_det_homogenize`). Indexing
+the `D` extensors by unordered pairs `{a,b} ⊆ Fin (d+1)` (a
+`Sym2`/`Finset.powersetCard 2` or `{p : Fin(d+1)×Fin(d+1) // p.1<p.2}`
+choice) and stating the omit-two family is the first design call —
+expect that to be the bulk of the work, not the per-term vanishing.
+Closing this node closes Phase 17.
 
 Phase 17 completes when `lem:extensor-independence` (Lemma 2.1) is green;
 that unblocks Phase 18 (panel-hinge rigidity matrix) and is the

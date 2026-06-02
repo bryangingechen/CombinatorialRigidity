@@ -77,16 +77,46 @@ housekeeping pass once their resolution is fully indexed.
 ## Open
 
 ### [open] No mathlib `Finset.univ.orderEmbOfFin = id` for `Fin n`
-- **Where it bit:** `pluckerCoord_univ` in `Molecular/Extensor.lean`
-  (Phase 17 `def:plucker-coords`). Reducing the top Plücker coordinate
-  (column set `= univ`) to the full determinant needs
-  `Finset.univ.orderEmbOfFin h = (id : Fin (d+1) → Fin (d+1))` to apply
-  `Matrix.submatrix_id_id`. mathlib has no direct lemma; derive it via
-  `Finset.orderEmbOfFin_unique h (fun _ => Finset.mem_univ _)
-  strictMono_id` (uniqueness of the increasing enumeration). Low-cost
-  two-step `have`; upstream-eligible (a `Finset.univ.orderEmbOfFin`
-  simp lemma) but not mirrored — single callsite, not on a recurrence
-  path. Mirror it if a downstream Plücker-vector lemma hits it again.
+- **Where it bit:** `pluckerCoord_univ` (Phase 17 `def:plucker-coords`)
+  and `extensor_ne_zero_iff_linearIndependent` (Phase 17
+  `def:affine-subspace-extensor`), both in `Molecular/Extensor.lean`.
+  `pluckerCoord_univ` reduces the top Plücker coordinate (column set
+  `= univ`) to the full determinant via `Matrix.submatrix_id_id`;
+  `extensor_ne_zero_iff_linearIndependent` shows the unique `k`-element
+  `powersetCard (Fin k) k` reindexing `ofFinEmbEquiv.symm ⟨univ,_⟩`
+  is `id` so the family member is `extensor v` itself. Both need
+  `Finset.univ.orderEmbOfFin h = (id : Fin n → Fin n)`. mathlib has no
+  direct lemma; derive it via `Finset.orderEmbOfFin_unique h
+  (fun _ => Finset.mem_univ _) strictMono_id` (uniqueness of the
+  increasing enumeration). Low-cost two-step `have`; now at **two**
+  callsites — upstream-eligible as a `Finset.univ.orderEmbOfFin` simp
+  lemma. Still not mirrored (both callsites are one-liners and the
+  `have` is the same two-step each time), but if a third hits, mirror
+  under `Mathlib/Order/Fin/Basic.lean` (or wherever `orderEmbOfFin`
+  lives) rather than re-deriving.
+
+### [open] No mathlib `exteriorPower.ιMulti v ≠ 0 ↔ LinearIndependent v` (over a field)
+- **Where it bit:** `extensor_ne_zero_iff_linearIndependent` in
+  `Molecular/Extensor.lean` (Phase 17 `def:affine-subspace-extensor`).
+  The `C(·)`-nonvanishing characterization needs `ExteriorAlgebra.ιMulti
+  ℝ k v ≠ 0 ↔ LinearIndependent ℝ v`. mathlib has the two halves but no
+  packaged iff: the `⇐`-`zero` (forward, dependent ⇒ 0) direction is
+  `AlternatingMap.map_linearDependent` (needs `[IsDomain]` +
+  `[IsTorsionFree]`, both free for `ℝ`); the `⇒`-`ne_zero` (independent
+  ⇒ nonzero) direction has to be assembled from
+  `exteriorPower.ιMulti_family_linearIndependent_field` +
+  `LinearIndependent.ne_zero` at the unique `powersetCard (Fin k) k`
+  index, then `Subtype.ext` into the `⋀[ℝ]^k` coercion and a `change`
+  to unfold the `ExteriorAlgebra.ιMulti_family` abbrev back to the bare
+  `ιMulti` (the index reindexing is `id`, via the orderEmbOfFin entry
+  above). ~12 lines for what reads as one line of math.
+- **Proposed fix:** upstream `exteriorPower.ιMulti_ne_zero_iff_linearIndependent`
+  (field version) into `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`,
+  next to `ιMulti_family_linearIndependent_field`. Not mirrored yet —
+  single callsite so far; mirror under `Mathlib/LinearAlgebra/
+  ExteriorPower/Basis.lean` if Lemma 2.1 or a Phase-18 consumer needs
+  the bare-extensor nonvanishing fact again.
+- **Status:** open
 
 ### [resolved] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
 - **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in

@@ -9,6 +9,7 @@ public import Mathlib.Data.Real.Basic
 public import Mathlib.LinearAlgebra.AffineSpace.Independent
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 public import Mathlib.LinearAlgebra.ExteriorPower.Basic
+public import Mathlib.LinearAlgebra.ExteriorPower.Basis
 
 /-!
 # Grassmann–Cayley extensor algebra: homogeneous coordinates (`sec:molecular-homog`)
@@ -230,6 +231,76 @@ theorem join_extensor {d m n : ℕ} (a : Fin m → Fin (d + 1) → ℝ)
 theorem join_assoc {d : ℕ} (A B C : ExteriorAlgebra ℝ (Fin (d + 1) → ℝ)) :
     (A ∨ₑ B) ∨ₑ C = A ∨ₑ (B ∨ₑ C) :=
   mul_assoc A B C
+
+/-! ## The extensor of an affine subspace
+
+The map `C(·)` sending affinely independent points `p₁, …, p_k ∈ ℝ^d` to the join
+`p̄₁ ∨ ⋯ ∨ p̄_k` of their homogenizations, with the nonvanishing characterization
+`C(p) ≠ 0 ⇔ p` affinely independent. -/
+
+/-- A `k`-extensor `extensor v` vanishes when `v` is linearly dependent; over a
+field, the converse also holds (see `extensor_ne_zero_iff_linearIndependent`).
+The forward direction is `AlternatingMap.map_linearDependent` applied to mathlib's
+`ExteriorAlgebra.ιMulti`. -/
+theorem extensor_eq_zero_of_not_linearIndependent {d k : ℕ}
+    {v : Fin k → Fin (d + 1) → ℝ} (hv : ¬LinearIndependent ℝ v) :
+    extensor v = 0 :=
+  (ExteriorAlgebra.ιMulti ℝ k).map_linearDependent v hv
+
+/-- **Extensor nonvanishing characterizes linear independence** (over `ℝ`). The
+`k`-extensor `extensor v` is nonzero if and only if the family `v` is linearly
+independent. The forward direction is the contrapositive of
+`extensor_eq_zero_of_not_linearIndependent`; the converse extends `v` to a basis of
+its span and reads off a nonzero exterior-power basis coordinate
+(mathlib's `exteriorPower.ιMulti_family_linearIndependent_field`). -/
+theorem extensor_ne_zero_iff_linearIndependent {d k : ℕ}
+    (v : Fin k → Fin (d + 1) → ℝ) :
+    extensor v ≠ 0 ↔ LinearIndependent ℝ v := by
+  constructor
+  · intro h
+    by_contra hv
+    exact h (extensor_eq_zero_of_not_linearIndependent hv)
+  · intro hv hzero
+    -- The family of `k`-fold exterior products of `v` is linearly independent
+    -- (`ιMulti_family_linearIndependent_field`), hence each member is nonzero.
+    -- The unique `k`-element subset of `Fin k` is `univ`, whose order embedding is
+    -- `id`, so that member is `extensor v` itself (up to the `⋀[ℝ]^k` coercion).
+    have hfam := exteriorPower.ιMulti_family_linearIndependent_field
+      (K := ℝ) (n := k) (v := v) hv
+    set s : Set.powersetCard (Fin k) k := ⟨Finset.univ, by simp⟩ with hs
+    have hne := hfam.ne_zero s
+    apply hne
+    have hid : Set.powersetCard.ofFinEmbEquiv.symm s = (id : Fin k → Fin k) := by
+      rw [Set.powersetCard.ofFinEmbEquiv_symm_apply]
+      exact (Finset.orderEmbOfFin_unique s.2 (fun _ => Finset.mem_univ _) strictMono_id).symm
+    apply Subtype.ext
+    rw [exteriorPower.ιMulti_family_apply_coe, ZeroMemClass.coe_zero]
+    change ExteriorAlgebra.ιMulti ℝ k (v ∘ ⇑(Set.powersetCard.ofFinEmbEquiv.symm s)) = 0
+    rw [hid, Function.comp_id]
+    exact hzero
+
+/-- **Extensor of an affine subspace** (`def:affine-subspace-extensor`). The
+extensor `C(p)` of the affine subspace spanned by points `p₁, …, p_k ∈ ℝ^d` is the
+join `p̄₁ ∨ ⋯ ∨ p̄_k ∈ ⋀^k ℝ^(d+1)` of their homogenizations — equivalently
+(`join_extensor`) the `k`-extensor of the homogenized family. It is well-defined up
+to a nonzero scalar and, by `affineSubspaceExtensor_ne_zero_iff`, nonzero exactly
+when the points are affinely independent, so `C` faithfully encodes the affine
+subspace. -/
+def affineSubspaceExtensor {d k : ℕ} (p : Fin k → Fin d → ℝ) :
+    ExteriorAlgebra ℝ (Fin (d + 1) → ℝ) :=
+  extensor (fun i => homogenize (p i))
+
+theorem affineSubspaceExtensor_apply {d k : ℕ} (p : Fin k → Fin d → ℝ) :
+    affineSubspaceExtensor p = extensor (fun i => homogenize (p i)) := rfl
+
+/-- **The extensor of an affine subspace is nonzero iff the points are affinely
+independent** (`def:affine-subspace-extensor`). Combines the homogenization bridge
+`affineIndependent_iff_linearIndependent_homogenize` with the extensor nonvanishing
+characterization `extensor_ne_zero_iff_linearIndependent`. -/
+theorem affineSubspaceExtensor_ne_zero_iff {d k : ℕ} (p : Fin k → Fin d → ℝ) :
+    affineSubspaceExtensor p ≠ 0 ↔ AffineIndependent ℝ p := by
+  rw [affineSubspaceExtensor, extensor_ne_zero_iff_linearIndependent,
+    ← affineIndependent_iff_linearIndependent_homogenize]
 
 /-! ## Plücker coordinates
 

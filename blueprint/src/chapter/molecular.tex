@@ -139,13 +139,21 @@ $\delta = \mathrm{bodyBarDim}\,n$ of the body-bar / body-hinge chapters
 
 \begin{definition}[Extensor of an affine subspace]
   \label{def:affine-subspace-extensor}
+  \lean{CombinatorialRigidity.Molecular.affineSubspaceExtensor,
+    CombinatorialRigidity.Molecular.affineSubspaceExtensor_ne_zero_iff}
+  \leanok
   \uses{def:homogeneous-coords, def:extensor, def:join}
   For an affine subspace spanned by affinely independent points
   $p_1, \dots, p_k \in \R^{d}$, its \emph{extensor} is
   $C(\cdot) = \bar p_1 \vee \cdots \vee \bar p_k \in \bigwedge^{k} \R^{d+1}$,
   well-defined up to a nonzero scalar. By \cref{lem:affine-indep-iff} it
   is nonzero exactly when the points are affinely independent, so $C$
-  faithfully encodes the affine subspace.
+  faithfully encodes the affine subspace. (Formally, the nonvanishing
+  characterization combines the homogenization bridge of
+  \cref{lem:affine-indep-iff} with the fact that a $k$-extensor is nonzero
+  iff its vectors are linearly independent --- the converse direction
+  extends the family to a basis of its span and reads off a nonzero
+  exterior-power basis coordinate.)
 \end{definition}
 
 \subsection{Independence of the $(d-1)$-extensors (Lemma 2.1)}
