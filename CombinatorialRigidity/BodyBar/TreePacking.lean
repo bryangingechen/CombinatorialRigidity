@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Matroid.Constructions.Union
 import Mathlib.Combinatorics.Graph.Basic
+import Matroid.Graphic
 
 /-!
 # Tutte–Nash-Williams tree-packing — rank adapter and `Graph`-native sparsity
@@ -110,5 +111,23 @@ def IsTight (G : Graph α β) (k ℓ : ℕ) : Prop :=
 
 lemma IsTight.isSparse {G : Graph α β} {k ℓ : ℕ} (h : G.IsTight k ℓ) : G.IsSparse k ℓ :=
   h.1
+
+open Set
+
+/-- **Cycle-matroid rank formula** (`eRk` form): for a bar set `E' ⊆ E(G)`, the rank of
+`E'` in `G.cycleMatroid` is `|V| - c(G ↾ E')`, additively `r(E') + c(G ↾ E') = |V|`. Here
+`c(G ↾ E')` is the number of connected components of the subgraph on the bars of `E'` (counting
+every vertex of `G`, including the isolated ones, as the matroid restriction keeps the full
+vertex set). This is the substantive content behind `thm:unionPow-cycle-indep-iff-sparse`:
+it specializes `Graph.eRank_cycleMatroid_add_numberOfComponents` (applied to `G ↾ E'`) to the
+rank of a subset, through the matroid-restriction bridge `(G ↾ E').cycleMatroid =
+G.cycleMatroid ↾ E'` and `Matroid.eRank_restrict`. -/
+lemma cycleMatroid_eRk_add_numberOfComponents_restrict {G : Graph α β} {E' : Set β}
+    (hE' : E' ⊆ E(G)) :
+    G.cycleMatroid.eRk E' + c(G ↾ E') = V(G).encard := by
+  have hbridge : G.cycleMatroid.eRk E' = (G ↾ E').cycleMatroid.eRank := by
+    rw [cycleMatroid_restrict, inter_eq_right.mpr hE', Matroid.eRank_restrict]
+  rw [hbridge, eRank_cycleMatroid_add_numberOfComponents (G ↾ E')]
+  simp
 
 end Graph

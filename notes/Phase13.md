@@ -49,6 +49,22 @@ theorem needs), `Set`-side throughout, count written additively. The blueprint
 Build + lint + `blueprint/verify.sh` all clean. **Next:**
 `thm:unionPow-cycle-indep-iff-sparse` (see *Next concrete commit* below).
 
+**Cycle-matroid rank formula (`eRk` form) landed (green build).**
+`BodyBar/TreePacking.lean` now imports `Matroid.Graphic` (the import blocker is
+cleared by the fork re-pin) and ships
+`Graph.cycleMatroid_eRk_add_numberOfComponents_restrict`: for `E' ⊆ E(G)`,
+`G.cycleMatroid.eRk E' + c(G ↾ E') = V(G).encard` — the `r(E') = |V'| − c(E')`
+identity in the matroid API's native `eRk`/`encard` shape. Proof is a 3-liner:
+the matroid-restriction bridge `(G ↾ E').cycleMatroid = G.cycleMatroid ↾ E'` +
+`Matroid.eRank_restrict` reduces `eRk E'` to `(G ↾ E').cycleMatroid.eRank`, then
+`Graph.eRank_cycleMatroid_add_numberOfComponents (G ↾ E')` closes it (`V(G ↾ E') =
+V(G)` since restriction keeps all vertices, discharged by `simp`). No dedicated
+blueprint node (internal glue, like the rank adapter). Build + lint + warning-scan
+clean. **Next:** finish `thm:unionPow-cycle-indep-iff-sparse` — bridge this `eRk`
+formula to `Graph.IsSparse` (cast `eRk`↦`rk`↦`ℕ`, `encard`↦`ncard`, and relate
+`c(G ↾ E')` ≥ 1 on a non-empty `E'` to the `(k,k)`-count, then combine with
+`Union_pow_rank_eq`). See *Next concrete commit* below.
+
 **Rank adapter landed.** `CombinatorialRigidity/BodyBar/TreePacking.lean`
 ships `Matroid.Union_pow_rank_eq` — the constant-family `Set`-side
 specialization of the partition formula for `Matroid.Union (fun _ : Fin k ↦
@@ -64,20 +80,24 @@ will apply it with `M := G.cycleMatroid` in the next commit.
 
 Three `body-bar.tex` tree-packing nodes remain red
 (`thm:unionPow-cycle-indep-iff-sparse`, `thm:tutte-nash-williams`,
-`cor:k-spanning-trees`); `def:graph-sparse` is now green. The adapter has no
-dedicated blueprint node (internal glue).
+`cor:k-spanning-trees`); `def:graph-sparse` is now green. Neither the rank adapter
+nor the cycle-matroid rank formula has a dedicated blueprint node (both internal glue).
 
-**Next concrete commit:** `thm:unionPow-cycle-indep-iff-sparse` — a bar set is
-independent in `⋃ⱼ G.cycleMatroid` (`k` copies) iff `G` restricted to it is
-`(k, k)`-sparse (Whiteley Cor 3). This is the first commit that imports
-`Matroid.Graphic` (the `cycleMatroid` source — import now unblocked, see
-*Blockers*, resolved); it bridges `Union_pow_rank_eq` (constant-`k`-fold
-partition rank, already landed) against the cycle-matroid rank formula
-`r(E') = |V'| − c(E')` via `Graph.IsSparse`. **Confirm the precise
-`|V'| − c(E')` rank shape on `Graph.cycleMatroid` first** (see *Blockers*,
-`Graphic.lean` exposes an `eRk + 1 = …` connected-component form) — that
-identification is the substantive content; this commit may be larger than one
-session, so a reasonable smaller landing is the cycle-matroid rank lemma alone.
+**Next concrete commit:** finish `thm:unionPow-cycle-indep-iff-sparse` — a bar set
+is independent in `⋃ⱼ G.cycleMatroid` (`k` copies) iff `G` restricted to it is
+`(k, k)`-sparse (Whiteley Cor 3). The two halves it bridges have both landed:
+`Union_pow_rank_eq` (constant-`k`-fold partition rank) and now
+`cycleMatroid_eRk_add_numberOfComponents_restrict` (the `eRk`-form cycle-matroid rank
+formula `r(E') + c(G ↾ E') = |V|`). Remaining work is the `ℕ`-cast + count-bridge
+glue: cast `eRk`↦`rk` and `encard`↦`ncard` (both finite under `[Finite]` / `E' ⊆ E(G)`),
+use `c(G ↾ E') ≥ 1` on non-empty `E'` to turn the rank identity into the additive
+`(k,k)`-sparsity inequality `|E'| + k ≤ k·|V'|`, and compose with `Union_pow_rank_eq`'s
+`min_Y` bound to get the `iff`. Watch the `V(G)` (full vertex set) vs `spanningVerts E'`
+gap: `c(G ↾ E')` counts isolated vertices too, so `|V| − c(G ↾ E') = |spanningVerts E'| −
+c'` (isolated vertices cancel) — the sparsity count is on `spanningVerts`, so this
+cancellation must be made explicit (likely a `spanningVerts`-vs-`V(G)` component-count
+lemma). That gap is the substantive remaining content; a reasonable smaller landing is
+that cancellation lemma alone.
 
 ## Architectural choices made up front
 
@@ -108,8 +128,13 @@ tree-packing nodes as of phase open).
 - [x] `def:graph-sparse` — `Graph` `(k,ℓ)`-sparsity + tightness,
   `Set`-side, edge-subset-indexed (`Graph.IsSparse` / `Graph.IsTight` /
   `Graph.spanningVerts` in `BodyBar/TreePacking.lean`).
+- [x] **Cycle-matroid rank formula** (`eRk` form; no blueprint node, internal glue) —
+  `Graph.cycleMatroid_eRk_add_numberOfComponents_restrict`, `r(E') + c(G ↾ E') = |V|`
+  for `E' ⊆ E(G)`, in `BodyBar/TreePacking.lean`. The `r(E') = |V'| − c(E')` half of
+  `thm:unionPow-cycle-indep-iff-sparse`.
 - [ ] `thm:unionPow-cycle-indep-iff-sparse` — independence in the
-  `k`-fold cycle-matroid union ⟺ `(k,k)`-sparse (Whiteley Cor 3).
+  `k`-fold cycle-matroid union ⟺ `(k,k)`-sparse (Whiteley Cor 3). Rank formula + adapter
+  both landed; remaining is the `ℕ`-cast + `spanningVerts`-vs-`V(G)` count-bridge glue.
 - [ ] `thm:tutte-nash-williams` — edge-disjoint union of `k` forests ⟺
   `(k,k)`-sparse.
 - [ ] `cor:k-spanning-trees` — under `(k,k)`-tightness the `k` forests
@@ -138,12 +163,16 @@ sub-organize only if it grows cleanup passes.>
   No upstream PR by request (trivial; upstream tracks mathlib master and
   will resolve it eventually). Retire the fork once upstream re-greens.
   The fix verified: `Matroid.Graphic` and the full project build green.
-- **`Graph.cycleMatroid` rank formula.** `thm:unionPow-cycle-indep-iff-sparse`
-  needs `r(E') = |V'| − c(E')` on the cycle matroid. `Graphic.lean` exposes
-  `cycleMatroid_indep` (= `IsAcyclicSet`), `cycleMatroid_isBase`
-  (= `IsMaximalAcyclicSet`), `cycleMatroid_isBasis`, and an `eRk + 1 =
-  |V|.encard` connected-component form (line ~235); confirm the precise
-  `|V'| − c(E')` shape once the import blocker above is cleared.
+- **`Graph.cycleMatroid` rank formula — RESOLVED.** The needed `r(E') = |V'| − c(E')`
+  identity landed as `cycleMatroid_eRk_add_numberOfComponents_restrict` (`eRk`/`encard`
+  form, `r(E') + c(G ↾ E') = |V|`). It specializes `Graphic.lean`'s
+  `eRank_cycleMatroid_add_numberOfComponents` (the `eRk + c = |V|.encard` form, applied
+  to `G ↾ E'`) to the rank of a subset, through `cycleMatroid_restrict` +
+  `Matroid.eRank_restrict`. **Note for the next commit:** the formula's `|V|` is the
+  *full* vertex set (`V(G ↾ E') = V(G)`, restriction keeps all vertices), not
+  `spanningVerts E'` — the `(k,k)`-sparsity count is on `spanningVerts`, so the next
+  commit must bridge `|V| − c(G ↾ E')` to `|spanningVerts E'| − c'` (isolated vertices
+  cancel against their singleton components).
 - **`k`-fold union shape — RESOLVED.** The adapter phrases the `k`-fold
   union as `Matroid.Union (fun _ : Fin k ↦ M)` (single `Matroid.Union`
   over a constant `Fin k` family), which the `adjMap_rank_eq` +
