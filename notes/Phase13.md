@@ -91,21 +91,29 @@ Three `body-bar.tex` tree-packing nodes remain red
 cycle-matroid rank formulas (`restrict` / `spanningVerts`), and the cancellation lemma are all
 internal glue with no dedicated blueprint node.
 
-**Next concrete commit:** finish `thm:unionPow-cycle-indep-iff-sparse` — a bar set
-is independent in `⋃ⱼ G.cycleMatroid` (`k` copies) iff `G` restricted to it is
-`(k, k)`-sparse (Whiteley Cor 3). The two halves it bridges have both landed:
-`Union_pow_rank_eq` (constant-`k`-fold partition rank) and now
-`cycleMatroid_eRk_add_numberOfComponents_restrict` (`V(G)`-form rank formula), and now
-`cycleMatroid_eRk_add_numberOfComponents_spanningVerts` (`spanningVerts`-form,
-`r(E') + c'(E') = |spanningVerts E'|`, with the `spanningVerts`-vs-`V(G)` cancellation
-already discharged via `vertexSet_deleteVerts_isolatedSet_restrict`). Remaining work is the
-`ℕ`-cast + count glue, with **no** `spanningVerts`-vs-`V(G)` gap left to fight:
-1. Cast `eRk`↦`rk` and `encard`↦`ncard` in the `spanningVerts` formula (both finite under
-   `[Finite β]` and `spanningVerts E' ⊆ V(G)`).
-2. Use `c'(E') ≥ 1` on non-empty `E'` to turn the rank identity into the additive
-   `(k,k)`-sparsity inequality `|E'| + k ≤ k·|spanningVerts E'|`.
-3. Tie union-independence to full rank (`(Union …).Indep I ↔ rk I = |I|`) and compose with
-   `Union_pow_rank_eq` applied at `Y = I` to get the `iff`.
+**Union-independence count condition landed (green build), matroid-side half of
+`thm:unionPow-cycle-indep-iff-sparse`.** `Matroid/Constructions/Union.lean` now ships
+the per-set partition machinery and the count equivalence, all generic over `Matroid α`:
+- `Matroid.adjMap_rk_eq` — per-set form of `adjMap_rank_eq` (`min_{Y⊆X}`, `.rk X` instead
+  of `.rank`), via `polymatroid_rank_eq hf_poly X` instead of `Finset.univ`.
+- `Matroid.Union_pow_rk_eq` — per-set form of `Union_pow_rank_eq`: for any `X`,
+  `(Union (fun _ : Fin k ↦ M)).rk X = min_{Y⊆X}(k·r_M(Y) + |X\Y|)`, `Set`/`ℕ`/`ncard`.
+- `Matroid.Union_pow_indep_iff_count` — **the substantive matroid content**:
+  `(Union (fun _ : Fin k ↦ M)).Indep E' ↔ ∀ Y ⊆ E', |Y| ≤ k·r_M(Y)`. Proof: independence is
+  `rk E' = |E'|`, which (since `rk ≤ |·|`) is `|E'| ≤ rk E'`; `Union_pow_rk_eq` turns that
+  into the count condition via `|E'\Y| = |E'| − |Y|` on `Y ⊆ E'`. This is exactly the
+  handoff's "ℕ-cast + count glue" (steps 1–3), discharged generically.
+
+**Next concrete commit — graphic-side bridge to finish `thm:unionPow-cycle-indep-iff-sparse`.**
+Bridge `Union_pow_indep_iff_count` (with `M := G.cycleMatroid`) to `(G ↾ E').IsSparse k k`.
+The count condition `∀ Y ⊆ E', |Y| ≤ k·r(Y)` becomes `(k,k)`-sparsity (`|Y|+k ≤ k|spanningVerts Y|`
+on nonempty `Y`) **only with a component-decomposition argument** (the substantive remaining gap,
+*not* a pure cast): `r(Y) = |spanningVerts Y| − c'(Y)` (the `spanningVerts` rank formula already
+landed), and the (⟸) direction needs to decompose `Y` into its connected components `Y_i`
+(each `r(Y_i) = |V(Y_i)|−1`), apply per-component sparsity, and sum. Sparsity-on-all-subsets is
+exactly what rules out the `c'(Y) > 1` slack (a triangle alone violates `(1,1)`-sparsity).
+Needs: component decomposition + rank/`spanningVerts` additivity over components. Look at
+`Matroid.Graphic`'s `cycleMatroid_indep = IsAcyclicSet` and `Connected.eRk_cycleMatroid_restrict_add_one`.
 
 ## Architectural choices made up front
 
@@ -145,8 +153,10 @@ tree-packing nodes as of phase open).
   (`V(G ↾ E') \ Isol(G ↾ E') = spanningVerts E'`). The `r(E') = |V'| − c(E')` half of
   `thm:unionPow-cycle-indep-iff-sparse`, now in `spanningVerts` shape.
 - [ ] `thm:unionPow-cycle-indep-iff-sparse` — independence in the
-  `k`-fold cycle-matroid union ⟺ `(k,k)`-sparse (Whiteley Cor 3). Rank formulas + adapter all
-  landed; remaining is the `ℕ`-cast + `c' ≥ 1` count glue (no `spanningVerts`-vs-`V(G)` gap left).
+  `k`-fold cycle-matroid union ⟺ `(k,k)`-sparse (Whiteley Cor 3). **Matroid-side half landed**
+  (`Matroid.Union_pow_indep_iff_count`: indep ⟺ `∀ Y ⊆ E', |Y| ≤ k·r(Y)`, via the per-set
+  `adjMap_rk_eq` / `Union_pow_rk_eq`, internal glue). Remaining: the graphic-side bridge
+  (count condition ⟺ `spanningVerts` sparsity) via component decomposition.
 - [ ] `thm:tutte-nash-williams` — edge-disjoint union of `k` forests ⟺
   `(k,k)`-sparse.
 - [ ] `cor:k-spanning-trees` — under `(k,k)`-tightness the `k` forests

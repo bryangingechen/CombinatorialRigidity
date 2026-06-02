@@ -53,6 +53,12 @@ This is Phase 12 (matroid foundations) of the body-bar program; see
 * `Matroid.matroid_partition'` / `Matroid.matroid_partition_eRk'` — Edmonds'
   matroid-partition rank formula for the (binary) union
   (`thm:matroid-partition-rank`).
+* `Matroid.Union_rank_eq` / `Matroid.adjMap_rk_eq` / `Matroid.Union_pow_rk_eq` —
+  the indexed and per-set forms of the partition rank formula.
+* `Matroid.Union_pow_indep_iff_count` — a set is independent in the `k`-fold
+  union `Matroid.Union (fun _ : Fin k ↦ M)` iff every subset `Y` satisfies
+  `|Y| ≤ k · r_M(Y)`; the matroid-side half of Tutte--Nash-Williams
+  (`thm:unionPow-cycle-indep-iff-sparse`).
 -/
 
 namespace Matroid
@@ -526,5 +532,85 @@ theorem Union_rank_eq [DecidableEq α] [Fintype α] [Fintype ι] (Ms : ι → Ma
   simp_rw [sum'_rk_eq_rk_sum] at hY hle
   simp only [exists_eq_right', preimage_setOf_eq, Finset.setOf_mem] at hY hle
   exact ⟨⟨Y, by convert hY using 3⟩, fun Y ↦ by have := hle Y; convert this using 3⟩
+
+/-- Per-set form of Edmonds' matroid-partition rank formula in `adjMap` form
+(Edmonds 1965): for any `X`, the rank of `X` in the `adjMap`-matroid attains
+`min_{Y ⊆ X} (r_M (N Adj Y) + |X \ Y|)`. The `X := Finset.univ` case is
+`adjMap_rank_eq`; the per-set generalization is what the union-independence
+count condition consumes. -/
+theorem adjMap_rk_eq [DecidableEq β] [Finite α] [Finite β] (M : Matroid α)
+    (Adj : α → β → Prop) (X : Finset β) :
+    (∃ Y ⊆ X, M.rk {v | ∃ u ∈ Y, Adj v u} + (X \ Y).card ≤ (M.adjMap Adj univ).rk X) ∧
+    (∀ Y ⊆ X, (M.adjMap Adj univ).rk X ≤ M.rk {v | ∃ u ∈ Y, Adj v u} + (X \ Y).card) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  obtain ⟨f, hf_poly, heq, hf⟩ := polymatroid_of_adjMap M Adj
+  rw [← heq]
+  zify
+  simp only [← (hf _)]
+  obtain ⟨⟨Y, hYsub, hY⟩, hle⟩ := polymatroid_rank_eq hf_poly X
+  exact ⟨⟨Y, hYsub, hY⟩, fun Y hYsub ↦ hle Y hYsub⟩
+
+/-- Per-set form of Edmonds' matroid-partition rank formula for the `k`-fold
+union of a single matroid `M`, `Set`-`X` / `ℕ` / `Set.ncard` / `[Finite]` idiom:
+for any `X`, the rank of `X` in `Matroid.Union (fun _ : Fin k ↦ M)` attains
+`min_{Y ⊆ X} (k · r_M(Y) + |X \ Y|)`. The per-set generalization of
+`Union_pow_rank_eq` (which is the `X := univ` case); the union-independence
+count condition (`thm:unionPow-cycle-indep-iff-sparse`) consumes this directly.
+(`thm:matroid-partition-rank`.) -/
+theorem Union_pow_rk_eq [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ) (X : Set α) :
+    (∃ Y ⊆ X, k * M.rk Y + (X \ Y).ncard ≤ (Matroid.Union (fun _ : Fin k ↦ M)).rk X) ∧
+    (∀ Y ⊆ X, (Matroid.Union (fun _ : Fin k ↦ M)).rk X ≤ k * M.rk Y + (X \ Y).ncard) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  classical
+  obtain ⟨Xf, rfl⟩ := (X.toFinite).exists_finset_coe
+  simp only [Matroid.Union]
+  obtain ⟨⟨Y, hYsub, hY⟩, hle⟩ :=
+    adjMap_rk_eq (Matroid.sum' (fun _ : Fin k ↦ M)) (fun x y ↦ x.2 = y) Xf
+  simp_rw [sum'_rk_eq_rk_sum, preimage_setOf_eq, exists_eq_right', Finset.setOf_mem,
+    Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hY hle
+  have hcard : ∀ Y : Finset α, Y ⊆ Xf → ((Xf : Set α) \ (Y : Set α)).ncard = (Xf \ Y).card := by
+    intro Y _; rw [← Finset.coe_sdiff, ncard_coe_finset]
+  refine ⟨⟨Y, by exact_mod_cast Finset.coe_subset.mpr hYsub, ?_⟩, fun Y hYsub ↦ ?_⟩
+  · rw [hcard Y hYsub]; convert hY using 2
+  · obtain ⟨Yf, rfl⟩ := (Y.toFinite).exists_finset_coe
+    rw [hcard Yf (Finset.coe_subset.mp hYsub)]
+    have := hle Yf (Finset.coe_subset.mp hYsub); convert this using 2
+
+/-- **Union-independence count condition** (Edmonds 1965, the matroid-side half
+of Tutte--Nash-Williams): a set `E'` is independent in the `k`-fold union
+`Matroid.Union (fun _ : Fin k ↦ M)` if and only if every subset `Y ⊆ E'`
+satisfies `|Y| ≤ k · r_M(Y)`. The substantive matroid content behind
+`thm:unionPow-cycle-indep-iff-sparse`: independence in the `k`-fold union is the
+count condition that, for the graphic matroid, becomes `(k, k)`-sparsity. Proved
+from the per-set partition rank formula `Union_pow_rk_eq`: independence is
+`rk E' = |E'|`, which (since `rk ≤ |·|` always) is `|E'| ≤ rk E'`, and the
+formula turns `|E'| ≤ rk E'` into the count condition via `|E' \ Y| = |E'| - |Y|`
+on `Y ⊆ E'`. -/
+theorem Union_pow_indep_iff_count [DecidableEq α] [Finite α] (M : Matroid α) (k : ℕ)
+    {E' : Set α} :
+    (Matroid.Union (fun _ : Fin k ↦ M)).Indep E' ↔ ∀ Y ⊆ E', Y.ncard ≤ k * M.rk Y := by
+  set N := Matroid.Union (fun _ : Fin k ↦ M) with hN
+  obtain ⟨⟨Y₀, hY₀sub, hY₀⟩, hle⟩ := Union_pow_rk_eq M k E'
+  have hfin : E'.Finite := E'.toFinite
+  -- independence ⟺ |E'| ≤ rk E' (the reverse inequality rk ≤ |E'| is automatic)
+  have hrk_le : N.rk E' ≤ E'.ncard := by
+    obtain ⟨Ef, rfl⟩ := hfin.exists_finset_coe
+    rw [ncard_coe_finset]; exact N.rk_le_finset_card Ef
+  have hindep : N.Indep E' ↔ E'.ncard ≤ N.rk E' := by
+    rw [indep_iff_eRk_eq_encard_of_finite hfin, ← cast_rk_eq_eRk_of_finite _ hfin,
+      ← hfin.cast_ncard_eq, Nat.cast_inj]
+    omega
+  -- the count condition |Y| ≤ k·r(Y) is |E'| ≤ k·r(Y) + |E'\Y| on Y ⊆ E'
+  have hsplit : ∀ Y ⊆ E', (Y.ncard ≤ k * M.rk Y ↔ E'.ncard ≤ k * M.rk Y + (E' \ Y).ncard) := by
+    intro Y hY
+    have : (E' \ Y).ncard + Y.ncard = E'.ncard := by
+      rw [ncard_diff_add_ncard_of_subset hY hfin]
+    omega
+  rw [hindep]
+  constructor
+  · intro hge Y hY
+    rw [hsplit Y hY]; exact le_trans hge (hle Y hY)
+  · intro hcount
+    exact le_trans ((hsplit Y₀ hY₀sub).mp (hcount Y₀ hY₀sub)) hY₀
 
 end Matroid
