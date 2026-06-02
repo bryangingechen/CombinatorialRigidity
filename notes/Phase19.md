@@ -1,6 +1,6 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
-**Status:** in progress (first Lean node `def:matroid-MG` landed).
+**Status:** in progress (`def:matroid-MG` + `def:D-deficiency` landed).
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -12,20 +12,27 @@ blueprint chapter `blueprint/src/chapter/deficiency.tex`
 
 ## Current state
 
-`Molecular/Deficiency.lean` created; the first forward-mode node
-`def:matroid-MG` is green. It defines `Graph.mulTilde G n = (D−1)·G`
-(`= G.edgeMultiply (bodyHingeMult n)`, edge type `β × Fin (D−1)`) and
-`Graph.matroidMG G n` as the `D`-fold cycle-matroid union of `G̃`
-restricted to `E(G̃)`, with `D = bodyBarDim n`. The **boundary-regime
-cleanliness check** `matroidMG_indep_iff` confirms (risk #2) that
-`M(G̃).Indep E' ↔ E' ⊆ E(G̃) ∧ (G̃ ↾ E').IsSparse D D` — the boundary
-regime `ℓ = 2k = D` is clean and routes through Phase 13's
+`Molecular/Deficiency.lean` has two forward-mode nodes green:
+`def:matroid-MG` and `def:D-deficiency`. `def:matroid-MG` defines
+`Graph.mulTilde G n = (D−1)·G` (`= G.edgeMultiply (bodyHingeMult n)`,
+edge type `β × Fin (D−1)`) and `Graph.matroidMG G n` as the `D`-fold
+cycle-matroid union of `G̃` restricted to `E(G̃)`, with `D = bodyBarDim n`;
+the **boundary-regime cleanliness check** `matroidMG_indep_iff` confirms
+(risk #2) that `M(G̃).Indep E' ↔ E' ⊆ E(G̃) ∧ (G̃ ↾ E').IsSparse D D` —
+clean, routing through Phase 13's
 `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (+ Tutte–Nash-Williams),
 **not** `CountMatroid.lean` (`ℓ < 2k`).
 
-Next concrete step: `def:D-deficiency` — `def_G̃(P) = D(|P|−1) −
-(D−1)·d_G(P)` over partitions `P` of `V(G)`, and `def(G̃) = maxₚ`.
-Then `def:k-dof`, `def:rigid-subgraph`, the structural lemmas
+`def:D-deficiency` defines `Graph.partitionDef G n f` =
+`D(|P|−1) − (D−1)·d_G(P)` (`ℤ`-valued) and `Graph.deficiency G n` =
+`⨆ f, partitionDef`, with partitions encoded as labelings `f : α → α`
+(fibers = parts): `numParts G f = |f '' V(G)|`, `crossingEdges G f` =
+edges with differently-labeled endpoints. `partitionDef_one` is the
+`def ≥ 0` witness (trivial one-part partition gives `0`).
+
+Next concrete step: `def:k-dof` — `k`-dof (`def(G̃) = k`) / `0`-dof
+(= body-hinge rigid) / minimal `k`-dof (every base of `M(G̃)` meets
+every edge-fiber `ẽ`). Then `def:rigid-subgraph`, the structural lemmas
 (KT 3.1/3.3/3.4), and the bridge `thm:def-eq-corank`.
 
 ## Architectural choices made up front
@@ -57,8 +64,10 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 - [x] `def:matroid-MG` — `M(G̃)`, the `D`-fold graphic union on
   `(D−1)·G` at the boundary `ℓ = 2k = D`. (`Graph.matroidMG` +
   boundary-regime cleanliness `Graph.matroidMG_indep_iff`.)
-- [ ] `def:D-deficiency` — `def_G̃(P) = D(|P|−1) − (D−1)·d_G(P)`;
-  `def(G̃) = maxₚ def_G̃(P)`.
+- [x] `def:D-deficiency` — `def_G̃(P) = D(|P|−1) − (D−1)·d_G(P)`;
+  `def(G̃) = maxₚ def_G̃(P)`. (`Graph.partitionDef` + `Graph.deficiency`,
+  partitions as labelings `f : α → α`; `numParts` / `crossingEdges` +
+  `partitionDef_one` witness.)
 - [ ] `def:k-dof` — `k`-dof / `0`-dof (= body-hinge rigid) / minimal
   `k`-dof (every base of `M(G̃)` meets every edge-fiber `ẽ`).
 - [ ] `def:rigid-subgraph` — rigid + proper rigid subgraph; circuits;
@@ -95,6 +104,26 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   `matroidMG_indep_iff` — no friction; it is a one-`rw`
   (`Matroid.restrict_indep_iff`) reduction to Phase 13's
   `unionPow_cycleMatroid_indep_iff_isSparse_restrict`.
+- **Partitions modeled as labelings `f : α → α`, not `Setoid` /
+  `Finpartition`.** `def:D-deficiency` encodes a partition of `V(G)` by
+  the kernel of a labeling `f : α → α` (fibers = parts): `numParts G f =
+  (f '' V(G)).ncard` and `crossingEdges G f = {e ∈ E(G) | ∃ x y, IsLink
+  e x y ∧ f x ≠ f y}`. This stays in the project's `Set.ncard` idiom and
+  gives clean `|P|` / `d_G(P)` counts; `Setoid.IsPartition` partitions
+  all of `α` (covers `univ`), not just `V(G)`, and `Finpartition` would
+  drag in `Finset` / `DecidableEq` plumbing. Fixing the label type at
+  `α` (rather than an arbitrary `ι`) keeps the `⨆` over partitions
+  well-typed and finite under `[Finite α]`; every partition of `V(G)`
+  into `≤ |α|` parts is realized by some `f : α → α`.
+- **`def_G̃(P)` is `ℤ`-valued (genuinely signed).** A fine partition
+  crossing many edges has *negative* deficiency, so `partitionDef : ℤ`
+  and `deficiency = ⨆ f, partitionDef` over the
+  `ConditionallyCompleteLinearOrder` `ℤ`. `def(G̃) ≥ 0` via the trivial
+  one-part partition (`partitionDef_one`). The ROADMAP "avoid
+  ℕ-subtraction" rule is for ℕ; here the honest model is signed. `iSup`
+  needs no `[Finite α]` to typecheck (junk-on-unbounded), so the
+  instance is dropped from the `deficiency` signature (the env linter
+  flagged it as unused) and reintroduced where lemmas need attainment.
 
 ## Blockers / open questions
 
@@ -109,12 +138,16 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 
 ## Hand-off / next phase
 
-`def:matroid-MG` is green (`Graph.matroidMG` + the boundary-regime
-cleanliness check `matroidMG_indep_iff`), in `Molecular/Deficiency.lean`.
-The next concrete commit is `def:D-deficiency` in the same file:
-`def_G̃(P) = D(|P|−1) − (D−1)·d_G(P)` for a partition `P` of `V(G)`
-(`d_G(P)` = edges of `G` crossing `P`), and `def(G̃) = maxₚ def_G̃(P)`.
-Phrase additively to avoid `ℕ`-subtraction (per ROADMAP conventions);
-decide how to model partitions (likely `Setoid`/`Finpartition` of
-`V(G)`). Phase 20 (combinatorial induction → Theorem 4.9) is unblocked
-once `M(G̃)`, deficiency, and the def = corank bridge are green.
+`def:matroid-MG` and `def:D-deficiency` are green in
+`Molecular/Deficiency.lean` (`Graph.matroidMG` / `matroidMG_indep_iff`;
+`Graph.partitionDef` / `Graph.deficiency` / `numParts` / `crossingEdges`
+/ `partitionDef_one`). The next concrete commit is `def:k-dof` in the
+same file: a `k`-dof-graph is one with `deficiency G n = k` (`0`-dof =
+body-hinge rigid); a *minimal* `k`-dof-graph additionally has every base
+`B` of `M(G̃)` meeting every edge-fiber `ẽ` (the `D−1` parallel copies
+`{e} × univ : Set (β × Fin (D−1))` of `e ∈ E(G)`). Likely a `def IsKDof`
++ `def IsMinimalKDof` pair; the base/fiber-meeting condition can reuse
+`matroidMG_indep_iff` / `Matroid.Base`. Then `def:rigid-subgraph`, the
+structural lemmas (KT 3.1/3.3/3.4), and the bridge `thm:def-eq-corank`.
+Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once
+`M(G̃)`, deficiency, and the def = corank bridge are all green.

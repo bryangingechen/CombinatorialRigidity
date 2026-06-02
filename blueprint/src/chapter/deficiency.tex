@@ -55,6 +55,8 @@ phase proceeds, leaf-first.
 
 \begin{definition}[$D$-deficiency]
   \label{def:D-deficiency}
+  \lean{Graph.partitionDef, Graph.deficiency}
+  \leanok
   \uses{def:matroid-MG}
   For a partition $P$ of $V(G)$ into nonempty parts, write $d_G(P)$ for
   the number of edges of $G$ joining distinct parts of $P$. The
@@ -67,7 +69,13 @@ phase proceeds, leaf-first.
   $\operatorname{def}(\tilde G) = \max_{P} \operatorname{def}_{\tilde
   G}(P)$, the maximum over all partitions. The deficiency measures how
   far $\tilde G$ is from being independently realizable as a rigid
-  body-hinge framework.
+  body-hinge framework. A partition is encoded by a labeling
+  $f \colon V \to V$ whose fibers are the parts; $|P|$ is the number of
+  distinct labels on $V(G)$ and $d_G(P)$ the number of edges with
+  differently-labeled endpoints. The quantity
+  $\operatorname{def}_{\tilde G}(P)$ is genuinely signed (a fine
+  partition crossing many edges is negative), so it is $\mathbb Z$-valued;
+  the maximum is $\ge 0$, witnessed by the trivial one-part partition.
 \end{definition}
 
 \begin{definition}[$k$-dof and minimal $k$-dof graphs]

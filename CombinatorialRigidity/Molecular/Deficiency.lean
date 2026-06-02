@@ -34,11 +34,17 @@ leaf node landing here:
   Tutte–Nash-Williams, `tutte_nash_williams`) decomposes into `D` edge-disjoint
   forests. The forward route is `unionPow_cycleMatroid_indep_iff_isSparse_restrict`
   (Phase 13) under matroid restriction `Matroid.restrict_indep_iff`.
+* `partitionDef` / `deficiency` (`def:D-deficiency`) — the `D`-deficiency of a partition
+  `P` of `V(G)`, `def(P) = D(|P| - 1) - (D-1)·d_G(P)`, and `def = max_P def(P)`. Partitions
+  are encoded as labelings `f : α → α` (the fibers are the parts); `numParts` counts the
+  parts `|P| = |f '' V(G)|` and `crossingEdges` collects the edges `d_G(P)` joining distinct
+  parts. The deficiency is `ℤ`-valued (genuinely signed) and `≥ 0` by the trivial one-part
+  partition (`partitionDef_one`).
 
 See `ROADMAP.md` §19 / `notes/Phase19.md` and the `sec:molecular-deficiency`
 dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining nodes
-(`def:D-deficiency`, `def:k-dof`, `def:rigid-subgraph`, the structural lemmas KT
-3.1/3.3/3.4, and the bridge `thm:def-eq-corank`) land in subsequent commits.
+(`def:k-dof`, `def:rigid-subgraph`, the structural lemmas KT 3.1/3.3/3.4, and the
+bridge `thm:def-eq-corank`) land in subsequent commits.
 -/
 
 namespace Graph
@@ -94,5 +100,66 @@ theorem matroidMG_indep_iff [DecidableEq β] [Finite α] [Finite β] (G : Graph 
     exact ⟨hsub, (unionPow_cycleMatroid_indep_iff_isSparse_restrict hsub).mp hindep⟩
   · rintro ⟨hsub, hsparse⟩
     exact ⟨(unionPow_cycleMatroid_indep_iff_isSparse_restrict hsub).mpr hsparse, hsub⟩
+
+/-! ## `D`-deficiency (`def:D-deficiency`)
+
+A *partition* `P` of `V(G)` is encoded by a labeling `f : α → α` (the kernel of `f`,
+i.e. its fibers, give the parts; vertices outside `V(G)` are irrelevant). The
+*number of parts* `|P|` is the number of distinct `f`-labels carried by the
+vertices of `G`, `|f '' V(G)|`, and the *crossing-edge count* `d_G(P)` is the
+number of edges of `G` whose two endpoints receive different labels. KT's
+`def_{\tilde G}(P) = D(|P| - 1) - (D-1)·d_G(P)` (`D = bodyBarDim n`) is genuinely
+signed — a fine partition crossing many edges has *negative* deficiency — so it is
+`ℤ`-valued; the deficiency `def(\tilde G) = max_P def_{\tilde G}(P)` takes the
+maximum and is `≥ 0` (witnessed by the trivial one-part partition, `partitionDef_one`). -/
+
+/-- The number of edges of `G` **crossing** the partition `P` (encoded by a labeling
+`f : α → α`): edges `e ∈ E(G)` with endpoints `x, y` such that `f x ≠ f y`. This is
+`d_G(P)` in Katoh–Tanigawa 2011 §2.5. Counted with `Set.ncard` to match the project's
+edge-counting idiom. -/
+def crossingEdges (G : Graph α β) (f : α → α) : Set β :=
+  {e ∈ E(G) | ∃ x y, G.IsLink e x y ∧ f x ≠ f y}
+
+/-- The number of **parts** `|P|` of the partition of `V(G)` encoded by a labeling
+`f : α → α`: the number of distinct labels carried by the vertices of `G`,
+`|f '' V(G)|`. -/
+noncomputable def numParts (G : Graph α β) (f : α → α) : ℕ := (f '' V(G)).ncard
+
+/-- The **`D`-deficiency** of a partition `P` of `V(G)` (`def:D-deficiency`;
+Katoh–Tanigawa 2011 §2.5): `def_{\tilde G}(P) = D(|P| - 1) - (D-1)·d_G(P)`, with
+`D = bodyBarDim n`, `|P| = numParts G f` the number of parts, and `d_G(P) =
+|crossingEdges G f|` the number of edges crossing `P`. `ℤ`-valued because the
+quantity is genuinely signed (a fine partition crossing many edges is negative). -/
+noncomputable def partitionDef (G : Graph α β) (n : ℕ) (f : α → α) : ℤ :=
+  (bodyBarDim n : ℤ) * ((G.numParts f : ℤ) - 1)
+    - (bodyBarDim n - 1 : ℤ) * (G.crossingEdges f).ncard
+
+/-- The **`D`-deficiency** of `\tilde G` (`def:D-deficiency`; Katoh–Tanigawa 2011 §2.5):
+`def(\tilde G) = max_P def_{\tilde G}(P)`, the maximum of `partitionDef` over all
+partitions `P` of `V(G)`. Partitions are quantified as labelings `f : α → α`; over the
+`ConditionallyCompleteLinearOrder` `ℤ` the supremum is taken with `iSup`, and under
+`[Finite α]` it is a finite supremum, hence attained, bounded, and `≥ 0` (the trivial
+one-part partition, `partitionDef_one`, witnesses `0`). It measures how far `\tilde G`
+is from being independently realizable as a rigid body-hinge framework. -/
+noncomputable def deficiency (G : Graph α β) (n : ℕ) : ℤ :=
+  ⨆ f : α → α, G.partitionDef n f
+
+/-- The trivial one-part partition (every vertex labeled identically) crosses no edge
+and has a single part, so its `D`-deficiency is `0`. This is the witness that
+`def(\tilde G) ≥ 0`. -/
+theorem partitionDef_one (G : Graph α β) (n : ℕ) (a : α) (hne : V(G).Nonempty) :
+    G.partitionDef n (fun _ => a) = 0 := by
+  have hcross : G.crossingEdges (fun _ => a) = ∅ := by
+    simp only [crossingEdges, Set.eq_empty_iff_forall_notMem, Set.mem_setOf_eq, not_and]
+    rintro e _ ⟨x, y, _, hxy⟩
+    exact hxy rfl
+  have hparts : G.numParts (fun _ => a) = 1 := by
+    rw [numParts]
+    rw [show (fun _ : α => a) '' V(G) = {a} from ?_]
+    · exact Set.ncard_singleton a
+    · exact Set.eq_singleton_iff_nonempty_unique_mem.mpr
+        ⟨hne.image _, fun _ hx => by obtain ⟨_, _, rfl⟩ := hx; rfl⟩
+  rw [partitionDef, hcross, hparts]
+  simp
 
 end Graph
