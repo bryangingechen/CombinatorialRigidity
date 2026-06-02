@@ -140,7 +140,7 @@ theorem span_kFrameRow_le_blockPiSpan :
 equivalent to the plain product `Fin k → ↥W` of the block submodule with itself. The forward
 map projects each block; the inverse re-bundles. Generic-block helper for the dimension count
 `finrank (constPiSpan) = k · finrank W`. -/
-noncomputable def constPiSpanEquiv {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
+def constPiSpanEquiv {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
     (n : ℕ) (W : Submodule R M) :
     (Submodule.pi Set.univ (fun _ : Fin n ↦ W) : Submodule R (Fin n → M)) ≃ₗ[R] (Fin n → W) where
   toFun f i := ⟨f.1 i, f.2 i (Set.mem_univ i)⟩

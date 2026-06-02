@@ -39,8 +39,20 @@ context (that is precisely what `letI` does and an abstraction destroys),
 so the only mechanism would be a macro — heavy machinery that would hide
 the genuinely-required instances for a 2-line save at 8 sites. No change.
 
-Next concrete step: continue (B) — B3 (`noncomputable def`
-forced-vs-accidental), then B2/B4/B5, then (C)/(D).
+(B3) `noncomputable def` forced-vs-accidental sweep done: seven of the
+eight are forced (`kFrameIndet`/`kFrameRow` via the `FractionRing`-backed
+`KFrameField`, `kFrameMatroid` via `Matroid.ofFun`, `blockPiSpan`/
+`blockPiSpanOn` via `Submodule.span`, `kFrameRowR` via the
+`Classical.decPred`-mediated `signedIncMatrix`, `forestEval` via
+`MvPolynomial.eval` with `Classical.decPred`). **One accidental:**
+`constPiSpanEquiv` — a `LinearEquiv` built from explicit `toFun`/`invFun`
++ `rfl` proofs over a generic `[Semiring R] [AddCommMonoid M] [Module R M]`,
+with no `FractionRing` / `span` / `Classical` data, so it is genuinely
+computable. Dropped its `noncomputable`. Build green + warning-clean +
+lint clean.
+
+Next concrete step: continue (B) — B2 (the 14 `classical` invocations),
+then B4/B5, then (C)/(D).
 
 ## Scope
 
@@ -109,9 +121,13 @@ bounded:
   `Rank.lean` (3): is `[DecidableEq …]` a cleaner boundary at each, or is
   the decidability genuinely unavailable (mathlib `[Finite]`-bridge idiom
   per `DESIGN.md` *Typeclass shape*)?
-- [ ] B3 — 8 `noncomputable def` in `KFrame.lean`: confirm each is forced
-  (`Matroid.ofFun`, `FractionRing`, `Classical.choose`-backed orientation,
-  no `Decidable` body) vs accidental.
+- [x] B3 — 8 `noncomputable def` in `KFrame.lean`: 7 forced
+  (`kFrameIndet`/`kFrameRow` via `FractionRing`, `kFrameMatroid` via
+  `Matroid.ofFun`, `blockPiSpan`/`blockPiSpanOn` via `Submodule.span`,
+  `kFrameRowR` via `signedIncMatrix`'s `Classical.decPred`, `forestEval`
+  via `MvPolynomial.eval` + `Classical.decPred`). **1 accidental:**
+  `constPiSpanEquiv` (explicit `toFun`/`invFun` `LinearEquiv` over generic
+  `[Semiring R]`, no noncomputable data) — `noncomputable` dropped.
 - [ ] B4 — `change`/`show`, `show … from rfl`, and 3+-arg single-step
   `rw` chains all came back **clean** on `KFrame.lean` at round open;
   re-confirm on `Rank.lean` adders and close as no-op if so.
@@ -156,6 +172,15 @@ bounded:
   the landed reverse half. No statement/proof changes; no FRICTION
   entry (pure divergence-audit doc fix). Blueprint TeX unchanged — the
   pins were already correct; the drift was Lean-side.
+- **B3 (KFrame.lean, one-token fix).** `noncomputable def`
+  forced-vs-accidental sweep: 7 of 8 forced (FractionRing-backed
+  `kFrameIndet`/`kFrameRow`, `Matroid.ofFun` `kFrameMatroid`,
+  `Submodule.span` `blockPiSpan`/`blockPiSpanOn`, `Classical.decPred`-
+  mediated `kFrameRowR`/`forestEval`). One accidental — `constPiSpanEquiv`,
+  an explicit-data `LinearEquiv` over a generic `[Semiring R]` with no
+  noncomputable ingredient — dropped its `noncomputable`. Build green +
+  warning-clean + lint clean; no FRICTION entry (pure code-smell fix the
+  B-sweep is designed to catch).
 - **B1 (KFrame.lean, no-op confirm).** The eight `DecidableEq α` +
   `DecidablePred (· ∈ E(G))` `letI`-pair sites (plus the single `letI`
   in `forestEval`) all match the FRICTION-pinned boundary and are each
@@ -171,14 +196,13 @@ bounded:
 
 ## Hand-off / next phase
 
-Round in progress (mid-(B)). Next concrete commit: **B3** — walk the
-eight `noncomputable def` in `KFrame.lean` (`kFrameIndet`, `kFrameRow`,
-`kFrameMatroid`, `blockPiSpan`, `constPiSpanEquiv`, `blockPiSpanOn`,
-`kFrameRowR`, `forestEval`) and confirm each `noncomputable` is forced
-(`Matroid.ofFun` / `FractionRing` / `Classical.choose`-backed
-orientation / `MvPolynomial.eval` with no `Decidable` body) vs
-accidental; record as a no-op confirm or fix as found. Then B2 (the 14
-`classical` invocations), B4/B5 (re-confirm clean on the `Rank.lean`
-adders), then (C) the two long proofs and (D) compress `notes/Phase14.md`
-+ FRICTION re-skim. When (D) closes, write the round summary here and
-flip the ROADMAP Status row to ✓.
+Round in progress (mid-(B); B1 + B3 done). Next concrete commit: **B2** —
+walk the 14 `classical` invocations across `KFrame.lean` (11) +
+`Rank.lean` (3) and decide at each whether a `[DecidableEq …]` signature
+binder is a cleaner boundary or the decidability is genuinely unavailable
+(the mathlib `[Finite]`-bridge idiom per `DESIGN.md` *Typeclass shape*);
+record as a no-op confirm or fix as found. Then B4/B5 (re-confirm the
+`change`/`show`/3+-arg-`rw` and `@[nolint]`/`set_option linter.*` greps
+clean on the `Rank.lean` adders), then (C) the two long proofs and (D)
+compress `notes/Phase14.md` + FRICTION re-skim. When (D) closes, write the
+round summary here and flip the ROADMAP Status row to ✓.
