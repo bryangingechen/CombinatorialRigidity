@@ -85,21 +85,38 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ### Bucket B — Code-smell sweep (near no-op)
 
-- [ ] **B1** — `haveI : Fintype α := Fintype.ofFinite α`
-  (`RigidityMatrix.lean:489`). Confirm the `[Finite α]`-bridge is the
-  right boundary per `DESIGN.md` *Typeclass shape*. Expected keep.
-- [ ] **B2** — `@[nolint unusedArguments]` (`RigidityMatrix.lean:281`,
-  on the trivial-motions submodule whose membership ignores the graph).
-  Already carries a one-line justification (L280); confirm it holds.
-- [ ] **B3** — multi-arg `rw` spot-checks (`RigidityMatrix.lean:225,
-  495`). Confirm each is a genuine multi-step line, not a missing fused
-  mirror lemma. Expected no-op.
+- [x] **B1** — done (no-op confirm, keep). `haveI : Fintype α :=
+  Fintype.ofFinite α` (`RigidityMatrix.lean:489`) is the `[Finite α]`
+  → `Fintype` bridge inside `finrank_pinnedMotions_add_screwDim`,
+  whose signature takes `[Finite α]` (L485) and whose proof needs
+  `Fintype` for `Submodule.finrank_sup_add_finrank_inf_eq`. This is
+  the sanctioned `[Finite α]`-bridge boundary (`DESIGN.md` typeclass
+  shape) — the public API stays `[Finite α]`, the bridge is local.
+- [x] **B2** — done (no-op confirm, keep). `@[nolint unusedArguments]`
+  (`RigidityMatrix.lean:281`) on `trivialMotions (_F : …)`. Doc L278–280
+  already justifies it: `_F` exists only for the `F.trivialMotions`
+  dot-notation parallel to `F.infinitesimalMotions`; the space depends
+  only on `α`, `k` (constant assignments), not the graph/hinges.
+  Genuine false positive, justification holds.
+- [x] **B3** — done (no-op confirm). Both sites are genuine multi-step
+  lines, no missing fused mirror. L225 `rw [hingeConstraint,
+  hingeConstraint, ← neg_sub …, Submodule.neg_mem_iff]` unfolds the
+  same predicate at two distinct positions then takes one algebraic
+  step (`hingeConstraint_comm`). L495 `rw [hdisj, hsup, finrank_bot,
+  add_zero, F.finrank_trivialMotions]` substitutes five distinct
+  named `have`s/lemmas into the dimension-counting identity.
 
 ### Bucket C — Long-proof audit (no-op expected)
 
-- [ ] **C1** — top proof `screwSpace_finrank` (23 lines, the
-  `⋀^k ℝ^{k+2}` finrank count); under the 50-line §C screening
-  threshold. Run the four-question gate as a no-extract confirm.
+- [x] **C1** — done (no-op confirm). `screwSpace_finrank`
+  (`RigidityMatrix.lean:93–96`) is in fact a **4-line** finrank count
+  (`rw [exteriorPower.finrank_eq, Module.finrank_pi, Fintype.card_fin,
+  screwDim, ← Nat.choose_symm …]; congr 1`), well under the 50-line §C
+  threshold (the "23 lines" in the sweep was a stale over-count). Four-
+  question gate: no self-contained sub-lemma to extract (single finrank
+  computation); no missed mathlib lemma (already chains
+  `exteriorPower.finrank_eq` / `Module.finrank_pi` / `Nat.choose_symm`);
+  no tactic-substitution win; no definitional refactor. No-extract.
 
 ### Bucket D — Project-organization compression
 
@@ -158,19 +175,22 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ## Hand-off / next phase
 
-Bucket A is **closed**: A2 + A5 landed earlier; this commit landed
-A1 (no-op confirm via `checkdecls` + outline spot-check), A3 (confirmed
-subsumed by A2 — §2.2–2.4 carries no bare `k`), and A4 (chapter-intro
-L28–39 destaled to a "Phase-18 formalized save the deferred
-reconciliation node" statement). D1 landed earlier.
+Buckets A, B, C are **closed**. Bucket A: A2 + A5 landed earlier; A1
+(no-op confirm via `checkdecls` + outline spot-check), A3 (subsumed by
+A2), A4 (chapter-intro destale) landed in `46b269f`. D1 landed earlier.
+Buckets B/C: this commit batched the four expected no-op confirms
+(B1 `Fintype.ofFinite` `[Finite α]`-bridge keep, B2 `nolint` justification
+holds, B3 both multi-arg `rw` sites genuine multi-step, C1
+`screwSpace_finrank` 4-line no-extract gate) — all confirm-only, no Lean
+edit, build re-verified warning-clean.
 
-Next concrete commit: the **B/C confirms** — coordinator-style batchable
-no-ops (B1 `Fintype.ofFinite` boundary keep, B2 `nolint` justification
-holds, B3 multi-arg `rw` spot-checks, C1 `screwSpace_finrank` 23-line
-four-question gate). These are all in `RigidityMatrix.lean`; one
-audit-confirm commit. Then **D2** (compress `notes/Phase18.md`, 499
-lines), **D3** (FRICTION re-skim), **P1/P2** (instruction tweaks), and
-**J1** last (split `molecular.tex`, a judgment call). Each fix is its
-own commit per `CLEANUP.md` *Workflow* rule 3. Close the round by
-flipping the ROADMAP row to ✓ and writing the *Hand-off* summary;
+Next concrete commit: **D2** (compress `notes/Phase18.md`, 499 lines —
+apply the ≤8-line-per-entry rule, lift cross-cutting lessons, compress
+the closed plan to a commit-log pointer). Then **D3** (FRICTION re-skim
+for open Phase-18 entries), **P1/P2** (instruction tweaks to
+`blueprint/CLAUDE.md` *Proof verbosity* and root `CLAUDE.md` *When this
+commit closes a phase*), and **J1** last (split `molecular.tex`, a
+judgment call — decide or defer to Phase 19's open with rationale). Each
+fix is its own commit per `CLEANUP.md` *Workflow* rule 3. Close the round
+by flipping the ROADMAP row to ✓ and writing the *Hand-off* summary;
 Phase 19 opens after.
