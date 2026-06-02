@@ -452,4 +452,80 @@ theorem tutte_nash_williams [Finite α] [Finite β] {G : Graph α β} {k : ℕ} 
         ← Finset.sup_univ_eq_iSup, hgsup]
     rw [hsup, hcover]
 
+/-- A **`k`-spanning-tree packing** of a connected multigraph `G : Graph α β`: a
+forest packing (`IsForestPacking`) whose `k` edge-disjoint forests are in fact
+*spanning trees* — each `Fs i` is a maximal acyclic set (`G.IsMaximalAcyclicSet`,
+equivalently a base of `G.cycleMatroid`; on a connected `G` this is a spanning
+tree via `Graph.IsMaximalAcyclicSet.isTree`). This is the conclusion of
+`cor:k-spanning-trees`. -/
+def IsSpanningTreePacking (G : Graph α β) (k : ℕ) : Prop :=
+  ∃ Fs : Fin k → Set β, ⋃ i, Fs i = E(G) ∧ Pairwise (Function.onFun Disjoint Fs) ∧
+    ∀ i, G.IsMaximalAcyclicSet (Fs i)
+
+/-- **Tightness upgrades each forest of a packing to a spanning tree.** If a
+connected `G` is `(k, k)`-tight and `Fs` is a `k`-forest packing of `G` (disjoint
+acyclic cover of `E(G)`), then each `Fs i` is a maximal acyclic set of `G`
+(a spanning tree, by `IsMaximalAcyclicSet.isTree`). This is the per-copy core of
+`cor:k-spanning-trees`.
+
+The count argument. Connectivity gives `r(G.cycleMatroid) + 1 = |V|`
+(`Connected.eRank_cycleMatroid_add_one`), so tightness `|E| + k = k|V|` reads as
+`|E| = k · r`. The forests cover `E(G)` disjointly, so `∑ᵢ |Fs i| = |E| = k · r`,
+while each acyclic `Fs i` is independent, hence `|Fs i| ≤ r`. Equality of the sum
+with `k · r` (= `∑ᵢ r`) and the per-term bound force `|Fs i| = r` for every `i`
+(`Finset.sum_eq_sum_iff_of_le`), so each `Fs i` is a maximal acyclic set
+(`Indep.isBase_of_ncard` + `cycleMatroid_isBase`). -/
+theorem isMaximalAcyclicSet_of_isForestPacking_of_isTight [Finite α] [Finite β]
+    {G : Graph α β} {k : ℕ} (hconn : G.Connected) (htight : G.IsTight k k)
+    {Fs : Fin k → Set β} (hcover : ⋃ i, Fs i = E(G))
+    (hdisj : Pairwise (Function.onFun Disjoint Fs)) (hacyc : ∀ i, G.IsAcyclicSet (Fs i))
+    (i : Fin k) : G.IsMaximalAcyclicSet (Fs i) := by
+  classical
+  haveI : Fintype β := Fintype.ofFinite β
+  set M := G.cycleMatroid with hM
+  -- each forest is independent in the cycle matroid
+  have hindep : ∀ j, M.Indep (Fs j) := fun j ↦ by rw [hM, cycleMatroid_indep]; exact hacyc j
+  -- connectivity: `M.rank + 1 = |V(G)|` (cast the `eRank` form)
+  have hrankV : M.rank + 1 = V(G).ncard := by
+    have h1 : (M.rank : ℕ∞) + 1 = V(G).encard := by
+      rw [Matroid.cast_rank_eq, hM]; exact hconn.eRank_cycleMatroid_add_one
+    rw [← (Set.toFinite V(G)).cast_ncard_eq] at h1; exact_mod_cast h1
+  -- tightness: `|E(G)| + k = k · |V(G)|`, hence `|E(G)| = k · M.rank`
+  have hErk : E(G).ncard = k * M.rank := by
+    have := htight.2; rw [← hrankV] at this; nlinarith [this]
+  -- the forests cover `E(G)` disjointly: `∑ⱼ |Fs j| = |E(G)|`
+  have hsumcard : ∑ j, (Fs j).ncard = E(G).ncard := by
+    have henc : (⋃ j, Fs j).encard = ∑ j, (Fs j).encard := Set.encard_iUnion Fs hdisj
+    rw [hcover] at henc
+    have hfin : ∀ j, (Fs j).Finite := fun j ↦ Set.toFinite _
+    rw [← (Set.toFinite E(G)).cast_ncard_eq] at henc
+    rw [show (∑ j, (Fs j).encard) = ((∑ j, (Fs j).ncard : ℕ) : ℕ∞) by
+      push_cast; exact Finset.sum_congr rfl fun j _ ↦ ((hfin j).cast_ncard_eq).symm] at henc
+    exact_mod_cast henc.symm
+  -- per term `|Fs j| ≤ M.rank`, and the sum hits `k · M.rank`; force equality per copy
+  have hle : ∀ j ∈ Finset.univ, (Fs j).ncard ≤ M.rank := fun j _ ↦ (hindep j).ncard_le_rank
+  have hsumeq : ∑ j, (Fs j).ncard = ∑ _j : Fin k, M.rank := by
+    rw [hsumcard, hErk, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul,
+      Nat.mul_comm]
+  have heq := (Finset.sum_eq_sum_iff_of_le hle).mp hsumeq i (Finset.mem_univ i)
+  -- `|Fs i| = M.rank`, so `Fs i` is a base of `M`, i.e. a maximal acyclic set
+  rw [← cycleMatroid_isBase, ← hM]
+  exact (hindep i).isBase_of_ncard heq.ge
+
+/-- **Spanning-tree refinement of Tutte–Nash-Williams** (Whiteley 1988,
+Theorem~13; `cor:k-spanning-trees`): a connected `(k, k)`-tight multigraph `G` is
+the edge-disjoint union of `k` *spanning trees*. This is the "union of `d`
+spanning trees" form of Tay's theorem.
+
+The forest packing from `tutte_nash_williams` (applied to `htight.isSparse`) is
+upgraded copy-by-copy to a spanning-tree packing by
+`isMaximalAcyclicSet_of_isForestPacking_of_isTight`: under tightness the global
+count `|E| = k(|V| - 1)` forces each forest to have exactly `|V| - 1` edges and
+hence to be a maximal acyclic set (a spanning tree, since `G` is connected). -/
+theorem isSpanningTreePacking_of_isTight [Finite α] [Finite β] {G : Graph α β} {k : ℕ}
+    (hconn : G.Connected) (htight : G.IsTight k k) : G.IsSpanningTreePacking k := by
+  obtain ⟨Fs, hcover, hdisj, hacyc⟩ := tutte_nash_williams.mpr htight.isSparse
+  exact ⟨Fs, hcover, hdisj,
+    fun i ↦ isMaximalAcyclicSet_of_isForestPacking_of_isTight hconn htight hcover hdisj hacyc i⟩
+
 end Graph

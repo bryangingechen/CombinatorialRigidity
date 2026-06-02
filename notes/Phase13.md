@@ -1,6 +1,8 @@
 # Phase 13 — Tutte–Nash-Williams tree-packing (work log)
 
-**Status:** in progress.
+**Status:** ✓ complete. All four owned `body-bar.tex` tree-packing nodes are green
+(`def:graph-sparse`, `thm:unionPow-cycle-indep-iff-sparse`, `thm:tutte-nash-williams`,
+`cor:k-spanning-trees`). Build + lint + `blueprint/verify.sh` clean. Unblocks Phase 14.
 
 This phase specializes Phase 12's Edmonds matroid-partition theorem to
 `k` copies of `Graph.cycleMatroid`, recovering the **Tutte–Nash-Williams
@@ -164,16 +166,28 @@ now ships:
   disjoint cover is in particular a cover. Build + lint + `verify.sh` all clean. **Next:**
   `cor:k-spanning-trees` (see *Next concrete commit* below).
 
-**Next concrete commit — `cor:k-spanning-trees`.** Under `(k,k)`-tightness the `k` edge-disjoint
-forests of `tutte_nash_williams` are spanning trees. Per blueprint: the tight global equality
-`|E| = k|V| - k` forces each of the `k` forests to have exactly `|V| - 1` edges and to span `V`,
-hence to be a spanning tree. Likely shape: from `G.IsTight k k`, get a forest packing
-(`tutte_nash_williams.mpr h.isSparse`); the global edge count `|E| = k(|V|-1) = ∑ᵢ |Fs i|` together
-with each `|Fs i| ≤ |V| - 1` (a forest on `V(G)` has `≤ |V|-1` edges) forces equality per copy, i.e.
-each `Fs i` is a spanning tree. Check `Matroid.Graphic` / `Matroid.Graph.Forest` for the
-forest-edge-count bound and a spanning-tree predicate (`IsMaximalAcyclicSet`/`IsSpanningTree`?) to
-state the conclusion against. Decide the Lean encoding of "spanning tree" (likely
-`G.IsMaximalAcyclicSet (Fs i)` + connectivity, or that `G ↾ Fs i` is a spanning tree of `G`).
+**`cor:k-spanning-trees` landed (green build + blueprint node green) — phase closes.**
+`BodyBar/TreePacking.lean` now ships:
+- `Graph.IsSpanningTreePacking G k` (internal glue, no blueprint node) — a forest packing whose `k`
+  parts are *maximal acyclic sets* (`G.IsMaximalAcyclicSet`, i.e. bases of `G.cycleMatroid`; on a
+  connected `G` each is a spanning tree via `Graph.IsMaximalAcyclicSet.isTree`).
+- `Graph.isMaximalAcyclicSet_of_isForestPacking_of_isTight` (`[Finite α] [Finite β]`) — the per-copy
+  core: a forest packing of a **connected** `(k,k)`-tight `G` has every part a maximal acyclic set.
+  Count argument via the matroid: `Connected.eRank_cycleMatroid_add_one` gives `r + 1 = |V|`, so
+  tightness `|E| + k = k|V|` reads `|E| = k·r`; the disjoint cover gives `∑ᵢ|Fs i| = |E| = k·r`,
+  each acyclic part is independent (`|Fs i| ≤ r` via `Indep.ncard_le_rank`), and
+  `Finset.sum_eq_sum_iff_of_le` forces `|Fs i| = r` per copy ⟹ base (`Indep.isBase_of_ncard` +
+  `cycleMatroid_isBase`).
+- `Graph.isSpanningTreePacking_of_isTight` (`[Finite α] [Finite β]`) — **the corollary**
+  (`cor:k-spanning-trees`): connected + `(k,k)`-tight ⟹ `IsSpanningTreePacking k`. The forest packing
+  from `tutte_nash_williams.mpr htight.isSparse` upgraded copy-by-copy by the per-copy core.
+
+**Connectivity hypothesis (decision).** The blueprint's "span `V`" / "spanning tree" framing is only
+true on a *connected* `G` (a multigraph spanning tree exists only when connected; `ℓ = k` tightness
+with `c(G) > 1` forces `r = |V| − c < |V| − 1`, breaking the per-copy equality). The matroid-faithful
+conclusion is `IsMaximalAcyclicSet` per copy (= spanning forest; = spanning tree under connectivity).
+So `isSpanningTreePacking_of_isTight` takes `hconn : G.Connected`; the blueprint statement +
+`thm:tay-witness` (deferred to Phase 15) were updated to state connectivity explicitly.
 
 ## Architectural choices made up front
 
@@ -226,13 +240,22 @@ tree-packing nodes as of phase open).
   `E' = E(G)` (`unionPow_cycleMatroid_indep_iff_isSparse_restrict` + `restrict_self`)
   to the acyclic cover (`Matroid.union_indep_iff` + `cycleMatroid_indep`); disjointness
   free via `Fintype.exists_disjointed_le` + `IsAcyclicSet.anti`.
-- [ ] `cor:k-spanning-trees` — under `(k,k)`-tightness the `k` forests
-  are spanning trees.
+- [x] `cor:k-spanning-trees` — under connectivity + `(k,k)`-tightness the `k` forests
+  are spanning trees, green: `Graph.isSpanningTreePacking_of_isTight` (with internal-glue
+  predicate `Graph.IsSpanningTreePacking` and per-copy core
+  `Graph.isMaximalAcyclicSet_of_isForestPacking_of_isTight`). Conclusion phrased as a per-copy
+  maximal-acyclic-set (= base of `cycleMatroid`; spanning tree on connected `G` via
+  `IsMaximalAcyclicSet.isTree`); connectivity required for the spanning-tree framing.
 
 ## Decisions made during this phase
 
-<none yet — phase just opened. Flat list is fine for a phase this size;
-sub-organize only if it grows cleanup passes.>
+- **Spanning-tree conclusion = per-copy maximal acyclic set + connectivity hypothesis.**
+  `cor:k-spanning-trees`'s "spanning tree" is `G.IsMaximalAcyclicSet (Fs i)` (= base of
+  `cycleMatroid`), upgraded to a literal tree via `IsMaximalAcyclicSet.isTree` only on a connected
+  `G`. The corollary therefore takes `hconn : G.Connected`: with `ℓ = k` tightness and `c(G) > 1`
+  the rank `r = |V| − c < |V| − 1`, so the per-copy `|Fs i| = r` equality cannot give a `|V|−1`-edge
+  spanning tree. Blueprint statement + the (deferred) `thm:tay-witness` updated to state connectivity
+  explicitly. Detail in *Current state* above.
 
 ## Blockers / open questions
 
@@ -271,4 +294,19 @@ sub-organize only if it grows cleanup passes.>
   one `Finset.sum_const` step.
 
 ## Hand-off / next phase
-<written when the phase finishes; what unlocks Phase 14.>
+
+Phase 13 is complete: `BodyBar/TreePacking.lean` ships the `Graph`-native
+`(k,ℓ)`-sparsity/tightness predicate, the `k`-fold-union rank adapter, the
+union-independence ⟺ sparsity iff (`unionPow_cycleMatroid_indep_iff_isSparse_restrict`),
+Tutte–Nash-Williams (`tutte_nash_williams`), and the spanning-tree refinement
+(`isSpanningTreePacking_of_isTight`). All four owned `body-bar.tex` nodes green.
+
+**Unlocks Phase 14** (`k`-frame matroid = `k`-fold cycle-matroid union, Whiteley Thm 1;
+`BodyBar/KFrame.lean`, scoped in `body-bar.tex`'s `thm:k-frame-union-cycle` node). Phase 14's
+matroid-union target is exactly `Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)`, the union object
+Phase 13 already characterizes — so Phase 14 builds the linear `k`-frame matroid `F(G,X)` (via
+`Matroid.ofFun` over indeterminate two-extensor coefficients) and proves it equals that union by
+Whiteley's column-reorder / monomial argument (§2.1). **Smallest first commit:** open
+`notes/Phase14.md` + define `F(G,X)` (the `Matroid.ofFun` linear matroid on `E(G)` from the
+indeterminate body-bar row map), flipping the `body-bar.tex` `def:k-frame-matroid` node; assess the
+union-equality proof once the definition's `Matroid.ofFun` indep-characterization is in hand.

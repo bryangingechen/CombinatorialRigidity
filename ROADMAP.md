@@ -60,7 +60,7 @@ plan, and engineering conventions. Read it after `CLAUDE.md`.
 │       ├── Exec.lean        Phase 10 (planning) — `runPebbleGameExec` + `Decidable` instances
 │       └── Examples.lean    Phase 10 (planning) — `#eval` examples on `Fin n` graphs
 │   ├── Matroid/         Phase 12 — local mirror of `apnelson1/Matroid` submodular + union (ported, Apache-2.0)
-│   └── BodyBar/         Phases 13–15 (planning) — Graph-native sparsity, k-frame matroid, body-bar frameworks + Tay
+│   └── BodyBar/         Phase 13 (✓, `TreePacking.lean`) — Graph-native sparsity + Tutte–Nash-Williams; Phases 14–15 (planning) — k-frame matroid, body-bar frameworks + Tay
 ├── Main.lean            Phase 10 (planning) — `lake exe pebble-game` CLI entry point
 ├── lakefile.toml        Lake build config; depends on mathlib4
 ├── lean-toolchain       pinned Lean version (matches mathlib4)
@@ -97,7 +97,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Perf pass (post-Phase-10+11) | Phase 10+11 surface — per-decl `@[expose]` audit on the four new/reshaped files + Phase-11-reshape re-audit on `Basic`/`DFS` + baseline | ✓ Complete (see `notes/Phase11-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | 12. Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` | ✓ Complete (see `notes/Phase12.md`) |
 | ⋮ Cleanup round (post-Phase-12) | Phase 12 surface (`Matroid/Constructions/{Submodular,Union}.lean`, `matroid-union.tex`) | ✓ Complete (see `notes/Phase12-cleanup.md`; round manual: `CLEANUP.md`) |
-| 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | in progress (see `notes/Phase13.md`) |
+| 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | ✓ Complete (see `notes/Phase13.md`) |
 | 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | planning (scoped in `body-bar.tex`) |
 | 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | planning (was Phase 12; see `notes/Phase12.md`) |
 
@@ -423,25 +423,23 @@ discipline.
 
 ### Phase 13 — Tutte–Nash-Williams tree-packing
 
-**Status (in progress; see `notes/Phase13.md`).** Specializes the
+**Status (✓ Complete; see `notes/Phase13.md`).** Specialized Phase 12's
 matroid-partition theorem to `k` copies of `Graph.cycleMatroid`,
 recovering Tutte–Nash-Williams tree-packing (Tutte 1961, Nash-Williams
-1961): a multigraph is the edge-disjoint union of `k` forests iff it is
-`(k,k)`-sparse, with the spanning-tree refinement under tightness.
-Introduces a `Graph`-native `(k,ℓ)`-sparsity/tightness predicate (fresh,
-**not** migrated from the Phase 9/10 `SimpleGraph` sparsity — see
-`DESIGN.md` *Migrating Phases 1–11 …*). Carrier: mathlib core `Graph α β`.
-
-Define that sparsity predicate **`Set`-side** (`Set.ncard` of edge sets,
-`ℕ`, `[Finite]`) so it lines up with both the Phases-1–11 convention and
-the Phase-12 matroid layer in one conversion step, and **open the phase
-with a thin rank adapter** restating Phase 12's partition theorem in
-`Set`-`Y`/`ℕ`/`ncard` idiom for the `k`-fold `cycleMatroid` case — the
-exported `matroid_partition'` is `Finset`/`ℕ`/`[Fintype]`-flavored and
-`matroid_partition_eRk'` is `Set`/`ℕ∞`/`[Finite]`, so the adapter
-absorbs the `rk`/`eRk`/`ncard` + typeclass plumbing once. Full rationale:
-`DESIGN.md` *Set/Finset and rank-flavor boundary at the matroid layer
-(Phases 13–15)*.
+1961): `Graph.tutte_nash_williams` (a multigraph is the edge-disjoint
+union of `k` forests iff it is `(k,k)`-sparse) and the connected-tight
+spanning-tree refinement `Graph.isSpanningTreePacking_of_isTight`
+(`cor:k-spanning-trees`, Whiteley Thm 13). Introduced a `Graph`-native
+`Set`-side `(k,ℓ)`-sparsity/tightness predicate (`Graph.IsSparse` /
+`Graph.IsTight`, fresh — **not** migrated from the Phase 9/10
+`SimpleGraph` sparsity; see `DESIGN.md` *Migrating Phases 1–11 …* and
+*Set/Finset and rank-flavor boundary at the matroid layer (Phases
+13–15)*) and a thin rank adapter (`Matroid.Union_pow_rank_eq`,
+`Union_pow_indep_iff_count`) bridging the partition formula to the
+`k`-fold `cycleMatroid` case. Carrier: mathlib core `Graph α β`.
+Per-node lemma map + decisions: `notes/Phase13.md` and the
+*Tree-packing as a corollary* subsection of `body-bar.tex`. Unblocks
+Phase 14 (`k`-frame matroid = `k`-fold cycle-matroid union).
 
 ### Phase 14 — k-frame matroid = k-fold cycle-matroid union
 

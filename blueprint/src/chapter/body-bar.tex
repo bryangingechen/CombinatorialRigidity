@@ -182,17 +182,23 @@ $\mathtt{SimpleGraph}$ sparsity of \cref{def:isSparse}.
 
 \begin{corollary}[Spanning-tree refinement]
   \label{cor:k-spanning-trees}
+  \lean{Graph.isSpanningTreePacking_of_isTight}
+  \leanok
   \uses{def:graph-sparse, thm:tutte-nash-williams}
-  If $G$ is $(k, k)$-tight then the $k$ edge-disjoint forests of
-  \cref{thm:tutte-nash-williams} are spanning trees. This is the
-  ``union of $d$ spanning trees'' form of Tay's theorem
+  If $G$ is connected and $(k, k)$-tight then the $k$ edge-disjoint
+  forests of \cref{thm:tutte-nash-williams} are spanning trees. This
+  is the ``union of $d$ spanning trees'' form of Tay's theorem
   (Whiteley Theorem~13).
 \end{corollary}
 \begin{proof}
+  \leanok
   \uses{thm:tutte-nash-williams}
-  The tight global equality $|E| = k|V| - k$ forces each of the $k$
-  forests to have exactly $|V| - 1$ edges and to span $V$, hence to
-  be a spanning tree.
+  Connectivity gives $r(G.\mathrm{cycleMatroid}) = |V| - 1$, so the
+  tight global equality $|E| = k|V| - k$ reads as $|E| = k \cdot r$.
+  The $k$ forests cover $E$ disjointly, so $\sum_{i} |F_i| = |E| = k
+  \cdot r$, while each forest is independent and hence $|F_i| \le r$;
+  equality of the sum with $k \cdot r$ forces $|F_i| = r$ for every
+  $i$, so each $F_i$ is a maximal acyclic set, i.e.\ a spanning tree.
 \end{proof}
 
 \subsection{Body-bar frameworks and the rigidity matrix}
