@@ -82,6 +82,15 @@ checklist). Leaf-first landing order:
   `[NeZero m]`. The reduction uses `m = δ - 1 ≥ 1` (δ ≥ 3 for `n ≥ 2`), so the
   hypothesis is free downstream. Reverse direction picks the copy `(e, ⟨0,…⟩)`.
 
+- **Tay 1989 title vs body terminology — do not "harmonize".** The
+  `tay1989` bib `title` is verbatim the published title, which reads
+  *"…(n−2,2)-frameworks…"*. The paper's *abstract and body* instead define
+  and use *"(n−1,2)-framework"* (63× vs 1×) with *(n−2)-dimensional panels*.
+  So `body-hinge.tex`'s panel-hinge aside says *"(n−2)-dimensional panels, the
+  (n−1,2)-frameworks of Tay"* (the self-consistent in-text name) while the bib
+  keeps the verbatim title. This mismatch is Tay's, not ours; bib = verbatim
+  title, prose = in-text term — neither should be edited to match the other.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
 - *Bare `\lean{}` in blueprint prose poisons `lean_decls` / fails `checkdecls`*
