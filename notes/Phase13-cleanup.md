@@ -72,33 +72,56 @@ match their Lean signatures; no formalization asides to discharge.
   mentions, no proof-level asides). Nothing to simplify.
 
 ### B. Code-smell sweep (TreePacking.lean + Phase-13 Union.lean additions)
-- [ ] **B1** `classical` × 4 in TreePacking (L69, 319, 433, 483) +
-  the Phase-13 Union.lean adders — confirm each is the documented
-  `[Finite]`-bridge idiom (DESIGN.md *Typeclass shape …*), not a
-  cleaner-`[DecidableEq]`-boundary site. Expect no-op.
-- [ ] **B2** `haveI : Fintype _ := Fintype.ofFinite _` (TreePacking
+**No-op (this commit).** All five smells clean across the surface.
+- [x] **B1** `classical` × 4 in TreePacking (L69, 319, 433, 483) +
+  the Phase-13 Union.lean adder (`Union_pow_rk_eq` L564) — each is the
+  documented `[Finite]`-bridge idiom: pairs with a
+  `Fintype.ofFinite`/`hCompFin.fintype` `haveI` to recover decidability
+  under the project's `[Finite α] [Finite β]` boundary. No
+  cleaner-`[DecidableEq]`-boundary site. No-op.
+- [x] **B2** `haveI : Fintype _ := Fintype.ofFinite _` (TreePacking
   L68, 434, 484; `hCompFin.fintype` L325) — same `[Finite]`-bridge
-  idiom; check whether any is a repeated-`haveI` single-helper
-  candidate. Expect no-op.
-- [ ] **B3** multi-step `rw` at TreePacking L328 (4 rewrites) — judge
-  whether it's one mathematical step needing a fused mirror lemma, or
-  four genuine distinct steps. Likely fine.
-- [ ] **B4** `Set`↔`Finset` ncard bridges (`ncard_coe_finset` /
-  `Finset.coe_*` chains: TreePacking L74; Phase-13 Union.lean L516,
-  572, 598) — does the autoparam pattern (`TACTICS-GOLF.md` §2)
-  absorb any of these?
-- [ ] **B5** confirm the no-finding smells (no `@[nolint]` /
+  idiom. The `Fintype β := Fintype.ofFinite β` recurs (L434, L484) but
+  in two distinct theorems; a shared helper saves nothing (one line
+  each). No-op.
+- [x] **B3** multi-step `rw` at TreePacking L328
+  (`rw [hH, cycleMatroid_deleteVerts_isolatedSet, cycleMatroid_restrict,
+  inter_eq_right.mpr hYG]`) — four genuine distinct steps: `hH` is the
+  `set H` unfold, the rest are the cycleMatroid restriction bridge
+  (delete-verts → restrict → `inter` simplification). Same idiom recurs
+  at L168 but threads into a different target (`Matroid.eRank_restrict`
+  vs. the `.restrict Y` form), so no single fused mirror lemma. No-op.
+- [x] **B4** `Set`↔`Finset` ncard bridges (`← Finset.coe_sdiff,
+  ncard_coe_finset` over an explicit `Finset.univ \ Y`: TreePacking L74;
+  Phase-13 Union.lean L516, 572) — the autoparam pattern
+  (`TACTICS-GOLF.md` §2) covers `Set.ncard`-of-`toFinset`-of-filter
+  sites, not these explicit `Finset.univ \ Y` two-step bridges; already
+  as tight as the idiom allows, and the same shape recurs in vendored
+  code (L516). No-op.
+- [x] **B5** confirmed absent across the surface: no `@[nolint]` /
   `set_option linter`, no `noncomputable def`, no `change`/`show`
-  coaxing, no `show … from rfl`) stay absent across the surface.
+  coaxing, no `show … from rfl`. No-op.
 
 ### C. Long-proof audit (TreePacking.lean)
-- [ ] **C1** Rank the top ~10 proofs by body length; walk each with
-  the four-question gate (API extraction / missed mathlib lemma /
-  tactic substitution / cross-proof unification). Candidates by eye:
-  `le_mul_cycleMatroid_rk_of_isSparse_restrict` (component
-  decomposition), `isMaximalAcyclicSet_of_isForestPacking_of_isTight`
-  (the per-copy count argument), the two `eRk`-formula proofs.
-  Calibration: expect mostly no-op (CLEANUP.md §C).
+**No-op (this commit).** Top sites walked; all structural assembly, no
+extraction debt (CLEANUP.md §C calibration).
+- [x] **C1** Top three by body (the seeded candidates) walked with the
+  four-question gate:
+  - `le_mul_cycleMatroid_rk_of_isSparse_restrict` (78 LoC) — component
+    decomposition assembly; sub-pieces already named lemmas
+    (`spanningVerts_edgeSet_eq_vertexSet_of_isCompOf`,
+    `edgeSet_deleteVerts_isolatedSet_restrict`,
+    `spanningVerts_restrict_of_subset`,
+    `components_cycleMatroid_isSkewFamily`). Remaining length is the
+    intrinsic ℕ↔ℕ∞ skew-sum cast plumbing. No further extract.
+  - `isMaximalAcyclicSet_of_isForestPacking_of_isTight` (36 LoC) — the
+    per-copy count argument; each `have` a distinct step, reads as
+    composition. No-op.
+  - `spanningVerts_edgeSet_eq_vertexSet_of_isCompOf` (27 LoC) — the
+    two-direction `ext`/incidence walk; the closed-subgraph step is a
+    single mathlib call. No-op.
+  The two `eRk`-formula proofs are <15 LoC, tight restriction-bridge
+  rewrites. No-op.
 
 ### D. Project-organization compression
 - [ ] **D1** Compress `notes/Phase13.md` (312 → target ≤ ~200): the
@@ -125,17 +148,33 @@ match their Lean signatures; no formalization asides to discharge.
   of `def:graph-sparse` is the intended math gloss (Lean doc-comment
   already flags the additive `Set`-side form), not drift. No `\lean{...}`
   pointer touched, so no `checkdecls` run needed this commit.
+- **B (code-smell sweep) — no-op, batched.** All five smells clean: the
+  `classical`/`haveI Fintype` sites are the documented `[Finite]`-bridge
+  idiom; the L328 / L74 multi-`rw` and ncard-bridge chains are genuine
+  multi-step compositions with no fusable single-step mirror; the
+  no-finding smells stay absent. Detail per-task in the checklist.
+- **C (long-proof audit) — no-op, batched.** Top three proofs walked
+  with the four-question gate; all are structural assembly over
+  already-named sub-lemmas plus intrinsic ℕ↔ℕ∞ cast plumbing, no
+  extraction debt (the CLEANUP.md §C calibration outcome). Detail in
+  the checklist.
 
 ## Blockers / open questions
 - None.
 
 ## Hand-off / next phase
 
-**Clean handoff.** Audit category A is closed (no-op, recorded above).
-Next concrete commit: run **audit category B** (code-smell sweep over
-`TreePacking.lean` + the Phase-13 `Union.lean` adders, tasks B1–B5);
-the seeded checklist expects mostly no-op (`classical`/`haveI` are the
-documented `[Finite]`-bridge idiom). Per *Scope* → Batching, B and C
-no-ops may be batched into a single commit. The round closes (likely
-that same commit or the D-compression commit) by flipping the ROADMAP
-Status row to ✓ and writing what (if anything) carried over.
+**Clean handoff.** Audit categories A, B, C are closed (all no-op;
+B+C batched into this commit per *Scope* → Batching, recorded above).
+Next concrete commit: run **audit category D** (project-organization
+compression, tasks D1–D3) — D1 compresses `notes/Phase13.md`
+(312 → ≤ ~200) by collapsing the per-commit *Current state* narrative
+to a summary + commit-log pointer; D2 lifts any cross-cutting Phase-13
+lesson referenced 2+ times to `TACTICS-GOLF.md` / `FRICTION.md`; D3
+re-skims `FRICTION.md` status sections for resolved Phase-13 entries to
+migrate to `FRICTION-archive.md`. That D commit **closes the round**:
+flip the ROADMAP Status row to ✓, sync no user-facing surfaces (a
+cleanup round is not a phase), and record what (if anything) carried
+over. All A–D have been no-op so far, so the round is shaping up as a
+clean-bill cleanup; D1's compression is the only concrete edit
+expected.
