@@ -79,7 +79,10 @@ bullets. If one matches, jump to the named section of
   on a WF-recursive def whose `termination_by` uses `Finset.univ`,
   or *"Unknown identifier `visited`"* from `termination_by` after a
   `| visited, v => ...` pattern-match body, or `unused variable`
-  lint on an `if h : ...` binder used only inside `decreasing_by` →
+  lint on an `if h : ...` binder used only inside `decreasing_by`,
+  or *"failed to synthesize Fintype ι"* at `termination_by` after
+  swapping a `[Fintype ι]` signature to `[Finite ι]` (to clear
+  `linter.unusedFintypeInType`) on a `Finset.univ`-based measure →
   § 16 *`termination_by` / `decreasing_by` elaboration rescue*.
 - *"Application type mismatch: heq has type X = some ⟨…⟩ but is
   expected to have type some ⟨…⟩ = some ⟨…⟩"* inside the `some`

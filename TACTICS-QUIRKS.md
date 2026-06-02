@@ -54,7 +54,9 @@ time, not first-draft.
 16. **`termination_by` / `decreasing_by` elaboration rescue** —
     explicit typeclass binding on the def, named def params over
     pattern-match binders, `_h`-prefixed `if h :` binders to silence
-    the unused-variable lint.
+    the unused-variable lint, and `termination_by haveI :=
+    Fintype.ofFinite ι; …` to keep a `Finset.univ`-based measure under
+    a `[Finite ι]` signature.
 17. **`match h : <expr> with | pat => …` substitutes `expr ↦ pat` in
     the *goal* of each branch** — return `rfl` when the goal collapses
     to `pat = pat`, or restructure to `by_contra` + `cases h_eq : …`.
@@ -462,6 +464,25 @@ usage and warns `unused variable hv`. Rename the binder to `_hv` —
 underscore-prefixed names are valid identifiers in Lean (still
 referenceable as `_hv` inside `decreasing_by`) and the linter
 silences itself.
+
+**d. A `Finset.univ`-based measure that wants a `[Finite ι]`
+signature (not `[Fintype ι]`): inject the `Fintype` inside
+`termination_by`.** The complement of (a): sometimes the *body*
+doesn't need `Fintype ι` in its type, so the `linter.unusedFintypeInType`
+linter flags `[Fintype ι]` as unused-in-type and asks for `[Finite ι]`
++ `Fintype.ofFinite`. But if `termination_by ∑ i, (A i).card` (or any
+`Finset.univ`-based measure) still needs a `Fintype ι`, swapping the
+signature to `[Finite ι]` breaks the measure — `Fintype.ofFinite` is a
+*def*, not an `instance`, so `∑ i` can't synthesize it, giving *"failed
+to synthesize Fintype ι"* at the `termination_by` line plus an *"MVar
+does not look like a recursive call"* on the def. The fix is to prefix
+the measure with a local instance: `termination_by haveI :=
+Fintype.ofFinite ι; ∑ i, (A i).card`. The `haveI` is in scope for the
+measure expression, and the `decreasing_by` block's `Finset.univ`
+matches it (so `Finset.sum_lt_sum` / `mem_univ` apply); the body proper
+gets its decidability via a `classical` and its own `Fintype` is no
+longer in the type. Worked example: `Matroid.generalized_halls_marriage`
+in `CombinatorialRigidity/Matroid/Constructions/Submodular.lean`.
 
 **Bonus: `mutual` recursion fails structural recursion when a
 helper's parameter type depends on the other helper's parameter.**

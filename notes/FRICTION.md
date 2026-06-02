@@ -76,7 +76,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union ported; partition rank theorem blocked on the un-ported Rado/Hall sub-tree = L2b-rado)
+### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union ported; L2b-rado infrastructure ported — `generalized_halls_marriage` + `PartialTransversal`; `rado` + L2b-partition remain)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
   `matroid_partition'` / `matroid_partition_eRk'`, plus its
@@ -206,6 +206,38 @@ housekeeping pass once their resolution is fully indexed.
   of the source, not just the import list. L2b re-scoped into L2b-rado
   (port the sub-tree) + L2b-partition (the two targets); see `notes/Phase12.md`
   *Current state* / *Layer plan* / *Hand-off*. No Lean changed this commit.
+- **L2b-rado infrastructure (2026-06):** ported `WIP/Submodular.lean:323–740`
+  (`generalized_halls_marriage` + `'`; the `PartialTransversal` family) into
+  `Constructions/Submodular.lean`, green/0-sorry. Porting points: (i) **the WIP
+  source does not build**, so its signatures are *untrustworthy* — several
+  `of_fun_*` / `move_*` lemmas were missing the `[DecidableEq α]` /
+  `[DecidableEq (ι × α)]` / `[Fintype ι]` instances their bodies need (`univ`,
+  `Finset.filter`-decidability, `I = univ`). Lesson: when porting from a
+  non-building file, treat every instance binder as a *guess* and let the
+  elaborator tell you what's actually required; the `f i` "type mismatch ι vs
+  ↑I" errors were a symptom of an instance failure earlier in elaboration, not
+  a real binder bug. (ii) `ne_of_mem_of_notMem → ne_of_mem_of_not_mem`.
+  (iii) `Fintype.choose` / `Fintype.choose_spec` need `import
+  Mathlib.Data.Fintype.Inv` (not in the minimal `Matroid.*` set). (iv) `runLinter`
+  gate: dropped `@[simp]` on `of_fun_mem_edges_iff` (simp-can-prove-this) and
+  switched `def → lemma` on `of_fun_{left,right}_eq` (`defLemma` + `docBlame`);
+  trimmed genuinely-unused `[DecidableEq α]` off `fun_{mem,inj,injective}`.
+  (v) `push_neg → push Not`; `simp_wf` in the `decreasing_by` now does nothing
+  (removed).
+- **L2b-rado warnings sweep (2026-06):** the L2b-rado port above shipped with
+  ~24 compile-time style warnings (`unusedSimpArgs` / `flexible` /
+  `unusedDecidableInType` / `unusedFintypeInType`); per the warnings-clean
+  policy these were all cleared in an amend, file still green/0-sorry. Mostly
+  mechanical (drop `tsub_le_iff_right` + `sub_add_cancel` unused-simp pairs in
+  the calc; `simp [le_eq_subset] → simp only`; drop `exists_and_right`; drop
+  unused `[DecidableEq ι]` from `generalized_halls_marriage{,'}` /
+  `card_eq_iff_total`, opening `classical` where the body then needs decidable
+  `Function.update` — including a `classical` *inside* `decreasing_by`). The one
+  non-obvious step: clearing `unusedFintypeInType` on the WF-recursive
+  `generalized_halls_marriage` (swap `[Fintype ι] → [Finite ι]`) breaks its
+  `termination_by ∑ i, …` measure, since `Fintype.ofFinite` is a *def* not an
+  `instance`; fixed by prefixing the measure `termination_by haveI :=
+  Fintype.ofFinite ι; ∑ i, (A i).card`. **Lifted to:** TACTICS-QUIRKS § 16(d).
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of

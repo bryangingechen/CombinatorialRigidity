@@ -1,13 +1,12 @@
 # Phase 12 — Matroid foundations: submodular functions & matroid union (work log)
 
-**Status:** in progress (Layer 2a **complete**; Layer 2b **underway** —
+**Status:** in progress (Layer 2a **complete**; Layer 2b **underway**.
 `Constructions/Union.lean` landed the union construction + independence
-characterization green: `def:matroid-union`, `lem:union-indep-iff`. The
-partition rank theorem `thm:matroid-partition-rank` is the one remaining
-L2b node, but a **dependency re-scope** this commit found it blocked on a
-~420-line un-ported Rado/Hall sub-tree — L2b is now split into **L2b-rado**
-(the Rado prerequisite) and **L2b-partition** (the two target theorems);
-see *Blockers* and *Hand-off*).
+characterization green: `def:matroid-union`, `lem:union-indep-iff`. **L2b-rado
+infrastructure landed this commit** — `generalized_halls_marriage` (+ `'`
+subtype variant) and the full `PartialTransversal` family ported into
+`Constructions/Submodular.lean`; **next is `rado` itself** (then L2b-partition's
+`thm:matroid-partition-rank`). See *Current state* and *Hand-off*.)
 
 This phase formalizes the abstract-matroid prerequisites of the
 body-bar route: the matroid-from-submodular-function construction and
@@ -57,7 +56,29 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-L2b dependency re-scope (this commit, **docs-only**): the next-commit plan
+L2b-rado infrastructure (this commit): ported the Rado/Hall prerequisite's
+front half from `WIP/Submodular.lean:323–740` into `Constructions/Submodular.lean`
+(its home file, continuing the L2a port). Landed green, **0 sorry**
+(`generalized_halls_marriage` verified clean — only `propext` / `Classical.choice`
+/ `Quot.sound`): `generalized_halls_marriage` (the submodular WF-recursive core,
+`termination_by ∑ i, (A i).card`) + its `'` subtype-domain restatement, and the
+complete `PartialTransversal` structure family (`left`/`right`/`fun`/`Total`/
+`card`/`encard`/`of_fun`/`move`/`⊆`/`exists_subset_card_eq` + ~30 supporting
+lemmas). **`rado` / `rado_v2` not yet ported** — they are the next commit (the
+WF-recursive core they rest on is now in place). Port hazards (FRICTION
+`[matroid]` *L2b-rado*): added `[DecidableEq α]` / `[DecidableEq (ι × α)]` /
+`[Fintype ι]` to several `of_fun_*` / `move_*` lemmas the bit-rotted WIP elided
+(WIP file does not build, so its signatures could not be trusted); `Matroid.r`
+rename irrelevant here (the front half is rank-free); `ne_of_mem_of_notMem →
+ne_of_mem_of_not_mem`; `Fintype.choose` needs `import Mathlib.Data.Fintype.Inv`;
+dropped `@[simp]` on `of_fun_mem_edges_iff` (simp-can-prove) and `def → lemma`
+on `of_fun_{left,right}_eq` (defLemma linter). **Made warnings-clean in an amend**
+per the warnings-clean policy (the port had shipped with ~24 style warnings);
+the one non-mechanical step is the `termination_by haveI := Fintype.ofFinite ι; …`
+trick to clear `unusedFintypeInType` on the WF-recursive core — see FRICTION
+`[matroid]` *L2b-rado warnings sweep* / TACTICS-QUIRKS § 16(d).
+
+L2b dependency re-scope (prior commit, **docs-only**): the next-commit plan
 "port `polymatroid_of_adjMap` → `adjMap_rank_eq` → the two `matroid_partition*`
 targets" assumed `rado` (Oxley Thm 11.2.2) was live upstream (per the prior
 hand-off note). **It is not.** Audit of the live package
@@ -302,9 +323,10 @@ High-level outline; the leaf-level to-do list is the
   (`Matroid.Union` / `Matroid.union`), `lem:union-indep-iff` ✓
   (`union_indep_iff` / `union_indep_iff'`; + `adjMap_indep_iff'`,
   `Union_empty`, `union_indep_aux{,'}` support).
-- [ ] **L2b-rado (NEW; prerequisite, ~420 L):** `generalized_halls_marriage`,
-  `PartialTransversal` (+ ~30 lemmas), `Transversal`/`Transverses` family,
-  `rado` / `rado_v2`. Port into `Constructions/Submodular.lean`.
+- [~] **L2b-rado (prerequisite, ~420 L):** infrastructure landed —
+  `generalized_halls_marriage` ✓ (+ `'` variant), `PartialTransversal` family ✓
+  (+ ~30 lemmas). **Remaining:** `Transversal`/`Transverses` family, `rado` /
+  `rado_v2` (next commit). Port into `Constructions/Submodular.lean`.
 - [ ] **L2b-partition:** `thm:matroid-partition-rank`
   (`matroid_partition'` / `matroid_partition_eRk'`); via
   `polymatroid_of_adjMap` / `adjMap_rank_eq` / `sum'_*` rank-distribution.
@@ -332,24 +354,27 @@ High-level outline; the leaf-level to-do list is the
 
 ## Hand-off / next phase
 
-This commit was a **docs-only re-scope**, not Lean: the planned next commit
-(port the two `matroid_partition*` targets) proved infeasible as scoped —
-its bridge `polymatroid_of_adjMap` needs Rado-sufficiency, which is not live
-upstream (full analysis in *Current state* / *Blockers*). No Lean changed;
-the tree still builds clean (L2b-union green).
+This commit landed the **first half of L2b-rado** (the infrastructure):
+`generalized_halls_marriage` + the `PartialTransversal` family are green and
+0-sorry in `Constructions/Submodular.lean`. The tree builds clean; lint passes.
 
-**Next concrete commit: L2b-rado** — port the Rado/Hall prerequisite from
-`WIP/Submodular.lean:323–942` (~420 L, 0 sorry upstream) into the local
-`Constructions/Submodular.lean` (its home file, continuing the L2a port).
-Sub-chain in order: `generalized_halls_marriage` (matroidal Hall;
-`WIP/Submodular.lean:323`, deps all in the L2a-ported surface) →
-`PartialTransversal` structure + ~30 supporting lemmas (`:504–740`) →
-`Transversal` / `Transverses` / `Transverses'` family (`:804–888`) → `rado`
-(`:891`, Oxley Thm 11.2.2) and `rado_v2` (`:742`). This is large enough that a
-**clean intermediate handoff** is: land `generalized_halls_marriage` +
-`PartialTransversal` first (the infrastructure), then `rado` itself as a second
-step. A `lem:rado` blueprint node in `matroid-union.tex` is optional (internal
-prerequisite) — add it if it helps the dep-graph read.
+**Next concrete commit: finish L2b-rado** — port the remaining
+`WIP/Submodular.lean:742–942` into `Constructions/Submodular.lean`: the
+`Transversal` / `Transverses` / `Transverses'` family (`:804–888`, rank-free
+defs/lemmas) → `rado_v2` (`:742`) → `rado` (`:891`, Oxley 2011 Thm 11.2.2 =
+Rado 1942). These DO touch matroid rank (`M.r`), so expect the `Matroid.r → rk`
+rename chase (the recipe in *Hand-off* port-hazards below + FRICTION
+`[matroid]`). The WF-recursive core they call (`generalized_halls_marriage`)
+is now in place, so they are straight-line ports modulo the rename. `rado'`
+(`:944`, the `+ d` generalization) and `halls_marriage` (`:1233`) are **not
+needed** — only `rado` (full iff) is consumed by `polymatroid_of_adjMap` in
+`Union.lean:339`. A `lem:rado` blueprint node in `matroid-union.tex` is optional
+(internal prerequisite); add it with the `rado` commit if it helps the dep-graph.
+
+**Then L2b-partition** (unblocked once `rado` is green): port
+`polymatroid_of_adjMap` / `adjMap_rank_eq` / `sum'_*` rank-distribution, then
+`matroid_partition'` / `matroid_partition_eRk'` (node `thm:matroid-partition-rank`)
+into `Constructions/Union.lean`. That closes Phase 12.
 
 **Then L2b-partition** (unblocked once `rado` is green): port
 `polymatroid_of_adjMap` (the key bridge — exhibits the `adjMap`-matroid as
