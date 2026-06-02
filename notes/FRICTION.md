@@ -76,7 +76,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
+### [resolved] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
 - **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in
   `BodyBar/TreePacking.lean` (Phase 13 forward direction). The lemma
   *states* `(Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E'`
@@ -87,8 +87,13 @@ housekeeping pass once their resolution is fully indexed.
   time, before the tactic block runs. **Fix:** add `[DecidableEq β]` as
   an explicit instance binder to any lemma that *mentions*
   `Matroid.Union`-of-`cycleMatroid` in its statement (we already have
-  `[Finite β]`, which does not imply `DecidableEq`). The reverse
-  direction + the assembled iff will need the same binder.
+  `[Finite β]`, which does not imply `DecidableEq`).
+- **Status:** resolved — the binder is on both
+  `isSparse_restrict_of_union_pow_indep` and the assembled iff
+  `unionPow_cycleMatroid_indep_iff_isSparse_restrict`
+  (`BodyBar/TreePacking.lean`); `tutte_nash_williams` /
+  `isSpanningTreePacking_of_isTight` inherit it. Phases 14–15 mentioning
+  the same union object in a signature will need it too.
 
 ### [resolved] `[matroid]` `Graph.Components` (the `Set (Graph α β)` of components) has no `Finite`/`Fintype` instance under `[Finite α]`
 - **Where it bit:** `Graph.le_mul_cycleMatroid_rk_of_isSparse_restrict` in

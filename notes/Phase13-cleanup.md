@@ -1,6 +1,8 @@
 # Phase 13-cleanup — between Phase 13 and Phase 14 (work log)
 
-**Status:** in progress.
+**Status:** ✓ complete. All four audit categories (A, B, C, D) closed; A/B/C
+all no-op (B+C batched), D = D1 compression (`notes/Phase13.md` 312 → 181) +
+D2/D3 no-migration. Clean-bill round. Unblocks Phase 14.
 
 Standard between-phases cleanup round (the default cadence in
 `CLEANUP.md`), opened on the Phase 13 surface now that
@@ -123,21 +125,31 @@ extraction debt (CLEANUP.md §C calibration).
   The two `eRk`-formula proofs are <15 LoC, tight restriction-bridge
   rewrites. No-op.
 
-### D. Project-organization compression
-- [ ] **D1** Compress `notes/Phase13.md` (312 → target ≤ ~200): the
-  *Current state* section is a running per-commit narrative (8+ "…
-  landed" paragraphs) that should collapse to a short summary + the
-  *Lemma checklist* (already a clean index) + commit-log pointer, now
-  that the phase is closed.
-- [ ] **D2** Lift any cross-cutting Phase-13 lessons referenced 2+
-  times (candidates: the isolated-vertex/`spanningVerts` cancellation
-  pattern; the `eRk`↦`rk` / `encard`↦`ncard` `[Finite]`-cast bridges;
-  the `IsSkewFamily.sum_eRk_eq_eRk_iUnion` component-sum idiom) to
-  `TACTICS-GOLF.md` / `FRICTION.md`, replacing the Phase entry with a
-  pointer.
-- [ ] **D3** Re-skim `notes/FRICTION.md` status sections; migrate any
-  resolved Phase-13 project-internal entry whose resolution is fully
-  indexed elsewhere to `FRICTION-archive.md`.
+#### D. Project-organization compression
+**D1 = genuine edit; D2/D3 = no-op (no migration).**
+- [x] **D1** Compressed `notes/Phase13.md` 312 → 181: the *Current state*
+  per-commit narrative (8+ "… landed" paragraphs) collapsed to a short
+  surface summary + commit-log pointer (`feat(phase13):` `4b1cbc8`..`6fade93`);
+  the *Lemma checklist* (already a clean per-node index), *Decisions made*,
+  *Blockers*, and *Hand-off* sections are unchanged. Dropped the now-dangling
+  "Detail in *Current state* above" pointer on the connectivity decision
+  (the entry is self-contained).
+- [x] **D2** No lift. The three candidate lessons (isolated-vertex/
+  `spanningVerts` cancellation; `eRk`↦`rk` / `encard`↦`ncard` `[Finite]`-cast
+  bridges; `IsSkewFamily.sum_eRk_eq_eRk_iUnion` component-sum idiom) are each
+  single-phase, single-file (`TreePacking.lean` only), below the
+  lift-on-promotion threshold (2+ files / 2+ phases). They are already
+  documented where they belong — in Phase13.md *Lemma checklist* /
+  *Decisions* and the FRICTION `Components`-`Finite` entry (which flags the
+  component-`Finite` bridge for Phase 14–15 reuse). No-op until a later phase
+  reaches for one of them a second time.
+- [x] **D3** One status flip, no migration. The Phase-13 `[open]`
+  `Matroid.Union` `[DecidableEq β]` entry's fix has landed (the binder is on
+  both `isSparse_restrict_of_union_pow_indep` and the assembled iff), so it is
+  flipped to `[resolved]` with a resolution note + Phase-14/15 forward flag.
+  The `[resolved]` `Graph.Components`-`Finite` entry stays in `FRICTION.md`
+  (not archived): its resolution is self-contained *and* it is a live forward
+  reference for Phases 14–15, not "fully indexed elsewhere". No archive moves.
 
 ## Decisions made during this round
 
@@ -158,23 +170,30 @@ extraction debt (CLEANUP.md §C calibration).
   already-named sub-lemmas plus intrinsic ℕ↔ℕ∞ cast plumbing, no
   extraction debt (the CLEANUP.md §C calibration outcome). Detail in
   the checklist.
+- **D (project-organization compression) — D1 edit; D2/D3 no migration.**
+  D1 compressed `notes/Phase13.md` 312 → 181 (per-commit *Current state*
+  narrative → surface summary + commit-log pointer; checklist/decisions/
+  blockers/hand-off untouched). D2 found no lift-eligible lesson — the three
+  candidates are single-phase/single-file, below the 2+-file / 2+-phase
+  threshold. D3 flipped the one Phase-13 `[open]` FRICTION entry
+  (`Matroid.Union` `[DecidableEq β]`) to `[resolved]` (its fix landed); no
+  archive migration, since the surviving `[resolved]` `Components`-`Finite`
+  entry is a live Phase-14/15 forward reference. Detail per-task in the
+  checklist.
 
 ## Blockers / open questions
 - None.
 
 ## Hand-off / next phase
 
-**Clean handoff.** Audit categories A, B, C are closed (all no-op;
-B+C batched into this commit per *Scope* → Batching, recorded above).
-Next concrete commit: run **audit category D** (project-organization
-compression, tasks D1–D3) — D1 compresses `notes/Phase13.md`
-(312 → ≤ ~200) by collapsing the per-commit *Current state* narrative
-to a summary + commit-log pointer; D2 lifts any cross-cutting Phase-13
-lesson referenced 2+ times to `TACTICS-GOLF.md` / `FRICTION.md`; D3
-re-skims `FRICTION.md` status sections for resolved Phase-13 entries to
-migrate to `FRICTION-archive.md`. That D commit **closes the round**:
-flip the ROADMAP Status row to ✓, sync no user-facing surfaces (a
-cleanup round is not a phase), and record what (if anything) carried
-over. All A–D have been no-op so far, so the round is shaping up as a
-clean-bill cleanup; D1's compression is the only concrete edit
-expected.
+**Round complete — clean handoff.** All four audit categories closed: A/B/C
+no-op (B+C batched), D = D1 compression + D2/D3 no-migration. This commit
+closes the round: ROADMAP Status row flipped to ✓; no user-facing surfaces
+synced (a cleanup round is not a phase, per CLEANUP.md). Nothing carried over
+— a clean-bill round.
+
+Next concrete commit is the start of **Phase 14** (`k`-frame matroid =
+`k`-fold cycle-matroid union, Whiteley Thm 1): open `notes/Phase14.md` + define
+`F(G,X)` (the `Matroid.ofFun` linear matroid on `E(G)` from the indeterminate
+body-bar row map), flipping the `body-bar.tex` `def:k-frame-matroid` node. See
+`notes/Phase13.md` *Hand-off / next phase* for the fuller Phase-14 entry plan.
