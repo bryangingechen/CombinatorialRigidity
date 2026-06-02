@@ -1,5 +1,6 @@
 import CombinatorialRigidity.BodyBar.Framework
 import CombinatorialRigidity.BodyBar.KFrame
+import CombinatorialRigidity.BodyBar.TayTheorem
 import CombinatorialRigidity.BodyBar.TreePacking
 import CombinatorialRigidity.CountMatroid
 import CombinatorialRigidity.LamanTheorem
