@@ -97,7 +97,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Perf pass (post-Phase-10+11) | Phase 10+11 surface — per-decl `@[expose]` audit on the four new/reshaped files + Phase-11-reshape re-audit on `Basic`/`DFS` + baseline | ✓ Complete (see `notes/Phase11-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | 12. Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` | ✓ Complete (see `notes/Phase12.md`) |
 | ⋮ Cleanup round (post-Phase-12) | Phase 12 surface (`Matroid/Constructions/{Submodular,Union}.lean`, `matroid-union.tex`) | ✓ Complete (see `notes/Phase12-cleanup.md`; round manual: `CLEANUP.md`) |
-| 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | planning (scoped in `body-bar.tex`) |
+| 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | in progress (see `notes/Phase13.md`) |
 | 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | planning (scoped in `body-bar.tex`) |
 | 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | planning (was Phase 12; see `notes/Phase12.md`) |
 
@@ -423,7 +423,7 @@ discipline.
 
 ### Phase 13 — Tutte–Nash-Williams tree-packing
 
-**Status (planning; scoped in `body-bar.tex`).** Specializes the
+**Status (in progress; see `notes/Phase13.md`).** Specializes the
 matroid-partition theorem to `k` copies of `Graph.cycleMatroid`,
 recovering Tutte–Nash-Williams tree-packing (Tutte 1961, Nash-Williams
 1961): a multigraph is the edge-disjoint union of `k` forests iff it is

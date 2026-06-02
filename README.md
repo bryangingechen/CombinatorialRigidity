@@ -49,7 +49,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–12 complete; Phases 13–15 scoped.**
+* **Phases 1–12 complete; Phase 13 in progress; Phases 14–15 scoped.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -93,13 +93,18 @@ project; commit history is preserved with paths rewritten.
     `blueprint/src/chapter/matroid-union.tex` dep-graph nodes are green
     and carry no `sorry`s. See `notes/Phase12.md` for the Layer plan,
     prerequisites audit, and attribution discipline.
-  * **Phases 13–15 (scoped)** — Tutte–Nash-Williams tree-packing
-    (Phase 13), the `k`-frame matroid = `k`-fold cycle-matroid union
-    (Phase 14, Whiteley Theorem 1), and **Tay's theorem** itself in
-    existence-of-realization form (Phase 15, by specializing
-    two-extensor row coefficients to standard-basis Plücker
-    coordinates). Scoped in `blueprint/src/chapter/body-bar.tex` and
-    ROADMAP §13–§15; not yet opened. Whiteley's full
+  * **Phase 13 (in progress)** — Tutte–Nash-Williams tree-packing:
+    specializing Phase 12's Edmonds matroid-partition theorem to `k`
+    copies of `Graph.cycleMatroid`, a multigraph is the edge-disjoint
+    union of `k` forests iff it is `(k,k)`-sparse (spanning-tree
+    refinement under tightness). Introduces a `Graph`-native
+    `(k,ℓ)`-sparsity predicate. See `notes/Phase13.md`.
+  * **Phases 14–15 (scoped)** — the `k`-frame matroid = `k`-fold
+    cycle-matroid union (Phase 14, Whiteley Theorem 1), and **Tay's
+    theorem** itself in existence-of-realization form (Phase 15, by
+    specializing two-extensor row coefficients to standard-basis
+    Plücker coordinates). Scoped in `blueprint/src/chapter/body-bar.tex`
+    and ROADMAP §14–§15. Whiteley's full
     "almost-all-realizations-are-rigid" lift via irreducible-variety
     machinery (Proposition 6) is deferred. The longer-horizon target
     beyond is the **molecular conjecture** (Katoh–Tanigawa 2011).

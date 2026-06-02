@@ -21,8 +21,9 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–12 are complete and carry no `sorry`s; **Phases 13–15 (the
-body-bar program) are scoped**, see below. The main theorem
+Phases 1–12 are complete and carry no `sorry`s; **Phase 13 is in
+progress and Phases 14–15 (the rest of the body-bar program) are
+scoped**, see below. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
@@ -69,12 +70,14 @@ theorem (Rado 1942), and Edmonds' matroid-partition theorem (Edmonds
 from Peter Nelson's `apnelson1/Matroid` (Apache-2.0) and rebased onto
 its live `FiniteCircuitMatroid` constructor; all
 `blueprint/src/chapter/matroid-union.tex` dep-graph nodes are green.
-**Phases 13–15
-(scoped)** then derive Tutte–Nash-Williams tree-packing, identify the
-`k`-frame matroid with the `k`-fold cycle-matroid union (Whiteley
-Theorem 1), and assemble Tay's theorem in existence-of-realization
-form (the algebraic-geometry lift to "almost all realizations are
-rigid" deferred). The longer-horizon target beyond is the
+**Phase 13 (in progress)** derives Tutte–Nash-Williams tree-packing
+(a multigraph is the edge-disjoint union of `k` forests iff it is
+`(k,k)`-sparse, by specializing the Edmonds matroid-partition theorem
+to `k` copies of `Graph.cycleMatroid`); **Phases 14–15 (scoped)** then
+identify the `k`-frame matroid with the `k`-fold cycle-matroid union
+(Whiteley Theorem 1) and assemble Tay's theorem in
+existence-of-realization form (the algebraic-geometry lift to "almost
+all realizations are rigid" deferred). The longer-horizon target beyond is the
 **molecular conjecture** (Katoh–Tanigawa 2011).
 
 The development is divided into the phases below, with Lean source
@@ -97,7 +100,7 @@ existing files or refactor across several).
 |    10 | Executable pebble game      | `PebbleGame/{Exec,Examples}.lean`, `Main.lean`                   |   ✓    |
 |    11 | Witness extraction          | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` |   ✓    |
 |    12 | Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` (ported from `apnelson1/Matroid`) | ✓ |
-|    13 | Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | planning |
+|    13 | Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | in progress |
 |    14 | k-frame = k-fold cycle union | `BodyBar/KFrame.lean` | planning |
 |    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | planning |
 
