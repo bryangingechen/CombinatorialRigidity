@@ -291,7 +291,10 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
 \begin{definition}[Panel-hinge rigidity matrix]
   \label{def:rigidity-matrix}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimalMotion,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions,
+    CombinatorialRigidity.Molecular.ScrewSpace,
+    CombinatorialRigidity.Molecular.screwDim,
+    CombinatorialRigidity.Molecular.screwSpace_finrank}
   \leanok
   \uses{def:hinge-row-block}
   The \emph{rigidity matrix} $R(G,p)$ is the $(D-1)|E| \times D|V|$ block
@@ -302,10 +305,12 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   space is written $Z(G,p)$. Its dimension is independent of the chosen
   orthogonal-complement basis.
 
-  The formalization keeps the screw space the full exterior-algebra
-  element (\cref{def:hinge-constraint}) and carries $R(G,p)$ as the
-  family of per-edge hinge constraints on the screw-assignment space,
-  not as an explicit real coordinate matrix: a screw assignment
+  The formalization carries the screw center in the degree-$k$ graded
+  piece $\bigwedge^{k}\R^{k+2}$ of the exterior algebra
+  (\texttt{ScrewSpace}, the subspace where the supporting extensors
+  $C(p(e))$ live) and carries $R(G,p)$ as the family of per-edge hinge
+  constraints on the screw-assignment space, not as an explicit real
+  coordinate matrix: a screw assignment
   $S \colon V \to \bigwedge^{k}\R^{k+2}$ is an \emph{infinitesimal
   motion} (\texttt{IsInfinitesimalMotion}) when it meets the hinge
   constraint (\cref{def:hinge-constraint}) at every edge, i.e.
@@ -314,9 +319,14 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   is closed under negation), so this is well-defined on the undirected
   multigraph, and the null space $Z(G,p) = \ker R(G,p)$ is the
   submodule of all infinitesimal motions
-  (\texttt{infinitesimalMotions}). The explicit
-  $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ coordinatization stays deferred,
-  as it does in \cref{def:hinge-row-block}.
+  (\texttt{infinitesimalMotions}). The
+  $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ coordinatization is realized as
+  the dimension count
+  $\operatorname{finrank} \bigwedge^{k}\R^{k+2} = D = \binom{k+2}{2}$
+  (\texttt{screwSpace\_finrank}, \texttt{screwDim}) rather than an
+  explicit basis --- the numeric gate for the rank bounds of
+  \cref{lem:trivial-motions-rank-bound} and the degree of freedom of
+  \cref{def:dof-generic}.
 \end{definition}
 
 \begin{definition}[Degree of freedom; generic realization]

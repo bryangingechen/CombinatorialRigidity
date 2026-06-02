@@ -42,12 +42,15 @@ The leaf node landing here:
 
 Infinitesimal motions are `D`-dimensional screw centers with `D = (d+1 choose 2)`,
 matching Phase 17's extensor space `⋀^(d-1) ℝ^(d+1) ≅ ℝ^D` (here, with `d = k+1`,
-`⋀^k ℝ^(k+2)`). We carry the screw center as a full element of
-`ExteriorAlgebra ℝ (Fin (k+2) → ℝ)` rather than as a coordinate vector in `ℝ^D`;
-`span C(p(e))` is then literally a `Submodule` of that algebra and the hinge
-constraint is a membership, with no coordinate identification needed yet. The
-concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` identification (and the orthogonal-complement block
-`r(p(e))`) is deferred to `def:hinge-row-block` / `def:rigidity-matrix`.
+`⋀^k ℝ^(k+2)`). We carry the screw center as an element of the **degree-`k` graded
+piece** `⋀[ℝ]^k (Fin (k+2) → ℝ)` of the exterior algebra — the subspace in which the
+supporting extensors `C(p(e)) = affineSubspaceExtensor (p e)` actually live
+(`affineSubspaceExtensor_mem_exteriorPower`) — rather than a coordinate vector in `ℝ^D`;
+`span C(p(e))` is then literally a `Submodule` of it and the hinge constraint is a
+membership. The concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` identification is realized as the `finrank`
+equality `screwSpace_finrank : finrank ℝ (ScrewSpace k) = D` (rather than an explicit
+basis), the numeric gate for the rank counts of `lem:trivial-motions-rank-bound` and the
+degree of freedom of `def:dof-generic`.
 
 Carrier for the multigraph: mathlib core `Graph α β` (the Phase 13–16 carrier).
 Carrier for points: `Fin (k+1) → ℝ`, matching Phase 17's `affineSubspaceExtensor`.
@@ -59,15 +62,37 @@ namespace CombinatorialRigidity.Molecular
 
 open scoped Matrix
 
-/-- The **screw-center space** of `d = k+1`-dimensional body-hinge rigidity: the
-exterior algebra `ExteriorAlgebra ℝ (Fin (k+2) → ℝ)` in which the supporting
-extensors `C(·) = affineSubspaceExtensor` of the hinges live. An infinitesimal
-motion of a rigid body is a `D`-dimensional *screw center* `S(v)` in this space,
-`D = (d+1 choose 2) = (k+2 choose 2)`; we carry the full algebra element rather
-than a coordinate vector in `ℝ^D` so that `span C(p(e))` is literally a
-`Submodule` of it (`def:hinge-constraint`). -/
+/-- The **screw dimension** `D = (d+1 choose 2) = (k+2 choose 2)` of `d = k+1`-dimensional
+body-hinge rigidity: the dimension of the screw-center space `ScrewSpace k`, equal to the
+dimension `binom(d+1, 2)` of the space of infinitesimal screw motions of a rigid body in
+`ℝ^d` (Katoh–Tanigawa 2011 §2.2). -/
+abbrev screwDim (k : ℕ) : ℕ := (k + 2).choose 2
+
+/-- The **screw-center space** of `d = k+1`-dimensional body-hinge rigidity: the degree-`k`
+graded piece `⋀[ℝ]^k (Fin (k+2) → ℝ)` of the exterior algebra, in which the supporting
+extensors `C(·) = affineSubspaceExtensor` of the hinges live
+(`affineSubspaceExtensor_mem_exteriorPower`). An infinitesimal motion of a rigid body is a
+`D`-dimensional *screw center* `S(v)` in this space, `D = screwDim k = (k+2 choose 2)`
+(`screwSpace_finrank`). We carry the screw center as the graded-piece element (a `Submodule`
+of the full exterior algebra) rather than a coordinate vector in `ℝ^D`, so `span C(p(e))` is
+literally a `Submodule` of it (`def:hinge-constraint`); the `⋀^k ℝ^(k+2) ≅ ℝ^D` identification
+of the blueprint is realized by the `finrank` equality `screwSpace_finrank` rather than an
+explicit basis. -/
 abbrev ScrewSpace (k : ℕ) : Type :=
-  ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)
+  ↥(⋀[ℝ]^k (Fin (k + 2) → ℝ))
+
+/-- **The screw-center space has dimension `D = (k+2 choose 2)`** (`def:rigidity-matrix`,
+the deferred `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization). Since `ScrewSpace k` is the degree-`k`
+graded piece of the exterior algebra of `ℝ^(k+2)`, its dimension is `(k+2).choose k`
+(`exteriorPower.finrank_eq`), which equals `(k+2).choose 2 = screwDim k` by the symmetry
+`binom(n, j) = binom(n, n-j)`. This is the numeric content of the blueprint's
+`⋀^k ℝ^(k+2) ≅ ℝ^D` identification — carried as a `finrank` equality rather than an explicit
+basis — and is the gate for every numeric rank count (`lem:trivial-motions-rank-bound`'s
+`rank R ≤ D(|V|-1)`, the degree of freedom of `def:dof-generic`). -/
+theorem screwSpace_finrank (k : ℕ) : Module.finrank ℝ (ScrewSpace k) = screwDim k := by
+  rw [exteriorPower.finrank_eq, Module.finrank_pi, Fintype.card_fin, screwDim,
+    ← Nat.choose_symm (Nat.le_add_left 2 k)]
+  congr 1
 
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with a *hinge assignment* `hinge` sending each
@@ -97,10 +122,11 @@ of Phase 17, an element of the screw space `⋀^k ℝ^(k+2)`. It is nonzero exac
 the `k` hinge points are affinely independent (`affineSubspaceExtensor_ne_zero_iff`),
 i.e. when the hinge is a genuine `(k-1)`-dimensional affine subspace. -/
 def supportExtensor (F : BodyHingeFramework k α β) (e : β) : ScrewSpace k :=
-  affineSubspaceExtensor (F.hinge e)
+  ⟨affineSubspaceExtensor (F.hinge e), affineSubspaceExtensor_mem_exteriorPower (F.hinge e)⟩
 
-theorem supportExtensor_apply (F : BodyHingeFramework k α β) (e : β) :
-    F.supportExtensor e = affineSubspaceExtensor (F.hinge e) := rfl
+theorem supportExtensor_coe (F : BodyHingeFramework k α β) (e : β) :
+    (F.supportExtensor e : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) =
+      affineSubspaceExtensor (F.hinge e) := rfl
 
 /-- The **hinge constraint** at an edge `e = uv` (`def:hinge-constraint`): a screw
 assignment `S : α → ScrewSpace k` meets the hinge constraint at `e` between
@@ -118,7 +144,7 @@ def hingeConstraint (F : BodyHingeFramework k α β) (S : α → ScrewSpace k)
 theorem hingeConstraint_iff (F : BodyHingeFramework k α β) (S : α → ScrewSpace k)
     (e : β) (u v : α) :
     F.hingeConstraint S e u v ↔
-      S u - S v ∈ Submodule.span ℝ {affineSubspaceExtensor (F.hinge e)} :=
+      S u - S v ∈ Submodule.span ℝ {F.supportExtensor e} :=
   Iff.rfl
 
 /-- The **hinge-row block** `r(p(e))` at an edge `e` (`def:hinge-row-block`): the
@@ -130,7 +156,7 @@ basis of it is the `(D-1)` rows of Katoh–Tanigawa's `(D-1) × D` matrix `r(p(e
 when the hinge is genuine, so its annihilator has dimension `D - 1`).
 
 Carrying the orthogonal complement as the annihilator submodule keeps the screw
-space as the full `ExteriorAlgebra` element (`def:hinge-constraint`): no explicit
+space as the graded-piece element (`def:hinge-constraint`): no explicit
 `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinate basis / inner-product structure is forced at this
 node. The dot products `(S u - S v) · r_i(p(e))` of the blueprint become the
 functional applications `r (S u - S v)`, and the orthogonality `v ⟂ span C ↔ r v = 0
@@ -142,7 +168,7 @@ def hingeRowBlock (F : BodyHingeFramework k α β) (e : β) :
 
 theorem hingeRowBlock_apply (F : BodyHingeFramework k α β) (e : β) :
     F.hingeRowBlock e =
-      (Submodule.span ℝ {affineSubspaceExtensor (F.hinge e)}).dualAnnihilator :=
+      (Submodule.span ℝ {F.supportExtensor e}).dualAnnihilator :=
   rfl
 
 /-- **The hinge constraint as `(D-1)` linear equations** (`def:hinge-row-block`): a
@@ -174,7 +200,7 @@ This is membership in the kernel of Katoh–Tanigawa's rigidity matrix `R(G,p)`
 (`def:rigidity-matrix`): each oriented edge `e = uv` contributes the block row carrying the
 hinge-row block `r(p(e))` in the `D` columns of `u` and `-r(p(e))` in those of `v` (zero
 elsewhere), so a vanishing matrix-vector product is exactly the per-edge hinge constraint.
-We keep the screw space the full `ExteriorAlgebra` element (`def:hinge-constraint`) and carry
+We keep the screw space the graded-piece element (`def:hinge-constraint`) and carry
 `R(G,p)` as this constraint family on the screw-assignment space `α → ScrewSpace k` rather
 than as an explicit `(D-1)|E| × D|V|` real coordinate matrix, matching the basis-free
 hinge-row block (`def:hinge-row-block`). -/
@@ -216,7 +242,8 @@ def infinitesimalMotions (F : BodyHingeFramework k α β) :
   smul_mem' c S hS e u v he := by
     have := hS e u v he
     rw [hingeConstraint] at *
-    simpa [Pi.smul_apply, ← smul_sub] using Submodule.smul_mem _ c ‹_›
+    have := Submodule.smul_mem (ℝ ∙ F.supportExtensor e) c this
+    rwa [smul_sub] at this
 
 @[simp]
 theorem mem_infinitesimalMotions (F : BodyHingeFramework k α β) (S : α → ScrewSpace k) :
@@ -242,8 +269,10 @@ theorem isInfinitesimalMotion_of_isTrivialMotion (F : BodyHingeFramework k α β
 /-- The **trivial-motion subspace** (`lem:trivial-motions-rank-bound`): the submodule of all
 trivial infinitesimal motions (constant screw assignments) inside the screw-assignment space
 `α → ScrewSpace k`. Katoh–Tanigawa's `D` standard trivial motions `S*_i` span this space, and
-its dimension is `D = (k+2 choose 2)`; carried basis-free as the constant assignments, so the
-explicit `D` count waits on the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization (`def:rigidity-matrix`).
+its dimension is `D = screwDim k = (k+2 choose 2)`; carried basis-free as the constant
+assignments. The screw-dimension count `D` is now available as the `finrank` equality
+`screwSpace_finrank` (`def:rigidity-matrix`'s `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization), so
+`finrank (trivialMotions) = D` follows from the diagonal iso `trivialMotions_eq_range_const`.
 
 The framework argument `F` is carried only to give the `F.trivialMotions` dot-notation API
 parallel to `F.infinitesimalMotions`: the trivial-motion space depends only on `α` and `k` (the

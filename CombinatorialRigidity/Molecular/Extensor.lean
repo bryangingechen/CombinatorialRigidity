@@ -306,6 +306,15 @@ def affineSubspaceExtensor {d k : ℕ} (p : Fin k → Fin d → ℝ) :
 theorem affineSubspaceExtensor_apply {d k : ℕ} (p : Fin k → Fin d → ℝ) :
     affineSubspaceExtensor p = extensor (fun i => homogenize (p i)) := rfl
 
+/-- The extensor of an affine subspace lies in the `k`-th exterior power (graded piece)
+`⋀[ℝ]^k (Fin (d+1) → ℝ)`, being the `k`-extensor of the homogenized family
+(`extensor_mem_exteriorPower`). This is what lets a screw center carry the
+supporting extensor inside the degree-`k` graded piece `⋀^k ℝ^(k+2)` of dimension
+`D = (k+2 choose 2)`, rather than the full exterior algebra. -/
+theorem affineSubspaceExtensor_mem_exteriorPower {d k : ℕ} (p : Fin k → Fin d → ℝ) :
+    affineSubspaceExtensor p ∈ ⋀[ℝ]^k (Fin (d + 1) → ℝ) :=
+  extensor_mem_exteriorPower _
+
 /-- **The extensor of an affine subspace is nonzero iff the points are affinely
 independent** (`def:affine-subspace-extensor`). Combines the homogenization bridge
 `affineIndependent_iff_linearIndependent_homogenize` with the extensor nonvanishing
