@@ -883,3 +883,47 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   documents both the splitting rationale and the orientation-
   indexed `toSucc` generalisation that the pebble-game layers use).
 - **Status:** resolved.
+
+### [resolved] `[matroid]` `apnelson1/Matroid` has no `Rep` "finrank of span of image = matroid rank" bridge
+- **Where it bit:** Phase 14 forward rank count
+  (`lem:k-frame-nonzero-monomial-forest`, piece (2)) needs
+  `finrank K (span K (v '' Y)) = M.rk Y` for a representation
+  `v : M.Rep K W`. The `Rep.span_*` API in
+  `Matroid/Representation/Basic.lean` relates spans to closures but has
+  no direct finrank=rk lemma (no loogle hit either).
+- **Fix:** built it locally as
+  `Matroid.Rep.finrank_span_image_eq_rk` in `BodyBar/KFrame.lean`
+  (`[M.RankFinite]`): pick a basis `I` of `Y` (`exists_isBasis'`),
+  `Rep.isBasis'_iff` gives `v '' Y ⊆ span (v '' I)` + `LinearIndepOn K v
+  I`, so spans agree; `finrank_span_set_eq_card` on the LI image plus
+  `InjOn.ncard_image` + `IsBasis'.card` collapse to `M.rk Y`. The
+  cycle-matroid specialization
+  `Graph.finrank_span_signedIncMatrix_eq_cycleMatroid_rk` follows since
+  `⇑(cycleMatroidRep K) = signedIncMatrix` by `rfl`.
+- **Upstream-eligible** to `apnelson1/Matroid` (a fact about its `Rep`),
+  not mathlib — the package isn't a `Mathlib/` mirror target, so it
+  lives in `KFrame.lean` for now.
+- **Status:** resolved (project-local). Migrated from `FRICTION.md` in
+  the post-Phase-14 cleanup round (D2): resolution indexed by the named
+  `Matroid.Rep.finrank_span_image_eq_rk` decl in `KFrame.lean`.
+
+### [resolved] `[matroid]` `apnelson1/Matroid` has no ring-hom naturality lemma for `signedIncMatrix`
+- **Where it bit:** Phase 14 reverse half, specialization identity
+  (`lem:k-frame-specialize-identity`). To specialize the
+  indeterminate-coefficient `k`-frame rows over `R = MvPolynomial …`
+  down to `ℚ` (and to lift `kFrameRow` over `K` from the `R`-row
+  `kFrameRowR`) I needed `(fun x ↦ φ (signedIncMatrix R e x)) =
+  signedIncMatrix S e` for a ring hom `φ : R →+* S`. The package has
+  `signedIncMatrix_apply_of_{mem,not_mem}` but no `map`/naturality lemma.
+- **Fix:** built `Graph.signedIncMatrix_map` locally in
+  `BodyBar/KFrame.lean`. Two-case `by_cases e ∈ E(G)`: off the edge set
+  both sides are `0`; on it, `signedIncMatrix_apply_of_mem` exposes
+  `update 0 _ 1 - update 0 _ 1`, and `φ` commutes with `sub`/`update 0 _
+  1` (entries in `{0, ±1}`) — a 4-way `by_cases` on `x` vs the two
+  endpoints + `simp_all [Function.update_apply]` closes it.
+- **Upstream-eligible** to `apnelson1/Matroid` (a fact about its
+  `signedIncMatrix`), not mathlib; lives in `KFrame.lean` for now,
+  beside `signedIncMatrix`'s other Phase-14 consumers.
+- **Status:** resolved (project-local). Migrated from `FRICTION.md` in
+  the post-Phase-14 cleanup round (D2): resolution indexed by the named
+  `Graph.signedIncMatrix_map` decl in `KFrame.lean`.

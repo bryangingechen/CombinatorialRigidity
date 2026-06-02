@@ -1,12 +1,15 @@
 # Phase 14 cleanup round (work log)
 
-**Status:** in progress.
+**Status:** complete.
 
 Between-phases cleanup round, run after Phase 14 (k-frame matroid =
 k-fold cycle-matroid union) closed in `b90516d` and before Phase 15
 (body-bar Tay) opens. Round manual: `CLEANUP.md`. The per-commit
 friction review (`CombinatorialRigidity/CLAUDE.md`) still fires on
 every commit in this round.
+
+**Status:** complete. All four categories (A–D) closed; ROADMAP Status
+row flipped to ✓.
 
 ## Current state
 
@@ -97,7 +100,21 @@ tagged **load-bearing for Phase 15**), *Re-scoping*, *Promoted to
 FRICTION* (added the second, already-existing det-routed-reflection
 pointer), and the *Hand-off* section verbatim. Doc-only.
 
-Next concrete step: (D2) FRICTION status-section re-skim.
+(D2) FRICTION status-section re-skim done — round complete. Of the six
+Phase-13/14 `[resolved]` entries in `FRICTION.md`'s *Open* section, **two
+migrated** to `FRICTION-archive.md` (the `Rep` finrank=rk bridge →
+`Matroid.Rep.finrank_span_image_eq_rk`; the `signedIncMatrix` ring-hom
+naturality → `Graph.signedIncMatrix_map`): both are pure Phase-14 infra
+whose resolution is a named, `lean_local_search`-discoverable decl in
+`KFrame.lean`, with no Phase-15 forward reference. **Four stay** — the
+`Matroid.Union` `[DecidableEq β]`-binder, the `signedIncMatrix`
+decidability-`letI`, the `Matroid.Union`-ground-is-`univ` lesson, and the
+`Graph.Components`-`Finite` bridge each carry an explicit "Phases 14–15
+will need/reuse it" live forward reference (the `Components` one matches
+the Phase-13-cleanup precedent for keeping it active). No 2+-phase lift:
+the surviving entries are type-specific project idioms, not general "always
+do X" rules; the `univ`-ground lesson is matroid-package-specific and
+single-sited, below the lift threshold.
 
 ## Scope
 
@@ -227,14 +244,33 @@ bounded:
   table and the resolved-blocker narration. Preserved *Decisions made*
   (coefficient encoding + ground-set restriction, tagged load-bearing
   for Phase 15), *Re-scoping*, *Promoted to FRICTION*, *Hand-off*.
-- [ ] D2 — re-skim `FRICTION.md` status sections: Phase-14 `[resolved]`
-  entries whose resolution is fully indexed elsewhere migrate to
-  `FRICTION-archive.md`; lift any cross-cutting lesson referenced by 2+
-  phases.
+- [x] D2 — re-skimmed `FRICTION.md` status sections. Two Phase-14
+  `[resolved]` entries migrated to `FRICTION-archive.md` (the `Rep`
+  finrank=rk bridge and the `signedIncMatrix` ring-hom naturality — both
+  fully indexed by a named `KFrame.lean` decl, no forward reference); four
+  Phase-13/14 entries kept active as live Phase-15 forward references (the
+  `Matroid.Union` `[DecidableEq β]`-binder, the `signedIncMatrix`
+  decidability-`letI`, the `Matroid.Union`-ground-is-`univ` lesson, the
+  `Graph.Components`-`Finite` bridge). No 2+-phase lesson lift (surviving
+  entries are type-specific project idioms; the `univ`-ground lesson is
+  single-sited, below threshold).
 
 ## Decisions made during this round
 
 ### Cleanup pass summaries
+- **D2 (FRICTION.md re-skim, doc-only; closes the round).** Migrated two
+  pure-Phase-14-infra `[resolved]` entries to `FRICTION-archive.md` — the
+  `Rep` finrank=rk bridge (→ `Matroid.Rep.finrank_span_image_eq_rk`) and
+  the `signedIncMatrix` ring-hom naturality (→ `Graph.signedIncMatrix_map`),
+  both indexed by a named `lean_local_search`-discoverable `KFrame.lean`
+  decl with no Phase-15 forward reference. Kept four Phase-13/14 entries
+  active (`Matroid.Union` `[DecidableEq β]`-binder, `signedIncMatrix`
+  decidability-`letI`, `Matroid.Union`-ground-is-`univ`, `Graph.Components`-
+  `Finite`): each is an explicit live Phase-15 forward reference (the
+  `Components` one per the Phase-13-cleanup precedent). No TACTICS lift —
+  surviving entries are type-specific idioms, not general rules; the
+  `univ`-ground lesson is single-sited (below the 2+-phase threshold). No
+  FRICTION entry (pure §D housekeeping).
 - **D1 (notes/Phase14.md, doc-only compression).** 329 → 152 lines.
   The closed phase no longer needs its *Current state* paragraph and
   per-node *Lemma checklist* at full landed-node-history density:
@@ -319,9 +355,20 @@ bounded:
 
 ## Hand-off / next phase
 
-Round in progress ((B) + (C) complete: B1–B5, C1–C2 done; (D1) done —
-`notes/Phase14.md` compressed 329 → 152 lines). Next concrete commit:
-**D2** — re-skim `FRICTION.md` status sections (migrate fully-indexed
-Phase-14 `[resolved]` entries to `FRICTION-archive.md`; lift any
-2+-phase cross-cutting lesson). When (D) closes, write the round summary
-here and flip the ROADMAP Status row to ✓.
+**Round complete.** All four categories closed: (A) A1+A2 (three docstring
+node-anchor + six staleness fixes), (B) B1–B5 (one accidental-`noncomputable`
+drop on `constPiSpanEquiv`, three stray `classical` drops; rest no-op
+confirm), (C) C1+C2 (one `hFcover`-block fold; cross-proof unification ruled
+out), (D) D1 (`notes/Phase14.md` 329 → 152) + D2 (two FRICTION entries
+archived, four kept as Phase-15 forward references). Build green +
+warning-clean + lint clean throughout (the round touched only docstrings,
+one token, dead `classical`s, and notes — no proof-term math changed).
+ROADMAP Status row flipped to ✓.
+
+Nothing carried over. Next agent opens **Phase 15** (body-bar Tay theorem,
+existence form) per ROADMAP §15 — create `notes/Phase15.md` and open the
+`body-bar.tex` `sec:body-bar-tay` chapter (forward mode). The four
+surviving `FRICTION.md` `[resolved]` entries (`Matroid.Union`
+`[DecidableEq β]`-binder, `signedIncMatrix` decidability-`letI`,
+`Matroid.Union`-ground-is-`univ`, `Graph.Components`-`Finite`) are the
+live forward references Phase 15 will reuse.
