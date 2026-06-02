@@ -1,7 +1,10 @@
 # Phase 17 cleanup round (work log)
 
-**Status:** in progress — A (blueprint divergence) closed; D2 + the
-B5/B6 sites it underlies landed (two mirrors); B1/B4/C remain.
+**Status:** ✓ Complete. A (blueprint divergence) closed; D2 + B5/B6
+mirror sites landed (two mirrors); the B1/B4/B5-L175/C/D1 closing batch
+landed (four dead `classical` removed; `show … from rfl` → `←
+Matrix.of_row`; B4/C no-op confirms; D1 spot-check + two stale Phase17.md
+FRICTION pointers fixed).
 
 Between-phases cleanup round, run after Phase 17 (Grassmann–Cayley
 extensor algebra / Lemma 2.1, KT §2.1) closed in `09921ac` and before
@@ -144,26 +147,28 @@ kept deferred** (ιMulti-ne-zero-iff-LI). So the mirror-directory leg is
 
 ### B. Code-smell sweep (greps run at round open — hit counts recorded)
 
-- [ ] B1 — `classical` invocations: **4 hits** (L382 `card_compl_pair`,
-  L407 `pairAppend_injective`, L455, L493). For each: is `[DecidableEq]`
-  / `[Fintype]` a cleaner boundary, or is the decidability genuinely
-  needed for a `Finset`-compl / `orderEmbOfFin` step? (Several look like
-  `Finset.compl` / `Finset.card_pair` decidability on `Fin (e+2)`, which
-  already has `DecidableEq` — check whether `classical` is load-bearing
-  or removable.)
+- [x] B1 — `classical` invocations: **4 hits** (L382 `card_compl_pair`,
+  L407 `pairAppend_injective`, L455 `join_pair_omitTwo_other_eq_zero`,
+  L493 `omitTwoExtensor_linearIndependent`). **All four removed** —
+  build green + warning-clean + `lake lint` clean without any of them.
+  Every site works over concrete `Fin (e+2)`, which already carries the
+  `DecidableEq`/`Fintype` instances, so the `Finset.compl` /
+  `Finset.card_pair` / `orderEmbOfFin` decidability resolves directly;
+  the `classical` invocations were dead.
 - [ ] B2 — `letI`/`haveI : Fintype … := Fintype.ofFinite _` bridges:
   **0 hits**. No-op confirm (everything is over concrete `Fin n`).
 - [ ] B3 — `@[nolint …]` / `set_option linter.* false`: **0 hits**.
   No-op confirm.
-- [ ] B4 — `noncomputable def`: **3 hits** (L340 `pluckerCoord`, L350
-  `pluckerVector`, L389 `omitTwoExtensor`). For each, confirm the keyword
-  is *forced*, not accidental: `pluckerCoord`/`pluckerVector` carry
-  `Matrix.det` over `ℝ` (noncomputable — documented in `notes/Phase17.md`
-  *Plücker sign encoding*); `omitTwoExtensor` is `extensor ∘ …` on the
-  `ExteriorAlgebra` (noncomputable via `ExteriorAlgebra.ιMulti`). Expect
-  all three forced; confirm `extensor` / `join` / `affineSubspaceExtensor`
-  themselves carry the keyword consistently and none is accidental.
-- [~] B5 — `change`/`show` to coax `simp`/`rw`: **2 hits** (L175
+- [x] B4 — `noncomputable def`: **3 hits** (L340 `pluckerCoord`, L350
+  `pluckerVector`, L389 `omitTwoExtensor`). **No-op confirm — all three
+  forced.** `pluckerCoord` carries `Matrix.det` over `ℝ` (noncomputable);
+  `pluckerVector` depends on it; `omitTwoExtensor` is `extensor ∘ …` on
+  `ExteriorAlgebra.ιMulti` (noncomputable). The three plain
+  `def`s `extensor` / `join` / `affineSubspaceExtensor` correctly carry
+  *no* keyword — the elaborator does not force it (build is green as
+  plain `def`s; it would hard-error "noncomputable" if needed), so none
+  is accidentally missing it.
+- [x] B5 — `change`/`show` to coax `simp`/`rw`: **2 hits** (L175
   `show … from rfl` inside the `rw` of `affineIndependent_fin_iff_det_…`
   — also a B7 hit; L290 `change ExteriorAlgebra.ιMulti ℝ k (v ∘ …) = 0`
   in `extensor_ne_zero_iff_linearIndependent`). **L290 audited:** the
@@ -171,41 +176,49 @@ kept deferred** (ιMulti-ne-zero-iff-LI). So the mirror-directory leg is
   orderEmbOfFin gap — `ιMulti_family_apply_coe` leaves the goal as
   `ExteriorAlgebra.ιMulti_family ℝ k v s = 0` (abbrev unexpanded), so the
   `change` to bare `ιMulti (v ∘ …)` is load-bearing and stays; it is the
-  kept-deferred ιMulti-ne-zero-iff-LI gap (D2). L175 `show … from rfl`
-  still to confirm.
+  kept-deferred ιMulti-ne-zero-iff-LI gap (D2). **L175 `show … from rfl`
+  resolved (also B7):** it is exactly mathlib's `Matrix.of_row`
+  (`(Matrix.of f).row = f`), used reversed with the function passed
+  explicitly so the rewrite metavariable resolves — replaced the
+  anonymous `show … from rfl` with `← Matrix.of_row _`. The trailing
+  bare `rfl` stays (a *separate* `.det`-side defeq bridge, not the same
+  construct). FRICTION `[resolved]` *No mathlib bridge AffineIndependent
+  …* entry updated.
 - [x] B6 — 3+-arg single-step `rw` chains: **2 hits** (L415
   `rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or]`
   — `simp`-collapsible membership unfold, **left as-is** (explicit unfold
   is clearer than `simp` here and not a fused-lemma gap); L525 the
   `{a,b}≠{c,d}` finset-to-set glue — **mirrored** as
   `Finset.pair_eq_pair_iff`, callsite collapsed to one rewrite).
-- [ ] B7 — `show … from rfl`: **1 hit** (L175, shared with B5). See B5.
+- [x] B7 — `show … from rfl`: **1 hit** (L175, shared with B5).
+  Resolved — see B5 (replaced with `← Matrix.of_row _`).
 
 ### C. Long-proof audit (LoC ranking at open — none reach §C 50-line threshold; top 3 are the audit gate)
 
-- [ ] C1 — `omitTwoExtensor_linearIndependent` (~47L, L488). Walk the
-  four-question gate (API extraction / missed mathlib lemma / tactic
-  substitution / cross-proof unification). Lemma 2.1's documented
-  architecture is left-multiply by the `2`-extensor + per-term split via
-  `join_pair_omitTwo_{other_eq_zero,self_ne_zero}`; confirm those two
-  helpers are already the right extraction and the residual body is
-  forced `Fintype.linearIndependent_iff` + pair-indexing boilerplate.
-- [ ] C2 — `join_pair_omitTwo_other_eq_zero` (~32L, L451). Audit gate;
-  expect forced (the off-diagonal `extensor_eq_zero_of_not_injective`
-  vanishing, the documented `{a,b}≠{c,d}` route through
-  `Set.pair_eq_pair_iff`).
-- [ ] C3 — `affineIndependent_iff_linearIndependent_homogenize` (~32L,
-  L129). Audit gate; expect forced (the homogeneous-coordinate
-  `∑w=0` / `∑ w•p=0` split documented in `notes/Phase17.md`
-  *lem:affine-indep-iff proof*).
+- [x] C1 — `omitTwoExtensor_linearIndependent` (~47L). **No-op confirm.**
+  Four-question gate: the two per-term-split helpers
+  `join_pair_omitTwo_{other_eq_zero,self_ne_zero}` are already the right
+  API extraction; the residual body is forced `Fintype.linearIndependent_iff`
+  + `Finset.sum_ite_eq'` pair-indexing boilerplate. No further split, no
+  missed mathlib lemma, no tactic substitution.
+- [x] C2 — `join_pair_omitTwo_other_eq_zero` (~32L). **No-op confirm —
+  forced.** Off-diagonal `extensor_eq_zero_of_not_injective` vanishing;
+  the `{a,b}≠{c,d}` route now goes through the mirrored
+  `Finset.pair_eq_pair_iff` at the C1 callsite (the helper itself uses
+  `Finset.subset_iff` + `range_orderEmbOfFin`).
+- [x] C3 — `affineIndependent_iff_linearIndependent_homogenize` (~32L).
+  **No-op confirm — forced** (the homogeneous-coordinate `∑w=0` / `∑ w•p=0`
+  `Fin.lastCases` split documented in `notes/Phase17.md`).
 
 ### D. Project-organization compression
 
-- [ ] D1 — `notes/Phase17.md` is **223 lines**, under the 250 soft budget
-  but the closest a phase log has run. Spot-check the *Decisions made*
-  entries against the ≤8-line rule and the *Current state* + *Hand-off*
-  sections against the hand-off contract; compress / lift any entry that
-  has leaked implementation detail.
+- [x] D1 — `notes/Phase17.md` spot-check. **224 lines, under budget; no
+  compression needed.** All *Decisions made* entries respect the ≤8-line
+  rule and already point cross-cutting items at FRICTION; *Current state*
+  + *Hand-off* pass the hand-off contract. **Two stale FRICTION pointers
+  fixed:** the `Finset.pair_eq_pair_iff` and `Finset.univ_orderEmbOfFin`
+  entries were relabelled `[open]` → `[mirrored]` (both mirrored in D2);
+  the ιMulti-ne-zero-iff-LI pointer relabelled `[open, kept-deferred]`.
 - [~] D2 — re-skim `FRICTION.md` status sections. Three upstream-eligible
   Phase-17 mirror candidates **triaged: two mirrored, one kept deferred**
   (see *Decisions made*). Mirrored *`Finset.univ.orderEmbOfFin = id`* →
@@ -245,28 +258,20 @@ kept deferred** (ιMulti-ne-zero-iff-LI). So the mirror-directory leg is
 
 ## Hand-off / next phase
 
-**A landed (doc-only); D2 + B5/B6 landed (two mirrors).** The round's
-substantive weight is discharged: the mirror triage is done (two mirrored,
-one kept deferred), the B6/L525 `rw` chain collapsed, and the B5/L290
-`change` audited as forced.
+**Round complete.** All four buckets discharged:
+- **A** (blueprint divergence) — A1 no-op confirm, A2 chapter-intro destale.
+- **B** (code smells) — B2/B3 zero-hit confirms; B4 no-op confirm (3 forced
+  `noncomputable`); **B1 four dead `classical` removed**; **B5/B7 L175
+  `show … from rfl` → `← Matrix.of_row _`**; B5/L290 `change` kept (forced);
+  B6/L415 `rw` kept, B6/L525 `rw` collapsed via the mirror.
+- **C** (long proofs) — C1–C3 no-op confirms (forced per-term-split / split
+  architecture; the two helpers are already the right extraction).
+- **D** (org compression) — D1 Phase17.md spot-check (under budget, two
+  stale FRICTION pointers fixed); D2 mirror triage (two mirrored, one
+  kept deferred).
 
-**Smallest concrete next commit:** the **B1 + B4 + C no-op-confirm batch**
-(the remaining sweep is per-site audits with no expected refactor, so they
-batch into one commit per `CLEANUP.md` *Calibration* and the parent
-batching guidance). Specifically:
-- **B1** (`classical` ×4: L382 `card_compl_pair`, L407 `pairAppend_injective`,
-  L455 `join_pair_omitTwo_other_eq_zero`, L493 `omitTwoExtensor_linearIndependent`):
-  confirm each is load-bearing (Finset-compl / `orderEmbOfFin` decidability
-  on `Fin (e+2)`) or removable.
-- **B4** (`noncomputable def` ×3: `pluckerCoord`, `pluckerVector`,
-  `omitTwoExtensor`): confirm the keyword is forced (`Matrix.det` over `ℝ` /
-  `ExteriorAlgebra.ιMulti`), not accidental.
-- **B5/L175** `show … from rfl` (also B7): confirm reducible to a named
-  `Matrix.row`/`Matrix.of` lemma or forced.
-- **C1–C3** long-proof gate (`omitTwoExtensor_linearIndependent` ~47L and
-  the two ~32L proofs): the four-question audit, expect a forced-shape
-  no-op confirm (Lemma 2.1's per-term-split architecture is documented).
-- **D1**: the `notes/Phase17.md` ≤8-line / hand-off spot-check.
-
-Closing that batch closes the round. A fresh session can resume from this
-log plus `CLEANUP.md` + ROADMAP §17 alone.
+Build green + warning-clean + `lake lint` clean throughout. **Next is
+Phase 18** (panel-hinge rigidity matrix `R(G,p)`, KT §2.2–2.4); first
+concrete commit per `notes/Phase17.md` *Hand-off*: create `notes/Phase18.md`,
+open the Phase-18 blueprint chapter (forward mode), pick its leaf-most red
+node. A fresh session resumes from ROADMAP §17+ + `notes/MolecularConjecture.md`.

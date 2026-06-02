@@ -174,7 +174,7 @@ theorem affineIndependent_fin_iff_det_homogenize (p : Fin (d + 1) → Fin d → 
     AffineIndependent ℝ p ↔
       (Matrix.of (fun i => homogenize (p i))).det ≠ 0 := by
   rw [affineIndependent_iff_linearIndependent_homogenize,
-    show (fun i => homogenize (p i)) = (Matrix.of (fun i => homogenize (p i))).row from rfl,
+    ← Matrix.of_row (fun i => homogenize (p i)),
     Matrix.linearIndependent_rows_iff_isUnit, Matrix.isUnit_iff_isUnit_det,
     isUnit_iff_ne_zero]
   rfl
@@ -378,7 +378,6 @@ The `D` extensors are indexed by ordered pairs `a < b` of point indices. -/
 exactly `e` elements. -/
 theorem card_compl_pair {e : ℕ} {a b : Fin (e + 2)} (hab : a ≠ b) :
     (({a, b} : Finset (Fin (e + 2)))ᶜ).card = e := by
-  classical
   rw [Finset.card_compl, Fintype.card_fin, Finset.card_pair hab]
   omega
 
@@ -403,7 +402,6 @@ private def pairAppend {e : ℕ} (a b : Fin (e + 2)) (hab : a ≠ b) :
 all of `Fin (e+2)`). -/
 private theorem pairAppend_injective {e : ℕ} (a b : Fin (e + 2)) (hab : a ≠ b) :
     Function.Injective (pairAppend a b hab) := by
-  classical
   set emb := (({a, b} : Finset (Fin (e + 2)))ᶜ).orderEmbOfFin (card_compl_pair hab) with hemb
   rw [pairAppend, Fin.append_injective_iff]
   refine ⟨injective_pair_iff_ne.mpr hab, emb.injective, ?_⟩
@@ -451,7 +449,6 @@ private theorem join_pair_omitTwo_other_eq_zero {e : ℕ} (v : Fin (e + 2) → F
     {a b c d : Fin (e + 2)} (hab : a ≠ b) (hcd : c ≠ d)
     (hne : ({a, b} : Finset (Fin (e + 2))) ≠ {c, d}) :
     extensor ![v a, v b] ∨ₑ omitTwoExtensor v hcd = 0 := by
-  classical
   rw [join_pair_omitTwo]
   apply extensor_eq_zero_of_not_injective
   -- `{a, b} ≠ {c, d}` forces `a ∈ {c,d}ᶜ` or `b ∈ {c,d}ᶜ`; that vector then appears
@@ -489,7 +486,6 @@ theorem omitTwoExtensor_linearIndependent {e : ℕ} (p : Fin (e + 2) → Fin (e 
     LinearIndependent ℝ
       (fun q : {q : Fin (e + 2) × Fin (e + 2) // q.1 < q.2} =>
         omitTwoExtensor (fun i => homogenize (p i)) (ne_of_lt q.2)) := by
-  classical
   set v := fun i => homogenize (p i) with hvdef
   have hv : LinearIndependent ℝ v :=
     (affineIndependent_iff_linearIndependent_homogenize p).mp hp

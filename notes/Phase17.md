@@ -140,8 +140,8 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
   Off-diagonal vanishing and diagonal nonvanishing are split into
   `join_pair_omitTwo_{other_eq_zero,self_ne_zero}`; the diagonal reindex
   is the `pairAppend` bijection (`Fin.append_injective_iff`). The
-  `{a,b}≠{c,d}` finset step routes through `Set.pair_eq_pair_iff` (no
-  `Finset` analogue — FRICTION [open]).
+  `{a,b}≠{c,d}` finset step routes through `Finset.pair_eq_pair_iff`
+  (mirrored post-phase — FRICTION [mirrored]).
 - **`C(·)` is `extensor ∘ homogenize`, not a fresh join chain.** Since
   `join_extensor` already proves `extensor a ∨ₑ extensor b =
   extensor (a ++ b)`, the join `p̄₁ ∨ ⋯ ∨ p̄_k` *is* the extensor of the
@@ -150,7 +150,7 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
   factors cleanly: homogenization bridge
   (`affineIndependent_iff_linearIndependent_homogenize`) ∘ the extensor
   ↔ LI fact (`extensor_ne_zero_iff_linearIndependent`).
-- **Extensor ↔ LI nonvanishing** → FRICTION [open] *No mathlib
+- **Extensor ↔ LI nonvanishing** → FRICTION [open, kept-deferred] *No mathlib
   `exteriorPower.ιMulti v ≠ 0 ↔ LinearIndependent v`* (forward via
   `AlternatingMap.map_linearDependent`; converse via
   `ιMulti_family_linearIndependent_field` + `.ne_zero` at the unique
@@ -162,9 +162,9 @@ in intended dependency order; flip each `\leanok` as the Lean lands.
   `(coordMatrix v).submatrix id (s.orderEmbOfFin h)` (columns selected in
   increasing order by the order-embedding of the `j`-element column set).
   `def`/`noncomputable` because `Matrix.det` over `ℝ` is noncomputable.
-- **`pluckerCoord_univ` idiom** → FRICTION [open] *No mathlib
-  `Finset.univ.orderEmbOfFin = id`* (derive via `orderEmbOfFin_unique` +
-  `submatrix_id_id`).
+- **`pluckerCoord_univ` idiom** → FRICTION [mirrored] *`Finset.univ_orderEmbOfFin`
+  (`Finset.univ.orderEmbOfFin = id`)*, mirrored post-phase; derived via
+  `orderEmbOfFin_unique` + `submatrix_id_id`.
 - **Carrier (decided on first Lean).** Point space `Fin d → ℝ`,
   homogenizing to `Fin (d+1) → ℝ` via `Fin.snoc p 1`. Plain coordinate
   tuples (not `EuclideanSpace`) are the natural carrier for the

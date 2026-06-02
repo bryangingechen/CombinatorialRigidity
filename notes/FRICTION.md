@@ -640,9 +640,12 @@ housekeeping pass once their resolution is fully indexed.
   coordinatization), so the lemma stays project-internal in
   `Molecular/`, not mirrored. Determinant form on top via
   `Matrix.linearIndependent_rows_iff_isUnit` + `isUnit_iff_isUnit_det`
-  + `isUnit_iff_ne_zero` (closing the `Matrix.of (_.row)` vs
-  `Matrix.of _` residual with a bare `rfl`, both being defeq through
-  `Matrix.row`/`Matrix.of` = identity).
+  + `isUnit_iff_ne_zero`. The row-identity step `(fun i => …) =
+  (Matrix.of …).row` is exactly mathlib's `Matrix.of_row` (used reversed,
+  with the function given explicitly so the rewrite metavariable
+  resolves) — Phase 17-cleanup B5/B7 replaced the original anonymous
+  `show … from rfl` with `← Matrix.of_row _`; a residual bare `rfl`
+  still bridges the `.det` side (`Matrix.of`-applied vs bare det, defeq).
 
 ### [open] `AffineSubspace.nonempty_of_affineSpan_eq_top` takes `(k V P)` explicit
 
