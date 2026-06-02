@@ -94,6 +94,13 @@ time, not first-draft.
     goal type-checks** — the goal's surrounding lemmas pin implicit
     motives (e.g. `Pi.single`'s family type); operate on the goal in
     place (`Finset.sum_congr` / `simp only`) rather than restating it.
+25. **`refine h.trans ?_` (or `Iff.trans`) needs the bridging iff's
+    side to *syntactically* match the goal — defeq is not enough** —
+    when a helper iff's LHS is only definitionally equal to the goal's
+    LHS (`F.IsIndependent` vs `F.toBodyBar.IsIndependent`, `∃ (_ : p)`
+    vs `p ∧ q`), `.trans` fails with a type mismatch. Drop `.trans`
+    and bridge with `constructor` + `.mp` / `.mpr` instead, which let
+    each direction close up to defeq via `exact`.
 
 ---
 
@@ -981,3 +988,31 @@ Pi.single … = …` failed to elaborate; collapsing the inner
 worked. Sibling of §9 / §12 (the FunLike/PiLp "acts like a function
 but isn't" family): same root cause — an elaborator inference that
 the surrounding context was silently supplying.
+
+## 25. `refine h.trans ?_` / `Iff.trans` requires a syntactic side-match, not just defeq
+
+When a helper iff `h : A ↔ B` is meant to bridge a goal `A' ↔ C`
+where `A'` is only *definitionally* equal to `A` (not syntactically),
+`refine h.trans ?_` fails with a *"Type mismatch … has type `A ↔ ?` but
+is expected to have type `A' ↔ …`"*. `Iff.trans` unifies its first
+component against the goal's LHS up to reducible transparency only, so
+the two must match *syntactically*; a `def`-unfolding or
+binder-shape difference defeats it. Typical offenders:
+
+- a wrapper-vs-base projection that is `rfl` but not syntactically
+  equal: `F.IsIndependent D` vs `F.toBodyBar.IsIndependent D` (the
+  former `def`-unfolds to the latter);
+- a dependent existential `∃ (_ : p), q` vs a conjunction-style
+  `p ∧ q` (both encode "`p` and `q`" but are different `Exists` /
+  `And` head symbols).
+
+**Fix:** don't compose with `.trans`. Open the goal iff with
+`constructor` and discharge each direction with `exact`, which closes
+up to full defeq — or, when one side already matches, `rw` the
+matching iff and then `constructor`. Worked case:
+`Graph.BodyHingeFramework.edgeMultiply_isSparse_iff` in
+`BodyBar/BodyHinge.lean` — the body-hinge↔body-bar transport
+(`exists_toBodyBar_iff`) only defeq-matches the goal's existential, so
+the proof `rw`s `tay_witness`'s iff (a syntactic match on the
+`IsSparse` side) and bridges the existentials with `constructor` +
+`.mpr`, never `.trans`.

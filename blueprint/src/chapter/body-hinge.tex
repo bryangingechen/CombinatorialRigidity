@@ -72,6 +72,8 @@ underlying multigraph.
 
 \begin{lemma}[Sparsity transports across edge multiplication]
   \label{lem:edge-multiply-sparse}
+  \lean{Graph.BodyHingeFramework.edgeMultiply_isSparse_iff}
+  \leanok
   \uses{def:edge-multiply, def:graph-sparse}
   For $\delta = \mathrm{bodyBarDim}\,n$, the multigraph $G$ is
   generically realizable as an independent (resp.\ isostatic)
@@ -83,13 +85,20 @@ underlying multigraph.
   $(\delta - 1)|E(G)| = \delta(|V(G)| - 1)$.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:body-hinge-framework, thm:tay-witness}
-  A generic hinge two-extensor assignment realizes the
-  $\delta - 1$ coincident bars of each hinge as an independent bundle
-  spanning the hinge's dual space, so the induced body-bar framework on
-  $(\delta - 1)\cdot G$ is independent iff the body-hinge framework is;
-  rigidity and independence then transport node-for-node through the
-  body-bar predicates of \cref{sec:body-bar-framework}.
+  A body-hinge framework on $G$ \emph{is} a body-bar framework on
+  $(\delta - 1)\cdot G$ --- the placement data and the induced rigidity
+  map are literally the same (\cref{def:body-hinge-framework}), so the
+  two existentials are the same data (a bijection, formalized as the
+  \texttt{exists\_toBodyBar\_iff} transport). Independence and
+  isostaticity therefore read off node-for-node, and the claim is
+  \cref{thm:tay-witness} applied to $(\delta - 1)\cdot G$. The generic
+  hinge two-extensor assignment that realizes the $\delta - 1$
+  coincident bars of each hinge as an independent bundle spanning the
+  hinge's dual space is the standard-basis witness on the tree packing
+  of $(\delta - 1)\cdot G$, carried verbatim from
+  \cref{sec:body-bar-tay}.
 \end{proof}
 
 \subsection{Tay--Whiteley body-hinge theorem (existence-of-realization form)}

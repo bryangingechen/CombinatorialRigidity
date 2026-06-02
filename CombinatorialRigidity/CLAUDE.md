@@ -133,6 +133,12 @@ bullets. If one matches, jump to the named section of
   meta import` for the imported `Decidable` / elaboration instances*:
   keep `public import X` for compile-time visibility and add a
   second-form `public meta import X` for meta-time visibility.
+- *"Type mismatch … has type `A ↔ ?` but is expected to have type
+  `A' ↔ …`"* on a `refine h.trans ?_` / `Iff.trans` where `A'` is only
+  *defeq* to `A` (a `def`-unfolding wrapper like `F.IsIndependent` vs
+  `F.toBodyBar.IsIndependent`, or `∃ (_ : p), q` vs `p ∧ q`) — § 25
+  *`Iff.trans` requires a syntactic side-match*: drop `.trans`, bridge
+  with `constructor` + `.mp` / `.mpr` (closes up to full defeq).
 
 ## Starting a Lean-touching session
 

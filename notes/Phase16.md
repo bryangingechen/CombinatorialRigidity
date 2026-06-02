@@ -1,6 +1,7 @@
 # Phase 16 — Body-hinge Tay–Whiteley theorem (existence form) (work log)
 
-**Status:** in progress (`def:edge-multiply`, `def:body-hinge-framework` landed).
+**Status:** in progress (`def:edge-multiply`, `def:body-hinge-framework`,
+`lem:edge-multiply-sparse` landed).
 
 ## Current state
 
@@ -15,13 +16,15 @@ hinge-to-bar reduction (`def:body-hinge-framework`, `lem:edge-multiply-sparse`)
 lands.
 
 Forward-mode phase. The authoritative dep-graph and lemma index is the
-blueprint chapter `body-hinge.tex` (§`sec:body-hinge`). Nodes `def:edge-multiply`
-and `def:body-hinge-framework` are now green: `Graph.edgeMultiply` (+3 transport
-facts) and `Graph.BodyHingeFramework` (+ `toBodyBar`, `IsIndependent`,
-`IsInfinitesimallyRigid`) live in `BodyBar/BodyHinge.lean` (in the
-`CombinatorialRigidity.lean` aggregator). Next concrete step is
-`lem:edge-multiply-sparse` — independent/isostatic body-hinge ⇔
-`(δ,δ)`-sparse/tight `(δ-1)·G`, the count `(δ-1)|E| = δ(|V|-1)`.
+blueprint chapter `body-hinge.tex` (§`sec:body-hinge`). Nodes `def:edge-multiply`,
+`def:body-hinge-framework`, and `lem:edge-multiply-sparse` are now green:
+`Graph.edgeMultiply` (+3 transport facts), `Graph.BodyHingeFramework`
+(+ `toBodyBar`, `IsIndependent`, `IsInfinitesimallyRigid`), and the sparsity
+correspondence `edgeMultiply_isSparse_iff` (+ helper `exists_toBodyBar_iff`) live
+in `BodyBar/BodyHinge.lean` (in the `CombinatorialRigidity.lean` aggregator).
+`lem:edge-multiply-sparse` is the body-bar Tay theorem (`tay_witness`) applied to
+`(δ-1)·G`, transported across the body-hinge ⇔ body-bar existential bijection.
+Next (final) concrete step is the chapter target `thm:body-hinge-tay`.
 
 ## Architectural choices made up front
 
@@ -65,8 +68,12 @@ checklist). Leaf-first landing order:
   framework on `(δ-1)·G` (`Graph.BodyHingeFramework`, `.toBodyBar`,
   `.IsIndependent`, `.IsInfinitesimallyRigid`); rigidity / independence inherited
   verbatim (one-line wrappers, no glue). In `BodyBar/BodyHinge.lean`.
-- [ ] `lem:edge-multiply-sparse` — independent/isostatic body-hinge ⇔
-  `(δ,δ)`-sparse/tight `(δ-1)·G`; the count `(δ-1)|E| = δ(|V|-1)`.
+- [x] `lem:edge-multiply-sparse` — independent/isostatic body-hinge ⇔
+  `(δ,δ)`-sparse/tight `(δ-1)·G` (`edgeMultiply_isSparse_iff`). Routed through
+  `tay_witness` on `(δ-1)·G` + the existential bijection `exists_toBodyBar_iff`;
+  the count `(δ-1)|E| = δ(|V|-1)` is left as the blueprint-prose consequence of
+  `edgeMultiply_edgeSet_ncard` + tightness (no standalone ℕ-lemma needed — see
+  Decisions). In `BodyBar/BodyHinge.lean`.
 - [ ] `thm:body-hinge-tay` — the chapter target; assemble from
   `lem:edge-multiply-sparse` + `tay_witness` + tree-packing reformulations.
 
@@ -108,8 +115,24 @@ checklist). Leaf-first landing order:
   keeps the verbatim title. This mismatch is Tay's, not ours; bib = verbatim
   title, prose = in-text term — neither should be edited to match the other.
 
+- **`lem:edge-multiply-sparse` = `tay_witness` on `(δ-1)·G` + an existential
+  bijection; no new count lemma.** `edgeMultiply_isSparse_iff` mirrors
+  `tay_witness`'s iff-pair shape with the body-hinge existential on the LHS and
+  `((δ-1)·G).IsSparse/IsTight δ δ` on the RHS. The proof `rw`s `tay_witness`'s
+  RHS (`IsSparse`/`IsTight` match syntactically), then bridges the body-hinge ⇔
+  body-bar existentials with the new helper `exists_toBodyBar_iff` (a bijection:
+  a body-hinge framework on `G` *is* a body-bar framework on `(δ-1)·G`, same
+  placement data). The count `(δ-1)|E| = δ(|V|-1)` is **not** a separate Lean
+  lemma — it falls out of `edgeMultiply_edgeSet_ncard` + the additive tightness
+  equation, so it stays a blueprint-prose consequence (answers the Blockers
+  re-assess: no `edgeMultiply_edgeSet_ncard`-backed arithmetic lemma needed).
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 
+- *`Iff.trans` / `refine h.trans ?_` needs a syntactic side-match, not just
+  defeq; bridge with `constructor` + `.mp`/`.mpr`* → TACTICS-QUIRKS § 25 /
+  FRICTION [resolved] *`refine h.trans ?_` over a defeq-but-not-syntactic iff
+  side* (hit landing `edgeMultiply_isSparse_iff`).
 - *Bare `\lean{}` in blueprint prose poisons `lean_decls` / fails `checkdecls`*
   → `blueprint/SETUP-AND-PITFALLS.md` *Pitfalls* (hit on this commit: the
   phase-opening chapter preamble's "gains a `\lean{}` pointer" prose silently
@@ -118,33 +141,32 @@ checklist). Leaf-first landing order:
 
 ## Blockers / open questions
 
-- **Degree of reuse of `tay_witness` — RESOLVED for the framework definition.**
-  `def:body-hinge-framework` routes through `tay_witness`/the body-bar predicates
-  verbatim: `BodyHingeFramework.IsIndependent` / `IsInfinitesimallyRigid` are
-  one-line `toBodyBar.Is…` wrappers, no orientation transport or basis
-  bookkeeping at the *definition* layer (see Decisions). The remaining content is
-  the count `(δ-1)|E| = δ(|V|-1)` and the generic-realization claim, both inside
-  `lem:edge-multiply-sparse`; `thm:body-hinge-tay` should then be a near-`rw` of
-  `tay_witness` on `(δ-1)·G`. Re-assess whether the sparse-side count needs a new
-  `edgeMultiply_edgeSet_ncard`-backed arithmetic lemma once that node opens.
+- **Tree-packing reformulation for `thm:body-hinge-tay`.** The chapter target's
+  statement folds in the `tutte_nash_williams` / `cor:k-spanning-trees`
+  equivalence (`(δ-1)·G` = edge-disjoint union of `δ` forests / spanning trees).
+  `lem:edge-multiply-sparse` already delivers the sparse/tight half; the open
+  question is whether `thm:body-hinge-tay` restates the tree-packing leg
+  explicitly (a second iff conjunct) or just composes `edgeMultiply_isSparse_iff`
+  with the existing `tutte_nash_williams` on `(δ-1)·G` at the call site. The
+  count `(δ-1)|E| = δ(|V|-1)` needs no Lean lemma — it is `edgeMultiply_edgeSet_ncard`
+  + the additive tightness equation (resolved during `lem:edge-multiply-sparse`).
 
 ## Hand-off / next phase
 
-**Smallest next commit:** formalize `lem:edge-multiply-sparse` — that an
-independent (resp. isostatic) body-hinge framework on `G` corresponds to
-`(δ,δ)`-sparse (resp. tight) `(δ-1)·G`, with the count
-`(δ-1)|E(G)| = δ(|V(G)|-1)`. The count side should follow from
-`edgeMultiply_edgeSet_ncard` (`|E((δ-1)·G)| = (δ-1)|E(G)|`, already green) plus
-`Graph.IsSparse`/tightness arithmetic (Phase 13 `Sparsity.lean`); the rigidity
-side from the `BodyHingeFramework.Is…` wrappers (now green) composed with the
-body-bar independence/sparsity correspondence used by `tay_witness`. Decide
-whether the count needs a small standalone `ℕ`-arithmetic lemma or folds into the
-sparse predicate directly. Land it in `BodyBar/BodyHinge.lean` and flip
-`lem:edge-multiply-sparse` green in `body-hinge.tex` in the same commit.
+**Smallest next commit (closes the phase):** formalize `thm:body-hinge-tay`, the
+chapter target. Statement: a multigraph `G` carries an independent body-hinge
+framework iff `(δ-1)·G` is `(δ,δ)`-sparse, isostatic iff `(δ-1)·G` is
+`(δ,δ)`-tight. This is `edgeMultiply_isSparse_iff` (now green) — the two are the
+same statement, so `thm:body-hinge-tay` is essentially that lemma re-exported
+under the theorem name, optionally conjoined with the tree-packing reformulation
+via `tutte_nash_williams` / `cor:k-spanning-trees` applied to `(δ-1)·G` (see
+Blockers for the open phrasing choice). Land it in `BodyBar/BodyHinge.lean`, flip
+`thm:body-hinge-tay` green in `body-hinge.tex`, and run the phase-completion
+checklist (ROADMAP row → ✓, compress §16 planning, sync the three status
+surfaces). This is the **last red node** of the chapter.
 
-`def:edge-multiply` (`Graph.edgeMultiply` + 3 transport facts) and
-`def:body-hinge-framework` (`Graph.BodyHingeFramework` + `toBodyBar` +
-`IsIndependent` + `IsInfinitesimallyRigid`) are done.
+`def:edge-multiply`, `def:body-hinge-framework`, and `lem:edge-multiply-sparse`
+are done; the chapter dep-graph is green except `thm:body-hinge-tay`.
 
 Follow-on after Phase 16: the **molecular conjecture** (panel-and-hinge with
 concurrent hinges; Tay–Whiteley conjecture, proved by Katoh–Tanigawa 2011) — a

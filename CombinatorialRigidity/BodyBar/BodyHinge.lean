@@ -5,6 +5,7 @@ Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.BodyBar.TreePacking
 import CombinatorialRigidity.BodyBar.Framework
+import CombinatorialRigidity.BodyBar.TayTheorem
 import Mathlib.Combinatorics.Graph.Basic
 
 /-!
@@ -192,6 +193,63 @@ same semantic contract guard as there (finite body set). -/
 def IsInfinitesimallyRigid [Finite α] (F : BodyHingeFramework n α β)
     (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))) : Prop :=
   F.toBodyBar.IsInfinitesimallyRigid D
+
+/-- A body-bar framework on the multiplied multigraph `(δ-1)·G` arises from a body-hinge
+framework on `G`: `toBodyBar` is a bijection from `BodyHingeFramework`s with `graph = G`
+onto `BodyBarFramework`s with `graph = (δ-1)·G`, given by passing the placement through
+unchanged. This is the existential transport underlying `lem:edge-multiply-sparse`: the
+body-hinge frameworks on `G` and the body-bar frameworks on `(δ-1)·G` are *the same data*. -/
+theorem exists_toBodyBar_iff (G : Graph α β)
+    (P : BodyBarFramework n α (β × Fin (bodyHingeMult n)) → Prop) :
+    (∃ F : BodyHingeFramework n α β, F.graph = G ∧ P F.toBodyBar) ↔
+      (∃ Fb : BodyBarFramework n α (β × Fin (bodyHingeMult n)),
+        Fb.graph = G.edgeMultiply (bodyHingeMult n) ∧ P Fb) := by
+  constructor
+  · rintro ⟨F, rfl, hP⟩
+    exact ⟨F.toBodyBar, rfl, hP⟩
+  · rintro ⟨Fb, hgraph, hP⟩
+    refine ⟨⟨G, hgraph ▸ Fb.placement⟩, rfl, ?_⟩
+    convert hP using 1
+    cases Fb with
+    | mk graph placement => cases hgraph; rfl
+
+/-- **Sparsity transports across edge multiplication** (`lem:edge-multiply-sparse`; Tay 1989 §7,
+Whiteley 1988). For `δ = bodyBarDim n`, a multigraph `G` carries an *independent* body-hinge
+framework in `ℝⁿ` **iff** `(δ-1)·G` is `(δ,δ)`-sparse, and an *isostatic* one **iff** `(δ-1)·G`
+is `(δ,δ)`-tight. The proof is the body-bar Tay theorem (`tay_witness`) applied to the multiplied
+multigraph `(δ-1)·G`, transported across the body-hinge ⇔ body-bar existential bijection
+(`exists_toBodyBar_iff`): a body-hinge framework on `G` *is* a body-bar framework on `(δ-1)·G`, so
+independence and isostaticity read off node-for-node.
+
+The count of `def:edge-multiply` makes the tightness concrete: `|E((δ-1)·G)| = (δ-1)|E(G)|`
+(`edgeMultiply_edgeSet_ncard`), so `(δ,δ)`-tightness of `(δ-1)·G` reads
+`(δ-1)|E(G)| + δ = δ·|V(G)|`, i.e. `(δ-1)|E(G)| = δ(|V(G)|-1)`. -/
+theorem edgeMultiply_isSparse_iff [Finite α] [Finite β] (G : Graph α β) :
+    ((∃ (F : BodyHingeFramework n α β) (_ : F.graph = G)
+        (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))), F.IsIndependent D) ↔
+      (G.edgeMultiply (bodyHingeMult n)).IsSparse (bodyBarDim n) (bodyBarDim n)) ∧
+    ((∃ (F : BodyHingeFramework n α β) (_ : F.graph = G)
+        (D : Graph.orientation (F.graph.edgeMultiply (bodyHingeMult n))),
+          F.IsIndependent D ∧ F.IsInfinitesimallyRigid D) ↔
+      (G.edgeMultiply (bodyHingeMult n)).IsTight (bodyBarDim n) (bodyBarDim n)) := by
+  obtain ⟨hsparse, htight⟩ :=
+    BodyBarFramework.tay_witness (n := n) (G.edgeMultiply (bodyHingeMult n))
+  refine ⟨?_, ?_⟩
+  · rw [← hsparse]
+    constructor
+    · rintro ⟨F, rfl, D, hD⟩; exact ⟨F.toBodyBar, rfl, D, hD⟩
+    · rintro ⟨Fb, hg, D, hD⟩
+      obtain ⟨F, rfl, hP⟩ :=
+        (exists_toBodyBar_iff G (fun Fb => ∃ D, Fb.IsIndependent D)).mpr ⟨Fb, hg, D, hD⟩
+      exact ⟨F, rfl, hP⟩
+  · rw [← htight]
+    constructor
+    · rintro ⟨F, rfl, D, hD⟩; exact ⟨F.toBodyBar, rfl, D, hD⟩
+    · rintro ⟨Fb, hg, D, hD⟩
+      obtain ⟨F, rfl, hP⟩ :=
+        (exists_toBodyBar_iff G
+          (fun Fb => ∃ D, Fb.IsIndependent D ∧ Fb.IsInfinitesimallyRigid D)).mpr ⟨Fb, hg, D, hD⟩
+      exact ⟨F, rfl, hP⟩
 
 end BodyHingeFramework
 
