@@ -101,7 +101,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-13) | Phase 13 surface (`BodyBar/TreePacking.lean`, Phase-13 `Matroid/Constructions/Union.lean` adders, `body-bar.tex` tree-packing nodes) | ✓ Complete (see `notes/Phase13-cleanup.md`; round manual: `CLEANUP.md`) |
 | 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | ✓ Complete (see `notes/Phase14.md`) |
 | ⋮ Cleanup round (post-Phase-14) | Phase 14 surface (`BodyBar/KFrame.lean`, Phase-14 `Mathlib/LinearAlgebra/Matrix/Rank.lean` adders, `body-bar.tex` `sec:body-bar-k-frame` nodes) | ✓ Complete (see `notes/Phase14-cleanup.md`; round manual: `CLEANUP.md`) |
-| 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | planning (was Phase 12; see `notes/Phase12.md`) |
+| 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | in progress (was Phase 12; see `notes/Phase15.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -466,8 +466,13 @@ encoding and the ground-set restriction): `notes/Phase14.md` and the
 
 ### Phase 15 — Body-bar Tay theorem (existence form)
 
-**Status (planning; scoped in `body-bar.tex`).** The original Phase-12
-target. For `n ≥ 2` and `d = n(n+1)/2`, a multigraph `G` on `b` bodies
+**Status (in progress; see `notes/Phase15.md`).** The original Phase-12
+target, unblocked by the Phase 12–14 chain. Forward-mode phase: the
+lemma index is `blueprint/src/chapter/body-bar.tex`
+§`sec:body-bar-framework` + §`sec:body-bar-tay` (four red nodes); next
+concrete commit is `def:body-bar-framework` in a new
+`BodyBar/Framework.lean`. For `n ≥ 2` and `d = n(n+1)/2`, a multigraph
+`G` on `b` bodies
 admits an infinitesimally rigid independent body-bar framework in `Rⁿ`
 iff `|E| = d(b−1)` with `|E'| ≤ d|V'| − d` on every sub-multigraph;
 equivalently (Phase 13) iff `G` is the edge-disjoint union of `d`

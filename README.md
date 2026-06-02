@@ -49,7 +49,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–14 complete; Phase 15 scoped.**
+* **Phases 1–14 complete; Phase 15 in progress.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -108,10 +108,13 @@ project; commit history is preserved with paths rewritten.
     (`Graph.kFrameMatroid_eq_unionPow_cycleMatroid`), matching the two
     `(k,k)`-sparsity count-characterizations by matroid extensionality.
     `BodyBar/KFrame.lean`. See `notes/Phase14.md`.
-  * **Phase 15 (scoped)** — **Tay's theorem** itself in
+  * **Phase 15 (in progress)** — **Tay's theorem** itself in
     existence-of-realization form (by specializing two-extensor row
-    coefficients to standard-basis Plücker coordinates). Scoped in
-    `blueprint/src/chapter/body-bar.tex` and ROADMAP §15. Whiteley's full
+    coefficients to standard-basis Plücker coordinates). Forward-mode
+    lemma index in `blueprint/src/chapter/body-bar.tex`
+    §`sec:body-bar-framework` + §`sec:body-bar-tay`; next concrete commit
+    is `def:body-bar-framework` in a new `BodyBar/Framework.lean`. See
+    `notes/Phase15.md`. Whiteley's full
     "almost-all-realizations-are-rigid" lift via irreducible-variety
     machinery (Proposition 6) is deferred. The longer-horizon target
     beyond is the **molecular conjecture** (Katoh–Tanigawa 2011).

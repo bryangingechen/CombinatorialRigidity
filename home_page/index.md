@@ -21,8 +21,8 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–13 are complete and carry no `sorry`s; **Phases 14–15 (the
-rest of the body-bar program) are scoped**, see below. The main theorem
+Phases 1–14 are complete and carry no `sorry`s; **Phase 15 (the
+last step of the body-bar program) is in progress**, see below. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
@@ -75,7 +75,7 @@ its live `FiniteCircuitMatroid` constructor; all
 to `k` copies of `Graph.cycleMatroid`, with the connected-tight
 spanning-tree refinement); **Phase 14 (complete)** then
 identifies the `k`-frame matroid with the `k`-fold cycle-matroid union
-(Whiteley Theorem 1), and **Phase 15 (scoped)** assembles Tay's theorem
+(Whiteley Theorem 1), and **Phase 15 (in progress)** assembles Tay's theorem
 in existence-of-realization form (the algebraic-geometry lift to "almost
 all realizations are rigid" deferred). The longer-horizon target beyond is the
 **molecular conjecture** (Katoh–Tanigawa 2011).
@@ -102,7 +102,7 @@ existing files or refactor across several).
 |    12 | Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` (ported from `apnelson1/Matroid`) | ✓ |
 |    13 | Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | ✓ |
 |    14 | k-frame = k-fold cycle union | `BodyBar/KFrame.lean` | ✓ |
-|    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | planning |
+|    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | in progress |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
