@@ -1,0 +1,424 @@
+# Molecular Conjecture — cross-phase program plan
+
+**Status:** PLANNING. No phase opened yet — this is the program design
+for what will become Phases 17–26. Nothing here is built; the file is
+the runbook for opening and threading the phases.
+**Audience:** the agent picking up the molecular-conjecture program.
+Read this after `ROADMAP.md` (which carries the one-paragraph program
+summary + status row); this file is the lemma-level detail.
+
+When Phase 17 is actually opened, follow the top-level `CLAUDE.md`
+*When this commit opens a phase* protocol (create `notes/Phase17.md`,
+sync the user-facing status surfaces, draft `blueprint/src/chapter/
+molecular.tex`); see *Opening Phase 17* at the end of this file.
+
+## The target
+
+The **Molecular Conjecture** (Tay–Whiteley 1984, proved by
+Katoh–Tanigawa 2011): a graph `G` can be realized as an
+infinitesimally rigid **body-hinge** framework in `ℝᵈ` iff it can be
+realized as an infinitesimally rigid **panel-hinge** framework in
+`ℝᵈ`. Combined with the Tay–Whiteley body-hinge theorem (our Phase 16,
+KT Proposition 1.1), this says: `G` has a rigid panel-hinge realization
+iff `(D−1)·G` contains `D` edge-disjoint spanning trees, where
+`D = (d+1 choose 2)`.
+
+The hard content is that forcing the hinges at each body to be
+**coplanar** (panel-hinge) does not drop the rank below the generic
+body-hinge value. KT prove the strong quantitative form:
+
+- **Theorem 5.5** (the heart): every *minimal `k`-dof-graph* `G` with
+  `|V| ≥ 2` has a (nonparallel, if `G` simple) panel-hinge realization
+  with `rank R(G,p) = D(|V|−1) − k`.
+- **Theorem 5.6**: every multigraph `G` has a panel-hinge realization
+  with `rank R(G,p) = D(|V|−1) − def(G̃)` — the conjecture, strong form.
+- **Corollary 5.7** (the *molecule application*, requested in scope):
+  for `G` with min degree ≥ 2, the rank of the 3-D generic bar-joint
+  rigidity matroid of the square satisfies `r(G²) = 3|V| − 6 − def(G̃)`.
+
+User-chosen scope (2026-06-02): **full conjecture + molecule
+application**, with the molecule app **fully formalized** (not
+citation-stubbed), built on a **full Grassmann–Cayley extensor
+algebra** layer.
+
+## Source and verified citations
+
+Primary source: **Katoh, N., Tanigawa, S.**, *A Proof of the Molecular
+Conjecture*, Discrete Comput. Geom. **45** (2011), 647–700
+(`.refs/katoh-tanigawa-2011-molecular-conjecture.pdf`; the 2009 arXiv
+version is also under `.refs/`). All section/lemma/theorem numbers
+below were read directly from that PDF.
+
+**Numbering convention.** Bracketed `[N]` throughout this file are
+Katoh–Tanigawa 2011's own reference-list numbers (their bibliography,
+pp. 699–700) — kept so entries line up with the paper, not a local
+list. The full citations of every `[N]` used appear either inline below
+or in the *Reference availability* note that follows.
+
+External results KT *cite rather than prove*; we mirror that boundary
+(formalize or axiomatize as noted per phase). Verified against KT's
+bibliography (page 699–700):
+
+- **[4] Crapo, H., Whiteley, W.**, *Statics of frameworks and motions
+  of panel structures: a projective geometric introduction*, Structural
+  Topology **6** (1982), 43–82. — projective invariance of
+  infinitesimal rigidity (§1.2, §5.2, §6); cycle realization Lemma 5.4.
+- **[29] White, N., Whiteley, W.**, *The algebraic geometry of motions
+  of bar-and-body frameworks*, SIAM J. Algebraic Discrete Methods
+  **8** (1987), 1–32. — the "pinning a body preserves the motion
+  space" fact behind Lemma 5.1.
+- **[15] Jackson, B., Jordán, T.**, *The generic rank of
+  body-bar-and-hinge frameworks*, European J. Combin. **31** (2009),
+  574–588. — the generic-rank ↔ matroid-deficiency bridge,
+  Proposition 2.3 (i)⇔(ii); also the generic-max-rank property of §5.1.
+- **[2] Barnabei, M., Brini, A., Rota, G.-C.**, *On the exterior
+  calculus of invariant theory*, J. Algebra **96** (1985), 120–160.
+  — Grassmann–Cayley foundations (extensors / join).
+- **[13] Jackson, B., Jordán, T.**, *On the rigidity of molecular
+  graphs*, Combinatorica **28** (2008), 645–658. — the published
+  primary source for the molecule-graph rigidity rank (Cor 5.7).
+  Whiteley's *equivalence of molecular rigidity models* (KT [35]) is
+  only an unpublished 2004 preprint, so [13] is the citable anchor.
+- **[37] Whiteley, W.**, *Counting out to the flexibility of
+  molecules*, Physical Biology **2** (2005), S116–S126
+  (`.refs/whiteley-2005-counting-flexibility-molecules.pdf`). — survey
+  presentation of the molecule ↔ body-hinge modelling.
+- Tutte 1961 [26] / Nash-Williams 1961 [20] (Proposition 2.2) and
+  Oxley [21] (count-matroid corollary) — already in the project
+  (Phases 12–13); reused, not re-cited as new.
+
+**Reference availability in `.refs/` (checked + completed 2026-06-02).**
+All load-bearing and medium-priority sources are now present and text-
+extractable: KT 2011 (+2009 arXiv), Nash-Williams 1961, Tutte 1961,
+Oxley (2011 2nd ed), Schrijver, Tay 1989, Whiteley 1988/1996/2005,
+Jackson–Jordán 2006 pin-collinear, **[4] Crapo–Whiteley 1982** (proj.
+invariance, Phase 25; cycle Lemma 5.4, Phase 21), **[13] Jackson–Jordán
+2008** *On the rigidity of molecular graphs* (Cor 5.7, Phase 26),
+**[15] Jackson–Jordán 2009** (Prop 2.3 bridge), **[29] White–Whiteley
+1987** (pin-a-body, Lemma 5.1, Phase 18), **[34] Whiteley 1999** Kluwer
+(Lemma 5.4). The Phase-17 Grassmann–Cayley foundations are also all in
+place (text-extractable, added 2026-06-02): **[2] Barnabei, M., Brini,
+A., Rota, G.-C.**, *On the exterior calculus of invariant theory*, J.
+Algebra **96** (1985), 120–160; **[6] Doubilet, P., Rota, G.-C., Stein,
+J.**, *On the foundations of combinatorial theory IX: Combinatorial
+methods in invariant theory*, Studies in Applied Mathematics **53**
+(1974), 185–216; **[28] White, N. L.**, *Grassmann–Cayley algebra and
+robotics*, J. Intelligent & Robotic Systems **11** (1994), 91–107
+(DOI 10.1007/BF01258296). (These three are background for Lemma 2.1's
+extensor conventions, not strictly required — Lemma 2.1 is
+self-contained from KT + mathlib `ExteriorAlgebra`.)
+
+**The reference set is complete** — every source the program needs
+(load-bearing, medium, and optional) is present in `.refs/` and
+text-extractable. Nothing outstanding to acquire.
+
+**OCR note.** [4] Crapo–Whiteley and `tay-whiteley-1985-generating-
+isostatic` arrived as image-only scans (no text layer) and were OCR'd
+in place on 2026-06-02 (`pymupdf` render at 300 dpi → `tesseract` 5.5.2
+searchable PDF, replacing the scan losslessly). Both are *Structural
+Topology* / *Topologie Structurale* journal articles with **side-by-
+side English|French columns**; tesseract auto-detected the columns and
+kept each contiguous (no interleaving), but only the `eng` language
+pack is installed, so per page the text extracts as the full (eng-OCR'd,
+imperfect) French column followed by the clean English column. Read the
+English run; math symbols are imperfect (scan OCR) but the prose proof
+structure is intact. To read a page via `pypdf`, expect French-then-
+English ordering. Note: `.refs/` is gitignored, so these OCR'd PDFs are
+local-only and not committed.
+
+**Citation accuracy caveat (per `CLAUDE.md` *Referencing prior work*).**
+Lemma 5.4 (cycle realizations) is cited by KT to [4] and [34]
+(Whiteley, *Rigidity of molecular structures*, Kluwer 1999); verify the
+exact proposition numbers in those sources before pinning a `§N` in the
+blueprint. Cor 5.7's rank formula is Jackson–Jordán [13]'s result;
+attribute it to them, with KT as the conjecture-resolving input.
+
+## Proof architecture — five strata
+
+In dependency order. The phase cuts follow these strata.
+
+1. **Grassmann–Cayley / extensor algebra** (§2.1). Genuinely new linear
+   algebra. Load-bearing fact: **Lemma 2.1** — the `D = (d+1 choose 2)`
+   many `(d−1)`-extensors of `d+1` affinely independent points are
+   linearly independent. Everything in Case III bottoms out here.
+2. **The genuine panel-hinge rigidity matrix `R(G,p)`** (§2.2–2.4).
+   Honest geometry: `(d−2)`-affine-subspace hinges, the orthogonal-
+   complement block `r(p(e))`, screw-center columns, `Z(G,p)`, trivial
+   motions, the `rank ≤ D(|V|−1)` bound, degree of freedom, generic
+   realizations. **Supersedes Phase 16's reduction-only
+   `BodyHingeFramework`** and must be reconciled with it. Carries the
+   three foundational rank lemmas 5.1/5.2/5.3.
+3. **The matroid `M(G̃)` and `k`-dof combinatorics** (§2.5, §3).
+   `D`-deficiency, `k`-dof / minimal `k`-dof-graphs, rigid subgraphs.
+   `M(G̃)` is the `(D,D)` count matroid at the **boundary regime
+   `ℓ = D = 2k`** — i.e. the `D`-fold graphic-matroid union + Tutte–
+   Nash-Williams of **Phases 13–14**, NOT the `ℓ<2k` `CountMatroid.lean`.
+4. **The combinatorial induction** (§4). Splitting-off / edge-splitting
+   / rigid-subgraph contraction as graph operations; forest-surgery
+   Lemmas 4.1/4.2 (hardest new pure combinatorics); the three-case
+   decomposition; **Theorem 4.9**.
+5. **The algebraic induction** (§5–6). Theorem 5.5 by induction on
+   `|V|`: base + Case I (proper rigid subgraph, §6.2) + Case II (`k>0`
+   splitting = Whiteley 1-extension, §6.3) + **Case III** (`k=0`, §6.4,
+   the `D`-candidate-frameworks argument — "the most difficult case").
+   Then Thm 5.6 → Conjecture 1.2, and (strata 6–7 below) the molecule
+   application.
+
+The **molecule application** (Cor 5.7) adds, on top:
+6. **The 3-D generic bar-joint rigidity matroid** (linear-matroid form).
+   Reuses the dimension-general `Framework V d` (Phase 4) + the
+   `Matroid.ofFun` linear-matroid framing (Phase 8), specialized to
+   `d = 3`. **NOT** a combinatorial (Laman-3D) characterization —
+   KT §7 explicitly states that is an *open problem*. We only need the
+   linear matroid and its rank `r(·)`.
+7. **Projective duality + the molecule modelling equivalence**
+   (Crapo–Whiteley [4]; Whiteley/Jackson–Jordán [13,37]): bar-joint of
+   `G²` ↔ hinge-concurrent body-hinge of `G` ↔ (projective dual)
+   panel-hinge of `G`. Then Cor 5.7 falls out of Thm 5.6.
+
+## Phase breakdown (17–26)
+
+| Phase | Content | KT § | Stratum |
+|---|---|---|---|
+| 17 | Grassmann–Cayley extensor algebra; **Lemma 2.1** | §2.1 | 1 |
+| 18 | Genuine panel-hinge rigidity matrix `R(G,p)`; Lemmas 5.1–5.3; reconcile Prop 1.1 with Phase 16 | §2.2–2.4, parts of §5 | 2 |
+| 19 | `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof, rigid subgraphs, def=corank (Prop 2.3); Lem 3.1/3.3/3.4 | §2.5, §3 | 3 |
+| 20 | Combinatorial induction: graph ops + forest surgery 4.1/4.2 + 4.3–4.8 + **Theorem 4.9** | §4 | 4 |
+| 21 | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8) + genericity (Claim 6.4) | §5, §6.1–6.3 | 5 |
+| 22 | **Case III, `d=3`** (Lemma 6.10): Claim 6.11 (combinatorial↔linear bridge), Claim 6.12 (extensor-span genericity), 3 candidates | §6.4.1 | 5 |
+| 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
+| 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
+| 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
+| 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
+
+**This is a floor of 10 phases.** Phases 18, 21, and 22/23 each carry
+enough that one or two may split once inside them (precedent: Phases
+8–11 spawned perf/cleanup rounds and structural-edit sub-phases). The
+program is the largest single undertaking in the project to date —
+comparable in effort to Phases 1–16 combined. Sequence the cut-points
+as living estimates; re-cut on contact.
+
+### Per-phase detail
+
+#### Phase 17 — Grassmann–Cayley extensor algebra (§2.1)
+
+All new. Extensors as elements of `⋀ʲ ℝ^(d+1)` (or coordinatized
+Plücker vectors of `j×j` minors), the homogeneous coordinatization
+`p ↦ (p,1)`, the Plücker coordinate vector with KT's sign convention
+`(−1)^{1+Σi_j}` (reproduce faithfully — it feeds Lemma 2.1), the join
+`∨`, the affine-subspace ↔ extensor map `C(·)`, and `p̄₁∨⋯∨p̄_k ≠ 0 ⇔
+{pᵢ} affinely independent`.
+
+- **Hard core:** **Lemma 2.1** — independence of the `D` `(d−1)`-
+  extensors of `d+1` affinely independent points. Proof joins the
+  dependence relation with a `2`-extensor to kill all but one term
+  (uses: join alternating / vanishes on repeats, and top extensor =
+  full determinant ≠ 0 ⇔ affine independence).
+- **mathlib:** has exterior algebra (`ExteriorAlgebra`, `⋀[R]`) but not
+  this Plücker/extensor layer nor `C(·)`. Decide early: full symbolic
+  Grassmann–Cayley (user's choice) vs coordinatized minors. KT work
+  coordinatized; the user asked for the full GC algebra, so build the
+  symbolic layer first and coordinatize as a bridge.
+- Self-contained; de-risks Case III. Open here.
+
+#### Phase 18 — Panel-hinge rigidity matrix `R(G,p)` (§2.2–2.4, §5 prep)
+
+Infinitesimal motion of a body = screw center `s ∈ ℝᴰ`; hinge
+constraint `s(u) − s(v) ∈ span C(p(e))`; the `(D−1)×D` block `r(p(e))`
+= a basis of `span C(p(e))^⊥`; the `(D−1)|E| × D|V|` block matrix
+`R(G,p)` with signed `±r(p(e))` per oriented edge; `Z(G,p)` = null
+space; the `D` trivial motions; `rank R ≤ D(|V|−1)`; degree of freedom;
+the submatrix selectors `R(G,p; F, X)`, `R(G,p; e)`, `R(G,p; v)`; the
+panel `Π_{G,p}(v)`; generic realizations.
+
+- **Reconciliation (real work, not a rename):** Phase 16's
+  `BodyHingeFramework` is *defined by reduction* to body-bar on
+  `(δ−1)·G` ("standard-basis witness, degenerate permitted, no
+  geometry"). Phase 18 builds the honest `R(G,p)` and must **prove the
+  two agree** — the new rank reproduces Prop 1.1 (`edgeMultiply_isSparse_iff`).
+  Keep the Phase-16 def as the "existence form"; the new one is the
+  "rank form."
+- **Hard core:** Lemma 5.1 (deleting one vertex's `D` columns preserves
+  rank — most-reused, uses the [29] pin-a-body fact); Lemma 5.3 (two
+  parallel edges → full `D`, uses Phase-17 extensor uniqueness);
+  Lemma 5.2 (rank lower-semicontinuity under a 1-param panel rotation —
+  consider doing genericity-style instead of analytic perturbation).
+- **Substrate:** reuse mathlib core `Graph α β` (Phases 13–16 carrier);
+  multigraph cut/degree functions may need building. May split (5.x out).
+
+#### Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (§2.5, §3)
+
+`D`-deficiency of a partition `def_G̃(P) = D(|P|−1) − (D−1)d_G(P)`;
+`def(G̃) = maxₚ def_G̃(P)`; `k`-dof / `0`-dof (= body-hinge rigid) /
+minimal `k`-dof (every base of `M(G̃)` meets every edge-fiber `ẽ`);
+rigid + proper rigid subgraph; circuits; 2-edge-connectivity. The
+matroid `M(G̃)` and the **def = corank bridge** (Prop 2.3 (ii)⇔(iii),
+eq. 2.4 `|B| + def(G̃) = D(|V|−1)`).
+
+- **Key reuse:** `M(G̃)` = `(D,D)` count matroid at the boundary
+  `ℓ = 2k = D`, = the `D`-fold graphic union of Phase 13/14
+  (`unionPow_cycleMatroid` + `tutte_nash_williams`). **Confirm the
+  boundary regime `ℓ = 2k` is clean before relying on it** —
+  `CountMatroid.lean` is built for `ℓ<2k` and will *not* cover this;
+  route through the union construction instead.
+- Lemmas 3.1 (2-edge-conn), 3.3 (subgraph minimality via restriction),
+  3.4 (circuit ⇒ rigid subgraph) are on the Thm-4.9 critical path; 3.2
+  (not 3-edge-conn) and 3.6 (partition decomposition) are off it — 3.6
+  is needed only by Case 6.1, schedule with Phase 21.
+- New graph ops (splitting-off, edge-splitting, removal, contraction)
+  may start here or in Phase 20.
+
+#### Phase 20 — Combinatorial induction → Theorem 4.9 (§4)
+
+Graph operations on `Graph α β`: splitting off `G_v^{ab}` at a degree-2
+vertex, its inverse edge-splitting `H_{ab}^v`, removal `G_v`, rigid-
+subgraph contraction `G/E'`. The forest-surgery core (Lemmas 4.1, 4.2)
++ the dof-tracking lemmas (4.3–4.8) + the three-case decomposition +
+**Theorem 4.9** (every minimal body-hinge-rigid graph reduces to the
+two-vertex double edge via splitting-off / rigid-contraction).
+
+- **Hard core:** 4.1/4.2 (explicit forest surgery at a degree-2 vertex
+  — no existing analogue, budget the most time); 4.6 (maximal-chain /
+  degree-sequence counting guaranteeing the degree-2 vertex); 4.8 (the
+  capstone, two circuit-swap arguments). 3.5 (rigid-subgraph contraction
+  preserves minimality — Case I engine) lands here or late Phase 19.
+- **Reuse:** matroid restriction/contraction + fundamental circuits
+  (mathlib `Matroid.restrict`, `Matroid.fundCircuit`), the vendored
+  union subsystem (`Matroid/Constructions/Union.lean`), `edgeMultiply`.
+
+#### Phase 21 — Theorem 5.5 base + Cases I & II (§5, §6.1–6.3)
+
+The induction skeleton on `|V|` with hypothesis (6.1) and the
+"nonparallel if simple" side condition. Base (`|V|=2`, via Lemma 5.3).
+**Case I** (proper rigid subgraph): §6.2 Lemmas 6.2 (non-simple), 6.3
+(simple, simple contraction; Claim 6.4 genericity), 6.5 (remaining;
+Claim 6.6). **Case II** (`k>0`, splitting): §6.3 Lemmas 6.7, 6.8
+(Claim 6.9) — the panel-hinge analogue of Whiteley's bar-joint
+1-extension. Cycle Lemma 5.4 ([4,34]) — formalize or axiomatize.
+
+- **Hard core:** Claim 6.4 / Lemma 6.3 genericity ("entries are
+  polynomials in alg.-indep. panel coords ⇒ generic point attains max
+  rank over the parametrized family"); Lemma 6.8's 1-extension rank
+  lift. Rank arguments are block-triangular (reuse Phase 18 Lemma 5.1).
+- Broad phase — may split Case I from Case II.
+
+#### Phase 22 — Case III, `d=3` (§6.4.1, Lemma 6.10)
+
+The crux. `k=0`, 2-edge-connected, no proper rigid subgraph: a single
+candidate is one row short, so build `D` candidates and show one is
+rigid. At `d=3`: three candidates `(G,p₁),(G,p₂),(G,p₃)`.
+
+- **Claim 6.11** (combinatorial↔linear bridge): `R(G_v^{ab},q)` has a
+  redundant `ab`-row, via Lemma 4.3(ii) (some base uses `< D−1` copies
+  of `ab`) + the induction hypothesis. The single hardest
+  *non-linear-algebra* step — wires `M(G̃_v^{ab})` to the row matroid
+  of `R`.
+- **Claim 6.12** (extensor-span genericity): if all candidates fail, a
+  nonzero `r ∈ ℝᴰ` is orthogonal to all extensors on `d+1` distinct
+  generic panels, which by **Lemma 2.1** (Phase 17) span `ℝᴰ` —
+  contradiction. The degree-2 condition forces all candidates to test
+  the *same* `r` (eq. 6.44).
+- ~12 pages, the single largest proof in the paper. Consider an
+  abstracted "candidate normal form" lemma to avoid repeating the
+  row-operation derivation three times.
+
+#### Phase 23 — Case III general `d` + assembly (§6.4.2, §5.2, §7)
+
+**Lemma 6.13**: generalize the `d=3` argument to a length-`d` chain
+`v₀…v_d` with `d` candidates and isomorphisms `ρᵢ`; reuse Claim 6.11
+and Lemma 2.1 verbatim, generalize the matrix bookkeeping (index-heavy).
+Then complete **Theorem 5.5**, derive **Theorem 5.6** (edge-strip to a
+minimal `k`-dof subgraph; re-add edges only grows rank; projective
+invariance to arrange panels), and state **Conjecture 1.2** as a
+theorem.
+
+- **Hard core:** the `d`-fold chain bookkeeping (eqs. 6.59–6.64); the
+  genericity/Lemma-2.1 step generalizes cleanly.
+
+#### Phase 24 — 3-D generic bar-joint rigidity matroid
+
+Specialize the dimension-general `Framework V d` (Phase 4) to `d=3`
+generic bar-joint frameworks; package the generic rigidity matroid via
+`Matroid.ofFun` (Phase 8's linear-matroid framing, now in `d=3`);
+define `r(·)` = its rank. **Scope guard:** this is the *linear* matroid
+only — no combinatorial/Laman-3D characterization (open per KT §7).
+
+- Mostly reuse; the dim-3 specialization + generic-placement existence
+  (à la Phase 8's `exists_uniform_rowIndependent_placement`) is the work.
+
+#### Phase 25 — Projective duality + molecule modelling equivalence
+
+Crapo–Whiteley [4] projective invariance of infinitesimal rigidity in
+`ℝ³`; the chain bar-joint of `G²` ↔ hinge-concurrent body-hinge of `G`
+↔ panel-hinge of `G` (Whiteley/Jackson–Jordán [13,37]). The geometric
+heart of the molecule connection. Likely the hardest of 24–26 (genuine
+projective-geometry + the square-graph modelling argument).
+
+#### Phase 26 — Corollary 5.7 (molecule application capstone)
+
+Assemble `r(G²) = 3|V| − 6 − def(G̃)` from Thm 5.6 (Phase 23),
+projective duality + molecule equivalence (Phase 25), and the dim-3
+rigidity matroid (Phase 24). The protein-flexibility statement /
+pebble-game-validity payoff (§1.2). Attribute the rank formula to
+Jackson–Jordán [13], conjecture-resolution to KT.
+
+## Reuse map (existing machinery each phase leans on)
+
+- **Phase 4 `Framework.lean`** (dimension-general frameworks, rigidity
+  map, infinitesimal rigidity) → Phases 18, 24.
+- **Phase 6–8 rigidity matroid / `Matroid.ofFun` linear framing,
+  `Mathlib/LinearAlgebra/Matrix/Rank.lean` Gram-det LI mirrors** →
+  Phases 18, 21, 24 (genericity / rank arguments).
+- **Phase 12 vendored matroid union/submodular
+  (`Matroid/Constructions/{Submodular,Union}.lean`)** → Phases 19, 20,
+  22 (restriction, contraction, fundamental circuits, union rank).
+- **Phase 13 Tutte–Nash-Williams (`BodyBar/TreePacking.lean`)** →
+  Phase 19 (`def=0` ⇔ packing; def=corank bridge).
+- **Phase 14–16 `BodyBar/{KFrame,Framework,TayTheorem,BodyHinge}.lean`,
+  `edgeMultiply`, `bodyBarDim`/`bodyHingeMult`** → Phases 18 (Prop 1.1
+  reconciliation), 19 (`G̃`, fibers `ẽ`).
+- **Mirror directory `CombinatorialRigidity/Mathlib/`** → Phase 17
+  (exterior-algebra / Plücker mirror lemmas are upstream-eligible).
+
+## Risk register / open questions
+
+1. **Grassmann–Cayley depth.** User chose the full symbolic GC algebra.
+   Risk: building more abstract machinery than the coordinatized proofs
+   need. Mitigation: Phase 17 builds the symbolic layer but lands a
+   coordinatized bridge early so downstream phases can stay concrete.
+2. **`ℓ = 2k = D` boundary regime** (Phase 19). Confirm the project's
+   union/tree-packing covers it before relying on it; do NOT assume
+   `CountMatroid.lean` (`ℓ<2k`) applies.
+3. **Lemma 5.2 perturbation** (Phase 18). Analytic rank-semicontinuity
+   is fiddly; a purely generic/algebraic-independence formulation may
+   sidestep it. Decide during Phase 18.
+4. **Externals to axiomatize vs prove.** Lemma 5.4 (cycles, [4,34]),
+   the [29] pin-a-body fact (Lemma 5.1), [15] generic-rank bridge
+   (Prop 2.3 (i)⇔(ii)). User scope is "fully formalize" — but these are
+   cited-not-proved in KT. Re-confirm per phase whether to formalize or
+   take as a hypothesis; the conjecture (Thm 5.6) needs (i)⇔(ii) only
+   for the upper bound, which the project may already supply via Phase
+   16's `edgeMultiply_isSparse_iff`.
+5. **Molecule equivalence primary source** (Phase 25). Whiteley [35] is
+   an unpublished preprint; anchor on Jackson–Jordán [13] (Combinatorica
+   2008) for the citable result.
+6. **General 3-D rigidity is open** (KT §7). The molecule app does NOT
+   require it; Phase 24's scope guard must hold or the program balloons.
+
+## Opening Phase 17 (when greenlit)
+
+1. Create `notes/Phase17.md` from the `notes/CLAUDE.md` template;
+   pull the Phase-17 detail above into its *Lemma checklist* +
+   *Architectural choices*.
+2. Draft `blueprint/src/chapter/molecular.tex` as a forward-mode
+   chapter (red dep-graph = the to-do list); add `\input{}` to
+   `chapter/main.tex`. Phase 17's nodes = the §2.1 extensor layer +
+   Lemma 2.1.
+3. Add the new bib entries ([4], [29], [15], [2], [13], [37]) to
+   `blueprint/src/bibliography.bib`, verifying each per
+   `blueprint/CLAUDE.md` *Citations*.
+4. Run the phase-open protocol in `CLAUDE.md` *When this commit opens a
+   phase*: ROADMAP status row → *in progress*, sync `README.md` /
+   `home_page/index.md` / `blueprint/src/chapter/intro.tex`.
+5. Forward-mode discipline: leaf-most red node first, flip `\lean{}` +
+   `\leanok` in the same commit the Lean lands.

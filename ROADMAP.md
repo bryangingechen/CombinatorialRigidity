@@ -105,6 +105,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-15) | Phase 15 surface (`BodyBar/{Framework,TayTheorem}.lean`, `body-bar.tex` `sec:body-bar-framework` + `sec:body-bar-tay` nodes) | ✓ Complete (see `notes/Phase15-cleanup.md`; round manual: `CLEANUP.md`) |
 | 16. Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ Complete (see `notes/Phase16.md`) |
 | ⋮ Cleanup round (post-Phase-16) | Phase 16 surface (`BodyBar/BodyHinge.lean`, `body-hinge.tex` `sec:body-hinge` nodes) | ✓ Complete (see `notes/Phase16-cleanup.md`; round manual: `CLEANUP.md`) |
+| 17–26. Molecular conjecture program | (none yet — planned) | ◷ Planning (10-phase program; see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -519,10 +520,61 @@ Whiteley's "almost all realizations are rigid" lift remains deferred.
 Forward-mode phase. Per-node lemma map + decisions: `notes/Phase16.md`
 and the `sec:body-hinge` dep-graph of `body-hinge.tex`.
 
-The longer-horizon **Phase 17** target — not opened — is the
+### Phase 17+ — The Molecular Conjecture program (planning)
+
+**Status: planning (not opened).** The longer-horizon target is the
 **molecular conjecture** (panel-and-hinge with hinges at each body
-forced concurrent; Tay–Whiteley conjecture, proved by Katoh–Tanigawa
-2011).
+forced concurrent/coplanar; Tay–Whiteley 1984, proved by Katoh–Tanigawa
+2011, Discrete Comput. Geom. **45**, 647–700). It is the project's
+largest single undertaking — comparable in effort to Phases 1–16
+combined — and is scoped as a **10-phase program (17–26)** delivering
+the full conjecture *and* its molecule/`G²` application. The
+lemma-level breakdown, reuse map, citations, and risk register live in
+`notes/MolecularConjecture.md`; this section is the one-paragraph-each
+summary.
+
+The proof (KT) splits into a **combinatorial step** (a graph-induction
+generating minimal `k`-dof-graphs via splitting-off and rigid-subgraph
+contraction; §3–4, Thm 4.9) and an **algebraic step** (a geometric
+induction realizing each move at the target rigidity-matrix rank; §5–6,
+Thm 5.5 → 5.6). Unlike Phases 15–16 (which defined body-hinge rigidity
+*by reduction* to body-bar, standard-basis witness only), the conjecture
+forces the **genuine panel-hinge rigidity matrix `R(G,p)`** with real
+extensor geometry and honest rank computations on *specific,
+non-generic* (coplanar/concurrent) realizations.
+
+Phase map (floor; 18/21/22-23 may each split on contact):
+
+1. **17** — Grassmann–Cayley extensor algebra + the load-bearing
+   independence Lemma 2.1 (§2.1). All new linear algebra.
+2. **18** — the genuine panel-hinge rigidity matrix `R(G,p)`, rank
+   Lemmas 5.1–5.3, and reconciliation with Phase 16's reduction-form
+   Prop 1.1 (§2.2–2.4).
+3. **19** — `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof-graphs,
+   rigid subgraphs, the def=corank bridge (§2.5, §3). `M(G̃)` is the
+   `ℓ=2k=D` boundary regime — the Phase 13/14 `D`-fold graphic union +
+   Tutte–Nash-Williams, **not** the `ℓ<2k` `CountMatroid.lean`.
+4. **20** — the combinatorial induction: graph operations + forest
+   surgery (4.1/4.2) + Theorem 4.9 (§4).
+5. **21** — Theorem 5.5 base + Case I (proper rigid subgraph) + Case II
+   (`k>0` splitting = Whiteley 1-extension) (§5, §6.1–6.3).
+6. **22** — Case III at `d=3` (Lemma 6.10): the `D`-candidate-frameworks
+   argument, Claims 6.11/6.12 (the crux, §6.4.1).
+7. **23** — Case III general `d` (Lemma 6.13) → Thm 5.5 → Thm 5.6 →
+   Conjecture 1.2 (§6.4.2, §5.2).
+8. **24** — the 3-D generic bar-joint rigidity matroid (linear-matroid
+   form; dim-3 specialization of Phase 4/8). *Not* a Laman-3D
+   characterization — general 3-D rigidity is open (KT §7).
+9. **25** — Crapo–Whiteley projective invariance + the molecule ↔
+   hinge-concurrent body-hinge ↔ panel-hinge modelling equivalence
+   (§1.2).
+10. **26** — Corollary 5.7 (`r(G²) = 3|V| − 6 − def(G̃)`), the
+    protein-flexibility / pebble-game-validity capstone.
+
+No phase is open: there is no `notes/Phase17.md`, no `molecular.tex`,
+and the user-facing status surfaces are untouched. Opening Phase 17
+follows the `CLAUDE.md` phase-open protocol — see *Opening Phase 17* in
+`notes/MolecularConjecture.md`.
 
 ## Engineering conventions
 
@@ -618,4 +670,18 @@ first.
   target.
 - N. Katoh, S. Tanigawa, *A proof of the molecular conjecture*, Discrete
   Comput. Geom. **45** (2011), 647–700. — molecular conjecture; the
-  `(δ−1)·G` device and the longer-horizon Phase 17 target.
+  `(δ−1)·G` device and the Phase 17–26 program (see
+  `notes/MolecularConjecture.md`).
+- H. Crapo, W. Whiteley, *Statics of frameworks and motions of panel
+  structures: a projective geometric introduction*, Structural Topology
+  **6** (1982), 43–82. — projective invariance of infinitesimal
+  rigidity; Phase 25.
+- N. White, W. Whiteley, *The algebraic geometry of motions of
+  bar-and-body frameworks*, SIAM J. Algebraic Discrete Methods **8**
+  (1987), 1–32. — pin-a-body motion-space fact behind Lemma 5.1.
+- B. Jackson, T. Jordán, *On the rigidity of molecular graphs*,
+  Combinatorica **28** (2008), 645–658. — citable primary source for the
+  molecule-graph rigidity rank (Corollary 5.7, Phase 26).
+- W. Whiteley, *Counting out to the flexibility of molecules*, Physical
+  Biology **2** (2005), S116–S126. — molecule ↔ body-hinge modelling
+  survey; Phase 25.
