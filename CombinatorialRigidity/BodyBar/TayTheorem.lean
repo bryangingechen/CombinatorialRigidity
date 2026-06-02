@@ -209,32 +209,65 @@ theorem blockPairing_injective {α : Type*} [Fintype α] {d : ℕ} :
     simp
   · simp
 
+/-- **General-placement rigidity-row identity.** For *any* body-bar framework `F` with
+placement `b = F.placement`, the rigidity row at `e` is the block-pairing of the block
+vector `fun c ↦ (b_e)_c • signedIncMatrix e` (up to sign):
+`F.rigidityRow D e = -(blockPairing α d (fun c ↦ F.placement e c • D.signedIncMatrix ℝ e))`.
+The row for `e` is the real-coefficient combination `∑_c (b_e)_c · (block-`c` incidence row
+of e)`, mirroring the indeterminate `kFrameRow = ∑_j X_{(e,j)} • (block-`j` incidence row)`.
+The standard-basis witness `b_e = e_{j(e)}` specializes it to the block-`single` row
+(`stdFramework_rigidityRow_eq`). -/
+theorem rigidityRow_eq [Fintype α] [DecidableEq α] {F : BodyBarFramework n α β}
+    [DecidablePred (· ∈ E(F.graph))] (D : Graph.orientation F.graph) (e : E(F.graph)) :
+    F.rigidityRow D e =
+      -(blockPairing α (bodyBarDim n)
+        (fun c => F.placement e c • D.signedIncMatrix ℝ (e : β))) := by
+  refine LinearMap.ext fun m => ?_
+  rw [rigidityRow_apply, rigidityMap_apply, LinearMap.neg_apply, blockPairing_apply,
+    PiLp.inner_apply]
+  have he : (e : β) ∈ E(F.graph) := e.2
+  -- Expand the inner product coordinatewise; over ℝ each component pairing is `b·w`.
+  simp only [RCLike.inner_apply, conj_trivial, PiLp.sub_apply]
+  -- Swap the order of summation and push the negation into the coordinate sum, then expand
+  -- the signed incidence row vertex-by-vertex and collapse via the indicator sums.
+  rw [Finset.sum_comm, ← Finset.sum_neg_distrib]
+  refine Finset.sum_congr rfl fun c _ => ?_
+  rw [D.signedIncMatrix_apply_of_mem he]
+  simp only [Pi.smul_apply, Pi.sub_apply, Function.update_apply, Pi.zero_apply, smul_eq_mul]
+  -- Each summand `(b_e c * (ite_v − ite_u)) * m x c` is `if x = v then … else if x = u …`;
+  -- collapse the indicator sums to the two endpoint contributions.
+  rw [show (∑ x, (F.placement e).ofLp c
+        * ((if x = (D.dInc ⟨↑e, he⟩).2 then (1:ℝ) else 0)
+          - if x = (D.dInc ⟨↑e, he⟩).1 then (1:ℝ) else 0) * (m x).ofLp c)
+      = (F.placement e).ofLp c * (m (D.dInc e).2).ofLp c
+        - (F.placement e).ofLp c * (m (D.dInc e).1).ofLp c from by
+      simp only [mul_assoc, ← Finset.mul_sum, mul_sub, sub_mul, ite_mul, one_mul, zero_mul,
+        Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]]
+  ring
+
 /-- **The standard-basis rigidity row is the block-pairing of a block-`single` incidence
 row** (up to sign). With `b_e = e_{j(e)}`, the rigidity row `m ↦ rigidityMap D m e` equals
 `-(blockPairing (Pi.single (j e) (signedIncMatrix ℝ e)))`: the row lives entirely in block
 `j(e)`, where it is `e`'s signed incidence row. This is what feeds the block-diagonal
-matrix of `specRow_linearIndependent` into the rank count. -/
+matrix of `specRow_linearIndependent` into the rank count.
+
+The special case of `rigidityRow_eq` at the standard-basis placement `b_e = e_{j(e)}`: there
+`F.placement e c = (e_{j(e)})_c = δ_{c, j(e)}`, so the block vector
+`fun c ↦ (b_e)_c • signedIncMatrix e` collapses to `Pi.single (j e) (signedIncMatrix e)`. -/
 theorem stdFramework_rigidityRow_eq [Fintype α] [DecidableEq α] {G : Graph α β}
     [DecidablePred (· ∈ E(G))] (j : E(G) → Fin (bodyBarDim n))
     (D : Graph.orientation G) (e : E(G)) :
     (stdFramework G n j).rigidityRow D e =
       -(blockPairing α (bodyBarDim n)
         (Pi.single (j e) (D.signedIncMatrix ℝ (e : β)))) := by
-  refine LinearMap.ext fun m => ?_
-  rw [rigidityRow_apply, stdPlacement_rigidityMap_apply, LinearMap.neg_apply,
-    blockPairing_apply]
-  have he : (e : β) ∈ E(G) := e.2
-  -- Only the block `c = j e` survives the inner `Pi.single`, leaving `e`'s signed incidence row.
-  rw [D.signedIncMatrix_apply_of_mem he,
-    Finset.sum_congr rfl fun x _ => Finset.sum_eq_single (a := j e)
-      (fun c _ hc => by rw [Pi.single_eq_of_ne hc]; simp)
-      (fun h => absurd (Finset.mem_univ _) h)]
-  simp only [Pi.single_eq_same]
-  -- Expand the signed incidence row vertex-by-vertex and collapse via the indicator sums.
-  simp only [Pi.sub_apply, Function.update_apply, Pi.zero_apply, sub_mul,
-    Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul,
-    Finset.sum_ite_eq', Finset.mem_univ, if_true, neg_sub]
-  rfl
+  haveI : DecidablePred (· ∈ E((stdFramework G n j).graph)) := ‹DecidablePred (· ∈ E(G))›
+  rw [rigidityRow_eq]
+  -- `(stdFramework).placement e c = (e_{j(e)})_c = δ_{c, j(e)}`: smul collapses to `Pi.single`.
+  refine congrArg (fun w => -(blockPairing α (bodyBarDim n) w)) (funext fun c => ?_)
+  rw [stdFramework_placement, stdPlacement, PiLp.single_apply]
+  rcases eq_or_ne c (j e) with h | h
+  · subst h; rw [if_pos rfl, one_smul, Pi.single_eq_same]; congr 1
+  · rw [if_neg h, Pi.single_eq_of_ne h, zero_smul]
 
 /-- **The standard-basis rigidity rows of a disjoint forest packing are linearly
 independent.** If `Fs : Fin (bodyBarDim n) → Set β` is a *disjoint* packing of `G` into
@@ -327,43 +360,6 @@ The bound is the real specialization of Whiteley §2.1's forward rank count
 block-diagonal product subspace whose `ℝ`-dimension is `d · r(E')` (the real analogue of
 `Graph.finrank_blockPiSpanOn`, assembled from the *field-generic* helpers
 `Graph.finrank_constPiSpan` + `Graph.finrank_span_signedIncMatrix_eq_cycleMatroid_rk`). -/
-
-open Submodule in
-/-- **General-placement rigidity-row identity.** For *any* body-bar framework `F` with
-placement `b = F.placement`, the rigidity row at `e` is the block-pairing of the block
-vector `fun c ↦ (b_e)_c • signedIncMatrix e` (up to sign):
-`F.rigidityRow D e = -(blockPairing α d (fun c ↦ F.placement e c • D.signedIncMatrix ℝ e))`.
-The arbitrary-placement generalization of `stdFramework_rigidityRow_eq` (which is this with
-`b_e = e_{j(e)}`, so the block vector is `Pi.single (j e) (signedIncMatrix e)`); the row for
-`e` is the real-coefficient combination `∑_c (b_e)_c · (block-`c` incidence row of e)`,
-mirroring the indeterminate `kFrameRow = ∑_j X_{(e,j)} • (block-`j` incidence row)`. -/
-theorem rigidityRow_eq [Fintype α] [DecidableEq α] {F : BodyBarFramework n α β}
-    [DecidablePred (· ∈ E(F.graph))] (D : Graph.orientation F.graph) (e : E(F.graph)) :
-    F.rigidityRow D e =
-      -(blockPairing α (bodyBarDim n)
-        (fun c => F.placement e c • D.signedIncMatrix ℝ (e : β))) := by
-  refine LinearMap.ext fun m => ?_
-  rw [rigidityRow_apply, rigidityMap_apply, LinearMap.neg_apply, blockPairing_apply,
-    PiLp.inner_apply]
-  have he : (e : β) ∈ E(F.graph) := e.2
-  -- Expand the inner product coordinatewise; over ℝ each component pairing is `b·w`.
-  simp only [RCLike.inner_apply, conj_trivial, PiLp.sub_apply]
-  -- Swap the order of summation and push the negation into the coordinate sum, then expand
-  -- the signed incidence row vertex-by-vertex and collapse via the indicator sums.
-  rw [Finset.sum_comm, ← Finset.sum_neg_distrib]
-  refine Finset.sum_congr rfl fun c _ => ?_
-  rw [D.signedIncMatrix_apply_of_mem he]
-  simp only [Pi.smul_apply, Pi.sub_apply, Function.update_apply, Pi.zero_apply, smul_eq_mul]
-  -- Each summand `(b_e c * (ite_v − ite_u)) * m x c` is `if x = v then … else if x = u …`;
-  -- collapse the indicator sums to the two endpoint contributions.
-  rw [show (∑ x, (F.placement e).ofLp c
-        * ((if x = (D.dInc ⟨↑e, he⟩).2 then (1:ℝ) else 0)
-          - if x = (D.dInc ⟨↑e, he⟩).1 then (1:ℝ) else 0) * (m x).ofLp c)
-      = (F.placement e).ofLp c * (m (D.dInc e).2).ofLp c
-        - (F.placement e).ofLp c * (m (D.dInc e).1).ofLp c from by
-      simp only [mul_assoc, ← Finset.mul_sum, mul_sub, sub_mul, ite_mul, one_mul, zero_mul,
-        Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]]
-  ring
 
 /-- **The signed incidence-row span is orientation-independent.** Over any commutative ring `𝔽`,
 the span of the signed incidence rows on a bar set `E'` is the same submodule for any two

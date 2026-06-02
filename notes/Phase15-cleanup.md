@@ -1,6 +1,6 @@
 # Phase 15 cleanup round (work log)
 
-**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C1/C2/C3 no-op confirms landed; D1 landed; D2 landed; D3 remains — closes round).
+**Status:** ✓ complete (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C1/C2/C3 no-op confirms landed; D1 landed; D2 landed; D3 landed — round closed).
 
 Between-phases cleanup round, run after Phase 15 (body-bar Tay theorem,
 existence form) closed in `fa4cfc3` and before Phase 16 (body-hinge /
@@ -234,19 +234,29 @@ mostly no-op confirming forced structural shape):
   Phase-14-cleanup D2 (which kept them as live Phase-15 references). No
   TACTICS lift (the two migrated entries are already lifted; the four kept
   are type-specific project idioms, not general rules).
-- [ ] D3 — **carry-over derivation item** (from Phase 15 notes *Possible
-  cleanup-round item*): `stdFramework_rigidityRow_eq` (the `b_e = e_{j(e)}`
-  block-`single` row identity, `TayTheorem.lean` L218) is now the special
-  case of the general `rigidityRow_eq` (L342). Derive it from `rigidityRow_eq`
-  (`Pi.single (j e) v = fun c ↦ (e_{j e} c) • v` after the std-basis
-  collapse) rather than reproving it standalone — removes ~21 lines of
-  duplicated incidence-row expansion. **Disposition call:** this is a
-  genuine in-round refactor (`CLEANUP.md` *What a cleanup round is not* →
-  surfaced-refactor exception), so land it as its own commit if the
-  derivation is clean; if the `Pi.single`-vs-block-vector reshape proves
-  more than a few lines of glue (the `Pi.single (j e) v = fun c ↦ …`
-  rewrite is exactly the elaboration-fragile shape FRICTION L96 warns
-  about), record what was tried and leave both standalone.
+- [x] D3 — **carry-over derivation item LANDED** (own commit, the round's
+  one substantive refactor). Derived `stdFramework_rigidityRow_eq` from the
+  general `rigidityRow_eq` instead of reproving it standalone. **Required
+  reordering** `rigidityRow_eq` to *precede* `stdFramework_rigidityRow_eq`
+  in the file (the general lemma was below the special case; its only
+  dependencies — `rigidityRow_apply`, `rigidityMap_apply`,
+  `blockPairing_apply`, `signedIncMatrix_apply_of_mem` — all sit above the
+  special case, so the move is free). The new special-case proof is 8 lines
+  (was ~25): apply `rigidityRow_eq`, then `congrArg`/`funext c` collapsing
+  the block vector `fun c ↦ (e_{j e})_c • signedIncMatrix e` to
+  `Pi.single (j e) (signedIncMatrix e)` via `PiLp.single_apply` +
+  `Pi.single_eq_same`/`Pi.single_eq_of_ne`. The feared `Pi.single`-vs-block
+  elaboration fragility (FRICTION → TACTICS-QUIRKS § 24) did **not**
+  materialize — the reshape went through `congrArg`+`funext` cleanly.
+  The one glue point: closing the `c = j e` branch needed `congr 1` (not
+  `rfl`) because `D.signedIncMatrix ℝ e` carries a `DecidablePred (· ∈
+  E(·))` instance argument that differs syntactically between the
+  `(stdFramework G n j).graph` form (from applying `rigidityRow_eq`) and
+  the `G` form (the goal RHS); `signedIncMatrix`'s exposed-but-`def` body
+  blocks `rfl`, and `congr 1` discharges the residual via the `Decidable`
+  subsingleton. Net: −17 lines on the special case, deduplicating the
+  incidence-row expansion. Build warning-clean + lint clean; no `\lean{}`
+  pin touched (neither lemma is blueprint-pinned), so no `checkdecls`.
 
 ### Non-A–D items noted during the sweep
 
@@ -341,26 +351,40 @@ mostly no-op confirming forced structural shape):
   logic Phase-14-cleanup D2 applied for Phase 15. No TACTICS lift; pure §D
   housekeeping, no Lean code touched.
 
+- **D3 (`stdFramework_rigidityRow_eq` derived from `rigidityRow_eq`).**
+  Reordered `rigidityRow_eq` above the special case (dependencies all
+  already above; move is free) and rewrote the special case as an 8-line
+  `congrArg`/`funext c` collapse of the block vector to `Pi.single`
+  (`PiLp.single_apply` + `Pi.single_eq_same`/`_eq_of_ne`), −17 lines of
+  duplicated incidence-row expansion. The `Pi.single`-vs-block elaboration
+  fragility (TACTICS-QUIRKS § 24) did not bite. One glue point: the
+  `c = j e` branch closes with `congr 1` not `rfl` — `D.signedIncMatrix`
+  carries a `DecidablePred (· ∈ E(·))` arg differing syntactically between
+  the `(stdFramework …).graph` instance (from `rigidityRow_eq`) and the
+  ambient `G` instance, and `signedIncMatrix`'s `def` body blocks `rfl`;
+  `congr 1` clears it via the `Decidable` subsingleton. Not a recurring API
+  gap (one-off `.graph = G`-coercion artifact, same shape the `rfl`
+  `stdFramework_graph`/`_placement` simp lemmas handle elsewhere), so no
+  FRICTION entry. Build warning-clean + lint clean; no `\lean{}` pin touched.
+
 ## Blockers / open questions
 
 <none at round open>
 
 ## Hand-off / next phase
 
-**A complete; all of B closed; C complete; D1 + D2 landed (D2 this
-commit, notes-only).** D2 migrated the two Phase-15 `[resolved]` FRICTION
-entries to `FRICTION-archive.md` (both TACTICS-indexed + decl-indexed, no
-Phase-16 forward ref) and kept the four Phase-13/14 `apnelson1/Matroid`-API
-entries active (live Phase-16 body-hinge references). No Lean code touched.
+**Round complete — all of A/B/C/D landed.** D3 (this commit) derived
+`stdFramework_rigidityRow_eq` from the general `rigidityRow_eq` (reordering
+the general lemma above the special case), −17 lines of duplicated
+incidence-row expansion; the feared `Pi.single`-vs-block elaboration
+fragility (TACTICS-QUIRKS § 24) did not materialize. Build warning-clean +
+lint clean; full project green.
 
-**Smallest concrete next commit:** **D3** (the
-`stdFramework_rigidityRow_eq` derivation from `rigidityRow_eq`,
-`TayTheorem.lean` L218 vs L342) — the one substantive refactor candidate of
-the round, as its own commit. Goal: derive the `b_e = e_{j(e)}` block-`single`
-row identity as the special case of the general `rigidityRow_eq` (after the
-std-basis collapse `Pi.single (j e) v = fun c ↦ (e_{j e} c) • v`) instead of
-reproving it standalone, removing ~21 lines of duplicated incidence-row
-expansion. **Try-and-record fallback:** if the `Pi.single`-vs-block-vector
-reshape proves more than a few lines of glue (it is exactly the
-elaboration-fragile shape now archived under FRICTION → TACTICS-QUIRKS § 24),
-record what was tried and leave both standalone. D3 closes the round.
+**Nothing carried over.** Every task-list item closed (A1/A2, B1–B7,
+C1–C3, D1–D3). No Lean `sorry`s introduced, no FRICTION entries opened, no
+deferred sub-items. The blueprint dep-graph for §`sec:body-bar-framework` +
+§`sec:body-bar-tay` is unchanged (no `\lean{}` pin moved — D3 reorders two
+non-pinned lemmas). Per `CLEANUP.md`, the round leaves the Phase-15 surface
+audited and the next work is the **Phase 16** open (body-hinge / panel-hinge
+Tay–Whiteley) per ROADMAP §15's follow-on note — a fresh phase, not a
+cleanup carry-over.
