@@ -357,7 +357,9 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
     CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions,
     CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_le_infinitesimalMotions,
     CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_eq_range_const,
-    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff}
+    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_trivialMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_screwAssignment}
   \leanok
   \uses{def:rigidity-matrix}
   For $1 \le i \le D$ let $S^*_i$ be the constant screw assignment with
@@ -383,12 +385,16 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   the basis-free stand-in for ``determined by a single common value''), and
   records infinitesimal rigidity as the submodule equality
   $Z(G,p) = \{\text{trivial}\}$
-  (\texttt{infinitesimalMotions\_eq\_trivialMotions\_iff}). A $D$-dimensional
-  trivial kernel forces $\operatorname{rank} R(G,p) \le D|V| - D$; the
-  numeric $D = (k+2 \text{ choose } 2)$ count of $\bigwedge^{k}\R^{k+2}$ is
-  the only piece that waits on the explicit
-  $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ coordinatization
-  (\cref{def:rigidity-matrix}).
+  (\texttt{infinitesimalMotions\_eq\_trivialMotions\_iff}). The diagonal
+  identification makes the constant-assignment map a linear isomorphism
+  $\bigwedge^{k}\R^{k+2} \cong \{\text{trivial}\}$ for nonempty $V$, so with
+  the screw-dimension count $\operatorname{finrank} \bigwedge^{k}\R^{k+2} = D$
+  (\cref{def:rigidity-matrix}) the trivial kernel has dimension exactly
+  $D$ (\texttt{finrank\_trivialMotions}) inside the $D|V|$-dimensional
+  screw-assignment space (\texttt{finrank\_screwAssignment}, from
+  $\operatorname{finrank}(V \to \bigwedge^{k}\R^{k+2}) = D|V|$). The
+  $D$-dimensional trivial kernel therefore forces
+  $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$.
 \end{proof}
 
 \subsection{Rank lemmas and reconciliation with Proposition 1.1}

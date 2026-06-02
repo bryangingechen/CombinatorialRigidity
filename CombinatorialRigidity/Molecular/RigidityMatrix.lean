@@ -7,6 +7,7 @@ module
 
 public import Mathlib.Combinatorics.Graph.Basic
 public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import CombinatorialRigidity.Mathlib.LinearAlgebra.Dimension.Constructions
 public import CombinatorialRigidity.Molecular.Extensor
 
 /-!
@@ -335,6 +336,42 @@ theorem trivialMotions_eq_range_const (F : BodyHingeFramework k α β) :
     · exact ⟨S a, funext fun u => (hS u a).symm⟩
   · rintro ⟨s, rfl⟩ u v
     rfl
+
+/-- The constant-assignment map `s ↦ (fun _ => s)` is injective on a nonempty index type
+(`lem:trivial-motions-rank-bound`): two constant assignments that agree everywhere agree at the
+witnessing body, hence carry the same common screw center. This is what makes the diagonal map a
+linear isomorphism `ScrewSpace k ≃ trivialMotions`, the basis-free form of "a trivial motion is
+determined by its single common value". -/
+theorem injective_const_pi [Nonempty α] :
+    Function.Injective (LinearMap.pi (fun _ : α => LinearMap.id) :
+      ScrewSpace k →ₗ[ℝ] α → ScrewSpace k) := by
+  intro s t h
+  have := congrFun h (Classical.arbitrary α)
+  simpa using this
+
+/-- **The trivial-motion space has dimension `D = (k+2 choose 2)`** for a nonempty body set
+(`lem:trivial-motions-rank-bound`, `def:dof-generic`): `finrank ℝ (trivialMotions) = screwDim k`.
+This is the numeric content of Katoh–Tanigawa's `D` standard trivial motions `S*_1, …, S*_D`. It
+combines the diagonal identification `trivialMotions_eq_range_const` (the trivial motions are the
+range of the injective constant-assignment map `s ↦ (fun _ => s)`, `injective_const_pi`) with the
+screw-dimension count `screwSpace_finrank` (`finrank ℝ (ScrewSpace k) = D`, the
+`⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization of `def:rigidity-matrix`): an injective linear map preserves
+`finrank` (`LinearMap.finrank_range_of_inj`). -/
+theorem finrank_trivialMotions [Nonempty α] (F : BodyHingeFramework k α β) :
+    Module.finrank ℝ F.trivialMotions = screwDim k := by
+  rw [trivialMotions_eq_range_const, LinearMap.finrank_range_of_inj injective_const_pi,
+    screwSpace_finrank]
+
+/-- **The screw-assignment space has dimension `D·|V|`** (`lem:trivial-motions-rank-bound`,
+`def:dof-generic`): `finrank ℝ (α → ScrewSpace k) = D · |V|`, the column count `D|V|` of
+Katoh–Tanigawa's rigidity matrix `R(G,p)`. From the product-space dimension `Module.finrank_pi`
+and the screw-dimension count `screwSpace_finrank` (the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization of
+`def:rigidity-matrix`). With `finrank_trivialMotions` this gives the numeric rank bound
+`rank R(G,p) ≤ D|V| - D = D(|V|-1)` of `lem:trivial-motions-rank-bound` (the codimension of the
+`D`-dimensional trivial kernel) and the degree of freedom of `def:dof-generic`. -/
+theorem finrank_screwAssignment [Fintype α] :
+    Module.finrank ℝ (α → ScrewSpace k) = screwDim k * Fintype.card α := by
+  rw [Module.finrank_pi_const ℝ, screwSpace_finrank, mul_comm]
 
 end BodyHingeFramework
 

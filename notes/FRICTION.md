@@ -1860,6 +1860,25 @@ limitations. Worth a once-over so future agents don't re-litigate.
   `Finset.coe_pair` lives; `Set.pair_eq_pair_iff` is in
   `Mathlib/Data/Set/Insert.lean`).
 
+### [mirrored] `Module.finrank_pi_const` (constant non-dependent `ι → M` finrank)
+- **Where it bit:** `finrank_screwAssignment` in
+  `Molecular/RigidityMatrix.lean` (Phase 18
+  `lem:trivial-motions-rank-bound`), the column-count
+  `finrank (V → ScrewSpace) = D·|V|` of the rigidity matrix.
+- **Friction:** mathlib has `Module.finrank_pi_fintype` for a
+  *dependent* product `(i : ι) → M i` (a `∑`) and `Module.finrank_pi`
+  for the scalar case `ι → R`, but no fused lemma for the constant
+  non-dependent product `ι → M`, so the callsite expanded to a 5-rewrite
+  chain `Module.finrank_pi_fintype` + `Finset.sum_const` +
+  `Finset.card_univ` + `smul_eq_mul` collapsing the constant sum.
+- **Resolution:** mirrored as `Module.finrank_pi_const`
+  (`finrank R (ι → M) = Fintype.card ι * finrank R M`), proved by exactly
+  that chain once. The callsite collapses to
+  `rw [Module.finrank_pi_const ℝ, screwSpace_finrank, mul_comm]`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
+  (where `Module.finrank_pi_fintype` lives).
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

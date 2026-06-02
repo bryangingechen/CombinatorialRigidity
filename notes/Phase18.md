@@ -21,11 +21,18 @@ algebra to the degree-`k` graded piece `↥(⋀[ℝ]^k (Fin (k+2) → ℝ))` (wh
 the supporting extensors actually live), and `screwSpace_finrank :
 finrank ℝ (ScrewSpace k) = screwDim k = (k+2).choose 2` realizes the
 identification as a `finrank` equality (not an explicit basis). This is
-the numeric gate for the remaining red nodes (the numeric dof / generic,
-the three rank lemmas 5.1/5.3/5.2, and the Prop 1.1 reconciliation), all
-still red. Next: `finrank (trivialMotions) = D` (via the diagonal iso
-`trivialMotions_eq_range_const` + `screwSpace_finrank`), then the numeric
-`rank R ≤ D(|V|−1)` (see *Hand-off*).
+the numeric gate for the remaining red nodes (the three rank lemmas
+5.1/5.3/5.2 and the Prop 1.1 reconciliation), all still red. The numeric
+finrank counts have now **landed**: `finrank_trivialMotions`
+(`finrank (trivialMotions) = D`, via the diagonal iso
+`trivialMotions_eq_range_const` + injectivity `injective_const_pi` +
+`screwSpace_finrank`) and `finrank_screwAssignment`
+(`finrank (α → ScrewSpace) = D·|V|`, via the mirrored
+`Module.finrank_pi_const` + `screwSpace_finrank`). Together they give the
+`D`-dimensional trivial kernel inside the `D·|V|`-dimensional
+screw-assignment space — the codimension form of `rank R ≤ D(|V|−1)`.
+Next: the three rank lemmas (5.1/5.3/5.2) and the Prop 1.1 reconciliation
+(see *Hand-off*).
 
 Landed so far:
 - `def:hinge-constraint` — `Molecular/RigidityMatrix.lean`:
@@ -174,11 +181,16 @@ the Lean lands.
       **Landed** basis-free (`IsTrivialMotion` / `trivialMotions` /
       `trivialMotions_le_infinitesimalMotions` /
       `trivialMotions_eq_range_const` / `IsInfinitesimallyRigid` /
-      `infinitesimalMotions_eq_trivialMotions_iff`); the numeric
-      `rank R ≤ D(|V|−1)` deferred to the coordinatization.
-- [ ] `def:dof-generic` — degree of freedom `D(|V|−1) − rank R`;
-      generic realization. `IsInfinitesimallyRigid` half **landed**;
-      numeric dof / generic still red (needs coordinatization).
+      `infinitesimalMotions_eq_trivialMotions_iff`); the numeric counts
+      `finrank_trivialMotions` (`= D`) + `finrank_screwAssignment`
+      (`= D·|V|`) now **landed** (the codimension form of
+      `rank R ≤ D(|V|−1)`).
+- [~] `def:dof-generic` — degree of freedom `D(|V|−1) − rank R`;
+      generic realization. `IsInfinitesimallyRigid` half **landed**; the
+      numeric dimension counts `finrank_trivialMotions` (`= D`) and
+      `finrank_screwAssignment` (`= D·|V|`) now **landed** too (the
+      codimension form of `rank R ≤ D(|V|−1)`). The maximum-rank *generic*
+      realization condition is the only remaining red part.
 - [ ] `lem:rank-delete-vertex` — **Lemma 5.1** (pin a body, delete `D`
       columns, rank unchanged); [29] White–Whiteley.
 - [ ] `lem:rank-parallel-full` — **Lemma 5.3** (two general-position
@@ -263,6 +275,16 @@ the Lean lands.
   `Nat.choose_symm` (`= (k+2).choose 2`). No explicit basis. Refactor friction:
   `simp [← smul_sub]` stalled on the subtype's `RingQuot`-built ops (not
   exposed) → FRICTION *`simp [← smul_sub]` … graded-piece screw subtype*.
+- **Numeric trivial-kernel / column counts via the diagonal iso, not a
+  basis.** `finrank_trivialMotions = D` is `LinearMap.finrank_range_of_inj`
+  applied to the constant-assignment map `s ↦ (fun _ => s)`
+  (`trivialMotions_eq_range_const` + injectivity `injective_const_pi`,
+  needing `Nonempty α`) composed with `screwSpace_finrank`;
+  `finrank_screwAssignment = D·|V|` is `Module.finrank_pi_const` (mirrored
+  — mathlib has only the dependent-`∑` `finrank_pi_fintype` and the scalar
+  `ι → R` case) + `screwSpace_finrank`. The codimension of the
+  `D`-dimensional trivial kernel is the basis-free `rank R ≤ D(|V|−1)`. See
+  FRICTION *`Module.finrank_pi_const`*.
 - **Body-hinge framework as a `Graph`-native `structure`** (graph +
   `hinge` field), mirroring Phase 16's `Graph.BodyHingeFramework` shape
   but in the `Molecular` namespace and carrying honest hinge *geometry*
@@ -300,23 +322,35 @@ the Lean lands.
 ## Hand-off / next phase
 
 `def:hinge-constraint`, `def:hinge-row-block`, `def:rigidity-matrix` (now
-**including** the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization), and the structural
-half of `lem:trivial-motions-rank-bound` / `def:dof-generic` have landed
-(`Molecular/RigidityMatrix.lean`). The screw space is the degree-`k` graded
+**including** the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization), the full
+`lem:trivial-motions-rank-bound` (structural skeleton + numeric finrank
+counts), and the rigidity-predicate + numeric-dimension parts of
+`def:dof-generic` have landed (`Molecular/RigidityMatrix.lean`). The screw space is the degree-`k` graded
 piece `↥(⋀[ℝ]^k (Fin (k+2) → ℝ))`; `screwSpace_finrank : finrank ℝ
 (ScrewSpace k) = screwDim k = (k+2).choose 2` is the numeric gate. The
 trivial-motion layer is basis-free: `trivialMotions` (≤ `infinitesimalMotions`),
 `trivialMotions_eq_range_const` (the diagonal iso `ScrewSpace ≃ trivialMotions`
 for `Nonempty α`), `IsInfinitesimallyRigid`, `infinitesimalMotions_eq_trivialMotions_iff`.
 
-The next concrete commit is **the numeric `finrank (trivialMotions) = D`**:
-combine `trivialMotions_eq_range_const` (trivial motions = `range` of the
-constant-assignment `LinearMap.pi id`, injective for `Nonempty α`) with
-`screwSpace_finrank` to get `finrank (F.trivialMotions) = screwDim k` (the
-diagonal map is a linear iso `ScrewSpace ≃ₗ trivialMotions`). With
-`finrank (α → ScrewSpace) = D·|V|` (`Module.finrank_pi` + `screwSpace_finrank`,
-for `Fintype α`), the numeric `rank R ≤ D(|V|−1)` and the degree of freedom of
-`def:dof-generic` follow from the basis-free skeleton (the codimension of the
-`D`-dimensional trivial kernel). After that: the three rank lemmas (5.1/5.3/5.2)
-and the Prop 1.1 reconciliation (the load-bearing targets). See
-`notes/MolecularConjecture.md` *Phase 18* for the per-lemma detail and reuse map.
+The numeric finrank counts have now **landed**: `finrank_trivialMotions`
+(`finrank (F.trivialMotions) = screwDim k = D`, via the diagonal iso
+`trivialMotions_eq_range_const` + injectivity `injective_const_pi` +
+`screwSpace_finrank`, for `Nonempty α`) and `finrank_screwAssignment`
+(`finrank (α → ScrewSpace) = D·|V|`, via the mirrored
+`Module.finrank_pi_const` + `screwSpace_finrank`, for `Fintype α`).
+Together they are the codimension form of `rank R ≤ D(|V|−1)` — the
+basis-free skeleton plus the two numerals. `lem:trivial-motions-rank-bound`
+is fully green; the numeric-dimension part of `def:dof-generic` is landed
+(only its maximum-rank *generic* realization condition remains red).
+
+The next concrete commit is the **leaf-most of the three rank lemmas**.
+Per the dep-graph, `lem:rank-parallel-full` (KT Lemma 5.3, two
+general-position parallel hinges → full block `D`) depends only on Phase
+17's `lem:extensor-independence` (`omitTwoExtensor_linearIndependent`,
+already green) — the natural base case and most self-contained start.
+`lem:rank-delete-vertex` (KT Lemma 5.1, pin-a-body) builds on the
+now-landed trivial-motion layer and the [29] White–Whiteley fact (decide
+prove-vs-hypothesize per the risk register); `lem:rank-rotation-semicont`
+(KT Lemma 5.2) and the Prop 1.1 reconciliation are the load-bearing
+finishers. See `notes/MolecularConjecture.md` *Phase 18* for the per-lemma
+detail and reuse map.
