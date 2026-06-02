@@ -11,9 +11,10 @@ is the Phase-18 work log only.
 
 ## Current state
 
-Phase 18 is **in progress**. The two leaf nodes `def:hinge-constraint`
-and `def:hinge-row-block` have **landed** (`Molecular/RigidityMatrix.lean`);
-the remaining `sec:molecular-rigidity-matrix` nodes are still red.
+Phase 18 is **in progress**. Three nodes (`def:hinge-constraint`,
+`def:hinge-row-block`, `def:rigidity-matrix`) have **landed**
+(`Molecular/RigidityMatrix.lean`); the remaining
+`sec:molecular-rigidity-matrix` nodes are still red.
 
 Landed so far:
 - `def:hinge-constraint` — `Molecular/RigidityMatrix.lean`:
@@ -34,18 +35,33 @@ Landed so far:
   `(span C)^⊥⊥ = span C`) + `Submodule.mem_dualCoannihilator`; added
   `import Mathlib.LinearAlgebra.Dual.Lemmas`. The `⋀^k ℝ^(k+2) ≅ ℝ^D`
   coordinatization stays deferred (see *Decisions* / open questions).
+- `def:rigidity-matrix` — same file: `IsInfinitesimalMotion F S`
+  (`S : α → ScrewSpace k` meets `hingeConstraint` at every edge, i.e.
+  `∀ e u v, G.IsLink e u v → S u − S v ∈ span C(p(e))`) and the
+  submodule `infinitesimalMotions F = Z(G,p) = ker R(G,p)` of all
+  motions. Carried **basis-free** — `R(G,p)` is the per-edge constraint
+  *family*, not an explicit `(D−1)|E| × D|V|` real coordinate matrix
+  (the matrix-vector-product vanishing is exactly the per-edge
+  constraint), so the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization stays
+  deferred. Orientation-independence via `hingeConstraint_comm` (span
+  closed under negation) makes the predicate well-defined on the
+  undirected multigraph; `Submodule` via fixed-subspace-membership
+  closure. Adds `mem_infinitesimalMotions` + `isInfinitesimalMotion_iff`.
 
 The opening commit created this work log, opened the
 `sec:molecular-rigidity-matrix` dep-graph (all red), added the two bib
 entries (`whiteWhiteley1987` [29], `jacksonJordan2009` [15]), and ran the
 phase-open status-surface sync.
 
-The next concrete commit is the next red node `def:rigidity-matrix` —
-assemble the `(D−1)|E| × D|V|` block matrix `R(G,p)` (signed `±r(p(e))`
-per oriented edge) and `Z(G,p) = ker R`. This is the node that finally
-forces the concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization, since the
-block matrix needs `r(p(e))` as an honest `(D−1)×D` real matrix
-(carrier-compatibility open question below).
+The next concrete commit is the next red node
+`lem:trivial-motions-rank-bound`: the `D` constant trivial motions `S*_i`
+lie in `Z(G,p)` and span the trivial motions (`S u = S v` for all `u v`),
+giving `rank R ≤ D(|V|−1)` with equality iff infinitesimally rigid. This
+plus `def:dof-generic` (degree of freedom, generic realization) are the
+next two nodes; both finally need a `rank` / `Module.finrank` count, so
+they will likely force the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization (or a
+`finrank` computation directly on the `infinitesimalMotions` submodule /
+its complement) — decide which when the node lands.
 
 ## Scope (Phase 18 only)
 
@@ -120,8 +136,10 @@ the Lean lands.
       `(span C(p(e)))^⊥`; constraint as `(D−1)` linear equations.
       **Landed** (`hingeRowBlock` + `hingeConstraint_iff_hingeRowBlock`,
       basis-free as the dual annihilator).
-- [ ] `def:rigidity-matrix` — `R(G,p)`, the `(D−1)|E| × D|V|` block
-      matrix; `Z(G,p) = ker R`. **Next commit.**
+- [x] `def:rigidity-matrix` — `R(G,p)`, the `(D−1)|E| × D|V|` block
+      matrix; `Z(G,p) = ker R`. **Landed** (`IsInfinitesimalMotion` +
+      `infinitesimalMotions`, basis-free as the per-edge constraint
+      family; `R(G,p)` not built as an explicit real coordinate matrix).
 - [ ] `lem:trivial-motions-rank-bound` — the `D` trivial motions
       `S*_i`; `rank R ≤ D(|V|−1)`, equality iff infinitesimally rigid.
 - [ ] `def:dof-generic` — degree of freedom `D(|V|−1) − rank R`;
@@ -160,8 +178,22 @@ the Lean lands.
   the blueprint's `(S u − S v) · r_i = 0` becomes `r (S u − S v) = 0` for
   `r` ranging over the annihilator, and the iff is the field-level
   double-annihilator identity `Subspace.dualAnnihilator_dualCoannihilator_eq`.
-  The explicit `(D−1)×D` matrix / coordinatization is deferred to
-  `def:rigidity-matrix`, which genuinely needs `r(p(e))` as a real matrix.
+  The explicit `(D−1)×D` matrix / coordinatization was *expected* to be
+  forced at `def:rigidity-matrix` — but it was not (see next entry); the
+  basis-free thread runs further than anticipated.
+- **`R(G,p)` carried basis-free as the per-edge constraint family, not
+  an explicit coordinate matrix** (`def:rigidity-matrix`). The null space
+  `Z(G,p) = ker R(G,p)` is realized as the submodule `infinitesimalMotions`
+  of `S : α → ScrewSpace k` cut out by `IsInfinitesimalMotion` (the
+  per-edge `hingeConstraint` over `G.IsLink`). Since the vanishing of
+  `R(G,p)`'s matrix-vector product *is* the per-edge constraint, no
+  honest `(D−1)|E| × D|V|` real matrix — hence no `⋀^k ℝ^(k+2) ≅ ℝ^D`
+  coordinatization — is needed for the kernel itself. The coordinatization
+  is now expected to land only at `lem:trivial-motions-rank-bound` /
+  `def:dof-generic`, where a `rank` / `finrank` count first appears.
+  Orientation-independence (`hingeConstraint_comm`, span closed under
+  negation) makes the predicate well-defined on the undirected
+  multigraph.
 - **Body-hinge framework as a `Graph`-native `structure`** (graph +
   `hinge` field), mirroring Phase 16's `Graph.BodyHingeFramework` shape
   but in the `Molecular` namespace and carrying honest hinge *geometry*
@@ -192,23 +224,28 @@ the Lean lands.
 - **Carrier compatibility** — Phase 4's `Framework V d` uses
   `EuclideanSpace ℝ (Fin d)`; Phase 17's extensors use `Fin (d+1) → ℝ`.
   Confirm the screw-space identification `⋀^(d−1) ℝ^(d+1) ≅ ℝ^D` is
-  frictionless before the `def:rigidity-matrix` node.
+  frictionless — now deferred to `lem:trivial-motions-rank-bound` /
+  `def:dof-generic` (the first `rank` / `finrank` node), since
+  `def:rigidity-matrix` landed basis-free without it.
 
 ## Hand-off / next phase
 
-`def:hinge-constraint` and `def:hinge-row-block` have landed
-(`Molecular/RigidityMatrix.lean`: `BodyHingeFramework` / `supportExtensor`
-/ `hingeConstraint`, then `hingeRowBlock` / `hingeConstraint_iff_hingeRowBlock`,
-the orthogonal complement carried basis-free as the dual annihilator). The
-next concrete commit is the next red node `def:rigidity-matrix`: assemble
-the `(D−1)|E| × D|V|` block matrix `R(G,p)` (signed `±r(p(e))` in the `D`
-columns of each oriented edge's endpoints) and `Z(G,p) = ker R`. This is
-the node that finally forces the concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinate
-identification (carrier compatibility, open question above), since the
-block matrix needs `r(p(e))` as an honest `(D−1)×D` real matrix — decide
-the explicit basis / inner-product structure then; the natural choice is
-the `pluckerVector` coordinatization (Phase 17) giving the `ℝ^D`
-isomorphism. The three rank lemmas (5.1/5.3/5.2)
-and the Prop 1.1 reconciliation are the load-bearing targets. See
-`notes/MolecularConjecture.md` *Phase 18* for the per-lemma detail and
-the reuse map.
+`def:hinge-constraint`, `def:hinge-row-block`, and `def:rigidity-matrix`
+have landed (`Molecular/RigidityMatrix.lean`: `BodyHingeFramework` /
+`supportExtensor` / `hingeConstraint`; `hingeRowBlock` /
+`hingeConstraint_iff_hingeRowBlock`, dual-annihilator basis-free; and
+`IsInfinitesimalMotion` / `infinitesimalMotions` = `Z(G,p) = ker R(G,p)`,
+the rigidity matrix carried as the per-edge constraint family — no
+explicit real coordinate matrix). The next concrete commit is the next
+red node `lem:trivial-motions-rank-bound`: the `D` constant trivial
+motions `S*_i ∈ Z(G,p)` span the trivial motions (`S u = S v` for all
+`u v`), giving `rank R ≤ D(|V|−1)`, equality iff infinitesimally rigid.
+This is where a `rank` / `Module.finrank` count first appears — so it
+(with `def:dof-generic` next) is the node that finally forces a
+coordinatization decision: either the `⋀^k ℝ^(k+2) ≅ ℝ^D` identification
+(natural choice: the `pluckerVector` coordinatization of Phase 17) or a
+`finrank` computation directly on the `infinitesimalMotions` submodule /
+its complement (carrier compatibility, open question above). The three
+rank lemmas (5.1/5.3/5.2) and the Prop 1.1 reconciliation are the
+load-bearing targets. See `notes/MolecularConjecture.md` *Phase 18* for
+the per-lemma detail and the reuse map.

@@ -164,6 +164,65 @@ theorem hingeConstraint_iff_hingeRowBlock (F : BodyHingeFramework k α β)
     rw [← Subspace.dualAnnihilator_dualCoannihilator_eq
       (W := Submodule.span ℝ {F.supportExtensor e}), Submodule.mem_dualCoannihilator]
 
+/-- **Infinitesimal motion** of a body-hinge framework `(G,p)` (`def:rigidity-matrix`): a
+screw assignment `S : α → ScrewSpace k` is an infinitesimal motion when it satisfies the
+hinge constraint (`def:hinge-constraint`) at *every* edge of `G`, i.e. for every edge `e`
+linking endpoints `u v` (`G.IsLink e u v`), the relative screw center `S u - S v` lies in
+`span C(p(e))`.
+
+This is membership in the kernel of Katoh–Tanigawa's rigidity matrix `R(G,p)`
+(`def:rigidity-matrix`): each oriented edge `e = uv` contributes the block row carrying the
+hinge-row block `r(p(e))` in the `D` columns of `u` and `-r(p(e))` in those of `v` (zero
+elsewhere), so a vanishing matrix-vector product is exactly the per-edge hinge constraint.
+We keep the screw space the full `ExteriorAlgebra` element (`def:hinge-constraint`) and carry
+`R(G,p)` as this constraint family on the screw-assignment space `α → ScrewSpace k` rather
+than as an explicit `(D-1)|E| × D|V|` real coordinate matrix, matching the basis-free
+hinge-row block (`def:hinge-row-block`). -/
+def IsInfinitesimalMotion (F : BodyHingeFramework k α β) (S : α → ScrewSpace k) : Prop :=
+  ∀ e u v, F.graph.IsLink e u v → F.hingeConstraint S e u v
+
+theorem isInfinitesimalMotion_iff (F : BodyHingeFramework k α β) (S : α → ScrewSpace k) :
+    F.IsInfinitesimalMotion S ↔
+      ∀ e u v, F.graph.IsLink e u v →
+        S u - S v ∈ Submodule.span ℝ {F.supportExtensor e} :=
+  Iff.rfl
+
+/-- The constraint of an infinitesimal motion is orientation-independent: it holds for an
+oriented edge `e = uv` iff for the reversed orientation `e = vu`. This makes
+`IsInfinitesimalMotion` well-defined on the undirected multigraph `G`, where `R(G,p)`'s block
+rows come from unoriented edges. (The span of a single vector is closed under negation, and
+`S v - S u = -(S u - S v)`.) -/
+theorem hingeConstraint_comm (F : BodyHingeFramework k α β) (S : α → ScrewSpace k)
+    (e : β) (u v : α) :
+    F.hingeConstraint S e u v ↔ F.hingeConstraint S e v u := by
+  rw [hingeConstraint, hingeConstraint, ← neg_sub (S v) (S u), Submodule.neg_mem_iff]
+
+/-- The **null space** `Z(G,p)` of the panel-hinge rigidity matrix `R(G,p)`
+(`def:rigidity-matrix`): the submodule of all infinitesimal motions inside the screw-assignment
+space `α → ScrewSpace k`. By `def:rigidity-matrix` this is `Z(G,p) = ker R(G,p)`; carried
+basis-free as the kernel cut out by the per-edge hinge constraints (`IsInfinitesimalMotion`),
+its membership is `mem_infinitesimalMotions`. It is a submodule because each hinge constraint
+is membership in the fixed subspace `span C(p(e))`, closed under the screw-assignment vector
+operations. -/
+def infinitesimalMotions (F : BodyHingeFramework k α β) :
+    Submodule ℝ (α → ScrewSpace k) where
+  carrier := {S | F.IsInfinitesimalMotion S}
+  add_mem' {S T} hS hT e u v he := by
+    have := hS e u v he
+    have := hT e u v he
+    rw [hingeConstraint] at *
+    simpa [add_sub_add_comm] using Submodule.add_mem _ ‹_› ‹_›
+  zero_mem' e u v _ := by simp [hingeConstraint]
+  smul_mem' c S hS e u v he := by
+    have := hS e u v he
+    rw [hingeConstraint] at *
+    simpa [Pi.smul_apply, ← smul_sub] using Submodule.smul_mem _ c ‹_›
+
+@[simp]
+theorem mem_infinitesimalMotions (F : BodyHingeFramework k α β) (S : α → ScrewSpace k) :
+    S ∈ F.infinitesimalMotions ↔ F.IsInfinitesimalMotion S :=
+  Iff.rfl
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

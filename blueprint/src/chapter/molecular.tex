@@ -290,6 +290,9 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
 
 \begin{definition}[Panel-hinge rigidity matrix]
   \label{def:rigidity-matrix}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimalMotion,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions}
+  \leanok
   \uses{def:hinge-row-block}
   The \emph{rigidity matrix} $R(G,p)$ is the $(D-1)|E| \times D|V|$ block
   matrix whose block row for the oriented edge $e = uv$ carries
@@ -298,6 +301,22 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   infinitesimal motion of $(G,p)$ iff $S \in \ker R(G,p)$; this null
   space is written $Z(G,p)$. Its dimension is independent of the chosen
   orthogonal-complement basis.
+
+  The formalization keeps the screw space the full exterior-algebra
+  element (\cref{def:hinge-constraint}) and carries $R(G,p)$ as the
+  family of per-edge hinge constraints on the screw-assignment space,
+  not as an explicit real coordinate matrix: a screw assignment
+  $S \colon V \to \bigwedge^{k}\R^{k+2}$ is an \emph{infinitesimal
+  motion} (\texttt{IsInfinitesimalMotion}) when it meets the hinge
+  constraint (\cref{def:hinge-constraint}) at every edge, i.e.
+  $S(u) - S(v) \in \operatorname{span} C(p(e))$ for every edge $e$
+  linking $u, v$. The constraint is orientation-independent (the span
+  is closed under negation), so this is well-defined on the undirected
+  multigraph, and the null space $Z(G,p) = \ker R(G,p)$ is the
+  submodule of all infinitesimal motions
+  (\texttt{infinitesimalMotions}). The explicit
+  $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ coordinatization stays deferred,
+  as it does in \cref{def:hinge-row-block}.
 \end{definition}
 
 \begin{definition}[Degree of freedom; generic realization]
