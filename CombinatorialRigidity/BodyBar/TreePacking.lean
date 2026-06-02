@@ -130,4 +130,44 @@ lemma cycleMatroid_eRk_add_numberOfComponents_restrict {G : Graph α β} {E' : S
   rw [hbridge, eRank_cycleMatroid_add_numberOfComponents (G ↾ E')]
   simp
 
+/-- The vertices `G.spanningVerts E'` spanned by a bar set `E' ⊆ E(G)` are exactly the
+non-isolated vertices of the edge-restricted subgraph `G ↾ E'`: deleting the isolated set
+`Isol(G ↾ E')` from the full vertex set `V(G ↾ E') = V(G)` leaves `spanningVerts E'`. This is
+the `spanningVerts`-vs-`V(G)` cancellation that bridges the matroid-restriction rank formula
+(whose component count `c(G ↾ E')` ranges over *all* of `V(G)`, isolated vertices included) to
+the `(k, ℓ)`-sparsity count (which lives on `spanningVerts`). -/
+lemma vertexSet_deleteVerts_isolatedSet_restrict {G : Graph α β} {E' : Set β} :
+    V(G ↾ E') \ Isol(G ↾ E') = G.spanningVerts E' := by
+  ext x
+  simp only [mem_diff, mem_isolatedSet_iff, mem_spanningVerts]
+  constructor
+  · rintro ⟨hxV, hxiso⟩
+    rw [not_isolated_iff hxV] at hxiso
+    obtain ⟨e, he⟩ := hxiso
+    rw [restrict_inc] at he
+    exact ⟨e, he.2, he.1⟩
+  · rintro ⟨e, heE', hinc⟩
+    have hxV : x ∈ V(G ↾ E') := (restrict_inc.mpr ⟨hinc, heE'⟩).vertex_mem
+    refine ⟨hxV, ?_⟩
+    rw [not_isolated_iff hxV]
+    exact ⟨e, restrict_inc.mpr ⟨hinc, heE'⟩⟩
+
+/-- **Cycle-matroid rank formula** on `spanningVerts` (`eRk` form): for a bar set `E' ⊆ E(G)`,
+`r(E') + c'(E') = |spanningVerts E'|`, where `c'(E') := c((G ↾ E') - Isol(G ↾ E'))` counts only
+the *non-trivial* components of the bars of `E'` (the isolated vertices of `V(G)` are deleted).
+This is the form the `(k, ℓ)`-sparsity bridge consumes: both sides live on `spanningVerts E'`,
+so the isolated-vertex singleton components that `cycleMatroid_eRk_add_numberOfComponents_restrict`
+counted on both sides have cancelled. Proof: apply the full-vertex-set formula to
+`(G ↾ E') - Isol(G ↾ E')`, whose cycle matroid agrees with `(G ↾ E')`'s
+(`cycleMatroid_deleteVerts_isolatedSet`) and whose vertex set is `spanningVerts E'`
+(`vertexSet_deleteVerts_isolatedSet_restrict`). -/
+lemma cycleMatroid_eRk_add_numberOfComponents_spanningVerts {G : Graph α β} {E' : Set β}
+    (hE' : E' ⊆ E(G)) :
+    G.cycleMatroid.eRk E' + c((G ↾ E') - Isol(G ↾ E')) = (G.spanningVerts E').encard := by
+  have hbridge : G.cycleMatroid.eRk E' = ((G ↾ E') - Isol(G ↾ E')).cycleMatroid.eRank := by
+    rw [cycleMatroid_deleteVerts_isolatedSet, cycleMatroid_restrict, inter_eq_right.mpr hE',
+      Matroid.eRank_restrict]
+  rw [hbridge, eRank_cycleMatroid_add_numberOfComponents ((G ↾ E') - Isol(G ↾ E')),
+    deleteVerts_vertexSet, vertexSet_deleteVerts_isolatedSet_restrict]
+
 end Graph
