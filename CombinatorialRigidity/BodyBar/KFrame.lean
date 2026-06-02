@@ -160,6 +160,48 @@ theorem finrank_constPiSpan {R M : Type*} [DivisionRing R] [AddCommGroup M] [Mod
   rw [(constPiSpanEquiv n W).finrank_eq, Module.finrank_pi_fintype R]
   simp
 
+/-- **Span finrank = matroid rank, via a representation** (`lem:k-frame-nonzero-monomial-forest`,
+piece (2)). For any finite-rank matroid `M` with a representation `v : M.Rep K W`, the `K`-dimension
+of the span of `v '' Y` equals the matroid rank `M.rk Y`. A basis `I` of `Y` has `v '' Y ⊆ span (v
+'' I)` and `LinearIndepOn K v I` (`Rep.isBasis'_iff`), so the two spans coincide; the LI image has
+`finrank = (v '' I).ncard = I.ncard = M.rk Y` (`finrank_span_set_eq_card` + `IsBasis'.card`). -/
+theorem _root_.Matroid.Rep.finrank_span_image_eq_rk {γ K W : Type*} [Field K] [AddCommGroup W]
+    [Module K W] {M : Matroid γ} [M.RankFinite] (v : M.Rep K W) (Y : Set γ) :
+    Module.finrank K (Submodule.span K (v '' Y)) = M.rk Y := by
+  classical
+  obtain ⟨I, hI⟩ := M.exists_isBasis' Y
+  obtain ⟨_, hindep, hsub⟩ := v.isBasis'_iff.mp hI
+  have hfinI : I.Finite := hI.indep.finite
+  haveI : Fintype (v '' I) := (hfinI.image v).fintype
+  have hspan : Submodule.span K (v '' Y) = Submodule.span K (v '' I) :=
+    le_antisymm (Submodule.span_le.mpr hsub)
+      (Submodule.span_mono (Set.image_mono hI.subset))
+  rw [hspan, finrank_span_set_eq_card hindep.id_image, ← Set.ncard_eq_toFinset_card',
+    hindep.injOn.ncard_image, hI.card]
+
+/-- **Incidence-span finrank = cycle-matroid rank** (`lem:k-frame-nonzero-monomial-forest`,
+piece (2)). For the orientation `G.orientation_nonempty.some` underlying `cycleMatroidRep` (the same
+one `kFrameMatroid` / `blockPiSpan` use), the `K`-dimension of the span of the signed incidence rows
+indexed by `Y` equals the cycle-matroid rank `G.cycleMatroid.rk Y`. This is the cycle-matroid
+specialization of `Matroid.Rep.finrank_span_image_eq_rk` to `Graph.cycleMatroidRep`, whose
+representation map is exactly `signedIncMatrix` for that orientation; it turns the
+`finrank blockPiSpan = k · (incidence-span finrank)` bound of the forward rank count into
+`k · r_{cycleMatroid}(Y)`. -/
+theorem finrank_span_signedIncMatrix_eq_cycleMatroid_rk [Finite β] (K : Type*) [Field K]
+    (Y : Set β) :
+    letI : DecidableEq α := Classical.decEq α
+    letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
+    Module.finrank K
+        (Submodule.span K ((G.orientation_nonempty.some.signedIncMatrix K) '' Y))
+      = G.cycleMatroid.rk Y := by
+  classical
+  haveI : G.EdgeFinite := by
+    rw [edgeFinite_iff]; exact Set.toFinite _
+  have hrep := (G.cycleMatroidRep K).finrank_span_image_eq_rk Y
+  have he : ⇑(G.cycleMatroidRep K) = G.orientation_nonempty.some.signedIncMatrix K := rfl
+  rw [he] at hrep
+  exact hrep
+
 end Forward
 
 end Graph

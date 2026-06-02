@@ -113,6 +113,27 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved (project-local; matches how `cycleMatroidRep`
   itself opens with `classical` in a `Rep` field).
 
+### [resolved] `[matroid]` `apnelson1/Matroid` has no `Rep` "finrank of span of image = matroid rank" bridge
+- **Where it bit:** Phase 14 forward rank count
+  (`lem:k-frame-nonzero-monomial-forest`, piece (2)) needs
+  `finrank K (span K (v '' Y)) = M.rk Y` for a representation
+  `v : M.Rep K W`. The `Rep.span_*` API in
+  `Matroid/Representation/Basic.lean` relates spans to closures but has
+  no direct finrank=rk lemma (no loogle hit either).
+- **Fix:** built it locally as
+  `Matroid.Rep.finrank_span_image_eq_rk` in `BodyBar/KFrame.lean`
+  (`[M.RankFinite]`): pick a basis `I` of `Y` (`exists_isBasis'`),
+  `Rep.isBasis'_iff` gives `v '' Y ⊆ span (v '' I)` + `LinearIndepOn K v
+  I`, so spans agree; `finrank_span_set_eq_card` on the LI image plus
+  `InjOn.ncard_image` + `IsBasis'.card` collapse to `M.rk Y`. The
+  cycle-matroid specialization
+  `Graph.finrank_span_signedIncMatrix_eq_cycleMatroid_rk` follows since
+  `⇑(cycleMatroidRep K) = signedIncMatrix` by `rfl`.
+- **Upstream-eligible** to `apnelson1/Matroid` (a fact about its `Rep`),
+  not mathlib — the package isn't a `Mathlib/` mirror target, so it
+  lives in `KFrame.lean` for now.
+- **Status:** resolved (project-local).
+
 ### [resolved] `[matroid]` `Graph.Components` (the `Set (Graph α β)` of components) has no `Finite`/`Fintype` instance under `[Finite α]`
 - **Where it bit:** `Graph.le_mul_cycleMatroid_rk_of_isSparse_restrict` in
   `BodyBar/TreePacking.lean` (Phase 13 reverse direction). The

@@ -160,9 +160,30 @@ and the same applies to every $Y \subseteq E'$.
   = k \cdot \dim_K W$ by the finite-product dimension formula.
 \end{proof}
 
+\begin{lemma}[Incidence-span dimension is the cycle-matroid rank]
+  \label{lem:k-frame-incidence-finrank-rk}
+  \lean{Matroid.Rep.finrank_span_image_eq_rk,
+    Graph.finrank_span_signedIncMatrix_eq_cycleMatroid_rk}
+  \leanok
+  \uses{def:k-frame-matroid}
+  For any finite-rank matroid $M$ with a representation $v$, the $K$-dimension of the
+  span of $v(Y)$ equals the matroid rank $r_M(Y)$. Specialized to the cycle-matroid
+  representation by the signed incidence rows (\cref{def:k-frame-matroid}'s reused
+  $\mathrm{signedIncMatrix}$):
+  $\dim_K \mathrm{span}_K\{\mathrm{signedIncMatrix}\,e : e \in Y\}
+  = r_{G.\mathrm{cycleMatroid}}(Y)$ — piece~(2) of the forward rank count.
+\end{lemma}
+\begin{proof}
+  \leanok
+  A basis $I$ of $Y$ in $M$ has $v(Y) \subseteq \mathrm{span}_K v(I)$ and $v$ linearly
+  independent on $I$, so the two spans agree; the independent image has dimension
+  $|v(I)| = |I| = r_M(Y)$.
+\end{proof}
+
 \begin{lemma}[Generic independence $\Rightarrow$ forest count]
   \label{lem:k-frame-nonzero-monomial-forest}
-  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank}
+  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank,
+    lem:k-frame-incidence-finrank-rk}
   Let $E' \subseteq E(G)$ be a bar set whose generic $k$-frame rows
   $\{X_{e,j} \cdot (\text{signed incidence row of } e)\}_{e \in E'}$ are
   linearly independent over $K$. Then $E'$ satisfies the count
@@ -170,14 +191,16 @@ and the same applies to every $Y \subseteq E'$.
   (equivalently, $E'$ decomposes into $k$ forests of $G$).
 \end{lemma}
 \begin{proof}
-  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank}
+  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank,
+    lem:k-frame-incidence-finrank-rk}
   The forward half of Whiteley~\cite{whiteley1988} \S2.1, by the rank count.
   Restricting to any $Y \subseteq E'$, the $|Y|$ generic rows remain linearly
   independent, so $|Y| = \dim_K \mathrm{span}_K\{\mathrm{kFrameRow}\,e :
   e \in Y\}$. That span sits inside the block-diagonal product subspace
   (\cref{lem:k-frame-span-le-pi}) restricted to $Y$, whose dimension is
   $k \cdot \dim_K \mathrm{span}_K\{\mathrm{signedIncMatrix}\,e : e \in Y\}
-  = k \cdot r_{G.\mathrm{cycleMatroid}}(Y)$ (the cycle-matroid representation).
+  = k \cdot r_{G.\mathrm{cycleMatroid}}(Y)$
+  (\cref{lem:k-frame-pi-finrank}, \cref{lem:k-frame-incidence-finrank-rk}).
   Hence $|Y| \le k \cdot r_{G.\mathrm{cycleMatroid}}(Y)$.
 \end{proof}
 
