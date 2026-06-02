@@ -37,6 +37,18 @@ prior work* before citing in blueprint/notes):
 
 ## Current state
 
+**`def:graph-sparse` landed (green).** `BodyBar/TreePacking.lean` now ships the
+`Graph`-native sparsity/tightness predicate under `namespace Graph`:
+`Graph.spanningVerts G E'` (vertices incident to some bar of `E'`, with helpers
+`mem_spanningVerts` + `spanningVerts_subset_vertexSet`), `Graph.IsSparse G k ℓ`
+(`∀ E' ⊆ E(G), E'.Nonempty → E'.ncard + ℓ ≤ k * (G.spanningVerts E').ncard`),
+`Graph.IsTight G k ℓ` (sparse + global equality `E(G).ncard + ℓ = k * V(G).ncard`),
+and `IsTight.isSparse`. Edge-subset-indexed (the shape the union-independence
+theorem needs), `Set`-side throughout, count written additively. The blueprint
+`def:graph-sparse` node is green (`\lean{Graph.IsSparse, Graph.IsTight}`).
+Build + lint + `blueprint/verify.sh` all clean. **Next:**
+`thm:unionPow-cycle-indep-iff-sparse` (see *Next concrete commit* below).
+
 **Rank adapter landed.** `CombinatorialRigidity/BodyBar/TreePacking.lean`
 ships `Matroid.Union_pow_rank_eq` — the constant-family `Set`-side
 specialization of the partition formula for `Matroid.Union (fun _ : Fin k ↦
@@ -50,19 +62,22 @@ formula `Matroid.Union_rank_eq` (the `Fin ι` generalization of
 and does **not** import `Matroid.Graphic`; the `Graph.cycleMatroid` consumer
 will apply it with `M := G.cycleMatroid` in the next commit.
 
-The four `body-bar.tex` tree-packing nodes (`def:graph-sparse`,
-`thm:unionPow-cycle-indep-iff-sparse`, `thm:tutte-nash-williams`,
-`cor:k-spanning-trees`) remain red — the adapter has no dedicated blueprint
-node (internal glue). The phase-open commit before this was docs-only.
+Three `body-bar.tex` tree-packing nodes remain red
+(`thm:unionPow-cycle-indep-iff-sparse`, `thm:tutte-nash-williams`,
+`cor:k-spanning-trees`); `def:graph-sparse` is now green. The adapter has no
+dedicated blueprint node (internal glue).
 
-**Next concrete commit:** `def:graph-sparse` — the `Graph`-native
-`(k, ℓ)`-sparsity / tightness predicate, `Set`-side (`Set.ncard` of edge
-sets, `ℕ`, `[Finite]`) per `../DESIGN.md` *Set/Finset and rank-flavor
-boundary …* item 1, under `namespace Graph` for dot-notation. This needs
-only mathlib-core `Graph α β` (`Mathlib.Combinatorics.Graph.Basic`); it is
-**not** gated behind `Matroid.Graphic` (only the downstream `cycleMatroid`
-indep-iff theorem imports that, and that import is now unblocked — see
-*Blockers*, resolved).
+**Next concrete commit:** `thm:unionPow-cycle-indep-iff-sparse` — a bar set is
+independent in `⋃ⱼ G.cycleMatroid` (`k` copies) iff `G` restricted to it is
+`(k, k)`-sparse (Whiteley Cor 3). This is the first commit that imports
+`Matroid.Graphic` (the `cycleMatroid` source — import now unblocked, see
+*Blockers*, resolved); it bridges `Union_pow_rank_eq` (constant-`k`-fold
+partition rank, already landed) against the cycle-matroid rank formula
+`r(E') = |V'| − c(E')` via `Graph.IsSparse`. **Confirm the precise
+`|V'| − c(E')` rank shape on `Graph.cycleMatroid` first** (see *Blockers*,
+`Graphic.lean` exposes an `eRk + 1 = …` connected-component form) — that
+identification is the substantive content; this commit may be larger than one
+session, so a reasonable smaller landing is the cycle-matroid rank lemma alone.
 
 ## Architectural choices made up front
 
@@ -90,8 +105,9 @@ tree-packing nodes as of phase open).
   is its first consumer, applied directly). Its prerequisite
   `Matroid.Union_rank_eq` (indexed generalization of `matroid_partition'`)
   landed in `Matroid/Constructions/Union.lean`.
-- [ ] `def:graph-sparse` — `Graph` `(k,ℓ)`-sparsity + tightness,
-  `Set`-side.
+- [x] `def:graph-sparse` — `Graph` `(k,ℓ)`-sparsity + tightness,
+  `Set`-side, edge-subset-indexed (`Graph.IsSparse` / `Graph.IsTight` /
+  `Graph.spanningVerts` in `BodyBar/TreePacking.lean`).
 - [ ] `thm:unionPow-cycle-indep-iff-sparse` — independence in the
   `k`-fold cycle-matroid union ⟺ `(k,k)`-sparse (Whiteley Cor 3).
 - [ ] `thm:tutte-nash-williams` — edge-disjoint union of `k` forests ⟺

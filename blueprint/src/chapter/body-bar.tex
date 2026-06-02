@@ -122,6 +122,8 @@ $\mathtt{SimpleGraph}$ sparsity of \cref{def:isSparse}.
 
 \begin{definition}[Graph $(k, \ell)$-sparsity and tightness]
   \label{def:graph-sparse}
+  \lean{Graph.IsSparse, Graph.IsTight}
+  \leanok
   A multigraph $G$ is \emph{$(k, \ell)$-sparse} if every non-empty
   set of bars $E'$ spanning vertex set $V'$ satisfies
   $|E'| \le k|V'| - \ell$, and \emph{$(k, \ell)$-tight} if it is
