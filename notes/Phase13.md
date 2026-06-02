@@ -58,10 +58,11 @@ node (internal glue). The phase-open commit before this was docs-only.
 **Next concrete commit:** `def:graph-sparse` — the `Graph`-native
 `(k, ℓ)`-sparsity / tightness predicate, `Set`-side (`Set.ncard` of edge
 sets, `ℕ`, `[Finite]`) per `../DESIGN.md` *Set/Finset and rank-flavor
-boundary …* item 1, under `namespace Graph` for dot-notation. **First
-resolve the `Matroid.Graphic` import blocker** (see Blockers) — the
-sparsity predicate references `Graph α β` edge sets and the indep-iff
-theorem after it needs `cycleMatroid`, both gated behind that import.
+boundary …* item 1, under `namespace Graph` for dot-notation. This needs
+only mathlib-core `Graph α β` (`Mathlib.Combinatorics.Graph.Basic`); it is
+**not** gated behind `Matroid.Graphic` (only the downstream `cycleMatroid`
+indep-iff theorem imports that, and that import is now unblocked — see
+*Blockers*, resolved).
 
 ## Architectural choices made up front
 
@@ -105,21 +106,22 @@ sub-organize only if it grows cleanup passes.>
 
 ## Blockers / open questions
 
-- **`Matroid.Graphic` import is currently broken (NEW, blocks next commit).**
+- **`Matroid.Graphic` import was broken — RESOLVED (fork re-pin).**
   Importing `Matroid.Graphic` (the `cycleMatroid` source) transitively
-  pulls `apnelson1/Matroid`'s `Matroid/Uniform/Basic.lean`, which fails to
-  build at the pinned package revision under the current mathlib pin —
-  `unifOn_rankPos_iff` (line 104) has a `simp` that no longer closes its
-  goal (`unsolved goals` + two unused-simp-arg warnings on line 105). This
-  is an upstream vendored-package breakage, not a project API gap. Options
-  for the next commit: (a) bump the `apnelson1/Matroid` pin to a revision
-  where `Uniform/Basic.lean` builds; (b) if no such revision, port the few
-  `cycleMatroid` facts we need (`cycleMatroid_indep` = `IsAcyclicSet`, the
-  rank-as-`|V|−c` form) into the local `CombinatorialRigidity/Matroid/`
-  tree against a constructor that doesn't drag in `Uniform/Basic`. The
-  rank adapter sidesteps this — it is `Matroid α`-generic and needs no
-  Graphic import — but `def:graph-sparse` and everything downstream needs
-  `Graph α β` / `cycleMatroid`.
+  pulls `apnelson1/Matroid`'s `Matroid/Uniform/Basic.lean`, whose
+  `unifOn_rankPos_iff` (line 104) `simp` no longer closed its goal under
+  our mathlib pin (mathlib-master drift; `unsolved goals`). Pin-bumping was
+  ruled out (upstream `origin/main` is 7 wip commits ahead with
+  `Uniform/Basic.lean` unchanged, so the breakage persists at HEAD), and
+  local vendoring of `cycleMatroid` is impractical (~2280-job transitive
+  closure). **Fix:** a one-commit fork off our exact pin `e6852ce` —
+  `bryangingechen/Matroid` branch `combinatorial-rigidity-fix`, commit
+  `08d517f`, replacing the broken `simp` with an explicit positivity
+  `rw` chain. `lakefile.toml` + `lake-manifest.json` now pin that fork;
+  **mathlib rev is unchanged (`21b745f`)**, so Phases 1–12 are unaffected.
+  No upstream PR by request (trivial; upstream tracks mathlib master and
+  will resolve it eventually). Retire the fork once upstream re-greens.
+  The fix verified: `Matroid.Graphic` and the full project build green.
 - **`Graph.cycleMatroid` rank formula.** `thm:unionPow-cycle-indep-iff-sparse`
   needs `r(E') = |V'| − c(E')` on the cycle matroid. `Graphic.lean` exposes
   `cycleMatroid_indep` (= `IsAcyclicSet`), `cycleMatroid_isBase`

@@ -900,6 +900,22 @@ to a fixed section above once a question is answered.
   obsolete the dep) and re-evaluate the pin whenever mathlib is
   bumped — apnelson1's master tracks mathlib master, so a stale pin
   drifting behind ours is the recurrent failure mode to watch.
+
+  **The predicted drift materialized (Phase 13).** Phase 13 is the
+  first phase to import `Matroid.Graphic` (for `Graph.cycleMatroid`);
+  nothing earlier touched it, so a mathlib-master-drift breakage in a
+  transitive dependency (`Matroid/Uniform/Basic.lean`,
+  `unifOn_rankPos_iff` — a `simp` that no longer closed) went
+  unexercised through Phase 12. Pin-bumping does not help (upstream
+  HEAD leaves the broken proof unchanged); local vendoring of
+  `cycleMatroid` is impractical (~2280-job transitive closure). The
+  pin therefore points at a **one-commit fork** off `e6852ce`
+  (`bryangingechen/Matroid` `combinatorial-rigidity-fix`, `08d517f`)
+  carrying just the one-line proof fix. mathlib rev is unchanged, so
+  Phases 1–12 are unaffected. No upstream PR (trivial; upstream will
+  re-green on its own). **Retire the fork** — back to a direct
+  apnelson1 pin — once upstream builds clean against a compatible
+  mathlib. See `notes/Phase13.md` *Blockers*.
 - **Migrating Phases 1–11 from `SimpleGraph` to mathlib's `Graph`.**
   **Decided against wholesale migration (2026-06); keep Phases 1–11
   on `SimpleGraph`.** Context: Phase 12 (body-bar) adopts mathlib's

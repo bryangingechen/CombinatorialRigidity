@@ -35,10 +35,22 @@ rev = "master"
 # takes precedence over the transitive one from this dep. See
 # `notes/Phase8.md` *Architectural choices made up front* and
 # `DESIGN.md` *Phase 8: `apnelson1/Matroid` dependency*.
+#
+# Phase 13: pinned to a one-commit fork off the upstream pin
+# (`e6852ce`) carrying a single proof fix — `unifOn_rankPos_iff` in
+# `Matroid/Uniform/Basic.lean`, whose `simp` no longer closed under our
+# mathlib pin (mathlib-master drift). The fix is a transitive
+# prerequisite of `Matroid.Graphic` (`Graph.cycleMatroid`), which
+# Phase 13 onward imports for tree-packing; nothing earlier imported it,
+# so the breakage went unexercised through Phase 12. No upstream PR by
+# request (trivial; upstream tracks mathlib master and will resolve it).
+# Retire the fork (back to a direct apnelson1 pin) once upstream
+# re-greens against a compatible mathlib. See `notes/Phase13.md`
+# *Blockers* and `DESIGN.md` *Phase 8: `apnelson1/Matroid` dependency*.
 [[require]]
 name = "Matroid"
-git = "https://github.com/apnelson1/Matroid.git"
-rev = "e6852cec65742d1ddce7a66122f842b791b1dd37"
+git = "https://github.com/bryangingechen/Matroid.git"
+rev = "08d517f06d6b38cc6ea443ab1d53a441fa03e714"
 
 [[lean_lib]]
 name = "CombinatorialRigidity"
