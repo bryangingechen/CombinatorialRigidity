@@ -62,17 +62,22 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
   Update to a closed-phase statement (recurring Phase15/16/17-cleanup A2
   shape). Re-read the §2.2–2.4 *Status* block (L237–249) — already notes
   the deferral, likely fine.
-- [ ] **A5 (citation accuracy)** — `prop:rigidity-matrix-prop11` proof
-  (L516) cites "Proposition 2.3 of Jackson–Jordán". Verify the prop
-  number against `.refs/` Jackson–Jordán 2009; per `CLAUDE.md`
-  *Referencing prior work*, **soften to "Jackson–Jordán" without the
-  number if not quickly verifiable** (the proof is deferred/red, so this
-  can also be finalized when Phase 19 formalizes it). Cross-check the
-  same "Prop 2.3 (i)⇔(ii)/(ii)⇔(iii)" pointers in
-  `MolecularConjecture.md` (L73, L255). *Note:* "KT Prop 1.1 / Tay–
-  Whiteley's Prop 1.1" was **verified correct** against KT arXiv
-  0902.0236 (KT's Prop 1.1, credited to Tay & Whiteley) — leave it,
-  optional polish only ("KT's Prop 1.1 stating Tay & Whiteley's theorem").
+- [x] **A5 (citation accuracy)** — done. Verified against `.refs/`
+  jackson-jordan-2009-generic-rank-of-body-bar.pdf: the paper has **no
+  Proposition 2.3** (and no Propositions at all — §2 holds only Lemmas
+  2.1–2.5, the screw-center lemmas; the rank↔deficiency bridge is
+  **Theorem 6.1** `r(G,q)=D(|V|−1)−def_D(G_H)` + **Corollary 6.2** rigid
+  iff `G_H` has `D` edge-disjoint spanning trees, with `def_k` defined in
+  §4 after Theorem 4.1). The invented "(i)⇔(ii)/(ii)⇔(iii)" multi-part
+  labels don't exist either. Fixed `prop:rigidity-matrix-prop11` proof in
+  `molecular.tex` and all six `MolecularConjecture.md` mentions (the
+  references list, the survey line, the Phase-19 table row + detail +
+  inherited bullet, and risk-register #4) to cite Thm 6.1 / Cor 6.2.
+  *Note:* "KT Prop 1.1 / Tay–Whiteley's Prop 1.1" was verified correct in
+  a prior pass against KT arXiv 0902.0236 — left as is. *Not touched:* the
+  bib `jacksonJordan2009` `year={2009}` reflects online-availability;
+  print volume 31 is 2010 — out of A5 scope (key churn), leave for a
+  later bib-accuracy pass if wanted.
 
 ### Bucket B — Code-smell sweep (near no-op)
 
@@ -155,12 +160,13 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ## Hand-off / next phase
 
-A2 landed (molecular.tex §2.2–2.4 readability pass + §2.2–2.4 share of
-A3). Next concrete commit: **A5** (the `prop:rigidity-matrix-prop11`
-citation — verify "Proposition 2.3 of Jackson–Jordán" against
-`.refs/` Jackson–Jordán 2009, or soften to "Jackson–Jordán" without the
-number; cross-check the same pointer in `MolecularConjecture.md`
-L73/L255). Then D1 (`MolecularConjecture.md` destale), the A3
+A2 + A5 landed (A5: "Proposition 2.3 of Jackson–Jordán" was a
+phantom — the [15] paper has no Propositions; corrected to the verified
+Theorem 6.1 / Corollary 6.2 in `molecular.tex` and all six
+`MolecularConjecture.md` mentions). Next concrete commit: **D1**
+(`MolecularConjecture.md` destale — header status, 17/18 ✓ in the phase
+table, resolve risk-register #3, compress the Phase 17/18 detail
+sections to pointers, drop the stale "Opening Phase 17" section). Then the A3
 section-head `k`/`d` finish + A1/A4 confirms, the B/C confirms, D2/D3,
 P1/P2, and J1 last. Each fix is its own commit per `CLEANUP.md`
 *Workflow* rule 3. Close the round by flipping the ROADMAP row to ✓ and

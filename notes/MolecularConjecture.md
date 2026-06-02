@@ -69,8 +69,10 @@ bibliography (page 699–700):
   space" fact behind Lemma 5.1.
 - **[15] Jackson, B., Jordán, T.**, *The generic rank of
   body-bar-and-hinge frameworks*, European J. Combin. **31** (2009),
-  574–588. — the generic-rank ↔ matroid-deficiency bridge,
-  Proposition 2.3 (i)⇔(ii); also the generic-max-rank property of §5.1.
+  574–588. — the generic-rank ↔ matroid-deficiency bridge
+  (Theorem 6.1: `r(G,q) = D(|V|−1) − def_D(G_H)`; Corollary 6.2: rigid
+  iff `G_H` has `D` edge-disjoint spanning trees; `def_k` defined in §4
+  after Theorem 4.1); also the generic-max-rank property of §6.
 - **[2] Barnabei, M., Brini, A., Rota, G.-C.**, *On the exterior
   calculus of invariant theory*, J. Algebra **96** (1985), 120–160.
   — Grassmann–Cayley foundations (extensors / join).
@@ -94,7 +96,7 @@ Oxley (2011 2nd ed), Schrijver, Tay 1989, Whiteley 1988/1996/2005,
 Jackson–Jordán 2006 pin-collinear, **[4] Crapo–Whiteley 1982** (proj.
 invariance, Phase 25; cycle Lemma 5.4, Phase 21), **[13] Jackson–Jordán
 2008** *On the rigidity of molecular graphs* (Cor 5.7, Phase 26),
-**[15] Jackson–Jordán 2009** (Prop 2.3 bridge), **[29] White–Whiteley
+**[15] Jackson–Jordán 2009** (Thm 6.1 / Cor 6.2 rank-deficiency bridge), **[29] White–Whiteley
 1987** (pin-a-body, Lemma 5.1, Phase 18), **[34] Whiteley 1999** Kluwer
 (Lemma 5.4). The Phase-17 Grassmann–Cayley foundations are also all in
 place (text-extractable, added 2026-06-02): **[2] Barnabei, M., Brini,
@@ -182,7 +184,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 |---|---|---|---|
 | 17 | Grassmann–Cayley extensor algebra; **Lemma 2.1** | §2.1 | 1 |
 | 18 | Genuine panel-hinge rigidity matrix `R(G,p)`; Lemmas 5.1–5.3; reconcile Prop 1.1 with Phase 16 | §2.2–2.4, parts of §5 | 2 |
-| 19 | `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof, rigid subgraphs, def=corank (Prop 2.3); Lem 3.1/3.3/3.4 | §2.5, §3 | 3 |
+| 19 | `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof, rigid subgraphs, def=corank (JJ Thm 6.1 / Cor 6.2); Lem 3.1/3.3/3.4 | §2.5, §3 | 3 |
 | 20 | Combinatorial induction: graph ops + forest surgery 4.1/4.2 + 4.3–4.8 + **Theorem 4.9** | §4 | 4 |
 | 21 | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8) + genericity (Claim 6.4) | §5, §6.1–6.3 | 5 |
 | 22 | **Case III, `d=3`** (Lemma 6.10): Claim 6.11 (combinatorial↔linear bridge), Claim 6.12 (extensor-span genericity), 3 candidates | §6.4.1 | 5 |
@@ -252,8 +254,9 @@ panel `Π_{G,p}(v)`; generic realizations.
 `def(G̃) = maxₚ def_G̃(P)`; `k`-dof / `0`-dof (= body-hinge rigid) /
 minimal `k`-dof (every base of `M(G̃)` meets every edge-fiber `ẽ`);
 rigid + proper rigid subgraph; circuits; 2-edge-connectivity. The
-matroid `M(G̃)` and the **def = corank bridge** (Prop 2.3 (ii)⇔(iii),
-eq. 2.4 `|B| + def(G̃) = D(|V|−1)`).
+matroid `M(G̃)` and the **def = corank bridge** (the project framing of
+JJ [15]'s rank-deficiency identity, Thm 6.1 / Cor 6.2:
+`|B| + def(G̃) = D(|V|−1)`).
 
 - **Key reuse:** `M(G̃)` = `(D,D)` count matroid at the boundary
   `ℓ = 2k = D`, = the `D`-fold graphic union of Phase 13/14
@@ -267,12 +270,12 @@ eq. 2.4 `|B| + def(G̃) = D(|V|−1)`).
   `Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff`
   with Phase 16's reduction-form `thm:body-hinge-tay` /
   `edgeMultiply_isSparse_iff`) was **deferred from Phase 18** to here:
-  its bridge is Prop 2.3 [15]'s `def(G̃) = corank M(G̃)`, a Phase-19
+  its bridge is JJ [15] (Thm 6.1 / Cor 6.2)'s `def(G̃) = corank M(G̃)`, a Phase-19
   object, so it cannot land before `M(G̃)`/deficiency. The rank-form
   skeleton it consumes (`def:dof-generic` + the three rank lemmas
   5.1/5.2/5.3) is all green from Phase 18. The conjecture itself needs
   only the upper-bound half (which Phase 16 may already supply); decide
-  the prove-vs-hypothesize boundary for the [15] (i)⇔(ii) generic-rank
+  the prove-vs-hypothesize boundary for the [15] (Thm 6.1) generic-rank
   half when the node lands. Blueprint node `prop:rigidity-matrix-prop11`
   is in `sec:molecular-rigidity-matrix` (red, marked deferred).
 - Lemmas 3.1 (2-edge-conn), 3.3 (subgraph minimality via restriction),
@@ -408,11 +411,11 @@ Jackson–Jordán [13], conjecture-resolution to KT.
    sidestep it. Decide during Phase 18.
 4. **Externals to axiomatize vs prove.** Lemma 5.4 (cycles, [4,34]),
    the [29] pin-a-body fact (Lemma 5.1), [15] generic-rank bridge
-   (Prop 2.3 (i)⇔(ii)). User scope is "fully formalize" — but these are
+   (JJ Thm 6.1 / Cor 6.2). User scope is "fully formalize" — but these are
    cited-not-proved in KT. Re-confirm per phase whether to formalize or
-   take as a hypothesis; the conjecture (Thm 5.6) needs (i)⇔(ii) only
-   for the upper bound, which the project may already supply via Phase
-   16's `edgeMultiply_isSparse_iff`.
+   take as a hypothesis; the conjecture (Thm 5.6) needs the generic-rank
+   bridge only for the upper bound, which the project may already supply
+   via Phase 16's `edgeMultiply_isSparse_iff`.
 5. **Molecule equivalence primary source** (Phase 25). Whiteley [35] is
    an unpublished preprint; anchor on Jackson–Jordán [13] (Combinatorica
    2008) for the citable result.
