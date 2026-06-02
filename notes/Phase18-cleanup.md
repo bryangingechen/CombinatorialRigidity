@@ -19,9 +19,9 @@ instruction alignment → D (process), file split → A (judgment call).
 
 ## Current state
 
-**Update (D2 landed):** Buckets A/B/C closed; D1 + D2 done. Remaining:
-**D3** (FRICTION re-skim, next), **P1/P2** (instruction tweaks), **J1**
-(judgment call). See *Hand-off*.
+**Update (D3 landed):** Buckets A/B/C closed; D1 + D2 + D3 done.
+Remaining: **P1/P2** (instruction tweaks, next), **J1** (judgment
+call). See *Hand-off*.
 
 The Phase-18 surface is the single new Lean file
 `Molecular/RigidityMatrix.lean` (545 lines, 38 decls) and the nine
@@ -148,8 +148,23 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
   Cor 6.2", with one explanatory line in *Citations verified* noting the
   phantom + pointing at A5 — so compressing didn't silently re-propagate
   the bad citation.
-- [ ] **D3** — re-skim `notes/FRICTION.md` for open Phase-18 entries;
-  lift/migrate per `CLAUDE.md` *Lift on promotion*.
+- [x] **D3** — done. Re-skimmed `notes/FRICTION.md` for Phase-18 entries.
+  Two surfaced: the `[mirrored]` `Module.finrank_pi_const` (correctly
+  placed + indexed, left as is) and the `[resolved]` `simp [← smul_sub]`
+  graded-piece-subtype entry that was living in the **Open** section. The
+  latter carried a buried cross-cutting rescue lesson ("over a
+  `RingQuot`-built algebra subtype, prefer explicit `rw` of the
+  `AddCommGroup`/`Module` identity over `simp [← lemma]`") — exactly the
+  "don't bury a general rule in a `[resolved]` entry" smell FRICTION's
+  scope rule warns against. Lifted the lesson to **TACTICS-QUIRKS § 26**
+  (new section + sections-list entry), migrated the worked
+  `infinitesimalMotions.smul_mem'` case study to `FRICTION-archive.md`
+  with a `**Lifted to:** § 26` index, struck the FRICTION.md Open entry to
+  a one-line migration pointer, and re-pointed both Phase18.md references
+  (the *Promoted to FRICTION* bullet + the *Carrier compatibility*
+  mention) at § 26. The two open Phase-17 entries
+  (`ιMulti_ne_zero_iff_linearIndependent`, …) stay open — single
+  callsite, upstream-eligible, not Phase-18.
 
 ### Process / instruction alignment (lands in D commits)
 
@@ -199,13 +214,17 @@ holds, B3 both multi-arg `rw` sites genuine multi-step, C1
 `screwSpace_finrank` 4-line no-extract gate) — all confirm-only, no Lean
 edit, build re-verified warning-clean.
 
-D2 landed (`notes/Phase18.md` 499 → 275 lines + the A5 citation fix
-folded into that file). Next concrete commit: **D3** (FRICTION re-skim
-for open Phase-18 entries; lift/migrate per `CLAUDE.md` *Lift on
-promotion*). Then **P1/P2** (instruction tweaks to `blueprint/CLAUDE.md`
-*Proof verbosity* and root `CLAUDE.md` *When this commit closes a
-phase*), and **J1** last (split `molecular.tex`, a judgment call —
-decide or defer to Phase 19's open with rationale). Each fix is its own
-commit per `CLEANUP.md` *Workflow* rule 3. Close the round by flipping
-the ROADMAP row to ✓ and writing the *Hand-off* summary; Phase 19 opens
+D3 landed (FRICTION re-skim: the buried RingQuot-subtype-op rescue
+lesson lifted to TACTICS-QUIRKS § 26, the resolved case study migrated to
+`FRICTION-archive.md`, FRICTION.md Open entry struck + Phase18.md pointers
+re-aimed). Next concrete commit: **P1** (`blueprint/CLAUDE.md`: name the
+basis-free / coordinatization-deferral-narration anti-pattern in *Proof
+verbosity* / *What to include vs skip* — "changelog, not math; one clause
+max"). Then **P2** (root `CLAUDE.md` *When this commit closes a phase*:
+add the "re-read each new/edited blueprint chapter end-to-end as a domain
+mathematician and collapse accumulated per-commit formalization asides"
+step). Then **J1** last (split `molecular.tex`, a judgment call — decide
+or defer to Phase 19's open with rationale). Each fix is its own commit
+per `CLEANUP.md` *Workflow* rule 3. Close the round by flipping the
+ROADMAP row to ✓ and writing the *Hand-off* summary; Phase 19 opens
 after.

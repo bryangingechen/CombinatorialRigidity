@@ -198,8 +198,10 @@ decls in `Molecular/RigidityMatrix.lean`.
 ### Promoted to FRICTION
 
 - *`simp [← smul_sub]` / `simp [add_sub_add_comm]` stalls on the
-  graded-piece screw subtype (RingQuot-built ops not exposed)* → FRICTION
-  [resolved], the `def:rigidity-matrix` `ScrewSpace`-refactor friction.
+  graded-piece screw subtype (RingQuot-built ops not exposed)* →
+  TACTICS-QUIRKS § 26 (cross-cutting rescue) + the worked
+  `infinitesimalMotions.smul_mem'` case study in FRICTION-archive.md
+  (migrated from FRICTION.md in the post-Phase-18 cleanup D3).
 - *`Module.finrank_pi_const` (constant non-dependent `ι → M` finrank)* →
   FRICTION [mirrored], used by `finrank_screwAssignment`.
 
@@ -229,7 +231,7 @@ decls in `Molecular/RigidityMatrix.lean`.
   conjecture needs only the upper bound, which Phase 16 may already supply.
 - **Carrier compatibility** — the screw-space identification
   `⋀^(d−1) ℝ^(d+1) ≅ ℝ^D` is landed (`screwSpace_finrank`); frictionless
-  apart from the subtype-op `simp` interaction in FRICTION.
+  apart from the subtype-op `simp` interaction (TACTICS-QUIRKS § 26).
 
 ## Hand-off / next phase
 

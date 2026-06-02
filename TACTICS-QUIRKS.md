@@ -101,6 +101,18 @@ time, not first-draft.
     vs `p ∧ q`), `.trans` fails with a type mismatch. Drop `.trans`
     and bridge with `constructor` + `.mp` / `.mpr` instead, which let
     each direction close up to defeq via `exact`.
+26. **`simp [← lemma]` stalls on a `Submodule`/subtype carrier over a
+    `RingQuot`-built algebra** (e.g. an `ExteriorAlgebra` graded piece)
+    — the build prints *"definitions were not unfolded because their
+    definition is not exposed: `RingQuot.instSub`"* (or `instSMul`,
+    `instAdd`, …). The subtype's `Sub`/`SMul`/`Add` come through the
+    `RingQuot` quotient and stay sealed by the module system, so a
+    `simp [← smul_sub]`-style rewrite can't see the operation to fold.
+    **Fix:** don't drive it through `simp`; build the membership and
+    `rw` the `AddCommGroup`/`Module` identity onto the named hypothesis
+    instead. Generic congruence-layer rewrites (`add_sub_add_comm`)
+    still fire under `simp`, since they apply without unfolding the
+    sealed op.
 
 ---
 
@@ -1016,3 +1028,44 @@ matching iff and then `constructor`. Worked case:
 the proof `rw`s `tay_witness`'s iff (a syntactic match on the
 `IsSparse` side) and bridges the existentials with `constructor` +
 `.mpr`, never `.trans`.
+
+## 26. `simp [← lemma]` stalls on a `Submodule`/subtype carrier over a `RingQuot`-built algebra
+
+When a carrier is a `Submodule` or subtype *over an algebra built by
+`RingQuot`* — the canonical case is a graded piece `↥(⋀[ℝ]^k M)` of an
+`ExteriorAlgebra`, but any `RingQuot`-quotient algebra qualifies — its
+`Sub` / `SMul` / `Add` instances are inherited through the quotient
+and the **module system keeps them sealed**. A rewrite that has to
+*see* the operation in order to fold it, e.g.
+`simp [← smul_sub]` turning `c • S u - c • S v` into `c • (S u - S v)`,
+then silently fails to fire, and the build prints:
+
+```
+definitions were not unfolded because their definition is not exposed:
+RingQuot.instSub
+```
+
+(or `RingQuot.instSMul`, `RingQuot.instAdd`, … depending on the op).
+
+**Fix:** don't drive the rewrite through `simp [← …]`. Build the
+target membership directly and `rw` the relevant
+`AddCommGroup` / `Module` identity *onto the named hypothesis* in the
+forward direction, where no unfolding of the sealed op is needed:
+
+```lean
+-- instead of: simpa [Pi.smul_apply, ← smul_sub] using Submodule.smul_mem _ c h
+have := Submodule.smul_mem (ℝ ∙ F.supportExtensor e) c h
+rwa [smul_sub] at this
+```
+
+Generic congruence-layer rewrites that don't depend on seeing the
+operation unfolded — e.g. `add_sub_add_comm`, a plain `AddCommGroup`
+rewrite applied at the congruence layer — **do** still fire under
+`simp`, so a sibling `add_mem'` can keep `simpa [add_sub_add_comm]`.
+The distinction is whether the rewrite needs to *unfold* the subtype's
+sealed op (`← smul_sub` does: it must recognize `c • _ - c • _`) or
+only rewrite *around* it (`add_sub_add_comm` does not).
+
+Worked case: `infinitesimalMotions.smul_mem'` / `add_mem'` in
+`Molecular/RigidityMatrix.lean`, after Phase 18 refactored
+`ScrewSpace` to the degree-`k` graded piece `↥(⋀[ℝ]^k (Fin (k+2) → ℝ))`.

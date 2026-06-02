@@ -991,3 +991,32 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   by the consumer decl `edgeMultiply_isSparse_iff`; no Phase-17 forward
   reference (Phase 17 unopened).
 - **Lifted to:** TACTICS-QUIRKS § 25.
+
+### [resolved] `simp [← smul_sub]` / `simp [add_sub_add_comm]` stalls on the graded-piece screw subtype (RingQuot-built ops not exposed)
+- **Where it bit:** `infinitesimalMotions.smul_mem'` in
+  `Molecular/RigidityMatrix.lean`, after Phase 18 refactored
+  `ScrewSpace k` from the full `ExteriorAlgebra ℝ (Fin (k+2) → ℝ)` to the
+  degree-`k` graded piece `↥(⋀[ℝ]^k (Fin (k+2) → ℝ))` (the
+  `screwSpace_finrank` coordinatization). The old proof
+  `simpa [Pi.smul_apply, ← smul_sub] using Submodule.smul_mem _ c ‹_›`
+  stopped firing: `simp` could not rewrite `c • S u - c • S v` to
+  `c • (S u - S v)` because the subtype's `Sub`/`SMul` come through the
+  exterior-algebra `RingQuot` and are not exposed (the build prints
+  *"definitions were not unfolded because their definition is not
+  exposed: RingQuot.instSub"*).
+- **Friction / fix:** don't drive the rewrite through `simp`; build the
+  membership and `rw` the algebra identity onto the bound hypothesis —
+  `have := Submodule.smul_mem (ℝ ∙ F.supportExtensor e) c this;
+  rwa [smul_sub] at this` (and the sibling `add_mem'` keeps
+  `simpa [add_sub_add_comm]`, which still fires since `add_sub_add_comm`
+  is a generic `AddCommGroup` rewrite that `simp` applies at the
+  congruence layer without unfolding the subtype op).
+- **Status:** resolved (worked around in-proof; no mirror needed — a
+  module-system exposure interaction, not a missing mathlib lemma).
+  Migrated from `FRICTION.md` in the post-Phase-18 cleanup round (D3):
+  the general lesson ("when a carrier becomes a `Submodule`/subtype over
+  a `RingQuot`-built algebra, prefer explicit `rw` of the
+  `AddCommGroup`/`Module` identity over `simp [← lemma]`") was lifted to
+  TACTICS-QUIRKS § 26, indexed by the consumer decls
+  `infinitesimalMotions.smul_mem'` / `add_mem'`.
+- **Lifted to:** TACTICS-QUIRKS § 26.
