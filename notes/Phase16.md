@@ -1,25 +1,25 @@
 # Phase 16 — Body-hinge Tay–Whiteley theorem (existence form) (work log)
 
-**Status:** in progress (phase-opening commit: docs/planning only; no Lean yet).
+**Status:** in progress (leaf node `def:edge-multiply` landed).
 
 ## Current state
 
-Phase opened. The target is the **body-hinge / panel-hinge Tay–Whiteley
-theorem** in `n`-space (Tay 1989, Whiteley 1988), existence-of-realization
-form, **via the matroid-union reduction to Phase 15's body-bar theorem**: a
-multigraph `G` carries an independent (resp. isostatic) body-hinge framework
-in `ℝⁿ` iff `(δ-1)·G` is `(δ,δ)`-sparse (resp. tight), where
-`δ = bodyBarDim n = n(n+1)/2` and `(δ-1)·G` replaces each hinge by `δ-1`
-parallel bars. This reduces node-for-node to `Graph.BodyBarFramework.tay_witness`
-(Phase 15) once the hinge-to-bar reduction (`def:body-hinge-framework`,
-`lem:edge-multiply-sparse`) lands.
+The target is the **body-hinge / panel-hinge Tay–Whiteley theorem** in
+`n`-space (Tay 1989, Whiteley 1988), existence-of-realization form, **via the
+matroid-union reduction to Phase 15's body-bar theorem**: a multigraph `G`
+carries an independent (resp. isostatic) body-hinge framework in `ℝⁿ` iff
+`(δ-1)·G` is `(δ,δ)`-sparse (resp. tight), where `δ = bodyBarDim n = n(n+1)/2`
+and `(δ-1)·G` replaces each hinge by `δ-1` parallel bars. This reduces
+node-for-node to `Graph.BodyBarFramework.tay_witness` (Phase 15) once the
+hinge-to-bar reduction (`def:body-hinge-framework`, `lem:edge-multiply-sparse`)
+lands.
 
-Forward-mode phase. The authoritative dep-graph and lemma index is the new
-blueprint chapter `body-hinge.tex` (§`sec:body-hinge`), seeded red this commit.
-This file does not duplicate the node list. No Lean files exist yet; the planned
-home is `BodyBar/BodyHinge.lean` (new), in the `CombinatorialRigidity.lean`
-aggregator. Next concrete step is the leaf-most red node — `def:edge-multiply`
-(`(δ-1)·G` parallel-edge multiplication on `Graph α β`).
+Forward-mode phase. The authoritative dep-graph and lemma index is the
+blueprint chapter `body-hinge.tex` (§`sec:body-hinge`). The leaf node
+`def:edge-multiply` is now green: `Graph.edgeMultiply` and its three transport
+facts live in `BodyBar/BodyHinge.lean` (new, in the `CombinatorialRigidity.lean`
+aggregator). Next concrete step is `def:body-hinge-framework` — the body-hinge
+framework as the induced body-bar framework on `(δ-1)·G`.
 
 ## Architectural choices made up front
 
@@ -55,9 +55,10 @@ Carried over from the Phases 12–15 body-bar program (see ROADMAP §15,
 Tracked as the `body-hinge.tex` dep-graph (forward mode; the chapter IS the
 checklist). Leaf-first landing order:
 
-- [ ] `def:edge-multiply` — `(δ-1)·G` parallel-edge multiplication on
-  `Graph α β`; vertex set preserved, `|E(m·G)| = m·|E(G)|`, spanning-vertex
-  transport. **Leaf node — start here.**
+- [x] `def:edge-multiply` — `(δ-1)·G` parallel-edge multiplication on
+  `Graph α β` (`Graph.edgeMultiply`, edge type `β × Fin m`); vertex set
+  preserved, `|E(m·G)| = m·|E(G)|`, spanning-vertex transport (the latter under
+  `[NeZero m]`). In `BodyBar/BodyHinge.lean`.
 - [ ] `def:body-hinge-framework` — body-hinge framework as the induced body-bar
   framework on `(δ-1)·G`; rigidity / independence inherited.
 - [ ] `lem:edge-multiply-sparse` — independent/isostatic body-hinge ⇔
@@ -67,17 +68,30 @@ checklist). Leaf-first landing order:
 
 ## Decisions made during this phase
 
-(none yet — phase just opened)
+### Phase-local choices and proof techniques
+
+- **`edgeMultiply` edge type = `β × Fin m`, incidence on the first
+  coordinate.** `m · G` is built as a direct `Graph α (β × Fin m)` literal:
+  `vertexSet := V(G)`, `IsLink (e,i) x y := G.IsLink e x y`, `edgeSet :=
+  {p | p.1 ∈ E(G)}`. `V` preservation and `edgeSet` are `rfl`; `|E| = m·|E(G)|`
+  is `Set.ncard_prod` after `ext` to `E(G) ×ˢ univ`. Clean — no helper or
+  mathlib gap; the `Graph` structure-literal route was cheap (resolves the
+  Blockers spike).
+- **`spanningVerts` transport needs `[NeZero m]`.** For `m = 0` the multiplied
+  graph is edgeless, so `spanningVerts_edgeMultiply` is false; stated under
+  `[NeZero m]`. The reduction uses `m = δ - 1 ≥ 1` (δ ≥ 3 for `n ≥ 2`), so the
+  hypothesis is free downstream. Reverse direction picks the copy `(e, ⟨0,…⟩)`.
+
+### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+
+- *Bare `\lean{}` in blueprint prose poisons `lean_decls` / fails `checkdecls`*
+  → `blueprint/SETUP-AND-PITFALLS.md` *Pitfalls* (hit on this commit: the
+  phase-opening chapter preamble's "gains a `\lean{}` pointer" prose silently
+  injected a blank decl that only failed once real `\lean{}` entries landed
+  after it).
 
 ## Blockers / open questions
 
-- **`(δ-1)·G` realization on `Graph α β`.** Need a clean construction of the
-  multiplied multigraph on the mathlib `Graph α β` carrier (edge type `β`
-  replaced by `β × Fin (δ-1)` or similar) such that `cycleMatroid`,
-  `Graph.IsSparse`, and `vertexSet`/`edgeSet` cardinalities transport. First
-  Lean spike (the `def:edge-multiply` leaf) will determine whether mathlib's
-  `Graph` API gives this cheaply or whether a helper is needed — record the
-  outcome here.
 - **Degree of reuse of `tay_witness`.** The reduction should make
   `thm:body-hinge-tay` a near-`rw` of `tay_witness` on `(δ-1)·G`. If the
   body-hinge rigidity-map *definition* (routing through the induced body-bar
@@ -87,12 +101,18 @@ checklist). Leaf-first landing order:
 
 ## Hand-off / next phase
 
-**Smallest next commit:** formalize `def:edge-multiply` — the
-`(δ-1)·G` parallel-edge multiplication on `Graph α β` (a `def` producing a
-`Graph α (β × Fin (δ-1))` or equivalent) with the three transport facts
-(`V` preserved, `|E| = m·|E|`, spanning-vertex agreement) — in a new
-`BodyBar/BodyHinge.lean`, and flip `def:edge-multiply` green in `body-hinge.tex`
-in the same commit. This is the leaf-most red node; everything else `\uses` it.
+**Smallest next commit:** formalize `def:body-hinge-framework` — the body-hinge
+framework as the induced body-bar framework on `(δ-1)·G`, reusing
+`Graph.edgeMultiply` (now green) plus `Graph.BodyBarFramework` (Phase 15
+`BodyBar/Framework.lean`). The body-hinge rigidity map is *defined* as the
+body-bar rigidity map of the induced framework on `(δ-1)·G`, with infinitesimal
+rigidity / independence inherited; assess whether the dual-space-basis
+bookkeeping (each hinge's `δ-1` bars carry a basis of its dual space) forces
+non-trivial glue or whether the standard-basis witness on `(δ-1)·G` routes
+through verbatim. Land it in `BodyBar/BodyHinge.lean` and flip
+`def:body-hinge-framework` green in `body-hinge.tex` in the same commit.
+
+`def:edge-multiply` is done (`Graph.edgeMultiply` + 3 transport facts).
 
 Follow-on after Phase 16: the **molecular conjecture** (panel-and-hinge with
 concurrent hinges; Tay–Whiteley conjecture, proved by Katoh–Tanigawa 2011) — a

@@ -65,6 +65,19 @@ pip install -r requirements.txt          # plastex, leanblueprint, invoke
   HTML build (each links separately) but produces only one link
   target in the PDF. Reserve multi-name `\lean{}` for closely-
   related corner cases the reader genuinely thinks of as a unit.
+- **A literal `\lean{}` in prose poisons `lean_decls` and fails
+  `checkdecls`.** plastex executes the `\lean` macro wherever it
+  appears, including inside descriptive prose — e.g. a
+  forward-mode chapter preamble saying "each node gains a `\lean{}`
+  pointer". The empty argument is parsed as a one-element decl list
+  `['']`, and leanblueprint writes it as a blank line into
+  `lean_decls`; `checkdecls` then resolves `"".toName =
+  Name.anonymous`, prints ` is missing.` (note the leading space —
+  empty name), and exits 1. It stays *silent* while the chapter has
+  no real `\lean{}` entries (the lone blank is a trailing line
+  `IO.FS.lines` drops), then surfaces the moment the first real
+  entry lands after it. Fix: never write a bare `\lean{}` in prose —
+  use `\texttt{\textbackslash lean}` to typeset the macro name.
 - **Math in section / subsection titles breaks `inv bp` (xelatex).**
   hyperref errors with *"Improper alphabetic constant"* and
   Emergency-stops the run when a section title contains raw

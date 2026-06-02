@@ -13,7 +13,7 @@ linear algebra, only the hinge-to-bar reduction and its bookkeeping.
 The nodes below are mostly \emph{red} (no \leanok) on first build:
 this dep-graph is the to-do list, formalized leaf-first in subsequent
 sessions per the forward-mode discipline. As each Lean declaration
-lands, its node gains a \lean{} pointer and \leanok in the same commit.
+lands, its node gains a \texttt{\textbackslash lean} pointer and \leanok in the same commit.
 
 \subsection{Body-hinge frameworks and the hinge-to-bar reduction}
 \label{sec:body-hinge-reduction}
@@ -39,12 +39,16 @@ underlying multigraph.
 
 \begin{definition}[Edge multiplication $(\delta-1)\cdot G$]
   \label{def:edge-multiply}
-  \uses{def:body-bar-framework}
+  \lean{Graph.edgeMultiply, Graph.vertexSet_edgeMultiply, Graph.edgeMultiply_edgeSet_ncard, Graph.spanningVerts_edgeMultiply}
+  \leanok
+  \uses{def:graph-sparse}
   For a multigraph $G$ and $m \in \mathbb{N}$, let $m \cdot G$ be the
   multigraph on the same vertex set in which each edge of $G$ is
   replaced by $m$ parallel copies. In particular $V(m \cdot G) = V(G)$
-  and $|E(m \cdot G)| = m\,|E(G)|$, and a subset spans the same
-  vertices in $m \cdot G$ as its image does in $G$.
+  and $|E(m \cdot G)| = m\,|E(G)|$, and (for $m \ge 1$) a subset spans
+  the same vertices in $m \cdot G$ as its image does in $G$. The edge
+  type of $m \cdot G$ is $\beta \times \mathrm{Fin}\,m$; incidence is
+  inherited from $G$ on the first coordinate.
 \end{definition}
 
 \begin{definition}[Body-hinge framework]

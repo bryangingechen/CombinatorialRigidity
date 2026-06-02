@@ -1,3 +1,4 @@
+import CombinatorialRigidity.BodyBar.BodyHinge
 import CombinatorialRigidity.BodyBar.Framework
 import CombinatorialRigidity.BodyBar.KFrame
 import CombinatorialRigidity.BodyBar.TayTheorem
