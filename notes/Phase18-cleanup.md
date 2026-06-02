@@ -36,9 +36,11 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ### Bucket A — Blueprint ↔ Lean divergence (the main bucket)
 
-- [ ] **A1** — per-node `\lean{}` signature compare for the 9
-  `sec:molecular-rigidity-matrix` nodes vs the Lean decls. Expected
-  no-op confirm (cf. Phase17-cleanup A1).
+- [x] **A1** — done (no-op confirm). `verify.sh`'s `checkdecls` resolves
+  every `\lean{}` name across the 9 `sec:molecular-rigidity-matrix` nodes;
+  spot-check of the `RigidityMatrix.lean` outline (BodyHingeFramework,
+  ScrewSpace, screwDim, screwSpace_finrank, the trivial-motion family,
+  IsInfinitesimallyRigid) matches the pinned signatures.
 - [x] **A2 (readability pass — highest value)** — done. Collapsed the
   formalization-implementation narration in all four spots
   (`def:hinge-row-block`, `def:rigidity-matrix`,
@@ -52,16 +54,18 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
   L85/L157 are the legitimate Phase-17 extensor degree `k`). `verify.sh`
   green. **A3 is now nearly subsumed** — only the section-head `k=d−1`
   statement remains if any `k` survives; re-confirm when picking up A3.
-- [ ] **A3** — tie the index `k` to `d`. The §2.2–2.4 prose switches to
-  `⋀^k ℝ^{k+2}` (L315, 329, 389, 397, …) where `k = d−1`, but that
-  relation is never stated; the reader must reverse-engineer it. State
-  it once at the section head, or rewrite §2.2–2.4 prose in `d`-terms.
-- [ ] **A4** — forward-mode chapter-intro destale. `molecular.tex`
-  L28–39 still describes the Phase-18 nodes as "the current forward-mode
-  to-do list … red until their Lean lands"; eight of nine are now green.
-  Update to a closed-phase statement (recurring Phase15/16/17-cleanup A2
-  shape). Re-read the §2.2–2.4 *Status* block (L237–249) — already notes
-  the deferral, likely fine.
+- [x] **A3** — done (subsumed by A2). Re-confirmed: no standalone `k`
+  index survives anywhere in §2.2–2.4 (line 216 onward); the prose is
+  fully in `d`-terms (`⋀^{d-1}ℝ^{d+1}`, `D=binom(d+1,2)`). The three
+  remaining `k` (L85/86/157) are all in §2.1, the legitimate general
+  extensor degree. No section-head `k=d−1` statement is needed — the
+  reader never meets a bare `k` in §2.2–2.4 to reverse-engineer.
+- [x] **A4** — done. Rewrote `molecular.tex` chapter-intro L28–39: the
+  Phase-18 nodes are no longer "the current forward-mode to-do list …
+  red", but "likewise formalized save for the single reconciliation node
+  `prop:rigidity-matrix-prop11`, deferred to Phase 19". The §2.2–2.4
+  *Status* block (L237–249) already notes the deferral + green state —
+  re-read, fine, left as is.
 - [x] **A5 (citation accuracy)** — done. Verified against `.refs/`
   jackson-jordan-2009-generic-rank-of-body-bar.pdf: the paper has **no
   Proposition 2.3** (and no Propositions at all — §2 holds only Lemmas
@@ -154,14 +158,19 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ## Hand-off / next phase
 
-A2 + A5 + D1 landed (D1: `MolecularConjecture.md` destaled — header
-status → IN PROGRESS, 17/18 ✓ in the phase table, risk-register #3
-resolved, Phase 17/18 detail sections compressed to pointers, "Opening
-Phase 17" section converted to a generic pointer). Next concrete commit:
-the **A3** section-head `k`/`d` finish (A2 nearly subsumed it; only the
-section-head `k=d−1` statement may remain — re-confirm against
-`molecular.tex` §2.2–2.4) **+ the A1/A4 confirms** (A1 per-node
-`\lean{}` signature compare, A4 chapter-intro destale L28–39). Then the
-B/C confirms, D2/D3, P1/P2, and J1 last. Each fix is its own commit per
-`CLEANUP.md` *Workflow* rule 3. Close the round by flipping the ROADMAP
-row to ✓ and writing the *Hand-off* summary; Phase 19 opens after.
+Bucket A is **closed**: A2 + A5 landed earlier; this commit landed
+A1 (no-op confirm via `checkdecls` + outline spot-check), A3 (confirmed
+subsumed by A2 — §2.2–2.4 carries no bare `k`), and A4 (chapter-intro
+L28–39 destaled to a "Phase-18 formalized save the deferred
+reconciliation node" statement). D1 landed earlier.
+
+Next concrete commit: the **B/C confirms** — coordinator-style batchable
+no-ops (B1 `Fintype.ofFinite` boundary keep, B2 `nolint` justification
+holds, B3 multi-arg `rw` spot-checks, C1 `screwSpace_finrank` 23-line
+four-question gate). These are all in `RigidityMatrix.lean`; one
+audit-confirm commit. Then **D2** (compress `notes/Phase18.md`, 499
+lines), **D3** (FRICTION re-skim), **P1/P2** (instruction tweaks), and
+**J1** last (split `molecular.tex`, a judgment call). Each fix is its
+own commit per `CLEANUP.md` *Workflow* rule 3. Close the round by
+flipping the ROADMAP row to ✓ and writing the *Hand-off* summary;
+Phase 19 opens after.
