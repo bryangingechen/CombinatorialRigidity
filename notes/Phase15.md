@@ -102,12 +102,13 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 
 ## Hand-off / next phase
 
-Phase just opened. **Next concrete commit:** formalize
-`def:body-bar-framework` in a new `BodyBar/Framework.lean` (the leaf-most
-red node), then flip its blueprint node green (`\lean{...}` + `\leanok`)
-in the same commit. Proceed up the dep-graph:
-`def:rigidity-map-body-bar` → `def:infinitesimally-rigid-body-bar` →
-`thm:tay-witness`. The phase closes when `thm:tay-witness` is green.
+`def:body-bar-framework` is green (`BodyBar/Framework.lean`). **Next
+concrete commit:** formalize the next leaf-most red node
+`def:rigidity-map-body-bar` in `BodyBar/Framework.lean` (the bar-constraint
+rigidity map, one row per bar), then flip its blueprint node green
+(`\lean{...}` + `\leanok`) in the same commit. Proceed up the dep-graph:
+`def:infinitesimally-rigid-body-bar` → `thm:tay-witness`. The phase closes
+when `thm:tay-witness` is green.
 
 Follow-on: **Phase 16** (body-hinge / panel-hinge Tay–Whiteley), en route
 to **Phase 17** (molecular conjecture, Katoh–Tanigawa 2011). Neither is
