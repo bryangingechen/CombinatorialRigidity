@@ -186,16 +186,31 @@ phase proceeds, leaf-first.
   Katoh--Tanigawa~\cite[Lemma 3.3]{katohTanigawa2011}.
 \end{proof}
 
-\begin{lemma}[A circuit yields a rigid subgraph; KT Lemma 3.4]
+\begin{lemma}[A circuit minus an edge is a maximal sparse subset; KT Lemma 3.4]
   \label{lem:circuit-rigid}
+  \lean{Graph.isSparse_diff_singleton_of_isCircuit}
+  \leanok
   \uses{def:rigid-subgraph, def:matroid-MG}
-  The edge set of a circuit of $M(\tilde G)$ spans a rigid subgraph of
-  $G$.
+  Let $X$ be a circuit of $M(\tilde G)$ and let $e \in X$. Then
+  $X - e$ is $(D,D)$-sparse --- equivalently, $X - e$ is an
+  $M(\tilde G)$-basis of $X$: a circuit is exactly one edge short of
+  being independent on its vertex span.
 \end{lemma}
 \begin{proof}
-  A circuit is one element short of $D$ edge-disjoint spanning trees on
-  its vertex span, hence is $0$-dof there; Katoh--Tanigawa~\cite[Lemma
-  3.4]{katohTanigawa2011}.
+  \leanok
+  $X - e$ is independent since $X$ is a minimal dependent set, so by
+  boundary-regime cleanliness (\cref{def:matroid-MG}) it is
+  $(D,D)$-sparse; and $X$ is dependent, so $X - e$ is a maximal
+  independent --- i.e.\ basis --- subset of $X$. This is the
+  upper-bound / maximal-sparse-subset half of
+  Katoh--Tanigawa~\cite[Lemma 3.4]{katohTanigawa2011}. KT's full
+  conclusion --- that the vertex-induced subgraph $G[V(X)]$ is rigid,
+  more precisely that $X - e$ partitions into $D$ edge-disjoint
+  spanning trees on $V(X)$, i.e.\ $|X - e| = D(|V(X)| - 1)$ exactly ---
+  needs the lower bound $|X| > D(|V(X)| - 1)$ forced by $X$ being
+  dependent, which in this count matroid is the reverse direction of
+  the $\operatorname{def} = \operatorname{corank}$ min--max
+  (\cref{thm:def-eq-corank}); it is deferred with that node.
 \end{proof}
 
 \subsection{The deficiency \texorpdfstring{$=$}{=} corank bridge}

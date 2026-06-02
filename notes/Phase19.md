@@ -1,10 +1,11 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
-**Status:** in progress (all four definition nodes + three structural lemmas
+**Status:** in progress (all four definition nodes + four structural lemmas
 + the rank upper bound landed: `lem:matroid-restrict-subgraph`,
 `lem:subgraph-minimality` (KT 3.3), `lem:two-edge-conn` (KT 3.1, cut form),
-`lem:rank-matroidMG-le` (conjecture-relevant half of `thm:def-eq-corank`);
-`lem:circuit-rigid` + the full `thm:def-eq-corank` equality next).
+`lem:circuit-rigid` (KT 3.4, matroidal core), `lem:rank-matroidMG-le`
+(conjecture-relevant half of `thm:def-eq-corank`); the full `thm:def-eq-corank`
+equality is the one remaining node).
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -93,7 +94,20 @@ decision (risk #4): the reverse direction of the full JJ09 min–max (a partitio
 rank) is **deferred** until a downstream node needs the full equality, since the conjecture
 needs only this upper bound — so `thm:def-eq-corank` (full equality) stays red.
 
-Next concrete step: `lem:circuit-rigid` (KT 3.4) and the full `thm:def-eq-corank` equality.
+`lem:circuit-rigid` (KT 3.4) is now green in matroidal-core form:
+`Graph.isSparse_diff_singleton_of_isCircuit`. For a circuit `X` of `M(G̃)` and `e ∈ X`,
+`X \ {e}` is `(D,D)`-sparse, equivalently an `M(G̃)`-basis of `X` — a circuit is exactly
+one edge short of independent on its span. Two-line term-mode composition of
+`IsCircuit.diff_singleton_indep` + `matroidMG_indep_iff` (sparse half) and
+`IsCircuit.diff_singleton_isBasis` (basis half). This is the upper-bound / maximal-sparse
+form KT's fundamental-circuit arguments (4.5, 6.10–6.11, Phases 21–22) consume. The full
+KT 3.4 — `G[V(X)]` rigid, i.e. the tightness *equality* `|X−e| = D(|V(X)|−1)` and
+`def(G[V(X)]̃) = 0` — needs the **lower** bound `|X| > D(|V(X)|−1)` forced by `X`
+dependent, which is the reverse direction of the full `def = corank` min–max
+(`thm:def-eq-corank`, JJ09, risk #4); deferred with that node, and would also need a
+vertex-induced-subgraph-from-edge-set construction (no existing analogue).
+
+Next concrete step: the full `thm:def-eq-corank` equality (JJ09 min–max reverse direction).
 
 ## Architectural choices made up front
 
@@ -149,7 +163,11 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 - [x] `lem:subgraph-minimality` — KT Lemma 3.3 (subgraph minimality
   via restriction). (`Graph.subgraph_minimality`: base/fiber-meeting
   transport over the green restriction identity + base extension.)
-- [ ] `lem:circuit-rigid` — KT Lemma 3.4 (circuit ⇒ rigid subgraph).
+- [x] `lem:circuit-rigid` — KT Lemma 3.4 (matroidal core):
+  `Graph.isSparse_diff_singleton_of_isCircuit` — for a circuit `X` and `e ∈ X`,
+  `X \ {e}` is `(D,D)`-sparse / an `M(G̃)`-basis of `X` (one edge short of independent).
+  The full `G[V(X)]`-rigid tightness *equality* is deferred with `thm:def-eq-corank`
+  (needs the JJ09 lower bound + a vertex-induced-subgraph construction).
 - [ ] `prop:rigidity-matrix-prop11` — KT Prop 1.1 reconciliation
   (**inherited from Phase 18**; node lives in
   `rigidity-matrix.tex`, flips green once `thm:def-eq-corank` lands).
@@ -246,6 +264,16 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   just the rigid `k'=0` specialization. *Lifted:* the `edgeMultiply.IsLink`
   defeq-ascription lesson → FRICTION.
 
+- **KT 3.4 landed in matroidal-core (sparse / basis) form, full `G[V(X)]`-rigid deferred.**
+  `isSparse_diff_singleton_of_isCircuit`: a circuit `X` minus any `e ∈ X` is `(D,D)`-sparse,
+  equivalently an `M(G̃)`-basis of `X`. Two-line term composition over `matroidMG_indep_iff`
+  + mathlib's `IsCircuit.{diff_singleton_indep, diff_singleton_isBasis}` — no friction. This
+  is exactly what KT's fundamental-circuit consumers (4.5, 6.10–6.11) use (`X−e` independent /
+  maximal). The full KT 3.4 (`G[V(X)]` rigid, the *equality* `|X−e| = D(|V(X)|−1)`) needs
+  (a) the lower bound `|X| > D(|V(X)|−1)` from `X` dependent — the JJ09 min–max reverse,
+  deferred with `thm:def-eq-corank` (risk #4) — and (b) a vertex-induced-subgraph-from-an-
+  edge-set construction with no existing `Graph α β` analogue. Both land with the bridge.
+
 - **`thm:def-eq-corank` split: prove the upper bound, defer the JJ09 reverse (risk #4).**
   The full equality `|B| + def(G̃) = D(|V|−1)` is a min–max duality (Edmonds rank over
   edge-subsets vs deficiency over vertex-partitions) — the hard JJ09 generic-rank content.
@@ -273,29 +301,33 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 All four definition nodes of `deficiency.tex` are green in `Molecular/Deficiency.lean`
 (`Graph.matroidMG` / `matroidMG_indep_iff`; `Graph.partitionDef` / `Graph.deficiency` /
 `numParts` / `crossingEdges` / `partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` /
-`Graph.IsMinimalKDof`; `Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`), plus four
+`Graph.IsMinimalKDof`; `Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`), plus five
 structural lemmas: the restriction identity `matroidMG_restrict_mulTilde`
 (`lem:matroid-restrict-subgraph`), the full KT 3.3 node `subgraph_minimality`
 (`lem:subgraph-minimality`), the KT 3.1 cut-form node
 `two_le_crossingEdges_of_isKDof_zero` (`lem:two-edge-conn`, with `cutLabeling` /
-`numParts_cutLabeling`), and the rank upper bound `rank_matroidMG_le`
+`numParts_cutLabeling`), the KT 3.4 matroidal-core node
+`isSparse_diff_singleton_of_isCircuit` (`lem:circuit-rigid`: `X − e` is `(D,D)`-sparse /
+an `M(G̃)`-basis of the circuit `X`), and the rank upper bound `rank_matroidMG_le`
 (`lem:rank-matroidMG-le`, the conjecture-relevant half of the corank bridge). The
 deficiency-attainment API
 (`bddAbove_range_partitionDef` / `partitionDef_le_deficiency` / `deficiency_nonneg`) is
 also in place — the `iSup`-model `deficiency` is now a usable attained max, and "a partition
 witnesses a deficiency lower bound" is one `partitionDef_le_deficiency` call.
 
-The two remaining nodes are `lem:circuit-rigid` (KT 3.4) and the **full** equality
-`thm:def-eq-corank` (its conjecture-relevant upper-bound half is now green as
-`lem:rank-matroidMG-le`). Smallest next commit: `lem:circuit-rigid` (KT 3.4: the edge set of
-a circuit `X` of `M(G̃)` spans a rigid subgraph `G[V(X)]`; more precisely `X − e` partitions
-into `D` spanning trees on `V(X)` for any `e ∈ X`). It needs a *vertex-induced-subgraph from
-an edge set* construction — map a circuit `X ⊆ E(G̃)` back to a subgraph of `G` and show it is
-`0`-dof. New machinery; the matroid argument (`|X| > D(|V(X)|−1)`, `X−e` independent ⇒
-`|X−e| = D(|V(X)|−1)` ⇒ base ⇒ rigid) is short once the subgraph is in hand. Note its
-conclusion `def(H̃) = 0` may still want the *full* `thm:def-eq-corank` (not just the upper
-bound) to turn `(D,D)`-tightness into `def = 0` cleanly, or a direct partition argument; if so,
-the full bridge's reverse (JJ09 min–max, risk #4) lands first.
+The one remaining `deficiency.tex` node is the **full** equality `thm:def-eq-corank`
+(its conjecture-relevant upper-bound half is green as `lem:rank-matroidMG-le`; the KT 3.4
+matroidal core is green as `lem:circuit-rigid`). Smallest next commit: the reverse
+direction of the JJ09 min–max — a partition attaining the rank `D(|V|−1) − def(G̃)` — to
+close `|B| + def(G̃) = D(|V|−1)`. This is the risk-#4 prove-vs-hypothesize boundary; decide
+whether to prove it (Edmonds partition rank over the `D`-fold graphic union vs the
+deficiency `iSup` over vertex partitions) or hypothesize it as a citable JJ09 external.
+Closing it also flips the Phase-18-inherited `prop:rigidity-matrix-prop11`. Two further
+pieces are still deferred behind the full equality: (i) the *full* KT 3.4 (`G[V(X)]`
+rigid, the tightness *equality* `|X−e| = D(|V(X)|−1)`), which needs the JJ09 lower bound
+**and** a vertex-induced-subgraph-from-an-edge-set construction (no existing `Graph α β`
+analogue — likely an early-Phase-20 graph-op deliverable); (ii) KT 3.5 (rigid-subgraph
+contraction preserves minimality — Case I engine), schedulable here or early Phase 20.
 
 Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once `M(G̃)`, deficiency,
 and the def = corank bridge are all green.

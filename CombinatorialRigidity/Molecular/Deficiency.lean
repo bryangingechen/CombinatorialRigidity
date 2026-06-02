@@ -75,9 +75,17 @@ leaf node landing here:
   Jackson–Jordán min–max identity (the partition attaining the rank) is deferred until
   a downstream node needs the full equality (risk #4, prove-vs-hypothesize).
 
+* `isSparse_diff_singleton_of_isCircuit` (`lem:circuit-rigid`, KT Lemma 3.4 matroidal
+  core) — for a circuit `X` of `M(G̃)` and `e ∈ X`, the set `X \ {e}` is `(D,D)`-sparse,
+  equivalently an `M(G̃)`-basis of `X`: a circuit is exactly one edge short of being
+  independent on its span. This is the upper-bound / maximal-sparse-subset form that KT's
+  fundamental-circuit arguments (Phases 21–22) consume; the full `G[V(X)]`-is-rigid
+  (`def = 0`, tightness *equality*) conclusion needs the deferred reverse half of
+  `thm:def-eq-corank` (risk #4) and lands with it.
+
 See `ROADMAP.md` §19 / `notes/Phase19.md` and the `sec:molecular-deficiency`
-dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining nodes (KT Lemma 3.4
-`lem:circuit-rigid`, and the full bridge `thm:def-eq-corank`) land in subsequent commits.
+dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining node (the full bridge
+`thm:def-eq-corank`) lands in a subsequent commit.
 -/
 
 namespace Graph
@@ -375,6 +383,33 @@ theorem subgraph_minimality [DecidableEq β] [Finite α] [Finite β] {H G : Grap
   -- `G`'s minimality gives `B ∩ ẽ ≠ ∅`; restrict to `B'`.
   obtain ⟨p, hp⟩ := hG.2 B hB e (h.edgeSet_mono he)
   exact ⟨p, by rw [hBeq]; exact ⟨⟨hp.1, hfiber hp.2⟩, hp.2⟩⟩
+
+/-! ## A circuit yields a rigid subgraph (`lem:circuit-rigid`; KT Lemma 3.4) -/
+
+/-- **A circuit minus an edge is a maximal sparse subset** (`lem:circuit-rigid`;
+Katoh–Tanigawa 2011 Lemma 3.4, matroidal core). Let `X` be a circuit of `M(G̃)` and
+`e ∈ X`. Then `X \ {e}` is `(D,D)`-sparse — equivalently, an `M(G̃)`-basis of `X`
+(`X \ {e}` is a maximal independent subset of `X`, and `X` itself is dependent). This
+is the structural content KT's fundamental-circuit arguments consume (Lemmas 4.5,
+6.10–6.11 of the algebraic induction, Phases 21–22): a circuit is exactly one edge
+short of being independent on its vertex span.
+
+KT's full Lemma 3.4 concludes that the vertex-induced subgraph `G[V(X)]` is *rigid*
+(`0`-dof) — more precisely that `X − e` partitions into `D` edge-disjoint spanning
+trees on `V(X)`, i.e. `|X − e| = D(|V(X)| − 1)` exactly. That tightness *equality*
+(and the `def(G[V(X)]̃) = 0` reading of it) needs the **lower** bound `|X| >
+D(|V(X)| − 1)` forced by `X` being dependent, which in this count matroid is the
+reverse direction of the full `def = corank` min–max (`thm:def-eq-corank`, the JJ09
+generic-rank identity, risk #4) — deferred with that node. The `(D,D)`-sparse /
+basis form here is the upper-bound half, self-contained on the boundary-regime
+cleanliness `matroidMG_indep_iff`. -/
+theorem isSparse_diff_singleton_of_isCircuit [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} {X : Set (β × Fin (bodyHingeMult n))}
+    (hX : (G.matroidMG n).IsCircuit X) {e : β × Fin (bodyHingeMult n)} (he : e ∈ X) :
+    ((G.mulTilde n) ↾ (X \ {e})).IsSparse (bodyBarDim n) (bodyBarDim n) ∧
+      (G.matroidMG n).IsBasis (X \ {e}) X :=
+  ⟨(matroidMG_indep_iff G n).mp (hX.diff_singleton_indep he) |>.2,
+    hX.diff_singleton_isBasis he⟩
 
 /-! ## Two-edge-connectivity (`lem:two-edge-conn`; KT Lemma 3.1)
 
