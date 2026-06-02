@@ -31,8 +31,14 @@ finrank counts have now **landed**: `finrank_trivialMotions`
 `Module.finrank_pi_const` + `screwSpace_finrank`). Together they give the
 `D`-dimensional trivial kernel inside the `D·|V|`-dimensional
 screw-assignment space — the codimension form of `rank R ≤ D(|V|−1)`.
-Next: the three rank lemmas (5.1/5.3/5.2) and the Prop 1.1 reconciliation
-(see *Hand-off*).
+**Lemma 5.3 (`lem:rank-parallel-full`) has now landed**: two parallel
+hinges in general position (linearly-independent supporting extensors)
+have constraint spans meeting only at `0`
+(`span_inf_span_eq_bot_of_linearIndependent`, via `disjoint_span_singleton'`
++ `pair_iff'`), so a screw meeting both forces `S u = S v`
+(`eq_of_hingeConstraint_two_parallel`) — the `|V|=2` base case. Next: the
+remaining two rank lemmas (5.1 pin-a-body, 5.2 rotation) and the Prop 1.1
+reconciliation (see *Hand-off*).
 
 Landed so far:
 - `def:hinge-constraint` — `Molecular/RigidityMatrix.lean`:
@@ -193,8 +199,13 @@ the Lean lands.
       realization condition is the only remaining red part.
 - [ ] `lem:rank-delete-vertex` — **Lemma 5.1** (pin a body, delete `D`
       columns, rank unchanged); [29] White–Whiteley.
-- [ ] `lem:rank-parallel-full` — **Lemma 5.3** (two general-position
+- [x] `lem:rank-parallel-full` — **Lemma 5.3** (two general-position
       parallel hinges → full block `D`); via `lem:extensor-independence`.
+      **Landed** (`span_inf_span_eq_bot_of_linearIndependent` + framework
+      corollary `eq_of_hingeConstraint_two_parallel`): the two constraint
+      spans of linearly-independent supporting extensors meet only at `0`
+      (`disjoint_span_singleton'` + `pair_iff'`), so a screw meeting both
+      hinge constraints has `S u = S v`.
 - [ ] `lem:rank-rotation-semicont` — **Lemma 5.2** (rank
       lower-semicontinuity under a panel rotation; genericity form).
 - [ ] `prop:rigidity-matrix-prop11` — reconcile rank form with Phase
@@ -343,14 +354,21 @@ basis-free skeleton plus the two numerals. `lem:trivial-motions-rank-bound`
 is fully green; the numeric-dimension part of `def:dof-generic` is landed
 (only its maximum-rank *generic* realization condition remains red).
 
-The next concrete commit is the **leaf-most of the three rank lemmas**.
-Per the dep-graph, `lem:rank-parallel-full` (KT Lemma 5.3, two
-general-position parallel hinges → full block `D`) depends only on Phase
-17's `lem:extensor-independence` (`omitTwoExtensor_linearIndependent`,
-already green) — the natural base case and most self-contained start.
+`lem:rank-parallel-full` (KT Lemma 5.3) has now **landed**
+(`span_inf_span_eq_bot_of_linearIndependent` + `eq_of_hingeConstraint_two_parallel`,
+basis-free): the constraint spans of two linearly-independent supporting
+extensors meet only at `0`, so a screw meeting both hinge constraints has
+`S u = S v` — the `|V|=2` base case. The hypothesis is taken directly as
+`LinearIndependent ℝ ![C(e₁), C(e₂)]`; specializing Phase 17's
+`omitTwoExtensor_linearIndependent` to two hinges to *derive* that
+independence from affine-general-position of the hinge points is a small
+follow-on, deferred to where Case II/III consume it.
+
+The next concrete commit is **either of the remaining two rank lemmas**.
 `lem:rank-delete-vertex` (KT Lemma 5.1, pin-a-body) builds on the
 now-landed trivial-motion layer and the [29] White–Whiteley fact (decide
 prove-vs-hypothesize per the risk register); `lem:rank-rotation-semicont`
-(KT Lemma 5.2) and the Prop 1.1 reconciliation are the load-bearing
-finishers. See `notes/MolecularConjecture.md` *Phase 18* for the per-lemma
-detail and reuse map.
+(KT Lemma 5.2, rotation semicontinuity, genericity form) and the Prop 1.1
+reconciliation are the load-bearing finishers. See
+`notes/MolecularConjecture.md` *Phase 18* for the per-lemma detail and
+reuse map.

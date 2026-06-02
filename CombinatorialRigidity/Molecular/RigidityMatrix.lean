@@ -373,6 +373,44 @@ theorem finrank_screwAssignment [Fintype α] :
     Module.finrank ℝ (α → ScrewSpace k) = screwDim k * Fintype.card α := by
   rw [Module.finrank_pi_const ℝ, screwSpace_finrank, mul_comm]
 
+/-- **Two general-position parallel hinges intersect their constraint spans only at `0`**
+(`lem:rank-parallel-full`, Katoh–Tanigawa Lemma 5.3, span form): if the supporting extensors
+`C₁, C₂` of two hinges are linearly independent (the *general-position* hypothesis), then the
+two one-dimensional constraint spans `span C₁` and `span C₂` meet only at the origin,
+`span C₁ ⊓ span C₂ = ⊥`. This is the linear-algebra core of the lemma; the geometric
+general-position hypothesis on the hinge points is `affineSubspaceExtensor`-independence,
+supplied by the extensor-independence engine (`omitTwoExtensor_linearIndependent`,
+Phase 17 Lemma 2.1) specialized to two hinges. -/
+theorem span_inf_span_eq_bot_of_linearIndependent {c₁ c₂ : ScrewSpace k}
+    (h : LinearIndependent ℝ ![c₁, c₂]) :
+    Submodule.span ℝ {c₁} ⊓ Submodule.span ℝ {c₂} = ⊥ := by
+  rw [← disjoint_iff, Submodule.disjoint_span_singleton' (by simpa using h.ne_zero 1)]
+  rw [LinearIndependent.pair_iff' (by simpa using h.ne_zero 0)] at h
+  rw [Submodule.mem_span_singleton]
+  rintro ⟨a, ha⟩
+  exact h a ha
+
+/-- **Two general-position parallel hinges force the relative screw to zero**
+(`lem:rank-parallel-full`, Katoh–Tanigawa Lemma 5.3): if two edges `e₁, e₂` of a body-hinge
+framework `F` join the same pair of bodies `u, v` with hinges in general position — i.e. their
+supporting extensors `C(p(e₁)), C(p(e₂))` are linearly independent — then any screw assignment
+`S` satisfying the hinge constraint of *both* edges has equal screw centers on the two bodies,
+`S u = S v`. Geometrically the two `(D-1) × D` hinge-row blocks together have full rank `D`
+(`hingeRowBlock`), so the combined kernel on the relative screw `S u - S v` is `{0}`: this is
+the base case `|V| = 2` of the conjecture's algebraic induction. The general-position
+hypothesis on the hinge *points* is supplied by `omitTwoExtensor_linearIndependent`
+(Phase 17 Lemma 2.1) specialized to the two hinges. -/
+theorem eq_of_hingeConstraint_two_parallel (F : BodyHingeFramework k α β)
+    (S : α → ScrewSpace k) {e₁ e₂ : β} {u v : α}
+    (hgen : LinearIndependent ℝ ![F.supportExtensor e₁, F.supportExtensor e₂])
+    (h₁ : F.hingeConstraint S e₁ u v) (h₂ : F.hingeConstraint S e₂ u v) :
+    S u = S v := by
+  have hmem : S u - S v ∈
+      Submodule.span ℝ {F.supportExtensor e₁} ⊓ Submodule.span ℝ {F.supportExtensor e₂} :=
+    ⟨h₁, h₂⟩
+  rw [span_inf_span_eq_bot_of_linearIndependent hgen, Submodule.mem_bot, sub_eq_zero] at hmem
+  exact hmem
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

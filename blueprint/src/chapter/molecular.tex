@@ -418,6 +418,9 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
 
 \begin{lemma}[Two parallel hinges give the full block; KT Lemma 5.3]
   \label{lem:rank-parallel-full}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.span_inf_span_eq_bot_of_linearIndependent,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.eq_of_hingeConstraint_two_parallel}
+  \leanok
   \uses{def:rigidity-matrix, lem:extensor-independence}
   If two edges of $G$ join the same pair of bodies with hinges in
   \emph{general position}, the two $(D-1) \times D$ blocks together have
@@ -425,12 +428,15 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   base case $|V| = 2$ of the conjecture's induction is this lemma.
 \end{lemma}
 \begin{proof}
-  Each hinge constrains the relative screw to the orthogonal complement
-  of its supporting extensor; two extensors in general position span,
-  by the extensor-independence engine
-  (\cref{lem:extensor-independence}, specialized to two hinges), so
-  their complements meet only at $0$ and the combined block has the full
-  rank $D$.
+  \leanok
+  Each hinge constrains the relative screw to the span of its supporting
+  extensor (\cref{def:rigidity-matrix}); two extensors in general
+  position are linearly independent, by the extensor-independence engine
+  (\cref{lem:extensor-independence}, specialized to two hinges), so their
+  one-dimensional constraint spans meet only at $0$
+  (\texttt{span\_inf\_span\_eq\_bot\_of\_linearIndependent}). Hence a
+  screw satisfying both constraints has zero relative part, the combined
+  block has the full rank $D$.
 \end{proof}
 
 \begin{lemma}[Lower-semicontinuity of rank under a panel rotation; KT Lemma 5.2]
