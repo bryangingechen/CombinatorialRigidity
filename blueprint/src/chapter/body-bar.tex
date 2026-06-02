@@ -255,9 +255,31 @@ and the same applies to every $Y \subseteq E'$.
   structure.
 \end{proof}
 
+\begin{lemma}[A $(k,k)$-sparse bar set is a $k$-forest packing]
+  \label{lem:k-frame-forest-packing-of-sparse}
+  \lean{Graph.exists_forestPacking_cover_of_isSparse_restrict}
+  \leanok
+  \uses{thm:unionPow-cycle-indep-iff-sparse}
+  If the edge-restriction $G \restriction E'$ is $(k,k)$-sparse, then there is a
+  $k$-tuple $\mathrm{Fs} : \mathrm{Fin}\,k \to \mathcal P(\beta)$ of acyclic bar
+  sets (forests of $G$) whose union is exactly $E'$. This is the family on which
+  \cref{lem:k-frame-specialize-li} places its block-diagonal full-rank
+  specialization: each $e \in E'$ lies in some $\mathrm{Fs}_j$, so setting
+  $X_{e,j} \mapsto 1$ on $\mathrm{Fs}_j$ (and $0$ elsewhere) turns the generic
+  $k$-frame row of $e$ into the block-single row of \cref{lem:k-frame-specialize-li}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By \cref{thm:unionPow-cycle-indep-iff-sparse}, $(k,k)$-sparsity of
+  $G \restriction E'$ is independence of $E'$ in the $k$-fold cycle-matroid union,
+  and \texttt{Matroid.union\_indep\_iff} unpacks that into a per-copy acyclic cover
+  (via the acyclic-set characterization of independence in the cycle matroid).
+\end{proof}
+
 \begin{lemma}[Forest decomposition $\Rightarrow$ generic independence]
   \label{lem:k-frame-specialize-forest}
-  \uses{def:k-frame-matroid, lem:k-frame-specialize-li, lem:k-frame-li-over-poly-ring}
+  \uses{def:k-frame-matroid, lem:k-frame-specialize-li, lem:k-frame-li-over-poly-ring,
+    lem:k-frame-forest-packing-of-sparse}
   Conversely, suppose $E' \subseteq E(G)$ decomposes as
   $E' = \bigsqcup_{j} E'_j$ with each $G \restriction E'_j$ a forest
   (equivalently, the union-side count holds on $E'$). Setting the block-$j$

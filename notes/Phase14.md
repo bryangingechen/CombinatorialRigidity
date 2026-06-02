@@ -47,10 +47,16 @@ via mathlib's `Pi.linearIndependent_single` + the Matroid-pkg `Graph.orientation
 `R = MvPolynomial (β × Fin k) ℚ`, via `LinearIndependent.iff_fractionRing` on the fixed row family
 (the `K`-module `Fin k → α → K` is an `R`-module via the algebra map, scalar tower inherited from
 the product). This moves the remaining nonzero-minor argument off the fraction field and onto the
-integral domain `R`. The remaining red frontier is the **second half** of the genericity-lift
-(a forest-packing specialization of full rank ⟹ generic LI **over `R`** — the nonzero-polynomial-minor
-argument) that finishes `lem:k-frame-specialize-forest`, then
-`lem:k-frame-indep-iff-count`, then `thm:k-frame-union-cycle`. The Phase 13 chain
+integral domain `R`. **The forest-extraction step of the reverse half is now also landed** as a
+new green sub-node `lem:k-frame-forest-packing-of-sparse`
+(`Graph.exists_forestPacking_cover_of_isSparse_restrict` in `BodyBar/KFrame.lean`): from
+`(G ↾ E').IsSparse k k` it produces a `k`-tuple `Fs : Fin k → Set β` of acyclic bar sets covering
+`E'` exactly, via `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (Phase 13) +
+`Matroid.union_indep_iff` + `cycleMatroid_indep`. The remaining red frontier is the **minor-
+nonvanishing step** of the genericity-lift (the full-rank block-diagonal specialization on `Fs` ⟹
+generic LI **over `R`** — the nonzero-polynomial-minor argument) that finishes
+`lem:k-frame-specialize-forest`, then `lem:k-frame-indep-iff-count`, then
+`thm:k-frame-union-cycle`. The Phase 13 chain
 (`BodyBar/TreePacking.lean`) remains the upstream dependency: it proves
 the tree-packing corollary and the `Graph`-native `(k, k)`-sparsity ↔
 `k`-fold-`cycleMatroid`-union independence bridge
@@ -130,13 +136,19 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   (`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`), via `LinearIndependent.iff_fractionRing`
   on the fixed row family. Moves the nonzero-minor argument off the fraction field onto the
   integral domain `R`.
+- [x] `lem:k-frame-forest-packing-of-sparse` — **landed.** Forest-extraction step of the reverse
+  half: `(G ↾ E').IsSparse k k` ⟹ `∃ Fs : Fin k → Set β, ⋃ Fs i = E' ∧ ∀ i, G.IsAcyclicSet (Fs i)`
+  (`Graph.exists_forestPacking_cover_of_isSparse_restrict`, `BodyBar/KFrame.lean`). Via
+  `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (Phase 13) + `Matroid.union_indep_iff` +
+  `cycleMatroid_indep`. Supplies the `Fs` on which `lem:k-frame-specialize-li` places its block-
+  diagonal full-rank matrix.
 - [ ] `lem:k-frame-specialize-forest` — reverse half of Whiteley §2.1; **LI core done**
-  (`lem:k-frame-specialize-li`) and **fraction-field reduction done** (`lem:k-frame-li-over-poly-ring`).
-  Remaining: the second half of the genericity-lift — a specialization of full rank (the
-  block-diagonal matrix of `lem:k-frame-specialize-li`, obtained by setting block-`j` vars `1`
-  on `Fs j`, `0` else) ⟹ generic rows LI **over `R`**. Needs the "evaluation of a polynomial
-  minor is nonzero ⟹ the minor is a nonzero polynomial ⟹ generic LI" argument (no off-the-shelf
-  mathlib/Matroid-pkg lemma; likely its own commit(s)).
+  (`lem:k-frame-specialize-li`), **fraction-field reduction done** (`lem:k-frame-li-over-poly-ring`),
+  and **forest extraction done** (`lem:k-frame-forest-packing-of-sparse`).
+  Remaining: the minor-nonvanishing step — the full-rank block-diagonal specialization on `Fs`
+  (set block-`j` vars `1` on `Fs j`, `0` else) ⟹ generic rows LI **over `R`**. Needs the
+  "evaluation of a polynomial minor is nonzero ⟹ the minor is a nonzero polynomial ⟹ generic LI"
+  argument (no off-the-shelf mathlib/Matroid-pkg lemma; likely its own commit(s)).
 - [ ] `lem:k-frame-indep-iff-count` — packages both directions:
   `(kFrameMatroid G k).Indep E' ↔ (G ↾ E').IsSparse k k` (the
   `Matroid.ofFun` LI predicate ⟺ the union-side count). Depends on the
@@ -214,9 +226,11 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   (blueprinted under `lem:k-frame-span-le-pi`). The reverse half `lem:k-frame-specialize-forest`
   has been re-split: its LI core `lem:k-frame-specialize-li` (`Graph.specRow_linearIndependent`) and
   the fraction-field reduction `lem:k-frame-li-over-poly-ring`
-  (`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`, via `LinearIndependent.iff_fractionRing`) are
-  landed; the remaining open work is the **second half** of the genericity-lift (specialization of
-  full rank ⟹ generic LI **over the polynomial ring `R`**), which needs the polynomial-minor
+  (`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`, via `LinearIndependent.iff_fractionRing`) and
+  the forest-extraction step `lem:k-frame-forest-packing-of-sparse`
+  (`Graph.exists_forestPacking_cover_of_isSparse_restrict`) are landed; the remaining open work is the
+  **minor-nonvanishing step** of the genericity-lift (the full-rank block-diagonal specialization on
+  the extracted `Fs` ⟹ generic LI **over the polynomial ring `R`**), which needs the polynomial-minor
   non-vanishing argument and has no off-the-shelf mathlib/Matroid-pkg lemma.
 
 ## Hand-off / next phase
@@ -239,18 +253,23 @@ half of the genericity-lift** `lem:k-frame-li-over-poly-ring`
 (`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`) is also landed: generic LI over
 `K = Frac R` ⟺ LI over `R = MvPolynomial (β × Fin k) ℚ`, via `LinearIndependent.iff_fractionRing`
 on the fixed row family. This moves the remaining argument off the fraction field onto the
-integral domain `R`.
+integral domain `R`. The **forest-extraction step** `lem:k-frame-forest-packing-of-sparse`
+(`Graph.exists_forestPacking_cover_of_isSparse_restrict`) is also landed: from
+`(G ↾ E').IsSparse k k` it produces a `k`-tuple `Fs : Fin k → Set β` of acyclic bar sets covering
+`E'` exactly (via `unionPow_cycleMatroid_indep_iff_isSparse_restrict` + `Matroid.union_indep_iff` +
+`cycleMatroid_indep`) — the family on which `lem:k-frame-specialize-li` places its block-diagonal
+full-rank matrix.
 
-The next concrete commit is the **second half of the genericity-lift** that finishes
-`lem:k-frame-specialize-forest` (leaf-most red node), now stated **over `R`**: from
-`(G ↾ E').IsSparse k k` extract a forest packing `Fs : Fin k → Set β` of `E'` (via
-`unionPow_cycleMatroid_indep_iff_isSparse_restrict` + `Matroid.union_indep_iff`, as in
-`tutte_nash_williams`), then show `LinearIndepOn R (kFrameRow k D) E'` from the full-rank
-specialization (`lem:k-frame-specialize-li`). The argument is "a polynomial minor with a nonzero
-specialization is a nonzero polynomial, so the generic rows are LI over `R`" — the specialization
-ring hom `R = MvPolynomial (β × Fin k) ℚ → ℚ` sends `X_{(e,j)} ↦ 1` if `e ∈ Fs j` else `0`,
-turning `kFrameRow` into the block-`single` `specRow` (each `e ∈ E'` is in exactly one `Fs j`
-since the packing is disjoint). **No off-the-shelf mathlib/Matroid-pkg lemma exists for the
+The next concrete commit is the **minor-nonvanishing step** that finishes
+`lem:k-frame-specialize-forest` (leaf-most red node), stated **over `R`**: given the extracted
+`Fs` (`lem:k-frame-forest-packing-of-sparse`), show `LinearIndepOn R (kFrameRow k D) E'` from the
+full-rank specialization (`lem:k-frame-specialize-li`). The argument is "a polynomial minor with a
+nonzero specialization is a nonzero polynomial, so the generic rows are LI over `R`" — the
+specialization ring hom `R = MvPolynomial (β × Fin k) ℚ → ℚ` sends `X_{(e,j)} ↦ 1` if `e ∈ Fs j`
+else `0`, turning `kFrameRow` into the block-`single` `specRow`. (`Fs` covers `E'` but is not
+yet disjointified here — for the minor argument disjointify via `Fintype.exists_disjointed_le`
+as in `tutte_nash_williams`, or thread disjointness through the extraction lemma; each `e ∈ E'`
+then lies in exactly one block.) **No off-the-shelf mathlib/Matroid-pkg lemma exists for the
 minor-nonvanishing reflection**, so it likely needs its own sub-lemma(s) (an `MvPolynomial.eval` /
 `Matrix.map`-mediated determinant-nonvanishing helper; note a coefficient-wise ring-hom reflection
 is *false* — the kernel of the specialization is nontrivial — so it must route through a maximal

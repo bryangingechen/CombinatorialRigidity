@@ -345,6 +345,30 @@ theorem linearIndepOn_kFrameRow_iff_over_polyRing (E' : Set β) :
   (LinearIndependent.iff_fractionRing (MvPolynomial (β × Fin k) ℚ) (KFrameField β k)
     (b := kFrameRow k D ∘ ((↑) : E' → β))).symm
 
+/-- **A `(k, k)`-sparse bar set decomposes as a `k`-forest packing covering it**
+(`lem:k-frame-specialize-forest`, the forest-extraction step of the reverse half). If the
+edge-restriction `G ↾ E'` is `(k, k)`-sparse, then there is a `k`-tuple `Fs : Fin k → Set β`
+of acyclic bar sets (forests of `G`) whose union is exactly `E'`. This is the family on which
+the block-diagonal specialization (`specRow_linearIndependent`) places its full-rank matrix:
+each bar `e ∈ E'` lies in some `Fs j`, and the specialization sending the block-`j` indeterminate
+`X_{(e,j)} ↦ 1` on `Fs j` (and `0` elsewhere) turns `kFrameRow k D e` into the block-`single` row.
+
+Routes through `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (Phase 13): `(k, k)`-sparsity of
+`G ↾ E'` is independence of `E'` in the `k`-fold cycle-matroid union, and `Matroid.union_indep_iff`
+unpacks that into a per-copy acyclic cover (`cycleMatroid_indep`'s acyclic-set characterization).
+The remaining reverse step — that this full-rank specialization witnesses generic independence of
+the `k`-frame rows over the polynomial ring `R` (a nonzero polynomial minor specializing to a
+nonzero value cannot vanish identically) — is the follow-up node. -/
+theorem exists_forestPacking_cover_of_isSparse_restrict [Finite α] [Finite β]
+    {E' : Set β} (hE' : E' ⊆ E(G)) (hsparse : (G ↾ E').IsSparse k k) :
+    ∃ Fs : Fin k → Set β, ⋃ i, Fs i = E' ∧ ∀ i, G.IsAcyclicSet (Fs i) := by
+  classical
+  have hindep : (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)).Indep E' :=
+    (unionPow_cycleMatroid_indep_iff_isSparse_restrict hE').mpr hsparse
+  rw [Matroid.union_indep_iff] at hindep
+  obtain ⟨Fs, hcover, hacyc⟩ := hindep
+  exact ⟨Fs, hcover, fun i ↦ by rw [← cycleMatroid_indep]; exact hacyc i⟩
+
 end Reverse
 
 end Graph
