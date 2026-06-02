@@ -1152,6 +1152,37 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Sits naturally
   alongside `Matrix.rank_self_mul_transpose` and `LinearIndependent.rank_matrix`.
 
+### [mirrored] `Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero` (minor-nonvanishing reflection over a domain)
+- **Where it bit:** Phase 14 reverse half (`lem:k-frame-specialize-forest`),
+  the minor-nonvanishing step: from a full-rank block-diagonal forest-packing
+  specialization, conclude that the generic `k`-frame rows are linearly
+  independent over the polynomial ring `R = MvPolynomial (β × Fin k) ℚ`.
+- **Friction:** the naive "images under `φ : R →+* S` are LI ⟹ originals are LI"
+  coefficient-wise reflection is **false** when `φ` has a nontrivial kernel (a
+  dependence `∑ cᵢ vᵢ = 0` maps to `∑ φ(cᵢ)(φ∘vᵢ) = 0`; `φ∘v` LI gives only
+  `φ(cᵢ) = 0`, not `cᵢ = 0`). The correct argument must route through a maximal
+  minor's determinant, and mathlib has only the *square* `det ≠ 0 ⟹ rows LI`
+  (`Matrix.linearIndependent_rows_of_det_ne_zero`), not the
+  rectangular-with-specialization form.
+- **Resolution:** mirrored as
+  `Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`: for
+  `M : ι → κ → R` over a domain `R` (`ι` finite), a column selection `e : ι → κ`,
+  and `φ : R →+* S` into a nontrivial `S`, if `φ (submatrix (M ∘ e)).det ≠ 0`
+  then `LinearIndependent R M`. The specialized det being nonzero forces the
+  `R`-det nonzero (`φ 0 = 0`), so the chosen square submatrix has LI rows; the
+  full rows follow by `LinearIndependent.of_comp` with the column-projection
+  `LinearMap.pi (fun i ↦ LinearMap.proj (e i)) : (κ → R) →ₗ[R] (ι → R)`.
+- **General lesson (avoid the false reflection):** *"the images under a ring
+  hom are LI" does not imply "the originals are LI" unless the hom is injective;
+  reflect linear independence through a square minor's determinant, never
+  coefficient-wise.* Not lifted to TACTICS-GOLF — it is a mathematical caveat
+  captured fully in this lemma's doc-comment + the Phase 14 notes, not a
+  recurring tactic pattern.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Companion to the
+  rectangular-LI entry above; promotes alongside
+  `Matrix.linearIndependent_rows_of_det_ne_zero` in `Determinant/Basic`.
+
 ### [mirrored] `Finset.mul_card_union_add_mul_card_inter` (`k`-scaled `card_union_add_card_inter`)
 - **Where it bit:** the union-half of `IsTightOn.union_inter`
   (`Sparsity.lean`:432) and step 2 of `IsTightOn.union_with_bonus`

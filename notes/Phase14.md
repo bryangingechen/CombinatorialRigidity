@@ -52,11 +52,17 @@ new green sub-node `lem:k-frame-forest-packing-of-sparse`
 (`Graph.exists_forestPacking_cover_of_isSparse_restrict` in `BodyBar/KFrame.lean`): from
 `(G ↾ E').IsSparse k k` it produces a `k`-tuple `Fs : Fin k → Set β` of acyclic bar sets covering
 `E'` exactly, via `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (Phase 13) +
-`Matroid.union_indep_iff` + `cycleMatroid_indep`. The remaining red frontier is the **minor-
-nonvanishing step** of the genericity-lift (the full-rank block-diagonal specialization on `Fs` ⟹
-generic LI **over `R`** — the nonzero-polynomial-minor argument) that finishes
-`lem:k-frame-specialize-forest`, then `lem:k-frame-indep-iff-count`, then
-`thm:k-frame-union-cycle`. The Phase 13 chain
+`Matroid.union_indep_iff` + `cycleMatroid_indep`. **The abstract minor-nonvanishing engine is now
+also landed** as a mirror lemma `Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`
+(`Mathlib/LinearAlgebra/Matrix/Rank.lean`): for rows `M : ι → κ → R` over a domain `R`, a column
+selection `e : ι → κ`, and a ring hom `φ : R →+* S` (`S` nontrivial), if `φ (submatrix (M∘e)).det
+≠ 0` then `LinearIndependent R M` (the determinant-routed reflection; the coefficient-wise one is
+false — see FRICTION). The remaining red frontier is the **wiring step** that finishes
+`lem:k-frame-specialize-forest`: instantiate this engine with the `kFrameRow`-over-`R` matrix, the
+column selection from the forest packing `Fs`, and the `MvPolynomial`-evaluation specialization
+`φ : R → ℚ` (`X_{(e,j)} ↦ 1` on `Fs j` else `0`), showing the specialized minor det is the nonzero
+ℚ-det of the block-diagonal forest matrix (`specRow_linearIndependent`). Then
+`lem:k-frame-indep-iff-count`, then `thm:k-frame-union-cycle`. The Phase 13 chain
 (`BodyBar/TreePacking.lean`) remains the upstream dependency: it proves
 the tree-packing corollary and the `Graph`-native `(k, k)`-sparsity ↔
 `k`-fold-`cycleMatroid`-union independence bridge
@@ -144,11 +150,13 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   diagonal full-rank matrix.
 - [ ] `lem:k-frame-specialize-forest` — reverse half of Whiteley §2.1; **LI core done**
   (`lem:k-frame-specialize-li`), **fraction-field reduction done** (`lem:k-frame-li-over-poly-ring`),
-  and **forest extraction done** (`lem:k-frame-forest-packing-of-sparse`).
-  Remaining: the minor-nonvanishing step — the full-rank block-diagonal specialization on `Fs`
-  (set block-`j` vars `1` on `Fs j`, `0` else) ⟹ generic rows LI **over `R`**. Needs the
-  "evaluation of a polynomial minor is nonzero ⟹ the minor is a nonzero polynomial ⟹ generic LI"
-  argument (no off-the-shelf mathlib/Matroid-pkg lemma; likely its own commit(s)).
+  **forest extraction done** (`lem:k-frame-forest-packing-of-sparse`), and the **abstract
+  minor-nonvanishing engine done** (`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`,
+  mirror in `Mathlib/LinearAlgebra/Matrix/Rank.lean`). Remaining: the **wiring step** — instantiate
+  the engine with the `kFrameRow`-over-`R` matrix, the column selection from the forest packing `Fs`,
+  and the `MvPolynomial`-eval specialization `φ : R → ℚ` (`X_{(e,j)} ↦ 1` on `Fs j` else `0`), and
+  show the specialized minor det is the nonzero ℚ-det of the block-diagonal forest matrix
+  (`specRow_linearIndependent` carries that the forest blocks are LI / full rank).
 - [ ] `lem:k-frame-indep-iff-count` — packages both directions:
   `(kFrameMatroid G k).Indep E' ↔ (G ↾ E').IsSparse k k` (the
   `Matroid.ofFun` LI predicate ⟺ the union-side count). Depends on the
@@ -228,10 +236,13 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   the fraction-field reduction `lem:k-frame-li-over-poly-ring`
   (`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`, via `LinearIndependent.iff_fractionRing`) and
   the forest-extraction step `lem:k-frame-forest-packing-of-sparse`
-  (`Graph.exists_forestPacking_cover_of_isSparse_restrict`) are landed; the remaining open work is the
-  **minor-nonvanishing step** of the genericity-lift (the full-rank block-diagonal specialization on
-  the extracted `Fs` ⟹ generic LI **over the polynomial ring `R`**), which needs the polynomial-minor
-  non-vanishing argument and has no off-the-shelf mathlib/Matroid-pkg lemma.
+  (`Graph.exists_forestPacking_cover_of_isSparse_restrict`) are landed, and the abstract
+  **minor-nonvanishing engine** `Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`
+  (mirror in `Mathlib/LinearAlgebra/Matrix/Rank.lean`) is now landed too — the determinant-routed
+  reflection that turns "the φ-specialized minor det is nonzero" into "the generic rows are LI over
+  `R`" (the coefficient-wise reflection is false; see FRICTION). The remaining open work is the
+  **wiring step**: instantiate that engine on the `kFrameRow`-over-`R` matrix with the forest-packing
+  column selection and the `MvPolynomial`-eval specialization to finish `lem:k-frame-specialize-forest`.
 
 ## Hand-off / next phase
 
@@ -260,21 +271,29 @@ integral domain `R`. The **forest-extraction step** `lem:k-frame-forest-packing-
 `cycleMatroid_indep`) — the family on which `lem:k-frame-specialize-li` places its block-diagonal
 full-rank matrix.
 
-The next concrete commit is the **minor-nonvanishing step** that finishes
-`lem:k-frame-specialize-forest` (leaf-most red node), stated **over `R`**: given the extracted
-`Fs` (`lem:k-frame-forest-packing-of-sparse`), show `LinearIndepOn R (kFrameRow k D) E'` from the
-full-rank specialization (`lem:k-frame-specialize-li`). The argument is "a polynomial minor with a
-nonzero specialization is a nonzero polynomial, so the generic rows are LI over `R`" — the
-specialization ring hom `R = MvPolynomial (β × Fin k) ℚ → ℚ` sends `X_{(e,j)} ↦ 1` if `e ∈ Fs j`
-else `0`, turning `kFrameRow` into the block-`single` `specRow`. (`Fs` covers `E'` but is not
-yet disjointified here — for the minor argument disjointify via `Fintype.exists_disjointed_le`
-as in `tutte_nash_williams`, or thread disjointness through the extraction lemma; each `e ∈ E'`
-then lies in exactly one block.) **No off-the-shelf mathlib/Matroid-pkg lemma exists for the
-minor-nonvanishing reflection**, so it likely needs its own sub-lemma(s) (an `MvPolynomial.eval` /
-`Matrix.map`-mediated determinant-nonvanishing helper; note a coefficient-wise ring-hom reflection
-is *false* — the kernel of the specialization is nontrivial — so it must route through a maximal
-minor's determinant, not directly through the dependence relation). Flip
-`lem:k-frame-specialize-forest` green when this lands; if it overshoots one commit, re-split.
+The **abstract minor-nonvanishing engine** is now landed too:
+`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`
+(`Mathlib/LinearAlgebra/Matrix/Rank.lean`) — for rows `M : ι → κ → R` over a domain `R`, a column
+selection `e : ι → κ`, and a ring hom `φ : R →+* S` (`S` nontrivial), `φ (submatrix (M∘e)).det ≠ 0`
+⟹ `LinearIndependent R M`. This is the determinant-routed reflection the whole reverse half hinges
+on (the coefficient-wise reflection is *false* when `φ` has a nontrivial kernel — see FRICTION).
+
+The next concrete commit is the **wiring step** that finishes `lem:k-frame-specialize-forest`
+(leaf-most red node), stated **over `R = MvPolynomial (β × Fin k) ℚ`**: given the extracted `Fs`
+(`lem:k-frame-forest-packing-of-sparse`), show `LinearIndepOn R (kFrameRow k D) E'` by applying the
+engine. Concretely: (i) reindex `LinearIndepOn R … E'` to `LinearIndependent R (M : E' → κ → R)`
+where `M` is `kFrameRow` over `R` and `κ = Fin k × α` (`κ → R ≃ Fin k → α → R`); (ii) build the
+specialization ring hom `φ : R →+* ℚ` via `MvPolynomial.eval` (or `aeval`) sending `X_{(e,j)} ↦ 1`
+if `e ∈ Fs j` else `0` — under `Matrix.map φ`, `kFrameRow` becomes the block-`single` `specRow`
+matrix; (iii) supply a column selection `e : E' → κ` so the `φ`-specialized submatrix is the
+square forest-incidence minor whose det is nonzero in ℚ — that nonzero-ness is what
+`specRow_linearIndependent` (full row rank of the block-diagonal forest matrix) provides, so this
+step is mostly choosing the right square minor / column selection and identifying its specialized
+det with the `specRow` determinant. (`Fs` covers `E'` but is not yet disjointified — disjointify
+via `Fintype.exists_disjointed_le` as in `tutte_nash_williams`, or thread disjointness through the
+extraction lemma, so each `e ∈ E'` lands in exactly one block and the column selection is
+well-defined.) Flip `lem:k-frame-specialize-forest` green when this lands; if it overshoots one
+commit, re-split (e.g. land the `kFrameRow.map φ = specRow` specialization identity first).
 
 After it, `lem:k-frame-indep-iff-count` packages both halves against
 `thm:unionPow-cycle-indep-iff-sparse` (Phase 13); then `thm:k-frame-union-cycle`

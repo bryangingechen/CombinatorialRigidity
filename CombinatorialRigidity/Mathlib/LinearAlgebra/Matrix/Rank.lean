@@ -111,6 +111,31 @@ theorem finite_setOf_not_linearIndependent_rows_along_affine_path
   by_contra h_ne
   exact ht ((linearIndependent_rows_iff_det_mul_transpose_ne_zero _).mpr h_ne)
 
+/-- **Linear independence of rows from a specialized nonzero minor.** Let `M : ι → κ → R` be
+a (possibly rectangular) family of rows over an integral domain `R`, with `ι` finite. If there
+is a column selection `e : ι → κ` and a ring homomorphism `φ : R →+* S` into a nontrivial
+commutative ring `S` such that the square submatrix `(i, j) ↦ M i (e j)` has a determinant whose
+image under `φ` is nonzero, then the rows `M` are linearly independent over `R`.
+
+This is the "a polynomial minor with a nonzero specialization is itself nonzero, hence the generic
+rows are independent" reflection: a nonzero specialized minor det forces the `R`-det to be nonzero
+(`φ 0 = 0`), so the chosen square submatrix has independent rows
+(`linearIndependent_rows_of_det_ne_zero`), and the full rows are independent by composing with the
+column-projection linear map `(κ → R) → (ι → R)` (`LinearIndependent.of_comp`). No coefficient-wise
+reflection along `φ` is used — that would be false when `φ` has a nontrivial kernel; the argument
+routes through the minor's determinant instead. -/
+theorem linearIndependent_rows_of_specialized_submatrix_det_ne_zero
+    {ι κ R S : Type*} [Fintype ι] [DecidableEq ι] [CommRing R] [IsDomain R]
+    [CommRing S] [Nontrivial S] (M : ι → κ → R) (φ : R →+* S) (e : ι → κ)
+    (hdet : φ (Matrix.of (fun i j : ι => M i (e j))).det ≠ 0) :
+    LinearIndependent R M := by
+  have hRne : (Matrix.of (fun i j : ι => M i (e j))).det ≠ 0 := fun h => hdet (by rw [h, map_zero])
+  let f : (κ → R) →ₗ[R] (ι → R) := LinearMap.pi (fun i => LinearMap.proj (e i))
+  refine LinearIndependent.of_comp f ?_
+  have hcomp : (f ∘ M) = (fun i j : ι => M i (e j)) := by funext i j; rfl
+  rw [hcomp]
+  exact Matrix.linearIndependent_rows_of_det_ne_zero hRne
+
 end Matrix
 
 /-- **Vector-form polynomial-along-line.** For a finite-dim ℝ-vector space `W` and an
