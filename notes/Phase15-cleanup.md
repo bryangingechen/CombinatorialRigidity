@@ -1,6 +1,6 @@
 # Phase 15 cleanup round (work log)
 
-**Status:** in progress (A2 landed; A1 + B/C/D remain).
+**Status:** in progress (A landed; B/C/D remain).
 
 Between-phases cleanup round, run after Phase 15 (body-bar Tay theorem,
 existence form) closed in `fa4cfc3` and before Phase 16 (body-hinge /
@@ -10,16 +10,22 @@ fires on every commit in this round.
 
 ## Current state
 
-A2 landed: the stale "Phase 15, in progress" / "the converse … is the
-next sub-step" *Current state* block in `TayTheorem.lean`'s module
-docstring was reworded to a *Contents* block reflecting the closed phase
-(both existence + converse directions and the full `tay_witness` iff are
-named). Doc-only, single file, no blueprint pin touched. Build green +
-warning-clean on the Phase-15 surface (`lake build
-CombinatorialRigidity.BodyBar.TayTheorem`). A1 + B/C/D remain; all sweep
-findings are in the task list below, and a fresh session can resume from
-this log alone. The smallest concrete next commit is named in
-*Hand-off / next phase*.
+A complete (A1 + A2 both legs). A1: per-node `\lean{}` signature compare
+for all 7 Phase-15 nodes — all 7 resolve and match (no-op confirms; the
+known `def:rigidity-map-body-bar` `G.vertexSet → ℝᵈ`-vs-`α`-domain
+candidate confirmed as a kept math-reading gloss, not a divergence — see
+*Decisions made*). A2 blueprint leg: re-read of the 7 node proofs for
+staleness asides surfaced one genuine stale aside in the **chapter
+intro** (`body-bar.tex` L8–12: "Its nodes are currently *red* (stated,
+not yet formalized) … the to-do list … turns green as the matching Lean
+lands") — a forward-mode to-do snapshot left over from when the chapter
+opened, now false (Phases 13–15 all complete, every node green).
+Reworded to "All three phases are complete: every node below is
+formalized (green) …". Doc-only blueprint edit; no `\lean{}` pin touched,
+so `checkdecls` not required; `inv web` builds clean. No Lean code
+touched. B/C/D remain; all sweep findings are in the task list below, and
+a fresh session can resume from this log alone. The smallest concrete
+next commit is named in *Hand-off / next phase*.
 
 ## Scope
 
@@ -56,16 +62,19 @@ mirror-directory leg of the usual sweep is empty.
 
 ### A. Blueprint ↔ Lean divergence audit
 
-- [ ] A1 — per-node `\lean{}` signature compare for all 7 Phase-15 nodes
-  (`sec:body-bar-framework` 4 + `sec:body-bar-tay` 3). Confirm every
-  `\lean{}` name resolves and each blueprint statement form matches its
-  Lean signature. **Known candidate to resolve:** `def:rigidity-map-body-bar`
-  prose says motions are `G.vertexSet → ℝᵈ`; Lean `Motion n α = α → ℝᵈ`
-  is over the full vertex type (documented decision in `notes/Phase15.md`).
-  Either confirm the prose is an acceptable gloss or reword to match the
-  `α`-domain Lean (prefer: keep the math reading, note the `α` domain only
-  if it reads as a substantive divergence). `checkdecls` is the per-commit
-  gate, not an A-task — only run it if this commit touches a `\lean{}` pin.
+- [x] A1 — per-node `\lean{}` signature compare for all 7 Phase-15 nodes
+  (`sec:body-bar-framework` 4 + `sec:body-bar-tay` 3): **all 7 resolve and
+  match, no-op.** `def:body-bar-framework` (`bodyBarDim`, `BodyBarFramework`),
+  `def:rigidity-map-body-bar` (`rigidityMap`), `def:infinitesimally-rigid-body-bar`
+  (`IsInfinitesimallyRigid`, prose `d·b − d` = Lean `rank + d = d·b`),
+  `def:independent-body-bar` (`IsIndependent`, `rank = |E|`), `thm:tay-witness`
+  (`tay_witness`, two-iff conjunction), `prop:tay-witness-exists`
+  (`exists_isIndependent_of_isSparse` / `exists_isIsostatic_of_isTight`),
+  `lem:tay-isSparse-of-independent` (`isSparse_of_isIndependent`). **Known
+  candidate resolved:** `def:rigidity-map-body-bar` prose `m : G.vertexSet → ℝᵈ`
+  vs. Lean `Motion n α = α → ℝᵈ` — kept as a math-reading gloss (not a
+  divergence); see *Decisions made*. `checkdecls` not run (no `\lean{}` pin
+  touched this commit; only intro prose).
 - [ ] A2 — re-read each Phase-15 node's prose proof for "the Lean does X
   via Y" smoothness glosses and "formalization aside" remarks. First
   response to any aside is a Lean-simplification attempt (`CLEANUP.md` §A);
@@ -74,11 +83,20 @@ mirror-directory leg of the usual sweep is empty.
   proof prose against the (now-landed) converse infra — confirm no stale
   "next sub-step" / "in progress" asides survive from the incremental
   build (cf. Phase-14-cleanup A2, which found six such staleness asides).
-  **Done (Lean-side staleness leg):** the `TayTheorem.lean` module docstring
-  *Current state* block (read "Phase 15, in progress" / "The converse … is
-  the next sub-step") was reworded to a *Contents* block reflecting the
-  closed phase. The blueprint-prose leg of A2 (re-read the 7 node proofs for
-  staleness asides) is **not yet done** — pair it with A1.
+  **Done (both legs).** *Lean-side leg* (prior commit): the `TayTheorem.lean`
+  module docstring *Current state* block (read "Phase 15, in progress" / "The
+  converse … is the next sub-step") was reworded to a *Contents* block
+  reflecting the closed phase. *Blueprint-prose leg* (this commit): re-read of
+  the 7 node proofs surfaced **one genuine stale aside** in the chapter intro
+  (`body-bar.tex` L8–12, "Its nodes are currently *red* (stated, not yet
+  formalized) … the to-do list … turns green as the matching Lean lands") —
+  a forward-mode to-do snapshot now false with Phases 13–15 all green;
+  reworded to "All three phases are complete: every node below is formalized
+  (green) …". The 7 node-level proof bodies (the `\begin{proof}` blocks) carried
+  **no** stale "next sub-step"/"in progress" asides; line 553's "deferred"
+  (Whiteley's irreducible-variety lift) is a legitimate documented deferral
+  (ROADMAP §15), kept. (cf. Phase-14-cleanup A2, which found six staleness
+  asides — Phase 15's incremental build left only the one chapter-intro one.)
 
 ### B. Code-smell sweep (greps run at round open)
 
@@ -212,6 +230,22 @@ mostly no-op confirming forced structural shape):
 
 ## Decisions made during this round
 
+- **A1 (`def:rigidity-map-body-bar` motion-domain gloss).** Blueprint prose
+  says body motions are `m : G.vertexSet → ℝᵈ`; Lean `Motion n α = α → ℝᵈ`
+  is over the full vertex type `α`. Kept as a math-reading gloss, **not**
+  reworded: `G.vertexSet → ℝᵈ` is the faithful mathematical statement (a
+  motion assigns a velocity to each body), and the `α`-domain is a documented
+  formalization convenience (only values on `V(G)` enter the bar constraints;
+  the `α` domain dodges `dInc` subtype coercions — `notes/Phase15.md`
+  *Decisions made*). Does not read as a substantive divergence, so the prose
+  stays as-is per the A1 "keep the math reading" preference.
+- **A2 (blueprint-prose staleness leg).** Reworded `body-bar.tex`'s chapter
+  intro (L8–12): the stale forward-mode "Its nodes are currently *red*
+  (stated, not yet formalized) … the to-do list … turns green as the matching
+  Lean lands" → "All three phases are complete: every node below is formalized
+  (green) …". Doc-only; no `\lean{}` pin touched (so no `checkdecls`); `inv
+  web` builds clean. The 7 Phase-15 node proof bodies carried no staleness
+  asides; the only stale prose was the chapter-level to-do snapshot.
 - **A2 (Lean-side staleness leg).** Reworded `TayTheorem.lean`'s module
   docstring *Current state (Phase 15, in progress)* block to a *Contents*
   block: dropped the "the converse … is the next sub-step" forward-looking
@@ -226,19 +260,24 @@ mostly no-op confirming forced structural shape):
 
 ## Hand-off / next phase
 
-**A2 (Lean-side staleness leg) landed** — `TayTheorem.lean` module
-docstring reworded to reflect the closed phase. Build green +
-warning-clean on the Phase-15 surface.
+**A complete (A1 + both A2 legs landed).** A1: all 7 Phase-15 `\lean{}`
+nodes resolve + match (no-op); the `def:rigidity-map-body-bar` motion-domain
+candidate kept as a math-reading gloss. A2 blueprint leg: the stale
+"currently red / to-do list" chapter-intro snapshot in `body-bar.tex`
+reworded to reflect the closed (all-green) phase. Doc-only blueprint edit;
+`inv web` clean; no Lean touched.
 
-**Smallest concrete next commit:** land **A1 + A2-blueprint-leg** together
-— the per-node `\lean{}` signature compare for all 7 Phase-15 nodes plus
-the staleness/aside re-read of their proof prose (A2's remaining blueprint
-leg). Expect mostly no-op confirms; the one known candidate is
-`def:rigidity-map-body-bar`'s `G.vertexSet → ℝᵈ` motion prose vs. the
-`α`-domain Lean `Motion n α = α → ℝᵈ` (confirm gloss or reword). Per the
-coordinator no-op-batch rule, these confirms can ride one commit; only run
-`checkdecls` if a `\lean{}` pin is touched. Then proceed B → C → D in
+**Smallest concrete next commit:** start **B (code-smell sweep)** at **B1**
+— the 9 `classical` sites in `TayTheorem.lean` (L146, 197, 256, 305, 423,
+447, 507, 549, 568): for each, confirm the `classical` is load-bearing
+(def-unfold or statement-level `Finset`/`Fintype` instance) vs. a cleaner
+`[DecidableEq α]` signature boundary; verify by a strip build per the
+Phase-14-cleanup B2 precedent. B1–B7 are expected mostly no-op confirms and
+may ride **one** commit together per the coordinator no-op-batch rule
+(record each disposition in the work log); B6 (drop the redundant L124
+`variable {α β : Type*}` re-bind) is the one tiny code change — keep it its
+own commit if it turns out non-trivial, else fold it in. Then C → D in
 order; D3 (the `stdFramework_rigidityRow_eq` derivation) is the one
-substantive refactor candidate and should land late (after the A/B/C no-op
-confirms), as its own commit, with a try-and-record fallback if the
-`Pi.single` reshape fights the elaborator.
+substantive refactor candidate and should land late, as its own commit,
+with a try-and-record fallback if the `Pi.single` reshape fights the
+elaborator.
