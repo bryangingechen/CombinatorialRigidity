@@ -125,16 +125,39 @@ phase proceeds, leaf-first.
   Katoh--Tanigawa~\cite[Lemma 3.1]{katohTanigawa2011}.
 \end{proof}
 
-\begin{lemma}[Subgraph minimality via restriction; KT Lemma 3.3]
-  \label{lem:subgraph-minimality}
-  \uses{def:k-dof, def:matroid-MG}
-  A rigid subgraph $H$ of a minimal $k$-dof-graph $G$ is itself a
-  minimal $0$-dof-graph, via the restriction $M(\tilde G)|E(\tilde H) =
-  M(\tilde H)$.
+\begin{lemma}[Matroid restriction descends to subgraphs]
+  \label{lem:matroid-restrict-subgraph}
+  \lean{Graph.matroidMG_restrict_mulTilde}
+  \leanok
+  \uses{def:matroid-MG}
+  For a subgraph $H \le G$, restricting $M(\tilde G)$ to the edge set
+  $E(\tilde H)$ of the smaller multiplied graph recovers $M(\tilde H)$:
+  \[
+    M(\tilde G)\,|\,E(\tilde H) \;=\; M(\tilde H).
+  \]
 \end{lemma}
 \begin{proof}
-  Matroid restriction commutes with the union construction, so the base
-  / fiber-meeting property descends to $H$; Katoh--Tanigawa~\cite[Lemma
+  \leanok
+  Matroid restriction commutes with the $D$-fold cycle-matroid union
+  construction. Both sides are checked equal on independent sets: an
+  edge set $E' \subseteq E(\tilde H)$ is independent in either matroid
+  iff it is $(D,D)$-sparse, and the two sparsity conditions agree
+  because the incidences of an edge of $\tilde H$ coincide with its
+  incidences in $\tilde G$ (the subgraph relation cannot be seen by a
+  restriction to a fiber subset of the smaller graph). This is the
+  identity Katoh--Tanigawa~\cite[Lemma 3.3]{katohTanigawa2011} runs on.
+\end{proof}
+
+\begin{lemma}[Subgraph minimality via restriction; KT Lemma 3.3]
+  \label{lem:subgraph-minimality}
+  \uses{def:k-dof, lem:matroid-restrict-subgraph}
+  A rigid subgraph $H$ of a minimal $k$-dof-graph $G$ is itself a
+  minimal $0$-dof-graph.
+\end{lemma}
+\begin{proof}
+  By \cref{lem:matroid-restrict-subgraph}, $M(\tilde H) = M(\tilde
+  G)|E(\tilde H)$, so the base / fiber-meeting minimality property
+  descends from $G$ to $H$; Katoh--Tanigawa~\cite[Lemma
   3.3]{katohTanigawa2011}.
 \end{proof}
 

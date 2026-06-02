@@ -76,6 +76,23 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `Graph.edgeMultiply m`'s `IsLink`/`Inc` are defeq to the base graph's but not syntactically — `IsLink.mono` needs a type ascription
+- **Where it bit:** `edgeMultiply_mono` in `BodyBar/BodyHinge.lean`
+  (Phase 19 `lem:matroid-restrict-subgraph` engine). `(G.edgeMultiply
+  m).IsLink p x y` reduces to `G.IsLink p.1 x y`, but discharging the
+  `IsSubgraph.isLink_mono` field with `hp.mono h` fails *"application
+  type mismatch"* because Lean does not unfold the `edgeMultiply.IsLink`
+  redex to find the `IsLink.mono` motive. Fixed by ascribing the result
+  type: `(IsLink.mono h hp : G.IsLink p.1 x y)`. Same flavour for
+  `Inc`: the `spanningVerts`-agreement in `matroidMG_restrict_mulTilde`
+  routes incidences through `hHG.inc_congr` rather than relying on the
+  `Inc` redex unfolding.
+- **General lesson:** when a `def`'d graph (here `edgeMultiply`) defines
+  `IsLink`/`Inc` *through* the base graph's, the resulting term is defeq
+  but the `IsLink`/`Inc` API lemmas don't fire syntactically — ascribe
+  the base-graph type, or restate via the congruence lemmas
+  (`IsSubgraph.isLink_iff` / `.inc_congr`). One build cycle.
+
 ### ~~[open] No mathlib `Finset.univ.orderEmbOfFin = id` for `Fin n`~~
 - **Resolved by mirroring** (Phase 17-cleanup D2): the two callsites
   (`pluckerCoord_univ`, `extensor_ne_zero_iff_linearIndependent`, both in

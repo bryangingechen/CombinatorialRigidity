@@ -108,6 +108,65 @@ theorem matroidMG_indep_iff [DecidableEq β] [Finite α] [Finite β] (G : Graph 
   · rintro ⟨hsub, hsparse⟩
     exact ⟨(unionPow_cycleMatroid_indep_iff_isSparse_restrict hsub).mpr hsparse, hsub⟩
 
+/-- The `(D,D)`-sparsity of a bar set `E'` inside the edge-restriction `G̃ ↾ S` agrees
+with its `(D,D)`-sparsity inside `H̃ ↾ S` whenever `H ≤ G` and `S` lies within `E(H̃)`:
+restriction to a fiber subset of the smaller graph cannot see the difference between
+`H` and `G`. The edge sets coincide (`E(G̃ ↾ S) = S = E(H̃ ↾ S)`) and the spanned-vertex
+counts coincide because the incidences of an edge `e ∈ E' ⊆ E(H̃)` agree under the
+subgraph relation. This is the `IsSparse`-level engine of the matroid-restriction
+identity `matroidMG_restrict_mulTilde`. -/
+private theorem isSparse_restrict_mulTilde_congr {H G : Graph α β} (h : H ≤ G) (n : ℕ)
+    {S : Set (β × Fin (bodyHingeMult n))} (hS : S ⊆ E(H.mulTilde n)) {E' : Set _} (hE' : E' ⊆ S) :
+    ((G.mulTilde n) ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n) ↔
+      ((H.mulTilde n) ↾ E').IsSparse (bodyBarDim n) (bodyBarDim n) := by
+  have hHG : H.mulTilde n ≤ G.mulTilde n := edgeMultiply_mono h _
+  have hinc : ∀ e ∈ E', ∀ x, (G.mulTilde n).Inc e x ↔ (H.mulTilde n).Inc e x :=
+    fun e he x ↦ (hHG.inc_congr (hS (hE' he))).symm
+  have hspan : ∀ Y ⊆ E', ((G.mulTilde n) ↾ E').spanningVerts Y =
+      ((H.mulTilde n) ↾ E').spanningVerts Y := by
+    intro Y hY
+    ext x
+    simp only [mem_spanningVerts, restrict_inc]
+    exact exists_congr fun e ↦ ⟨fun ⟨heY, hi, he⟩ ↦ ⟨heY, (hinc e he x).mp hi, he⟩,
+      fun ⟨heY, hi, he⟩ ↦ ⟨heY, (hinc e he x).mpr hi, he⟩⟩
+  have hedge : E((G.mulTilde n) ↾ E') = E((H.mulTilde n) ↾ E') := by
+    rw [edgeSet_restrict, edgeSet_restrict, inter_eq_right.mpr (hE'.trans (hS.trans
+      (hHG.edgeSet_mono))), inter_eq_right.mpr (hE'.trans hS)]
+  constructor
+  · intro hsp Y hYsub hYne
+    have hYE' : Y ⊆ E' := hYsub.trans_eq (by rw [edgeSet_restrict,
+      inter_eq_right.mpr (hE'.trans hS)])
+    rw [← hspan Y hYE']
+    exact hsp Y (hYsub.trans_eq hedge.symm) hYne
+  · intro hsp Y hYsub hYne
+    have hYE' : Y ⊆ E' := hYsub.trans_eq (by rw [edgeSet_restrict,
+      inter_eq_right.mpr (hE'.trans (hS.trans hHG.edgeSet_mono))])
+    rw [hspan Y hYE']
+    exact hsp Y (hYsub.trans_eq hedge) hYne
+
+/-- **Matroid restriction descends to subgraphs** (`lem:subgraph-minimality`, engine):
+for `H ≤ G`, restricting `M(G̃)` to the edge set `E(H̃)` of the smaller multiplied graph
+recovers `M(H̃)`, `M(G̃) ↾ E(H̃) = M(H̃)`. This is the matroid identity Katoh–Tanigawa's
+Lemma 3.3 runs on: matroid restriction commutes with the `D`-fold cycle-matroid union
+construction. Proved by `Matroid.ext_indep`, routing both sides through the
+boundary-regime characterization `matroidMG_indep_iff` (an `E'` is independent in either
+matroid iff it is `(D,D)`-sparse, and those sparsities agree by
+`isSparse_restrict_mulTilde_congr`). -/
+theorem matroidMG_restrict_mulTilde [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    (h : H ≤ G) (n : ℕ) :
+    (G.matroidMG n) ↾ E(H.mulTilde n) = H.matroidMG n := by
+  have hHG : H.mulTilde n ≤ G.mulTilde n := edgeMultiply_mono h _
+  have hground : E(H.mulTilde n) ⊆ E(G.mulTilde n) := hHG.edgeSet_mono
+  refine Matroid.ext_indep ?_ fun E' _ ↦ ?_
+  · rw [Matroid.restrict_ground_eq, matroidMG, Matroid.restrict_ground_eq]
+  · rw [Matroid.restrict_indep_iff, matroidMG_indep_iff, matroidMG_indep_iff]
+    constructor
+    · rintro ⟨⟨_, hsparse⟩, hsub⟩
+      exact ⟨hsub, (isSparse_restrict_mulTilde_congr h n subset_rfl hsub).mp hsparse⟩
+    · rintro ⟨hsub, hsparse⟩
+      exact ⟨⟨hsub.trans hground, (isSparse_restrict_mulTilde_congr h n subset_rfl hsub).mpr
+        hsparse⟩, hsub⟩
+
 /-! ## `D`-deficiency (`def:D-deficiency`)
 
 A *partition* `P` of `V(G)` is encoded by a labeling `f : α → α` (the kernel of `f`,

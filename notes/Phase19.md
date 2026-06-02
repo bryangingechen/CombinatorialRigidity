@@ -44,8 +44,18 @@ A *circuit* of `M(G̃)` is mathlib's `Matroid.IsCircuit (G.matroidMG n)` (no pro
 def needed); 2-edge-connectivity is the still-red `lem:two-edge-conn` (KT 3.1), not
 this commit.
 
-Next concrete step: the structural lemmas (KT 3.1/3.3/3.4: `lem:two-edge-conn`,
-`lem:subgraph-minimality`, `lem:circuit-rigid`) and the bridge `thm:def-eq-corank`.
+The first structural-lemma engine is now green: `lem:matroid-restrict-subgraph`
+(`Graph.matroidMG_restrict_mulTilde`), the matroid identity `M(G̃) ↾ E(H̃) = M(H̃)`
+for `H ≤ G` that KT Lemma 3.3 runs on. Proved via `Matroid.ext_indep` routing both
+sides through `matroidMG_indep_iff`; the `IsSparse`-agreement engine is the private
+`isSparse_restrict_mulTilde_congr` (edge sets + `spanningVerts` agree because `Inc` on
+`E(H̃)` is shared, via `hHG.inc_congr`). New supporting lemma `edgeMultiply_mono` in
+`BodyBar/BodyHinge.lean` (`H ≤ G → m·H ≤ m·G`).
+
+Next concrete step: the remaining structural lemmas (KT 3.1/3.4: `lem:two-edge-conn`,
+`lem:circuit-rigid`), the full `lem:subgraph-minimality` node (transport the
+base/fiber-meeting minimality from `G` to `H` over the now-green restriction identity —
+needs base-extension API), and the bridge `thm:def-eq-corank`.
 
 ## Architectural choices made up front
 
@@ -89,8 +99,12 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 - [ ] `thm:def-eq-corank` — the def = corank bridge (JJ09 Thm 6.1 /
   Cor 6.2): `|B| + def(G̃) = D(|V|−1)`.
 - [ ] `lem:two-edge-conn` — KT Lemma 3.1 (2-edge-connectivity).
+- [x] `lem:matroid-restrict-subgraph` — the engine of KT 3.3:
+  `M(G̃) ↾ E(H̃) = M(H̃)` for `H ≤ G`. (`Graph.matroidMG_restrict_mulTilde`,
+  via `Matroid.ext_indep` + `matroidMG_indep_iff`.)
 - [ ] `lem:subgraph-minimality` — KT Lemma 3.3 (subgraph minimality
-  via restriction).
+  via restriction). Engine `lem:matroid-restrict-subgraph` is green;
+  the full node still needs the base/fiber-meeting minimality transport.
 - [ ] `lem:circuit-rigid` — KT Lemma 3.4 (circuit ⇒ rigid subgraph).
 - [ ] `prop:rigidity-matrix-prop11` — KT Prop 1.1 reconciliation
   (**inherited from Phase 18**; node lives in
@@ -159,6 +173,19 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   prose in the node (the lemma `lem:two-edge-conn` is separate, still red), and mathlib
   has no edge-connectivity API for `Graph α β` (only `SimpleGraph`) — flagged for that
   node's scoping.
+
+- **KT 3.3 split into engine + node.** `lem:subgraph-minimality` (KT
+  Lemma 3.3) is two pieces: the matroid identity `M(G̃) ↾ E(H̃) = M(H̃)`
+  and the minimality transport built on it. Landed the identity first as
+  its own green node `lem:matroid-restrict-subgraph`
+  (`matroidMG_restrict_mulTilde`); `lem:subgraph-minimality` `\uses` it and
+  stays red until the base/fiber-meeting transport lands. The identity is
+  proved by `Matroid.ext_indep` through `matroidMG_indep_iff` (not a
+  `Matroid.Union`-restrict-commute lemma — the vendored union has no such
+  lemma and ground `univ`), so it never touches the union internals: both
+  sides reduce to `(D,D)`-sparsity of `·̃ ↾ E'`, which agree by the private
+  `isSparse_restrict_mulTilde_congr`. *Lifted:* the `edgeMultiply.IsLink`
+  defeq-ascription lesson → FRICTION.
 
 ## Blockers / open questions
 

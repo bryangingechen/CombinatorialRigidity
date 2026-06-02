@@ -111,6 +111,15 @@ lemma spanningVerts_edgeMultiply (G : Graph α β) (m : ℕ) [NeZero m] (E' : Se
   · rintro ⟨p, hp, hinc⟩; exact ⟨p.1, hp, hinc⟩
   · rintro ⟨e, he, hinc⟩; exact ⟨(e, ⟨0, Nat.pos_of_ne_zero (NeZero.ne m)⟩), he, hinc⟩
 
+/-- Edge multiplication is **monotone** in the subgraph order: `H ≤ G` implies
+`m · H ≤ m · G`. Each parallel copy of a link of `H` is the corresponding copy of the
+same link of `G`, and the vertex sets are inherited verbatim. -/
+@[gcongr]
+lemma edgeMultiply_mono {H G : Graph α β} (h : H ≤ G) (m : ℕ) :
+    H.edgeMultiply m ≤ G.edgeMultiply m where
+  vertexSet_mono := h.vertexSet_mono
+  isLink_mono p x y hp := (IsLink.mono h hp : G.IsLink p.1 x y)
+
 /-! ## Body-hinge frameworks (`def:body-hinge-framework`)
 
 A **body-hinge framework** in `ℝⁿ` on a multigraph `G : Graph α β` assigns each
