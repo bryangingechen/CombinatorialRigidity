@@ -369,6 +369,98 @@ theorem exists_forestPacking_cover_of_isSparse_restrict [Finite α] [Finite β]
   obtain ⟨Fs, hcover, hacyc⟩ := hindep
   exact ⟨Fs, hcover, fun i ↦ by rw [← cycleMatroid_indep]; exact hacyc i⟩
 
+/-- **Ring-hom naturality of the signed incidence matrix.** The signed incidence row of a bar
+`e` has entries in `{0, 1, -1}`, so applying any ring homomorphism `φ : R →+* S` entrywise turns
+`signedIncMatrix R e` into `signedIncMatrix S e`. The reverse half specializes the
+indeterminate-coefficient `k`-frame matrix down to `ℚ` via an `MvPolynomial`-evaluation hom; this
+lemma is what lets that specialization commute past the incidence pattern (which is the same over
+every ring). Local to this file — a statement about the `apnelson1/Matroid`-package
+`Graph.orientation.signedIncMatrix`, not a mathlib fact. -/
+theorem signedIncMatrix_map {R S : Type*} [CommRing R] [CommRing S]
+    [DecidableEq α] [DecidablePred (· ∈ E(G))]
+    (φ : R →+* S) (D : Graph.orientation G) (e : β) :
+    (fun x => φ (D.signedIncMatrix R e x)) = D.signedIncMatrix S e := by
+  ext x
+  by_cases he : e ∈ E(G)
+  · rw [Graph.orientation.signedIncMatrix_apply_of_mem he,
+      Graph.orientation.signedIncMatrix_apply_of_mem he]
+    simp only [Pi.sub_apply, map_sub]
+    by_cases hx1 : x = (D.dInc ⟨e, he⟩).1 <;> by_cases hx2 : x = (D.dInc ⟨e, he⟩).2 <;>
+      simp_all [Function.update_apply]
+  · rw [Graph.orientation.signedIncMatrix_apply_of_not_mem he,
+      Graph.orientation.signedIncMatrix_apply_of_not_mem he]
+    simp
+
+/-- The **`k`-frame row function over the polynomial ring** `R = MvPolynomial (β × Fin k) ℚ`: the
+row for bar `e` places in each vertex block `j` the indeterminate scaling
+`X_{(e, j)} • signedIncMatrix R e` of `e`'s signed incidence row. This is the `R`-valued analogue
+of `kFrameRow` (which is its image under `algebraMap R (KFrameField β k)`, by
+`kFrameRow_eq_map_kFrameRowR`); moving the row family onto the integral domain `R` is what makes the
+reverse half's determinant / specialization argument (over `R`, then `φ`-specialized to `ℚ`)
+available. -/
+noncomputable def kFrameRowR (k : ℕ) (D : Graph.orientation G) :
+    β → (Fin k → α → MvPolynomial (β × Fin k) ℚ) :=
+  letI : DecidableEq α := Classical.decEq α
+  letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
+  fun e j => (MvPolynomial.X (e, j) : MvPolynomial (β × Fin k) ℚ) •
+    D.signedIncMatrix (MvPolynomial (β × Fin k) ℚ) e
+
+/-- The generic `k`-frame row `kFrameRow k D e` is the image of the polynomial-ring row
+`kFrameRowR k D e` under `algebraMap R (KFrameField β k)` applied entrywise. Both the
+indeterminate coefficient `X_{(e, j)}` (`kFrameIndet`, defined as `algebraMap … (X (e, j))`) and
+the incidence pattern (`signedIncMatrix_map`) push through the algebra map, so the two rows agree.
+This is the bridge that lets `linearIndepOn_kFrameRow_iff_over_polyRing` be combined with an
+`R`-level independence argument. -/
+theorem kFrameRow_eq_map_kFrameRowR (e : β) :
+    kFrameRow k D e = fun j x =>
+      algebraMap (MvPolynomial (β × Fin k) ℚ) (KFrameField β k) (kFrameRowR k D e j x) := by
+  classical
+  ext j x
+  rw [kFrameRow, kFrameRowR]
+  simp only [Pi.smul_apply, smul_eq_mul, map_mul]
+  rw [kFrameIndet, ← signedIncMatrix_map
+    (algebraMap (MvPolynomial (β × Fin k) ℚ) (KFrameField β k)) D e]
+
+/-- The **forest-packing specialization homomorphism** `R →+* ℚ` of a `k`-tuple
+`Fs : Fin k → Set β`: the `MvPolynomial`-evaluation sending each indeterminate `X_{(e, j)}` to `1`
+if `e ∈ Fs j` and `0`
+otherwise. Specializing the polynomial-ring `k`-frame matrix `kFrameRowR` along this hom turns the
+generic rows into the block-diagonal forest matrix of `specRow_linearIndependent`
+(`forestEval_kFrameRowR_eq_single`). -/
+noncomputable def forestEval (Fs : Fin k → Set β) :
+    MvPolynomial (β × Fin k) ℚ →+* ℚ :=
+  letI : DecidablePred (fun p : β × Fin k => p.1 ∈ Fs p.2) := Classical.decPred _
+  MvPolynomial.eval (fun p : β × Fin k => if p.1 ∈ Fs p.2 then (1 : ℚ) else 0)
+
+/-- **The forest-packing specialization sends `kFrameRowR` to the block-single row**
+(`lem:k-frame-specialize-forest`, the specialization identity of the reverse half). For a
+*disjoint* `k`-forest packing `Fs` and a bar `e ∈ Fs j₀`, applying `forestEval Fs` entrywise to the
+polynomial-ring row `kFrameRowR k D e` yields exactly `Pi.single j₀ (signedIncMatrix ℚ e)` — the
+block-`single` row that `specRow_linearIndependent` proves linearly independent. In block `j₀` the
+coefficient `X_{(e, j₀)}` evaluates to `1` (as `e ∈ Fs j₀`), leaving the real signed incidence row;
+in every other block `j ≠ j₀` disjointness gives `e ∉ Fs j`, so `X_{(e, j)}` evaluates to `0` and
+the block vanishes. Incidence-pattern commutation with the evaluation hom is `signedIncMatrix_map`.
+This is the identity that, fed to the minor-nonvanishing engine
+`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`, finishes the reverse half. -/
+theorem forestEval_kFrameRowR_eq_single (Fs : Fin k → Set β)
+    (hdisj : Pairwise (Function.onFun Disjoint Fs)) {e : β} {j₀ : Fin k} (he : e ∈ Fs j₀) :
+    letI : DecidableEq α := Classical.decEq α
+    letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
+    (fun j x => forestEval Fs (kFrameRowR k D e j x)) =
+      Pi.single j₀ (D.signedIncMatrix ℚ e) := by
+  classical
+  ext j x
+  rw [kFrameRowR, forestEval]
+  simp only [Pi.smul_apply, smul_eq_mul, map_mul, MvPolynomial.eval_X]
+  rw [← signedIncMatrix_map (MvPolynomial.eval
+    (fun p : β × Fin k => if p.1 ∈ Fs p.2 then (1 : ℚ) else 0)) D e]
+  by_cases hj : j = j₀
+  · subst hj
+    rw [if_pos he, one_mul, Pi.single_eq_same]
+  · have hne : e ∉ Fs j := fun hmem => (hdisj hj).ne_of_mem hmem he rfl
+    rw [if_neg hne, zero_mul, Pi.single_eq_of_ne hj]
+    rfl
+
 end Reverse
 
 end Graph

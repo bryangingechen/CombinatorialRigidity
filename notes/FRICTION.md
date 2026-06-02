@@ -142,6 +142,25 @@ housekeeping pass once their resolution is fully indexed.
   lives in `KFrame.lean` for now.
 - **Status:** resolved (project-local).
 
+### [resolved] `[matroid]` `apnelson1/Matroid` has no ring-hom naturality lemma for `signedIncMatrix`
+- **Where it bit:** Phase 14 reverse half, specialization identity
+  (`lem:k-frame-specialize-identity`). To specialize the
+  indeterminate-coefficient `k`-frame rows over `R = MvPolynomial …`
+  down to `ℚ` (and to lift `kFrameRow` over `K` from the `R`-row
+  `kFrameRowR`) I needed `(fun x ↦ φ (signedIncMatrix R e x)) =
+  signedIncMatrix S e` for a ring hom `φ : R →+* S`. The package has
+  `signedIncMatrix_apply_of_{mem,not_mem}` but no `map`/naturality lemma.
+- **Fix:** built `Graph.signedIncMatrix_map` locally in
+  `BodyBar/KFrame.lean`. Two-case `by_cases e ∈ E(G)`: off the edge set
+  both sides are `0`; on it, `signedIncMatrix_apply_of_mem` exposes
+  `update 0 _ 1 - update 0 _ 1`, and `φ` commutes with `sub`/`update 0 _
+  1` (entries in `{0, ±1}`) — a 4-way `by_cases` on `x` vs the two
+  endpoints + `simp_all [Function.update_apply]` closes it.
+- **Upstream-eligible** to `apnelson1/Matroid` (a fact about its
+  `signedIncMatrix`), not mathlib; lives in `KFrame.lean` for now,
+  beside `signedIncMatrix`'s other Phase-14 consumers.
+- **Status:** resolved (project-local).
+
 ### [resolved] `[matroid]` `Graph.Components` (the `Set (Graph α β)` of components) has no `Finite`/`Fintype` instance under `[Finite α]`
 - **Where it bit:** `Graph.le_mul_cycleMatroid_rk_of_isSparse_restrict` in
   `BodyBar/TreePacking.lean` (Phase 13 reverse direction). The

@@ -276,10 +276,37 @@ and the same applies to every $Y \subseteq E'$.
   (via the acyclic-set characterization of independence in the cycle matroid).
 \end{proof}
 
+\begin{lemma}[Specialization sends the generic rows to the block-single rows]
+  \label{lem:k-frame-specialize-identity}
+  \lean{Graph.forestEval_kFrameRowR_eq_single, Graph.kFrameRowR,
+    Graph.kFrameRow_eq_map_kFrameRowR, Graph.forestEval, Graph.signedIncMatrix_map}
+  \leanok
+  \uses{def:k-frame-matroid, lem:k-frame-specialize-li}
+  Write the $k$-frame rows over the polynomial ring $R = \mathbb{Q}[X_{e,j}]$ rather
+  than over $K = \mathrm{Frac}(R)$ — the generic row $\mathrm{kFrameRow}\,e$ is the
+  image of the $R$-valued row $\mathrm{kFrameRowR}\,e =
+  (X_{e,j} \cdot \mathrm{signedIncMatrix}\,e)_j$ under the algebra map $R \to K$
+  applied entrywise. For a \emph{disjoint} $k$-forest packing $\mathrm{Fs}$ and a
+  bar $e \in \mathrm{Fs}_{j_0}$, the evaluation homomorphism $\varphi : R \to
+  \mathbb{Q}$ sending $X_{e,j} \mapsto 1$ if $e \in \mathrm{Fs}_j$ and $0$ otherwise
+  carries $\mathrm{kFrameRowR}\,e$ to exactly $\mathrm{Pi.single}\,j_0\,
+  (\mathrm{signedIncMatrix}\,e)$ — the block-single row of
+  \cref{lem:k-frame-specialize-li}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Each indeterminate scales the incidence row, which has entries in $\{0, \pm 1\}$
+  and so commutes with any ring homomorphism (the naturality lemma
+  $\mathtt{signedIncMatrix\_map}$). In block $j_0$ the coefficient $X_{e,j_0}$
+  evaluates to $1$ (as $e \in \mathrm{Fs}_{j_0}$), leaving the real signed-incidence
+  row; in every other block $j \ne j_0$ disjointness gives $e \notin \mathrm{Fs}_j$,
+  so $X_{e,j}$ evaluates to $0$ and the block vanishes.
+\end{proof}
+
 \begin{lemma}[Forest decomposition $\Rightarrow$ generic independence]
   \label{lem:k-frame-specialize-forest}
   \uses{def:k-frame-matroid, lem:k-frame-specialize-li, lem:k-frame-li-over-poly-ring,
-    lem:k-frame-forest-packing-of-sparse}
+    lem:k-frame-forest-packing-of-sparse, lem:k-frame-specialize-identity}
   Conversely, suppose $E' \subseteq E(G)$ decomposes as
   $E' = \bigsqcup_{j} E'_j$ with each $G \restriction E'_j$ a forest
   (equivalently, the union-side count holds on $E'$). Setting the block-$j$

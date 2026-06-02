@@ -418,6 +418,15 @@ because of the surrounding `: Polynomial ℝ` ascription, look first
 for a bare `Polynomial.X` (or `0`, `1`, `C r`) whose containing ring
 is set by the surrounding context but not by the local syntax.
 
+**`MvPolynomial.X` in a `noncomputable def` body is the same trap**
+(Phase 14, `Graph.kFrameRowR`): `fun e j => MvPolynomial.X (e, j) •
+D.signedIncMatrix R e` in a def whose *return type* fixes the ring
+still fails with `typeclass instance problem is stuck: CommSemiring
+?m (e j)` — the `•` scalar's ring is determined by the result type
+the elaborator hasn't reached when it commits to `MvPolynomial.X`.
+Fix is identical: `(MvPolynomial.X (e, j) : MvPolynomial (β × Fin k)
+ℚ) • …`.
+
 Worked examples: `exists_affinelySpanning_rigid_placement` in
 `RigidityMatroid.lean` and `finite_setOf_not_linearIndependent_rows_along_affine_path`
 in `Mathlib/LinearAlgebra/Matrix/Rank.lean` — same workaround,

@@ -57,11 +57,21 @@ also landed** as a mirror lemma `Matrix.linearIndependent_rows_of_specialized_su
 (`Mathlib/LinearAlgebra/Matrix/Rank.lean`): for rows `M : ι → κ → R` over a domain `R`, a column
 selection `e : ι → κ`, and a ring hom `φ : R →+* S` (`S` nontrivial), if `φ (submatrix (M∘e)).det
 ≠ 0` then `LinearIndependent R M` (the determinant-routed reflection; the coefficient-wise one is
-false — see FRICTION). The remaining red frontier is the **wiring step** that finishes
-`lem:k-frame-specialize-forest`: instantiate this engine with the `kFrameRow`-over-`R` matrix, the
-column selection from the forest packing `Fs`, and the `MvPolynomial`-evaluation specialization
-`φ : R → ℚ` (`X_{(e,j)} ↦ 1` on `Fs j` else `0`), showing the specialized minor det is the nonzero
-ℚ-det of the block-diagonal forest matrix (`specRow_linearIndependent`). Then
+false — see FRICTION). **The specialization-identity sub-node is now also landed (green):
+`Graph.forestEval_kFrameRowR_eq_single`** — the `R`-lift half of the wiring step. It introduces the
+`R = MvPolynomial (β × Fin k) ℚ`-valued row `Graph.kFrameRowR` (`X_{(e,j)} • signedIncMatrix R e`),
+the bridge `Graph.kFrameRow_eq_map_kFrameRowR` (`kFrameRow` is `kFrameRowR` under `algebraMap R K`
+entrywise, via the ring-hom naturality helper `Graph.signedIncMatrix_map`), the forest-packing
+evaluation hom `Graph.forestEval Fs : R →+* ℚ` (`X_{(e,j)} ↦ 1` on `Fs j` else `0`), and the
+identity that for a **disjoint** packing and `e ∈ Fs j₀`, `forestEval`-specializing `kFrameRowR k D
+e` entrywise yields exactly the block-`single` row `Pi.single j₀ (signedIncMatrix ℚ e)` of
+`specRow_linearIndependent`. The remaining red frontier is the **minor / det step** that finishes
+`lem:k-frame-specialize-forest`: pick a disjoint forest packing (disjointify
+`exists_forestPacking_cover_of_isSparse_restrict`, or reuse Phase 13's `IsForestPacking`), feed
+`forestEval Fs` + the identity above + a square column selection to the engine
+`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`, where the specialized minor
+det is nonzero because the block-diagonal forest rows are LI over ℚ (`specRow_linearIndependent` →
+`LinearIndependent.rank_matrix`, picking a maximal nonsingular minor). Then
 `lem:k-frame-indep-iff-count`, then `thm:k-frame-union-cycle`. The Phase 13 chain
 (`BodyBar/TreePacking.lean`) remains the upstream dependency: it proves
 the tree-packing corollary and the `Graph`-native `(k, k)`-sparsity ↔
@@ -148,15 +158,22 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (Phase 13) + `Matroid.union_indep_iff` +
   `cycleMatroid_indep`. Supplies the `Fs` on which `lem:k-frame-specialize-li` places its block-
   diagonal full-rank matrix.
+- [x] `lem:k-frame-specialize-identity` — **landed.** The `R`-lift / specialization-identity
+  sub-node of the reverse half: `Graph.forestEval_kFrameRowR_eq_single` (`BodyBar/KFrame.lean`),
+  grouped with the `R`-valued row `Graph.kFrameRowR`, the algebra-map bridge
+  `Graph.kFrameRow_eq_map_kFrameRowR`, the eval hom `Graph.forestEval`, and the ring-hom naturality
+  helper `Graph.signedIncMatrix_map`. For a disjoint `k`-forest packing `Fs` and `e ∈ Fs j₀`,
+  entrywise-`forestEval`-specializing `kFrameRowR k D e` gives exactly `Pi.single j₀
+  (signedIncMatrix ℚ e)` — the block-`single` row of `lem:k-frame-specialize-li`.
 - [ ] `lem:k-frame-specialize-forest` — reverse half of Whiteley §2.1; **LI core done**
   (`lem:k-frame-specialize-li`), **fraction-field reduction done** (`lem:k-frame-li-over-poly-ring`),
-  **forest extraction done** (`lem:k-frame-forest-packing-of-sparse`), and the **abstract
+  **forest extraction done** (`lem:k-frame-forest-packing-of-sparse`), the **abstract
   minor-nonvanishing engine done** (`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`,
-  mirror in `Mathlib/LinearAlgebra/Matrix/Rank.lean`). Remaining: the **wiring step** — instantiate
-  the engine with the `kFrameRow`-over-`R` matrix, the column selection from the forest packing `Fs`,
-  and the `MvPolynomial`-eval specialization `φ : R → ℚ` (`X_{(e,j)} ↦ 1` on `Fs j` else `0`), and
-  show the specialized minor det is the nonzero ℚ-det of the block-diagonal forest matrix
-  (`specRow_linearIndependent` carries that the forest blocks are LI / full rank).
+  mirror in `Mathlib/LinearAlgebra/Matrix/Rank.lean`), and the **specialization identity done**
+  (`lem:k-frame-specialize-identity`). Remaining: the **minor / det step** — pick a disjoint forest
+  packing, feed `forestEval Fs` + the identity + a square column selection to the engine, where the
+  specialized minor det is nonzero because the forest blocks are LI over ℚ
+  (`specRow_linearIndependent` → `LinearIndependent.rank_matrix`, maximal nonsingular minor).
 - [ ] `lem:k-frame-indep-iff-count` — packages both directions:
   `(kFrameMatroid G k).Indep E' ↔ (G ↾ E').IsSparse k k` (the
   `Matroid.ofFun` LI predicate ⟺ the union-side count). Depends on the
@@ -278,22 +295,30 @@ selection `e : ι → κ`, and a ring hom `φ : R →+* S` (`S` nontrivial), `φ
 ⟹ `LinearIndependent R M`. This is the determinant-routed reflection the whole reverse half hinges
 on (the coefficient-wise reflection is *false* when `φ` has a nontrivial kernel — see FRICTION).
 
-The next concrete commit is the **wiring step** that finishes `lem:k-frame-specialize-forest`
-(leaf-most red node), stated **over `R = MvPolynomial (β × Fin k) ℚ`**: given the extracted `Fs`
-(`lem:k-frame-forest-packing-of-sparse`), show `LinearIndepOn R (kFrameRow k D) E'` by applying the
-engine. Concretely: (i) reindex `LinearIndepOn R … E'` to `LinearIndependent R (M : E' → κ → R)`
-where `M` is `kFrameRow` over `R` and `κ = Fin k × α` (`κ → R ≃ Fin k → α → R`); (ii) build the
-specialization ring hom `φ : R →+* ℚ` via `MvPolynomial.eval` (or `aeval`) sending `X_{(e,j)} ↦ 1`
-if `e ∈ Fs j` else `0` — under `Matrix.map φ`, `kFrameRow` becomes the block-`single` `specRow`
-matrix; (iii) supply a column selection `e : E' → κ` so the `φ`-specialized submatrix is the
-square forest-incidence minor whose det is nonzero in ℚ — that nonzero-ness is what
-`specRow_linearIndependent` (full row rank of the block-diagonal forest matrix) provides, so this
-step is mostly choosing the right square minor / column selection and identifying its specialized
-det with the `specRow` determinant. (`Fs` covers `E'` but is not yet disjointified — disjointify
-via `Fintype.exists_disjointed_le` as in `tutte_nash_williams`, or thread disjointness through the
-extraction lemma, so each `e ∈ E'` lands in exactly one block and the column selection is
-well-defined.) Flip `lem:k-frame-specialize-forest` green when this lands; if it overshoots one
-commit, re-split (e.g. land the `kFrameRow.map φ = specRow` specialization identity first).
+The **specialization identity** `lem:k-frame-specialize-identity`
+(`Graph.forestEval_kFrameRowR_eq_single`) is now landed — the `R`-lift half of the wiring step. It
+introduces the `R = MvPolynomial (β × Fin k) ℚ`-valued row `Graph.kFrameRowR`, the algebra-map
+bridge `Graph.kFrameRow_eq_map_kFrameRowR` (via the ring-hom naturality helper
+`Graph.signedIncMatrix_map`), the forest-packing evaluation hom `Graph.forestEval`, and the identity
+that, for a **disjoint** `k`-forest packing and `e ∈ Fs j₀`, entrywise-`forestEval`-specializing
+`kFrameRowR k D e` gives exactly the block-`single` row `Pi.single j₀ (signedIncMatrix ℚ e)` of
+`specRow_linearIndependent`.
+
+The next concrete commit is the **minor / det step** that finishes `lem:k-frame-specialize-forest`
+(now the leaf-most red node). Given `(G ↾ E').IsSparse k k`, target `LinearIndepOn K (kFrameRow k D)
+E'` via `linearIndepOn_kFrameRow_iff_over_polyRing` (reduce to `R`) + `kFrameRow_eq_map_kFrameRowR`
+(work with the `R`-row `kFrameRowR`). Concretely: (i) get a **disjoint** forest packing covering
+`E'` — disjointify `exists_forestPacking_cover_of_isSparse_restrict` via
+`Fintype.exists_disjointed_le` (as in `tutte_nash_williams`), or reuse Phase 13's `IsForestPacking`
+on `G ↾ E'`; (ii) reindex `LinearIndepOn R (kFrameRowR k D) E'` to `LinearIndependent R (M : E' → κ →
+R)`, `κ = Fin k × α`; (iii) feed the engine
+`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero` the hom `forestEval Fs`, where
+by `forestEval_kFrameRowR_eq_single` the specialized rows are the block-`single` `specRow` matrix
+(reindexed via the disjoint cover bijection `E' ≃ Σ j, Fs j`); (iv) the square column selection +
+nonzero specialized det come from the forest rows being LI over ℚ (`specRow_linearIndependent` →
+`LinearIndependent.rank_matrix`, then a maximal nonsingular minor — the one remaining "LI rows ⟹
+nonzero square minor" step to locate/prove). If it overshoots, the maximal-minor step is the natural
+further split.
 
 After it, `lem:k-frame-indep-iff-count` packages both halves against
 `thm:unionPow-cycle-indep-iff-sparse` (Phase 13); then `thm:k-frame-union-cycle`
