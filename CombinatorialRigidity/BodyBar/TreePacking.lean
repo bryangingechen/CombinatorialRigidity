@@ -170,4 +170,56 @@ lemma cycleMatroid_eRk_add_numberOfComponents_spanningVerts {G : Graph α β} {E
   rw [hbridge, eRank_cycleMatroid_add_numberOfComponents ((G ↾ E') - Isol(G ↾ E')),
     deleteVerts_vertexSet, vertexSet_deleteVerts_isolatedSet_restrict]
 
+/-- A non-empty bar set `E' ⊆ E(G)` spans at least one non-trivial component of `G ↾ E'`:
+`c'(E') := c((G ↾ E') - Isol(G ↾ E')) ≥ 1`. The vertices `spanningVerts E'` are non-empty (a bar
+of `E'` is incident to a vertex), and the isolated set is deleted, so the residual subgraph has a
+non-empty vertex set and hence a component. This is what supplies the `+k` slack in the sparsity
+count: deleting `k · c'(E') ≥ k` from `k · |spanningVerts E'|` is what turns the rank bound into
+`|E'| + k ≤ k · |spanningVerts E'|`. -/
+lemma one_le_numberOfComponents_deleteVerts_isolatedSet_restrict {G : Graph α β} {E' : Set β}
+    (hE' : E' ⊆ E(G)) (hne : E'.Nonempty) : 1 ≤ c((G ↾ E') - Isol(G ↾ E')) := by
+  obtain ⟨e, heE'⟩ := hne
+  obtain ⟨x, y, hxy⟩ := exists_isLink_of_mem_edgeSet (hE' heE')
+  rw [NumberOfComponents, one_le_encard_iff_nonempty, components_nonempty_iff,
+    deleteVerts_vertexSet, vertexSet_deleteVerts_isolatedSet_restrict]
+  exact ⟨x, e, heE', hxy.inc_left⟩
+
+/-- **Cycle-matroid rank bound** (`ncard` form): for a non-empty bar set `E' ⊆ E(G)`, the rank of
+`E'` in `G.cycleMatroid` is at most `|spanningVerts E'| - 1`, i.e. `r(E') + 1 ≤ |spanningVerts E'|`.
+The `ℕ`/`ncard` consequence of the `spanningVerts` rank formula
+`r(E') + c'(E') = |spanningVerts E'|` together with `c'(E') ≥ 1` on a non-empty `E'`
+(`one_le_numberOfComponents_deleteVerts_isolatedSet_restrict`). This is the `+1` that the `(k,k)`
+sparsity bound multiplies into the `+k` slack. -/
+lemma cycleMatroid_rk_add_one_le_spanningVerts_ncard [Finite α] [Finite β] {G : Graph α β}
+    {E' : Set β} (hE' : E' ⊆ E(G)) (hne : E'.Nonempty) :
+    G.cycleMatroid.rk E' + 1 ≤ (G.spanningVerts E').ncard := by
+  have hkey := cycleMatroid_eRk_add_numberOfComponents_spanningVerts hE'
+  have hc := one_le_numberOfComponents_deleteVerts_isolatedSet_restrict hE' hne
+  have hfin : (G.spanningVerts E').Finite :=
+    (Set.toFinite V(G)).subset (G.spanningVerts_subset_vertexSet E')
+  have heRk : G.cycleMatroid.eRk E' + 1 ≤ (G.spanningVerts E').encard := by
+    calc G.cycleMatroid.eRk E' + 1 ≤ G.cycleMatroid.eRk E' + c((G ↾ E') - Isol(G ↾ E')) := by
+            gcongr
+      _ = (G.spanningVerts E').encard := hkey
+  rw [← Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite E'), ← hfin.cast_ncard_eq] at heRk
+  exact_mod_cast heRk
+
+/-- **Count condition implies `(k, k)`-sparsity** — the easy half of
+`thm:unionPow-cycle-indep-iff-sparse`. If every bar set `Y ⊆ E(G)` satisfies the
+union-independence count condition `|Y| ≤ k · r(Y)` (the matroid-side characterization of
+independence in the `k`-fold cycle-matroid union, `Matroid.Union_pow_indep_iff_count`), then `G`
+is `(k, k)`-sparse. Each non-empty `Y` has `r(Y) + 1 ≤ |spanningVerts Y|`
+(`cycleMatroid_rk_add_one_le_spanningVerts_ncard`, the `c'(Y) ≥ 1` slack), so
+`|Y| ≤ k · r(Y) ≤ k · (|spanningVerts Y| - 1) = k · |spanningVerts Y| - k`, i.e.
+`|Y| + k ≤ k · |spanningVerts Y|`. The reverse implication (`(k, k)`-sparsity ⟹ the count
+condition) needs the connected-component decomposition of `Y` and is deferred. -/
+lemma isSparse_of_forall_le_cycleMatroid_rk [Finite α] [Finite β] {G : Graph α β} {k : ℕ}
+    (h : ∀ Y ⊆ E(G), Y.ncard ≤ k * G.cycleMatroid.rk Y) : G.IsSparse k k := by
+  intro Y hYE hne
+  have hrk := G.cycleMatroid_rk_add_one_le_spanningVerts_ncard hYE hne
+  have hcount := h Y hYE
+  calc Y.ncard + k ≤ k * G.cycleMatroid.rk Y + k := by omega
+    _ = k * (G.cycleMatroid.rk Y + 1) := by ring
+    _ ≤ k * (G.spanningVerts Y).ncard := by gcongr
+
 end Graph
