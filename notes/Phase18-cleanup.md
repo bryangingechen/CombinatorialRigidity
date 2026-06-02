@@ -19,6 +19,10 @@ instruction alignment → D (process), file split → A (judgment call).
 
 ## Current state
 
+**Update (D2 landed):** Buckets A/B/C closed; D1 + D2 done. Remaining:
+**D3** (FRICTION re-skim, next), **P1/P2** (instruction tweaks), **J1**
+(judgment call). See *Hand-off*.
+
 The Phase-18 surface is the single new Lean file
 `Molecular/RigidityMatrix.lean` (545 lines, 38 decls) and the nine
 `molecular.tex` `sec:molecular-rigidity-matrix` nodes (eight green +
@@ -129,10 +133,21 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
   preserving the Phase-19 "Inherited from Phase 18" carry-forward bullet;
   (e) converted the "Opening Phase 17" section to a generic "Opening the
   next phase" pointer.
-- [ ] **D2 (compress `notes/Phase18.md`)** — 499 lines, over even the
-  long-phase ceiling (`notes/CLAUDE.md` *Soft length budget*). Apply the
-  ≤8-line-per-entry rule, lift cross-cutting lessons (*Promoted to …*),
-  and compress the now-closed plan to a commit-log pointer + summary.
+- [x] **D2 (compress `notes/Phase18.md`)** — done. 499 → 275 lines (in
+  line with Phase17.md's 223 for a comparable molecular-program phase,
+  under the long-phase ceiling). Collapsed the *Current state* +
+  per-node *Landed so far* narrative (it triplicated *Lemma checklist* +
+  *Hand-off*) to one architectural paragraph; tightened every *Decisions*
+  entry to ≤8 lines; replaced the two FRICTION-lifted entries (the
+  `smul_sub` graded-piece stall, the `Module.finrank_pi_const` mirror)
+  with one-line *Promoted to FRICTION* pointers per `notes/CLAUDE.md`
+  "Don't duplicate FRICTION explanations". Also **folded in the A5
+  citation fix's reach into this file** (out of A5's stated scope, which
+  only touched `molecular.tex` + `MolecularConjecture.md`): the five
+  stale phantom "Prop 2.3 [15]" references are now "JJ [15] Thm 6.1 /
+  Cor 6.2", with one explanatory line in *Citations verified* noting the
+  phantom + pointing at A5 — so compressing didn't silently re-propagate
+  the bad citation.
 - [ ] **D3** — re-skim `notes/FRICTION.md` for open Phase-18 entries;
   lift/migrate per `CLAUDE.md` *Lift on promotion*.
 
@@ -184,13 +199,13 @@ holds, B3 both multi-arg `rw` sites genuine multi-step, C1
 `screwSpace_finrank` 4-line no-extract gate) — all confirm-only, no Lean
 edit, build re-verified warning-clean.
 
-Next concrete commit: **D2** (compress `notes/Phase18.md`, 499 lines —
-apply the ≤8-line-per-entry rule, lift cross-cutting lessons, compress
-the closed plan to a commit-log pointer). Then **D3** (FRICTION re-skim
-for open Phase-18 entries), **P1/P2** (instruction tweaks to
-`blueprint/CLAUDE.md` *Proof verbosity* and root `CLAUDE.md` *When this
-commit closes a phase*), and **J1** last (split `molecular.tex`, a
-judgment call — decide or defer to Phase 19's open with rationale). Each
-fix is its own commit per `CLEANUP.md` *Workflow* rule 3. Close the round
-by flipping the ROADMAP row to ✓ and writing the *Hand-off* summary;
-Phase 19 opens after.
+D2 landed (`notes/Phase18.md` 499 → 275 lines + the A5 citation fix
+folded into that file). Next concrete commit: **D3** (FRICTION re-skim
+for open Phase-18 entries; lift/migrate per `CLAUDE.md` *Lift on
+promotion*). Then **P1/P2** (instruction tweaks to `blueprint/CLAUDE.md`
+*Proof verbosity* and root `CLAUDE.md` *When this commit closes a
+phase*), and **J1** last (split `molecular.tex`, a judgment call —
+decide or defer to Phase 19's open with rationale). Each fix is its own
+commit per `CLEANUP.md` *Workflow* rule 3. Close the round by flipping
+the ROADMAP row to ✓ and writing the *Hand-off* summary; Phase 19 opens
+after.
