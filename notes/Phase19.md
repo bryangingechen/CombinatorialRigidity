@@ -1,7 +1,8 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
-**Status:** in progress (`def:matroid-MG` + `def:D-deficiency` + `def:k-dof` +
-`def:rigid-subgraph` landed — all four definition nodes done; lemmas/bridge next).
+**Status:** in progress (all four definition nodes + three structural lemmas landed:
+`lem:matroid-restrict-subgraph`, `lem:subgraph-minimality` (KT 3.3),
+`lem:two-edge-conn` (KT 3.1, cut form); `lem:circuit-rigid` + `thm:def-eq-corank` next).
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -71,8 +72,16 @@ de-risk the `iSup` model and are the prerequisite every remaining node needs (th
 `{V', V∖V'}` cut-partition lower bound for `lem:two-edge-conn`, the deficiency side of the
 corank bridge).
 
-Next concrete step: the remaining structural lemmas (KT 3.1/3.4: `lem:two-edge-conn`,
-`lem:circuit-rigid`) and the bridge `thm:def-eq-corank`.
+`lem:two-edge-conn` (KT 3.1) is now green: `Graph.two_le_crossingEdges_of_isKDof_zero`. A
+body-hinge-rigid (`0`-dof) graph admits no bridge cut — for a nonempty proper `V' ⊊ V(G)`
+separating `V(G)`, `d_G(V') ≥ 2`. Phrased directly in cut form (mathlib has no
+edge-connectivity predicate for `Graph α β`, only `SimpleGraph`): the cut `{V', V∖V'}` is a
+two-part partition (`Graph.cutLabeling` / `Graph.numParts_cutLabeling`), so `def ≥ D - (D-1)d`;
+`d ≤ 1` forces `def ≥ 1 > 0`, contradicting `def = 0` (via `partitionDef_le_deficiency`). Needs
+only `D = bodyBarDim n ≥ 1`. No new graph machinery — runs entirely on the green
+deficiency-attainment API.
+
+Next concrete step: `lem:circuit-rigid` (KT 3.4) and the bridge `thm:def-eq-corank`.
 
 ## Architectural choices made up front
 
@@ -115,7 +124,9 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   `lem:two-edge-conn`). (`Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`.)
 - [ ] `thm:def-eq-corank` — the def = corank bridge (JJ09 Thm 6.1 /
   Cor 6.2): `|B| + def(G̃) = D(|V|−1)`.
-- [ ] `lem:two-edge-conn` — KT Lemma 3.1 (2-edge-connectivity).
+- [x] `lem:two-edge-conn` — KT Lemma 3.1 (2-edge-connectivity, cut form):
+  `Graph.two_le_crossingEdges_of_isKDof_zero` (+ `cutLabeling` / `numParts_cutLabeling`).
+  A `0`-dof graph has `d_G(V') ≥ 2` for every separating `V' ⊊ V(G)`.
 - [x] `lem:matroid-restrict-subgraph` — the engine of KT 3.3:
   `M(G̃) ↾ E(H̃) = M(H̃)` for `H ≤ G`. (`Graph.matroidMG_restrict_mulTilde`,
   via `Matroid.ext_indep` + `matroidMG_indep_iff`.)
@@ -191,6 +202,16 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   has no edge-connectivity API for `Graph α β` (only `SimpleGraph`) — flagged for that
   node's scoping.
 
+- **KT 3.1 stated in cut form, not via a connectivity predicate.** `lem:two-edge-conn`
+  (`two_le_crossingEdges_of_isKDof_zero`) phrases 2-edge-connectivity directly as "every
+  separating `V' ⊊ V(G)` has `d_G(V') ≥ 2`", because mathlib has no edge-connectivity API
+  for `Graph α β` (only `SimpleGraph`). This is exactly the form KT's proof uses (the bridge
+  cut `{V', V∖V'}`), so no predicate is lost. The cut partition is encoded by a `cutLabeling`
+  helper (collapse `V'`→`a`, complement→`b`); `numParts_cutLabeling = 2` then drives the
+  `def ≥ D-(D-1)d` lower bound through `partitionDef_le_deficiency`. Self-contained on the
+  green deficiency-attainment API — no new graph machinery, and `D ≥ 1` suffices (KT uses
+  `D ≥ 3`, but `D ≥ 1` already gives `(D-1)·d < D` when `d ≤ 1`).
+
 - **KT 3.3 split into engine + node; both green.** `lem:subgraph-minimality`
   (KT Lemma 3.3) is two pieces: the matroid identity `M(G̃) ↾ E(H̃) = M(H̃)`
   (engine, green as `lem:matroid-restrict-subgraph` / `matroidMG_restrict_mulTilde`)
@@ -225,15 +246,18 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 All four definition nodes of `deficiency.tex` are green in `Molecular/Deficiency.lean`
 (`Graph.matroidMG` / `matroidMG_indep_iff`; `Graph.partitionDef` / `Graph.deficiency` /
 `numParts` / `crossingEdges` / `partitionDef_one`; `Graph.IsKDof` / `Graph.edgeFiber` /
-`Graph.IsMinimalKDof`; `Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`), plus two
+`Graph.IsMinimalKDof`; `Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`), plus three
 structural lemmas: the restriction identity `matroidMG_restrict_mulTilde`
-(`lem:matroid-restrict-subgraph`) and the full KT 3.3 node `subgraph_minimality`
-(`lem:subgraph-minimality`). The deficiency-attainment API
+(`lem:matroid-restrict-subgraph`), the full KT 3.3 node `subgraph_minimality`
+(`lem:subgraph-minimality`), and the KT 3.1 cut-form node
+`two_le_crossingEdges_of_isKDof_zero` (`lem:two-edge-conn`, with `cutLabeling` /
+`numParts_cutLabeling`). The deficiency-attainment API
 (`bddAbove_range_partitionDef` / `partitionDef_le_deficiency` / `deficiency_nonneg`) is
 also in place — the `iSup`-model `deficiency` is now a usable attained max, and "a partition
 witnesses a deficiency lower bound" is one `partitionDef_le_deficiency` call.
 
-The next concrete commit is the remaining structural work. Likely-cost note: `lem:circuit-rigid`
+The two remaining nodes are `lem:circuit-rigid` (KT 3.4) and the bridge `thm:def-eq-corank`.
+Likely-cost note: `lem:circuit-rigid`
 concludes `def(H̃) = 0` (rigid), which is awkward to reach from "circuit ⇒ sparse" without
 either the corank bridge or a direct partition argument — so `thm:def-eq-corank` may need to
 land first (it gives `def = corank`, turning a `(D,D)`-tight subgraph directly into `def = 0`).

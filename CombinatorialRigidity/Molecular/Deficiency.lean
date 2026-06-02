@@ -57,10 +57,17 @@ leaf node landing here:
   `B` of `M(G̃)` with `B' = B ∩ E(H̃)`, and each fiber `ẽ` of `e ∈ E(H) ⊆ E(G)` lies
   in `E(H̃)`, so `B ∩ ẽ ≠ ∅` (from `G`'s minimality) descends to `B' ∩ ẽ ≠ ∅`.
 
+* `two_le_crossingEdges_of_isKDof_zero` (`lem:two-edge-conn`, KT Lemma 3.1) — a
+  body-hinge-rigid (`0`-dof) graph is `2`-edge-connected, in cut form: any nonempty
+  proper `V' ⊊ V(G)` separating `V(G)` has `d_G(V') ≥ 2`. (Mathlib has no
+  edge-connectivity predicate for `Graph α β`, so the conclusion is the cut form KT's
+  proof uses.) The bridge cut `{V', V∖V'}` (a two-part partition, `cutLabeling` /
+  `numParts_cutLabeling`) would otherwise witness `def ≥ D - (D-1)·d_G(V') ≥ 1 > 0`
+  through `partitionDef_le_deficiency`, contradicting `def = 0`.
+
 See `ROADMAP.md` §19 / `notes/Phase19.md` and the `sec:molecular-deficiency`
-dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining nodes (the
-structural lemmas KT 3.1/3.4, and the bridge `thm:def-eq-corank`) land in
-subsequent commits.
+dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining nodes (KT Lemma 3.4
+`lem:circuit-rigid`, and the bridge `thm:def-eq-corank`) land in subsequent commits.
 -/
 
 namespace Graph
@@ -358,5 +365,71 @@ theorem subgraph_minimality [DecidableEq β] [Finite α] [Finite β] {H G : Grap
   -- `G`'s minimality gives `B ∩ ẽ ≠ ∅`; restrict to `B'`.
   obtain ⟨p, hp⟩ := hG.2 B hB e (h.edgeSet_mono he)
   exact ⟨p, by rw [hBeq]; exact ⟨⟨hp.1, hfiber hp.2⟩, hp.2⟩⟩
+
+/-! ## Two-edge-connectivity (`lem:two-edge-conn`; KT Lemma 3.1)
+
+A body-hinge-rigid (`0`-dof) graph `G` is `2`-edge-connected. Mathlib carries no
+edge-connectivity predicate for the multigraph `Graph α β` (only for `SimpleGraph`),
+so — as flagged in `notes/Phase19.md` — the lemma is phrased directly in the cut form
+Katoh–Tanigawa's proof actually uses: for the cut `{V', V∖V'}` induced by a nonempty
+proper vertex set `V' ⊊ V(G)`, the number of edges crossing the cut is `≥ 2`. A
+crossing count of `≤ 1` would let the trivial bridge cut `{V', V∖V'}` witness
+`def(G̃) ≥ D·(2-1) - (D-1)·d_G(P) ≥ D - (D-1) = 1`, contradicting `def(G̃) = 0`. -/
+
+/-- The **cut labeling** of a vertex set `V'`: the labeling `f : α → α` collapsing `V'`
+to a representative `a` and its complement to `b`. Its fibers on `V(G)` are `V'` and
+`V(G) ∖ V'`, so it encodes the partition `P = {V', V∖V'}` whose crossing edges are
+`d_G(V')`. Used by `lem:two-edge-conn` to feed a bridge cut to `partitionDef`. -/
+def cutLabeling (V' : Set α) (a b : α) [∀ x, Decidable (x ∈ V')] : α → α :=
+  fun x => if x ∈ V' then a else b
+
+/-- The cut labeling of a vertex set `V'` separating `V(G)` (both `a ∈ V' ⊆ V(G)` and a
+distinct `b ∈ V(G) ∖ V'`) has exactly two parts: `numParts G (cutLabeling V' a b) = 2`.
+The image of `V(G)` is `{a, b}` (every vertex maps to one or the other; both are hit by
+`a` itself and `b` itself), and `a ≠ b` because `b ∉ V'`. -/
+theorem numParts_cutLabeling {G : Graph α β} {V' : Set α} {a b : α}
+    [∀ x, Decidable (x ∈ V')] (ha : a ∈ V') (hb : b ∈ V(G)) (hbV' : b ∉ V')
+    (haV : a ∈ V(G)) : G.numParts (cutLabeling V' a b) = 2 := by
+  have hab : a ≠ b := fun h => hbV' (h ▸ ha)
+  have himg : cutLabeling V' a b '' V(G) = {a, b} := by
+    apply Set.Subset.antisymm
+    · rintro _ ⟨x, _, rfl⟩
+      by_cases hx : x ∈ V' <;> simp [cutLabeling, hx]
+    · intro x hx
+      rcases hx with hx | hx
+      · exact ⟨a, haV, by rw [hx]; simp [cutLabeling, ha]⟩
+      · refine ⟨b, hb, ?_⟩
+        rw [Set.mem_singleton_iff] at hx
+        rw [hx]; simp [cutLabeling, hbV']
+  rw [numParts, himg, Set.ncard_pair hab]
+
+/-- **Two-edge-connectivity in cut form** (`lem:two-edge-conn`; Katoh–Tanigawa 2011
+Lemma 3.1): a body-hinge-rigid (`0`-dof) graph `G` admits no bridge cut. For a nonempty
+proper vertex set `V' ⊊ V(G)` that separates `V(G)` (witnessed by `a ∈ V' ⊆ V(G)` and a
+distinct `b ∈ V(G) ∖ V'`), at least two edges cross the cut `{V', V∖V'}`:
+`2 ≤ d_G(V') = |crossingEdges G (cutLabeling V' a b)|`.
+
+Proof (KT Lemma 3.1): the cut `{V', V∖V'}` is a two-part partition
+(`numParts_cutLabeling`), so `def_{G̃}(P) = D·(2-1) - (D-1)·d_G(P) = D - (D-1)·d_G(P)`.
+If `d_G(P) ≤ 1` then `def_{G̃}(P) ≥ D - (D-1) = 1 > 0 = def(G̃)`, contradicting that the
+deficiency (an upper bound for every partition, `partitionDef_le_deficiency`) is `0`.
+With `D = bodyBarDim n ≥ 1` this forces `d_G(P) ≥ 2`. -/
+theorem two_le_crossingEdges_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) (hrigid : G.IsKDof n 0) {V' : Set α} {a b : α}
+    [∀ x, Decidable (x ∈ V')] (ha : a ∈ V') (haV : a ∈ V(G)) (hb : b ∈ V(G))
+    (hbV' : b ∉ V') : 2 ≤ (G.crossingEdges (cutLabeling V' a b)).ncard := by
+  by_contra hlt
+  push Not at hlt
+  -- The cut is a two-part partition, so its deficiency is `D - (D-1)·d_G(P)`.
+  have hle : G.partitionDef n (cutLabeling V' a b) ≤ G.deficiency n :=
+    G.partitionDef_le_deficiency n _
+  rw [partitionDef, numParts_cutLabeling ha hb hbV' haV, hrigid] at hle
+  push_cast at hle
+  -- `def(G̃) = 0`, so `D - (D-1)·d_G(P) ≤ 0`, i.e. `(D-1)·d_G(P) ≥ D`.
+  have hc : ((G.crossingEdges (cutLabeling V' a b)).ncard : ℤ) ≤ 1 := by exact_mod_cast by omega
+  -- With `d_G(P) ≤ 1` and `D ≥ 1`: `(D-1)·d_G(P) ≤ D-1 < D`. Contradiction.
+  have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+  nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ (bodyBarDim n : ℤ) - 1)
+    (by linarith : (0:ℤ) ≤ 1 - ((G.crossingEdges (cutLabeling V' a b)).ncard : ℤ))]
 
 end Graph

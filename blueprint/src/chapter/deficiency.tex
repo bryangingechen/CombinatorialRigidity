@@ -113,16 +113,29 @@ phase proceeds, leaf-first.
   under (\cref{lem:two-edge-conn}).
 \end{definition}
 
-\begin{lemma}[Two-edge-connectivity; KT Lemma 3.1]
+\begin{lemma}[Two-edge-connectivity, cut form; KT Lemma 3.1]
   \label{lem:two-edge-conn}
-  \uses{def:k-dof}
-  A minimal $k$-dof-graph $G$ with $|V| \ge 2$ and $k \ge 0$ is
-  $2$-edge-connected.
+  \lean{Graph.two_le_crossingEdges_of_isKDof_zero, Graph.cutLabeling, Graph.numParts_cutLabeling}
+  \leanok
+  \uses{def:k-dof, def:D-deficiency}
+  A body-hinge-rigid ($0$-dof) graph $G$ is $2$-edge-connected: for any
+  nonempty proper vertex set $V' \subsetneq V(G)$ separating $V(G)$, at
+  least two edges cross the cut $\{V', V \setminus V'\}$, i.e.\
+  $d_G(V') \ge 2$.
 \end{lemma}
 \begin{proof}
-  A bridge would split off a part contributing to the deficiency that
-  could be realized independently, contradicting minimality; this is
-  Katoh--Tanigawa~\cite[Lemma 3.1]{katohTanigawa2011}.
+  \leanok
+  Were $d_G(V') \le 1$, the two-part cut partition $P = \{V', V
+  \setminus V'\}$ would witness $\operatorname{def}(\tilde G) \ge
+  \operatorname{def}_{\tilde G}(P) = D(|P| - 1) - (D-1)\,d_G(P) \ge D -
+  (D-1) = 1 > 0$, contradicting $\operatorname{def}(\tilde G) = 0$
+  (the deficiency is an upper bound for every partition's deficiency).
+  This is Katoh--Tanigawa~\cite[Lemma 3.1]{katohTanigawa2011}. As
+  mathlib carries no edge-connectivity predicate for multigraphs, the
+  conclusion is phrased directly in the cut form the proof uses; the
+  cut is encoded by the labeling $f$ collapsing $V'$ and its complement
+  to two distinct representatives ($D = \operatorname{bodyBarDim} n \ge
+  1$).
 \end{proof}
 
 \begin{lemma}[Matroid restriction descends to subgraphs]
