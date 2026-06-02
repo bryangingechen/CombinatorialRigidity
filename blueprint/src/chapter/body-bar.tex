@@ -143,9 +143,26 @@ and the same applies to every $Y \subseteq E'$.
   follows by \texttt{span\_le}.
 \end{proof}
 
+\begin{lemma}[Dimension of the constant block-product subspace]
+  \label{lem:k-frame-pi-finrank}
+  \lean{Graph.finrank_constPiSpan, Graph.constPiSpanEquiv}
+  \leanok
+  \uses{lem:k-frame-span-le-pi}
+  For a finite-dimensional block submodule $W$, the constant $\mathrm{Fin}\,k$-fold
+  product subspace $\mathrm{Submodule.pi}\,\mathrm{univ}\,(\_\mapsto W)$ has
+  $K$-dimension $k \cdot \dim_K W$. (It is linearly equivalent to the plain
+  product $\mathrm{Fin}\,k \to W$, whose dimension is the $k$-fold sum.)
+\end{lemma}
+\begin{proof}
+  \leanok
+  The forward map projects each of the $k$ blocks and the inverse re-bundles, a
+  linear equivalence onto $\mathrm{Fin}\,k \to W$; its dimension is $\sum_{j} \dim_K W
+  = k \cdot \dim_K W$ by the finite-product dimension formula.
+\end{proof}
+
 \begin{lemma}[Generic independence $\Rightarrow$ forest count]
   \label{lem:k-frame-nonzero-monomial-forest}
-  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi}
+  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank}
   Let $E' \subseteq E(G)$ be a bar set whose generic $k$-frame rows
   $\{X_{e,j} \cdot (\text{signed incidence row of } e)\}_{e \in E'}$ are
   linearly independent over $K$. Then $E'$ satisfies the count
@@ -153,7 +170,7 @@ and the same applies to every $Y \subseteq E'$.
   (equivalently, $E'$ decomposes into $k$ forests of $G$).
 \end{lemma}
 \begin{proof}
-  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi}
+  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi, lem:k-frame-pi-finrank}
   The forward half of Whiteley~\cite{whiteley1988} \S2.1, by the rank count.
   Restricting to any $Y \subseteq E'$, the $|Y|$ generic rows remain linearly
   independent, so $|Y| = \dim_K \mathrm{span}_K\{\mathrm{kFrameRow}\,e :

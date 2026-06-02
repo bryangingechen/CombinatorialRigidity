@@ -135,6 +135,31 @@ theorem span_kFrameRow_le_blockPiSpan :
   rintro _ ⟨e, rfl⟩
   exact kFrameRow_mem_blockPiSpan e
 
+/-- The `Fin k`-fold constant product subspace `Submodule.pi univ (fun _ ↦ W)` is linearly
+equivalent to the plain product `Fin k → ↥W` of the block submodule with itself. The forward
+map projects each block; the inverse re-bundles. Generic-block helper for the dimension count
+`finrank (constPiSpan) = k · finrank W`. -/
+noncomputable def constPiSpanEquiv {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
+    (n : ℕ) (W : Submodule R M) :
+    (Submodule.pi Set.univ (fun _ : Fin n ↦ W) : Submodule R (Fin n → M)) ≃ₗ[R] (Fin n → W) where
+  toFun f i := ⟨f.1 i, f.2 i (Set.mem_univ i)⟩
+  invFun g := ⟨fun i ↦ (g i : M), fun i _ ↦ (g i).2⟩
+  map_add' _ _ := rfl
+  map_smul' _ _ := rfl
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- The `K`-dimension of the constant `Fin k`-fold product subspace is `k` times the dimension of
+the block submodule `W`. Piece (1) of the forward rank count of Whiteley §2.1
+(`lem:k-frame-nonzero-monomial-forest`): applied with `W` the `K`-span of the signed incidence
+rows of a bar set, it turns the `blockPiSpan` upper bound into `k · (incidence-span dimension)`. -/
+theorem finrank_constPiSpan {R M : Type*} [DivisionRing R] [AddCommGroup M] [Module R M]
+    (n : ℕ) (W : Submodule R M) [Module.Finite R W] :
+    Module.finrank R (Submodule.pi Set.univ (fun _ : Fin n ↦ W) : Submodule R (Fin n → M))
+      = n * Module.finrank R W := by
+  rw [(constPiSpanEquiv n W).finrank_eq, Module.finrank_pi_fintype R]
+  simp
+
 end Forward
 
 end Graph
