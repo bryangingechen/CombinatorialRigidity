@@ -99,21 +99,15 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ### Bucket D — Project-organization compression
 
-- [ ] **D1 (destale `MolecularConjecture.md`)** — the file header still
-  says "PLANNING. No phase opened yet … Nothing here is built" (L4–6)
-  and "When Phase 17 is actually opened …" (L10–13), and closes with an
-  "Opening Phase 17 (when greenlit)" section (L422–439) — all stale now
-  that 17–18 are complete. Fixes: (a) header status → 17–18 done, 19
-  next; (b) mark 17/18 ✓ in the phase table (L181–192); (c) resolve
-  risk-register #3 (L406–408, Lemma 5.2 perturbation — Phase 18 chose
+- [x] **D1 (destale `MolecularConjecture.md`)** — done. (a) header
+  status → IN PROGRESS, 17–18 done / 19 next; (b) marked 17/18 ✓ in the
+  phase table; (c) resolved risk-register #3 (Lemma 5.2 — Phase 18 chose
   the basis-free span-refinement monotonicity form, no analytic
-  perturbation); (d) compress the Phase 17 + Phase 18 detail sections
-  (L203–248) to brief done-summaries + pointers to `notes/Phase{17,18}.md`
-  per `CLEANUP.md` §D, **preserving the carry-forward notes** (the
-  Phase-19 "Inherited from Phase 18" bullet at L264–277 already records
-  the `prop:rigidity-matrix-prop11` + coordinatization carry-forward —
-  keep it); (e) drop/convert the "Opening Phase 17" section to a one-line
-  historical pointer.
+  perturbation); (d) compressed the Phase 17 + Phase 18 detail sections
+  to brief done-summaries + pointers to `notes/Phase{17,18}.md`,
+  preserving the Phase-19 "Inherited from Phase 18" carry-forward bullet;
+  (e) converted the "Opening Phase 17" section to a generic "Opening the
+  next phase" pointer.
 - [ ] **D2 (compress `notes/Phase18.md`)** — 499 lines, over even the
   long-phase ceiling (`notes/CLAUDE.md` *Soft length budget*). Apply the
   ≤8-line-per-entry rule, lift cross-cutting lessons (*Promoted to …*),
@@ -160,14 +154,14 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ## Hand-off / next phase
 
-A2 + A5 landed (A5: "Proposition 2.3 of Jackson–Jordán" was a
-phantom — the [15] paper has no Propositions; corrected to the verified
-Theorem 6.1 / Corollary 6.2 in `molecular.tex` and all six
-`MolecularConjecture.md` mentions). Next concrete commit: **D1**
-(`MolecularConjecture.md` destale — header status, 17/18 ✓ in the phase
-table, resolve risk-register #3, compress the Phase 17/18 detail
-sections to pointers, drop the stale "Opening Phase 17" section). Then the A3
-section-head `k`/`d` finish + A1/A4 confirms, the B/C confirms, D2/D3,
-P1/P2, and J1 last. Each fix is its own commit per `CLEANUP.md`
-*Workflow* rule 3. Close the round by flipping the ROADMAP row to ✓ and
-writing the *Hand-off* summary; Phase 19 opens after.
+A2 + A5 + D1 landed (D1: `MolecularConjecture.md` destaled — header
+status → IN PROGRESS, 17/18 ✓ in the phase table, risk-register #3
+resolved, Phase 17/18 detail sections compressed to pointers, "Opening
+Phase 17" section converted to a generic pointer). Next concrete commit:
+the **A3** section-head `k`/`d` finish (A2 nearly subsumed it; only the
+section-head `k=d−1` statement may remain — re-confirm against
+`molecular.tex` §2.2–2.4) **+ the A1/A4 confirms** (A1 per-node
+`\lean{}` signature compare, A4 chapter-intro destale L28–39). Then the
+B/C confirms, D2/D3, P1/P2, and J1 last. Each fix is its own commit per
+`CLEANUP.md` *Workflow* rule 3. Close the round by flipping the ROADMAP
+row to ✓ and writing the *Hand-off* summary; Phase 19 opens after.

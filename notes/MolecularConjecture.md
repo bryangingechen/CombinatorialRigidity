@@ -1,16 +1,16 @@
 # Molecular Conjecture — cross-phase program plan
 
-**Status:** PLANNING. No phase opened yet — this is the program design
-for what will become Phases 17–26. Nothing here is built; the file is
-the runbook for opening and threading the phases.
+**Status:** IN PROGRESS. Phases 17–18 complete; Phase 19 (`M(G̃)`,
+deficiency, `k`-dof) is next. This is the program design for Phases
+17–26 and the runbook for threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
 summary + status row); this file is the lemma-level detail.
 
-When Phase 17 is actually opened, follow the top-level `CLAUDE.md`
-*When this commit opens a phase* protocol (create `notes/Phase17.md`,
-sync the user-facing status surfaces, draft `blueprint/src/chapter/
-molecular.tex`); see *Opening Phase 17* at the end of this file.
+When opening each remaining phase, follow the top-level `CLAUDE.md`
+*When this commit opens a phase* protocol (create `notes/PhaseN.md`,
+sync the user-facing status surfaces, extend `blueprint/src/chapter/
+molecular.tex` with the phase's red dep-graph nodes).
 
 ## The target
 
@@ -182,8 +182,8 @@ The **molecule application** (Cor 5.7) adds, on top:
 
 | Phase | Content | KT § | Stratum |
 |---|---|---|---|
-| 17 | Grassmann–Cayley extensor algebra; **Lemma 2.1** | §2.1 | 1 |
-| 18 | Genuine panel-hinge rigidity matrix `R(G,p)`; Lemmas 5.1–5.3; reconcile Prop 1.1 with Phase 16 | §2.2–2.4, parts of §5 | 2 |
+| 17 ✓ | Grassmann–Cayley extensor algebra; **Lemma 2.1** | §2.1 | 1 |
+| 18 ✓ | Genuine panel-hinge rigidity matrix `R(G,p)`; Lemmas 5.1–5.3 (Prop 1.1 deferred to 19) | §2.2–2.4, parts of §5 | 2 |
 | 19 | `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof, rigid subgraphs, def=corank (JJ Thm 6.1 / Cor 6.2); Lem 3.1/3.3/3.4 | §2.5, §3 | 3 |
 | 20 | Combinatorial induction: graph ops + forest surgery 4.1/4.2 + 4.3–4.8 + **Theorem 4.9** | §4 | 4 |
 | 21 | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8) + genericity (Claim 6.4) | §5, §6.1–6.3 | 5 |
@@ -202,51 +202,37 @@ as living estimates; re-cut on contact.
 
 ### Per-phase detail
 
-#### Phase 17 — Grassmann–Cayley extensor algebra (§2.1)
+#### Phase 17 — Grassmann–Cayley extensor algebra (§2.1) — ✓ Complete
 
-All new. Extensors as elements of `⋀ʲ ℝ^(d+1)` (or coordinatized
-Plücker vectors of `j×j` minors), the homogeneous coordinatization
-`p ↦ (p,1)`, the Plücker coordinate vector with KT's sign convention
-`(−1)^{1+Σi_j}` (reproduce faithfully — it feeds Lemma 2.1), the join
-`∨`, the affine-subspace ↔ extensor map `C(·)`, and `p̄₁∨⋯∨p̄_k ≠ 0 ⇔
-{pᵢ} affinely independent`.
+Done; full detail in `notes/Phase17.md`, dep-graph in
+`molecular.tex` `sec:molecular`. Formalized the Grassmann–Cayley /
+extensor layer in `Molecular/Extensor.lean`: homogeneous
+coordinatization, the affine-independence ↔ top-extensor bridge, the
+symbolic extensor/join on `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`, the
+coordinatized Plücker bridge with KT's sign, the affine-subspace
+extensor `C(·)`, and the hard core **Lemma 2.1**
+(`omitTwoExtensor_linearIndependent` — independence of the `D`
+`(d−1)`-extensors of `d+1` affinely independent points), on which Case
+III (Phases 22–23) bottoms out. Built the symbolic layer first with a
+coordinatized bridge, per the user's full-GC choice.
 
-- **Hard core:** **Lemma 2.1** — independence of the `D` `(d−1)`-
-  extensors of `d+1` affinely independent points. Proof joins the
-  dependence relation with a `2`-extensor to kill all but one term
-  (uses: join alternating / vanishes on repeats, and top extensor =
-  full determinant ≠ 0 ⇔ affine independence).
-- **mathlib:** has exterior algebra (`ExteriorAlgebra`, `⋀[R]`) but not
-  this Plücker/extensor layer nor `C(·)`. Decide early: full symbolic
-  Grassmann–Cayley (user's choice) vs coordinatized minors. KT work
-  coordinatized; the user asked for the full GC algebra, so build the
-  symbolic layer first and coordinatize as a bridge.
-- Self-contained; de-risks Case III. Open here.
+#### Phase 18 — Panel-hinge rigidity matrix `R(G,p)` (§2.2–2.4) — ✓ Complete
 
-#### Phase 18 — Panel-hinge rigidity matrix `R(G,p)` (§2.2–2.4, §5 prep)
-
-Infinitesimal motion of a body = screw center `s ∈ ℝᴰ`; hinge
-constraint `s(u) − s(v) ∈ span C(p(e))`; the `(D−1)×D` block `r(p(e))`
-= a basis of `span C(p(e))^⊥`; the `(D−1)|E| × D|V|` block matrix
-`R(G,p)` with signed `±r(p(e))` per oriented edge; `Z(G,p)` = null
-space; the `D` trivial motions; `rank R ≤ D(|V|−1)`; degree of freedom;
-the submatrix selectors `R(G,p; F, X)`, `R(G,p; e)`, `R(G,p; v)`; the
-panel `Π_{G,p}(v)`; generic realizations.
-
-- **Reconciliation (real work, not a rename):** Phase 16's
-  `BodyHingeFramework` is *defined by reduction* to body-bar on
-  `(δ−1)·G` ("standard-basis witness, degenerate permitted, no
-  geometry"). Phase 18 builds the honest `R(G,p)` and must **prove the
-  two agree** — the new rank reproduces Prop 1.1 (`edgeMultiply_isSparse_iff`).
-  Keep the Phase-16 def as the "existence form"; the new one is the
-  "rank form."
-- **Hard core:** Lemma 5.1 (deleting one vertex's `D` columns preserves
-  rank — most-reused, uses the [29] pin-a-body fact); Lemma 5.3 (two
-  parallel edges → full `D`, uses Phase-17 extensor uniqueness);
-  Lemma 5.2 (rank lower-semicontinuity under a 1-param panel rotation —
-  consider doing genericity-style instead of analytic perturbation).
-- **Substrate:** reuse mathlib core `Graph α β` (Phases 13–16 carrier);
-  multigraph cut/degree functions may need building. May split (5.x out).
+Done; full detail in `notes/Phase18.md`, dep-graph in `molecular.tex`
+`sec:molecular-rigidity-matrix`. Built the genuine panel-hinge rigidity
+matrix `R(G,p)` in `Molecular/RigidityMatrix.lean` (basis-free: hinge
+constraint `S(u) − S(v) ∈ span C(p(e))` + dual-annihilator row block +
+null space `Z(G,p) = infinitesimalMotions`), the trivial-motion layer
+with the `D`-dimensional / `D·|V|` numeric counts (codimension form of
+`rank R ≤ D(|V|−1)`), and the three rank lemmas — 5.1 pin-a-body
+(`finrank_pinnedMotions_add_screwDim`), 5.3 parallel-hinges-full
+(`eq_of_hingeConstraint_two_parallel`), 5.2 rotation semicontinuity
+(`finrank_infinitesimalMotions_le_of_span_le`, the basis-free
+span-refinement monotonicity form — see risk #3, resolved). The one
+remaining node `prop:rigidity-matrix-prop11` (KT Prop 1.1, reconcile the
+rank form with Phase 16's `thm:body-hinge-tay`) was **deferred to Phase
+19** — its bridge `def(G̃) = corank M(G̃)` is a Phase-19 object (see the
+*Inherited from Phase 18* bullet under Phase 19 below).
 
 #### Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (§2.5, §3)
 
@@ -406,9 +392,10 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 2. **`ℓ = 2k = D` boundary regime** (Phase 19). Confirm the project's
    union/tree-packing covers it before relying on it; do NOT assume
    `CountMatroid.lean` (`ℓ<2k`) applies.
-3. **Lemma 5.2 perturbation** (Phase 18). Analytic rank-semicontinuity
-   is fiddly; a purely generic/algebraic-independence formulation may
-   sidestep it. Decide during Phase 18.
+3. **Lemma 5.2 perturbation** (Phase 18). *Resolved:* Phase 18 chose
+   the basis-free span-refinement monotonicity form
+   (`finrank_infinitesimalMotions_le_of_span_le`) and sidestepped
+   analytic rank-semicontinuity entirely — no perturbation argument.
 4. **Externals to axiomatize vs prove.** Lemma 5.4 (cycles, [4,34]),
    the [29] pin-a-body fact (Lemma 5.1), [15] generic-rank bridge
    (JJ Thm 6.1 / Cor 6.2). User scope is "fully formalize" — but these are
@@ -422,20 +409,14 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 6. **General 3-D rigidity is open** (KT §7). The molecule app does NOT
    require it; Phase 24's scope guard must hold or the program balloons.
 
-## Opening Phase 17 (when greenlit)
+## Opening the next phase
 
-1. Create `notes/Phase17.md` from the `notes/CLAUDE.md` template;
-   pull the Phase-17 detail above into its *Lemma checklist* +
-   *Architectural choices*.
-2. Draft `blueprint/src/chapter/molecular.tex` as a forward-mode
-   chapter (red dep-graph = the to-do list); add `\input{}` to
-   `chapter/main.tex`. Phase 17's nodes = the §2.1 extensor layer +
-   Lemma 2.1.
-3. Add the new bib entries ([4], [29], [15], [2], [13], [37]) to
-   `blueprint/src/bibliography.bib`, verifying each per
-   `blueprint/CLAUDE.md` *Citations*.
-4. Run the phase-open protocol in `CLAUDE.md` *When this commit opens a
-   phase*: ROADMAP status row → *in progress*, sync `README.md` /
-   `home_page/index.md` / `blueprint/src/chapter/intro.tex`.
-5. Forward-mode discipline: leaf-most red node first, flip `\lean{}` +
-   `\leanok` in the same commit the Lean lands.
+Phases 17–18 are open and complete; the `molecular.tex` chapter and the
+bib entries ([4], [29], [15], [2], [13], [37]) are in place. To open the
+next planned phase (Phase 19), follow the top-level `CLAUDE.md` *When
+this commit opens a phase* protocol: create `notes/Phase19.md` from the
+`notes/CLAUDE.md` template (pull the Phase-19 detail above into its
+*Lemma checklist* + *Architectural choices*), extend `molecular.tex`
+with the phase's red dep-graph nodes as the forward-mode to-do list,
+flip the ROADMAP status row to *in progress*, and sync `README.md` /
+`home_page/index.md` / `blueprint/src/chapter/intro.tex`.
