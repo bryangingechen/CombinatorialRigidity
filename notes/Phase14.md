@@ -11,7 +11,15 @@ file carries current state, decisions, blockers, and hand-off, and does
 ## Current state
 
 `def:k-frame-matroid` is **done** (`Graph.kFrameMatroid` in the new
-`BodyBar/KFrame.lean`, blueprint node green). The Phase 13 chain
+`BodyBar/KFrame.lean`, blueprint node green). The forward node
+`lem:k-frame-nonzero-monomial-forest` was found too large for one commit and
+**re-split**: its self-contained linear-algebra core landed as a new green
+sub-node `lem:k-frame-span-le-pi` (`Graph.blockPiSpan` + `kFrameRow_mem_blockPiSpan`
++ `span_kFrameRow_le_blockPiSpan` in `BodyBar/KFrame.lean`) — the span of the
+`k`-frame rows lies in the `Fin k`-fold product of the incidence-row span. The
+forward node itself was re-cast to a **rank-counting** route (cleaner than
+Whiteley's nonzero-monomial expansion; both give the same bound) and remains
+red, blocked on two pieces (see *Hand-off*). The Phase 13 chain
 (`BodyBar/TreePacking.lean`) remains the upstream dependency: it proves
 the tree-packing corollary and the `Graph`-native `(k, k)`-sparsity ↔
 `k`-fold-`cycleMatroid`-union independence bridge
@@ -53,13 +61,17 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
 `body-bar.tex`. Nodes, in dependency order (post re-scoping):
 - [x] `def:k-frame-matroid` — generic `k`-frame matroid via
   `Matroid.ofFun` (`Graph.kFrameMatroid`, `BodyBar/KFrame.lean`).
-- [ ] `lem:k-frame-nonzero-monomial-forest` — **leaf-most; next concrete
-  commit.** Forward half of Whiteley §2.1: generic rows of `E'` LI over
-  `K` ⟹ a nonzero `|E'|`-minor has a nonzero monomial whose per-bar
-  variable selects a block `j(e)`; specializing those variables to `1`
-  (rest `0`) gives a block-diagonal real signed-incidence matrix, so
-  `E'` is a `k`-forest decomposition / satisfies the count
-  `∀ Y ⊆ E', |Y| ≤ k · r(Y)`. Depends only on `def:k-frame-matroid`.
+- [x] `lem:k-frame-span-le-pi` — **landed.** Rank-counting core of the forward
+  half: the span of the generic `k`-frame rows lies in `blockPiSpan`, the
+  `Fin k`-fold product whose `j`-th block is the `K`-span of the signed
+  incidence rows (`Graph.blockPiSpan` + `kFrameRow_mem_blockPiSpan` +
+  `span_kFrameRow_le_blockPiSpan`). Depends only on `def:k-frame-matroid`.
+- [ ] `lem:k-frame-nonzero-monomial-forest` — **leaf-most red; next concrete
+  commit.** Forward half of Whiteley §2.1 by the **rank count** (re-cast from
+  the nonzero-monomial route): generic rows of `E'` LI over `K` ⟹
+  `∀ Y ⊆ E', |Y| ≤ k · r(Y)`. With `lem:k-frame-span-le-pi` in hand, two
+  pieces remain (see *Hand-off*): the pi-subspace finrank count and the
+  incidence-span finrank = cycle-matroid rank bridge.
 - [ ] `lem:k-frame-specialize-forest` — reverse half of Whiteley §2.1:
   a `k`-forest decomposition `E' = ⨆ⱼ E'ⱼ` specializes the generic rows
   (block-`j` vars `1` on `E'ⱼ`, `0` else) to a block-diagonal full-rank
@@ -130,30 +142,45 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
 - **Genericity-argument routing — resolved.** The "route via
   `Matroid.ofFun_indep_iff` vs a bespoke `Rep`" question is settled in
   favour of the former; see *Re-scoping of `thm:k-frame-union-cycle`*.
-  The substantive remaining risk is purely formalization cost of the
-  nonzero-monomial / variable-specialization argument in the two
-  genericity halves (`lem:k-frame-nonzero-monomial-forest` /
-  `lem:k-frame-specialize-forest`); these may each themselves want
-  further splitting once `lean_goal` exploration shows the real shape
-  of the `MvPolynomial` determinant-expansion step.
+  The forward half was re-cast from the nonzero-monomial determinant
+  expansion to a **rank-counting** argument (avoids the `MvPolynomial`
+  determinant machinery entirely); its linear-algebra core
+  `lem:k-frame-span-le-pi` is landed. The remaining forward risk is the two
+  finrank facts in *Hand-off* (pi-subspace dimension count; incidence-span
+  finrank = cycle-matroid rank via `cycleMatroidRep`) — both need building, no
+  loogle hits. The reverse half `lem:k-frame-specialize-forest` likely also
+  reduces to a specialization/rank argument over `cycleMatroidRep` rather than
+  the monomial route.
 
 ## Hand-off / next phase
 
-`thm:k-frame-union-cycle` was re-scoped into a 4-node chain (this is a
-planning-only commit; no Lean landed). Resume the standard
-one-commit-per-subagent loop against the **leaf-most red node**:
+The forward node's linear-algebra core `lem:k-frame-span-le-pi` is landed
+(`Graph.span_kFrameRow_le_blockPiSpan`). Resume the one-commit-per-subagent
+loop against the **leaf-most red node**, `lem:k-frame-nonzero-monomial-forest`,
+now on the **rank-counting route**. Two pieces remain; each is a candidate for
+its own commit/sub-node:
 
-Next concrete commit: **`lem:k-frame-nonzero-monomial-forest`** (forward
-half of Whiteley §2.1). State and prove, in `BodyBar/KFrame.lean`, that
-linear independence of the generic `k`-frame rows of `E' ⊆ E(G)` over
-`KFrameField β k` implies the union-side count
-`∀ Y ⊆ E', |Y| ≤ k · r_{G.cycleMatroid}(Y)` (equivalently a `k`-forest
-decomposition of `E'`), via the nonzero-monomial / per-bar block
-selection / variable-specialization argument. Depends only on
-`def:k-frame-matroid`; flip its `body-bar.tex` node green in the same
-commit. Explore the `Matroid.ofFun_indep_iff` LI predicate and the
-`MvPolynomial` determinant-expansion shape with `lean_goal` first — the
-node may itself want further splitting (see Blockers).
+1. **Pi-subspace finrank count.** `finrank K (blockPiSpan G k D ↓restricted to
+   the K-span of incidence rows of Y) = k · finrank K (span_K {signedIncMatrix e
+   : e ∈ Y})`. The general fact is `finrank (Submodule.pi univ (fun _:Fin k ↦ W))
+   = k · finrank W`; no off-the-shelf mathlib lemma was found (loogle empty), so
+   it likely needs building (or a `Fin k → W ≃ₗ` + `finrank_pi`-style argument).
+2. **Incidence-span finrank = cycle-matroid rank.** `finrank K (span_K {
+   signedIncMatrix D K e : e ∈ Y}) = G.cycleMatroid.rk Y`. Route through
+   `Graph.cycleMatroidRep K` (independence over any field `K` ⟺ acyclic, via
+   `isAcyclicSet_linearIndepOn`); needs a `Matroid.Rep` "finrank of span of
+   image = rk" bridge — `Rep.span_*` API exists in `Matroid/Representation/
+   Basic.lean` but no direct finrank=rk lemma, so this is the deeper piece.
+
+With both in hand, the forward node is: restrict LI to `Y`, get
+`Y.ncard = finrank (span (kFrameRow '' Y))` (mathlib `LinearIndepOn`→finrank;
+also not found by loogle — check `finrank_span_set_eq_card`), bound by
+`finrank blockPiSpan` via `span_kFrameRow_le_blockPiSpan` + `Submodule.finrank_mono`,
+then apply (1)+(2). Flip `lem:k-frame-nonzero-monomial-forest` green in that
+commit. After it, `lem:k-frame-specialize-forest` (reverse half) and
+`lem:k-frame-indep-iff-count`; then `thm:k-frame-union-cycle` closes Phase 14
+and carries the phase-completion checklist (ROADMAP ✓, status surfaces,
+compress §14).
 
 After the two genericity halves and `lem:k-frame-indep-iff-count` land,
 `thm:k-frame-union-cycle` is a short `Matroid.ext_indep`; **that** commit

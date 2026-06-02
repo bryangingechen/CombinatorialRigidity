@@ -106,36 +106,62 @@ which we factor into its two directions
 indeterminate field $K = \mathrm{Frac}\,\mathbb{Q}[X_{e,j}]$ — and a
 characterization lemma that packages them against the union-side count.
 
-\begin{lemma}[Generic minor $\Rightarrow$ block-diagonal forest minor]
-  \label{lem:k-frame-nonzero-monomial-forest}
+The forward direction (generic independence $\Rightarrow$ the count) is
+formalized by a \emph{rank-counting} route rather than Whiteley's original
+nonzero-monomial expansion: the two arguments give the same bound, but the
+rank count avoids the $\mathrm{MvPolynomial}$ determinant machinery. Each
+$k$-frame row $\mathrm{kFrameRow}\,e$ places, in every block $j$, the scalar
+multiple $X_{e,j} \cdot (\text{signed incidence row of } e)$, so it lives in
+the $k$-fold product subspace $\mathrm{blockPiSpan}$ whose $j$-th block is the
+$K$-span of \emph{all} signed incidence rows of $G$. Hence the whole
+$k$-frame row space is contained in $\mathrm{blockPiSpan}$
+(\cref{lem:k-frame-span-le-pi}). The dimension of $\mathrm{blockPiSpan}$
+is $k$ times the dimension of the incidence-row span, and that span dimension
+is exactly the cycle-matroid rank (the cycle-matroid representation,
+\cref{def:k-frame-matroid}'s reused $\mathrm{signedIncMatrix}$); so linear
+independence of $|E'|$ rows forces $|E'| \le k \cdot r_{G.\mathrm{cycleMatroid}}(E')$,
+and the same applies to every $Y \subseteq E'$.
+
+\begin{lemma}[$k$-frame row space lies in the block-diagonal product span]
+  \label{lem:k-frame-span-le-pi}
+  \lean{Graph.span_kFrameRow_le_blockPiSpan, Graph.kFrameRow_mem_blockPiSpan,
+    Graph.blockPiSpan}
+  \leanok
   \uses{def:k-frame-matroid}
-  Let $E' \subseteq E(G)$ be a bar set whose generic $k$-frame rows
-  $\{X_{e,j} \cdot (\text{signed incidence row of } e)\}_{e \in E'}$ are
-  linearly independent over $K$. Then there is a nonzero $|E'|$-column
-  minor of the row matrix, and a nonzero monomial of its determinant.
-  Selecting, for each bar $e \in E'$, the block $j(e)$ whose column index
-  carries the variable $X_{e, j(e)}$ in that monomial, and setting those
-  variables to $1$ and all others to $0$, specializes the minor to a
-  block-diagonal matrix whose $j$-th block is the (real) signed-incidence
-  matrix of the bars $E'_j := j^{-1}(j)$. Its nonvanishing forces each
-  block to have full column rank, so each $E'_j$ is a forest of $G$ and
-  $E' = \bigsqcup_j E'_j$ is a decomposition into $k$ forests; hence
-  $E'$ satisfies the count $|Y| \le k \cdot r_{G.\mathrm{cycleMatroid}}(Y)$
-  for every $Y \subseteq E'$.
+  Let $\mathrm{blockPiSpan}$ be the $\mathrm{Fin}\,k$-fold product subspace of
+  $\mathrm{Fin}\,k \to \alpha \to K$ whose $j$-th block is the $K$-span of the
+  signed incidence rows $\{\mathrm{signedIncMatrix}\,e\}_{e}$ of $G$. Then
+  every $k$-frame row $\mathrm{kFrameRow}\,e$ lies in $\mathrm{blockPiSpan}$,
+  and consequently the span of all $k$-frame rows is contained in
+  $\mathrm{blockPiSpan}$.
 \end{lemma}
 \begin{proof}
-  \uses{def:k-frame-matroid}
-  The forward half of Whiteley~\cite{whiteley1988} \S2.1. Linear
-  independence over $K$ gives a nonzero $|E'| \times |E'|$ minor; expand
-  its determinant as a polynomial in the $X_{e,j}$ and pick any monomial
-  with nonzero coefficient. Because each row $e$ contributes its variable
-  only in the columns of a single block, the monomial's variable set
-  assigns each bar to one block $j(e)$; specializing as stated kills all
-  cross-block terms and leaves the block-diagonal real incidence matrix,
-  whose nonzero determinant is the product of the per-block forest minors.
-  A nonsingular incidence minor on $E'_j$ is exactly the forest condition
-  for $G \restriction E'_j$, and the cycle-matroid rank
-  $r(Y) = |V(Y)| - c(Y)$ over a forest decomposition gives the count.
+  \leanok
+  In block $j$ the $k$-frame row is $X_{e,j} \cdot (\text{signed incidence
+  row of } e)$, a scalar multiple of an incidence row, hence in the block's
+  span; so the row lies in the product subspace, and the span of all rows
+  follows by \texttt{span\_le}.
+\end{proof}
+
+\begin{lemma}[Generic independence $\Rightarrow$ forest count]
+  \label{lem:k-frame-nonzero-monomial-forest}
+  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi}
+  Let $E' \subseteq E(G)$ be a bar set whose generic $k$-frame rows
+  $\{X_{e,j} \cdot (\text{signed incidence row of } e)\}_{e \in E'}$ are
+  linearly independent over $K$. Then $E'$ satisfies the count
+  $|Y| \le k \cdot r_{G.\mathrm{cycleMatroid}}(Y)$ for every $Y \subseteq E'$
+  (equivalently, $E'$ decomposes into $k$ forests of $G$).
+\end{lemma}
+\begin{proof}
+  \uses{def:k-frame-matroid, lem:k-frame-span-le-pi}
+  The forward half of Whiteley~\cite{whiteley1988} \S2.1, by the rank count.
+  Restricting to any $Y \subseteq E'$, the $|Y|$ generic rows remain linearly
+  independent, so $|Y| = \dim_K \mathrm{span}_K\{\mathrm{kFrameRow}\,e :
+  e \in Y\}$. That span sits inside the block-diagonal product subspace
+  (\cref{lem:k-frame-span-le-pi}) restricted to $Y$, whose dimension is
+  $k \cdot \dim_K \mathrm{span}_K\{\mathrm{signedIncMatrix}\,e : e \in Y\}
+  = k \cdot r_{G.\mathrm{cycleMatroid}}(Y)$ (the cycle-matroid representation).
+  Hence $|Y| \le k \cdot r_{G.\mathrm{cycleMatroid}}(Y)$.
 \end{proof}
 
 \begin{lemma}[Forest decomposition $\Rightarrow$ generic independence]
