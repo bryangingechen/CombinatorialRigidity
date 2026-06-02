@@ -76,44 +76,6 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [resolved] `Finset.sum_ite_eq'` silently no-ops on `∑ x, c · (if x = a then 1 else 0) · g x`
-- **Where it bit:** `BodyBarFramework.rigidityRow_eq` in
-  `BodyBar/TayTheorem.lean` (Phase 15 converse rank bound). Expanding a
-  signed-incidence row `∑ x, b·((ite_v − ite_u))·m x` to `b·(m v − m u)`,
-  the `simp only [Finset.sum_ite_eq', …]` left the sum uncollapsed and
-  the linter flagged `Finset.sum_ite_eq'` (and most siblings) as
-  *unused* — the indicator was wrapped in a constant factor `b` and a
-  trailing `m x`, so it never reached the `∑ x, if x = a then f x else 0`
-  shape the lemma matches.
-- **Friction:** several build cycles tuning the simp set before realizing
-  the collapse lemma fires only on a *bare* indicator summand.
-- **Resolution:** factor the constant out with `← Finset.mul_sum` first,
-  then `ite_mul` / `one_mul` / `zero_mul` normalize the summand to a bare
-  indicator, after which `Finset.sum_ite_eq'` collapses it.
-- **Status:** resolved (cross-cutting idiom).
-- **Lifted to:** TACTICS-GOLF § 10.
-
-### [resolved] Restating a `Pi.single`-indexed subterm in a standalone `have` fails to elaborate
-- **Where it bit:** `BodyBarFramework.stdFramework_rigidityRow_eq` in
-  `BodyBar/TayTheorem.lean` (Phase 15 block-diagonal rank count). The
-  goal contained `∑ c, Pi.single (j e) (signedIncMatrix ℝ e) c x *
-  (m x).ofLp c`; an attempted helper `have hinner : ∀ x, (that sum) =
-  signedIncMatrix … x * (m x).ofLp (j e)` failed with *"Function
-  expected at `Pi.single …`"* even though the identical subterm in the
-  goal type-checked.
-- **Friction:** the goal's `Pi.single` motive (family type `Fin d →
-  (α → ℝ)`) was pinned by the lemma that produced it
-  (`blockPairing_apply`, whose statement fixes `w : Fin d → α → ℝ`);
-  restating it standalone strips that context and the elaborator picks
-  the wrong family.
-- **Resolution:** operate on the goal in place — `rw [Finset.sum_congr
-  rfl fun x _ => Finset.sum_eq_single …]` collapses the inner sum where
-  the motive stays pinned. No standalone `have` of the subterm.
-- **Status:** resolved (project-internal lesson). Sibling of the
-  FunLike/PiLp "acts like a function but isn't" family
-  (TACTICS-QUIRKS §9, §12).
-- **Lifted to:** TACTICS-QUIRKS § 24.
-
 ### [resolved] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
 - **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in
   `BodyBar/TreePacking.lean` (Phase 13 forward direction). The lemma

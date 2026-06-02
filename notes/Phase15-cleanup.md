@@ -1,6 +1,6 @@
 # Phase 15 cleanup round (work log)
 
-**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C1/C2/C3 no-op confirms landed; D1 landed; D2/D3 remain).
+**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C1/C2/C3 no-op confirms landed; D1 landed; D2 landed; D3 remains — closes round).
 
 Between-phases cleanup round, run after Phase 15 (body-bar Tay theorem,
 existence form) closed in `fa4cfc3` and before Phase 16 (body-hinge /
@@ -218,19 +218,22 @@ mostly no-op confirming forced structural shape):
   made* (all ≤8-line entries, untouched), *Blockers* (resolved), and the
   *Hand-off* + *Converse-route note* + *Possible cleanup-round item* (the
   D3 reference) sections verbatim.
-- [ ] D2 — re-skim `FRICTION.md` status sections. Two Phase-15 `[resolved]`
-  entries are candidates (both already `Lifted to:` a TACTICS section):
-  - `Finset.sum_ite_eq' silently no-ops …` (L79; Lifted to TACTICS-GOLF
-    § 10) — cross-cutting idiom, indexed by `rigidityRow_eq`.
+- [x] D2 — re-skimmed `FRICTION.md` status sections. **Migrated the two
+  Phase-15 `[resolved]` entries to `FRICTION-archive.md`** (both fully
+  indexed by a TACTICS section, both consumer decls in `TayTheorem.lean`,
+  no Phase-16 forward reference):
+  - `Finset.sum_ite_eq' silently no-ops …` → TACTICS-GOLF § 10, indexed
+    by `rigidityRow_eq`.
   - `Restating a Pi.single-indexed subterm in a standalone have fails to
-    elaborate` (L96; Lifted to TACTICS-QUIRKS § 24) — project-internal
-    lesson, indexed by `stdFramework_rigidityRow_eq`.
-  Decide migrate-to-archive (fully indexed elsewhere, no Phase-16 forward
-  reference) vs. keep-active per the Phase-14-cleanup D2 criterion. Also
-  re-confirm the four Phase-13/14 `[resolved]` entries kept active for
-  Phase 15 (`Matroid.Union` `[DecidableEq β]`-binder, `signedIncMatrix`
-  decidability-`letI`, `Matroid.Union`-ground-is-`univ`, `Graph.Components`-
-  `Finite`) — do any now lose their forward reference with Phase 15 closed?
+    elaborate` → TACTICS-QUIRKS § 24, indexed by `stdFramework_rigidityRow_eq`.
+  **Kept active** the four Phase-13/14 `[resolved]` entries (`Matroid.Union`
+  `[DecidableEq β]`-binder, `signedIncMatrix` decidability-`letI`,
+  `Matroid.Union`-ground-is-`univ`, `Graph.Components`-`Finite`): each is an
+  `apnelson1/Matroid`-API idiom the body-bar chain reuses, so each is a live
+  **Phase-16** (body-hinge) forward reference — same disposition logic as
+  Phase-14-cleanup D2 (which kept them as live Phase-15 references). No
+  TACTICS lift (the two migrated entries are already lifted; the four kept
+  are type-specific project idioms, not general rules).
 - [ ] D3 — **carry-over derivation item** (from Phase 15 notes *Possible
   cleanup-round item*): `stdFramework_rigidityRow_eq` (the `b_e = e_{j(e)}`
   block-`single` row identity, `TayTheorem.lean` L218) is now the special
@@ -327,26 +330,37 @@ mostly no-op confirming forced structural shape):
   B7: zero-hit greps re-confirmed (3+-arg `rw` chains, `show … from rfl`).
   No code change; build green.
 
+- **D2 (FRICTION.md re-skim, doc-only).** Migrated the two Phase-15
+  `[resolved]` entries (`Finset.sum_ite_eq'` no-op → TACTICS-GOLF § 10,
+  indexed by `rigidityRow_eq`; `Pi.single`-indexed standalone `have` →
+  TACTICS-QUIRKS § 24, indexed by `stdFramework_rigidityRow_eq`) to
+  `FRICTION-archive.md` — both fully indexed by a TACTICS section + a named
+  `TayTheorem.lean` consumer decl, neither forward-referenced by Phase 16.
+  Kept the four Phase-13/14 entries active: each is an `apnelson1/Matroid`-API
+  idiom the body-bar chain (Phase 16 body-hinge) reuses — same keep-active
+  logic Phase-14-cleanup D2 applied for Phase 15. No TACTICS lift; pure §D
+  housekeeping, no Lean code touched.
+
 ## Blockers / open questions
 
 <none at round open>
 
 ## Hand-off / next phase
 
-**A complete; all of B closed; C complete; D1 landed (this commit,
-notes-only).** D1 compressed `notes/Phase15.md` 273 → 167 lines (commit-log
-pointer + route summary, per-node *Lemma checklist* dropped to the
-blueprint dep-graph), under the 250 budget. No Lean code touched.
+**A complete; all of B closed; C complete; D1 + D2 landed (D2 this
+commit, notes-only).** D2 migrated the two Phase-15 `[resolved]` FRICTION
+entries to `FRICTION-archive.md` (both TACTICS-indexed + decl-indexed, no
+Phase-16 forward ref) and kept the four Phase-13/14 `apnelson1/Matroid`-API
+entries active (live Phase-16 body-hinge references). No Lean code touched.
 
-**Smallest concrete next commit:** **D2** — re-skim `FRICTION.md` status
-sections; for the two Phase-15 `[resolved]` entries (`Finset.sum_ite_eq'`
-L79, Lifted to TACTICS-GOLF §10; `Pi.single`-indexed `have` L96, Lifted to
-TACTICS-QUIRKS §24) decide migrate-to-archive vs. keep-active per the
-Phase-14-cleanup D2 criterion (fully indexed elsewhere + no Phase-16
-forward reference → archive). Also re-confirm whether the four Phase-13/14
-`[resolved]` entries kept active for Phase 15 now lose their forward
-reference with Phase 15 closed. Then **D3** (the
-`stdFramework_rigidityRow_eq` derivation from `rigidityRow_eq`) — the one
-substantive refactor candidate, as its own commit, with a try-and-record
-fallback if the `Pi.single` reshape fights the elaborator. D3 closes the
-round.
+**Smallest concrete next commit:** **D3** (the
+`stdFramework_rigidityRow_eq` derivation from `rigidityRow_eq`,
+`TayTheorem.lean` L218 vs L342) — the one substantive refactor candidate of
+the round, as its own commit. Goal: derive the `b_e = e_{j(e)}` block-`single`
+row identity as the special case of the general `rigidityRow_eq` (after the
+std-basis collapse `Pi.single (j e) v = fun c ↦ (e_{j e} c) • v`) instead of
+reproving it standalone, removing ~21 lines of duplicated incidence-row
+expansion. **Try-and-record fallback:** if the `Pi.single`-vs-block-vector
+reshape proves more than a few lines of glue (it is exactly the
+elaboration-fragile shape now archived under FRICTION → TACTICS-QUIRKS § 24),
+record what was tried and leave both standalone. D3 closes the round.
