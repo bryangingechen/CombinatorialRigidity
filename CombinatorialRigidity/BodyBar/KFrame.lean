@@ -19,8 +19,8 @@ uses for the planar case) of the formal `k · |V|`-column matrix whose row for a
 `e` carries indeterminate coefficients across `k` vertex blocks, with each block
 placing a copy of the (signed) graph-incidence pattern of `e`.
 
-This file ships the definition; the identification `F(G, X) = ⋃ⱼ G.cycleMatroid`
-(`thm:k-frame-union-cycle`, the single remaining Phase-14 node) is deferred.
+This file ships the definition and the identification `F(G, X) = (⋃ⱼ G.cycleMatroid) ↾ E(G)`
+(`thm:k-frame-union-cycle`, `kFrameMatroid_eq_unionPow_cycleMatroid`), Phase 14's target.
 
 ## Coefficient encoding
 
@@ -39,7 +39,7 @@ the generic matroid (orientations differ only by a per-row sign). The row vector
 in `Fin k → α → K`, the `k`-fold copy of the incidence-row space `α → K` —
 `k · |V|`-dimensional, the blueprint's "`k` vertex blocks".
 
-This indeterminate encoding is what powers the deferred
+This indeterminate encoding is what powers
 `thm:k-frame-union-cycle`'s column-reorder / nonzero-monomial argument (Whiteley §2.1):
 a nonzero monomial of an `|E|`-minor's determinant, with its variables set to `1` and
 the rest to `0`, exhibits a block-diagonal forest-incidence matrix.
@@ -84,8 +84,8 @@ coefficient field `KFrameField β k`. Built via `Matroid.ofFun`, like the planar
 `SimpleGraph.linearRigidityMatroid`. The orientation is picked by
 `G.orientation_nonempty.some`, matching `Graph.cycleMatroidRep`.
 
-The identification `kFrameMatroid G k = Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)`
-(`thm:k-frame-union-cycle`) is the remaining Phase-14 target. -/
+The identification `kFrameMatroid G k = (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)) ↾ E(G)`
+is `kFrameMatroid_eq_unionPow_cycleMatroid` (`thm:k-frame-union-cycle`). -/
 noncomputable def kFrameMatroid (G : Graph α β) (k : ℕ) : Matroid β :=
   Matroid.ofFun (KFrameField β k) E(G) (kFrameRow k G.orientation_nonempty.some)
 
@@ -299,7 +299,7 @@ open Submodule
 variable {G : Graph α β} {k : ℕ} {D : Graph.orientation G}
 
 /-- **Block-diagonal specialization of the `k`-frame rows on a forest packing**
-(`lem:k-frame-specialize-forest`, the linear-algebra core of the reverse half of Whiteley §2.1).
+(`lem:k-frame-specialize-li`, the linear-algebra core of the reverse half of Whiteley §2.1).
 Given a `k`-tuple of acyclic bar sets `Fs : Fin k → Set β` (a forest packing), the rows obtained
 by placing, for a bar `e ∈ Fs j`, the signed incidence row `signedIncMatrix D e` in block `j` and
 `0` elsewhere — i.e. `Pi.single j (signedIncMatrix D e)` — are linearly independent over
@@ -310,8 +310,8 @@ indeterminate `X_{(e,j)}` to `1` on `Fs j` and `0` elsewhere turns each generic 
 `kFrameRow k D e` into exactly this block-`single` row, and the resulting block-diagonal matrix
 has full row rank because each block is the signed-incidence matrix of a forest
 (`Graph.orientation.isAcyclicSet_linearIndepOn`, linearly independent), assembled across blocks by
-`Pi.linearIndependent_single`. The remaining reverse step (a specialization of full rank witnesses
-generic linear independence over `K`) is a follow-up node. -/
+`Pi.linearIndependent_single`. The step that a specialization of full rank witnesses generic
+linear independence over `K` is `linearIndepOn_kFrameRow_of_isSparse_restrict`. -/
 theorem specRow_linearIndependent (𝔽 : Type*) [Field 𝔽]
     (Fs : Fin k → Set β) (hFs : ∀ j, G.IsAcyclicSet (Fs j)) :
     letI : DecidableEq α := Classical.decEq α
@@ -337,10 +337,10 @@ the algebra map, with the scalar tower `IsScalarTower R K M` inherited from the 
 
 The point is to move the remaining nonzero-minor / specialization argument off the fraction field
 (awkward — no general ring hom extends to it) and onto the integral domain `R`, where the
-indeterminate-coefficient minors are honest polynomials. The remaining reverse step — that a
+indeterminate-coefficient minors are honest polynomials. The reverse step — that a
 forest-packing specialization of full rank witnesses linear independence of the generic rows over
-`R` (a nonzero polynomial minor specializing to a nonzero value cannot vanish identically) — is a
-follow-up node. -/
+`R` (a nonzero polynomial minor specializing to a nonzero value cannot vanish identically) — is
+`linearIndepOn_kFrameRow_of_isSparse_restrict`. -/
 theorem linearIndepOn_kFrameRow_iff_over_polyRing (E' : Set β) :
     LinearIndepOn (KFrameField β k) (kFrameRow k D) E'
       ↔ LinearIndepOn (MvPolynomial (β × Fin k) ℚ) (kFrameRow k D) E' :=
@@ -348,7 +348,7 @@ theorem linearIndepOn_kFrameRow_iff_over_polyRing (E' : Set β) :
     (b := kFrameRow k D ∘ ((↑) : E' → β))).symm
 
 /-- **A `(k, k)`-sparse bar set decomposes as a `k`-forest packing covering it**
-(`lem:k-frame-specialize-forest`, the forest-extraction step of the reverse half). If the
+(`lem:k-frame-forest-packing-of-sparse`, the forest-extraction step of the reverse half). If the
 edge-restriction `G ↾ E'` is `(k, k)`-sparse, then there is a `k`-tuple `Fs : Fin k → Set β`
 of acyclic bar sets (forests of `G`) whose union is exactly `E'`. This is the family on which
 the block-diagonal specialization (`specRow_linearIndependent`) places its full-rank matrix:
@@ -358,9 +358,9 @@ each bar `e ∈ E'` lies in some `Fs j`, and the specialization sending the bloc
 Routes through `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (Phase 13): `(k, k)`-sparsity of
 `G ↾ E'` is independence of `E'` in the `k`-fold cycle-matroid union, and `Matroid.union_indep_iff`
 unpacks that into a per-copy acyclic cover (`cycleMatroid_indep`'s acyclic-set characterization).
-The remaining reverse step — that this full-rank specialization witnesses generic independence of
+The step that this full-rank specialization witnesses generic independence of
 the `k`-frame rows over the polynomial ring `R` (a nonzero polynomial minor specializing to a
-nonzero value cannot vanish identically) — is the follow-up node. -/
+nonzero value cannot vanish identically) is `linearIndepOn_kFrameRow_of_isSparse_restrict`. -/
 theorem exists_forestPacking_cover_of_isSparse_restrict [Finite α] [Finite β]
     {E' : Set β} (hE' : E' ⊆ E(G)) (hsparse : (G ↾ E').IsSparse k k) :
     ∃ Fs : Fin k → Set β, ⋃ i, Fs i = E' ∧ ∀ i, G.IsAcyclicSet (Fs i) := by
@@ -435,7 +435,7 @@ noncomputable def forestEval (Fs : Fin k → Set β) :
   MvPolynomial.eval (fun p : β × Fin k => if p.1 ∈ Fs p.2 then (1 : ℚ) else 0)
 
 /-- **The forest-packing specialization sends `kFrameRowR` to the block-single row**
-(`lem:k-frame-specialize-forest`, the specialization identity of the reverse half). For a
+(`lem:k-frame-specialize-identity`, the specialization identity of the reverse half). For a
 *disjoint* `k`-forest packing `Fs` and a bar `e ∈ Fs j₀`, applying `forestEval Fs` entrywise to the
 polynomial-ring row `kFrameRowR k D e` yields exactly `Pi.single j₀ (signedIncMatrix ℚ e)` — the
 block-`single` row that `specRow_linearIndependent` proves linearly independent. In block `j₀` the

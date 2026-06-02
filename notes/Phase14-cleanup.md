@@ -10,18 +10,23 @@ every commit in this round.
 
 ## Current state
 
-Round just opened (this commit is the log skeleton + task list + ROADMAP
-row; `CLEANUP.md` *Workflow* rule 1). Phase 14 surface is
-`BodyBar/KFrame.lean` (634 lines, 8 `noncomputable def`s, the phase's
-only new project file) plus the Phase-14 adders to the mirror
-`Mathlib/LinearAlgebra/Matrix/Rank.lean` (the two minor-nonvanishing /
-maximal-minor lemmas) and the `sec:body-bar-k-frame` subsection of
-`blueprint/src/chapter/body-bar.tex` (11 `\lean{}` nodes). Build is green
-and warning-clean on `KFrame` as of round open.
+(A) blueprint↔Lean divergence audit complete (A1 + A2). One fixable
+divergence cluster found and fixed: three reverse-section `KFrame.lean`
+docstrings carried a wrong blueprint node-anchor (all three said
+`(lem:k-frame-specialize-forest …)` — copy-paste from the
+reverse-half session — where the blueprint pins them to
+`lem:k-frame-specialize-li` / `lem:k-frame-forest-packing-of-sparse` /
+`lem:k-frame-specialize-identity` respectively), plus three stale
+"follow-up node" / "deferred" / "remaining Phase-14 target" asides
+(the module docstring + two reverse-half docstrings) left over from
+when the reverse half was being built incrementally. All `\lean{}`
+pins resolve and every blueprint statement form matches its Lean
+signature; the Rank.lean Phase-14 adders carry no blueprint node-anchor
+(correctly unpinned). Build green + warning-clean + lint clean.
 
-Next concrete step: run the (A) blueprint↔Lean divergence audit on
-`sec:body-bar-k-frame`, recording each node's verify result in the task
-list, then proceed down (B)–(D).
+Next concrete step: (B) code-smell sweep — start B1 (the
+`letI`-pair sites; likely confirm-only per the FRICTION pin) or B3
+(`noncomputable def` forced-vs-accidental), then B2/B4/B5, then (C)/(D).
 
 ## Scope
 
@@ -46,18 +51,30 @@ bounded:
 
 ### A. Blueprint ↔ Lean divergence audit
 
-- [ ] A1 — `sec:body-bar-k-frame` per-node `\lean{}` signature compare
-  (11 nodes: `def:k-frame-matroid`, `lem:k-frame-span-le-pi`,
-  `lem:k-frame-pi-finrank`, `lem:k-frame-incidence-finrank-rk`,
-  `lem:k-frame-nonzero-monomial-forest`, `lem:k-frame-specialize-li`,
-  `lem:k-frame-li-over-poly-ring`, `lem:k-frame-forest-packing-of-sparse`,
-  `lem:k-frame-specialize-identity`, `lem:k-frame-specialize-forest`,
-  `lem:k-frame-indep-iff-count`, `thm:k-frame-union-cycle`). Flag any
-  hypothesis / conclusion / binder mismatch. `checkdecls` is the
-  per-commit gate, not an audit task.
-- [ ] A2 — re-read each node's prose proof for "the Lean does X via Y"
-  glosses (Y harder than X) and any "formalization aside" remark; the
-  first response to an aside is a Lean-simplification attempt.
+- [x] A1 — `sec:body-bar-k-frame` per-node `\lean{}` signature compare
+  (12 nodes). All 23 `\lean{}` names resolve to `KFrame.lean` decls
+  (one `_root_.Matroid.Rep.…`); every blueprint statement form matches
+  its Lean signature. **Finding:** three reverse-section docstrings'
+  `(lem:…)` node-anchor parentheticals were wrong (all read
+  `lem:k-frame-specialize-forest`; correct anchors are
+  `lem:k-frame-specialize-li` on `specRow_linearIndependent`,
+  `lem:k-frame-forest-packing-of-sparse` on
+  `exists_forestPacking_cover_of_isSparse_restrict`,
+  `lem:k-frame-specialize-identity` on
+  `forestEval_kFrameRowR_eq_single`). Fixed. Rank.lean Phase-14 adders
+  are unpinned (correct — upstream-candidate infra, not blueprint
+  nodes).
+- [x] A2 — re-read each node's prose proof. No "the Lean does X via Y"
+  smoothness gloss and no genuine formalization aside (the prose
+  faithfully names the infra lemmas: `Pi.linearIndependent_single`,
+  `LinearIndependent.iff_fractionRing`, the minor-nonvanishing engine).
+  **Finding (staleness):** the module docstring + two reverse-half
+  docstrings carried "follow-up node" / "is deferred" / "remaining
+  Phase-14 target" asides from the incremental build; the reverse half
+  and `thm:k-frame-union-cycle` are landed. Reworded to point at the
+  landed `linearIndepOn_kFrameRow_of_isSparse_restrict` /
+  `kFrameMatroid_eq_unionPow_cycleMatroid`. No Lean-simplification
+  candidate surfaced.
 
 ### B. Code-smell sweep (greps run at round open)
 
@@ -110,7 +127,16 @@ bounded:
 
 ## Decisions made during this round
 
-<populated per fix-commit>
+### Cleanup pass summaries
+- **A1+A2 (KFrame.lean, doc-only).** Corrected three reverse-section
+  docstring blueprint node-anchors (`lem:k-frame-specialize-li`,
+  `lem:k-frame-forest-packing-of-sparse`, `lem:k-frame-specialize-identity`
+  — all were `lem:k-frame-specialize-forest`). Reworded six stale
+  incremental-build asides (module docstring "is deferred" / "remaining
+  Phase-14 target"; two reverse-half "follow-up node" lines) to reflect
+  the landed reverse half. No statement/proof changes; no FRICTION
+  entry (pure divergence-audit doc fix). Blueprint TeX unchanged — the
+  pins were already correct; the drift was Lean-side.
 
 ## Blockers / open questions
 
