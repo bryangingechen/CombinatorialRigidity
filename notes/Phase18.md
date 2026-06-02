@@ -11,9 +11,9 @@ is the Phase-18 work log only.
 
 ## Current state
 
-Phase 18 is **in progress**. The leaf node `def:hinge-constraint` has
-**landed** (`Molecular/RigidityMatrix.lean`); the remaining
-`sec:molecular-rigidity-matrix` nodes are still red.
+Phase 18 is **in progress**. The two leaf nodes `def:hinge-constraint`
+and `def:hinge-row-block` have **landed** (`Molecular/RigidityMatrix.lean`);
+the remaining `sec:molecular-rigidity-matrix` nodes are still red.
 
 Landed so far:
 - `def:hinge-constraint` — `Molecular/RigidityMatrix.lean`:
@@ -25,18 +25,27 @@ Landed so far:
   ExteriorAlgebra ℝ (Fin (k+2) → ℝ)` carried as the full algebra element,
   so `span C(p(e))` is literally a `Submodule` — no coordinate `ℝ^D`
   identification yet. File wired into `CombinatorialRigidity.lean`.
+- `def:hinge-row-block` — same file: `hingeRowBlock F e` =
+  `(span C(p(e))).dualAnnihilator ⊆ Module.Dual ℝ (ScrewSpace k)`, the
+  **basis-free** orthogonal complement (rows `r_i = functionals`), plus
+  the restatement `hingeConstraint_iff_hingeRowBlock`:
+  `hingeConstraint S e u v ↔ ∀ r ∈ hingeRowBlock e, r (S u − S v) = 0`.
+  Proof is `Subspace.dualAnnihilator_dualCoannihilator_eq` (field-level
+  `(span C)^⊥⊥ = span C`) + `Submodule.mem_dualCoannihilator`; added
+  `import Mathlib.LinearAlgebra.Dual.Lemmas`. The `⋀^k ℝ^(k+2) ≅ ℝ^D`
+  coordinatization stays deferred (see *Decisions* / open questions).
 
-The opening commit (prior) created this work log, opened the
+The opening commit created this work log, opened the
 `sec:molecular-rigidity-matrix` dep-graph (all red), added the two bib
 entries (`whiteWhiteley1987` [29], `jacksonJordan2009` [15]), and ran the
 phase-open status-surface sync.
 
-The next concrete commit is the next red node `def:hinge-row-block` —
-`r(p(e))`, a basis of `(span C(p(e)))^⊥ ⊆ ℝ^D`, restating the hinge
-constraint as `D−1` linear equations `(S u − S v) · r_i(p(e)) = 0`. This
-forces the concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinate identification
-(carrier-compatibility open question below); decide it when this node
-lands.
+The next concrete commit is the next red node `def:rigidity-matrix` —
+assemble the `(D−1)|E| × D|V|` block matrix `R(G,p)` (signed `±r(p(e))`
+per oriented edge) and `Z(G,p) = ker R`. This is the node that finally
+forces the concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization, since the
+block matrix needs `r(p(e))` as an honest `(D−1)×D` real matrix
+(carrier-compatibility open question below).
 
 ## Scope (Phase 18 only)
 
@@ -107,11 +116,12 @@ the Lean lands.
 - [x] `def:hinge-constraint` — body-hinge framework `(G,p)` +
       `S(u) − S(v) ∈ span C(p(e))`. **Landed**
       (`Molecular/RigidityMatrix.lean`).
-- [ ] `def:hinge-row-block` — `r(p(e))`, a basis of
+- [x] `def:hinge-row-block` — `r(p(e))`, a basis of
       `(span C(p(e)))^⊥`; constraint as `(D−1)` linear equations.
-      **Next commit.**
+      **Landed** (`hingeRowBlock` + `hingeConstraint_iff_hingeRowBlock`,
+      basis-free as the dual annihilator).
 - [ ] `def:rigidity-matrix` — `R(G,p)`, the `(D−1)|E| × D|V|` block
-      matrix; `Z(G,p) = ker R`.
+      matrix; `Z(G,p) = ker R`. **Next commit.**
 - [ ] `lem:trivial-motions-rank-bound` — the `D` trivial motions
       `S*_i`; `rank R ≤ D(|V|−1)`, equality iff infinitesimally rigid.
 - [ ] `def:dof-generic` — degree of freedom `D(|V|−1) − rank R`;
@@ -142,6 +152,16 @@ the Lean lands.
   identification needed at this node. That identification is deferred to
   `def:hinge-row-block` / `def:rigidity-matrix`, where `r(p(e))` (a basis
   of the orthogonal complement in `ℝ^D`) forces it.
+- **Hinge-row block as the dual annihilator, not an explicit basis.**
+  `def:hinge-row-block` defines `r(p(e))` as `(span C(p(e))).dualAnnihilator`
+  in `Module.Dual ℝ (ScrewSpace k)` — the orthogonal complement taken
+  basis-free. This keeps the screw space the full `ExteriorAlgebra` element
+  (no `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization, no inner product) at this node;
+  the blueprint's `(S u − S v) · r_i = 0` becomes `r (S u − S v) = 0` for
+  `r` ranging over the annihilator, and the iff is the field-level
+  double-annihilator identity `Subspace.dualAnnihilator_dualCoannihilator_eq`.
+  The explicit `(D−1)×D` matrix / coordinatization is deferred to
+  `def:rigidity-matrix`, which genuinely needs `r(p(e))` as a real matrix.
 - **Body-hinge framework as a `Graph`-native `structure`** (graph +
   `hinge` field), mirroring Phase 16's `Graph.BodyHingeFramework` shape
   but in the `Molecular` namespace and carrying honest hinge *geometry*
@@ -176,18 +196,19 @@ the Lean lands.
 
 ## Hand-off / next phase
 
-`def:hinge-constraint` has landed (`Molecular/RigidityMatrix.lean`:
-`BodyHingeFramework` / `supportExtensor` / `hingeConstraint`). The next
-concrete commit is the next red node `def:hinge-row-block`: in the same
-file, define `r(p(e))` — a basis of the orthogonal complement
-`(span C(p(e)))^⊥ ⊆ ℝ^D` — and restate the hinge constraint as the `D−1`
-linear equations `(S u − S v) · r_i(p(e)) = 0`. This node forces the
-concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinate identification (carrier
-compatibility, open question above) — decide the explicit basis /
-inner-product structure on the screw space when it lands; the natural
-choice is the `pluckerVector` coordinatization (Phase 17) giving the `ℝ^D`
-isomorphism. Then `def:rigidity-matrix` assembles the `(D−1)|E| × D|V|`
-block matrix and `Z(G,p) = ker R`. The three rank lemmas (5.1/5.3/5.2)
+`def:hinge-constraint` and `def:hinge-row-block` have landed
+(`Molecular/RigidityMatrix.lean`: `BodyHingeFramework` / `supportExtensor`
+/ `hingeConstraint`, then `hingeRowBlock` / `hingeConstraint_iff_hingeRowBlock`,
+the orthogonal complement carried basis-free as the dual annihilator). The
+next concrete commit is the next red node `def:rigidity-matrix`: assemble
+the `(D−1)|E| × D|V|` block matrix `R(G,p)` (signed `±r(p(e))` in the `D`
+columns of each oriented edge's endpoints) and `Z(G,p) = ker R`. This is
+the node that finally forces the concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinate
+identification (carrier compatibility, open question above), since the
+block matrix needs `r(p(e))` as an honest `(D−1)×D` real matrix — decide
+the explicit basis / inner-product structure then; the natural choice is
+the `pluckerVector` coordinatization (Phase 17) giving the `ℝ^D`
+isomorphism. The three rank lemmas (5.1/5.3/5.2)
 and the Prop 1.1 reconciliation are the load-bearing targets. See
 `notes/MolecularConjecture.md` *Phase 18* for the per-lemma detail and
 the reuse map.

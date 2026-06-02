@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import Mathlib.Combinatorics.Graph.Basic
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import CombinatorialRigidity.Molecular.Extensor
 
 /-!
@@ -119,6 +120,49 @@ theorem hingeConstraint_iff (F : BodyHingeFramework k α β) (S : α → ScrewSp
     F.hingeConstraint S e u v ↔
       S u - S v ∈ Submodule.span ℝ {affineSubspaceExtensor (F.hinge e)} :=
   Iff.rfl
+
+/-- The **hinge-row block** `r(p(e))` at an edge `e` (`def:hinge-row-block`): the
+orthogonal complement `(span C(p(e)))^⊥` of the hinge's supporting extensor, taken
+basis-free as the **dual annihilator** of `span C(p(e))` inside the dual space
+`Module.Dual ℝ (ScrewSpace k)`. Its elements are the row functionals `r_i(p(e))`; a
+basis of it is the `(D-1)` rows of Katoh–Tanigawa's `(D-1) × D` matrix `r(p(e))`
+(`D = (k+2 choose 2) = dim (ScrewSpace k)`, and `span C(p(e))` is `1`-dimensional
+when the hinge is genuine, so its annihilator has dimension `D - 1`).
+
+Carrying the orthogonal complement as the annihilator submodule keeps the screw
+space as the full `ExteriorAlgebra` element (`def:hinge-constraint`): no explicit
+`⋀^k ℝ^(k+2) ≅ ℝ^D` coordinate basis / inner-product structure is forced at this
+node. The dot products `(S u - S v) · r_i(p(e))` of the blueprint become the
+functional applications `r (S u - S v)`, and the orthogonality `v ⟂ span C ↔ r v = 0
+∀ r ∈ (span C)^⊥` is exactly the field-level double-annihilator identity
+`Subspace.dualAnnihilator_dualCoannihilator_eq`. -/
+def hingeRowBlock (F : BodyHingeFramework k α β) (e : β) :
+    Submodule ℝ (Module.Dual ℝ (ScrewSpace k)) :=
+  (Submodule.span ℝ {F.supportExtensor e}).dualAnnihilator
+
+theorem hingeRowBlock_apply (F : BodyHingeFramework k α β) (e : β) :
+    F.hingeRowBlock e =
+      (Submodule.span ℝ {affineSubspaceExtensor (F.hinge e)}).dualAnnihilator :=
+  rfl
+
+/-- **The hinge constraint as `(D-1)` linear equations** (`def:hinge-row-block`): a
+screw assignment `S` meets the hinge constraint at `e = uv` (`def:hinge-constraint`)
+exactly when the relative screw center `S u - S v` is annihilated by every row
+functional `r ∈ r(p(e))` of the hinge-row block, i.e. `r (S u - S v) = 0` for all
+`r ∈ F.hingeRowBlock e`. This is Katoh–Tanigawa's restatement
+`(S(u) - S(v)) · r_i(p(e)) = 0`, `1 ≤ i ≤ D-1`.
+
+The forward direction is `Submodule.dualAnnihilator` membership; the converse is the
+field-level double-annihilator identity `Subspace.dualAnnihilator_dualCoannihilator_eq`
+(`(span C)^⊥⊥ = span C`), which holds because `ScrewSpace k` is an `ℝ`-vector
+space. -/
+theorem hingeConstraint_iff_hingeRowBlock (F : BodyHingeFramework k α β)
+    (S : α → ScrewSpace k) (e : β) (u v : α) :
+    F.hingeConstraint S e u v ↔ ∀ r ∈ F.hingeRowBlock e, r (S u - S v) = 0 := by
+  rw [hingeConstraint, hingeRowBlock]
+  conv_lhs =>
+    rw [← Subspace.dualAnnihilator_dualCoannihilator_eq
+      (W := Submodule.span ℝ {F.supportExtensor e}), Submodule.mem_dualCoannihilator]
 
 end BodyHingeFramework
 

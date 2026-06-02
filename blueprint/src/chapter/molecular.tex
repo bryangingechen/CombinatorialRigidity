@@ -266,6 +266,9 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
 
 \begin{definition}[Hinge-row block]
   \label{def:hinge-row-block}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRowBlock,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.hingeConstraint_iff_hingeRowBlock}
+  \leanok
   \uses{def:hinge-constraint}
   For an edge $e$, fix a basis
   $\{r_1(p(e)), \dots, r_{D-1}(p(e))\}$ of the orthogonal complement
@@ -273,7 +276,16 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   $r(p(e))$ be the $(D-1)\times D$ matrix with these rows. Then a screw
   assignment $S$ meets the hinge constraint
   (\cref{def:hinge-constraint}) at $e = uv$ iff
-  $(S(u) - S(v)) \cdot r_i(p(e)) = 0$ for all $1 \le i \le D-1$.
+  $(S(u) - S(v)) \cdot r_i(p(e)) = 0$ for all $1 \le i \le D-1$. The
+  formalization keeps the screw space as the full exterior-algebra
+  element (\cref{def:hinge-constraint}) and so carries the orthogonal
+  complement basis-free, as the dual annihilator
+  $(\operatorname{span} C(p(e)))^{\circ} \subseteq (\R^{D})^{*}$; the
+  dot products become functional applications $r_i(S(u) - S(v))$ and the
+  equivalence is the field-level double-annihilator identity
+  $(\operatorname{span} C)^{\circ\circ} = \operatorname{span} C$. The
+  explicit $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ coordinatization is
+  therefore still deferred to \cref{def:rigidity-matrix}.
 \end{definition}
 
 \begin{definition}[Panel-hinge rigidity matrix]
