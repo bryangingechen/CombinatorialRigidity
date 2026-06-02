@@ -223,6 +223,90 @@ theorem mem_infinitesimalMotions (F : BodyHingeFramework k α β) (S : α → Sc
     S ∈ F.infinitesimalMotions ↔ F.IsInfinitesimalMotion S :=
   Iff.rfl
 
+/-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
+assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
+These are the rigid-motion screws — the constant assignments — and they form the
+`D`-dimensional subspace that the rank bound subtracts off. -/
+def IsTrivialMotion (S : α → ScrewSpace k) : Prop :=
+  ∀ u v, S u = S v
+
+/-- Every trivial motion is an infinitesimal motion (`lem:trivial-motions-rank-bound`): a
+constant screw assignment has `S u - S v = 0`, which lies in every hinge constraint's span,
+so it satisfies the hinge constraint at every edge. -/
+theorem isInfinitesimalMotion_of_isTrivialMotion (F : BodyHingeFramework k α β)
+    {S : α → ScrewSpace k} (hS : IsTrivialMotion S) : F.IsInfinitesimalMotion S := by
+  intro e u v _
+  rw [hingeConstraint, hS u v, sub_self]
+  exact Submodule.zero_mem _
+
+/-- The **trivial-motion subspace** (`lem:trivial-motions-rank-bound`): the submodule of all
+trivial infinitesimal motions (constant screw assignments) inside the screw-assignment space
+`α → ScrewSpace k`. Katoh–Tanigawa's `D` standard trivial motions `S*_i` span this space, and
+its dimension is `D = (k+2 choose 2)`; carried basis-free as the constant assignments, so the
+explicit `D` count waits on the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization (`def:rigidity-matrix`).
+
+The framework argument `F` is carried only to give the `F.trivialMotions` dot-notation API
+parallel to `F.infinitesimalMotions`: the trivial-motion space depends only on `α` and `k` (the
+constant assignments), not on the graph or hinges, hence the `@[nolint unusedArguments]`. -/
+@[nolint unusedArguments]
+def trivialMotions (_F : BodyHingeFramework k α β) : Submodule ℝ (α → ScrewSpace k) where
+  carrier := {S | IsTrivialMotion S}
+  add_mem' {S T} hS hT u v := by rw [Pi.add_apply, Pi.add_apply, hS u v, hT u v]
+  zero_mem' u v := rfl
+  smul_mem' c S hS u v := by rw [Pi.smul_apply, Pi.smul_apply, hS u v]
+
+@[simp]
+theorem mem_trivialMotions (F : BodyHingeFramework k α β) (S : α → ScrewSpace k) :
+    S ∈ F.trivialMotions ↔ IsTrivialMotion S :=
+  Iff.rfl
+
+/-- The trivial motions lie inside the null space `Z(G,p)` (`lem:trivial-motions-rank-bound`):
+`trivialMotions ≤ infinitesimalMotions`, since each constant assignment is an infinitesimal
+motion (`isInfinitesimalMotion_of_isTrivialMotion`). -/
+theorem trivialMotions_le_infinitesimalMotions (F : BodyHingeFramework k α β) :
+    F.trivialMotions ≤ F.infinitesimalMotions :=
+  fun _ hS => F.isInfinitesimalMotion_of_isTrivialMotion hS
+
+/-- **Infinitesimal rigidity** of a body-hinge framework `(G,p)`
+(`def:dof-generic`, `lem:trivial-motions-rank-bound`): every infinitesimal motion is trivial,
+i.e. `Z(G,p) ⊆` the trivial motions. Equivalently `rank R(G,p) = D(|V|-1)`; the equality form
+of the rank bound waits on the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization (`def:rigidity-matrix`). -/
+def IsInfinitesimallyRigid (F : BodyHingeFramework k α β) : Prop :=
+  F.infinitesimalMotions ≤ F.trivialMotions
+
+theorem isInfinitesimallyRigid_iff (F : BodyHingeFramework k α β) :
+    F.IsInfinitesimallyRigid ↔
+      ∀ S, F.IsInfinitesimalMotion S → IsTrivialMotion S :=
+  Iff.rfl
+
+/-- Infinitesimal rigidity is the equality `Z(G,p) = trivialMotions` of the two submodules
+(`lem:trivial-motions-rank-bound`): one inclusion always holds
+(`trivialMotions_le_infinitesimalMotions`), so rigidity — the reverse inclusion — upgrades it to
+equality. This is the basis-free form of `rank R(G,p) = D(|V|-1)`: the null space is exactly the
+`D(|V|-1)`-corank trivial-motion space. -/
+theorem infinitesimalMotions_eq_trivialMotions_iff (F : BodyHingeFramework k α β) :
+    F.infinitesimalMotions = F.trivialMotions ↔ F.IsInfinitesimallyRigid :=
+  ⟨fun h => h.le, fun h => le_antisymm h F.trivialMotions_le_infinitesimalMotions⟩
+
+/-- The trivial-motion subspace is the **diagonal** of `α → ScrewSpace k`: the range of the
+constant-assignment map `s ↦ (fun _ => s)`. This is the `D`-dimensional rigid-motion space of
+`lem:trivial-motions-rank-bound`; the linear isomorphism `ScrewSpace k ≃ trivialMotions` it
+gives (for `Nonempty α`) is what carries `finrank (trivialMotions) = D` once the
+`⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization is in place (`def:rigidity-matrix`). -/
+theorem trivialMotions_eq_range_const (F : BodyHingeFramework k α β) :
+    F.trivialMotions =
+      LinearMap.range (LinearMap.pi (fun _ : α => LinearMap.id) :
+        ScrewSpace k →ₗ[ℝ] α → ScrewSpace k) := by
+  ext S
+  rw [mem_trivialMotions, LinearMap.mem_range]
+  constructor
+  · rintro hS
+    rcases isEmpty_or_nonempty α with hα | ⟨⟨a⟩⟩
+    · exact ⟨0, funext fun u => (hα.false u).elim⟩
+    · exact ⟨S a, funext fun u => (hS u a).symm⟩
+  · rintro ⟨s, rfl⟩ u v
+    rfl
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

@@ -321,6 +321,7 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
 
 \begin{definition}[Degree of freedom; generic realization]
   \label{def:dof-generic}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigid}
   \uses{lem:trivial-motions-rank-bound}
   An infinitesimal motion $S$ is \emph{trivial} when $S(u) = S(v)$ for
   all $u, v$; $(G,p)$ is \emph{infinitesimally rigid} when all
@@ -329,10 +330,25 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   of $(G,p)$ is $D(|V|-1) - \operatorname{rank} R(G,p)$. A realization is
   \emph{generic} when $R(G,p)$ and all its edge-induced submatrices
   attain their maximum ranks over realizations of $G$.
+
+  The formalization lands the rigidity predicate
+  (\texttt{IsInfinitesimallyRigid}) as the inclusion
+  $Z(G,p) \subseteq \{\text{trivial motions}\}$ (the reverse of the always-true
+  $\{\text{trivial}\} \subseteq Z(G,p)$ of
+  \cref{lem:trivial-motions-rank-bound}), basis-free; the numeric degree of
+  freedom and the maximum-rank \emph{generic} condition wait on the explicit
+  $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ rank count (\cref{def:rigidity-matrix}).
 \end{definition}
 
 \begin{lemma}[The $D$ trivial motions and the rank bound]
   \label{lem:trivial-motions-rank-bound}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsTrivialMotion,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimalMotion_of_isTrivialMotion,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_le_infinitesimalMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_eq_range_const,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff}
+  \leanok
   \uses{def:rigidity-matrix}
   For $1 \le i \le D$ let $S^*_i$ be the constant screw assignment with
   $i$-th coordinate $1$ at every vertex. Each $S^*_i$ lies in $Z(G,p)$
@@ -342,12 +358,27 @@ and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
   $(G,p)$ is infinitesimally rigid.
 \end{lemma}
 \begin{proof}
+  \leanok
   A constant assignment has $S(u) - S(v) = 0$, which lies in every
-  hinge constraint, so $S^*_i \in Z(G,p)$ and is trivial; the
+  hinge constraint, so $S^*_i \in Z(G,p)$ and is trivial
+  (\texttt{isInfinitesimalMotion\_of\_isTrivialMotion}, giving
+  $\{\text{trivial}\} \subseteq Z(G,p)$); the
   $\{S^*_i\}$ are linearly independent across the $D$ coordinates and a
   trivial motion is determined by its single common value, so they span
-  the trivial motions. A $D$-dimensional kernel forces
-  $\operatorname{rank} R(G,p) \le D|V| - D$.
+  the trivial motions. The formalization carries the trivial-motion space
+  basis-free as the constant assignments
+  (\texttt{trivialMotions}), identifies it with the diagonal of
+  $V \to \bigwedge^{k}\R^{k+2}$
+  (\texttt{trivialMotions\_eq\_range\_const}, the range of $s \mapsto (\_\mapsto s)$,
+  the basis-free stand-in for ``determined by a single common value''), and
+  records infinitesimal rigidity as the submodule equality
+  $Z(G,p) = \{\text{trivial}\}$
+  (\texttt{infinitesimalMotions\_eq\_trivialMotions\_iff}). A $D$-dimensional
+  trivial kernel forces $\operatorname{rank} R(G,p) \le D|V| - D$; the
+  numeric $D = (k+2 \text{ choose } 2)$ count of $\bigwedge^{k}\R^{k+2}$ is
+  the only piece that waits on the explicit
+  $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ coordinatization
+  (\cref{def:rigidity-matrix}).
 \end{proof}
 
 \subsection{Rank lemmas and reconciliation with Proposition 1.1}

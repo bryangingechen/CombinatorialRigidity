@@ -11,10 +11,15 @@ is the Phase-18 work log only.
 
 ## Current state
 
-Phase 18 is **in progress**. Three nodes (`def:hinge-constraint`,
-`def:hinge-row-block`, `def:rigidity-matrix`) have **landed**
-(`Molecular/RigidityMatrix.lean`); the remaining
-`sec:molecular-rigidity-matrix` nodes are still red.
+Phase 18 is **in progress**. Four nodes (`def:hinge-constraint`,
+`def:hinge-row-block`, `def:rigidity-matrix`,
+`lem:trivial-motions-rank-bound`) have **landed**
+(`Molecular/RigidityMatrix.lean`), plus the rigidity-predicate half of
+`def:dof-generic`; the remaining `sec:molecular-rigidity-matrix` nodes
+(the numeric dof / generic, the three rank lemmas 5.1/5.3/5.2, and the
+Prop 1.1 reconciliation) are still red. The numeric `rank R ≤ D(|V|−1)`
+is the first genuinely-blocked piece — it IS the deferred
+`⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization (see *Hand-off*).
 
 Landed so far:
 - `def:hinge-constraint` — `Molecular/RigidityMatrix.lean`:
@@ -53,15 +58,30 @@ The opening commit created this work log, opened the
 entries (`whiteWhiteley1987` [29], `jacksonJordan2009` [15]), and ran the
 phase-open status-surface sync.
 
-The next concrete commit is the next red node
-`lem:trivial-motions-rank-bound`: the `D` constant trivial motions `S*_i`
-lie in `Z(G,p)` and span the trivial motions (`S u = S v` for all `u v`),
-giving `rank R ≤ D(|V|−1)` with equality iff infinitesimally rigid. This
-plus `def:dof-generic` (degree of freedom, generic realization) are the
-next two nodes; both finally need a `rank` / `Module.finrank` count, so
-they will likely force the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization (or a
-`finrank` computation directly on the `infinitesimalMotions` submodule /
-its complement) — decide which when the node lands.
+Landed `lem:trivial-motions-rank-bound` (same file) basis-free:
+`IsTrivialMotion S` (`∀ u v, S u = S v`),
+`isInfinitesimalMotion_of_isTrivialMotion` (trivial ⇒ in `Z(G,p)`), the
+`trivialMotions` submodule + `trivialMotions_le_infinitesimalMotions`
+(the always-true `{trivial} ⊆ Z(G,p)`), `trivialMotions_eq_range_const`
+(trivial motions = the diagonal `range (s ↦ (_ ↦ s))`, the basis-free
+stand-in for "determined by one common value"), and
+`IsInfinitesimallyRigid` (`Z(G,p) ⊆ trivialMotions`, the reverse
+inclusion) with `infinitesimalMotions_eq_trivialMotions_iff` (rigidity ↔
+`Z(G,p) = trivialMotions`). The numeric `rank R ≤ D(|V|−1)` (and `D =
+(k+2 choose 2)` itself) is the **one** piece that stays deferred — it is
+exactly the `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinatization, since
+`ScrewSpace k = ExteriorAlgebra ℝ (Fin (k+2) → ℝ)` has `finrank 2^(k+2)`,
+not `D`, so a `finrank` count on the full algebra over-counts. The
+basis-free skeleton (containments + the diagonal iso + equality-iff-rigid)
+carries everything that does not need the numeral.
+
+The next concrete commit is `def:dof-generic`'s numeric half (degree of
+freedom `D(|V|−1) − rank R`, generic realization), or — equivalently — the
+deferred coordinatization itself: pick the `⋀^k ℝ^(k+2) ≅ ℝ^D`
+identification (the `pluckerVector` route of Phase 17) **or** prove
+`finrank (trivialMotions) = D` / `finrank (α → ScrewSpace) = D·|V|`
+directly. Once that lands, the numeric `rank R ≤ D(|V|−1)` and the dof/
+generic numerics follow from the basis-free skeleton already in place.
 
 ## Scope (Phase 18 only)
 
@@ -140,10 +160,16 @@ the Lean lands.
       matrix; `Z(G,p) = ker R`. **Landed** (`IsInfinitesimalMotion` +
       `infinitesimalMotions`, basis-free as the per-edge constraint
       family; `R(G,p)` not built as an explicit real coordinate matrix).
-- [ ] `lem:trivial-motions-rank-bound` — the `D` trivial motions
+- [x] `lem:trivial-motions-rank-bound` — the `D` trivial motions
       `S*_i`; `rank R ≤ D(|V|−1)`, equality iff infinitesimally rigid.
+      **Landed** basis-free (`IsTrivialMotion` / `trivialMotions` /
+      `trivialMotions_le_infinitesimalMotions` /
+      `trivialMotions_eq_range_const` / `IsInfinitesimallyRigid` /
+      `infinitesimalMotions_eq_trivialMotions_iff`); the numeric
+      `rank R ≤ D(|V|−1)` deferred to the coordinatization.
 - [ ] `def:dof-generic` — degree of freedom `D(|V|−1) − rank R`;
-      generic realization.
+      generic realization. `IsInfinitesimallyRigid` half **landed**;
+      numeric dof / generic still red (needs coordinatization).
 - [ ] `lem:rank-delete-vertex` — **Lemma 5.1** (pin a body, delete `D`
       columns, rank unchanged); [29] White–Whiteley.
 - [ ] `lem:rank-parallel-full` — **Lemma 5.3** (two general-position
@@ -194,6 +220,28 @@ the Lean lands.
   Orientation-independence (`hingeConstraint_comm`, span closed under
   negation) makes the predicate well-defined on the undirected
   multigraph.
+- **Trivial motions carried basis-free; `IsInfinitesimallyRigid` as a
+  submodule inclusion** (`lem:trivial-motions-rank-bound`). A trivial
+  motion is a constant assignment (`IsTrivialMotion S := ∀ u v, S u = S v`);
+  `trivialMotions` is their submodule, always `≤ infinitesimalMotions`.
+  Infinitesimal rigidity is the *reverse* inclusion `Z(G,p) ⊆ trivialMotions`,
+  upgrading to the equality `Z(G,p) = trivialMotions`
+  (`infinitesimalMotions_eq_trivialMotions_iff`) — the basis-free form of
+  `rank R = D(|V|−1)`. `trivialMotions_eq_range_const` identifies the space
+  with the diagonal `range (s ↦ (_ ↦ s))` (the "one common value"
+  determination). `trivialMotions` carries the framework `F` only for
+  `F.trivialMotions` dot-notation parity (it depends only on `α, k`), hence
+  `@[nolint unusedArguments]` (the `IsInfinitesimallyRigid`/`Framework.lean`
+  precedent for an API-shape arg the linter can't see the need for).
+- **The numeric `rank R ≤ D(|V|−1)` IS the deferred coordinatization, not a
+  separate step.** `ScrewSpace k = ExteriorAlgebra ℝ (Fin (k+2) → ℝ)` has
+  `finrank 2^(k+2)`, not `D = (k+2 choose 2)` — a `finrank` count on the
+  full algebra over-counts. So the screw genuinely lives in the degree-`k`
+  graded piece `⋀^k ℝ^(k+2)` (dim `D`), and the numeric bound needs the
+  `⋀^k ℝ^(k+2) ≅ ℝ^D` identification. The basis-free skeleton (containments,
+  diagonal iso, equality-iff-rigid) carries the full *structural* content of
+  KT's lemma without the numeral; the numeral waits on the coordinatization
+  (the first genuinely-blocked node, as the hand-off anticipated).
 - **Body-hinge framework as a `Graph`-native `structure`** (graph +
   `hinge` field), mirroring Phase 16's `Graph.BodyHingeFramework` shape
   but in the `Molecular` namespace and carrying honest hinge *geometry*
@@ -230,22 +278,24 @@ the Lean lands.
 
 ## Hand-off / next phase
 
-`def:hinge-constraint`, `def:hinge-row-block`, and `def:rigidity-matrix`
-have landed (`Molecular/RigidityMatrix.lean`: `BodyHingeFramework` /
-`supportExtensor` / `hingeConstraint`; `hingeRowBlock` /
-`hingeConstraint_iff_hingeRowBlock`, dual-annihilator basis-free; and
-`IsInfinitesimalMotion` / `infinitesimalMotions` = `Z(G,p) = ker R(G,p)`,
-the rigidity matrix carried as the per-edge constraint family — no
-explicit real coordinate matrix). The next concrete commit is the next
-red node `lem:trivial-motions-rank-bound`: the `D` constant trivial
-motions `S*_i ∈ Z(G,p)` span the trivial motions (`S u = S v` for all
-`u v`), giving `rank R ≤ D(|V|−1)`, equality iff infinitesimally rigid.
-This is where a `rank` / `Module.finrank` count first appears — so it
-(with `def:dof-generic` next) is the node that finally forces a
-coordinatization decision: either the `⋀^k ℝ^(k+2) ≅ ℝ^D` identification
-(natural choice: the `pluckerVector` coordinatization of Phase 17) or a
-`finrank` computation directly on the `infinitesimalMotions` submodule /
-its complement (carrier compatibility, open question above). The three
-rank lemmas (5.1/5.3/5.2) and the Prop 1.1 reconciliation are the
-load-bearing targets. See `notes/MolecularConjecture.md` *Phase 18* for
-the per-lemma detail and the reuse map.
+`def:hinge-constraint`, `def:hinge-row-block`, `def:rigidity-matrix`, and
+the structural half of `lem:trivial-motions-rank-bound` /
+`def:dof-generic` have landed (`Molecular/RigidityMatrix.lean`). The
+trivial-motion layer is basis-free: `IsTrivialMotion`, `trivialMotions`
+(≤ `infinitesimalMotions`), `trivialMotions_eq_range_const` (the diagonal
+iso), `IsInfinitesimallyRigid` (`Z(G,p) ⊆ trivialMotions`), and
+`infinitesimalMotions_eq_trivialMotions_iff` (rigidity ↔ `Z = trivial`).
+
+The next concrete commit is **the deferred coordinatization** — now the
+first genuinely-blocked node and the gate for every remaining numeric: pick
+the `⋀^k ℝ^(k+2) ≅ ℝ^D` identification (natural choice: the `pluckerVector`
+coordinatization of Phase 17) **or** prove `finrank (trivialMotions) = D`
+and `finrank (α → ScrewSpace) = D·|V|` directly on the screw-assignment
+space (note `ScrewSpace k` is the *full* exterior algebra, `finrank
+2^(k+2)`, so the screw must be cut down to the degree-`k` graded piece
+`⋀^k ℝ^(k+2)` of dim `D = (k+2 choose 2)` first). Once the `D`-count lands,
+the numeric `rank R ≤ D(|V|−1)` and the dof / generic numerics of
+`def:dof-generic` follow from the basis-free skeleton already in place.
+After that: the three rank lemmas (5.1/5.3/5.2) and the Prop 1.1
+reconciliation (the load-bearing targets). See `notes/MolecularConjecture.md`
+*Phase 18* for the per-lemma detail and the reuse map.
