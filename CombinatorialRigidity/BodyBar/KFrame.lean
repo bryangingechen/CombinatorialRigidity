@@ -324,6 +324,27 @@ theorem specRow_linearIndependent (Fs : Fin k → Set β) (hFs : ∀ j, G.IsAcyc
     (fun (j : Fin k) (e : (Fs j : Set β)) ↦ D.signedIncMatrix (KFrameField β k) (e : β))
     (fun j ↦ D.isAcyclicSet_linearIndepOn (𝔽 := KFrameField β k) (hFs j))
 
+/-- **Generic `k`-frame independence reduces to independence over the polynomial ring**
+(`lem:k-frame-li-over-poly-ring`, the first half of the genericity-lift step of the reverse
+direction). The coefficient field `KFrameField β k = FractionRing (MvPolynomial (β × Fin k) ℚ)`
+is the field of fractions of the polynomial ring `R = MvPolynomial (β × Fin k) ℚ`, and the
+`k`-frame rows of any bar set `E'` are linearly independent over `KFrameField β k` **iff** they
+are linearly independent over `R`. This is `LinearIndependent.iff_fractionRing` applied to the
+fixed row family in the `K`-module `Fin k → α → KFrameField β k` (which is also an `R`-module via
+the algebra map, with the scalar tower `IsScalarTower R K M` inherited from the `Pi` structure).
+
+The point is to move the remaining nonzero-minor / specialization argument off the fraction field
+(awkward — no general ring hom extends to it) and onto the integral domain `R`, where the
+indeterminate-coefficient minors are honest polynomials. The remaining reverse step — that a
+forest-packing specialization of full rank witnesses linear independence of the generic rows over
+`R` (a nonzero polynomial minor specializing to a nonzero value cannot vanish identically) — is a
+follow-up node. -/
+theorem linearIndepOn_kFrameRow_iff_over_polyRing (E' : Set β) :
+    LinearIndepOn (KFrameField β k) (kFrameRow k D) E'
+      ↔ LinearIndepOn (MvPolynomial (β × Fin k) ℚ) (kFrameRow k D) E' :=
+  (LinearIndependent.iff_fractionRing (MvPolynomial (β × Fin k) ℚ) (KFrameField β k)
+    (b := kFrameRow k D ∘ ((↑) : E' → β))).symm
+
 end Reverse
 
 end Graph

@@ -234,9 +234,30 @@ and the same applies to every $Y \subseteq E'$.
   ($\mathtt{Pi.linearIndependent\_single}$).
 \end{proof}
 
+\begin{lemma}[Generic independence reduces to independence over the polynomial ring]
+  \label{lem:k-frame-li-over-poly-ring}
+  \lean{Graph.linearIndepOn_kFrameRow_iff_over_polyRing}
+  \leanok
+  \uses{def:k-frame-matroid}
+  The coefficient field $K = \mathrm{Frac}(R)$ is the field of fractions of the
+  polynomial ring $R = \mathbb{Q}[X_{e,j}]$. For any bar set $E' \subseteq E(G)$,
+  the generic $k$-frame rows of $E'$ are linearly independent over $K$ if and
+  only if they are linearly independent over $R$. This moves the remaining
+  nonzero-minor / specialization argument off the fraction field (where no
+  general ring homomorphism extends) and onto the integral domain $R$, where the
+  indeterminate-coefficient minors are honest polynomials.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Immediate from \texttt{LinearIndependent.iff\_fractionRing} applied to the fixed
+  row family in the $K$-module $\mathrm{Fin}\,k \to \alpha \to K$, which is also an
+  $R$-module via the algebra map, with the scalar tower inherited from the product
+  structure.
+\end{proof}
+
 \begin{lemma}[Forest decomposition $\Rightarrow$ generic independence]
   \label{lem:k-frame-specialize-forest}
-  \uses{def:k-frame-matroid, lem:k-frame-specialize-li}
+  \uses{def:k-frame-matroid, lem:k-frame-specialize-li, lem:k-frame-li-over-poly-ring}
   Conversely, suppose $E' \subseteq E(G)$ decomposes as
   $E' = \bigsqcup_{j} E'_j$ with each $G \restriction E'_j$ a forest
   (equivalently, the union-side count holds on $E'$). Setting the block-$j$
@@ -254,9 +275,10 @@ and the same applies to every $Y \subseteq E'$.
   $E'_j$ has linearly independent incidence rows (the cycle-matroid
   representation, \cref{def:k-frame-matroid}'s reused $\mathrm{signedIncMatrix}$),
   and the block-diagonal arrangement keeps the blocks independent. Lifting
-  back: a polynomial matrix with a specialization of full rank has full
-  generic rank, so the unspecialized indeterminate rows are independent
-  over the fraction field $K$.
+  back: by \cref{lem:k-frame-li-over-poly-ring} it suffices to argue over the
+  polynomial ring $R$, where a matrix with a specialization of full rank has full
+  generic rank, so the unspecialized indeterminate rows are independent over $R$
+  and hence over $K$.
 \end{proof}
 
 \begin{lemma}[Generic $k$-frame independence by the count]

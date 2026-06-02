@@ -41,8 +41,15 @@ green sub-node `lem:k-frame-specialize-li` (`Graph.specRow_linearIndependent` in
 `BodyBar/KFrame.lean`) — the block-diagonal specialization (`Pi.single j (signedIncMatrix e)` for
 `e ∈ Fs j` over a forest packing `Fs : Fin k → Set β`, indexed by `Σ j, ↥(Fs j)`) is LI over `K`,
 via mathlib's `Pi.linearIndependent_single` + the Matroid-pkg `Graph.orientation.isAcyclicSet_linearIndepOn`.
-The remaining red frontier is the genericity-lift step that finishes `lem:k-frame-specialize-forest`
-(a specialization of full rank witnesses generic LI over `K = Frac ℚ[X]`), then
+**The first half of the genericity-lift is now also landed** as a new green sub-node
+`lem:k-frame-li-over-poly-ring` (`Graph.linearIndepOn_kFrameRow_iff_over_polyRing` in
+`BodyBar/KFrame.lean`): generic LI of `kFrameRow` over `K = Frac R` ⟺ LI over the polynomial ring
+`R = MvPolynomial (β × Fin k) ℚ`, via `LinearIndependent.iff_fractionRing` on the fixed row family
+(the `K`-module `Fin k → α → K` is an `R`-module via the algebra map, scalar tower inherited from
+the product). This moves the remaining nonzero-minor argument off the fraction field and onto the
+integral domain `R`. The remaining red frontier is the **second half** of the genericity-lift
+(a forest-packing specialization of full rank ⟹ generic LI **over `R`** — the nonzero-polynomial-minor
+argument) that finishes `lem:k-frame-specialize-forest`, then
 `lem:k-frame-indep-iff-count`, then `thm:k-frame-union-cycle`. The Phase 13 chain
 (`BodyBar/TreePacking.lean`) remains the upstream dependency: it proves
 the tree-packing corollary and the `Graph`-native `(k, k)`-sparsity ↔
@@ -118,10 +125,16 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   `Pi.linearIndependent_single` (disjoint-block assembly) + the Matroid-pkg
   `Graph.orientation.isAcyclicSet_linearIndepOn` (each forest's incidence rows LI). Two-line term
   proof; `letI`-in-statement instance pattern (as `finrank_span_signedIncMatrix_eq_cycleMatroid_rk`).
+- [x] `lem:k-frame-li-over-poly-ring` — **landed.** First half of the genericity-lift:
+  generic LI of `kFrameRow` over `K = Frac R` ⟺ LI over `R = MvPolynomial (β × Fin k) ℚ`
+  (`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`), via `LinearIndependent.iff_fractionRing`
+  on the fixed row family. Moves the nonzero-minor argument off the fraction field onto the
+  integral domain `R`.
 - [ ] `lem:k-frame-specialize-forest` — reverse half of Whiteley §2.1; **LI core done**
-  (`lem:k-frame-specialize-li`). Remaining: the genericity-lift — a specialization of full rank
-  (the block-diagonal matrix of `lem:k-frame-specialize-li`, obtained by setting block-`j` vars `1`
-  on `Fs j`, `0` else) ⟹ generic rows LI over `K = Frac ℚ[X]`. Needs the "evaluation of a polynomial
+  (`lem:k-frame-specialize-li`) and **fraction-field reduction done** (`lem:k-frame-li-over-poly-ring`).
+  Remaining: the second half of the genericity-lift — a specialization of full rank (the
+  block-diagonal matrix of `lem:k-frame-specialize-li`, obtained by setting block-`j` vars `1`
+  on `Fs j`, `0` else) ⟹ generic rows LI **over `R`**. Needs the "evaluation of a polynomial
   minor is nonzero ⟹ the minor is a nonzero polynomial ⟹ generic LI" argument (no off-the-shelf
   mathlib/Matroid-pkg lemma; likely its own commit(s)).
 - [ ] `lem:k-frame-indep-iff-count` — packages both directions:
@@ -199,10 +212,12 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   (block `W_Y = span (signedIncMatrix '' Y)`), so piece (2) applies with the correct
   `r(Y)`; the original full-row `blockPiSpan` + `span_kFrameRow_le_blockPiSpan` stay
   (blueprinted under `lem:k-frame-span-le-pi`). The reverse half `lem:k-frame-specialize-forest`
-  has been re-split: its LI core `lem:k-frame-specialize-li` (`Graph.specRow_linearIndependent`) is
-  landed; the remaining open work is the genericity-lift (specialization of full rank ⟹ generic LI
-  over `K`), which needs the polynomial-minor non-vanishing argument and has no off-the-shelf
-  mathlib/Matroid-pkg lemma.
+  has been re-split: its LI core `lem:k-frame-specialize-li` (`Graph.specRow_linearIndependent`) and
+  the fraction-field reduction `lem:k-frame-li-over-poly-ring`
+  (`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`, via `LinearIndependent.iff_fractionRing`) are
+  landed; the remaining open work is the **second half** of the genericity-lift (specialization of
+  full rank ⟹ generic LI **over the polynomial ring `R`**), which needs the polynomial-minor
+  non-vanishing argument and has no off-the-shelf mathlib/Matroid-pkg lemma.
 
 ## Hand-off / next phase
 
@@ -217,20 +232,30 @@ The **entire forward half** of Whiteley §2.1 is now landed:
 `Graph.blockPiSpanOn` and `finrank_blockPiSpanOn`).
 
 The reverse half's **linear-algebra core** `lem:k-frame-specialize-li`
-(`Graph.specRow_linearIndependent`) is now landed: the block-diagonal specialization on a forest
+(`Graph.specRow_linearIndependent`) is landed: the block-diagonal specialization on a forest
 packing is LI over `K`, assembled from per-forest incidence-row LI
-(`Graph.orientation.isAcyclicSet_linearIndepOn`) by `Pi.linearIndependent_single`.
+(`Graph.orientation.isAcyclicSet_linearIndepOn`) by `Pi.linearIndependent_single`. The **first
+half of the genericity-lift** `lem:k-frame-li-over-poly-ring`
+(`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`) is also landed: generic LI over
+`K = Frac R` ⟺ LI over `R = MvPolynomial (β × Fin k) ℚ`, via `LinearIndependent.iff_fractionRing`
+on the fixed row family. This moves the remaining argument off the fraction field onto the
+integral domain `R`.
 
-The next concrete commit is the **genericity-lift** that finishes `lem:k-frame-specialize-forest`
-(leaf-most red node): from `(G ↾ E').IsSparse k k` extract a forest packing `Fs : Fin k → Set β` of
-`E'` (via `unionPow_cycleMatroid_indep_iff_isSparse_restrict` + `Matroid.union_indep_iff`, as in
-`tutte_nash_williams`), then lift `lem:k-frame-specialize-li` (the specialization has full rank) to
-generic LI of `kFrameRow` over `E'`. The lift is the "a polynomial minor with a nonzero
-specialization is a nonzero polynomial, so the generic rows are LI over `K = Frac ℚ[X]`" argument —
-**no off-the-shelf mathlib/Matroid-pkg lemma exists for this**, so it likely needs its own
-sub-lemma(s) (a `RingHom`/`AlgHom`-mediated `LinearIndependent`-reflection over the fraction field,
-or an `MvPolynomial.eval`-based minor-nonvanishing helper). Flip `lem:k-frame-specialize-forest`
-green when the lift lands; if it overshoots one commit, re-split as the forward half was.
+The next concrete commit is the **second half of the genericity-lift** that finishes
+`lem:k-frame-specialize-forest` (leaf-most red node), now stated **over `R`**: from
+`(G ↾ E').IsSparse k k` extract a forest packing `Fs : Fin k → Set β` of `E'` (via
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict` + `Matroid.union_indep_iff`, as in
+`tutte_nash_williams`), then show `LinearIndepOn R (kFrameRow k D) E'` from the full-rank
+specialization (`lem:k-frame-specialize-li`). The argument is "a polynomial minor with a nonzero
+specialization is a nonzero polynomial, so the generic rows are LI over `R`" — the specialization
+ring hom `R = MvPolynomial (β × Fin k) ℚ → ℚ` sends `X_{(e,j)} ↦ 1` if `e ∈ Fs j` else `0`,
+turning `kFrameRow` into the block-`single` `specRow` (each `e ∈ E'` is in exactly one `Fs j`
+since the packing is disjoint). **No off-the-shelf mathlib/Matroid-pkg lemma exists for the
+minor-nonvanishing reflection**, so it likely needs its own sub-lemma(s) (an `MvPolynomial.eval` /
+`Matrix.map`-mediated determinant-nonvanishing helper; note a coefficient-wise ring-hom reflection
+is *false* — the kernel of the specialization is nontrivial — so it must route through a maximal
+minor's determinant, not directly through the dependence relation). Flip
+`lem:k-frame-specialize-forest` green when this lands; if it overshoots one commit, re-split.
 
 After it, `lem:k-frame-indep-iff-count` packages both halves against
 `thm:unionPow-cycle-indep-iff-sparse` (Phase 13); then `thm:k-frame-union-cycle`
