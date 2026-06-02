@@ -1,12 +1,14 @@
 # Phase 16 cleanup round (work log)
 
-**Status:** open — A landed (A2 chapter-intro destale + A1
+**Status:** ✓ Complete — A landed (A2 chapter-intro destale + A1
 signature-compare no-op + A2 Lean-side `BodyHinge.lean` docstring
 destale). B closed (B1–B7 no-op confirm batch — all seven greps
 re-run zero-hit on `BodyHinge.lean`). C closed (C1–C3 long-proof
 audit-gate no-op confirm batch — top three proofs forced structural
-shape, no extraction). D remains. Smallest concrete next commit named
-in *Hand-off / next phase*.
+shape, no extraction). D closed this commit (D1 `notes/Phase16.md`
+spot-check no-op; D2 migrated the one Phase-16 `[resolved]` FRICTION
+entry to `FRICTION-archive.md`, kept the four Phase-13/14 `[matroid]`
+entries active). Round closed; ROADMAP row flipped to ✓.
 
 Between-phases cleanup round, run after Phase 16 (body-hinge /
 panel-hinge Tay–Whiteley theorem, existence form) closed in `968e137`
@@ -210,23 +212,27 @@ threshold; the top three are the audit gate per `CLEANUP.md`
 
 ### D. Project-organization compression
 
-- [ ] D1 — `notes/Phase16.md` is **172 lines, under the 250 soft
-  budget**, so no compression forced. Spot-check only: confirm the
-  *Current state* + *Hand-off* still pass the hand-off contract and the
-  *Decisions made* entries respect the ≤8-line rule (they do at phase
-  close). Likely no-op (a short phase, 4 forward-work commits, sits
-  naturally near 170 lines per `notes/CLAUDE.md` *Soft length budget*).
-- [ ] D2 — re-skim `FRICTION.md` status sections. **Migrate candidate:**
-  the one Phase-16 `[resolved]` entry — `refine h.trans ?_` over a
-  defeq-but-not-syntactic iff side (L79–95), consumer
-  `edgeMultiply_isSparse_iff`, already fully indexed by TACTICS-QUIRKS
-  § 25 — to `FRICTION-archive.md` (it has no forward reference if Phase
-  17 stays unopened). Re-assess the four Phase-13/14 `[matroid]` entries
-  Phase-15-cleanup D2 kept active: they are `apnelson1/Matroid`-API
-  idioms the body-bar chain reuses; keep active only if a Phase-17
-  open would still forward-reference them — otherwise this is the round
-  to migrate them too. No TACTICS lift (the migrate candidate is already
-  lifted).
+- [x] D1 — `notes/Phase16.md` is **172 lines, under the 250 soft
+  budget**, so no compression forced. Spot-checked, **no-op**: *Current
+  state* + *Hand-off* pass the hand-off contract (name the molecular-
+  conjecture Phase 17 concretely as the next phase), and the *Decisions
+  made* entries all respect the ≤8-line rule. Sits naturally near 170
+  lines for a short phase (4 forward-work commits) per `notes/CLAUDE.md`
+  *Soft length budget*.
+- [x] D2 — re-skimmed `FRICTION.md` status sections. **Migrated** the one
+  Phase-16 `[resolved]` entry — `refine h.trans ?_` over a defeq-but-not-
+  syntactic iff side (was L79–95), consumer `edgeMultiply_isSparse_iff`,
+  fully indexed by TACTICS-QUIRKS § 25 — to `FRICTION-archive.md` with a
+  *Migrated from FRICTION.md … (D2)* note; it has no forward reference
+  (Phase 17 unopened). **Kept active** the four Phase-13/14 `[matroid]`
+  entries (`Matroid.Union` `[DecidableEq β]`-binder, `signedIncMatrix`
+  decidability-`letI`, `Matroid.Union`-ground-is-`univ`,
+  `Graph.Components`-`Finite`): none is `Lifted to:` a TACTICS section —
+  each is the sole living record of an `apnelson1/Matroid`-rebase idiom
+  the body-bar/body-hinge chain reuses, so each remains a live forward
+  reference for a Phase-17 open (which would build on the same matroid-
+  union chain). Same keep-active disposition as Phase-15-cleanup D2. No
+  TACTICS lift (the migrated entry is already lifted).
 
 ### Non-A–D items noted during the sweep
 
@@ -242,7 +248,13 @@ threshold; the top three are the audit gate per `CLEANUP.md`
 
 ## Decisions made during this round
 
-<none yet — fixes land in subsequent commits>
+- **D2 keep-active criterion for the four `[matroid]` entries.** Migrated
+  only the Phase-16 `[resolved]` entry (TACTICS-QUIRKS § 25-indexed, no
+  Phase-17 forward ref). The four Phase-13/14 `[matroid]` `apnelson1/Matroid`-
+  rebase idioms stayed active: none is lifted to a TACTICS section, so each
+  is the sole living record of its gotcha, and a Phase-17 (molecular) open
+  would build on the same matroid-union chain — same disposition as
+  Phase-15-cleanup D2.
 
 ## Blockers / open questions
 
@@ -250,28 +262,32 @@ threshold; the top three are the audit gate per `CLEANUP.md`
 
 ## Hand-off / next phase
 
-**Buckets A, B, and C closed.** Build green (2673 jobs on
-`BodyBar.BodyHinge`), `checkdecls` exit 0, `lake lint` clean. Two
-genuine doc findings (both A2 — the chapter-intro destale and the
-`BodyHinge.lean` *Contents*-list destale); A1's signature compare was
-a no-op; B1–B7 were a single no-op confirm batch (all seven code-smell
-greps zero-hit on `BodyHinge.lean`, re-run at close); C1–C3 were a
-single no-op confirm batch (top three proofs all forced structural
-shape, no extraction, disjoint per-step shapes — `CLEANUP.md`
-*Calibration*). What remains is bucket D: one spot-check (no-op) plus
-one FRICTION migrate.
+**Round complete — all four buckets closed.** Build green (2673 jobs on
+`BodyBar.BodyHinge`), `checkdecls` exit 0, `lake lint` clean (no Lean
+touched in D, so no gate re-fired this commit). ROADMAP Status row
+flipped to ✓.
 
-**Smallest concrete next commit:** land **D1 + D2** as one `chore`
-commit closing bucket D (and the round). D1: spot-check
-`notes/Phase16.md` (172 lines, under the 250 budget — confirm *Current
-state* + *Hand-off* pass the contract and *Decisions made* entries
-respect the ≤8-line rule; expect no-op). D2: migrate the one Phase-16
-`[resolved]` FRICTION entry (`refine h.trans ?_` over a
-defeq-but-not-syntactic iff side, consumer `edgeMultiply_isSparse_iff`,
-already indexed by TACTICS-QUIRKS § 25) to `FRICTION-archive.md`, and
-re-assess whether the four Phase-13/14 `[matroid]` entries
-Phase-15-cleanup D2 kept active should migrate too (keep active only if
-a Phase-17 open would forward-reference them; Phase 17 is unopened).
-On landing D, flip the ROADMAP Status row for this cleanup round to ✓
-and write the round-close summary. A fresh session can resume from this
-log alone.
+Summary of the round:
+- **A** — two genuine doc findings, both A2 (the `body-hinge.tex`
+  chapter-intro forward-mode destale and the `BodyHinge.lean`
+  *Contents*-list destale); A1's per-node signature compare was a no-op
+  (all 10 pins resolve, statement forms match node-for-node).
+- **B** — single no-op confirm batch; all seven code-smell greps
+  zero-hit on `BodyHinge.lean`.
+- **C** — single no-op confirm batch; top three proofs
+  (`edgeMultiply_isSparse_iff` ~26L, `spanningVerts_edgeMultiply` ~20L,
+  `exists_toBodyBar_iff` ~13L) all forced structural shape, no
+  extraction, disjoint per-step shapes (`CLEANUP.md` *Calibration*).
+- **D** (this commit) — D1 spot-check of `notes/Phase16.md` no-op (172
+  lines, under budget, contract + ≤8-line rule both pass); D2 migrated
+  the one Phase-16 `[resolved]` FRICTION entry to `FRICTION-archive.md`
+  and kept the four Phase-13/14 `[matroid]` entries active (sole living
+  record of `apnelson1/Matroid`-rebase idioms; live forward reference
+  for a Phase-17 open).
+
+**Next:** no follow-on cleanup. The next phase is the molecular
+conjecture (Tay–Whiteley / Katoh–Tanigawa 2011) — a longer-horizon
+**Phase 17**, not opened; opening it starts (forward mode) by drafting a
+new `molecular.tex` chapter dep-graph and `notes/Phase17.md` (see
+`notes/Phase16.md` *Hand-off*). A fresh session can resume from this log
+plus ROADMAP §16 alone.

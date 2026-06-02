@@ -76,24 +76,6 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [resolved] `refine h.trans ?_` over a defeq-but-not-syntactic iff side
-- **Where it bit:** `Graph.BodyHingeFramework.edgeMultiply_isSparse_iff`
-  (`BodyBar/BodyHinge.lean`, Phase 16). The transport helper
-  `exists_toBodyBar_iff` produces an iff whose LHS is the body-hinge
-  existential up to `def`-unfolding (`F.IsIndependent` ↦
-  `F.toBodyBar.IsIndependent`) and binder-shape (`∃ (_ : p), q` vs
-  `p ∧ q`). `refine (exists_toBodyBar_iff …).trans ?_` failed with a
-  *"has type `A ↔ ? `, expected `A' ↔ …`"* type mismatch — `Iff.trans`
-  matches its component against the goal's LHS only up to reducible
-  transparency.
-- **Friction:** rewrote the proof to `rw [← hsparse]` (a syntactic
-  match on the `IsSparse` side from `tay_witness`), then bridged the
-  two existentials with `constructor` + the helper's `.mpr`, never
-  `.trans`. Each branch then closes by `exact` up to full defeq.
-- **Proposed fix:** none needed — `constructor` + `.mp`/`.mpr` is the
-  idiom. Cross-cutting, so lifted.
-- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 25.
-
 ### [resolved] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
 - **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in
   `BodyBar/TreePacking.lean` (Phase 13 forward direction). The lemma

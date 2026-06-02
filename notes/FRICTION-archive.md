@@ -969,3 +969,25 @@ mirrored upstream candidates — see [`FRICTION.md`](FRICTION.md).
   post-Phase-15 cleanup round (D2): resolution lifted to TACTICS-QUIRKS
   § 24, indexed by `stdFramework_rigidityRow_eq`.
 - **Lifted to:** TACTICS-QUIRKS § 24.
+
+### [resolved] `refine h.trans ?_` over a defeq-but-not-syntactic iff side
+- **Where it bit:** `Graph.BodyHingeFramework.edgeMultiply_isSparse_iff`
+  (`BodyBar/BodyHinge.lean`, Phase 16). The transport helper
+  `exists_toBodyBar_iff` produces an iff whose LHS is the body-hinge
+  existential up to `def`-unfolding (`F.IsIndependent` ↦
+  `F.toBodyBar.IsIndependent`) and binder-shape (`∃ (_ : p), q` vs
+  `p ∧ q`). `refine (exists_toBodyBar_iff …).trans ?_` failed with a
+  *"has type `A ↔ ? `, expected `A' ↔ …`"* type mismatch — `Iff.trans`
+  matches its component against the goal's LHS only up to reducible
+  transparency.
+- **Friction:** rewrote the proof to `rw [← hsparse]` (a syntactic
+  match on the `IsSparse` side from `tay_witness`), then bridged the
+  two existentials with `constructor` + the helper's `.mpr`, never
+  `.trans`. Each branch then closes by `exact` up to full defeq.
+- **Proposed fix:** none needed — `constructor` + `.mp`/`.mpr` is the
+  idiom. Cross-cutting, so lifted.
+- **Status:** resolved. Migrated from `FRICTION.md` in the post-Phase-16
+  cleanup round (D2): resolution lifted to TACTICS-QUIRKS § 25, indexed
+  by the consumer decl `edgeMultiply_isSparse_iff`; no Phase-17 forward
+  reference (Phase 17 unopened).
+- **Lifted to:** TACTICS-QUIRKS § 25.
