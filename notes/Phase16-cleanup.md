@@ -2,8 +2,9 @@
 
 **Status:** open — A landed (A2 chapter-intro destale + A1
 signature-compare no-op + A2 Lean-side `BodyHinge.lean` docstring
-destale). B, C, D remain. Smallest concrete next commit named in
-*Hand-off / next phase*.
+destale). B closed (B1–B7 no-op confirm batch — all seven greps
+re-run zero-hit on `BodyHinge.lean`). C, D remain. Smallest concrete
+next commit named in *Hand-off / next phase*.
 
 Between-phases cleanup round, run after Phase 16 (body-hinge /
 panel-hinge Tay–Whiteley theorem, existence form) closed in `968e137`
@@ -21,8 +22,10 @@ leg — a second genuine doc finding, the `BodyHinge.lean` module
 docstring's *Contents* list called itself the "lower" nodes and listed
 only the two definition nodes, now reworded to all four. Build green on
 `CombinatorialRigidity.BodyBar.BodyHinge` (2673 jobs); `checkdecls`
-exit 0. Remaining: B1–B7 no-op confirm batch, C1–C3 no-op confirms,
-D1/D2.
+exit 0. Bucket **B closed** this commit: the seven code-smell greps
+re-run zero-hit on `BodyHinge.lean` (confirm-and-close, doc-only — no
+Lean touched, so no build/lint/`checkdecls` gate fires). Remaining:
+C1–C3 no-op confirms, D1/D2.
 
 The Phase-16 surface is small and uniform: a single new Lean file
 (`BodyBar/BodyHinge.lean`, 279 lines) and four `body-hinge.tex` nodes,
@@ -122,40 +125,41 @@ facts), so the mirror-directory leg of the usual sweep is empty.
   build + lint green and warning-clean, `checkdecls` exit 0 (re-run
   since the file changed; no pin touched).
 
-### B. Code-smell sweep (greps run at round open — all zero-hit)
+### B. Code-smell sweep (greps run at round open — all zero-hit; re-confirmed at close)
 
-- [ ] B1 — `classical` invocations: **zero hits** on `BodyHinge.lean`.
+- [x] B1 — `classical` invocations: **zero hits** on `BodyHinge.lean`.
   No-op confirm (no strip-build sweep needed; the file's decidability
   needs are met by the inherited Phase-13/15 API, which carries its own
   bridges).
-- [ ] B2 — `letI`/`haveI : Fintype … := Fintype.ofFinite _` bridges:
+- [x] B2 — `letI`/`haveI : Fintype … := Fintype.ofFinite _` bridges:
   **zero hits**. No-op confirm. `edgeMultiply_isSparse_iff` /
   `body_hinge_tay` take `[Finite α] [Finite β]` in the signature and
   delegate to `tay_witness` (which carries its own inline bridges), so
   no `[Finite] → Fintype` bridge is written at this surface.
-- [ ] B3 — `@[nolint …]` / `set_option linter.* false`: **zero hits**.
+- [x] B3 — `@[nolint …]` / `set_option linter.* false`: **zero hits**.
   No-op confirm. (The `IsInfinitesimallyRigid` `[Finite α]`-contract
   `@[nolint unusedArguments]` lives upstream in `Framework.lean`, audited
   in Phase-15-cleanup B3; the Phase-16 `IsInfinitesimallyRigid` wrapper
   takes `[Finite α]` but uses it via the delegate, no nolint needed.)
-- [ ] B4 — `noncomputable def`: **zero hits**. No-op confirm.
+- [x] B4 — `noncomputable def`: **zero hits**. No-op confirm.
   `edgeMultiply` and `bodyHingeMult` are plain `def`s (computable —
   `edgeMultiply` is a `Graph` structure literal, `bodyHingeMult` is
   `bodyBarDim n - 1`); `BodyHingeFramework` / `toBodyBar` are a
   `structure` + a `def` with no noncomputable ingredient. Confirm none
   silently *should* be `noncomputable` (none are — no `Classical.choose`
   / `Module.Dual` / norm in any body).
-- [ ] B5 — `change`/`show` to coax `simp`/`rw`: **zero hits**. No-op
+- [x] B5 — `change`/`show` to coax `simp`/`rw`: **zero hits**. No-op
   confirm.
-- [ ] B6 — 3+-arg single-step `rw` chains: **zero hits**. No-op confirm.
+- [x] B6 — 3+-arg single-step `rw` chains: **zero hits**. No-op confirm.
   (`edgeMultiply_edgeSet_ncard` has a 5-lemma `rw` but it is a genuine
   multi-step `ncard_prod` expansion, not a single mathematical step — it
   is on a 2-arg-or-fewer pattern at each step; the grep for the
   4+-comma single chain returned empty.)
-- [ ] B7 — `show … from rfl`: **zero hits**. No-op confirm.
+- [x] B7 — `show … from rfl`: **zero hits**. No-op confirm.
 
-  *All seven B greps zero-hit → expect to land B1–B7 as one no-op
-  confirm batch commit (cf. Phase-15-cleanup B2/B3/B5/B7 batch).*
+  *All seven B greps zero-hit → landed B1–B7 as one no-op confirm
+  batch commit (re-run at close, exit 1 each; cf. Phase-15-cleanup
+  B2/B3/B5/B7 batch).*
 
 ### C. Long-proof audit
 
@@ -224,19 +228,24 @@ screening threshold; the top three are the audit gate per `CLEANUP.md`
 
 ## Hand-off / next phase
 
-**Bucket A closed.** Build green (2673 jobs on `BodyBar.BodyHinge`),
-`checkdecls` exit 0, `lake lint` clean. Two genuine doc findings (both
-A2 — the chapter-intro destale and the `BodyHinge.lean` *Contents*-list
-destale); A1's signature compare was a no-op. What remains is all no-op
-confirm work plus one FRICTION migrate.
+**Buckets A and B closed.** Build green (2673 jobs on
+`BodyBar.BodyHinge`), `checkdecls` exit 0, `lake lint` clean. Two
+genuine doc findings (both A2 — the chapter-intro destale and the
+`BodyHinge.lean` *Contents*-list destale); A1's signature compare was
+a no-op; B1–B7 were a single no-op confirm batch (all seven
+code-smell greps zero-hit on `BodyHinge.lean`, re-run at close). What
+remains is all no-op confirm work plus one FRICTION migrate.
 
-**Smallest concrete next commit:** land the **B1–B7 no-op confirm
-batch** as one `chore` commit closing bucket B (all seven greps were
-zero-hit on `BodyHinge.lean` at round open — see the per-row findings
-in the B task list; the round opener's task-list-discipline pass
-already recorded them, so this is a confirm-and-close, cf.
-Phase-15-cleanup's `9b55e4a` B-batch). Then C1–C3 no-op confirms
-(one commit), then D1 (Phase16.md spot-check, no-op) + D2 (FRICTION
-migrate — the one Phase-16 `[resolved]` entry to `FRICTION-archive.md`,
-plus re-assess the four Phase-13/14 `[matroid]` entries). A fresh
-session can resume from this log alone.
+**Smallest concrete next commit:** land the **C1–C3 no-op confirms**
+as one `chore` commit closing bucket C — the long-proof audit gate on
+`BodyHinge.lean`'s top three proofs (`edgeMultiply_isSparse_iff` ~26L,
+`exists_toBodyBar_iff`/`toBodyBar_placement` ~21/19L,
+`spanningVerts_edgeMultiply` ~20L; none reach the §C 50-line
+screening threshold). Walk the four-question audit gate (`CLEANUP.md`
+§C *Calibration*) confirming the forced structural shape — expect
+no-op (the Tay transport, the framework/spanning bookkeeping, disjoint
+shapes, no cross-proof unification candidate). Then D1 (Phase16.md
+spot-check, no-op) + D2 (FRICTION migrate — the one Phase-16
+`[resolved]` entry to `FRICTION-archive.md`, plus re-assess the four
+Phase-13/14 `[matroid]` entries). A fresh session can resume from this
+log alone.
