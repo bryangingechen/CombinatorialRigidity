@@ -73,8 +73,14 @@ column selection to the engine `Matrix.linearIndependent_rows_of_specialized_sub
 where the nonsingular minor came from the new mirror
 `Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows` applied to the block-diagonal forest
 rows LI over ℚ (`specRow_linearIndependent`, generalized to a field `𝔽`, reindexed along
-`Set.unionEqSigmaOfDisjoint`). **Both genericity halves are done.** Remaining red frontier:
-`lem:k-frame-indep-iff-count`, then `thm:k-frame-union-cycle`. The Phase 13 chain
+`Set.unionEqSigmaOfDisjoint`). **Both genericity halves are done.** **The count-bridge node
+`lem:k-frame-indep-iff-count` is now also landed (green): `Graph.kFrameMatroid_indep_iff_isSparse_restrict`**
+— `Matroid.ofFun_indep_iff` reduces matroid independence to `LinearIndepOn K (kFrameRow k D) E'`
+(LI on the full `E'`; `and_iff_left hE'` discharges the `E' ⊆ E(G)` side), then the two genericity
+halves wire forward (via `forest_count_of_linearIndepOn_kFrameRow` + Phase 13's
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict` / `Matroid.Union_pow_indep_iff_count`) and reverse
+(`linearIndepOn_kFrameRow_of_isSparse_restrict`). Remaining red frontier:
+`thm:k-frame-union-cycle` (the Phase-closing `Matroid.ext_indep`). The Phase 13 chain
 (`BodyBar/TreePacking.lean`) remains the upstream dependency: it proves
 the tree-packing corollary and the `Graph`-native `(k, k)`-sparsity ↔
 `k`-fold-`cycleMatroid`-union independence bridge
@@ -180,10 +186,15 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   `Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows` gives a nonsingular maximal minor,
   fed (via `RingHom.map_det`) to the minor-nonvanishing engine. `specRow_linearIndependent` was
   generalized from `KFrameField β k` to an arbitrary field `𝔽` (needed over ℚ here).
-- [ ] `lem:k-frame-indep-iff-count` — packages both directions:
-  `(kFrameMatroid G k).Indep E' ↔ (G ↾ E').IsSparse k k` (the
-  `Matroid.ofFun` LI predicate ⟺ the union-side count). Depends on the
-  two halves above + `thm:unionPow-cycle-indep-iff-sparse` (Phase 13).
+- [x] `lem:k-frame-indep-iff-count` — **landed.** Packages both directions:
+  `(kFrameMatroid G k).Indep E' ↔ (G ↾ E').IsSparse k k`
+  (`Graph.kFrameMatroid_indep_iff_isSparse_restrict`, `BodyBar/KFrame.lean`).
+  `Matroid.ofFun_indep_iff` (`@[simp]`, gives LI on the *full* `E'` — no `E' ∩ E(G)`
+  intersection, since `and_iff_left hE'` discharges `E' ⊆ E(G)`) reduces the LHS to
+  `LinearIndepOn K (kFrameRow k D) E'`; forward routes the LI through
+  `forest_count_of_linearIndepOn_kFrameRow` + Phase 13's
+  `unionPow_cycleMatroid_indep_iff_isSparse_restrict` / `Matroid.Union_pow_indep_iff_count`,
+  reverse is `linearIndepOn_kFrameRow_of_isSparse_restrict`. Five-line `rw`+`refine`.
 - [ ] `thm:k-frame-union-cycle` — Whiteley Theorem 1: `F(G, X) = ⋃ⱼ
   G.cycleMatroid`. Now a `Matroid.ext_indep` matching the two
   count-characterizations (`lem:k-frame-indep-iff-count` vs
@@ -273,93 +284,24 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
 
 ## Hand-off / next phase
 
-**The reverse half `lem:k-frame-specialize-forest` is now landed**
-(`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`, `BodyBar/KFrame.lean`): from
-`(G ↾ E').IsSparse k k`, the generic `k`-frame rows on `E'` are LI over `K`. The wiring is described
-in the *Lemma checklist*. Its only genuinely-new prerequisite, the "full row rank ⟹ nonsingular
-maximal minor" extraction, landed as the mirror
-`Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows`
-(`Mathlib/LinearAlgebra/Matrix/Rank.lean`); `specRow_linearIndependent` was generalized to an
-arbitrary field `𝔽`. **Both genericity halves of Whiteley §2.1 are now complete.**
+**The count-bridge node `lem:k-frame-indep-iff-count` is now landed**
+(`Graph.kFrameMatroid_indep_iff_isSparse_restrict`, `BodyBar/KFrame.lean`): for `E' ⊆ E(G)`,
+`(G.kFrameMatroid k).Indep E' ↔ (G ↾ E').IsSparse k k`. The proof is a five-line `rw`+`refine`:
+`Matroid.ofFun_indep_iff` (a `@[simp]` lemma giving LI on the *full* `E'` — the feared `E' ∩ E(G)`
+intersection does not appear, because `and_iff_left hE'` discharges the `E' ⊆ E(G)` conjunct) reduces
+the LHS to `LinearIndepOn K (kFrameRow k D) E'`; forward wires the two genericity halves
+(`forest_count_of_linearIndepOn_kFrameRow` → Phase 13's
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict` / `Matroid.Union_pow_indep_iff_count`), reverse is
+`linearIndepOn_kFrameRow_of_isSparse_restrict`. `[DecidableEq β]` was dropped from the signature
+(unused-in-type linter) and supplied by `classical`.
 
-The next concrete commit is **`lem:k-frame-indep-iff-count`**: package both halves into
-`(kFrameMatroid G k).Indep E' ↔ (G ↾ E').IsSparse k k`. The `Matroid.ofFun` independence predicate
-(`Matroid.ofFun_indep_iff`) unfolds to `LinearIndepOn K (kFrameRow k D) (E' ∩ E(G))` plus `E' ⊆ E(G)`;
-the forward direction routes the LI through `forest_count_of_linearIndepOn_kFrameRow` (the count
-`∀ Y ⊆ E', |Y| ≤ k · r(Y)`) and back to `(k,k)`-sparsity via Phase 13's
-`unionPow_cycleMatroid_indep_iff_isSparse_restrict` / `Matroid.Union_pow_indep_iff_count`; the reverse
-is the new `linearIndepOn_kFrameRow_of_isSparse_restrict`. Watch the ground-set
-intersection (`ofFun` independence is stated on `E' ∩ E(G)`; `kFrameMatroid_ground` gives `E = E(G)`).
-After it, `thm:k-frame-union-cycle` is a short `Matroid.ext_indep` matching the two
-count-characterizations on the shared ground set `E(G)` — **that** commit closes Phase 14 and carries
-the phase-completion checklist (ROADMAP row ✓, status surfaces, compress §14).
-
-----
-
-The **entire forward half** of Whiteley §2.1 is now landed:
-`lem:k-frame-span-le-pi` (`Graph.span_kFrameRow_le_blockPiSpan`), piece (1)
-`lem:k-frame-pi-finrank` (`Graph.finrank_constPiSpan`), piece (2)
-`lem:k-frame-incidence-finrank-rk`
-(`Matroid.Rep.finrank_span_image_eq_rk` +
-`Graph.finrank_span_signedIncMatrix_eq_cycleMatroid_rk`), and the assembly
-`lem:k-frame-nonzero-monomial-forest`
-(`Graph.forest_count_of_linearIndepOn_kFrameRow`, via the `Y`-restricted block span
-`Graph.blockPiSpanOn` and `finrank_blockPiSpanOn`).
-
-The reverse half's **linear-algebra core** `lem:k-frame-specialize-li`
-(`Graph.specRow_linearIndependent`) is landed: the block-diagonal specialization on a forest
-packing is LI over `K`, assembled from per-forest incidence-row LI
-(`Graph.orientation.isAcyclicSet_linearIndepOn`) by `Pi.linearIndependent_single`. The **first
-half of the genericity-lift** `lem:k-frame-li-over-poly-ring`
-(`Graph.linearIndepOn_kFrameRow_iff_over_polyRing`) is also landed: generic LI over
-`K = Frac R` ⟺ LI over `R = MvPolynomial (β × Fin k) ℚ`, via `LinearIndependent.iff_fractionRing`
-on the fixed row family. This moves the remaining argument off the fraction field onto the
-integral domain `R`. The **forest-extraction step** `lem:k-frame-forest-packing-of-sparse`
-(`Graph.exists_forestPacking_cover_of_isSparse_restrict`) is also landed: from
-`(G ↾ E').IsSparse k k` it produces a `k`-tuple `Fs : Fin k → Set β` of acyclic bar sets covering
-`E'` exactly (via `unionPow_cycleMatroid_indep_iff_isSparse_restrict` + `Matroid.union_indep_iff` +
-`cycleMatroid_indep`) — the family on which `lem:k-frame-specialize-li` places its block-diagonal
-full-rank matrix.
-
-The **abstract minor-nonvanishing engine** is now landed too:
-`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero`
-(`Mathlib/LinearAlgebra/Matrix/Rank.lean`) — for rows `M : ι → κ → R` over a domain `R`, a column
-selection `e : ι → κ`, and a ring hom `φ : R →+* S` (`S` nontrivial), `φ (submatrix (M∘e)).det ≠ 0`
-⟹ `LinearIndependent R M`. This is the determinant-routed reflection the whole reverse half hinges
-on (the coefficient-wise reflection is *false* when `φ` has a nontrivial kernel — see FRICTION).
-
-The **specialization identity** `lem:k-frame-specialize-identity`
-(`Graph.forestEval_kFrameRowR_eq_single`) is now landed — the `R`-lift half of the wiring step. It
-introduces the `R = MvPolynomial (β × Fin k) ℚ`-valued row `Graph.kFrameRowR`, the algebra-map
-bridge `Graph.kFrameRow_eq_map_kFrameRowR` (via the ring-hom naturality helper
-`Graph.signedIncMatrix_map`), the forest-packing evaluation hom `Graph.forestEval`, and the identity
-that, for a **disjoint** `k`-forest packing and `e ∈ Fs j₀`, entrywise-`forestEval`-specializing
-`kFrameRowR k D e` gives exactly the block-`single` row `Pi.single j₀ (signedIncMatrix ℚ e)` of
-`specRow_linearIndependent`.
-
-The next concrete commit is the **minor / det step** that finishes `lem:k-frame-specialize-forest`
-(now the leaf-most red node). Given `(G ↾ E').IsSparse k k`, target `LinearIndepOn K (kFrameRow k D)
-E'` via `linearIndepOn_kFrameRow_iff_over_polyRing` (reduce to `R`) + `kFrameRow_eq_map_kFrameRowR`
-(work with the `R`-row `kFrameRowR`). Concretely: (i) get a **disjoint** forest packing covering
-`E'` — disjointify `exists_forestPacking_cover_of_isSparse_restrict` via
-`Fintype.exists_disjointed_le` (as in `tutte_nash_williams`), or reuse Phase 13's `IsForestPacking`
-on `G ↾ E'`; (ii) reindex `LinearIndepOn R (kFrameRowR k D) E'` to `LinearIndependent R (M : E' → κ →
-R)`, `κ = Fin k × α`; (iii) feed the engine
-`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero` the hom `forestEval Fs`, where
-by `forestEval_kFrameRowR_eq_single` the specialized rows are the block-`single` `specRow` matrix
-(reindexed via the disjoint cover bijection `E' ≃ Σ j, Fs j`); (iv) the square column selection +
-nonzero specialized det come from the forest rows being LI over ℚ (`specRow_linearIndependent` →
-`LinearIndependent.rank_matrix`, then a maximal nonsingular minor — the one remaining "LI rows ⟹
-nonzero square minor" step to locate/prove). If it overshoots, the maximal-minor step is the natural
-further split.
-
-After it, `lem:k-frame-indep-iff-count` packages both halves against
-`thm:unionPow-cycle-indep-iff-sparse` (Phase 13); then `thm:k-frame-union-cycle`
-closes Phase 14 (a short `Matroid.ext_indep`) and carries the phase-completion
-checklist (ROADMAP ✓, status surfaces, compress §14).
-
-After the two genericity halves and `lem:k-frame-indep-iff-count` land,
-`thm:k-frame-union-cycle` is a short `Matroid.ext_indep`; **that** commit
-closes Phase 14 and unblocks Phase 15 (body-bar Tay theorem, existence
-form), so it carries the phase-completion checklist (ROADMAP row ✓,
-status surfaces, compress ROADMAP §14).
+The next concrete commit is **`thm:k-frame-union-cycle`** — the Phase-closing theorem
+`G.kFrameMatroid k = Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)` (Whiteley Theorem 1). Both
+matroids have ground set `E(G)` (`kFrameMatroid_ground`; `Matroid.Union` ground), so it is a
+`Matroid.ext_indep` matching the two count-characterizations on the shared ground set: for
+`E' ⊆ E(G)`, the new `kFrameMatroid_indep_iff_isSparse_restrict` and Phase 13's
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict` give the *same* `(k,k)`-sparsity condition.
+Watch the `Matroid.ext_indep` obligation shape (it supplies `I ⊆ E` on each side; use it to feed the
+`hE'` hypothesis both lemmas require). **That** commit closes Phase 14 and carries the
+phase-completion checklist (ROADMAP row ✓, status surfaces — README / home_page / intro.tex —,
+compress ROADMAP §14) and unblocks Phase 15.

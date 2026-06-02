@@ -448,11 +448,16 @@ Phase 14 (`k`-frame matroid = `k`-fold cycle-matroid union).
 §`sec:body-bar-k-frame`; see `notes/Phase14.md`).** Whiteley 1988
 Theorem 1: the generic `k`-frame matroid `F(G,X)` on a multigraph (a
 linear matroid via `Matroid.ofFun` over indeterminate coefficients)
-equals the `k`-fold union of `Graph.cycleMatroid`. Column-reorder /
-monomial argument from Whiteley §2.1. Bridges Phase 12's abstract union
-to the body-bar realizations of Phase 15. Leaf-most red node /
-next concrete commit: `def:k-frame-matroid` in a new
-`BodyBar/KFrame.lean`.
+equals the `k`-fold union of `Graph.cycleMatroid`. Whiteley §2.1's
+genericity argument (re-cast as a rank count forward, a forest-packing
+specialization reverse). Bridges Phase 12's abstract union to the
+body-bar realizations of Phase 15. Both genericity halves and the
+count-bridge node `lem:k-frame-indep-iff-count`
+(`Graph.kFrameMatroid_indep_iff_isSparse_restrict`) are landed in
+`BodyBar/KFrame.lean`; the single remaining red node is the
+Phase-closing `thm:k-frame-union-cycle` (a `Matroid.ext_indep` matching
+`kFrameMatroid_indep_iff_isSparse_restrict` against Phase 13's
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict`).
 
 ### Phase 15 — Body-bar Tay theorem (existence form)
 

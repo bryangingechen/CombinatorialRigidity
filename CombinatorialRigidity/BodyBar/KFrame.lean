@@ -578,4 +578,31 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
 
 end Reverse
 
+section Identification
+
+variable {G : Graph α β} {k : ℕ}
+
+/-- **Generic `k`-frame independence by the count** (`lem:k-frame-indep-iff-count`). A bar set
+`E' ⊆ E(G)` is independent in the generic `k`-frame matroid `F(G, X)` if and only if the
+edge-restriction `G ↾ E'` is `(k, k)`-sparse. This packages both halves of Whiteley §2.1: the
+`Matroid.ofFun` independence predicate unfolds to linear independence of the generic `k`-frame rows
+on `E'`, the forward direction (`forest_count_of_linearIndepOn_kFrameRow`) reads off the count
+`∀ Y ⊆ E', |Y| ≤ k · r_{cycleMatroid}(Y)`, and the reverse
+(`linearIndepOn_kFrameRow_of_isSparse_restrict`) recovers linear independence from sparsity. The
+count is exactly what Phase 13's `unionPow_cycleMatroid_indep_iff_isSparse_restrict` (via
+`Matroid.Union_pow_indep_iff_count`) attaches to `(k, k)`-sparsity, which is what makes
+`thm:k-frame-union-cycle` collapse to matroid extensionality. -/
+theorem kFrameMatroid_indep_iff_isSparse_restrict [Finite α] [Finite β]
+    {E' : Set β} (hE' : E' ⊆ E(G)) :
+    (G.kFrameMatroid k).Indep E' ↔ (G ↾ E').IsSparse k k := by
+  classical
+  rw [kFrameMatroid, Matroid.ofFun_indep_iff, and_iff_left hE']
+  refine ⟨fun hLI ↦ ?_, fun hsparse ↦ ?_⟩
+  · rw [← unionPow_cycleMatroid_indep_iff_isSparse_restrict hE',
+      Matroid.Union_pow_indep_iff_count]
+    exact fun Y hY ↦ forest_count_of_linearIndepOn_kFrameRow hLI hY
+  · exact linearIndepOn_kFrameRow_of_isSparse_restrict hE' hsparse
+
+end Identification
+
 end Graph

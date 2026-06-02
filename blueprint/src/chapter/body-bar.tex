@@ -336,6 +336,8 @@ and the same applies to every $Y \subseteq E'$.
 
 \begin{lemma}[Generic $k$-frame independence by the count]
   \label{lem:k-frame-indep-iff-count}
+  \lean{Graph.kFrameMatroid_indep_iff_isSparse_restrict}
+  \leanok
   \uses{def:k-frame-matroid, lem:k-frame-nonzero-monomial-forest,
     lem:k-frame-specialize-forest, thm:unionPow-cycle-indep-iff-sparse}
   A bar set $E' \subseteq E(G)$ is independent in the generic $k$-frame
@@ -346,6 +348,7 @@ and the same applies to every $Y \subseteq E'$.
   the $k$-fold cycle-matroid union.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:k-frame-nonzero-monomial-forest, lem:k-frame-specialize-forest}
   Independence in $F(G, X)$ is linear independence of the generic rows
   (the \texttt{Matroid.ofFun} independence predicate). The forward
