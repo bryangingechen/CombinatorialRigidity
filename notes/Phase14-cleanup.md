@@ -85,8 +85,19 @@ count (`finrank_span_set_eq_card` → `Submodule.finrank_mono` →
 opposite directions, no shared step-level backbone. Build green +
 warning-clean + lint clean.
 
-Next concrete step: (D) compress `notes/Phase14.md` (329 → under 250)
-+ FRICTION re-skim.
+(D1) `notes/Phase14.md` compression done: 329 → 152 lines (under the
+250 budget). Collapsed the narrated *Current state* paragraph and the
+per-node *Lemma checklist* — which restated the full landed-node build
+history — to a commit-log pointer (`17178ef..b90516d`) + a three-bullet
+forward/reverse/bridge route summary; dropped the now-stale "red
+frontier" *Lemma checklist* table and the resolved-blocker narration
+(folded to a one-liner pointing at *Re-scoping*). Preserved *Decisions
+made* in full (coefficient encoding + ground-set restriction, both
+tagged **load-bearing for Phase 15**), *Re-scoping*, *Promoted to
+FRICTION* (added the second, already-existing det-routed-reflection
+pointer), and the *Hand-off* section verbatim. Doc-only.
+
+Next concrete step: (D2) FRICTION status-section re-skim.
 
 ## Scope
 
@@ -209,13 +220,13 @@ bounded:
 
 ### D. Project-organization compression
 
-- [ ] D1 — compress `notes/Phase14.md` (329 lines → under the 250 soft
-  budget): the *Current state* paragraph and the per-node *Lemma
-  checklist* both narrate the full landed-node history that the closed
-  phase no longer needs at that density; collapse to a commit-log pointer
-  + brief summary per `CLEANUP.md` §D. Preserve *Decisions made* (the
-  coefficient encoding + ground-set restriction are load-bearing for
-  Phase 15) and the *Hand-off* section.
+- [x] D1 — compressed `notes/Phase14.md` (329 → 152 lines): collapsed
+  the narrated *Current state* + per-node *Lemma checklist* (full
+  landed-node history) to a commit-log pointer (`17178ef..b90516d`) +
+  forward/reverse/bridge route summary; dropped the stale "red frontier"
+  table and the resolved-blocker narration. Preserved *Decisions made*
+  (coefficient encoding + ground-set restriction, tagged load-bearing
+  for Phase 15), *Re-scoping*, *Promoted to FRICTION*, *Hand-off*.
 - [ ] D2 — re-skim `FRICTION.md` status sections: Phase-14 `[resolved]`
   entries whose resolution is fully indexed elsewhere migrate to
   `FRICTION-archive.md`; lift any cross-cutting lesson referenced by 2+
@@ -224,6 +235,19 @@ bounded:
 ## Decisions made during this round
 
 ### Cleanup pass summaries
+- **D1 (notes/Phase14.md, doc-only compression).** 329 → 152 lines.
+  The closed phase no longer needs its *Current state* paragraph and
+  per-node *Lemma checklist* at full landed-node-history density:
+  collapsed both to a commit-log pointer (`17178ef..b90516d`, 14
+  forward-work commits) + a three-bullet forward/reverse/bridge route
+  summary, dropped the stale "red frontier" *Lemma checklist* table and
+  the resolved-blocker build narration (folded to a one-liner pointing
+  at *Re-scoping*). Preserved verbatim: *Decisions made* (coefficient
+  encoding + ground-set restriction, each tagged **load-bearing for
+  Phase 15**), *Re-scoping*, *Promoted to FRICTION* (added the second,
+  already-existing det-routed-reflection pointer alongside the
+  `signedIncMatrix`-decidability one), and *Hand-off*. No FRICTION
+  entry (pure §D compression). D2 (FRICTION re-skim) carries over.
 - **C1+C2 (KFrame.lean, one marginal tightening).** Four-question
   long-proof audit on `linearIndepOn_kFrameRow_of_isSparse_restrict`
   (~95 LoC) + `forest_count_of_linearIndepOn_kFrameRow` (~27 LoC).
@@ -295,13 +319,9 @@ bounded:
 
 ## Hand-off / next phase
 
-Round in progress ((B) + (C) complete: B1–B5, C1–C2 done). Next concrete
-commit: **D1** — compress `notes/Phase14.md` (329 lines → under the 250 soft
-budget) per `CLEANUP.md` §D: collapse the *Current state* paragraph and the
-per-node *Lemma checklist* (which narrate the full landed-node history) to a
-commit-log pointer + brief summary; preserve *Decisions made* (the coefficient
-encoding + ground-set restriction are load-bearing for Phase 15) and the
-*Hand-off* section. Then **D2** — re-skim `FRICTION.md` status sections (migrate
-fully-indexed Phase-14 `[resolved]` entries to `FRICTION-archive.md`; lift any
-2+-phase cross-cutting lesson). When (D) closes, write the round summary here
-and flip the ROADMAP Status row to ✓.
+Round in progress ((B) + (C) complete: B1–B5, C1–C2 done; (D1) done —
+`notes/Phase14.md` compressed 329 → 152 lines). Next concrete commit:
+**D2** — re-skim `FRICTION.md` status sections (migrate fully-indexed
+Phase-14 `[resolved]` entries to `FRICTION-archive.md`; lift any
+2+-phase cross-cutting lesson). When (D) closes, write the round summary
+here and flip the ROADMAP Status row to ✓.
