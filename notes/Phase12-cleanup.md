@@ -1,9 +1,11 @@
 # Phase 12 cleanup round — work log
 
-**Status:** in progress (A–D surveys run; **A3 + B5 fixes landed** — A3
+**Status:** in progress (A–D surveys run; **A3 + B5 + D1 fixes landed** — A3
 removed the stale forward-mode chapter-intro paragraph from
 `matroid-union.tex`; B5 added the `PolymatroidFn.zero_at_empty` fused
-accessor and applied it at four sites; remaining buckets
+accessor and applied it at four sites; D1 compressed `notes/Phase12.md`
+*Current state* from a 160-line reverse-chronological narrative to a
+Phase-11-style summary + pointers, 434 → 304 LoC; remaining buckets
 surveyed-but-unfixed, expected mostly no-op under the vendored-port bias).
 
 This is the inter-phase cleanup round covering **Phase 12** (matroid
@@ -256,17 +258,20 @@ Runners-up (just outside): `union_indep_aux'` (Union L168, 46 L);
 
 ### Bucket D — Project-organization compression
 
-- [ ] **D1:** `notes/Phase12.md` length/compression check. Currently
-  434 LoC. Per `../notes/CLAUDE.md` *Soft length budget*, Phase 12 was
-  a substantive multi-layer phase (L0/L1/L2a/L2b-union/L2b-rado/
-  L2b-partition; ~1670 ported LoC) → adaptive upper band 350–450, so
-  434 is **in band but at the top**. Assess whether *Current state*
-  (which carries a long reverse-chronological per-layer narrative —
-  L2b-partition, L2b-rado, L2b-rado-infra, re-scope, L2b-union, L2a×3,
-  L1, L0) duplicates the *Layer plan* section and can collapse to a
-  hand-off summary + pointer (the D1/D2 pattern from Phase 11-cleanup).
-  If the per-entry ≤8-line rule and the hand-off contract both hold,
-  may close no-op-or-light.
+- [x] **D1:** `notes/Phase12.md` length/compression check — **done, fix
+  landed.** The *Current state* section was ~160 lines of
+  reverse-chronological per-layer narrative (L2b-partition, L2b-rado,
+  L2b-rado-infra, re-scope, L2b-union, L2a×3, L1, L0) that duplicated three
+  other sections of the same file: the *Layer plan* (per-layer what-landed +
+  the L2b re-scope rationale), the *Lemma checklist* (every node green), and
+  the cross-referenced FRICTION `[matroid]` sub-entries (per-layer port
+  hazards). Phase 12 is **closed**, so per `../CLEANUP.md` §D ("compress the
+  multi-session plan to a commit-log pointer + a brief summary once the phase
+  is closed") this is the D1/D2 pattern from Phase 11-cleanup. Collapsed
+  *Current state* to a Phase-11-style ~20-line summary (foundations available
+  + where the per-layer detail / port hazards live), dropping nothing not
+  preserved elsewhere. **434 → 304 LoC** — mid-band, hand-off contract intact,
+  per-entry ≤8-line rule holds.
 - [ ] **D2:** FRICTION re-skim. The `[matroid]` entry (FRICTION L79+) is
   a single large `[resolved]` block with per-layer sub-bullets (L2a /
   L2a-polymatroid / L2a-rank / L2b-union / re-scope / L2b-rado-infra /
@@ -308,17 +313,17 @@ Runners-up (just outside): `union_indep_aux'` (Union L168, 46 L);
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** dispatch **D1** — the
-`notes/Phase12.md` *Current state* compression (434 LoC, top of the
-adaptive band): assess whether its reverse-chronological per-layer
-narrative duplicates the *Layer plan* section and can collapse to a
-hand-off summary + pointer (the D1/D2 pattern from Phase 11-cleanup). If
-the per-entry ≤8-line rule and the hand-off contract both already hold,
-D1 closes no-op-or-light. Then the A1/A2 statement/proof walks (the last
-substantive un-run survey items) and the remaining no-op confirmations
-(B1–B4/B6, C2, D2–D5).
+**Smallest concrete next commit:** dispatch the **A1/A2 statement/proof
+walks** (the last substantive un-run survey items): A1 compares each of the
+9 `matroid-union.tex` `\lean{...}` entries against its Lean signature
+(binders/hypotheses/conclusion — see the A1 survey-relevant unknowns:
+`def:ofSubmodular`'s three-name grouping, `lem:rado`'s `Finset`-valued family
+binder, the two namespace-omitted `\lean{}` names); A2 scans the four prose
+`\begin{proof}` blocks for a smoothness gloss the Lean can't sustain (vendored-port
+bias: record a residual aside only if no *project-side* fix exists). Then the
+remaining no-op confirmations (B1–B4/B6, C2, D2–D5).
 
-A3 + B5 have each landed a fix. The remaining buckets are expected to
-close no-op under the vendored-port bias; if B1–D5 all survey no-op, the
-closing commit flips the ROADMAP row to ✓ with an "A3 + B5 fixes +
-all-else-no-op → close" summary.
+A3 + B5 + D1 have each landed a fix. The remaining buckets are expected to
+close no-op under the vendored-port bias; if A1/A2/B1–C2/D2–D5 all survey
+no-op, the closing commit flips the ROADMAP row to ✓ with an "A3 + B5 + D1
+fixes + all-else-no-op → close" summary.

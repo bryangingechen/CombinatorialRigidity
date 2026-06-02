@@ -57,158 +57,28 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-**Phase 12 complete (this commit, L2b-partition).** Ported the partition-rank
-sub-chain from `WIP/Union.lean` into `Constructions/Union.lean`:
-`polymatroid_of_adjMap` (the bridge — exhibits the `adjMap`-matroid as
-`ofPolymatroidFn` of `f Y = M.rk (N Adj Y)`; its sufficiency direction calls
-`(rado …).mpr`), `adjMap_rank_eq`, `sum'_eRk_eq_eRk_sum{_on_indep}` /
-`sum'_rk_eq_rk_sum`, then `matroid_partition'` / `matroid_partition_eRk'`
-(node `thm:matroid-partition-rank`). Added `PolymatroidFn_of_zero` to
-`Submodular.lean` (consumed by the `isEmpty α` branch of
-`polymatroid_of_adjMap`). Landed green, **0 sorry** (`#print axioms` on all four
-partition/bridge targets = only `propext`/`Classical.choice`/`Quot.sound`);
-`lake build` warning-clean, `lake lint` clean, `checkdecls` passes. Blueprint
-node `thm:matroid-partition-rank` flipped green. The warnings-clean sweep and
-the `simpNF` fix (dropped `@[simp]` on `sum'_eRk_eq_eRk_sum_on_indep`, subsumed
-by `sum'_eRk_eq_eRk_sum`) are recorded in FRICTION `[matroid]` *L2b-partition
-finish*.
+**Phase 12 complete.** All `matroid-union.tex` nodes green; the tree builds
+warning-clean, `lake lint` and `checkdecls` pass, all targets 0-sorry
+(`#print axioms` = only `propext`/`Classical.choice`/`Quot.sound`). The
+abstract-matroid foundations the body-bar route needs — submodular → matroid
+(`ofSubmodular`), polymatroid rank (`polymatroid_rank_eq`, Edmonds 1970),
+matroid union (`Matroid.Union` / `union_indep_iff`), and the Edmonds partition
+rank formula (`matroid_partition'` / `matroid_partition_eRk'`) — are available
+locally under `CombinatorialRigidity/Matroid/` (`Constructions/Submodular.lean`
++ `Constructions/Union.lean`).
 
-L2b-rado COMPLETE (prior commit): ported `WIP/Submodular.lean:742–942` into
-`Constructions/Submodular.lean` — the `Transversal`/`Transverses`/`Transverses'`
-family (`transverses_{of_empty,mono,of_transverses',iff_transverses',
-of_image_univ,of_subset_image_univ}`), `rado_v2` (total-transversal form), and
-`rado` (full iff, Oxley 2011 Thm 11.2.2 = Rado 1942). Landed green, **0 sorry**
-(`#print axioms` on both `rado` / `rado_v2` = only `propext`/`Classical.choice`/
-`Quot.sound`); `lake build` + `lake lint` clean, warning-clean. Blueprint node
-`lem:rado` added green and wired into `thm:matroid-partition-rank`'s proof
-`\uses`; `checkdecls` passes. Port hazards (FRICTION `[matroid]` *L2b-rado
-finish*): the `Matroid.r → rk` rename (`Indep.r → Indep.rk_eq_ncard`,
-`Indep.eRk → Indep.eRk_eq_encard`, `M.IsRkFinite.of_finite →
-M.isRkFinite_of_finite`, `Set.ncard_coe_Finset → Set.ncard_coe_finset`);
-`IsRkFinite.submod` now takes the **second set explicitly** (`hX.submod (Y :
-Set α)`), not its finiteness proof; `[Fintype ι]`→`[Finite ι]`+
-`haveI := Fintype.ofFinite ι` per project convention (statement has no
-`Fintype.card ι`); dropped the bit-rotted `[DecidableEq ι]` on `Transversal`
-(`unusedArguments` linter — the def is decidability-free) and the now-unused
-`[DecidableEq ι]`/`[Fintype α]` on `rado`/`rado_v2`; `push_neg → push Not`;
-`Finset.toSet → (· : Set α)`. `rado'` (`:944`) and `halls_marriage` (`:1233`)
-were **not** ported — not consumed (only `rado` feeds `polymatroid_of_adjMap`).
-
-L2b-rado infrastructure (prior commit): ported the Rado/Hall prerequisite's
-front half from `WIP/Submodular.lean:323–740` into `Constructions/Submodular.lean`
-(its home file, continuing the L2a port). Landed green, **0 sorry**
-(`generalized_halls_marriage` verified clean — only `propext` / `Classical.choice`
-/ `Quot.sound`): `generalized_halls_marriage` (the submodular WF-recursive core,
-`termination_by ∑ i, (A i).card`) + its `'` subtype-domain restatement, and the
-complete `PartialTransversal` structure family (`left`/`right`/`fun`/`Total`/
-`card`/`encard`/`of_fun`/`move`/`⊆`/`exists_subset_card_eq` + ~30 supporting
-lemmas). **`rado` / `rado_v2` not yet ported** — they are the next commit (the
-WF-recursive core they rest on is now in place). Port hazards (FRICTION
-`[matroid]` *L2b-rado*): added `[DecidableEq α]` / `[DecidableEq (ι × α)]` /
-`[Fintype ι]` to several `of_fun_*` / `move_*` lemmas the bit-rotted WIP elided
-(WIP file does not build, so its signatures could not be trusted); `Matroid.r`
-rename irrelevant here (the front half is rank-free); `ne_of_mem_of_notMem →
-ne_of_mem_of_not_mem`; `Fintype.choose` needs `import Mathlib.Data.Fintype.Inv`;
-dropped `@[simp]` on `of_fun_mem_edges_iff` (simp-can-prove) and `def → lemma`
-on `of_fun_{left,right}_eq` (defLemma linter). **Made warnings-clean in an amend**
-per the warnings-clean policy (the port had shipped with ~24 style warnings);
-the one non-mechanical step is the `termination_by haveI := Fintype.ofFinite ι; …`
-trick to clear `unusedFintypeInType` on the WF-recursive core — see FRICTION
-`[matroid]` *L2b-rado warnings sweep* / TACTICS-QUIRKS § 16(d).
-
-L2b dependency re-scope (prior commit, **docs-only**): the next-commit plan
-"port `polymatroid_of_adjMap` → `adjMap_rank_eq` → the two `matroid_partition*`
-targets" assumed `rado` (Oxley Thm 11.2.2) was live upstream (per the prior
-hand-off note). **It is not.** Audit of the live package
-(`apnelson1/Matroid`, rev `e6852ce`):
-- `polymatroid_of_adjMap` (`WIP/Union.lean:258`) builds its matching via the
-  *sufficiency* direction of Rado's theorem: `(rado M A).mpr <rank-condition>`
-  (`WIP/Union.lean:339`).
-- `rado` is **not** in the live `Matroid.Intersection` — that file has only
-  `rado_necessary` (the easy direction); `rado_sufficient` / `rado_iff` are
-  commented-out Lean-3 and route through further dead machinery
-  (`partition_matroid_on`, `exists_common_ind_with_isFlat_right`).
-- The live `rado` (full iff) exists **only** in the shelved
-  `WIP/Submodular.lean:891` — i.e. in the *same* WIP file L2a ported from, but
-  in its **back half**, which the L2a port stopped short of (L2a ended at
-  `polymatroid_rank_eq`, `WIP/Submodular.lean:~296`).
-- `rado` rests on a self-contained but sizeable un-ported sub-tree
-  (`WIP/Submodular.lean:323–942`, ~420 L, **0 sorry**): `generalized_halls_marriage`
-  (matroidal Hall, routes through the already-ported `Submodular`/`Monotone` +
-  `polymatroid_rank_eq`-adjacent rank API), the `PartialTransversal` structure
-  + ~30 supporting lemmas, the `Transversal`/`Transverses` family, then `rado`
-  / `rado_v2`. `generalized_halls_marriage`'s own deps are all within the
-  L2a-ported surface, so the sub-tree is bounded and self-contained.
-
-**L2b is therefore split into two sub-layers** (see *Layer plan* L2b-rado /
-L2b-partition and *Hand-off*). This is the same class of deeper bit-rot the
-*Prerequisites audit* flagged as a residual risk; the next concrete commit is
-**L2b-rado**, not the two partition theorems.
-
-Layer 2b union construction (prior commit, **opened L2b**): created
-`Constructions/Union.lean`, ported from `apnelson1/Matroid`'s `WIP/Union.lean`
-with the Peter-Nelson attribution header. Landed green, **0 sorry**:
-`AdjIndep'` + `adjMap_indep_iff'` (Set-valued analogue of the live
-`Matching.AdjIndep` / `adjMap_indep_iff`), `Matroid.Union` (node
-`def:matroid-union`, via `(sum' Ms).adjMap (·.2 = ·) univ`), `Matroid.union`
-(binary, over `Bool`), `Union_empty`, the two halves `union_indep_aux{,'}`,
-and `union_indep_iff` / `union_indep_iff'` (node `lem:union-indep-iff`).
-Both blueprint nodes flipped green; `checkdecls` passes; `lake build` +
-`lake lint` clean. Port hazards (full detail in FRICTION `[matroid]` *L2b
-union construction*): `open Function` for the ` on ` infix; reconstructed the
-commented-out `exists_pairwiseDisjoint_iUnion_eq` as a `private` lemma;
-reproved the brittle `Union_empty` via `eq_loopyOn_iff` + finitarity; used
-`[Finite α]` over the WIP's `[Fintype α]` per project convention. The
-partition rank theorem (`matroid_partition'` / `matroid_partition_eRk'`,
-node `thm:matroid-partition-rank`) is **deferred** to the next commit — its
-WIP proof routes through `polymatroid_of_adjMap` / `adjMap_rank_eq` /
-`sum'_rk_eq_rk_sum`, a larger sub-chain (see *Hand-off*).
-
-Layer 2a rank lemma (prior commit, **closed L2a**): ported
-`polymatroid_rank_eq` (`lem:polymatroid-rank`, Edmonds 1970 Prop. 11.1.7)
-and its private helper `polymatroid_rank_eq_on_indep` into
-`Constructions/Submodular.lean`. Landed green, **0 sorry**; blueprint node
-`lem:polymatroid-rank` flipped green; `checkdecls` passes; `lake lint`
-clean. The port did the `Matroid.r → rk` rename chase plus three other
-API-drift fixes and two missing transitive imports — full detail in
-FRICTION `[matroid]` *L2a rank lemma*. All five L2a blueprint nodes are
-now green.
-
-Layer 2a polymatroid layer (prior commit): added `PolymatroidFn`
-(`def:polymatroidFn`, a `Prop` structure bundling `Submodular` + `Monotone`
-+ `f ⊥ = 0`), `ofPolymatroidFn` (`def:ofPolymatroidFn`, a thin wrapper of
-`ofSubmodular`), `indep_ofPolymatroidFn_iff`, and the corollary
-`ofPolymatroidFn_nonempty_indep_le` to `Constructions/Submodular.lean`.
-Landed green, **0 sorry**; both blueprint nodes flipped green; `checkdecls`
-passes. One porting gotcha (see FRICTION `[matroid]` L2a polymatroid note):
-the WIP's `@[simps!]` on `ofPolymatroidFn` breaks `simpNF` on
-`indep_ofPolymatroidFn_iff` — restricted to `@[simps! E]` per the
-`ofSubmodular` precedent.
-
-Layer 2a submodular (prior commit): created
-`CombinatorialRigidity/Matroid/Constructions/Submodular.lean` (non-`module`,
-since the `apnelson1/Matroid` package is not module-converted — same
-constraint as `LinearRigidityMatroid.lean`), ported from
-`apnelson1/Matroid`'s `WIP/Submodular.lean` with the Peter-Nelson
-attribution header. Landed green, **0 sorry**: `Matroid.Submodular`
-(`def:submodular`), `Matroid.ofSubmodular` (`def:ofSubmodular`, rebased
-onto the live `FiniteCircuitMatroid` via the Set-lift
-`∃ C₀, ↑C₀ = C ∧ Minimal P C₀` validated by the L1 spike), and the API
-`circuit_ofSubmodular_iff` / `indep_ofSubmodular_iff`. The three helpers
-the WIP pulled from the never-committed `IsCircuitAxioms` /
-commented-out `ForMathlib/Finset.lean` are reconstructed as `private`
-lemmas in the file: `setOf_minimal_antichain`,
-`exists_minimal_satisfying_subset`, `intro_elimination_nontrivial`.
-Both `matroid-union.tex` nodes flipped green; `checkdecls` passes; the
-file is imported from the top-level `CombinatorialRigidity.lean`.
-
-(At that point the polymatroid layer — `PolymatroidFn`, `ofPolymatroidFn`,
-`polymatroid_rank_eq` — was still pending; all of it has since landed, see
-*Current state*.)
-
-Layer 1 (prior commit): route spike complete; **route (a)
-submodular-repair chosen** (rationale below). Layer 0: phase opened,
-`matroid-union.tex` populated, surfaces synced, `LICENSE` + provenance.
+The per-layer landing sequence (route (a) submodular-repair, chosen at L1) is
+in *Layer plan* below; what each layer ported and its blueprint nodes are in
+the *Lemma checklist*. The mid-phase dependency re-scope that split L2b
+(discovering `rado` lived only in the shelved `WIP/Submodular.lean` back half,
+not live upstream) is recorded in *Layer plan* L2b. Per-layer **port hazards**
+— the `Matroid.r → rk` rename chase, the Set-lift constructor pattern,
+transitive-import gaps, `[Fintype] → [Finite]` conversion, the WF-recursion
+`termination_by haveI := Fintype.ofFinite ι` trick — live in FRICTION
+`[matroid]` (sub-entries *L2a rank lemma* / *L2b union construction* /
+*L2b-rado* / *L2b-rado warnings sweep* / *L2b-rado finish* / *L2b-partition
+finish*) and the *Hand-off* recipe below; TACTICS-QUIRKS § 16(d) absorbed the
+`termination_by` trick.
 
 Two porting gotchas hit and resolved (see FRICTION `[matroid]` L2a
 note): the minimal import set does not transitively expose `linarith`
