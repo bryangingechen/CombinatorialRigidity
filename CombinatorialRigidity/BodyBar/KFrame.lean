@@ -603,6 +603,32 @@ theorem kFrameMatroid_indep_iff_isSparse_restrict [Finite α] [Finite β]
     exact fun Y hY ↦ forest_count_of_linearIndepOn_kFrameRow hLI hY
   · exact linearIndepOn_kFrameRow_of_isSparse_restrict hE' hsparse
 
+/-- **The generic `k`-frame matroid is the `k`-fold cycle-matroid union**
+(Whiteley 1988, Theorem 1; `thm:k-frame-union-cycle`). For every multigraph
+`G : Graph α β` and `k`, the generic `k`-frame matroid `F(G, X)` equals the
+`k`-fold union `⋃ⱼ G.cycleMatroid` of the cycle matroid, **restricted to** the
+bar set `E(G)`. Both sides are matroids on the edge type `β` with ground set
+`E(G)`.
+
+The `↾ E(G)` is bookkeeping forced by the ground-set convention of the vendored
+`Matroid.Union` (`Matroid.Union Ms = (Matroid.sum' Ms).adjMap _ univ`, so its
+ground set is `univ : Set β`, not `E(G)` — elements of `univ \ E(G)` sit in the
+union as loops). Restricting to `E(G)` discards those loops and recovers the
+ground set `E(G)` of `kFrameMatroid` (`Matroid.ofFun … E(G) …`). On `E' ⊆ E(G)`
+both sides are independent exactly when `G ↾ E'` is `(k, k)`-sparse: the
+`kFrameMatroid` side is `kFrameMatroid_indep_iff_isSparse_restrict` (Whiteley
+§2.1, both genericity halves), the union side is Phase 13's
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict`, so the equality is
+`Matroid.ext_indep`. -/
+theorem kFrameMatroid_eq_unionPow_cycleMatroid [DecidableEq β] [Finite α] [Finite β] :
+    G.kFrameMatroid k = (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)) ↾ E(G) := by
+  refine Matroid.ext_indep ?_ fun I hI ↦ ?_
+  · rw [kFrameMatroid_ground, Matroid.restrict_ground_eq]
+  · rw [kFrameMatroid_ground] at hI
+    rw [Matroid.restrict_indep_iff, and_iff_left hI,
+      unionPow_cycleMatroid_indep_iff_isSparse_restrict hI,
+      ← kFrameMatroid_indep_iff_isSparse_restrict hI]
+
 end Identification
 
 end Graph

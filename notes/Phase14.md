@@ -1,6 +1,6 @@
 # Phase 14 — k-frame matroid = k-fold cycle-matroid union (work log)
 
-**Status:** in progress.
+**Status:** ✓ Complete.
 
 Forward-mode phase. The authoritative dep-graph and lemma index is the
 *The $k$-frame matroid as a union of cycle matroids* subsection
@@ -79,8 +79,14 @@ rows LI over ℚ (`specRow_linearIndependent`, generalized to a field `𝔽`, re
 (LI on the full `E'`; `and_iff_left hE'` discharges the `E' ⊆ E(G)` side), then the two genericity
 halves wire forward (via `forest_count_of_linearIndepOn_kFrameRow` + Phase 13's
 `unionPow_cycleMatroid_indep_iff_isSparse_restrict` / `Matroid.Union_pow_indep_iff_count`) and reverse
-(`linearIndepOn_kFrameRow_of_isSparse_restrict`). Remaining red frontier:
-`thm:k-frame-union-cycle` (the Phase-closing `Matroid.ext_indep`). The Phase 13 chain
+(`linearIndepOn_kFrameRow_of_isSparse_restrict`). **The Phase-closing theorem
+`thm:k-frame-union-cycle` is now also landed (green):
+`Graph.kFrameMatroid_eq_unionPow_cycleMatroid`** —
+`G.kFrameMatroid k = (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)) ↾ E(G)`, a
+`Matroid.ext_indep` matching the two count-characterizations on the shared ground set
+`E(G)`. The `↾ E(G)` is forced by the vendored `Matroid.Union`'s `univ` ground set (see
+*Decisions made → Ground-set restriction on the union side*). **Phase 14 is complete.**
+The Phase 13 chain
 (`BodyBar/TreePacking.lean`) remains the upstream dependency: it proves
 the tree-packing corollary and the `Graph`-native `(k, k)`-sparsity ↔
 `k`-fold-`cycleMatroid`-union independence bridge
@@ -195,11 +201,14 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   `forest_count_of_linearIndepOn_kFrameRow` + Phase 13's
   `unionPow_cycleMatroid_indep_iff_isSparse_restrict` / `Matroid.Union_pow_indep_iff_count`,
   reverse is `linearIndepOn_kFrameRow_of_isSparse_restrict`. Five-line `rw`+`refine`.
-- [ ] `thm:k-frame-union-cycle` — Whiteley Theorem 1: `F(G, X) = ⋃ⱼ
-  G.cycleMatroid`. Now a `Matroid.ext_indep` matching the two
-  count-characterizations (`lem:k-frame-indep-iff-count` vs
-  `thm:unionPow-cycle-indep-iff-sparse`); same ground set `E(G)`. This
-  commit closes Phase 14.
+- [x] `thm:k-frame-union-cycle` — **landed (Phase-closing).** Whiteley Theorem 1:
+  `G.kFrameMatroid k = (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)) ↾ E(G)`
+  (`Graph.kFrameMatroid_eq_unionPow_cycleMatroid`, `BodyBar/KFrame.lean`). A
+  `Matroid.ext_indep` matching the two count-characterizations
+  (`kFrameMatroid_indep_iff_isSparse_restrict` vs Phase 13's
+  `unionPow_cycleMatroid_indep_iff_isSparse_restrict`) on the shared ground
+  set `E(G)`. **Note the `↾ E(G)`** — see *Decisions made → Ground-set
+  restriction on the union side* below.
 
 ## Decisions made during this phase
 
@@ -218,6 +227,20 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
   reuse-of-`signedIncMatrix` is what should make `thm:k-frame-union-cycle`
   reduce cleanly to `k` independent `cycleMatroid` representations rather
   than re-deriving the incidence pattern from scratch.
+
+- **Ground-set restriction on the union side (`thm:k-frame-union-cycle`).** The
+  documented target `G.kFrameMatroid k = Matroid.Union (fun _ ↦ G.cycleMatroid)`
+  is **not provable as a bare equality**: the vendored `Matroid.Union Ms =
+  (sum' Ms).adjMap _ univ` has ground set `univ : Set β` (`adjMap_ground_eq`),
+  whereas `kFrameMatroid` (`Matroid.ofFun … E(G) …`) has ground `E(G)`. The two
+  agree on independent sets (both `⊆ E(G)`) but differ on ground (non-edges of
+  `β` are loops in the union, absent from `kFrameMatroid`). The honest theorem
+  restricts the union to `E(G)`:
+  `G.kFrameMatroid k = (Matroid.Union (fun _ ↦ G.cycleMatroid)) ↾ E(G)`. Both
+  sides then have ground `E(G)` and the `Matroid.ext_indep` goes through. Needs
+  `[DecidableEq β]` in the signature (the `Matroid.Union` term in the *type*
+  demands it, unlike the count-bridge node where it only appeared in the body).
+  Blueprint statement + proof updated with a one-clause aside.
 
 ### Re-scoping of `thm:k-frame-union-cycle`
 
@@ -284,24 +307,22 @@ The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
 
 ## Hand-off / next phase
 
-**The count-bridge node `lem:k-frame-indep-iff-count` is now landed**
-(`Graph.kFrameMatroid_indep_iff_isSparse_restrict`, `BodyBar/KFrame.lean`): for `E' ⊆ E(G)`,
-`(G.kFrameMatroid k).Indep E' ↔ (G ↾ E').IsSparse k k`. The proof is a five-line `rw`+`refine`:
-`Matroid.ofFun_indep_iff` (a `@[simp]` lemma giving LI on the *full* `E'` — the feared `E' ∩ E(G)`
-intersection does not appear, because `and_iff_left hE'` discharges the `E' ⊆ E(G)` conjunct) reduces
-the LHS to `LinearIndepOn K (kFrameRow k D) E'`; forward wires the two genericity halves
-(`forest_count_of_linearIndepOn_kFrameRow` → Phase 13's
-`unionPow_cycleMatroid_indep_iff_isSparse_restrict` / `Matroid.Union_pow_indep_iff_count`), reverse is
-`linearIndepOn_kFrameRow_of_isSparse_restrict`. `[DecidableEq β]` was dropped from the signature
-(unused-in-type linter) and supplied by `classical`.
+**Phase 14 is complete.** The Phase-closing theorem `thm:k-frame-union-cycle`
+(`Graph.kFrameMatroid_eq_unionPow_cycleMatroid`, `BodyBar/KFrame.lean`) landed as a
+`Matroid.ext_indep`: `G.kFrameMatroid k = (Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)) ↾ E(G)`.
+The ground-set obligation closes by `kFrameMatroid_ground` + `Matroid.restrict_ground_eq`; the
+indep-iff obligation rewrites through `Matroid.restrict_indep_iff` + `and_iff_left hI`, then matches
+the two count-characterizations (`kFrameMatroid_indep_iff_isSparse_restrict` and Phase 13's
+`unionPow_cycleMatroid_indep_iff_isSparse_restrict`) on `E' ⊆ E(G)`. **The `↾ E(G)` is mathematically
+forced**, not a convenience: the vendored `Matroid.Union` has ground `univ : Set β`, so a bare
+equality is unprovable — see *Decisions made → Ground-set restriction on the union side*. Axioms:
+`propext`, `Classical.choice`, `Quot.sound` (no `sorryAx`).
 
-The next concrete commit is **`thm:k-frame-union-cycle`** — the Phase-closing theorem
-`G.kFrameMatroid k = Matroid.Union (fun _ : Fin k ↦ G.cycleMatroid)` (Whiteley Theorem 1). Both
-matroids have ground set `E(G)` (`kFrameMatroid_ground`; `Matroid.Union` ground), so it is a
-`Matroid.ext_indep` matching the two count-characterizations on the shared ground set: for
-`E' ⊆ E(G)`, the new `kFrameMatroid_indep_iff_isSparse_restrict` and Phase 13's
-`unionPow_cycleMatroid_indep_iff_isSparse_restrict` give the *same* `(k,k)`-sparsity condition.
-Watch the `Matroid.ext_indep` obligation shape (it supplies `I ⊆ E` on each side; use it to feed the
-`hE'` hypothesis both lemmas require). **That** commit closes Phase 14 and carries the
-phase-completion checklist (ROADMAP row ✓, status surfaces — README / home_page / intro.tex —,
-compress ROADMAP §14) and unblocks Phase 15.
+**Next phase: Phase 15 (Body-bar Tay theorem).** Now unblocked — `thm:tay-witness` in `body-bar.tex`
+consumes `thm:k-frame-union-cycle` (via the standard-basis Plücker / two-extensor specialization of
+the indeterminate `k`-frame coefficients) alongside `thm:tutte-nash-williams` / `cor:k-spanning-trees`.
+See ROADMAP §15 for the architectural decisions (carrier `Graph α β`, inline Plücker coordinates,
+existence-of-realization form only). The smallest first commit there opens Phase 15:
+`notes/Phase15.md` + the framework definitions (`def:body-bar-framework`,
+`def:infinitesimally-rigid-body-bar`) under `BodyBar/Framework.lean`. If `Matroid.Union`'s `univ`
+ground recurs in Phase 15, the `↾ E(G)` restriction pattern from this phase is the fix.

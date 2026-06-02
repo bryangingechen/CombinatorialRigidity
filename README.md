@@ -49,7 +49,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–13 complete; Phase 14 in progress; Phase 15 scoped.**
+* **Phases 1–14 complete; Phase 15 scoped.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -101,10 +101,12 @@ project; commit history is preserved with paths rewritten.
     refinement `Graph.isSpanningTreePacking_of_isTight` (Whiteley
     Theorem 13). Introduces a `Graph`-native `(k,ℓ)`-sparsity predicate.
     See `notes/Phase13.md`.
-  * **Phase 14 (in progress)** — the `k`-frame matroid = `k`-fold
-    cycle-matroid union (Whiteley Theorem 1). Forward-mode lemma index
-    in `blueprint/src/chapter/body-bar.tex` §`sec:body-bar-k-frame`;
-    next concrete commit is `def:k-frame-matroid` in a new
+  * **Phase 14 (complete)** — the `k`-frame matroid = `k`-fold
+    cycle-matroid union restricted to `E(G)` (Whiteley Theorem 1):
+    the generic `k`-frame matroid `F(G,X)` (a linear matroid over
+    indeterminate coefficients) equals `(⋃ⱼ G.cycleMatroid) ↾ E(G)`
+    (`Graph.kFrameMatroid_eq_unionPow_cycleMatroid`), matching the two
+    `(k,k)`-sparsity count-characterizations by matroid extensionality.
     `BodyBar/KFrame.lean`. See `notes/Phase14.md`.
   * **Phase 15 (scoped)** — **Tay's theorem** itself in
     existence-of-realization form (by specializing two-extensor row

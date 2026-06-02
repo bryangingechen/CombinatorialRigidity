@@ -93,7 +93,28 @@ housekeeping pass once their resolution is fully indexed.
   `unionPow_cycleMatroid_indep_iff_isSparse_restrict`
   (`BodyBar/TreePacking.lean`); `tutte_nash_williams` /
   `isSpanningTreePacking_of_isTight` inherit it. Phases 14–15 mentioning
-  the same union object in a signature will need it too.
+  the same union object in a signature will need it too. (Confirmed:
+  Phase 14's `kFrameMatroid_eq_unionPow_cycleMatroid` needed it.)
+
+### [resolved] `[matroid]` `Matroid.Union`'s ground set is `univ`, not the common ground of its factors
+- **Where it bit:** `Graph.kFrameMatroid_eq_unionPow_cycleMatroid`
+  (`BodyBar/KFrame.lean`, Phase-14 closer). The documented target was the
+  bare equality `G.kFrameMatroid k = Matroid.Union (fun _ ↦ G.cycleMatroid)`,
+  but it is **unprovable**: `Matroid.Union Ms = (Matroid.sum' Ms).adjMap _ univ`
+  (`Matroid/Constructions/Union.lean`), and `adjMap _ _ univ` has ground set
+  `univ : Set β` (`Matroid.adjMap_ground_eq`, vendored). So the union's ground
+  is `univ`, while `kFrameMatroid` (= `Matroid.ofFun … E(G) …`) has ground
+  `E(G)`. The two agree on *independent* sets (all `⊆ E(G)`) but the union
+  carries every non-edge of `β` as a loop. **Fix:** restrict the union to
+  `E(G)`: `… = (Matroid.Union …) ↾ E(G)`. The `Matroid.ext_indep` then closes
+  via `Matroid.restrict_ground_eq` (ground half) and `Matroid.restrict_indep_iff`
+  + `and_iff_left hI` (indep half, on `I ⊆ E(G)` supplied by `ext_indep`).
+- **General lesson:** when stating an equality whose RHS is a vendored
+  `Matroid.Union` (or any `adjMap … univ`-built matroid), check the ground set
+  before assuming it matches the factors' — it is `univ`. A blueprint/notes
+  claim of "both sides have ground `E(G)`" for such an equality is a smell.
+- **Status:** resolved — the `↾ E(G)` form landed; blueprint
+  `thm:k-frame-union-cycle` statement + proof restated with a one-clause aside.
 
 ### [resolved] `[matroid]` `Graph.orientation.signedIncMatrix` needs `[DecidableEq α]` + `[DecidablePred (· ∈ E(G))]` inside a `noncomputable def` body
 - **Where it bit:** `Graph.kFrameRow` in `BodyBar/KFrame.lean` (Phase 14

@@ -99,7 +99,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-12) | Phase 12 surface (`Matroid/Constructions/{Submodular,Union}.lean`, `matroid-union.tex`) | ✓ Complete (see `notes/Phase12-cleanup.md`; round manual: `CLEANUP.md`) |
 | 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | ✓ Complete (see `notes/Phase13.md`) |
 | ⋮ Cleanup round (post-Phase-13) | Phase 13 surface (`BodyBar/TreePacking.lean`, Phase-13 `Matroid/Constructions/Union.lean` adders, `body-bar.tex` tree-packing nodes) | ✓ Complete (see `notes/Phase13-cleanup.md`; round manual: `CLEANUP.md`) |
-| 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | in progress (see `notes/Phase14.md`; forward-mode index in `body-bar.tex`) |
+| 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | ✓ Complete (see `notes/Phase14.md`) |
 | 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | planning (was Phase 12; see `notes/Phase12.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -444,20 +444,24 @@ Phase 14 (`k`-frame matroid = `k`-fold cycle-matroid union).
 
 ### Phase 14 — k-frame matroid = k-fold cycle-matroid union
 
-**Status (in progress; forward-mode lemma index in `body-bar.tex`
-§`sec:body-bar-k-frame`; see `notes/Phase14.md`).** Whiteley 1988
-Theorem 1: the generic `k`-frame matroid `F(G,X)` on a multigraph (a
-linear matroid via `Matroid.ofFun` over indeterminate coefficients)
-equals the `k`-fold union of `Graph.cycleMatroid`. Whiteley §2.1's
-genericity argument (re-cast as a rank count forward, a forest-packing
-specialization reverse). Bridges Phase 12's abstract union to the
-body-bar realizations of Phase 15. Both genericity halves and the
-count-bridge node `lem:k-frame-indep-iff-count`
-(`Graph.kFrameMatroid_indep_iff_isSparse_restrict`) are landed in
-`BodyBar/KFrame.lean`; the single remaining red node is the
-Phase-closing `thm:k-frame-union-cycle` (a `Matroid.ext_indep` matching
-`kFrameMatroid_indep_iff_isSparse_restrict` against Phase 13's
-`unionPow_cycleMatroid_indep_iff_isSparse_restrict`).
+**Status (✓ Complete; see `notes/Phase14.md`).** Whiteley 1988 Theorem 1:
+the generic `k`-frame matroid `F(G,X)` on a multigraph (a linear matroid
+via `Matroid.ofFun` over indeterminate coefficients
+`KFrameField β k = FractionRing (MvPolynomial (β × Fin k) ℚ)`) equals the
+`k`-fold union of `Graph.cycleMatroid`, restricted to `E(G)`:
+`Graph.kFrameMatroid_eq_unionPow_cycleMatroid`. Whiteley §2.1's genericity
+argument runs as a rank count forward (`Graph.forest_count_of_linearIndepOn_kFrameRow`)
+and a forest-packing block-diagonal specialization reverse
+(`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`); the two halves package
+into the count bridge `Graph.kFrameMatroid_indep_iff_isSparse_restrict`, which
+matches Phase 13's `unionPow_cycleMatroid_indep_iff_isSparse_restrict` by
+`Matroid.ext_indep`. The `↾ E(G)` is forced: the vendored `Matroid.Union` has
+ground `univ : Set β`, so the bare equality is unprovable (the matroids agree on
+independent sets but the union carries every non-edge as a loop). Carrier:
+mathlib core `Graph α β`. Bridges Phase 12's abstract union to the body-bar
+realizations of Phase 15. Per-node lemma map + decisions (incl. the coefficient
+encoding and the ground-set restriction): `notes/Phase14.md` and the
+`sec:body-bar-k-frame` dep-graph of `body-bar.tex`. Unblocks Phase 15.
 
 ### Phase 15 — Body-bar Tay theorem (existence form)
 

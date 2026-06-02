@@ -360,26 +360,33 @@ and the same applies to every $Y \subseteq E'$.
 \begin{theorem}[$k$-frame matroid is the $k$-fold cycle-matroid union;
   Whiteley Theorem~1]
   \label{thm:k-frame-union-cycle}
+  \lean{Graph.kFrameMatroid_eq_unionPow_cycleMatroid}
+  \leanok
   \uses{def:k-frame-matroid, def:matroid-union,
     lem:k-frame-indep-iff-count, thm:unionPow-cycle-indep-iff-sparse}
   For every multigraph $G$ and every $k \ge 1$,
   \[
-    F(G, X) \;=\; \bigcup_{j = 1}^{k} G.\mathrm{cycleMatroid},
+    F(G, X) \;=\; \Bigl(\bigcup_{j = 1}^{k} G.\mathrm{cycleMatroid}\Bigr)
+      \restriction E(G),
   \]
-  the $k$-fold union of the cycle matroid of $G$ (both sides
-  matroids on the edge type $\beta$).
+  the $k$-fold union of the cycle matroid of $G$, restricted to the bar
+  set $E(G)$ (both sides matroids on the edge type $\beta$ with ground
+  set $E(G)$).
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:k-frame-indep-iff-count, thm:unionPow-cycle-indep-iff-sparse}
-  Both matroids have ground set $E(G)$
-  (\cref{def:k-frame-matroid}), so by matroid extensionality
+  Both matroids have ground set $E(G)$, so by matroid extensionality
   (\texttt{Matroid.ext\_indep}) it suffices to match their independent
   sets. A bar set $E' \subseteq E(G)$ is independent in $F(G, X)$ iff
   $G \restriction E'$ is $(k,k)$-sparse
   (\cref{lem:k-frame-indep-iff-count}), and independent in the cycle-matroid
   union under the same condition
   (\cref{thm:unionPow-cycle-indep-iff-sparse}); the two characterizations
-  coincide.
+  coincide. The $\restriction E(G)$ is bookkeeping for the formalization's
+  union construction, whose ground set is the full edge type $\beta$ (with
+  every non-edge a loop); restricting to $E(G)$ discards those loops to match
+  the ground set $E(G)$ of $F(G, X)$.
 \end{proof}
 
 \subsection{Tree-packing as a corollary}

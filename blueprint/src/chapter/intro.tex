@@ -25,7 +25,7 @@ combinatorial rigidity, see
 
 The Lean code is organized into fifteen phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--12 are complete; Phases~13--15 are scoped (see the phase
+Phases~1--14 are complete; Phase~15 is scoped (see the phase
 bullets below). The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
@@ -128,8 +128,9 @@ theorem itself (Phase~15). The per-phase breakdown:
   \item \textbf{The $k$-frame matroid as a cycle-matroid union.}
         Whiteley's Theorem~1~\cite{whiteley1988}: the generic
         $k$-frame matroid on a multigraph (a linear matroid via
-        \texttt{Matroid.ofFun}) equals the $k$-fold union of the
-        cycle matroid. (File: \texttt{BodyBar/KFrame.lean}.)
+        \texttt{Matroid.ofFun} over indeterminate coefficients)
+        equals the $k$-fold union of the cycle matroid, restricted to
+        the bar set $E(G)$. (File: \texttt{BodyBar/KFrame.lean}.)
   \item \textbf{Body-bar Tay theorem.} For $n \ge 2$ and
         $d = n(n+1)/2$, a multigraph $G$ is the underlying graph of an
         infinitesimally rigid body-bar framework in $\mathbb{R}^n$ iff
@@ -149,16 +150,16 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from the
 navigation bar) is the best place to see at a glance how the chapters
-fit together; all Phase~1--13 nodes are green: the main Laman line
+fit together; all Phase~1--14 nodes are green: the main Laman line
 (\cref{sec:laman-theorem}), the matroid identifications
 (\cref{sec:rigidity-matroid,sec:count-matroid}), the verified-DFS
 warmup (\cref{sec:dfs}), the pebble-game chapter
 (\cref{sec:pebble-game}), the executable pebble-game chapter
 (\cref{sec:executable}), the matroid-union / Edmonds-partition
 chapter (\cref{sec:matroid-union}), and the Tutte--Nash-Williams
-tree-packing nodes of the body-bar chapter (the
-\cref{sec:body-bar-tree-packing} subsection). The rest of the body-bar
-program is the to-do list: the Phases~14--15 nodes of the body-bar
-chapter (\cref{sec:body-bar}) are red and turn green as each phase
-lands, with Phase~14 (the $k$-frame matroid as a cycle-matroid union)
-the active front.
+tree-packing and $k$-frame-matroid nodes of the body-bar chapter (the
+\cref{sec:body-bar-tree-packing,sec:body-bar-k-frame} subsections). The
+rest of the body-bar program is the to-do list: the Phase~15 nodes of
+the body-bar chapter (\cref{sec:body-bar}) are red and turn green as
+the phase lands, with Phase~15 (Tay's body-bar theorem) the active
+front.
