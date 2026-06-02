@@ -1,10 +1,10 @@
 # Phase 15 — Body-bar Tay theorem (existence form) (work log)
 
-**Status:** in progress (just opened).
+**Status:** in progress (3 of 4 nodes green; target `thm:tay-witness` left).
 
 ## Current state
 
-Two leaf nodes are **green** in `BodyBar/Framework.lean`:
+Three leaf nodes are **green** in `BodyBar/Framework.lean`:
 - `def:body-bar-framework` — `Graph.bodyBarDim n = n(n+1)/2` and the
   `Graph.BodyBarFramework n α β` structure (a multigraph `graph : Graph α β`
   paired with an unconstrained `placement : E(graph) → EuclideanSpace ℝ
@@ -19,6 +19,15 @@ Two leaf nodes are **green** in `BodyBar/Framework.lean`:
   compositionally (`barRow` + `LinearMap.pi`) mirroring Phase 4's
   `edgeRow`/`RigidityMap`; `barRow_apply` / `rigidityMap_apply` are
   `@[simp] := rfl`. Blueprint node flipped (`\lean{...}` + `\leanok`).
+- `def:infinitesimally-rigid-body-bar` —
+  `Graph.BodyBarFramework.IsInfinitesimallyRigid F D`, a `Prop` predicate:
+  `finrank ℝ (range (rigidityMap D)) + bodyBarDim n = bodyBarDim n *
+  F.graph.vertexSet.ncard` (the count `rank = d·b − d` phrased as `rank + d
+  = d·b` to dodge ℕ-subtraction; `b = #bodies = vertexSet.ncard`). Mirrors
+  Phase 4's `SimpleGraph.IsInfinitesimallyRigid`, incl. the `[Finite α]`
+  contract guard + `@[nolint unusedArguments]` (same disposition note).
+  Stated against **rank** (not kernel-dim) to match the blueprint's `d·b −
+  d` phrasing. Blueprint node flipped (`\lean{...}` + `\leanok`).
 
 `BodyBar/Framework.lean` is in the top-level `CombinatorialRigidity.lean`
 import aggregator. Forward-mode phase: the lemma index lives in
@@ -26,17 +35,18 @@ import aggregator. Forward-mode phase: the lemma index lives in
 §`sec:body-bar-tay`. All `sec:body-bar-k-frame` /
 `sec:body-bar-tree-packing` prerequisites are green.
 
-The chapter has **two red nodes** left, in dependency order:
-- `def:infinitesimally-rigid-body-bar` (`\uses{def:rigidity-map-body-bar}`)
-- `thm:tay-witness` (the target; `\uses` the three defs +
-  `def:graph-sparse`, `thm:tutte-nash-williams`, `cor:k-spanning-trees`;
-  proof `\uses{thm:k-frame-union-cycle, …}`).
+The chapter has **one red node** left — the target:
+- `thm:tay-witness` (`\uses` the three defs + `def:graph-sparse`,
+  `thm:tutte-nash-williams`, `cor:k-spanning-trees`; proof
+  `\uses{thm:k-frame-union-cycle, …}`). The phase closes when it is green.
 
-**Next concrete commit:** `def:infinitesimally-rigid-body-bar` in
-`BodyBar/Framework.lean` — a body-bar framework on `b` bodies is
-infinitesimally rigid when `rigidityMap D` has rank `d·b − d` (kernel =
-the `d`-dim space of trivial screw motions). Add/flip its
-`\lean{...}` + `\leanok` in the same commit.
+**Next concrete commit:** `thm:tay-witness` (Tay's theorem, existence
+form). Standard-basis specialization `b_e = e_{j(e)}` of
+`thm:k-frame-union-cycle`'s reverse direction
+(`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`), lifted from
+indeterminate to real coefficients; the rigidity matrix becomes
+block-diagonal with `d` full-rank forest-incidence blocks. See *Blockers*
+re: whether Phase 14's `specRow`/`forestEval` lifts directly.
 
 ## Architectural choices made up front
 
@@ -69,11 +79,12 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
       `Graph.BodyBarFramework`).
 - [x] `def:rigidity-map-body-bar` — bar-constraint rigidity map.
       `BodyBar/Framework.lean` (`BodyBarFramework.rigidityMap`, `barRow`).
-- [ ] `def:infinitesimally-rigid-body-bar` — rank `= d·b − d`.
-      **Next concrete commit.** `BodyBar/Framework.lean`.
+- [x] `def:infinitesimally-rigid-body-bar` — rank `= d·b − d`
+      (`IsInfinitesimallyRigid`). `BodyBar/Framework.lean`.
 - [ ] `thm:tay-witness` — Tay's theorem, existence form (Whiteley Thm 8).
-      Standard-basis specialization of `thm:k-frame-union-cycle`'s reverse
-      direction lifted from indeterminate to real coefficients.
+      **Next concrete commit.** Standard-basis specialization of
+      `thm:k-frame-union-cycle`'s reverse direction lifted from indeterminate
+      to real coefficients.
 
 ## Decisions made during this phase
 
@@ -104,6 +115,15 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
   Plücker-variety membership in the type — the existence-of-realization
   scope (ROADMAP §15) is witnessed by standard-basis `b_e`, themselves
   degenerate two-extensors. The "almost all realizations" lift is deferred.
+- **`IsInfinitesimallyRigid` stated against rank, not kernel-dim, and `b`
+  computed from `vertexSet.ncard`.** The blueprint phrases rigidity as rank
+  `= d·b − d`, so the def reads `finrank (range (rigidityMap D)) + d = d·b`
+  (the `+ d = d·b` form sidesteps ℕ-subtraction). `b` is read off the
+  framework as `F.graph.vertexSet.ncard` rather than a parameter — the body
+  set is intrinsic to `F.graph`. Predicate takes the orientation `D`
+  explicitly (matching `rigidityMap`); rank is `D`-independent. Mirrors
+  Phase-4 `SimpleGraph.IsInfinitesimallyRigid`'s `[Finite α]` guard +
+  `@[nolint unusedArguments]` disposition verbatim.
 
 ## Blockers / open questions
 
@@ -118,18 +138,24 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 
 ## Hand-off / next phase
 
-`def:body-bar-framework` and `def:rigidity-map-body-bar` are green
-(`BodyBar/Framework.lean`). **Next concrete commit:** formalize the next
-leaf-most red node `def:infinitesimally-rigid-body-bar` in
-`BodyBar/Framework.lean` — a body-bar framework on `b` bodies is
-infinitesimally rigid when `rigidityMap D` has rank `d·b − d` (kernel = the
-`d`-dim space of trivial screw motions; the body-bar analogue of
-`SimpleGraph.IsInfinitesimallyRigid`'s kernel bound). Likely shape: a `def`
-predicate on `(F, D)` via `Module.finrank` of the range/kernel — confirm
-whether it should be stated against rank or kernel-dim, and whether `b` is
-`Nat.card V(F.graph)` or carried as a parameter. Then flip its blueprint
-node green (`\lean{...}` + `\leanok`) in the same commit. Last red node is
-`thm:tay-witness`; the phase closes when it is green.
+The three `sec:body-bar-framework` defs are green
+(`BodyBar/Framework.lean`). **Next concrete commit:** the last red node and
+phase target, `thm:tay-witness` (Tay's theorem, existence form; Whiteley
+Thm 8) — a multigraph `G` carries an independent body-bar framework in `ℝⁿ`
+iff it is `(d,d)`-sparse (`d = bodyBarDim n`), isostatic iff `(d,d)`-tight
+(`cor:k-spanning-trees`). Route: specialize each bar's two-extensor to the
+standard basis `b_e = e_{j(e)}` (`j(e)` = forest index in a tree-packing
+partition), the reverse direction of `thm:k-frame-union-cycle`
+(`Graph.linearIndepOn_kFrameRow_of_isSparse_restrict`) lifted from the
+fraction-field `KFrameField` to `ℝ`; the rigidity matrix becomes
+block-diagonal with `d` full-rank forest-incidence blocks. **First
+sub-step** (likely >1 session): assess whether Phase 14's
+`specRow`/`forestEval`/`blockPiSpan` machinery lifts to `ℝ` directly or
+needs a thin Plücker-coordinate wrapper (see *Blockers*); if it lifts,
+land the independent-form (`(d,d)`-sparse ⟹ independent framework) half
+first, then the isostatic refinement via `cor:k-spanning-trees`. Flip
+`thm:tay-witness` green (`\lean{...}` + `\leanok`) when it lands; the phase
+closes on that commit.
 
 Follow-on: **Phase 16** (body-hinge / panel-hinge Tay–Whiteley), en route
 to **Phase 17** (molecular conjecture, Katoh–Tanigawa 2011). Neither is

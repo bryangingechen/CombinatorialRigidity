@@ -130,6 +130,29 @@ theorem rigidityMap_apply {α β : Type*} (F : BodyBarFramework n α β)
     (D : Graph.orientation F.graph) (m : Motion n α) (e : E(F.graph)) :
     F.rigidityMap D m e = ⟪F.placement e, m (D.dInc e).1 - m (D.dInc e).2⟫_ℝ := rfl
 
+/-- A body-bar framework `F` on `b = F.graph.vertexSet.ncard` bodies is
+**infinitesimally rigid** (Whiteley~1988 §3; `def:infinitesimally-rigid-body-bar`)
+when its rigidity map for an orientation `D` has rank `d·b − d`, `d = bodyBarDim n` —
+equivalently its kernel is exactly the `d`-dimensional space of trivial screw
+motions of `ℝⁿ` (the body-bar analogue of `SimpleGraph.IsInfinitesimallyRigid`'s
+kernel bound). Following the project's no-ℕ-subtraction convention, the count
+`d·b − d` is phrased as the equality `rank + d = d·b`.
+
+The orientation `D` only fixes per-row signs, so the rank — and hence this
+predicate — is orientation-independent (see `rigidityMap`). -/
+-- `[Finite α]` is a semantic contract guard: with `α` infinite the body-motion
+-- space `Motion n α = α → ℝᵈ` is infinite-dimensional and the rank count is
+-- meaningless. It is not consumed by elaboration of the body, so the
+-- `unusedArguments` env-linter fires; the guard prevents callers from applying
+-- this to an infinite body set. (Same disposition as `Framework.lean`'s
+-- `SimpleGraph.IsInfinitesimallyRigid`; once `unusedFintypeInType` extends to
+-- `def`s this would migrate to `set_option linter.unusedFintypeInType false`.)
+@[nolint unusedArguments]
+def IsInfinitesimallyRigid {α β : Type*} [Finite α] (F : BodyBarFramework n α β)
+    (D : Graph.orientation F.graph) : Prop :=
+  Module.finrank ℝ (LinearMap.range (F.rigidityMap D)) + bodyBarDim n
+    = bodyBarDim n * F.graph.vertexSet.ncard
+
 end BodyBarFramework
 
 end Graph
