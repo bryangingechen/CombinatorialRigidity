@@ -1,7 +1,7 @@
 # Phase 17 cleanup round (work log)
 
-**Status:** in progress — A (blueprint divergence) bucket closed; B/C/D
-remain.
+**Status:** in progress — A (blueprint divergence) closed; D2 + the
+B5/B6 sites it underlies landed (two mirrors); B1/B4/C remain.
 
 Between-phases cleanup round, run after Phase 17 (Grassmann–Cayley
 extensor algebra / Lemma 2.1, KT §2.1) closed in `09921ac` and before
@@ -42,11 +42,19 @@ audit gate runs on the top ~3. Bucket **D** has substantive work:
 `FRICTION.md` carries **four open Phase-17 entries**, three of them
 upstream-eligible mirror candidates not yet mirrored.
 
-The smallest concrete next commit is **A1** (per-node `\lean{}`
-signature compare for the 7 nodes — `checkdecls` already green, so this
-is the statement-form leg), bundled with or followed immediately by
-**A2** (the chapter-intro destale, the one finding spotted at open). See
-*Hand-off / next phase*.
+**D2 + B5/B6 landed.** Triaged the three upstream-eligible FRICTION
+Phase-17 entries: **two mirrored, one kept deferred** (see *Decisions
+made*). Mirrored `Finset.univ_orderEmbOfFin`
+(`Mathlib/Data/Finset/Sort.lean`, `@[simp]`) and `Finset.pair_eq_pair_iff`
+(`Mathlib/Data/Finset/Insert.lean`); refactored the three Extensor.lean
+callsites. The B6/L525 three-rewrite `rw` chain collapsed to
+`rw [Finset.pair_eq_pair_iff]`; `pluckerCoord_univ` and the `hid`
+derivation inside `extensor_ne_zero_iff_linearIndependent` collapsed to
+`rw [Finset.univ_orderEmbOfFin]`. The B5/L290 `change` **stays** — it
+covers the *folded `ιMulti_family` abbrev* (the kept-deferred
+ιMulti-ne-zero-iff-LI gap), not the orderEmbOfFin gap. Build green,
+warning-clean, `lake lint` clean. Remaining: B1 (`classical` ×4) / B4
+(`noncomputable def` ×3) per-site confirms + the C long-proof gate.
 
 ## Scope
 
@@ -60,7 +68,11 @@ shipped*. But the **B/D sweep must re-assess that**: FRICTION carries
 three open upstream-eligible Phase-17 items (orderEmbOfFin-is-id,
 ιMulti-ne-zero-iff-LI, Finset.pair_eq_pair_iff) that were deferred at
 phase close — a cleanup round is the moment to decide mirror-now vs.
-keep-deferred for each.
+keep-deferred for each. **Re-assessed (D2): two mirrored** —
+`Mathlib/Data/Finset/Sort.lean` (`Finset.univ_orderEmbOfFin`) and
+`Mathlib/Data/Finset/Insert.lean` (`Finset.pair_eq_pair_iff`) — **one
+kept deferred** (ιMulti-ne-zero-iff-LI). So the mirror-directory leg is
+*not* empty after the cleanup round, contrary to the as-shipped state.
 
 - **(A) Blueprint ↔ Lean divergence** — `molecular.tex` §`sec:molecular`
   (7 nodes: `def:homogeneous-coords`, `lem:affine-indep-iff`,
@@ -151,21 +163,22 @@ keep-deferred for each.
   `ExteriorAlgebra` (noncomputable via `ExteriorAlgebra.ιMulti`). Expect
   all three forced; confirm `extensor` / `join` / `affineSubspaceExtensor`
   themselves carry the keyword consistently and none is accidental.
-- [ ] B5 — `change`/`show` to coax `simp`/`rw`: **2 hits** (L175
+- [~] B5 — `change`/`show` to coax `simp`/`rw`: **2 hits** (L175
   `show … from rfl` inside the `rw` of `affineIndependent_fin_iff_det_…`
   — also a B7 hit; L290 `change ExteriorAlgebra.ιMulti ℝ k (v ∘ …) = 0`
-  in `extensor_ne_zero_iff_linearIndependent`). Per
-  `CombinatorialRigidity/CLAUDE.md` *Concrete signals*: is the L290
-  `change` covering for an un-fused `ιMulti_family`→`ιMulti` reduction
-  (the orderEmbOfFin-is-id gap, FRICTION-open)? Is the L175 `show …
-  from rfl` reducible to a named `Matrix.row`/`Matrix.of` lemma?
-- [ ] B6 — 3+-arg single-step `rw` chains: **2 hits** (L415
+  in `extensor_ne_zero_iff_linearIndependent`). **L290 audited:** the
+  `change` covers the *folded `ιMulti_family` abbrev*, not the
+  orderEmbOfFin gap — `ιMulti_family_apply_coe` leaves the goal as
+  `ExteriorAlgebra.ιMulti_family ℝ k v s = 0` (abbrev unexpanded), so the
+  `change` to bare `ιMulti (v ∘ …)` is load-bearing and stays; it is the
+  kept-deferred ιMulti-ne-zero-iff-LI gap (D2). L175 `show … from rfl`
+  still to confirm.
+- [x] B6 — 3+-arg single-step `rw` chains: **2 hits** (L415
   `rw [Finset.mem_compl, Finset.mem_insert, Finset.mem_singleton, not_or]`
-  — likely a `simp`-collapsible membership unfold; L525
-  `rw [← Finset.coe_inj, Finset.coe_pair, Finset.coe_pair,
-  Set.pair_eq_pair_iff]` — the `{a,b}≠{c,d}` finset-to-set glue, exactly
-  the FRICTION-open `Finset.pair_eq_pair_iff` mirror candidate). Decide
-  per site: collapse to `simp`, or mirror the missing fused lemma.
+  — `simp`-collapsible membership unfold, **left as-is** (explicit unfold
+  is clearer than `simp` here and not a fused-lemma gap); L525 the
+  `{a,b}≠{c,d}` finset-to-set glue — **mirrored** as
+  `Finset.pair_eq_pair_iff`, callsite collapsed to one rewrite).
 - [ ] B7 — `show … from rfl`: **1 hit** (L175, shared with B5). See B5.
 
 ### C. Long-proof audit (LoC ranking at open — none reach §C 50-line threshold; top 3 are the audit gate)
@@ -193,24 +206,38 @@ keep-deferred for each.
   entries against the ≤8-line rule and the *Current state* + *Hand-off*
   sections against the hand-off contract; compress / lift any entry that
   has leaked implementation detail.
-- [ ] D2 — re-skim `FRICTION.md` status sections. **Four open Phase-17
-  entries**, three upstream-eligible mirror candidates deferred at phase
-  close (per `notes/FRICTION.md` ~L79–131): *No `Finset.univ.orderEmbOfFin
-  = id`* (consumers `pluckerCoord_univ`, `extensor_ne_zero_iff_LI`),
-  *No `exteriorPower.ιMulti v ≠ 0 ↔ LinearIndependent v`* (consumer
-  `extensor_ne_zero_iff_LI`), *No `Finset.pair_eq_pair_iff`* (consumer
-  `omitTwoExtensor_linearIndependent`, B6/L525). For each: mirror-now
-  under `CombinatorialRigidity/Mathlib/<path>` (refactoring the callsite
-  and closing the B5/B6 hit it underlies — A B-sweep that surfaces a
-  missing fused lemma is itself a small refactor, `CLEANUP.md` §B) vs.
-  keep-deferred with a recorded rationale. One project-internal entry
-  (the KT-homogenization one ~L630) to triage for keep-active vs. lift.
-  This is where the B5/B6/D2 findings converge — likely the round's main
-  substantive work.
+- [~] D2 — re-skim `FRICTION.md` status sections. Three upstream-eligible
+  Phase-17 mirror candidates **triaged: two mirrored, one kept deferred**
+  (see *Decisions made*). Mirrored *`Finset.univ.orderEmbOfFin = id`* →
+  `Finset.univ_orderEmbOfFin` (`Mathlib/Data/Finset/Sort.lean`) and
+  *`Finset.pair_eq_pair_iff`* (`Mathlib/Data/Finset/Insert.lean`); both
+  Open entries struck through, two new Mirrored entries added. Kept
+  deferred: *`exteriorPower.ιMulti v ≠ 0 ↔ LinearIndependent v`* (no clean
+  glue-lemma reduction; belongs upstream next to
+  `ιMulti_family_linearIndependent_field`). Still to do: the
+  `notes/Phase17.md` ≤8-line / hand-off spot-check (D1) and the
+  project-internal KT-homogenization entry (the `[resolved]` one at
+  former ~L630 — already `[resolved]`, no action) triage for keep-active
+  vs. lift.
 
 ## Decisions made during this round
 
-<none yet — round just opened>
+- **D2 mirror triage (2026-06): two of three upstream-eligible Phase-17
+  FRICTION entries mirrored, one kept deferred.** Mirrored
+  `Finset.univ_orderEmbOfFin` (`@[simp]`, `Mathlib/Data/Finset/Sort.lean`)
+  — two same-shape callsites hit the entry's own "if a third hits"
+  threshold — and `Finset.pair_eq_pair_iff` (`Mathlib/Data/Finset/Insert.lean`)
+  — single callsite but a clean general glue lemma parallel to the existing
+  `Set.pair_eq_pair_iff`, collapsing a three-rewrite chain. Kept deferred:
+  ιMulti-ne-zero-iff-LI — no clean glue-lemma reduction (leans on
+  `ExteriorPower` internals + the folded `ιMulti_family` abbrev), belongs
+  upstream next to `ιMulti_family_linearIndependent_field`. Rationale per
+  entry in `FRICTION.md` (Mirrored × 2; the deferred one's *Status* note).
+- **B5/L290 `change` is forced and stays.** It unfolds the folded
+  `ιMulti_family` abbrev (the kept-deferred ιMulti gap), not the
+  now-mirrored orderEmbOfFin gap; the orderEmbOfFin mirror only shaved the
+  `hid` derivation. B6/L415 `rw` chain left as-is (explicit membership
+  unfold, not a fused-lemma gap).
 
 ## Blockers / open questions
 
@@ -218,26 +245,28 @@ keep-deferred for each.
 
 ## Hand-off / next phase
 
-**Bucket A landed (A1 + A2, doc-only).** Next is the round's
-substantive weight: **B + D**.
+**A landed (doc-only); D2 + B5/B6 landed (two mirrors).** The round's
+substantive weight is discharged: the mirror triage is done (two mirrored,
+one kept deferred), the B6/L525 `rw` chain collapsed, and the B5/L290
+`change` audited as forced.
 
-**Smallest concrete next commit:** **D2 + the B5/B6 sites it underlies.**
-Triage the three upstream-eligible FRICTION Phase-17 entries
-(orderEmbOfFin-is-id, ιMulti-ne-zero-iff-LI, `Finset.pair_eq_pair_iff`)
-for mirror-now vs. keep-deferred. Mirror-now closes the corresponding
-code-smell hit as a refactor in the same commit: the `Finset.pair_eq_pair_iff`
-mirror collapses the B6/L525 `rw` chain; the orderEmbOfFin-is-id mirror
-underlies the B5/L290 `change` (and the L287/L365 `orderEmbOfFin_unique`
-uses). Start there since it's the convergence point; the B1 `classical`
-(4) and B4 `noncomputable def` (3) audits and the C long-proof gate (no
-proof ≥ 50L) are smaller per-site confirms that can batch after.
+**Smallest concrete next commit:** the **B1 + B4 + C no-op-confirm batch**
+(the remaining sweep is per-site audits with no expected refactor, so they
+batch into one commit per `CLEANUP.md` *Calibration* and the parent
+batching guidance). Specifically:
+- **B1** (`classical` ×4: L382 `card_compl_pair`, L407 `pairAppend_injective`,
+  L455 `join_pair_omitTwo_other_eq_zero`, L493 `omitTwoExtensor_linearIndependent`):
+  confirm each is load-bearing (Finset-compl / `orderEmbOfFin` decidability
+  on `Fin (e+2)`) or removable.
+- **B4** (`noncomputable def` ×3: `pluckerCoord`, `pluckerVector`,
+  `omitTwoExtensor`): confirm the keyword is forced (`Matrix.det` over `ℝ` /
+  `ExteriorAlgebra.ιMulti`), not accidental.
+- **B5/L175** `show … from rfl` (also B7): confirm reducible to a named
+  `Matrix.row`/`Matrix.of` lemma or forced.
+- **C1–C3** long-proof gate (`omitTwoExtensor_linearIndependent` ~47L and
+  the two ~32L proofs): the four-question audit, expect a forced-shape
+  no-op confirm (Lemma 2.1's per-term-split architecture is documented).
+- **D1**: the `notes/Phase17.md` ≤8-line / hand-off spot-check.
 
-**The round's substantive weight is in B + D**, which converge: the three
-upstream-eligible FRICTION entries (D2) underlie the B5 `change` (L290,
-the ιMulti-family→ιMulti / orderEmbOfFin-is-id gap) and the B6 `rw` chain
-(L525, the `Finset.pair_eq_pair_iff` glue). The round's main decision is
-mirror-now vs. keep-deferred for each — landing a mirror closes the
-corresponding code-smell hit as a refactor in the same commit. The 4
-`classical` (B1) and 3 `noncomputable def` (B4) are likely forced/removable
-audits with smaller per-site cost. A fresh session can resume from this
+Closing that batch closes the round. A fresh session can resume from this
 log plus `CLEANUP.md` + ROADMAP §17 alone.

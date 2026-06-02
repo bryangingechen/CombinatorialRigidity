@@ -76,24 +76,14 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] No mathlib `Finset.univ.orderEmbOfFin = id` for `Fin n`
-- **Where it bit:** `pluckerCoord_univ` (Phase 17 `def:plucker-coords`)
-  and `extensor_ne_zero_iff_linearIndependent` (Phase 17
-  `def:affine-subspace-extensor`), both in `Molecular/Extensor.lean`.
-  `pluckerCoord_univ` reduces the top Plücker coordinate (column set
-  `= univ`) to the full determinant via `Matrix.submatrix_id_id`;
-  `extensor_ne_zero_iff_linearIndependent` shows the unique `k`-element
-  `powersetCard (Fin k) k` reindexing `ofFinEmbEquiv.symm ⟨univ,_⟩`
-  is `id` so the family member is `extensor v` itself. Both need
-  `Finset.univ.orderEmbOfFin h = (id : Fin n → Fin n)`. mathlib has no
-  direct lemma; derive it via `Finset.orderEmbOfFin_unique h
-  (fun _ => Finset.mem_univ _) strictMono_id` (uniqueness of the
-  increasing enumeration). Low-cost two-step `have`; now at **two**
-  callsites — upstream-eligible as a `Finset.univ.orderEmbOfFin` simp
-  lemma. Still not mirrored (both callsites are one-liners and the
-  `have` is the same two-step each time), but if a third hits, mirror
-  under `Mathlib/Order/Fin/Basic.lean` (or wherever `orderEmbOfFin`
-  lives) rather than re-deriving.
+### ~~[open] No mathlib `Finset.univ.orderEmbOfFin = id` for `Fin n`~~
+- **Resolved by mirroring** (Phase 17-cleanup D2): the two callsites
+  (`pluckerCoord_univ`, `extensor_ne_zero_iff_linearIndependent`, both in
+  `Molecular/Extensor.lean`) hit the threshold the original entry named
+  ("if a third hits, mirror" — two same-shape callsites is the trigger).
+  Mirrored as `Finset.univ_orderEmbOfFin` (a `@[simp]` lemma); see
+  [Mirrored](#mirrored). Both callsites collapse from the two-step
+  `orderEmbOfFin_unique … strictMono_id` `have` to a one-line `rw`/`simp`.
 
 ### [open] No mathlib `exteriorPower.ιMulti v ≠ 0 ↔ LinearIndependent v` (over a field)
 - **Where it bit:** `extensor_ne_zero_iff_linearIndependent` in
@@ -116,21 +106,27 @@ housekeeping pass once their resolution is fully indexed.
   single callsite so far; mirror under `Mathlib/LinearAlgebra/
   ExteriorPower/Basis.lean` if Lemma 2.1 or a Phase-18 consumer needs
   the bare-extensor nonvanishing fact again.
-- **Status:** open
+- **Status:** open. **Kept deferred (Phase 17-cleanup D2 decision):**
+  unlike its two sibling Phase-17 entries (orderEmbOfFin-is-id,
+  `Finset.pair_eq_pair_iff`), this one does *not* reduce to a clean glue
+  lemma — the ~12-line proof leans on deep `ExteriorPower` internals
+  (`ιMulti_family_linearIndependent_field`, the `⋀[ℝ]^k`-coercion
+  `Subtype.ext`, the folded `ιMulti_family` abbrev that forces the `change`
+  to bare `ιMulti`). It belongs upstream *next to*
+  `ιMulti_family_linearIndependent_field`, not in a thin project mirror;
+  single callsite, no third consumer yet. The orderEmbOfFin-is-id mirror
+  (now landed) only shaved the `hid` derivation inside this proof — the
+  residual `change` is this entry's gap, not the orderEmbOfFin one.
 
-### [open] No `Finset.pair_eq_pair_iff` (only the `Set` version)
-- **Where it bit:** the off-diagonal `hne` step of
-  `omitTwoExtensor_linearIndependent` in `Molecular/Extensor.lean`
-  (Phase 17 `lem:extensor-independence`). Needed `({a,b} : Finset α) =
-  {c,d} ↔ (a = c ∧ b = d) ∨ (a = d ∧ b = c)` to turn an ordered-pair
-  inequality into a finset inequality. mathlib has `Set.pair_eq_pair_iff`
-  but no `Finset` analogue, so the bridge is `rw [← Finset.coe_inj,
-  Finset.coe_pair, Finset.coe_pair, Set.pair_eq_pair_iff]` — three glue
-  rewrites for one mathematical equivalence.
-- **Proposed fix:** upstream `Finset.pair_eq_pair_iff` next to
-  `Set.pair_eq_pair_iff` (needs `[DecidableEq α]`). Not mirrored —
-  single callsite; the `coe_inj` bridge is a clean one-liner.
-- **Status:** open
+### ~~[open] No `Finset.pair_eq_pair_iff` (only the `Set` version)~~
+- **Resolved by mirroring** (Phase 17-cleanup D2): mirrored as
+  `Finset.pair_eq_pair_iff` next to the `Set` version; see
+  [Mirrored](#mirrored). Single callsite (the off-diagonal `hne` step of
+  `omitTwoExtensor_linearIndependent`, `Molecular/Extensor.lean`), but the
+  fact is a general `Finset`/`Set` glue lemma cleanly parallel to the
+  existing `Set.pair_eq_pair_iff`, and mirroring collapses the three glue
+  rewrites (`← coe_inj`, two `coe_pair`, `Set.pair_eq_pair_iff`) to a
+  single `rw [Finset.pair_eq_pair_iff]`.
 
 ### [resolved] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
 - **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in
@@ -1796,6 +1792,45 @@ limitations. Worth a once-over so future agents don't re-litigate.
   matches the neighbour `Sym2.mk_mem_image_map_some_iff`.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/Data/Sym/Sym2.lean`.
+
+### [mirrored] `Finset.univ_orderEmbOfFin` (`Finset.univ.orderEmbOfFin = id` on `Fin n`)
+- **Where it bit:** `pluckerCoord_univ` and
+  `extensor_ne_zero_iff_linearIndependent` in `Molecular/Extensor.lean`
+  (Phase 17 `def:plucker-coords` / `def:affine-subspace-extensor`). Both
+  needed `⇑(Finset.univ.orderEmbOfFin h) = (id : Fin n → Fin n)` — the
+  increasing enumeration of `univ : Finset (Fin n)` is the identity — to
+  reduce a `submatrix`/reindex to the original object (`Matrix.submatrix_id_id`
+  for the top Plücker coordinate; the unique `powersetCard` member is
+  `extensor v` itself for the nonvanishing iff).
+- **Friction:** mathlib has `Finset.orderEmbOfFin_unique` (any `StrictMono`
+  `f` landing in `s` equals `s.orderEmbOfFin`), but not the `univ`/`id`
+  specialization, so each callsite spelled the same two-step
+  `(orderEmbOfFin_unique h (fun _ => mem_univ _) strictMono_id).symm`.
+- **Resolution:** mirrored as the `@[simp]` lemma `Finset.univ_orderEmbOfFin`.
+  `pluckerCoord_univ` and the `hid` derivation in
+  `extensor_ne_zero_iff_linearIndependent` both collapse to a one-line
+  `rw [Finset.univ_orderEmbOfFin]`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Finset/Sort.lean` (where
+  `orderEmbOfFin` / `orderEmbOfFin_unique` live).
+
+### [mirrored] `Finset.pair_eq_pair_iff` (`Finset` analogue of `Set.pair_eq_pair_iff`)
+- **Where it bit:** the off-diagonal `hne` step of
+  `omitTwoExtensor_linearIndependent` in `Molecular/Extensor.lean`
+  (Phase 17 `lem:extensor-independence`), turning an ordered-pair
+  inequality into a finset-pair inequality.
+- **Friction:** mathlib has `Set.pair_eq_pair_iff` but no `Finset`
+  analogue, so the callsite bridged through three glue rewrites
+  `rw [← Finset.coe_inj, Finset.coe_pair, Finset.coe_pair, Set.pair_eq_pair_iff]`
+  for one mathematical equivalence.
+- **Resolution:** mirrored as `Finset.pair_eq_pair_iff`
+  (`{a,b} = {c,d} ↔ (a = c ∧ b = d) ∨ (a = d ∧ b = c)`, `[DecidableEq α]`),
+  proved by exactly that `coe_inj` bridge once. The callsite collapses to
+  `rw [Finset.pair_eq_pair_iff]`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Finset/Insert.lean` (where
+  `Finset.coe_pair` lives; `Set.pair_eq_pair_iff` is in
+  `Mathlib/Data/Set/Insert.lean`).
 
 ## Archived: Resolved (project-internal)
 

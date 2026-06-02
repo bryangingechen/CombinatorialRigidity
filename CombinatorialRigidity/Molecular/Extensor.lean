@@ -10,6 +10,8 @@ public import Mathlib.LinearAlgebra.AffineSpace.Independent
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 public import Mathlib.LinearAlgebra.ExteriorPower.Basic
 public import Mathlib.LinearAlgebra.ExteriorPower.Basis
+public import CombinatorialRigidity.Mathlib.Data.Finset.Insert
+public import CombinatorialRigidity.Mathlib.Data.Finset.Sort
 
 /-!
 # Grassmann–Cayley extensor algebra: homogeneous coordinates (`sec:molecular-homog`)
@@ -282,9 +284,8 @@ theorem extensor_ne_zero_iff_linearIndependent {d k : ℕ}
     set s : Set.powersetCard (Fin k) k := ⟨Finset.univ, by simp⟩ with hs
     have hne := hfam.ne_zero s
     apply hne
-    have hid : Set.powersetCard.ofFinEmbEquiv.symm s = (id : Fin k → Fin k) := by
-      rw [Set.powersetCard.ofFinEmbEquiv_symm_apply]
-      exact (Finset.orderEmbOfFin_unique s.2 (fun _ => Finset.mem_univ _) strictMono_id).symm
+    have hid : ⇑(Set.powersetCard.ofFinEmbEquiv.symm s) = (id : Fin k → Fin k) := by
+      rw [Set.powersetCard.ofFinEmbEquiv_symm_apply, Finset.univ_orderEmbOfFin]
     apply Subtype.ext
     rw [exteriorPower.ιMulti_family_apply_coe, ZeroMemClass.coe_zero]
     change ExteriorAlgebra.ιMulti ℝ k (v ∘ ⇑(Set.powersetCard.ofFinEmbEquiv.symm s)) = 0
@@ -362,9 +363,7 @@ theorem pluckerCoord_univ {d : ℕ} (v : Fin (d + 1) → Fin (d + 1) → ℝ)
       (-1) ^ (1 + ∑ i : Fin (d + 1), (i.val + 1)) * (coordMatrix v).det := by
   rw [pluckerCoord]
   congr 1
-  have hemb : (id : Fin (d + 1) → Fin (d + 1)) = Finset.univ.orderEmbOfFin h :=
-    Finset.orderEmbOfFin_unique h (fun _ => Finset.mem_univ _) strictMono_id
-  rw [← hemb, Matrix.submatrix_id_id]
+  rw [Finset.univ_orderEmbOfFin, Matrix.submatrix_id_id]
 
 /-! ## Independence of the `(d-1)`-extensors (Lemma 2.1)
 
@@ -522,7 +521,7 @@ theorem omitTwoExtensor_linearIndependent {e : ℕ} (p : Fin (e + 2) → Fin (e 
         intro h
         apply hq
         rw [Subtype.ext_iff, Prod.ext_iff]
-        rw [← Finset.coe_inj, Finset.coe_pair, Finset.coe_pair, Set.pair_eq_pair_iff] at h
+        rw [Finset.pair_eq_pair_iff] at h
         rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
         · exact ⟨rfl, rfl⟩
         · exact absurd (hablt.trans hcdlt) (lt_irrefl _)
