@@ -23,11 +23,13 @@ independent points are linearly independent.
 
 \medskip
 \noindent\emph{Forward-mode chapter.} Following the convention for
-Phases~6 onward, the nodes below are stated with their intended
-\texttt{\textbackslash uses\{\}} dependency structure but \emph{without}
-\texttt{\textbackslash lean\{\}} / \texttt{\textbackslash leanok}: the
-dep-graph is red and \emph{is} the phase to-do list. Each node turns
-green as its Lean lands, in the same commit that adds the pointer.
+Phases~6 onward, this chapter was authored as the phase's authoritative
+dep-graph: each node carries its intended \texttt{\textbackslash uses\{\}}
+dependency structure, and turned green as its Lean landed. Phase~17 is
+now complete, so every node below is formalized
+(\texttt{\textbackslash lean\{\}} / \texttt{\textbackslash leanok}); the
+dep-graph records the realized proof structure of
+\texttt{Molecular/Extensor.lean}.
 
 \subsection{Homogeneous coordinates and affine independence}
 \label{sec:molecular-homog}

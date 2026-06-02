@@ -1,8 +1,7 @@
 # Phase 17 cleanup round (work log)
 
-**Status:** in progress — round just opened (this commit is the log
-skeleton + scoped task list only; no cleanup edits yet, per `CLEANUP.md`
-*Workflow* rule 1).
+**Status:** in progress — A (blueprint divergence) bucket closed; B/C/D
+remain.
 
 Between-phases cleanup round, run after Phase 17 (Grassmann–Cayley
 extensor algebra / Lemma 2.1, KT §2.1) closed in `09921ac` and before
@@ -12,7 +11,22 @@ fires on every commit in this round.
 
 ## Current state
 
-Round just opened. The Phase-17 surface is the single new Lean file
+**Bucket A done** (A1 + A2, doc-only). A1: the per-node `\lean{}`
+signature compare for the 7 nodes is a **no-op confirm** — every
+blueprint statement form matches the Lean signature node-for-node
+(`homogenize`, the LI + det iff pair, `extensor`, `join`,
+`pluckerCoord`/`pluckerVector`, `affineSubspaceExtensor` +
+`_ne_zero_iff`, `omitTwoExtensor` + `_linearIndependent`). A2: reworded
+the chapter intro (`molecular.tex` L24–31) from the stale forward-mode
+"dep-graph is red and *is* the phase to-do list" snapshot to a
+closed-phase statement; the node-body re-read found **no other
+findings** — the three formalization asides (`affine-indep-iff` proof,
+`affine-subspace-extensor` basis-extension parenthetical,
+`extensor-independence` `d=e+1` reparametrization note) are faithful
+formalization-cost remarks, not removable Lean-verbosity glosses.
+`blueprint/verify.sh` green (checkdecls OK).
+
+The Phase-17 surface is the single new Lean file
 `Molecular/Extensor.lean` (536 lines — substantially larger than the
 Phase-16 surface, 279 lines) and the seven `molecular.tex` §2.1 nodes
 (all green at phase close, 7 `\lean{}` pins). Unlike Phase 16 (all-zero
@@ -92,7 +106,7 @@ keep-deferred for each.
 
 ### A. Blueprint ↔ Lean divergence audit
 
-- [ ] A1 — per-node `\lean{}` signature compare for all 7 Phase-17 nodes
+- [x] A1 — per-node `\lean{}` signature compare for all 7 Phase-17 nodes
   against `Molecular/Extensor.lean` declarations
   (`def:homogeneous-coords` → `homogenize`; `lem:affine-indep-iff` →
   `affineIndependent_iff_linearIndependent_homogenize` +
@@ -106,7 +120,7 @@ keep-deferred for each.
   `omitTwoExtensor_linearIndependent`). Confirm each blueprint statement
   form matches the Lean signature node-for-node (`checkdecls` already
   verifies the pins *resolve*; A1 is the statement-form leg).
-- [ ] A2 — re-read each Phase-17 node's prose proof for "the Lean does X
+- [x] A2 — re-read each Phase-17 node's prose proof for "the Lean does X
   via Y" smoothness glosses and "formalization aside" remarks (first
   response to any aside is a Lean-simplification attempt, `CLEANUP.md`
   §A). **One finding spotted at open:** the chapter intro (`molecular.tex`
@@ -204,16 +218,19 @@ keep-deferred for each.
 
 ## Hand-off / next phase
 
-**Round just opened — task list scoped, no fixes landed.** This commit is
-the log skeleton + comprehensive A–D task list only (`CLEANUP.md`
-*Workflow* rule 1: "One commit just for the log skeleton + task list is
-fine"). ROADMAP Status row added.
+**Bucket A landed (A1 + A2, doc-only).** Next is the round's
+substantive weight: **B + D**.
 
-**Smallest concrete next commit:** **A1 + A2** — the per-node `\lean{}`
-signature compare for the 7 Phase-17 nodes (statement-form leg;
-`checkdecls` already green) and the chapter-intro forward-mode destale
-spotted at open (`molecular.tex` L25–30, the recurring A2 shape). Doc-only
-if A1 confirms no-op, so no Lean gate fires.
+**Smallest concrete next commit:** **D2 + the B5/B6 sites it underlies.**
+Triage the three upstream-eligible FRICTION Phase-17 entries
+(orderEmbOfFin-is-id, ιMulti-ne-zero-iff-LI, `Finset.pair_eq_pair_iff`)
+for mirror-now vs. keep-deferred. Mirror-now closes the corresponding
+code-smell hit as a refactor in the same commit: the `Finset.pair_eq_pair_iff`
+mirror collapses the B6/L525 `rw` chain; the orderEmbOfFin-is-id mirror
+underlies the B5/L290 `change` (and the L287/L365 `orderEmbOfFin_unique`
+uses). Start there since it's the convergence point; the B1 `classical`
+(4) and B4 `noncomputable def` (3) audits and the C long-proof gate (no
+proof ≥ 50L) are smaller per-site confirms that can batch after.
 
 **The round's substantive weight is in B + D**, which converge: the three
 upstream-eligible FRICTION entries (D2) underlie the B5 `change` (L290,
