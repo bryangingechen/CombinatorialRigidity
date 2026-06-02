@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–17 complete; Phases 18–26 planned.**
+* **Phases 1–17 complete; Phase 18 in progress; Phases 19–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -158,6 +158,19 @@ project; commit history is preserved with paths rewritten.
   Forward-mode phase; the chapter `molecular.tex` is the authoritative
   dep-graph. `Molecular/Extensor.lean`. See `notes/Phase17.md` and
   the program-level plan in `notes/MolecularConjecture.md`.
+* **Phase 18 (in progress)** — stratum 2 of the molecular program: the
+  **genuine panel-hinge rigidity matrix** `R(G,p)` (Katoh–Tanigawa
+  §2.2–2.4, §5 prep). A body-hinge framework assigns a `(d−2)`-affine
+  hinge to each edge; its supporting `(d−1)`-extensor `C(p(e))` (Phase
+  17) constrains the `D`-dimensional screw centers by
+  `S(u) − S(v) ∈ span C(p(e))`. The phase builds the `(D−1)|E|×D|V|`
+  block matrix `R(G,p)`, the null space `Z(G,p)`, the `D` trivial
+  motions and `rank ≤ D(|V|−1)` bound, degree of freedom, generic
+  realizations, the three rank Lemmas 5.1–5.3, and **reconciles the
+  honest rank form with Phase 16's reduction-form Prop 1.1**. Forward
+  mode; the new `sec:molecular-rigidity-matrix` nodes of `molecular.tex`
+  are the red to-do list. `Molecular/RigidityMatrix.lean` (planned).
+  See `notes/Phase18.md` and `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

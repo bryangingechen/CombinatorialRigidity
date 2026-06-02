@@ -28,7 +28,9 @@ The Lean code is organized into phases, tracked in
 Phases~1--17 are complete (see the phase bullets below);
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
-Katoh--Tanigawa~\cite{katohTanigawa2011}). The first six
+Katoh--Tanigawa~\cite{katohTanigawa2011}), and \textbf{Phase~18} (in
+progress) builds the genuine panel-hinge rigidity matrix on top of it.
+The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
 \texttt{Matroid}: first combinatorially, via the Lov\'asz--Yemini
@@ -46,7 +48,8 @@ theorem itself (Phase~15). Phase~16 extends the body-bar theorem to
 the body-hinge / panel-hinge Tay--Whiteley theorem via a
 hinge-to-body-bar reduction. Phase~17 opens the
 molecular-conjecture program with the Grassmann--Cayley extensor-algebra
-layer. The per-phase breakdown:
+layer, and Phase~18 builds the genuine panel-hinge rigidity matrix
+$R(G,p)$ on it. The per-phase breakdown:
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -181,6 +184,20 @@ layer. The per-phase breakdown:
         linear-algebra foundation the conjecture's hardest case bottoms
         out on. (Chapter: \cref{sec:molecular}; file:
         \texttt{Molecular/Extensor.lean} --- all \S2.1 nodes green.)
+  \item \textbf{Panel-hinge rigidity matrix.} Stratum~2 of the
+        molecular program (Katoh--Tanigawa~\cite[\S2.2--2.4]{katohTanigawa2011}):
+        the \emph{genuine} panel-hinge rigidity matrix $R(G,p)$. A
+        body-hinge framework assigns a $(d-2)$-dimensional affine hinge
+        to each edge; its supporting $(d-1)$-extensor $C(p(e))$ (Phase~17)
+        constrains the $D$-dimensional screw centers by
+        $S(u) - S(v) \in \operatorname{span} C(p(e))$. The phase builds
+        the $(D-1)|E| \times D|V|$ block matrix, the trivial motions and
+        the $\operatorname{rank} \le D(|V|-1)$ bound, degree of freedom,
+        generic realizations, the rank Lemmas~5.1--5.3, and reconciles
+        the honest rank form with the body-hinge existence form of
+        Phase~16 (\cref{thm:body-hinge-tay}). (Chapter:
+        \cref{sec:molecular-rigidity-matrix}; file:
+        \texttt{Molecular/RigidityMatrix.lean}, in progress.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -203,7 +220,10 @@ itself (\cref{thm:tay-witness}) --- and the body-hinge chapter
 body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}). With
 Phase~17 complete the Phase~1--17 dependency graph is green. The
 molecular-conjecture program (\cref{sec:molecular}, opened as Phase~17)
-runs forward-mode: its extensor-algebra chapter is fully green,
+runs forward-mode: its extensor-algebra section is fully green,
 culminating in \cref{lem:extensor-independence}
-(Katoh--Tanigawa~\cite{katohTanigawa2011} Lemma~2.1); Phases~18--26
-remain to be opened.
+(Katoh--Tanigawa~\cite{katohTanigawa2011} Lemma~2.1). Phase~18 (in
+progress) extends the same chapter with the panel-hinge rigidity-matrix
+dep-graph (\cref{sec:molecular-rigidity-matrix}), whose nodes are
+currently red --- the forward-mode to-do list; Phases~19--26 remain to
+be opened.

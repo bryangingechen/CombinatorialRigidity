@@ -8,7 +8,10 @@ Katoh--Tanigawa~\cite{katohTanigawa2011}. The program-level plan ---
 target, five-strata architecture, and the phase breakdown --- is
 described in the project's \texttt{notes/MolecularConjecture.md}; this
 chapter is the forward-mode authoritative dep-graph and lemma index for
-its \textbf{first phase}, Phase~17.
+its first two phases: Phase~17 (the extensor algebra,
+\cref{sec:molecular-homog,sec:molecular-extensor,sec:molecular-lemma21})
+and Phase~18 (the genuine panel-hinge rigidity matrix,
+\cref{sec:molecular-rigidity-matrix}).
 
 Phase~17 formalizes the \emph{Grassmann--Cayley / extensor algebra}
 layer of Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}, the first of
@@ -23,13 +26,17 @@ independent points are linearly independent.
 
 \medskip
 \noindent\emph{Forward-mode chapter.} Following the convention for
-Phases~6 onward, this chapter was authored as the phase's authoritative
+Phases~6 onward, this chapter is authored as the phase's authoritative
 dep-graph: each node carries its intended \texttt{\textbackslash uses\{\}}
-dependency structure, and turned green as its Lean landed. Phase~17 is
-now complete, so every node below is formalized
+dependency structure, and turns green as its Lean lands. The Phase~17
+nodes (\cref{sec:molecular-homog,sec:molecular-extensor,sec:molecular-lemma21})
+are all formalized
 (\texttt{\textbackslash lean\{\}} / \texttt{\textbackslash leanok}); the
-dep-graph records the realized proof structure of
-\texttt{Molecular/Extensor.lean}.
+dep-graph there records the realized proof structure of
+\texttt{Molecular/Extensor.lean}. The Phase~18 nodes
+(\cref{sec:molecular-rigidity-matrix}) are the current forward-mode
+to-do list: stated with their intended \texttt{\textbackslash uses\{\}}
+chains and prose, red until their Lean lands.
 
 \subsection{Homogeneous coordinates and affine independence}
 \label{sec:molecular-homog}
@@ -203,5 +210,186 @@ the conjecture's algebraic induction (Phases~22--23) bottoms out on: a
 nonzero screw $r \in \R^{D}$ orthogonal to the extensors of $d+1$
 distinct generic panels would, by \cref{lem:extensor-independence}, be
 orthogonal to a spanning set of $\R^{D}$ and hence zero. The genuine
-panel-hinge rigidity matrix that consumes this fact is built in
-Phase~18 (the next chapter, not yet opened).
+panel-hinge rigidity matrix that consumes this fact is built next, in
+\cref{sec:molecular-rigidity-matrix}.
+
+\section{The panel-hinge rigidity matrix \texorpdfstring{$R(G,p)$}{R(G,p)}}
+\label{sec:molecular-rigidity-matrix}
+
+This section is the \textbf{Phase~18} dep-graph: the \emph{genuine}
+panel-hinge (body-hinge) rigidity matrix of
+Katoh--Tanigawa~\cite[\S2.2--2.4]{katohTanigawa2011}. Where the
+body-hinge chapter (\cref{sec:body-hinge}) \emph{defined} rigidity by
+reduction to body-bar on the multiplied graph $(\delta-1)\cdot G$ (a
+standard-basis witness, no honest geometry --- the
+\emph{existence} form), this section builds the honest rigidity matrix
+$R(G,p)$ on a realization $p$ assigning a $(d-2)$-dimensional affine
+\emph{hinge} subspace to each edge, computes its rank, and reconciles
+the two: the new rank reproduces Tay--Whiteley's Proposition~1.1
+(\cref{thm:body-hinge-tay}). It is the \emph{rank} form, and the
+substrate on which the conjecture's algebraic induction
+(Phases~21--23) runs. The infinitesimal-motion vectors are
+$D$-dimensional \emph{screw centers} $S(v) \in \R^{D}$ with
+$D = \binom{d+1}{2}$, matching the extensors of
+\cref{sec:molecular-homog}.
+
+\medskip
+\noindent\emph{Forward mode --- to-do list.} Every node in this section
+is red: stated with its intended \texttt{\textbackslash uses\{\}}
+dependency chain and a prose sketch of the intended proof, awaiting its
+Lean. The leaf-most node is the hinge constraint
+(\cref{def:hinge-constraint}); the load-bearing targets are the three
+rank lemmas (\cref{lem:rank-delete-vertex,lem:rank-rotation-semicont,lem:rank-parallel-full})
+and the reconciliation with Phase~16 (\cref{prop:rigidity-matrix-prop11}).
+
+\subsection{Body-hinge frameworks and the rigidity matrix}
+\label{sec:molecular-rigidity-matrix-def}
+
+\begin{definition}[Hinge constraint via the supporting extensor]
+  \label{def:hinge-constraint}
+  \uses{def:affine-subspace-extensor}
+  A \emph{$d$-dimensional body-hinge framework} $(G,p)$ is a multigraph
+  $G = (V,E)$ together with a map $p$ assigning to each edge $e \in E$ a
+  $(d-2)$-dimensional affine subspace $p(e)$ of $\R^{d}$ --- a
+  \emph{hinge}. Identifying an infinitesimal motion of a rigid body with
+  a $D$-dimensional screw center, the hinge $p(e)$ supported on the
+  $(d-1)$-extensor $C(p(e)) \in \bigwedge^{d-1}\R^{d+1} \cong \R^{D}$
+  (\cref{def:affine-subspace-extensor}) constrains the two screw centers
+  $S(u), S(v) \in \R^{D}$ of its endpoints $e = uv$ to satisfy
+  \[
+    S(u) - S(v) \in \operatorname{span} C\bigl(p(e)\bigr).
+  \]
+\end{definition}
+
+\begin{definition}[Hinge-row block]
+  \label{def:hinge-row-block}
+  \uses{def:hinge-constraint}
+  For an edge $e$, fix a basis
+  $\{r_1(p(e)), \dots, r_{D-1}(p(e))\}$ of the orthogonal complement
+  $(\operatorname{span} C(p(e)))^{\perp} \subseteq \R^{D}$, and let
+  $r(p(e))$ be the $(D-1)\times D$ matrix with these rows. Then a screw
+  assignment $S$ meets the hinge constraint
+  (\cref{def:hinge-constraint}) at $e = uv$ iff
+  $(S(u) - S(v)) \cdot r_i(p(e)) = 0$ for all $1 \le i \le D-1$.
+\end{definition}
+
+\begin{definition}[Panel-hinge rigidity matrix]
+  \label{def:rigidity-matrix}
+  \uses{def:hinge-row-block}
+  The \emph{rigidity matrix} $R(G,p)$ is the $(D-1)|E| \times D|V|$ block
+  matrix whose block row for the oriented edge $e = uv$ carries
+  $r(p(e))$ in the $D$ columns of $u$, $-r(p(e))$ in the $D$ columns of
+  $v$, and zero elsewhere. A screw assignment $S \in \R^{D|V|}$ is an
+  infinitesimal motion of $(G,p)$ iff $S \in \ker R(G,p)$; this null
+  space is written $Z(G,p)$. Its dimension is independent of the chosen
+  orthogonal-complement basis.
+\end{definition}
+
+\begin{definition}[Degree of freedom; generic realization]
+  \label{def:dof-generic}
+  \uses{lem:trivial-motions-rank-bound}
+  An infinitesimal motion $S$ is \emph{trivial} when $S(u) = S(v)$ for
+  all $u, v$; $(G,p)$ is \emph{infinitesimally rigid} when all
+  infinitesimal motions are trivial, equivalently
+  $\operatorname{rank} R(G,p) = D(|V|-1)$. The \emph{degree of freedom}
+  of $(G,p)$ is $D(|V|-1) - \operatorname{rank} R(G,p)$. A realization is
+  \emph{generic} when $R(G,p)$ and all its edge-induced submatrices
+  attain their maximum ranks over realizations of $G$.
+\end{definition}
+
+\begin{lemma}[The $D$ trivial motions and the rank bound]
+  \label{lem:trivial-motions-rank-bound}
+  \uses{def:rigidity-matrix}
+  For $1 \le i \le D$ let $S^*_i$ be the constant screw assignment with
+  $i$-th coordinate $1$ at every vertex. Each $S^*_i$ lies in $Z(G,p)$
+  and is trivial, and $\{S^*_1, \dots, S^*_D\}$ is linearly independent
+  and spans the space of trivial infinitesimal motions. Hence
+  $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$, with equality iff
+  $(G,p)$ is infinitesimally rigid.
+\end{lemma}
+\begin{proof}
+  A constant assignment has $S(u) - S(v) = 0$, which lies in every
+  hinge constraint, so $S^*_i \in Z(G,p)$ and is trivial; the
+  $\{S^*_i\}$ are linearly independent across the $D$ coordinates and a
+  trivial motion is determined by its single common value, so they span
+  the trivial motions. A $D$-dimensional kernel forces
+  $\operatorname{rank} R(G,p) \le D|V| - D$.
+\end{proof}
+
+\subsection{Rank lemmas and reconciliation with Proposition 1.1}
+\label{sec:molecular-rigidity-matrix-rank}
+
+\begin{lemma}[Deleting one body's columns preserves rank; KT Lemma 5.1]
+  \label{lem:rank-delete-vertex}
+  \uses{def:rigidity-matrix, lem:trivial-motions-rank-bound}
+  Pinning one body (deleting the $D$ columns of a single vertex $v$ from
+  $R(G,p)$) does not change the rank:
+  $\operatorname{rank} R(G,p) = \operatorname{rank} R(G,p; V \setminus v)$.
+  Consequently rank computations may always fix one body, the most
+  reused reduction in the algebraic induction.
+\end{lemma}
+\begin{proof}
+  The $D$ trivial motions (\cref{lem:trivial-motions-rank-bound}) let
+  any motion be normalized to vanish on the pinned body, so the column
+  space is unchanged; this is the ``pinning a body preserves the motion
+  space'' fact of White--Whiteley~\cite{whiteWhiteley1987}.
+\end{proof}
+
+\begin{lemma}[Two parallel hinges give the full block; KT Lemma 5.3]
+  \label{lem:rank-parallel-full}
+  \uses{def:rigidity-matrix, lem:extensor-independence}
+  If two edges of $G$ join the same pair of bodies with hinges in
+  \emph{general position}, the two $(D-1) \times D$ blocks together have
+  rank $D$ --- the constraint forces the relative screw to zero. The
+  base case $|V| = 2$ of the conjecture's induction is this lemma.
+\end{lemma}
+\begin{proof}
+  Each hinge constrains the relative screw to the orthogonal complement
+  of its supporting extensor; two extensors in general position span,
+  by the extensor-independence engine
+  (\cref{lem:extensor-independence}, specialized to two hinges), so
+  their complements meet only at $0$ and the combined block has the full
+  rank $D$.
+\end{proof}
+
+\begin{lemma}[Lower-semicontinuity of rank under a panel rotation; KT Lemma 5.2]
+  \label{lem:rank-rotation-semicont}
+  \uses{def:rigidity-matrix, def:dof-generic}
+  Along a one-parameter family of realizations rotating a single panel,
+  the rank of $R(G,p)$ is lower-semicontinuous: it cannot drop at a
+  generic parameter. Equivalently, if some realization in the family
+  attains rank $\rho$, so does the generic one.
+\end{lemma}
+\begin{proof}
+  The entries of $R(G,p)$ are polynomials in the panel coordinates, so a
+  nonvanishing $\rho \times \rho$ minor at one parameter is a nonzero
+  polynomial and hence nonvanishing at a generic parameter; the
+  formalization is expected to run this genericity argument rather than
+  an analytic perturbation (cf.\ \texttt{notes/MolecularConjecture.md}
+  risk register).
+\end{proof}
+
+\begin{proposition}[Reconciliation with the body-hinge existence form; KT Prop 1.1]
+  \label{prop:rigidity-matrix-prop11}
+  \uses{def:dof-generic, lem:rank-delete-vertex, lem:rank-parallel-full}
+  A multigraph $G$ has a realization as an infinitesimally rigid
+  body-hinge framework $(G,p)$ --- in the rank sense
+  $\operatorname{rank} R(G,p) = D(|V|-1)$ of \cref{def:dof-generic} ---
+  if and only if it has one in the reduction sense of the body-hinge
+  chapter, i.e.\ $(\delta-1)\cdot G$ is $(\delta,\delta)$-tight
+  (\cref{thm:body-hinge-tay}), where $\delta = D = \binom{d+1}{2}$. The
+  honest rank form and the standard-basis existence form of Phase~16
+  agree.
+\end{proposition}
+\begin{proof}
+  The rank form is the generic-rank specialization of Proposition~2.3 of
+  Jackson--Jordán~\cite{jacksonJordan2009}, whose deficiency $\operatorname{def}(\tilde G)$
+  is the corank of the $D$-fold graphic-matroid union $M(\tilde G)$ on
+  $(D-1)\cdot G$; that union and its Tutte--Nash-Williams tree-packing
+  characterization are exactly the body-bar / body-hinge machinery of
+  \cref{sec:body-bar,sec:body-hinge}. Rigidity ($\operatorname{def} = 0$)
+  thus matches $(\delta,\delta)$-tightness of $(\delta-1)\cdot G$, the
+  existence form of \cref{thm:body-hinge-tay}. The rank lemmas
+  (\cref{lem:rank-delete-vertex,lem:rank-parallel-full}) supply the
+  block-rank inputs the matching needs.
+\end{proof}

@@ -26,7 +26,9 @@ program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
 longer-horizon **molecular-conjecture program** (Phases 17–26;
-Katoh–Tanigawa 2011) with its Grassmann–Cayley extensor-algebra layer.
+Katoh–Tanigawa 2011) with its Grassmann–Cayley extensor-algebra layer,
+and **Phase 18 (in progress)** builds the genuine panel-hinge rigidity
+matrix `R(G,p)` on top of it.
 The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
@@ -115,9 +117,15 @@ coordinates, and the affine-subspace extensor `C(·)` — culminating in
 **Lemma 2.1**: the `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1`
 affinely independent points are linearly independent, the
 linear-algebra foundation the conjecture's hardest case bottoms out on.
-Forward-mode phase: the chapter `molecular.tex` is the authoritative
-dep-graph. See the program-level plan in
-`notes/MolecularConjecture.md`.
+**Phase 18 (in progress)** builds stratum 2: the genuine panel-hinge
+rigidity matrix `R(G,p)` (hinge constraints via the supporting
+extensors `C(p(e))`, the `(D−1)|E|×D|V|` block matrix, trivial motions,
+the `rank ≤ D(|V|−1)` bound, degree of freedom, and the rank Lemmas
+5.1–5.3), reconciling its honest rank form with Phase 16's
+reduction-form Prop 1.1. Forward-mode program: the chapter
+`molecular.tex` is the authoritative dep-graph (Phase-17 nodes green,
+Phase-18 nodes the current red to-do list). See the program-level plan
+in `notes/MolecularConjecture.md`.
 
 The development is divided into the phases below, with Lean source
 under
@@ -144,6 +152,7 @@ existing files or refactor across several).
 |    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | ✓ |
 |    16 | Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ |
 |    17 | Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` | ✓ |
+|    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
