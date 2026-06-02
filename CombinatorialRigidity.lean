@@ -1,3 +1,4 @@
+import CombinatorialRigidity.BodyBar.KFrame
 import CombinatorialRigidity.BodyBar.TreePacking
 import CombinatorialRigidity.CountMatroid
 import CombinatorialRigidity.LamanTheorem

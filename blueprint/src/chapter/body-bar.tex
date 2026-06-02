@@ -75,13 +75,21 @@ connected components).
 
 \begin{definition}[Generic $k$-frame matroid]
   \label{def:k-frame-matroid}
+  \lean{Graph.kFrameMatroid}
+  \leanok
   \uses{def:matroid-union}
   For a multigraph $G$ and $k \ge 1$, the generic \emph{$k$-frame
   matroid} $F(G, X)$ on the edge type $\beta$ is the linear matroid
   (via \texttt{Matroid.ofFun}) of the formal $k \cdot |V|$-column
   matrix whose row for edge $e = (u, v)$ carries indeterminate
   coefficients across the $k$ vertex blocks, placing the generic
-  body-bar incidence pattern in each block.
+  body-bar incidence pattern in each block. The coefficients are
+  realized over the indeterminate field
+  $K := \mathrm{Frac}\,\mathbb{Q}[X_{e, j} : (e, j) \in \beta \times
+  \mathrm{Fin}\,k]$: the row for bar $e$ in block $j$ is
+  $X_{e, j}$ times the signed graph-incidence row of $e$ (the row
+  vector representing $G.\mathrm{cycleMatroid}$), placing $k$
+  independent indeterminate-scaled copies of the incidence pattern.
 \end{definition}
 
 \begin{theorem}[$k$-frame matroid is the $k$-fold cycle-matroid union;

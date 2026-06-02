@@ -10,21 +10,18 @@ file carries current state, decisions, blockers, and hand-off, and does
 
 ## Current state
 
-Phase opened. The Phase 13 chain (`BodyBar/TreePacking.lean`) is green
-and unblocks this phase: it already proves the tree-packing corollary
-and the `Graph`-native `(k, k)`-sparsity ↔ `k`-fold-`cycleMatroid`-union
-independence bridge (`Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict`).
+`def:k-frame-matroid` is **done** (`Graph.kFrameMatroid` in the new
+`BodyBar/KFrame.lean`, blueprint node green). The Phase 13 chain
+(`BodyBar/TreePacking.lean`) remains the upstream dependency: it proves
+the tree-packing corollary and the `Graph`-native `(k, k)`-sparsity ↔
+`k`-fold-`cycleMatroid`-union independence bridge
+(`Graph.unionPow_cycleMatroid_indep_iff_isSparse_restrict`).
 
 Phase 14's target is Whiteley 1988 Theorem 1
 (`thm:k-frame-union-cycle`): the generic `k`-frame matroid `F(G, X)` on
 a multigraph `Graph α β` equals the `k`-fold union of `Graph.cycleMatroid`.
-Both `def:k-frame-matroid` and `thm:k-frame-union-cycle` are red nodes in
-`body-bar.tex`. The leaf-most red node — and the next concrete Lean
-commit — is **`def:k-frame-matroid`**: the linear matroid (via
-`Matroid.ofFun`, the same constructor `LinearRigidityMatroid.lean` uses
-for the planar case) of the formal `k · |V|`-column matrix whose row for
-edge `e = (u, v)` carries indeterminate coefficients across the `k`
-vertex blocks. New file: `CombinatorialRigidity/BodyBar/KFrame.lean`.
+This is now the **single remaining red node** in `body-bar.tex`'s
+`sec:body-bar-k-frame`.
 
 ## Architectural choices made up front
 
@@ -49,34 +46,59 @@ Carried from ROADMAP §14–§15 and `DESIGN.md`:
 
 The authoritative checklist is the `sec:body-bar-k-frame` dep-graph in
 `body-bar.tex`. Top-level nodes, in dependency order:
-- [ ] `def:k-frame-matroid` — generic `k`-frame matroid via
-  `Matroid.ofFun`. **Next concrete commit.**
+- [x] `def:k-frame-matroid` — generic `k`-frame matroid via
+  `Matroid.ofFun` (`Graph.kFrameMatroid`, `BodyBar/KFrame.lean`).
 - [ ] `thm:k-frame-union-cycle` — Whiteley Theorem 1: `F(G, X) = ⋃ⱼ
   G.cycleMatroid`. Column-reorder / nonzero-monomial argument
   (Whiteley §2.1), routed through `lem:union-indep-iff` (Phase 12).
+  **Next concrete commit.**
 
 ## Decisions made during this phase
 
-_(none yet)_
+- **Coefficient encoding (pinned).** The generic `k`-frame matroid is
+  realized over **true indeterminates**, not a real placement (departing
+  from Phase 8's `linearRigidityMatroid`, which parametrizes by
+  `p : Framework V d`): the field is `KFrameField β k :=
+  FractionRing (MvPolynomial (β × Fin k) ℚ)`, one indeterminate
+  `X_{(e,j)}` per (bar, block) pair. The row for bar `e` in block `j`
+  (`kFrameRow`) is `X_{(e,j)} • D.signedIncMatrix K e` — the
+  indeterminate scaling of the signed graph-incidence row that
+  `Graph.cycleMatroidRep` represents `cycleMatroid` by, so the row space
+  is `Fin k → α → K` (`k` copies of the `|V|`-dim incidence-row space).
+  The orientation `D` is picked by `G.orientation_nonempty.some`
+  (matching `cycleMatroidRep`); harmless for the generic matroid. This
+  reuse-of-`signedIncMatrix` is what should make `thm:k-frame-union-cycle`
+  reduce cleanly to `k` independent `cycleMatroid` representations rather
+  than re-deriving the incidence pattern from scratch.
+
+### Promoted to FRICTION
+- *`signedIncMatrix` decidability instances inside a `noncomputable def`
+  body* → FRICTION `[matroid]` *`Graph.orientation.signedIncMatrix` needs
+  `[DecidableEq α]` + `[DecidablePred (· ∈ E(G))]` …* (term-level `letI`
+  with `Classical.dec*`, keeping the def signature binder-free).
 
 ## Blockers / open questions
 
-- **Coefficient encoding for `def:k-frame-matroid`.** Whiteley's
-  indeterminate row coefficients need a concrete Lean realization
-  through `Matroid.ofFun`. Open until the def commit pins it; the
-  `LinearRigidityMatroid.linearRigidityRow` / `Matroid.ofFun` pattern is
-  the precedent to start from. The genericity argument (nonzero monomial
-  of a determinant) parallels Phase 8's uniform-genericity perturbation
-  but over a formal/indeterminate ring rather than ℝ — confirm whether
-  the existing `Mathlib/LinearAlgebra/Matrix/Rank.lean` mirror lemmas
-  carry over or whether a polynomial-ring analogue is needed.
+- **`thm:k-frame-union-cycle` genericity argument.** The remaining node
+  needs Whiteley's column-reorder / nonzero-monomial argument over the
+  indeterminate field. Whether to route it through the
+  `Matroid.ofFun_indep_iff` row-LI characterization directly (LI of the
+  indeterminate-scaled incidence rows ⟺ existence of a nonzero block
+  permanent), or to first build a `kFrameMatroid`-side `Rep` analogue of
+  `cycleMatroidRep` for the `k`-block space, is open — assess against
+  `lem:union-indep-iff` (`Matroid.Union_pow_indep_iff_count`), the
+  intended target shape.
 
 ## Hand-off / next phase
 
-Next concrete commit: formalize **`def:k-frame-matroid`** in a new
-`CombinatorialRigidity/BodyBar/KFrame.lean` (the leaf-most red node),
-pinning the coefficient encoding per the blocker above, and flip its
-`body-bar.tex` node green (`\lean{...}` + `\leanok`) in the same commit.
-Then `thm:k-frame-union-cycle` is the single remaining Phase-14 node.
-Phase 14 closing unblocks Phase 15 (body-bar Tay theorem, existence
-form).
+`def:k-frame-matroid` landed (`Graph.kFrameMatroid`, `BodyBar/KFrame.lean`;
+blueprint node green). Next concrete commit: **`thm:k-frame-union-cycle`**
+— prove `Graph.kFrameMatroid G k = Matroid.Union (fun _ : Fin k ↦
+G.cycleMatroid)` (the single remaining red node), via the
+column-reorder / nonzero-monomial argument routed through
+`Matroid.Union_pow_indep_iff_count` (Phase 12 `lem:union-indep-iff`); pin
+the proof route per the blocker above, flip the `body-bar.tex` node green
+in the same commit. That commit closes Phase 14 and unblocks Phase 15
+(body-bar Tay theorem, existence form) — so it also carries the
+phase-completion checklist (ROADMAP row ✓, status surfaces, compress
+ROADMAP §14).

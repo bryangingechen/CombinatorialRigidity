@@ -95,6 +95,24 @@ housekeeping pass once their resolution is fully indexed.
   `isSpanningTreePacking_of_isTight` inherit it. Phases 14–15 mentioning
   the same union object in a signature will need it too.
 
+### [resolved] `[matroid]` `Graph.orientation.signedIncMatrix` needs `[DecidableEq α]` + `[DecidablePred (· ∈ E(G))]` inside a `noncomputable def` body
+- **Where it bit:** `Graph.kFrameRow` in `BodyBar/KFrame.lean` (Phase 14
+  `def:k-frame-matroid`). The `k`-frame row reuses
+  `D.signedIncMatrix K e` (the signed graph-incidence row that
+  `cycleMatroidRep` represents `cycleMatroid` by), which carries
+  `[DecidableEq α]` and `[DecidablePred (· ∈ E(G))]` (via `update` and
+  the edge-set `dite`). Those don't follow from anything in scope, and a
+  `def` body can't open with the `classical` *tactic*.
+- **Fix:** supply both as term-level `letI`s at the top of the `def`
+  body — `letI : DecidableEq α := Classical.decEq α` and
+  `letI : DecidablePred (· ∈ E(G)) := Classical.decPred _` — keeping the
+  `def` signature free of the binders (the matroid is `noncomputable`
+  anyway, so the choice is harmless). Cleaner than threading the
+  instances through the signature; reuse for any Phase-14/15 def that
+  builds a `signedIncMatrix`-based row.
+- **Status:** resolved (project-local; matches how `cycleMatroidRep`
+  itself opens with `classical` in a `Rep` field).
+
 ### [resolved] `[matroid]` `Graph.Components` (the `Set (Graph α β)` of components) has no `Finite`/`Fintype` instance under `[Finite α]`
 - **Where it bit:** `Graph.le_mul_cycleMatroid_rk_of_isSparse_restrict` in
   `BodyBar/TreePacking.lean` (Phase 13 reverse direction). The
