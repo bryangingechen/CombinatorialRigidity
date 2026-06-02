@@ -76,7 +76,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union ported; L2b-rado infrastructure ported — `generalized_halls_marriage` + `PartialTransversal`; `rado` + L2b-partition remain)
+### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union + L2b-rado ported — `rado`/`rado_v2` green; only L2b-partition `thm:matroid-partition-rank` remains)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
   `matroid_partition'` / `matroid_partition_eRk'`, plus its
@@ -238,6 +238,23 @@ housekeeping pass once their resolution is fully indexed.
   `termination_by ∑ i, …` measure, since `Fintype.ofFinite` is a *def* not an
   `instance`; fixed by prefixing the measure `termination_by haveI :=
   Fintype.ofFinite ι; ∑ i, (A i).card`. **Lifted to:** TACTICS-QUIRKS § 16(d).
+- **L2b-rado finish (2026-06):** ported `WIP/Submodular.lean:742–942` (the
+  `Transversal`/`Transverses`/`Transverses'` family, `rado_v2`, `rado`) into
+  `Constructions/Submodular.lean`, green/0-sorry; `rado` is `lem:rado`. Renames
+  beyond the standard `Matroid.r → rk` chase: (i) **`IsRkFinite.submod` now takes
+  the second set explicitly** — `hX.submod (Y : Set α)`, not a second finiteness
+  proof (the WIP passed `(M.IsRkFinite.of_finite …)` as the 2nd arg; that arg is
+  now `Y : Set α`). (ii) `Indep.r → Indep.rk_eq_ncard`, `Indep.eRk →
+  Indep.eRk_eq_encard`, `M.IsRkFinite.of_finite → M.isRkFinite_of_finite`,
+  `Set.ncard_coe_Finset → Set.ncard_coe_finset`. (iii) `[Fintype ι] → [Finite ι]`
+  + `haveI := Fintype.ofFinite ι` (statements have no `Fintype.card ι`); the
+  `Transverses (image f univ)`-shaped lemmas keep `[Fintype ι]` since `univ :
+  Finset ι` is in the *type*. (iv) `runLinter`/warnings: dropped the bit-rotted
+  `[DecidableEq ι]` on `Transversal` (`unusedArguments` — the def is decidability-
+  free) and the now-unused `[DecidableEq ι]`/`[Fintype α]` on `rado`/`rado_v2`;
+  `push_neg → push Not`; `Finset.toSet → (· : Set α)`. (v) An over-aggressive
+  `simpa [mem_image, mem_univ, true_and] using x.property` collapsed the hyp to
+  `True`; replaced with `obtain ⟨i, _, hi⟩ := mem_image.mp x.property`.
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of

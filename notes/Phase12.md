@@ -3,10 +3,11 @@
 **Status:** in progress (Layer 2a **complete**; Layer 2b **underway**.
 `Constructions/Union.lean` landed the union construction + independence
 characterization green: `def:matroid-union`, `lem:union-indep-iff`. **L2b-rado
-infrastructure landed this commit** — `generalized_halls_marriage` (+ `'`
-subtype variant) and the full `PartialTransversal` family ported into
-`Constructions/Submodular.lean`; **next is `rado` itself** (then L2b-partition's
-`thm:matroid-partition-rank`). See *Current state* and *Hand-off*.)
+COMPLETE this commit** — `rado` (Oxley 2011 Thm 11.2.2), `rado_v2`, and the
+`Transversal`/`Transverses`/`Transverses'` family ported into
+`Constructions/Submodular.lean` (0 sorry; blueprint node `lem:rado` green).
+**Next is L2b-partition's `thm:matroid-partition-rank`** — the last red node,
+which closes Phase 12. See *Current state* and *Hand-off*.)
 
 This phase formalizes the abstract-matroid prerequisites of the
 body-bar route: the matroid-from-submodular-function construction and
@@ -56,7 +57,28 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-L2b-rado infrastructure (this commit): ported the Rado/Hall prerequisite's
+L2b-rado COMPLETE (this commit): ported `WIP/Submodular.lean:742–942` into
+`Constructions/Submodular.lean` — the `Transversal`/`Transverses`/`Transverses'`
+family (`transverses_{of_empty,mono,of_transverses',iff_transverses',
+of_image_univ,of_subset_image_univ}`), `rado_v2` (total-transversal form), and
+`rado` (full iff, Oxley 2011 Thm 11.2.2 = Rado 1942). Landed green, **0 sorry**
+(`#print axioms` on both `rado` / `rado_v2` = only `propext`/`Classical.choice`/
+`Quot.sound`); `lake build` + `lake lint` clean, warning-clean. Blueprint node
+`lem:rado` added green and wired into `thm:matroid-partition-rank`'s proof
+`\uses`; `checkdecls` passes. Port hazards (FRICTION `[matroid]` *L2b-rado
+finish*): the `Matroid.r → rk` rename (`Indep.r → Indep.rk_eq_ncard`,
+`Indep.eRk → Indep.eRk_eq_encard`, `M.IsRkFinite.of_finite →
+M.isRkFinite_of_finite`, `Set.ncard_coe_Finset → Set.ncard_coe_finset`);
+`IsRkFinite.submod` now takes the **second set explicitly** (`hX.submod (Y :
+Set α)`), not its finiteness proof; `[Fintype ι]`→`[Finite ι]`+
+`haveI := Fintype.ofFinite ι` per project convention (statement has no
+`Fintype.card ι`); dropped the bit-rotted `[DecidableEq ι]` on `Transversal`
+(`unusedArguments` linter — the def is decidability-free) and the now-unused
+`[DecidableEq ι]`/`[Fintype α]` on `rado`/`rado_v2`; `push_neg → push Not`;
+`Finset.toSet → (· : Set α)`. `rado'` (`:944`) and `halls_marriage` (`:1233`)
+were **not** ported — not consumed (only `rado` feeds `polymatroid_of_adjMap`).
+
+L2b-rado infrastructure (prior commit): ported the Rado/Hall prerequisite's
 front half from `WIP/Submodular.lean:323–740` into `Constructions/Submodular.lean`
 (its home file, continuing the L2a port). Landed green, **0 sorry**
 (`generalized_halls_marriage` verified clean — only `propext` / `Classical.choice`
@@ -323,10 +345,10 @@ High-level outline; the leaf-level to-do list is the
   (`Matroid.Union` / `Matroid.union`), `lem:union-indep-iff` ✓
   (`union_indep_iff` / `union_indep_iff'`; + `adjMap_indep_iff'`,
   `Union_empty`, `union_indep_aux{,'}` support).
-- [~] **L2b-rado (prerequisite, ~420 L):** infrastructure landed —
-  `generalized_halls_marriage` ✓ (+ `'` variant), `PartialTransversal` family ✓
-  (+ ~30 lemmas). **Remaining:** `Transversal`/`Transverses` family, `rado` /
-  `rado_v2` (next commit). Port into `Constructions/Submodular.lean`.
+- [x] **L2b-rado (prerequisite, ~420 L):** `generalized_halls_marriage` ✓
+  (+ `'` variant), `PartialTransversal` family ✓ (+ ~30 lemmas),
+  `Transversal`/`Transverses`/`Transverses'` family ✓, `rado_v2` ✓,
+  `rado` ✓ (node `lem:rado`). All in `Constructions/Submodular.lean`.
 - [ ] **L2b-partition:** `thm:matroid-partition-rank`
   (`matroid_partition'` / `matroid_partition_eRk'`); via
   `polymatroid_of_adjMap` / `adjMap_rank_eq` / `sum'_*` rank-distribution.
@@ -354,29 +376,13 @@ High-level outline; the leaf-level to-do list is the
 
 ## Hand-off / next phase
 
-This commit landed the **first half of L2b-rado** (the infrastructure):
-`generalized_halls_marriage` + the `PartialTransversal` family are green and
-0-sorry in `Constructions/Submodular.lean`. The tree builds clean; lint passes.
+This commit **completed L2b-rado**: `rado` (Oxley 2011 Thm 11.2.2), `rado_v2`,
+and the `Transversal`/`Transverses`/`Transverses'` family are green and 0-sorry
+in `Constructions/Submodular.lean`; blueprint node `lem:rado` is green. The tree
+builds clean; lint passes; `checkdecls` passes. **L2b-partition is now
+unblocked** — it is the last red node and closes Phase 12.
 
-**Next concrete commit: finish L2b-rado** — port the remaining
-`WIP/Submodular.lean:742–942` into `Constructions/Submodular.lean`: the
-`Transversal` / `Transverses` / `Transverses'` family (`:804–888`, rank-free
-defs/lemmas) → `rado_v2` (`:742`) → `rado` (`:891`, Oxley 2011 Thm 11.2.2 =
-Rado 1942). These DO touch matroid rank (`M.r`), so expect the `Matroid.r → rk`
-rename chase (the recipe in *Hand-off* port-hazards below + FRICTION
-`[matroid]`). The WF-recursive core they call (`generalized_halls_marriage`)
-is now in place, so they are straight-line ports modulo the rename. `rado'`
-(`:944`, the `+ d` generalization) and `halls_marriage` (`:1233`) are **not
-needed** — only `rado` (full iff) is consumed by `polymatroid_of_adjMap` in
-`Union.lean:339`. A `lem:rado` blueprint node in `matroid-union.tex` is optional
-(internal prerequisite); add it with the `rado` commit if it helps the dep-graph.
-
-**Then L2b-partition** (unblocked once `rado` is green): port
-`polymatroid_of_adjMap` / `adjMap_rank_eq` / `sum'_*` rank-distribution, then
-`matroid_partition'` / `matroid_partition_eRk'` (node `thm:matroid-partition-rank`)
-into `Constructions/Union.lean`. That closes Phase 12.
-
-**Then L2b-partition** (unblocked once `rado` is green): port
+**Next concrete commit: L2b-partition.** Port
 `polymatroid_of_adjMap` (the key bridge — exhibits the `adjMap`-matroid as
 `ofPolymatroidFn` of `f Y = M.rk {v | ∃ u ∈ Y, Adj v u}`, the longest proof,
 calls `rado …).mpr`), `adjMap_rank_eq`, `sum'_eRk_eq_eRk_sum{_on_indep}` /

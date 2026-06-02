@@ -138,6 +138,27 @@ attribution and the list of modifications.
   from a decomposition.
 \end{proof}
 
+\begin{lemma}[Rado's theorem]
+  \label{lem:rado}
+  \lean{Matroid.rado}
+  \leanok
+  \uses{lem:polymatroid-rank}
+  Let $M$ be a matroid on $\alpha$ and $A : \iota \to \mathrm{Finset}\,\alpha$
+  a finite family of sets. There is a transversal $e : \iota \to \alpha$
+  (an injective choice with $e\,i \in A_i$) whose range is independent in
+  $M$ if and only if $|K| \le r_M\bigl(\bigcup_{i \in K} A_i\bigr)$ for every
+  $K \subseteq \iota$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:polymatroid-rank}
+  This is Rado's theorem~\cite[Thm 11.2.2]{oxley2011} (Rado 1942). Apply
+  the submodular generalization of Hall's marriage condition to the rank
+  function $f(S) = r_M(S)$, which is monotone and submodular; the
+  representative-existence half of that condition produces the independent
+  transversal, while the rank-condition side is exactly the hypothesis.
+\end{proof}
+
 \begin{theorem}[Edmonds' matroid-partition rank formula]
   \label{thm:matroid-partition-rank}
   \uses{def:matroid-union, lem:union-indep-iff, lem:polymatroid-rank}
@@ -149,9 +170,10 @@ attribution and the list of modifications.
   bound underlying the count characterization.
 \end{theorem}
 \begin{proof}
-  \uses{lem:polymatroid-rank}
+  \uses{lem:polymatroid-rank, lem:rado}
   Apply the polymatroid rank formula (\cref{lem:polymatroid-rank})
   to $f(X) = \sum_{j} r_{M_{j}}(X)$, which realizes the union
-  (\cref{def:matroid-union}); this is Edmonds' matroid-partition
-  theorem~\cite{edmonds1965}.
+  (\cref{def:matroid-union}); the matching that exhibits the union's
+  independent sets is produced by Rado's theorem (\cref{lem:rado}).
+  This is Edmonds' matroid-partition theorem~\cite{edmonds1965}.
 \end{proof}
