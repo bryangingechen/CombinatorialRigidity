@@ -96,6 +96,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-10+11) | Phase 10+11 surface (`PebbleGame/`, `Search/DFS.lean`, `Main.lean`, three blueprint chapters) | ✓ Complete (see `notes/Phase11-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-10+11) | Phase 10+11 surface — per-decl `@[expose]` audit on the four new/reshaped files + Phase-11-reshape re-audit on `Basic`/`DFS` + baseline | ✓ Complete (see `notes/Phase11-perf.md`; protocol: `notes/PERFORMANCE.md`) |
 | 12. Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` | ✓ Complete (see `notes/Phase12.md`) |
+| ⋮ Cleanup round (post-Phase-12) | Phase 12 surface (`Matroid/Constructions/{Submodular,Union}.lean`, `matroid-union.tex`) | in progress (see `notes/Phase12-cleanup.md`; round manual: `CLEANUP.md`) |
 | 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | planning (scoped in `body-bar.tex`) |
 | 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | planning (scoped in `body-bar.tex`) |
 | 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | planning (was Phase 12; see `notes/Phase12.md`) |
