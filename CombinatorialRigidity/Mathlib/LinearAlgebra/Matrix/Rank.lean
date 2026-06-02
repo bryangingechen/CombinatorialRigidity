@@ -8,6 +8,8 @@ module
 public import Mathlib.LinearAlgebra.Matrix.Rank
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 public import Mathlib.LinearAlgebra.Matrix.Polynomial
+public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
+public import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 public import Mathlib.Algebra.Polynomial.Roots
 public import Mathlib.Data.Real.Basic
 
@@ -135,6 +137,47 @@ theorem linearIndependent_rows_of_specialized_submatrix_det_ne_zero
   have hcomp : (f ∘ M) = (fun i j : ι => M i (e j)) := by funext i j; rfl
   rw [hcomp]
   exact Matrix.linearIndependent_rows_of_det_ne_zero hRne
+
+/-- **A matrix with linearly independent rows over a field has a nonsingular maximal minor.**
+Let `M : Matrix m n K` over a field `K` with `m` finite. If the rows of `M` are linearly
+independent, then there is a square column selection `e : m → n` such that the `m × m` submatrix
+`(i, j) ↦ M i (e j)` has nonzero determinant.
+
+This is the "full row rank ⟹ nonzero square minor" extraction: the columns `Mᵀ.row : n → (m → K)`
+span a subspace of `K`-dimension `M.rank = #m` (`LinearIndependent.rank_matrix` + `rank_transpose`),
+which is all of `m → K`, so `Mᵀ.row` is a spanning family. Extracting a linearly independent
+spanning subfamily (`exists_linearIndependent'`) gives a basis, necessarily of size `#m`; reindexing
+it by `m` yields `e : m → n` with `Mᵀ.row ∘ e` linearly independent, i.e. the transpose of the
+selected minor has independent rows, i.e. the minor has nonzero determinant
+(`linearIndependent_rows_iff_isUnit` + `det_transpose` + `isUnit_iff_ne_zero`). -/
+theorem exists_submatrix_det_ne_zero_of_linearIndependent_rows
+    {m n K : Type*} [Field K] [Fintype m] [DecidableEq m] [Finite n] {M : Matrix m n K}
+    (h : LinearIndependent K M.row) :
+    ∃ e : m → n, (Matrix.of (fun i j : m => M i (e j))).det ≠ 0 := by
+  classical
+  haveI : Fintype n := Fintype.ofFinite n
+  -- The columns of `M` (= rows of `Mᵀ`) span all of `m → K`.
+  have hrank : Module.finrank K (Submodule.span K (Set.range Mᵀ.row)) = Fintype.card m := by
+    rw [← Mᵀ.rank_eq_finrank_span_row, rank_transpose, h.rank_matrix]
+  have hspan : Submodule.span K (Set.range Mᵀ.row) = ⊤ :=
+    Submodule.eq_top_of_finrank_eq (by rw [hrank, Module.finrank_fintype_fun_eq_card])
+  -- Extract a linearly independent spanning subfamily of the columns.
+  obtain ⟨κ, a, _, hsp, hli⟩ := exists_linearIndependent' K Mᵀ.row
+  rw [hspan] at hsp
+  -- It is a basis of `m → K`, so it has exactly `#m` elements: `κ ≃ m`.
+  let b : Module.Basis κ K (m → K) := Module.Basis.mk hli (by rw [hsp])
+  haveI : Fintype κ := FiniteDimensional.fintypeBasisIndex b
+  have hcard : Fintype.card κ = Fintype.card m := by
+    rw [← Module.finrank_eq_card_basis b, Module.finrank_fintype_fun_eq_card]
+  let em : m ≃ κ := (Fintype.equivOfCardEq hcard).symm
+  refine ⟨a ∘ em, ?_⟩
+  -- The transpose of the selected minor has rows `Mᵀ.row ∘ a ∘ em`, which are LI.
+  set N : Matrix m m K := Matrix.of (fun i j : m => M i ((a ∘ em) j)) with hN
+  have hrow : Nᵀ.row = Mᵀ.row ∘ a ∘ em := rfl
+  have hLIN : LinearIndependent K Nᵀ.row := by rw [hrow]; exact hli.comp ⇑em em.injective
+  have : IsUnit Nᵀ := Matrix.linearIndependent_rows_iff_isUnit.mp hLIN
+  rw [← Matrix.det_transpose]
+  exact isUnit_iff_ne_zero.mp (Nᵀ.isUnit_iff_isUnit_det.mp this)
 
 end Matrix
 

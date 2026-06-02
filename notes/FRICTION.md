@@ -1202,6 +1202,30 @@ limitations. Worth a once-over so future agents don't re-litigate.
   rectangular-LI entry above; promotes alongside
   `Matrix.linearIndependent_rows_of_det_ne_zero` in `Determinant/Basic`.
 
+### [mirrored] `Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows` (full row rank ⟹ nonsingular maximal minor)
+- **Where it bit:** Phase 14 reverse half (`lem:k-frame-specialize-forest`), the
+  wiring step that feeds the minor-nonvanishing engine above: to apply it one
+  must *produce* the square column selection `e : ι → κ`, and the specialized
+  block-diagonal forest matrix is only known to have LI rows.
+- **Friction:** mathlib has the *square* `linearIndependent_rows_iff_isUnit`
+  (rows LI ⟺ matrix a unit) but no rectangular "rows LI ⟹ there is a column
+  selection making a nonzero square minor" — i.e. the classical "row rank =
+  column rank, so a maximal independent set of columns is nonsingular".
+- **Resolution:** mirrored as
+  `Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows`: for
+  `M : Matrix m n K` over a field with `m` finite, `LinearIndependent K M.row`
+  yields `e : m → n` with `(of (fun i j ↦ M i (e j))).det ≠ 0`. The columns
+  (= rows of `Mᵀ`) span `m → K` (`LinearIndependent.rank_matrix` + `rank_transpose`
+  + `Submodule.eq_top_of_finrank_eq`); `exists_linearIndependent'` extracts a
+  spanning LI subfamily, which `Basis.mk` turns into a basis of cardinality `#m`
+  (so its index `≃ m`), and the reindexed columns are the transpose of the
+  nonsingular minor (`linearIndependent_rows_iff_isUnit` + `isUnit_iff_isUnit_det`
+  + `det_transpose`).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Companion to the two
+  rectangular-LI entries above; the natural "existence" partner of
+  `LinearIndependent.rank_matrix`.
+
 ### [mirrored] `Finset.mul_card_union_add_mul_card_inter` (`k`-scaled `card_union_add_card_inter`)
 - **Where it bit:** the union-half of `IsTightOn.union_inter`
   (`Sparsity.lean`:432) and step 2 of `IsTightOn.union_with_bonus`

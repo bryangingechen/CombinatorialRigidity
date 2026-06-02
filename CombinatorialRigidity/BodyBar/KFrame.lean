@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.BodyBar.TreePacking
+import CombinatorialRigidity.Mathlib.LinearAlgebra.Matrix.Rank
 import Matroid.Representation.Map
 import Mathlib.RingTheory.MvPolynomial.Basic
 
@@ -311,18 +312,19 @@ has full row rank because each block is the signed-incidence matrix of a forest
 (`Graph.orientation.isAcyclicSet_linearIndepOn`, linearly independent), assembled across blocks by
 `Pi.linearIndependent_single`. The remaining reverse step (a specialization of full rank witnesses
 generic linear independence over `K`) is a follow-up node. -/
-theorem specRow_linearIndependent (Fs : Fin k → Set β) (hFs : ∀ j, G.IsAcyclicSet (Fs j)) :
+theorem specRow_linearIndependent (𝔽 : Type*) [Field 𝔽]
+    (Fs : Fin k → Set β) (hFs : ∀ j, G.IsAcyclicSet (Fs j)) :
     letI : DecidableEq α := Classical.decEq α
     letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
-    LinearIndependent (KFrameField β k)
+    LinearIndependent 𝔽
       (fun ji : Σ j : Fin k, (Fs j : Set β) ↦
-        (Pi.single ji.1 (D.signedIncMatrix (KFrameField β k) (ji.2 : β)) :
-          Fin k → α → KFrameField β k)) :=
+        (Pi.single ji.1 (D.signedIncMatrix 𝔽 (ji.2 : β)) :
+          Fin k → α → 𝔽)) :=
   letI : DecidableEq α := Classical.decEq α
   letI : DecidablePred (· ∈ E(G)) := Classical.decPred _
   Pi.linearIndependent_single
-    (fun (j : Fin k) (e : (Fs j : Set β)) ↦ D.signedIncMatrix (KFrameField β k) (e : β))
-    (fun j ↦ D.isAcyclicSet_linearIndepOn (𝔽 := KFrameField β k) (hFs j))
+    (fun (j : Fin k) (e : (Fs j : Set β)) ↦ D.signedIncMatrix 𝔽 (e : β))
+    (fun j ↦ D.isAcyclicSet_linearIndepOn (𝔽 := 𝔽) (hFs j))
 
 /-- **Generic `k`-frame independence reduces to independence over the polynomial ring**
 (`lem:k-frame-li-over-poly-ring`, the first half of the genericity-lift step of the reverse
@@ -460,6 +462,119 @@ theorem forestEval_kFrameRowR_eq_single (Fs : Fin k → Set β)
   · have hne : e ∉ Fs j := fun hmem => (hdisj hj).ne_of_mem hmem he rfl
     rw [if_neg hne, zero_mul, Pi.single_eq_of_ne hj]
     rfl
+
+/-- **Forest decomposition ⟹ generic independence** (`lem:k-frame-specialize-forest`, the reverse
+half of Whiteley §2.1). If the edge-restriction `G ↾ E'` is `(k, k)`-sparse, then the generic
+`k`-frame rows on `E'` are linearly independent over the coefficient field `K = KFrameField β k`.
+
+The wiring of all the reverse-half pieces. By `linearIndepOn_kFrameRow_iff_over_polyRing` it
+suffices to argue over the polynomial ring `R = MvPolynomial (β × Fin k) ℚ`, and via
+`kFrameRow_eq_map_kFrameRowR` (the generic row is the entrywise `algebraMap R K`-image of the
+`R`-valued row `kFrameRowR`) over the `R`-valued rows. Those are fed, in curried-to-`Fin k × α`
+matrix form, to the minor-nonvanishing engine
+`Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero` with the forest-packing
+evaluation hom `forestEval Fs` (`Fs` a *disjoint* forest packing covering `E'`, from
+`exists_forestPacking_cover_of_isSparse_restrict` disjointified via `Fintype.exists_disjointed_le`):
+by `forestEval_kFrameRowR_eq_single` the specialized rows are the block-`single` forest matrix,
+which is LI over ℚ (`specRow_linearIndependent`, reindexed along the disjoint-cover bijection
+`Set.unionEqSigmaOfDisjoint`), so it has a nonsingular maximal minor
+(`Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows`) — the nonzero specialized
+determinant the engine consumes. -/
+theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
+    {E' : Set β} (hE' : E' ⊆ E(G)) (hsparse : (G ↾ E').IsSparse k k) :
+    LinearIndepOn (KFrameField β k) (kFrameRow k (G.orientation_nonempty.some)) E' := by
+  classical
+  haveI : Fintype β := Fintype.ofFinite β
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype E' := (Set.toFinite E').fintype
+  set D := G.orientation_nonempty.some with hD
+  set R := MvPolynomial (β × Fin k) ℚ with hR
+  -- A disjoint forest packing covering `E'`.
+  obtain ⟨Is, hcover, hacyc⟩ := exists_forestPacking_cover_of_isSparse_restrict hE' hsparse
+  obtain ⟨Fs, hgle, hgsup, hgdisj⟩ := Fintype.exists_disjointed_le Is
+  have hFcover : ⋃ i, Fs i = E' := by
+    have hsup : ⋃ i, Fs i = ⋃ i, Is i := by
+      rw [← Set.iSup_eq_iUnion, ← Set.iSup_eq_iUnion, ← Finset.sup_univ_eq_iSup,
+        ← Finset.sup_univ_eq_iSup, hgsup]
+    rw [hsup, hcover]
+  have hFacyc : ∀ i, G.IsAcyclicSet (Fs i) := fun i => (hacyc i).anti (hgle i)
+  -- The disjoint cover gives `↥(⋃ Fs) ≃ Σ j, Fs j`; compose with `E' = ⋃ Fs`.
+  let eqv : ↥E' ≃ Σ j : Fin k, (Fs j : Set β) :=
+    (Equiv.setCongr hFcover.symm).trans (Set.unionEqSigmaOfDisjoint hgdisj)
+  -- STEP 1 (engine): the `R`-valued rows over `E'`, in uncurried matrix form, are LI over `R`.
+  have hR_uncurry : LinearIndependent R
+      (fun e : E' => fun jx : Fin k × α => kFrameRowR k D (e : β) jx.1 jx.2) := by
+    -- The specialization hom and its evaluated matrix (block-`single` forest rows).
+    set φ := forestEval Fs with hφ
+    -- Specialized matrix as rows indexed by `E'`.
+    set Mspec : E' → (Fin k × α) → ℚ :=
+      fun e jx => φ (kFrameRowR k D (e : β) jx.1 jx.2) with hMspec
+    -- For `e ∈ E'`, `e ∈ Fs (eqv e).1`, so the specialized row is block-`single`.
+    have hsingle : ∀ e : E', Mspec e =
+        fun jx : Fin k × α =>
+          (Pi.single (eqv e).1 (D.signedIncMatrix ℚ (e : β)) : Fin k → α → ℚ) jx.1 jx.2 := by
+      intro e
+      have hmem : (e : β) ∈ Fs (eqv e).1 := by
+        have h1 : ((eqv e).2 : β) ∈ Fs (eqv e).1 := (eqv e).2.2
+        have h2 : ((eqv e).2 : β) = (e : β) := by
+          simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint,
+            Equiv.setCongr_apply]
+        rwa [h2] at h1
+      funext jx
+      have := forestEval_kFrameRowR_eq_single (D := D) Fs hgdisj hmem
+      exact congrFun (congrFun this jx.1) jx.2
+    -- The specialized rows are LI over ℚ, by reindexing `specRow_linearIndependent` along `eqv`.
+    have hMspec_LI : LinearIndependent ℚ Mspec := by
+      have hbase := specRow_linearIndependent (G := G) (D := D) ℚ Fs hFacyc
+      -- `Mspec = (uncurry-of block-single) ∘ eqv`, an LI family precomposed with an equiv.
+      have hcomp : Mspec =
+          (⇑(LinearEquiv.curry ℚ ℚ (Fin k) α).symm ∘
+            (fun ji : Σ j : Fin k, (Fs j : Set β) =>
+              (Pi.single ji.1 (D.signedIncMatrix ℚ (ji.2 : β)) : Fin k → α → ℚ)))
+            ∘ eqv := by
+        funext e jx
+        rw [Function.comp_apply, Function.comp_apply, hsingle e]
+        have h2 : ((eqv e).2 : β) = (e : β) := by
+          simp only [eqv, Equiv.trans_apply, Set.coe_snd_unionEqSigmaOfDisjoint,
+            Equiv.setCongr_apply]
+        rw [LinearEquiv.coe_curry_symm, Function.uncurry_apply_pair, h2]
+      rw [hcomp]
+      -- the uncurried block-single family is LI over ℚ (uncurry is an equiv)
+      refine LinearIndependent.comp ?_ eqv eqv.injective
+      exact (LinearMap.linearIndependent_iff _
+        (LinearEquiv.ker (LinearEquiv.curry ℚ ℚ (Fin k) α).symm)).mpr hbase
+    -- Maximal minor: a column selection with nonzero specialized det.
+    obtain ⟨c, hc⟩ :=
+      Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows (M := Matrix.of Mspec)
+        (by simpa [Matrix.row] using hMspec_LI)
+    -- Feed the engine: `φ (det of R-minor) = det of specialized minor ≠ 0`.
+    refine Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero
+      (fun e : E' => fun jx : Fin k × α => kFrameRowR k D (e : β) jx.1 jx.2) φ c ?_
+    rw [RingHom.map_det]
+    convert hc using 2
+  -- STEP 2: transfer the uncurried R-LI to the nested K-valued `kFrameRow`.
+  rw [linearIndepOn_kFrameRow_iff_over_polyRing, LinearIndepOn]
+  -- `kFrameRow ∘ (↑) = ψ ∘ (uncurried R rows)` for an injective `R`-linear `ψ`.
+  -- ψ = curry (uncurried R → nested R) then entrywise `algebraMap R K` (nested R → nested K).
+  let ψ : ((Fin k × α) → R) →ₗ[R] (Fin k → α → KFrameField β k) :=
+    (((Algebra.linearMap R (KFrameField β k)).compLeft α).compLeft (Fin k)).comp
+      (LinearEquiv.curry R R (Fin k) α).toLinearMap
+  have halg_inj : Function.Injective ⇑(Algebra.linearMap R (KFrameField β k)) :=
+    FaithfulSMul.algebraMap_injective R (KFrameField β k)
+  have hentry_inj : Function.Injective
+      ⇑(((Algebra.linearMap R (KFrameField β k)).compLeft α).compLeft (Fin k)) := by
+    rw [← LinearMap.ker_eq_bot, LinearMap.ker_compLeft, LinearMap.ker_compLeft,
+      LinearMap.ker_eq_bot.mpr halg_inj]
+    simp
+  have hψ_inj : Function.Injective ψ :=
+    hentry_inj.comp (LinearEquiv.curry R R (Fin k) α).injective
+  have hcomp : (fun e : E' => kFrameRow k D (e : β)) =
+      ψ ∘ (fun e : E' => fun jx : Fin k × α => kFrameRowR k D (e : β) jx.1 jx.2) := by
+    funext e
+    rw [kFrameRow_eq_map_kFrameRowR (e : β)]
+    rfl
+  rw [hcomp]
+  exact hR_uncurry.map' ψ (LinearMap.ker_eq_bot.mpr hψ_inj)
 
 end Reverse
 

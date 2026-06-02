@@ -305,6 +305,8 @@ and the same applies to every $Y \subseteq E'$.
 
 \begin{lemma}[Forest decomposition $\Rightarrow$ generic independence]
   \label{lem:k-frame-specialize-forest}
+  \lean{Graph.linearIndepOn_kFrameRow_of_isSparse_restrict}
+  \leanok
   \uses{def:k-frame-matroid, lem:k-frame-specialize-li, lem:k-frame-li-over-poly-ring,
     lem:k-frame-forest-packing-of-sparse, lem:k-frame-specialize-identity}
   Conversely, suppose $E' \subseteq E(G)$ decomposes as
@@ -319,6 +321,7 @@ and the same applies to every $Y \subseteq E'$.
   minor specializing to a nonzero value cannot be the zero polynomial).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{def:k-frame-matroid}
   The reverse half of Whiteley~\cite{whiteley1988} \S2.1. Each forest
   $E'_j$ has linearly independent incidence rows (the cycle-matroid
@@ -326,8 +329,9 @@ and the same applies to every $Y \subseteq E'$.
   and the block-diagonal arrangement keeps the blocks independent. Lifting
   back: by \cref{lem:k-frame-li-over-poly-ring} it suffices to argue over the
   polynomial ring $R$, where a matrix with a specialization of full rank has full
-  generic rank, so the unspecialized indeterminate rows are independent over $R$
-  and hence over $K$.
+  generic rank (a nonsingular maximal minor of the specialized block-diagonal
+  matrix is the image of a minor that is therefore a nonzero polynomial), so the
+  unspecialized indeterminate rows are independent over $R$ and hence over $K$.
 \end{proof}
 
 \begin{lemma}[Generic $k$-frame independence by the count]
