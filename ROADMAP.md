@@ -108,7 +108,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 17. Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` (full §2.1) | ✓ Complete (see `notes/Phase17.md`; opens the 10-phase molecular-conjecture program, `notes/MolecularConjecture.md` + §17 below) |
 | ⋮ Cleanup round (post-Phase-17) | Phase 17 surface (`Molecular/Extensor.lean`, `molecular.tex` `sec:molecular` nodes) | ✓ Complete (see `notes/Phase17-cleanup.md`; round manual: `CLEANUP.md`) |
 | 18. Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` (KT §2.2–2.4 + Lemmas 5.1–5.3) | ✓ Complete (see `notes/Phase18.md`; `molecular.tex` `sec:molecular-rigidity-matrix`) |
-| ⋮ Cleanup round (post-Phase-18) | Phase 18 surface (`Molecular/RigidityMatrix.lean`, `molecular.tex` `sec:molecular-rigidity-matrix` nodes) + readability/citation/instruction items | ◐ In progress (see `notes/Phase18-cleanup.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (post-Phase-18) | Phase 18 surface (`Molecular/RigidityMatrix.lean`, `molecular.tex` → split into `extensor.tex` + `rigidity-matrix.tex`) + readability/citation/instruction items | ✓ Complete (see `notes/Phase18-cleanup.md`; round manual: `CLEANUP.md`) |
 | 19–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -614,8 +614,10 @@ span-refinement monotonicity, genericity over analytic perturbation). The
 one remaining node `prop:rigidity-matrix-prop11` (KT Prop 1.1, reconcile
 the rank form with Phase 16's `thm:body-hinge-tay`) was **deferred to
 Phase 19**: its bridge `def(G̃) = corank M(G̃)` is a Phase-19 object.
-Forward-mode (the dep-graph is `molecular.tex`'s
-`sec:molecular-rigidity-matrix`, extending the Phase-17 chapter).
+Forward-mode (the dep-graph is `rigidity-matrix.tex`'s
+`sec:molecular-rigidity-matrix`; the post-Phase-18 cleanup round split
+the former `molecular.tex` into `extensor.tex` (Phase 17) +
+`rigidity-matrix.tex` (Phase 18), one `.tex` per molecular phase).
 Per-lemma detail + decisions: `notes/Phase18.md`; the deferred node is an
 inherited Phase-19 deliverable in `notes/MolecularConjecture.md`
 *Phase 19*.

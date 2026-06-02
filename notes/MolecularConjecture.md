@@ -411,12 +411,18 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 
 ## Opening the next phase
 
-Phases 17–18 are open and complete; the `molecular.tex` chapter and the
-bib entries ([4], [29], [15], [2], [13], [37]) are in place. To open the
-next planned phase (Phase 19), follow the top-level `CLAUDE.md` *When
-this commit opens a phase* protocol: create `notes/Phase19.md` from the
-`notes/CLAUDE.md` template (pull the Phase-19 detail above into its
-*Lemma checklist* + *Architectural choices*), extend `molecular.tex`
-with the phase's red dep-graph nodes as the forward-mode to-do list,
-flip the ROADMAP status row to *in progress*, and sync `README.md` /
+Phases 17–18 are open and complete; the molecular program now runs
+**one blueprint chapter per phase** (`extensor.tex` for Phase 17,
+`rigidity-matrix.tex` for Phase 18 — the former single `molecular.tex`
+was split in the post-Phase-18 cleanup round, `notes/Phase18-cleanup.md`
+J1) and the bib entries ([4], [29], [15], [2], [13], [37]) are in place.
+To open the next planned phase (Phase 19), follow the top-level
+`CLAUDE.md` *When this commit opens a phase* protocol: create
+`notes/Phase19.md` from the `notes/CLAUDE.md` template (pull the
+Phase-19 detail above into its *Lemma checklist* + *Architectural
+choices*), add a **new** `blueprint/src/chapter/*.tex` for Phase 19
+(per the one-`.tex`-per-phase convention; its Lean lives in a new
+`Molecular/Deficiency.lean`, not appended to `RigidityMatrix.lean`) with
+the phase's red dep-graph nodes as the forward-mode to-do list, flip the
+ROADMAP status row to *in progress*, and sync `README.md` /
 `home_page/index.md` / `blueprint/src/chapter/intro.tex`.

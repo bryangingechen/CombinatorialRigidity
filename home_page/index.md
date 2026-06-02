@@ -124,10 +124,10 @@ screw space `⋀^k ℝ^(k+2)` of dimension `D`, the `D` trivial motions and
 the codimension form of `rank ≤ D(|V|−1)`, and the three rank Lemmas
 5.1–5.3). Its reconciliation with Phase 16's reduction-form Prop 1.1 is
 deferred to Phase 19, whose `M(G̃)`-deficiency machinery the bridge
-needs. Forward-mode program: the chapter `molecular.tex` is the
-authoritative dep-graph (Phase-17 + Phase-18 nodes green, the deferred
-Prop 1.1 node red). See the program-level plan in
-`notes/MolecularConjecture.md`.
+needs. Forward-mode program, one chapter per phase: `extensor.tex`
+(Phase 17) and `rigidity-matrix.tex` (Phase 18) are the authoritative
+dep-graphs (all nodes green save the deferred Prop 1.1 node, red). See
+the program-level plan in `notes/MolecularConjecture.md`.
 
 The development is divided into the phases below, with Lean source
 under

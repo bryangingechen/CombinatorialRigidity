@@ -155,7 +155,7 @@ project; commit history is preserved with paths rewritten.
   `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1` affinely
   independent points are linearly independent, the linear-algebra
   foundation the conjecture's hardest case (Case III) bottoms out on.
-  Forward-mode phase; the chapter `molecular.tex` is the authoritative
+  Forward-mode phase; the chapter `extensor.tex` is the authoritative
   dep-graph. `Molecular/Extensor.lean`. See `notes/Phase17.md` and
   the program-level plan in `notes/MolecularConjecture.md`.
 * **Phase 18 (complete)** — stratum 2 of the molecular program: the

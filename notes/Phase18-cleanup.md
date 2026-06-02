@@ -1,6 +1,6 @@
 # Phase 18 cleanup round (work log)
 
-**Status:** in progress (open). Task list below is comprehensive
+**Status:** complete (closed). Task list below is comprehensive
 (swept 2026-06-02 before any fix lands); resumable from this log alone.
 
 Between-phases cleanup round, run after Phase 18 (panel-hinge rigidity
@@ -19,8 +19,8 @@ instruction alignment → D (process), file split → A (judgment call).
 
 ## Current state
 
-**Update (P2 landed):** Buckets A/B/C closed; D1 + D2 + D3 done; P1 +
-P2 done. Remaining: **J1** (judgment call, next). See *Hand-off*.
+**Update (round closed):** Buckets A/B/C closed; D1 + D2 + D3 done; P1 +
+P2 done; **J1** done (split landed). Round complete. See *Hand-off*.
 
 The Phase-18 surface is the single new Lean file
 `Molecular/RigidityMatrix.lean` (545 lines, 38 decls) and the nine
@@ -191,26 +191,43 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ### Judgment call (decide in-round or defer with rationale)
 
-- [ ] **J1 (split `molecular.tex`)** — the file (526 lines) now holds
-  two full `\section`s (Phase 17 §2.1 extensor algebra + Phase 18
+- [x] **J1 (split `molecular.tex`)** — done (split). The 497-line file
+  held two full `\section`s (Phase 17 §2.1 extensor algebra + Phase 18
   §2.2–2.4 rigidity matrix), with 8 molecular phases still queued.
-  Candidate: split into `extensor.tex` + `rigidity-matrix.tex` (mirroring
-  the Lean `Extensor.lean`/`RigidityMatrix.lean` split and phase
-  boundaries), adopt "one `.tex` per molecular phase" going forward.
-  **Counter-precedent:** `body-bar.tex` deliberately holds three phases
-  (13–15) in one 642-line file. Not forced; lean split given program
-  length. Decide here or file to Phase 19's open. *Companion (Lean):* no
+  **Decision: split** into `chapter/extensor.tex` (Phase 17, keeps
+  `\label{sec:molecular}`) + `chapter/rigidity-matrix.tex` (Phase 18,
+  keeps `\label{sec:molecular-rigidity-matrix}`), mirroring the Lean
+  `Extensor.lean`/`RigidityMatrix.lean` split and phase boundaries;
+  adopting **"one `.tex` per molecular phase"** going forward. Chosen
+  over the `body-bar.tex` counter-precedent (three phases in one file)
+  because the molecular program is 10 phases — the body-bar 3-phase
+  bundle is the bounded exception, not the model for a program this long.
+  The split is content-preserving: all 23 `\label{}`s and 15 `\lean{}`
+  pointers are retained verbatim (labels are global, so every
+  `intro.tex` `\cref{sec:molecular}` / `\cref{sec:molecular-rigidity-matrix}`
+  / `\cref{lem:extensor-independence}` / `\cref{prop:rigidity-matrix-prop11}`
+  still resolves); the two new files' environment bodies `diff`-clean
+  against the old `molecular.tex` (§2.1 and §2.2–2.4 byte-identical). The
+  only edit was reframing the chapter-intro prose: `extensor.tex` opens
+  the program + Phase 17, `rigidity-matrix.tex` gets a short Phase-18
+  header pointing back at `\cref{sec:molecular}`. `main.tex` swaps the one
+  `\input{chapter/molecular.tex}` for the two new inputs; `molecular.tex`
+  `git rm`'d. `blueprint/verify.sh` green (`checkdecls` resolves all
+  names, both `sec-molecular*.html` pages render). *Companion (Lean):* no
   split needed now (`RigidityMatrix.lean` is coherent at 545 lines), but
   Phase 19's `M(G̃)`/deficiency machinery should go in a **new file**
-  (`Molecular/Deficiency.lean`), not bloat `RigidityMatrix.lean`.
+  (`Molecular/Deficiency.lean`), not bloat `RigidityMatrix.lean` — carried
+  to Phase 19's plan.
 
 ## Blockers / open questions
 
 - A5 / D1(part) depend on the `.refs/` Jackson–Jordán 2009 PDF being
   text-extractable (the program plan says it is, L97). If "Prop 2.3"
   can't be confirmed, soften rather than guess (CLAUDE.md bar).
-- J1 is a genuine judgment call; if deferred, record the decision in
-  Phase 19's open so it isn't silently dropped.
+- J1 resolved in-round (split, not deferred); see the J1 checklist
+  entry for the decision + rationale. The Lean-companion deferral
+  (`Molecular/Deficiency.lean` for Phase 19) is carried to Phase 19's
+  plan, not silently dropped.
 
 ## Hand-off / next phase
 
@@ -231,9 +248,21 @@ domain mathematician and collapse accumulated per-commit formalization
 asides" step — the step that would have caught the A2 narration at phase
 close rather than a round later; it cross-references P1's anti-pattern.
 
-Next (and last) concrete commit: **J1** (split `molecular.tex`, a
-judgment call — decide in-round or defer to Phase 19's open with
-rationale). Each fix is its own commit per `CLEANUP.md` *Workflow*
-rule 3. Once J1 is resolved, close the round by flipping the ROADMAP
-row to ✓ and writing the round's closing summary; Phase 19 opens
-after.
+**Round closed.** J1 landed: `molecular.tex` split into
+`chapter/extensor.tex` (Phase 17, `sec:molecular`) +
+`chapter/rigidity-matrix.tex` (Phase 18, `sec:molecular-rigidity-matrix`),
+content-preserving (all labels + `\lean{}` pointers retained, bodies
+`diff`-clean), `main.tex` re-input, `blueprint/verify.sh` green. ROADMAP
+post-Phase-18 cleanup row flipped to ✓ in the same commit. The
+"one `.tex` per molecular phase" convention is now in force — Phase 19's
+`M(G̃)`/deficiency chapter gets its own `chapter/*.tex` (and its own Lean
+file `Molecular/Deficiency.lean`, not appended to `RigidityMatrix.lean`).
+
+**Next:** open **Phase 19** (`M(G̃)`, `D`-deficiency, `k`-dof / minimal
+`k`-dof-graphs, rigid subgraphs, the def=corank bridge; §2.5, §3 of
+Katoh–Tanigawa). First commit creates `notes/Phase19.md` + the new
+forward-mode blueprint chapter, syncs the three user-facing status
+surfaces (README / home_page / intro.tex) to mark Phase 18 ✓ and Phase 19
+in progress, and discharges the inherited `prop:rigidity-matrix-prop11`
+node once `M(G̃)`/deficiency lands. See `notes/MolecularConjecture.md`
+*Phase 19* for the carry-forward bullet and the lemma map.
