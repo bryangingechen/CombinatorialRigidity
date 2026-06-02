@@ -65,7 +65,28 @@ sole 3-arg `rw` (the rank-bridge in `exists_submatrix_det_ne_zero_…`) is a
 one-off upstream-fact composition already named in its FRICTION resolution, not
 a missing fused lemma. (B) complete; no-op confirm, doc-only commit.
 
-Next concrete step: (C) the two long proofs, then (D).
+(C) long-proof audit done (C1 + C2). C1 closed mostly no-op per
+`CLEANUP.md` *Calibration*: all substantive pieces of
+`linearIndepOn_kFrameRow_of_isSparse_restrict` (~95 LoC) are already
+extracted into named lemmas (`specRow_linearIndependent`,
+`forestEval_kFrameRowR_eq_single`, `exists_forestPacking_cover_…`,
+`linearIndepOn_kFrameRow_iff_over_polyRing`, `kFrameRow_eq_map_kFrameRowR`,
+the two `Rank.lean` engine lemmas); the body is forced wiring (disjoint
+forest packing → reindex via `Set.unionEqSigmaOfDisjoint` → minor engine
+→ injective `ψ`-transfer). No mathlib lemma missed (the `hentry_inj`
+`ker = bot` route is idiomatic; no `LinearMap.compLeft_injective` exists
+upstream). **One marginal tightening landed:** the 5-line `hFcover`
+sub-block (an intermediate `have hsup` + `rw [hsup, hcover]`) folds into
+a single `rw [← hcover, …]` chain over the `iSup`/`Finset.sup` bridge.
+C2 (`forest_count_of_linearIndepOn_kFrameRow`, ~27 LoC) ruled out as a
+cross-proof-unification partner — the forward half is a finrank-monotone
+count (`finrank_span_set_eq_card` → `Submodule.finrank_mono` →
+`finrank_blockPiSpanOn`), the reverse a specialization/minor argument;
+opposite directions, no shared step-level backbone. Build green +
+warning-clean + lint clean.
+
+Next concrete step: (D) compress `notes/Phase14.md` (329 → under 250)
++ FRICTION re-skim.
 
 ## Scope
 
@@ -170,15 +191,21 @@ bounded:
 
 ### C. Long-proof audit
 
-- [ ] C1 — `linearIndepOn_kFrameRow_of_isSparse_restrict` (~95 lines, the
-  reverse-half wiring). Walk the four-question audit (API extraction /
-  missed mathlib lemma / tactic substitution / cross-proof unification).
-  Expect a no-op per `CLEANUP.md` *Calibration* (forced case-dispatch /
-  wiring boilerplate), but the walk is the gate.
-- [ ] C2 — `forest_count_of_linearIndepOn_kFrameRow` (~27 lines, forward
-  half). Below the §C 50-line threshold; spot-check only if C1 surfaces a
-  shared backbone with the reverse half (the two genericity halves are the
-  obvious cross-proof-unification candidate to rule in/out).
+- [x] C1 — `linearIndepOn_kFrameRow_of_isSparse_restrict` (~95 lines, the
+  reverse-half wiring). Four-question walk: API extraction — none (all
+  substantive pieces already named lemmas); missed mathlib lemma — none
+  (`hentry_inj`'s `ker = bot` route is idiomatic; no
+  `LinearMap.compLeft_injective` upstream); tactic substitution — **one
+  marginal tightening** (the 5-line `hFcover` sub-block folds to a single
+  `rw [← hcover, …]` over the `iSup`/`Finset.sup` bridge), landed;
+  cross-proof unification — see C2. Otherwise forced wiring per
+  `CLEANUP.md` *Calibration*.
+- [x] C2 — `forest_count_of_linearIndepOn_kFrameRow` (~27 lines, forward
+  half). Below the §C 50-line threshold; cross-proof-unification spot-check
+  vs. C1: **ruled out.** Forward is a finrank-monotone count
+  (`finrank_span_set_eq_card` → `Submodule.finrank_mono` →
+  `finrank_blockPiSpanOn`), reverse a specialization/minor argument;
+  opposite directions, no shared step-level backbone.
 
 ### D. Project-organization compression
 
@@ -197,6 +224,20 @@ bounded:
 ## Decisions made during this round
 
 ### Cleanup pass summaries
+- **C1+C2 (KFrame.lean, one marginal tightening).** Four-question
+  long-proof audit on `linearIndepOn_kFrameRow_of_isSparse_restrict`
+  (~95 LoC) + `forest_count_of_linearIndepOn_kFrameRow` (~27 LoC).
+  C1 mostly no-op per `CLEANUP.md` *Calibration* — substantive pieces
+  already extracted into named lemmas, body is forced wiring; no missed
+  mathlib lemma (the `ker = bot` injectivity route is idiomatic). One
+  tightening landed: the 5-line `hFcover` sub-block (`have hsup` +
+  `rw [hsup, hcover]`) folds to a single `rw [← hcover, …]` chain over
+  the `iSup`/`Finset.sup` bridge — same one mathematical step, two fewer
+  lines. C2 cross-proof-unification with C1 ruled out (forward = finrank
+  count, reverse = specialization/minor; opposite directions). Build
+  green + warning-clean + lint clean; no FRICTION entry (the remaining
+  6-arg `rw` is the one-off `iSup`↔`Finset.sup` bridge already pinned as
+  non-recurring in B4).
 - **B4+B5 (Rank.lean adders, doc-only no-op confirm).** Re-ran the
   `change`/`show`, `show … from rfl`, 3+-arg single-step `rw`,
   `@[nolint …]`, and `set_option linter.*` greps on the two Phase-14
@@ -254,14 +295,13 @@ bounded:
 
 ## Hand-off / next phase
 
-Round in progress ((B) complete: B1–B5 done). Next concrete commit:
-**C1** — walk the four-question long-proof audit (API extraction / missed
-mathlib lemma / tactic substitution / cross-proof unification) on
-`linearIndepOn_kFrameRow_of_isSparse_restrict` (~95 LoC, reverse-half wiring)
-in `KFrame.lean`; expect a no-op per `CLEANUP.md` *Calibration* (forced
-case-dispatch / wiring boilerplate), but the walk is the gate. C2
-(`forest_count_of_linearIndepOn_kFrameRow` ~27 LoC, below the 50-line §C
-threshold) is a spot-check only if C1 surfaces a shared backbone with the
-two genericity halves. Then (D) compress `notes/Phase14.md` (329 → under 250)
-+ FRICTION re-skim. When (D) closes, write the round summary here and flip the
-ROADMAP Status row to ✓.
+Round in progress ((B) + (C) complete: B1–B5, C1–C2 done). Next concrete
+commit: **D1** — compress `notes/Phase14.md` (329 lines → under the 250 soft
+budget) per `CLEANUP.md` §D: collapse the *Current state* paragraph and the
+per-node *Lemma checklist* (which narrate the full landed-node history) to a
+commit-log pointer + brief summary; preserve *Decisions made* (the coefficient
+encoding + ground-set restriction are load-bearing for Phase 15) and the
+*Hand-off* section. Then **D2** — re-skim `FRICTION.md` status sections (migrate
+fully-indexed Phase-14 `[resolved]` entries to `FRICTION-archive.md`; lift any
+2+-phase cross-cutting lesson). When (D) closes, write the round summary here
+and flip the ROADMAP Status row to ✓.

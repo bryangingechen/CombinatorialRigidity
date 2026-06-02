@@ -490,10 +490,8 @@ theorem linearIndepOn_kFrameRow_of_isSparse_restrict [Finite α] [Finite β]
   obtain ⟨Is, hcover, hacyc⟩ := exists_forestPacking_cover_of_isSparse_restrict hE' hsparse
   obtain ⟨Fs, hgle, hgsup, hgdisj⟩ := Fintype.exists_disjointed_le Is
   have hFcover : ⋃ i, Fs i = E' := by
-    have hsup : ⋃ i, Fs i = ⋃ i, Is i := by
-      rw [← Set.iSup_eq_iUnion, ← Set.iSup_eq_iUnion, ← Finset.sup_univ_eq_iSup,
-        ← Finset.sup_univ_eq_iSup, hgsup]
-    rw [hsup, hcover]
+    rw [← hcover, ← Set.iSup_eq_iUnion, ← Set.iSup_eq_iUnion, ← Finset.sup_univ_eq_iSup,
+      ← Finset.sup_univ_eq_iSup, hgsup]
   have hFacyc : ∀ i, G.IsAcyclicSet (Fs i) := fun i => (hacyc i).anti (hgle i)
   -- The disjoint cover gives `↥(⋃ Fs) ≃ Σ j, Fs j`; compose with `E' = ⋃ Fs`.
   let eqv : ↥E' ≃ Σ j : Fin k, (Fs j : Set β) :=
