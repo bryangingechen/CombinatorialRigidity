@@ -39,21 +39,19 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 - [ ] **A1** — per-node `\lean{}` signature compare for the 9
   `sec:molecular-rigidity-matrix` nodes vs the Lean decls. Expected
   no-op confirm (cf. Phase17-cleanup A1).
-- [ ] **A2 (readability pass — highest value)** — strip the
-  formalization-implementation narration that accumulated across the
-  per-commit Phase-18 subagents. Each of `def:hinge-row-block`
-  (L286–294), `def:rigidity-matrix` (L314–336),
-  `lem:trivial-motions-rank-bound` proof (L386–403), and
-  `def:dof-generic` (L350–356) carries a paragraph of "carried
-  basis-free / still deferred / waits on the explicit
-  `⋀^k ℝ^{k+2} ≅ ℝ^D` coordinatization" commentary. Per
-  `blueprint/CLAUDE.md` *Proof verbosity* + *Keep the reshape history
-  out of the prose*, collapse each to **one clause** (e.g. "formalized
-  basis-free via the dual annihilator"). This is the exact anti-pattern
-  the 2026-05 Phase-11 readability pass stripped and was told not to
-  reintroduce. **Bias: keep the basis-free Lean (it IS the simpler
-  encoding); the fix is prose-side narration removal, not a Lean
-  change.**
+- [x] **A2 (readability pass — highest value)** — done. Collapsed the
+  formalization-implementation narration in all four spots
+  (`def:hinge-row-block`, `def:rigidity-matrix`,
+  `lem:trivial-motions-rank-bound` proof, `def:dof-generic`) to a
+  one-clause "formalized basis-free via …" aside each. Dropped the
+  in-prose `\texttt{}` decl-name lists (still pinned in each node's
+  `\lean{}` block, so `checkdecls` keeps them honest). Also folded in
+  the §2.2–2.4 share of A3: rewrote the collapsed prose in `d`-terms
+  (`⋀^{d-1}ℝ^{d+1}`, screw space `ℝ^D` with `D=binom(d+1,2)`), removing
+  every `⋀^k ℝ^{k+2}` from §2.2–2.4 (the remaining `\bigwedge^{k}` at
+  L85/L157 are the legitimate Phase-17 extensor degree `k`). `verify.sh`
+  green. **A3 is now nearly subsumed** — only the section-head `k=d−1`
+  statement remains if any `k` survives; re-confirm when picking up A3.
 - [ ] **A3** — tie the index `k` to `d`. The §2.2–2.4 prose switches to
   `⋀^k ℝ^{k+2}` (L315, 329, 389, 397, …) where `k = d−1`, but that
   relation is never stated; the reader must reverse-engineer it. State
@@ -157,11 +155,13 @@ destale + `Phase18.md` compression + two instruction tweaks), plus a
 
 ## Hand-off / next phase
 
-Round just opened (this commit = log skeleton + task list + ROADMAP
-row). Next concrete commit: **A2**, the molecular.tex §2.2–2.4
-readability pass (highest reader-value, self-contained, prose-only).
-Then A5 (citation, quick), D1 (`MolecularConjecture.md` destale), the
-remaining A/B/C confirms, D2/D3, P1/P2, and J1 last. Each fix is its own
-commit per `CLEANUP.md` *Workflow* rule 3. Close the round by flipping
-the ROADMAP row to ✓ and writing the *Hand-off* summary; Phase 19 opens
-after.
+A2 landed (molecular.tex §2.2–2.4 readability pass + §2.2–2.4 share of
+A3). Next concrete commit: **A5** (the `prop:rigidity-matrix-prop11`
+citation — verify "Proposition 2.3 of Jackson–Jordán" against
+`.refs/` Jackson–Jordán 2009, or soften to "Jackson–Jordán" without the
+number; cross-check the same pointer in `MolecularConjecture.md`
+L73/L255). Then D1 (`MolecularConjecture.md` destale), the A3
+section-head `k`/`d` finish + A1/A4 confirms, the B/C confirms, D2/D3,
+P1/P2, and J1 last. Each fix is its own commit per `CLEANUP.md`
+*Workflow* rule 3. Close the round by flipping the ROADMAP row to ✓ and
+writing the *Hand-off* summary; Phase 19 opens after.

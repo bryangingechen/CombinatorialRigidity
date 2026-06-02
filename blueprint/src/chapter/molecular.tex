@@ -282,16 +282,11 @@ Phase~19, \S2.5--\S3).
   $r(p(e))$ be the $(D-1)\times D$ matrix with these rows. Then a screw
   assignment $S$ meets the hinge constraint
   (\cref{def:hinge-constraint}) at $e = uv$ iff
-  $(S(u) - S(v)) \cdot r_i(p(e)) = 0$ for all $1 \le i \le D-1$. The
-  formalization keeps the screw space as the full exterior-algebra
-  element (\cref{def:hinge-constraint}) and so carries the orthogonal
-  complement basis-free, as the dual annihilator
-  $(\operatorname{span} C(p(e)))^{\circ} \subseteq (\R^{D})^{*}$; the
-  dot products become functional applications $r_i(S(u) - S(v))$ and the
-  equivalence is the field-level double-annihilator identity
-  $(\operatorname{span} C)^{\circ\circ} = \operatorname{span} C$. The
-  explicit $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ coordinatization is
-  therefore still deferred to \cref{def:rigidity-matrix}.
+  $(S(u) - S(v)) \cdot r_i(p(e)) = 0$ for all $1 \le i \le D-1$, by the
+  double-annihilator identity
+  $(\operatorname{span} C)^{\circ\circ} = \operatorname{span} C$;
+  formalized via the dual annihilator
+  $(\operatorname{span} C(p(e)))^{\circ} \subseteq (\R^{D})^{*}$.
 \end{definition}
 
 \begin{definition}[Panel-hinge rigidity matrix]
@@ -311,28 +306,14 @@ Phase~19, \S2.5--\S3).
   space is written $Z(G,p)$. Its dimension is independent of the chosen
   orthogonal-complement basis.
 
-  The formalization carries the screw center in the degree-$k$ graded
-  piece $\bigwedge^{k}\R^{k+2}$ of the exterior algebra
-  (\texttt{ScrewSpace}, the subspace where the supporting extensors
-  $C(p(e))$ live) and carries $R(G,p)$ as the family of per-edge hinge
-  constraints on the screw-assignment space, not as an explicit real
-  coordinate matrix: a screw assignment
-  $S \colon V \to \bigwedge^{k}\R^{k+2}$ is an \emph{infinitesimal
-  motion} (\texttt{IsInfinitesimalMotion}) when it meets the hinge
-  constraint (\cref{def:hinge-constraint}) at every edge, i.e.
-  $S(u) - S(v) \in \operatorname{span} C(p(e))$ for every edge $e$
-  linking $u, v$. The constraint is orientation-independent (the span
-  is closed under negation), so this is well-defined on the undirected
-  multigraph, and the null space $Z(G,p) = \ker R(G,p)$ is the
-  submodule of all infinitesimal motions
-  (\texttt{infinitesimalMotions}). The
-  $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ coordinatization is realized as
-  the dimension count
-  $\operatorname{finrank} \bigwedge^{k}\R^{k+2} = D = \binom{k+2}{2}$
-  (\texttt{screwSpace\_finrank}, \texttt{screwDim}) rather than an
-  explicit basis --- the numeric gate for the rank bounds of
-  \cref{lem:trivial-motions-rank-bound} and the degree of freedom of
-  \cref{def:dof-generic}.
+  Formalized basis-free: a screw assignment $S \colon V \to \R^{D}$ is
+  an infinitesimal motion when it meets every per-edge hinge constraint
+  $S(u) - S(v) \in \operatorname{span} C(p(e))$ (orientation-independent,
+  since the span is closed under negation), and $Z(G,p)$ is the submodule
+  of all such $S$. The screw space $\R^{D}$ is realized as the degree-$(d-1)$
+  graded piece $\bigwedge^{d-1}\R^{d+1}$ where the extensors $C(p(e))$
+  live, with $\operatorname{finrank} = D = \binom{d+1}{2}$
+  (\texttt{screwSpace\_finrank}).
 \end{definition}
 
 \begin{definition}[Degree of freedom; generic realization]
@@ -345,15 +326,11 @@ Phase~19, \S2.5--\S3).
   $\operatorname{rank} R(G,p) = D(|V|-1)$. The \emph{degree of freedom}
   of $(G,p)$ is $D(|V|-1) - \operatorname{rank} R(G,p)$. A realization is
   \emph{generic} when $R(G,p)$ and all its edge-induced submatrices
-  attain their maximum ranks over realizations of $G$.
-
-  The formalization lands the rigidity predicate
-  (\texttt{IsInfinitesimallyRigid}) as the inclusion
-  $Z(G,p) \subseteq \{\text{trivial motions}\}$ (the reverse of the always-true
+  attain their maximum ranks over realizations of $G$. Formalized
+  basis-free as the inclusion $Z(G,p) \subseteq \{\text{trivial motions}\}$
+  (\texttt{IsInfinitesimallyRigid}), the reverse of the always-true
   $\{\text{trivial}\} \subseteq Z(G,p)$ of
-  \cref{lem:trivial-motions-rank-bound}), basis-free; the numeric degree of
-  freedom and the maximum-rank \emph{generic} condition wait on the explicit
-  $\bigwedge^{k}\R^{k+2} \cong \R^{D}$ rank count (\cref{def:rigidity-matrix}).
+  \cref{lem:trivial-motions-rank-bound}.
 \end{definition}
 
 \begin{lemma}[The $D$ trivial motions and the rank bound]
@@ -378,29 +355,17 @@ Phase~19, \S2.5--\S3).
 \begin{proof}
   \leanok
   A constant assignment has $S(u) - S(v) = 0$, which lies in every
-  hinge constraint, so $S^*_i \in Z(G,p)$ and is trivial
-  (\texttt{isInfinitesimalMotion\_of\_isTrivialMotion}, giving
-  $\{\text{trivial}\} \subseteq Z(G,p)$); the
+  hinge constraint, so $S^*_i \in Z(G,p)$ and is trivial, giving
+  $\{\text{trivial}\} \subseteq Z(G,p)$; the
   $\{S^*_i\}$ are linearly independent across the $D$ coordinates and a
   trivial motion is determined by its single common value, so they span
-  the trivial motions. The formalization carries the trivial-motion space
-  basis-free as the constant assignments
-  (\texttt{trivialMotions}), identifies it with the diagonal of
-  $V \to \bigwedge^{k}\R^{k+2}$
-  (\texttt{trivialMotions\_eq\_range\_const}, the range of $s \mapsto (\_\mapsto s)$,
-  the basis-free stand-in for ``determined by a single common value''), and
-  records infinitesimal rigidity as the submodule equality
-  $Z(G,p) = \{\text{trivial}\}$
-  (\texttt{infinitesimalMotions\_eq\_trivialMotions\_iff}). The diagonal
-  identification makes the constant-assignment map a linear isomorphism
-  $\bigwedge^{k}\R^{k+2} \cong \{\text{trivial}\}$ for nonempty $V$, so with
-  the screw-dimension count $\operatorname{finrank} \bigwedge^{k}\R^{k+2} = D$
-  (\cref{def:rigidity-matrix}) the trivial kernel has dimension exactly
-  $D$ (\texttt{finrank\_trivialMotions}) inside the $D|V|$-dimensional
-  screw-assignment space (\texttt{finrank\_screwAssignment}, from
-  $\operatorname{finrank}(V \to \bigwedge^{k}\R^{k+2}) = D|V|$). The
-  $D$-dimensional trivial kernel therefore forces
-  $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$.
+  the trivial motions, which are exactly the constant assignments
+  (\texttt{trivialMotions}, the diagonal of $V \to \R^{D}$). The
+  constant-assignment map is thus a linear isomorphism
+  $\R^{D} \cong \{\text{trivial}\}$ for nonempty $V$, so the trivial
+  kernel has dimension exactly $D$ inside the $D|V|$-dimensional
+  screw-assignment space. The $D$-dimensional trivial kernel therefore
+  forces $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$.
 \end{proof}
 
 \subsection{Rank lemmas and reconciliation with Proposition 1.1}
