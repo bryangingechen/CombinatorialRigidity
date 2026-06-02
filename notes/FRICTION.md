@@ -76,6 +76,27 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Restating a `Pi.single`-indexed subterm in a standalone `have` fails to elaborate
+- **Where it bit:** `BodyBarFramework.stdFramework_rigidityRow_eq` in
+  `BodyBar/TayTheorem.lean` (Phase 15 block-diagonal rank count). The
+  goal contained `∑ c, Pi.single (j e) (signedIncMatrix ℝ e) c x *
+  (m x).ofLp c`; an attempted helper `have hinner : ∀ x, (that sum) =
+  signedIncMatrix … x * (m x).ofLp (j e)` failed with *"Function
+  expected at `Pi.single …`"* even though the identical subterm in the
+  goal type-checked.
+- **Friction:** the goal's `Pi.single` motive (family type `Fin d →
+  (α → ℝ)`) was pinned by the lemma that produced it
+  (`blockPairing_apply`, whose statement fixes `w : Fin d → α → ℝ`);
+  restating it standalone strips that context and the elaborator picks
+  the wrong family.
+- **Resolution:** operate on the goal in place — `rw [Finset.sum_congr
+  rfl fun x _ => Finset.sum_eq_single …]` collapses the inner sum where
+  the motive stays pinned. No standalone `have` of the subterm.
+- **Status:** resolved (project-internal lesson). Sibling of the
+  FunLike/PiLp "acts like a function but isn't" family
+  (TACTICS-QUIRKS §9, §12).
+- **Lifted to:** TACTICS-QUIRKS § 24.
+
 ### [resolved] `[matroid]` `Matroid.Union` needs `[DecidableEq β]` in the *statement* signature, not just the proof
 - **Where it bit:** `Graph.isSparse_restrict_of_union_pow_indep` in
   `BodyBar/TreePacking.lean` (Phase 13 forward direction). The lemma

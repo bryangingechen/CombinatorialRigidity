@@ -86,6 +86,14 @@ time, not first-draft.
     that, or skip the instance entirely and sort the projection
     through `Lex (β)` for some image type `β` with `Prod.Lex`-style
     order already in mathlib.
+23. **`#eval`-bearing `module` files need `public meta import`** for
+    the imported `Decidable` / elaboration instances — keep the
+    `public import X` and add a second-form `public meta import X`.
+24. **Restating a subterm in a standalone `have` can fail to
+    elaborate (`Function expected`) even when the same subterm in the
+    goal type-checks** — the goal's surrounding lemmas pin implicit
+    motives (e.g. `Pi.single`'s family type); operate on the goal in
+    place (`Finset.sum_congr` / `simp only`) rather than restating it.
 
 ---
 
@@ -945,3 +953,31 @@ visibility does the consumer need?*
 The alternative — dropping `module` for the `#eval`-bearing file —
 works (non-`module` files can `import` `module` files freely) but
 breaks the project's uniform module convention.
+
+## 24. Restating a subterm in a standalone `have` can fail (`Function expected`) where the goal type-checks
+
+When a goal contains a subterm like
+`Pi.single (j e) v c x * (m x).ofLp c` (a `Pi.single`-indexed family
+applied at `c` then `x`), restating that **same** subterm inside a
+fresh `have`/`suffices` can fail with *"Function expected at
+`Pi.single …`"* or *"Application type mismatch"* — even though the
+goal itself elaborates fine.
+
+The cause: in the goal, the implicit motive of `Pi.single` (the
+family type `Fin d → (α → ℝ)`) is **pinned** by the surrounding lemma
+that produced the term (here `blockPairing_apply`, whose statement
+fixes `w : Fin d → α → ℝ`). Re-stating the subterm in isolation
+strips that context, so the elaborator must re-infer the motive from
+the literal expression and picks the wrong one (treating the
+incidence row `α → ℝ` as the *value* rather than the *family member*).
+
+**Fix:** don't restate — operate on the goal in place. Use
+`rw [Finset.sum_congr rfl fun x _ => …]` or `simp only [...]` to
+transform the sum directly, where the motive stays pinned by the
+goal. Worked case: `BodyBarFramework.stdFramework_rigidityRow_eq` in
+`BodyBar/TayTheorem.lean` — an attempted `have hinner : ∀ x, ∑ c,
+Pi.single … = …` failed to elaborate; collapsing the inner
+`Pi.single` sum via `rw [Finset.sum_eq_single …]` *on the goal*
+worked. Sibling of §9 / §12 (the FunLike/PiLp "acts like a function
+but isn't" family): same root cause — an elaborator inference that
+the surrounding context was silently supplying.

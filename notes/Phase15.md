@@ -1,7 +1,8 @@
 # Phase 15 — Body-bar Tay theorem (existence form) (work log)
 
-**Status:** in progress (3 of 4 nodes green; target `thm:tay-witness` left;
-witness placement + bar-row reduction landed in `BodyBar/TayTheorem.lean`).
+**Status:** in progress (3 of 4 blueprint nodes green; target `thm:tay-witness`
+left). Witness placement + bar-row reduction + **block-diagonal rank count** all
+landed in `BodyBar/TayTheorem.lean`; the independent-form half is done.
 
 ## Current state
 
@@ -55,22 +56,43 @@ placement** and the **bar-row reduction** — the foundational step toward
   structure: the row for `e` lives entirely in coordinate `j(e)`, where it
   is `e`'s signed incidence row.
 
+The **block-diagonal rank count** now also lives in `BodyBar/TayTheorem.lean`
+(this commit) — the independent-form half:
+- `rigidityRow` / `rigidityRow_apply` — the `e`-th rigidity-matrix row as a
+  `Module.Dual ℝ (Motion n α)` functional (mirror of Phase-6
+  `SimpleGraph.rigidityRow`).
+- `span_range_rigidityRow` — span of rows = `range (rigidityMap D).dualMap`
+  (mirror of Phase-6 `span_range_rigidityRow`, via the project mirror
+  `LinearMap.range_dualMap_eq_span_image_dualBasis` + `Pi.basisFun`).
+- `blockPairing` / `blockPairing_apply` / `blockPairing_injective` — the
+  injective block-pairing map `(Fin d → α → ℝ) →ₗ Module.Dual ℝ (Motion n α)`,
+  `S w m = Σₓ Σ_c w c x · (m x) c`. Carries an LI family of block rows to an
+  LI family of row functionals.
+- `stdFramework_rigidityRow_eq` — the row identity: each standard-basis row is
+  `-(blockPairing (Pi.single (j e) (signedIncMatrix ℝ e)))`, the block-`single`
+  incidence row.
+- `stdFramework_rigidityRow_linearIndependent` — the rows are LI for a disjoint
+  forest packing `Fs` covering `E(G)` with `j(e) =` forest index. Via
+  `specRow_linearIndependent` (at `𝔽 = ℝ`) reindexed along the disjoint-cover
+  bijection `Set.unionEqSigmaOfDisjoint`, then `blockPairing` injective +
+  `LinearIndependent.neg`.
+- `stdFramework_finrank_range` — **the rank count**: `finrank (range
+  (rigidityMap D)) = |E(G)|`, via `finrank_range_dualMap_eq_finrank_range` +
+  `span_range_rigidityRow` + `finrank_span_eq_card`.
+
 The blueprint node `thm:tay-witness` is **still red** (no Lean theorem
-declaration yet) — `TayTheorem.lean` is infrastructure below it, so no
+declaration yet) — `TayTheorem.lean` is all infrastructure below it, so no
 `\lean{...}`/`\leanok` flip this commit.
 
-**Next concrete commit:** the **block-diagonal rank count**. Relate
-`finrank (range (stdFramework G n j).rigidityMap D)` to `Σⱼ |Fs j|` for a
-disjoint forest packing `Fs` with `j(e) =` the forest index of `e`. The
-shape to aim for: the rigidity matrix (rows = bars, cols = (coordinate,
-body)) reindexes — via `stdPlacement_rigidityMap_apply` — to the
-block-diagonal matrix whose block `j` is the `ℝ`-signed-incidence matrix of
-`Fs j`, the **real-coefficient analogue of `specRow_linearIndependent`**
-(which is already stated over an arbitrary `Field 𝔽`, so it applies at
-`𝔽 = ℝ` directly — see *Blockers*, resolved). Land the
-independent-form half (`(d,d)`-sparse ⟹ `rigidityMap` injective on the
-witness / rank `= |E|`) first, then the `thm:tay-witness` iff + isostatic
-refinement via `cor:k-spanning-trees`.
+**Next concrete commit:** the `thm:tay-witness` **iff** (the phase closer).
+Forward direction packages `stdFramework_finrank_range` with
+`def:infinitesimally-rigid-body-bar` / `def:graph-sparse`: a `(d,d)`-sparse
+(equivalently — Phase 13 `thm:tutte-nash-williams` — `d`-forest-packable) `G`
+admits an independent body-bar framework (the standard-basis witness has rank
+`|E|`). Reverse direction: rank `≤ |E|` always (rows ≤ bars), and the
+isostatic count `|E| = d(b−1)` is `cor:k-spanning-trees` (the `d`-spanning-tree
+refinement). Flip `thm:tay-witness` green (`\lean{...}` + `\leanok`) when the
+iff lands; the phase closes on that commit.
 
 ## Architectural choices made up front
 
@@ -111,10 +133,13 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
       - [x] Witness placement + bar-row reduction (`stdPlacement`,
             `stdFramework`, `stdPlacement_rigidityMap_apply`) —
             `BodyBar/TayTheorem.lean`. The row collapse to coordinate `j(e)`.
-      - [ ] **Next:** block-diagonal rank count
-            (`rank (rigidityMap) = Σⱼ |Fs j| = |E|`), via the ℝ-instance of
-            `specRow_linearIndependent`.
-      - [ ] The `thm:tay-witness` iff + isostatic refinement
+      - [x] Block-diagonal rank count (`rigidityRow`, `span_range_rigidityRow`,
+            `blockPairing`(`_injective`), `stdFramework_rigidityRow_eq`,
+            `stdFramework_rigidityRow_linearIndependent`,
+            `stdFramework_finrank_range`) — `finrank (range (rigidityMap D)) =
+            |E(G)|` for a disjoint forest packing, via the ℝ-instance of
+            `specRow_linearIndependent`. `BodyBar/TayTheorem.lean`.
+      - [ ] **Next:** the `thm:tay-witness` iff + isostatic refinement
             (`cor:k-spanning-trees`). Phase closes here.
 
 ## Decisions made during this phase
@@ -177,25 +202,33 @@ Leaf-level to-do list = the `body-bar.tex` §`sec:body-bar-framework` +
 ## Hand-off / next phase
 
 The three `sec:body-bar-framework` defs are green
-(`BodyBar/Framework.lean`); the witness placement + bar-row reduction are
-green (`BodyBar/TayTheorem.lean`). The **first sub-step is done**: the
-Phase-14 block-diagonal machinery lifts to `ℝ` with no Plücker wrapper
-(see *Blockers*, RESOLVED — `specRow_linearIndependent` /
-`isAcyclicSet_linearIndepOn` are already field-generic), and the witness
-row collapses to a single signed-incidence coordinate via
-`stdPlacement_rigidityMap_apply`.
+(`BodyBar/Framework.lean`); the witness placement, bar-row reduction, **and
+block-diagonal rank count** are green (`BodyBar/TayTheorem.lean`). The
+independent-form half is complete: `stdFramework_finrank_range` gives
+`finrank (range (rigidityMap D)) = |E(G)|` for a disjoint forest packing.
 
-**Next concrete commit:** the **block-diagonal rank count** — prove
-`finrank (range ((stdFramework G n j).rigidityMap D)) = Σⱼ |Fs j| = |E|`
-for a disjoint forest packing `Fs` and `j(e) =` forest index of `e`. This
-is the independent-form half (`(d,d)`-sparse ⟹ rank `= |E|`, hence
-independent). The matrix (rows = bars, cols = (coordinate, body)) reindexes
-along `stdPlacement_rigidityMap_apply` to the block-diagonal matrix whose
-block `j` is the ℝ-signed-incidence matrix of `Fs j`; each block is LI
-(`specRow_linearIndependent` at `𝔽 = ℝ`). Then the `thm:tay-witness` iff
-(both directions) + isostatic refinement via `cor:k-spanning-trees` is the
-phase-closing commit. Flip `thm:tay-witness` green (`\lean{...}` +
-`\leanok`) when the iff lands; the phase closes on that commit.
+**Next concrete commit (phase closer):** declare and prove the
+`thm:tay-witness` iff in `BodyBar/TayTheorem.lean`, then flip the blueprint
+node green (`\lean{...}` + `\leanok` on theorem + proof). Shape:
+- **Independent ⟸ `(d,d)`-sparse.** From `(G ↾ E(G)).IsSparse d d`
+  (equivalently `G` is `d`-forest-packable, `thm:tutte-nash-williams`), get
+  the disjoint forest packing + index map `j`, build `stdFramework G n j`, and
+  use `stdFramework_finrank_range` to witness rank `= |E|` = independence.
+  (Choosing `j` from the packing: `Set.unionEqSigmaOfDisjoint` `.1`, as in
+  `stdFramework_rigidityRow_linearIndependent`.)
+- **Independent ⟹ `(d,d)`-sparse.** Any independent framework's rank `= |E|`
+  bounds sub-multigraph counts (rows of any `E' ⊆ E(G)` are LI ⟹
+  `|E'| ≤ d|V'| − d`). May want a Phase-14-style rank-count forward lemma; if
+  this turns out to need substantive new infra (vs. the existence direction
+  which is essentially done), land the ⟸ existence direction first and assess
+  ⟹ separately.
+- **Isostatic refinement** via `cor:k-spanning-trees` (`(d,d)`-tight ⟺
+  `d` spanning trees ⟺ `|E| = d(b−1)`): pins `IsInfinitesimallyRigid`
+  (rank `+ d = d·b`).
+
+The phase closes on the commit that takes `thm:tay-witness` green. Then the
+phase-completion checklist (ROADMAP Status ✓, compress §15, sync README /
+home_page / intro.tex, project-organization re-skim) fires.
 
 Follow-on: **Phase 16** (body-hinge / panel-hinge Tay–Whiteley), en route
 to **Phase 17** (molecular conjecture, Katoh–Tanigawa 2011). Neither is
