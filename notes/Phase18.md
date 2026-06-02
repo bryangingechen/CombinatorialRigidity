@@ -11,25 +11,32 @@ is the Phase-18 work log only.
 
 ## Current state
 
-Phase 18 is **open**; no Lean has landed yet. This opening commit:
-- creates this work log,
-- opens the Phase-18 dep-graph as a new forward-mode section
-  `sec:molecular-rigidity-matrix` in
-  `blueprint/src/chapter/molecular.tex` (all nodes red — the to-do
-  list), extending the existing molecular chapter rather than opening a
-  new one (the chapter spans Phases 17–18),
-- adds the two bib entries the phase needs (`whiteWhiteley1987` [29],
-  `jacksonJordan2009` [15]),
-- runs the phase-open status-surface sync (ROADMAP row → in progress;
-  README / `home_page/index.md` / `intro.tex`).
+Phase 18 is **in progress**. The leaf node `def:hinge-constraint` has
+**landed** (`Molecular/RigidityMatrix.lean`); the remaining
+`sec:molecular-rigidity-matrix` nodes are still red.
 
-The next concrete commit is the **leaf-most red node**,
-`def:hinge-constraint` — the body-hinge framework `(G,p)` (multigraph +
-`(d−2)`-affine-subspace hinge per edge) and the hinge constraint
-`S(u) − S(v) ∈ span C(p(e))`, built directly on Phase 17's
-`affineSubspaceExtensor` (`C(·)`). No Lean file exists yet; create
-`CombinatorialRigidity/Molecular/RigidityMatrix.lean` (working name)
-with that first node.
+Landed so far:
+- `def:hinge-constraint` — `Molecular/RigidityMatrix.lean`:
+  `BodyHingeFramework k α β` (multigraph `Graph α β` + per-edge hinge
+  `β → Fin k → Fin (k+1) → ℝ`, i.e. `k = d−1` points spanning the
+  `(d−2)`-affine hinge), `supportExtensor` = Phase 17's
+  `affineSubspaceExtensor (hinge e)` (the `C(·)`), and `hingeConstraint`
+  (`S u − S v ∈ Submodule.span ℝ {C(p e)}`). Screw space `ScrewSpace k =
+  ExteriorAlgebra ℝ (Fin (k+2) → ℝ)` carried as the full algebra element,
+  so `span C(p(e))` is literally a `Submodule` — no coordinate `ℝ^D`
+  identification yet. File wired into `CombinatorialRigidity.lean`.
+
+The opening commit (prior) created this work log, opened the
+`sec:molecular-rigidity-matrix` dep-graph (all red), added the two bib
+entries (`whiteWhiteley1987` [29], `jacksonJordan2009` [15]), and ran the
+phase-open status-surface sync.
+
+The next concrete commit is the next red node `def:hinge-row-block` —
+`r(p(e))`, a basis of `(span C(p(e)))^⊥ ⊆ ℝ^D`, restating the hinge
+constraint as `D−1` linear equations `(S u − S v) · r_i(p(e)) = 0`. This
+forces the concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinate identification
+(carrier-compatibility open question below); decide it when this node
+lands.
 
 ## Scope (Phase 18 only)
 
@@ -97,10 +104,12 @@ Forward-mode: the authoritative dep-graph is the
 intended dependency order; flip each `\leanok` (and add `\lean{}`) as
 the Lean lands.
 
-- [ ] `def:hinge-constraint` — body-hinge framework `(G,p)` +
-      `S(u) − S(v) ∈ span C(p(e))`. **Leaf node; next commit.**
+- [x] `def:hinge-constraint` — body-hinge framework `(G,p)` +
+      `S(u) − S(v) ∈ span C(p(e))`. **Landed**
+      (`Molecular/RigidityMatrix.lean`).
 - [ ] `def:hinge-row-block` — `r(p(e))`, a basis of
       `(span C(p(e)))^⊥`; constraint as `(D−1)` linear equations.
+      **Next commit.**
 - [ ] `def:rigidity-matrix` — `R(G,p)`, the `(D−1)|E| × D|V|` block
       matrix; `Z(G,p) = ker R`.
 - [ ] `lem:trivial-motions-rank-bound` — the `D` trivial motions
@@ -120,7 +129,26 @@ the Lean lands.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-- (none yet — opening commit)
+- **Reparametrize dimension `d = k+1`** (à la Phase 17's
+  `omitTwoExtensor`). A hinge is `k = d−1` points in `ℝ^(k+1)`, the
+  supporting extensor is a `k`-extensor in `⋀^k ℝ^(k+2)`. Clears the
+  `d−1` / `d−2` `ℕ`-subtractions in the hinge / extensor arities; the
+  `affineSubspaceExtensor (p : Fin k → Fin (k+1) → ℝ)` arity matches
+  directly.
+- **Screw center = full `ExteriorAlgebra` element**, not a coordinate
+  vector in `ℝ^D` (`ScrewSpace k := ExteriorAlgebra ℝ (Fin (k+2) → ℝ)`).
+  Then `span C(p(e))` is literally `Submodule.span ℝ {C(p e)}` and the
+  hinge constraint is a `Submodule` membership — no `⋀^k ℝ^(k+2) ≅ ℝ^D`
+  identification needed at this node. That identification is deferred to
+  `def:hinge-row-block` / `def:rigidity-matrix`, where `r(p(e))` (a basis
+  of the orthogonal complement in `ℝ^D`) forces it.
+- **Body-hinge framework as a `Graph`-native `structure`** (graph +
+  `hinge` field), mirroring Phase 16's `Graph.BodyHingeFramework` shape
+  but in the `Molecular` namespace and carrying honest hinge *geometry*
+  (the point family) rather than the reduction-only standard-basis
+  witness. The two coexist (Phase 16 = existence form, Phase 18 = rank
+  form); the reconciliation `prop:rigidity-matrix-prop11` is the real
+  bridge, not a rename.
 
 ### Citations verified this phase
 - **[29] White, N., Whiteley, W.**, *The algebraic geometry of motions
@@ -148,14 +176,18 @@ the Lean lands.
 
 ## Hand-off / next phase
 
-Phase 18 just opened. The next concrete commit is the **leaf-most red
-node** `def:hinge-constraint`: create
-`CombinatorialRigidity/Molecular/RigidityMatrix.lean` (working name),
-define the body-hinge framework `(G,p)` (multigraph + `(d−2)`-affine
-hinge per edge) and the hinge constraint
-`S(u) − S(v) ∈ span (affineSubspaceExtensor (p e))`, then flip
-`def:hinge-constraint`'s `\lean{}` + `\leanok` in the same commit. Build
-up the dep-graph in the listed order; the three rank lemmas
-(5.1/5.3/5.2) and the Prop 1.1 reconciliation are the load-bearing
-targets. See `notes/MolecularConjecture.md` *Phase 18* for the
-per-lemma detail and the reuse map.
+`def:hinge-constraint` has landed (`Molecular/RigidityMatrix.lean`:
+`BodyHingeFramework` / `supportExtensor` / `hingeConstraint`). The next
+concrete commit is the next red node `def:hinge-row-block`: in the same
+file, define `r(p(e))` — a basis of the orthogonal complement
+`(span C(p(e)))^⊥ ⊆ ℝ^D` — and restate the hinge constraint as the `D−1`
+linear equations `(S u − S v) · r_i(p(e)) = 0`. This node forces the
+concrete `⋀^k ℝ^(k+2) ≅ ℝ^D` coordinate identification (carrier
+compatibility, open question above) — decide the explicit basis /
+inner-product structure on the screw space when it lands; the natural
+choice is the `pluckerVector` coordinatization (Phase 17) giving the `ℝ^D`
+isomorphism. Then `def:rigidity-matrix` assembles the `(D−1)|E| × D|V|`
+block matrix and `Z(G,p) = ker R`. The three rank lemmas (5.1/5.3/5.2)
+and the Prop 1.1 reconciliation are the load-bearing targets. See
+`notes/MolecularConjecture.md` *Phase 18* for the per-lemma detail and
+the reuse map.
