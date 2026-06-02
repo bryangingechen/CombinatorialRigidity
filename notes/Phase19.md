@@ -289,12 +289,16 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   `matroidMG_indep_iff` — the `D`-fold cycle-matroid union +
   Tutte–Nash-Williams covers the boundary regime cleanly; no
   `CountMatroid.lean` (`ℓ < 2k`) involvement.
-- **Externals: prove vs hypothesize** (risk #4): JJ09 Thm 6.1 /
-  Cor 6.2 generic-rank bridge — the **upper-bound half** is now proved
-  (`lem:rank-matroidMG-le`, `rank M(G̃) ≤ D(|V|−1)`); the reverse
-  direction of the full min–max equality is **deferred** until a
-  downstream node needs the full `def = corank` rather than the bound.
-  The conjecture (Thm 5.6) needs only the upper-bound half.
+- **Externals: prove vs hypothesize** (risk #4) — **RESOLVED (user,
+  2026-06-02): prove `thm:def-eq-corank` in-repo, axiom-free**, per the
+  "fully formalize, not citation-stubbed" scope. The **upper-bound half**
+  is already green (`lem:rank-matroidMG-le`, `rank M(G̃) ≤ D(|V|−1)`); the
+  reverse direction (JJ09 Thm 6.1 / Cor 6.2 min–max — a vertex-partition
+  attaining the rank) is now a sequenced multi-commit sub-plan (see
+  *Hand-off*), NOT an axiom and NOT deferred to a downstream phase. Core
+  machinery in hand: Edmonds matroid-partition rank (Phase 12,
+  `Matroid/Constructions/Union.lean`) + `Union_pow_rank_eq` (Phase 13)
+  over the same `D`-fold graphic union.
 
 ## Hand-off / next phase
 
@@ -317,17 +321,33 @@ witnesses a deficiency lower bound" is one `partitionDef_le_deficiency` call.
 
 The one remaining `deficiency.tex` node is the **full** equality `thm:def-eq-corank`
 (its conjecture-relevant upper-bound half is green as `lem:rank-matroidMG-le`; the KT 3.4
-matroidal core is green as `lem:circuit-rigid`). Smallest next commit: the reverse
-direction of the JJ09 min–max — a partition attaining the rank `D(|V|−1) − def(G̃)` — to
-close `|B| + def(G̃) = D(|V|−1)`. This is the risk-#4 prove-vs-hypothesize boundary; decide
-whether to prove it (Edmonds partition rank over the `D`-fold graphic union vs the
-deficiency `iSup` over vertex partitions) or hypothesize it as a citable JJ09 external.
-Closing it also flips the Phase-18-inherited `prop:rigidity-matrix-prop11`. Two further
-pieces are still deferred behind the full equality: (i) the *full* KT 3.4 (`G[V(X)]`
-rigid, the tightness *equality* `|X−e| = D(|V(X)|−1)`), which needs the JJ09 lower bound
-**and** a vertex-induced-subgraph-from-an-edge-set construction (no existing `Graph α β`
-analogue — likely an early-Phase-20 graph-op deliverable); (ii) KT 3.5 (rigid-subgraph
-contraction preserves minimality — Case I engine), schedulable here or early Phase 20.
+matroidal core is green as `lem:circuit-rigid`). **Decision is settled (risk #4, see
+Blockers): prove it in-repo, axiom-free.** It is a sequenced multi-commit sub-plan — do the
+next *unfinished* piece each commit, not the whole bridge at once:
+
+1. **Partition-respecting `cycleMatroid` component-rank bound.** For a labeling `f : α → α`
+   (the `partitionDef` partition model) and the within-part edge set `Y`, the graphic-matroid
+   rank `r_cycle(Y) ≤ |V| − numParts f` (rank ≤ vertices − components, components ≥ #parts).
+   No existing project/mathlib lemma covers the labeling-encoded partition; this is the new
+   leaf the weak-duality half bottoms out on. Likely its own commit (possibly a small
+   `Graph`/`cycleMatroid` helper or a mirror lemma).
+2. **Weak duality `rank M(G̃) + def(G̃) ≤ D(|V|−1)`** (equivalently `def ≤ corank`), summing
+   per-part sparsity / piece-1's component bound over the `D`-fold union with the `(D−1)`-fiber
+   multiplicity bookkeeping. Pairs with the already-green `lem:rank-matroidMG-le`.
+3. **The JJ09 reverse (`def ≥ corank`): a vertex-partition attaining the rank**, via Edmonds
+   matroid-partition rank (Phase 12 `Matroid/Constructions/Union.lean`) + `Union_pow_rank_eq`
+   (Phase 13) over the `D`-fold graphic union — translating Edmonds' optimal *edge subset* into
+   the deficiency *vertex partition*. Then assemble `|B| + def(G̃) = D(|V|−1)`, flip
+   `thm:def-eq-corank` green.
+
+Each piece is a normal forward-mode commit (Lean + blueprint node/`\leanok` + notes). If piece 1
+or 3 itself proves to be multi-commit on contact, split it and keep going. Closing
+`thm:def-eq-corank` also flips the Phase-18-inherited `prop:rigidity-matrix-prop11`. Two further
+pieces are still deferred behind the full equality and are **early-Phase-20** deliverables, not
+Phase 19: (i) the *full* KT 3.4 (`G[V(X)]` rigid, the tightness *equality* `|X−e| =
+D(|V(X)|−1)`), which needs a vertex-induced-subgraph-from-an-edge-set construction (no existing
+`Graph α β` analogue); (ii) KT 3.5 (rigid-subgraph contraction preserves minimality — Case I
+engine).
 
 Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once `M(G̃)`, deficiency,
 and the def = corank bridge are all green.
