@@ -4,7 +4,10 @@
 `Constructions/Union.lean` landed the union construction + independence
 characterization green: `def:matroid-union`, `lem:union-indep-iff`. The
 partition rank theorem `thm:matroid-partition-rank` is the one remaining
-L2b node).
+L2b node, but a **dependency re-scope** this commit found it blocked on a
+~420-line un-ported Rado/Hall sub-tree — L2b is now split into **L2b-rado**
+(the Rado prerequisite) and **L2b-partition** (the two target theorems);
+see *Blockers* and *Hand-off*).
 
 This phase formalizes the abstract-matroid prerequisites of the
 body-bar route: the matroid-from-submodular-function construction and
@@ -54,7 +57,36 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-Layer 2b union construction (this commit, **opens L2b**): created
+L2b dependency re-scope (this commit, **docs-only**): the next-commit plan
+"port `polymatroid_of_adjMap` → `adjMap_rank_eq` → the two `matroid_partition*`
+targets" assumed `rado` (Oxley Thm 11.2.2) was live upstream (per the prior
+hand-off note). **It is not.** Audit of the live package
+(`apnelson1/Matroid`, rev `e6852ce`):
+- `polymatroid_of_adjMap` (`WIP/Union.lean:258`) builds its matching via the
+  *sufficiency* direction of Rado's theorem: `(rado M A).mpr <rank-condition>`
+  (`WIP/Union.lean:339`).
+- `rado` is **not** in the live `Matroid.Intersection` — that file has only
+  `rado_necessary` (the easy direction); `rado_sufficient` / `rado_iff` are
+  commented-out Lean-3 and route through further dead machinery
+  (`partition_matroid_on`, `exists_common_ind_with_isFlat_right`).
+- The live `rado` (full iff) exists **only** in the shelved
+  `WIP/Submodular.lean:891` — i.e. in the *same* WIP file L2a ported from, but
+  in its **back half**, which the L2a port stopped short of (L2a ended at
+  `polymatroid_rank_eq`, `WIP/Submodular.lean:~296`).
+- `rado` rests on a self-contained but sizeable un-ported sub-tree
+  (`WIP/Submodular.lean:323–942`, ~420 L, **0 sorry**): `generalized_halls_marriage`
+  (matroidal Hall, routes through the already-ported `Submodular`/`Monotone` +
+  `polymatroid_rank_eq`-adjacent rank API), the `PartialTransversal` structure
+  + ~30 supporting lemmas, the `Transversal`/`Transverses` family, then `rado`
+  / `rado_v2`. `generalized_halls_marriage`'s own deps are all within the
+  L2a-ported surface, so the sub-tree is bounded and self-contained.
+
+**L2b is therefore split into two sub-layers** (see *Layer plan* L2b-rado /
+L2b-partition and *Hand-off*). This is the same class of deeper bit-rot the
+*Prerequisites audit* flagged as a residual risk; the next concrete commit is
+**L2b-rado**, not the two partition theorems.
+
+Layer 2b union construction (prior commit, **opened L2b**): created
 `Constructions/Union.lean`, ported from `apnelson1/Matroid`'s `WIP/Union.lean`
 with the Peter-Nelson attribution header. Landed green, **0 sorry**:
 `AdjIndep'` + `adjMap_indep_iff'` (Set-valued analogue of the live
@@ -234,10 +266,21 @@ Mirror dir `CombinatorialRigidity/Matroid/`. For route (a), likely:
   `ofSubmodular`, `PolymatroidFn`, `ofPolymatroidFn`,
   `polymatroid_rank_eq`. Nodes `def:submodular`, `def:ofSubmodular`,
   `def:polymatroidFn`, `def:ofPolymatroidFn`, `lem:polymatroid-rank`.
-- **L2b** — `Constructions/Union.lean`: `Matroid.Union`,
-  `union_indep_iff`, `matroid_partition'` / `matroid_partition_eRk'`.
-  Nodes `def:matroid-union`, `lem:union-indep-iff`,
-  `thm:matroid-partition-rank`.
+- **L2b** — split into two sub-layers after the dependency re-scope:
+  - **L2b-union** (DONE) — `Constructions/Union.lean`: `Matroid.Union`,
+    `union_indep_iff`. Nodes `def:matroid-union`, `lem:union-indep-iff`.
+  - **L2b-rado** (NEXT) — port the Rado/Hall prerequisite from
+    `WIP/Submodular.lean:323–942` (~420 L). Lands in `Constructions/Submodular.lean`
+    (its home file) as a continuation of the L2a port, since `rado` lives in
+    that WIP file and depends only on the already-ported `Submodular` surface.
+    Sub-chain: `generalized_halls_marriage` → `PartialTransversal` (+ ~30
+    lemmas) → `Transversal`/`Transverses` family → `rado` / `rado_v2`. No new
+    blueprint node (Rado is an internal prerequisite); a `lem:rado` node may be
+    added to `matroid-union.tex` if useful for the dep-graph.
+  - **L2b-partition** — `Constructions/Union.lean`: `polymatroid_of_adjMap`,
+    `adjMap_rank_eq`, `sum'_eRk_eq_eRk_sum{_on_indep}` / `sum'_rk_eq_rk_sum`,
+    then `matroid_partition'` / `matroid_partition_eRk'`. Node
+    `thm:matroid-partition-rank`. Unblocked once L2b-rado lands.
 Each vendored file carries the Peter-Nelson attribution header.
 Blueprint nodes flip green per file.
 
@@ -255,12 +298,17 @@ High-level outline; the leaf-level to-do list is the
   `def:polymatroidFn` ✓, `def:ofPolymatroidFn` ✓ (+
   `indep_ofPolymatroidFn_iff` / `ofPolymatroidFn_nonempty_indep_le`),
   `lem:polymatroid-rank` ✓ (+ private `polymatroid_rank_eq_on_indep`).
-- [x] **L2b (union construction):** `def:matroid-union` ✓
+- [x] **L2b-union:** `def:matroid-union` ✓
   (`Matroid.Union` / `Matroid.union`), `lem:union-indep-iff` ✓
   (`union_indep_iff` / `union_indep_iff'`; + `adjMap_indep_iff'`,
   `Union_empty`, `union_indep_aux{,'}` support).
-- [ ] **L2b (partition rank):** `thm:matroid-partition-rank`
-  (`matroid_partition'` / `matroid_partition_eRk'`).
+- [ ] **L2b-rado (NEW; prerequisite, ~420 L):** `generalized_halls_marriage`,
+  `PartialTransversal` (+ ~30 lemmas), `Transversal`/`Transverses` family,
+  `rado` / `rado_v2`. Port into `Constructions/Submodular.lean`.
+- [ ] **L2b-partition:** `thm:matroid-partition-rank`
+  (`matroid_partition'` / `matroid_partition_eRk'`); via
+  `polymatroid_of_adjMap` / `adjMap_rank_eq` / `sum'_*` rank-distribution.
+  Blocked on L2b-rado.
 
 ## Blockers / open questions
 
@@ -268,6 +316,14 @@ High-level outline; the leaf-level to-do list is the
   (see *Layer 1* above for the three measured findings).
 - **`Matroid.ofFun` / polynomial-ring coefficient questions** belong to
   Phase 14 (k-frame), not here.
+- **L2b-rado prerequisite (active blocker for `thm:matroid-partition-rank`).**
+  `polymatroid_of_adjMap` needs the *sufficiency* direction of Rado's theorem
+  (`rado`), which is **not** live upstream — only `WIP/Submodular.lean:891`
+  has it, on top of a ~420-line un-ported sub-tree
+  (`generalized_halls_marriage` + `PartialTransversal` + `Transversal` family).
+  Must be ported first; see *Current state* and *Layer plan* L2b-rado. This is
+  bounded (self-contained, 0 sorry upstream) but is a genuine sub-phase, not a
+  single commit.
 - **Upstream issue against `apnelson1/Matroid`** — optional. We are no
   longer waiting on upstream (local-mirror decision), but an issue
   asking whether the `FinsetCircuitMatroid`-based WIP will be revived
@@ -276,32 +332,40 @@ High-level outline; the leaf-level to-do list is the
 
 ## Hand-off / next phase
 
-L2b is **underway** as of this commit: `Constructions/Union.lean` landed the
-union construction + independence characterization green
-(`def:matroid-union`, `lem:union-indep-iff`). Next concrete commit:
-**finish L2b — add the partition rank theorem** `matroid_partition'` /
-`matroid_partition_eRk'` (node `thm:matroid-partition-rank`) to
-`Constructions/Union.lean`. That closes Phase 12.
+This commit was a **docs-only re-scope**, not Lean: the planned next commit
+(port the two `matroid_partition*` targets) proved infeasible as scoped —
+its bridge `polymatroid_of_adjMap` needs Rado-sufficiency, which is not live
+upstream (full analysis in *Current state* / *Blockers*). No Lean changed;
+the tree still builds clean (L2b-union green).
 
-The WIP chain to port (from `apnelson1/Matroid`'s `WIP/Union.lean`, all
-currently un-ported): `polymatroid_of_adjMap` (the key bridge — exhibits the
-`adjMap`-matroid as `ofPolymatroidFn` of `f Y = M.r {v | ∃ u ∈ Y, Adj v u}`,
-the longest proof in the file, uses `rado` from `Constructions/Matching`),
-`adjMap_rank_eq` (instantiates `polymatroid_rank_eq` through that bridge),
-`sum'_eRk_eq_eRk_sum{_on_indep}` + `sum'_rk_eq_rk_sum` (rank of `sum'`
-distributes over the index), then `matroid_partition'` (binary) and
-`matroid_partition_eRk'` (the `eRk` form). Dependencies satisfied:
-`ofPolymatroidFn` + `polymatroid_rank_eq` in `Submodular.lean`; `Union` +
-`union_indep_iff'` now in this file; `rado` / `Matroid.sum'` live upstream.
-Expect the same port hazards (FRICTION `[matroid]` *L2a rank lemma* +
-*L2b union construction*): `Matroid.r → rk` renames, `open Function` for
-` on ` / `onFun`, transitive-import gaps, stale aesop simp-lists, and
-`[Fintype] → [Finite]` signature conversion per project convention. This is
-a larger sub-chain than the construction (~6 supporting lemmas before the two
-targets) — if it runs long, landing `polymatroid_of_adjMap` + `adjMap_rank_eq`
-first (the matroid-theoretic core) is a clean intermediate handoff, with the
-`sum'` rank-distribution lemmas + the two `matroid_partition*` wrappers as a
-second step.
+**Next concrete commit: L2b-rado** — port the Rado/Hall prerequisite from
+`WIP/Submodular.lean:323–942` (~420 L, 0 sorry upstream) into the local
+`Constructions/Submodular.lean` (its home file, continuing the L2a port).
+Sub-chain in order: `generalized_halls_marriage` (matroidal Hall;
+`WIP/Submodular.lean:323`, deps all in the L2a-ported surface) →
+`PartialTransversal` structure + ~30 supporting lemmas (`:504–740`) →
+`Transversal` / `Transverses` / `Transverses'` family (`:804–888`) → `rado`
+(`:891`, Oxley Thm 11.2.2) and `rado_v2` (`:742`). This is large enough that a
+**clean intermediate handoff** is: land `generalized_halls_marriage` +
+`PartialTransversal` first (the infrastructure), then `rado` itself as a second
+step. A `lem:rado` blueprint node in `matroid-union.tex` is optional (internal
+prerequisite) — add it if it helps the dep-graph read.
+
+**Then L2b-partition** (unblocked once `rado` is green): port
+`polymatroid_of_adjMap` (the key bridge — exhibits the `adjMap`-matroid as
+`ofPolymatroidFn` of `f Y = M.rk {v | ∃ u ∈ Y, Adj v u}`, the longest proof,
+calls `rado …).mpr`), `adjMap_rank_eq`, `sum'_eRk_eq_eRk_sum{_on_indep}` /
+`sum'_rk_eq_rk_sum`, then `matroid_partition'` / `matroid_partition_eRk'`
+(node `thm:matroid-partition-rank`) into `Constructions/Union.lean`. That
+closes Phase 12.
+
+Port hazards across both sub-layers (FRICTION `[matroid]` *L2a rank lemma* +
+*L2b union construction*): the `Matroid.r → rk` rename (incl. `rk_submod` /
+`rk_mono` / `rk_empty` now `[RankFinite M]`-gated, `coe_rank_eq → cast_rank_eq`,
+`Indep.eRk → eRk_eq_encard`, `Indep.r → Indep.rk_eq_card`, `IsBasis.r →
+ncard_eq_rk`), `open Function` for ` on ` / `onFun`, transitive-import gaps,
+stale aesop simp-lists, and `[Fintype] → [Finite]` signature conversion per
+project convention.
 
 Reusable recipe for the port (validated across L2a): non-`module`
 file, Peter-Nelson header, explicit `import` of tactics/lemmas the

@@ -76,7 +76,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (Submodular half ported; Union construction + indep-iff ported; partition rank theorem = remaining L2b)
+### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union ported; partition rank theorem blocked on the un-ported Rado/Hall sub-tree = L2b-rado)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
   `matroid_partition'` / `matroid_partition_eRk'`, plus its
@@ -183,6 +183,29 @@ housekeeping pass once their resolution is fully indexed.
   `adjMap_indep_iff'`), clearing the `unusedFintypeInType` linter; added
   focus dots + the `simp?`-suggested `simp only` set to clear the
   `style.{multiGoal,flexible}` compile warnings.
+- **L2b dependency re-scope (2026-06): the partition-rank target is blocked on
+  an un-ported Rado/Hall sub-tree — Phase-12 audit residual.** Planning the
+  partition-rank commit (`matroid_partition'` / `matroid_partition_eRk'`)
+  surfaced a dependency the *Prerequisites audit* missed: their bridge
+  `polymatroid_of_adjMap` (`WIP/Union.lean:258`) builds its matching via the
+  **sufficiency** direction of Rado's theorem, calling `(rado M A).mpr …`
+  (`WIP/Union.lean:339`). Two decoys to avoid: (i) the live
+  `Matroid.Intersection.rado_necessary` is only the *easy* direction; the full
+  `rado` / `rado_iff` / `rado_sufficient` there are **commented-out Lean-3**
+  resting on further dead machinery (`partition_matroid_on`,
+  `exists_common_ind_with_isFlat_right`). (ii) The live `rado` exists *only* in
+  the **back half of the same `WIP/Submodular.lean`** L2a ported from
+  (`:891`, Oxley Thm 11.2.2) — L2a stopped at `polymatroid_rank_eq` (`:~296`)
+  and never reached it. `rado` rests on a self-contained, 0-sorry but ~420-line
+  sub-tree (`:323–942`): `generalized_halls_marriage` (deps all in the
+  L2a-ported surface), the `PartialTransversal` structure + ~30 lemmas, the
+  `Transversal`/`Transverses` family, then `rado` / `rado_v2`. **Lesson:** the
+  prereq-audit's "0 sorry, just rebase" reading covered only the *front* of
+  `WIP/Submodular.lean`; the proof-by-grep of a vendored file's dependency
+  graph must follow `.mpr`/`.1` projections of *named theorems* into the rest
+  of the source, not just the import list. L2b re-scoped into L2b-rado
+  (port the sub-tree) + L2b-partition (the two targets); see `notes/Phase12.md`
+  *Current state* / *Layer plan* / *Hand-off*. No Lean changed this commit.
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of
