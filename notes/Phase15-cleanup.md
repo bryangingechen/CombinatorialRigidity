@@ -1,6 +1,6 @@
 # Phase 15 cleanup round (work log)
 
-**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms + C/D remain).
+**Status:** in progress (A landed; B1+B6 landed; B4 landed; B2/B3/B5/B7 no-op confirms landed; C/D remain).
 
 Between-phases cleanup round, run after Phase 15 (body-bar Tay theorem,
 existence form) closed in `fa4cfc3` and before Phase 16 (body-hinge /
@@ -32,10 +32,11 @@ second substantive B-sweep finding): the strip-build sweep over the 4
 `TayTheorem.lean` `noncomputable def`s found `blockPairing`'s
 `noncomputable` **accidental** (the other three forced) — dropped it.
 Build warning-clean + lint clean. The remaining B items (B2 `Fintype`
-bridges, B3 `nolint`, B5 `change`, B7 zero-hit greps) are confirmed
-no-op and ride the next commit as a batch; then C → D. A fresh session
-can resume from this log alone; the smallest concrete next commit is
-named in *Hand-off / next phase*.
+bridges, B3 `nolint`, B5 `change`, B7 zero-hit greps) landed this commit
+as a no-op confirm batch (all four confirmed no-op; no code change).
+All of B is now closed; next is the **C long-proof audit** (C1–C3),
+then **D**. A fresh session can resume from this log alone; the smallest
+concrete next commit is named in *Hand-off / next phase*.
 
 ## Scope
 
@@ -128,19 +129,20 @@ mirror-directory leg of the usual sweep is empty.
   aren't needed at all. Dropped all 5. Substantive change → own commit
   (not folded with the no-op confirms). Mirrors Phase-14-cleanup B2
   (which found 3 stray `classical`s the same way).
-- [ ] B2 — `haveI : Fintype … := Fintype.ofFinite _` bridges (8 sites,
-  all `TayTheorem.lean`: L257, 306, 307, 424, 448, 550, 569, 574). These
+- [x] B2 — `haveI : Fintype … := Fintype.ofFinite _` bridges (8 sites,
+  all `TayTheorem.lean`: L256, 304, 305, 422, 445, 545, 563, 568 after
+  the B1/B4 line shifts). **No-op confirm:** all 8 forced, not a
+  single-helper candidate — see *Decisions made* B2/B3/B5/B7 batch. These
   are the `[Finite] → Fintype` inline bridge the `DESIGN.md` *Vertex
   types* convention prescribes. Confirm each is forced (a body step needs
   `Finset.univ` / `Fintype.card`) and that the repeated `Fintype E(F.graph)`
   bridge (L550, 569 + the `stdFramework`-graph variants L306/307) isn't a
   single-helper candidate. Likely no-op confirm.
-- [ ] B3 — `@[nolint unusedArguments]` on `IsInfinitesimallyRigid`
+- [x] B3 — `@[nolint unusedArguments]` on `IsInfinitesimallyRigid`
   (`Framework.lean` L161). Already carries a 6-line justification comment
   (semantic `[Finite α]` contract guard, mirrors `Framework.lean`'s
-  `SimpleGraph.IsInfinitesimallyRigid` disposition). Confirm the
-  justification still holds / matches the bar-joint precedent verbatim;
-  expect no-op.
+  `SimpleGraph.IsInfinitesimallyRigid` disposition). **No-op confirm:**
+  justification (L154–160) matches the bar-joint precedent verbatim.
 - [x] B4 — `noncomputable def` (6 sites: `Framework.lean` `barRow` L98,
   `rigidityMap` L119; `TayTheorem.lean` `stdPlacement` L67, `stdFramework`
   L75, `rigidityRow` L128, `blockPairing` L159). **Strip-build sweep:
@@ -154,15 +156,13 @@ mirror-directory leg of the usual sweep is empty.
   are forced (`innerSL`/`LinearMap.pi`). Substantive change → own commit
   (not folded with the no-op confirms). Mirrors Phase-14-cleanup B3
   (accidental `noncomputable` on `constPiSpanEquiv`).
-- [ ] B5 — `change` tactic (1 site: `TayTheorem.lean` L535 in
-  `exists_isIsostatic_of_isTight`, `change Module.finrank … = …` to
-  unfold `IsInfinitesimallyRigid`). This is the `def`-predicate-unfold
-  pattern flagged in `TACTICS-GOLF.md` § 4 / the `CombinatorialRigidity/
-  CLAUDE.md` *Concrete signals* list. Question: could a project-internal
-  `IsInfinitesimallyRigid` unfold lemma (or `show`/`refine` reshape)
-  replace the `change`, or is it the accepted predicate-unfold idiom
-  (matching the `IsLaman`/`IsTight` precedent)? Likely accepted-idiom
-  no-op, but record the disposition.
+- [x] B5 — `change` tactic (1 site: `TayTheorem.lean` L531 after the
+  B1/B4 line shifts, in `exists_isIsostatic_of_isTight`, `change
+  Module.finrank … = …` to unfold `IsInfinitesimallyRigid`). This is the
+  `def`-predicate-unfold pattern flagged in `TACTICS-GOLF.md` § 4 / the
+  `CombinatorialRigidity/CLAUDE.md` *Concrete signals* list. **No-op
+  confirm:** accepted predicate-unfold idiom (matches the `IsLaman`/
+  `IsTight` precedent); no project-internal unfold lemma warranted.
 - [x] B6 — duplicate `variable {α β : Type*}` declaration: `TayTheorem.lean`
   L58 (`variable {α β : Type*} {n : ℕ}`) and again L124 (`variable {α β :
   Type*}`). **Dropped the L124 re-bind.** Verified no `clear`/rescope of
@@ -170,9 +170,9 @@ mirror-directory leg of the usual sweep is empty.
   block-rank docstring); dropping L124 leaves `α β n` all from L58.
   Build + lint clean. Folded into the B1 commit (both are real edits in
   the same file / same sweep, neither a no-op confirm).
-- [ ] B7 — no-op confirm: 3+-arg single-step `rw` chains and `show … from
-  rfl` both came back **clean** (zero hits) on both files at round open.
-  Record as no-op; no task beyond this note.
+- [x] B7 — no-op confirm: 3+-arg single-step `rw` chains and `show … from
+  rfl` both came back **clean** (zero hits) on both files; re-confirmed
+  this commit. Record as no-op; no task beyond this note.
 
 ### C. Long-proof audit
 
@@ -298,6 +298,19 @@ mostly no-op confirming forced structural shape):
   `Framework.lean`'s `barRow`/`rigidityMap` are forced. Same
   disposition + method as Phase-14-cleanup B3 (`constPiSpanEquiv`). No
   friction (mechanical removal, build warning-clean + lint clean).
+- **B2/B3/B5/B7 (no-op confirm batch).** B2: all 8 `Fintype.ofFinite`
+  bridges forced — `Fintype α` (L256/422/445) feeds the block-product
+  dimension lemmas (`finrank_constPiSpan` / `finrank_realBlockPiSpanOn`)
+  and the `specRow` block reindex; the `Fintype E(…)` bridges
+  (L304/305/545/563/568) feed `Fintype.card_congr` / `finrank_span_eq_card`
+  / `Set.toFinset_card` via `Nat.card_eq_fintype_card`. The repeated
+  bridges live in distinct theorems with no shared scope, so not a
+  single-helper candidate. B3: the `IsInfinitesimallyRigid` `@[nolint
+  unusedArguments]` justification (Framework.lean L154–160) still matches
+  the bar-joint precedent verbatim. B5: the L531 `change` is the accepted
+  `def`-predicate-unfold idiom (cf. `IsLaman`/`IsTight`, TACTICS-GOLF §4).
+  B7: zero-hit greps re-confirmed (3+-arg `rw` chains, `show … from rfl`).
+  No code change; build green.
 
 ## Blockers / open questions
 
@@ -305,31 +318,24 @@ mostly no-op confirming forced structural shape):
 
 ## Hand-off / next phase
 
-**A complete; B1+B6 (`c1fdaf2`) and B4 landed** (the two substantive
-B-sweep findings — 5 stray `classical`s + redundant `variable` re-bind,
-then accidental `noncomputable` on `blockPairing`; build + lint clean).
+**A complete; B1+B6 (`c1fdaf2`), B4, and the B2/B3/B5/B7 no-op confirm
+batch (this commit) all landed.** All of B is closed (the two substantive
+findings — 5 stray `classical`s + redundant `variable` re-bind, then
+accidental `noncomputable` on `blockPairing`; build + lint clean — plus
+the four no-op confirms).
 
-**Smallest concrete next commit:** the **B2 + B3 + B5 + B7 no-op confirm
-batch** — one commit recording each disposition in the work log (per the
-coordinator no-op-batch rule), no code change expected:
-- **B2** — 8 `haveI : Fintype … := Fintype.ofFinite _` bridges
-  (`TayTheorem.lean` L256, 304, 305, 422, 445, 545, 563, 568 after the
-  B1/B4 line shifts): confirm each is forced (a body step needs
-  `Finset.univ` / `Fintype.card` / `finrank_span_eq_card`) and that the
-  repeated `Fintype E(F.graph)` bridge isn't a single-helper candidate.
-- **B3** — `@[nolint unusedArguments]` on `IsInfinitesimallyRigid`
-  (`Framework.lean` L161): the 6-line justification (L154–160) matches
-  the bar-joint precedent verbatim (semantic `[Finite α]` contract guard +
-  `unusedFintypeInType`-migration note). **Already verified this round:**
-  no-op.
-- **B5** — the 1 `change` site in `exists_isIsostatic_of_isTight`
-  (`TayTheorem.lean` L531, unfold `IsInfinitesimallyRigid`): accepted
-  predicate-unfold idiom vs. a project-internal unfold lemma. Likely
-  accepted-idiom no-op.
-- **B7** — record the zero-hit greps (3+-arg `rw` chains; `show … from
-  rfl`) as no-op.
+**Smallest concrete next commit:** the **C long-proof audit**, starting
+with **C1** — `stdFramework_rigidityRow_linearIndependent` (~38 lines,
+`TayTheorem.lean` L249). Four-question walk (API extraction / missed
+mathlib lemma / tactic substitution / cross-proof unification per
+`CLEANUP.md`); likely a forced-reindex no-op confirm (cf. Phase-14-cleanup
+*Calibration*). Then C2 (`finrank_rigidityRow_span_le`, L441) and C3
+(`isSparse_of_isIndependent`, L560) — the one genuine cross-proof
+unification spot-check this round is C2↔C3 (shared `E'ₛ`/`Subtype.val ''`
+bar-set restriction backbone). C-confirm no-ops may batch per the
+coordinator rule; a real refactor stays its own commit.
 
-Then C → D in order; D3 (the `stdFramework_rigidityRow_eq` derivation
+Then D in order; D3 (the `stdFramework_rigidityRow_eq` derivation
 from `rigidityRow_eq`) is the one substantive refactor candidate and
 should land late, as its own commit, with a try-and-record fallback if
 the `Pi.single` reshape fights the elaborator.
