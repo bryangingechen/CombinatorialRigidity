@@ -1,8 +1,9 @@
 # Phase 12 cleanup round — work log
 
-**Status:** in progress (opening commit — log skeleton + comprehensive
-task list + ROADMAP row; no fixes yet, per `../CLEANUP.md` *Workflow*
-rule 1).
+**Status:** in progress (A–D surveys run; **A3 fix landed** — stale
+forward-mode chapter-intro paragraph removed from `matroid-union.tex`;
+remaining buckets surveyed-but-unfixed, expected mostly no-op under the
+vendored-port bias).
 
 This is the inter-phase cleanup round covering **Phase 12** (matroid
 foundations: submodular functions + matroid union). See `../CLEANUP.md`
@@ -15,12 +16,16 @@ session that runs out of time can hand off cleanly.
 
 ## Current state
 
-Round **opened** this commit. The §A blueprint↔Lean divergence walk
-over `matroid-union.tex`'s nine `\lean{...}` entries, the §B code-smell
-greps over the two Matroid files, the §C long-proof ranking, and the
-§D org-compression check have all been **run** (results recorded under
-*Task checklist* below); no fixes have landed yet. Build of both files
-is cached green and warning-clean at round open.
+The §A blueprint↔Lean divergence walk over `matroid-union.tex`'s nine
+`\lean{...}` entries, the §B code-smell greps over the two Matroid
+files, the §C long-proof ranking, and the §D org-compression check
+have all been **run** (results recorded under *Task checklist* below).
+**A3 landed** (the only A-bucket fix the survey surfaced): the stale
+forward-mode "currently red / to-do list" chapter-intro paragraph in
+`matroid-union.tex` was removed; `verify.sh` green. The remaining
+buckets (A1/A2 statement/proof walks, B1–B6, C2, D1–D5) are surveyed
+but unfixed — expected mostly no-op under the vendored-port bias.
+Build of both Lean files is cached green and warning-clean.
 
 **Scope (coordinator-decided): Phase-12 surface** —
 `CombinatorialRigidity/Matroid/Constructions/Submodular.lean` (1151 L),
@@ -138,14 +143,20 @@ gate, so no separate resolve-check task here):
   bias:** the "fix Lean first" response is constrained — a Lean
   simplification that rewrites Nelson's proof is out of scope; record
   the residual as an aside only if no *project-side* fix exists.
-- [ ] **A3:** Formalization-aside scan — walk every `\emph{}` /
-  `\begin{remark}` / parenthetical aside in `matroid-union.tex`
-  (notably the `\paragraph{Provenance.}` block and the chapter-intro
-  "currently red" line — confirm the latter is now stale since all
-  nodes are green, an easy candidate fix). First response per
-  `../CLEANUP.md` §A is to shorten the Lean to retire the aside; under
-  the vendored-port bias, most asides here are sticky provenance/design
-  rationale with no Lean-side shortening available.
+- [x] **A3:** Formalization-aside scan — **done, one fix landed.** The
+  stale chapter-intro paragraph (former lines 4–9: "Its nodes are
+  currently \emph{red} … the phase's to-do list … turns green as the
+  matching Lean lands") was forward-mode scaffolding, stale now that
+  Phase 12 closed all-green; removed, letting the mathematical-content
+  paragraph lead (per `../blueprint/CLAUDE.md` *Keep the reshape history
+  out of the prose* — a completed chapter reads as if its current shape
+  were always the shape; matches the cleaned pebble-game/count-matroid
+  chapter intros). The `\paragraph{Provenance.}` block ("Phase~12
+  vendors the proofs into …") is sticky factual provenance with no
+  Lean-side shortening — kept. The four proof prose blocks
+  (`lem:polymatroid-rank`, `lem:union-indep-iff`, `lem:rado`,
+  `thm:matroid-partition-rank`) carry no stale asides. `verify.sh`
+  green (bp + web + checkdecls).
 
 ### Bucket B — Code-smell sweep (Phase 12 surface)
 
@@ -283,21 +294,20 @@ Runners-up (just outside): `union_indep_aux'` (Union L168, 46 L);
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** dispatch **A3** — the
-formalization-aside / staleness scan over `matroid-union.tex`. It has a
-concrete near-certain fix already surfaced by the survey: the chapter
-intro (lines 5–9) still says *"Its nodes are currently \emph{red}
-(stated, not yet formalized): the dependency structure below is the
-phase's to-do list"*, which is **stale** now that Phase 12 closed with
-every node green. That one-line correction is the first fix; the rest
-of A3 (the `\paragraph{Provenance.}` and proof asides) and then A1/A2
-follow. If the A3 survey somehow finds the intro line already fixed and
-no other aside drift, fall through to **B5** (the multi-step `rw`
-zero-at-bot fused-lemma assessment, the most likely B-bucket fix) or
-**D1** (the `notes/Phase12.md` *Current state* compression).
+**Smallest concrete next commit:** dispatch **B5** — the multi-step
+`rw` (4+ args) audit over the 5 Submodular sites
+(L179/L297/L375/L381/L403), the most likely remaining B-bucket fix. The
+specific candidate already surfaced: L297/L403 share the `card_empty,
+← bot_eq_empty, hf.zero_at_bot` polymatroid-zero-at-bot pattern — assess
+whether a 2-site fused mirror lemma under `CombinatorialRigidity/Mathlib/`
+collapses both chains (project-side addition, in scope under the
+vendored-port bias). The other three (L179 `Nat.cast`/`card_erase`, L375
+`Nat.cast`/`card_insert`, L381 `biUnion_insert`) are expected per-step
+structural with no mirror (Phase 9/11-cleanup precedent). If B5 surveys
+no-op, fall through to **D1** (the `notes/Phase12.md` *Current state*
+compression — 434 LoC, top of band) or the A1/A2 statement/proof walks.
 
-If the whole round surveys to no-op (possible given the vendored-port
-bias on B/C and the forward-mode blueprint tracking on A), the closing
-commit flips the ROADMAP row to ✓ with a "all categories no-op →
-close" summary. Current read: **A3 is a non-no-op** (the stale "red
-nodes" intro line), so the round will land at least one fix.
+A3 landed one fix (the stale forward-mode intro paragraph). The round
+already has its non-no-op commit, so the remaining buckets may close
+no-op; if B5–D5 all survey no-op, the closing commit flips the ROADMAP
+row to ✓ with a "A3 fix + all-else-no-op → close" summary.
