@@ -49,7 +49,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–13 complete; Phases 14–15 scoped.**
+* **Phases 1–13 complete; Phase 14 in progress; Phase 15 scoped.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -101,12 +101,15 @@ project; commit history is preserved with paths rewritten.
     refinement `Graph.isSpanningTreePacking_of_isTight` (Whiteley
     Theorem 13). Introduces a `Graph`-native `(k,ℓ)`-sparsity predicate.
     See `notes/Phase13.md`.
-  * **Phases 14–15 (scoped)** — the `k`-frame matroid = `k`-fold
-    cycle-matroid union (Phase 14, Whiteley Theorem 1), and **Tay's
-    theorem** itself in existence-of-realization form (Phase 15, by
-    specializing two-extensor row coefficients to standard-basis
-    Plücker coordinates). Scoped in `blueprint/src/chapter/body-bar.tex`
-    and ROADMAP §14–§15. Whiteley's full
+  * **Phase 14 (in progress)** — the `k`-frame matroid = `k`-fold
+    cycle-matroid union (Whiteley Theorem 1). Forward-mode lemma index
+    in `blueprint/src/chapter/body-bar.tex` §`sec:body-bar-k-frame`;
+    next concrete commit is `def:k-frame-matroid` in a new
+    `BodyBar/KFrame.lean`. See `notes/Phase14.md`.
+  * **Phase 15 (scoped)** — **Tay's theorem** itself in
+    existence-of-realization form (by specializing two-extensor row
+    coefficients to standard-basis Plücker coordinates). Scoped in
+    `blueprint/src/chapter/body-bar.tex` and ROADMAP §15. Whiteley's full
     "almost-all-realizations-are-rigid" lift via irreducible-variety
     machinery (Proposition 6) is deferred. The longer-horizon target
     beyond is the **molecular conjecture** (Katoh–Tanigawa 2011).

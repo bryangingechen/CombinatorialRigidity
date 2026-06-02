@@ -73,10 +73,10 @@ its live `FiniteCircuitMatroid` constructor; all
 (a multigraph is the edge-disjoint union of `k` forests iff it is
 `(k,k)`-sparse, by specializing the Edmonds matroid-partition theorem
 to `k` copies of `Graph.cycleMatroid`, with the connected-tight
-spanning-tree refinement); **Phases 14–15 (scoped)** then
-identify the `k`-frame matroid with the `k`-fold cycle-matroid union
-(Whiteley Theorem 1) and assemble Tay's theorem in
-existence-of-realization form (the algebraic-geometry lift to "almost
+spanning-tree refinement); **Phase 14 (in progress)** then
+identifies the `k`-frame matroid with the `k`-fold cycle-matroid union
+(Whiteley Theorem 1), and **Phase 15 (scoped)** assembles Tay's theorem
+in existence-of-realization form (the algebraic-geometry lift to "almost
 all realizations are rigid" deferred). The longer-horizon target beyond is the
 **molecular conjecture** (Katoh–Tanigawa 2011).
 
@@ -101,7 +101,7 @@ existing files or refactor across several).
 |    11 | Witness extraction          | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` |   ✓    |
 |    12 | Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` (ported from `apnelson1/Matroid`) | ✓ |
 |    13 | Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | ✓ |
-|    14 | k-frame = k-fold cycle union | `BodyBar/KFrame.lean` | planning |
+|    14 | k-frame = k-fold cycle union | `BodyBar/KFrame.lean` | in progress |
 |    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | planning |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)

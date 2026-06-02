@@ -99,7 +99,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-12) | Phase 12 surface (`Matroid/Constructions/{Submodular,Union}.lean`, `matroid-union.tex`) | ✓ Complete (see `notes/Phase12-cleanup.md`; round manual: `CLEANUP.md`) |
 | 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | ✓ Complete (see `notes/Phase13.md`) |
 | ⋮ Cleanup round (post-Phase-13) | Phase 13 surface (`BodyBar/TreePacking.lean`, Phase-13 `Matroid/Constructions/Union.lean` adders, `body-bar.tex` tree-packing nodes) | ✓ Complete (see `notes/Phase13-cleanup.md`; round manual: `CLEANUP.md`) |
-| 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | planning (scoped in `body-bar.tex`) |
+| 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | in progress (see `notes/Phase14.md`; forward-mode index in `body-bar.tex`) |
 | 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | planning (was Phase 12; see `notes/Phase12.md`) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -444,12 +444,15 @@ Phase 14 (`k`-frame matroid = `k`-fold cycle-matroid union).
 
 ### Phase 14 — k-frame matroid = k-fold cycle-matroid union
 
-**Status (planning; scoped in `body-bar.tex`).** Whiteley 1988
+**Status (in progress; forward-mode lemma index in `body-bar.tex`
+§`sec:body-bar-k-frame`; see `notes/Phase14.md`).** Whiteley 1988
 Theorem 1: the generic `k`-frame matroid `F(G,X)` on a multigraph (a
 linear matroid via `Matroid.ofFun` over indeterminate coefficients)
 equals the `k`-fold union of `Graph.cycleMatroid`. Column-reorder /
 monomial argument from Whiteley §2.1. Bridges Phase 12's abstract union
-to the body-bar realizations of Phase 15.
+to the body-bar realizations of Phase 15. Leaf-most red node /
+next concrete commit: `def:k-frame-matroid` in a new
+`BodyBar/KFrame.lean`.
 
 ### Phase 15 — Body-bar Tay theorem (existence form)
 
