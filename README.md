@@ -49,7 +49,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–11 complete; Phase 12 (matroid foundations) in progress; Phases 13–15 scoped.**
+* **Phases 1–12 complete; Phases 13–15 scoped.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -81,18 +81,18 @@ project; commit history is preserved with paths rewritten.
   re-investigation found the matroid-union machinery already fully
   formalized (zero-sorry) in `apnelson1/Matroid`, just bit-rotted onto
   a superseded constructor:
-  * **Phase 12 (in progress)** — matroid foundations: the
+  * **Phase 12 (complete)** — matroid foundations: the
     matroid-from-submodular-function construction + polymatroid rank
-    (Edmonds 1970), matroid union (Nash-Williams 1966 / Edmonds), and
+    (Edmonds 1970), matroid union (Nash-Williams 1966 / Edmonds) with
+    its independence characterization, Rado's theorem (Rado 1942), and
     Edmonds' matroid-partition rank formula (Edmonds 1965), formalized
     **locally** under `CombinatorialRigidity/Matroid/`. The Lean is
     ported from Peter Nelson's `apnelson1/Matroid` (Apache-2.0; same
     license as this project and mathlib), rebased onto the package's
-    live `FiniteCircuitMatroid` constructor. Layer 0 (the forward-mode
-    dep-graph in `blueprint/src/chapter/matroid-union.tex`) has landed;
-    the formalization route is chosen by an early spike (Layer 1). See
-    `notes/Phase12.md` for the Layer plan, prerequisites audit, and
-    attribution discipline.
+    live `FiniteCircuitMatroid` constructor. All
+    `blueprint/src/chapter/matroid-union.tex` dep-graph nodes are green
+    and carry no `sorry`s. See `notes/Phase12.md` for the Layer plan,
+    prerequisites audit, and attribution discipline.
   * **Phases 13–15 (scoped)** — Tutte–Nash-Williams tree-packing
     (Phase 13), the `k`-frame matroid = `k`-fold cycle-matroid union
     (Phase 14, Whiteley Theorem 1), and **Tay's theorem** itself in

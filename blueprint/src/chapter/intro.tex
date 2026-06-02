@@ -25,8 +25,8 @@ combinatorial rigidity, see
 
 The Lean code is organized into fifteen phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--11 are complete; Phase~12 is in progress and Phases~13--15
-are scoped (see the phase bullets below). The first six
+Phases~1--12 are complete; Phases~13--15 are scoped (see the phase
+bullets below). The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
 \texttt{Matroid}: first combinatorially, via the Lov\'asz--Yemini
@@ -107,7 +107,8 @@ theorem itself (Phase~15). The per-phase breakdown:
         body-bar route, formalized \emph{locally}: the
         matroid-from-submodular-function construction and polymatroid
         rank formula (Edmonds~\cite{edmonds1970}), the matroid-union
-        theorem (Nash-Williams~\cite{nashWilliams1966} / Edmonds), and
+        theorem (Nash-Williams~\cite{nashWilliams1966} / Edmonds),
+        Rado's theorem (Rado~1942,~\cite[Thm 11.2.2]{oxley2011}), and
         Edmonds' matroid-partition rank formula~\cite{edmonds1965}. The
         Lean is ported from Peter Nelson's \texttt{apnelson1/Matroid}
         package (Apache-2.0; the same package supplying
@@ -148,12 +149,13 @@ Statements that are formalized in Lean carry a green tick and a
 \texttt{\textbackslash lean\{\}} pointer linking back to the API
 documentation. The \emph{dependency graph view} (linked from the
 navigation bar) is the best place to see at a glance how the chapters
-fit together; all Phase~1--11 nodes are green: the main Laman line
+fit together; all Phase~1--12 nodes are green: the main Laman line
 (\cref{sec:laman-theorem}), the matroid identifications
 (\cref{sec:rigidity-matroid,sec:count-matroid}), the verified-DFS
 warmup (\cref{sec:dfs}), the pebble-game chapter
-(\cref{sec:pebble-game}), and the executable pebble-game chapter
-(\cref{sec:executable}). The body-bar program is currently the to-do
-list: the Phase~12 matroid-union chapter (\cref{sec:matroid-union})
-and the Phases~13--15 body-bar chapter (\cref{sec:body-bar}) are red
-on first build and turn green as each phase lands.
+(\cref{sec:pebble-game}), the executable pebble-game chapter
+(\cref{sec:executable}), and the matroid-union / Edmonds-partition
+chapter (\cref{sec:matroid-union}). The remaining body-bar program is
+the to-do list: the Phases~13--15 body-bar chapter
+(\cref{sec:body-bar}) is red on first build and turns green as each
+phase lands.

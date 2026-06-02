@@ -161,6 +161,8 @@ attribution and the list of modifications.
 
 \begin{theorem}[Edmonds' matroid-partition rank formula]
   \label{thm:matroid-partition-rank}
+  \lean{Matroid.matroid_partition', Matroid.matroid_partition_eRk'}
+  \leanok
   \uses{def:matroid-union, lem:union-indep-iff, lem:polymatroid-rank}
   The rank of $E'$ in $\bigcup_{j} M_{j}$ equals
   $\min_{X \subseteq E'} \bigl(|E' \setminus X| + \sum_{j}
@@ -170,6 +172,7 @@ attribution and the list of modifications.
   bound underlying the count characterization.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{lem:polymatroid-rank, lem:rado}
   Apply the polymatroid rank formula (\cref{lem:polymatroid-rank})
   to $f(X) = \sum_{j} r_{M_{j}}(X)$, which realizes the union

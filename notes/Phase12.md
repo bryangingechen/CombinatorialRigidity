@@ -1,13 +1,13 @@
 # Phase 12 — Matroid foundations: submodular functions & matroid union (work log)
 
-**Status:** in progress (Layer 2a **complete**; Layer 2b **underway**.
-`Constructions/Union.lean` landed the union construction + independence
-characterization green: `def:matroid-union`, `lem:union-indep-iff`. **L2b-rado
-COMPLETE this commit** — `rado` (Oxley 2011 Thm 11.2.2), `rado_v2`, and the
-`Transversal`/`Transverses`/`Transverses'` family ported into
-`Constructions/Submodular.lean` (0 sorry; blueprint node `lem:rado` green).
-**Next is L2b-partition's `thm:matroid-partition-rank`** — the last red node,
-which closes Phase 12. See *Current state* and *Hand-off*.)
+**Status:** ✓ **COMPLETE** (all Layers done; every `matroid-union.tex` node
+green). **L2b-partition landed this commit** — `polymatroid_of_adjMap`,
+`adjMap_rank_eq`, the `sum'_*` rank-distribution lemmas, and
+`matroid_partition'` / `matroid_partition_eRk'` (node
+`thm:matroid-partition-rank`) ported into `Constructions/Union.lean`
+(0 sorry; build + lint + `checkdecls` clean, warning-clean). Phase 13
+(Tutte–Nash-Williams tree-packing) is the next phase but is **not opened**.
+See *Current state* and *Hand-off*.
 
 This phase formalizes the abstract-matroid prerequisites of the
 body-bar route: the matroid-from-submodular-function construction and
@@ -57,7 +57,23 @@ Schrijver subsume them, and the working proofs are the
 
 ## Current state
 
-L2b-rado COMPLETE (this commit): ported `WIP/Submodular.lean:742–942` into
+**Phase 12 complete (this commit, L2b-partition).** Ported the partition-rank
+sub-chain from `WIP/Union.lean` into `Constructions/Union.lean`:
+`polymatroid_of_adjMap` (the bridge — exhibits the `adjMap`-matroid as
+`ofPolymatroidFn` of `f Y = M.rk (N Adj Y)`; its sufficiency direction calls
+`(rado …).mpr`), `adjMap_rank_eq`, `sum'_eRk_eq_eRk_sum{_on_indep}` /
+`sum'_rk_eq_rk_sum`, then `matroid_partition'` / `matroid_partition_eRk'`
+(node `thm:matroid-partition-rank`). Added `PolymatroidFn_of_zero` to
+`Submodular.lean` (consumed by the `isEmpty α` branch of
+`polymatroid_of_adjMap`). Landed green, **0 sorry** (`#print axioms` on all four
+partition/bridge targets = only `propext`/`Classical.choice`/`Quot.sound`);
+`lake build` warning-clean, `lake lint` clean, `checkdecls` passes. Blueprint
+node `thm:matroid-partition-rank` flipped green. The warnings-clean sweep and
+the `simpNF` fix (dropped `@[simp]` on `sum'_eRk_eq_eRk_sum_on_indep`, subsumed
+by `sum'_eRk_eq_eRk_sum`) are recorded in FRICTION `[matroid]` *L2b-partition
+finish*.
+
+L2b-rado COMPLETE (prior commit): ported `WIP/Submodular.lean:742–942` into
 `Constructions/Submodular.lean` — the `Transversal`/`Transverses`/`Transverses'`
 family (`transverses_{of_empty,mono,of_transverses',iff_transverses',
 of_image_univ,of_subset_image_univ}`), `rado_v2` (total-transversal form), and
@@ -349,10 +365,11 @@ High-level outline; the leaf-level to-do list is the
   (+ `'` variant), `PartialTransversal` family ✓ (+ ~30 lemmas),
   `Transversal`/`Transverses`/`Transverses'` family ✓, `rado_v2` ✓,
   `rado` ✓ (node `lem:rado`). All in `Constructions/Submodular.lean`.
-- [ ] **L2b-partition:** `thm:matroid-partition-rank`
-  (`matroid_partition'` / `matroid_partition_eRk'`); via
-  `polymatroid_of_adjMap` / `adjMap_rank_eq` / `sum'_*` rank-distribution.
-  Blocked on L2b-rado.
+- [x] **L2b-partition:** `thm:matroid-partition-rank`
+  (`matroid_partition'` / `matroid_partition_eRk'`) ✓; via
+  `polymatroid_of_adjMap` ✓ / `adjMap_rank_eq` ✓ / `sum'_eRk_eq_eRk_sum{_on_indep}`
+  ✓ / `sum'_rk_eq_rk_sum` ✓ rank-distribution (+ `PolymatroidFn_of_zero` ✓ in
+  `Submodular.lean`). **All `matroid-union.tex` nodes green; Phase 12 complete.**
 
 ## Blockers / open questions
 
@@ -360,14 +377,10 @@ High-level outline; the leaf-level to-do list is the
   (see *Layer 1* above for the three measured findings).
 - **`Matroid.ofFun` / polynomial-ring coefficient questions** belong to
   Phase 14 (k-frame), not here.
-- **L2b-rado prerequisite (active blocker for `thm:matroid-partition-rank`).**
-  `polymatroid_of_adjMap` needs the *sufficiency* direction of Rado's theorem
-  (`rado`), which is **not** live upstream — only `WIP/Submodular.lean:891`
-  has it, on top of a ~420-line un-ported sub-tree
-  (`generalized_halls_marriage` + `PartialTransversal` + `Transversal` family).
-  Must be ported first; see *Current state* and *Layer plan* L2b-rado. This is
-  bounded (self-contained, 0 sorry upstream) but is a genuine sub-phase, not a
-  single commit.
+- ~~**L2b-rado prerequisite (active blocker for `thm:matroid-partition-rank`).**~~
+  **Resolved** — L2b-rado landed `rado`/`rado_v2`, then L2b-partition consumed
+  `(rado …).mpr` inside `polymatroid_of_adjMap`. No open blockers; Phase 12 is
+  complete.
 - **Upstream issue against `apnelson1/Matroid`** — optional. We are no
   longer waiting on upstream (local-mirror decision), but an issue
   asking whether the `FinsetCircuitMatroid`-based WIP will be revived
@@ -376,21 +389,27 @@ High-level outline; the leaf-level to-do list is the
 
 ## Hand-off / next phase
 
-This commit **completed L2b-rado**: `rado` (Oxley 2011 Thm 11.2.2), `rado_v2`,
-and the `Transversal`/`Transverses`/`Transverses'` family are green and 0-sorry
-in `Constructions/Submodular.lean`; blueprint node `lem:rado` is green. The tree
-builds clean; lint passes; `checkdecls` passes. **L2b-partition is now
-unblocked** — it is the last red node and closes Phase 12.
+**Phase 12 is complete.** This commit landed L2b-partition:
+`polymatroid_of_adjMap`, `adjMap_rank_eq`, the `sum'_*` rank-distribution
+lemmas, and `matroid_partition'` / `matroid_partition_eRk'` (node
+`thm:matroid-partition-rank`) are green and 0-sorry in
+`Constructions/Union.lean` (with `PolymatroidFn_of_zero` in `Submodular.lean`).
+All `matroid-union.tex` nodes are green; the tree builds warning-clean, lint and
+`checkdecls` pass. The abstract-matroid foundations (submodular → matroid,
+polymatroid rank, matroid union, Edmonds partition) the body-bar route needs are
+now available locally under `CombinatorialRigidity/Matroid/`.
 
-**Next concrete commit: L2b-partition.** Port
-`polymatroid_of_adjMap` (the key bridge — exhibits the `adjMap`-matroid as
-`ofPolymatroidFn` of `f Y = M.rk {v | ∃ u ∈ Y, Adj v u}`, the longest proof,
-calls `rado …).mpr`), `adjMap_rank_eq`, `sum'_eRk_eq_eRk_sum{_on_indep}` /
-`sum'_rk_eq_rk_sum`, then `matroid_partition'` / `matroid_partition_eRk'`
-(node `thm:matroid-partition-rank`) into `Constructions/Union.lean`. That
-closes Phase 12.
+**Next phase: Phase 13 (Tutte–Nash-Williams tree-packing).** Not yet opened —
+no `notes/Phase13.md` until its first commit. It is scoped in
+`blueprint/src/chapter/body-bar.tex` and `../ROADMAP.md` §13. The first concrete
+commit there is the phase-opening one: create `notes/Phase13.md`, sync the
+status surfaces, and start the `Graph`-native `(k,ℓ)`-sparsity predicate +
+the specialization of `matroid_partition'` to `k` copies of
+`Graph.cycleMatroid`. Carrier is mathlib core `Graph α β` (see ROADMAP §13 and
+`DESIGN.md` *Migrating Phases 1–11 …*).
 
-Port hazards across both sub-layers (FRICTION `[matroid]` *L2a rank lemma* +
+Port hazards across the L2 sub-layers (FRICTION `[matroid]` *L2a rank lemma* +
+*L2b-partition finish* +
 *L2b union construction*): the `Matroid.r → rk` rename (incl. `rk_submod` /
 `rk_mono` / `rk_empty` now `[RankFinite M]`-gated, `coe_rank_eq → cast_rank_eq`,
 `Indep.eRk → eRk_eq_encard`, `Indep.r → Indep.rk_eq_card`, `IsBasis.r →

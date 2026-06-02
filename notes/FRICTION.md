@@ -76,7 +76,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union + L2b-rado ported — `rado`/`rado_v2` green; only L2b-partition `thm:matroid-partition-rank` remains)
+### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union + L2b-rado + L2b-partition all ported; **Phase 12 complete**, all `matroid-union.tex` nodes green)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
   `matroid_partition'` / `matroid_partition_eRk'`, plus its
@@ -255,6 +255,25 @@ housekeeping pass once their resolution is fully indexed.
   `push_neg → push Not`; `Finset.toSet → (· : Set α)`. (v) An over-aggressive
   `simpa [mem_image, mem_univ, true_and] using x.property` collapsed the hyp to
   `True`; replaced with `obtain ⟨i, _, hi⟩ := mem_image.mp x.property`.
+- **L2b-partition finish (2026-06, closes Phase 12):** ported
+  `WIP/Union.lean`'s `polymatroid_of_adjMap` (the bridge — `adjMap`-matroid as
+  `ofPolymatroidFn` of `f Y = M.rk (N Adj Y)`; sufficiency direction calls
+  `(rado …).mpr`), `adjMap_rank_eq`, `sum'_eRk_eq_eRk_sum{_on_indep}` /
+  `sum'_rk_eq_rk_sum`, and `matroid_partition'` / `matroid_partition_eRk'`
+  (node `thm:matroid-partition-rank`) into `Constructions/Union.lean`,
+  green/0-sorry. Also added `PolymatroidFn_of_zero` to `Submodular.lean` (the
+  `isEmpty α` branch of `polymatroid_of_adjMap` needs it). Warnings-clean sweep
+  (~28 warnings on first build, same class as the L2b-rado sweep): dropped many
+  bit-rotted unused `simp only` args (`Classical.not_imp`, `le_eq_subset`,
+  `mem_setOf_eq`, `N`/`N_singleton`/`he'` set-aliases, `hf`/`hN`); `[Fintype α]
+  → [Finite α]` + `haveI := Fintype.ofFinite α` on the five theorems whose type
+  has no `Fintype.card α` (`matroid_partition'` keeps `[Fintype α]` — `Finset.univ
+  : Finset α` is in its type); `Finset.toSet → (· : Set _)`,
+  `ncard_image_of_injOn → InjOn.ncard_image`; long-line wraps. `lake lint`
+  flagged `sum'_eRk_eq_eRk_sum_on_indep` `@[simp]` as simp-can-prove (the general
+  `sum'_eRk_eq_eRk_sum` subsumes it) — dropped the `@[simp]` (stays callable by
+  name). `#print axioms` on all four targets = `propext`/`Classical.choice`/
+  `Quot.sound` only.
 
 ### [open] Chaining `LinearIndepOn.insert` from `linearIndepOn_empty` produces `insert _ ∅` shapes that don't unify with `{_, _, _}`
 - **Where it bit:** Case-2 (LI on the three new edges) of

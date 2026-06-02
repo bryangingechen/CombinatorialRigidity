@@ -265,6 +265,12 @@ theorem ofPolymatroidFn_nonempty_indep_le [DecidableEq α] {f : Finset α → �
     (h : (ofPolymatroidFn hf).Indep ↑I) : I.card ≤ f I :=
   (indep_ofPolymatroidFn_iff hf I).mp h I subset_rfl h'
 
+/-- The constantly-zero function on `Finset α` is a polymatroid rank function. -/
+theorem PolymatroidFn_of_zero [DecidableEq α] : PolymatroidFn (fun _ : Finset α ↦ (0 : ℤ)) where
+  submodular := by simp only [Submodular, add_zero, le_refl, implies_true]
+  mono := by simp only [Monotone, le_eq_subset, le_refl, implies_true]
+  zero_at_bot := by simp only
+
 /-- The polymatroid rank formula restricted to an independent set `X`: the rank
 of `X` equals `f Y + |X \ Y|` for the minimizing `Y ⊆ X` (here `Y = ∅`). -/
 private theorem polymatroid_rank_eq_on_indep [DecidableEq α] {f : Finset α → ℤ}

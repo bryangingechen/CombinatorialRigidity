@@ -21,9 +21,8 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–11 are complete and carry no `sorry`s; **Phase 12 (matroid
-foundations) is in progress and Phases 13–15 (the body-bar program)
-are scoped**, see below. The main theorem
+Phases 1–12 are complete and carry no `sorry`s; **Phases 13–15 (the
+body-bar program) are scoped**, see below. The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
 Lovász–Yemini matroid identification has landed in both combinatorial
@@ -62,14 +61,15 @@ framing. The program was re-scoped from a single blocked "Phase 12"
 into a dependency-ordered chain after a 2026-06 re-investigation found
 the matroid-union machinery already fully formalized (zero-sorry) in
 `apnelson1/Matroid`, just bit-rotted onto a superseded constructor.
-**Phase 12 (in progress)** formalizes the abstract prerequisites —
+**Phase 12 (complete)** formalizes the abstract prerequisites —
 the matroid-from-submodular-function construction + polymatroid rank
-(Edmonds 1970), matroid union (Nash-Williams 1966 / Edmonds), and
-Edmonds' matroid-partition theorem (Edmonds 1965) — **locally** under
-`CombinatorialRigidity/Matroid/`, ported from Peter Nelson's
-`apnelson1/Matroid` (Apache-2.0) and rebased onto its live
-`FiniteCircuitMatroid` constructor; Layer 0 (the dep-graph in
-`blueprint/src/chapter/matroid-union.tex`) has landed. **Phases 13–15
+(Edmonds 1970), matroid union (Nash-Williams 1966 / Edmonds), Rado's
+theorem (Rado 1942), and Edmonds' matroid-partition theorem (Edmonds
+1965) — **locally** under `CombinatorialRigidity/Matroid/`, ported
+from Peter Nelson's `apnelson1/Matroid` (Apache-2.0) and rebased onto
+its live `FiniteCircuitMatroid` constructor; all
+`blueprint/src/chapter/matroid-union.tex` dep-graph nodes are green.
+**Phases 13–15
 (scoped)** then derive Tutte–Nash-Williams tree-packing, identify the
 `k`-frame matroid with the `k`-fold cycle-matroid union (Whiteley
 Theorem 1), and assemble Tay's theorem in existence-of-realization
@@ -96,7 +96,7 @@ existing files or refactor across several).
 |     9 | Pebble game                 | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness}.lean` |   ✓    |
 |    10 | Executable pebble game      | `PebbleGame/{Exec,Examples}.lean`, `Main.lean`                   |   ✓    |
 |    11 | Witness extraction          | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` |   ✓    |
-|    12 | Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` (ported from `apnelson1/Matroid`) | ⋯ |
+|    12 | Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` (ported from `apnelson1/Matroid`) | ✓ |
 |    13 | Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | planning |
 |    14 | k-frame = k-fold cycle union | `BodyBar/KFrame.lean` | planning |
 |    15 | Body-bar Tay theorem        | `BodyBar/{Framework,TayTheorem}.lean` | planning |

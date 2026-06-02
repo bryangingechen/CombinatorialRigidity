@@ -95,7 +95,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 11. Witness extraction | `Search/DFS.lean`, `PebbleGame/{Basic,Algorithm,Correctness,Exec}.lean`, `Main.lean` | ✓ Complete (see `notes/Phase11.md`) |
 | ⋮ Cleanup round (post-Phase-10+11) | Phase 10+11 surface (`PebbleGame/`, `Search/DFS.lean`, `Main.lean`, three blueprint chapters) | ✓ Complete (see `notes/Phase11-cleanup.md`; round manual: `CLEANUP.md`) |
 | ⋮ Perf pass (post-Phase-10+11) | Phase 10+11 surface — per-decl `@[expose]` audit on the four new/reshaped files + Phase-11-reshape re-audit on `Basic`/`DFS` + baseline | ✓ Complete (see `notes/Phase11-perf.md`; protocol: `notes/PERFORMANCE.md`) |
-| 12. Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` | in progress (Layer 2a done; L2b-union + L2b-rado landed — `rado`/`rado_v2` green; only L2b-partition `thm:matroid-partition-rank` remains → next: L2b-partition; see `notes/Phase12.md`) |
+| 12. Matroid foundations (submodular + union) | `CombinatorialRigidity/Matroid/` | ✓ Complete (see `notes/Phase12.md`) |
 | 13. Tutte–Nash-Williams tree-packing | `BodyBar/TreePacking.lean` | planning (scoped in `body-bar.tex`) |
 | 14. k-frame matroid = k-fold cycle union | `BodyBar/KFrame.lean` | planning (scoped in `body-bar.tex`) |
 | 15. Body-bar Tay theorem | `BodyBar/{Framework,TayTheorem}.lean` | planning (was Phase 12; see `notes/Phase12.md`) |
@@ -403,23 +403,22 @@ the corrected analysis.
 
 ### Phase 12 — Matroid foundations: submodular functions & matroid union
 
-**Status (in progress; Layer 0 done.)** Formalizes the abstract-matroid
-prerequisites of the body-bar route, **locally** under
-`CombinatorialRigidity/Matroid/`: the matroid-from-submodular-function
-construction and polymatroid rank formula (Edmonds 1970), the
-matroid-union theorem (Nash-Williams 1966 / Edmonds), and Edmonds'
-matroid-partition rank formula (Edmonds 1965). The Lean is **ported
-from Peter Nelson's `apnelson1/Matroid`** (Apache-2.0; same license as
-this project and mathlib), whose shelved `WIP/{Submodular,Union}.lean`
-carry complete proofs, rebased onto the package's live
-`FiniteCircuitMatroid` constructor (the WIP rests on the superseded
-`FinsetCircuitMatroid`). This is an explicit exception to the "small
-upstream-eligible lemmas only" mirror convention — see `DESIGN.md`
-*Local mirror of the matroid-union subsystem*. The route (submodular-
-repair vs union-from-the-live-`Matroid.Intersection`) is chosen by an
-early spike (Layer 1); see `notes/Phase12.md` for the Layer plan, the
-prerequisites audit, and the attribution discipline. Forward-mode
-chapter: `blueprint/src/chapter/matroid-union.tex`.
+Complete. Formalizes the abstract-matroid prerequisites of the body-bar
+route, **locally** under `CombinatorialRigidity/Matroid/`: the
+matroid-from-submodular-function construction and polymatroid rank formula
+(Edmonds 1970), the matroid-union theorem (Nash-Williams 1966 / Edmonds)
+with its independence characterization, Rado's theorem (Rado 1942), and
+Edmonds' matroid-partition rank formula (Edmonds 1965). The Lean is
+**ported from Peter Nelson's `apnelson1/Matroid`** (Apache-2.0), whose
+shelved `WIP/{Submodular,Union}.lean` carry complete proofs, rebased onto
+the package's live `FiniteCircuitMatroid` constructor — an explicit
+exception to the "small upstream-eligible lemmas only" mirror convention
+(see `DESIGN.md` *Local mirror of the matroid-union subsystem*). The phase
+ran route (a), submodular-repair, chosen by the Layer-1 spike, in **forward
+blueprint mode** with `blueprint/src/chapter/matroid-union.tex` as the
+authoritative dep-graph. See `notes/Phase12.md` for the Layer plan, the
+prerequisites audit, the per-layer decision records, and the attribution
+discipline.
 
 ### Phase 13 — Tutte–Nash-Williams tree-packing
 
