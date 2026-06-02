@@ -1,8 +1,7 @@
 # Phase 16 cleanup round (work log)
 
-**Status:** open — log skeleton + full A–D task list laid down (this
-commit); no fixes landed yet. Smallest concrete next commit named in
-*Hand-off / next phase*.
+**Status:** open — A2 landed (chapter-intro destale). A1, B, C, D
+remain. Smallest concrete next commit named in *Hand-off / next phase*.
 
 Between-phases cleanup round, run after Phase 16 (body-hinge /
 panel-hinge Tay–Whiteley theorem, existence form) closed in `968e137`
@@ -13,10 +12,13 @@ round.
 
 ## Current state
 
-Round just opened: scope decided, all four buckets' greps / file walks
-run, task list below populated *before* any fix (per `CLEANUP.md`
+A2 landed (chapter-intro destale on `body-hinge.tex` L13–16, the one
+genuine doc finding). Scope decided, all four buckets' greps / file
+walks run, task list below populated *before* any fix (per `CLEANUP.md`
 *Workflow* rule 1 + *Task list discipline*). Build green on
 `CombinatorialRigidity.BodyBar.BodyHinge` (2673 jobs) at round open.
+Remaining: A1 (signature compare + Lean-side docstring spot-check,
+no-op), B1–B7 no-op confirm batch, C1–C3 no-op confirms, D1/D2.
 
 The Phase-16 surface is small and uniform: a single new Lean file
 (`BodyBar/BodyHinge.lean`, 279 lines) and four `body-hinge.tex` nodes,
@@ -83,25 +85,23 @@ facts), so the mirror-directory leg of the usual sweep is empty.
   `edgeMultiply_isSparse_iff`; `thm:body-hinge-tay` → `body_hinge_tay`).
   Confirm each resolves and the blueprint statement form matches the
   Lean signature (hypotheses, conclusion, binders). Expect no-op.
-- [ ] A2 — re-read each Phase-16 node's prose proof for "the Lean does X
+- [x] A2 — re-read each Phase-16 node's prose proof for "the Lean does X
   via Y" smoothness glosses and "formalization aside" remarks (first
   response to any aside is a Lean-simplification attempt, `CLEANUP.md`
-  §A). **Known finding to land:** the chapter intro (`body-hinge.tex`
-  L13–16) carries the stale forward-mode "The nodes below are mostly
-  *red* (no `\leanok`) on first build: this dep-graph is the to-do
-  list … As each Lean declaration lands, its node gains a `\lean`
-  pointer and `\leanok` in the same commit" snapshot — false now that
-  Phase 16 is closed and every node green. Reword to a closed-phase
-  statement (cf. Phase-15-cleanup A2's "All three phases are complete:
-  every node below is formalized (green)" rewording of `body-bar.tex`).
-  Doc-only; no `\lean{}` pin touched, so `checkdecls` not required;
-  confirm `inv web` builds clean. Also spot-check the four node proof
-  bodies for stale "next sub-step"/"in progress" asides from the
-  incremental build (L110 "deferred out of Phase 15" / L147 molecular-
-  conjecture pointer are legitimate documented deferrals, ROADMAP §16 —
-  keep). Lean-side leg: spot-check the `BodyHinge.lean` module docstring
-  / doc-comments for the same staleness (Phase-15-cleanup A2 found a
-  stale "in progress" block in `TayTheorem.lean`).
+  §A). **Landed:** the chapter intro (`body-hinge.tex` L13–16) carried
+  the stale forward-mode "The nodes below are mostly *red* (no `\leanok`)
+  on first build: this dep-graph is the to-do list … As each Lean
+  declaration lands, its node gains a `\lean` pointer and `\leanok` in
+  the same commit" snapshot — false now that Phase 16 is closed and
+  every node green. Reworded to a closed-phase statement ("Phase 16 is
+  complete: every node below is formalized (green), with its `\lean{}`
+  pointer resolving …"), matching Phase-15-cleanup A2's `body-bar.tex`
+  destale. The four node proof bodies carried no stale asides (L110
+  "deferred out of Phase 15" / L147 molecular-conjecture pointer are
+  legitimate documented deferrals, ROADMAP §16 — kept). Doc-only; no
+  `\lean{}` pin touched (so `checkdecls` not required); `inv web` builds
+  clean. Lean-side leg deferred to the A1 commit (signature compare also
+  reads the `BodyHinge.lean` declarations).
 
 ### B. Code-smell sweep (greps run at round open — all zero-hit)
 
@@ -205,18 +205,18 @@ screening threshold; the top three are the audit gate per `CLEANUP.md`
 
 ## Hand-off / next phase
 
-**Round just opened — log skeleton + full A–D task list laid down this
-commit; no fixes yet.** Build green at open (2673 jobs on
-`BodyBar.BodyHinge`). The Phase-16 surface is small (one Lean file +
-four blueprint nodes) and the B greps are all zero-hit, so the round is
-expected to be light: one genuine doc fix (A2), one no-op confirm batch
-(B), no-op long-proof confirms (C), and one FRICTION migrate (D2).
+**A2 landed (chapter-intro destale).** Build green at open (2673 jobs
+on `BodyBar.BodyHinge`). The Phase-16 surface is small (one Lean file +
+four blueprint nodes) and the B greps are all zero-hit, so the round
+stays light: A2 was the one genuine doc fix; what remains is all no-op
+confirm work plus one FRICTION migrate.
 
-**Smallest concrete next commit:** land **A2** — reword the stale
-forward-mode chapter-intro snapshot in `body-hinge.tex` (L13–16, "The
-nodes below are mostly *red* … this dep-graph is the to-do list …") to
-a closed-phase statement, matching Phase-15-cleanup A2's `body-bar.tex`
-destale. Doc-only blueprint edit; no `\lean{}` pin touched (so no
-`checkdecls`), confirm `inv web` builds clean. Then A1 (signature
-compare, no-op), the B1–B7 no-op confirm batch, C1–C3 no-op confirms,
-and D1/D2. A fresh session can resume from this log alone.
+**Smallest concrete next commit:** land **A1** — per-node `\lean{}`
+signature compare for all 4 Phase-16 nodes (the four declarations
+listed in A1's task entry; confirm each resolves and the blueprint
+statement matches the Lean signature) plus the deferred Lean-side leg
+of A2 (spot-check the `BodyHinge.lean` module docstring / doc-comments
+for stale "in progress" prose, cf. Phase-15-cleanup A2's `TayTheorem.lean`
+finding). Both expected no-op; land as one `chore` commit closing
+bucket A. Then the B1–B7 no-op confirm batch, C1–C3 no-op confirms, and
+D1/D2. A fresh session can resume from this log alone.

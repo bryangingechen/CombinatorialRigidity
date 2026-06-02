@@ -10,10 +10,9 @@ it through a single combinatorial device --- replacing each hinge by a
 bundle of $\delta - 1$ coincident bars --- so the chapter adds no new
 linear algebra, only the hinge-to-bar reduction and its bookkeeping.
 
-The nodes below are mostly \emph{red} (no \leanok) on first build:
-this dep-graph is the to-do list, formalized leaf-first in subsequent
-sessions per the forward-mode discipline. As each Lean declaration
-lands, its node gains a \texttt{\textbackslash lean} pointer and \leanok in the same commit.
+Phase~16 is complete: every node below is formalized (green), with its
+\texttt{\textbackslash lean\{\}} pointer resolving to the matching Lean
+declaration.
 
 \subsection{Body-hinge frameworks and the hinge-to-bar reduction}
 \label{sec:body-hinge-reduction}
