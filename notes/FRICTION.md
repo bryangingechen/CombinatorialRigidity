@@ -76,7 +76,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [open] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union + L2b-rado + L2b-partition all ported; **Phase 12 complete**, all `matroid-union.tex` nodes green)
+### [resolved] `[matroid]` `apnelson1/Matroid`'s `WIP/{Union,Submodular}.lean` are unbuildable at every ref — Phase 12 matroid-union mirror (L2a + L2b-union + L2b-rado + L2b-partition all ported; **Phase 12 complete**, all `matroid-union.tex` nodes green)
 - **Where it bit:** Phase 12 Layer 1. The plan was to vendor the
   matroid-union machinery (`Matroid.Union`, `union_indep_iff'`, Edmonds
   `matroid_partition'` / `matroid_partition_eRk'`, plus its
@@ -106,10 +106,15 @@ housekeeping pass once their resolution is fully indexed.
   choice is made by a Phase-12 Layer-1 spike. Apache-2.0 throughout, so
   no license issue; attribution via per-file headers + blueprint credit
   (see `DESIGN.md` *Local mirror of the matroid-union subsystem*).
-- **Status:** in progress under Phase 12 (re-scoped to "matroid
-  foundations"). See `notes/Phase12.md` *Prerequisites audit* +
-  *Layer plan*. Filing an upstream courtesy issue (offer the rebase
-  back) is optional, not blocking.
+- **Status:** **resolved** — Phase 12 complete (all four port layers
+  green/0-sorry, every `matroid-union.tex` node green). See
+  `notes/Phase12.md` *Prerequisites audit* + *Layer plan*. Filing an
+  upstream courtesy issue (offer the rebase back) is an optional
+  follow-up, not blocking. The *downstream* consumption boundary
+  (Set/Finset + `rk`/`eRk`/`ncard` rank flavor as Phases 13–15 consume
+  this layer) is a cross-cutting design concern, captured in `DESIGN.md`
+  *Set/Finset and rank-flavor boundary at the matroid layer (Phases
+  13–15)* — not duplicated here per this file's scope rule.
 - **L2a progress (2026-06):** `Constructions/Submodular.lean` landed
   green, 0 sorry — `Submodular`, `ofSubmodular` (rebased onto
   `FiniteCircuitMatroid` via the Set-lift `∃ C₀, ↑C₀ = C ∧ Minimal P C₀`),

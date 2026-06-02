@@ -431,6 +431,17 @@ Introduces a `Graph`-native `(k,ℓ)`-sparsity/tightness predicate (fresh,
 **not** migrated from the Phase 9/10 `SimpleGraph` sparsity — see
 `DESIGN.md` *Migrating Phases 1–11 …*). Carrier: mathlib core `Graph α β`.
 
+Define that sparsity predicate **`Set`-side** (`Set.ncard` of edge sets,
+`ℕ`, `[Finite]`) so it lines up with both the Phases-1–11 convention and
+the Phase-12 matroid layer in one conversion step, and **open the phase
+with a thin rank adapter** restating Phase 12's partition theorem in
+`Set`-`Y`/`ℕ`/`ncard` idiom for the `k`-fold `cycleMatroid` case — the
+exported `matroid_partition'` is `Finset`/`ℕ`/`[Fintype]`-flavored and
+`matroid_partition_eRk'` is `Set`/`ℕ∞`/`[Finite]`, so the adapter
+absorbs the `rk`/`eRk`/`ncard` + typeclass plumbing once. Full rationale:
+`DESIGN.md` *Set/Finset and rank-flavor boundary at the matroid layer
+(Phases 13–15)*.
+
 ### Phase 14 — k-frame matroid = k-fold cycle-matroid union
 
 **Status (planning; scoped in `body-bar.tex`).** Whiteley 1988

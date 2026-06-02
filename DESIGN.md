@@ -358,6 +358,65 @@ upstream" option.
 
 ---
 
+## Set/Finset and rank-flavor boundary at the matroid layer (Phases 13–15)
+
+**Context.** Phase 12's vendored matroid subsystem (above) is
+`Finset`-heavy *internally* — submodular functions `f : Finset α → β`,
+Hall/Rado transversal families `A : ι → Finset α`, the circuit
+predicate — whereas the project's combinatorial core (Phases 1–11)
+deliberately works `Set`-side with `Set.ncard` and `[Finite V]` (see
+*`Set.ncard` over `Finset.card`* above and the resolved *Typeclass shape
+for finiteness on `V`* note under *Choices to revisit* below). The
+question for the downstream body-bar phases
+is whether that mismatch leaks across the API boundary. Checked against
+the exported Phase-12 signatures (2026-06):
+
+- **Independence is clean `Set`.** `union_indep_iff` /
+  `union_indep_iff'` quantify over `Is : ι → Set α` and speak in
+  `(Matroid.Union Ms).Indep (I : Set α)`. Consumers touch no `Finset`
+  (modulo a `[DecidableEq α]` that `classical` discharges).
+- **The partition theorem is *forked*, and the fork is the real
+  friction axis** — not `Set`/`Finset` per se, but the *rank flavor*
+  coupled to the finiteness typeclass:
+  - `matroid_partition'` — `ℕ`-valued, `Finset`-flavored: `∃/∀ Y :
+    Finset α`, `M.rk Y`, `(Finset.univ \ Y).card`, `(M₁.union M₂).rank`;
+    needs `[DecidableEq α] [Fintype α]`.
+  - `matroid_partition_eRk'` — `ℕ∞`-valued, `Set`-flavored: `∃ Y : Set
+    α, M₁.eRk Y + M₂.eRk Y + (univ \ Y).encard = (M₁.union M₂).eRank`;
+    needs only `[DecidableEq α] [Finite α]`.
+
+  So the genuine recurring cost across Phases 13–15 is the `rk` (ℕ) /
+  `eRk` (ℕ∞) / `ncard`·`card` (counting) triple plus the
+  `Fintype`+`DecidableEq` vs `Finite` plumbing. `Finset` leaks *only*
+  into the `ℕ` form — which is exactly the form tree-packing (Phase 13)
+  reaches for, since `(k,ℓ)`-sparsity is a natural-number edge-count
+  condition.
+
+**Two decisions that keep this contained — no big refactor.** The
+vendored layer already ships *both* bracketing forms (`Finset`/`ℕ`/
+`Fintype` and `Set`/`ℕ∞`/`Finite`), so rewriting its internals to `Set`
+buys nothing the brackets don't already give; that option is rejected
+(it would also cost the byte-closeness to upstream the vendoring
+decision values). Instead:
+
+1. **Phase 13's `Graph`-native `(k,ℓ)`-sparsity is defined `Set`-side** —
+   `Set.ncard` of edge sets, `ℕ`, `[Finite]` — matching both the
+   Phases-1–11 convention and the eventual adapter output, so there is
+   exactly one conversion layer (sparsity-count ↔ matroid-rank), not
+   two. Reaching for `Finset.card` because the Phase-12 internals are
+   `Finset`-flavored is the trap that would double the glue.
+2. **A thin rank adapter, built at Phase 13's open** (not speculatively
+   now): one file restating the partition theorem in `Set`-`Y` / `ℕ` /
+   `Set.ncard` / `[Finite]` idiom for the `k`-fold `cycleMatroid` union
+   over a finite edge type, discharging the `Fintype`/`DecidableEq`/
+   finite-rank plumbing and the `ℕ∞ → ℕ` conversion once, so Phases
+   13–15 see a single clean `ncard`/`ℕ` surface. Reserved, not written
+   ahead of its first concrete consumer (cf. *Reshape past results in
+   place* — build against a real caller, don't guess the interface).
+   Decided 2026-06 ("document now, build at Phase 13 open").
+
+---
+
 ## Strengthen the existing lemma, don't proliferate variants
 
 When a downstream proof needs a lemma close to one that already
