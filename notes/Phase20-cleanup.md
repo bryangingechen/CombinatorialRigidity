@@ -1,7 +1,8 @@
 # Phase 20 cleanup round (work log)
 
-**Status:** in progress. Round-opening commit lands the comprehensive A–D
-sweep checklist (this file) + the ROADMAP Status row; no fixing has begun.
+**Status:** in progress. A3 (the round's one real fix) landed; A1 + B4
+confirmed no-op. Remaining: A2 / B1–B3 / C1 / D1 / D2 — see the checklist
+and *Hand-off* below.
 
 Between-phases cleanup round, run after Phase 20 (combinatorial induction →
 Theorem 4.9, KT §3.4–3.5 + §4) closed in `144e3b5` and before Phase 21
@@ -55,13 +56,35 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ### Bucket A — Blueprint ↔ Lean divergence
 
-- [ ] **A1** — per-node statement-form check. Walk all 30 `\lean`-pinned
-  nodes in `molecular-induction.tex` (32 labels − `rem:kt-lemma-41`,
-  `rem:kt-lemma-44` which are prose remarks, − `ex:kt-41-overquantified`
-  which is the A3 orphan): compare each blueprint statement form against the
-  Lean signature (hypotheses incl. the `2 ≤ bodyBarDim n` / `3 ≤ bodyBarDim
-  n` / `V(G).Nonempty` / `a ≠ b` side-conditions that vary across nodes,
-  conclusion form, implicit/explicit binders). Flag any mismatch.
+- [x] **A1** — per-node statement-form check. DONE; **no-op** (no
+  mismatch). Walked all 28 `\lean`-pinned nodes (30 declarations, since
+  `lem:circuit-induces-rigid` / `lem:splitoff-deficiency` /
+  `lem:reduction-measure` / `lem:reduction-step` each pin two names),
+  comparing every blueprint statement form against the Lean signature
+  (`Molecular/Induction.lean`). All names resolve and every form agrees:
+  - **Side-conditions track the blueprint's stated `D` bounds exactly.**
+    `D ≥ 1` (`circuit_induces_isRigidSubgraph`, the `rank_*`/`contract_*`
+    chain, `splitOff_deficiency_{le,ge}`, `kt_lemma_41_overquantified`'s
+    `1 ≤ bodyBarDim n`); `D ≥ 2` (`removeVertex_deficiency_ge`,
+    `dof_tracking`, `isBase_vfiber_ncard_ge`, `exists_balanced_forest_packing`,
+    `forest_surgery_{count,split}`, `no_rigid_edge_count`,
+    `splitOff_isMinimalKDof`); `D ≥ 3` (`exists_degree_{le,eq}_two`,
+    `minimal_kdof_reduction`). `lem:reducible-vertex` carries `2 ≤ |V(G)|`
+    (`hV2`); `lem:reduction-measure` contraction half carries `2 ≤ |V(H)|`
+    (`hH2`); `forest_surgery_{count,split}` carry `a ≠ b` (`hab`). Each
+    matches the blueprint's explicit hypothesis text.
+  - **ℕ-subtraction-free restatements** are the expected project idiom and
+    match: `|X−e| = D(|V(X)|−1)` is `circuit_induces_isTight`'s
+    `(X∖{e}).ncard + D = D·|V(X)|`; `|I'| = |I|−D` is `forest_surgery_count`'s
+    `(⋃ Fs').ncard + D = I.ncard`; `ex:kt-41-overquantified`'s `|I'|+D=0` is
+    verbatim.
+  - **Benign extra side-conditions** (not a mismatch): several
+    contraction/deficiency nodes carry a `V(G).Nonempty` / `V(H).Nonempty`
+    (`hVGne`/`hVHne`) the blueprint statement does not spell out; these are
+    implied by the node's degree-2 / subgraph hypotheses and are the
+    standard `deficiency`/`rank_add_deficiency_eq` precondition. No blueprint
+    edit warranted — the prose already names the substantive hypotheses.
+  build confirmed green (`lake build CombinatorialRigidity.Molecular.Induction`).
 - [ ] **A2** — formalization-aside check. Re-read the prose-aside hits
   (molecular-induction.tex L32 "fully formalized, repairing the gloss",
   L247 "Formalizing the forest surgery …", L310 "splitting-off direction is
@@ -104,13 +127,16 @@ from this log alone (CLEANUP.md *Task list discipline*).
   repeated `numParts, numParts` and `mulTilde, edgeMultiply_edgeSet,
   Set.mem_setOf_eq` shapes for a one-line mirror worth extracting (they recur
   3× and 5× respectively).
-- [ ] **B4** — `@[deprecated … (since := "narrative-bridge")]` shim
+- [x] **B4** — `@[deprecated … (since := "narrative-bridge")]` shim
   (`splitOff_deficiency_le_of_forest_surgery`, `cor:forest-surgery-deficiency`).
-  Confirm the shim follows the project pattern (one-line composition, defers
-  to the general `splitOff_deficiency_le`, `since := "narrative-bridge"`
-  sentinel) per `CombinatorialRigidity/CLAUDE.md` *Engineering conventions* +
-  `blueprint/CLAUDE.md` *Narrative-bridge corollaries*. Expected no-op (it
-  was authored to-spec this phase) — confirm, don't re-litigate.
+  DONE; **no-op** (confirmed in passing during A1). Shim is to-spec:
+  `@[deprecated splitOff_deficiency_le (since := "narrative-bridge")]` (the
+  general-form target + sentinel), a one-line composition body
+  (`forest_surgery_split hD hab …`), doc-comment explaining the narrative-
+  bridge intent and the no-caller rationale, blueprint node carries
+  `\lean{Graph.splitOff_deficiency_le_of_forest_surgery}` + `\leanok`.
+  Matches `CombinatorialRigidity/CLAUDE.md` *Engineering conventions* +
+  `blueprint/CLAUDE.md` *Narrative-bridge corollaries*.
 
 ### Bucket C — Long-proof audit
 
@@ -157,6 +183,13 @@ from this log alone (CLEANUP.md *Task list discipline*).
   anonymous `example`, so blueprint node `ex:kt-41-overquantified` carries a
   `\lean{...}` pointer instead of an orphan comment. No friction (trivial
   `rintro`/`rw [Set.ncard_empty]`/`omega` proof, unchanged).
+- **A1 + B4 (no-op confirmations).** All 28 `\lean`-pinned nodes match
+  their Lean signatures (A1); the forest-surgery narrative-bridge shim is
+  to-spec (B4). No blueprint/Lean edits — confirmation only. Detail in the
+  A1/B4 checklist entries above. The `D ≥ 1/2/3` side-condition split is the
+  only systematic variation across nodes and it tracks the blueprint text
+  exactly; the only deltas are benign `V(·).Nonempty` preconditions implied
+  by each node's stated hypotheses.
 
 ## Blockers / open questions
 
@@ -167,13 +200,14 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** execute **A1** — the per-node
-statement-form check across the 30 `\lean`-pinned nodes in
-`molecular-induction.tex` (compare each blueprint statement form against the
-Lean signature, flagging side-condition / binder / conclusion mismatches).
-Expected mostly no-op; lands as a confirmation commit (or a fix commit if a
-mismatch surfaces). The round's single known real fix (A3, the carry-forward
-seed) is **done**; the remaining A1/A2/B1–B4/C1/D1/D2 items are sweeps
-expected mostly no-op. No-op audit items may be batched into a single
-confirmation commit per the round brief. Close the round by flipping the
-ROADMAP Status row to ✓.
+**Smallest concrete next commit:** execute **A2** — the
+formalization-aside check on the `molecular-induction.tex` prose-aside hits
+(L32, L247, L310, L340, L639, L979 per the A2 checklist entry), classifying
+each as allowed one-clause modelling aside vs. the Phase-18 A2 basis-free /
+changelog-not-math anti-pattern to collapse. Expected mostly no-op given the
+chapter's phase-end re-read; lands as a confirmation commit (or a small TeX
+fix if a changelog aside surfaces). **A1, A3, B4 are done** (A1/B4 no-op,
+A3 the real fix). Remaining: A2 / B1–B3 / C1 / D1 / D2 — sweeps expected
+mostly no-op; B1–B3/C1 may be batched into one confirmation commit. D1
+(`notes/Phase20.md` 1089 lines, far over budget) is the other genuine
+substance item. Close the round by flipping the ROADMAP Status row to ✓.
