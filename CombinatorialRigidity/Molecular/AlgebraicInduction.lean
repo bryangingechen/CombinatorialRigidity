@@ -706,6 +706,51 @@ theorem finrank_pinnedMotions_le_withGraph [Finite α] (F : BodyHingeFramework k
       Module.finrank ℝ ((F.withGraph G').pinnedMotions v) :=
   Submodule.finrank_mono (F.pinnedMotions_le_withGraph v hle)
 
+/-- **The Case II inclusion is tight when the re-added edges' constraints are met**
+(`lem:case-II`, the genericity-gated equality; Katoh–Tanigawa 2011 §6.3 Claim 6.9): for
+`G' ≤ F.graph`, the body-`v`-pinned motions of the framework on the parent graph `F.graph`
+*equal* those on the smaller graph `G'` — `F.pinnedMotions v = (F.withGraph G').pinnedMotions v` —
+provided every base-`v`-pinned motion of `F.withGraph G'` already satisfies the hinge constraint of
+each *re-added* edge (every link `e u w` of `F.graph` that is not a link of `G'`), the hypothesis
+`hnew`. The `≤` direction is the unconditional `pinnedMotions_le_withGraph` (re-adding edges only
+shrinks the pin); the reverse `≥` is exactly `hnew` — a base-pinned motion `S` (with `S v = 0`) is
+parent-pinned iff it meets the two new `v`-incident constraints `S a ∈ span C(e_a)`,
+`S b ∈ span C(e_b)`. That is the honest content of Claim 6.9's general position: the splitting-off
+`G_v^{ab} = G'` carries `v`'s two new hinge edges `e_a, e_b` (the only links of `F.graph` outside
+`G'`), and `hnew` is the requirement that the inductive base motions clear them — supplied
+downstream by placing the two new supporting extensors in general position
+(`exists_independent_panelSupportExtensor`). The constraints of edges already in `G'` are met
+automatically (the supporting extensors are untouched by `withGraph`,
+`withGraph_supportExtensor`). Composing with the `+D` rank-lift
+`rankHypothesis_withNormal_iff_finrank_pinnedMotions` closes `lem:case-II`'s rank step up to the
+vertex-level splitting-off op `G_v^{ab}`. -/
+theorem pinnedMotions_withGraph_eq (F : BodyHingeFramework k α β) (v : α)
+    {G' : Graph α β} (hle : G' ≤ F.graph)
+    (hnew : ∀ S ∈ (F.withGraph G').pinnedMotions v, ∀ e u w, F.graph.IsLink e u w →
+      ¬G'.IsLink e u w → F.hingeConstraint S e u w) :
+    F.pinnedMotions v = (F.withGraph G').pinnedMotions v := by
+  refine le_antisymm (F.pinnedMotions_le_withGraph v hle) (fun S hS => ?_)
+  refine ⟨fun e u w he => ?_, hS.2⟩
+  by_cases hg : G'.IsLink e u w
+  · exact hS.1 e u w hg
+  · exact hnew S hS e u w he hg
+
+/-- **Rank form of `pinnedMotions_withGraph_eq`** (`lem:case-II`, the genericity-gated equality):
+under the same hypothesis `hnew` that every base-`v`-pinned motion clears the re-added edges'
+constraints, the body-`v`-pinned dimension is *equal* on the parent graph and the smaller graph,
+`finrank (F.pinnedMotions v) = finrank ((F.withGraph G').pinnedMotions v)`. This is what turns the
+unconditional inequality `finrank_pinnedMotions_le_withGraph` into the exact count the `+D`
+rank-lift
+needs: the extended framework's `v`-pinned dimension is the inductive realization's, so the
+1-extension lifts the rank by exactly `D`. Immediate from `pinnedMotions_withGraph_eq`. -/
+theorem finrank_pinnedMotions_withGraph_eq [Finite α] (F : BodyHingeFramework k α β) (v : α)
+    {G' : Graph α β} (hle : G' ≤ F.graph)
+    (hnew : ∀ S ∈ (F.withGraph G').pinnedMotions v, ∀ e u w, F.graph.IsLink e u w →
+      ¬G'.IsLink e u w → F.hingeConstraint S e u w) :
+    Module.finrank ℝ (F.pinnedMotions v) =
+      Module.finrank ℝ ((F.withGraph G').pinnedMotions v) := by
+  rw [F.pinnedMotions_withGraph_eq v hle hnew]
+
 end BodyHingeFramework
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)
@@ -1038,6 +1083,47 @@ theorem finrank_toBodyHinge_pinnedMotions_le_withGraph [Finite α]
     Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) ≤
       Module.finrank ℝ ((P.withGraph G').toBodyHinge.pinnedMotions v) :=
   Submodule.finrank_mono (P.toBodyHinge_pinnedMotions_le_withGraph v hle)
+
+omit [DecidableEq α] in
+/-- **The panel-framework Case II inclusion is tight when the re-added edges' constraints are met**
+(`lem:case-II`, the genericity-gated equality; KT 2011 §6.3 Claim 6.9): the panel-layer
+specialization of `pinnedMotions_withGraph_eq`. For `G' ≤ P.graph`, the body-`v`-pinned motions of
+the panel framework on the parent graph `P.graph` *equal* those on the smaller graph `G'` —
+`P.toBodyHinge.pinnedMotions v = (P.withGraph G').toBodyHinge.pinnedMotions v` — provided every
+base-`v`-pinned motion of `P.withGraph G'` already satisfies the hinge constraint of each re-added
+edge (`hnew`). Reads with `P` on the parent graph `G = P.graph` carrying `v`'s two new hinge edges
+and `P.withGraph G'` on the splitting-off `G_v^{ab} = G'`: the inductive realization of `G_v^{ab}`
+*equals* the extended framework's `v`-pinned motions once `hnew` clears the two new edges (the
+honest
+content of Claim 6.9's general position, supplied by `exists_independent_panelSupportExtensor`). The
+panel `withGraph` commute identity `toBodyHinge_withGraph` routes the body-hinge equality onto the
+panel layer with coplanarity preserved (the panel normals are untouched). Composing with the `+D`
+rank-lift `rankHypothesis_withNormal_iff_finrank_pinnedMotions` closes `lem:case-II`'s rank step up
+to the vertex-level splitting-off op `G_v^{ab}` (green in Phase 20). -/
+theorem toBodyHinge_pinnedMotions_withGraph_eq (P : PanelHingeFramework k α β) (v : α)
+    {G' : Graph α β} (hle : G' ≤ P.graph)
+    (hnew : ∀ S ∈ (P.withGraph G').toBodyHinge.pinnedMotions v, ∀ e u w,
+      P.graph.IsLink e u w → ¬G'.IsLink e u w → P.toBodyHinge.hingeConstraint S e u w) :
+    P.toBodyHinge.pinnedMotions v = (P.withGraph G').toBodyHinge.pinnedMotions v := by
+  rw [P.toBodyHinge_withGraph G']
+  exact P.toBodyHinge.pinnedMotions_withGraph_eq v hle hnew
+
+omit [DecidableEq α] in
+/-- **Rank form of `toBodyHinge_pinnedMotions_withGraph_eq`** (`lem:case-II`, the genericity-gated
+equality): under the same hypothesis `hnew`, the panel framework's body-`v`-pinned dimension is
+*equal* on the parent graph and the smaller graph,
+`finrank (P.toBodyHinge.pinnedMotions v) = finrank ((P.withGraph G').toBodyHinge.pinnedMotions v)`.
+This is the exact count the `+D` rank-lift `rankHypothesis_withNormal_iff_finrank_pinnedMotions`
+needs: the extended panel framework's `v`-pinned dimension is the inductive realization's, so the
+1-extension lifts the realized rank by exactly `D`. Immediate from
+`toBodyHinge_pinnedMotions_withGraph_eq`. -/
+theorem finrank_toBodyHinge_pinnedMotions_withGraph_eq [Finite α]
+    (P : PanelHingeFramework k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph)
+    (hnew : ∀ S ∈ (P.withGraph G').toBodyHinge.pinnedMotions v, ∀ e u w,
+      P.graph.IsLink e u w → ¬G'.IsLink e u w → P.toBodyHinge.hingeConstraint S e u w) :
+    Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) =
+      Module.finrank ℝ ((P.withGraph G').toBodyHinge.pinnedMotions v) := by
+  rw [P.toBodyHinge_pinnedMotions_withGraph_eq v hle hnew]
 
 end PanelHingeFramework
 

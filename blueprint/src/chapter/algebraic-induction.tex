@@ -564,9 +564,12 @@ Cases~I and~II travel toward the smaller inductive graph.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotions,
         CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions,
         CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotions_le_withGraph,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_le_withGraph}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_le_withGraph,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotions_withGraph_eq,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_withGraph_eq}
   \leanok
-  \uses{def:rank-hypothesis, lem:rank-delete-vertex, def:framework-with-graph}
+  \uses{def:rank-hypothesis, lem:rank-delete-vertex, def:framework-with-graph,
+        lem:exists-independent-panel-extensor}
   In the codimension form of \cref{sec:molecular-rigidity-matrix},
   re-inserting (equivalently, pinning) a body $v$ shifts the realization
   count by exactly $D$. A framework $F$ realizes the target
@@ -587,7 +590,17 @@ Cases~I and~II travel toward the smaller inductive graph.
   can only \emph{shrink} the body-$v$-pinned motions, so the inductive
   realization of $G_v^{ab}$ bounds the extended framework's body-$v$-pinned
   dimension from above (the residual cut by the two new edges is the
-  genericity-gated Claim~6.9 step).
+  genericity-gated Claim~6.9 step). That inclusion is \emph{tight} exactly
+  when every base-$v$-pinned motion of $G_v^{ab}$ already clears the two
+  re-added $v$-incident hinge constraints $S a \in \operatorname{span}
+  C(e_a)$, $S b \in \operatorname{span} C(e_b)$ (a base-pinned motion has
+  $S v = 0$): under that hypothesis the body-$v$-pinned motions on $G$ and
+  on $G_v^{ab}$ \emph{coincide}, so the extended framework's pinned
+  dimension equals the inductive realization's and the $1$-extension lifts
+  the rank by exactly $D$. The hypothesis is the honest content of
+  Claim~6.9's general position --- supplied by placing the two new
+  supporting extensors in general position
+  (\cref{lem:exists-independent-panel-extensor}).
 \end{lemma}
 \begin{proof}
   \leanok
