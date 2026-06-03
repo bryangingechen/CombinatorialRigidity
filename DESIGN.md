@@ -849,6 +849,79 @@ induction); `notes/MolecularConjecture.md` risk #7 + Phase-21/21a detail;
 
 ---
 
+## Genericity device (Claim 6.4/6.9) is its own sub-phase (Phase 21b)
+
+**The device.** KT's algebraic induction rests on one analytic crux,
+their Claim 6.4 (and its Case-II twin Claim 6.9): the entries of the
+panel-hinge rigidity matrix `R(G,p)` are polynomials in the
+algebraically independent panel coordinates, so the rank is a lower
+semicontinuous function that attains its maximum on a Zariski-open
+(generic) set; hence a *single* good realization at the target rank
+lifts to a *generic* realization at that rank. This is the
+rank/dimension-count argument that every "place the pieces, then make
+them generic" step in §5–6 invokes. It is shared, verbatim in spirit,
+by `lem:case-I` (block-triangular gluing of a contraction + a pinned
+rigid block), `lem:case-II` (the 1-extension's `+D` rank lift,
+discharging `hspan`), `thm:theorem-55` (the induction conjoins the
+per-case generic realizations), `prop:rigidity-matrix-prop11` (the
+generic-rank = `D(|V|−1) − def` reconciliation, JJ 2009 Thm 6.1
+geometric side), and `lem:cycle-realization` (the projective assembly
+of the cycle's independent extensors into one rigid realization).
+
+**Decision (2026-06-03): scope the device OUT of Phase 21 into a
+focused sub-phase, Phase 21b** — the analytic sibling of the Phase-21a
+meet sub-phase. Phase 21 closes on the **genericity-free content**: the
+per-case reductions are formalized in full, with the genericity device
+entering each remaining node as an **explicit cited input / black-box
+hypothesis**. The surrounding reductions are then *fully formal modulo
+that one device*, exactly as `lem:cycle-realization`'s four Lean pieces
+already sit around its cited projective assembly. This is the same
+move that worked for the meet (21a): isolate the one genuinely new,
+shared, hard ingredient as its own dependency-ordered sub-phase rather
+than re-deriving it inline in four places, and let the consumers cite
+it.
+
+**Why a sub-phase and not inline.** The device is (i) *shared* by four
+nodes — proving it once and citing it avoids four parallel
+rank-count derivations; (ii) *genuinely new analytic infrastructure*
+(the panel-coordinate parametrization + a generic-max-rank /
+lower-semicontinuity argument over it), large enough to warrant its
+own forward-mode chapter and notes file; and (iii) *separable* — the
+non-genericity reductions (graph ops, block-pin accounting,
+edge-substitution bridges, the `hnew`/`hspan` reduction) are
+self-contained and already mostly green, so closing Phase 21 on them
+does not wait on the device.
+
+**Contract for Phase 21's remaining nodes.** Each red node
+(`lem:case-I`, `lem:case-II`, `thm:theorem-55`,
+`prop:rigidity-matrix-prop11`) is to be stated/closed with the
+genericity conclusion supplied as a named hypothesis or cited lemma
+(the Phase-21b deliverable), so that the node is GREEN-modulo-21b: its
+Lean either takes the device's conclusion as an input or `\uses` the
+forthcoming 21b node. The node-by-node split — what each needs *from*
+the device vs. what is genericity-free and formalized in Phase 21 — is
+in `notes/Phase21.md` *Hand-off*. `lem:case-III` is unaffected (it was
+already deferred to Phases 22–23, where the device is also consumed).
+
+**What Phase 21b will contain (scoped at open).** The panel-coordinate
+parametrization of `R(G,p)` (entries as polynomials in the per-vertex
+normals), the generic-max-rank lemma over that family (rank lower
+semicontinuity / a Zariski-open attainment argument — assess on
+contact whether the Phase 6/8 Gram-det perturbation machinery transfers
+or a fresh polynomial-rank argument is needed), and the discharge of
+each consumer's cited hypothesis (`hspan` for Case II, the
+block-triangular generic gluing for Case I, the cycle projective
+assembly for `lem:cycle-realization`, the generic-rank reconciliation
+for Prop 1.1). Its own notes file `notes/Phase21b.md` and blueprint
+section open when the sub-phase starts.
+
+Cross-refs: KT 2011 §6.1 (Claim 6.4), §6.3 (Claim 6.9), Lemma 6.3;
+Jackson–Jordán 2009 Thm 6.1 (the Prop 1.1 analytic side);
+`notes/MolecularConjecture.md` risk #4/#7 + Phase-21/21b detail;
+`notes/Phase21.md` *Hand-off*.
+
+---
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually

@@ -1,14 +1,17 @@
 # Molecular Conjecture — cross-phase program plan
 
-**Status:** IN PROGRESS. Phases 17–20 complete (`M(G̃)`, deficiency,
-`k`-dof, def = corank bridge, and the Theorem-4.9 combinatorial
-induction all green; see `notes/Phase19.md`, `notes/Phase20.md`). Phase
-21 (algebraic induction) is **paused mid-stream** for a modeling
-re-scope: the panel-hinge = hinge-coplanar body-hinge gap (risk #7 +
-`DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge*) means the panel
-layer must be added before Cases I–III and Lemma 5.4 are built. Phases
-22–26 planned. This is the program design for Phases 17–26 and the
-runbook for threading the remaining phases.
+**Status:** IN PROGRESS. Phases 17–20 + 21a complete (`M(G̃)`,
+deficiency, `k`-dof, def = corank bridge, the Theorem-4.9 combinatorial
+induction, and the Grassmann–Cayley meet all green; see
+`notes/Phase19.md`, `notes/Phase20.md`, `notes/Phase21a.md`). Phase 21
+(algebraic induction) has **resumed** with the panel layer green, and
+has been **re-scoped to close on the genericity-free content**: the
+shared analytic crux Claim 6.4/6.9 (the genericity device) is scoped out
+into its own sub-phase **Phase 21b**, entering Phase 21's remaining
+nodes as a cited black-box (risk #4/#7 + `DESIGN.md` *Genericity device
+(Claim 6.4/6.9) is its own sub-phase (Phase 21b)*). Phases 21b, 22–26
+planned. This is the program design for Phases 17–26 and the runbook for
+threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
 summary + status row); this file is the lemma-level detail.
@@ -193,16 +196,18 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 19 | `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof, rigid subgraphs, def=corank (JJ Thm 6.1 / Cor 6.2); Lem 3.1/3.3/3.4 | §2.5, §3 | 3 |
 | 20 | Combinatorial induction: graph ops + forest surgery 4.1/4.2 + 4.3–4.8 + **Theorem 4.9** | §4 | 4 |
 | 21a | **GC meet / projective-duality foundations** (the dual half of §2.1): `topEquiv`, `pairingDual`-iso, `complementIso`, `meet` — the substrate the panel layer + Lemma 5.4 + Phase 25 rest on | §2.1 (dual half) | 1 |
-| 21 | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8) + genericity (Claim 6.4); **+ panel layer** (coplanar realizations) | §5, §6.1–6.3 | 5 |
+| 21 | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8), closing on the **genericity-free** content; **+ panel layer** (coplanar realizations). Genericity (Claim 6.4/6.9) enters as a cited black-box. | §5, §6.1–6.3 | 5 |
+| 21b | **Genericity device** (Claim 6.4/6.9): the panel-coordinate parametrization of `R(G,p)` + generic-max-rank argument — the shared analytic crux of Cases I/II, Thm 5.5, Prop 1.1, and the cycle assembly. Discharges the cited black-box left by Phase 21. | §6.1 (Claim 6.4), §6.3 (Claim 6.9) | 5 |
 | 22 | **Case III, `d=3`** (Lemma 6.10): Claim 6.11 (combinatorial↔linear bridge), Claim 6.12 (extensor-span genericity), 3 candidates | §6.4.1 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
 
-**This is a floor of 11 phases** (10 originally; +1 for the Phase-21a
-meet foundations inserted by the 2026-06-03 panel re-scope, risk #7).
-Phases 18, 21, and 22/23 each carry
+**This is a floor of 12 phases** (10 originally; +1 for the Phase-21a
+meet foundations inserted by the 2026-06-03 panel re-scope, risk #7;
++1 for the Phase-21b genericity-device sub-phase scoped out of Phase 21
+the same day, risk #4/#7). Phases 18, 21, and 22/23 each carry
 enough that one or two may split once inside them (precedent: Phases
 8–11 spawned perf/cleanup rounds and structural-edit sub-phases). The
 program is the largest single undertaking in the project to date —
@@ -335,35 +340,82 @@ body-hinge*.
 
 #### Phase 21 — Theorem 5.5 base + Cases I & II (§5, §6.1–6.3)
 
-**Re-scoped + paused 2026-06-03 (panel re-scope, risk #7).** Theorem 5.5
-and the realization-existence nodes must be stated over **panel**
-(hinge-coplanar) realizations, not free body-hinge ones — so Phase 21 is
-gated on the Phase-21a meet foundations, after which it resumes by adding
-the panel layer (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar`),
-then Lemma 5.4 (panel cycle realization, *formalized* not cited), then the
-re-scoped Cases. The regime-agnostic rank nodes landed so far stay green.
-See `DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge* + `notes/Phase21.md`.
+**Re-scoped 2026-06-03 (panel re-scope, risk #7; genericity scope-out,
+risk #4/#7), resumed and building.** Two re-scopes landed this day:
+(1) Theorem 5.5 and the realization-existence nodes are stated over
+**panel** (hinge-coplanar) realizations, not free body-hinge ones — the
+panel layer (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar`),
+gated on the Phase-21a meet, is now green; (2) the shared analytic crux
+Claim 6.4/6.9 (the genericity device) is **scoped out into Phase 21b**,
+so Phase 21 aims to **close on the genericity-free content** with the
+device entering each remaining node as a **cited black-box**. See
+`DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge* +
+*Genericity device (Claim 6.4/6.9) is its own sub-phase (Phase 21b)*,
+and `notes/Phase21.md` *Hand-off* for the node-by-node split.
 
 The induction skeleton on `|V|` with hypothesis (6.1) and the
 "nonparallel if simple" side condition. Base (`|V|=2`, via Lemma 5.3).
 **Case I** (proper rigid subgraph): §6.2 Lemmas 6.2 (non-simple), 6.3
-(simple, simple contraction; Claim 6.4 genericity), 6.5 (remaining;
-Claim 6.6). **Case II** (`k>0`, splitting): §6.3 Lemmas 6.7, 6.8
-(Claim 6.9) — the panel-hinge analogue of Whiteley's bar-joint
-1-extension. Cycle Lemma 5.4 ([4,34]) — formalize or axiomatize.
+(simple, simple contraction; Claim 6.4 genericity → 21b), 6.5
+(remaining; Claim 6.6). **Case II** (`k>0`, splitting): §6.3 Lemmas
+6.7, 6.8 (Claim 6.9 → 21b) — the panel-hinge analogue of Whiteley's
+bar-joint 1-extension. Cycle Lemma 5.4 ([4,34]) — its four Lean pieces
+are green; the projective assembly is the 21b genericity device.
 
-- **Hard core:** Claim 6.4 / Lemma 6.3 genericity ("entries are
+- **Genericity-free hard core (Phase 21):** the panel layer, the
+  block-pin / `withGraph` / `withNormal` framework ops, the
+  block-triangular rank *accounting* (reusing Phase 18 Lemma 5.1), the
+  edge-substitution bridge, and the `hnew`/`hspan` reduction. The
+  *analytic* hard core — Claim 6.4 / Lemma 6.3 genericity ("entries are
   polynomials in alg.-indep. panel coords ⇒ generic point attains max
-  rank over the parametrized family"); Lemma 6.8's 1-extension rank
-  lift. Rank arguments are block-triangular (reuse Phase 18 Lemma 5.1).
+  rank") and Lemma 6.8's generic 1-extension lift — is **Phase 21b**.
 - **Inherited from Phase 19** (relocated at Phase-19 close): the analytic
   half of `prop:rigidity-matrix-prop11` (KT Prop 1.1) — `rank R(G,p) =
   D(|V|−1) − def(G̃)` (JJ [15] Thm 6.1 geometric side), wiring the
   rigidity-matrix rank `R(G,p)` (Phase 18) to the matroid corank
-  (`def = corank M(G̃)`, Phase 19's `thm:def-eq-corank`). It lands with
-  the Claim 6.4 generic-rank argument; (re)create the blueprint node in
-  this phase's chapter then. The matroidal half is already green.
-- Broad phase — may split Case I from Case II.
+  (`def = corank M(G̃)`, Phase 19's `thm:def-eq-corank`). Its node is
+  stated in this phase's chapter `\uses`ing the 21b device; the
+  generic-rank conclusion itself lands in **Phase 21b**. Matroidal half
+  already green.
+- Split realized: Phase 21 = genericity-free reductions; Phase 21b =
+  the device. Case I vs Case II may still split within Phase 21.
+
+#### Phase 21b — Genericity device (Claim 6.4/6.9) (§6.1, §6.3)
+
+Scoped out of Phase 21 on 2026-06-03 (risk #4/#7), the analytic sibling
+of the Phase-21a meet sub-phase. The one genuinely new analytic crux of
+KT's algebraic induction: the entries of the panel-hinge rigidity matrix
+`R(G,p)` are polynomials in the algebraically independent panel
+coordinates (the per-vertex normals), so the rank is lower
+semicontinuous and attains its maximum on a Zariski-open (generic) set —
+a single good realization at the target rank lifts to a generic one
+(Claim 6.4, and its Case-II twin Claim 6.9). This is the shared
+black-box that Phase 21 leaves cited in `lem:case-I`, `lem:case-II`,
+`thm:theorem-55`, `prop:rigidity-matrix-prop11`, and the projective
+assembly of `lem:cycle-realization`; Phase 21b discharges it once and
+the consumers `\uses` it.
+
+- **Scope (at open):** the panel-coordinate parametrization of `R(G,p)`
+  (entries as polynomials in the normals), the generic-max-rank lemma
+  over that family, and the discharge of each consumer's cited
+  hypothesis — `hspan` for Case II (every base-pinned motion lands in
+  the two new spans, via the rank count), the block-triangular generic
+  gluing for Case I, the cycle projective assembly, and the generic-rank
+  reconciliation for Prop 1.1.
+- **Reuse to assess on contact:** the Phase 6/8 Gram-det perturbation
+  machinery (`Mathlib/LinearAlgebra/Matrix/Rank.lean`,
+  `exists_uniform_rowIndependent_placement`-style arguments) is the
+  natural candidate; the Phase-21a finding was that the *cycle*
+  genericity was purely exterior-algebraic (no perturbation), so assess
+  whether the panel-coordinate rank argument is polynomial-perturbation
+  or reduces similarly. Bottoms (for Case III's share) on Lemma 2.1
+  (Phase 17).
+- **Also consumed by Phases 22–23** (Case III's candidate-framework
+  genericity, Claims 6.11/6.12) — building it as its own sub-phase pays
+  off there too.
+- Opens with its own `notes/Phase21b.md` + a blueprint section (likely
+  in `algebraic-induction.tex` beside the consumers, or its own chapter
+  if it grows); follow the *When this commit opens a phase* protocol.
 
 #### Phase 22 — Case III, `d=3` (§6.4.1, Lemma 6.10)
 
@@ -461,13 +513,23 @@ Jackson–Jordán [13], conjecture-resolution to KT.
    generic-rank bridge (JJ Thm 6.1 / Cor 6.2) splits: its **matroidal
    half** `def(G̃) = corank M(G̃)` was *proved in-repo axiom-free* in
    Phase 19 (`thm:def-eq-corank`, no deferral); its **analytic half**
-   `rank R(G,p) = D(|V|−1) − def(G̃)` lands with Claim 6.4 in Phase 21+.
+   `rank R(G,p) = D(|V|−1) − def(G̃)` lands with Claim 6.4 in Phase 21b.
    User scope is "fully formalize". **Lemma 5.4 decision (2026-06-03):
    formalize, not cite** — as genuine *panel* content (the cycle's
    panel realization with independent hinge extensors = the
    Crapo–Whiteley projective fact), its own sub-phase. Supersedes the
    per-phase cite option for 5.4. See risk #7 + `DESIGN.md`
    *Panel-hinge = hinge-coplanar body-hinge*.
+   **Genericity-device decision (2026-06-03):** the shared analytic
+   crux Claim 6.4/6.9 (rank/dimension count: matrix entries polynomial
+   in alg.-indep. panel coords ⇒ generic max rank) is **scoped out of
+   Phase 21 into its own focused sub-phase, Phase 21b** (the analytic
+   sibling of 21a). Phase 21 closes on the genericity-free content,
+   entering the device as a cited black-box in `lem:case-I`,
+   `lem:case-II`, `thm:theorem-55`, `prop:rigidity-matrix-prop11`, and
+   the projective assembly of `lem:cycle-realization`. See `DESIGN.md`
+   *Genericity device (Claim 6.4/6.9) is its own sub-phase (Phase 21b)*
+   + the Phase 21b detail below.
 5. **Molecule equivalence primary source** (Phase 25). Whiteley [35] is
    an unpublished preprint; anchor on Jackson–Jordán [13] (Combinatorica
    2008) for the citable result.

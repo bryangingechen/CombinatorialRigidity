@@ -1,12 +1,22 @@
 # Phase 21 — Algebraic induction: Theorem 5.5 base + Cases I & II (work log)
 
-**Status:** in progress (opened 2026-06-03). The mid-phase
-panel-coplanarity re-scope (the panel-hinge = hinge-coplanar body-hinge
-gap) is **resolved**: the gating foundations sub-phase **Phase 21a**
-(Grassmann–Cayley meet) is complete (`notes/Phase21a.md`,
-`Molecular/Meet.lean`), and the form-(B) panel plan is fixed in DESIGN.md
-*Panel-hinge = hinge-coplanar body-hinge*. Phase 21 has **resumed** with
-the panel layer; the earlier plan-first gate is cleared.
+**Status:** in progress (opened 2026-06-03). Two re-scopes landed
+2026-06-03. (1) The panel-coplanarity re-scope (panel-hinge =
+hinge-coplanar body-hinge) is **resolved**: the gating foundations
+sub-phase **Phase 21a** (Grassmann–Cayley meet) is complete
+(`notes/Phase21a.md`, `Molecular/Meet.lean`), the form-(B) panel plan is
+fixed in DESIGN.md *Panel-hinge = hinge-coplanar body-hinge*, and the
+panel layer is green. (2) **Genericity scope-out (user decision):** the
+shared analytic crux Claim 6.4/6.9 (the rank/dimension-count argument) is
+**scoped out of Phase 21 into its own focused sub-phase, Phase 21b** (the
+analytic sibling of 21a). Phase 21 now **aims to close on the
+genericity-free content**: each remaining red node is formalized in full
+*modulo* the device, which enters as an explicit cited input / black-box
+hypothesis. Decision: DESIGN.md *Genericity device (Claim 6.4/6.9) is its
+own sub-phase (Phase 21b)*; risk #4/#7 + Phase-21b detail in
+`notes/MolecularConjecture.md`. The node-by-node "needs from 21b vs.
+genericity-free and still to formalize" split is the *Hand-off* section
+below.
 
 Stratum 5 of the molecular-conjecture program (the *algebraic* half of
 Katoh–Tanigawa's proof, KT §5, §6.1–6.3). Where Phase 20 reduced every
@@ -656,13 +666,14 @@ decomposition).
 
 ## Blockers / open questions
 
-- **Claim 6.4 / 6.9 genericity** is the new analytic device this phase
-  introduces (matrix entries polynomial in alg.-indep. panel coords ⇒
-  generic max rank). Reuse the Phase 6/8 genericity machinery
-  (`Mathlib/LinearAlgebra/Matrix/Rank.lean` Gram-det LI mirrors,
-  `exists_uniform_rowIndependent_placement`-style perturbation) where it
-  transfers; assess on contact whether the panel-coordinate
-  parametrization needs new infrastructure.
+- **Claim 6.4 / 6.9 genericity — SCOPED OUT to Phase 21b** (user
+  decision 2026-06-03). The shared analytic device (matrix entries
+  polynomial in alg.-indep. panel coords ⇒ generic max rank) is no
+  longer a Phase 21 blocker: it is its own focused sub-phase, entering
+  Phase 21's remaining nodes as a cited black-box (see *Hand-off*
+  node-by-node split + DESIGN.md *Genericity device …*). The
+  reuse-to-assess note (Phase 6/8 Gram-det machinery vs. fresh argument)
+  moves with it to `notes/MolecularConjecture.md` *Phase 21b*.
 - **Panel-coplanarity re-scope (RESOLVED — panel layer now building).**
   The realization-existence nodes as first drafted proved the
   *body-hinge* rank theorem, not the molecular conjecture, because
@@ -680,176 +691,110 @@ decomposition).
   Citation work stands as the source pointer. Lands after the panel
   framework + `IsHingeCoplanar`.
 
+
 ## Hand-off / next phase
 
-**Phase 21 has RESUMED; the panel layer is fully stood up (2026-06-03).**
-Phase 21a (the meet) is complete, the form-(B) panel plan is fixed in
-DESIGN.md, and both panel nodes are green in
-`Molecular/AlgebraicInduction.lean`: `def:panel-support-extensor`
-(`panelSupportExtensor` + `normalsJoin` + the two nonvanishing iffs) and
-`def:panel-hinge-framework` (`PanelHingeFramework` + `toBodyHinge` +
-`BodyHingeFramework.IsHingeCoplanar` + `isHingeCoplanar_toBodyHinge`).
+**Re-scoped 2026-06-03 (user decision): close Phase 21 on the
+genericity-free content; the genericity device is Phase 21b.** The
+shared analytic crux Claim 6.4/6.9 (matrix entries polynomial in
+alg.-indep. panel coords ⇒ generic max rank) is no longer Phase 21
+work — it is sub-phase **21b** (DESIGN.md *Genericity device …*;
+`notes/MolecularConjecture.md` *Phase 21b*). Phase 21's job on each
+remaining red node is to land everything *except* the device, then
+state/close the node with the device's conclusion as a cited
+input / named hypothesis so the node is GREEN-modulo-21b. Do **not**
+follow the prior hand-off's "tackle A′ / continue Case I" framing
+verbatim — A′ (`hspan`) is exactly the genericity content now in 21b.
 
-Green so far: both panel nodes above, the regime-agnostic
-rank/structure facts retained verbatim under the panel layer —
-`def:rank-hypothesis`, `lem:theorem-55-base` (rank content; gains a
-coplanarity conjunct when assembled into the full Theorem 5.5),
-`lem:case-II-rank-lift`, `def:framework-with-graph` +
-`lem:motions-mono-of-graph-le`, `def:pinned-motions-on` — and now the
-**short-cycle base** of Lemma 5.4 (`lem:cycle-realization-base`,
-`toBodyHinge_rankHypothesis_zero`) and its **`|V| ≤ D` dimension bound**
-(`lem:cycle-realization-dim-bound`,
-`card_le_screwDim_of_linearIndependent` +
-`PanelHingeFramework.card_le_screwDim_of_supportExtensor_linearIndependent`) — and now the
-**`m`-body cycle rigidity** (`lem:cycle-realization-rigid`,
-`rankHypothesis_zero_of_cycle` + `toBodyHinge_rankHypothesis_zero_cycle`). All four Lean
-pieces of `lem:cycle-realization` are green; the node itself stays red (its statement is the
-cited projective *existence* assembly, not a single Lean theorem).
-Remaining red: `lem:cycle-realization` (cited assembly only),
-`prop:rigidity-matrix-prop11` (stays body-hinge), `thm:theorem-55`,
-`lem:case-I`, `lem:case-II`, `lem:case-III` (III is 22–23).
+**Green so far (genericity-free, retained):** both panel nodes
+(`def:panel-support-extensor`, `def:panel-hinge-framework`); the
+regime-agnostic rank/structure nodes (`def:rank-hypothesis`,
+`lem:theorem-55-base`, `lem:case-II-rank-lift`,
+`def:framework-with-graph` + `withNormal`, `lem:motions-mono-of-graph-le`,
+`def:pinned-motions-on`, `lem:pinned-motions-on-mono`,
+`lem:pinned-motions-on-rank-bound`); all four Lean pieces of
+`lem:cycle-realization` (`-base`, `-dim-bound`, `-rigid`,
+`-panel-support-extensor-independence`, `-exists-independent-panel-extensor`);
+and Case II's reduction stack (`pinnedMotions_le_withGraph`,
+`pinnedMotions_withGraph_eq` conditional on `hnew`,
+`hnew_of_isLink_incident`, `lem:splitoff-edge-substitution`).
 
-**Genericity-device reduction is now green** — `panelSupportExtensor_
-linearIndependent_iff` reduces the analytic blocker to a concrete
-exterior-power-basis question (see *Current state*). The
-**assess-on-contact** finding the prior hand-off requested: the Phase
-6/8 Gram-det perturbation machinery (`Mathlib/LinearAlgebra/Matrix/Rank
-.lean`) is **not** the right tool — genericity here is purely
-exterior-algebraic, not a real-polynomial-perturbation argument. The
-right device is `exteriorPower.ιMulti_family_linearIndependent_ofBasis`
-(an independent basis-indexed family of `⋀² ℝ^(k+2)`), already in
-mathlib; no new perturbation infrastructure needed.
+### Node-by-node path to close Phase 21
 
-**Independent-family existence is now green** (this commit):
-`exists_independent_normalsJoin` + `exists_independent_panelSupportExtensor`,
-bridged by `normalsJoin_basisFun_orderEmbOfFin`. The witness was a basis
-choice exactly as planned — `m` distinct 2-subsets of `Fin (k+2)` (card cap
-`Fintype.card (Set.powersetCard (Fin (k+2)) 2) = (k+2).choose 2 = D ≥ m`),
-standard basis vectors, `ιMulti_family_linearIndependent_ofBasis` + `.comp`
-of the index injection. No new mathlib needed.
+Four red nodes remain (Case III excepted — deferred to 22–23). For each:
+what it still needs **from the cited 21b device** vs. what is
+**genericity-free and still to formalize in Phase 21**.
 
-**`m`-body cycle rigidity is now green** (this commit):
-`BodyHingeFramework.rankHypothesis_zero_of_cycle` +
-`PanelHingeFramework.toBodyHinge_rankHypothesis_zero_cycle`, staged through
-`eq_succ_of_isInfinitesimalMotion_cycle` /
-`isTrivialMotion_of_isInfinitesimalMotion_cycle`. **No `Graph`-cycle/walk primitive was
-needed** (the prior hand-off's anticipated cost): the cycle is the cyclic index type `Fin m`
-itself (`NeZero m`), edge `i` linking `i`→`i+1`, so the per-edge `S i − S(i+1)` telescope to
-`∑ = 0` by `Equiv.addRight (1 : Fin m)` (a bijection of `Fin m`) and the green
-`eq_zero_of_mem_span_singleton_of_sum_eq_zero` (RigidityMatrix.lean, commit `5d72764`) forces
-constancy. The constant-propagation is an `ℕ`-induction over `Fin.ofNat m j`
-(`Fin.ofNat_val_eq_self` closes the return); the small `Fin` fact
-`Fin.ofNat m p + 1 = Fin.ofNat m (p+1)` is a one-line `Fin.ext` + `simp [Fin.add_def,
-Nat.add_mod]`.
+1. **`lem:case-II`** (KT 6.7/6.8 splitting / 1-extension).
+   - *Genericity-free, still to do in 21:* wire the vertex-level
+     splitting-off op `G_v^{ab}` (green combinatorially in Phase 20)
+     into the panel `withGraph`/`withNormal` carriers **through the
+     `G − v` common lower bound** — the edge-substitution bridge
+     (`removeVertex_le`, `removeVertex_le_splitOff`,
+     `isLink_incident_of_not_removeVertex`) is green, so this is
+     plumbing: instantiate the rank-lift assembly
+     (`rankHypothesis_withNormal_iff_finrank_pinnedMotions`) +
+     tightness (`pinnedMotions_withGraph_eq`) against
+     `splitOff`-via-`removeVertex`, leaving `hnew` as the open
+     hypothesis. This is the **smallest next concrete commit**:
+     assemble the 1-extension rank lift on `G_v^{ab}` with `hnew`
+     (equivalently `hspan`) as an explicit hypothesis on the lemma.
+   - *From 21b (cited):* discharge `hspan` — every base-`v`-pinned
+     motion lands in the two new edges' spans (`S a ∈ span C(e_a)`,
+     `S b ∈ span C(e_b)`). False pointwise; holds by the rank/dimension
+     count. Phase 21's `lem:case-II` `\uses` the 21b node here.
 
-**Case I block-pin rank lower bound is now green** (this commit):
-`BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot` +
-`…screwDim_add_finrank_pinnedMotionsOn_le` — `D + finrank (pinnedMotionsOn s) ≤ finrank Z(G,p)`
-for nonempty `s`, the block analogue (in inequality form) of the single-body pin-a-body equality
-`finrank_pinnedMotions_add_screwDim`. The disjointness routes through the green singleton case
-via `pinnedMotionsOn_le_pinnedMotions`; the bound is `finrank_sup_add_finrank_inf_eq` +
-`finrank_mono` of `trivial ⊔ blockpin ≤ Z(G,p)`. Blueprint node
-`lem:pinned-motions-on-rank-bound` (green), in the Case I section, that the still-red
-`lem:case-I` `\uses`.
+2. **`lem:case-I`** (KT 6.2/6.3/6.5 rigid-subgraph contraction).
+   - *Genericity-free, still to do in 21:* the vertex-level contraction
+     op `G/E(H)` on the panel layer (place panel data on
+     `rigidContract`, green in Phase 20) + the block-triangular rank
+     *accounting*: re-add `E(H)` via `withGraph` (block-pin monotonicity
+     `pinnedMotionsOn_le_withGraph_of_le` + lower bound
+     `screwDim_add_finrank_pinnedMotionsOn_le` are green), reducing
+     `lem:case-I` to "the two blocks' ranks add" with the contraction's
+     inductive rank filling the slack.
+   - *From 21b (cited):* the block-triangular *generic* gluing — that a
+     generic choice makes the combined matrix attain the sum of the two
+     block ranks (Claim 6.4). `lem:case-I` `\uses` the 21b node.
 
-**Case I block-pin graph-monotonicity is now green** (this commit):
-`BodyHingeFramework.pinnedMotionsOn_le_withGraph_of_le` +
-`…finrank_pinnedMotionsOn_le_of_graph_le` — the block-pin analogue of
-`lem:motions-mono-of-graph-le`. Two one-liners: the inclusion is
-`infinitesimalMotions_le_withGraph_of_le` on the first conjunct (the vanishing
-conditions `∀ v ∈ s, S v = 0` are graph-independent), the rank form is
-`Submodule.finrank_mono`. Blueprint node `lem:pinned-motions-on-mono` (green), in the
-Case I section, that the still-red `lem:case-I` `\uses`. The block-pin infra for Case I's
-block-triangular gluing is now fully stocked (`def:pinned-motions-on` + rank lower bound +
-graph monotonicity); the remaining red on Case I is the *vertex-level* contraction op
-`G/E(H)` and the cited Claim 6.4 genericity / block-triangular rank addition.
+3. **`thm:theorem-55`** (the capstone induction).
+   - *Genericity-free, still to do in 21:* the induction on `|V|`
+     wiring `lem:theorem-55-base` (green) + `lem:case-I` + `lem:case-II`
+     over the Phase-20 reduction dichotomy
+     (`minimal_kdof_reduction`, green) + `lem:case-III` (deferred stub).
+     Once Cases I/II are GREEN-modulo-21b, the induction itself is
+     genericity-free assembly; it inherits the 21b citation transitively
+     through the cases.
+   - *From 21b (cited):* none directly — only through Cases I/II/III.
 
-**Panel `withGraph` carrier is now green** (this commit): `PanelHingeFramework.withGraph` +
-the commute identity `toBodyHinge_withGraph`, folded into `def:framework-with-graph`. The
-graph-swap primitive both inductive cases need on the panel layer now exists, and the commute
-identity routes the green body-hinge graph-monotonicity / block-pin rank machinery onto panel
-realizations placed on a smaller graph and re-glued. The combinatorial vertex-level ops
-themselves are already green in Phase 20 (`rigidContract`, `splitOff`, `edgeSplit`).
+4. **`prop:rigidity-matrix-prop11`** (KT Prop 1.1 analytic half).
+   - *Genericity-free, still to do in 21:* the upper-bound /
+     codimension side (`lem:trivial-motions-rank-bound` + deficiency
+     count) and the edge-strip-to-minimal-`k`-dof reduction (re-adding
+     edges only grows rank, `lem:motions-mono-of-graph-le`, green); the
+     matroidal half `def = corank` is green (Phase 19,
+     `thm:def-eq-corank`).
+   - *From 21b (cited):* the generic-max-rank lower bound —
+     `rank R(G,p) = D(|V|−1) − def(G̃)` for generic `(G,p)`, which is
+     Theorem 5.5 pushed through the device. `prop:rigidity-matrix-prop11`
+     `\uses` `thm:theorem-55` (already) and the 21b node.
 
-**Case II panel-normal-extension carrier is now green** (this commit):
-`PanelHingeFramework.withNormal v n` (override `v`'s panel normal via `Function.update`) + its simp
-lemmas (`withNormal_{graph,ends,normal,normal_self}`, `withNormal_normal_of_ne`) + the invariance
-`toBodyHinge_withNormal_supportExtensor_of_ne` (the support extensor at an edge avoiding `v` is
-unchanged). Folded into `def:framework-with-graph` (panel layer), beside the panel `withGraph`. Needs
-`[DecidableEq α]` on its own namespace block. With `withGraph` (to add `v`'s two edges) this is the
-full panel-data carrier for the 1-extension; what remains is wiring it into the rank-lift.
+### What opening Phase 21b will involve
 
-**Case II rank-lift assembly is now green** (this commit):
-`PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions` — the extended framework
-`(P.withNormal v n).toBodyHinge` realizes the rank at `k'` iff `P`'s `v`-pinned motions have
-dimension `k'`, under the no-incident-hinge hypothesis `hv` on `v`. Staged through
-`toBodyHinge_withNormal_{infinitesimalMotions,pinnedMotions}_eq` (panel choice at an unhinged `v`
-leaves `Z`/pins fixed) on the new general `infinitesimalMotions_eq_of_isLink_supportExtensor`
-(motions depend only on the *linking* edges' extensors). The `hv` hypothesis is the honest
-genericity-free content — "`v` is unhinged in the base graph `G_v^{ab}`". See *Current state*.
+Per *When this commit opens a phase* (CLAUDE.md): create
+`notes/Phase21b.md`, add its forward-mode blueprint section (likely in
+`algebraic-induction.tex` beside the consumers — a single
+`lem:genericity-device` / `claim:6.4` node the four consumers `\uses`,
+or its own chapter if it grows), sync the user-facing surfaces, flip the
+21b status row to *in progress*. Scope and reuse-to-assess are in
+`notes/MolecularConjecture.md` *Phase 21b*. The device is **also
+consumed by Phases 22–23** (Case III candidate genericity), so building
+it standalone pays forward.
 
-**Case II graph-half inclusion is now green** (this commit):
-`BodyHingeFramework.pinnedMotions_le_withGraph` (+ rank form
-`finrank_pinnedMotions_le_withGraph`) and the panel layer
-`PanelHingeFramework.toBodyHinge_pinnedMotions_le_withGraph` (+ rank form). The `withGraph` step that
-enlarges `P.graph` to `G` by `v`'s two new edges and the unconditional inclusion
-`pinnedMotions_G(v) ≤ pinnedMotions_{G_v^{ab}}(v)` the prior hand-off anticipated both landed here, as
-predicted via the green `pinnedMotionsOn_le_withGraph_of_le` at the singleton (two
-`pinnedMotionsOn_singleton` rewrites) + `toBodyHinge_withGraph` on the panel layer. Four one-liners,
-axiom-clean, no friction.
-
-**Case II genericity-gated tightness is now green** (this commit):
-`BodyHingeFramework.pinnedMotions_withGraph_eq` (+ rank form `finrank_pinnedMotions_withGraph_eq`)
-and the panel layer `PanelHingeFramework.toBodyHinge_pinnedMotions_withGraph_eq` (+ rank form). The
-equality `F.pinnedMotions v = (F.withGraph G').pinnedMotions v` is conditional on `hnew` — every
-base-`v`-pinned motion of `F.withGraph G'` already clears the re-added edges' hinge constraints
-(`∀ S ∈ … , ∀ e u w, F.graph.IsLink e u w → ¬G'.IsLink e u w → F.hingeConstraint S e u w`). The
-equality landed in one commit given the green `≤` (`pinnedMotions_le_withGraph`): the proof is
-`le_antisymm` of it with a `by_cases G'.IsLink` split (in-`G'` edges close via `hS.1`, the two new
-`v`-edges via `hnew`). The prior hand-off's "assess whether a bridge is needed" resolved to: `hnew`
-*is* the honest genericity-free brick (mirror of the `hv` pattern in the rank-lift assembly), and
-discharging it from `exists_independent_panelSupportExtensor` is the remaining genericity step (a
-base motion has `S v = 0`, so the new constraints are `S a ∈ span C(e_a)`, `S b ∈ span C(e_b)`).
-
-**Case II `hnew` reduction is now green** (this commit): `BodyHingeFramework.hnew_of_isLink_incident`
-+ panel `toBodyHinge_hnew_of_isLink_incident` reduce the `hnew` hypothesis of
-`pinnedMotions_withGraph_eq` to a per-edge single span-membership `S w ∈ span C(e)` at each new
-edge's non-`v` endpoint (using `S v = 0` to collapse the relative-screw difference). Folded into the
-green `lem:case-II-rank-lift` node.
-
-**Correction to the prior hand-off's route (A).** The prior hand-off proposed "show a `v`-pinned base
-motion satisfies `S a ∈ span C(e_a)`, `S b ∈ span C(e_b)`" as a small commit. This is **not a
-theorem pointwise** — a base motion on `G_v^{ab}` (constrained only by `e₀`: `S a − S b ∈ span
-C(e₀)`) does not generally land each of `S a, S b` in the new spans for independently-chosen
-extensors. That is the genuine Claim 6.9 genericity content, which holds via a rank/dimension count,
-not pointwise. The reduction landed this commit (`hnew_of_isLink_incident`) isolates exactly the
-span-memberships (`hspan`) the genericity device must achieve, so the open piece is now sharply
-stated.
-
-**Case II `hinc` incidence brick is now green** (this commit):
-`Graph.isLink_incident_of_not_removeVertex` (`Molecular/Induction.lean`) — a link of `G` lost by
-`removeVertex v` is `v`-incident. This is the graph-side `hinc` hypothesis of
-`hnew_of_isLink_incident` at the Case II common lower bound `G' = G − v`, so the *incidence* side of
-`hnew` (and the `G − v` plumbing) is now fully discharged. Folded into the green
-`lem:splitoff-edge-substitution` blueprint node (now `\lean`s three names). The remaining open piece
-for Case II is sharply isolated to the genericity span membership `hspan` below.
-
-**Smallest next concrete commit:** the edge-substitution graph bridge and the `hinc` incidence brick
-are now both green (`removeVertex_le_splitOff`, `isLink_incident_of_not_removeVertex`); exactly one
-genuinely-open piece remains for `lem:case-II`, plus Case I.
-(A′) Discharge `hspan` (`S w ∈ span C(e)` for the two new edges) via the rank/dimension count of the
-genericity device — *not* a pointwise fact; reuses `exists_independent_panelSupportExtensor` for the
-extensor placement but needs the rank-counting argument to conclude every base-pinned motion lands.
-This is the genuine Claim 6.9 analytic content and the harder of the two; assess on contact whether
-it splits into a smaller commit. With the `G − v` common lower bound and the `hinc`/`hnew` reduction
-both in hand, the remaining plumbing for Case II is to instantiate `withGraph`/`withNormal` against
-`splitOff`-via-`removeVertex` rather than the (false) `splitOff ≤ G`, then feed the chosen generic
-extensors' `hspan`.
-Alternatively continue Case I: place the contraction
-realization (panel data on `rigidContract`) and re-add `E(H)` via `withGraph`; the slack in
-`screwDim_add_finrank_pinnedMotionsOn_le` is the contraction's inductive rank (block-triangular
-gluing). The vertex-level splitting-off / contraction ops (`splitOff`, `rigidContract`) are green
-in Phase 20 combinatorially; the genericity device for both is the same
-`panelSupportExtensor_linearIndependent_iff` + `exists_independent_panelSupportExtensor` pair already
-green for the cycle. Cases carry the panel (coplanarity) requirement automatically (panel
-constructions are `IsHingeCoplanar` by `isHingeCoplanar_toBodyHinge`); III is deferred to 22–23.
+**Smallest next concrete commit (recommended):** state `lem:case-II` as
+a Lean theorem taking the genericity conclusion (`hspan`, or the
+finished generic 1-extension hypothesis) as an explicit hypothesis, and
+discharge everything else (the `G_v^{ab}`-via-`G − v` plumbing into the
+rank-lift assembly + tightness). That takes `lem:case-II` to
+GREEN-modulo-21b and is self-contained; Case I's contraction plumbing is
+the natural parallel follow-up. Either can proceed before 21b lands.

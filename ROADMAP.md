@@ -113,8 +113,9 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-19) | Phase 19 surface (`Molecular/Deficiency.lean`, `deficiency.tex` `sec:molecular-deficiency` nodes) | ✓ Complete (all A–D audits no-op; see `notes/Phase19-cleanup.md`; round manual: `CLEANUP.md`) |
 | 20. Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` (KT §3.4–3.5, §4) | ✓ Complete (`thm:minimal-kdof-reduction` green; see `notes/Phase20.md`; `molecular-induction.tex` `sec:molecular-induction`) |
 | ⋮ Cleanup round (post-Phase-20) | Phase 20 surface (`Molecular/Induction.lean`, `molecular-induction.tex` `sec:molecular-induction` nodes) | ✓ Complete (A3 + B3 the two real fixes; A1/A2/B1/B2/B4/C1/D2 no-op; D1 compressed `notes/Phase20.md` 1089→434; see `notes/Phase20-cleanup.md`; round manual: `CLEANUP.md`) |
-| 21. Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` (KT §5, §6.1–6.3) | ◷ In progress — **panel layer fully stood up** (Phase 21a meet complete; form-(B) panel plan fixed). Both panel nodes green: `def:panel-support-extensor` (the meet of two panel normals → `ScrewSpace k`) and `def:panel-hinge-framework` (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar`); regime-agnostic rank nodes green. `BodyHingeFramework` now carries `supportExtensor` as a field (affine model = `ofHinge`). All four Lean pieces of `lem:cycle-realization` (KT Lemma 5.4) green; Case I block-pin infra + Case II rank-lift assembly + graph-half inclusion green. Next: the genericity-gated tightness of the Case II inclusion (extended `v`-pinned = base, Claim 6.9) → close `lem:case-II`; then Case I gluing. See `notes/Phase21.md` + `DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge*. |
+| 21. Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` (KT §5, §6.1–6.3) | ◷ In progress — **panel layer fully stood up** (Phase 21a meet complete; form-(B) panel plan fixed) and **re-scoped (2026-06-03) to close on the genericity-free content**: the shared analytic crux Claim 6.4/6.9 (the genericity device) is scoped out into sub-phase **21b**, entering Phase 21's remaining nodes (`lem:case-I`, `lem:case-II`, `thm:theorem-55`, `prop:rigidity-matrix-prop11`) as a cited black-box. Green: both panel nodes (`def:panel-support-extensor`, `def:panel-hinge-framework`), regime-agnostic rank nodes, all four Lean pieces of `lem:cycle-realization`, Case I block-pin infra, Case II rank-lift assembly + graph-half inclusion + genericity-gated tightness (conditional on `hnew`) + `hnew`/`hspan` reduction + edge-substitution bridge. Remaining red is genericity-free-modulo-21b. See `notes/Phase21.md` *Hand-off* + `DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge* + *Genericity device … sub-phase (Phase 21b)*. |
 | 21a. Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` (KT §2.1 dual half) + mirror lemmas | ✓ Complete — all four deliverables green (`screwAlgebraTopEquiv`, `screwAlgebraPairingDualEquiv`, `complementIso`, `meet`); the meet is the Grassmann–Cayley dual of the Phase-17 join, `*(*A ∨ₑ *B)` over the general-grade product `gradedMul`, with `* = complementIso` (closed via the signed-permutation pairing matrix ⇒ `wedgePairing_injective` + equal finrank). `meet_ne_zero_iff` / geometric reading deferred to the Phase-21 consumers. Mirrors under `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` + `Mathlib/Data/Finset/Card.lean`. See `notes/Phase21a.md`; dep-graph `meet.tex` `sec:molecular-meet`. |
+| 21b. Genericity device (Claim 6.4/6.9) | (none yet — planned; `Molecular/AlgebraicInduction.lean` + new section) | ◷ Planning — the analytic sibling of 21a, scoped out of Phase 21 on 2026-06-03 (risk #4/#7). The panel-coordinate parametrization of `R(G,p)` + generic-max-rank argument: the shared analytic crux of Cases I/II, Thm 5.5, Prop 1.1, and the cycle assembly; discharges the cited black-box Phase 21 leaves. Also consumed by Phases 22–23. See `notes/MolecularConjecture.md` *Phase 21b* + `DESIGN.md` *Genericity device …*. |
 | 22–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -679,17 +680,25 @@ Cases I & II).
 
 ### Phase 21 — Algebraic induction: Theorem 5.5 base + Cases I & II (KT §5, §6.1–6.3)
 
-**Status (◷ in progress, paused for a panel re-scope; see
-`notes/Phase21.md`).** Mid-phase (2026-06-03) a modeling correction
-surfaced: KT's *panel-hinge* framework is a *hinge-coplanar* body-hinge
-framework, and the conjecture's content is that coplanarity does not drop
-rigidity — but the Phase-18 `BodyHingeFramework` carries free hinges with
-no coplanarity, so the realization-existence nodes as first drafted prove
-the (weaker) body-hinge rank theorem. The fix is a **panel layer**, gated
-on a new foundations sub-phase **Phase 21a** (Grassmann–Cayley meet /
-projective duality). The regime-agnostic rank nodes landed so far stay
-green. Full decision: `DESIGN.md` *Panel-hinge = hinge-coplanar
-body-hinge*; risk #7 + Phase-21a detail in `notes/MolecularConjecture.md`;
+**Status (◷ in progress; see `notes/Phase21.md`).** Two re-scopes landed
+2026-06-03. (1) *Panel re-scope:* KT's *panel-hinge* framework is a
+*hinge-coplanar* body-hinge framework, and the conjecture's content is
+that coplanarity does not drop rigidity — but the Phase-18
+`BodyHingeFramework` carries free hinges with no coplanarity, so the
+realization-existence nodes as first drafted proved the (weaker)
+body-hinge rank theorem. The fix is a **panel layer**, gated on the
+foundations sub-phase **Phase 21a** (Grassmann–Cayley meet); 21a is
+complete and the panel layer is green. (2) *Genericity scope-out:* the
+shared analytic crux Claim 6.4/6.9 (the rank/dimension-count argument) is
+scoped out into its own sub-phase **Phase 21b** (the analytic sibling of
+21a), so Phase 21 **closes on the genericity-free content** with the
+device entering its remaining nodes (`lem:case-I`, `lem:case-II`,
+`thm:theorem-55`, `prop:rigidity-matrix-prop11`) as a cited black-box —
+the surrounding reductions fully formal modulo that one device. The
+regime-agnostic rank nodes stay green. Full decisions: `DESIGN.md`
+*Panel-hinge = hinge-coplanar body-hinge* + *Genericity device
+(Claim 6.4/6.9) is its own sub-phase (Phase 21b)*; risk #4/#7 +
+Phase-21a/21b detail in `notes/MolecularConjecture.md`;
 `notes/Phase21a.md`. Stratum 5 of the
 molecular-conjecture program: the *algebraic* half of Katoh–Tanigawa's
 proof, opened in a new file `Molecular/AlgebraicInduction.lean`. Where
@@ -704,17 +713,20 @@ II** (`k>0` splitting — the panel-hinge analogue of Whiteley's bar-joint
 1-extension). The induction is driven by the *same* reduction dichotomy
 Phase 20's `minimal_kdof_reduction` exposes as a well-founded induction
 principle. The crux **Case III** (`k=0`, no proper rigid subgraph) is
-deferred to Phases 22–23. The new analytic device is the Claim 6.4 / 6.9
+deferred to Phases 22–23. The new analytic device — the Claim 6.4 / 6.9
 genericity argument (matrix entries are polynomials in algebraically
-independent panel coordinates ⇒ a generic point attains the maximum rank);
-the cycle-realization Lemma 5.4 (Crapo–Whiteley 1982) enters as an input.
-The relocated **analytic half of KT Prop 1.1** (`prop:rigidity-matrix-prop11`,
-`rank R(G,p) = D(|V|−1) − def(G̃)`, JJ 2009 Thm 6.1 geometric side) lands
-with the Claim 6.4 argument; its matroidal half (`def = corank M(G̃)`) is
-already green (Phase 19). Forward-mode; dep-graph `algebraic-induction.tex`
+independent panel coordinates ⇒ a generic point attains the maximum
+rank) — is itself **scoped into sub-phase 21b** and enters Phase 21's
+nodes as a cited black-box; the cycle-realization Lemma 5.4
+(Crapo–Whiteley 1982) has its four Lean pieces green with the same
+genericity assembly cited. The relocated **analytic half of KT Prop 1.1**
+(`prop:rigidity-matrix-prop11`, `rank R(G,p) = D(|V|−1) − def(G̃)`, JJ 2009
+Thm 6.1 geometric side) is stated in this chapter `\uses`ing the 21b
+device; its matroidal half (`def = corank M(G̃)`) is already green
+(Phase 19). Forward-mode; dep-graph `algebraic-induction.tex`
 `sec:molecular-algebraic-induction`. Per-node lemma map + decisions:
 `notes/Phase21.md`; program-level plan in `notes/MolecularConjecture.md`
-*Phase 21*.
+*Phase 21* / *Phase 21b*.
 
 ## Engineering conventions
 

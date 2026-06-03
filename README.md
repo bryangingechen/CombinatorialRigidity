@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–20 complete; Phase 21 in progress (paused for a panel-coplanarity re-scope — its Grassmann–Cayley meet foundations sub-phase 21a is complete; the panel layer follows); Phases 22–26 planned.**
+* **Phases 1–20 + 21a complete; Phase 21 in progress (panel layer green; re-scoped to close on the genericity-free content, with the shared genericity device Claim 6.4/6.9 scoped out into sub-phase 21b as a cited black-box); Phases 21b, 22–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -215,13 +215,24 @@ project; commit history is preserved with paths rewritten.
   Lemma 5.1), and **Case II** (`k>0`, splitting off a reducible degree-2
   vertex — the panel-hinge analogue of Whiteley's bar-joint 1-extension).
   The induction is driven by the same reduction dichotomy as Theorem 4.9
-  (`Graph.minimal_kdof_reduction`); the new analytic device is the
-  genericity argument (Claim 6.4/6.9), and the cycle-realization Lemma 5.4
-  (Crapo–Whiteley 1982) enters as an input. The crux **Case III** (`k=0`,
-  no proper rigid subgraph) is deferred to Phases 22–23. Forward-mode;
-  the chapter `algebraic-induction.tex` is the authoritative dep-graph.
-  `Molecular/AlgebraicInduction.lean`. See `notes/Phase21.md` and
-  `notes/MolecularConjecture.md`.
+  (`Graph.minimal_kdof_reduction`). The phase has been **re-scoped to
+  close on the genericity-free content**: the shared analytic device —
+  the genericity argument (Claim 6.4/6.9) — is scoped out into its own
+  focused sub-phase **21b** and enters Phase 21's remaining nodes as a
+  cited black-box, so the surrounding reductions are fully formal modulo
+  that one device. The panel layer (`PanelHingeFramework`,
+  hinge-coplanarity) is green, as are all four Lean pieces of the
+  cycle-realization Lemma 5.4 (Crapo–Whiteley 1982). The crux **Case III**
+  (`k=0`, no proper rigid subgraph) is deferred to Phases 22–23.
+  Forward-mode; the chapter `algebraic-induction.tex` is the
+  authoritative dep-graph. `Molecular/AlgebraicInduction.lean`. See
+  `notes/Phase21.md` and `notes/MolecularConjecture.md`.
+* **Phase 21b (planned)** — the genericity device (Claim 6.4/6.9): the
+  panel-coordinate parametrization of `R(G,p)` plus the generic-max-rank
+  argument, the shared analytic crux of Cases I/II, Theorem 5.5,
+  Proposition 1.1, and the cycle assembly. Discharges the black-box left
+  cited by Phase 21; also consumed by Phases 22–23. The analytic sibling
+  of the Phase-21a meet sub-phase. See `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

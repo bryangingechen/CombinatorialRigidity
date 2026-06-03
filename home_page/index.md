@@ -21,10 +21,11 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–20 are complete and carry no `sorry`s, and **Phase 21
-(in progress, paused for a panel-coplanarity re-scope — its
-Grassmann–Cayley meet foundations sub-phase 21a is now complete, and
-its panel layer follows)** opens the algebraic induction; **the body-bar
+Phases 1–20 and the Grassmann–Cayley meet sub-phase 21a are complete and
+carry no `sorry`s, and **Phase 21 (in progress — panel layer green;
+re-scoped to close on the genericity-free content, with the shared
+genericity device Claim 6.4/6.9 scoped out into sub-phase 21b as a cited
+black-box)** opens the algebraic induction; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -180,13 +181,23 @@ contraction + block-triangular gluing through the Phase 18 pin-a-body
 Lemma 5.1), and **Case II** (`k>0`, splitting off a reducible degree-2
 vertex — the panel-hinge analogue of Whiteley's bar-joint 1-extension).
 The induction is driven by the same reduction dichotomy as Theorem 4.9
-(`Graph.minimal_kdof_reduction`); the new analytic device is the
-genericity argument (Claim 6.4/6.9), and the cycle-realization Lemma 5.4
-(Crapo–Whiteley 1982) enters as an input. The crux **Case III** (`k=0`,
+(`Graph.minimal_kdof_reduction`). The phase is **re-scoped to close on
+the genericity-free content**: the shared analytic device — the
+genericity argument (Claim 6.4/6.9) — is scoped out into its own focused
+sub-phase **21b** and enters Phase 21's remaining nodes as a cited
+black-box, so the surrounding reductions are fully formal modulo that one
+device. The panel layer and all four Lean pieces of the cycle-realization
+Lemma 5.4 (Crapo–Whiteley 1982) are green. The crux **Case III** (`k=0`,
 no proper rigid subgraph) is deferred to Phases 22–23. Forward-mode; the
 chapter `algebraic-induction.tex` is the authoritative dep-graph.
 `Molecular/AlgebraicInduction.lean`. See `notes/Phase21.md` and
 `notes/MolecularConjecture.md`.
+
+**Phase 21b (planned)** is the genericity device itself (Claim 6.4/6.9):
+the panel-coordinate parametrization of `R(G,p)` plus the
+generic-max-rank argument — the shared analytic crux of Cases I/II,
+Theorem 5.5, Proposition 1.1, and the cycle assembly, the analytic
+sibling of the Phase-21a meet sub-phase. Also consumed by Phases 22–23.
 
 The development is divided into the phases below, with Lean source
 under
@@ -216,8 +227,9 @@ existing files or refactor across several).
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
-|    21 | Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` | ◷ |
+|    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction.lean` | ◷ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
+|   21b | Genericity device (Claim 6.4/6.9) | `Molecular/AlgebraicInduction.lean` (+ new section) | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
