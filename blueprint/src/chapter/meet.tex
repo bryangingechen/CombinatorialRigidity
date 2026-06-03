@@ -29,11 +29,13 @@ canonically $\cong \R$.
 \texttt{Molecular/Meet.lean} (with the general facts mirrored under
 \texttt{Mathlib/LinearAlgebra/ExteriorPower/Basis.lean}). The complement
 iso (\cref{def:meet-complement-iso}) is in progress: the perfect wedge
-pairing and its off-diagonal vanishing on the standard exterior-power basis
-(the pairing of the basis vectors indexed by $S$ and $T$ is $0$ unless
-$T = S^{c}$) are formalized; the diagonal sign ($\pm 1$ on $T = S^{c}$) and
-the resulting nondegeneracy remain. The regressive product
-(\cref{def:meet}) remains to be formalized.
+pairing and its vanishing/non-vanishing on the standard exterior-power basis
+are formalized --- the pairing of the basis vectors indexed by $S$ and $T$ is
+$0$ off the diagonal ($T \ne S^{c}$) and nonzero ($\pm 1$, the sign of the
+interleaving permutation) on the diagonal ($T = S^{c}$), so the pairing matrix
+is a signed-permutation matrix. The remaining step is to package this
+nondegeneracy as the iso itself (the $\mathrm{toDualEquiv}^{-1}$ composition).
+The regressive product (\cref{def:meet}) remains to be formalized.
 
 \begin{definition}[Top-power volume form $\bigwedge^{N} V \cong \R$]
   \label{def:meet-top-equiv}
@@ -108,6 +110,18 @@ the resulting nondegeneracy remain. The regressive product
   $\bigwedge^{j} V \cong \bigwedge^{N-j} V$. This is the genuinely
   new core of the chapter; the grade-swap sign is routed through the
   duality iso of \cref{def:meet-pairing-dual}.
+
+  Nondegeneracy is checked on the standard exterior-power basis, whose
+  vectors are indexed by the $j$- and $(N-j)$-element subsets $S$ and $T$ of
+  $\{1, \dots, N\}$. The pairing of $\mathbf{e}_S$ and $\mathbf{e}_T$ is the
+  volume form applied to the join $\mathbf{e}_S \vee \mathbf{e}_T$, i.e.\ the
+  extensor of the concatenated index family. If $S$ and $T$ overlap (which,
+  for complementary cardinalities, is exactly $T \ne S^{c}$) the family
+  repeats a basis vector and the extensor vanishes by alternation. If
+  $T = S^{c}$ the family is a permutation of all $N$ standard basis vectors,
+  so it is linearly independent and its extensor is nonzero --- in fact
+  $\pm 1$, the sign of the interleaving permutation. Hence the pairing matrix
+  on the standard basis is a signed-permutation matrix, which is invertible.
 \end{definition}
 
 \begin{definition}[The regressive product (meet)]

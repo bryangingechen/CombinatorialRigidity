@@ -91,6 +91,30 @@ housekeeping pass once their resolution is fully indexed.
   defeq is project-local; `coe_wedgeProd_ιMulti_family` is itself the fused bridge so
   the `change` happens once).
 
+### [resolved] No mathlib `g ∘ Fin.append a b = Fin.append (g∘a) (g∘b)`; diagonal wedge-pairing nonzero via injective-append + LI, not via the permutation sign
+- **Where it bit:** `wedgePairing_ιMulti_family_compl_ne_zero` in `Molecular/Meet.lean`
+  (Phase 21a ingredient (c), diagonal half): the value of the standard-basis wedge
+  pairing on `T = Sᶜ`.
+- **Two findings.** (1) The natural reduction "`extensor (e ∘ σ) = sign σ • extensor e`
+  via `AlternatingMap.map_perm`" needs the interleaving bijection `Fin.append φ_S φ_{Sᶜ}`
+  re-cast to `Equiv.Perm (Fin (k+2))`, but its domain is `Fin (j + (k+2−j))`, so the
+  `Fin.cast`/`finCongr` bookkeeping (plus matching `ιMulti_family default`'s
+  `ofFinEmbEquiv.symm default = id` reindex) is heavy and exposes a sign convention the
+  notes flag as possibly needing a user decision. (2) **Sidestepped entirely**: the
+  diagonal value is `±1`, hence nonzero, and *nonzero is all nondegeneracy needs.* The
+  append family is `e ∘ (Fin.append φ_S φ_{Sᶜ})` with the inner map injective
+  (`Fin.append_injective_iff` + disjoint ranges `S`, `Sᶜ` via
+  `mem_range_ofFinEmbEquiv_symm_iff_mem`), so it is linearly independent
+  (`Basis.linearIndependent.comp`) and its extensor is nonzero
+  (`extensor_ne_zero_iff_linearIndependent`); `screwAlgebraTopEquiv` injective keeps it
+  nonzero. No sign, no cast.
+- **Gap:** no `g ∘ Fin.append a b = Fin.append (g∘a) (g∘b)` in mathlib
+  (`Fin.comp_append` does not exist; `append_comp_sumElim` is the closest). Proved inline
+  by `funext x; refine Fin.addCases ?_ ?_ x <;> intro i <;> simp [Fin.append_left,
+  Fin.append_right]`.
+- **Status:** resolved (no mirror — the composition identity is a one-line `addCases`;
+  the nonzero-not-sign decision is project-local and recorded in `notes/Phase21a.md`).
+
 ### [resolved] Transporting `SetLike.mul_mem_graded` across an index-arithmetic equality: cast the *membership*, not the subtype
 - **Where it bit:** `wedgeProd` in `Molecular/Meet.lean` (the graded wedge product
   `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V`, from `↑A * ↑B ∈ ⋀^(j+(N−j))` with `j+(N−j)=N`).

@@ -286,4 +286,56 @@ theorem wedgePairing_ιMulti_family_eq_zero_of_ne_compl {j : ℕ} (hj : j ≤ k 
   intro h
   exact hT (by rw [← Subtype.coe_inj, Set.powersetCard.coe_compl, h])
 
+/-- **Diagonal non-vanishing of the wedge pairing** (ingredient (c), the diagonal half).
+On the diagonal `T = Sᶜ` (mathlib's complement equivalence on the complementary-cardinality
+subtypes), the wedge pairing of the two standard exterior-power basis vectors is nonzero —
+in fact `±1`, the sign of the permutation interleaving `S` and `Sᶜ` into increasing order, but
+only non-vanishing is needed downstream. The concatenated indexing family
+`Fin.append (e ∘ φ_S) (e ∘ φ_{Sᶜ})` is `e` (the standard basis, hence injective) precomposed
+with the bijection `Fin.append φ_S φ_{Sᶜ}` (injective: `φ_S`, `φ_{Sᶜ}` are order embeddings
+with disjoint ranges `S`, `Sᶜ`), so it is a linearly independent family of standard basis
+vectors and its extensor is nonzero (`extensor_ne_zero_iff_linearIndependent`); the volume
+form `screwAlgebraTopEquiv`, being injective, keeps it nonzero. Together with the off-diagonal
+`wedgePairing_ιMulti_family_eq_zero_of_ne_compl` this makes the pairing matrix on the standard
+basis a signed-permutation matrix, hence nondegenerate — the input to `complementIso`. -/
+theorem wedgePairing_ιMulti_family_compl_ne_zero {j : ℕ} (hj : j ≤ k + 2)
+    (S : Set.powersetCard (Fin (k + 2)) j) :
+    wedgePairing k hj (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+        (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2)))
+          (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S)) ≠ 0 := by
+  rw [wedgePairing_apply]
+  have hne : wedgeProd hj
+      (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+      (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2)))
+        (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S)) ≠ 0 := by
+    intro h
+    have hcoe := congrArg (Subtype.val) h
+    rw [coe_wedgeProd_ιMulti_family, ZeroMemClass.coe_zero] at hcoe
+    refine (extensor_ne_zero_iff_linearIndependent _).mpr ?_ hcoe
+    have hinj : Function.Injective (Fin.append
+        (⇑(Set.powersetCard.ofFinEmbEquiv.symm S) : Fin j → Fin (k + 2))
+        (⇑(Set.powersetCard.ofFinEmbEquiv.symm
+          (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S)) :
+            Fin (k + 2 - j) → Fin (k + 2))) := by
+      rw [Fin.append_injective_iff]
+      refine ⟨(Set.powersetCard.ofFinEmbEquiv.symm S).injective,
+        (Set.powersetCard.ofFinEmbEquiv.symm _).injective, ?_⟩
+      intro p q hpq
+      have hp := (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem S _).mp ⟨p, rfl⟩
+      have hq := (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem
+        (Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S) _).mp ⟨q, rfl⟩
+      rw [hpq] at hp
+      rw [Set.powersetCard.mem_compl] at hq
+      exact hq hp
+    have hrw : ∀ (a : Fin j → Fin (k + 2)) (b : Fin (k + 2 - j) → Fin (k + 2)),
+        Fin.append (⇑(Pi.basisFun ℝ (Fin (k + 2))) ∘ a)
+          (⇑(Pi.basisFun ℝ (Fin (k + 2))) ∘ b) =
+        ⇑(Pi.basisFun ℝ (Fin (k + 2))) ∘ Fin.append a b := by
+      intro a b
+      funext x
+      refine Fin.addCases ?_ ?_ x <;> intro i <;> simp [Fin.append_left, Fin.append_right]
+    rw [hrw]
+    exact (Pi.basisFun ℝ (Fin (k + 2))).linearIndependent.comp _ hinj
+  exact fun hz => hne ((map_eq_zero_iff _ (screwAlgebraTopEquiv k).injective).mp hz)
+
 end CombinatorialRigidity.Molecular
