@@ -671,20 +671,35 @@ route that bypasses the deferred forest surgery
 
 \begin{lemma}[Reduction step preserves minimality; KT Lemmas 4.7--4.8]
   \label{lem:reduction-step}
-  \uses{lem:reducible-vertex, lem:contraction-minimality, lem:dof-tracking, lem:reduction-measure}
+  \lean{Graph.splitOff_isMinimalKDof, Graph.contraction_isMinimalKDof}
+  \uses{lem:reducible-vertex, lem:contraction-minimality, lem:dof-tracking, lem:reduction-measure, lem:circuit-induces-rigid}
   Each reduction --- splitting-off at the degree-2 vertex of
   \cref{lem:reducible-vertex}, or contraction of a proper rigid
   subgraph (\cref{lem:contraction-minimality}) --- carries a minimal
-  $k$-dof-graph to a smaller minimal $k$-dof-graph with the same $k$.
-  KT~4.8 is the capstone, run through two circuit-swap arguments on the
-  fundamental circuits of $M(\tilde G)$.
+  $0$-dof-graph (with no proper rigid subgraph, in the splitting-off
+  case) to a smaller minimal $0$-dof-graph. This is the inductive step
+  of KT Theorem~4.9.
 \end{lemma}
 \begin{proof}
-  Minimality transport: the base / fiber-meeting condition of
-  \cref{def:k-dof} is preserved by each operation, via fundamental
-  circuit swaps in $M(\tilde G)$ (each base of the reduced matroid
-  lifts to a base of $M(\tilde G)$ meeting every fiber). The deficiency
-  is unchanged by \cref{lem:dof-tracking,lem:contraction-minimality}.
+  \uses{lem:circuit-induces-rigid}
+  The contraction branch is \cref{lem:contraction-minimality}. For the
+  splitting-off branch (KT 4.8(i)): $\operatorname{def}(\tilde
+  G_v^{ab}) = 0$ is \cref{lem:dof-tracking} squeezed against
+  $\operatorname{def}(\tilde G) = 0$. For minimality, Katoh--Tanigawa's
+  claim (4.10) --- every circuit of $M(\tilde G_v^{ab})$ meets the fresh
+  short-circuit fiber $\tilde{ab}$ --- is exactly the statement that the
+  surviving ground set $E(\tilde G_v) = E(\tilde G_v^{ab}) \setminus
+  \tilde{ab}$ is independent in $M(\tilde G_v^{ab})$: otherwise a circuit
+  inside it would be a circuit of $M(\tilde G)$ avoiding $v$, inducing a
+  proper rigid subgraph (\cref{lem:circuit-induces-rigid}). So $E(\tilde
+  G_v)$ is a base of $M(\tilde G_v)$, and KT 4.7 gives
+  $\operatorname{def}(\tilde G_v) > 0$ ($G_v$ is a proper subgraph, so not
+  rigid). A \emph{rank count} replaces KT's iterated fundamental-circuit
+  swap: any base $B'$ of $M(\tilde G_v^{ab})$ avoiding a fiber $\tilde e$
+  has $|B'| \le |E(\tilde G_v)|$ (split $B'$ across $\tilde{ab}$ and
+  $E(\tilde G_v)$), which through
+  $|B| + \operatorname{def} = D(|V|-1)$ forces $\operatorname{def}(\tilde
+  G_v) \le 0$ --- a contradiction. Hence every base meets every fiber.
 \end{proof}
 
 \subsection{Theorem 4.9}

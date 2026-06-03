@@ -136,6 +136,30 @@ housekeeping pass once their resolution is fully indexed.
   circuit-swap commits (G/H) too.
 - **Status:** resolved.
 
+### [resolved] `[matroid]` Transporting circuits between `M(G̃)` and `M(H̃)` for `H ≤ G`; and a rank count that bypasses KT 4.8(i)'s iterated swap
+- **Where it bit:** `Graph.circuit_splitOff_meets_fiber` + `Graph.splitOff_isMinimalKDof` in
+  `Molecular/Induction.lean` (Phase 20, KT 4.8(i) splitting-off minimality transport).
+- **Friction / resolution — circuit transport:** to move a circuit between `M(G̃)` and `M(H̃)`
+  for a graph-level `H ≤ G`, compose mathlib `Matroid.restrict_isCircuit_iff`
+  (`(M ↾ R).IsCircuit C ↔ M.IsCircuit C ∧ C ⊆ R`) with the project's
+  `matroidMG_restrict_mulTilde` (`M(G̃) ↾ E(H̃) = M(H̃)`). `restrict_isCircuit_iff`'s ground
+  side-goal `R ⊆ M.E` is `(edgeMultiply_mono h _).edgeSet_mono`. Same composition for `Indep`
+  (`Matroid.restrict_indep_iff`) and for "whole ground independent ⟹ base"
+  (`Matroid.ground_indep_iff_isBase`, after `rw [matroidMG, restrict_ground_eq]` to expose the
+  ground as `E(H̃)`). KT's (4.10) "every circuit of `M(G̃_v^{ab})` meets `ã̃b`" is most cleanly
+  stated/used as "`E(G̃_v)` is independent (circuit-free) in `M(G̃_v^{ab})`" via
+  `Matroid.indep_iff_forall_subset_not_isCircuit'`.
+- **General lesson — bypass the iterated swap with a rank count.** KT 4.8(i) proves minimality
+  by an iterated fundamental-circuit swap (relocate each `ã̃b` copy onto an `ẽ` copy, induction
+  on `|B₁ ∩ ã̃b|`). The whole induction is unnecessary: once `E(G̃_v)` is a *base* of `M(G̃_v)`
+  (from (4.10)) and `def(G̃_v) > 0` (KT 4.7), any base `B'` of `M(G̃_v^{ab})` avoiding a fiber
+  `ẽ` splits as `(B'∩ã̃b) ⊔ (B'∩E(G̃_v))` with `|B'∩ã̃b| ≤ D−1` and `|B'∩E(G̃_v)| ≤ |E(G̃_v)|−(D−1)`
+  (when `e≠e₀`) or `B' ⊆ E(G̃_v)` (when `e=e₀`), so `|B'| ≤ |E(G̃_v)|`; through
+  `isBase_ncard_add_deficiency_eq` on the two bases this forces `def(G̃_v) ≤ 0` — contradiction.
+  Pattern: *an iterated basis-exchange whose only purpose is to relocate redundancy onto a fixed
+  set is often replaceable by a single cardinality split across that set's complement.*
+- **Status:** resolved.
+
 ### [resolved] `[matroid]` Building a small explicit cyclic walk (`IsCyclicWalk`) needs the full structure tower + a hoisted `IsWalk` `have`
 - **Where it bit:** `Graph.isCycleSet_pair_edgeFiber_splitOff` in `Molecular/Induction.lean`
   (Phase 20 `lem:forest-surgery-split` reroute-count substrate). To exhibit `{p, q}` as a

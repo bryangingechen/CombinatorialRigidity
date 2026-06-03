@@ -1995,4 +1995,252 @@ lemma fiber_inter_subsingleton_of_isAcyclicSet_splitOff {G : Graph α β}
   rw [← hCpq]
   exact Set.insert_subset hp.1 (Set.singleton_subset_iff.mpr hq.1)
 
+/-! ## Circuits of the multiplied splitting-off meet the short-circuit (`lem:reduction-step`)
+
+The conceptual heart of the splitting-off minimality transport (Katoh–Tanigawa 2011 Lemma
+4.8(i), the claim labelled (4.10) in their proof). For a minimal `k`-dof-graph `G` with **no
+proper rigid subgraph** and a degree-2 vertex `v` with neighbours `a, b` (`e₀ ∉ E(G)` fresh),
+*every circuit `X` of the matroid `M(G̃_v^{ab})` of the splitting-off meets the fresh
+short-circuit fiber* `ã̃b = edgeFiber e₀ n`.
+
+This is KT's (4.10): if instead `X ∩ ã̃b = ∅`, then `X ⊆ E(G̃_v^{ab}) ∖ ã̃b = E(G̃_v) ⊆ E(G̃)`
+(the ground-set bridge `edgeSet_mulTilde_splitOff_diff_fiber`), and since the two matroids
+restrict identically to the surviving ground set `E(G̃_v)` (`matroidMG_restrict_mulTilde`
+applied to `G̃_v ≤ G̃_v^{ab}` and to `G_v ≤ G`, both read off `Matroid.restrict_isCircuit_iff`),
+`X` is also a circuit of `M(G̃)` — with `v ∉ V(X)`, since every fiber of `X` is a copy of a
+`v`-avoiding edge of `G`. So `G[V(X)]` is a rigid subgraph (`circuit_induces_isRigidSubgraph`)
+that is *proper* (`v ∉ V(X)`), contradicting the no-proper-rigid hypothesis.
+
+This is the matroidal claim the minimality transport `splitOff_isMinimalKDof` consumes: it is
+exactly the statement that the surviving ground set `E(G̃_v)` is circuit-free, i.e. independent,
+in `M(G̃_v^{ab})`. Katoh–Tanigawa use it to drive an iterated fundamental-circuit swap relocating
+each `ã̃b` copy onto an `ẽ` copy; `splitOff_isMinimalKDof` instead consumes it directly, as the
+fact that `E(G̃_v)` is a base of `M(G̃_v)` (so the swap induction is bypassed by a rank count).
+Stated under no-proper-rigid alone — minimality of `G` is not needed for (4.10). -/
+theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ : β} (hvG : v ∈ V(G))
+    (he₀ : e₀ ∉ E(G)) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {X : Set (β × Fin (bodyHingeMult n))}
+    (hX : ((G.splitOff v a b e₀).matroidMG n).IsCircuit X) :
+    (X ∩ edgeFiber e₀ n).Nonempty := by
+  classical
+  rw [Set.nonempty_iff_ne_empty]
+  intro hXe
+  -- `X ⊆ E(G̃_v^{ab}) ∖ ã̃b = E(G̃_v)` (ground-set bridge).
+  have hXground : X ⊆ E((G.splitOff v a b e₀).mulTilde n) := by
+    have := hX.subset_ground; rwa [matroidMG, Matroid.restrict_ground_eq] at this
+  have hXdisj : Disjoint X (edgeFiber e₀ n) := Set.disjoint_iff_inter_eq_empty.mpr hXe
+  have hXsubGv : X ⊆ E((G.removeVertex v).mulTilde n) := by
+    rw [← edgeSet_mulTilde_splitOff_diff_fiber n he₀]
+    exact Set.subset_diff.mpr ⟨hXground, hXdisj⟩
+  -- `G_v ≤ G_v^{ab}` at the graph level (every `v`-avoiding `G`-link survives, `e₀` being fresh).
+  have hleGvSplit : G.removeVertex v ≤ G.splitOff v a b e₀ := by
+    refine ⟨fun x hx => hx, fun p x y hp => ?_⟩
+    rw [removeVertex_isLink] at hp
+    obtain ⟨hlink, hxv, hyv⟩ := hp
+    rw [splitOff_isLink]
+    exact Or.inl ⟨fun h => he₀ (h ▸ hlink.edge_mem), hlink, hxv, hyv⟩
+  have hleSplitMul : (G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n :=
+    edgeMultiply_mono hleGvSplit _
+  -- `M(G̃_v^{ab}) ↾ E(G̃_v) = M(G̃_v)`, so `X` is a circuit of `M(G̃_v)`.
+  have hcircGv : ((G.removeVertex v).matroidMG n).IsCircuit X := by
+    rw [← matroidMG_restrict_mulTilde hleGvSplit n,
+      Matroid.restrict_isCircuit_iff hleSplitMul.edgeSet_mono]
+    exact ⟨hX, hXsubGv⟩
+  -- `M(G̃) ↾ E(G̃_v) = M(G̃_v)`, so `X` is a circuit of `M(G̃)`.
+  have hleG : G.removeVertex v ≤ G := by
+    rw [removeVertex]; exact deleteVerts_le
+  have hcircG : (G.matroidMG n).IsCircuit X := by
+    have hbridge := matroidMG_restrict_mulTilde hleG n
+    rw [← hbridge] at hcircGv
+    exact (Matroid.restrict_isCircuit_iff (edgeMultiply_mono hleG _).edgeSet_mono).mp hcircGv |>.1
+  -- `G[V(X)]` is a rigid subgraph of `G`.
+  have hrigid : (G.inducedSpan n X).IsRigidSubgraph G n :=
+    circuit_induces_isRigidSubgraph hD hcircG
+  -- `v ∉ V(X)`: every fiber of `X` is a copy of a `v`-avoiding edge.
+  have hvnot : v ∉ V(G.inducedSpan n X) := by
+    rw [vertexSet_inducedSpan, fiberSpan, mem_spanningVerts]
+    rintro ⟨p, hpX, hinc⟩
+    rw [mulTilde_inc] at hinc
+    obtain ⟨w, hlw⟩ := hinc
+    -- `p.1 ∈ E(G_v)`, so `p.1` carries a `v`-avoiding `G`-link, contradicting `G.IsLink p.1 v w`.
+    have hpe : p.1 ∈ E(G.removeVertex v) := by
+      have := hXsubGv hpX
+      rwa [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at this
+    obtain ⟨x, y, hlxy⟩ := exists_isLink_of_mem_edgeSet hpe
+    rw [removeVertex_isLink] at hlxy
+    obtain ⟨hlxyG, hxv, hyv⟩ := hlxy
+    rcases hlw.left_eq_or_eq hlxyG with h | h
+    · exact hxv h.symm
+    · exact hyv h.symm
+  -- A circuit spans a nonempty vertex set; with `v ∉ V(X)`, `G[V(X)]` is *proper* rigid.
+  have hVne : V(G.inducedSpan n X).Nonempty := by
+    rw [vertexSet_inducedSpan, fiberSpan]
+    obtain ⟨q, hq⟩ := hcircG.nonempty
+    obtain ⟨x, _, hinc⟩ := exists_isLink_of_mem_edgeSet (hcircG.subset_ground hq)
+    exact ⟨x, q, hq, hinc.inc_left⟩
+  have hVsub : V(G.inducedSpan n X) ⊆ V(G) := by
+    rw [vertexSet_inducedSpan, fiberSpan]
+    exact (G.mulTilde n).spanningVerts_subset_vertexSet X
+  exact hnp (G.inducedSpan n X)
+    ⟨hrigid, hVne, hVsub.ssubset_of_ne (fun heq => hvnot (heq ▸ hvG))⟩
+
+/-! ## Splitting-off preserves minimal `0`-dof (`lem:reduction-step`, splitting-off branch)
+
+The full Katoh–Tanigawa 2011 Lemma 4.8(i): splitting off a degree-2 vertex `v` of a minimal
+`0`-dof-graph `G` with **no proper rigid subgraph** again yields a minimal `0`-dof-graph
+`G_v^{ab}`. This is the splitting-off branch of `lem:reduction-step` (the contraction branch is
+`contraction_isMinimalKDof`); paired with `lem:reduction-measure` it drives the `|V|`-induction
+of Theorem 4.9.
+
+**A clean counting argument replaces KT's iterated swap.** Katoh–Tanigawa prove minimality by
+an iterated fundamental-circuit swap (their (4.10) + the `i = 1,…,h` loop) that relocates each
+short-circuit copy `(ab)ᵢ` onto an `eᵢ ∈ ẽ`. We bypass the induction with a rank/cardinality
+comparison through the green `def = corank` bridge `isBase_ncard_add_deficiency_eq`:
+
+* the **0-dof half** (`def(G̃_v^{ab}) = 0`) is `dof_tracking`'s two-sided bound squeezed against
+  `def(G̃) = 0` and `def ≥ 0`;
+* the surviving ground set `E(G̃_v) = E(G̃_v^{ab}) ∖ ã̃b` is a **base of `M(G̃_v)`**: it is
+  independent in `M(G̃_v^{ab})` (`circuit_splitOff_meets_fiber` — KT's (4.10) — says no circuit
+  avoids `ã̃b`, i.e. `E(G̃_v)` is circuit-free), and restriction descends it to `M(G̃_v)`, where
+  it is the whole ground set;
+* KT 4.7 (`def(G̃_v) > 0`): `G_v ≤ G` is a proper subgraph, so under no-proper-rigid it is not
+  `0`-dof, hence `def(G̃_v) > 0`;
+* finally, any base `B'` of `M(G̃_v^{ab})` avoiding a fiber `ẽ` (`e ∈ E(G_v^{ab})`) has
+  `|B'| ≤ |E(G̃_v)|` (case `e = e₀`: `B' ⊆ E(G̃_v)`; case `e ≠ e₀`: `B'` splits into `B' ∩ ã̃b`
+  of size `≤ D − 1` and `B' ∩ E(G̃_v) ⊆ E(G̃_v) ∖ ẽ` of size `≤ |E(G̃_v)| − (D − 1)`). Via
+  `isBase_ncard_add_deficiency_eq` on the two bases this forces `def(G̃_v) ≤ def(G̃_v^{ab}) = 0`,
+  contradicting `def(G̃_v) > 0`. So every base meets every fiber: `G_v^{ab}` is minimal. -/
+theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
+    (hav : a ≠ v) (hbv : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (hvG : v ∈ V(G))
+    (heab : eₐ ≠ e_b) (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) (he₀ : e₀ ∉ E(G))
+    (hG : G.IsMinimalKDof n 0) (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    (G.splitOff v a b e₀).IsMinimalKDof n 0 := by
+  classical
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  set G' := G.splitOff v a b e₀ with hG'def
+  set Gv := G.removeVertex v with hGvdef
+  -- Vertex sets: `V(G') = V(Gv) = V(G) ∖ {v}`, nonempty (it contains `a`).
+  have hVeq : V(G') = V(G) \ {v} := vertexSet_splitOff G v a b e₀
+  have hVveq : V(Gv) = V(G) \ {v} := vertexSet_removeVertex G v
+  have hVne : V(G').Nonempty := by rw [hVeq]; exact ⟨a, haV, by simpa using hav⟩
+  have hVvne : V(Gv).Nonempty := by rw [hVveq]; exact ⟨a, haV, by simpa using hav⟩
+  -- `Gv ≤ G` a proper subgraph (`v ∈ V(G)` is dropped); under no-proper-rigid, `def(G̃v) > 0`.
+  have hleGvG : Gv ≤ G := by rw [hGvdef, removeVertex]; exact deleteVerts_le
+  have hdefGv_pos : 0 < Gv.deficiency n := by
+    rcases lt_or_eq_of_le (Gv.deficiency_nonneg n hVvne) with h | h
+    · exact h
+    · exfalso
+      refine hnp Gv ⟨⟨hleGvG, h.symm⟩, hVvne, ?_⟩
+      rw [hVveq]; exact Set.diff_singleton_ssubset.mpr hvG
+  -- 0-dof half: `def(G̃') = 0` from `dof_tracking` squeezed against `def(G̃) = 0` and `def ≥ 0`.
+  have hdofG : G.deficiency n = 0 := hG.1
+  have htrack := dof_tracking hD hav hbv heab hla hlb hdeg2 he₀
+  have hdefG'_zero : G'.deficiency n = 0 := by
+    have h1 : G'.deficiency n ≤ G.deficiency n := htrack.2.1
+    have h2 : 0 ≤ G'.deficiency n := G'.deficiency_nonneg n hVne
+    rw [hdofG] at h1; omega
+  refine ⟨hdefG'_zero, fun B' hB' e heG' => ?_⟩
+  -- Prove the fiber-meeting by contradiction: assume `B' ∩ ẽ = ∅`.
+  rw [Set.nonempty_iff_ne_empty]
+  intro hBe
+  -- `E(G̃') = ã̃b ⊔ E(G̃v)`: the fresh fiber and the surviving fibers.
+  have hsplit_ground : E(G'.mulTilde n) \ edgeFiber e₀ n = E(Gv.mulTilde n) :=
+    edgeSet_mulTilde_splitOff_diff_fiber n he₀
+  have hfiberGround : edgeFiber e₀ n ⊆ E(G'.mulTilde n) :=
+    edgeFiber_subset_edgeSet_mulTilde_splitOff n hav hbv haV hbV
+  -- `B' ⊆ E(G̃')`, `|B'| = D(|V'|−1)` since `def(G̃') = 0`.
+  have hB'ground : B' ⊆ E(G'.mulTilde n) := hB'.subset_ground
+  have hB'card : (B'.ncard : ℤ) + 0 = bodyBarDim n * ((V(G').ncard : ℤ) - 1) := by
+    have := G'.isBase_ncard_add_deficiency_eq n hD1 hVne hB'
+    rwa [hdefG'_zero] at this
+  -- `E(G̃v)` is a base of `M(G̃v)`: it is circuit-free in `M(G̃')` (KT (4.10)), hence
+  -- independent there, and restriction descends it to the whole ground of `M(G̃v)`.
+  have hGv_indep_in_G' : (G'.matroidMG n).Indep (E(Gv.mulTilde n)) := by
+    rw [Matroid.indep_iff_forall_subset_not_isCircuit']
+    refine ⟨fun C hCsub hC => ?_, ?_⟩
+    · -- A circuit `C ⊆ E(G̃v)` avoids `ã̃b`, contradicting `circuit_splitOff_meets_fiber`.
+      obtain ⟨p, hpC, hpfib⟩ := circuit_splitOff_meets_fiber hD1 hvG he₀ hnp hC
+      have hpGv : p ∈ E(Gv.mulTilde n) := hCsub hpC
+      rw [← hsplit_ground] at hpGv
+      exact hpGv.2 hpfib
+    · rw [matroidMG, Matroid.restrict_ground_eq, ← hsplit_ground]; exact Set.diff_subset
+  have hleGvG' : Gv ≤ G' := by
+    rw [hGvdef, hG'def]
+    refine ⟨fun x hx => hx, fun p x y hp => ?_⟩
+    rw [removeVertex_isLink] at hp
+    obtain ⟨hlink, hxv, hyv⟩ := hp
+    rw [splitOff_isLink]
+    exact Or.inl ⟨fun h => he₀ (h ▸ hlink.edge_mem), hlink, hxv, hyv⟩
+  have hGv_base : (Gv.matroidMG n).IsBase (E(Gv.mulTilde n)) := by
+    have hg : (Gv.matroidMG n).E = E(Gv.mulTilde n) := by
+      rw [matroidMG, Matroid.restrict_ground_eq]
+    rw [← hg, ← Matroid.ground_indep_iff_isBase, hg, ← matroidMG_restrict_mulTilde hleGvG' n,
+      Matroid.restrict_indep_iff]
+    exact ⟨hGv_indep_in_G', subset_rfl⟩
+  -- `|E(G̃v)| + def(G̃v) = D(|V v|−1) = D(|V'|−1)` (same vertex set `V(G)∖{v}`).
+  have hEGvcard : (E(Gv.mulTilde n).ncard : ℤ) + Gv.deficiency n
+      = bodyBarDim n * ((V(G').ncard : ℤ) - 1) := by
+    have hb := Gv.isBase_ncard_add_deficiency_eq n hD1 hVvne hGv_base
+    rw [hVveq] at hb; rw [hVeq]; exact hb
+  -- Core cardinality bound: any base `B'` avoiding the fiber `ẽ` has `|B'| ≤ |E(G̃v)|`.
+  have hB'le : B'.ncard ≤ E(Gv.mulTilde n).ncard := by
+    by_cases he : e = e₀
+    · -- `e = e₀`: `B'` avoids `ã̃b`, so `B' ⊆ E(G̃v)`.
+      subst he
+      have hB'sub : B' ⊆ E(Gv.mulTilde n) := by
+        rw [← hsplit_ground]
+        refine Set.subset_diff.mpr ⟨hB'ground, Set.disjoint_left.mpr fun p hpB' hpfib => ?_⟩
+        exact absurd (Set.eq_empty_iff_forall_notMem.mp hBe p ⟨hpB', hpfib⟩) id
+      exact Set.ncard_le_ncard hB'sub (Set.toFinite _)
+    · -- `e ≠ e₀`: split `B'` into `B' ∩ ã̃b` (≤ D−1) and `B' ∩ E(G̃v) ⊆ E(G̃v) ∖ ẽ`.
+      have heGv : edgeFiber e n ⊆ E(Gv.mulTilde n) := by
+        intro p hp
+        rw [edgeFiber, Set.mem_setOf_eq] at hp
+        have heE : e ∈ E(Gv) := by
+          have hmem : e ∈ E(G') := heG'
+          rw [hG'def, edgeSet_splitOff] at hmem
+          rcases hmem with ⟨rfl, _⟩ | ⟨_, x, y, hl, hx, hy⟩
+          · exact absurd rfl he
+          · have hlGv : Gv.IsLink e x y := by rw [hGvdef, removeVertex_isLink]; exact ⟨hl, hx, hy⟩
+            exact hlGv.edge_mem
+        rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, hp]; exact heE
+      -- Decompose `B' = (B' ∩ ã̃b) ∪ (B' ∩ E(G̃v))` since `B' ⊆ ã̃b ∪ E(G̃v) = E(G̃')`.
+      have hcover : B' ⊆ edgeFiber e₀ n ∪ E(Gv.mulTilde n) := by
+        intro p hpB'
+        rcases em (p ∈ edgeFiber e₀ n) with hpf | hpf
+        · exact Or.inl hpf
+        · exact Or.inr (hsplit_ground ▸ ⟨hB'ground hpB', hpf⟩)
+      have h1 : (B' ∩ edgeFiber e₀ n).ncard ≤ bodyHingeMult n := by
+        calc (B' ∩ edgeFiber e₀ n).ncard ≤ (edgeFiber e₀ n).ncard :=
+              Set.ncard_le_ncard Set.inter_subset_right (Set.toFinite _)
+          _ = bodyHingeMult n := edgeFiber_ncard e₀ n
+      have h2 : (B' ∩ E(Gv.mulTilde n)).ncard ≤ E(Gv.mulTilde n).ncard - bodyHingeMult n := by
+        have hsub : B' ∩ E(Gv.mulTilde n) ⊆ E(Gv.mulTilde n) \ edgeFiber e n := by
+          refine Set.subset_diff.mpr ⟨Set.inter_subset_right, Set.disjoint_left.mpr ?_⟩
+          intro p hpB' hpfib
+          exact absurd (Set.eq_empty_iff_forall_notMem.mp hBe p ⟨hpB'.1, hpfib⟩) id
+        calc (B' ∩ E(Gv.mulTilde n)).ncard ≤ (E(Gv.mulTilde n) \ edgeFiber e n).ncard :=
+              Set.ncard_le_ncard hsub (Set.toFinite _)
+          _ = E(Gv.mulTilde n).ncard - (edgeFiber e n).ncard :=
+              Set.ncard_diff heGv (Set.toFinite _)
+          _ = E(Gv.mulTilde n).ncard - bodyHingeMult n := by rw [edgeFiber_ncard]
+      have hcoverle : B'.ncard ≤ (B' ∩ edgeFiber e₀ n).ncard + (B' ∩ E(Gv.mulTilde n)).ncard := by
+        calc B'.ncard ≤ ((B' ∩ edgeFiber e₀ n) ∪ (B' ∩ E(Gv.mulTilde n))).ncard := by
+              refine Set.ncard_le_ncard ?_ (Set.toFinite _)
+              rw [← Set.inter_union_distrib_left]
+              exact Set.subset_inter (subset_refl _) hcover
+          _ ≤ (B' ∩ edgeFiber e₀ n).ncard + (B' ∩ E(Gv.mulTilde n)).ncard :=
+              Set.ncard_union_le _ _
+      -- `|E(G̃v)| ≥ D − 1` (it contains `ẽ` of size `D − 1`), so the subtraction is exact.
+      have hge : bodyHingeMult n ≤ E(Gv.mulTilde n).ncard := by
+        calc bodyHingeMult n = (edgeFiber e n).ncard := (edgeFiber_ncard e n).symm
+          _ ≤ E(Gv.mulTilde n).ncard := Set.ncard_le_ncard heGv (Set.toFinite _)
+      omega
+  -- Assemble: `D(|V'|−1) = |B'| ≤ |E(G̃v)| = D(|V'|−1) − def(G̃v)`, so `def(G̃v) ≤ 0` — contra.
+  have hle : (B'.ncard : ℤ) ≤ (E(Gv.mulTilde n).ncard : ℤ) := by exact_mod_cast hB'le
+  linarith [hB'card, hEGvcard, hle, hdefGv_pos]
+
 end Graph
