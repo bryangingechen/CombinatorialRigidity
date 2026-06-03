@@ -31,8 +31,9 @@ skeleton, then discharges the base case (via the parallel-hinges Lemma
 rigid-subgraph contraction \cref{lem:reduction-step} and the pin-a-body
 Lemma~\cref{lem:rank-delete-vertex}), and Case~II ($k>0$ splitting, the
 panel-hinge analogue of Whiteley's bar-joint 1-extension). The
-cycle-realization Lemma~5.4 of Crapo--Whiteley~\cite{crapoWhiteley1982}
-enters here as an input.
+cycle-realization Lemma~5.4
+(\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
+Whiteley~\cite{whiteley1999}) enters here as an input.
 
 \subsection{The generic-rank reconciliation (Proposition 1.1, analytic half)}
 \label{sec:molecular-algebraic-induction-prop11}
@@ -144,19 +145,31 @@ whole induction.
 \subsection{Case I: a proper rigid subgraph}
 \label{sec:molecular-algebraic-induction-caseI}
 
-\begin{lemma}[Cycle realizations; Crapo--Whiteley Lemma 5.4]
+\begin{lemma}[Cycle realizations; KT Lemma 5.4]
   \label{lem:cycle-realization}
   \uses{def:rigidity-matrix}
-  A cycle of bodies joined by hinges has a panel-hinge realization in
-  which the rank of the rigidity matrix is one less than the
-  free (tree) value, the single dependency being the cycle relation.
-  This is the cycle-realization input of
-  Crapo--Whiteley~\cite{crapoWhiteley1982} (also Whiteley, Kluwer 1999).
+  A cycle graph $G = (V, E)$ with $3 \le |V| \le D$ has an
+  infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$
+  --- equivalently a realization at the full rank $D(|V|-1)$, the
+  target rank of the minimal $0$-dof case
+  (\cref{def:rank-hypothesis}). This is Katoh--Tanigawa's Lemma~5.4,
+  whose geometric content is the cycle-realization result of
+  Crapo--Whiteley~\cite[Proposition~3.4]{crapoWhiteley1982} (the
+  $3$-dimensional, $D = 6$ case) and
+  Whiteley~\cite[Proposition~3]{whiteley1999}, the technique extending
+  to general $d$ without modification.
 \end{lemma}
 \begin{proof}
-  Realize the cycle projectively so that the composite screw motion
-  around the cycle closes up; the closing relation is the unique
-  dependency. (Cycle-realization input; formalize or cite per phase.)
+  A single cycle of $k$ panels and $k$ hinges is infinitesimally rigid
+  iff the $k$ hinge lines are independent in the Grassmann line
+  geometry --- the dimension-$D$ extensor space supports at most $D$
+  independent lines, so a cycle of length $3 \le |V| \le D$ admits a
+  nonparallel realization whose supporting extensors are independent,
+  hence rigid (\cite[Prop.~3.4]{crapoWhiteley1982},
+  \cite[Prop.~3]{whiteley1999}). An external geometric input, cited
+  rather than reproved (KT~\cite[Lemma~5.4]{katohTanigawa2011}
+  likewise defers the detailed projective calculation to these
+  sources).
 \end{proof}
 
 \begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]

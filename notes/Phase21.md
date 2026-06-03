@@ -20,19 +20,20 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
-`Molecular/AlgebraicInduction.lean` started; the induction-skeleton leaf
-nodes are green, plus the Case II rank-lift accounting skeleton. The base
-case landed earlier (`def:rank-hypothesis` + `lem:theorem-55-base`). This
-commit lands the new node `lem:case-II-rank-lift`
-(`rankHypothesis_iff_finrank_pinnedMotions`): the basis-free `+D` core of
-the panel-hinge 1-extension — `RankHypothesis F k' ↔ finrank (pinnedMotions
-v) = k'`, a 3-line consequence of the green pin-a-body identity
-`finrank_pinnedMotions_add_screwDim` (Phase 18). Axiom-clean. The full
-`lem:case-II` stays red (it still needs the framework *construction* from a
-realization of `G_v^{ab}` and the Claim 6.9 genericity device); the new
-node is wired in as a dependency of its proof. Still red:
-`prop:rigidity-matrix-prop11`, `thm:theorem-55`, `lem:cycle-realization`,
-`lem:case-I`, `lem:case-II`, `lem:case-III` (the last deferred to 22–23).
+`Molecular/AlgebraicInduction.lean` carries the induction-skeleton leaf
+nodes (green): `def:rank-hypothesis`, `lem:theorem-55-base`, and the Case
+II rank-lift accounting `lem:case-II-rank-lift`
+(`rankHypothesis_iff_finrank_pinnedMotions`, the basis-free `+D` core of
+the panel-hinge 1-extension). This commit settles the cycle input
+`lem:cycle-realization` (KT Lemma 5.4) as a **verified cite** — not Lean:
+its proposition numbers ([4] Crapo–Whiteley 1982 Prop 3.4, [34] Whiteley
+1999 Kluwer Prop 3) were checked against the local OCR'd primaries and
+pinned, the statement was corrected to KT's form (short cycles are
+*rigid* = full rank, not "one short"), and a `whiteley1999` bib entry was
+added. The dep-graph node stays red (external input, no `\leanok`). Still
+red: `prop:rigidity-matrix-prop11`, `thm:theorem-55`, `lem:case-I`,
+`lem:case-II` (all gating on the framework-construction op + genericity
+device, see *Hand-off*), and `lem:case-III` (deferred to 22–23).
 
 **Basis-free rank convention (carried forward from Phase 18).** Phase 18
 carries `rank R(G,p)` as the codimension `D|V| − dim Z(G,p)` of the null
@@ -91,7 +92,13 @@ Induction skeleton + base:
   green). Axiom-free.
 
 Case I (proper rigid subgraph; KT §6.2):
-- [ ] `lem:cycle-realization` — Crapo–Whiteley Lemma 5.4 input.
+- [~] `lem:cycle-realization` — KT Lemma 5.4, **cite-only** (decision
+  made; see *Decisions made* below). Statement corrected to KT's form
+  (a cycle graph with `3 ≤ |V| ≤ D` has an infinitesimally rigid =
+  full-rank `D(|V|−1)` nonparallel realization), citation pinned to the
+  verified primary sources Crapo–Whiteley 1982 Prop 3.4 + Whiteley 1999
+  (Kluwer) Prop 3. No `\leanok` (external geometric input, not
+  formalized); dep-graph node stays red.
 - [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
   subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
   glue block-triangularly with a pinned rigid realization of `H`
@@ -149,6 +156,23 @@ decomposition).
   edge. Keeps the base case reusable by the induction (which will supply
   the 2-body framework from its own data) and lets
   `eq_of_hingeConstraint_two_parallel` apply verbatim.
+- **Cycle Lemma 5.4 (`lem:cycle-realization`): cite, don't formalize.**
+  KT's Lemma 5.4 — a cycle graph with `3 ≤ |V| ≤ D` has an
+  infinitesimally rigid nonparallel panel-hinge realization (= full rank
+  `D(|V|−1)`) — is a projective-geometry fact KT themselves cite to
+  external sources rather than reprove (the Grassmann-line-geometry
+  independence of the `k` hinge lines). Cited, not formalized; the node
+  stays red (no `\leanok`). Proposition numbers verified against the
+  local OCR'd primaries before pinning: [4] Crapo–Whiteley 1982
+  **Proposition 3.4** (`.refs/`, French+English columns p.25, `D=6`
+  case) and [34] Whiteley 1999 Kluwer **Proposition 3** (p.5); KT
+  attributes "[4, Proposition 3.4] or [34, Proposition 3]" itself. This
+  discharges the *Citation accuracy caveat* in MolecularConjecture.md.
+  Also corrected a prior mis-statement: the blueprint had glossed cycle
+  realization as "rank one less than the free value" — backwards; short
+  cycles (`|V| ≤ D`) are *rigid*, i.e. full rank. New bib entry
+  `whiteley1999` (verified against KT ref [34]; editor initials
+  corrected from KT's OCR-typo'd "Thorpe, O., Duxbury, O.").
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *(none yet)*
@@ -162,36 +186,41 @@ decomposition).
   `exists_uniform_rowIndependent_placement`-style perturbation) where it
   transfers; assess on contact whether the panel-coordinate
   parametrization needs new infrastructure.
-- **Cycle Lemma 5.4 formalize-vs-cite** decision pending — re-confirm the
-  exact proposition numbers in Crapo–Whiteley [4] / Whiteley Kluwer 1999
-  before pinning, per MolecularConjecture.md *Citation accuracy caveat*.
+- ~~Cycle Lemma 5.4 formalize-vs-cite decision~~ — **resolved this
+  commit**: cite-only, proposition numbers verified and pinned ([4]
+  Prop 3.4, [34] Prop 3). See *Decisions made*. Citation caveat in
+  MolecularConjecture.md discharged for Phase 21.
 
 ## Hand-off / next phase
 
-Base case (`def:rank-hypothesis` + `lem:theorem-55-base`) and the Case II
-`+D` rank-lift accounting (`lem:case-II-rank-lift`) are green in
-`Molecular/AlgebraicInduction.lean`. The accounting skeleton the previous
-hand-off named is now landed; what remains for Case II is the genuinely
-hard part (framework construction + genericity), shared with Case I.
+Base case (`def:rank-hypothesis` + `lem:theorem-55-base`), the Case II
+`+D` rank-lift accounting (`lem:case-II-rank-lift`), and now the cycle
+input (`lem:cycle-realization`, cite-only) are settled.
+`Molecular/AlgebraicInduction.lean` carries the three Lean nodes;
+`lem:cycle-realization` is a verified cite (no Lean). The remaining red
+nodes (`prop:rigidity-matrix-prop11`, `thm:theorem-55`, `lem:case-I`,
+`lem:case-II`) all gate on the same two not-yet-built pieces.
 
-The next concrete commit takes the next leaf-most red node. Remaining
-candidates:
-- `lem:cycle-realization` (Crapo–Whiteley Lemma 5.4 input) — deps only
-  `def:rigidity-matrix`; **formalize-or-cite still pending** (Blockers,
-  Citation caveat — verify the exact prop numbers in [4]/[34] before
-  pinning a `§N`). A cite-only landing is a small commit; a formalized
-  cycle-closing realization is larger. This is the cleanest *small*
-  remaining step since it sidesteps the genericity device.
-- `lem:case-I` / `lem:case-II` (full forms): both now have their rank
-  accounting in hand (`lem:case-II-rank-lift`, `lem:rank-delete-vertex`)
-  but still need (a) the framework *construction* — splitting-off /
-  contraction graph op realized as a `BodyHingeFramework`, no
-  vertex-deletion/extension op exists yet on the structure — and (b) the
-  Claim 6.4/6.9 genericity argument (the new analytic device, Blockers).
-  Assess genericity-infrastructure need on contact.
+The next concrete commit must build one of those two pieces (neither
+exists yet, so the next step is infrastructure, not a leaf node):
+1. **Framework-construction op.** Case I needs the contraction `G/E(H)`
+   realized as a `BodyHingeFramework`; Case II needs the splitting-off
+   `G_v^{ab}` (re-insert `v` with two hinges). No vertex-deletion /
+   extension / contraction op exists on `BodyHingeFramework` yet — this
+   is the prerequisite for both full Cases. Likely its own commit (or a
+   small series): define the op + its `infinitesimalMotions` /
+   `pinnedMotions` relationship to the parent framework, reusing the
+   pin-a-body identity (`finrank_pinnedMotions_add_screwDim`).
+2. **Claim 6.4 / 6.9 genericity device** (Blockers): matrix entries are
+   polynomials in alg.-indep. panel coords ⇒ a generic point attains max
+   rank. Assess whether the Phase 6/8 genericity machinery transfers or
+   the panel-coordinate parametrization needs new infrastructure; the
+   first step here is that *assessment* (a scoping commit / FRICTION
+   entry), since it determines whether Cases I/II are one commit or
+   several.
 
-Smallest forward step: land `lem:cycle-realization` (make the
-cite-or-formalize decision first), since both full Cases are gated on the
-not-yet-built genericity device and the framework-construction op. Broad
-phase; may split Case I from Case II (precedent: Phases 8–11). Phases
-22–23 pick up Case III (the crux).
+Smallest forward step: start the framework-construction op (#1) — it is
+the shared, citation-free prerequisite both Cases need, and it can land
+its `pinnedMotions`-relationship lemma incrementally before the
+genericity device is in place. Broad phase; may split Case I from Case II
+(precedent: Phases 8–11). Phases 22–23 pick up Case III (the crux).
