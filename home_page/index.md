@@ -25,7 +25,8 @@ Phases 1–21 and the Grassmann–Cayley meet sub-phase 21a are complete and
 carry no `sorry`s, and **Phase 21 (complete — GREEN-modulo-21b: all
 genericity-free content green, the shared genericity device Claim 6.4/6.9
 scoped out into sub-phase 21b as a cited black-box)** lands the algebraic
-induction; **the body-bar
+induction, with **Phase 21b (in progress)** opening to discharge that
+device; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -196,7 +197,7 @@ chapter `algebraic-induction.tex` is the authoritative dep-graph.
 `Molecular/AlgebraicInduction.lean`. See `notes/Phase21.md` and
 `notes/MolecularConjecture.md`.
 
-**Phase 21b (planned)** is the genericity device itself (Claim 6.4/6.9):
+**Phase 21b (in progress)** is the genericity device itself (Claim 6.4/6.9):
 the panel-coordinate parametrization of `R(G,p)` plus the
 generic-max-rank argument — the shared analytic crux of Cases I/II,
 Theorem 5.5, Proposition 1.1, and the cycle assembly, the analytic
@@ -232,7 +233,7 @@ existing files or refactor across several).
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction.lean` | ✓ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
-|   21b | Genericity device (Claim 6.4/6.9) | `Molecular/AlgebraicInduction.lean` (+ new section) | ◷ |
+|   21b | Genericity device (Claim 6.4/6.9) | `Molecular/AlgebraicInduction.lean` (+ `lem:genericity-device`) | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

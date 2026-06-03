@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–21 + 21a complete (Phase 21 GREEN-modulo-21b — all genericity-free content green, the shared genericity device Claim 6.4/6.9 scoped out into sub-phase 21b as a cited black-box); Phases 21b, 22–26 planned.**
+* **Phases 1–21 + 21a complete (Phase 21 GREEN-modulo-21b — all genericity-free content green, the shared genericity device Claim 6.4/6.9 scoped out into sub-phase 21b as a cited black-box); Phase 21b in progress; Phases 22–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -228,12 +228,13 @@ project; commit history is preserved with paths rewritten.
   Phases 22–23. Forward-mode; the chapter `algebraic-induction.tex` is the
   authoritative dep-graph. `Molecular/AlgebraicInduction.lean`. See
   `notes/Phase21.md` and `notes/MolecularConjecture.md`.
-* **Phase 21b (planned)** — the genericity device (Claim 6.4/6.9): the
+* **Phase 21b (in progress)** — the genericity device (Claim 6.4/6.9): the
   panel-coordinate parametrization of `R(G,p)` plus the generic-max-rank
   argument, the shared analytic crux of Cases I/II, Theorem 5.5,
   Proposition 1.1, and the cycle assembly. Discharges the black-box left
   cited by Phase 21; also consumed by Phases 22–23. The analytic sibling
-  of the Phase-21a meet sub-phase. See `notes/MolecularConjecture.md`.
+  of the Phase-21a meet sub-phase. See `notes/Phase21b.md` and
+  `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

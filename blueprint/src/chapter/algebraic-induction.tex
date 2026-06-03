@@ -29,13 +29,15 @@ rigid-subgraph contraction \cref{lem:reduction-step} and the pin-a-body
 Lemma~\cref{lem:rank-delete-vertex}), and Case~II ($k>0$ splitting, the
 panel-hinge analogue of Whiteley's bar-joint 1-extension). Each node that
 needs the shared analytic device --- the genericity argument
-(Claim~6.4/6.9) --- takes it as an explicit hypothesis, so it is green
-\emph{modulo} that device, which is scoped out into the sub-phase
-Phase~21b. The cycle-realization Lemma~5.4
+(Claim~6.4/6.9, \cref{lem:genericity-device}) --- takes it as an explicit
+hypothesis, so it is green \emph{modulo} that device, which is scoped out
+into the sub-phase Phase~21b. That device is stated here as a red node
+(\cref{lem:genericity-device}) the four consumers reference; its discharge
+is the content of Phase~21b. The cycle-realization Lemma~5.4
 (\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
-Whiteley~\cite{whiteley1999}) enters here as an input. The only remaining
-red node is the crux Case~III (\cref{lem:case-III}), deferred to
-Phases~22--23.
+Whiteley~\cite{whiteley1999}) enters here as an input. The remaining red
+nodes are this genericity device (\cref{lem:genericity-device}, Phase~21b)
+and the crux Case~III (\cref{lem:case-III}, deferred to Phases~22--23).
 
 \subsection{The panel layer}
 \label{sec:molecular-algebraic-induction-panel}
@@ -120,7 +122,7 @@ whole induction.
   \label{prop:rigidity-matrix-prop11}
   \lean{CombinatorialRigidity.Molecular.rigidityMatrix_prop11}
   \leanok
-  \uses{def:rigidity-matrix, def:D-deficiency, thm:def-eq-corank, def:dof-generic}
+  \uses{def:rigidity-matrix, def:D-deficiency, thm:def-eq-corank, def:dof-generic, lem:genericity-device}
   For a generic panel-hinge realization $(G,p)$,
   \[
     \operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G).
@@ -444,7 +446,8 @@ Cases~I and~II travel toward the smaller inductive graph.
   \label{lem:cycle-realization}
   \uses{def:rigidity-matrix, lem:cycle-realization-base, lem:cycle-realization-dim-bound,
         lem:cycle-realization-rigid,
-        lem:panel-support-extensor-independence, lem:exists-independent-panel-extensor}
+        lem:panel-support-extensor-independence, lem:exists-independent-panel-extensor,
+        lem:genericity-device}
   A cycle graph $G = (V, E)$ with $3 \le |V| \le D$ has an
   infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$
   --- equivalently a realization at the full rank $D(|V|-1)$, the
@@ -567,7 +570,7 @@ Cases~I and~II travel toward the smaller inductive graph.
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
         lem:rank-delete-vertex, def:pinned-motions-on,
         lem:pinned-motions-on-rank-bound, lem:pinned-motions-on-mono,
-        lem:exists-independent-panel-extensor}
+        lem:exists-independent-panel-extensor, lem:genericity-device}
   Let $G$ be a minimal $k$-dof-graph with a proper rigid subgraph $H$ on
   the (nonempty) body set $s = V(H)$. Contracting $H$ to a single pinned
   body is the block pin $Z_s(G,p)$ (\cref{def:pinned-motions-on}), the
@@ -713,7 +716,8 @@ Cases~I and~II travel toward the smaller inductive graph.
   \leanok
   \uses{thm:minimal-kdof-reduction, lem:reduction-step,
         lem:rank-delete-vertex, lem:case-II-rank-lift, lem:cycle-realization,
-        lem:splitoff-edge-substitution, lem:exists-independent-panel-extensor}
+        lem:splitoff-edge-substitution, lem:exists-independent-panel-extensor,
+        lem:genericity-device}
   Let $G$ be a minimal $k$-dof-graph with $k > 0$ and a reducible
   degree-2 vertex $v$ (KT~4.6), and let $G_v^{ab}$ be the splitting-off
   at $v$ (a smaller minimal $k$-dof-graph by \cref{lem:reduction-step}).
@@ -762,6 +766,49 @@ Cases~I and~II travel toward the smaller inductive graph.
   span-membership input is supplied by the genericity device (Claim~6.9,
   Phase~21b).
 \end{proof}
+
+\subsection{The genericity device (Claim 6.4/6.9)}
+\label{sec:molecular-algebraic-induction-genericity}
+
+The four GREEN-modulo-21b nodes above (\cref{lem:case-I},
+\cref{lem:case-II}, \cref{thm:theorem-55},
+\cref{prop:rigidity-matrix-prop11}) and the projective assembly of the
+cycle realization (\cref{lem:cycle-realization}) all rest on one shared
+analytic crux, which is scoped out into the focused sub-phase
+\textbf{Phase~21b} (the analytic sibling of the Phase-21a meet). The
+device is stated here, red, as the node \cref{lem:genericity-device}
+that those consumers reference; its discharge is the content of
+Phase~21b.
+
+\begin{lemma}[Genericity device; KT Claim 6.4, Claim 6.9]
+  \label{lem:genericity-device}
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
+  Fix a multigraph $G$ and regard a panel-hinge realization through its
+  per-vertex panel normals as a point of the panel-coordinate space. The
+  entries of the panel-hinge rigidity matrix $R(G,p)$ are polynomials in
+  those (algebraically independent) panel coordinates, so
+  $\operatorname{rank} R(G,p)$ is a lower semicontinuous function of the
+  coordinates and attains its maximum on a Zariski-open (generic) subset.
+  Consequently, if some realization $(G,p_0)$ attains a given rank, then
+  the generic realization attains at least that rank.
+\end{lemma}
+\begin{proof}
+  Deferred to Phase~21b. A non-vanishing maximal minor of $R(G,p_0)$ is a
+  polynomial in the panel coordinates that is nonzero at $p_0$, hence
+  nonzero on a Zariski-open set; on that set the rank is at least the
+  size of that minor. See \cite[\S6.1, \S6.3]{katohTanigawa2011}
+  (Claim~6.4 and its Case-II twin Claim~6.9).
+\end{proof}
+
+\noindent The device discharges the explicit hypotheses each consumer
+carries: the block-triangular gluing inequality of \cref{lem:case-I},
+the span-membership input of \cref{lem:case-II} (each base-$v$-pinned
+motion lands in the two new edges' panel-support spans --- false
+pointwise, true for the general-position normals the rank count selects,
+\cref{lem:exists-independent-panel-extensor}), the generic-rank lower
+bound of \cref{prop:rigidity-matrix-prop11}, and the projective assembly
+of \cref{lem:cycle-realization}. It is also consumed by the Case~III
+candidate-framework genericity of Phases~22--23.
 
 \subsection{Case III deferred (the crux)}
 \label{sec:molecular-algebraic-induction-caseIII}
