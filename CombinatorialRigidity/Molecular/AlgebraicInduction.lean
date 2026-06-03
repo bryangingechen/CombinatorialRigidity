@@ -827,6 +827,75 @@ theorem card_le_screwDim_of_supportExtensor_linearIndependent
 
 end PanelHingeFramework
 
+/-! ## Setting the panel normal at one body (`def:panel-hinge-framework`, Case II infra)
+
+Case II of Theorem 5.5 re-inserts a reducible degree-2 body `v` into the splitting-off
+`G_v^{ab}`: it builds a panel realization of the larger graph `G` from one of `G_v^{ab}` by
+*choosing a panel normal for `v`* (the two new hinges at `v` are the meets of `panel(v)` with
+the panels of its two neighbours `a, b`). The framework-side carrier of that move is
+`withNormal v n`: override the panel normal at the single body `v` by `n`, leaving the
+multigraph, the endpoint selector, and every other body's normal fixed. This is the per-body
+analogue of `withGraph` (which swaps the whole graph) and the panel-data primitive the
+1-extension is assembled from; combined with `withGraph` (to enlarge the graph by `v`'s two new
+edges) it produces the extended panel realization whose rank Case II accounts for via the `+D`
+rank-lift `rankHypothesis_iff_finrank_pinnedMotions`. -/
+
+namespace PanelHingeFramework
+
+variable {α β : Type*} [DecidableEq α]
+
+/-- **The panel framework with a chosen normal at one body** (`def:panel-hinge-framework`,
+Case II infra): override `P`'s panel normal at the single body `v` by `n`, keeping the
+multigraph, the endpoint selector, and every other body's normal — `Function.update P.normal v
+n`. The per-body analogue of `withGraph`; the panel-data primitive Case II's 1-extension uses to
+*pick a panel for the re-inserted body `v`*. Because only `v`'s normal changes, every hinge whose
+two endpoints avoid `v` keeps its supporting extensor
+(`toBodyHinge_withNormal_supportExtensor_of_ne`), so the inductive realization of `G_v^{ab}` is
+untouched away from `v`. -/
+def withNormal (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+    PanelHingeFramework k α β where
+  graph := P.graph
+  normal := Function.update P.normal v n
+  ends := P.ends
+
+@[simp]
+theorem withNormal_graph (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+    (P.withNormal v n).graph = P.graph := rfl
+
+@[simp]
+theorem withNormal_ends (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+    (P.withNormal v n).ends = P.ends := rfl
+
+@[simp]
+theorem withNormal_normal (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+    (P.withNormal v n).normal = Function.update P.normal v n := rfl
+
+@[simp]
+theorem withNormal_normal_self (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) :
+    (P.withNormal v n).normal v = n := by
+  rw [withNormal_normal, Function.update_self]
+
+theorem withNormal_normal_of_ne (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ)
+    {w : α} (hw : w ≠ v) : (P.withNormal v n).normal w = P.normal w := by
+  rw [withNormal_normal, Function.update_of_ne hw]
+
+/-- **The supporting extensor of a hinge away from the re-inserted body is unchanged**
+(`def:panel-hinge-framework`, Case II infra): if neither endpoint of edge `e` is the body `v`
+whose normal was overridden (`(P.ends e).1 ≠ v` and `(P.ends e).2 ≠ v`), then `withNormal v n`
+leaves `e`'s panel support extensor untouched —
+`(P.withNormal v n).toBodyHinge.supportExtensor e = P.toBodyHinge.supportExtensor e`. The support
+extensor at `e` is the meet of the two normals at its endpoints, and only `v`'s normal changed, so
+the meets of the edges avoiding `v` (i.e. all of `G_v^{ab}` away from `v`'s two new hinges) are
+fixed. This is what carries the inductive realization of the splitting-off `G_v^{ab}` through the
+1-extension untouched, the `+D` lift coming entirely from `v`'s two new edges. -/
+theorem toBodyHinge_withNormal_supportExtensor_of_ne (P : PanelHingeFramework k α β) (v : α)
+    (n : Fin (k + 2) → ℝ) (e : β) (h₁ : (P.ends e).1 ≠ v) (h₂ : (P.ends e).2 ≠ v) :
+    (P.withNormal v n).toBodyHinge.supportExtensor e = P.toBodyHinge.supportExtensor e := by
+  rw [toBodyHinge_supportExtensor, toBodyHinge_supportExtensor, withNormal_ends,
+    withNormal_normal_of_ne P v n h₁, withNormal_normal_of_ne P v n h₂]
+
+end PanelHingeFramework
+
 namespace PanelHingeFramework
 
 variable {β : Type*}

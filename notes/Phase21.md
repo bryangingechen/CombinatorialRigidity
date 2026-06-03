@@ -26,6 +26,28 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case II panel-normal-extension carrier landed (2026-06-03).** The per-body panel-data primitive
+Case II's 1-extension is assembled from is green: `PanelHingeFramework.withNormal v n` (override the
+panel normal at the single body `v` by `n` via `Function.update`, keeping the multigraph, the
+endpoint selector, and every other body's normal) with its simp lemmas (`withNormal_{graph,ends,
+normal,normal_self}`, plus the non-simp `withNormal_normal_of_ne`) and the load-bearing invariance
+`toBodyHinge_withNormal_supportExtensor_of_ne` (for an edge `e` whose endpoints `ends e` both avoid
+`v`, the panel support extensor is unchanged). This is the per-body analogue of `withGraph` (which
+swaps the whole graph): Case II re-inserts a reducible degree-2 body `v` into the splitting-off
+`G_v^{ab}` by *choosing a panel normal for `v`*, and `withNormal` is the framework-side carrier of
+that move; the invariance lemma is what carries the inductive realization of `G_v^{ab}` through the
+1-extension untouched away from `v` (the `+D` lift coming entirely from `v`'s two new edges, accounted
+by `rankHypothesis_iff_finrank_pinnedMotions`). Needs `[DecidableEq α]` (for `Function.update`),
+carried on its own namespace block so the binder does not leak onto the earlier `[DecidableEq]`-free
+panel lemmas. Axiom-clean (propext/Classical.choice/Quot.sound). No friction beyond the documented
+`public section` `def`-opacity quirk (the `rfl` projection lemma `withNormal_normal` is rewritten
+in before `Function.update_self`/`update_of_ne`, the standard pattern already used in this file).
+Blueprint folds `withNormal` + the invariance into the existing green `def:framework-with-graph` node
+(beside the panel `withGraph`). **Remaining red on Case II:** the actual rank-lift assembly — build the
+extended `PanelHingeFramework` on `G` (via `withGraph` to add `v`'s two edges + `withNormal` to set
+`v`'s panel), then show its body-`v`-pinned motions are the inductive motions of `G_v^{ab}` and apply
+the `+D` accounting — plus the vertex-level splitting-off op `G_v^{ab}` and Claim 6.9 genericity.
+
 **Panel `withGraph` carrier landed (2026-06-03).** The shared graph-swap primitive both
 inductive cases need *on the panel layer* is green: `PanelHingeFramework.withGraph G'`
 (swap the multigraph, keep `normal` + `ends`, hence every panel support extensor) with its
@@ -307,7 +329,11 @@ Framework-construction op (shared infra for Cases I & II):
   + the commute identity `toBodyHinge_withGraph`
   (`(P.withGraph G').toBodyHinge = P.toBodyHinge.withGraph G'`), routing
   the green body-hinge graph-monotonicity / block-pin rank facts onto
-  panel realizations on a different graph, coplanarity preserved. Green.
+  panel realizations on a different graph, coplanarity preserved. Also carries the
+  per-body `PanelHingeFramework.withNormal v n` (override `v`'s panel normal via
+  `Function.update`, Case II's 1-extension primitive) + its simp lemmas and the
+  support-extensor invariance `toBodyHinge_withNormal_supportExtensor_of_ne`
+  (edges avoiding `v` unchanged). Green.
 - [x] `lem:motions-mono-of-graph-le` — graph-monotonicity of the null
   space: `infinitesimalMotions_le_withGraph_of_le` (`G' ≤ G ⇒ Z(G,p) ≤
   Z(G',p)`) + its `finrank` form `finrank_infinitesimalMotions_le_of_
@@ -599,17 +625,25 @@ identity routes the green body-hinge graph-monotonicity / block-pin rank machine
 realizations placed on a smaller graph and re-glued. The combinatorial vertex-level ops
 themselves are already green in Phase 20 (`rigidContract`, `splitOff`, `edgeSplit`).
 
-**Smallest next concrete commit:** continue Case I or start Case II — both now have their full
-panel-layer *carrier* infra (graph-swap + commute + block-pin rank bounds). The remaining work
-is the actual realization construction on the panel layer:
-- **Case II (recommended, smaller):** the framework construction re-inserting a reducible
-  degree-2 vertex `v`. Build a `PanelHingeFramework` on `G` (or `G.edgeSplit …`) from one on
-  `G_v^{ab}` by extending `normal`/`ends` to `v` with a chosen normal, then show the rank lifts
-  by `+D` via the green accounting `rankHypothesis_iff_finrank_pinnedMotions` (`+D` core) — the
-  pinned-`v` motions of the extended framework are the inductive motions of `G_v^{ab}`.
-- **Case I:** place the contraction realization (panel data on `rigidContract`) and re-add
-  `E(H)` via `withGraph`; the slack in `screwDim_add_finrank_pinnedMotionsOn_le` is the
-  contraction's inductive rank (block-triangular gluing).
+**Case II panel-normal-extension carrier is now green** (this commit):
+`PanelHingeFramework.withNormal v n` (override `v`'s panel normal via `Function.update`) + its simp
+lemmas (`withNormal_{graph,ends,normal,normal_self}`, `withNormal_normal_of_ne`) + the invariance
+`toBodyHinge_withNormal_supportExtensor_of_ne` (the support extensor at an edge avoiding `v` is
+unchanged). Folded into `def:framework-with-graph` (panel layer), beside the panel `withGraph`. Needs
+`[DecidableEq α]` on its own namespace block. With `withGraph` (to add `v`'s two edges) this is the
+full panel-data carrier for the 1-extension; what remains is wiring it into the rank-lift.
+
+**Smallest next concrete commit:** the Case II rank-lift assembly, now that both panel-data carriers
+exist (`withGraph` to add `v`'s two new edges, `withNormal` to set `v`'s panel). Build the extended
+`PanelHingeFramework` on `G` from one on `G_v^{ab}`, then show its body-`v`-pinned motions
+(`pinnedMotions v`) equal — or have the same `finrank` as — the inductive motions of `G_v^{ab}`
+(the invariance `toBodyHinge_withNormal_supportExtensor_of_ne` keeps every non-`v` edge's constraint
+fixed; the two new `v`-edges vanish on a `v`-pinned motion), then apply the `+D` accounting
+`rankHypothesis_iff_finrank_pinnedMotions`. The remaining red after that is the vertex-level
+splitting-off op `G_v^{ab}` (green in Phase 20 combinatorially) and Claim 6.9 genericity.
+Alternatively continue Case I: place the contraction realization (panel data on `rigidContract`) and
+re-add `E(H)` via `withGraph`; the slack in `screwDim_add_finrank_pinnedMotionsOn_le` is the
+contraction's inductive rank (block-triangular gluing).
 
 The genericity device for both is the same `panelSupportExtensor_linearIndependent_iff` +
 `exists_independent_panelSupportExtensor` pair already green for the cycle. Cases carry the

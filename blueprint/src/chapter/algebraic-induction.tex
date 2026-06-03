@@ -228,7 +228,9 @@ Cases~I and~II travel toward the smaller inductive graph.
   \label{def:framework-with-graph}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.withGraph,
         CombinatorialRigidity.Molecular.PanelHingeFramework.withGraph,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withGraph}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withGraph,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.withNormal,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_supportExtensor_of_ne}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   For a body-hinge framework $F = (G, p)$ and any multigraph $G'$ on the
@@ -241,7 +243,12 @@ Cases~I and~II travel toward the smaller inductive graph.
   with the body-hinge interpretation, $(P[G'])^\flat = (P^\flat)[G']$, so
   the graph-monotonicity and block-pin rank facts below apply verbatim to a
   panel realization re-glued onto $G$, with coplanarity preserved (the
-  normals are unchanged).
+  normals are unchanged). Case~II's $1$-extension additionally re-inserts a
+  body $v$ with a \emph{chosen} panel: the per-body variant $P[v \mapsto n]$
+  overrides only $v$'s panel normal, leaving the multigraph, endpoint
+  selector, and every other normal fixed, so each hinge whose endpoints
+  avoid $v$ keeps its supporting extensor and the inductive realization of
+  the splitting-off $G_v^{ab}$ is untouched away from $v$.
 \end{definition}
 
 \begin{lemma}[Edge deletion enlarges the motion space]
