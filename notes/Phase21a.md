@@ -8,12 +8,16 @@ risk #7 + the Phase-21a detail).
 
 ## Current state
 
-**Deliverables 1–2 (`topEquiv`, `pairingDualEquiv`) are green; deliverable 3
-(`complementIso`) is started — ingredients (a) `wedgeProd`, (b) the bilinear
-pairing `wedgePairing`, and *both halves of (c)* (the standard-basis pairing
-matrix is a signed-permutation matrix: off-diagonal `0` for `T ≠ Sᶜ`, and
-nonzero on the diagonal `T = Sᶜ` via `wedgePairing_ιMulti_family_compl_ne_zero`)
-are green.** File
+**Deliverables 1–3 (`topEquiv`, `pairingDualEquiv`, `complementIso`) are green;
+deliverable 4 (`meet`) remains.** Deliverable 3 closed via ingredients (a)
+`wedgeProd`, (b) the bilinear pairing `wedgePairing`, (c) the signed-permutation
+basis matrix (off-diagonal `0` for `T ≠ Sᶜ`, diagonal `≠ 0` via
+`wedgePairing_ιMulti_family_compl_ne_zero`), and (d) the assembly
+`complementIso` — `wedgePairing` is injective (`wedgePairing_injective`, via the
+basis-matrix nondegeneracy) and domain/codomain have equal finrank
+(`finrank_exteriorPower_eq_finrank_dual`, both `(k+2).choose j`), so
+`LinearMap.linearEquivOfInjective` makes it an iso onto the dual, post-composed
+with `(…).exteriorPower (k+2−j) |>.toDualEquiv.symm` to land in `⋀^(k+2−j) V`. File
 `Molecular/Meet.lean` carries the screw-algebra specializations
 (`screwAlgebraTopEquiv : ⋀^(k+2) (Fin (k+2) → ℝ) ≃ₗ ℝ`,
 `screwAlgebraPairingDualEquiv j : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*`), with the general
@@ -39,9 +43,21 @@ nondegeneracy via the signed-permutation basis computation
 vanishing is `extensor_eq_zero_of_not_injective`; the diagonal `≠ 0` is
 `wedgePairing_ιMulti_family_compl_ne_zero`, via injective-append linear
 independence — the sign value itself is not needed, see *Decisions*); (d) `complementIso :=
-(pairing-as-equiv) ≪≫ₗ (b.exteriorPower (k+2−j)).toDualEquiv.symm`. Mathlib
+(LinearMap.linearEquivOfInjective wedgePairing wedgePairing_injective …) ≪≫ₗ
+(b.exteriorPower (k+2−j)).toDualEquiv.symm` (✓). Mathlib
 exposes no graded `⋀ʲ × ⋀ᵏ → ⋀^(j+k)` map, so (a) was built by hand from the
 graded-monoid instance.
+
+**(d) used injectivity, not the abstract `pairingDualEquiv` route.** The
+checklist drafted (d) as "pairing-as-equiv via `pairingDualEquiv` ≪≫
+`toDualEquiv.symm`", routing the grade-swap sign through `pairingDualEquiv`. The
+realized route is cheaper: prove `wedgePairing` injective (`ker_eq_bot'`: evaluate
+the zero functional at the complementary basis vector `e_{Sᶜ}` to read off each
+coordinate, killed by the (c) lemmas), then `LinearMap.linearEquivOfInjective` +
+equal finrank (`finrank_exteriorPower_eq_finrank_dual`) gives the iso onto the dual
+directly. `pairingDualEquiv` (deliverable 2) stays the Phase-25 projective-duality
+entry but is **not** on the `complementIso` path; the blueprint `\uses` dropped it
+accordingly. No sign computation needed (consistent with the deferred-sign decision).
 
 Phase 21 (algebraic induction) is **paused**: its
 realization-existence statements need a *panel* layer (coplanar hinges,
@@ -91,19 +107,20 @@ Dependency order (route (ii); `N = k+2`, `V = Fin (k+2) → ℝ`):
    landed as the mirror `exteriorPower.pairingDualEquiv` + the project
    specialization `screwAlgebraPairingDualEquiv`. The basis-to-iso idiom is
    in FRICTION *Mirrored* under this entry.
-3. [ ] `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V` — from the perfect wedge
+3. [x] `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V` — from the perfect wedge
    pairing `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ R` (via `join` + `topEquiv`), shown
-   nondegenerate for free `V`. The genuinely new core. *In progress:* ingredients
-   (a) `wedgeProd` + `coe_wedgeProd`, (b) `wedgePairing` (+ `wedgeProdBilin`), and
-   **both halves of (c)** landed. Off-diagonal: `coe_wedgeProd_ιMulti_family` (the
-   `wedgeProd` of two standard basis vectors is the extensor of the concatenated
-   index family) feeds `wedgePairing_ιMulti_family_eq_zero_of_not_disjoint` and its
-   `T ≠ Sᶜ` form `…_of_ne_compl` (overlap ⇒ repeated basis vector ⇒ vanishing).
-   Diagonal: `wedgePairing_ιMulti_family_compl_ne_zero` (`T = Sᶜ` ⇒ append family is
-   a permutation of the standard basis ⇒ linearly independent ⇒ extensor `≠ 0` ⇒
-   pairing `≠ 0`). The pairing matrix is thus a signed-permutation matrix. The
-   `toDualEquiv.symm` composition (d) remains (see *Current state* for the (a)–(d)
-   decomposition).
+   nondegenerate for free `V`. The genuinely new core. Ingredients
+   (a) `wedgeProd` + `coe_wedgeProd`, (b) `wedgePairing` (+ `wedgeProdBilin`),
+   **both halves of (c)**, and (d) the assembly all green. Off-diagonal:
+   `coe_wedgeProd_ιMulti_family` (the `wedgeProd` of two standard basis vectors is
+   the extensor of the concatenated index family) feeds
+   `wedgePairing_ιMulti_family_eq_zero_of_not_disjoint` and its `T ≠ Sᶜ` form
+   `…_of_ne_compl` (overlap ⇒ repeated basis vector ⇒ vanishing). Diagonal:
+   `wedgePairing_ιMulti_family_compl_ne_zero` (`T = Sᶜ` ⇒ append family is a
+   permutation of the standard basis ⇒ linearly independent ⇒ extensor `≠ 0` ⇒
+   pairing `≠ 0`). The pairing matrix is thus a signed-permutation matrix; (d)
+   `wedgePairing_injective` + `finrank_exteriorPower_eq_finrank_dual` +
+   `LinearMap.linearEquivOfInjective` + `toDualEquiv.symm` assemble the iso.
 4. [ ] `meet` (regressive product) — thin layer above `complementIso` +
    Phase-17 `join` (`meet = complementIso⁻¹ ∘ join ∘ (complementIso ×
    complementIso)`); + `meet_ne_zero_iff` (⟺ transversal / independent),
@@ -162,25 +179,19 @@ metric Hodge star.
 
 ## Hand-off / next phase
 
-Deliverable 3 (`complementIso`) is in progress: ingredients (a) `wedgeProd` +
-`coe_wedgeProd`, (b) the bilinear wedge pairing
-`wedgePairing k hj : ⋀ʲ V →ₗ[ℝ] Module.Dual ℝ (⋀^(k+2−j) V)` (+ `wedgeProdBilin`,
-`wedgePairing_apply`), and **both halves of (c)** are green:
-`coe_wedgeProd_ιMulti_family` plus `wedgePairing_ιMulti_family_eq_zero_of_not_disjoint`
-/ `…_of_ne_compl` give `wedgePairing e_S e_T = 0` for `T ≠ Sᶜ`, and
-`wedgePairing_ιMulti_family_compl_ne_zero` gives `wedgePairing e_S e_{Sᶜ} ≠ 0` on the
-diagonal. So the standard-basis pairing matrix is a signed-permutation matrix
-(nondegenerate). `def:meet-complement-iso` stays red. **Next concrete commit:
-ingredient (d)** — assemble the iso from this nondegeneracy. Turn `wedgePairing` into a
-`LinearEquiv` `⋀ʲ V ≃ₗ Module.Dual ℝ (⋀^(k+2−j) V)` (it is a bijective linear map: it
-sends the standard basis of `⋀ʲ V` to the dual basis up to the signed-permutation
-reindex; the cleanest route is likely `Basis.equiv` carrying
-`(Pi.basisFun …).exteriorPower j` onto a reindexed `(…).exteriorPower (k+2−j) |>.dualBasis`,
-proving the matrix entries from the two (c) lemmas), then post-compose with
-`(Pi.basisFun …).exteriorPower (k+2−j) |>.toDualEquiv.symm` to land in `⋀^(k+2−j) V`,
-flipping `def:meet-complement-iso` green. Then `meet` + its lemmas (deliverable 4).
-**Route (ii) is multi-commit** — budget (d) and `meet` as separate commits.
-When 21a's
+Deliverable 3 (`complementIso`) is **green** (`def:meet-complement-iso` flipped):
+ingredients (a)–(d) all landed. (d) `wedgePairing_injective`
+(`ker_eq_bot'` + the two (c) lemmas evaluated at the complementary basis vector) +
+`finrank_exteriorPower_eq_finrank_dual` (both sides `(k+2).choose j`) +
+`LinearMap.linearEquivOfInjective` ≪≫ `toDualEquiv.symm` = `complementIso`. Axiom-clean
+(propext/Classical.choice/Quot.sound only). **Next concrete commit: deliverable 4
+(`meet`)** — the regressive product `meet = complementIso⁻¹ ∘ join ∘ (complementIso ×
+complementIso)`, a thin layer above `complementIso` + the Phase-17 `join`. Add
+`meet_ne_zero_iff` (⟺ transversal / independent), the grade arithmetic, and the
+geometric reading (*meet of two hyperplane normals = supporting extensor of their
+codim-2 intersection*) landing in `ScrewSpace k`. Flip `def:meet` green. Scope: build
+only the meet-properties the panel layer + Lemma 5.4 consume; projective invariance →
+Phase 25; no metric Hodge star. When 21a's
 deliverables are green, **Phase 21 resumes** with the panel layer
 (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar` once; DESIGN.md
 *Panel-hinge = hinge-coplanar body-hinge*), then Lemma 5.4 (panel cycle),

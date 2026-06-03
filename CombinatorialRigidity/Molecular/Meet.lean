@@ -8,6 +8,8 @@ module
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.ExteriorPower.Basis
 public import CombinatorialRigidity.Mathlib.Data.Finset.Card
 public import CombinatorialRigidity.Molecular.Extensor
+public import Mathlib.LinearAlgebra.Dual.Lemmas
+public import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 
 /-!
 # Grassmann–Cayley meet / projective-duality foundations (`sec:molecular-meet`)
@@ -337,5 +339,82 @@ theorem wedgePairing_ιMulti_family_compl_ne_zero {j : ℕ} (hj : j ≤ k + 2)
     rw [hrw]
     exact (Pi.basisFun ℝ (Fin (k + 2))).linearIndependent.comp _ hinj
   exact fun hz => hne ((map_eq_zero_iff _ (screwAlgebraTopEquiv k).injective).mp hz)
+
+/-! ## The complement isomorphism `⋀ʲ V ≃ₗ ⋀^(N−j) V` (ingredient (d), `def:meet-complement-iso`)
+
+The perfect wedge pairing `wedgePairing` is nondegenerate (ingredient (c): its matrix on
+the standard exterior-power bases is a signed-permutation matrix — off-diagonal `0` by
+`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`, diagonal `≠ 0` by
+`wedgePairing_ιMulti_family_compl_ne_zero`). Hence `wedgePairing k hj : ⋀ʲ V →ₗ
+Module.Dual ℝ (⋀^(N−j) V)` is **injective**: evaluating `wedgePairing k hj m` at the
+complementary basis vector `e_{Sᶜ}` of `⋀^(N−j) V` reads off the `S`-coordinate of `m`
+up to the nonzero diagonal scalar, so a zero pairing forces every coordinate of `m` to
+vanish. Domain and codomain have equal finrank (`(k+2).choose j` on both sides, since
+`Module.Dual` preserves finrank and `(k+2).choose j = (k+2).choose (k+2−j)`), so
+injectivity upgrades to a `LinearEquiv` via `LinearMap.linearEquivOfInjective`; one more
+post-composition with the dual-evaluation iso of `⋀^(N−j) V` lands `complementIso` in
+`⋀^(N−j) V` itself. -/
+
+/-- **Injectivity of the wedge pairing** (ingredient (c) → (d)). The perfect wedge pairing
+`wedgePairing k hj : ⋀ʲ V →ₗ Module.Dual ℝ (⋀^(N−j) V)` is injective: its matrix on the
+standard exterior-power bases is a signed-permutation matrix (nonzero diagonal
+`wedgePairing_ιMulti_family_compl_ne_zero`, vanishing off-diagonal
+`wedgePairing_ιMulti_family_eq_zero_of_ne_compl`), so evaluating a zero pairing at each
+complementary basis vector forces all standard-basis coordinates of the argument to
+vanish. The nondegeneracy input to `complementIso` (`def:meet-complement-iso`). -/
+theorem wedgePairing_injective {j : ℕ} (hj : j ≤ k + 2) :
+    Function.Injective (wedgePairing k hj) := by
+  rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
+  intro m hm
+  set bj := (Pi.basisFun ℝ (Fin (k + 2))).exteriorPower j with hbj
+  apply bj.ext_elem_iff.mpr
+  intro S
+  -- read off the `S`-coordinate by evaluating the zero functional at `e_{Sᶜ}`
+  set T : Set.powersetCard (Fin (k + 2)) (k + 2 - j) :=
+    Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S with hT
+  have hval : wedgePairing k hj m
+      (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T) = 0 := by
+    rw [hm]; rfl
+  rw [← bj.sum_repr m, map_sum] at hval
+  simp only [LinearMap.coe_sum, Finset.sum_apply, map_smul, LinearMap.smul_apply,
+    smul_eq_mul, hbj, exteriorPower.basis_apply] at hval
+  rw [Finset.sum_eq_single S] at hval
+  · rw [map_zero, Finsupp.coe_zero, Pi.zero_apply]
+    by_contra hne
+    exact (wedgePairing_ιMulti_family_compl_ne_zero hj S)
+      (by simpa [hT] using (mul_eq_zero.mp hval).resolve_left hne)
+  · intro S' _ hS'
+    have : T ≠ Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S' := by
+      rw [hT]
+      intro h
+      exact hS' ((Set.powersetCard.compl _).injective h).symm
+    rw [wedgePairing_ιMulti_family_eq_zero_of_ne_compl hj S' T this, mul_zero]
+  · intro h; exact absurd (Finset.mem_univ S) h
+
+/-- The finrank of `⋀ʲ (Fin (k+2) → ℝ)` equals the finrank of `Module.Dual ℝ (⋀^(k+2−j)
+(Fin (k+2) → ℝ))`: both are `(k+2).choose j`. The dual preserves finrank, and the binomial
+symmetry `(k+2).choose j = (k+2).choose (k+2−j)` (`Nat.choose_symm_diff`, valid for
+`j ≤ k+2`) matches the two exterior powers. The dimension match feeding
+`LinearMap.linearEquivOfInjective` in `complementIso`. -/
+theorem finrank_exteriorPower_eq_finrank_dual {j : ℕ} (hj : j ≤ k + 2) :
+    Module.finrank ℝ (⋀[ℝ]^j (Fin (k + 2) → ℝ)) =
+      Module.finrank ℝ (Module.Dual ℝ (⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ))) := by
+  rw [Subspace.dual_finrank_eq, exteriorPower.finrank_eq, exteriorPower.finrank_eq,
+    Module.finrank_fin_fun]
+  exact (Nat.choose_symm hj).symm
+
+/-- **The complement isomorphism** `⋀ʲ V ≃ₗ ⋀^(N−j) V` (`N = k+2`, `def:meet-complement-iso`):
+the genuinely new core of the Grassmann–Cayley meet. Built from the nondegenerate perfect
+wedge pairing `wedgePairing` (ingredient (c)): injectivity (`wedgePairing_injective`) plus
+the equal finrank (`finrank_exteriorPower_eq_finrank_dual`) make `wedgePairing` a
+`LinearEquiv` onto `Module.Dual ℝ (⋀^(N−j) V)` via `LinearMap.linearEquivOfInjective`, and
+post-composing with the dual-evaluation iso `(b.exteriorPower (k+2−j)).toDualEquiv.symm`
+lands the result in `⋀^(N−j) V`. The regressive product `meet` is the next deliverable
+above this. -/
+noncomputable def complementIso {j : ℕ} (hj : j ≤ k + 2) :
+    ⋀[ℝ]^j (Fin (k + 2) → ℝ) ≃ₗ[ℝ] ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ) :=
+  (LinearMap.linearEquivOfInjective (wedgePairing k hj) (wedgePairing_injective hj)
+      (finrank_exteriorPower_eq_finrank_dual hj)) ≪≫ₗ
+    ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).toDualEquiv.symm
 
 end CombinatorialRigidity.Molecular
