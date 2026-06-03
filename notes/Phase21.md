@@ -446,5 +446,11 @@ independent `.comp` argument. Then compose with the `m`-body cycle
 `theorem_55_base` analogue (propagating `S u = S v` around the cycle —
 mathlib's relational `Graph` has no connectivity API, so this likely
 needs a `Graph`-cycle/walk primitive; can land as a separate commit).
+**Already green for that analogue:** the cycle-difference linear-algebra
+core `eq_zero_of_mem_span_singleton_of_sum_eq_zero` (RigidityMatrix.lean,
+commit `31ded90`) — an independent family of constraint spans admits no
+nonzero cycle of differences (the `m`-edge generalization of
+`span_inf_span_eq_bot_of_linearIndependent`); reuse it rather than
+rebuilding.
 After 5.4: the re-scoped Cases I/II (Cases gain the panel requirement;
 III is 22–23).

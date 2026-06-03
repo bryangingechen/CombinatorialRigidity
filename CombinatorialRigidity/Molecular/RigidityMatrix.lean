@@ -439,6 +439,25 @@ theorem eq_of_hingeConstraint_two_parallel (F : BodyHingeFramework k α β)
   rw [span_inf_span_eq_bot_of_linearIndependent hgen, Submodule.mem_bot, sub_eq_zero] at hmem
   exact hmem
 
+/-- **An independent family of constraint spans admits no nonzero cycle of differences**
+(`lem:cycle-realization`, the linear-algebra core of the `m`-body cycle): if `c : Fin m →
+ScrewSpace k` is linearly independent and a family `d : Fin m → ScrewSpace k` has each
+`d i ∈ span {c i}` with `∑ i, d i = 0`, then every `d i = 0`. This is the screw-space fact
+behind Katoh–Tanigawa Lemma 5.4 for a cycle of length `m`: around a cycle the relative-screw
+differences `d i = S(vᵢ) − S(vᵢ₊₁)` lie in the one-dimensional hinge spans `span C(p(eᵢ))`
+and telescope to `∑ d i = 0`, so independence of the `m` supporting extensors forces every
+difference to vanish — the `m`-edge generalization of
+`span_inf_span_eq_bot_of_linearIndependent` (the `m = 2` antiparallel case). Each `d i` is a
+scalar multiple `aᵢ • c i` (`Submodule.mem_span_singleton`), and `∑ aᵢ • c i = 0` with the
+`c i` independent forces every `aᵢ = 0` (`Fintype.linearIndependent_iff`). -/
+theorem eq_zero_of_mem_span_singleton_of_sum_eq_zero {m : ℕ}
+    {c d : Fin m → ScrewSpace k} (hc : LinearIndependent ℝ c)
+    (hd : ∀ i, d i ∈ Submodule.span ℝ {c i}) (hsum : ∑ i, d i = 0) (i : Fin m) :
+    d i = 0 := by
+  choose a ha using fun j => Submodule.mem_span_singleton.1 (hd j)
+  have key : ∑ j, a j • c j = 0 := by rw [← hsum]; exact Finset.sum_congr rfl fun j _ => ha j
+  rw [← ha i, Fintype.linearIndependent_iff.1 hc a key i, zero_smul]
+
 /-- The **pinned-motion subspace** at a body `v` (`lem:rank-delete-vertex`): the infinitesimal
 motions `S` that vanish on the pinned body, `S v = 0`. Pinning a body — fixing it to the zero
 screw — is the algebraic effect of deleting the `D` columns of `v` from the rigidity matrix
