@@ -10,6 +10,7 @@ public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 public import Mathlib.LinearAlgebra.Matrix.Polynomial
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 public import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
+public import Mathlib.LinearAlgebra.Dual.Lemmas
 public import Mathlib.Algebra.Polynomial.Roots
 public import Mathlib.Data.Real.Basic
 
@@ -261,4 +262,40 @@ theorem LinearIndependent.le_finrank_span_along_affine_path_cofinite
   have hmono : Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i : s => a i + t • b i)))
       ≤ Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i => a i + t • b i))) :=
     Submodule.finrank_mono (Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨i, rfl⟩))
+  omega
+
+/-- **Codimension form: kernel finrank is cofinitely bounded above along an affine path.**
+The dual of `LinearIndependent.le_finrank_span_along_affine_path_cofinite`, stated for an affine
+family of *linear functionals* `t ↦ fun i => a i + t • b i : ℝ → ι → Module.Dual ℝ V` (with `ι`
+finite and `V` finite-dimensional). If the subfamily indexed by `s : Set ι` is linearly
+independent at some `t₀ : ℝ`, then for all but finitely many `t : ℝ` the common kernel of the
+*full* functional family at `t` — packaged as the dual coannihilator
+`(span (range (fun i => a i + t • b i))).dualCoannihilator = {x : V | ∀ i, (a i + t • b i) x = 0}`
+(`Submodule.coe_dualCoannihilator_span`) — has `finrank` at most `finrank V - #s`. I.e. the
+null-space dimension is cofinitely bounded *above* by any corank witnessed once.
+
+This is the exact shape the Phase-21b genericity device feeds its consumers: each carries an
+*upper* bound on a null-space dimension (`dim Z(G,p) ≤ …`, the codimension/rank-nullity reading
+of `rank R(G,p) ≥ …`), so the span-form `le_finrank_span_along_affine_path_cofinite` is dualized
+here once. The span and its coannihilator have complementary dimension at *every* `t`
+(`Subspace.finrank_add_finrank_dualAnnihilator_eq` + `Subspace.finrank_dualCoannihilator_eq`:
+`finrank coann + finrank span = finrank (Dual ℝ V) = finrank V`), so "span finrank ≥ #s
+cofinitely" turns into "coann finrank ≤ finrank V − #s cofinitely" verbatim. The conclusion is
+stated in the additive form `finrank V < #s + finrank coann` to sidestep `ℕ`-subtraction. -/
+theorem LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite
+    {ι V : Type*} [Finite ι] [AddCommGroup V] [Module ℝ V] [Module.Finite ℝ V]
+    {a b : ι → Module.Dual ℝ V} {t₀ : ℝ} {s : Set ι}
+    (h : LinearIndependent ℝ (fun i : s => a i + t₀ • b i)) :
+    {t : ℝ | Module.finrank ℝ V < Nat.card s + Module.finrank ℝ
+      (Submodule.span ℝ (Set.range (fun i => a i + t • b i))).dualCoannihilator}.Finite := by
+  classical
+  refine (h.le_finrank_span_along_affine_path_cofinite (a := a) (b := b)).subset (fun t ht => ?_)
+  rw [Set.mem_setOf_eq] at ht ⊢
+  -- complementary-dimension identity: coann finrank + span finrank = finrank V, at this `t`.
+  set Φ : Subspace ℝ (Module.Dual ℝ V) :=
+    Submodule.span ℝ (Set.range (fun i => a i + t • b i)) with hΦ
+  have hcompl : Module.finrank ℝ Φ.dualCoannihilator + Module.finrank ℝ Φ
+      = Module.finrank ℝ V := by
+    rw [Subspace.finrank_dualCoannihilator_eq, add_comm,
+      Subspace.finrank_add_finrank_dualAnnihilator_eq, Subspace.dual_finrank_eq]
   omega
