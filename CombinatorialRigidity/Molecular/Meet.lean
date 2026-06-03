@@ -114,4 +114,78 @@ theorem coe_wedgeProd {j : ℕ} (hj : j ≤ k + 2)
         (B : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) :=
   rfl
 
+/-! ## The perfect wedge pairing `⋀ʲ V →ₗ Dual ℝ (⋀^(N−j) V)`
+
+The bilinear ingredient (b) of the perfect wedge pairing on which `complementIso`
+(`def:meet-complement-iso`) is built (route (ii); `notes/Phase21a.md`). The graded
+wedge product `wedgeProd` is bilinear — its underlying element `↑A * ↑B` is bilinear
+in the full algebra, and the subtype inclusion `⋀ᴺ V ↪ ExteriorAlgebra` is a linear
+map, so `wedgeProd` inherits bilinearity (`wedgeProdBilin`). Composing the second
+slot with the volume form `screwAlgebraTopEquiv : ⋀ᴺ V ≃ₗ ℝ` lands the pairing in
+`ℝ`, giving `wedgePairing j : ⋀ʲ V →ₗ Dual ℝ (⋀^(N−j) V)`, `A ↦ B ↦
+screwAlgebraTopEquiv (wedgeProd A B)`. Its nondegeneracy (the signed-permutation
+basis computation) is the next ingredient; `complementIso` is then `wedgePairing`
+as an equiv composed with `toDualEquiv.symm`. -/
+
+/-- `wedgeProd` is additive in its first slot: the underlying product `↑A * ↑B` is
+additive in `↑A` and the subtype inclusion `⋀ᴺ V ↪ ExteriorAlgebra` is linear. -/
+theorem wedgeProd_add_left {j : ℕ} (hj : j ≤ k + 2)
+    (A A' : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    wedgeProd hj (A + A') B = wedgeProd hj A B + wedgeProd hj A' B := by
+  apply Subtype.ext
+  simp [wedgeProd, add_mul]
+
+/-- `wedgeProd` is additive in its second slot. -/
+theorem wedgeProd_add_right {j : ℕ} (hj : j ≤ k + 2)
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B B' : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    wedgeProd hj A (B + B') = wedgeProd hj A B + wedgeProd hj A B' := by
+  apply Subtype.ext
+  simp [wedgeProd, mul_add]
+
+/-- `wedgeProd` is `ℝ`-homogeneous in its first slot. -/
+theorem wedgeProd_smul_left {j : ℕ} (hj : j ≤ k + 2) (c : ℝ)
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    wedgeProd hj (c • A) B = c • wedgeProd hj A B := by
+  apply Subtype.ext
+  simp [wedgeProd]
+
+/-- `wedgeProd` is `ℝ`-homogeneous in its second slot. -/
+theorem wedgeProd_smul_right {j : ℕ} (hj : j ≤ k + 2) (c : ℝ)
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    wedgeProd hj A (c • B) = c • wedgeProd hj A B := by
+  apply Subtype.ext
+  simp [wedgeProd]
+
+/-- The graded wedge product `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V` packaged as an `ℝ`-bilinear
+map. The `LinearMap.mk₂` bundling of `wedgeProd`, whose bilinearity is
+`wedgeProd_{add,smul}_{left,right}`. -/
+noncomputable def wedgeProdBilin {j : ℕ} (hj : j ≤ k + 2) :
+    ⋀[ℝ]^j (Fin (k + 2) → ℝ) →ₗ[ℝ]
+      ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ) →ₗ[ℝ] ⋀[ℝ]^(k + 2) (Fin (k + 2) → ℝ) :=
+  LinearMap.mk₂ ℝ (wedgeProd hj) (wedgeProd_add_left hj) (wedgeProd_smul_left hj)
+    (wedgeProd_add_right hj) (wedgeProd_smul_right hj)
+
+@[simp]
+theorem wedgeProdBilin_apply {j : ℕ} (hj : j ≤ k + 2)
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    wedgeProdBilin hj A B = wedgeProd hj A B :=
+  rfl
+
+/-- The perfect wedge pairing `⋀ʲ V →ₗ Module.Dual ℝ (⋀^(N−j) V)` (`N = k+2`):
+`A ↦ B ↦ screwAlgebraTopEquiv (wedgeProd A B)`, the graded wedge product composed
+with the top-power volume form `screwAlgebraTopEquiv : ⋀ᴺ V ≃ₗ ℝ`. The bilinear
+pairing whose nondegeneracy makes `complementIso` (`def:meet-complement-iso`) an
+isomorphism; `Module.Dual ℝ (⋀^(N−j) V) = (⋀^(N−j) V) →ₗ ℝ` is the second-slot
+codomain after the volume form. -/
+noncomputable def wedgePairing (k : ℕ) {j : ℕ} (hj : j ≤ k + 2) :
+    ⋀[ℝ]^j (Fin (k + 2) → ℝ) →ₗ[ℝ]
+      Module.Dual ℝ (⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :=
+  (wedgeProdBilin hj).compr₂ (screwAlgebraTopEquiv k).toLinearMap
+
+@[simp]
+theorem wedgePairing_apply {j : ℕ} (hj : j ≤ k + 2)
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    wedgePairing k hj A B = screwAlgebraTopEquiv k (wedgeProd hj A B) :=
+  rfl
+
 end CombinatorialRigidity.Molecular

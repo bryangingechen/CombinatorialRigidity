@@ -88,6 +88,22 @@ housekeeping pass once their resolution is fully indexed.
   predicate, not the `Subtype.val`, when the index equality also appears in the
   ambient type" is the takeaway).
 
+### [resolved] Bilinear map out of a graded-subtype constructor: `mk₂` over `Subtype.ext; simp [def]`, post-compose with `compr₂`
+- **Where it bit:** `wedgeProdBilin` / `wedgePairing` in `Molecular/Meet.lean`
+  (ingredient (b) of `complementIso`, route (ii)): the bilinear
+  `⋀ʲ V →ₗ ⋀^(N−j) V →ₗ ⋀ᴺ V` out of `wedgeProd hj A B := ⟨↑A * ↑B, _⟩`, then
+  the pairing `⋀ʲ V →ₗ Dual ℝ (⋀^(N−j) V)` landing through the volume form.
+- **Fix (clean, ~1 line each):** the four `mk₂` bilinearity obligations each close
+  by `apply Subtype.ext; simp [wedgeProd]` — the subtype constructor inherits
+  bilinearity from `↑A * ↑B` via `add_mul`/`mul_add` (and `smul`s `simp` already
+  knows), surfaced by coercing through `Subtype.ext`. To send the *output* slot
+  `⋀ᴺ V` through `screwAlgebraTopEquiv`, the operator is `LinearMap.compr₂`
+  (`(f.compr₂ g) m n = g (f m n)`), **not** `compl₂` (which acts on the second
+  *input*). The whole pairing is one `(wedgeProdBilin hj).compr₂ topEquiv.toLinearMap`.
+- **Status:** resolved (no lift — standard mathlib bilinear-map plumbing; the
+  reusable takeaway is the `mk₂`-of-`Subtype.ext;simp` shape + `compr₂`-for-output
+  pairing, which `meet` (deliverable 4) and Phase 25 will rebuild on the same carrier).
+
 ### [resolved] `simp [key, key.symm]` loops to "maximum recursion depth" — feed only one orientation
 - **Where it bit:** `theorem_55_base` in `Molecular/AlgebraicInduction.lean`, closing the
   four `S a = S b` cases (`a, b ∈ {u, v}`) from `key : S u = S v`.
