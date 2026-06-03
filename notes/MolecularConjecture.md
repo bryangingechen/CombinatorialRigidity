@@ -192,14 +192,17 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 18 ✓ | Genuine panel-hinge rigidity matrix `R(G,p)`; Lemmas 5.1–5.3 (Prop 1.1 deferred to 19) | §2.2–2.4, parts of §5 | 2 |
 | 19 | `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof, rigid subgraphs, def=corank (JJ Thm 6.1 / Cor 6.2); Lem 3.1/3.3/3.4 | §2.5, §3 | 3 |
 | 20 | Combinatorial induction: graph ops + forest surgery 4.1/4.2 + 4.3–4.8 + **Theorem 4.9** | §4 | 4 |
-| 21 | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8) + genericity (Claim 6.4) | §5, §6.1–6.3 | 5 |
+| 21a | **GC meet / projective-duality foundations** (the dual half of §2.1): `topEquiv`, `pairingDual`-iso, `complementIso`, `meet` — the substrate the panel layer + Lemma 5.4 + Phase 25 rest on | §2.1 (dual half) | 1 |
+| 21 | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8) + genericity (Claim 6.4); **+ panel layer** (coplanar realizations) | §5, §6.1–6.3 | 5 |
 | 22 | **Case III, `d=3`** (Lemma 6.10): Claim 6.11 (combinatorial↔linear bridge), Claim 6.12 (extensor-span genericity), 3 candidates | §6.4.1 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |
 
-**This is a floor of 10 phases.** Phases 18, 21, and 22/23 each carry
+**This is a floor of 11 phases** (10 originally; +1 for the Phase-21a
+meet foundations inserted by the 2026-06-03 panel re-scope, risk #7).
+Phases 18, 21, and 22/23 each carry
 enough that one or two may split once inside them (precedent: Phases
 8–11 spawned perf/cleanup rounds and structural-edit sub-phases). The
 program is the largest single undertaking in the project to date —
@@ -314,7 +317,32 @@ two-vertex double edge via splitting-off / rigid-contraction).
   lemma) is a non-blocking TODO; the hard core is now 4.6 / the capstone
   4.8, not 4.1/4.2.
 
+#### Phase 21a — Grassmann–Cayley meet / projective-duality foundations
+
+Inserted by the 2026-06-03 panel re-scope (risk #7). The dual sibling of
+Phase 17: where Phase 17 built the *join*, 21a builds the *meet*
+(regressive product) — the substrate on which the panel layer derives
+coplanar hinges, Lemma 5.4 builds its cycle realization, and Phase 25
+inherits the projective-duality dictionary. On `V = ℝ^(k+2)`, route (ii):
+`topEquiv` (`⋀ᴺ V ≃ R`) → `pairingDual`-iso (`⋀ʲ(V*) ≃ (⋀ʲ V)*`, the
+Phase-25 dictionary entry) → `complementIso` (`⋀ʲ V ≃ ⋀^(N−j) V`, via the
+perfect wedge pairing) → `meet` + `meet_ne_zero_iff` (⟺ transversal).
+Scope: regressive product only, no metric Hodge; projective *invariance*
+→ Phase 25. Items `topEquiv` / `pairingDual`-iso / `complementIso` are
+upstream-eligible (mirror directory). Full detail + checklist:
+`notes/Phase21a.md`; decision: `DESIGN.md` *Panel-hinge = hinge-coplanar
+body-hinge*.
+
 #### Phase 21 — Theorem 5.5 base + Cases I & II (§5, §6.1–6.3)
+
+**Re-scoped + paused 2026-06-03 (panel re-scope, risk #7).** Theorem 5.5
+and the realization-existence nodes must be stated over **panel**
+(hinge-coplanar) realizations, not free body-hinge ones — so Phase 21 is
+gated on the Phase-21a meet foundations, after which it resumes by adding
+the panel layer (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar`),
+then Lemma 5.4 (panel cycle realization, *formalized* not cited), then the
+re-scoped Cases. The regime-agnostic rank nodes landed so far stay green.
+See `DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge* + `notes/Phase21.md`.
 
 The induction skeleton on `|V|` with hypothesis (6.1) and the
 "nonparallel if simple" side condition. Base (`|V|=2`, via Lemma 5.3).

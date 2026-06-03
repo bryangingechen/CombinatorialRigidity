@@ -113,7 +113,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-19) | Phase 19 surface (`Molecular/Deficiency.lean`, `deficiency.tex` `sec:molecular-deficiency` nodes) | ✓ Complete (all A–D audits no-op; see `notes/Phase19-cleanup.md`; round manual: `CLEANUP.md`) |
 | 20. Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` (KT §3.4–3.5, §4) | ✓ Complete (`thm:minimal-kdof-reduction` green; see `notes/Phase20.md`; `molecular-induction.tex` `sec:molecular-induction`) |
 | ⋮ Cleanup round (post-Phase-20) | Phase 20 surface (`Molecular/Induction.lean`, `molecular-induction.tex` `sec:molecular-induction` nodes) | ✓ Complete (A3 + B3 the two real fixes; A1/A2/B1/B2/B4/C1/D2 no-op; D1 compressed `notes/Phase20.md` 1089→434; see `notes/Phase20-cleanup.md`; round manual: `CLEANUP.md`) |
-| 21. Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` (KT §5, §6.1–6.3) | ◷ In progress (see `notes/Phase21.md`; `algebraic-induction.tex` `sec:molecular-algebraic-induction`) |
+| 21. Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` (KT §5, §6.1–6.3) | ◷ In progress — **paused for a panel re-scope** (realization nodes need a hinge-coplanar *panel* layer, gated on Phase 21a; regime-agnostic rank nodes green). See `notes/Phase21.md` + `DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge*. |
+| 21a. Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` (planned; KT §2.1 dual half) + mirror lemmas | ◷ Planning — prerequisite of Phase 21's panel layer (and Lemma 5.4, Phase 25): `topEquiv` / `pairingDual`-iso / `complementIso` / `meet`. See `notes/Phase21a.md`. |
 | 22–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -678,7 +679,18 @@ Cases I & II).
 
 ### Phase 21 — Algebraic induction: Theorem 5.5 base + Cases I & II (KT §5, §6.1–6.3)
 
-**Status (◷ in progress; see `notes/Phase21.md`).** Stratum 5 of the
+**Status (◷ in progress, paused for a panel re-scope; see
+`notes/Phase21.md`).** Mid-phase (2026-06-03) a modeling correction
+surfaced: KT's *panel-hinge* framework is a *hinge-coplanar* body-hinge
+framework, and the conjecture's content is that coplanarity does not drop
+rigidity — but the Phase-18 `BodyHingeFramework` carries free hinges with
+no coplanarity, so the realization-existence nodes as first drafted prove
+the (weaker) body-hinge rank theorem. The fix is a **panel layer**, gated
+on a new foundations sub-phase **Phase 21a** (Grassmann–Cayley meet /
+projective duality). The regime-agnostic rank nodes landed so far stay
+green. Full decision: `DESIGN.md` *Panel-hinge = hinge-coplanar
+body-hinge*; risk #7 + Phase-21a detail in `notes/MolecularConjecture.md`;
+`notes/Phase21a.md`. Stratum 5 of the
 molecular-conjecture program: the *algebraic* half of Katoh–Tanigawa's
 proof, opened in a new file `Molecular/AlgebraicInduction.lean`. Where
 Phase 20 reduced every minimal `0`-dof-graph to the two-vertex double

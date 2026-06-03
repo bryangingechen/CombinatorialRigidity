@@ -801,9 +801,51 @@ argument. This supersedes both the earlier cite-only call and the
 mid-Phase-21 — that reduction proved only the *body-hinge* cycle
 statement, which is too weak.
 
+**The meet foundation (Phase 21a) and its construction chain.** Building
+the panel layer (form (B)) and Lemma 5.4 both need the *supporting
+extensor of `panel(u) ∩ panel(v)`* — the Grassmann–Cayley **meet**
+(regressive product), the dual of the *join* Phase 17 built. mathlib has
+neither a meet, a Hodge star, nor a top-power iso (its `exteriorPower`
+surface is `Basic` / `Basis` / `Pairing` / `Grading` / `OfAlternating`
+only), but it has the primitives. So the meet is its own **foundations
+sub-phase, Phase 21a** (the dual sibling of Phase 17), scoped to the
+**regressive product only — no metric Hodge star** (projective geometry
+is metric-free; only an orientation / top-power volume form is needed).
+
+The decisive structural fact: on `V = ℝ^(k+2)` the irreducible new piece
+is a single iso, `complementIso : ⋀ʲ V ≃ ⋀^(N−j) V` (`N = k+2`). With it
+and Phase-17 `join`, a panel is a normal vector `nᵥ ∈ V` and
+`supportExtensor(e) = complementIso(nᵤ ∧ nᵥ)` (join, grade 2 →
+`⋀^(N−2)V = ⋀ᵏV = ScrewSpace k`), with **transversal ⟺ `nᵤ ∧ nᵥ ≠ 0` ⟺
+the normals independent** — so coplanarity and the only general-position
+condition both live in the extensor algebra, and no affine-subspace
+intersection plumbing is needed. The abstract `meet` is then a thin layer
+(`meet = complementIso⁻¹ ∘ join ∘ (complementIso × complementIso)`).
+
+`complementIso` is built by **route (ii)** (chosen 2026-06-03 over the
+combinatorial `e_S ↦ ±e_(Sᶜ)` route, for the Phase-25 payoff), via the
+duality pairing, in dependency order:
+
+1. `topEquiv : ⋀ᴺ V ≃ R` — canonical via the standard basis
+   (`Module.Basis.exteriorPower (Pi.basisFun)` + `exteriorPower.finrank_eq`).
+   Mirror lemma (mathlib has only `zeroEquiv` / `oneEquiv`).
+2. `pairingDualEquiv : ⋀ʲ(V*) ≃ (⋀ʲ V)*` — upgrade mathlib's
+   `exteriorPower.pairingDual` (a bare `→ₗ`) to an iso via its dual-basis
+   lemmas. Mirror lemma. **This is the projective-duality dictionary entry
+   Phase 25 reuses — the reason route (ii) was worth the extra abstraction
+   over route (i).**
+3. `complementIso` — from the perfect wedge pairing
+   `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ R` (via `join` + `topEquiv`), nondegenerate
+   for free `V`. The genuinely new core.
+4. `meet` + `meet_ne_zero_iff` + the geometric reading above.
+
+Items 1–3 are general free-module facts → mirror directory
+(`CombinatorialRigidity/Mathlib/LinearAlgebra/ExteriorPower/…`), natural
+mathlib-PR candidates. Detail + checklist: `notes/Phase21a.md`.
+
 Cross-refs: KT 2011 pp.647–649 (definitions), §5–6 (the panel
-induction); `notes/MolecularConjecture.md` risk #7 + Phase-21 detail;
-`notes/Phase21.md` *Decisions / Hand-off*.
+induction); `notes/MolecularConjecture.md` risk #7 + Phase-21/21a detail;
+`notes/Phase21.md` *Decisions / Hand-off*; `notes/Phase21a.md`.
 
 ---
 

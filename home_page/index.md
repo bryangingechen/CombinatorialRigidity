@@ -22,7 +22,9 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 ## Project status
 
 Phases 1–20 are complete and carry no `sorry`s, and **Phase 21
-(in progress)** opens the algebraic induction; **the body-bar
+(in progress, paused for a panel-coplanarity re-scope — a
+Grassmann–Cayley meet foundations sub-phase 21a precedes its panel
+layer)** opens the algebraic induction; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the

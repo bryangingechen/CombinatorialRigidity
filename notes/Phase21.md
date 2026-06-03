@@ -284,12 +284,16 @@ wasted. Remaining red: `lem:cycle-realization` (now a panel sub-phase),
 `lem:case-I`, `lem:case-II`, `lem:case-III` (all gain the panel
 requirement; III is 22–23).
 
-**Next concrete step (after plan sign-off):** design + land the panel
-layer (form (B) — per-vertex hyperplane data, `panelRealization :
-(α → Hyperplane) → BodyHingeFramework`, hinges as `panel(u) ∩ panel(v)`,
-+ the `IsHingeCoplanar` spec it meets), then restate `thm:theorem-55`
-over it. The first Lean commit is the panel constructor + its basic API
-(does it reduce to existing `affineSubspaceExtensor` / extensor *meet*?
-— scope on contact). Lemma 5.4 (panel cycle realization) and the
-re-scoped Cases I/II/III follow. Broad phase; the panel layer may itself
-be a sub-phase. Phases 22–23 still pick up Case III.
+**Next concrete step: Phase 21a (the gating prerequisite), not Phase 21
+itself.** The panel layer rests on the Grassmann–Cayley **meet** (the
+dual half of the GC algebra, not built in Phase 17), so that foundation
+is its own sub-phase — see `notes/Phase21a.md` (checklist + route (ii)
+construction chain) and `DESIGN.md` *Panel-hinge = hinge-coplanar
+body-hinge*. The first Lean commit of the whole resumed effort is **21a's
+`topEquiv`** (`⋀ᴺ V ≃ₗ R`), then `pairingDual`-iso → `complementIso` →
+`meet`. **Only once 21a is green does Phase 21 resume**, with the panel
+layer (form (B): `PanelHingeFramework` → `toBodyHinge` →
+`IsHingeCoplanar` once; with the meet, `supportExtensor(e) =
+complementIso(nᵤ ∧ nᵥ)` and coplanarity is automatic), then Lemma 5.4
+(panel cycle realization), then the re-scoped Cases I/II/III. Phases
+22–23 still pick up Case III.
