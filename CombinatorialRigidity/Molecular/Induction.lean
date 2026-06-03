@@ -923,6 +923,50 @@ theorem removeVertex_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n 
     rw [partitionDef, partitionDef]
     nlinarith [Int.ofNat_le.mpr hcross, hparts]
 
+/-! ### Degrees of freedom under vertex removal and splitting-off (`lem:dof-tracking`, KT 4.3–4.5)
+
+The local degree-of-freedom bookkeeping at a degree-2 vertex `v`, packaged from the three
+green per-partition deficiency bounds. For a `k`-dof-graph `G` (`def(G̃) = k`) with a
+degree-2 vertex `v` of neighbours `a, b`:
+* the splitting-off `G_v^{ab}` is a `k`-dof- or a `(k−1)`-dof-graph — `def(G̃_v^{ab}) ∈
+  {k, k − 1}` — by `splitOff_deficiency_le` (`≤ k`) and `splitOff_deficiency_ge` (`≥ k − 1`);
+* the removal `G_v` is at least a `k`-dof-graph — `def(G̃_v) ≥ k` — by
+  `removeVertex_deficiency_ge`.
+
+These are the dof-conservation laws the combinatorial induction (KT 4.6–4.9) tracks: each
+reduction step (splitting-off or vertex removal) keeps the deficiency `k` invariant or drops
+it by exactly one, so the target `k` is preserved along the reduction chain. KT phrases the
+"which alternative" refinement (whether `G_v^{ab}` keeps `k` or drops to `k − 1`) via the
+fundamental-circuit count of the new edge `ab` through the forest surgery (`rem:kt-lemma-41`);
+that refinement is off the Theorem-4.9 critical path (the induction consumes only the
+two-sided bound), so it is omitted. -/
+
+/-- **Degrees of freedom under vertex removal and splitting-off** (`lem:dof-tracking`,
+KT Lemmas 4.3–4.5). Let `v` be a degree-2 vertex of `G` with neighbours `a, b`, carried by
+the two distinct edges `eₐ`/`e_b` that are the *only* edges of `G` incident to `v`
+(`hdeg2`), and let `D = bodyBarDim n ≥ 2`. If `G` is a `k`-dof-graph (`def(G̃) = k`), then
+with the fresh short-circuit label `e₀ ∉ E(G)`:
+* `def(G̃) − 1 ≤ def(G̃_v^{ab}) ≤ def(G̃)` — the splitting-off `G_v^{ab}` is a `k`-dof- or a
+  `(k−1)`-dof-graph;
+* `def(G̃) ≤ def(G̃_v)` — the removal `G_v` has deficiency `≥ k`.
+
+A packaging lemma over the three deficiency-count bounds `splitOff_deficiency_le`,
+`splitOff_deficiency_ge`, `removeVertex_deficiency_ge` (no forests; see `rem:kt-lemma-41`).
+These are the dof-conservation laws the induction toward Theorem 4.9 tracks. -/
+theorem dof_tracking [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G)) :
+    G.deficiency n - 1 ≤ (G.splitOff v a b e₀).deficiency n ∧
+      (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n ∧
+      G.deficiency n ≤ (G.removeVertex v).deficiency n :=
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  ⟨splitOff_deficiency_ge hD1 hav hbv heab hla hlb hdeg2 he₀,
+    splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀,
+    removeVertex_deficiency_ge hD hav hbv heab hla hlb hdeg2⟩
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,

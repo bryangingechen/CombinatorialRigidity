@@ -507,24 +507,35 @@ route that bypasses the deferred forest surgery
 
 \begin{lemma}[Deficiency under vertex removal and splitting-off; KT Lemmas 4.3--4.5]
   \label{lem:dof-tracking}
+  \lean{Graph.dof_tracking}
+  \leanok
   \uses{lem:splitoff-deficiency, lem:removal-deficiency, def:graph-operations}
-  For a degree-2 vertex $v$ of $G$, the deficiencies of $G$, the
-  removal $G_v$, and the splitting-off $G_v^{ab}$ are related by the
-  KT~4.3--4.5 inequalities, pinning $\operatorname{def}(\tilde G)$ in
-  terms of $\operatorname{def}(\widetilde{G_v^{ab}})$ and the local
-  structure at $v$ (including the fundamental-circuit count of the new
-  edge $ab$). These are the dof-conservation laws the induction tracks.
+  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$, and let
+  $D = \binom{d+1}{2} \ge 2$. If $G$ is a $k$-dof-graph
+  ($\operatorname{def}(\tilde G) = k$), then the deficiencies of the
+  removal $G_v$ and the splitting-off $G_v^{ab}$ satisfy
+  \[
+    k - 1 \le \operatorname{def}(\widetilde{G_v^{ab}}) \le k,
+    \qquad
+    \operatorname{def}(\widetilde{G_v}) \ge k.
+  \]
+  That is, $G_v^{ab}$ is a $k$-dof- or a $(k-1)$-dof-graph, and $G_v$
+  has deficiency at least $k$. These are the dof-conservation laws the
+  induction tracks. (Katoh--Tanigawa additionally read off \emph{which}
+  alternative holds for $G_v^{ab}$ from the fundamental-circuit count of
+  the new edge $ab$, through the forest surgery (\cref{rem:kt-lemma-41});
+  that refinement is not needed for Theorem~4.9, which consumes only the
+  two-sided bound, so it is omitted.)
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:splitoff-deficiency, lem:removal-deficiency}
-  Assemble the splitting-off bound
-  (\cref{lem:splitoff-deficiency}) and the removal bound
-  (\cref{lem:removal-deficiency}); each is a consequence of the
-  def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) under the
-  corresponding rank change, and together they pin
-  $\operatorname{def}(\tilde G)$ in terms of the local structure at $v$.
-  This replaces Katoh--Tanigawa's forest-surgery derivation
-  (\cref{rem:kt-lemma-41}).
+  A packaging of the splitting-off bound
+  (\cref{lem:splitoff-deficiency}, both directions) and the removal
+  bound (\cref{lem:removal-deficiency}); each is a per-partition
+  deficiency-count comparison through the def\,$=$\,corank bridge
+  (\cref{thm:def-eq-corank}), no forests. This replaces
+  Katoh--Tanigawa's forest-surgery derivation (\cref{rem:kt-lemma-41}).
 \end{proof}
 
 \begin{lemma}[Existence of a reducible degree-2 vertex; KT Lemma 4.6]

@@ -20,11 +20,12 @@ dep-graph / lemma index is the new blueprint chapter
 > forest-surgery substrate already landed is now **off the Theorem-4.9
 > critical path** and serves a deferred TODO. A fresh
 > `/coordinate-phase 20` session should read *Finding* + *Replan* +
-> *Hand-off* and start at **Replan commit E** (`lem:dof-tracking`).
-> Commits A–D have landed (the deficiency-count route carries both the
-> splitting-off bounds and the KT 4.4 removal bound; the same-day
-> *Finding 2* that claimed KT 4.4 needed the unsplit forest surgery was
-> itself **refuted** — see *Finding 2 REFUTED*).
+> *Hand-off* and start at **Replan commit F** (`lem:reducible-vertex`).
+> Commits A–E have landed (the deficiency-count route carries both the
+> splitting-off bounds and the KT 4.4 removal bound, now assembled into
+> the KT 4.3–4.5 dof-tracking packaging; the same-day *Finding 2* that
+> claimed KT 4.4 needed the unsplit forest surgery was itself **refuted**
+> — see *Finding 2 REFUTED*).
 
 ## Finding: KT Lemma 4.1 / 5.1 is over-quantified, and its proof glosses a balanced-packing assumption (2026-06-02)
 
@@ -228,9 +229,9 @@ blueprint node; the node stays red) — incidence/cardinality
 surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
 they are **not** needed for Theorem 4.9.
 
-**Next:** *Replan* commit E (`lem:dof-tracking`, KT 4.3–4.5 assembly).
-The local-dof bookkeeping at a degree-2 vertex is now complete on the Lean
-side (axiom-free, `Molecular/Induction.lean`):
+**Next:** *Replan* commit F (`lem:reducible-vertex`, KT 4.6).
+The local-dof bookkeeping at a degree-2 vertex is now complete and assembled
+on the Lean side (axiom-free, `Molecular/Induction.lean`):
 - B (`≤`, `Graph.splitOff_deficiency_le`): `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via the
   partition *extension* `f = update f' v (f' a)` (numParts equal; crossing
   injection `e_b ↦ e₀`).
@@ -239,7 +240,9 @@ side (axiom-free, `Molecular/Induction.lean`):
   case-split on `v`-isolation.
 - D (`Graph.removeVertex_deficiency_ge`): `def(G̃) ≤ def(G̃ᵥ)` via the *same*
   maximizer-restriction route, simpler (no `e₀`), `2 ≤ bodyBarDim n`.
-B + C pin `def(G̃ᵥᵃᵇ) ∈ {def(G̃), def(G̃) − 1}`; D adds `def(G̃ᵥ) ≥ def(G̃)`.
+- E (`Graph.dof_tracking`): the KT 4.3–4.5 packaging — a 3-way conjunction over
+  B + C + D under `2 ≤ bodyBarDim n`. B + C pin `def(G̃ᵥᵃᵇ) ∈ {def(G̃),
+  def(G̃) − 1}`; D adds `def(G̃ᵥ) ≥ def(G̃)`.
 The matroid-base forms of KT 4.3(ii) / 4.4's "moreover" clause need the deferred
 forest surgery and are **not** on the Theorem-4.9 critical path (omitted; see
 *Replan*). See *Hand-off*.
@@ -324,8 +327,15 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   `Graph.removeVertex_deficiency_ge`, green `\leanok`, axiom-free, needs
   `2 ≤ bodyBarDim n`. *Finding 2* (which claimed it was blocked on the unsplit
   forest surgery) is **refuted** — see *Finding 2 REFUTED*.
-- [ ] `lem:dof-tracking` — KT 4.3–4.5 assembly; `\uses` `lem:splitoff-deficiency`
-  + `lem:removal-deficiency` (NOT forest surgery). Replan commit E (**next**).
+- [x] `lem:dof-tracking` — KT 4.3–4.5 assembly; `\uses` `lem:splitoff-deficiency`
+  + `lem:removal-deficiency` (NOT forest surgery). **LANDED** (commit E),
+  `Graph.dof_tracking`, green `\leanok`, axiom-free. Packaging lemma: a 3-way
+  conjunction over the green bounds (`splitOff_deficiency_{le,ge}` +
+  `removeVertex_deficiency_ge`) under `2 ≤ bodyBarDim n` (deriving `1 ≤` for the
+  splitting-off pair via `le_trans`). For a `k`-dof-graph `G`:
+  `k − 1 ≤ def(G̃ᵥᵃᵇ) ≤ k` and `def(G̃ᵥ) ≥ k`. The "which alternative" refinement
+  (forest-surgery fundamental-circuit count) is off the Thm-4.9 critical path,
+  omitted.
 - [ ] `lem:reducible-vertex` — KT 4.6, existence of a reducible degree-2
   vertex (maximal-chain / degree-sequence count). Replan commit F.
 - [ ] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality
@@ -506,13 +516,26 @@ fact") + return of `lem:forest-surgery-unsplit` to deferred-TODO + *Finding 2
 REFUTED* above. KT did not err: KT's `h'=0` unsplit forest-surgery route is a
 sound alternative; we simply found a shorter deficiency count.
 
-**Next agent's concrete commit = E: `lem:dof-tracking`** (KT 4.3–4.5 assembly).
-The local-dof bookkeeping at a degree-2 vertex `v` is now fully green:
-`splitOff_deficiency_{le,ge}` pin `def(G̃ᵥᵃᵇ) ∈ {def(G̃), def(G̃)−1}`, and
-`removeVertex_deficiency_ge` gives `def(G̃ᵥ) ≥ def(G̃)`. `lem:dof-tracking`
-assembles these into the KT 4.3–4.5 inequalities the induction tracks (no new
-infrastructure — it is a packaging lemma over the three green bounds). Then
-commits F (`lem:reducible-vertex`, KT 4.6), G (`lem:reduction-step`, KT 4.7–4.8),
-H (`thm:minimal-kdof-reduction`, Theorem 4.9 capstone → phase close) per
-*Replan*. Degree-2 stays encoded as two edges `eₐ`/`e_b` (the only `v`-incident
-edges, `hdeg2`); the removal/splitting-off lemmas all share that signature.
+**Commit E landed.** `lem:dof-tracking` (KT 4.3–4.5 assembly, `Graph.dof_tracking`,
+green `\leanok`, axiom-free): a 3-way conjunction over the three green bounds
+(`splitOff_deficiency_{le,ge}` + `removeVertex_deficiency_ge`) under
+`2 ≤ bodyBarDim n` — `k − 1 ≤ def(G̃ᵥᵃᵇ) ≤ k` and `def(G̃ᵥ) ≥ k` for a
+`k`-dof-graph `G`. No new infrastructure (the `1 ≤ bodyBarDim n` the
+splitting-off pair wants is derived from `2 ≤` by `le_trans`). Blueprint
+`lem:dof-tracking` flipped green with the two-sided statement; the "which
+alternative" forest-surgery refinement noted off-critical-path.
+
+**Next agent's concrete commit = F: `lem:reducible-vertex`** (KT 4.6, existence
+of a reducible degree-2 vertex). This is the first commit that leaves the local
+deficiency bookkeeping: a maximal-chain / degree-sequence counting argument on
+the 2-edge-connected graph (it `\uses` `lem:dof-tracking` + `lem:two-edge-conn`
++ `def:k-dof`, all three already green — `lem:two-edge-conn`,
+`Graph.two_le_crossingEdges_of_isKDof_zero`, landed in `deficiency.tex`). Scope F
+carefully: KT 4.6's full degree-sequence argument may pull in KT Lemma 3.2
+*not-3-edge-connected*, currently parked for Phase 21 per the *Lemma checklist*
+tail — assess reachability against the dep-graph before committing to the full
+form. Then commits G (`lem:reduction-step`, KT
+4.7–4.8), H (`thm:minimal-kdof-reduction`, Theorem 4.9 capstone → phase close)
+per *Replan*. Degree-2 stays encoded as two edges `eₐ`/`e_b` (the only
+`v`-incident edges, `hdeg2`); the removal/splitting-off/dof-tracking lemmas all
+share that signature.
