@@ -79,13 +79,20 @@ whole induction.
 
 \begin{definition}[Generic-rank hypothesis (6.1)]
   \label{def:rank-hypothesis}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.RankHypothesis}
+  \leanok
   \uses{def:rigidity-matrix, def:k-dof}
   For a minimal $k$-dof-graph $G$ with $|V| \ge 2$, the
   \emph{realization hypothesis} $(6.1)$ asserts the existence of a
   panel-hinge realization $(G,p)$ with
   $\operatorname{rank} R(G,p) = D(|V|-1) - k$, and --- when $G$ is simple
   --- with no two hinges parallel. This is the predicate Theorem~5.5
-  establishes by induction on $|V|$.
+  establishes by induction on $|V|$. In the codimension form of
+  \cref{sec:molecular-rigidity-matrix} (the column space is the
+  screw-assignment space of dimension $D|V|$ and
+  $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$), the target rank is
+  equivalently the null-space dimension $\dim Z(G,p) = D + k$, the form
+  the Lean carries.
 \end{definition}
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
@@ -111,19 +118,27 @@ whole induction.
 
 \begin{lemma}[Theorem 5.5 base case ($|V| = 2$)]
   \label{lem:theorem-55-base}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_base,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_zero_iff}
+  \leanok
   \uses{def:rank-hypothesis, lem:rank-parallel-full}
   The two-vertex double edge has a panel-hinge realization of rank
   $D(|V|-1) - k = D - k$. For the minimal $0$-dof case (the double edge,
   $k = 0$) this is the full rank $D$, attained by two non-parallel hinges
   via the parallel-hinges-full Lemma~5.3
-  (\cref{lem:rank-parallel-full}).
+  (\cref{lem:rank-parallel-full}). At $k = 0$ the realization hypothesis
+  is exactly infinitesimal rigidity, the null space being the
+  $D$-dimensional trivial-motion space.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rank-parallel-full}
-  Two bodies joined by $D$ parallel-copy fibers with non-coincident
-  hinge supports realize the full screw-difference constraint; the rank
-  is exactly $D$ by \cref{lem:rank-parallel-full}, matching
-  $D(2-1) - 0$.
+  Two bodies joined by hinges with linearly independent supporting
+  extensors realize the full screw-difference constraint: the
+  parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full}) forces
+  $S(u) = S(v)$, so every infinitesimal motion is trivial and the null
+  space is the $D$-dimensional trivial-motion space, i.e.
+  $\dim Z(G,p) = D$, matching $D(2-1) - 0$.
 \end{proof}
 
 \subsection{Case I: a proper rigid subgraph}

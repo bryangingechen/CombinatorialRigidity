@@ -76,6 +76,16 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `simp [key, key.symm]` loops to "maximum recursion depth" — feed only one orientation
+- **Where it bit:** `theorem_55_base` in `Molecular/AlgebraicInduction.lean`, closing the
+  four `S a = S b` cases (`a, b ∈ {u, v}`) from `key : S u = S v`.
+- **Friction:** `rcases … <;> simp [key, key.symm]` overflowed the recursion limit — `simp`
+  with both an equation and its `symm` rewrites `S u ↦ S v ↦ S u …` indefinitely.
+- **Fix:** discharge per-case without `simp`: `first | rfl | exact key | exact key.symm`.
+- **Status:** resolved (no lift — well-known `simp [h, h.symm]` non-termination; the
+  `first | rfl | exact h | exact h.symm` dispatcher is the standard close for a symmetric
+  equation over a `<;>`-fanned case split).
+
 ### [resolved] A `have h : … = … := by ring` whose type embeds `(V(G).ncard : ℤ) - 1 - 1` fails to parse ("unexpected token '-'")
 - **Where it bit:** `Graph.forest_surgery_split` in `Molecular/Induction.lean` (the
   def\,=\,corank read-off, expanding `D·((|V|−1)−1)`).

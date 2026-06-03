@@ -20,15 +20,24 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
-Phase just opened. This commit lays down the forward-mode blueprint
-chapter `algebraic-induction.tex` (all nodes red — the to-do list),
-creates this work log, flips the ROADMAP status row to *in progress*,
-and syncs the user-facing status surfaces (README, home_page, intro.tex).
-No Lean yet. The next concrete commit takes the leaf-most red node
-(statement deps all green or mathlib) — likely `lem:cycle-realization`
-(Crapo–Whiteley Lemma 5.4 input) or `lem:theorem-55-base` (the `|V|=2`
-base case via the green parallel-hinges Lemma 5.3,
-`lem:rank-parallel-full`) — and starts `Molecular/AlgebraicInduction.lean`.
+`Molecular/AlgebraicInduction.lean` started; the induction-skeleton leaf
+nodes are green. This commit lands `def:rank-hypothesis` (`RankHypothesis`,
+the realization predicate (6.1)) and `lem:theorem-55-base` (`theorem_55_base`
++ the helper `rankHypothesis_zero_iff`), the `|V|=2`, `k=0` base case,
+axiom-free via the green parallel-hinges Lemma 5.3
+(`eq_of_hingeConstraint_two_parallel`). Both blueprint nodes flipped green.
+Still red: `prop:rigidity-matrix-prop11`, `thm:theorem-55`,
+`lem:cycle-realization`, `lem:case-I`, `lem:case-II`, `lem:case-III` (the
+last deferred to 22–23).
+
+**Basis-free rank convention (carried forward from Phase 18).** Phase 18
+carries `rank R(G,p)` as the codimension `D|V| − dim Z(G,p)` of the null
+space `Z(G,p) = F.infinitesimalMotions` (`finrank_screwAssignment`). The
+realization hypothesis `rank R(G,p) = D(|V|−1) − k` is therefore stated
+directly on the null-space dimension: `RankHypothesis F k' := (finrank
+infinitesimalMotions : ℤ) = screwDim k + k'`. At `k'=0` this is exactly
+infinitesimal rigidity (`rankHypothesis_zero_iff`, via
+`finrank_trivialMotions` + `infinitesimalMotions_eq_trivialMotions_iff`).
 
 ## Architectural choices made up front
 
@@ -67,12 +76,15 @@ Generic-rank reconciliation (relocated forward from Phase 18/19):
   the Claim 6.4 generic-rank argument. Lands with / after Theorem 5.5.
 
 Induction skeleton + base:
-- [ ] `def:rank-hypothesis` — the realization hypothesis (6.1): a
-  panel-hinge realization at `rank = D(|V|−1) − k`, nonparallel if simple.
+- [x] `def:rank-hypothesis` — the realization hypothesis (6.1):
+  `RankHypothesis F k' := (finrank infinitesimalMotions : ℤ) = screwDim k + k'`
+  (null-space form of `rank = D(|V|−1) − k`; see *Current state*). Green.
 - [ ] `thm:theorem-55` — KT Theorem 5.5, the capstone of this phase.
   Induction on `|V|` over the Phase-20 reduction dichotomy.
-- [ ] `lem:theorem-55-base` — `|V|=2` base case; full rank `D` via
-  `lem:rank-parallel-full` (Phase 18, green).
+- [x] `lem:theorem-55-base` — `|V|=2`, `k=0` base case (`theorem_55_base`
+  + helper `rankHypothesis_zero_iff`); full rank `D` via
+  `eq_of_hingeConstraint_two_parallel` (`lem:rank-parallel-full`, Phase 18
+  green). Axiom-free.
 
 Case I (proper rigid subgraph; KT §6.2):
 - [ ] `lem:cycle-realization` — Crapo–Whiteley Lemma 5.4 input.
@@ -111,7 +123,21 @@ decomposition).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-- *(none yet — phase just opened)*
+- **Null-space form of the realization hypothesis.** `RankHypothesis`
+  states `rank R(G,p) = D(|V|−1) − k` as the null-space dimension
+  `dim Z(G,p) = D + k` rather than carrying an `ℤ`-valued rank and
+  re-deriving the `D|V|` column count at each node — matches the
+  basis-free convention Phase 18's rank lemmas
+  (`finrank_pinnedMotions_add_screwDim`, `finrank_trivialMotions`) already
+  speak. The two forms interchange by `finrank_screwAssignment`. See
+  Phase21.md *Current state* and the file docstring.
+- **Base case stated abstractly, not on a concrete 2-vertex graph.**
+  `theorem_55_base` hypothesizes a 2-body framework (`Nonempty`/`Finite α`,
+  `hcover : ∀ w, w = u ∨ w = v`) with two independent-extensor hinges
+  linking `u v`, rather than constructing `Fin 2` + an explicit double
+  edge. Keeps the base case reusable by the induction (which will supply
+  the 2-body framework from its own data) and lets
+  `eq_of_hingeConstraint_two_parallel` apply verbatim.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *(none yet)*
@@ -131,10 +157,22 @@ decomposition).
 
 ## Hand-off / next phase
 
-Phase just opened; nothing to hand off yet. The next concrete commit
-takes the leaf-most red node in `algebraic-induction.tex` — the base
-case `lem:theorem-55-base` (deps all green: `lem:rank-parallel-full`,
-`def:rank-hypothesis`) or the cycle-realization input
-`lem:cycle-realization` — and starts `Molecular/AlgebraicInduction.lean`.
-Broad phase; may split Case I from Case II (precedent: Phases 8–11 spawned
-sub-phases). Phases 22–23 pick up Case III (the crux).
+Base case (`def:rank-hypothesis` + `lem:theorem-55-base`) green in
+`Molecular/AlgebraicInduction.lean`. The next concrete commit takes the
+next leaf-most red node. Two candidates, both deps-green:
+- `lem:cycle-realization` (Crapo–Whiteley Lemma 5.4 input) — deps only
+  `def:rigidity-matrix`; **formalize-or-cite still pending** (Blockers,
+  Citation caveat). A cite-only landing is a small commit; a formalized
+  cycle-closing realization is larger.
+- `lem:case-II` (`k>0` splitting / 1-extension) vs `lem:case-I` (proper
+  rigid subgraph): both depend on the green `lem:rank-delete-vertex`
+  (`finrank_pinnedMotions_add_screwDim`) plus the Phase-20 minimality
+  transports (`lem:reduction-step` / `lem:contraction-minimality`) and the
+  Claim 6.9/6.4 genericity argument — the new analytic device (Blockers).
+
+Smallest forward step: land `lem:cycle-realization` (cite-or-formalize
+decision first) **or** the Case II re-insertion rank-lift skeleton, whose
+core `+D` accounting is `finrank_pinnedMotions_add_screwDim`. Assess
+genericity-infrastructure need on contact with the first Case. Broad
+phase; may split Case I from Case II (precedent: Phases 8–11). Phases
+22–23 pick up Case III (the crux).
