@@ -47,9 +47,18 @@ dep-graph / lemma index is the new blueprint chapter
   literals (no graph union/`addEdge` in mathlib). Each has `vertexSet_*`/`*_isLink`
   simp lemmas. Axiom-free.
 
-Next concrete step: the other inherited lemma `lem:contraction-minimality` (KT 3.5,
-uses `thm:def-eq-corank` + `lem:subgraph-minimality`). The forest-surgery core
-(4.1/4.2) is the budget-the-most-time piece, scheduled after KT 3.5.
+Now also green: `lem:rigid-full-rank` (`Graph.rank_matroidMG_of_isKDof_zero`), the
+**rank core** of KT 3.5 — a rigid subgraph `H` (`def(H̃) = 0`) attains full rank
+`rank M(H̃) = D(|V(H)| − 1)`. Four-line corollary of Phase 19's `rank_add_deficiency_eq`
+(def\,=\,corank) with `def = 0`. This is the rank quantity contraction removes.
+
+Next concrete step: the rest of `lem:contraction-minimality` (KT 3.5) — it needs the
+**graph↔matroid contraction bridge** relating the multiplied contracted graph
+`(G/E(H))̃` to `M(G̃) / E(H̃)` (undeveloped: `rigidContract` is a `deleteEdges` + `map`
+vertex-collapse, and `Matroid.map` of a `cycleMatroid` union is not yet a developed
+correspondence in-repo), then deficiency conservation (rank core + `Matroid.contract`
+rank arithmetic) + minimality transport (fundamental-circuit swaps). The forest-surgery
+core (4.1/4.2) is the budget-the-most-time piece, scheduled after KT 3.5.
 
 ## Architectural choices made up front
 
@@ -81,8 +90,12 @@ Inherited from Phase 19 (schedule early):
   induces a rigid `G[V(X)]` (tightness equality `|X−e| = D(|V(X)|−1)`).
   `Graph.circuit_induces_isTight`; lower bound is the direct circuit-minimality
   fact `Graph.circuit_ncard_gt` (NOT `thm:def-eq-corank`).
+- [x] `lem:rigid-full-rank` — KT 3.5 rank core: a rigid subgraph `H`
+  (`def(H̃) = 0`) attains full rank `rank M(H̃) = D(|V(H)| − 1)`.
+  `Graph.rank_matroidMG_of_isKDof_zero`; 4-line corollary of `rank_add_deficiency_eq`.
 - [ ] `lem:contraction-minimality` — KT 3.5: contracting a proper rigid
-  subgraph preserves minimal `k`-dof (Case I engine).
+  subgraph preserves minimal `k`-dof (Case I engine). Rank core done; remaining =
+  graph↔matroid contraction bridge + deficiency conservation + minimality transport.
 
 Graph operations:
 - [x] `def:induced-span` — vertex-induced subgraph `G[V(X)]` from a fiber set
@@ -142,6 +155,16 @@ only by Case 6.1).
   `e₁,e₂` for edge-splitting). `collapseTo r S` uses `open Classical in` for the
   membership `if`. Deficiency behaviour is deferred to the later surgery nodes.
 
+- **KT 3.5 decomposed; rank core landed first.** The full
+  `lem:contraction-minimality` is multi-commit: it needs a graph↔matroid contraction
+  bridge (`(G/E(H))̃` ↔ `M(G̃)/E(H̃)`) that is undeveloped — `rigidContract` is a
+  `deleteEdges` + vertex-collapse `map`, and there is no in-repo correspondence between
+  `Matroid.map` of a `cycleMatroid` union and the multiplied collapsed graph. So this
+  commit lands the self-contained **rank core** `lem:rigid-full-rank`
+  (`rank M(H̃) = D(|V(H)| − 1)` for rigid `H`), the explicit first step of KT 3.5's
+  proof, as a 4-line corollary of Phase 19's `rank_add_deficiency_eq`. The bridge is the
+  next blocker.
+
 ### Promoted to FRICTION
 - *`IsCircuit.subset_ground` for `M(G̃)` gives a restrict-ground `⊆`, defeq-but-not-
   syntactic to `E(G̃)` — ascribe once* → FRICTION `[resolved] [matroid]
@@ -159,18 +182,24 @@ only by Case 6.1).
 ## Hand-off / next phase
 
 Green in `Molecular/Induction.lean`, axiom-free, blueprint nodes `\leanok`:
-`def:induced-span`, `lem:circuit-induces-rigid` (KT 3.4 full form), and the four
+`def:induced-span`, `lem:circuit-induces-rigid` (KT 3.4 full form), the four
 graph operations `def:graph-operations` (`Graph.removeVertex` / `splitOff` /
 `edgeSplit`) + `def:rigid-contraction` (`Graph.rigidContract`, via the auxiliary
-`collapseTo`). Each op has `vertexSet_*` / `*_isLink` simp lemmas.
+`collapseTo`), and now `lem:rigid-full-rank` (`Graph.rank_matroidMG_of_isKDof_zero`,
+KT 3.5 rank core). Each op has `vertexSet_*` / `*_isLink` simp lemmas.
 
-Next agent's concrete commit: the inherited lemma `lem:contraction-minimality`
-(KT 3.5 — rigid-subgraph contraction preserves minimal `k`-dof). It uses
-`thm:def-eq-corank` (rank conservation under contraction: contracting a rigid `H`
-removes `D(|V(H)|−1)` from both `rank M(G̃)` and the ambient `D(|V|−1)`, so the
-corank/deficiency is unchanged) + `lem:subgraph-minimality` (minimality transport).
-The new `Graph.rigidContract` is the graph-side object it operates on; the matroid
-side is `Matroid.contract` on `M(G̃)`. The forest-surgery core (4.1/4.2,
-`lem:forest-surgery-split`/`-unsplit`) is the budget-the-most-time piece; schedule
-after KT 3.5. Decide the explicit-`D`-forests-vs-matroid-base framing when the first
-surgery node lands (see Blockers).
+Next agent's concrete commit: the **graph↔matroid contraction bridge** for
+`lem:contraction-minimality` (KT 3.5) — relate the multiplied contracted graph
+`(G/E(H))̃ = (G.rigidContract H r).mulTilde n` to the matroid contraction
+`M(G̃) / E(H̃)` (= `(G.matroidMG n) ／ E(H.mulTilde n)`). This is the missing piece:
+`rigidContract` is `(deleteEdges E(H)).map (collapseTo r V(H))`, so the bridge has to
+push the `Matroid.map` of the vertex-collapse through the `D`-fold `cycleMatroid` union;
+no in-repo correspondence exists yet (start by checking whether `cycleMatroid` commutes
+with `Graph.map`/`deleteEdges` in mathlib, and how `Matroid.contract` interacts with the
+union — `IsBasis.contract_indep_iff` is the likely engine). Once the bridge lands,
+deficiency conservation = `lem:rigid-full-rank` + contraction rank arithmetic, and
+minimality transport = fundamental-circuit swaps (`Matroid.fundCircuit`); together they
+close KT 3.5. The forest-surgery core (4.1/4.2, `lem:forest-surgery-split`/`-unsplit`)
+is the budget-the-most-time piece; schedule after KT 3.5. Decide the
+explicit-`D`-forests-vs-matroid-base framing when the first surgery node lands (see
+Blockers).

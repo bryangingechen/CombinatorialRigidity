@@ -154,6 +154,34 @@ theorem circuit_induces_isTight [DecidableEq β] [Finite α] [Finite β] {G : Gr
         _ ≤ bodyBarDim n * (G.fiberSpan n X).ncard := by gcongr
   omega
 
+/-! ## A rigid subgraph attains full rank (`lem:contraction-minimality`, rank core)
+
+The matroidal arithmetic the rigid-subgraph contraction of KT Lemma 3.5 opens on: a
+*rigid* subgraph `H` (`def(H̃) = 0`) has `rank M(H̃) = D(|V(H)| − 1)`, the maximal value
+allowed by the rank upper bound. This is the `def = 0` reading of the def\,$=$\,corank
+bridge (`thm:def-eq-corank`, Phase 19's `rank_add_deficiency_eq`): a `0`-dof graph's
+multiplied form packs `D` edge-disjoint spanning trees on its `|V(H)|` vertices, exactly
+`D(|V(H)| − 1)` edges. Contracting such an `H` removes precisely this rank from `M(G̃)`
+and the matching `D(|V(H)| − 1)` from the ambient `D(|V| − 1)`, leaving the corank — hence
+the deficiency — unchanged; that is the engine of Case I of the algebraic induction. -/
+
+/-- **A rigid subgraph attains full rank** (`lem:contraction-minimality`, rank core;
+Katoh–Tanigawa 2011 Lemma 3.5, the rank-conservation fact its proof opens on). For a
+rigid subgraph — `H.IsKDof n 0`, i.e. `def(H̃) = 0` — with `V(H).Nonempty` and
+`D = bodyBarDim n ≥ 1`, the matroid `M(H̃)` has full rank `rank M(H̃) = D(|V(H)| − 1)`.
+
+Immediate from the def\,$=$\,corank bridge `rank_add_deficiency_eq` (Phase 19) with the
+deficiency `def(H̃) = 0` of the rigid hypothesis: `rank M(H̃) + 0 = D(|V(H)| − 1)`. This
+is the rank quantity contraction of a rigid subgraph removes from both `rank M(G̃)` and
+the ambient `D(|V| − 1)`, leaving the corank/deficiency unchanged (KT 3.5). -/
+theorem rank_matroidMG_of_isKDof_zero [DecidableEq β] [Finite α] [Finite β] {H : Graph α β}
+    {n : ℕ} (hD : 1 ≤ bodyBarDim n) (hne : V(H).Nonempty) (hrigid : H.IsKDof n 0) :
+    ((H.matroidMG n).rank : ℤ) = bodyBarDim n * ((V(H).ncard : ℤ) - 1) := by
+  have hbridge := H.rank_add_deficiency_eq n hD hne
+  rw [IsKDof] at hrigid
+  rw [hrigid] at hbridge
+  simpa using hbridge
+
 /-! ## Graph operations (`def:graph-operations`, `def:rigid-contraction`)
 
 The four operations on `Graph α β` that drive the Katoh–Tanigawa induction
