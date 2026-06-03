@@ -1292,6 +1292,60 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   -- `(D−1)|E| = |Bs| + |E∖Bs| ≤ D(|V|−1) + (D−1−h*) < D(|V|−1) + (D−1)` since `h* ≥ 1`.
   nlinarith [hsplit, hfibersplit, hdiffle, hstarpos, hBscard, hhstar]
 
+/-! ### A low-degree vertex by the average-degree count (`lem:reducible-vertex`, F″ core)
+
+Katoh–Tanigawa 2011 Lemma 4.6 forces a degree-`2` vertex in a minimal `0`-dof-graph with no
+proper rigid subgraph. The arithmetic is the average-degree bound `d_avg = 2|E|/|V| <
+2D/(D−1) ≤ 3` (for `D = bodyBarDim n ≥ 3`, the molecular regime `n ≥ 2`): with `2|E|/|V| <
+3`, the multigraph **handshake** `∑_v deg(v) = 2|E|` (`Graph.handshake_degree_subtype`,
+vendored from `apnelson1/Matroid`'s `Graph.degree`/`incFun` API) forces some vertex to have
+degree `< 3`, i.e. `≤ 2`. The strict edge bound is the green KT 4.5(i) count
+`no_rigid_edge_count`: `(D−1)|E| < D(|V|−1) + (D−1) = D|V| − 1`, which multiplied by `2` and
+cancelled against `3(D−1)|V|` (using `D ≥ 3` and `|V| ≥ 1`) gives `2|E| < 3|V|`.
+
+This is the F″ core of `lem:reducible-vertex`. Pairing it with two-edge-connectivity
+(`two_le_crossingEdges_of_isKDof_zero`, KT 3.1, which rules out degree `≤ 1`) yields the
+degree-`exactly`-2 vertex Theorem 4.9 splits off; that refinement and the full reducibility
+packaging are the remaining `lem:reducible-vertex` work. -/
+
+/-- **A minimal `0`-dof-graph with no proper rigid subgraph has a vertex of degree `≤ 2`**
+(`lem:reducible-vertex`, F″ core; Katoh–Tanigawa 2011 Lemma 4.6, printed p.664). For
+`D = bodyBarDim n ≥ 3` (the molecular regime `n ≥ 2`) and `V(G).Nonempty`, the average-degree
+bound `2|E|/|V| < 2D/(D−1) ≤ 3` forces some `v ∈ V(G)` with multigraph degree `G.degree v ≤
+2`. Combines the green KT 4.5(i) edge bound (`no_rigid_edge_count`) with the multigraph
+handshake `∑_v deg(v) = 2|E|` (`Graph.handshake_degree_subtype`, vendored) via a Finset
+pigeonhole (`Finset.exists_lt_of_sum_lt`). The two-edge-connectivity (KT 3.1) needed to
+upgrade `≤ 2` to `= 2` is a separate step. -/
+theorem exists_degree_le_two [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) (hVne : V(G).Nonempty) (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    ∃ v ∈ V(G), G.degree v ≤ 2 := by
+  classical
+  haveI : G.Finite := { edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }
+  have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  -- The KT 4.5(i) edge bound, read over ℤ: `(D−1)|E| < D(|V|−1) + (D−1)`.
+  have hedge := no_rigid_edge_count hD2 hVne hG hnp
+  -- The handshake `∑_{v ∈ V(G)} deg(v) = 2|E(G)|` over the finite vertex Finset.
+  set s := G.vertexSet_finite.toFinset with hs
+  have hhand : ∑ v ∈ s, G.degree v = 2 * E(G).ncard := by
+    rw [hs, ← finsum_mem_eq_finite_toFinset_sum _ G.vertexSet_finite]
+    exact handshake_degree_subtype G
+  -- `2|E| < 3|V|` from the edge bound, using `D ≥ 3` and `|V| ≥ 1`.
+  have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  have hsum_lt : ∑ v ∈ s, G.degree v < ∑ _v ∈ s, 3 := by
+    rw [Finset.sum_const, hhand, smul_eq_mul]
+    -- `|s| = |V(G)|`.
+    have hscard : s.card = V(G).ncard := by
+      rw [hs, ← Set.ncard_eq_toFinset_card _ G.vertexSet_finite]
+    rw [hscard]
+    -- `2|E| < 3|V|`: cast to ℤ and discharge with the edge bound.
+    have h2D : (3 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+    zify
+    nlinarith [hedge, hHM, hVpos, h2D]
+  obtain ⟨v, hvs, hvdeg⟩ := Finset.exists_lt_of_sum_lt hsum_lt
+  exact ⟨v, (by rwa [hs, Set.Finite.mem_toFinset] at hvs), by omega⟩
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,

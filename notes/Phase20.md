@@ -240,6 +240,14 @@ reasoning, no `rank M(G̃)↾(E(G̃)∖ẽ)` detour. Supports `mulTilde_edgeSet_
 (D−1)|E|`) and `fundCircuit_inducedSpan_vertexSet_eq` (spanning step) were landed earlier.
 Needs `2 ≤ bodyBarDim n` (`D ≥ 2`, trivial in the molecular regime).
 
+**Commit F″-core landed (`exists_degree_le_two`, KT 4.6 average-degree core; `lem:low-degree-vertex`
+GREEN, axiom-free).** ∃ a degree-`≤ 2` vertex in a minimal 0-dof-graph with no proper rigid
+subgraph (`3 ≤ bodyBarDim n`): the average-degree count `2|E| < 3|V|` + the handshake
+`∑ deg = 2|E|` + a Finset pigeonhole. **Finding:** the multigraph degree + handshake already
+exist in the **vendored `apnelson1/Matroid`** package (transitively imported); no new degree
+infrastructure was built. See *Hand-off* + FRICTION. Needs `3 ≤ bodyBarDim n` (stronger than
+the `2 ≤` elsewhere — the pigeonhole needs `2D ≤ 3(D−1)`).
+
 **Citation reconciliation (verified against `.refs/` PDF).** KT 2011 Lemma 4.4 begins on
 **printed p.662** (the running header of pdf page 16 reads "662 Discrete Comput Geom …"),
 confirming the *Finding 2 REFUTED* / commit-D record. An independent scrutiny pass had
@@ -396,17 +404,30 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   drops `|B∩ẽ| = h*−1`. Support: `Graph.mulTilde_edgeSet_ncard` (`|E(G̃)|=(D−1)|E|`),
   the spanning step `Graph.fundCircuit_inducedSpan_vertexSet_eq`, and
   `Graph.circuit_induces_isRigidSubgraph`. Needs `2 ≤ bodyBarDim n` (`D ≥ 2`).
+- [x] `lem:low-degree-vertex` — KT 4.6 **F″ core**, `Graph.exists_degree_le_two`
+  (green `\leanok`, axiom-free): a minimal 0-dof-graph with no proper rigid subgraph and
+  `3 ≤ bodyBarDim n` has a vertex of multigraph degree `≤ 2`. The average-degree count
+  `2|E| < 3|V|` (from `no_rigid_edge_count` ×2, cancelling `3(D−1)|V|` with `D ≥ 3`,
+  `|V| ≥ 1`) + the handshake `∑ deg = 2|E|` + a Finset pigeonhole
+  (`Finset.exists_lt_of_sum_lt`). **Key finding:** the multigraph degree + handshake
+  already exist in the **vendored `apnelson1/Matroid`** package
+  (`Graph.degree`/`eDegree`/`incFun`/`handshake_degree_subtype`,
+  `.lake/packages/Matroid/Matroid/Graph/Degree/Basic.lean`), transitively imported — the
+  hand-off's "project has no degree function" was stale. No new degree infrastructure was
+  built; see FRICTION `[resolved] [matroid] The vendored … package already supplies a full
+  multigraph Graph.degree …`. Needs `3 ≤ bodyBarDim n` (`d ≥ 2`; stronger than the `2 ≤`
+  elsewhere — the pigeonhole needs `2D ≤ 3(D−1)`).
 - [ ] `lem:reducible-vertex` — KT 4.6, existence of a degree-2 vertex in a
   2-edge-connected minimal 0-dof-graph with no proper rigid subgraph. **Scope
   refined at commit F** (which landed the *prerequisite* `circuit_induces_isRigidSubgraph`
   instead): Thm 4.9 consumes only "∃ degree-2 vertex" (the chain/cycle refinement
-  is for the §5–6 *algebraic* induction, off the Thm-4.9 critical path). The "∃
-  degree-2 vertex" core needs (a) the **KT 4.5(i)** edge bound `lem:no-rigid-edge-count`
-  above; and (b) the average-degree arithmetic `d_avg = 2|E|/|V| < 2D/(D−1) ≤ 3`,
-  which needs a **multigraph degree notion on `Graph α β`** (the project has none —
-  degree-2 is encoded ad hoc as `hdeg2 : ∀ e x, IsLink e v x → e = eₐ ∨ e = e_b`).
-  Likely 2 commits: F′ = KT 4.5(i) edge bound (corank core); F″ = degree theory +
-  ∃-degree-2.
+  is for the §5–6 *algebraic* induction, off the Thm-4.9 critical path). With the F′
+  edge bound and the **F″ core** `lem:low-degree-vertex` (∃ degree-≤-2 vertex, above) now
+  both green, the remaining step is upgrading `≤ 2` to `= 2` via two-edge-connectivity
+  (`two_le_crossingEdges_of_isKDof_zero`, KT 3.1, green) — i.e. linking the vendored
+  `Graph.degree` to the cut form (`degree v ≤ 1` ⟹ a `≤ 1`-edge cut at `{v}`) — and
+  packaging reducibility. (Degree-2 stays encoded ad hoc as `eₐ`/`e_b` in the
+  splitting-off bookkeeping; this node is the *existence* of such a vertex.)
 - [ ] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality
   (two circuit-swap arguments; the 4.8 capstone). Replan commit G.
 - [ ] `thm:minimal-kdof-reduction` — KT Theorem 4.9 (capstone; phase
@@ -626,18 +647,27 @@ base avoiding `ẽ` — contra `hG.2`), NOT forest reasoning and NOT needing
 `Set.eq_of_subset_of_ncard_le`. Final count `|E(G̃)| = |B*| + (|ẽ|−h*) ≤ D(|V|−1)+(D−2)` via
 `mulTilde_edgeSet_ncard` + `edgeFiber_ncard`. Needs `2 ≤ bodyBarDim n`.
 
-**Next agent's concrete commit = F″, the second half of `lem:reducible-vertex` (KT 4.6).**
-Thm 4.9 consumes only "∃ degree-2 vertex" — the chain/cycle refinement (length-`d`
-chain, cycle-of-`≤d`-vertices) is for the §5–6 *algebraic* induction, **off the
-Thm-4.9 critical path** (confirmed: KT 4.9's proof says only "G has a vertex of
-degree two by Lemma 4.6"). With F′ (the edge bound) now green, the remaining piece is:
-- **F″ — multigraph degree theory + ∃-degree-2.** `d_avg = 2|E|/|V| < 2D/(D−1) ≤ 3`
-  (using `D ≥ 3`) forces a degree-2 vertex. **The project has no `Graph α β` degree
-  function** — degree-2 is encoded ad hoc as `hdeg2 : ∀ e x, IsLink e v x → e = eₐ ∨
-  e = e_b`. F″ must build a degree notion (`∑ degree = 2|E|` handshake on the
-  multigraph) and the ∃-low-degree pigeonhole; this is genuinely new infrastructure,
-  not parked KT Lemma 3.2 (which is the 3-edge-conn refinement, still off-path).
-Then commits G (`lem:reduction-step`, KT 4.7–4.8 — circuit-swap minimality transport,
-`\uses` `circuit_induces_isRigidSubgraph` for the `X∩ãb=∅ ⟹ proper rigid` step),
-H (`thm:minimal-kdof-reduction`, Theorem 4.9 capstone → phase close) per *Replan*.
-Degree-2 stays encoded as two edges `eₐ`/`e_b` where the bookkeeping lemmas need it.
+**Commit F″-core landed (`exists_degree_le_two`, KT 4.6 average-degree core; `lem:low-degree-vertex`
+GREEN, axiom-free).** ∃ a vertex of multigraph degree `≤ 2` in a minimal 0-dof-graph with no
+proper rigid subgraph (`3 ≤ bodyBarDim n`): `2|E| < 3|V|` (from `no_rigid_edge_count` ×2,
+cancelling `3(D−1)|V|` with `D ≥ 3`) + the handshake `∑ deg = 2|E|` + Finset pigeonhole
+(`Finset.exists_lt_of_sum_lt`). **Finding (corrected the hand-off):** the multigraph degree
+and handshake are **already in the vendored `apnelson1/Matroid`** package
+(`Graph.degree`/`eDegree`/`incFun`/`handshake_degree_subtype`,
+`.lake/packages/Matroid/Matroid/Graph/Degree/Basic.lean`), transitively imported — the prior
+"the project has no `Graph α β` degree function" was stale. No new degree infrastructure was
+needed; F″ reduced to the pigeonhole on top. FRICTION entry filed (grep `.lake/packages/Matroid`
+before building any `Graph α β` graph-theory notion).
+
+**Next agent's concrete commit = finish `lem:reducible-vertex` (KT 4.6).** Thm 4.9 consumes
+only "∃ degree-2 vertex" (the chain/cycle refinement is §5–6 algebraic, off-path). With the
+F′ edge bound and the F″ core (`exists_degree_le_two`, ∃-degree-≤-2) both green, the remaining
+step is **upgrading `≤ 2` to `= 2`** via two-edge-connectivity
+(`two_le_crossingEdges_of_isKDof_zero`, KT 3.1, green): a vertex of `Graph.degree ≤ 1` would
+give a `≤ 1`-edge cut at `{v}`, contradicting `d_G(V') ≥ 2`. This needs a small bridge between
+the vendored `Graph.degree` (endpoint count) and the project's cut form (the `cutLabeling` /
+`crossingEdges` count) — likely the only genuinely new piece. Then package reducibility.
+Then commits G (`lem:reduction-step`, KT 4.7–4.8 — circuit-swap minimality transport, `\uses`
+`circuit_induces_isRigidSubgraph` for the `X∩ãb=∅ ⟹ proper rigid` step), H
+(`thm:minimal-kdof-reduction`, Theorem 4.9 capstone → phase close) per *Replan*. Degree-2 stays
+encoded as two edges `eₐ`/`e_b` where the splitting-off bookkeeping needs it.

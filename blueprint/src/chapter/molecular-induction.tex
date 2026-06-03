@@ -595,9 +595,33 @@ route that bypasses the deferred forest surgery
   D(|V(G)| - 1) + (D - 2)$.
 \end{proof}
 
+\begin{lemma}[A low-degree vertex by the average-degree count; KT Lemma 4.6, core]
+  \label{lem:low-degree-vertex}
+  \lean{Graph.exists_degree_le_two}
+  \leanok
+  \uses{lem:no-rigid-edge-count, def:k-dof}
+  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph,
+  $V(G) \neq \emptyset$, and $D = \binom{d+1}{2} \ge 3$ (the molecular
+  regime $d \ge 2$). Then some vertex $v \in V(G)$ has multigraph degree
+  $\deg_G(v) \le 2$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Average-degree count. The edge bound (\cref{lem:no-rigid-edge-count})
+  reads $(D-1)\,|E| < D\,(|V|-1) + (D-1) = D|V| - 1$; multiplying by $2$
+  and cancelling against $3(D-1)|V|$ (using $D \ge 3$ and $|V| \ge 1$)
+  gives the average-degree bound $2|E| < 3|V|$, i.e.\ $d_{\mathrm{avg}} =
+  2|E|/|V| < 2D/(D-1) \le 3$. The multigraph handshake $\sum_v \deg_G(v)
+  = 2|E|$ then forces some vertex to have degree $< 3$, i.e.\ $\le 2$,
+  by a finite pigeonhole. The degree function and the handshake are the
+  vendored \texttt{Graph.degree} / \texttt{Graph.handshake\_degree\_subtype}
+  API (Peter Nelson's \texttt{apnelson1/Matroid} \texttt{Graph.incFun}
+  development), reused here rather than re-derived.
+\end{proof}
+
 \begin{lemma}[Existence of a reducible degree-2 vertex; KT Lemma 4.6]
   \label{lem:reducible-vertex}
-  \uses{lem:dof-tracking, lem:no-rigid-edge-count, lem:two-edge-conn, def:k-dof}
+  \uses{lem:dof-tracking, lem:low-degree-vertex, lem:two-edge-conn, def:k-dof}
   A minimal $k$-dof-graph $G$ with $|V| \ge 3$ that has no proper rigid
   subgraph contains a degree-2 vertex whose splitting-off (or removal)
   preserves minimality and the degree of freedom. The proof is a
@@ -605,12 +629,12 @@ route that bypasses the deferred forest surgery
   $2$-edge-connected graph (\cref{lem:two-edge-conn}).
 \end{lemma}
 \begin{proof}
-  Degree-sequence counting: a minimal $k$-dof-graph has average degree
-  bounded by the $(D,D)$-tightness, forcing a low-degree vertex; the
-  $2$-edge-connectivity (\cref{lem:two-edge-conn}) rules out degree
-  $\le 1$, and the no-proper-rigid-subgraph hypothesis makes a degree-2
-  vertex reducible. This is the lemma that guarantees the induction can
-  always take a step.
+  The average-degree count (\cref{lem:low-degree-vertex}) supplies a
+  vertex of degree $\le 2$; the $2$-edge-connectivity
+  (\cref{lem:two-edge-conn}) rules out degree $\le 1$, pinning it to
+  degree exactly $2$, and the no-proper-rigid-subgraph hypothesis makes
+  that degree-$2$ vertex reducible. This is the lemma that guarantees the
+  induction can always take a step.
 \end{proof}
 
 \begin{lemma}[Reduction step preserves minimality; KT Lemmas 4.7--4.8]

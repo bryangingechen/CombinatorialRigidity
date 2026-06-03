@@ -76,6 +76,29 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `[matroid]` The vendored `apnelson1/Matroid` package already supplies a full multigraph `Graph.degree` + handshake API — do not roll your own
+- **Where it bit:** `Graph.exists_degree_le_two` in `Molecular/Induction.lean` (Phase 20
+  KT 4.6, F″ core). The Phase-20 hand-off note asserted "the project has no `Graph α β`
+  degree function" and scoped F″ as building one (degree, the `∑ deg = 2|E|` handshake,
+  pigeonhole) from scratch. A first draft did exactly that (`endpointMult`/`degree`/
+  `sum_endpointMult_eq_two`/handshake) — then the build reported `Graph.degree` *already
+  declared*, resolving to a vendored definition `G.degree v = (G.eDegree v).toNat`.
+- **Resolution:** `.lake/packages/Matroid/Matroid/Graph/Degree/Basic.lean` carries the entire
+  development: `incFun` (the `α →₀ ℕ` endpoint-multiplicity finsupp, loops count 2),
+  `eDegree`/`degree`, `sum_incFun_eq_two`, and the handshake `handshake_eDegree`,
+  `handshake_degree_subtype` (`∑ᶠ v ∈ V(G), G.degree v = 2 * E(G).ncard`, needs `[G.Finite]`),
+  `handshake_degree_finset`, `handshake`. It is transitively imported via the `cycleMatroid`
+  chain, so it is usable in `Induction.lean` with **zero** new imports. `[G.Finite]` is
+  discharged under the project's `[Finite α] [Finite β]` by
+  `{ edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }` (anonymous
+  constructor `⟨⟨_⟩, _⟩` mis-elaborates — use named fields).
+- **General lesson:** **`grep .lake/packages/Matroid` for any `Graph α β` graph-theory notion
+  before building it** — the vendored package is a large, actively-developed graph library
+  (degree, connectivity, matching, walks/trails), not just the matroid-union subsystem that
+  was originally ported. A stale "the project has no X" hand-off note is not evidence X is
+  absent from the dependency closure.
+- **Status:** resolved (reused the vendored API; F″ core landed as the pigeonhole on top).
+
 ### [resolved] `[matroid]` Fundamental-circuit-swap idioms: finite-min over bases, "indep of full rank ⟹ base", and the `X∩ẽ≠∅` base-meets-fiber move
 - **Where it bit:** `Graph.no_rigid_edge_count` in `Molecular/Induction.lean` (Phase 20
   KT 4.5(i), F′ swap core). KT's proof argues "`X∩ẽ=∅` ⟹ `D` spanning trees avoid `ẽ`,
