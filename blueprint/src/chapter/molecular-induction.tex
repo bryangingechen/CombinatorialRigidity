@@ -472,16 +472,22 @@ instead by a direct deficiency-count argument
   the move to a balanced packing (\cref{lem:balanced-forest-packing}) are all
   formalized, confirming the missing step is a gap, not an error. What remains
   unformalized is only the final wiring: rerouting the balanced packing of
-  $\tilde G$ across $v$ to produce the $\widetilde{G_v^{ab}}$ packing. The
-  reroute-acyclicity substrate is landed, and its first step now too: the
-  $v$-free part of each balanced forest --- the fibers KT's surgery keeps
-  untouched --- transports verbatim into $\widetilde{G_v^{ab}}$
+  $\tilde G$ across $v$ to produce the $\widetilde{G_v^{ab}}$ packing. Both
+  per-forest acyclicity steps are now landed. The $v$-free part of each balanced
+  forest --- the fibers KT's surgery keeps untouched --- transports verbatim
+  into $\widetilde{G_v^{ab}}$
   (\texttt{isAcyclicSet\_splitOff\_of\_diff\_fiberAtVertex}, via
-  \texttt{isAcyclicSet\_mulTilde\_splitOff\_of\_removeVertex}). The single
-  residual crux is the degree-2-at-$v$ forest swapping its two $v$-edges for
-  one $\widetilde{ab}$ copy --- a $v$-traversing tree-path lift to the
-  short-circuit. The induction toward Theorem~4.9 meanwhile uses
-  \cref{lem:splitoff-deficiency}.
+  \texttt{isAcyclicSet\_mulTilde\_splitOff\_of\_removeVertex}). And the
+  genuinely-hard step --- the degree-2-at-$v$ forest swapping its two $v$-edges
+  $pa,pb$ for one short-circuit copy $r$ --- stays acyclic by a cycle-lift:
+  any $\widetilde{G_v^{ab}}$-cycle through $r$ is rotated to put $r$ first,
+  then $r$ (joining $a,b$) is substituted by the $v$-traversing 2-path
+  $a$-$pa$-$v$-$pb$-$b$ of $\tilde G$, yielding a closed $\tilde G$-trail inside
+  $F$ that contains a $\tilde G$-cycle, contradicting $F$'s acyclicity
+  (\texttt{isAcyclicSet\_splitOff\_reroute}). What remains is only the
+  bookkeeping assembly: stitching the two per-forest maps over all $D$ forests
+  and reading off the deficiency relation. The induction toward Theorem~4.9
+  meanwhile uses \cref{lem:splitoff-deficiency}.
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
   packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
   the fibers not incident to $v$ and rerouted across $v$, induces a

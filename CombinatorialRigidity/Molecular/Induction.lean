@@ -1922,8 +1922,9 @@ cycle-matroid-acyclic fiber set of `G̃_v^{ab}` that avoids `ã̃b` is acyclic i
 (`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`) — the half of the surgery's
 acyclicity-preservation that needs no rerouting (the forests with `dᶠ(v) ≤ 1`, which drop
 their `v`-edge rather than swap onto `ã̃b`). The rerouting half (`dᶠ(v) = 2` forests
-swapping their two `v`-edges for one `ã̃b` copy, with the `v`-traversing path lift) remains
-the residual crux of the still-red `lem:forest-surgery-split`. -/
+swapping their two `v`-edges for one `ã̃b` copy, with the `v`-traversing path lift) is landed
+as `isAcyclicSet_splitOff_reroute` below; what remains of the still-red
+`lem:forest-surgery-split` is only the per-`D`-forest bookkeeping assembly. -/
 
 /-- **Deleting the fresh fiber from the multiplied splitting-off lands inside `G̃`**
 (`lem:forest-surgery-split`, surgery crux). The multiplied splitting-off `G̃_v^{ab}` with
@@ -2080,8 +2081,9 @@ fibers of `G̃` incident to `v` (`fiberAtVertex`), the reduction of `G̃`-incide
 (`fiberAtVertex_inter_edgeSet_ncard`) — so a *degree-2* vertex `v` of `G` has exactly
 `2(D − 1)` incident fibers, the quantity the `h' ≤ D − 2` bound is counted against. The
 acyclicity-preserving reroute itself (a `G̃ᵥᵃᵇ`-cycle through `ãb` lifts to a
-`v`-traversing path of `G̃`, via the `Matroid/Graph/AcyclicSet.lean` cycle
-characterization) remains the residual crux of the still-red `lem:forest-surgery-split`. -/
+`v`-traversing path of `G̃`) is landed as `isAcyclicSet_splitOff_reroute` (reroute wiring
+step 2); what remains of the still-red `lem:forest-surgery-split` is only the per-`D`-forest
+bookkeeping assembly. -/
 
 /-- **The fibers of `G̃` incident to a vertex `v`** (`lem:forest-surgery-split`, degree
 substrate): the set of fibers `p` of the multiplied graph `G̃ = (D-1)·G` with `v` as an
@@ -2273,6 +2275,206 @@ lemma fiber_inter_subsingleton_of_isAcyclicSet_splitOff {G : Graph α β}
   refine (not_isAcyclicSet_iff hF.1).mpr ⟨C, hC, hCG, ?_⟩ hF
   rw [← hCpq]
   exact Set.insert_subset hp.1 (Set.singleton_subset_iff.mpr hq.1)
+
+/-! ## The degree-2 reroute preserves acyclicity (`lem:forest-surgery-split`, reroute wiring step 2)
+
+The genuine combinatorial crux of the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery: a balanced
+forest `F` of `G̃` that uses **both** of its two `v`-edges (`dᶠ(v) = 2`: the `va`-copy `pa` and
+the `vb`-copy `pb`) trades them for a single short-circuit copy `r` of the fresh edge `e₀`. The
+rerouted forest `(F ∖ {pa, pb}) ∪ {r}` must stay acyclic in the multiplied splitting-off
+`G̃_v^{ab}`.
+
+The acyclicity rests on a **cycle-lift**: any cycle `C` of `G̃_v^{ab}` whose edges lie in
+`(F ∖ {pa, pb}) ∪ {r}` lifts to a cyclic structure of `G̃` inside `F`, contradicting `F`'s
+acyclicity. Two cases. If `C` avoids `r`, its edges lie in `F ∖ {pa, pb}` (so avoid the fresh
+fiber), and deleting the fresh fiber from `G̃_v^{ab}` lands in `G̃`
+(`mulTilde_splitOff_deleteFiber_le`), so `C` is already a cycle of `G̃` in `F`. If `C` uses `r` —
+exactly once, as a trail has distinct edges — rotate `C` so `r` is its first edge,
+`C = cons x r w'` with `{x, w'.first} = {a, b}`. The fresh edge `r` joins `a, b` in `G̃_v^{ab}`;
+substituting the `v`-traversing 2-path `a —pa— v —pb— b` of `G̃` for `r` turns `C` into a closed
+`G̃`-trail (the substituted `pa, pb ∉ E(w')`, distinct from each other and from `w'`'s edges), and
+a closed trail contains a cycle (`IsTour.exists_isCyclicWalk`) whose edges are a sublist — hence
+still inside `F = (F ∖ {pa, pb}) ∪ {pa, pb}`. Either way `F`
+carries a `G̃`-cycle, contradiction. This is the last open wiring step; with it the per-forest
+reroute map and the deficiency-relation assembly close `lem:forest-surgery-split`. -/
+
+/-- **The degree-2 reroute preserves acyclicity** (`lem:forest-surgery-split`, reroute wiring
+step 2; Katoh–Tanigawa 2011 Lemma 4.1 p.660). Let `v` be a degree-2 vertex of `G` with distinct
+neighbours `a ≠ b` (`a, b ≠ v`, `a, b ∈ V(G)`) and `e₀ ∉ E(G)` the fresh short-circuit edge. Let
+`F` be a `(G̃).cycleMatroid`-independent (forest) fiber set whose two `v`-incident fibers are
+exactly `pa` (a `v—a` copy) and `pb` (a `v—b` copy) — the `dᶠ(v) = 2` case of the surgery — and
+let `r` be any copy of `e₀` (`r.1 = e₀`). Then the **rerouted forest** `(F ∖ {pa, pb}) ∪ {r}`,
+obtained by swapping the two `v`-edges for the single short-circuit copy `r`, is acyclic in the
+multiplied splitting-off `G̃_v^{ab}`:
+`((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep (insert r (F \ {pa, pb}))`.
+
+This is the rerouting half of KT 4.1's per-forest acyclicity preservation — the half
+`isAcyclicSet_splitOff_of_diff_fiberAtVertex` (reroute wiring step 1, the `v`-free part) does
+*not* cover. The proof lifts a hypothetical `G̃_v^{ab}`-cycle through `r` to a `G̃`-cycle inside
+`F` (substituting `r` by the 2-path through `v`), contradicting acyclicity; see the section
+preamble. -/
+lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {n : ℕ}
+    (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
+    {F : Set (β × Fin (bodyHingeMult n))} {pa pb r : β × Fin (bodyHingeMult n)}
+    (hF : ((G.mulTilde n).cycleMatroid).Indep F)
+    (hpa : (G.mulTilde n).IsLink pa v a) (hpb : (G.mulTilde n).IsLink pb v b)
+    (hpaF : pa ∈ F) (hpbF : pb ∈ F) (hpab : pa ≠ pb)
+    (hFv : ∀ p ∈ F, (G.mulTilde n).Inc p v → p = pa ∨ p = pb)
+    (hr : r.1 = e₀) (he₀ : e₀ ∉ E(G)) :
+    ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep (insert r (F \ {pa, pb})) := by
+  classical
+  -- Abbreviations: the original `K = G̃` and the splitting-off `Ksp = G̃_v^{ab}`.
+  set K := G.mulTilde n with hK
+  set Ksp := (G.splitOff v a b e₀).mulTilde n with hKsp
+  rw [cycleMatroid_indep] at hF
+  -- The rerouted set lies in the ground set of `Ksp`.
+  have hpaE : pa.1 ∈ E(G) := by
+    rw [hK, mulTilde, edgeMultiply_isLink] at hpa; exact hpa.edge_mem
+  have hpbE : pb.1 ∈ E(G) := by
+    rw [hK, mulTilde, edgeMultiply_isLink] at hpb; exact hpb.edge_mem
+  -- `pa, pb` are not copies of the fresh edge.
+  have hpane₀ : pa.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpaE)
+  have hpbne₀ : pb.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpbE)
+  have hrE : r ∈ E(Ksp) := by
+    rw [hKsp, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, edgeSet_splitOff]
+    exact Or.inl ⟨hr, ha, hb, haV, hbV⟩
+  have hdiffsub : F \ {pa, pb} ⊆ E(Ksp) := by
+    rintro p ⟨hpF, hp2⟩
+    rw [Set.mem_insert_iff, Set.mem_singleton_iff, not_or] at hp2
+    have hpE : p ∈ E(K) := hF.1 hpF
+    have hpv : ¬ K.Inc p v := fun hinc ↦ (hFv p hpF hinc).elim hp2.1 hp2.2
+    -- `p` is a `v`-avoiding `G`-edge copy distinct from `e₀`, kept by `splitOff`.
+    rw [hK, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpE
+    obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hpE
+    have hxv : x ≠ v := fun hx ↦ hpv (hx ▸ (by
+      rw [hK, mulTilde, edgeMultiply_inc]; exact hl.inc_left))
+    have hyv : y ≠ v := fun hy ↦ hpv (hy ▸ (by
+      rw [hK, mulTilde, edgeMultiply_inc]; exact hl.inc_right))
+    have hpne₀ : p.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpE)
+    rw [hKsp, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, edgeSet_splitOff]
+    exact Or.inr ⟨hpne₀, x, y, hl, hxv, hyv⟩
+  set S := insert r (F \ {pa, pb}) with hS
+  have hSE : S ⊆ E(Ksp) := Set.insert_subset hrE hdiffsub
+  rw [cycleMatroid_indep, isAcyclicSet_iff]
+  refine ⟨hSE, ?_⟩
+  rw [restrict_isForest_iff']
+  intro C hCS hCcyc
+  -- The cycle's edges avoid `pa, pb` (they are kept off `S`).
+  have hCnpa : pa ∉ C.edgeSet := fun h ↦ (Set.mem_of_mem_of_subset h hCS).elim
+    (fun he ↦ hpane₀ (by rw [he, hr]))
+    (fun ⟨_, hne⟩ ↦ hne (Or.inl rfl))
+  have hCnpb : pb ∉ C.edgeSet := fun h ↦ (Set.mem_of_mem_of_subset h hCS).elim
+    (fun he ↦ hpbne₀ (by rw [he, hr]))
+    (fun ⟨_, hne⟩ ↦ hne (Or.inr rfl))
+  by_cases hrC : r ∈ C.edgeSet
+  · -- `C` uses the short-circuit copy `r`: substitute the 2-path through `v`.
+    -- Rotate `C` so its first edge is `r`.
+    obtain ⟨m, -, hne, hfe⟩ := WList.exists_rotate_firstEdge_eq (w := C) (e := r) hrC
+    have hDcyc : Ksp.IsCyclicWalk (C.rotate m) := hCcyc.rotate m
+    have hDE : (C.rotate m).edgeSet = C.edgeSet := WList.rotate_edgeSet C m
+    -- Destructure the rotated walk: `C.rotate m = cons x r w'`.
+    obtain ⟨x, e, w', heq⟩ := WList.nonempty_iff_exists_cons.mp (hne.rotate m)
+    have her : e = r := by simp only [heq, WList.Nonempty.firstEdge_cons] at hfe; exact hfe
+    subst her
+    rw [heq] at hDcyc hDE
+    -- `D₀ = cons x e w'` is closed, so `w'.last = x`.
+    have hclosed : (WList.cons x e w').IsClosed := hDcyc.isClosed
+    rw [WList.cons_isClosed_iff] at hclosed
+    -- The first link of `D₀ = cons x e w'`: `e` joins `x` and `w'.first` in `Ksp`.
+    have hwalk : Ksp.IsWalk (WList.cons x e w') := hDcyc.isWalk
+    rw [cons_isWalk_iff] at hwalk
+    obtain ⟨hrlink, hw'walk⟩ := hwalk
+    -- `e` is a fresh-edge copy, so it joins exactly `a` and `b`.
+    rw [hKsp, mulTilde, edgeMultiply_isLink, splitOff_isLink] at hrlink
+    have hxw' : (x = a ∧ w'.first = b) ∨ (x = b ∧ w'.first = a) := by
+      rcases hrlink with ⟨hne', _⟩ | ⟨_, _, _, _, _, hxy⟩
+      · exact absurd hr hne'
+      · exact hxy
+    -- Edge bookkeeping on the cyclic walk `cons x e w'`: distinct edges, so `e ∉ E(w')`.
+    have hnodup : (WList.cons x e w').edge.Nodup := hDcyc.edge_nodup
+    rw [WList.cons_edge, List.nodup_cons] at hnodup
+    obtain ⟨henw', hw'nodup⟩ := hnodup
+    have hw'edge : ∀ p ∈ w'.edge, p ∈ F \ {pa, pb} := by
+      intro p hp
+      have hpS : p ∈ S := hCS (hDE ▸ (by
+        rw [WList.cons_edgeSet]; exact Set.mem_insert_of_mem _ (WList.mem_edgeSet_iff.mpr hp)))
+      refine (Set.mem_insert_iff.mp hpS).resolve_left ?_
+      rintro rfl; exact henw' hp
+    -- `w'` avoids the fresh fiber, hence lifts to a `K = G̃`-walk.
+    have hw'fresh : Disjoint w'.edgeSet (edgeFiber e₀ n) := by
+      rw [Set.disjoint_left]; intro p hp hpf
+      have : p.1 = e₀ := hpf
+      have hpEK : p ∈ E(K) := hF.1 (hw'edge p hp).1
+      rw [hK, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpEK
+      exact he₀ (this ▸ hpEK)
+    have hw'K : K.IsWalk w' :=
+      (isWalk_deleteEdges_iff.mpr ⟨hw'walk, hw'fresh⟩).of_le
+        (mulTilde_splitOff_deleteFiber_le n)
+    -- Build the `K`-substitute closed trail and extract a `K`-cycle inside `F`.
+    have hkey : ∃ T : WList α (β × Fin (bodyHingeMult n)), K.IsTour T ∧ T.edgeSet ⊆ F := by
+      rcases hxw' with ⟨hxa, hwb⟩ | ⟨hxb, hwa⟩
+      · -- `x = a`, `w'.first = b`: substitute `a —pa— v —pb— b ⋯ a`.
+        refine ⟨WList.cons a pa (WList.cons v pb w'), ?_, ?_⟩
+        · refine ⟨⟨?_, ?_⟩, by simp, ?_⟩
+          · rw [cons_isWalk_iff, cons_isWalk_iff]
+            exact ⟨hpa.symm, hwb ▸ hpb, hw'K⟩
+          · simp only [WList.cons_edge, List.nodup_cons, List.mem_cons]
+            refine ⟨?_, ?_, hw'nodup⟩
+            · rintro (h | h)
+              · exact hpab h
+              · exact (hw'edge pa h).2 (by simp)
+            · exact fun h ↦ (hw'edge pb h).2 (by simp)
+          · -- closed: first `a` = last `w'.last = x = a`.
+            rw [WList.cons_isClosed_iff, WList.last_cons]; exact hxa ▸ hclosed
+        · intro p hp
+          simp only [WList.cons_edgeSet, Set.mem_insert_iff] at hp
+          rcases hp with rfl | rfl | hp
+          · exact hpaF
+          · exact hpbF
+          · exact (hw'edge p hp).1
+      · -- `x = b`, `w'.first = a`: substitute `b —pb— v —pa— a ⋯ b`.
+        refine ⟨WList.cons b pb (WList.cons v pa w'), ?_, ?_⟩
+        · refine ⟨⟨?_, ?_⟩, by simp, ?_⟩
+          · rw [cons_isWalk_iff, cons_isWalk_iff]
+            exact ⟨hpb.symm, hwa ▸ hpa, hw'K⟩
+          · simp only [WList.cons_edge, List.nodup_cons, List.mem_cons]
+            refine ⟨?_, ?_, hw'nodup⟩
+            · rintro (h | h)
+              · exact hpab.symm h
+              · exact (hw'edge pb h).2 (by simp)
+            · exact fun h ↦ (hw'edge pa h).2 (by simp)
+          · rw [WList.cons_isClosed_iff, WList.last_cons]; exact hxb ▸ hclosed
+        · intro p hp
+          simp only [WList.cons_edgeSet, Set.mem_insert_iff] at hp
+          rcases hp with rfl | rfl | hp
+          · exact hpbF
+          · exact hpaF
+          · exact (hw'edge p hp).1
+    -- A `K`-tour contains a `K`-cycle whose edges are a sublist, hence inside `F`.
+    obtain ⟨T, hT, hTF⟩ := hkey
+    obtain ⟨C', hC', hsub⟩ := hT.exists_isCyclicWalk
+    exact hF.2 C' hC' (hsub.edge_subset.trans hTF)
+  · -- `C` avoids `r`, so its edges lie in `F ∖ {pa, pb}` and avoid the fresh fiber;
+    -- `C` is then a cycle of `K = G̃` inside `F`, contradicting `hF`.
+    have hCF : C.edgeSet ⊆ F := by
+      intro p hp
+      rcases Set.mem_of_mem_of_subset hp hCS with hpr | hpd
+      · exact absurd (hpr ▸ hp) hrC
+      · exact hpd.1
+    have hCnofresh : Disjoint C.edgeSet (edgeFiber e₀ n) := by
+      rw [Set.disjoint_left]
+      intro p hp hpf
+      have hpe₀ : p.1 = e₀ := hpf
+      rcases Set.mem_of_mem_of_subset hp hCS with hpr | hpd
+      · exact hrC (hpr ▸ hp)
+      · have hpEK : p ∈ E(K) := hF.1 hpd.1
+        rw [hK, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpEK
+        exact he₀ (hpe₀ ▸ hpEK)
+    -- Lift `C` to a cyclic walk of `K = G̃` inside `F`, contradicting `F` acyclic.
+    have hCK : K.IsCyclicWalk C :=
+      ((deleteEdges_isCyclicWalk_iff _ _).mpr ⟨hCcyc, hCnofresh⟩).of_le
+        (mulTilde_splitOff_deleteFiber_le n)
+    exact hF.2 C hCK hCF
 
 /-! ## Circuits of the multiplied splitting-off meet the short-circuit (`lem:reduction-step`)
 

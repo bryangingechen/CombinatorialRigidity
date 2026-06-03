@@ -259,6 +259,33 @@ housekeeping pass once their resolution is fully indexed.
   so it lives in `Induction.lean`; no upstream mirror.
 - **Status:** resolved.
 
+### [resolved] `[matroid]` Cycle-lift by edge-substitution (rotate-to-first + cons-substitute + tour-contains-cycle): four naming/`def`-unfold traps
+- **Where it bit:** `Graph.isAcyclicSet_splitOff_reroute` in `Molecular/Induction.lean`
+  (Phase 20 `lem:forest-surgery-split` reroute wiring step 2, the `dᶠ(v)=2` cycle-lift crux).
+  To show the rerouted forest `(F ∖ {pa,pb}) ∪ {r}` stays acyclic, a hypothetical `G̃ᵥᵃᵇ`-cycle
+  `C` through the short-circuit copy `r` is lifted to a closed `G̃`-trail by substituting the
+  fresh edge `r` (joining `a,b`) with the `v`-traversing 2-path `a—pa—v—pb—b`, then a contained
+  cycle is extracted.
+- **Friction (the idiom + four traps):** the idiom is `WList.exists_rotate_firstEdge_eq` (rotate
+  `C` so `r` is the first edge) → `nonempty_iff_exists_cons` destructure into `cons x r w'` →
+  splice `r` out and `cons a pa (cons v pb w')` in → `IsTour` (closed trail) → `IsTour.exists_isCyclicWalk`
+  (a tour contains a cycle as an `IsSublist`). Traps: (1) the walk-down-a-subgraph lemma is
+  `Graph.isWalk_deleteEdges_iff` (vendored, `Graph.`-namespaced), **not** `WList.deleteEdges_isWalk_iff`
+  (unknown constant). (2) the sublist edge-containment is `WList.IsSublist.edge_subset` (`E(w₁) ⊆ E(w₂)`),
+  **not** `…edgeSet_subset`. (3) `WList.IsClosed` is a bare `def` (`first = last`); `simp` "made no
+  progress" — peel with `WList.cons_isClosed_iff` (`(cons x e w).IsClosed ↔ x = w.last`) + `last_cons`,
+  then close by `hx ▸ hclosed`. (4) membership `p ∈ (cons x e w').edgeSet` from `p ∈ w'.edge` needs
+  `WList.cons_edgeSet` (`= insert e E(w)`) + `Set.mem_insert_of_mem` + `WList.mem_edgeSet_iff`, **not**
+  `cons_edge` (that's the `.edge` *list*, and the goal is the `edgeSet`).
+- **Fix / general lesson:** for an edge-substitution cycle-lift, hoist the substituted walk's
+  endpoint orientation (`hwb : w'.first = b`) and rewrite the inner `cons_isWalk_iff` link with it
+  (`hwb ▸ hpb`, no `.symm` — the `▸` already lands the direction). `IsTour`'s anonymous constructor
+  is `⟨⟨isWalk, edge_nodup⟩, nonempty, isClosed⟩`; the `edge_nodup` for the spliced trail comes from
+  `cons_edge`/`nodup_cons` on the original cyclic walk's `edge_nodup` plus the new edges' absence from
+  `w'.edge`. Project-internal (about our `splitOff`/`mulTilde`), lives in `Induction.lean`; no upstream
+  mirror. **Lifted to:** TACTICS-QUIRKS § 29.
+- **Status:** resolved.
+
 ### [resolved] `[matroid]` no mathlib "base of `M ／ C` lifts to base of `M` via a basis of `C`" — route through `IsBasis'.contract_eq_contract_delete` + loops
 - **Where it bit:** `Matroid.IsBase.union_isBasis_of_contract` in
   `Molecular/Induction.lean` (Phase 20 `lem:contract-minimality-transport`). mathlib

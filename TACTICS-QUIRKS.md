@@ -1131,3 +1131,50 @@ Worked case: `Graph.exists_packing_move_of_not_inc` in
 `Molecular/Induction.lean` (the forest-packing rebalancing move, where the
 re-chosen packing `fun i => if i = j then insert x (Fs j) else Fs i \ {x}` is
 evaluated at `j` in the recipient-forest subgoals).
+
+## 29. Cycle-lift by edge-substitution: the walk-rewiring idiom + four naming/`def`-unfold traps
+
+**Symptom.** Proving "an inserted edge cannot create a cycle" by lifting a
+hypothetical cycle of the *larger* graph back to a forbidden cycle of the
+*smaller* one — rotate the cycle to put the new edge first, destructure off the
+`cons`, splice the new edge out and a substitute walk in, then extract a
+contained cycle. Four traps surface as build failures along the way.
+
+**The idiom (vendored `apnelson1/Matroid` `WList`/`Graph.Walk` API).**
+1. `WList.exists_rotate_firstEdge_eq (w := C) (e := r) hrC` — rotate `C` so the
+   target edge `r` is first; gives `m`, nonempty-after-rotate, and the
+   firstEdge equation.
+2. `(hne.rotate m); WList.nonempty_iff_exists_cons.mp` — destructure
+   `C.rotate m = cons x r w'`.
+3. Re-derive the rotated walk's properties via `WList.rotate_edgeSet` (edge set
+   is rotation-invariant) and `IsCyclicWalk.rotate` / `.isClosed` / `.edge_nodup`.
+4. Build the substitute closed trail (`cons a pa (cons v pb w')`) as an
+   `IsTour`, then `IsTour.exists_isCyclicWalk` returns a cycle `C'` with
+   `C'.IsSublist T` — its edges are a subset of `T`'s by `WList.IsSublist.edge_subset`.
+
+**The four traps.**
+1. The "walk lives in the deleted-edges subgraph" iff is
+   `Graph.isWalk_deleteEdges_iff` (`(G ＼ F).IsWalk w ↔ G.IsWalk w ∧ Disjoint E(w) F`),
+   `Graph.`-namespaced. `WList.deleteEdges_isWalk_iff` is an *unknown constant*.
+2. Sublist edge-containment is `WList.IsSublist.edge_subset : E(w₁) ⊆ E(w₂)`,
+   **not** `…edgeSet_subset`.
+3. `WList.IsClosed` is a bare `def` (`w.first = w.last`); `simp` reports "made
+   no progress". Peel it with `WList.cons_isClosed_iff`
+   (`(cons x e w).IsClosed ↔ x = w.last`) + `WList.last_cons`, then close by
+   `hx ▸ hclosed` from the original cycle's closure.
+4. Membership `p ∈ (cons x e w').edgeSet` from a list membership `p ∈ w'.edge`
+   uses `WList.cons_edgeSet` (`E(cons x e w) = insert e E(w)`) +
+   `Set.mem_insert_of_mem` + `WList.mem_edgeSet_iff`. `WList.cons_edge` is the
+   *list* `.edge`, not the `Set`-valued `.edgeSet`, so `rw [cons_edge]` fails on
+   an `edgeSet` goal.
+
+**Orientation note.** When the inner `cons_isWalk_iff` link goal is
+`K.IsLink pb v w'.first` and you have `hpb : K.IsLink pb v b`, `hwb : w'.first = b`,
+write `hwb ▸ hpb` (no `.symm` — the `▸` rewrite already lands the direction);
+only the *outer* link `K.IsLink pa a v` from `hpa : K.IsLink pa v a` needs `hpa.symm`.
+
+Worked case: `Graph.isAcyclicSet_splitOff_reroute` in `Molecular/Induction.lean`
+(Phase 20 forest-surgery `dᶠ(v)=2` reroute, substituting the short-circuit edge
+by its `v`-traversing 2-path). Companion to the explicit-cyclic-walk tower in
+`isCycleSet_pair_edgeFiber_splitOff` (FRICTION "Building a small explicit cyclic
+walk").

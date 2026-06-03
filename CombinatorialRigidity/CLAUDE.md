@@ -150,6 +150,15 @@ bullets. If one matches, jump to the named section of
   un-beta-reduced lambda hiding the `ite`) — § 28 *`rw [if_pos rfl]`
   fails on a `(fun i ↦ if i = j then …) j` goal*: use `simp only
   [↓reduceIte]` (beta + ite reduction in one), not the `if_pos` lemma.
+- *"unknown constant `WList.deleteEdges_isWalk_iff`"*, or `simp` "made
+  no progress" on a `WList.IsClosed` goal, or `rw [cons_edge]` failing
+  on a `.edgeSet` membership goal, while lifting a graph cycle back along
+  an edge-substitution — § 29 *Cycle-lift by edge-substitution*: the
+  walk-down-a-subgraph iff is `Graph.isWalk_deleteEdges_iff`
+  (`Graph.`-namespaced), `IsClosed` is a bare `def` (peel with
+  `cons_isClosed_iff`), edgeSet membership uses `cons_edgeSet` +
+  `mem_edgeSet_iff`, and sublist edge-containment is
+  `WList.IsSublist.edge_subset` (not `…edgeSet_subset`).
 
 ## Starting a Lean-touching session
 
