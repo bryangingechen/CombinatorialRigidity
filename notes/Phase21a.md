@@ -8,17 +8,32 @@ risk #7 + the Phase-21a detail).
 
 ## Current state
 
-**Deliverables 1–2 (`topEquiv`, `pairingDualEquiv`) are green.** File
+**Deliverables 1–2 (`topEquiv`, `pairingDualEquiv`) are green; deliverable 3
+(`complementIso`) is started — its first ingredient `wedgeProd` is green.** File
 `Molecular/Meet.lean` carries the screw-algebra specializations
 (`screwAlgebraTopEquiv : ⋀^(k+2) (Fin (k+2) → ℝ) ≃ₗ ℝ`,
 `screwAlgebraPairingDualEquiv j : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*`), with the general
 facts (`exteriorPower.topEquiv` over any `CommRing`;
 `exteriorPower.pairingDualEquiv` + `coe_pairingDualEquiv` for any finite
 free `M` with an ordered basis) mirrored under
-`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Blueprint chapter
+`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`, plus the new graded wedge
+product `wedgeProd (hj : j ≤ k+2) : ⋀ʲ V × ⋀^(k+2−j) V → ⋀^(k+2) V` (the
+Phase-17 join landed in the top graded piece via `SetLike.GradedMonoid`, with
+`coe_wedgeProd` bridging it to the Phase-17 `∨ₑ`). Blueprint chapter
 `meet.tex` (`sec:molecular-meet`): `def:meet-top-equiv` and
 `def:meet-pairing-dual` green, `def:meet-complement-iso` + `def:meet` red.
-Next: `complementIso` (deliverable 3), the genuinely new core.
+
+**Route (ii) is genuinely multi-commit.** `complementIso` decomposes into:
+(a) `wedgeProd` — the graded product (✓ this commit); (b) the bilinear pairing
+`⋀ʲ V →ₗ Module.Dual ℝ (⋀^(k+2−j) V)`, `A ↦ B ↦ topEquiv (wedgeProd A B)`,
+made into a `LinearMap` (bilinearity of `↑A * ↑B` through the subtype); (c)
+nondegeneracy via the signed-permutation basis computation
+`topEquiv (wedgeProd e_S e_T) = ±1` if `T = Sᶜ` else `0` (the off-diagonal
+vanishing is `extensor_eq_zero_of_not_injective`; the diagonal sign is the
+*open sign subproblem* in *Blockers*); (d) `complementIso :=
+(pairing-as-equiv) ≪≫ₗ (b.exteriorPower (k+2−j)).toDualEquiv.symm`. Mathlib
+exposes no graded `⋀ʲ × ⋀ᵏ → ⋀^(j+k)` map, so (a) was built by hand from the
+graded-monoid instance.
 
 Phase 21 (algebraic induction) is **paused**: its
 realization-existence statements need a *panel* layer (coplanar hinges,
@@ -70,7 +85,10 @@ Dependency order (route (ii); `N = k+2`, `V = Fin (k+2) → ℝ`):
    in FRICTION *Mirrored* under this entry.
 3. [ ] `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V` — from the perfect wedge
    pairing `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ R` (via `join` + `topEquiv`), shown
-   nondegenerate for free `V`. The genuinely new core.
+   nondegenerate for free `V`. The genuinely new core. *In progress:* the
+   graded-product ingredient `wedgeProd` + `coe_wedgeProd` landed; bilinear
+   pairing / nondegeneracy / `toDualEquiv.symm` composition remain (see
+   *Current state* for the (a)–(d) decomposition).
 4. [ ] `meet` (regressive product) — thin layer above `complementIso` +
    Phase-17 `join` (`meet = complementIso⁻¹ ∘ join ∘ (complementIso ×
    complementIso)`); + `meet_ne_zero_iff` (⟺ transversal / independent),
@@ -116,15 +134,26 @@ metric Hodge star.
 
 ## Hand-off / next phase
 
-Deliverables 1–2 (`topEquiv`, `pairingDualEquiv`) green; chapter
-`meet.tex` has `def:meet-top-equiv` + `def:meet-pairing-dual` green.
-**Next concrete commit: deliverable 3, `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V`**
-— the genuinely new core. Build the perfect wedge pairing
-`⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ ℝ` (Phase-17 `join` + `topEquiv`), show it
-nondegenerate for free `V`, and route the `j ↔ N−j` grade-swap sign
-through `pairingDualEquiv`'s `det` form (see *Blockers* — verify the sign
-convention matches the panel hinge extensor's `supportExtensor`). Flip
-`def:meet-complement-iso` green. Then `meet` + its lemmas (4). When 21a's
+Deliverable 3 (`complementIso`) is in progress: ingredient (a), the graded
+wedge product `wedgeProd` + `coe_wedgeProd`, is green; `def:meet-complement-iso`
+stays red. **Next concrete commit: ingredient (b), the bilinear wedge pairing
+`wedgePairing j : ⋀ʲ V →ₗ[ℝ] Module.Dual ℝ (⋀^(k+2−j) V)`**, `A ↦ B ↦
+screwAlgebraTopEquiv (wedgeProd hj A B)`, with its apply-on-`ιMulti_family`
+lemma. The subtlety is realizing it as an honest `LinearMap` in `A` (the
+product `↑A * ↑B` is bilinear, but it passes through the `wedgeProd` subtype
+constructor and the index-arithmetic cast — likely build via
+`LinearMap.mk₂` / a `LinearMap`-valued `topEquiv ∘ (· * ·)` factored through
+`exteriorPower`'s module structure). *Then* ingredient (c): the basis
+computation `screwAlgebraTopEquiv (wedgeProd hj e_S e_T) = ±1` if `T = Sᶜ`
+else `0` (off-diagonal = `extensor_eq_zero_of_not_injective` via a repeated
+basis vector; **the diagonal sign is the open sign subproblem in *Blockers*** —
+verify against `supportExtensor` / KT's `C(·)`), giving nondegeneracy. *Then*
+(d): `complementIso := (pairing-as-equiv) ≪≫ₗ
+(Pi.basisFun …).exteriorPower (k+2−j) |>.toDualEquiv.symm`, flipping
+`def:meet-complement-iso` green. Then `meet` + its lemmas (deliverable 4).
+**Route (ii) is multi-commit** — budget (b)/(c)/(d) as separate commits; the
+sign subproblem in (c) is the one place that may need a user decision if the
+orientation convention conflicts with the panel hinge extensor. When 21a's
 deliverables are green, **Phase 21 resumes** with the panel layer
 (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar` once; DESIGN.md
 *Panel-hinge = hinge-coplanar body-hinge*), then Lemma 5.4 (panel cycle),

@@ -76,4 +76,42 @@ noncomputable def screwAlgebraPairingDualEquiv (j : ℕ) :
       Module.Dual ℝ (⋀[ℝ]^j (Fin (k + 2) → ℝ)) :=
   exteriorPower.pairingDualEquiv (Pi.basisFun ℝ (Fin (k + 2))) j
 
+/-! ## The graded wedge product `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V`
+
+The first ingredient of the perfect wedge pairing on which `complementIso`
+(`def:meet-complement-iso`) and the regressive product `meet` (`def:meet`) are
+built (route (ii); `notes/Phase21a.md`). It is the join (Phase 17, the symbolic
+exterior product in the full `ExteriorAlgebra`) landed back in the *top* graded
+piece `⋀^(k+2) V` via the graded-monoid structure `SetLike.GradedMonoid` on
+`fun i ↦ ⋀^i V`: the product of a `j`-graded and an `(N−j)`-graded element is
+`(j + (N−j)) = N`-graded. Composing with the volume form `screwAlgebraTopEquiv`
+sends it into `ℝ`, the pairing whose nondegeneracy is the next deliverable. -/
+
+variable {k}
+
+/-- The graded wedge product `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V` (`N = k+2`): the join /
+exterior product of `A` and `B`, landed in the *top* graded piece via the graded
+monoid structure on `fun i ↦ ⋀^i V`. The bilinear ingredient of the perfect wedge
+pairing on which `complementIso` (`def:meet-complement-iso`) is built; on extensors
+it agrees with the Phase-17 `join` (`coe_wedgeProd`). -/
+noncomputable def wedgeProd {j : ℕ} (hj : j ≤ k + 2)
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    ⋀[ℝ]^(k + 2) (Fin (k + 2) → ℝ) := by
+  refine ⟨(A : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) * (B : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)), ?_⟩
+  have h : j + (k + 2 - j) = k + 2 := by omega
+  have := SetLike.mul_mem_graded A.2 B.2
+  rwa [h] at this
+
+/-- The underlying exterior-algebra element of `wedgeProd` is the join (Phase-17
+`∨ₑ`, the full-algebra exterior product) of the two factors: `wedgeProd` is the
+join landed in the top graded piece. The bridge from the meet's graded pairing to
+the Phase-17 join API. -/
+@[simp]
+theorem coe_wedgeProd {j : ℕ} (hj : j ≤ k + 2)
+    (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
+    (wedgeProd hj A B : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) =
+      (A : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) ∨ₑ
+        (B : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) :=
+  rfl
+
 end CombinatorialRigidity.Molecular

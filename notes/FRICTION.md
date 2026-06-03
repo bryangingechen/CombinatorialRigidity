@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Transporting `SetLike.mul_mem_graded` across an index-arithmetic equality: cast the *membership*, not the subtype
+- **Where it bit:** `wedgeProd` in `Molecular/Meet.lean` (the graded wedge product
+  `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V`, from `↑A * ↑B ∈ ⋀^(j+(N−j))` with `j+(N−j)=N`).
+- **Friction:** `h ▸ ⟨↑A * ↑B, SetLike.mul_mem_graded A.2 B.2⟩` with `h : j+(N−j)=N`
+  rewrites the index *inside the underlying module* too (`Fin (j+(N−j)) → ℝ` vs
+  `Fin N → ℝ`), tripping a type mismatch on `↑A * ↑B`.
+- **Fix:** build the subtype with the un-rewritten value and cast only the proof —
+  `refine ⟨↑A * ↑B, ?_⟩; have := SetLike.mul_mem_graded A.2 B.2; rwa [h] at this`.
+- **Status:** resolved (no lift — local plumbing; the rule "rewrite the membership
+  predicate, not the `Subtype.val`, when the index equality also appears in the
+  ambient type" is the takeaway).
+
 ### [resolved] `simp [key, key.symm]` loops to "maximum recursion depth" — feed only one orientation
 - **Where it bit:** `theorem_55_base` in `Molecular/AlgebraicInduction.lean`, closing the
   four `S a = S b` cases (`a, b ∈ {u, v}`) from `key : S u = S v`.
