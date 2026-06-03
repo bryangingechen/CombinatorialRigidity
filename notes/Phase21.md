@@ -1,6 +1,9 @@
 # Phase 21 — Algebraic induction: Theorem 5.5 base + Cases I & II (work log)
 
-**Status:** in progress (opened 2026-06-03).
+**Status:** in progress (opened 2026-06-03); **paused 2026-06-03 for a
+modeling re-scope** — the panel-hinge = hinge-coplanar body-hinge gap
+(see *Blockers* + DESIGN.md *Panel-hinge = hinge-coplanar body-hinge*).
+Plan-first: no further Lean until the panel-layer plan is reviewed.
 
 Stratum 5 of the molecular-conjecture program (the *algebraic* half of
 Katoh–Tanigawa's proof, KT §5, §6.1–6.3). Where Phase 20 reduced every
@@ -123,16 +126,15 @@ Case I (proper rigid subgraph; KT §6.2):
   `pinnedMotionsOn_singleton`, `pinnedMotionsOn_eq_iInf` (nonempty `s`),
   `pinnedMotionsOn_mono`, `pinnedMotionsOn_le_pinnedMotions`. Axiom-clean.
   Green.
-- [ ] `lem:cycle-realization` — KT Lemma 5.4. **Decision revised
-  2026-06-03: formalize before phase close** (was cite-only; see
-  *Decisions made* below for the original citation work, which stands,
-  and the abstract-model finding that reopened it). Statement is KT's
-  form (a cycle graph with `3 ≤ |V| ≤ D` has an infinitesimally rigid =
-  full-rank `D(|V|−1)` nonparallel realization). Citation to
-  Crapo–Whiteley 1982 Prop 3.4 + Whiteley 1999 (Kluwer) Prop 3 stays as
-  the source pointer. **Phase-close requirement:** must land green
-  (`\leanok`) before Phase 21 closes — a focused 1–2 commit task, not a
-  side phase (see the finding). Currently still red.
+- [ ] `lem:cycle-realization` — KT Lemma 5.4. **Decision (2026-06-03):
+  formalize as genuine *panel* content — its own sub-phase**, not cite,
+  not the free-hinge telescoping reduction (which proved only the
+  body-hinge cycle statement; superseded — see DESIGN.md). Statement is
+  KT's form (a cycle with `3 ≤ |V| ≤ D` has an infinitesimally rigid
+  full-rank `D(|V|−1)` *panel* realization). Needs the panel layer + the
+  extensor meet algebra + a generic-panel independence argument bottoming
+  on Lemma 2.1. Citation (CW82 Prop 3.4 / Whiteley99 Prop 3) stays as the
+  source pointer. Still red.
 - [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
   subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
   glue block-triangularly with a pinned rigid realization of `H`
@@ -208,51 +210,31 @@ decomposition).
   I's block-triangular rank accounting will run against the per-body
   pin-a-body identity. No new mathlib needed; built directly mirroring
   the `pinnedMotions` submodule.
-- **Cycle Lemma 5.4 (`lem:cycle-realization`): citation work (stands).**
-  KT's Lemma 5.4 — a cycle graph with `3 ≤ |V| ≤ D` has an
-  infinitesimally rigid nonparallel panel-hinge realization (= full rank
-  `D(|V|−1)`). Proposition numbers verified against the local OCR'd
-  primaries: [4] Crapo–Whiteley 1982 **Proposition 3.4** (`.refs/`,
-  French+English columns p.25, `D=6` case) and [34] Whiteley 1999 Kluwer
-  **Proposition 3** (p.5); KT attributes "[4, Proposition 3.4] or [34,
-  Proposition 3]" itself. Discharges the *Citation accuracy caveat* in
-  MolecularConjecture.md. Corrected a prior mis-statement: the blueprint
-  had glossed cycle realization as "rank one less than the free value" —
-  backwards; short cycles (`|V| ≤ D`) are *rigid*, i.e. full rank. New
-  bib entry `whiteley1999` (editor initials corrected from KT's
-  OCR-typo'd "Thorpe, O., Duxbury, O.").
-- **Cycle Lemma 5.4: revised to formalize before phase close
-  (2026-06-03).** The cite-only call above was made on the premise that
-  5.4 needs Crapo–Whiteley's *projective realizability* (a cycle of
-  `n ≤ D` lines is physically realizable by panels in ℝ^d). It does
-  not — in **our** model. `BodyHingeFramework` (`RigidityMatrix.lean`)
-  is a **free per-edge hinge assignment** (`hinge : β → Fin k →
-  Fin (k+1) → ℝ`); there is no per-body panel data and no
-  geometric-consistency constraint, so physical realizability was
-  abstracted away in Phase 18 and the rank depends only on the per-edge
-  supporting extensors. So 5.4 reduces to pure linear algebra on
-  existing API:
-  1. cycle graph on `Fin n` (edge `i` links `i, i+1 mod n`) — modest
-     structural plumbing on `Graph (Fin n) (Fin n)`, the only new piece;
-  2. hinges with independent extensors — Lemma 2.1
-     (`omitTwoExtensor_linearIndependent`, Phase 17 green) gives `D`
-     independent extensors indexed by point-pairs; assign any `n ≤ D` to
-     the edges. Each `omitTwoExtensor` *is* an `affineSubspaceExtensor`
-     of a point sub-family, i.e. exactly what `supportExtensor`
-     consumes — reindexing glue, not new math;
-  3. rigidity bridge (short): around the cycle the constraints give
-     `S(vᵢ)−S(vᵢ₊₁) = λᵢ·Cᵢ`; telescoping ⇒ `Σ λᵢ Cᵢ = 0`; `{Cᵢ}`
-     independent ⇒ all `λᵢ=0` ⇒ `S` constant ⇒ trivial ⇒ rigid at rank
-     `D(n−1)`.
-  **Faithfulness caveat:** this proves an *abstract* hinge assignment
-  with the target rank exists — which is what Cases I/II/III consume —
-  not KT's stronger *physical* realization. That physical-realizability
-  gap is inherited from the Phase-18 modeling choice and is identical
-  for every node in the program; it is not specific to 5.4. User
-  decision (2026-06-03): formalize after Cases I/II, before phase close.
+- **Cycle Lemma 5.4 citation work (Phase-local, stands).** Proposition
+  numbers verified against the local OCR'd primaries: [4] Crapo–Whiteley
+  1982 **Proposition 3.4** (`D=6` case) and [34] Whiteley 1999 Kluwer
+  **Proposition 3**; KT attributes "[4, Prop 3.4] or [34, Prop 3]"
+  itself. Discharged the *Citation accuracy caveat* in
+  MolecularConjecture.md. Corrected a prior mis-statement (the blueprint
+  glossed cycle realization as "rank one less" — backwards; short cycles
+  are *rigid*, full rank). New bib entry `whiteley1999`.
+- **Panel-coplanarity finding + Lemma 5.4 → formalize as panel content
+  (2026-06-03).** Cross-cutting; full record promoted to DESIGN. Two
+  superseded mid-Phase-21 calls are corrected there: (i) the cite-only
+  call on 5.4, and (ii) the later "5.4 reduces to trivial telescoping in
+  our free-hinge model" reduction — which proved only the *body-hinge*
+  cycle statement (too weak), because `BodyHingeFramework` omits the
+  hinge-coplanarity that *defines* panel-hinge. Net: add a **panel
+  layer** (per-vertex hyperplanes, hinges as intersections — reuses all
+  rank infra) and formalize 5.4 as genuine panel content, its own
+  sub-phase. See *Promoted to … DESIGN* below.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
-- *(none yet)*
+- *Panel-hinge = hinge-coplanar body-hinge; the coplanarity layer (form
+  (A) predicate vs (B) panel-data, (B) chosen); which nodes are reused
+  vs gain the panel requirement; Lemma 5.4 formalized as a panel
+  sub-phase* → DESIGN.md *Panel-hinge = hinge-coplanar body-hinge: the
+  coplanarity layer*; risk #7 in MolecularConjecture.md.
 
 ## Blockers / open questions
 
@@ -263,64 +245,51 @@ decomposition).
   `exists_uniform_rowIndependent_placement`-style perturbation) where it
   transfers; assess on contact whether the panel-coordinate
   parametrization needs new infrastructure.
-- **Cycle Lemma 5.4 — to formalize before phase close** (revised
-  2026-06-03, was cite-only). The abstract `BodyHingeFramework` model
-  doesn't carry physical panel-realizability, so 5.4 reduces to linear
-  algebra on existing Phase-17/18 API (cycle graph + Lemma 2.1 extensors
-  + telescoping bridge — a 1–2 commit task). Citation work stands as the
-  source pointer. See *Decisions made* for the finding + proof sketch.
-  **Must land green before Phase 21 closes** (per user decision; do it
-  after Cases I/II).
+- **Panel-coplanarity re-scope (the active blocker; phase paused).**
+  `thm:theorem-55` and the realization-existence nodes as first drafted
+  prove the *body-hinge* rank theorem, not the molecular conjecture,
+  because `BodyHingeFramework` omits hinge-coplanarity (= what defines
+  panel-hinge). Prerequisite for Cases I–III: add a **panel layer**
+  (per-vertex hyperplanes, hinges as intersections; reuses all rank
+  infra). Decision + (A)/(B) analysis in DESIGN.md; risk #7 in
+  MolecularConjecture.md. **Plan-first: no Lean until the plan is
+  reviewed.**
+- **Lemma 5.4 — formalize as genuine panel content, its own sub-phase**
+  (user decision 2026-06-03; was cite-only, then mistakenly reduced to
+  free-hinge telescoping). The cycle's panel realization with
+  independent hinge extensors is the Crapo–Whiteley projective fact:
+  needs the panel layer + the extensor *meet* algebra (hinges as panel
+  intersections) + a generic-panel independence argument bottoming on
+  Lemma 2.1 (Phase 17). Citation work stands as the source pointer.
 
 ## Hand-off / next phase
 
-Settled: base case (`def:rank-hypothesis` + `lem:theorem-55-base`), the
-Case II `+D` rank-lift accounting (`lem:case-II-rank-lift`), the cycle
-input (`lem:cycle-realization`, cite-only), the graph-level
-framework-construction op (`def:framework-with-graph` /
-`lem:motions-mono-of-graph-le`), and now the **Case I block-pinning op**
-(`def:pinned-motions-on`): `BodyHingeFramework.pinnedMotionsOn s` pins a
-whole block of bodies (motions vanishing on all of `s`), the
-framework-side carrier of contracting a rigid subgraph (pin `V(H)`). It
-generalizes Phase 18's `pinnedMotions v` and equals `⨅ v ∈ s,
-pinnedMotions v` for nonempty `s` — the form Case I's block-triangular
-accounting compares against the per-body pin-a-body identity.
-`Molecular/AlgebraicInduction.lean` carries six Lean nodes. Remaining
-red: `lem:cycle-realization` (slated to formalize before phase close —
-see Blockers / Decisions), `prop:rigidity-matrix-prop11`,
-`thm:theorem-55`, `lem:case-I`, `lem:case-II` (gating on the pieces
-below), `lem:case-III` (22–23).
+**Phase 21 is PAUSED for a modeling re-scope (2026-06-03, plan-first).**
+The realization-existence statements as first drafted prove the
+*body-hinge* rank theorem, not the molecular conjecture, because
+`BodyHingeFramework` omits **hinge-coplanarity** (= what defines
+panel-hinge; KT p.647). The fix is a **panel layer** and it is a
+prerequisite for Cases I–III and Lemma 5.4. Full decision + the (A)/(B)
+analysis: `DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge*; risk #7
+in MolecularConjecture.md. **No Lean until the plan is reviewed.**
 
-**Phase-close requirement (do not lose):** `lem:cycle-realization` must
-be formalized green before Phase 21 closes (user decision 2026-06-03,
-after Cases I/II). Focused 1–2 commit task on existing API; the
-abstract-model finding + telescoping proof sketch are in *Decisions
-made*. The immediate next commit is still the Case I/II work below.
+Green so far (all regime-agnostic rank/structure facts — *retained
+verbatim* under the panel layer): `def:rank-hypothesis`,
+`lem:theorem-55-base` (rank content; gains a coplanarity conjunct when
+assembled), `lem:case-II-rank-lift`, `def:framework-with-graph` +
+`lem:motions-mono-of-graph-le`, `def:pinned-motions-on`.
+`Molecular/AlgebraicInduction.lean` carries six Lean nodes; none are
+wasted. Remaining red: `lem:cycle-realization` (now a panel sub-phase),
+`prop:rigidity-matrix-prop11` (stays body-hinge), `thm:theorem-55`,
+`lem:case-I`, `lem:case-II`, `lem:case-III` (all gain the panel
+requirement; III is 22–23).
 
-The next concrete commit continues hand-off #1 (vertex-level ops) or
-opens #2 (the genericity device):
-1. **Block-pinning rank accounting** (continues the just-landed
-   `def:pinned-motions-on`). The natural follow-on to `pinnedMotionsOn`
-   is its `finrank` relationship to the parent — the block analogue of
-   `finrank_pinnedMotions_add_screwDim` (pinning a rigid block of size
-   `m` removes `D·?` — work out the exact count via the `⨅` form
-   `pinnedMotionsOn_eq_iInf` and the rigid-block rank). Then the genuine
-   vertex-set-changing op: Case I contracts `H` (`G/E(H)`), Case II
-   splits off a reducible degree-2 vertex (`G_v^{ab}`, re-insert `v`
-   with two hinges). A vertex-quotient / vertex-extension op on
-   `BodyHingeFramework` does not exist yet — likely its own commit(s):
-   define the op + its `infinitesimalMotions` / `pinnedMotionsOn`
-   relationship to the parent, reusing the pin-a-body identity and the
-   `withGraph` monotonicity for edge-set bookkeeping.
-2. **Claim 6.4 / 6.9 genericity device** (Blockers): matrix entries are
-   polynomials in alg.-indep. panel coords ⇒ a generic point attains max
-   rank. First step is an *assessment* (scoping commit / FRICTION entry):
-   does the Phase 6/8 genericity machinery transfer, or does the panel-
-   coordinate parametrization need new infra? It determines whether
-   Cases I/II are one commit or several.
-
-Smallest forward step: the block-pinning `finrank` accounting (#1's next
-piece) — it builds directly on the just-landed `pinnedMotionsOn` and the
-green `finrank_pinnedMotions_add_screwDim`, before the genericity device
-is in place. Broad phase; may split Case I from Case II (precedent:
-Phases 8–11). Phases 22–23 pick up Case III.
+**Next concrete step (after plan sign-off):** design + land the panel
+layer (form (B) — per-vertex hyperplane data, `panelRealization :
+(α → Hyperplane) → BodyHingeFramework`, hinges as `panel(u) ∩ panel(v)`,
++ the `IsHingeCoplanar` spec it meets), then restate `thm:theorem-55`
+over it. The first Lean commit is the panel constructor + its basic API
+(does it reduce to existing `affineSubspaceExtensor` / extensor *meet*?
+— scope on contact). Lemma 5.4 (panel cycle realization) and the
+re-scoped Cases I/II/III follow. Broad phase; the panel layer may itself
+be a sub-phase. Phases 22–23 still pick up Case III.

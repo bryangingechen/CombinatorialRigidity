@@ -722,6 +722,91 @@ priority.
 
 ---
 
+## Panel-hinge = hinge-coplanar body-hinge: the coplanarity layer (Phases 21–26)
+
+**The gap (found 2026-06-03, mid-Phase-21).** The Molecular Conjecture
+is a statement about *panel-hinge* frameworks, and a panel-hinge
+framework is **not** a primitive object. Per Katoh–Tanigawa 2011
+(p.647), a body-hinge framework `(G,p)` — `p` assigning each edge a
+free `(d−2)`-affine subspace — is **hinge-coplanar** when, *at every
+vertex `v`, all hinges incident to `v` lie in a common hyperplane*; a
+hinge-coplanar body-hinge framework *is* a panel-hinge framework. The
+conjecture (KT Conj 1.2) is exactly that body-hinge rigidity ⟺
+panel-hinge rigidity — i.e. the coplanarity constraint can be met
+without losing rigidity — and that is the **entire difficulty**: KT
+prove it by directly constructing coplanar (panel) realizations through
+the §5–6 induction, with *no* body↔panel equivalence shortcut (the
+Crapo–Whiteley projective duality is used only for the *molecule*
+application, relating panel-hinge to hinge-*concurrent* body-hinge, not
+for the general theorem; KT p.648).
+
+Our Phase-18 `BodyHingeFramework` models the free (body-hinge) `p` with
+no coplanarity; `RankHypothesis` / `thm:theorem-55` as first drafted
+quantify over free realizations. As such they state the **body-hinge**
+rank theorem — by Prop 1.1 essentially the Tay–Whiteley + Phase-19
+`def=corank` result already in hand — not the molecular conjecture. The
+conjecture's defining constraint was absent from the formal statement.
+(Not previously in the risk register; a genuine oversight, now risk #7
+in `notes/MolecularConjecture.md`.)
+
+**Decision: add a panel layer; reuse all rank infra.** The panel-hinge
+regime is *additive* over the existing rigidity-matrix machinery, which
+is regime-agnostic (a fact about a given `p`). Two forms were weighed:
+
+- **(A) Predicate form.** Keep `hinge : β → …` free, add
+  `IsHingeCoplanar F : Prop` (for each `v`, all incident hinge affine
+  subspaces share a hyperplane), and have each construction *prove*
+  coplanarity of the `p` it builds.
+- **(B) Panel-data form (chosen).** Model a panel realization as
+  **per-vertex hyperplanes** (the panel coordinates), with each edge's
+  hinge *derived* as the intersection `panel(u) ∩ panel(v)`. This
+  produces a `BodyHingeFramework` — so all Phase-17/18 rank infra
+  applies verbatim — and is hinge-coplanar *by construction* (both
+  hinges at `v` lie in `panel(v)`), discharging coplanarity structurally
+  rather than as a per-case proof obligation. It is also the
+  parametrization KT's genericity argument presumes (Claim 6.4:
+  "entries are polynomials in the panel coordinates").
+
+Form (B) is the primary route; `IsHingeCoplanar` survives as the *spec*
+the panel constructor satisfies and as the predicate in which
+`thm:theorem-55`/5.6 are stated (`∃ panels, RankHypothesis
+(panelRealization panels) k'`). Form (A) alone is rejected as primary:
+it neither gives the panel-coordinate parametrization for genericity nor
+avoids reproving coplanarity in every case.
+
+**What is reused vs. what changes.**
+- *Reused verbatim* (regime-agnostic): `R(G,p)`,
+  `Z(G,p)`/`infinitesimalMotions`, rank lemmas 5.1/5.2/5.3,
+  `pinnedMotions`/`pinnedMotionsOn`, `withGraph` + monotonicity,
+  `lem:case-II-rank-lift`. Each is a fact about a given `p`, and the
+  produced panel realization is one.
+- *Stays body-hinge*: `prop:rigidity-matrix-prop11` (KT Prop 1.1) — it
+  *is* the body-hinge generic-rank statement; the molecular upgrade is
+  that the panel realization also attains it (Thm 5.6).
+- *Gains the panel requirement*: the realization-existence nodes —
+  `thm:theorem-55`, `lem:case-I/II/III`, `lem:cycle-realization`, and
+  the base case's "realization" form. Their *rank* content (where
+  already green) is intact; assembly into Theorem 5.5 conjoins
+  coplanarity / threads the panel constructor.
+
+**Lemma 5.4 (cycle realization) is formalized, not cited** (user
+decision 2026-06-03), as genuine panel content. A cycle's panel
+realization with linearly independent hinge extensors is precisely the
+Crapo–Whiteley projective fact (Grassmann-line-geometry independence of
+the panel-intersection hinges), bottoming on Lemma 2.1 (Phase 17). It is
+**its own sub-phase**: the panel layer (B) + the extensor *meet* algebra
+for hinges-as-panel-intersections + a generic-panel independence
+argument. This supersedes both the earlier cite-only call and the
+(mistaken) free-hinge "telescoping is trivial" reduction recorded
+mid-Phase-21 — that reduction proved only the *body-hinge* cycle
+statement, which is too weak.
+
+Cross-refs: KT 2011 pp.647–649 (definitions), §5–6 (the panel
+induction); `notes/MolecularConjecture.md` risk #7 + Phase-21 detail;
+`notes/Phase21.md` *Decisions / Hand-off*.
+
+---
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually

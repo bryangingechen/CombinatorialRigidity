@@ -1,9 +1,14 @@
 # Molecular Conjecture — cross-phase program plan
 
-**Status:** IN PROGRESS. Phases 17–19 complete (`M(G̃)`, deficiency,
-`k`-dof, and the def = corank bridge all green; see `notes/Phase19.md`);
-Phases 20–26 planned. This is the program design for Phases 17–26 and
-the runbook for threading the remaining phases.
+**Status:** IN PROGRESS. Phases 17–20 complete (`M(G̃)`, deficiency,
+`k`-dof, def = corank bridge, and the Theorem-4.9 combinatorial
+induction all green; see `notes/Phase19.md`, `notes/Phase20.md`). Phase
+21 (algebraic induction) is **paused mid-stream** for a modeling
+re-scope: the panel-hinge = hinge-coplanar body-hinge gap (risk #7 +
+`DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge*) means the panel
+layer must be added before Cases I–III and Lemma 5.4 are built. Phases
+22–26 planned. This is the program design for Phases 17–26 and the
+runbook for threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
 summary + status row); this file is the lemma-level detail.
@@ -429,12 +434,34 @@ Jackson–Jordán [13], conjecture-resolution to KT.
    half** `def(G̃) = corank M(G̃)` was *proved in-repo axiom-free* in
    Phase 19 (`thm:def-eq-corank`, no deferral); its **analytic half**
    `rank R(G,p) = D(|V|−1) − def(G̃)` lands with Claim 6.4 in Phase 21+.
-   User scope is "fully formalize"; re-confirm Lemma 5.4 per phase.
+   User scope is "fully formalize". **Lemma 5.4 decision (2026-06-03):
+   formalize, not cite** — as genuine *panel* content (the cycle's
+   panel realization with independent hinge extensors = the
+   Crapo–Whiteley projective fact), its own sub-phase. Supersedes the
+   per-phase cite option for 5.4. See risk #7 + `DESIGN.md`
+   *Panel-hinge = hinge-coplanar body-hinge*.
 5. **Molecule equivalence primary source** (Phase 25). Whiteley [35] is
    an unpublished preprint; anchor on Jackson–Jordán [13] (Combinatorica
    2008) for the citable result.
 6. **General 3-D rigidity is open** (KT §7). The molecule app does NOT
    require it; Phase 24's scope guard must hold or the program balloons.
+7. **Panel = hinge-coplanar body-hinge not modeled** (found 2026-06-03,
+   mid-Phase-21; **the central modeling correction of the program**).
+   KT's panel-hinge framework is a body-hinge framework that is
+   *hinge-coplanar* — all hinges at each vertex share a hyperplane
+   (KT p.647) — and the conjecture's content is that this constraint
+   does not drop rigidity. Phase 18's `BodyHingeFramework` carries the
+   *free* (body-hinge) `p` only, so the algebraic-induction statements
+   as first drafted (`thm:theorem-55`, the realization-existence nodes)
+   prove the **body-hinge** rank theorem — by Prop 1.1 essentially the
+   Tay–Whiteley + Phase-19 `def=corank` result already in hand — not the
+   conjecture. *Mitigation:* add a **panel layer** — per-vertex
+   hyperplanes with hinges derived as intersections (auto-coplanar,
+   reuses all rank infra verbatim); state Thm 5.5/5.6 + Cases I–III over
+   it. Re-scopes Phases 21–23. Full decision + the (A) predicate vs (B)
+   panel-data analysis: `DESIGN.md` *Panel-hinge = hinge-coplanar
+   body-hinge*. Phase 21 is **paused mid-stream** pending this re-scope
+   (plan-first, no Lean yet).
 
 ## Opening the next phase
 
