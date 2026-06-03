@@ -1058,6 +1058,36 @@ have := Submodule.smul_mem (ℝ ∙ F.supportExtensor e) c h
 rwa [smul_sub] at this
 ```
 
+## 27. `rw [deleteEdges]` (or any mathlib-`Graph` op defined via `.copy`) trips the motive — use the simps lemmas
+
+Mathlib's `Graph.deleteEdges` is defined as a `.copy` of a `restrict`
+(so the edge set is *definitionally* `E(G) \ F`):
+`(G.restrict (E(G) \ F)).copy (edgeSet := E(G) \ F) (IsLink := …) …`.
+Unfolding it with `rw [deleteEdges]` (or `rw [IsLink, deleteEdges, …]`)
+exposes the `.copy` wrapper and `rewrite` then fails with *"motive is
+not type correct"* / *"Did not find an occurrence of the pattern
+`(?G ↾ ?E₀).IsLink …`"*, because the goal now carries the `.copy`
+proof obligations (`deleteEdges._proof_2 …`) that abstract badly.
+
+**Fix:** never `rw` the `def` itself. `deleteEdges` is `@[simps!]`
+(with `grind =`), so the right tools are its **generated simp lemmas**,
+which `simp only` applies cleanly through the `.copy`:
+
+- `vertexSet_deleteEdges` — `V(G.deleteEdges F) = V(G)`;
+- `deleteEdges_isLink` — `(G.deleteEdges F).IsLink e x y ↔ G.IsLink e x y ∧ e ∉ F`;
+- `edgeSet_deleteEdges` — `E(G.deleteEdges F) = E(G) \ F`;
+- `deleteEdges_inc`, `deleteEdges_isLoopAt`, …
+
+Worked case: `Graph.mulTilde_splitOff_deleteFiber_le` in
+`Molecular/Induction.lean` proves
+`((G.splitOff …).mulTilde n).deleteEdges (edgeFiber e₀ n) ≤ G.mulTilde n`
+by `refine ⟨?_, ?_⟩` then `simp only [vertexSet_deleteEdges] at hx` /
+`simp only [deleteEdges_isLink, …] at hp` — `rw [deleteEdges]` had
+tripped both subgoals on the `.copy` motive. The same applies to any
+mathlib-`Graph` operation built with `.copy` (it's the standard idiom
+there for pinning a definitional edge set); reach for the `simps`
+lemmas, not the `def`.
+
 Generic congruence-layer rewrites that don't depend on seeing the
 operation unfolded — e.g. `add_sub_add_comm`, a plain `AddCommGroup`
 rewrite applied at the congruence layer — **do** still fire under

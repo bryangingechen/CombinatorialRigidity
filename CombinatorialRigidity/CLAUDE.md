@@ -139,6 +139,12 @@ bullets. If one matches, jump to the named section of
   `F.toBodyBar.IsIndependent`, or `∃ (_ : p), q` vs `p ∧ q`) — § 25
   *`Iff.trans` requires a syntactic side-match*: drop `.trans`, bridge
   with `constructor` + `.mp` / `.mpr` (closes up to full defeq).
+- *"motive is not type correct"* / *"Did not find an occurrence of the
+  pattern `(?G ↾ ?E₀).IsLink …`"* after `rw [deleteEdges]` (or `rw` on
+  any mathlib-`Graph` op defined via `.copy`) — § 27 *`rw [deleteEdges]`
+  trips the motive*: don't `rw` the `def`; use its `@[simps!]` lemmas
+  (`vertexSet_deleteEdges`, `deleteEdges_isLink`, `edgeSet_deleteEdges`)
+  via `simp only`.
 
 ## Starting a Lean-touching session
 

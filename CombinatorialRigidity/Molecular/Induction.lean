@@ -599,6 +599,79 @@ theorem contraction_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G 
   have hdef := contract_matroidMG_deficiency_eq hle n hD hVHne hVGne hrigid
   rwa [hG.1] at hdef
 
+/-! ## Acyclicity transport across the short-circuit (`lem:forest-surgery-split`, surgery crux)
+
+The genuine combinatorial crux of the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery: the
+reroute of the `D` forests across the degree-2 vertex `v` must **preserve acyclicity** —
+each rerouted forest of the splitting-off `G_v^{ab}` is still a forest. The fibers of the
+multiplied splitting-off `G̃_v^{ab}` split into the *fresh* short-circuit fiber `ã̃b =
+edgeFiber e₀ n` (the `D-1` parallel copies of the new edge `e₀`) and the *surviving* fibers
+(`p.1 ≠ e₀`), which are exactly the fibers of `G̃` whose underlying `G`-edge avoids `v`.
+
+The surviving part transports cleanly: deleting the fresh fiber from `G̃_v^{ab}` gives a
+subgraph of `G̃` (`mulTilde_splitOff_deleteFiber_le`), because every non-`e₀` link of the
+splitting-off is a link of `G` (it keeps `G`'s `e ≠ e₀` links avoiding `v`). So a
+cycle-matroid-acyclic fiber set of `G̃_v^{ab}` that avoids `ã̃b` is acyclic in `G̃`
+(`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`) — the half of the surgery's
+acyclicity-preservation that needs no rerouting (the forests with `dᶠ(v) ≤ 1`, which drop
+their `v`-edge rather than swap onto `ã̃b`). The rerouting half (`dᶠ(v) = 2` forests
+swapping their two `v`-edges for one `ã̃b` copy, with the `v`-traversing path lift) remains
+the residual crux of the still-red `lem:forest-surgery-split`. -/
+
+/-- **Deleting the fresh fiber from the multiplied splitting-off lands inside `G̃`**
+(`lem:forest-surgery-split`, surgery crux). The multiplied splitting-off `G̃_v^{ab}` with
+its fresh short-circuit fiber `ã̃b = edgeFiber e₀ n` deleted is a subgraph of the multiplied
+original `G̃ = (D-1)·G`. Every surviving fiber `p` (`p.1 ≠ e₀`) of `G̃_v^{ab}` is a copy of
+an `e₀`-distinct edge of `G` avoiding `v`, so it carries exactly the same link in `G̃` — the
+splitting-off only *adds* the fresh `e₀`-fiber and *removes* the `v`-incident fibers, both of
+which lie outside the deleted-fiber subgraph. This is the structural fact the acyclicity
+transport `isAcyclicSet_mulTilde_of_splitOff_of_disjoint` runs on. -/
+lemma mulTilde_splitOff_deleteFiber_le {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ) :
+    ((G.splitOff v a b e₀).mulTilde n).deleteEdges (edgeFiber e₀ n) ≤ G.mulTilde n := by
+  refine ⟨?_, ?_⟩
+  · -- Vertex sets: `V(G̃_v^{ab}) = V(G) \ {v} ⊆ V(G) = V(G̃)`.
+    intro x hx
+    simp only [vertexSet_deleteEdges] at hx
+    exact Set.diff_subset hx
+  · -- Links: a surviving link of `G̃_v^{ab}` (`p.1 ≠ e₀`) is a link of `G̃`.
+    intro p x y hp
+    simp only [deleteEdges_isLink, mulTilde, edgeMultiply_isLink, splitOff_isLink] at hp
+    obtain ⟨hlink | hlink, hpfiber⟩ := hp
+    · simpa only [mulTilde, edgeMultiply_isLink] using hlink.2.1
+    · -- The `e₀`-fiber case is excluded: `p.1 = e₀` puts `p ∈ edgeFiber e₀ n`.
+      exact absurd (show p ∈ edgeFiber e₀ n from hlink.1) hpfiber
+
+/-- **Acyclicity transports across the short-circuit** (`lem:forest-surgery-split`, surgery
+crux; Katoh–Tanigawa 2011 Lemma 4.1). A fiber set `F` that is cycle-matroid-independent
+(acyclic) in the multiplied splitting-off `G̃_v^{ab}` and **disjoint from the fresh fiber**
+`ã̃b = edgeFiber e₀ n` is acyclic in the multiplied original `G̃ = (D-1)·G`:
+`(G̃_v^{ab}).cycleMatroid.Indep F → Disjoint F (edgeFiber e₀ n) → (G̃).cycleMatroid.Indep F`.
+
+This is the half of the surgery's acyclicity-preservation that needs no rerouting — the
+forests with `dᶠ(v) ≤ 1` at the degree-2 vertex `v`, which drop their single `v`-edge and
+survive verbatim inside `G̃`. The transport routes through `mulTilde_splitOff_deleteFiber_le`
+(deleting `ã̃b` from `G̃_v^{ab}` lands in `G̃`): `F`'s disjointness from `ã̃b` means `F` lives
+in that deleted subgraph, where acyclicity is monotone up to `G̃` (`IsAcyclicSet.mono`,
+`Graph.cycleMatroid_indep`). The rerouting half (the `dᶠ(v) = 2` forests swapping their two
+`v`-edges for one `ã̃b` copy) is the residual crux of the still-red surgery. -/
+lemma isAcyclicSet_mulTilde_of_splitOff_of_disjoint {G : Graph α β} {v a b : α} {e₀ : β}
+    {n : ℕ} {F : Set (β × Fin (bodyHingeMult n))}
+    (hF : ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep F)
+    (hdisj : Disjoint F (edgeFiber e₀ n)) :
+    (G.mulTilde n).cycleMatroid.Indep F := by
+  rw [cycleMatroid_indep] at hF ⊢
+  -- `F` is acyclic in `G̃_v^{ab}` and avoids the deleted fiber, hence acyclic in the
+  -- deleted subgraph `G̃_v^{ab} ＼ ã̃b`.
+  have hFdel : (((G.splitOff v a b e₀).mulTilde n).deleteEdges (edgeFiber e₀ n)).IsAcyclicSet F :=
+      by
+    refine ⟨?_, fun C hC hCF ↦ ?_⟩
+    · rw [edgeSet_deleteEdges]
+      exact Set.subset_diff.mpr ⟨hF.1, hdisj⟩
+    · -- A cyclic walk in the deleted subgraph is one in `G̃_v^{ab}`, contradicting `hF`.
+      exact hF.2 C (hC.of_le (deleteEdges_le)) hCF
+  -- Transport acyclicity up the subgraph `… ＼ ã̃b ≤ G̃`.
+  exact hFdel.mono (mulTilde_splitOff_deleteFiber_le n)
+
 /-! ## Degree of a vertex in a fiber set (`lem:forest-surgery-split`, degree substrate)
 
 The forest surgery of Katoh–Tanigawa 2011 Lemma 4.1 reroutes the `D` edge-disjoint
