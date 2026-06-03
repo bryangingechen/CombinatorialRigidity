@@ -329,7 +329,7 @@ stays deferred, being sound but unneeded.
 
 \begin{example}[KT Lemma 4.1's universal quantification is unsatisfiable]
   \label{ex:kt-41-overquantified}
-  % Formalized as an unnamed Lean `example`; no `\lean{}` pointer to pin.
+  \lean{Graph.kt_lemma_41_overquantified}
   \leanok
   \uses{def:matroid-MG, rem:kt-lemma-41}
   Taking $I = \emptyset$ (independent in any matroid), the promised $I'$
@@ -337,8 +337,7 @@ stays deferred, being sound but unneeded.
   impossible for $D = \binom{d+1}{2} \ge 1$. This is layer~(1) of
   \cref{rem:kt-lemma-41}: the universal-over-$I$ quantification is
   formally false, witnessing that the intended quantifier ranges over
-  bases. Formalized as a one-line \texttt{example} in
-  \texttt{Molecular/Induction.lean}.
+  bases.
 \end{example}
 
 \begin{lemma}[Forest-packing decomposition of an $M(\tilde G)$-independent set]

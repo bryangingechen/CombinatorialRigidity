@@ -72,14 +72,14 @@ from this log alone (CLEANUP.md *Task list discipline*).
   collapse)? Given the phase's multi-route history (pivot + Finding/Replan +
   addendum), watch specifically for changelog-not-math narration that
   accreted across the per-commit subagents.
-- [ ] **A3** — **the named-lemma promotion (carry-forward seed, the round's
-  one known real fix).** Promote the anonymous `example` (Induction.lean
-  L346, `lem:forest-surgery-split` over-quantification note) to a named
-  `lemma` (e.g. `Graph.kt_lemma_41_overquantified` or similar), then flip
-  `molecular-induction.tex` `ex:kt-41-overquantified` to carry a `\lean{...}`
-  pointer (replacing the `% Formalized as an unnamed Lean example` comment).
-  Run `checkdecls` (new `\lean{}` pointer). Lean + blueprint in one commit.
-  Seed: `notes/Phase20.md` *User-directed addendum items* #2.
+- [x] **A3** — **the named-lemma promotion (carry-forward seed, the round's
+  one known real fix).** DONE. Promoted the anonymous `example` to
+  `Graph.kt_lemma_41_overquantified` (Induction.lean), flipped
+  `molecular-induction.tex` `ex:kt-41-overquantified` from the
+  `% Formalized as an unnamed Lean example` comment to
+  `\lean{Graph.kt_lemma_41_overquantified}`, and dropped the now-stale
+  "one-line `example`" prose in both the blueprint example and the Lean
+  section docstring. build + lint + checkdecls green.
 
 ### Bucket B — Code-smell sweep
 
@@ -152,7 +152,11 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ## Decisions made during this round
 
-<populated as fixes land; one entry per fix commit>
+- **A3 (named-lemma promotion).** The KT-Lemma-4.1 over-quantification
+  disproof is now `Graph.kt_lemma_41_overquantified` rather than an
+  anonymous `example`, so blueprint node `ex:kt-41-overquantified` carries a
+  `\lean{...}` pointer instead of an orphan comment. No friction (trivial
+  `rintro`/`rw [Set.ncard_empty]`/`omega` proof, unchanged).
 
 ## Blockers / open questions
 
@@ -163,14 +167,13 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** execute **A3** — promote the anonymous
-`example` at `Molecular/Induction.lean` L346 to a named lemma (the
-over-quantification disproof of KT Lemma 4.1), then flip
-`molecular-induction.tex` `ex:kt-41-overquantified` (L331–333) to carry a
-`\lean{...}` pointer to the new name in place of its
-`% Formalized as an unnamed Lean example` orphan comment. Lean + blueprint
-in one commit; run `lake build` + `lake lint` + `checkdecls`. This is the
-round's single known real fix (the carry-forward seed); the remaining A1/A2/
-B1–B4/C1/D1/D2 items are sweeps expected mostly no-op, each landing as its
-own confirmation/fix commit per CLEANUP.md *Workflow* rule 3. Close the round
-by flipping the ROADMAP Status row to ✓.
+**Smallest concrete next commit:** execute **A1** — the per-node
+statement-form check across the 30 `\lean`-pinned nodes in
+`molecular-induction.tex` (compare each blueprint statement form against the
+Lean signature, flagging side-condition / binder / conclusion mismatches).
+Expected mostly no-op; lands as a confirmation commit (or a fix commit if a
+mismatch surfaces). The round's single known real fix (A3, the carry-forward
+seed) is **done**; the remaining A1/A2/B1–B4/C1/D1/D2 items are sweeps
+expected mostly no-op. No-op audit items may be batched into a single
+confirmation commit per the round brief. Close the round by flipping the
+ROADMAP Status row to ✓.

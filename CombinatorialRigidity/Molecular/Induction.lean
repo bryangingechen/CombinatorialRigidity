@@ -324,7 +324,7 @@ quantified "**for any** independent set `I` of `M(G̃)` … there exists `I'` �
 for any `I` with `|I| < D` — e.g. `I = ∅` — it demands `|I'| = |I| − D < 0`, impossible.
 The intended quantifier is over **bases** of `M(G̃)`; the universal form must be restricted.
 
-We record the literal disproof as a one-line `example` (the `I = ∅`, ℕ-cardinality witness:
+We record the literal disproof as a named lemma (the `I = ∅`, ℕ-cardinality witness:
 no `I'` can satisfy `|I'| + D = 0` because `D = bodyBarDim n ≥ 1`). This is a narrow
 *statement-as-quantified* observation, **not** a refutation of KT's theorem: the molecular
 conjecture and KT's proof stand. The intended (base-form) content the induction consumes —
@@ -343,7 +343,7 @@ in any matroid) makes the demand `|I'| + D = 0` in ℕ, which fails whenever `D 
 ≥ 1`. So the universal-over-`I` reading is formally false; the intended quantifier is over
 *bases*. See the section docstring and `notes/Phase20.md` for the three-layer framing — this
 is the *statement-as-quantified* layer only, not a refutation of KT's theorem. -/
-example (n : ℕ) (hD : 1 ≤ bodyBarDim n) :
+theorem kt_lemma_41_overquantified (n : ℕ) (hD : 1 ≤ bodyBarDim n) :
     ¬ ∃ I' : Set (β × Fin (bodyHingeMult n)),
         I'.ncard + bodyBarDim n = (∅ : Set (β × Fin (bodyHingeMult n))).ncard := by
   rintro ⟨I', hI'⟩
