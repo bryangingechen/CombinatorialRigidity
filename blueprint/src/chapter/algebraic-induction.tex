@@ -626,7 +626,8 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Edge-substitution bridge for splitting-off]
   \label{lem:splitoff-edge-substitution}
-  \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff}
+  \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff,
+        Graph.isLink_incident_of_not_removeVertex}
   \leanok
   The splitting-off $G_v^{ab}$ is \emph{not} a subgraph of $G$: it deletes
   the two $v$-incident edges $v a$, $v b$ but adds a fresh short-circuit
@@ -635,7 +636,11 @@ Cases~I and~II travel toward the smaller inductive graph.
   $G - v$ (all of $G$ away from $v$): $G - v \le G$ and
   $G - v \le G_v^{ab}$. The second inclusion holds because every edge of
   $G - v$ is an edge of $G$, hence $\neq e_0$, so it survives into
-  $G_v^{ab}$.
+  $G_v^{ab}$. Conversely, every link of $G$ \emph{lost} by passing to
+  $G - v$ is incident to $v$: the re-added edges over the common lower
+  bound are exactly the $v$-incident ones, which is what lets the genericity
+  step (\cref{lem:case-II-rank-lift}) collapse each re-added hinge constraint
+  on a $v$-pinned motion to a single span membership at its non-$v$ endpoint.
 \end{lemma}
 \begin{proof}
   \leanok

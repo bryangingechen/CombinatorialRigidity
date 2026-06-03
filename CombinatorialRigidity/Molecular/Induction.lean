@@ -495,6 +495,24 @@ common-subgraph lower bound for the splitting-off edge-substitution bridge below
 lemma removeVertex_le (G : Graph α β) (v : α) : G.removeVertex v ≤ G := by
   rw [removeVertex]; exact G.deleteVerts_le
 
+/-- **Every link of `G` lost by removing `v` is incident to `v`** (`lem:case-II`, the
+`hinc` brick of the genericity-gated tightness). The common lower bound of the Case II
+edge-substitution is `G − v` (`removeVertex_le` / `removeVertex_le_splitOff`): both the
+parent graph `G` and the splitting-off `G_v^{ab}` re-add edges *over* `G − v`. The hinge
+constraints those re-added edges impose on a `v`-pinned motion collapse to a single span
+membership at the non-`v` endpoint, but only because every link of `G` outside `G − v` is
+incident to `v` — which is exactly this lemma: a link `e u w` of `G` that does *not* survive
+the vertex removal must have `u = v ∨ w = v` (else it avoids `v` and `removeVertex_isLink`
+would keep it). This is the graph-side hypothesis `hinc` of
+`BodyHingeFramework.hnew_of_isLink_incident` instantiated at the Case II common lower bound
+`G' = G − v`, so it discharges the incidence side of `hnew` for the splitting-off
+1-extension (leaving only the genericity span membership `hspan`, Claim 6.9). -/
+lemma isLink_incident_of_not_removeVertex {G : Graph α β} {v : α} {e : β} {u w : α}
+    (h : G.IsLink e u w) (hg : ¬(G.removeVertex v).IsLink e u w) : u = v ∨ w = v := by
+  by_contra hc
+  rw [not_or] at hc
+  exact hg (removeVertex_isLink.mpr ⟨h, hc.1, hc.2⟩)
+
 /-- **Splitting-off** `G_v^{ab}` at a degree-2 vertex `v` with neighbours `a`, `b`
 (`def:graph-operations`): delete `v` and replace the two edges through `v` by a single
 fresh edge `e₀` joining `a` and `b`. Edges other than `e₀` are kept iff they avoid `v`;

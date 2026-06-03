@@ -26,6 +26,21 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case II `hinc` incidence brick landed (2026-06-03).** The graph-side hypothesis of
+`hnew_of_isLink_incident`, instantiated at the Case II common lower bound `G' = G − v`, is green:
+`Graph.isLink_incident_of_not_removeVertex` (`Molecular/Induction.lean`, beside `removeVertex_le`):
+a link `e u w` of `G` that does *not* survive `removeVertex v` has `u = v ∨ w = v` (else it avoids
+`v`, and `removeVertex_isLink` would keep it). Four-line `by_contra` + `not_or` + `removeVertex_isLink.mpr`.
+This discharges the *incidence* side (`hinc`) of `hnew` for the splitting-off 1-extension over the shared
+`G − v` lower bound: the only links of `G` re-added over `G − v` are the `v`-incident ones, so each
+re-added hinge constraint on a `v`-pinned motion (`S v = 0`) collapses to the single span membership
+`S w ∈ span C(e)` at its non-`v` endpoint (`hnew_of_isLink_incident`). Axiom-clean
+(propext/Classical.choice/Quot.sound). No friction. Blueprint folds the name into the green
+`lem:splitoff-edge-substitution` node (the edge-substitution bridge; now `\lean`s three names) with a
+one-sentence prose addition. **Remaining red on Case II:** only the genericity span membership (`hspan`,
+A′ — `S w ∈ span C(e)` for the two new edges via the rank/dimension count of Claim 6.9, *not* pointwise);
+the `hinc` side and the `G − v` plumbing are now fully stocked. Plus Case I.
+
 **Case II edge-substitution graph bridge landed (2026-06-03).** The missing graph-level brick of
 `lem:case-II` (hand-off option B) is green: `Graph.removeVertex_le` (`G − v ≤ G`, via
 `deleteVerts_le`) and `Graph.removeVertex_le_splitOff` (`e₀ ∉ E(G) ⇒ G − v ≤ G.splitOff v a b e₀`),
@@ -811,15 +826,25 @@ not pointwise. The reduction landed this commit (`hnew_of_isLink_incident`) isol
 span-memberships (`hspan`) the genericity device must achieve, so the open piece is now sharply
 stated.
 
-**Smallest next concrete commit:** the edge-substitution graph bridge (former option B) is now
-green (`removeVertex_le_splitOff`); one genuinely-open piece remains for `lem:case-II`, plus Case I.
+**Case II `hinc` incidence brick is now green** (this commit):
+`Graph.isLink_incident_of_not_removeVertex` (`Molecular/Induction.lean`) — a link of `G` lost by
+`removeVertex v` is `v`-incident. This is the graph-side `hinc` hypothesis of
+`hnew_of_isLink_incident` at the Case II common lower bound `G' = G − v`, so the *incidence* side of
+`hnew` (and the `G − v` plumbing) is now fully discharged. Folded into the green
+`lem:splitoff-edge-substitution` blueprint node (now `\lean`s three names). The remaining open piece
+for Case II is sharply isolated to the genericity span membership `hspan` below.
+
+**Smallest next concrete commit:** the edge-substitution graph bridge and the `hinc` incidence brick
+are now both green (`removeVertex_le_splitOff`, `isLink_incident_of_not_removeVertex`); exactly one
+genuinely-open piece remains for `lem:case-II`, plus Case I.
 (A′) Discharge `hspan` (`S w ∈ span C(e)` for the two new edges) via the rank/dimension count of the
 genericity device — *not* a pointwise fact; reuses `exists_independent_panelSupportExtensor` for the
 extensor placement but needs the rank-counting argument to conclude every base-pinned motion lands.
 This is the genuine Claim 6.9 analytic content and the harder of the two; assess on contact whether
-it splits into a smaller commit. With the `G − v` common lower bound now in hand, the remaining
-plumbing for Case II is to instantiate `withGraph`/`withNormal` against `splitOff`-via-`removeVertex`
-rather than the (false) `splitOff ≤ G`.
+it splits into a smaller commit. With the `G − v` common lower bound and the `hinc`/`hnew` reduction
+both in hand, the remaining plumbing for Case II is to instantiate `withGraph`/`withNormal` against
+`splitOff`-via-`removeVertex` rather than the (false) `splitOff ≤ G`, then feed the chosen generic
+extensors' `hspan`.
 Alternatively continue Case I: place the contraction
 realization (panel data on `rigidContract`) and re-add `E(H)` via `withGraph`; the slack in
 `screwDim_add_finrank_pinnedMotionsOn_le` is the contraction's inductive rank (block-triangular
