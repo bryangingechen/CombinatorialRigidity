@@ -28,13 +28,20 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
-**Phase opened (2026-06-03), no Lean yet.** This commit is the
-phase-opening commit per CLAUDE.md *When this commit opens a phase*:
-creates this notes file, adds the forward-mode `lem:genericity-device`
-blueprint node (red — the device the four Phase-21 consumers `\uses`),
-flips the 21b status row to *in progress*, and syncs the user-facing
-surfaces. No Lean lands here; the first Lean brick is the
-reuse-to-assess below.
+**Reuse assessed; first linear-algebra brick landed (2026-06-03).** The
+reuse-to-assess is resolved (see *Decisions made* below): the device
+reuses the Phase-6/8 Gram-det polynomial-root-set machinery, but at the
+*rank* level rather than the full-rank (LI) level the Phase-8 lemmas
+stop at. The first brick is the rank-form generalization of
+`LinearIndependent.finite_setOf_not_along_affine_path`:
+`LinearIndependent.le_finrank_span_along_affine_path_cofinite` in
+`Mathlib/LinearAlgebra/Matrix/Rank.lean` (upstream-eligible, beside its
+LI-form sibling) — *finrank of the span of an affine vector family is
+cofinitely bounded below by any rank witnessed once*, i.e. the
+"generic point attains the maximum rank" mechanism. Green, build +
+lint clean. The `lem:genericity-device` node stays red (this is
+infrastructure, not yet the device's API); next is to assemble the
+per-consumer discharge on top of it (see *Hand-off*).
 
 ## Architectural choices made up front
 
@@ -60,6 +67,11 @@ hand-off convenience.
   are polynomials in the panel coordinates ⇒ the rank attains its max on
   a generic set; a single good realization lifts to a generic one. Red
   (the phase's target).
+- [x] `LinearIndependent.le_finrank_span_along_affine_path_cofinite`
+  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`) — the rank-form analytic
+  core: `finrank` of the span of an affine vector family is cofinitely
+  bounded below by any rank witnessed once. Green; mirror lemma (no
+  blueprint node).
 
 The consumer-side discharge targets (each currently a named hypothesis
 in the Phase-21 Lean, to be supplied by the device):
@@ -77,34 +89,68 @@ in the Phase-21 Lean, to be supplied by the device):
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-- *(none yet — opened this commit.)*
+- **Reuse-to-assess resolved: rank-form of the Phase-8 Gram-det
+  machinery, not a fresh perturbation.** The cycle-genericity *existence*
+  (independent supporting extensors) was already purely
+  exterior-algebraic in Phase 21 (`exists_independent_panelSupportExtensor`,
+  a basis choice on `⋀²`, no perturbation). What remains — the device's
+  actual content — is *generic-max-rank attainment*: each consumer
+  hypothesis (`hglue` rank-`≤`, `hspan` span-membership, `hub`/`hgen`)
+  fails pointwise but holds at a generic point. That *is* the Phase-8
+  polynomial-root-set mechanism (`finite_setOf_…_along_affine_path`),
+  but the Phase-8 lemmas stop at the full-rank/LI case; the device needs
+  the `finrank ≥ r` lower-bound case. So: **reuse the mechanism, lift it
+  to rank form**. First brick:
+  `LinearIndependent.le_finrank_span_along_affine_path_cofinite` — a
+  maximal LI subfamily witnessing `finrank ≥ #s` at `t₀` stays LI
+  cofinitely (the LI lemma on the subfamily) and an LI subfamily of size
+  `#s` forces full-span `finrank ≥ #s`. Mirror-directory, upstream-
+  eligible, beside its LI sibling; no blueprint node (mirror lemma).
 
 ## Blockers / open questions
 
-- **Reuse-to-assess (first concrete brick).** Whether the Phase-6/8
-  Gram-det perturbation machinery
-  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, the
-  `exists_uniform_rowIndependent_placement`-style cofiniteness-of-LI-
-  along-a-line argument) transfers to the panel-coordinate
-  parametrization of `R(G,p)`, or whether a fresh polynomial-rank /
-  Zariski-open-attainment argument is needed. The Phase-21a finding was
-  that the *cycle* genericity was purely exterior-algebraic (no
-  perturbation); assess on contact whether the panel-coordinate rank
-  argument reduces similarly or is genuinely polynomial-perturbation.
-  See `notes/MolecularConjecture.md` *Phase 21b*.
+- **Reuse-to-assess: RESOLVED** (see *Decisions made*). The device
+  reuses the Phase-8 Gram-det polynomial-root-set mechanism, lifted to
+  rank form. First brick landed.
+- **Open: bridging the abstract `t₀` to the panel-coordinate family.**
+  The brick parametrizes by a single scalar `t` along an affine path
+  `a i + t • b i`. The panel-hinge rigidity matrix's entries are
+  polynomials in *many* panel coordinates (the per-vertex normals), not
+  one scalar. To feed the consumers, the device must (a) pick an affine
+  path through panel-coordinate space hitting the good realization
+  `exists_independent_panelSupportExtensor` supplies, then (b) read the
+  consumer hypothesis (`hglue`/`hspan`/`hub`) off the cofinite-`t`
+  conclusion. Whether a *single* affine path suffices or a multivariate
+  Zariski-open argument is needed is the next thing to assess on
+  contact — the single-path route worked for Phase-8's uniform-generic
+  placement (`exists_uniform_rowIndependent_placement`), so try it
+  first.
 
 ## Hand-off / next phase
 
-**Smallest next concrete commit:** assess the reuse-to-assess above —
-read `Mathlib/LinearAlgebra/Matrix/Rank.lean`'s Gram-det LI-cofiniteness
-lemmas (the Phase-8 `exists_uniform_rowIndependent_placement` route) and
-the panel-coordinate entry structure of `R(G,p)` (Phase 18
-`Molecular/RigidityMatrix.lean`), and decide whether to (a) reuse that
-machinery for the panel-coordinate parametrization or (b) write a fresh
-polynomial-rank argument. Record the call as the first *Decisions made*
-entry, then land the chosen first linear-algebra brick. The device's
-*target statement* is fixed: produce the consumers' `hglue`/`hspan`/
-`hub`/`hgen` hypotheses (see *Lemma checklist*).
+**Smallest next concrete commit:** bridge the abstract rank-form brick
+`le_finrank_span_along_affine_path_cofinite` to the panel-coordinate
+parametrization of `R(G,p)`. Concretely: (i) express the relevant
+motion-space / pinned-motion `finrank` (the quantity `hglue`/`hub`
+bound) as the `finrank` of the span of a per-edge vector family indexed
+by the rigidity-matrix rows, parametrized by the panel normals; (ii)
+choose an affine path through panel-coordinate space whose `t₀` is the
+good realization `exists_independent_panelSupportExtensor` already
+supplies; (iii) apply the brick to get cofinitely-many `t` at the
+target rank, and pick one rational/real `t` to instantiate the
+consumer's existential. Start with **one** consumer — `hglue` for
+Case I (`rankHypothesis_iff_finrank_pinnedMotionsOn`) is the cleanest
+target since it is a single `finrank` inequality. The device's *target
+statements* are fixed: the consumers' `hglue`/`hspan`/`hub`/`hgen`
+hypotheses (see *Lemma checklist* + the named hypotheses in
+`AlgebraicInduction.lean`).
+
+If step (i) — re-expressing `finrank pinnedMotionsOn` / `finrank
+infinitesimalMotions` as `finrank` of an explicit row-span over an
+affine panel-coordinate family — turns out to need new
+`RigidityMatrix.lean` plumbing (a coordinatized row-vector view of the
+basis-free `IsInfinitesimalMotion`), that plumbing is its own brick;
+assess size on contact and split if it exceeds one commit.
 
 **Also consumed by Phases 22–23** (Case III candidate-framework
 genericity, Claims 6.11/6.12), so building the device standalone pays

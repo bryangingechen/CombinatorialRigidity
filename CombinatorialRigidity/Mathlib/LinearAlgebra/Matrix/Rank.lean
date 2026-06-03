@@ -31,6 +31,13 @@ single one-variable polynomial in `t`, then concludes via `Polynomial.finite_set
 that the bad-`t` set is finite — the linear-interpolation-perturbation step of the Phase 8
 target `linearRigidityMatroid_eq_rigidityMatroid` (see `LinearRigidityMatroid.lean`).
 
+The Phase-21b genericity device (Katoh–Tanigawa 2011 Claim 6.4/6.9) needs the *rank-form*
+generalization of the cofiniteness lemma — lower semicontinuity of `finrank` of the span of
+an affine vector family along the path, not just the full-rank (LI) case. That is
+`LinearIndependent.le_finrank_span_along_affine_path_cofinite` below: a single realization
+at the target rank lifts to cofinitely many parameter values at *at least* that rank, the
+"generic point attains the maximum rank" mechanism the device runs on.
+
 Mirror path: `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Promotion to mathlib is a copy-paste
 into the upstream file, alongside `Matrix.rank_self_mul_transpose` and
 `LinearIndependent.rank_matrix`.
@@ -217,3 +224,41 @@ theorem LinearIndependent.finite_setOf_not_along_affine_path
     ((h_iff t₀).mp h)).subset fun t ht => ?_
   rw [Set.mem_setOf_eq] at ht ⊢
   rwa [← h_iff]
+
+/-- **Rank lower semicontinuity along an affine path.** For a finite-dim ℝ-vector space `W`
+and an affine vector family `t ↦ fun i => a i + t • b i : ℝ → ι → W` (with `ι` finite), if
+the subfamily indexed by a subset `s : Set ι` is linearly independent at some `t₀ : ℝ`, then
+for all but finitely many `t : ℝ` the span of the *full* family at `t` has `finrank` at least
+`#s`. I.e. `finrank` of the span is cofinitely bounded below by any rank witnessed once.
+
+This is the rank-form generalization of `LinearIndependent.finite_setOf_not_along_affine_path`
+(which handles only the full-rank case where `s` is all of `ι` and the bound is "the family is
+LI"): a maximal independent subfamily witnessing `finrank ≥ r` at `t₀` stays independent for
+cofinitely many `t` (the LI lemma applied to that subfamily), and an LI subfamily of size `#s`
+forces the full span's `finrank ≥ #s` (`finrank_span_eq_card` + `Submodule.finrank_mono`).
+This is the analytic core of the Phase-21b genericity device (Katoh–Tanigawa 2011 Claim
+6.4/6.9): the panel-hinge rigidity matrix's entries are polynomials in the panel coordinates,
+so a single realization at the target rank lifts to the generic realization at *at least* that
+rank — the "generic point attains the maximum rank over the parametrized family" step the
+device supplies to `lem:case-I`'s gluing, `lem:case-II`'s span membership, and the
+generic-rank lower bound of `prop:rigidity-matrix-prop11`. -/
+theorem LinearIndependent.le_finrank_span_along_affine_path_cofinite
+    {ι W : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
+    {a b : ι → W} {t₀ : ℝ} {s : Set ι}
+    (h : LinearIndependent ℝ (fun i : s => a i + t₀ • b i)) :
+    {t : ℝ | Module.finrank ℝ (Submodule.span ℝ
+      (Set.range (fun i => a i + t • b i))) < Nat.card s}.Finite := by
+  classical
+  haveI : Fintype ι := Fintype.ofFinite ι
+  haveI : Fintype s := Fintype.ofFinite s
+  refine (LinearIndependent.finite_setOf_not_along_affine_path
+    (a := fun i : s => a i) (b := fun i : s => b i) (t₀ := t₀) h).subset (fun t ht => ?_)
+  rw [Set.mem_setOf_eq] at ht ⊢
+  intro hLI
+  have hcard : Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i : s => a i + t • b i)))
+      = Nat.card s := by
+    rw [finrank_span_eq_card hLI, Nat.card_eq_fintype_card]
+  have hmono : Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i : s => a i + t • b i)))
+      ≤ Module.finrank ℝ (Submodule.span ℝ (Set.range (fun i => a i + t • b i))) :=
+    Submodule.finrank_mono (Submodule.span_mono (by rintro _ ⟨i, rfl⟩; exact ⟨i, rfl⟩))
+  omega
