@@ -225,6 +225,50 @@ theorem contract_matroidMG_rank [DecidableEq β] [Finite α] [Finite β] {H G : 
   rw [← hrestrict]
   exact (G.matroidMG n).rank_contract_add_rank_restrict _
 
+/-! ## Contracting a rigid subgraph conserves the deficiency (`lem:contraction-minimality`)
+
+The deficiency-conservation half of KT Lemma 3.5: contracting a *rigid* proper subgraph
+`H` of `G` leaves the deficiency unchanged. Stated on the *matroid* side — against the
+matroid contraction `M(G̃) / E(H̃)`, matching how KT's proof reasons — this is pure
+bookkeeping over the two rank facts already in hand. Contracting `H` collapses `|V(H)|`
+vertices to one, so the contraction lives over `|V(G)| − |V(H)| + 1` vertices and its
+ambient trivial-motion count drops by `D(|V(H)| − 1)`; `lem:contract-rank-bridge` removes
+the *matching* `rank M(H̃) = D(|V(H)| − 1)` (`lem:rigid-full-rank`) from the rank, so the
+corank — hence the deficiency (`thm:def-eq-corank`) — is unchanged. The minimality-transport
+half (every base of the contracted matroid meets every surviving edge-fiber) is the second
+half of `lem:contraction-minimality`, scheduled next. -/
+
+/-- **Contracting a rigid subgraph conserves the deficiency** (`lem:contraction-minimality`,
+deficiency-conservation half; Katoh–Tanigawa 2011 Lemma 3.5). For a rigid subgraph
+`H ≤ G` (`H.IsKDof n 0`) with `V(H).Nonempty` and `D = bodyBarDim n ≥ 1`, the corank of
+the matroid contraction `M(G̃) / E(H̃)` at the *reduced* ambient `D(|V(G)| − |V(H)|)`
+(the trivial-motion count of the contracted graph, which has `|V(G)| − |V(H)| + 1`
+vertices) equals `def(G̃)`:
+`D(|V(G)| − |V(H)|) − rank(M(G̃) / E(H̃)) = def(G̃)`.
+
+Pure matroid bookkeeping over the two rank facts: `contract_matroidMG_rank`
+(`rank(M(G̃)/E(H̃)) + rank M(H̃) = rank M(G̃)`) with the rank core
+`rank_matroidMG_of_isKDof_zero` (`rank M(H̃) = D(|V(H)| − 1)`) gives
+`rank(M(G̃)/E(H̃)) = rank M(G̃) − D(|V(H)| − 1)`; substituting into the def\,$=$\,corank
+bridge `rank_add_deficiency_eq` (`rank M(G̃) + def(G̃) = D(|V(G)| − 1)`) and cancelling the
+`D(|V(H)| − 1)` between the rank drop and the ambient drop leaves `def(G̃)`. No
+graph↔matroid `map` correspondence is needed — the statement is against the matroid
+contraction directly. -/
+theorem contract_matroidMG_deficiency_eq [DecidableEq β] [Finite α] [Finite β]
+    {H G : Graph α β} (h : H ≤ G) (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hVHne : V(H).Nonempty)
+    (hVGne : V(G).Nonempty) (hrigid : H.IsKDof n 0) :
+    bodyBarDim n * ((V(G).ncard : ℤ) - (V(H).ncard : ℤ))
+      - ((G.matroidMG n ／ E(H.mulTilde n)).rank : ℤ) = G.deficiency n := by
+  -- The rank a rigid `H` contributes: `rank M(H̃) = D(|V(H)| − 1)`.
+  have hrankH := rank_matroidMG_of_isKDof_zero hD hVHne hrigid
+  -- Contraction arithmetic: `rank(M(G̃)/E(H̃)) + rank M(H̃) = rank M(G̃)`.
+  have hbridge := contract_matroidMG_rank h n
+  -- def = corank for `G̃`: `rank M(G̃) + def(G̃) = D(|V(G)| − 1)`.
+  have hdefcorank := G.rank_add_deficiency_eq n hD hVGne
+  -- Cast the ℕ-valued contraction arithmetic into ℤ; finish by linear bookkeeping.
+  zify at hbridge
+  linarith [hrankH, hbridge, hdefcorank]
+
 /-! ## Graph operations (`def:graph-operations`, `def:rigid-contraction`)
 
 The four operations on `Graph α β` that drive the Katoh–Tanigawa induction
