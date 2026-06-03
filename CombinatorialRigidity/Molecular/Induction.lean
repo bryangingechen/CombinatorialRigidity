@@ -522,6 +522,17 @@ def splitOff (G : Graph α β) (v a b : α) (e₀ : β) : Graph α β where
 lemma vertexSet_splitOff (G : Graph α β) (v a b : α) (e₀ : β) :
     V(G.splitOff v a b e₀) = V(G) \ {v} := rfl
 
+/-- **Splitting-off strictly decreases the vertex count** (`lem:reduction-step`, the
+"reduces to a smaller graph" measure). Splitting off a vertex `v ∈ V(G)` deletes `v`
+(`V(G_v^{ab}) = V(G) ∖ {v}`), so `|V(G_v^{ab})| < |V(G)|`. This is the well-founded measure
+on which Katoh–Tanigawa 2011's Theorem 4.9 inducts in the splitting-off branch (the
+no-proper-rigid-subgraph case): each reduction step lands on a strictly smaller minimal
+`k`-dof-graph. -/
+lemma splitOff_vertexSet_ncard_lt [Finite α] {G : Graph α β} {v a b : α} {e₀ : β}
+    (hv : v ∈ V(G)) : V(G.splitOff v a b e₀).ncard < V(G).ncard := by
+  rw [vertexSet_splitOff]
+  exact Set.ncard_diff_singleton_lt_of_mem hv (Set.toFinite _)
+
 @[simp]
 lemma splitOff_isLink {G : Graph α β} {v a b : α} {e₀ : β} {e : β} {x y : α} :
     (G.splitOff v a b e₀).IsLink e x y ↔
@@ -1506,6 +1517,35 @@ noncomputable def rigidContract (G H : Graph α β) (r : α) : Graph α β :=
 @[simp]
 lemma vertexSet_rigidContract (G H : Graph α β) (r : α) :
     V(G.rigidContract H r) = collapseTo r V(H) '' V(G) := rfl
+
+/-- **Rigid-subgraph contraction strictly decreases the vertex count** (`lem:reduction-step`,
+the "reduces to a smaller graph" measure). Contracting a subgraph `H ≤ G` whose vertex set
+`V(H) ⊆ V(G)` has at least two vertices collapses `V(H)` to the single representative `r`, so
+`V(G / E(H)) = collapseTo r V(H) '' V(G)` has cardinality at most `|V(G)| − |V(H)| + 1 <
+|V(G)|`. The `2 ≤ |V(H)|` hypothesis is the genuine requirement: collapsing a single-vertex
+`H` is a vertex-set no-op (KT's Case I always contracts a proper rigid subgraph spanning at
+least two vertices). This is the well-founded measure on which Katoh–Tanigawa 2011's
+Theorem 4.9 inducts in the contraction branch. -/
+lemma rigidContract_vertexSet_ncard_lt [Finite α] {G H : Graph α β} {r : α}
+    (hHsub : V(H) ⊆ V(G)) (hH2 : 2 ≤ V(H).ncard) :
+    V(G.rigidContract H r).ncard < V(G).ncard := by
+  rw [vertexSet_rigidContract]
+  calc (collapseTo r V(H) '' V(G)).ncard
+      ≤ ((V(G) \ V(H)) ∪ {r}).ncard := by
+        refine Set.ncard_le_ncard ?_ (Set.toFinite _)
+        rintro _ ⟨x, hx, rfl⟩
+        unfold collapseTo
+        split_ifs with hxH
+        · exact Or.inr rfl
+        · exact Or.inl ⟨hx, hxH⟩
+    _ ≤ (V(G) \ V(H)).ncard + 1 := by
+        refine le_trans (Set.ncard_union_le _ _) ?_
+        simp [Set.ncard_singleton]
+    _ < V(G).ncard := by
+        have h1 : (V(G) \ V(H)).ncard = V(G).ncard - V(H).ncard :=
+          Set.ncard_diff hHsub (Set.toFinite _)
+        have hVH : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
+        omega
 
 /-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
 

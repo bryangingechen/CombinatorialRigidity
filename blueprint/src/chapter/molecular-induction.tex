@@ -646,9 +646,32 @@ route that bypasses the deferred forest surgery
   take a step.
 \end{proof}
 
+\begin{lemma}[Each reduction strictly shrinks the vertex set; KT Theorem 4.9, measure]
+  \label{lem:reduction-measure}
+  \lean{Graph.splitOff_vertexSet_ncard_lt, Graph.rigidContract_vertexSet_ncard_lt}
+  \leanok
+  \uses{def:graph-operations, def:rigid-contraction}
+  Both reduction operations strictly decrease the number of vertices, the
+  well-founded measure on which Theorem~4.9 inducts. Splitting-off deletes
+  the degree-2 vertex, $V(G_v^{ab}) = V(G) \setminus \{v\}$, so
+  $|V(G_v^{ab})| < |V(G)|$ for $v \in V(G)$. Contraction collapses $V(H)$ to a
+  single representative, so $|V(G / E(H))| \le |V(G)| - |V(H)| + 1 < |V(G)|$
+  whenever $|V(H)| \ge 2$ --- the genuine requirement, since contracting a
+  single-vertex subgraph is a vertex-set no-op; Case~I always contracts a
+  proper rigid subgraph spanning at least two vertices.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Splitting-off: immediate from $V(G_v^{ab}) = V(G) \setminus \{v\}$
+  (\texttt{Graph.vertexSet\_splitOff}) and $v \in V(G)$. Contraction: the
+  image $\operatorname{collapseTo}\,r\,V(H)\,''\,V(G)$ is contained in
+  $(V(G) \setminus V(H)) \cup \{r\}$, of cardinality at most $|V(G)| - |V(H)|
+  + 1$, which is $< |V(G)|$ exactly when $|V(H)| \ge 2$.
+\end{proof}
+
 \begin{lemma}[Reduction step preserves minimality; KT Lemmas 4.7--4.8]
   \label{lem:reduction-step}
-  \uses{lem:reducible-vertex, lem:contraction-minimality, lem:dof-tracking}
+  \uses{lem:reducible-vertex, lem:contraction-minimality, lem:dof-tracking, lem:reduction-measure}
   Each reduction --- splitting-off at the degree-2 vertex of
   \cref{lem:reducible-vertex}, or contraction of a proper rigid
   subgraph (\cref{lem:contraction-minimality}) --- carries a minimal
@@ -669,7 +692,7 @@ route that bypasses the deferred forest surgery
 
 \begin{theorem}[Reduction of minimal $k$-dof-graphs; KT Theorem 4.9]
   \label{thm:minimal-kdof-reduction}
-  \uses{lem:reduction-step, lem:reducible-vertex, lem:contraction-minimality, def:graph-operations}
+  \uses{lem:reduction-step, lem:reducible-vertex, lem:contraction-minimality, def:graph-operations, lem:reduction-measure}
   Every minimal $k$-dof-graph $G$ with $|V| \ge 2$ reduces to the
   two-vertex double edge by a sequence of splitting-off and
   proper-rigid-subgraph contraction operations. Equivalently, $G$ is
