@@ -248,6 +248,14 @@ exist in the **vendored `apnelson1/Matroid`** package (transitively imported); n
 infrastructure was built. See *Hand-off* + FRICTION. Needs `3 ≤ bodyBarDim n` (stronger than
 the `2 ≤` elsewhere — the pigeonhole needs `2D ≤ 3(D−1)`).
 
+**Commit F‴ landed (`exists_degree_eq_two`, KT 4.6 degree-`=`-2 upgrade; `lem:reducible-vertex`
+GREEN, axiom-free).** ∃ a vertex of multigraph degree *exactly* 2 (`3 ≤ bodyBarDim n`, `|V| ≥ 2`):
+the F″ core gives `≤ 2`; two-edge-connectivity (`two_le_crossingEdges_of_isKDof_zero`, KT 3.1)
+rules out `≤ 1`. The cut↔degree bridge (the predicted only-new-piece, clean): the crossing edges
+of the single-vertex cut `{v}` are exactly the *nonloop* edges at `v` (an edge crosses iff exactly
+one endpoint is `v`), so `degree v ≥ d_G({v}) ≥ 2` via vendored `Graph.degree_eq_ncard_add_ncard`
+(`degree = 2·loops + nonloops`). Support: `crossingEdges_cutLabeling_singleton_{subset,ncard_le}`.
+
 **Citation reconciliation (verified against `.refs/` PDF).** KT 2011 Lemma 4.4 begins on
 **printed p.662** (the running header of pdf page 16 reads "662 Discrete Comput Geom …"),
 confirming the *Finding 2 REFUTED* / commit-D record. An independent scrutiny pass had
@@ -417,17 +425,22 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   built; see FRICTION `[resolved] [matroid] The vendored … package already supplies a full
   multigraph Graph.degree …`. Needs `3 ≤ bodyBarDim n` (`d ≥ 2`; stronger than the `2 ≤`
   elsewhere — the pigeonhole needs `2D ≤ 3(D−1)`).
-- [ ] `lem:reducible-vertex` — KT 4.6, existence of a degree-2 vertex in a
-  2-edge-connected minimal 0-dof-graph with no proper rigid subgraph. **Scope
-  refined at commit F** (which landed the *prerequisite* `circuit_induces_isRigidSubgraph`
-  instead): Thm 4.9 consumes only "∃ degree-2 vertex" (the chain/cycle refinement
-  is for the §5–6 *algebraic* induction, off the Thm-4.9 critical path). With the F′
-  edge bound and the **F″ core** `lem:low-degree-vertex` (∃ degree-≤-2 vertex, above) now
-  both green, the remaining step is upgrading `≤ 2` to `= 2` via two-edge-connectivity
-  (`two_le_crossingEdges_of_isKDof_zero`, KT 3.1, green) — i.e. linking the vendored
-  `Graph.degree` to the cut form (`degree v ≤ 1` ⟹ a `≤ 1`-edge cut at `{v}`) — and
-  packaging reducibility. (Degree-2 stays encoded ad hoc as `eₐ`/`e_b` in the
-  splitting-off bookkeeping; this node is the *existence* of such a vertex.)
+- [x] `lem:reducible-vertex` — KT 4.6, existence of a degree-`exactly`-2 vertex in a
+  minimal 0-dof-graph with no proper rigid subgraph, `|V| ≥ 2`, `3 ≤ bodyBarDim n`.
+  **LANDED** (`Graph.exists_degree_eq_two`, green `\leanok`, axiom-free). Scope: Thm 4.9
+  consumes only "∃ degree-2 vertex" (the chain/cycle refinement is §5–6 *algebraic*, off
+  the Thm-4.9 critical path; reducibility-preserves-minimality is `lem:reduction-step`,
+  commit G). The `≤ 2` → `= 2` upgrade is the F″ core (`exists_degree_le_two`, ∃-degree-≤-2)
+  plus two-edge-connectivity (`two_le_crossingEdges_of_isKDof_zero`, KT 3.1, green) ruling
+  out degree `≤ 1`. **Cut↔degree bridge** (the only new piece, as predicted): the crossing
+  edges of the single-vertex cut `{v}` are exactly the *nonloop* edges at `v` (an edge
+  crosses iff exactly one endpoint is `v`), so `degree v ≥ d_G({v}) ≥ 2` via the vendored
+  `Graph.degree_eq_ncard_add_ncard` (`degree = 2·loops + nonloops`). Two support lemmas:
+  `crossingEdges_cutLabeling_singleton_subset` (⊆ nonloops) +
+  `crossingEdges_cutLabeling_singleton_ncard_le` (count ≤ degree). FRICTION: a lemma whose
+  statement mentions `cutLabeling V'` needs `[∀ x, Decidable (x ∈ V')]` in the binder list.
+  (Degree-2 stays encoded ad hoc as `eₐ`/`e_b` in the splitting-off bookkeeping; this node
+  is the *existence* of such a vertex.)
 - [ ] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality
   (two circuit-swap arguments; the 4.8 capstone). Replan commit G.
 - [ ] `thm:minimal-kdof-reduction` — KT Theorem 4.9 (capstone; phase
@@ -659,15 +672,23 @@ and handshake are **already in the vendored `apnelson1/Matroid`** package
 needed; F″ reduced to the pigeonhole on top. FRICTION entry filed (grep `.lake/packages/Matroid`
 before building any `Graph α β` graph-theory notion).
 
-**Next agent's concrete commit = finish `lem:reducible-vertex` (KT 4.6).** Thm 4.9 consumes
-only "∃ degree-2 vertex" (the chain/cycle refinement is §5–6 algebraic, off-path). With the
-F′ edge bound and the F″ core (`exists_degree_le_two`, ∃-degree-≤-2) both green, the remaining
-step is **upgrading `≤ 2` to `= 2`** via two-edge-connectivity
-(`two_le_crossingEdges_of_isKDof_zero`, KT 3.1, green): a vertex of `Graph.degree ≤ 1` would
-give a `≤ 1`-edge cut at `{v}`, contradicting `d_G(V') ≥ 2`. This needs a small bridge between
-the vendored `Graph.degree` (endpoint count) and the project's cut form (the `cutLabeling` /
-`crossingEdges` count) — likely the only genuinely new piece. Then package reducibility.
-Then commits G (`lem:reduction-step`, KT 4.7–4.8 — circuit-swap minimality transport, `\uses`
-`circuit_induces_isRigidSubgraph` for the `X∩ãb=∅ ⟹ proper rigid` step), H
-(`thm:minimal-kdof-reduction`, Theorem 4.9 capstone → phase close) per *Replan*. Degree-2 stays
-encoded as two edges `eₐ`/`e_b` where the splitting-off bookkeeping needs it.
+**Commit F‴ landed (`exists_degree_eq_two`, KT 4.6 degree-`=`-2 upgrade; `lem:reducible-vertex`
+GREEN, axiom-free).** ∃ a vertex of multigraph degree *exactly* 2 in a minimal 0-dof-graph with
+no proper rigid subgraph (`3 ≤ bodyBarDim n`, `|V| ≥ 2`). The `≤ 2` half is the F″ core
+(`exists_degree_le_two`); the `= 2` upgrade is two-edge-connectivity
+(`two_le_crossingEdges_of_isKDof_zero`, KT 3.1, green) ruling out degree `≤ 1`. The **cut↔degree
+bridge** (the predicted only-new-piece) turned out clean: the crossing edges of the single-vertex
+cut `{v}` are exactly the *nonloop* edges at `v` (an edge crosses `{v}` iff exactly one endpoint
+is `v`), and the vendored `Graph.degree_eq_ncard_add_ncard` (`degree = 2·loops + nonloops`) gives
+`degree v ≥ d_G({v}) ≥ 2`. Two support lemmas (`crossingEdges_cutLabeling_singleton_subset` /
+`_ncard_le`). FRICTION filed (`cutLabeling V'`-in-statement needs `[∀ x, Decidable (x ∈ V')]`).
+
+**Next agent's concrete commit = commit G, `lem:reduction-step` (KT 4.7–4.8).** Reduction
+(splitting-off at the degree-2 vertex of `exists_degree_eq_two`, or contraction of a proper
+rigid subgraph via `contraction_isMinimalKDof`) carries a minimal `k`-dof-graph to a smaller
+one with the same `k`. Two circuit-swap minimality-transport arguments on `M(G̃)`'s fundamental
+circuits; the splitting-off half `\uses` `circuit_induces_isRigidSubgraph` for the `X∩ãb=∅ ⟹
+proper rigid` step, and `dof_tracking` for the deficiency-unchanged half. Then commit H
+(`thm:minimal-kdof-reduction`, Theorem 4.9 capstone, induction on `|V|` → phase close) per
+*Replan*. Degree-2 stays encoded as two edges `eₐ`/`e_b` where the splitting-off bookkeeping
+needs it.

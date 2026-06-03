@@ -99,6 +99,22 @@ housekeeping pass once their resolution is fully indexed.
   absent from the dependency closure.
 - **Status:** resolved (reused the vendored API; F″ core landed as the pigeonhole on top).
 
+### [resolved] A lemma whose *statement* mentions `cutLabeling V' a b` needs `[∀ x, Decidable (x ∈ V')]` in the binder list
+- **Where it bit:** `crossingEdges_cutLabeling_singleton_subset` / `_ncard_le` in
+  `Molecular/Induction.lean` (Phase 20 KT 4.6, `lem:reducible-vertex` cut↔degree bridge).
+  `cutLabeling V' a b` carries an instance argument `[∀ x, Decidable (x ∈ V')]`; with the
+  ambient context holding only `[Finite α]` (no `DecidableEq α`), a `classical` inside the
+  proof does **not** supply the instance the *statement* needs — the statement elaborates
+  before the tactic block. Build error: *"failed to synthesize `(x : α) → Decidable (x ∈ {v})`"*.
+- **Resolution:** add `[∀ x, Decidable (x ∈ ({v} : Set α))]` to the lemma binders. At the
+  caller (`exists_degree_eq_two`, which has only `[Finite α]`), `classical` then discharges
+  this singleton-membership instance for the term-mode applications.
+- **General lesson:** when a lemma's *statement* references a definition carrying a
+  `[Decidable …]` / `[DecidableEq …]` instance arg, that instance must be in the binder list
+  (or derivable from one), not introduced by an in-proof `classical`. Same shape as the
+  `Matroid.Union [DecidableEq β]`-in-the-statement entry below.
+- **Status:** resolved.
+
 ### [resolved] `[matroid]` Fundamental-circuit-swap idioms: finite-min over bases, "indep of full rank ⟹ base", and the `X∩ẽ≠∅` base-meets-fiber move
 - **Where it bit:** `Graph.no_rigid_edge_count` in `Molecular/Induction.lean` (Phase 20
   KT 4.5(i), F′ swap core). KT's proof argues "`X∩ẽ=∅` ⟹ `D` spanning trees avoid `ẽ`,

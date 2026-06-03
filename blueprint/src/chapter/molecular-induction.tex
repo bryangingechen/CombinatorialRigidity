@@ -619,22 +619,31 @@ route that bypasses the deferred forest surgery
   development), reused here rather than re-derived.
 \end{proof}
 
-\begin{lemma}[Existence of a reducible degree-2 vertex; KT Lemma 4.6]
+\begin{lemma}[Existence of a degree-2 vertex; KT Lemma 4.6]
   \label{lem:reducible-vertex}
-  \uses{lem:dof-tracking, lem:low-degree-vertex, lem:two-edge-conn, def:k-dof}
-  A minimal $k$-dof-graph $G$ with $|V| \ge 3$ that has no proper rigid
-  subgraph contains a degree-2 vertex whose splitting-off (or removal)
-  preserves minimality and the degree of freedom. The proof is a
-  maximal-chain / degree-sequence counting argument on the
-  $2$-edge-connected graph (\cref{lem:two-edge-conn}).
+  \lean{Graph.exists_degree_eq_two}
+  \leanok
+  \uses{lem:low-degree-vertex, lem:two-edge-conn, def:k-dof}
+  A minimal $0$-dof-graph $G$ with no proper rigid subgraph, $|V| \ge 2$,
+  and $D = \binom{d+1}{2} \ge 3$ (the molecular regime $d \ge 2$)
+  contains a vertex $v$ of multigraph degree exactly $2$. (This degree-2
+  vertex is the one whose splitting-off the reduction step
+  (\cref{lem:reduction-step}) shows preserves minimality and the degree
+  of freedom.)
 \end{lemma}
 \begin{proof}
+  \leanok
   The average-degree count (\cref{lem:low-degree-vertex}) supplies a
   vertex of degree $\le 2$; the $2$-edge-connectivity
   (\cref{lem:two-edge-conn}) rules out degree $\le 1$, pinning it to
-  degree exactly $2$, and the no-proper-rigid-subgraph hypothesis makes
-  that degree-$2$ vertex reducible. This is the lemma that guarantees the
-  induction can always take a step.
+  degree exactly $2$. Concretely, the single-vertex cut $\{v\}$ has at
+  least two crossing edges (KT~3.1 admits no bridge cut in a $0$-dof
+  graph), and the crossing edges of $\{v\}$ are exactly the nonloop
+  edges at $v$, so $\deg_G(v) \ge d_G(\{v\}) \ge 2$. The cut count and
+  the vendored multigraph degree (\texttt{Graph.degree}) are bridged by
+  the observation that an edge crosses $\{v\}$ iff exactly one endpoint
+  is $v$. This is the lemma that guarantees the induction can always
+  take a step.
 \end{proof}
 
 \begin{lemma}[Reduction step preserves minimality; KT Lemmas 4.7--4.8]
