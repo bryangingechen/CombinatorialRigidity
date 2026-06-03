@@ -226,14 +226,22 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{definition}[Framework on a new graph]
   \label{def:framework-with-graph}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.withGraph}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.withGraph,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.withGraph,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withGraph}
   \leanok
-  \uses{def:rigidity-matrix}
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
   For a body-hinge framework $F = (G, p)$ and any multigraph $G'$ on the
   same bodies, $F[G']$ is the framework with underlying multigraph $G'$
   and the same hinge assignment $p$. Every supporting extensor $C(p(e))$,
   hinge-row block, and per-edge constraint is untouched; only the set of
-  edges imposing a constraint changes.
+  edges imposing a constraint changes. The panel layer carries the same
+  operation on a panel-hinge framework $P$ --- swap the multigraph, keep
+  the per-body panel normals and endpoint selector --- and the two commute
+  with the body-hinge interpretation, $(P[G'])^\flat = (P^\flat)[G']$, so
+  the graph-monotonicity and block-pin rank facts below apply verbatim to a
+  panel realization re-glued onto $G$, with coplanarity preserved (the
+  normals are unchanged).
 \end{definition}
 
 \begin{lemma}[Edge deletion enlarges the motion space]

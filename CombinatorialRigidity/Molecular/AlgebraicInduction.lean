@@ -732,6 +732,48 @@ theorem toBodyHinge_supportExtensor_ne_zero_iff (P : PanelHingeFramework k α β
       LinearIndependent ℝ ![P.normal (P.ends e).1, P.normal (P.ends e).2] := by
   rw [toBodyHinge_supportExtensor, panelSupportExtensor_ne_zero_iff]
 
+/-- **The panel framework on a new graph** (`def:framework-with-graph`, panel layer): replace the
+underlying multigraph of `P` by `G'`, keeping the per-body panel normals `normal` and the endpoint
+selector `ends` — hence every panel support extensor. The panel analogue of
+`BodyHingeFramework.withGraph`, and the shared carrier both inductive cases of Theorem 5.5 need on
+the panel layer: Case I realizes the contraction `G/E(H)` and Case II the splitting-off `G_v^{ab}`
+on the *same* panel data of the parent framework. Because the normals are untouched, the
+hinge-coplanarity is preserved: every hinge of `P.withGraph G'` incident to a body `v` still lies in
+the single panel `panel(v) = {normal v}^⊥`. -/
+def withGraph (P : PanelHingeFramework k α β) (G' : Graph α β) : PanelHingeFramework k α β where
+  graph := G'
+  normal := P.normal
+  ends := P.ends
+
+@[simp]
+theorem withGraph_graph (P : PanelHingeFramework k α β) (G' : Graph α β) :
+    (P.withGraph G').graph = G' := rfl
+
+@[simp]
+theorem withGraph_normal (P : PanelHingeFramework k α β) (G' : Graph α β) :
+    (P.withGraph G').normal = P.normal := rfl
+
+@[simp]
+theorem withGraph_ends (P : PanelHingeFramework k α β) (G' : Graph α β) :
+    (P.withGraph G').ends = P.ends := rfl
+
+@[simp]
+theorem withGraph_graph_self (P : PanelHingeFramework k α β) : P.withGraph P.graph = P := rfl
+
+/-- **The panel `withGraph` commutes with the body-hinge interpretation**
+(`def:framework-with-graph`, panel layer): `(P.withGraph G').toBodyHinge =
+P.toBodyHinge.withGraph G'`. The body-hinge interpretation of the panel framework on a new graph is
+the body-hinge `withGraph` of the original's interpretation — both carry the same multigraph `G'`
+and the same panel support extensors (the normals and endpoint selector are unchanged by either
+`withGraph`). This is the bridge that lets the green body-hinge graph-monotonicity and block-pin
+rank machinery (`infinitesimalMotions_le_withGraph_of_le`, `pinnedMotionsOn_le_withGraph_of_le`,
+`screwDim_add_finrank_pinnedMotionsOn_le`) apply verbatim to a panel realization placed on the
+smaller inductive graph (`G/E(H)`, `G_v^{ab}`) and re-glued onto `G`, with coplanarity preserved
+throughout. -/
+@[simp]
+theorem toBodyHinge_withGraph (P : PanelHingeFramework k α β) (G' : Graph α β) :
+    (P.withGraph G').toBodyHinge = P.toBodyHinge.withGraph G' := rfl
+
 /-! ## Cycle realizations (`lem:cycle-realization`, KT Lemma 5.4 — panel content)
 
 Katoh–Tanigawa's Lemma 5.4 (the geometric content of Crapo–Whiteley 1982 Prop 3.4 / Whiteley
