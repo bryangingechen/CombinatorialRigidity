@@ -368,23 +368,31 @@ route that bypasses the deferred forest surgery
 
 \begin{lemma}[Splitting-off does not increase the deficiency; KT Lemma 4.3]
   \label{lem:splitoff-deficiency}
+  \lean{Graph.splitOff_deficiency_le}
+  \leanok
   \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank}
-  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. Then
+  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$, carried by
+  the two edges $eₐ$ (joining $v, a$) and $e_b$ (joining $v, b$). Then
   $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde
-  G)$, with the refinement that the deficiency drops by at most the
-  $k$-vs-$(k-1)$ amount the induction tracks (KT~4.3(ii)). This is the
-  substantive splitting-off fact the induction consumes, replacing the
-  forest surgery of \cref{lem:forest-surgery-split}.
+  G)$. This is the substantive splitting-off fact the induction consumes,
+  replacing the forest surgery of \cref{lem:forest-surgery-split}. The
+  $k$-vs-$(k-1)$ refinement (KT~4.3(ii)) the induction tracks is recorded
+  separately and assembled in \cref{lem:dof-tracking}.
 \end{lemma}
 \begin{proof}
-  Partition-count comparison. Take an optimal partition $P'$ of $V - v$
-  realizing $\operatorname{def}(\widetilde{G_v^{ab}})$ and extend it to a
-  partition $P$ of $V$ by dropping $v$ into $a$'s block; then $|P| =
-  |P'|$. The edge $va$ no longer crosses $P$ while $vb$ crosses iff $ab$
-  crosses $P'$, so the crossing counts agree, $d_G(P) =
-  d_{G_v^{ab}}(P')$, whence the per-partition deficiency is unchanged and
+  \leanok
+  Partition-count comparison, on the green \texttt{deficiency}
+  infrastructure of \cref{sec:molecular-deficiency} and \emph{no forests}.
+  Each partition $P'$ of $V - v$ extends to a partition $P$ of $V$ by
+  dropping $v$ into $a$'s block ($f = \mathrm{update}\,f'\,v\,(f'\,a)$);
+  then $|P| = |P'|$, since $v$'s new label $f'(a)$ is already carried by
+  $a \in V - v$. The edge $va$ no longer crosses $P$ (both endpoints carry
+  $f'(a)$), the edge $vb$ crosses $P$ exactly when the short-circuit edge
+  $ab$ crosses $P'$, and every other edge survives verbatim with the same
+  crossing status; so $d_G(P) \le d_{G_v^{ab}}(P')$ via the crossing-edge
+  injection $e_b \mapsto ab$, identity elsewhere. Hence the per-partition
+  deficiency does not decrease, and taking $P'$ over the supremum gives
   $\operatorname{def}(\tilde G) \ge \operatorname{def}(\widetilde{G_v^{ab}})$.
-  No forests.
 \end{proof}
 
 \begin{lemma}[Vertex removal raises the deficiency; KT Lemma 4.4]

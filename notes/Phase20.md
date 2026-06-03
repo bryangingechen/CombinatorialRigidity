@@ -133,6 +133,10 @@ substrate lemmas are **retained** for this track.
 ## Current state
 
 Pivoted to the deficiency route (2026-06-02 — see *Finding* + *Replan*).
+**Commit B landed (route confirmed):** the splitting-off `≤` direction
+`Graph.splitOff_deficiency_le` (`lem:splitoff-deficiency`, green `\leanok`),
+the de-facto route-confirmation spike — see *Hand-off*. Next is commit C
+(KT 4.3(ii) refinement, scoped under `lem:dof-tracking`).
 
 **Green and `\leanok` in `Molecular/Induction.lean`** (all axiom-free): the
 full inherited KT 3.4 + KT 3.5 chain — `lem:circuit-induces-rigid` (3.4),
@@ -161,13 +165,14 @@ blueprint node; the node stays red) — incidence/cardinality
 surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
 they are **not** needed for Theorem 4.9.
 
-**Next:** *Replan* commit B (`lem:splitoff-deficiency` `≤` direction). Commit A
-(pivot) **landed**: blueprint Remark `rem:kt-lemma-41` (three-layer) +
-`example` node `ex:kt-41-overquantified` (green `\leanok`); red nodes
-`lem:splitoff-deficiency` / `lem:removal-deficiency` added and
-`lem:dof-tracking` re-pointed to them; `lem:forest-surgery-split` / `-unsplit`
-annotated deferred; Lean `example` disproving the literal `I = ∅`
-quantification in `Molecular/Induction.lean`. See *Hand-off*.
+**Next:** *Replan* commit C (`lem:splitoff-deficiency` `k`-vs-`(k−1)` refinement,
+KT 4.3(ii)). Commit B (the `≤` direction) **landed**: `Graph.splitOff_deficiency_le`
+(axiom-free) in `Molecular/Induction.lean`, the deficiency-count route's
+route-confirmation spike — for a degree-2 vertex `v` (two edges `eₐ`, `e_b`,
+the only `v`-incident edges), `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via the partition extension
+`f = update f' v (f' a)` (numParts equal; crossing-edge injection `e_b ↦ e₀`,
+identity elsewhere). `lem:splitoff-deficiency` flipped green `\leanok` for the
+`≤`; the 4.3(ii) refinement moved into `lem:dof-tracking`'s scope. See *Hand-off*.
 
 ## Architectural choices made up front
 
@@ -231,12 +236,13 @@ Graph operations:
   (`Graph.rigidContract`, via `deleteEdges` + `map (collapseTo …)`).
 
 Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
-- [ ] `lem:splitoff-deficiency` — KT 4.3(i)+(ii): `def(G̃ᵥᵃᵇ) ≤ def(G̃)`
-  via the partition-count comparison (extend an optimal partition of `V−v`
-  by dropping `v` into `a`'s block; `d_G(P) = d_{Gᵥᵃᵇ}(P')`), plus the
-  `k`-vs-`(k−1)` refinement. NEW node **added red (commit A)**; commits B (`≤`)
-  / C (refinement) land the Lean. The `≤` direction is the de-facto
-  route-confirmation spike.
+- [~] `lem:splitoff-deficiency` — KT 4.3(i)+(ii). **`≤` direction landed (commit B):**
+  `Graph.splitOff_deficiency_le` (green `\leanok`), via the partition extension
+  `f = update f' v (f' a)` (numParts equal; crossing-edge injection `e_b ↦ e₀`,
+  identity elsewhere — `d_G(P) ≤ d_{Gᵥᵃᵇ}(P')` suffices, no need for equality).
+  Degree-2 encoded as two edges `eₐ`/`e_b` that are the *only* `v`-incident
+  edges + fresh `e₀ ∉ E(G)`. **Remaining (commit C):** the `k`-vs-`(k−1)`
+  refinement (KT 4.3(ii)), now scoped under `lem:dof-tracking`.
 - [x] (commit A) `ex:kt-41-overquantified` — the over-quantification disproof
   `example` (`I = ∅`, ℕ-cardinality: no `I'` with `|I'| + D = 0` for `D ≥ 1`),
   green `\leanok` in `Molecular/Induction.lean`. Blueprint Remark
@@ -323,7 +329,21 @@ only by Case 6.1).
   comparison through `rank_add_deficiency_eq` — not KT's explicit forest reroute.
   KT's surgery (and the balanced-packing lemma it glosses) is a non-blocking TODO.
 
+- **Splitting-off `≤` (commit B): degree-2 encoded as two named edges, `≤` not `=`.**
+  `splitOff_deficiency_le` takes the degree-2 hypothesis as two distinct edges
+  `eₐ`/`e_b` (joining `v,a`/`v,b`) that are the *only* `v`-incident edges
+  (`hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b`) + fresh `e₀ ∉ E(G)`. The
+  partition-count step needs only `d_G(P) ≤ d_{Gᵥᵃᵇ}(P')` (a crossing-edge
+  injection `e_b ↦ e₀`, identity elsewhere), not KT's claimed *equality* —
+  the `≤` is what the `(D−1)·d` term in `partitionDef` consumes. The `va`-edge
+  never crosses (both endpoints get label `f' a`); `vb` maps to `e₀`; all other
+  crossing edges survive verbatim. Proof opens `rw [deficiency]; haveI :
+  Nonempty α := ⟨a⟩; refine ciSup_le …` (FRICTION entry for the `Nonempty`/unfold).
+
 ### Promoted to FRICTION
+- *`ciSup_le` on `deficiency = ⨆ f : α → α, …` needs `rw [deficiency]` + `haveI :
+  Nonempty α` (from any vertex); the prior lemmas only bounded from below via
+  `partitionDef_le_deficiency`* → FRICTION `[resolved] ciSup_le on deficiency …`.
 - *No mathlib "base of `M ／ C` lifts to base of `M` via a basis of `C`" — route through
   `IsBasis'.contract_eq_contract_delete` + loops/spanning; `IsBasis'` carries no ground
   containment for its `X`* → FRICTION `[resolved] [matroid] no mathlib "base of M ／ C
@@ -368,17 +388,25 @@ forest-surgery framing `lem:forest-packing-decomp` (names in *Current
 state*). The forest-surgery substrate is landed but serves the deferred
 surgery TODO (*Replan* Step 5), not Theorem 4.9.
 
-**Commit A landed** (the pivot): blueprint Remark `rem:kt-lemma-41`
+**Commits A–B landed.** A (the pivot): blueprint Remark `rem:kt-lemma-41`
 (three-layer "On Katoh–Tanigawa Lemma 4.1") + green `example` node
-`ex:kt-41-overquantified`; red dep-graph nodes `lem:splitoff-deficiency` /
+`ex:kt-41-overquantified`; dep-graph nodes `lem:splitoff-deficiency` /
 `lem:removal-deficiency` added with `lem:dof-tracking` re-pointed to them;
 `lem:forest-surgery-split` / `-unsplit` annotated deferred; Lean `example`
-disproving the `I = ∅` literal quantification in `Molecular/Induction.lean`.
+disproving the `I = ∅` literal quantification. B (the route-confirmation spike,
+**route confirmed**): `Graph.splitOff_deficiency_le` (axiom-free, green
+`\leanok` on `lem:splitoff-deficiency` for the `≤` direction) — the deficiency
+inequality `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via `ciSup_le` + the partition extension
+`f = update f' v (f' a)`: numParts equal, crossing-edge injection `e_b ↦ e₀`
+(identity elsewhere) gives `d_G(P) ≤ d_{Gᵥᵃᵇ}(P')`, so per-partition def does
+not decrease. The deficiency-count route is now confirmed on green infra.
 
-**Next agent's concrete commit = *Replan* commit B**: `lem:splitoff-deficiency`
-`≤` direction (`def(G̃ᵥᵃᵇ) ≤ def(G̃)`) via the partition-extension comparison
-(extend an optimal partition `P'` of `V−v` by dropping `v` into `a`'s block;
-`d_G(P) = d_{Gᵥᵃᵇ}(P')`). This is the de-facto route-confirmation spike — the
-`≤` is ~10 lines on green infra (`partitionDef` / `rank_add_deficiency_eq`,
-high confidence). Then commits C–H per the *Replan* sequence (refinement +
-4.9 assembly are the substantive work).
+**Next agent's concrete commit = *Replan* commit C**: the `k`-vs-`(k−1)`
+refinement of `lem:splitoff-deficiency` (KT 4.3(ii)), now scoped under
+`lem:dof-tracking`. Then commits D–H per the *Replan* sequence (removal bound
+`lem:removal-deficiency`, then the 4.9 assembly — the substantive work). Reuse
+the commit-B proof shape: `rw [deficiency]; haveI : Nonempty α := ⟨_⟩; refine
+ciSup_le fun f' => ?_`, then a partition-count comparison (see FRICTION
+*`ciSup_le` on `deficiency` …*). Degree-2 is encoded as two edges `eₐ`/`e_b`
+that are the only `v`-incident edges (`hdeg2`) + fresh `e₀ ∉ E(G)`; carry the
+same hypothesis shape forward.

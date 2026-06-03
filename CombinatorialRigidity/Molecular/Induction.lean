@@ -440,6 +440,138 @@ lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} 
   rw [hp, edgeSet_splitOff]
   exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
 
+/-! ## Splitting-off does not increase the deficiency (`lem:splitoff-deficiency`)
+
+The substantive splitting-off fact the combinatorial induction consumes (Katoh–Tanigawa
+2011 Lemma 4.3(i)), established directly via the **deficiency-count route** that bypasses
+the forest surgery of `lem:forest-surgery-split` (see `rem:kt-lemma-41` /
+`notes/Phase20.md` *Replan*). For a degree-2 vertex `v` of `G` with neighbours `a, b`,
+splitting-off `G_v^{ab}` does not increase the deficiency: `def(G̃_v^{ab}) ≤ def(G̃)`.
+
+The proof is a per-partition comparison on the green `deficiency` infrastructure of
+`Molecular/Deficiency.lean`, *no forests*. Take any partition `P'` of
+`V(G_v^{ab}) = V(G) ∖ {v}` and extend it to a partition `P` of `V(G)` by dropping `v`
+into `a`'s block (`f = update f' v (f' a)`). Then `|P| = |P'|` (the label of `v`, `f' a`,
+is already carried by `a ∈ V(G) ∖ {v}`), and the crossing-edge count does not increase:
+the `va`-edge no longer crosses `P` (both endpoints carry `f' a`), the `vb`-edge crosses
+`P` exactly when the short-circuit `e₀ = ab` crosses `P'`, and every other edge survives
+verbatim with the same crossing status. So `def_{G̃}(P) ≥ def_{G̃_v^{ab}}(P')`, and taking
+`P'` over the supremum gives `def(G̃) ≥ def(G̃_v^{ab})`. -/
+
+/-- **Splitting-off does not increase the deficiency** (`lem:splitoff-deficiency`,
+KT Lemma 4.3(i)). Let `v` be a degree-2 vertex of `G` with neighbours `a, b`, carried by
+two distinct edges `eₐ` (joining `v, a`) and `e_b` (joining `v, b`) that are the *only*
+edges of `G` incident to `v` (`hdeg2`), with `a, b ≠ v`. With the short-circuit label
+`e₀` fresh (`e₀ ∉ E(G)`), the splitting-off `G_v^{ab}` satisfies
+`def(G̃_v^{ab}) ≤ def(G̃)`.
+
+Proved by the deficiency-count route (no forest surgery): each partition `P'` of
+`V(G) ∖ {v}` extends to a partition `P` of `V(G)` (drop `v` into `a`'s block) with
+`|P| = |P'|` and `d_G(P) ≤ d_{G_v^{ab}}(P')`, via the crossing-edge injection
+`e_b ↦ e₀`, identity elsewhere. See `rem:kt-lemma-41` and `notes/Phase20.md` for why this
+replaces KT's forest surgery (`lem:forest-surgery-split`). -/
+theorem splitOff_deficiency_le [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 1 ≤ bodyBarDim n) {v a b : α} {e₀ eₐ e_b : β}
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G)) :
+    (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n := by
+  classical
+  set H := G.splitOff v a b e₀ with hH
+  have haV : a ∈ V(G) := hla.right_mem
+  have hbV : b ∈ V(G) := hlb.right_mem
+  -- It suffices to bound each partition `P'` of `H` by `def(G̃)`.
+  haveI : Nonempty α := ⟨a⟩
+  rw [deficiency]
+  refine ciSup_le fun f' => ?_
+  -- Extend `f'` to a partition `f` of `V(G)` by dropping `v` into `a`'s block.
+  set f := Function.update f' v (f' a) with hf
+  have hfne : ∀ x, x ≠ v → f x = f' x := fun x hx => Function.update_of_ne hx _ _
+  have hfv : f v = f' a := Function.update_self v (f' a) f'
+  -- Step 1: the number of parts is unchanged.
+  have hparts : G.numParts f = H.numParts f' := by
+    rw [numParts, numParts, vertexSet_splitOff]
+    congr 1
+    apply Set.Subset.antisymm
+    · rintro _ ⟨x, hx, rfl⟩
+      by_cases hxv : x = v
+      · subst hxv
+        exact ⟨a, ⟨haV, by simpa using hav⟩, by rw [hfv]⟩
+      · exact ⟨x, ⟨hx, by simpa using hxv⟩, (hfne x hxv).symm⟩
+    · rintro _ ⟨x, ⟨hx, hxv⟩, rfl⟩
+      exact ⟨x, hx, hfne x (by simpa using hxv)⟩
+  -- Step 2: the crossing-edge count does not increase, via the injection `e_b ↦ e₀`.
+  have hcross : (G.crossingEdges f).ncard ≤ (H.crossingEdges f').ncard := by
+    -- `f` and `f'` agree away from `v`; `f v = f' a` and `f b = f' b` (since `b ≠ v`).
+    have hfb : f b = f' b := hfne b hbv
+    have hfa : f a = f' a := hfne a hav
+    refine Set.ncard_le_ncard_of_injOn (fun e => if e = e_b then e₀ else e) ?_ ?_ ?_
+    · -- maps crossing edges of `G` to crossing edges of `H`
+      rintro e ⟨heG, x, y, hlink, hxy⟩
+      by_cases hev : e = e_b
+      · -- `e_b` ↦ `e₀`: `e₀` links `a, b` in `H`, and `f' a ≠ f' b` (since `e_b` crosses).
+        simp only [if_pos hev]
+        rw [hev] at hlink
+        -- The endpoints `{x, y}` of `e_b` are `{v, b}`, so `f x ≠ f y` gives `f' a ≠ f' b`.
+        have hab' : f' a ≠ f' b := by
+          rcases hlb.eq_and_eq_or_eq_and_eq hlink with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩
+          · rwa [hfv, hfb] at hxy
+          · rw [hfv, hfb] at hxy; exact fun h => hxy h.symm
+        have hl₀ : H.IsLink e₀ a b := by
+          rw [hH, splitOff_isLink]
+          exact Or.inr ⟨rfl, hav, hbv, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩
+        exact ⟨hl₀.edge_mem, a, b, hl₀, hab'⟩
+      · -- `e ≠ e_b`: `e` avoids `v`, survives in `H`, crosses with the same labels.
+        simp only [if_neg hev]
+        -- `e` is not incident to `v`: else `e ∈ {eₐ, e_b}` and `eₐ`/`e_b`-incident edges
+        -- through `v` get equal labels or contradict `e ≠ e_b`.
+        have hxv : x ≠ v ∧ y ≠ v := by
+          refine ⟨fun hxv => hxy ?_, fun hyv => hxy ?_⟩
+          · -- `x = v`: `e` through `v` is `eₐ` (not `e_b`), so `y = a`; then `f x = f y`.
+            subst hxv
+            rcases hdeg2 e y hlink with rfl | rfl
+            · obtain ⟨_, rfl⟩ | ⟨_, hav'⟩ := hla.eq_and_eq_or_eq_and_eq hlink
+              · rw [hfv, hfa]
+              · exact absurd hav' hav
+            · exact absurd rfl hev
+          · -- `y = v`: symmetric.
+            subst hyv
+            rcases hdeg2 e x hlink.symm with rfl | rfl
+            · obtain ⟨_, rfl⟩ | ⟨_, hav'⟩ := hla.eq_and_eq_or_eq_and_eq hlink.symm
+              · rw [hfv, hfa]
+              · exact absurd hav' hav
+            · exact absurd rfl hev
+        have hee₀ : e ≠ e₀ := fun h => he₀ (h ▸ heG)
+        refine ⟨?_, x, y, ?_, ?_⟩
+        · have : H.IsLink e x y := by
+            rw [hH, splitOff_isLink]; exact Or.inl ⟨hee₀, hlink, hxv.1, hxv.2⟩
+          exact this.edge_mem
+        · rw [hH, splitOff_isLink]; exact Or.inl ⟨hee₀, hlink, hxv.1, hxv.2⟩
+        · rwa [hfne x hxv.1, hfne y hxv.2] at hxy
+    · -- injectivity on `crossingEdges G f`: `g` is identity except `e_b ↦ e₀ ∉ E(G)`.
+      intro e1 he1 e2 he2 hg
+      dsimp only at hg
+      have hmemG : ∀ {e}, e ∈ G.crossingEdges f → e ∈ E(G) := fun h => h.1
+      by_cases h1 : e1 = e_b <;> by_cases h2 : e2 = e_b
+      · rw [h1, h2]
+      · -- `g e1 = e₀ = e2`, but `e2 ∈ E(G)` and `e₀ ∉ E(G)`.
+        rw [if_pos h1, if_neg h2] at hg
+        exact absurd (hg ▸ hmemG he2) he₀
+      · rw [if_neg h1, if_pos h2] at hg
+        exact absurd (hg.symm ▸ hmemG he1) he₀
+      · rwa [if_neg h1, if_neg h2] at hg
+    · exact Set.toFinite _
+  -- Combine: `partitionDef_G(f) ≥ partitionDef_H(f')`, then bound by the supremum.
+  have hmono : H.partitionDef n f' ≤ G.partitionDef n f := by
+    rw [partitionDef, partitionDef, hparts]
+    have hD1 : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1 := by
+      have : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast hD
+      linarith
+    nlinarith [Int.ofNat_le.mpr hcross]
+  exact hmono.trans (G.partitionDef_le_deficiency n f)
+
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,

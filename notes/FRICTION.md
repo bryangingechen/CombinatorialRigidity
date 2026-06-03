@@ -193,6 +193,21 @@ housekeeping pass once their resolution is fully indexed.
   bound that puts `D(|V|-1)` on the RHS should take `1 ≤ bodyBarDim n` up
   front rather than discover the degenerate `D = 0` branch mid-`nlinarith`.
 
+### [resolved] `ciSup_le` on `deficiency = ⨆ f : α → α, partitionDef …` needs `rw [deficiency]` + `Nonempty α`
+- **Where it bit:** `splitOff_deficiency_le` in `Molecular/Induction.lean`
+  (Phase 20 `lem:splitoff-deficiency`, the deficiency-route `≤` direction).
+  Bounding `def(H̃) = ⨆ f', H.partitionDef n f'` by `def(G̃)` per-partition
+  wants `ciSup_le`, but two things block it: (i) `deficiency` is a plain
+  `noncomputable def`, so the `⨆` is hidden — `rw [deficiency]` first; (ii)
+  `ciSup_le` needs `[Nonempty (α → α)]`, which `Pi.instNonempty` derives only
+  from `Nonempty α` — *not* automatic. Supply `haveI : Nonempty α := ⟨a⟩`
+  from any vertex in hand (here `a := hla.right_mem`-style).
+- **General lesson:** the prior deficiency lemmas all bounded *from below*
+  via `partitionDef_le_deficiency` (`le_ciSup`, no `Nonempty` need); this is
+  the first to bound `deficiency` *from above*, so it is the first to want
+  `ciSup_le`. Commits C/D (refinement, removal) take the same shape — open
+  with `rw [deficiency]; haveI : Nonempty α := ⟨_⟩; refine ciSup_le fun f' => ?_`.
+
 ### [resolved] `Graph.edgeMultiply m`'s `IsLink`/`Inc` are defeq to the base graph's but not syntactically — `IsLink.mono` needs a type ascription
 - **Where it bit:** `edgeMultiply_mono` in `BodyBar/BodyHinge.lean`
   (Phase 19 `lem:matroid-restrict-subgraph` engine). `(G.edgeMultiply
