@@ -25,16 +25,17 @@ combinatorial rigidity, see
 
 The Lean code is organized into phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--19 are complete (see the phase bullets below) and
-\textbf{Phase~20} is in progress;
+Phases~1--20 are complete (see the phase bullets below) and
+\textbf{Phase~21} is in progress;
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
 builds the genuine panel-hinge rigidity matrix on top of it,
 \textbf{Phase~19} builds the matroid $M(\tilde G)$,
-the $D$-deficiency, and the $k$-degree-of-freedom combinatorics, and
+the $D$-deficiency, and the $k$-degree-of-freedom combinatorics,
 \textbf{Phase~20} develops the combinatorial induction (graph
-operations and Theorem~4.9).
+operations and Theorem~4.9), and \textbf{Phase~21} opens the
+algebraic induction (Theorem~5.5 base and Cases~I \& II).
 The first six
 phases formalize Laman's theorem along the Henneberg route described
 above. Phases~7--8 package the planar rigidity matroid as a mathlib
@@ -56,9 +57,11 @@ molecular-conjecture program with the Grassmann--Cayley extensor-algebra
 layer, Phase~18 builds the genuine panel-hinge rigidity matrix
 $R(G,p)$ on it, Phase~19 builds its matroidal
 substrate $M(\tilde G)$, the $D$-deficiency, and the $k$-dof
-combinatorics, and Phase~20 develops the combinatorial induction ---
-the graph operations and Katoh--Tanigawa's Theorem~4.9. The per-phase
-breakdown:
+combinatorics, Phase~20 develops the combinatorial induction ---
+the graph operations and Katoh--Tanigawa's Theorem~4.9 --- and
+Phase~21 opens the algebraic induction, realizing that reduction at
+the rigidity-matrix rank (Theorem~5.5 base and Cases~I \& II). The
+per-phase breakdown:
 
 \begin{enumerate}
   \item \textbf{Sparsity.} Basic $(k,\ell)$-sparsity and $(k,\ell)$-tightness
@@ -248,6 +251,27 @@ breakdown:
         off the Theorem-4.9 critical path. \emph{Complete.} (Chapter:
         \cref{sec:molecular-induction}; file:
         \texttt{Molecular/Induction.lean}.)
+  \item \textbf{Algebraic induction: Theorem~5.5 base and Cases~I \& II.}
+        Stratum~5 of the molecular program
+        (Katoh--Tanigawa~\cite[\S5, \S6.1--6.3]{katohTanigawa2011}): the
+        \emph{algebraic} half of the proof, which realizes the Phase~20
+        combinatorial reduction at the rigidity-matrix rank. The phase
+        states Theorem~5.5 --- every minimal $k$-dof-graph $G$ with
+        $|V| \ge 2$ has a panel-hinge realization with
+        $\operatorname{rank} R(G,p) = D(|V|-1) - k$ --- and discharges
+        its base case ($|V| = 2$), Case~I (a proper rigid subgraph, by
+        rigid-subgraph contraction and block-triangular gluing through the
+        pin-a-body Lemma~5.1), and Case~II ($k > 0$, splitting off a
+        reducible degree-2 vertex --- the panel-hinge analogue of
+        Whiteley's bar-joint $1$-extension). The induction is driven by
+        the same reduction dichotomy as Theorem~4.9
+        (\cref{thm:minimal-kdof-reduction}); the new analytic device is
+        the genericity argument (Claim~6.4/6.9), and the cycle-realization
+        Lemma~5.4~\cite{crapoWhiteley1982} enters as an input. The crux
+        Case~III ($k = 0$, no proper rigid subgraph) is deferred to
+        Phases~22--23. \emph{In progress.} (Chapter:
+        \cref{sec:molecular-algebraic-induction}; file:
+        \texttt{Molecular/AlgebraicInduction.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -288,5 +312,10 @@ the degree-of-freedom tracking, and the capstone Theorem~4.9
 (\cref{thm:minimal-kdof-reduction}) --- is green on its critical path
 (the forest-surgery nodes, KT Lemmas 4.1/4.2, stay red as a deferred
 off-critical-path TODO). The whole Phase~1--20 dependency graph is
-therefore green on the Theorem-4.9 critical path. Phases~21--26 remain
-to be opened.
+therefore green on the Theorem-4.9 critical path. \textbf{Phase~21}
+(\cref{sec:molecular-algebraic-induction}) is now open and runs
+forward-mode: it opens the algebraic induction (Theorem~5.5 base and
+Cases~I \& II, \cref{thm:theorem-55}), and its nodes are red --- the
+live to-do list --- until their Lean lands in
+\texttt{Molecular/AlgebraicInduction.lean}. Phases~22--26 remain to be
+opened.

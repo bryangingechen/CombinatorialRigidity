@@ -113,7 +113,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-19) | Phase 19 surface (`Molecular/Deficiency.lean`, `deficiency.tex` `sec:molecular-deficiency` nodes) | ✓ Complete (all A–D audits no-op; see `notes/Phase19-cleanup.md`; round manual: `CLEANUP.md`) |
 | 20. Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` (KT §3.4–3.5, §4) | ✓ Complete (`thm:minimal-kdof-reduction` green; see `notes/Phase20.md`; `molecular-induction.tex` `sec:molecular-induction`) |
 | ⋮ Cleanup round (post-Phase-20) | Phase 20 surface (`Molecular/Induction.lean`, `molecular-induction.tex` `sec:molecular-induction` nodes) | ✓ Complete (A3 + B3 the two real fixes; A1/A2/B1/B2/B4/C1/D2 no-op; D1 compressed `notes/Phase20.md` 1089→434; see `notes/Phase20-cleanup.md`; round manual: `CLEANUP.md`) |
-| 21–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
+| 21. Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` (KT §5, §6.1–6.3) | ◷ In progress (see `notes/Phase21.md`; `algebraic-induction.tex` `sec:molecular-algebraic-induction`) |
+| 22–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -674,6 +675,34 @@ an error); only the edge-splitting inverse KT 4.2 stays a deferred TODO.
 Per-node lemma map + decisions + findings:
 `notes/Phase20.md`. Unblocks Phase 21 (algebraic induction base +
 Cases I & II).
+
+### Phase 21 — Algebraic induction: Theorem 5.5 base + Cases I & II (KT §5, §6.1–6.3)
+
+**Status (◷ in progress; see `notes/Phase21.md`).** Stratum 5 of the
+molecular-conjecture program: the *algebraic* half of Katoh–Tanigawa's
+proof, opened in a new file `Molecular/AlgebraicInduction.lean`. Where
+Phase 20 reduced every minimal `0`-dof-graph to the two-vertex double
+edge combinatorially (Theorem 4.9), this phase realizes that reduction at
+the rigidity-matrix rank: KT **Theorem 5.5** (every minimal `k`-dof-graph
+`G` with `|V| ≥ 2` has a panel-hinge realization with `rank R(G,p) =
+D(|V|−1) − k`), its base case (`|V|=2`, via the green parallel-hinges
+Lemma 5.3), **Case I** (proper rigid subgraph — rigid-subgraph contraction
++ block-triangular gluing via the green pin-a-body Lemma 5.1), and **Case
+II** (`k>0` splitting — the panel-hinge analogue of Whiteley's bar-joint
+1-extension). The induction is driven by the *same* reduction dichotomy
+Phase 20's `minimal_kdof_reduction` exposes as a well-founded induction
+principle. The crux **Case III** (`k=0`, no proper rigid subgraph) is
+deferred to Phases 22–23. The new analytic device is the Claim 6.4 / 6.9
+genericity argument (matrix entries are polynomials in algebraically
+independent panel coordinates ⇒ a generic point attains the maximum rank);
+the cycle-realization Lemma 5.4 (Crapo–Whiteley 1982) enters as an input.
+The relocated **analytic half of KT Prop 1.1** (`prop:rigidity-matrix-prop11`,
+`rank R(G,p) = D(|V|−1) − def(G̃)`, JJ 2009 Thm 6.1 geometric side) lands
+with the Claim 6.4 argument; its matroidal half (`def = corank M(G̃)`) is
+already green (Phase 19). Forward-mode; dep-graph `algebraic-induction.tex`
+`sec:molecular-algebraic-induction`. Per-node lemma map + decisions:
+`notes/Phase21.md`; program-level plan in `notes/MolecularConjecture.md`
+*Phase 21*.
 
 ## Engineering conventions
 

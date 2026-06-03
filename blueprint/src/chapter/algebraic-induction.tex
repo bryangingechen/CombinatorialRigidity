@@ -1,0 +1,216 @@
+\section{The algebraic induction: Theorem 5.5 base, Cases I \& II}
+\label{sec:molecular-algebraic-induction}
+
+This chapter is the \textbf{Phase~21} dep-graph: the opening of the
+\emph{algebraic} half of Katoh--Tanigawa's proof of the molecular
+conjecture --- \cite[\S5, \S6.1--6.3]{katohTanigawa2011}, the fifth and
+final proof stratum. Where \cref{sec:molecular-induction} reduced every
+minimal $0$-dof-graph to the two-vertex double edge by a combinatorial
+induction (Theorem~4.9, \cref{thm:minimal-kdof-reduction}), this chapter
+\emph{realizes} that reduction at the rigidity-matrix rank: it states
+Katoh--Tanigawa's Theorem~5.5 --- every minimal $k$-dof-graph $G$ with
+$|V| \ge 2$ has a panel-hinge realization $(G,p)$ with
+$\operatorname{rank} R(G,p) = D(|V|-1) - k$ --- and discharges its base
+case and the first two of its three inductive cases. The crux Case~III
+($k=0$, no proper rigid subgraph) is deferred to Phases~22--23.
+Throughout $D = \binom{d+1}{2} = \delta$ is the body-bar dimension,
+$\tilde G = (D-1)\cdot G$ is the multiplied graph of
+\cref{sec:body-hinge}, $R(G,p)$ is the panel-hinge rigidity matrix of
+\cref{def:rigidity-matrix}, and $\operatorname{def}(\tilde G)$ is the
+$D$-deficiency of \cref{def:D-deficiency}.
+
+\medskip
+\noindent\emph{Status.} Forward mode: this chapter is the live to-do
+list. Every node below is red until its Lean lands in
+\texttt{Molecular/AlgebraicInduction.lean}; the leaf-most red node
+(statement dependencies all green or mathlib) is the next target. The
+chapter opens with the generic-rank reconciliation (Tay--Whiteley's
+Proposition~1.1, relocated forward from Phase~18), states the induction
+skeleton, then discharges the base case (via the parallel-hinges Lemma
+\cref{lem:rank-parallel-full}), Case~I (proper rigid subgraph, via
+rigid-subgraph contraction \cref{lem:reduction-step} and the pin-a-body
+Lemma~\cref{lem:rank-delete-vertex}), and Case~II ($k>0$ splitting, the
+panel-hinge analogue of Whiteley's bar-joint 1-extension). The
+cycle-realization Lemma~5.4 of Crapo--Whiteley~\cite{crapoWhiteley1982}
+enters here as an input.
+
+\subsection{The generic-rank reconciliation (Proposition 1.1, analytic half)}
+\label{sec:molecular-algebraic-induction-prop11}
+
+The matroidal half of Tay--Whiteley's Proposition~1.1 --- the bridge
+$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$ ---
+landed green in Phase~19 (\cref{thm:def-eq-corank}). The analytic half
+relocated forward to this phase: it wires the rigidity-matrix rank
+$R(G,p)$ of \cref{sec:molecular-rigidity-matrix} to the matroid corank,
+and depends on the generic-rank argument (Claim~6.4) that drives the
+whole induction.
+
+\begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}$; KT Proposition 1.1, analytic half]
+  \label{prop:rigidity-matrix-prop11}
+  \uses{def:rigidity-matrix, def:D-deficiency, thm:def-eq-corank, def:dof-generic}
+  For a generic panel-hinge realization $(G,p)$,
+  \[
+    \operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G).
+  \]
+  Equivalently $G$ has a rigid panel-hinge realization iff
+  $\tilde G = (D-1)\cdot G$ contains $D$ edge-disjoint spanning trees,
+  reconciling the honest rank form of
+  \cref{sec:molecular-rigidity-matrix} with the body-hinge existence
+  form (\cref{thm:body-hinge-tay}) of Phase~16. This is
+  Jackson--Jord\'an's Theorem~6.1, geometric side
+  \cite{jacksonJordan2009}.
+\end{proposition}
+\begin{proof}
+  \uses{thm:theorem-55}
+  The deficiency is the corank of $M(\tilde G)$
+  (\cref{thm:def-eq-corank}), so the claim is that a generic realization
+  attains the maximum rank $D(|V|-1) - \operatorname{corank}$. The
+  lower-bound (generic max-rank) direction is exactly the content of
+  Theorem~5.5 (\cref{thm:theorem-55}), pushed from minimal $k$-dof-graphs
+  to all multigraphs by deleting down to a minimal $k$-dof spanning
+  subgraph and observing that re-adding edges only grows the rank; the
+  upper bound is the codimension form
+  \cref{lem:trivial-motions-rank-bound} together with the deficiency
+  count. Lands with the Claim~6.4 generic-rank argument.
+\end{proof}
+
+\subsection{The induction skeleton and base case}
+\label{sec:molecular-algebraic-induction-base}
+
+\begin{definition}[Generic-rank hypothesis (6.1)]
+  \label{def:rank-hypothesis}
+  \uses{def:rigidity-matrix, def:k-dof}
+  For a minimal $k$-dof-graph $G$ with $|V| \ge 2$, the
+  \emph{realization hypothesis} $(6.1)$ asserts the existence of a
+  panel-hinge realization $(G,p)$ with
+  $\operatorname{rank} R(G,p) = D(|V|-1) - k$, and --- when $G$ is simple
+  --- with no two hinges parallel. This is the predicate Theorem~5.5
+  establishes by induction on $|V|$.
+\end{definition}
+
+\begin{theorem}[Realization at the target rank; KT Theorem 5.5]
+  \label{thm:theorem-55}
+  \uses{def:rank-hypothesis, thm:minimal-kdof-reduction, lem:case-I,
+        lem:case-II, lem:case-III, lem:theorem-55-base}
+  Every minimal $k$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
+  realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V|-1) - k$,
+  nonparallel if $G$ is simple. (\cref{def:rank-hypothesis}.)
+\end{theorem}
+\begin{proof}
+  \uses{thm:minimal-kdof-reduction, lem:theorem-55-base, lem:case-I,
+        lem:case-II, lem:case-III}
+  Induction on $|V|$, driven by the combinatorial reduction
+  Theorem~4.9 (\cref{thm:minimal-kdof-reduction}). The base case
+  $|V| = 2$ is \cref{lem:theorem-55-base}. The inductive step splits
+  three ways on the reduction dichotomy: Case~I (a proper rigid
+  subgraph, \cref{lem:case-I}), Case~II ($k > 0$, splitting off a
+  reducible degree-2 vertex, \cref{lem:case-II}), and Case~III ($k = 0$,
+  no proper rigid subgraph, \cref{lem:case-III}). Cases~I and~II land in
+  this phase; Case~III --- the crux --- is Phases~22--23.
+\end{proof}
+
+\begin{lemma}[Theorem 5.5 base case ($|V| = 2$)]
+  \label{lem:theorem-55-base}
+  \uses{def:rank-hypothesis, lem:rank-parallel-full}
+  The two-vertex double edge has a panel-hinge realization of rank
+  $D(|V|-1) - k = D - k$. For the minimal $0$-dof case (the double edge,
+  $k = 0$) this is the full rank $D$, attained by two non-parallel hinges
+  via the parallel-hinges-full Lemma~5.3
+  (\cref{lem:rank-parallel-full}).
+\end{lemma}
+\begin{proof}
+  \uses{lem:rank-parallel-full}
+  Two bodies joined by $D$ parallel-copy fibers with non-coincident
+  hinge supports realize the full screw-difference constraint; the rank
+  is exactly $D$ by \cref{lem:rank-parallel-full}, matching
+  $D(2-1) - 0$.
+\end{proof}
+
+\subsection{Case I: a proper rigid subgraph}
+\label{sec:molecular-algebraic-induction-caseI}
+
+\begin{lemma}[Cycle realizations; Crapo--Whiteley Lemma 5.4]
+  \label{lem:cycle-realization}
+  \uses{def:rigidity-matrix}
+  A cycle of bodies joined by hinges has a panel-hinge realization in
+  which the rank of the rigidity matrix is one less than the
+  free (tree) value, the single dependency being the cycle relation.
+  This is the cycle-realization input of
+  Crapo--Whiteley~\cite{crapoWhiteley1982} (also Whiteley, Kluwer 1999).
+\end{lemma}
+\begin{proof}
+  Realize the cycle projectively so that the composite screw motion
+  around the cycle closes up; the closing relation is the unique
+  dependency. (Cycle-realization input; formalize or cite per phase.)
+\end{proof}
+
+\begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
+  \label{lem:case-I}
+  \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
+        lem:rank-delete-vertex, lem:cycle-realization}
+  Let $G$ be a minimal $k$-dof-graph with a proper rigid subgraph $H$.
+  Then $G$ has a realization at rank $D(|V|-1) - k$, built from a
+  realization of the contraction $G/E(H)$ (a smaller minimal
+  $k$-dof-graph by \cref{lem:contraction-minimality}, supplied the
+  induction hypothesis) and a rigid realization of $H$ (the
+  pin-a-body Lemma~5.1, \cref{lem:rank-delete-vertex}), glued
+  block-triangularly. KT split this into the non-simple case (6.2),
+  the simple case with simple contraction (6.3, via the Claim~6.4
+  genericity argument), and the remaining simple case (6.5).
+\end{lemma}
+\begin{proof}
+  \uses{lem:rank-delete-vertex}
+  Pin the rigid block $H$ (\cref{lem:rank-delete-vertex}) and place the
+  contraction $G/E(H)$ at its inductive rank; the combined rigidity
+  matrix is block-triangular, so the ranks add to $D(|V|-1) - k$. The
+  genericity step (the entries are polynomials in algebraically
+  independent panel coordinates, so a generic point attains the maximum
+  rank over the parametrized family --- Claim~6.4) lifts a single
+  good realization to a generic one.
+\end{proof}
+
+\subsection{Case II: \texorpdfstring{$k > 0$}{k > 0} splitting (1-extension)}
+\label{sec:molecular-algebraic-induction-caseII}
+
+\begin{lemma}[Case II: splitting off a reducible vertex; KT Lemmas 6.7, 6.8]
+  \label{lem:case-II}
+  \uses{thm:minimal-kdof-reduction, lem:reduction-step,
+        lem:rank-delete-vertex, lem:cycle-realization}
+  Let $G$ be a minimal $k$-dof-graph with $k > 0$ and a reducible
+  degree-2 vertex $v$ (KT~4.6), and let $G_v^{ab}$ be the splitting-off
+  at $v$ (a smaller minimal $k$-dof-graph by \cref{lem:reduction-step}).
+  A realization of $G_v^{ab}$ at its inductive rank extends to a
+  realization of $G$ at rank $D(|V|-1) - k$. This is the panel-hinge
+  analogue of Whiteley's bar-joint $1$-extension: re-inserting $v$ with
+  its two hinges lifts the rank by exactly $D$ (Lemma~6.8, via the
+  Claim~6.9 genericity argument).
+\end{lemma}
+\begin{proof}
+  \uses{lem:rank-delete-vertex}
+  Place $G_v^{ab}$ at its inductive realization; re-insert $v$ joined to
+  $a$ and $b$ by hinges chosen generically. The pin-a-body Lemma~5.1
+  (\cref{lem:rank-delete-vertex}) accounts for $v$'s screw freedoms, and
+  the two new hinge-row blocks raise the rank by $D$, giving
+  $D(|V|-1) - k$. Genericity (Claim~6.9) lifts to a generic realization.
+\end{proof}
+
+\subsection{Case III deferred (the crux)}
+\label{sec:molecular-algebraic-induction-caseIII}
+
+\begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
+  \label{lem:case-III}
+  \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
+        lem:cycle-realization}
+  Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
+  proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
+  $D(|V|-1)$. A single candidate realization is one row short of full
+  rank, so KT build $D$ candidate realizations and show one is rigid;
+  the degree-2 condition forces all candidates to test the same normal
+  vector $r \in \mathbb{R}^D$, which by the extensor-independence
+  Lemma~2.1 (\cref{lem:extensor-independence}) must vanish ---
+  contradiction. \textbf{Deferred to Phases~22--23} ($d = 3$ first, then
+  general $d$); stated here only to close the Theorem~5.5 dichotomy.
+\end{lemma}
+\begin{proof}
+  Deferred to Phases~22--23. See \cite[\S6.4]{katohTanigawa2011}.
+\end{proof}
