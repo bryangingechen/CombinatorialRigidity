@@ -641,6 +641,54 @@ lemma mulTilde_splitOff_deleteFiber_le {G : Graph α β} {v a b : α} {e₀ : β
     · -- The `e₀`-fiber case is excluded: `p.1 = e₀` puts `p ∈ edgeFiber e₀ n`.
       exact absurd (show p ∈ edgeFiber e₀ n from hlink.1) hpfiber
 
+/-- **The multiplied vertex-removal lands inside the multiplied splitting-off**
+(`lem:forest-surgery-split`, surgery crux, reverse inclusion). The converse companion of
+`mulTilde_splitOff_deleteFiber_le`: the multiplied vertex-removal `(G_v)̃ = ((G - v))̃` is a
+subgraph of the multiplied splitting-off `G̃_v^{ab}`, *provided the short-circuit edge `e₀`
+is fresh* (`e₀ ∉ E(G)`): `(G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n`.
+Both graphs carry the vertex set `V(G) \ {v}`; every fiber `p` of `(G_v)̃` is a copy of an
+edge of `G` avoiding `v` (`removeVertex_isLink`), and freshness forces `p.1 ≠ e₀`, so
+`splitOff` keeps that very link (its first disjunct). This is the structural fact the
+rerouting half of the surgery runs on: the part of a `G̃`-forest avoiding `v` (the forests
+with `dᶠ(v) ≤ 1` reduced to `G_v`) transports verbatim into `G̃_v^{ab}` — only the
+`v`-traversing tree-path of a `dᶠ(v) = 2` forest needs the `ã̃b` swap. -/
+lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ)
+    (he₀ : e₀ ∉ E(G)) :
+    (G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n := by
+  refine ⟨?_, ?_⟩
+  · -- Vertex sets: both are `V(G) \ {v}` definitionally.
+    intro x hx
+    exact hx
+  · -- Links: a link of `(G_v)̃` (a `v`-avoiding `G`-link) is a `splitOff` link (first disjunct).
+    intro p x y hp
+    simp only [mulTilde, edgeMultiply_isLink, removeVertex_isLink] at hp ⊢
+    obtain ⟨hlink, hxv, hyv⟩ := hp
+    rw [splitOff_isLink]
+    refine Or.inl ⟨?_, hlink, hxv, hyv⟩
+    -- `p.1 ≠ e₀`: `p.1 ∈ E(G)` (it carries the link `hlink`) but `e₀ ∉ E(G)`.
+    rintro rfl; exact he₀ hlink.edge_mem
+
+/-- **A forest of the multiplied vertex-removal is a forest of the multiplied splitting-off**
+(`lem:forest-surgery-split`, surgery crux, reverse acyclicity transport; Katoh–Tanigawa 2011
+Lemma 4.1). The reverse companion of `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`: any
+cycle-matroid-acyclic fiber set `F` of the multiplied vertex-removal `(G_v)̃ = ((G - v))̃` is
+acyclic in the multiplied splitting-off `G̃_v^{ab}`, whenever the short-circuit edge `e₀` is
+fresh (`e₀ ∉ E(G)`):
+`((G - v))̃.cycleMatroid.Indep F → ((G_v^{ab}))̃.cycleMatroid.Indep F`.
+
+This is the half of the surgery's acyclicity-preservation that transports *into* `G̃_v^{ab}`
+without rerouting: a forest of `G̃` reduced to the vertex-removal `G_v` (its `v`-edges
+dropped) is a forest of `G̃_v^{ab}` verbatim, because deleting `v` strictly precedes the
+short-circuit. No disjointness hypothesis is needed — `(G_v)̃` carries no `v`-incident fibers
+at all, so it sits below `G̃_v^{ab}` unconditionally (`mulTilde_removeVertex_le_splitOff`); the
+`v`-traversing tree-path that *does* need the `ã̃b` swap is the residual rerouting crux. -/
+lemma isAcyclicSet_mulTilde_splitOff_of_removeVertex {G : Graph α β} {v a b : α} {e₀ : β}
+    {n : ℕ} (he₀ : e₀ ∉ E(G)) {F : Set (β × Fin (bodyHingeMult n))}
+    (hF : ((G.removeVertex v).mulTilde n).cycleMatroid.Indep F) :
+    ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep F := by
+  rw [cycleMatroid_indep] at hF ⊢
+  exact hF.mono (mulTilde_removeVertex_le_splitOff n he₀)
+
 /-- **Acyclicity transports across the short-circuit** (`lem:forest-surgery-split`, surgery
 crux; Katoh–Tanigawa 2011 Lemma 4.1). A fiber set `F` that is cycle-matroid-independent
 (acyclic) in the multiplied splitting-off `G̃_v^{ab}` and **disjoint from the fresh fiber**

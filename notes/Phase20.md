@@ -20,9 +20,11 @@ the four graph operations (`def:graph-operations` + `def:rigid-contraction`), an
 KT 3.5 assembly `lem:contraction-minimality` (rank core → contraction arithmetic →
 deficiency conservation → minimality transport → assembly). The forest-surgery **framing**
 sub-node (`lem:forest-packing-decomp`) is green, as is the surgery's incidence/degree
-substrate and now the **first half of its acyclicity-preservation crux** (the no-reroute
-`dᶠ(v) ≤ 1` direction: `mulTilde_splitOff_deleteFiber_le` + `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`);
-next is the **rerouting half** of the surgery proper (KT 4.1, `lem:forest-surgery-split`,
+substrate and now **both directions of its no-reroute acyclicity-preservation crux** — the
+`G̃→G̃ᵥᵃᵇ` reverse (`mulTilde_removeVertex_le_splitOff` + `isAcyclicSet_mulTilde_splitOff_of_removeVertex`)
+alongside the original `G̃ᵥᵃᵇ→G̃` forward (`mulTilde_splitOff_deleteFiber_le` +
+`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`); next is the genuine **rerouting half** of
+the surgery proper (the `dᶠ(v)=2` `ã̃b`-swap path-lift, KT 4.1, `lem:forest-surgery-split`,
 still red).
 
 - **`def:induced-span`** — `Graph.fiberSpan G n X = (G.mulTilde n).spanningVerts X`
@@ -159,6 +161,25 @@ And now landed: the **first half of the acyclicity-preservation crux** of the fo
   `IsAcyclicSet.mono` + `cycleMatroid_indep`. This is the `dᶠ(v) ≤ 1` forests (drop their
   `v`-edge, survive verbatim) — the half needing no rerouting.
 
+And now landed: the **reverse structural inclusion + reverse acyclicity transport** of the
+forest surgery (`lem:forest-surgery-split`, KT 4.1, surgery crux) — the *into-`G̃ᵥᵃᵇ`*
+direction, the mirror of the two `…_splitOff_…` lemmas above. Two axiom-free lemmas in
+`Molecular/Induction.lean` (NOT a blueprint node; `lem:forest-surgery-split` stays red):
+- `Graph.mulTilde_removeVertex_le_splitOff`: the multiplied vertex-removal `(G_v)̃` is a
+  subgraph of the multiplied splitting-off `G̃ᵥᵃᵇ`, **given `e₀ ∉ E(G)`** (freshness):
+  `(G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n`. Both vertex sets are
+  `V(G) \ {v}` (definitional `rfl` — no rewrite needed); every `(G_v)̃`-link is a `v`-avoiding
+  `G`-link, and freshness forces `p.1 ≠ e₀`, so it is a `splitOff` link (first disjunct). The
+  converse of `mulTilde_splitOff_deleteFiber_le`, stated against `removeVertex` (vertex-side
+  delete) rather than a `deleteEdges` of `G̃` — the latter keeps `v` and breaks the `≤` at the
+  vertex level.
+- `Graph.isAcyclicSet_mulTilde_splitOff_of_removeVertex`: a cycle-matroid-acyclic `F` of
+  `(G_v)̃` is acyclic in `G̃ᵥᵃᵇ`, given `e₀ ∉ E(G)`. **No disjointness-from-`ã̃b` hypothesis**
+  (`(G_v)̃` carries no `v`-incident fibers, so it sits below `G̃ᵥᵃᵇ` unconditionally). Routes
+  through `mulTilde_removeVertex_le_splitOff` + `IsAcyclicSet.mono` + `cycleMatroid_indep` —
+  the mirror of `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`. This is the `v`-avoiding part
+  of a `G̃`-forest reduced to `G_v` transporting verbatim into `G̃ᵥᵃᵇ`.
+
 Next concrete step (still): the **rerouting half** of `lem:forest-surgery-split` (KT 4.1)
 — still the residual crux, red. The `dᶠ(v) = 2` forests swap their two `v`-edges for one fresh
 `ã̃b` copy (via `edgeFiber_subset_edgeSet_mulTilde_splitOff`); the `v`-traversing tree-path lift
@@ -240,10 +261,11 @@ Forest surgery (hard core):
   `lem:forest-packing-decomp`. **Substrate landed** (`edgeFiber_ncard`,
   `edgeSet_splitOff`, `edgeFiber_subset_edgeSet_mulTilde_splitOff`, and now the
   degree substrate `fiberAtVertex` / `mulTilde_inc` / `fiberAtVertex_inter_edgeSet[_ncard]`
-  / `fiberDegree` / `fiberDegree_{mono,le}`, and the **no-reroute acyclicity half**
-  `mulTilde_splitOff_deleteFiber_le` + `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`); the
-  acyclicity-preserving *reroute* (the `dᶠ(v)=2` swap) + `h' ≤ D−2` disjointness count remain
-  (no blueprint node yet — node stays red).
+  / `fiberDegree` / `fiberDegree_{mono,le}`, and **both directions of the no-reroute acyclicity
+  half** — forward `mulTilde_splitOff_deleteFiber_le` + `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`,
+  reverse `mulTilde_removeVertex_le_splitOff` + `isAcyclicSet_mulTilde_splitOff_of_removeVertex`);
+  the acyclicity-preserving *reroute* (the `dᶠ(v)=2` `ã̃b`-swap) + `h' ≤ D−2` disjointness count
+  remain (no blueprint node yet — node stays red).
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction
   (the inverse; makes split/unsplit inverse on deficiency).
 
@@ -369,24 +391,28 @@ edge set of the short-circuit splitting-off), and
 These are the quantities KT 4.1's count and reroute consume (`|ã̃b| = D − 1`, the target edge set,
 the short-circuit fiber, and the per-forest degree count).
 
-And now landed (axiom-free, **no blueprint node** — first half of the surgery's acyclicity
-crux, still feeding the red `lem:forest-surgery-split`): the **no-reroute acyclicity transport**
-— `Graph.mulTilde_splitOff_deleteFiber_le` (deleting the fresh fiber `ã̃b` from the multiplied
-splitting-off `G̃ᵥᵃᵇ` lands inside `G̃`) and `Graph.isAcyclicSet_mulTilde_of_splitOff_of_disjoint`
-(a cycle-matroid-acyclic `F` of `G̃ᵥᵃᵇ` *disjoint from `ã̃b`* is acyclic in `G̃`). This is the
-`dᶠ(v) ≤ 1` forests of the surgery — they drop their single `v`-edge and survive verbatim inside
-`G̃`, no rerouting. Routes through `IsAcyclicSet.mono` + `cycleMatroid_indep`.
+And now landed (axiom-free, **no blueprint node** — both no-reroute acyclicity directions,
+still feeding the red `lem:forest-surgery-split`): the **no-reroute acyclicity transport**, both
+ways across the short-circuit. Forward (`G̃ᵥᵃᵇ→G̃`): `Graph.mulTilde_splitOff_deleteFiber_le`
+(deleting the fresh fiber `ã̃b` from `G̃ᵥᵃᵇ` lands inside `G̃`) +
+`Graph.isAcyclicSet_mulTilde_of_splitOff_of_disjoint` (an acyclic `F` of `G̃ᵥᵃᵇ` *disjoint from
+`ã̃b`* is acyclic in `G̃`). Reverse (`G̃→G̃ᵥᵃᵇ`, this commit, given freshness `e₀ ∉ E(G)`):
+`Graph.mulTilde_removeVertex_le_splitOff` (the multiplied vertex-removal `(G_v)̃ ≤ G̃ᵥᵃᵇ`, both
+on `V(G)\{v}`, definitional vertex side) + `Graph.isAcyclicSet_mulTilde_splitOff_of_removeVertex`
+(an acyclic `F` of `(G_v)̃` is acyclic in `G̃ᵥᵃᵇ`, no `ã̃b`-disjointness needed). These are the
+`dᶠ(v) ≤ 1` forests (drop their single `v`-edge, survive verbatim in either direction). Both
+mirrors route through `IsAcyclicSet.mono` + `cycleMatroid_indep`.
 
-Next agent's concrete commit: the **rerouting half** of `lem:forest-surgery-split` (KT 4.1),
-still red — the genuine residual crux. The framing (`lem:forest-packing-decomp`), the incidence
-substrate, the **degree substrate** (`fiberDegree` / `fiberDegree_le`, `dᶠ(v) ≤ 2(D−1)`), and
-now the **no-reroute acyclicity half** are all in place. What remains: the `dᶠ(v)=2` forests
-swap their two `v`-edges for one fresh `ã̃b` copy (via `edgeFiber_subset_edgeSet_mulTilde_splitOff`),
-which `isAcyclicSet_mulTilde_of_splitOff_of_disjoint` does **not** cover (it assumes `F` avoids
-`ã̃b`). The reroute needs the `v`-traversing path lift — a `G̃ᵥᵃᵇ`-cycle *using* `ã̃b` lifts to a
-`v`-traversing path of `G̃` (via the `Matroid/Graph/AcyclicSet.lean` `not_isAcyclicSet_iff` cycle
-characterization, `cycleMatroid_indep = IsAcyclicSet`) — plus the assembly `|I'| = |I| − D` and
-the `h' ≤ D−2` edge-disjointness count of the `ã̃b` copies (bounded via `edgeFiber_ncard`).
-Multi-commit; budget the most time. After `-split`, its inverse `lem:forest-surgery-unsplit`
-(KT 4.2) makes split/unsplit inverse on the deficiency, then the dof-tracking chain (4.3–4.8)
-and Theorem 4.9.
+Next agent's concrete commit: the genuine **rerouting half** of `lem:forest-surgery-split`
+(KT 4.1), still red — the residual crux. The framing (`lem:forest-packing-decomp`), the incidence
+substrate, the **degree substrate** (`fiberDegree` / `fiberDegree_le`, `dᶠ(v) ≤ 2(D−1)`), and now
+**both directions of the no-reroute acyclicity half** are all in place. What remains: the
+`dᶠ(v)=2` forests swap their two `v`-edges for one fresh `ã̃b` copy (via
+`edgeFiber_subset_edgeSet_mulTilde_splitOff`), which neither acyclicity mirror covers (each
+assumes `F` avoids `ã̃b`). The reroute needs the `v`-traversing path lift — a `G̃ᵥᵃᵇ`-cycle
+*using* `ã̃b` lifts to a `v`-traversing path of `G̃` (via the `Matroid/Graph/AcyclicSet.lean`
+`not_isAcyclicSet_iff` cycle characterization, `cycleMatroid_indep = IsAcyclicSet`) — plus the
+assembly `|I'| = |I| − D` and the `h' ≤ D−2` edge-disjointness count of the `ã̃b` copies (bounded
+via `edgeFiber_ncard`). Multi-commit; budget the most time. After `-split`, its inverse
+`lem:forest-surgery-unsplit` (KT 4.2) makes split/unsplit inverse on the deficiency, then the
+dof-tracking chain (4.3–4.8) and Theorem 4.9.
