@@ -433,15 +433,41 @@ optimistic — prop11 needs this analytic link in addition. The node prose in
 `rigidity-matrix.tex` is updated to flag the split (matroidal half done, analytic half
 scheduled with the algebraic induction, Phase 21+).
 
-**Next concrete step / remaining Phase-19 work.** The Phase-19 `deficiency.tex` chapter is
-complete. Two structural deliverables flagged off the original critical path remain, both
-**early-Phase-20** (not blocking Phase 20's opening): (i) the *full* KT 3.4 (`G[V(X)]` rigid,
-the tightness *equality* `|X−e| = D(|V(X)|−1)`), needing a vertex-induced-subgraph-from-an-
-edge-set construction (no existing `Graph α β` analogue) — now unblocked since the JJ09
-reverse `le_rank_add_deficiency` supplies the lower bound it was waiting on; (ii) KT 3.5
-(rigid-subgraph contraction preserves minimality — Case I engine). If the next agent treats
-this commit as phase-closing, run the phase-close checklist (ROADMAP status ✓, sync README /
-home_page / intro.tex, re-read `deficiency.tex` end-to-end); otherwise pick up (i) or (ii).
+**Next concrete step — CLOSE PHASE 19 (user decision, 2026-06-02).** The `deficiency.tex`
+chapter is fully green; the user has ratified closing the phase and **relocating
+`prop:rigidity-matrix-prop11` forward** out of the completed Phase-18 chapter. The closing
+commit(s) do, on top of the standard per-commit checklist:
 
-Phase 20 (combinatorial induction → Theorem 4.9) is unblocked: `M(G̃)`, deficiency,
+1. **Relocate `prop:rigidity-matrix-prop11` forward.** It is a top-of-DAG reconciliation
+   corollary (KT Prop 1.1, stated in KT §1 as a signpost but dependent on the analytic
+   generic-rank theorem); leaving a red node stranded in the otherwise-complete Phase-18
+   `rigidity-matrix.tex` reads as "stuck in Phase 18". Remove the `\begin{proposition}`
+   node (`rigidity-matrix.tex` ~ll. 248–286) and rewrite the §*Status* paragraph
+   (~ll. 24–36) so the chapter reads as a **complete** Phase-18 chapter (no dangling red
+   node, no "deferred to Phase 19"); fix the dangling `\cref{prop:rigidity-matrix-prop11}`
+   in `deficiency.tex` (the "this bridge closes the reconciliation node" sentence) to a
+   forward-pointing prose note. Re-home prop11 as a **planned Phase-21+ deliverable** of the
+   algebraic-induction chapter in `notes/MolecularConjecture.md` (its analytic half =
+   `rank R(G,p) = D(|V|−1) − def(G̃)`, the genericity/generic-max-rank argument deferred
+   since Phase 15–16, lands with Claim 6.4); the node itself gets (re)created in that phase's
+   chapter when Phase 21 opens. Run the blueprint static checks (`blueprint/verify.sh` +
+   the `\uses`/`\cref` label check) so no reference dangles.
+2. **Run the full phase-close checklist** (top-level `CLAUDE.md` *When this commit closes a
+   phase*): flip the ROADMAP §19 row to ✓ and compress its §19 planning section to a
+   one-paragraph summary + pointer to this file; sync the three user-facing surfaces
+   (`README.md` *Project status*; `home_page/index.md` status prose + phase table;
+   `intro.tex` phase-plan prose + enumerate + dep-graph-status line) flipping Phase 19 → ✓;
+   re-read `deficiency.tex` end-to-end as a domain mathematician and collapse any accumulated
+   per-commit formalization asides (basis-free-narration anti-pattern per `blueprint/CLAUDE.md`
+   *Proof verbosity*); review project organization (re-skim ROADMAP / TACTICS-GOLF /
+   TACTICS-QUIRKS / FRICTION; check this file against the lift-on-promotion threshold).
+3. **Record the forward-scheduled deliverables in their homes**, so the hand-off contract
+   stays honest: full KT 3.4 (`G[V(X)]` rigid, tightness *equality*; vertex-induced-subgraph
+   construction — now unblocked, the JJ09 reverse `le_rank_add_deficiency` supplies the
+   lower bound it waited on) and KT 3.5 (contraction preserves minimality, Case I engine)
+   → **early Phase 20**; `prop:rigidity-matrix-prop11` → **Phase 21+**. These belong in
+   `notes/MolecularConjecture.md` *Phase 20* / *Phase 21*, not stranded under closed Phase 19.
+
+This may be one closing commit or split across two (e.g. relocation + checklist); use
+judgment. Phase 20 (combinatorial induction → Theorem 4.9) is unblocked: `M(G̃)`, deficiency,
 and the def = corank bridge are all green.
