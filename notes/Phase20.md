@@ -9,9 +9,10 @@ its counting half (`isBase_vfiber_ncard_ge`), redistribution half
 and the descent's **outer loop** (`exists_balanced_forest_packing`: a base admits a balanced
 `D`-forest packing) are all green, and **both reroute wiring steps now landed** — step 1
 (`isAcyclicSet_splitOff_of_diff_fiberAtVertex`, the `v`-free part) and step 2
-(`isAcyclicSet_splitOff_reroute`, the genuinely-hard `dᶠ(v)=2` cycle-lift). The only piece left
-toward `lem:forest-surgery-split` itself is the per-`D`-forest **bookkeeping assembly** (stitch the
-two maps + read off the deficiency relation); the node stays red. See the *TODO* Progress *VERDICT*.
+(`isAcyclicSet_splitOff_reroute`, the genuinely-hard `dᶠ(v)=2` cycle-lift). The per-`D`-forest
+**bookkeeping assembly** that closes the node — `Graph.forest_surgery_split`, stitching the two
+maps into a `G̃ᵥᵃᵇ` forest packing + reading off `def(G̃ᵥᵃᵇ) ≤ def(G̃)` — is now landed
+(2026-06-03), so **`lem:forest-surgery-split` is GREEN**. See the *TODO* Progress *VERDICT*.
 
 This phase is stratum 4 of the molecular-conjecture program (KT §3
 Lemmas 3.4/3.5 full forms, §4). The program-level plan, reuse map,
@@ -319,10 +320,14 @@ steps now landed**: step 1 `isAcyclicSet_splitOff_of_diff_fiberAtVertex` (the `v
 step. A `G̃ᵥᵃᵇ`-cycle through the inserted short-circuit copy `r` is rotated so `r` is first,
 then `r` (joining `a,b`) is substituted by the `v`-traversing 2-path `a—pa—v—pb—b` of `G̃`, giving
 a closed `G̃`-trail inside `F` that contains a `G̃`-cycle (`IsTour.exists_isCyclicWalk`),
-contradicting `F`'s acyclicity. **The only remaining piece toward `lem:forest-surgery-split` itself
-is the bookkeeping assembly** — stitching the two per-forest acyclicity maps over all `D` forests
-into a `G̃ᵥᵃᵇ` packing and reading off the deficiency relation. None of this is needed for Theorem
-4.9. (Substrate lemmas are not blueprint nodes; the node stays red until the assembly lands.)
+contradicting `F`'s acyclicity. **The per-`D`-forest bookkeeping assembly that closes the node
+is now landed:** `Graph.forest_surgery_split` (green `\leanok`, axiom-free) stitches the two
+per-forest maps over all `D` forests into an edge-disjoint `G̃ᵥᵃᵇ` forest packing (each `v`-free
+part via step 1; the `dᶠ(v)=2` forests' swap via step 2; distinct fresh `ã̃b`-copies + the
+single-copy cap `fiber_inter_subsingleton_of_isAcyclicSet_splitOff` keep it edge-disjoint), so the
+rerouted union of a base is `M(G̃ᵥᵃᵇ)`-independent — reading off `def(G̃ᵥᵃᵇ) ≤ def(G̃)` (= the
+green `splitOff_deficiency_le`). **`lem:forest-surgery-split` is now GREEN.** None of this is needed
+for Theorem 4.9. (The step-1/step-2/cap substrate lemmas are not blueprint nodes.)
 
 **Commit F′ landed (`no_rigid_edge_count`, KT 4.5(i) edge bound; `lem:no-rigid-edge-count`
 GREEN).** The KT 4.5(i) edge bound `(D−1)|E| < D(|V|−1)+(D−1)` for a minimal 0-dof-graph
@@ -595,9 +600,23 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   sets. `Graph.matroidMG_indep_iff_exists_forest_packing`. Green and still
   generally useful (and `def:matroid-MG`'s union form is the engine of the
   deficiency route too).
-- [ ] `lem:forest-surgery-split` — KT 4.1, splitting-off direction.
-  **DEFERRED**: blocked on the balanced-packing lemma KT glosses (*Finding*);
-  *not* needed for Theorem 4.9 (deficiency route replaces it). Substrate
+- [x] `lem:forest-surgery-split` — KT 4.1, splitting-off direction. **GREEN
+  `\leanok`** (`Graph.forest_surgery_split`, axiom-free; off the Theorem-4.9
+  critical path — the deficiency route already delivered Thm 4.9). The
+  per-`D`-forest bookkeeping **assembly** that closes the node: an edge-disjoint
+  `D`-forest packing of `G̃` covering an `M(G̃)`-independent `I`, plus per-forest
+  reroute data (a distinct fresh `ã̃b`-copy `r i`; the two `v`-fibers `pa i`/`pb i`
+  for the `dᶠ(v)=2` forests), reroutes — forest by forest — to an edge-disjoint
+  `D`-forest packing of `G̃ᵥᵃᵇ` covering `I ∖ fiberAtVertex v`, hence an
+  `M(G̃ᵥᵃᵇ)`-independent set; on a base this reads off
+  `def(G̃ᵥᵃᵇ) ≤ def(G̃)` (= the green `splitOff_deficiency_le`). Stitches step 1
+  (`isAcyclicSet_splitOff_of_diff_fiberAtVertex`, every forest's `v`-free part) +
+  step 2 (`isAcyclicSet_splitOff_reroute`, the `dᶠ(v)=2` swap); edge-disjointness
+  from distinct `r i` (`hr_inj`) being absent from any `G`-forest (`e₀ ∉ E(G)`),
+  each forest capped at one `ã̃b`-copy by
+  `fiber_inter_subsingleton_of_isAcyclicSet_splitOff`. The reroute data's
+  existence is the balanced packing (`exists_balanced_forest_packing`) + per-forest
+  degree classification. Substrate (still retained)
   landed (`edgeFiber_ncard`, `edgeSet_splitOff`,
   `edgeFiber_subset_edgeSet_mulTilde_splitOff`; degree substrate
   `fiberAtVertex` / `mulTilde_inc` / `fiberAtVertex_inter_edgeSet[_ncard]` /
@@ -624,10 +643,11 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   through `r` rotates so `r` is first (`WList.exists_rotate_firstEdge_eq`), substitutes `r` (joining
   `a,b`) by the `v`-traversing 2-path `a—pa—v—pb—b` of `G̃` (the surviving `w'` lifts to `G̃` via
   `mulTilde_splitOff_deleteFiber_le`), giving a closed `G̃`-trail inside `F` that contains a
-  `G̃`-cycle (`IsTour.exists_isCyclicWalk` + `IsSublist.edge_subset`) — contradiction. **The only
-  remaining piece toward `lem:forest-surgery-split` itself is the bookkeeping assembly:** stitch the
-  two per-forest maps over all `D` forests into a `G̃ᵥᵃᵇ` packing and read off the deficiency
-  relation. Off the Thm-4.9 critical path. FRICTION (`[matroid] Cycle-lift by edge-substitution…`)
+  `G̃`-cycle (`IsTour.exists_isCyclicWalk` + `IsSublist.edge_subset`) — contradiction. The
+  per-`D`-forest **bookkeeping assembly** that stitches these two maps over all forests into a
+  `G̃ᵥᵃᵇ` packing and reads off the deficiency relation is `Graph.forest_surgery_split`
+  (the node, now green; see the `lem:forest-surgery-split` checklist entry above). Off the
+  Thm-4.9 critical path. FRICTION (`[matroid] Cycle-lift by edge-substitution…`)
   / TACTICS-QUIRKS § 29. See the *TODO* Progress *VERDICT* note + *Hand-off*.
 - [x] `lem:balanced-forest-packing` — the repacking descent's **outer loop**
   (`Graph.exists_balanced_forest_packing`, green `\leanok`, axiom-free): a base `B` of `M(G̃)` admits
@@ -957,14 +977,20 @@ to schedule as Phase 21 needs them:
    `G̃` via `mulTilde_splitOff_deleteFiber_le`), and the resulting closed `G̃`-trail inside `F`
    contains a `G̃`-cycle (`IsTour.exists_isCyclicWalk` + `IsSublist.edge_subset`) — contradicting `F`
    acyclic. FRICTION (`[matroid] Cycle-lift by edge-substitution…`) / TACTICS-QUIRKS § 29.
-   **The ONLY remaining piece is the bookkeeping assembly** that closes the node: stitch the two
-   per-forest acyclicity maps over all `D` forests into a `G̃ᵥᵃᵇ` forest packing (each forest's
-   `v`-free part via step 1, and the at-most-one `dᶠ(v)=2` forest's swap via step 2, with the
-   single-`ã̃b`-copy cap `fiber_inter_subsingleton_of_isAcyclicSet_splitOff` keeping the rerouted
-   packing edge-disjoint) and read off the deficiency relation. Off the Theorem-4.9 critical path
-   (the deficiency route already delivered Thm 4.9). The substrate lemmas (steps 1/2 and the caps)
-   are not blueprint nodes; `lem:forest-surgery-split` stays red until the assembly lands. See the
-   *TODO* Progress *VERDICT* note.
+   **The bookkeeping assembly is now LANDED (2026-06-03) — `lem:forest-surgery-split` is GREEN.**
+   `Graph.forest_surgery_split` (green `\leanok`, axiom-free) stitches the two per-forest maps over
+   all `D` forests into an edge-disjoint `G̃ᵥᵃᵇ` forest packing: each forest's `v`-free part via
+   step 1, and the `dᶠ(v)=2` forests' swap via step 2, with the single-`ã̃b`-copy cap
+   `fiber_inter_subsingleton_of_isAcyclicSet_splitOff` + distinct fresh copies (`e₀ ∉ E(G)` keeps
+   each `r i` out of every `G`-forest) keeping the rerouted packing edge-disjoint. The rerouted
+   union of a base is `M(G̃ᵥᵃᵇ)`-independent, reading off `def(G̃ᵥᵃᵇ) ≤ def(G̃)` (= the green
+   `splitOff_deficiency_le`). The per-forest reroute data (which forest is `dᶠ(v)=2`, the fresh
+   copies) is supplied as input; its existence is the balanced packing
+   (`exists_balanced_forest_packing`) + per-forest degree classification. Off the Theorem-4.9
+   critical path (the deficiency route already delivered Thm 4.9). **Next addendum commit** =
+   *User-directed addendum item #1* below (the narrative-bridge `@[deprecated … (since :=
+   "narrative-bridge")]` shim deriving the KT-4.3 deficiency content from `forest_surgery_split`).
+   See the *TODO* Progress *VERDICT* note.
 
 ### User-directed addendum items (2026-06-03 coordination)
 

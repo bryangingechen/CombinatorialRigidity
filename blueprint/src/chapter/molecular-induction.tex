@@ -459,49 +459,39 @@ instead by a direct deficiency-count argument
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
   \label{lem:forest-surgery-split}
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, lem:packing-move, lem:balanced-forest-packing, rem:kt-lemma-41}
-  \emph{Deferred / off the Theorem-4.9 critical path}
-  (\cref{rem:kt-lemma-41}): its substrate is formalized in
-  \texttt{Molecular/Induction.lean}. The balanced-packing assumption of
-  \cref{rem:kt-lemma-41}~(2) that KT's proof glosses is now fully
-  \emph{discharged}: both halves --- the counting half
-  (\cref{lem:base-vfiber-count}: a base meets $\ge D$ of $v$'s fibers) and the
-  redistribution half (\cref{lem:acyclic-insert-vfiber}: a $v$-avoiding forest
-  absorbs a free $v$-fiber as a pendant) --- their rebalancing move
-  (\cref{lem:packing-move}), and the descent's \emph{outer loop} that iterates
-  the move to a balanced packing (\cref{lem:balanced-forest-packing}) are all
-  formalized, confirming the missing step is a gap, not an error. What remains
-  unformalized is only the final wiring: rerouting the balanced packing of
-  $\tilde G$ across $v$ to produce the $\widetilde{G_v^{ab}}$ packing. Both
-  per-forest acyclicity steps are now landed. The $v$-free part of each balanced
-  forest --- the fibers KT's surgery keeps untouched --- transports verbatim
-  into $\widetilde{G_v^{ab}}$
-  (\texttt{isAcyclicSet\_splitOff\_of\_diff\_fiberAtVertex}, via
-  \texttt{isAcyclicSet\_mulTilde\_splitOff\_of\_removeVertex}). And the
-  genuinely-hard step --- the degree-2-at-$v$ forest swapping its two $v$-edges
-  $pa,pb$ for one short-circuit copy $r$ --- stays acyclic by a cycle-lift:
-  any $\widetilde{G_v^{ab}}$-cycle through $r$ is rotated to put $r$ first,
-  then $r$ (joining $a,b$) is substituted by the $v$-traversing 2-path
-  $a$-$pa$-$v$-$pb$-$b$ of $\tilde G$, yielding a closed $\tilde G$-trail inside
-  $F$ that contains a $\tilde G$-cycle, contradicting $F$'s acyclicity
-  (\texttt{isAcyclicSet\_splitOff\_reroute}). What remains is only the
-  bookkeeping assembly: stitching the two per-forest maps over all $D$ forests
-  and reading off the deficiency relation. The induction toward Theorem~4.9
-  meanwhile uses \cref{lem:splitoff-deficiency}.
-  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
-  packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
-  the fibers not incident to $v$ and rerouted across $v$, induces a
-  packing of $\widetilde{G_v^{ab}}$, with the deficiency changing in a
-  controlled way. Concretely the surgery rewires the $D-1$ fibers of
-  one of $v$'s edges through $v$ onto the new edge $ab$.
+  \lean{Graph.forest_surgery_split}
+  \leanok
+  \uses{def:graph-operations, def:matroid-MG, lem:forest-packing-decomp, lem:balanced-forest-packing, lem:splitoff-deficiency, rem:kt-lemma-41}
+  \emph{Off the Theorem-4.9 critical path} (\cref{rem:kt-lemma-41}): the
+  induction toward Theorem~4.9 uses the deficiency-count
+  \cref{lem:splitoff-deficiency} instead. Let $v$ be a degree-2 vertex of $G$
+  with distinct neighbours $a, b$ and $e_0 \notin E(G)$ a fresh edge. Given an
+  edge-disjoint packing of $\tilde G$ into $D$ forests covering an
+  $M(\tilde G)$-independent set $I$, the \emph{surgery} reroutes each forest
+  across $v$: it discards the forest's fibers incident to $v$, and a forest that
+  uses both of $v$'s edges trades them for a single copy of the short-circuit
+  fiber $\widetilde{ab}$. The rerouted family is again an edge-disjoint packing
+  into $D$ forests --- now of $\widetilde{G_v^{ab}}$ --- covering the $v$-free
+  part of $I$, hence an independent set of $M(\widetilde{G_v^{ab}})$. Applied to
+  a base $I$ this reads off the splitting-off deficiency relation
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G)$.
+  The balanced packing in which every forest meets $v$
+  (\cref{lem:balanced-forest-packing}) supplies the per-forest reroute data,
+  confirming that the assumption \cref{rem:kt-lemma-41}~(2) KT's proof glosses is
+  a gap, not an error.
 \end{lemma}
 \begin{proof}
-  Explicit forest surgery: each of the $D$ spanning forests of $\tilde
-  G$ uses some subset of the $2(D-1)$ fibers at $v$; rerouting a
-  $v$-traversing tree-path across the short-circuit $ab$ keeps each
-  forest acyclic and edge-disjoint. The bookkeeping is the hard new
-  combinatorial core of Phase~20; no existing analogue in the project
-  or mathlib.
+  \leanok
+  The part of each forest avoiding $v$ is a set of fibers of non-$v$-edges of
+  $G$, so it transports verbatim into $\widetilde{G_v^{ab}}$. A forest using
+  both $v$-edges $pa, pb$ replaces them by one copy $r$ of $\widetilde{ab}$:
+  any $\widetilde{G_v^{ab}}$-cycle through $r$ rotates to put $r$ first, and
+  substituting the $v$-traversing $2$-path $a$-$pa$-$v$-$pb$-$b$ for $r$
+  produces a closed $\tilde G$-trail inside the forest, hence a $\tilde
+  G$-cycle, contradicting acyclicity. Distinct copies $r$ across forests, each
+  forest absorbing at most one (two parallel copies form a $2$-cycle), keep the
+  rerouted forests edge-disjoint. Their union is a forest packing of
+  $\widetilde{G_v^{ab}}$, so an independent set of $M(\widetilde{G_v^{ab}})$.
 \end{proof}
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, edge-splitting direction; KT Lemma 4.2]
