@@ -76,6 +76,25 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `[matroid]` contraction rank arithmetic already lives in vendored `Matroid.Minor.Rank`; the `cast_int` form's RHS is ℤ-subtraction, annotate as such
+- **Where it bit:** `Matroid.rank_contract_add_rank_restrict` in
+  `Molecular/Induction.lean` (Phase 20 `lem:contraction-minimality` contraction
+  arithmetic). The standard matroid identity `r(M/C) = r(M) − r_M(C)` is **not**
+  in mathlib's `Matroid` minor files, but the vendored `apnelson1/Matroid`
+  package's `Matroid/Minor/Rank.lean` already carries it: `contract_rk_add_eq`
+  (`(M／C).rk X + M.rk C = M.rk (X∪C)`) and the `@[simp]`
+  `contract_rank_cast_int_eq` (`((M／C).rank : ℤ) = M.rank − M.rk C`). No need to
+  re-derive via the `eRelRk_add_eRk_eq` chain rule — search the vendored
+  `Minor/Rank.lean` first. Also `restrict_rk_eq M subset_rfl` gives
+  `(M↾C).rank = M.rk C` (via `(M↾C).E = C`).
+- **Fix / general lesson:** `contract_rank_cast_int_eq`'s RHS is `↑M.rank − ↑(M.rk C)`
+  (ℤ-`Sub`), **not** `↑(M.rank − M.rk C)` (cast of ℕ-truncated-sub) — annotating the
+  `have` as the latter is a type mismatch. Write the `have` type with explicit ℤ
+  casts on each atom (`(M.rank : ℤ) − (M.rk C : ℤ)`) and close the ℕ goal with
+  `omega` (it bridges the ℕ `restrict` fact and the ℤ `contract` fact). General:
+  for the vendored package's `*_cast_int_eq` rank lemmas, the int form uses honest
+  ℤ-subtraction; keep atoms ℤ-cast and let `omega` reconcile.
+
 ### [resolved] A hand-rolled `Graph α β` with several fresh edge labels needs a distinctness guard baked into a clause, or `eq_or_eq_of_isLink_of_isLink` is unprovable
 - **Where it bit:** `Graph.edgeSplit` in `Molecular/Induction.lean` (Phase 20
   `def:graph-operations`). Edge-splitting subdivides `e₀` into a path `a–v–b`

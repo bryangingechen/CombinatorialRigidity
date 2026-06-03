@@ -182,6 +182,49 @@ theorem rank_matroidMG_of_isKDof_zero [DecidableEq β] [Finite α] [Finite β] {
   rw [hrigid] at hbridge
   simpa using hbridge
 
+/-! ## The matroid contraction rank bridge (`lem:contraction-minimality`, contraction arithmetic)
+
+The graph↔matroid side of KT Lemma 3.5: contracting a rigid subgraph `H` removes exactly
+`rank M(H̃) = D(|V(H)| − 1)` from `rank M(G̃)`. On the matroid this is the rank-conservation
+identity for a contraction, `rank(M ／ C) + rank(M ↾ C) = rank M`, specialized to
+`C = E(H̃)` via the restriction identity `M(G̃) ↾ E(H̃) = M(H̃)` (`matroidMG_restrict_mulTilde`,
+Phase 19). The rank-conservation identity is the abstract matroid chain rule
+`eRelRk C M.E + eRk C = eRk M.E` (`Matroid.eRelRk_add_eRk_eq`), read through
+`(M ／ C).eRank = eRelRk C M.E` and `(M ↾ C).eRank = eRk C`; together with the rank core
+`rank_matroidMG_of_isKDof_zero` it pins the rank contraction removes, the input to the
+deficiency-conservation half of `lem:contraction-minimality`. -/
+
+/-- **Contraction rank-conservation** for a matroid: `rank(M ／ C) + rank(M ↾ C) = rank M`
+in a rank-finite matroid. This is the standard matroid identity `r(M/C) = r(M) − r_M(C)`
+in additive form, the contraction arithmetic the rigid-subgraph contraction of
+Katoh–Tanigawa 2011 Lemma 3.5 runs on. The contraction half is the vendored relative-rank
+identity `Matroid.contract_rank_cast_int_eq` (`r(M/C) = r(M) − r_M(C)`); the restriction's
+rank is `r_M(C)` since `(M ↾ C).E = C` (`Matroid.restrict_rk_eq`). -/
+theorem _root_.Matroid.rank_contract_add_rank_restrict {γ : Type*} (M : Matroid γ)
+    [M.RankFinite] (C : Set γ) :
+    (M ／ C).rank + (M ↾ C).rank = M.rank := by
+  have hrestrict : (M ↾ C).rank = M.rk C := by
+    rw [Matroid.rank_def, Matroid.restrict_ground_eq, Matroid.restrict_rk_eq M subset_rfl]
+  have hcontract : ((M ／ C).rank : ℤ) = (M.rank : ℤ) - (M.rk C : ℤ) := M.contract_rank_cast_int_eq C
+  omega
+
+/-- **The contraction rank bridge for `M(G̃)`** (`lem:contraction-minimality`, contraction
+arithmetic; Katoh–Tanigawa 2011 Lemma 3.5). For a subgraph `H ≤ G`, contracting the
+edge-fibers `E(H̃)` in `M(G̃)` removes exactly `rank M(H̃)`:
+`rank(M(G̃) ／ E(H̃)) + rank M(H̃) = rank M(G̃)`. The restriction `M(G̃) ↾ E(H̃)` is
+`M(H̃)` (`matroidMG_restrict_mulTilde`, Phase 19), so this is the abstract contraction
+rank-conservation `Matroid.rank_contract_add_rank_restrict` read through that identity.
+Combined with the rank core `rank_matroidMG_of_isKDof_zero` (rigid `H` ⟹
+`rank M(H̃) = D(|V(H)| − 1)`), it pins the rank contraction of a *rigid* subgraph removes
+from `rank M(G̃)` — the deficiency-conservation input of KT 3.5's Case-I engine. -/
+theorem contract_matroidMG_rank [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    (h : H ≤ G) (n : ℕ) :
+    ((G.matroidMG n) ／ E(H.mulTilde n)).rank + (H.matroidMG n).rank = (G.matroidMG n).rank := by
+  have hrestrict : (G.matroidMG n) ↾ E(H.mulTilde n) = H.matroidMG n :=
+    matroidMG_restrict_mulTilde h n
+  rw [← hrestrict]
+  exact (G.matroidMG n).rank_contract_add_rank_restrict _
+
 /-! ## Graph operations (`def:graph-operations`, `def:rigid-contraction`)
 
 The four operations on `Graph α β` that drive the Katoh–Tanigawa induction

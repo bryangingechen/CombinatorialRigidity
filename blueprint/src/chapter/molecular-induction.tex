@@ -82,9 +82,32 @@ and Theorem~4.9.
   - 1)$) with $\operatorname{def}(\tilde H) = 0$ from rigidity.
 \end{proof}
 
+\begin{lemma}[Contraction rank bridge; KT Lemma 3.5, contraction arithmetic]
+  \label{lem:contract-rank-bridge}
+  \lean{Graph.contract_matroidMG_rank}
+  \leanok
+  \uses{def:rigid-contraction, def:matroid-MG, lem:matroid-restrict-subgraph}
+  For a subgraph $H \le G$, contracting the edge-fibers $E(\tilde H)$ in
+  $M(\tilde G)$ removes exactly $\operatorname{rank} M(\tilde H)$:
+  \[
+    \operatorname{rank}\bigl(M(\tilde G) / E(\tilde H)\bigr)
+      + \operatorname{rank} M(\tilde H)
+      = \operatorname{rank} M(\tilde G).
+  \]
+\end{lemma}
+\begin{proof}
+  \leanok
+  The standard matroid identity $\operatorname{rank}(M / C) =
+  \operatorname{rank} M - \operatorname{rank}_M(C)$ in additive form, on
+  $M = M(\tilde G)$ and $C = E(\tilde H)$. The restriction $M(\tilde G)
+  \restriction E(\tilde H)$ is $M(\tilde H)$
+  (\cref{lem:matroid-restrict-subgraph}), whose rank is
+  $\operatorname{rank}_{M(\tilde G)}(E(\tilde H))$.
+\end{proof}
+
 \begin{lemma}[Rigid-subgraph contraction preserves minimality; KT Lemma 3.5]
   \label{lem:contraction-minimality}
-  \uses{def:rigid-subgraph, lem:subgraph-minimality, def:k-dof, lem:rigid-full-rank}
+  \uses{def:rigid-subgraph, lem:subgraph-minimality, def:k-dof, lem:rigid-full-rank, lem:contract-rank-bridge}
   Let $G$ be a minimal $k$-dof-graph and let $H$ be a proper rigid
   subgraph of $G$. Then the contraction $G / E(H)$ (collapse $V(H)$ to
   a single vertex, keeping the edges of $G$ incident to $V(H)$ from
@@ -92,11 +115,12 @@ and Theorem~4.9.
   This is the engine of Case~I of the algebraic induction.
 \end{lemma}
 \begin{proof}
-  \uses{lem:rigid-full-rank}
+  \uses{lem:rigid-full-rank, lem:contract-rank-bridge}
   Contracting a rigid subgraph removes $D(|V(H)| - 1)$ from both the
-  rank of $M(\tilde G)$ and the ambient $D(|V| - 1)$
-  (\cref{lem:rigid-full-rank}), so the corank --- hence the deficiency
-  (\cref{thm:def-eq-corank}) --- is unchanged.
+  rank of $M(\tilde G)$ (\cref{lem:contract-rank-bridge}, since
+  $\operatorname{rank} M(\tilde H) = D(|V(H)| - 1)$ by
+  \cref{lem:rigid-full-rank}) and the ambient $D(|V| - 1)$, so the corank
+  --- hence the deficiency (\cref{thm:def-eq-corank}) --- is unchanged.
   Minimality (every base of the contracted matroid meets every
   edge-fiber) transports from $G$ along the contraction, using the
   subgraph-minimality machinery of \cref{lem:subgraph-minimality}.

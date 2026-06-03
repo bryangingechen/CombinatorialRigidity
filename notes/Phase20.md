@@ -52,13 +52,29 @@ Now also green: `lem:rigid-full-rank` (`Graph.rank_matroidMG_of_isKDof_zero`), t
 `rank M(H̃) = D(|V(H)| − 1)`. Four-line corollary of Phase 19's `rank_add_deficiency_eq`
 (def\,=\,corank) with `def = 0`. This is the rank quantity contraction removes.
 
-Next concrete step: the rest of `lem:contraction-minimality` (KT 3.5) — it needs the
-**graph↔matroid contraction bridge** relating the multiplied contracted graph
-`(G/E(H))̃` to `M(G̃) / E(H̃)` (undeveloped: `rigidContract` is a `deleteEdges` + `map`
-vertex-collapse, and `Matroid.map` of a `cycleMatroid` union is not yet a developed
-correspondence in-repo), then deficiency conservation (rank core + `Matroid.contract`
-rank arithmetic) + minimality transport (fundamental-circuit swaps). The forest-surgery
-core (4.1/4.2) is the budget-the-most-time piece, scheduled after KT 3.5.
+And now green: `lem:contract-rank-bridge` (`Graph.contract_matroidMG_rank`), the
+**matroid contraction arithmetic** of KT 3.5 — `rank(M(G̃) / E(H̃)) + rank M(H̃) =
+rank M(G̃)` for `H ≤ G`. This is the *matroid* side of the contraction bridge (the
+graph-collapse `Matroid.map` correspondence the earlier hand-off worried about turned
+out **not needed**): contraction in `M(G̃)` is the abstract matroid-rank identity
+`rank(M/C) = rank M − rank_M(C)`, and the restriction `M(G̃) ↾ E(H̃)` is `M(H̃)`
+(Phase 19's `matroidMG_restrict_mulTilde`). Both pieces already existed — the
+`rank(M/C)` identity is in the vendored `Matroid/Minor/Rank.lean`
+(`contract_rank_cast_int_eq`), so the bridge is a 5-line composition + a 4-line abstract
+adapter `Matroid.rank_contract_add_rank_restrict`. Combined with the rank core this pins
+the rank a *rigid* subgraph's contraction removes.
+
+Next concrete step: the rest of `lem:contraction-minimality` (KT 3.5) — **deficiency
+conservation** (assemble `contract_matroidMG_rank` + rank core + def\,=\,corank into
+`def((G/E(H))̃) = def(G̃)`) and **minimality transport** (every base of the contracted
+matroid meets every surviving edge-fiber — fundamental-circuit swaps via
+`Matroid.fundCircuit` + the subgraph-minimality machinery). The remaining wrinkle: the
+contracted *graph* `(G.rigidContract H r).mulTilde n` vs. the *matroid* contraction
+`M(G̃) / E(H̃)` — `contract_matroidMG_rank` works purely on the matroid side, so KT 3.5's
+deficiency/minimality statement only needs `def`/base facts about `M(G̃) / E(H̃)`, not a
+graph↔matroid `map` correspondence (state `lem:contraction-minimality` against the matroid
+contraction directly, matching how KT's proof reasons). The forest-surgery core (4.1/4.2)
+is the budget-the-most-time piece, scheduled after KT 3.5.
 
 ## Architectural choices made up front
 
@@ -93,9 +109,15 @@ Inherited from Phase 19 (schedule early):
 - [x] `lem:rigid-full-rank` — KT 3.5 rank core: a rigid subgraph `H`
   (`def(H̃) = 0`) attains full rank `rank M(H̃) = D(|V(H)| − 1)`.
   `Graph.rank_matroidMG_of_isKDof_zero`; 4-line corollary of `rank_add_deficiency_eq`.
+- [x] `lem:contract-rank-bridge` — KT 3.5 contraction arithmetic:
+  `rank(M(G̃)/E(H̃)) + rank M(H̃) = rank M(G̃)` (`Graph.contract_matroidMG_rank`),
+  via the abstract adapter `Matroid.rank_contract_add_rank_restrict` + the vendored
+  `contract_rank_cast_int_eq` + Phase 19's `matroidMG_restrict_mulTilde`.
 - [ ] `lem:contraction-minimality` — KT 3.5: contracting a proper rigid
-  subgraph preserves minimal `k`-dof (Case I engine). Rank core done; remaining =
-  graph↔matroid contraction bridge + deficiency conservation + minimality transport.
+  subgraph preserves minimal `k`-dof (Case I engine). Rank core + contraction
+  arithmetic done; remaining = deficiency conservation (assemble the two) +
+  minimality transport (fundamental-circuit swaps). NO graph↔matroid `map`
+  correspondence needed — state against the matroid contraction `M(G̃)/E(H̃)`.
 
 Graph operations:
 - [x] `def:induced-span` — vertex-induced subgraph `G[V(X)]` from a fiber set
@@ -155,20 +177,28 @@ only by Case 6.1).
   `e₁,e₂` for edge-splitting). `collapseTo r S` uses `open Classical in` for the
   membership `if`. Deficiency behaviour is deferred to the later surgery nodes.
 
-- **KT 3.5 decomposed; rank core landed first.** The full
-  `lem:contraction-minimality` is multi-commit: it needs a graph↔matroid contraction
-  bridge (`(G/E(H))̃` ↔ `M(G̃)/E(H̃)`) that is undeveloped — `rigidContract` is a
-  `deleteEdges` + vertex-collapse `map`, and there is no in-repo correspondence between
-  `Matroid.map` of a `cycleMatroid` union and the multiplied collapsed graph. So this
-  commit lands the self-contained **rank core** `lem:rigid-full-rank`
-  (`rank M(H̃) = D(|V(H)| − 1)` for rigid `H`), the explicit first step of KT 3.5's
-  proof, as a 4-line corollary of Phase 19's `rank_add_deficiency_eq`. The bridge is the
-  next blocker.
+- **KT 3.5 decomposed; rank core then contraction arithmetic.** The full
+  `lem:contraction-minimality` is multi-commit. Earlier worry — a graph↔matroid `map`
+  correspondence (`(G/E(H))̃` ↔ `M(G̃)/E(H̃)`) — turned out **unnecessary**: KT's proof
+  reasons entirely on the matroid contraction `M(G̃)/E(H̃)`, so the deficiency/minimality
+  statement is stated against the matroid, not the collapsed graph `rigidContract`. Two
+  commits landed: (1) the **rank core** `lem:rigid-full-rank` (`rank M(H̃) = D(|V(H)|−1)`
+  for rigid `H`, 4-line corollary of `rank_add_deficiency_eq`); (2) the **contraction
+  arithmetic** `lem:contract-rank-bridge` (`rank(M(G̃)/E(H̃)) + rank M(H̃) = rank M(G̃)`).
+  The latter is a 5-line composition of an abstract adapter
+  `Matroid.rank_contract_add_rank_restrict` (`rank(M/C) + rank(M↾C) = rank M`, itself a
+  4-line wrap of the vendored `contract_rank_cast_int_eq` + `restrict_rk_eq`) with Phase
+  19's `matroidMG_restrict_mulTilde`. Remaining: deficiency conservation (assemble) +
+  minimality transport (fundCircuit swaps).
 
 ### Promoted to FRICTION
 - *`IsCircuit.subset_ground` for `M(G̃)` gives a restrict-ground `⊆`, defeq-but-not-
   syntactic to `E(G̃)` — ascribe once* → FRICTION `[resolved] [matroid]
   IsCircuit.subset_ground for M(G̃) …`.
+- *Contraction rank arithmetic is already in the vendored `Matroid/Minor/Rank.lean`
+  (`contract_rank_cast_int_eq`); its `cast_int` RHS is ℤ-subtraction — keep atoms ℤ-cast
+  + `omega`* → FRICTION `[resolved] [matroid] contraction rank arithmetic already lives
+  in vendored Matroid.Minor.Rank …`.
 - *Hand-rolled `Graph` with several fresh edge labels needs a distinctness guard in a
   clause, else `eq_or_eq_of_isLink_of_isLink` is unprovable* → FRICTION `[resolved] A
   hand-rolled Graph α β with several fresh edge labels …`.
@@ -185,21 +215,26 @@ Green in `Molecular/Induction.lean`, axiom-free, blueprint nodes `\leanok`:
 `def:induced-span`, `lem:circuit-induces-rigid` (KT 3.4 full form), the four
 graph operations `def:graph-operations` (`Graph.removeVertex` / `splitOff` /
 `edgeSplit`) + `def:rigid-contraction` (`Graph.rigidContract`, via the auxiliary
-`collapseTo`), and now `lem:rigid-full-rank` (`Graph.rank_matroidMG_of_isKDof_zero`,
-KT 3.5 rank core). Each op has `vertexSet_*` / `*_isLink` simp lemmas.
+`collapseTo`), `lem:rigid-full-rank` (`Graph.rank_matroidMG_of_isKDof_zero`, KT 3.5 rank
+core), and now `lem:contract-rank-bridge` (`Graph.contract_matroidMG_rank`, KT 3.5
+contraction arithmetic; abstract adapter `Matroid.rank_contract_add_rank_restrict`). Each
+op has `vertexSet_*` / `*_isLink` simp lemmas.
 
-Next agent's concrete commit: the **graph↔matroid contraction bridge** for
-`lem:contraction-minimality` (KT 3.5) — relate the multiplied contracted graph
-`(G/E(H))̃ = (G.rigidContract H r).mulTilde n` to the matroid contraction
-`M(G̃) / E(H̃)` (= `(G.matroidMG n) ／ E(H.mulTilde n)`). This is the missing piece:
-`rigidContract` is `(deleteEdges E(H)).map (collapseTo r V(H))`, so the bridge has to
-push the `Matroid.map` of the vertex-collapse through the `D`-fold `cycleMatroid` union;
-no in-repo correspondence exists yet (start by checking whether `cycleMatroid` commutes
-with `Graph.map`/`deleteEdges` in mathlib, and how `Matroid.contract` interacts with the
-union — `IsBasis.contract_indep_iff` is the likely engine). Once the bridge lands,
-deficiency conservation = `lem:rigid-full-rank` + contraction rank arithmetic, and
-minimality transport = fundamental-circuit swaps (`Matroid.fundCircuit`); together they
-close KT 3.5. The forest-surgery core (4.1/4.2, `lem:forest-surgery-split`/`-unsplit`)
-is the budget-the-most-time piece; schedule after KT 3.5. Decide the
+Next agent's concrete commit: **deficiency conservation** for `lem:contraction-minimality`
+(KT 3.5). Now that both rank facts are green, this is matroid bookkeeping: from
+`contract_matroidMG_rank` (`rank(M(G̃)/E(H̃)) + rank M(H̃) = rank M(G̃)`) and the rank core
+(`rank M(H̃) = D(|V(H)|−1)` for rigid `H`), plus def\,=\,corank
+(`rank_add_deficiency_eq`) applied to both `G̃` and the contraction, derive that
+contracting a rigid `H` leaves the deficiency unchanged — i.e. `corank(M(G̃)/E(H̃)) =
+corank M(G̃)` once the ambient `D(|V|−1)` drops by the matching `D(|V(H)|−1)`. KEY
+SIMPLIFICATION (this commit's finding): NO graph↔matroid `map` correspondence is needed —
+state `lem:contraction-minimality` against the *matroid* contraction `M(G̃)/E(H̃) =
+(G.matroidMG n) ／ E(H.mulTilde n)`, matching how KT's proof reasons; the worry about
+pushing `Matroid.map` of a vertex-collapse through the `cycleMatroid` union is moot. After
+deficiency conservation, **minimality transport** (every base of the contracted matroid
+meets every surviving edge-fiber) is the second half — fundamental-circuit swaps via
+`Matroid.fundCircuit` + the subgraph-minimality machinery (`subgraph_minimality`). The
+forest-surgery core (4.1/4.2, `lem:forest-surgery-split`/`-unsplit`) is the
+budget-the-most-time piece; schedule after KT 3.5. Decide the
 explicit-`D`-forests-vs-matroid-base framing when the first surgery node lands (see
 Blockers).
