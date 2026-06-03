@@ -168,7 +168,7 @@ theorem subset_edgeSet_mulTilde_inducedSpan {G : Graph α β} {n : ℕ}
   have hl1 : G.IsLink p.1 x y := hlink
   have hxV : x ∈ G.fiberSpan n X := ⟨p, hp, hlink.inc_left⟩
   have hyV : y ∈ G.fiberSpan n X := ⟨p, hp, hlink.inc_right⟩
-  simp only [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, inducedSpan, edgeSet_induce]
+  simp only [mem_edgeSet_mulTilde, inducedSpan, edgeSet_induce]
   exact ⟨x, y, hl1, hxV, hyV⟩
 
 /-- **A circuit induces a rigid subgraph** (`lem:circuit-induces-rigid`; Katoh–Tanigawa 2011
@@ -573,7 +573,7 @@ lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} 
     (n : ℕ) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G)) :
     edgeFiber e₀ n ⊆ E((G.splitOff v a b e₀).mulTilde n) := by
   intro p hp
-  rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq]
+  rw [mem_edgeSet_mulTilde]
   rw [edgeFiber, Set.mem_setOf_eq] at hp
   rw [hp, edgeSet_splitOff]
   exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
@@ -1154,7 +1154,7 @@ theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Gra
   have hdiffsub : B \ vfib ⊆ E(H.mulTilde n) := by
     rintro p ⟨hpB, hpnot⟩
     have hpE : p ∈ E(G.mulTilde n) := hBground hpB
-    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpE
+    rw [mem_edgeSet_mulTilde] at hpE
     -- `p.1` is a `G`-edge; it is not `eₐ`/`e_b` (else `p ∈ vfib`), hence avoids `v`.
     have hp1ne : p.1 ≠ eₐ ∧ p.1 ≠ e_b := by
       constructor <;> intro hc <;> apply hpnot
@@ -1165,7 +1165,7 @@ theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Gra
     have hxv : x ≠ v := by rintro rfl; exact absurd (hdeg2 p.1 y hlink) (by tauto)
     have hyv : y ≠ v := by rintro rfl; exact absurd (hdeg2 p.1 x hlink.symm) (by tauto)
     have hlinkH : H.IsLink p.1 x y := by rw [hH, removeVertex_isLink]; exact ⟨hlink, hxv, hyv⟩
-    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq]; exact hlinkH.edge_mem
+    rw [mem_edgeSet_mulTilde]; exact hlinkH.edge_mem
   -- Step 2: `B ∖ v-fibers` is independent in `M((G_v)̃)`, so `|B ∖ v-fibers| ≤ rank M((G_v)̃)`.
   have hdiffindepG : (G.matroidMG n).Indep (B \ vfib) := hB.indep.subset diff_subset
   have hdiffindepH : (H.matroidMG n).Indep (B \ vfib) := by
@@ -1421,7 +1421,7 @@ theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph 
   obtain ⟨e, he⟩ := hEne
   have hfiberE : edgeFiber e n ⊆ E(G.mulTilde n) := by
     intro p hp
-    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, (show p.1 = e from hp)]; exact he
+    rw [mem_edgeSet_mulTilde, (show p.1 = e from hp)]; exact he
   -- The set of bases is finite and nonempty; `h* = minₐ |ẽ ∩ B|` is attained at `Bs`.
   have hbasesFin : {B | M.IsBase B}.Finite := by
     apply Set.Finite.subset ((Set.toFinite E(G.mulTilde n)).finite_subsets)
@@ -1863,7 +1863,7 @@ theorem contract_minimality_transport [DecidableEq β] [Finite α] [Finite β] {
   · exact hpB'
   · have hpH : p.1 ∈ E(H) := by
       have hmem := hJ.subset hpJ
-      rwa [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hmem
+      rwa [mem_edgeSet_mulTilde] at hmem
     exact absurd hpH (hfiberdisj hp.2)
 
 /-! ## Rigid-subgraph contraction preserves minimality (`lem:contraction-minimality`)
@@ -1943,9 +1943,9 @@ lemma mulTilde_splitOff_deleteFiber_le {G : Graph α β} {v a b : α} {e₀ : β
     exact Set.diff_subset hx
   · -- Links: a surviving link of `G̃_v^{ab}` (`p.1 ≠ e₀`) is a link of `G̃`.
     intro p x y hp
-    simp only [deleteEdges_isLink, mulTilde, edgeMultiply_isLink, splitOff_isLink] at hp
+    simp only [deleteEdges_isLink, mulTilde_isLink, splitOff_isLink] at hp
     obtain ⟨hlink | hlink, hpfiber⟩ := hp
-    · simpa only [mulTilde, edgeMultiply_isLink] using hlink.2.1
+    · simpa only [mulTilde_isLink] using hlink.2.1
     · -- The `e₀`-fiber case is excluded: `p.1 = e₀` puts `p ∈ edgeFiber e₀ n`.
       exact absurd (show p ∈ edgeFiber e₀ n from hlink.1) hpfiber
 
@@ -1969,7 +1969,7 @@ lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : �
     exact hx
   · -- Links: a link of `(G_v)̃` (a `v`-avoiding `G`-link) is a `splitOff` link (first disjunct).
     intro p x y hp
-    simp only [mulTilde, edgeMultiply_isLink, removeVertex_isLink] at hp ⊢
+    simp only [mulTilde_isLink, removeVertex_isLink] at hp ⊢
     obtain ⟨hlink, hxv, hyv⟩ := hp
     rw [splitOff_isLink]
     refine Or.inl ⟨?_, hlink, hxv, hyv⟩
@@ -1998,7 +1998,7 @@ lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ 
     (he₀ : e₀ ∉ E(G)) :
     E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) := by
   ext p
-  simp only [Set.mem_diff, edgeFiber, Set.mem_setOf_eq, mulTilde, edgeMultiply_edgeSet,
+  simp only [Set.mem_diff, edgeFiber, Set.mem_setOf_eq, mem_edgeSet_mulTilde,
     edgeSet_splitOff, Set.mem_union]
   rw [removeVertex, edgeSet_deleteVerts]
   simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
@@ -2113,7 +2113,7 @@ lemma fiberAtVertex_inter_edgeSet {G : Graph α β} {n : ℕ} {v : α} :
     G.fiberAtVertex n v ∩ E(G.mulTilde n) =
       {p : β × Fin (bodyHingeMult n) | p.1 ∈ {e | G.Inc e v}} := by
   ext p
-  simp only [Set.mem_inter_iff, mem_fiberAtVertex, mulTilde, edgeMultiply_edgeSet,
+  simp only [Set.mem_inter_iff, mem_fiberAtVertex, mem_edgeSet_mulTilde,
     Set.mem_setOf_eq]
   exact ⟨fun ⟨hinc, _⟩ ↦ hinc, fun hinc ↦ ⟨hinc, hinc.edge_mem⟩⟩
 
@@ -2188,9 +2188,9 @@ lemma isAcyclicSet_splitOff_of_diff_fiberAtVertex {G : Graph α β} {v a b : α}
     rintro p ⟨hpF, hpv⟩
     have hpE : p ∈ E(G.mulTilde n) := hF.1 hpF
     rw [mem_fiberAtVertex] at hpv
-    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpE
+    rw [mem_edgeSet_mulTilde] at hpE
     obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hpE
-    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, removeVertex,
+    rw [mem_edgeSet_mulTilde, removeVertex,
       edgeSet_deleteVerts, Set.mem_setOf_eq]
     exact ⟨x, y, hl, fun hx ↦ hpv (hx ▸ hl.inc_left), fun hy ↦ hpv (hy ▸ hl.inc_right)⟩
   -- Acyclic in `(G_v)̃` (subset of the `G̃`-forest, restricted to the smaller ground set),
@@ -2231,7 +2231,7 @@ lemma isCycleSet_pair_edgeFiber_splitOff {G : Graph α β} {v a b : α} {e₀ : 
   have hlink : ∀ r : β × Fin (bodyHingeMult n), r.1 = e₀ →
       ((G.splitOff v a b e₀).mulTilde n).IsLink r a b := by
     intro r hr
-    rw [mulTilde, edgeMultiply_isLink, splitOff_isLink, hr]
+    rw [mulTilde_isLink, splitOff_isLink, hr]
     exact Or.inr ⟨rfl, ha, hb, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩
   have hlinkp := hlink p hp
   have hlinkq := hlink q hq
@@ -2287,7 +2287,7 @@ lemma isCycleSet_pair_edgeFiber_mulTilde {G : Graph α β} {n : ℕ} {e : β} {x
     {p q : β × Fin (bodyHingeMult n)} (hp : p.1 = e) (hq : q.1 = e) (hpq : p ≠ q) :
     (G.mulTilde n).IsCycleSet {p, q} := by
   have hlink : ∀ r : β × Fin (bodyHingeMult n), r.1 = e → (G.mulTilde n).IsLink r x y :=
-    fun r hr ↦ by rw [mulTilde, edgeMultiply_isLink, hr]; exact hl
+    fun r hr ↦ by rw [mulTilde_isLink, hr]; exact hl
   have hlinkp := hlink p hp
   have hlinkq := hlink q hq
   refine ⟨WList.cons x p (WList.cons y q (WList.nil x)), ?_, by simp⟩
@@ -2369,14 +2369,14 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
   rw [cycleMatroid_indep] at hF
   -- The rerouted set lies in the ground set of `Ksp`.
   have hpaE : pa.1 ∈ E(G) := by
-    rw [hK, mulTilde, edgeMultiply_isLink] at hpa; exact hpa.edge_mem
+    rw [hK, mulTilde_isLink] at hpa; exact hpa.edge_mem
   have hpbE : pb.1 ∈ E(G) := by
-    rw [hK, mulTilde, edgeMultiply_isLink] at hpb; exact hpb.edge_mem
+    rw [hK, mulTilde_isLink] at hpb; exact hpb.edge_mem
   -- `pa, pb` are not copies of the fresh edge.
   have hpane₀ : pa.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpaE)
   have hpbne₀ : pb.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpbE)
   have hrE : r ∈ E(Ksp) := by
-    rw [hKsp, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, edgeSet_splitOff]
+    rw [hKsp, mem_edgeSet_mulTilde, edgeSet_splitOff]
     exact Or.inl ⟨hr, ha, hb, haV, hbV⟩
   have hdiffsub : F \ {pa, pb} ⊆ E(Ksp) := by
     rintro p ⟨hpF, hp2⟩
@@ -2384,14 +2384,14 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
     have hpE : p ∈ E(K) := hF.1 hpF
     have hpv : ¬ K.Inc p v := fun hinc ↦ (hFv p hpF hinc).elim hp2.1 hp2.2
     -- `p` is a `v`-avoiding `G`-edge copy distinct from `e₀`, kept by `splitOff`.
-    rw [hK, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpE
+    rw [hK, mem_edgeSet_mulTilde] at hpE
     obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hpE
     have hxv : x ≠ v := fun hx ↦ hpv (hx ▸ (by
       rw [hK, mulTilde, edgeMultiply_inc]; exact hl.inc_left))
     have hyv : y ≠ v := fun hy ↦ hpv (hy ▸ (by
       rw [hK, mulTilde, edgeMultiply_inc]; exact hl.inc_right))
     have hpne₀ : p.1 ≠ e₀ := fun h ↦ he₀ (h ▸ hpE)
-    rw [hKsp, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, edgeSet_splitOff]
+    rw [hKsp, mem_edgeSet_mulTilde, edgeSet_splitOff]
     exact Or.inr ⟨hpne₀, x, y, hl, hxv, hyv⟩
   set S := insert r (F \ {pa, pb}) with hS
   have hSE : S ⊆ E(Ksp) := Set.insert_subset hrE hdiffsub
@@ -2425,7 +2425,7 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
     rw [cons_isWalk_iff] at hwalk
     obtain ⟨hrlink, hw'walk⟩ := hwalk
     -- `e` is a fresh-edge copy, so it joins exactly `a` and `b`.
-    rw [hKsp, mulTilde, edgeMultiply_isLink, splitOff_isLink] at hrlink
+    rw [hKsp, mulTilde_isLink, splitOff_isLink] at hrlink
     have hxw' : (x = a ∧ w'.first = b) ∨ (x = b ∧ w'.first = a) := by
       rcases hrlink with ⟨hne', _⟩ | ⟨_, _, _, _, _, hxy⟩
       · exact absurd hr hne'
@@ -2445,7 +2445,7 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
       rw [Set.disjoint_left]; intro p hp hpf
       have : p.1 = e₀ := hpf
       have hpEK : p ∈ E(K) := hF.1 (hw'edge p hp).1
-      rw [hK, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpEK
+      rw [hK, mem_edgeSet_mulTilde] at hpEK
       exact he₀ (this ▸ hpEK)
     have hw'K : K.IsWalk w' :=
       (isWalk_deleteEdges_iff.mpr ⟨hw'walk, hw'fresh⟩).of_le
@@ -2508,7 +2508,7 @@ lemma isAcyclicSet_splitOff_reroute {G : Graph α β} {v a b : α} {e₀ : β} {
       rcases Set.mem_of_mem_of_subset hp hCS with hpr | hpd
       · exact hrC (hpr ▸ hp)
       · have hpEK : p ∈ E(K) := hF.1 hpd.1
-        rw [hK, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpEK
+        rw [hK, mem_edgeSet_mulTilde] at hpEK
         exact he₀ (hpe₀ ▸ hpEK)
     -- Lift `C` to a cyclic walk of `K = G̃` inside `F`, contradicting `F` acyclic.
     have hCK : K.IsCyclicWalk C :=
@@ -2587,7 +2587,7 @@ theorem circuit_splitOff_meets_fiber [DecidableEq β] [Finite α] [Finite β] {G
     -- `p.1 ∈ E(G_v)`, so `p.1` carries a `v`-avoiding `G`-link, contradicting `G.IsLink p.1 v w`.
     have hpe : p.1 ∈ E(G.removeVertex v) := by
       have := hXsubGv hpX
-      rwa [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at this
+      rwa [mem_edgeSet_mulTilde] at this
     obtain ⟨x, y, hlxy⟩ := exists_isLink_of_mem_edgeSet hpe
     rw [removeVertex_isLink] at hlxy
     obtain ⟨hlxyG, hxv, hyv⟩ := hlxy
@@ -2727,7 +2727,7 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
           · exact absurd rfl he
           · have hlGv : Gv.IsLink e x y := by rw [hGvdef, removeVertex_isLink]; exact ⟨hl, hx, hy⟩
             exact hlGv.edge_mem
-        rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, hp]; exact heE
+        rw [mem_edgeSet_mulTilde, hp]; exact heE
       -- Decompose `B' = (B' ∩ ã̃b) ∪ (B' ∩ E(G̃v))` since `B' ⊆ ã̃b ∪ E(G̃v) = E(G̃')`.
       have hcover : B' ⊆ edgeFiber e₀ n ∪ E(Gv.mulTilde n) := by
         intro p hpB'
@@ -3072,8 +3072,8 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
     -- `x` is a non-loop `v`-fiber: `IsLink x v a` (if `eₐ`) or `IsLink x v b` (if `e_b`).
     have hxlink : ∃ w, (G.mulTilde n).IsLink x v w ∧ w ≠ v := by
       rcases hxvfib with hxe | hxe <;> rw [edgeFiber, Set.mem_setOf_eq] at hxe
-      · exact ⟨a, by rw [mulTilde, edgeMultiply_isLink, hxe]; exact hla, hav⟩
-      · exact ⟨b, by rw [mulTilde, edgeMultiply_isLink, hxe]; exact hlb, hbv⟩
+      · exact ⟨a, by rw [mulTilde_isLink, hxe]; exact hla, hav⟩
+      · exact ⟨b, by rw [mulTilde_isLink, hxe]; exact hlb, hbv⟩
     obtain ⟨w, hxvw, hwv⟩ := hxlink
     have hxB : x ∈ B := hssubB i hxFi
     -- `Fs j` avoids `v`: any `v`-incident fiber would be in `vfib`, but `Fs j ∩ vfib = ∅`.
@@ -3313,7 +3313,7 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
   have hr_notin : ∀ i j, r i ∉ Fs j := by
     intro i j hrFj
     have hrE : r i ∈ E(G.mulTilde n) := hssubE j hrFj
-    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hrE
+    rw [mem_edgeSet_mulTilde] at hrE
     exact he₀ ((hr1 i) ▸ hrE)
   -- The rerouted family.
   set Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)) := fun i =>
@@ -3340,11 +3340,11 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
       have hpaℓ : (G.mulTilde n).IsLink pa v a := by
         have : pa.1 = eₐ := by
           have := (hSpa ▸ Set.mem_singleton pa).2; rwa [edgeFiber, Set.mem_setOf_eq] at this
-        rw [mulTilde, edgeMultiply_isLink, this]; exact hla
+        rw [mulTilde_isLink, this]; exact hla
       have hpbℓ : (G.mulTilde n).IsLink pb v b := by
         have : pb.1 = e_b := by
           have := (hSpb ▸ Set.mem_singleton pb).2; rwa [edgeFiber, Set.mem_setOf_eq] at this
-        rw [mulTilde, edgeMultiply_isLink, this]; exact hlb
+        rw [mulTilde_isLink, this]; exact hlb
       have hpab : pa ≠ pb := by
         rintro rfl
         exact hab (hpaℓ.right_unique hpbℓ)

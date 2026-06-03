@@ -109,6 +109,22 @@ Phase 16 attaches to it (`Graph.edgeMultiply`); the edge type becomes
 def mulTilde (G : Graph α β) (n : ℕ) : Graph α (β × Fin (bodyHingeMult n)) :=
   G.edgeMultiply (bodyHingeMult n)
 
+/-- **Edge-set membership of `G̃ = (D-1)·G`** (`def:matroid-MG`): a copy `p` is an edge of
+the multiplied graph iff its underlying hinge `p.1` is an edge of `G`. The fused mirror of
+the `mulTilde`/`edgeMultiply_edgeSet`/`Set.mem_setOf_eq` unfold tower; tagged `@[simp]` so a
+bare `simp` reaches through the `mulTilde` `def` wrapper that does not unfold on its own. -/
+@[simp]
+lemma mem_edgeSet_mulTilde (G : Graph α β) (n : ℕ) {p : β × Fin (bodyHingeMult n)} :
+    p ∈ E(G.mulTilde n) ↔ p.1 ∈ E(G) := Iff.rfl
+
+/-- **Incidence of `G̃ = (D-1)·G`** (`def:matroid-MG`): the copy `p` links `x` and `y` in the
+multiplied graph iff its underlying hinge `p.1` links them in `G`. The fused mirror of the
+`mulTilde`/`edgeMultiply_isLink` unfold pair; `@[simp]` for the same wrapper reason as
+`mem_edgeSet_mulTilde`. -/
+@[simp]
+lemma mulTilde_isLink (G : Graph α β) (n : ℕ) {p : β × Fin (bodyHingeMult n)} {x y : α} :
+    (G.mulTilde n).IsLink p x y ↔ G.IsLink p.1 x y := Iff.rfl
+
 /-- The **matroid `M(G̃)`** (`def:matroid-MG`; Katoh–Tanigawa 2011 §2.5): the
 `(D,D)`-count matroid of the multiplied graph `G̃ = (D-1)·G` at the boundary regime
 `ℓ = 2k = D` with `D = bodyBarDim n`. Concretely it is the `D`-fold union of the
@@ -392,7 +408,7 @@ theorem subgraph_minimality [DecidableEq β] [Finite α] [Finite β] {H G : Grap
   -- The edge-fiber of `e ∈ E(H)` lies inside `E(H̃)`.
   have hfiber : edgeFiber e n ⊆ E(H.mulTilde n) := by
     intro p hp
-    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, (show p.1 = e from hp)]
+    rw [mem_edgeSet_mulTilde, (show p.1 = e from hp)]
     exact he
   -- `B' = B ∩ E(H̃)` by maximality of the basis.
   have hBeq : B' = B ∩ E(H.mulTilde n) :=
@@ -654,11 +670,11 @@ theorem rank_add_partitionDef_le [DecidableEq β] [Finite α] [Finite β] (G : G
   set Y : Set (β × Fin (bodyHingeMult n)) :=
     {p | p.1 ∈ E(G) ∧ p.1 ∉ G.crossingEdges f} with hY
   have hYsub : Y ⊆ E(G.mulTilde n) := by
-    intro p hp; rw [mulTilde, edgeMultiply_edgeSet]; exact hp.1
+    intro p hp; rw [mem_edgeSet_mulTilde]; exact hp.1
   -- `E(G̃) ∖ Y = {p | p.1 ∈ crossingEdges}`: crossing edges have `p.1 ∈ E(G)`.
   have hdiff : E(G.mulTilde n) \ Y = {p : β × Fin (bodyHingeMult n) | p.1 ∈ G.crossingEdges f} := by
     ext p
-    simp only [hY, Set.mem_diff, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, not_and,
+    simp only [hY, Set.mem_diff, mem_edgeSet_mulTilde, Set.mem_setOf_eq, not_and,
       not_not]
     constructor
     · rintro ⟨hpE, h⟩; exact h hpE
@@ -669,7 +685,7 @@ theorem rank_add_partitionDef_le [DecidableEq β] [Finite α] [Finite β] (G : G
   -- Within-part hypothesis for piece 1: a non-crossing fiber joins equally-labeled vertices.
   have hwithin : ∀ p ∈ Y, ∀ x y, (G.mulTilde n).IsLink p x y → f x = f y := by
     intro p hp x y hlink
-    have hG : G.IsLink p.1 x y := by rw [mulTilde, edgeMultiply_isLink] at hlink; exact hlink
+    have hG : G.IsLink p.1 x y := by rw [mulTilde_isLink] at hlink; exact hlink
     by_contra hxy
     exact hp.2 ⟨hp.1, x, y, hG, hxy⟩
   have hpiece1 := G.rk_cycleMatroid_within_parts_le n hYsub hwithin
@@ -872,9 +888,9 @@ theorem le_rank_add_deficiency [DecidableEq β] [Finite α] [Finite β] (G : Gra
       ⊆ E(G.mulTilde n) \ Y₀ := by
     rintro p hp
     obtain ⟨hpE, x, y, hlink, hxy⟩ := hp
-    refine ⟨by rw [mulTilde, edgeMultiply_edgeSet]; exact hpE, fun hpY₀ => hxy ?_⟩
+    refine ⟨by rw [mem_edgeSet_mulTilde]; exact hpE, fun hpY₀ => hxy ?_⟩
     -- If `p ∈ Y₀`, its endpoints `x, y` are connected in `G̃ ↾ Y₀`, hence equally labeled.
-    have hGlink : (G.mulTilde n).IsLink p x y := by rw [mulTilde, edgeMultiply_isLink]; exact hlink
+    have hGlink : (G.mulTilde n).IsLink p x y := by rw [mulTilde_isLink]; exact hlink
     have hHlink : ((G.mulTilde n) ↾ Y₀).IsLink p x y := by
       rw [restrict_isLink]; exact ⟨hpY₀, hGlink⟩
     exact componentLabel_eq_of_connBetween (H := (G.mulTilde n) ↾ Y₀) hHlink.connBetween

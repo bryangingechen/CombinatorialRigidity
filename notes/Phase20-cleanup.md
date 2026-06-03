@@ -1,8 +1,8 @@
 # Phase 20 cleanup round (work log)
 
-**Status:** in progress. A3 (the round's one real fix) landed; A1 + A2 +
-B4 confirmed no-op. Remaining: B1–B3 / C1 / D1 / D2 — see the checklist
-and *Hand-off* below.
+**Status:** in progress. A3 and B3 (the round's two real fixes) landed;
+A1 + A2 + B1 + B2 + B4 + C1 confirmed no-op. Remaining: D1 / D2 — see the
+checklist and *Hand-off* below.
 
 Between-phases cleanup round, run after Phase 20 (combinatorial induction →
 Theorem 4.9, KT §3.4–3.5 + §4) closed in `144e3b5` and before Phase 21
@@ -122,27 +122,35 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ### Bucket B — Code-smell sweep
 
-- [ ] **B1** — `classical` (20 sites: L190/260/618/753/960/1140/1241/1312/
-  1408/1572/1664/1847/2365/2547/2642/2800/2876/2986/3220/3470) + `haveI`
-  finiteness/Nonempty (9 sites: L623/761/968/1141/3471 `Nonempty α := ⟨a⟩`;
-  L1573 `G.Finite`; L2987 `Nonempty (Fin (bodyBarDim n))`; L3282 `Nonempty
-  (β × Fin (bodyHingeMult n))`). Confirm each is the project-standard
-  `[Finite]`→body-`classical`/`Fintype` bridge or a Nonempty derived from a
-  hypothesis vertex — not a signature-decidability boundary that should move
-  to `[DecidableEq]`/`[Fintype]`.
-- [ ] **B2** — `noncomputable def` (3 sites: L1742 `collapseTo`, L1752
-  `rigidContract`, L2142 `fiberDegree`). Confirm each is forced
-  (`collapseTo` uses `open Classical … if`; `rigidContract` built on it;
-  `fiberDegree` on `Set.ncard`) vs. accidental.
-- [ ] **B3** — 4+-arg `rw` chains (11 sites: L861/996/1027 `numParts,
-  numParts, …`; L1424/2379/2387/2394/2730 `mulTilde, edgeMultiply_*,
-  Set.mem_setOf_eq, …`; L2234/2428 `mulTilde, edgeMultiply_isLink,
-  splitOff_isLink, …`; L2448/2511 `mulTilde, edgeMultiply_edgeSet,
-  Set.mem_setOf_eq` at hyps). Confirm each is a cross-API-layer defeq-unfold
-  (the Phase-19-B3 confirmed idiom) and not a missing-fused-lemma; check the
-  repeated `numParts, numParts` and `mulTilde, edgeMultiply_edgeSet,
-  Set.mem_setOf_eq` shapes for a one-line mirror worth extracting (they recur
-  3× and 5× respectively).
+- [x] **B1** — DONE; **no-op**. Walked all 20 `classical` + 9 `haveI`
+  sites. Every `classical` opens a proof body (immediately after the
+  lemma's `:= by`) whose body does finite-sup / `ncard` / matroid-`Indep`
+  reasoning — the project-standard `[Finite]`→body bridge, never in a
+  signature. Each `haveI : Nonempty …` is derived from a hypothesis: `⟨a⟩`
+  from a hypothesis vertex `a` (feeds `exists_eq_ciSup_of_finite`/`ciSup`),
+  `Fin (bodyBarDim n)` from `1 ≤ bodyBarDim n`, `Fin (bodyHingeMult n)` /
+  `β × Fin …` from a fiber-meet hypothesis (else-branch `choose`
+  placeholder). `G.Finite` (L1573) is built from `Set.toFinite`. No
+  signature-decidability boundary; nothing to move to `[DecidableEq]`/
+  `[Fintype]`.
+- [x] **B2** — DONE; **no-op**. All three `noncomputable def` forced:
+  `collapseTo` uses `open Classical in … if` (Classical.dec → noncomputable);
+  `rigidContract` is built on `collapseTo`; `fiberDegree` is `Set.ncard`.
+- [x] **B3** — **REAL FIX (not the predicted no-op).** The
+  `mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq` (edgeSet) and
+  `mulTilde, edgeMultiply_isLink` (isLink) unfold towers recurred ~30×
+  (18 + 14 sites across Induction.lean + Deficiency.lean) — well past the
+  mirror-extraction threshold, not the 3×/5× the pre-open sweep estimated.
+  Extracted two `Iff.rfl` `@[simp]` mirrors next to `def mulTilde` in
+  `Deficiency.lean`: `mem_edgeSet_mulTilde` and `mulTilde_isLink`; refactored
+  every callsite to a single `rw`/`simp only`. One subtlety preserved: three
+  `simp only` sites needed their `Set.mem_setOf_eq` kept (it was also
+  unfolding a sibling `crossingEdges` `setOf`). FRICTION `[resolved]` entry
+  filed. build + lint + warning-scan green. The other B3 shape from the
+  pre-open list — `numParts, numParts, …` (L861/996/1027) — stays as-is: the
+  two `numParts` unfold the *same* def at two different graphs (G and H), and
+  each chain's tail differs (`vertexSet_removeVertex` vs `ncard_insert`), so
+  there is no single mirror to extract there.
 - [x] **B4** — `@[deprecated … (since := "narrative-bridge")]` shim
   (`splitOff_deficiency_le_of_forest_surgery`, `cor:forest-surgery-deficiency`).
   DONE; **no-op** (confirmed in passing during A1). Shim is to-spec:
@@ -156,17 +164,21 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ### Bucket C — Long-proof audit
 
-- [ ] **C1** — top-~10 long-proof four-question walk (API extraction /
-  missed-mathlib-lemma / tactic substitution / cross-proof unification),
-  ranked by body line count over Induction.lean (3524 lines). Per CLEANUP.md
-  *Calibration*, expect mostly no-op (structural-shape regime); the four-
-  question walk is the audit gate confirming the no-extract finding. Watch
-  specifically for cross-proof unification among the partition-count
-  comparison proofs (`splitOff_deficiency_{le,ge}`, `removeVertex_deficiency_ge`
-  all run the same maximizer-restriction / partition-extension backbone — the
-  Phase-20 notes flag them as siblings; verify they share a per-step backbone,
-  not just boilerplate, before claiming a combinator) and among the reroute /
-  forest-surgery acyclicity lemmas.
+- [x] **C1** — DONE; **no-op**. Four-question walk over the top-~10 by body
+  span (`forest_surgery_count` 259, `exists_balanced_forest_packing` 228,
+  `splitOff_deficiency_ge` 208, `isAcyclicSet_splitOff_reroute` 185,
+  `no_rigid_edge_count` 165, `splitOff_isMinimalKDof` 160,
+  `removeVertex_deficiency_ge` 140, `splitOff_deficiency_le` 135, …). The
+  partition-count siblings (`splitOff_deficiency_{le,ge}`,
+  `removeVertex_deficiency_ge`) share only the *opening* boilerplate —
+  `classical`; pick a maximizing `f` via `exists_eq_ciSup_of_finite`;
+  `rw [deficiency, ← hf]`; reduce via `partitionDef_le_deficiency` — which is
+  *already* factored into those two named lemmas. The per-step middle diverges
+  genuinely (splitOff's `eₐ/e_b ∉ E(H)` dropped-edge case analysis vs
+  removeVertex's vertex-deletion count), so no combinator to extract. The B3
+  fix above absorbed the one real cross-proof repetition (the `mulTilde`
+  unfold tower). No further API extraction / mathlib-lemma / tactic
+  substitution warranted.
 
 ### Bucket D — Project-organization compression
 
@@ -199,6 +211,15 @@ from this log alone (CLEANUP.md *Task list discipline*).
   anonymous `example`, so blueprint node `ex:kt-41-overquantified` carries a
   `\lean{...}` pointer instead of an orphan comment. No friction (trivial
   `rintro`/`rw [Set.ncard_empty]`/`omega` proof, unchanged).
+- **B3 (fused `mulTilde` mirrors).** The `mulTilde`/`edgeMultiply_*` unfold
+  tower recurred ~30× (the pre-open sweep under-counted it as 3×/5×); past the
+  mirror threshold, so promoted to two `Iff.rfl` `@[simp]` lemmas
+  (`mem_edgeSet_mulTilde`, `mulTilde_isLink`) in `Deficiency.lean` and
+  refactored all callsites. The other B-bucket items (B1 `classical`/`haveI`,
+  B2 `noncomputable`, B4 shim) and C1 (long-proof walk incl. the
+  partition-count sibling check) all confirmed no-op. Detail in the checklist
+  entries; FRICTION `[resolved]` entry carries the general "def-wrapper unfold
+  tower → fused mirror" lesson.
 - **A1 + A2 + B4 (no-op confirmations).** All 28 `\lean`-pinned nodes match
   their Lean signatures (A1); the six `molecular-induction.tex` prose-aside
   hits are all load-bearing status / literature-correction content or honest
@@ -219,16 +240,17 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** execute the **B1–B3 + C1** code-smell /
-long-proof sweeps over `Molecular/Induction.lean`, batched into one
-confirmation commit (per CLEANUP.md *Calibration*, all expected no-op in the
-structural-shape regime — see each checklist entry for the per-site list and
-the specific things to confirm: B1 `classical`/`haveI` are the
-`[Finite]`→body bridge, B2 `noncomputable` forced, B3 `rw` chains are
-cross-API defeq-unfold not missing-fused-lemmas, C1 the four-question walk on
-the top-~10 long proofs incl. the partition-count sibling check). Run a
-`lake build CombinatorialRigidity.Molecular.Induction` sanity check first.
-**A1, A2, A3, B4 are done** (A1/A2/B4 no-op, A3 the real fix). Remaining
-after the batch: D1 / D2. D1 (`notes/Phase20.md` 1089 lines, far over
-budget) is the other genuine substance item. Close the round by flipping the
-ROADMAP Status row to ✓.
+**Smallest concrete next commit:** **D1** — compress `notes/Phase20.md`
+(1089 lines, far over the 250-line soft budget / 350–450 adaptive ceiling).
+Per CLEANUP.md *Project-organization compression*, the closed phase's
+multi-route narrative can collapse to a commit-log pointer + brief summary;
+candidate compressions named in the D1 checklist entry (the *CORRECTION*,
+*Finding 2 REFUTED*, *TODO Progress VERDICT* blocks duplicate *Current state*
++ checklist material — one source of truth). Bring it to the adaptive ceiling
+at most. Then **D2** (project-org re-skim — mostly a confirm-nothing-drifted
+pass; can ride the same commit). Close the round by flipping the ROADMAP
+Status row to ✓.
+
+**Done:** A1/A2/B1/B2/B4/C1 no-op; **A3 + B3 the two real fixes** (A3
+named-lemma promotion landed earlier; B3 extracted the `mem_edgeSet_mulTilde`
+/ `mulTilde_isLink` fused mirrors and refactored ~30 callsites this commit).

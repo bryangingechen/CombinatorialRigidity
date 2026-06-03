@@ -457,6 +457,29 @@ housekeeping pass once their resolution is fully indexed.
   the base-graph type, or restate via the congruence lemmas
   (`IsSubgraph.isLink_iff` / `.inc_congr`). One build cycle.
 
+### [resolved] `mulTilde` edge-set / `IsLink` unfold tower recurred ~30× — extracted two fused `@[simp]` mirrors
+- **Where it bit:** across `Molecular/Induction.lean` + `Molecular/Deficiency.lean`
+  (Phase 19/20). Reaching `mulTilde`'s edge-set or incidence content needed the
+  three-token tower `rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq]`
+  (membership) or `rw [mulTilde, edgeMultiply_isLink]` (incidence): `mulTilde`
+  is a plain non-`@[expose]` `def` wrapping `edgeMultiply`, so neither `simp`
+  nor `rw` reaches through it without naming the def first. The Phase-19-B3
+  cleanup confirmed this as a no-op "cross-API defeq-unfold" idiom; by Phase 20
+  the chain recurred ~30× (18 edgeSet + 14 isLink sites), well past the
+  mirror-extraction threshold.
+- **Resolved by mirroring** (Phase 20-cleanup B3): added
+  `Graph.mem_edgeSet_mulTilde` (`p ∈ E(G.mulTilde n) ↔ p.1 ∈ E(G)`) and
+  `Graph.mulTilde_isLink` (`(G.mulTilde n).IsLink p x y ↔ G.IsLink p.1 x y`) in
+  `Deficiency.lean` next to `def mulTilde`, both `Iff.rfl` and `@[simp]` (the
+  tag lets a bare `simp` reach through the `def` wrapper). Every callsite
+  collapses to a single `rw`/`simp only`. One subtlety: at three `simp only`
+  sites the dropped `Set.mem_setOf_eq` was *also* unfolding a sibling `setOf`
+  (a `crossingEdges` membership), so it had to stay — the fused lemma only
+  rewrites the `mulTilde` redex, not every `setOf` in the goal.
+- **General lesson:** same threshold rule as the `orderEmbOfFin` entry below —
+  a `def`-wrapper unfold tower that recurs is a missing fused mirror, not a
+  standing idiom; tag the mirror `@[simp]` so the wrapper stops blocking `simp`.
+
 ### ~~[open] No mathlib `Finset.univ.orderEmbOfFin = id` for `Fin n`~~
 - **Resolved by mirroring** (Phase 17-cleanup D2): the two callsites
   (`pluckerCoord_univ`, `extensor_ne_zero_iff_linearIndependent`, both in
