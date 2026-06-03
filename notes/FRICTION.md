@@ -76,6 +76,25 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A choice-of-representative label `if h : s.Nonempty then h.choose else _` trips `rw`-motive when you rewrite the set `s` underneath — factor through the *object* so equality is `congrArg`
+- **Where it bit:** `componentLabel` in `Molecular/Deficiency.lean` (Phase 19
+  `thm:def-eq-corank` piece 3). The component label of a vertex is a chosen
+  vertex of its `walkable`-component; proving it constant on a component means
+  showing `ConnBetween x y → label x = label y`, where `ConnBetween` gives
+  `walkable x = walkable y`. A direct `componentLabel H x := if h :
+  V(H.walkable x).Nonempty then h.choose else x` form forces, after `dif_pos`,
+  the goal `hx.choose = hy.choose` with `hx : V(walkable x).Nonempty`; rewriting
+  the walkable-set equality there is a *"motive is not type correct"* (`rw`
+  wants to rewrite inside the type of the `Exists.choose` proof argument).
+- **Fix / general lesson:** factor the choice through a function on the *object*
+  whose equality you have — `pickVertex (K : Graph) := if h : V(K).Nonempty then
+  h.choose else arbitrary`, `componentLabel H x := pickVertex (H.walkable x)`.
+  Then constancy is `congrArg pickVertex (h.walkable_eq_walkable)` — no `dite`,
+  no motive. Whenever a `Classical.choice`/`Exists.choose`-based selector must be
+  proved constant on a fiber, define it as `select ∘ (canonical object map)` and
+  reduce to `congrArg select` on an equality of canonical objects, rather than
+  carrying the membership proof into the `dite` and rewriting under it.
+
 ### [resolved] Weak-duality `rank + def ≤ D(|V|-1)` is FALSE at `D = 0` — needs an explicit `1 ≤ bodyBarDim n` hypothesis
 - **Where it bit:** `rank_add_partitionDef_le` / `rank_add_deficiency_le`
   in `Molecular/Deficiency.lean` (Phase 19 `lem:weak-duality`). The first

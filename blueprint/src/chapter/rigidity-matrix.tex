@@ -247,13 +247,18 @@ Phase~19, \S2.5--\S3).
 
 \begin{proposition}[Reconciliation with the body-hinge existence form; KT Prop 1.1]
   \label{prop:rigidity-matrix-prop11}
-  \uses{def:dof-generic, lem:rank-delete-vertex, lem:rank-parallel-full}
-  \emph{(Deferred to Phase~19.)} The proof routes through the
-  deficiency $\operatorname{def}(\tilde G) = \operatorname{corank}
-  M(\tilde G)$, whose matroid $M(\tilde G)$ --- the $D$-fold graphic
-  union on $(D-1)\cdot G$ --- is constructed in Phase~19 (\S2.5--\S3);
-  the rank-form skeleton it consumes (\cref{def:dof-generic} and the
-  rank lemmas) is complete in this section.
+  \uses{def:dof-generic, lem:rank-delete-vertex, lem:rank-parallel-full, thm:def-eq-corank}
+  \emph{(Matroidal half complete; analytic link outstanding.)} The proof
+  routes through the deficiency $\operatorname{def}(\tilde G) =
+  \operatorname{corank} M(\tilde G)$, whose matroid $M(\tilde G)$ --- the
+  $D$-fold graphic union on $(D-1)\cdot G$ --- is constructed in Phase~19
+  (\S2.5--\S3) and whose corank identity (\cref{thm:def-eq-corank}) is now
+  green; the rank-form skeleton it consumes (\cref{def:dof-generic} and the
+  rank lemmas) is complete in this section. The one remaining link is the
+  \emph{analytic} generic-rank equality $\operatorname{rank} R(G,p) =
+  D(|V|-1) - \operatorname{def}(\tilde G)$ (Jackson--Jord\'an~Thm 6.1,
+  geometric side), which wires the rigidity-matrix rank to the matroid
+  corank; it is scheduled with the algebraic induction.
 
   A multigraph $G$ has a realization as an infinitesimally rigid
   body-hinge framework $(G,p)$ --- in the rank sense

@@ -1,13 +1,19 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
 **Status:** in progress (all four definition nodes + four structural lemmas
-+ the rank upper bound landed: `lem:matroid-restrict-subgraph`,
-`lem:subgraph-minimality` (KT 3.3), `lem:two-edge-conn` (KT 3.1, cut form),
-`lem:circuit-rigid` (KT 3.4, matroidal core), `lem:rank-matroidMG-le`
-(conjecture-relevant half of `thm:def-eq-corank`); plus pieces 1–2 of the full
-`thm:def-eq-corank` sub-plan — `lem:rk-within-parts` (partition-respecting
-cycle-matroid rank bound) and `lem:weak-duality` (`def ≤ corank`). The full
-`thm:def-eq-corank` equality (piece 3: the JJ09 reverse) is the one remaining node).
++ the rank upper bound + the **full def = corank bridge** landed:
+`lem:matroid-restrict-subgraph`, `lem:subgraph-minimality` (KT 3.3),
+`lem:two-edge-conn` (KT 3.1, cut form), `lem:circuit-rigid` (KT 3.4, matroidal
+core), `lem:rank-matroidMG-le`; plus all three pieces of the `thm:def-eq-corank`
+sub-plan — `lem:rk-within-parts` (piece 1), `lem:weak-duality` (piece 2, `def ≤
+corank`), and the JJ09 reverse `def ≥ corank` (piece 3, `le_rank_add_deficiency`),
+assembled into `thm:def-eq-corank` (`rank_add_deficiency_eq` /
+`isBase_ncard_add_deficiency_eq`). All `deficiency.tex` nodes are now green.
+The inherited Phase-18 node `prop:rigidity-matrix-prop11` is **not** fully closed
+by this — its matroidal half (`def = corank M(G̃)`) is green, but its *analytic*
+half (`rank R(G,p) = D(|V|-1) − def(G̃)`, JJ09 Thm 6.1 geometric side, wiring the
+rigidity-matrix rank to the matroid corank) is a separate object scheduled with the
+algebraic induction.)
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -134,9 +140,20 @@ single-partition bound by `ciSup_le` on the green attainment API. **Needs `1 ≤
 — the bound is genuinely false at `D = 0` (then `G̃` is edgeless, `rank = 0`, but
 `partitionDef = d`); see FRICTION. The conjecture runs at `D ≥ 3`, so the hypothesis is free.
 
-Next concrete step: **piece 3** — the JJ09 reverse `def ≥ corank` (a vertex-partition
-attaining the rank), then assemble `|B| + def(G̃) = D(|V|−1)` and flip `thm:def-eq-corank`
-(and the inherited `prop:rigidity-matrix-prop11`) green. See *Hand-off* below.
+Piece 3 (`thm:def-eq-corank`, the JJ09 reverse) is now green:
+`Graph.le_rank_add_deficiency` (`def ≥ corank`) assembled with `lem:weak-duality`
+into `Graph.rank_add_deficiency_eq` (`rank M(G̃) + def(G̃) = D(|V|−1)`) and its
+base form `Graph.isBase_ncard_add_deficiency_eq` (`|B| + def(G̃) = D(|V|−1)`). The
+reverse runs on the Edmonds-optimal `Y₀` (existence half of `Union_pow_rk_eq`): the
+partition `P` into the components of `G̃ ↾ Y₀` is attaining. For `P` the within-part
+fibers are exactly `Y₀` (so `r_cycle(Y₀) + numParts f = |V|` *exactly* —
+`rk_add_numParts_componentLabel`, the `≤` from piece 1, the `≥` from the
+components-refine-partition injection run in reverse, `numberOfComponents_le_numParts`),
+and every crossing edge's `D−1` fibers all lie outside `Y₀`, so `(D−1)·d_G(P) ≤
+|E(G̃)∖Y₀|`; substituting into the Edmonds bound gives `rank ≥ D(|V|−1) − def_P`. The
+component labeling is the private `componentLabel` (representative of the `walkable`
+component, factored through `pickVertex` so constancy-on-component is a `congrArg`).
+Axiom-free (`propext`/`Classical.choice`/`Quot.sound` only). See *Hand-off* below.
 
 ## Architectural choices made up front
 
@@ -177,10 +194,13 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 - [x] `def:rigid-subgraph` — rigid + proper rigid subgraph (circuits via
   mathlib's `Matroid.IsCircuit`; 2-edge-connectivity deferred to
   `lem:two-edge-conn`). (`Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`.)
-- [ ] `thm:def-eq-corank` — the def = corank bridge (JJ09 Thm 6.1 /
-  Cor 6.2): `|B| + def(G̃) = D(|V|−1)`. Full equality still red; the
-  conjecture-relevant upper-bound half is `lem:rank-matroidMG-le` below,
-  and piece 1 of the sub-plan is `lem:rk-within-parts` below.
+- [x] `thm:def-eq-corank` — the def = corank bridge (JJ09 Thm 6.1 /
+  Cor 6.2): `|B| + def(G̃) = D(|V|−1)`. Green: `Graph.rank_add_deficiency_eq`
+  (`rank + def = D(|V|−1)`) + `Graph.isBase_ncard_add_deficiency_eq` (base form),
+  `le_antisymm` of `lem:weak-duality` and the JJ09 reverse
+  `Graph.le_rank_add_deficiency` (piece 3, via the component-partition of the
+  Edmonds-optimal `Y₀`; helpers `rk_add_numParts_componentLabel`,
+  `numberOfComponents_le_numParts`, `componentLabel`/`pickVertex`).
 - [x] `lem:rk-within-parts` — piece 1 of `thm:def-eq-corank`: the
   partition-respecting cycle-matroid rank bound `r_cycle(Y) + numParts f ≤ |V|`
   for the non-crossing-fiber set `Y` (`Graph.rk_cycleMatroid_within_parts_le`,
@@ -208,8 +228,12 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   The full `G[V(X)]`-rigid tightness *equality* is deferred with `thm:def-eq-corank`
   (needs the JJ09 lower bound + a vertex-induced-subgraph construction).
 - [ ] `prop:rigidity-matrix-prop11` — KT Prop 1.1 reconciliation
-  (**inherited from Phase 18**; node lives in
-  `rigidity-matrix.tex`, flips green once `thm:def-eq-corank` lands).
+  (**inherited from Phase 18**; node lives in `rigidity-matrix.tex`).
+  Matroidal half (`def = corank M(G̃)`) now green via `thm:def-eq-corank`; the
+  remaining **analytic** half — `rank R(G,p) = D(|V|−1) − def(G̃)` (JJ09 Thm 6.1
+  geometric side), wiring the rigidity-matrix rank to the matroid corank — is a
+  separate object (not closeable by `thm:def-eq-corank` alone). Scheduled with the
+  algebraic induction (Phase 21+); the node prose is updated to flag the split.
 - (off the Thm-4.9 critical path; schedule late or with Phase 21):
   KT Lemma 3.2 (not 3-edge-connected), Lemma 3.6 (partition
   decomposition — needed only by Case 6.1, schedule with Phase 21),
@@ -334,14 +358,25 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   `ciSup_le` on the attainment API. **Needs `1 ≤ bodyBarDim n`** — false at `D=0` (FRICTION).
   *Lifted:* the `D=0`-degeneracy lesson → FRICTION.
 
-- **`thm:def-eq-corank` split: prove the upper bound, defer the JJ09 reverse (risk #4).**
-  The full equality `|B| + def(G̃) = D(|V|−1)` is a min–max duality (Edmonds rank over
-  edge-subsets vs deficiency over vertex-partitions) — the hard JJ09 generic-rank content.
-  Per risk #4 the conjecture (Thm 5.6) needs only the **upper-bound half**
-  `rank M(G̃) ≤ D(|V|−1)`, which landed as `lem:rank-matroidMG-le` (`Matroid.rank_def` +
-  `rk_le_iff` + `matroidMG_indep_iff` sparsity, applied to the base itself). Decision: keep
-  `thm:def-eq-corank` (full equality) red; the reverse direction (a partition attaining the
-  rank) is deferred until a downstream node demands the full equality rather than the bound.
+- **Piece 3 (JJ09 reverse `def ≥ corank`) via the component partition of the Edmonds-optimal
+  `Y₀`.** The reverse min–max direction translates the Edmonds optimal *edge subset* `Y₀`
+  (existence half of `Union_pow_rk_eq`) into the deficiency *vertex partition*: `P =` the
+  components of `G̃ ↾ Y₀`. Two facts make `P` attaining — `r_cycle(Y₀) + numParts f = |V|`
+  *exactly* (`rk_add_numParts_componentLabel`: piece 1 gives `≤`, the reverse injection
+  components→labels `numberOfComponents_le_numParts` gives `≥`), and every crossing edge's
+  `D−1` fibers avoid `Y₀` (same-component endpoints ⇒ equal label), so `(D−1)d_G(P) ≤
+  |E(G̃)∖Y₀|`. `nlinarith` over the Edmonds bound, the exact-vertex identity, and the
+  crossing-fiber bound closes `rank ≥ D(|V|−1) − def_P`. Assembled with `lem:weak-duality`
+  by `le_antisymm` into `rank_add_deficiency_eq` + base form `isBase_ncard_add_deficiency_eq`.
+  Axiom-free; resolves risk #4 in full (no axiom, no deferral). The full `thm:def-eq-corank`
+  is now green.
+
+- **`componentLabel` factored through `pickVertex` (a function on the component *graph*)
+  so constancy-on-a-component is a `congrArg`.** `componentLabel H x = pickVertex (H.walkable x)`;
+  since `ConnBetween x y ⇒ walkable x = walkable y` (`ConnBetween.walkable_eq_walkable`),
+  `componentLabel H x = componentLabel H y` is `congrArg pickVertex …` — sidestepping the
+  `dite`-motive trip that a direct `if h : V(walkable x).Nonempty …` form hits on rewriting
+  the walkable set under the chosen `Exists.choose`. *Lifted:* → FRICTION.
 
 ## Blockers / open questions
 
@@ -382,39 +417,31 @@ deficiency-attainment API
 also in place — the `iSup`-model `deficiency` is now a usable attained max, and "a partition
 witnesses a deficiency lower bound" is one `partitionDef_le_deficiency` call.
 
-The one remaining `deficiency.tex` node is the **full** equality `thm:def-eq-corank`
-(its conjecture-relevant upper-bound half is green as `lem:rank-matroidMG-le`; the KT 3.4
-matroidal core is green as `lem:circuit-rigid`; **pieces 1–2 of the sub-plan are now green** as
-`lem:rk-within-parts` and `lem:weak-duality`). **Decision is settled (risk #4, see Blockers):
-prove it in-repo, axiom-free.** It is a sequenced multi-commit sub-plan — do the next *unfinished* piece each
-commit, not the whole bridge at once:
+The full equality `thm:def-eq-corank` is now green (`Graph.rank_add_deficiency_eq`
++ base form `isBase_ncard_add_deficiency_eq`), via `le_antisymm` of `lem:weak-duality`
+(piece 2, `def ≤ corank`) and the JJ09 reverse `Graph.le_rank_add_deficiency`
+(piece 3, `def ≥ corank`). **All `deficiency.tex` nodes are green.** Risk #4 is
+resolved in full — proved in-repo, axiom-free, no deferral.
 
-1. ✓ **Partition-respecting `cycleMatroid` component-rank bound** — DONE
-   (`Graph.rk_cycleMatroid_within_parts_le` / `lem:rk-within-parts`): for a labeling
-   `f : α → α` and the within-part (non-crossing) fiber set `Y`, `r_cycle(Y) + numParts f ≤ |V|`.
-   Via the rank–component identity on `G̃ ↾ Y` + the components-refine-partition injection
-   (`label_eq_of_connBetween` walk induction). Stated on `mulTilde` directly; no new mirror.
-2. ✓ **Weak duality `rank M(G̃) + def(G̃) ≤ D(|V|−1)`** (equivalently `def ≤ corank`) — DONE
-   (`lem:weak-duality`: `Graph.rank_add_partitionDef_le` single-partition + `Graph.
-   rank_add_deficiency_le` maximised). `Union_pow_rk_eq` on `X := E(G̃)`, `Y :=` non-crossing
-   fibers gives `rank = rk_Union(E(G̃)) ≤ D·r_cycle(Y) + |E(G̃)∖Y|`; piece 1 bounds `r_cycle(Y)
-   ≤ |V| − numParts f`; the crossing-fiber count `|E(G̃)∖Y| = (D−1)·d_G(P)` is the private
-   `Graph.ncard_crossing_fibers`. Maximised by `ciSup_le` on the attainment API. Carries
-   `1 ≤ bodyBarDim n` (statement false at `D=0`; see FRICTION). No split needed.
-3. **The JJ09 reverse (`def ≥ corank`): a vertex-partition attaining the rank** — NEXT. Via Edmonds
-   matroid-partition rank (Phase 12 `Matroid/Constructions/Union.lean`) + `Union_pow_rk_eq`
-   (Phase 13) over the `D`-fold graphic union — translating Edmonds' optimal *edge subset* into
-   the deficiency *vertex partition* (the optimal `Y` induces the partition into the components
-   of `G̃ ↾ Y`). Then assemble `|B| + def(G̃) = D(|V|−1)`, flip `thm:def-eq-corank` green.
+**`prop:rigidity-matrix-prop11` (inherited from Phase 18) is NOT closed by this.** Its
+*matroidal* half (`def = corank M(G̃)`) is now green, but reconciling the honest analytic
+rank form requires the *analytic* generic-rank equality `rank R(G,p) = D(|V|−1) − def(G̃)`
+(JJ09 Thm 6.1 geometric side) — a wiring of the rigidity-matrix rank `R(G,p)` (Phase 18,
+`Molecular/RigidityMatrix.lean`) to the matroid corank, a distinct object with no Lean yet.
+Earlier hand-off prose claimed closing `thm:def-eq-corank` would flip prop11; that was
+optimistic — prop11 needs this analytic link in addition. The node prose in
+`rigidity-matrix.tex` is updated to flag the split (matroidal half done, analytic half
+scheduled with the algebraic induction, Phase 21+).
 
-Each piece is a normal forward-mode commit (Lean + blueprint node/`\leanok` + notes). If piece 1
-or 3 itself proves to be multi-commit on contact, split it and keep going. Closing
-`thm:def-eq-corank` also flips the Phase-18-inherited `prop:rigidity-matrix-prop11`. Two further
-pieces are still deferred behind the full equality and are **early-Phase-20** deliverables, not
-Phase 19: (i) the *full* KT 3.4 (`G[V(X)]` rigid, the tightness *equality* `|X−e| =
-D(|V(X)|−1)`), which needs a vertex-induced-subgraph-from-an-edge-set construction (no existing
-`Graph α β` analogue); (ii) KT 3.5 (rigid-subgraph contraction preserves minimality — Case I
-engine).
+**Next concrete step / remaining Phase-19 work.** The Phase-19 `deficiency.tex` chapter is
+complete. Two structural deliverables flagged off the original critical path remain, both
+**early-Phase-20** (not blocking Phase 20's opening): (i) the *full* KT 3.4 (`G[V(X)]` rigid,
+the tightness *equality* `|X−e| = D(|V(X)|−1)`), needing a vertex-induced-subgraph-from-an-
+edge-set construction (no existing `Graph α β` analogue) — now unblocked since the JJ09
+reverse `le_rank_add_deficiency` supplies the lower bound it was waiting on; (ii) KT 3.5
+(rigid-subgraph contraction preserves minimality — Case I engine). If the next agent treats
+this commit as phase-closing, run the phase-close checklist (ROADMAP status ✓, sync README /
+home_page / intro.tex, re-read `deficiency.tex` end-to-end); otherwise pick up (i) or (ii).
 
-Phase 20 (combinatorial induction → Theorem 4.9) is unblocked once `M(G̃)`, deficiency,
+Phase 20 (combinatorial induction → Theorem 4.9) is unblocked: `M(G̃)`, deficiency,
 and the def = corank bridge are all green.

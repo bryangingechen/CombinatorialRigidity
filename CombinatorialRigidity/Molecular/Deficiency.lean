@@ -80,12 +80,19 @@ leaf node landing here:
   equivalently an `M(G̃)`-basis of `X`: a circuit is exactly one edge short of being
   independent on its span. This is the upper-bound / maximal-sparse-subset form that KT's
   fundamental-circuit arguments (Phases 21–22) consume; the full `G[V(X)]`-is-rigid
-  (`def = 0`, tightness *equality*) conclusion needs the deferred reverse half of
-  `thm:def-eq-corank` (risk #4) and lands with it.
+  (`def = 0`, tightness *equality*) conclusion needs a vertex-induced-subgraph
+  construction and is an early-Phase-20 deliverable.
+
+* `rank_add_deficiency_eq` / `isBase_ncard_add_deficiency_eq` (`thm:def-eq-corank`;
+  Jackson–Jordán 2009 Thm 6.1 / Cor 6.2) — the **def = corank bridge**
+  `rank M(G̃) + def(G̃) = D(|V| - 1)` (equivalently `|B| + def(G̃) = D(|V| - 1)` for any
+  base `B`), the `le_antisymm` of weak duality `rank_add_deficiency_le` (`def ≤ corank`) and
+  its reverse `le_rank_add_deficiency` (`def ≥ corank`, the substantive JJ09 min–max content:
+  the partition into the connected components of `G̃ ↾ Y₀`, for the Edmonds-optimal `Y₀`,
+  attains the rank). Axiom-free.
 
 See `ROADMAP.md` §19 / `notes/Phase19.md` and the `sec:molecular-deficiency`
-dep-graph of `blueprint/src/chapter/deficiency.tex`. The remaining node (the full bridge
-`thm:def-eq-corank`) lands in a subsequent commit.
+dep-graph of `blueprint/src/chapter/deficiency.tex`.
 -/
 
 namespace Graph
@@ -695,5 +702,219 @@ theorem rank_add_deficiency_le [DecidableEq β] [Finite α] [Finite β] (G : Gra
       bodyBarDim n * ((V(G).ncard : ℤ) - 1) - (G.matroidMG n).rank :=
     ciSup_le fun f => by linarith [G.rank_add_partitionDef_le n hD hne f]
   linarith
+
+/-! ## The reverse inequality (`thm:def-eq-corank`, piece 3)
+
+The substantive Jackson--Jordán min–max content: a vertex-partition `P` attaining the
+rank, giving `rank M(G̃) + def_{G̃}(P) ≥ D(|V| - 1)`, equivalently
+`def(G̃) ≥ corank M(G̃)`. The optimal edge set `Y₀ ⊆ E(G̃)` of the Edmonds
+partition-rank formula (`Union_pow_rk_eq`, existence half) induces a partition `P`
+of `V(G)`: the connected components of `G̃ ↾ Y₀`. For that partition the within-part
+fibers are exactly `Y₀`, so `r_cycle(Y₀) = |V| - |P|`, and every crossing edge has all
+`D-1` of its fibers outside `Y₀`, so `(D-1)·d_G(P) ≤ |E(G̃) ∖ Y₀|`. Together with the
+optimal bound `D·r_cycle(Y₀) + |E(G̃) ∖ Y₀| ≤ rank` this gives the reverse inequality. -/
+
+/-- A chosen vertex of a graph `K` (the component graph in `componentLabel`), or an
+arbitrary vertex if `K` is empty. Factored through the graph so that the component label
+depends only on the `walkable` *graph*, making it constant on a component a `congrArg`. -/
+private noncomputable def pickVertex {α γ : Type*} [Nonempty α] (K : Graph α γ) : α := by
+  classical exact if h : V(K).Nonempty then h.choose else Classical.arbitrary α
+
+/-- The **component labeling** of a graph `H`: `componentLabel H x` is a chosen vertex of
+the connected component (the `walkable` set) of `x`. It is constant on each component
+(`componentLabel_eq_of_connBetween`) and connected to its own vertex
+(`connBetween_componentLabel`), so its fibers on `V(H)` are exactly the connected
+components — the partition the reverse direction of `thm:def-eq-corank` runs on. -/
+private noncomputable def componentLabel {α γ : Type*} [Nonempty α] (H : Graph α γ) (x : α) : α :=
+  pickVertex (H.walkable x)
+
+private theorem pickVertex_mem {α γ : Type*} [Nonempty α] {K : Graph α γ} (h : V(K).Nonempty) :
+    pickVertex K ∈ V(K) := by
+  rw [pickVertex]; classical rw [dif_pos h]; exact h.choose_spec
+
+private theorem connBetween_componentLabel {α γ : Type*} [Nonempty α] {H : Graph α γ} {x : α}
+    (hx : x ∈ V(H)) : H.ConnBetween x (componentLabel H x) :=
+  mem_walkable_iff.mp (pickVertex_mem ⟨x, mem_walkable hx⟩)
+
+private theorem componentLabel_eq_of_connBetween {α γ : Type*} [Nonempty α] {H : Graph α γ}
+    {x y : α} (h : H.ConnBetween x y) : componentLabel H x = componentLabel H y :=
+  congrArg pickVertex h.walkable_eq_walkable
+
+private theorem connBetween_of_componentLabel_eq {α γ : Type*} [Nonempty α] {H : Graph α γ}
+    {x y : α} (hx : x ∈ V(H)) (hy : y ∈ V(H))
+    (heq : componentLabel H x = componentLabel H y) : H.ConnBetween x y :=
+  ((connBetween_componentLabel hx).trans (heq ▸ (connBetween_componentLabel hy).symm))
+
+/-- The components of `H ↾ Y` number at most the parts of the component labeling `f`:
+the map sending each part-label of `f` back to the component of one of its vertices is
+the inverse of the component-to-label map, so the labels at least count the components.
+This is the reverse of the `numParts ≤ c` inequality inside
+`rk_cycleMatroid_within_parts_le`, and it gives the *exact* `r_cycle(Y) + numParts f = |V|`
+for the component labeling. -/
+private theorem numberOfComponents_le_numParts [Finite α] [Finite β] [Nonempty α] (G : Graph α β)
+    (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} :
+    c((G.mulTilde n) ↾ Y) ≤ (G.numParts (componentLabel ((G.mulTilde n) ↾ Y)) : ℕ∞) := by
+  classical
+  set H := (G.mulTilde n) ↾ Y with hHdef
+  have hVH : V(H) = V(G) := by rw [hHdef, vertexSet_restrict, mulTilde]; rfl
+  set f := componentLabel H with hf
+  -- A chosen representative vertex of each component.
+  set rep : Graph α (β × Fin (bodyHingeMult n)) → α :=
+    fun C => pickVertex C with hrep
+  have hrepmem : ∀ C : Graph α (β × Fin (bodyHingeMult n)), C.IsCompOf H → rep C ∈ V(C) :=
+    fun C hC => pickVertex_mem hC.nonempty
+  -- Inject components into the label image `f '' V(G)`.
+  have hmaps : Set.MapsTo (fun C => f (rep C)) H.Components (f '' V(G)) := by
+    intro C hC
+    have hCco : C.IsCompOf H := mem_components_iff_isCompOf.mp hC
+    exact ⟨rep C, hVH ▸ vertexSet_mono hCco.le (hrepmem C hCco), rfl⟩
+  have hinj : Set.InjOn (fun C => f (rep C)) H.Components := by
+    intro C hC C' hC' heq
+    have hCco : C.IsCompOf H := mem_components_iff_isCompOf.mp hC
+    have hC'co : C'.IsCompOf H := mem_components_iff_isCompOf.mp hC'
+    have hc := hrepmem C hCco
+    have hc' := hrepmem C' hC'co
+    have hconn := connBetween_of_componentLabel_eq (vertexSet_mono hCco.le hc)
+      (vertexSet_mono hC'co.le hc') heq
+    refine hCco.eq_of_not_disjoint hC'co (Set.not_disjoint_iff.mpr ⟨rep C, hc, ?_⟩)
+    rw [hC'co.eq_walkable_of_mem_walkable hc', mem_walkable_iff]
+    exact hconn.symm
+  -- Components inject into the label image, so `c ≤ |f '' V|`.
+  rw [NumberOfComponents, numParts, Set.Finite.cast_ncard_eq ((f '' V(G)).toFinite)]
+  exact Set.encard_le_encard_of_injOn hmaps hinj
+
+/-- For the component labeling of `G̃ ↾ Y`, the within-part fibers of `Y` together with the
+parts exactly account for the vertices: `r_cycle(Y) + numParts f = |V|`. The `≤` is piece 1
+(`rk_cycleMatroid_within_parts_le`, valid since every fiber of `Y` joins same-component, hence
+equally-labeled, vertices); the `≥` is `numberOfComponents_le_numParts` plus the rank–component
+identity `r_cycle(Y) = |V| - c(G̃ ↾ Y)`. This exactness is what turns the *upper* bound piece 1
+gave for weak duality into the *lower* bound the reverse direction needs. -/
+private theorem rk_add_numParts_componentLabel [Finite α] [Finite β] [Nonempty α] (G : Graph α β)
+    (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} (hYE : Y ⊆ E(G.mulTilde n)) :
+    (G.mulTilde n).cycleMatroid.rk Y + G.numParts (componentLabel ((G.mulTilde n) ↾ Y))
+      = V(G).ncard := by
+  classical
+  set H := (G.mulTilde n) ↾ Y with hHdef
+  have hVH : V(H) = V(G) := by rw [hHdef, vertexSet_restrict, mulTilde]; rfl
+  set f := componentLabel H with hf
+  -- The fibers of `Y` join equally-labeled vertices (same component, `componentLabel` constant).
+  have hwithin : ∀ p ∈ Y, ∀ x y, (G.mulTilde n).IsLink p x y → f x = f y := by
+    intro p hp x y hlink
+    have hHlink : H.IsLink p x y := by rw [hHdef, restrict_isLink]; exact ⟨hp, hlink⟩
+    exact componentLabel_eq_of_connBetween (H := H) hHlink.connBetween
+  -- `≤` from piece 1.
+  have hle := G.rk_cycleMatroid_within_parts_le n hYE hwithin
+  -- `≥` via the rank–component identity and `c ≤ numParts`.
+  have hrank : (G.mulTilde n).cycleMatroid.eRk Y = H.cycleMatroid.eRank := by
+    rw [hHdef, cycleMatroid_restrict, inter_eq_right.mpr hYE, Matroid.eRank_restrict]
+  have hid : H.cycleMatroid.eRank + c(H) = V(G).encard := by
+    rw [eRank_cycleMatroid_add_numberOfComponents H, hVH]
+  have hrk_eq : ((G.mulTilde n).cycleMatroid.rk Y : ℕ∞) = H.cycleMatroid.eRank := by
+    rw [Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite Y), hrank]
+  have hcle : c(H) ≤ (G.numParts f : ℕ∞) := G.numberOfComponents_le_numParts n (Y := Y)
+  -- `|V| = eRank + c ≤ rk + numParts` in `ℕ∞`.
+  have hge : (V(G).ncard : ℕ∞) ≤
+      ((G.mulTilde n).cycleMatroid.rk Y : ℕ∞) + (G.numParts f : ℕ∞) := by
+    rw [hrk_eq, Set.Finite.cast_ncard_eq V(G).toFinite]
+    calc V(G).encard = H.cycleMatroid.eRank + c(H) := hid.symm
+      _ ≤ H.cycleMatroid.eRank + (G.numParts f : ℕ∞) := by gcongr
+  -- Combine `≤` (piece 1) and `≥` into the equality, in `ℕ`.
+  have hge' : V(G).ncard ≤ (G.mulTilde n).cycleMatroid.rk Y + G.numParts f := by
+    exact_mod_cast hge
+  omega
+
+/-- **Weak duality is tight: the reverse inequality** (`thm:def-eq-corank`, piece 3). For a
+multigraph `G` with `V(G) ≠ ∅` and `D ≥ 1`, the partition `P` into the connected components
+of `G̃ ↾ Y₀` (for the Edmonds-optimal edge set `Y₀`) attains
+`rank M(G̃) + def_{G̃}(P) ≥ D(|V| - 1)`, hence `rank M(G̃) + def(G̃) ≥ D(|V| - 1)`, i.e.
+`def(G̃) ≥ corank M(G̃)`. With `rank_add_deficiency_le` this is the full bridge.
+
+The existence half of the Edmonds partition-rank formula (`Union_pow_rk_eq`) provides an
+edge set `Y₀ ⊆ E(G̃)` with `D·r_cycle(Y₀) + |E(G̃) ∖ Y₀| ≤ rank M(G̃)`. For the component
+labeling of `G̃ ↾ Y₀`: every fiber of `Y₀` joins same-component, hence equally-labeled,
+vertices, so `Y₀` is non-crossing and `r_cycle(Y₀) + numParts f = |V|`
+(`rk_add_numParts_componentLabel`); and every crossing edge's `D-1` fibers all lie outside
+`Y₀` (their endpoints are in different components), so the crossing fibers
+`{p | p.1 ∈ crossingEdges f}` (numbering `(D-1)·d_G(P)`, `ncard_crossing_fibers`) sit inside
+`E(G̃) ∖ Y₀`, giving `(D-1)·d_G(P) ≤ |E(G̃) ∖ Y₀|`. Substituting,
+`rank ≥ D(|V| - numParts f) + (D-1)·d_G(P) = D(|V|-1) - def_{G̃}(P)`. -/
+theorem le_rank_add_deficiency [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
+    (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
+    bodyBarDim n * ((V(G).ncard : ℤ) - 1) ≤ (G.matroidMG n).rank + G.deficiency n := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Nonempty α := ⟨hne.choose⟩
+  classical
+  -- `rank M(G̃) = (Union).rk E(G̃)`.
+  have hrank : (G.matroidMG n).rank =
+      (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)).rk
+        E(G.mulTilde n) := by
+    rw [matroidMG, Matroid.rank_def, Matroid.restrict_ground_eq,
+      Matroid.restrict_rk_eq _ subset_rfl]
+  -- Edmonds-optimal `Y₀ ⊆ E(G̃)`.
+  obtain ⟨⟨Y₀, hY₀sub, hY₀le⟩, _⟩ :=
+    Union_pow_rk_eq (G.mulTilde n).cycleMatroid (bodyBarDim n) E(G.mulTilde n)
+  set f := componentLabel ((G.mulTilde n) ↾ Y₀) with hf
+  -- Piece: `r_cycle(Y₀) + numParts f = |V|`.
+  have heq := G.rk_add_numParts_componentLabel n hY₀sub
+  -- Crossing fibers sit inside `E(G̃) ∖ Y₀`.
+  have hcrosssub : {p : β × Fin (bodyHingeMult n) | p.1 ∈ G.crossingEdges f}
+      ⊆ E(G.mulTilde n) \ Y₀ := by
+    rintro p hp
+    obtain ⟨hpE, x, y, hlink, hxy⟩ := hp
+    refine ⟨by rw [mulTilde, edgeMultiply_edgeSet]; exact hpE, fun hpY₀ => hxy ?_⟩
+    -- If `p ∈ Y₀`, its endpoints `x, y` are connected in `G̃ ↾ Y₀`, hence equally labeled.
+    have hGlink : (G.mulTilde n).IsLink p x y := by rw [mulTilde, edgeMultiply_isLink]; exact hlink
+    have hHlink : ((G.mulTilde n) ↾ Y₀).IsLink p x y := by
+      rw [restrict_isLink]; exact ⟨hpY₀, hGlink⟩
+    exact componentLabel_eq_of_connBetween (H := (G.mulTilde n) ↾ Y₀) hHlink.connBetween
+  have hcrosscard : (bodyHingeMult n) * (G.crossingEdges f).ncard
+      ≤ (E(G.mulTilde n) \ Y₀).ncard := by
+    rw [← G.ncard_crossing_fibers n f]
+    exact Set.ncard_le_ncard hcrosssub (E(G.mulTilde n) \ Y₀).toFinite
+  -- The deficiency dominates this partition's deficiency.
+  have hdef := G.partitionDef_le_deficiency n f
+  rw [partitionDef, numParts] at hdef
+  -- `|V| ≥ 1` and `D - 1 = bodyHingeMult n`.
+  have hV1 : 1 ≤ V(G).ncard := hne.ncard_pos
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  rw [hrank]
+  -- Assemble in `ℤ`. `numParts f = (f '' V(G)).ncard`.
+  rw [← hf, numParts] at heq
+  zify at hY₀le hcrosscard heq
+  rw [hHM] at hcrosscard
+  set D : ℤ := (bodyBarDim n : ℤ) with hDdef
+  set R : ℤ := ((G.mulTilde n).cycleMatroid.rk Y₀ : ℤ) with hR
+  set NP : ℤ := ((f '' V(G)).ncard : ℤ) with hNP
+  set RKU : ℤ := ((Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)).rk
+    E(G.mulTilde n) : ℤ) with hRKU
+  set DC : ℤ := ((G.crossingEdges f).ncard : ℤ) with hDC
+  set ED : ℤ := ((E(G.mulTilde n) \ Y₀).ncard : ℤ) with hED
+  -- hY₀le : D * R + ED ≤ RKU ; heq : R + NP = |V| ; hcrosscard : (D-1)*DC ≤ ED
+  -- hdef : def_P = D*(NP-1) - (D-1)*DC ≤ deficiency
+  nlinarith [hdef, hY₀le, heq, hcrosscard]
+
+/-! ## The def = corank bridge (`thm:def-eq-corank`; Jackson–Jordán) -/
+
+/-- **`rank M(G̃) + def(G̃) = D(|V| - 1)`** (`thm:def-eq-corank`; Jackson–Jordán 2009 Thm 6.1):
+the rank-deficiency identity, assembled from weak duality `rank_add_deficiency_le`
+(`def ≤ corank`) and its reverse `le_rank_add_deficiency` (`def ≥ corank`, the substantive
+JJ09 min–max content: a vertex-partition — the components of `G̃ ↾ Y₀` for the Edmonds-optimal
+`Y₀` — attaining the rank). For `V(G) ≠ ∅` and `D = bodyBarDim n ≥ 1`. -/
+theorem rank_add_deficiency_eq [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
+    (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
+    (G.matroidMG n).rank + G.deficiency n = bodyBarDim n * ((V(G).ncard : ℤ) - 1) :=
+  le_antisymm (G.rank_add_deficiency_le n hD hne) (G.le_rank_add_deficiency n hD hne)
+
+/-- **`def(G̃) = corank M(G̃)`** in base form (`thm:def-eq-corank`; Jackson–Jordán 2009
+Thm 6.1 / Cor 6.2): for any base `B` of `M(G̃)`, `|B| + def(G̃) = D(|V| - 1)`. The corank
+`D(|V|-1) - |B|` against the trivial-motion ambient `D(|V|-1)` equals the deficiency; in
+particular `def(G̃) = 0` (`G` body-hinge rigid) iff `|B| = D(|V|-1)`, i.e. `G̃` packs `D`
+edge-disjoint spanning trees (Cor 6.2). This closes the Phase-18-inherited reconciliation
+node `prop:rigidity-matrix-prop11`. -/
+theorem isBase_ncard_add_deficiency_eq [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
+    (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) {B : Set (β × Fin (bodyHingeMult n))}
+    (hB : (G.matroidMG n).IsBase B) :
+    (B.ncard : ℤ) + G.deficiency n = bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+  rw [hB.ncard]; exact G.rank_add_deficiency_eq n hD hne
 
 end Graph
