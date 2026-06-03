@@ -1050,6 +1050,30 @@ theorem dof_tracking [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀,
     removeVertex_deficiency_ge hD hav hbv heab hla hlb hdeg2⟩
 
+/-! ### Total fiber count of `G̃` (`lem:no-rigid-edge-count`, support)
+
+The KT 4.5(i) edge-count bound (`lem:no-rigid-edge-count`, the prerequisite for the
+existence of a reducible degree-2 vertex, KT 4.6) is a statement about `|E(G)|`, while the
+matroid `M(G̃)` lives over the fiber set `E(G̃)`. The bridge is the elementary cardinality
+identity `|E(G̃)| = (D − 1)·|E(G)|`: the multiplied graph `G̃ = (D−1)·G` replaces each edge
+of `G` by `D − 1 = bodyHingeMult n` parallel copies (`Graph.edgeMultiply`), so its edge set
+has `(D − 1)·|E(G)|` fibers. This is the per-edge `edgeFiber_ncard` (`|ẽ| = D − 1`) summed
+over the `|E(G)|` edges, packaged as a single `mulTilde`-level count. It is the support fact
+that lets the matroidal corank bound `corank M(G̃) ≤ D − 2` (the substantive content of KT
+4.5(i), still to land — see `notes/Phase20.md` *Hand-off*) be read off as the graph-level
+edge bound `(D−1)|E| < D(|V|−1) + (D−1)`, and it also feeds the degree-handshake
+`∑_v d(v) = 2|E|` of the average-degree count (KT 4.6, the `F″` sub-step). -/
+
+/-- **The fiber set of `G̃` has `(D − 1)·|E(G)|` elements** (`lem:no-rigid-edge-count`,
+support): `|E(G̃)| = bodyHingeMult n · |E(G)| = (D − 1)·|E(G)|`, since the multiplied graph
+`G̃ = (D−1)·G` (`mulTilde`, `Graph.edgeMultiply (bodyHingeMult n)`) replaces each edge of `G`
+by `D − 1 = bodyHingeMult n` parallel fiber copies. Immediate from
+`edgeMultiply_edgeSet_ncard`. This bridges the matroidal corank of `M(G̃)` (which counts
+fibers of `E(G̃)`) to the graph-level edge count `|E(G)|` of the KT 4.5(i)/4.6 edge bound. -/
+theorem mulTilde_edgeSet_ncard [Finite β] (G : Graph α β) (n : ℕ) :
+    E(G.mulTilde n).ncard = bodyHingeMult n * E(G).ncard := by
+  rw [mulTilde, edgeMultiply_edgeSet_ncard]
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,

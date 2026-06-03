@@ -549,9 +549,39 @@ route that bypasses the deferred forest surgery
   Katoh--Tanigawa's forest-surgery derivation (\cref{rem:kt-lemma-41}).
 \end{proof}
 
+\begin{lemma}[Edge-count bound with no proper rigid subgraph; KT Lemma 4.5(i)]
+  \label{lem:no-rigid-edge-count}
+  \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG}
+  Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph and
+  $D = \binom{d+1}{2} \ge 2$. Then
+  \[
+    (D-1)\,|E(G)| \;<\; D\,(|V(G)| - 1) + (D-1).
+  \]
+  Equivalently, $\operatorname{corank} M(\tilde G) = |E(\tilde G)| -
+  \operatorname{rank} M(\tilde G) \le D - 2$: the fibers redundant in
+  $M(\tilde G)$ all concentrate on a single edge. This is the edge bound
+  Katoh--Tanigawa use to force a low-degree vertex (\cref{lem:reducible-vertex}).
+\end{lemma}
+\begin{proof}
+  Read the graph-level bound through the matroid: $|E(\tilde G)| = (D-1)\,|E(G)|$
+  (each edge of $G$ contributes a fiber $\tilde e$ of size $D-1$, the
+  \texttt{mulTilde}-level count \texttt{Graph.mulTilde\_edgeSet\_ncard}), and
+  $\operatorname{rank} M(\tilde G) = D(|V(G)| - 1)$ since $G$ is $0$-dof
+  (\cref{thm:def-eq-corank}); so the claim is exactly $\operatorname{corank}
+  M(\tilde G) \le D - 2$. Fix an edge $e$ and let $h^\ast = \min_B |\tilde e \cap
+  B|$ over bases $B$ of $M(\tilde G)$, attained at $B^\ast$; minimality of $G$
+  gives $h^\ast \ge 1$. If some fiber $f \ne \tilde e$ had an element $p \notin
+  B^\ast$, its fundamental circuit $X = \operatorname{fundCircuit}(p, B^\ast)$
+  would, by \cref{lem:circuit-induces-rigid}, induce a rigid subgraph $G[V(X)]$;
+  the no-proper-rigid hypothesis forces $V(X) = V(G)$, and a base exchange along
+  $X$ then drops $|\tilde e \cap B|$ below $h^\ast$, contradicting minimality. So
+  every $f \ne \tilde e$ lies in $B^\ast$, whence $|E(\tilde G) \setminus B^\ast|
+  = |\tilde e| - h^\ast = (D-1) - h^\ast \le D - 2$.
+\end{proof}
+
 \begin{lemma}[Existence of a reducible degree-2 vertex; KT Lemma 4.6]
   \label{lem:reducible-vertex}
-  \uses{lem:dof-tracking, lem:two-edge-conn, def:k-dof}
+  \uses{lem:dof-tracking, lem:no-rigid-edge-count, lem:two-edge-conn, def:k-dof}
   A minimal $k$-dof-graph $G$ with $|V| \ge 3$ that has no proper rigid
   subgraph contains a degree-2 vertex whose splitting-off (or removal)
   preserves minimality and the degree of freedom. The proof is a
