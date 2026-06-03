@@ -2160,6 +2160,47 @@ lemma fiberDegree_le [Finite β] {G : Graph α β} {n : ℕ} {v : α}
   rw [fiberDegree, ← fiberAtVertex_inter_edgeSet_ncard]
   refine Set.ncard_le_ncard (fun p hp ↦ ⟨hp.2, hF hp.1⟩) (Set.toFinite _)
 
+/-- **The `v`-free part of a `G̃`-forest transports verbatim into `G̃_v^{ab}`**
+(`lem:forest-surgery-split`, reroute wiring step 1; Katoh–Tanigawa 2011 Lemma 4.1). Given a
+cycle-matroid-acyclic (forest) fiber set `F` of the multiplied graph `G̃ = (D-1)·G` and a
+*fresh* short-circuit edge `e₀ ∉ E(G)`, the part of `F` avoiding the degree-2 vertex `v` —
+`F ∖ fiberAtVertex v`, the fibers KT's surgery keeps untouched (`dᶠ(v) = 0` forests entirely,
+and the surviving non-`v`-edges of the `dᶠ(v) ∈ {1,2}` forests) — is acyclic in the multiplied
+splitting-off `G̃_v^{ab}`.
+
+This is the half of KT 4.1's per-forest reroute that needs *no* `ã̃b` swap: every `v`-free
+fiber `p` of `F` is a copy of a `v`-avoiding edge of `G`, hence a fiber of the multiplied
+vertex-removal `(G_v)̃`. The `v`-free part is a subset of `F`, so acyclic in `G̃`; it lives in
+`E((G_v)̃) ⊆ E(G̃)`, so by `IsAcyclicSet.anti_inter` along `(G_v)̃ = ((G − v))̃ ≤ G̃`
+(`edgeMultiply_mono` of `deleteVerts_le`) it is acyclic already in `(G_v)̃`, and
+`isAcyclicSet_mulTilde_splitOff_of_removeVertex` lifts that into `G̃_v^{ab}`. The residual
+reroute crux — the `dᶠ(v) = 2` forest swapping its two `v`-edges for one `ã̃b` copy (a
+`v`-traversing tree-path lift) — is the still-open second wiring step. -/
+lemma isAcyclicSet_splitOff_of_diff_fiberAtVertex {G : Graph α β} {v a b : α} {e₀ : β}
+    {n : ℕ} (he₀ : e₀ ∉ E(G)) {F : Set (β × Fin (bodyHingeMult n))}
+    (hF : ((G.mulTilde n).cycleMatroid).Indep F) :
+    ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep (F \ G.fiberAtVertex n v) := by
+  rw [cycleMatroid_indep] at hF
+  -- The `v`-free part lands in the ground set of the multiplied vertex-removal.
+  have hsub : F \ G.fiberAtVertex n v ⊆ E((G.removeVertex v).mulTilde n) := by
+    rintro p ⟨hpF, hpv⟩
+    have hpE : p ∈ E(G.mulTilde n) := hF.1 hpF
+    rw [mem_fiberAtVertex] at hpv
+    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpE
+    obtain ⟨x, y, hl⟩ := exists_isLink_of_mem_edgeSet hpE
+    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, removeVertex,
+      edgeSet_deleteVerts, Set.mem_setOf_eq]
+    exact ⟨x, y, hl, fun hx ↦ hpv (hx ▸ hl.inc_left), fun hy ↦ hpv (hy ▸ hl.inc_right)⟩
+  -- Acyclic in `(G_v)̃` (subset of the `G̃`-forest, restricted to the smaller ground set),
+  -- then lift to `G̃_v^{ab}`.
+  apply isAcyclicSet_mulTilde_splitOff_of_removeVertex he₀
+  rw [cycleMatroid_indep]
+  have hle : (G.removeVertex v).mulTilde n ≤ G.mulTilde n :=
+    edgeMultiply_mono (by rw [removeVertex]; exact deleteVerts_le) _
+  have hanti := hF.anti (Set.diff_subset (t := G.fiberAtVertex n v))
+  have := hanti.anti_inter hle
+  rwa [Set.inter_eq_self_of_subset_right hsub] at this
+
 /-! ## At most one fresh copy per forest (`lem:forest-surgery-split`, reroute count substrate)
 
 The rerouting half of the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery swaps the two

@@ -222,6 +222,22 @@ housekeeping pass once their resolution is fully indexed.
   (`e ∈ F ∧ G.IsLink e x y`), not the link first.
 - **Status:** resolved.
 
+### [resolved] `[matroid]` Transporting acyclicity *down* a subgraph (`IsAcyclicSet.anti_inter`) always intersects with `E(G)` — clean up with `Set.inter_eq_self_of_subset_right`
+- **Where it bit:** `Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex` in `Molecular/Induction.lean`
+  (Phase 20, `lem:forest-surgery-split` reroute wiring step 1 — the `v`-free part of a `G̃`-forest
+  transports into `G̃ᵥᵃᵇ`).
+- **Friction / resolution:** the vendored `Graph.IsAcyclicSet.anti_inter (hGH : G ≤ H)
+  (hF : H.IsAcyclicSet F) : G.IsAcyclicSet (E(G) ∩ F)` is the only "transport acyclicity down a
+  subgraph" lemma, and it **always** intersects the set with the smaller graph's edge set. When
+  the set already lives in `E(G)` (here `F ∖ fiberAtVertex v ⊆ E((G_v)̃)`, proved separately), the
+  produced `E(G) ∩ F` is `F`, but not syntactically — close the gap with
+  `rwa [Set.inter_eq_self_of_subset_right hsub] at this`.
+- **General lesson:** *`IsAcyclicSet.anti_inter` is the down-a-subgraph transport, but its
+  conclusion is `E(G) ∩ F`, not `F`; pair it with `Set.inter_eq_self_of_subset_right` (+ a
+  ground-membership `have`). The `up`-a-subgraph direction `IsAcyclicSet.mono` carries no such
+  intersection.*
+- **Status:** resolved.
+
 ### [resolved] `[matroid]` Building a small explicit cyclic walk (`IsCyclicWalk`) needs the full structure tower + a hoisted `IsWalk` `have`
 - **Where it bit:** `Graph.isCycleSet_pair_edgeFiber_splitOff` in `Molecular/Induction.lean`
   (Phase 20 `lem:forest-surgery-split` reroute-count substrate). To exhibit `{p, q}` as a

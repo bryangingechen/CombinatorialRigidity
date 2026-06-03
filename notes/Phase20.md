@@ -309,9 +309,11 @@ blueprint node; the node stays red) — incidence/cardinality
 `acyclicSet_insert_vfiber_of_not_inc`, the descent's rebalancing move
 `exists_packing_move_of_not_inc` (`lem:packing-move`), and the descent's **outer loop**
 `exists_balanced_forest_packing` (`lem:balanced-forest-packing`: a base admits a `D`-forest
-packing meeting `v` everywhere) are all green `\leanok` blueprint nodes. The only remaining piece
-toward `lem:forest-surgery-split` itself is the reroute wiring (balanced `G̃` packing →
-`G̃ᵥᵃᵇ` packing). None of this is needed for Theorem 4.9.
+packing meeting `v` everywhere) are all green `\leanok` blueprint nodes. **Reroute wiring step 1
+landed**: `isAcyclicSet_splitOff_of_diff_fiberAtVertex` (the `v`-free part of a `G̃`-forest
+transports verbatim into `G̃ᵥᵃᵇ`). The only remaining piece toward `lem:forest-surgery-split`
+itself is reroute wiring step 2 — the `dᶠ(v)=2` forest's `ã̃b`-swap cycle-lift. None of this is
+needed for Theorem 4.9.
 
 **Commit F′ landed (`no_rigid_edge_count`, KT 4.5(i) edge bound; `lem:no-rigid-edge-count`
 GREEN).** The KT 4.5(i) edge bound `(D−1)|E| < D(|V|−1)+(D−1)` for a minimal 0-dof-graph
@@ -603,9 +605,14 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   lands `x ∈ Fs' j`). The descent's **outer loop** is now green too: `lem:balanced-forest-packing` /
   `Graph.exists_balanced_forest_packing` (a base admits a `D`-forest packing with every forest
   meeting `v`). All four green `\leanok`, axiom-free — the balanced-packing assumption is **fully
-  discharged**. The only remaining piece toward `lem:forest-surgery-split` itself is the final
-  wiring (reroute the balanced packing across `v` to the `G̃ᵥᵃᵇ` packing; reroute substrate landed).
-  Off the Thm-4.9 critical path. See the *TODO* Progress *VERDICT* note.
+  discharged**. **Reroute wiring step 1 landed (2026-06-03):**
+  `Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex` (green, axiom-free) — the `v`-free part
+  `F ∖ fiberAtVertex v` of a `G̃`-forest transports verbatim into `G̃ᵥᵃᵇ` (the fibers KT's surgery
+  keeps untouched), via `IsAcyclicSet.anti_inter` along `(G_v)̃ ≤ G̃` then
+  `isAcyclicSet_mulTilde_splitOff_of_removeVertex`. The **single residual crux** (reroute wiring
+  step 2, the still-open cycle-lift) is the `dᶠ(v)=2` forest swapping its two `v`-edges for one
+  `ã̃b` copy — a `v`-traversing tree-path lift to the short-circuit. Off the Thm-4.9 critical path.
+  See the *TODO* Progress *VERDICT* note + *Hand-off*.
 - [x] `lem:balanced-forest-packing` — the repacking descent's **outer loop**
   (`Graph.exists_balanced_forest_packing`, green `\leanok`, axiom-free): a base `B` of `M(G̃)` admits
   a `D`-forest packing with every forest meeting the degree-2 vertex `v`. Disjointify the
@@ -921,9 +928,15 @@ to schedule as Phase 21 needs them:
    first (mathlib `disjointed` over `Fin D`): the move then leaves exactly one donor, and the
    pigeonhole (`≥ D` `v`-fibers among `≤ D−1` non-`j` forests ⟹ a donor with `≥ 2`) keeps the
    `v`-avoiding count strictly decreasing under strong induction. **So the balanced-packing
-   assumption is now fully DISCHARGED.** The only remaining piece toward `lem:forest-surgery-split`
+   assumption is now fully DISCHARGED.** The remaining piece toward `lem:forest-surgery-split`
    itself is the final **reroute wiring**: take the balanced packing of `G̃` and reroute it across `v`
-   to produce the `G̃ᵥᵃᵇ` packing realizing the deficiency relation (the no-reroute acyclicity
-   directions + reroute count cap substrate are landed; this is the assembly that consumes them).
-   Off the Theorem-4.9 critical path (the deficiency route already delivered Thm 4.9). See the
-   *TODO* Progress *VERDICT* note.
+   to the `G̃ᵥᵃᵇ` packing. **Reroute wiring step 1 LANDED (2026-06-03):**
+   `Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex` (green, axiom-free) — the `v`-free part of
+   each balanced forest (the fibers the surgery keeps untouched) transports verbatim into `G̃ᵥᵃᵇ`,
+   assembling the landed `IsAcyclicSet.anti_inter` + `isAcyclicSet_mulTilde_splitOff_of_removeVertex`.
+   The **single residual crux (step 2)** is the `dᶠ(v)=2` forest swapping its two `v`-edges for one
+   `ã̃b` copy — a `v`-traversing tree-path lift to the short-circuit (a `G̃ᵥᵃᵇ`-cycle through `ã̃b`
+   lifts to a `v`-traversing path of `G̃`, via the `Matroid/Graph/AcyclicSet.lean` cycle
+   characterization), the still-open cycle-lift. Once step 2 lands, the per-forest reroute map and
+   the deficiency-relation assembly close the node. Off the Theorem-4.9 critical path (the
+   deficiency route already delivered Thm 4.9). See the *TODO* Progress *VERDICT* note.

@@ -472,9 +472,16 @@ instead by a direct deficiency-count argument
   the move to a balanced packing (\cref{lem:balanced-forest-packing}) are all
   formalized, confirming the missing step is a gap, not an error. What remains
   unformalized is only the final wiring: rerouting the balanced packing of
-  $\tilde G$ across $v$ to produce the $\widetilde{G_v^{ab}}$ packing (the
-  reroute-acyclicity substrate is landed). The induction toward Theorem~4.9
-  meanwhile uses \cref{lem:splitoff-deficiency}.
+  $\tilde G$ across $v$ to produce the $\widetilde{G_v^{ab}}$ packing. The
+  reroute-acyclicity substrate is landed, and its first step now too: the
+  $v$-free part of each balanced forest --- the fibers KT's surgery keeps
+  untouched --- transports verbatim into $\widetilde{G_v^{ab}}$
+  (\texttt{isAcyclicSet\_splitOff\_of\_diff\_fiberAtVertex}, via
+  \texttt{isAcyclicSet\_mulTilde\_splitOff\_of\_removeVertex}). The single
+  residual crux is the degree-2-at-$v$ forest swapping its two $v$-edges for
+  one $\widetilde{ab}$ copy --- a $v$-traversing tree-path lift to the
+  short-circuit. The induction toward Theorem~4.9 meanwhile uses
+  \cref{lem:splitoff-deficiency}.
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
   packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
   the fibers not incident to $v$ and rerouted across $v$, induces a
