@@ -230,7 +230,9 @@ Cases~I and~II travel toward the smaller inductive graph.
         CombinatorialRigidity.Molecular.PanelHingeFramework.withGraph,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withGraph,
         CombinatorialRigidity.Molecular.PanelHingeFramework.withNormal,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_supportExtensor_of_ne}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_supportExtensor_of_ne,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_infinitesimalMotions_eq,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_pinnedMotions_eq}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   For a body-hinge framework $F = (G, p)$ and any multigraph $G'$ on the
@@ -248,7 +250,12 @@ Cases~I and~II travel toward the smaller inductive graph.
   overrides only $v$'s panel normal, leaving the multigraph, endpoint
   selector, and every other normal fixed, so each hinge whose endpoints
   avoid $v$ keeps its supporting extensor and the inductive realization of
-  the splitting-off $G_v^{ab}$ is untouched away from $v$.
+  the splitting-off $G_v^{ab}$ is untouched away from $v$. In particular,
+  when $v$ is still unhinged (no edge of $G$ has $v$ as an endpoint, as in
+  $G_v^{ab}$ before $v$'s two new edges are added), the choice of $v$'s
+  panel normal changes neither the null space $Z(G,p)$ nor any
+  body-$w$-pinned motion subspace, so the inductive count is preserved
+  through the choice.
 \end{definition}
 
 \begin{lemma}[Edge deletion enlarges the motion space]
@@ -554,9 +561,10 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Case II rank-lift accounting; the $+D$ core of KT Lemma 6.8]
   \label{lem:case-II-rank-lift}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotions}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotions,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions}
   \leanok
-  \uses{def:rank-hypothesis, lem:rank-delete-vertex}
+  \uses{def:rank-hypothesis, lem:rank-delete-vertex, def:framework-with-graph}
   In the codimension form of \cref{sec:molecular-rigidity-matrix},
   re-inserting (equivalently, pinning) a body $v$ shifts the realization
   count by exactly $D$. A framework $F$ realizes the target
@@ -566,15 +574,24 @@ Cases~I and~II travel toward the smaller inductive graph.
   pinned subspace is the null space of the rigidity matrix with $v$'s $D$
   columns deleted (the smaller graph $G - v$), and $\dim(\text{pinned at
   } v) + D = \dim Z(G,p)$ by the pin-a-body Lemma~5.1
-  (\cref{lem:rank-delete-vertex}).
+  (\cref{lem:rank-delete-vertex}). Assembled on the panel layer: building
+  the $1$-extension by choosing a panel normal $n$ for the re-inserted body
+  $v$ (still unhinged, so the choice does not disturb the inductive null
+  space, \cref{def:framework-with-graph}), the extended framework
+  $P[v \mapsto n]^\flat$ realizes the target rank at $k'$ exactly when the
+  splitting-off carries body-$v$-pinned motion dimension $k'$.
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-delete-vertex}
+  \uses{lem:rank-delete-vertex, def:framework-with-graph}
   Immediate from the pin-a-body identity
   $\dim(\text{pinned at } v) + D = \dim Z(G,p)$
   (\cref{lem:rank-delete-vertex}): substitute it into the definition of
-  the rank hypothesis $\dim Z(G,p) = D + k'$ and cancel the $D$ term.
+  the rank hypothesis $\dim Z(G,p) = D + k'$ and cancel the $D$ term. For
+  the panel assembly, the body-$v$-pinned motions of $P[v \mapsto n]^\flat$
+  agree with those of $P^\flat$ when $v$ is unhinged
+  (\cref{def:framework-with-graph}), so the $+D$ accounting applies to the
+  pre-choice framework's pinned dimension.
 \end{proof}
 
 \begin{lemma}[Case II: splitting off a reducible vertex; KT Lemmas 6.7, 6.8]

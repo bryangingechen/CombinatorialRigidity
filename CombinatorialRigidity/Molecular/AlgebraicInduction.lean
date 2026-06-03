@@ -483,6 +483,27 @@ theorem infinitesimalMotions_mono_of_graph_le (F F' : BodyHingeFramework k α β
   rw [hingeConstraint, hext e]
   exact hS e u v (Graph.IsLink.mono hle he)
 
+/-- **The motion space depends only on the supporting extensors of the linking edges**
+(`lem:motions-mono-of-graph-le`, equality form): two body-hinge frameworks `F`, `F'` on the
+*same* multigraph whose supporting extensors agree at every edge that actually links
+(`∀ e u v, F.graph.IsLink e u v → F'.supportExtensor e = F.supportExtensor e`) have the same null
+space, `F.infinitesimalMotions = F'.infinitesimalMotions`. Only the extensors of genuine hinges
+enter the constraint family, so an extensor change at a non-linking edge — the situation Case II's
+`withNormal` creates when the re-inserted body `v` carries no incident edges yet — leaves the
+motions untouched. The two inclusions are `infinitesimalMotions_mono_of_graph_le` (with `≤ = rfl`)
+in each direction. -/
+theorem infinitesimalMotions_eq_of_isLink_supportExtensor (F F' : BodyHingeFramework k α β)
+    (hgraph : F'.graph = F.graph)
+    (hext : ∀ e u v, F.graph.IsLink e u v → F'.supportExtensor e = F.supportExtensor e) :
+    F.infinitesimalMotions = F'.infinitesimalMotions := by
+  apply le_antisymm
+  · intro S hS e u v he
+    rw [hingeConstraint, hext e u v (hgraph ▸ he)]
+    exact hS e u v (hgraph ▸ he)
+  · intro S hS e u v he
+    rw [hingeConstraint, ← hext e u v he]
+    exact hS e u v (hgraph ▸ he)
+
 /-- **Deleting edges enlarges the motion space** (`lem:motions-mono-of-graph-le`, `withGraph`
 form): replacing `F.graph` by any subgraph `G' ≤ F.graph` (keeping the hinge data via
 `withGraph`) can only grow the null space — `F.infinitesimalMotions ≤
@@ -893,6 +914,69 @@ theorem toBodyHinge_withNormal_supportExtensor_of_ne (P : PanelHingeFramework k 
     (P.withNormal v n).toBodyHinge.supportExtensor e = P.toBodyHinge.supportExtensor e := by
   rw [toBodyHinge_supportExtensor, toBodyHinge_supportExtensor, withNormal_ends,
     withNormal_normal_of_ne P v n h₁, withNormal_normal_of_ne P v n h₂]
+
+/-- **Choosing the re-inserted body's panel leaves the null space unchanged when it is yet
+unhinged** (`def:panel-hinge-framework`, Case II infra): if no linking edge of `P.graph` has the
+body `v` among its endpoint-selector endpoints
+(`hv : ∀ e u w, P.graph.IsLink e u w → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v`), then overriding
+`v`'s panel normal by `n` does not change the infinitesimal-motion space —
+`(P.withNormal v n).toBodyHinge.infinitesimalMotions = P.toBodyHinge.infinitesimalMotions`. This
+is the situation at the start of Case II's $1$-extension: the splitting-off `G_v^{ab}` carries the
+re-inserted body `v` with *no incident hinges yet* (its two new edges `e_a, e_b` are added by
+`withGraph` afterward), so `v`'s normal enters no constraint and may be picked freely — the
+degree of freedom the genericity step (Claim 6.9) selects. Only `v`'s normal changed
+(`toBodyHinge_withNormal_supportExtensor_of_ne`), so every linking edge's supporting extensor is
+fixed and `infinitesimalMotions_eq_of_isLink_supportExtensor` applies. -/
+theorem toBodyHinge_withNormal_infinitesimalMotions_eq (P : PanelHingeFramework k α β) (v : α)
+    (n : Fin (k + 2) → ℝ)
+    (hv : ∀ e u w, P.graph.IsLink e u w → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v) :
+    (P.withNormal v n).toBodyHinge.infinitesimalMotions =
+      P.toBodyHinge.infinitesimalMotions := by
+  refine BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor
+    (P.withNormal v n).toBodyHinge P.toBodyHinge rfl (fun e u w he => ?_)
+  obtain ⟨h₁, h₂⟩ := hv e u w he
+  exact (P.toBodyHinge_withNormal_supportExtensor_of_ne v n e h₁ h₂).symm
+
+/-- **Choosing the re-inserted body's panel leaves a body's pinned motions unchanged when it is
+yet unhinged** (`def:panel-hinge-framework`, Case II infra): under the same no-incident-hinge
+hypothesis on `v`, overriding `v`'s panel normal by `n` leaves every body's pinned-motion subspace
+unchanged — `(P.withNormal v n).toBodyHinge.pinnedMotions w = P.toBodyHinge.pinnedMotions w`. The
+pin `pinnedMotions w` is the null space cut by the graph-independent vanishing condition `S w = 0`,
+and the null space itself is untouched (`toBodyHinge_withNormal_infinitesimalMotions_eq`), so the
+pin is too. This is what carries the inductive realization of the splitting-off `G_v^{ab}` —
+measured by its pinned-motion dimension via the rank-lift `rankHypothesis_iff_finrank_pinnedMotions`
+— through the choice of `v`'s panel normal untouched. -/
+theorem toBodyHinge_withNormal_pinnedMotions_eq (P : PanelHingeFramework k α β) (v : α)
+    (n : Fin (k + 2) → ℝ) (w : α)
+    (hv : ∀ e u w', P.graph.IsLink e u w' → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v) :
+    (P.withNormal v n).toBodyHinge.pinnedMotions w = P.toBodyHinge.pinnedMotions w := by
+  ext S
+  rw [BodyHingeFramework.mem_pinnedMotions, BodyHingeFramework.mem_pinnedMotions,
+    ← BodyHingeFramework.mem_infinitesimalMotions, ← BodyHingeFramework.mem_infinitesimalMotions,
+    P.toBodyHinge_withNormal_infinitesimalMotions_eq v n hv]
+
+/-- **The Case II rank-lift assembly** (`lem:case-II`, skeleton; Katoh–Tanigawa 2011 §6.3
+Lemma 6.8): the panel-hinge $1$-extension realizes the target rank at `k'` exactly when the
+splitting-off carries pinned-motion dimension `k'`. Building the extended panel framework on `G`
+by choosing a panel normal `n` for the re-inserted body `v` (`withNormal v n`), the extended
+framework realizes the rank hypothesis at `k'` (`RankHypothesis k'`, i.e. `dim Z(G,p) = D + k'`)
+exactly when the *original* framework's body-`v`-pinned motions have dimension `k'` —
+`(P.withNormal v n).toBodyHinge.RankHypothesis k' ↔ finrank (P.toBodyHinge.pinnedMotions v) = k'` —
+provided `v` is yet unhinged in `P.graph` (no linking edge has `v` among its endpoints, `hv`). The
+$+D$ rank-lift `rankHypothesis_iff_finrank_pinnedMotions` re-inserts `v`'s `D` screw freedoms, and
+the choice of `v`'s panel does not disturb the inductive null space when `v` is unhinged
+(`toBodyHinge_withNormal_pinnedMotions_eq`). So a realization of the splitting-off `G_v^{ab}` at
+its inductive count — measured by its `v`-pinned dimension `k'` — lifts to a realization of `G` at
+the same `k'`. What remains of Case II is *adding* `v`'s two new hinge edges to the graph (via
+`withGraph`) and the genericity step (Claim 6.9) ensuring the two new supporting extensors are in
+general position, deferred with the genericity device. -/
+theorem rankHypothesis_withNormal_iff_finrank_pinnedMotions [Nonempty α] [Finite α]
+    (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) (k' : ℤ)
+    (hv : ∀ e u w, P.graph.IsLink e u w → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v) :
+    (P.withNormal v n).toBodyHinge.RankHypothesis k' ↔
+      (Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) : ℤ) = k' := by
+  rw [(P.withNormal v n).toBodyHinge.rankHypothesis_iff_finrank_pinnedMotions v k',
+    P.toBodyHinge_withNormal_pinnedMotions_eq v n v hv]
 
 end PanelHingeFramework
 

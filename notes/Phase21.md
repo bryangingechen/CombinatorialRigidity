@@ -26,6 +26,28 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case II rank-lift assembly landed (2026-06-03).** The panel-layer assembly that wires the
+`withNormal` carrier into the `+D` rank-lift is green:
+`PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions` — building the
+1-extension by choosing a panel normal `n` for the re-inserted body `v`, the extended framework
+`(P.withNormal v n).toBodyHinge` realizes the target rank at `k'` (`RankHypothesis k'`) iff the
+*original* `P.toBodyHinge`'s body-`v`-pinned motions have dimension `k'`. Staged through two new
+invariance lemmas under the no-incident-hinge hypothesis on `v` (`hv : ∀ e u w, P.graph.IsLink e u w
+→ (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v`): `toBodyHinge_withNormal_infinitesimalMotions_eq` (choosing
+`v`'s panel leaves `Z(G,p)` unchanged when `v` is unhinged) and
+`toBodyHinge_withNormal_pinnedMotions_eq` (hence every `pinnedMotions w` unchanged). Both rest on a
+new general `BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor` (the motion space
+depends only on the supporting extensors of the *linking* edges — two `infinitesimalMotions_mono_of_
+graph_le`-style inclusions). The hypothesis `hv` is the honest, genericity-free content: it captures
+"`v` carries no incident hinge yet" (true of `G_v^{ab}` before its two new edges are added), so the
+panel normal at `v` is a free choice that the genericity step (Claim 6.9) later pins. Axiom-clean
+(propext/Classical.choice/Quot.sound). No friction (mirror of `infinitesimalMotions_mono_of_graph_le`
++ submodule `ext`). Blueprint folds the two invariance lemmas into `def:framework-with-graph` and the
+assembly into `lem:case-II-rank-lift` (both already green). **Remaining red on Case II:** *adding*
+`v`'s two new hinge edges to the graph (via `withGraph`) and Claim 6.9 genericity ensuring the two
+new supporting extensors are in general position — plus the vertex-level splitting-off op `G_v^{ab}`
+(green in Phase 20 combinatorially).
+
 **Case II panel-normal-extension carrier landed (2026-06-03).** The per-body panel-data primitive
 Case II's 1-extension is assembled from is green: `PanelHingeFramework.withNormal v n` (override the
 panel normal at the single body `v` by `n` via `Function.update`, keeping the multigraph, the
@@ -404,13 +426,21 @@ Case II (`k>0` splitting; KT §6.3):
   (`rankHypothesis_iff_finrank_pinnedMotions`): `RankHypothesis F k' ↔
   finrank (pinnedMotions v) = k'`, via the green
   `finrank_pinnedMotions_add_screwDim` (pin-a-body Lemma 5.1, Phase 18).
+  Now also carries the **panel-layer assembly**
+  `PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions`:
+  the extended framework `(P.withNormal v n).toBodyHinge` realizes the rank
+  at `k'` iff the original `P`'s `v`-pinned motions have dimension `k'`,
+  staged through `toBodyHinge_withNormal_{infinitesimalMotions,pinnedMotions}_eq`
+  (the panel choice at an unhinged `v` leaves `Z`/pins fixed) on the general
+  `BodyHingeFramework.infinitesimalMotions_eq_of_isLink_supportExtensor`.
   Axiom-clean. Green.
 - [ ] `lem:case-II` — KT Lemmas 6.7/6.8: splitting off a reducible
   degree-2 vertex (smaller minimal `k`-dof by green `lem:reduction-step`),
   the panel-hinge analogue of Whiteley's bar-joint 1-extension; re-insert
-  `v` to lift the rank by `D` (the accounting is `lem:case-II-rank-lift`).
-  Still needs the framework construction from a realization of `G_v^{ab}` +
-  Claim 6.9 genericity.
+  `v` to lift the rank by `D` (the accounting is `lem:case-II-rank-lift`,
+  the panel assembly now green). Still needs *adding* `v`'s two new hinge
+  edges (via `withGraph`) + Claim 6.9 genericity (the two new supporting
+  extensors in general position).
 
 Case III (deferred to Phases 22–23):
 - [ ] `lem:case-III` — KT Lemma 6.10/6.13: `k=0`, no proper rigid
@@ -633,19 +663,30 @@ unchanged). Folded into `def:framework-with-graph` (panel layer), beside the pan
 `[DecidableEq α]` on its own namespace block. With `withGraph` (to add `v`'s two edges) this is the
 full panel-data carrier for the 1-extension; what remains is wiring it into the rank-lift.
 
-**Smallest next concrete commit:** the Case II rank-lift assembly, now that both panel-data carriers
-exist (`withGraph` to add `v`'s two new edges, `withNormal` to set `v`'s panel). Build the extended
-`PanelHingeFramework` on `G` from one on `G_v^{ab}`, then show its body-`v`-pinned motions
-(`pinnedMotions v`) equal — or have the same `finrank` as — the inductive motions of `G_v^{ab}`
-(the invariance `toBodyHinge_withNormal_supportExtensor_of_ne` keeps every non-`v` edge's constraint
-fixed; the two new `v`-edges vanish on a `v`-pinned motion), then apply the `+D` accounting
-`rankHypothesis_iff_finrank_pinnedMotions`. The remaining red after that is the vertex-level
-splitting-off op `G_v^{ab}` (green in Phase 20 combinatorially) and Claim 6.9 genericity.
-Alternatively continue Case I: place the contraction realization (panel data on `rigidContract`) and
-re-add `E(H)` via `withGraph`; the slack in `screwDim_add_finrank_pinnedMotionsOn_le` is the
-contraction's inductive rank (block-triangular gluing).
+**Case II rank-lift assembly is now green** (this commit):
+`PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions` — the extended framework
+`(P.withNormal v n).toBodyHinge` realizes the rank at `k'` iff `P`'s `v`-pinned motions have
+dimension `k'`, under the no-incident-hinge hypothesis `hv` on `v`. Staged through
+`toBodyHinge_withNormal_{infinitesimalMotions,pinnedMotions}_eq` (panel choice at an unhinged `v`
+leaves `Z`/pins fixed) on the new general `infinitesimalMotions_eq_of_isLink_supportExtensor`
+(motions depend only on the *linking* edges' extensors). The `hv` hypothesis is the honest
+genericity-free content — "`v` is unhinged in the base graph `G_v^{ab}`". See *Current state*.
 
-The genericity device for both is the same `panelSupportExtensor_linearIndependent_iff` +
-`exists_independent_panelSupportExtensor` pair already green for the cycle. Cases carry the
-panel (coplanarity) requirement automatically (panel constructions are `IsHingeCoplanar` by
-`isHingeCoplanar_toBodyHinge`); III is deferred to 22–23.
+**Smallest next concrete commit:** finish the graph half of Case II — *add* `v`'s two new hinge
+edges. The panel rank-lift assembly now reads off the inductive `v`-pinned dimension from the base
+framework `P` (on `G_v^{ab}` with `v` unhinged); what's missing is the `withGraph` step that enlarges
+`P.graph` to `G` by `v`'s two new edges `e_a, e_b`, and the lemma relating the *extended* framework's
+`v`-pinned motions to the base's (the two new `v`-edge constraints `S a ∈ span C(e_a)`,
+`S b ∈ span C(e_b)` on a `v`-pinned motion). That last relation is where Claim 6.9 genericity enters
+(the two new supporting extensors must be independent / in general position so the constraints don't
+cut the dimension), so this brick is the genericity-gated half — assess on contact whether the
+unconditional inclusion (`pinnedMotions_G(v) ≤ pinnedMotions_{G_v^{ab}}(v)`, via the green
+`pinnedMotionsOn_le_withGraph_of_le` at the singleton) plus a genericity lemma lands in one commit
+or needs the genericity device first. Alternatively continue Case I: place the contraction
+realization (panel data on `rigidContract`) and re-add `E(H)` via `withGraph`; the slack in
+`screwDim_add_finrank_pinnedMotionsOn_le` is the contraction's inductive rank (block-triangular
+gluing). The vertex-level splitting-off / contraction ops (`splitOff`, `rigidContract`) are green
+in Phase 20 combinatorially; the genericity device for both is the same
+`panelSupportExtensor_linearIndependent_iff` + `exists_independent_panelSupportExtensor` pair already
+green for the cycle. Cases carry the panel (coplanarity) requirement automatically (panel
+constructions are `IsHingeCoplanar` by `isHingeCoplanar_toBodyHinge`); III is deferred to 22–23.
