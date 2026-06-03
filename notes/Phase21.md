@@ -21,14 +21,18 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 ## Current state
 
 `Molecular/AlgebraicInduction.lean` started; the induction-skeleton leaf
-nodes are green. This commit lands `def:rank-hypothesis` (`RankHypothesis`,
-the realization predicate (6.1)) and `lem:theorem-55-base` (`theorem_55_base`
-+ the helper `rankHypothesis_zero_iff`), the `|V|=2`, `k=0` base case,
-axiom-free via the green parallel-hinges Lemma 5.3
-(`eq_of_hingeConstraint_two_parallel`). Both blueprint nodes flipped green.
-Still red: `prop:rigidity-matrix-prop11`, `thm:theorem-55`,
-`lem:cycle-realization`, `lem:case-I`, `lem:case-II`, `lem:case-III` (the
-last deferred to 22–23).
+nodes are green, plus the Case II rank-lift accounting skeleton. The base
+case landed earlier (`def:rank-hypothesis` + `lem:theorem-55-base`). This
+commit lands the new node `lem:case-II-rank-lift`
+(`rankHypothesis_iff_finrank_pinnedMotions`): the basis-free `+D` core of
+the panel-hinge 1-extension — `RankHypothesis F k' ↔ finrank (pinnedMotions
+v) = k'`, a 3-line consequence of the green pin-a-body identity
+`finrank_pinnedMotions_add_screwDim` (Phase 18). Axiom-clean. The full
+`lem:case-II` stays red (it still needs the framework *construction* from a
+realization of `G_v^{ab}` and the Claim 6.9 genericity device); the new
+node is wired in as a dependency of its proof. Still red:
+`prop:rigidity-matrix-prop11`, `thm:theorem-55`, `lem:cycle-realization`,
+`lem:case-I`, `lem:case-II`, `lem:case-III` (the last deferred to 22–23).
 
 **Basis-free rank convention (carried forward from Phase 18).** Phase 18
 carries `rank R(G,p)` as the codimension `D|V| − dim Z(G,p)` of the null
@@ -94,10 +98,17 @@ Case I (proper rigid subgraph; KT §6.2):
   (`lem:rank-delete-vertex`, Phase 18 green). Claim 6.4 genericity.
 
 Case II (`k>0` splitting; KT §6.3):
+- [x] `lem:case-II-rank-lift` — the `+D` accounting core
+  (`rankHypothesis_iff_finrank_pinnedMotions`): `RankHypothesis F k' ↔
+  finrank (pinnedMotions v) = k'`, via the green
+  `finrank_pinnedMotions_add_screwDim` (pin-a-body Lemma 5.1, Phase 18).
+  Axiom-clean. Green.
 - [ ] `lem:case-II` — KT Lemmas 6.7/6.8: splitting off a reducible
   degree-2 vertex (smaller minimal `k`-dof by green `lem:reduction-step`),
   the panel-hinge analogue of Whiteley's bar-joint 1-extension; re-insert
-  `v` to lift the rank by `D`. Claim 6.9 genericity.
+  `v` to lift the rank by `D` (the accounting is `lem:case-II-rank-lift`).
+  Still needs the framework construction from a realization of `G_v^{ab}` +
+  Claim 6.9 genericity.
 
 Case III (deferred to Phases 22–23):
 - [ ] `lem:case-III` — KT Lemma 6.10/6.13: `k=0`, no proper rigid
@@ -157,22 +168,30 @@ decomposition).
 
 ## Hand-off / next phase
 
-Base case (`def:rank-hypothesis` + `lem:theorem-55-base`) green in
-`Molecular/AlgebraicInduction.lean`. The next concrete commit takes the
-next leaf-most red node. Two candidates, both deps-green:
+Base case (`def:rank-hypothesis` + `lem:theorem-55-base`) and the Case II
+`+D` rank-lift accounting (`lem:case-II-rank-lift`) are green in
+`Molecular/AlgebraicInduction.lean`. The accounting skeleton the previous
+hand-off named is now landed; what remains for Case II is the genuinely
+hard part (framework construction + genericity), shared with Case I.
+
+The next concrete commit takes the next leaf-most red node. Remaining
+candidates:
 - `lem:cycle-realization` (Crapo–Whiteley Lemma 5.4 input) — deps only
   `def:rigidity-matrix`; **formalize-or-cite still pending** (Blockers,
-  Citation caveat). A cite-only landing is a small commit; a formalized
-  cycle-closing realization is larger.
-- `lem:case-II` (`k>0` splitting / 1-extension) vs `lem:case-I` (proper
-  rigid subgraph): both depend on the green `lem:rank-delete-vertex`
-  (`finrank_pinnedMotions_add_screwDim`) plus the Phase-20 minimality
-  transports (`lem:reduction-step` / `lem:contraction-minimality`) and the
-  Claim 6.9/6.4 genericity argument — the new analytic device (Blockers).
+  Citation caveat — verify the exact prop numbers in [4]/[34] before
+  pinning a `§N`). A cite-only landing is a small commit; a formalized
+  cycle-closing realization is larger. This is the cleanest *small*
+  remaining step since it sidesteps the genericity device.
+- `lem:case-I` / `lem:case-II` (full forms): both now have their rank
+  accounting in hand (`lem:case-II-rank-lift`, `lem:rank-delete-vertex`)
+  but still need (a) the framework *construction* — splitting-off /
+  contraction graph op realized as a `BodyHingeFramework`, no
+  vertex-deletion/extension op exists yet on the structure — and (b) the
+  Claim 6.4/6.9 genericity argument (the new analytic device, Blockers).
+  Assess genericity-infrastructure need on contact.
 
-Smallest forward step: land `lem:cycle-realization` (cite-or-formalize
-decision first) **or** the Case II re-insertion rank-lift skeleton, whose
-core `+D` accounting is `finrank_pinnedMotions_add_screwDim`. Assess
-genericity-infrastructure need on contact with the first Case. Broad
+Smallest forward step: land `lem:cycle-realization` (make the
+cite-or-formalize decision first), since both full Cases are gated on the
+not-yet-built genericity device and the framework-construction op. Broad
 phase; may split Case I from Case II (precedent: Phases 8–11). Phases
 22–23 pick up Case III (the crux).

@@ -114,6 +114,26 @@ theorem theorem_55_base [Nonempty α] [Finite α] (F : BodyHingeFramework k α �
   rcases hcover a with rfl | rfl <;> rcases hcover b with rfl | rfl <;>
     first | rfl | exact key | exact key.symm
 
+/-- **The Case II rank-lift accounting** (`lem:case-II`, skeleton; Katoh–Tanigawa 2011 §6.3
+Lemma 6.8): in the basis-free null-space convention, re-inserting a body `v` — equivalently
+pinning it — shifts the realization count by exactly `D = screwDim k`. A framework `F` realizes
+the target rank at `k'` (`RankHypothesis F k'`, i.e. `dim Z(G,p) = D + k'`) exactly when its
+body-`v`-pinned motion subspace has dimension `k'`. This is the `+D` core of the panel-hinge
+1-extension: the pinned subspace `pinnedMotions v` is the null space of the rigidity matrix with
+`v`'s `D` columns deleted (the smaller framework `G - v`), and `finrank (pinnedMotions v) + D =
+dim Z(G,p)` (pin-a-body Lemma 5.1, `finrank_pinnedMotions_add_screwDim`, Phase 18 green). Hence a
+realization of the splitting-off `G_v^{ab}` at its inductive count lifts to a realization of `G`
+at the same `k'`, the two new hinge-row blocks accounting for the `+D`. The geometric content —
+*constructing* the extended framework from a realization of `G_v^{ab}` and the genericity step
+(Claim 6.9) ensuring the supporting extensors are in general position — is the remainder of Case
+II, deferred with the genericity device. -/
+theorem rankHypothesis_iff_finrank_pinnedMotions [Nonempty α] [Finite α]
+    (F : BodyHingeFramework k α β) (v : α) (k' : ℤ) :
+    F.RankHypothesis k' ↔ (Module.finrank ℝ (F.pinnedMotions v) : ℤ) = k' := by
+  rw [RankHypothesis, ← F.finrank_pinnedMotions_add_screwDim v]
+  push_cast
+  omega
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

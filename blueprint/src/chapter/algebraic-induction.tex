@@ -187,10 +187,35 @@ whole induction.
 \subsection{Case II: \texorpdfstring{$k > 0$}{k > 0} splitting (1-extension)}
 \label{sec:molecular-algebraic-induction-caseII}
 
+\begin{lemma}[Case II rank-lift accounting; the $+D$ core of KT Lemma 6.8]
+  \label{lem:case-II-rank-lift}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotions}
+  \leanok
+  \uses{def:rank-hypothesis, lem:rank-delete-vertex}
+  In the codimension form of \cref{sec:molecular-rigidity-matrix},
+  re-inserting (equivalently, pinning) a body $v$ shifts the realization
+  count by exactly $D$. A framework $F$ realizes the target
+  rank at $k'$ ($\dim Z(G,p) = D + k'$, \cref{def:rank-hypothesis})
+  precisely when its body-$v$-pinned motion subspace has dimension $k'$.
+  This is the algebraic $+D$ core of the panel-hinge $1$-extension: the
+  pinned subspace is the null space of the rigidity matrix with $v$'s $D$
+  columns deleted (the smaller graph $G - v$), and $\dim(\text{pinned at
+  } v) + D = \dim Z(G,p)$ by the pin-a-body Lemma~5.1
+  (\cref{lem:rank-delete-vertex}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-delete-vertex}
+  Immediate from the pin-a-body identity
+  $\dim(\text{pinned at } v) + D = \dim Z(G,p)$
+  (\cref{lem:rank-delete-vertex}): substitute it into the definition of
+  the rank hypothesis $\dim Z(G,p) = D + k'$ and cancel the $D$ term.
+\end{proof}
+
 \begin{lemma}[Case II: splitting off a reducible vertex; KT Lemmas 6.7, 6.8]
   \label{lem:case-II}
   \uses{thm:minimal-kdof-reduction, lem:reduction-step,
-        lem:rank-delete-vertex, lem:cycle-realization}
+        lem:rank-delete-vertex, lem:case-II-rank-lift, lem:cycle-realization}
   Let $G$ be a minimal $k$-dof-graph with $k > 0$ and a reducible
   degree-2 vertex $v$ (KT~4.6), and let $G_v^{ab}$ be the splitting-off
   at $v$ (a smaller minimal $k$-dof-graph by \cref{lem:reduction-step}).
@@ -201,11 +226,12 @@ whole induction.
   Claim~6.9 genericity argument).
 \end{lemma}
 \begin{proof}
-  \uses{lem:rank-delete-vertex}
+  \uses{lem:rank-delete-vertex, lem:case-II-rank-lift}
   Place $G_v^{ab}$ at its inductive realization; re-insert $v$ joined to
-  $a$ and $b$ by hinges chosen generically. The pin-a-body Lemma~5.1
-  (\cref{lem:rank-delete-vertex}) accounts for $v$'s screw freedoms, and
-  the two new hinge-row blocks raise the rank by $D$, giving
+  $a$ and $b$ by hinges chosen generically. The rank-lift accounting
+  \cref{lem:case-II-rank-lift} (via the pin-a-body Lemma~5.1,
+  \cref{lem:rank-delete-vertex}) accounts for $v$'s screw freedoms, and
+  the two new hinge-row blocks raise the rank by exactly $D$, giving
   $D(|V|-1) - k$. Genericity (Claim~6.9) lifts to a generic realization.
 \end{proof}
 
