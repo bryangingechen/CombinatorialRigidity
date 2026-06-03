@@ -26,6 +26,21 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case I block-pin graph-monotonicity landed (2026-06-03).** The block-pin analogue of
+`lem:motions-mono-of-graph-le` is green: `BodyHingeFramework.pinnedMotionsOn_le_withGraph_of_le`
+(`G' ≤ G ⇒ pinnedMotionsOn s ≤ (withGraph G').pinnedMotionsOn s`) and its rank form
+`…finrank_pinnedMotionsOn_le_of_graph_le` (`finrank` mono). The block pin is `infinitesimalMotions`
+cut by the *graph-independent* vanishing conditions `∀ v ∈ s, S v = 0`, so the inclusion is the
+already-green `infinitesimalMotions_le_withGraph_of_le` on the first conjunct, the vanishing
+conditions carried unchanged; the rank form is `Submodule.finrank_mono` of it. This is the
+direction Case I's block-triangular gluing travels: place the contraction realization on the
+smaller `G/E(H)` and re-add `E(H)` — the block-pinned rank only grows, the slack in
+`screwDim_add_finrank_pinnedMotionsOn_le` filled by the contraction's inductive rank. Axiom-clean
+(propext/Classical.choice/Quot.sound). Blueprint adds a green `lem:pinned-motions-on-mono` node
+(Case I section) that the still-red `lem:case-I` `\uses`. No friction (two one-liners mirroring
+existing green lemmas). **Remaining red on Case I:** still the vertex-level contraction op `G/E(H)`
+and the cited Claim 6.4 genericity / block-triangular gluing.
+
 **Case I block-pin rank lower bound landed (2026-06-03).** The first rank-accounting
 brick of Case I is green: `BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot`
 (for nonempty `s`, trivial ⊓ block-pin = ⊥ — the block analogue of Phase-18's
@@ -284,6 +299,12 @@ Case I (proper rigid subgraph; KT §6.2):
   `pinnedMotionsOn_singleton`, `pinnedMotionsOn_eq_iInf` (nonempty `s`),
   `pinnedMotionsOn_mono`, `pinnedMotionsOn_le_pinnedMotions`. Axiom-clean.
   Green.
+- [x] `lem:pinned-motions-on-mono` — block-pin graph monotonicity:
+  `pinnedMotionsOn_le_withGraph_of_le` (`G' ≤ G ⇒ pinnedMotionsOn s ≤
+  (withGraph G').pinnedMotionsOn s`) + rank form
+  `finrank_pinnedMotionsOn_le_of_graph_le`. The block-pin analogue of
+  `lem:motions-mono-of-graph-le`; the "re-adding `E(H)` only grows the block-pinned
+  rank" direction Case I's gluing travels. Axiom-clean. Green.
 - [~] `lem:cycle-realization` — KT Lemma 5.4. **Decision (2026-06-03):
   formalize as genuine *panel* content — its own sub-phase**, not cite,
   not the free-hinge telescoping reduction (which proved only the
@@ -535,6 +556,18 @@ via `pinnedMotionsOn_le_pinnedMotions`; the bound is `finrank_sup_add_finrank_in
 `finrank_mono` of `trivial ⊔ blockpin ≤ Z(G,p)`. Blueprint node
 `lem:pinned-motions-on-rank-bound` (green), in the Case I section, that the still-red
 `lem:case-I` `\uses`.
+
+**Case I block-pin graph-monotonicity is now green** (this commit):
+`BodyHingeFramework.pinnedMotionsOn_le_withGraph_of_le` +
+`…finrank_pinnedMotionsOn_le_of_graph_le` — the block-pin analogue of
+`lem:motions-mono-of-graph-le`. Two one-liners: the inclusion is
+`infinitesimalMotions_le_withGraph_of_le` on the first conjunct (the vanishing
+conditions `∀ v ∈ s, S v = 0` are graph-independent), the rank form is
+`Submodule.finrank_mono`. Blueprint node `lem:pinned-motions-on-mono` (green), in the
+Case I section, that the still-red `lem:case-I` `\uses`. The block-pin infra for Case I's
+block-triangular gluing is now fully stocked (`def:pinned-motions-on` + rank lower bound +
+graph monotonicity); the remaining red on Case I is the *vertex-level* contraction op
+`G/E(H)` and the cited Claim 6.4 genericity / block-triangular rank addition.
 
 **Smallest next concrete commit:** continue Case I or start Case II. Both still gate on the
 *vertex-level* graph ops that change `|V|` — for Case I the contraction `G/E(H)` (the block-pin

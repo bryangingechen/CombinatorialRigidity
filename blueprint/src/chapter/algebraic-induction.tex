@@ -450,6 +450,33 @@ Cases~I and~II travel toward the smaller inductive graph.
   framework-side carrier of the rigid-block contraction.
 \end{definition}
 
+\begin{lemma}[Edge deletion enlarges the block pin]
+  \label{lem:pinned-motions-on-mono}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_le_withGraph_of_le,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_le_of_graph_le}
+  \leanok
+  \uses{def:pinned-motions-on, def:framework-with-graph, lem:motions-mono-of-graph-le}
+  Replacing $G$ by any subgraph $G' \le G$ (keeping the hinge data) can
+  only grow the block pin:
+  $Z_s(G,p) \subseteq Z_s(G',p)$, hence
+  $\dim Z_s(G,p) \le \dim Z_s(G',p)$. This is the block-pin analogue of
+  the motion-space monotonicity \cref{lem:motions-mono-of-graph-le}; it
+  is the direction Case~I's block-triangular gluing travels --- placing
+  the contraction realization on the smaller inductive graph $G/E(H)$
+  and re-adding the edges $E(H)$ only grows the block-pinned rank, the
+  slack in \cref{lem:pinned-motions-on-rank-bound} being filled by the
+  contraction.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:motions-mono-of-graph-le}
+  The block pin $Z_s(G,p)$ is $Z(G,p)$ intersected with the
+  graph-independent vanishing conditions $S|_s = 0$, so the inclusion is
+  the motion-space monotonicity \cref{lem:motions-mono-of-graph-le}
+  applied to the first factor, with the vanishing conditions carried
+  unchanged. The dimension bound follows by monotonicity of $\dim$.
+\end{proof}
+
 \begin{lemma}[Block-pinning drops at least the $D$ trivial-motion dimensions]
   \label{lem:pinned-motions-on-rank-bound}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot,
@@ -485,7 +512,7 @@ Cases~I and~II travel toward the smaller inductive graph.
   \label{lem:case-I}
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
         lem:rank-delete-vertex, lem:cycle-realization, def:pinned-motions-on,
-        lem:pinned-motions-on-rank-bound}
+        lem:pinned-motions-on-rank-bound, lem:pinned-motions-on-mono}
   Let $G$ be a minimal $k$-dof-graph with a proper rigid subgraph $H$.
   Then $G$ has a realization at rank $D(|V|-1) - k$, built from a
   realization of the contraction $G/E(H)$ (a smaller minimal

@@ -628,6 +628,34 @@ theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
   have := Submodule.finrank_mono hle
   omega
 
+/-- **Deleting edges enlarges the block-pinned motion space** (`def:pinned-motions-on`, Case I
+infra): replacing `F.graph` by any subgraph `G' ≤ F.graph` (keeping the hinge data via
+`withGraph`) can only grow the block pin — `F.pinnedMotionsOn s ≤ (F.withGraph G').pinnedMotionsOn
+s`. The block pin is the motion space cut by the (graph-independent) vanishing conditions
+`∀ v ∈ s, S v = 0`, so the inclusion is the motion-space monotonicity
+`infinitesimalMotions_le_withGraph_of_le` on the first conjunct, with the vanishing conditions
+carried unchanged. This is the block-pin analogue of `infinitesimalMotions_le_withGraph_of_le`
+and the direction Case I's block-triangular gluing travels: placing the contraction realization
+on the smaller inductive graph `G/E(H)` and re-adding the edges `E(H)` only grows the block-pinned
+rank, the slack in `screwDim_add_finrank_pinnedMotionsOn_le` being filled by the contraction. -/
+theorem pinnedMotionsOn_le_withGraph_of_le (F : BodyHingeFramework k α β) (s : Set α)
+    {G' : Graph α β} (hle : G' ≤ F.graph) :
+    F.pinnedMotionsOn s ≤ (F.withGraph G').pinnedMotionsOn s :=
+  fun _ hS => ⟨F.infinitesimalMotions_le_withGraph_of_le hle hS.1, hS.2⟩
+
+/-- **The block-pinned dimension does not decrease under edge deletion** (`def:pinned-motions-on`,
+Case I infra, rank form): for `G' ≤ F.graph`,
+`finrank (pinnedMotionsOn s) ≤ finrank ((withGraph G').pinnedMotionsOn s)`. The supergraph's
+block pin has at most the dimension of any subgraph's — the "re-adding edges only grows the
+block-pinned rank" monotonicity that lifts a block-pinned realization of the contraction
+`G/E(H)` to one of the whole multigraph. Immediate from the inclusion
+`pinnedMotionsOn_le_withGraph_of_le` and `Submodule.finrank_mono`. -/
+theorem finrank_pinnedMotionsOn_le_of_graph_le [Finite α] (F : BodyHingeFramework k α β)
+    (s : Set α) {G' : Graph α β} (hle : G' ≤ F.graph) :
+    Module.finrank ℝ (F.pinnedMotionsOn s) ≤
+      Module.finrank ℝ ((F.withGraph G').pinnedMotionsOn s) :=
+  Submodule.finrank_mono (F.pinnedMotionsOn_le_withGraph_of_le s hle)
+
 end BodyHingeFramework
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)
