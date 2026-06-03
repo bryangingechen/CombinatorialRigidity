@@ -1,7 +1,7 @@
 # Phase 20 cleanup round (work log)
 
-**Status:** in progress. A3 (the round's one real fix) landed; A1 + B4
-confirmed no-op. Remaining: A2 / B1–B3 / C1 / D1 / D2 — see the checklist
+**Status:** in progress. A3 (the round's one real fix) landed; A1 + A2 +
+B4 confirmed no-op. Remaining: B1–B3 / C1 / D1 / D2 — see the checklist
 and *Hand-off* below.
 
 Between-phases cleanup round, run after Phase 20 (combinatorial induction →
@@ -85,16 +85,32 @@ from this log alone (CLEANUP.md *Task list discipline*).
     standard `deficiency`/`rank_add_deficiency_eq` precondition. No blueprint
     edit warranted — the prose already names the substantive hypotheses.
   build confirmed green (`lake build CombinatorialRigidity.Molecular.Induction`).
-- [ ] **A2** — formalization-aside check. Re-read the prose-aside hits
-  (molecular-induction.tex L32 "fully formalized, repairing the gloss",
-  L247 "Formalizing the forest surgery …", L310 "splitting-off direction is
-  fully formalized", L340 "Formalized as a one-line `example`", L639
-  "unformalized", L979 "The formalization …"). For each: is it a
-  one-clause modelling aside (allowed), a load-bearing math statement, or a
-  basis-free/representation-choice narration (the Phase-18 A2 anti-pattern to
-  collapse)? Given the phase's multi-route history (pivot + Finding/Replan +
-  addendum), watch specifically for changelog-not-math narration that
-  accreted across the per-commit subagents.
+- [x] **A2** — formalization-aside check. DONE; **no-op** (no
+  anti-pattern aside). Walked all six prose-aside hits; none is the
+  Phase-18 basis-free / changelog-not-math anti-pattern:
+  - **L32** ("(KT~4.1) … fully formalized, repairing the gloss") — chapter
+    *Status* paragraph; its job is to state what's formalized vs deferred.
+    Load-bearing status. Allowed.
+  - **L247** ("Formalizing the forest surgery … surfaced a three-layer
+    subtlety") — opens `rem:kt-lemma-41`, whose math content *is* the gap
+    analysis of KT 4.1; the "formalizing surfaced" framing is load-bearing
+    (formal scrutiny revealed the over-quantification + balanced-packing
+    gloss, a correction to the literature). Allowed.
+  - **L310** ("the splitting-off direction is fully formalized as the repair
+    of this gloss") — continues the remark, naming which lemmas repair the
+    gloss. Math-status. Allowed.
+  - **L340** (`ex:kt-41-overquantified`) — A3 already dropped the "one-line
+    `example`" prose; the example now reads as math. No change.
+  - **L638** ("…leaving this lemma unformalized") — proof sketch of the
+    deferred (no-`\leanok`) `lem:forest-surgery-unsplit`; honest deferred
+    status. Allowed.
+  - **L978** ("The formalization states this as the well-founded induction
+    principle…") — `thm:minimal-kdof-reduction`; flags the genuine gap
+    between the reduce-to-double-edge math statement and the formal
+    induction-principle shape. The *Note* case (real statement difference),
+    not the basis-free anti-pattern. Allowed. (Same for the L998–1003 proof
+    aside on the unbridged graph-level minimality + unused-edge-label premise
+    — honest residual-cost notes, allowed.)
 - [x] **A3** — **the named-lemma promotion (carry-forward seed, the round's
   one known real fix).** DONE. Promoted the anonymous `example` to
   `Graph.kt_lemma_41_overquantified` (Induction.lean), flipped
@@ -183,11 +199,14 @@ from this log alone (CLEANUP.md *Task list discipline*).
   anonymous `example`, so blueprint node `ex:kt-41-overquantified` carries a
   `\lean{...}` pointer instead of an orphan comment. No friction (trivial
   `rintro`/`rw [Set.ncard_empty]`/`omega` proof, unchanged).
-- **A1 + B4 (no-op confirmations).** All 28 `\lean`-pinned nodes match
-  their Lean signatures (A1); the forest-surgery narrative-bridge shim is
+- **A1 + A2 + B4 (no-op confirmations).** All 28 `\lean`-pinned nodes match
+  their Lean signatures (A1); the six `molecular-induction.tex` prose-aside
+  hits are all load-bearing status / literature-correction content or honest
+  *Note*-case formalization-cost flags — none is the Phase-18 basis-free /
+  changelog anti-pattern (A2); the forest-surgery narrative-bridge shim is
   to-spec (B4). No blueprint/Lean edits — confirmation only. Detail in the
-  A1/B4 checklist entries above. The `D ≥ 1/2/3` side-condition split is the
-  only systematic variation across nodes and it tracks the blueprint text
+  A1/A2/B4 checklist entries above. The `D ≥ 1/2/3` side-condition split is
+  the only systematic variation across nodes and it tracks the blueprint text
   exactly; the only deltas are benign `V(·).Nonempty` preconditions implied
   by each node's stated hypotheses.
 
@@ -200,14 +219,16 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** execute **A2** — the
-formalization-aside check on the `molecular-induction.tex` prose-aside hits
-(L32, L247, L310, L340, L639, L979 per the A2 checklist entry), classifying
-each as allowed one-clause modelling aside vs. the Phase-18 A2 basis-free /
-changelog-not-math anti-pattern to collapse. Expected mostly no-op given the
-chapter's phase-end re-read; lands as a confirmation commit (or a small TeX
-fix if a changelog aside surfaces). **A1, A3, B4 are done** (A1/B4 no-op,
-A3 the real fix). Remaining: A2 / B1–B3 / C1 / D1 / D2 — sweeps expected
-mostly no-op; B1–B3/C1 may be batched into one confirmation commit. D1
-(`notes/Phase20.md` 1089 lines, far over budget) is the other genuine
-substance item. Close the round by flipping the ROADMAP Status row to ✓.
+**Smallest concrete next commit:** execute the **B1–B3 + C1** code-smell /
+long-proof sweeps over `Molecular/Induction.lean`, batched into one
+confirmation commit (per CLEANUP.md *Calibration*, all expected no-op in the
+structural-shape regime — see each checklist entry for the per-site list and
+the specific things to confirm: B1 `classical`/`haveI` are the
+`[Finite]`→body bridge, B2 `noncomputable` forced, B3 `rw` chains are
+cross-API defeq-unfold not missing-fused-lemmas, C1 the four-question walk on
+the top-~10 long proofs incl. the partition-count sibling check). Run a
+`lake build CombinatorialRigidity.Molecular.Induction` sanity check first.
+**A1, A2, A3, B4 are done** (A1/A2/B4 no-op, A3 the real fix). Remaining
+after the batch: D1 / D2. D1 (`notes/Phase20.md` 1089 lines, far over
+budget) is the other genuine substance item. Close the round by flipping the
+ROADMAP Status row to ✓.
