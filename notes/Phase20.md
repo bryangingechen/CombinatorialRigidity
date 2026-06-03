@@ -125,17 +125,34 @@ node (the node stays red; these are the glue the still-open surgery proper consu
   lies in `E(G̃_v^{ab})` when the short-circuit edge is present. This is the fiber the
   surgery reroutes the degree-2 forests onto.
 
+And now landed: the **degree-at-`v`-in-a-forest substrate** of the forest surgery
+(`lem:forest-surgery-split`, KT 4.1) — the degree notion the hand-off flagged as the needed
+*new sub-node first*, NOT a blueprint node (the node stays red; this is the degree machinery
+the surgery's `dᶠ(v) ∈ {0,1,2}` split + `h' ≤ D−2` count consume). Axiom-free, in
+`Molecular/Induction.lean`:
+- `Graph.fiberAtVertex G n v = {p | (G̃).Inc p v}` — the fibers of `G̃` incident to `v`, with
+  `mem_fiberAtVertex` (`p ∈ fiberAtVertex ↔ G.Inc p.1 v`).
+- `Graph.mulTilde_inc` — `(G̃).Inc p v ↔ G.Inc p.1 v` (incidence reduces to the underlying
+  `G`-edge; the only non-`Classical` lemma of the batch, `propext`-only).
+- `Graph.fiberAtVertex_inter_edgeSet` + `…_ncard` — the fibers at `v` in `E(G̃)` are the copies
+  of `v`'s incident `G`-edges, so `|fibers at v in E(G̃)| = (D−1)·|{e | G.Inc e v}|`; for a
+  degree-2 vertex `v` this is `2(D−1)`, the total the surgery distributes among the `D` forests.
+- `Graph.fiberDegree G n v F = |F ∩ fiberAtVertex|` — the per-forest degree `dᶠ(v)`, with
+  `fiberDegree_mono` (subset monotonicity, the drop-`v`-edge reduction) and `fiberDegree_le`
+  (`dᶠ(v) ≤ (D−1)·|incident G-edges at v|`, the bound the `h' ≤ D−2` count rests on).
+
 Next concrete step (still): the **forest-surgery proper** (`lem:forest-surgery-split`, KT 4.1)
 — the genuinely hard combinatorial core, still red. Take the `D`-forest packing of an
 independent set `I`, reroute each forest across the degree-2 vertex `v` (degree-1-in-`Fᵢ`
 forests drop their `v`-edge; degree-2-in-`Fᵢ` forests swap their two `v`-edges for one `ãb`
 copy via `edgeFiber_subset_edgeSet_mulTilde_splitOff`), and reassemble into an independent `I'`
 of `M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1` (bounded via `edgeFiber_ncard`).
-The bookkeeping that remains — **per-forest acyclicity preservation across the short-circuit**
+The degree substrate above (`fiberDegree` / `fiberDegree_le`) now supplies the `dᶠ(v) ≤ 2(D−1)`
+count; what remains is **per-forest acyclicity preservation across the short-circuit**
 (cycles in `G̃ᵥᵃᵇ` lift to cycles/paths in `G̃`, via the `Matroid/Graph/AcyclicSet.lean`
-cycle-characterization) **and edge-disjointness of the `ãb` copies used** (KT's `h' ≤ D − 2`
-count) — is the residual combinatorial crux; it needs a degree-at-`v`-in-a-forest notion not
-yet in place. Multi-commit; budget the most time.
+`not_isAcyclicSet_iff` cycle-characterization, with `cycleMatroid_indep = IsAcyclicSet`) **and
+the `h' ≤ D−2` edge-disjointness count** of the `ãb` copies. Still the residual combinatorial
+crux; multi-commit; budget the most time.
 
 ## Architectural choices made up front
 
@@ -206,9 +223,10 @@ Forest surgery (hard core):
   (the surgery proper: reroute each of the `D` forests across the degree-2
   vertex `v`, giving `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1`). Built on
   `lem:forest-packing-decomp`. **Substrate landed** (`edgeFiber_ncard`,
-  `edgeSet_splitOff`, `edgeFiber_subset_edgeSet_mulTilde_splitOff`); the
-  acyclicity-preserving reroute + `h' ≤ D−2` disjointness count remain (no
-  blueprint node yet — node stays red).
+  `edgeSet_splitOff`, `edgeFiber_subset_edgeSet_mulTilde_splitOff`, and now the
+  degree substrate `fiberAtVertex` / `mulTilde_inc` / `fiberAtVertex_inter_edgeSet[_ncard]`
+  / `fiberDegree` / `fiberDegree_{mono,le}`); the acyclicity-preserving reroute +
+  `h' ≤ D−2` disjointness count remain (no blueprint node yet — node stays red).
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction
   (the inverse; makes split/unsplit inverse on deficiency).
 
@@ -326,20 +344,25 @@ And now landed (axiom-free, **no blueprint node** — bookkeeping for the still-
 `lem:forest-surgery-split`): the surgery's **incidence/cardinality substrate** —
 `Graph.edgeFiber_ncard` (`|ẽ| = D − 1`, `Deficiency.lean`), `Graph.edgeSet_splitOff` (the
 edge set of the short-circuit splitting-off), and
-`Graph.edgeFiber_subset_edgeSet_mulTilde_splitOff` (the fresh fiber `ã̃b ⊆ E(G̃ᵥᵃᵇ)`). These are
-the quantities KT 4.1's count and reroute consume (`|ã̃b| = D − 1`, the target edge set, the
-short-circuit fiber).
+`Graph.edgeFiber_subset_edgeSet_mulTilde_splitOff` (the fresh fiber `ã̃b ⊆ E(G̃ᵥᵃᵇ)`); plus the
+**degree-at-`v`-in-a-forest substrate** — `Graph.fiberAtVertex` (the fibers of `G̃` at `v`),
+`Graph.mulTilde_inc` (`G̃`-incidence ↔ `G`-incidence at `p.1`), `Graph.fiberAtVertex_inter_edgeSet[_ncard]`
+(`|fibers at v in E(G̃)| = (D−1)·|incident G-edges at v|`, so `2(D−1)` at a degree-2 vertex),
+`Graph.fiberDegree` (the per-forest `dᶠ(v)`), `Graph.fiberDegree_mono`, and `Graph.fiberDegree_le`.
+These are the quantities KT 4.1's count and reroute consume (`|ã̃b| = D − 1`, the target edge set,
+the short-circuit fiber, and the per-forest degree count).
 
 Next agent's concrete commit: the **forest-surgery proper** — `lem:forest-surgery-split`
-(KT 4.1, splitting-off direction), still red. The framing (`lem:forest-packing-decomp`) and
-the incidence substrate above are now in place; reroute each of the `D` forests across the
-degree-2 vertex `v` — forests with `dᶠ(v)=1` drop their `v`-edge, forests with `dᶠ(v)=2` swap
-their two `v`-edges for one fresh `ã̃b` copy (≤ `D−2` such, so `< D−1` copies used, all
-edge-disjoint) — yielding an independent `I'` of `M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and
-`|ã̃b ∩ I'| < D − 1`. **What remains is the genuine crux** and likely needs a *new sub-node
-first*: a **degree-at-`v`-in-a-forest** notion (KT's `dᶠ(v) ∈ {0,1,2}`, giving the count
-`h' ≤ D − 2`) and a **acyclicity-preservation-across-the-short-circuit** lemma (a cycle of
-`G̃ᵥᵃᵇ` using `ã̃b` lifts to a `v`-traversing path in `G̃`, via the
-`Matroid/Graph/AcyclicSet.lean` `not_isAcyclicSet_iff` cycle characterization). Multi-commit;
-budget the most time. After `-split`, its inverse `lem:forest-surgery-unsplit` (KT 4.2) makes
-split/unsplit inverse on the deficiency, then the dof-tracking chain (4.3–4.8) and Theorem 4.9.
+(KT 4.1, splitting-off direction), still red. The framing (`lem:forest-packing-decomp`), the
+incidence substrate, and now the **degree substrate** (`fiberDegree` / `fiberDegree_le`, giving
+the `dᶠ(v) ≤ 2(D−1)` count the hand-off flagged as the needed new sub-node) are all in place;
+reroute each of the `D` forests across the degree-2 vertex `v` — forests with `dᶠ(v)=1` drop
+their `v`-edge, forests with `dᶠ(v)=2` swap their two `v`-edges for one fresh `ã̃b` copy
+(≤ `D−2` such, so `< D−1` copies used, all edge-disjoint) — yielding an independent `I'` of
+`M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and `|ã̃b ∩ I'| < D − 1`. **What remains is the genuine crux**:
+the **acyclicity-preservation-across-the-short-circuit** lemma (a cycle of `G̃ᵥᵃᵇ` using `ã̃b`
+lifts to a `v`-traversing path in `G̃`, via the `Matroid/Graph/AcyclicSet.lean`
+`not_isAcyclicSet_iff` cycle characterization, with `cycleMatroid_indep = IsAcyclicSet`) and the
+`h' ≤ D−2` edge-disjointness count. Multi-commit; budget the most time. After `-split`, its
+inverse `lem:forest-surgery-unsplit` (KT 4.2) makes split/unsplit inverse on the deficiency,
+then the dof-tracking chain (4.3–4.8) and Theorem 4.9.

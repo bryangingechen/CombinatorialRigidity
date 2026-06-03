@@ -599,4 +599,102 @@ theorem contraction_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G 
   have hdef := contract_matroidMG_deficiency_eq hle n hD hVHne hVGne hrigid
   rwa [hG.1] at hdef
 
+/-! ## Degree of a vertex in a fiber set (`lem:forest-surgery-split`, degree substrate)
+
+The forest surgery of Katoh–Tanigawa 2011 Lemma 4.1 reroutes the `D` edge-disjoint
+forests `F₀, …, F_{D-1}` of an `M(G̃)`-independent set across a degree-2 vertex `v`.
+Per forest `Fᵢ`, the reroute is driven by the **degree of `v` in `Fᵢ`** — the number
+`dᶠ(v)` of fibers of `Fᵢ` incident to `v` in `G̃`. KT's surgery splits the forests by
+`dᶠ(v) ∈ {0, 1, 2}` (a forest meeting `v` at `0` fibers is untouched; at `1` fiber its
+`v`-edge is dropped; at `2` fibers its two `v`-edges are swapped for one `ãb` copy),
+and the `< D − 1` short-circuit-copy count `h' ≤ D − 2` is read off these per-forest
+degrees.
+
+This subsection lands the **degree substrate** the surgery bottoms out on: the set of
+fibers of `G̃` incident to `v` (`fiberAtVertex`), the reduction of `G̃`-incidence to
+`G`-incidence at the underlying edge (`mulTilde_inc`), the per-fiber-set degree
+`fiberDegree`, and the count `|fibers at v in E(G̃)| = (D − 1)·|incident G-edges at v|`
+(`fiberAtVertex_inter_edgeSet_ncard`) — so a *degree-2* vertex `v` of `G` has exactly
+`2(D − 1)` incident fibers, the quantity the `h' ≤ D − 2` bound is counted against. The
+acyclicity-preserving reroute itself (a `G̃ᵥᵃᵇ`-cycle through `ãb` lifts to a
+`v`-traversing path of `G̃`, via the `Matroid/Graph/AcyclicSet.lean` cycle
+characterization) remains the residual crux of the still-red `lem:forest-surgery-split`. -/
+
+/-- **The fibers of `G̃` incident to a vertex `v`** (`lem:forest-surgery-split`, degree
+substrate): the set of fibers `p` of the multiplied graph `G̃ = (D-1)·G` with `v` as an
+endpoint. These are the fibers the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery reroutes
+when it short-circuits the two edges through a degree-2 vertex `v`. -/
+def fiberAtVertex (G : Graph α β) (n : ℕ) (v : α) : Set (β × Fin (bodyHingeMult n)) :=
+  {p | (G.mulTilde n).Inc p v}
+
+/-- **`G̃`-incidence reduces to `G`-incidence at the underlying edge**
+(`lem:forest-surgery-split`, degree substrate): a fiber `p` of `G̃ = (D-1)·G` is incident
+to a vertex `v` exactly when its underlying `G`-edge `p.1` is. Each parallel copy `p` of
+an edge `e` of `G` carries the same incidences as `e`. -/
+lemma mulTilde_inc {G : Graph α β} {n : ℕ} {p : β × Fin (bodyHingeMult n)} {v : α} :
+    (G.mulTilde n).Inc p v ↔ G.Inc p.1 v := by
+  rw [mulTilde, edgeMultiply_inc]
+
+@[simp]
+lemma mem_fiberAtVertex {G : Graph α β} {n : ℕ} {v : α} {p : β × Fin (bodyHingeMult n)} :
+    p ∈ G.fiberAtVertex n v ↔ G.Inc p.1 v := by
+  rw [fiberAtVertex, Set.mem_setOf_eq, mulTilde_inc]
+
+/-- **The fibers at `v` are the copies of `v`'s incident edges**
+(`lem:forest-surgery-split`, degree substrate): inside `E(G̃)`, the fibers incident to
+`v` are exactly the fibers `ẽ` of the `G`-edges `e` incident to `v`. So the fibers at `v`
+in `E(G̃)` partition by the underlying incident edge. -/
+lemma fiberAtVertex_inter_edgeSet {G : Graph α β} {n : ℕ} {v : α} :
+    G.fiberAtVertex n v ∩ E(G.mulTilde n) =
+      {p : β × Fin (bodyHingeMult n) | p.1 ∈ {e | G.Inc e v}} := by
+  ext p
+  simp only [Set.mem_inter_iff, mem_fiberAtVertex, mulTilde, edgeMultiply_edgeSet,
+    Set.mem_setOf_eq]
+  exact ⟨fun ⟨hinc, _⟩ ↦ hinc, fun hinc ↦ ⟨hinc, hinc.edge_mem⟩⟩
+
+/-- **Count of the fibers at `v`** (`lem:forest-surgery-split`, degree substrate;
+Katoh–Tanigawa 2011 Lemma 4.1). The number of fibers of `G̃ = (D-1)·G` incident to `v`
+inside `E(G̃)` is `(D − 1)` times the number of `G`-edges incident to `v`:
+`|fibers at v in E(G̃)| = bodyHingeMult n · |{e | G.Inc e v}|`. For a degree-2 vertex `v`
+of `G` (exactly two incident edges) this is `2(D − 1)`, the total fiber count the surgery
+distributes among the `D` forests and counts the `h' ≤ D − 2` short-circuit copies
+against. -/
+lemma fiberAtVertex_inter_edgeSet_ncard [Finite β] {G : Graph α β} {n : ℕ} {v : α} :
+    (G.fiberAtVertex n v ∩ E(G.mulTilde n)).ncard
+      = bodyHingeMult n * {e | G.Inc e v}.ncard := by
+  rw [fiberAtVertex_inter_edgeSet]
+  have hprod : {p : β × Fin (bodyHingeMult n) | p.1 ∈ {e | G.Inc e v}}
+      = {e | G.Inc e v} ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
+    ext ⟨e, i⟩; simp
+  rw [hprod, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin,
+    mul_comm]
+
+/-- **The degree of `v` in a fiber set `F`** (`lem:forest-surgery-split`, degree
+substrate): the number `dᶠ(v)` of fibers of `F` incident to `v` in `G̃ = (D-1)·G`. This
+is the per-forest quantity Katoh–Tanigawa 2011 Lemma 4.1's surgery splits on
+(`dᶠ(v) ∈ {0, 1, 2}` when `v` is a degree-2 vertex), driving the reroute of each forest
+`Fᵢ` across the short-circuit `ab`. -/
+noncomputable def fiberDegree (G : Graph α β) (n : ℕ) (v : α)
+    (F : Set (β × Fin (bodyHingeMult n))) : ℕ :=
+  (F ∩ G.fiberAtVertex n v).ncard
+
+/-- **Degree monotonicity** (`lem:forest-surgery-split`, degree substrate): the degree of
+`v` in a subset `F' ⊆ F` is at most its degree in `F`. The surgery drops the `v`-edges of
+each forest, reducing `dᶠ(v)`; this is the monotonicity that bounds the rerouted degrees. -/
+lemma fiberDegree_mono [Finite β] {G : Graph α β} {n : ℕ} {v : α}
+    {F' F : Set (β × Fin (bodyHingeMult n))} (h : F' ⊆ F) :
+    G.fiberDegree n v F' ≤ G.fiberDegree n v F :=
+  Set.ncard_le_ncard (Set.inter_subset_inter_left _ h) (Set.toFinite _)
+
+/-- **The fiber-degree at `v` is bounded by the total fiber count at `v`**
+(`lem:forest-surgery-split`, degree substrate). For a fiber set `F ⊆ E(G̃)`, the degree
+`dᶠ(v)` is at most `(D − 1)·|incident G-edges at v|`; for a degree-2 vertex `v` this is
+`2(D − 1)`, so the per-forest degrees sum to at most `2(D − 1)` across the `D` forests of
+an independent set, the count the surgery's `h' ≤ D − 2` short-circuit bound rests on. -/
+lemma fiberDegree_le [Finite β] {G : Graph α β} {n : ℕ} {v : α}
+    {F : Set (β × Fin (bodyHingeMult n))} (hF : F ⊆ E(G.mulTilde n)) :
+    G.fiberDegree n v F ≤ bodyHingeMult n * {e | G.Inc e v}.ncard := by
+  rw [fiberDegree, ← fiberAtVertex_inter_edgeSet_ncard]
+  refine Set.ncard_le_ncard (fun p hp ↦ ⟨hp.2, hF hp.1⟩) (Set.toFinite _)
+
 end Graph
