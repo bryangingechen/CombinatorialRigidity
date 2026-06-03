@@ -151,6 +151,40 @@ theorem panelSupportExtensor_ne_zero_iff (n₁ n₂ : Fin (k + 2) → ℝ) :
   rw [panelSupportExtensor, ← normalsJoin_ne_zero_iff]
   exact map_ne_zero_iff _ (complementIso (by omega : 2 ≤ k + 2)).injective
 
+/-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
+extensor`): the family `i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is `complementIso` applied to the
+family of grade-2 joins `i ↦ normalsJoin (n₁ i) (n₂ i)`. Definitional, unfolding
+`panelSupportExtensor = complementIso ∘ normalsJoin`; the staging lemma for the
+independence-transfer below. -/
+theorem panelSupportExtensor_eq_complementIso_comp_normalsJoin
+    {m : ℕ} (n₁ n₂ : Fin m → Fin (k + 2) → ℝ) :
+    (fun i => panelSupportExtensor (n₁ i) (n₂ i)) =
+      (complementIso (k := k) (j := 2) (by omega)) ∘ (fun i => normalsJoin (n₁ i) (n₂ i)) := by
+  funext i
+  rfl
+
+/-- **Panel support extensor independence reduces to grade-2 join independence**
+(`lem:cycle-realization`, the genericity-device reduction): a family of `m` panel support extensors
+`i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is linearly independent in the screw space `ScrewSpace k`
+exactly when the family of grade-2 joins `i ↦ normalsJoin (n₁ i) (n₂ i)` is independent in
+`⋀² ℝ^(k+2)`. Because the complement iso `complementIso : ⋀² V ≃ ⋀^k V` (Phase 21a) is a *linear
+equivalence*, it carries independent families to independent families and reflects them.
+This is the reduction at the heart of Katoh–Tanigawa's generic-panel independence argument
+(Claim 6.4/6.9): the existence of an infinitesimally rigid panel-cycle realization
+(`lem:cycle-realization`, KT Lemma 5.4) needs `m ≤ D` panel hinges whose supporting extensors are
+independent, and this lemma turns that screw-space-independence question into an independence
+question on the grade-2 joins of the panel normals — a concrete exterior-power statement that a
+basis choice on `⋀²` (the panel-normal analogue of a generic point, bottoming on the
+extensor-independence Lemma 2.1) discharges, with `m ≤ D = dim ⋀² ℝ^(k+2)` the dimension cap
+(`card_le_screwDim_of_supportExtensor_linearIndependent`). -/
+theorem panelSupportExtensor_linearIndependent_iff
+    {m : ℕ} (n₁ n₂ : Fin m → Fin (k + 2) → ℝ) :
+    LinearIndependent ℝ (fun i => panelSupportExtensor (n₁ i) (n₂ i)) ↔
+      LinearIndependent ℝ (fun i => normalsJoin (n₁ i) (n₂ i)) := by
+  rw [panelSupportExtensor_eq_complementIso_comp_normalsJoin]
+  exact (complementIso (k := k) (j := 2) (by omega)).toLinearMap.linearIndependent_iff_of_injOn
+    (LinearMap.injOn_of_disjoint_ker le_rfl (by simp [LinearEquiv.ker]))
+
 namespace BodyHingeFramework
 
 variable {α β : Type*}

@@ -93,6 +93,24 @@ housekeeping pass once their resolution is fully indexed.
   is up-to-defeq" rule already in TACTICS-QUIRKS § 25; this is the `map_eq_zero_iff`
   instance. Lifted: TACTICS-QUIRKS § 25).
 
+### [resolved] No `LinearEquiv.linearIndependent_comp_iff` — reflect/preserve independence through `e.toLinearMap.linearIndependent_iff_of_injOn (injOn_of_disjoint_ker …)`
+- **Where it bit:** `panelSupportExtensor_linearIndependent_iff` in
+  `Molecular/AlgebraicInduction.lean` (Phase 21 genericity-device reduction): a family
+  `i ↦ panelSupportExtensor (n₁ i) (n₂ i) = complementIso ∘ (i ↦ normalsJoin (n₁ i)(n₂ i))`
+  is LI iff the grade-2-join family is, since `complementIso` is a `LinearEquiv`.
+- **Friction:** mathlib has no `LinearEquiv.linearIndependent_comp_iff` / `(e ∘ v) LI ↔ v LI`
+  for a `LinearEquiv e`. `LinearIndependent.map'` is one-directional; `Function.Injective`
+  has no `.linearIndependent_iff_comp`. The two-step idiom that works:
+  `e.toLinearMap.linearIndependent_iff_of_injOn (LinearMap.injOn_of_disjoint_ker le_rfl
+  (by simp [LinearEquiv.ker]))` — the `.toLinearMap` is needed for the `Module` instance to
+  resolve, and the `InjOn` is produced from `ker e = ⊥` (`LinearEquiv.ker`) via
+  `injOn_of_disjoint_ker le_rfl`.
+- **Proposed fix:** mirror `LinearEquiv.linearIndependent_comp_iff (e : M ≃ₗ N) (v : ι → M) :
+  LinearIndependent R (e ∘ v) ↔ LinearIndependent R v` under
+  `Mathlib/LinearAlgebra/LinearIndependent/`. Not mirrored this commit (single callsite;
+  the two-line idiom is acceptable). If a 2nd callsite appears, mirror it.
+- **Status:** resolved (idiom recorded; mirror deferred to 2nd use).
+
 ### [resolved] `wedgeProd` of two `ιMulti_family` basis vectors → single `extensor`: `change` to surface the `extensor ∘ ofFinEmbEquiv.symm` form before `join_extensor`
 - **Where it bit:** `coe_wedgeProd_ιMulti_family` in `Molecular/Meet.lean` (Phase 21a
   ingredient (c)), bridging the graded wedge pairing on standard basis vectors to the

@@ -310,9 +310,35 @@ Cases~I and~II travel toward the smaller inductive graph.
   \cref{def:rigidity-matrix}).
 \end{proof}
 
+\begin{lemma}[Panel independence reduces to grade-2 join independence]
+  \label{lem:panel-support-extensor-independence}
+  \lean{CombinatorialRigidity.Molecular.panelSupportExtensor_linearIndependent_iff}
+  \leanok
+  \uses{def:panel-support-extensor, def:meet-complement-iso}
+  A family of $m$ panel support extensors $i \mapsto C(p(e_i)) =
+  \mathrm{panelSupportExtensor}(n_{u_i}, n_{v_i})$ is linearly independent in the screw
+  space $\Lambda^k \R^{k+2}$ iff the family of grade-$2$ joins
+  $i \mapsto n_{u_i} \wedge n_{v_i}$ (\cref{def:panel-support-extensor}) is independent in
+  $\Lambda^2 \R^{k+2}$. This is the reduction at the heart of the generic-panel independence
+  argument (Claim~6.4/6.9): it turns the screw-space independence of the supporting extensors
+  --- what \cref{lem:cycle-realization} needs --- into an independence question on the joins of
+  the panel normals, a concrete exterior-power statement a basis choice on $\Lambda^2$
+  discharges (bottoming on the extensor-independence Lemma~2.1,
+  \cref{lem:extensor-independence}).
+\end{lemma}
+\begin{proof}
+  \leanok
+  The complement isomorphism $\mathrm{complementIso} : \Lambda^2 V \simeq \Lambda^k V$
+  (\cref{def:meet-complement-iso}, with $k + 2 - 2 = k$) is a linear \emph{equivalence}, and
+  $\mathrm{panelSupportExtensor} = \mathrm{complementIso} \circ (\text{grade-}2\text{ join})$
+  by definition. A linear equivalence both preserves and reflects linear independence, so the
+  two families are independent together.
+\end{proof}
+
 \begin{lemma}[Cycle realizations; KT Lemma 5.4]
   \label{lem:cycle-realization}
-  \uses{def:rigidity-matrix, lem:cycle-realization-base, lem:cycle-realization-dim-bound}
+  \uses{def:rigidity-matrix, lem:cycle-realization-base, lem:cycle-realization-dim-bound,
+        lem:panel-support-extensor-independence}
   A cycle graph $G = (V, E)$ with $3 \le |V| \le D$ has an
   infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$
   --- equivalently a realization at the full rank $D(|V|-1)$, the
