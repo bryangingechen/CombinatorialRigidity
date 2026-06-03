@@ -965,3 +965,25 @@ to schedule as Phase 21 needs them:
    (the deficiency route already delivered Thm 4.9). The substrate lemmas (steps 1/2 and the caps)
    are not blueprint nodes; `lem:forest-surgery-split` stays red until the assembly lands. See the
    *TODO* Progress *VERDICT* note.
+
+### User-directed addendum items (2026-06-03 coordination)
+
+Two items raised by the user while coordinating this forest-surgery addendum; recorded
+here so they survive across dispatches:
+
+1. **Narrative-bridge shim: forest surgery ⟹ alternative route to Theorem 4.9** — *this
+   track, the next commit AFTER `lem:forest-surgery-split` goes green.* The forest-surgery
+   route gives an alternative (and strictly stronger — it also reaches KT 4.3(ii)) route to
+   the KT-4.3 splitting-off deficiency content that `lem:dof-tracking` / Theorem 4.9 consume.
+   Record it in Lean as a lemma deriving that deficiency content **from** `forest_surgery_split`,
+   marked `@[deprecated <deficiency-count `splitOff_deficiency_*`> (since := "narrative-bridge")]`
+   with a doc-comment explaining the intent, plus a narrative-bridge corollary node in the
+   blueprint (`\lean` + `\leanok`). Pattern + rationale: `blueprint/CLAUDE.md` *Narrative-bridge
+   corollaries (the `@[deprecated]` shim pattern)*; this is API surface with no caller, exactly
+   the shim's use-case. This commit closes the addendum.
+2. **`ex:kt-41-overquantified` `example` → named lemma — NEXT CLEANUP PASS, not this addendum.**
+   The KT-4.1 over-quantification disproof is currently an anonymous Lean `example`, so the
+   blueprint node `ex:kt-41-overquantified` is an orphan (no identifier to carry a `\lean{}`
+   pointer; see its `% Formalized as an unnamed Lean example` comment). Promote it to a named
+   lemma so the node can link. The user will open the cleanup pass once this addendum finishes;
+   this item is its seed.
