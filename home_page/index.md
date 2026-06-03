@@ -22,9 +22,9 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 ## Project status
 
 Phases 1–20 are complete and carry no `sorry`s, and **Phase 21
-(in progress, paused for a panel-coplanarity re-scope — a
-Grassmann–Cayley meet foundations sub-phase 21a precedes its panel
-layer)** opens the algebraic induction; **the body-bar
+(in progress, paused for a panel-coplanarity re-scope — its
+Grassmann–Cayley meet foundations sub-phase 21a is now complete, and
+its panel layer follows)** opens the algebraic induction; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -217,7 +217,7 @@ existing files or refactor across several).
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` | ◷ |
-|   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ◷ |
+|   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

@@ -127,6 +127,21 @@ housekeeping pass once their resolution is fully indexed.
   predicate, not the `Subtype.val`, when the index equality also appears in the
   ambient type" is the takeaway).
 
+### [resolved] `meet` grade alignment: `▸`-transport the `complementIso` *codomain*, not the value
+- **Where it bit:** `meet` in `Molecular/Meet.lean` (Phase 21a deliverable 4, the
+  regressive product `⋀^(N−a) × ⋀^(N−b) → ⋀^(N−(a+b))`). `complementIso (j := N−a)`
+  has codomain `⋀^(N−(N−a))`, which is `⋀^a` only up to the `ℕ`-arithmetic
+  `N−(N−a) = a` (`a ≤ N`); `gradedMul` then needs the two factors at the *literal*
+  grades `a`, `b` so the product lands in `⋀^(a+b)`.
+- **Fix:** transport the equiv-application at the type level — `have hA : N−(N−a)=a :=
+  by omega; … (hA ▸ complementIso … A)`. Built first try (no motive trip), because the
+  rewritten index `N−(N−a)` appears only in the *codomain grade*, not inside an ambient
+  term's type (contrast the `wedgeProd` membership-cast entry above, and the general
+  `▸`-oversubstitution open entry). The third `complementIso` (`j := a+b`) lands the
+  result in `⋀^(N−(a+b))` directly, no transport.
+- **Status:** resolved (no lift — local grade plumbing; takeaway is that a `▸` on an
+  equiv's codomain grade is safe when the rewritten index is confined to that codomain).
+
 ### [resolved] Bilinear map out of a graded-subtype constructor: `mk₂` over `Subtype.ext; simp [def]`, post-compose with `compr₂`
 - **Where it bit:** `wedgeProdBilin` / `wedgePairing` in `Molecular/Meet.lean`
   (ingredient (b) of `complementIso`, route (ii)): the bilinear

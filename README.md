@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–20 complete; Phase 21 in progress (paused for a panel-coplanarity re-scope — a Grassmann–Cayley meet foundations sub-phase, 21a, precedes its panel layer); Phases 22–26 planned.**
+* **Phases 1–20 complete; Phase 21 in progress (paused for a panel-coplanarity re-scope — its Grassmann–Cayley meet foundations sub-phase 21a is complete; the panel layer follows); Phases 22–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini

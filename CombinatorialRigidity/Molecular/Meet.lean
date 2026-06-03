@@ -417,4 +417,68 @@ noncomputable def complementIso {j : ℕ} (hj : j ≤ k + 2) :
       (finrank_exteriorPower_eq_finrank_dual hj)) ≪≫ₗ
     ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).toDualEquiv.symm
 
+/-! ## The regressive product (meet) `⋀^(N−a) V × ⋀^(N−b) V → ⋀^(N−(a+b)) V` (`def:meet`)
+
+The Grassmann–Cayley **meet** (regressive product), the dual of the Phase-17 join.
+Where the join `A ∨ₑ B` spans the two subspaces (and lands in grade `p + q`), the meet
+`A ∧ₑ B` *intersects* them: it is the join conjugated by the complement iso
+`complementIso` (`def:meet-complement-iso`), which plays the role of the projective dual
+(a `*`-operator `⋀^j V → ⋀^(N−j) V`).
+
+Concretely, for `A : ⋀^(N−a) V` and `B : ⋀^(N−b) V` (`N = k+2`, with `a + b ≤ N` the
+transversality grade budget), the meet is
+
+  `meet A B := complementIso (gradedMul (complementIso A) (complementIso B))`,
+
+i.e. `*(*A ∨ₑ *B)`: `complementIso A : ⋀^a V`, `complementIso B : ⋀^b V`, their graded
+product `gradedMul` lands in `⋀^(a+b) V`, and a third `complementIso` brings it to
+`⋀^(N−(a+b)) V`. Geometrically, when `A`, `B` are the supporting `(N−a)`- and
+`(N−b)`-extensors of two subspaces of `V`, the meet is the supporting extensor of their
+codimension-`(a+b)` intersection; in the screw-space arithmetic of
+`sec:molecular-rigidity-matrix` the meet of two hyperplane normals (`a = b = 1`) is the
+supporting `(N−2) = k`-extensor of their codimension-2 intersection, landing in
+`ScrewSpace k`. -/
+
+/-- The general graded wedge product `⋀^p V × ⋀^q V → ⋀^(p+q) V` (`N = k+2`): the join /
+exterior product `↑A * ↑B` landed in the `(p+q)`-graded piece via the graded monoid
+structure on `fun i ↦ ⋀^i V`. The grade-general form of `wedgeProd` (which is the
+`q = N−p` top-piece specialization); the join transport on which the regressive product
+`meet` (`def:meet`) is built. -/
+noncomputable def gradedMul {p q : ℕ}
+    (A : ⋀[ℝ]^p (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^q (Fin (k + 2) → ℝ)) :
+    ⋀[ℝ]^(p + q) (Fin (k + 2) → ℝ) :=
+  ⟨(A : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) * (B : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)),
+    SetLike.mul_mem_graded A.2 B.2⟩
+
+/-- The underlying exterior-algebra element of `gradedMul` is the Phase-17 join `∨ₑ`
+of the two factors. The bridge from the meet's graded product to the join API. -/
+@[simp]
+theorem coe_gradedMul {p q : ℕ}
+    (A : ⋀[ℝ]^p (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^q (Fin (k + 2) → ℝ)) :
+    (gradedMul A B : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) =
+      (A : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) ∨ₑ
+        (B : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) :=
+  rfl
+
+/-- **The regressive product (meet)** `⋀^(N−a) V × ⋀^(N−b) V → ⋀^(N−(a+b)) V`
+(`N = k+2`, `def:meet`): the Grassmann–Cayley meet, the projective dual of the
+Phase-17 join. It is the graded product `gradedMul` of the two complements (via
+`complementIso` as the `*`-operator), conjugated by a third `complementIso` —
+`*(*A ∨ₑ *B)`: `complementIso A : ⋀^a V`, `complementIso B : ⋀^b V`, their product lands
+in `⋀^(a+b) V`, and `complementIso` returns it to `⋀^(N−(a+b)) V`. Geometrically the supporting
+extensor of the codimension-`(a+b)` intersection of the two factors' subspaces; for
+`a = b = 1` the meet of two hyperplane normals is the supporting `k`-extensor of their
+codimension-2 intersection, landing in `ScrewSpace k`. -/
+noncomputable def meet {a b : ℕ} (ha : a ≤ k + 2) (hb : b ≤ k + 2) (hab : a + b ≤ k + 2)
+    (A : ⋀[ℝ]^(k + 2 - a) (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - b) (Fin (k + 2) → ℝ)) :
+    ⋀[ℝ]^(k + 2 - (a + b)) (Fin (k + 2) → ℝ) := by
+  -- `complementIso A : ⋀^a`, `complementIso B : ⋀^b`, product in `⋀^(a+b)`.
+  have hA : k + 2 - (k + 2 - a) = a := by omega
+  have hB : k + 2 - (k + 2 - b) = b := by omega
+  refine complementIso (j := a + b) hab
+    (gradedMul (hA ▸ complementIso (k := k) (j := k + 2 - a) (by omega) A)
+      (hB ▸ complementIso (k := k) (j := k + 2 - b) (by omega) B))
+
+@[inherit_doc] scoped infixl:70 " ∧ₑ " => meet
+
 end CombinatorialRigidity.Molecular

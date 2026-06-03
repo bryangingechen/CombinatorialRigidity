@@ -23,13 +23,16 @@ $\bigwedge^{N} V$ is free of rank $\binom{N}{N} = 1$, hence
 canonically $\cong \R$.
 
 \medskip
-\noindent\emph{Status.} In progress. The top-power volume-form iso
+\noindent\emph{Status.} Complete. The top-power volume-form iso
 (\cref{def:meet-top-equiv}), the duality-pairing iso
-(\cref{def:meet-pairing-dual}), and the complement iso
-(\cref{def:meet-complement-iso}) are green, formalized in
+(\cref{def:meet-pairing-dual}), the complement iso
+(\cref{def:meet-complement-iso}), and the regressive product
+(\cref{def:meet}) are all green, formalized in
 \texttt{Molecular/Meet.lean} (with the general facts mirrored under
-\texttt{Mathlib/LinearAlgebra/ExteriorPower/Basis.lean}). The regressive
-product (\cref{def:meet}) remains to be formalized.
+\texttt{Mathlib/LinearAlgebra/ExteriorPower/Basis.lean}). The meet's
+nonvanishing / transversality characterization and the geometric-reading API
+are deferred to the panel-coplanarity layer (Phase~21) and Lemma~5.4, which
+consume them; projective invariance is Phase~25.
 
 \begin{definition}[Top-power volume form $\bigwedge^{N} V \cong \R$]
   \label{def:meet-top-equiv}
@@ -129,15 +132,22 @@ product (\cref{def:meet}) remains to be formalized.
 
 \begin{definition}[The regressive product (meet)]
   \label{def:meet}
+  \lean{CombinatorialRigidity.Molecular.meet}
+  \leanok
   \uses{def:meet-complement-iso}
   The \emph{meet} (regressive product) $A \wedge B$ of two extensors is the
-  composite
-  $\mathrm{complementIso}^{-1} \circ \vee \circ (\mathrm{complementIso}
-  \times \mathrm{complementIso})$ --- the join of \cref{sec:molecular-homog}
-  transported across the complement iso of \cref{def:meet-complement-iso}.
-  Its nonvanishing characterizes transversality (independence) of the two
-  factors; geometrically, the meet of two hyperplane normals is the
-  supporting extensor of their codimension-2 intersection, landing in the
-  screw space of \cref{sec:molecular-rigidity-matrix}. This is the device
-  the panel-coplanarity layer and Lemma~5.4 consume.
+  Grassmann--Cayley dual of the join: writing $*$ for the complement iso
+  $\bigwedge^{j} V \to \bigwedge^{N-j} V$ of \cref{def:meet-complement-iso}, the
+  meet of $A \in \bigwedge^{N-a} V$ and $B \in \bigwedge^{N-b} V$ (with
+  $a + b \le N$) is $*(*A \vee *B)$, landing in $\bigwedge^{N-(a+b)} V$: the
+  complements $*A \in \bigwedge^{a} V$ and $*B \in \bigwedge^{b} V$ are joined to a
+  $\bigwedge^{a+b} V$ element (the graded product $\mathrm{gradedMul}$, the
+  general-grade form of $\mathrm{wedgeProd}$), and a third $*$ returns the result to
+  $\bigwedge^{N-(a+b)} V$. Geometrically, when $A$, $B$ are the supporting extensors
+  of two subspaces of $V$, the meet is the supporting extensor of their
+  codimension-$(a+b)$ intersection; for $a = b = 1$ the meet of two hyperplane
+  normals is the supporting $(N-2) = k$-extensor of their codimension-2
+  intersection, landing in the screw space $\mathrm{ScrewSpace}\,k$ of
+  \cref{sec:molecular-rigidity-matrix}. This is the device the panel-coplanarity
+  layer and Lemma~5.4 consume.
 \end{definition}

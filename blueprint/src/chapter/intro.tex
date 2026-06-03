@@ -27,8 +27,8 @@ The Lean code is organized into phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
 Phases~1--20 are complete (see the phase bullets below) and
 \textbf{Phase~21} is in progress (paused for a panel-coplanarity
-re-scope --- a Grassmann--Cayley meet foundations sub-phase,
-Phase~21a, precedes its panel layer);
+re-scope --- its Grassmann--Cayley meet foundations sub-phase
+Phase~21a is now complete, and its panel layer follows);
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
@@ -253,6 +253,19 @@ per-phase breakdown:
         off the Theorem-4.9 critical path. \emph{Complete.} (Chapter:
         \cref{sec:molecular-induction}; file:
         \texttt{Molecular/Induction.lean}.)
+  \item \textbf{Grassmann--Cayley meet / projective-duality foundations
+        (Phase~21a).} A prerequisite sub-phase of the algebraic induction,
+        inserted by the panel-coplanarity re-scope
+        (Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}, dual half):
+        the \emph{meet} (regressive product) and the projective-duality
+        dictionary on the concrete carrier $\R^{k+2}$, the dual of the
+        Phase-17 join. Builds the top-power volume-form iso, the
+        exterior-power duality iso $\bigwedge^{j} V^{*} \cong (\bigwedge^{j}
+        V)^{*}$, the complement iso $\bigwedge^{j} V \cong \bigwedge^{N-j} V$
+        (from the nondegenerate perfect wedge pairing), and the meet itself
+        as the Grassmann--Cayley dual of the join. Metric-free (orientation
+        only, no Hodge star). \emph{Complete.} (Chapter:
+        \cref{sec:molecular-meet}; file: \texttt{Molecular/Meet.lean}.)
   \item \textbf{Algebraic induction: Theorem~5.5 base and Cases~I \& II.}
         Stratum~5 of the molecular program
         (Katoh--Tanigawa~\cite[\S5, \S6.1--6.3]{katohTanigawa2011}): the
@@ -314,10 +327,16 @@ the degree-of-freedom tracking, and the capstone Theorem~4.9
 (\cref{thm:minimal-kdof-reduction}) --- is green on its critical path
 (the forest-surgery nodes, KT Lemmas 4.1/4.2, stay red as a deferred
 off-critical-path TODO). The whole Phase~1--20 dependency graph is
-therefore green on the Theorem-4.9 critical path. \textbf{Phase~21}
-(\cref{sec:molecular-algebraic-induction}) is now open and runs
+therefore green on the Theorem-4.9 critical path. \textbf{Phase~21a}
+(\cref{sec:molecular-meet}) --- the Grassmann--Cayley meet /
+projective-duality foundations sub-phase inserted by the
+panel-coplanarity re-scope --- is complete: the top-power volume-form
+iso, the exterior-power duality iso, the complement iso, and the meet
+(\cref{def:meet}) are all green. \textbf{Phase~21}
+(\cref{sec:molecular-algebraic-induction}) is open and runs
 forward-mode: it opens the algebraic induction (Theorem~5.5 base and
 Cases~I \& II, \cref{thm:theorem-55}), and its nodes are red --- the
 live to-do list --- until their Lean lands in
-\texttt{Molecular/AlgebraicInduction.lean}. Phases~22--26 remain to be
+\texttt{Molecular/AlgebraicInduction.lean} (it is paused for the panel
+layer, now unblocked by Phase~21a). Phases~22--26 remain to be
 opened.

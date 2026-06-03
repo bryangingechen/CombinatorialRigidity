@@ -1,6 +1,6 @@
 # Phase 21a — Grassmann–Cayley meet / projective-duality foundations (work log)
 
-**Status:** in progress (opened 2026-06-03). Prerequisite
+**Status:** complete (opened + closed 2026-06-03). Prerequisite
 sub-phase of the Phase-21 algebraic induction, inserted after the
 panel-coplanarity modeling correction (DESIGN.md *Panel-hinge =
 hinge-coplanar body-hinge: the coplanarity layer*; MolecularConjecture.md
@@ -8,8 +8,16 @@ risk #7 + the Phase-21a detail).
 
 ## Current state
 
-**Deliverables 1–3 (`topEquiv`, `pairingDualEquiv`, `complementIso`) are green;
-deliverable 4 (`meet`) remains.** Deliverable 3 closed via ingredients (a)
+**All four deliverables (`topEquiv`, `pairingDualEquiv`, `complementIso`, `meet`)
+are green; `def:meet` flipped, chapter `meet.tex` complete.** Deliverable 4 landed
+`meet` as the Grassmann–Cayley dual of the Phase-17 join — `*(*A ∨ₑ *B)`, three
+applications of `complementIso` as the `*`-operator around the general-grade product
+`gradedMul : ⋀^p × ⋀^q → ⋀^(p+q)` (the grade-general form of `wedgeProd`). Grades:
+`meet : ⋀^(N−a) × ⋀^(N−b) → ⋀^(N−(a+b))` for `a+b ≤ N` (`N=k+2`), via `hA/hB ▸`
+transport of the `complementIso` codomains. Scope-bounded: `meet_ne_zero_iff` and the
+geometric-reading API are deferred to the panel layer (Phase 21) + Lemma 5.4 that
+consume them (none built yet); projective invariance → Phase 25; no metric Hodge star.
+Axiom-clean (propext/Classical.choice/Quot.sound). Deliverable 3 closed via ingredients (a)
 `wedgeProd`, (b) the bilinear pairing `wedgePairing`, (c) the signed-permutation
 basis matrix (off-diagonal `0` for `T ≠ Sᶜ`, diagonal `≠ 0` via
 `wedgePairing_ιMulti_family_compl_ne_zero`), and (d) the assembly
@@ -121,12 +129,17 @@ Dependency order (route (ii); `N = k+2`, `V = Fin (k+2) → ℝ`):
    pairing `≠ 0`). The pairing matrix is thus a signed-permutation matrix; (d)
    `wedgePairing_injective` + `finrank_exteriorPower_eq_finrank_dual` +
    `LinearMap.linearEquivOfInjective` + `toDualEquiv.symm` assemble the iso.
-4. [ ] `meet` (regressive product) — thin layer above `complementIso` +
-   Phase-17 `join` (`meet = complementIso⁻¹ ∘ join ∘ (complementIso ×
-   complementIso)`); + `meet_ne_zero_iff` (⟺ transversal / independent),
-   the grade arithmetic, and the geometric reading: *meet of two
-   hyperplane normals = supporting extensor of their codim-2 intersection*,
-   landing in `ScrewSpace k`.
+4. [x] `meet` (regressive product) — thin layer above `complementIso` +
+   Phase-17 `join`: `meet = * ∘ gradedMul ∘ (* × *)` with `* = complementIso`
+   the `*`-operator `⋀ʲ → ⋀^(N−j)` (so `meet A B = *(*A ∨ₑ *B)`, **not**
+   `complementIso⁻¹` — the dual operator applied three times). Added the
+   general-grade product `gradedMul : ⋀^p × ⋀^q → ⋀^(p+q)` (+ `coe_gradedMul`)
+   as the grade-general form of `wedgeProd`; `∧ₑ` notation. Grades
+   `⋀^(N−a) × ⋀^(N−b) → ⋀^(N−(a+b))` (`a+b ≤ N`). `meet_ne_zero_iff` and the
+   geometric reading (*meet of two hyperplane normals = supporting `k`-extensor
+   of their codim-2 intersection, landing in `ScrewSpace k`*) are **deferred to
+   the consumers** (panel layer Phase 21 + Lemma 5.4) per the scope boundary —
+   build only what those consume; neither is built yet.
 
 Scope boundary: build only the meet-properties the panel layer + Lemma
 5.4 consume. Projective *invariance* (Crapo–Whiteley) → Phase 25. No
@@ -179,20 +192,17 @@ metric Hodge star.
 
 ## Hand-off / next phase
 
-Deliverable 3 (`complementIso`) is **green** (`def:meet-complement-iso` flipped):
-ingredients (a)–(d) all landed. (d) `wedgePairing_injective`
-(`ker_eq_bot'` + the two (c) lemmas evaluated at the complementary basis vector) +
-`finrank_exteriorPower_eq_finrank_dual` (both sides `(k+2).choose j`) +
-`LinearMap.linearEquivOfInjective` ≪≫ `toDualEquiv.symm` = `complementIso`. Axiom-clean
-(propext/Classical.choice/Quot.sound only). **Next concrete commit: deliverable 4
-(`meet`)** — the regressive product `meet = complementIso⁻¹ ∘ join ∘ (complementIso ×
-complementIso)`, a thin layer above `complementIso` + the Phase-17 `join`. Add
-`meet_ne_zero_iff` (⟺ transversal / independent), the grade arithmetic, and the
-geometric reading (*meet of two hyperplane normals = supporting extensor of their
-codim-2 intersection*) landing in `ScrewSpace k`. Flip `def:meet` green. Scope: build
-only the meet-properties the panel layer + Lemma 5.4 consume; projective invariance →
-Phase 25; no metric Hodge star. When 21a's
-deliverables are green, **Phase 21 resumes** with the panel layer
-(`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar` once; DESIGN.md
-*Panel-hinge = hinge-coplanar body-hinge*), then Lemma 5.4 (panel cycle),
-then the re-scoped Cases I/II/III.
+**Phase 21a is complete.** All four deliverables green: `screwAlgebraTopEquiv` /
+`screwAlgebraPairingDualEquiv` / `complementIso` / `meet` in `Molecular/Meet.lean`,
+chapter `meet.tex` fully green. `meet = *(*A ∨ₑ *B)` (`* = complementIso`, three
+applications) over the general-grade product `gradedMul`; axiom-clean.
+
+**Phase 21 now resumes** with the panel layer in `Molecular/AlgebraicInduction.lean`
+(it was paused for this sub-phase). Smallest concrete next commit: the panel-hinge
+framework `PanelHingeFramework` → `toBodyHinge` → the one-time hinge-coplanarity
+constraint `IsHingeCoplanar` (DESIGN.md *Panel-hinge = hinge-coplanar body-hinge*),
+consuming `meet` for the coplanarity layer. Then Lemma 5.4 (panel cycle), then the
+re-scoped Cases I/II/III. See `notes/Phase21.md` (still ◷ in progress) for the paused
+realization-existence nodes and the panel re-scope plan; the meet-properties those
+nodes need (`meet_ne_zero_iff` / geometric reading) land in Phase 21 alongside the
+first consumer, not here (scope boundary).
