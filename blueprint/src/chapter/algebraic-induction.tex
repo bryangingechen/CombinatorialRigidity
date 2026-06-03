@@ -450,10 +450,42 @@ Cases~I and~II travel toward the smaller inductive graph.
   framework-side carrier of the rigid-block contraction.
 \end{definition}
 
+\begin{lemma}[Block-pinning drops at least the $D$ trivial-motion dimensions]
+  \label{lem:pinned-motions-on-rank-bound}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_finrank_pinnedMotionsOn_le}
+  \leanok
+  \uses{def:pinned-motions-on, lem:rank-delete-vertex, lem:trivial-motions-rank-bound}
+  For a nonempty block of bodies $s \subseteq V$,
+  \[
+    D + \dim Z_s(G,p) \;\le\; \dim Z(G,p),
+  \]
+  i.e. block-pinning $s$ cuts the motion space by at least the $D$
+  trivial-motion dimensions. The $D$-dimensional trivial motions
+  (\cref{lem:trivial-motions-rank-bound}) and the block pin $Z_s(G,p)$
+  (\cref{def:pinned-motions-on}) are disjoint submodules of $Z(G,p)$, so their
+  dimensions add to at most $\dim Z(G,p)$. This is the inequality form of the
+  single-body pin-a-body equality \cref{lem:rank-delete-vertex} (an exact $+D$
+  direct-sum split); pinning a rigid block $V(H)$ collapses it to one effective
+  body, the residual constraints making the bound an inequality whose slack the
+  contraction's inductive rank fills. The lower-bound brick of Case~I's
+  block-triangular gluing.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-delete-vertex}
+  Pinning the whole block in particular pins any one body $v \in s$, so
+  $Z_s(G,p) \subseteq \operatorname{pinned}(v)$; the latter meets the trivial
+  motions only at $0$ (\cref{lem:rank-delete-vertex}), hence so does $Z_s(G,p)$.
+  Both sit inside $Z(G,p)$, so $\dim(\text{trivial}) + \dim Z_s(G,p) \le \dim
+  Z(G,p)$, and $\dim(\text{trivial}) = D$ (\cref{lem:trivial-motions-rank-bound}).
+\end{proof}
+
 \begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
   \label{lem:case-I}
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
-        lem:rank-delete-vertex, lem:cycle-realization, def:pinned-motions-on}
+        lem:rank-delete-vertex, lem:cycle-realization, def:pinned-motions-on,
+        lem:pinned-motions-on-rank-bound}
   Let $G$ be a minimal $k$-dof-graph with a proper rigid subgraph $H$.
   Then $G$ has a realization at rank $D(|V|-1) - k$, built from a
   realization of the contraction $G/E(H)$ (a smaller minimal

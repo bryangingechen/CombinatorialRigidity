@@ -587,6 +587,47 @@ theorem pinnedMotionsOn_le_pinnedMotions (F : BodyHingeFramework k α β) {s : S
     F.pinnedMotionsOn s ≤ F.pinnedMotions v :=
   fun _ hS => ⟨hS.1, hS.2 v hv⟩
 
+/-- **The trivial and block-pinned motions intersect only at `0`** (`def:pinned-motions-on`,
+Case I infra): for a nonempty block `s`, a trivial motion (constant on every body) that also
+vanishes on all of `s` is the zero assignment, `trivialMotions ⊓ pinnedMotionsOn s = ⊥`. This is
+the block analogue of the single-body `trivialMotions_inf_pinnedMotions_eq_bot` (Phase 18,
+`lem:rank-delete-vertex`): pinning a whole block in particular pins one of its bodies `v ∈ s`
+(`pinnedMotionsOn_le_pinnedMotions`), so the block intersection sits inside the single-body one,
+which is already `⊥`. It is the disjointness half of Case I's block-triangular rank
+accounting — pinning the rigid block `V(H)` drops the full `D` trivial-motion dimensions. -/
+theorem trivialMotions_inf_pinnedMotionsOn_eq_bot (F : BodyHingeFramework k α β) {s : Set α}
+    (hs : s.Nonempty) :
+    F.trivialMotions ⊓ F.pinnedMotionsOn s = ⊥ := by
+  obtain ⟨v, hv⟩ := hs
+  exact le_bot_iff.mp <| (inf_le_inf_left _ (F.pinnedMotionsOn_le_pinnedMotions hv)).trans
+    (F.trivialMotions_inf_pinnedMotions_eq_bot v).le
+
+/-- **Block-pinning drops at least the `D` trivial-motion dimensions** (`def:pinned-motions-on`,
+Case I infra): for a nonempty block `s`,
+`screwDim k + finrank (pinnedMotionsOn s) ≤ finrank Z(G,p)`. The `D`-dimensional trivial motions
+(`finrank_trivialMotions`) and the block-pinned motions are disjoint
+(`trivialMotions_inf_pinnedMotionsOn_eq_bot`) submodules of `Z(G,p)` (the block pin lies in
+`infinitesimalMotions` by construction), so their dimensions add to at most `finrank Z(G,p)`.
+This is the block analogue of the single-body equality `finrank_pinnedMotions_add_screwDim`
+(Phase 18, `lem:rank-delete-vertex`) in inequality form: a single body pin is an exact `+D`
+direct-sum split, whereas a block pin of a *rigid* `H` collapses `V(H)` to one effective body
+and the residual `D(|V(H)|-1)` constraints make the bound an inequality (the contraction's
+rank, supplied by the induction hypothesis, recovers the exact count). It is the lower-bound
+brick of Case I's block-triangular gluing. -/
+theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
+    (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty) :
+    screwDim k + Module.finrank ℝ (F.pinnedMotionsOn s) ≤
+      Module.finrank ℝ F.infinitesimalMotions := by
+  haveI : Fintype α := Fintype.ofFinite α
+  have hdisj : F.trivialMotions ⊓ F.pinnedMotionsOn s = ⊥ :=
+    F.trivialMotions_inf_pinnedMotionsOn_eq_bot hs
+  have hle : F.trivialMotions ⊔ F.pinnedMotionsOn s ≤ F.infinitesimalMotions :=
+    sup_le F.trivialMotions_le_infinitesimalMotions fun _ hS => hS.1
+  have key := Submodule.finrank_sup_add_finrank_inf_eq F.trivialMotions (F.pinnedMotionsOn s)
+  rw [hdisj, finrank_bot, add_zero, F.finrank_trivialMotions] at key
+  have := Submodule.finrank_mono hle
+  omega
+
 end BodyHingeFramework
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)

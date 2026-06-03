@@ -26,6 +26,22 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case I block-pin rank lower bound landed (2026-06-03).** The first rank-accounting
+brick of Case I is green: `BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot`
+(for nonempty `s`, trivial ⊓ block-pin = ⊥ — the block analogue of Phase-18's
+`trivialMotions_inf_pinnedMotions_eq_bot`, via `pinnedMotionsOn_le_pinnedMotions` into the
+green singleton case) and `…screwDim_add_finrank_pinnedMotionsOn_le`
+(`screwDim k + finrank (pinnedMotionsOn s) ≤ finrank Z(G,p)` — disjoint trivial + block-pin
+submodules of `Z(G,p)`, via `finrank_sup_add_finrank_inf_eq` + `finrank_mono hle`). This is
+the **inequality** form of the single-body pin-a-body **equality**
+`finrank_pinnedMotions_add_screwDim`: a block pin of a rigid `H` collapses `V(H)` to one
+effective body, the residual `D(|V(H)|−1)` constraints making it `≤` not `=`; the
+contraction's inductive rank fills the slack. Axiom-clean (propext/Classical.choice/Quot.sound).
+Blueprint adds a green `lem:pinned-motions-on-rank-bound` node (in the Case I section) that the
+still-red `lem:case-I` `\uses`. **Remaining red on Case I:** the vertex-level contraction op
+`G/E(H)` and the block-triangular gluing of the contraction realization with the pinned rigid
+block (the genericity-device step, Claim 6.4).
+
 **`m`-body cycle rigidity landed (2026-06-03).** The last remaining brick of
 `lem:cycle-realization` (KT Lemma 5.4) — the general `m`-body cycle, `theorem_55_base`
 analogue — is green: `BodyHingeFramework.rankHypothesis_zero_of_cycle` (cycle bodies `Fin m`,
@@ -300,10 +316,18 @@ Case I (proper rigid subgraph; KT §6.2):
   of_sum_eq_zero` forces constancy — no `Graph`-walk primitive needed, the cyclic
   `Fin m` index *is* the cycle. All four Lean pieces of 5.4 now green; only the
   cited projective assembly (CW82 Prop 3.4 / Whiteley99 Prop 3) stays non-Lean.
+- [x] `lem:pinned-motions-on-rank-bound` — block-pin rank lower bound:
+  `trivialMotions_inf_pinnedMotionsOn_eq_bot` (nonempty `s`) +
+  `screwDim_add_finrank_pinnedMotionsOn_le` (`D + finrank (pinnedMotionsOn s) ≤
+  finrank Z(G,p)`). The inequality form of the single-body `lem:rank-delete-vertex`
+  equality; the lower-bound brick of Case I's block-triangular gluing. Axiom-clean.
+  Green.
 - [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
   subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
   glue block-triangularly with a pinned rigid realization of `H`
-  (`lem:rank-delete-vertex`, Phase 18 green). Claim 6.4 genericity.
+  (`lem:rank-delete-vertex`, Phase 18 green; block-pin lower bound
+  `lem:pinned-motions-on-rank-bound` green). Still needs the vertex-level
+  contraction op `G/E(H)` + Claim 6.4 genericity.
 
 Case II (`k>0` splitting; KT §6.3):
 - [x] `lem:case-II-rank-lift` — the `+D` accounting core
@@ -502,12 +526,24 @@ constancy. The constant-propagation is an `ℕ`-induction over `Fin.ofNat m j`
 `Fin.ofNat m p + 1 = Fin.ofNat m (p+1)` is a one-line `Fin.ext` + `simp [Fin.add_def,
 Nat.add_mod]`.
 
-**Smallest next concrete commit:** start Case I or Case II (`lem:case-I` / `lem:case-II`).
-Both gate on the *vertex-level* graph ops that change `|V|` — contraction `G/E(H)` (Case I,
-pin a proper rigid subgraph via the green `def:pinned-motions-on`) and splitting-off `G_v^{ab}`
-(Case II, the `+D` rank lift is the green `lem:case-II-rank-lift`). Each then composes the green
-Phase-20 minimality-transport (`lem:contraction-minimality` / `lem:reduction-step`) with the
-cycle realization just landed and the Phase-18 pin-a-body / parallel lemmas, block-triangularly.
-The genericity device for Cases I/II is the same `panelSupportExtensor_linearIndependent_iff` +
-`exists_independent_panelSupportExtensor` pair already green for the cycle. Cases gain the panel
+**Case I block-pin rank lower bound is now green** (this commit):
+`BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot` +
+`…screwDim_add_finrank_pinnedMotionsOn_le` — `D + finrank (pinnedMotionsOn s) ≤ finrank Z(G,p)`
+for nonempty `s`, the block analogue (in inequality form) of the single-body pin-a-body equality
+`finrank_pinnedMotions_add_screwDim`. The disjointness routes through the green singleton case
+via `pinnedMotionsOn_le_pinnedMotions`; the bound is `finrank_sup_add_finrank_inf_eq` +
+`finrank_mono` of `trivial ⊔ blockpin ≤ Z(G,p)`. Blueprint node
+`lem:pinned-motions-on-rank-bound` (green), in the Case I section, that the still-red
+`lem:case-I` `\uses`.
+
+**Smallest next concrete commit:** continue Case I or start Case II. Both still gate on the
+*vertex-level* graph ops that change `|V|` — for Case I the contraction `G/E(H)` (the block-pin
+side is now stocked: `def:pinned-motions-on` + the rank lower bound just landed); for Case II the
+splitting-off `G_v^{ab}` (the `+D` rank lift is the green `lem:case-II-rank-lift`). Next concrete
+pieces: (i) a `withGraph`-style vertex-contraction op on `Graph α β` that collapses `V(H)` to one
+body (then the block-triangular gluing of the contraction's inductive realization with the pinned
+rigid block — the slack in `lem:pinned-motions-on-rank-bound` is exactly the contraction's rank),
+or (ii) the Case II framework construction from a realization of `G_v^{ab}` re-inserting `v` with
+two hinges. The genericity device for both is the same `panelSupportExtensor_linearIndependent_iff`
++ `exists_independent_panelSupportExtensor` pair already green for the cycle. Cases gain the panel
 (coplanarity) requirement; III is deferred to 22–23.
