@@ -24,11 +24,14 @@ opens with two structural lemmas inherited from
 KT Lemma 3.5 --- whose lower bounds the Phase~19 def\,$=$\,corank bridge
 (\cref{thm:def-eq-corank}) now unblocks, then builds the graph
 operations, the degree-of-freedom tracking, and Theorem~4.9. The
-forest-surgery lemmas KT~4.1/4.2 turn out to be \emph{deferred} (see
-\cref{rem:kt-lemma-41}): KT's Lemma~4.1 is over-quantified and its proof
-glosses a balanced-packing assumption, so the dof tracking is obtained
-instead by a direct deficiency-count argument
-(\cref{sec:molecular-induction-dof}).
+forest-surgery lemmas KT~4.1/4.2 turn out to be \emph{off the
+Theorem-4.9 critical path} (see \cref{rem:kt-lemma-41}): KT's Lemma~4.1
+is over-quantified and its proof glosses a balanced-packing assumption,
+so the dof tracking is obtained instead by a direct deficiency-count
+argument (\cref{sec:molecular-induction-dof}). The splitting-off surgery
+(KT~4.1) is nonetheless fully formalized, repairing the gloss
+(\cref{lem:forest-surgery-split}); the edge-splitting inverse (KT~4.2)
+stays deferred, being sound but unneeded.
 
 \subsection{Inherited structural lemmas (KT 3.4 full form, KT 3.5)}
 \label{sec:molecular-induction-inherited}
@@ -304,13 +307,14 @@ instead by a direct deficiency-count argument
       (\cref{thm:def-eq-corank}), bypassing the forest surgery entirely.
   \end{enumerate}
   Accordingly the forest surgery is \textbf{off the Theorem-4.9 critical
-  path}, but it is now fully formalized in the splitting-off direction: a
-  balanced packing exists (\cref{lem:balanced-forest-packing}), both
-  per-forest reroute steps --- the degree-$2$ cycle-lift
-  (\cref{lem:reroute-cycle-lift}) and the verbatim transport of the
-  $v$-free part (\cref{lem:reroute-vfree-transport}) --- are formalized,
-  and the cardinality bookkeeping (\cref{lem:forest-surgery-count}) assembles
-  them into the deficiency relation (\cref{lem:forest-surgery-split},
+  path}, though the splitting-off direction is fully formalized as the
+  repair of this gloss: a balanced packing exists
+  (\cref{lem:balanced-forest-packing}), both per-forest reroute steps ---
+  the degree-$2$ cycle-lift (\cref{lem:reroute-cycle-lift}) and the
+  verbatim transport of the $v$-free part
+  (\cref{lem:reroute-vfree-transport}) --- carry through, and the
+  cardinality bookkeeping (\cref{lem:forest-surgery-count}) assembles them
+  into the deficiency relation (\cref{lem:forest-surgery-split},
   $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G)$).
   The edge-splitting inverse (\cref{lem:forest-surgery-unsplit}), while
   sound, is not needed by Theorem~4.9 and stays deferred. Both the
@@ -378,8 +382,8 @@ instead by a direct deficiency-count argument
   with every forest meeting $v$ needs at least $D$ $v$-fibers present, and
   they are. It is established on the green deficiency infrastructure, so the
   pigeonhole obstruction ``$h < D$'' of \cref{rem:kt-lemma-41}~(2) cannot
-  arise; what remains genuinely open is only the \emph{redistribution} of
-  these $\ge D$ fibers, one per forest.
+  arise; the complementary \emph{redistribution} of these $\ge D$ fibers
+  one per forest is \cref{lem:acyclic-insert-vfiber}.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -585,6 +589,26 @@ instead by a direct deficiency-count argument
   D(|V| - 1) - \operatorname{rank}$) gives $\operatorname{def}(\widetilde{G_v^{ab}})
   = D(|V| - 2) - \operatorname{rank} M(\widetilde{G_v^{ab}}) \le D(|V| - 1) -
   \operatorname{rank} M(\tilde G) = \operatorname{def}(\tilde G)$.
+\end{proof}
+
+\begin{corollary}[The forest-surgery route to the splitting-off deficiency bound]
+  \label{cor:forest-surgery-deficiency}
+  \lean{Graph.splitOff_deficiency_le_of_forest_surgery}
+  \leanok
+  \uses{lem:forest-surgery-split, lem:splitoff-deficiency}
+  The forest surgery (\cref{lem:forest-surgery-split}) is an alternative,
+  off-critical-path route to the very deficiency bound
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G)$
+  that the induction toward Theorem~4.9 (\cref{lem:dof-tracking}) consumes ---
+  the same bound the deficiency-count \cref{lem:splitoff-deficiency} delivers on
+  the critical path. This corollary records the bridge: the forest reroute, the
+  route Katoh--Tanigawa actually take, reaches exactly where the deficiency count
+  does. It is an API anchor with no downstream caller; the critical path uses the
+  deficiency count.
+\end{corollary}
+\begin{proof}
+  \leanok
+  Immediate from \cref{lem:forest-surgery-split}, whose conclusion is this bound.
 \end{proof}
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, edge-splitting direction; KT Lemma 4.2]

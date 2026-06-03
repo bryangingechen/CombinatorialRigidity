@@ -7,8 +7,13 @@ fully formalized** (2026-06-03 addendum, corrected): `lem:forest-surgery-count`
 (`Graph.forest_surgery_count`) and `lem:forest-surgery-split` (`Graph.forest_surgery_split`,
 `def(G̃ᵥᵃᵇ) ≤ def(G̃)`) are both green `\leanok`, axiom-free — the corrected non-vacuous
 construction that replaces and deletes the superseded `c3df62f` over-claim. KT 4.2 (edge-splitting
-inverse `lem:forest-surgery-unsplit`) stays deferred (sound, not needed by Thm 4.9). The remaining
-addendum item is the narrative-bridge shim (Task #2), explicitly NOT in this commit.
+inverse `lem:forest-surgery-unsplit`) stays deferred (sound, not needed by Thm 4.9). The
+forest-surgery `-split` track is **complete** — the over-claim is fully resolved and the
+narrative-bridge shim has landed (`Graph.splitOff_deficiency_le_of_forest_surgery`,
+`@[deprecated splitOff_deficiency_le (since := "narrative-bridge")]`, blueprint node
+`cor:forest-surgery-deficiency`): the forest route is recorded as the off-path alternative to
+the deficiency-count `splitOff_deficiency_le` that Thm 4.9 actually consumes. The addendum is
+closed.
 The KT 4.1 balanced-packing gloss is **fully discharged (2026-06-03): a GAP, not an error** —
 its counting half (`isBase_vfiber_ncard_ge`), redistribution half
 (`acyclicSet_insert_vfiber_of_not_inc`), rebalancing move (`exists_packing_move_of_not_inc`),
@@ -20,10 +25,16 @@ below for the now-resolved over-claim history.
 
 ## CORRECTION (2026-06-03): the `forest_surgery_split` over-claim, and its repair
 
-**RESOLVED (2026-06-03 addendum).** The corrected surgery is now formalized: `forest_surgery_count`
-(the `|⋃ F'ᵢ| + D = |I|` bookkeeping, stated additively to avoid ℕ-subtraction) + `forest_surgery_split`
-(`def(G̃ᵥᵃᵇ) ≤ def(G̃)`) are both green, axiom-free, and the vacuous `c3df62f` declaration is deleted.
-The history below records the over-claim that this repair corrects.
+**RESOLVED (2026-06-03 addendum) — `-split` track COMPLETE.** The corrected surgery is formalized:
+`forest_surgery_count` (the `|⋃ F'ᵢ| + D = |I|` bookkeeping, stated additively to avoid
+ℕ-subtraction) + `forest_surgery_split` (`def(G̃ᵥᵃᵇ) ≤ def(G̃)`) are both green, axiom-free, and the
+vacuous `c3df62f` declaration is deleted. The closing **narrative-bridge shim** has also landed:
+`Graph.splitOff_deficiency_le_of_forest_surgery` (`@[deprecated splitOff_deficiency_le
+(since := "narrative-bridge")]`, axiom-free), with blueprint node `cor:forest-surgery-deficiency`
+(`\lean` + `\leanok`), records that the forest route reaches the *same* deficiency bound the
+critical-path `splitOff_deficiency_le` delivers — API anchor, no caller. The addendum is closed;
+`lem:forest-surgery-unsplit` (KT 4.2) remains deferred/sound/off-path, unchanged. The history below
+records the over-claim that this repair corrects.
 
 Commit `c3df62f` flipped `lem:forest-surgery-split` green via `Graph.forest_surgery_split`.
 
@@ -701,6 +712,16 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   (the node, now green; see the `lem:forest-surgery-split` checklist entry above). Off the
   Thm-4.9 critical path. FRICTION (`[matroid] Cycle-lift by edge-substitution…`)
   / TACTICS-QUIRKS § 29. See the *TODO* Progress *VERDICT* note + *Hand-off*.
+- [x] `cor:forest-surgery-deficiency` — **narrative-bridge shim** (2026-06-03 addendum, GREEN;
+  closes the `-split` track). `Graph.splitOff_deficiency_le_of_forest_surgery` (axiom-free,
+  `@[deprecated splitOff_deficiency_le (since := "narrative-bridge")]`): a one-line wrapper of
+  `forest_surgery_split` exposing the forest route to `def(G̃ᵥᵃᵇ) ≤ def(G̃)` — the *same* bound
+  the critical-path deficiency-count `splitOff_deficiency_le` delivers and that `dof_tracking` /
+  Theorem 4.9 consume. API surface with no caller (the critical path uses the deficiency count);
+  exists solely to anchor the blueprint claim that the forest surgery reaches the same place.
+  Blueprint node `cor:forest-surgery-deficiency` (`\lean` + `\leanok`, `\uses
+  lem:forest-surgery-split, lem:splitoff-deficiency`). Shim pattern: `blueprint/CLAUDE.md`
+  *Narrative-bridge corollaries*; canonical example `IsLaman.exists_rowIndependent_placement`.
 - [x] `lem:balanced-forest-packing` — the repacking descent's **outer loop**
   (`Graph.exists_balanced_forest_packing`, green `\leanok`, axiom-free): a base `B` of `M(G̃)` admits
   a `D`-forest packing with every forest meeting the degree-2 vertex `v`. Disjointify the
@@ -1034,27 +1055,31 @@ to schedule as Phase 21 needs them:
    (the `|⋃F'ᵢ|+D=|I|` count, stated additively; `dᶠ=2` forests swap via the green
    `lem:reroute-cycle-lift`, `dᶠ=1` forests drop their `v`-fiber via the green
    `lem:reroute-vfree-transport`, balance ⟹ each shrinks by one) → `Graph.forest_surgery_split`
-   (reads off `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via def\,=\,corank on a base, `linarith`). **Next addendum
-   commit = *User-directed addendum item #1* below** (the narrative-bridge
-   `@[deprecated … (since := "narrative-bridge")]` shim deriving the KT-4.3 deficiency content
-   *from* `forest_surgery_split`). Off the Theorem-4.9 critical path (the deficiency route already
-   delivered Thm 4.9). See ## CORRECTION + the *TODO* Progress *VERDICT*.
+   (reads off `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via def\,=\,corank on a base, `linarith`). **The
+   narrative-bridge shim has landed (2026-06-03 addendum, closing the `-split` track):**
+   `Graph.splitOff_deficiency_le_of_forest_surgery` (`@[deprecated splitOff_deficiency_le
+   (since := "narrative-bridge")]`, blueprint node `cor:forest-surgery-deficiency`) records the
+   forest route as the off-path alternative to `splitOff_deficiency_le`. Off the Theorem-4.9
+   critical path (the deficiency route already delivered Thm 4.9). See ## CORRECTION + the *TODO*
+   Progress *VERDICT*.
 
 ### User-directed addendum items (2026-06-03 coordination)
 
 Two items raised by the user while coordinating this forest-surgery addendum; recorded
 here so they survive across dispatches:
 
-1. **Narrative-bridge shim: forest surgery ⟹ alternative route to Theorem 4.9** — *this
-   track, the next commit AFTER `lem:forest-surgery-split` goes green.* The forest-surgery
-   route gives an alternative (and strictly stronger — it also reaches KT 4.3(ii)) route to
-   the KT-4.3 splitting-off deficiency content that `lem:dof-tracking` / Theorem 4.9 consume.
-   Record it in Lean as a lemma deriving that deficiency content **from** `forest_surgery_split`,
-   marked `@[deprecated <deficiency-count `splitOff_deficiency_*`> (since := "narrative-bridge")]`
-   with a doc-comment explaining the intent, plus a narrative-bridge corollary node in the
-   blueprint (`\lean` + `\leanok`). Pattern + rationale: `blueprint/CLAUDE.md` *Narrative-bridge
-   corollaries (the `@[deprecated]` shim pattern)*; this is API surface with no caller, exactly
-   the shim's use-case. This commit closes the addendum.
+1. **Narrative-bridge shim: forest surgery ⟹ alternative route to Theorem 4.9 — DONE
+   (2026-06-03 addendum; closes the addendum).** Landed `Graph.splitOff_deficiency_le_of_forest_surgery`
+   (axiom-free, `@[deprecated splitOff_deficiency_le (since := "narrative-bridge")]`), a one-line
+   wrapper of `forest_surgery_split` exposing the forest route to `def(G̃ᵥᵃᵇ) ≤ def(G̃)` — the same
+   bound the critical-path deficiency-count `splitOff_deficiency_le` delivers and that
+   `lem:dof-tracking` / Theorem 4.9 consume. Blueprint node `cor:forest-surgery-deficiency`
+   (`\lean` + `\leanok`, cross-referencing `lem:forest-surgery-split` + `lem:splitoff-deficiency`).
+   API surface with no caller; the critical path uses the deficiency count. Pattern + rationale:
+   `blueprint/CLAUDE.md` *Narrative-bridge corollaries (the `@[deprecated]` shim pattern)*;
+   canonical example `IsLaman.exists_rowIndependent_placement`. The shim's signature carries
+   `forest_surgery_split`'s hypotheses (`2 ≤ bodyBarDim n`, `a ≠ b`) since it is the forest route;
+   the deficiency count's `splitOff_deficiency_le` is the weaker-hypothesis general form it defers to.
 2. **`ex:kt-41-overquantified` `example` → named lemma — NEXT CLEANUP PASS, not this addendum.**
    The KT-4.1 over-quantification disproof is currently an anonymous Lean `example`, so the
    blueprint node `ex:kt-41-overquantified` is an orphan (no identifier to carry a `\lean{}`

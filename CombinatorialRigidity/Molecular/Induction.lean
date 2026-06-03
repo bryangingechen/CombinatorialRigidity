@@ -3499,4 +3499,26 @@ theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
   -- Combine: `def(H̃) = D(|V|−2) − rank ≤ D(|V|−2) − (|B|−D) = D(|V|−1) − |B| = def(G̃)`.
   linarith [hrkZ, hcountZ, hBrank, hHrank]
 
+/-- **The forest-surgery route to the KT-4.3 splitting-off deficiency bound**
+(`cor:forest-surgery-deficiency`; narrative bridge). The deficiency bound
+`def(G̃_v^{ab}) ≤ def(G̃)` that `dof_tracking` / Theorem 4.9 consume — landed on the
+critical path by the deficiency-count `splitOff_deficiency_le` — is *also* the exact
+conclusion of the off-path forest surgery `forest_surgery_split` (KT 4.1, splitting-off
+direction). This lemma records that alternative route: it derives the same bound from the
+forest reroute, the route Katoh–Tanigawa actually take. It is `@[deprecated]` in favour of
+`splitOff_deficiency_le` because that deficiency-count lemma is the route the critical path
+uses (and carries the weaker `1 ≤ bodyBarDim n`, no `a ≠ b`); this shim exists solely to
+anchor the blueprint's narrative claim that the forest surgery reaches the same place, with
+no Lean caller. The `@[deprecated]` shim pattern (and the `(since := "narrative-bridge")`
+sentinel) is documented in `CombinatorialRigidity/CLAUDE.md` *Engineering conventions*. -/
+@[deprecated splitOff_deficiency_le (since := "narrative-bridge")]
+theorem splitOff_deficiency_le_of_forest_surgery [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G)) :
+    (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n :=
+  forest_surgery_split hD hab hav hbv heab hla hlb hdeg2 he₀
+
 end Graph
