@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import Mathlib.Data.Finset.Card
+public import Mathlib.Data.Fintype.Card
 
 /-!
 # Mirror file: `Mathlib/Data/Finset/Card.lean`
@@ -39,6 +40,20 @@ to bridge `k * |s| + k * |t|` to `k * |s ∪ t| + k * |s ∩ t|`. -/
 lemma mul_card_union_add_mul_card_inter [DecidableEq α] (s t : Finset α) (k : ℕ) :
     k * s.card + k * t.card = k * (s ∪ t).card + k * (s ∩ t).card := by
   rw [← Nat.mul_add, ← Nat.mul_add, Finset.card_union_add_card_inter]
+
+/-- Two finsets of *complementary* cardinality (`|s| + |t| = |α|`) are disjoint exactly
+when one is the complement of the other. The forward direction upgrades disjointness to
+equality by a cardinality squeeze on `s ⊆ tᶜ`; the converse is immediate from
+`Finset.disjoint_compl_right`. -/
+lemma disjoint_iff_eq_compl [Fintype α] [DecidableEq α] {s t : Finset α}
+    (hcard : s.card + t.card = Fintype.card α) : Disjoint s t ↔ t = sᶜ := by
+  rw [Finset.disjoint_left]
+  constructor
+  · intro h
+    apply Finset.eq_of_subset_of_card_le
+    · intro x hx; simp only [Finset.mem_compl]; exact fun hxS => h hxS hx
+    · rw [Finset.card_compl]; omega
+  · intro h x hxS hxT; rw [h, Finset.mem_compl] at hxT; exact hxT hxS
 
 /-- Three distinct elements of a finset force its cardinality to be at least three. -/
 lemma three_le_card_of_three_distinct_mem {s : Finset α} {a b c : α}

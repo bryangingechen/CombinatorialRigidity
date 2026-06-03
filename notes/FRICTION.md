@@ -76,6 +76,21 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `wedgeProd` of two `ιMulti_family` basis vectors → single `extensor`: `change` to surface the `extensor ∘ ofFinEmbEquiv.symm` form before `join_extensor`
+- **Where it bit:** `coe_wedgeProd_ιMulti_family` in `Molecular/Meet.lean` (Phase 21a
+  ingredient (c)), bridging the graded wedge pairing on standard basis vectors to the
+  Phase-17 single-extensor API for the disjointness ⇒ vanishing argument.
+- **Friction:** `coe_wedgeProd` rewrites `↑(wedgeProd …)` to `↑A ∨ₑ ↑B`, but the
+  factors are `↑(ιMulti_family ℝ j b S)`, which is *defeq* to
+  `extensor (b ∘ ofFinEmbEquiv.symm S)` (both unfold to `ExteriorAlgebra.ιMulti ℝ j
+  (b ∘ σ)`) yet not syntactically — so `join_extensor` (stated on `extensor a ∨ₑ
+  extensor b`) does not fire by `rw` alone.
+- **Fix:** a one-line `change (extensor (b ∘ σ_S)) ∨ₑ (extensor (b ∘ σ_T)) = _`
+  surfaces the `extensor`-form, after which `rw [join_extensor]` closes it.
+- **Status:** resolved (no lift — the `ιMulti_family ↦ extensor ∘ ofFinEmbEquiv.symm`
+  defeq is project-local; `coe_wedgeProd_ιMulti_family` is itself the fused bridge so
+  the `change` happens once).
+
 ### [resolved] Transporting `SetLike.mul_mem_graded` across an index-arithmetic equality: cast the *membership*, not the subtype
 - **Where it bit:** `wedgeProd` in `Molecular/Meet.lean` (the graded wedge product
   `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V`, from `↑A * ↑B ∈ ⋀^(j+(N−j))` with `j+(N−j)=N`).
@@ -2376,6 +2391,18 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
   (where `Module.finrank_pi_fintype` lives).
+
+### [mirrored] `Finset.disjoint_iff_eq_compl` (complementary-card disjointness ⟺ complement)
+- **Where it bit:** `wedgePairing_ιMulti_family_eq_zero_of_ne_compl` in
+  `Molecular/Meet.lean` (Phase 21a ingredient (c)), restating the
+  off-diagonal wedge-pairing vanishing in the `T ≠ Sᶜ` form the
+  `notes/Phase21a.md` deliverable asks for.
+- **Friction:** mathlib has the `Set.powersetCard.compl` *equivalence* on the
+  complementary-cardinality subtypes but no plain-`Finset` lemma that two
+  finsets of complementary card (`|s| + |t| = |α|`) are disjoint exactly when
+  `t = sᶜ` — the cardinality-squeeze on `s ⊆ tᶜ` is a 6-line block.
+- **Status:** mirrored. The callsite collapses to one `rw`.
+- **Mirror file:** `Mathlib/Data/Finset/Card.lean`.
 
 ## Archived: Resolved (project-internal)
 

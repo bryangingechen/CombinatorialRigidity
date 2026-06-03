@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Mathlib.LinearAlgebra.ExteriorPower.Basis
+public import CombinatorialRigidity.Mathlib.Data.Finset.Card
 public import CombinatorialRigidity.Molecular.Extensor
 
 /-!
@@ -187,5 +188,102 @@ theorem wedgePairing_apply {j : ℕ} (hj : j ≤ k + 2)
     (A : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ)) :
     wedgePairing k hj A B = screwAlgebraTopEquiv k (wedgeProd hj A B) :=
   rfl
+
+/-! ## Nondegeneracy of the wedge pairing on the standard basis (ingredient (c))
+
+The third ingredient of `complementIso` (`def:meet-complement-iso`): the perfect
+wedge pairing `wedgePairing` is nondegenerate, computed on the standard
+exterior-power basis. The basis of `⋀ʲ V` is indexed by the `j`-element subsets
+`S : Set.powersetCard (Fin (k+2)) j`, with basis vector
+`exteriorPower.ιMulti_family ℝ j (Pi.basisFun …) S` — the wedge `e_{S₀} ∧ ⋯` of the
+standard basis vectors indexed by `S` in increasing order; similarly the basis of
+`⋀^(N−j) V` is indexed by `(N−j)`-element subsets `T`.
+
+The pairing of two such basis vectors is `screwAlgebraTopEquiv (e_S ∨ₑ e_T)`. Since
+the join is the exterior product of two extensors of standard basis vectors
+(`join_extensor`, with `coe_wedgeProd`), it is the extensor of the concatenated
+family `Fin.append (eₛ) (eₜ)`. That family is injective iff `S` and `T` are disjoint;
+given `|S| = j` and `|T| = (k+2)−j`, disjointness is equivalent to `T = Sᶜ`. Hence:
+
+* **off-diagonal** (`T ≠ Sᶜ`, this commit): `S, T` overlap, so the append family
+  repeats a standard basis vector and the extensor vanishes
+  (`extensor_eq_zero_of_not_injective`), giving pairing `= 0`;
+* **diagonal** (`T = Sᶜ`): the append family is a permutation of all standard basis
+  vectors, so the extensor is `±` the top basis vector and the pairing is `±1` (the
+  permutation sign — the *open sign subproblem* of `notes/Phase21a.md`, deferred).
+-/
+
+/-- The underlying exterior-algebra element of the wedge product of two standard
+exterior-power basis vectors is the extensor of the concatenated indexing family:
+the join `e_S ∨ₑ e_T` is the `(k+2)`-extensor of `Fin.append` of the two ordered
+families of standard basis vectors. The bridge from the graded pairing on basis
+vectors to the Phase-17 single-extensor API, on which the disjointness ⇒ vanishing
+computation runs. -/
+theorem coe_wedgeProd_ιMulti_family {j : ℕ} (hj : j ≤ k + 2)
+    (S : Set.powersetCard (Fin (k + 2)) j)
+    (T : Set.powersetCard (Fin (k + 2)) (k + 2 - j)) :
+    (wedgeProd hj (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+        (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T) :
+        ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) =
+      extensor (Fin.append
+        (Pi.basisFun ℝ (Fin (k + 2)) ∘ Set.powersetCard.ofFinEmbEquiv.symm S)
+        (Pi.basisFun ℝ (Fin (k + 2)) ∘ Set.powersetCard.ofFinEmbEquiv.symm T)) := by
+  rw [coe_wedgeProd]
+  change (extensor (Pi.basisFun ℝ (Fin (k + 2)) ∘ Set.powersetCard.ofFinEmbEquiv.symm S))
+      ∨ₑ (extensor (Pi.basisFun ℝ (Fin (k + 2)) ∘ Set.powersetCard.ofFinEmbEquiv.symm T)) = _
+  rw [join_extensor]
+
+/-- **Off-diagonal vanishing of the wedge pairing** (ingredient (c), this commit).
+If the indexing subsets `S` (size `j`) and `T` (size `(k+2)−j`) of the two standard
+exterior-power basis vectors are *not* disjoint — equivalently, since they have
+complementary sizes, `T ≠ Sᶜ` — then the wedge pairing of the basis vectors
+vanishes. A shared index `x ∈ S ∩ T` makes the standard basis vector `eₓ` appear in
+both factors of the concatenated family `Fin.append`, so the extensor vanishes by
+the alternating law (`extensor_eq_zero_of_not_injective`) and the volume form sends
+it to `0`. The complementary diagonal case (`T = Sᶜ`, value `±1`) is the open sign
+subproblem of `notes/Phase21a.md`. -/
+theorem wedgePairing_ιMulti_family_eq_zero_of_not_disjoint {j : ℕ} (hj : j ≤ k + 2)
+    (S : Set.powersetCard (Fin (k + 2)) j)
+    (T : Set.powersetCard (Fin (k + 2)) (k + 2 - j))
+    (hST : ¬Disjoint (S : Finset (Fin (k + 2))) (T : Finset (Fin (k + 2)))) :
+    wedgePairing k hj (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+        (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T) = 0 := by
+  rw [wedgePairing_apply]
+  have hzero : wedgeProd hj
+      (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+      (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T) = 0 := by
+    apply Subtype.ext
+    rw [coe_wedgeProd_ιMulti_family, ZeroMemClass.coe_zero]
+    -- the append family repeats the standard basis vector `eₓ` for `x ∈ S ∩ T`
+    obtain ⟨x, hxS, hxT⟩ := Finset.not_disjoint_iff.mp hST
+    obtain ⟨a, ha⟩ := (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem S x).mpr hxS
+    obtain ⟨b, hb⟩ := (Set.powersetCard.mem_range_ofFinEmbEquiv_symm_iff_mem T x).mpr hxT
+    apply extensor_eq_zero_of_eq _
+      (a := Fin.castAdd (k + 2 - j) a) (b := Fin.natAdd j b)
+    · rw [Fin.append_left, Fin.append_right, Function.comp_apply, Function.comp_apply, ha, hb]
+    · refine Fin.ne_of_lt ?_
+      simp only [Fin.lt_def, Fin.val_castAdd, Fin.val_natAdd]
+      have := a.isLt
+      omega
+  rw [hzero, map_zero]
+
+/-- **Off-diagonal vanishing, complement form** (ingredient (c)). The `T ≠ Sᶜ`
+restatement of `wedgePairing_ιMulti_family_eq_zero_of_not_disjoint`, matching the
+`notes/Phase21a.md` deliverable shape "`±1` if `T = Sᶜ` else `0`": when the index `T`
+is *not* the complement of `S` (using mathlib's complement equivalence
+`Set.powersetCard.compl` on the complementary-cardinality subtypes), the two index
+sets overlap (`Finset.disjoint_iff_eq_compl`), so the basis-vector pairing vanishes.
+The complementary `T = Sᶜ` diagonal (value `±1`) is the open sign subproblem. -/
+theorem wedgePairing_ιMulti_family_eq_zero_of_ne_compl {j : ℕ} (hj : j ≤ k + 2)
+    (S : Set.powersetCard (Fin (k + 2)) j)
+    (T : Set.powersetCard (Fin (k + 2)) (k + 2 - j))
+    (hT : T ≠ Set.powersetCard.compl (by rw [Fintype.card_fin]; omega) S) :
+    wedgePairing k hj (exteriorPower.ιMulti_family ℝ j (Pi.basisFun ℝ (Fin (k + 2))) S)
+        (exteriorPower.ιMulti_family ℝ (k + 2 - j) (Pi.basisFun ℝ (Fin (k + 2))) T) = 0 := by
+  apply wedgePairing_ιMulti_family_eq_zero_of_not_disjoint hj S T
+  rw [Finset.disjoint_iff_eq_compl
+    (by rw [Set.powersetCard.card_eq, Set.powersetCard.card_eq, Fintype.card_fin]; omega)]
+  intro h
+  exact hT (by rw [← Subtype.coe_inj, Set.powersetCard.coe_compl, h])
 
 end CombinatorialRigidity.Molecular

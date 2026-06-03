@@ -9,8 +9,9 @@ risk #7 + the Phase-21a detail).
 ## Current state
 
 **Deliverables 1–2 (`topEquiv`, `pairingDualEquiv`) are green; deliverable 3
-(`complementIso`) is started — ingredients (a) `wedgeProd` and (b) the bilinear
-pairing `wedgePairing` are green.** File
+(`complementIso`) is started — ingredients (a) `wedgeProd`, (b) the bilinear
+pairing `wedgePairing`, and the *off-diagonal half* of (c) (vanishing of the
+basis-vector pairing off `T = Sᶜ`) are green.** File
 `Molecular/Meet.lean` carries the screw-algebra specializations
 (`screwAlgebraTopEquiv : ⋀^(k+2) (Fin (k+2) → ℝ) ≃ₗ ℝ`,
 `screwAlgebraPairingDualEquiv j : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*`), with the general
@@ -90,9 +91,14 @@ Dependency order (route (ii); `N = k+2`, `V = Fin (k+2) → ℝ`):
 3. [ ] `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V` — from the perfect wedge
    pairing `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ R` (via `join` + `topEquiv`), shown
    nondegenerate for free `V`. The genuinely new core. *In progress:* ingredients
-   (a) `wedgeProd` + `coe_wedgeProd` and (b) `wedgePairing` (+ `wedgeProdBilin`)
-   landed; nondegeneracy (c) / `toDualEquiv.symm` composition (d) remain (see
-   *Current state* for the (a)–(d) decomposition).
+   (a) `wedgeProd` + `coe_wedgeProd`, (b) `wedgePairing` (+ `wedgeProdBilin`), and
+   the **off-diagonal half of (c)** landed: `coe_wedgeProd_ιMulti_family` (the
+   `wedgeProd` of two standard basis vectors is the extensor of the concatenated
+   index family) feeds `wedgePairing_ιMulti_family_eq_zero_of_not_disjoint` and its
+   `T ≠ Sᶜ` form `…_of_ne_compl` (overlap ⇒ repeated basis vector ⇒ vanishing). The
+   **diagonal sign** (value `±1` on `T = Sᶜ`, the open sign subproblem) and the
+   `toDualEquiv.symm` composition (d) remain (see *Current state* for the (a)–(d)
+   decomposition).
 4. [ ] `meet` (regressive product) — thin layer above `complementIso` +
    Phase-17 `join` (`meet = complementIso⁻¹ ∘ join ∘ (complementIso ×
    complementIso)`); + `meet_ne_zero_iff` (⟺ transversal / independent),
@@ -139,20 +145,24 @@ metric Hodge star.
 ## Hand-off / next phase
 
 Deliverable 3 (`complementIso`) is in progress: ingredients (a) `wedgeProd` +
-`coe_wedgeProd` and (b) the bilinear wedge pairing
+`coe_wedgeProd`, (b) the bilinear wedge pairing
 `wedgePairing k hj : ⋀ʲ V →ₗ[ℝ] Module.Dual ℝ (⋀^(k+2−j) V)` (+ `wedgeProdBilin`,
-`wedgePairing_apply`) are green; `def:meet-complement-iso` stays red. **Next
-concrete commit: ingredient (c)**, the basis
-computation `screwAlgebraTopEquiv (wedgeProd hj e_S e_T) = ±1` if `T = Sᶜ`
-else `0` (off-diagonal = `extensor_eq_zero_of_not_injective` via a repeated
-basis vector; **the diagonal sign is the open sign subproblem in *Blockers*** —
-verify against `supportExtensor` / KT's `C(·)`), giving nondegeneracy. *Then*
+`wedgePairing_apply`), and the **off-diagonal half of (c)** are green:
+`coe_wedgeProd_ιMulti_family` plus `wedgePairing_ιMulti_family_eq_zero_of_not_disjoint`
+/ `…_of_ne_compl` give `wedgePairing e_S e_T = 0` for `T ≠ Sᶜ`.
+`def:meet-complement-iso` stays red. **Next concrete commit: the diagonal half of
+(c)** — `screwAlgebraTopEquiv (wedgeProd hj e_S e_{Sᶜ}) = ±1`, the value on
+`T = Sᶜ`. This is the **open sign subproblem in *Blockers*** (the permutation sign
+from interleaving `S` with `Sᶜ` into increasing order): compute it as the sign of the
+sort permutation, and **verify the orientation convention against `supportExtensor` /
+KT's `C(·)`** before committing — this is the one place that may need a user decision.
+Together with the off-diagonal half this gives nondegeneracy (the pairing matrix on
+the standard basis is a signed permutation matrix). *Then*
 (d): `complementIso := (pairing-as-equiv) ≪≫ₗ
 (Pi.basisFun …).exteriorPower (k+2−j) |>.toDualEquiv.symm`, flipping
 `def:meet-complement-iso` green. Then `meet` + its lemmas (deliverable 4).
-**Route (ii) is multi-commit** — budget (b)/(c)/(d) as separate commits; the
-sign subproblem in (c) is the one place that may need a user decision if the
-orientation convention conflicts with the panel hinge extensor. When 21a's
+**Route (ii) is multi-commit** — budget the (c)-diagonal and (d) as separate commits.
+When 21a's
 deliverables are green, **Phase 21 resumes** with the panel layer
 (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar` once; DESIGN.md
 *Panel-hinge = hinge-coplanar body-hinge*), then Lemma 5.4 (panel cycle),

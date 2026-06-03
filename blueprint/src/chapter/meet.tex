@@ -28,8 +28,12 @@ canonically $\cong \R$.
 (\cref{def:meet-pairing-dual}) are green, formalized in
 \texttt{Molecular/Meet.lean} (with the general facts mirrored under
 \texttt{Mathlib/LinearAlgebra/ExteriorPower/Basis.lean}). The complement
-iso (\cref{def:meet-complement-iso}) is in progress and the regressive
-product (\cref{def:meet}) remains to be formalized.
+iso (\cref{def:meet-complement-iso}) is in progress: the perfect wedge
+pairing and its off-diagonal vanishing on the standard exterior-power basis
+(the pairing of the basis vectors indexed by $S$ and $T$ is $0$ unless
+$T = S^{c}$) are formalized; the diagonal sign ($\pm 1$ on $T = S^{c}$) and
+the resulting nondegeneracy remain. The regressive product
+(\cref{def:meet}) remains to be formalized.
 
 \begin{definition}[Top-power volume form $\bigwedge^{N} V \cong \R$]
   \label{def:meet-top-equiv}
