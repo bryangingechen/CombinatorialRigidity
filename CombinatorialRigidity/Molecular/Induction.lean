@@ -1737,6 +1737,41 @@ lemma mulTilde_removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : �
     -- `p.1 ≠ e₀`: `p.1 ∈ E(G)` (it carries the link `hlink`) but `e₀ ∉ E(G)`.
     rintro rfl; exact he₀ hlink.edge_mem
 
+/-- **The surviving fibers of the multiplied splitting-off are exactly `E((G_v)̃)`**
+(`lem:reduction-step`, splitting-off minimality transport; Katoh–Tanigawa 2011 Lemmas 4.7–4.8,
+ground-set bridge). With the short-circuit edge `e₀` fresh (`e₀ ∉ E(G)`), the multiplied
+splitting-off `G̃_v^{ab}` has ground set the disjoint union of the fresh short-circuit fiber
+`ã̃b = edgeFiber e₀ n` and the surviving fibers, and the surviving fibers
+(`E(G̃_v^{ab}) ∖ ã̃b`) are *precisely* the fibers of the multiplied vertex-removal
+`(G_v)̃ = ((G − v))̃`:
+`E((G_v^{ab}))̃ ∖ ã̃b = E((G_v))̃`.
+
+This is the ground-set decomposition the by-hand base correspondence of KT 4.8 runs on:
+splitting-off only *adds* the fresh `e₀`-fiber to and *removes* the two `v`-incident fibers
+from `G̃`, so deleting the fresh fiber recovers exactly the `v`-free fibers — which are the
+ground set of `M((G_v)̃)`. Sharpens the one-sided inclusions
+`mulTilde_splitOff_deleteFiber_le` / `mulTilde_removeVertex_le_splitOff` to the edge-set
+equality the base lift needs to identify the surviving matroid's ground set. The two `⊆`
+directions are: a non-`e₀` fiber of `G̃_v^{ab}` carries a `v`-avoiding `G`-link (so its edge
+lies in `E(G_v)`), and conversely a fiber of `(G_v)̃` is `v`-free with a fresh-distinct edge
+(forced by `e₀ ∉ E(G)`), hence kept by `splitOff`'s first disjunct. -/
+lemma edgeSet_mulTilde_splitOff_diff_fiber {G : Graph α β} {v a b : α} {e₀ : β} (n : ℕ)
+    (he₀ : e₀ ∉ E(G)) :
+    E((G.splitOff v a b e₀).mulTilde n) \ edgeFiber e₀ n = E((G.removeVertex v).mulTilde n) := by
+  ext p
+  simp only [Set.mem_diff, edgeFiber, Set.mem_setOf_eq, mulTilde, edgeMultiply_edgeSet,
+    edgeSet_splitOff, Set.mem_union]
+  rw [removeVertex, edgeSet_deleteVerts]
+  simp only [Set.mem_setOf_eq, Set.mem_singleton_iff]
+  constructor
+  · rintro ⟨(⟨rfl, _⟩ | ⟨_, x, y, hl, hx, hy⟩), hpne⟩
+    · exact absurd rfl hpne
+    · exact ⟨x, y, hl, hx, hy⟩
+  · rintro ⟨x, y, hl, hx, hy⟩
+    refine ⟨Or.inr ⟨?_, x, y, hl, hx, hy⟩, ?_⟩
+    · rintro rfl; exact he₀ hl.edge_mem
+    · rintro rfl; exact he₀ hl.edge_mem
+
 /-- **A forest of the multiplied vertex-removal is a forest of the multiplied splitting-off**
 (`lem:forest-surgery-split`, surgery crux, reverse acyclicity transport; Katoh–Tanigawa 2011
 Lemma 4.1). The reverse companion of `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`: any

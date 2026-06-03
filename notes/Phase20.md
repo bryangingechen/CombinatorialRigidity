@@ -185,6 +185,14 @@ gloss) stands as before — only Finding 2's removal-bound claim is retracted.
 
 ## Current state
 
+**Commit G step 2a landed (`edgeSet_mulTilde_splitOff_diff_fiber`, 2026-06-03):** the
+ground-set bridge for the splitting-off base correspondence — `E(G̃_v^{ab}) ∖ ã̃b = E((G_v)̃)`
+(green `\leanok`, axiom-free) — identifies the surviving ground set of `M(G̃_v^{ab})` (minus
+the fresh `e₀`-fiber) as exactly that of `M((G_v)̃)`, the first substrate piece the by-hand
+KT 4.8 base lift consumes. No blueprint node (internal substrate). The full
+`lem:reduction-step` splitting-off minimality transport (KT 4.7–4.8 base correspondence,
+no matroid-minor shortcut; see *Hand-off*) remains residual.
+
 **Commit G step 1 landed (`lem:reduction-measure`, 2026-06-03):** both reduction operations
 strictly shrink `|V|` (`Graph.splitOff_vertexSet_ncard_lt`,
 `Graph.rigidContract_vertexSet_ncard_lt`; the latter needs `2 ≤ |V(H)|`), green `\leanok`,
@@ -463,6 +471,12 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   splitting-off injects a fresh `e₀`-fiber and drops the `v`-incident `eₐ`/`e_b` fibers, so
   it is neither a deletion nor a contraction of `M(G̃)`; the base correspondence must be
   built by hand (KT 4.7–4.8). The `\uses`/measure (`lem:reduction-measure`) is now in hand.
+  **Ground-set bridge landed (2026-06-03):** `edgeSet_mulTilde_splitOff_diff_fiber`
+  (`E(G̃_v^{ab}) ∖ ã̃b = E((G_v)̃)`, green, axiom-free) pins the *surviving* ground set of
+  `M(G̃_v^{ab})` (minus the fresh fiber) as exactly the ground set of `M((G_v)̃)` — the
+  identification the by-hand KT 4.8 base lift consumes. Sharpens the one-sided
+  `mulTilde_splitOff_deleteFiber_le` / `mulTilde_removeVertex_le_splitOff` inclusions to the
+  edge-set equality. Node stays red (the by-hand base correspondence proper is unbuilt).
 - [ ] `thm:minimal-kdof-reduction` — KT Theorem 4.9 (capstone; phase
   close). Replan commit H.
 
@@ -714,15 +728,25 @@ neither a deletion nor a contraction of `M(G̃)`; KT 4.7–4.8's base correspond
 by hand (unlike the contraction branch, which IS a matroid contraction and is already
 `contraction_isMinimalKDof`).
 
-**Next agent's concrete commit = commit G step 2, the `lem:reduction-step` splitting-off
-minimality transport.** Given `G` minimal `k`-dof and `v` the degree-2 vertex of
-`exists_degree_eq_two`, show `G_v^{ab}` minimal `k`-dof: the deficiency half is the
+**Commit G step 2a landed (2026-06-03): ground-set bridge for the splitting-off base
+correspondence.** `edgeSet_mulTilde_splitOff_diff_fiber` (`E(G̃_v^{ab}) ∖ ã̃b = E((G_v)̃)`,
+green `\leanok`, axiom-free, `Molecular/Induction.lean`) sharpens the one-sided subgraph
+inclusions `mulTilde_splitOff_deleteFiber_le` / `mulTilde_removeVertex_le_splitOff` to the
+**edge-set equality** the by-hand KT 4.8 base lift needs: deleting the fresh `e₀`-fiber from
+`G̃_v^{ab}` recovers exactly the `v`-free fibers, which are the ground set of `M((G_v)̃)`. No
+blueprint node (churn-prone internal substrate; `lem:reduction-step` stays red). The full
+splitting-off minimality transport remains the residual.
+
+**Next agent's concrete commit = continue commit G step 2, the `lem:reduction-step`
+splitting-off minimality transport.** Given `G` minimal `k`-dof and `v` the degree-2 vertex
+of `exists_degree_eq_two`, show `G_v^{ab}` minimal `k`-dof: the deficiency half is the
 two-sided `dof_tracking` bound (plus the no-proper-rigid case forcing `def(G̃_v^{ab}) = k`,
 not `k−1` — KT 4.5(ii)/4.8 via `circuit_induces_isRigidSubgraph` for `X∩ãb=∅ ⟹ proper
 rigid`), and the **minimality (base/fiber-meeting) half** is KT's two circuit swaps on
 `M(G̃)`'s fundamental circuits, lifting each base of `M(G̃_v^{ab})` to a fiber-meeting base
-of `M(G̃)` *by hand* (no matroid-minor shortcut — see the Finding above). The contraction
-branch is already done (`contraction_isMinimalKDof`). Then commit H
-(`thm:minimal-kdof-reduction`, Theorem 4.9 capstone, induction on `|V|` via
-`lem:reduction-measure` → phase close) per *Replan*. Degree-2 stays encoded as two edges
-`eₐ`/`e_b` where the splitting-off bookkeeping needs it.
+of `M(G̃)` *by hand* (no matroid-minor shortcut — see the Finding above). The ground-set
+bridge `edgeSet_mulTilde_splitOff_diff_fiber` (above) is the first substrate piece in hand;
+the base-lift proper is next. The contraction branch is already done
+(`contraction_isMinimalKDof`). Then commit H (`thm:minimal-kdof-reduction`, Theorem 4.9
+capstone, induction on `|V|` via `lem:reduction-measure` → phase close) per *Replan*.
+Degree-2 stays encoded as two edges `eₐ`/`e_b` where the splitting-off bookkeeping needs it.
