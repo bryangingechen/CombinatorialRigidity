@@ -368,6 +368,44 @@ lemma splitOff_isLink {G : Graph α β} {v a b : α} {e₀ : β} {e : β} {x y :
         (e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧
           ((x = a ∧ y = b) ∨ (x = b ∧ y = a))) := Iff.rfl
 
+/-- **Edge set of a splitting-off** `G_v^{ab}` (`def:graph-operations`): an edge `e`
+survives the splitting-off iff either `e = e₀` is the fresh short-circuit edge (which is
+present exactly when its endpoints `a, b` are distinct from `v` and lie in `V(G)`), or `e`
+is an `e₀`-distinct edge of `G` not incident to the deleted vertex `v`. The condition for
+the fresh edge `e₀` records that the splitting-off at a degree-2 vertex `v` with neighbours
+`a, b` short-circuits the two `v`-edges into a single `ab` edge. This is the edge-level
+bookkeeping the forest surgery of `lem:forest-surgery-split` (KT 4.1) runs on. -/
+lemma edgeSet_splitOff {G : Graph α β} {v a b : α} {e₀ : β} :
+    E(G.splitOff v a b e₀) =
+      {e | e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G)} ∪
+        {e | e ≠ e₀ ∧ ∃ x y, G.IsLink e x y ∧ x ≠ v ∧ y ≠ v} := by
+  ext e
+  rw [edgeSet_eq_setOf_exists_isLink]
+  simp only [splitOff_isLink, Set.mem_setOf_eq, Set.mem_union]
+  constructor
+  · rintro ⟨x, y, (⟨hne, h, hx, hy⟩ | ⟨rfl, ha, hb, haV, hbV, _⟩)⟩
+    · exact Or.inr ⟨hne, x, y, h, hx, hy⟩
+    · exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
+  · rintro (⟨rfl, ha, hb, haV, hbV⟩ | ⟨hne, x, y, h, hx, hy⟩)
+    · exact ⟨a, b, Or.inr ⟨rfl, ha, hb, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩⟩
+    · exact ⟨x, y, Or.inl ⟨hne, h, hx, hy⟩⟩
+
+/-- **The fresh short-circuit fiber `ã̃b` lives in `E(G̃_v^{ab})`** (`def:graph-operations`):
+when the splitting-off `G_v^{ab}` at a degree-2 vertex `v` with neighbours `a, b`
+(`a, b ≠ v`, `a, b ∈ V(G)`) actually inserts its short-circuit edge `e₀`, the whole fiber
+`ẽ₀ = {p | p.1 = e₀}` of `D - 1 = bodyHingeMult n` parallel copies lies in
+`E(G̃_v^{ab})`. This is the `ã̃b` fiber the forest surgery of `lem:forest-surgery-split`
+(KT 4.1) reroutes its degree-2 forests onto, and the fibers whose count must stay
+`< D - 1` in the surgery's output. -/
+lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} {e₀ : β}
+    (n : ℕ) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G)) :
+    edgeFiber e₀ n ⊆ E((G.splitOff v a b e₀).mulTilde n) := by
+  intro p hp
+  rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq]
+  rw [edgeFiber, Set.mem_setOf_eq] at hp
+  rw [hp, edgeSet_splitOff]
+  exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,

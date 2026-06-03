@@ -114,13 +114,28 @@ forced, because `matroidMG = (⋃_{i<D} cycleMatroid(G̃)) ↾ E(G̃)` already (
 union_indep_iff]; tauto`). Axiom-free. Factored as its own blueprint node feeding
 `lem:forest-surgery-split`.
 
-Next concrete step: the **forest-surgery proper** (`lem:forest-surgery-split`, KT 4.1). With
-the framing now fixed, this is: take the `D`-forest packing of an independent set `I`, reroute
-each forest across the degree-2 vertex `v` (degree-1-in-`Fᵢ` forests drop their `v`-edge;
-degree-2-in-`Fᵢ` forests swap their two `v`-edges for one `ãb` copy), and reassemble into an
-independent `I'` of `M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1`. The bookkeeping
-(per-forest acyclicity preservation + edge-disjointness of the `ãb` copies used) is the hard
-combinatorial core; budget the most time.
+And now landed: the **incidence/cardinality substrate** of the forest surgery
+(`lem:forest-surgery-split`, KT 4.1) — three axiom-free bookkeeping lemmas, NOT a blueprint
+node (the node stays red; these are the glue the still-open surgery proper consumes):
+- `Graph.edgeFiber_ncard` (in `Deficiency.lean`): `|ẽ| = bodyHingeMult n = D − 1`, the
+  `|ã̃b| = D − 1` quantity KT 4.1 counts the `< D − 1` short-circuit copies against.
+- `Graph.edgeSet_splitOff`: `E(G_v^{ab}) = {fresh e₀ when a,b ≠ v ∈ V(G)} ∪ {e ≠ e₀ of G
+  avoiding v}` — the edge-level description of the splitting-off short-circuit.
+- `Graph.edgeFiber_subset_edgeSet_mulTilde_splitOff`: the fresh fiber `ã̃b = edgeFiber e₀ n`
+  lies in `E(G̃_v^{ab})` when the short-circuit edge is present. This is the fiber the
+  surgery reroutes the degree-2 forests onto.
+
+Next concrete step (still): the **forest-surgery proper** (`lem:forest-surgery-split`, KT 4.1)
+— the genuinely hard combinatorial core, still red. Take the `D`-forest packing of an
+independent set `I`, reroute each forest across the degree-2 vertex `v` (degree-1-in-`Fᵢ`
+forests drop their `v`-edge; degree-2-in-`Fᵢ` forests swap their two `v`-edges for one `ãb`
+copy via `edgeFiber_subset_edgeSet_mulTilde_splitOff`), and reassemble into an independent `I'`
+of `M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1` (bounded via `edgeFiber_ncard`).
+The bookkeeping that remains — **per-forest acyclicity preservation across the short-circuit**
+(cycles in `G̃ᵥᵃᵇ` lift to cycles/paths in `G̃`, via the `Matroid/Graph/AcyclicSet.lean`
+cycle-characterization) **and edge-disjointness of the `ãb` copies used** (KT's `h' ≤ D − 2`
+count) — is the residual combinatorial crux; it needs a degree-at-`v`-in-a-forest notion not
+yet in place. Multi-commit; budget the most time.
 
 ## Architectural choices made up front
 
@@ -190,7 +205,10 @@ Forest surgery (hard core):
 - [ ] `lem:forest-surgery-split` — KT 4.1, splitting-off direction
   (the surgery proper: reroute each of the `D` forests across the degree-2
   vertex `v`, giving `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1`). Built on
-  `lem:forest-packing-decomp`.
+  `lem:forest-packing-decomp`. **Substrate landed** (`edgeFiber_ncard`,
+  `edgeSet_splitOff`, `edgeFiber_subset_edgeSet_mulTilde_splitOff`); the
+  acyclicity-preserving reroute + `h' ≤ D−2` disjointness count remain (no
+  blueprint node yet — node stays red).
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction
   (the inverse; makes split/unsplit inverse on deficiency).
 
@@ -304,14 +322,24 @@ fiber sets (the `D` edge-disjoint forests). This **resolves the open framing blo
 matroid-base / `union_indep_iff` framing is forced by `matroidMG`'s definition, so a "forest"
 is a `cycleMatroid`-independent fiber set and no hand-rolled acyclicity predicate is needed.
 
+And now landed (axiom-free, **no blueprint node** — bookkeeping for the still-red
+`lem:forest-surgery-split`): the surgery's **incidence/cardinality substrate** —
+`Graph.edgeFiber_ncard` (`|ẽ| = D − 1`, `Deficiency.lean`), `Graph.edgeSet_splitOff` (the
+edge set of the short-circuit splitting-off), and
+`Graph.edgeFiber_subset_edgeSet_mulTilde_splitOff` (the fresh fiber `ã̃b ⊆ E(G̃ᵥᵃᵇ)`). These are
+the quantities KT 4.1's count and reroute consume (`|ã̃b| = D − 1`, the target edge set, the
+short-circuit fiber).
+
 Next agent's concrete commit: the **forest-surgery proper** — `lem:forest-surgery-split`
-(KT 4.1, splitting-off direction). The framing is now fixed (consume `lem:forest-packing-decomp`
-for the `D`-forest packing). The remaining work is the **hard combinatorial core**: reroute each
-of the `D` forests across the degree-2 vertex `v` — forests with `dᶠ(v)=1` drop their `v`-edge,
-forests with `dᶠ(v)=2` swap their two `v`-edges for one fresh `ãb` copy (≤ `D−2` such, so
-`< D−1` copies of `ãb` are used and they stay edge-disjoint) — yielding an independent `I'` of
-`M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1`. The per-forest acyclicity-preservation
-and `ãb`-edge-disjointness bookkeeping (over `(G̃ᵥᵃᵇ).cycleMatroid`) is what is missing; the graph
-ops (`splitOff` + its simp lemmas) and `mulTilde` plumbing are in place. Budget the most time.
-After `-split`, its inverse `lem:forest-surgery-unsplit` (KT 4.2) makes split/unsplit inverse on
-the deficiency, then the dof-tracking chain (4.3–4.8) and Theorem 4.9.
+(KT 4.1, splitting-off direction), still red. The framing (`lem:forest-packing-decomp`) and
+the incidence substrate above are now in place; reroute each of the `D` forests across the
+degree-2 vertex `v` — forests with `dᶠ(v)=1` drop their `v`-edge, forests with `dᶠ(v)=2` swap
+their two `v`-edges for one fresh `ã̃b` copy (≤ `D−2` such, so `< D−1` copies used, all
+edge-disjoint) — yielding an independent `I'` of `M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and
+`|ã̃b ∩ I'| < D − 1`. **What remains is the genuine crux** and likely needs a *new sub-node
+first*: a **degree-at-`v`-in-a-forest** notion (KT's `dᶠ(v) ∈ {0,1,2}`, giving the count
+`h' ≤ D − 2`) and a **acyclicity-preservation-across-the-short-circuit** lemma (a cycle of
+`G̃ᵥᵃᵇ` using `ã̃b` lifts to a `v`-traversing path in `G̃`, via the
+`Matroid/Graph/AcyclicSet.lean` `not_isAcyclicSet_iff` cycle characterization). Multi-commit;
+budget the most time. After `-split`, its inverse `lem:forest-surgery-unsplit` (KT 4.2) makes
+split/unsplit inverse on the deficiency, then the dof-tracking chain (4.3–4.8) and Theorem 4.9.

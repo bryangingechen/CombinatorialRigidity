@@ -314,6 +314,17 @@ i.e. the set `{p : β × Fin (bodyHingeMult n) | p.1 = e}`. A base of `M(G̃)` m
 `ẽ` exactly when it retains at least one of the `D-1` copies of `e`. -/
 def edgeFiber (e : β) (n : ℕ) : Set (β × Fin (bodyHingeMult n)) := {p | p.1 = e}
 
+/-- **The edge-fiber has `D - 1` elements** (`def:k-dof`): `|ẽ| = bodyHingeMult n =
+D - 1`, the number of parallel copies of `e` in `G̃ = (D-1)·G`. This is the `|ã̃b| = D − 1`
+bound the forest surgery of `lem:forest-surgery-split` (Katoh–Tanigawa 2011 Lemma 4.1)
+counts against: the surgery uses fewer than `D - 1` copies of the short-circuit fiber. -/
+@[simp]
+lemma edgeFiber_ncard (e : β) (n : ℕ) : (edgeFiber e n).ncard = bodyHingeMult n := by
+  have : edgeFiber e n = ({e} : Set β) ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
+    ext ⟨e', i⟩; simp [edgeFiber, eq_comm]
+  rw [this, Set.ncard_prod, Set.ncard_singleton, Set.ncard_univ, Nat.card_eq_fintype_card,
+    Fintype.card_fin, one_mul]
+
 /-- `G` is a **`k`-dof-graph** (`def:k-dof`; Katoh–Tanigawa 2011 §2.5): its
 multiplied graph `G̃ = (D-1)·G` has `D`-deficiency `def(G̃) = k`, with
 `D = bodyBarDim n`. The `0`-dof case is exactly the body-hinge-rigid case
