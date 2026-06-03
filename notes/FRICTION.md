@@ -76,6 +76,27 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `[matroid]` Fundamental-circuit-swap idioms: finite-min over bases, "indep of full rank ⟹ base", and the `X∩ẽ≠∅` base-meets-fiber move
+- **Where it bit:** `Graph.no_rigid_edge_count` in `Molecular/Induction.lean` (Phase 20
+  KT 4.5(i), F′ swap core). KT's proof argues "`X∩ẽ=∅` ⟹ `D` spanning trees avoid `ẽ`,
+  contra minimality" (forest language); the prior session read this as a real blocker.
+- **Friction / resolution:** three reusable moves, all standard once stated cleanly:
+  1. **Min over bases:** `Set.exists_min_image {B | M.IsBase B} (fun B ↦ (ẽ ∩ B).ncard)`;
+     finiteness of `{B | IsBase B}` via `(Set.toFinite M.E).finite_subsets` + `subset_ground`,
+     nonemptiness via `M.exists_isBase`.
+  2. **Indep of full rank ⟹ base, without a dedicated lemma:** `exists_isBase_superset` to a
+     base `B'`, then `Set.eq_of_subset_of_ncard_le` with `|I| = |B*| = |B'|` (all bases share
+     cardinality, `IsBase.ncard_eq_ncard_of_isBase`) forces `I = B'`.
+  3. **`X∩ẽ≠∅` is base-meets-fiber, not forest:** if `X∩ẽ=∅`, `X−ej` is independent of full
+     size (tight on `V(X)=V`) ⟹ a base avoiding `ẽ`, contradicting `IsMinimalKDof`'s clause
+     (`hG.2`). No `rank M↾(E∖ẽ)` detour.
+- **General lesson:** "KT argues by forests" does not mean the Lean must — when the consumed
+  fact is a base/fiber statement, route directly through the minimality clause. The base
+  exchange itself is `IsBase.exchange_isBase_of_indep` + `Indep.mem_fundCircuit_iff`
+  (`ej ∈ fundCircuit f B ↔ Indep(insert f B ∖ {ej})`). These three carry the remaining
+  circuit-swap commits (G/H) too.
+- **Status:** resolved.
+
 ### [resolved] `[matroid]` Building a small explicit cyclic walk (`IsCyclicWalk`) needs the full structure tower + a hoisted `IsWalk` `have`
 - **Where it bit:** `Graph.isCycleSet_pair_edgeFiber_splitOff` in `Molecular/Induction.lean`
   (Phase 20 `lem:forest-surgery-split` reroute-count substrate). To exhibit `{p, q}` as a

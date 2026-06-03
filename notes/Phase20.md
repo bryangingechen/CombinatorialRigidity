@@ -229,12 +229,22 @@ blueprint node; the node stays red) — incidence/cardinality
 surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
 they are **not** needed for Theorem 4.9.
 
-**Commit F′-prep landed (`mulTilde_edgeSet_ncard`, KT 4.5(i) support; new red node
-`lem:no-rigid-edge-count`).** The KT 4.5(i) edge bound `(D−1)|E| < D(|V|−1)+(D−1)` got
-a red blueprint node (`lem:no-rigid-edge-count`), with its cardinality-bridge support
-`Graph.mulTilde_edgeSet_ncard` (`|E(G̃)| = (D−1)|E|`, green, axiom-free) landed. The
-matroidal core `corank M(G̃) ≤ D−2` (the fundamental-circuit-swap argument) is **not yet
-landed** — it hit a genuine blocker on the `X∩ẽ≠∅` step (see *Hand-off*).
+**Commit F′ landed (`no_rigid_edge_count`, KT 4.5(i) edge bound; `lem:no-rigid-edge-count`
+GREEN).** The KT 4.5(i) edge bound `(D−1)|E| < D(|V|−1)+(D−1)` for a minimal 0-dof-graph
+with no proper rigid subgraph — equivalently `corank M(G̃) ≤ D−2` — is fully landed as
+`Graph.no_rigid_edge_count` (green `\leanok`, axiom-free). The fundamental-circuit-swap
+argument (KT eq. 4.3) goes through: the prior `X∩ẽ≠∅` "blocker" was an un-attempted clean
+restatement, NOT a real obstruction — it is a direct base-meets-fiber contradiction off
+`IsMinimalKDof`'s clause (if `X∩ẽ=∅`, `X−ej` is a full-rank base avoiding `ẽ`), no forest
+reasoning, no `rank M(G̃)↾(E(G̃)∖ẽ)` detour. Supports `mulTilde_edgeSet_ncard` (`|E(G̃)| =
+(D−1)|E|`) and `fundCircuit_inducedSpan_vertexSet_eq` (spanning step) were landed earlier.
+Needs `2 ≤ bodyBarDim n` (`D ≥ 2`, trivial in the molecular regime).
+
+**Citation reconciliation (verified against `.refs/` PDF).** KT 2011 Lemma 4.4 begins on
+**printed p.662** (the running header of pdf page 16 reads "662 Discrete Comput Geom …"),
+confirming the *Finding 2 REFUTED* / commit-D record. An independent scrutiny pass had
+placed it on p.661; that is **wrong** — corrected here. KT 2011 Lemma 4.5 is on **printed
+p.663** (verified, pdf page 17), and its proof runs onto p.664.
 
 **Commit F′-spanning landed (`fundCircuit_inducedSpan_vertexSet_eq`, KT 4.5(i) spanning
 step).** The "no-proper-rigid ⟹ `V(X)=V`" reduction half of F′ is now green, axiom-free
@@ -370,19 +380,22 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   `k − 1 ≤ def(G̃ᵥᵃᵇ) ≤ k` and `def(G̃ᵥ) ≥ k`. The "which alternative" refinement
   (forest-surgery fundamental-circuit count) is off the Thm-4.9 critical path,
   omitted.
-- [ ] `lem:no-rigid-edge-count` — KT 4.5(i) edge-count bound `(D−1)|E| <
-  D(|V|−1)+(D−1)` for a minimal 0-dof-graph with no proper rigid subgraph. **New
-  red blueprint node added (commit F′-prep).** Equivalent matroidal form: `corank
-  M(G̃) ≤ D−2`. **Support landed:** `Graph.mulTilde_edgeSet_ncard` (`|E(G̃)| =
-  (D−1)|E|`, green `\leanok`, axiom-free; one-line `rw [mulTilde,
-  edgeMultiply_edgeSet_ncard]`), the cardinality bridge from the matroid's fiber
-  ground set to the graph edge count. The substantive content — `corank ≤ D−2`,
-  i.e. the redundant fibers concentrate on one edge — is the
-  fundamental-circuit-swap argument and is **not yet landed**: see *Hand-off* for
-  the precise remaining step + its blocker. **Spanning step landed:**
-  `Graph.fundCircuit_inducedSpan_vertexSet_eq` (no-proper-rigid ⟹ the fundamental
-  circuit of a redundant fiber spans `V(G)`), green `\leanok`, axiom-free; isolates the
-  clean matroid-API half from the residual base-exchange count.
+- [x] `lem:no-rigid-edge-count` — KT 4.5(i) edge-count bound `(D−1)|E| <
+  D(|V|−1)+(D−1)` for a minimal 0-dof-graph with no proper rigid subgraph.
+  **LANDED (F′ swap core)** — `Graph.no_rigid_edge_count`, green `\leanok`,
+  axiom-free. Equivalent matroidal form: `corank M(G̃) ≤ D−2`. The full KT eq. 4.3
+  fundamental-circuit swap: `h* = minₐ |ẽ ∩ B|` over bases (finite-min via
+  `Set.exists_min_image` on `{B | IsBase B}`, finite as `⊆ 𝒫(E(G̃))`); `h* ≥ 1`
+  from `IsMinimalKDof`'s base-meets-fiber clause. The `X∩ẽ≠∅` step (the prior
+  blocker) is a **direct base-meets-fiber contradiction**, NOT forest reasoning:
+  if `X∩ẽ=∅`, then `X−ej` is independent of full size `D(|V|−1)=|B*|` (`(D,D)`-tight
+  on `V(X)=V` via `circuit_induces_isTight`), hence a *base* (certified via
+  `exists_isBase_superset` + `eq_of_subset_of_ncard_le` since all bases share card)
+  avoiding `ẽ` — contra `hG.2`. The exchange `B = insert f B* ∖ {ej}`
+  (`IsBase.exchange_isBase_of_indep`, independence from `Indep.mem_fundCircuit_iff`)
+  drops `|B∩ẽ| = h*−1`. Support: `Graph.mulTilde_edgeSet_ncard` (`|E(G̃)|=(D−1)|E|`),
+  the spanning step `Graph.fundCircuit_inducedSpan_vertexSet_eq`, and
+  `Graph.circuit_induces_isRigidSubgraph`. Needs `2 ≤ bodyBarDim n` (`D ≥ 2`).
 - [ ] `lem:reducible-vertex` — KT 4.6, existence of a degree-2 vertex in a
   2-edge-connected minimal 0-dof-graph with no proper rigid subgraph. **Scope
   refined at commit F** (which landed the *prerequisite* `circuit_induces_isRigidSubgraph`
@@ -519,14 +532,15 @@ only by Case 6.1).
   one. NOT on the Theorem-4.9 critical path (the deficiency route bypasses it);
   it gates only the deferred `-split` surgery TODO. Proving it rescues KT's
   proof (gap, not error); refuting it confirms the gap.
-- **[open] KT 4.5(i) swap core (`X∩ẽ≠∅`).** The fundamental-circuit-swap proof of
-  `lem:no-rigid-edge-count` (`corank M(G̃) ≤ D−2`) needs, for the circuit `X =
-  fundCircuit p B*` with `V(X)=V`, that `X` meets the fiber `ẽ`. KT derives this
-  from "`D` spanning trees avoid `ẽ` ⟹ contra minimality" (forest reasoning). A
-  clean matroidal restatement is the one hard sub-step gating F′ — see *Hand-off*
-  for the candidate route (rank of `M(G̃)↾(E(G̃)∖ẽ)`). The arithmetic shell + the
-  no-proper-rigid ⟹ `V(X)=V` reduction are low-risk; the support
-  `mulTilde_edgeSet_ncard` is landed.
+- **[resolved] KT 4.5(i) swap core (`X∩ẽ≠∅`).** LANDED (`Graph.no_rigid_edge_count`).
+  The prior "could not crisply formalize" was an un-attempted clean restatement: the
+  `X∩ẽ≠∅` step is **not** intrinsically forest reasoning. If `X∩ẽ=∅`, the independent
+  `X−ej` is full-rank (`(D,D)`-tight on `V(X)=V` ⟹ `|X−ej|=D(|V|−1)=|B*|`), hence a
+  *base* avoiding `ẽ` — a direct base-meets-fiber contradiction with
+  `IsMinimalKDof`'s clause (`hG.2`). No `rank M(G̃)↾(E(G̃)∖ẽ)` detour needed. Certify
+  base-hood by `exists_isBase_superset` + `Set.eq_of_subset_of_ncard_le` (all bases
+  share cardinality). Reused green machinery: `circuit_induces_isTight`,
+  `fundCircuit_inducedSpan_vertexSet_eq`. Needs `2 ≤ bodyBarDim n`.
 - **[resolved — *Finding 2 REFUTED*] KT 4.4 removal bound.** Earlier thought to
   need the `h'=0` unsplit forest lift; in fact lands by the deficiency-count
   route (`Graph.removeVertex_deficiency_ge`, commit D) with `2 ≤ bodyBarDim n`.
@@ -600,32 +614,23 @@ G n`), pinning `rank M(G[V(X)]̃) = D(|V(X)|−1)` from both sides (`rank_matroi
 `subset_edgeSet_mulTilde_inducedSpan`) then `rank_add_deficiency_eq`. Blueprint
 `lem:circuit-induces-rigid` `\lean{}` now pins both decls; proof prose + `\uses` updated.
 
-**Next agent's concrete commit = the KT 4.6 chain proper** (`lem:reducible-vertex`).
+**Commit F′ landed (`no_rigid_edge_count`, KT 4.5(i) edge bound — `lem:no-rigid-edge-count`
+GREEN, axiom-free).** The fundamental-circuit swap (KT eq. 4.3) fully formalized: `h* = minₐ
+|ẽ∩B|` over bases (finite-min via `Set.exists_min_image` on the finite `{B | IsBase B}`),
+`h* ≥ 1` from `hG.2`; `Ẽ∖ẽ ⊆ B*` by the exchange `B = insert f B* ∖ {ej}`
+(`IsBase.exchange_isBase_of_indep`, independence via `Indep.mem_fundCircuit_iff`). The prior
+`X∩ẽ≠∅` "blocker" dissolved on a clean restatement: it is a **direct base-meets-fiber
+contradiction** (if `X∩ẽ=∅`, `X−ej` is independent of full size `D(|V|−1)=|B*|`, hence a
+base avoiding `ẽ` — contra `hG.2`), NOT forest reasoning and NOT needing
+`rank M(G̃)↾(E(G̃)∖ẽ)`. Base-hood certified via `exists_isBase_superset` +
+`Set.eq_of_subset_of_ncard_le`. Final count `|E(G̃)| = |B*| + (|ẽ|−h*) ≤ D(|V|−1)+(D−2)` via
+`mulTilde_edgeSet_ncard` + `edgeFiber_ncard`. Needs `2 ≤ bodyBarDim n`.
+
+**Next agent's concrete commit = F″, the second half of `lem:reducible-vertex` (KT 4.6).**
 Thm 4.9 consumes only "∃ degree-2 vertex" — the chain/cycle refinement (length-`d`
 chain, cycle-of-`≤d`-vertices) is for the §5–6 *algebraic* induction, **off the
 Thm-4.9 critical path** (confirmed: KT 4.9's proof says only "G has a vertex of
-degree two by Lemma 4.6"). The "∃ degree-2 vertex" core is two pieces:
-- **F′ — KT 4.5(i) edge-count bound** `(D−1)|E| < D(|V|−1)+(D−1)`, blueprint node
-  `lem:no-rigid-edge-count` (**added, red**). Recast as `corank M(G̃) ≤ D−2` via the
-  landed support `Graph.mulTilde_edgeSet_ncard` (`|E(G̃)| = (D−1)|E|`) +
-  `isBase_ncard_add_deficiency_eq` (0-dof ⟹ `|B| = D(|V|−1)`). The remaining
-  fundamental-circuit-swap core (KT eq. 4.3 `Ẽ∖ẽ ⊂ B*`): fix edge `e`, `h* = minₐ
-  |ẽ∩B|` over bases (finite-min via `Finite`), `B*` attaining it, `h* ≥ 1` by
-  minimality (`hG.2`). If `f∈Ẽ∖ẽ` has `p∉B*`, `X = fundCircuit p B*`
-  (`IsBase.fundCircuit_isCircuit`) gives rigid `G[V(X)]` (green:
-  `circuit_induces_isRigidSubgraph`); no-proper-rigid ⟹ `V(X)=V` — **LANDED** as
-  `Graph.fundCircuit_inducedSpan_vertexSet_eq` (green, axiom-free; `IsProperRigidSubgraph`
-  ruled out via `V(X)⊊V` excluded + `V(X)⊆V` + `V(X)` nonempty). A swap via
-  `Indep.mem_fundCircuit_iff` (`x∈fundCircuit p B* ↔ Indep(insert p B* ∖ {x})` ⟹
-  base) drops `|B∩ẽ|` below `h*`. **Blocker (prior session could not crisply
-  formalize, still open):** the `X∩ẽ≠∅` step — KT argues "else `D` spanning trees avoid `ẽ`,
-  contra minimality", which is the forest-flavored reasoning this phase routed
-  around; need a clean matroidal restatement (likely: if `X∩ẽ=∅` then `X⊆E(G̃)∖ẽ`
-  is dependent there, so `rank(M(G̃)↾(E(G̃)∖ẽ)) = rank M(G̃)` would give a base
-  avoiding `ẽ`, contradicting `hG.2` — but pinning the rank-equality from one
-  circuit needs care). Once `X∩ẽ≠∅` is in hand the rest assembles. The shell +
-  `V(X)=V` reduction are landed (`fundCircuit_inducedSpan_vertexSet_eq`); budget the
-  swap-core (`X∩ẽ≠∅` + the `h*`-drop exchange) as the one hard remaining sub-step of F′.
+degree two by Lemma 4.6"). With F′ (the edge bound) now green, the remaining piece is:
 - **F″ — multigraph degree theory + ∃-degree-2.** `d_avg = 2|E|/|V| < 2D/(D−1) ≤ 3`
   (using `D ≥ 3`) forces a degree-2 vertex. **The project has no `Graph α β` degree
   function** — degree-2 is encoded ad hoc as `hdeg2 : ∀ e x, IsLink e v x → e = eₐ ∨

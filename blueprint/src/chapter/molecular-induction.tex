@@ -551,6 +551,8 @@ route that bypasses the deferred forest surgery
 
 \begin{lemma}[Edge-count bound with no proper rigid subgraph; KT Lemma 4.5(i)]
   \label{lem:no-rigid-edge-count}
+  \lean{Graph.no_rigid_edge_count}
+  \leanok
   \uses{lem:circuit-induces-rigid, def:k-dof, def:rigid-subgraph, def:matroid-MG}
   Let $G$ be a minimal $0$-dof-graph with no proper rigid subgraph and
   $D = \binom{d+1}{2} \ge 2$. Then
@@ -559,27 +561,38 @@ route that bypasses the deferred forest surgery
   \]
   Equivalently, $\operatorname{corank} M(\tilde G) = |E(\tilde G)| -
   \operatorname{rank} M(\tilde G) \le D - 2$: the fibers redundant in
-  $M(\tilde G)$ all concentrate on a single edge. This is the edge bound
+  $M(\tilde G)$ all concentrate on a single edge-fiber. This is the edge bound
   Katoh--Tanigawa use to force a low-degree vertex (\cref{lem:reducible-vertex}).
 \end{lemma}
 \begin{proof}
+  \leanok
+  \uses{thm:def-eq-corank}
   Read the graph-level bound through the matroid: $|E(\tilde G)| = (D-1)\,|E(G)|$
   (each edge of $G$ contributes a fiber $\tilde e$ of size $D-1$, the
-  \texttt{mulTilde}-level count \texttt{Graph.mulTilde\_edgeSet\_ncard}), and
-  $\operatorname{rank} M(\tilde G) = D(|V(G)| - 1)$ since $G$ is $0$-dof
+  \texttt{mulTilde}-level count \texttt{Graph.mulTilde\_edgeSet\_ncard}), and a
+  base $B^\ast$ has $|B^\ast| = D(|V(G)| - 1)$ since $G$ is $0$-dof
   (\cref{thm:def-eq-corank}); so the claim is exactly $\operatorname{corank}
   M(\tilde G) \le D - 2$. Fix an edge $e$ and let $h^\ast = \min_B |\tilde e \cap
   B|$ over bases $B$ of $M(\tilde G)$, attained at $B^\ast$; minimality of $G$
-  gives $h^\ast \ge 1$. If some fiber $f \ne \tilde e$ had an element $p \notin
-  B^\ast$, its fundamental circuit $X = \operatorname{fundCircuit}(p, B^\ast)$
-  would, by \cref{lem:circuit-induces-rigid}, induce a rigid subgraph $G[V(X)]$;
-  the no-proper-rigid hypothesis forces $V(X) = V(G)$ (this spanning step is
-  formalized as \texttt{Graph.fundCircuit\_inducedSpan\_vertexSet\_eq}: a
-  fundamental circuit of a redundant fiber induces a rigid subgraph, which cannot
-  be proper, so it spans all of $G$), and a base exchange along $X$ then drops
-  $|\tilde e \cap B|$ below $h^\ast$, contradicting minimality. So
-  every $f \ne \tilde e$ lies in $B^\ast$, whence $|E(\tilde G) \setminus B^\ast|
-  = |\tilde e| - h^\ast = (D-1) - h^\ast \le D - 2$.
+  gives $h^\ast \ge 1$. We show $E(\tilde G) \setminus \tilde e \subseteq B^\ast$
+  (KT eq.~4.3). If some $f \in E(\tilde G) \setminus \tilde e$ were outside
+  $B^\ast$, its fundamental circuit $X = \operatorname{fundCircuit}(f, B^\ast)$
+  induces, by \cref{lem:circuit-induces-rigid}, a rigid subgraph $G[V(X)]$; the
+  no-proper-rigid hypothesis forces $V(X) = V(G)$ (the spanning step
+  \texttt{Graph.fundCircuit\_inducedSpan\_vertexSet\_eq}). Then $X \cap \tilde e
+  \neq \emptyset$: otherwise $X \subseteq E(\tilde G) \setminus \tilde e$, and for
+  any $e_j \in X$ the set $X - e_j$ is independent and, by
+  \cref{lem:circuit-induces-rigid}, of full size $D(|V(X)| - 1) = D(|V(G)| - 1) =
+  |B^\ast|$, hence a \emph{base} avoiding $\tilde e$ entirely --- contradicting
+  minimality. (This is a direct base-meets-fiber contradiction, not the
+  $D$-spanning-trees forest argument of KT; the minimality clause of
+  \cref{def:k-dof} carries it.) Picking $e_j \in X \cap \tilde e$, the base
+  exchange $B = B^\ast + f - e_j$ (independent by the fundamental-circuit
+  characterization, with $f \notin \tilde e$ so $f \neq e_j$) has $|B \cap \tilde
+  e| = h^\ast - 1 < h^\ast$, contradicting the choice of $B^\ast$. So
+  $E(\tilde G) \setminus \tilde e \subseteq B^\ast$, whence $|E(\tilde G)| =
+  |B^\ast| + (|\tilde e| - h^\ast) = D(|V(G)| - 1) + (D - 1 - h^\ast) \le
+  D(|V(G)| - 1) + (D - 2)$.
 \end{proof}
 
 \begin{lemma}[Existence of a reducible degree-2 vertex; KT Lemma 4.6]

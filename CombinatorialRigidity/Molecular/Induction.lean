@@ -1118,6 +1118,180 @@ theorem mulTilde_edgeSet_ncard [Finite β] (G : Graph α β) (n : ℕ) :
     E(G.mulTilde n).ncard = bodyHingeMult n * E(G).ncard := by
   rw [mulTilde, edgeMultiply_edgeSet_ncard]
 
+/-! ### The edge-count bound with no proper rigid subgraph (`lem:no-rigid-edge-count`, F′ core)
+
+The matroidal heart of Katoh–Tanigawa 2011 Lemma 4.5(i) (printed p.663). For a minimal
+`0`-dof-graph `G` with **no proper rigid subgraph** and `D = bodyBarDim n ≥ 2`, the redundant
+fibers of `M(G̃)` concentrate on a single edge-fiber `ẽ` — equivalently the corank is at most
+`D − 2` — giving the graph-level edge bound `(D−1)|E| < D(|V|−1) + (D−1)`.
+
+The argument is Katoh–Tanigawa's fundamental-circuit swap (KT eq. 4.3, `Ẽ∖ẽ ⊂ B*`). Fix an
+edge `e`, let `h* = minₐ |ẽ ∩ B|` over bases of `M(G̃)`, attained at `B*`; minimality of `G`
+forces `h* ≥ 1` (every base meets `ẽ`). For any out-of-`B*` fiber `f ∉ ẽ`, the fundamental
+circuit `X = fundCircuit f B*` induces a rigid `G[V(X)]` and — no proper rigid subgraph —
+spans `V` (`fundCircuit_inducedSpan_vertexSet_eq`). Then `X ∩ ẽ ≠ ∅`: otherwise `X ⊆ Ẽ∖ẽ` and
+`X − ej` (any `ej ∈ X`) is an independent set of full rank `D(|V|−1)` (it is `(D,D)`-tight on
+`V(X) = V` by `circuit_induces_isTight`), hence a *base* avoiding `ẽ` — contradicting
+minimality. The `X∩ẽ≠∅` step is therefore a direct base-meets-fiber contradiction, **not**
+forest reasoning. A base exchange `B = insert f B* − ej` (with `ej ∈ X ∩ ẽ`, independent by
+`Indep.mem_fundCircuit_iff`) then has `|B ∩ ẽ| = h* − 1 < h*`, contradicting the choice of
+`B*`. So `Ẽ∖ẽ ⊆ B*`, and `|E(G̃)| = |B*| + (|ẽ| − h*) ≤ D(|V|−1) + (D − 2)`. -/
+
+/-- **KT Lemma 4.5(i) edge-count bound, F′ swap core** (`lem:no-rigid-edge-count`;
+Katoh–Tanigawa 2011 Lemma 4.5(i), printed p.663). For a minimal `0`-dof-graph `G` with **no
+proper rigid subgraph** and `D = bodyBarDim n ≥ 2`,
+`(D − 1)·|E(G)| < D·(|V(G)| − 1) + (D − 1)` (in `ℤ`, `|V|−1` written `V(G).ncard - 1`).
+Equivalently `corank M(G̃) ≤ D − 2`: the fibers redundant in `M(G̃)` all concentrate on a
+single edge-fiber. This is the edge bound Katoh–Tanigawa use to force a low-degree vertex
+(`lem:reducible-vertex`).
+
+Proof: the fundamental-circuit swap (KT eq. 4.3). For a fixed edge `e`, the minimum
+`h* = minₐ |ẽ ∩ B|` over bases is `≥ 1` by minimality; every out-of-base fiber `f ∉ ẽ` has a
+fundamental circuit spanning `V` (`fundCircuit_inducedSpan_vertexSet_eq`) that must meet `ẽ`
+(else `X − ej` is a base avoiding `ẽ`, contradicting minimality — a base-meets-fiber step, not
+forest reasoning), so a base exchange drops `|B ∩ ẽ|` below `h*` unless `f ∈ B*`. Hence
+`Ẽ∖ẽ ⊆ B*`, and `|E(G̃)| = |B*| + (|ẽ| − h*) ≤ D(|V|−1) + (D−2)`. -/
+theorem no_rigid_edge_count [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) (hVne : V(G).Nonempty) (hG : G.IsMinimalKDof n 0)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) :
+    (bodyHingeMult n : ℤ) * E(G).ncard
+      < bodyBarDim n * ((V(G).ncard : ℤ) - 1) + bodyHingeMult n := by
+  classical
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  set M := G.matroidMG n with hM
+  -- `|E(G̃)| = (D−1)·|E(G)|`.
+  have hEcard : E(G.mulTilde n).ncard = bodyHingeMult n * E(G).ncard := mulTilde_edgeSet_ncard G n
+  -- Case `E(G) = ∅`: LHS `= 0`, RHS `≥ D−1 ≥ 1 > 0`.
+  rcases eq_empty_or_nonempty E(G) with hEempty | hEne
+  · rw [hEempty, Set.ncard_empty]
+    have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+    push_cast
+    nlinarith [hD, hVpos]
+  -- Pick an edge `e`; its fiber `ẽ = edgeFiber e n ⊆ E(G̃)`, `|ẽ| = D−1`.
+  obtain ⟨e, he⟩ := hEne
+  have hfiberE : edgeFiber e n ⊆ E(G.mulTilde n) := by
+    intro p hp
+    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, (show p.1 = e from hp)]; exact he
+  -- The set of bases is finite and nonempty; `h* = minₐ |ẽ ∩ B|` is attained at `Bs`.
+  have hbasesFin : {B | M.IsBase B}.Finite := by
+    apply Set.Finite.subset ((Set.toFinite E(G.mulTilde n)).finite_subsets)
+    intro B hB
+    rw [Set.mem_setOf_eq] at hB
+    exact hB.subset_ground
+  have hbasesNe : {B | M.IsBase B}.Nonempty := M.exists_isBase
+  obtain ⟨Bs, hBsmem, hBsmin⟩ :=
+    Set.exists_min_image {B | M.IsBase B} (fun B => (edgeFiber e n ∩ B).ncard) hbasesFin hbasesNe
+  rw [Set.mem_setOf_eq] at hBsmem
+  set hstar := (edgeFiber e n ∩ Bs).ncard with hhstar
+  -- `h* ≥ 1` from minimality: every base meets `ẽ`.
+  have hstarpos : 1 ≤ hstar := by
+    have hmeet := hG.2 Bs hBsmem e he
+    rw [Set.inter_comm] at hmeet
+    exact hmeet.ncard_pos
+  -- Eq 4.3: `E(G̃) ∖ ẽ ⊆ Bs`.
+  -- `|Bs| = D(|V|−1)` since `G` is `0`-dof.
+  have hBscard : (Bs.ncard : ℤ) = bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+    have hb := G.isBase_ncard_add_deficiency_eq n hD1 hVne hBsmem
+    rw [hM] at hBsmem
+    rw [(hG.1 : G.deficiency n = 0)] at hb
+    simpa using hb
+  have h43 : E(G.mulTilde n) \ edgeFiber e n ⊆ Bs := by
+    intro f hf
+    by_contra hfB
+    -- The fundamental circuit `X = fundCircuit f Bs` is a circuit spanning `V`.
+    have hfE : f ∈ M.E := by rw [hM, matroidMG, Matroid.restrict_ground_eq]; exact hf.1
+    set X := M.fundCircuit f Bs with hXdef
+    have hXcirc : M.IsCircuit X := hBsmem.fundCircuit_isCircuit hfE hfB
+    have hspan : V(G.inducedSpan n X) = V(G) :=
+      fundCircuit_inducedSpan_vertexSet_eq hD1 hnp hBsmem hf.1 hfB
+    have hfiberspan : (G.fiberSpan n X).ncard = V(G).ncard := by
+      rw [← vertexSet_inducedSpan G n X, hspan]
+    -- Step 3: `X ∩ ẽ ≠ ∅`. Else `X − ej` is a base avoiding `ẽ`, contradicting minimality.
+    have hXmeet : (X ∩ edgeFiber e n).Nonempty := by
+      rw [Set.nonempty_iff_ne_empty]
+      intro hXe
+      obtain ⟨ej, hej⟩ := hXcirc.nonempty
+      -- `X − ej` is independent of full size `D(|V|−1) = |Bs|`, hence a base.
+      have hindep : M.Indep (X \ {ej}) := hXcirc.diff_singleton_indep hej
+      have htight : (X \ {ej}).ncard + bodyBarDim n = bodyBarDim n * (G.fiberSpan n X).ncard :=
+        circuit_induces_isTight (hM ▸ hXcirc) hej
+      have hcard : (X \ {ej}).ncard = Bs.ncard := by
+        have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+        zify [hVpos] at hBscard ⊢
+        rw [hfiberspan] at htight
+        zify [hVpos] at htight
+        linarith [hBscard, htight]
+      obtain ⟨B', hB', hsub'⟩ := hindep.exists_isBase_superset
+      have heqcard : (X \ {ej}).ncard = B'.ncard := by
+        rw [hcard, hBsmem.ncard_eq_ncard_of_isBase hB']
+      have hXeb : X \ {ej} = B' :=
+        Set.eq_of_subset_of_ncard_le hsub' (le_of_eq heqcard.symm) (hB'.finite)
+      have hbase : M.IsBase (X \ {ej}) := hXeb ▸ hB'
+      -- But `X − ej ⊆ X ⊆ E(G̃) ∖ ẽ`, so it avoids `ẽ` — contradiction with minimality.
+      have hXsub : X ⊆ E(G.mulTilde n) \ edgeFiber e n := by
+        intro p hp
+        refine ⟨hXcirc.subset_ground hp, fun hpe => ?_⟩
+        exact absurd (Set.mem_empty_iff_false p |>.mp (hXe ▸ ⟨hp, hpe⟩)) id
+      have hmeet := hG.2 (X \ {ej}) (hM ▸ hbase) e he
+      obtain ⟨q, hq⟩ := hmeet
+      exact (hXsub (Set.diff_subset hq.1)).2 hq.2
+    -- Step 4: `ej ∈ X ∩ ẽ`; exchange `B = insert f (Bs − ej)` drops `|B ∩ ẽ|` below `h*`.
+    obtain ⟨ej, hejX, hejfib⟩ := hXmeet
+    have hpcl : f ∈ M.closure Bs := by rw [hBsmem.closure_eq]; exact hfE
+    have hejdiff : M.Indep (insert f Bs \ {ej}) :=
+      (hBsmem.indep.mem_fundCircuit_iff hpcl hfB).mp hejX
+    -- `f ∉ ẽ` (since `f ∈ E(G̃) ∖ ẽ`), so `f ≠ ej` (as `ej ∈ ẽ`).
+    have hfne : f ≠ ej := fun h => hf.2 (h ▸ hejfib)
+    have hinsert_eq : insert f (Bs \ {ej}) = insert f Bs \ {ej} := by
+      rw [Set.insert_diff_of_notMem _ (by simp [hfne])]
+    have hBnew : M.IsBase (insert f (Bs \ {ej})) :=
+      hBsmem.exchange_isBase_of_indep hfB (hinsert_eq ▸ hejdiff)
+    -- `|ẽ ∩ B_new| < h*`: removing `ej ∈ ẽ` and adding `f ∉ ẽ` strictly drops the count.
+    have hcount : (edgeFiber e n ∩ insert f (Bs \ {ej})).ncard < hstar := by
+      have hfnotfib : f ∉ edgeFiber e n := hf.2
+      have heq : edgeFiber e n ∩ insert f (Bs \ {ej}) = (edgeFiber e n ∩ Bs) \ {ej} := by
+        ext p
+        simp only [Set.mem_inter_iff, Set.mem_insert_iff, Set.mem_diff, Set.mem_singleton_iff]
+        constructor
+        · rintro ⟨hpfib, rfl | ⟨hpBs, hpne⟩⟩
+          · exact absurd hpfib hfnotfib
+          · exact ⟨⟨hpfib, hpBs⟩, hpne⟩
+        · rintro ⟨⟨hpfib, hpBs⟩, hpne⟩
+          exact ⟨hpfib, Or.inr ⟨hpBs, hpne⟩⟩
+      rw [heq, hhstar]
+      refine Set.ncard_diff_singleton_lt_of_mem ⟨hejfib, ?_⟩ ((Set.toFinite _))
+      -- `ej ∈ Bs`: `ej ∈ X ⊆ insert f Bs` and `ej ≠ f` (else `ej = f ∉ ẽ`, but `ej ∈ ẽ`).
+      have hejins : ej ∈ insert f Bs := (M.fundCircuit_subset_insert f Bs) hejX
+      rcases hejins with hejf | hejBs
+      · exact absurd hejf.symm hfne
+      · exact hejBs
+    exact absurd (hBsmin _ (hM ▸ hBnew)) (by rw [Set.inter_comm] at hcount ⊢; omega)
+  -- Final count: `|E(G̃)| = |Bs| + |E(G̃) ∖ Bs| ≤ D(|V|−1) + (D−1) − h* < D(|V|−1) + (D−1)`.
+  have hBssub : Bs ⊆ E(G.mulTilde n) := by rw [hM] at hBsmem; exact hBsmem.subset_ground
+  -- `|E(G̃) ∖ Bs| + |Bs| = |E(G̃)|`.
+  have hsplit : (E(G.mulTilde n) \ Bs).ncard + Bs.ncard = E(G.mulTilde n).ncard :=
+    Set.ncard_diff_add_ncard_of_subset hBssub
+  -- `E(G̃) ∖ Bs ⊆ ẽ ∖ Bs` (since `E(G̃) ∖ ẽ ⊆ Bs`).
+  have hdiffsub : E(G.mulTilde n) \ Bs ⊆ edgeFiber e n \ Bs := by
+    intro p hp
+    refine ⟨?_, hp.2⟩
+    by_contra hpe
+    exact hp.2 (h43 ⟨hp.1, hpe⟩)
+  have hdiffle : (E(G.mulTilde n) \ Bs).ncard ≤ (edgeFiber e n \ Bs).ncard :=
+    Set.ncard_le_ncard hdiffsub (Set.toFinite _)
+  -- `|ẽ ∩ Bs| + |ẽ ∖ Bs| = |ẽ| = D − 1`.
+  have hfibersplit : (edgeFiber e n ∩ Bs).ncard + (edgeFiber e n \ Bs).ncard = bodyHingeMult n := by
+    rw [Set.ncard_inter_add_ncard_diff_eq_ncard _ _ (Set.toFinite _), edgeFiber_ncard]
+  -- Assemble: cast to ℤ and close by linear arithmetic.
+  have hVpos : 1 ≤ V(G).ncard := hVne.ncard_pos
+  rw [hEcard] at hsplit
+  zify at hsplit hfibersplit hdiffle hstarpos
+  rw [hHM]
+  rw [hHM] at hfibersplit
+  -- `(D−1)|E| = |Bs| + |E∖Bs| ≤ D(|V|−1) + (D−1−h*) < D(|V|−1) + (D−1)` since `h* ≥ 1`.
+  nlinarith [hsplit, hfibersplit, hdiffle, hstarpos, hBscard, hhstar]
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,
