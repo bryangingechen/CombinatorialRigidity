@@ -76,6 +76,20 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `Set.ncard_iUnion_of_finite` returns a `finsum` (`∑ᶠ`), not a `Finset.sum` — bridge with `finsum_eq_sum_of_fintype`
+- **Where it bit:** `Graph.exists_balanced_forest_packing` in `Molecular/Induction.lean`
+  (the forest-packing descent's pigeonhole: `∑ i, (Fs i ∩ vfib).ncard = (B ∩ vfib).ncard`
+  for a disjoint packing).
+- **Friction:** `Set.ncard_iUnion_of_finite (hfin) (hpairwise) : (⋃ i, s i).ncard = ∑ᶠ i, (s i).ncard`
+  gives a `finsum`, but the pigeonhole wants an ordinary `Finset.sum` over `Fin D`. Over a
+  Fintype the two agree but not syntactically.
+- **Fix:** `rw [← finsum_eq_sum_of_fintype, ← Set.ncard_iUnion_of_finite …, ← Set.iUnion_inter, hcover]`.
+  The pairwise-disjoint hypothesis is `Pairwise (Function.onFun Disjoint s)` (mathlib's `disjoint_disjointed`
+  has exactly this shape; `Disjoint on Fs` notation needs `Function.onFun`). Set-disjointness used
+  pointwise is `Set.disjoint_left.mp`, not `Disjoint.le_bot` (the latter's `(a := x)` elaboration stalls
+  on `Set`).
+- **Status:** resolved (no lift — narrow API-shape note).
+
 ### [resolved] `rw [if_pos rfl]` fails on a `(fun i ↦ if i = j then …) j` goal — `simp only [↓reduceIte]`
 - **Where it bit:** `Graph.exists_packing_move_of_not_inc` in `Molecular/Induction.lean`
   (the forest-packing rebalancing move; the re-chosen packing `fun i => if i = j then

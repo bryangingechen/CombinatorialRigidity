@@ -2633,4 +2633,251 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
       exact hsplit G v a b e₀ hG hrig hvG he₀
         (IH _ hsmaller _ rfl hsplitMin hsplit2)
 
+/-! ### The repacking descent: a base admits a balanced forest packing
+(`lem:forest-surgery-split`, the balanced-packing descent — outer loop)
+
+This closes the balanced-packing assumption Katoh–Tanigawa 2011 Lemma 4.1 (p.660) glosses
+(`rem:kt-lemma-41`~(2)): **a base of `M(G̃)` admits a `D`-forest packing in which every one
+of the `D` forests meets the degree-2 vertex `v`.** The two halves and their assembly step
+are green: the counting half (`isBase_vfiber_ncard_ge`: a base meets `≥ D` of the `2(D−1)`
+fibers at `v`), the redistribution kernel (`acyclicSet_insert_vfiber_of_not_inc`: a
+`v`-avoiding forest absorbs a free `v`-fiber as a pendant), and one rebalancing move
+(`exists_packing_move_of_not_inc`). This is the **outer loop** that iterates the move to
+termination.
+
+The descent runs on a *disjoint* forest packing (a genuine partition of the base `B`, not
+merely a cover), obtained by `disjointed` from the `Matroid.union_indep_iff` cover
+(`matroidMG_indep_iff_exists_forest_packing`). Disjointness is the device that handles the
+caveat the cover form leaves open — when a `v`-fiber `x` is moved into a `v`-avoiding forest
+`F_j`, it is removed from every *other* forest, and disjointness guarantees `x` belonged to
+exactly one donor, so at most one forest can lose `v`-incidence. The pigeonhole then makes
+the move strictly safe: if `F_j` avoids `v`, then the `≥ D` `v`-fibers of `B` are partitioned
+among the other `≤ D − 1` forests, so some forest `F_i` (`i ≠ j`) holds `≥ 2` of them; moving
+one to `F_j` leaves `F_i` still meeting `v` while `F_j` now meets `v`, strictly raising the
+count of `v`-meeting forests. A strong induction on the count of `v`-avoiding forests
+terminates with a balanced packing. Off the Theorem-4.9 critical path (the deficiency route
+already delivered Theorem 4.9); this discharges the deferred surgery TODO's last piece. -/
+
+/-- A `v`-fiber (a copy of `eₐ` or `e_b`) is incident to `v` in `G̃`, and conversely a fiber
+of `E(G̃)` incident to `v` is a `v`-fiber, when `eₐ`, `e_b` are the only `v`-incident edges. -/
+private lemma vfiber_inc_iff {G : Graph α β} {n : ℕ} {v a b : α} {eₐ e_b : β}
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    {p : β × Fin (bodyHingeMult n)} (_hpE : p ∈ E(G.mulTilde n)) :
+    (G.mulTilde n).Inc p v ↔ p ∈ edgeFiber eₐ n ∪ edgeFiber e_b n := by
+  rw [mulTilde_inc]
+  constructor
+  · rintro ⟨w, hw⟩
+    rcases hdeg2 p.1 w hw with h | h
+    · exact Or.inl (by rw [edgeFiber, Set.mem_setOf_eq]; exact h)
+    · exact Or.inr (by rw [edgeFiber, Set.mem_setOf_eq]; exact h)
+  · rintro (h | h) <;> rw [edgeFiber, Set.mem_setOf_eq] at h <;> rw [h]
+    · exact hla.inc_left
+    · exact hlb.inc_left
+
+/-- **The repacking descent (outer loop): a base admits a balanced forest packing**
+(`lem:forest-surgery-split`; Katoh–Tanigawa 2011 Lemma 4.1 p.660). For a base `B` of
+`M(G̃)` at a degree-2 vertex `v` (with `eₐ`, `e_b` its only incident edges, `D ≥ 2`), there
+is a `D`-forest packing of `B` — `D = bodyBarDim n` cycle-matroid-independent fiber sets
+covering `B` — in which **every** forest meets `v`. This is the balanced packing Katoh–
+Tanigawa's Lemma 4.1 base-case proof assumes without justification; it is achievable, so
+the missing step is a *gap, not an error*.
+
+Proof: disjointify the `Matroid.union_indep_iff` cover of the base
+(`matroidMG_indep_iff_exists_forest_packing`) into a genuine partition, then run a strong
+induction on the number of `v`-avoiding forests. The base meets `≥ D` `v`-fibers
+(`isBase_vfiber_ncard_ge`); if some forest avoids `v`, the pigeonhole forces another forest
+to hold `≥ 2` of them, and the rebalancing move (`exists_packing_move_of_not_inc`, recipient
+acyclic via `acyclicSet_insert_vfiber_of_not_inc`) shifts one over, strictly raising the
+count of `v`-meeting forests while preserving disjointness. -/
+theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    {B : Set (β × Fin (bodyHingeMult n))} (hB : (G.matroidMG n).IsBase B) :
+    ∃ Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
+      (⋃ i, Fs i = B) ∧ (∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs i)) ∧
+        (∀ i, ∃ p ∈ Fs i, (G.mulTilde n).Inc p v) := by
+  classical
+  haveI : Nonempty (Fin (bodyBarDim n)) := ⟨⟨0, lt_of_lt_of_le (by norm_num) hD⟩⟩
+  set vfib := edgeFiber eₐ n ∪ edgeFiber e_b n with hvfib
+  have hBE : B ⊆ E(G.mulTilde n) := by
+    have := hB.subset_ground; rwa [matroidMG] at this
+  have hinciff : ∀ p ∈ E(G.mulTilde n),
+      ((G.mulTilde n).Inc p v ↔ p ∈ vfib) := fun p hp ↦ vfiber_inc_iff hla hlb hdeg2 hp
+  have hcount : bodyBarDim n ≤ (B ∩ vfib).ncard :=
+    isBase_vfiber_ncard_ge hD hav hbv heab hla hlb hdeg2 hB
+  have hmeet_iff : ∀ F : Set (β × Fin (bodyHingeMult n)), F ⊆ B →
+      ((∃ p ∈ F, (G.mulTilde n).Inc p v) ↔ (F ∩ vfib).Nonempty) := by
+    intro F hF
+    constructor
+    · rintro ⟨p, hpF, hpinc⟩
+      exact ⟨p, hpF, (hinciff p (hBE (hF hpF))).mp hpinc⟩
+    · rintro ⟨p, hpF, hpv⟩
+      exact ⟨p, hpF, (hinciff p (hBE (hF hpF))).mpr hpv⟩
+  -- Disjointify the cover of `B` into a genuine partition (`disjointed` over `Fin D`).
+  obtain ⟨Fs₀, hcover₀, hindep₀⟩ :=
+    ((matroidMG_indep_iff_exists_forest_packing G n).mp hB.indep).2
+  set Ds := disjointed Fs₀ with hDs
+  have hDscover : ⋃ i, Ds i = B := by rw [hDs, iUnion_disjointed]; exact hcover₀
+  have hDsindep : ∀ i, ((G.mulTilde n).cycleMatroid).Indep (Ds i) :=
+    fun i ↦ (hindep₀ i).subset (disjointed_le Fs₀ i)
+  have hDsdisj : Pairwise (Function.onFun Disjoint Ds) := disjoint_disjointed Fs₀
+  -- Strong induction on the count of `v`-avoiding forests.
+  suffices H : ∀ m : ℕ, ∀ Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
+      (⋃ i, Fs i = B) → (∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs i)) →
+      Pairwise (Function.onFun Disjoint Fs) →
+      {i | (Fs i ∩ vfib) = ∅}.ncard ≤ m →
+      ∃ Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
+        (⋃ i, Fs' i = B) ∧ (∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs' i)) ∧
+          (∀ i, (Fs' i ∩ vfib).Nonempty) by
+    obtain ⟨Fs', hc, hi, hmeet⟩ :=
+      H {i | (Ds i ∩ vfib) = ∅}.ncard Ds hDscover hDsindep hDsdisj le_rfl
+    refine ⟨Fs', hc, hi, fun i ↦ ?_⟩
+    exact (hmeet_iff (Fs' i) (hc ▸ Set.subset_iUnion Fs' i)).mpr (hmeet i)
+  intro m
+  induction m with
+  | zero =>
+    intro Fs hcover hindep _hdisj hle
+    refine ⟨Fs, hcover, hindep, fun i ↦ ?_⟩
+    have hempty : {i | (Fs i ∩ vfib) = ∅} = ∅ := by
+      rw [← Set.ncard_eq_zero (Set.toFinite _)]; omega
+    by_contra hne
+    have hmem : i ∈ {i | (Fs i ∩ vfib) = ∅} := Set.not_nonempty_iff_eq_empty.mp hne
+    rw [hempty] at hmem; exact hmem
+  | succ m ih =>
+    intro Fs hcover hindep hdisj hle
+    by_cases hbal : ∀ i, (Fs i ∩ vfib).Nonempty
+    · exact ⟨Fs, hcover, hindep, hbal⟩
+    simp only [not_forall, Set.not_nonempty_iff_eq_empty] at hbal
+    obtain ⟨j, hj⟩ := hbal
+    have hssubB : ∀ i, Fs i ⊆ B := fun i ↦ hcover ▸ Set.subset_iUnion Fs i
+    -- Pigeonhole: `∑_i |Fs i ∩ vfib| = |B ∩ vfib| ≥ D`, `j` contributes `0`,
+    -- `D` indices ⟹ some `i` has `|Fs i ∩ vfib| ≥ 2`.
+    have hpart : ∑ i, (Fs i ∩ vfib).ncard = (B ∩ vfib).ncard := by
+      rw [← finsum_eq_sum_of_fintype,
+        ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _)
+          (fun s t hst ↦ (hdisj hst).mono Set.inter_subset_left Set.inter_subset_left),
+        ← Set.iUnion_inter, hcover]
+    have hjzero : (Fs j ∩ vfib).ncard = 0 := by rw [hj]; exact Set.ncard_empty _
+    obtain ⟨i, hij, hidonor⟩ : ∃ i, i ≠ j ∧ 2 ≤ (Fs i ∩ vfib).ncard := by
+      by_contra hcon
+      simp only [not_exists, not_and, not_le] at hcon
+      have hbnd : ∀ k ∈ Finset.univ, (Fs k ∩ vfib).ncard ≤ (if k = j then 0 else 1) := by
+        intro k _
+        by_cases hkj : k = j
+        · subst hkj; simp [hjzero]
+        · simpa [hkj] using Nat.lt_succ_iff.mp (hcon k hkj)
+      have hsum : ∑ k : Fin (bodyBarDim n), (if k = j then (0:ℕ) else 1)
+          = bodyBarDim n - 1 := by
+        have hcong : (∑ k : Fin (bodyBarDim n), if k = j then (0:ℕ) else 1)
+            = (Finset.univ.filter (fun k => k ≠ j)).card := by
+          rw [Finset.card_filter]
+          refine Finset.sum_congr rfl (fun k _ => ?_)
+          by_cases h : k = j <;> simp [h]
+        rw [hcong, Finset.filter_ne', Finset.card_erase_of_mem (Finset.mem_univ j),
+          Finset.card_univ, Fintype.card_fin]
+      have hle' := Finset.sum_le_sum hbnd
+      rw [hsum, hpart] at hle'
+      omega
+    -- Pick a spare `v`-fiber `x ∈ Fs i ∩ vfib`. `Fs i` holds `≥ 2`, so it is nonempty.
+    obtain ⟨x, hxFi, hxvfib⟩ : (Fs i ∩ vfib).Nonempty := by
+      rw [← Set.ncard_pos (Set.toFinite _)]; omega
+    -- `x` is a non-loop `v`-fiber: `IsLink x v a` (if `eₐ`) or `IsLink x v b` (if `e_b`).
+    have hxlink : ∃ w, (G.mulTilde n).IsLink x v w ∧ w ≠ v := by
+      rcases hxvfib with hxe | hxe <;> rw [edgeFiber, Set.mem_setOf_eq] at hxe
+      · exact ⟨a, by rw [mulTilde, edgeMultiply_isLink, hxe]; exact hla, hav⟩
+      · exact ⟨b, by rw [mulTilde, edgeMultiply_isLink, hxe]; exact hlb, hbv⟩
+    obtain ⟨w, hxvw, hwv⟩ := hxlink
+    have hxB : x ∈ B := hssubB i hxFi
+    -- `Fs j` avoids `v`: any `v`-incident fiber would be in `vfib`, but `Fs j ∩ vfib = ∅`.
+    have hFjv : ∀ p ∈ Fs j, ¬ (G.mulTilde n).Inc p v := by
+      intro p hpFj hpinc
+      have : p ∈ Fs j ∩ vfib := ⟨hpFj, (hinciff p (hBE (hssubB j hpFj))).mp hpinc⟩
+      rw [hj] at this; exact this
+    -- The explicit move.
+    set Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)) :=
+      fun k => if k = j then insert x (Fs j) else Fs k \ {x} with hFs'
+    have hcover' : ⋃ k, Fs' k = B := by
+      apply Set.Subset.antisymm
+      · rintro p hp
+        rw [Set.mem_iUnion] at hp
+        obtain ⟨k, hk⟩ := hp
+        by_cases hkj : k = j
+        · subst hkj; simp only [hFs', ↓reduceIte] at hk
+          rcases Set.mem_insert_iff.mp hk with rfl | hk'
+          · exact hxB
+          · exact hssubB k hk'
+        · simp only [hFs', if_neg hkj] at hk; exact hssubB k hk.1
+      · rw [← hcover]
+        rintro p hp
+        rw [Set.mem_iUnion] at hp ⊢
+        obtain ⟨k, hk⟩ := hp
+        by_cases hpx : p = x
+        · exact ⟨j, by simp only [hFs', ↓reduceIte]; exact Set.mem_insert_iff.mpr (Or.inl hpx)⟩
+        · by_cases hkj : k = j
+          · subst hkj
+            exact ⟨k, by simp only [hFs', ↓reduceIte]; exact Set.mem_insert_iff.mpr (Or.inr hk)⟩
+          · exact ⟨k, by simp only [hFs', if_neg hkj]; exact ⟨hk, by simpa using hpx⟩⟩
+    have hindep' : ∀ k, ((G.mulTilde n).cycleMatroid).Indep (Fs' k) := by
+      intro k
+      by_cases hkj : k = j
+      · subst hkj
+        simp only [hFs', ↓reduceIte]
+        exact acyclicSet_insert_vfiber_of_not_inc (hindep k) hxvw hwv hFjv
+      · simp only [hFs', if_neg hkj]; exact (hindep k).subset Set.diff_subset
+    have hdisj' : Pairwise (Function.onFun Disjoint Fs') := by
+      intro k l hkl
+      simp only [Function.onFun, hFs']
+      rcases eq_or_ne k j with rfl | hk
+      · simp only [↓reduceIte, if_neg (Ne.symm hkl), Set.disjoint_left]
+        rintro p hpins ⟨hpFl, hpx⟩
+        rcases Set.mem_insert_iff.mp hpins with rfl | hpFj
+        · exact hpx rfl
+        · exact (hdisj (Ne.symm hkl)).le_bot ⟨hpFl, hpFj⟩
+      · simp only [if_neg hk]
+        rcases eq_or_ne l j with rfl | hl
+        · simp only [↓reduceIte, Set.disjoint_right]
+          rintro p hpins ⟨hpFk, hpx⟩
+          rcases Set.mem_insert_iff.mp hpins with rfl | hpFj
+          · exact hpx rfl
+          · exact (hdisj hk).le_bot ⟨hpFk, hpFj⟩
+        · simp only [if_neg hl]
+          exact (hdisj hkl).mono Set.diff_subset Set.diff_subset
+    -- The `v`-avoiding count strictly drops: `j` leaves it; `i` and others don't enter it.
+    -- `x ∈ Fs' j ∩ vfib`, so `j` no longer avoids `v`.
+    have hxFs'j : x ∈ Fs' j ∩ vfib :=
+      ⟨by simp only [hFs', ↓reduceIte]; exact Set.mem_insert _ _, hxvfib⟩
+    have hdrop : {k | (Fs' k ∩ vfib) = ∅}.ncard < {k | (Fs k ∩ vfib) = ∅}.ncard := by
+      apply Set.ncard_lt_ncard _ (Set.toFinite _)
+      constructor
+      · -- `{k | Fs' k ∩ vfib = ∅} ⊆ {k | Fs k ∩ vfib = ∅}`.
+        intro k hk
+        simp only [Set.mem_setOf_eq] at hk ⊢
+        by_cases hkj : k = j
+        · subst hkj
+          -- `Fs' j ⊇ {x}`, `x ∈ vfib`, so `Fs' j ∩ vfib ≠ ∅` — `hk` is impossible.
+          exact absurd (hk ▸ hxFs'j) (Set.notMem_empty x)
+        · -- `Fs' k = Fs k \ {x}`. Show `Fs k ∩ vfib = ∅`.
+          simp only [hFs', if_neg hkj] at hk
+          rw [Set.eq_empty_iff_forall_notMem] at hk ⊢
+          intro p hp
+          rcases eq_or_ne p x with hpx | hpx
+          · -- `p = x ∈ Fs k`; disjointness with `x ∈ Fs i` forces `k = i`, but then
+            -- `Fs i ∩ vfib` (card ≥ 2) has some `y ≠ x` surviving the deletion — contra `hk`.
+            have hxFk : x ∈ Fs k := hpx ▸ hp.1
+            have hki : k = i := by
+              by_contra hne
+              exact Set.disjoint_left.mp (hdisj (Ne.symm hne)) hxFi hxFk
+            subst hki
+            obtain ⟨y, hy, hyne⟩ := Set.exists_ne_of_one_lt_ncard hidonor x
+            exact hk y ⟨⟨hy.1, by simpa using hyne⟩, hy.2⟩
+          · exact hk p ⟨⟨hp.1, by simpa using hpx⟩, hp.2⟩
+      · -- `j` is in the old avoiding-set but not the new one.
+        refine fun hsub ↦ ?_
+        have hjnew : (Fs' j ∩ vfib) = ∅ := hsub (show j ∈ {k | (Fs k ∩ vfib) = ∅} from hj)
+        exact absurd (hjnew ▸ hxFs'j) (Set.notMem_empty x)
+    exact ih Fs' hcover' hindep' hdisj' (by omega)
+
 end Graph

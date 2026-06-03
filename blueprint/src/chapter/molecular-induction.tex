@@ -430,24 +430,51 @@ instead by a direct deficiency-count argument
   balanced packing.
 \end{proof}
 
+\begin{lemma}[The repacking descent: a base admits a balanced forest packing]
+  \label{lem:balanced-forest-packing}
+  \lean{Graph.exists_balanced_forest_packing}
+  \leanok
+  \uses{def:matroid-MG, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, lem:packing-move, rem:kt-lemma-41}
+  A base $B$ of $M(\tilde G)$ admits a $D$-forest packing --- $D$
+  cycle-matroid-independent fiber sets covering $B$ --- in which \emph{every}
+  forest meets the degree-2 vertex $v$. This is exactly the balanced packing
+  Katoh--Tanigawa's Lemma~4.1 base-case proof assumes without justification
+  (\cref{rem:kt-lemma-41}~(2)); it is achievable, so the missing step is a
+  \emph{gap, not an error}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Disjointify the matroid-union cover of $B$
+  (\cref{lem:forest-packing-decomp}) into a genuine partition, then run a
+  strong induction on the number of $v$-avoiding forests. The base meets
+  $\ge D$ $v$-fibers (\cref{lem:base-vfiber-count}); if some forest $F_j$
+  avoids $v$, those $\ge D$ fibers are partitioned among the other
+  $\le D - 1$ forests, so by pigeonhole one forest $F_i$ ($i \ne j$) holds
+  $\ge 2$ of them. The rebalancing move (\cref{lem:packing-move}) shifts one
+  $v$-fiber from $F_i$ into $F_j$: disjointness guarantees it leaves no other
+  donor, so $F_j$ now meets $v$ while $F_i$ still meets $v$, strictly raising
+  the count of $v$-meeting forests. The induction terminates with a balanced
+  packing.
+\end{proof}
+
 \begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
   \label{lem:forest-surgery-split}
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, lem:packing-move, rem:kt-lemma-41}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, lem:packing-move, lem:balanced-forest-packing, rem:kt-lemma-41}
   \emph{Deferred / off the Theorem-4.9 critical path}
   (\cref{rem:kt-lemma-41}): its substrate is formalized in
   \texttt{Molecular/Induction.lean}. The balanced-packing assumption of
-  \cref{rem:kt-lemma-41}~(2) that KT's proof glosses is now \emph{settled}
-  in both halves --- the counting half (\cref{lem:base-vfiber-count}: a base
-  meets $\ge D$ of $v$'s fibers) and the redistribution half
-  (\cref{lem:acyclic-insert-vfiber}: a $v$-avoiding forest absorbs a free
-  $v$-fiber as a pendant), confirming the missing step is a gap, not an
-  error. Their load-bearing assembly step --- one rebalancing move of the
-  packing --- is formalized too (\cref{lem:packing-move}). What remains
-  unformalized is only the descent's outer loop: the pigeonhole that always
-  supplies a spare $v$-fiber ($\ge D$ fibers among $< D$ non-empty forests)
-  and the well-founded measure (the count of $v$-avoiding forests) iterating
-  the move to a balanced packing. The induction toward Theorem~4.9 meanwhile
-  uses \cref{lem:splitoff-deficiency}.
+  \cref{rem:kt-lemma-41}~(2) that KT's proof glosses is now fully
+  \emph{discharged}: both halves --- the counting half
+  (\cref{lem:base-vfiber-count}: a base meets $\ge D$ of $v$'s fibers) and the
+  redistribution half (\cref{lem:acyclic-insert-vfiber}: a $v$-avoiding forest
+  absorbs a free $v$-fiber as a pendant) --- their rebalancing move
+  (\cref{lem:packing-move}), and the descent's \emph{outer loop} that iterates
+  the move to a balanced packing (\cref{lem:balanced-forest-packing}) are all
+  formalized, confirming the missing step is a gap, not an error. What remains
+  unformalized is only the final wiring: rerouting the balanced packing of
+  $\tilde G$ across $v$ to produce the $\widetilde{G_v^{ab}}$ packing (the
+  reroute-acyclicity substrate is landed). The induction toward Theorem~4.9
+  meanwhile uses \cref{lem:splitoff-deficiency}.
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
   packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
   the fibers not incident to $v$ and rerouted across $v$, induces a
