@@ -751,6 +751,36 @@ theorem finrank_pinnedMotions_withGraph_eq [Finite α] (F : BodyHingeFramework k
       Module.finrank ℝ ((F.withGraph G').pinnedMotions v) := by
   rw [F.pinnedMotions_withGraph_eq v hle hnew]
 
+/-- **Case II's `hnew` reduces to a single span-membership per re-added edge** (`lem:case-II`,
+the genericity-gated equality). In the splitting-off 1-extension the only links of `F.graph`
+outside the smaller graph `G'` are the two new hinge edges *incident to* `v` (KT 2011 §6.3:
+splitting-off at a degree-2 vertex `v` re-adds exactly the edges `v–a` and `v–b`). For a
+base-`v`-pinned motion `S` (so `S v = 0`), the hinge constraint of such a `v`-incident edge
+`e` linking `v w` is `S v − S w = −S w ∈ span C(e)`, i.e. just `S w ∈ span C(e)` — the
+difference collapses because the pinned body contributes zero. So the full `hnew` hypothesis
+of `pinnedMotions_withGraph_eq` follows from: (a) every out-of-`G'` link of `F.graph` is
+incident to `v` (`hinc`), and (b) for each such link `e v w` the non-`v` endpoint `w` already
+lands in the new edge's hinge span (`hspan`). This is the brick that turns the abstract
+`hnew` into the concrete two-edge condition the genericity device (Claim 6.9, supplied by
+`exists_independent_panelSupportExtensor`) discharges: it isolates the *single* span-membership
+per new edge that general position must achieve, stripping the relative-screw difference. The
+`hingeConstraint_comm` orients each link so `v` sits on the left, then `S v = 0` and
+`Submodule.neg_mem_iff` reduce the membership to `hspan`. -/
+theorem hnew_of_isLink_incident (F : BodyHingeFramework k α β) (v : α) {G' : Graph α β}
+    (hinc : ∀ e u w, F.graph.IsLink e u w → ¬G'.IsLink e u w → u = v ∨ w = v)
+    {S : α → ScrewSpace k} (hSv : S v = 0)
+    (hspan : ∀ e w, F.graph.IsLink e v w → ¬G'.IsLink e v w →
+      S w ∈ Submodule.span ℝ {F.supportExtensor e}) :
+    ∀ e u w, F.graph.IsLink e u w → ¬G'.IsLink e u w → F.hingeConstraint S e u w := by
+  intro e u w he hg
+  rcases hinc e u w he hg with rfl | rfl
+  · -- `u = v`: `hingeConstraint S e v w` is `S v − S w = −S w ∈ span`
+    rw [hingeConstraint, hSv, zero_sub, Submodule.neg_mem_iff]
+    exact hspan e w he hg
+  · -- `w = v`: orient via `hingeConstraint_comm` to put `v` on the left
+    rw [F.hingeConstraint_comm, hingeConstraint, hSv, zero_sub, Submodule.neg_mem_iff]
+    exact hspan e u he.symm (fun h => hg h.symm)
+
 end BodyHingeFramework
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)
@@ -1124,6 +1154,27 @@ theorem finrank_toBodyHinge_pinnedMotions_withGraph_eq [Finite α]
     Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) =
       Module.finrank ℝ ((P.withGraph G').toBodyHinge.pinnedMotions v) := by
   rw [P.toBodyHinge_pinnedMotions_withGraph_eq v hle hnew]
+
+omit [DecidableEq α] in
+/-- **Panel-layer `hnew` reduction** (`lem:case-II`, the genericity-gated equality): the panel
+specialization of `hnew_of_isLink_incident`. In Case II's 1-extension the only links of
+`P.graph` outside the splitting-off `G'` are `v`'s two new hinge edges; for a base-`v`-pinned
+motion `S` (`S v = 0`) the hinge constraint of a `v`-incident edge `e v w` collapses to
+`S w ∈ span (panelSupportExtensor (normal v) (normal w))` because the pinned body contributes
+zero. So the `hnew` hypothesis of `toBodyHinge_pinnedMotions_withGraph_eq` follows from (a)
+every out-of-`G'` link is incident to `v` (`hinc`) and (b) the non-`v` endpoint of each lands
+in the new edge's panel-support span (`hspan`) — the concrete two-edge condition the genericity
+device (Claim 6.9, `exists_independent_panelSupportExtensor`) discharges, routed onto the panel
+layer verbatim from the body-hinge brick. -/
+theorem toBodyHinge_hnew_of_isLink_incident (P : PanelHingeFramework k α β) (v : α)
+    {G' : Graph α β}
+    (hinc : ∀ e u w, P.graph.IsLink e u w → ¬G'.IsLink e u w → u = v ∨ w = v)
+    {S : α → ScrewSpace k} (hSv : S v = 0)
+    (hspan : ∀ e w, P.graph.IsLink e v w → ¬G'.IsLink e v w →
+      S w ∈ Submodule.span ℝ {P.toBodyHinge.supportExtensor e}) :
+    ∀ e u w, P.graph.IsLink e u w → ¬G'.IsLink e u w →
+      P.toBodyHinge.hingeConstraint S e u w :=
+  P.toBodyHinge.hnew_of_isLink_incident v hinc hSv hspan
 
 end PanelHingeFramework
 

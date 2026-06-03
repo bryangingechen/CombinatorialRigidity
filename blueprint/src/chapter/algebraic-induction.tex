@@ -566,7 +566,9 @@ Cases~I and~II travel toward the smaller inductive graph.
         CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotions_le_withGraph,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_le_withGraph,
         CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotions_withGraph_eq,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_withGraph_eq}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_withGraph_eq,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hnew_of_isLink_incident,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_hnew_of_isLink_incident}
   \leanok
   \uses{def:rank-hypothesis, lem:rank-delete-vertex, def:framework-with-graph,
         lem:exists-independent-panel-extensor}
@@ -600,7 +602,14 @@ Cases~I and~II travel toward the smaller inductive graph.
   the rank by exactly $D$. The hypothesis is the honest content of
   Claim~6.9's general position --- supplied by placing the two new
   supporting extensors in general position
-  (\cref{lem:exists-independent-panel-extensor}).
+  (\cref{lem:exists-independent-panel-extensor}). Since the only links of
+  $G$ outside $G_v^{ab}$ are the two $v$-incident edges $v a$, $v b$, and a
+  base-pinned motion has $S v = 0$, each re-added hinge constraint
+  $S v - S w \in \operatorname{span} C(e)$ collapses to the single
+  span-membership $S w \in \operatorname{span} C(e)$ at the non-$v$
+  endpoint, reducing the tightness hypothesis to exactly the two conditions
+  $S a \in \operatorname{span} C(e_a)$, $S b \in \operatorname{span}
+  C(e_b)$ that general position achieves.
 \end{lemma}
 \begin{proof}
   \leanok

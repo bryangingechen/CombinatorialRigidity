@@ -26,6 +26,26 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case II `hnew` reduction to per-edge span-membership landed (2026-06-03).** The brick that turns
+the abstract `hnew` hypothesis of `pinnedMotions_withGraph_eq` into the concrete two-edge condition
+the genericity device must discharge is green: `BodyHingeFramework.hnew_of_isLink_incident` and its
+panel wrapper `PanelHingeFramework.toBodyHinge_hnew_of_isLink_incident`. In Case II's 1-extension
+the only links of `F.graph` outside the splitting-off `G'` are `v`'s two new hinge edges (all
+incident to `v`); for a base-`v`-pinned motion `S` (`S v = 0`) the hinge constraint `S v − S w ∈
+span C(e)` of such an edge collapses to the single span-membership `S w ∈ span C(e)` at the non-`v`
+endpoint (the pinned body contributes zero). So `hnew` follows from (a) every out-of-`G'` link is
+`v`-incident (`hinc`) and (b) the non-`v` endpoint of each lands in the new edge's hinge span
+(`hspan`). Proof: `rcases hinc` on the two orientations, `hingeConstraint_comm` to put `v` left in
+the `w = v` case, then `hSv` + `zero_sub` + `Submodule.neg_mem_iff` reduce to `hspan`; the panel
+wrapper is a defeq one-liner through `toBodyHinge_graph`. Axiom-clean
+(propext/Classical.choice/Quot.sound). No friction. Blueprint folds both into the green
+`lem:case-II-rank-lift` node (the per-edge collapse sentence + the two `\lean{...}` pins).
+**Remaining red on Case II:** discharging `hspan` for the chosen general-position panel extensors
+(the genuine Claim 6.9 content — *not* free for an arbitrary base motion; it holds via the rank/
+dimension count, the genericity device) and wiring the vertex-level splitting-off op `G_v^{ab}`
+(green in Phase 20, but differs from `G` by an edge substitution `e₀ ↔ {e_a,e_b}`, so it is not
+directly `≤ G` — a graph-substitution bridge is needed) into `withGraph`.
+
 **Case II genericity-gated tightness landed (2026-06-03).** The reverse `≥` half making the Case II
 inclusion an *equality* is green: `BodyHingeFramework.pinnedMotions_withGraph_eq` (+ rank form
 `finrank_pinnedMotions_withGraph_eq`) and its panel layer
@@ -493,10 +513,15 @@ Case II (`k>0` splitting; KT §6.3):
   the extended `v`-pinned motions with the base's is now green too
   (`pinnedMotions_withGraph_eq` + panel `toBodyHinge_pinnedMotions_withGraph_eq`
   + rank forms): conditional on `hnew` (every base-`v`-pinned motion clears
-  the re-added edges' constraints), the honest content of Claim 6.9. Still
-  needs: wiring the vertex-level splitting-off op `G_v^{ab}` (green in
-  Phase 20) into the rank-lift, and discharging `hnew` from the green
-  general-position existence `exists_independent_panelSupportExtensor`.
+  the re-added edges' constraints), the honest content of Claim 6.9. `hnew`
+  now reduces to a per-edge single span-membership at the non-`v` endpoint
+  (`hnew_of_isLink_incident` + panel `toBodyHinge_hnew_of_isLink_incident`,
+  green): given all out-of-`G'` links are `v`-incident and `S v = 0`, the
+  constraint `S v − S w` collapses to `S w ∈ span C(e)`. Still needs:
+  discharging that span-membership (`hspan`) for the chosen general-position
+  extensors (genuine Claim 6.9 — false pointwise, holds by the rank count),
+  and wiring `G_v^{ab}` (Phase 20; needs an edge-substitution bridge,
+  `splitOff` adds a fresh `e₀` so is not directly `≤ G`) into `withGraph`.
 
 Case III (deferred to Phases 22–23):
 - [ ] `lem:case-III` — KT Lemma 6.10/6.13: `k=0`, no proper rigid
@@ -751,16 +776,30 @@ equality landed in one commit given the green `≤` (`pinnedMotions_le_withGraph
 discharging it from `exists_independent_panelSupportExtensor` is the remaining genericity step (a
 base motion has `S v = 0`, so the new constraints are `S a ∈ span C(e_a)`, `S b ∈ span C(e_b)`).
 
-**Smallest next concrete commit:** two routes, both closing `lem:case-II`. (A) Discharge `hnew` from
-the green general-position existence: with `v`'s two new supporting extensors placed via
-`exists_independent_panelSupportExtensor`, show a `v`-pinned base motion (`S v = 0`) satisfies
-`S a ∈ span C(e_a)` and `S b ∈ span C(e_b)` — feeds `pinnedMotions_withGraph_eq` to make the
-inclusion tight unconditionally on the chosen panel. (B) Wire the vertex-level splitting-off op
-`G_v^{ab}` (green in Phase 20 combinatorially) as the `G'` in `withGraph`, so the panel framework on
-`G_v^{ab}` is the inductive realization; then compose
-`toBodyHinge_pinnedMotions_withGraph_eq` (or its rank form) with the `+D` rank-lift
-`rankHypothesis_withNormal_iff_finrank_pinnedMotions`. (A) and (B) together close Case II. Alternatively continue
-Case I: place the contraction
+**Case II `hnew` reduction is now green** (this commit): `BodyHingeFramework.hnew_of_isLink_incident`
++ panel `toBodyHinge_hnew_of_isLink_incident` reduce the `hnew` hypothesis of
+`pinnedMotions_withGraph_eq` to a per-edge single span-membership `S w ∈ span C(e)` at each new
+edge's non-`v` endpoint (using `S v = 0` to collapse the relative-screw difference). Folded into the
+green `lem:case-II-rank-lift` node.
+
+**Correction to the prior hand-off's route (A).** The prior hand-off proposed "show a `v`-pinned base
+motion satisfies `S a ∈ span C(e_a)`, `S b ∈ span C(e_b)`" as a small commit. This is **not a
+theorem pointwise** — a base motion on `G_v^{ab}` (constrained only by `e₀`: `S a − S b ∈ span
+C(e₀)`) does not generally land each of `S a, S b` in the new spans for independently-chosen
+extensors. That is the genuine Claim 6.9 genericity content, which holds via a rank/dimension count,
+not pointwise. The reduction landed this commit (`hnew_of_isLink_incident`) isolates exactly the
+span-memberships (`hspan`) the genericity device must achieve, so the open piece is now sharply
+stated.
+
+**Smallest next concrete commit:** two genuinely-open pieces remain, both feeding `lem:case-II`.
+(A′) Discharge `hspan` (`S w ∈ span C(e)` for the two new edges) via the rank/dimension count of the
+genericity device — *not* a pointwise fact; reuses `exists_independent_panelSupportExtensor` for the
+extensor placement but needs the rank-counting argument to conclude every base-pinned motion lands.
+(B) Wire the vertex-level splitting-off op `G_v^{ab}` (`Graph.splitOff`, green in Phase 20) as `G'`
+in `withGraph`; note `splitOff` adds a fresh edge `e₀` joining `a–b`, so it is **not** directly
+`≤ G` — an edge-substitution bridge relating `G` (with `v`'s two edges) to `splitOff G v a b e₀`
+(with `e₀`) is the missing graph-level brick. Either is a clean standalone next commit.
+Alternatively continue Case I: place the contraction
 realization (panel data on `rigidContract`) and re-add `E(H)` via `withGraph`; the slack in
 `screwDim_add_finrank_pinnedMotionsOn_le` is the contraction's inductive rank (block-triangular
 gluing). The vertex-level splitting-off / contraction ops (`splitOff`, `rigidContract`) are green
