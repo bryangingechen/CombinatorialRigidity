@@ -1,8 +1,9 @@
 # Phase 20 cleanup round (work log)
 
-**Status:** in progress. A3 and B3 (the round's two real fixes) landed;
-A1 + A2 + B1 + B2 + B4 + C1 confirmed no-op. Remaining: D1 / D2 — see the
-checklist and *Hand-off* below.
+**Status:** ✓ complete. A3 and B3 (the round's two real fixes) landed;
+A1 + A2 + B1 + B2 + B4 + C1 + D2 confirmed no-op; D1 compressed
+`notes/Phase20.md` (1089 → 434 lines, within the adaptive ceiling for a
+25+-commit phase). ROADMAP Status row flipped ✓. See *Hand-off* below.
 
 Between-phases cleanup round, run after Phase 20 (combinatorial induction →
 Theorem 4.9, KT §3.4–3.5 + §4) closed in `144e3b5` and before Phase 21
@@ -182,27 +183,38 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ### Bucket D — Project-organization compression
 
-- [ ] **D1** — `notes/Phase20.md` length (1089 lines). **Far past the
-  250-line soft budget** — well beyond even the 350–450 adaptive ceiling for
-  a big phase (`notes/CLAUDE.md` *Soft length budget*). Assess: is this
-  density-justified (the phase had a mid-stream pivot + two Findings + a
-  corrected-over-claim addendum, each legitimately recorded), or has content
-  accreted that should be promoted/compressed? Candidate compressions: the
-  *CORRECTION*, *Finding 2 REFUTED*, and *TODO Progress VERDICT* blocks
-  duplicate material now also in *Current state* and the *forest surgery*
-  checklist entries (one source of truth — `notes/CLAUDE.md` *Don't duplicate*).
-  The phase is closed, so per CLEANUP.md *Project-organization compression*
-  the multi-route narrative can compress to a commit-log pointer + brief
-  summary. Bring it to the adaptive ceiling at most.
-- [ ] **D2** — project-org re-skim (`ROADMAP.md`, `TACTICS-GOLF.md`,
-  `TACTICS-QUIRKS.md`, `notes/FRICTION.md` status sections). The Phase-20
-  close already lifted TACTICS-GOLF §11 (induction-on-derived-measure),
-  TACTICS-QUIRKS §28 (`↓reduceIte`) + §29 (cycle-lift), and several FRICTION
-  entries. Re-confirm: nothing drifted; no Phase-20 decision sits at the
-  2+-site/2+-phase promotion threshold un-lifted; FRICTION status sections
-  scannable (resolved Phase-20 entries indexed elsewhere → consider
-  `FRICTION-archive.md` migration); no stale prose-count/section-name
-  reference in DESIGN.md/ROADMAP.md.
+- [x] **D1** — DONE. Compressed `notes/Phase20.md` **1089 → 434 lines**,
+  within the 350–450 adaptive ceiling for a 25+-commit phase with multiple
+  substantive subsystems (`notes/CLAUDE.md` *Soft length budget*). The
+  phase is closed, so per CLEANUP.md *Project-organization compression* the
+  multi-route narrative collapsed to a commit-log pointer (`e8ca530`…`144e3b5`
+  + `9f7f071`…`f51417a`) + a *Findings* summary. Specific collapses (each was
+  duplicated 3–4× — one source of truth, `notes/CLAUDE.md` *Don't duplicate*):
+  the standalone `## CORRECTION` header → folded into *Forest surgery: the
+  over-claim and its repair*; `## Finding 2 REFUTED` → a short *Findings*
+  subsection; the `## Finding`/*Replan* preamble → compact *Findings* +
+  *Replan*; the multi-paragraph *TODO Progress*/*VERDICT* blocks → a single
+  *VERDICT* paragraph; the commit-by-commit *Hand-off* narration (≈200 lines
+  re-stating each commit) → the two carry-forwards + a git-history pointer
+  (the play-by-play is the checklist entries + git log). Re-sub-organized
+  *Decisions* into *Phase-local* + *Promoted to …* per the `notes/CLAUDE.md`
+  template. **All load-bearing content preserved:** the three-layer KT 4.1
+  finding, the Finding-2-refuted lesson, the corrected-surgery construction,
+  both Thm-4.9 scope decisions, both carry-forwards, the full lemma checklist.
+- [x] **D2** — DONE; **no-op + one small ROADMAP fix.** Re-skim confirmed the
+  Phase-20 lifts all resolve: TACTICS-GOLF §11 (induction-on-derived-measure),
+  TACTICS-QUIRKS §28 (`↓reduceIte`) + §29 (cycle-lift), and every FRICTION
+  `[matroid]`/deficiency entry the Phase20.md *Promoted to …* section points
+  at. No Phase-20 decision sits un-lifted at the 2+-site/2+-phase threshold.
+  FRICTION status sections still scannable; the freshly-resolved Phase-20
+  entries (resolved within the past few days) stay in the active log per the
+  filing rule ("file new resolved entries here first … migrate on the next
+  housekeeping pass") — consistent with how Phase-19 cleanup left its entries;
+  no `FRICTION-archive.md` migration this round. **One stale prose fix:**
+  ROADMAP §20 said the forest-surgery core is "substrate landed; deferred
+  TODO" — pre-dates the `144e3b5` addendum that landed the `-split` direction
+  green; corrected to "fully landed (`-split` green, gloss discharged as a GAP);
+  only KT 4.2 stays deferred". No DESIGN.md drift.
 
 ## Decisions made during this round
 
@@ -240,17 +252,20 @@ from this log alone (CLEANUP.md *Task list discipline*).
 
 ## Hand-off / next phase
 
-**Smallest concrete next commit:** **D1** — compress `notes/Phase20.md`
-(1089 lines, far over the 250-line soft budget / 350–450 adaptive ceiling).
-Per CLEANUP.md *Project-organization compression*, the closed phase's
-multi-route narrative can collapse to a commit-log pointer + brief summary;
-candidate compressions named in the D1 checklist entry (the *CORRECTION*,
-*Finding 2 REFUTED*, *TODO Progress VERDICT* blocks duplicate *Current state*
-+ checklist material — one source of truth). Bring it to the adaptive ceiling
-at most. Then **D2** (project-org re-skim — mostly a confirm-nothing-drifted
-pass; can ride the same commit). Close the round by flipping the ROADMAP
-Status row to ✓.
+**Round complete — nothing carried over.** All A–D audit items discharged;
+ROADMAP Status row flipped ✓. Two real fixes, the rest no-op:
 
-**Done:** A1/A2/B1/B2/B4/C1 no-op; **A3 + B3 the two real fixes** (A3
-named-lemma promotion landed earlier; B3 extracted the `mem_edgeSet_mulTilde`
-/ `mulTilde_isLink` fused mirrors and refactored ~30 callsites this commit).
+- **A3** (real) — promoted the KT-4.1 over-quantification disproof from an
+  anonymous `example` to `Graph.kt_lemma_41_overquantified`, so blueprint node
+  `ex:kt-41-overquantified` carries a `\lean{}` pointer.
+- **B3** (real) — extracted two `Iff.rfl` `@[simp]` mirrors
+  (`mem_edgeSet_mulTilde`, `mulTilde_isLink`) for the `mulTilde`/`edgeMultiply_*`
+  unfold tower that recurred ~30×; refactored all callsites.
+- **D1** (real, this commit) — compressed `notes/Phase20.md` 1089 → 434 lines.
+- **A1/A2/B1/B2/B4/C1/D2** — no-op confirmations (detail in the checklist
+  entries). D2 incidentally fixed one stale ROADMAP §20 prose clause.
+
+**Next:** Phase 21 (algebraic induction, KT §5–6). The first concrete commit
+creates `notes/Phase21.md` + opens the Phase-21 blueprint chapter (forward
+mode) — see `notes/Phase20.md` *Hand-off* and `ROADMAP.md` §21. No cleanup
+debt carried into it.

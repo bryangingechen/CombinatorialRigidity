@@ -112,7 +112,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 19. `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` (KT §2.5, §3) | ✓ Complete (see `notes/Phase19.md`; `deficiency.tex` `sec:molecular-deficiency`) |
 | ⋮ Cleanup round (post-Phase-19) | Phase 19 surface (`Molecular/Deficiency.lean`, `deficiency.tex` `sec:molecular-deficiency` nodes) | ✓ Complete (all A–D audits no-op; see `notes/Phase19-cleanup.md`; round manual: `CLEANUP.md`) |
 | 20. Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` (KT §3.4–3.5, §4) | ✓ Complete (`thm:minimal-kdof-reduction` green; see `notes/Phase20.md`; `molecular-induction.tex` `sec:molecular-induction`) |
-| ⋮ Cleanup round (post-Phase-20) | Phase 20 surface (`Molecular/Induction.lean`, `molecular-induction.tex` `sec:molecular-induction` nodes) | ◷ In progress (see `notes/Phase20-cleanup.md`; round manual: `CLEANUP.md`) |
+| ⋮ Cleanup round (post-Phase-20) | Phase 20 surface (`Molecular/Induction.lean`, `molecular-induction.tex` `sec:molecular-induction` nodes) | ✓ Complete (A3 + B3 the two real fixes; A1/A2/B1/B2/B4/C1/D2 no-op; D1 compressed `notes/Phase20.md` 1089→434; see `notes/Phase20-cleanup.md`; round manual: `CLEANUP.md`) |
 | 21–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -668,8 +668,10 @@ counterexample; routed around via a deficiency-count argument), and KT's
 iterated fundamental-circuit swaps for the dof bounds and the
 minimality transport are bypassed by partition-count / rank-count
 comparisons through the green `def = corank` bridge. The forest-surgery
-core (KT 4.1/4.2) is off the Theorem-4.9 critical path (substrate
-landed; deferred TODO). Per-node lemma map + decisions + findings:
+core (KT 4.1) is off the Theorem-4.9 critical path but fully landed (the
+`-split` direction green, balanced-packing gloss discharged as a GAP not
+an error); only the edge-splitting inverse KT 4.2 stays a deferred TODO.
+Per-node lemma map + decisions + findings:
 `notes/Phase20.md`. Unblocks Phase 21 (algebraic induction base +
 Cases I & II).
 
