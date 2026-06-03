@@ -95,6 +95,18 @@ theorem screwSpace_finrank (k : ℕ) : Module.finrank ℝ (ScrewSpace k) = screw
     ← Nat.choose_symm (Nat.le_add_left 2 k)]
   congr 1
 
+/-- **At most `D` independent supporting extensors** (`def:rigidity-matrix`): any linearly
+independent family of `m` screw-space elements has `m ≤ D = screwDim k`, since
+`ScrewSpace k` is `D`-dimensional (`screwSpace_finrank`). This is the dimension bound a panel
+*cycle* must respect — a cycle whose `m` supporting extensors are independent in the
+`D`-dimensional screw space can have at most `m ≤ D` hinges, the upper half `|V| ≤ D` of
+Katoh–Tanigawa Lemma 5.4's hypothesis `3 ≤ |V| ≤ D` (`lem:cycle-realization`). Immediate from
+the finite-dimensionality bound `LinearIndependent.fintype_card_le_finrank`. -/
+theorem card_le_screwDim_of_linearIndependent {k m : ℕ} (c : Fin m → ScrewSpace k)
+    (h : LinearIndependent ℝ c) : m ≤ screwDim k := by
+  have := h.fintype_card_le_finrank
+  rwa [Fintype.card_fin, screwSpace_finrank] at this
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space

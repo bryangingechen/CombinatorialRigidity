@@ -507,6 +507,21 @@ theorem toBodyHinge_rankHypothesis_zero [Nonempty α] [Finite α] (P : PanelHing
     P.toBodyHinge.RankHypothesis 0 :=
   P.toBodyHinge.theorem_55_base huv hgen h₁ h₂ hcover
 
+/-- **A rigid panel cycle has at most `D` hinges** (`lem:cycle-realization`, KT Lemma 5.4, the
+`|V| ≤ D` bound): if the supporting extensors of `m` edges of a panel-hinge framework are linearly
+independent in the `D`-dimensional screw space `ScrewSpace k`, then `m ≤ D = screwDim k`. This is
+the upper half of the cycle hypothesis `3 ≤ |V| ≤ D`: a cycle of `m` panels and `m` hinges is
+infinitesimally rigid exactly when its `m` supporting extensors are independent, which by the
+dimension of `ScrewSpace k` forces `m ≤ D`. The general-position bound the general cycle
+realization respects; immediate from `card_le_screwDim_of_linearIndependent`. The matching
+*existence* of an independent family for a given cycle (`3 ≤ m ≤ D`) is the generic-panel
+independence argument (Claim 6.4/6.9), the remaining red content of `lem:cycle-realization`. -/
+theorem card_le_screwDim_of_supportExtensor_linearIndependent
+    (P : PanelHingeFramework k α β) {m : ℕ} (e : Fin m → β)
+    (h : LinearIndependent ℝ fun i => P.toBodyHinge.supportExtensor (e i)) :
+    m ≤ screwDim k :=
+  card_le_screwDim_of_linearIndependent _ h
+
 end PanelHingeFramework
 
 namespace BodyHingeFramework

@@ -55,6 +55,24 @@ Earlier leaf recap: `panelSupportExtensor n₁ n₂ := complementIso
 `⋀^(k+2−2) = ⋀^k = ScrewSpace k`); `panelSupportExtensor_ne_zero_iff`
 reduces transversality to independence of the two normals.
 
+**Cycle-realization dimension bound landed (2026-06-03).** The
+`|V| ≤ D` upper half of KT Lemma 5.4's hypothesis `3 ≤ |V| ≤ D` is
+green: `card_le_screwDim_of_linearIndependent` (RigidityMatrix.lean,
+beside `screwSpace_finrank`) — any linearly independent family of `m`
+screw-space elements has `m ≤ screwDim k` — and its panel-cycle
+specialization `PanelHingeFramework.card_le_screwDim_of_support
+Extensor_linearIndependent` (AlgebraicInduction.lean). One-line
+compositions of `LinearIndependent.fintype_card_le_finrank` with
+`screwSpace_finrank`; axiom-clean (`#print axioms`:
+`propext/Classical.choice/Quot.sound`). Blueprint adds a green
+`lem:cycle-realization-dim-bound` node that the still-red
+`lem:cycle-realization` `\uses`. **Remaining red on 5.4:** the
+*existence* of an independent extensor family for a given cycle
+(`3 ≤ m ≤ D`) — the generic-panel independence argument (Claim 6.4/6.9,
+bottoming on Lemma 2.1), the open analytic blocker. The two bricks now
+green (base + dim-bound) bound the cycle hypothesis from both ends; the
+genericity device is the whole remaining content.
+
 **Cycle-realization short-cycle base landed (2026-06-03).** The first
 brick of `lem:cycle-realization` (KT Lemma 5.4) is green:
 `PanelHingeFramework.toBodyHinge_rankHypothesis_zero` — the panel
@@ -65,9 +83,7 @@ body-hinge interpretation (`RankHypothesis 0`, full rank `D`).
 One-line composition with `theorem_55_base` on `P.toBodyHinge`
 (defeq carries `graph`/`supportExtensor`); axiom-clean. Blueprint adds
 a `lem:cycle-realization-base` node (green) that the still-red
-`lem:cycle-realization` `\uses`. Next: the general cycle (`|V| ≥ 3`) +
-the generic-panel independence argument (Claim 6.4/6.9, bottoming on
-Lemma 2.1), then the re-scoped Cases I/II.
+`lem:cycle-realization` `\uses`.
 
 The pre-21a induction-skeleton leaf nodes remain green (all
 regime-agnostic, retained verbatim under the panel layer):
@@ -199,11 +215,14 @@ Case I (proper rigid subgraph; KT §6.2):
   full-rank `D(|V|−1)` *panel* realization). The **short-cycle base** is
   green (`lem:cycle-realization-base`,
   `PanelHingeFramework.toBodyHinge_rankHypothesis_zero`): the two-body
-  panel analogue of `theorem_55_base` via `toBodyHinge`. Still red: the
-  general cycle (`|V| ≥ 3`) + the generic-panel independence argument
-  bottoming on Lemma 2.1 (the Claim 6.4/6.9 genericity device).
-  Citation (CW82 Prop 3.4 / Whiteley99 Prop 3) stays as the source
-  pointer.
+  panel analogue of `theorem_55_base` via `toBodyHinge`. The **`|V| ≤ D`
+  dimension bound** is also green (`lem:cycle-realization-dim-bound`,
+  `card_le_screwDim_of_linearIndependent` +
+  `…card_le_screwDim_of_supportExtensor_linearIndependent`). Still red:
+  the general cycle (`|V| ≥ 3`) + the generic-panel independence
+  *existence* argument bottoming on Lemma 2.1 (the Claim 6.4/6.9
+  genericity device). Citation (CW82 Prop 3.4 / Whiteley99 Prop 3) stays
+  as the source pointer.
 - [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
   subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
   glue block-triangularly with a pinned rigid realization of `H`
@@ -361,20 +380,30 @@ coplanarity conjunct when assembled into the full Theorem 5.5),
 `lem:case-II-rank-lift`, `def:framework-with-graph` +
 `lem:motions-mono-of-graph-le`, `def:pinned-motions-on` — and now the
 **short-cycle base** of Lemma 5.4 (`lem:cycle-realization-base`,
-`toBodyHinge_rankHypothesis_zero`). Remaining red:
-`lem:cycle-realization` (the general cycle, `|V| ≥ 3`),
+`toBodyHinge_rankHypothesis_zero`) and its **`|V| ≤ D` dimension bound**
+(`lem:cycle-realization-dim-bound`,
+`card_le_screwDim_of_linearIndependent` +
+`PanelHingeFramework.card_le_screwDim_of_supportExtensor_linearIndependent`).
+Remaining red: `lem:cycle-realization` (the general cycle, `|V| ≥ 3`),
 `prop:rigidity-matrix-prop11` (stays body-hinge), `thm:theorem-55`,
 `lem:case-I`, `lem:case-II`, `lem:case-III` (III is 22–23).
 
-**Smallest next concrete commit:** continue `lem:cycle-realization`
-past its now-green two-body base (`lem:cycle-realization-base`) toward
-the general cycle (`3 ≤ |V| ≤ D`): an infinitesimally rigid full-rank
-`D(|V|−1)` *panel* realization. The base case is done; the remaining
-content is the generic-panel independence argument for the cycle's `m`
-supporting extensors (they must be independent in the `D`-dim
-`ScrewSpace k`, so `m ≤ D`), bottoming on Lemma 2.1 (Phase 17) via
-`panelSupportExtensor`. This is the genericity device (Claim 6.4/6.9),
-the open analytic blocker shared by 5.4 and Cases I/II — assess on
-contact whether the Phase 6/8 Gram-det perturbation machinery transfers
-to the panel-coordinate parametrization. After 5.4: the re-scoped Cases
-I/II (Cases gain the panel requirement; III is 22–23).
+**Smallest next concrete commit:** the genericity device itself
+(Claim 6.4/6.9) is now the entire remaining content of
+`lem:cycle-realization` — both cheap brackets (two-body base,
+`|V| ≤ D` bound) are green, so the next commit must engage the open
+analytic blocker rather than another bracket. The target is the
+*existence* of a linearly independent family of `m` supporting
+extensors for a cycle of length `3 ≤ m ≤ D` (which then composes with
+`toBodyHinge_rankHypothesis_zero`'s generalization to give rigidity):
+build the generic-panel independence argument bottoming on Lemma 2.1
+(Phase 17, `omitTwoExtensor_linearIndependent`) via `panelSupportExtensor`.
+**Assess first on contact** whether the Phase 6/8 Gram-det perturbation
+machinery (`Mathlib/LinearAlgebra/Matrix/Rank.lean`) transfers to the
+panel-coordinate parametrization; if it needs new infrastructure, that
+infrastructure is the next commit instead. The general-cycle rigidity
+also needs a `theorem_55_base` analogue for `m`-body cycles (propagating
+`S u = S v` around the cycle — note mathlib's relational `Graph` has no
+connectivity API yet, so this may need a `Graph`-cycle/walk primitive).
+After 5.4: the re-scoped Cases I/II (Cases gain the panel requirement;
+III is 22–23).

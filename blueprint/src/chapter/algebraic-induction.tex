@@ -290,9 +290,29 @@ Cases~I and~II travel toward the smaller inductive graph.
   to $P^\flat$ verbatim.
 \end{proof}
 
+\begin{lemma}[Rigid cycle dimension bound ($|V| \le D$)]
+  \label{lem:cycle-realization-dim-bound}
+  \lean{CombinatorialRigidity.Molecular.card_le_screwDim_of_linearIndependent,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.card_le_screwDim_of_supportExtensor_linearIndependent}
+  \leanok
+  \uses{def:panel-hinge-framework, def:rigidity-matrix}
+  If the supporting extensors of $m$ edges of a panel-hinge framework are linearly
+  independent in the screw space $\Lambda^k \R^{k+2}$, then $m \le D = \binom{k+2}{2}$.
+  This is the upper half $|V| \le D$ of the cycle hypothesis $3 \le |V| \le D$ in
+  \cref{lem:cycle-realization}: a cycle of $m$ panels and $m$ hinges is infinitesimally
+  rigid exactly when its $m$ supporting extensors are independent, which the
+  $D$-dimensionality of the screw space (\cref{def:rigidity-matrix}) caps at $m \le D$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  A linearly independent family in a $D$-dimensional space has at most $D$ members
+  ($\dim \Lambda^k \R^{k+2} = D$, the screw-space dimension of
+  \cref{def:rigidity-matrix}).
+\end{proof}
+
 \begin{lemma}[Cycle realizations; KT Lemma 5.4]
   \label{lem:cycle-realization}
-  \uses{def:rigidity-matrix, lem:cycle-realization-base}
+  \uses{def:rigidity-matrix, lem:cycle-realization-base, lem:cycle-realization-dim-bound}
   A cycle graph $G = (V, E)$ with $3 \le |V| \le D$ has an
   infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$
   --- equivalently a realization at the full rank $D(|V|-1)$, the
@@ -303,9 +323,10 @@ Cases~I and~II travel toward the smaller inductive graph.
   $3$-dimensional, $D = 6$ case) and
   Whiteley~\cite[Proposition~3]{whiteley1999}, the technique extending
   to general $d$ without modification. The two-body base is
-  \cref{lem:cycle-realization-base}; the general cycle ($|V| \ge 3$)
-  and the generic-panel independence argument supplying the
-  independent supporting extensors (bottoming on the
+  \cref{lem:cycle-realization-base} and the upper bound $|V| \le D$ on
+  the hypothesis is \cref{lem:cycle-realization-dim-bound}; the general
+  cycle ($|V| \ge 3$) and the generic-panel independence argument
+  supplying the independent supporting extensors (bottoming on the
   extensor-independence Lemma~2.1, \cref{lem:extensor-independence})
   remain --- the genericity device (Claim~6.4/6.9) shared with
   Cases~I and~II.
