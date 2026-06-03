@@ -13,6 +13,7 @@ import CombinatorialRigidity.Molecular.AlgebraicInduction
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor
 import CombinatorialRigidity.Molecular.Induction
+import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.RigidityMatrix
 import CombinatorialRigidity.PebbleGame.Correctness
 import CombinatorialRigidity.PebbleGame.Examples

@@ -1634,6 +1634,30 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `exteriorPower.topEquiv` (+ `Set.powersetCard.instUniqueTop`) — the top-power volume-form iso `⋀ⁿ (Fin n → R) ≃ₗ R`
+- **Where it bit:** Phase 21a deliverable 1 (`Molecular/Meet.lean`,
+  `screwAlgebraTopEquiv`): the volume form `⋀^(k+2) (Fin (k+2) → ℝ) ≃ₗ ℝ`
+  through which the perfect wedge pairing lands in `ℝ`, on which
+  `complementIso` and the regressive product `meet` are built.
+- **Friction:** mathlib ships only the two boundary exterior-power isos
+  `exteriorPower.zeroEquiv` (`⋀⁰ M ≃ₗ R`) and `oneEquiv` (`⋀¹ M ≃ₗ M`), plus
+  the dimension count `exteriorPower.finrank_eq`, but not the *top*-power iso
+  `⋀ⁿ M ≃ₗ R` for `n = finrank M`. The clean construction goes through the
+  top-power basis `Module.Basis.exteriorPower (Pi.basisFun …)`, indexed by
+  `Set.powersetCard (Fin n) n` — which is a singleton (the full set is the
+  unique `n`-element subset) — but mathlib carries no `Unique` instance for
+  that top case, so `LinearEquiv.funUnique` can't fire directly.
+- **Resolution:** mirrored as
+  - `Set.powersetCard.instUniqueTop : Unique (Set.powersetCard (Fin n) n)`
+    (default `Finset.univ`; uniqueness via `Finset.eq_univ_of_card`).
+  - `exteriorPower.topEquiv : ⋀ⁿ (Fin n → R) ≃ₗ R` (any `CommRing R`), the
+    standard-basis top-power basis's `equivFun` composed with
+    `LinearEquiv.funUnique` on the singleton index; with the characterizing
+    `@[simp]` lemma `topEquiv_ιMulti_family_default` (all-basis wedge ↦ `1`).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Sits
+  naturally alongside `Module.Basis.exteriorPower` and `finrank_eq`.
+
 ### [mirrored] `Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero` + `finite_setOf_not_linearIndependent_rows_along_affine_path` (rectangular Gram det + polynomial-along-line)
 - **Where it bit:** Phase 8 target `linearRigidityMatroid_eq_rigidityMatroid`
   in `LinearRigidityMatroid.lean`, the inductive proof of

@@ -1,6 +1,6 @@
 # Phase 21a — Grassmann–Cayley meet / projective-duality foundations (work log)
 
-**Status:** planning (recorded 2026-06-03; no Lean yet). Prerequisite
+**Status:** in progress (opened 2026-06-03). Prerequisite
 sub-phase of the Phase-21 algebraic induction, inserted after the
 panel-coplanarity modeling correction (DESIGN.md *Panel-hinge =
 hinge-coplanar body-hinge: the coplanarity layer*; MolecularConjecture.md
@@ -8,7 +8,17 @@ risk #7 + the Phase-21a detail).
 
 ## Current state
 
-Plan only. Phase 21 (algebraic induction) is **paused**: its
+**Deliverable 1 (`topEquiv`) is green.** New file `Molecular/Meet.lean`
+opened the phase (`screwAlgebraTopEquiv : ⋀^(k+2) (Fin (k+2) → ℝ) ≃ₗ ℝ`,
+the `N = k+2` specialization), with the general fact
+(`exteriorPower.topEquiv : ⋀ⁿ (Fin n → R) ≃ₗ R` over any `CommRing`)
+mirrored under `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` alongside
+its enabling `Unique` instance on the top-power index. Forward-mode
+blueprint chapter `meet.tex` (`sec:molecular-meet`) opened with the same
+commit: `def:meet-top-equiv` green, the other three deliverables red.
+Next: `pairingDualEquiv` (deliverable 2).
+
+Phase 21 (algebraic induction) is **paused**: its
 realization-existence statements need a *panel* layer (coplanar hinges,
 DESIGN.md), and the panel layer + Lemma 5.4 + Phase 25 all rest on the
 **meet** (regressive product) — the dual half of the Grassmann–Cayley
@@ -42,10 +52,11 @@ layer on top.
 ## Lemma checklist (forward-mode; all red — planning)
 
 Dependency order (route (ii); `N = k+2`, `V = Fin (k+2) → ℝ`):
-1. [ ] `topEquiv : ⋀ᴺ V ≃ₗ R` — canonical top-power iso via the standard
+1. [x] `topEquiv : ⋀ᴺ V ≃ₗ R` — canonical top-power iso via the standard
    basis (`Module.Basis.exteriorPower (Pi.basisFun …)` +
-   `exteriorPower.finrank_eq`). Mathlib has only `zeroEquiv` / `oneEquiv`;
-   this is a mirror lemma.
+   `LinearEquiv.funUnique` on the singleton top-power index). Mathlib has
+   only `zeroEquiv` / `oneEquiv`; landed as the mirror `exteriorPower.topEquiv`
+   + the project specialization `screwAlgebraTopEquiv`.
 2. [ ] `pairingDualEquiv : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*` (free finite `V`) — upgrade
    mathlib's `exteriorPower.pairingDual` (a bare `→ₗ`) to an iso via its
    dual-basis lemmas (`pairingDual_apply_apply_eq_one` / `_one_zero`) +
@@ -68,7 +79,15 @@ metric Hodge star.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-*(none yet — planning)*
+- **`topEquiv` via the singleton top-power index, not `finrank_eq`.** The
+  cleanest route is `(Pi.basisFun ℝ (Fin N)).exteriorPower N).equivFun ≪≫ₗ
+  LinearEquiv.funUnique …`: the top-power basis is indexed by
+  `Set.powersetCard (Fin N) N`, which is a singleton (`Unique`, only
+  `Finset.univ`), so `funUnique` collapses the `pi`-type to `ℝ`
+  canonically. The mirror adds the `Set.powersetCard.instUniqueTop`
+  instance to enable this; stated over a general `CommRing` for maximal
+  upstream eligibility. The characterizing simp lemma
+  `topEquiv_ιMulti_family_default` sends the all-basis wedge to `1`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *Panel-coplanarity gap; coplanarity layer; meet front-loaded; route
@@ -91,11 +110,13 @@ metric Hodge star.
 
 ## Hand-off / next phase
 
-Plan only; no Lean yet (plan-first, per the panel re-scope). When work
-resumes, the first Lean commit is **deliverable 1, `topEquiv`** — the
-smallest leaf, a mirror lemma `⋀ᴺ (Fin (k+2) → ℝ) ≃ₗ ℝ`. Then
-`pairingDualEquiv` (2), `complementIso` (3), `meet` + its lemmas (4); a
-forward-mode blueprint chapter opens with that first commit. When 21a's
+Deliverable 1 (`topEquiv`) green; chapter `meet.tex` opened. **Next
+concrete commit: deliverable 2, `pairingDualEquiv : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*`**
+for free finite `V` — upgrade mathlib's `exteriorPower.pairingDual` (a
+bare `→ₗ`) to an iso via its dual-basis lemmas
+(`pairingDual_apply_apply_eq_one` / `_one_zero`) + `Module.Basis.exteriorPower`;
+mirror it alongside `topEquiv` and flip `def:meet-pairing-dual` green.
+Then `complementIso` (3), `meet` + its lemmas (4). When 21a's
 deliverables are green, **Phase 21 resumes** with the panel layer
 (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar` once; DESIGN.md
 *Panel-hinge = hinge-coplanar body-hinge*), then Lemma 5.4 (panel cycle),

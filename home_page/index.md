@@ -217,6 +217,7 @@ existing files or refactor across several).
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` | ◷ |
+|   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

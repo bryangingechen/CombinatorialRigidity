@@ -1,0 +1,99 @@
+\section{Grassmann--Cayley meet and projective duality}
+\label{sec:molecular-meet}
+
+This chapter is the \textbf{Phase~21a} dep-graph: the \emph{dual half}
+of the Grassmann--Cayley algebra of
+Katoh--Tanigawa~\cite[\S2.1]{katohTanigawa2011}, a prerequisite
+sub-phase of the algebraic induction (\cref{sec:molecular-algebraic-induction})
+inserted by the panel-coplanarity re-scope. Where
+\cref{sec:molecular-homog} built the \emph{join} (the progressive
+product $A \vee B$, the symbolic exterior product on
+$\bigwedge[\R] \R^{k+2}$) and a coordinatized
+Plücker bridge, this chapter builds the \emph{meet} (the regressive
+product) and the projective-duality dictionary on which it rests, on the
+same concrete carrier. The meet is the device the panel-coplanarity
+layer, the cycle-realization Lemma~5.4 (Crapo--Whiteley~\cite{crapoWhiteley1982}),
+and the projective invariance of Phase~25 all consume.
+
+The construction is \textbf{metric-free}: projective geometry needs no
+inner product, only the top-power volume form (an orientation). Write
+$N = k+2$ and $V = \R^{N}$ for the homogeneous-coordinate carrier
+of $\cref{sec:molecular-homog}$; the top graded piece
+$\bigwedge^{N} V$ is free of rank $\binom{N}{N} = 1$, hence
+canonically $\cong \R$.
+
+\medskip
+\noindent\emph{Status.} In progress. The top-power volume-form iso
+(\cref{def:meet-top-equiv}) is green, formalized in
+\texttt{Molecular/Meet.lean} (with the general fact mirrored under
+\texttt{Mathlib/LinearAlgebra/ExteriorPower/Basis.lean}). The
+duality-pairing iso, the complement iso, and the regressive product
+itself remain to be formalized.
+
+\begin{definition}[Top-power volume form $\bigwedge^{N} V \cong \R$]
+  \label{def:meet-top-equiv}
+  \lean{CombinatorialRigidity.Molecular.screwAlgebraTopEquiv,
+    exteriorPower.topEquiv}
+  \leanok
+  The $N$-th exterior power of a free module of rank $N$ is free of rank
+  $\binom{N}{N} = 1$, hence canonically isomorphic to the base ring. On
+  the standard carrier $V = \R^{N}$ this is the \emph{volume
+  form}: the linear isomorphism
+  \[
+    \mathrm{topEquiv} : \bigwedge^{N} V \xrightarrow{\ \sim\ } \R,
+  \]
+  sending the wedge $\mathbf{e}_1 \wedge \cdots \wedge \mathbf{e}_N$ of all
+  standard basis vectors to $1$. It carries an orientation, not a metric:
+  the meet is built from it without any inner-product structure.
+\end{definition}
+\begin{proof}
+  \leanok
+  Built from the standard-basis top-power basis
+  $\mathrm{Module.Basis.exteriorPower}\,(\mathrm{Pi.basisFun}\ \R\ (\mathrm{Fin}\ N))$,
+  whose index set $\mathrm{powersetCard}\,(\mathrm{Fin}\ N)\ N$ is a
+  singleton (the full set is the unique $N$-element subset of an
+  $N$-element type), composed with the unique-index evaluation
+  $\mathrm{LinearEquiv.funUnique}$. The general fact (over any commutative
+  ring, on $\mathrm{Fin}\ n \to R$) is the mirror lemma
+  $\mathrm{exteriorPower.topEquiv}$; $\mathrm{screwAlgebraTopEquiv}$ is the
+  $N = k+2$ specialization on the screw-algebra carrier of
+  \cref{sec:molecular-homog}.
+\end{proof}
+
+\begin{definition}[Exterior-power duality iso $\bigwedge^{j} V^{*} \cong (\bigwedge^{j} V)^{*}$]
+  \label{def:meet-pairing-dual}
+  \uses{def:meet-top-equiv}
+  For free finite $V$, mathlib's $\mathrm{exteriorPower.pairingDual}$ is a
+  bare linear map $\bigwedge^{j} V^{*} \to (\bigwedge^{j} V)^{*}$; it
+  upgrades to an isomorphism via its dual-basis evaluation lemmas. This is
+  the \textbf{projective-duality dictionary entry} reused by the
+  Crapo--Whiteley projective-invariance development of Phase~25.
+\end{definition}
+
+\begin{definition}[Complement iso $\bigwedge^{j} V \cong \bigwedge^{N-j} V$]
+  \label{def:meet-complement-iso}
+  \uses{def:meet-top-equiv, def:meet-pairing-dual}
+  The perfect wedge pairing
+  $\bigwedge^{j} V \times \bigwedge^{N-j} V \to \bigwedge^{N} V
+  \cong \R$ (the join of \cref{sec:molecular-homog} followed by the
+  volume form of \cref{def:meet-top-equiv}) is nondegenerate for free $V$,
+  inducing a linear isomorphism
+  $\bigwedge^{j} V \cong \bigwedge^{N-j} V$. This is the genuinely
+  new core of the chapter; the grade-swap sign is routed through the
+  duality iso of \cref{def:meet-pairing-dual}.
+\end{definition}
+
+\begin{definition}[The regressive product (meet)]
+  \label{def:meet}
+  \uses{def:meet-complement-iso}
+  The \emph{meet} (regressive product) $A \wedge B$ of two extensors is the
+  composite
+  $\mathrm{complementIso}^{-1} \circ \vee \circ (\mathrm{complementIso}
+  \times \mathrm{complementIso})$ --- the join of \cref{sec:molecular-homog}
+  transported across the complement iso of \cref{def:meet-complement-iso}.
+  Its nonvanishing characterizes transversality (independence) of the two
+  factors; geometrically, the meet of two hyperplane normals is the
+  supporting extensor of their codimension-2 intersection, landing in the
+  screw space of \cref{sec:molecular-rigidity-matrix}. This is the device
+  the panel-coplanarity layer and Lemma~5.4 consume.
+\end{definition}
