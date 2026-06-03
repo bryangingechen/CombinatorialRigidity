@@ -2495,6 +2495,16 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored. The callsite collapses to one `rw`.
 - **Mirror file:** `Mathlib/Data/Finset/Card.lean`.
 
+### [resolved] `LinearMap.proj u - LinearMap.proj v` over a Pi type elaborates stuck
+
+`def screwDiff (u v : α) : (α → W) →ₗ[ℝ] W := LinearMap.proj u - LinearMap.proj v`
+fails with *"typeclass instance problem is stuck … `(i : α) → Module ?m (?φ i)`"*:
+the `-` unifies the two `proj` summands before the declared codomain, leaving the
+Pi fiber metavariable. Fixed by type-ascribing the first summand to the full
+`LinearMap` type (`(R := ℝ)` alone is insufficient). Hit building
+`BodyHingeFramework.screwDiff` in `Molecular/RigidityMatrix.lean` (Phase 21b
+rigidity-matrix row-functional plumbing). **Lifted to:** TACTICS-QUIRKS § 30.
+
 ## Archived: Resolved (project-internal)
 
 The body of this section was moved to

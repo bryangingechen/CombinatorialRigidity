@@ -159,6 +159,12 @@ bullets. If one matches, jump to the named section of
   `cons_isClosed_iff`), edgeSet membership uses `cons_edgeSet` +
   `mem_edgeSet_iff`, and sublist edge-containment is
   `WList.IsSublist.edge_subset` (not `…edgeSet_subset`).
+- *"typeclass instance problem is stuck … `(i : α) → Module ?m (?φ i)`"* on a
+  `def f : (α → W) →ₗ[ℝ] W := LinearMap.proj u - LinearMap.proj v` (the `-`
+  unifies the two `proj` summands before the declared codomain, leaving the Pi
+  fiber stuck) → § 30 *`LinearMap.proj i - LinearMap.proj j` over a Pi type*:
+  type-ascribe the first summand to the full `LinearMap` type (`(R := ℝ)` alone
+  is not enough).
 
 ## Starting a Lean-touching session
 

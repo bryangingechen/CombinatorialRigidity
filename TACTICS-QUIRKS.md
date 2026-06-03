@@ -1190,3 +1190,32 @@ Worked case: `Graph.isAcyclicSet_splitOff_reroute` in `Molecular/Induction.lean`
 by its `v`-traversing 2-path). Companion to the explicit-cyclic-walk tower in
 `isCycleSet_pair_edgeFiber_splitOff` (FRICTION "Building a small explicit cyclic
 walk").
+
+## 30. `LinearMap.proj i - LinearMap.proj j` over a Pi type leaves the fiber/`R` stuck
+
+**Symptom.** A definition like
+```
+def screwDiff (u v : α) : (α → W) →ₗ[ℝ] W := LinearMap.proj u - LinearMap.proj v
+```
+fails to elaborate with *"typeclass instance problem is stuck, it is often due to
+metavariables: `(i : α) → Module ?m (?φ i)`"*, even though the declared type pins
+both the domain `α → W` and codomain `W`. The `-` (over the `LinearMap` module)
+unifies the two `proj` summands' types with each other *before* either is unified
+against the declared codomain, so the Pi fiber family `?φ` and the scalar `?R`
+stay metavariables and the `Module` instance can't be synthesized.
+
+**Fix.** Type-ascribe the *first* summand to the full `LinearMap` type; the second
+then unifies against it:
+```
+def screwDiff (u v : α) : (α → W) →ₗ[ℝ] W :=
+  (LinearMap.proj u : (α → W) →ₗ[ℝ] W) - LinearMap.proj v
+```
+`(R := ℝ)` on each `proj` alone is *not* enough — it pins the scalar but leaves the
+fiber family `?φ` stuck; the whole-LinearMap ascription is what fixes `?φ`. The
+companion `_apply` lemma is then not `rfl` (the `proj` subtraction doesn't reduce
+to the projection form under a `public section`): close it with
+`rw [LinearMap.sub_apply, LinearMap.proj_apply, LinearMap.proj_apply]`.
+
+Worked case: `BodyHingeFramework.screwDiff` in `Molecular/RigidityMatrix.lean`
+(Phase 21b, the relative-screw evaluation `S ↦ S u - S v` underlying the
+rigidity-matrix row functionals).

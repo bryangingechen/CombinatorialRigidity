@@ -86,6 +86,9 @@ and the generic-rank argument are in hand.
   \label{def:rigidity-matrix}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimalMotion,
     CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.rigidityRows,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_dualCoannihilator,
     CombinatorialRigidity.Molecular.ScrewSpace,
     CombinatorialRigidity.Molecular.screwDim,
     CombinatorialRigidity.Molecular.screwSpace_finrank}
@@ -106,7 +109,14 @@ and the generic-rank argument are in hand.
   of all such $S$. The screw space $\R^{D}$ is realized as the degree-$(d-1)$
   graded piece $\bigwedge^{d-1}\R^{d+1}$ where the extensors $C(p(e))$
   live, with $\operatorname{finrank} = D = \binom{d+1}{2}$
-  (\texttt{screwSpace\_finrank}).
+  (\texttt{screwSpace\_finrank}). The block-row structure is carried as the
+  family of \emph{row functionals} $\mathrm{hingeRow}(u,v,r) \colon S \mapsto
+  r(S(u) - S(v))$, one per oriented edge $e = uv$ and row $r$ of $r(p(e))$;
+  their collection is $\mathrm{rigidityRows}$, and $Z(G,p)$ is exactly the
+  common kernel of this family --- the dual coannihilator of its span
+  ($\mathrm{infinitesimalMotions\_eq\_dualCoannihilator}$), the kernel reading
+  $Z(G,p) = \ker R(G,p)$ in the functional encoding the Phase-21b genericity
+  device parametrizes by the panel coordinates.
 \end{definition}
 
 \begin{definition}[Degree of freedom; generic realization]

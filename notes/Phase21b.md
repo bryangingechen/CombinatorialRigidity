@@ -28,6 +28,27 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**RigidityMatrix coordinatization landed (2026-06-03), connecting the
+analytic engine to the consumers.** Step (i) of the hand-off is done:
+`F.infinitesimalMotions` is now expressed as the `dualCoannihilator` of
+the span of an explicit row-functional family on the screw-assignment
+space `α → ScrewSpace k`. Four new declarations in
+`Molecular/RigidityMatrix.lean` (beside the basis-free hinge-row block):
+`screwDiff u v` (the relative-screw evaluation `S ↦ S u − S v`, a
+`LinearMap`), `hingeRow u v r := r ∘ₗ screwDiff u v` (one coordinatized
+row of `R(G,p)`), `rigidityRows F` (the set of all such rows over links ×
+hinge-row-block elements), and the load-bearing identity
+`infinitesimalMotions_eq_dualCoannihilator : F.infinitesimalMotions =
+(span ℝ F.rigidityRows).dualCoannihilator` (via
+`Submodule.coe_dualCoannihilator_span` + `hingeConstraint_iff_hingeRowBlock`).
+This is exactly the shape
+`finrank_dualCoannihilator_along_affine_path_cofinite` consumes — the
+remaining step is the affine path through panel-coordinate space (steps
+(ii)/(iii); see *Hand-off*). Green, build+lint clean, axioms {propext,
+Classical.choice, Quot.sound}. Folded into the existing
+`def:rigidity-matrix` node's `\lean{...}` pin (forward-mode plumbing for
+that node, not a new node); `lem:genericity-device` stays red.
+
 **Analytic engine landed in both span (rank) and coannihilator
 (codimension) form (2026-06-03).** The reuse-to-assess is resolved
 (see *Decisions made* below): the device reuses the Phase-6/8 Gram-det
@@ -91,6 +112,11 @@ hand-off convenience.
   functional family) has `finrank` cofinitely bounded *above* by
   `finrank V − #s`. The consumer-facing shape (`dim ker ≤ value`).
   Green; mirror lemma (no blueprint node).
+- [x] RigidityMatrix coordinatization (step (i),
+  `Molecular/RigidityMatrix.lean`): `screwDiff`, `hingeRow`,
+  `rigidityRows`, and `infinitesimalMotions_eq_dualCoannihilator`
+  (`Z(G,p) = (span rigidityRows).dualCoannihilator`). Green; folded
+  into the `def:rigidity-matrix` node's `\lean{...}` pin (no new node).
 
 The consumer-side discharge targets (each currently a named hypothesis
 in the Phase-21 Lean, to be supplied by the device):
@@ -138,6 +164,17 @@ in the Phase-21 Lean, to be supplied by the device):
   "≥ #s cofinitely" becomes "coann ≤ finrank V − #s cofinitely"
   verbatim. Conclusion stated additively (`finrank V < #s + finrank
   coann`) to avoid `ℕ`-subtraction.
+- **Coordinatize `R(G,p)` as a functional family, not a coordinate
+  matrix.** Step (i): the rows are `hingeRow u v r = r ∘ₗ screwDiff u v`
+  on `α → ScrewSpace k` (`screwDiff = proj u − proj v`), one per
+  link × hinge-row-block element; `rigidityRows` is their set, and
+  `infinitesimalMotions_eq_dualCoannihilator` reads `Z(G,p)` off as
+  `(span rigidityRows).dualCoannihilator`. This keeps the screw space the
+  graded-piece element (no `⋀^k ≅ ℝ^D` basis forced) and matches the
+  coannihilator brick's shape exactly. Folded into `def:rigidity-matrix`
+  (forward-mode plumbing for an existing node, not a new node), parallel
+  to the two Rank.lean bricks being node-free mirror lemmas.
+  Elaboration gotcha (`proj − proj` stuck): TACTICS-QUIRKS § 30.
 
 ## Blockers / open questions
 
@@ -166,34 +203,41 @@ in the Phase-21 Lean, to be supplied by the device):
 
 ## Hand-off / next phase
 
-**Smallest next concrete commit (the split-off step (i) plumbing):**
-the abstract analytic engine is now complete in *both* the span (rank)
-and coannihilator (codimension) forms; what is left to connect it to
-the consumers is the RigidityMatrix coordinatization. Concretely:
-express `F.infinitesimalMotions` (the basis-free
-`IsInfinitesimalMotion` kernel) as the `dualCoannihilator` of the span
-of an explicit, panel-coordinate-parametrized functional family on the
-screw-assignment space `α → ScrewSpace k` — i.e. give a coordinatized
-row-vector view of `hingeConstraint` / `hingeRowBlock` whose entries
-are affine (indeed polynomial) in the per-vertex panel normals. This is
-the step (i) plumbing the previous hand-off flagged as "its own brick";
-it is the load-bearing new `RigidityMatrix.lean` work and is one
-focused commit (a `LinearMap`/functional view of the per-edge hinge
-row block + the identity `infinitesimalMotions = dualCoannihilator
-(span rows)`).
+**Step (i) (the RigidityMatrix coordinatization) is now done** (see
+*Current state*): `infinitesimalMotions_eq_dualCoannihilator` expresses
+`Z(G,p)` as `(span ℝ rigidityRows).dualCoannihilator`, the exact shape
+`finrank_dualCoannihilator_along_affine_path_cofinite` consumes. The
+`rigidityRows` entries are `hingeRow u v r = r ∘ₗ screwDiff u v`; the
+panel-coordinate dependence enters through `r ∈ hingeRowBlock e =
+(span {supportExtensor e})ᵒ` and `supportExtensor` of a
+`PanelHingeFramework` is `panelSupportExtensor (n_u, n_v)`, polynomial
+in the normals.
 
-Once that view lands, the per-consumer discharge is short: (ii) choose
-an affine path through panel-coordinate space whose `t₀` is the good
-realization `exists_independent_panelSupportExtensor` already supplies;
-(iii) apply `finrank_dualCoannihilator_along_affine_path_cofinite` to
-get cofinitely-many `t` with `dim Z(G,p_t) ≤ target`, pick one real `t`
-off the finite bad set, and read off the consumer's hypothesis. Start
-with **one** consumer — `hglue` for Case I
+**Smallest next concrete commit (step (ii)/(iii), one consumer):** wire
+the abstract device to the *first* consumer. Concretely: (ii) exhibit an
+affine path `t ↦ panel normals` through panel-coordinate space whose `t₀`
+is the good realization `exists_independent_panelSupportExtensor`
+supplies, with the `rigidityRows` re-expressed as an affine family
+`a i + t • b i : ι → Module.Dual ℝ (α → ScrewSpace k)` (the row
+functionals are affine in the normals — assess on contact whether a
+*single* scalar path suffices or the multivariate Zariski-open form is
+needed; the single-path route worked for Phase 8's
+`exists_uniform_rowIndependent_placement`, try it first); (iii) apply
+`finrank_dualCoannihilator_along_affine_path_cofinite` to get
+cofinitely-many `t` with `dim Z(G,p_t) ≤ target`, pick one real `t` off
+the finite bad set, and read off the consumer's hypothesis. Start with
+**one** consumer — `hglue` for Case I
 (`rankHypothesis_iff_finrank_pinnedMotionsOn`) is the cleanest target
-since it is a single `finrank` inequality. The device's *target
-statements* are fixed: the consumers' `hglue`/`hspan`/`hub`/`hgen`
-hypotheses (see *Lemma checklist* + the named hypotheses in
-`AlgebraicInduction.lean`).
+since it is a single `finrank` inequality
+(`dim Z(G,p) ≤ D + dim Z_s`). The device's *target statements* are
+fixed: the consumers' `hglue`/`hspan`/`hub`/`hgen` hypotheses (see
+*Lemma checklist* + the named hypotheses in `AlgebraicInduction.lean`).
+
+The likely API gap on contact: the device's affine-path brick
+parametrizes by a *single* scalar `t`, but the panel-coordinate space is
+multivariate; bridging may need either a single-line restriction (as in
+Phase 8) or a multivariate generalization of the Rank.lean brick. Pin
+that down before committing to the per-consumer wiring shape.
 
 **Also consumed by Phases 22–23** (Case III candidate-framework
 genericity, Claims 6.11/6.12), so building the device standalone pays

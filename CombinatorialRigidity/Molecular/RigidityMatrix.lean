@@ -219,6 +219,53 @@ theorem hingeConstraint_iff_hingeRowBlock (F : BodyHingeFramework k α β)
     rw [← Subspace.dualAnnihilator_dualCoannihilator_eq
       (W := Submodule.span ℝ {F.supportExtensor e}), Submodule.mem_dualCoannihilator]
 
+/-- The **relative-screw evaluation** `screwDiff u v : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k`
+(`def:rigidity-matrix`): the linear map sending a screw assignment `S` to the relative screw
+center `S u - S v` of the bodies `u, v`. It is the difference of the two coordinate projections
+`proj u − proj v`; the per-edge hinge constraint (`def:hinge-constraint`) and the row functionals
+of `R(G,p)` (`hingeRow`) are built from it. -/
+def screwDiff (u v : α) : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k :=
+  (LinearMap.proj u : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k) - LinearMap.proj v
+
+@[simp]
+theorem screwDiff_apply (u v : α) (S : α → ScrewSpace k) :
+    screwDiff (k := k) u v S = S u - S v := by
+  rw [screwDiff, LinearMap.sub_apply, LinearMap.proj_apply, LinearMap.proj_apply]
+
+/-- A **row functional** of the panel-hinge rigidity matrix `R(G,p)` (`def:rigidity-matrix`): the
+linear functional on the screw-assignment space `α → ScrewSpace k` sending `S ↦ r (S u − S v)`,
+for a row `r` of the hinge-row block (`def:hinge-row-block`) at an oriented edge `e = uv`. This is
+the coordinatized view of one row of `R(G,p)`: the block row of the oriented edge `e = uv` carries
+the dual element `r` in `u`'s `D` columns and `−r` in `v`'s, zero elsewhere, so its dot product
+with `S` is exactly `r (S u − S v)`. Built basis-free as `r ∘ₗ screwDiff u v` — the composite of
+the relative-screw evaluation `screwDiff` with the hinge-row-block functional `r ∈ Module.Dual ℝ
+(ScrewSpace k)` — so that the rigidity matrix is carried as the *family* of these functionals
+(`rigidityRows`) and its null space `Z(G,p)` is their common kernel
+(`infinitesimalMotions_eq_dualCoannihilator`). It depends only on the endpoints `u v` and the row
+`r`, not on which edge `e` carries the hinge; the edge is recorded only at the family level
+(`rigidityRows`, which pairs `u v` with the rows of the edge's hinge-row block). -/
+def hingeRow (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) :
+    Module.Dual ℝ (α → ScrewSpace k) :=
+  r ∘ₗ screwDiff (k := k) u v
+
+@[simp]
+theorem hingeRow_apply (u v : α) (r : Module.Dual ℝ (ScrewSpace k))
+    (S : α → ScrewSpace k) :
+    hingeRow (k := k) (α := α) u v r S = r (S u - S v) := by
+  rw [hingeRow, LinearMap.comp_apply, screwDiff_apply]
+
+/-- The **rows of the panel-hinge rigidity matrix `R(G,p)`** (`def:rigidity-matrix`): the set of
+all row functionals `hingeRow u v r` over every link `e = uv` of `G` and every row `r` of the
+hinge-row block `r(p(e))` (`def:hinge-row-block`). This is the basis-free carrier of `R(G,p)` as
+a *family of functionals* on the screw-assignment space `α → ScrewSpace k` — its span is the row
+space of the matrix and its common kernel (the dual coannihilator of that span) is the null space
+`Z(G,p) = infinitesimalMotions` (`infinitesimalMotions_eq_dualCoannihilator`). Carrying the matrix
+this way (rather than as an explicit `(D−1)|E| × D|V|` real coordinate matrix) keeps the screw
+space the graded-piece element and lets the rank arguments run through `Module.Dual`; it is the
+view the Phase-21b genericity device parametrizes by the panel coordinates. -/
+def rigidityRows (F : BodyHingeFramework k α β) : Set (Module.Dual ℝ (α → ScrewSpace k)) :=
+  {φ | ∃ e u v, F.graph.IsLink e u v ∧ ∃ r ∈ F.hingeRowBlock e, φ = hingeRow u v r}
+
 /-- **Infinitesimal motion** of a body-hinge framework `(G,p)` (`def:rigidity-matrix`): a
 screw assignment `S : α → ScrewSpace k` is an infinitesimal motion when it satisfies the
 hinge constraint (`def:hinge-constraint`) at *every* edge of `G`, i.e. for every edge `e`
@@ -278,6 +325,38 @@ def infinitesimalMotions (F : BodyHingeFramework k α β) :
 theorem mem_infinitesimalMotions (F : BodyHingeFramework k α β) (S : α → ScrewSpace k) :
     S ∈ F.infinitesimalMotions ↔ F.IsInfinitesimalMotion S :=
   Iff.rfl
+
+/-- **The null space `Z(G,p)` is the common kernel of the rows of `R(G,p)`**
+(`def:rigidity-matrix`): the infinitesimal-motion subspace equals the **dual coannihilator** of the
+span of the rigidity rows,
+
+  `F.infinitesimalMotions = (Submodule.span ℝ F.rigidityRows).dualCoannihilator`.
+
+This is the coordinatized reading of `Z(G,p) = ker R(G,p)` against the basis-free row family
+`rigidityRows` (`def:rigidity-matrix`): the dual coannihilator of a span is the common kernel of
+the functionals (`Submodule.coe_dualCoannihilator_span`), so an infinitesimal motion is exactly a
+screw assignment annihilated by every row functional `hingeRow e u v r` of every link `e = uv` and
+every row `r` of the hinge-row block. The per-edge match is the row-block restatement of the hinge
+constraint `hingeConstraint_iff_hingeRowBlock` (`r (S u − S v) = 0` for all `r ∈ r(p(e))`). This is
+the load-bearing identity that lets the Phase-21b genericity device — which works on a `finrank`
+upper bound for the `dualCoannihilator` of an affine family of functionals
+(`LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite`) — speak directly about
+`dim Z(G,p)`. -/
+theorem infinitesimalMotions_eq_dualCoannihilator (F : BodyHingeFramework k α β) :
+    F.infinitesimalMotions = (Submodule.span ℝ F.rigidityRows).dualCoannihilator := by
+  apply SetLike.coe_injective
+  rw [Submodule.coe_dualCoannihilator_span]
+  ext S
+  simp only [SetLike.mem_coe, mem_infinitesimalMotions, Set.mem_setOf_eq]
+  constructor
+  · rintro hS φ ⟨e, u, v, he, r, hr, rfl⟩
+    rw [hingeRow_apply]
+    exact (hingeConstraint_iff_hingeRowBlock F S e u v).1 (hS e u v he) r hr
+  · intro hS e u v he
+    rw [hingeConstraint_iff_hingeRowBlock]
+    intro r hr
+    have := hS (hingeRow u v r) ⟨e, u, v, he, r, hr, rfl⟩
+    rwa [hingeRow_apply] at this
 
 /-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
 assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
