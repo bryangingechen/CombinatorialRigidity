@@ -160,14 +160,21 @@ and Theorem~4.9.
 
 \begin{lemma}[Rigid-subgraph contraction preserves minimality; KT Lemma 3.5]
   \label{lem:contraction-minimality}
+  \lean{Graph.contraction_isMinimalKDof}
+  \leanok
   \uses{def:rigid-subgraph, lem:subgraph-minimality, def:k-dof, lem:rigid-full-rank, lem:contract-rank-bridge, lem:contract-deficiency-conservation, lem:contract-minimality-transport}
   Let $G$ be a minimal $k$-dof-graph and let $H$ be a proper rigid
   subgraph of $G$. Then the contraction $G / E(H)$ (collapse $V(H)$ to
   a single vertex, keeping the edges of $G$ incident to $V(H)$ from
   outside) is again a minimal $k$-dof-graph, with the same deficiency.
-  This is the engine of Case~I of the algebraic induction.
+  Stated on the matroid side --- the matroid contraction $M(\tilde G) /
+  E(\tilde H)$ is a minimal $k$-dof matroid at the reduced ambient
+  $D(|V(G)| - |V(H)|)$ --- so no graph$\leftrightarrow$matroid
+  correspondence is needed. This is the engine of Case~I of the
+  algebraic induction.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:contract-deficiency-conservation, lem:contract-minimality-transport}
   The deficiency is unchanged by
   \cref{lem:contract-deficiency-conservation}: contracting a rigid

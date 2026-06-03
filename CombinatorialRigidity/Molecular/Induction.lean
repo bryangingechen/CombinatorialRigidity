@@ -486,4 +486,44 @@ theorem contract_minimality_transport [DecidableEq β] [Finite α] [Finite β] {
       rwa [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hmem
     exact absurd hpH (hfiberdisj hp.2)
 
+/-! ## Rigid-subgraph contraction preserves minimality (`lem:contraction-minimality`)
+
+The full Katoh–Tanigawa Lemma 3.5: contracting a *proper rigid* subgraph `H` of a minimal
+`k`-dof-graph `G` again yields a minimal `k`-dof-graph, with the deficiency unchanged. The
+assembly packages the two halves already in hand. **No graph↔matroid `map` correspondence
+is needed** — both halves are stated against the matroid contraction `M(G̃) / E(H̃)`, and so
+is the assembled conclusion: the matroid contraction is itself a *minimal `k`-dof matroid*,
+i.e. it has corank `def(G̃)` at the reduced ambient `D(|V(G)| − |V(H)|)`
+(`contract_matroidMG_deficiency_eq`, deficiency conservation) **and** every base of it meets
+every surviving edge-fiber `ẽ` (`contract_minimality_transport`, minimality transport). This
+is the Case-I engine of the algebraic induction (Phases 21–23). -/
+
+/-- **Rigid-subgraph contraction preserves minimality** (`lem:contraction-minimality`;
+Katoh–Tanigawa 2011 Lemma 3.5, full form). For a *proper rigid* subgraph `H` of a minimal
+`k`-dof-graph `G` (`hG : G.IsMinimalKDof n k`, `hH : H.IsProperRigidSubgraph G n`) with
+`D = bodyBarDim n ≥ 1`, the matroid contraction `M(G̃) / E(H̃)` is a *minimal `k`-dof
+matroid* at the reduced ambient `D(|V(G)| − |V(H)|)`:
+
+* **deficiency conservation** — its corank at `D(|V(G)| − |V(H)|)` equals `def(G̃) = k`:
+  `D(|V(G)| − |V(H)|) − rank(M(G̃) / E(H̃)) = k`;
+* **minimality transport** — every base `B'` of `M(G̃) / E(H̃)` meets every surviving
+  edge-fiber `ẽ` of an edge `e ∈ E(G) \ E(H)`: `B' ∩ ẽ ≠ ∅`.
+
+The assembly is the conjunction of `contract_matroidMG_deficiency_eq` (rewriting its
+`G.deficiency n` RHS to `k` via `hG.1`) and `contract_minimality_transport`. Stated on the
+matroid side directly — no graph↔matroid `map` correspondence, matching how Katoh–Tanigawa's
+proof reasons. This is the Case-I engine of the algebraic induction (Phases 21–23). -/
+theorem contraction_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    {n : ℕ} {k : ℤ} (hD : 1 ≤ bodyBarDim n) (hG : G.IsMinimalKDof n k)
+    (hH : H.IsProperRigidSubgraph G n) (hVGne : V(G).Nonempty) :
+    bodyBarDim n * ((V(G).ncard : ℤ) - (V(H).ncard : ℤ))
+        - ((G.matroidMG n ／ E(H.mulTilde n)).rank : ℤ) = k ∧
+      ∀ B', ((G.matroidMG n) ／ E(H.mulTilde n)).IsBase B' →
+        ∀ e ∈ E(G), e ∉ E(H) → (B' ∩ edgeFiber e n).Nonempty := by
+  obtain ⟨⟨hle, hrigid⟩, hVHne, _⟩ := hH
+  refine ⟨?_, fun B' hB' e heG heH ↦ contract_minimality_transport hG hB' heG heH⟩
+  -- Deficiency conservation, with `def(G̃) = k` from `G`'s `k`-dof hypothesis.
+  have hdef := contract_matroidMG_deficiency_eq hle n hD hVHne hVGne hrigid
+  rwa [hG.1] at hdef
+
 end Graph
