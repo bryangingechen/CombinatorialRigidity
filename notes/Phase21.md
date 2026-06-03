@@ -109,13 +109,16 @@ Framework-construction op (shared infra for Cases I & II):
   `prop:rigidity-matrix-prop11` uses). Axiom-clean. Green.
 
 Case I (proper rigid subgraph; KT §6.2):
-- [~] `lem:cycle-realization` — KT Lemma 5.4, **cite-only** (decision
-  made; see *Decisions made* below). Statement corrected to KT's form
-  (a cycle graph with `3 ≤ |V| ≤ D` has an infinitesimally rigid =
-  full-rank `D(|V|−1)` nonparallel realization), citation pinned to the
-  verified primary sources Crapo–Whiteley 1982 Prop 3.4 + Whiteley 1999
-  (Kluwer) Prop 3. No `\leanok` (external geometric input, not
-  formalized); dep-graph node stays red.
+- [ ] `lem:cycle-realization` — KT Lemma 5.4. **Decision revised
+  2026-06-03: formalize before phase close** (was cite-only; see
+  *Decisions made* below for the original citation work, which stands,
+  and the abstract-model finding that reopened it). Statement is KT's
+  form (a cycle graph with `3 ≤ |V| ≤ D` has an infinitesimally rigid =
+  full-rank `D(|V|−1)` nonparallel realization). Citation to
+  Crapo–Whiteley 1982 Prop 3.4 + Whiteley 1999 (Kluwer) Prop 3 stays as
+  the source pointer. **Phase-close requirement:** must land green
+  (`\leanok`) before Phase 21 closes — a focused 1–2 commit task, not a
+  side phase (see the finding). Currently still red.
 - [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
   subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
   glue block-triangularly with a pinned rigid realization of `H`
@@ -182,23 +185,48 @@ decomposition).
   `|V|` are left for the next commit — they are where Cases I/II diverge.
   Needed the `Mathlib.Combinatorics.Graph.Subgraph` import (`≤` on
   `Graph` lives there, not `.Basic`).
-- **Cycle Lemma 5.4 (`lem:cycle-realization`): cite, don't formalize.**
+- **Cycle Lemma 5.4 (`lem:cycle-realization`): citation work (stands).**
   KT's Lemma 5.4 — a cycle graph with `3 ≤ |V| ≤ D` has an
   infinitesimally rigid nonparallel panel-hinge realization (= full rank
-  `D(|V|−1)`) — is a projective-geometry fact KT themselves cite to
-  external sources rather than reprove (the Grassmann-line-geometry
-  independence of the `k` hinge lines). Cited, not formalized; the node
-  stays red (no `\leanok`). Proposition numbers verified against the
-  local OCR'd primaries before pinning: [4] Crapo–Whiteley 1982
-  **Proposition 3.4** (`.refs/`, French+English columns p.25, `D=6`
-  case) and [34] Whiteley 1999 Kluwer **Proposition 3** (p.5); KT
-  attributes "[4, Proposition 3.4] or [34, Proposition 3]" itself. This
-  discharges the *Citation accuracy caveat* in MolecularConjecture.md.
-  Also corrected a prior mis-statement: the blueprint had glossed cycle
-  realization as "rank one less than the free value" — backwards; short
-  cycles (`|V| ≤ D`) are *rigid*, i.e. full rank. New bib entry
-  `whiteley1999` (verified against KT ref [34]; editor initials
-  corrected from KT's OCR-typo'd "Thorpe, O., Duxbury, O.").
+  `D(|V|−1)`). Proposition numbers verified against the local OCR'd
+  primaries: [4] Crapo–Whiteley 1982 **Proposition 3.4** (`.refs/`,
+  French+English columns p.25, `D=6` case) and [34] Whiteley 1999 Kluwer
+  **Proposition 3** (p.5); KT attributes "[4, Proposition 3.4] or [34,
+  Proposition 3]" itself. Discharges the *Citation accuracy caveat* in
+  MolecularConjecture.md. Corrected a prior mis-statement: the blueprint
+  had glossed cycle realization as "rank one less than the free value" —
+  backwards; short cycles (`|V| ≤ D`) are *rigid*, i.e. full rank. New
+  bib entry `whiteley1999` (editor initials corrected from KT's
+  OCR-typo'd "Thorpe, O., Duxbury, O.").
+- **Cycle Lemma 5.4: revised to formalize before phase close
+  (2026-06-03).** The cite-only call above was made on the premise that
+  5.4 needs Crapo–Whiteley's *projective realizability* (a cycle of
+  `n ≤ D` lines is physically realizable by panels in ℝ^d). It does
+  not — in **our** model. `BodyHingeFramework` (`RigidityMatrix.lean`)
+  is a **free per-edge hinge assignment** (`hinge : β → Fin k →
+  Fin (k+1) → ℝ`); there is no per-body panel data and no
+  geometric-consistency constraint, so physical realizability was
+  abstracted away in Phase 18 and the rank depends only on the per-edge
+  supporting extensors. So 5.4 reduces to pure linear algebra on
+  existing API:
+  1. cycle graph on `Fin n` (edge `i` links `i, i+1 mod n`) — modest
+     structural plumbing on `Graph (Fin n) (Fin n)`, the only new piece;
+  2. hinges with independent extensors — Lemma 2.1
+     (`omitTwoExtensor_linearIndependent`, Phase 17 green) gives `D`
+     independent extensors indexed by point-pairs; assign any `n ≤ D` to
+     the edges. Each `omitTwoExtensor` *is* an `affineSubspaceExtensor`
+     of a point sub-family, i.e. exactly what `supportExtensor`
+     consumes — reindexing glue, not new math;
+  3. rigidity bridge (short): around the cycle the constraints give
+     `S(vᵢ)−S(vᵢ₊₁) = λᵢ·Cᵢ`; telescoping ⇒ `Σ λᵢ Cᵢ = 0`; `{Cᵢ}`
+     independent ⇒ all `λᵢ=0` ⇒ `S` constant ⇒ trivial ⇒ rigid at rank
+     `D(n−1)`.
+  **Faithfulness caveat:** this proves an *abstract* hinge assignment
+  with the target rank exists — which is what Cases I/II/III consume —
+  not KT's stronger *physical* realization. That physical-realizability
+  gap is inherited from the Phase-18 modeling choice and is identical
+  for every node in the program; it is not specific to 5.4. User
+  decision (2026-06-03): formalize after Cases I/II, before phase close.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *(none yet)*
@@ -212,10 +240,14 @@ decomposition).
   `exists_uniform_rowIndependent_placement`-style perturbation) where it
   transfers; assess on contact whether the panel-coordinate
   parametrization needs new infrastructure.
-- ~~Cycle Lemma 5.4 formalize-vs-cite decision~~ — **resolved this
-  commit**: cite-only, proposition numbers verified and pinned ([4]
-  Prop 3.4, [34] Prop 3). See *Decisions made*. Citation caveat in
-  MolecularConjecture.md discharged for Phase 21.
+- **Cycle Lemma 5.4 — to formalize before phase close** (revised
+  2026-06-03, was cite-only). The abstract `BodyHingeFramework` model
+  doesn't carry physical panel-realizability, so 5.4 reduces to linear
+  algebra on existing Phase-17/18 API (cycle graph + Lemma 2.1 extensors
+  + telescoping bridge — a 1–2 commit task). Citation work stands as the
+  source pointer. See *Decisions made* for the finding + proof sketch.
+  **Must land green before Phase 21 closes** (per user decision; do it
+  after Cases I/II).
 
 ## Hand-off / next phase
 
@@ -227,10 +259,17 @@ framework-construction op** (`def:framework-with-graph` /
 underlying multigraph keeping the hinge data, and edge deletion only
 enlarges `Z(G,p)`. This is the citation-free `≤`-monotonicity primitive
 both Cases need to compare a realization across the inductive graph
-change. `Molecular/AlgebraicInduction.lean` carries five Lean nodes;
-`lem:cycle-realization` is a verified cite. Remaining red:
-`prop:rigidity-matrix-prop11`, `thm:theorem-55`, `lem:case-I`,
-`lem:case-II` (gating on the two pieces below), `lem:case-III` (22–23).
+change. `Molecular/AlgebraicInduction.lean` carries five Lean nodes.
+Remaining red: `lem:cycle-realization` (now slated to formalize before
+phase close — see Blockers / Decisions), `prop:rigidity-matrix-prop11`,
+`thm:theorem-55`, `lem:case-I`, `lem:case-II` (gating on the two pieces
+below), `lem:case-III` (22–23).
+
+**Phase-close requirement (do not lose):** `lem:cycle-realization` must
+be formalized green before Phase 21 closes (user decision 2026-06-03,
+after Cases I/II). Focused 1–2 commit task on existing API; the
+abstract-model finding + telescoping proof sketch are in *Decisions
+made*. The immediate next commit is still the Case I/II work below.
 
 The next concrete commit must build one of two not-yet-existing pieces:
 1. **Vertex-level graph ops realized as frameworks.** `withGraph` only
