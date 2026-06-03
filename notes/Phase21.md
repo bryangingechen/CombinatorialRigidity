@@ -53,9 +53,21 @@ Earlier leaf recap: `panelSupportExtensor n₁ n₂ := complementIso
 (normalsJoin n₁ n₂)` is the meet of the two panels (the grade-2 join
 `normalsJoin` in `⋀^2`, carried by Phase-21a `complementIso` to
 `⋀^(k+2−2) = ⋀^k = ScrewSpace k`); `panelSupportExtensor_ne_zero_iff`
-reduces transversality to independence of the two normals. Next:
-`lem:cycle-realization` (panel cycle realization), then the re-scoped
-Cases I/II.
+reduces transversality to independence of the two normals.
+
+**Cycle-realization short-cycle base landed (2026-06-03).** The first
+brick of `lem:cycle-realization` (KT Lemma 5.4) is green:
+`PanelHingeFramework.toBodyHinge_rankHypothesis_zero` — the panel
+analogue of `theorem_55_base`, lifted through `toBodyHinge`. A panel
+framework on a two-body cover with two edges joining `u ≠ v` whose
+panel support extensors are independent has an infinitesimally rigid
+body-hinge interpretation (`RankHypothesis 0`, full rank `D`).
+One-line composition with `theorem_55_base` on `P.toBodyHinge`
+(defeq carries `graph`/`supportExtensor`); axiom-clean. Blueprint adds
+a `lem:cycle-realization-base` node (green) that the still-red
+`lem:cycle-realization` `\uses`. Next: the general cycle (`|V| ≥ 3`) +
+the generic-panel independence argument (Claim 6.4/6.9, bottoming on
+Lemma 2.1), then the re-scoped Cases I/II.
 
 The pre-21a induction-skeleton leaf nodes remain green (all
 regime-agnostic, retained verbatim under the panel layer):
@@ -179,15 +191,19 @@ Case I (proper rigid subgraph; KT §6.2):
   `pinnedMotionsOn_singleton`, `pinnedMotionsOn_eq_iInf` (nonempty `s`),
   `pinnedMotionsOn_mono`, `pinnedMotionsOn_le_pinnedMotions`. Axiom-clean.
   Green.
-- [ ] `lem:cycle-realization` — KT Lemma 5.4. **Decision (2026-06-03):
+- [~] `lem:cycle-realization` — KT Lemma 5.4. **Decision (2026-06-03):
   formalize as genuine *panel* content — its own sub-phase**, not cite,
   not the free-hinge telescoping reduction (which proved only the
   body-hinge cycle statement; superseded — see DESIGN.md). Statement is
   KT's form (a cycle with `3 ≤ |V| ≤ D` has an infinitesimally rigid
-  full-rank `D(|V|−1)` *panel* realization). Needs the panel layer + the
-  extensor meet algebra + a generic-panel independence argument bottoming
-  on Lemma 2.1. Citation (CW82 Prop 3.4 / Whiteley99 Prop 3) stays as the
-  source pointer. Still red.
+  full-rank `D(|V|−1)` *panel* realization). The **short-cycle base** is
+  green (`lem:cycle-realization-base`,
+  `PanelHingeFramework.toBodyHinge_rankHypothesis_zero`): the two-body
+  panel analogue of `theorem_55_base` via `toBodyHinge`. Still red: the
+  general cycle (`|V| ≥ 3`) + the generic-panel independence argument
+  bottoming on Lemma 2.1 (the Claim 6.4/6.9 genericity device).
+  Citation (CW82 Prop 3.4 / Whiteley99 Prop 3) stays as the source
+  pointer.
 - [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
   subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
   glue block-triangularly with a pinned rigid realization of `H`
@@ -338,26 +354,27 @@ DESIGN.md, and both panel nodes are green in
 `def:panel-hinge-framework` (`PanelHingeFramework` + `toBodyHinge` +
 `BodyHingeFramework.IsHingeCoplanar` + `isHingeCoplanar_toBodyHinge`).
 
-Green so far: both panel nodes above, plus the regime-agnostic
+Green so far: both panel nodes above, the regime-agnostic
 rank/structure facts retained verbatim under the panel layer —
 `def:rank-hypothesis`, `lem:theorem-55-base` (rank content; gains a
 coplanarity conjunct when assembled into the full Theorem 5.5),
 `lem:case-II-rank-lift`, `def:framework-with-graph` +
-`lem:motions-mono-of-graph-le`, `def:pinned-motions-on`. Remaining red:
-`lem:cycle-realization` (panel cycle), `prop:rigidity-matrix-prop11`
-(stays body-hinge), `thm:theorem-55`, `lem:case-I`, `lem:case-II`,
-`lem:case-III` (III is 22–23).
+`lem:motions-mono-of-graph-le`, `def:pinned-motions-on` — and now the
+**short-cycle base** of Lemma 5.4 (`lem:cycle-realization-base`,
+`toBodyHinge_rankHypothesis_zero`). Remaining red:
+`lem:cycle-realization` (the general cycle, `|V| ≥ 3`),
+`prop:rigidity-matrix-prop11` (stays body-hinge), `thm:theorem-55`,
+`lem:case-I`, `lem:case-II`, `lem:case-III` (III is 22–23).
 
-**Smallest next concrete commit:** start `lem:cycle-realization` (KT
-Lemma 5.4) on the now-available panel layer — a cycle with `3 ≤ |V| ≤ D`
-has an infinitesimally rigid full-rank `D(|V|−1)` *panel* realization.
-This is genuine panel content (DESIGN.md decision): it needs a
-generic-panel independence argument for the cycle's supporting extensors,
-bottoming on Lemma 2.1 (Phase 17) via `panelSupportExtensor` /
-`toBodyHinge`. The citation (CW82 Prop 3.4 / Whiteley99 Prop 3) stays the
-source pointer. Likely multi-commit; a reasonable first piece is the
-statement + the two-vertex/short-cycle base via `theorem_55_base`
-specialized to a `PanelHingeFramework.toBodyHinge`. After 5.4: the
-re-scoped Cases I/II (Cases gain the panel requirement; III is 22–23).
-The genericity device (Claim 6.4/6.9) remains the open analytic blocker
-shared by 5.4 and the Cases.
+**Smallest next concrete commit:** continue `lem:cycle-realization`
+past its now-green two-body base (`lem:cycle-realization-base`) toward
+the general cycle (`3 ≤ |V| ≤ D`): an infinitesimally rigid full-rank
+`D(|V|−1)` *panel* realization. The base case is done; the remaining
+content is the generic-panel independence argument for the cycle's `m`
+supporting extensors (they must be independent in the `D`-dim
+`ScrewSpace k`, so `m ≤ D`), bottoming on Lemma 2.1 (Phase 17) via
+`panelSupportExtensor`. This is the genericity device (Claim 6.4/6.9),
+the open analytic blocker shared by 5.4 and Cases I/II — assess on
+contact whether the Phase 6/8 Gram-det perturbation machinery transfers
+to the panel-coordinate parametrization. After 5.4: the re-scoped Cases
+I/II (Cases gain the panel requirement; III is 22–23).

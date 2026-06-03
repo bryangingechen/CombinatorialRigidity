@@ -265,9 +265,34 @@ Cases~I and~II travel toward the smaller inductive graph.
 \subsection{Case I: a proper rigid subgraph}
 \label{sec:molecular-algebraic-induction-caseI}
 
+\begin{lemma}[Cycle realization, short-cycle base]
+  \label{lem:cycle-realization-base}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_zero}
+  \leanok
+  \uses{def:panel-hinge-framework, lem:theorem-55-base}
+  The two-body base of \cref{lem:cycle-realization}: a panel-hinge
+  framework $P$ on a two-body cover, with two edges $e_1, e_2$ joining
+  the two bodies $u \ne v$ whose panel support extensors $C(p(e_1)),
+  C(p(e_2))$ are linearly independent, has an infinitesimally rigid
+  body-hinge interpretation $P^\flat$ --- it realizes the rank
+  hypothesis at $k' = 0$ (\cref{def:rank-hypothesis}), the full rank
+  $D = D(2-1) - 0$. This is the panel analogue of the base case
+  \cref{lem:theorem-55-base}, lifted through the body-hinge
+  interpretation, and is the brick the general panel cycle is built
+  from.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:theorem-55-base}
+  The body-hinge interpretation $P^\flat$ carries exactly the two
+  independent supporting extensors as its hinge data, so the
+  parallel-hinges-full base case \cref{lem:theorem-55-base} applies
+  to $P^\flat$ verbatim.
+\end{proof}
+
 \begin{lemma}[Cycle realizations; KT Lemma 5.4]
   \label{lem:cycle-realization}
-  \uses{def:rigidity-matrix}
+  \uses{def:rigidity-matrix, lem:cycle-realization-base}
   A cycle graph $G = (V, E)$ with $3 \le |V| \le D$ has an
   infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$
   --- equivalently a realization at the full rank $D(|V|-1)$, the
@@ -277,10 +302,18 @@ Cases~I and~II travel toward the smaller inductive graph.
   Crapo--Whiteley~\cite[Proposition~3.4]{crapoWhiteley1982} (the
   $3$-dimensional, $D = 6$ case) and
   Whiteley~\cite[Proposition~3]{whiteley1999}, the technique extending
-  to general $d$ without modification.
+  to general $d$ without modification. The two-body base is
+  \cref{lem:cycle-realization-base}; the general cycle ($|V| \ge 3$)
+  and the generic-panel independence argument supplying the
+  independent supporting extensors (bottoming on the
+  extensor-independence Lemma~2.1, \cref{lem:extensor-independence})
+  remain --- the genericity device (Claim~6.4/6.9) shared with
+  Cases~I and~II.
 \end{lemma}
 \begin{proof}
-  A single cycle of $k$ panels and $k$ hinges is infinitesimally rigid
+  \uses{lem:cycle-realization-base}
+  The two-body base case is \cref{lem:cycle-realization-base}. For the
+  general cycle, a single cycle of $k$ panels and $k$ hinges is infinitesimally rigid
   iff the $k$ hinge lines are independent in the Grassmann line
   geometry --- the dimension-$D$ extensor space supports at most $D$
   independent lines, so a cycle of length $3 \le |V| \le D$ admits a

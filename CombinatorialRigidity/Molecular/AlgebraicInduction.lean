@@ -471,6 +471,42 @@ theorem toBodyHinge_supportExtensor_ne_zero_iff (P : PanelHingeFramework k α β
       LinearIndependent ℝ ![P.normal (P.ends e).1, P.normal (P.ends e).2] := by
   rw [toBodyHinge_supportExtensor, panelSupportExtensor_ne_zero_iff]
 
+/-! ## Cycle realizations (`lem:cycle-realization`, KT Lemma 5.4 — panel content)
+
+Katoh–Tanigawa's Lemma 5.4 (the geometric content of Crapo–Whiteley 1982 Prop 3.4 / Whiteley
+1999 Kluwer Prop 3): a cycle graph `G = (V, E)` with `3 ≤ |V| ≤ D` has an infinitesimally rigid,
+nonparallel *panel*-hinge realization `(G, p)` — equivalently a realization at the full rank
+`D(|V|−1)`, the target rank of the minimal `0`-dof case (`RankHypothesis 0`). Geometrically a
+cycle of `m` panels and `m` hinges is rigid exactly when its `m` supporting `k`-extensors are
+linearly independent in the `D`-dimensional screw space `ScrewSpace k`, which a generic choice of
+the `m` panel normals achieves whenever `m ≤ D` (the dimension bound `3 ≤ |V| ≤ D`).
+
+This file lands the **short-cycle base** of that statement: the panel analogue of the two-body
+base case `theorem_55_base`, lifted through `toBodyHinge`. A `PanelHingeFramework` on a two-body
+cover whose two edges' panel support extensors are independent has an infinitesimally rigid
+body-hinge interpretation, i.e. realizes `RankHypothesis 0` at the full rank `D`. The general
+cycle (`|V| ≥ 3`) and the generic-panel independence argument that supplies the linearly
+independent supporting extensors (bottoming on the extensor-independence Lemma 2.1, Phase 17)
+remain red — that is the genericity device (Claim 6.4/6.9) shared with Cases I/II. -/
+
+/-- **Short-cycle base of the panel cycle realization** (`lem:cycle-realization`, KT Lemma 5.4):
+the panel analogue of `theorem_55_base`, lifted through `toBodyHinge`. A panel-hinge framework `P`
+on a two-body cover (`hcover : ∀ w, w = u ∨ w = v`, `huv : u ≠ v`) with two edges `e₁, e₂` joining
+`u` and `v` (`h₁ : P.graph.IsLink e₁ u v`, `h₂ : …`) whose panel support extensors are linearly
+independent (`hgen`) has a body-hinge interpretation realizing the rank hypothesis at `k' = 0` —
+equivalently `P.toBodyHinge` is infinitesimally rigid, at the full rank `D = D(2−1) − 0`. This is
+the brick the general panel-cycle realization (KT Lemma 5.4, `|V| ≥ 3`) is built from; the
+linearly independent panel extensors are supplied generically (Claim 6.4/6.9, deferred). Immediate
+from `BodyHingeFramework.theorem_55_base` applied to `P.toBodyHinge`. -/
+theorem toBodyHinge_rankHypothesis_zero [Nonempty α] [Finite α] (P : PanelHingeFramework k α β)
+    {e₁ e₂ : β} {u v : α} (huv : u ≠ v)
+    (hgen : LinearIndependent ℝ
+      ![P.toBodyHinge.supportExtensor e₁, P.toBodyHinge.supportExtensor e₂])
+    (h₁ : P.graph.IsLink e₁ u v) (h₂ : P.graph.IsLink e₂ u v)
+    (hcover : ∀ w, w = u ∨ w = v) :
+    P.toBodyHinge.RankHypothesis 0 :=
+  P.toBodyHinge.theorem_55_base huv hgen h₁ h₂ hcover
+
 end PanelHingeFramework
 
 namespace BodyHingeFramework
