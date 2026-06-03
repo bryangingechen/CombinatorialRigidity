@@ -23,8 +23,12 @@ opens with two structural lemmas inherited from
 \cref{sec:molecular-deficiency} --- the full form of KT Lemma 3.4 and
 KT Lemma 3.5 --- whose lower bounds the Phase~19 def\,$=$\,corank bridge
 (\cref{thm:def-eq-corank}) now unblocks, then builds the graph
-operations, the forest-surgery core, the degree-of-freedom tracking,
-and Theorem~4.9.
+operations, the degree-of-freedom tracking, and Theorem~4.9. The
+forest-surgery lemmas KT~4.1/4.2 turn out to be \emph{deferred} (see
+\cref{rem:kt-lemma-41}): KT's Lemma~4.1 is over-quantified and its proof
+glosses a balanced-packing assumption, so the dof tracking is obtained
+instead by a direct deficiency-count argument
+(\cref{sec:molecular-induction-dof}).
 
 \subsection{Inherited structural lemmas (KT 3.4 full form, KT 3.5)}
 \label{sec:molecular-induction-inherited}
@@ -221,8 +225,66 @@ and Theorem~4.9.
   the surviving fibers.
 \end{definition}
 
-\subsection{Forest surgery}
+\subsection{Forest surgery (deferred --- see the remark on KT Lemma 4.1)}
 \label{sec:molecular-induction-forest}
+
+\begin{remark}[On Katoh--Tanigawa Lemma 4.1]
+  \label{rem:kt-lemma-41}
+  Formalizing the forest surgery of \cite[Lemma 4.1]{katohTanigawa2011}
+  (p.~660; the 2009 arXiv predecessor, Lemma 5.1, p.~11, is essentially
+  verbatim) surfaced a three-layer subtlety. \emph{The molecular
+  conjecture and Katoh--Tanigawa's proof are not in question}; the value
+  is in stating exactly which layer is which.
+  \begin{enumerate}
+    \item \emph{Statement-as-quantified --- false.} Both versions read
+      ``for \emph{any} independent set $I$ of $M(\tilde G)$ \dots there
+      exists $I'$ \dots with $|I'| = |I| - D$''. For any independent $I$
+      with $|I| < D$ --- e.g.\ $I = \emptyset$ --- this demands $|I'| =
+      |I| - D < 0$, which is impossible. The intended quantifier is
+      clearly over \emph{bases} of $M(\tilde G)$; the universal-over-$I$
+      reading must be restricted. We record the literal disproof as
+      \cref{ex:kt-41-overquantified}.
+    \item \emph{Proof of the intended (base) case --- an unjustified
+      step.} ``Convert each $F_i$ to $F'_i$ with $|F'_i| = |F_i| - 1$
+      for each $i$'' (2011), and the equation $2h' + (D - h') = h$
+      (2009), silently assume the chosen $D$-forest packing is
+      \emph{balanced at $v$}: every forest uses at least one edge at the
+      degree-2 vertex $v$. Neither version justifies this, and for a
+      general packing it can fail (pigeonhole when $h < D$); when it
+      fails, both the cardinality count and the slack clause break.
+      Whether the balanced packing is achievable for a base we leave
+      \emph{open} --- Katoh--Tanigawa omit a justification and we did not
+      recover one.
+    \item \emph{Intended content --- true.} What the induction
+      (\cref{lem:dof-tracking}) actually consumes is the deficiency
+      inequality $\operatorname{def}(\widetilde{G_v^{ab}}) \le
+      \operatorname{def}(\tilde G)$. This is correct, and we establish it
+      directly (\cref{lem:splitoff-deficiency}) by a partition-count
+      comparison through the def\,$=$\,corank bridge
+      (\cref{thm:def-eq-corank}), bypassing the forest surgery entirely.
+  \end{enumerate}
+  Accordingly the forest-surgery lemmas
+  (\cref{lem:forest-surgery-split,lem:forest-surgery-unsplit}) are
+  \textbf{deferred / off the Theorem-4.9 critical path}: their substrate
+  is formalized but they complete only if the balanced-packing
+  assumption of layer~(2) is settled. Theorem~4.9 is reached instead
+  through the deficiency-counting route of
+  \cref{sec:molecular-induction-dof}.
+\end{remark}
+
+\begin{example}[KT Lemma 4.1's universal quantification is unsatisfiable]
+  \label{ex:kt-41-overquantified}
+  % Formalized as an unnamed Lean `example`; no `\lean{}` pointer to pin.
+  \leanok
+  \uses{def:matroid-MG, rem:kt-lemma-41}
+  Taking $I = \emptyset$ (independent in any matroid), the promised $I'$
+  with $|I'| = |I| - D = -D$ would need $|I'| + D = 0$ in $\mathbb{N}$,
+  impossible for $D = \binom{d+1}{2} \ge 1$. This is layer~(1) of
+  \cref{rem:kt-lemma-41}: the universal-over-$I$ quantification is
+  formally false, witnessing that the intended quantifier ranges over
+  bases. Formalized as a one-line \texttt{example} in
+  \texttt{Molecular/Induction.lean}.
+\end{example}
 
 \begin{lemma}[Forest-packing decomposition of an $M(\tilde G)$-independent set]
   \label{lem:forest-packing-decomp}
@@ -250,7 +312,12 @@ and Theorem~4.9.
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
   \label{lem:forest-surgery-split}
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp, rem:kt-lemma-41}
+  \emph{Deferred / off the Theorem-4.9 critical path}
+  (\cref{rem:kt-lemma-41}): its substrate is formalized in
+  \texttt{Molecular/Induction.lean}, but the lemma completes only if the
+  balanced-packing assumption of \cref{rem:kt-lemma-41}~(2) is settled;
+  the induction instead uses \cref{lem:splitoff-deficiency}.
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
   packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
   the fibers not incident to $v$ and rerouted across $v$, induces a
@@ -269,7 +336,9 @@ and Theorem~4.9.
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, edge-splitting direction; KT Lemma 4.2]
   \label{lem:forest-surgery-unsplit}
-  \uses{def:graph-operations, lem:forest-surgery-split}
+  \uses{def:graph-operations, lem:forest-surgery-split, rem:kt-lemma-41}
+  \emph{Deferred} with \cref{lem:forest-surgery-split}
+  (\cref{rem:kt-lemma-41}); off the Theorem-4.9 critical path.
   The inverse direction: a packing of $\widetilde{H}$ extends across an
   edge-split $H_{ab}^v$ to a packing of $\widetilde{H_{ab}^v}$,
   matching deficiencies under
@@ -285,12 +354,58 @@ and Theorem~4.9.
   companion of the splitting-off surgery.
 \end{proof}
 
-\subsection{Degree-of-freedom tracking}
+\subsection{Degree-of-freedom tracking (via deficiency counting)}
 \label{sec:molecular-induction-dof}
+
+The dof-conservation laws Katoh--Tanigawa derive from the forest surgery
+(KT~4.3--4.5) are obtained here directly from the deficiency
+max-formula, on the green infrastructure of
+\cref{sec:molecular-deficiency} --- the partition deficiency
+$\operatorname{def}(\tilde G) = \max_P [\, D(|P| - 1) - (D - 1)\,d_G(P)\,]$
+and the def\,$=$\,corank bridge (\cref{thm:def-eq-corank}). This is the
+route that bypasses the deferred forest surgery
+(\cref{rem:kt-lemma-41}).
+
+\begin{lemma}[Splitting-off does not increase the deficiency; KT Lemma 4.3]
+  \label{lem:splitoff-deficiency}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank}
+  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. Then
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde
+  G)$, with the refinement that the deficiency drops by at most the
+  $k$-vs-$(k-1)$ amount the induction tracks (KT~4.3(ii)). This is the
+  substantive splitting-off fact the induction consumes, replacing the
+  forest surgery of \cref{lem:forest-surgery-split}.
+\end{lemma}
+\begin{proof}
+  Partition-count comparison. Take an optimal partition $P'$ of $V - v$
+  realizing $\operatorname{def}(\widetilde{G_v^{ab}})$ and extend it to a
+  partition $P$ of $V$ by dropping $v$ into $a$'s block; then $|P| =
+  |P'|$. The edge $va$ no longer crosses $P$ while $vb$ crosses iff $ab$
+  crosses $P'$, so the crossing counts agree, $d_G(P) =
+  d_{G_v^{ab}}(P')$, whence the per-partition deficiency is unchanged and
+  $\operatorname{def}(\tilde G) \ge \operatorname{def}(\widetilde{G_v^{ab}})$.
+  No forests.
+\end{proof}
+
+\begin{lemma}[Vertex removal raises the deficiency; KT Lemma 4.4]
+  \label{lem:removal-deficiency}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank}
+  Let $v$ be a degree-2 vertex of the minimal $k$-dof-graph $G$. Then the
+  removal $G_v$ has $\operatorname{def}(\widetilde{G_v}) \ge k$: deleting
+  $v$ and its two incident edges removes $D$ from the ambient and at most
+  $2(D-1)$ from the rank, so the corank cannot decrease below $k$. This
+  is the other half of the local dof bookkeeping at $v$.
+\end{lemma}
+\begin{proof}
+  The def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) at $G_v$: the
+  ambient $D(|V| - 1)$ drops by $D$ and the rank of $M(\tilde G)$ drops
+  by at most the $2(D-1)$ fibers at $v$, so $\operatorname{def}$ does not
+  fall below the $k = \operatorname{def}(\tilde G)$ of the minimal graph.
+\end{proof}
 
 \begin{lemma}[Deficiency under vertex removal and splitting-off; KT Lemmas 4.3--4.5]
   \label{lem:dof-tracking}
-  \uses{lem:forest-surgery-split, lem:forest-surgery-unsplit, def:graph-operations}
+  \uses{lem:splitoff-deficiency, lem:removal-deficiency, def:graph-operations}
   For a degree-2 vertex $v$ of $G$, the deficiencies of $G$, the
   removal $G_v$, and the splitting-off $G_v^{ab}$ are related by the
   KT~4.3--4.5 inequalities, pinning $\operatorname{def}(\tilde G)$ in
@@ -299,11 +414,15 @@ and Theorem~4.9.
   edge $ab$). These are the dof-conservation laws the induction tracks.
 \end{lemma}
 \begin{proof}
-  Combine the forest-surgery correspondence
-  (\cref{lem:forest-surgery-split,lem:forest-surgery-unsplit}) with
-  the def\,$=$\,corank bridge (\cref{thm:def-eq-corank}): the rank
-  changes by an explicit amount under each operation, and corank
-  tracks deficiency.
+  \uses{lem:splitoff-deficiency, lem:removal-deficiency}
+  Assemble the splitting-off bound
+  (\cref{lem:splitoff-deficiency}) and the removal bound
+  (\cref{lem:removal-deficiency}); each is a consequence of the
+  def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) under the
+  corresponding rank change, and together they pin
+  $\operatorname{def}(\tilde G)$ in terms of the local structure at $v$.
+  This replaces Katoh--Tanigawa's forest-surgery derivation
+  (\cref{rem:kt-lemma-41}).
 \end{proof}
 
 \begin{lemma}[Existence of a reducible degree-2 vertex; KT Lemma 4.6]

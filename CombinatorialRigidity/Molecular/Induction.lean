@@ -189,6 +189,40 @@ theorem matroidMG_indep_iff_exists_forest_packing [DecidableEq β] [Finite α] [
   rw [matroidMG, Matroid.restrict_indep_iff, Matroid.union_indep_iff]
   tauto
 
+/-! ### Katoh–Tanigawa Lemma 4.1 is over-quantified (`lem:forest-surgery-split`, off-path note)
+
+Katoh–Tanigawa 2011 Lemma 4.1 (p.660; the 2009 arXiv predecessor Lemma 5.1, p.11) is
+quantified "**for any** independent set `I` of `M(G̃)` … there exists `I'` … with
+`|I'| = |I| − D`". As literally quantified over *all* independent `I` this is **false**:
+for any `I` with `|I| < D` — e.g. `I = ∅` — it demands `|I'| = |I| − D < 0`, impossible.
+The intended quantifier is over **bases** of `M(G̃)`; the universal form must be restricted.
+
+We record the literal disproof as a one-line `example` (the `I = ∅`, ℕ-cardinality witness:
+no `I'` can satisfy `|I'| + D = 0` because `D = bodyBarDim n ≥ 1`). This is a narrow
+*statement-as-quantified* observation, **not** a refutation of KT's theorem: the molecular
+conjecture and KT's proof stand. The intended (base-form) content the induction consumes —
+the deficiency inequality `def(G̃ᵥᵃᵇ) ≤ def(G̃)` — is true and is established directly via
+the deficiency-count route (`lem:splitoff-deficiency`), bypassing the forest surgery. A
+separate, subtler gap (KT's base-case proof silently assumes a *balanced* `D`-forest packing
+at the degree-2 vertex `v`, which we could neither justify nor recover) gates only the
+deferred surgery TODO; see `notes/Phase20.md` *Finding* / *Replan*. The framing here is
+deliberately "KT omits / we did not recover", never "KT errs". -/
+
+/-- **KT Lemma 4.1's universal quantification over independent sets is not satisfiable**
+(`lem:forest-surgery-split`, over-quantification note; Katoh–Tanigawa 2011 Lemma 4.1 p.660 /
+2009 arXiv Lemma 5.1 p.11). The lemma as stated promises, *for any* independent set `I` of
+`M(G̃)`, an `I'` with `|I'| = |I| − D` (i.e. `|I'| + D = |I|`). Taking `I = ∅` (independent
+in any matroid) makes the demand `|I'| + D = 0` in ℕ, which fails whenever `D = bodyBarDim n
+≥ 1`. So the universal-over-`I` reading is formally false; the intended quantifier is over
+*bases*. See the section docstring and `notes/Phase20.md` for the three-layer framing — this
+is the *statement-as-quantified* layer only, not a refutation of KT's theorem. -/
+example (n : ℕ) (hD : 1 ≤ bodyBarDim n) :
+    ¬ ∃ I' : Set (β × Fin (bodyHingeMult n)),
+        I'.ncard + bodyBarDim n = (∅ : Set (β × Fin (bodyHingeMult n))).ncard := by
+  rintro ⟨I', hI'⟩
+  rw [Set.ncard_empty] at hI'
+  omega
+
 /-! ## A rigid subgraph attains full rank (`lem:contraction-minimality`, rank core)
 
 The matroidal arithmetic the rigid-subgraph contraction of KT Lemma 3.5 opens on: a

@@ -161,8 +161,13 @@ blueprint node; the node stays red) — incidence/cardinality
 surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
 they are **not** needed for Theorem 4.9.
 
-**Next:** *Replan* commit A (pivot: blueprint Remark + node restate +
-counterexample `example`). See *Hand-off*.
+**Next:** *Replan* commit B (`lem:splitoff-deficiency` `≤` direction). Commit A
+(pivot) **landed**: blueprint Remark `rem:kt-lemma-41` (three-layer) +
+`example` node `ex:kt-41-overquantified` (green `\leanok`); red nodes
+`lem:splitoff-deficiency` / `lem:removal-deficiency` added and
+`lem:dof-tracking` re-pointed to them; `lem:forest-surgery-split` / `-unsplit`
+annotated deferred; Lean `example` disproving the literal `I = ∅`
+quantification in `Molecular/Induction.lean`. See *Hand-off*.
 
 ## Architectural choices made up front
 
@@ -229,8 +234,13 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
 - [ ] `lem:splitoff-deficiency` — KT 4.3(i)+(ii): `def(G̃ᵥᵃᵇ) ≤ def(G̃)`
   via the partition-count comparison (extend an optimal partition of `V−v`
   by dropping `v` into `a`'s block; `d_G(P) = d_{Gᵥᵃᵇ}(P')`), plus the
-  `k`-vs-`(k−1)` refinement. NEW node; Replan commits A (node) / B (`≤`) / C
-  (refinement). The `≤` direction is the de-facto route-confirmation spike.
+  `k`-vs-`(k−1)` refinement. NEW node **added red (commit A)**; commits B (`≤`)
+  / C (refinement) land the Lean. The `≤` direction is the de-facto
+  route-confirmation spike.
+- [x] (commit A) `ex:kt-41-overquantified` — the over-quantification disproof
+  `example` (`I = ∅`, ℕ-cardinality: no `I'` with `|I'| + D = 0` for `D ≥ 1`),
+  green `\leanok` in `Molecular/Induction.lean`. Blueprint Remark
+  `rem:kt-lemma-41` carries the three-layer framing (*Finding*).
 - [ ] `lem:removal-deficiency` — KT 4.4: `def(G̃ᵥ) ≥ k`. NEW node; Replan
   commit D.
 - [ ] `lem:dof-tracking` — KT 4.3–4.5 assembly; `\uses` the two deficiency
@@ -358,12 +368,17 @@ forest-surgery framing `lem:forest-packing-decomp` (names in *Current
 state*). The forest-surgery substrate is landed but serves the deferred
 surgery TODO (*Replan* Step 5), not Theorem 4.9.
 
-**Next agent's concrete commit = *Replan* commit A** (the pivot): blueprint
-discussion subsection "On Katoh–Tanigawa Lemma 4.1" (three-layer writeup
-principle — see *Replan*), restate the dof-tracking dep-graph (add red
-`lem:splitoff-deficiency` / `lem:removal-deficiency`, re-point
-`lem:dof-tracking`, mark `lem:forest-surgery-split` / `-unsplit` deferred),
-and the Lean `example` disproving the literal quantification. Then commits
-B–H per the *Replan* sequence — commit B (the `≤` direction) is the de-facto
-route-confirmation spike; the deficiency `≤` is ~10 lines on green infra
-(high confidence), the refinement + 4.9 assembly are the substantive work.
+**Commit A landed** (the pivot): blueprint Remark `rem:kt-lemma-41`
+(three-layer "On Katoh–Tanigawa Lemma 4.1") + green `example` node
+`ex:kt-41-overquantified`; red dep-graph nodes `lem:splitoff-deficiency` /
+`lem:removal-deficiency` added with `lem:dof-tracking` re-pointed to them;
+`lem:forest-surgery-split` / `-unsplit` annotated deferred; Lean `example`
+disproving the `I = ∅` literal quantification in `Molecular/Induction.lean`.
+
+**Next agent's concrete commit = *Replan* commit B**: `lem:splitoff-deficiency`
+`≤` direction (`def(G̃ᵥᵃᵇ) ≤ def(G̃)`) via the partition-extension comparison
+(extend an optimal partition `P'` of `V−v` by dropping `v` into `a`'s block;
+`d_G(P) = d_{Gᵥᵃᵇ}(P')`). This is the de-facto route-confirmation spike — the
+`≤` is ~10 lines on green infra (`partitionDef` / `rank_add_deficiency_eq`,
+high confidence). Then commits C–H per the *Replan* sequence (refinement +
+4.9 assembly are the substantive work).
