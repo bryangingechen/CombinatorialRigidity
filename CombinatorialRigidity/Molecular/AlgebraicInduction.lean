@@ -3,11 +3,10 @@ Copyright (c) 2026 Bryan Gin-ge Chen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
-module
-
-public import CombinatorialRigidity.Molecular.RigidityMatrix
-public import CombinatorialRigidity.Molecular.Meet
-public import Mathlib.Combinatorics.Graph.Subgraph
+import CombinatorialRigidity.Molecular.RigidityMatrix
+import CombinatorialRigidity.Molecular.Meet
+import CombinatorialRigidity.Molecular.Induction
+import Mathlib.Combinatorics.Graph.Subgraph
 
 /-!
 # The algebraic induction: Theorem 5.5 base, Cases I & II (`sec:molecular-algebraic-induction`)
@@ -74,8 +73,6 @@ stated directly on the null-space dimension: `RankHypothesis F k` asserts
 interchanged by `finrank_screwAssignment`; the null-space form is the one the rank lemmas of
 Phase 18 (`finrank_pinnedMotions_add_screwDim`, `finrank_trivialMotions`) already speak.
 -/
-
-@[expose] public section
 
 namespace CombinatorialRigidity.Molecular
 
@@ -1336,5 +1333,84 @@ theorem isHingeCoplanar_toBodyHinge (P : PanelHingeFramework k α β) :
   ⟨P, rfl⟩
 
 end BodyHingeFramework
+
+/-! ## Theorem 5.5: realization at the target rank (`thm:theorem-55`)
+
+The capstone of Phase 21. Where the combinatorial induction (Phase 20,
+`Graph.minimal_kdof_reduction`, KT Theorem 4.9) reduced every minimal `0`-dof-graph to the
+two-vertex double edge, this theorem *realizes* that reduction at the rigidity-matrix rank:
+every minimal `0`-dof-graph `G` with `|V| ≥ 2` carries a panel-hinge realization of the full
+rank `D(|V|−1)`, i.e. an infinitesimally rigid panel-hinge framework `(G,p)` (Katoh–Tanigawa
+2011 §5, Theorem 5.5, at `k = 0`).
+
+The proof is the genericity-free assembly over the Phase-20 reduction dichotomy: it runs the
+well-founded induction principle `Graph.minimal_kdof_reduction` against the *realization*
+motive `HasFullRankRealization` (`∃ Q, Q.graph = G ∧ Q.toBodyHinge.RankHypothesis 0`),
+discharging its three premises with the base case (`lem:theorem-55-base`), the splitting-off
+1-extension (Case II, `lem:case-II`), and the rigid-subgraph contraction (Case I, `lem:case-I`).
+The two inductive cases are GREEN-modulo-21b — each lands the iff-realization `RankHypothesis ↔
+pinned dimension` taking its genericity input (the general-position panel normals of Claim
+6.9/6.4) as an explicit hypothesis — so the induction *itself* is genericity-free and inherits
+the Phase-21b citation transitively through the cases. The per-case realization steps are taken
+here as hypotheses (`hbase`/`hsplit`/`hcontract`), the shape the consumer assembles from the
+panel capstones `toBodyHinge_rankHypothesis_zero_cycle` (base), the Case II
+`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`, and the Case I
+`toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn` once the genericity device supplies the
+general-position normals; Case III (`k = 0`, no proper rigid subgraph) closes the dichotomy and
+is deferred to Phases 22–23. -/
+
+namespace PanelHingeFramework
+
+variable {α β : Type*}
+
+/-- **A graph has a full-rank panel realization** (`thm:theorem-55`, the realization motive):
+there is a panel-hinge framework `Q` on `G` (`Q.graph = G`) whose body-hinge interpretation is
+infinitesimally rigid, `Q.toBodyHinge.RankHypothesis 0` — the full target rank `D(|V|−1)` of the
+minimal `0`-dof case. This is the motive Theorem 5.5's induction is run against. -/
+def HasFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
+  ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧ Q.toBodyHinge.RankHypothesis 0
+
+end PanelHingeFramework
+
+open scoped Graph
+
+variable {α β : Type*}
+
+/-- **Theorem 5.5: every minimal `0`-dof-graph has a full-rank panel realization**
+(`thm:theorem-55`; Katoh–Tanigawa 2011 §5, Theorem 5.5, at `k = 0`). For the molecular regime
+`D = bodyBarDim n ≥ 3` (so `n ≥ 2`) and a freshness supply of edge labels (`hfresh`), every
+minimal `0`-dof-graph `G` with `2 ≤ |V(G)|` admits a panel-hinge framework `Q` on `G` whose
+body-hinge interpretation is infinitesimally rigid
+(`PanelHingeFramework.HasFullRankRealization k G` — full rank `D(|V|−1)`).
+
+This is the genericity-free assembly over Phase 20's reduction dichotomy
+(`Graph.minimal_kdof_reduction`): the realization motive `HasFullRankRealization k` is closed
+under the two-vertex base case (`hbase`, `lem:theorem-55-base`), splitting off a reducible
+degree-2 vertex (`hsplit`, Case II `lem:case-II`), and contracting a proper rigid subgraph
+(`hcontract`, Case I `lem:case-I`). Each inductive case is GREEN-modulo-21b — its iff-realization
+(`PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions` for Case II,
+`PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn` for Case I) takes the
+general-position panel normals of Claim 6.9/6.4 (the Phase-21b genericity device) as an explicit
+hypothesis — so the three realization steps are taken here as hypotheses and the induction itself
+is genericity-free, inheriting the Phase-21b citation transitively. Case III (`k = 0`, no proper
+rigid subgraph) closes the dichotomy combinatorially inside `minimal_kdof_reduction` and is
+realized in Phases 22–23. -/
+theorem theorem_55 [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
+    (hD : 3 ≤ Graph.bodyBarDim n) (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
+      PanelHingeFramework.HasFullRankRealization k G)
+    (hsplit : ∀ (G : Graph α β) (v a b : α) (e₀ : β),
+      G.IsMinimalKDof n 0 → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      v ∈ V(G) → e₀ ∉ E(G) →
+      PanelHingeFramework.HasFullRankRealization k (G.splitOff v a b e₀) →
+      PanelHingeFramework.HasFullRankRealization k G)
+    (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → PanelHingeFramework.HasFullRankRealization k G') →
+      PanelHingeFramework.HasFullRankRealization k G)
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0) (hV : 2 ≤ V(G).ncard) :
+    PanelHingeFramework.HasFullRankRealization k G :=
+  Graph.minimal_kdof_reduction hD hfresh hbase hsplit hcontract G hG hV
 
 end CombinatorialRigidity.Molecular

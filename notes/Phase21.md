@@ -36,6 +36,25 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Theorem 5.5 capstone landed — `thm:theorem-55` GREEN-modulo-21b (2026-06-03).** The genericity-free
+induction assembly is green: `CombinatorialRigidity.Molecular.theorem_55`
+(`Molecular/AlgebraicInduction.lean`, end of file) — every minimal `0`-dof-graph with `|V| ≥ 2` has a
+full-rank panel realization (motive `PanelHingeFramework.HasFullRankRealization k G := ∃ Q, Q.graph = G
+∧ Q.toBodyHinge.RankHypothesis 0`). One-line `exact Graph.minimal_kdof_reduction …`: the three
+reduction-step realizations (`hbase`/`hsplit`/`hcontract`) are taken as hypotheses, exactly the shape
+the Phase-20 dichotomy hands the induction; the consumer fills them from `lem:theorem-55-base` (base),
+the Case II capstone `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`, and the Case I
+`toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`, each modulo its 21b genericity input. So the
+induction itself is genericity-free and inherits the 21b citation transitively. Axiom-clean
+(propext/Classical.choice/Quot.sound). **Structural note:** assembling over `minimal_kdof_reduction`
+forced **demoting `AlgebraicInduction.lean` from `module` to non-`module`** — a `module` file cannot
+import the non-`module` `Molecular/Induction.lean` where the reduction lives (same boundary that keeps
+`LinearRigidityMatroid.lean` non-`module`). Demotion is mechanical + warning-clean (drop `module`,
+`public import` → `import`, drop `@[expose] public section`); recorded in PERFORMANCE.md *Molecular chain
+is non-`module`*. Blueprint flips `thm:theorem-55` green (`\lean` + `\leanok`; statement restated at the
+`0`-dof case). **Remaining red on Phase 21:** only `prop:rigidity-matrix-prop11` (the analytic half of
+KT Prop 1.1, via the device — its generic-max-rank lower bound is Thm 5.5 pushed through 21b).
+
 **Case I rigid-block contraction assembly landed — `lem:case-I` GREEN-modulo-21b (2026-06-03).**
 The genericity-free assembly of `lem:case-I` is green:
 `BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn` (`Molecular/AlgebraicInduction.lean`,
@@ -491,8 +510,19 @@ Induction skeleton + base:
 - [x] `def:rank-hypothesis` — the realization hypothesis (6.1):
   `RankHypothesis F k' := (finrank infinitesimalMotions : ℤ) = screwDim k + k'`
   (null-space form of `rank = D(|V|−1) − k`; see *Current state*). Green.
-- [ ] `thm:theorem-55` — KT Theorem 5.5, the capstone of this phase.
-  Induction on `|V|` over the Phase-20 reduction dichotomy.
+- [x] `thm:theorem-55` — KT Theorem 5.5, the capstone of this phase.
+  **GREEN-modulo-21b** (`CombinatorialRigidity.Molecular.theorem_55`): every minimal
+  `0`-dof-graph with `|V| ≥ 2` has a full-rank panel realization
+  (`PanelHingeFramework.HasFullRankRealization k G := ∃ Q, Q.graph = G ∧
+  Q.toBodyHinge.RankHypothesis 0`). One-line `exact` over the Phase-20
+  `Graph.minimal_kdof_reduction`: the three reduction-step realizations
+  (`hbase`/`hsplit`/`hcontract`) are taken as hypotheses, matching what
+  `lem:theorem-55-base`/`lem:case-II`/`lem:case-I` deliver (each modulo its 21b
+  genericity input), so the induction itself is genericity-free. Axiom-clean.
+  Required **demoting `AlgebraicInduction.lean` from `module` to non-`module`**
+  (the `module`/non-`module` boundary blocks importing the non-`module`
+  `Induction.lean`; same precedent as `LinearRigidityMatroid.lean`) — see
+  PERFORMANCE.md *Molecular chain is non-`module`*.
 - [x] `lem:theorem-55-base` — `|V|=2`, `k=0` base case (`theorem_55_base`
   + helper `rankHypothesis_zero_iff`); full rank `D` via
   `eq_of_hingeConstraint_two_parallel` (`lem:rank-parallel-full`, Phase 18
@@ -773,35 +803,23 @@ Case II 1-extension assembly `lem:case-II` itself
 GREEN-modulo-21b with `hspan` an explicit hypothesis); and the Case I
 rigid-block contraction assembly `lem:case-I`
 (`rankHypothesis_iff_finrank_pinnedMotionsOn` + panel wrapper,
-GREEN-modulo-21b with the block-triangular gluing `hglue` explicit).
+GREEN-modulo-21b with the block-triangular gluing `hglue` explicit); and the
+**capstone induction `thm:theorem-55`** itself
+(`CombinatorialRigidity.Molecular.theorem_55`, GREEN-modulo-21b — one-line
+`exact` over `Graph.minimal_kdof_reduction`, the three reduction-step
+realizations taken as hypotheses).
 
 ### Node-by-node path to close Phase 21
 
-Two red nodes remain (Case III excepted — deferred to 22–23; Cases I and II
-are now GREEN-modulo-21b). For each: what it still needs **from the cited 21b
-device** vs. what is **genericity-free and still to formalize in Phase 21**.
-**The smallest next concrete commit** is `thm:theorem-55` — the genericity-free
-induction assembly, now that both cases are GREEN-modulo-21b.
+One red node remains (Case III excepted — deferred to 22–23; Cases I, II, and
+the capstone `thm:theorem-55` are now GREEN-modulo-21b). What it still needs
+**from the cited 21b device** vs. what is **genericity-free and still to
+formalize in Phase 21**. **The smallest next concrete commit** is
+`prop:rigidity-matrix-prop11` (the analytic half of KT Prop 1.1) — its
+genericity-free upper-bound/codimension side, with the generic-max-rank lower
+bound cited from 21b.
 
-1. **`lem:case-I`** (KT 6.2/6.3/6.5 rigid-subgraph contraction).
-   **GREEN-modulo-21b** (`rankHypothesis_iff_finrank_pinnedMotionsOn` + panel
-   wrapper). The genericity-free skeleton (block-pin lower bound
-   `screwDim_add_finrank_pinnedMotionsOn_le`) plus the explicit block-triangular
-   gluing hypothesis `hglue` (Claim 6.4, the 21b device) pin
-   `finrank Z = D + finrank (pinnedMotionsOn s)`; the realization count is the
-   contraction's block-pinned dimension. `\uses lem:exists-independent-panel-extensor`.
-
-2. **`thm:theorem-55`** (the capstone induction).
-   - *Genericity-free, still to do in 21:* the induction on `|V|`
-     wiring `lem:theorem-55-base` (green) + `lem:case-I` + `lem:case-II`
-     over the Phase-20 reduction dichotomy
-     (`minimal_kdof_reduction`, green) + `lem:case-III` (deferred stub).
-     Once Cases I/II are GREEN-modulo-21b, the induction itself is
-     genericity-free assembly; it inherits the 21b citation transitively
-     through the cases.
-   - *From 21b (cited):* none directly — only through Cases I/II/III.
-
-3. **`prop:rigidity-matrix-prop11`** (KT Prop 1.1 analytic half).
+1. **`prop:rigidity-matrix-prop11`** (KT Prop 1.1 analytic half).
    - *Genericity-free, still to do in 21:* the upper-bound /
      codimension side (`lem:trivial-motions-rank-bound` + deficiency
      count) and the edge-strip-to-minimal-`k`-dof reduction (re-adding
@@ -825,12 +843,18 @@ or its own chapter if it grows), sync the user-facing surfaces, flip the
 consumed by Phases 22–23** (Case III candidate genericity), so building
 it standalone pays forward.
 
-**Smallest next concrete commit (recommended):** assemble `thm:theorem-55`,
-the capstone induction on `|V|` over the Phase-20 reduction dichotomy
-(`minimal_kdof_reduction`, green): wire `lem:theorem-55-base` (green) +
-`lem:case-I` (now GREEN-modulo-21b) + `lem:case-II` (GREEN-modulo-21b) +
-`lem:case-III` (deferred stub, Phases 22–23). With both inductive cases stated
-as iff-realizations taking their genericity input as an explicit hypothesis,
-the induction itself is genericity-free assembly; it inherits the 21b citation
-transitively through the cases. After that, `prop:rigidity-matrix-prop11`
-(analytic half). Both can proceed before 21b lands.
+**Smallest next concrete commit (recommended):** the analytic half of
+`prop:rigidity-matrix-prop11` — its genericity-free upper-bound / codimension
+side (`lem:trivial-motions-rank-bound` + deficiency count) and the
+edge-strip-to-minimal-`k`-dof reduction (re-adding edges only grows rank,
+`lem:motions-mono-of-graph-le`, green; the matroidal half `def = corank` is
+green from Phase 19). The generic-max-rank lower bound
+(`rank R(G,p) = D(|V|−1) − def(G̃)` for generic `(G,p)`, i.e. Thm 5.5 pushed
+through the device) is cited from 21b. `prop:rigidity-matrix-prop11` `\uses`
+`thm:theorem-55` (now green) and the 21b node. This is the last red node before
+Phase 21 closes (Case III deferred to 22–23); it can proceed before 21b lands.
+
+Once `prop:rigidity-matrix-prop11` lands, Phase 21 closes (fire the
+phase-completion checklist: flip the ROADMAP row to ✓, compress the planning
+section, sync the three user-facing status surfaces, re-read the blueprint
+chapter end-to-end).

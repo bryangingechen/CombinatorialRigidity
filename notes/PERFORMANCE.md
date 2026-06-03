@@ -174,6 +174,23 @@ non-`module` (~4 % of `apnelson1/Matroid` is converted as of
 2026-05). A future one-commit follow-up can convert LRM when the
 upstream lands.
 
+**Molecular chain is non-`module` (Phase 17+).** The molecular /
+body-bar files (`BodyBar/*.lean`, `Molecular/{Extensor, Meet,
+RigidityMatrix, Deficiency, Induction}.lean`) were authored
+non-`module`, so anything that must consume them stays non-`module`
+too. Phase 21's `Molecular/AlgebraicInduction.lean` was authored
+`module` (importing only the `module`-converted `RigidityMatrix` +
+`Meet`), but the Theorem 5.5 capstone (`thm:theorem-55`) needs
+`Graph.minimal_kdof_reduction` from the non-`module`
+`Molecular/Induction.lean`. Per the same constraint that keeps LRM
+non-`module`, `AlgebraicInduction.lean` was **demoted** to
+non-`module` (drop `module`, `public import` → `import`, drop the
+`@[expose] public section`) in the `thm:theorem-55` commit —
+mechanical and warning-clean (non-`module` is the more permissive
+mode; demotion cannot break compilation). Converting the whole
+molecular chain to `module` is a future perf pass; re-promote
+`AlgebraicInduction` then.
+
 Constraint that drives ordering: a `module` file cannot import a
 non-`module` file (build error: *"cannot import non-`module` X from
 `module`"*); non-`module` files can freely import `module` files.

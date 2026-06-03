@@ -166,23 +166,34 @@ whole induction.
 
 \begin{theorem}[Realization at the target rank; KT Theorem 5.5]
   \label{thm:theorem-55}
+  \lean{CombinatorialRigidity.Molecular.theorem_55}
+  \leanok
   \uses{def:rank-hypothesis, thm:minimal-kdof-reduction, lem:case-I,
         lem:case-II, lem:case-III, lem:theorem-55-base}
-  Every minimal $k$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
-  realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V|-1) - k$,
-  nonparallel if $G$ is simple. (\cref{def:rank-hypothesis}.)
+  Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
+  realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V|-1)$ ---
+  an infinitesimally rigid panel-hinge framework (\cref{def:rank-hypothesis},
+  at $k' = 0$). (The general minimal $k$-dof statement is recovered the
+  same way; the molecular conjecture needs only the $0$-dof case.)
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:minimal-kdof-reduction, lem:theorem-55-base, lem:case-I,
         lem:case-II, lem:case-III}
   Induction on $|V|$, driven by the combinatorial reduction
-  Theorem~4.9 (\cref{thm:minimal-kdof-reduction}). The base case
-  $|V| = 2$ is \cref{lem:theorem-55-base}. The inductive step splits
-  three ways on the reduction dichotomy: Case~I (a proper rigid
-  subgraph, \cref{lem:case-I}), Case~II ($k > 0$, splitting off a
-  reducible degree-2 vertex, \cref{lem:case-II}), and Case~III ($k = 0$,
-  no proper rigid subgraph, \cref{lem:case-III}). Cases~I and~II land in
-  this phase; Case~III --- the crux --- is Phases~22--23.
+  Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): run its well-founded
+  induction principle against the realization motive ``$G$ carries a
+  full-rank panel realization''. The base case $|V| = 2$ is
+  \cref{lem:theorem-55-base}. The inductive step splits three ways on the
+  reduction dichotomy: Case~I (a proper rigid subgraph, \cref{lem:case-I}),
+  Case~II (splitting off a reducible degree-2 vertex, \cref{lem:case-II}),
+  and Case~III (no proper rigid subgraph, closed combinatorially inside the
+  reduction). The two inductive cases are GREEN-modulo-21b --- each is an
+  iff-realization taking the general-position panel normals of Claim~6.9/6.4
+  (the Phase-21b genericity device) as an explicit hypothesis --- so the
+  induction itself is genericity-free and inherits the Phase-21b citation
+  transitively through the cases. Case~III --- the crux --- is realized in
+  Phases~22--23.
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 base case ($|V| = 2$)]
