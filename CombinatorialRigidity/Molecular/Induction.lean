@@ -237,6 +237,50 @@ theorem circuit_induces_isRigidSubgraph [DecidableEq β] [Finite α] [Finite β]
       = (bodyBarDim n : ℤ) * ((G.fiberSpan n X).ncard : ℤ) - (bodyBarDim n : ℤ) := by ring
   linarith
 
+/-- **The fundamental circuit of an out-of-base fiber spans all of `G`, given no proper
+rigid subgraph** (`lem:no-rigid-edge-count`, support; Katoh–Tanigawa 2011 Lemma 4.5(i),
+the spanning step). Let `B` be a base of `M(G̃)` and `p ∈ E(G̃) ∖ B` a fiber element
+outside it. Its fundamental circuit `X = fundCircuit p B` induces a rigid subgraph
+`G[V(X)]` (`circuit_induces_isRigidSubgraph`, via `IsBase.fundCircuit_isCircuit`); if `G`
+has **no proper rigid subgraph**, that rigid subgraph cannot be proper, so it must span all
+of `G`: `V(G[V(X)]) = V(X) = V(G)`.
+
+This is the "Lemma 3.4 ⟹ `V(X) = V(G)`" reduction Katoh–Tanigawa use inside the KT 4.5(i)
+edge-count bound `lem:no-rigid-edge-count` (and again in the KT 4.7–4.8 reduction step): the
+fundamental circuit of any redundant fiber is forced to be *spanning*, which is what lets the
+later base-exchange relocate redundancy onto a single fiber `ẽ`. It isolates the clean,
+matroid-API half of KT 4.5(i) (the rigid-subgraph / no-proper-rigid reasoning) from the
+remaining base-exchange count. -/
+theorem fundCircuit_inducedSpan_vertexSet_eq [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (hD : 1 ≤ bodyBarDim n)
+    (hnp : ∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n)
+    {B : Set (β × Fin (bodyHingeMult n))} (hB : (G.matroidMG n).IsBase B)
+    {p : β × Fin (bodyHingeMult n)} (hpE : p ∈ E(G.mulTilde n)) (hpB : p ∉ B) :
+    V(G.inducedSpan n ((G.matroidMG n).fundCircuit p B)) = V(G) := by
+  classical
+  set X := (G.matroidMG n).fundCircuit p B with hXdef
+  -- `p ∈ M.E = E(G̃)`, so the fundamental circuit `X` is a circuit of `M(G̃)`.
+  have hpground : p ∈ (G.matroidMG n).E := by rw [matroidMG, Matroid.restrict_ground_eq]; exact hpE
+  have hXcirc : (G.matroidMG n).IsCircuit X := hB.fundCircuit_isCircuit hpground hpB
+  -- The induced subgraph `G[V(X)]` is rigid, in particular `H ≤ G` and `0`-dof.
+  have hrigid : (G.inducedSpan n X).IsRigidSubgraph G n :=
+    circuit_induces_isRigidSubgraph hD hXcirc
+  -- `V(X) ⊆ V(G)` (the span sits inside `V(G)`).
+  have hsub : V(G.inducedSpan n X) ⊆ V(G) := by
+    rw [vertexSet_inducedSpan, fiberSpan]
+    exact (G.mulTilde n).spanningVerts_subset_vertexSet X
+  -- `V(X)` is nonempty: a circuit is nonempty, and each fiber spans a vertex.
+  have hVne : V(G.inducedSpan n X).Nonempty := by
+    rw [vertexSet_inducedSpan, fiberSpan]
+    obtain ⟨q, hq⟩ := hXcirc.nonempty
+    obtain ⟨x, _, hinc⟩ := exists_isLink_of_mem_edgeSet (hXcirc.subset_ground hq)
+    exact ⟨x, q, hq, hinc.inc_left⟩
+  -- If `V(X) ⊊ V(G)`, `G[V(X)]` is a *proper* rigid subgraph — excluded by hypothesis.
+  refine subset_antisymm hsub ?_
+  by_contra hnotle
+  exact hnp (G.inducedSpan n X)
+    ⟨hrigid, hVne, hsub.ssubset_of_ne (fun heq ↦ hnotle heq.ge)⟩
+
 /-! ## Forest-packing decomposition of `M(G̃)`-independent sets (`lem:forest-surgery-split`)
 
 The matroidal substrate the Katoh–Tanigawa forest surgery (KT Lemmas 4.1/4.2) operates on.

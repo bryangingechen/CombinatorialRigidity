@@ -234,8 +234,17 @@ they are **not** needed for Theorem 4.9.
 a red blueprint node (`lem:no-rigid-edge-count`), with its cardinality-bridge support
 `Graph.mulTilde_edgeSet_ncard` (`|E(G̃)| = (D−1)|E|`, green, axiom-free) landed. The
 matroidal core `corank M(G̃) ≤ D−2` (the fundamental-circuit-swap argument) is **not yet
-landed** — it hit a genuine blocker on the `X∩ẽ≠∅` step (see *Hand-off*). The arithmetic
-shell + the no-proper-rigid ⟹ `V(X)=V` reduction are clean once that step is in hand.
+landed** — it hit a genuine blocker on the `X∩ẽ≠∅` step (see *Hand-off*).
+
+**Commit F′-spanning landed (`fundCircuit_inducedSpan_vertexSet_eq`, KT 4.5(i) spanning
+step).** The "no-proper-rigid ⟹ `V(X)=V`" reduction half of F′ is now green, axiom-free
+(`Molecular/Induction.lean`): for a base `B` of `M(G̃)` and a redundant fiber `p ∈ E(G̃)∖B`,
+the fundamental circuit `X = fundCircuit p B` (`IsBase.fundCircuit_isCircuit`) induces a
+rigid `G[V(X)]` (green `circuit_induces_isRigidSubgraph`); under the no-proper-rigid
+hypothesis it cannot be a *proper* rigid subgraph, so `V(X) = V(G)`. This isolates the
+clean matroid-API half of F′ from the remaining base-exchange count + the `X∩ẽ≠∅` blocker
+(unchanged — see *Hand-off*). It is also reused by commit G (KT 4.7–4.8). Referenced in the
+`lem:no-rigid-edge-count` proof prose (node stays red; the corank core is still open).
 
 **Commit F landed (`circuit_induces_isRigidSubgraph`, KT 3.4 rigid-subgraph form).**
 While scoping the planned commit F (`lem:reducible-vertex`, KT 4.6) it became clear
@@ -370,7 +379,10 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   ground set to the graph edge count. The substantive content — `corank ≤ D−2`,
   i.e. the redundant fibers concentrate on one edge — is the
   fundamental-circuit-swap argument and is **not yet landed**: see *Hand-off* for
-  the precise remaining step + its blocker.
+  the precise remaining step + its blocker. **Spanning step landed:**
+  `Graph.fundCircuit_inducedSpan_vertexSet_eq` (no-proper-rigid ⟹ the fundamental
+  circuit of a redundant fiber spans `V(G)`), green `\leanok`, axiom-free; isolates the
+  clean matroid-API half from the residual base-exchange count.
 - [ ] `lem:reducible-vertex` — KT 4.6, existence of a degree-2 vertex in a
   2-edge-connected minimal 0-dof-graph with no proper rigid subgraph. **Scope
   refined at commit F** (which landed the *prerequisite* `circuit_induces_isRigidSubgraph`
@@ -601,17 +613,19 @@ degree two by Lemma 4.6"). The "∃ degree-2 vertex" core is two pieces:
   |ẽ∩B|` over bases (finite-min via `Finite`), `B*` attaining it, `h* ≥ 1` by
   minimality (`hG.2`). If `f∈Ẽ∖ẽ` has `p∉B*`, `X = fundCircuit p B*`
   (`IsBase.fundCircuit_isCircuit`) gives rigid `G[V(X)]` (green:
-  `circuit_induces_isRigidSubgraph`); no-proper-rigid ⟹ `V(X)=V` (clean:
-  `IsProperRigidSubgraph` needs `V(X) ⊊ V`, ruled out, + `V(X)⊆V`). A swap via
+  `circuit_induces_isRigidSubgraph`); no-proper-rigid ⟹ `V(X)=V` — **LANDED** as
+  `Graph.fundCircuit_inducedSpan_vertexSet_eq` (green, axiom-free; `IsProperRigidSubgraph`
+  ruled out via `V(X)⊊V` excluded + `V(X)⊆V` + `V(X)` nonempty). A swap via
   `Indep.mem_fundCircuit_iff` (`x∈fundCircuit p B* ↔ Indep(insert p B* ∖ {x})` ⟹
-  base) drops `|B∩ẽ|` below `h*`. **Blocker (this session could not crisply
-  formalize):** the `X∩ẽ≠∅` step — KT argues "else `D` spanning trees avoid `ẽ`,
+  base) drops `|B∩ẽ|` below `h*`. **Blocker (prior session could not crisply
+  formalize, still open):** the `X∩ẽ≠∅` step — KT argues "else `D` spanning trees avoid `ẽ`,
   contra minimality", which is the forest-flavored reasoning this phase routed
   around; need a clean matroidal restatement (likely: if `X∩ẽ=∅` then `X⊆E(G̃)∖ẽ`
   is dependent there, so `rank(M(G̃)↾(E(G̃)∖ẽ)) = rank M(G̃)` would give a base
   avoiding `ẽ`, contradicting `hG.2` — but pinning the rank-equality from one
   circuit needs care). Once `X∩ẽ≠∅` is in hand the rest assembles. The shell +
-  `V(X)=V` reduction are low-risk; budget the swap-core as the one hard sub-step.
+  `V(X)=V` reduction are landed (`fundCircuit_inducedSpan_vertexSet_eq`); budget the
+  swap-core (`X∩ẽ≠∅` + the `h*`-drop exchange) as the one hard remaining sub-step of F′.
 - **F″ — multigraph degree theory + ∃-degree-2.** `d_avg = 2|E|/|V| < 2D/(D−1) ≤ 3`
   (using `D ≥ 3`) forces a degree-2 vertex. **The project has no `Graph α β` degree
   function** — degree-2 is encoded ad hoc as `hdeg2 : ∀ e x, IsLink e v x → e = eₐ ∨

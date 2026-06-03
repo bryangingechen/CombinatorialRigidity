@@ -573,8 +573,11 @@ route that bypasses the deferred forest surgery
   gives $h^\ast \ge 1$. If some fiber $f \ne \tilde e$ had an element $p \notin
   B^\ast$, its fundamental circuit $X = \operatorname{fundCircuit}(p, B^\ast)$
   would, by \cref{lem:circuit-induces-rigid}, induce a rigid subgraph $G[V(X)]$;
-  the no-proper-rigid hypothesis forces $V(X) = V(G)$, and a base exchange along
-  $X$ then drops $|\tilde e \cap B|$ below $h^\ast$, contradicting minimality. So
+  the no-proper-rigid hypothesis forces $V(X) = V(G)$ (this spanning step is
+  formalized as \texttt{Graph.fundCircuit\_inducedSpan\_vertexSet\_eq}: a
+  fundamental circuit of a redundant fiber induces a rigid subgraph, which cannot
+  be proper, so it spans all of $G$), and a base exchange along $X$ then drops
+  $|\tilde e \cap B|$ below $h^\ast$, contradicting minimality. So
   every $f \ne \tilde e$ lies in $B^\ast$, whence $|E(\tilde G) \setminus B^\ast|
   = |\tilde e| - h^\ast = (D-1) - h^\ast \le D - 2$.
 \end{proof}
