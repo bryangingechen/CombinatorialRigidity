@@ -255,24 +255,46 @@ instead by a direct deficiency-count argument
       clearly over \emph{bases} of $M(\tilde G)$; the universal-over-$I$
       reading must be restricted. We record the literal disproof as
       \cref{ex:kt-41-overquantified}.
-    \item \emph{Proof of the intended (base) case --- an unjustified
-      step that we now resolve: a gap, not an error.} ``Convert each
-      $F_i$ to $F'_i$ with $|F'_i| = |F_i| - 1$ for each $i$'' (2011),
-      and the equation $2h' + (D - h') = h$ (2009), silently assume the
-      chosen $D$-forest packing is \emph{balanced at $v$}: every forest
-      uses at least one edge at the degree-2 vertex $v$. Neither version
-      justifies this. We have since recovered a justification, so the
-      step is a \emph{gap}, not an error: the balanced packing
-      \textbf{is} achievable for a base, in two halves. The
-      \emph{counting} half (\cref{lem:base-vfiber-count}) shows a base
-      meets $\ge D$ of $v$'s $2(D-1)$ fibers, so the pigeonhole
-      obstruction ``$h < D$'' cannot arise. The \emph{redistribution}
-      half (\cref{lem:acyclic-insert-vfiber}) shows those $\ge D$ fibers
-      can be spread one per forest: a forest avoiding $v$ has $v$
-      isolated (degree~2!), so it accepts any free $v$-fiber as a
-      \emph{pendant} without closing a cycle, and a finite descent then
-      makes every forest meet $v$. So KT's conclusion holds; only an
-      intermediate justification was missing.
+    \item \emph{Proof of the intended (base) case --- the unjustified
+      step.} ``Convert each $F_i$ to $F'_i$ with $|F'_i| = |F_i| - 1$
+      for each $i$'' (2011), and the equation $2h' + (D - h') = h$
+      (2009), rest on an unstated premise about the chosen $D$-forest
+      packing: that it is \emph{balanced at $v$} --- every one of the
+      $D$ forests uses at least one edge at the degree-2 vertex $v$, so
+      that all $D$ forests shrink by one and $|I'| = |I| - D$. Neither
+      version justifies this. \textbf{We resolve it; the step is a gap,
+      not an error}, but the repair has \emph{two} parts, both worked
+      out here since no source supplies them.
+
+      First, a balanced packing \emph{exists} for a base, in two
+      halves: the \emph{counting} half (\cref{lem:base-vfiber-count})
+      shows a base meets $\ge D$ of $v$'s $2(D-1)$ fibers, so the
+      pigeonhole obstruction ``$h < D$'' cannot arise; the
+      \emph{redistribution} half (\cref{lem:acyclic-insert-vfiber})
+      spreads those fibers one per forest --- a forest avoiding $v$ has
+      $v$ isolated (degree~2!), so it absorbs any free $v$-fiber as a
+      \emph{pendant} --- and a finite descent
+      (\cref{lem:packing-move,lem:balanced-forest-packing}) makes every
+      forest meet $v$.
+
+      Second --- the part it is easy to overlook --- the \emph{reroute
+      itself} must convert a balanced packing into a packing of
+      $\widetilde{G_v^{ab}}$ with the right count. Each forest has
+      $v$-degree $1$ or $2$ (at most one copy of each of $v$'s two
+      parallel edge-bundles, since two parallel copies form a $2$-cycle;
+      at least one, by balance). A degree-$2$ forest trades its
+      $a$--$v$--$b$ path for a single short-circuit copy $\widetilde{ab}$
+      (\cref{lem:reroute-cycle-lift}); a degree-$1$ forest simply drops
+      its lone $v$-fiber, keeping the rest
+      (\cref{lem:reroute-vfree-transport}) --- it gains \emph{no}
+      $\widetilde{ab}$-copy, since only $D-1$ such copies exist for the
+      $D$ forests, so not all can be degree-$2$. Because the packing is
+      balanced, all $D$ forests shrink by exactly one, giving $|I'| =
+      |I| - D$ (\cref{lem:forest-surgery-count}); KT's $2h' + (D-h') = h$
+      is precisely this accounting. Assembled
+      (\cref{lem:forest-surgery-split}) this yields
+      $\operatorname{def}(\widetilde{G_v^{ab}}) \le
+      \operatorname{def}(\tilde G)$, KT's intended conclusion.
     \item \emph{Intended content --- true.} What the induction
       (\cref{lem:dof-tracking}) actually consumes is the deficiency
       inequality $\operatorname{def}(\widetilde{G_v^{ab}}) \le
@@ -284,12 +306,15 @@ instead by a direct deficiency-count argument
   Accordingly the forest surgery (both the splitting-off
   \cref{lem:forest-surgery-split} and the edge-splitting inverse
   \cref{lem:forest-surgery-unsplit}) is \textbf{deferred / off the
-  Theorem-4.9 critical path}: the substrate of the splitting-off direction
-  is formalized, and the balanced-packing assumption of layer~(2) is now
-  settled (\cref{lem:base-vfiber-count,lem:acyclic-insert-vfiber}); what
-  remains is only the bookkeeping descent assembling them into the surgery,
-  which Theorem~4.9 does not need. The edge-splitting inverse, while sound,
-  is not needed by Theorem~4.9 either. Both the splitting-off deficiency bound
+  Theorem-4.9 critical path}. Its components are largely formalized: a
+  balanced packing exists (\cref{lem:balanced-forest-packing}), and both
+  per-forest reroute steps --- the degree-$2$ cycle-lift
+  (\cref{lem:reroute-cycle-lift}) and the verbatim transport of the
+  $v$-free part (\cref{lem:reroute-vfree-transport}) --- are formalized.
+  What remains is the cardinality bookkeeping (\cref{lem:forest-surgery-count})
+  and its assembly into the deficiency relation
+  (\cref{lem:forest-surgery-split}). The edge-splitting inverse, while
+  sound, is not needed by Theorem~4.9 either. Both the splitting-off deficiency bound
   (\cref{lem:splitoff-deficiency}, KT~4.3) \emph{and} the removal bound
   (\cref{lem:removal-deficiency}, KT~4.4) are reached instead through the
   deficiency-counting route of \cref{sec:molecular-induction-dof}, on the
@@ -457,41 +482,103 @@ instead by a direct deficiency-count argument
   packing.
 \end{proof}
 
-\begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
-  \label{lem:forest-surgery-split}
-  \lean{Graph.forest_surgery_split}
+\begin{lemma}[Reroute step: the $v$-free part of a forest transports verbatim]
+  \label{lem:reroute-vfree-transport}
+  \lean{Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex}
   \leanok
-  \uses{def:graph-operations, def:matroid-MG, lem:forest-packing-decomp, lem:balanced-forest-packing, lem:splitoff-deficiency, rem:kt-lemma-41}
-  \emph{Off the Theorem-4.9 critical path} (\cref{rem:kt-lemma-41}): the
-  induction toward Theorem~4.9 uses the deficiency-count
-  \cref{lem:splitoff-deficiency} instead. Let $v$ be a degree-2 vertex of $G$
-  with distinct neighbours $a, b$ and $e_0 \notin E(G)$ a fresh edge. Given an
-  edge-disjoint packing of $\tilde G$ into $D$ forests covering an
-  $M(\tilde G)$-independent set $I$, the \emph{surgery} reroutes each forest
-  across $v$: it discards the forest's fibers incident to $v$, and a forest that
-  uses both of $v$'s edges trades them for a single copy of the short-circuit
-  fiber $\widetilde{ab}$. The rerouted family is again an edge-disjoint packing
-  into $D$ forests --- now of $\widetilde{G_v^{ab}}$ --- covering the $v$-free
-  part of $I$, hence an independent set of $M(\widetilde{G_v^{ab}})$. Applied to
-  a base $I$ this reads off the splitting-off deficiency relation
-  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G)$.
-  The balanced packing in which every forest meets $v$
-  (\cref{lem:balanced-forest-packing}) supplies the per-forest reroute data,
-  confirming that the assumption \cref{rem:kt-lemma-41}~(2) KT's proof glosses is
-  a gap, not an error.
+  \uses{def:graph-operations, def:matroid-MG}
+  Let $F$ be a cycle-matroid-independent fiber set of $\tilde G$ (a forest).
+  Its part avoiding the degree-2 vertex $v$, namely $F$ with $v$'s fibers
+  removed, is again cycle-matroid-independent in the multiplied splitting-off
+  $\widetilde{G_v^{ab}}$. This is the entire reroute for a $v$-degree-$1$ forest
+  (drop its lone $v$-fiber, keep the rest), and the untouched core of a
+  $v$-degree-$2$ forest.
 \end{lemma}
 \begin{proof}
   \leanok
-  The part of each forest avoiding $v$ is a set of fibers of non-$v$-edges of
-  $G$, so it transports verbatim into $\widetilde{G_v^{ab}}$. A forest using
-  both $v$-edges $pa, pb$ replaces them by one copy $r$ of $\widetilde{ab}$:
-  any $\widetilde{G_v^{ab}}$-cycle through $r$ rotates to put $r$ first, and
-  substituting the $v$-traversing $2$-path $a$-$pa$-$v$-$pb$-$b$ for $r$
-  produces a closed $\tilde G$-trail inside the forest, hence a $\tilde
-  G$-cycle, contradicting acyclicity. Distinct copies $r$ across forests, each
-  forest absorbing at most one (two parallel copies form a $2$-cycle), keep the
-  rerouted forests edge-disjoint. Their union is a forest packing of
-  $\widetilde{G_v^{ab}}$, so an independent set of $M(\widetilde{G_v^{ab}})$.
+  The splitting-off $G_v^{ab}$ deletes $v$ and its two edges and adds the single
+  edge $ab$, so every edge of $G$ not incident to $v$ --- hence every fiber of
+  the $v$-free part of $F$ --- survives unchanged into $G_v^{ab}$ and its
+  multiplication. Acyclicity transports down this inclusion of the $v$-removed
+  multigraph into the splitting-off.
+\end{proof}
+
+\begin{lemma}[Reroute step: the degree-2 cycle-lift swap]
+  \label{lem:reroute-cycle-lift}
+  \lean{Graph.isAcyclicSet_splitOff_reroute}
+  \leanok
+  \uses{def:graph-operations, def:matroid-MG, lem:reroute-vfree-transport}
+  Let $F$ be a forest of $\tilde G$ using exactly one $v$--$a$ fiber $pa$ and one
+  $v$--$b$ fiber $pb$ (a $v$-degree-$2$ forest), and let $r$ be a copy of the
+  fresh short-circuit fiber $\widetilde{ab}$. Then $(F \setminus \{pa, pb\}) \cup
+  \{r\}$ is cycle-matroid-independent in $\widetilde{G_v^{ab}}$: the forest may
+  trade its $a$--$v$--$b$ path for the direct $ab$-edge without creating a cycle.
+  This is the genuinely combinatorial step Katoh--Tanigawa's proof omits.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Suppose the rerouted set had a cycle. It must use $r$ (its $v$-free part is a
+  forest, \cref{lem:reroute-vfree-transport}); rotate the cycle so $r = ab$ comes
+  first. Substituting the $v$-traversing $2$-path $a$-$pa$-$v$-$pb$-$b$ of
+  $\tilde G$ for $r$ yields a closed walk inside $F \cup \{pa, pb\} \subseteq F$,
+  which therefore contains a $\tilde G$-cycle --- contradicting that $F$ is a
+  forest.
+\end{proof}
+
+\begin{lemma}[The surgery count: $|I'| = |I| - D$]
+  \label{lem:forest-surgery-count}
+  \uses{def:graph-operations, def:matroid-MG, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport}
+  Let $F_0, \dots, F_{D-1}$ be a \emph{balanced} edge-disjoint forest packing of a
+  base $I$ of $M(\tilde G)$ --- every forest meets the degree-2 vertex $v$
+  (\cref{lem:balanced-forest-packing}). Reroute each forest: a $v$-degree-$2$
+  forest trades $\{pa, pb\}$ for one copy of $\widetilde{ab}$, chosen distinct
+  across forests (\cref{lem:reroute-cycle-lift}); a $v$-degree-$1$ forest drops
+  its single $v$-fiber and adds nothing (\cref{lem:reroute-vfree-transport}). The
+  rerouted family $F'_0, \dots, F'_{D-1}$ is an edge-disjoint forest packing of
+  $\widetilde{G_v^{ab}}$ with $\bigl|\bigcup_i F'_i\bigr| = |I| - D$.
+\end{lemma}
+\begin{proof}
+  Every forest has $v$-degree $1$ or $2$: at most one copy of each of $v$'s two
+  parallel edge-bundles (two parallel copies form a $2$-cycle), and at least one
+  by balance. A degree-$2$ forest loses two $v$-fibers and gains one copy
+  ($|F'_i| = |F_i| - 1$); a degree-$1$ forest loses one and gains none ($|F'_i| =
+  |F_i| - 1$). So all $D$ forests shrink by exactly one, and as the packing
+  partitions $I$, $\bigl|\bigcup_i F'_i\bigr| = |I| - D$. (With $h'$ degree-$2$
+  forests this is KT's $2h' + (D - h') = h$: $h$ fibers dropped, $h'$ copies
+  added, net $-D$.) Edge-disjointness: the $v$-free cores are disjoint subsets of
+  the disjoint $F_i$, and the added copies are distinct --- enough exist, since
+  the $h' \le D - 1$ degree-$2$ forests draw on $D - 1$ copies of $\widetilde{ab}$.
+\end{proof}
+
+\begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
+  \label{lem:forest-surgery-split}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport, lem:forest-surgery-count, lem:splitoff-deficiency, rem:kt-lemma-41}
+  \emph{Off the Theorem-4.9 critical path} (\cref{rem:kt-lemma-41}): the
+  induction toward Theorem~4.9 uses the deficiency-count
+  \cref{lem:splitoff-deficiency} instead. Let $v$ be a degree-2 vertex of $G$
+  with distinct neighbours $a, b$ and $e_0 \notin E(G)$ a fresh edge. Rerouting a
+  balanced forest packing of a base $I$ of $M(\tilde G)$ across $v$ --- degree-$2$
+  forests swap their $a$--$v$--$b$ path for an $\widetilde{ab}$-copy, degree-$1$
+  forests drop their $v$-fiber (\cref{lem:forest-surgery-count}) --- produces a
+  forest packing of $\widetilde{G_v^{ab}}$ of size $|I| - D$, an independent set
+  of $M(\widetilde{G_v^{ab}})$. Hence
+  \[
+    \operatorname{def}(\widetilde{G_v^{ab}}) \;\le\; \operatorname{def}(\tilde G),
+  \]
+  KT's Lemma~4.1 conclusion --- the same bound the deficiency route delivers as
+  \cref{lem:splitoff-deficiency}. This is the assembled repair of the
+  balanced-packing gloss (\cref{rem:kt-lemma-41}~(2)).
+\end{lemma}
+\begin{proof}
+  By \cref{lem:forest-surgery-count} the rerouted family is an edge-disjoint
+  $D$-forest packing of $\widetilde{G_v^{ab}}$ covering an independent set $I' =
+  \bigcup_i F'_i$ with $|I'| = |I| - D$, so $\operatorname{rank}
+  M(\widetilde{G_v^{ab}}) \ge |I| - D = \operatorname{rank} M(\tilde G) - D$.
+  Since $\widetilde{G_v^{ab}}$ has one fewer vertex than $\tilde G$, the
+  def\,$=$\,corank identity (\cref{thm:def-eq-corank}, $\operatorname{def} =
+  D(|V| - 1) - \operatorname{rank}$) gives $\operatorname{def}(\widetilde{G_v^{ab}})
+  = D(|V| - 2) - \operatorname{rank} M(\widetilde{G_v^{ab}}) \le D(|V| - 1) -
+  \operatorname{rank} M(\tilde G) = \operatorname{def}(\tilde G)$.
 \end{proof}
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, edge-splitting direction; KT Lemma 4.2]

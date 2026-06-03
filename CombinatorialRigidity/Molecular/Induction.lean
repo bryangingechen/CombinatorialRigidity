@@ -3141,7 +3141,21 @@ Theorem-4.9 critical path). The reroute data — which forest carries two `v`-ed
 fresh copy it absorbs — is supplied per forest; its existence is the balanced packing
 (`exists_balanced_forest_packing`) plus the per-forest degree classification. -/
 
-/-- **The splitting-off forest surgery** (`lem:forest-surgery-split`; Katoh–Tanigawa 2011
+/-- **⚠ SUPERSEDED / VACUOUS — do not use; to be replaced (Phase-20 forest-surgery addendum).**
+This declaration's hypotheses are jointly **unsatisfiable**, so it is vacuously true and
+establishes nothing. `hr_inj` demands an injection `Fin (bodyBarDim n) ↪ {e₀} × Fin
+(bodyHingeMult n)`, but `bodyHingeMult n = bodyBarDim n - 1` — a strictly smaller codomain, so
+no such `r` exists. Structurally, `hreroute` forces every `v`-meeting forest to have `v`-degree
+exactly `2`, which no balanced base packing admits: there are only `D-1` copies of each of `v`'s
+two edges for `D` forests, so at least one forest has `v`-degree `1`. The corrected surgery —
+degree-`1` forests drop their lone `v`-fiber with **no** `ã̃b`-copy added, and the `|I'| = |I| - D`
+count follows because balance makes every forest shrink by exactly one — is specified in blueprint
+`lem:forest-surgery-split` / `lem:forest-surgery-count` and will replace this declaration. Kept
+here (unpinned: no `\lean{}` blueprint node points at it) only so the planning commit stays
+build-green; the reusable acyclicity steps live in `isAcyclicSet_splitOff_reroute` /
+`isAcyclicSet_splitOff_of_diff_fiberAtVertex`.
+
+**The splitting-off forest surgery** (Katoh–Tanigawa 2011
 Lemma 4.1 p.660). Let `v` be a degree-2 vertex of `G` with distinct neighbours `a, b`
 (`a, b ≠ v`, `a, b ∈ V(G)`), and let `e₀ ∉ E(G)` be the fresh short-circuit edge. Given an
 edge-disjoint `D`-forest packing `Fs` of `G̃` covering an `M(G̃)`-independent set `I` (each
