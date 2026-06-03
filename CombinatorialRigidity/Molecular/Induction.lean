@@ -489,6 +489,12 @@ lemma removeVertex_isLink {G : Graph α β} {v : α} {e : β} {x y : α} :
   rw [removeVertex, deleteVerts_isLink]
   simp [Set.mem_singleton_iff]
 
+/-- **Vertex removal is a subgraph** (`def:graph-operations`): `G_v = G − v ≤ G`. The
+common-subgraph lower bound for the splitting-off edge-substitution bridge below
+(`removeVertex_le_splitOff`); both `G` and `G_v^{ab}` sit *above* `G − v`. -/
+lemma removeVertex_le (G : Graph α β) (v : α) : G.removeVertex v ≤ G := by
+  rw [removeVertex]; exact G.deleteVerts_le
+
 /-- **Splitting-off** `G_v^{ab}` at a degree-2 vertex `v` with neighbours `a`, `b`
 (`def:graph-operations`): delete `v` and replace the two edges through `v` by a single
 fresh edge `e₀` joining `a` and `b`. Edges other than `e₀` are kept iff they avoid `v`;
@@ -577,6 +583,34 @@ lemma edgeFiber_subset_edgeSet_mulTilde_splitOff {G : Graph α β} {v a b : α} 
   rw [edgeFiber, Set.mem_setOf_eq] at hp
   rw [hp, edgeSet_splitOff]
   exact Or.inl ⟨rfl, ha, hb, haV, hbV⟩
+
+/-- **Edge-substitution bridge for splitting-off** (`def:graph-operations`, the
+graph-level brick of `lem:case-II`). The splitting-off `G_v^{ab} = G.splitOff v a b e₀`
+is *not* a subgraph of `G`: it deletes `v`'s two edges `eₐ, e_b` but adds a *fresh*
+short-circuit edge `e₀` joining `a` and `b` (with `e₀ ∉ E(G)`). The two graphs are instead
+an **edge substitution** of each other, sharing the common subgraph `G − v` (all of `G`
+away from `v`): `G − v ≤ G` (`removeVertex_le`) and `G − v ≤ G_v^{ab}` (this lemma). The
+inclusion holds because every link of `G − v` is a link of `G` avoiding `v`
+(`removeVertex_isLink`), and its edge — being an edge of `G` — is `≠ e₀` (else `e₀ ∈ E(G)`,
+contradicting `he₀`), so it survives into `G_v^{ab}` through `splitOff`'s `e ≠ e₀` branch.
+
+This is the missing graph-level piece Case II's 1-extension needs to wire the inductive
+realization of `G_v^{ab}` (placed *above* `G − v`) into the parent framework on `G` (also
+above `G − v`) via `withGraph`: both re-add edges over the shared `G − v`, so the
+`withGraph`-routed monotonicity / rank machinery (`pinnedMotions_le_withGraph` et al.,
+all requiring `G' ≤ F.graph`) applies through the common lower bound `G − v` rather than
+the (false) direct comparison `G_v^{ab} ≤ G`. -/
+lemma removeVertex_le_splitOff {G : Graph α β} {v a b : α} {e₀ : β} (he₀ : e₀ ∉ E(G)) :
+    G.removeVertex v ≤ G.splitOff v a b e₀ := by
+  refine ⟨?_, ?_⟩
+  · intro x hx
+    rw [vertexSet_splitOff]
+    rw [vertexSet_removeVertex] at hx
+    exact hx
+  · intro e x y h
+    rw [removeVertex_isLink] at h
+    rw [splitOff_isLink]
+    exact Or.inl ⟨fun hee => he₀ (hee ▸ h.1.edge_mem), h.1, h.2.1, h.2.2⟩
 
 /-! ## Splitting-off does not increase the deficiency (`lem:splitoff-deficiency`)
 

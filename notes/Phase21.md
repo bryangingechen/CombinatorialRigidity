@@ -26,6 +26,23 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case II edge-substitution graph bridge landed (2026-06-03).** The missing graph-level brick of
+`lem:case-II` (hand-off option B) is green: `Graph.removeVertex_le` (`G − v ≤ G`, via
+`deleteVerts_le`) and `Graph.removeVertex_le_splitOff` (`e₀ ∉ E(G) ⇒ G − v ≤ G.splitOff v a b e₀`),
+both in `Molecular/Induction.lean` beside the `splitOff` def. The point: `splitOff G v a b e₀` is
+**not** `≤ G` (it adds the fresh short-circuit edge `e₀ ∉ E(G)`), so the `withGraph` machinery —
+which needs `G' ≤ F.graph` — cannot compare `G` and `G_v^{ab}` directly. They are instead an *edge
+substitution*, sharing the common subgraph `G − v`; both these inclusions route through that shared
+lower bound. Proofs are anonymous-constructor one-liners on the `Graph` `≤` structure (vertex-set +
+`isLink_mono`): for the splitting-off inclusion, a link of `G − v` is a link of `G` avoiding `v`, so
+its edge is in `E(G)`, hence `≠ e₀` (else `e₀ ∈ E(G)`), so it survives into `splitOff`'s `v`-avoiding
+branch. Axiom-clean (propext/Classical.choice/Quot.sound). No friction. Blueprint adds a green
+`lem:splitoff-edge-substitution` node that the still-red `lem:case-II` `\uses`. **Remaining red on
+Case II:** discharging `hspan` (option A′ — `S w ∈ span C(e)` for the two new edges via the
+genericity rank/dimension count, *not* pointwise) and wiring the inductive realization on `G_v^{ab}`
+into the parent framework on `G` *through* this `G − v` common lower bound (the rank-lift assembly +
+`pinnedMotions_withGraph_eq` now have the graph relationship they were missing).
+
 **Case II `hnew` reduction to per-edge span-membership landed (2026-06-03).** The brick that turns
 the abstract `hnew` hypothesis of `pinnedMotions_withGraph_eq` into the concrete two-edge condition
 the genericity device must discharge is green: `BodyHingeFramework.hnew_of_isLink_incident` and its
@@ -519,9 +536,12 @@ Case II (`k>0` splitting; KT §6.3):
   green): given all out-of-`G'` links are `v`-incident and `S v = 0`, the
   constraint `S v − S w` collapses to `S w ∈ span C(e)`. Still needs:
   discharging that span-membership (`hspan`) for the chosen general-position
-  extensors (genuine Claim 6.9 — false pointwise, holds by the rank count),
-  and wiring `G_v^{ab}` (Phase 20; needs an edge-substitution bridge,
-  `splitOff` adds a fresh `e₀` so is not directly `≤ G`) into `withGraph`.
+  extensors (genuine Claim 6.9 — false pointwise, holds by the rank count).
+  The edge-substitution bridge for wiring `G_v^{ab}` into `withGraph` is now
+  green (`lem:splitoff-edge-substitution`, `removeVertex_le` +
+  `removeVertex_le_splitOff`): `splitOff` adds a fresh `e₀` so it is not
+  directly `≤ G`, but `G` and `G_v^{ab}` share the common subgraph `G − v`,
+  the lower bound both `withGraph`-inclusions route through.
 
 Case III (deferred to Phases 22–23):
 - [ ] `lem:case-III` — KT Lemma 6.10/6.13: `k=0`, no proper rigid
@@ -791,14 +811,15 @@ not pointwise. The reduction landed this commit (`hnew_of_isLink_incident`) isol
 span-memberships (`hspan`) the genericity device must achieve, so the open piece is now sharply
 stated.
 
-**Smallest next concrete commit:** two genuinely-open pieces remain, both feeding `lem:case-II`.
+**Smallest next concrete commit:** the edge-substitution graph bridge (former option B) is now
+green (`removeVertex_le_splitOff`); one genuinely-open piece remains for `lem:case-II`, plus Case I.
 (A′) Discharge `hspan` (`S w ∈ span C(e)` for the two new edges) via the rank/dimension count of the
 genericity device — *not* a pointwise fact; reuses `exists_independent_panelSupportExtensor` for the
 extensor placement but needs the rank-counting argument to conclude every base-pinned motion lands.
-(B) Wire the vertex-level splitting-off op `G_v^{ab}` (`Graph.splitOff`, green in Phase 20) as `G'`
-in `withGraph`; note `splitOff` adds a fresh edge `e₀` joining `a–b`, so it is **not** directly
-`≤ G` — an edge-substitution bridge relating `G` (with `v`'s two edges) to `splitOff G v a b e₀`
-(with `e₀`) is the missing graph-level brick. Either is a clean standalone next commit.
+This is the genuine Claim 6.9 analytic content and the harder of the two; assess on contact whether
+it splits into a smaller commit. With the `G − v` common lower bound now in hand, the remaining
+plumbing for Case II is to instantiate `withGraph`/`withNormal` against `splitOff`-via-`removeVertex`
+rather than the (false) `splitOff ≤ G`.
 Alternatively continue Case I: place the contraction
 realization (panel data on `rigidContract`) and re-add `E(H)` via `withGraph`; the slack in
 `screwDim_add_finrank_pinnedMotionsOn_le` is the contraction's inductive rank (block-triangular

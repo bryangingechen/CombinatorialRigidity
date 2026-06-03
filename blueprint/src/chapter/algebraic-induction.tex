@@ -624,10 +624,33 @@ Cases~I and~II travel toward the smaller inductive graph.
   pre-choice framework's pinned dimension.
 \end{proof}
 
+\begin{lemma}[Edge-substitution bridge for splitting-off]
+  \label{lem:splitoff-edge-substitution}
+  \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff}
+  \leanok
+  The splitting-off $G_v^{ab}$ is \emph{not} a subgraph of $G$: it deletes
+  the two $v$-incident edges $v a$, $v b$ but adds a fresh short-circuit
+  edge $e_0 \notin E(G)$ joining $a$ and $b$. The two graphs are instead an
+  \emph{edge substitution} of one another, sharing the common subgraph
+  $G - v$ (all of $G$ away from $v$): $G - v \le G$ and
+  $G - v \le G_v^{ab}$. The second inclusion holds because every edge of
+  $G - v$ is an edge of $G$, hence $\neq e_0$, so it survives into
+  $G_v^{ab}$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Both inclusions are the definition of $\le$ on multigraphs (vertex-set
+  and link inclusion). For $G - v \le G_v^{ab}$, a link of $G - v$ is a
+  link $e\,x\,y$ of $G$ with $x, y \neq v$; since $e \in E(G)$ and
+  $e_0 \notin E(G)$ we have $e \neq e_0$, so $e$ lands in $G_v^{ab}$'s
+  $v$-avoiding branch.
+\end{proof}
+
 \begin{lemma}[Case II: splitting off a reducible vertex; KT Lemmas 6.7, 6.8]
   \label{lem:case-II}
   \uses{thm:minimal-kdof-reduction, lem:reduction-step,
-        lem:rank-delete-vertex, lem:case-II-rank-lift, lem:cycle-realization}
+        lem:rank-delete-vertex, lem:case-II-rank-lift, lem:cycle-realization,
+        lem:splitoff-edge-substitution}
   Let $G$ be a minimal $k$-dof-graph with $k > 0$ and a reducible
   degree-2 vertex $v$ (KT~4.6), and let $G_v^{ab}$ be the splitting-off
   at $v$ (a smaller minimal $k$-dof-graph by \cref{lem:reduction-step}).
