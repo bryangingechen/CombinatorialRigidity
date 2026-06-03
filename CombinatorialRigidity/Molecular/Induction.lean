@@ -2276,6 +2276,46 @@ lemma fiber_inter_subsingleton_of_isAcyclicSet_splitOff {G : Graph α β}
   rw [← hCpq]
   exact Set.insert_subset hp.1 (Set.singleton_subset_iff.mpr hq.1)
 
+/-- **Two distinct parallel copies of an edge of `G` form a 2-cycle in `G̃`**
+(`lem:forest-surgery-count`, degree-cap substrate). If `e` is an edge of `G` linking two
+*distinct* vertices `x ≠ y`, any two distinct copies `p ≠ q` of `e` in the multiplied graph
+`G̃ = (D-1)·G` are a cycle-edge-set: `{p, q}` is `IsCycleSet` of `G̃`. Both copies link the
+same endpoints `x, y`, so `x —p→ y —q→ x` is a length-2 cyclic walk. (This is the plain-`G̃`
+analogue of `isCycleSet_pair_edgeFiber_splitOff`; it caps each forest's `v`-degree at `2`.) -/
+lemma isCycleSet_pair_edgeFiber_mulTilde {G : Graph α β} {n : ℕ} {e : β} {x y : α}
+    (hxy : x ≠ y) (hl : G.IsLink e x y)
+    {p q : β × Fin (bodyHingeMult n)} (hp : p.1 = e) (hq : q.1 = e) (hpq : p ≠ q) :
+    (G.mulTilde n).IsCycleSet {p, q} := by
+  have hlink : ∀ r : β × Fin (bodyHingeMult n), r.1 = e → (G.mulTilde n).IsLink r x y :=
+    fun r hr ↦ by rw [mulTilde, edgeMultiply_isLink, hr]; exact hl
+  have hlinkp := hlink p hp
+  have hlinkq := hlink q hq
+  refine ⟨WList.cons x p (WList.cons y q (WList.nil x)), ?_, by simp⟩
+  have hwalk : (G.mulTilde n).IsWalk (WList.cons x p (WList.cons y q (WList.nil x))) := by
+    rw [cons_isWalk_iff, cons_isWalk_iff, nil_isWalk_iff]
+    exact ⟨hlinkp, hlinkq.symm, hlinkp.left_mem⟩
+  refine ⟨⟨⟨hwalk, ?_⟩, by simp, ?_⟩, ?_⟩
+  · simp [hpq]
+  · simp
+  · simp [hxy.symm]
+
+/-- **A `G̃`-forest holds at most one copy of any single edge** (`lem:forest-surgery-count`,
+degree-cap substrate). For a cycle-matroid-acyclic (forest) fiber set `F` of `G̃` and an edge
+`e` of `G` between *distinct* endpoints, `F` meets the fiber `ẽ = edgeFiber e n` in at most one
+element. Two distinct copies of `e` form a 2-cycle (`isCycleSet_pair_edgeFiber_mulTilde`),
+which a forest cannot contain. -/
+lemma fiber_inter_subsingleton_of_isAcyclicSet_mulTilde {G : Graph α β} {n : ℕ} {e : β}
+    {x y : α} (hxy : x ≠ y) (hl : G.IsLink e x y) {F : Set (β × Fin (bodyHingeMult n))}
+    (hF : (G.mulTilde n).cycleMatroid.Indep F) : (F ∩ edgeFiber e n).Subsingleton := by
+  rw [cycleMatroid_indep] at hF
+  intro p hp q hq
+  by_contra hpq
+  obtain ⟨C, hCG, hC, hCpq⟩ := isCycleSet_iff.mp
+    (isCycleSet_pair_edgeFiber_mulTilde hxy hl hp.2 hq.2 hpq)
+  refine (not_isAcyclicSet_iff hF.1).mpr ⟨C, hC, hCG, ?_⟩ hF
+  rw [← hCpq]
+  exact Set.insert_subset hp.1 (Set.singleton_subset_iff.mpr hq.1)
+
 /-! ## The degree-2 reroute preserves acyclicity (`lem:forest-surgery-split`, reroute wiring step 2)
 
 The genuine combinatorial crux of the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery: a balanced
@@ -2941,6 +2981,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
     {B : Set (β × Fin (bodyHingeMult n))} (hB : (G.matroidMG n).IsBase B) :
     ∃ Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
       (⋃ i, Fs i = B) ∧ (∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs i)) ∧
+        (Pairwise (Function.onFun Disjoint Fs)) ∧
         (∀ i, ∃ p ∈ Fs i, (G.mulTilde n).Inc p v) := by
   classical
   haveI : Nonempty (Fin (bodyBarDim n)) := ⟨⟨0, lt_of_lt_of_le (by norm_num) hD⟩⟩
@@ -2974,16 +3015,17 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
       {i | (Fs i ∩ vfib) = ∅}.ncard ≤ m →
       ∃ Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
         (⋃ i, Fs' i = B) ∧ (∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs' i)) ∧
+          (Pairwise (Function.onFun Disjoint Fs')) ∧
           (∀ i, (Fs' i ∩ vfib).Nonempty) by
-    obtain ⟨Fs', hc, hi, hmeet⟩ :=
+    obtain ⟨Fs', hc, hi, hd, hmeet⟩ :=
       H {i | (Ds i ∩ vfib) = ∅}.ncard Ds hDscover hDsindep hDsdisj le_rfl
-    refine ⟨Fs', hc, hi, fun i ↦ ?_⟩
+    refine ⟨Fs', hc, hi, hd, fun i ↦ ?_⟩
     exact (hmeet_iff (Fs' i) (hc ▸ Set.subset_iUnion Fs' i)).mpr (hmeet i)
   intro m
   induction m with
   | zero =>
-    intro Fs hcover hindep _hdisj hle
-    refine ⟨Fs, hcover, hindep, fun i ↦ ?_⟩
+    intro Fs hcover hindep hdisj hle
+    refine ⟨Fs, hcover, hindep, hdisj, fun i ↦ ?_⟩
     have hempty : {i | (Fs i ∩ vfib) = ∅} = ∅ := by
       rw [← Set.ncard_eq_zero (Set.toFinite _)]; omega
     by_contra hne
@@ -2992,7 +3034,7 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
   | succ m ih =>
     intro Fs hcover hindep hdisj hle
     by_cases hbal : ∀ i, (Fs i ∩ vfib).Nonempty
-    · exact ⟨Fs, hcover, hindep, hbal⟩
+    · exact ⟨Fs, hcover, hindep, hdisj, hbal⟩
     simp only [not_forall, Set.not_nonempty_iff_eq_empty] at hbal
     obtain ⟨j, hj⟩ := hbal
     have hssubB : ∀ i, Fs i ⊆ B := fun i ↦ hcover ▸ Set.subset_iUnion Fs i
@@ -3123,100 +3165,198 @@ theorem exists_balanced_forest_packing [DecidableEq β] [Finite α] [Finite β] 
         exact absurd (hjnew ▸ hxFs'j) (Set.notMem_empty x)
     exact ih Fs' hcover' hindep' hdisj' (by omega)
 
-/-! ### The forest-surgery assembly (`lem:forest-surgery-split`, Katoh–Tanigawa Lemma 4.1)
+/-! ### The surgery count (`lem:forest-surgery-count`, Katoh–Tanigawa Lemma 4.1)
 
-The bookkeeping that closes the splitting-off forest surgery: a `D`-forest packing of `G̃`
-across a degree-2 vertex `v` reroutes, forest by forest, into a `D`-forest packing of the
-multiplied splitting-off `G̃_v^{ab}`. Each forest's part avoiding `v` transports verbatim
-(reroute wiring step 1, `isAcyclicSet_splitOff_of_diff_fiberAtVertex`), and a forest using
-both of `v`'s edges trades them for a single short-circuit copy of the fresh fiber `ã̃b`
-(reroute wiring step 2, `isAcyclicSet_splitOff_reroute`); the per-forest `ã̃b`-copies are kept
-distinct so the rerouted forests stay edge-disjoint, capped one per forest by
-`fiber_inter_subsingleton_of_isAcyclicSet_splitOff`. Stitching the per-forest reroutes over
-all `D` forests turns the union — a base of `M(G̃)` — into a forest packing of `G̃_v^{ab}`,
-hence an independent set of `M(G̃_v^{ab})`, which reads off the splitting-off deficiency
-relation `def(G̃_v^{ab}) ≤ def(G̃)` Katoh–Tanigawa derive from the surgery (the same content the
-deficiency-count route delivers green as `splitOff_deficiency_le`; the surgery is off the
-Theorem-4.9 critical path). The reroute data — which forest carries two `v`-edges and the
-fresh copy it absorbs — is supplied per forest; its existence is the balanced packing
-(`exists_balanced_forest_packing`) plus the per-forest degree classification. -/
+The cardinality bookkeeping that the corrected forest surgery rests on. Starting from a
+*balanced* edge-disjoint `D`-forest packing of a base `I` of `M(G̃)` — every forest meets the
+degree-2 vertex `v` (`exists_balanced_forest_packing`) — reroute each forest across `v`:
 
-/-- **⚠ SUPERSEDED / VACUOUS — do not use; to be replaced (Phase-20 forest-surgery addendum).**
-This declaration's hypotheses are jointly **unsatisfiable**, so it is vacuously true and
-establishes nothing. `hr_inj` demands an injection `Fin (bodyBarDim n) ↪ {e₀} × Fin
-(bodyHingeMult n)`, but `bodyHingeMult n = bodyBarDim n - 1` — a strictly smaller codomain, so
-no such `r` exists. Structurally, `hreroute` forces every `v`-meeting forest to have `v`-degree
-exactly `2`, which no balanced base packing admits: there are only `D-1` copies of each of `v`'s
-two edges for `D` forests, so at least one forest has `v`-degree `1`. The corrected surgery —
-degree-`1` forests drop their lone `v`-fiber with **no** `ã̃b`-copy added, and the `|I'| = |I| - D`
-count follows because balance makes every forest shrink by exactly one — is specified in blueprint
-`lem:forest-surgery-split` / `lem:forest-surgery-count` and will replace this declaration. Kept
-here (unpinned: no `\lean{}` blueprint node points at it) only so the planning commit stays
-build-green; the reusable acyclicity steps live in `isAcyclicSet_splitOff_reroute` /
-`isAcyclicSet_splitOff_of_diff_fiberAtVertex`.
+* a `v`-degree-`2` forest (one `eₐ`-copy `pa`, one `e_b`-copy `pb`) drops `{pa, pb}` and adds a
+  *single* short-circuit copy `r = (e₀, pa.2)` of `ã̃b` (via `isAcyclicSet_splitOff_reroute`);
+* a `v`-degree-`1` forest drops its lone `v`-fiber and adds **nothing**
+  (acyclicity: `isAcyclicSet_splitOff_of_diff_fiberAtVertex`).
 
-**The splitting-off forest surgery** (Katoh–Tanigawa 2011
-Lemma 4.1 p.660). Let `v` be a degree-2 vertex of `G` with distinct neighbours `a, b`
-(`a, b ≠ v`, `a, b ∈ V(G)`), and let `e₀ ∉ E(G)` be the fresh short-circuit edge. Given an
-edge-disjoint `D`-forest packing `Fs` of `G̃` covering an `M(G̃)`-independent set `I` (each
-`Fs i` acyclic, pairwise disjoint, `⋃ Fs i = I`), together with the per-forest reroute data —
-a designated short-circuit copy `r i ∈ ã̃b` for each forest, distinct across forests
-(`hr_inj`), and, for the forests that use both `v`-edges, the two `v`-fibers `pa i`/`pb i` they
-swap (`hreroute`) — the **rerouted family** `Fs' i = insert? (r i) (Fs i ∖ fiberAtVertex v)`
-is an edge-disjoint `D`-forest packing of the multiplied splitting-off `G̃_v^{ab}`:
+Every forest has `v`-degree `1` or `2` — at least `1` by balance, at most `2` because two copies
+of the same `v`-edge form a `2`-cycle (`fiber_inter_subsingleton_of_isAcyclicSet_mulTilde`,
+applied to `eₐ` and `e_b` separately, the only two edges at the degree-2 vertex `v`). So **every**
+forest shrinks by exactly one (`|F'ᵢ| + 1 = |Fᵢ|`), and as the packing partitions `I`, the
+rerouted union satisfies `|⋃ F'ᵢ| + D = |I|`. This is precisely Katoh–Tanigawa's accounting
+`2h' + (D − h') = h` — `h` fibers dropped, `h'` short-circuit copies added, net `−D` — handling
+the `dᶠ(v) = 1` forests their proof glosses. The added copies are distinct across the degree-`2`
+forests: `r i = (e₀, (pa i).2)`, and the `pa i` (distinct `eₐ`-copies in disjoint forests) have
+distinct second coordinates, so `≤ D − 1` such copies are needed and `D − 1` exist. Off the
+Theorem-4.9 critical path (the deficiency route already delivered Theorem 4.9). -/
 
-* each `Fs' i` is acyclic in `G̃_v^{ab}`;
-* the `Fs' i` are pairwise disjoint;
-* they cover the rerouted independent set `⋃ Fs' i`, which contains the `v`-free part
-  `I ∖ fiberAtVertex v` of `I` and is independent in `M(G̃_v^{ab})`.
+/-- **The surgery count `|⋃ F'ᵢ| + D = |I|`** (`lem:forest-surgery-count`; Katoh–Tanigawa 2011
+Lemma 4.1 p.660). Let `v` be a degree-2 vertex of `G` with distinct neighbours `a ≠ b`
+(`a, b ≠ v ∈ V(G)`, incident edges exactly `eₐ ≠ e_b`), `e₀ ∉ E(G)` fresh, `D = bodyBarDim n ≥ 2`.
+Given a *balanced* edge-disjoint `D`-forest packing `Fs` of a fiber set `I` — `⋃ Fs i = I`, each
+`Fs i` acyclic in `G̃`, pairwise disjoint, and **every** forest meets `v`
+(`exists_balanced_forest_packing`) — there is a rerouted family `Fs'` that is an edge-disjoint
+`D`-forest packing of the multiplied splitting-off `G̃_v^{ab}` whose union is `M(G̃_v^{ab})`-indep
+and satisfies
+`(⋃ i, Fs' i).ncard + bodyBarDim n = I.ncard`.
 
-This stitches the two reroute wiring steps — `isAcyclicSet_splitOff_of_diff_fiberAtVertex`
-(the `v`-free part, every forest) and `isAcyclicSet_splitOff_reroute` (the `dᶠ(v) = 2` swap) —
-keeping the forests edge-disjoint by distinct fresh copies (each forest absorbs at most one,
-`fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). The resulting `M(G̃_v^{ab})`-independence
-of the rerouted packing reads off the splitting-off deficiency relation `def(G̃_v^{ab}) ≤
-def(G̃)` Katoh–Tanigawa obtain from the surgery (the same content the deficiency-count route
-delivers green as `splitOff_deficiency_le`); it is off the Theorem-4.9 critical path. -/
-theorem forest_surgery_split [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
-    {v a b : α} {e₀ : β} (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G))
-    (hbV : b ∈ V(G)) (he₀ : e₀ ∉ E(G))
+This is the corrected construction (the superseded `forest_surgery_split` was vacuous and assumed
+away the `dᶠ(v) = 1` forests): every forest shrinks by exactly one because a degree-`2` forest
+loses two `v`-fibers and gains one `ã̃b`-copy while a degree-`1` forest loses one and gains none.
+See the section preamble. -/
+theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (haV : a ∈ V(G)) (hbV : b ∈ V(G)) (he₀ : e₀ ∉ E(G))
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
     {I : Set (β × Fin (bodyHingeMult n))}
     (Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)))
     (hcover : ⋃ i, Fs i = I) (hindep : ∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs i))
     (hdisj : Pairwise (Function.onFun Disjoint Fs))
-    (r : Fin (bodyBarDim n) → β × Fin (bodyHingeMult n)) (hr : ∀ i, (r i).1 = e₀)
-    (hr_inj : Function.Injective r)
-    (hreroute : ∀ i, (∀ p ∈ Fs i, (G.mulTilde n).Inc p v →
-        ∃ pa pb, (G.mulTilde n).IsLink pa v a ∧ (G.mulTilde n).IsLink pb v b ∧
-          pa ∈ Fs i ∧ pb ∈ Fs i ∧ pa ≠ pb ∧
-          (∀ q ∈ Fs i, (G.mulTilde n).Inc q v → q = pa ∨ q = pb))) :
+    (hmeet : ∀ i, ∃ p ∈ Fs i, (G.mulTilde n).Inc p v) :
     ∃ Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
       (∀ i, ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep (Fs' i)) ∧
       (Pairwise (Function.onFun Disjoint Fs')) ∧
-      (I \ G.fiberAtVertex n v ⊆ ⋃ i, Fs' i) ∧
-      ((G.splitOff v a b e₀).matroidMG n).Indep (⋃ i, Fs' i) := by
+      ((G.splitOff v a b e₀).matroidMG n).Indep (⋃ i, Fs' i) ∧
+      (⋃ i, Fs' i).ncard + bodyBarDim n = I.ncard := by
   classical
-  -- Per-forest reroute: drop the `v`-fibers; if the forest used both `v`-edges, add `r i`.
-  set Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)) :=
-    fun i => if (∃ p ∈ Fs i, (G.mulTilde n).Inc p v) then
-        insert (r i) (Fs i \ G.fiberAtVertex n v)
-      else Fs i \ G.fiberAtVertex n v with hFs'
-  -- A fresh copy `r i` never lies in any forest of `G̃` (those are `G`-edge copies; `e₀ ∉ E(G)`).
-  have hr_notin : ∀ i j, r i ∉ Fs j \ G.fiberAtVertex n v := by
-    rintro i j ⟨hrFj, -⟩
-    have hrE : r i ∈ E(G.mulTilde n) := (hindep j).subset_ground hrFj
+  -- Each forest is finite (subset of the finite ground set).
+  have hssubE : ∀ i, Fs i ⊆ E(G.mulTilde n) := fun i ↦ (hindep i).subset_ground
+  -- `fiberAtVertex v ⊆ ẽₐ ∪ ẽ_b`: the only `v`-incident edges are `eₐ, e_b`.
+  have hfibsub : G.fiberAtVertex n v ⊆ edgeFiber eₐ n ∪ edgeFiber e_b n := by
+    intro p hp
+    rw [mem_fiberAtVertex] at hp
+    obtain ⟨x, hlx⟩ := hp
+    rcases hdeg2 p.1 x hlx with h | h
+    · exact Or.inl (by rw [edgeFiber, Set.mem_setOf_eq]; exact h)
+    · exact Or.inr (by rw [edgeFiber, Set.mem_setOf_eq]; exact h)
+  -- Per-edge subsingleton: a forest holds ≤ 1 copy of `eₐ`, ≤ 1 of `e_b`.
+  have hsubₐ : ∀ i, (Fs i ∩ edgeFiber eₐ n).Subsingleton := fun i ↦
+    fiber_inter_subsingleton_of_isAcyclicSet_mulTilde (Ne.symm hav) hla (hindep i)
+  have hsub_b : ∀ i, (Fs i ∩ edgeFiber e_b n).Subsingleton := fun i ↦
+    fiber_inter_subsingleton_of_isAcyclicSet_mulTilde (Ne.symm hbv) hlb (hindep i)
+  -- `Fs i ∩ fiberAtVertex v = (Fs i ∩ ẽₐ) ∪ (Fs i ∩ ẽ_b)`, the two pieces disjoint.
+  have hfibdecomp : ∀ i, Fs i ∩ G.fiberAtVertex n v
+      = (Fs i ∩ edgeFiber eₐ n) ∪ (Fs i ∩ edgeFiber e_b n) := by
+    intro i
+    apply Set.Subset.antisymm
+    · rintro p ⟨hpF, hpv⟩
+      rcases hfibsub hpv with h | h
+      · exact Or.inl ⟨hpF, h⟩
+      · exact Or.inr ⟨hpF, h⟩
+    · rintro p (⟨hpF, hp⟩ | ⟨hpF, hp⟩) <;> refine ⟨hpF, ?_⟩ <;>
+        rw [edgeFiber, Set.mem_setOf_eq] at hp <;> rw [mem_fiberAtVertex, hp]
+      · exact hla.inc_left
+      · exact hlb.inc_left
+  have hfibdisj : Disjoint (edgeFiber eₐ n) (edgeFiber e_b n) := by
+    rw [Set.disjoint_left]; rintro p hp hp'
+    rw [edgeFiber, Set.mem_setOf_eq] at hp hp'; exact heab (hp ▸ hp')
+  -- Degree at `v` of each forest is `1` or `2`.
+  have hdeg : ∀ i, (Fs i ∩ G.fiberAtVertex n v).ncard = 1 ∨
+      (Fs i ∩ G.fiberAtVertex n v).ncard = 2 := by
+    intro i
+    have hle2 : (Fs i ∩ G.fiberAtVertex n v).ncard ≤ 2 := by
+      rw [hfibdecomp i]
+      refine le_trans (Set.ncard_union_le _ _) ?_
+      have := (Set.ncard_le_one_iff_subsingleton).mpr (hsubₐ i)
+      have := (Set.ncard_le_one_iff_subsingleton).mpr (hsub_b i)
+      omega
+    have hpos : 1 ≤ (Fs i ∩ G.fiberAtVertex n v).ncard := by
+      obtain ⟨p, hpF, hpv⟩ := hmeet i
+      have : (Fs i ∩ G.fiberAtVertex n v).Nonempty :=
+        ⟨p, hpF, by rw [mem_fiberAtVertex, ← mulTilde_inc]; exact hpv⟩
+      exact this.ncard_pos (Set.toFinite _)
+    omega
+  -- When `dᶠ(v) = 2`, the two pieces `Fs i ∩ ẽₐ` and `Fs i ∩ ẽ_b` are each singletons; extract
+  -- the `eₐ`-copy `paOf i` and `e_b`-copy `pbOf i`.
+  have hdeg2_split : ∀ i, (Fs i ∩ G.fiberAtVertex n v).ncard = 2 →
+      ∃ pa pb, Fs i ∩ edgeFiber eₐ n = {pa} ∧ Fs i ∩ edgeFiber e_b n = {pb} := by
+    intro i hi
+    rw [hfibdecomp i,
+      Set.ncard_union_eq (hfibdisj.mono Set.inter_subset_right Set.inter_subset_right)
+        (Set.toFinite _) (Set.toFinite _)] at hi
+    have hca := (Set.ncard_le_one_iff_subsingleton).mpr (hsubₐ i)
+    have hcb := (Set.ncard_le_one_iff_subsingleton).mpr (hsub_b i)
+    obtain ⟨pa, hpa⟩ := Set.ncard_eq_one.mp (by omega : (Fs i ∩ edgeFiber eₐ n).ncard = 1)
+    obtain ⟨pb, hpb⟩ := Set.ncard_eq_one.mp (by omega : (Fs i ∩ edgeFiber e_b n).ncard = 1)
+    exact ⟨pa, pb, hpa, hpb⟩
+  -- A fixed inhabitant of the fiber type (the else-branch placeholder; `Fs 0` meets `v`).
+  haveI : Nonempty (β × Fin (bodyHingeMult n)) := ⟨(hmeet ⟨0, by omega⟩).choose⟩
+  -- Choose, per `dᶠ = 2` forest, the swapped-out pair; `r i := (e₀, (paOf i).2)` is the fresh copy.
+  set paOf : Fin (bodyBarDim n) → β × Fin (bodyHingeMult n) := fun i =>
+    if h : (Fs i ∩ G.fiberAtVertex n v).ncard = 2 then (hdeg2_split i h).choose
+    else Classical.arbitrary _ with hpaOf
+  set r : Fin (bodyBarDim n) → β × Fin (bodyHingeMult n) := fun i => (e₀, (paOf i).2) with hr
+  have hr1 : ∀ i, (r i).1 = e₀ := fun i ↦ rfl
+  -- For `dᶠ = 2` forests, `paOf i` is the unique `eₐ`-copy (so `paOf i ∈ Fs i`, `.1 = eₐ`).
+  have hpaOf_mem : ∀ i, (Fs i ∩ G.fiberAtVertex n v).ncard = 2 →
+      paOf i ∈ Fs i ∩ edgeFiber eₐ n := by
+    intro i hi
+    have hsing := (hdeg2_split i hi).choose_spec.choose_spec.1
+    simp only [hpaOf, dif_pos hi]
+    exact hsing.ge (Set.mem_singleton _)
+  -- `r` is injective across the `dᶠ = 2` forests: distinct `eₐ`-copies in disjoint forests have
+  -- distinct second coordinates.
+  have hr_inj2 : ∀ i j, (Fs i ∩ G.fiberAtVertex n v).ncard = 2 →
+      (Fs j ∩ G.fiberAtVertex n v).ncard = 2 → r i = r j → i = j := by
+    intro i j hi hj hrij
+    by_contra hij
+    have hpi := hpaOf_mem i hi
+    have hpj := hpaOf_mem j hj
+    have hpi1 : (paOf i).1 = eₐ := hpi.2
+    have hpj1 : (paOf j).1 = eₐ := hpj.2
+    -- `paOf i = paOf j`: same first coord `eₐ`, same second coord (from `r i = r j`).
+    rw [hr] at hrij
+    simp only at hrij
+    have hsnd : (paOf i).2 = (paOf j).2 := (Prod.ext_iff.mp hrij).2
+    have heq : paOf i = paOf j := Prod.ext_iff.mpr ⟨hpi1.trans hpj1.symm, hsnd⟩
+    exact Set.disjoint_left.mp (hdisj hij) hpi.1 (heq ▸ hpj.1)
+  -- The fresh copy `r i` is never in any forest of `G̃` (those are `G`-edge copies; `e₀ ∉ E(G)`).
+  have hr_notin : ∀ i j, r i ∉ Fs j := by
+    intro i j hrFj
+    have hrE : r i ∈ E(G.mulTilde n) := hssubE j hrFj
     rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hrE
-    exact he₀ ((hr i) ▸ hrE)
+    exact he₀ ((hr1 i) ▸ hrE)
+  -- The rerouted family.
+  set Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)) := fun i =>
+    if (Fs i ∩ G.fiberAtVertex n v).ncard = 2 then insert (r i) (Fs i \ G.fiberAtVertex n v)
+    else Fs i \ G.fiberAtVertex n v with hFs'
+  -- `Fs i ∖ fiberAtVertex v ⊆ Fs' i ⊆ insert (r i) (Fs i ∖ fiberAtVertex v)`, both branches.
+  have hFs'sub : ∀ i, Fs' i ⊆ insert (r i) (Fs i \ G.fiberAtVertex n v) := by
+    intro i; simp only [hFs']; split
+    · exact subset_rfl
+    · exact Set.subset_insert _ _
+  have hsubFs' : ∀ i, Fs i \ G.fiberAtVertex n v ⊆ Fs' i := by
+    intro i; simp only [hFs']; split
+    · exact Set.subset_insert _ _
+    · exact subset_rfl
   -- Each rerouted forest is acyclic in `G̃_v^{ab}`.
   have hindep' : ∀ i, ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep (Fs' i) := by
     intro i
     simp only [hFs']
-    by_cases hmeet : ∃ p ∈ Fs i, (G.mulTilde n).Inc p v
-    · -- The forest meets `v`. The `v`-free part is `Fs i ∖ {pa, pb}`; reroute via step 2.
-      rw [if_pos hmeet]
-      obtain ⟨p₀, hp₀F, hp₀v⟩ := hmeet
-      obtain ⟨pa, pb, hpa, hpb, hpaF, hpbF, hpab, hall⟩ := hreroute i p₀ hp₀F hp₀v
-      -- `Fs i ∖ fiberAtVertex v = Fs i ∖ {pa, pb}` since `pa, pb` are exactly its `v`-fibers.
+    by_cases hi : (Fs i ∩ G.fiberAtVertex n v).ncard = 2
+    · rw [if_pos hi]
+      obtain ⟨pa, pb, hSpa, hSpb⟩ := hdeg2_split i hi
+      have hpaF : pa ∈ Fs i := (hSpa ▸ Set.mem_singleton pa).1
+      have hpbF : pb ∈ Fs i := (hSpb ▸ Set.mem_singleton pb).1
+      have hpaℓ : (G.mulTilde n).IsLink pa v a := by
+        have : pa.1 = eₐ := by
+          have := (hSpa ▸ Set.mem_singleton pa).2; rwa [edgeFiber, Set.mem_setOf_eq] at this
+        rw [mulTilde, edgeMultiply_isLink, this]; exact hla
+      have hpbℓ : (G.mulTilde n).IsLink pb v b := by
+        have : pb.1 = e_b := by
+          have := (hSpb ▸ Set.mem_singleton pb).2; rwa [edgeFiber, Set.mem_setOf_eq] at this
+        rw [mulTilde, edgeMultiply_isLink, this]; exact hlb
+      have hpab : pa ≠ pb := by
+        rintro rfl
+        exact hab (hpaℓ.right_unique hpbℓ)
+      -- `pa, pb` are exactly the `v`-fibers of `Fs i` (degree-2 ⟹ no others).
+      have hall : ∀ q ∈ Fs i, (G.mulTilde n).Inc q v → q = pa ∨ q = pb := by
+        intro q hqF hqv
+        have hqfib : q ∈ Fs i ∩ G.fiberAtVertex n v :=
+          ⟨hqF, by rw [mem_fiberAtVertex, ← mulTilde_inc]; exact hqv⟩
+        rw [hfibdecomp i] at hqfib
+        rcases hqfib with hqa | hqb
+        · exact Or.inl (hSpa ▸ hqa : q ∈ ({pa} : Set _))
+        · exact Or.inr (hSpb ▸ hqb : q ∈ ({pb} : Set _))
       have hdiff : Fs i \ G.fiberAtVertex n v = Fs i \ {pa, pb} := by
         ext q
         simp only [Set.mem_diff, mem_fiberAtVertex, Set.mem_insert_iff, Set.mem_singleton_iff]
@@ -3224,48 +3364,139 @@ theorem forest_surgery_split [DecidableEq β] [Finite α] [Finite β] {G : Graph
         · rintro ⟨hqF, hqv⟩
           refine ⟨hqF, fun hq ↦ hqv ?_⟩
           rcases hq with rfl | rfl
-          · exact hpa.inc_left
-          · exact hpb.inc_left
+          · exact hpaℓ.inc_left
+          · exact hpbℓ.inc_left
         · rintro ⟨hqF, hq2⟩
-          exact ⟨hqF, fun hqv ↦ hq2 (hall q hqF hqv)⟩
+          exact ⟨hqF, fun hqv ↦ hq2 (hall q hqF (mulTilde_inc.mpr hqv))⟩
       rw [hdiff]
-      exact isAcyclicSet_splitOff_reroute ha hb haV hbV (hindep i) hpa hpb hpaF hpbF hpab
-        hall (hr i) he₀
-    · -- The forest avoids `v`; the `v`-free part is the whole forest, transport verbatim.
-      rw [if_neg hmeet]
+      exact isAcyclicSet_splitOff_reroute hav hbv haV hbV (hindep i) hpaℓ hpbℓ hpaF hpbF hpab
+        hall (hr1 i) he₀
+    · rw [if_neg hi]
       exact isAcyclicSet_splitOff_of_diff_fiberAtVertex he₀ (hindep i)
-  -- `Fs' i ⊆ insert (r i) (Fs i ∖ fiberAtVertex v)` regardless of the branch.
-  have hFs'sub : ∀ i, Fs' i ⊆ insert (r i) (Fs i \ G.fiberAtVertex n v) := by
-    intro i; simp only [hFs']; split
-    · exact subset_rfl
-    · exact Set.subset_insert _ _
-  -- `Fs i ∖ fiberAtVertex v ⊆ Fs' i` regardless of the branch.
-  have hsubFs' : ∀ i, Fs i \ G.fiberAtVertex n v ⊆ Fs' i := by
-    intro i; simp only [hFs']; split
-    · exact Set.subset_insert _ _
-    · exact subset_rfl
-  refine ⟨Fs', hindep', ?_, ?_, ?_⟩
-  · -- Pairwise disjoint: the `v`-free cores are disjoint (subsets of disjoint `Fs`), and the
-    -- distinct fresh copies `r i` lie in no other forest's core.
+  -- `r i` lies in `Fs' i` only when `Fs i` has `v`-degree `2` (else `Fs' i ⊆ Fs i`, `r i ∉ Fs i`).
+  have hrmem : ∀ i, r i ∈ Fs' i → (Fs i ∩ G.fiberAtVertex n v).ncard = 2 := by
+    intro i hri
+    by_contra hi
+    simp only [hFs', if_neg hi] at hri
+    exact hr_notin i i hri.1
+  -- Pairwise disjoint: the `v`-free cores are disjoint, and `r i ∈ Fs' i` forces `dᶠ(i) = 2`,
+  -- where `r` is injective.
+  have hdisj' : Pairwise (Function.onFun Disjoint Fs') := by
     intro i j hij
     simp only [Function.onFun, Set.disjoint_left]
     intro p hpi hpj
     rcases Set.mem_insert_iff.mp (hFs'sub i hpi) with hri | hci <;>
       rcases Set.mem_insert_iff.mp (hFs'sub j hpj) with hrj | hcj
-    · exact hij (hr_inj (hri.symm.trans hrj))
-    · exact hr_notin i j (hri ▸ hcj)
-    · exact hr_notin j i (hrj ▸ hci)
+    · -- `p = r i = r j`: both forests took the insert branch (`dᶠ = 2`), and `r` is injective.
+      exact hij (hr_inj2 i j (hrmem i (hri ▸ hpi)) (hrmem j (hrj ▸ hpj)) (hri.symm.trans hrj))
+    · exact hr_notin i j (hri ▸ hcj.1)
+    · exact hr_notin j i (hrj ▸ hci.1)
     · exact (hdisj hij).le_bot ⟨hci.1, hcj.1⟩
-  · -- The `v`-free part of `I` is covered: `I ∖ fiberAtVertex v = (⋃ Fs i) ∖ … ⊆ ⋃ Fs' i`.
-    rw [← hcover, Set.iUnion_diff]
-    exact Set.iUnion_mono fun i ↦ hsubFs' i
-  · -- The rerouted union is a forest packing of `G̃_v^{ab}`, hence `M(G̃_v^{ab})`-independent.
+  -- The rerouted union is a forest packing of `G̃_v^{ab}`, hence `M(G̃_v^{ab})`-independent.
+  have hMindep : ((G.splitOff v a b e₀).matroidMG n).Indep (⋃ i, Fs' i) := by
     rw [matroidMG_indep_iff_exists_forest_packing]
     refine ⟨?_, Fs', rfl, hindep'⟩
-    -- The union lies in `E(G̃_v^{ab})`: each `Fs' i` does (ground set of an acyclic set).
     refine Set.iUnion_subset fun i ↦ ?_
     have := hindep' i
     rw [cycleMatroid_indep, isAcyclicSet_iff] at this
     exact this.1
+  -- The count: every forest shrinks by exactly one.
+  -- `(Fs i).ncard = (Fs i \ fib).ncard + (Fs i ∩ fib).ncard`.
+  have hpart_i : ∀ i, (Fs i \ G.fiberAtVertex n v).ncard + (Fs i ∩ G.fiberAtVertex n v).ncard
+      = (Fs i).ncard := fun i ↦ by
+    rw [add_comm]
+    exact Set.ncard_inter_add_ncard_diff_eq_ncard (Fs i) (G.fiberAtVertex n v) (Set.toFinite _)
+  -- `r i ∉ Fs i \ fib`, so the insert adds exactly one.
+  have hrnotcore : ∀ i, r i ∉ Fs i \ G.fiberAtVertex n v := fun i hri ↦ hr_notin i i hri.1
+  have hshrink : ∀ i, (Fs' i).ncard + 1 = (Fs i).ncard := by
+    intro i
+    by_cases hi : (Fs i ∩ G.fiberAtVertex n v).ncard = 2
+    · have hcard' : (Fs' i).ncard = (Fs i \ G.fiberAtVertex n v).ncard + 1 := by
+        simp only [hFs', if_pos hi]
+        rw [Set.ncard_insert_of_notMem (hrnotcore i) (Set.toFinite _)]
+      have := hpart_i i; omega
+    · have h1 : (Fs i ∩ G.fiberAtVertex n v).ncard = 1 := (hdeg i).resolve_right hi
+      have hcard' : (Fs' i).ncard = (Fs i \ G.fiberAtVertex n v).ncard := by
+        simp only [hFs', if_neg hi]
+      have := hpart_i i; omega
+  -- `∑ |Fs' i| + D = ∑ |Fs i| = |I|`.
+  have hsumFs' : ∑ i, (Fs' i).ncard = (⋃ i, Fs' i).ncard := by
+    rw [← finsum_eq_sum_of_fintype,
+      ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hdisj']
+  have hsumFs : ∑ i, (Fs i).ncard = I.ncard := by
+    rw [← finsum_eq_sum_of_fintype,
+      ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hdisj, hcover]
+  have hcount : (⋃ i, Fs' i).ncard + bodyBarDim n = I.ncard := by
+    have hkey : ∑ i : Fin (bodyBarDim n), ((Fs' i).ncard + 1) = ∑ i, (Fs i).ncard :=
+      Finset.sum_congr rfl (fun i _ ↦ hshrink i)
+    rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+      smul_eq_mul, mul_one] at hkey
+    rw [← hsumFs', ← hsumFs, hkey]
+  exact ⟨Fs', hindep', hdisj', hMindep, hcount⟩
+
+/-! ### The forest-surgery assembly (`lem:forest-surgery-split`, Katoh–Tanigawa Lemma 4.1)
+
+The deficiency read-off that closes the splitting-off forest surgery. Starting from a base `B`
+of `M(G̃)` at a degree-2 vertex `v`, a *balanced* `D`-forest packing exists
+(`exists_balanced_forest_packing`); rerouting it across `v` (`forest_surgery_count`) yields a
+`D`-forest packing of the multiplied splitting-off `G̃_v^{ab}` covering an `M(G̃_v^{ab})`-indep set
+`I'` of size `|B| − D`. Hence `rank M(G̃_v^{ab}) ≥ |B| − D = rank M(G̃) − D`, and the
+def\,=\,corank identity (`rank_add_deficiency_eq`, against the `D(|V| − 1)` trivial-motion
+ambient — and `G̃_v^{ab}` has one fewer vertex) reads off
+`def(G̃_v^{ab}) ≤ def(G̃)`, KT 4.1's intended conclusion. This is the same bound the
+deficiency-count route delivers green as `splitOff_deficiency_le`; the surgery is off the
+Theorem-4.9 critical path (`rem:kt-lemma-41`). -/
+
+/-- **Forest surgery at a degree-2 vertex, splitting-off direction** (`lem:forest-surgery-split`;
+Katoh–Tanigawa 2011 Lemma 4.1 p.660). Let `v` be a degree-2 vertex of `G` with distinct
+neighbours `a ≠ b` (`a, b ≠ v ∈ V(G)`), incident edges exactly `eₐ ≠ e_b`, `e₀ ∉ E(G)` fresh,
+`D = bodyBarDim n ≥ 2`, `V(G)` nonempty. Rerouting a balanced forest packing of a base of `M(G̃)`
+across `v` (`exists_balanced_forest_packing` + `forest_surgery_count`) produces a forest packing
+of `G̃_v^{ab}` of size `|base| − D`, an independent set of `M(G̃_v^{ab})`. The def\,=\,corank
+identity then gives
+`def(G̃_v^{ab}) ≤ def(G̃)`,
+KT's Lemma 4.1 conclusion — the same bound the deficiency-count route delivers as
+`splitOff_deficiency_le`. This is the assembled repair of the balanced-packing gloss
+(`rem:kt-lemma-41`~(2)): the corrected `forest_surgery_count` handles the `dᶠ(v) = 1` forests
+(drop their lone `v`-fiber, add no `ã̃b`-copy) that the superseded vacuous over-claim assumed
+away. Off the Theorem-4.9 critical path. -/
+theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G)) :
+    (G.splitOff v a b e₀).deficiency n ≤ G.deficiency n := by
+  classical
+  haveI : Nonempty α := ⟨a⟩
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have haV : a ∈ V(G) := hla.right_mem
+  have hbV : b ∈ V(G) := hlb.right_mem
+  have hvG : v ∈ V(G) := hla.left_mem
+  have hVne : V(G).Nonempty := ⟨v, hvG⟩
+  set H := G.splitOff v a b e₀ with hH
+  have hVHne : V(H).Nonempty := ⟨a, by rw [hH, vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
+  -- A base `B` of `M(G̃)`, its balanced packing, and the reroute into `G̃_v^{ab}`.
+  obtain ⟨B, hB⟩ := (G.matroidMG n).exists_isBase
+  obtain ⟨Fs, hcover, hindep, hpdisj, hmeetv⟩ :=
+    exists_balanced_forest_packing hD hav hbv heab hla hlb hdeg2 hB
+  obtain ⟨Fs', _, _, hMindep, hcount⟩ :=
+    forest_surgery_count hD hab hav hbv heab haV hbV he₀ hla hlb hdeg2 Fs hcover hindep
+      hpdisj hmeetv
+  -- `|⋃ Fs' i| ≤ rank M(G̃_v^{ab})`, and `|⋃ Fs' i| + D = |B|`.
+  have hrkZ : (((⋃ i, Fs' i).ncard : ℤ)) ≤ ((H.matroidMG n).rank : ℤ) := by
+    exact_mod_cast hMindep.ncard_le_rank
+  have hcountZ : (((⋃ i, Fs' i).ncard : ℤ)) + (bodyBarDim n : ℤ) = (B.ncard : ℤ) := by
+    exact_mod_cast hcount
+  -- The two def = corank identities, and `|V(H)| = |V(G)| − 1`.
+  have hBrank := G.isBase_ncard_add_deficiency_eq n hD1 hVne hB
+  have hHrank := H.rank_add_deficiency_eq n hD1 hVHne
+  have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
+    rw [hH, vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+    have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
+    omega
+  rw [hVHcard, mul_sub, mul_one] at hHrank
+  -- Combine: `def(H̃) = D(|V|−2) − rank ≤ D(|V|−2) − (|B|−D) = D(|V|−1) − |B| = def(G̃)`.
+  linarith [hrkZ, hcountZ, hBrank, hHrank]
 
 end Graph

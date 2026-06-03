@@ -2,21 +2,30 @@
 
 **Status:** ✓ complete. Capstone `thm:minimal-kdof-reduction` (KT Theorem 4.9,
 `Graph.minimal_kdof_reduction`) green, axiom-free; commit H landed 2026-06-03.
-Forest-surgery core (KT 4.1/4.2) is off the critical path (deferred TODO, *Replan* Step 5).
+Forest-surgery core (KT 4.1, splitting-off direction) is off the critical path but **now
+fully formalized** (2026-06-03 addendum, corrected): `lem:forest-surgery-count`
+(`Graph.forest_surgery_count`) and `lem:forest-surgery-split` (`Graph.forest_surgery_split`,
+`def(G̃ᵥᵃᵇ) ≤ def(G̃)`) are both green `\leanok`, axiom-free — the corrected non-vacuous
+construction that replaces and deletes the superseded `c3df62f` over-claim. KT 4.2 (edge-splitting
+inverse `lem:forest-surgery-unsplit`) stays deferred (sound, not needed by Thm 4.9). The remaining
+addendum item is the narrative-bridge shim (Task #2), explicitly NOT in this commit.
 The KT 4.1 balanced-packing gloss is **fully discharged (2026-06-03): a GAP, not an error** —
 its counting half (`isBase_vfiber_ncard_ge`), redistribution half
 (`acyclicSet_insert_vfiber_of_not_inc`), rebalancing move (`exists_packing_move_of_not_inc`),
 and the descent's **outer loop** (`exists_balanced_forest_packing`: a base admits a balanced
 `D`-forest packing) are all green, and both reroute acyclicity steps are green — step 1
 (`isAcyclicSet_splitOff_of_diff_fiberAtVertex`, the `v`-free part) and step 2
-(`isAcyclicSet_splitOff_reroute`, the genuinely-hard `dᶠ(v)=2` cycle-lift). **CORRECTION
-(2026-06-03): `lem:forest-surgery-split` is NOT yet green — the `c3df62f` green flip was an
-over-claim, reverted to red.** `Graph.forest_surgery_split` as committed is **vacuous**
-(unsatisfiable hypotheses) and assumes away the `dᶠ(v)=1` forests; the corrected surgery is
-re-specified in the blueprint and awaits formalization (step 2). See **## CORRECTION** below
-and the *TODO* Progress *VERDICT*.
+(`isAcyclicSet_splitOff_reroute`, the genuinely-hard `dᶠ(v)=2` cycle-lift). See **## CORRECTION**
+below for the now-resolved over-claim history.
 
-## CORRECTION (2026-06-03): the `forest_surgery_split` green flip was an over-claim
+## CORRECTION (2026-06-03): the `forest_surgery_split` over-claim, and its repair
+
+**RESOLVED (2026-06-03 addendum).** The corrected surgery is now formalized: `forest_surgery_count`
+(the `|⋃ F'ᵢ| + D = |I|` bookkeeping, stated additively to avoid ℕ-subtraction) + `forest_surgery_split`
+(`def(G̃ᵥᵃᵇ) ≤ def(G̃)`) are both green, axiom-free, and the vacuous `c3df62f` declaration is deleted.
+The history below records the over-claim that this repair corrects.
+
+Commit `c3df62f` flipped `lem:forest-surgery-split` green via `Graph.forest_surgery_split`.
 
 Commit `c3df62f` flipped `lem:forest-surgery-split` green via `Graph.forest_surgery_split`.
 **This was an over-claim; the `\leanok` is reverted to red.** Two independent defects, the
@@ -38,13 +47,20 @@ A balanced packing's forests are each `dᶠ(v) ∈ {1,2}`. Reroute: a `dᶠ=2` f
 forest **drops its lone `v`-fiber and adds no `ã̃b`-copy** (verbatim transport of the `v`-free
 part, `isAcyclicSet_splitOff_of_diff_fiberAtVertex`, green). Because the packing is balanced,
 **every** forest shrinks by exactly one, so `|I′| = |I| − D`; then `rank M(G̃ᵥᵃᵇ) ≥ rank M(G̃) −
-D` and the def\,=\,corank identity (one fewer vertex) gives `def(G̃ᵥᵃᵇ) ≤ def(G̃)`. Both
-acyclicity steps are already green; **what remains for step 2 is the count + assembly**, now
-first-class blueprint nodes: `lem:reroute-vfree-transport` (green), `lem:reroute-cycle-lift`
-(green), `lem:forest-surgery-count` (red — the `|I′|=|I|−D` bookkeeping), and `lem:forest-surgery-split`
-(red — assembles them to `def(G̃ᵥᵃᵇ) ≤ def(G̃)`). `rem:kt-lemma-41` layer (2) is expanded to
-this two-part repair. `Graph.forest_surgery_split` is retained (unpinned, loud ⚠ docstring)
-only so this planning commit stays build-green; step 2 replaces it.
+D` and the def\,=\,corank identity (one fewer vertex) gives `def(G̃ᵥᵃᵇ) ≤ def(G̃)`. This is now
+**all green**: `lem:reroute-vfree-transport`, `lem:reroute-cycle-lift`, `lem:forest-surgery-count`
+(the `|⋃F'ᵢ|+D=|I|` bookkeeping), and `lem:forest-surgery-split` (the def-bound assembly).
+`rem:kt-lemma-41` layer (2) records this two-part repair as formalized.
+
+**Formalization notes (2026-06-03 addendum).** The `dᶠ(v)≤2` cap reuses a new plain-`G̃` 2-cycle
+lemma `isCycleSet_pair_edgeFiber_mulTilde` + per-edge subsingleton
+`fiber_inter_subsingleton_of_isAcyclicSet_mulTilde` (analogues of the `splitOff` versions, applied
+to `eₐ` and `e_b` separately). The fresh `ã̃b`-copies are chosen as `r i = (e₀, (paOf i).2)` where
+`paOf i` is the unique `eₐ`-copy of a `dᶠ=2` forest — distinct second coordinates across disjoint
+forests give injectivity for free (no global pigeonhole). `exists_balanced_forest_packing` was
+strengthened to also export pairwise-disjointness of the packing (threaded through its descent
+induction already; only the `suffices`/conclusion shapes needed the extra conjunct), which
+`forest_surgery_count` consumes for the additive count.
 
 This phase is stratum 4 of the molecular-conjecture program (KT §3
 Lemmas 3.4/3.5 full forms, §4). The program-level plan, reuse map,
@@ -232,10 +248,9 @@ disjointness means exactly one donor held it. Strong induction on the count of `
 forest holds `≥ 2`) keeps the move strictly safe (donor keeps a `v`-fiber). **The only remaining piece
 toward `lem:forest-surgery-split` itself is the final wiring** — rerouting the balanced packing of `G̃`
 across `v` to produce the `G̃ᵥᵃᵇ` packing (reroute-acyclicity substrate already landed). Off the
-Theorem-4.9 critical path. **[Update — see ## CORRECTION: the wiring's two acyclicity steps landed
-green, but the `c3df62f` assembly over-claimed (vacuous + assumed away `dᶠ(v)=1` forests); the
-corrected count + assembly (`lem:forest-surgery-count` → `lem:forest-surgery-split`) is the
-red remaining work.]**
+Theorem-4.9 critical path. **[Update — RESOLVED: the corrected count + assembly
+(`lem:forest-surgery-count` → `lem:forest-surgery-split`) are now both green, axiom-free, and the
+vacuous `c3df62f` declaration is deleted. See the ## CORRECTION header.]**
 
 ## Finding 2 REFUTED: KT Lemma 4.4 *is* a deficiency-counting fact (2026-06-03, same day)
 
@@ -331,9 +346,9 @@ the forest-surgery framing `lem:forest-packing-decomp`. Per-lemma rationale
 is in *Decisions* + the *Lemma checklist*; the full play-by-play is in git
 history (commits `6b1176a`…`f7a7ebd`).
 
-**Off the critical path (deferred surgery TODO — *Replan* Step 5):** the
-forest-surgery substrate landed for `lem:forest-surgery-split` (none a
-blueprint node; the node stays red) — incidence/cardinality
+**Off the critical path (forest surgery, now fully formalized — *Replan* Step 5):** the
+forest-surgery substrate landed for `lem:forest-surgery-split` (which is now GREEN,
+2026-06-03 addendum, along with `lem:forest-surgery-count`) — incidence/cardinality
 (`edgeFiber_ncard`, `edgeSet_splitOff`,
 `edgeFiber_subset_edgeSet_mulTilde_splitOff`), degree-at-`v` (`fiberAtVertex`,
 `mulTilde_inc`, `fiberAtVertex_inter_edgeSet[_ncard]`, `fiberDegree`,
@@ -355,12 +370,12 @@ steps now landed**: step 1 `isAcyclicSet_splitOff_of_diff_fiberAtVertex` (the `v
 step. A `G̃ᵥᵃᵇ`-cycle through the inserted short-circuit copy `r` is rotated so `r` is first,
 then `r` (joining `a,b`) is substituted by the `v`-traversing 2-path `a—pa—v—pb—b` of `G̃`, giving
 a closed `G̃`-trail inside `F` that contains a `G̃`-cycle (`IsTour.exists_isCyclicWalk`),
-contradicting `F`'s acyclicity. **The per-`D`-forest assembly is NOT yet done — see ## CORRECTION:**
-the `c3df62f` `Graph.forest_surgery_split` over-claimed (vacuous hypotheses; assumes away `dᶠ(v)=1`
-forests), so `lem:forest-surgery-split` is **RED**. The two acyclicity steps above (step 1, step 2)
-are green and reused by the corrected surgery; what remains for step 2 is the `|I′|=|I|−D` count
-(`lem:forest-surgery-count`, handling `dᶠ=1` forests by dropping their `v`-fiber with no copy) and
-the read-off of `def(G̃ᵥᵃᵇ) ≤ def(G̃)`. None of this is needed for Theorem 4.9. (The step-1/step-2/cap
+contradicting `F`'s acyclicity. **The per-`D`-forest assembly is now done (2026-06-03 addendum):**
+`lem:forest-surgery-count` (`Graph.forest_surgery_count`, the `|⋃F'ᵢ|+D=|I|` count, handling `dᶠ=1`
+forests by dropping their `v`-fiber with no copy) and `lem:forest-surgery-split`
+(`Graph.forest_surgery_split`, the `def(G̃ᵥᵃᵇ) ≤ def(G̃)` read-off) are both green, axiom-free; the
+vacuous `c3df62f` declaration is deleted. The two acyclicity steps above (step 1, step 2)
+are reused by the corrected surgery. None of this is needed for Theorem 4.9. (The step-1/step-2/cap
 substrate lemmas are not blueprint nodes; the two reroute steps are now promoted to nodes
 `lem:reroute-vfree-transport` / `lem:reroute-cycle-lift`.)
 
@@ -635,16 +650,25 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   sets. `Graph.matroidMG_indep_iff_exists_forest_packing`. Green and still
   generally useful (and `def:matroid-MG`'s union form is the engine of the
   deficiency route too).
-- [ ] `lem:forest-surgery-split` — KT 4.1, splitting-off direction. **RED — the `c3df62f`
-  green flip was an over-claim; see ## CORRECTION.** `Graph.forest_surgery_split` is vacuous
-  (`hr_inj` unsatisfiable: `Fin D ↪ {e₀}×Fin(D−1)`) and assumes away the `dᶠ(v)=1` forests via
-  `hreroute`. **Corrected surgery (step 2, to formalize):** a `dᶠ=2` forest swaps its `a–v–b`
-  path for one `ã̃b`-copy (`lem:reroute-cycle-lift` / `isAcyclicSet_splitOff_reroute`, green); a
-  `dᶠ=1` forest drops its lone `v`-fiber and adds **no** copy
-  (`lem:reroute-vfree-transport` / `isAcyclicSet_splitOff_of_diff_fiberAtVertex`, green); balance
-  ⟹ every forest shrinks by one ⟹ `|I′| = |I| − D` (`lem:forest-surgery-count`, red) ⟹
-  `def(G̃ᵥᵃᵇ) ≤ def(G̃)` (= the green `splitOff_deficiency_le`). Off the Theorem-4.9 critical
-  path (the deficiency route already delivered Thm 4.9). Substrate (still retained)
+- [x] `lem:forest-surgery-count` — KT 4.1 surgery count (2026-06-03 addendum, GREEN).
+  `Graph.forest_surgery_count` (green `\leanok`, axiom-free): a *balanced* edge-disjoint forest
+  packing of a base `I` reroutes into a `D`-forest packing of `G̃ᵥᵃᵇ`, `M(G̃ᵥᵃᵇ)`-independent, with
+  `|⋃F'ᵢ| + D = |I|` (stated additively to avoid ℕ-subtraction). Every forest has `dᶠ(v) ∈ {1,2}`
+  (≥1 balance, ≤2 via new plain-`G̃` per-edge subsingleton `fiber_inter_subsingleton_of_isAcyclicSet_mulTilde`
+  on `eₐ`/`e_b` separately), so each shrinks by exactly one. The `dᶠ=2` reroute uses
+  `isAcyclicSet_splitOff_reroute`; the `dᶠ=1` (and `v`-free core) uses
+  `isAcyclicSet_splitOff_of_diff_fiberAtVertex`. Fresh copies `r i = (e₀, (paOf i).2)` (the unique
+  `eₐ`-copy's index) are distinct across disjoint `dᶠ=2` forests — no global pigeonhole.
+- [x] `lem:forest-surgery-split` — KT 4.1, splitting-off direction (2026-06-03 addendum, GREEN).
+  `Graph.forest_surgery_split` (green `\leanok`, axiom-free): `def(G̃ᵥᵃᵇ) ≤ def(G̃)`. The corrected
+  non-vacuous construction replacing/deleting the over-claimed `c3df62f` (which was vacuous —
+  `hr_inj : Fin D ↪ {e₀}×Fin(D−1)` unsatisfiable — and assumed away `dᶠ(v)=1` forests). Take a base
+  `B` of `M(G̃)` (`Matroid.exists_isBase`), its balanced packing
+  (`exists_balanced_forest_packing`, now also exporting pairwise-disjointness), reroute
+  (`forest_surgery_count`): `rank M(G̃ᵥᵃᵇ) ≥ |B|−D`, and the def\,=\,corank identity (one fewer
+  vertex, `rank_add_deficiency_eq` + `isBase_ncard_add_deficiency_eq`) gives the bound by `linarith`.
+  Same conclusion as the green `splitOff_deficiency_le` (deficiency route). Off the Theorem-4.9
+  critical path. Substrate (still retained)
   landed (`edgeFiber_ncard`, `edgeSet_splitOff`,
   `edgeFiber_subset_edgeSet_mulTilde_splitOff`; degree substrate
   `fiberAtVertex` / `mulTilde_inc` / `fiberAtVertex_inter_edgeSet[_ncard]` /
@@ -1005,17 +1029,16 @@ to schedule as Phase 21 needs them:
    `G̃` via `mulTilde_splitOff_deleteFiber_le`), and the resulting closed `G̃`-trail inside `F`
    contains a `G̃`-cycle (`IsTour.exists_isCyclicWalk` + `IsSublist.edge_subset`) — contradicting `F`
    acyclic. FRICTION (`[matroid] Cycle-lift by edge-substitution…`) / TACTICS-QUIRKS § 29.
-   **CORRECTION (2026-06-03): `lem:forest-surgery-split` is RED, not green — the `c3df62f` flip
-   was an over-claim (see ## CORRECTION near the top).** `Graph.forest_surgery_split` is vacuous
-   (`hr_inj` demands `Fin D ↪ Fin(D−1)`) and `hreroute` assumes away the `dᶠ(v)=1` forests that a
-   balanced packing necessarily contains. **Next addendum commit = step 2:** formalize the
-   corrected surgery against the now-explicit blueprint nodes — `lem:forest-surgery-count` (the
-   `|I′|=|I|−D` count: `dᶠ=2` forests swap via the green `lem:reroute-cycle-lift`, `dᶠ=1` forests
-   drop their `v`-fiber via the green `lem:reroute-vfree-transport`, balance ⟹ each shrinks by
-   one) → `lem:forest-surgery-split` (read off `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via def\,=\,corank), then
-   flip both green and **only then** do *User-directed addendum item #1* below (the narrative-bridge
-   `@[deprecated … (since := "narrative-bridge")]` shim). Off the Theorem-4.9 critical path (the
-   deficiency route already delivered Thm 4.9). See ## CORRECTION + the *TODO* Progress *VERDICT*.
+   **RESOLVED (2026-06-03 addendum): `lem:forest-surgery-count` and `lem:forest-surgery-split` are
+   both GREEN, axiom-free; the vacuous `c3df62f` declaration is deleted.** `Graph.forest_surgery_count`
+   (the `|⋃F'ᵢ|+D=|I|` count, stated additively; `dᶠ=2` forests swap via the green
+   `lem:reroute-cycle-lift`, `dᶠ=1` forests drop their `v`-fiber via the green
+   `lem:reroute-vfree-transport`, balance ⟹ each shrinks by one) → `Graph.forest_surgery_split`
+   (reads off `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via def\,=\,corank on a base, `linarith`). **Next addendum
+   commit = *User-directed addendum item #1* below** (the narrative-bridge
+   `@[deprecated … (since := "narrative-bridge")]` shim deriving the KT-4.3 deficiency content
+   *from* `forest_surgery_split`). Off the Theorem-4.9 critical path (the deficiency route already
+   delivered Thm 4.9). See ## CORRECTION + the *TODO* Progress *VERDICT*.
 
 ### User-directed addendum items (2026-06-03 coordination)
 

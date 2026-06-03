@@ -303,18 +303,18 @@ instead by a direct deficiency-count argument
       comparison through the def\,$=$\,corank bridge
       (\cref{thm:def-eq-corank}), bypassing the forest surgery entirely.
   \end{enumerate}
-  Accordingly the forest surgery (both the splitting-off
-  \cref{lem:forest-surgery-split} and the edge-splitting inverse
-  \cref{lem:forest-surgery-unsplit}) is \textbf{deferred / off the
-  Theorem-4.9 critical path}. Its components are largely formalized: a
-  balanced packing exists (\cref{lem:balanced-forest-packing}), and both
+  Accordingly the forest surgery is \textbf{off the Theorem-4.9 critical
+  path}, but it is now fully formalized in the splitting-off direction: a
+  balanced packing exists (\cref{lem:balanced-forest-packing}), both
   per-forest reroute steps --- the degree-$2$ cycle-lift
   (\cref{lem:reroute-cycle-lift}) and the verbatim transport of the
-  $v$-free part (\cref{lem:reroute-vfree-transport}) --- are formalized.
-  What remains is the cardinality bookkeeping (\cref{lem:forest-surgery-count})
-  and its assembly into the deficiency relation
-  (\cref{lem:forest-surgery-split}). The edge-splitting inverse, while
-  sound, is not needed by Theorem~4.9 either. Both the splitting-off deficiency bound
+  $v$-free part (\cref{lem:reroute-vfree-transport}) --- are formalized,
+  and the cardinality bookkeeping (\cref{lem:forest-surgery-count}) assembles
+  them into the deficiency relation (\cref{lem:forest-surgery-split},
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde G)$).
+  The edge-splitting inverse (\cref{lem:forest-surgery-unsplit}), while
+  sound, is not needed by Theorem~4.9 and stays deferred. Both the
+  splitting-off deficiency bound
   (\cref{lem:splitoff-deficiency}, KT~4.3) \emph{and} the removal bound
   (\cref{lem:removal-deficiency}, KT~4.4) are reached instead through the
   deficiency-counting route of \cref{sec:molecular-induction-dof}, on the
@@ -527,6 +527,8 @@ instead by a direct deficiency-count argument
 
 \begin{lemma}[The surgery count: $|I'| = |I| - D$]
   \label{lem:forest-surgery-count}
+  \lean{Graph.forest_surgery_count}
+  \leanok
   \uses{def:graph-operations, def:matroid-MG, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport}
   Let $F_0, \dots, F_{D-1}$ be a \emph{balanced} edge-disjoint forest packing of a
   base $I$ of $M(\tilde G)$ --- every forest meets the degree-2 vertex $v$
@@ -538,6 +540,7 @@ instead by a direct deficiency-count argument
   $\widetilde{G_v^{ab}}$ with $\bigl|\bigcup_i F'_i\bigr| = |I| - D$.
 \end{lemma}
 \begin{proof}
+  \leanok
   Every forest has $v$-degree $1$ or $2$: at most one copy of each of $v$'s two
   parallel edge-bundles (two parallel copies form a $2$-cycle), and at least one
   by balance. A degree-$2$ forest loses two $v$-fibers and gains one copy
@@ -552,6 +555,8 @@ instead by a direct deficiency-count argument
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
   \label{lem:forest-surgery-split}
+  \lean{Graph.forest_surgery_split}
+  \leanok
   \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:balanced-forest-packing, lem:reroute-cycle-lift, lem:reroute-vfree-transport, lem:forest-surgery-count, lem:splitoff-deficiency, rem:kt-lemma-41}
   \emph{Off the Theorem-4.9 critical path} (\cref{rem:kt-lemma-41}): the
   induction toward Theorem~4.9 uses the deficiency-count
@@ -570,6 +575,7 @@ instead by a direct deficiency-count argument
   balanced-packing gloss (\cref{rem:kt-lemma-41}~(2)).
 \end{lemma}
 \begin{proof}
+  \leanok
   By \cref{lem:forest-surgery-count} the rerouted family is an edge-disjoint
   $D$-forest packing of $\widetilde{G_v^{ab}}$ covering an independent set $I' =
   \bigcup_i F'_i$ with $|I'| = |I| - D$, so $\operatorname{rank}

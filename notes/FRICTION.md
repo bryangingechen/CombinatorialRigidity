@@ -76,6 +76,20 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A `have h : … = … := by ring` whose type embeds `(V(G).ncard : ℤ) - 1 - 1` fails to parse ("unexpected token '-'")
+- **Where it bit:** `Graph.forest_surgery_split` in `Molecular/Induction.lean` (the
+  def\,=\,corank read-off, expanding `D·((|V|−1)−1)`).
+- **Friction:** writing a standalone algebra `have hD2 : (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1 - 1)
+  = … := by ring` to feed `linarith` errored at parse time with *"unexpected token '-'; expected ')'"*
+  on the doubly-subtracted `V(…)`-notation term (the `V(...)` macro + nested `: ℤ` coercion + repeated
+  `- 1` confuses the parser). A single `- 1` (as in a `|V(H)| = |V(G)| − 1` cast `have`) parses fine.
+- **Fix:** don't introduce the expanded product as a fresh `have` type. Instead rewrite the *existing*
+  def\,=\,corank hypothesis in place: `rw [hVHcard, mul_sub, mul_one] at hHrank` turns
+  `rank + def = D·((|V|−1)−1)` into `… = D·(|V|−1) − D`, matching the base-side identity, and `linarith`
+  closes. Rewriting an existing hypothesis sidesteps re-parsing the notation in a new type ascription.
+- **Status:** resolved (no lift — narrow parser/notation quirk; the `rw [… , mul_sub, mul_one] at h`
+  rescue generalizes to any "distribute the corank product" step).
+
 ### [resolved] `Set.ncard_iUnion_of_finite` returns a `finsum` (`∑ᶠ`), not a `Finset.sum` — bridge with `finsum_eq_sum_of_fintype`
 - **Where it bit:** `Graph.exists_balanced_forest_packing` in `Molecular/Induction.lean`
   (the forest-packing descent's pigeonhole: `∑ i, (Fs i ∩ vfib).ncard = (B ∩ vfib).ncard`
