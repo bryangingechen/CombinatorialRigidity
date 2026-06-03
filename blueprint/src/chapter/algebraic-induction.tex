@@ -562,7 +562,9 @@ Cases~I and~II travel toward the smaller inductive graph.
 \begin{lemma}[Case II rank-lift accounting; the $+D$ core of KT Lemma 6.8]
   \label{lem:case-II-rank-lift}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotions,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotions_le_withGraph,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_le_withGraph}
   \leanok
   \uses{def:rank-hypothesis, lem:rank-delete-vertex, def:framework-with-graph}
   In the codimension form of \cref{sec:molecular-rigidity-matrix},
@@ -579,7 +581,13 @@ Cases~I and~II travel toward the smaller inductive graph.
   $v$ (still unhinged, so the choice does not disturb the inductive null
   space, \cref{def:framework-with-graph}), the extended framework
   $P[v \mapsto n]^\flat$ realizes the target rank at $k'$ exactly when the
-  splitting-off carries body-$v$-pinned motion dimension $k'$.
+  splitting-off carries body-$v$-pinned motion dimension $k'$. The graph
+  step of the $1$-extension is the unconditional inclusion: re-adding $v$'s
+  two new hinge edges (passing from the splitting-off $G_v^{ab}$ up to $G$)
+  can only \emph{shrink} the body-$v$-pinned motions, so the inductive
+  realization of $G_v^{ab}$ bounds the extended framework's body-$v$-pinned
+  dimension from above (the residual cut by the two new edges is the
+  genericity-gated Claim~6.9 step).
 \end{lemma}
 \begin{proof}
   \leanok

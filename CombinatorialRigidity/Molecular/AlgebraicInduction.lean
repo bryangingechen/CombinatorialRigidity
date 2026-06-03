@@ -677,6 +677,35 @@ theorem finrank_pinnedMotionsOn_le_of_graph_le [Finite α] (F : BodyHingeFramewo
       Module.finrank ℝ ((F.withGraph G').pinnedMotionsOn s) :=
   Submodule.finrank_mono (F.pinnedMotionsOn_le_withGraph_of_le s hle)
 
+/-- **Re-adding edges shrinks the body-`v`-pinned motion space** (`lem:case-II-rank-lift`, Case II
+infra): the single-body specialization of `pinnedMotionsOn_le_withGraph_of_le` at `s = {v}` —
+for `G' ≤ F.graph`, `F.pinnedMotions v ≤ (F.withGraph G').pinnedMotions v`. Read with `F` on the
+parent graph `G = F.graph` and `F.withGraph G'` on the smaller splitting-off graph `G_v^{ab} = G'`
+(where `v` is unhinged): passing down to `G_v^{ab}` only *grows* the `v`-pinned motions, so the
+*extended* framework's (on `G`) `v`-pinned motions sit inside the *base* framework's (on
+`G_v^{ab}`). This is the unconditional half of Case II's 1-extension accounting: the inductive
+realization of `G_v^{ab}` bounds the extended framework's `v`-pinned dimension from above, the
+residual cut by `v`'s two new edges (the slack closed by the Claim 6.9 genericity step).
+The two `pinnedMotionsOn_singleton` rewrites reduce it to the block form. -/
+theorem pinnedMotions_le_withGraph (F : BodyHingeFramework k α β) (v : α)
+    {G' : Graph α β} (hle : G' ≤ F.graph) :
+    F.pinnedMotions v ≤ (F.withGraph G').pinnedMotions v := by
+  rw [← F.pinnedMotionsOn_singleton, ← (F.withGraph G').pinnedMotionsOn_singleton]
+  exact F.pinnedMotionsOn_le_withGraph_of_le {v} hle
+
+/-- **The body-`v`-pinned dimension does not increase under re-adding edges** (`lem:case-II-rank-
+lift`, Case II infra, rank form): for `G' ≤ F.graph`,
+`finrank (F.pinnedMotions v) ≤ finrank ((withGraph G').pinnedMotions v)`. The smaller splitting-off
+graph `G_v^{ab}` has at least the `v`-pinned dimension of the parent `G` — the bound the inductive
+realization of `G_v^{ab}` provides on the extended framework's `v`-pinned rank (read through the
+`+D` rank-lift `rankHypothesis_iff_finrank_pinnedMotions`). Immediate from the inclusion
+`pinnedMotions_le_withGraph` and `Submodule.finrank_mono`. -/
+theorem finrank_pinnedMotions_le_withGraph [Finite α] (F : BodyHingeFramework k α β) (v : α)
+    {G' : Graph α β} (hle : G' ≤ F.graph) :
+    Module.finrank ℝ (F.pinnedMotions v) ≤
+      Module.finrank ℝ ((F.withGraph G').pinnedMotions v) :=
+  Submodule.finrank_mono (F.pinnedMotions_le_withGraph v hle)
+
 end BodyHingeFramework
 
 /-! ## The panel-hinge framework (`def:panel-hinge-framework`)
@@ -977,6 +1006,38 @@ theorem rankHypothesis_withNormal_iff_finrank_pinnedMotions [Nonempty α] [Finit
       (Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) : ℤ) = k' := by
   rw [(P.withNormal v n).toBodyHinge.rankHypothesis_iff_finrank_pinnedMotions v k',
     P.toBodyHinge_withNormal_pinnedMotions_eq v n v hv]
+
+omit [DecidableEq α] in
+/-- **Re-adding `v`'s edges shrinks the panel framework's body-`v`-pinned motions** (`lem:case-II`,
+graph half): the panel-layer specialization of `pinnedMotions_le_withGraph`. For `G' ≤ P.graph`,
+the body-`v`-pinned motions of the panel framework placed on the parent graph `P.graph` sit inside
+those of the framework on the smaller graph `G'` — `P.toBodyHinge.pinnedMotions v ≤
+(P.withGraph G').toBodyHinge.pinnedMotions v`. This is the graph step of Case II's 1-extension: `P`
+on the parent graph `G = P.graph` (carrying `v`'s two new hinge edges) and `P.withGraph G'` on the
+splitting-off graph `G_v^{ab} = G'` (where they are deleted), so the inductive realization of
+`G_v^{ab}` bounds the extended framework's `v`-pinned dimension from above. The panel `withGraph`
+commute identity `toBodyHinge_withGraph` routes the body-hinge inclusion onto the panel layer with
+coplanarity preserved (the panel normals are untouched). The residual cut by `v`'s two new edges is
+the genericity-gated half (Claim 6.9, the two new supporting extensors in general position). -/
+theorem toBodyHinge_pinnedMotions_le_withGraph (P : PanelHingeFramework k α β) (v : α)
+    {G' : Graph α β} (hle : G' ≤ P.graph) :
+    P.toBodyHinge.pinnedMotions v ≤ (P.withGraph G').toBodyHinge.pinnedMotions v := by
+  rw [P.toBodyHinge_withGraph G']
+  exact P.toBodyHinge.pinnedMotions_le_withGraph v hle
+
+omit [DecidableEq α] in
+/-- **Rank form of `toBodyHinge_pinnedMotions_le_withGraph`** (`lem:case-II`, graph half): for
+`G' ≤ P.graph`, `finrank (P.toBodyHinge.pinnedMotions v) ≤
+finrank ((P.withGraph G').toBodyHinge.pinnedMotions v)`. The splitting-off graph `G_v^{ab}` has at
+least the `v`-pinned dimension of the parent `G`, the inductive bound that — through the `+D`
+rank-lift `rankHypothesis_withNormal_iff_finrank_pinnedMotions` — caps the extended panel
+framework's realized rank. Immediate from the inclusion `toBodyHinge_pinnedMotions_le_withGraph`
+and `Submodule.finrank_mono`. -/
+theorem finrank_toBodyHinge_pinnedMotions_le_withGraph [Finite α]
+    (P : PanelHingeFramework k α β) (v : α) {G' : Graph α β} (hle : G' ≤ P.graph) :
+    Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) ≤
+      Module.finrank ℝ ((P.withGraph G').toBodyHinge.pinnedMotions v) :=
+  Submodule.finrank_mono (P.toBodyHinge_pinnedMotions_le_withGraph v hle)
 
 end PanelHingeFramework
 
