@@ -110,6 +110,7 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 18. Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` (KT §2.2–2.4 + Lemmas 5.1–5.3) | ✓ Complete (see `notes/Phase18.md`; `molecular.tex` `sec:molecular-rigidity-matrix`) |
 | ⋮ Cleanup round (post-Phase-18) | Phase 18 surface (`Molecular/RigidityMatrix.lean`, `molecular.tex` → split into `extensor.tex` + `rigidity-matrix.tex`) + readability/citation/instruction items | ✓ Complete (see `notes/Phase18-cleanup.md`; round manual: `CLEANUP.md`) |
 | 19. `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` (KT §2.5, §3) | ✓ Complete (see `notes/Phase19.md`; `deficiency.tex` `sec:molecular-deficiency`) |
+| ⋮ Cleanup round (post-Phase-19) | Phase 19 surface (`Molecular/Deficiency.lean`, `deficiency.tex` `sec:molecular-deficiency` nodes) | ◷ In progress (see `notes/Phase19-cleanup.md`; round manual: `CLEANUP.md`) |
 | 20–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
