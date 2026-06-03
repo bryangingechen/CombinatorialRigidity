@@ -154,4 +154,140 @@ theorem circuit_induces_isTight [DecidableEq β] [Finite α] [Finite β] {G : Gr
         _ ≤ bodyBarDim n * (G.fiberSpan n X).ncard := by gcongr
   omega
 
+/-! ## Graph operations (`def:graph-operations`, `def:rigid-contraction`)
+
+The four operations on `Graph α β` that drive the Katoh–Tanigawa induction
+(`def:graph-operations`, `def:rigid-contraction`): vertex removal, splitting-off at
+a degree-2 vertex, its inverse edge-splitting, and rigid-subgraph contraction. These
+are graph-level constructions; their *deficiency* behaviour (the forest-surgery core,
+KT 4.1–4.5) routes through the matroid `M(G̃)` of Phase 19 in later nodes. -/
+
+/-- **Vertex removal** `G_v := G − v` (`def:graph-operations`): delete `v` and all its
+incident edges. Realized through mathlib's `Graph.deleteVerts {v}`. -/
+def removeVertex (G : Graph α β) (v : α) : Graph α β :=
+  G.deleteVerts {v}
+
+@[simp]
+lemma vertexSet_removeVertex (G : Graph α β) (v : α) :
+    V(G.removeVertex v) = V(G) \ {v} := by
+  rw [removeVertex, vertexSet_deleteVerts]
+
+@[simp]
+lemma removeVertex_isLink {G : Graph α β} {v : α} {e : β} {x y : α} :
+    (G.removeVertex v).IsLink e x y ↔ G.IsLink e x y ∧ x ≠ v ∧ y ≠ v := by
+  rw [removeVertex, deleteVerts_isLink]
+  simp [Set.mem_singleton_iff]
+
+/-- **Splitting-off** `G_v^{ab}` at a degree-2 vertex `v` with neighbours `a`, `b`
+(`def:graph-operations`): delete `v` and replace the two edges through `v` by a single
+fresh edge `e₀` joining `a` and `b`. Edges other than `e₀` are kept iff they avoid `v`;
+the new edge `e₀` links exactly `a` and `b` (requiring `a, b ≠ v` so the construction is
+a well-formed graph on the surviving vertices). -/
+def splitOff (G : Graph α β) (v a b : α) (e₀ : β) : Graph α β where
+  vertexSet := V(G) \ {v}
+  IsLink e x y :=
+    (e ≠ e₀ ∧ G.IsLink e x y ∧ x ≠ v ∧ y ≠ v) ∨
+      (e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧
+        ((x = a ∧ y = b) ∨ (x = b ∧ y = a)))
+  isLink_symm := by
+    rintro e he x y (⟨hne, h, hx, hy⟩ | ⟨he₀, ha, hb, haV, hbV, hxy⟩)
+    · exact Or.inl ⟨hne, h.symm, hy, hx⟩
+    · exact Or.inr ⟨he₀, ha, hb, haV, hbV, hxy.symm.imp (fun ⟨p, q⟩ ↦ ⟨q, p⟩)
+        (fun ⟨p, q⟩ ↦ ⟨q, p⟩)⟩
+  eq_or_eq_of_isLink_of_isLink := by
+    rintro e x y z w (⟨_, h, _, _⟩ | ⟨_, _, _, _, _, hxy⟩) (⟨_, h', _, _⟩ | ⟨_, _, _, _, _, hzw⟩)
+    · exact h.left_eq_or_eq h'
+    · exact absurd ‹e = e₀› ‹e ≠ e₀›
+    · exact absurd ‹e = e₀› ‹e ≠ e₀›
+    · rcases hxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rcases hzw with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;>
+        simp
+  left_mem_of_isLink := by
+    rintro e x y (⟨_, h, hx, _⟩ | ⟨_, hav, hbv, haV, hbV, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)⟩)
+    · exact ⟨h.left_mem, by simpa using hx⟩
+    · exact ⟨haV, by simpa using hav⟩
+    · exact ⟨hbV, by simpa using hbv⟩
+
+@[simp]
+lemma vertexSet_splitOff (G : Graph α β) (v a b : α) (e₀ : β) :
+    V(G.splitOff v a b e₀) = V(G) \ {v} := rfl
+
+@[simp]
+lemma splitOff_isLink {G : Graph α β} {v a b : α} {e₀ : β} {e : β} {x y : α} :
+    (G.splitOff v a b e₀).IsLink e x y ↔
+      (e ≠ e₀ ∧ G.IsLink e x y ∧ x ≠ v ∧ y ≠ v) ∨
+        (e = e₀ ∧ a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧
+          ((x = a ∧ y = b) ∨ (x = b ∧ y = a))) := Iff.rfl
+
+/-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
+Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
+replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,
+`v`) and `e₂` (joining `v`, `b`). Every edge of `H` other than `e₀` is kept; the new
+vertex `v` and the two new edges realize the subdivision. It satisfies
+`(H_{ab}^v)_v^{ab} = H` (the `lem:forest-surgery-unsplit` identity, established later). -/
+def edgeSplit (H : Graph α β) (a b v : α) (e₀ e₁ e₂ : β) : Graph α β where
+  vertexSet := insert v V(H)
+  IsLink e x y :=
+    (e ≠ e₀ ∧ e ≠ e₁ ∧ e ≠ e₂ ∧ H.IsLink e x y) ∨
+      (e = e₁ ∧ ((x = a ∧ y = v) ∨ (x = v ∧ y = a)) ∧ a ∈ V(H)) ∨
+      (e = e₂ ∧ e ≠ e₁ ∧ ((x = v ∧ y = b) ∨ (x = b ∧ y = v)) ∧ b ∈ V(H))
+  isLink_symm := by
+    rintro e he x y (⟨h₀, h₁, h₂, h⟩ | ⟨he₁, hxy, ha⟩ | ⟨he₂, hne, hxy, hb⟩)
+    · exact Or.inl ⟨h₀, h₁, h₂, h.symm⟩
+    · exact Or.inr <| Or.inl
+        ⟨he₁, hxy.symm.imp (fun ⟨p, q⟩ ↦ ⟨q, p⟩) (fun ⟨p, q⟩ ↦ ⟨q, p⟩), ha⟩
+    · exact Or.inr <| Or.inr
+        ⟨he₂, hne, hxy.symm.imp (fun ⟨p, q⟩ ↦ ⟨q, p⟩) (fun ⟨p, q⟩ ↦ ⟨q, p⟩), hb⟩
+  eq_or_eq_of_isLink_of_isLink := by
+    rintro e x y z w
+      (⟨h₀, h₁, h₂, h⟩ | ⟨he, hxy, _⟩ | ⟨he, hne, hxy, _⟩)
+      (⟨h₀', h₁', h₂', h'⟩ | ⟨he', hzw, _⟩ | ⟨he', hne', hzw, _⟩)
+    · exact h.left_eq_or_eq h'
+    · grind
+    · grind
+    · grind
+    · rcases hxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rcases hzw with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp
+    · grind
+    · grind
+    · grind
+    · rcases hxy with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rcases hzw with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp
+  left_mem_of_isLink := by
+    rintro e x y (⟨_, _, _, h⟩ | ⟨_, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩), ha⟩ |
+        ⟨_, _, (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩), hb⟩)
+    · exact Set.mem_insert_of_mem _ h.left_mem
+    · exact Set.mem_insert_of_mem _ ha
+    · exact Set.mem_insert _ _
+    · exact Set.mem_insert _ _
+    · exact Set.mem_insert_of_mem _ hb
+
+@[simp]
+lemma vertexSet_edgeSplit (H : Graph α β) (a b v : α) (e₀ e₁ e₂ : β) :
+    V(H.edgeSplit a b v e₀ e₁ e₂) = insert v V(H) := rfl
+
+@[simp]
+lemma edgeSplit_isLink {H : Graph α β} {a b v : α} {e₀ e₁ e₂ : β} {e : β} {x y : α} :
+    (H.edgeSplit a b v e₀ e₁ e₂).IsLink e x y ↔
+      (e ≠ e₀ ∧ e ≠ e₁ ∧ e ≠ e₂ ∧ H.IsLink e x y) ∨
+        (e = e₁ ∧ ((x = a ∧ y = v) ∨ (x = v ∧ y = a)) ∧ a ∈ V(H)) ∨
+        (e = e₂ ∧ e ≠ e₁ ∧ ((x = v ∧ y = b) ∨ (x = b ∧ y = v)) ∧ b ∈ V(H)) := Iff.rfl
+
+/-- **Collapse map** `collapseTo r S` (`def:rigid-contraction`, auxiliary): the vertex
+map `α → α` sending every vertex of `S` to the representative `r` and fixing all others.
+The vertex identification underlying rigid-subgraph contraction. -/
+noncomputable def collapseTo (r : α) (S : Set α) : α → α :=
+  open Classical in fun x => if x ∈ S then r else x
+
+/-- **Rigid-subgraph contraction** `G / E(H)` (`def:rigid-contraction`): collapse the
+vertex set `V(H)` of a (rigid) subgraph `H ≤ G` to a single representative vertex `r`,
+discard the edges of `H`, and retain every other edge of `G` with its endpoints in `V(H)`
+redirected to `r`. Realized as `(G.deleteEdges E(H)).map (collapseTo r V(H))`: deleting
+`E(H)` discards the rigid subgraph's edges, and `map` identifies `V(H)` to `r`. On the
+matroid side this is the matroid contraction `M(G̃) / E(H̃)` restricted to the surviving
+fibers (used in `lem:contraction-minimality`). -/
+noncomputable def rigidContract (G H : Graph α β) (r : α) : Graph α β :=
+  (G.deleteEdges E(H)).map (collapseTo r V(H))
+
+@[simp]
+lemma vertexSet_rigidContract (G H : Graph α β) (r : α) :
+    V(G.rigidContract H r) = collapseTo r V(H) '' V(G) := rfl
+
 end Graph

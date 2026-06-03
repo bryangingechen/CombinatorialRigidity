@@ -87,6 +87,8 @@ and Theorem~4.9.
 
 \begin{definition}[Vertex removal, splitting-off, and edge-splitting]
   \label{def:graph-operations}
+  \lean{Graph.removeVertex, Graph.splitOff, Graph.edgeSplit}
+  \leanok
   \uses{def:k-dof}
   For a multigraph $G$ and a vertex $v$ of degree~2 with the two
   incident edges joining $v$ to $a$ and $b$:
@@ -104,6 +106,8 @@ and Theorem~4.9.
 
 \begin{definition}[Rigid-subgraph contraction]
   \label{def:rigid-contraction}
+  \lean{Graph.rigidContract}
+  \leanok
   \uses{def:rigid-subgraph}
   For a rigid subgraph $H \le G$, the \emph{contraction} $G / E(H)$
   collapses the vertex set $V(H)$ to a single vertex and discards the

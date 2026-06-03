@@ -13,9 +13,11 @@ dep-graph / lemma index is the new blueprint chapter
 
 ## Current state
 
-`Molecular/Induction.lean` exists with the first two nodes green: the
-vertex-induced-subgraph construction (`def:induced-span`) and the full
-form of KT Lemma 3.4 (`lem:circuit-induces-rigid`).
+`Molecular/Induction.lean` has the first two structural nodes plus the
+**graph operations** green: the vertex-induced-subgraph construction
+(`def:induced-span`), the full form of KT Lemma 3.4
+(`lem:circuit-induces-rigid`), and now the four graph operations
+(`def:graph-operations` + `def:rigid-contraction`).
 
 - **`def:induced-span`** — `Graph.fiberSpan G n X = (G.mulTilde n).spanningVerts X`
   (the vertices `V(X)` spanned by a fiber set `X` of `G̃`) and
@@ -35,10 +37,19 @@ form of KT Lemma 3.4 (`lem:circuit-induces-rigid`).
   failure is at `X` itself). Upper bound from Phase 19's
   `isSparse_diff_singleton_of_isCircuit`. Axiom-free.
 
-Next concrete step: the graph operations (`def:graph-operations` —
-removal/splitting-off/edge-splitting, and `def:rigid-contraction`), then the
-other inherited lemma `lem:contraction-minimality` (KT 3.5). The forest-surgery
-core (4.1/4.2) is the budget-the-most-time piece, scheduled after the ops + KT 3.5.
+- **`def:graph-operations` / `def:rigid-contraction`** — the four ops:
+  `Graph.removeVertex` (= mathlib `deleteVerts {v}`), `Graph.splitOff v a b e₀`
+  (delete `v`, add fresh edge `e₀` joining `a,b`), `Graph.edgeSplit a b v e₀ e₁ e₂`
+  (subdivide `e₀` by fresh `v` via fresh `e₁,e₂`), and `Graph.rigidContract G H r`
+  (= `(G.deleteEdges E(H)).map (collapseTo r V(H))`, collapse `V(H)` to representative
+  `r`). `removeVertex` and `rigidContract` are thin mathlib compositions
+  (`deleteVerts` / `deleteEdges` + `map`); `splitOff` / `edgeSplit` are structure
+  literals (no graph union/`addEdge` in mathlib). Each has `vertexSet_*`/`*_isLink`
+  simp lemmas. Axiom-free.
+
+Next concrete step: the other inherited lemma `lem:contraction-minimality` (KT 3.5,
+uses `thm:def-eq-corank` + `lem:subgraph-minimality`). The forest-surgery core
+(4.1/4.2) is the budget-the-most-time piece, scheduled after KT 3.5.
 
 ## Architectural choices made up front
 
@@ -76,9 +87,11 @@ Inherited from Phase 19 (schedule early):
 Graph operations:
 - [x] `def:induced-span` — vertex-induced subgraph `G[V(X)]` from a fiber set
   `X` of `G̃` (`Graph.fiberSpan` / `Graph.inducedSpan`, via mathlib `Graph.induce`).
-- [ ] `def:graph-operations` — removal `G_v`, splitting-off `G_v^{ab}`,
-  edge-splitting `H_{ab}^v` (inverse of splitting-off).
-- [ ] `def:rigid-contraction` — rigid-subgraph contraction `G/E(H)`.
+- [x] `def:graph-operations` — removal `G_v` (`Graph.removeVertex`), splitting-off
+  `G_v^{ab}` (`Graph.splitOff`), edge-splitting `H_{ab}^v` (`Graph.edgeSplit`,
+  inverse of splitting-off).
+- [x] `def:rigid-contraction` — rigid-subgraph contraction `G/E(H)`
+  (`Graph.rigidContract`, via `deleteEdges` + `map (collapseTo …)`).
 
 Forest surgery (hard core):
 - [ ] `lem:forest-surgery-split` — KT 4.1, splitting-off direction
@@ -120,10 +133,22 @@ only by Case 6.1).
   `thm:def-eq-corank`. (The def=corank reverse is still the engine for KT 3.5's
   rank-conservation, scheduled next.)
 
+- **Graph operations: reuse mathlib where possible, structure-literal where not.**
+  `removeVertex = deleteVerts {v}` and `rigidContract = (deleteEdges E(H)).map
+  (collapseTo r V(H))` are thin compositions of mathlib `Graph` ops (mathlib's `map`
+  realizes the vertex-collapse). `splitOff` / `edgeSplit` *add* edges/vertices, and
+  mathlib's `Graph` has no union/join (`SemilatticeInf` only) or `addEdge`, so they
+  are structure literals with explicit fresh edge labels (`e₀` for splitting-off;
+  `e₁,e₂` for edge-splitting). `collapseTo r S` uses `open Classical in` for the
+  membership `if`. Deficiency behaviour is deferred to the later surgery nodes.
+
 ### Promoted to FRICTION
 - *`IsCircuit.subset_ground` for `M(G̃)` gives a restrict-ground `⊆`, defeq-but-not-
   syntactic to `E(G̃)` — ascribe once* → FRICTION `[resolved] [matroid]
   IsCircuit.subset_ground for M(G̃) …`.
+- *Hand-rolled `Graph` with several fresh edge labels needs a distinctness guard in a
+  clause, else `eq_or_eq_of_isLink_of_isLink` is unprovable* → FRICTION `[resolved] A
+  hand-rolled Graph α β with several fresh edge labels …`.
 
 ## Blockers / open questions
 
@@ -133,19 +158,19 @@ only by Case 6.1).
 
 ## Hand-off / next phase
 
-`def:induced-span` and `lem:circuit-induces-rigid` (KT 3.4 full form) are green in
-`Molecular/Induction.lean` (`Graph.fiberSpan` / `Graph.inducedSpan` /
-`vertexSet_inducedSpan`; `Graph.circuit_ncard_gt` / `Graph.circuit_induces_isTight`),
-axiom-free, blueprint nodes flipped `\leanok`.
+Green in `Molecular/Induction.lean`, axiom-free, blueprint nodes `\leanok`:
+`def:induced-span`, `lem:circuit-induces-rigid` (KT 3.4 full form), and the four
+graph operations `def:graph-operations` (`Graph.removeVertex` / `splitOff` /
+`edgeSplit`) + `def:rigid-contraction` (`Graph.rigidContract`, via the auxiliary
+`collapseTo`). Each op has `vertexSet_*` / `*_isLink` simp lemmas.
 
-Next agent's concrete commit: land the **graph operations** —
-`def:graph-operations` (vertex removal `G_v`, splitting-off `G_v^{ab}` at a
-degree-2 vertex, edge-splitting `H_{ab}^v`) and `def:rigid-contraction`
-(rigid-subgraph contraction `G/E(H)`). Check mathlib `Graph` API
-(`Graph.vertexDelete` / `edgeDelete` / `Graph.induce` / any contraction) before
-hand-rolling — `induce` already existed where the phase-open notes expected a
-gap. Then the other inherited lemma `lem:contraction-minimality` (KT 3.5,
-contraction preserves minimal `k`-dof) — this one *does* use `thm:def-eq-corank`
-(rank conservation under contraction) + `lem:subgraph-minimality`. The
-forest-surgery core (4.1/4.2) is the budget-the-most-time piece; schedule after
-the ops + KT 3.5 are green.
+Next agent's concrete commit: the inherited lemma `lem:contraction-minimality`
+(KT 3.5 — rigid-subgraph contraction preserves minimal `k`-dof). It uses
+`thm:def-eq-corank` (rank conservation under contraction: contracting a rigid `H`
+removes `D(|V(H)|−1)` from both `rank M(G̃)` and the ambient `D(|V|−1)`, so the
+corank/deficiency is unchanged) + `lem:subgraph-minimality` (minimality transport).
+The new `Graph.rigidContract` is the graph-side object it operates on; the matroid
+side is `Matroid.contract` on `M(G̃)`. The forest-surgery core (4.1/4.2,
+`lem:forest-surgery-split`/`-unsplit`) is the budget-the-most-time piece; schedule
+after KT 3.5. Decide the explicit-`D`-forests-vs-matroid-base framing when the first
+surgery node lands (see Blockers).

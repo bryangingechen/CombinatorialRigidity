@@ -76,6 +76,27 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A hand-rolled `Graph α β` with several fresh edge labels needs a distinctness guard baked into a clause, or `eq_or_eq_of_isLink_of_isLink` is unprovable
+- **Where it bit:** `Graph.edgeSplit` in `Molecular/Induction.lean` (Phase 20
+  `def:graph-operations`). Edge-splitting subdivides `e₀` into a path `a–v–b`
+  carried by two *fresh* edge labels `e₁`, `e₂`. The structure-literal `IsLink`
+  has one clause per label; if `e₁ = e₂` the two new-edge clauses both fire on the
+  same label with links `a–v` and `v–b`, and `eq_or_eq_of_isLink_of_isLink` then
+  demands `a = v ∨ a = b`, which can fail — the def is *not well-formed* without
+  distinct labels. No external hypothesis was wanted (it would break the
+  `IsLink`/`vertexSet` `Iff.rfl`/`rfl` simp lemmas).
+- **Fix / general lesson:** bake a single `e ≠ e₁` guard into the `e₂` clause
+  (`e = e₂ ∧ e ≠ e₁ ∧ …`); if the labels coincide the `e₂` clause is vacuous and
+  the result is a degenerate-but-well-formed graph (downstream always passes
+  distinct labels). When hand-rolling a `Graph` via structure literal that adds
+  *N ≥ 2* new edge labels, make the clauses label-exclusive by guard so
+  `eq_or_eq` is dischargeable — then the 3×3 (or N×N) cross-cases close by
+  `grind` (contradictory `e = eᵢ` / `e ≠ eⱼ` hyps) interleaved with the
+  endpoint-disjunction `rcases … <;> simp` for the genuine same-label cases.
+  Note the `rintro ⟨rfl, …⟩` on `e = eᵢ` substitutes the *parameter* `eᵢ`, not
+  the bound `e` (TACTICS-QUIRKS § 4 subst-direction trap), so bind the equality
+  as a named hyp rather than `rfl`-matching it inside the case split.
+
 ### [resolved] A choice-of-representative label `if h : s.Nonempty then h.choose else _` trips `rw`-motive when you rewrite the set `s` underneath — factor through the *object* so equality is `congrArg`
 - **Where it bit:** `componentLabel` in `Molecular/Deficiency.lean` (Phase 19
   `thm:def-eq-corank` piece 3). The component label of a vertex is a chosen
