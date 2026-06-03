@@ -466,6 +466,15 @@ housekeeping pass once their resolution is fully indexed.
   but the `IsLink`/`Inc` API lemmas don't fire syntactically — ascribe
   the base-graph type, or restate via the congruence lemmas
   (`IsSubgraph.isLink_iff` / `.inc_congr`). One build cycle.
+- **Recurred (Phase 21, `infinitesimalMotions_mono_of_graph_le` in
+  `Molecular/AlgebraicInduction.lean`):** even on a *bare* `G.IsLink`
+  (no `edgeMultiply` wrapper), dot notation `he.mono hle` fails because
+  the hypothesis type displays as the raw structure projection
+  `G.2 e u v`, so dot-resolution can't see the `Graph.IsLink` head.
+  Call `Graph.IsLink.mono hle he` explicitly (matches the existing
+  `BodyHinge.lean` callsite). Also note `≤`/`IsLink.mono` live in
+  `Mathlib.Combinatorics.Graph.Subgraph`, not `.Basic` — a `module`
+  file using the subgraph order needs that import. One build cycle.
 
 ### [resolved] `mulTilde` edge-set / `IsLink` unfold tower recurred ~30× — extracted two fused `@[simp]` mirrors
 - **Where it bit:** across `Molecular/Induction.lean` + `Molecular/Deficiency.lean`

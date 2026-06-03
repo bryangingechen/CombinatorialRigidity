@@ -142,6 +142,58 @@ whole induction.
   $\dim Z(G,p) = D$, matching $D(2-1) - 0$.
 \end{proof}
 
+\subsection{The framework-construction op}
+\label{sec:molecular-algebraic-induction-withgraph}
+
+Both inductive cases build a realization of $G$ from a realization of a
+\emph{different} graph: Case~I from the contraction $G/E(H)$, Case~II
+from the splitting-off $G_v^{ab}$. The shared, citation-free primitive
+both need is the ability to keep the hinge assignment fixed while
+changing the underlying multigraph --- the supporting extensors $C(p(e))$
+and hinge-row blocks depend only on the hinge data, not on which edges
+$G$ carries. The one fact this phase needs from the op is the
+graph-monotonicity of the motion space: deleting edges (passing to a
+subgraph) can only enlarge the null space $Z(G,p)$, the direction
+Cases~I and~II travel toward the smaller inductive graph.
+
+\begin{definition}[Framework on a new graph]
+  \label{def:framework-with-graph}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.withGraph}
+  \leanok
+  \uses{def:rigidity-matrix}
+  For a body-hinge framework $F = (G, p)$ and any multigraph $G'$ on the
+  same bodies, $F[G']$ is the framework with underlying multigraph $G'$
+  and the same hinge assignment $p$. Every supporting extensor $C(p(e))$,
+  hinge-row block, and per-edge constraint is untouched; only the set of
+  edges imposing a constraint changes.
+\end{definition}
+
+\begin{lemma}[Edge deletion enlarges the motion space]
+  \label{lem:motions-mono-of-graph-le}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_le_withGraph_of_le,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_le_of_graph_le}
+  \leanok
+  \uses{def:framework-with-graph}
+  If $G' \le G$ then $Z(G,p) \subseteq Z(G', p)$, equivalently
+  $\dim Z(G,p) \le \dim Z(G', p)$ --- i.e.
+  $\operatorname{rank} R(G', p) \le \operatorname{rank} R(G, p)$. A
+  supergraph imposes more hinge constraints, so a motion of $G$ is a
+  fortiori a motion of any subgraph $G'$. This is the
+  ``re-adding edges only grows the rank'' monotonicity that lifts a
+  realization of a minimal $k$-dof spanning subgraph to one of the whole
+  multigraph (the step \cref{prop:rigidity-matrix-prop11} uses), and the
+  companion to the fixed-graph span-monotonicity Lemma~5.2.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:framework-with-graph}
+  Each link of $G'$ is a link of $G$ (\texttt{Graph.IsLink.mono}), and
+  the matching supporting extensors agree, so every infinitesimal motion
+  of $G$ meets every constraint of $G'$: $Z(G,p) \subseteq Z(G', p)$.
+  Taking dimensions (\texttt{Submodule.finrank\_mono}) gives the rank
+  form.
+\end{proof}
+
 \subsection{Case I: a proper rigid subgraph}
 \label{sec:molecular-algebraic-induction-caseI}
 

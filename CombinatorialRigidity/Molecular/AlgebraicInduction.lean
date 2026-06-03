@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix
+public import Mathlib.Combinatorics.Graph.Subgraph
 
 /-!
 # The algebraic induction: Theorem 5.5 base, Cases I & II (`sec:molecular-algebraic-induction`)
@@ -133,6 +134,89 @@ theorem rankHypothesis_iff_finrank_pinnedMotions [Nonempty α] [Finite α]
   rw [RankHypothesis, ← F.finrank_pinnedMotions_add_screwDim v]
   push_cast
   omega
+
+/-! ## The framework-construction op (`def:framework-with-graph`)
+
+Both inductive cases of Theorem 5.5 build a realization of `G` from a realization of a
+*different* graph: Case I from the contraction `G/E(H)`, Case II from the splitting-off
+`G_v^{ab}`. The shared, citation-free primitive both need is the ability to keep a hinge
+assignment fixed while changing the underlying multigraph. We package this as `withGraph`:
+the framework on a new graph `G'` carrying the same hinge map (hence the same supporting
+extensors and hinge-row blocks).
+
+The one fact this phase needs from it is the *graph-monotonicity* of the motion space: adding
+edges (passing to a supergraph) can only shrink the null space `Z(G,p)`, since each new link
+imposes another hinge constraint. Dually, deleting edges — the direction Cases I/II travel,
+toward the smaller inductive graph — can only enlarge it. This is the combinatorial companion
+to the span-monotonicity Lemma 5.2 (`infinitesimalMotions_mono_of_span_le`, fixed graph,
+refining spans); together they bound how `rank R(G,p)` moves under the two ways a realization's
+data can change. The base identity `withGraph_supportExtensor` (the hinge data, hence every
+extensor, is untouched) is what lets the two compose. -/
+
+/-- **The framework on a new graph** (`def:framework-with-graph`): replace the underlying
+multigraph of `F` by `G'`, keeping the hinge assignment — hence every supporting extensor
+`C(p(e))`, hinge-row block `r(p(e))`, and per-edge constraint. This is the carrier for the
+inductive constructions of Cases I and II, which realize a *different* graph (the contraction
+`G/E(H)`, the splitting-off `G_v^{ab}`) on the same hinge data of the parent framework. -/
+@[simps]
+def withGraph (F : BodyHingeFramework k α β) (G' : Graph α β) : BodyHingeFramework k α β where
+  graph := G'
+  hinge := F.hinge
+
+@[simp]
+theorem withGraph_supportExtensor (F : BodyHingeFramework k α β) (G' : Graph α β) (e : β) :
+    (F.withGraph G').supportExtensor e = F.supportExtensor e := rfl
+
+@[simp]
+theorem withGraph_graph_self (F : BodyHingeFramework k α β) : F.withGraph F.graph = F := rfl
+
+/-- **Graph monotonicity of the motion space** (`lem:motions-mono-of-graph-le`): a supergraph
+imposes more hinge constraints, so its null space is contained in the subgraph's. If
+`F'.graph ≤ F.graph` and `F'` carries the same hinge data as `F` (the supporting extensors
+agree), then every infinitesimal motion of `F` is one of `F'`:
+`F.infinitesimalMotions ≤ F'.infinitesimalMotions`. A motion of `F` meets the constraint at
+every link of `F.graph`; each link of the smaller `F'.graph` is one of `F.graph`
+(`Graph.IsLink.mono`), and the matching extensors carry the same constraint, so it meets every
+constraint of `F'`.
+
+The phase reaches this through `withGraph`: `F.infinitesimalMotions ≤ (F.withGraph G').
+infinitesimalMotions` whenever `G' ≤ F.graph` (`infinitesimalMotions_le_withGraph_of_le`), the
+"deleting edges enlarges the null space" half that Cases I/II use to pass to the smaller
+inductive graph. -/
+theorem infinitesimalMotions_mono_of_graph_le (F F' : BodyHingeFramework k α β)
+    (hle : F'.graph ≤ F.graph)
+    (hext : ∀ e, F'.supportExtensor e = F.supportExtensor e) :
+    F.infinitesimalMotions ≤ F'.infinitesimalMotions := by
+  intro S hS e u v he
+  rw [hingeConstraint, hext e]
+  exact hS e u v (Graph.IsLink.mono hle he)
+
+/-- **Deleting edges enlarges the motion space** (`lem:motions-mono-of-graph-le`, `withGraph`
+form): replacing `F.graph` by any subgraph `G' ≤ F.graph` (keeping the hinge data via
+`withGraph`) can only grow the null space — `F.infinitesimalMotions ≤
+(F.withGraph G').infinitesimalMotions`. This is the direction Cases I and II travel: from the
+parent graph `G` toward the smaller inductive graph (the contraction `G/E(H)` or splitting-off
+`G_v^{ab}`), where the realization count is supplied by the induction hypothesis. The supporting
+extensors are untouched (`withGraph_supportExtensor`), so this is
+`infinitesimalMotions_mono_of_graph_le` specialized to the `withGraph` carrier. -/
+theorem infinitesimalMotions_le_withGraph_of_le (F : BodyHingeFramework k α β) {G' : Graph α β}
+    (hle : G' ≤ F.graph) :
+    F.infinitesimalMotions ≤ (F.withGraph G').infinitesimalMotions :=
+  F.infinitesimalMotions_mono_of_graph_le (F.withGraph G') hle fun _ => rfl
+
+/-- **The motion-space dimension does not increase under edge deletion** (`lem:motions-mono-of-
+graph-le`, rank form): for `G' ≤ F.graph`, `finrank Z(G,p) ≤ finrank Z(G',p)`, equivalently
+`rank R(G',p) ≤ rank R(G,p)` (the rank is the codimension `D|V| − finrank Z`,
+`finrank_screwAssignment`). The supergraph has at least the rank of any of its subgraphs — the
+"re-adding edges only grows the rank" monotonicity that lifts a realization of a minimal
+`k`-dof spanning subgraph to one of the whole multigraph (the step `prop:rigidity-matrix-prop11`
+uses to push Theorem 5.5 from minimal `k`-dof-graphs to all multigraphs). Immediate from the
+inclusion `infinitesimalMotions_le_withGraph_of_le` and `Submodule.finrank_mono`. -/
+theorem finrank_infinitesimalMotions_le_of_graph_le [Finite α] (F : BodyHingeFramework k α β)
+    {G' : Graph α β} (hle : G' ≤ F.graph) :
+    Module.finrank ℝ F.infinitesimalMotions ≤
+      Module.finrank ℝ (F.withGraph G').infinitesimalMotions :=
+  Submodule.finrank_mono (F.infinitesimalMotions_le_withGraph_of_le hle)
 
 end BodyHingeFramework
 
