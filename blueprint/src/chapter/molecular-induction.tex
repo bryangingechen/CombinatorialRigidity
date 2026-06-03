@@ -132,9 +132,35 @@ and Theorem~4.9.
   correspondence is needed --- the statement is against the matroid contraction directly.
 \end{proof}
 
+\begin{lemma}[Minimality transports along a contraction; KT Lemma 3.5, second half]
+  \label{lem:contract-minimality-transport}
+  \lean{Graph.contract_minimality_transport}
+  \leanok
+  \uses{lem:subgraph-minimality, def:k-dof, def:rigid-contraction}
+  Let $G$ be a minimal $k$-dof-graph and $H$ a subgraph. Then every base
+  $B'$ of the matroid contraction $M(\tilde G) / E(\tilde H)$ meets every
+  \emph{surviving} edge-fiber $\tilde e$ of an edge $e \in E(G) \setminus
+  E(H)$: $B' \cap \tilde e \ne \emptyset$. This is the contraction analogue
+  of the restriction transport \cref{lem:subgraph-minimality}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:matroid-MG}
+  A base $B'$ of $M(\tilde G) / E(\tilde H)$ lies in the contraction's
+  ground $E(\tilde G) \setminus E(\tilde H)$, so it is disjoint from
+  $E(\tilde H)$. Pick an $M(\tilde G)$-basis $J$ of $E(\tilde H)$; then
+  $B' \cup J$ is a base of $M(\tilde G)$ (the deleted part $E(\tilde H)
+  \setminus J$ consists of loops of the contraction $M(\tilde G) / J$, so
+  $B'$ is a base there and \cref{def:matroid-MG}'s independence lifts). By
+  $G$'s minimality, $(B' \cup J) \cap \tilde e \ne \emptyset$; the surviving
+  fiber $\tilde e$ ($e \notin E(H)$) is disjoint from $E(\tilde H) \supseteq
+  J$, so the witness lands in $B'$. No graph$\leftrightarrow$matroid
+  correspondence is needed.
+\end{proof}
+
 \begin{lemma}[Rigid-subgraph contraction preserves minimality; KT Lemma 3.5]
   \label{lem:contraction-minimality}
-  \uses{def:rigid-subgraph, lem:subgraph-minimality, def:k-dof, lem:rigid-full-rank, lem:contract-rank-bridge, lem:contract-deficiency-conservation}
+  \uses{def:rigid-subgraph, lem:subgraph-minimality, def:k-dof, lem:rigid-full-rank, lem:contract-rank-bridge, lem:contract-deficiency-conservation, lem:contract-minimality-transport}
   Let $G$ be a minimal $k$-dof-graph and let $H$ be a proper rigid
   subgraph of $G$. Then the contraction $G / E(H)$ (collapse $V(H)$ to
   a single vertex, keeping the edges of $G$ incident to $V(H)$ from
@@ -142,7 +168,7 @@ and Theorem~4.9.
   This is the engine of Case~I of the algebraic induction.
 \end{lemma}
 \begin{proof}
-  \uses{lem:contract-deficiency-conservation, lem:subgraph-minimality}
+  \uses{lem:contract-deficiency-conservation, lem:contract-minimality-transport}
   The deficiency is unchanged by
   \cref{lem:contract-deficiency-conservation}: contracting a rigid
   subgraph removes $D(|V(H)| - 1)$ from both the rank of $M(\tilde G)$

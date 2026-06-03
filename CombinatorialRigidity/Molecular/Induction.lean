@@ -405,4 +405,85 @@ noncomputable def rigidContract (G H : Graph α β) (r : α) : Graph α β :=
 lemma vertexSet_rigidContract (G H : Graph α β) (r : α) :
     V(G.rigidContract H r) = collapseTo r V(H) '' V(G) := rfl
 
+/-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
+
+The minimality-transport half of KT Lemma 3.5: contracting a (rigid) subgraph `H` of a
+minimal `k`-dof-graph `G` leaves the minimality condition intact — every base of the
+matroid contraction `M(G̃) / E(H̃)` meets every *surviving* edge-fiber `ẽ`
+(`e ∈ E(G) \ E(H)`). This is the contraction analogue of `subgraph_minimality` (KT 3.3),
+which transports minimality along a *restriction*; here the transport is along the
+contraction, lifting a base `B'` of `M(G̃) / E(H̃)` to a base `B' ∪ J` of `M(G̃)` for an
+`M(G̃)`-basis `J` of the contracted-out `E(H̃)` (`Matroid.IsBase.union_isBasis_of_contract`),
+applying `G`'s minimality there, and pushing the fiber witness back to `B'` since the
+basis part `J ⊆ E(H̃)` is disjoint from every surviving fiber. Stated on the matroid side
+`M(G̃) / E(H̃)` — no graph↔matroid `map` correspondence. -/
+
+/-- **A base of a matroid contraction lifts to a base of the matroid** (the abstract
+matroid fact behind the contraction analogue of `subgraph_minimality`). For a base `B'`
+of `M ／ C` and an `M`-basis `J` of `C` (`M.IsBasis' J C`), the union `B' ∪ J` is a base
+of `M`. Via `IsBasis'.contract_eq_contract_delete` (`M ／ C = M ／ J ＼ (C \ J)`): the
+deleted `C \ J` consists of loops of `M ／ J` (it lies in `closure J`), so a base `B'` of
+`M ／ C` is a base of `M ／ J`, and `Indep.contract_isBase_iff` then gives `B' ∪ J` a base
+of `M`. -/
+theorem _root_.Matroid.IsBase.union_isBasis_of_contract {γ : Type*} {M : Matroid γ}
+    {B' J C : Set γ} (hB' : (M ／ C).IsBase B') (hJ : M.IsBasis' J C) :
+    M.IsBase (B' ∪ J) := by
+  rw [hJ.contract_eq_contract_delete, Matroid.delete_isBase_iff] at hB'
+  -- `C \ J` lies in `closure J`, hence is loops of `M ／ J`.
+  have hCcl : C ∩ M.E ⊆ M.closure J := by
+    rw [hJ.closure_eq_closure]; exact M.subset_closure_of_subset' Set.inter_subset_left
+  have hsub : (M ／ J).E \ (M ／ J).loops ⊆ (M ／ J).E \ (C \ J) := by
+    rw [Matroid.contract_loops_eq, Matroid.contract_ground]
+    refine fun x hx ↦ ⟨hx.1, fun hxc ↦ hx.2 ⟨hCcl ⟨hxc.1, hx.1.1⟩, hxc.2⟩⟩
+  -- So `(M ／ J).E \ (C \ J)` is spanning in `M ／ J`, making `B'` a base of `M ／ J`.
+  have hsp : (M ／ J).Spanning ((M ／ J).E \ (C \ J)) := by
+    rw [Matroid.spanning_iff_closure_eq Set.diff_subset]
+    refine subset_antisymm (Matroid.closure_subset_ground _ _) ?_
+    calc (M ／ J).E = (M ／ J).closure ((M ／ J).E \ (M ／ J).loops) := by
+            rw [Matroid.closure_diff_loops_eq, Matroid.closure_ground]
+      _ ⊆ (M ／ J).closure ((M ／ J).E \ (C \ J)) := Matroid.closure_subset_closure _ hsub
+  have hBJ : (M ／ J).IsBase B' := hB'.isBase_of_spanning hsp
+  rw [hJ.indep.contract_isBase_iff] at hBJ
+  exact hBJ.1
+
+/-- **Minimality transports along a contraction** (`lem:contraction-minimality`, second
+half; Katoh–Tanigawa 2011 Lemma 3.5). For a subgraph `H` of a minimal `k`-dof-graph `G`,
+every base `B'` of the matroid contraction `M(G̃) ／ E(H̃)` meets every *surviving*
+edge-fiber `ẽ` of an edge `e ∈ E(G) \ E(H)`: `B' ∩ ẽ ≠ ∅`. This is the contraction
+analogue of `subgraph_minimality` (KT 3.3, restriction transport). (No `H ≤ G` hypothesis
+is needed: the argument is entirely on the matroid contraction `M(G̃) ／ E(H̃)`, using only
+that the contracted-out fibers `E(H̃)` are the multiplied edges of `H` and the surviving
+edge `e ∉ E(H)`; `H ≤ G` enters only the deficiency-conservation half.)
+
+A base `B'` of `M(G̃) ／ E(H̃)` is disjoint from `E(H̃)` (it lies in the contraction's
+ground `E(G̃) \ E(H̃)`). Picking an `M(G̃)`-basis `J` of `E(H̃)`, the union `B' ∪ J` is a
+base of `M(G̃)` (`Matroid.IsBase.union_isBasis_of_contract`), so `G`'s minimality gives
+`(B' ∪ J) ∩ ẽ ≠ ∅`. The surviving fiber `ẽ` (with `e ∉ E(H)`) is disjoint from `E(H̃) ⊇ J`
+(`p ∈ E(H̃) ↔ p.1 ∈ E(H)`, but `p.1 = e ∉ E(H)`), so the witness lands in `B'`. -/
+theorem contract_minimality_transport [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    {n : ℕ} {k : ℤ} (hG : G.IsMinimalKDof n k) {B' : Set (β × Fin (bodyHingeMult n))}
+    (hB' : ((G.matroidMG n) ／ E(H.mulTilde n)).IsBase B') {e : β} (heG : e ∈ E(G))
+    (heH : e ∉ E(H)) : (B' ∩ edgeFiber e n).Nonempty := by
+  classical
+  -- `B'` lives in the contraction's ground `E(G̃) \ E(H̃)`, so it is disjoint from `E(H̃)`.
+  have hB'ground : B' ⊆ E(G.mulTilde n) \ E(H.mulTilde n) := by
+    have := hB'.subset_ground
+    rwa [Matroid.contract_ground, matroidMG, Matroid.restrict_ground_eq] at this
+  -- The surviving fiber `ẽ` is disjoint from `E(H̃)` (its edges all have `.1 = e ∉ E(H)`).
+  have hfiberdisj : edgeFiber e n ⊆ {p | p.1 ∉ E(H)} := by
+    intro p hp; rw [Set.mem_setOf_eq, (show p.1 = e from hp)]; exact heH
+  -- Pick an `M(G̃)`-basis `J` of `E(H̃)`; then `B' ∪ J` is a base of `M(G̃)`.
+  obtain ⟨J, hJ⟩ := (G.matroidMG n).exists_isBasis' E(H.mulTilde n)
+  have hbase : (G.matroidMG n).IsBase (B' ∪ J) := hB'.union_isBasis_of_contract hJ
+  -- `e ∈ E(G̃)` as the fiber lies in `E(G̃)`, so `G`'s minimality applies to `B' ∪ J`.
+  obtain ⟨p, hp⟩ := hG.2 (B' ∪ J) hbase e heG
+  -- The witness `p ∈ (B' ∪ J) ∩ ẽ` cannot lie in `J ⊆ E(H̃)`, so it is in `B'`.
+  refine ⟨p, ?_, hp.2⟩
+  rcases hp.1 with hpB' | hpJ
+  · exact hpB'
+  · have hpH : p.1 ∈ E(H) := by
+      have hmem := hJ.subset hpJ
+      rwa [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hmem
+    exact absurd hpH (hfiberdisj hp.2)
+
 end Graph

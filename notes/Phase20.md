@@ -76,12 +76,24 @@ hand-off's simplification. Axiom-free. Factored as its own blueprint node feedin
 `lem:contraction-minimality` (matching how the rank core / contraction arithmetic are
 separate sub-nodes).
 
-Next concrete step: the rest of `lem:contraction-minimality` (KT 3.5) — **minimality
-transport** (every base of the contracted matroid `M(G̃)/E(H̃)` meets every surviving
-edge-fiber — fundamental-circuit swaps via `Matroid.fundCircuit` + the subgraph-minimality
-machinery `subgraph_minimality`). Stay on the matroid side `M(G̃)/E(H̃)` (no graph↔matroid
-`map`). The forest-surgery core (4.1/4.2) is the budget-the-most-time piece, scheduled
-after KT 3.5.
+And now green: `lem:contract-minimality-transport` (`Graph.contract_minimality_transport`),
+the **minimality-transport half** of KT 3.5 `lem:contraction-minimality`. Every base `B'`
+of the matroid contraction `M(G̃)/E(H̃)` meets every *surviving* edge-fiber `ẽ`
+(`e ∈ E(G) \ E(H)`). The fundamental-circuit-swap worry was unnecessary: the transport is
+a clean base-lift. Pick an `M(G̃)`-basis `J` of the contracted-out `E(H̃)`; the abstract
+helper `Matroid.IsBase.union_isBasis_of_contract` lifts `B'` to a base `B' ∪ J` of `M(G̃)`
+(via `IsBasis'.contract_eq_contract_delete` + the deleted part being loops), then `G`'s
+minimality (`hG.2`) gives `(B' ∪ J) ∩ ẽ ≠ ∅` and the witness lands in `B'` because the
+basis part `J ⊆ E(H̃)` is disjoint from the surviving fiber. **No `H ≤ G` hypothesis
+needed** (matroid-side only; `H ≤ G` enters only the deficiency-conservation half).
+Axiom-free. The abstract helper is the missing-mathlib piece (FRICTION).
+
+Next concrete step: **assemble `lem:contraction-minimality`** into a single
+`Graph.contraction_isMinimalKDof`-style theorem combining `contract_matroidMG_deficiency_eq`
+(deficiency conservation) + `contract_minimality_transport` (minimality transport), then
+flip the node `\leanok`. After that, the **forest-surgery core** (4.1/4.2,
+`lem:forest-surgery-split`/`-unsplit`) is the budget-the-most-time piece (decide
+explicit-forests vs matroid-base framing when the first surgery node lands).
 
 ## Architectural choices made up front
 
@@ -124,11 +136,15 @@ Inherited from Phase 19 (schedule early):
   `D(|V(G)| − |V(H)|) − rank(M(G̃)/E(H̃)) = def(G̃)` for rigid `H ≤ G`
   (`Graph.contract_matroidMG_deficiency_eq`); `zify` + `linarith` over `contract_matroidMG_rank`
   + rank core + `rank_add_deficiency_eq`. Matroid-side, no `map`.
+- [x] `lem:contract-minimality-transport` — KT 3.5 minimality-transport half: every base
+  of `M(G̃)/E(H̃)` meets every surviving edge-fiber (`Graph.contract_minimality_transport`).
+  Base-lift via the abstract helper `Matroid.IsBase.union_isBasis_of_contract`, NOT
+  fundamental-circuit swaps. Matroid-side, no `H ≤ G` needed.
 - [ ] `lem:contraction-minimality` — KT 3.5: contracting a proper rigid
   subgraph preserves minimal `k`-dof (Case I engine). Rank core + contraction
-  arithmetic + deficiency conservation done; remaining = minimality transport
-  (fundamental-circuit swaps). NO graph↔matroid `map` needed — matroid contraction
-  `M(G̃)/E(H̃)`.
+  arithmetic + deficiency conservation + minimality transport all done; remaining =
+  **assemble** the two halves into one `Graph.contraction_isMinimalKDof`-style theorem
+  and flip the node. NO graph↔matroid `map` needed — matroid contraction `M(G̃)/E(H̃)`.
 
 Graph operations:
 - [x] `def:induced-span` — vertex-induced subgraph `G[V(X)]` from a fiber set
@@ -203,6 +219,10 @@ only by Case 6.1).
   minimality transport (fundCircuit swaps).
 
 ### Promoted to FRICTION
+- *No mathlib "base of `M ／ C` lifts to base of `M` via a basis of `C`" — route through
+  `IsBasis'.contract_eq_contract_delete` + loops/spanning; `IsBasis'` carries no ground
+  containment for its `X`* → FRICTION `[resolved] [matroid] no mathlib "base of M ／ C
+  lifts …"`.
 - *`IsCircuit.subset_ground` for `M(G̃)` gives a restrict-ground `⊆`, defeq-but-not-
   syntactic to `E(G̃)` — ascribe once* → FRICTION `[resolved] [matroid]
   IsCircuit.subset_ground for M(G̃) …`.
@@ -228,22 +248,24 @@ graph operations `def:graph-operations` (`Graph.removeVertex` / `splitOff` /
 `edgeSplit`) + `def:rigid-contraction` (`Graph.rigidContract`, via the auxiliary
 `collapseTo`), `lem:rigid-full-rank` (`Graph.rank_matroidMG_of_isKDof_zero`, KT 3.5 rank
 core), `lem:contract-rank-bridge` (`Graph.contract_matroidMG_rank`, KT 3.5 contraction
-arithmetic; abstract adapter `Matroid.rank_contract_add_rank_restrict`), and now
+arithmetic; abstract adapter `Matroid.rank_contract_add_rank_restrict`),
 `lem:contract-deficiency-conservation` (`Graph.contract_matroidMG_deficiency_eq`, KT 3.5
-deficiency-conservation half). Each op has `vertexSet_*` / `*_isLink` simp lemmas.
+deficiency-conservation half), and now `lem:contract-minimality-transport`
+(`Graph.contract_minimality_transport`, KT 3.5 minimality-transport half; abstract helper
+`Matroid.IsBase.union_isBasis_of_contract`). Each op has `vertexSet_*` / `*_isLink` simp
+lemmas.
 
-Next agent's concrete commit: **minimality transport** — the second (and last) half of
-`lem:contraction-minimality` (KT 3.5). With deficiency conservation now green, what remains
-is: every base `B'` of the matroid contraction `M(G̃)/E(H̃) = (G.matroidMG n) ／
-E(H.mulTilde n)` meets every *surviving* edge-fiber `ẽ` (`e ∈ E(G) \ E(H)`). The engine is
-the same as `subgraph_minimality` (KT 3.3, Phase 19) but along a contraction rather than a
-restriction: a base of `M/C` lifts to a base of `M` meeting every fiber (extend `B' ∪ B_C`
-for a base `B_C` of the contracted-out `C = E(H̃)`), and the surviving-fiber-meeting
-condition transports from `G`'s minimality via fundamental-circuit swaps
-(`Matroid.fundCircuit`). Stay on the matroid side `M(G̃)/E(H̃)` (NO graph↔matroid `map`
-correspondence — confirmed again this commit). Once `lem:contraction-minimality` is fully
-green (assemble deficiency conservation + minimality transport into a single
-`Graph.contraction_isMinimalKDof`-style theorem, then flip the node), the
-**forest-surgery core** (4.1/4.2, `lem:forest-surgery-split`/`-unsplit`) is the
-budget-the-most-time piece. Decide the explicit-`D`-forests-vs-matroid-base framing when
-the first surgery node lands (see Blockers).
+Next agent's concrete commit: **assemble `lem:contraction-minimality`** (KT 3.5). Both
+halves are now green — deficiency conservation (`contract_matroidMG_deficiency_eq`) and
+minimality transport (`contract_minimality_transport`). What remains is to package them
+into a single `Graph.contraction_isMinimalKDof`-style theorem: for a *proper rigid*
+subgraph `H` of a minimal `k`-dof `G`, the contraction is again minimal `k`-dof. The
+subtlety is the *graph-level* statement (`G.rigidContract H r`) vs the matroid-side facts:
+either state the assembled theorem against the matroid contraction `M(G̃)/E(H̃)` (matching
+the two halves, no `map`) and defer the graph-collapse `IsKDof`/`IsMinimalKDof` phrasing,
+or decide here whether `rigidContract`'s `M((G/E(H))̃)` is needed (the hand-off has
+repeatedly found the `map` correspondence unnecessary — confirm once more). After
+`lem:contraction-minimality` flips `\leanok`, the **forest-surgery core** (4.1/4.2,
+`lem:forest-surgery-split`/`-unsplit`) is the budget-the-most-time piece. Decide the
+explicit-`D`-forests-vs-matroid-base framing when the first surgery node lands (see
+Blockers).

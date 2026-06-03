@@ -76,6 +76,26 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `[matroid]` no mathlib "base of `M ／ C` lifts to base of `M` via a basis of `C`" — route through `IsBasis'.contract_eq_contract_delete` + loops
+- **Where it bit:** `Matroid.IsBase.union_isBasis_of_contract` in
+  `Molecular/Induction.lean` (Phase 20 `lem:contract-minimality-transport`). mathlib
+  has `Indep.contract_isBase_iff` (`(M／I).IsBase B ↔ M.IsBase (B∪I) ∧ Disjoint B I`)
+  only for **independent** contracted `I`; for a general `C` there is no
+  `(M／C).IsBase B' → M.IsBasis' J C → M.IsBase (B'∪J)`. Build it: pick `J` a basis of
+  `C` (`exists_isBasis'`), rewrite `M ／ C = M ／ J ＼ (C\J)`
+  (`IsBasis'.contract_eq_contract_delete`) + `delete_isBase_iff`; the deleted `C\J` is
+  loops of `M ／ J` (`contract_loops_eq` gives `loops = M.closure J \ J ⊇ C\J` since
+  `C ⊆ closure J`), so `ground \ (C\J)` is spanning (`closure_diff_loops_eq` +
+  `closure_ground`) and `B'` is a base of `M ／ J` (`IsBasis.isBase_of_spanning`); then
+  `Indep.contract_isBase_iff` finishes.
+- **Fix / general lesson:** `IsBasis'` does **not** give `C ⊆ M.E` (it intersects
+  ground internally), so the loops-containment must intersect with ground: prove
+  `C ∩ M.E ⊆ M.closure J` (via `IsBasis'.closure_eq_closure` + `subset_closure_of_subset'`
+  on `C ∩ M.E`), not `C ⊆ M.closure J`. General: when lifting a contraction base, reduce
+  to contracting an *independent* basis of the contracted set and discharge the leftover
+  via the loops/spanning route; and remember `IsBasis'` carries no ground containment for
+  its `X`.
+
 ### [resolved] `[matroid]` contraction rank arithmetic already lives in vendored `Matroid.Minor.Rank`; the `cast_int` form's RHS is ℤ-subtraction, annotate as such
 - **Where it bit:** `Matroid.rank_contract_add_rank_restrict` in
   `Molecular/Induction.lean` (Phase 20 `lem:contraction-minimality` contraction
