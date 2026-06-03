@@ -45,6 +45,13 @@ symptom-indexed and lighter.
    parameter type instead of taking `P` abstract + an `hP_def` equation.
    The `.induct` case-binder defeq-reduces, so unification fires without
    any explicit equation argument.
+10. **Collapsing indicator sums** — factor a constant out with
+    `← Finset.mul_sum` before `Finset.sum_ite_eq'`; the collapse fires
+    only when the `if` is the whole summand.
+11. **Strong induction on a derived measure** —
+    `induction hN : m G using Nat.strong_induction_on generalizing G`;
+    `generalizing` is mandatory, the IH threads the measure-equation
+    first (`IH _ hlt G' rfl …`), and don't `subst hN`.
 
 ---
 
@@ -791,3 +798,35 @@ The diagnostic that you've hit this: a `simp only [Finset.sum_ite_eq',
 *unused* — the indicator never reached the collapsible shape. Reach for
 `← Finset.mul_sum` (constant factor) or restructure the summand before
 re-adding it.
+
+## 11. Strong induction on a derived measure (`induction hN : m G using Nat.strong_induction_on`)
+
+To induct on a *derived* `ℕ` measure of an object (`V(G).ncard`,
+`E(G).ncard`, …) rather than a structural argument, the idiom is
+
+```lean
+intro G
+induction hN : V(G).ncard using Nat.strong_induction_on generalizing G with
+| _ N IH =>
+  intro hG hV2   -- the hypotheses you didn't pre-`intro`
+  …
+```
+
+Two things to know, both of which bit in Phase 20's
+`Graph.minimal_kdof_reduction` (KT Theorem 4.9, the `|V|`-induction):
+
+- **`generalizing G` is mandatory** — otherwise the IH is fixed to the
+  *current* `G` and is useless. The motive then quantifies over every
+  object of the measure's value, and the IH reads
+  `IH : ∀ m < N, ∀ G, V(G).ncard = m → <hyps> → <goal>`.
+- **The IH carries the measure-equation `V(G').ncard = m` as an explicit
+  argument**, threaded *first*, before the object's own hypotheses. So a
+  recursive call on a smaller `G'` is
+  `IH _ hlt G' rfl hG' hG'2` (the `rfl` discharges `V(G').ncard =
+  V(G').ncard`), and the strict-decrease proof `hlt : V(G').ncard < N`
+  uses `hN ▸ (the measure-drop lemma)` to rewrite `N` back to
+  `V(G).ncard`. **Do not `subst hN`** — `hN : V(G).ncard = N` binds the
+  abstract `N` the goal and `IH` are stated against; substituting it
+  re-expresses the goal in `V(G).ncard` and desyncs from `IH`'s `< N`.
+  Keep `hN` and `rw [hN]` / `hN ▸` locally where you need the concrete
+  count.

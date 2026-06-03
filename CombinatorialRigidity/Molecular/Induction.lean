@@ -2243,4 +2243,156 @@ theorem splitOff_isMinimalKDof [DecidableEq β] [Finite α] [Finite β] {G : Gra
   have hle : (B'.ncard : ℤ) ≤ (E(Gv.mulTilde n).ncard : ℤ) := by exact_mod_cast hB'le
   linarith [hB'card, hEGvcard, hle, hdefGv_pos]
 
+/-! ## Theorem 4.9: reduction of minimal `0`-dof-graphs (`thm:minimal-kdof-reduction`)
+
+The capstone of the combinatorial induction (Katoh–Tanigawa 2011 Theorem 4.9). Every
+minimal `0`-dof-graph with `2 ≤ |V|` reduces to the two-vertex double edge by a sequence
+of two operations — splitting off a reducible degree-2 vertex, and contracting a proper
+rigid subgraph — each of which (`lem:reduction-step`) carries a minimal `0`-dof-graph to a
+strictly smaller one (`lem:reduction-measure`). Phrased as the well-founded induction
+principle this dichotomy + measure drives: a motive closed under the two-vertex base case
+and the two reductions holds of every minimal `0`-dof-graph.
+
+The splitting-off step needs the degree-2 vertex's two incident edges as explicit data
+(the `eₐ`/`e_b` encoding `splitOff_isMinimalKDof` consumes). The bridge
+`exists_splitOff_data_of_degree_eq_two` extracts it: a degree-2 vertex of a `0`-dof-graph
+has its two incidences carried by two *distinct nonloop* edges (the `0`-dof
+two-edge-connectivity rules out a single loop, which would also give degree 2), whose far
+endpoints supply `a`, `b`. -/
+
+/-- **A degree-2 vertex of a `0`-dof-graph carries splitting-off data**
+(`thm:minimal-kdof-reduction`, the degree↔edges bridge for the splitting-off step). For
+`D = bodyBarDim n ≥ 1`, a `0`-dof-graph
+`G`, and a vertex `v` of multigraph degree exactly `2` with a distinct companion `b₀ ∈ V(G)`
+(needed only to invoke two-edge-connectivity), the two incidences at `v` are carried by two
+*distinct nonloop* edges `eₐ ≠ e_b`: the count `degree v = 2·#loops + #nonloops` together with
+`#nonloops ≥ 2` (two-edge-connectivity, `two_le_crossingEdges_of_isKDof_zero`, via the singleton
+cut `{v}` whose crossing edges are the nonloops at `v`) forces `#loops = 0` and `#nonloops = 2`.
+The two nonloop edges' far endpoints `a, b ≠ v` lie in `V(G)`, and every `v`-incident edge is one
+of them (the closure `hdeg2`). This is exactly the `eₐ`/`e_b`/`a`/`b` data `splitOff_isMinimalKDof`
+consumes. -/
+theorem exists_splitOff_data_of_degree_eq_two [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ} (hD1 : 1 ≤ bodyBarDim n) (hG0 : G.IsKDof n 0) {v b₀ : α}
+    (hvG : v ∈ V(G)) (hb₀G : b₀ ∈ V(G)) (hb₀v : b₀ ≠ v) (hdeg : G.degree v = 2) :
+    ∃ (a b : α) (eₐ e_b : β), a ≠ v ∧ b ≠ v ∧ a ∈ V(G) ∧ b ∈ V(G) ∧ eₐ ≠ e_b ∧
+      G.IsLink eₐ v a ∧ G.IsLink e_b v b ∧ ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b := by
+  classical
+  -- `degree v = 2·#loops + #nonloops`, and `#nonloops ≥ 2` (two-edge-connectivity).
+  have hcount := G.degree_eq_ncard_add_ncard v
+  have hcross : 2 ≤ (G.crossingEdges (cutLabeling {v} v b₀)).ncard :=
+    two_le_crossingEdges_of_isKDof_zero hD1 hG0 (Set.mem_singleton v) hvG hb₀G
+      (by simpa using hb₀v)
+  have hnl2 : 2 ≤ {e | G.IsNonloopAt e v}.ncard :=
+    le_trans hcross (Set.ncard_le_ncard crossingEdges_cutLabeling_singleton_subset
+      (Set.toFinite _))
+  -- Hence `#loops = 0` and `#nonloops = 2`.
+  have hnl_eq : {e | G.IsNonloopAt e v}.ncard = 2 := by omega
+  have hloop0 : {e | G.IsLoopAt e v}.ncard = 0 := by omega
+  -- The two nonloop edges, distinct, with far endpoints.
+  obtain ⟨eₐ, e_b, hne, hset⟩ := Set.ncard_eq_two.mp hnl_eq
+  have hea : G.IsNonloopAt eₐ v := by
+    have : eₐ ∈ {e | G.IsNonloopAt e v} := by rw [hset]; exact Set.mem_insert _ _
+    exact this
+  have heb : G.IsNonloopAt e_b v := by
+    have : e_b ∈ {e | G.IsNonloopAt e v} := by rw [hset]; exact Set.mem_insert_of_mem _ rfl
+    exact this
+  obtain ⟨a, hav, hla⟩ := hea
+  obtain ⟨b, hbv, hlb⟩ := heb
+  -- Closure: every `v`-incident edge is `eₐ` or `e_b` (no loops at `v`).
+  have hclosure : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b := by
+    intro e x hlink
+    have hinc : G.Inc e v := hlink.inc_left
+    rcases hinc.isLoopAt_or_isNonloopAt with hloop | hnonloop
+    · exact absurd (Set.eq_empty_iff_forall_notMem.mp
+        (Set.ncard_eq_zero (Set.toFinite _) |>.mp hloop0) e hloop) id
+    · have : e ∈ ({eₐ, e_b} : Set β) := hset ▸ hnonloop
+      simpa [Set.mem_insert_iff] using this
+  exact ⟨a, b, eₐ, e_b, hav, hbv, hla.right_mem, hlb.right_mem, hne, hla, hlb, hclosure⟩
+
+/-- **Reduction of minimal `0`-dof-graphs** (`thm:minimal-kdof-reduction`; Katoh–Tanigawa 2011
+Theorem 4.9). The combinatorial skeleton of the molecular conjecture's induction, phrased as the
+well-founded induction principle that the reduction dichotomy + the vertex-count measure drive.
+
+For `D = bodyBarDim n ≥ 3` (the molecular regime `n ≥ 2`), a motive `P` on graphs that
+
+* holds for every minimal `0`-dof-graph on exactly two vertices (the two-vertex double edge,
+  `hbase`),
+* is reflected by splitting off a reducible degree-2 vertex — if `P` holds of the splitting-off
+  `G_v^{ab}` then it holds of `G` (`hsplit`), and
+* is reflected by contracting a proper rigid subgraph, given the induction hypothesis on every
+  strictly-smaller minimal `0`-dof-graph (`hcontract`),
+
+holds of every minimal `0`-dof-graph `G` with `2 ≤ |V(G)|`. The proof is the `|V|`-induction
+(`lem:reduction-measure`): the base case `|V| = 2`; for `|V| ≥ 3`, either `G` has a proper rigid
+subgraph — apply `hcontract` with the strong induction hypothesis — or it does not, in which case
+`exists_degree_eq_two` (`lem:reducible-vertex`) supplies a degree-2 vertex,
+`exists_splitOff_data_of_degree_eq_two` its two incident edges, and `splitOff_isMinimalKDof`
+(`lem:reduction-step`) makes the splitting-off a strictly-smaller (`splitOff_vertexSet_ncard_lt`)
+minimal `0`-dof-graph on which the induction hypothesis closes the `hsplit` premise.
+
+The contraction branch is handed only the *existence* of a proper rigid subgraph together with
+the strong induction hypothesis (rather than recursing on `rigidContract` internally): bridging
+the matroid-side `contraction_isMinimalKDof` to a graph-level `(G.rigidContract H r).IsMinimalKDof`
+is the graph↔matroid correspondence Phase 20 deliberately did not build (see `notes/Phase20.md`),
+and a single-vertex subgraph is vacuously rigid so the predicate alone does not force the measure
+to drop — the user discharges Case I from `H`. The splitting-off branch, fully graph-level,
+recurses internally. The `hfresh` premise supplies an unused edge label for each splitting-off
+(`splitOff` injects a fresh `e₀`); it holds whenever `β` is not exhausted by `E(G)` — e.g. `β`
+infinite, or large relative to the edge count. This is the combinatorial backbone the algebraic
+induction (Phases 21–23) realizes at the rigidity-matrix rank. -/
+theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ}
+    (hD : 3 ≤ bodyBarDim n) (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
+    {P : Graph α β → Prop}
+    (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → P G)
+    (hsplit : ∀ (G : Graph α β) (v a b : α) (e₀ : β),
+      G.IsMinimalKDof n 0 → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
+      v ∈ V(G) → e₀ ∉ E(G) → P (G.splitOff v a b e₀) → P G)
+    (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
+      (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
+      (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+        V(G').ncard < V(G).ncard → P G') → P G) :
+    ∀ G : Graph α β, G.IsMinimalKDof n 0 → 2 ≤ V(G).ncard → P G := by
+  classical
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have hD2 : 2 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  -- Strong induction on the vertex count `|V(G)|`.
+  intro G
+  induction hN : V(G).ncard using Nat.strong_induction_on generalizing G with
+  | _ N IH =>
+  intro hG hV2
+  rcases eq_or_lt_of_le hV2 with hVeq | hVlt
+  · exact hbase G hG (hN.trans hVeq.symm)
+  · -- `|V(G)| ≥ 3`: split on the existence of a proper rigid subgraph.
+    have hV3 : 3 ≤ V(G).ncard := by rw [hN]; omega
+    by_cases hrig : ∃ H : Graph α β, H.IsProperRigidSubgraph G n
+    · -- Case I: contract a proper rigid subgraph (handed the strong induction hypothesis).
+      refine hcontract G hG hV3 hrig (fun G' hG' hG'2 hlt => IH _ (hN ▸ hlt) _ rfl hG' hG'2)
+    · -- Case II: no proper rigid subgraph ⟹ a reducible degree-2 vertex; split it off.
+      push Not at hrig
+      have hV2' : 2 ≤ V(G).ncard := by rw [hN]; exact hV2
+      obtain ⟨v, hvG, hvdeg⟩ := exists_degree_eq_two hD hV2' hG hrig
+      -- A companion vertex `b₀ ≠ v` (exists since `|V(G)| ≥ 2`).
+      obtain ⟨b₀, hb₀G, hb₀v⟩ : ∃ b₀ ∈ V(G), b₀ ≠ v := by
+        by_contra h
+        push Not at h
+        have hsub : V(G) ⊆ {v} := fun x hx => h x hx
+        have : V(G).ncard ≤ 1 := by
+          rw [← Set.ncard_singleton v]; exact Set.ncard_le_ncard hsub (Set.toFinite _)
+        omega
+      obtain ⟨a, b, eₐ, e_b, hav, hbv, haV, hbV, heab, hla, hlb, hdeg2⟩ :=
+        exists_splitOff_data_of_degree_eq_two hD1 hG.1 hvG hb₀G hb₀v hvdeg
+      -- A fresh edge label `e₀ ∉ E(G)` (the freshness hypothesis: `β` carries unused labels).
+      obtain ⟨e₀, he₀⟩ := hfresh G
+      have hsplitMin : (G.splitOff v a b e₀).IsMinimalKDof n 0 :=
+        splitOff_isMinimalKDof hD2 hav hbv haV hbV hvG heab hla hlb hdeg2 he₀ hG hrig
+      have hsmaller : V(G.splitOff v a b e₀).ncard < N :=
+        hN ▸ splitOff_vertexSet_ncard_lt hvG
+      have hsplit2 : 2 ≤ V(G.splitOff v a b e₀).ncard := by
+        rw [vertexSet_splitOff]
+        have hdv : (V(G) \ {v}).ncard = V(G).ncard - 1 := by
+          rw [Set.ncard_diff (by simpa using hvG) (Set.toFinite _), Set.ncard_singleton]
+        omega
+      exact hsplit G v a b e₀ hG hrig hvG he₀
+        (IH _ hsmaller _ rfl hsplitMin hsplit2)
+
 end Graph

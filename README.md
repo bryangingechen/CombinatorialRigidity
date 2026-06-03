@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–19 complete; Phase 20 in progress; Phases 21–26 planned.**
+* **Phases 1–20 complete; Phases 21–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -186,22 +186,24 @@ project; commit history is preserved with paths rewritten.
   proved in-repo axiom-free) — the matroidal half of the Phase 16
   reconciliation. `Molecular/Deficiency.lean`. See `notes/Phase19.md` and
   `notes/MolecularConjecture.md`.
-* **Phase 20 (in progress)** — stratum 4 of the molecular program: the
+* **Phase 20 (complete)** — stratum 4 of the molecular program: the
   **combinatorial induction** of Katoh–Tanigawa's proof (§3.4–3.5, §4).
   Develops the graph operations on `Graph α β` (vertex removal,
   splitting-off `G_v^{ab}` at a degree-2 vertex, its inverse
-  edge-splitting, and rigid-subgraph contraction), the forest-surgery
-  core (KT Lemmas 4.1/4.2), the degree-of-freedom tracking lemmas
-  (4.3–4.8), and **Theorem 4.9**: every minimal `k`-dof-graph reduces
-  to the two-vertex double edge by splitting-off and rigid-subgraph
-  contraction — the combinatorial skeleton the algebraic induction of
-  Phases 21–23 realizes at the rigidity-matrix rank. Two structural
-  lemmas relocated from Phase 19's close open the chapter (KT Lemma 3.4
-  full form, KT Lemma 3.5), now unblocked by the Phase 19
-  `def(G̃) = corank M(G̃)` bridge. Forward-mode; the chapter
-  `molecular-induction.tex` is the authoritative dep-graph (all nodes
-  red — the to-do list). `Molecular/Induction.lean`. See
-  `notes/Phase20.md` and `notes/MolecularConjecture.md`.
+  edge-splitting, and rigid-subgraph contraction), the degree-of-freedom
+  tracking lemmas (4.3–4.8), and the capstone **Theorem 4.9**: every
+  minimal `0`-dof-graph reduces to the two-vertex double edge by
+  splitting-off and rigid-subgraph contraction — the combinatorial
+  skeleton the algebraic induction of Phases 21–23 realizes at the
+  rigidity-matrix rank. The formalization surfaced two route findings:
+  KT Lemma 4.1 (the forest surgery) is over-quantified with a
+  balanced-packing gloss in its proof, routed around via a
+  deficiency-count argument; and KT's iterated fundamental-circuit swaps
+  are bypassed by partition-count / rank-count comparisons through the
+  Phase 19 `def(G̃) = corank M(G̃)` bridge. The forest-surgery core
+  (KT 4.1/4.2) is off the Theorem-4.9 critical path. `Molecular/Induction.lean`;
+  chapter `molecular-induction.tex`. See `notes/Phase20.md` and
+  `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

@@ -30,7 +30,7 @@ Katoh–Tanigawa 2011) with its Grassmann–Cayley extensor-algebra layer,
 **Phase 18 (complete)** builds the genuine panel-hinge rigidity
 matrix `R(G,p)` on top of it, **Phase 19 (complete)** builds the
 matroid `M(G̃)`, the `D`-deficiency, and the `k`-dof combinatorics,
-and **Phase 20 (in progress)** develops the combinatorial induction —
+and **Phase 20 (complete)** develops the combinatorial induction —
 graph operations and Katoh–Tanigawa's Theorem 4.9.
 The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
@@ -146,22 +146,23 @@ the matroidal half of the Phase 16 reconciliation. Forward-mode; the
 chapter `deficiency.tex` is the authoritative dep-graph (all nodes
 green). See `notes/Phase19.md` and `notes/MolecularConjecture.md`.
 
-**Phase 20 (in progress)** builds stratum 4: the **combinatorial
+**Phase 20 (complete)** builds stratum 4: the **combinatorial
 induction** of Katoh–Tanigawa's proof (§3.4–3.5, §4). It develops the
 graph operations on `Graph α β` — vertex removal, splitting-off
 `G_v^{ab}` at a degree-2 vertex, its inverse edge-splitting, and
-rigid-subgraph contraction — the forest-surgery core (KT Lemmas
-4.1/4.2), the degree-of-freedom tracking lemmas (4.3–4.8), and
-**Theorem 4.9**: every minimal `k`-dof-graph reduces to the two-vertex
-double edge by splitting-off and rigid-subgraph contraction, the
-combinatorial skeleton the algebraic induction of Phases 21–23 realizes
-at the rigidity-matrix rank. Two structural lemmas relocated from
-Phase 19's close open the chapter (KT Lemma 3.4 full form, KT Lemma
-3.5), now unblocked by the `def(G̃) = corank M(G̃)` bridge.
-Forward-mode; the chapter `molecular-induction.tex` is the
-authoritative dep-graph (all nodes red — the to-do list).
-`Molecular/Induction.lean`. See `notes/Phase20.md` and
-`notes/MolecularConjecture.md`.
+rigid-subgraph contraction — the degree-of-freedom tracking lemmas
+(4.3–4.8), and the capstone **Theorem 4.9**: every minimal `0`-dof-graph
+reduces to the two-vertex double edge by splitting-off and rigid-subgraph
+contraction, the combinatorial skeleton the algebraic induction of
+Phases 21–23 realizes at the rigidity-matrix rank. The formalization
+surfaced two route findings — KT Lemma 4.1 (the forest surgery) is
+over-quantified with a balanced-packing gloss in its proof (routed
+around via a deficiency-count argument), and KT's iterated
+fundamental-circuit swaps are bypassed by partition-count / rank-count
+comparisons through the `def(G̃) = corank M(G̃)` bridge. The
+forest-surgery core (KT 4.1/4.2) is off the Theorem-4.9 critical path.
+`Molecular/Induction.lean`; chapter `molecular-induction.tex`. See
+`notes/Phase20.md` and `notes/MolecularConjecture.md`.
 
 The development is divided into the phases below, with Lean source
 under
@@ -190,7 +191,7 @@ existing files or refactor across several).
 |    17 | Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` | ✓ |
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
-|    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ◐ |
+|    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

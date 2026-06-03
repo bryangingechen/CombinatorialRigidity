@@ -234,16 +234,19 @@ breakdown:
         the combinatorial half of the proof. The graph operations on
         \texttt{Graph $\alpha$ $\beta$} --- vertex removal, splitting-off
         $G_v^{ab}$ at a degree-2 vertex, its inverse edge-splitting, and
-        rigid-subgraph contraction --- the forest-surgery core (KT
-        Lemmas 4.1/4.2), the degree-of-freedom tracking lemmas
-        (4.3--4.8), and \textbf{Theorem~4.9}: every minimal
-        $k$-dof-graph reduces to the two-vertex double edge by
+        rigid-subgraph contraction --- the degree-of-freedom tracking
+        lemmas (4.3--4.8), and the capstone \textbf{Theorem~4.9}: every
+        minimal $0$-dof-graph reduces to the two-vertex double edge by
         splitting-off and rigid-subgraph contraction, the combinatorial
         skeleton the algebraic induction (Phases~21--23) realizes at the
-        rigidity-matrix rank. Two structural lemmas relocated from
-        Phase~19's close open the chapter (KT Lemma 3.4 full form, KT
-        Lemma 3.5), unblocked by \cref{thm:def-eq-corank}. \emph{In
-        progress.} (Chapter: \cref{sec:molecular-induction}; file:
+        rigidity-matrix rank. The formalization surfaced that KT Lemma~4.1
+        (the forest surgery) is over-quantified with a balanced-packing
+        gloss in its proof (routed around via a deficiency-count
+        argument), and that KT's iterated fundamental-circuit swaps are
+        bypassed by partition-count / rank-count comparisons through
+        \cref{thm:def-eq-corank}; the forest-surgery core (KT 4.1/4.2) is
+        off the Theorem-4.9 critical path. \emph{Complete.} (Chapter:
+        \cref{sec:molecular-induction}; file:
         \texttt{Molecular/Induction.lean}.)
 \end{enumerate}
 
@@ -279,9 +282,11 @@ $D$-deficiency, the $k$-dof hierarchy, the structural lemmas, and the
 $\operatorname{def} = \operatorname{corank}$ bridge
 (\cref{thm:def-eq-corank}) --- the matroidal half of the Phase~16
 reconciliation. The whole Phase~1--19 dependency graph is therefore
-green. \textbf{Phase~20} (\cref{sec:molecular-induction}) is now open
-and runs forward-mode: the combinatorial-induction chapter --- the
-graph operations, the forest-surgery core (KT Lemmas 4.1/4.2), the
-degree-of-freedom tracking, and Theorem~4.9
-(\cref{thm:minimal-kdof-reduction}) --- is all red, the live to-do
-list. Phases~21--26 remain to be opened.
+green. \textbf{Phase~20} (\cref{sec:molecular-induction}) is also
+complete: the combinatorial-induction chapter --- the graph operations,
+the degree-of-freedom tracking, and the capstone Theorem~4.9
+(\cref{thm:minimal-kdof-reduction}) --- is green on its critical path
+(the forest-surgery nodes, KT Lemmas 4.1/4.2, stay red as a deferred
+off-critical-path TODO). The whole Phase~1--20 dependency graph is
+therefore green on the Theorem-4.9 critical path. Phases~21--26 remain
+to be opened.

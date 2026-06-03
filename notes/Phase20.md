@@ -1,6 +1,8 @@
 # Phase 20 — Combinatorial induction → Theorem 4.9 (work log)
 
-**Status:** in progress.
+**Status:** ✓ complete. Capstone `thm:minimal-kdof-reduction` (KT Theorem 4.9,
+`Graph.minimal_kdof_reduction`) green, axiom-free; commit H landed 2026-06-03.
+Forest-surgery core (KT 4.1/4.2) is off the critical path (deferred TODO, *Replan* Step 5).
 
 This phase is stratum 4 of the molecular-conjecture program (KT §3
 Lemmas 3.4/3.5 full forms, §4). The program-level plan, reuse map,
@@ -469,7 +471,10 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   `Graph.rigidContract_vertexSet_ncard_lt` (`|V(G/E(H))| < |V(G)|` *needs `2 ≤ |V(H)|`* —
   collapsing a single-vertex `H` is a vertex no-op; the `collapseTo` image lands in
   `(V(G)∖V(H)) ∪ {r}`). Consumed by `thm:minimal-kdof-reduction`'s induction on `|V|`.
-- [ ] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality. Replan commit G.
+- [x] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality. Replan commit G.
+  **Node green** (both `\lean{}` pins): splitting-off branch `Graph.splitOff_isMinimalKDof`,
+  contraction branch `Graph.contraction_isMinimalKDof`. Flipped `\leanok` at commit H, when
+  `thm:minimal-kdof-reduction` tied measure + branches together.
   **Splitting-off branch LANDED (2026-06-03), `k=0`:** `Graph.splitOff_isMinimalKDof` (green
   `\leanok`, axiom-free) — `G` minimal `0`-dof + no proper rigid + `v` degree-2 + `e₀` fresh ⟹
   `G_v^{ab}` minimal `0`-dof. Contraction branch is already `contraction_isMinimalKDof`. Node
@@ -490,8 +495,27 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   `edgeSet_mulTilde_splitOff_diff_fiber` (`E(G̃_v^{ab})∖ã̃b = E(G̃_v)`) is the substrate it runs on.
   **`k>0` branch (KT 4.8(ii), `G_v^{ab}` minimal `(k−1)`-dof)** is *not* needed by Theorem 4.9
   (minimally body-hinge rigid = minimal `0`-dof) — off the critical path, omitted.
-- [ ] `thm:minimal-kdof-reduction` — KT Theorem 4.9 (capstone; phase
-  close). Replan commit H.
+- [x] `thm:minimal-kdof-reduction` — KT Theorem 4.9 (capstone; phase close, commit H,
+  2026-06-03). **LANDED** `Graph.minimal_kdof_reduction`, green `\leanok`, axiom-free.
+  Stated as the well-founded **induction principle** the reduction dichotomy + the `|V|`
+  measure (`lem:reduction-measure`) drive: a motive `P` closed under the two-vertex base case
+  (`hbase`), under splitting off a reducible degree-2 vertex (`hsplit`), and under contracting
+  a proper rigid subgraph *given the strong IH on every smaller minimal `0`-dof-graph*
+  (`hcontract`) holds of every minimal `0`-dof-graph with `2 ≤ |V|`. Proof: strong induction on
+  `|V|` (`induction hN : V(G).ncard using Nat.strong_induction_on generalizing G`, idiom lifted
+  to TACTICS-GOLF §11); base `|V|=2`; for `|V|≥3`, dichotomy on `∃` proper rigid subgraph —
+  Case I hands `hcontract` the existence + IH, Case II (`exists_degree_eq_two`) splits off via
+  `splitOff_isMinimalKDof` and recurses on the smaller `splitOff` (`splitOff_vertexSet_ncard_lt`).
+  **Two scope decisions** (both honest, both in the doc-comment): (i) the **contraction branch is
+  handed the IH rather than recursing internally** — bridging matroid-side `contraction_isMinimalKDof`
+  to a graph-level `(rigidContract).IsMinimalKDof` is the graph↔matroid map Phase 20 deliberately
+  did not build, and a single-vertex subgraph is vacuously rigid so the predicate alone doesn't
+  force the measure to drop; the splitting-off branch, fully graph-level, recurses internally.
+  (ii) An explicit **freshness premise** `hfresh : ∀ G', ∃ e₀ ∉ E(G')` supplies the fresh
+  short-circuit edge each `splitOff` injects (`[Finite β]` would otherwise exhaust `β`). New
+  support: `exists_splitOff_data_of_degree_eq_two` (the degree↔edges bridge — `degree v = 2` ⟹
+  two distinct *nonloop* edges at `v`, the single-loop case ruled out by `0`-dof
+  two-edge-connectivity, far endpoints `a,b` and the `hdeg2` closure). Needs `3 ≤ bodyBarDim n`.
 
 Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
 - [x] `lem:forest-packing-decomp` — framing sub-node of KT 4.1/4.2:
@@ -753,18 +777,27 @@ cardinality split of any fiber-avoiding base across `ã̃b ⊔ E(G̃_v)` contrad
 are now landed (contraction = `contraction_isMinimalKDof`); the node carries both `\lean{}` pins
 and stays red until commit H. The `k>0` branch (KT 4.8(ii)) is off the Theorem-4.9 critical path.
 
-**Next agent's concrete commit = commit H, `thm:minimal-kdof-reduction` (KT Theorem 4.9,
-capstone → phase close).** All ingredients are now green: the reduction measure
-(`splitOff_vertexSet_ncard_lt` / `rigidContract_vertexSet_ncard_lt`, `lem:reduction-measure`),
-the degree-2 vertex (`exists_degree_eq_two`, `lem:reducible-vertex`), the contraction branch
-(`contraction_isMinimalKDof`), and the splitting-off branch (`splitOff_isMinimalKDof`). Theorem
-4.9 is the `|V|`-induction (`2 ≤ |V|`; base case `|V|=2` = two-vertex double edge): for `|V|≥3`,
-either `G` has a proper rigid subgraph (contract it, Case I) or it does not (then a degree-2
-vertex exists by `exists_degree_eq_two`, split it off via `splitOff_isMinimalKDof`); either way
-land on a smaller minimal `0`-dof-graph and recurse. The statement shape (an explicit sequence
-`G = G₁,…,G_m`, or a `WellFoundedRecursion`/`Nat.strong_induction` existence claim) is the one
-design choice to settle. Degree-2 stays encoded as `eₐ`/`e_b` where the splitting-off bookkeeping
-needs it (`splitOff_isMinimalKDof` takes them, derived from `exists_degree_eq_two` + the two
-crossing edges of the singleton cut). Watch the hypotheses `splitOff_isMinimalKDof` needs:
-`a≠v, b≠v, a,b∈V, v∈V, eₐ≠e_b`, the two `v`-links, the degree-2 closure `hdeg2`, and `e₀∉E(G)`
-(pick any unused label — `β` is infinite-or-large enough; or carry a freshness hypothesis).
+**Commit H landed (2026-06-03) → Phase 20 complete.** `thm:minimal-kdof-reduction` (KT Theorem
+4.9, `Graph.minimal_kdof_reduction`) is green, axiom-free, stated as the well-founded induction
+principle the dichotomy + `|V|` measure drive (see its checklist entry for the full shape, the
+two scope decisions, and the `exists_splitOff_data_of_degree_eq_two` degree↔edges bridge). The
+`induction-on-a-derived-measure` idiom was lifted to TACTICS-GOLF §11. Blueprint
+`thm:minimal-kdof-reduction` and `lem:reduction-step` both flipped green; status surfaces
+(README, `home_page/index.md`, `intro.tex`) synced to Phase 20 ✓.
+
+**Next phase = Phase 21 (algebraic induction, KT §5–6).** Theorem 4.9 is the *combinatorial*
+skeleton; Phase 21 realizes it at the rigidity-matrix rank (the algebraic-induction base +
+Cases I & II) — see `notes/MolecularConjecture.md` *Phase 21* and `ROADMAP.md` §21 (planning).
+The first concrete Phase-21 commit creates `notes/Phase21.md` + opens the Phase-21 blueprint
+chapter (forward-mode). **Two Phase-20 carry-forwards**, both off the Theorem-4.9 critical path,
+to schedule as Phase 21 needs them:
+
+1. **Graph↔matroid contraction bridge.** `minimal_kdof_reduction`'s contraction branch is handed
+   the IH rather than recursing internally, because `(G.rigidContract H r).IsMinimalKDof` is not
+   yet derived from matroid-side `contraction_isMinimalKDof` (no `(G/E(H))̃ ↔ M(G̃)/E(H̃)` map —
+   deliberately deferred). If the algebraic induction wants a fully graph-level recursion, this
+   bridge is the missing piece; otherwise the IH-handed form suffices and the bridge stays unbuilt.
+2. **Forest surgery (KT 4.1/4.2) + the balanced-packing lemma** (*Replan* Step 5 / *Finding*
+   layer 2). Off-critical-path TODO; substrate landed (`lem:forest-surgery-{split,unsplit}` stay
+   red). Proving-or-refuting the balanced-packing lemma resolves whether KT's Lemma 4.1 proof has
+   a gap or an error.

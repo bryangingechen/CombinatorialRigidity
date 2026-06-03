@@ -672,6 +672,7 @@ route that bypasses the deferred forest surgery
 \begin{lemma}[Reduction step preserves minimality; KT Lemmas 4.7--4.8]
   \label{lem:reduction-step}
   \lean{Graph.splitOff_isMinimalKDof, Graph.contraction_isMinimalKDof}
+  \leanok
   \uses{lem:reducible-vertex, lem:contraction-minimality, lem:dof-tracking, lem:reduction-measure, lem:circuit-induces-rigid}
   Each reduction --- splitting-off at the degree-2 vertex of
   \cref{lem:reducible-vertex}, or contraction of a proper rigid
@@ -681,6 +682,7 @@ route that bypasses the deferred forest surgery
   of KT Theorem~4.9.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:circuit-induces-rigid}
   The contraction branch is \cref{lem:contraction-minimality}. For the
   splitting-off branch (KT 4.8(i)): $\operatorname{def}(\tilde
@@ -705,23 +707,42 @@ route that bypasses the deferred forest surgery
 \subsection{Theorem 4.9}
 \label{sec:molecular-induction-thm49}
 
-\begin{theorem}[Reduction of minimal $k$-dof-graphs; KT Theorem 4.9]
+\begin{theorem}[Reduction of minimal $0$-dof-graphs; KT Theorem 4.9]
   \label{thm:minimal-kdof-reduction}
+  \lean{Graph.minimal_kdof_reduction}
+  \leanok
   \uses{lem:reduction-step, lem:reducible-vertex, lem:contraction-minimality, def:graph-operations, lem:reduction-measure}
-  Every minimal $k$-dof-graph $G$ with $|V| \ge 2$ reduces to the
+  Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ reduces to the
   two-vertex double edge by a sequence of splitting-off and
   proper-rigid-subgraph contraction operations. Equivalently, $G$ is
   generated from the two-vertex double edge by the inverse operations
-  (edge-splitting and rigid-subgraph expansion).
+  (edge-splitting and rigid-subgraph expansion). The formalization
+  states this as the well-founded induction principle the reduction
+  dichotomy and the vertex-count measure (\cref{lem:reduction-measure})
+  drive: a property $P$ closed under the two-vertex base case, under
+  splitting off a reducible degree-2 vertex, and under contracting a
+  proper rigid subgraph (with the induction hypothesis on every
+  strictly-smaller minimal $0$-dof-graph) holds of every minimal
+  $0$-dof-graph with $|V| \ge 2$.
 \end{theorem}
 \begin{proof}
-  Induction on $|V|$. The base case $|V| = 2$ is the two-vertex double
-  edge. For $|V| \ge 3$: if $G$ has a proper rigid subgraph, contract
-  it (\cref{lem:contraction-minimality}); otherwise
-  \cref{lem:reducible-vertex} supplies a reducible degree-2 vertex,
-  split it off. Either way \cref{lem:reduction-step} produces a smaller
-  minimal $k$-dof-graph with the same $k$, and the induction hypothesis
-  applies. This is Katoh--Tanigawa~\cite[Theorem 4.9]{katohTanigawa2011};
-  it is the combinatorial skeleton the algebraic induction
-  (Phases~21--23) realizes at the rigidity-matrix rank.
+  \leanok
+  Strong induction on $|V|$. The base case $|V| = 2$ is the two-vertex
+  double edge. For $|V| \ge 3$: if $G$ has a proper rigid subgraph, the
+  contraction step applies (\cref{lem:contraction-minimality}); otherwise
+  \cref{lem:reducible-vertex} supplies a reducible degree-2 vertex, whose
+  two incident edges are recovered as the distinct nonloop edges at $v$
+  (the $0$-dof two-edge-connectivity rules out a single loop), and
+  splitting it off yields a strictly smaller minimal $0$-dof-graph
+  (\cref{lem:reduction-step,lem:reduction-measure}) on which the induction
+  hypothesis applies. The contraction branch is handed the induction
+  hypothesis rather than recursing internally: the matroid-side
+  \cref{lem:contraction-minimality} is not yet bridged to a graph-level
+  minimality statement for $G / E(H)$ (a single-vertex subgraph is
+  vacuously rigid, so the predicate alone need not drop the measure), and
+  the splitting-off branch carries an unused-edge-label premise for the
+  fresh short-circuit edge. This is
+  Katoh--Tanigawa~\cite[Theorem 4.9]{katohTanigawa2011}; it is the
+  combinatorial skeleton the algebraic induction (Phases~21--23) realizes
+  at the rigidity-matrix rank.
 \end{proof}
