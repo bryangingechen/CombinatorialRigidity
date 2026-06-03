@@ -649,6 +649,39 @@ theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
   have := Submodule.finrank_mono hle
   omega
 
+/-- **Case I: contracting a rigid block realizes the rank** (`lem:case-I`, Katoh–Tanigawa 2011
+§6.2/6.3/6.5 Lemmas 6.2, 6.3, 6.5; GREEN-modulo the Phase-21b genericity device). Let `F` be a
+body-hinge framework on the parent graph `G = F.graph` carrying a proper rigid subgraph `H` on the
+(nonempty) body set `s = V(H)`. Contracting `H` to a single pinned body is the block pin
+`pinnedMotionsOn s`, and Case I builds the realization of `G` from a realization of the contraction
+`G/E(H)` (a smaller minimal `k`-dof-graph, `lem:contraction-minimality`, green) glued
+block-triangularly with the pinned rigid block. Then `F` realizes the target rank at `k'`
+(`RankHypothesis k'`, i.e. `dim Z(G,p) = D + k'`) **iff** the block pin has dimension `k'` — the
+contraction's inductive rank.
+
+This is the genericity-free assembly of Case I, the parallel of the Case II 1-extension
+`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`. The genericity-free skeleton is
+the block-pin lower bound `screwDim_add_finrank_pinnedMotionsOn_le` (the `D`-dimensional trivial
+motions and the block pin are disjoint inside `Z(G,p)`, so `D + dim Z_s ≤ dim Z`, always). The
+**one** input from the Phase-21b device is `hglue`: the block-triangular gluing closes that slack
+to an equality, `dim Z(G,p) ≤ D + dim Z_s(G,p)` (the reverse inequality — KT's Claim 6.4 that the
+combined rigidity matrix attains the sum of the two block ranks, the generic-position step lifting
+a single good realization to a generic one). That is *not* automatic: it holds only at the generic
+point the Claim 6.4 rank/dimension count selects. Taking `hglue` as an explicit hypothesis makes
+`lem:case-I` GREEN-modulo-21b: combined with the green lower bound it pins
+`dim Z(G,p) = D + dim Z_s`, so the realization count is exactly the contraction's block-pinned
+dimension. -/
+theorem rankHypothesis_iff_finrank_pinnedMotionsOn [Nonempty α] [Finite α]
+    (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
+    (hglue : (Module.finrank ℝ F.infinitesimalMotions : ℤ) ≤
+      screwDim k + Module.finrank ℝ (F.pinnedMotionsOn s)) :
+    F.RankHypothesis k' ↔ (Module.finrank ℝ (F.pinnedMotionsOn s) : ℤ) = k' := by
+  have hge : (screwDim k + Module.finrank ℝ (F.pinnedMotionsOn s) : ℤ) ≤
+      Module.finrank ℝ F.infinitesimalMotions := by
+    exact_mod_cast F.screwDim_add_finrank_pinnedMotionsOn_le hs
+  rw [RankHypothesis]
+  omega
+
 /-- **Deleting edges enlarges the block-pinned motion space** (`def:pinned-motions-on`, Case I
 infra): replacing `F.graph` by any subgraph `G' ≤ F.graph` (keeping the hinge data via
 `withGraph`) can only grow the block pin — `F.pinnedMotionsOn s ≤ (F.withGraph G').pinnedMotionsOn
@@ -1229,6 +1262,28 @@ theorem rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions [Nonempty 
     exact hspan S hS e' w' (hQg ▸ h') hn'
   rw [Q.toBodyHinge_pinnedMotions_withGraph_eq v hle' hnew, hQsub,
     P.toBodyHinge_withNormal_pinnedMotions_eq v n v hv]
+
+omit [DecidableEq α] in
+/-- **Case I: contracting a rigid block realizes the rank** (`lem:case-I`, panel layer;
+Katoh–Tanigawa 2011 §6.2/6.3/6.5; GREEN-modulo the Phase-21b genericity device). The panel-layer
+form of `BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn`: for a panel-hinge
+framework `P` on the parent graph `G = P.graph` with a proper rigid subgraph `H` on the (nonempty)
+body set `s = V(H)`, the body-hinge interpretation `P.toBodyHinge` realizes the target rank at `k'`
+(`RankHypothesis k'`) **iff** its block pin `pinnedMotionsOn s` — the framework-side carrier of the
+contraction `G/E(H)` (pin all of `V(H)` to one body) — has dimension `k'`, the contraction's
+inductive rank. Lifted verbatim through `toBodyHinge` from the body-hinge assembly. The one
+Phase-21b input is `hglue`, the block-triangular gluing closing the slack of the green lower bound
+`screwDim_add_finrank_pinnedMotionsOn_le` to an equality (KT's Claim 6.4 generic-position step).
+The parallel of the Case II panel capstone
+`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`, but with the contraction's
+*block* pin in place of the 1-extension's single-body pin. -/
+theorem toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn [Nonempty α] [Finite α]
+    (P : PanelHingeFramework k α β) {s : Set α} (hs : s.Nonempty) (k' : ℤ)
+    (hglue : (Module.finrank ℝ P.toBodyHinge.infinitesimalMotions : ℤ) ≤
+      screwDim k + Module.finrank ℝ (P.toBodyHinge.pinnedMotionsOn s)) :
+    P.toBodyHinge.RankHypothesis k' ↔
+      (Module.finrank ℝ (P.toBodyHinge.pinnedMotionsOn s) : ℤ) = k' :=
+  P.toBodyHinge.rankHypothesis_iff_finrank_pinnedMotionsOn hs k' hglue
 
 end PanelHingeFramework
 

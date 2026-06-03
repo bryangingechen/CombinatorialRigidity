@@ -36,6 +36,29 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case I rigid-block contraction assembly landed — `lem:case-I` GREEN-modulo-21b (2026-06-03).**
+The genericity-free assembly of `lem:case-I` is green:
+`BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn` (`Molecular/AlgebraicInduction.lean`,
+beside `screwDim_add_finrank_pinnedMotionsOn_le`) and its panel wrapper
+`PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`. For a framework on the
+parent graph `G` with a proper rigid subgraph `H` on the nonempty body set `s = V(H)`, the block pin
+`pinnedMotionsOn s` is the framework-side carrier of the contraction `G/E(H)`; the framework realizes
+`RankHypothesis k'` iff that block pin has dimension `k'`. Proof: the green lower bound
+`screwDim_add_finrank_pinnedMotionsOn_le` (`D + finrank Z_s ≤ finrank Z`, the disjointness of
+trivial + block-pin inside `Z(G,p)`) plus the explicit Phase-21b input `hglue` (the reverse
+inequality `finrank Z ≤ D + finrank Z_s`, the block-triangular gluing of Claim 6.4) pin the equality;
+`rw [RankHypothesis]; omega` closes it. The parallel of the Case II capstone
+`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`, with the contraction's *block* pin
+in place of the 1-extension's single-body pin. The panel wrapper is a one-line `toBodyHinge` lift
+(`omit [DecidableEq α]`, the documented panel-wrapper pattern). Axiom-clean
+(propext/Classical.choice/Quot.sound). No friction (the only wrinkles — an `exact_mod_cast` ℕ→ℤ
+bridge on the lower bound, the `omit [DecidableEq α]` on the wrapper — are documented idioms).
+Blueprint flips `lem:case-I` to green (`\lean` + `\leanok` on both forms; `\uses`
+`lem:exists-independent-panel-extensor` for the cited device, dropped the spurious
+`lem:cycle-realization` edge). **Remaining red on Phase 21:** `thm:theorem-55` (the capstone
+induction, now genericity-free assembly over the Phase-20 dichotomy once Cases I/II are
+GREEN-modulo-21b) and `prop:rigidity-matrix-prop11` (analytic half via the device).
+
 **Case II 1-extension assembly landed — `lem:case-II` GREEN-modulo-21b (2026-06-03).** The
 genericity-free assembly of `lem:case-II` is green:
 `PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
@@ -547,12 +570,17 @@ Case I (proper rigid subgraph; KT §6.2):
   finrank Z(G,p)`). The inequality form of the single-body `lem:rank-delete-vertex`
   equality; the lower-bound brick of Case I's block-triangular gluing. Axiom-clean.
   Green.
-- [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
-  subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
-  glue block-triangularly with a pinned rigid realization of `H`
-  (`lem:rank-delete-vertex`, Phase 18 green; block-pin lower bound
-  `lem:pinned-motions-on-rank-bound` green). Still needs the vertex-level
-  contraction op `G/E(H)` + Claim 6.4 genericity.
+- [x] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
+  subgraph `H`. **GREEN-modulo-21b**
+  (`rankHypothesis_iff_finrank_pinnedMotionsOn` + panel wrapper
+  `toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`): for nonempty block
+  `s = V(H)`, `F.RankHypothesis k' ↔ finrank (pinnedMotionsOn s) = k'`, given the
+  block-triangular gluing `hglue : finrank Z ≤ D + finrank (pinnedMotionsOn s)`
+  (Claim 6.4 reverse inequality) as an explicit hypothesis. The genericity-free
+  lower bound `screwDim_add_finrank_pinnedMotionsOn_le` (green) is the other
+  half; the two pin `finrank Z = D + finrank (pinnedMotionsOn s)`, then `omega`.
+  The parallel of the Case II capstone with the contraction's *block* pin in
+  place of the 1-extension's single-body pin. Axiom-clean.
 
 Case II (`k>0` splitting; KT §6.3):
 - [x] `lem:case-II-rank-lift` — the `+D` accounting core
@@ -742,28 +770,26 @@ and Case II's reduction stack (`pinnedMotions_le_withGraph`,
 `hnew_of_isLink_incident`, `lem:splitoff-edge-substitution`); and the
 Case II 1-extension assembly `lem:case-II` itself
 (`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
-GREEN-modulo-21b with `hspan` an explicit hypothesis).
+GREEN-modulo-21b with `hspan` an explicit hypothesis); and the Case I
+rigid-block contraction assembly `lem:case-I`
+(`rankHypothesis_iff_finrank_pinnedMotionsOn` + panel wrapper,
+GREEN-modulo-21b with the block-triangular gluing `hglue` explicit).
 
 ### Node-by-node path to close Phase 21
 
-Three red nodes remain (Case III excepted — deferred to 22–23; Case II is
-now GREEN-modulo-21b). For each: what it still needs **from the cited 21b
+Two red nodes remain (Case III excepted — deferred to 22–23; Cases I and II
+are now GREEN-modulo-21b). For each: what it still needs **from the cited 21b
 device** vs. what is **genericity-free and still to formalize in Phase 21**.
+**The smallest next concrete commit** is `thm:theorem-55` — the genericity-free
+induction assembly, now that both cases are GREEN-modulo-21b.
 
-1. **`lem:case-I`** (KT 6.2/6.3/6.5 rigid-subgraph contraction). **The
-   smallest next concrete commit** — the natural parallel of the now-green
-   Case II assembly.
-   - *Genericity-free, still to do in 21:* the vertex-level contraction
-     op `G/E(H)` on the panel layer (place panel data on
-     `rigidContract`, green in Phase 20) + the block-triangular rank
-     *accounting*: re-add `E(H)` via `withGraph` (block-pin monotonicity
-     `pinnedMotionsOn_le_withGraph_of_le` + lower bound
-     `screwDim_add_finrank_pinnedMotionsOn_le` are green), reducing
-     `lem:case-I` to "the two blocks' ranks add" with the contraction's
-     inductive rank filling the slack.
-   - *From 21b (cited):* the block-triangular *generic* gluing — that a
-     generic choice makes the combined matrix attain the sum of the two
-     block ranks (Claim 6.4). `lem:case-I` `\uses` the 21b node.
+1. **`lem:case-I`** (KT 6.2/6.3/6.5 rigid-subgraph contraction).
+   **GREEN-modulo-21b** (`rankHypothesis_iff_finrank_pinnedMotionsOn` + panel
+   wrapper). The genericity-free skeleton (block-pin lower bound
+   `screwDim_add_finrank_pinnedMotionsOn_le`) plus the explicit block-triangular
+   gluing hypothesis `hglue` (Claim 6.4, the 21b device) pin
+   `finrank Z = D + finrank (pinnedMotionsOn s)`; the realization count is the
+   contraction's block-pinned dimension. `\uses lem:exists-independent-panel-extensor`.
 
 2. **`thm:theorem-55`** (the capstone induction).
    - *Genericity-free, still to do in 21:* the induction on `|V|`
@@ -799,14 +825,12 @@ or its own chapter if it grows), sync the user-facing surfaces, flip the
 consumed by Phases 22–23** (Case III candidate genericity), so building
 it standalone pays forward.
 
-**Smallest next concrete commit (recommended):** state `lem:case-I` as a
-Lean theorem taking the genericity block-triangular-gluing conclusion as
-an explicit hypothesis (the parallel of the now-green Case II assembly
-`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`), and
-discharge everything genericity-free: place panel data on the contraction
-`G/E(H)` (combinatorially green in Phase 20), re-add `E(H)` via `withGraph`
-(block-pin monotonicity `pinnedMotionsOn_le_withGraph_of_le` + lower bound
-`screwDim_add_finrank_pinnedMotionsOn_le`, both green), reducing the node to
-"the two blocks' ranks add" with the generic gluing (Claim 6.4) the one 21b
-input. That takes `lem:case-I` to GREEN-modulo-21b; then `thm:theorem-55` is
-genericity-free induction assembly. All can proceed before 21b lands.
+**Smallest next concrete commit (recommended):** assemble `thm:theorem-55`,
+the capstone induction on `|V|` over the Phase-20 reduction dichotomy
+(`minimal_kdof_reduction`, green): wire `lem:theorem-55-base` (green) +
+`lem:case-I` (now GREEN-modulo-21b) + `lem:case-II` (GREEN-modulo-21b) +
+`lem:case-III` (deferred stub, Phases 22–23). With both inductive cases stated
+as iff-realizations taking their genericity input as an explicit hypothesis,
+the induction itself is genericity-free assembly; it inherits the 21b citation
+transitively through the cases. After that, `prop:rigidity-matrix-prop11`
+(analytic half). Both can proceed before 21b lands.
