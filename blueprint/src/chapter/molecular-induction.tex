@@ -404,9 +404,35 @@ instead by a direct deficiency-count argument
   $v$ isolated).
 \end{proof}
 
+\begin{lemma}[One rebalancing move of the forest-packing descent]
+  \label{lem:packing-move}
+  \lean{Graph.exists_packing_move_of_not_inc}
+  \leanok
+  \uses{def:matroid-MG, lem:acyclic-insert-vfiber, lem:base-vfiber-count}
+  Let $F_0, \dots, F_{D-1}$ be a forest packing covering a fiber set $I$
+  ($\bigcup_i F_i = I$, each $F_i$ cycle-matroid-independent), let $F_j$ be a
+  forest avoiding the degree-2 vertex $v$, and let $x \in I$ be a $v$-fiber
+  (a non-loop copy joining $v$ to some $w \ne v$). Then the re-choice
+  $F_j' = F_j \cup \{x\}$, $F_i' = F_i \setminus \{x\}$ for $i \ne j$, is
+  again a forest packing covering $I$, and the new $F_j'$ \emph{meets} $v$.
+  This is the single load-bearing step of the repacking descent that
+  assembles the two balanced-packing halves
+  (\cref{lem:base-vfiber-count,lem:acyclic-insert-vfiber}) into the surgery.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The recipient $F_j'$ stays acyclic by the redistribution kernel
+  (\cref{lem:acyclic-insert-vfiber}): $x$ is a pendant at the isolated $v$.
+  Every donor $F_i' = F_i \setminus \{x\}$ stays acyclic as a subset of the
+  acyclic $F_i$. The union is unchanged because $x \in I$ is re-added at $j$
+  while removed elsewhere. Finally $x \in F_j'$, so $F_j'$ meets $v$, and a
+  descent driven by the count of $v$-avoiding forests terminates with a
+  balanced packing.
+\end{proof}
+
 \begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
   \label{lem:forest-surgery-split}
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, rem:kt-lemma-41}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp, lem:base-vfiber-count, lem:acyclic-insert-vfiber, lem:packing-move, rem:kt-lemma-41}
   \emph{Deferred / off the Theorem-4.9 critical path}
   (\cref{rem:kt-lemma-41}): its substrate is formalized in
   \texttt{Molecular/Induction.lean}. The balanced-packing assumption of
@@ -415,9 +441,13 @@ instead by a direct deficiency-count argument
   meets $\ge D$ of $v$'s fibers) and the redistribution half
   (\cref{lem:acyclic-insert-vfiber}: a $v$-avoiding forest absorbs a free
   $v$-fiber as a pendant), confirming the missing step is a gap, not an
-  error. What remains unformalized is only the finite repacking descent
-  that assembles these into the surgery; the induction toward Theorem~4.9
-  meanwhile uses \cref{lem:splitoff-deficiency}.
+  error. Their load-bearing assembly step --- one rebalancing move of the
+  packing --- is formalized too (\cref{lem:packing-move}). What remains
+  unformalized is only the descent's outer loop: the pigeonhole that always
+  supplies a spare $v$-fiber ($\ge D$ fibers among $< D$ non-empty forests)
+  and the well-founded measure (the count of $v$-avoiding forests) iterating
+  the move to a balanced packing. The induction toward Theorem~4.9 meanwhile
+  uses \cref{lem:splitoff-deficiency}.
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
   packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
   the fibers not incident to $v$ and rerouted across $v$, induces a

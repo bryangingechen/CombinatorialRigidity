@@ -176,9 +176,16 @@ too pessimistic — degree-2 makes all `D` uniform. The load-bearing kernel is f
 independent after inserting a non-loop `v`-fiber. Proof via `cycleMatroid_indep` →
 `IsAcyclicSet` → `IsForest.of_deleteEdges_singleton` with `x` a bridge
 (`IsLink.isBridge_iff_not_connBetween` + `v` isolated in the deletion via
-`Isolated.connBetween_iff_eq`). The only unformalized remainder is the bookkeeping descent
-(a `Fin D → Set _` repacking with a well-founded measure on the count of `v`-avoiding
-forests) — off the Theorem-4.9 critical path.
+`Isolated.connBetween_iff_eq`). The descent's **load-bearing assembly step is now formalized
+too** (2026-06-03): `Graph.exists_packing_move_of_not_inc` (green `\leanok`, axiom-free;
+blueprint node `lem:packing-move`) — *one rebalancing move*. Given a forest packing
+`Fs : Fin D → Set _` covering `I`, a `v`-avoiding forest `Fs j`, and a `v`-fiber `x ∈ I`,
+the re-choice `Fs' j = insert x (Fs j)`, `Fs' i = Fs i ∖ {x}` (`i ≠ j`) is again a packing
+covering `I` (recipient acyclic via the kernel, donors acyclic as subsets, union unchanged
+since `x ∈ I` is re-added at `j`), and `Fs' j` now meets `v`. The only unformalized
+remainder is the descent's **outer loop**: the pigeonhole that always supplies a spare
+`v`-fiber (`≥ D` fibers among `< D` non-empty forests) and the well-founded measure (count
+of `v`-avoiding forests) iterating the move — off the Theorem-4.9 critical path.
 
 ## Finding 2 REFUTED: KT Lemma 4.4 *is* a deficiency-counting fact (2026-06-03, same day)
 
@@ -286,9 +293,12 @@ blueprint node; the node stays red) — incidence/cardinality
 `mulTilde_removeVertex_le_splitOff` +
 `isAcyclicSet_mulTilde_splitOff_of_removeVertex`), and the reroute count cap
 (`isCycleSet_pair_edgeFiber_splitOff`,
-`fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). These complete the
-surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
-they are **not** needed for Theorem 4.9.
+`fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). The balanced-packing assembly is now
+itself substantially landed: counting half `isBase_vfiber_ncard_ge`, redistribution kernel
+`acyclicSet_insert_vfiber_of_not_inc`, and the descent's rebalancing move
+`exists_packing_move_of_not_inc` (`lem:packing-move`) are all green `\leanok` blueprint nodes;
+only the descent's outer loop (pigeonhole + WF measure) remains. None of this is needed for
+Theorem 4.9.
 
 **Commit F′ landed (`no_rigid_edge_count`, KT 4.5(i) edge bound; `lem:no-rigid-edge-count`
 GREEN).** The KT 4.5(i) edge bound `(D−1)|E| < D(|V|−1)+(D−1)` for a minimal 0-dof-graph
@@ -574,10 +584,12 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   `lem:base-vfiber-count` / `Graph.isBase_vfiber_ncard_ge` (a base meets ≥ D of `v`'s
   fibers, no pigeonhole obstruction). Redistribution half: `lem:acyclic-insert-vfiber` /
   `Graph.acyclicSet_insert_vfiber_of_not_inc` (a `v`-avoiding forest absorbs a free
-  `v`-fiber as a pendant — `v` deg 2 ⟹ `v` isolated ⟹ the fiber is a bridge). Both green
-  `\leanok`, axiom-free. Only the finite repacking *descent* assembling them into the
-  surgery remains unformalized — off the Thm-4.9 critical path. See the *TODO* Progress
-  *VERDICT* note.
+  `v`-fiber as a pendant — `v` deg 2 ⟹ `v` isolated ⟹ the fiber is a bridge). The descent's
+  load-bearing **rebalancing move** is also green: `lem:packing-move` /
+  `Graph.exists_packing_move_of_not_inc` (one move preserves the cover + independence and
+  lands `x ∈ Fs' j`). All three green `\leanok`, axiom-free. Only the descent's *outer loop*
+  (pigeonhole for a spare fiber + well-founded measure on the `v`-avoiding-forest count)
+  remains unformalized — off the Thm-4.9 critical path. See the *TODO* Progress *VERDICT* note.
 - [x] `lem:base-vfiber-count` — counting half of the balanced-packing assumption
   (`Graph.isBase_vfiber_ncard_ge`, green `\leanok`, axiom-free): every base of
   `M(G̃)` contains ≥ D = `bodyBarDim n` of the `2(D−1)` fibers at a degree-2
@@ -594,6 +606,14 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   KT 4.1's gloss is a GAP, not an error. Proof: `cycleMatroid_indep` → `isAcyclicSet_iff`
   → `IsForest.of_deleteEdges_singleton` (vendored `Matroid` pkg) with `x` a bridge via
   `IsLink.isBridge_iff_not_connBetween` + `Isolated.connBetween_iff_eq`.
+- [x] `lem:packing-move` — the descent's load-bearing rebalancing step
+  (`Graph.exists_packing_move_of_not_inc`, green `\leanok`, axiom-free): for a forest packing
+  `Fs : Fin D → Set _` covering `I`, a `v`-avoiding forest `Fs j`, and a `v`-fiber `x ∈ I`,
+  the re-choice `Fs' j = insert x (Fs j)`, `Fs' i = Fs i ∖ {x}` (`i ≠ j`) is again a packing
+  covering `I` with `x ∈ Fs' j`. Recipient acyclic via `acyclicSet_insert_vfiber_of_not_inc`,
+  donors via `Indep.subset diff_subset`, union unchanged (`x ∈ I` re-added at `j`). The single
+  step the descent's outer loop iterates. FRICTION/TACTICS-QUIRKS § 28 (`↓reduceIte` vs
+  `if_pos rfl` on the beta-redex'd `(fun i ↦ if i = j then …) j` goal).
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction.
   **DEFERRED / off critical path** (returned here after *Finding 2 REFUTED*).
   This direction is **sound** (no balanced-packing gloss, unlike `-split`) but
@@ -698,8 +718,9 @@ only by Case 6.1).
   error.** Counting half `isBase_vfiber_ncard_ge` (a base meets ≥ D fibers, no pigeonhole),
   redistribution half `acyclicSet_insert_vfiber_of_not_inc` (a `v`-avoiding forest absorbs
   a free `v`-fiber as a pendant — `v` deg 2 makes `v` isolated). No `D ≥ 3` counterexample.
-  Only the finite repacking descent that assembles these into the full `-split` surgery
-  remains; off the Theorem-4.9 critical path. See *TODO* Progress *VERDICT*.
+  The descent's load-bearing rebalancing move is also green (`exists_packing_move_of_not_inc`,
+  `lem:packing-move`). Only the descent's *outer loop* (pigeonhole + WF measure) remains; off
+  the Theorem-4.9 critical path. See *TODO* Progress *VERDICT*.
 - **[resolved] KT 4.5(i) swap core (`X∩ẽ≠∅`).** LANDED (`Graph.no_rigid_edge_count`).
   The prior "could not crisply formalize" was an un-attempted clean restatement: the
   `X∩ẽ≠∅` step is **not** intrinsically forest reasoning. If `X∩ẽ=∅`, the independent
@@ -867,8 +888,14 @@ to schedule as Phase 21 needs them:
    every base meets ≥ D fibers — no pigeonhole obstruction) and redistribution half
    `Graph.acyclicSet_insert_vfiber_of_not_inc` (`lem:acyclic-insert-vfiber`, a `v`-avoiding
    forest absorbs a free `v`-fiber as a pendant since `v` deg 2 ⟹ `v` isolated) are both green
-   `\leanok`, axiom-free. No `D ≥ 3` counterexample. **The only remaining TODO toward
-   `lem:forest-surgery-split` itself is the finite repacking descent**: a `Fin D → Set _`
-   re-choice of the forest packing with a well-founded measure on the number of `v`-avoiding
-   forests, iterating the kernel until every forest meets `v`. Off the Theorem-4.9 critical path
-   (the deficiency route already delivered Thm 4.9). See the *TODO* Progress *VERDICT* note.
+   `\leanok`, axiom-free. No `D ≥ 3` counterexample. The descent's load-bearing **rebalancing
+   move** is also green (`Graph.exists_packing_move_of_not_inc`, `lem:packing-move`): one move
+   preserves the cover + independence and makes the recipient forest meet `v`. **The only
+   remaining TODO toward `lem:forest-surgery-split` itself is the descent's outer loop**: the
+   pigeonhole that always supplies a spare `v`-fiber (`≥ D` fibers among `< D` non-empty
+   forests, from `lem:base-vfiber-count`) + a well-founded measure on the count of `v`-avoiding
+   forests, iterating `exists_packing_move_of_not_inc` until every forest meets `v`. (Note the
+   move-step takes a *packing covering `I`*, not necessarily disjoint; the outer loop must
+   either disjointify first or pick `x` so no other forest loses its only `v`-fiber — that
+   bookkeeping is the residual work.) Off the Theorem-4.9 critical path (the deficiency route
+   already delivered Thm 4.9). See the *TODO* Progress *VERDICT* note.

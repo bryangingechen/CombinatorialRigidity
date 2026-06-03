@@ -1277,6 +1277,72 @@ theorem acyclicSet_insert_vfiber_of_not_inc {G : Graph α β} {n : ℕ}
     exact hwv ((hvisol.connBetween_iff_eq).mp hconn).symm
   exact Graph.IsForest.of_deleteEdges_singleton hbridge hRforest_del
 
+/-! ### One rebalancing move of the forest-packing descent
+(`lem:forest-surgery-split`, the balanced-packing redistribution descent step)
+
+The two halves of the balanced-packing assumption — the counting half
+(`isBase_vfiber_ncard_ge`: a base meets `≥ D` of the `v`-fibers) and the redistribution
+kernel (`acyclicSet_insert_vfiber_of_not_inc`: a `v`-avoiding forest absorbs a free
+`v`-fiber as a pendant) — assemble into the balanced packing through a **finite repacking
+descent**: as long as some forest `Fs j` of the `D`-forest packing of a base avoids `v`,
+*move* a spare `v`-fiber `x` into it, raising the count of `v`-meeting forests.
+
+This lemma is the single load-bearing step of that descent: the **move preserves the
+packing**. Given a forest packing `Fs : Fin D → Set _` covering `I` (`⋃ i, Fs i = I`, each
+`Fs i` a `(G̃).cycleMatroid`-independent fiber set), a designated `v`-avoiding forest
+`Fs j` (`∀ p ∈ Fs j, ¬ (G̃).Inc p v`), and a `v`-fiber `x ∈ I` (`(G̃).IsLink x v w`, `w ≠ v`),
+the re-choice `Fs' i = insert x (Fs j)` at `i = j` and `Fs i ∖ {x}` elsewhere is again a
+forest packing covering `I`. The recipient `Fs j` stays acyclic by the kernel (`x` is a
+pendant at the isolated `v`); every donor `Fs i ∖ {x}` stays acyclic as a subset; and the
+union is unchanged because `x ∈ I` is re-added at `j` while removed elsewhere. The new
+forest `Fs' j` *meets* `v` (it contains `x`), so a descent driven by the count of
+`v`-avoiding forests terminates with a balanced packing. The descent's well-founded measure
+and the pigeonhole that always supplies such a spare `x` (`≥ D` fibers among `< D` non-empty
+forests) are the remaining surgery work, off the Theorem-4.9 critical path. -/
+theorem exists_packing_move_of_not_inc {G : Graph α β} {n : ℕ}
+    {I : Set (β × Fin (bodyHingeMult n))}
+    {Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n))}
+    (hcover : ⋃ i, Fs i = I) (hindep : ∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs i))
+    {x : β × Fin (bodyHingeMult n)} {v w : α}
+    (hxvw : (G.mulTilde n).IsLink x v w) (hwv : w ≠ v) (hxI : x ∈ I)
+    {j : Fin (bodyBarDim n)} (hFjv : ∀ p ∈ Fs j, ¬ (G.mulTilde n).Inc p v) :
+    ∃ Fs' : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
+      (⋃ i, Fs' i = I) ∧ (∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs' i)) ∧
+        x ∈ Fs' j := by
+  classical
+  refine ⟨fun i => if i = j then insert x (Fs j) else Fs i \ {x}, ?_, ?_, ?_⟩
+  · -- The union is unchanged: `x` is re-added at `j`, removed elsewhere, and `x ∈ I`.
+    apply Set.Subset.antisymm
+    · rintro p hp
+      rw [Set.mem_iUnion] at hp
+      obtain ⟨i, hi⟩ := hp
+      by_cases hij : i = j
+      · subst hij
+        rw [if_pos rfl] at hi
+        rcases Set.mem_insert_iff.mp hi with rfl | hi'
+        · exact hxI
+        · rw [← hcover]; exact Set.mem_iUnion.mpr ⟨i, hi'⟩
+      · simp only [if_neg hij] at hi
+        rw [← hcover]; exact Set.mem_iUnion.mpr ⟨i, hi.1⟩
+    · rw [← hcover]
+      rintro p hp
+      rw [Set.mem_iUnion] at hp ⊢
+      obtain ⟨i, hi⟩ := hp
+      by_cases hpx : p = x
+      · exact ⟨j, by rw [if_pos rfl]; exact Set.mem_insert_iff.mpr (Or.inl hpx)⟩
+      · by_cases hij : i = j
+        · subst hij
+          exact ⟨i, by rw [if_pos rfl]; exact Set.mem_insert_iff.mpr (Or.inr hi)⟩
+        · exact ⟨i, by simp only [if_neg hij]; exact ⟨hi, by simpa using hpx⟩⟩
+  · intro i
+    by_cases hij : i = j
+    · subst hij
+      simp only [↓reduceIte]
+      exact acyclicSet_insert_vfiber_of_not_inc (hindep i) hxvw hwv hFjv
+    · simp only [if_neg hij]
+      exact (hindep i).subset Set.diff_subset
+  · simp only [↓reduceIte]; exact Set.mem_insert _ _
+
 /-! ### Total fiber count of `G̃` (`lem:no-rigid-edge-count`, support)
 
 The KT 4.5(i) edge-count bound (`lem:no-rigid-edge-count`, the prerequisite for the

@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `rw [if_pos rfl]` fails on a `(fun i ↦ if i = j then …) j` goal — `simp only [↓reduceIte]`
+- **Where it bit:** `Graph.exists_packing_move_of_not_inc` in `Molecular/Induction.lean`
+  (the forest-packing rebalancing move; the re-chosen packing `fun i => if i = j then
+  insert x (Fs j) else Fs i \ {x}` evaluated at `j` in the recipient-forest subgoals).
+- **Friction:** after `refine ⟨fun i => …, …⟩` + `subst`, the goal still showed the
+  un-beta-reduced `(fun i ↦ if i = j then …) j`; `rw [if_pos rfl]` failed ("Did not find an
+  occurrence of the pattern" — no `ite` at the surface). `simp only [if_pos rfl]` reduced it
+  but flagged `if_pos` as an unused simp arg (`linter.unusedSimpArgs`).
+- **Proposed fix:** `simp only [↓reduceIte]` (the simproc beta-reduces and reduces `if (j = j)`
+  in one step); use the simproc name, not the `if_pos` lemma.
+- **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 28.
+
 ### [resolved] `[matroid]` The vendored `apnelson1/Matroid` package already supplies a full multigraph `Graph.degree` + handshake API — do not roll your own
 - **Where it bit:** `Graph.exists_degree_le_two` in `Molecular/Induction.lean` (Phase 20
   KT 4.6, F″ core). The Phase-20 hand-off note asserted "the project has no `Graph α β`

@@ -113,6 +113,15 @@ time, not first-draft.
     instead. Generic congruence-layer rewrites (`add_sub_add_comm`)
     still fire under `simp`, since they apply without unfolding the
     sealed op.
+27. **`rw [deleteEdges]` (or any mathlib-`Graph` op built via `.copy`)
+    trips the motive** — `rw` the `def` fails / over-substitutes; use
+    its `@[simps!]` lemmas (`vertexSet_deleteEdges`, `deleteEdges_isLink`,
+    `edgeSet_deleteEdges`) via `simp only` instead.
+28. **`rw [if_pos rfl]` fails on a `(fun i ↦ if i = j then …) j` goal**
+    (un-beta-reduced lambda hides the `ite`) — use `simp only [↓reduceIte]`,
+    which beta-reduces and reduces the `if (j = j)` in one step.
+    `simp only [if_pos rfl]` also works but flags `if_pos` as an unused
+    simp arg, so prefer the simproc name.
 
 ---
 
@@ -1099,3 +1108,26 @@ only rewrite *around* it (`add_sub_add_comm` does not).
 Worked case: `infinitesimalMotions.smul_mem'` / `add_mem'` in
 `Molecular/RigidityMatrix.lean`, after Phase 18 refactored
 `ScrewSpace` to the degree-`k` graded piece `↥(⋀[ℝ]^k (Fin (k+2) → ℝ))`.
+
+## 28. `rw [if_pos rfl]` fails on a `(fun i ↦ if i = j then …) j` goal — use `simp only [↓reduceIte]`
+
+**Symptom.** After `refine ⟨fun i => if i = j then … else …, …⟩` and a
+`subst`/`by_cases` landing in the `i = j` branch, the goal still shows the
+un-beta-reduced application `(fun i ↦ if i = j then A else B) j`. `rw [if_pos
+rfl]` reports *"Did not find an occurrence of the pattern"* — the `if` is
+hidden under an unapplied lambda, so there is no `ite` subterm at the syntactic
+surface for `rw` to match.
+
+**Fix.** `simp only [↓reduceIte]` does both the beta-reduction *and* the
+`if (j = j)` → `then`-branch reduction in one step (the `↓reduceIte` simproc
+fires after `simp`'s built-in beta). Plain `simp only [if_pos rfl]` also works
+but flags `if_pos` as an *unused* simp argument (the simproc did the reduction,
+not the lemma) — a `linter.unusedSimpArgs` warning. So reach for the simproc
+name `↓reduceIte`, not the lemma. The `else`-branch (`i ≠ j`) is unaffected:
+`simp only [if_neg hij]` fires there normally because the discriminant is a
+free `hij : ¬ i = j`, no beta-redex in the way.
+
+Worked case: `Graph.exists_packing_move_of_not_inc` in
+`Molecular/Induction.lean` (the forest-packing rebalancing move, where the
+re-chosen packing `fun i => if i = j then insert x (Fs j) else Fs i \ {x}` is
+evaluated at `j` in the recipient-forest subgoals).

@@ -145,6 +145,11 @@ bullets. If one matches, jump to the named section of
   trips the motive*: don't `rw` the `def`; use its `@[simps!]` lemmas
   (`vertexSet_deleteEdges`, `deleteEdges_isLink`, `edgeSet_deleteEdges`)
   via `simp only`.
+- *"Did not find an occurrence of the pattern"* on `rw [if_pos rfl]`
+  where the goal is a `(fun i ↦ if i = j then …) j` application (an
+  un-beta-reduced lambda hiding the `ite`) — § 28 *`rw [if_pos rfl]`
+  fails on a `(fun i ↦ if i = j then …) j` goal*: use `simp only
+  [↓reduceIte]` (beta + ite reduction in one), not the `if_pos` lemma.
 
 ## Starting a Lean-touching session
 
