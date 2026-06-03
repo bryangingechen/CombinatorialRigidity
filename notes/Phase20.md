@@ -20,7 +20,11 @@ dep-graph / lemma index is the new blueprint chapter
 > forest-surgery substrate already landed is now **off the Theorem-4.9
 > critical path** and serves a deferred TODO. A fresh
 > `/coordinate-phase 20` session should read *Finding* + *Replan* +
-> *Hand-off* and start at **Replan commit A**.
+> *Hand-off* and start at **Replan commit E** (`lem:dof-tracking`).
+> Commits A–D have landed (the deficiency-count route carries both the
+> splitting-off bounds and the KT 4.4 removal bound; the same-day
+> *Finding 2* that claimed KT 4.4 needed the unsplit forest surgery was
+> itself **refuted** — see *Finding 2 REFUTED*).
 
 ## Finding: KT Lemma 4.1 / 5.1 is over-quantified, and its proof glosses a balanced-packing assumption (2026-06-02)
 
@@ -111,10 +115,12 @@ and a cleaner route) — explain it clearly in both the blueprint and the Lean.
 - **B —** `lem:splitoff-deficiency` `≤` direction (`def(G̃ᵥᵃᵇ) ≤ def(G̃)`)
   via the partition extension above. The de-facto route-confirmation spike.
 - **C —** the `k`-vs-`(k−1)` refinement (KT 4.3(ii)).
-- **D —** `lem:removal-deficiency` (`Gᵥ`, KT 4.4). **REVISED (2026-06-03,
-  *Finding 2*):** not a clean deficiency-count corollary — gated on the
-  `h'=0` unsplit forest surgery (`lem:forest-surgery-unsplit`). D now means
-  "formalize the `h'=0` lift, then the `≥ k` corollary."
+- **D —** `lem:removal-deficiency` (`Gᵥ`, KT 4.4: `def(G̃ᵥ) ≥ k`). **LANDED
+  (2026-06-03)** by the deficiency-count route after all — see *Finding 2
+  refuted* below. `Graph.removeVertex_deficiency_ge`, green `\leanok`,
+  axiom-free. The 2026-06-03 *Finding 2* (which had re-scoped D onto the
+  `h'=0` unsplit forest surgery) was itself wrong; the clean partition-count
+  comparison goes through with a `2 ≤ bodyBarDim n` hypothesis.
 - **E —** `lem:dof-tracking` (assemble KT 4.3–4.5; `\uses` the two new nodes).
 - **F —** `lem:reducible-vertex` (KT 4.6).
 - **G —** `lem:reduction-step` (KT 4.7–4.8).
@@ -133,72 +139,67 @@ formalize a concrete `dᶠ(v)=0` witness as a sharper counterexample to the
 *proof step* (distinct from the over-quantification disproof). The 6
 substrate lemmas are **retained** for this track.
 
-## Finding 2: KT Lemma 4.4's lower bound is not a deficiency-counting fact (2026-06-03)
+## Finding 2 REFUTED: KT Lemma 4.4 *is* a deficiency-counting fact (2026-06-03, same day)
 
-The Replan's commit-D claim — that `lem:removal-deficiency` (KT 4.4,
-`def(G̃ᵥ) ≥ k`) would fall to the same deficiency-counting route as the
-splitting-off bound — is **wrong**. The obstruction is structural, and worth
-recording because it sharpens the boundary of where the deficiency route
-reaches. Verified against KT 2011 Lemma 4.4 (p.661) directly.
+An earlier 2026-06-03 analysis ("Finding 2", commit d44789e) concluded that
+`lem:removal-deficiency` (KT 4.4, `def(G̃ᵥ) ≥ k`) is **not** a
+deficiency-counting fact and is gated on the `h'=0` unsplit forest surgery.
+**That conclusion was wrong.** Commit D lands KT 4.4 by exactly the same
+partition-count comparison as the splitting-off bounds B/C
+(`Graph.removeVertex_deficiency_ge`, green `\leanok`, axiom-free), needing
+only the strengthened hypothesis `2 ≤ bodyBarDim n`. (KT 2011 Lemma 4.4 is on
+**p.662** — pdf page 16 of the DCG PDF opens "662 Discrete Comput Geom …" — not
+p.661 as Finding 2 wrote.)
 
-Via the green `def = corank` bridge (`rank_add_deficiency_eq`), with `Gᵥ`
-dropping `D` from the ambient `D(|V|−1)`:
-`def(G̃ᵥ) − k = (rank M(G̃) − rank M(G̃ᵥ)) − D`. So `def(G̃ᵥ) ≥ k` is
-**equivalent** to `rank M(G̃) − rank M(G̃ᵥ) ≥ D`. But:
-- `M(G̃ᵥ) = M(G̃) ↾ E(G̃ᵥ)` (green `matroidMG_restrict_mulTilde`, since
-  `Gᵥ ≤ G`), and the deleted ground elements are exactly the two `v`-fibers
-  `ẽₐ ∪ ẽ_b`, size `2(D−1)`. Restriction rank-monotonicity gives only the
-  *reverse* bound `rank M(G̃) − rank M(G̃ᵥ) ≤ 2(D−1)` — an **upper** bound on
-  `def(G̃ᵥ)`, not the lower bound we want.
-- A single-partition comparison (the B/C engine): restrict an optimal
-  partition of `V` to `V∖{v}`; `numParts` drops by ≤1 (costs `D`), `d` drops
-  by ≤2 (helps, but in the wrong direction for a *lower* bound on
-  `partitionDef`). Net: `def(G̃ᵥ) ≥ k − D`. Degree-2 does not rescue it —
-  the `−D` is from the lost part, not the edges.
+**The flaw in Finding 2.** Finding 2 considered restricting an optimal
+partition `P` of `V` to `V∖{v}` and reasoned: `numParts` drops by ≤1 (costs
+`D`), `d` drops by ≤2 (helps "in the wrong direction"), net `≥ k − D`. Two
+errors: (1) the `−(D−1)·d` sign in `partitionDef` means a *larger* crossing-drop
+*raises* the deficiency — dropping `d` is not "the wrong direction", it is the
+*helpful* direction; (2) in the only case that loses a part (`v` isolated in its
+block), `v`'s neighbours `a, b` are *forced* into blocks distinct from `v`'s, so
+**both** `va` and `vb` cross — `c = 2` is forced, not merely `≤ 2`. The two cases:
 
-So the needed `≥ D` rank-increment is a forest-packing existence statement.
-This is exactly what KT proves via Lemma 4.2(i) at `h'=0`: a base `B'` of
-`M(G̃ᵥ)` = `D` forests on `V∖{v}` lifts to `D` forests on `V` by adding one
-fresh `v`-edge per forest (`v` isolated ⟹ no added edge closes a cycle),
-giving an independent set of `M(G̃)` of size `|B'| + D`. **This `h'=0`
-extension does NOT use the balanced-packing assumption** the KT 4.1 *Finding*
-flagged: that gloss is in the splitting-**off** direction (`-split`), not the
-edge-**splitting** inverse (`-unsplit`). KT 4.4 is sound; it is gated on the
-*unsplit* forest-packing lift, which is itself sound but unformalized.
+- **shared** (`v`'s label carried by another vertex): `|P|` unchanged, crossing
+  count non-increasing ⟹ `def_{Gᵥ}(P) = k + (D−1)·c ≥ k` (c = #v-edges crossing).
+- **isolated**: `|P|` drops by exactly 1, `c = 2` forced ⟹ `def_{Gᵥ}(P) =
+  k − D + 2(D−1) = k + (D−2) ≥ k`. The `+2(D−1)` crossing-drop pays for the
+  `−D` part-loss precisely when `D ≥ 2`.
 
-**Consequence for the Replan commit sequence.** Commit D is no longer a quick
-proof — it requires first formalizing `lem:forest-surgery-unsplit` (at least
-its `h'=0` instance). The forest substrate already landed is mostly *into-G̃ᵥᵃᵇ*
-acyclicity transport; the unsplit lift needs *into-G̃* transport (adding a
-`va`/`vb` fiber to a forest on `V∖{v}` where `v` is fresh) plus a
-`forest_packing_decomp`-driven count across all `D` forests. Blueprint:
-`rem:kt-lemma-44` records this; `lem:removal-deficiency` `\uses`
-`lem:forest-surgery-unsplit`; `lem:forest-surgery-unsplit` re-annotated as
-*sound, not yet formalized* (distinct from `-split`'s balanced-packing block).
+`removeVertex` is *structurally simpler* than `splitOff` (no fresh `e₀`/`ab`
+edge to inject or track), so the crossing count strictly drops with no
+replacement — the proof is shorter than `splitOff_deficiency_ge`. The
+`2 ≤ bodyBarDim n` hypothesis (vs the bare `1 ≤` the splitting-off lemmas carry)
+is trivial in the molecular regime (`n ≥ 2 ⟹ D = n(n+1)/2 ≥ 3`) but a genuine
+signature difference, carried explicitly.
+
+**Three-layer framing (unchanged for KT here).** KT 4.4 did *not* err: KT's
+`h'=0` unsplit forest-surgery derivation is a sound alternative route (and the
+`-unsplit` direction carries no balanced-packing gloss). We simply found a
+deficiency-count route that avoids the forest surgery entirely — KT's route and
+ours both establish the same true statement. `lem:forest-surgery-unsplit` is
+therefore returned to deferred-TODO (off the Theorem-4.9 critical path), like
+`-split`. The KT 4.1 *Finding* (over-quantification + `-split` balanced-packing
+gloss) stands as before — only Finding 2's removal-bound claim is retracted.
 
 ## Current state
 
 Pivoted to the deficiency route (2026-06-02 — see *Finding* + *Replan*).
-**Commits B + C landed:** `lem:splitoff-deficiency` is now two-sided and
-green `\leanok` — `Graph.splitOff_deficiency_le` (`≤`, KT 4.3(i) upper) and
-`Graph.splitOff_deficiency_ge` (`def(G̃) − 1 ≤ def(G̃ᵥᵃᵇ)`, the KT 4.3(i)
-"`k`-dof or `(k−1)`-dof" lower bound). Both axiom-free, deficiency-count
-route, no forests.
+**Commits B + C + D landed:** the splitting-off bounds `lem:splitoff-deficiency`
+(two-sided, `Graph.splitOff_deficiency_{le,ge}`) and the removal bound
+`lem:removal-deficiency` (`Graph.removeVertex_deficiency_ge`: `def(G̃) ≤
+def(G̃ᵥ)`, KT 4.4 p.662) are all green `\leanok`, axiom-free, deficiency-count
+route, no forests. All three are partition-count comparisons through the green
+`def = corank` infrastructure.
 
-**Commit D BLOCKED (2026-06-03 — see *Finding 2* below).** The Replan
-assumed `lem:removal-deficiency` (KT 4.4, `def(G̃ᵥ) ≥ k`) would yield to the
-same deficiency-counting route as B/C. It does **not**: KT 4.4's lower bound
-is provably *not* a deficiency-counting fact — it is equivalent to a
-rank-increment lower bound `rank M(G̃) − rank M(G̃ᵥ) ≥ D` that is a
-forest-packing *existence* statement, not derivable from rank-monotonicity
-(gives only `≤ 2(D−1)`, wrong direction) or single-partition comparison
-(gives only `≥ k − D`). It genuinely needs the `h'=0` case of the unsplit
-forest surgery `lem:forest-surgery-unsplit` (KT 4.2(i)). That direction is
-**sound** (no balanced-packing gloss — the gloss is only in `-split`) but is
-not yet formalized; landing it is a multi-commit forest-packing-lift
-development, not a clean corollary. **Next concrete task is now the unsplit
-forest surgery `h'=0` lift, not a quick `≥ k` proof.** See *Finding 2* and
-*Hand-off*.
+**Commit D landed by deficiency counting after all (2026-06-03 — see *Finding 2
+REFUTED*).** The 2026-06-03 "Finding 2" had claimed KT 4.4's lower bound was
+*not* a deficiency-counting fact (gated on the `h'=0` unsplit forest surgery);
+that was wrong. The clean partition-count comparison goes through with a
+`2 ≤ bodyBarDim n` hypothesis: the isolated case forces both `v`-edges to cross
+(`c=2`), and the `+2(D−1)` crossing-drop pays for the `−D` part-loss exactly
+when `D ≥ 2`. `removeVertex` is structurally simpler than `splitOff` (no fresh
+`e₀`/`ab` edge), so the proof is shorter than `splitOff_deficiency_ge`.
 
 **Green and `\leanok` in `Molecular/Induction.lean`** (all axiom-free): the
 full inherited KT 3.4 + KT 3.5 chain — `lem:circuit-induces-rigid` (3.4),
@@ -227,23 +228,21 @@ blueprint node; the node stays red) — incidence/cardinality
 surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
 they are **not** needed for Theorem 4.9.
 
-**Next:** *Replan* commit D (`lem:removal-deficiency`, KT 4.4: `def(G̃ᵥ) ≥ k`
-for a degree-2 vertex of a minimal `k`-dof graph). Commits B + C (the two
-directions of `lem:splitoff-deficiency`) **landed** axiom-free in
-`Molecular/Induction.lean`:
+**Next:** *Replan* commit E (`lem:dof-tracking`, KT 4.3–4.5 assembly).
+The local-dof bookkeeping at a degree-2 vertex is now complete on the Lean
+side (axiom-free, `Molecular/Induction.lean`):
 - B (`≤`, `Graph.splitOff_deficiency_le`): `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via the
   partition *extension* `f = update f' v (f' a)` (numParts equal; crossing
   injection `e_b ↦ e₀`).
 - C (`≥`, `Graph.splitOff_deficiency_ge`): `def(G̃) − 1 ≤ def(G̃ᵥᵃᵇ)` via the
   partition *restriction* of an attained maximizer (`exists_eq_ciSup_of_finite`),
-  case-split on whether `v`'s label is shared (numParts unchanged, crossing
-  count non-increasing ⟹ `≥ def(G̃)`) or `v` isolated (numParts `−1`, crossing
-  count `−1` via injection `e₀ ↦ e_b` missing the crossing `eₐ ∉ E(H)` ⟹
-  `≥ def(G̃) − 1`).
-Together they pin `def(G̃ᵥᵃᵇ) ∈ {def(G̃), def(G̃) − 1}`. The matroid-base form
-of KT 4.3(ii) (which alternative holds) needs the deferred forest surgery and
-is **not** on the Theorem-4.9 critical path (omitted; see *Replan*). See
-*Hand-off*.
+  case-split on `v`-isolation.
+- D (`Graph.removeVertex_deficiency_ge`): `def(G̃) ≤ def(G̃ᵥ)` via the *same*
+  maximizer-restriction route, simpler (no `e₀`), `2 ≤ bodyBarDim n`.
+B + C pin `def(G̃ᵥᵃᵇ) ∈ {def(G̃), def(G̃) − 1}`; D adds `def(G̃ᵥ) ≥ def(G̃)`.
+The matroid-base forms of KT 4.3(ii) / 4.4's "moreover" clause need the deferred
+forest surgery and are **not** on the Theorem-4.9 critical path (omitted; see
+*Replan*). See *Hand-off*.
 
 ## Architectural choices made up front
 
@@ -320,12 +319,13 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   `example` (`I = ∅`, ℕ-cardinality: no `I'` with `|I'| + D = 0` for `D ≥ 1`),
   green `\leanok` in `Molecular/Induction.lean`. Blueprint Remark
   `rem:kt-lemma-41` carries the three-layer framing (*Finding*).
-- [ ] `lem:removal-deficiency` — KT 4.4: `def(G̃ᵥ) ≥ k`. **BLOCKED on
-  `lem:forest-surgery-unsplit` (`h'=0`)** — NOT a deficiency-counting fact
-  (*Finding 2*). Replan commit D, but D now means "formalize the unsplit
-  `h'=0` lift first".
-- [ ] `lem:dof-tracking` — KT 4.3–4.5 assembly; `\uses` the two deficiency
-  nodes above (NOT forest surgery). Replan commit E.
+- [x] `lem:removal-deficiency` — KT 4.4 (p.662): `def(G̃) ≤ def(G̃ᵥ)`, so
+  `def(G̃ᵥ) ≥ k`. **LANDED** by the deficiency-count route (commit D),
+  `Graph.removeVertex_deficiency_ge`, green `\leanok`, axiom-free, needs
+  `2 ≤ bodyBarDim n`. *Finding 2* (which claimed it was blocked on the unsplit
+  forest surgery) is **refuted** — see *Finding 2 REFUTED*.
+- [ ] `lem:dof-tracking` — KT 4.3–4.5 assembly; `\uses` `lem:splitoff-deficiency`
+  + `lem:removal-deficiency` (NOT forest surgery). Replan commit E (**next**).
 - [ ] `lem:reducible-vertex` — KT 4.6, existence of a reducible degree-2
   vertex (maximal-chain / degree-sequence count). Replan commit F.
 - [ ] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality
@@ -350,14 +350,13 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   `fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). Completes from this
   substrate **iff** the balanced-packing lemma is proven (TODO).
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction.
-  **SOUND, not yet formalized (NOT deferred for the `-split` reason).** Its
-  `h'=0` case carries no balanced-packing gloss and is now ON the critical
-  path: `lem:removal-deficiency` (KT 4.4) needs it (*Finding 2*). The `h'=0`
-  lift: `D` forests on `V∖{v}` (a base of `M(G̃ᵥ)`) extend to `D` forests on
-  `V` by adding one fresh `v`-fiber each (`v` isolated ⟹ acyclic), giving an
-  indep set of `M(G̃)` of size `+D`. Needs *into-G̃* acyclicity transport +
-  a `forest_packing_decomp` count. The general `h'>0` case reroutes and
-  shares `-split`'s subtleties — only `h'=0` is needed downstream.
+  **DEFERRED / off critical path** (returned here after *Finding 2 REFUTED*).
+  This direction is **sound** (no balanced-packing gloss, unlike `-split`) but
+  is **not** needed by Theorem 4.9: the removal bound it was thought to gate
+  (`lem:removal-deficiency`, KT 4.4) lands by the deficiency-count route
+  instead (commit D). The `h'=0` lift (`D` forests on `V∖{v}` extend to `V` by
+  adding one fresh `v`-fiber each, `v` isolated ⟹ acyclic) is KT's route to
+  KT 4.4; we no longer need to formalize it.
 
 (Off the Thm-4.9 critical path; schedule with Phase 21:) KT Lemma 3.2
 (not 3-edge-connected), Lemma 3.6 (partition decomposition — needed
@@ -454,14 +453,11 @@ only by Case 6.1).
   one. NOT on the Theorem-4.9 critical path (the deficiency route bypasses it);
   it gates only the deferred `-split` surgery TODO. Proving it rescues KT's
   proof (gap, not error); refuting it confirms the gap.
-- **[blocking, on critical path — *Finding 2*] `h'=0` unsplit forest lift.** KT
-  4.4 (`lem:removal-deficiency`) is on the Theorem-4.9 critical path and is NOT
-  a deficiency-counting fact: it needs the `h'=0` case of
-  `lem:forest-surgery-unsplit` (into-G̃ acyclicity transport + a
-  `forest_packing_decomp` count). This direction is *sound* (no balanced-packing
-  gloss) but unformalized. It is the genuine next chunk of work; see *Finding 2*
-  + *Hand-off*. (Distinct from the non-blocking `-split` balanced-packing open
-  question above.)
+- **[resolved — *Finding 2 REFUTED*] KT 4.4 removal bound.** Earlier thought to
+  need the `h'=0` unsplit forest lift; in fact lands by the deficiency-count
+  route (`Graph.removeVertex_deficiency_ge`, commit D) with `2 ≤ bodyBarDim n`.
+  The unsplit forest surgery (`lem:forest-surgery-unsplit`) is back to deferred /
+  off the critical path. See *Finding 2 REFUTED*.
 
 ## Hand-off / next phase
 
@@ -496,33 +492,27 @@ through Lemma 4.1/4.2 (the deferred forest surgery, *Finding* layer 2), so it is
 bound is what `lem:dof-tracking` and Theorem 4.9 actually consume. Blueprint
 `lem:splitoff-deficiency` restated to the two-sided form with this scope note.
 
-**Commit D is BLOCKED as originally scoped (2026-06-03 — *Finding 2*).** KT
-4.4 (`lem:removal-deficiency`, `def(G̃ᵥ) ≥ k`) is *not* a deficiency-counting
-fact — it is equivalent to a rank-increment lower bound
-`rank M(G̃) − rank M(G̃ᵥ) ≥ D` that needs the `h'=0` case of the *unsplit*
-forest surgery (KT 4.2(i)), not rank-monotonicity (gives `≤ 2(D−1)`) or a
-single partition (gives `≥ k − D`). This session's commit recorded the finding:
-blueprint `rem:kt-lemma-44` + revised `lem:removal-deficiency` proof/`\uses` +
-re-annotated `lem:forest-surgery-unsplit` (sound, not yet formalized) +
-*Finding 2* above. **No Lean lemma landed** — there was no honest non-forest
-proof to write.
+**Commit D landed (2026-06-03), refuting the same-day *Finding 2*.** KT 4.4
+(`lem:removal-deficiency`, `def(G̃) ≤ def(G̃ᵥ)`, p.662) lands by the
+deficiency-count route after all — `Graph.removeVertex_deficiency_ge`, green
+`\leanok`, axiom-free — needing the strengthened `2 ≤ bodyBarDim n`. Finding 2
+had wrongly concluded the bound was *not* a deficiency-counting fact; the flaw
+was (i) treating the crossing-drop as "the wrong direction" when the
+`−(D−1)·d` sign in `partitionDef` makes it *helpful*, and (ii) missing that the
+isolated case *forces* both `v`-edges to cross (`c=2`). This session's commit:
+the Lean lemma + blueprint flip of `lem:removal-deficiency` to green (deficiency
+route) + rewrite of `rem:kt-lemma-44` (now "KT 4.4 *is* a deficiency-counting
+fact") + return of `lem:forest-surgery-unsplit` to deferred-TODO + *Finding 2
+REFUTED* above. KT did not err: KT's `h'=0` unsplit forest-surgery route is a
+sound alternative; we simply found a shorter deficiency count.
 
-**Next agent's concrete commit = formalize the `h'=0` unsplit forest-packing
-lift** (`lem:forest-surgery-unsplit`, restricted to `h'=0`), which then makes
-`lem:removal-deficiency` a short corollary via `rank_add_deficiency_eq`. The
-lift: given `D` cycle-matroid-independent forests on `V∖{v}` covering a base
-`B'` of `M(G̃ᵥ)` (use the green `matroidMG_indep_iff_exists_forest_packing` /
-`forest_packing_decomp`), add one fresh `v`-fiber to each (`D−1` get a `va`
-copy, one gets a `vb` copy) and show the result is acyclic in `G̃` (`v` is
-isolated in each forest-on-`V∖{v}`, so any added `v`-edge cannot close a
-cycle — the *into-G̃* analogue of the green
-`isAcyclicSet_mulTilde_splitOff_of_removeVertex`, but targeting `G̃` not
-`G̃ᵥᵃᵇ`) and edge-disjoint, giving an indep set of `M(G̃)` of size `|B'| + D`.
-This is a multi-commit substrate development — assess after the first into-G̃
-acyclicity-transport lemma lands. Only `h'=0` is needed; do NOT attempt the
-general `h'>0` reroute (it shares `-split`'s open balanced-packing crux).
-Then `lem:removal-deficiency`, then commits E–H per *Replan* (4.9 assembly).
-Reuse shapes for the eventual corollary: `rank_add_deficiency_eq` for the
-ambient/corank arithmetic; `matroidMG_restrict_mulTilde` for
-`M(G̃ᵥ) = M(G̃) ↾ E(G̃ᵥ)`. Degree-2 stays encoded as two edges `eₐ`/`e_b`
-(the only `v`-incident edges, `hdeg2`).
+**Next agent's concrete commit = E: `lem:dof-tracking`** (KT 4.3–4.5 assembly).
+The local-dof bookkeeping at a degree-2 vertex `v` is now fully green:
+`splitOff_deficiency_{le,ge}` pin `def(G̃ᵥᵃᵇ) ∈ {def(G̃), def(G̃)−1}`, and
+`removeVertex_deficiency_ge` gives `def(G̃ᵥ) ≥ def(G̃)`. `lem:dof-tracking`
+assembles these into the KT 4.3–4.5 inequalities the induction tracks (no new
+infrastructure — it is a packaging lemma over the three green bounds). Then
+commits F (`lem:reducible-vertex`, KT 4.6), G (`lem:reduction-step`, KT 4.7–4.8),
+H (`thm:minimal-kdof-reduction`, Theorem 4.9 capstone → phase close) per
+*Replan*. Degree-2 stays encoded as two edges `eₐ`/`e_b` (the only `v`-incident
+edges, `hdeg2`); the removal/splitting-off lemmas all share that signature.

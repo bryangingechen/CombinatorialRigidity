@@ -769,6 +769,160 @@ theorem splitOff_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : �
     have : (G.numParts f : ℤ) = (H.numParts f : ℤ) + 1 := hparts
     nlinarith [Int.ofNat_le.mpr hcross, this]
 
+/-! ### Vertex removal raises the deficiency (`lem:removal-deficiency`, KT Lemma 4.4)
+
+The other half of the local dof bookkeeping at a degree-2 vertex `v`: deleting `v`
+(`removeVertex`) does **not** decrease the deficiency, `def(G̃) ≤ def(G̃ᵥ)`. Equivalently,
+if `def(G̃) = k` then `def(G̃ᵥ) ≥ k` — Katoh–Tanigawa 2011 Lemma 4.4 (p.662).
+
+This is proved by the **same deficiency-count route** that carried `splitOff_deficiency_le`
+/ `splitOff_deficiency_ge`, *no forests* — refuting `notes/Phase20.md` *Finding 2* (which
+had claimed KT 4.4's lower bound is not a deficiency-counting fact, gated on the unsplit
+forest surgery). The removal case is in fact structurally *simpler* than splitting-off:
+`removeVertex v = deleteVerts {v}` adds **no** fresh edge `e₀`/`ab`, so the crossing count
+strictly drops with no replacement. Take a partition `f` of `V(G)` attaining `def(G̃) = k`
+(finite supremum), and reuse the *same* labeling on `V(Gᵥ) = V(G) ∖ {v}`. The crossing
+edges of `Gᵥ` are exactly the crossing edges of `G` other than the two `v`-incident edges
+`eₐ`, `e_b` (`hdeg2`), so `d_{Gᵥ}(P) = d_G(P) − c` with `c ∈ {0, 1, 2}` the number of
+`v`-edges that crossed. Case-split on whether `v`'s label is shared:
+* **shared** — `|P|` unchanged, so `def_{Gᵥ}(P) = k + (D−1)·c ≥ k` (the dropped `v`-edges
+  *help*, since `partitionDef` carries `−(D−1)·d`; we only need `d_{Gᵥ}(P) ≤ d_G(P)`).
+* **isolated** — `|P|` drops by exactly `1`, but `v`'s neighbours `a, b` are then forced
+  into *different* blocks from `v`, so **both** `eₐ` and `e_b` crossed (`c = 2`), giving
+  `def_{Gᵥ}(P) = k − D + 2(D−1) = k + (D−2) ≥ k`. The `+2(D−1)` crossing-drop exactly
+  pays for the `−D` part-loss precisely because `D ≥ 2`.
+
+The `2 ≤ bodyBarDim n` hypothesis (strengthening the bare `1 ≤ bodyBarDim n` the
+splitting-off lemmas carry) is where the molecular regime `n ≥ 2 ⟹ D = n(n+1)/2 ≥ 3`
+enters; it is the genuine signature difference from `splitOff_deficiency_ge`, forcing the
+isolated case to break even. Degree-2 (`hdeg2`: `eₐ`, `e_b` are the only `v`-incident
+edges) is what forces `c = 2` in the isolated case. -/
+
+/-- **Vertex removal raises the deficiency** (`lem:removal-deficiency`, KT Lemma 4.4,
+p.662). Let `v` be a degree-2 vertex of `G` with neighbours `a, b`, carried by the two
+distinct edges `eₐ` (joining `v, a`) and `e_b` (joining `v, b`) that are the *only* edges
+of `G` incident to `v` (`hdeg2`), with `a, b ≠ v`. With `D = bodyBarDim n ≥ 2`, vertex
+removal does not decrease the deficiency: `def(G̃) ≤ def(G̃ᵥ)`. So if `G` is a `k`-dof-graph
+then `G_v` has `def(G̃ᵥ) ≥ k`.
+
+Proved by the deficiency-count route (no forest surgery), parallel to
+`splitOff_deficiency_ge` but simpler — there is no fresh short-circuit edge, so the
+crossing count strictly drops. A partition `f` attaining `def(G̃)` is reused on
+`V(G) ∖ {v}`; a case split on whether `v`'s label is shared bounds the change in parts and
+crossing edges. In the isolated case both `v`-edges necessarily cross (`c = 2`), and the
+`D ≥ 2` hypothesis makes the `+2(D−1)` crossing-drop pay for the `−D` part-loss. This is
+the deficiency-count proof that **refutes** `notes/Phase20.md` *Finding 2*'s claim that
+KT 4.4 needed the unsplit forest surgery. See `notes/Phase20.md` and `rem:kt-lemma-44`. -/
+theorem removeVertex_deficiency_ge [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) :
+    G.deficiency n ≤ (G.removeVertex v).deficiency n := by
+  classical
+  set H := G.removeVertex v with hH
+  have haV : a ∈ V(G) := hla.right_mem
+  have hbV : b ∈ V(G) := hlb.right_mem
+  have hD1 : (0 : ℤ) ≤ (bodyBarDim n : ℤ) - 1 := by
+    have : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (le_trans (by norm_num) hD)
+    linarith
+  -- Pick a partition `f` of `V(G)` attaining `def(G̃)` (finite supremum).
+  haveI : Nonempty α := ⟨a⟩
+  obtain ⟨f, hf⟩ := exists_eq_ciSup_of_finite (f := G.partitionDef n)
+  rw [deficiency, ← hf]
+  -- It suffices to bound the same labeling `f` on `V(H) = V(G) ∖ {v}` below.
+  refine le_trans ?_ (H.partitionDef_le_deficiency n f)
+  have heaG : eₐ ∈ E(G) := hla.edge_mem
+  have hebG : e_b ∈ E(G) := hlb.edge_mem
+  -- The crossing edges of `H = Gᵥ` inject into those of `G`: identity, surviving `v`-free.
+  have hcross_sub : H.crossingEdges f ⊆ G.crossingEdges f := by
+    rintro e ⟨heH, x, y, hlink, hxy⟩
+    rw [hH, removeVertex_isLink] at hlink
+    exact ⟨hlink.1.edge_mem, x, y, hlink.1, hxy⟩
+  -- A crossing edge of `G` that is **not** a crossing edge of `H` must be `v`-incident,
+  -- hence `eₐ` or `e_b` (`hdeg2`).
+  have hcross_diff : ∀ {e}, e ∈ G.crossingEdges f → e ∉ H.crossingEdges f →
+      e = eₐ ∨ e = e_b := by
+    rintro e ⟨heG, x, y, hlink, hxy⟩ hnotH
+    by_cases hxv : x = v
+    · subst hxv; exact hdeg2 e y hlink
+    · by_cases hyv : y = v
+      · subst hyv; exact hdeg2 e x hlink.symm
+      · have hlinkH : H.IsLink e x y := by rw [hH, removeVertex_isLink]; exact ⟨hlink, hxv, hyv⟩
+        exact absurd ⟨hlinkH.edge_mem, x, y, hlinkH, hxy⟩ hnotH
+  by_cases hshared : ∃ w ∈ V(G), w ≠ v ∧ f w = f v
+  · -- Case: `v`'s label `f v` is shared, so `|P|` is unchanged. Crossing count does not
+    -- increase (`hcross_sub`), so the per-partition deficiency does not decrease.
+    have hparts : H.numParts f = G.numParts f := by
+      obtain ⟨w, hwV, hwv, hfw⟩ := hshared
+      rw [numParts, numParts, hH, vertexSet_removeVertex]
+      congr 1
+      apply Set.Subset.antisymm
+      · rintro _ ⟨x, hx, rfl⟩; exact ⟨x, hx.1, rfl⟩
+      · rintro _ ⟨x, hx, rfl⟩
+        by_cases hxv : x = v
+        · exact ⟨w, ⟨hwV, by simpa using hwv⟩, by rw [hfw, hxv]⟩
+        · exact ⟨x, ⟨hx, by simpa using hxv⟩, rfl⟩
+    have hcross : (H.crossingEdges f).ncard ≤ (G.crossingEdges f).ncard :=
+      Set.ncard_le_ncard hcross_sub (Set.toFinite _)
+    rw [partitionDef, partitionDef, hparts]
+    nlinarith [Int.ofNat_le.mpr hcross]
+  · -- Case: `v` is isolated in its part (`f v` carried only by `v`).
+    push Not at hshared
+    -- `|P|` drops by exactly `1`: `f '' V(G) = insert (f v) (f '' V(H))`, `f v ∉ f '' V(H)`.
+    have hfv_notin : f v ∉ f '' V(H) := by
+      rintro ⟨w, hwV, hfw⟩
+      rw [hH, vertexSet_removeVertex] at hwV
+      exact hshared w hwV.1 (by simpa using hwV.2) hfw
+    have hvV : v ∈ V(G) := hla.left_mem
+    have himg : f '' V(G) = insert (f v) (f '' V(H)) := by
+      rw [hH, vertexSet_removeVertex]
+      apply Set.Subset.antisymm
+      · rintro _ ⟨x, hx, rfl⟩
+        by_cases hxv : x = v
+        · exact Set.mem_insert_iff.mpr (Or.inl (by rw [hxv]))
+        · exact Set.mem_insert_iff.mpr (Or.inr ⟨x, ⟨hx, by simpa using hxv⟩, rfl⟩)
+      · rintro _ (rfl | ⟨x, hx, rfl⟩)
+        · exact ⟨v, hvV, rfl⟩
+        · exact ⟨x, hx.1, rfl⟩
+    have hparts : (G.numParts f : ℤ) = (H.numParts f : ℤ) + 1 := by
+      rw [numParts, numParts, himg, Set.ncard_insert_of_notMem hfv_notin (Set.toFinite _)]
+      push_cast; ring
+    -- `eₐ`, `e_b` both cross `f` (since `f a ≠ f v` and `f b ≠ f v`), but are not crossing
+    -- edges of `H` (they are `v`-incident, dropped by `removeVertex`).
+    have hfav : f a ≠ f v := hshared a haV hav
+    have hfbv : f b ≠ f v := hshared b hbV hbv
+    have hea_cross : eₐ ∈ G.crossingEdges f := ⟨heaG, v, a, hla, fun h => hfav h.symm⟩
+    have heb_cross : e_b ∈ G.crossingEdges f := ⟨hebG, v, b, hlb, fun h => hfbv h.symm⟩
+    have hea_notH : eₐ ∉ H.crossingEdges f := by
+      rintro ⟨heH, x, y, hlink, _⟩
+      rw [hH, removeVertex_isLink] at hlink
+      rcases hla.eq_and_eq_or_eq_and_eq hlink.1 with ⟨rfl, _⟩ | ⟨rfl, _⟩
+      · exact hlink.2.1 rfl
+      · exact hlink.2.2 rfl
+    have heb_notH : e_b ∉ H.crossingEdges f := by
+      rintro ⟨heH, x, y, hlink, _⟩
+      rw [hH, removeVertex_isLink] at hlink
+      rcases hlb.eq_and_eq_or_eq_and_eq hlink.1 with ⟨rfl, _⟩ | ⟨rfl, _⟩
+      · exact hlink.2.1 rfl
+      · exact hlink.2.2 rfl
+    -- Crossing count drops by ≥ 2: `H.crossingEdges f ∪ {eₐ, e_b} ⊆ G.crossingEdges f`,
+    -- with `eₐ ≠ e_b` and both `∉ H.crossingEdges f`.
+    have hcross : (H.crossingEdges f).ncard + 2 ≤ (G.crossingEdges f).ncard := by
+      have hsub : insert eₐ (insert e_b (H.crossingEdges f)) ⊆ G.crossingEdges f := by
+        rintro e (rfl | rfl | he)
+        · exact hea_cross
+        · exact heb_cross
+        · exact hcross_sub he
+      have hbnotin : e_b ∉ H.crossingEdges f := heb_notH
+      have hanotin : eₐ ∉ insert e_b (H.crossingEdges f) := by
+        rw [Set.mem_insert_iff]; push Not; exact ⟨heab, hea_notH⟩
+      have := Set.ncard_le_ncard hsub (Set.toFinite _)
+      rwa [Set.ncard_insert_of_notMem hanotin (Set.toFinite _),
+        Set.ncard_insert_of_notMem hbnotin (Set.toFinite _)] at this
+    rw [partitionDef, partitionDef]
+    nlinarith [Int.ofNat_le.mpr hcross, hparts]
+
 /-- **Edge-splitting** `H_{ab}^v` (`def:graph-operations`): the inverse of splitting-off.
 Subdivide the edge `e₀` of `H` (joining `a` and `b`) by a fresh degree-2 vertex `v`,
 replacing `e₀` with the path `a — v — b` carried by two fresh edges `e₁` (joining `a`,
