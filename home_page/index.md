@@ -28,8 +28,10 @@ theorem — see below. **Phase 17 (complete)** opens the
 longer-horizon **molecular-conjecture program** (Phases 17–26;
 Katoh–Tanigawa 2011) with its Grassmann–Cayley extensor-algebra layer,
 **Phase 18 (complete)** builds the genuine panel-hinge rigidity
-matrix `R(G,p)` on top of it, and **Phase 19 (complete)** builds the
-matroid `M(G̃)`, the `D`-deficiency, and the `k`-dof combinatorics.
+matrix `R(G,p)` on top of it, **Phase 19 (complete)** builds the
+matroid `M(G̃)`, the `D`-deficiency, and the `k`-dof combinatorics,
+and **Phase 20 (in progress)** develops the combinatorial induction —
+graph operations and Katoh–Tanigawa's Theorem 4.9.
 The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
@@ -144,6 +146,23 @@ the matroidal half of the Phase 16 reconciliation. Forward-mode; the
 chapter `deficiency.tex` is the authoritative dep-graph (all nodes
 green). See `notes/Phase19.md` and `notes/MolecularConjecture.md`.
 
+**Phase 20 (in progress)** builds stratum 4: the **combinatorial
+induction** of Katoh–Tanigawa's proof (§3.4–3.5, §4). It develops the
+graph operations on `Graph α β` — vertex removal, splitting-off
+`G_v^{ab}` at a degree-2 vertex, its inverse edge-splitting, and
+rigid-subgraph contraction — the forest-surgery core (KT Lemmas
+4.1/4.2), the degree-of-freedom tracking lemmas (4.3–4.8), and
+**Theorem 4.9**: every minimal `k`-dof-graph reduces to the two-vertex
+double edge by splitting-off and rigid-subgraph contraction, the
+combinatorial skeleton the algebraic induction of Phases 21–23 realizes
+at the rigidity-matrix rank. Two structural lemmas relocated from
+Phase 19's close open the chapter (KT Lemma 3.4 full form, KT Lemma
+3.5), now unblocked by the `def(G̃) = corank M(G̃)` bridge.
+Forward-mode; the chapter `molecular-induction.tex` is the
+authoritative dep-graph (all nodes red — the to-do list).
+`Molecular/Induction.lean`. See `notes/Phase20.md` and
+`notes/MolecularConjecture.md`.
+
 The development is divided into the phases below, with Lean source
 under
 [`CombinatorialRigidity/`](https://github.com/bryangingechen/CombinatorialRigidity/tree/master/CombinatorialRigidity)
@@ -171,6 +190,7 @@ existing files or refactor across several).
 |    17 | Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` | ✓ |
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
+|    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ◐ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

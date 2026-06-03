@@ -111,7 +111,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | ⋮ Cleanup round (post-Phase-18) | Phase 18 surface (`Molecular/RigidityMatrix.lean`, `molecular.tex` → split into `extensor.tex` + `rigidity-matrix.tex`) + readability/citation/instruction items | ✓ Complete (see `notes/Phase18-cleanup.md`; round manual: `CLEANUP.md`) |
 | 19. `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` (KT §2.5, §3) | ✓ Complete (see `notes/Phase19.md`; `deficiency.tex` `sec:molecular-deficiency`) |
 | ⋮ Cleanup round (post-Phase-19) | Phase 19 surface (`Molecular/Deficiency.lean`, `deficiency.tex` `sec:molecular-deficiency` nodes) | ✓ Complete (all A–D audits no-op; see `notes/Phase19-cleanup.md`; round manual: `CLEANUP.md`) |
-| 20–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
+| 20. Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` (KT §3.4–3.5, §4) | ◐ In progress (see `notes/Phase20.md`; `molecular-induction.tex` `sec:molecular-induction`) |
+| 21–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -645,6 +646,31 @@ def(G̃)`) relocated forward to the algebraic-induction phases (21+).
 Forward-mode; dep-graph `deficiency.tex` `sec:molecular-deficiency`.
 Per-node lemma map + decisions: `notes/Phase19.md`. Unblocks Phase 20
 (combinatorial induction → Theorem 4.9).
+
+### Phase 20 — Combinatorial induction → Theorem 4.9 (KT §3.4–3.5, §4)
+
+**Status (◐ In progress; see `notes/Phase20.md`).** Stratum 4 of the
+molecular-conjecture program: the **combinatorial** half of
+Katoh–Tanigawa's proof. In a new file `Molecular/Induction.lean`, the
+graph operations on `Graph α β` — vertex removal `G_v`, splitting-off
+`G_v^{ab}` at a degree-2 vertex, its inverse edge-splitting `H_{ab}^v`,
+and rigid-subgraph contraction `G/E(H)` — the forest-surgery core
+(KT Lemmas 4.1/4.2, the hardest new pure combinatorics: explicit forest
+surgery at a degree-2 vertex), the dof-tracking lemmas (4.3–4.8), and
+**Theorem 4.9** (every minimal `k`-dof-graph with `|V| ≥ 2` reduces to
+the two-vertex double edge by splitting-off / rigid-subgraph
+contraction). Two structural lemmas relocated from Phase 19's close open
+the chapter — KT Lemma 3.4 full form (`G[V(X)]` rigid, the tightness
+*equality*, now unblocked by Phase 19's `thm:def-eq-corank` reverse)
+and KT Lemma 3.5 (contraction preserves minimality, the Case I engine);
+both need a vertex-induced-subgraph-from-an-edge-set construction on
+`Graph α β` (no existing analogue, the realistic first Lean piece).
+Reuse: matroid restriction/contraction + fundamental circuits (mathlib
+`Matroid.{restrict,contract,fundCircuit}`), the vendored union subsystem,
+`edgeMultiply` / `mulTilde`. Forward-mode; dep-graph
+`molecular-induction.tex` `sec:molecular-induction`. Per-node lemma map
++ decisions: `notes/Phase20.md`. Unblocks Phase 21 (algebraic induction
+base + Cases I & II).
 
 ## Engineering conventions
 

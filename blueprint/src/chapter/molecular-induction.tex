@@ -1,0 +1,221 @@
+\section{The combinatorial induction: graph operations and Theorem 4.9}
+\label{sec:molecular-induction}
+
+This chapter is the \textbf{Phase~20} dep-graph: the
+\emph{combinatorial} half of Katoh--Tanigawa's proof of the molecular
+conjecture --- \cite[\S3 (Lemmas 3.4, 3.5), \S4]{katohTanigawa2011},
+the fourth stratum. Where \cref{sec:molecular-deficiency} built the
+matroid $M(\tilde G)$, the $D$-deficiency, and the $k$-dof hierarchy,
+this chapter develops the \emph{graph operations} that reduce a
+minimal $k$-dof-graph to the two-vertex double edge, and assembles them
+into Katoh--Tanigawa's Theorem~4.9. The algebraic induction of
+Phases~21--23 then realizes each reduction step at the rigidity-matrix
+rank. Throughout $D = \binom{d+1}{2} = \delta$ is the body-bar
+dimension and $\tilde G = (D-1)\cdot G$ is the multiplied graph of
+\cref{sec:body-hinge}.
+
+\medskip
+\noindent\emph{Status.} Forward mode: this chapter is the live to-do
+list. Every node below is red until its Lean lands in
+\texttt{Molecular/Induction.lean}; the leaf-most red node (statement
+dependencies all green or mathlib) is the next target. The chapter
+opens with two structural lemmas inherited from
+\cref{sec:molecular-deficiency} --- the full form of KT Lemma 3.4 and
+KT Lemma 3.5 --- whose lower bounds the Phase~19 def\,$=$\,corank bridge
+(\cref{thm:def-eq-corank}) now unblocks, then builds the graph
+operations, the forest-surgery core, the degree-of-freedom tracking,
+and Theorem~4.9.
+
+\subsection{Inherited structural lemmas (KT 3.4 full form, KT 3.5)}
+\label{sec:molecular-induction-inherited}
+
+\begin{lemma}[A circuit induces a rigid subgraph; KT Lemma 3.4, full form]
+  \label{lem:circuit-induces-rigid}
+  \uses{lem:circuit-rigid, thm:def-eq-corank, def:rigid-subgraph}
+  Let $X$ be a circuit of $M(\tilde G)$. Then the vertex-induced
+  subgraph $G[V(X)]$ on the vertices spanned by $X$ is rigid: $\tilde
+  G[V(X)]$ packs $D$ edge-disjoint spanning trees, equivalently
+  $|X - e| = D(|V(X)| - 1)$ for any $e \in X$.
+\end{lemma}
+\begin{proof}
+  By \cref{lem:circuit-rigid}, $X - e$ is $(D,D)$-sparse, giving the
+  upper bound $|X - e| \le D(|V(X)| - 1)$. The matching lower bound
+  $|X| > D(|V(X)| - 1)$ is forced by $X$ being dependent, via the
+  reverse direction of the $\operatorname{def} =
+  \operatorname{corank}$ min--max (\cref{thm:def-eq-corank}, the
+  Jackson--Jord\'an content now green). Together they give the
+  tightness equality and hence $\operatorname{def}(\tilde G[V(X)]) =
+  0$, i.e.\ $G[V(X)]$ is rigid. The formalization additionally
+  requires a vertex-induced-subgraph-from-an-edge-set construction on
+  \texttt{Graph $\alpha$ $\beta$}.
+\end{proof}
+
+\begin{lemma}[Rigid-subgraph contraction preserves minimality; KT Lemma 3.5]
+  \label{lem:contraction-minimality}
+  \uses{def:rigid-subgraph, lem:subgraph-minimality, def:k-dof}
+  Let $G$ be a minimal $k$-dof-graph and let $H$ be a proper rigid
+  subgraph of $G$. Then the contraction $G / E(H)$ (collapse $V(H)$ to
+  a single vertex, keeping the edges of $G$ incident to $V(H)$ from
+  outside) is again a minimal $k$-dof-graph, with the same deficiency.
+  This is the engine of Case~I of the algebraic induction.
+\end{lemma}
+\begin{proof}
+  Contracting a rigid subgraph removes $D(|V(H)| - 1)$ from both the
+  rank of $M(\tilde G)$ and the ambient $D(|V| - 1)$, so the corank ---
+  hence the deficiency (\cref{thm:def-eq-corank}) --- is unchanged.
+  Minimality (every base of the contracted matroid meets every
+  edge-fiber) transports from $G$ along the contraction, using the
+  subgraph-minimality machinery of \cref{lem:subgraph-minimality}.
+\end{proof}
+
+\subsection{Graph operations}
+\label{sec:molecular-induction-operations}
+
+\begin{definition}[Vertex removal, splitting-off, and edge-splitting]
+  \label{def:graph-operations}
+  \uses{def:k-dof}
+  For a multigraph $G$ and a vertex $v$ of degree~2 with the two
+  incident edges joining $v$ to $a$ and $b$:
+  \begin{itemize}
+    \item \emph{Removal} $G_v := G - v$ deletes $v$ and its incident
+      edges.
+    \item \emph{Splitting-off} $G_v^{ab}$ deletes $v$ and adds the new
+      edge $ab$ (the two edges through $v$ are short-circuited into a
+      single edge between its neighbours).
+    \item \emph{Edge-splitting} $H_{ab}^v$ is the inverse: subdivide an
+      edge $ab$ of $H$ by a fresh degree-2 vertex $v$, replacing $ab$
+      with the path $a$--$v$--$b$. It satisfies $(H_{ab}^v)_v^{ab} = H$.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Rigid-subgraph contraction]
+  \label{def:rigid-contraction}
+  \uses{def:rigid-subgraph}
+  For a rigid subgraph $H \le G$, the \emph{contraction} $G / E(H)$
+  collapses the vertex set $V(H)$ to a single vertex and discards the
+  edges of $H$, retaining every other edge of $G$ (with endpoints in
+  $V(H)$ redirected to the collapsed vertex). On the matroid side this
+  is the matroid contraction $M(\tilde G) / E(\tilde H)$ restricted to
+  the surviving fibers.
+\end{definition}
+
+\subsection{Forest surgery}
+\label{sec:molecular-induction-forest}
+
+\begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
+  \label{lem:forest-surgery-split}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank}
+  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
+  packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
+  the fibers not incident to $v$ and rerouted across $v$, induces a
+  packing of $\widetilde{G_v^{ab}}$, with the deficiency changing in a
+  controlled way. Concretely the surgery rewires the $D-1$ fibers of
+  one of $v$'s edges through $v$ onto the new edge $ab$.
+\end{lemma}
+\begin{proof}
+  Explicit forest surgery: each of the $D$ spanning forests of $\tilde
+  G$ uses some subset of the $2(D-1)$ fibers at $v$; rerouting a
+  $v$-traversing tree-path across the short-circuit $ab$ keeps each
+  forest acyclic and edge-disjoint. The bookkeeping is the hard new
+  combinatorial core of Phase~20; no existing analogue in the project
+  or mathlib.
+\end{proof}
+
+\begin{lemma}[Forest surgery at a degree-2 vertex, edge-splitting direction; KT Lemma 4.2]
+  \label{lem:forest-surgery-unsplit}
+  \uses{def:graph-operations, lem:forest-surgery-split}
+  The inverse direction: a packing of $\widetilde{H}$ extends across an
+  edge-split $H_{ab}^v$ to a packing of $\widetilde{H_{ab}^v}$,
+  matching deficiencies under
+  $(H_{ab}^v)_v^{ab} = H$. Together with
+  \cref{lem:forest-surgery-split} this makes splitting-off and
+  edge-splitting inverse operations on the deficiency.
+\end{lemma}
+\begin{proof}
+  The fresh degree-2 vertex $v$ contributes $D$ to $D(|V|-1)$ and the
+  subdivided edge contributes $D-1$ crossing fibers; the surgery of
+  \cref{lem:forest-surgery-split} run in reverse distributes the new
+  fibers across the $D$ forests. Explicit forest construction, the
+  companion of the splitting-off surgery.
+\end{proof}
+
+\subsection{Degree-of-freedom tracking}
+\label{sec:molecular-induction-dof}
+
+\begin{lemma}[Deficiency under vertex removal and splitting-off; KT Lemmas 4.3--4.5]
+  \label{lem:dof-tracking}
+  \uses{lem:forest-surgery-split, lem:forest-surgery-unsplit, def:graph-operations}
+  For a degree-2 vertex $v$ of $G$, the deficiencies of $G$, the
+  removal $G_v$, and the splitting-off $G_v^{ab}$ are related by the
+  KT~4.3--4.5 inequalities, pinning $\operatorname{def}(\tilde G)$ in
+  terms of $\operatorname{def}(\widetilde{G_v^{ab}})$ and the local
+  structure at $v$ (including the fundamental-circuit count of the new
+  edge $ab$). These are the dof-conservation laws the induction tracks.
+\end{lemma}
+\begin{proof}
+  Combine the forest-surgery correspondence
+  (\cref{lem:forest-surgery-split,lem:forest-surgery-unsplit}) with
+  the def\,$=$\,corank bridge (\cref{thm:def-eq-corank}): the rank
+  changes by an explicit amount under each operation, and corank
+  tracks deficiency.
+\end{proof}
+
+\begin{lemma}[Existence of a reducible degree-2 vertex; KT Lemma 4.6]
+  \label{lem:reducible-vertex}
+  \uses{lem:dof-tracking, lem:two-edge-conn, def:k-dof}
+  A minimal $k$-dof-graph $G$ with $|V| \ge 3$ that has no proper rigid
+  subgraph contains a degree-2 vertex whose splitting-off (or removal)
+  preserves minimality and the degree of freedom. The proof is a
+  maximal-chain / degree-sequence counting argument on the
+  $2$-edge-connected graph (\cref{lem:two-edge-conn}).
+\end{lemma}
+\begin{proof}
+  Degree-sequence counting: a minimal $k$-dof-graph has average degree
+  bounded by the $(D,D)$-tightness, forcing a low-degree vertex; the
+  $2$-edge-connectivity (\cref{lem:two-edge-conn}) rules out degree
+  $\le 1$, and the no-proper-rigid-subgraph hypothesis makes a degree-2
+  vertex reducible. This is the lemma that guarantees the induction can
+  always take a step.
+\end{proof}
+
+\begin{lemma}[Reduction step preserves minimality; KT Lemmas 4.7--4.8]
+  \label{lem:reduction-step}
+  \uses{lem:reducible-vertex, lem:contraction-minimality, lem:dof-tracking}
+  Each reduction --- splitting-off at the degree-2 vertex of
+  \cref{lem:reducible-vertex}, or contraction of a proper rigid
+  subgraph (\cref{lem:contraction-minimality}) --- carries a minimal
+  $k$-dof-graph to a smaller minimal $k$-dof-graph with the same $k$.
+  KT~4.8 is the capstone, run through two circuit-swap arguments on the
+  fundamental circuits of $M(\tilde G)$.
+\end{lemma}
+\begin{proof}
+  Minimality transport: the base / fiber-meeting condition of
+  \cref{def:k-dof} is preserved by each operation, via fundamental
+  circuit swaps in $M(\tilde G)$ (each base of the reduced matroid
+  lifts to a base of $M(\tilde G)$ meeting every fiber). The deficiency
+  is unchanged by \cref{lem:dof-tracking,lem:contraction-minimality}.
+\end{proof}
+
+\subsection{Theorem 4.9}
+\label{sec:molecular-induction-thm49}
+
+\begin{theorem}[Reduction of minimal $k$-dof-graphs; KT Theorem 4.9]
+  \label{thm:minimal-kdof-reduction}
+  \uses{lem:reduction-step, lem:reducible-vertex, lem:contraction-minimality, def:graph-operations}
+  Every minimal $k$-dof-graph $G$ with $|V| \ge 2$ reduces to the
+  two-vertex double edge by a sequence of splitting-off and
+  proper-rigid-subgraph contraction operations. Equivalently, $G$ is
+  generated from the two-vertex double edge by the inverse operations
+  (edge-splitting and rigid-subgraph expansion).
+\end{theorem}
+\begin{proof}
+  Induction on $|V|$. The base case $|V| = 2$ is the two-vertex double
+  edge. For $|V| \ge 3$: if $G$ has a proper rigid subgraph, contract
+  it (\cref{lem:contraction-minimality}); otherwise
+  \cref{lem:reducible-vertex} supplies a reducible degree-2 vertex,
+  split it off. Either way \cref{lem:reduction-step} produces a smaller
+  minimal $k$-dof-graph with the same $k$, and the induction hypothesis
+  applies. This is Katoh--Tanigawa~\cite[Theorem 4.9]{katohTanigawa2011};
+  it is the combinatorial skeleton the algebraic induction
+  (Phases~21--23) realizes at the rigidity-matrix rank.
+\end{proof}
