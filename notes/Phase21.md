@@ -21,18 +21,25 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 ## Current state
 
 `Molecular/AlgebraicInduction.lean` carries the induction-skeleton leaf
-nodes (green): `def:rank-hypothesis`, `lem:theorem-55-base`, and the Case
+nodes (green): `def:rank-hypothesis`, `lem:theorem-55-base`, the Case
 II rank-lift accounting `lem:case-II-rank-lift`
 (`rankHypothesis_iff_finrank_pinnedMotions`, the basis-free `+D` core of
-the panel-hinge 1-extension). This commit lands the **framework-
-construction op** (`def:framework-with-graph` / `lem:motions-mono-of-
-graph-le`, green): `BodyHingeFramework.withGraph` (swap the underlying
-multigraph, keep the hinge data — hence every supporting extensor /
-hinge-row block) plus the graph-monotonicity of the null space
-(`infinitesimalMotions_le_withGraph_of_le` and its `finrank` form,
-"deleting edges enlarges `Z(G,p)`"). This is the shared, citation-free
-primitive both inductive cases need; it is hand-off #1 from the previous
-commit. The cycle input `lem:cycle-realization` (KT Lemma 5.4) is a
+the panel-hinge 1-extension), and the framework-construction op
+`def:framework-with-graph` / `lem:motions-mono-of-graph-le`. This commit
+lands the **Case I block-pinning op** (`def:pinned-motions-on`, green):
+`BodyHingeFramework.pinnedMotionsOn s` — the infinitesimal motions
+vanishing on every body of a set `s ⊆ α`, the set-level analogue of
+Phase 18's `pinnedMotions v` and the framework-side carrier of
+contracting a rigid subgraph `H` (pin all of `V(H)` → one body). Ships
+the membership simp lemma, `pinnedMotionsOn_singleton` (recovers
+`pinnedMotions v` at `s = {v}`), `pinnedMotionsOn_eq_iInf` (block pin =
+`⨅ v ∈ s, pinnedMotions v` for nonempty `s`), and the two monotonicity
+facts (`pinnedMotionsOn_mono`, `pinnedMotionsOn_le_pinnedMotions`). The
+`s.Nonempty` hypothesis on the iInf identity is essential: the empty
+infimum is `⊤` and would drop the shared `IsInfinitesimalMotion`
+condition. This is hand-off #1's incremental first piece (the
+`pinnedMotions`-relationship lemma, landed before the genericity
+device). The cycle input `lem:cycle-realization` (KT Lemma 5.4) is a
 **verified cite** — not Lean: its proposition numbers ([4] Crapo–Whiteley
 1982 Prop 3.4, [34] Whiteley 1999 Kluwer Prop 3) were checked against the
 local OCR'd primaries and pinned. Still red: `prop:rigidity-matrix-prop11`,
@@ -109,6 +116,13 @@ Framework-construction op (shared infra for Cases I & II):
   `prop:rigidity-matrix-prop11` uses). Axiom-clean. Green.
 
 Case I (proper rigid subgraph; KT §6.2):
+- [x] `def:pinned-motions-on` — `BodyHingeFramework.pinnedMotionsOn s`:
+  block-pin the bodies of a set `s` (motions vanishing on all of `s`).
+  Set-level analogue of Phase 18's `pinnedMotions v`; the framework-side
+  carrier of rigid-subgraph contraction (pin `V(H)`). Ships
+  `pinnedMotionsOn_singleton`, `pinnedMotionsOn_eq_iInf` (nonempty `s`),
+  `pinnedMotionsOn_mono`, `pinnedMotionsOn_le_pinnedMotions`. Axiom-clean.
+  Green.
 - [ ] `lem:cycle-realization` — KT Lemma 5.4. **Decision revised
   2026-06-03: formalize before phase close** (was cite-only; see
   *Decisions made* below for the original citation work, which stands,
@@ -182,9 +196,18 @@ decomposition).
   Z(G',p)`), proved through `Graph.IsLink.mono` (called explicitly, not
   via dot notation — FRICTION recurrence). The *vertex-level* ops
   (contraction `G/E(H)`, splitting-off `G_v^{ab}`) that actually change
-  `|V|` are left for the next commit — they are where Cases I/II diverge.
+  `|V|` are left for later commits — they are where Cases I/II diverge.
   Needed the `Mathlib.Combinatorics.Graph.Subgraph` import (`≤` on
   `Graph` lives there, not `.Basic`).
+- **Case I block-pinning landed at the set-pin level (`pinnedMotionsOn`).**
+  The first incremental piece of hand-off #1: rather than build a full
+  vertex-quotient contraction op up front, the framework-side carrier of
+  "contract rigid `H` to one body" is `pinnedMotionsOn (V(H))` — pin the
+  whole block. Generalizes `pinnedMotions v` (= `pinnedMotionsOn {v}`)
+  and equals `⨅ v ∈ s, pinnedMotions v` for nonempty `s`, the form Case
+  I's block-triangular rank accounting will run against the per-body
+  pin-a-body identity. No new mathlib needed; built directly mirroring
+  the `pinnedMotions` submodule.
 - **Cycle Lemma 5.4 (`lem:cycle-realization`): citation work (stands).**
   KT's Lemma 5.4 — a cycle graph with `3 ≤ |V| ≤ D` has an
   infinitesimally rigid nonparallel panel-hinge realization (= full rank
@@ -253,16 +276,19 @@ decomposition).
 
 Settled: base case (`def:rank-hypothesis` + `lem:theorem-55-base`), the
 Case II `+D` rank-lift accounting (`lem:case-II-rank-lift`), the cycle
-input (`lem:cycle-realization`, cite-only), and now the **graph-level
-framework-construction op** (`def:framework-with-graph` /
-`lem:motions-mono-of-graph-le`): `BodyHingeFramework.withGraph` swaps the
-underlying multigraph keeping the hinge data, and edge deletion only
-enlarges `Z(G,p)`. This is the citation-free `≤`-monotonicity primitive
-both Cases need to compare a realization across the inductive graph
-change. `Molecular/AlgebraicInduction.lean` carries five Lean nodes.
-Remaining red: `lem:cycle-realization` (now slated to formalize before
-phase close — see Blockers / Decisions), `prop:rigidity-matrix-prop11`,
-`thm:theorem-55`, `lem:case-I`, `lem:case-II` (gating on the two pieces
+input (`lem:cycle-realization`, cite-only), the graph-level
+framework-construction op (`def:framework-with-graph` /
+`lem:motions-mono-of-graph-le`), and now the **Case I block-pinning op**
+(`def:pinned-motions-on`): `BodyHingeFramework.pinnedMotionsOn s` pins a
+whole block of bodies (motions vanishing on all of `s`), the
+framework-side carrier of contracting a rigid subgraph (pin `V(H)`). It
+generalizes Phase 18's `pinnedMotions v` and equals `⨅ v ∈ s,
+pinnedMotions v` for nonempty `s` — the form Case I's block-triangular
+accounting compares against the per-body pin-a-body identity.
+`Molecular/AlgebraicInduction.lean` carries six Lean nodes. Remaining
+red: `lem:cycle-realization` (slated to formalize before phase close —
+see Blockers / Decisions), `prop:rigidity-matrix-prop11`,
+`thm:theorem-55`, `lem:case-I`, `lem:case-II` (gating on the pieces
 below), `lem:case-III` (22–23).
 
 **Phase-close requirement (do not lose):** `lem:cycle-realization` must
@@ -271,17 +297,21 @@ after Cases I/II). Focused 1–2 commit task on existing API; the
 abstract-model finding + telescoping proof sketch are in *Decisions
 made*. The immediate next commit is still the Case I/II work below.
 
-The next concrete commit must build one of two not-yet-existing pieces:
-1. **Vertex-level graph ops realized as frameworks.** `withGraph` only
-   changes *which edges* impose constraints; Cases I/II additionally
-   change the *vertex set* — Case I contracts a proper rigid subgraph
-   `H` (`G/E(H)`), Case II splits off a reducible degree-2 vertex
-   (`G_v^{ab}`, re-insert `v` with two hinges). Neither vertex-deletion /
-   extension / contraction op exists on `BodyHingeFramework` yet. Likely
-   its own commit (or a small series): define the op + its
-   `infinitesimalMotions` / `pinnedMotions` relationship to the parent,
-   reusing the pin-a-body identity (`finrank_pinnedMotions_add_screwDim`)
-   and the new `withGraph` monotonicity for the edge-set bookkeeping.
+The next concrete commit continues hand-off #1 (vertex-level ops) or
+opens #2 (the genericity device):
+1. **Block-pinning rank accounting** (continues the just-landed
+   `def:pinned-motions-on`). The natural follow-on to `pinnedMotionsOn`
+   is its `finrank` relationship to the parent — the block analogue of
+   `finrank_pinnedMotions_add_screwDim` (pinning a rigid block of size
+   `m` removes `D·?` — work out the exact count via the `⨅` form
+   `pinnedMotionsOn_eq_iInf` and the rigid-block rank). Then the genuine
+   vertex-set-changing op: Case I contracts `H` (`G/E(H)`), Case II
+   splits off a reducible degree-2 vertex (`G_v^{ab}`, re-insert `v`
+   with two hinges). A vertex-quotient / vertex-extension op on
+   `BodyHingeFramework` does not exist yet — likely its own commit(s):
+   define the op + its `infinitesimalMotions` / `pinnedMotionsOn`
+   relationship to the parent, reusing the pin-a-body identity and the
+   `withGraph` monotonicity for edge-set bookkeeping.
 2. **Claim 6.4 / 6.9 genericity device** (Blockers): matrix entries are
    polynomials in alg.-indep. panel coords ⇒ a generic point attains max
    rank. First step is an *assessment* (scoping commit / FRICTION entry):
@@ -289,7 +319,8 @@ The next concrete commit must build one of two not-yet-existing pieces:
    coordinate parametrization need new infra? It determines whether
    Cases I/II are one commit or several.
 
-Smallest forward step: start the vertex-level contraction op for Case I
-(#1) — it can land its `pinnedMotions`-relationship lemma incrementally
-before the genericity device is in place. Broad phase; may split Case I
-from Case II (precedent: Phases 8–11). Phases 22–23 pick up Case III.
+Smallest forward step: the block-pinning `finrank` accounting (#1's next
+piece) — it builds directly on the just-landed `pinnedMotionsOn` and the
+green `finrank_pinnedMotions_add_screwDim`, before the genericity device
+is in place. Broad phase; may split Case I from Case II (precedent:
+Phases 8–11). Phases 22–23 pick up Case III.

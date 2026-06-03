@@ -218,6 +218,83 @@ theorem finrank_infinitesimalMotions_le_of_graph_le [Finite α] (F : BodyHingeFr
       Module.finrank ℝ (F.withGraph G').infinitesimalMotions :=
   Submodule.finrank_mono (F.infinitesimalMotions_le_withGraph_of_le hle)
 
+/-! ## Block-pinning a rigid subgraph (`def:pinned-motions-on`, Case I infra)
+
+Case I of Theorem 5.5 contracts a *proper rigid subgraph* `H`: every body of `V(H)` collapses
+to a single body of the contraction `G/E(H)`. The framework-side carrier of that move is
+**block-pinning** — fixing the screws of *all* bodies of `V(H)` to zero, the set-level analogue
+of `pinnedMotions v`. We package it as `pinnedMotionsOn s`, the infinitesimal motions vanishing
+on every body of `s`; pinning a single body is the special case `s = {v}`
+(`pinnedMotionsOn_singleton`), and the block pin is the infimum of the single-body pins over
+`s` (`pinnedMotionsOn_eq_iInf`). This is the framework primitive Case I's block-triangular
+gluing runs on; its `+D·|V(H)|`-style rank accounting (the generalization of the pin-a-body
+identity `finrank_pinnedMotions_add_screwDim`) lands with the contraction realization once the
+rigid block is placed. -/
+
+/-- **Block-pinning at a set of bodies** (`def:pinned-motions-on`): the infinitesimal motions
+`S` vanishing on *every* body of `s ⊆ α`, `∀ v ∈ s, S v = 0`. Fixing a whole block of bodies to
+the zero screw is the algebraic effect of contracting them to one pinned body — the move Case I
+makes on a rigid subgraph `H` (pin all of `V(H)`). Generalizes the single-body pin
+`pinnedMotions v` (`pinnedMotionsOn_singleton`); carried as the submodule of
+`infinitesimalMotions` cut out by the conjunction of vanishing conditions. -/
+def pinnedMotionsOn (F : BodyHingeFramework k α β) (s : Set α) :
+    Submodule ℝ (α → ScrewSpace k) where
+  carrier := {S | F.IsInfinitesimalMotion S ∧ ∀ v ∈ s, S v = 0}
+  add_mem' {S T} hS hT :=
+    ⟨F.infinitesimalMotions.add_mem hS.1 hT.1,
+      fun v hv => by rw [Pi.add_apply, hS.2 v hv, hT.2 v hv, add_zero]⟩
+  zero_mem' := ⟨F.infinitesimalMotions.zero_mem, fun _ _ => rfl⟩
+  smul_mem' c S hS :=
+    ⟨F.infinitesimalMotions.smul_mem c hS.1,
+      fun v hv => by rw [Pi.smul_apply, hS.2 v hv, smul_zero]⟩
+
+@[simp]
+theorem mem_pinnedMotionsOn (F : BodyHingeFramework k α β) (s : Set α) (S : α → ScrewSpace k) :
+    S ∈ F.pinnedMotionsOn s ↔ F.IsInfinitesimalMotion S ∧ ∀ v ∈ s, S v = 0 :=
+  Iff.rfl
+
+/-- **Block-pinning a single body is body-pinning** (`def:pinned-motions-on`): pinning the
+one-element block `{v}` recovers the pin-a-body subspace `pinnedMotions v` of Phase 18, so the
+block pin is a genuine generalization. -/
+@[simp]
+theorem pinnedMotionsOn_singleton (F : BodyHingeFramework k α β) (v : α) :
+    F.pinnedMotionsOn {v} = F.pinnedMotions v := by
+  ext S
+  simp [mem_pinnedMotionsOn, mem_pinnedMotions]
+
+/-- **Block-pinning is the infimum of the single-body pins** (`def:pinned-motions-on`): for a
+nonempty block, `pinnedMotionsOn s = ⨅ v ∈ s, pinnedMotions v`. A motion vanishes on the whole
+block `s` exactly when it vanishes at each body of `s`, so the block pin is the intersection of
+the single-body pins over `s` (the nonemptiness carries the shared `IsInfinitesimalMotion`
+condition, which the empty infimum `⊤` would otherwise drop). This is the form Case I's
+block-triangular accounting uses to relate the block pin to the per-body pin-a-body identity
+(`finrank_pinnedMotions_add_screwDim`). -/
+theorem pinnedMotionsOn_eq_iInf (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty) :
+    F.pinnedMotionsOn s = ⨅ v ∈ s, F.pinnedMotions v := by
+  obtain ⟨w, hw⟩ := hs
+  ext S
+  simp only [mem_pinnedMotionsOn, Submodule.mem_iInf, mem_pinnedMotions]
+  constructor
+  · rintro ⟨hmot, hvan⟩ v hv
+    exact ⟨hmot, hvan v hv⟩
+  · intro h
+    exact ⟨(h w hw).1, fun v hv => (h v hv).2⟩
+
+/-- **Block-pinning shrinks under a larger block** (`def:pinned-motions-on`): pinning more bodies
+can only cut the motion space, `s ⊆ t → pinnedMotionsOn t ≤ pinnedMotionsOn s`. Each extra pinned
+body imposes one more vanishing condition. -/
+theorem pinnedMotionsOn_mono (F : BodyHingeFramework k α β) {s t : Set α} (hst : s ⊆ t) :
+    F.pinnedMotionsOn t ≤ F.pinnedMotionsOn s :=
+  fun _ hS => ⟨hS.1, fun v hv => hS.2 v (hst hv)⟩
+
+/-- **Block-pinning sits below any single-body pin in the block** (`def:pinned-motions-on`):
+for `v ∈ s`, `pinnedMotionsOn s ≤ pinnedMotions v`. Pinning the whole block in particular pins
+`v`. -/
+theorem pinnedMotionsOn_le_pinnedMotions (F : BodyHingeFramework k α β) {s : Set α} {v : α}
+    (hv : v ∈ s) :
+    F.pinnedMotionsOn s ≤ F.pinnedMotions v :=
+  fun _ hS => ⟨hS.1, hS.2 v hv⟩
+
 end BodyHingeFramework
 
 end CombinatorialRigidity.Molecular

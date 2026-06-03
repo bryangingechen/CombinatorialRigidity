@@ -224,10 +224,32 @@ Cases~I and~II travel toward the smaller inductive graph.
   sources).
 \end{proof}
 
+\begin{definition}[Block-pinning a set of bodies]
+  \label{def:pinned-motions-on}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_singleton,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_eq_iInf}
+  \leanok
+  \uses{def:rigidity-matrix, lem:rank-delete-vertex}
+  For a body-hinge framework $F = (G,p)$ and a set of bodies
+  $s \subseteq V$, the \emph{block pin} $Z_s(G,p)$ is the subspace of
+  infinitesimal motions vanishing on every body of $s$:
+  $\{S \in Z(G,p) : S|_s = 0\}$. It is the set-level analogue of the
+  pin-a-body subspace $\operatorname{pinned}(v)$
+  (\cref{lem:rank-delete-vertex}), recovering it at a singleton
+  ($Z_{\{v\}}(G,p) = \operatorname{pinned}(v)$), and for a nonempty
+  block equals the intersection of the single-body pins,
+  $Z_s(G,p) = \bigsqcap_{v \in s} \operatorname{pinned}(v)$. Fixing a
+  whole block of bodies to the zero screw is the algebraic effect of
+  contracting them to one pinned body --- the move Case~I makes on a
+  rigid subgraph $H$ (pin all of $V(H)$), so $Z_{V(H)}(G,p)$ is the
+  framework-side carrier of the rigid-block contraction.
+\end{definition}
+
 \begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
   \label{lem:case-I}
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
-        lem:rank-delete-vertex, lem:cycle-realization}
+        lem:rank-delete-vertex, lem:cycle-realization, def:pinned-motions-on}
   Let $G$ be a minimal $k$-dof-graph with a proper rigid subgraph $H$.
   Then $G$ has a realization at rank $D(|V|-1) - k$, built from a
   realization of the contraction $G/E(H)$ (a smaller minimal
