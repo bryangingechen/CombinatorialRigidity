@@ -18,8 +18,9 @@ the complete KT 3.5 chain) and the **graph operations** green: the vertex-induce
 construction (`def:induced-span`), the full form of KT Lemma 3.4 (`lem:circuit-induces-rigid`),
 the four graph operations (`def:graph-operations` + `def:rigid-contraction`), and the full
 KT 3.5 assembly `lem:contraction-minimality` (rank core → contraction arithmetic →
-deficiency conservation → minimality transport → assembly). Next is the forest-surgery core
-(KT 4.1/4.2).
+deficiency conservation → minimality transport → assembly). The forest-surgery **framing**
+sub-node (`lem:forest-packing-decomp`) is now green too; next is the surgery proper
+(KT 4.1, `lem:forest-surgery-split`).
 
 - **`def:induced-span`** — `Graph.fiberSpan G n X = (G.mulTilde n).spanningVerts X`
   (the vertices `V(X)` spanned by a fiber set `X` of `G̃`) and
@@ -102,9 +103,24 @@ hand-off's repeated finding, now confirmed at the assembly: `IsMinimalKDof` of t
 graph-collapse `rigidContract` phrasing is deferred — Cases I/III of Phase 21+ consume the
 matroid-side form directly.
 
-Next concrete step: the **forest-surgery core** (4.1/4.2,
-`lem:forest-surgery-split`/`-unsplit`) is the budget-the-most-time piece (decide
-explicit-forests vs matroid-base framing when the first surgery node lands).
+And now green: `lem:forest-packing-decomp` (`Graph.matroidMG_indep_iff_exists_forest_packing`),
+the **framing sub-node** of the forest surgery (KT 4.1/4.2). An `I ⊆ E(G̃)` is independent in
+`M(G̃)` iff it is covered by `D = bodyBarDim n` cycle-matroid-independent fiber sets — the `D`
+edge-disjoint forests KT's surgery operates on. **Resolves the open framing blocker:** the
+matroid-base / `union_indep_iff` framing (NOT a hand-rolled graph-acyclicity predicate) is
+forced, because `matroidMG = (⋃_{i<D} cycleMatroid(G̃)) ↾ E(G̃)` already (`def:matroid-MG`), so
+"D edge-disjoint forests" = the `Matroid.union_indep_iff` decomposition and "forest" =
+`(G̃).cycleMatroid`-independent. 1-line proof (`rw [matroidMG, restrict_indep_iff,
+union_indep_iff]; tauto`). Axiom-free. Factored as its own blueprint node feeding
+`lem:forest-surgery-split`.
+
+Next concrete step: the **forest-surgery proper** (`lem:forest-surgery-split`, KT 4.1). With
+the framing now fixed, this is: take the `D`-forest packing of an independent set `I`, reroute
+each forest across the degree-2 vertex `v` (degree-1-in-`Fᵢ` forests drop their `v`-edge;
+degree-2-in-`Fᵢ` forests swap their two `v`-edges for one `ãb` copy), and reassemble into an
+independent `I'` of `M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1`. The bookkeeping
+(per-forest acyclicity preservation + edge-disjointness of the `ãb` copies used) is the hard
+combinatorial core; budget the most time.
 
 ## Architectural choices made up front
 
@@ -166,8 +182,15 @@ Graph operations:
   (`Graph.rigidContract`, via `deleteEdges` + `map (collapseTo …)`).
 
 Forest surgery (hard core):
+- [x] `lem:forest-packing-decomp` — framing sub-node of KT 4.1/4.2:
+  `I` independent in `M(G̃)` ⟺ covered by `D` cycle-matroid-independent fiber
+  sets (the `D` edge-disjoint forests). `Graph.matroidMG_indep_iff_exists_forest_packing`;
+  1-line `rw [matroidMG, restrict_indep_iff, union_indep_iff]; tauto`. **Decides the
+  framing blocker** (matroid-base via `union_indep_iff`, not hand-rolled acyclicity).
 - [ ] `lem:forest-surgery-split` — KT 4.1, splitting-off direction
-  (explicit forest surgery at a degree-2 vertex).
+  (the surgery proper: reroute each of the `D` forests across the degree-2
+  vertex `v`, giving `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1`). Built on
+  `lem:forest-packing-decomp`.
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction
   (the inverse; makes split/unsplit inverse on deficiency).
 
@@ -246,9 +269,12 @@ only by Case 6.1).
 
 ## Blockers / open questions
 
-- **Forest-surgery framing** (risk: more abstract machinery than the
-  explicit `D`-forest argument needs). Decide explicit-forests vs.
-  matroid-base framing when `lem:forest-surgery-split` lands.
+- **[resolved] Forest-surgery framing.** Decided by `lem:forest-packing-decomp`:
+  the matroid-base / `union_indep_iff` framing is *forced* by the existing
+  `matroidMG` definition (`= (⋃_{i<D} cycleMatroid(G̃)) ↾ E(G̃)`), so the "D
+  edge-disjoint forests" are the `union_indep_iff` decomposition and a "forest"
+  is a `cycleMatroid`-independent fiber set. No hand-rolled acyclicity predicate.
+  The surgery proper (`lem:forest-surgery-split`) now operates on this packing.
 
 ## Hand-off / next phase
 
@@ -266,18 +292,26 @@ deficiency-conservation half), and now `lem:contract-minimality-transport`
 lemmas.
 
 `lem:contraction-minimality` (`Graph.contraction_isMinimalKDof`, KT 3.5 full assembly) is
-now also green and `\leanok` — the matroid contraction `M(G̃)/E(H̃)` is a minimal `k`-dof
-matroid (corank `= k` ∧ every base meets every surviving fiber). Stated matroid-side; the
-`map` correspondence was confirmed unnecessary one last time, and the graph-collapse
-`rigidContract` phrasing is deferred (Phase 21+ consumes the matroid-side form).
+green and `\leanok` — the matroid contraction `M(G̃)/E(H̃)` is a minimal `k`-dof matroid
+(corank `= k` ∧ every base meets every surviving fiber). Stated matroid-side; the `map`
+correspondence was confirmed unnecessary, and the graph-collapse `rigidContract` phrasing is
+deferred (Phase 21+ consumes the matroid-side form).
 
-Next agent's concrete commit: the **forest-surgery core** — `lem:forest-surgery-split`
-(KT 4.1, splitting-off direction). This is the **hard new pure combinatorics** of the phase
-(flagged in `notes/MolecularConjecture.md` *Phase 20* hard-core; no existing analogue in the
-project or mathlib). **First decide the framing** (the open Blocker): explicit `D`-forest
-surgery at the degree-2 vertex vs. a matroid-base argument on the `D`-fold cycle-matroid
-union. The graph ops (`splitOff` / `edgeSplit` + their `vertexSet_*` / `*_isLink` simp
-lemmas) and `mulTilde` / `edgeMultiply` plumbing are all in place; what is missing is the
-forest-rerouting bookkeeping at `v`. Budget the most time here. After `-split`, its inverse
-`lem:forest-surgery-unsplit` (KT 4.2) makes split/unsplit inverse on the deficiency, then
-the dof-tracking chain (4.3–4.8) and Theorem 4.9.
+And now green and `\leanok`: `lem:forest-packing-decomp`
+(`Graph.matroidMG_indep_iff_exists_forest_packing`), the **framing sub-node** of the forest
+surgery — an `I ⊆ E(G̃)` is independent in `M(G̃)` iff covered by `D` cycle-matroid-independent
+fiber sets (the `D` edge-disjoint forests). This **resolves the open framing blocker**: the
+matroid-base / `union_indep_iff` framing is forced by `matroidMG`'s definition, so a "forest"
+is a `cycleMatroid`-independent fiber set and no hand-rolled acyclicity predicate is needed.
+
+Next agent's concrete commit: the **forest-surgery proper** — `lem:forest-surgery-split`
+(KT 4.1, splitting-off direction). The framing is now fixed (consume `lem:forest-packing-decomp`
+for the `D`-forest packing). The remaining work is the **hard combinatorial core**: reroute each
+of the `D` forests across the degree-2 vertex `v` — forests with `dᶠ(v)=1` drop their `v`-edge,
+forests with `dᶠ(v)=2` swap their two `v`-edges for one fresh `ãb` copy (≤ `D−2` such, so
+`< D−1` copies of `ãb` are used and they stay edge-disjoint) — yielding an independent `I'` of
+`M(G̃ᵥᵃᵇ)` with `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1`. The per-forest acyclicity-preservation
+and `ãb`-edge-disjointness bookkeeping (over `(G̃ᵥᵃᵇ).cycleMatroid`) is what is missing; the graph
+ops (`splitOff` + its simp lemmas) and `mulTilde` plumbing are in place. Budget the most time.
+After `-split`, its inverse `lem:forest-surgery-unsplit` (KT 4.2) makes split/unsplit inverse on
+the deficiency, then the dof-tracking chain (4.3–4.8) and Theorem 4.9.

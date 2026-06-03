@@ -154,6 +154,41 @@ theorem circuit_induces_isTight [DecidableEq β] [Finite α] [Finite β] {G : Gr
         _ ≤ bodyBarDim n * (G.fiberSpan n X).ncard := by gcongr
   omega
 
+/-! ## Forest-packing decomposition of `M(G̃)`-independent sets (`lem:forest-surgery-split`)
+
+The matroidal substrate the Katoh–Tanigawa forest surgery (KT Lemmas 4.1/4.2) operates on.
+`M(G̃)` is the `D`-fold union of the cycle matroid of `G̃` restricted to `E(G̃)`
+(`def:matroid-MG`), so by the matroid-union characterization (`Matroid.union_indep_iff`,
+Nash-Williams 1966 / Edmonds) an independent set `I` of `M(G̃)` is exactly one that decomposes into
+`D = bodyBarDim n` cycle-matroid-independent fiber sets `F₀, …, F_{D-1}` — the **`D`
+edge-disjoint forests on `V(G̃)`** of Katoh–Tanigawa's proof. This pins the **framing** of
+the surgery (the open Phase-20 blocker): a "forest" of `G̃` is a cycle-matroid-independent
+fiber set (mathlib `Matroid.Graph.cycleMatroid` independence = acyclicity), and the
+`D`-forest partition is the `Matroid.union_indep_iff` decomposition — *no* hand-rolled
+graph-theoretic acyclicity predicate is introduced. KT 4.1's surgery then reroutes each of
+these `D` forests across the degree-2 vertex `v`. -/
+
+/-- **Forest-packing decomposition of an `M(G̃)`-independent set** (`lem:forest-surgery-split`,
+framing; Katoh–Tanigawa 2011, the "partition `I` into `D` edge-disjoint forests on `V`" step
+opening the proofs of Lemmas 4.1/4.2). A fiber set `I ⊆ E(G̃)` is independent in `M(G̃)` iff it
+is covered by `D = bodyBarDim n` cycle-matroid-independent fiber sets (the `D` edge-disjoint
+forests of `G̃`): `∃ Fs : Fin D → Set _, ⋃ i, Fs i = I ∧ ∀ i, (G̃.cycleMatroid).Indep (Fs i)`.
+
+This is the matroidal reading of "`I` partitions into `D` edge-disjoint forests": `M(G̃)` is the
+`D`-fold cycle-matroid union restricted to `E(G̃)` (`def:matroid-MG`), so independence unfolds
+through `Matroid.restrict_indep_iff` and `Matroid.union_indep_iff` (Nash-Williams 1966 /
+Edmonds). It fixes
+the framing of the Katoh–Tanigawa forest surgery: a "forest" is a `(G̃).cycleMatroid`-independent
+fiber set, and the surgery of KT Lemma 4.1 reroutes each of these `D` forests across the
+degree-2 vertex. -/
+theorem matroidMG_indep_iff_exists_forest_packing [DecidableEq β] [Finite α] [Finite β]
+    (G : Graph α β) (n : ℕ) {I : Set (β × Fin (bodyHingeMult n))} :
+    (G.matroidMG n).Indep I ↔ I ⊆ E(G.mulTilde n) ∧
+      ∃ Fs : Fin (bodyBarDim n) → Set (β × Fin (bodyHingeMult n)),
+        ⋃ i, Fs i = I ∧ ∀ i, ((G.mulTilde n).cycleMatroid).Indep (Fs i) := by
+  rw [matroidMG, Matroid.restrict_indep_iff, Matroid.union_indep_iff]
+  tauto
+
 /-! ## A rigid subgraph attains full rank (`lem:contraction-minimality`, rank core)
 
 The matroidal arithmetic the rigid-subgraph contraction of KT Lemma 3.5 opens on: a

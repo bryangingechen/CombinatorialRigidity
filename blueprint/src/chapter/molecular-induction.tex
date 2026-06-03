@@ -224,9 +224,33 @@ and Theorem~4.9.
 \subsection{Forest surgery}
 \label{sec:molecular-induction-forest}
 
+\begin{lemma}[Forest-packing decomposition of an $M(\tilde G)$-independent set]
+  \label{lem:forest-packing-decomp}
+  \lean{Graph.matroidMG_indep_iff_exists_forest_packing}
+  \leanok
+  \uses{def:matroid-MG}
+  A fiber set $I \subseteq E(\tilde G)$ is independent in $M(\tilde G)$ if and only
+  if it is covered by $D = \binom{d+1}{2}$ cycle-matroid-independent fiber sets
+  $F_0, \dots, F_{D-1}$ --- the \emph{$D$ edge-disjoint forests on $V(\tilde G)$} of
+  Katoh--Tanigawa's surgery: $\bigcup_{i} F_i = I$ with each $F_i$ a forest of
+  $\tilde G$. This is the matroidal reading of ``$I$ partitions into $D$ forests'',
+  fixing the framing of the forest surgery below: a \emph{forest} is a
+  cycle-matroid-independent fiber set, and the $D$-forest partition is the union
+  decomposition of $M(\tilde G)$ --- no hand-rolled acyclicity predicate.
+\end{lemma}
+\begin{proof}
+  \leanok
+  $M(\tilde G)$ is the $D$-fold cycle-matroid union restricted to $E(\tilde G)$
+  (\cref{def:matroid-MG}), so independence unfolds through matroid restriction and
+  the matroid-union characterization (Nash--Williams~\cite{nashWilliams1966},
+  Edmonds~\cite{edmonds1965}): independence in $\bigcup_{i < D}
+  \operatorname{cycleMatroid}(\tilde G)$ is exactly a cover by $D$
+  cycle-matroid-independent sets.
+\end{proof}
+
 \begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
   \label{lem:forest-surgery-split}
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp}
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
   packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
   the fibers not incident to $v$ and rerouted across $v$, induces a
