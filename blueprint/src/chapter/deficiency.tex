@@ -239,9 +239,36 @@ phase proceeds, leaf-first.
   \cref{sec:molecular-rigidity-matrix}).
 \end{proof}
 
+\begin{lemma}[Partition-respecting cycle-matroid rank bound]
+  \label{lem:rk-within-parts}
+  \lean{Graph.rk_cycleMatroid_within_parts_le}
+  \leanok
+  \uses{def:matroid-MG, def:D-deficiency}
+  Let $P$ be a partition of $V(G)$ and let $Y \subseteq E(\tilde G)$ be the set
+  of fibers of $\tilde G$ whose two endpoints lie in the same part of $P$
+  (the non-crossing fibers). Then the cycle-matroid rank of $Y$ satisfies
+  \[
+    \operatorname{r}_{\mathrm{cycle}}(Y) + |P| \;\le\; |V(G)|,
+  \]
+  i.e.\ $\operatorname{r}_{\mathrm{cycle}}(Y) \le |V(G)| - |P|$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By the cycle-matroid rank--component identity
+  $\operatorname{r}_{\mathrm{cycle}}(Y) + c(\tilde G \restriction Y) = |V(G)|$
+  (the edge-restriction $\tilde G \restriction Y$ keeps every vertex, so
+  $V(\tilde G \restriction Y) = V(\tilde G) = V(G)$). It remains to see
+  $c(\tilde G \restriction Y) \ge |P|$. A fiber of $Y$ joins two
+  equally-labelled vertices, so along any walk of $\tilde G \restriction Y$ the
+  part label is constant; hence the part containing a vertex is a connected-
+  component invariant, and the map sending each part to the component of one of
+  its vertices is injective. Thus the number of components is at least the
+  number $|P|$ of parts.
+\end{proof}
+
 \begin{theorem}[$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$; Jackson--Jord\'an]
   \label{thm:def-eq-corank}
-  \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le}
+  \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le, lem:rk-within-parts}
   For any base $B$ of $M(\tilde G)$,
   \[
     |B| + \operatorname{def}(\tilde G) \;=\; D\,(|V| - 1),

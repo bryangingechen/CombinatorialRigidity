@@ -504,4 +504,90 @@ theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α
         omega
     _ = bodyBarDim n * (V(G).ncard - 1) := by rw [Nat.mul_sub, Nat.mul_one]
 
+/-! ## Partition-respecting cycle-matroid rank bound (`thm:def-eq-corank`, piece 1)
+
+The leaf the weak-duality half of the def = corank bridge bottoms out on: for the
+edge set `Y` of `G̃` whose every edge stays *within* a part of the partition `P`
+encoded by `f` (no crossing edge), the cycle-matroid rank is bounded by
+`r_{cycle}(Y) ≤ |V(G)| - |P|`. The point is *rank ≤ vertices − components* together
+with *components ≥ #parts*: a within-part edge keeps connectivity inside a part, so
+the connected components of `(G̃ ↾ Y)` refine the partition, hence there are at least
+`|P| = numParts` of them. -/
+
+/-- A labeling `f` that agrees across the endpoints of every edge of `Y` is constant
+on each connected component of the restriction `H ↾ Y`: if `x` and `y` are joined by a
+walk in `H ↾ Y`, then `f x = f y`. Proof by induction on the walk — each `cons` step is
+an `H ↾ Y`-link, hence an `H`-link with edge in `Y`, so `f` agrees across it. The engine
+of the components-refine-the-partition count in `rk_cycleMatroid_within_parts_le`. -/
+private theorem label_eq_of_connBetween {α γ : Type*} {H : Graph α γ} {Y : Set γ}
+    {f : α → α} (hY : ∀ e ∈ Y, ∀ x y, H.IsLink e x y → f x = f y) {x y : α}
+    (h : (H ↾ Y).ConnBetween x y) : f x = f y := by
+  obtain ⟨w, hw, rfl, rfl⟩ := h
+  induction hw with
+  | nil hx => rfl
+  | cons hw hlink ih =>
+    rw [Graph.restrict_isLink] at hlink
+    rw [WList.first_cons, WList.last_cons, hY _ hlink.1 _ _ hlink.2]
+    exact ih
+
+/-- **Partition-respecting cycle-matroid rank bound** (`thm:def-eq-corank`, piece 1;
+the components-refine-the-partition leaf). For the multiplied graph `G̃ = (D-1)·G`,
+the edge set `Y` of within-part fibers under the partition `P` encoded by `f` (every
+edge of `Y` joins two equally-labeled vertices) satisfies
+`r_{cycle}(Y) + numParts f ≤ |V(G)|`, i.e. `r_{cycle}(Y) ≤ |V(G)| - |P|`.
+
+Via the cycle-matroid rank–component identity `eRank + c = |V|` on the restriction
+`G̃ ↾ Y` (which keeps every vertex, so `V(G̃ ↾ Y) = V(G̃) = V(G)`): the rank is
+`|V(G)| - c(G̃ ↾ Y)`, and `c(G̃ ↾ Y) ≥ numParts f` because the labeling is constant on
+each component (`label_eq_of_connBetween`), so the map sending a label to the component
+of one of its vertices is injective. -/
+theorem rk_cycleMatroid_within_parts_le [Finite α] [Finite β] (G : Graph α β)
+    (n : ℕ) {Y : Set (β × Fin (bodyHingeMult n))} (hYE : Y ⊆ E(G.mulTilde n)) {f : α → α}
+    (hY : ∀ p ∈ Y, ∀ x y, (G.mulTilde n).IsLink p x y → f x = f y) :
+    (G.mulTilde n).cycleMatroid.rk Y + G.numParts f ≤ V(G).ncard := by
+  haveI : Fintype α := Fintype.ofFinite α
+  classical
+  set H := G.mulTilde n with hH
+  have hVH : V(H) = V(G) := by rw [hH, mulTilde]; rfl
+  -- Rank–component identity on `H ↾ Y` (vertices preserved): `rk Y + c(H ↾ Y) = |V(G)|`.
+  have hrank : H.cycleMatroid.eRk Y = (H ↾ Y).cycleMatroid.eRank := by
+    rw [cycleMatroid_restrict, inter_eq_right.mpr hYE, Matroid.eRank_restrict]
+  have hid : (H ↾ Y).cycleMatroid.eRank + c(H ↾ Y) = V(G).encard := by
+    rw [eRank_cycleMatroid_add_numberOfComponents (H ↾ Y), vertexSet_restrict, hVH]
+  -- Choose a total representative-vertex function for each label.
+  have hrep : ∀ ℓ : α, ∃ x : α, ℓ ∈ f '' V(G) → x ∈ V(G) ∧ f x = ℓ := by
+    intro ℓ
+    by_cases hℓ : ℓ ∈ f '' V(G)
+    · obtain ⟨x, hx, rfl⟩ := hℓ; exact ⟨x, fun _ => ⟨hx, rfl⟩⟩
+    · exact ⟨ℓ, fun h => (hℓ h).elim⟩
+  choose rep hrep using hrep
+  -- The map `ℓ ↦ walkable (rep ℓ)` injects `f '' V(G)` into the components of `H ↾ Y`.
+  have hmaps : Set.MapsTo (fun ℓ => (H ↾ Y).walkable (rep ℓ)) (f '' V(G)) (H ↾ Y).Components := by
+    intro ℓ hℓ
+    exact mem_components_iff_isCompOf.mpr
+      (walkable_isCompOf (x := rep ℓ) (by rw [vertexSet_restrict, hVH]; exact (hrep ℓ hℓ).1))
+  have hinj : Set.InjOn (fun ℓ => (H ↾ Y).walkable (rep ℓ)) (f '' V(G)) := by
+    intro ℓ hℓ ℓ' hℓ' heq
+    simp only [] at heq
+    -- `rep ℓ'` lies in `walkable (rep ℓ)`, so the two reps are connected, hence equally labeled.
+    have hmem : rep ℓ' ∈ V((H ↾ Y).walkable (rep ℓ)) := by
+      rw [heq, mem_walkable_self_iff, vertexSet_restrict, hVH]; exact (hrep ℓ' hℓ').1
+    rw [mem_walkable_iff] at hmem
+    have hff := label_eq_of_connBetween hY hmem.symm
+    rw [(hrep ℓ hℓ).2, (hrep ℓ' hℓ').2] at hff
+    exact hff.symm
+  have hle_enc : (f '' V(G)).encard ≤ c(H ↾ Y) :=
+    Set.encard_le_encard_of_injOn hmaps hinj
+  -- Cast to `ℕ`: everything is finite since `V(G).encard` is.
+  have hfinV : V(G).encard ≠ ⊤ := by rw [Set.encard_ne_top_iff]; exact V(G).toFinite
+  have hnp : (G.numParts f : ℕ∞) ≤ c(H ↾ Y) := by
+    rw [numParts, Set.Finite.cast_ncard_eq ((f '' V(G)).toFinite)]; exact hle_enc
+  -- `eRk Y = rk Y`, and `rk Y + numParts ≤ rk Y + c = |V(G)|`.
+  have hrk_eq : (H.cycleMatroid.rk Y : ℕ∞) = (H ↾ Y).cycleMatroid.eRank := by
+    rw [Matroid.cast_rk_eq_eRk_of_finite _ (Set.toFinite Y), hrank]
+  have hsum : (H.cycleMatroid.rk Y : ℕ∞) + (G.numParts f : ℕ∞) ≤ (V(G).ncard : ℕ∞) := by
+    rw [Set.Finite.cast_ncard_eq V(G).toFinite, ← hid, hrk_eq]
+    gcongr
+  exact_mod_cast hsum
+
 end Graph

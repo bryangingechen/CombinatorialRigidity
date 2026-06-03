@@ -4,8 +4,10 @@
 + the rank upper bound landed: `lem:matroid-restrict-subgraph`,
 `lem:subgraph-minimality` (KT 3.3), `lem:two-edge-conn` (KT 3.1, cut form),
 `lem:circuit-rigid` (KT 3.4, matroidal core), `lem:rank-matroidMG-le`
-(conjecture-relevant half of `thm:def-eq-corank`); the full `thm:def-eq-corank`
-equality is the one remaining node).
+(conjecture-relevant half of `thm:def-eq-corank`); plus piece 1 of the full
+`thm:def-eq-corank` sub-plan — the partition-respecting cycle-matroid rank bound
+`lem:rk-within-parts`. The full `thm:def-eq-corank` equality (pieces 2–3:
+weak duality + the JJ09 reverse) is the one remaining node).
 
 This phase is stratum 3 of the molecular-conjecture program (KT §2.5,
 §3). The program-level plan, reuse map, citations, and risk register
@@ -107,7 +109,23 @@ dependent, which is the reverse direction of the full `def = corank` min–max
 (`thm:def-eq-corank`, JJ09, risk #4); deferred with that node, and would also need a
 vertex-induced-subgraph-from-edge-set construction (no existing analogue).
 
-Next concrete step: the full `thm:def-eq-corank` equality (JJ09 min–max reverse direction).
+Piece 1 of the `thm:def-eq-corank` sub-plan is now green: `lem:rk-within-parts`
+(`Graph.rk_cycleMatroid_within_parts_le`). For a labeling `f` and the non-crossing-fiber
+edge set `Y` of `G̃` (every fiber of `Y` joins two equally-`f`-labelled vertices),
+`r_cycle(Y) + numParts f ≤ |V(G)|`. Proof: the rank–component identity
+`eRank(G̃ ↾ Y) + c(G̃ ↾ Y) = |V(G)|` (the edge-restriction `G̃ ↾ Y` keeps every vertex,
+so `V(G̃ ↾ Y) = V(G̃) = V(G)`, via `eRank_cycleMatroid_add_numberOfComponents`), plus
+`c(G̃ ↾ Y) ≥ numParts f` from the components-refine-the-partition injection. The injection
+engine is the private `label_eq_of_connBetween` (`f` is constant on each `G̃ ↾ Y` component,
+by walk induction since each cons-edge is a within-part fiber), then label `↦` `walkable(rep)`
+is `InjOn` via `mem_walkable_iff` + `Set.encard_le_encard_of_injOn`. Stated generally on
+`G̃ = mulTilde` (not an abstract `H`) since `numParts`/`mulTilde` are the deficiency-side
+objects; all building blocks (`cycleMatroid_restrict`, the rank–component identity,
+`walkable`/`ConnBetween` API) are upstream in `apnelson1/Matroid`, no new mirror needed.
+
+Next concrete step: **piece 2** — weak duality `rank M(G̃) + def(G̃) ≤ D(|V|−1)`, feeding
+`lem:rk-within-parts` and `Union_pow_rk_eq` (with `X := E(G̃)`, `Y :=` non-crossing fibers,
+`|X∖Y| = (D−1)·d_G(P)` the fiber-crossing bookkeeping) per the sub-plan below.
 
 ## Architectural choices made up front
 
@@ -150,7 +168,12 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   `lem:two-edge-conn`). (`Graph.IsRigidSubgraph` / `Graph.IsProperRigidSubgraph`.)
 - [ ] `thm:def-eq-corank` — the def = corank bridge (JJ09 Thm 6.1 /
   Cor 6.2): `|B| + def(G̃) = D(|V|−1)`. Full equality still red; the
-  conjecture-relevant upper-bound half is `lem:rank-matroidMG-le` below.
+  conjecture-relevant upper-bound half is `lem:rank-matroidMG-le` below,
+  and piece 1 of the sub-plan is `lem:rk-within-parts` below.
+- [x] `lem:rk-within-parts` — piece 1 of `thm:def-eq-corank`: the
+  partition-respecting cycle-matroid rank bound `r_cycle(Y) + numParts f ≤ |V|`
+  for the non-crossing-fiber set `Y` (`Graph.rk_cycleMatroid_within_parts_le`,
+  via the rank–component identity + the components-refine-partition injection).
 - [x] `lem:rank-matroidMG-le` — the rank upper bound `rank M(G̃) ≤ D(|V|−1)`
   (`Graph.rank_matroidMG_le`), the conjecture-relevant half of the bridge:
   every base is `(D,D)`-sparse, so `|B| + D ≤ D·|spanningVerts B| ≤ D·|V|`.
@@ -274,6 +297,17 @@ flip to `[x]` as each lands `\leanok` in the chapter.
   deferred with `thm:def-eq-corank` (risk #4) — and (b) a vertex-induced-subgraph-from-an-
   edge-set construction with no existing `Graph α β` analogue. Both land with the bridge.
 
+- **Piece 1 (`lem:rk-within-parts`) via rank–components, not direct-sum-over-parts.**
+  The leaf `r_cycle(Y) + numParts f ≤ |V|` for non-crossing fibers `Y` is proved through
+  the graphic rank–component identity `eRank(G̃ ↾ Y) + c(G̃ ↾ Y) = |V(G)|`
+  (`eRank_cycleMatroid_add_numberOfComponents`; the edge-restriction keeps every vertex,
+  so `V(G̃ ↾ Y) = V(G)`) plus `c ≥ numParts` from a components-refine-partition injection
+  (label `↦` `walkable(rep)`, `InjOn` via `mem_walkable_iff` + `Set.encard_le_encard_of_injOn`).
+  The injection's correctness is the private `label_eq_of_connBetween`: `f` is constant on
+  each `G̃ ↾ Y` component, by `IsWalk` induction (each cons-edge is a within-part fiber).
+  Stated on `mulTilde`/`numParts` directly (deficiency-side objects), not an abstract `H`.
+  Building blocks all upstream in `apnelson1/Matroid`; no new mirror, axiom-free.
+
 - **`thm:def-eq-corank` split: prove the upper bound, defer the JJ09 reverse (risk #4).**
   The full equality `|B| + def(G̃) = D(|V|−1)` is a min–max duality (Edmonds rank over
   edge-subsets vs deficiency over vertex-partitions) — the hard JJ09 generic-rank content.
@@ -321,24 +355,32 @@ witnesses a deficiency lower bound" is one `partitionDef_le_deficiency` call.
 
 The one remaining `deficiency.tex` node is the **full** equality `thm:def-eq-corank`
 (its conjecture-relevant upper-bound half is green as `lem:rank-matroidMG-le`; the KT 3.4
-matroidal core is green as `lem:circuit-rigid`). **Decision is settled (risk #4, see
-Blockers): prove it in-repo, axiom-free.** It is a sequenced multi-commit sub-plan — do the
-next *unfinished* piece each commit, not the whole bridge at once:
+matroidal core is green as `lem:circuit-rigid`; **piece 1 of the sub-plan is now green** as
+`lem:rk-within-parts`). **Decision is settled (risk #4, see Blockers): prove it in-repo,
+axiom-free.** It is a sequenced multi-commit sub-plan — do the next *unfinished* piece each
+commit, not the whole bridge at once:
 
-1. **Partition-respecting `cycleMatroid` component-rank bound.** For a labeling `f : α → α`
-   (the `partitionDef` partition model) and the within-part edge set `Y`, the graphic-matroid
-   rank `r_cycle(Y) ≤ |V| − numParts f` (rank ≤ vertices − components, components ≥ #parts).
-   No existing project/mathlib lemma covers the labeling-encoded partition; this is the new
-   leaf the weak-duality half bottoms out on. Likely its own commit (possibly a small
-   `Graph`/`cycleMatroid` helper or a mirror lemma).
-2. **Weak duality `rank M(G̃) + def(G̃) ≤ D(|V|−1)`** (equivalently `def ≤ corank`), summing
-   per-part sparsity / piece-1's component bound over the `D`-fold union with the `(D−1)`-fiber
-   multiplicity bookkeeping. Pairs with the already-green `lem:rank-matroidMG-le`.
+1. ✓ **Partition-respecting `cycleMatroid` component-rank bound** — DONE
+   (`Graph.rk_cycleMatroid_within_parts_le` / `lem:rk-within-parts`): for a labeling
+   `f : α → α` and the within-part (non-crossing) fiber set `Y`, `r_cycle(Y) + numParts f ≤ |V|`.
+   Via the rank–component identity on `G̃ ↾ Y` + the components-refine-partition injection
+   (`label_eq_of_connBetween` walk induction). Stated on `mulTilde` directly; no new mirror.
+2. **Weak duality `rank M(G̃) + def(G̃) ≤ D(|V|−1)`** (equivalently `def ≤ corank`) — NEXT.
+   For each labeling `f`, apply `Union_pow_rk_eq` (Phase 13, `Matroid/Constructions/Union.lean`)
+   with `X := E(G̃)` and `Y :=` the non-crossing fibers: `rank ≤ D·r_cycle(Y) + |E(G̃)∖Y|`.
+   Piece 1 bounds `D·r_cycle(Y) ≤ D(|V| − numParts f)`; the bookkeeping leaf is
+   `|E(G̃)∖Y| = (D−1)·d_G(P)` (each of the `d_G(P)` crossing edges of `G` contributes its
+   `D−1` fibers, and the non-crossing fibers are exactly the complement). Combining gives
+   `rank + def_P ≤ D(|V|−1)` for every `f`, hence `rank + def(G̃) ≤ D(|V|−1)` by
+   `partitionDef_le_deficiency` / the `iSup` attainment. (`rank M(G̃)` unfolds via
+   `matroidMG = Union ↾ E(G̃)`, so `rank = rk_Union(E(G̃))` — use the restriction's rank.)
+   May split if the fiber-crossing bookkeeping (`Y` ↔ `crossingEdges`, the `(D−1)·` count)
+   is itself a commit.
 3. **The JJ09 reverse (`def ≥ corank`): a vertex-partition attaining the rank**, via Edmonds
-   matroid-partition rank (Phase 12 `Matroid/Constructions/Union.lean`) + `Union_pow_rank_eq`
+   matroid-partition rank (Phase 12 `Matroid/Constructions/Union.lean`) + `Union_pow_rk_eq`
    (Phase 13) over the `D`-fold graphic union — translating Edmonds' optimal *edge subset* into
-   the deficiency *vertex partition*. Then assemble `|B| + def(G̃) = D(|V|−1)`, flip
-   `thm:def-eq-corank` green.
+   the deficiency *vertex partition* (the optimal `Y` induces the partition into the components
+   of `G̃ ↾ Y`). Then assemble `|B| + def(G̃) = D(|V|−1)`, flip `thm:def-eq-corank` green.
 
 Each piece is a normal forward-mode commit (Lean + blueprint node/`\leanok` + notes). If piece 1
 or 3 itself proves to be multi-commit on contact, split it and keep going. Closing
