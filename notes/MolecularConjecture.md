@@ -4,13 +4,14 @@
 deficiency, `k`-dof, def = corank bridge, the Theorem-4.9 combinatorial
 induction, and the Grassmann–Cayley meet all green; see
 `notes/Phase19.md`, `notes/Phase20.md`, `notes/Phase21a.md`). Phase 21
-(algebraic induction) has **resumed** with the panel layer green, and
-has been **re-scoped to close on the genericity-free content**: the
-shared analytic crux Claim 6.4/6.9 (the genericity device) is scoped out
-into its own sub-phase **Phase 21b**, entering Phase 21's remaining
-nodes as a cited black-box (risk #4/#7 + `DESIGN.md` *Genericity device
-(Claim 6.4/6.9) is its own sub-phase (Phase 21b)*). Phases 21b, 22–26
-planned. This is the program design for Phases 17–26 and the runbook for
+(algebraic induction) is **complete, GREEN-modulo-21b**: all
+genericity-free content green (panel layer, Theorem 5.5, Cases I/II, the
+analytic half of Prop 1.1), with the shared analytic crux Claim 6.4/6.9
+(the genericity device) scoped out into its own sub-phase **Phase 21b**,
+entering each consuming node as an explicit hypothesis (risk #4/#7 +
+`DESIGN.md` *Genericity device (Claim 6.4/6.9) is its own sub-phase
+(Phase 21b)*). **Phase 21b is the next phase to open.** Phases 21b,
+22–26 planned. This is the program design for Phases 17–26 and the runbook for
 threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
@@ -369,14 +370,17 @@ are green; the projective assembly is the 21b genericity device.
   *analytic* hard core — Claim 6.4 / Lemma 6.3 genericity ("entries are
   polynomials in alg.-indep. panel coords ⇒ generic point attains max
   rank") and Lemma 6.8's generic 1-extension lift — is **Phase 21b**.
-- **Inherited from Phase 19** (relocated at Phase-19 close): the analytic
-  half of `prop:rigidity-matrix-prop11` (KT Prop 1.1) — `rank R(G,p) =
+- **Inherited from Phase 19** (relocated at Phase-19 close, landed
+  GREEN-modulo-21b in Phase 21): the analytic half of
+  `prop:rigidity-matrix-prop11` (KT Prop 1.1) — `rank R(G,p) =
   D(|V|−1) − def(G̃)` (JJ [15] Thm 6.1 geometric side), wiring the
   rigidity-matrix rank `R(G,p)` (Phase 18) to the matroid corank
-  (`def = corank M(G̃)`, Phase 19's `thm:def-eq-corank`). Its node is
-  stated in this phase's chapter `\uses`ing the 21b device; the
-  generic-rank conclusion itself lands in **Phase 21b**. Matroidal half
-  already green.
+  (`def = corank M(G̃)`, Phase 19's `thm:def-eq-corank`).
+  `rigidityMatrix_prop11` is the basis-free equality `dim Z = D + def`
+  (= `RankHypothesis (deficiency n)`), pinned by the genericity-free
+  upper bound (`hub`) + the 21b-cited generic-max-rank lower bound
+  (`hgen`) as explicit hypotheses. Matroidal half already green; the
+  generic-rank conclusion (`hgen`) is discharged in **Phase 21b**.
 - Split realized: Phase 21 = genericity-free reductions; Phase 21b =
   the device. Case I vs Case II may still split within Phase 21.
 

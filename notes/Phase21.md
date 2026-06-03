@@ -1,6 +1,10 @@
 # Phase 21 — Algebraic induction: Theorem 5.5 base + Cases I & II (work log)
 
-**Status:** in progress (opened 2026-06-03). Two re-scopes landed
+**Status:** ✓ COMPLETE (opened + closed 2026-06-03). All genericity-free
+content green-modulo-21b; the only remaining red on the algebraic-induction
+chapter is `lem:case-III`, deferred to Phases 22–23. The shared analytic
+crux Claim 6.4/6.9 is sub-phase **Phase 21b** (next; `notes/MolecularConjecture.md`
+*Phase 21b*). Two re-scopes landed
 2026-06-03. (1) The panel-coplanarity re-scope (panel-hinge =
 hinge-coplanar body-hinge) is **resolved**: the gating foundations
 sub-phase **Phase 21a** (Grassmann–Cayley meet) is complete
@@ -35,6 +39,27 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`.
 
 ## Current state
+
+**Phase 21 COMPLETE — `prop:rigidity-matrix-prop11` GREEN-modulo-21b (2026-06-03).** The last
+red node is green: `CombinatorialRigidity.Molecular.rigidityMatrix_prop11`
+(`Molecular/AlgebraicInduction.lean`, end of file) — the analytic half of KT Prop 1.1 /
+Jackson–Jordán 2009 Thm 6.1. In the basis-free codimension convention the target equality
+`rank R(G,p) = D(|V|−1) − def(G̃)` reads `dim Z(G,p) = D + def(G̃)`, i.e. `F.RankHypothesis
+(F.graph.deficiency n)`. It is pinned by two `ℤ`-inequalities taken as explicit hypotheses
+(the established `hglue`/`hspan` idiom): `hub` (genericity-free upper bound `D + def ≤ dim Z`,
+the codimension form + deficiency count — genuine genericity-free content, every realization has
+≥ this many motions; still to be bricked from the Phase-19 partition machinery) and `hgen` (the
+21b-cited lower bound `dim Z ≤ D + def`, Thm 5.5 pushed through the device). The assembly is
+`rw [RankHypothesis]; omega` — genericity-free, axiom-clean (propext/Classical.choice/Quot.sound).
+The **matroidal half** `def = corank` is the green Phase-19 `Graph.rank_add_deficiency_eq` /
+`isBase_ncard_add_deficiency_eq`. **Scope note:** stated only as the analytic equality in the
+null-space convention; a matroid-rank form `rank R = |B|` was drafted and dropped — it would
+require the extra modeling identifications `screwDim k = bodyBarDim n` and `Fintype.card α =
+|V(G)|` (the framework's `k` and the deficiency's `n` are independent parameters here), which are
+not part of this proposition's content. No friction (mirror of Case I's `hglue` assembly).
+Blueprint flips `prop:rigidity-matrix-prop11` green (`\lean` + `\leanok`; proof `\uses`
+`thm:theorem-55`, `lem:trivial-motions-rank-bound`, `lem:motions-mono-of-graph-le`). With this
+the only remaining red on the algebraic-induction chapter is `lem:case-III` (deferred to 22–23).
 
 **Theorem 5.5 capstone landed — `thm:theorem-55` GREEN-modulo-21b (2026-06-03).** The genericity-free
 induction assembly is green: `CombinatorialRigidity.Molecular.theorem_55`
@@ -500,11 +525,13 @@ Panel layer (form (B), DESIGN.md; resumed 2026-06-03 post-21a):
   as a field, affine model retained as `ofHinge`. Axiom-clean. Green.
 
 Generic-rank reconciliation (relocated forward from Phase 18/19):
-- [ ] `prop:rigidity-matrix-prop11` — KT Prop 1.1, analytic half:
-  `rank R(G,p) = D(|V|−1) − def(G̃)` for generic `(G,p)`. The matroidal
-  half (`def = corank M(G̃)`, `thm:def-eq-corank`) is already green
-  (Phase 19); this is the geometric side (JJ [15] Thm 6.1), depending on
-  the Claim 6.4 generic-rank argument. Lands with / after Theorem 5.5.
+- [x] `prop:rigidity-matrix-prop11` — KT Prop 1.1, analytic half:
+  `rank R(G,p) = D(|V|−1) − def(G̃)` for generic `(G,p)`. **GREEN-modulo-21b**
+  (`rigidityMatrix_prop11`): basis-free form `dim Z = D + def`, i.e.
+  `RankHypothesis (deficiency n)`, pinned by `hub` (genericity-free upper
+  bound) + `hgen` (21b-cited lower bound = Thm 5.5 via the device); `omega`
+  assembly. The matroidal half (`def = corank M(G̃)`, `thm:def-eq-corank`)
+  is green (Phase 19). Axiom-clean.
 
 Induction skeleton + base:
 - [x] `def:rank-hypothesis` — the realization hypothesis (6.1):
@@ -809,27 +836,22 @@ GREEN-modulo-21b with the block-triangular gluing `hglue` explicit); and the
 `exact` over `Graph.minimal_kdof_reduction`, the three reduction-step
 realizations taken as hypotheses).
 
-### Node-by-node path to close Phase 21
+### Phase 21 closed — `prop:rigidity-matrix-prop11` landed
 
-One red node remains (Case III excepted — deferred to 22–23; Cases I, II, and
-the capstone `thm:theorem-55` are now GREEN-modulo-21b). What it still needs
-**from the cited 21b device** vs. what is **genericity-free and still to
-formalize in Phase 21**. **The smallest next concrete commit** is
-`prop:rigidity-matrix-prop11` (the analytic half of KT Prop 1.1) — its
-genericity-free upper-bound/codimension side, with the generic-max-rank lower
-bound cited from 21b.
+All genericity-free nodes are green-modulo-21b. `prop:rigidity-matrix-prop11`
+(KT Prop 1.1 analytic half) closed the phase: the analytic equality
+`rank R(G,p) = D(|V|−1) − def(G̃)` in the basis-free convention
+(`dim Z = D + def`, i.e. `RankHypothesis (deficiency n)`), pinned by the
+genericity-free upper bound (`hub`, codimension form + deficiency count)
+and the 21b-cited lower bound (`hgen`, Thm 5.5 through the device) as
+explicit hypotheses — the established `hglue`/`hspan` idiom. The matroidal
+half `def = corank` is the green Phase-19 `thm:def-eq-corank`. The
+edge-strip-to-minimal-`k`-dof step is `lem:motions-mono-of-graph-le` (green).
 
-1. **`prop:rigidity-matrix-prop11`** (KT Prop 1.1 analytic half).
-   - *Genericity-free, still to do in 21:* the upper-bound /
-     codimension side (`lem:trivial-motions-rank-bound` + deficiency
-     count) and the edge-strip-to-minimal-`k`-dof reduction (re-adding
-     edges only grows rank, `lem:motions-mono-of-graph-le`, green); the
-     matroidal half `def = corank` is green (Phase 19,
-     `thm:def-eq-corank`).
-   - *From 21b (cited):* the generic-max-rank lower bound —
-     `rank R(G,p) = D(|V|−1) − def(G̃)` for generic `(G,p)`, which is
-     Theorem 5.5 pushed through the device. `prop:rigidity-matrix-prop11`
-     `\uses` `thm:theorem-55` (already) and the 21b node.
+**Next phase: Phase 21b** (the genericity device) — see below and
+`notes/MolecularConjecture.md` *Phase 21b*. It discharges the `hub`/`hgen`,
+`hglue`, and `hspan` inputs of the Phase-21 nodes (turning GREEN-modulo-21b
+into GREEN) and feeds Phases 22–23 (Case III candidate genericity).
 
 ### What opening Phase 21b will involve
 
@@ -843,18 +865,11 @@ or its own chapter if it grows), sync the user-facing surfaces, flip the
 consumed by Phases 22–23** (Case III candidate genericity), so building
 it standalone pays forward.
 
-**Smallest next concrete commit (recommended):** the analytic half of
-`prop:rigidity-matrix-prop11` — its genericity-free upper-bound / codimension
-side (`lem:trivial-motions-rank-bound` + deficiency count) and the
-edge-strip-to-minimal-`k`-dof reduction (re-adding edges only grows rank,
-`lem:motions-mono-of-graph-le`, green; the matroidal half `def = corank` is
-green from Phase 19). The generic-max-rank lower bound
-(`rank R(G,p) = D(|V|−1) − def(G̃)` for generic `(G,p)`, i.e. Thm 5.5 pushed
-through the device) is cited from 21b. `prop:rigidity-matrix-prop11` `\uses`
-`thm:theorem-55` (now green) and the 21b node. This is the last red node before
-Phase 21 closes (Case III deferred to 22–23); it can proceed before 21b lands.
-
-Once `prop:rigidity-matrix-prop11` lands, Phase 21 closes (fire the
-phase-completion checklist: flip the ROADMAP row to ✓, compress the planning
-section, sync the three user-facing status surfaces, re-read the blueprint
-chapter end-to-end).
+**Smallest next concrete commit (recommended):** open Phase 21b — create
+`notes/Phase21b.md`, add its forward-mode blueprint section (a
+`lem:genericity-device` / `claim:6.4` node the Phase-21 consumers `\uses`,
+likely beside them in `algebraic-induction.tex` or its own chapter if it
+grows), sync the user-facing surfaces, flip the 21b status row to *in
+progress*. The first genericity-free brick to assess is whether the Phase-6/8
+Gram-det machinery can be reused for the panel-coordinate parametrization
+(reuse-to-assess note in `notes/MolecularConjecture.md` *Phase 21b*).

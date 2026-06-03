@@ -1413,4 +1413,46 @@ theorem theorem_55 [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
     PanelHingeFramework.HasFullRankRealization k G :=
   Graph.minimal_kdof_reduction hD hfresh hbase hsplit hcontract G hG hV
 
+/-! ## Proposition 1.1, analytic half: generic rank `= D(|V|−1) − def(G̃)`
+(`prop:rigidity-matrix-prop11`)
+
+The last red node of Phase 21. Katoh–Tanigawa's Proposition 1.1 reconciles the *honest*
+panel-hinge rigidity-matrix rank `R(G,p)` of `Molecular/RigidityMatrix.lean` (Phase 18) with the
+combinatorial deficiency `def(G̃)` of `Molecular/Deficiency.lean` (Phase 19): for a generic
+panel-hinge realization `(G,p)`,
+`rank R(G,p) = D(|V|−1) − def(G̃)` (Jackson–Jordán 2009 Thm 6.1, geometric side).
+
+The **matroidal half** — `def(G̃) = corank M(G̃)`, equivalently `|B| + def(G̃) = D(|V|−1)` for
+any base `B` of `M(G̃)` — landed green in Phase 19 (`Graph.rank_add_deficiency_eq`,
+`Graph.isBase_ncard_add_deficiency_eq`). This file lands the **analytic half**, the bridge from
+the rank `R(G,p)` to the deficiency, in the basis-free codimension convention of Phase 18: `rank
+R(G,p) = D|V| − dim Z(G,p)` (`finrank_screwAssignment`), so the target equality `rank R(G,p) =
+D(|V|−1) − def(G̃)` is precisely `dim Z(G,p) = D + def(G̃)`, i.e. `F.RankHypothesis (def(G̃))`
+(`def:rank-hypothesis`, at `k' = def`).
+
+It is **GREEN-modulo the Phase-21b genericity device**, assembled from the two inequalities that
+pin the equality, in the established idiom of Cases I/II (`hglue`, `hspan`):
+
+* *Genericity-free upper bound* `hub` (`rank R(G,p) ≤ D(|V|−1) − def(G̃)`, equivalently `D +
+  def(G̃) ≤ dim Z(G,p)`): the codimension form `lem:trivial-motions-rank-bound` together with the
+  deficiency count. A vertex partition `P` attaining `def(G̃)` contracts each part to one effective
+  body, leaving `D(|P|−1) − (D−1)·d_G(P) = partitionDef` independent screw freedoms in the null
+  space beyond the `D` trivial motions; maximizing over `P` gives `def(G̃)` extra motions. This is
+  genuine genericity-free content (no max-rank assumption — *every* realization has at least this
+  many motions), still to be bricked from the Phase-19 partition machinery; carried here as an
+  explicit hypothesis so the node is not blocked on it.
+* *From Phase 21b (cited)* `hgen` (`rank R(G,p) ≥ D(|V|−1) − def(G̃)`, equivalently `dim Z(G,p) ≤ D
+  + def(G̃)`): the generic max-rank lower bound — Theorem 5.5 (`theorem_55`) pushed from minimal
+  `k`-dof-graphs to all multigraphs by deleting down to a minimal `k`-dof spanning subgraph and
+  observing that re-adding edges only grows the rank (`lem:motions-mono-of-graph-le`). The
+  generic-rank argument (Claim 6.4) selects the point attaining this max; that is the Phase-21b
+  device. -/
+theorem rigidityMatrix_prop11 [Nonempty α] [Finite α]
+    (F : BodyHingeFramework k α β) (n : ℕ)
+    (hub : screwDim k + F.graph.deficiency n ≤ (Module.finrank ℝ F.infinitesimalMotions : ℤ))
+    (hgen : (Module.finrank ℝ F.infinitesimalMotions : ℤ) ≤ screwDim k + F.graph.deficiency n) :
+    F.RankHypothesis (F.graph.deficiency n) := by
+  rw [BodyHingeFramework.RankHypothesis]
+  omega
+
 end CombinatorialRigidity.Molecular

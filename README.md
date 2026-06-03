@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–20 + 21a complete; Phase 21 in progress (panel layer green; re-scoped to close on the genericity-free content, with the shared genericity device Claim 6.4/6.9 scoped out into sub-phase 21b as a cited black-box); Phases 21b, 22–26 planned.**
+* **Phases 1–21 + 21a complete (Phase 21 GREEN-modulo-21b — all genericity-free content green, the shared genericity device Claim 6.4/6.9 scoped out into sub-phase 21b as a cited black-box); Phases 21b, 22–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -204,27 +204,28 @@ project; commit history is preserved with paths rewritten.
   (KT 4.1/4.2) is off the Theorem-4.9 critical path. `Molecular/Induction.lean`;
   chapter `molecular-induction.tex`. See `notes/Phase20.md` and
   `notes/MolecularConjecture.md`.
-* **Phase 21 (in progress)** — stratum 5 of the molecular program: the
-  **algebraic induction** (Katoh–Tanigawa §5, §6.1–6.3), which realizes
-  the Phase 20 combinatorial reduction at the rigidity-matrix rank. The
-  phase states KT **Theorem 5.5** (every minimal `k`-dof-graph `G` with
-  `|V| ≥ 2` has a panel-hinge realization with `rank R(G,p) = D(|V|−1) − k`)
-  and discharges its base case (`|V|=2`, via the Phase 18 parallel-hinges
-  Lemma 5.3), **Case I** (a proper rigid subgraph — rigid-subgraph
-  contraction + block-triangular gluing through the Phase 18 pin-a-body
-  Lemma 5.1), and **Case II** (`k>0`, splitting off a reducible degree-2
-  vertex — the panel-hinge analogue of Whiteley's bar-joint 1-extension).
-  The induction is driven by the same reduction dichotomy as Theorem 4.9
-  (`Graph.minimal_kdof_reduction`). The phase has been **re-scoped to
-  close on the genericity-free content**: the shared analytic device —
-  the genericity argument (Claim 6.4/6.9) — is scoped out into its own
-  focused sub-phase **21b** and enters Phase 21's remaining nodes as a
-  cited black-box, so the surrounding reductions are fully formal modulo
-  that one device. The panel layer (`PanelHingeFramework`,
-  hinge-coplanarity) is green, as are all four Lean pieces of the
-  cycle-realization Lemma 5.4 (Crapo–Whiteley 1982). The crux **Case III**
-  (`k=0`, no proper rigid subgraph) is deferred to Phases 22–23.
-  Forward-mode; the chapter `algebraic-induction.tex` is the
+* **Phase 21 (complete, GREEN-modulo-21b)** — stratum 5 of the molecular
+  program: the **algebraic induction** (Katoh–Tanigawa §5, §6.1–6.3),
+  which realizes the Phase 20 combinatorial reduction at the
+  rigidity-matrix rank. The phase lands KT **Theorem 5.5** (every minimal
+  `k`-dof-graph `G` with `|V| ≥ 2` has a panel-hinge realization with
+  `rank R(G,p) = D(|V|−1) − k`) and discharges its base case (`|V|=2`, via
+  the Phase 18 parallel-hinges Lemma 5.3), **Case I** (a proper rigid
+  subgraph — rigid-subgraph contraction + block-triangular gluing through
+  the Phase 18 pin-a-body Lemma 5.1), **Case II** (`k>0`, splitting off a
+  reducible degree-2 vertex — the panel-hinge analogue of Whiteley's
+  bar-joint 1-extension), and the analytic half of KT **Proposition 1.1**
+  (`rank R(G,p) = D(|V|−1) − def(G̃)`, the rank/deficiency reconciliation;
+  matroidal half green from Phase 19). The induction is driven by the same
+  reduction dichotomy as Theorem 4.9 (`Graph.minimal_kdof_reduction`). The
+  shared analytic device — the genericity argument (Claim 6.4/6.9) — is
+  scoped out into its own focused sub-phase **21b** and enters each
+  consuming node as an explicit hypothesis, so the surrounding reductions
+  are fully formal modulo that one device. The panel layer
+  (`PanelHingeFramework`, hinge-coplanarity) is green, as are all four
+  Lean pieces of the cycle-realization Lemma 5.4 (Crapo–Whiteley 1982).
+  The crux **Case III** (`k=0`, no proper rigid subgraph) is deferred to
+  Phases 22–23. Forward-mode; the chapter `algebraic-induction.tex` is the
   authoritative dep-graph. `Molecular/AlgebraicInduction.lean`. See
   `notes/Phase21.md` and `notes/MolecularConjecture.md`.
 * **Phase 21b (planned)** — the genericity device (Claim 6.4/6.9): the

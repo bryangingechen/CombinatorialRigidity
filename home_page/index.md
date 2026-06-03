@@ -21,11 +21,11 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–20 and the Grassmann–Cayley meet sub-phase 21a are complete and
-carry no `sorry`s, and **Phase 21 (in progress — panel layer green;
-re-scoped to close on the genericity-free content, with the shared
-genericity device Claim 6.4/6.9 scoped out into sub-phase 21b as a cited
-black-box)** opens the algebraic induction; **the body-bar
+Phases 1–21 and the Grassmann–Cayley meet sub-phase 21a are complete and
+carry no `sorry`s, and **Phase 21 (complete — GREEN-modulo-21b: all
+genericity-free content green, the shared genericity device Claim 6.4/6.9
+scoped out into sub-phase 21b as a cited black-box)** lands the algebraic
+induction; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -36,8 +36,9 @@ matrix `R(G,p)` on top of it, **Phase 19 (complete)** builds the
 matroid `M(G̃)`, the `D`-deficiency, and the `k`-dof combinatorics,
 **Phase 20 (complete)** develops the combinatorial induction —
 graph operations and Katoh–Tanigawa's Theorem 4.9 — and **Phase 21
-(in progress)** opens the algebraic induction, realizing that reduction
-at the rigidity-matrix rank (Theorem 5.5 base and Cases I & II).
+(complete)** lands the algebraic induction, realizing that reduction
+at the rigidity-matrix rank (Theorem 5.5 base, Cases I & II, and the
+analytic half of Proposition 1.1).
 The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
 in `LamanTheorem.lean` is fully formalized in both directions; the
@@ -170,22 +171,24 @@ forest-surgery core (KT 4.1/4.2) is off the Theorem-4.9 critical path.
 `Molecular/Induction.lean`; chapter `molecular-induction.tex`. See
 `notes/Phase20.md` and `notes/MolecularConjecture.md`.
 
-**Phase 21 (in progress)** opens stratum 5: the **algebraic
+**Phase 21 (complete — GREEN-modulo-21b)** lands stratum 5: the **algebraic
 induction** of Katoh–Tanigawa's proof (§5, §6.1–6.3), which realizes the
 Phase 20 combinatorial reduction at the rigidity-matrix rank. The phase
-states KT **Theorem 5.5** — every minimal `k`-dof-graph `G` with
+lands KT **Theorem 5.5** — every minimal `k`-dof-graph `G` with
 `|V| ≥ 2` has a panel-hinge realization with `rank R(G,p) = D(|V|−1) − k`
 — and discharges its base case (`|V|=2`, via the Phase 18 parallel-hinges
 Lemma 5.3), **Case I** (a proper rigid subgraph — rigid-subgraph
 contraction + block-triangular gluing through the Phase 18 pin-a-body
-Lemma 5.1), and **Case II** (`k>0`, splitting off a reducible degree-2
-vertex — the panel-hinge analogue of Whiteley's bar-joint 1-extension).
-The induction is driven by the same reduction dichotomy as Theorem 4.9
-(`Graph.minimal_kdof_reduction`). The phase is **re-scoped to close on
-the genericity-free content**: the shared analytic device — the
+Lemma 5.1), **Case II** (`k>0`, splitting off a reducible degree-2
+vertex — the panel-hinge analogue of Whiteley's bar-joint 1-extension),
+and the analytic half of KT **Proposition 1.1**
+(`rank R(G,p) = D(|V|−1) − def(G̃)`, the rank/deficiency reconciliation;
+matroidal half green from Phase 19). The induction is driven by the same
+reduction dichotomy as Theorem 4.9
+(`Graph.minimal_kdof_reduction`). The shared analytic device — the
 genericity argument (Claim 6.4/6.9) — is scoped out into its own focused
-sub-phase **21b** and enters Phase 21's remaining nodes as a cited
-black-box, so the surrounding reductions are fully formal modulo that one
+sub-phase **21b** and enters each consuming node as an explicit
+hypothesis, so the surrounding reductions are fully formal modulo that one
 device. The panel layer and all four Lean pieces of the cycle-realization
 Lemma 5.4 (Crapo–Whiteley 1982) are green. The crux **Case III** (`k=0`,
 no proper rigid subgraph) is deferred to Phases 22–23. Forward-mode; the
@@ -227,7 +230,7 @@ existing files or refactor across several).
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
-|    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction.lean` | ◷ |
+|    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction.lean` | ✓ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
 |   21b | Genericity device (Claim 6.4/6.9) | `Molecular/AlgebraicInduction.lean` (+ new section) | ◷ |
 

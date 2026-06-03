@@ -20,20 +20,22 @@ $\tilde G = (D-1)\cdot G$ is the multiplied graph of
 $D$-deficiency of \cref{def:D-deficiency}.
 
 \medskip
-\noindent\emph{Status.} Forward mode: this chapter is the live to-do
-list. Every node below is red until its Lean lands in
-\texttt{Molecular/AlgebraicInduction.lean}; the leaf-most red node
-(statement dependencies all green or mathlib) is the next target. The
-chapter opens with the generic-rank reconciliation (Tay--Whiteley's
-Proposition~1.1, relocated forward from Phase~18), states the induction
-skeleton, then discharges the base case (via the parallel-hinges Lemma
+\noindent\emph{Status.} Complete, GREEN-modulo-21b. The chapter opens
+with the generic-rank reconciliation (Tay--Whiteley's Proposition~1.1,
+relocated forward from Phase~18), states the induction skeleton, then
+discharges the base case (via the parallel-hinges Lemma
 \cref{lem:rank-parallel-full}), Case~I (proper rigid subgraph, via
 rigid-subgraph contraction \cref{lem:reduction-step} and the pin-a-body
 Lemma~\cref{lem:rank-delete-vertex}), and Case~II ($k>0$ splitting, the
-panel-hinge analogue of Whiteley's bar-joint 1-extension). The
-cycle-realization Lemma~5.4
+panel-hinge analogue of Whiteley's bar-joint 1-extension). Each node that
+needs the shared analytic device --- the genericity argument
+(Claim~6.4/6.9) --- takes it as an explicit hypothesis, so it is green
+\emph{modulo} that device, which is scoped out into the sub-phase
+Phase~21b. The cycle-realization Lemma~5.4
 (\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
-Whiteley~\cite{whiteley1999}) enters here as an input.
+Whiteley~\cite{whiteley1999}) enters here as an input. The only remaining
+red node is the crux Case~III (\cref{lem:case-III}), deferred to
+Phases~22--23.
 
 \subsection{The panel layer}
 \label{sec:molecular-algebraic-induction-panel}
@@ -116,6 +118,8 @@ whole induction.
 
 \begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}$; KT Proposition 1.1, analytic half]
   \label{prop:rigidity-matrix-prop11}
+  \lean{CombinatorialRigidity.Molecular.rigidityMatrix_prop11}
+  \leanok
   \uses{def:rigidity-matrix, def:D-deficiency, thm:def-eq-corank, def:dof-generic}
   For a generic panel-hinge realization $(G,p)$,
   \[
@@ -130,17 +134,31 @@ whole induction.
   \cite{jacksonJordan2009}.
 \end{proposition}
 \begin{proof}
-  \uses{thm:theorem-55}
+  \leanok
+  \uses{thm:theorem-55, lem:trivial-motions-rank-bound,
+        lem:motions-mono-of-graph-le}
   The deficiency is the corank of $M(\tilde G)$
   (\cref{thm:def-eq-corank}), so the claim is that a generic realization
-  attains the maximum rank $D(|V|-1) - \operatorname{corank}$. The
-  lower-bound (generic max-rank) direction is exactly the content of
-  Theorem~5.5 (\cref{thm:theorem-55}), pushed from minimal $k$-dof-graphs
-  to all multigraphs by deleting down to a minimal $k$-dof spanning
-  subgraph and observing that re-adding edges only grows the rank; the
-  upper bound is the codimension form
+  attains the maximum rank $D(|V|-1) - \operatorname{corank}$. In the
+  basis-free codimension convention of \cref{sec:molecular-rigidity-matrix}
+  ($\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$, \cref{lem:trivial-motions-rank-bound}),
+  the target equality reads $\dim Z(G,p) = D + \operatorname{def}(\tilde G)$, i.e.\ the
+  realization hypothesis \cref{def:rank-hypothesis} at $k' = \operatorname{def}$; it is pinned
+  by two inequalities. The genericity-free upper bound
+  $\operatorname{rank} R(G,p) \le D(|V|-1) - \operatorname{def}$ (equivalently
+  $D + \operatorname{def} \le \dim Z(G,p)$) is the codimension form
   \cref{lem:trivial-motions-rank-bound} together with the deficiency
-  count. Lands with the Claim~6.4 generic-rank argument.
+  count: a partition $P$ attaining $\operatorname{def}(\tilde G)$ contributes
+  $\operatorname{def}$ independent motions beyond the $D$ trivial ones --- this holds for
+  \emph{every} realization, no genericity. The reverse (generic max-rank)
+  bound is exactly Theorem~5.5 (\cref{thm:theorem-55}), pushed from minimal
+  $k$-dof-graphs to all multigraphs by deleting down to a minimal $k$-dof
+  spanning subgraph and observing that re-adding edges only grows the rank
+  (\cref{lem:motions-mono-of-graph-le}); the Claim~6.4 generic-rank
+  argument selects the point attaining it. GREEN-modulo-21b: the two
+  inequalities are taken as explicit hypotheses (the genericity-free upper
+  bound and the Phase-21b-cited lower bound), and the equality assembly
+  itself is genericity-free.
 \end{proof}
 
 \subsection{The induction skeleton and base case}
