@@ -11,202 +11,158 @@ dep-graph / lemma index is the new blueprint chapter
 `blueprint/src/chapter/molecular-induction.tex`
 (`sec:molecular-induction`); its red nodes are the live to-do list.
 
+> **PIVOT (2026-06-02).** Phase 20 changed route mid-stream. While
+> formalizing the forest surgery (`lem:forest-surgery-split`, KT 4.1)
+> we found KT's Lemma 4.1 is **over-quantified (formally disprovable)
+> and its proof glosses an unjustified balanced-packing assumption**
+> (see *Finding* below). We **route around it** via a deficiency-count
+> argument on green infrastructure (see *Replan* below). The
+> forest-surgery substrate already landed is now **off the Theorem-4.9
+> critical path** and serves a deferred TODO. A fresh
+> `/coordinate-phase 20` session should read *Finding* + *Replan* +
+> *Hand-off* and start at **Replan commit A**.
+
+## Finding: KT Lemma 4.1 / 5.1 is over-quantified, and its proof glosses a balanced-packing assumption (2026-06-02)
+
+The molecular conjecture and KT's overall proof are **not** in question —
+this finding is narrow and three-layered, and the value is in stating
+*exactly* which layer is which. Sources verified directly: KT 2011
+(*A proof of the molecular conjecture*, DCG **45**:647–700) **Lemma 4.1,
+p.660**; the KT 2009 arXiv predecessor **Lemma 5.1, p.11** (essentially
+verbatim, and makes the gloss *more* visible).
+
+1. **Statement-as-quantified — false, formally disprovable.** Both
+   versions read "*for any independent set `I` of `M(G̃)`* … there exists
+   `I'` … with `|I'| = |I| − D`." For any independent `I` with `|I| < D`
+   (e.g. `I = ∅`) this demands `|I'| = |I| − D < 0` — impossible. The
+   intended quantifier is clearly over **bases**. We formalize the literal
+   disproof (`I = ∅`, ℕ-cardinality: no `I'` with `|I'| + D = 0` since
+   `D = bodyBarDim n ≥ 1`) as a one-line Lean `example`, framed as "the
+   universal quantifier must be restricted."
+2. **Proof of the intended (base) case — unjustified step.** "Convert each
+   `Fᵢ` to `F'ᵢ` with `|F'ᵢ| = |Fᵢ| − 1` *for each i*" (2011), and the
+   equation `2h' + (D − h') = h` (2009), silently assume the chosen
+   `D`-forest packing is **balanced at `v`**: every forest uses ≥ 1 edge at
+   `v` (no `dᵢ = 0`). Neither version justifies this. For a general
+   independent `I` it can fail (pigeonhole when `h < D`), and when it does
+   *both* conclusions break: cardinality becomes `|I'| = |I| − D + z`
+   (`z` = #`v`-avoiding forests), and the slack clause `|ãb ∩ I'| < D − 1`
+   can hit equality (take `h = 2(D−1)`, `z = 1` ⟹ `h' = D−1`). Whether the
+   balanced packing is *achievable for a base* we leave **open** — KT omits
+   a justification; we did not recover one. (Phrase as "KT omits / we did
+   not recover", **not** "KT errs".)
+3. **Intended content — true, established directly.** What the induction
+   (KT 4.3) consumes is the deficiency inequality `def(G̃ᵥᵃᵇ) ≤ def(G̃)`.
+   This is correct; we prove it by a partition-count comparison through the
+   green `def = corank` bridge (`rank_add_deficiency_eq`), bypassing the
+   forest surgery — see *Replan*.
+
+## Replan (2026-06-02): route splitting-off via deficiency-counting
+
+The viable route is a direct comparison of the deficiency max-formula,
+entirely green infrastructure:
+
+```
+def(G̃) = max_P [ D(|P|−1) − (D−1)·d_G(P) ]   -- partitionDef / deficiency (Deficiency.lean)
+rank M(G̃) + def(G̃) = D(|V|−1)                 -- rank_add_deficiency_eq (green)
+```
+
+**Correction (do not repeat the earlier misfire):** the route is **NOT
+matroid contraction**. `Gᵥᵃᵇ ≅ G/va` does *not* give a clean
+single-element matroid minor of `M(G̃)` — the count matroid's rank drops
+by `D` per removed vertex, not 1. The route is the **partition-count
+comparison**:
+
+- `def(G̃ᵥᵃᵇ) ≤ def(G̃)` (KT 4.3(i)): take an optimal partition `P'` of
+  `V−v`, extend by dropping `v` into `a`'s block. Then `|P| = |P'|`, and
+  since `va` no longer crosses while `vb` crosses iff `ab` crosses `P'`,
+  the crossing count is identical: `d_G(P) = d_{Gᵥᵃᵇ}(P')`, so
+  `partitionDef_G(P) = partitionDef_{Gᵥᵃᵇ}(P')` and `def(G̃) ≥ def(G̃ᵥᵃᵇ)`.
+  ~10 lines of partition arithmetic, no forests. **Confidence: high**
+  (worked on paper). The `k`-vs-`(k−1)` refinement (4.3(ii)) and the
+  removal `Gᵥ` case (4.4) are confirmed by the first implementation
+  commit acting as a de-facto spike (commit B going green = route
+  confirmed).
+
+### Writeup principle (the headline — handle carefully)
+
+The blueprint Remark and all prose MUST follow the three-layer framing of
+*Finding*: (1) affirm KT's result + stature; (2) distinguish
+*statement-as-quantified false* (formalized counterexample) /
+*proof-of-base-case glosses balanced packing* (unjustified, open) /
+*intended content true* (we prove it); (3) "KT omits / we did not recover",
+never "KT errs". Cite KT 2011 Lemma 4.1 p.660 + KT 2009 Lemma 5.1 p.11.
+This is genuinely interesting (formalization surfacing a refereed-proof gap
+and a cleaner route) — explain it clearly in both the blueprint and the Lean.
+
+### Commit sequence for the next /coordinate-phase session
+
+- **A — Pivot commit (finding + node restate + counterexample).**
+  *Blueprint:* new discussion subsection "On Katoh–Tanigawa Lemma 4.1"
+  (three-layer); restate the dof-tracking dep-graph — add red nodes
+  `lem:splitoff-deficiency` (`def(G̃ᵥᵃᵇ) ≤ def(G̃)` + refinement) and
+  `lem:removal-deficiency` (KT 4.4); re-point `lem:dof-tracking`'s `\uses`
+  to these; mark `lem:forest-surgery-split` / `-unsplit` **deferred / off
+  critical path** (kept red, annotated → deficiency route + TODO).
+  *Lean:* the `example` formally disproving the literal quantification
+  (clearly commented as targeting the over-quantification). *Notes:* this
+  Finding + Replan already record the rationale. Run `checkdecls` (new
+  blueprint pointers + the `example`'s `\lean{}` if any).
+- **B —** `lem:splitoff-deficiency` `≤` direction (`def(G̃ᵥᵃᵇ) ≤ def(G̃)`)
+  via the partition extension above. The de-facto route-confirmation spike.
+- **C —** the `k`-vs-`(k−1)` refinement (KT 4.3(ii)).
+- **D —** `lem:removal-deficiency` (`Gᵥ`, KT 4.4).
+- **E —** `lem:dof-tracking` (assemble KT 4.3–4.5; `\uses` the two new nodes).
+- **F —** `lem:reducible-vertex` (KT 4.6).
+- **G —** `lem:reduction-step` (KT 4.7–4.8).
+- **H —** `thm:minimal-kdof-reduction` (Theorem 4.9) → phase close.
+
+### TODO (parallel, non-blocking — Step 5)
+
+Recover KT's surgery by **proving-or-refuting the balanced-packing lemma**:
+"a base of `M(G̃)` admits a `D`-forest partition with every forest meeting
+the degree-2 vertex `v`." If true, KT's proof is rescued (gap, not error)
+and `lem:forest-surgery-split` completes from the substrate already landed
+(framing / incidence / degree / both no-reroute directions / reroute count
+cap — see *Current state*); if false, KT's surgery proof is genuinely broken
+though the base-form lemma still holds via the deficiency route. Optionally
+formalize a concrete `dᶠ(v)=0` witness as a sharper counterexample to the
+*proof step* (distinct from the over-quantification disproof). The 6
+substrate lemmas are **retained** for this track.
+
 ## Current state
 
-`Molecular/Induction.lean` has all of the inherited structural lemmas (KT 3.4 full form +
-the complete KT 3.5 chain) and the **graph operations** green: the vertex-induced-subgraph
-construction (`def:induced-span`), the full form of KT Lemma 3.4 (`lem:circuit-induces-rigid`),
-the four graph operations (`def:graph-operations` + `def:rigid-contraction`), and the full
-KT 3.5 assembly `lem:contraction-minimality` (rank core → contraction arithmetic →
-deficiency conservation → minimality transport → assembly). The forest-surgery **framing**
-sub-node (`lem:forest-packing-decomp`) is green, as is the surgery's incidence/degree
-substrate and now **both directions of its no-reroute acyclicity-preservation crux** — the
-`G̃→G̃ᵥᵃᵇ` reverse (`mulTilde_removeVertex_le_splitOff` + `isAcyclicSet_mulTilde_splitOff_of_removeVertex`)
-alongside the original `G̃ᵥᵃᵇ→G̃` forward (`mulTilde_splitOff_deleteFiber_le` +
-`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`); next is the genuine **rerouting half** of
-the surgery proper (the `dᶠ(v)=2` `ã̃b`-swap path-lift, KT 4.1, `lem:forest-surgery-split`,
-still red).
+Pivoted to the deficiency route (2026-06-02 — see *Finding* + *Replan*).
 
-- **`def:induced-span`** — `Graph.fiberSpan G n X = (G.mulTilde n).spanningVerts X`
-  (the vertices `V(X)` spanned by a fiber set `X` of `G̃`) and
-  `Graph.inducedSpan G n X = G.induce (G.fiberSpan n X)` (the induced subgraph
-  `G[V(X)]` of the *original* `G`). The construction is **mathlib's
-  `Graph.induce`** (`Mathlib.Combinatorics.Graph.Delete`) — no new graph
-  machinery needed, contra the phase-open expectation; `inducedSpan` is a thin
-  wrapper plus the simp lemma `vertexSet_inducedSpan`.
-- **`lem:circuit-induces-rigid`** (`Graph.circuit_induces_isTight`, KT 3.4 full
-  form) — for a circuit `X` of `M(G̃)` and `e ∈ X`, the tightness equality
-  `|X − e| + D = D·|V(X)|` (i.e. `|X − e| = D(|V(X)| − 1)`), so `X − e` packs `D`
-  spanning trees on `V(X)` and `G[V(X)]` is rigid. **Did NOT need
-  `thm:def-eq-corank`** (the phase-open / blueprint `\uses` was overcautious): the
-  lower bound `|X| > D(|V(X)| − 1)` is the matroidal circuit-minimality fact
-  `circuit_ncard_gt`, proved directly from `matroidMG_indep_iff` (every proper
-  subset of `X` is independent ⟹ `(D,D)`-sparse, so the dependent `X`'s sparsity
-  failure is at `X` itself). Upper bound from Phase 19's
-  `isSparse_diff_singleton_of_isCircuit`. Axiom-free.
+**Green and `\leanok` in `Molecular/Induction.lean`** (all axiom-free): the
+full inherited KT 3.4 + KT 3.5 chain — `lem:circuit-induces-rigid` (3.4),
+and the 3.5 chain `lem:rigid-full-rank` → `lem:contract-rank-bridge` →
+`lem:contract-deficiency-conservation` → `lem:contract-minimality-transport`
+→ `lem:contraction-minimality` (all stated matroid-side, no graph↔matroid
+`map`); the four graph operations `def:induced-span` / `def:graph-operations`
+(`removeVertex` / `splitOff` / `edgeSplit`) / `def:rigid-contraction`; and
+the forest-surgery framing `lem:forest-packing-decomp`. Per-lemma rationale
+is in *Decisions* + the *Lemma checklist*; the full play-by-play is in git
+history (commits `6b1176a`…`f7a7ebd`).
 
-- **`def:graph-operations` / `def:rigid-contraction`** — the four ops:
-  `Graph.removeVertex` (= mathlib `deleteVerts {v}`), `Graph.splitOff v a b e₀`
-  (delete `v`, add fresh edge `e₀` joining `a,b`), `Graph.edgeSplit a b v e₀ e₁ e₂`
-  (subdivide `e₀` by fresh `v` via fresh `e₁,e₂`), and `Graph.rigidContract G H r`
-  (= `(G.deleteEdges E(H)).map (collapseTo r V(H))`, collapse `V(H)` to representative
-  `r`). `removeVertex` and `rigidContract` are thin mathlib compositions
-  (`deleteVerts` / `deleteEdges` + `map`); `splitOff` / `edgeSplit` are structure
-  literals (no graph union/`addEdge` in mathlib). Each has `vertexSet_*`/`*_isLink`
-  simp lemmas. Axiom-free.
+**Off the critical path (deferred surgery TODO — *Replan* Step 5):** the
+forest-surgery substrate landed for `lem:forest-surgery-split` (none a
+blueprint node; the node stays red) — incidence/cardinality
+(`edgeFiber_ncard`, `edgeSet_splitOff`,
+`edgeFiber_subset_edgeSet_mulTilde_splitOff`), degree-at-`v` (`fiberAtVertex`,
+`mulTilde_inc`, `fiberAtVertex_inter_edgeSet[_ncard]`, `fiberDegree`,
+`fiberDegree_{mono,le}`), both no-reroute acyclicity directions
+(`mulTilde_splitOff_deleteFiber_le` +
+`isAcyclicSet_mulTilde_of_splitOff_of_disjoint`;
+`mulTilde_removeVertex_le_splitOff` +
+`isAcyclicSet_mulTilde_splitOff_of_removeVertex`), and the reroute count cap
+(`isCycleSet_pair_edgeFiber_splitOff`,
+`fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). These complete the
+surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
+they are **not** needed for Theorem 4.9.
 
-Now also green: `lem:rigid-full-rank` (`Graph.rank_matroidMG_of_isKDof_zero`), the
-**rank core** of KT 3.5 — a rigid subgraph `H` (`def(H̃) = 0`) attains full rank
-`rank M(H̃) = D(|V(H)| − 1)`. Four-line corollary of Phase 19's `rank_add_deficiency_eq`
-(def\,=\,corank) with `def = 0`. This is the rank quantity contraction removes.
-
-And now green: `lem:contract-rank-bridge` (`Graph.contract_matroidMG_rank`), the
-**matroid contraction arithmetic** of KT 3.5 — `rank(M(G̃) / E(H̃)) + rank M(H̃) =
-rank M(G̃)` for `H ≤ G`. This is the *matroid* side of the contraction bridge (the
-graph-collapse `Matroid.map` correspondence the earlier hand-off worried about turned
-out **not needed**): contraction in `M(G̃)` is the abstract matroid-rank identity
-`rank(M/C) = rank M − rank_M(C)`, and the restriction `M(G̃) ↾ E(H̃)` is `M(H̃)`
-(Phase 19's `matroidMG_restrict_mulTilde`). Both pieces already existed — the
-`rank(M/C)` identity is in the vendored `Matroid/Minor/Rank.lean`
-(`contract_rank_cast_int_eq`), so the bridge is a 5-line composition + a 4-line abstract
-adapter `Matroid.rank_contract_add_rank_restrict`. Combined with the rank core this pins
-the rank a *rigid* subgraph's contraction removes.
-
-And now green: `lem:contract-deficiency-conservation` (`Graph.contract_matroidMG_deficiency_eq`),
-the **deficiency-conservation half** of KT 3.5 `lem:contraction-minimality`. For a rigid
-`H ≤ G` the corank of the matroid contraction `M(G̃)/E(H̃)` at the reduced ambient
-`D(|V(G)| − |V(H)|)` equals `def(G̃)`:
-`D(|V(G)| − |V(H)|) − rank(M(G̃)/E(H̃)) = def(G̃)`. Pure matroid bookkeeping (a `zify` +
-`linarith`): `contract_matroidMG_rank` + rank core gives the rank drop `D(|V(H)|−1)`, which
-cancels against the ambient drop in `rank_add_deficiency_eq`. Stated against the *matroid*
-contraction directly — NO graph↔matroid `map` correspondence — confirming the earlier
-hand-off's simplification. Axiom-free. Factored as its own blueprint node feeding
-`lem:contraction-minimality` (matching how the rank core / contraction arithmetic are
-separate sub-nodes).
-
-And now green: `lem:contract-minimality-transport` (`Graph.contract_minimality_transport`),
-the **minimality-transport half** of KT 3.5 `lem:contraction-minimality`. Every base `B'`
-of the matroid contraction `M(G̃)/E(H̃)` meets every *surviving* edge-fiber `ẽ`
-(`e ∈ E(G) \ E(H)`). The fundamental-circuit-swap worry was unnecessary: the transport is
-a clean base-lift. Pick an `M(G̃)`-basis `J` of the contracted-out `E(H̃)`; the abstract
-helper `Matroid.IsBase.union_isBasis_of_contract` lifts `B'` to a base `B' ∪ J` of `M(G̃)`
-(via `IsBasis'.contract_eq_contract_delete` + the deleted part being loops), then `G`'s
-minimality (`hG.2`) gives `(B' ∪ J) ∩ ẽ ≠ ∅` and the witness lands in `B'` because the
-basis part `J ⊆ E(H̃)` is disjoint from the surviving fiber. **No `H ≤ G` hypothesis
-needed** (matroid-side only; `H ≤ G` enters only the deficiency-conservation half).
-Axiom-free. The abstract helper is the missing-mathlib piece (FRICTION).
-
-And now green: `lem:contraction-minimality` (`Graph.contraction_isMinimalKDof`), the
-**full KT 3.5 assembly**. For a proper rigid `H` of a minimal `k`-dof `G`, the matroid
-contraction `M(G̃)/E(H̃)` is a *minimal `k`-dof matroid* at the reduced ambient
-`D(|V(G)|−|V(H)|)`: corank `= k` (deficiency conservation, with `def(G̃)=k` rewritten via
-`hG.1`) ∧ every base meets every surviving fiber (minimality transport). A 4-line
-conjunction of `contract_matroidMG_deficiency_eq` + `contract_minimality_transport`; both
-halves were already green. **Stated matroid-side — NO graph↔matroid `map`** (the earlier
-hand-off's repeated finding, now confirmed at the assembly: `IsMinimalKDof` of the collapsed
-`rigidContract` is never needed; KT reasons on `M(G̃)/E(H̃)` throughout). Axiom-free. The
-graph-collapse `rigidContract` phrasing is deferred — Cases I/III of Phase 21+ consume the
-matroid-side form directly.
-
-And now green: `lem:forest-packing-decomp` (`Graph.matroidMG_indep_iff_exists_forest_packing`),
-the **framing sub-node** of the forest surgery (KT 4.1/4.2). An `I ⊆ E(G̃)` is independent in
-`M(G̃)` iff it is covered by `D = bodyBarDim n` cycle-matroid-independent fiber sets — the `D`
-edge-disjoint forests KT's surgery operates on. **Resolves the open framing blocker:** the
-matroid-base / `union_indep_iff` framing (NOT a hand-rolled graph-acyclicity predicate) is
-forced, because `matroidMG = (⋃_{i<D} cycleMatroid(G̃)) ↾ E(G̃)` already (`def:matroid-MG`), so
-"D edge-disjoint forests" = the `Matroid.union_indep_iff` decomposition and "forest" =
-`(G̃).cycleMatroid`-independent. 1-line proof (`rw [matroidMG, restrict_indep_iff,
-union_indep_iff]; tauto`). Axiom-free. Factored as its own blueprint node feeding
-`lem:forest-surgery-split`.
-
-And now landed: the **incidence/cardinality substrate** of the forest surgery
-(`lem:forest-surgery-split`, KT 4.1) — three axiom-free bookkeeping lemmas, NOT a blueprint
-node (the node stays red; these are the glue the still-open surgery proper consumes):
-- `Graph.edgeFiber_ncard` (in `Deficiency.lean`): `|ẽ| = bodyHingeMult n = D − 1`, the
-  `|ã̃b| = D − 1` quantity KT 4.1 counts the `< D − 1` short-circuit copies against.
-- `Graph.edgeSet_splitOff`: `E(G_v^{ab}) = {fresh e₀ when a,b ≠ v ∈ V(G)} ∪ {e ≠ e₀ of G
-  avoiding v}` — the edge-level description of the splitting-off short-circuit.
-- `Graph.edgeFiber_subset_edgeSet_mulTilde_splitOff`: the fresh fiber `ã̃b = edgeFiber e₀ n`
-  lies in `E(G̃_v^{ab})` when the short-circuit edge is present. This is the fiber the
-  surgery reroutes the degree-2 forests onto.
-
-And now landed: the **degree-at-`v`-in-a-forest substrate** of the forest surgery
-(`lem:forest-surgery-split`, KT 4.1) — the degree notion the hand-off flagged as the needed
-*new sub-node first*, NOT a blueprint node (the node stays red; this is the degree machinery
-the surgery's `dᶠ(v) ∈ {0,1,2}` split + `h' ≤ D−2` count consume). Axiom-free, in
-`Molecular/Induction.lean`:
-- `Graph.fiberAtVertex G n v = {p | (G̃).Inc p v}` — the fibers of `G̃` incident to `v`, with
-  `mem_fiberAtVertex` (`p ∈ fiberAtVertex ↔ G.Inc p.1 v`).
-- `Graph.mulTilde_inc` — `(G̃).Inc p v ↔ G.Inc p.1 v` (incidence reduces to the underlying
-  `G`-edge; the only non-`Classical` lemma of the batch, `propext`-only).
-- `Graph.fiberAtVertex_inter_edgeSet` + `…_ncard` — the fibers at `v` in `E(G̃)` are the copies
-  of `v`'s incident `G`-edges, so `|fibers at v in E(G̃)| = (D−1)·|{e | G.Inc e v}|`; for a
-  degree-2 vertex `v` this is `2(D−1)`, the total the surgery distributes among the `D` forests.
-- `Graph.fiberDegree G n v F = |F ∩ fiberAtVertex|` — the per-forest degree `dᶠ(v)`, with
-  `fiberDegree_mono` (subset monotonicity, the drop-`v`-edge reduction) and `fiberDegree_le`
-  (`dᶠ(v) ≤ (D−1)·|incident G-edges at v|`, the bound the `h' ≤ D−2` count rests on).
-
-And now landed: the **first half of the acyclicity-preservation crux** of the forest surgery
-(`lem:forest-surgery-split`, KT 4.1) — the no-reroute direction. Two axiom-free lemmas in
-`Molecular/Induction.lean` (NOT a blueprint node; `lem:forest-surgery-split` stays red):
-- `Graph.mulTilde_splitOff_deleteFiber_le`: deleting the fresh fiber `ã̃b = edgeFiber e₀ n`
-  from the multiplied splitting-off lands inside `G̃`:
-  `((G.splitOff v a b e₀).mulTilde n).deleteEdges (edgeFiber e₀ n) ≤ G.mulTilde n`. Every
-  surviving (`p.1 ≠ e₀`) link of `G̃ᵥᵃᵇ` is the same link in `G̃` (splitOff only *adds* the
-  `e₀`-fiber and *removes* `v`-incident fibers). Proved via the `deleteEdges`/`splitOff` simp
-  lemmas; `rw`-unfold of `deleteEdges` trips the `.copy` motive (use `simp only` — already in
-  the quirks index).
-- `Graph.isAcyclicSet_mulTilde_of_splitOff_of_disjoint`: a cycle-matroid-acyclic `F` of `G̃ᵥᵃᵇ`
-  **disjoint from `ã̃b`** is acyclic in `G̃`. Routes through `…_deleteFiber_le` +
-  `IsAcyclicSet.mono` + `cycleMatroid_indep`. This is the `dᶠ(v) ≤ 1` forests (drop their
-  `v`-edge, survive verbatim) — the half needing no rerouting.
-
-And now landed: the **reverse structural inclusion + reverse acyclicity transport** of the
-forest surgery (`lem:forest-surgery-split`, KT 4.1, surgery crux) — the *into-`G̃ᵥᵃᵇ`*
-direction, the mirror of the two `…_splitOff_…` lemmas above. Two axiom-free lemmas in
-`Molecular/Induction.lean` (NOT a blueprint node; `lem:forest-surgery-split` stays red):
-- `Graph.mulTilde_removeVertex_le_splitOff`: the multiplied vertex-removal `(G_v)̃` is a
-  subgraph of the multiplied splitting-off `G̃ᵥᵃᵇ`, **given `e₀ ∉ E(G)`** (freshness):
-  `(G.removeVertex v).mulTilde n ≤ (G.splitOff v a b e₀).mulTilde n`. Both vertex sets are
-  `V(G) \ {v}` (definitional `rfl` — no rewrite needed); every `(G_v)̃`-link is a `v`-avoiding
-  `G`-link, and freshness forces `p.1 ≠ e₀`, so it is a `splitOff` link (first disjunct). The
-  converse of `mulTilde_splitOff_deleteFiber_le`, stated against `removeVertex` (vertex-side
-  delete) rather than a `deleteEdges` of `G̃` — the latter keeps `v` and breaks the `≤` at the
-  vertex level.
-- `Graph.isAcyclicSet_mulTilde_splitOff_of_removeVertex`: a cycle-matroid-acyclic `F` of
-  `(G_v)̃` is acyclic in `G̃ᵥᵃᵇ`, given `e₀ ∉ E(G)`. **No disjointness-from-`ã̃b` hypothesis**
-  (`(G_v)̃` carries no `v`-incident fibers, so it sits below `G̃ᵥᵃᵇ` unconditionally). Routes
-  through `mulTilde_removeVertex_le_splitOff` + `IsAcyclicSet.mono` + `cycleMatroid_indep` —
-  the mirror of `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`. This is the `v`-avoiding part
-  of a `G̃`-forest reduced to `G_v` transporting verbatim into `G̃ᵥᵃᵇ`.
-
-And now landed: the **reroute count substrate** of the forest surgery
-(`lem:forest-surgery-split`, KT 4.1, surgery crux) — the per-forest cap behind KT's `h' ≤ D−2`
-short-circuit count. Two axiom-free lemmas in `Molecular/Induction.lean` (NOT a blueprint node;
-`lem:forest-surgery-split` stays red):
-- `Graph.isCycleSet_pair_edgeFiber_splitOff`: two distinct copies `p ≠ q` of the fresh edge
-  `e₀` in `G̃ᵥᵃᵇ` form a 2-cycle (`IsCycleSet {p,q}`), given distinct neighbours `a ≠ b`
-  (`a,b ≠ v`, `a,b ∈ V(G)`). Both copies link `a,b` (`splitOff`'s fresh-edge disjunct), so the
-  explicit length-2 closed walk `a —p→ b —q→ a` is a cyclic walk (built via the
-  `IsCyclicWalk`/`IsTour`/`IsTrail`/`IsWalk` structure tower: `cons_isWalk_iff` ×2 +
-  `nil_isWalk_iff`, then `edge_nodup`/`isClosed`/`nodup` by `simp [hpq]` / `simp` / `simp [hab.symm]`).
-- `Graph.fiber_inter_subsingleton_of_isAcyclicSet_splitOff`: a cycle-matroid-acyclic (forest)
-  fiber set `F` of `G̃ᵥᵃᵇ` meets the fresh fiber `ã̃b = edgeFiber e₀ n` in at most one element —
-  `(F ∩ edgeFiber e₀ n).Subsingleton`. Two distinct copies would give a 2-cycle inside `F`
-  (`isCycleSet_pair_edgeFiber_splitOff` → `isCycleSet_iff` → `not_isAcyclicSet_iff`),
-  contradicting acyclicity. The per-forest `≤ 1` cap; aggregated across the `D` forests it
-  bounds the total `ã̃b`-copy count by `D`.
-
-Next concrete step (still): the **acyclicity-preserving reroute transport** of
-`lem:forest-surgery-split` (KT 4.1) — still the residual crux, red. The `dᶠ(v) = 2` forests
-swap their two `v`-edges for one fresh `ã̃b` copy (via `edgeFiber_subset_edgeSet_mulTilde_splitOff`);
-the `v`-traversing tree-path lift (a `G̃ᵥᵃᵇ`-cycle *using* `ã̃b` lifts to a `v`-traversing path of
-`G̃`, via the `Matroid/Graph/AcyclicSet.lean` `not_isAcyclicSet_iff` cycle characterization) is
-what `isAcyclicSet_mulTilde_of_splitOff_of_disjoint` does *not* cover — it assumes `F` avoids
-`ã̃b`. With the per-forest cap now in hand, what remains is the genuine path-lift (showing the
-rerouted forest stays acyclic across the swap) plus the assembly `|I'| = |I| − D` and the
-`h' ≤ D−2` aggregate count (the per-forest cap × `D` forests, bounded via `edgeFiber_ncard`,
-`fiberDegree_le` giving `dᶠ(v) ≤ 2(D−1)`). Multi-commit; budget the most time.
+**Next:** *Replan* commit A (pivot: blueprint Remark + node restate +
+counterexample `example`). See *Hand-off*.
 
 ## Architectural choices made up front
 
@@ -221,11 +177,13 @@ rerouted forest stays acyclic across the swap) plus the assembly `|I'| = |I| −
   `Matroid.fundCircuit`) + the vendored union subsystem
   (`Matroid/Constructions/Union.lean`). `edgeMultiply` / `mulTilde`
   carry the `(D−1)·G` plumbing already.
-- **Forest surgery (4.1/4.2) is the hard new pure combinatorics** — no
-  existing analogue, budget the most time (flagged in
-  `notes/MolecularConjecture.md` *Phase 20* hard-core). Decide the
-  packing-vs-matroid framing (explicit `D` forests vs. base of the
-  `D`-fold cycle-matroid union) when the first surgery node lands.
+- **Forest surgery (4.1/4.2) was the planned hard core — now deferred.**
+  The framing question (explicit `D` forests vs. matroid-base) was settled
+  by `lem:forest-packing-decomp` (matroid-base, forced by `matroidMG`'s
+  union definition). But the surgery proper hit the KT 4.1 balanced-packing
+  gloss (*Finding*); Theorem 4.9 instead routes through the
+  deficiency-count argument (*Replan*), and the surgery is a non-blocking
+  TODO.
 
 ## Lemma checklist
 
@@ -267,40 +225,41 @@ Graph operations:
 - [x] `def:rigid-contraction` — rigid-subgraph contraction `G/E(H)`
   (`Graph.rigidContract`, via `deleteEdges` + `map (collapseTo …)`).
 
-Forest surgery (hard core):
+Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
+- [ ] `lem:splitoff-deficiency` — KT 4.3(i)+(ii): `def(G̃ᵥᵃᵇ) ≤ def(G̃)`
+  via the partition-count comparison (extend an optimal partition of `V−v`
+  by dropping `v` into `a`'s block; `d_G(P) = d_{Gᵥᵃᵇ}(P')`), plus the
+  `k`-vs-`(k−1)` refinement. NEW node; Replan commits A (node) / B (`≤`) / C
+  (refinement). The `≤` direction is the de-facto route-confirmation spike.
+- [ ] `lem:removal-deficiency` — KT 4.4: `def(G̃ᵥ) ≥ k`. NEW node; Replan
+  commit D.
+- [ ] `lem:dof-tracking` — KT 4.3–4.5 assembly; `\uses` the two deficiency
+  nodes above (NOT forest surgery). Replan commit E.
+- [ ] `lem:reducible-vertex` — KT 4.6, existence of a reducible degree-2
+  vertex (maximal-chain / degree-sequence count). Replan commit F.
+- [ ] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality
+  (two circuit-swap arguments; the 4.8 capstone). Replan commit G.
+- [ ] `thm:minimal-kdof-reduction` — KT Theorem 4.9 (capstone; phase
+  close). Replan commit H.
+
+Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
 - [x] `lem:forest-packing-decomp` — framing sub-node of KT 4.1/4.2:
   `I` independent in `M(G̃)` ⟺ covered by `D` cycle-matroid-independent fiber
-  sets (the `D` edge-disjoint forests). `Graph.matroidMG_indep_iff_exists_forest_packing`;
-  1-line `rw [matroidMG, restrict_indep_iff, union_indep_iff]; tauto`. **Decides the
-  framing blocker** (matroid-base via `union_indep_iff`, not hand-rolled acyclicity).
-- [ ] `lem:forest-surgery-split` — KT 4.1, splitting-off direction
-  (the surgery proper: reroute each of the `D` forests across the degree-2
-  vertex `v`, giving `|I'| = |I| − D` and `|ãb ∩ I'| < D − 1`). Built on
-  `lem:forest-packing-decomp`. **Substrate landed** (`edgeFiber_ncard`,
-  `edgeSet_splitOff`, `edgeFiber_subset_edgeSet_mulTilde_splitOff`, and now the
-  degree substrate `fiberAtVertex` / `mulTilde_inc` / `fiberAtVertex_inter_edgeSet[_ncard]`
-  / `fiberDegree` / `fiberDegree_{mono,le}`, and **both directions of the no-reroute acyclicity
-  half** — forward `mulTilde_splitOff_deleteFiber_le` + `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`,
-  reverse `mulTilde_removeVertex_le_splitOff` + `isAcyclicSet_mulTilde_splitOff_of_removeVertex`,
-  and now the **reroute count substrate** — `isCycleSet_pair_edgeFiber_splitOff` (two distinct
-  `e₀` copies form a 2-cycle) + `fiber_inter_subsingleton_of_isAcyclicSet_splitOff` (a forest of
-  `G̃ᵥᵃᵇ` keeps `≤ 1` `ã̃b` copy));
-  the acyclicity-preserving *reroute* (the `dᶠ(v)=2` `ã̃b`-swap path-lift) + the `h' ≤ D−2`
-  aggregate count remain (no blueprint node yet — node stays red).
-- [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction
-  (the inverse; makes split/unsplit inverse on deficiency).
-
-Dof tracking:
-- [ ] `lem:dof-tracking` — KT 4.3–4.5, deficiency under removal /
-  splitting-off.
-- [ ] `lem:reducible-vertex` — KT 4.6, existence of a reducible
-  degree-2 vertex (maximal-chain / degree-sequence count).
-- [ ] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality
-  (two circuit-swap arguments; the 4.8 capstone).
-
-Capstone:
-- [ ] `thm:minimal-kdof-reduction` — KT Theorem 4.9: every minimal
-  `k`-dof-graph reduces to the two-vertex double edge.
+  sets. `Graph.matroidMG_indep_iff_exists_forest_packing`. Green and still
+  generally useful (and `def:matroid-MG`'s union form is the engine of the
+  deficiency route too).
+- [ ] `lem:forest-surgery-split` — KT 4.1, splitting-off direction.
+  **DEFERRED**: blocked on the balanced-packing lemma KT glosses (*Finding*);
+  *not* needed for Theorem 4.9 (deficiency route replaces it). Substrate
+  landed (`edgeFiber_ncard`, `edgeSet_splitOff`,
+  `edgeFiber_subset_edgeSet_mulTilde_splitOff`; degree substrate
+  `fiberAtVertex` / `mulTilde_inc` / `fiberAtVertex_inter_edgeSet[_ncard]` /
+  `fiberDegree` / `fiberDegree_{mono,le}`; both no-reroute acyclicity
+  directions; reroute count cap `isCycleSet_pair_edgeFiber_splitOff` /
+  `fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). Completes from this
+  substrate **iff** the balanced-packing lemma is proven (TODO).
+- [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction.
+  **DEFERRED** with `-split`.
 
 (Off the Thm-4.9 critical path; schedule with Phase 21:) KT Lemma 3.2
 (not 3-edge-connected), Lemma 3.6 (partition decomposition — needed
@@ -347,6 +306,13 @@ only by Case 6.1).
   19's `matroidMG_restrict_mulTilde`. Remaining: deficiency conservation (assemble) +
   minimality transport (fundCircuit swaps).
 
+- **KT 4.1 forest surgery hit an over-quantification + balanced-packing gloss
+  (2026-06-02); routed around via deficiency-counting.** See *Finding* +
+  *Replan* above. The substantive splitting-off content the induction needs is
+  the deficiency inequality `def(G̃ᵥᵃᵇ) ≤ def(G̃)`, proved by a partition-count
+  comparison through `rank_add_deficiency_eq` — not KT's explicit forest reroute.
+  KT's surgery (and the balanced-packing lemma it glosses) is a non-blocking TODO.
+
 ### Promoted to FRICTION
 - *No mathlib "base of `M ／ C` lifts to base of `M` via a basis of `C`" — route through
   `IsBasis'.contract_eq_contract_delete` + loops/spanning; `IsBasis'` carries no ground
@@ -370,81 +336,34 @@ only by Case 6.1).
   `matroidMG` definition (`= (⋃_{i<D} cycleMatroid(G̃)) ↾ E(G̃)`), so the "D
   edge-disjoint forests" are the `union_indep_iff` decomposition and a "forest"
   is a `cycleMatroid`-independent fiber set. No hand-rolled acyclicity predicate.
-  The surgery proper (`lem:forest-surgery-split`) now operates on this packing.
+- **[open, non-blocking] KT 4.1 balanced-packing (the *Finding*).** Is a base of
+  `M(G̃)` always partitionable into `D` forests each meeting the degree-2 vertex
+  `v`? KT's Lemma 4.1 proof assumes it without justification; we did not recover
+  one. NOT on the Theorem-4.9 critical path (the deficiency route bypasses it);
+  it gates only the deferred surgery TODO. Proving it rescues KT's proof (gap,
+  not error); refuting it confirms the gap.
 
 ## Hand-off / next phase
 
-Green in `Molecular/Induction.lean`, axiom-free, blueprint nodes `\leanok`:
-`def:induced-span`, `lem:circuit-induces-rigid` (KT 3.4 full form), the four
-graph operations `def:graph-operations` (`Graph.removeVertex` / `splitOff` /
-`edgeSplit`) + `def:rigid-contraction` (`Graph.rigidContract`, via the auxiliary
-`collapseTo`), `lem:rigid-full-rank` (`Graph.rank_matroidMG_of_isKDof_zero`, KT 3.5 rank
-core), `lem:contract-rank-bridge` (`Graph.contract_matroidMG_rank`, KT 3.5 contraction
-arithmetic; abstract adapter `Matroid.rank_contract_add_rank_restrict`),
-`lem:contract-deficiency-conservation` (`Graph.contract_matroidMG_deficiency_eq`, KT 3.5
-deficiency-conservation half), and now `lem:contract-minimality-transport`
-(`Graph.contract_minimality_transport`, KT 3.5 minimality-transport half; abstract helper
-`Matroid.IsBase.union_isBasis_of_contract`). Each op has `vertexSet_*` / `*_isLink` simp
-lemmas.
+**Read *Finding* + *Replan* first — Phase 20 pivoted (2026-06-02).** The
+forest-surgery route (`lem:forest-surgery-split`, KT 4.1) is **off the
+critical path**: KT's Lemma 4.1 is over-quantified (formally disprovable) and
+its proof glosses a balanced-packing assumption we could not recover.
+Theorem 4.9 is reached instead via the **deficiency-count route** (resting on
+the green `def = corank` bridge `rank_add_deficiency_eq`).
 
-`lem:contraction-minimality` (`Graph.contraction_isMinimalKDof`, KT 3.5 full assembly) is
-green and `\leanok` — the matroid contraction `M(G̃)/E(H̃)` is a minimal `k`-dof matroid
-(corank `= k` ∧ every base meets every surviving fiber). Stated matroid-side; the `map`
-correspondence was confirmed unnecessary, and the graph-collapse `rigidContract` phrasing is
-deferred (Phase 21+ consumes the matroid-side form).
+Green and `\leanok` (axiom-free, `Molecular/Induction.lean`): the full
+inherited KT 3.4 + KT 3.5 chain, the four graph operations, and the
+forest-surgery framing `lem:forest-packing-decomp` (names in *Current
+state*). The forest-surgery substrate is landed but serves the deferred
+surgery TODO (*Replan* Step 5), not Theorem 4.9.
 
-And now green and `\leanok`: `lem:forest-packing-decomp`
-(`Graph.matroidMG_indep_iff_exists_forest_packing`), the **framing sub-node** of the forest
-surgery — an `I ⊆ E(G̃)` is independent in `M(G̃)` iff covered by `D` cycle-matroid-independent
-fiber sets (the `D` edge-disjoint forests). This **resolves the open framing blocker**: the
-matroid-base / `union_indep_iff` framing is forced by `matroidMG`'s definition, so a "forest"
-is a `cycleMatroid`-independent fiber set and no hand-rolled acyclicity predicate is needed.
-
-And now landed (axiom-free, **no blueprint node** — bookkeeping for the still-red
-`lem:forest-surgery-split`): the surgery's **incidence/cardinality substrate** —
-`Graph.edgeFiber_ncard` (`|ẽ| = D − 1`, `Deficiency.lean`), `Graph.edgeSet_splitOff` (the
-edge set of the short-circuit splitting-off), and
-`Graph.edgeFiber_subset_edgeSet_mulTilde_splitOff` (the fresh fiber `ã̃b ⊆ E(G̃ᵥᵃᵇ)`); plus the
-**degree-at-`v`-in-a-forest substrate** — `Graph.fiberAtVertex` (the fibers of `G̃` at `v`),
-`Graph.mulTilde_inc` (`G̃`-incidence ↔ `G`-incidence at `p.1`), `Graph.fiberAtVertex_inter_edgeSet[_ncard]`
-(`|fibers at v in E(G̃)| = (D−1)·|incident G-edges at v|`, so `2(D−1)` at a degree-2 vertex),
-`Graph.fiberDegree` (the per-forest `dᶠ(v)`), `Graph.fiberDegree_mono`, and `Graph.fiberDegree_le`.
-These are the quantities KT 4.1's count and reroute consume (`|ã̃b| = D − 1`, the target edge set,
-the short-circuit fiber, and the per-forest degree count).
-
-And now landed (axiom-free, **no blueprint node** — both no-reroute acyclicity directions,
-still feeding the red `lem:forest-surgery-split`): the **no-reroute acyclicity transport**, both
-ways across the short-circuit. Forward (`G̃ᵥᵃᵇ→G̃`): `Graph.mulTilde_splitOff_deleteFiber_le`
-(deleting the fresh fiber `ã̃b` from `G̃ᵥᵃᵇ` lands inside `G̃`) +
-`Graph.isAcyclicSet_mulTilde_of_splitOff_of_disjoint` (an acyclic `F` of `G̃ᵥᵃᵇ` *disjoint from
-`ã̃b`* is acyclic in `G̃`). Reverse (`G̃→G̃ᵥᵃᵇ`, this commit, given freshness `e₀ ∉ E(G)`):
-`Graph.mulTilde_removeVertex_le_splitOff` (the multiplied vertex-removal `(G_v)̃ ≤ G̃ᵥᵃᵇ`, both
-on `V(G)\{v}`, definitional vertex side) + `Graph.isAcyclicSet_mulTilde_splitOff_of_removeVertex`
-(an acyclic `F` of `(G_v)̃` is acyclic in `G̃ᵥᵃᵇ`, no `ã̃b`-disjointness needed). These are the
-`dᶠ(v) ≤ 1` forests (drop their single `v`-edge, survive verbatim in either direction). Both
-mirrors route through `IsAcyclicSet.mono` + `cycleMatroid_indep`.
-
-And now landed (axiom-free, **no blueprint node** — the reroute count cap, still feeding the red
-`lem:forest-surgery-split`): the **reroute count substrate**. `Graph.isCycleSet_pair_edgeFiber_splitOff`
-(two distinct copies `p ≠ q` of the fresh edge `e₀` in `G̃ᵥᵃᵇ` form a 2-cycle `IsCycleSet {p,q}`,
-given distinct neighbours `a ≠ b`, via the explicit length-2 closed walk `a —p→ b —q→ a`) +
-`Graph.fiber_inter_subsingleton_of_isAcyclicSet_splitOff` (a cycle-matroid-acyclic forest `F` of
-`G̃ᵥᵃᵇ` keeps `≤ 1` copy of `ã̃b = edgeFiber e₀ n`: two would form a 2-cycle inside `F`, via
-`isCycleSet_iff` → `not_isAcyclicSet_iff`, contradicting acyclicity). The per-forest cap behind
-KT 4.1's `h' ≤ D−2` count — aggregated across the `D` forests it bounds the total `ã̃b`-copy
-count by `D`.
-
-Next agent's concrete commit: the genuine **acyclicity-preserving reroute transport** of
-`lem:forest-surgery-split` (KT 4.1), still red — the residual crux. The framing
-(`lem:forest-packing-decomp`), the incidence substrate, the **degree substrate** (`fiberDegree`
-/ `fiberDegree_le`, `dᶠ(v) ≤ 2(D−1)`), **both directions of the no-reroute acyclicity half**, and
-now the **reroute count cap** (`fiber_inter_subsingleton_of_isAcyclicSet_splitOff`) are all in
-place. What remains is the genuine path-lift: the `dᶠ(v)=2` forests swap their two `v`-edges for
-one fresh `ã̃b` copy (via `edgeFiber_subset_edgeSet_mulTilde_splitOff`), and showing the rerouted
-forest stays acyclic needs the `v`-traversing path lift — a `G̃ᵥᵃᵇ`-cycle *using* `ã̃b` lifts to a
-`v`-traversing path of `G̃` (via the `Matroid/Graph/AcyclicSet.lean` `not_isAcyclicSet_iff` cycle
-characterization, `cycleMatroid_indep = IsAcyclicSet`), which neither no-reroute acyclicity mirror
-covers (each assumes `F` avoids `ã̃b`). Then the assembly `|I'| = |I| − D` and the `h' ≤ D−2`
-aggregate count (per-forest cap × `D` forests, bounded via `edgeFiber_ncard`). Multi-commit;
-budget the most time. After `-split`, its inverse `lem:forest-surgery-unsplit` (KT 4.2) makes
-split/unsplit inverse on the deficiency, then the dof-tracking chain (4.3–4.8) and Theorem 4.9.
+**Next agent's concrete commit = *Replan* commit A** (the pivot): blueprint
+discussion subsection "On Katoh–Tanigawa Lemma 4.1" (three-layer writeup
+principle — see *Replan*), restate the dof-tracking dep-graph (add red
+`lem:splitoff-deficiency` / `lem:removal-deficiency`, re-point
+`lem:dof-tracking`, mark `lem:forest-surgery-split` / `-unsplit` deferred),
+and the Lean `example` disproving the literal quantification. Then commits
+B–H per the *Replan* sequence — commit B (the `≤` direction) is the de-facto
+route-confirmation spike; the deficiency `≤` is ~10 lines on green infra
+(high confidence), the refinement + 4.9 assembly are the substantive work.

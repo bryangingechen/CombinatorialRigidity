@@ -296,6 +296,18 @@ two-vertex double edge via splitting-off / rigid-contraction).
 - **Reuse:** matroid restriction/contraction + fundamental circuits
   (mathlib `Matroid.restrict`, `Matroid.fundCircuit`), the vendored
   union subsystem (`Matroid/Constructions/Union.lean`), `edgeMultiply`.
+- **Route change (2026-06-02 — see `notes/Phase20.md` *Finding* +
+  *Replan*).** Formalizing the forest surgery (4.1) surfaced that KT's
+  Lemma 4.1 is over-quantified (false for `|I| < D`, formally disproved)
+  and its proof of the base case glosses an unstated *balanced-packing*
+  assumption (every forest in the `D`-forest partition meets `v`) — in
+  both the 2011 (Lemma 4.1, p.660) and 2009 arXiv (Lemma 5.1, p.11)
+  versions. The induction needs only `def(G̃ᵥᵃᵇ) ≤ def(G̃)` (KT 4.3),
+  which is true and which we prove directly by a **deficiency-count
+  partition comparison** through `def = corank` (Phase 19), bypassing the
+  forest surgery. The surgery (and proving-or-refuting the balanced-packing
+  lemma) is a non-blocking TODO; the hard core is now 4.6 / the capstone
+  4.8, not 4.1/4.2.
 
 #### Phase 21 — Theorem 5.5 base + Cases I & II (§5, §6.1–6.3)
 
