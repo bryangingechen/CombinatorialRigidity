@@ -363,9 +363,36 @@ Cases~I and~II travel toward the smaller inductive graph.
   of indices.
 \end{proof}
 
+\begin{lemma}[Rigidity of a cycle with independent extensors]
+  \label{lem:cycle-realization-rigid}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_zero_cycle,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_zero_of_cycle,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isTrivialMotion_of_isInfinitesimalMotion_cycle}
+  \leanok
+  \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:cycle-realization-base}
+  The rigidity half of \cref{lem:cycle-realization}: a panel-hinge framework on the cycle of
+  $m$ bodies $0, 1, \dots, m-1$ --- the $i$-th hinge joining body $i$ to body $i+1$ (cyclically)
+  --- whose $m$ supporting extensors are linearly independent in the screw space $\Lambda^k
+  \R^{k+2}$ is infinitesimally rigid, realizing the rank hypothesis at $k' = 0$
+  (\cref{def:rank-hypothesis}), the full rank $D(|V|-1)$ of the minimal $0$-dof case. This is the
+  $m$-body generalization of the two-body short-cycle base \cref{lem:cycle-realization-base}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-parallel-full}
+  Each hinge constraint puts the relative screw $S(i) - S(i+1)$ of an infinitesimal motion $S$ in
+  the one-dimensional span of its supporting extensor, and the $m$ differences telescope around
+  the cycle to $\sum_i (S(i) - S(i+1)) = 0$ (the shift $i \mapsto i+1$ is a bijection of the cycle
+  $\Z/m$). Independence of the $m$ extensors then forces every difference to vanish --- the
+  $m$-edge generalization of the parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full},
+  the $m=2$ case) --- so $S$ is constant around the connected cycle, hence a trivial motion. By
+  \cref{def:rank-hypothesis} the framework realizes the rank hypothesis at $k'=0$.
+\end{proof}
+
 \begin{lemma}[Cycle realizations; KT Lemma 5.4]
   \label{lem:cycle-realization}
   \uses{def:rigidity-matrix, lem:cycle-realization-base, lem:cycle-realization-dim-bound,
+        lem:cycle-realization-rigid,
         lem:panel-support-extensor-independence, lem:exists-independent-panel-extensor}
   A cycle graph $G = (V, E)$ with $3 \le |V| \le D$ has an
   infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$
@@ -376,28 +403,29 @@ Cases~I and~II travel toward the smaller inductive graph.
   Crapo--Whiteley~\cite[Proposition~3.4]{crapoWhiteley1982} (the
   $3$-dimensional, $D = 6$ case) and
   Whiteley~\cite[Proposition~3]{whiteley1999}, the technique extending
-  to general $d$ without modification. The two-body base is
-  \cref{lem:cycle-realization-base} and the upper bound $|V| \le D$ on
-  the hypothesis is \cref{lem:cycle-realization-dim-bound}; the general
-  cycle ($|V| \ge 3$) and the generic-panel independence argument
-  supplying the independent supporting extensors (bottoming on the
-  extensor-independence Lemma~2.1, \cref{lem:extensor-independence})
-  remain --- the genericity device (Claim~6.4/6.9) shared with
-  Cases~I and~II.
+  to general $d$ without modification. All three pieces are now formalized: the two-body base is
+  \cref{lem:cycle-realization-base}, the rigidity of an $m$-body cycle whose supporting extensors
+  are independent is \cref{lem:cycle-realization-rigid}, the upper bound $|V| \le D$ on the
+  hypothesis is \cref{lem:cycle-realization-dim-bound}, and the generic-panel independence
+  argument supplying the independent supporting extensors (bottoming on the extensor-independence
+  Lemma~2.1, \cref{lem:extensor-independence}) is \cref{lem:exists-independent-panel-extensor}.
+  What remains a cited rather than formalized step is only the projective assembly of these into
+  a single realization on a concrete cycle graph (the genericity device, Claim~6.4/6.9, shared
+  with Cases~I and~II).
 \end{lemma}
 \begin{proof}
-  \uses{lem:cycle-realization-base}
+  \uses{lem:cycle-realization-base, lem:cycle-realization-rigid,
+        lem:exists-independent-panel-extensor}
   The two-body base case is \cref{lem:cycle-realization-base}. For the
-  general cycle, a single cycle of $k$ panels and $k$ hinges is infinitesimally rigid
-  iff the $k$ hinge lines are independent in the Grassmann line
-  geometry --- the dimension-$D$ extensor space supports at most $D$
-  independent lines, so a cycle of length $3 \le |V| \le D$ admits a
-  nonparallel realization whose supporting extensors are independent,
-  hence rigid (\cite[Prop.~3.4]{crapoWhiteley1982},
-  \cite[Prop.~3]{whiteley1999}). An external geometric input, cited
-  rather than reproved (KT~\cite[Lemma~5.4]{katohTanigawa2011}
-  likewise defers the detailed projective calculation to these
-  sources).
+  general cycle, a single cycle of $m$ panels and $m$ hinges is infinitesimally rigid
+  iff the $m$ hinge lines are independent in the Grassmann line
+  geometry (\cref{lem:cycle-realization-rigid}) --- the dimension-$D$ extensor space supports at
+  most $D$ independent lines, so a cycle of length $3 \le |V| \le D$ admits a
+  nonparallel realization whose supporting extensors are independent
+  (\cref{lem:exists-independent-panel-extensor}), hence rigid
+  (\cite[Prop.~3.4]{crapoWhiteley1982}, \cite[Prop.~3]{whiteley1999}). The detailed projective
+  assembly is an external geometric input, cited rather than reproved
+  (KT~\cite[Lemma~5.4]{katohTanigawa2011} likewise defers it to these sources).
 \end{proof}
 
 \begin{definition}[Block-pinning a set of bodies]

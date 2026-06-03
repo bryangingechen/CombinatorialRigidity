@@ -26,6 +26,23 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**`m`-body cycle rigidity landed (2026-06-03).** The last remaining brick of
+`lem:cycle-realization` (KT Lemma 5.4) — the general `m`-body cycle, `theorem_55_base`
+analogue — is green: `BodyHingeFramework.rankHypothesis_zero_of_cycle` (cycle bodies `Fin m`,
+`NeZero m`, edge `i` linking `i`→`i+1` cyclically, `m` independent supporting extensors ⇒
+`RankHypothesis 0`) and its panel wrapper
+`PanelHingeFramework.toBodyHinge_rankHypothesis_zero_cycle` (lifted verbatim through
+`toBodyHinge`). The proof propagates `S i = S (i+1)` around the cycle: each hinge puts
+`S i − S (i+1)` in `span C(p(eᵢ))`, the `m` differences telescope to `∑ = 0` (the shift
+`i ↦ i+1` is `Equiv.addRight (1 : Fin m)`, a bijection), and the green core
+`eq_zero_of_mem_span_singleton_of_sum_eq_zero` forces each to vanish; `S` is then constant on
+the connected cycle (an `ℕ`-induction over `Fin.ofNat m j`, closed by `Fin.ofNat_val_eq_self`).
+Staged through `eq_succ_of_isInfinitesimalMotion_cycle` (the step) and
+`isTrivialMotion_of_isInfinitesimalMotion_cycle` (constancy). Axiom-clean
+(propext/Classical.choice/Quot.sound). Blueprint adds a green `lem:cycle-realization-rigid`
+node; `lem:cycle-realization` now `\uses` it and its three other pieces are all green, so only
+the cited projective assembly (genericity device, Claim 6.4/6.9) is left non-Lean.
+
 **Independent grade-2-join / panel-extensor existence landed (2026-06-03).** The existence
 half of the genericity device is green: `exists_independent_normalsJoin` (for any
 `m ≤ screwDim k = D`, there are `m` pairs of panel normals whose grade-2 joins are
@@ -273,9 +290,16 @@ Case I (proper rigid subgraph; KT §6.2):
   `exists_independent_normalsJoin` + `exists_independent_panelSupportExtensor`,
   bridged by `normalsJoin_basisFun_orderEmbOfFin`): basis-selection on `⋀²`
   via `ιMulti_family_linearIndependent_ofBasis`, bottoming on Lemma 2.1.
-  Still red: the `m`-body cycle `theorem_55_base` analogue (needs a
-  `Graph`-cycle/walk primitive to propagate `S u = S v`). Citation
-  (CW82 Prop 3.4 / Whiteley99 Prop 3) stays as the source pointer.
+  The **`m`-body cycle rigidity half** is now green too
+  (`lem:cycle-realization-rigid`, `rankHypothesis_zero_of_cycle` +
+  `…toBodyHinge_rankHypothesis_zero_cycle`, staged through
+  `eq_succ_of_isInfinitesimalMotion_cycle` /
+  `isTrivialMotion_of_isInfinitesimalMotion_cycle`): cycle bodies are `Fin m`
+  (`NeZero m`), edge `i` links `i`→`i+1`, the per-edge `S i − S(i+1)` telescope
+  to `∑ = 0` via `Equiv.addRight (1 : Fin m)` and `eq_zero_of_mem_span_singleton_
+  of_sum_eq_zero` forces constancy — no `Graph`-walk primitive needed, the cyclic
+  `Fin m` index *is* the cycle. All four Lean pieces of 5.4 now green; only the
+  cited projective assembly (CW82 Prop 3.4 / Whiteley99 Prop 3) stays non-Lean.
 - [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
   subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
   glue block-triangularly with a pinned rigid realization of `H`
@@ -436,8 +460,12 @@ coplanarity conjunct when assembled into the full Theorem 5.5),
 `toBodyHinge_rankHypothesis_zero`) and its **`|V| ≤ D` dimension bound**
 (`lem:cycle-realization-dim-bound`,
 `card_le_screwDim_of_linearIndependent` +
-`PanelHingeFramework.card_le_screwDim_of_supportExtensor_linearIndependent`).
-Remaining red: `lem:cycle-realization` (the general cycle, `|V| ≥ 3`),
+`PanelHingeFramework.card_le_screwDim_of_supportExtensor_linearIndependent`) — and now the
+**`m`-body cycle rigidity** (`lem:cycle-realization-rigid`,
+`rankHypothesis_zero_of_cycle` + `toBodyHinge_rankHypothesis_zero_cycle`). All four Lean
+pieces of `lem:cycle-realization` are green; the node itself stays red (its statement is the
+cited projective *existence* assembly, not a single Lean theorem).
+Remaining red: `lem:cycle-realization` (cited assembly only),
 `prop:rigidity-matrix-prop11` (stays body-hinge), `thm:theorem-55`,
 `lem:case-I`, `lem:case-II`, `lem:case-III` (III is 22–23).
 
@@ -460,18 +488,26 @@ choice exactly as planned — `m` distinct 2-subsets of `Fin (k+2)` (card cap
 standard basis vectors, `ιMulti_family_linearIndependent_ofBasis` + `.comp`
 of the index injection. No new mathlib needed.
 
-**Smallest next concrete commit:** the `m`-body cycle `theorem_55_base`
-analogue — propagate `S u = S v` around a length-`m` cycle of edges whose
-supporting extensors are independent, yielding `RankHypothesis 0` for the
-panel-cycle framework. mathlib's relational `Graph` has no connectivity API,
-so this likely needs a small `Graph`-cycle/walk primitive (or an explicit
-`Fin m`-indexed cycle of edges) to chain the per-edge `S uᵢ = S vᵢ`
-constraints. **Already green for that analogue:** the cycle-difference
-linear-algebra core `eq_zero_of_mem_span_singleton_of_sum_eq_zero`
-core `eq_zero_of_mem_span_singleton_of_sum_eq_zero` (RigidityMatrix.lean,
-commit `31ded90`) — an independent family of constraint spans admits no
-nonzero cycle of differences (the `m`-edge generalization of
-`span_inf_span_eq_bot_of_linearIndependent`); reuse it rather than
-rebuilding.
-After 5.4: the re-scoped Cases I/II (Cases gain the panel requirement;
-III is 22–23).
+**`m`-body cycle rigidity is now green** (this commit):
+`BodyHingeFramework.rankHypothesis_zero_of_cycle` +
+`PanelHingeFramework.toBodyHinge_rankHypothesis_zero_cycle`, staged through
+`eq_succ_of_isInfinitesimalMotion_cycle` /
+`isTrivialMotion_of_isInfinitesimalMotion_cycle`. **No `Graph`-cycle/walk primitive was
+needed** (the prior hand-off's anticipated cost): the cycle is the cyclic index type `Fin m`
+itself (`NeZero m`), edge `i` linking `i`→`i+1`, so the per-edge `S i − S(i+1)` telescope to
+`∑ = 0` by `Equiv.addRight (1 : Fin m)` (a bijection of `Fin m`) and the green
+`eq_zero_of_mem_span_singleton_of_sum_eq_zero` (RigidityMatrix.lean, commit `5d72764`) forces
+constancy. The constant-propagation is an `ℕ`-induction over `Fin.ofNat m j`
+(`Fin.ofNat_val_eq_self` closes the return); the small `Fin` fact
+`Fin.ofNat m p + 1 = Fin.ofNat m (p+1)` is a one-line `Fin.ext` + `simp [Fin.add_def,
+Nat.add_mod]`.
+
+**Smallest next concrete commit:** start Case I or Case II (`lem:case-I` / `lem:case-II`).
+Both gate on the *vertex-level* graph ops that change `|V|` — contraction `G/E(H)` (Case I,
+pin a proper rigid subgraph via the green `def:pinned-motions-on`) and splitting-off `G_v^{ab}`
+(Case II, the `+D` rank lift is the green `lem:case-II-rank-lift`). Each then composes the green
+Phase-20 minimality-transport (`lem:contraction-minimality` / `lem:reduction-step`) with the
+cycle realization just landed and the Phase-18 pin-a-body / parallel lemmas, block-triangularly.
+The genericity device for Cases I/II is the same `panelSupportExtensor_linearIndependent_iff` +
+`exists_independent_panelSupportExtensor` pair already green for the cycle. Cases gain the panel
+(coplanarity) requirement; III is deferred to 22–23.

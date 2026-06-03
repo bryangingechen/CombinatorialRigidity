@@ -76,6 +76,23 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Iterating cyclic `+1` around `Fin m`: `(j : Fin m)` ascription / `NatCast` / `Fin.induction` all fail; use `Fin.ofNat`-based ℕ-induction
+- **Where it bit:** `isTrivialMotion_of_isInfinitesimalMotion_cycle` in
+  `Molecular/AlgebraicInduction.lean` (Phase 21 `m`-body cycle): turning the
+  consecutive equality `S i = S (i+1)` (cyclic `Fin m` `+1`) into `S i = S 0`.
+- **Friction:** `(j : Fin m)` for `j : ℕ` parses as a type ascription, not a
+  coercion (*"Type mismatch j has type ℕ"*); `(↑j : Fin m)` / `Nat.cast` then trip
+  *"failed to synthesize NatCast (Fin m)"* (the instance wants the literal `n+1`
+  shape, not `Fin m` under `[NeZero m]`); `Fin.induction` uses the non-wrapping
+  `Fin.succ`, not cyclic `+1`.
+- **Fix:** induct over `Fin.ofNat m j` on `ℕ` (`Fin.ofNat_zero` base,
+  `Fin.ofNat_val_eq_self` to return to `i`), with the one-line successor fact
+  `Fin.ofNat m p + 1 = Fin.ofNat m (p+1)` by `Fin.ext` + `simp [Fin.add_def,
+  Nat.add_mod]`. No `Graph`-walk primitive needed — `Fin m` *is* the cycle.
+- **General lesson:** lifted to TACTICS-GOLF § 12.
+- **Status:** resolved — landed inline; `Fin.ofNat m p + 1 = …` is a one-liner, no
+  separate mirror warranted.
+
 ### [resolved] `LinearEquiv.map_eq_zero_iff` via `rw` fails on a defeq-wrapped codomain (`ScrewSpace k` = `⋀^(k+2−2)`); apply `map_ne_zero_iff … .injective` as a term
 - **Where it bit:** `panelSupportExtensor_ne_zero_iff` in
   `Molecular/AlgebraicInduction.lean` (Phase 21 panel leaf): showing

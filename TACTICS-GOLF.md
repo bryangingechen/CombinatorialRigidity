@@ -52,6 +52,10 @@ symptom-indexed and lighter.
     `induction hN : m G using Nat.strong_induction_on generalizing G`;
     `generalizing` is mandatory, the IH threads the measure-equation
     first (`IH _ hlt G' rfl …`), and don't `subst hN`.
+12. **Iterating `+1` around a cyclic `Fin m`** — to propagate a
+    consecutive-equality `f i = f (i+1)` to a global one, induct over
+    `Fin.ofNat m j` on `ℕ` (not `(j : Fin m)` ascription, not
+    `Fin.induction`); `Fin.ofNat_val_eq_self` returns to `i`.
 
 ---
 
@@ -830,3 +834,42 @@ Two things to know, both of which bit in Phase 20's
   re-expresses the goal in `V(G).ncard` and desyncs from `IH`'s `< N`.
   Keep `hN` and `rw [hN]` / `hN ▸` locally where you need the concrete
   count.
+
+## 12. Iterating `+1` around a cyclic `Fin m` (`Fin.ofNat`-based ℕ-induction)
+
+To turn a *consecutive* equality `∀ i : Fin m, f i = f (i + 1)` (the
+`+1` being cyclic `Fin m` addition) into a *global* one
+`∀ i, f i = f 0` — the "constant around a cycle" step — three obvious
+moves fail and one works:
+
+- `(j : Fin m)` for `j : ℕ` does **not** coerce: the parser reads it as
+  a type ascription, so you get *"Type mismatch: j has type ℕ but is
+  expected to have type Fin m"* (and `(↑j : Fin m)` / `Nat.cast` trip
+  *"failed to synthesize NatCast (Fin m)"* — the `NatCast` instance
+  wants the literal `n+1` shape, not `Fin m` under `[NeZero m]`).
+- `Fin.induction` is for `Fin (n+1)` with the **non-wrapping**
+  `Fin.succ : Fin n → Fin (n+1)`, a different operation from cyclic
+  `+1`.
+
+The idiom (used in `rankHypothesis_zero_of_cycle`'s
+`isTrivialMotion_of_isInfinitesimalMotion_cycle`,
+`Molecular/AlgebraicInduction.lean`):
+
+```lean
+have hofNat : ∀ p : ℕ, Fin.ofNat m p + 1 = Fin.ofNat m (p + 1) := fun p => by
+  apply Fin.ext; simp [Fin.add_def, Nat.add_mod]
+have hnat : ∀ j : ℕ, f (Fin.ofNat m j) = f 0 := by
+  intro j
+  induction j with
+  | zero => rw [Fin.ofNat_zero]
+  | succ p ih => rw [← hofNat, ← hstep, ih]
+have := hnat i.val
+rwa [Fin.ofNat_val_eq_self] at this   -- Fin.ofNat m ↑i = i
+```
+
+`Fin.ofNat m : ℕ → Fin m` is the canonical (`[NeZero m]`) cyclic map;
+`Fin.ofNat_zero`, `Fin.ofNat_val_eq_self`, and the one-line `hofNat`
+successor fact (`Fin.ext` + `simp [Fin.add_def, Nat.add_mod]`, since
+both sides are `(p+1) % m`) are all you need. The cyclic index type
+`Fin m` *is* the cycle — no `Graph`-walk/connectivity primitive is
+required to chain the per-step equalities.
