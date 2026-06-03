@@ -1193,6 +1193,90 @@ theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Gra
     linarith [hdiffleZ, hremoval, hBrank, hsplitZ, hHrank]
   exact_mod_cast key
 
+/-! ### Redistribution kernel: a `v`-avoiding forest accepts any `v`-fiber as a pendant
+(`lem:forest-surgery-split`, the balanced-packing redistribution half)
+
+With the *counting* half of the balanced-packing assumption discharged
+(`isBase_vfiber_ncard_ge`: a base meets `≥ D` of the `2(D−1)` fibers at the degree-2
+vertex `v`), the residual *redistribution* question (`rem:kt-lemma-41`~(2)) is: given the
+`D`-forest packing of a base and `≥ D` `v`-fibers among them, can the forests be rechosen
+so each meets `v`? This kernel resolves it **affirmatively** — confirming Katoh–Tanigawa's
+Lemma 4.1 proof has a *gap, not an error* (the balanced packing is achievable for a base).
+
+The mechanism turns entirely on **`v` having degree 2** in `G`. A forest `F` (a
+`(G̃).cycleMatroid`-independent fiber set) that contains no `v`-incident fiber has `v`
+isolated in `G̃ ↾ F`; so for any `v`-fiber `x` (a copy of `eₐ` or `e_b`), `x` is a *pendant*
+edge in `G̃ ↾ insert x F` — its `v`-endpoint has degree 1 — hence a bridge, and adding a
+bridge to a forest keeps it a forest. So `insert x F` is again `(G̃).cycleMatroid`-
+independent. The repacking descent (move a `v`-fiber from a forest holding two of them
+into a `v`-avoiding forest; the pigeonhole donor always exists since `≥ D` fibers sit in
+`< D` non-empty forests) strictly raises the number of `v`-meeting forests, terminating
+with every forest meeting `v`. This kernel is the single load-bearing step of that descent;
+the descent itself (a `Fin D → Set _` repacking with a well-founded measure) is the
+remaining surgery work, off the Theorem-4.9 critical path. -/
+
+/-- **A `v`-avoiding forest accepts a `v`-fiber as a pendant** (`lem:forest-surgery-split`,
+balanced-packing redistribution kernel; Katoh–Tanigawa 2011 Lemma 4.1 p.660). Let `F` be a
+`(G̃).cycleMatroid`-independent fiber set (a "forest") whose edges all *avoid* `v`
+(`∀ p ∈ F, ¬ (G̃).Inc p v`), and let `x` be a fiber joining `v` to a distinct vertex `w`
+(`(G̃).IsLink x v w`, `w ≠ v` — a *non-loop* copy of a `v`-incident `G`-edge, exactly the
+shape of the `va`/`vb` fibers at a degree-2 vertex). Then `insert x F` is still
+`(G̃).cycleMatroid`-independent. (The non-loop hypothesis is essential: a loop at `v` is
+itself a cycle, so `insert (loop) F` is never acyclic.)
+
+Proof: by `cycleMatroid_indep`, `insert x F` is acyclic iff `G̃ ↾ insert x F` is a forest;
+since `F` is acyclic, it suffices (`IsForest.of_deleteEdges_singleton`) that `x` is a bridge
+of `G̃ ↾ insert x F`. `x` is a bridge iff `v` and `w` are disconnected after deleting `x`
+(`IsLink.isBridge_iff_not_connBetween`). But in `(G̃ ↾ insert x F) ＼ {x}` the vertex `v` is
+*isolated*: its only `insert x F`-edge was `x`, now deleted, and no `F`-edge touches `v`. So
+`Isolated.connBetween_iff_eq` forces any `v`–`w` connection to have `v = w`, contradicting
+`w ≠ v`. This is the single combinatorial step KT's Lemma 4.1 base-case proof needs and
+glosses; it holds because `v` has degree 2 (so a `v`-avoiding forest has `v` isolated). -/
+theorem acyclicSet_insert_vfiber_of_not_inc {G : Graph α β} {n : ℕ}
+    {F : Set (β × Fin (bodyHingeMult n))} {x : β × Fin (bodyHingeMult n)} {v w : α}
+    (hF : ((G.mulTilde n).cycleMatroid).Indep F)
+    (hxvw : (G.mulTilde n).IsLink x v w) (hwv : w ≠ v)
+    (hFv : ∀ p ∈ F, ¬ (G.mulTilde n).Inc p v) :
+    ((G.mulTilde n).cycleMatroid).Indep (insert x F) := by
+  classical
+  set K := G.mulTilde n with hK
+  rw [Graph.cycleMatroid_indep] at hF ⊢
+  have hxE : x ∈ E(K) := hxvw.edge_mem
+  have hFE : F ⊆ E(K) := hF.1
+  -- `insert x F ⊆ E(K)`.
+  rw [Graph.isAcyclicSet_iff]
+  refine ⟨Set.insert_subset hxE hFE, ?_⟩
+  -- It suffices that `x` is a bridge of `K ↾ insert x F`, since deleting it leaves a forest.
+  set R := K ↾ insert x F with hR
+  have hRforest_del : (R ＼ {x}).IsForest := by
+    have hFforest : (K ↾ F).IsForest := (Graph.restrict_isForest_iff hFE).mpr hF
+    refine hFforest.anti ?_
+    rw [hR, Graph.restrict_deleteEdges]
+    refine Graph.restrict_le_restrict (Set.inter_subset_inter_right _ ?_)
+    rintro p ⟨hpmem, hpne⟩
+    exact (Set.mem_insert_iff.mp hpmem).resolve_left hpne
+  have hxlinkR : R.IsLink x v w := by
+    rw [hR, Graph.restrict_isLink]; exact ⟨Set.mem_insert _ _, hxvw⟩
+  -- `x` is a bridge of `R`: deleting it isolates `v`, so no `v`–`w` path remains.
+  have hbridge : R.IsBridge x := by
+    rw [hxlinkR.isBridge_iff_not_connBetween]
+    intro hconn
+    -- `v` is isolated in `R ＼ {x}`.
+    have hvisol : (R ＼ {x}).Isolated v := by
+      constructor
+      · intro e hinc
+        rw [hR] at hinc
+        have hincK : K.Inc e v ∧ e ∈ insert x F ∧ e ∉ ({x} : Set _) := by
+          rw [Graph.deleteEdges_inc, Graph.restrict_inc] at hinc; tauto
+        obtain ⟨hincK, hmem, hne⟩ := hincK
+        have heF : e ∈ F := (Set.mem_insert_iff.mp hmem).resolve_left (by simpa using hne)
+        exact hFv e heF hincK
+      · have : v ∈ V(K) := hxvw.left_mem
+        rw [Graph.vertexSet_deleteEdges, hR, Graph.vertexSet_restrict]
+        exact this
+    exact hwv ((hvisol.connBetween_iff_eq).mp hconn).symm
+  exact Graph.IsForest.of_deleteEdges_singleton hbridge hRforest_del
+
 /-! ### Total fiber count of `G̃` (`lem:no-rigid-edge-count`, support)
 
 The KT 4.5(i) edge-count bound (`lem:no-rigid-edge-count`, the prerequisite for the

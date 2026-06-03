@@ -176,6 +176,26 @@ housekeeping pass once their resolution is fully indexed.
   set is often replaceable by a single cardinality split across that set's complement.*
 - **Status:** resolved.
 
+### [resolved] `[matroid]` Extending a cycle-matroid-independent set by a *pendant* edge: the `Isolated`/bridge idiom
+- **Where it bit:** `Graph.acyclicSet_insert_vfiber_of_not_inc` in `Molecular/Induction.lean`
+  (Phase 20, KT 4.1 balanced-packing redistribution kernel).
+- **Friction / resolution:** to show `cycleMatroid.Indep (insert x F)` for a forest `F` whose
+  edges avoid a vertex `v` and a non-loop `v`-fiber `x : v—w` (`w ≠ v`), the clean route is
+  entirely vendored `apnelson1/Matroid` graph API: `Graph.cycleMatroid_indep`
+  (`Indep = IsAcyclicSet`) → `Graph.isAcyclicSet_iff` (`= F ⊆ E ∧ (G ↾ F).IsForest`) →
+  `Graph.IsForest.of_deleteEdges_singleton (he : bridge x) (hG : (R ＼ {x}).IsForest)`. The
+  deleted-graph forest goal closes by `IsForest.anti` after `Graph.restrict_deleteEdges`
+  (`(G ↾ F₁) ＼ F₂ = G ↾ (F₁ \ F₂)`) + `Graph.restrict_le_restrict` (needs
+  `E ∩ F₁ ⊆ E ∩ F₂`). The bridge closes by `IsLink.isBridge_iff_not_connBetween` then
+  `Isolated.connBetween_iff_eq` — the latter is the key lever: a vertex incident to *no* edge
+  of the deleted graph is `Graph.Isolated`, so any `ConnBetween v w` forces `v = w`.
+- **General lesson:** *for "adding a degree-≤-1 edge keeps a graph acyclic", don't reason
+  about cyclic walks directly — go through `Isolated` (the endpoint has no other edge) +
+  `Isolated.connBetween_iff_eq` to get a bridge, then `IsForest.of_deleteEdges_singleton`.*
+  Gotcha: `Graph.restrict_isLink`/`restrict_inc` put the **set-membership conjunct first**
+  (`e ∈ F ∧ G.IsLink e x y`), not the link first.
+- **Status:** resolved.
+
 ### [resolved] `[matroid]` Building a small explicit cyclic walk (`IsCyclicWalk`) needs the full structure tower + a hoisted `IsWalk` `have`
 - **Where it bit:** `Graph.isCycleSet_pair_edgeFiber_splitOff` in `Molecular/Induction.lean`
   (Phase 20 `lem:forest-surgery-split` reroute-count substrate). To exhibit `{p, q}` as a

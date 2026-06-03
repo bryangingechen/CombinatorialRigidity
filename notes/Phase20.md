@@ -3,6 +3,9 @@
 **Status:** ✓ complete. Capstone `thm:minimal-kdof-reduction` (KT Theorem 4.9,
 `Graph.minimal_kdof_reduction`) green, axiom-free; commit H landed 2026-06-03.
 Forest-surgery core (KT 4.1/4.2) is off the critical path (deferred TODO, *Replan* Step 5).
+The KT 4.1 balanced-packing gloss is **resolved (2026-06-03): a GAP, not an error** — both
+its counting half (`isBase_vfiber_ncard_ge`) and its redistribution half
+(`acyclicSet_insert_vfiber_of_not_inc`) are now green; see the *TODO* Progress *VERDICT*.
 
 This phase is stratum 4 of the molecular-conjecture program (KT §3
 Lemmas 3.4/3.5 full forms, §4). The program-level plan, reuse map,
@@ -154,14 +157,28 @@ in `M(G̃ᵥ) = M(G̃)↾E(G̃ᵥ)` (`matroidMG_restrict_mulTilde`), so
 `removeVertex_deficiency_ge` (KT 4.4). **Significance:** this discharges the
 pure-cardinality content KT's Lemma 4.1 base-case proof glosses — the
 pigeonhole obstruction "`h < D`" of *Finding* layer 2 **cannot arise**, since
-a base always has ≥ D `v`-fibers available. The balanced-packing lemma is thereby
-reduced to a pure **redistribution** question (the genuinely-open residue): given
-≥ D `v`-fibers, each forest holding ≤ 1 `va`-copy and ≤ 1 `vb`-copy, can the `D`
-forests be rechosen so each meets `v`? On paper the `D = 2` case is fully balanced
-(every base contains both `va`, `vb` since neither is ever redundant — `v` deg 2 —
-and a 2-colouring separates them); `D ≥ 3` is the open redistribution. The
-counterexample-vs-rescue verdict now turns solely on this redistribution claim,
-**not** on a counting failure.
+a base always has ≥ D `v`-fibers available.
+
+**VERDICT (2026-06-03): the REDISTRIBUTION question is resolved POSITIVELY for all `D` —
+KT Lemma 4.1's gloss is a GAP, not an error.** The redistribution residue ("given ≥ D
+`v`-fibers, each forest holding ≤ 1 `va`-copy and ≤ 1 `vb`-copy, can the `D` forests be
+rechosen so each meets `v`?") was thought open for `D ≥ 3`. It is **not** open: the
+mechanism turns on `v` having **degree 2**, so a forest avoiding `v` has `v` *isolated*,
+and a free `v`-fiber `x : v—w` (`w ≠ v`) is then a **pendant** edge of that forest — its
+`v`-endpoint has degree 1 — hence a bridge, and adding a bridge to a forest keeps it a
+forest. So any `v`-avoiding forest absorbs any free `v`-fiber, and a finite descent (move
+a `v`-fiber from a forest holding two into a `v`-avoiding one; the pigeonhole donor always
+exists since ≥ D fibers sit in < D non-empty forests) makes every forest meet `v`. There
+is **no `D ≥ 3` counterexample**; the earlier "`D = 2` balanced, `D ≥ 3` open" framing was
+too pessimistic — degree-2 makes all `D` uniform. The load-bearing kernel is formalized:
+`Graph.acyclicSet_insert_vfiber_of_not_inc` (green `\leanok`, axiom-free; blueprint node
+`lem:acyclic-insert-vfiber`): a `cycleMatroid`-independent fiber set avoiding `v` stays
+independent after inserting a non-loop `v`-fiber. Proof via `cycleMatroid_indep` →
+`IsAcyclicSet` → `IsForest.of_deleteEdges_singleton` with `x` a bridge
+(`IsLink.isBridge_iff_not_connBetween` + `v` isolated in the deletion via
+`Isolated.connBetween_iff_eq`). The only unformalized remainder is the bookkeeping descent
+(a `Fin D → Set _` repacking with a well-founded measure on the count of `v`-avoiding
+forests) — off the Theorem-4.9 critical path.
 
 ## Finding 2 REFUTED: KT Lemma 4.4 *is* a deficiency-counting fact (2026-06-03, same day)
 
@@ -552,12 +569,15 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   `fiberAtVertex` / `mulTilde_inc` / `fiberAtVertex_inter_edgeSet[_ncard]` /
   `fiberDegree` / `fiberDegree_{mono,le}`; both no-reroute acyclicity
   directions; reroute count cap `isCycleSet_pair_edgeFiber_splitOff` /
-  `fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). Completes from this
-  substrate **iff** the balanced-packing lemma is proven (TODO). **Counting half
-  now landed** (`lem:base-vfiber-count` / `Graph.isBase_vfiber_ncard_ge`, green
-  `\leanok`, axiom-free): a base meets ≥ D of `v`'s fibers, so the pigeonhole
-  obstruction cannot arise — only the redistribution residue remains open (see
-  the *TODO* Progress note).
+  `fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). **Balanced-packing assumption
+  now fully settled (2026-06-03) — KT 4.1's gloss is a GAP, not an error.** Counting half:
+  `lem:base-vfiber-count` / `Graph.isBase_vfiber_ncard_ge` (a base meets ≥ D of `v`'s
+  fibers, no pigeonhole obstruction). Redistribution half: `lem:acyclic-insert-vfiber` /
+  `Graph.acyclicSet_insert_vfiber_of_not_inc` (a `v`-avoiding forest absorbs a free
+  `v`-fiber as a pendant — `v` deg 2 ⟹ `v` isolated ⟹ the fiber is a bridge). Both green
+  `\leanok`, axiom-free. Only the finite repacking *descent* assembling them into the
+  surgery remains unformalized — off the Thm-4.9 critical path. See the *TODO* Progress
+  *VERDICT* note.
 - [x] `lem:base-vfiber-count` — counting half of the balanced-packing assumption
   (`Graph.isBase_vfiber_ncard_ge`, green `\leanok`, axiom-free): every base of
   `M(G̃)` contains ≥ D = `bodyBarDim n` of the `2(D−1)` fibers at a degree-2
@@ -565,6 +585,15 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   (`matroidMG_restrict_mulTilde` + `isBase_ncard_add_deficiency_eq` /
   `rank_add_deficiency_eq` + `removeVertex_deficiency_ge`), not a forest reroute.
   Reduces `lem:forest-surgery-split`'s gating assumption to pure redistribution.
+- [x] `lem:acyclic-insert-vfiber` — redistribution half of the balanced-packing
+  assumption (`Graph.acyclicSet_insert_vfiber_of_not_inc`, green `\leanok`, axiom-free):
+  a `cycleMatroid`-independent fiber set `F` avoiding `v` stays independent after inserting
+  a non-loop `v`-fiber `x : v—w` (`w ≠ v`). Because `v` has degree 2, a `v`-avoiding forest
+  has `v` isolated, so `x` is a *pendant* (bridge) of `F ∪ {x}` and acyclicity is preserved.
+  Resolves the redistribution residue POSITIVELY for all `D` (no `D ≥ 3` counterexample) ⟹
+  KT 4.1's gloss is a GAP, not an error. Proof: `cycleMatroid_indep` → `isAcyclicSet_iff`
+  → `IsForest.of_deleteEdges_singleton` (vendored `Matroid` pkg) with `x` a bridge via
+  `IsLink.isBridge_iff_not_connBetween` + `Isolated.connBetween_iff_eq`.
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction.
   **DEFERRED / off critical path** (returned here after *Finding 2 REFUTED*).
   This direction is **sound** (no balanced-packing gloss, unlike `-split`) but
@@ -663,12 +692,14 @@ only by Case 6.1).
   `matroidMG` definition (`= (⋃_{i<D} cycleMatroid(G̃)) ↾ E(G̃)`), so the "D
   edge-disjoint forests" are the `union_indep_iff` decomposition and a "forest"
   is a `cycleMatroid`-independent fiber set. No hand-rolled acyclicity predicate.
-- **[open, non-blocking] KT 4.1 balanced-packing (the *Finding*).** Is a base of
-  `M(G̃)` always partitionable into `D` forests each meeting the degree-2 vertex
-  `v`? KT's Lemma 4.1 proof assumes it without justification; we did not recover
-  one. NOT on the Theorem-4.9 critical path (the deficiency route bypasses it);
-  it gates only the deferred `-split` surgery TODO. Proving it rescues KT's
-  proof (gap, not error); refuting it confirms the gap.
+- **[resolved, non-blocking] KT 4.1 balanced-packing (the *Finding*).** Is a base of
+  `M(G̃)` always partitionable into `D` forests each meeting the degree-2 vertex `v`?
+  **YES — proven in both halves (2026-06-03), so KT's Lemma 4.1 gloss is a GAP, not an
+  error.** Counting half `isBase_vfiber_ncard_ge` (a base meets ≥ D fibers, no pigeonhole),
+  redistribution half `acyclicSet_insert_vfiber_of_not_inc` (a `v`-avoiding forest absorbs
+  a free `v`-fiber as a pendant — `v` deg 2 makes `v` isolated). No `D ≥ 3` counterexample.
+  Only the finite repacking descent that assembles these into the full `-split` surgery
+  remains; off the Theorem-4.9 critical path. See *TODO* Progress *VERDICT*.
 - **[resolved] KT 4.5(i) swap core (`X∩ẽ≠∅`).** LANDED (`Graph.no_rigid_edge_count`).
   The prior "could not crisply formalize" was an un-attempted clean restatement: the
   `X∩ẽ≠∅` step is **not** intrinsically forest reasoning. If `X∩ẽ=∅`, the independent
@@ -831,11 +862,13 @@ to schedule as Phase 21 needs them:
    bridge is the missing piece; otherwise the IH-handed form suffices and the bridge stays unbuilt.
 2. **Forest surgery (KT 4.1/4.2) + the balanced-packing lemma** (*Replan* Step 5 / *Finding*
    layer 2). Off-critical-path TODO; substrate landed (`lem:forest-surgery-{split,unsplit}` stay
-   red). Proving-or-refuting the balanced-packing lemma resolves whether KT's Lemma 4.1 proof has
-   a gap or an error. **The COUNTING HALF is now landed (2026-06-03):**
-   `Graph.isBase_vfiber_ncard_ge` (`lem:base-vfiber-count`, green `\leanok`, axiom-free) — every
-   base of `M(G̃)` meets ≥ D of the degree-2 vertex's fibers, by a rank count on the green
-   def\,=\,corank + `removeVertex_deficiency_ge` infrastructure. This removes the pigeonhole
-   ("`h < D`") counting obstruction entirely; the verdict now turns **only** on the residual
-   *redistribution* claim (`D = 2` is balanced on paper; `D ≥ 3` open). See the *TODO* Progress
-   note under *Replan* Step 5.
+   red). **The balanced-packing lemma is now fully RESOLVED (2026-06-03): KT's Lemma 4.1 has a
+   GAP, not an error.** Counting half `Graph.isBase_vfiber_ncard_ge` (`lem:base-vfiber-count`,
+   every base meets ≥ D fibers — no pigeonhole obstruction) and redistribution half
+   `Graph.acyclicSet_insert_vfiber_of_not_inc` (`lem:acyclic-insert-vfiber`, a `v`-avoiding
+   forest absorbs a free `v`-fiber as a pendant since `v` deg 2 ⟹ `v` isolated) are both green
+   `\leanok`, axiom-free. No `D ≥ 3` counterexample. **The only remaining TODO toward
+   `lem:forest-surgery-split` itself is the finite repacking descent**: a `Fin D → Set _`
+   re-choice of the forest packing with a well-founded measure on the number of `v`-avoiding
+   forests, iterating the kernel until every forest meets `v`. Off the Theorem-4.9 critical path
+   (the deficiency route already delivered Thm 4.9). See the *TODO* Progress *VERDICT* note.
