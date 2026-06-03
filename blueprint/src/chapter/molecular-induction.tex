@@ -29,25 +29,39 @@ and Theorem~4.9.
 \subsection{Inherited structural lemmas (KT 3.4 full form, KT 3.5)}
 \label{sec:molecular-induction-inherited}
 
+\begin{definition}[Vertex-induced subgraph from a fiber set]
+  \label{def:induced-span}
+  For a fiber set $X$ of the multiplied graph $\tilde G = (D-1)\cdot G$,
+  the \emph{vertex span} $V(X)$ is the set of vertices of $G$ incident to
+  some fiber of $X$ (\texttt{Graph.fiberSpan}), and the
+  \emph{vertex-induced subgraph} $G[V(X)]$ is the induced subgraph of $G$
+  on $V(X)$ (\texttt{Graph.inducedSpan}, mathlib's \texttt{Graph.induce}
+  on $V(X)$). This is the induced-from-an-edge-set construction
+  \cref{lem:circuit-induces-rigid} and the graph operations consume.
+\end{definition}
+
 \begin{lemma}[A circuit induces a rigid subgraph; KT Lemma 3.4, full form]
   \label{lem:circuit-induces-rigid}
-  \uses{lem:circuit-rigid, thm:def-eq-corank, def:rigid-subgraph}
-  Let $X$ be a circuit of $M(\tilde G)$. Then the vertex-induced
-  subgraph $G[V(X)]$ on the vertices spanned by $X$ is rigid: $\tilde
-  G[V(X)]$ packs $D$ edge-disjoint spanning trees, equivalently
-  $|X - e| = D(|V(X)| - 1)$ for any $e \in X$.
+  \lean{Graph.circuit_induces_isTight}
+  \leanok
+  \uses{lem:circuit-rigid, def:induced-span, def:rigid-subgraph}
+  Let $X$ be a circuit of $M(\tilde G)$ and $e \in X$. Then $X - e$ is
+  $(D,D)$-tight on its vertex span: $|X - e| = D(|V(X)| - 1)$, so $X - e$
+  packs $D$ edge-disjoint spanning trees on $V(X)$ and the vertex-induced
+  subgraph $G[V(X)]$ is rigid.
 \end{lemma}
 \begin{proof}
-  By \cref{lem:circuit-rigid}, $X - e$ is $(D,D)$-sparse, giving the
-  upper bound $|X - e| \le D(|V(X)| - 1)$. The matching lower bound
-  $|X| > D(|V(X)| - 1)$ is forced by $X$ being dependent, via the
-  reverse direction of the $\operatorname{def} =
-  \operatorname{corank}$ min--max (\cref{thm:def-eq-corank}, the
-  Jackson--Jord\'an content now green). Together they give the
-  tightness equality and hence $\operatorname{def}(\tilde G[V(X)]) =
-  0$, i.e.\ $G[V(X)]$ is rigid. The formalization additionally
-  requires a vertex-induced-subgraph-from-an-edge-set construction on
-  \texttt{Graph $\alpha$ $\beta$}.
+  \leanok
+  \uses{def:matroid-MG}
+  By \cref{lem:circuit-rigid}, $X - e$ is independent, hence $(D,D)$-sparse,
+  giving the upper bound $|X - e| \le D(|V(X - e)| - 1) \le D(|V(X)| - 1)$.
+  The matching lower bound $|X| > D(|V(X)| - 1)$ is forced by $X$ being a
+  circuit: a circuit is a \emph{minimal} dependent set, so every proper
+  subset of $X$ is independent (\,$(D,D)$-sparse\,), whence the sparsity
+  failure of the dependent $X$ can only occur at $X$ itself
+  (\cref{def:matroid-MG}, the boundary-regime cleanliness of $M(\tilde G)$).
+  Together they give $|X - e| = D(|V(X)| - 1)$, i.e.\
+  $\operatorname{def}(\widetilde{G[V(X)]}) = 0$.
 \end{proof}
 
 \begin{lemma}[Rigid-subgraph contraction preserves minimality; KT Lemma 3.5]

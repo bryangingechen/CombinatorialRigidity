@@ -228,6 +228,21 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved — the `↾ E(G)` form landed; blueprint
   `thm:k-frame-union-cycle` statement + proof restated with a one-clause aside.
 
+### [resolved] `[matroid]` `IsCircuit.subset_ground` for `M(G̃)` gives `X ⊆ (G.matroidMG n).E`, defeq-but-not-syntactic to `E(G.mulTilde n)` — `inter_eq_right.mpr` needs a `show`-ascription
+- **Where it bit:** `Graph.circuit_ncard_gt` / `circuit_induces_isTight`
+  (`Molecular/Induction.lean`, Phase 20). `(G.matroidMG n).E` is the
+  union-then-restrict ground `↾ E(G.mulTilde n)` (sibling of the `Union` ground
+  being `univ`, above), so `hX.subset_ground : X ⊆ (G.matroidMG n).E` does not
+  syntactically unify with the `E(G.mulTilde n)` that `edgeSet_restrict` /
+  `inter_eq_right` want. `rw [edgeSet_restrict, inter_eq_right.mpr hX.subset_ground]`
+  fails ("did not find pattern"). **Fix:** bind `have hXg : X ⊆ E(G.mulTilde n)
+  := hX.subset_ground` (a one-line defeq nudge via `show`/ascription), then feed
+  `hXg` to `inter_eq_right.mpr` everywhere.
+- **General lesson:** a `restrict`-built matroid's `.E` reads back as the *restrict
+  ground*, not the syntactic `E(G̃)`; ascribe the subset hypothesis to the graph's
+  edge set once and reuse it. Sibling of the `Matroid.Union`-ground-is-`univ` entry.
+- **Status:** resolved — `hXg` ascription landed; no mirror needed.
+
 ### [resolved] `[matroid]` `Graph.orientation.signedIncMatrix` needs `[DecidableEq α]` + `[DecidablePred (· ∈ E(G))]` inside a `noncomputable def` body
 - **Where it bit:** `Graph.kFrameRow` in `BodyBar/KFrame.lean` (Phase 14
   `def:k-frame-matroid`). The `k`-frame row reuses

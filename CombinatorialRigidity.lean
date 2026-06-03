@@ -11,6 +11,7 @@ import CombinatorialRigidity.Matroid.Constructions.Union
 import CombinatorialRigidity.MatroidIdentification
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor
+import CombinatorialRigidity.Molecular.Induction
 import CombinatorialRigidity.Molecular.RigidityMatrix
 import CombinatorialRigidity.PebbleGame.Correctness
 import CombinatorialRigidity.PebbleGame.Examples
