@@ -218,6 +218,25 @@ housekeeping pass once their resolution is fully indexed.
   bookkeeping; reach for `exists_eq_ciSup_of_finite` whenever a partition
   witness for `def(G̃)` itself is needed.
 
+### [resolved] Pinning `rank M(G̃) = D(|V|−1)` from a two-sided bound: `zify [hPos]` the ℕ rank bound, then a `D·(F−1) = D·F − D` ring-bridge for `linarith`
+- **Where it bit:** `circuit_induces_isRigidSubgraph` in `Molecular/Induction.lean`
+  (Phase 20 `lem:circuit-induces-rigid`, rigid-subgraph form). To turn the
+  tightness equality `|X−e| = D(|V(X)|−1)` into `def(G[V(X)]̃) = 0` you pin
+  `rank M(H̃)` from both sides: the upper bound `rank_matroidMG_le` is **ℕ-valued**
+  with a ℕ-subtraction `D·(F − 1)`; the lower bound and `rank_add_deficiency_eq` are
+  **ℤ-native** with `D·(↑F − 1)`. Two snags: (i) `rank_matroidMG_le`'s `↑(F − 1)`
+  is a *cast of a ℕ-subtraction* — `omega`/`linarith` can't relate it to `↑F − 1`
+  until you `zify [hFpos] at hupper` (the `1 ≤ F` side-goal discharges the
+  truncation); (ii) the three D-products `D·(↑F − 1)` (bridge, upper) and `D·↑F`
+  (tightness) are **opaque distinct atoms** to `omega`/`linarith` — supply the link
+  `have hmul : (D:ℤ)·((F:ℤ) − 1) = (D:ℤ)·F − D := by ring` so `linarith` can chain
+  them. (Writing the bridge LHS as `((F:ℤ) − 1)`, *not* `(F − 1 : ℕ)` cast — the
+  latter re-introduces the ℕ-subtraction.)
+- **General lesson:** ℕ→ℤ bound-mixing where a product `c·(n−1)` straddles the two
+  rings is a recurrent deficiency-side shape. `zify [pos-hyp]` the ℕ side first,
+  then hand `linarith` an explicit `c·(n−1) = c·n − c` ring fact, since neither
+  `omega` (no var·var) nor `linarith` (atoms) expands the product on its own.
+
 ### [resolved] `Graph.edgeMultiply m`'s `IsLink`/`Inc` are defeq to the base graph's but not syntactically — `IsLink.mono` needs a type ascription
 - **Where it bit:** `edgeMultiply_mono` in `BodyBar/BodyHinge.lean`
   (Phase 19 `lem:matroid-restrict-subgraph` engine). `(G.edgeMultiply

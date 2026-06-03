@@ -229,8 +229,17 @@ blueprint node; the node stays red) — incidence/cardinality
 surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
 they are **not** needed for Theorem 4.9.
 
-**Next:** *Replan* commit F (`lem:reducible-vertex`, KT 4.6).
-The local-dof bookkeeping at a degree-2 vertex is now complete and assembled
+**Commit F landed (`circuit_induces_isRigidSubgraph`, KT 3.4 rigid-subgraph form).**
+While scoping the planned commit F (`lem:reducible-vertex`, KT 4.6) it became clear
+KT 4.6 is multi-commit and rests on a prerequisite KT 3.4 never delivered in Lean:
+`circuit_induces_isTight` proved the tightness *equality* but never packaged the
+`G[V(X)]` rigid-subgraph conclusion the node claims. Commit F lands that packaging —
+`Graph.circuit_induces_isRigidSubgraph : (G.inducedSpan n X).IsRigidSubgraph G n` —
+which KT 4.5(i)/4.8 (and hence KT 4.6) invoke directly. See the `lem:circuit-induces-rigid`
+checklist entry. Next is the KT 4.6 chain proper (see its refined checklist entry +
+*Hand-off*).
+
+**Local-dof bookkeeping (commits B–E)** is complete and assembled
 on the Lean side (axiom-free, `Molecular/Induction.lean`):
 - B (`≤`, `Graph.splitOff_deficiency_le`): `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via the
   partition *extension* `f = update f' v (f' a)` (numParts equal; crossing
@@ -276,9 +285,17 @@ flip to `[x]` as each lands `\leanok` in the chapter.
 
 Inherited from Phase 19 (schedule early):
 - [x] `lem:circuit-induces-rigid` — KT 3.4 full form: a circuit `X`
-  induces a rigid `G[V(X)]` (tightness equality `|X−e| = D(|V(X)|−1)`).
-  `Graph.circuit_induces_isTight`; lower bound is the direct circuit-minimality
-  fact `Graph.circuit_ncard_gt` (NOT `thm:def-eq-corank`).
+  induces a rigid `G[V(X)]`. Two Lean decls: the tightness equality
+  `|X−e| = D(|V(X)|−1)` (`Graph.circuit_induces_isTight`; lower bound the direct
+  circuit-minimality fact `Graph.circuit_ncard_gt`, NOT `thm:def-eq-corank`), and
+  the **rigid-subgraph packaging** `Graph.circuit_induces_isRigidSubgraph`
+  (commit F): `(G.inducedSpan n X).IsRigidSubgraph G n`, i.e. `G[V(X)] ≤ G ∧
+  def(G[V(X)]̃) = 0`. The packaging pins `rank M(G[V(X)]̃) = D(|V(X)|−1)` from both
+  sides (`rank_matroidMG_le` ∧ the independent `X−e` of tight size, independent in
+  `M(G[V(X)]̃) = M(G̃) ↾ E(G[V(X)]̃)` via `matroidMG_restrict_mulTilde` since `X ⊆
+  E(G[V(X)]̃)` — new support lemma `subset_edgeSet_mulTilde_inducedSpan`), then
+  `rank_add_deficiency_eq` forces `def = 0`. This is the "Lemma 3.4 implies G[V(X)]
+  is a (proper) rigid subgraph" form KT 4.5(i)/4.8 invoke.
 - [x] `lem:rigid-full-rank` — KT 3.5 rank core: a rigid subgraph `H`
   (`def(H̃) = 0`) attains full rank `rank M(H̃) = D(|V(H)| − 1)`.
   `Graph.rank_matroidMG_of_isKDof_zero`; 4-line corollary of `rank_add_deficiency_eq`.
@@ -336,8 +353,19 @@ Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
   `k − 1 ≤ def(G̃ᵥᵃᵇ) ≤ k` and `def(G̃ᵥ) ≥ k`. The "which alternative" refinement
   (forest-surgery fundamental-circuit count) is off the Thm-4.9 critical path,
   omitted.
-- [ ] `lem:reducible-vertex` — KT 4.6, existence of a reducible degree-2
-  vertex (maximal-chain / degree-sequence count). Replan commit F.
+- [ ] `lem:reducible-vertex` — KT 4.6, existence of a degree-2 vertex in a
+  2-edge-connected minimal 0-dof-graph with no proper rigid subgraph. **Scope
+  refined at commit F** (which landed the *prerequisite* `circuit_induces_isRigidSubgraph`
+  instead): Thm 4.9 consumes only "∃ degree-2 vertex" (the chain/cycle refinement
+  is for the §5–6 *algebraic* induction, off the Thm-4.9 critical path). The "∃
+  degree-2 vertex" core needs (a) **KT 4.5(i)** edge-count bound `(D−1)|E| <
+  D(|V|−1)+(D−1)` — a fundamental-circuit-swap argument (`IsBase.fundCircuit_isCircuit`
+  + `circuit_induces_isRigidSubgraph` ⟹ `V(X)=V` from no-proper-rigid + a
+  minimality `X∩ẽ≠∅` swap), itself a full commit; and (b) the average-degree
+  arithmetic `d_avg = 2|E|/|V| < 2D/(D−1) ≤ 3`, which needs a **multigraph degree
+  notion on `Graph α β`** (the project has none — degree-2 is encoded ad hoc as
+  `hdeg2 : ∀ e x, IsLink e v x → e = eₐ ∨ e = e_b`). Likely 2 commits: F′ = KT 4.5(i)
+  edge bound; F″ = degree theory + ∃-degree-2.
 - [ ] `lem:reduction-step` — KT 4.7–4.8, reduction preserves minimality
   (two circuit-swap arguments; the 4.8 capstone). Replan commit G.
 - [ ] `thm:minimal-kdof-reduction` — KT Theorem 4.9 (capstone; phase
@@ -525,17 +553,40 @@ splitting-off pair wants is derived from `2 ≤` by `le_trans`). Blueprint
 `lem:dof-tracking` flipped green with the two-sided statement; the "which
 alternative" forest-surgery refinement noted off-critical-path.
 
-**Next agent's concrete commit = F: `lem:reducible-vertex`** (KT 4.6, existence
-of a reducible degree-2 vertex). This is the first commit that leaves the local
-deficiency bookkeeping: a maximal-chain / degree-sequence counting argument on
-the 2-edge-connected graph (it `\uses` `lem:dof-tracking` + `lem:two-edge-conn`
-+ `def:k-dof`, all three already green — `lem:two-edge-conn`,
-`Graph.two_le_crossingEdges_of_isKDof_zero`, landed in `deficiency.tex`). Scope F
-carefully: KT 4.6's full degree-sequence argument may pull in KT Lemma 3.2
-*not-3-edge-connected*, currently parked for Phase 21 per the *Lemma checklist*
-tail — assess reachability against the dep-graph before committing to the full
-form. Then commits G (`lem:reduction-step`, KT
-4.7–4.8), H (`thm:minimal-kdof-reduction`, Theorem 4.9 capstone → phase close)
-per *Replan*. Degree-2 stays encoded as two edges `eₐ`/`e_b` (the only
-`v`-incident edges, `hdeg2`); the removal/splitting-off/dof-tracking lemmas all
-share that signature.
+**Commit F landed (`circuit_induces_isRigidSubgraph`, KT 3.4 rigid-subgraph form,
+the prerequisite for KT 4.6).** Green `\leanok`, axiom-free, `Molecular/Induction.lean`.
+Scoping the originally-planned commit F (`lem:reducible-vertex`, KT 4.6) showed it is
+2+ commits and rests on a KT 3.4 conclusion never delivered in Lean: the node
+`lem:circuit-induces-rigid` *claimed* "G[V(X)] is rigid" but only pinned the tightness
+equality. Commit F lands the rigid-subgraph packaging (`(G.inducedSpan n X).IsRigidSubgraph
+G n`), pinning `rank M(G[V(X)]̃) = D(|V(X)|−1)` from both sides (`rank_matroidMG_le`
+∧ independent `X−e` of tight size via `matroidMG_restrict_mulTilde` +
+`subset_edgeSet_mulTilde_inducedSpan`) then `rank_add_deficiency_eq`. Blueprint
+`lem:circuit-induces-rigid` `\lean{}` now pins both decls; proof prose + `\uses` updated.
+
+**Next agent's concrete commit = the KT 4.6 chain proper** (`lem:reducible-vertex`).
+Thm 4.9 consumes only "∃ degree-2 vertex" — the chain/cycle refinement (length-`d`
+chain, cycle-of-`≤d`-vertices) is for the §5–6 *algebraic* induction, **off the
+Thm-4.9 critical path** (confirmed: KT 4.9's proof says only "G has a vertex of
+degree two by Lemma 4.6"). The "∃ degree-2 vertex" core is two pieces:
+- **F′ — KT 4.5(i) edge-count bound** `(D−1)|E| < D(|V|−1)+(D−1)` for a minimal
+  0-dof-graph with no proper rigid subgraph. The fundamental-circuit-swap argument
+  (KT eq. 4.3 `Ẽ∖ẽ ⊂ B*`): pick edge `e`, `h* = minₐ |ẽ∩B|`, `B*` attaining it,
+  `h* ≥ 1` by minimality; if `f∈Ẽ∖ẽ` avoids `B*`, its fundamental circuit `X`
+  (`IsBase.fundCircuit_isCircuit`) gives rigid `G[V(X)]` (now green:
+  `circuit_induces_isRigidSubgraph`); no-proper-rigid ⟹ `V(X)=V`; `X∩ẽ≠∅` (else `D`
+  spanning trees avoid `ẽ`, contra minimality) lets a swap drop `|B∩ẽ|` below `h*`.
+  Then `|Ẽ| = |B*| + (|ẽ| − h*) = D(|V|−1)+(D−1−h*) < D(|V|−1)+(D−1)`. **Add a new
+  blueprint node** (`lem:no-rigid-edge-count` or similar); the existing
+  `lem:dof-tracking` mislabels itself "KT 4.3–4.5" but never established the 4.5
+  edge bound.
+- **F″ — multigraph degree theory + ∃-degree-2.** `d_avg = 2|E|/|V| < 2D/(D−1) ≤ 3`
+  (using `D ≥ 3`) forces a degree-2 vertex. **The project has no `Graph α β` degree
+  function** — degree-2 is encoded ad hoc as `hdeg2 : ∀ e x, IsLink e v x → e = eₐ ∨
+  e = e_b`. F″ must build a degree notion (`∑ degree = 2|E|` handshake on the
+  multigraph) and the ∃-low-degree pigeonhole; this is genuinely new infrastructure,
+  not parked KT Lemma 3.2 (which is the 3-edge-conn refinement, still off-path).
+Then commits G (`lem:reduction-step`, KT 4.7–4.8 — circuit-swap minimality transport,
+`\uses` `circuit_induces_isRigidSubgraph` for the `X∩ãb=∅ ⟹ proper rigid` step),
+H (`thm:minimal-kdof-reduction`, Theorem 4.9 capstone → phase close) per *Replan*.
+Degree-2 stays encoded as two edges `eₐ`/`e_b` where the bookkeeping lemmas need it.

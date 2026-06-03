@@ -154,6 +154,89 @@ theorem circuit_induces_isTight [DecidableEq β] [Finite α] [Finite β] {G : Gr
         _ ≤ bodyBarDim n * (G.fiberSpan n X).ncard := by gcongr
   omega
 
+/-- **A circuit's fibers are edges of the induced subgraph** (`lem:circuit-induces-rigid`,
+support): every fiber `p ∈ X` of a fiber set `X` of `G̃` has its underlying edge `p.1`
+joining two vertices of the vertex span `V(X) = fiberSpan X`, hence `p ∈ E((G[V(X)])̃)`.
+This is the inclusion `X ⊆ E((inducedSpan X)̃)` that lets the `M(G̃)`-circuit `X` be read
+as an edge set of the induced subgraph `G[V(X)]`. -/
+theorem subset_edgeSet_mulTilde_inducedSpan {G : Graph α β} {n : ℕ}
+    {X : Set (β × Fin (bodyHingeMult n))} (hX : X ⊆ E(G.mulTilde n)) :
+    X ⊆ E((G.inducedSpan n X).mulTilde n) := by
+  intro p hp
+  -- `p.1` is an edge of `G̃`, joining some `x, y`; both lie in `V(X) = fiberSpan X`.
+  obtain ⟨x, y, hlink⟩ := exists_isLink_of_mem_edgeSet (hX hp)
+  have hl1 : G.IsLink p.1 x y := hlink
+  have hxV : x ∈ G.fiberSpan n X := ⟨p, hp, hlink.inc_left⟩
+  have hyV : y ∈ G.fiberSpan n X := ⟨p, hp, hlink.inc_right⟩
+  simp only [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, inducedSpan, edgeSet_induce]
+  exact ⟨x, y, hl1, hxV, hyV⟩
+
+/-- **A circuit induces a rigid subgraph** (`lem:circuit-induces-rigid`; Katoh–Tanigawa 2011
+Lemma 3.4, full form — rigid-subgraph conclusion). Let `X` be a circuit of `M(G̃)`. Then the
+vertex-induced subgraph `G[V(X)]` on the vertex span `V(X) = fiberSpan X` is a **rigid
+subgraph** of `G`: `G[V(X)] ≤ G` and `def((G[V(X)])̃) = 0`, i.e. it is `0`-dof.
+
+This packages the tightness *equality* `circuit_induces_isTight` (`|X − e| = D(|V(X)| − 1)`)
+into the `IsRigidSubgraph` predicate Katoh–Tanigawa's Lemmas 4.5(i)/4.8 consume ("Lemma 3.4
+implies `G[V(X)]` is a (proper) rigid subgraph"). The rank of `M((G[V(X)])̃)` is pinned to
+`D(|V(X)| − 1)` from both sides: the upper bound is `rank_matroidMG_le`, and the lower bound
+is the independent `X − e` of size `D(|V(X)| − 1)` (independent in `M((G[V(X)])̃) = M(G̃) ↾
+E((G[V(X)])̃)` by `matroidMG_restrict_mulTilde`, since `X ⊆ E((G[V(X)])̃)`). The def\,=\,corank
+bridge `rank_add_deficiency_eq` then forces the deficiency to `0`. -/
+theorem circuit_induces_isRigidSubgraph [DecidableEq β] [Finite α] [Finite β] {G : Graph α β}
+    {n : ℕ} (hD : 1 ≤ bodyBarDim n) {X : Set (β × Fin (bodyHingeMult n))}
+    (hX : (G.matroidMG n).IsCircuit X) :
+    (G.inducedSpan n X).IsRigidSubgraph G n := by
+  classical
+  set H := G.inducedSpan n X with hH
+  -- `V(H) = fiberSpan X`, nonempty (a circuit is nonempty, spanning a vertex).
+  have hXground : X ⊆ E(G.mulTilde n) := hX.subset_ground
+  have hVeq : V(H) = G.fiberSpan n X := vertexSet_inducedSpan G n X
+  have hVne : V(H).Nonempty := by
+    rw [hVeq]
+    obtain ⟨p, hp⟩ := hX.nonempty
+    obtain ⟨x, _, hinc⟩ := exists_isLink_of_mem_edgeSet (hXground hp)
+    exact ⟨x, p, hp, hinc.inc_left⟩
+  -- `H ≤ G` via `induce_le` (the span sits inside `V(G)`).
+  have hVsub : G.fiberSpan n X ⊆ V(G) := by
+    rw [fiberSpan]
+    exact (G.mulTilde n).spanningVerts_subset_vertexSet X
+  have hle : H ≤ G := by
+    rw [hH, inducedSpan]; exact G.induce_le hVsub
+  refine ⟨hle, ?_⟩
+  -- The deficiency is `0`: pin `rank M(H̃) = D(|V(X)| − 1)` from both sides.
+  obtain ⟨e, heX⟩ := hX.nonempty
+  -- Upper bound: `rank M(H̃) ≤ D(|V(H)| − 1) = D(|V(X)| − 1)`.
+  have hupper : (H.matroidMG n).rank ≤ bodyBarDim n * (V(H).ncard - 1) :=
+    H.rank_matroidMG_le n hVne
+  -- Lower bound: `X − e` is independent in `M(H̃)` of size `D(|V(X)| − 1)`.
+  have hXe_sub : X \ {e} ⊆ E(H.mulTilde n) :=
+    diff_subset.trans (subset_edgeSet_mulTilde_inducedSpan hXground)
+  have hXe_indepG : (G.matroidMG n).Indep (X \ {e}) := hX.diff_singleton_indep heX
+  have hXe_indepH : (H.matroidMG n).Indep (X \ {e}) := by
+    rw [← matroidMG_restrict_mulTilde hle n, Matroid.restrict_indep_iff]
+    exact ⟨hXe_indepG, hXe_sub⟩
+  -- Extend `X − e` to a base `B` of `M(H̃)`; `|X − e| = D(|V(X)| − 1) ≤ |B| = rank`.
+  obtain ⟨B, hB, hBsup⟩ := hXe_indepH.exists_isBase_superset
+  have htight : (X \ {e}).ncard + bodyBarDim n = bodyBarDim n * (G.fiberSpan n X).ncard :=
+    circuit_induces_isTight hX heX
+  have hcardle : (X \ {e}).ncard ≤ B.ncard := Set.ncard_le_ncard hBsup (hB.finite)
+  rw [hB.ncard] at hcardle
+  -- `def(H̃) = D(|V(X)| − 1) − rank M(H̃)`; both bounds pin `rank = D(|V(X)| − 1)`, so `def = 0`.
+  have hbridge := H.rank_add_deficiency_eq n hD hVne
+  have hVHcard : V(H).ncard = (G.fiberSpan n X).ncard := by rw [hVeq]
+  have hnonneg := H.deficiency_nonneg n hVne
+  rw [IsKDof]
+  -- ℤ arithmetic: `rank ≤ D(|V(X)|−1)`, `D(|V(X)|−1) = |X−e| + D ... ` — close by `omega`/`zify`.
+  have hVpos : 1 ≤ V(H).ncard := hVne.ncard_pos
+  have hFpos : 1 ≤ (G.fiberSpan n X).ncard := hVHcard ▸ hVpos
+  rw [hVHcard] at hbridge hupper
+  zify [hFpos] at hcardle htight hupper
+  -- `D·(F−1) = D·F − D`, linking `hupper`/`hbridge` (the `D·(F−1)` atom) to `htight` (`D·F`).
+  have hmul : (bodyBarDim n : ℤ) * (((G.fiberSpan n X).ncard : ℤ) - 1)
+      = (bodyBarDim n : ℤ) * ((G.fiberSpan n X).ncard : ℤ) - (bodyBarDim n : ℤ) := by ring
+  linarith
+
 /-! ## Forest-packing decomposition of `M(G̃)`-independent sets (`lem:forest-surgery-split`)
 
 The matroidal substrate the Katoh–Tanigawa forest surgery (KT Lemmas 4.1/4.2) operates on.

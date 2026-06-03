@@ -46,17 +46,20 @@ instead by a direct deficiency-count argument
 
 \begin{lemma}[A circuit induces a rigid subgraph; KT Lemma 3.4, full form]
   \label{lem:circuit-induces-rigid}
-  \lean{Graph.circuit_induces_isTight}
+  \lean{Graph.circuit_induces_isTight, Graph.circuit_induces_isRigidSubgraph}
   \leanok
-  \uses{lem:circuit-rigid, def:induced-span, def:rigid-subgraph}
+  \uses{lem:circuit-rigid, def:induced-span, def:rigid-subgraph, thm:def-eq-corank}
   Let $X$ be a circuit of $M(\tilde G)$ and $e \in X$. Then $X - e$ is
   $(D,D)$-tight on its vertex span: $|X - e| = D(|V(X)| - 1)$, so $X - e$
   packs $D$ edge-disjoint spanning trees on $V(X)$ and the vertex-induced
-  subgraph $G[V(X)]$ is rigid.
+  subgraph $G[V(X)]$ is a \emph{rigid subgraph} of $G$:
+  $\operatorname{def}(\widetilde{G[V(X)]}) = 0$. This is the form
+  Katoh--Tanigawa's Lemmas~4.5(i)/4.8 invoke (``Lemma~3.4 implies $G[V(X)]$
+  is a (proper) rigid subgraph'').
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{def:matroid-MG}
+  \uses{def:matroid-MG, lem:rank-matroidMG-le, lem:matroid-restrict-subgraph, thm:def-eq-corank}
   By \cref{lem:circuit-rigid}, $X - e$ is independent, hence $(D,D)$-sparse,
   giving the upper bound $|X - e| \le D(|V(X - e)| - 1) \le D(|V(X)| - 1)$.
   The matching lower bound $|X| > D(|V(X)| - 1)$ is forced by $X$ being a
@@ -64,8 +67,16 @@ instead by a direct deficiency-count argument
   subset of $X$ is independent (\,$(D,D)$-sparse\,), whence the sparsity
   failure of the dependent $X$ can only occur at $X$ itself
   (\cref{def:matroid-MG}, the boundary-regime cleanliness of $M(\tilde G)$).
-  Together they give $|X - e| = D(|V(X)| - 1)$, i.e.\
-  $\operatorname{def}(\widetilde{G[V(X)]}) = 0$.
+  Together they give the tightness equality $|X - e| = D(|V(X)| - 1)$. To
+  read off $\operatorname{def}(\widetilde{G[V(X)]}) = 0$: the rank of
+  $M(\widetilde{G[V(X)]})$ is pinned to $D(|V(X)| - 1)$ from both sides ---
+  the upper bound is the generic rank bound (\cref{lem:rank-matroidMG-le}),
+  and the lower bound is the independent set $X - e$, which is independent in
+  $M(\widetilde{G[V(X)]}) = M(\tilde G) \restriction E(\widetilde{G[V(X)]})$
+  (\cref{lem:matroid-restrict-subgraph}, since every fiber of $X$ joins two
+  vertices of $V(X)$, so $X \subseteq E(\widetilde{G[V(X)]})$) and has the
+  tight size. The def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) then
+  forces the deficiency to $0$.
 \end{proof}
 
 \begin{lemma}[A rigid subgraph attains full rank; KT Lemma 3.5, rank core]
