@@ -335,10 +335,38 @@ Cases~I and~II travel toward the smaller inductive graph.
   two families are independent together.
 \end{proof}
 
+\begin{lemma}[Existence of an independent panel-extensor family for $m \le D$ panels]
+  \label{lem:exists-independent-panel-extensor}
+  \lean{CombinatorialRigidity.Molecular.exists_independent_panelSupportExtensor,
+        CombinatorialRigidity.Molecular.exists_independent_normalsJoin}
+  \leanok
+  \uses{def:panel-support-extensor, lem:panel-support-extensor-independence,
+        lem:extensor-independence}
+  For every $m \le D = \binom{k+2}{2}$ there are $m$ pairs of panel normals
+  $(n_{u_i}, n_{v_i})$ whose supporting extensors $i \mapsto
+  \mathrm{panelSupportExtensor}(n_{u_i}, n_{v_i})$ are linearly independent in the screw
+  space $\Lambda^k \R^{k+2}$, equivalently whose grade-$2$ joins $i \mapsto n_{u_i} \wedge
+  n_{v_i}$ are independent in $\Lambda^2 \R^{k+2}$. This is the existence half of the
+  generic-panel independence argument (Claim~6.4/6.9): the independent supporting extensors
+  \cref{lem:cycle-realization} needs for a rigid panel-cycle realization, capped from above by
+  the dimension bound \cref{lem:cycle-realization-dim-bound}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  By \cref{lem:panel-support-extensor-independence} it suffices to produce $m$ independent
+  grade-$2$ joins. The witness is a basis choice rather than a perturbation: the index set of
+  $2$-element subsets of $\{1, \dots, k+2\}$ has cardinality $\binom{k+2}{2} = D \ge m$, so pick
+  $m$ distinct $2$-subsets and take the corresponding pairs of standard basis vectors. Each join
+  $e_a \wedge e_b$ is then a member of the basis-indexed exterior-power family, which is linearly
+  independent (the $\Lambda^2$-basis fact bottoming on the extensor-independence Lemma~2.1,
+  \cref{lem:extensor-independence}); the chosen subfamily inherits independence via the injection
+  of indices.
+\end{proof}
+
 \begin{lemma}[Cycle realizations; KT Lemma 5.4]
   \label{lem:cycle-realization}
   \uses{def:rigidity-matrix, lem:cycle-realization-base, lem:cycle-realization-dim-bound,
-        lem:panel-support-extensor-independence}
+        lem:panel-support-extensor-independence, lem:exists-independent-panel-extensor}
   A cycle graph $G = (V, E)$ with $3 \le |V| \le D$ has an
   infinitesimally rigid, nonparallel panel-hinge realization $(G,p)$
   --- equivalently a realization at the full rank $D(|V|-1)$, the

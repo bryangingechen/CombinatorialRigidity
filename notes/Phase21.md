@@ -26,6 +26,25 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Independent grade-2-join / panel-extensor existence landed (2026-06-03).** The existence
+half of the genericity device is green: `exists_independent_normalsJoin` (for any
+`m ≤ screwDim k = D`, there are `m` pairs of panel normals whose grade-2 joins are
+independent in `⋀² ℝ^(k+2)`) and its screw-space corollary
+`exists_independent_panelSupportExtensor` (via `panelSupportExtensor_linearIndependent_iff`).
+The witness is a *basis choice*, not a perturbation: pick `m` distinct 2-subsets of
+`Fin (k+2)` (possible since `Fintype.card (Set.powersetCard (Fin (k+2)) 2) = (k+2).choose 2 =
+D ≥ m`) and take the corresponding pairs of `Pi.basisFun` standard basis vectors; each join is
+then a member of the basis-indexed exterior-power family
+(`exteriorPower.ιMulti_family_linearIndependent_ofBasis`), and the chosen subfamily inherits
+independence via the index injection (`.comp g g.injective`). The member-identity bridge
+`normalsJoin_basisFun_orderEmbOfFin` (`normalsJoin (b·)(b·) = ιMulti_family ℝ 2 b s` for a
+2-subset `s`) is the `Fin 2`-eta plumbing. Axiom-clean
+(`propext/Classical.choice/Quot.sound`). Blueprint adds a green
+`lem:exists-independent-panel-extensor` node that the still-red `lem:cycle-realization`
+`\uses`. **Remaining red on 5.4:** the `m`-body cycle `theorem_55_base` analogue
+(propagating `S u = S v` around the cycle — needs a `Graph`-cycle/walk primitive; the
+linear-algebra core `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is already green).
+
 **Genericity-device reduction landed (2026-06-03).** The substantive
 reduction at the heart of Claim 6.4/6.9 is green:
 `panelSupportExtensor_linearIndependent_iff` (AlgebraicInduction.lean,
@@ -249,11 +268,14 @@ Case I (proper rigid subgraph; KT §6.2):
   `panelSupportExtensor_linearIndependent_iff`): panel-extensor
   independence ⟺ grade-2-join independence via `complementIso` being a
   `LinearEquiv`, turning the analytic blocker into a `⋀²`-basis question.
-  Still red: the general cycle (`|V| ≥ 3`) + the *existence* of an
-  independent grade-2-join family (basis-selection construction on `⋀²`,
-  bottoming on Lemma 2.1) + the `m`-body cycle `theorem_55_base`
-  analogue. Citation (CW82 Prop 3.4 / Whiteley99 Prop 3) stays as the
-  source pointer.
+  The *existence* of an independent grade-2-join / panel-extensor family
+  for `m ≤ D` is now green too (`lem:exists-independent-panel-extensor`,
+  `exists_independent_normalsJoin` + `exists_independent_panelSupportExtensor`,
+  bridged by `normalsJoin_basisFun_orderEmbOfFin`): basis-selection on `⋀²`
+  via `ιMulti_family_linearIndependent_ofBasis`, bottoming on Lemma 2.1.
+  Still red: the `m`-body cycle `theorem_55_base` analogue (needs a
+  `Graph`-cycle/walk primitive to propagate `S u = S v`). Citation
+  (CW82 Prop 3.4 / Whiteley99 Prop 3) stays as the source pointer.
 - [ ] `lem:case-I` — KT Lemmas 6.2/6.3/6.5: contract a proper rigid
   subgraph `H` (smaller minimal `k`-dof by green `lem:contraction-minimality`),
   glue block-triangularly with a pinned rigid realization of `H`
@@ -430,23 +452,22 @@ right device is `exteriorPower.ιMulti_family_linearIndependent_ofBasis`
 (an independent basis-indexed family of `⋀² ℝ^(k+2)`), already in
 mathlib; no new perturbation infrastructure needed.
 
-**Smallest next concrete commit:** the *existence* of an independent
-grade-2-join family for `m ≤ D`, i.e. a green
-`exists_independent_normalsJoin` (or directly
-`exists_independent_panelSupportExtensor` via the new iff): choose `m`
-distinct 2-element subsets of `Fin (k+2)` (possible since `m ≤ D =
-(k+2 choose 2)`) and set the normals to the corresponding standard
-basis vectors, so each `normalsJoin (e_a)(e_b)` is `ιMulti_family ℝ 2
-(Pi.basisFun …) {a,b}`, a member of the independent basis-indexed
-family. The plumbing is the order-emb bridge `normalsJoin (b a)(b b') =
-ιMulti_family ℝ 2 b {a,b'}` (n=2 unfold of `ιMulti_family`,
-`Set.powersetCard.ofFinEmbEquiv`/`orderEmbOfFin` — see Extensor.lean's
-`omitTwoExtensor` plumbing for the pattern) plus a subfamily-of-
-independent `.comp` argument. Then compose with the `m`-body cycle
-`theorem_55_base` analogue (propagating `S u = S v` around the cycle —
-mathlib's relational `Graph` has no connectivity API, so this likely
-needs a `Graph`-cycle/walk primitive; can land as a separate commit).
-**Already green for that analogue:** the cycle-difference linear-algebra
+**Independent-family existence is now green** (this commit):
+`exists_independent_normalsJoin` + `exists_independent_panelSupportExtensor`,
+bridged by `normalsJoin_basisFun_orderEmbOfFin`. The witness was a basis
+choice exactly as planned — `m` distinct 2-subsets of `Fin (k+2)` (card cap
+`Fintype.card (Set.powersetCard (Fin (k+2)) 2) = (k+2).choose 2 = D ≥ m`),
+standard basis vectors, `ιMulti_family_linearIndependent_ofBasis` + `.comp`
+of the index injection. No new mathlib needed.
+
+**Smallest next concrete commit:** the `m`-body cycle `theorem_55_base`
+analogue — propagate `S u = S v` around a length-`m` cycle of edges whose
+supporting extensors are independent, yielding `RankHypothesis 0` for the
+panel-cycle framework. mathlib's relational `Graph` has no connectivity API,
+so this likely needs a small `Graph`-cycle/walk primitive (or an explicit
+`Fin m`-indexed cycle of edges) to chain the per-edge `S uᵢ = S vᵢ`
+constraints. **Already green for that analogue:** the cycle-difference
+linear-algebra core `eq_zero_of_mem_span_singleton_of_sum_eq_zero`
 core `eq_zero_of_mem_span_singleton_of_sum_eq_zero` (RigidityMatrix.lean,
 commit `31ded90`) — an independent family of constraint spans admits no
 nonzero cycle of differences (the `m`-edge generalization of

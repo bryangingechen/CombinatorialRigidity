@@ -185,6 +185,76 @@ theorem panelSupportExtensor_linearIndependent_iff
   exact (complementIso (k := k) (j := 2) (by omega)).toLinearMap.linearIndependent_iff_of_injOn
     (LinearMap.injOn_of_disjoint_ker le_rfl (by simp [LinearEquiv.ker]))
 
+/-- **A grade-2 join of two standard basis vectors is the basis exterior-power family member**
+(`lem:cycle-realization`, the existence-construction plumbing): for a two-element index set
+`s ⊆ Fin (k+2)`, the join `normalsJoin (eₐ) (e_b)` of the two standard basis vectors picked out
+by `s`'s order embedding equals the basis-indexed exterior-power family member
+`exteriorPower.ιMulti_family ℝ 2 b s` at `b = Pi.basisFun ℝ (Fin (k+2))`. Definitional unfold of
+`normalsJoin = ιMulti ℝ 2 ![·,·]` against `ιMulti_family … s = ιMulti ℝ 2 (b ∘ s.orderEmbOfFin)`
+(`Set.powersetCard.ofFinEmbEquiv_symm_apply`); the `Fin 2`-eta identity `![f 0, f 1] = f` closes
+the two-element case. The bridge that turns the abstract basis-family independence
+(`ιMulti_family_linearIndependent_ofBasis`) into a concrete family of panel-normal joins. -/
+theorem normalsJoin_basisFun_orderEmbOfFin (s : Set.powersetCard (Fin (k + 2)) 2) :
+    normalsJoin (Pi.basisFun ℝ (Fin (k + 2)) ((s : Finset (Fin (k + 2))).orderEmbOfFin s.2 0))
+      (Pi.basisFun ℝ (Fin (k + 2)) ((s : Finset (Fin (k + 2))).orderEmbOfFin s.2 1))
+      = exteriorPower.ιMulti_family ℝ 2 (Pi.basisFun ℝ (Fin (k + 2))) s := by
+  rw [normalsJoin]
+  apply Subtype.ext
+  rw [exteriorPower.ιMulti_apply_coe, exteriorPower.ιMulti_family_apply_coe]
+  congr 1
+  rw [Set.powersetCard.ofFinEmbEquiv_symm_apply]
+  ext i; fin_cases i <;> rfl
+
+/-- **Existence of an independent grade-2-join family for a cycle of `m ≤ D` panels**
+(`lem:cycle-realization`, the genericity-device existence half; Katoh–Tanigawa 2011 Claim 6.4/6.9):
+for any `m ≤ D = screwDim k` there are `m` pairs of panel normals whose grade-2 joins
+`i ↦ normalsJoin (n₁ i) (n₂ i)` are linearly independent in `⋀² ℝ^(k+2)`. This is the
+exterior-algebraic core of the generic-panel independence argument: rather than a real-polynomial
+perturbation, the witness is a *basis choice* — pick `m` distinct 2-element subsets of `Fin (k+2)`
+(possible since the index set `Set.powersetCard (Fin (k+2)) 2` has cardinality
+`(k+2).choose 2 = D ≥ m`) and take the corresponding pairs of standard basis vectors. Each join is
+then a member of the basis-indexed exterior-power family
+(`normalsJoin_basisFun_orderEmbOfFin`), and that whole family is linearly independent
+(`exteriorPower.ιMulti_family_linearIndependent_ofBasis`, the `⋀²`-basis fact bottoming on the
+extensor-independence Lemma 2.1, Phase 17), so the chosen subfamily inherits independence via the
+injection of indices. Combined with `panelSupportExtensor_linearIndependent_iff` this supplies the
+independent supporting extensors KT Lemma 5.4 needs for a rigid panel-cycle realization, the
+existence half of `lem:cycle-realization` that the dimension bound
+`card_le_screwDim_of_supportExtensor_linearIndependent` caps from above. -/
+theorem exists_independent_normalsJoin {m : ℕ} (hm : m ≤ screwDim k) :
+    ∃ n₁ n₂ : Fin m → Fin (k + 2) → ℝ,
+      LinearIndependent ℝ (fun i => normalsJoin (n₁ i) (n₂ i)) := by
+  have hcard : Fintype.card (Set.powersetCard (Fin (k + 2)) 2) = screwDim k := by
+    rw [← Nat.card_eq_fintype_card, Set.powersetCard.card, Nat.card_eq_fintype_card,
+      Fintype.card_fin]
+  obtain ⟨g⟩ : Nonempty (Fin m ↪ Set.powersetCard (Fin (k + 2)) 2) := by
+    apply Function.Embedding.nonempty_of_card_le
+    rw [Fintype.card_fin, hcard]; exact hm
+  set b := Pi.basisFun ℝ (Fin (k + 2)) with hb
+  refine ⟨fun i => b ((↑(g i) : Finset (Fin (k + 2))).orderEmbOfFin (g i).2 0),
+    fun i => b ((↑(g i) : Finset (Fin (k + 2))).orderEmbOfFin (g i).2 1), ?_⟩
+  have hfam : (fun i => normalsJoin (b ((↑(g i) : Finset (Fin (k + 2))).orderEmbOfFin (g i).2 0))
+      (b ((↑(g i) : Finset (Fin (k + 2))).orderEmbOfFin (g i).2 1)))
+      = (exteriorPower.ιMulti_family ℝ 2 b) ∘ g := by
+    funext i; exact normalsJoin_basisFun_orderEmbOfFin (g i)
+  rw [hfam]
+  exact (exteriorPower.ιMulti_family_linearIndependent_ofBasis ℝ 2 b).comp g g.injective
+
+/-- **Existence of an independent panel-support-extensor family for a cycle of `m ≤ D` panels**
+(`lem:cycle-realization`, the genericity-device existence half, screw-space form): for any
+`m ≤ D = screwDim k` there are `m` pairs of panel normals whose supporting extensors
+`i ↦ panelSupportExtensor (n₁ i) (n₂ i)` are linearly independent in `ScrewSpace k`. Immediate from
+`exists_independent_normalsJoin` carried across `panelSupportExtensor_linearIndependent_iff` (the
+complement iso `complementIso` is a `LinearEquiv`). These are exactly the independent supporting
+extensors KT Lemma 5.4 feeds into the short-cycle base (`toBodyHinge_rankHypothesis_zero`) and the
+general panel-cycle realization; the matching upper bound is
+`card_le_screwDim_of_supportExtensor_linearIndependent`. -/
+theorem exists_independent_panelSupportExtensor {m : ℕ} (hm : m ≤ screwDim k) :
+    ∃ n₁ n₂ : Fin m → Fin (k + 2) → ℝ,
+      LinearIndependent ℝ (fun i => panelSupportExtensor (n₁ i) (n₂ i)) := by
+  obtain ⟨n₁, n₂, h⟩ := exists_independent_normalsJoin (k := k) hm
+  exact ⟨n₁, n₂, (panelSupportExtensor_linearIndependent_iff n₁ n₂).mpr h⟩
+
 namespace BodyHingeFramework
 
 variable {α β : Type*}
