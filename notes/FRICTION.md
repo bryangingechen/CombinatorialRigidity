@@ -76,6 +76,23 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Weak-duality `rank + def ≤ D(|V|-1)` is FALSE at `D = 0` — needs an explicit `1 ≤ bodyBarDim n` hypothesis
+- **Where it bit:** `rank_add_partitionDef_le` / `rank_add_deficiency_le`
+  in `Molecular/Deficiency.lean` (Phase 19 `lem:weak-duality`). The first
+  draft omitted any `D`-positivity hypothesis; the `D = 0` case `nlinarith`
+  refused. Root cause is mathematical, not tactical: at `D = bodyBarDim n =
+  0`, `bodyHingeMult n = D - 1 = 0` (ℕ-sub) so `G̃` is edgeless and
+  `rank M(G̃) = 0`, but `partitionDef = D(|P|-1) - (D-1)·d = -(-1)·d = d`,
+  so `rank + def_P = d` while the RHS `D(|V|-1) = 0` — false whenever a
+  partition crosses an edge. Fixed by adding `hD : 1 ≤ bodyBarDim n` (same
+  hypothesis `lem:two-edge-conn`/`two_le_crossingEdges_of_isKDof_zero`
+  already carries); the conjecture runs at `n ≥ 2`, `D ≥ 3`, so it costs
+  nothing downstream.
+- **General lesson:** the signed `ℤ`-valued `partitionDef` with `(D-1)`
+  ℕ-subtraction is well-behaved only for `D ≥ 1`; any deficiency-side
+  bound that puts `D(|V|-1)` on the RHS should take `1 ≤ bodyBarDim n` up
+  front rather than discover the degenerate `D = 0` branch mid-`nlinarith`.
+
 ### [resolved] `Graph.edgeMultiply m`'s `IsLink`/`Inc` are defeq to the base graph's but not syntactically — `IsLink.mono` needs a type ascription
 - **Where it bit:** `edgeMultiply_mono` in `BodyBar/BodyHinge.lean`
   (Phase 19 `lem:matroid-restrict-subgraph` engine). `(G.edgeMultiply

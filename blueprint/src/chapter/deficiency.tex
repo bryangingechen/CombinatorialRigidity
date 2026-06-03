@@ -266,9 +266,44 @@ phase proceeds, leaf-first.
   number $|P|$ of parts.
 \end{proof}
 
+\begin{lemma}[Weak duality: $\operatorname{def}(\tilde G) \le \operatorname{corank} M(\tilde G)$]
+  \label{lem:weak-duality}
+  \lean{Graph.rank_add_partitionDef_le, Graph.rank_add_deficiency_le}
+  \leanok
+  \uses{def:D-deficiency, def:matroid-MG, lem:rk-within-parts}
+  For a multigraph $G$ with $V(G) \ne \emptyset$ and $D \ge 1$, and every
+  partition $P$ of $V(G)$,
+  \[
+    \operatorname{rank} M(\tilde G) + \operatorname{def}_{\tilde G}(P)
+      \;\le\; D\,(|V(G)| - 1);
+  \]
+  maximising over $P$ gives
+  $\operatorname{rank} M(\tilde G) + \operatorname{def}(\tilde G) \le
+  D\,(|V(G)| - 1)$, i.e.\ $\operatorname{def}(\tilde G) \le
+  \operatorname{corank} M(\tilde G)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Fix $P$, encoded by $f$, and let $Y \subseteq E(\tilde G)$ be the
+  non-crossing fibers (those whose underlying edge does not cross $P$). The
+  Edmonds matroid-partition rank formula (\cref{sec:matroid-union},
+  \texttt{Union\_pow\_rk\_eq}) applied to the $D$-fold cycle-matroid union on
+  $X = E(\tilde G)$ with the witness $Y$ gives
+  $\operatorname{rank} M(\tilde G) \le D \cdot
+  \operatorname{r}_{\mathrm{cycle}}(Y) + |E(\tilde G) \setminus Y|$. By
+  \cref{lem:rk-within-parts}, $D \cdot \operatorname{r}_{\mathrm{cycle}}(Y)
+  \le D(|V| - |P|)$; and the crossing fibers $E(\tilde G) \setminus Y$ number
+  exactly $(D-1)\,d_G(P)$ (each of the $d_G(P)$ crossing edges of $G$
+  contributes its $D-1$ parallel copies). Substituting,
+  $\operatorname{rank} M(\tilde G) + \operatorname{def}_{\tilde G}(P) =
+  \operatorname{rank} M(\tilde G) + D(|P|-1) - (D-1)\,d_G(P) \le D(|V| - 1)$.
+  Maximising over $P$ (a conditionally-complete supremum, bounded by the
+  per-partition bound) gives the deficiency form.
+\end{proof}
+
 \begin{theorem}[$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$; Jackson--Jord\'an]
   \label{thm:def-eq-corank}
-  \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le, lem:rk-within-parts}
+  \uses{def:D-deficiency, def:matroid-MG, lem:rank-matroidMG-le, lem:rk-within-parts, lem:weak-duality}
   For any base $B$ of $M(\tilde G)$,
   \[
     |B| + \operatorname{def}(\tilde G) \;=\; D\,(|V| - 1),
@@ -284,14 +319,16 @@ phase proceeds, leaf-first.
   The rank of the $D$-fold graphic-matroid union is the partition
   formula of Edmonds (\cref{sec:matroid-union}); the corank against the
   ambient $D(|V|-1)$ is exactly the deficiency maximised over
-  partitions. The conjecture (Theorem~5.6) needs only the upper-bound
-  half $\operatorname{rank} M(\tilde G) \le D(|V|-1)$, which is
-  \cref{lem:rank-matroidMG-le} (matching, on the matroidal side, the
-  body-hinge reduction of \cref{thm:body-hinge-tay}); the
-  prove-vs-hypothesize boundary for the reverse direction of the full
-  Jackson--Jord\'an~\cite{jacksonJordan2009} min--max identity --- the
-  partition attaining the rank --- is therefore deferred until a
-  downstream node needs the full equality rather than the upper bound.
+  partitions. One inequality is now in hand: weak duality
+  (\cref{lem:weak-duality}) gives $\operatorname{def}(\tilde G) \le
+  \operatorname{corank} M(\tilde G)$ from the Edmonds rank formula and the
+  partition-respecting bound \cref{lem:rk-within-parts}, alongside the rank
+  upper bound \cref{lem:rank-matroidMG-le} (matching, on the matroidal side,
+  the body-hinge reduction of \cref{thm:body-hinge-tay}). The reverse
+  inequality $\operatorname{def}(\tilde G) \ge \operatorname{corank} M(\tilde
+  G)$ --- a vertex-partition attaining the rank, the substantive
+  Jackson--Jord\'an~\cite{jacksonJordan2009} min--max content --- is the one
+  remaining piece, after which the full equality assembles.
 \end{proof}
 
 This bridge closes the reconciliation node deferred from Phase~18:

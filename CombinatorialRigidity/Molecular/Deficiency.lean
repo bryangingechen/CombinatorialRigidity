@@ -590,4 +590,110 @@ theorem rk_cycleMatroid_within_parts_le [Finite α] [Finite β] (G : Graph α β
     gcongr
   exact_mod_cast hsum
 
+/-! ## Weak duality (`thm:def-eq-corank`, piece 2)
+
+For every partition `P` of `V(G)`, `rank M(G̃) + def_{G̃}(P) ≤ D(|V| - 1)`, hence
+(maximising over `P`) `rank M(G̃) + def(G̃) ≤ D(|V| - 1)` — the `def ≤ corank`
+half of the bridge. The Edmonds matroid-partition rank formula (`Union_pow_rk_eq`)
+on `X := E(G̃)` with the non-crossing fibers `Y` bounds `rank M(G̃) ≤ D·r_cycle(Y) +
+|E(G̃) ∖ Y|`; piece 1 (`rk_cycleMatroid_within_parts_le`) bounds `D·r_cycle(Y) ≤
+D(|V| - |P|)`, and the bookkeeping leaf `|E(G̃) ∖ Y| = (D-1)·d_G(P)` (each crossing
+edge contributes its `D-1` fibers) makes the two sides match. -/
+
+/-- The **crossing fibers** of `G̃` under the partition `P` encoded by `f`: the fibers
+`p ∈ E(G̃)` whose underlying edge `p.1` crosses `P`. Equivalently `E(G̃) ∖ Y` for the
+non-crossing fibers `Y`. There are exactly `(D-1)·d_G(P)` of them — each of the
+`d_G(P) = |crossingEdges G f|` crossing edges of `G` contributes its `D-1` parallel
+copies. -/
+private theorem ncard_crossing_fibers (G : Graph α β) (n : ℕ) (f : α → α) :
+    {p : β × Fin (bodyHingeMult n) | p.1 ∈ G.crossingEdges f}.ncard =
+      bodyHingeMult n * (G.crossingEdges f).ncard := by
+  have hprod : {p : β × Fin (bodyHingeMult n) | p.1 ∈ G.crossingEdges f} =
+      (G.crossingEdges f) ×ˢ (Set.univ : Set (Fin (bodyHingeMult n))) := by
+    ext ⟨e, i⟩; simp
+  rw [hprod, Set.ncard_prod, Set.ncard_univ, Nat.card_eq_fintype_card, Fintype.card_fin,
+    mul_comm]
+
+/-- **Weak duality for a single partition** (`thm:def-eq-corank`, piece 2): for the
+partition `P` encoded by a labeling `f`, `rank M(G̃) + def_{G̃}(P) ≤ D(|V| - 1)`.
+Via the Edmonds partition-rank formula `Union_pow_rk_eq` on `X := E(G̃)` and the
+non-crossing fibers `Y = {p ∈ E(G̃) | p.1 ∉ crossingEdges}`: `rank M(G̃) =
+rk_Union(E(G̃)) ≤ D·r_cycle(Y) + |E(G̃) ∖ Y|`, where `r_cycle(Y) ≤ |V| - |P|`
+(`rk_cycleMatroid_within_parts_le`) and `|E(G̃) ∖ Y| = (D-1)·d_G(P)`
+(`ncard_crossing_fibers`). -/
+theorem rank_add_partitionDef_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
+    (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) (f : α → α) :
+    (G.matroidMG n).rank + G.partitionDef n f ≤ bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  classical
+  -- `rank M(G̃) = (Union).rk E(G̃)` (restrict to the ground set is the rank).
+  have hrank : (G.matroidMG n).rank =
+      (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)).rk
+        E(G.mulTilde n) := by
+    rw [matroidMG, Matroid.rank_def, Matroid.restrict_ground_eq,
+      Matroid.restrict_rk_eq _ subset_rfl]
+  -- The non-crossing fibers `Y ⊆ E(G̃)`.
+  set Y : Set (β × Fin (bodyHingeMult n)) :=
+    {p | p.1 ∈ E(G) ∧ p.1 ∉ G.crossingEdges f} with hY
+  have hYsub : Y ⊆ E(G.mulTilde n) := by
+    intro p hp; rw [mulTilde, edgeMultiply_edgeSet]; exact hp.1
+  -- `E(G̃) ∖ Y = {p | p.1 ∈ crossingEdges}`: crossing edges have `p.1 ∈ E(G)`.
+  have hdiff : E(G.mulTilde n) \ Y = {p : β × Fin (bodyHingeMult n) | p.1 ∈ G.crossingEdges f} := by
+    ext p
+    simp only [hY, Set.mem_diff, mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq, not_and,
+      not_not]
+    constructor
+    · rintro ⟨hpE, h⟩; exact h hpE
+    · intro hp; exact ⟨(by exact hp.1 : p.1 ∈ E(G)), fun _ => hp⟩
+  -- Edmonds rank formula: `rk_Union(E(G̃)) ≤ D·r_cycle(Y) + |E(G̃) ∖ Y|`.
+  obtain ⟨_, hle⟩ := Union_pow_rk_eq (G.mulTilde n).cycleMatroid (bodyBarDim n) E(G.mulTilde n)
+  have hbound := hle Y hYsub
+  -- Within-part hypothesis for piece 1: a non-crossing fiber joins equally-labeled vertices.
+  have hwithin : ∀ p ∈ Y, ∀ x y, (G.mulTilde n).IsLink p x y → f x = f y := by
+    intro p hp x y hlink
+    have hG : G.IsLink p.1 x y := by rw [mulTilde, edgeMultiply_isLink] at hlink; exact hlink
+    by_contra hxy
+    exact hp.2 ⟨hp.1, x, y, hG, hxy⟩
+  have hpiece1 := G.rk_cycleMatroid_within_parts_le n hYsub hwithin
+  -- Cardinality of the crossing fibers.
+  have hcard : (E(G.mulTilde n) \ Y).ncard = bodyHingeMult n * (G.crossingEdges f).ncard := by
+    rw [hdiff, ncard_crossing_fibers]
+  -- Assemble in `ℕ`, then cast. `D = bodyBarDim n`, `D - 1 = bodyHingeMult n`.
+  rw [hrank, partitionDef, numParts]
+  -- `rank ≤ D·r_cycle(Y) + (D-1)·d_G(P)` and `r_cycle(Y) + |P| ≤ |V|`.
+  have hkey : (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)).rk
+      E(G.mulTilde n) ≤ bodyBarDim n * (G.mulTilde n).cycleMatroid.rk Y +
+        bodyHingeMult n * (G.crossingEdges f).ncard := by
+    rw [← hcard]; exact hbound
+  -- `|V| ≥ 1` (nonempty); unfold `numParts` in piece 1 to match the goal's `(f '' V).ncard`.
+  have hV1 : 1 ≤ V(G).ncard := hne.ncard_pos
+  rw [numParts] at hpiece1
+  -- `bodyHingeMult n = D - 1` as ℤ (clean since `D ≥ 1`).
+  have hHM : (bodyHingeMult n : ℤ) = (bodyBarDim n : ℤ) - 1 := by rw [bodyHingeMult]; omega
+  zify at hkey hpiece1
+  rw [hHM] at hkey
+  -- `r_cycle(Y) ≤ |V| - |P|` (piece 1) and `rank ≤ D·r + (D-1)·d` (Edmonds); combine.
+  set R : ℤ := ((G.mulTilde n).cycleMatroid.rk Y : ℤ) with hR
+  set D : ℤ := (bodyBarDim n : ℤ) with hDdef
+  nlinarith [hkey, hpiece1, mul_le_mul_of_nonneg_left
+    (show R ≤ (V(G).ncard : ℤ) - (f '' V(G)).ncard by linarith)
+    (show (0:ℤ) ≤ D by positivity)]
+
+/-- **Weak duality** (`thm:def-eq-corank`, the `def ≤ corank` half): maximising
+`rank_add_partitionDef_le` over all partitions gives
+`rank M(G̃) + def(G̃) ≤ D(|V| - 1)`. Equivalently `def(G̃) ≤ corank M(G̃)` inside the
+rank-`D(|V|-1)` ambient. With the rank upper bound `rank_matroidMG_le`, this is one of
+the two inequalities of the full bridge `thm:def-eq-corank`; the reverse direction (a
+partition attaining the rank) is the remaining JJ09 min–max content. -/
+theorem rank_add_deficiency_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β)
+    (n : ℕ) (hD : 1 ≤ bodyBarDim n) (hne : V(G).Nonempty) :
+    (G.matroidMG n).rank + G.deficiency n ≤ bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
+  haveI : Nonempty (α → α) := ⟨fun _ => hne.choose⟩
+  rw [deficiency]
+  -- `⨆ def_P ≤ bound - rank` by `ciSup_le` on `rank_add_partitionDef_le`.
+  have hbound : ⨆ f : α → α, G.partitionDef n f ≤
+      bodyBarDim n * ((V(G).ncard : ℤ) - 1) - (G.matroidMG n).rank :=
+    ciSup_le fun f => by linarith [G.rank_add_partitionDef_le n hD hne f]
+  linarith
+
 end Graph
