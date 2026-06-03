@@ -1176,6 +1176,60 @@ theorem toBodyHinge_hnew_of_isLink_incident (P : PanelHingeFramework k α β) (v
       P.toBodyHinge.hingeConstraint S e u w :=
   P.toBodyHinge.hnew_of_isLink_incident v hinc hSv hspan
 
+/-- **Case II: the splitting-off `1`-extension realizes the target rank** (`lem:case-II`,
+Katoh–Tanigawa 2011 §6.3 Lemmas 6.7/6.8; GREEN-modulo the Phase-21b genericity device). Let `P`
+be a panel-hinge framework on the splitting-off graph `G_v^{ab} = P.graph`, in which the
+re-inserted body `v` is *yet unhinged* (no linking edge has `v` among its endpoints, `hv`), and
+let `G` be the parent graph with `P.graph ≤ G`. Choosing a panel normal `n` for `v` and enlarging
+the graph to `G` produces the extended panel framework `(P.withNormal v n).withGraph G` — the
+panel-hinge analogue of Whiteley's bar-joint `1`-extension. Then the extended framework realizes
+the target rank at `k'` (`RankHypothesis k'`, i.e. `dim Z(G,p) = D + k'`) **iff** the original
+splitting-off framework `P` carries body-`v`-pinned-motion dimension `k'` — so the inductive
+realization of `G_v^{ab}` lifts to `G`, the two new hinge-row blocks accounting for the `+D`
+(`rankHypothesis_iff_finrank_pinnedMotions`, the pin-a-body Lemma 5.1).
+
+This is the genericity-free assembly of Case II: it wires the vertex-level splitting-off
+op `G_v^{ab}` (green in Phase 20) into the panel `withNormal`/`withGraph` carriers through the
+rank-lift accounting (`rankHypothesis_withNormal_iff_finrank_pinnedMotions` via the unhinged-`v`
+invariance `toBodyHinge_withNormal_pinnedMotions_eq`) and the genericity-gated tightness
+(`toBodyHinge_pinnedMotions_withGraph_eq`, the `≥` half). The two graph-side hypotheses are
+genericity-free: `hv` (`v` unhinged in `G_v^{ab}`, true before its two new edges are added) and
+`hinc` (every link of `G` lost on passing to `G_v^{ab}` is `v`-incident — the
+`isLink_incident_of_not_removeVertex` brick at the common lower bound, here `G_v^{ab}` itself). The
+**one** input from the Phase-21b device is `hspan`: each base-`v`-pinned motion lands in the two
+new edges' panel-support spans (`S a ∈ span C(e_a)`, `S b ∈ span C(e_b)`). That is *false
+pointwise* — it holds only for the general-position normals the genericity rank/dimension count
+(Claim 6.9) selects, supplied by `exists_independent_panelSupportExtensor`. Taking `hspan` as an
+explicit hypothesis makes `lem:case-II` GREEN-modulo-21b. The `S w ∈ span C(e)` form (rather than
+the full hinge constraint `S v − S w ∈ span C(e)`) is the collapse a base-pinned `S v = 0` already
+forces (`toBodyHinge_hnew_of_isLink_incident`). -/
+theorem rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions [Nonempty α] [Finite α]
+    (P : PanelHingeFramework k α β) (v : α) (n : Fin (k + 2) → ℝ) (k' : ℤ) {G : Graph α β}
+    (hle : P.graph ≤ G)
+    (hv : ∀ e u w, P.graph.IsLink e u w → (P.ends e).1 ≠ v ∧ (P.ends e).2 ≠ v)
+    (hinc : ∀ e u w, G.IsLink e u w → ¬P.graph.IsLink e u w → u = v ∨ w = v)
+    (hspan : ∀ S ∈ (P.withNormal v n).toBodyHinge.pinnedMotions v, ∀ e w,
+      G.IsLink e v w → ¬P.graph.IsLink e v w →
+        S w ∈ Submodule.span ℝ {(P.withNormal v n).toBodyHinge.supportExtensor e}) :
+    ((P.withNormal v n).withGraph G).toBodyHinge.RankHypothesis k' ↔
+      (Module.finrank ℝ (P.toBodyHinge.pinnedMotions v) : ℤ) = k' := by
+  set Q := (P.withNormal v n).withGraph G with hQdef
+  have hQg : Q.graph = G := (P.withNormal v n).withGraph_graph G
+  have hQsub : Q.withGraph P.graph = P.withNormal v n := rfl
+  rw [Q.toBodyHinge.rankHypothesis_iff_finrank_pinnedMotions v k']
+  have hle' : P.graph ≤ Q.graph := by rw [hQg]; exact hle
+  have hnew : ∀ S ∈ (Q.withGraph P.graph).toBodyHinge.pinnedMotions v, ∀ e u w,
+      Q.graph.IsLink e u w → ¬P.graph.IsLink e u w → Q.toBodyHinge.hingeConstraint S e u w := by
+    intro S hS e u w hlink hnG
+    rw [hQsub] at hS
+    have hSv : S v = 0 := (((P.withNormal v n).toBodyHinge.mem_pinnedMotions v S).mp hS).2
+    refine Q.toBodyHinge_hnew_of_isLink_incident v
+      (fun e' u' w' h' hn' => hinc e' u' w' (hQg ▸ h') hn') hSv
+      (fun e' w' h' hn' => ?_) e u w hlink hnG
+    exact hspan S hS e' w' (hQg ▸ h') hn'
+  rw [Q.toBodyHinge_pinnedMotions_withGraph_eq v hle' hnew, hQsub,
+    P.toBodyHinge_withNormal_pinnedMotions_eq v n v hv]
+
 end PanelHingeFramework
 
 namespace PanelHingeFramework

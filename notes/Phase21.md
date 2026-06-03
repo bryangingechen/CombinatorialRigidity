@@ -36,6 +36,32 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
+**Case II 1-extension assembly landed — `lem:case-II` GREEN-modulo-21b (2026-06-03).** The
+genericity-free assembly of `lem:case-II` is green:
+`PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`
+(`Molecular/AlgebraicInduction.lean`, end of the `[DecidableEq α]` panel block). For a panel
+framework `P` on the splitting-off `G_v^{ab} = P.graph` with `v` yet unhinged (`hv`) and
+`P.graph ≤ G`, the extended framework `(P.withNormal v n).withGraph G` realizes `RankHypothesis k'`
+iff `P` carries body-`v`-pinned dimension `k'` — the inductive realization lifts to `G` with the
+two new hinge-row blocks accounting for the `+D`. The proof composes the three green reduction
+bricks: `rankHypothesis_iff_finrank_pinnedMotions` (the `+D` core), `toBodyHinge_pinnedMotions_
+withGraph_eq` (the genericity-gated `≥` tightness, fed `hnew`), and `toBodyHinge_withNormal_
+pinnedMotions_eq` (the unhinged-`v` panel-normal invariance), with the key `withGraph`-composition
+identity `(Q.withGraph P.graph) = P.withNormal v n` (definitional, `rfl`). The single Phase-21b
+input is `hspan` (each base-`v`-pinned motion in the two new edges' panel-support spans — false
+pointwise, holds by the rank/dimension count, supplied by `exists_independent_panelSupportExtensor`);
+taking it as an explicit hypothesis closes the node modulo the device. The incidence side `hinc`
+(every link of `G` lost on passing to `G_v^{ab}` is `v`-incident) is genericity-free graph data,
+also an explicit hypothesis — instantiated by `isLink_incident_of_not_removeVertex` at the common
+lower bound in the consumer. Axiom-clean (propext/Classical.choice/Quot.sound). No friction (a
+three-rw composition of green bricks; the `withGraph`-composition `rfl` was the one thing checked via
+`lean_multi_attempt`). Blueprint flips `lem:case-II` to green (`\lean` + `\leanok` on both
+environment and proof; `\uses` `lem:exists-independent-panel-extensor` added). **Remaining red on
+Phase 21:** `lem:case-I` (Case I contraction plumbing — the natural parallel follow-up),
+`thm:theorem-55` (the capstone induction, assembled once Cases I/II are green-modulo-21b),
+`prop:rigidity-matrix-prop11` (analytic half via the device). All four `\uses` the cited 21b node
+transitively.
+
 **Case II `hinc` incidence brick landed (2026-06-03).** The graph-side hypothesis of
 `hnew_of_isLink_incident`, instantiated at the Case II common lower bound `G' = G − v`, is green:
 `Graph.isLink_incident_of_not_removeVertex` (`Molecular/Induction.lean`, beside `removeVertex_le`):
@@ -547,26 +573,22 @@ Case II (`k>0` splitting; KT §6.3):
   motions (single-body specialization of `pinnedMotionsOn_le_withGraph_of_le`,
   routed through `toBodyHinge_withGraph` on the panel layer). Axiom-clean.
   Green.
-- [ ] `lem:case-II` — KT Lemmas 6.7/6.8: splitting off a reducible
+- [x] `lem:case-II` — KT Lemmas 6.7/6.8: splitting off a reducible
   degree-2 vertex (smaller minimal `k`-dof by green `lem:reduction-step`),
   the panel-hinge analogue of Whiteley's bar-joint 1-extension; re-insert
-  `v` to lift the rank by `D` (the accounting is `lem:case-II-rank-lift`,
-  the panel assembly + graph-half inclusion now green). The *equality* of
-  the extended `v`-pinned motions with the base's is now green too
-  (`pinnedMotions_withGraph_eq` + panel `toBodyHinge_pinnedMotions_withGraph_eq`
-  + rank forms): conditional on `hnew` (every base-`v`-pinned motion clears
-  the re-added edges' constraints), the honest content of Claim 6.9. `hnew`
-  now reduces to a per-edge single span-membership at the non-`v` endpoint
-  (`hnew_of_isLink_incident` + panel `toBodyHinge_hnew_of_isLink_incident`,
-  green): given all out-of-`G'` links are `v`-incident and `S v = 0`, the
-  constraint `S v − S w` collapses to `S w ∈ span C(e)`. Still needs:
-  discharging that span-membership (`hspan`) for the chosen general-position
-  extensors (genuine Claim 6.9 — false pointwise, holds by the rank count).
-  The edge-substitution bridge for wiring `G_v^{ab}` into `withGraph` is now
-  green (`lem:splitoff-edge-substitution`, `removeVertex_le` +
-  `removeVertex_le_splitOff`): `splitOff` adds a fresh `e₀` so it is not
-  directly `≤ G`, but `G` and `G_v^{ab}` share the common subgraph `G − v`,
-  the lower bound both `withGraph`-inclusions route through.
+  `v` to lift the rank by `D`. **GREEN-modulo-21b**
+  (`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`): the
+  extended `(P.withNormal v n).withGraph G` realizes `RankHypothesis k'`
+  iff `P` (on `G_v^{ab}`) carries `v`-pinned dimension `k'`, composing the
+  green `+D` core (`rankHypothesis_iff_finrank_pinnedMotions`), the
+  genericity-gated tightness (`toBodyHinge_pinnedMotions_withGraph_eq`), and
+  the unhinged-`v` invariance (`toBodyHinge_withNormal_pinnedMotions_eq`),
+  via the `withGraph`-composition `rfl` `(Q.withGraph P.graph) = withNormal`.
+  Genericity-free hypotheses `hv` (v unhinged) + `hinc` (lost links
+  v-incident, via `isLink_incident_of_not_removeVertex`); the **one** 21b
+  input is `hspan` (base-pinned motions in the two new panel-support spans —
+  false pointwise, supplied by `exists_independent_panelSupportExtensor`),
+  taken as an explicit hypothesis. Axiom-clean.
 
 Case III (deferred to Phases 22–23):
 - [ ] `lem:case-III` — KT Lemma 6.10/6.13: `k=0`, no proper rigid
@@ -717,34 +739,20 @@ regime-agnostic rank/structure nodes (`def:rank-hypothesis`,
 `-panel-support-extensor-independence`, `-exists-independent-panel-extensor`);
 and Case II's reduction stack (`pinnedMotions_le_withGraph`,
 `pinnedMotions_withGraph_eq` conditional on `hnew`,
-`hnew_of_isLink_incident`, `lem:splitoff-edge-substitution`).
+`hnew_of_isLink_incident`, `lem:splitoff-edge-substitution`); and the
+Case II 1-extension assembly `lem:case-II` itself
+(`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`,
+GREEN-modulo-21b with `hspan` an explicit hypothesis).
 
 ### Node-by-node path to close Phase 21
 
-Four red nodes remain (Case III excepted — deferred to 22–23). For each:
-what it still needs **from the cited 21b device** vs. what is
-**genericity-free and still to formalize in Phase 21**.
+Three red nodes remain (Case III excepted — deferred to 22–23; Case II is
+now GREEN-modulo-21b). For each: what it still needs **from the cited 21b
+device** vs. what is **genericity-free and still to formalize in Phase 21**.
 
-1. **`lem:case-II`** (KT 6.7/6.8 splitting / 1-extension).
-   - *Genericity-free, still to do in 21:* wire the vertex-level
-     splitting-off op `G_v^{ab}` (green combinatorially in Phase 20)
-     into the panel `withGraph`/`withNormal` carriers **through the
-     `G − v` common lower bound** — the edge-substitution bridge
-     (`removeVertex_le`, `removeVertex_le_splitOff`,
-     `isLink_incident_of_not_removeVertex`) is green, so this is
-     plumbing: instantiate the rank-lift assembly
-     (`rankHypothesis_withNormal_iff_finrank_pinnedMotions`) +
-     tightness (`pinnedMotions_withGraph_eq`) against
-     `splitOff`-via-`removeVertex`, leaving `hnew` as the open
-     hypothesis. This is the **smallest next concrete commit**:
-     assemble the 1-extension rank lift on `G_v^{ab}` with `hnew`
-     (equivalently `hspan`) as an explicit hypothesis on the lemma.
-   - *From 21b (cited):* discharge `hspan` — every base-`v`-pinned
-     motion lands in the two new edges' spans (`S a ∈ span C(e_a)`,
-     `S b ∈ span C(e_b)`). False pointwise; holds by the rank/dimension
-     count. Phase 21's `lem:case-II` `\uses` the 21b node here.
-
-2. **`lem:case-I`** (KT 6.2/6.3/6.5 rigid-subgraph contraction).
+1. **`lem:case-I`** (KT 6.2/6.3/6.5 rigid-subgraph contraction). **The
+   smallest next concrete commit** — the natural parallel of the now-green
+   Case II assembly.
    - *Genericity-free, still to do in 21:* the vertex-level contraction
      op `G/E(H)` on the panel layer (place panel data on
      `rigidContract`, green in Phase 20) + the block-triangular rank
@@ -757,7 +765,7 @@ what it still needs **from the cited 21b device** vs. what is
      generic choice makes the combined matrix attain the sum of the two
      block ranks (Claim 6.4). `lem:case-I` `\uses` the 21b node.
 
-3. **`thm:theorem-55`** (the capstone induction).
+2. **`thm:theorem-55`** (the capstone induction).
    - *Genericity-free, still to do in 21:* the induction on `|V|`
      wiring `lem:theorem-55-base` (green) + `lem:case-I` + `lem:case-II`
      over the Phase-20 reduction dichotomy
@@ -767,7 +775,7 @@ what it still needs **from the cited 21b device** vs. what is
      through the cases.
    - *From 21b (cited):* none directly — only through Cases I/II/III.
 
-4. **`prop:rigidity-matrix-prop11`** (KT Prop 1.1 analytic half).
+3. **`prop:rigidity-matrix-prop11`** (KT Prop 1.1 analytic half).
    - *Genericity-free, still to do in 21:* the upper-bound /
      codimension side (`lem:trivial-motions-rank-bound` + deficiency
      count) and the edge-strip-to-minimal-`k`-dof reduction (re-adding
@@ -791,10 +799,14 @@ or its own chapter if it grows), sync the user-facing surfaces, flip the
 consumed by Phases 22–23** (Case III candidate genericity), so building
 it standalone pays forward.
 
-**Smallest next concrete commit (recommended):** state `lem:case-II` as
-a Lean theorem taking the genericity conclusion (`hspan`, or the
-finished generic 1-extension hypothesis) as an explicit hypothesis, and
-discharge everything else (the `G_v^{ab}`-via-`G − v` plumbing into the
-rank-lift assembly + tightness). That takes `lem:case-II` to
-GREEN-modulo-21b and is self-contained; Case I's contraction plumbing is
-the natural parallel follow-up. Either can proceed before 21b lands.
+**Smallest next concrete commit (recommended):** state `lem:case-I` as a
+Lean theorem taking the genericity block-triangular-gluing conclusion as
+an explicit hypothesis (the parallel of the now-green Case II assembly
+`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`), and
+discharge everything genericity-free: place panel data on the contraction
+`G/E(H)` (combinatorially green in Phase 20), re-add `E(H)` via `withGraph`
+(block-pin monotonicity `pinnedMotionsOn_le_withGraph_of_le` + lower bound
+`screwDim_add_finrank_pinnedMotionsOn_le`, both green), reducing the node to
+"the two blocks' ranks add" with the generic gluing (Claim 6.4) the one 21b
+input. That takes `lem:case-I` to GREEN-modulo-21b; then `thm:theorem-55` is
+genericity-free induction assembly. All can proceed before 21b lands.

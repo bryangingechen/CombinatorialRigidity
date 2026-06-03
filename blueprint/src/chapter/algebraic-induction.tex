@@ -653,9 +653,11 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Case II: splitting off a reducible vertex; KT Lemmas 6.7, 6.8]
   \label{lem:case-II}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions}
+  \leanok
   \uses{thm:minimal-kdof-reduction, lem:reduction-step,
         lem:rank-delete-vertex, lem:case-II-rank-lift, lem:cycle-realization,
-        lem:splitoff-edge-substitution}
+        lem:splitoff-edge-substitution, lem:exists-independent-panel-extensor}
   Let $G$ be a minimal $k$-dof-graph with $k > 0$ and a reducible
   degree-2 vertex $v$ (KT~4.6), and let $G_v^{ab}$ be the splitting-off
   at $v$ (a smaller minimal $k$-dof-graph by \cref{lem:reduction-step}).
@@ -664,15 +666,45 @@ Cases~I and~II travel toward the smaller inductive graph.
   analogue of Whiteley's bar-joint $1$-extension: re-inserting $v$ with
   its two hinges lifts the rank by exactly $D$ (Lemma~6.8, via the
   Claim~6.9 genericity argument).
+
+  Concretely, with $P$ a panel framework on $G_v^{ab}$ in which $v$ is
+  yet unhinged and $P.\mathrm{graph} \le G$, choosing a panel normal $n$
+  for $v$ and enlarging the graph to $G$ gives the extended framework
+  $(P[v \mapsto n]).\mathrm{withGraph}\,G$, which realizes the target
+  rank at $k'$ \emph{iff} the splitting-off $P$ carries body-$v$-pinned
+  dimension $k'$ --- the inductive realization lifts to $G$ with the two
+  new hinge-row blocks accounting for the $+D$
+  (\cref{lem:case-II-rank-lift}). The graph-side hypotheses are
+  genericity-free: $v$ is unhinged in $G_v^{ab}$ (true before its two new
+  edges are added) and every link of $G$ lost on passing to $G_v^{ab}$ is
+  $v$-incident (\cref{lem:splitoff-edge-substitution}). The \emph{one}
+  input from the genericity device (Phase~21b, Claim~6.9) is that each
+  base-$v$-pinned motion lands in the two new edges' panel-support spans,
+  $S a \in \operatorname{span} C(e_a)$, $S b \in \operatorname{span}
+  C(e_b)$; this is false pointwise and holds only for the general-position
+  normals the rank/dimension count selects
+  (\cref{lem:exists-independent-panel-extensor}). Taking that span
+  membership as an explicit hypothesis makes the lemma green modulo the
+  device.
 \end{lemma}
 \begin{proof}
-  \uses{lem:rank-delete-vertex, lem:case-II-rank-lift}
+  \leanok
+  \uses{lem:rank-delete-vertex, lem:case-II-rank-lift,
+        lem:splitoff-edge-substitution}
   Place $G_v^{ab}$ at its inductive realization; re-insert $v$ joined to
   $a$ and $b$ by hinges chosen generically. The rank-lift accounting
   \cref{lem:case-II-rank-lift} (via the pin-a-body Lemma~5.1,
-  \cref{lem:rank-delete-vertex}) accounts for $v$'s screw freedoms, and
-  the two new hinge-row blocks raise the rank by exactly $D$, giving
-  $D(|V|-1) - k$. Genericity (Claim~6.9) lifts to a generic realization.
+  \cref{lem:rank-delete-vertex}) accounts for $v$'s screw freedoms through
+  the unhinged-$v$ panel-normal invariance, and the genericity-gated
+  tightness \cref{lem:case-II-rank-lift} (the $\ge$ half) makes the
+  $1$-extension inclusion an equality once the span-membership input
+  clears the two new $v$-incident edges (a base-pinned motion has
+  $S v = 0$, so each constraint $S v - S w \in \operatorname{span} C(e)$
+  collapses to $S w \in \operatorname{span} C(e)$ at the non-$v$
+  endpoint). Hence the extended pinned dimension equals the inductive
+  one and the rank lifts by exactly $D$, giving $D(|V|-1) - k$. The
+  span-membership input is supplied by the genericity device (Claim~6.9,
+  Phase~21b).
 \end{proof}
 
 \subsection{Case III deferred (the crux)}
