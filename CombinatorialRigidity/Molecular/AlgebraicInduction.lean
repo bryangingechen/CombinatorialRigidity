@@ -255,10 +255,13 @@ multigraph of `F` by `G'`, keeping the hinge assignment — hence every supporti
 `C(p(e))`, hinge-row block `r(p(e))`, and per-edge constraint. This is the carrier for the
 inductive constructions of Cases I and II, which realize a *different* graph (the contraction
 `G/E(H)`, the splitting-off `G_v^{ab}`) on the same hinge data of the parent framework. -/
-@[simps]
 def withGraph (F : BodyHingeFramework k α β) (G' : Graph α β) : BodyHingeFramework k α β where
   graph := G'
-  hinge := F.hinge
+  supportExtensor := F.supportExtensor
+
+@[simp]
+theorem withGraph_graph (F : BodyHingeFramework k α β) (G' : Graph α β) :
+    (F.withGraph G').graph = G' := rfl
 
 @[simp]
 theorem withGraph_supportExtensor (F : BodyHingeFramework k α β) (G' : Graph α β) (e : β) :
@@ -391,6 +394,107 @@ theorem pinnedMotionsOn_le_pinnedMotions (F : BodyHingeFramework k α β) {s : S
     (hv : v ∈ s) :
     F.pinnedMotionsOn s ≤ F.pinnedMotions v :=
   fun _ hS => ⟨hS.1, hS.2 v hv⟩
+
+end BodyHingeFramework
+
+/-! ## The panel-hinge framework (`def:panel-hinge-framework`)
+
+Katoh–Tanigawa's *panel-hinge* framework is a **hinge-coplanar** body-hinge framework: at each
+body `v`, all incident hinges lie in a common hyperplane `panel(v)` (KT 2011 p.647). We carry
+the panel-data form (`DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge*): a
+`PanelHingeFramework` assigns each body `v` a hyperplane *normal* `normal v ∈ ℝ^(k+2)`, and the
+hinge at an edge `e = uv` is the codimension-2 intersection `panel(u) ∩ panel(v)`, whose
+supporting `k`-extensor is the Grassmann–Cayley meet `panelSupportExtensor (normal u) (normal v)`
+(`def:panel-support-extensor`). Because each edge's two endpoints are not a function of the edge
+alone in mathlib's relational `Graph`, the structure also carries an explicit endpoint selector
+`ends : β → α × α`; the supporting extensor of `e` is the meet of the two normals at `ends e`.
+
+The body-hinge interpretation `toBodyHinge` (`def:panel-hinge-framework`) feeds this support
+extensor into the Phase-18 rigidity-matrix rank theory verbatim: it is the `BodyHingeFramework`
+with `supportExtensor e = panelSupportExtensor (normal u) (normal v)` at `(u,v) = ends e`. Every
+incident hinge at `v` is then a meet whose join factor includes `normal v`, so it lies in the
+panel `panel(v) = {normal v}^⊥` by construction — coplanarity is structural, with no
+affine-intersection plumbing. The coplanarity *spec* `IsHingeCoplanar` on a bare
+`BodyHingeFramework` is exactly "arises as a `toBodyHinge`", automatic for the panel
+constructions of Theorem 5.5 (`isHingeCoplanar_toBodyHinge`). -/
+
+/-- A **`d = k+1`-dimensional panel-hinge framework** (`def:panel-hinge-framework`;
+Katoh–Tanigawa 2011): a multigraph `G : Graph α β` together with a per-body *panel normal*
+`normal v ∈ ℝ^(k+2)` (the pole of body `v`'s hyperplane `panel(v)`) and an endpoint selector
+`ends : β → α × α` for the edges. The hinge at edge `e` is the codimension-2 intersection of the
+two panels at `ends e`; its supporting `k`-extensor is the meet `panelSupportExtensor` of the two
+normals (`def:panel-support-extensor`). Unlike `BodyHingeFramework`'s free hinges, every hinge
+incident to `v` lies in the single panel `panel(v)` — the hinge-coplanarity that *defines* the
+panel-hinge (molecular) model. -/
+structure PanelHingeFramework (k : ℕ) (α β : Type*) where
+  /-- The underlying multigraph; bodies are vertices, hinges are edges. -/
+  graph : Graph α β
+  /-- The panel normal at each body `v`: the pole `n_v ∈ ℝ^(k+2)` of `v`'s hyperplane
+  `panel(v)`. All hinges incident to `v` are forced to lie in `panel(v)`. -/
+  normal : α → Fin (k + 2) → ℝ
+  /-- The endpoint selector: the two bodies `e` joins. (Mathlib's `Graph` keeps endpoints
+  relational, so the panel hinge's two normals are read off `ends e` rather than `e` alone.) -/
+  ends : β → α × α
+
+namespace PanelHingeFramework
+
+variable {α β : Type*}
+
+/-- The **body-hinge interpretation** of a panel-hinge framework (`def:panel-hinge-framework`):
+the `BodyHingeFramework` on the same multigraph whose supporting extensor at each edge `e` is the
+panel support extensor `panelSupportExtensor (normal u) (normal v)` of the two panel normals at
+`(u, v) = ends e` (`def:panel-support-extensor`). This feeds the panel hinge directly into the
+Phase-18 rigidity-matrix rank theory — null space, hinge-row blocks, pin-a-body and parallel
+lemmas all apply verbatim — while keeping the framework coplanar by construction
+(`isHingeCoplanar_toBodyHinge`). It is the panel analogue of the affine constructor
+`BodyHingeFramework.ofHinge`. -/
+noncomputable def toBodyHinge (P : PanelHingeFramework k α β) : BodyHingeFramework k α β where
+  graph := P.graph
+  supportExtensor e := panelSupportExtensor (P.normal (P.ends e).1) (P.normal (P.ends e).2)
+
+@[simp]
+theorem toBodyHinge_graph (P : PanelHingeFramework k α β) : P.toBodyHinge.graph = P.graph := rfl
+
+@[simp]
+theorem toBodyHinge_supportExtensor (P : PanelHingeFramework k α β) (e : β) :
+    P.toBodyHinge.supportExtensor e =
+      panelSupportExtensor (P.normal (P.ends e).1) (P.normal (P.ends e).2) := rfl
+
+/-- **The panel hinge's supporting extensor is nonzero iff its two panels are transversal**
+(`def:panel-hinge-framework`): for `(u, v) = ends e`, `P.toBodyHinge.supportExtensor e ≠ 0 ↔
+LinearIndependent ℝ ![normal u, normal v]`. Immediate from `panelSupportExtensor_ne_zero_iff`;
+this is the general-position hypothesis the panel realizations of Theorem 5.5 supply — the two
+panels at `e`'s endpoints meet in a genuine codimension-2 hinge exactly when their normals are
+independent. -/
+theorem toBodyHinge_supportExtensor_ne_zero_iff (P : PanelHingeFramework k α β) (e : β) :
+    P.toBodyHinge.supportExtensor e ≠ 0 ↔
+      LinearIndependent ℝ ![P.normal (P.ends e).1, P.normal (P.ends e).2] := by
+  rw [toBodyHinge_supportExtensor, panelSupportExtensor_ne_zero_iff]
+
+end PanelHingeFramework
+
+namespace BodyHingeFramework
+
+variable {α β : Type*}
+
+/-- **Hinge-coplanarity of a body-hinge framework** (`def:panel-hinge-framework`): `F` is
+*hinge-coplanar* when it arises as the body-hinge interpretation of a panel-hinge framework,
+`∃ P : PanelHingeFramework k α β, P.toBodyHinge = F`. By `toBodyHinge` this means there is a
+per-body normal assignment realizing every edge's supporting extensor as the meet of its two
+endpoints' panels, so all hinges incident to a body `v` lie in the single panel `panel(v)` — the
+coplanarity constraint that distinguishes Katoh–Tanigawa's panel-hinge (molecular) model from the
+free-hinge body-hinge model. This is the property Theorem 5.5's panel constructions establish; the
+conjecture's content is that it can be met without dropping rigidity. -/
+def IsHingeCoplanar (F : BodyHingeFramework k α β) : Prop :=
+  ∃ P : PanelHingeFramework k α β, P.toBodyHinge = F
+
+/-- **A panel framework's body-hinge interpretation is hinge-coplanar** by construction
+(`def:panel-hinge-framework`): `(P.toBodyHinge).IsHingeCoplanar` for every
+`P : PanelHingeFramework k α β`. The witness is `P` itself. Hence every realization Theorem 5.5
+builds through the panel layer automatically satisfies the molecular-model coplanarity. -/
+theorem isHingeCoplanar_toBodyHinge (P : PanelHingeFramework k α β) :
+    P.toBodyHinge.IsHingeCoplanar :=
+  ⟨P, rfl⟩
 
 end BodyHingeFramework
 

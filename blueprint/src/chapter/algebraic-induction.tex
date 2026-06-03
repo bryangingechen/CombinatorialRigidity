@@ -76,6 +76,33 @@ plumbing is needed.
   condition the panel layer needs.
 \end{definition}
 
+\begin{definition}[Panel-hinge framework and its body-hinge interpretation]
+  \label{def:panel-hinge-framework}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.IsHingeCoplanar,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge}
+  \leanok
+  \uses{def:panel-support-extensor, def:hinge-constraint}
+  A \emph{panel-hinge framework} is a multigraph $G = (V,E)$ together with a
+  per-body panel normal $n_v \in \R^{k+2}$ (the pole of body $v$'s
+  hyperplane $\mathrm{panel}(v)$). The hinge at an edge $e = uv$ is the
+  codimension-2 intersection $\mathrm{panel}(u) \cap \mathrm{panel}(v)$,
+  with supporting $k$-extensor the meet $C(p(e)) =
+  \mathrm{panelSupportExtensor}(n_u, n_v)$
+  (\cref{def:panel-support-extensor}). Its \emph{body-hinge interpretation}
+  is the body-hinge framework (\cref{def:hinge-constraint}) on $G$ carrying
+  exactly these supporting extensors, so the entire rigidity-matrix rank
+  theory of \cref{sec:molecular-rigidity-matrix} applies verbatim. Every
+  hinge incident to $v$ has $n_v$ as a join factor, hence lies in the single
+  panel $\mathrm{panel}(v)$: the framework is \emph{hinge-coplanar} by
+  construction. A body-hinge framework is hinge-coplanar
+  ($\mathrm{IsHingeCoplanar}$) when it arises this way; this is the
+  molecular-model constraint Katoh--Tanigawa's panel-hinge frameworks carry
+  beyond the free-hinge body-hinge model, and the conjecture's content is
+  that it can be met without dropping rigidity.
+\end{definition}
+
 \subsection{The generic-rank reconciliation (Proposition 1.1, analytic half)}
 \label{sec:molecular-algebraic-induction-prop11}
 

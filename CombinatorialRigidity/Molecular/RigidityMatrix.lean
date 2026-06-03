@@ -96,11 +96,15 @@ theorem screwSpace_finrank (k : ℕ) : Module.finrank ℝ (ScrewSpace k) = screw
   congr 1
 
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
-a multigraph `G : Graph α β` together with a *hinge assignment* `hinge` sending each
-edge `e : β` to a family of `k` points in `ℝ^(k+1)`, whose affine span is the
-`(d-2) = (k-1)`-dimensional affine *hinge* subspace `p(e)`. The supporting
-`(d-1) = k`-extensor of the hinge is `C(p(e)) = affineSubspaceExtensor (hinge e)`
-(Phase 17), an element of the screw space `⋀^k ℝ^(k+2)`.
+a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
+`(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space
+element the rigidity matrix constrains. In the affine model `p(e)` is a
+`(d-2) = (k-1)`-dimensional affine *hinge* subspace spanned by `k` points of `ℝ^(k+1)`
+and `C(p(e)) = affineSubspaceExtensor (p e)` (Phase 17, the smart constructor `ofHinge`);
+the panel model (Phase 21, `PanelHingeFramework.toBodyHinge`) supplies it as a
+Grassmann–Cayley meet of two panels instead. Carrying the support extensor directly as a
+field decouples the rigidity-matrix rank theory from how the extensor arose, so both the
+affine hinge and the panel hinge feed the same constraint family.
 
 The dimension is reparametrized `d = k + 1` (so points live in `ℝ^(k+1)`,
 homogenizing to `ℝ^(k+2)`) to clear the `ℕ`-subtractions `d-1`, `d-2` that the
@@ -109,25 +113,37 @@ hinge / extensor arities would otherwise carry, matching the Phase 17
 structure BodyHingeFramework (k : ℕ) (α β : Type*) where
   /-- The underlying multigraph; bodies are vertices, hinges are edges. -/
   graph : Graph α β
-  /-- The hinge assignment: each edge `e` gets `k` points in `ℝ^(k+1)` spanning a
-  `(k-1)`-dimensional affine hinge subspace. -/
-  hinge : β → Fin k → Fin (k + 1) → ℝ
+  /-- The **supporting extensor** `C(p(e))` of the hinge at each edge `e`: the
+  `(d-1) = k`-extensor in the screw space `⋀^k ℝ^(k+2)` whose span the relative screw
+  center is constrained to lie in (`def:hinge-constraint`). It is nonzero exactly when the
+  hinge is genuine (a `(k-1)`-dimensional affine subspace, resp. two transversal panels). -/
+  supportExtensor : β → ScrewSpace k
 
 namespace BodyHingeFramework
 
 variable {k : ℕ} {α β : Type*}
 
-/-- The **supporting extensor** `C(p(e))` of the hinge at edge `e`
-(`def:hinge-constraint`): the `(d-1) = k`-extensor `affineSubspaceExtensor (hinge e)`
-of Phase 17, an element of the screw space `⋀^k ℝ^(k+2)`. It is nonzero exactly when
-the `k` hinge points are affinely independent (`affineSubspaceExtensor_ne_zero_iff`),
-i.e. when the hinge is a genuine `(k-1)`-dimensional affine subspace. -/
-def supportExtensor (F : BodyHingeFramework k α β) (e : β) : ScrewSpace k :=
-  ⟨affineSubspaceExtensor (F.hinge e), affineSubspaceExtensor_mem_exteriorPower (F.hinge e)⟩
+/-- The **affine-hinge body-hinge framework** (`def:hinge-constraint`): the canonical
+constructor from a *hinge assignment* `hinge` sending each edge `e : β` to a family of `k`
+points in `ℝ^(k+1)`, whose affine span is the `(d-2) = (k-1)`-dimensional affine hinge
+subspace `p(e)`. Its supporting extensor is `C(p(e)) = affineSubspaceExtensor (hinge e)`
+(Phase 17), nonzero exactly when the `k` hinge points are affinely independent
+(`affineSubspaceExtensor_ne_zero_iff`). This is the original Phase-18 free-hinge model; the
+hinge-coplanar panel model is the alternative constructor `PanelHingeFramework.toBodyHinge`. -/
+def ofHinge (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ) :
+    BodyHingeFramework k α β where
+  graph := G
+  supportExtensor e :=
+    ⟨affineSubspaceExtensor (hinge e), affineSubspaceExtensor_mem_exteriorPower (hinge e)⟩
 
-theorem supportExtensor_coe (F : BodyHingeFramework k α β) (e : β) :
-    (F.supportExtensor e : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) =
-      affineSubspaceExtensor (F.hinge e) := rfl
+@[simp]
+theorem ofHinge_graph (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ) :
+    (ofHinge G hinge).graph = G := rfl
+
+theorem ofHinge_supportExtensor_coe (G : Graph α β) (hinge : β → Fin k → Fin (k + 1) → ℝ)
+    (e : β) :
+    ((ofHinge G hinge).supportExtensor e : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) =
+      affineSubspaceExtensor (hinge e) := rfl
 
 /-- The **hinge constraint** at an edge `e = uv` (`def:hinge-constraint`): a screw
 assignment `S : α → ScrewSpace k` meets the hinge constraint at `e` between
