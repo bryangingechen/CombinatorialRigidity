@@ -7,9 +7,15 @@ module
 
 public import Mathlib.LinearAlgebra.ExteriorPower.Basis
 public import Mathlib.LinearAlgebra.Pi
+public import Mathlib.LinearAlgebra.Dual.Basis
 
 /-!
-# Upstream candidate: the canonical top exterior power iso `⋀ⁿ (Fin n → R) ≃ₗ R`
+# Upstream candidates: the top exterior power iso and the `pairingDual` iso
+
+Two upstream-eligible facts about exterior-power bases that mathlib does not yet
+ship, both consumed by the Grassmann–Cayley *meet* of Phase 21a.
+
+## The canonical top exterior power iso `⋀ⁿ (Fin n → R) ≃ₗ R`
 
 The `n`-th exterior power of a free module of rank `n` is free of rank
 `(n.choose n) = 1`, hence (over a nontrivial commutative ring) isomorphic to the
@@ -32,10 +38,29 @@ half of the extensor algebra): the volume-form / orientation iso through which t
 `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ R` perfect wedge pairing lands in the base ring, on
 which `complementIso` and the regressive product `meet` are built.
 
-Promotion to mathlib: the `Unique` instance and `topEquiv` copy-paste into
-`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` (which already supplies
-`Module.Basis.exteriorPower` and `finrank_eq`); the Lean namespaces
-(`Set.powersetCard`, `exteriorPower`) match upstream conventions.
+## The `pairingDual` iso `⋀ⁿ (M*) ≃ₗ (⋀ⁿ M)*` for finite free `M`
+
+Mathlib ships `exteriorPower.pairingDual` as a bare linear map `⋀ⁿ (Dual R M) →ₗ
+Dual R (⋀ⁿ M)`. When `M` is finite free with an ordered basis `b`, this map is an
+isomorphism: it carries the exterior-power basis built from the dual basis
+`b.dualBasis` onto the dual basis of the exterior-power basis built from `b`
+(`coe_dualBasis` identifies `b.dualBasis` with `b.coord`, and
+`exteriorPower.basis_coord` identifies the resulting `pairingDual` image with the
+coordinate forms of `b.exteriorPower n`). This file packages that as
+
+* **`exteriorPower.pairingDualEquiv`** — the iso, defined via `Basis.equiv` between
+  `b.dualBasis.exteriorPower n` and `(b.exteriorPower n).dualBasis`, and
+* **`exteriorPower.coe_pairingDualEquiv`** — its identification with the underlying
+  `pairingDual` linear map, so the equiv is `pairingDual` upgraded in place.
+
+This is Phase 21a's second deliverable, the projective-duality dictionary entry
+`⋀ʲ(V*) ≃ (⋀ʲ V)*` reused by the Crapo–Whiteley invariance of Phase 25.
+
+Promotion to mathlib: the `Unique` instance, `topEquiv`, and `pairingDualEquiv`
+copy-paste into `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` (which already
+supplies `Module.Basis.exteriorPower`, `finrank_eq`, and the `pairingDual` /
+`ιMultiDual` API); the Lean namespaces (`Set.powersetCard`, `exteriorPower`) match
+upstream conventions.
 
 See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
 -/
@@ -78,5 +103,37 @@ theorem topEquiv_ιMulti_family_default :
         (exteriorPower.ιMulti_family R n (Pi.basisFun R (Fin n)) default) = 1 := by
   unfold topEquiv
   simp [LinearEquiv.funUnique, Basis.equivFun_apply]
+
+section PairingDual
+
+open Module
+
+variable {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
+  {ι : Type*} [LinearOrder ι] [Finite ι] (b : Module.Basis ι R M)
+
+/-- For a finite free module `M` with ordered basis `b`, the canonical map
+`exteriorPower.pairingDual` from the exterior power of the dual to the dual of the
+exterior power is an isomorphism `⋀ⁿ (Module.Dual R M) ≃ₗ Module.Dual R (⋀ⁿ M)`.
+Built as the `Basis.equiv` carrying the exterior-power basis of the dual basis
+`b.dualBasis` onto the dual basis of the exterior-power basis of `b`; that this
+`Basis.equiv` *is* `pairingDual` is `coe_pairingDualEquiv`. The projective-duality
+dictionary entry `⋀ʲ(V*) ≃ (⋀ʲ V)*`. -/
+noncomputable def pairingDualEquiv (n : ℕ) :
+    ⋀[R]^n (Module.Dual R M) ≃ₗ[R] Module.Dual R (⋀[R]^n M) :=
+  (b.dualBasis.exteriorPower n).equiv ((b.exteriorPower n).dualBasis) (Equiv.refl _)
+
+/-- The `pairingDualEquiv` iso is exactly `exteriorPower.pairingDual` as a linear
+map: the iso is `pairingDual` upgraded in place for finite free `M`. -/
+theorem coe_pairingDualEquiv (n : ℕ) :
+    (pairingDualEquiv b n : ⋀[R]^n (Module.Dual R M) →ₗ[R] Module.Dual R (⋀[R]^n M)) =
+      pairingDual R M n := by
+  apply Module.Basis.ext (b.dualBasis.exteriorPower n)
+  intro s
+  rw [pairingDualEquiv, LinearEquiv.coe_coe, Basis.equiv_apply, Equiv.refl_apply,
+    Basis.coe_dualBasis, basis_coord, basis_apply, ιMultiDual, ιMulti_family,
+    Basis.coe_dualBasis]
+  rfl
+
+end PairingDual
 
 end exteriorPower

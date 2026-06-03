@@ -1658,6 +1658,32 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Sits
   naturally alongside `Module.Basis.exteriorPower` and `finrank_eq`.
 
+### [mirrored] `exteriorPower.pairingDualEquiv` — the `pairingDual` iso `⋀ⁿ (M*) ≃ₗ (⋀ⁿ M)*` for finite free `M`
+- **Where it bit:** Phase 21a deliverable 2 (`Molecular/Meet.lean`,
+  `screwAlgebraPairingDualEquiv`): the projective-duality dictionary entry
+  `⋀ʲ(V*) ≃ (⋀ʲ V)*` reused by Phase 25.
+- **Friction:** mathlib ships `exteriorPower.pairingDual` only as a bare
+  linear map `⋀ⁿ (Dual R M) →ₗ Dual R (⋀ⁿ M)`, plus the dual-basis API
+  (`ιMultiDual`, `basis_coord`) that establishes it sends a basis to the
+  dual basis — but stops short of packaging it as an `≃ₗ` for finite free
+  `M`, even though the basis-to-basis property makes that immediate.
+- **Resolution:** mirrored as
+  - `exteriorPower.pairingDualEquiv : ⋀ⁿ (Dual R M) ≃ₗ Dual R (⋀ⁿ M)` (any
+    `CommRing R`, finite free `M` with ordered basis `b`), built as the
+    `Basis.equiv` carrying `b.dualBasis.exteriorPower n` onto
+    `(b.exteriorPower n).dualBasis`.
+  - `exteriorPower.coe_pairingDualEquiv` identifying its `toLinearMap` with
+    `pairingDual` in place (proven on the basis via `Module.Basis.ext`,
+    chaining `coe_dualBasis` + `basis_coord` to reach `ιMultiDual`'s def).
+- **General idiom (reusable):** to upgrade a bare `f : M →ₗ N` that is known
+  to send one basis to another into an `≃ₗ` whose forward map *is* `f`, take
+  `b.equiv c (Equiv.refl _)` and prove `(b.equiv c _ : M →ₗ N) = f` by
+  `Module.Basis.ext b` (both agree on `b`). Cleaner than `LinearEquiv.ofLinear`
+  with a hand-built inverse, and keeps `f`'s `@[simp]` API usable through the iso.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Sits
+  alongside `topEquiv` and the `pairingDual` / `ιMultiDual` API it upgrades.
+
 ### [mirrored] `Matrix.linearIndependent_rows_iff_det_mul_transpose_ne_zero` + `finite_setOf_not_linearIndependent_rows_along_affine_path` (rectangular Gram det + polynomial-along-line)
 - **Where it bit:** Phase 8 target `linearRigidityMatroid_eq_rigidityMatroid`
   in `LinearRigidityMatroid.lean`, the inductive proof of

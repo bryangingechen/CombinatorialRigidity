@@ -31,8 +31,13 @@ top-power volume form (orientation). Deliverables, in dependency order
    general fact `exteriorPower.topEquiv` (over any `CommRing`, on `Fin n → R`) under
    `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`; `screwAlgebraTopEquiv` below is the
    `N = k+2` specialization on the screw-algebra carrier.
-2. `pairingDualEquiv : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*` — the projective-duality dictionary entry
-   reused by Phase 25 (upgrade of mathlib's `exteriorPower.pairingDual` to an iso).
+2. **`pairingDualEquiv`** (this commit) — the projective-duality dictionary entry
+   `⋀ʲ(V*) ≃ₗ (⋀ʲ V)*` reused by Phase 25, the upgrade of mathlib's
+   `exteriorPower.pairingDual` (a bare `→ₗ`) to an iso for finite free `V`. Mirrored
+   as the general fact `exteriorPower.pairingDualEquiv` (over any `CommRing`, for any
+   finite free `M` with an ordered basis) under
+   `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`; `screwAlgebraPairingDualEquiv`
+   below is the screw-algebra specialization at the standard basis.
 3. `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V` — from the perfect wedge pairing, shown
    nondegenerate. The genuinely new core.
 4. `meet` (regressive product) + `meet_ne_zero_iff` and the geometric reading.
@@ -59,5 +64,16 @@ Metric-free: no inner product, only the volume form. -/
 noncomputable def screwAlgebraTopEquiv :
     ⋀[ℝ]^(k + 2) (Fin (k + 2) → ℝ) ≃ₗ[ℝ] ℝ :=
   exteriorPower.topEquiv (k + 2)
+
+/-- The projective-duality dictionary iso on the screw-algebra carrier:
+`⋀ʲ((Fin (k+2) → ℝ)*) ≃ₗ (⋀ʲ (Fin (k+2) → ℝ))*`, the `j`-graded specialization of the
+general mirror `exteriorPower.pairingDualEquiv` at the standard basis. This is the
+projective-duality dictionary entry `⋀ʲ(V*) ≃ (⋀ʲ V)*` reused by the Crapo–Whiteley
+projective invariance of Phase 25; it is mathlib's bare `exteriorPower.pairingDual`
+upgraded in place to an iso (`exteriorPower.coe_pairingDualEquiv`). -/
+noncomputable def screwAlgebraPairingDualEquiv (j : ℕ) :
+    ⋀[ℝ]^j (Module.Dual ℝ (Fin (k + 2) → ℝ)) ≃ₗ[ℝ]
+      Module.Dual ℝ (⋀[ℝ]^j (Fin (k + 2) → ℝ)) :=
+  exteriorPower.pairingDualEquiv (Pi.basisFun ℝ (Fin (k + 2))) j
 
 end CombinatorialRigidity.Molecular

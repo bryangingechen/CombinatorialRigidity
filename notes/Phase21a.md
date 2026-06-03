@@ -8,15 +8,17 @@ risk #7 + the Phase-21a detail).
 
 ## Current state
 
-**Deliverable 1 (`topEquiv`) is green.** New file `Molecular/Meet.lean`
-opened the phase (`screwAlgebraTopEquiv : ⋀^(k+2) (Fin (k+2) → ℝ) ≃ₗ ℝ`,
-the `N = k+2` specialization), with the general fact
-(`exteriorPower.topEquiv : ⋀ⁿ (Fin n → R) ≃ₗ R` over any `CommRing`)
-mirrored under `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` alongside
-its enabling `Unique` instance on the top-power index. Forward-mode
-blueprint chapter `meet.tex` (`sec:molecular-meet`) opened with the same
-commit: `def:meet-top-equiv` green, the other three deliverables red.
-Next: `pairingDualEquiv` (deliverable 2).
+**Deliverables 1–2 (`topEquiv`, `pairingDualEquiv`) are green.** File
+`Molecular/Meet.lean` carries the screw-algebra specializations
+(`screwAlgebraTopEquiv : ⋀^(k+2) (Fin (k+2) → ℝ) ≃ₗ ℝ`,
+`screwAlgebraPairingDualEquiv j : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*`), with the general
+facts (`exteriorPower.topEquiv` over any `CommRing`;
+`exteriorPower.pairingDualEquiv` + `coe_pairingDualEquiv` for any finite
+free `M` with an ordered basis) mirrored under
+`Mathlib/LinearAlgebra/ExteriorPower/Basis.lean`. Blueprint chapter
+`meet.tex` (`sec:molecular-meet`): `def:meet-top-equiv` and
+`def:meet-pairing-dual` green, `def:meet-complement-iso` + `def:meet` red.
+Next: `complementIso` (deliverable 3), the genuinely new core.
 
 Phase 21 (algebraic induction) is **paused**: its
 realization-existence statements need a *panel* layer (coplanar hinges,
@@ -57,11 +59,15 @@ Dependency order (route (ii); `N = k+2`, `V = Fin (k+2) → ℝ`):
    `LinearEquiv.funUnique` on the singleton top-power index). Mathlib has
    only `zeroEquiv` / `oneEquiv`; landed as the mirror `exteriorPower.topEquiv`
    + the project specialization `screwAlgebraTopEquiv`.
-2. [ ] `pairingDualEquiv : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*` (free finite `V`) — upgrade
-   mathlib's `exteriorPower.pairingDual` (a bare `→ₗ`) to an iso via its
-   dual-basis lemmas (`pairingDual_apply_apply_eq_one` / `_one_zero`) +
-   `Module.Basis.exteriorPower`. Mirror lemma. **The projective-duality
-   dictionary entry reused by Phase 25.**
+2. [x] `pairingDualEquiv : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*` (free finite `V`) — upgraded
+   mathlib's `exteriorPower.pairingDual` (a bare `→ₗ`) to an iso. **The
+   projective-duality dictionary entry reused by Phase 25.** Built as the
+   `Basis.equiv` carrying `b.dualBasis.exteriorPower n` onto
+   `(b.exteriorPower n).dualBasis` (via `coe_dualBasis` + `basis_coord`),
+   with `coe_pairingDualEquiv` identifying it with `pairingDual` in place;
+   landed as the mirror `exteriorPower.pairingDualEquiv` + the project
+   specialization `screwAlgebraPairingDualEquiv`. The basis-to-iso idiom is
+   in FRICTION *Mirrored* under this entry.
 3. [ ] `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V` — from the perfect wedge
    pairing `⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ R` (via `join` + `topEquiv`), shown
    nondegenerate for free `V`. The genuinely new core.
@@ -110,13 +116,15 @@ metric Hodge star.
 
 ## Hand-off / next phase
 
-Deliverable 1 (`topEquiv`) green; chapter `meet.tex` opened. **Next
-concrete commit: deliverable 2, `pairingDualEquiv : ⋀ʲ(V*) ≃ₗ (⋀ʲ V)*`**
-for free finite `V` — upgrade mathlib's `exteriorPower.pairingDual` (a
-bare `→ₗ`) to an iso via its dual-basis lemmas
-(`pairingDual_apply_apply_eq_one` / `_one_zero`) + `Module.Basis.exteriorPower`;
-mirror it alongside `topEquiv` and flip `def:meet-pairing-dual` green.
-Then `complementIso` (3), `meet` + its lemmas (4). When 21a's
+Deliverables 1–2 (`topEquiv`, `pairingDualEquiv`) green; chapter
+`meet.tex` has `def:meet-top-equiv` + `def:meet-pairing-dual` green.
+**Next concrete commit: deliverable 3, `complementIso : ⋀ʲ V ≃ₗ ⋀^(N−j) V`**
+— the genuinely new core. Build the perfect wedge pairing
+`⋀ʲ V × ⋀^(N−j) V → ⋀ᴺ V ≅ ℝ` (Phase-17 `join` + `topEquiv`), show it
+nondegenerate for free `V`, and route the `j ↔ N−j` grade-swap sign
+through `pairingDualEquiv`'s `det` form (see *Blockers* — verify the sign
+convention matches the panel hinge extensor's `supportExtensor`). Flip
+`def:meet-complement-iso` green. Then `meet` + its lemmas (4). When 21a's
 deliverables are green, **Phase 21 resumes** with the panel layer
 (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar` once; DESIGN.md
 *Panel-hinge = hinge-coplanar body-hinge*), then Lemma 5.4 (panel cycle),

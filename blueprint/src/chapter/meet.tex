@@ -24,11 +24,11 @@ canonically $\cong \R$.
 
 \medskip
 \noindent\emph{Status.} In progress. The top-power volume-form iso
-(\cref{def:meet-top-equiv}) is green, formalized in
-\texttt{Molecular/Meet.lean} (with the general fact mirrored under
-\texttt{Mathlib/LinearAlgebra/ExteriorPower/Basis.lean}). The
-duality-pairing iso, the complement iso, and the regressive product
-itself remain to be formalized.
+(\cref{def:meet-top-equiv}) and the duality-pairing iso
+(\cref{def:meet-pairing-dual}) are green, formalized in
+\texttt{Molecular/Meet.lean} (with the general facts mirrored under
+\texttt{Mathlib/LinearAlgebra/ExteriorPower/Basis.lean}). The complement
+iso and the regressive product itself remain to be formalized.
 
 \begin{definition}[Top-power volume form $\bigwedge^{N} V \cong \R$]
   \label{def:meet-top-equiv}
@@ -62,13 +62,35 @@ itself remain to be formalized.
 
 \begin{definition}[Exterior-power duality iso $\bigwedge^{j} V^{*} \cong (\bigwedge^{j} V)^{*}$]
   \label{def:meet-pairing-dual}
+  \lean{CombinatorialRigidity.Molecular.screwAlgebraPairingDualEquiv,
+    exteriorPower.pairingDualEquiv}
+  \leanok
   \uses{def:meet-top-equiv}
   For free finite $V$, mathlib's $\mathrm{exteriorPower.pairingDual}$ is a
   bare linear map $\bigwedge^{j} V^{*} \to (\bigwedge^{j} V)^{*}$; it
-  upgrades to an isomorphism via its dual-basis evaluation lemmas. This is
-  the \textbf{projective-duality dictionary entry} reused by the
+  upgrades to an isomorphism
+  \[
+    \mathrm{pairingDualEquiv} : \bigwedge^{j} V^{*}
+      \xrightarrow{\ \sim\ } (\bigwedge^{j} V)^{*}.
+  \]
+  This is the \textbf{projective-duality dictionary entry} reused by the
   Crapo--Whiteley projective-invariance development of Phase~25.
 \end{definition}
+\begin{proof}
+  \leanok
+  Fix an ordered basis $b$ of $V$. The map $\mathrm{pairingDual}$ carries
+  the exterior-power basis $\bigwedge^{j} b^{*}$ built from the dual basis
+  onto the dual basis of the exterior-power basis $\bigwedge^{j} b$: the
+  identification $b^{*} = b.\mathrm{coord}$ together with the coordinate
+  computation $\mathrm{exteriorPower.basis\_coord}$ shows the image of each
+  basis vector is the corresponding coordinate form. Hence
+  $\mathrm{pairingDual}$ sends a basis to a basis and is an isomorphism;
+  the mirror lemma $\mathrm{exteriorPower.pairingDualEquiv}$ packages this
+  as a $\mathrm{Basis.equiv}$ and $\mathrm{coe\_pairingDualEquiv}$ identifies
+  it with $\mathrm{pairingDual}$ in place.
+  $\mathrm{screwAlgebraPairingDualEquiv}$ is the specialization at the
+  standard basis of the screw-algebra carrier.
+\end{proof}
 
 \begin{definition}[Complement iso $\bigwedge^{j} V \cong \bigwedge^{N-j} V$]
   \label{def:meet-complement-iso}
