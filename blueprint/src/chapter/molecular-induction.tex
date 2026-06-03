@@ -366,33 +366,52 @@ and the def\,$=$\,corank bridge (\cref{thm:def-eq-corank}). This is the
 route that bypasses the deferred forest surgery
 (\cref{rem:kt-lemma-41}).
 
-\begin{lemma}[Splitting-off does not increase the deficiency; KT Lemma 4.3]
+\begin{lemma}[Splitting-off changes the deficiency by at most one; KT Lemma 4.3]
   \label{lem:splitoff-deficiency}
-  \lean{Graph.splitOff_deficiency_le}
+  \lean{Graph.splitOff_deficiency_le, Graph.splitOff_deficiency_ge}
   \leanok
   \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank}
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$, carried by
   the two edges $eₐ$ (joining $v, a$) and $e_b$ (joining $v, b$). Then
-  $\operatorname{def}(\widetilde{G_v^{ab}}) \le \operatorname{def}(\tilde
-  G)$. This is the substantive splitting-off fact the induction consumes,
-  replacing the forest surgery of \cref{lem:forest-surgery-split}. The
-  $k$-vs-$(k-1)$ refinement (KT~4.3(ii)) the induction tracks is recorded
-  separately and assembled in \cref{lem:dof-tracking}.
+  \[
+    \operatorname{def}(\tilde G) - 1
+      \;\le\; \operatorname{def}(\widetilde{G_v^{ab}})
+      \;\le\; \operatorname{def}(\tilde G),
+  \]
+  so $G_v^{ab}$ is either a $k$-dof-graph or a $(k-1)$-dof-graph
+  (KT~4.3(i)). This two-sided bound is the substantive splitting-off fact
+  the induction consumes, replacing the forest surgery of
+  \cref{lem:forest-surgery-split}. The matroid-base characterization of
+  \emph{which} alternative holds (KT~4.3(ii): $G_v^{ab}$ is $k$-dof iff
+  some base $B'$ of $M(\widetilde{G_v^{ab}})$ has $|\tilde{ab} \cap B'| <
+  D - 1$) is Katoh--Tanigawa's reading through the deferred forest surgery
+  (\cref{rem:kt-lemma-41}) and is not needed for Theorem~4.9.
 \end{lemma}
 \begin{proof}
   \leanok
-  Partition-count comparison, on the green \texttt{deficiency}
-  infrastructure of \cref{sec:molecular-deficiency} and \emph{no forests}.
-  Each partition $P'$ of $V - v$ extends to a partition $P$ of $V$ by
-  dropping $v$ into $a$'s block ($f = \mathrm{update}\,f'\,v\,(f'\,a)$);
-  then $|P| = |P'|$, since $v$'s new label $f'(a)$ is already carried by
-  $a \in V - v$. The edge $va$ no longer crosses $P$ (both endpoints carry
-  $f'(a)$), the edge $vb$ crosses $P$ exactly when the short-circuit edge
-  $ab$ crosses $P'$, and every other edge survives verbatim with the same
-  crossing status; so $d_G(P) \le d_{G_v^{ab}}(P')$ via the crossing-edge
-  injection $e_b \mapsto ab$, identity elsewhere. Hence the per-partition
-  deficiency does not decrease, and taking $P'$ over the supremum gives
-  $\operatorname{def}(\tilde G) \ge \operatorname{def}(\widetilde{G_v^{ab}})$.
+  Both bounds are per-partition deficiency-count comparisons, on the green
+  \texttt{deficiency} infrastructure of \cref{sec:molecular-deficiency} and
+  \emph{no forests}. For the upper bound, each partition $P'$ of $V - v$
+  extends to a partition $P$ of $V$ by dropping $v$ into $a$'s block ($f =
+  \mathrm{update}\,f'\,v\,(f'\,a)$); then $|P| = |P'|$, since $v$'s new
+  label $f'(a)$ is already carried by $a \in V - v$. The edge $va$ no longer
+  crosses $P$ (both endpoints carry $f'(a)$), $vb$ crosses $P$ exactly when
+  the short-circuit $ab$ crosses $P'$, and every other edge survives with
+  the same crossing status; so $d_G(P) \le d_{G_v^{ab}}(P')$ via the
+  injection $e_b \mapsto ab$, and the per-partition deficiency does not
+  decrease.
+
+  For the lower bound, take a partition $P$ of $V$ attaining
+  $\operatorname{def}(\tilde G)$ (a finite supremum) and reuse the same
+  labeling on $V - v$. If $v$'s label is shared by another vertex, $|P|$ is
+  unchanged and the crossing count does not increase ($va, vb$ leave, $ab$
+  enters), so $\operatorname{def}_{G_v^{ab}}(P) \ge \operatorname{def}(\tilde
+  G)$. If $v$ is isolated in its block, $|P|$ drops by exactly one but both
+  $va$ and $vb$ crossed and $ab$ enters, so the crossing count drops by at
+  least one and $\operatorname{def}_{G_v^{ab}}(P) \ge D(|P|-2) -
+  (D-1)(d_G(P)-1) = \operatorname{def}(\tilde G) - 1$. Either way
+  $\operatorname{def}(\widetilde{G_v^{ab}}) \ge \operatorname{def}(\tilde
+  G) - 1$.
 \end{proof}
 
 \begin{lemma}[Vertex removal raises the deficiency; KT Lemma 4.4]

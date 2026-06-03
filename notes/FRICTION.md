@@ -205,8 +205,18 @@ housekeeping pass once their resolution is fully indexed.
 - **General lesson:** the prior deficiency lemmas all bounded *from below*
   via `partitionDef_le_deficiency` (`le_ciSup`, no `Nonempty` need); this is
   the first to bound `deficiency` *from above*, so it is the first to want
-  `ciSup_le`. Commits C/D (refinement, removal) take the same shape — open
-  with `rw [deficiency]; haveI : Nonempty α := ⟨_⟩; refine ciSup_le fun f' => ?_`.
+  `ciSup_le`. The removal bound (commit D) takes the same shape — open with
+  `rw [deficiency]; haveI : Nonempty α := ⟨_⟩; refine ciSup_le fun f' => ?_`.
+- **Dual shape (commit C, `splitOff_deficiency_ge`, lower bound on the
+  *split-off* deficiency):** to lower-bound `def(H̃)` by `def(G̃) − 1` you
+  need a *maximizer* of `def(G̃)`, not `ciSup_le`. Get one with
+  `obtain ⟨f, hf⟩ := exists_eq_ciSup_of_finite (f := G.partitionDef n)`
+  (`Nonempty α` ⟹ `Nonempty (α → α)`, `Finite α` ⟹ `Finite (α → α)`), then
+  `rw [deficiency, ← hf]` to expose `def(G̃) = partitionDef f` and bound the
+  *target* `def(H̃)` from below by `H.partitionDef_le_deficiency n f`
+  (`le_trans`). The deficiency-as-attained-max idiom recurs in the dof
+  bookkeeping; reach for `exists_eq_ciSup_of_finite` whenever a partition
+  witness for `def(G̃)` itself is needed.
 
 ### [resolved] `Graph.edgeMultiply m`'s `IsLink`/`Inc` are defeq to the base graph's but not syntactically — `IsLink.mono` needs a type ascription
 - **Where it bit:** `edgeMultiply_mono` in `BodyBar/BodyHinge.lean`

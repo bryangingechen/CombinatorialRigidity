@@ -133,10 +133,11 @@ substrate lemmas are **retained** for this track.
 ## Current state
 
 Pivoted to the deficiency route (2026-06-02 — see *Finding* + *Replan*).
-**Commit B landed (route confirmed):** the splitting-off `≤` direction
-`Graph.splitOff_deficiency_le` (`lem:splitoff-deficiency`, green `\leanok`),
-the de-facto route-confirmation spike — see *Hand-off*. Next is commit C
-(KT 4.3(ii) refinement, scoped under `lem:dof-tracking`).
+**Commits B + C landed:** `lem:splitoff-deficiency` is now two-sided and
+green `\leanok` — `Graph.splitOff_deficiency_le` (`≤`, KT 4.3(i) upper) and
+`Graph.splitOff_deficiency_ge` (`def(G̃) − 1 ≤ def(G̃ᵥᵃᵇ)`, the KT 4.3(i)
+"`k`-dof or `(k−1)`-dof" lower bound). Both axiom-free, deficiency-count
+route, no forests. Next is commit D (`lem:removal-deficiency`, KT 4.4).
 
 **Green and `\leanok` in `Molecular/Induction.lean`** (all axiom-free): the
 full inherited KT 3.4 + KT 3.5 chain — `lem:circuit-induces-rigid` (3.4),
@@ -165,14 +166,23 @@ blueprint node; the node stays red) — incidence/cardinality
 surgery only if the balanced-packing lemma is proven (*Finding* layer 2);
 they are **not** needed for Theorem 4.9.
 
-**Next:** *Replan* commit C (`lem:splitoff-deficiency` `k`-vs-`(k−1)` refinement,
-KT 4.3(ii)). Commit B (the `≤` direction) **landed**: `Graph.splitOff_deficiency_le`
-(axiom-free) in `Molecular/Induction.lean`, the deficiency-count route's
-route-confirmation spike — for a degree-2 vertex `v` (two edges `eₐ`, `e_b`,
-the only `v`-incident edges), `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via the partition extension
-`f = update f' v (f' a)` (numParts equal; crossing-edge injection `e_b ↦ e₀`,
-identity elsewhere). `lem:splitoff-deficiency` flipped green `\leanok` for the
-`≤`; the 4.3(ii) refinement moved into `lem:dof-tracking`'s scope. See *Hand-off*.
+**Next:** *Replan* commit D (`lem:removal-deficiency`, KT 4.4: `def(G̃ᵥ) ≥ k`
+for a degree-2 vertex of a minimal `k`-dof graph). Commits B + C (the two
+directions of `lem:splitoff-deficiency`) **landed** axiom-free in
+`Molecular/Induction.lean`:
+- B (`≤`, `Graph.splitOff_deficiency_le`): `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via the
+  partition *extension* `f = update f' v (f' a)` (numParts equal; crossing
+  injection `e_b ↦ e₀`).
+- C (`≥`, `Graph.splitOff_deficiency_ge`): `def(G̃) − 1 ≤ def(G̃ᵥᵃᵇ)` via the
+  partition *restriction* of an attained maximizer (`exists_eq_ciSup_of_finite`),
+  case-split on whether `v`'s label is shared (numParts unchanged, crossing
+  count non-increasing ⟹ `≥ def(G̃)`) or `v` isolated (numParts `−1`, crossing
+  count `−1` via injection `e₀ ↦ e_b` missing the crossing `eₐ ∉ E(H)` ⟹
+  `≥ def(G̃) − 1`).
+Together they pin `def(G̃ᵥᵃᵇ) ∈ {def(G̃), def(G̃) − 1}`. The matroid-base form
+of KT 4.3(ii) (which alternative holds) needs the deferred forest surgery and
+is **not** on the Theorem-4.9 critical path (omitted; see *Replan*). See
+*Hand-off*.
 
 ## Architectural choices made up front
 
@@ -236,13 +246,15 @@ Graph operations:
   (`Graph.rigidContract`, via `deleteEdges` + `map (collapseTo …)`).
 
 Deficiency route to dof-tracking (Replan 2026-06-02 — **the critical path**):
-- [~] `lem:splitoff-deficiency` — KT 4.3(i)+(ii). **`≤` direction landed (commit B):**
-  `Graph.splitOff_deficiency_le` (green `\leanok`), via the partition extension
-  `f = update f' v (f' a)` (numParts equal; crossing-edge injection `e_b ↦ e₀`,
-  identity elsewhere — `d_G(P) ≤ d_{Gᵥᵃᵇ}(P')` suffices, no need for equality).
-  Degree-2 encoded as two edges `eₐ`/`e_b` that are the *only* `v`-incident
-  edges + fresh `e₀ ∉ E(G)`. **Remaining (commit C):** the `k`-vs-`(k−1)`
-  refinement (KT 4.3(ii)), now scoped under `lem:dof-tracking`.
+- [x] `lem:splitoff-deficiency` — KT 4.3(i), both directions landed
+  (commits B + C), green `\leanok`: `Graph.splitOff_deficiency_le`
+  (`def(G̃ᵥᵃᵇ) ≤ def(G̃)`, partition *extension* `f = update f' v (f' a)`) and
+  `Graph.splitOff_deficiency_ge` (`def(G̃) − 1 ≤ def(G̃ᵥᵃᵇ)`, partition
+  *restriction* of an attained maximizer + case split on `v`-isolation). Pins
+  `def(G̃ᵥᵃᵇ) ∈ {def(G̃), def(G̃) − 1}`. Degree-2 encoded as two edges `eₐ`/`e_b`
+  (the *only* `v`-incident edges) + fresh `e₀ ∉ E(G)`. The matroid-base form of
+  KT 4.3(ii) (which alternative) is **off the critical path** — it needs the
+  deferred forest surgery (*Finding* layer 2); omitted, not needed by Thm 4.9.
 - [x] (commit A) `ex:kt-41-overquantified` — the over-quantification disproof
   `example` (`I = ∅`, ℕ-cardinality: no `I'` with `|I'| + D = 0` for `D ≥ 1`),
   green `\leanok` in `Molecular/Induction.lean`. Blueprint Remark
@@ -388,25 +400,34 @@ forest-surgery framing `lem:forest-packing-decomp` (names in *Current
 state*). The forest-surgery substrate is landed but serves the deferred
 surgery TODO (*Replan* Step 5), not Theorem 4.9.
 
-**Commits A–B landed.** A (the pivot): blueprint Remark `rem:kt-lemma-41`
+**Commits A–C landed.** A (the pivot): blueprint Remark `rem:kt-lemma-41`
 (three-layer "On Katoh–Tanigawa Lemma 4.1") + green `example` node
 `ex:kt-41-overquantified`; dep-graph nodes `lem:splitoff-deficiency` /
 `lem:removal-deficiency` added with `lem:dof-tracking` re-pointed to them;
 `lem:forest-surgery-split` / `-unsplit` annotated deferred; Lean `example`
-disproving the `I = ∅` literal quantification. B (the route-confirmation spike,
-**route confirmed**): `Graph.splitOff_deficiency_le` (axiom-free, green
-`\leanok` on `lem:splitoff-deficiency` for the `≤` direction) — the deficiency
-inequality `def(G̃ᵥᵃᵇ) ≤ def(G̃)` via `ciSup_le` + the partition extension
-`f = update f' v (f' a)`: numParts equal, crossing-edge injection `e_b ↦ e₀`
-(identity elsewhere) gives `d_G(P) ≤ d_{Gᵥᵃᵇ}(P')`, so per-partition def does
-not decrease. The deficiency-count route is now confirmed on green infra.
+disproving the `I = ∅` literal quantification. B + C (`lem:splitoff-deficiency`,
+both directions, green `\leanok`, axiom-free): `Graph.splitOff_deficiency_le`
+(`def(G̃ᵥᵃᵇ) ≤ def(G̃)`, partition extension `f = update f' v (f' a)` + `ciSup_le`)
+and `Graph.splitOff_deficiency_ge` (`def(G̃) − 1 ≤ def(G̃ᵥᵃᵇ)`, restriction of an
+attained maximizer + `v`-isolation case split). They pin
+`def(G̃ᵥᵃᵇ) ∈ {def(G̃), def(G̃) − 1}` (KT 4.3(i)). **Scope note discovered at
+commit C:** KT 4.3(ii) — the matroid-base characterization of *which*
+alternative holds (`∃` base `B'` with `|ãb ∩ B'| < D − 1`) — is proved by KT
+through Lemma 4.1/4.2 (the deferred forest surgery, *Finding* layer 2), so it is
+**off the Theorem-4.9 critical path** and is omitted; the two-sided deficiency
+bound is what `lem:dof-tracking` and Theorem 4.9 actually consume. Blueprint
+`lem:splitoff-deficiency` restated to the two-sided form with this scope note.
 
-**Next agent's concrete commit = *Replan* commit C**: the `k`-vs-`(k−1)`
-refinement of `lem:splitoff-deficiency` (KT 4.3(ii)), now scoped under
-`lem:dof-tracking`. Then commits D–H per the *Replan* sequence (removal bound
-`lem:removal-deficiency`, then the 4.9 assembly — the substantive work). Reuse
-the commit-B proof shape: `rw [deficiency]; haveI : Nonempty α := ⟨_⟩; refine
-ciSup_le fun f' => ?_`, then a partition-count comparison (see FRICTION
-*`ciSup_le` on `deficiency` …*). Degree-2 is encoded as two edges `eₐ`/`e_b`
-that are the only `v`-incident edges (`hdeg2`) + fresh `e₀ ∉ E(G)`; carry the
-same hypothesis shape forward.
+**Next agent's concrete commit = *Replan* commit D**: `lem:removal-deficiency`
+(KT 4.4): for a degree-2 vertex `v` of a minimal `k`-dof graph `G`,
+`def(G̃ᵥ) ≥ k`. The clean route is the def-as-attained-max bridge —
+`removeVertex` drops `D` from the ambient `D(|V|−1)` and at most `2(D−1)` from
+the rank, so corank `≥ k`, likely via `rank_add_deficiency_eq` rather than a
+direct partition argument (vertex removal lacks splitting-off's clean
+partition-extension shape: two edges vanish with no short-circuit). Then
+commits E–H per *Replan* (the 4.9 assembly — the substantive work). Reuse
+shapes: for `ciSup_le`-from-above bounds open with `rw [deficiency]; haveI :
+Nonempty α := ⟨_⟩; refine ciSup_le fun f' => ?_`; for an *attained maximizer* of
+`def(G̃)` use `exists_eq_ciSup_of_finite (f := G.partitionDef n)` (see FRICTION
+*`ciSup_le` on `deficiency` …*, both shapes). Degree-2 stays encoded as two
+edges `eₐ`/`e_b` (the only `v`-incident edges, `hdeg2`) + fresh `e₀ ∉ E(G)`.
