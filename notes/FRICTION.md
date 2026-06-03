@@ -99,6 +99,22 @@ housekeeping pass once their resolution is fully indexed.
   absent from the dependency closure.
 - **Status:** resolved (reused the vendored API; F″ core landed as the pigeonhole on top).
 
+### [resolved] `Set.ncard_pos` (and `ncard_diff_singleton_of_mem`) carry a `(hs : s.Finite := by toFinite_tac)` autoparam, not an explicit arg — pass `(Set.toFinite _)` or omit
+- **Where it bit:** `Graph.isBase_vfiber_ncard_ge` in `Molecular/Induction.lean` (Phase 20
+  forest-surgery TODO, `lem:base-vfiber-count`). Two stumbles in one proof: `Set.ncard_pos.mpr hne`
+  failed (`Unknown constant Set.ncard_pos.mpr`) because the finiteness autoparam blocks the
+  dot-`.mpr` chain, and `Set.ncard_diff_singleton_of_mem hvG (Set.toFinite _)` failed (`Function
+  expected at (Set.toFinite _)`) because that lemma takes **only** `(h : a ∈ s)` — no finiteness
+  argument at all.
+- **Resolution:** for `ncard_pos`, supply the autoparam explicitly then chain:
+  `Set.ncard_pos (Set.toFinite _) |>.mpr hne`. For `ncard_diff_singleton_of_mem`, pass only the
+  membership; its RHS is `s.ncard - 1` (ℕ-subtraction), so wrap in an `omega` after an ℤ-cast goal.
+- **General lesson:** when a `Set.ncard` lemma fails to apply, check its signature for a
+  `(by toFinite_tac)` autoparam — it sits *between* the explicit args and breaks both naive
+  positional application and `.mpr`/`.mp` dot-chaining. Pass `(Set.toFinite _)` for the autoparam
+  slot, or use the bare lemma if it has none.
+- **Status:** resolved (idiom in-proof; no mirror — it's a calling-convention gotcha, not a missing lemma).
+
 ### [resolved] A lemma whose *statement* mentions `cutLabeling V' a b` needs `[∀ x, Decidable (x ∈ V')]` in the binder list
 - **Where it bit:** `crossingEdges_cutLabeling_singleton_subset` / `_ncard_le` in
   `Molecular/Induction.lean` (Phase 20 KT 4.6, `lem:reducible-vertex` cut↔degree bridge).

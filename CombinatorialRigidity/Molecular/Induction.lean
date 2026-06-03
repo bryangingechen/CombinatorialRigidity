@@ -1105,6 +1105,94 @@ theorem dof_tracking [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
     splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀,
     removeVertex_deficiency_ge hD hav hbv heab hla hlb hdeg2⟩
 
+/-! ### Every base of `M(G̃)` meets ≥ `D` of the fibers at a degree-2 vertex
+(`lem:forest-surgery-split`, the balanced-packing counting half)
+
+The deferred forest surgery (`lem:forest-surgery-split`, KT~4.1) is gated on the
+*balanced-packing* assumption Katoh–Tanigawa gloss (`rem:kt-lemma-41`~(2)): that a base of
+`M(G̃)` admits a `D`-forest partition with **every** one of the `D` forests meeting the
+degree-2 vertex `v`. The pure-counting half of that assumption is *true* and provable on
+the green deficiency infrastructure: every base `B` of `M(G̃)` already contains **at least
+`D`** of the `2(D−1)` fibers incident to `v`.
+
+The argument is a rank count, **not** a forest reroute. Deleting `v`'s fibers from `B`
+lands inside `E((G_v)̃)` (the only `v`-incident `G`-edges are `eₐ`, `e_b` by `hdeg2`, so a
+surviving fiber's underlying edge avoids `v`), where the remainder is independent in
+`M((G_v)̃) = M(G̃) ↾ E((G_v)̃)` (`matroidMG_restrict_mulTilde`). Hence
+`|B ∖ v-fibers| ≤ rank M((G_v)̃)`, and the def\,$=$\,corank bridge
+(`isBase_ncard_add_deficiency_eq` / `rank_add_deficiency_eq`) turns
+`|B ∩ v-fibers| = |B| − |B ∖ v-fibers|` into
+`≥ D + (def((G_v)̃) − def(G̃))`, which is `≥ D` by the removal bound
+`removeVertex_deficiency_ge` (KT~4.4, `def(G̃) ≤ def((G_v)̃)`). Needs `2 ≤ bodyBarDim n`.
+
+This reduces the open balanced-packing assumption to a *redistribution* question — given
+`≥ D` `v`-fibers (each forest taking at most one `va`-copy and one `vb`-copy), can the `D`
+forests be rechosen so each meets `v`? — isolating exactly the combinatorial step KT's
+proof omits a justification for (`rem:kt-lemma-41`~(2)); the counting obstruction
+("pigeonhole when `h < D`") cannot arise. -/
+theorem isBase_vfiber_ncard_ge [DecidableEq β] [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b : β}
+    (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    {B : Set (β × Fin (bodyHingeMult n))} (hB : (G.matroidMG n).IsBase B) :
+    bodyBarDim n ≤ (B ∩ (edgeFiber eₐ n ∪ edgeFiber e_b n)).ncard := by
+  classical
+  haveI : Nonempty α := ⟨a⟩
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  set H := G.removeVertex v with hH
+  have hle : H ≤ G := by rw [hH, removeVertex]; exact G.deleteVerts_le
+  have hvG : v ∈ V(G) := hla.left_mem
+  have hVne : V(G).Nonempty := ⟨v, hvG⟩
+  have hVHne : V(H).Nonempty := ⟨a, by rw [hH, vertexSet_removeVertex]; exact ⟨hla.right_mem, hav⟩⟩
+  -- `v`-fibers and their cardinality `2(D−1)` is not needed; we only need the count `≥ D`.
+  set vfib := edgeFiber eₐ n ∪ edgeFiber e_b n with hvfib
+  -- The base lives inside `E(G̃)`.
+  have hBground : B ⊆ E(G.mulTilde n) := by
+    have := hB.subset_ground; rwa [matroidMG] at this
+  -- Step 1: `B ∖ v-fibers ⊆ E((G_v)̃)`.
+  have hdiffsub : B \ vfib ⊆ E(H.mulTilde n) := by
+    rintro p ⟨hpB, hpnot⟩
+    have hpE : p ∈ E(G.mulTilde n) := hBground hpB
+    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq] at hpE
+    -- `p.1` is a `G`-edge; it is not `eₐ`/`e_b` (else `p ∈ vfib`), hence avoids `v`.
+    have hp1ne : p.1 ≠ eₐ ∧ p.1 ≠ e_b := by
+      constructor <;> intro hc <;> apply hpnot
+      · exact Or.inl (by rw [edgeFiber, Set.mem_setOf_eq]; exact hc)
+      · exact Or.inr (by rw [edgeFiber, Set.mem_setOf_eq]; exact hc)
+    -- `p.1 ∈ E(G)` survives in `H = G_v`: neither endpoint is `v` (else `p.1 ∈ {eₐ, e_b}`).
+    obtain ⟨x, y, hlink⟩ := G.exists_isLink_of_mem_edgeSet hpE
+    have hxv : x ≠ v := by rintro rfl; exact absurd (hdeg2 p.1 y hlink) (by tauto)
+    have hyv : y ≠ v := by rintro rfl; exact absurd (hdeg2 p.1 x hlink.symm) (by tauto)
+    have hlinkH : H.IsLink p.1 x y := by rw [hH, removeVertex_isLink]; exact ⟨hlink, hxv, hyv⟩
+    rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq]; exact hlinkH.edge_mem
+  -- Step 2: `B ∖ v-fibers` is independent in `M((G_v)̃)`, so `|B ∖ v-fibers| ≤ rank M((G_v)̃)`.
+  have hdiffindepG : (G.matroidMG n).Indep (B \ vfib) := hB.indep.subset diff_subset
+  have hdiffindepH : (H.matroidMG n).Indep (B \ vfib) := by
+    rw [← matroidMG_restrict_mulTilde hle n, Matroid.restrict_indep_iff]
+    exact ⟨hdiffindepG, hdiffsub⟩
+  have hdiffleZ : ((B \ vfib).ncard : ℤ) ≤ ((H.matroidMG n).rank : ℤ) := by
+    exact_mod_cast hdiffindepH.ncard_le_rank
+  -- Step 3: the two rank/deficiency identities, and `|V(H)| = |V(G)| − 1`.
+  have hBrank := G.isBase_ncard_add_deficiency_eq n hD1 hVne hB
+  have hHrank := H.rank_add_deficiency_eq n hD1 hVHne
+  have hVGpos : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
+  have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
+    rw [hH, vertexSet_removeVertex, Set.ncard_diff_singleton_of_mem hvG]
+    omega
+  rw [hVHcard] at hHrank
+  -- Step 4: combine. `|B ∩ vfib| = |B| − |B ∖ vfib| ≥ D + (def(G̃ᵥ) − def(G̃)) ≥ D`.
+  have hremoval := removeVertex_deficiency_ge hD hav hbv heab hla hlb hdeg2
+  have hsplit : (B ∩ vfib).ncard + (B \ vfib).ncard = B.ncard :=
+    Set.ncard_inter_add_ncard_diff_eq_ncard B vfib (Set.toFinite _)
+  have hsplitZ : ((B ∩ vfib).ncard : ℤ) + ((B \ vfib).ncard : ℤ) = (B.ncard : ℤ) := by
+    exact_mod_cast hsplit
+  -- `hdiffleZ : |B∖vfib| ≤ rank M(G̃ᵥ)`; `hHrank : rank M(G̃ᵥ) + def(G̃ᵥ) = D(|V(G)|−1)`;
+  -- `hremoval : def(G̃) ≤ def(G̃ᵥ)`; `hBrank : |B| + def(G̃) = D(|V(G)|−1)`; `hsplitZ`.
+  have key : (bodyBarDim n : ℤ) ≤ ((B ∩ vfib).ncard : ℤ) := by
+    linarith [hdiffleZ, hremoval, hBrank, hsplitZ, hHrank]
+  exact_mod_cast key
+
 /-! ### Total fiber count of `G̃` (`lem:no-rigid-edge-count`, support)
 
 The KT 4.5(i) edge-count bound (`lem:no-rigid-edge-count`, the prerequisite for the

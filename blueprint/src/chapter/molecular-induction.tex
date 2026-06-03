@@ -327,14 +327,54 @@ instead by a direct deficiency-count argument
   cycle-matroid-independent sets.
 \end{proof}
 
+\begin{lemma}[A base meets at least $D$ of the fibers at a degree-2 vertex]
+  \label{lem:base-vfiber-count}
+  \lean{Graph.isBase_vfiber_ncard_ge}
+  \leanok
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:removal-deficiency, rem:kt-lemma-41}
+  Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$ (its only
+  incident edges $e_a, e_b$), and $D = \binom{d+1}{2} \ge 2$. Then every
+  base $B$ of $M(\tilde G)$ contains at least $D$ of the $2(D-1)$ fibers
+  incident to $v$:
+  \[
+    \bigl|\, B \cap (\tilde e_a \cup \tilde e_b)\,\bigr| \;\ge\; D .
+  \]
+  This is the \emph{counting half} of the balanced-packing assumption
+  Katoh--Tanigawa gloss (\cref{rem:kt-lemma-41}~(2)): a $D$-forest packing
+  with every forest meeting $v$ needs at least $D$ $v$-fibers present, and
+  they are. It is established on the green deficiency infrastructure, so the
+  pigeonhole obstruction ``$h < D$'' of \cref{rem:kt-lemma-41}~(2) cannot
+  arise; what remains genuinely open is only the \emph{redistribution} of
+  these $\ge D$ fibers, one per forest.
+\end{lemma}
+\begin{proof}
+  \leanok
+  A rank count, not a forest reroute. Deleting $v$'s fibers from $B$ lands
+  inside $E(\widetilde{G_v})$ --- the only $v$-incident $G$-edges are
+  $e_a, e_b$, so a surviving fiber's underlying edge avoids $v$ --- where the
+  remainder is independent in $M(\widetilde{G_v}) = M(\tilde G) \restriction
+  E(\widetilde{G_v})$ (\cref{lem:matroid-restrict-subgraph}). Hence
+  $|B \setminus (\tilde e_a \cup \tilde e_b)| \le \operatorname{rank}
+  M(\widetilde{G_v})$, and the def\,$=$\,corank bridge
+  (\cref{thm:def-eq-corank}) turns $|B \cap (\tilde e_a \cup \tilde e_b)| =
+  |B| - |B \setminus (\tilde e_a \cup \tilde e_b)|$ into $\ge D +
+  (\operatorname{def}(\widetilde{G_v}) - \operatorname{def}(\tilde G))$,
+  which is $\ge D$ by the removal bound (\cref{lem:removal-deficiency},
+  $\operatorname{def}(\tilde G) \le \operatorname{def}(\widetilde{G_v})$).
+\end{proof}
+
 \begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
   \label{lem:forest-surgery-split}
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp, rem:kt-lemma-41}
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-packing-decomp, lem:base-vfiber-count, rem:kt-lemma-41}
   \emph{Deferred / off the Theorem-4.9 critical path}
   (\cref{rem:kt-lemma-41}): its substrate is formalized in
   \texttt{Molecular/Induction.lean}, but the lemma completes only if the
-  balanced-packing assumption of \cref{rem:kt-lemma-41}~(2) is settled;
-  the induction instead uses \cref{lem:splitoff-deficiency}.
+  balanced-packing assumption of \cref{rem:kt-lemma-41}~(2) is settled. The
+  \emph{counting half} of that assumption now holds
+  (\cref{lem:base-vfiber-count}: a base meets $\ge D$ of $v$'s fibers), so
+  what is left genuinely open is only the redistribution of those fibers,
+  one per forest; the induction toward Theorem~4.9 meanwhile uses
+  \cref{lem:splitoff-deficiency}.
   Let $v$ be a degree-2 vertex of $G$ with neighbours $a, b$. A
   packing of $\tilde G$ into $D$ edge-disjoint forests, restricted to
   the fibers not incident to $v$ and rerouted across $v$, induces a

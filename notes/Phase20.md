@@ -142,6 +142,27 @@ formalize a concrete `dᶠ(v)=0` witness as a sharper counterexample to the
 *proof step* (distinct from the over-quantification disproof). The 6
 substrate lemmas are **retained** for this track.
 
+**Progress (2026-06-03): the COUNTING HALF of the balanced packing is proven.**
+`Graph.isBase_vfiber_ncard_ge` (green `\leanok`, axiom-free, `Molecular/Induction.lean`;
+blueprint node `lem:base-vfiber-count`): every base `B` of `M(G̃)` contains
+**at least `D`** of the `2(D−1)` fibers at the degree-2 vertex `v`
+(`D ≤ |B ∩ (ẽₐ ∪ ẽ_b)|`, needs `2 ≤ bodyBarDim n`). A rank count on green
+infrastructure, **not** a forest reroute: `B ∖ vfibers ⊆ E(G̃ᵥ)` is independent
+in `M(G̃ᵥ) = M(G̃)↾E(G̃ᵥ)` (`matroidMG_restrict_mulTilde`), so
+`|B∖vfib| ≤ rank M(G̃ᵥ)`; the def\,=\,corank bridge turns
+`|B∩vfib| = |B| − |B∖vfib|` into `≥ D + (def(G̃ᵥ) − def(G̃)) ≥ D` via the green
+`removeVertex_deficiency_ge` (KT 4.4). **Significance:** this discharges the
+pure-cardinality content KT's Lemma 4.1 base-case proof glosses — the
+pigeonhole obstruction "`h < D`" of *Finding* layer 2 **cannot arise**, since
+a base always has ≥ D `v`-fibers available. The balanced-packing lemma is thereby
+reduced to a pure **redistribution** question (the genuinely-open residue): given
+≥ D `v`-fibers, each forest holding ≤ 1 `va`-copy and ≤ 1 `vb`-copy, can the `D`
+forests be rechosen so each meets `v`? On paper the `D = 2` case is fully balanced
+(every base contains both `va`, `vb` since neither is ever redundant — `v` deg 2 —
+and a 2-colouring separates them); `D ≥ 3` is the open redistribution. The
+counterexample-vs-rescue verdict now turns solely on this redistribution claim,
+**not** on a counting failure.
+
 ## Finding 2 REFUTED: KT Lemma 4.4 *is* a deficiency-counting fact (2026-06-03, same day)
 
 An earlier 2026-06-03 analysis ("Finding 2", commit d44789e) concluded that
@@ -532,7 +553,18 @@ Forest surgery (**DEFERRED — off critical path, TODO per Replan Step 5**):
   `fiberDegree` / `fiberDegree_{mono,le}`; both no-reroute acyclicity
   directions; reroute count cap `isCycleSet_pair_edgeFiber_splitOff` /
   `fiber_inter_subsingleton_of_isAcyclicSet_splitOff`). Completes from this
-  substrate **iff** the balanced-packing lemma is proven (TODO).
+  substrate **iff** the balanced-packing lemma is proven (TODO). **Counting half
+  now landed** (`lem:base-vfiber-count` / `Graph.isBase_vfiber_ncard_ge`, green
+  `\leanok`, axiom-free): a base meets ≥ D of `v`'s fibers, so the pigeonhole
+  obstruction cannot arise — only the redistribution residue remains open (see
+  the *TODO* Progress note).
+- [x] `lem:base-vfiber-count` — counting half of the balanced-packing assumption
+  (`Graph.isBase_vfiber_ncard_ge`, green `\leanok`, axiom-free): every base of
+  `M(G̃)` contains ≥ D = `bodyBarDim n` of the `2(D−1)` fibers at a degree-2
+  vertex `v` (`2 ≤ bodyBarDim n`). Rank count on green infrastructure
+  (`matroidMG_restrict_mulTilde` + `isBase_ncard_add_deficiency_eq` /
+  `rank_add_deficiency_eq` + `removeVertex_deficiency_ge`), not a forest reroute.
+  Reduces `lem:forest-surgery-split`'s gating assumption to pure redistribution.
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction.
   **DEFERRED / off critical path** (returned here after *Finding 2 REFUTED*).
   This direction is **sound** (no balanced-packing gloss, unlike `-split`) but
@@ -800,4 +832,10 @@ to schedule as Phase 21 needs them:
 2. **Forest surgery (KT 4.1/4.2) + the balanced-packing lemma** (*Replan* Step 5 / *Finding*
    layer 2). Off-critical-path TODO; substrate landed (`lem:forest-surgery-{split,unsplit}` stay
    red). Proving-or-refuting the balanced-packing lemma resolves whether KT's Lemma 4.1 proof has
-   a gap or an error.
+   a gap or an error. **The COUNTING HALF is now landed (2026-06-03):**
+   `Graph.isBase_vfiber_ncard_ge` (`lem:base-vfiber-count`, green `\leanok`, axiom-free) — every
+   base of `M(G̃)` meets ≥ D of the degree-2 vertex's fibers, by a rank count on the green
+   def\,=\,corank + `removeVertex_deficiency_ge` infrastructure. This removes the pigeonhole
+   ("`h < D`") counting obstruction entirely; the verdict now turns **only** on the residual
+   *redistribution* claim (`D = 2` is balanced on paper; `D ≥ 3` open). See the *TODO* Progress
+   note under *Replan* Step 5.
