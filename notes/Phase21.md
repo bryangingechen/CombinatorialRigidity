@@ -1,9 +1,12 @@
 # Phase 21 — Algebraic induction: Theorem 5.5 base + Cases I & II (work log)
 
-**Status:** in progress (opened 2026-06-03); **paused 2026-06-03 for a
-modeling re-scope** — the panel-hinge = hinge-coplanar body-hinge gap
-(see *Blockers* + DESIGN.md *Panel-hinge = hinge-coplanar body-hinge*).
-Plan-first: no further Lean until the panel-layer plan is reviewed.
+**Status:** in progress (opened 2026-06-03). The mid-phase
+panel-coplanarity re-scope (the panel-hinge = hinge-coplanar body-hinge
+gap) is **resolved**: the gating foundations sub-phase **Phase 21a**
+(Grassmann–Cayley meet) is complete (`notes/Phase21a.md`,
+`Molecular/Meet.lean`), and the form-(B) panel plan is fixed in DESIGN.md
+*Panel-hinge = hinge-coplanar body-hinge*. Phase 21 has **resumed** with
+the panel layer; the earlier plan-first gate is cleared.
 
 Stratum 5 of the molecular-conjecture program (the *algebraic* half of
 Katoh–Tanigawa's proof, KT §5, §6.1–6.3). Where Phase 20 reduced every
@@ -23,8 +26,24 @@ lemma index: `blueprint/src/chapter/algebraic-induction.tex`
 
 ## Current state
 
-`Molecular/AlgebraicInduction.lean` carries the induction-skeleton leaf
-nodes (green): `def:rank-hypothesis`, `lem:theorem-55-base`, the Case
+**Panel layer opened (2026-06-03, resumed).** The first panel-layer leaf
+landed in `Molecular/AlgebraicInduction.lean`: the **panel support
+extensor** `def:panel-support-extensor` (green), the panel-data form (B)
+source of supporting extensors. A panel is a per-vertex hyperplane normal
+`nᵥ ∈ ℝ^(k+2)`; `panelSupportExtensor n₁ n₂ := complementIso (normalsJoin
+n₁ n₂)` is the meet of the two panels (the grade-2 join `normalsJoin`
+in `⋀^2`, carried by Phase-21a `complementIso` to `⋀^(k+2−2) = ⋀^k =
+ScrewSpace k`), with `panelSupportExtensor_ne_zero_iff` reducing
+transversality to linear independence of the two normals
+(`normalsJoin_ne_zero_iff` + `complementIso` injective). Coplanarity is
+structural (both hinges at `v` lie in `panel(v)`); no affine-intersection
+plumbing. Axiom-clean. Next: the `PanelHingeFramework` structure (carrying
+`normal : α → (Fin (k+2) → ℝ)`), `toBodyHinge`, and the `IsHingeCoplanar`
+spec on top of this leaf.
+
+The pre-21a induction-skeleton leaf nodes remain green (all
+regime-agnostic, retained verbatim under the panel layer):
+`def:rank-hypothesis`, `lem:theorem-55-base`, the Case
 II rank-lift accounting `lem:case-II-rank-lift`
 (`rankHypothesis_iff_finrank_pinnedMotions`, the basis-free `+D` core of
 the panel-hinge 1-extension), and the framework-construction op
@@ -88,6 +107,18 @@ infinitesimal rigidity (`rankHypothesis_zero_iff`, via
 
 Forward-mode: the authoritative node list is `algebraic-induction.tex`.
 Tracked here for hand-off convenience; all red at phase open.
+
+Panel layer (form (B), DESIGN.md; resumed 2026-06-03 post-21a):
+- [x] `def:panel-support-extensor` — `panelSupportExtensor n₁ n₂ :=
+  complementIso (normalsJoin n₁ n₂)`: the meet of two panel normals,
+  landing in `ScrewSpace k`. Ships `normalsJoin` (grade-2 join, `⋀^2`),
+  `normalsJoin_coe`, `normalsJoin_ne_zero_iff`,
+  `panelSupportExtensor_ne_zero_iff` (transversal ⟺ normals independent).
+  The panel-layer leaf; consumes Phase-21a `complementIso`. Axiom-clean.
+  Green.
+- [ ] `PanelHingeFramework` + `toBodyHinge` + `IsHingeCoplanar` — the
+  panel framework (per-vertex normals) producing a `BodyHingeFramework`,
+  coplanar by construction. Next commit, on top of the leaf above.
 
 Generic-rank reconciliation (relocated forward from Phase 18/19):
 - [ ] `prop:rigidity-matrix-prop11` — KT Prop 1.1, analytic half:
@@ -245,55 +276,52 @@ decomposition).
   `exists_uniform_rowIndependent_placement`-style perturbation) where it
   transfers; assess on contact whether the panel-coordinate
   parametrization needs new infrastructure.
-- **Panel-coplanarity re-scope (the active blocker; phase paused).**
-  `thm:theorem-55` and the realization-existence nodes as first drafted
-  prove the *body-hinge* rank theorem, not the molecular conjecture,
-  because `BodyHingeFramework` omits hinge-coplanarity (= what defines
-  panel-hinge). Prerequisite for Cases I–III: add a **panel layer**
-  (per-vertex hyperplanes, hinges as intersections; reuses all rank
-  infra). Decision + (A)/(B) analysis in DESIGN.md; risk #7 in
-  MolecularConjecture.md. **Plan-first: no Lean until the plan is
-  reviewed.**
-- **Lemma 5.4 — formalize as genuine panel content, its own sub-phase**
-  (user decision 2026-06-03; was cite-only, then mistakenly reduced to
-  free-hinge telescoping). The cycle's panel realization with
-  independent hinge extensors is the Crapo–Whiteley projective fact:
-  needs the panel layer + the extensor *meet* algebra (hinges as panel
-  intersections) + a generic-panel independence argument bottoming on
-  Lemma 2.1 (Phase 17). Citation work stands as the source pointer.
+- **Panel-coplanarity re-scope (RESOLVED — panel layer now building).**
+  The realization-existence nodes as first drafted proved the
+  *body-hinge* rank theorem, not the molecular conjecture, because
+  `BodyHingeFramework` omits hinge-coplanarity. The fix — a form-(B)
+  panel layer (per-vertex normals, hinges as panel intersections via the
+  meet; reuses all rank infra) — is decided (DESIGN.md; risk #7 in
+  MolecularConjecture.md), its meet prerequisite Phase 21a is complete,
+  and its first leaf `def:panel-support-extensor` is green. The
+  panel-coplanarity gap is no longer a blocker.
+- **Lemma 5.4 — formalize as genuine panel content** (user decision
+  2026-06-03). The cycle's panel realization with independent hinge
+  extensors is the Crapo–Whiteley projective fact: needs the panel layer
+  (`panelSupportExtensor` + the forthcoming `PanelHingeFramework`) + a
+  generic-panel independence argument bottoming on Lemma 2.1 (Phase 17).
+  Citation work stands as the source pointer. Lands after the panel
+  framework + `IsHingeCoplanar`.
 
 ## Hand-off / next phase
 
-**Phase 21 is PAUSED for a modeling re-scope (2026-06-03, plan-first).**
-The realization-existence statements as first drafted prove the
-*body-hinge* rank theorem, not the molecular conjecture, because
-`BodyHingeFramework` omits **hinge-coplanarity** (= what defines
-panel-hinge; KT p.647). The fix is a **panel layer** and it is a
-prerequisite for Cases I–III and Lemma 5.4. Full decision + the (A)/(B)
-analysis: `DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge*; risk #7
-in MolecularConjecture.md. **No Lean until the plan is reviewed.**
+**Phase 21 has RESUMED with the panel layer (2026-06-03).** Phase 21a
+(the meet) is complete and the form-(B) panel plan is fixed in DESIGN.md;
+the first panel leaf `def:panel-support-extensor` is green
+(`panelSupportExtensor` + `normalsJoin` + the two nonvanishing iffs in
+`Molecular/AlgebraicInduction.lean`).
 
-Green so far (all regime-agnostic rank/structure facts — *retained
-verbatim* under the panel layer): `def:rank-hypothesis`,
-`lem:theorem-55-base` (rank content; gains a coplanarity conjunct when
-assembled), `lem:case-II-rank-lift`, `def:framework-with-graph` +
-`lem:motions-mono-of-graph-le`, `def:pinned-motions-on`.
-`Molecular/AlgebraicInduction.lean` carries six Lean nodes; none are
-wasted. Remaining red: `lem:cycle-realization` (now a panel sub-phase),
+Green so far: the panel leaf `def:panel-support-extensor`, plus the
+regime-agnostic rank/structure facts retained verbatim under the panel
+layer — `def:rank-hypothesis`, `lem:theorem-55-base` (rank content; gains
+a coplanarity conjunct when assembled), `lem:case-II-rank-lift`,
+`def:framework-with-graph` + `lem:motions-mono-of-graph-le`,
+`def:pinned-motions-on`. Remaining red: `PanelHingeFramework` /
+`toBodyHinge` / `IsHingeCoplanar`, `lem:cycle-realization` (panel cycle),
 `prop:rigidity-matrix-prop11` (stays body-hinge), `thm:theorem-55`,
 `lem:case-I`, `lem:case-II`, `lem:case-III` (all gain the panel
 requirement; III is 22–23).
 
-**Next concrete step: Phase 21a (the gating prerequisite), not Phase 21
-itself.** The panel layer rests on the Grassmann–Cayley **meet** (the
-dual half of the GC algebra, not built in Phase 17), so that foundation
-is its own sub-phase — see `notes/Phase21a.md` (checklist + route (ii)
-construction chain) and `DESIGN.md` *Panel-hinge = hinge-coplanar
-body-hinge*. The first Lean commit of the whole resumed effort is **21a's
-`topEquiv`** (`⋀ᴺ V ≃ₗ R`), then `pairingDual`-iso → `complementIso` →
-`meet`. **Only once 21a is green does Phase 21 resume**, with the panel
-layer (form (B): `PanelHingeFramework` → `toBodyHinge` →
-`IsHingeCoplanar` once; with the meet, `supportExtensor(e) =
-complementIso(nᵤ ∧ nᵥ)` and coplanarity is automatic), then Lemma 5.4
-(panel cycle realization), then the re-scoped Cases I/II/III. Phases
-22–23 still pick up Case III.
+**Smallest next concrete commit:** the `PanelHingeFramework` structure —
+a `Graph α β` plus per-vertex normals `normal : α → (Fin (k+2) → ℝ)` —
+and its `toBodyHinge : PanelHingeFramework k α β → BodyHingeFramework k α
+β`. The open design question to settle on contact: `BodyHingeFramework`
+derives `supportExtensor` from affine `hinge` points, whereas the panel
+route produces `panelSupportExtensor (normal u) (normal v)` directly per
+edge; either generalize `BodyHingeFramework` to carry the support
+extensor (so `toBodyHinge` sets it from `panelSupportExtensor`) or
+express the panel hinge as an `affineSubspaceExtensor`. Assess which is
+cleaner when building `toBodyHinge`. After that: the `IsHingeCoplanar`
+spec (automatic for `toBodyHinge`, both hinges at `v` lying in
+`panel(v)`), then Lemma 5.4 (panel cycle realization), then the re-scoped
+Cases I/II/III. Phases 22–23 still pick up Case III.

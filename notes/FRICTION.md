@@ -76,6 +76,23 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `LinearEquiv.map_eq_zero_iff` via `rw` fails on a defeq-wrapped codomain (`ScrewSpace k` = `⋀^(k+2−2)`); apply `map_ne_zero_iff … .injective` as a term
+- **Where it bit:** `panelSupportExtensor_ne_zero_iff` in
+  `Molecular/AlgebraicInduction.lean` (Phase 21 panel leaf): showing
+  `complementIso (j:=2) (normalsJoin n₁ n₂) ≠ 0 ↔ …`, where the result is typed
+  `ScrewSpace k` (a `def`-abbrev for `⋀^(k+2−2) (Fin (k+2) → ℝ)`).
+- **Friction:** `rw [LinearEquiv.map_eq_zero_iff]` and `rw [map_eq_zero_iff _
+  (complementIso _).injective]` both failed with "Did not find an occurrence of the
+  pattern `?e ?x = 0`" — the displayed `(complementIso ⋯) (normalsJoin …)` elaborated
+  through the `ScrewSpace k`-vs-`⋀^(k+2−2)` defeq, so the `rw` HO-pattern matcher
+  couldn't unify.
+- **Fix:** apply the lemma as a *term*, not via `rw`: after `rw […, ← normalsJoin_ne_zero_iff]`,
+  close with `exact map_ne_zero_iff _ (complementIso (by omega : 2 ≤ k + 2)).injective`.
+  Term-mode `exact` unifies up to defeq where `rw` pattern-matching does not.
+- **Status:** resolved (no lift — recurrence of the general "`rw` is syntactic, `exact`
+  is up-to-defeq" rule already in TACTICS-QUIRKS § 25; this is the `map_eq_zero_iff`
+  instance. Lifted: TACTICS-QUIRKS § 25).
+
 ### [resolved] `wedgeProd` of two `ιMulti_family` basis vectors → single `extensor`: `change` to surface the `extensor ∘ ofFinEmbEquiv.symm` form before `join_extensor`
 - **Where it bit:** `coe_wedgeProd_ιMulti_family` in `Molecular/Meet.lean` (Phase 21a
   ingredient (c)), bridging the graded wedge pairing on standard basis vectors to the

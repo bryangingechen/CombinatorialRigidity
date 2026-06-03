@@ -35,6 +35,47 @@ cycle-realization Lemma~5.4
 (\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
 Whiteley~\cite{whiteley1999}) enters here as an input.
 
+\subsection{The panel layer}
+\label{sec:molecular-algebraic-induction-panel}
+
+Katoh--Tanigawa's \emph{panel-hinge} framework is a
+\emph{hinge-coplanar} body-hinge framework: at each body all incident
+hinges lie in a common hyperplane \cite[p.\,647]{katohTanigawa2011}. The
+molecular conjecture's content is that this coplanarity can be met
+without losing rigidity; the Phase-18 body-hinge framework
+(\cref{def:hinge-constraint}) carries free hinges with no coplanarity,
+so the realization-existence nodes below need a \emph{panel layer} on
+top. We take the panel-data form: a panel realization assigns each body
+$v$ a hyperplane normal $n_v \in \R^{k+2}$, and the hinge at an edge
+$e = uv$ is the codimension-2 intersection $\mathrm{panel}(u) \cap
+\mathrm{panel}(v)$. Its supporting $k$-extensor --- the screw-space
+element of \cref{def:hinge-constraint} the rigidity matrix constrains ---
+is the Grassmann--Cayley meet of the two panels, equivalently the
+complement iso of the join of the two normals. Coplanarity (both hinges
+at $v$ lie in $\mathrm{panel}(v)$ by construction) and transversality
+both live in the extensor algebra, so no affine-subspace-intersection
+plumbing is needed.
+
+\begin{definition}[Panel support extensor]
+  \label{def:panel-support-extensor}
+  \lean{CombinatorialRigidity.Molecular.panelSupportExtensor,
+        CombinatorialRigidity.Molecular.normalsJoin,
+        CombinatorialRigidity.Molecular.panelSupportExtensor_ne_zero_iff}
+  \leanok
+  \uses{def:join, def:meet-complement-iso, def:hinge-constraint}
+  For two panel normals $n_1, n_2 \in \R^{k+2}$, the \emph{panel support
+  extensor} is the supporting $k$-extensor $C(p(e)) \in \Lambda^k
+  \R^{k+2}$ of the codimension-2 intersection of the two panels, given as
+  the complement iso (\cref{def:meet-complement-iso}) of the grade-2 join
+  $n_1 \wedge n_2 \in \Lambda^2 \R^{k+2}$ (\cref{def:join}). Since
+  $k+2-2 = k$ is the screw-space grade, the result lands in the screw
+  space $\Lambda^k \R^{k+2}$ of \cref{def:hinge-constraint} and feeds the
+  hinge constraint verbatim. It is nonzero exactly when the two normals
+  are linearly independent --- the algebraic form of the two panels
+  meeting transversally in a genuine hinge --- the only general-position
+  condition the panel layer needs.
+\end{definition}
+
 \subsection{The generic-rank reconciliation (Proposition 1.1, analytic half)}
 \label{sec:molecular-algebraic-induction-prop11}
 

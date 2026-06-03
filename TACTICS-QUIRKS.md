@@ -1038,6 +1038,18 @@ the proof `rw`s `tay_witness`'s iff (a syntactic match on the
 `IsSparse` side) and bridges the existentials with `constructor` +
 `.mpr`, never `.trans`.
 
+**Same rule for `rw` of a `map_eq_zero_iff`-family lemma when the
+codomain is a `def`-wrapper.** `rw [map_eq_zero_iff _ e.injective]` (or
+`LinearEquiv.map_eq_zero_iff`) pattern-matches `?f ?x = 0`
+*syntactically*; if the equiv's codomain is a defeq abbrev (e.g.
+`ScrewSpace k` for `⋀^(k+2−2) (Fin (k+2) → ℝ)`), the displayed
+`(e ⋯) x` elaborated through that defeq and the `rw` reports *"Did not
+find an occurrence of the pattern"*. Apply the lemma as a **term**
+instead: `exact map_ne_zero_iff _ e.injective` (after `rw`-ing the goal
+into the `e x ≠ 0 ↔ x ≠ 0` shape), since `exact` unifies up to defeq.
+Worked case: `panelSupportExtensor_ne_zero_iff` in
+`Molecular/AlgebraicInduction.lean`.
+
 ## 26. `simp [← lemma]` stalls on a `Submodule`/subtype carrier over a `RingQuot`-built algebra
 
 When a carrier is a `Submodule` or subtype *over an algebra built by

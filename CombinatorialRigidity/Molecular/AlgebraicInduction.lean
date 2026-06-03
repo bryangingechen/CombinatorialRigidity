@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import CombinatorialRigidity.Molecular.RigidityMatrix
+public import CombinatorialRigidity.Molecular.Meet
 public import Mathlib.Combinatorics.Graph.Subgraph
 
 /-!
@@ -21,8 +22,32 @@ Discrete Comput. Geom. **45**, §5, §6.1–6.3) **Theorem 5.5** — every minim
 its base case, Case I (proper rigid subgraph), and Case II (`k > 0` splitting). The crux
 Case III (`k = 0`, no proper rigid subgraph) is deferred to Phases 22–23.
 
+## The panel layer (`def:panel-hinge-framework`)
+
+Katoh–Tanigawa's *panel-hinge* framework is a **hinge-coplanar** body-hinge framework: at
+each vertex all incident hinges lie in a common hyperplane (KT 2011 p.647). The conjecture's
+content is that this coplanarity constraint can be met *without losing rigidity*. The
+Phase-18 `BodyHingeFramework` carries free hinges with no coplanarity, so the
+realization-existence nodes need a **panel layer** on top (`DESIGN.md` *Panel-hinge =
+hinge-coplanar body-hinge*). We take the panel-data form: a panel realization assigns each
+body `v` a *hyperplane normal* `nᵥ ∈ ℝ^(k+2)`, and the hinge at an edge `e = uv` is the
+codimension-2 intersection `panel(u) ∩ panel(v)` of the two panels. Its supporting
+`k`-extensor — the screw-space element `ScrewSpace k = ⋀^k ℝ^(k+2)` the rigidity matrix
+constrains — is the Grassmann–Cayley meet of the two panels, equivalently
+`complementIso (nᵤ ∧ nᵥ)` (`panelSupportExtensor`): the join `nᵤ ∧ nᵥ` is the grade-2
+extensor of the two normals (`normalsJoin`, in `⋀^2 ℝ^(k+2)`), and the complement iso
+`complementIso : ⋀^2 V ≃ ⋀^(k+2−2) V = ⋀^k V` (Phase 21a, `Molecular/Meet.lean`) lands it in
+`ScrewSpace k`. The only general-position condition — the two panels meet transversally — is
+then exactly that the two normals are linearly independent
+(`panelSupportExtensor_ne_zero_iff`), so coplanarity and transversality both live in the
+extensor algebra and no affine-subspace-intersection plumbing is needed. This is the leaf the
+panel layer rests on; the panel framework `PanelHingeFramework`, its body-hinge interpretation
+`toBodyHinge`, and the coplanarity spec `IsHingeCoplanar` land on top in subsequent commits.
+
+## The rank-induction nodes
+
 This file lands the `sec:molecular-algebraic-induction` dep-graph in dependency order. The
-leaf nodes landing here:
+regime-agnostic rank leaf nodes (retained verbatim under the panel layer):
 
 * `RankHypothesis` (`def:rank-hypothesis`) — the realization hypothesis (6.1). Carried in
   the basis-free form of Phase 18 (`Molecular/RigidityMatrix.lean`): the panel-hinge rigidity
@@ -54,9 +79,81 @@ Phase 18 (`finrank_pinnedMotions_add_screwDim`, `finrank_trivialMotions`) alread
 
 namespace CombinatorialRigidity.Molecular
 
+variable {k : ℕ}
+
+/-! ## The panel support extensor (`def:panel-support-extensor`, panel-layer leaf)
+
+A **panel** at a body is a hyperplane of `ℝ^(k+1)`, carried by its normal vector
+`n ∈ ℝ^(k+2)` (homogenized). The hinge at an edge `e = uv` is the codimension-2 intersection
+`panel(u) ∩ panel(v)` of the two panels; its supporting `k`-extensor — the element of the
+screw space `ScrewSpace k = ⋀^k ℝ^(k+2)` that the rigidity matrix constrains — is the
+Grassmann–Cayley **meet** of the two panels. Concretely it is `complementIso (n_u ∧ n_v)`:
+the join `n_u ∧ n_v` is the grade-2 extensor of the two normals (`normalsJoin`, landing in
+`⋀^2 ℝ^(k+2)`), and the complement iso `complementIso : ⋀^2 V ≃ ⋀^(k+2−2) V = ⋀^k V`
+(Phase 21a, `Molecular/Meet.lean`) carries it into `ScrewSpace k`.
+
+This is the leaf the whole panel layer rests on: it produces the supporting extensor of a
+panel hinge directly from the per-vertex normals, with the only general-position condition —
+the two panels meeting transversally — being exactly the linear independence of the two
+normals (`panelSupportExtensor_ne_zero_iff`). So coplanarity (both hinges at `v` lie in
+`panel(v)` by construction) and transversality both live in the extensor algebra, and the
+panel framework `PanelHingeFramework` (subsequent commit) carries only the per-vertex normals
+with no affine-subspace-intersection plumbing. -/
+
+/-- **The grade-2 join of two panel normals** (`def:panel-support-extensor`): the wedge
+`n₁ ∧ n₂` of two normal vectors of `ℝ^(k+2)`, landing in the grade-2 piece
+`⋀^2 ℝ^(k+2)`. The join of the two panels' poles, dual to the codimension-2 intersection of
+the panels themselves; the `complementIso` of this is the panel hinge's supporting extensor
+(`panelSupportExtensor`). -/
+noncomputable def normalsJoin (n₁ n₂ : Fin (k + 2) → ℝ) :
+    ⋀[ℝ]^2 (Fin (k + 2) → ℝ) :=
+  exteriorPower.ιMulti ℝ 2 ![n₁, n₂]
+
+/-- The underlying exterior-algebra element of `normalsJoin` is the Phase-17 grade-2 extensor
+`extensor ![n₁, n₂]` of the two normals (bridge to the join / extensor API). -/
+theorem normalsJoin_coe (n₁ n₂ : Fin (k + 2) → ℝ) :
+    (normalsJoin n₁ n₂ : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) = extensor ![n₁, n₂] := by
+  rw [normalsJoin, exteriorPower.ιMulti_apply_coe, extensor_apply]
+
+/-- **The join of two panel normals is nonzero iff the normals are independent**
+(`def:panel-support-extensor`): `normalsJoin n₁ n₂ ≠ 0 ↔ LinearIndependent ℝ ![n₁, n₂]`. The
+grade-2 extensor of two vectors vanishes exactly when they are linearly dependent
+(`extensor_ne_zero_iff_linearIndependent`, Phase 17); this is the algebraic form of the two
+panels meeting transversally (their normals not collinear), the only general-position
+condition the panel layer needs. -/
+theorem normalsJoin_ne_zero_iff (n₁ n₂ : Fin (k + 2) → ℝ) :
+    normalsJoin n₁ n₂ ≠ 0 ↔ LinearIndependent ℝ ![n₁, n₂] := by
+  rw [← extensor_ne_zero_iff_linearIndependent (d := k + 1) ![n₁, n₂],
+    ← normalsJoin_coe, ne_eq, ne_eq, ← ZeroMemClass.coe_eq_zero (x := normalsJoin n₁ n₂)]
+
+/-- **The panel support extensor** of a hinge between two panels with normals `n₁, n₂`
+(`def:panel-support-extensor`): the supporting `k`-extensor `C(p(e)) ∈ ScrewSpace k` of the
+codimension-2 intersection `panel(u) ∩ panel(v)`, given as the Grassmann–Cayley meet of the
+two panels — the complement iso `complementIso : ⋀^2 V ≃ ⋀^(k+2−2) V` (Phase 21a) of their
+grade-2 join `normalsJoin n₁ n₂`. The target grade `k + 2 − 2 = k` is exactly the screw-space
+grade, so the result lands in `ScrewSpace k = ⋀^k ℝ^(k+2)` and is consumed verbatim by the
+Phase-18 hinge constraint. This is the panel-layer source of supporting extensors, replacing
+the body-hinge `affineSubspaceExtensor` of the free-hinge model with a coplanar-by-construction
+panel hinge. -/
+noncomputable def panelSupportExtensor (n₁ n₂ : Fin (k + 2) → ℝ) : ScrewSpace k :=
+  complementIso (k := k) (j := 2) (by omega) (normalsJoin n₁ n₂)
+
+/-- **The panel support extensor is nonzero iff the two panels are transversal**
+(`def:panel-support-extensor`): `panelSupportExtensor n₁ n₂ ≠ 0 ↔ LinearIndependent ℝ ![n₁, n₂]`.
+The complement iso is a linear equivalence (`complementIso`, Phase 21a), so it sends a nonzero
+join to a nonzero extensor; combined with `normalsJoin_ne_zero_iff` the supporting extensor is
+nonzero exactly when the two panel normals are independent, i.e. the panels meet
+transversally in a genuine codimension-2 hinge. This is the general-position hypothesis the
+panel realizations of Theorem 5.5 supply (the panel analogue of the body-hinge framework's
+`affineSubspaceExtensor_ne_zero_iff`). -/
+theorem panelSupportExtensor_ne_zero_iff (n₁ n₂ : Fin (k + 2) → ℝ) :
+    panelSupportExtensor n₁ n₂ ≠ 0 ↔ LinearIndependent ℝ ![n₁, n₂] := by
+  rw [panelSupportExtensor, ← normalsJoin_ne_zero_iff]
+  exact map_ne_zero_iff _ (complementIso (by omega : 2 ≤ k + 2)).injective
+
 namespace BodyHingeFramework
 
-variable {k : ℕ} {α β : Type*}
+variable {α β : Type*}
 
 /-- **The realization (generic-rank) hypothesis (6.1)** (`def:rank-hypothesis`): a panel-hinge
 framework `(G,p)` realizes the target rank of a `k`-dof-graph when its null space has dimension
