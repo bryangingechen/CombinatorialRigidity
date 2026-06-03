@@ -180,15 +180,33 @@ direction, the mirror of the two `…_splitOff_…` lemmas above. Two axiom-free
   the mirror of `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`. This is the `v`-avoiding part
   of a `G̃`-forest reduced to `G_v` transporting verbatim into `G̃ᵥᵃᵇ`.
 
-Next concrete step (still): the **rerouting half** of `lem:forest-surgery-split` (KT 4.1)
-— still the residual crux, red. The `dᶠ(v) = 2` forests swap their two `v`-edges for one fresh
-`ã̃b` copy (via `edgeFiber_subset_edgeSet_mulTilde_splitOff`); the `v`-traversing tree-path lift
-(a `G̃ᵥᵃᵇ`-cycle *using* `ã̃b` lifts to a `v`-traversing path of `G̃`, via the
-`Matroid/Graph/AcyclicSet.lean` `not_isAcyclicSet_iff` cycle characterization) is what
-`isAcyclicSet_mulTilde_of_splitOff_of_disjoint` does *not* cover — it assumes `F` avoids `ã̃b`.
-Then assemble: `|I'| = |I| − D` and the `h' ≤ D−2` edge-disjointness count of the `ã̃b` copies
-(bounded via `edgeFiber_ncard`, `fiberDegree_le` giving `dᶠ(v) ≤ 2(D−1)`). Multi-commit; budget
-the most time.
+And now landed: the **reroute count substrate** of the forest surgery
+(`lem:forest-surgery-split`, KT 4.1, surgery crux) — the per-forest cap behind KT's `h' ≤ D−2`
+short-circuit count. Two axiom-free lemmas in `Molecular/Induction.lean` (NOT a blueprint node;
+`lem:forest-surgery-split` stays red):
+- `Graph.isCycleSet_pair_edgeFiber_splitOff`: two distinct copies `p ≠ q` of the fresh edge
+  `e₀` in `G̃ᵥᵃᵇ` form a 2-cycle (`IsCycleSet {p,q}`), given distinct neighbours `a ≠ b`
+  (`a,b ≠ v`, `a,b ∈ V(G)`). Both copies link `a,b` (`splitOff`'s fresh-edge disjunct), so the
+  explicit length-2 closed walk `a —p→ b —q→ a` is a cyclic walk (built via the
+  `IsCyclicWalk`/`IsTour`/`IsTrail`/`IsWalk` structure tower: `cons_isWalk_iff` ×2 +
+  `nil_isWalk_iff`, then `edge_nodup`/`isClosed`/`nodup` by `simp [hpq]` / `simp` / `simp [hab.symm]`).
+- `Graph.fiber_inter_subsingleton_of_isAcyclicSet_splitOff`: a cycle-matroid-acyclic (forest)
+  fiber set `F` of `G̃ᵥᵃᵇ` meets the fresh fiber `ã̃b = edgeFiber e₀ n` in at most one element —
+  `(F ∩ edgeFiber e₀ n).Subsingleton`. Two distinct copies would give a 2-cycle inside `F`
+  (`isCycleSet_pair_edgeFiber_splitOff` → `isCycleSet_iff` → `not_isAcyclicSet_iff`),
+  contradicting acyclicity. The per-forest `≤ 1` cap; aggregated across the `D` forests it
+  bounds the total `ã̃b`-copy count by `D`.
+
+Next concrete step (still): the **acyclicity-preserving reroute transport** of
+`lem:forest-surgery-split` (KT 4.1) — still the residual crux, red. The `dᶠ(v) = 2` forests
+swap their two `v`-edges for one fresh `ã̃b` copy (via `edgeFiber_subset_edgeSet_mulTilde_splitOff`);
+the `v`-traversing tree-path lift (a `G̃ᵥᵃᵇ`-cycle *using* `ã̃b` lifts to a `v`-traversing path of
+`G̃`, via the `Matroid/Graph/AcyclicSet.lean` `not_isAcyclicSet_iff` cycle characterization) is
+what `isAcyclicSet_mulTilde_of_splitOff_of_disjoint` does *not* cover — it assumes `F` avoids
+`ã̃b`. With the per-forest cap now in hand, what remains is the genuine path-lift (showing the
+rerouted forest stays acyclic across the swap) plus the assembly `|I'| = |I| − D` and the
+`h' ≤ D−2` aggregate count (the per-forest cap × `D` forests, bounded via `edgeFiber_ncard`,
+`fiberDegree_le` giving `dᶠ(v) ≤ 2(D−1)`). Multi-commit; budget the most time.
 
 ## Architectural choices made up front
 
@@ -263,9 +281,12 @@ Forest surgery (hard core):
   degree substrate `fiberAtVertex` / `mulTilde_inc` / `fiberAtVertex_inter_edgeSet[_ncard]`
   / `fiberDegree` / `fiberDegree_{mono,le}`, and **both directions of the no-reroute acyclicity
   half** — forward `mulTilde_splitOff_deleteFiber_le` + `isAcyclicSet_mulTilde_of_splitOff_of_disjoint`,
-  reverse `mulTilde_removeVertex_le_splitOff` + `isAcyclicSet_mulTilde_splitOff_of_removeVertex`);
-  the acyclicity-preserving *reroute* (the `dᶠ(v)=2` `ã̃b`-swap) + `h' ≤ D−2` disjointness count
-  remain (no blueprint node yet — node stays red).
+  reverse `mulTilde_removeVertex_le_splitOff` + `isAcyclicSet_mulTilde_splitOff_of_removeVertex`,
+  and now the **reroute count substrate** — `isCycleSet_pair_edgeFiber_splitOff` (two distinct
+  `e₀` copies form a 2-cycle) + `fiber_inter_subsingleton_of_isAcyclicSet_splitOff` (a forest of
+  `G̃ᵥᵃᵇ` keeps `≤ 1` `ã̃b` copy));
+  the acyclicity-preserving *reroute* (the `dᶠ(v)=2` `ã̃b`-swap path-lift) + the `h' ≤ D−2`
+  aggregate count remain (no blueprint node yet — node stays red).
 - [ ] `lem:forest-surgery-unsplit` — KT 4.2, edge-splitting direction
   (the inverse; makes split/unsplit inverse on deficiency).
 
@@ -403,16 +424,27 @@ on `V(G)\{v}`, definitional vertex side) + `Graph.isAcyclicSet_mulTilde_splitOff
 `dᶠ(v) ≤ 1` forests (drop their single `v`-edge, survive verbatim in either direction). Both
 mirrors route through `IsAcyclicSet.mono` + `cycleMatroid_indep`.
 
-Next agent's concrete commit: the genuine **rerouting half** of `lem:forest-surgery-split`
-(KT 4.1), still red — the residual crux. The framing (`lem:forest-packing-decomp`), the incidence
-substrate, the **degree substrate** (`fiberDegree` / `fiberDegree_le`, `dᶠ(v) ≤ 2(D−1)`), and now
-**both directions of the no-reroute acyclicity half** are all in place. What remains: the
-`dᶠ(v)=2` forests swap their two `v`-edges for one fresh `ã̃b` copy (via
-`edgeFiber_subset_edgeSet_mulTilde_splitOff`), which neither acyclicity mirror covers (each
-assumes `F` avoids `ã̃b`). The reroute needs the `v`-traversing path lift — a `G̃ᵥᵃᵇ`-cycle
-*using* `ã̃b` lifts to a `v`-traversing path of `G̃` (via the `Matroid/Graph/AcyclicSet.lean`
-`not_isAcyclicSet_iff` cycle characterization, `cycleMatroid_indep = IsAcyclicSet`) — plus the
-assembly `|I'| = |I| − D` and the `h' ≤ D−2` edge-disjointness count of the `ã̃b` copies (bounded
-via `edgeFiber_ncard`). Multi-commit; budget the most time. After `-split`, its inverse
-`lem:forest-surgery-unsplit` (KT 4.2) makes split/unsplit inverse on the deficiency, then the
-dof-tracking chain (4.3–4.8) and Theorem 4.9.
+And now landed (axiom-free, **no blueprint node** — the reroute count cap, still feeding the red
+`lem:forest-surgery-split`): the **reroute count substrate**. `Graph.isCycleSet_pair_edgeFiber_splitOff`
+(two distinct copies `p ≠ q` of the fresh edge `e₀` in `G̃ᵥᵃᵇ` form a 2-cycle `IsCycleSet {p,q}`,
+given distinct neighbours `a ≠ b`, via the explicit length-2 closed walk `a —p→ b —q→ a`) +
+`Graph.fiber_inter_subsingleton_of_isAcyclicSet_splitOff` (a cycle-matroid-acyclic forest `F` of
+`G̃ᵥᵃᵇ` keeps `≤ 1` copy of `ã̃b = edgeFiber e₀ n`: two would form a 2-cycle inside `F`, via
+`isCycleSet_iff` → `not_isAcyclicSet_iff`, contradicting acyclicity). The per-forest cap behind
+KT 4.1's `h' ≤ D−2` count — aggregated across the `D` forests it bounds the total `ã̃b`-copy
+count by `D`.
+
+Next agent's concrete commit: the genuine **acyclicity-preserving reroute transport** of
+`lem:forest-surgery-split` (KT 4.1), still red — the residual crux. The framing
+(`lem:forest-packing-decomp`), the incidence substrate, the **degree substrate** (`fiberDegree`
+/ `fiberDegree_le`, `dᶠ(v) ≤ 2(D−1)`), **both directions of the no-reroute acyclicity half**, and
+now the **reroute count cap** (`fiber_inter_subsingleton_of_isAcyclicSet_splitOff`) are all in
+place. What remains is the genuine path-lift: the `dᶠ(v)=2` forests swap their two `v`-edges for
+one fresh `ã̃b` copy (via `edgeFiber_subset_edgeSet_mulTilde_splitOff`), and showing the rerouted
+forest stays acyclic needs the `v`-traversing path lift — a `G̃ᵥᵃᵇ`-cycle *using* `ã̃b` lifts to a
+`v`-traversing path of `G̃` (via the `Matroid/Graph/AcyclicSet.lean` `not_isAcyclicSet_iff` cycle
+characterization, `cycleMatroid_indep = IsAcyclicSet`), which neither no-reroute acyclicity mirror
+covers (each assumes `F` avoids `ã̃b`). Then the assembly `|I'| = |I| − D` and the `h' ≤ D−2`
+aggregate count (per-forest cap × `D` forests, bounded via `edgeFiber_ncard`). Multi-commit;
+budget the most time. After `-split`, its inverse `lem:forest-surgery-unsplit` (KT 4.2) makes
+split/unsplit inverse on the deficiency, then the dof-tracking chain (4.3–4.8) and Theorem 4.9.

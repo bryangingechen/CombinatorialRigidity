@@ -76,6 +76,27 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `[matroid]` Building a small explicit cyclic walk (`IsCyclicWalk`) needs the full structure tower + a hoisted `IsWalk` `have`
+- **Where it bit:** `Graph.isCycleSet_pair_edgeFiber_splitOff` in `Molecular/Induction.lean`
+  (Phase 20 `lem:forest-surgery-split` reroute-count substrate). To exhibit `{p, q}` as a
+  cycle of `G̃ᵥᵃᵇ` I constructed the explicit length-2 walk `cons a p (cons b q (nil a))` and
+  had to discharge `IsCyclicWalk` directly.
+- **Friction:** (1) `IsCyclicWalk` extends `IsTour` extends `IsTrail` extends `IsWalk`, so the
+  anonymous constructor is the 4-deep nest `⟨⟨⟨hwalk, edge_nodup⟩, nonempty, isClosed⟩, nodup⟩`
+  — easy to mis-count fields (initial `⟨⟨⟨?_,?_,?_⟩,?_⟩,?_⟩` gave "Constructor IsTour.mk has 3
+  explicit fields, but only 2 provided"). (2) The `IsWalk` proof must be hoisted into a separate
+  `have hwalk`; inlining it as `⟨…, hlinkq.symm.walk_isWalk⟩` type-mismatches because the
+  innermost tail is `IsWalk (nil a)`, **not** `q`'s link-walk — close it with `nil_isWalk_iff`
+  + `hlinkp.left_mem` (membership of the endpoint). (3) `cons_isWalk_iff` / `nil_isWalk_iff` are
+  `Graph.`-namespaced, not `WList.` (first guess `WList.cons_isWalk_iff` was "unknown constant").
+- **Fix / general lesson:** for a hand-built short cyclic walk, hoist the `IsWalk` to its own
+  `have` (peel with `cons_isWalk_iff` ×k + `nil_isWalk_iff`), then `refine` the `IsCyclicWalk`
+  tower as `⟨⟨⟨hwalk, ?_⟩, by simp, ?_⟩, ?_⟩` and close `edge_nodup` / `isClosed` / `nodup` by
+  `simp` (feed the edge-distinctness `p ≠ q` and the vertex-distinctness `a ≠ b`). The edge-set
+  equation `E(C) = {p, q}` is plain `simp`. Project-internal (about our `splitOff`/`mulTilde`),
+  so it lives in `Induction.lean`; no upstream mirror.
+- **Status:** resolved.
+
 ### [resolved] `[matroid]` no mathlib "base of `M ／ C` lifts to base of `M` via a basis of `C`" — route through `IsBasis'.contract_eq_contract_delete` + loops
 - **Where it bit:** `Matroid.IsBase.union_isBasis_of_contract` in
   `Molecular/Induction.lean` (Phase 20 `lem:contract-minimality-transport`). mathlib

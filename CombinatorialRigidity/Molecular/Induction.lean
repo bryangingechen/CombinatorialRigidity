@@ -818,4 +818,77 @@ lemma fiberDegree_le [Finite β] {G : Graph α β} {n : ℕ} {v : α}
   rw [fiberDegree, ← fiberAtVertex_inter_edgeSet_ncard]
   refine Set.ncard_le_ncard (fun p hp ↦ ⟨hp.2, hF hp.1⟩) (Set.toFinite _)
 
+/-! ## At most one fresh copy per forest (`lem:forest-surgery-split`, reroute count substrate)
+
+The rerouting half of the Katoh–Tanigawa 2011 Lemma 4.1 forest surgery swaps the two
+`v`-edges of each `dᶠ(v) = 2` forest for a *single* fresh copy of the short-circuit fiber
+`ã̃b = edgeFiber e₀ n`. The bound that makes the `< D - 1` short-circuit-copy count
+(`h' ≤ D - 2`) go through is that **each rerouted forest absorbs at most one `ã̃b` copy**:
+an acyclic fiber set of the multiplied splitting-off `G̃_v^{ab}` cannot contain two distinct
+parallel copies of `e₀`, since two parallel copies of the same edge between distinct
+endpoints `a ≠ b` form a 2-cycle. Aggregated across the `D` forests this caps the total
+`ã̃b`-copy count at `D`, and the per-forest single-copy fact is what drives the reroute's
+edge-disjointness bookkeeping (the residual rerouting transport itself — a `v`-traversing
+tree-path lift — is the still-open crux). -/
+
+/-- **Two distinct parallel copies of the short-circuit edge form a 2-cycle**
+(`lem:forest-surgery-split`, reroute count substrate). When the splitting-off `G_v^{ab}` at
+a degree-2 vertex `v` with *distinct* neighbours `a ≠ b` (`a, b ≠ v`, `a, b ∈ V(G)`) inserts
+its fresh edge `e₀`, any two distinct copies `p ≠ q` of `e₀` in the multiplied splitting-off
+`G̃_v^{ab}` are a cycle-edge-set: `{p, q}` is `IsCycleSet` of `G̃_v^{ab}`. Both copies join
+the same endpoints `a, b` (`splitOff`'s fresh-edge disjunct), so the length-2 closed walk
+`a —p→ b —q→ a` is a cyclic walk. -/
+lemma isCycleSet_pair_edgeFiber_splitOff {G : Graph α β} {v a b : α} {e₀ : β} {n : ℕ}
+    (hab : a ≠ b) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G)) (hbV : b ∈ V(G))
+    {p q : β × Fin (bodyHingeMult n)} (hp : p.1 = e₀) (hq : q.1 = e₀) (hpq : p ≠ q) :
+    ((G.splitOff v a b e₀).mulTilde n).IsCycleSet {p, q} := by
+  -- Both `p` and `q` are copies of `e₀`, hence links of `a, b` in `G̃_v^{ab}`.
+  have hlink : ∀ r : β × Fin (bodyHingeMult n), r.1 = e₀ →
+      ((G.splitOff v a b e₀).mulTilde n).IsLink r a b := by
+    intro r hr
+    rw [mulTilde, edgeMultiply_isLink, splitOff_isLink, hr]
+    exact Or.inr ⟨rfl, ha, hb, haV, hbV, Or.inl ⟨rfl, rfl⟩⟩
+  have hlinkp := hlink p hp
+  have hlinkq := hlink q hq
+  -- The length-2 closed walk `a —p→ b —q→ a`.
+  refine ⟨WList.cons a p (WList.cons b q (WList.nil a)), ?_, by simp⟩
+  have hwalk : ((G.splitOff v a b e₀).mulTilde n).IsWalk
+      (WList.cons a p (WList.cons b q (WList.nil a))) := by
+    rw [cons_isWalk_iff, cons_isWalk_iff, nil_isWalk_iff]
+    exact ⟨hlinkp, hlinkq.symm, hlinkp.left_mem⟩
+  refine ⟨⟨⟨hwalk, ?_⟩, by simp, ?_⟩, ?_⟩
+  · -- Distinct edges `p ≠ q`.
+    simp [hpq]
+  · -- Closed: first vertex = last vertex.
+    simp
+  · -- No repeated vertices in the tail `[b, a]`: `a ≠ b`.
+    simp [hab.symm]
+
+/-- **A forest of the multiplied splitting-off carries at most one short-circuit copy**
+(`lem:forest-surgery-split`, reroute count substrate; Katoh–Tanigawa 2011 Lemma 4.1). When the
+splitting-off `G_v^{ab}` at a degree-2 vertex `v` with distinct neighbours `a ≠ b`
+(`a, b ≠ v`, `a, b ∈ V(G)`) inserts its fresh edge `e₀`, any cycle-matroid-acyclic (forest)
+fiber set `F` of the multiplied splitting-off `G̃_v^{ab}` meets the fresh short-circuit fiber
+`ã̃b = edgeFiber e₀ n` in at most one element: `(F ∩ edgeFiber e₀ n).Subsingleton`.
+
+Two distinct copies of `e₀` form a 2-cycle (`isCycleSet_pair_edgeFiber_splitOff`), so a forest
+— containing no cycle — can keep at most one. This is the per-forest cap behind KT 4.1's
+`< D - 1` short-circuit-copy count: across the `D` rerouted forests the total number of
+`ã̃b` copies retained is at most `D`, each forest absorbing one swapped `v`-traversing path. -/
+lemma fiber_inter_subsingleton_of_isAcyclicSet_splitOff {G : Graph α β}
+    {v a b : α} {e₀ : β} {n : ℕ} (hab : a ≠ b) (ha : a ≠ v) (hb : b ≠ v) (haV : a ∈ V(G))
+    (hbV : b ∈ V(G)) {F : Set (β × Fin (bodyHingeMult n))}
+    (hF : ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep F) :
+    (F ∩ edgeFiber e₀ n).Subsingleton := by
+  rw [cycleMatroid_indep] at hF
+  intro p hp q hq
+  by_contra hpq
+  -- `p, q` are distinct copies of `e₀` in `F`, so `{p, q}` is a cycle of `G̃_v^{ab}`.
+  obtain ⟨C, hCG, hC, hCpq⟩ := isCycleSet_iff.mp
+    (isCycleSet_pair_edgeFiber_splitOff hab ha hb haV hbV hp.2 hq.2 hpq)
+  -- A cycle with edge set `{p, q} ⊆ F` contradicts the acyclicity of `F`.
+  refine (not_isAcyclicSet_iff hF.1).mpr ⟨C, hC, hCG, ?_⟩ hF
+  rw [← hCpq]
+  exact Set.insert_subset hp.1 (Set.singleton_subset_iff.mpr hq.1)
+
 end Graph
