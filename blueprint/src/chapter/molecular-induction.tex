@@ -263,13 +263,18 @@ instead by a direct deficiency-count argument
       comparison through the def\,$=$\,corank bridge
       (\cref{thm:def-eq-corank}), bypassing the forest surgery entirely.
   \end{enumerate}
-  Accordingly the forest-surgery lemmas
-  (\cref{lem:forest-surgery-split,lem:forest-surgery-unsplit}) are
-  \textbf{deferred / off the Theorem-4.9 critical path}: their substrate
-  is formalized but they complete only if the balanced-packing
-  assumption of layer~(2) is settled. Theorem~4.9 is reached instead
-  through the deficiency-counting route of
-  \cref{sec:molecular-induction-dof}.
+  Accordingly the splitting-off forest surgery
+  (\cref{lem:forest-surgery-split}) is \textbf{deferred / off the
+  Theorem-4.9 critical path}: its substrate is formalized but it completes
+  only if the balanced-packing assumption of layer~(2) is settled. The
+  edge-splitting inverse (\cref{lem:forest-surgery-unsplit}) carries no
+  such gloss and is sound; it is merely not yet formalized. The
+  splitting-off deficiency bound (\cref{lem:splitoff-deficiency}, KT~4.3)
+  is reached instead through the deficiency-counting route of
+  \cref{sec:molecular-induction-dof} --- but the removal bound (KT~4.4,
+  \cref{lem:removal-deficiency}) is \emph{not} a deficiency-counting fact
+  and genuinely needs \cref{lem:forest-surgery-unsplit}'s $h' = 0$ case
+  (\cref{rem:kt-lemma-44}).
 \end{remark}
 
 \begin{example}[KT Lemma 4.1's universal quantification is unsatisfiable]
@@ -336,22 +341,27 @@ instead by a direct deficiency-count argument
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, edge-splitting direction; KT Lemma 4.2]
   \label{lem:forest-surgery-unsplit}
-  \uses{def:graph-operations, lem:forest-surgery-split, rem:kt-lemma-41}
-  \emph{Deferred} with \cref{lem:forest-surgery-split}
-  (\cref{rem:kt-lemma-41}); off the Theorem-4.9 critical path.
-  The inverse direction: a packing of $\widetilde{H}$ extends across an
-  edge-split $H_{ab}^v$ to a packing of $\widetilde{H_{ab}^v}$,
-  matching deficiencies under
-  $(H_{ab}^v)_v^{ab} = H$. Together with
-  \cref{lem:forest-surgery-split} this makes splitting-off and
-  edge-splitting inverse operations on the deficiency.
+  \uses{def:graph-operations, lem:forest-packing-decomp}
+  \emph{Not yet formalized} --- but, unlike
+  \cref{lem:forest-surgery-split}, this direction is \textbf{sound}: it
+  carries no balanced-packing gloss (\cref{rem:kt-lemma-44}). The inverse
+  direction: a packing of $\widetilde{H}$ into $D$ forests on $V$ extends
+  across an edge-split $H_{ab}^v$ to a packing of $\widetilde{H_{ab}^v}$
+  into $D$ forests on $V \cup \{v\}$, matching deficiencies under
+  $(H_{ab}^v)_v^{ab} = H$. It is the lift the removal bound
+  (\cref{lem:removal-deficiency}, hence \cref{lem:dof-tracking}) requires
+  in its $h' = 0$ case.
 \end{lemma}
 \begin{proof}
-  The fresh degree-2 vertex $v$ contributes $D$ to $D(|V|-1)$ and the
-  subdivided edge contributes $D-1$ crossing fibers; the surgery of
-  \cref{lem:forest-surgery-split} run in reverse distributes the new
-  fibers across the $D$ forests. Explicit forest construction, the
-  companion of the splitting-off surgery.
+  The fresh vertex $v$ starts isolated, so adding a single $v$-incident
+  fiber to a forest on $V$ can never close a cycle. KT~4.2(i) at $h' = 0$
+  thus adds one $va$-fiber to each of $D-1$ forests and one $vb$-fiber to
+  the last, lifting the packing of $\widetilde{H}$ to one of
+  $\widetilde{H_{ab}^v}$ with $|I| = |I'| + D$ --- with \emph{no}
+  rerouting across $v$ and \emph{no} appeal to the balanced-packing
+  assumption that obstructs \cref{lem:forest-surgery-split}. (The general
+  $h' > 0$ case does reroute and shares the splitting-off surgery's
+  subtleties; only the $h' = 0$ instance is needed downstream.)
 \end{proof}
 
 \subsection{Degree-of-freedom tracking (via deficiency counting)}
@@ -414,20 +424,76 @@ route that bypasses the deferred forest surgery
   G) - 1$.
 \end{proof}
 
+\begin{remark}[KT Lemma 4.4's lower bound is not a deficiency-counting fact]
+  \label{rem:kt-lemma-44}
+  \uses{lem:splitoff-deficiency, lem:forest-surgery-unsplit}
+  The Replan of \cref{rem:kt-lemma-41} hoped to reach KT~4.4
+  ($\operatorname{def}(\widetilde{G_v}) \ge k$) by the same
+  deficiency-counting route that carried \cref{lem:splitoff-deficiency},
+  bypassing the forest surgery. That hope was \textbf{wrong}, and the
+  obstruction is instructive: \cref{lem:splitoff-deficiency} and KT~4.4
+  are not the same kind of statement.
+
+  Write $\operatorname{def}(\widetilde{G_v}) - k = \big(\operatorname{rank}
+  M(\tilde G) - \operatorname{rank} M(\widetilde{G_v})\big) - D$ via the
+  def\,$=$\,corank bridge (\cref{thm:def-eq-corank}; $G_v$ drops $D$ from
+  the ambient). So $\operatorname{def}(\widetilde{G_v}) \ge k$ is
+  \emph{equivalent} to $\operatorname{rank} M(\tilde G) -
+  \operatorname{rank} M(\widetilde{G_v}) \ge D$: removing $v$ must drop the
+  rank by \emph{at least} $D$. Now $M(\widetilde{G_v}) = M(\tilde G)
+  \restriction E(\widetilde{G_v})$ (\cref{lem:contract-rank-bridge}'s
+  restriction engine), and the deleted ground elements are exactly the two
+  $v$-fibers $\tilde{eₐ} \cup \tilde{e_b}$ of size $2(D-1)$. Restriction
+  rank-monotonicity gives only the \emph{reverse} bound
+  $\operatorname{rank} M(\tilde G) - \operatorname{rank}
+  M(\widetilde{G_v}) \le 2(D-1)$ (an \emph{upper} bound on
+  $\operatorname{def}(\widetilde{G_v})$); and a single-partition comparison
+  --- the engine of \cref{lem:splitoff-deficiency} --- yields only
+  $\operatorname{def}(\widetilde{G_v}) \ge k - D$, since restricting an
+  optimal partition of $V$ to $V - v$ loses one part ($-D$) while the
+  crossing-edge drop helps in the wrong direction. The needed lower bound
+  $\ge D$ on the rank increment is a \emph{forest-packing existence}
+  statement, not a counting identity.
+
+  This is precisely what Katoh--Tanigawa establish via the $h' = 0$ case of
+  Lemma~4.2(i): a base $B'$ of $M(\widetilde{G_v})$, viewed as $D$ forests
+  on $V - v$, lifts to $D$ forests on $V$ by adding one fresh $v$-edge per
+  forest (the new vertex $v$ is isolated, so no edge to it closes a cycle),
+  giving an independent set of $M(\tilde G)$ of size $|B'| + D$. Crucially
+  this $h' = 0$ extension does \textbf{not} invoke the balanced-packing
+  assumption that \cref{rem:kt-lemma-41}~(2) found unjustified --- that
+  gloss is in the splitting-\emph{off} direction
+  (\cref{lem:forest-surgery-split}), not the edge-\emph{splitting} inverse
+  (\cref{lem:forest-surgery-unsplit}). KT~4.4 is therefore sound, but its
+  formalization is \textbf{gated on the unsplit forest-packing lift}
+  (\cref{lem:forest-surgery-unsplit}, $h' = 0$), a multi-commit development
+  comparable in size to the deferred surgery rather than a clean
+  deficiency-count corollary. See \texttt{notes/Phase20.md}.
+\end{remark}
+
 \begin{lemma}[Vertex removal raises the deficiency; KT Lemma 4.4]
   \label{lem:removal-deficiency}
-  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank}
-  Let $v$ be a degree-2 vertex of the minimal $k$-dof-graph $G$. Then the
-  removal $G_v$ has $\operatorname{def}(\widetilde{G_v}) \ge k$: deleting
-  $v$ and its two incident edges removes $D$ from the ambient and at most
-  $2(D-1)$ from the rank, so the corank cannot decrease below $k$. This
-  is the other half of the local dof bookkeeping at $v$.
+  \uses{def:graph-operations, def:matroid-MG, thm:def-eq-corank, lem:forest-surgery-unsplit}
+  \emph{Blocked on the unsplit forest surgery
+  (\cref{rem:kt-lemma-44}): unlike \cref{lem:splitoff-deficiency}, this
+  lower bound is \textbf{not} a deficiency-counting fact and needs the
+  $h' = 0$ case of \cref{lem:forest-surgery-unsplit}.}
+  Let $v$ be a degree-2 vertex of the $k$-dof-graph $G$ with neighbours
+  $a, b$. Then the removal $G_v$ has $\operatorname{def}(\widetilde{G_v})
+  \ge k$. Moreover, if equality holds there is a base $B$ of $M(\tilde G)$
+  with $|\tilde{vb} \cap B| = 1$. This is the other half of the local dof
+  bookkeeping at $v$.
 \end{lemma}
 \begin{proof}
-  The def\,$=$\,corank bridge (\cref{thm:def-eq-corank}) at $G_v$: the
-  ambient $D(|V| - 1)$ drops by $D$ and the rank of $M(\tilde G)$ drops
-  by at most the $2(D-1)$ fibers at $v$, so $\operatorname{def}$ does not
-  fall below the $k = \operatorname{def}(\tilde G)$ of the minimal graph.
+  \uses{lem:forest-surgery-unsplit, thm:def-eq-corank}
+  Following Katoh--Tanigawa: a base $B'$ of $M(\widetilde{G_v})$ is
+  independent in $M(\tilde G)$ (since $G_v \le G$), and since $G$ is the
+  edge-split $(G_v^{ab})_{ab}^v$ along $ab$, the $h' = 0$ case of
+  \cref{lem:forest-surgery-unsplit} lifts $B'$ to an independent set $I$
+  of $M(\tilde G)$ with $|I| = |B'| + D$. By the def\,$=$\,corank bridge
+  (\cref{thm:def-eq-corank}), $|I| = |B'| + D = D(|V| - 1) -
+  \operatorname{def}(\widetilde{G_v})$, whence $k = \operatorname{def}
+  (\tilde G) \le \operatorname{def}(\widetilde{G_v})$.
 \end{proof}
 
 \begin{lemma}[Deficiency under vertex removal and splitting-off; KT Lemmas 4.3--4.5]
