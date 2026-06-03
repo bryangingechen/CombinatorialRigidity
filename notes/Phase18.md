@@ -265,6 +265,14 @@ count matroid at the boundary `ℓ = 2k = D`, routed through the Phase 13/14
 `unionPow_cycleMatroid` + `tutte_nash_williams` union — *not*
 `CountMatroid.lean`, which is `ℓ<2k`) and the `def = corank` bridge, then
 land `prop:rigidity-matrix-prop11` against the now-available deficiency.
+
+**Update (Phase 19 close, 2026-06-02):** `M(G̃)`, deficiency, and the
+`def = corank` bridge all landed green in Phase 19. `prop:rigidity-matrix-prop11`
+did **not** land there — its matroidal half is the bridge (green), but its
+analytic half (`rank R(G,p) = D(|V|−1) − def(G̃)`) needs the Claim 6.4
+generic-rank argument, so the node was **relocated forward to Phase 21+**
+and removed from `rigidity-matrix.tex` (which now reads as a complete chapter).
+See `notes/MolecularConjecture.md` *Phase 21*.
 The conjecture needs only the upper-bound half (which Phase 16's
 `edgeMultiply_isSparse_iff` may already supply); decide the
 prove-vs-hypothesize boundary for the [15] (Thm 6.1) generic-rank half

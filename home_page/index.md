@@ -21,14 +21,14 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–18 are complete and carry no `sorry`s; **the body-bar
+Phases 1–19 are complete and carry no `sorry`s; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
 longer-horizon **molecular-conjecture program** (Phases 17–26;
 Katoh–Tanigawa 2011) with its Grassmann–Cayley extensor-algebra layer,
 **Phase 18 (complete)** builds the genuine panel-hinge rigidity
-matrix `R(G,p)` on top of it, and **Phase 19 (in progress)** builds the
+matrix `R(G,p)` on top of it, and **Phase 19 (complete)** builds the
 matroid `M(G̃)`, the `D`-deficiency, and the `k`-dof combinatorics.
 The main theorem
 [`SimpleGraph.isGenericallyRigid_two_iff_exists_isLaman_le`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/CombinatorialRigidity/LamanTheorem.lean)
@@ -123,14 +123,15 @@ rigidity matrix `R(G,p)` (hinge constraints via the supporting
 extensors `C(p(e))`, the null space `Z(G,p)` on the degree-`k` graded
 screw space `⋀^k ℝ^(k+2)` of dimension `D`, the `D` trivial motions and
 the codimension form of `rank ≤ D(|V|−1)`, and the three rank Lemmas
-5.1–5.3). Its reconciliation with Phase 16's reduction-form Prop 1.1 is
-deferred to Phase 19, whose `M(G̃)`-deficiency machinery the bridge
-needs. Forward-mode program, one chapter per phase: `extensor.tex`
-(Phase 17) and `rigidity-matrix.tex` (Phase 18) are the authoritative
-dep-graphs (all nodes green save the deferred Prop 1.1 node, red). See
-the program-level plan in `notes/MolecularConjecture.md`.
+5.1–5.3) — the full rank-form substrate the algebraic induction runs
+on. Its reconciliation with Phase 16's reduction-form Prop 1.1 is a
+top-of-DAG corollary depending on the analytic generic-rank theorem,
+presented with the algebraic induction (Phase 21+). Forward-mode
+program, one chapter per phase: `extensor.tex` (Phase 17) and
+`rigidity-matrix.tex` (Phase 18) are the authoritative dep-graphs (all
+nodes green). See the program-level plan in `notes/MolecularConjecture.md`.
 
-**Phase 19 (in progress)** builds stratum 3: the matroidal substrate of
+**Phase 19 (complete)** builds stratum 3: the matroidal substrate of
 the conjecture's algebraic induction (Katoh–Tanigawa §2.5, §3). The
 matroid `M(G̃)` is the `(D,D)`-count matroid of the multiplied graph
 `G̃ = (D−1)·G` at the boundary regime `ℓ = 2k = D` — the `D`-fold
@@ -138,10 +139,10 @@ graphic-matroid union of Phases 13/14 with Tutte–Nash-Williams, not the
 `ℓ<2k` count matroid of Phase 7. The phase builds the `D`-deficiency
 `def(G̃)`, the `k`-dof / minimal-`k`-dof hierarchy, rigid subgraphs
 (KT Lemmas 3.1/3.3/3.4), and the `def(G̃) = corank M(G̃)` bridge
-(Jackson–Jordán 2009 Thm 6.1 / Cor 6.2), which closes the reconciliation
-node deferred from Phase 18. Forward-mode; the chapter `deficiency.tex`
-is the authoritative dep-graph (all nodes red — the to-do list). See
-`notes/Phase19.md` and `notes/MolecularConjecture.md`.
+(Jackson–Jordán 2009 Thm 6.1 / Cor 6.2, proved in-repo axiom-free) —
+the matroidal half of the Phase 16 reconciliation. Forward-mode; the
+chapter `deficiency.tex` is the authoritative dep-graph (all nodes
+green). See `notes/Phase19.md` and `notes/MolecularConjecture.md`.
 
 The development is divided into the phases below, with Lean source
 under
@@ -169,7 +170,7 @@ existing files or refactor across several).
 |    16 | Body-hinge Tay–Whiteley theorem | `BodyBar/BodyHinge.lean` | ✓ |
 |    17 | Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` | ✓ |
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
-|    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ◐ |
+|    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

@@ -1,6 +1,13 @@
 # Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (work log)
 
-**Status:** in progress (all four definition nodes + four structural lemmas
+**Status:** ✓ COMPLETE. All `deficiency.tex` nodes green; the phase-close
+commit relocated `prop:rigidity-matrix-prop11` forward (its analytic half →
+Phase 21+; matroidal half landed here via `thm:def-eq-corank`), flipped the
+ROADMAP row + the three user-facing surfaces, and recorded the forward-scheduled
+deliverables (full KT 3.4, KT 3.5 → early Phase 20; prop11 analytic half →
+Phase 21+) in `notes/MolecularConjecture.md`. See *Hand-off* below.
+
+**Original close-state note** (all four definition nodes + four structural lemmas
 + the rank upper bound + the **full def = corank bridge** landed:
 `lem:matroid-restrict-subgraph`, `lem:subgraph-minimality` (KT 3.3),
 `lem:two-edge-conn` (KT 3.1, cut form), `lem:circuit-rigid` (KT 3.4, matroidal
@@ -433,41 +440,29 @@ optimistic — prop11 needs this analytic link in addition. The node prose in
 `rigidity-matrix.tex` is updated to flag the split (matroidal half done, analytic half
 scheduled with the algebraic induction, Phase 21+).
 
-**Next concrete step — CLOSE PHASE 19 (user decision, 2026-06-02).** The `deficiency.tex`
-chapter is fully green; the user has ratified closing the phase and **relocating
-`prop:rigidity-matrix-prop11` forward** out of the completed Phase-18 chapter. The closing
-commit(s) do, on top of the standard per-commit checklist:
+**PHASE 19 CLOSED (2026-06-02).** All three close-out tasks done in the closing commit:
 
-1. **Relocate `prop:rigidity-matrix-prop11` forward.** It is a top-of-DAG reconciliation
-   corollary (KT Prop 1.1, stated in KT §1 as a signpost but dependent on the analytic
-   generic-rank theorem); leaving a red node stranded in the otherwise-complete Phase-18
-   `rigidity-matrix.tex` reads as "stuck in Phase 18". Remove the `\begin{proposition}`
-   node (`rigidity-matrix.tex` ~ll. 248–286) and rewrite the §*Status* paragraph
-   (~ll. 24–36) so the chapter reads as a **complete** Phase-18 chapter (no dangling red
-   node, no "deferred to Phase 19"); fix the dangling `\cref{prop:rigidity-matrix-prop11}`
-   in `deficiency.tex` (the "this bridge closes the reconciliation node" sentence) to a
-   forward-pointing prose note. Re-home prop11 as a **planned Phase-21+ deliverable** of the
-   algebraic-induction chapter in `notes/MolecularConjecture.md` (its analytic half =
-   `rank R(G,p) = D(|V|−1) − def(G̃)`, the genericity/generic-max-rank argument deferred
-   since Phase 15–16, lands with Claim 6.4); the node itself gets (re)created in that phase's
-   chapter when Phase 21 opens. Run the blueprint static checks (`blueprint/verify.sh` +
-   the `\uses`/`\cref` label check) so no reference dangles.
-2. **Run the full phase-close checklist** (top-level `CLAUDE.md` *When this commit closes a
-   phase*): flip the ROADMAP §19 row to ✓ and compress its §19 planning section to a
-   one-paragraph summary + pointer to this file; sync the three user-facing surfaces
-   (`README.md` *Project status*; `home_page/index.md` status prose + phase table;
-   `intro.tex` phase-plan prose + enumerate + dep-graph-status line) flipping Phase 19 → ✓;
-   re-read `deficiency.tex` end-to-end as a domain mathematician and collapse any accumulated
-   per-commit formalization asides (basis-free-narration anti-pattern per `blueprint/CLAUDE.md`
-   *Proof verbosity*); review project organization (re-skim ROADMAP / TACTICS-GOLF /
-   TACTICS-QUIRKS / FRICTION; check this file against the lift-on-promotion threshold).
-3. **Record the forward-scheduled deliverables in their homes**, so the hand-off contract
-   stays honest: full KT 3.4 (`G[V(X)]` rigid, tightness *equality*; vertex-induced-subgraph
-   construction — now unblocked, the JJ09 reverse `le_rank_add_deficiency` supplies the
-   lower bound it waited on) and KT 3.5 (contraction preserves minimality, Case I engine)
-   → **early Phase 20**; `prop:rigidity-matrix-prop11` → **Phase 21+**. These belong in
-   `notes/MolecularConjecture.md` *Phase 20* / *Phase 21*, not stranded under closed Phase 19.
+1. **`prop:rigidity-matrix-prop11` relocated forward.** Removed the `\begin{proposition}`
+   node from `rigidity-matrix.tex` and rewrote its §*Status* paragraph + the
+   "Rank lemmas and reconciliation" subsection title so the Phase-18 chapter reads as
+   complete (no dangling red node). Rewrote the dangling `\cref{prop:rigidity-matrix-prop11}`
+   references in `deficiency.tex` (closing paragraph + intro chapter) to forward-pointing
+   prose. Re-homed prop11 as a planned **Phase 21+** deliverable in
+   `notes/MolecularConjecture.md` (its analytic half `rank R(G,p) = D(|V|−1) − def(G̃)`
+   lands with Claim 6.4). `blueprint/verify.sh` + the `\uses`/`\cref` label check: all green.
+2. **Full phase-close checklist done.** ROADMAP §19 row → ✓ and its planning section
+   compressed; the three user-facing surfaces (`README.md`, `home_page/index.md` prose +
+   table, `intro.tex` phase-plan prose + enumerate + dep-graph-status) all flipped to
+   Phase 19 ✓; `deficiency.tex` re-read end-to-end (no basis-free-narration asides to
+   collapse — the chapter was written clean); project-organization re-skim done.
+3. **Forward-scheduled deliverables recorded** in `notes/MolecularConjecture.md`: full
+   KT 3.4 (`G[V(X)]` rigid tightness equality + vertex-induced-subgraph construction —
+   now unblocked by `le_rank_add_deficiency`) and KT 3.5 (contraction preserves minimality)
+   → **early Phase 20**; prop11 analytic half → **Phase 21+**.
 
-This may be one closing commit or split across two (e.g. relocation + checklist); use
-judgment. Phase 20 (combinatorial induction → Theorem 4.9) is unblocked: `M(G̃)`, deficiency,
-and the def = corank bridge are all green.
+**Phase 20 (combinatorial induction → Theorem 4.9) is unblocked.** Next agent: open Phase 20
+per `CLAUDE.md` *When this commit opens a phase* — create `notes/Phase20.md`, add a new
+`blueprint/src/chapter/*.tex` for Phase 20 with red forward-mode nodes (pull the Phase-20
+detail from `notes/MolecularConjecture.md` *Phase 20*: graph ops splitting-off /
+edge-splitting / removal / contraction, forest surgery 4.1/4.2, Theorem 4.9, plus the
+inherited full KT 3.4 + KT 3.5), and sync the ROADMAP row + three surfaces.

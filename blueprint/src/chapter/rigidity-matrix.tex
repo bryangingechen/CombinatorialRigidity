@@ -21,19 +21,25 @@ $D = \binom{d+1}{2}$, matching the extensors of
 \cref{sec:molecular-homog}.
 
 \medskip
-\noindent\emph{Status.} The rigidity-matrix skeleton
+\noindent\emph{Status.} The chapter is complete. The rigidity-matrix
+skeleton
 (\cref{def:hinge-constraint,def:hinge-row-block,def:rigidity-matrix}),
 the trivial-motion / dimension layer
 (\cref{lem:trivial-motions-rank-bound,def:dof-generic}), and the three
 rank lemmas
 (\cref{lem:rank-delete-vertex,lem:rank-rotation-semicont,lem:rank-parallel-full})
-are all green. The single remaining node, the reconciliation with
-Phase~16 (\cref{prop:rigidity-matrix-prop11}), is \textbf{deferred to
-Phase~19}: its proof routes through the deficiency
-$\operatorname{def}(\tilde G)$ and the matroid $M(\tilde G)$, which are
-Phase~19 objects (\cref{sec:molecular-rigidity-matrix} closes here in
-the rank-form skeleton; the def\,$=$\,corank bridge is built in
-Phase~19, \S2.5--\S3).
+are all green --- the full rank-form substrate the conjecture's
+algebraic induction (Phases~21--23) runs on. The reconciliation with
+the body-hinge existence form of Phase~16 (Tay--Whiteley's
+Proposition~1.1, equating the honest rank $\operatorname{rank} R(G,p) =
+D(|V|-1)$ with $(\delta,\delta)$-tightness of $(\delta-1)\cdot G$,
+\cref{thm:body-hinge-tay}) is a top-of-DAG corollary that depends on the
+\emph{analytic} generic-rank theorem (Jackson--Jord\'an Thm 6.1,
+$\operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G)$);
+it is therefore presented with the algebraic induction (Phase~21+), once
+both the matroidal bridge $\operatorname{def}(\tilde G) =
+\operatorname{corank} M(\tilde G)$ (Phase~19, \cref{sec:molecular-deficiency})
+and the generic-rank argument are in hand.
 
 \subsection{Body-hinge frameworks and the rigidity matrix}
 \label{sec:molecular-rigidity-matrix-def}
@@ -155,7 +161,7 @@ Phase~19, \S2.5--\S3).
   forces $\operatorname{rank} R(G,p) \le D|V| - D = D(|V|-1)$.
 \end{proof}
 
-\subsection{Rank lemmas and reconciliation with Proposition 1.1}
+\subsection{Rank lemmas}
 \label{sec:molecular-rigidity-matrix-rank}
 
 \begin{lemma}[Deleting one body's columns preserves rank; KT Lemma 5.1]
@@ -243,44 +249,4 @@ Phase~19, \S2.5--\S3).
   Z$ only shrinks under refinement (\texttt{Submodule.finrank\_mono}); the
   generic member of the rotation family has the largest supporting spans
   and thus the maximal rank.
-\end{proof}
-
-\begin{proposition}[Reconciliation with the body-hinge existence form; KT Prop 1.1]
-  \label{prop:rigidity-matrix-prop11}
-  \uses{def:dof-generic, lem:rank-delete-vertex, lem:rank-parallel-full, thm:def-eq-corank}
-  \emph{(Matroidal half complete; analytic link outstanding.)} The proof
-  routes through the deficiency $\operatorname{def}(\tilde G) =
-  \operatorname{corank} M(\tilde G)$, whose matroid $M(\tilde G)$ --- the
-  $D$-fold graphic union on $(D-1)\cdot G$ --- is constructed in Phase~19
-  (\S2.5--\S3) and whose corank identity (\cref{thm:def-eq-corank}) is now
-  green; the rank-form skeleton it consumes (\cref{def:dof-generic} and the
-  rank lemmas) is complete in this section. The one remaining link is the
-  \emph{analytic} generic-rank equality $\operatorname{rank} R(G,p) =
-  D(|V|-1) - \operatorname{def}(\tilde G)$ (Jackson--Jord\'an~Thm 6.1,
-  geometric side), which wires the rigidity-matrix rank to the matroid
-  corank; it is scheduled with the algebraic induction.
-
-  A multigraph $G$ has a realization as an infinitesimally rigid
-  body-hinge framework $(G,p)$ --- in the rank sense
-  $\operatorname{rank} R(G,p) = D(|V|-1)$ of \cref{def:dof-generic} ---
-  if and only if it has one in the reduction sense of the body-hinge
-  chapter, i.e.\ $(\delta-1)\cdot G$ is $(\delta,\delta)$-tight
-  (\cref{thm:body-hinge-tay}), where $\delta = D = \binom{d+1}{2}$. The
-  honest rank form and the standard-basis existence form of Phase~16
-  agree.
-\end{proposition}
-\begin{proof}
-  The rank form is the generic-rank theorem of
-  Jackson--Jordán~\cite{jacksonJordan2009} (Theorem~6.1: the maximum rank
-  of a body-and-hinge realization is $D(|V|-1) - \operatorname{def}_D(G_H)$),
-  whose deficiency $\operatorname{def}(\tilde G)$
-  is the corank of the $D$-fold graphic-matroid union $M(\tilde G)$ on
-  $(D-1)\cdot G$; that union and its Tutte--Nash-Williams tree-packing
-  characterization are exactly the body-bar / body-hinge machinery of
-  \cref{sec:body-bar,sec:body-hinge}. Rigidity ($\operatorname{def} = 0$)
-  thus matches $(\delta,\delta)$-tightness of $(\delta-1)\cdot G$, the
-  existence form of \cref{thm:body-hinge-tay} (their Corollary~6.2: rigid
-  iff $G_H$ has $D$ edge-disjoint spanning trees). The rank lemmas
-  (\cref{lem:rank-delete-vertex,lem:rank-parallel-full}) supply the
-  block-rank inputs the matching needs.
 \end{proof}

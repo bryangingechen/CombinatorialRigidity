@@ -1,9 +1,9 @@
 # Molecular Conjecture — cross-phase program plan
 
-**Status:** IN PROGRESS. Phases 17–18 complete; Phase 19 (`M(G̃)`,
-deficiency, `k`-dof) is open (see `notes/Phase19.md`); Phases 20–26
-planned. This is the program design for Phases 17–26 and the runbook
-for threading the remaining phases.
+**Status:** IN PROGRESS. Phases 17–19 complete (`M(G̃)`, deficiency,
+`k`-dof, and the def = corank bridge all green; see `notes/Phase19.md`);
+Phases 20–26 planned. This is the program design for Phases 17–26 and
+the runbook for threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
 summary + status row); this file is the lemma-level detail.
@@ -219,8 +219,9 @@ coordinatized bridge, per the user's full-GC choice.
 
 #### Phase 18 — Panel-hinge rigidity matrix `R(G,p)` (§2.2–2.4) — ✓ Complete
 
-Done; full detail in `notes/Phase18.md`, dep-graph in `molecular.tex`
-`sec:molecular-rigidity-matrix`. Built the genuine panel-hinge rigidity
+Done; full detail in `notes/Phase18.md`, dep-graph in
+`rigidity-matrix.tex` `sec:molecular-rigidity-matrix`. Built the genuine
+panel-hinge rigidity
 matrix `R(G,p)` in `Molecular/RigidityMatrix.lean` (basis-free: hinge
 constraint `S(u) − S(v) ∈ span C(p(e))` + dual-annihilator row block +
 null space `Z(G,p) = infinitesimalMotions`), the trivial-motion layer
@@ -229,48 +230,50 @@ with the `D`-dimensional / `D·|V|` numeric counts (codimension form of
 (`finrank_pinnedMotions_add_screwDim`), 5.3 parallel-hinges-full
 (`eq_of_hingeConstraint_two_parallel`), 5.2 rotation semicontinuity
 (`finrank_infinitesimalMotions_le_of_span_le`, the basis-free
-span-refinement monotonicity form — see risk #3, resolved). The one
-remaining node `prop:rigidity-matrix-prop11` (KT Prop 1.1, reconcile the
-rank form with Phase 16's `thm:body-hinge-tay`) was **deferred to Phase
-19** — its bridge `def(G̃) = corank M(G̃)` is a Phase-19 object (see the
-*Inherited from Phase 18* bullet under Phase 19 below).
+span-refinement monotonicity form — see risk #3, resolved). KT Prop 1.1
+(`prop:rigidity-matrix-prop11`, reconcile the rank form with Phase 16's
+`thm:body-hinge-tay`) was originally deferred from Phase 18 to Phase 19;
+at Phase-19 close it was **relocated forward to Phase 21+** — its
+matroidal half (`def = corank M(G̃)`) landed green in Phase 19, but its
+analytic half (`rank R(G,p) = D(|V|−1) − def(G̃)`) depends on the
+generic-rank argument (Claim 6.4) and lands with the algebraic induction
+(see the *Relocated forward* bullet under Phase 19 + the Phase 21 bullet).
+The completed `rigidity-matrix.tex` carries no red node.
 
-#### Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (§2.5, §3)
+#### Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (§2.5, §3) — ✓ Complete
 
-`D`-deficiency of a partition `def_G̃(P) = D(|P|−1) − (D−1)d_G(P)`;
-`def(G̃) = maxₚ def_G̃(P)`; `k`-dof / `0`-dof (= body-hinge rigid) /
-minimal `k`-dof (every base of `M(G̃)` meets every edge-fiber `ẽ`);
-rigid + proper rigid subgraph; circuits; 2-edge-connectivity. The
-matroid `M(G̃)` and the **def = corank bridge** (the project framing of
-JJ [15]'s rank-deficiency identity, Thm 6.1 / Cor 6.2:
-`|B| + def(G̃) = D(|V|−1)`).
+**Complete; see `notes/Phase19.md`.** Landed in `Molecular/Deficiency.lean`:
+`M(G̃)` (boundary-regime `(D,D)` count matroid, clean — risk #2 resolved),
+the `D`-deficiency `def(G̃) = maxₚ [D(|P|−1) − (D−1)d_G(P)]`, the
+`k`-dof / `0`-dof / minimal-`k`-dof hierarchy, rigid + proper rigid
+subgraphs, KT Lemmas 3.1/3.3/3.4 (matroidal-core forms), and the **full
+def = corank bridge** `|B| + def(G̃) = D(|V|−1)` (JJ [15] Thm 6.1 / Cor 6.2,
+proved in-repo axiom-free — risk #4 resolved, no axiom / no deferral).
 
-- **Key reuse:** `M(G̃)` = `(D,D)` count matroid at the boundary
-  `ℓ = 2k = D`, = the `D`-fold graphic union of Phase 13/14
-  (`unionPow_cycleMatroid` + `tutte_nash_williams`). **Confirm the
-  boundary regime `ℓ = 2k` is clean before relying on it** —
-  `CountMatroid.lean` is built for `ℓ<2k` and will *not* cover this;
-  route through the union construction instead.
-- **Inherited from Phase 18:** `prop:rigidity-matrix-prop11` (KT
-  Prop 1.1, the reconciliation of the honest rank form
-  `rank R(G,p) = D(|V|−1)` =
-  `Molecular.BodyHingeFramework.infinitesimalMotions_eq_trivialMotions_iff`
-  with Phase 16's reduction-form `thm:body-hinge-tay` /
-  `edgeMultiply_isSparse_iff`) was **deferred from Phase 18** to here:
-  its bridge is JJ [15] (Thm 6.1 / Cor 6.2)'s `def(G̃) = corank M(G̃)`, a Phase-19
-  object, so it cannot land before `M(G̃)`/deficiency. The rank-form
-  skeleton it consumes (`def:dof-generic` + the three rank lemmas
-  5.1/5.2/5.3) is all green from Phase 18. The conjecture itself needs
-  only the upper-bound half (which Phase 16 may already supply); decide
-  the prove-vs-hypothesize boundary for the [15] (Thm 6.1) generic-rank
-  half when the node lands. Blueprint node `prop:rigidity-matrix-prop11`
-  is in `sec:molecular-rigidity-matrix` (red, marked deferred).
-- Lemmas 3.1 (2-edge-conn), 3.3 (subgraph minimality via restriction),
-  3.4 (circuit ⇒ rigid subgraph) are on the Thm-4.9 critical path; 3.2
-  (not 3-edge-conn) and 3.6 (partition decomposition) are off it — 3.6
-  is needed only by Case 6.1, schedule with Phase 21.
-- New graph ops (splitting-off, edge-splitting, removal, contraction)
-  may start here or in Phase 20.
+- **Key reuse (as planned):** `M(G̃)` routed through the `D`-fold graphic
+  union of Phase 13/14 (`unionPow_cycleMatroid` + `tutte_nash_williams`),
+  **not** `CountMatroid.lean` (`ℓ<2k`). Confirmed clean by `matroidMG_indep_iff`.
+- **Relocated forward at phase close (2026-06-02):**
+  - **`prop:rigidity-matrix-prop11`** (KT Prop 1.1, the rank/reduction
+    reconciliation) → **Phase 21+**. Its matroidal half (`def = corank M(G̃)`)
+    is now green via `thm:def-eq-corank`, but its **analytic half** —
+    `rank R(G,p) = D(|V|−1) − def(G̃)` (JJ [15] Thm 6.1 geometric side, wiring
+    the rigidity-matrix rank to the matroid corank) — is a separate object
+    with no Lean yet, dependent on the generic-rank / genericity argument
+    (Claim 6.4) deferred since Phase 15–16. The node was removed from the
+    completed Phase-18 `rigidity-matrix.tex`; it gets (re)created in the
+    algebraic-induction chapter when Phase 21 opens. Lands with Claim 6.4.
+  - **Full KT 3.4** (`G[V(X)]` rigid — the tightness *equality*
+    `|X−e| = D(|V(X)|−1)`, vs. the Phase-19 matroidal-core sparse/basis
+    form) → **early Phase 20**. Now unblocked: the JJ09 reverse
+    `le_rank_add_deficiency` supplies the lower bound `|X| > D(|V(X)|−1)`
+    it waited on; still needs a vertex-induced-subgraph-from-edge-set
+    construction (no existing `Graph α β` analogue).
+  - **KT Lemma 3.5** (rigid-subgraph contraction preserves minimality —
+    Case I engine) → **early Phase 20**.
+- KT Lemmas 3.2 (not 3-edge-conn) and 3.6 (partition decomposition) remain
+  off the Thm-4.9 critical path; 3.6 is needed only by Case 6.1, schedule
+  with Phase 21.
 
 #### Phase 20 — Combinatorial induction → Theorem 4.9 (§4)
 
@@ -284,8 +287,12 @@ two-vertex double edge via splitting-off / rigid-contraction).
 - **Hard core:** 4.1/4.2 (explicit forest surgery at a degree-2 vertex
   — no existing analogue, budget the most time); 4.6 (maximal-chain /
   degree-sequence counting guaranteeing the degree-2 vertex); 4.8 (the
-  capstone, two circuit-swap arguments). 3.5 (rigid-subgraph contraction
-  preserves minimality — Case I engine) lands here or late Phase 19.
+  capstone, two circuit-swap arguments).
+- **Inherited from Phase 19** (relocated at Phase-19 close): KT Lemma 3.5
+  (rigid-subgraph contraction preserves minimality — Case I engine) and
+  the full KT 3.4 (`G[V(X)]` rigid, the tightness *equality* + a
+  vertex-induced-subgraph-from-edge-set construction; the lower bound it
+  needs is now green via `le_rank_add_deficiency`). Schedule early.
 - **Reuse:** matroid restriction/contraction + fundamental circuits
   (mathlib `Matroid.restrict`, `Matroid.fundCircuit`), the vendored
   union subsystem (`Matroid/Constructions/Union.lean`), `edgeMultiply`.
@@ -304,6 +311,13 @@ Claim 6.6). **Case II** (`k>0`, splitting): §6.3 Lemmas 6.7, 6.8
   polynomials in alg.-indep. panel coords ⇒ generic point attains max
   rank over the parametrized family"); Lemma 6.8's 1-extension rank
   lift. Rank arguments are block-triangular (reuse Phase 18 Lemma 5.1).
+- **Inherited from Phase 19** (relocated at Phase-19 close): the analytic
+  half of `prop:rigidity-matrix-prop11` (KT Prop 1.1) — `rank R(G,p) =
+  D(|V|−1) − def(G̃)` (JJ [15] Thm 6.1 geometric side), wiring the
+  rigidity-matrix rank `R(G,p)` (Phase 18) to the matroid corank
+  (`def = corank M(G̃)`, Phase 19's `thm:def-eq-corank`). It lands with
+  the Claim 6.4 generic-rank argument; (re)create the blueprint node in
+  this phase's chapter then. The matroidal half is already green.
 - Broad phase — may split Case I from Case II.
 
 #### Phase 22 — Case III, `d=3` (§6.4.1, Lemma 6.10)
@@ -390,20 +404,20 @@ Jackson–Jordán [13], conjecture-resolution to KT.
    Risk: building more abstract machinery than the coordinatized proofs
    need. Mitigation: Phase 17 builds the symbolic layer but lands a
    coordinatized bridge early so downstream phases can stay concrete.
-2. **`ℓ = 2k = D` boundary regime** (Phase 19). Confirm the project's
-   union/tree-packing covers it before relying on it; do NOT assume
-   `CountMatroid.lean` (`ℓ<2k`) applies.
+2. **`ℓ = 2k = D` boundary regime** (Phase 19). *Resolved:*
+   `matroidMG_indep_iff` confirmed the `D`-fold union + Tutte–Nash-Williams
+   covers the boundary regime cleanly; no `CountMatroid.lean` (`ℓ<2k`).
 3. **Lemma 5.2 perturbation** (Phase 18). *Resolved:* Phase 18 chose
    the basis-free span-refinement monotonicity form
    (`finrank_infinitesimalMotions_le_of_span_le`) and sidestepped
    analytic rank-semicontinuity entirely — no perturbation argument.
 4. **Externals to axiomatize vs prove.** Lemma 5.4 (cycles, [4,34]),
-   the [29] pin-a-body fact (Lemma 5.1), [15] generic-rank bridge
-   (JJ Thm 6.1 / Cor 6.2). User scope is "fully formalize" — but these are
-   cited-not-proved in KT. Re-confirm per phase whether to formalize or
-   take as a hypothesis; the conjecture (Thm 5.6) needs the generic-rank
-   bridge only for the upper bound, which the project may already supply
-   via Phase 16's `edgeMultiply_isSparse_iff`.
+   the [29] pin-a-body fact (Lemma 5.1, *proved* in Phase 18). The [15]
+   generic-rank bridge (JJ Thm 6.1 / Cor 6.2) splits: its **matroidal
+   half** `def(G̃) = corank M(G̃)` was *proved in-repo axiom-free* in
+   Phase 19 (`thm:def-eq-corank`, no deferral); its **analytic half**
+   `rank R(G,p) = D(|V|−1) − def(G̃)` lands with Claim 6.4 in Phase 21+.
+   User scope is "fully formalize"; re-confirm Lemma 5.4 per phase.
 5. **Molecule equivalence primary source** (Phase 25). Whiteley [35] is
    an unpublished preprint; anchor on Jackson–Jordán [13] (Combinatorica
    2008) for the citable result.
@@ -412,15 +426,14 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 
 ## Opening the next phase
 
-Phases 17–18 are complete and Phase 19 is open (`notes/Phase19.md`,
-`deficiency.tex` `sec:molecular-deficiency`, `Molecular/Deficiency.lean`
-— all dep-graph nodes red, the forward-mode to-do list). The molecular
-program runs **one blueprint chapter per phase** (`extensor.tex` for
-Phase 17, `rigidity-matrix.tex` for Phase 18, `deficiency.tex` for
-Phase 19 — the former single `molecular.tex` was split in the
-post-Phase-18 cleanup round, `notes/Phase18-cleanup.md` J1) and the bib
-entries ([4], [29], [15], [2], [13], [37]) are in place. To open the
-next planned phase (Phase 20), follow the top-level `CLAUDE.md` *When
+Phases 17–19 are complete (`notes/Phase19.md`, `deficiency.tex`
+`sec:molecular-deficiency`, `Molecular/Deficiency.lean` — all dep-graph
+nodes green). The molecular program runs **one blueprint chapter per
+phase** (`extensor.tex` for Phase 17, `rigidity-matrix.tex` for Phase 18,
+`deficiency.tex` for Phase 19 — the former single `molecular.tex` was
+split in the post-Phase-18 cleanup round, `notes/Phase18-cleanup.md` J1)
+and the bib entries ([4], [29], [15], [2], [13], [37]) are in place. To
+open the next planned phase (Phase 20), follow the top-level `CLAUDE.md` *When
 this commit opens a phase* protocol: create `notes/Phase20.md` from the
 `notes/CLAUDE.md` template (pull the Phase-20 detail above into its
 *Lemma checklist* + *Architectural choices*), add a **new**

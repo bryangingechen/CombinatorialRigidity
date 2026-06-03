@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–18 complete; Phase 19 in progress; Phases 20–26 planned.**
+* **Phases 1–19 complete; Phases 20–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -168,11 +168,13 @@ project; commit history is preserved with paths rewritten.
   space `⋀^k ℝ^(k+2)`, `finrank = D`), the `D` trivial motions and the
   codimension form of `rank ≤ D(|V|−1)`, and the three rank Lemmas
   5.1–5.3 (pin-a-body, parallel-hinges-full, rotation semicontinuity),
-  all green. The reconciliation with Phase 16's reduction-form Prop 1.1
-  (`prop:rigidity-matrix-prop11`) is deferred to Phase 19, whose
-  `M(G̃)`-deficiency machinery the bridge needs. `Molecular/RigidityMatrix.lean`.
+  all green — the full rank-form substrate the algebraic induction runs
+  on. The reconciliation with Phase 16's reduction-form Prop 1.1 is a
+  top-of-DAG corollary depending on the analytic generic-rank theorem;
+  it is presented with the algebraic induction (Phase 21+).
+  `Molecular/RigidityMatrix.lean`.
   See `notes/Phase18.md` and `notes/MolecularConjecture.md`.
-* **Phase 19 (in progress)** — stratum 3 of the molecular program: the
+* **Phase 19 (complete)** — stratum 3 of the molecular program: the
   matroidal substrate of the conjecture's algebraic induction
   (Katoh–Tanigawa §2.5, §3). Builds the matroid `M(G̃)` — the
   `(D,D)`-count matroid of the multiplied graph `G̃ = (D−1)·G` at the
@@ -180,10 +182,9 @@ project; commit history is preserved with paths rewritten.
   Phases 13/14 + Tutte–Nash-Williams, not the `ℓ<2k` count matroid of
   Phase 7) — the `D`-deficiency `def(G̃)`, the `k`-dof / minimal-`k`-dof
   hierarchy, rigid subgraphs (KT Lemmas 3.1/3.3/3.4), and the
-  `def(G̃) = corank M(G̃)` bridge (Jackson–Jordán 2009 Thm 6.1 / Cor 6.2)
-  that closes the reconciliation node deferred from Phase 18. Forward-mode
-  phase; the chapter `deficiency.tex` is the authoritative dep-graph.
-  `Molecular/Deficiency.lean`. See `notes/Phase19.md` and
+  `def(G̃) = corank M(G̃)` bridge (Jackson–Jordán 2009 Thm 6.1 / Cor 6.2,
+  proved in-repo axiom-free) — the matroidal half of the Phase 16
+  reconciliation. `Molecular/Deficiency.lean`. See `notes/Phase19.md` and
   `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,

@@ -25,12 +25,12 @@ combinatorial rigidity, see
 
 The Lean code is organized into phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--18 are complete (see the phase bullets below);
+Phases~1--19 are complete (see the phase bullets below);
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
 builds the genuine panel-hinge rigidity matrix on top of it, and
-\textbf{Phase~19} (in progress) builds the matroid $M(\tilde G)$,
+\textbf{Phase~19} builds the matroid $M(\tilde G)$,
 the $D$-deficiency, and the $k$-degree-of-freedom combinatorics.
 The first six
 phases formalize Laman's theorem along the Henneberg route described
@@ -51,7 +51,7 @@ the body-hinge / panel-hinge Tay--Whiteley theorem via a
 hinge-to-body-bar reduction. Phase~17 opens the
 molecular-conjecture program with the Grassmann--Cayley extensor-algebra
 layer, Phase~18 builds the genuine panel-hinge rigidity matrix
-$R(G,p)$ on it, and Phase~19 (in progress) builds its matroidal
+$R(G,p)$ on it, and Phase~19 builds its matroidal
 substrate $M(\tilde G)$, the $D$-deficiency, and the $k$-dof
 combinatorics. The per-phase breakdown:
 
@@ -199,14 +199,16 @@ combinatorics. The per-phase breakdown:
         degree-$k$ graded screw space $\bigwedge^k \R^{k+2}$ of dimension
         $D$), the $D$ trivial motions and the codimension form of
         $\operatorname{rank} \le D(|V|-1)$, and the rank Lemmas~5.1--5.3
-        --- all green. The reconciliation with the body-hinge existence
-        form of Phase~16 (\cref{prop:rigidity-matrix-prop11},
-        \cref{thm:body-hinge-tay}) is deferred to Phase~19, whose
-        $M(\tilde G)$-deficiency machinery the bridge needs. (Chapter:
+        --- all green: the full rank-form substrate the algebraic
+        induction runs on. The reconciliation with the body-hinge
+        existence form of Phase~16 (Tay--Whiteley's Proposition~1.1,
+        \cref{thm:body-hinge-tay}) is a top-of-DAG corollary depending on
+        the analytic generic-rank theorem; it is presented with the
+        algebraic induction (Phase~21+). (Chapter:
         \cref{sec:molecular-rigidity-matrix}; file:
         \texttt{Molecular/RigidityMatrix.lean}.)
   \item \textbf{The matroid $M(\tilde G)$, deficiency, and $k$-dof
-        graphs} (in progress). Stratum~3 of the molecular program
+        graphs.} Stratum~3 of the molecular program
         (Katoh--Tanigawa~\cite[\S2.5, \S3]{katohTanigawa2011}): the
         matroidal substrate of the conjecture's algebraic induction. The
         matroid $M(\tilde G)$ is the $(D,D)$-count matroid of the
@@ -215,11 +217,11 @@ combinatorics. The per-phase breakdown:
         Phases~13--14 with Tutte--Nash-Williams, not the matroidal-regime
         count matroid of Phase~7. The phase builds the $D$-deficiency
         $\operatorname{def}(\tilde G)$, the $k$-degree-of-freedom and
-        minimal-$k$-dof hierarchy, rigid subgraphs, and the bridge
+        minimal-$k$-dof hierarchy, rigid subgraphs, the structural lemmas
+        (KT 3.1, 3.3, 3.4), and the bridge
         $\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$
-        (Jackson--Jord\'an~\cite{jacksonJordan2009}), which closes the
-        reconciliation node deferred from Phase~18
-        (\cref{prop:rigidity-matrix-prop11}). (Chapter:
+        (Jackson--Jord\'an~\cite{jacksonJordan2009}) --- the matroidal
+        half of the Phase~16 reconciliation --- all green. (Chapter:
         \cref{sec:molecular-deficiency}; file:
         \texttt{Molecular/Deficiency.lean}.)
 \end{enumerate}
@@ -242,18 +244,18 @@ $k$-frame matroid as a cycle-matroid union, and Tay's body-bar theorem
 itself (\cref{thm:tay-witness}) --- and the body-hinge chapter
 (\cref{sec:body-hinge}): the hinge-to-body-bar reduction and the
 body-hinge Tay--Whiteley theorem (\cref{thm:body-hinge-tay}). With
-Phases~17--18 complete the Phase~1--18 dependency graph is green. The
+Phases~17--19 complete the Phase~1--19 dependency graph is green. The
 molecular-conjecture program (\cref{sec:molecular}, opened as Phase~17)
 runs forward-mode: its extensor-algebra section is fully green,
 culminating in \cref{lem:extensor-independence}
-(Katoh--Tanigawa~\cite{katohTanigawa2011} Lemma~2.1). Phase~18 extends
-the same chapter with the panel-hinge rigidity-matrix dep-graph
-(\cref{sec:molecular-rigidity-matrix}): its rank-matrix skeleton,
-trivial-motion layer, and three rank lemmas are green, with the single
-reconciliation node (\cref{prop:rigidity-matrix-prop11}) red, deferred
-to Phase~19. Phase~19 (in progress) opens the deficiency chapter
-(\cref{sec:molecular-deficiency}): the matroid $M(\tilde G)$, the
-$D$-deficiency, the $k$-dof hierarchy, and the
-$\operatorname{def} = \operatorname{corank}$ bridge that closes the
-deferred node --- all red, the forward-mode to-do list. Phases~20--26
-remain to be opened.
+(Katoh--Tanigawa~\cite{katohTanigawa2011} Lemma~2.1). The
+panel-hinge rigidity-matrix dep-graph
+(\cref{sec:molecular-rigidity-matrix}, Phase~18) --- its rank-matrix
+skeleton, trivial-motion layer, and three rank lemmas --- is fully
+green. The deficiency chapter (\cref{sec:molecular-deficiency},
+Phase~19) is also fully green: the matroid $M(\tilde G)$, the
+$D$-deficiency, the $k$-dof hierarchy, the structural lemmas, and the
+$\operatorname{def} = \operatorname{corank}$ bridge
+(\cref{thm:def-eq-corank}) --- the matroidal half of the Phase~16
+reconciliation. The whole Phase~1--19 dependency graph is therefore
+green. Phases~20--26 remain to be opened.
