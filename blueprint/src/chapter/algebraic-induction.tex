@@ -1605,6 +1605,9 @@ non-spanning block).}
 
 \begin{lemma}[N7b-0: a rigid realization carries a full-rank independent row family]
   \label{lem:case-II-placement-old-rows-extract}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet}
+  \leanok
   \uses{def:panel-hinge-framework, def:rigidity-matrix, def:rank-hypothesis,
         lem:rank-delete-vertex, lem:relative-screw-split}
   The \emph{producer} of the old block that the transport
@@ -1625,18 +1628,18 @@ non-spanning block).}
   contain an independent subfamily of size $D(|V(G_v^{ab})|-1)$
   ($\mathrm{Submodule.exists\_fun\_fin\_finrank\_span\_eq}$ on the rigidity-row
   span, re-indexed into a $\mathrm{panelRow}$-index subset as in
-  \cref{lem:case-II-placement-new-rows}'s honest form). \emph{Red} (Phase~21b
-  realization layer): this rank-equals-codimension forward direction is the
-  genuine deficit between ``rigid on a set'' and ``carries that many independent
-  rows'' --- it is \emph{not} discharged by the transport
-  \cref{lem:case-II-placement-old-rows} (which only carries an
-  \emph{already-witnessed} independent family across the graph swap) nor by the
-  graph-forest existence \cref{def:rigidity-matrix}
+  \cref{lem:case-II-placement-new-rows}'s honest form). This
+  rank-equals-codimension forward direction is the genuine deficit between
+  ``rigid on a set'' and ``carries that many independent rows'' --- it is
+  \emph{not} discharged by the transport \cref{lem:case-II-placement-old-rows}
+  (which only carries an \emph{already-witnessed} independent family across the
+  graph swap) nor by the graph-forest existence \cref{def:rigidity-matrix}
   ($\mathrm{exists\_independent\_rigidityRows\_of\_forest}$, which sources rows
   from a transversal-hinge spanning forest, of count bounded by the forest size
   rather than the full $D(|V|-1)$ unless the block is itself rigid).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rank-delete-vertex, lem:relative-screw-split}
   The realization is rigid on $V(G_v^{ab})$, so $\mathrm{pinnedMotionsOn}\,
   V(G_v^{ab})$ pins all residual freedom: its dimension is

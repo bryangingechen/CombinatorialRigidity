@@ -2847,6 +2847,129 @@ theorem PanelHingeFramework.exists_independent_panelRow_transport {α β : Type*
           ∘ f) := funext hrow
   rw [he]; exact h
 
+/-- **A framework rigid on its vertex set pins the whole free residual** (N7b-0 infra; the
+dimension half of `lem:case-II-placement-old-rows-extract`). If `F` is infinitesimally rigid on its
+own vertex set `V(G)` (`hrig`, the realization motive `IsInfinitesimallyRigidOn`) and `V(G)` is
+nonempty, then the null space has exactly the relative full dimension
+`dim Z(G,p) = D·(|V(G)ᶜ| + 1)` — the `D·|V(G)ᶜ|` ambient free dimensions of the isolated bodies
+(N1, `finrank_pinnedMotionsOn_vertexSet`) plus the `D` trivial-motion dimensions of the rigid block.
+This is the forward converse of the relative-count adapter
+`isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (N3): N3 turns the `≤`-count *into* rigidity;
+here rigidity forces the *equality*. The proof equates the single-body pin `pinnedMotions v₀` with
+the block pin `pinnedMotionsOn V(G)` (rigidity makes a `v₀`-vanishing motion vanish on all of
+`V(G)`; the reverse is `pinnedMotionsOn_mono`), then reads the block-pin dimension off N1 and the
+pin-a-body `+D` identity `finrank_pinnedMotions_add_screwDim`. -/
+theorem BodyHingeFramework.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet
+    [Finite α] (F : BodyHingeFramework k α β) (hne : F.graph.vertexSet.Nonempty)
+    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
+    Module.finrank ℝ F.infinitesimalMotions = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  obtain ⟨v₀, hv₀⟩ := hne
+  haveI : Nonempty α := ⟨v₀⟩
+  -- Rigidity equates the single-body pin at `v₀` with the block pin on `V(G)`.
+  have hpin : F.pinnedMotions v₀ = F.pinnedMotionsOn F.graph.vertexSet := by
+    rw [← F.pinnedMotionsOn_singleton]
+    refine le_antisymm (fun S hS => ?_)
+      (F.pinnedMotionsOn_mono (Set.singleton_subset_iff.2 hv₀))
+    rw [F.mem_pinnedMotionsOn] at hS ⊢
+    refine ⟨hS.1, fun w hw => ?_⟩
+    rw [hrig S hS.1 w hw v₀ hv₀, hS.2 v₀ rfl]
+  -- `dim Z = finrank (pinnedMotions v₀) + D = D·|V(G)ᶜ| + D`.
+  have hadd := F.finrank_pinnedMotions_add_screwDim v₀
+  rw [hpin, F.finrank_pinnedMotionsOn_vertexSet] at hadd
+  rw [Nat.mul_succ, ← hadd]
+
+/-- **N7b-0: a rigid realization carries a full-rank independent `panelRow` subfamily**
+(`lem:case-II-placement-old-rows-extract`; Katoh–Tanigawa 2011 §6.3, Lemma 6.8). The *producer* of
+the old block that the transport `exists_independent_panelRow_transport` (N7b-2) consumes: from the
+inductive realization of `G_v^{ab}` — a panel-hinge framework infinitesimally rigid on its own
+vertex set `V(F.graph)` (`hrig`, the realization motive `IsInfinitesimallyRigidOn`), all of whose
+hinges are transversal (`hne`) — extract an *index subset* `s ⊆ E × ⋀^k-pairs` of size
+`Nat.card s = D(|V(F.graph)|−1)` whose *actual* `panelRow ends`-subfamily is linearly independent,
+in the honest index-subfamily form `exists_independent_panelRow_subfamily_of_edge` supplies for the
+new block.
+
+This is the **forward converse** of the relative-count adapter
+`isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (N3): that node turns a witnessed corank
+`#s ≥ D(|V|−1)` *into* rigidity on `V(G)`; this node runs the implication backward — rigidity on
+`V(F.graph)` forces `dim Z(G,p) = D·(|V(G)ᶜ| + 1)`
+(`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`), so the rigidity-row span,
+the kernel-complement of `Z` (`infinitesimalMotions_eq_dualCoannihilator` + the complementary-
+dimension identity `Subspace.finrank_dualCoannihilator_eq`), has dimension `D|V| − dim Z =
+D(|V|−1)`. Under transversal hinges the panel rows span that whole space
+(`span_panelRow_eq_rigidityRows`), so `Submodule.exists_fun_fin_finrank_span_eq` extracts an
+independent subfamily of that many *actual* panel rows; re-indexing each by its
+`(edge, ⋀^k-pair)` packages them as a genuine `panelRow`-index subset (injective since independent),
+exactly as `exists_independent_panelRow_subfamily_of_edge`'s honest form does per edge.
+
+It is **not** discharged by the transport `exists_independent_panelRow_transport` (which only
+carries an *already-witnessed* family across the graph swap) nor by the forest-existence
+`exists_independent_rigidityRows_of_forest` (forest-count rows, bounded below the full `D(|V|−1)`
+unless the block is rigid). This rank-equals-codimension forward direction is the genuine deficit
+between "rigid on a set" and "carries that many independent rows". -/
+theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn
+    [Finite α] [Finite β] (F : BodyHingeFramework k α β) {ends : β → α × α}
+    (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2)
+    (hne : ∀ e, F.supportExtensor e ≠ 0)
+    (hnev : F.graph.vertexSet.Nonempty)
+    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet) :
+    ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      Nat.card s = screwDim k * (F.graph.vertexSet.ncard - 1) ∧
+      LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set T := Set.range (F.panelRow ends) with hT
+  haveI : Module.Finite ℝ (Submodule.span ℝ T) :=
+    Module.Finite.span_of_finite ℝ (Set.finite_range _)
+  -- The panel-row span has dimension `D|V| − dim Z = D(|V| − 1)` (rigid block).
+  have hZ : Module.finrank ℝ F.infinitesimalMotions
+      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
+    F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet hnev hrig
+  have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnev
+  have hsplit : screwDim k * Fintype.card α
+      = screwDim k * F.graph.vertexSet.ncard + screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
+    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  have hfin : Module.finrank ℝ (Submodule.span ℝ T)
+      = screwDim k * (F.graph.vertexSet.ncard - 1) := by
+    -- `span (range panelRow) = span rigidityRows`, the kernel-complement of `Z`.
+    rw [hT, F.span_panelRow_eq_rigidityRows hends hne]
+    set Φ : Subspace ℝ (Module.Dual ℝ (α → ScrewSpace k)) := Submodule.span ℝ F.rigidityRows with hΦ
+    -- `finrank Φ + finrank Φ.dualCoannihilator = D|V|`, and `Φ.dualCoannihilator = Z`.
+    have hcompl : Module.finrank ℝ Φ + Module.finrank ℝ Φ.dualCoannihilator
+        = Module.finrank ℝ (α → ScrewSpace k) := by
+      rw [Subspace.finrank_dualCoannihilator_eq, Subspace.finrank_add_finrank_dualAnnihilator_eq,
+        Subspace.dual_finrank_eq]
+    rw [← F.infinitesimalMotions_eq_dualCoannihilator, hZ,
+      BodyHingeFramework.finrank_screwAssignment, Nat.mul_succ] at hcompl
+    rw [Nat.mul_sub, Nat.mul_one]
+    omega
+  -- Extract a `Fin (D(|V| − 1))`-indexed independent subfamily of *actual* panel rows.
+  obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ T
+  choose idx hidx using hfmem
+  -- Re-index each chosen row by its `(edge, ⋀^k-pair)`; injective since the rows are independent.
+  set j : Fin (Module.finrank ℝ (Submodule.span ℝ T))
+      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :=
+    fun i => idx i with hj
+  have hjinj : Function.Injective j := by
+    intro a b hab
+    rw [hj] at hab
+    simp only at hab
+    have : f a = f b := by rw [← hidx a, ← hidx b, hab]
+    exact hfindep.injective this
+  refine ⟨Set.range j, ?_, ?_⟩
+  · rw [Nat.card_range_of_injective hjinj, Nat.card_eq_fintype_card, Fintype.card_fin, hfin]
+  · -- The `range j`-subfamily of `panelRow` is `f` reindexed across `Equiv.ofInjective j`.
+    have hreindex : (fun i : Set.range j => F.panelRow ends (i : β × _ × _))
+        ∘ (Equiv.ofInjective j hjinj) = f := by
+      funext a
+      simp only [Function.comp_apply, Equiv.ofInjective_apply]
+      rw [hj]
+      exact hidx a
+    have hindep2 :=
+      hfindep.comp (Equiv.ofInjective j hjinj).symm (Equiv.ofInjective j hjinj).symm.injective
+    rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
+    exact hindep2
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by

@@ -3,10 +3,10 @@
 **Status:** in progress (opened 2026-06-03; realization layer re-planned
 2026-06-04; node-decomposition re-plan 2026-06-06; N7 decomposed into glue +
 placement 2026-06-04; N7b placement decomposed into N7b-1/2/3 2026-06-04; N7b-1/2/3 GREEN
-2026-06-04; N7b-1 honest index-subfamily bridge GREEN 2026-06-04; **N7b re-plan 2026-06-04 —
-recon found the N7b assembly blocked on a missing old-block *producer* (N7b-0), the prior
-"assemble N7b now" hand-off was wrong; N7b-0 added RED, is now the next concrete commit**).
-Cold-start-ready hand-off below.
+2026-06-04; N7b-1 honest index-subfamily bridge GREEN 2026-06-04; N7b re-plan surfaced the missing
+old-block producer N7b-0; **N7b-0 `lem:case-II-placement-old-rows-extract` GREEN 2026-06-04 — all
+four N7b sub-nodes green; next concrete commit is the N7b assembly**). Cold-start-ready hand-off
+below.
 
 Sub-phase scoped out of Phase 21 (user decision, risk #4/#7) — the **analytic
 sibling** of the Phase-21a meet. Two halves: (1) the **genericity device**
@@ -35,29 +35,27 @@ the rank-side accounting iffs (`lem:case-I` / `lem:case-II`, green-modulo-21b),
 the **B0 keystone** (`lem:rows-polynomial-in-normals` — the device closure on the
 *varying* panel family), the Case-I splice **glue** (`lem:case-I-splice-seed`), the
 **`V(G)`-relative count bridge N1–N3** (`lem:relative-screw-split` /
-`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`), and the **three Case-II
-placement sub-nodes N7b-1/N7b-2/N7b-3** (`lem:case-II-placement-new-rows` — a transversal hinge's
-`D−1` independent panel rows, now also in the **honest index-subfamily form**
-`exists_independent_panelRow_subfamily_of_edge` — an actual `panelRow ends`-index-subset of size
-`D−1`, the honesty-gate input N7a wants; `lem:case-II-placement-old-rows` — the inductive rows'
-`ofNormals` graph-swap transport; `lem:case-II-placement-block-independent` — the abstract pin-a-body
-column split joining the two blocks) are all green and axiom-clean {propext, Classical.choice,
-Quot.sound}. (Authoritative inventory: the blueprint dep-graph. Per-commit history: *Completed
-items* in the Hand-off.)
+`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`), and the **four Case-II
+placement sub-nodes N7b-0/N7b-1/N7b-2/N7b-3** (`lem:case-II-placement-old-rows-extract` — the old-block
+*producer* `exists_independent_panelRow_subfamily_of_rigidOn`: rigid-on-`V` ⇒ `D(|V|−1)` independent
+actual panel rows, the forward converse of N3; `lem:case-II-placement-new-rows` — a transversal
+hinge's `D−1` independent panel rows, also in the **honest index-subfamily form**
+`exists_independent_panelRow_subfamily_of_edge`; `lem:case-II-placement-old-rows` — the inductive
+rows' `ofNormals` graph-swap transport; `lem:case-II-placement-block-independent` — the abstract
+pin-a-body column split joining the two blocks) are all green and axiom-clean {propext,
+Classical.choice, Quot.sound}. (Authoritative inventory: the blueprint dep-graph. Per-commit
+history: *Completed items* in the Hand-off.)
 
-**Re-plan (2026-06-04, this commit — recon/decomposition, blueprint + notes only).** A scrutiny
-pass before building the N7b assembly found the prior hand-off **overstated readiness** (process
-lesson (d): "cross-check the actual statement, not the name"). The three green N7b sub-nodes are
-real but they presuppose data they cannot produce: N7b-2 (`exists_independent_panelRow_transport`)
-*transports* an old-block independent family across the graph swap but **takes it as a hypothesis
-`hindep`** — and **nothing produces** the `D(|V(G)|−2)` independent old rows from the inductive
-`HasFullRankRealization k (G.splitOff …)` (= `IsInfinitesimallyRigidOn (V(G)∖{v})`). That extraction
-— "rigid on `s` ⇒ the `s`-rigidity rows carry `D(|s|−1)` independent rows" — is the **forward
-converse of N3** and **does not exist** in the codebase (`exists_independent_rigidityRows_of_forest`
-gives forest-count rows, not the full `D(|V|−1)` unless the block is itself rigid). Added as the new
-RED producer node **N7b-0 `lem:case-II-placement-old-rows-extract`**; **the N7b assembly is blocked
-on it.** The functional-vs-`panelRow` honesty gate the prior hand-off flagged is genuinely resolved
-for the *new* block (N7b-1 honest form); the deficit is the *old* block's producer.
+**N7b-0 (the old-block producer) LANDED GREEN (2026-06-04, this commit).**
+`BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn`: from a framework rigid on its
+own vertex set `V(F.graph)` (the realization motive, with transversal hinges) extract a
+`panelRow`-index subset of size `D(|V|−1)` whose actual subfamily is independent — the **forward
+converse of N3** (rigid-on-`V` ⇒ the dimension equality `dim Z = D·(|Vᶜ|+1)`, so `rank R = D(|V|−1)`,
+hence that many independent rows from the spanning panel-row family). This was the genuine deficit
+the prior recon surfaced (N7b-2 only *transports* an already-witnessed family; nothing *produced* the
+old block). **With N7b-0 green, all four N7b sub-nodes (N7b-0/1/2/3) are green; the remaining red is
+the N7b assembly** (pick `q₀`/`s`, then one-line N7a∘N7b). The functional-vs-`panelRow` honesty gate
+is fully resolved (both blocks now have honest index-subfamily producers).
 
 **Remaining: the realization producers, re-planned 2026-06-06** into the ordered
 node list in the Hand-off. Three forward facts shape the plan:
@@ -120,10 +118,10 @@ per-node detail.
 - [ ] N7b `lem:case-II-realization-placement` — construct the seed `(q₀, s)` for the 1-extension
   across the edge substitution (KT 6.12). The genuine geometry; feeds N7a. **Decomposed
   2026-06-04** into buildable sub-nodes (blueprint, mirrors the Case-I placement split).
-  **Re-planned 2026-06-04:** a recon for the assembly found the old-block sub-node was only a
-  *transport* (N7b-2 takes its independent input as a hypothesis `hindep`) — nothing **produced**
-  the `D(|V(G)|−2)` independent old rows from the inductive rigidity. Added the missing producer
-  **N7b-0** (RED) below; **N7b is blocked on N7b-0** (build N7b-0 first, then assemble):
+  **All four sub-nodes N7b-0/1/2/3 are now GREEN** (the producer N7b-0 landed 2026-06-04); **the
+  remaining red is the N7b assembly** — pick `q₀`/`s` (= inductive normals on `G−v` + `v`'s
+  general-position normal), get the old block from N7b-0 (extract on `G_v^{ab}`) transported by
+  N7b-2 to `G`, the new block from N7b-1, join via N7b-3, feed to N7a:
   - [x] N7b-1 `lem:case-II-placement-new-rows` — **GREEN 2026-06-04**. A transversal hinge `e=uv`
     incident to `v` gives `D−1` independent rigidity rows, each in *that edge's* panel-row span
     (`exists_independent_panelRow_of_edge`; the per-edge span identity `span_panelRow_edge_eq` +
@@ -154,16 +152,18 @@ per-node detail.
     terms vanish, forcing new coeffs by `hnewpin`; residual forces old coeffs by `holdindep`.
     Mirrors `linearIndependent_hingeRow_star`; count-agnostic (the `D(|V(G)|−1)` total is N7b's
     job, satisfiable from N7b-1's `D−1` + N7b-2's `D(|V(G)|−2)`).
-  - [ ] **N7b-0 `lem:case-II-placement-old-rows-extract` — the genuine missing producer (NEW, RED).**
-    *Produce* the old block: from the inductive realization's rigidity on `V(G_v^{ab}) = V(G)∖{v}`,
-    extract `D(|V(G)|−2)` independent **actual** `panelRow` rows. This is the **forward converse of
-    N3** (`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`): rigid-on-`s` ⇒ `dim Z = D(|α∖s|+1)`
-    (N1 `finrank_pinnedMotionsOn_vertexSet` + `finrank_pinnedMotions_add_screwDim`) ⇒ `rank R =
-    D(|s|−1)` ⇒ the rigidity-row span has that finrank ⇒ `Submodule.exists_fun_fin_finrank_span_eq`
-    extracts that many independent rows; re-index into a `panelRow`-index subset as in N7b-1's honest
-    form. **NOT** discharged by N7b-2 (transport only carries an *already-witnessed* family) nor by
-    `exists_independent_rigidityRows_of_forest` (forest-count, not the full `D(|V|−1)` unless the
-    block is itself rigid). This is the deficit the prior hand-off mislabelled "all sub-nodes green".
+  - [x] **N7b-0 `lem:case-II-placement-old-rows-extract` — GREEN 2026-06-04.** The genuine
+    producer. `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn`: a framework rigid
+    on its own vertex set `V(F.graph)` (the motive), with transversal hinges, carries a `panelRow`-index
+    subset of size `D(|V|−1)` whose actual subfamily is independent. The **forward converse of N3**:
+    the dimension half `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` (rigid-on-`V`
+    ⇒ `pinnedMotions v₀ = pinnedMotionsOn V`, so `dim Z = D·|Vᶜ| + D` by N1 +
+    `finrank_pinnedMotions_add_screwDim`); then `rank R = finrank (span rigidityRows) = D|V| − dim Z =
+    D(|V|−1)` (`span_panelRow_eq_rigidityRows` + the complementary `Subspace.finrank_dualCoannihilator_eq`
+    on `Z = (span rigidityRows).dualCoannihilator`); `Submodule.exists_fun_fin_finrank_span_eq` extracts
+    that many independent actual panel rows, `Equiv.ofInjective`-reindexed into the index subset like
+    N7b-1's honest form. Stated on the `G_v^{ab}` framework directly (`s = V` is its own vertex set), so
+    no N1-generalization needed — feed N7b-2's transport. Axiom-clean {propext, Classical.choice, Quot.sound}.
 - [ ] N7 `lem:case-II-realization` — compose N7a (glue) + N7b (placement). Discharges `hsplit`.
 - [ ] N4 `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction bridge; gates Case I.
 - [ ] N5 `lem:case-I-splice-placement` — the splice geometry (decompose first).
@@ -232,14 +232,13 @@ are **retained** (blueprint `lem:pinned-motions-on-rank-bound`).
 - **N1–N3 (the `V(G)`-relative count bridge) is GREEN** (landed 2026-06-04) —
   adapted the device's absolute count to `IsInfinitesimallyRigidOn V(G)` via mathlib
   `LinearMap.iInfKerProjEquiv` + the green block-pin bricks.
-- **N7b-0 (`lem:case-II-placement-old-rows-extract`, the old-block producer) is the next build.**
-  The forward converse of N3 — rigid-on-`s` ⇒ the `s`-rigidity rows carry `D(|s|−1)` independent
-  rows. Build-shaped from existing bricks (N1 + `finrank_pinnedMotions_add_screwDim` +
-  `finrank_screwAssignment` + `Submodule.exists_fun_fin_finrank_span_eq`); the one thing to confirm
-  /locate is the row-span = `D|V| − dim Z` identity (the `dualCoannihilator` dual). Cleanest to
-  extract on the `G_v^{ab}` framework directly (its `V = s`) then transport (N7b-2) — see the
-  Hand-off "Next concrete commit" for the skeleton + the `s ≠ V(F.graph)` watch. **Then the N7b
-  assembly** (was mislabelled "next commit" by the prior hand-off).
+- **N7b-0 (`lem:case-II-placement-old-rows-extract`, the old-block producer) is GREEN** (landed
+  2026-06-04). The row-span = `D|V| − dim Z` identity was found in the codebase: `Z =
+  (span rigidityRows).dualCoannihilator` (`infinitesimalMotions_eq_dualCoannihilator`) + the
+  complementary `Subspace.finrank_dualCoannihilator_eq` / `…_dualAnnihilator_eq` (already used by
+  the affine-path rank engine in `Mathlib/.../Rank.lean`). Stated on the `G_v^{ab}` framework
+  directly (`s = V(F.graph)`), so the `s ≠ V(F.graph)` watch dissolved — no N1 generalization
+  needed; feed N7b-2's transport. **The N7b assembly is now the next concrete commit.**
 - **N4 (graph↔matroid contraction-minimality bridge) gates Case I.**
   `(rigidContract).IsMinimalKDof` is not built (Phase-20 carry-forward 1,
   `Induction.lean:2956–2961`); the matroid side is green. Build-shaped but
@@ -333,36 +332,30 @@ hinge an *index subset* `s ⊆ {e}×pc×pc` of size `D−1` whose actual `panelR
 independent — via `Submodule.exists_fun_fin_finrank_span_eq` on the `(D−1)`-dim per-edge span +
 `Equiv.ofInjective` re-indexing. No functional-vs-`panelRow` laundering remains on the new block.
 
-**Next concrete commit: N7b-0 `lem:case-II-placement-old-rows-extract`** — the genuine missing
-producer for the old block (this commit's recon found it absent; the prior "assemble N7b now"
-hand-off was wrong). Statement: a panel-hinge framework `F` with `F.IsInfinitesimallyRigidOn s`
-(`s = V(G_v^{ab}) = V(G)∖{v}`, `s.Nonempty`) carries a `panelRow`-index subset of size `D(|s|−1)`
-whose actual `panelRow`-subfamily is linearly independent. Proof skeleton (forward converse of N3):
-1. Rigid-on-`s` ⇒ `pinnedMotionsOn s` pins all residual freedom; `finrank (pinnedMotionsOn s) =
-   D·|sᶜ|` (N1 `finrank_pinnedMotionsOn_vertexSet`, **but stated for `s = V(F.graph)`** — generalize
-   it to an arbitrary rigid set `s`, or apply it after a `withGraph`/relabel so `V = s`). With the
-   single-body pin `finrank_pinnedMotions_add_screwDim` this gives `dim Z = D + D·|sᶜ| =
-   D·(|α|−|s|+1)`, hence `rank R = D·|α| − dim Z = D·(|s|−1)` (`finrank_screwAssignment`).
-2. `dim (span rigidityRows) = rank R = D·(|s|−1)` (the row span is the dual of `Z`;
-   `finrank_dualCoannihilator`-style identity — confirm/locate the row-span = `D|V| − dim Z` bridge,
-   else build it). Then `Submodule.exists_fun_fin_finrank_span_eq` on `span rigidityRows` extracts an
-   independent subfamily of `D·(|s|−1)` actual rows; re-index into a `panelRow`-index subset exactly
-   as N7b-1's honest form (`Equiv.ofInjective` over the `⋀^k`-pair).
-**Watch:** step 1's `s` ≠ `V(F.graph)` in general (the rigid set `s` is the inductive subgraph's
-vertex set, the framework sits on `G`); N1 as stated is `s = V(F.graph)`-specific, so either
-generalize N1 to a hypothesis `IsInfinitesimallyRigidOn s` for arbitrary `s`, or extract on the
-`G_v^{ab}` framework directly (where `s = V(G_v^{ab})` *is* its vertex set) and feed N7b-2's
-transport. The latter is cleaner — extract on `ofNormals G_v^{ab} …` (its `V = s`), then N7b-2
-carries the index subset to `G`.
+**N7b-0 `lem:case-II-placement-old-rows-extract` is GREEN (landed 2026-06-04, this commit).**
+`BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn`: a framework rigid on its own
+vertex set `V(F.graph)` (the motive `IsInfinitesimallyRigidOn`), with transversal hinges (`hne`) and
+an `ends`-link selector (`hends`), carries a `panelRow`-index subset of size `D(|V|−1)` whose actual
+`panelRow ends`-subfamily is independent — the forward converse of N3. Two-part build:
+(1) the dimension half `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` — rigid-on-`V`
+makes `pinnedMotions v₀ = pinnedMotionsOn V` (a `v₀`-vanishing motion is constant on `V` ⇒ vanishes
+on `V`; reverse is `pinnedMotionsOn_mono`), so `dim Z = D·|Vᶜ| + D` (N1 `finrank_pinnedMotionsOn_vertexSet`
++ `finrank_pinnedMotions_add_screwDim`); (2) `rank R = finrank (span rigidityRows) = D|V| − dim Z =
+D(|V|−1)` (the row-span = codim-`Z` identity: `Z = (span rigidityRows).dualCoannihilator` +
+`Subspace.finrank_dualCoannihilator_eq`), `span (range panelRow) = span rigidityRows` under
+transversality (`span_panelRow_eq_rigidityRows`), then `Submodule.exists_fun_fin_finrank_span_eq`
++ `Equiv.ofInjective`-reindex as N7b-1's honest form. **The `s ≠ V(F.graph)` watch dissolved** by
+stating it on the `G_v^{ab}` framework directly (`s = V` is its own vertex set) and feeding N7b-2's
+transport — no N1 generalization. Axiom-clean {propext, Classical.choice, Quot.sound}.
 
-**Then the N7b assembly** (now unblocked): seed `q₀` = inductive normals on `G−v` + `v`'s
-general-position normal (N7b-1's `supportExtensor_ne_zero_of_isGeneralPosition`); old block from
-N7b-0 (extract on `G_v^{ab}`) transported by N7b-2 to `s_old ⊆ E(G−v)×pc×pc`; new block `s_new` from
-N7b-1; join the disjoint `s_new ∪ s_old` (size `D(|V(G)|−1)`) via N7b-3 (new as `rn` = functionals
-of `v`'s screw, old as `ro` reading 0 at the `v`-column). **Remaining watch (unchanged):** N7b-3 is
-`Sum.elim rn ro`-indexed; reconcile with the `Set`-union `panelRow`-subfamily via
-`Sum (↥s_new) (↥s_old) ≃ ↥(s_new ∪ s_old)` under disjointness. Then feed to N7a and N7
-(one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
+**Next concrete commit: the N7b assembly** (now unblocked, all four sub-nodes green): seed `q₀` =
+inductive normals on `G−v` + `v`'s general-position normal (N7b-1's
+`supportExtensor_ne_zero_of_isGeneralPosition`); old block by N7b-0 (extract on `G_v^{ab}`)
+transported by N7b-2 to `s_old ⊆ E(G−v)×pc×pc`; new block `s_new` by N7b-1; join the disjoint
+`s_new ∪ s_old` (size `D(|V(G)|−1)`) via N7b-3 (new as `rn` = functionals of `v`'s screw, old as `ro`
+reading 0 at the `v`-column). **Watch:** N7b-3 is `Sum.elim rn ro`-indexed; reconcile with the
+`Set`-union `panelRow`-subfamily via `Sum (↥s_new) (↥s_old) ≃ ↥(s_new ∪ s_old)` under disjointness.
+Then feed to N7a and N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
 
 **The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
 (`exists_good_realization_ofParam`, green) gives the *absolute* codimension bound
@@ -378,10 +371,9 @@ of `v`'s screw, old as `ro` reading 0 at the `v`-column). **Remaining watch (unc
   at a singleton block `{v₀}` + N1 dimension-match (`finrank_pinnedMotions_add_screwDim`).
 
 Then, in order:
-1. **N7b `lem:case-II-realization-placement`**: N7b-0 (RED, the missing producer — **next concrete
-   commit**) → N7b-1 (GREEN) → N7b-2 (GREEN) → N7b-3 (GREEN) → N7b-assembly (blocked on N7b-0; see
-   the "Next concrete commit" detail above for the N7b-0 statement + proof skeleton and the assembly
-   plan) → **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
+1. **N7b `lem:case-II-realization-placement`**: N7b-0/1/2/3 all GREEN → **N7b-assembly (next concrete
+   commit** — pick `q₀`/`s`, see the "Next concrete commit" detail above for the assembly plan) →
+   **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
 2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
    matroid-side `contraction_isMinimalKDof` (`Induction.lean:1998`) + a
@@ -422,6 +414,13 @@ already-witnessed independent family, and the inductive-rigidity → independent
 forward converse of N3) does not exist in the codebase. Added the new RED node **N7b-0
 `lem:case-II-placement-old-rows-extract`** as the next concrete commit; wired into N7b-2 / the N7b
 assembly `\uses`.
+**N7b-0 `lem:case-II-placement-old-rows-extract` GREEN — 2026-06-04** (this commit):
+`exists_independent_panelRow_subfamily_of_rigidOn` + the dimension half
+`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`; the old-block producer (forward
+converse of N3), all built from existing bricks (N1, `finrank_pinnedMotions_add_screwDim`,
+`infinitesimalMotions_eq_dualCoannihilator` + `Subspace.finrank_dualCoannihilator_eq`,
+`span_panelRow_eq_rigidityRows`, `Submodule.exists_fun_fin_finrank_span_eq`). All four N7b sub-nodes
+green; next is the N7b assembly.
 Per-node detail in the blueprint dep-graph.
 
 **Process lessons (don't repeat).**
