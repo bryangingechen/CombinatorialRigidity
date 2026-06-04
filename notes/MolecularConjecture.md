@@ -427,46 +427,79 @@ the consumers `\uses` it.
   `MvPolynomial.funext`. Landed as four mirror bricks (the
   `exists_…_polynomial` family); the device statement is rebuilt on them.
   Bottoms (for Case III's share) on Lemma 2.1 (Phase 17).
-- **Device GREEN; realization layer re-planned (2026-06-04).**
-  `lem:genericity-device` (multivariate Claim 6.4) landed green. Two spikes
-  then found (i) the realization *motive* was the *absolute* null-space
-  rigidity `dim Z = D` over the ambient body type `α`, **unsatisfiable** for
-  the non-spanning inductive subgraphs (verified: an isolated body is a free
-  motion); and (ii) the Case-I closure carrier took unsatisfiable
-  `withGraph`-subgraph-rigid hypotheses. Fix (user decision): carry the motive
-  in the `V(G)`-relative **rank form** `rank R = D(|V(G)|−1)`. The realization
-  spine (`def:rank-hypothesis`, base, `thm:theorem-55`, the case iffs, Prop 1.1)
-  is re-stated red against it; the producers (B0 `lem:rows-polynomial-in-normals`,
-  `lem:case-I-splice-seed`, `lem:case-I-realization`, `lem:case-II-realization`)
-  are the genuine device-direct build. Ordered single-commit hand-off in
-  `notes/Phase21b.md`. Lessons: `DESIGN.md` *Realization motive must be
-  V(G)-relative* + *Forward-mode reduction chains*.
+- **Phase 21b COMPLETE (closed 2026-06-04).** `lem:genericity-device`
+  (multivariate Claim 6.4) + the genericity-free accounting iffs + the
+  `V(G)`-relative count bridges (N1–N3) + the reusable row/glue infra
+  (N7b-0/1/2/3, the device-closure glue) are green and axiom-clean. The
+  motive is `V(G)`-relative (`rank R = D(|V(G)|−1)`); the absolute
+  null-space form was unsatisfiable for non-spanning inductive subgraphs
+  (`DESIGN.md` *Realization motive must be V(G)-relative*).
+- **Realization producers re-scoped to Phases 22–23** (math-first pass vs.
+  KT §6.2–6.3; `notes/Phase21b.md` *Finding A/B*). The `theorem_55.hsplit`
+  branch (k=0 reducible-vertex split) is KT **Case III**, not Case II: KT's
+  eq. (6.12) degenerate placement is one row short of full rank for k=0 and
+  needs the Lemma 6.10/6.13 redundant-edge row. Only Case I (proper rigid
+  subgraph, §6.2 splice) reaches full rank. So both producers
+  (`lem:case-I-realization`, `lem:case-II-realization`) live with the
+  realization layer in 22–23; `thm:theorem-55` and
+  `prop:rigidity-matrix-prop11` stay green-modulo-22–23 (awaiting the
+  producers + the genericity-free `hub` partition brick). Lessons:
+  `DESIGN.md` *Constructibility recon before scheduling a producer build*
+  + *Phase Case-naming must match KT's k-bookkeeping*.
 - **Also consumed by Phases 22–23** (Case III's candidate-framework
-  genericity, Claims 6.11/6.12) — building it as its own sub-phase pays
+  genericity, Claims 6.11/6.12) — building it as its own sub-phase paid
   off there too.
-- Current state, lemma inventory, and the three-item hand-off live in
-  `notes/Phase21b.md`; the live node list is `algebraic-induction.tex`
-  (`sec:molecular-algebraic-induction-genericity`).
+- Final state + the KT math for both producers (Finding A/B) + the 22–23
+  hand-off live in `notes/Phase21b.md`.
 
-#### Phase 22 — Case III, `d=3` (§6.4.1, Lemma 6.10)
+#### Phase 22 — Realization layer (Case I + Case III at `d=3`) (§6.2, §6.4.1)
 
-The crux. `k=0`, 2-edge-connected, no proper rigid subgraph: a single
-candidate is one row short, so build `D` candidates and show one is
-rigid. At `d=3`: three candidates `(G,p₁),(G,p₂),(G,p₃)`.
+Opens the realization layer re-scoped out of Phase 21b — the Theorem-5.5
+case producers the genericity device feeds. Two tracks; the first is the
+tractable entry point. (Math for both worked out in `notes/Phase21b.md`
+*Finding A/B*; the green Phase-21b infra — device, count bridge, N7b row
+sub-nodes, splice/union glue — feeds them.)
 
-- **Claim 6.11** (combinatorial↔linear bridge): `R(G_v^{ab},q)` has a
-  redundant `ab`-row, via Lemma 4.3(ii) (some base uses `< D−1` copies
-  of `ab`) + the induction hypothesis. The single hardest
-  *non-linear-algebra* step — wires `M(G̃_v^{ab})` to the row matroid
-  of `R`.
-- **Claim 6.12** (extensor-span genericity): if all candidates fail, a
-  nonzero `r ∈ ℝᴰ` is orthogonal to all extensors on `d+1` distinct
-  generic panels, which by **Lemma 2.1** (Phase 17) span `ℝᴰ` —
-  contradiction. The degree-2 condition forces all candidates to test
-  the *same* `r` (eq. 6.44).
-- ~12 pages, the single largest proof in the paper. Consider an
-  abstracted "candidate normal form" lemma to avoid repeating the
-  row-operation derivation three times.
+**Track A — Case I producer (full-rank, KT §6.2).** Independent of Case III;
+reaches full `D(|V|−1)` with no shortfall (the contracted vertex's two
+boundary hinges give `+D` via Lemma 5.3 / the splice). Nodes:
+- **N4 `lem:rigidContract-isMinimalKDof`** — graph↔matroid contraction-
+  minimality bridge (matroid side `contraction_isMinimalKDof` green; content
+  = the `matroidMG`-of-`(map ∘ deleteEdges)` correspondence). Phase-20
+  carry-forward, build-shaped. **The natural first commit.**
+- **N5 `lem:case-I-splice-placement`** — splice the inductive legs `(H,p₁)`,
+  `(G/E',p₂)` along boundary hinges at panel intersections (eq. 6.6); needs a
+  *panel-transversality* lemma (two generic `(d−1)`-panels meet in a
+  `(d−2)`-flat) + block-triangular independence (Lemma 5.1). Three KT
+  sub-cases (6.2/6.3/6.5). Research-shaped — **decompose math-first** (run the
+  constructibility recon).
+- **N6 `lem:case-I-realization`** — compose N4 + N5 + the green glue
+  (`isInfinitesimallyRigidOn_union_of_inter`) + device ⇒ discharges
+  `theorem_55.hcontract`.
+
+**Track B — Case II/III producer at `d=3` (the crux, KT §6.3 + §6.4.1).**
+This is `theorem_55.hsplit` (k=0 split). The eq. (6.12) degenerate placement
+(`p1(vb)=q(ab)` reproduces the `e₀` row; the green N7b-0/1/2/3 + glue feed it)
+gives `+(D−1)` — one short — and the missing row is **Lemma 6.10** (`d=3`,
+3 candidates `(G,p₁),(G,p₂),(G,p₃)`):
+- **Claim 6.11** (combinatorial↔linear): `R(G_v^{ab},q)` has a redundant
+  `ab`-row, via Lemma 4.3(ii) + the IH. The hardest non-linear-algebra step —
+  wires `M(G̃_v^{ab})` to the row matroid of `R`.
+- **Claim 6.12** (extensor-span genericity): if all candidates fail, a nonzero
+  `r ∈ ℝᴰ` is ⟂ all extensors on `d+1` generic panels, which by **Lemma 2.1**
+  (Phase 17) span `ℝᴰ` — contradiction. The degree-2 condition forces all
+  candidates to test the same `r` (eq. 6.44).
+- ~12 pages, the single largest proof in the paper; consider an abstracted
+  "candidate normal form" lemma to avoid repeating the row-ops three times.
+
+**Launch plan.** Open the phase (`notes/Phase22.md` + the §6.2/§6.4.1
+blueprint nodes — N4/N5/N6 already stubbed red in `algebraic-induction.tex`),
+then **N4** (build-shaped) → decompose **N5** math-first (the panel-
+transversality lemma is the one genuinely new geometry) → **N6** closes Track
+A and discharges `hcontract`. Track B follows, opening with the eq. (6.12)
+placement on the green N7b infra, then Lemma 6.10. The
+`prop:rigidity-matrix-prop11` `hub` brick (Phase-19 partition count) lands
+alongside Track A or defers to Phase 23 with Thm 5.5's completion.
 
 #### Phase 23 — Case III general `d` + assembly (§6.4.2, §5.2, §7)
 
@@ -581,24 +614,25 @@ Jackson–Jordán [13], conjecture-resolution to KT.
    reuses all rank infra verbatim); state Thm 5.5/5.6 + Cases I–III over
    it. Re-scopes Phases 21–23. Full decision + the (A) predicate vs (B)
    panel-data analysis: `DESIGN.md` *Panel-hinge = hinge-coplanar
-   body-hinge*. Phase 21 is **paused mid-stream** pending this re-scope
-   (plan-first, no Lean yet).
+   body-hinge*. **Resolved:** the panel layer landed (Phase 21 + the
+   Phase-21a meet substrate); Phases 21/21a/21b are complete.
 
 ## Opening the next phase
 
-Phases 17–19 are complete (`notes/Phase19.md`, `deficiency.tex`
-`sec:molecular-deficiency`, `Molecular/Deficiency.lean` — all dep-graph
-nodes green). The molecular program runs **one blueprint chapter per
-phase** (`extensor.tex` for Phase 17, `rigidity-matrix.tex` for Phase 18,
-`deficiency.tex` for Phase 19 — the former single `molecular.tex` was
-split in the post-Phase-18 cleanup round, `notes/Phase18-cleanup.md` J1)
-and the bib entries ([4], [29], [15], [2], [13], [37]) are in place. To
-open the next planned phase (Phase 20), follow the top-level `CLAUDE.md` *When
-this commit opens a phase* protocol: create `notes/Phase20.md` from the
-`notes/CLAUDE.md` template (pull the Phase-20 detail above into its
-*Lemma checklist* + *Architectural choices*), add a **new**
-`blueprint/src/chapter/*.tex` for Phase 20 (per the one-`.tex`-per-phase
-convention; its Lean lives in a new `Molecular/` file) with the phase's
-red dep-graph nodes as the forward-mode to-do list, flip the ROADMAP
-status row to *in progress*, and sync `README.md` /
-`home_page/index.md` / `blueprint/src/chapter/intro.tex`.
+Phases 17–21b + 21a are complete. The Phase 1–21b dependency graph is
+green except the realization producers, Case III, and
+`prop:rigidity-matrix-prop11`'s `hub` brick — which together are the
+**Phase 22–23 realization layer**. **Next is Phase 22 — the realization
+layer (Case I + Case III at `d=3`); its launch plan, node list, and first
+commit (N4 `lem:rigidContract-isMinimalKDof`) are in the *Phase 22* detail
+above, and the KT math is worked out in `notes/Phase21b.md` *Finding A/B*
+(Phase 22 formalizes it, does not re-derive).**
+
+Unlike Phases 17–20, Phase 22 does **not** open a new blueprint chapter:
+its producers (N4/N5/N6, the Case II/III producer) **extend the existing
+`algebraic-induction.tex`** — their nodes are already stubbed red there —
+so it follows the *extend-an-existing-chapter / structural-edit* discipline
+(`blueprint/CLAUDE.md`), not the one-chapter-per-phase recipe 17–20 used.
+On open, per top-level `CLAUDE.md` *When this commit opens a phase*: create
+`notes/Phase22.md`, flip the ROADMAP row to *in progress*, and sync
+`README.md` / `home_page/index.md` / `blueprint/src/chapter/intro.tex`.
