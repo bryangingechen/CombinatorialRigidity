@@ -589,6 +589,79 @@ namespace BodyHingeFramework
 
 variable {α β : Type*}
 
+/-- **The annihilator rows of a framework's edges** (B0, `lem:rows-polynomial-in-normals`): the
+explicit, edge-and-basis-pair-indexed family of rigidity rows of `R(G,p)` built from the per-edge
+annihilator family `annihRow`. For an endpoint selector `ends : β → α × α`, the row at index
+`(e, t₁, t₂)` is `hingeRow (ends e).1 (ends e).2 (annihRow (C(p(e))) t₁ t₂)` — the annihilator
+functional `annihRow` of the edge's supporting extensor `C(p(e))`, transported to the
+screw-assignment space along the relative-screw evaluation `hingeRow`. This is the finite-index
+family the genericity device's `g` consumes; its `⋀^k`-coordinates are the degree-2 panel
+polynomials `annihRowPoly` (`annihRowPoly_eval`), and its span is the whole rigidity-row space
+(`span_panelRow_eq_rigidityRows`). -/
+noncomputable def panelRow (F : BodyHingeFramework k α β) (ends : β → α × α)
+    (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
+    Module.Dual ℝ (α → ScrewSpace k) :=
+  hingeRow (ends i.1).1 (ends i.1).2 (annihRow (F.supportExtensor i.1) i.2.1 i.2.2)
+
+/-- **The annihilator rows span the rigidity-row space** (B0, `lem:rows-polynomial-in-normals`, the
+device's `hcoord` input). For a framework whose endpoint selector `ends` records each edge's actual
+link (`hends`) and all of whose hinges are transversal (`hne : C(p(e)) ≠ 0`), the span of the
+explicit annihilator-row family `panelRow` equals the span of the (a-priori-infinite) rigidity-row
+set `rigidityRows`. The `⊆` is by membership: each `annihRow C t₁ t₂` lies in the hinge-row block
+`(span {C})^⊥` (`annihRow_apply_self`), so its `hingeRow` image is a rigidity row. The `⊇` uses the
+spanning identity `span_annihRow_eq_dualAnnihilator` (the family spans the *whole* block for
+`C ≠ 0`): any rigidity row `hingeRow u v r` with `r ∈ r(p(e))` has, by edge-uniqueness
+(`IsLink.eq_and_eq_or_eq_and_eq`), endpoints `(u,v) = ends e` or its reverse; in either orientation
+`hingeRow u v r` is a (signed) combination of the `panelRow` family, since `r` is in the span of
+`annihRow (C(p(e)))` and `hingeRow` is linear with `hingeRow v u r = hingeRow u v (-r)`. Composing
+with `infinitesimalMotions_eq_dualCoannihilator` gives the device's `hcoord`
+(`Z(G,p) = (span (range panelRow))^{\circ}`). -/
+theorem span_panelRow_eq_rigidityRows (F : BodyHingeFramework k α β) {ends : β → α × α}
+    (hends : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2)
+    (hne : ∀ e, F.supportExtensor e ≠ 0) :
+    Submodule.span ℝ (Set.range (F.panelRow ends)) = Submodule.span ℝ F.rigidityRows := by
+  apply le_antisymm
+  · rw [Submodule.span_le]
+    rintro _ ⟨⟨e, t₁, t₂⟩, rfl⟩
+    apply Submodule.subset_span
+    refine ⟨e, (ends e).1, (ends e).2, hends e, annihRow (F.supportExtensor e) t₁ t₂, ?_, rfl⟩
+    rw [hingeRowBlock_apply, ← span_annihRow_eq_dualAnnihilator _ (hne e)]
+    exact Submodule.subset_span ⟨(t₁, t₂), rfl⟩
+  · rw [Submodule.span_le]
+    rintro _ ⟨e, u, v, he, r, hr, rfl⟩
+    -- `r` lies in the span of `annihRow (C(p(e)))`, and `(u,v) = ends e` or its reverse.
+    rw [hingeRowBlock_apply, ← span_annihRow_eq_dualAnnihilator _ (hne e)] at hr
+    -- The map `r ↦ hingeRow u v r = (screwDiff u v).dualMap r` is linear in `r`; its image of the
+    -- annihRow span is the span of the (panelRow) images, by `Submodule.map_span`.
+    have hmap : ∀ w x : α,
+        (∀ t₁ t₂, hingeRow w x (annihRow (F.supportExtensor e) t₁ t₂)
+          ∈ Submodule.span ℝ (Set.range (F.panelRow ends))) →
+        ∀ ρ ∈ Submodule.span ℝ (Set.range (fun p :
+          Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+            annihRow (F.supportExtensor e) p.1 p.2)),
+        hingeRow w x ρ ∈ Submodule.span ℝ (Set.range (F.panelRow ends)) := by
+      intro w x hbase ρ hρ
+      rw [hingeRow_eq_dualMap]
+      have himg : Submodule.map (screwDiff w x).dualMap (Submodule.span ℝ (Set.range (fun p :
+            Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+              annihRow (F.supportExtensor e) p.1 p.2)))
+          ≤ Submodule.span ℝ (Set.range (F.panelRow ends)) := by
+        rw [Submodule.map_span, Submodule.span_le]
+        rintro _ ⟨_, ⟨⟨t₁, t₂⟩, rfl⟩, rfl⟩
+        rw [← hingeRow_eq_dualMap]; exact hbase t₁ t₂
+      exact himg ⟨ρ, hρ, rfl⟩
+    -- The orientation of `e`: endpoints match `ends e` directly or are swapped.
+    rcases (hends e).eq_and_eq_or_eq_and_eq he with ⟨hu, hv⟩ | ⟨hu, hv⟩
+    · exact hmap u v (fun t₁ t₂ =>
+        Submodule.subset_span ⟨(e, t₁, t₂), by rw [panelRow, hu, hv]⟩) r hr
+    · -- swapped: `hingeRow u v r = hingeRow v u (-r)`, and `-r` is in the same span.
+      rw [show hingeRow u v r = hingeRow v u (-r) from
+        LinearMap.ext fun S => by
+          rw [hingeRow_apply, hingeRow_apply, LinearMap.neg_apply, ← map_neg, neg_sub]]
+      exact hmap v u (fun t₁ t₂ =>
+        Submodule.subset_span ⟨(e, t₁, t₂), by rw [panelRow, hu, hv]⟩) (-r)
+        ((Submodule.neg_mem_iff _).2 hr)
+
 /-- **The realization (generic-rank) hypothesis (6.1)** (`def:rank-hypothesis`): a panel-hinge
 framework `(G,p)` realizes the target rank of a `k`-dof-graph when its null space has dimension
 `dim Z(G,p) = D + k`, i.e. `rank R(G,p) = D|V| − dim Z(G,p) = D(|V|−1) − k`
@@ -1551,6 +1624,42 @@ theorem ofParam_ends (G : Graph α β) (ends : β → α × α) (param : α → 
 theorem ofParam_normal (G : Graph α β) (ends : β → α × α) (param : α → ℝ) (a : α) :
     (ofParam (k := k) G ends param).normal a = momentCurve (param a) := rfl
 
+/-- **The panel framework from a free normal assignment** (`def:panel-hinge-framework`,
+`lem:rows-polynomial-in-normals`): the panel-hinge framework on `G` (with endpoint selector `ends`)
+whose panel normal at each body `a` is read directly off a *free* normal assignment
+`q : α × Fin (k+2) → ℝ`, `normal a i = q (a, i)`. Unlike `ofParam` (which constrains the normals to
+the moment curve), `ofNormals` ranges over *all* panel coordinatizations — it is the family the
+genericity device (`lem:genericity-device`) varies over to lift a moment-curve seed realization
+(`ofParam` at an injective parameter, general position by `isGeneralPosition_ofParam`) to a generic
+normal assignment at the same rank (`exists_good_realization_ofParam`). The moment-curve framework
+is the special case `q (a, i) = (param a)^i` (`ofParam_eq_ofNormals_momentCurve`). -/
+def ofNormals (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+    PanelHingeFramework k α β where
+  graph := G
+  normal := fun a i => q (a, i)
+  ends := ends
+
+@[simp]
+theorem ofNormals_graph (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+    (ofNormals (k := k) G ends q).graph = G := rfl
+
+@[simp]
+theorem ofNormals_ends (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+    (ofNormals (k := k) G ends q).ends = ends := rfl
+
+@[simp]
+theorem ofNormals_normal (G : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) (a : α) :
+    (ofNormals (k := k) G ends q).normal a = fun i => q (a, i) := rfl
+
+/-- **The moment-curve panel framework is the free-normal one at the moment-curve coordinates**
+(`def:panel-hinge-framework`): `ofParam G ends param = ofNormals G ends (q)` where
+`q (a, i) = momentCurve (param a) i = (param a)^i`. This identifies the device's seed point
+(the moment-curve general-position realization, `ofParam`) as a point of the free-normal
+panel-coordinate space `α × Fin (k+2) → ℝ` the device varies over. -/
+theorem ofParam_eq_ofNormals_momentCurve (G : Graph α β) (ends : β → α × α) (param : α → ℝ) :
+    ofParam (k := k) G ends param
+      = ofNormals (k := k) G ends (fun p => momentCurve (param p.1) p.2) := rfl
+
 /-- **The moment-curve panel framework is in general position** (`def:panel-hinge-framework`,
 Theorem 5.5 infra): if `param : α → ℝ` is injective, then `ofParam G ends param`'s panel normals
 are in general position — any two normals at distinct bodies are linearly independent. The
@@ -2195,9 +2304,12 @@ bodies. The entries of the rigidity matrix `R(G,p)` are polynomials in `p` (degr
 in the normals), so its null space is coordinatized by a *polynomial* family of rigidity-row
 functionals: there is a fixed `c : ι → Fin (finrank (Dual (α → ScrewSpace k))) → MvPolynomial σ ℝ`
 and a basis identification `φ` with the per-realization rows `g p i` satisfying
-`φ (g p i) j = eval p (c i j)` (`hg`), and `(F p).infinitesimalMotions =
+`φ (g p i) j = eval p (c i j)` (`hg`), and `(F p).infinitesimalMotions ≤
 (span (range (g p))).dualCoannihilator` at every `p` (`hcoord`, the per-framework
-`infinitesimalMotions_eq_dualCoannihilator` re-indexed). If the subfamily indexed by `s : Set ι`
+`infinitesimalMotions_eq_dualCoannihilator` re-indexed; a *containment* rather than equality, so
+the coordinate family `g p` is allowed to *under*-span the rigidity rows at degenerate `p` — which
+only makes the null space larger and the codimension bound easier). If the subfamily indexed by
+`s : Set ι`
 is linearly independent at *one* realization `p₀` — the witnessed rank, supplied by
 `exists_independent_panelSupportExtensor` — then there is a point `p : σ → ℝ` at which the null
 space attains the codimension bound `dim Z(F p) ≤ D|V| − #s`, stated additively as
@@ -2220,15 +2332,142 @@ theorem exists_good_realization [Fintype α] {ι σ : Type*} [Finite ι]
       ≃ₗ[ℝ] (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))) → ℝ))
     (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
     (hcoord : ∀ p, (F p).infinitesimalMotions
-      = (Submodule.span ℝ (Set.range (g p))).dualCoannihilator)
+      ≤ (Submodule.span ℝ (Set.range (g p))).dualCoannihilator)
     {p₀ : σ → ℝ} {s : Set ι}
     (hindep : LinearIndependent ℝ (fun i : s => g p₀ i)) :
     ∃ p : σ → ℝ, Nat.card s + Module.finrank ℝ (F p).infinitesimalMotions
       ≤ screwDim k * Fintype.card α := by
   obtain ⟨p, hp⟩ := exists_finrank_dualCoannihilator_polynomial g c φ hg hindep
   refine ⟨p, ?_⟩
-  rw [BodyHingeFramework.finrank_screwAssignment (k := k) (α := α), ← hcoord p] at hp
-  exact hp
+  rw [BodyHingeFramework.finrank_screwAssignment (k := k) (α := α)] at hp
+  exact le_trans (by gcongr; exact Submodule.finrank_mono (hcoord p)) hp
+
+/-- **Genericity device, basis-flexible codimension form** (`lem:genericity-device`, the B0-closure
+helper; Phase 21b). The reindexing-flexible variant of `exists_good_realization`: it accepts the
+panel-coordinate identification `φ` against an *arbitrary* finite basis index `ν` (with the
+cardinality bridge `e : Fin (finrank (Dual ℝ (α → ScrewSpace k))) ≃ ν`) rather than the canonical
+`Fin (finrank …)`. This lets the B0 closure (`exists_good_realization_ofParam`) coordinatize the
+rigidity rows against the *concrete* standard basis `Pi.basis (fun _ => screwBasis k)` of
+`α → ScrewSpace k` — indexed by `Σ _ : α, ⋀^k`-indices — at which each row coordinate
+`(B.dualBasis.equivFun (g p i)) ⟨a, t⟩ = (g p i) (B ⟨a, t⟩)` is a degree-2 panel polynomial
+(`annihRowPoly`), rather than against an opaque `Module.finBasis`. It reduces to
+`exists_good_realization` by precomposing `φ` with the index reindexing
+`LinearEquiv.funCongrLeft ℝ ℝ e` and pulling `c` back along `e`. -/
+theorem exists_good_realization_reindex [Fintype α] {ι ν σ : Type*} [Finite ι]
+    (e : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))) ≃ ν)
+    (F : (σ → ℝ) → BodyHingeFramework k α β)
+    (g : (σ → ℝ) → ι → Module.Dual ℝ (α → ScrewSpace k))
+    (c : ι → ν → MvPolynomial σ ℝ)
+    (φ : Module.Dual ℝ (α → ScrewSpace k) ≃ₗ[ℝ] (ν → ℝ))
+    (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
+    (hcoord : ∀ p, (F p).infinitesimalMotions
+      ≤ (Submodule.span ℝ (Set.range (g p))).dualCoannihilator)
+    {p₀ : σ → ℝ} {s : Set ι}
+    (hindep : LinearIndependent ℝ (fun i : s => g p₀ i)) :
+    ∃ p : σ → ℝ, Nat.card s + Module.finrank ℝ (F p).infinitesimalMotions
+      ≤ screwDim k * Fintype.card α :=
+  exists_good_realization F g (fun i j => c i (e j)) (φ.trans (LinearEquiv.funCongrLeft ℝ ℝ e))
+    (fun p i j => by rw [LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply,
+      LinearMap.funLeft_apply, hg]) hcoord hindep
+
+/-- **B0 keystone: the genericity device applied to a varying panel realization**
+(`lem:rows-polynomial-in-normals`; Katoh–Tanigawa 2011 Claim 6.4/6.9, Phase 21b). The device
+closure: it coordinatizes the rigidity rows of a *family* of panel-hinge frameworks `ofNormals G
+ends q` — one per free normal assignment `q : α × Fin (k+2) → ℝ` — as degree-2 polynomials in `q`,
+and runs the genericity device on the varying family. Given a fixed graph `G` whose endpoint
+selector `ends` records each edge's link (`hends`) and all of whose hinges are transversal at the
+seed (`hne`, e.g. moment-curve general position `isGeneralPosition_ofParam`), if at *one* normal
+assignment `q₀` the rigidity rows indexed by `s` are linearly independent (`hindep`, the witnessed
+corank, supplied by `exists_independent_panelSupportExtensor` through the hinge-row block), then
+there is a normal assignment `q` at which the null space attains the codimension bound
+`#s + dim Z(G,q) ≤ D|V|`.
+
+This is the keystone the prior phase could only invoke on a *constant* family
+(`exists_good_realization_const`): here the realization genuinely varies over panel-coordinate
+space. The device inputs are assembled from the landed B0 bricks: the row family is the explicit
+`panelRow` (`hingeRow` of the `annihRow` annihilator family); its `⋀^k`-coordinates against the
+standard basis `Pi.basis (fun _ => screwBasis k)` are the degree-2 polynomials
+`annihRowPoly` scaled by the body-incidence sign `[u=a] − [v=a]` (`hg`, via `dualBasis_equivFun` +
+`annihRowPoly_eval` + `Pi.single_apply`); and the span identity `hcoord` is
+`span_panelRow_eq_rigidityRows` composed with `infinitesimalMotions_eq_dualCoannihilator`. The
+seed `q₀`'s general position is the moment-curve assignment, so this discharges the
+device-application leg of the Case-I / Case-II producers. -/
+theorem PanelHingeFramework.exists_good_realization_ofParam [Fintype α]
+    (G : Graph α β) (ends : β → α × α) [Finite β]
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hindep : LinearIndependent ℝ
+      (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i)) :
+    ∃ q : α × Fin (k + 2) → ℝ,
+      Nat.card s + Module.finrank ℝ
+        (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions
+        ≤ screwDim k * Fintype.card α := by
+  classical
+  -- The body-hinge family parametrized by free normal assignments `q`.
+  set F : (α × Fin (k + 2) → ℝ) → BodyHingeFramework k α β :=
+    fun q => (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF
+  -- The standard basis of `α → ScrewSpace k` and the dual-basis identification `φ`.
+  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) ℝ (α → ScrewSpace k) :=
+    Pi.basis (fun _ : α => screwBasis k) with hB
+  set φ : Module.Dual ℝ (α → ScrewSpace k)
+      ≃ₗ[ℝ] ((Σ _ : α, Set.powersetCard (Fin (k + 2)) k) → ℝ) := B.dualBasis.equivFun with hφ
+  -- The cardinality bridge: `card ν = finrank (Dual (α → ScrewSpace k))`.
+  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin (k + 2)) k)
+      = Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)) := by
+    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
+  let e : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
+    (Fintype.equivFinOfCardEq hcard).symm
+  -- The row family and its polynomial coordinates.
+  set g : (α × Fin (k + 2) → ℝ)
+      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Module.Dual ℝ (α → ScrewSpace k) :=
+    fun q i => (F q).panelRow ends i with hg_def
+  set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) → MvPolynomial (α × Fin (k + 2)) ℝ :=
+    fun i j => ((if (ends i.1).1 = j.1 then (1 : ℝ) else 0)
+        - (if (ends i.1).2 = j.1 then 1 else 0))
+      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 j.2 with hc_def
+  -- The evaluation identity `hg`: each row coordinate is the panel polynomial `c`.
+  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
+    intro q i j
+    obtain ⟨a, t⟩ := j
+    -- `φ (g q i) ⟨a,t⟩ = (g q i) (B ⟨a,t⟩)`; unfold `g`, `panelRow`, `φ`, the support extensor.
+    rw [hφ, Module.Basis.dualBasis_equivFun, hg_def, hc_def, hB, Pi.basis_apply]
+    change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t)) = _
+    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply, hF,
+      PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
+    -- `B⟨a,t⟩ u − B⟨a,t⟩ v = ([u=a]−[v=a])•screwBasis t`; push `annihRow` through by linearity,
+    -- then settle the boole arithmetic `[u=a] − [v=a]` per case.
+    rw [Pi.single_apply, Pi.single_apply]
+    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
+      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+        map_neg, one_mul, neg_mul, zero_mul]
+  -- The span containment `hcoord`: the panel rows lie in the rigidity rows (no transversality
+  -- needed for `⊆`), so their span is contained and the coannihilator reversed. The seed's
+  -- transversality `hne` enters only through the witnessed independence `hindep`.
+  have hsub : ∀ q, Submodule.span ℝ (Set.range (g q)) ≤ Submodule.span ℝ (F q).rigidityRows := by
+    intro q
+    rw [Submodule.span_le, hg_def]
+    rintro _ ⟨⟨e', t₁, t₂⟩, rfl⟩
+    apply Submodule.subset_span
+    refine ⟨e', (ends e').1, (ends e').2, ?_,
+      annihRow ((F q).supportExtensor e') t₁ t₂, ?_, rfl⟩
+    · rw [hF]; exact hends e'
+    · rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+      intro x hx
+      rw [Submodule.mem_span_singleton] at hx
+      obtain ⟨r, rfl⟩ := hx
+      rw [map_smul, annihRow_apply_self, smul_zero]
+  have hcoord : ∀ q, (F q).infinitesimalMotions
+      ≤ (Submodule.span ℝ (Set.range (g q))).dualCoannihilator := by
+    intro q
+    rw [(F q).infinitesimalMotions_eq_dualCoannihilator]
+    exact Submodule.dualCoannihilator_anti (hsub q)
+  exact exists_good_realization_reindex e F g c φ hg hcoord hindep
 
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
@@ -2264,7 +2503,7 @@ theorem exists_good_realization_const [Fintype α] {ι : Type*} [Finite ι]
   obtain ⟨p, hp⟩ := exists_good_realization (σ := Unit) (s := s) (p₀ := fun _ => 0)
     (fun _ => F₀) (fun _ => a) (fun i j => MvPolynomial.C (φ (a i) j)) φ
     (fun _ i j => by rw [MvPolynomial.eval_C])
-    (fun _ => by rw [F₀.infinitesimalMotions_eq_dualCoannihilator, hspanrows])
+    (fun _ => le_of_eq (by rw [F₀.infinitesimalMotions_eq_dualCoannihilator, hspanrows]))
     hindep
   exact hp
 

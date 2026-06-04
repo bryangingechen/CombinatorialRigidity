@@ -23,27 +23,40 @@ must be V(G)-relative …*. Forward-mode dep-graph:
 
 ## Current state
 
-**Item 3 IN PROGRESS (2026-06-06): B0 sub-commit 3 — the per-edge annihilator family is landed,
-panel-coordinatized as a degree-2 `MvPolynomial`.** In `AlgebraicInduction.lean` (next to
-`panelSupportPoly`): `screwBasis k` (the standard `⋀^k`-basis abbrev); `annihRow C t₁ t₂ =
-repr(C) t₁ • coord t₂ − repr(C) t₂ • coord t₁` (the functional `x ↦ C_{t₁}x_{t₂} − C_{t₂}x_{t₁}`,
-*linear in `C`*) with `annihRow_apply` / `annihRow_apply_self` (it annihilates `C`); the spanning
-identity `span_annihRow_eq_dualAnnihilator` — for `C ≠ 0`, `span (range (annihRow C)) =
-(span {C}).dualAnnihilator` (= the hinge-row block `r(p(e))`), the reverse containment via the
-explicit expansion `f = ∑_t (f(b t)/C_{t₀})·annihRow C t₀ t` at a coordinate `t₀` with `C_{t₀} ≠ 0`
-(uses `f C = ∑ C_t f(b_t) = 0`); and the panel coordinatization `annihRowPoly u v t₁ t₂ s =
-[t₂=s]·panelSupportPoly u v t₁ − [t₁=s]·panelSupportPoly u v t₂` with `annihRowPoly_eval` (eval at
-panel coords = `annihRow (panelSupportExtensor …) t₁ t₂ (b s)`) + `annihRowPoly_totalDegree_le`
-(`totalDegree ≤ 2`, since `panelSupportPoly` is degree-2 and the `if`-guards/`b s`-coordinates are
-constants). Sub-commit 1 (`normalsJoin_basis_repr` + `normalsJoinPoly{,_eval,_totalDegree_le}`, the
-`⋀²` minor) landed 2026-06-04; sub-commit 2 (`panelSupportPoly{,_eval,_totalDegree_le}`, the `⋀^k`
-coordinate through `complementIso`) 2026-06-05. The B0 node `lem:rows-polynomial-in-normals` stays
-**RED** (the device closure — assemble the device families `g`/`c`/`φ`/`hg` from `annihRow` +
-`hingeRow` lifted to `α → ScrewSpace k`, prove `hcoord` via `span_annihRow_eq_dualAnnihilator` +
-`infinitesimalMotions_eq_dualCoannihilator`, invoke `exists_good_realization` — is the remaining
-keystone build, sub-commit 4). Build + lint clean, axiom-clean {propext, Classical.choice,
-Quot.sound}. **Next B0 sub-commit 4:** assemble `g`/`c`/`φ`/`hg`/`hcoord` and invoke the device,
-flipping the node `\leanok`.
+**Item 3 LANDED (2026-06-06): B0 sub-commit 4 — the device closure; `lem:rows-polynomial-in-normals`
+GREEN.** `PanelHingeFramework.exists_good_realization_ofParam` in `AlgebraicInduction.lean` assembles
+the device input shape on the **varying** panel family `q ↦ (ofNormals G ends q).toBodyHinge`
+(`ofNormals` = the free-normal panel framework, `normal a i = q (a,i)`; the moment-curve seed is its
+special case, `ofParam_eq_ofNormals_momentCurve`) and invokes the device, producing a generic normal
+assignment at the witnessed corank. Three supporting bricks landed alongside:
+- **`exists_good_realization_reindex`** — the basis-flexible device wrapper: takes `φ : Dual ≃ₗ
+  (ν → ℝ)` against an arbitrary finite basis index `ν` (+ `e : Fin (finrank dual) ≃ ν`) instead of
+  the canonical `Fin (finrank …)`, reducing to `exists_good_realization` via
+  `LinearEquiv.funCongrLeft ℝ ℝ e` + pulling `c` back along `e`. Lets the closure coordinatize
+  against the *concrete* standard basis `Pi.basis (screwBasis k)`, indexed by `Σ _ : α, ⋀^k`-indices.
+- **`BodyHingeFramework.panelRow` + `span_panelRow_eq_rigidityRows`** — the explicit
+  edge×basis-pair-indexed row family (`hingeRow (ends e).1 (ends e).2 (annihRow C t₁ t₂)`) and the
+  proof its span equals `rigidityRows` (given `hends` + transversal `hne`); the orientation
+  case-split (`IsLink.eq_and_eq_or_eq_and_eq`) handles `(u,v) = ends e` vs reversed via
+  `hingeRow u v r = hingeRow v u (-r)`.
+- The device's `hcoord` was **generalized from equality to a `≤`-containment** (`infinitesimalMotions
+  ≤ (span (range g)).dualCoannihilator`). This is the keystone fix: at degenerate normals some
+  `C(p(e)) = 0`, so the panel-row family `panelRow` *under*-spans `rigidityRows` (annihRow 0 = 0
+  there) and equality fails — but the device only needs the bound, and the `⊆` half of
+  `span_panelRow` (no transversality) holds at every `q`, including the generic output point. The
+  equality consumer (`exists_good_realization_const`) passes `le_of_eq`.
+
+`hg` (the eval identity): `φ (g q i) ⟨a,t⟩ = (g q i) (Pi.single a (sb t))` (`dualBasis_equivFun`) `=
+([u=a]−[v=a]) · annihRow C t₁ t₂ (sb t)` (`Pi.single_apply` + `annihRow` linearity) `= eval q (c i
+⟨a,t⟩)` with `c i ⟨a,t⟩ = ([u=a]−[v=a]) • annihRowPoly u v t₁ t₂ t` (`annihRowPoly_eval`). Build +
+lint clean, axiom-clean {propext, Classical.choice, Quot.sound}. **Next: item 4
+(`lem:case-I-splice-seed`) — the genuine geometric Case-I seed.**
+
+Sub-commits 1–3 (the polynomial bricks) landed 2026-06-04…06: `normalsJoin_basis_repr` +
+`normalsJoinPoly{,_eval,_totalDegree_le}` (the `⋀²` minor); `panelSupportPoly{,_eval,_totalDegree_le}`
+(the `⋀^k` coordinate through `complementIso`); `screwBasis`, `annihRow`
+(+`_apply`/`_apply_self`), `span_annihRow_eq_dualAnnihilator`, `annihRowPoly{,_eval,_totalDegree_le}`
+(the per-edge annihilator family, panel-coordinatized degree-2).
 
 **Item 2 LANDED (2026-06-05): the Case-I / Case-II accounting is re-stated rank-side.**
 Two genericity-free, `α`-independent rigidity bridges in `AlgebraicInduction.lean` give the
@@ -193,20 +206,16 @@ Classical.choice, Quot.sound}.
   conditional); node stays red until its producers land.
 - [ ] `prop:rigidity-matrix-prop11` — depends on the re-stated `theorem_55`.
 
+**GREEN — B0 keystone (item 3, landed 2026-06-06):**
+- [x] `lem:rows-polynomial-in-normals` (**B0, keystone**) —
+  `PanelHingeFramework.exists_good_realization_ofParam`: the device closure on the varying panel
+  family `ofNormals G ends q`. Bricks: `ofNormals` (+ `ofParam_eq_ofNormals_momentCurve`),
+  `exists_good_realization_reindex` (basis-flexible device), `BodyHingeFramework.panelRow` +
+  `span_panelRow_eq_rigidityRows`, and the device's `hcoord` generalized to a `≤`-containment.
+  Sub-commits 1–3 (the polynomial bricks `normalsJoin{Poly}`, `panelSupportPoly`, `annihRow{Poly}` +
+  `span_annihRow_eq_dualAnnihilator`) landed 2026-06-04…06.
+
 **RED — realization producers (no `\lean` yet; the genuine build):**
-- [ ] `lem:rows-polynomial-in-normals` (**B0, keystone**) — coordinatize the
-  panel-normal rows as degree-2 `MvPolynomial`, packaging the device's
-  `g`/`c`/`φ`/`hg` (`hcoord` = green `infinitesimalMotions_eq_dualCoannihilator`). **Item 3.**
-  Sub-commit 1 (2026-06-04) LANDED the `⋀²`-minor core: `normalsJoin_basis_repr`
-  (`⋀²`-coordinate = `2×2` minor), `normalsJoinPoly` + `normalsJoinPoly_eval` +
-  `normalsJoinPoly_totalDegree_le` (the degree-2 `MvPolynomial` lift). Sub-commit 2
-  (2026-06-05) LANDED the `⋀^k` panel-support-extensor coordinate through `complementIso`:
-  `panelSupportPoly` + `panelSupportPoly_eval` + `panelSupportPoly_totalDegree_le` (degree
-  stays 2 under the fixed linear iso). Sub-commit 3 (2026-06-06) LANDED the per-edge
-  annihilator family: `screwBasis`, `annihRow` (+ `annihRow_apply`/`annihRow_apply_self`),
-  `span_annihRow_eq_dualAnnihilator` (the family spans the hinge-row block `(span {C})^⊥`),
-  `annihRowPoly` + `annihRowPoly_eval` + `annihRowPoly_totalDegree_le` (panel-coordinatized,
-  degree-2). Node stays RED (device-closure assembly, sub-commit 4, remains).
 - [ ] `lem:case-I-splice-seed` — one placement `p₀` with `D(|V(G)|−1)`
   independent parent rows, block-triangular from the two IH legs
   (genericity-free). **Item 4.**
@@ -231,6 +240,18 @@ The genuine block-pin bricks `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **The device's `hcoord` is a `≤`-containment, not equality.** At degenerate panel
+  normals some `C(p(e)) = 0`, so the polynomial row family `panelRow` (annihRow 0 = 0)
+  *under*-spans `rigidityRows` and the equality `Z = (span (range g))^∘` fails — but the
+  device's generic output point is unknown, so it must work at degenerate `q` too. The fix:
+  the device only needs `Z ⊆ (span (range g))^∘` (the `⊆`-half of `span_panelRow`, which holds
+  at *every* `q`, no transversality); `finrank Z ≤ finrank (…)^∘` then chains into the bound.
+  Equality consumers pass `le_of_eq`. → blueprint honesty gate (the family may under-span).
+- **B0 coordinatizes against the concrete `Pi.basis (screwBasis k)`, not `Module.finBasis`.**
+  `B.dualBasis.equivFun (g i) ⟨a,t⟩ = (g i) (Pi.single a (sb t))` is computable (degree-2 panel
+  poly); `Module.finBasis` is opaque. The price is a reindex: `B.dualBasis.equivFun : Dual ≃ₗ
+  (ν → ℝ)` with `ν = Σ _ : α, ⋀^k`-indices, bridged to the device's `Fin (finrank dual)` via
+  `exists_good_realization_reindex` (`LinearEquiv.funCongrLeft`).
 - **The realization motive must be `V(G)`-relative.** The absolute null-space
   form `dim Z = D` is α-dependent and unsatisfiable for non-spanning inductive
   subgraphs. Carry the rank form `rank R = D(|V(G)|−1)`. → `DESIGN.md`
@@ -293,21 +314,16 @@ its blueprint node's `\leanok` (or adds green infra) + updates this file. The
 device is green and `B0`'s coordinate core is validated, so this is build work,
 not research. **Do not** re-introduce the retired vacuous lemmas.
 
-**Next concrete commit: item 3, B0 sub-commit 4 — the device closure** (items 1–2 landed
-2026-06-05; item 3 sub-commit 1 — the `⋀²` minor `normalsJoin_basis_repr` +
-`normalsJoinPoly{,_eval,_totalDegree_le}` — landed 2026-06-04; sub-commit 2 — the `⋀^k`
-panel-support-extensor coordinate `panelSupportPoly{,_eval,_totalDegree_le}` through `complementIso`
-— landed 2026-06-05; sub-commit 3 — the per-edge annihilator family `annihRow` /
-`span_annihRow_eq_dualAnnihilator` / `annihRowPoly{,_eval,_totalDegree_le}` — landed 2026-06-06;
-node still RED).
-Next (sub-commit 4): assemble the device families from the now-landed bricks — `g p` = the
-`hingeRow u v`-lifts (`RigidityMatrix.hingeRow`, `linearIndependent_hingeRow`) of the `annihRow`
-family over each edge, `c` = their `annihRowPoly` coordinates, `φ` = a finite-basis coordinate iso
-of `Module.Dual ℝ (α → ScrewSpace k)`, `hg` = `annihRowPoly_eval` (+ the `hingeRow` coordinate
-identity); prove `hcoord` from `span_annihRow_eq_dualAnnihilator` (rows span the hinge-row block) +
-`infinitesimalMotions_eq_dualCoannihilator`; invoke `exists_good_realization`, flipping the B0 node
-`\leanok`. (`exists_good_realization_const` may suffice on a single hand-built realization, the
-route-(a) constant family — see the device doc-comment — if the splice seed supplies `F₀` directly.)
+**Next concrete commit: item 4 — `lem:case-I-splice-seed`** (items 1–3 landed: 1–2 on 2026-06-05;
+item 3, the B0 keystone `lem:rows-polynomial-in-normals` GREEN, on 2026-06-06 —
+`PanelHingeFramework.exists_good_realization_ofParam`, the device closure on the varying panel
+family `ofNormals G ends q`; see *Current state*). Construct `p₀` on `G` with `D(|V(G)|−1)`
+independent parent rows by transporting the IH realizations of `H` and `G/E(H)` onto `G` and
+certifying block-triangular row independence (genericity-free, via pin-a-body Lemma 5.1's column
+split). The device leg is now available: `exists_good_realization_ofParam` lifts the splice seed to a
+generic realization, so item 5 (`lem:case-I-realization`) composes seed + device into
+`HasFullRankRealization`. The seed's witnessed independent subfamily `hindep` is supplied by
+`exists_independent_panelSupportExtensor` through the hinge-row block (the `panelRow` family's `s`).
 
 1. ~~**Relativize the realization motive + base case**~~ **DONE (2026-06-05).**
    `IsInfinitesimallyRigidOn` + its API in `RigidityMatrix.lean`;
@@ -327,36 +343,15 @@ route-(a) constant family — see the device doc-comment — if the splice seed 
    the `\uses`'d green-modulo node). *These are the rank-side legs items 4–6 consume to convert
    their seeds into `IsInfinitesimallyRigidOn V(G)`.*
 
-3. **B0 — `lem:rows-polynomial-in-normals`** (the keystone; likely 2–4 commits,
-   builder decomposes). Build the device inputs for the panel-normal family:
-   `g` = the rigidity-row functionals, `c` = their degree-2 `MvPolynomial`
-   coordinates (via the validated `normalsJoin` minor + `complementIso` linear +
-   the `{Cᵢeⱼ*−Cⱼeᵢ*}` annihilator family), `φ` = a basis coordinate iso,
-   `hg` = the eval identity, `hcoord` = green
-   `infinitesimalMotions_eq_dualCoannihilator`. Seed point `p₀` = moment-curve normals (reuse
-   `isGeneralPosition_ofParam` + `exists_independent_rigidityRows_of_forest`).
-   - ~~Sub-commit 1: lift the `⋀²`-coordinate bilinearity to a coordinate-as-`MvPolynomial`
-     lemma.~~ **DONE (2026-06-04):** `normalsJoin_basis_repr` (`⋀²`-coord = `2×2` minor),
-     `normalsJoinPoly` + `normalsJoinPoly_eval` + `normalsJoinPoly_totalDegree_le` (degree-2
-     `MvPolynomial` lift). Node still RED.
-   - ~~Sub-commit 2: push that `MvPolynomial` coordinate through the fixed linear
-     `complementIso` to a `panelSupportExtensor`-coordinate-as-`MvPolynomial` (degree stays 2).~~
-     **DONE (2026-06-05):** `panelSupportPoly` + `panelSupportPoly_eval` +
-     `panelSupportPoly_totalDegree_le` (the `⋀^k`-coordinate of `panelSupportExtensor` as a
-     degree-2 `MvPolynomial`, `m(t,s) = repr_k (complementIso (b₂ s)) t` the fixed-iso matrix
-     coefficient). Node still RED. (Friction: the `Finsupp`-codomain `map_sum` snag — route the
-     coordinate through `Finsupp.lapply t ∘ₗ repr.toLinearMap`; TACTICS-QUIRKS §34.)
-   - ~~Sub-commit 3: the `{Cᵢeⱼ*−Cⱼeᵢ*}` per-edge annihilator family (linear in `C`) on the
-     `panelSupportPoly` coordinates.~~ **DONE (2026-06-06):** `screwBasis`, `annihRow`
-     (+ `annihRow_apply`/`annihRow_apply_self`), `span_annihRow_eq_dualAnnihilator` (the family
-     spans the hinge-row block `(span {C}).dualAnnihilator` for `C ≠ 0`), `annihRowPoly` +
-     `annihRowPoly_eval` + `annihRowPoly_totalDegree_le` (panel-coordinatized, degree-2). Node
-     still RED.
-   - Sub-commit 4 (next): assemble `g`/`c`/`φ`/`hg`/`hcoord` from the landed bricks (the `annihRow`
-     family lifted across `hingeRow u v` per edge, `annihRowPoly` for `c`, `hcoord` via
-     `span_annihRow_eq_dualAnnihilator` + `infinitesimalMotions_eq_dualCoannihilator`), invoke
-     `exists_good_realization` (or `exists_good_realization_const` on a hand-built `F₀`); flip the
-     node `\leanok`.
+3. ~~**B0 — `lem:rows-polynomial-in-normals`** (the keystone)~~ **DONE (2026-06-06, GREEN).**
+   `PanelHingeFramework.exists_good_realization_ofParam` — the device closure on the varying panel
+   family `ofNormals G ends q`. Sub-commits 1–3 (the polynomial bricks `normalsJoin{Poly}`,
+   `panelSupportPoly`, `annihRow{Poly}` + `span_annihRow_eq_dualAnnihilator`) landed 2026-06-04…06;
+   sub-commit 4 (the closure) on 2026-06-06 with three new bricks: `ofNormals` (free-normal panel
+   framework), `exists_good_realization_reindex` (basis-flexible device wrapper), `panelRow` +
+   `span_panelRow_eq_rigidityRows`; the device's `hcoord` was generalized to a `≤`-containment (it
+   must hold at degenerate output normals, where the family under-spans). See *Current state* +
+   *Decisions made*.
 
 4. **`lem:case-I-splice-seed`** — construct `p₀` on `G` with `D(|V(G)|−1)`
    independent parent rows: transport the IH realizations of `H` and `G/E(H)`

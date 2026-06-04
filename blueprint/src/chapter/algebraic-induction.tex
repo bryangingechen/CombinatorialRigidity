@@ -751,6 +751,8 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Panel-coordinate row coordinatization (B0, the device keystone)]
   \label{lem:rows-polynomial-in-normals}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_good_realization_ofParam}
+  \leanok
   \uses{def:panel-support-extensor, def:rigidity-matrix, lem:genericity-device}
   Regard a panel-hinge realization of a fixed graph $G$ as a point of the
   panel-coordinate space: an assignment $p \mapsto (n_v)_{v}$ of a normal
@@ -797,18 +799,29 @@ Cases~I and~II travel toward the smaller inductive graph.
   degree-$2$ polynomials $\mathrm{annihRowPoly}$ (the eval identity
   $\mathrm{annihRowPoly\_eval}$, degree $\mathrm{annihRowPoly\_totalDegree\_le}$),
   keeping the row coordinates degree-$2$.
-  \emph{Red:} the remaining construction (assembling the device families $g$, $c$,
-  the coordinate iso $\varphi$, the eval identity $\mathtt{hg}$, and invoking the
-  device through $\mathrm{span\_annihRow\_eq\_dualAnnihilator}$ +
-  $\mathrm{infinitesimalMotions\_eq\_dualCoannihilator}$ for $\mathtt{hcoord}$) is
-  the keystone closure; everything it rests on is now landed --- the
-  $\Lambda^2$-coordinate of the join
-  ($\mathrm{normalsJoin\_basis\_repr}$, $\mathrm{normalsJoinPoly\_eval}$,
-  $\mathrm{normalsJoinPoly\_totalDegree\_le}$), its image under the
-  complement iso ($\mathrm{panelSupportPoly\_eval}$,
-  $\mathrm{panelSupportPoly\_totalDegree\_le}$), and the panel-coordinatized
-  annihilator family ($\mathrm{span\_annihRow\_eq\_dualAnnihilator}$,
-  $\mathrm{annihRowPoly\_eval}$, $\mathrm{annihRowPoly\_totalDegree\_le}$).
+
+  The keystone closure assembles these into the device's input shape and invokes
+  it on the \emph{varying} panel family $q \mapsto \mathrm{ofNormals}\,G\,
+  \mathrm{ends}\,q$ (one body-hinge framework per free normal assignment
+  $q : V_\alpha \times \R^{k+2} \to \R$): the rows are the explicit
+  $\mathrm{panelRow}$ family ($\mathrm{hingeRow}$ of the $\mathrm{annihRow}$
+  annihilators), with $\Lambda^k$-coordinates against the standard basis
+  $\mathrm{Pi.basis}(\mathrm{screwBasis}\,k)$ given by the degree-$2$
+  $\mathrm{annihRowPoly}$ scaled by the body-incidence sign $[u{=}a] - [v{=}a]$
+  (the eval identity $\mathtt{hg}$, via $\mathrm{dualBasis\_equivFun}$,
+  $\mathrm{annihRowPoly\_eval}$ and $\mathrm{Pi.single\_apply}$); the span
+  containment $\mathtt{hcoord}$ is $\mathrm{span\_panelRow\_eq\_rigidityRows}$
+  (the $\subseteq$ half, needing no transversality --- so it holds at every
+  $q$, even degenerate) composed with
+  $\mathrm{infinitesimalMotions\_eq\_dualCoannihilator}$; and the witnessed
+  independent subfamily is the device's $\mathtt{hindep}$, supplied by the
+  general-position seed (the moment-curve assignment,
+  \cref{lem:exists-independent-panel-extensor}). The device
+  (\cref{lem:genericity-device}, in its containment form
+  $\mathrm{exists\_good\_realization\_reindex}$, basis-flexible) then produces a
+  generic normal assignment at the same corank. This is the closure the prior
+  phase could only run on a \emph{constant} family; here the realization
+  genuinely varies over panel-coordinate space.
 \end{lemma}
 
 \begin{lemma}[Case I splice seed; KT eqs.\ (6.2), (6.6)]
