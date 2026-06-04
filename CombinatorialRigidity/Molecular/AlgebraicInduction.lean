@@ -58,10 +58,11 @@ regime-agnostic rank leaf nodes (retained verbatim under the panel layer):
   `dim Z(G,p) = D + k`, the form carried here. (`D = screwDim k`.)
 * `theorem_55_base` (`lem:theorem-55-base`) — the `|V| = 2`, `k = 0` base case: the
   two-vertex double edge with two non-parallel hinges (independent supporting extensors)
-  realizes the full rank `D = D(2−1) − 0`, i.e. `dim Z(G,p) = D`. The framework is
-  infinitesimally rigid (`Z(G,p) = trivialMotions`), so its null space is the `D`-dimensional
-  trivial-motion space — exactly the parallel-hinges-full Lemma 5.3
-  (`eq_of_hingeConstraint_two_parallel`, Phase 18 green) specialized to the two bodies.
+  realizes the full rank `D = D(2−1) − 0`. In the `V(G)`-relative motive (`def:rank-hypothesis`,
+  the Phase-21b re-plan) the conclusion is `IsInfinitesimallyRigidOn {u, v}` — every infinitesimal
+  motion is constant on the two bodies `V(G) = {u, v}` — exactly the parallel-hinges-full Lemma 5.3
+  (`eq_of_hingeConstraint_two_parallel`, Phase 18 green) specialized to the two bodies. (The prior
+  absolute form additionally assumed `α = {u, v}`, the unsatisfiable-for-subgraphs artefact.)
 
 ## The rank in basis-free form
 
@@ -287,31 +288,34 @@ theorem rankHypothesis_zero_iff [Nonempty α] [Finite α] (F : BodyHingeFramewor
     rw [h, F.finrank_trivialMotions, add_zero]
 
 /-- **Theorem 5.5, base case (`|V| = 2`)** (`lem:theorem-55-base`; Katoh–Tanigawa 2011 §5):
-the two-vertex double edge realizes the target rank `D(|V|−1) − k = D − 0 = D` of the minimal
-`0`-dof case. Concretely, if a body-hinge framework `F` on a two-body set `α` has two edges
-`e₁, e₂` whose supporting extensors `C(p(e₁)), C(p(e₂))` are linearly independent (the
-non-parallel-hinges, *general-position* hypothesis), and every link of `G` joins the two
-distinct bodies `u v` carried by `e₁` and `e₂`, then `F` realizes the rank hypothesis at
-`k' = 0` — equivalently `F.IsInfinitesimallyRigid` (`rankHypothesis_zero_iff`).
+the two-vertex double edge realizes the target rank `D(|V(G)|−1) − k = D − 0 = D` of the minimal
+`0`-dof case, in the `V(G)`-relative motive (`def:rank-hypothesis`, `IsInfinitesimallyRigidOn`).
+Concretely, if a body-hinge framework `F` has two edges `e₁, e₂` joining two distinct bodies
+`u v` whose supporting extensors `C(p(e₁)), C(p(e₂))` are linearly independent (the
+non-parallel-hinges, *general-position* hypothesis), then `F` is infinitesimally rigid *on the
+two bodies* `{u, v} = V(G)` — every infinitesimal motion is constant on `{u, v}`.
 
 This is the parallel-hinges-full Lemma 5.3 (`eq_of_hingeConstraint_two_parallel`, Phase 18
 green) specialized to the two bodies: the two `(D−1) × D` hinge-row blocks together have full
 rank `D`, so the combined kernel on the relative screw is `{0}` and every infinitesimal motion
-is trivial. -/
-theorem theorem_55_base [Nonempty α] [Finite α] (F : BodyHingeFramework k α β)
+carries `S u = S v`, i.e. is constant on `{u, v}`. **`V(G)`-relative re-statement (Phase 21b):**
+the prior version concluded the *absolute* `F.RankHypothesis 0` (`F.IsInfinitesimallyRigid`,
+constancy on all of `α`) under the extra hypothesis `hcover : ∀ w, w = u ∨ w = v` ("`α = {u, v}`",
+the absolute-motive artefact, unsatisfiable for the non-spanning inductive subgraphs); the
+relative conclusion needs no condition on bodies outside `{u, v}`, so `hcover` is dropped. -/
+theorem theorem_55_base (F : BodyHingeFramework k α β)
     {e₁ e₂ : β} {u v : α} (huv : u ≠ v)
     (hgen : LinearIndependent ℝ ![F.supportExtensor e₁, F.supportExtensor e₂])
-    (h₁ : F.graph.IsLink e₁ u v) (h₂ : F.graph.IsLink e₂ u v)
-    (hcover : ∀ w, w = u ∨ w = v) :
-    F.RankHypothesis 0 := by
-  rw [rankHypothesis_zero_iff]
+    (h₁ : F.graph.IsLink e₁ u v) (h₂ : F.graph.IsLink e₂ u v) :
+    F.IsInfinitesimallyRigidOn {u, v} := by
   intro S hS
   -- Both edges constrain the relative screw `S u - S v`; independence forces `S u = S v`.
   have key : S u = S v :=
     F.eq_of_hingeConstraint_two_parallel S hgen (hS e₁ u v h₁) (hS e₂ u v h₂)
-  -- Every body is `u` or `v`, so the motion is constant.
-  intro a b
-  rcases hcover a with rfl | rfl <;> rcases hcover b with rfl | rfl <;>
+  -- Every body of `{u, v}` is `u` or `v`, so the motion is constant on `{u, v}`.
+  intro a ha b hb
+  simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at ha hb
+  rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;>
     first | rfl | exact key | exact key.symm
 
 /-! ## The `m`-body cycle base (`lem:cycle-realization`, KT Lemma 5.4)
@@ -529,26 +533,6 @@ theorem finrank_infinitesimalMotions_le_of_graph_le [Finite α] (F : BodyHingeFr
       Module.finrank ℝ (F.withGraph G').infinitesimalMotions :=
   Submodule.finrank_mono (F.infinitesimalMotions_le_withGraph_of_le hle)
 
-/-- **A rigid spanning subgraph certifies rigidity of the parent** (`lem:case-I`, the graph-side
-leg of Case I's block-triangular gluing; Katoh–Tanigawa 2011 §6.2/6.5, Phase 21b). If some
-subgraph `G' ≤ F.graph` (on the *same* body set, keeping the hinge data via `withGraph`) is
-infinitesimally rigid, then so is `F` itself. Re-adding hinges only *shrinks* the null space
-(`infinitesimalMotions_le_withGraph_of_le`), so `Z(G,p) ⊆ Z(G',p) ⊆ trivialMotions`; since the
-trivial-motion space depends only on the bodies, not on the graph
-(`trivialMotions` ignores its framework argument), the parent's null space lands back inside
-`F.trivialMotions` and `F` is rigid.
-
-This is the rigidity-monotonicity step the genuinely-geometric Case-I assembly needs (KT §6.2/6.5):
-the block-triangular glue places the contraction `G/E(H)` at its inductive full rank and the rigid
-block `H` rigidly, producing a rigid realization of a spanning subgraph of the parent `G`;
-re-adding the remaining inter-block hinges then preserves rigidity, and the parent realization is
-rigid. Composed with `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid`, it discharges the
-`hcontract` premise of `theorem_55` once the spanning rigid subgraph of the parent is exhibited. -/
-theorem isInfinitesimallyRigid_of_le_withGraph (F : BodyHingeFramework k α β) {G' : Graph α β}
-    (hle : G' ≤ F.graph) (hrig : (F.withGraph G').IsInfinitesimallyRigid) :
-    F.IsInfinitesimallyRigid :=
-  le_trans (F.infinitesimalMotions_le_withGraph_of_le hle) hrig
-
 /-! ## Block-pinning a rigid subgraph (`def:pinned-motions-on`, Case I infra)
 
 Case I of Theorem 5.5 contracts a *proper rigid subgraph* `H`: every body of `V(H)` collapses
@@ -676,12 +660,10 @@ pinning any *nonempty* body set `s` leaves nothing, `pinnedMotionsOn s = ⊥`. A
 even one body `v ∈ s` then forces the constant to be `0`, so `S` is identically `0`.
 
 This is the geometric heart of Case I in dimension form: a full-rank realization of the parent
-graph `G` (the witness `ofParam G ends param` at its inductive rank) is rigid, hence pinning the
-rigid block `H` on `s = V(H)` carries no residual freedom — the framework-side statement that the
-contraction `G/E(H)`, realized at its own full rank, makes the block pin vanish. It discharges the
-`hpin : dim (pinnedMotionsOn sblk) = 0` premise of
-`hasFullRankRealization_ofParam_of_pinnedMotionsOn` (via `finrank_pinnedMotionsOn_eq_zero_of_
-isInfinitesimallyRigid`) from rigidity of the realization. -/
+graph `G` is rigid, hence pinning the rigid block `H` on `s = V(H)` carries no residual freedom —
+the framework-side statement that the contraction `G/E(H)`, realized at its own full rank, makes
+the block pin vanish. It feeds the block-pin `finrank` form
+`finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid` of the Case-I accounting. -/
 theorem pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid (F : BodyHingeFramework k α β)
     {s : Set α} (hs : s.Nonempty) (hrig : F.IsInfinitesimallyRigid) :
     F.pinnedMotionsOn s = ⊥ := by
@@ -698,44 +680,15 @@ theorem pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid (F : BodyHingeFramework
 /-- **The block-pinned dimension of a rigid framework is `0`** (`lem:case-I`, the block-pin ↔
 contraction-realization bridge, `finrank` form; Katoh–Tanigawa 2011 §6.2/6.5). For a nonempty
 block `s` of an infinitesimally rigid framework `F`, `finrank (pinnedMotionsOn s) = 0`. Immediate
-from `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` and `finrank_bot`. This is exactly the
-`hpin` premise consumed by `hasFullRankRealization_ofParam_of_pinnedMotionsOn`: a full-rank
-realization of the parent graph (its body-hinge interpretation rigid by `rankHypothesis_zero_iff`)
-pins the rigid block to dimension `0`, so the only remaining Case-I obligation is the count
-`hmatch` and the realization itself, not the block pin. -/
+from `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` and `finrank_bot`. This is the block-pin
+`finrank` form the Case-I accounting iff (`rankHypothesis_iff_finrank_pinnedMotionsOn`) reads off:
+a full-rank realization of the contraction pins the rigid block to dimension `0`, so the remaining
+Case-I obligation is the count and the realization itself, not the block pin. -/
 theorem finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid [Finite α]
     (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty)
     (hrig : F.IsInfinitesimallyRigid) :
     Module.finrank ℝ (F.pinnedMotionsOn s) = 0 := by
   rw [F.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid hs hrig, finrank_bot]
-
-/-- **A rigid block subgraph makes every motion constant on the block** (`lem:case-I`, the
-geometric `hblock` brick of Case I's block-triangular glue; Katoh–Tanigawa 2011 §6.2/6.5,
-Phase 21b). If some subgraph `G' ≤ F.graph` (on the *same* body set, keeping the hinge data via
-`withGraph`) is infinitesimally rigid — the rigid block `H` of Case I, placed rigidly on its body
-set `s = V(H)` — then *every* infinitesimal motion `S` of the parent `F` agrees across all bodies
-of the block: `∀ u ∈ s, ∀ w ∈ s, S u = S w`.
-
-The mechanism is graph monotonicity composed with rigidity of the block: a motion of the parent
-`F` is a fortiori a motion of the subgraph `G' = H` (`infinitesimalMotions_le_withGraph_of_le`,
-re-adding the inter-block hinges only shrinks the null space), and rigidity of `F[H]` forces every
-such motion to be *trivial* — a global constant (`IsTrivialMotion S`, `∀ u v, S u = S v`). The
-block constancy is then immediate (indeed `S` is constant everywhere, a fortiori on `s`). This is
-the geometric heart of `hblock`: it supplies the first of the two block hypotheses that
-`isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` consumes, sourced purely from rigidity
-of the block's own sub-framework — the rigid block `H` placed rigidly pins every parent motion to
-agree across `V(H)`. Paired with the block-pin vanishing `hpin` (the contraction `G/E(H)` realized
-at its inductive full rank), it produces rigidity of the glued parent realization. -/
-theorem isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph
-    (F : BodyHingeFramework k α β) {G' : Graph α β} (s : Set α)
-    (hle : G' ≤ F.graph) (hrig : (F.withGraph G').IsInfinitesimallyRigid) :
-    ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ w ∈ s, S u = S w := by
-  intro S hS u _ w _
-  -- `S` is a motion of the parent, hence of the rigid block subgraph `G' = H`.
-  have hS' : (F.withGraph G').IsInfinitesimalMotion S :=
-    F.infinitesimalMotions_le_withGraph_of_le hle hS
-  -- Rigidity of the block forces `S` to be a global constant.
-  exact (hrig hS') u w
 
 /-- **A block-rigid framework with a trivial block pin is rigid** (`lem:case-I`, the block-pin ↔
 contraction-realization bridge, *converse* / rigidity-producing direction; Katoh–Tanigawa 2011
@@ -754,8 +707,9 @@ every body of `s`* (on `s`, `hblock` makes `S` the constant `S v`, which `T` can
 `S - T ∈ pinnedMotionsOn s = ⊥` by `hpin`, forcing `S = T`, a trivial motion. This is the
 rigidity-producing brick the genuinely-geometric Case-I assembly (KT §6.2/6.5) feeds: the rigid
 block placement supplies `hblock` and the contraction realization supplies `hpin`, and this lemma
-turns the pair into rigidity of the glued framework — exactly the input
-`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` consumes. -/
+turns the pair into rigidity of the glued framework. It is a genuine, reusable brick under the
+`V(G)`-relative realization motive (`def:rank-hypothesis`); the prior absolute-motive Case-I
+producers it fed were retired in the Phase-21b re-plan (see the retirement note at end of file). -/
 theorem isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot
     (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty)
     (hblock : ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ w ∈ s, S u = S w)
@@ -775,33 +729,6 @@ theorem isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot
   rw [hpin, Submodule.mem_bot, sub_eq_zero] at hdiff
   rw [hdiff]
   exact hTtriv
-
-/-- **The block-triangular glue: rigid block subgraph + vanishing block pin ⇒ rigid parent**
-(`lem:case-I`, the assembled geometric core of Case I's block-triangular gluing; Katoh–Tanigawa
-2011 §6.2/6.5, Phase 21b). This composes the two geometric bricks into the single rigidity
-conclusion the from-scratch producer
-`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` consumes: from a rigid block subgraph
-`G' ≤ F.graph` (`hrig`, the rigid subgraph `H` placed rigidly on its body set `s = V(H)`) and the
-vanishing of the residual block pin (`hpin`, the contraction `G/E(H)` realized at its inductive
-full rank), the parent framework `F` is infinitesimally rigid.
-
-The rigid block subgraph supplies the block-constancy hypothesis `hblock`
-(`isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph`: every parent motion is constant on
-`s`, sourced from rigidity of `F[H]` via graph monotonicity), which combines with the block-pin
-vanishing in `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot`. This is the genuinely-
-geometric Case-I assembly KT §6.2/6.5 calls for: place the contraction at its inductive full rank
-and the rigid block rigidly, and the glued parent realization is rigid. Composed with
-`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` (which reads rigidity as
-`RankHypothesis 0`) it lands the realization motive `HasFullRankRealization k G`, reducing the
-residual Case-I obligation to *exhibiting* the rigid block subgraph and the block-pin vanishing
-(the inductive contraction realization) on a concrete `ofParam` witness. -/
-theorem isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot
-    (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty)
-    {G' : Graph α β} (hle : G' ≤ F.graph) (hrig : (F.withGraph G').IsInfinitesimallyRigid)
-    (hpin : F.pinnedMotionsOn s = ⊥) :
-    F.IsInfinitesimallyRigid :=
-  F.isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot hs
-    (F.isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph s hle hrig) hpin
 
 /-- **Case I: contracting a rigid block realizes the rank** (`lem:case-I`, Katoh–Tanigawa 2011
 §6.2/6.3/6.5 Lemmas 6.2, 6.3, 6.5; GREEN-modulo the Phase-21b genericity device). Let `F` be a
@@ -883,66 +810,6 @@ theorem pinnedMotionsOn_withGraph_eq_of_block_internal (F : BodyHingeFramework k
     obtain ⟨hu, hv⟩ := hblk e u v hlink hG'
     rw [hingeConstraint, hS.2 u hu, hS.2 v hv, sub_zero]
     exact Submodule.zero_mem _
-
-/-- **The parent block pin vanishes when the block-internal-deletion subgraph is rigid**
-(`lem:case-I`, the `hpin` geometric leaf in subgraph form; Katoh–Tanigawa 2011 §6.2/6.5,
-Phase 21b). This is the direct Case-I consumer of the contraction reduction: if `G' ≤ F.graph`
-drops only edges internal to the (nonempty) pinned block `s` (`hblk`) and the subgraph realization
-`F.withGraph G'` is itself infinitesimally rigid (`hrig` — the contraction `G/E(H)` realized at its
-inductive full rank), then the parent's block pin vanishes, `F.pinnedMotionsOn s = ⊥`.
-
-Mechanism: rigidity of `F.withGraph G'` makes *its* block pin trivial
-(`pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`), and the block-internal deletion leaves the
-block pin unchanged (`pinnedMotionsOn_withGraph_eq_of_block_internal`), so the parent's block pin is
-equally trivial. This discharges the residual `hpin` premise of
-`hasFullRankRealization_ofParam_of_pinnedMotionsOn` (equivalently the `hpin` feeding
-`isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot`) *from rigidity of the
-contraction realization alone* — the inductive `RankHypothesis 0` on `G/E(H)`, re-expressed as
-deletion of the block-internal edges `E(H)`. It is the framework-side reduction of the geometric
-`hpin` leaf to the contraction's inductive rigidity. -/
-theorem pinnedMotionsOn_eq_bot_of_block_internal_rigid (F : BodyHingeFramework k α β) {s : Set α}
-    (hs : s.Nonempty) {G' : Graph α β} (hle : G' ≤ F.graph)
-    (hblk : ∀ e u v, F.graph.IsLink e u v → ¬ G'.IsLink e u v → u ∈ s ∧ v ∈ s)
-    (hrig : (F.withGraph G').IsInfinitesimallyRigid) :
-    F.pinnedMotionsOn s = ⊥ := by
-  rw [← F.pinnedMotionsOn_withGraph_eq_of_block_internal s hle hblk]
-  exact (F.withGraph G').pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid hs hrig
-
-/-- **The contraction splice is rigid** (`lem:case-I-realization`, the assembled splice-rigidity
-core; Katoh–Tanigawa 2011 eqs. (6.2), (6.6), Phase 21b). The framework-level statement that the
-Case-I splice attains full rank: given a body-hinge framework `F` on the parent graph `G = F.graph`
-carrying a proper rigid subgraph `H` on the (nonempty) body set `s = V(H)`, if
-
-* the block subgraph `G_H ≤ F.graph` (the rigid subgraph `H` placed at `(H, p₁)`) realizes
-  rigidly (`hHrig : (F.withGraph G_H).IsInfinitesimallyRigid`), and
-* the contraction subgraph `G_c ≤ F.graph` — the parent with the block-internal edges `E(H)`
-  deleted, i.e. `G/E(H)` carried as the `G_c`-deletion (`hblk : every dropped link has both
-  endpoints in s`) — realizes rigidly at its inductive full rank
-  (`hcrig : (F.withGraph G_c).IsInfinitesimallyRigid`, the inductive `RankHypothesis 0` on the
-  smaller minimal `0`-dof-graph `G/E(H)` by `lem:contraction-minimality`),
-
-then the spliced parent framework `F` is itself infinitesimally rigid (full rank `D(|V|−1)`).
-
-This is the splice of KT eqs. (6.2)/(6.6) read at the framework level: the rigid block placement
-makes every parent motion constant on `s` (the `hblock` brick
-`isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph`, sourced from `hHrig`), and the
-contraction's inductive rigidity makes the residual block pin vanish (`hpin`, the geometric leaf
-`pinnedMotionsOn_eq_bot_of_block_internal_rigid` sourced from `hcrig`); the block-triangular glue
-`isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` turns the pair into rigidity of the
-glued parent. The genericity device (`lem:genericity-device`, now green) underwrites the
-no-rank-loss at the generic splice point through the block-pin lower/upper bounds of `lem:case-I`;
-here the two rigidity inputs `hHrig`/`hcrig` are the geometric output of placing the block and the
-contraction at their respective full ranks, the splice's "remaining geometric content" the
-blueprint flags. -/
-theorem isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal (F : BodyHingeFramework k α β)
-    {s : Set α} (hs : s.Nonempty)
-    {G_H : Graph α β} (hHle : G_H ≤ F.graph) (hHrig : (F.withGraph G_H).IsInfinitesimallyRigid)
-    {G_c : Graph α β} (hcle : G_c ≤ F.graph)
-    (hblk : ∀ e u v, F.graph.IsLink e u v → ¬ G_c.IsLink e u v → u ∈ s ∧ v ∈ s)
-    (hcrig : (F.withGraph G_c).IsInfinitesimallyRigid) :
-    F.IsInfinitesimallyRigid :=
-  F.isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot hs hHle hHrig
-    (F.pinnedMotionsOn_eq_bot_of_block_internal_rigid hs hcle hblk hcrig)
 
 /-- **The block-pinned dimension does not decrease under edge deletion** (`def:pinned-motions-on`,
 Case I infra, rank form): for `G' ≤ F.graph`,
@@ -1347,21 +1214,21 @@ remain red — that is the genericity device (Claim 6.4/6.9) shared with Cases I
 
 /-- **Short-cycle base of the panel cycle realization** (`lem:cycle-realization`, KT Lemma 5.4):
 the panel analogue of `theorem_55_base`, lifted through `toBodyHinge`. A panel-hinge framework `P`
-on a two-body cover (`hcover : ∀ w, w = u ∨ w = v`, `huv : u ≠ v`) with two edges `e₁, e₂` joining
-`u` and `v` (`h₁ : P.graph.IsLink e₁ u v`, `h₂ : …`) whose panel support extensors are linearly
-independent (`hgen`) has a body-hinge interpretation realizing the rank hypothesis at `k' = 0` —
-equivalently `P.toBodyHinge` is infinitesimally rigid, at the full rank `D = D(2−1) − 0`. This is
-the brick the general panel-cycle realization (KT Lemma 5.4, `|V| ≥ 3`) is built from; the
-linearly independent panel extensors are supplied generically (Claim 6.4/6.9, deferred). Immediate
-from `BodyHingeFramework.theorem_55_base` applied to `P.toBodyHinge`. -/
-theorem toBodyHinge_rankHypothesis_zero [Nonempty α] [Finite α] (P : PanelHingeFramework k α β)
+with two edges `e₁, e₂` joining two distinct bodies `u v` (`huv : u ≠ v`,
+`h₁ : P.graph.IsLink e₁ u v`, `h₂ : …`) whose panel support extensors are linearly independent
+(`hgen`) has a body-hinge interpretation that is infinitesimally rigid *on the two bodies*
+`{u, v} = V(G)` (`def:rank-hypothesis`, `IsInfinitesimallyRigidOn`), at the full rank
+`D = D(2−1) − 0`. This is the brick the general panel-cycle realization (KT Lemma 5.4, `|V| ≥ 3`)
+is built from; the linearly independent panel extensors are supplied generically (Claim 6.4/6.9,
+deferred). Immediate from `BodyHingeFramework.theorem_55_base` applied to `P.toBodyHinge`. The
+`V(G)`-relative re-statement drops the prior `hcover : ∀ w, w = u ∨ w = v` (Phase 21b). -/
+theorem toBodyHinge_rankHypothesis_zero (P : PanelHingeFramework k α β)
     {e₁ e₂ : β} {u v : α} (huv : u ≠ v)
     (hgen : LinearIndependent ℝ
       ![P.toBodyHinge.supportExtensor e₁, P.toBodyHinge.supportExtensor e₂])
-    (h₁ : P.graph.IsLink e₁ u v) (h₂ : P.graph.IsLink e₂ u v)
-    (hcover : ∀ w, w = u ∨ w = v) :
-    P.toBodyHinge.RankHypothesis 0 :=
-  P.toBodyHinge.theorem_55_base huv hgen h₁ h₂ hcover
+    (h₁ : P.graph.IsLink e₁ u v) (h₂ : P.graph.IsLink e₂ u v) :
+    P.toBodyHinge.IsInfinitesimallyRigidOn {u, v} :=
+  P.toBodyHinge.theorem_55_base huv hgen h₁ h₂
 
 /-- **A rigid panel cycle has at most `D` hinges** (`lem:cycle-realization`, KT Lemma 5.4, the
 `|V| ≤ D` bound): if the supporting extensors of `m` edges of a panel-hinge framework are linearly
@@ -1743,7 +1610,9 @@ rank `D(|V|−1)`, i.e. an infinitesimally rigid panel-hinge framework `(G,p)` (
 
 The proof is the genericity-free assembly over the Phase-20 reduction dichotomy: it runs the
 well-founded induction principle `Graph.minimal_kdof_reduction` against the *realization*
-motive `HasFullRankRealization` (`∃ Q, Q.graph = G ∧ Q.toBodyHinge.RankHypothesis 0`),
+motive `HasFullRankRealization` (`∃ Q, Q.graph = G ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)`,
+the `V(G)`-relative rank form `rank R(G,p) = D(|V(G)|−1)`; the absolute null-space form is
+unsatisfiable for the non-spanning inductive subgraphs — Phase-21b re-plan, `def:rank-hypothesis`),
 discharging its three premises with the base case (`lem:theorem-55-base`), the splitting-off
 1-extension (Case II, `lem:case-II`), and the rigid-subgraph contraction (Case I, `lem:case-I`).
 The two inductive cases are GREEN-modulo-21b — each lands the iff-realization `RankHypothesis ↔
@@ -1757,20 +1626,29 @@ panel capstones `toBodyHinge_rankHypothesis_zero_cycle` (base), the Case II
 general-position normals; Case III (`k = 0`, no proper rigid subgraph) closes the dichotomy and
 is deferred to Phases 22–23. -/
 
+open scoped Graph
+
 namespace PanelHingeFramework
 
 variable {α β : Type*}
 
-/-- **A graph has a full-rank panel realization** (`thm:theorem-55`, the realization motive):
-there is a panel-hinge framework `Q` on `G` (`Q.graph = G`) whose body-hinge interpretation is
-infinitesimally rigid, `Q.toBodyHinge.RankHypothesis 0` — the full target rank `D(|V|−1)` of the
-minimal `0`-dof case. This is the motive Theorem 5.5's induction is run against. -/
+/-- **A graph has a full-rank panel realization** (`thm:theorem-55`, the realization motive,
+`V(G)`-relative form): there is a panel-hinge framework `Q` on `G` (`Q.graph = G`) whose
+body-hinge interpretation is infinitesimally rigid *on the bodies `G` carries*,
+`Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)` — equivalently `rank R(G,p) = D(|V(G)|−1)`, the
+full target rank of the minimal `0`-dof case (`def:rank-hypothesis`). This is the motive
+Theorem 5.5's induction is run against.
+
+**`V(G)`-relative (Phase 21b).** The prior absolute form
+`Q.toBodyHinge.RankHypothesis 0` (`IsInfinitesimallyRigid`, constancy on all of `α`) is
+unsatisfiable for the non-spanning inductive subgraphs `Q.graph = G` on a fixed ambient type
+`α`: a body in `α ∖ V(G)` carries no hinge constraint and is a free non-trivial motion. The
+relative form asks rigidity only on `V(G) = Q.graph` and so composes through the vertex-reducing
+induction `Graph.minimal_kdof_reduction`. -/
 def HasFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
-  ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧ Q.toBodyHinge.RankHypothesis 0
+  ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)
 
 end PanelHingeFramework
-
-open scoped Graph
 
 variable {α β : Type*}
 
@@ -2227,155 +2105,22 @@ theorem PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn
     (isGeneralPosition_ofParam G ends hparam) hs k' hu hsep
     (by simpa using hlink) (by simpa using hends) hmatch)
 
-/-- **Case I from-scratch full-rank realization of the parent graph** (`lem:case-I`, the
-`HasFullRankRealization` packaging of the `ofParam` Case-I realization entry point; Katoh–Tanigawa
-2011 §6.2/6.5, Phase 21b). Specializing `ofParam_rankHypothesis_iff_pinnedMotionsOn` at the target
-deficiency `k' = 0` and reading the resulting iff *forwards* against a *trivial* block pin
-(`dim Z_sblk = 0`) lands the realization motive `HasFullRankRealization k G` of Theorem 5.5 directly
-on the parent multigraph `G`: the witness framework is the from-scratch moment-curve framework
-`ofParam G ends param` (its `graph = G` definitionally, `ofParam_graph`), and its body-hinge
-interpretation realizes the full rank `D(|V|−1)` (`RankHypothesis 0`) exactly because the rigid
-block's pin carries no residual motion.
+/-! ### Retired absolute-motive Case-I producers (Phase 21b re-plan)
 
-The hypothesis `hpin : dim (pinnedMotionsOn sblk) = 0` is the framework-side statement of the
-geometric heart of Case I: the rigid block `H` on `s = V(H)`, pinned, leaves no infinitesimal
-freedom, so the parent's count is entirely the `D` trivial motions. It is the dimension form of the
-contraction `G/E(H)` being realized at *its* full rank — the inductive hypothesis supplied to Case I
-(`lem:contraction-minimality` makes `G/E(H)` a smaller minimal `k`-dof-graph; its full-rank
-realization is the block pin's vanishing). Taking `hpin` as a hypothesis isolates the remaining
-consumer obligation to the genuinely-geometric block-pin ↔ contraction-realization bridge (KT
-§6.2/6.5), leaving the analytic gluing, general position, transversality, and count `hmatch` all
-discharged here. This is the consumer-facing producer of the `hcontract` premise of
-`theorem_55`: supply `(G, ends)`, an injective `param`, the rigid block's spanning forest, the count
-`hmatch`, and the block-pin vanishing `hpin`, and obtain the parent realization. -/
-theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_pinnedMotionsOn
-    [Fintype α] [Nonempty α] {J : Type*} [Finite J]
-    (G : Graph α β) (ends : β → α × α) {param : α → ℝ} (hparam : Function.Injective param)
-    {sblk : Set α} (hs : sblk.Nonempty)
-    {u other : J → α} {e : J → β} (hu : Function.Injective u)
-    (hsep : ∀ j j', other j ≠ u j')
-    (hlink : ∀ j, G.IsLink (e j) (u j) (other j))
-    (hends : ∀ j, ends (e j) = (u j, other j))
-    (hmatch : Nat.card J * (screwDim k - 1)
-        + Module.finrank ℝ (ofParam (k := k) G ends param).toBodyHinge.infinitesimalMotions
-        ≤ screwDim k * Fintype.card α →
-      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
-        - Module.finrank ℝ
-            ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk))
-    (hpin : Module.finrank ℝ
-        ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk) = 0) :
-    HasFullRankRealization k G :=
-  ⟨ofParam (k := k) G ends param, ofParam_graph G ends param,
-    (PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn
-      G ends hparam hs 0 hu hsep hlink hends hmatch).mpr (by exact_mod_cast hpin)⟩
-
-/-- **Case I from-scratch realization, rigidity form** (`lem:case-I`, the `HasFullRankRealization`
-producer keyed to *rigidity of the realization*; Katoh–Tanigawa 2011 §6.2/6.5, Phase 21b). Where
-`hasFullRankRealization_ofParam_of_pinnedMotionsOn` discharges the realization motive from the block
-pin's vanishing `hpin` plus the analytic count `hmatch`, this form takes the *single* geometric
-hypothesis that the from-scratch witness `ofParam G ends param` is itself infinitesimally rigid
-(its body-hinge interpretation realizes the full rank `D(|V|−1)`, `RankHypothesis 0`). That is the
-geometric output of Case I's block-triangular glue (KT §6.2/6.5): placing the contraction `G/E(H)`
-at its inductive full rank and rigidly placing the block `H` makes the combined parent realization
-rigid. Rigidity *is* `RankHypothesis 0` (`rankHypothesis_zero_iff`), so the realization motive
-`HasFullRankRealization k G` follows directly — the block-pin vanishing `hpin` (via the landed brick
-`finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid`) and the count `hmatch` collapse into
-rigidity and need not be supplied separately. This isolates the remaining `hcontract` obligation of
-`theorem_55` to a single statement: *the contraction-glued `ofParam` realization is rigid*. -/
-theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_isInfinitesimallyRigid
-    [Nonempty α] [Finite α]
-    (G : Graph α β) (ends : β → α × α) (param : α → ℝ)
-    (hrig : (ofParam (k := k) G ends param).toBodyHinge.IsInfinitesimallyRigid) :
-    HasFullRankRealization k G :=
-  ⟨ofParam (k := k) G ends param, ofParam_graph G ends param,
-    (BodyHingeFramework.rankHypothesis_zero_iff _).mpr hrig⟩
-
-/-- **Case I realization: the contraction splice attains full rank** (`lem:case-I-realization`,
-the `HasFullRankRealization` closure under rigid-subgraph contraction; Katoh–Tanigawa 2011
-eqs. (6.2), (6.6), Phase 21b). This is the consumer-facing carrier of `lem:case-I-realization`:
-the full-rank realization motive of Theorem 5.5 is closed under contracting a proper rigid
-subgraph. On the from-scratch `ofParam G ends param` witness (its `graph = G` definitionally,
-`ofParam_graph`), supplying the two splice rigidity inputs
-
-* `hHrig` — the block subgraph `G_H ≤ G` (the rigid subgraph `H` placed rigidly, `(H, p₁)`)
-  realizes rigidly, and
-* `hcrig` together with the block-internal-deletion hypothesis `hblk` — the contraction subgraph
-  `G_c ≤ G`, the parent with the block edges `E(H)` deleted (`G/E(H)`), realizes rigidly at its
-  inductive full rank (`lem:contraction-minimality` makes `G/E(H)` a smaller minimal `0`-dof-graph,
-  the induction hypothesis of `hcontract`),
-
-lands the realization motive `HasFullRankRealization k G` directly.
-
-The proof is one composition: the splice-rigidity core
-`isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal` glues the rigid block (every motion
-constant on `s = V(H)`) with the vanishing residual block pin (the contraction's inductive
-rigidity) into rigidity of the parent, and
-`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` reads that rigidity as
-`RankHypothesis 0`.
-This discharges the `hcontract` premise of `theorem_55` once the splice realization data is
-exhibited: the genericity device (`lem:genericity-device`, green) underwrites the no-rank-loss at
-the generic splice point through the block-pin bounds of `lem:case-I`, and the two rigidity inputs
-are the geometric output of placing the block at `p₁` and the contraction at `p₂` and intersecting
-panels on the boundary `δ_G(V(H))` (KT eqs. (6.2)/(6.6)) — the splice's remaining geometric
-content. -/
-theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_contraction
-    [Nonempty α] [Finite α]
-    (G : Graph α β) (ends : β → α × α) (param : α → ℝ)
-    {s : Set α} (hs : s.Nonempty)
-    {G_H : Graph α β} (hHle : G_H ≤ G)
-    (hHrig : (((ofParam (k := k) G ends param).toBodyHinge).withGraph G_H).IsInfinitesimallyRigid)
-    {G_c : Graph α β} (hcle : G_c ≤ G)
-    (hblk : ∀ e u v, G.IsLink e u v → ¬ G_c.IsLink e u v → u ∈ s ∧ v ∈ s)
-    (hcrig : (((ofParam (k := k) G ends param).toBodyHinge).withGraph G_c).IsInfinitesimallyRigid) :
-    HasFullRankRealization k G := by
-  set F := (ofParam (k := k) G ends param).toBodyHinge with hF
-  have hg : F.graph = G :=
-    (PanelHingeFramework.toBodyHinge_graph _).trans (ofParam_graph ..)
-  refine PanelHingeFramework.hasFullRankRealization_ofParam_of_isInfinitesimallyRigid
-    G ends param ?_
-  exact F.isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal
-    hs (hg ▸ hHle) hHrig (hg ▸ hcle) (fun e u v hl => hblk e u v (hg ▸ hl)) hcrig
-
-/-- **Case I from-scratch realization, block-pin form with the parameter map supplied**
-(`lem:case-I`, the `HasFullRankRealization` producer that internalizes the injective panel
-parameter; Katoh–Tanigawa 2011 §6.2/6.5, Phase 21b). The block-pin-form producer
-`hasFullRankRealization_ofParam_of_pinnedMotionsOn` carries the residual obligation
-`hparam : Function.Injective param` — the genericity of the moment-curve normals
-(`isGeneralPosition_ofParam`) is supplied by *any* injective real assignment on the bodies.
-Over a `[Countable]` (in particular `[Finite]`) body type that assignment always exists
-(`Countable.exists_injective_real`), so the obligation is not really a hypothesis: this form
-picks the canonical injective `param` internally and removes it from the consumer's surface,
-reducing the residual Case-I gluing data to the forest orientation `ends` plus the count
-`hmatch` and the block-pin vanishing `hpin`.
-
-The orientation `ends` and the rigid block `sblk`/its spanning forest (`u`/`other`/`e` with the
-injectivity `hu`, separation `hsep`, and link/orientation `hlink`/`hends`) and the analytic count
-`hmatch`/block-pin vanishing `hpin` are quantified existentially over an arbitrary injective
-`param`, so a consumer assembling Case I from the contraction realization need only exhibit the
-graph-side gluing data and the count — never the parameter map itself. The geometric residual
-(showing the contraction-glued realization is rigid, equivalently that the count + block-pin
-hold) is unchanged; this is bookkeeping that removes the `hparam` plumbing. -/
-theorem PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn
-    [Fintype α] [Nonempty α] {J : Type*} [Finite J]
-    (G : Graph α β) (ends : β → α × α)
-    {sblk : Set α} (hs : sblk.Nonempty)
-    {u other : J → α} {e : J → β} (hu : Function.Injective u)
-    (hsep : ∀ j j', other j ≠ u j')
-    (hlink : ∀ j, G.IsLink (e j) (u j) (other j))
-    (hends : ∀ j, ends (e j) = (u j, other j))
-    (hmatch : ∀ param : α → ℝ, Function.Injective param →
-      Nat.card J * (screwDim k - 1)
-        + Module.finrank ℝ (ofParam (k := k) G ends param).toBodyHinge.infinitesimalMotions
-        ≤ screwDim k * Fintype.card α →
-      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
-        - Module.finrank ℝ
-            ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk))
-    (hpin : ∀ param : α → ℝ, Function.Injective param →
-      Module.finrank ℝ
-        ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk) = 0) :
-    HasFullRankRealization k G := by
-  obtain ⟨param, hparam⟩ := Countable.exists_injective_real α
-  exact hasFullRankRealization_ofParam_of_pinnedMotionsOn G ends hparam hs hu hsep hlink hends
-    (hmatch param hparam) (hpin param hparam)
+The four `HasFullRankRealization` producers that lived here —
+`hasFullRankRealization_ofParam_of_pinnedMotionsOn`,
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid`,
+`hasFullRankRealization_ofParam_of_contraction`, and
+`hasFullRankRealization_of_pinnedMotionsOn` — produced the *absolute* realization motive
+`RankHypothesis 0` (`IsInfinitesimallyRigid`, constancy on all of `α`). A 2026-06-04 spike found
+that motive unsatisfiable for the non-spanning inductive subgraphs the realization induction
+reduces to (a body in `α ∖ V(G)` is a free non-trivial motion), so the producers were green only
+over unsatisfiable hypotheses (`hpin`/`hHrig`/`hcrig` over `withGraph`-subgraphs rigid on the whole
+`α`). They are retired here as the realization motive (`HasFullRankRealization`) is relativized to
+`IsInfinitesimallyRigidOn V(G)`; the genuine device-direct producers (`lem:case-I-realization`,
+`lem:case-II-realization`, built on the splice seed + B0 + the green genericity device) replace
+them and remain red — see `notes/Phase21b.md` *Hand-off*. The accounting iffs
+(`ofParam_rankHypothesis_iff_pinnedMotionsOn` and the nullity `RankHypothesis` chain) are retained
+above. -/
 
 end CombinatorialRigidity.Molecular

@@ -70,10 +70,10 @@ lemma vertexSet_inducedSpan (G : Graph α β) (n : ℕ) (X : Set (β × Fin (bod
 The from-scratch panel-hinge realization `PanelHingeFramework.ofParam G ends param` of the
 algebraic induction (Phase 21b) takes an *endpoint selector* `ends : β → α × α` choosing an
 ordered pair of endpoints for each edge. Case I orients the rigid block's spanning forest along
-this selector; the producer
-`PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn` requires it to be *consistent*
-with the graph — `G.IsLink (e j) (u j) (other j)` and `ends (e j) = (u j, other j)` for the
-forest hinges. This section lands the canonical such selector once, as a reusable `Graph`
+this selector; the Case-I realization producer (`lem:case-I-realization`, Phase 21b) requires it
+to be *consistent* with the graph — `G.IsLink (e j) (u j) (other j)` and
+`ends (e j) = (u j, other j)` for the forest hinges. This section lands the canonical such
+selector once, as a reusable `Graph`
 primitive, rather than re-deriving the per-edge `obtain ⟨x, y, hlink⟩` choice inline at each use
 (the pattern `exists_isLink_of_mem_edgeSet` is repeated a dozen times across the molecular files).
 -/
@@ -92,9 +92,9 @@ noncomputable def endsOf [Inhabited α] (G : Graph α β) (e : β) : α × α :=
 /-- **The canonical endpoint selector is a genuine link on every edge** (`def:graph-operations`):
 if `e ∈ E(G)` then `G.IsLink e (G.endsOf e).1 (G.endsOf e).2`. The endpoint pair `G.endsOf e` is
 chosen by `Classical.choice` from `exists_isLink_of_mem_edgeSet`, so its components are an actual
-pair of ends of `e`. This is the consistency contract the panel-realization producer
-`PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn` requires of its forest hinges
-(`hlink`), discharging the per-edge `obtain ⟨x, y, hlink⟩` choice once and for all. -/
+pair of ends of `e`. This is the consistency contract the Case-I realization producer
+(`lem:case-I-realization`, Phase 21b) requires of its forest hinges (`hlink`), discharging the
+per-edge `obtain ⟨x, y, hlink⟩` choice once and for all. -/
 lemma isLink_endsOf [Inhabited α] (G : Graph α β) {e : β} (he : e ∈ E(G)) :
     G.IsLink e (G.endsOf e).1 (G.endsOf e).2 := by
   have h : ∃ x y, G.IsLink e x y := exists_isLink_of_mem_edgeSet he

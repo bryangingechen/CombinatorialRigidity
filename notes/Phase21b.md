@@ -23,7 +23,26 @@ must be V(G)-relative …*. Forward-mode dep-graph:
 
 ## Current state
 
-**The device is GREEN; the realization layer is RED and re-planned (2026-06-04).**
+**Item 1 LANDED (2026-06-05): the motive is relativized + base case green.**
+`BodyHingeFramework.IsInfinitesimallyRigidOn (s : Set α)` ("motions constant on `s`") is in
+`RigidityMatrix.lean` (with `.mono`, `isInfinitesimallyRigidOn_univ_iff`,
+`isInfinitesimallyRigidOn_of_isInfinitesimallyRigid`); `HasFullRankRealization k G` is re-pinned to
+`∃ Q, Q.graph = G ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)`; `theorem_55_base` now concludes
+`IsInfinitesimallyRigidOn {u, v}` unconditionally (**`hcover` dropped**, `[Nonempty]`/`[Finite]`
+dropped) and `toBodyHinge_rankHypothesis_zero` follows; `theorem_55`'s recursion is unchanged
+(motive-agnostic `exact minimal_kdof_reduction …`) and compiles against the new motive. The four
+absolute-motive Case-I producers (`hasFullRankRealization_ofParam_of_{pinnedMotionsOn,
+isInfinitesimallyRigid,contraction}`, `hasFullRankRealization_of_pinnedMotionsOn`) and the orphaned
+vacuous block-internal chain (`isInfinitesimallyRigid_of_le_withGraph`,
+`isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph`,
+`isInfinitesimallyRigid_of_rigid_subgraph_of_{pinnedMotionsOn_eq_bot,block_internal}`,
+`pinnedMotionsOn_eq_bot_of_block_internal_rigid`) are **retired** (deleted, retirement note at end
+of `AlgebraicInduction.lean`). Blueprint: `def:rank-hypothesis` + `lem:theorem-55-base` flipped
+GREEN; `thm:theorem-55` stays red (producers red). The nullity `RankHypothesis` chain + accounting
+iffs are retained. Build + lint clean, axiom-clean {propext, Classical.choice, Quot.sound}.
+**Next: item 2 (accounting iffs) or item 3 (B0 keystone).**
+
+**The device is GREEN; the realization producers are RED (re-planned 2026-06-04).**
 Two spike findings (both verified in Lean) reshaped the plan:
 
 1. **The realization motive was unsatisfiable for the inductive graphs.**
@@ -114,40 +133,43 @@ Classical.choice, Quot.sound}.
   no rigidity hypothesis), the Case-II `withNormal`/`hnew`/edge-substitution
   graph bricks (`lem:case-II-rank-lift`, `lem:splitoff-edge-substitution`).
 
-**RED — realization spine, re-stated against the relativized motive (`\lean` kept
-where the name will be re-pinned, `\leanok` dropped):**
-- [ ] `def:rank-hypothesis` — re-pin to the `V(G)`-relative rank form.
-- [ ] `lem:theorem-55-base` — re-prove the 2-vertex base relative (drop `hcover`).
-- [ ] `thm:theorem-55` — re-run the recursion against the relativized motive.
-- [ ] `lem:case-I`, `lem:case-II` — accounting iffs, re-stated rank-side.
+**GREEN — relativized motive + base (item 1, landed 2026-06-05):**
+- [x] `def:rank-hypothesis` — re-pinned to `IsInfinitesimallyRigidOn` +
+  `HasFullRankRealization` (the `V(G)`-relative rank form); the nullity
+  `RankHypothesis` retained as the accounting-iff carrier.
+- [x] `lem:theorem-55-base` — `theorem_55_base` concludes `IsInfinitesimallyRigidOn {u,v}`,
+  `hcover` (and `[Nonempty]`/`[Finite]`) dropped; `toBodyHinge_rankHypothesis_zero` follows.
+
+**RED — realization spine, re-stated against the relativized motive:**
+- [ ] `thm:theorem-55` — recursion compiles motive-agnostically (`theorem_55` green as a
+  conditional); node stays red until its producers land.
+- [ ] `lem:case-I`, `lem:case-II` — accounting iffs, re-stated rank-side. **Item 2.**
 - [ ] `prop:rigidity-matrix-prop11` — depends on the re-stated `theorem_55`.
 
 **RED — realization producers (no `\lean` yet; the genuine build):**
 - [ ] `lem:rows-polynomial-in-normals` (**B0, keystone**) — coordinatize the
   panel-normal rows as degree-2 `MvPolynomial`, packaging the device's
-  `g`/`c`/`φ`/`hg` (`hcoord` = green `infinitesimalMotions_eq_dualCoannihilator`).
+  `g`/`c`/`φ`/`hg` (`hcoord` = green `infinitesimalMotions_eq_dualCoannihilator`). **Item 3.**
 - [ ] `lem:case-I-splice-seed` — one placement `p₀` with `D(|V(G)|−1)`
   independent parent rows, block-triangular from the two IH legs
-  (genericity-free).
+  (genericity-free). **Item 4.**
 - [ ] `lem:case-I-realization` — compose B0 + splice-seed + device ⇒
-  `HasFullRankRealization`.
+  `HasFullRankRealization` (the device-direct producer, NOT the retired closure). **Item 5.**
 - [ ] `lem:case-II-realization` — the shallower 1-extension producer (one
-  re-inserted body, `+(D−1)` rows, KT 6.12).
+  re-inserted body, `+(D−1)` rows, KT 6.12). **Item 6.**
 - [ ] `lem:case-III` — deferred to Phases 22–23.
 
-**TO RETIRE (vacuous Lean, now blueprint-unreferenced):**
-`hasFullRankRealization_ofParam_of_contraction`,
-`isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`,
-`isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph` (takes
-`withGraph`-rigid, vacuous; the relativized analogue takes `IsInfinitesimallyRigidOn`),
-`pinnedMotionsOn_eq_bot_of_block_internal_rigid` (takes `G_c` rigid, vacuous;
-`hpin` should come from the *contraction* `G/E(H)` rigid, not `G − E(H)`),
-`isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot`,
-`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` /
-`hasFullRankRealization_ofParam_of_pinnedMotionsOn` /
-`hasFullRankRealization_of_pinnedMotionsOn` (absolute-motive producers).
-Delete (or relativize) as their replacements land — do **not** leave them as
-green decoys.
+**RETIRED (item 1, deleted — retirement note at end of `AlgebraicInduction.lean`):**
+`hasFullRankRealization_ofParam_of_{contraction,isInfinitesimallyRigid,pinnedMotionsOn}`,
+`hasFullRankRealization_of_pinnedMotionsOn` (absolute-motive producers);
+`isInfinitesimallyRigid_of_le_withGraph`,
+`isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph`,
+`isInfinitesimallyRigid_of_rigid_subgraph_of_{pinnedMotionsOn_eq_bot,block_internal}`,
+`pinnedMotionsOn_eq_bot_of_block_internal_rigid` (orphaned vacuous block-internal chain).
+The genuine block-pin bricks `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot`,
+`pinnedMotionsOn_withGraph_eq_of_block_internal`, `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`,
+`finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid` are **retained** (reusable, blueprint
+`lem:pinned-motions-on-rank-bound`).
 
 ## Decisions made during this phase
 
@@ -185,9 +207,12 @@ green decoys.
 
 ## Blockers / open questions
 
-- **Motive relativization is the gating commit.** Nothing downstream
-  (producers) composes until the realization motive is `V(G)`-relative. Hand-off
-  item 1.
+- **Motive relativization (gating commit) DONE (item 1, 2026-06-05).** The
+  realization motive is now `V(G)`-relative (`IsInfinitesimallyRigidOn V(G)`); the
+  rank-equality bridge `IsInfinitesimallyRigidOn V(G) ↔ finrank (span rigidityRows)
+  = D·(V(G).ncard−1)` was **not** built this commit (the base case proves constancy
+  directly, not via the rank bridge) — it is a leaf the producers (items 4–6) need,
+  build on contact.
 - **Accounting iffs (`lem:case-I`/`lem:case-II`) are nullity-side, α-dependent.**
   They are true relative statements but do not directly serve the non-spanning
   producers; re-state rank-side (or bridge) as the producers need them. Assess
@@ -206,20 +231,17 @@ its blueprint node's `\leanok` (or adds green infra) + updates this file. The
 device is green and `B0`'s coordinate core is validated, so this is build work,
 not research. **Do not** re-introduce the retired vacuous lemmas.
 
-1. **Relativize the realization motive + base case** (flips `def:rank-hypothesis`,
-   `lem:theorem-55-base`, `thm:theorem-55`). Introduce
-   `BodyHingeFramework.IsInfinitesimallyRigidOn (s : Set α) := ∀ S,
-   IsInfinitesimalMotion S → ∀ u ∈ s, ∀ v ∈ s, S u = S v`; re-pin
-   `HasFullRankRealization k G := ∃ Q, Q.graph = G ∧ Q.toBodyHinge.
-   IsInfinitesimallyRigidOn V(G)` (rank-equality bridge:
-   `IsInfinitesimallyRigidOn V(G) ↔ finrank (span rigidityRows) = D·(V(G).ncard−1)`).
-   Re-prove `theorem_55_base` relative — its existing `key : S u = S v` already
-   gives constancy on `V(G) = {u,v}`; **drop the `hcover` hypothesis**. Re-run
-   `theorem_55` (the recursion `exact minimal_kdof_reduction …` is
-   motive-agnostic; only the case-premise *shapes* change). Keep the nullity
-   `RankHypothesis` for the accounting iffs for now. *This is the gating commit;
-   it may be bounded further (e.g. predicate + base in one commit, recursion in
-   the next) at the builder's discretion.*
+**Next concrete commit: item 2** (item 1 landed 2026-06-05).
+
+1. ~~**Relativize the realization motive + base case**~~ **DONE (2026-06-05).**
+   `IsInfinitesimallyRigidOn` + its API in `RigidityMatrix.lean`;
+   `HasFullRankRealization` re-pinned; `theorem_55_base` relative (`hcover` dropped);
+   `theorem_55` recursion unchanged; four absolute-motive producers + the orphaned
+   vacuous block-internal chain retired; `def:rank-hypothesis` + `lem:theorem-55-base`
+   GREEN, `thm:theorem-55` red (producers red). Nullity `RankHypothesis` + accounting
+   iffs retained. *The rank-equality bridge `IsInfinitesimallyRigidOn V(G) ↔ finrank
+   (span rigidityRows) = D·(V(G).ncard−1)` was NOT built — it is a producer-side leaf
+   (items 4–6 need it; build on contact).*
 
 2. **Re-state the Case-I / Case-II accounting** (`lem:case-I`, `lem:case-II`)
    against the relativized motive — rank-side block-triangular addition (KT 6.3

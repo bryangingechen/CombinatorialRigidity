@@ -54,10 +54,15 @@ panel-hinge analogue of Whiteley's bar-joint 1-extension). The shared
 analytic device --- the genericity argument (Claim~6.4/6.9,
 \cref{lem:genericity-device}) --- is green; the cycle-realization Lemma~5.4
 (\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
-Whiteley~\cite{whiteley1999}) enters as an input. \emph{Red, and re-stated
-against the relativized motive:} the motive and base case
-(\cref{def:rank-hypothesis}, \cref{lem:theorem-55-base}), the capstone
-\cref{thm:theorem-55}, the two accounting iffs \cref{lem:case-I} /
+Whiteley~\cite{whiteley1999}) enters as an input. \emph{Landed (Phase 21b):}
+the relativized motive and the base case are green
+(\cref{def:rank-hypothesis} now carries
+$\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ /
+$\mathrm{HasFullRankRealization}$, and \cref{lem:theorem-55-base} discharges
+the two-vertex case unconditionally); the recursion of \cref{thm:theorem-55}
+compiles motive-agnostically against it, and the absolute-motive Case-I
+producers were retired. \emph{Still red:} the capstone \cref{thm:theorem-55}
+(pending its producers), the two accounting iffs \cref{lem:case-I} /
 \cref{lem:case-II} (relative restatements), and the realization producers
 --- the panel-coordinate row coordinatization \cref{lem:rows-polynomial-in-normals}
 (the keystone, B0), the Case~I splice seed \cref{lem:case-I-splice-seed}, the
@@ -216,7 +221,10 @@ whole induction.
 
 \begin{definition}[Generic-rank hypothesis (6.1), $V(G)$-relative]
   \label{def:rank-hypothesis}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.RankHypothesis}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigidOn,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.HasFullRankRealization,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.RankHypothesis}
+  \leanok
   \uses{def:rigidity-matrix, def:k-dof}
   For a minimal $k$-dof-graph $G$ with $|V| \ge 2$, the
   \emph{realization hypothesis} $(6.1)$ asserts the existence of a
@@ -283,13 +291,14 @@ whole induction.
 
   The well-founded recursion itself is a one-line application of
   \cref{thm:minimal-kdof-reduction} taking the three case-producers as
-  premises; the genericity-free content is the recursion. The Lean is
-  \emph{red and re-stated} pending the motive relativization: the prior
-  formalization carried the absolute null-space motive $\dim Z = D$, whose
-  case-producer premises are unsatisfiable for the non-spanning inductive
-  subgraphs (chapter status); re-pinning the motive to
-  \cref{def:rank-hypothesis}'s rank form and re-running the recursion is the
-  re-plan. What remains genuinely to construct are the producers:
+  premises; the genericity-free content is the recursion. The motive has
+  been \emph{relativized} (Phase 21b): $\mathrm{HasFullRankRealization}$ now
+  carries the $V(G)$-relative form $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$
+  (\cref{def:rank-hypothesis}), and the recursion itself compiles
+  motive-agnostically against it (the prior absolute null-space motive
+  $\dim Z = D$ had case-producer premises unsatisfiable for the non-spanning
+  inductive subgraphs --- chapter status). The node stays \emph{red} because
+  the three case-producers it depends on are not yet built: what remains is
   \cref{lem:case-I-realization} (via the row coordinatization
   \cref{lem:rows-polynomial-in-normals} and the splice seed
   \cref{lem:case-I-splice-seed}), \cref{lem:case-II-realization}, and
@@ -300,23 +309,24 @@ whole induction.
 
 \begin{lemma}[Theorem 5.5 base case ($|V(G)| = 2$)]
   \label{lem:theorem-55-base}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_base,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_zero_iff}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_base}
+  \leanok
   \uses{def:rank-hypothesis, lem:rank-parallel-full}
   The two-vertex double edge has a panel-hinge realization of rank
   $D(|V(G)|-1) - k = D - k$. For the minimal $0$-dof case (the double edge,
   $k = 0$) this is the full rank $D$, attained by two non-parallel hinges
   via the parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full}).
   At $k = 0$, in the $V(G)$-relative motive (\cref{def:rank-hypothesis}),
-  the hypothesis is exactly ``every infinitesimal motion is constant on the
-  two bodies $V(G) = \{u, v\}$''. \emph{Red, re-stated:} the prior Lean
-  required the constancy to hold over the \emph{whole} ambient body type
-  (a hypothesis $\forall w,\ w = u \lor w = v$, i.e.\ ``$\alpha = \{u,v\}$''),
-  which is the absolute-motive artefact; against the relativized motive the
+  the conclusion is exactly ``every infinitesimal motion is constant on the
+  two bodies $V(G) = \{u, v\}$'' ($\mathrm{IsInfinitesimallyRigidOn}\,\{u,v\}$).
+  The prior Lean required the constancy to hold over the \emph{whole} ambient
+  body type (a hypothesis $\forall w,\ w = u \lor w = v$, i.e.\ ``$\alpha =
+  \{u,v\}$''), the absolute-motive artefact; against the relativized motive the
   constancy is only required on $V(G)$, so that ambient hypothesis is
   dropped and the base case holds for any ambient type.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rank-parallel-full}
   Two bodies joined by hinges with linearly independent supporting
   extensors realize the full screw-difference constraint: the
@@ -410,12 +420,12 @@ Cases~I and~II travel toward the smaller inductive graph.
   \leanok
   \uses{def:panel-hinge-framework, lem:theorem-55-base}
   The two-body base of \cref{lem:cycle-realization}: a panel-hinge
-  framework $P$ on a two-body cover, with two edges $e_1, e_2$ joining
-  the two bodies $u \ne v$ whose panel support extensors $C(p(e_1)),
-  C(p(e_2))$ are linearly independent, has an infinitesimally rigid
-  body-hinge interpretation $P^\flat$ --- it realizes the rank
-  hypothesis at $k' = 0$ (\cref{def:rank-hypothesis}), the full rank
-  $D = D(2-1) - 0$. This is the panel analogue of the base case
+  framework $P$ with two edges $e_1, e_2$ joining two bodies $u \ne v$
+  whose panel support extensors $C(p(e_1)), C(p(e_2))$ are linearly
+  independent has a body-hinge interpretation $P^\flat$ that is
+  infinitesimally rigid \emph{on the two bodies} $\{u, v\} = V(G)$
+  (\cref{def:rank-hypothesis}, $\mathrm{IsInfinitesimallyRigidOn}$), the
+  full rank $D = D(2-1) - 0$. This is the panel analogue of the base case
   \cref{lem:theorem-55-base}, lifted through the body-hinge
   interpretation, and is the brick the general panel cycle is built
   from.

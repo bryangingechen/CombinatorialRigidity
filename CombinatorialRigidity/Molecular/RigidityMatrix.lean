@@ -681,6 +681,48 @@ theorem isInfinitesimallyRigid_iff (F : BodyHingeFramework k α β) :
       ∀ S, F.IsInfinitesimalMotion S → IsTrivialMotion S :=
   Iff.rfl
 
+/-- **Infinitesimal rigidity relative to a body set `s`** (`def:rank-hypothesis`, the
+`V(G)`-relative motive): every infinitesimal motion is constant *on `s`*, `S u = S v` for all
+`u v ∈ s`. This is the `α`-independent realization motive of the algebraic induction (Phase 21b):
+the absolute form `IsInfinitesimallyRigid` (constancy on *all* of `α`) is unsatisfiable for a
+graph `G` that does not span the ambient body type `α` — a body in `α ∖ V(G)` carries no hinge
+constraint and is a free non-trivial motion — but the realization induction reduces to subgraphs
+with strictly fewer vertices on the same fixed `α`. Read at `s = V(G)`, this asks only that
+motions be constant on the bodies `G` actually carries, which is `rank R(G,p) = D(|V(G)|−1)` and
+composes through the vertex-reducing induction. Taking `s = Set.univ` recovers the absolute form
+(`isInfinitesimallyRigidOn_univ_iff`). -/
+def IsInfinitesimallyRigidOn (F : BodyHingeFramework k α β) (s : Set α) : Prop :=
+  ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ v ∈ s, S u = S v
+
+theorem isInfinitesimallyRigidOn_iff (F : BodyHingeFramework k α β) (s : Set α) :
+    F.IsInfinitesimallyRigidOn s ↔
+      ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ v ∈ s, S u = S v :=
+  Iff.rfl
+
+/-- **Relative rigidity shrinks with the body set** (`def:rank-hypothesis`): a framework rigid on
+`t` is rigid on any subset `s ⊆ t`. Constancy on the larger set forces constancy on the
+smaller. -/
+theorem IsInfinitesimallyRigidOn.mono (F : BodyHingeFramework k α β) {s t : Set α} (hst : s ⊆ t)
+    (h : F.IsInfinitesimallyRigidOn t) : F.IsInfinitesimallyRigidOn s :=
+  fun S hS u hu v hv => h S hS u (hst hu) v (hst hv)
+
+/-- **Absolute rigidity is relative rigidity on all of `α`** (`def:rank-hypothesis`): the
+`V(G)`-relative motive at `s = Set.univ` is exactly the absolute infinitesimal rigidity
+`IsInfinitesimallyRigid` (every motion constant on every pair). -/
+theorem isInfinitesimallyRigidOn_univ_iff (F : BodyHingeFramework k α β) :
+    F.IsInfinitesimallyRigidOn Set.univ ↔ F.IsInfinitesimallyRigid := by
+  rw [isInfinitesimallyRigidOn_iff, isInfinitesimallyRigid_iff]
+  exact ⟨fun h S hS u v => h S hS u (Set.mem_univ u) v (Set.mem_univ v),
+    fun h S hS u _ v _ => h S hS u v⟩
+
+/-- **Absolute rigidity implies relative rigidity on any set** (`def:rank-hypothesis`): if every
+infinitesimal motion is constant on *all* of `α` then in particular it is constant on `s`. This is
+the direction the cycle / two-body base cases use — they prove the strong absolute statement when
+`G` spans, which immediately gives the relative motive on `V(G)`. -/
+theorem isInfinitesimallyRigidOn_of_isInfinitesimallyRigid (F : BodyHingeFramework k α β)
+    (h : F.IsInfinitesimallyRigid) (s : Set α) : F.IsInfinitesimallyRigidOn s :=
+  fun S hS u _ v _ => (F.isInfinitesimallyRigid_iff.mp h S hS) u v
+
 /-- Infinitesimal rigidity is the equality `Z(G,p) = trivialMotions` of the two submodules
 (`lem:trivial-motions-rank-bound`): one inclusion always holds
 (`trivialMotions_le_infinitesimalMotions`), so rigidity — the reverse inclusion — upgrades it to
