@@ -21,6 +21,19 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
+**N5 row-stacking brick ruled out by constructibility recon (2026-06-04, docs-only commit).** The
+prior hand-off's "recommended next concrete commit" was to stack the `D` forests of the (green)
+`M(H̃)`-base packing into `D(|V(H)|−1)` jointly-independent rigidity rows. A math-first recon (the
+honesty gate's second half, mandated for producer nodes) found it **fails the arithmetic and is off
+the critical path**: naive stacking over-counts by a factor `(D−1)` (`(D−1)·D·(|V(H)|−1)` rows, not
+jointly independent — per-forest pin-a-body conflicts cross-forest), so reaching exactly the target
+is the KT §6.2 extensor-span genericity (Lemma 2.1 / Claim 6.12, research-shaped); and N7b-0
+(`exists_independent_panelRow_subfamily_of_rigidOn`, green) *already* extracts the full `D(|V|−1)`
+rows directly from rigidity on `V`, so the forest packing was never on the path to the row count — it
+fed the per-leg *seed*, whose real content is the seed witness-transfer. The hand-off is re-pointed
+(below) to that witness-transfer (option (b)). FRICTION dead-end #4; `DESIGN.md` *Constructibility
+recon before a producer build*. No Lean change; the forest-packing brick stays green.
+
 **N5 rigid-block forest-packing brick GREEN** (`Graph.IsKDof.exists_isBase_isForestPacking`,
 `Deficiency.lean`, axiom-clean, no `\leanok` flip — infra below the still-red
 `lem:case-I-splice-placement` / `lem:case-I-realization`). The first decomposable brick of the
@@ -265,9 +278,11 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   rank; needs the `D`-fold `M(H̃)`-base packing). **Forest-packing brick GREEN (this commit):**
   `Graph.IsKDof.exists_isBase_isForestPacking` (`Deficiency.lean`) — the `D`-fold `M(H̃)`-base packing
   itself: a rigid `H` has a base `B` of `M(H̃)` packing into `D` edge-disjoint forests of `H̃ ↾ B`
-  with `|B| = D(|V(H)|−1)`. The first decomposable step of option (a) (the prose-only "`G̃` packs `D`
-  spanning trees" now formal). Remaining (red): stack the `D` forests' rigidity rows to the full count
-  + exhibit one seed making the leg(s) rigid.
+  with `|B| = D(|V(H)|−1)`. A true structural fact (may serve a future Track-B consumer). **Row-stacking
+  ruled OUT (this commit, recon):** stacking the `D` forests' rows over-counts by `(D−1)` and isn't
+  jointly independent (research-shaped extensor-span genericity), *and* is off-path (N7b-0 extracts the
+  full count directly from rigidity-on-`V`). Remaining (red): exhibit one seed making the leg(s) rigid
+  — the seed witness-transfer (option (b)), now the genuine next step.
 - [ ] **N6** `lem:case-I-realization` — compose N4 + N5 + the green glue
   (`isInfinitesimallyRigidOn_union_of_inter`) + device ⇒ discharges
   `theorem_55.hcontract`. **Largely subsumed by `hasFullRankRealization_of_splice`**
@@ -287,6 +302,16 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N5 row-stacking brick FAILS the constructibility recon — skip it (2026-06-04, docs-only).** Ran
+  the producer-scrutiny recon the prior hand-off + the `exists_isBase_isForestPacking` doc-comment
+  demanded before scheduling the "stack the `D` forests' rows to `D(|V(H)|−1)`" brick. Two findings,
+  both fatal: (i) the arithmetic doesn't close — naive stacking over-counts by a factor `(D−1)` and the
+  rows aren't jointly independent, so the real content is the KT §6.2 extensor-span genericity
+  (research-shaped); (ii) it's off-path — N7b-0 already gives the full count from rigidity-on-`V`, so
+  the forest packing only ever fed the per-leg *seed*. Options (a)/(b) thus collapse to one obstruction:
+  the seed witness-transfer (hand-off re-pointed there). Forest-packing brick stays green (structural).
+  Full arithmetic → FRICTION dead-end #4; rule → `DESIGN.md` *Constructibility recon before a producer
+  build*.
 - **N5 rigid-block forest-packing brick (2026-06-04).** Built `Graph.IsKDof.exists_isBase_isForestPacking`
   (`Deficiency.lean`), the first decomposable step of Hand-off option (a) — the `D`-fold `M(H̃)`-base
   packing the prior hand-off named as option (a)'s genuine new content. A rigid `H` (`def(H̃)=0`) has a
@@ -525,11 +550,14 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   rigid on its vertex set. This is **not** the one-commit step the prior hand-off implied: a single
   spanning forest gives only `(D−1)·(|V(H)|−1)` independent rows (`exists_independent_rigidityRows_of_forest`),
   short of the full `D(|V(H)|−1)`; reaching full rank needs a `D`-fold `M(H̃)`-base packing, i.e.
-  essentially `theorem_55` recursed onto `H` (research-shaped). **The `D`-fold base packing is now
-  GREEN** (`Graph.IsKDof.exists_isBase_isForestPacking`, this commit): a rigid `H` has a base of
-  `M(H̃)` packing into `D` edge-disjoint forests, `|B| = D(|V(H)|−1)`. What remains red is stacking
-  those `D` forests' rigidity rows to the full count (the linear-algebra step), then the seed. (2) The
-  **simultaneous witness-transfer**
+  essentially `theorem_55` recursed onto `H` (research-shaped). **The `D`-fold base packing is
+  GREEN** (`Graph.IsKDof.exists_isBase_isForestPacking`): a rigid `H` has a base of `M(H̃)` packing
+  into `D` edge-disjoint forests, `|B| = D(|V(H)|−1)`. **But the "row-stacking" follow-up is ruled out**
+  (recon, this commit): stacking the `D` forests' rows over-counts by `(D−1)` and isn't jointly
+  independent (extensor-span genericity, research-shaped), *and* is off-path — N7b-0
+  (`exists_independent_panelRow_subfamily_of_rigidOn`, green) extracts the full count directly from
+  rigidity-on-`V`. So option (a) bottoms out on the same seed obstruction as (b), not on a separable
+  linear-algebra brick. (2) The **simultaneous witness-transfer**
   (both legs' rank-determinant polynomials non-zero in the shared normals ⇒ a common non-root `q₀` by
   `MvPolynomial.funext`, fed to `hasFullRankRealization_of_splice_ofNormals`). The rest of N5/N6 is green
   (transversality, `withGraph` normal-sharing, the splice→N7b-0→device chain, and now the single-leg
@@ -541,54 +569,42 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 
 ## Hand-off / next phase
 
-**N5 rigid-block forest-packing brick GREEN** (`Graph.IsKDof.exists_isBase_isForestPacking`,
-`Deficiency.lean`; axiom-clean, no `\leanok` flip — infra below the still-red
-`lem:case-I-splice-placement` / `lem:case-I-realization`). The first decomposable step of option (a):
-the **`D`-fold `M(H̃)`-base packing** the prior hand-off flagged as the genuine new content. A rigid
-`H` (`def(H̃) = 0`) has a base `B` of `M(H̃)` packing into `D = bodyBarDim n` edge-disjoint forests of
-`H̃ ↾ B`, with `|B| = D(|V(H)|−1)`. Proof on green infra: `exists_isBase` → `matroidMG_indep_iff` +
-`tutte_nash_williams` → `isBase_ncard_add_deficiency_eq` (`def=0`). Formalizes the prose-only "`G̃`
-packs `D` spanning trees" from the `IsKDof`/`IsRigidSubgraph` doc-comments. See *Current state* +
-*Decisions*.
+**This commit (docs-only): row-stacking ruled out by constructibility recon; hand-off re-pointed.**
+The prior hand-off recommended a "row-stacking linear-algebra brick" (stack the `D` forests of the
+green `M(H̃)`-base packing into `D(|V(H)|−1)` jointly-independent rows) as option (a)'s next step. The
+producer-scrutiny recon (mandatory before scheduling a producer node as a build) ruled it out on two
+counts — see *Current state* / *Decisions* / FRICTION dead-end #4:
+1. **Arithmetic-short.** Naive stacking gives `(D−1)·∑ᵢ|Fs i| = (D−1)·D·(|V(H)|−1)` rows — a factor
+   `(D−1)` over target — and they are *not* jointly independent (per-forest pin-a-body conflicts
+   cross-forest). Reaching exactly `D(|V(H)|−1)` is the KT §6.2 extensor-span genericity (Lemma 2.1 /
+   Claim 6.12), research-shaped — not a Lean concatenation combinator.
+2. **Off the critical path.** N7b-0 (`exists_independent_panelRow_subfamily_of_rigidOn`, green)
+   *already* yields the full `D(|V|−1)` rows directly from rigidity on `V`. The forest packing only
+   ever fed the per-leg rigid *seed*; option (a) therefore bottoms out on the **same seed obstruction**
+   as (b), not on a separable linear-algebra brick.
 
-**Recommended next concrete commit (the next decomposable step of option (a)).** With the `D`-fold base
-packing green, the next step is the **row-stacking linear-algebra brick**: stack the `D` forests'
-rigidity-row families into a single jointly-independent family of the full `D(|V(H)|−1)` count. The
-single-forest `exists_independent_rigidityRows_of_forest` (`RigidityMatrix.lean`) gives *one* forest's
-`(D−1)·|J|` independent rows via the pin-a-private-endpoint count (`linearIndependent_hingeRow_forest`).
-The new content: each forest `Fs i` of the packing (this commit's brick) is a spanning forest of
-`H̃ ↾ B`; assemble per-forest row families and prove their union is independent at the full count
-`D(|V(H)|−1)`. Caution — the naive concatenation does *not* inherit independence from
-`linearIndependent_hingeRow_forest` (its pin-a-body argument is per-forest; a vertex is a child in
-several of the `D` forests), so the cross-forest independence is the genuine work — decompose it
-math-first against KT §6.2 (the `D`-candidate / extensor-span argument) before scheduling the build.
-The output (`D(|V(H)|−1)` independent rigidity rows of a rigid block at a general-position seed) feeds
-the single-leg bridge `hasFullRankRealization_of_rigidOn_seed` (giving the per-leg rigid seed), then the
-simultaneous witness-transfer (option (b)) glues both legs.
+So options (a) and (b) collapse to a single genuine remaining N5 obstruction: **produce one seed `q₀`
+at which the leg(s) are rigid** (the witness-transfer). The forest-packing brick
+(`Graph.IsKDof.exists_isBase_isForestPacking`, `Deficiency.lean`) stays green — a true structural fact
+(may serve a future Track-B consumer) — but is no longer claimed as a step toward the row count.
 
-**Scoping context carried from the prior commit.** The single-leg
-`hasFullRankRealization_of_rigidOn_seed` (`AlgebraicInduction.lean`, green) is the
-*single-seed-rigidity ⟹ full-rank-realization* bridge the per-leg producer feeds; the per-leg
-rigid-seed *construction* is research-shaped (full rank needs the `D`-fold base packing — now green —
-not one spanning tree, i.e. essentially `theorem_55` recursed onto `H`). The two remaining N5 paths:
-- *(a) The per-leg rigid-seed producer* — `HasFullRankRealization k H` for a rigid (proper-rigid-subgraph)
-  `H`. The `D`-fold `M(H̃)`-base packing is **GREEN** (`Graph.IsKDof.exists_isBase_isForestPacking`, this
-  commit); the green single-forest brick `exists_independent_rigidityRows_of_forest` handles *one* tree
-  (`(D−1)·|J|` rows). Remaining: the row-stacking brick (above) to the full count, then the seed; feeds
-  the single-leg bridge `hasFullRankRealization_of_rigidOn_seed` directly.
-- *(b) The simultaneous witness-transfer* (the second N5 commit per the route decision): both legs'
-  rank-determinant polynomials are non-zero in the shared normals (B0 `exists_good_realization_ofParam`,
-  green) ⇒ a common non-root `q₀` by `MvPolynomial.funext`, fed to
-  `hasFullRankRealization_of_splice_ofNormals`. This *presupposes* each leg has a non-empty rigid locus,
-  i.e. it consumes (a)'s output (each leg rigid for *some* normals); so (a) is the prerequisite.
+**Recommended next concrete commit — the seed witness-transfer (option (b)).** Each leg's IH supplies
+its own free-normal rigid realization (some normals where the leg is rigid on its vertex set); the
+remaining content is to put *both* legs' loci on **one** seed `q₀`. The route (decided in the
+"assess-the-math" pause, still standing): in **free `ofNormals` space, not moment-curve `ofParam`** —
+both legs' rank-determinants are non-zero polynomials in the shared normals (B0 row coordinatization
+`lem:rows-polynomial-in-normals`, green), so their product (× the general-position polynomial) is a
+non-zero polynomial with a common non-root `q₀` by `MvPolynomial.funext`; feed that `q₀` to
+`hasFullRankRealization_of_splice_ofNormals` (green). This is itself a ~2–3-commit sub-build on green
+infra (device polynomial engine, B0 coordinatization, splice glue, Lemma 5.1, `MvPolynomial.funext`
+mirror) — **decompose it math-first** before the first build: the prerequisite is each leg's *non-empty
+rigid locus* (an existence statement the IH / `HasFullRankRealization k GH` provides), then the
+non-zero-product lemma; isolate the funext step as the genuine new brick. The single-leg
+`hasFullRankRealization_of_rigidOn_seed` (green) is the per-leg consumer once a leg's seed is in hand.
 
-Route decision still stands: build in **free `ofNormals` space, not moment-curve `ofParam`** (the
-`_ofParam` consumer needs a subvariety-genericity sub-lemma the `∃ Q, …` motive doesn't supply; that gap
-is the wall the three N5 scaffolding commits kept circling). The single-leg `_ofNormals` bridge this
-commit added is the consumer for (a)'s output. Honesty-gate: keep `lem:case-I-splice-placement` /
-`lem:case-I-realization` red until the *constructions* (not just their consumers) land. The KT math is
-`notes/Phase21b.md` *Finding A* + the `algebraic-induction.tex` `lem:case-I-splice-placement` proof
-sketch.
+Honesty-gate: keep `lem:case-I-splice-placement` / `lem:case-I-realization` red until the seed
+*construction* (not just its consumers) lands. The KT math is `notes/Phase21b.md` *Finding A* + the
+`algebraic-induction.tex` `lem:case-I-splice-placement` proof sketch.
 
 *Alternatively*, the genericity-free `prop:rigidity-matrix-prop11` `hub` brick (`screwDim k + def ≤
 dim Z(G,p)`, the Phase-19 partition-contraction count) is a Track-independent closable target — but it

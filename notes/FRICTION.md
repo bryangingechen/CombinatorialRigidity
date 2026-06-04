@@ -1902,6 +1902,29 @@ limitations. Worth a once-over so future agents don't re-litigate.
      redundant-edge row (KT Lemma 6.10/6.13). So this producer *is* Case
      III, deferred to Phases 22–23 — it cannot be closed by the
      1-extension (Lemma 6.8, `k>0`) construction alone.
+  4. **"Row-stacking" the `D`-fold forest packing to full rank (Phase 22,
+     2026-06-04).** The Phase-22 hand-off recommended stacking the `D`
+     forests of a rigid block's `M(H̃)`-base packing
+     (`IsKDof.exists_isBase_isForestPacking`, green) into `D(|V(H)|−1)`
+     jointly-independent rigidity rows as the "next decomposable step".
+     Constructibility recon: the per-forest brick
+     `exists_independent_rigidityRows_of_forest` gives `(D−1)·|Fs i|` rows
+     per forest; the packing has `∑ᵢ|Fs i| = |B| = D(|V(H)|−1)` hinges of
+     `H̃ = (D−1)·G`, so naive stacking gives `(D−1)·D·(|V(H)|−1)` rows — a
+     **factor `(D−1)` over** the target, and *not* jointly independent (each
+     forest's pin-a-body argument is internal; a body is a forest-child in
+     several of the `D` forests, so the orientations conflict cross-forest).
+     The genuine content — that the `D` forests' rows span exactly
+     `D(|V(H)|−1)` independent dimensions — is the **KT §6.2 extensor-span
+     genericity** (Lemma 2.1 / Claim 6.12-style), research-shaped, not a Lean
+     concatenation combinator. *And it is off the critical path:* N7b-0
+     (`exists_independent_panelRow_subfamily_of_rigidOn`, green) already
+     extracts the full `D(|V|−1)` rows **directly from rigidity on `V`**, no
+     forest decomposition; the forest packing only ever fed the per-leg rigid
+     *seed*, whose real remaining content is the seed construction (the
+     witness-transfer), not the row count. So the row-stacking node is *both*
+     arithmetic-short *and* unneeded — skip it. (Standing rule: `DESIGN.md`
+     *Constructibility recon before scheduling a producer build*.)
 - **What IS reusable for Phase 22:** the green row sub-nodes N7b-0/1/2/3,
   the device-closure glue `lem:realization-of-independent-rows`, the
   `V(G)`-relative count bridge, and the genericity device — all feed the
