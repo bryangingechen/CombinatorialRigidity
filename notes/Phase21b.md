@@ -28,6 +28,36 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Abstract genericity device landed (2026-06-03) — `lem:genericity-device`
+GREEN.** `CombinatorialRigidity.Molecular.genericityDevice` (end of
+`Molecular/AlgebraicInduction.lean`) composes the two Phase-21b bricks into
+the device's consumer-facing **codimension shape**: given a one-parameter
+family of frameworks `F : ℝ → BodyHingeFramework k α β` whose null spaces are
+coordinatized by a single affine functional family `a b : ι → Dual ℝ (α →
+ScrewSpace k)` (`hcoord : ∀ t, (F t).infinitesimalMotions = (span (range
+(fun i => a i + t • b i))).dualCoannihilator`, the per-`t`
+`infinitesimalMotions_eq_dualCoannihilator`) and a subfamily `s` LI at one
+realization `t₀`, the bad-`t` set `{t | D|V| < #s + dim Z(F t)}` is finite —
+i.e. `dim Z(G,p_t) ≤ D|V| − #s` for cofinitely many `t`. Three-line proof:
+`finrank_dualCoannihilator_along_affine_path_cofinite` (engine) +
+`finrank_screwAssignment` (`finrank (α→ScrewSpace k) = D|V|`) + `hcoord`.
+Green, build warning-clean + lint clean, axioms {propext, Classical.choice,
+Quot.sound}. The blueprint node `lem:genericity-device` flips green (`\lean` +
+`\leanok`), restated in the dual codimension form it now formalizes.
+
+**Scoping finding (the API gap, now pinned): the panel rows are NOT affine
+in a single scalar.** The engine (`Rank.lean` bricks) is genuinely affine-only
+(`a i + t • b i`, degree ≤ 1, via the one-variable Gram-det polynomial). But
+`panelSupportExtensor n_u n_v = complementIso (n_u ∧ n_v)` is *bilinear* in the
+normals, so a generic line through panel-coordinate space gives a row family
+that is **quadratic**, not affine, in `t`. The abstract device fixes the
+target shape (`hcoord` takes the affine family as a hypothesis); the residual
+per-consumer wiring must either (a) present each consumer's rows as an affine
+family along a *chosen* path (the single-scalar restriction route that worked
+for Phase 8's `exists_uniform_rowIndependent_placement`), or (b) generalize
+the engine to a multivariate Zariski-open form. This is the genuinely open
+piece — see *Hand-off*.
+
 **RigidityMatrix coordinatization landed (2026-06-03), connecting the
 analytic engine to the consumers.** Step (i) of the hand-off is done:
 `F.infinitesimalMotions` is now expressed as the `dualCoannihilator` of
@@ -97,10 +127,14 @@ Forward-mode: the authoritative node list is `algebraic-induction.tex`
 (`sec:molecular-algebraic-induction-genericity`). Tracked here for
 hand-off convenience.
 
-- [ ] `lem:genericity-device` — Claim 6.4/6.9: the entries of `R(G,p)`
-  are polynomials in the panel coordinates ⇒ the rank attains its max on
-  a generic set; a single good realization lifts to a generic one. Red
-  (the phase's target).
+- [x] `lem:genericity-device` — Claim 6.4/6.9, codimension form:
+  `genericityDevice` (`Molecular/AlgebraicInduction.lean`). Along an affine
+  functional family coordinatizing the null spaces, a witnessed corank
+  bounds `dim Z(G,p_t) ≤ D|V| − #s` cofinitely. Green; thin composition of
+  the two bricks below + `finrank_screwAssignment`. (The per-consumer wiring
+  — presenting the *panel* rows as such an affine family despite their
+  bilinear dependence on the normals — is the residual open piece; see
+  *Hand-off*.)
 - [x] `LinearIndependent.le_finrank_span_along_affine_path_cofinite`
   (`Mathlib/LinearAlgebra/Matrix/Rank.lean`) — the rank-form analytic
   core: `finrank` of the span of an affine vector family is cofinitely
@@ -175,6 +209,22 @@ in the Phase-21 Lean, to be supplied by the device):
   (forward-mode plumbing for an existing node, not a new node), parallel
   to the two Rank.lean bricks being node-free mirror lemmas.
   Elaboration gotcha (`proj − proj` stuck): TACTICS-QUIRKS § 30.
+- **The abstract device is `genericityDevice`: one lemma, `hcoord` carries
+  the affine family.** Rather than wire the device inseparably into the
+  first consumer, it lands as a standalone framework-facing lemma whose
+  `hcoord` hypothesis *receives* the affine functional family
+  `t ↦ a i + t • b i` coordinatizing each `(F t).infinitesimalMotions`.
+  This fixes the device's target shape (the consumer-facing
+  `dim Z ≤ D|V| − #s` cofinitely) before committing to a wiring shape, and
+  isolates the genuinely-open piece (building the affine family from
+  *panel* normals) as the consumer's obligation, not the device's. The
+  device proof is then a 3-line composition of the two bricks +
+  `finrank_screwAssignment`. Why this and not "wire Case I first": the
+  panel rows are *bilinear* (degree-2) in the normals, so there is no
+  single affine path to feed Case I's `hglue` without first choosing a
+  restriction — the assessment the hand-off flagged. Landing the abstract
+  device makes that assessment explicit and unblocks all four consumers
+  uniformly once the affine-presentation route is chosen.
 
 ## Blockers / open questions
 
@@ -182,62 +232,61 @@ in the Phase-21 Lean, to be supplied by the device):
   reuses the Phase-8 Gram-det polynomial-root-set mechanism, lifted to
   rank form, in both the span and codimension shapes. Both bricks
   landed.
-- **Open: coordinatizing `infinitesimalMotions` as a `dualCoannihilator`
-  of a panel-parametrized functional family** (the split-off step (i),
-  now the *next* concrete commit — see *Hand-off*). The two bricks
-  parametrize by a single scalar `t` along an affine path `a i + t•b i`.
-  The panel-hinge rigidity matrix's entries are polynomials in *many*
-  panel coordinates (the per-vertex normals), not one scalar. To feed
-  the consumers, the device must (a) express
-  `F.infinitesimalMotions` as `dualCoannihilator (span rows)` with rows
-  affine/polynomial in the panel coordinates, (b) pick an affine path
-  through panel-coordinate space hitting the good realization
-  `exists_independent_panelSupportExtensor` supplies, then (c) read the
-  consumer hypothesis (`hglue`/`hspan`/`hub`) off the cofinite-`t`
-  conclusion of `finrank_dualCoannihilator_along_affine_path_cofinite`.
-  Whether a *single* affine path suffices or a multivariate Zariski-open
-  argument is needed is still the thing to assess on contact for step
-  (b) — the single-path route worked for Phase-8's uniform-generic
-  placement (`exists_uniform_rowIndependent_placement`), so try it
-  first. Step (a) is the load-bearing piece and is its own commit.
+- **The abstract device `genericityDevice` is landed** (codimension form;
+  see *Current state*) — `lem:genericity-device` is GREEN. The single open
+  piece is now the **per-consumer wiring**: presenting each consumer's
+  *panel* rigidity rows as an affine functional family `a i + t • b i` so
+  the device's `hcoord` hypothesis can be discharged. This is the API gap:
+  the engine is affine-only, but `panelSupportExtensor` is *bilinear* in the
+  normals, so a generic line through panel-coordinate space gives a
+  *quadratic* (degree-2) row family. Two routes, to assess on contact: (a)
+  a single-scalar restriction along a chosen path (worked for Phase 8's
+  `exists_uniform_rowIndependent_placement`); (b) a multivariate
+  Zariski-open generalization of the `Rank.lean` brick (a new mirror
+  lemma). Route (a) is the first thing to try; route (b) is the fallback if
+  no affine path hits the good realization
+  `exists_independent_panelSupportExtensor` supplies.
 
 ## Hand-off / next phase
 
-**Step (i) (the RigidityMatrix coordinatization) is now done** (see
-*Current state*): `infinitesimalMotions_eq_dualCoannihilator` expresses
-`Z(G,p)` as `(span ℝ rigidityRows).dualCoannihilator`, the exact shape
-`finrank_dualCoannihilator_along_affine_path_cofinite` consumes. The
-`rigidityRows` entries are `hingeRow u v r = r ∘ₗ screwDiff u v`; the
-panel-coordinate dependence enters through `r ∈ hingeRowBlock e =
-(span {supportExtensor e})ᵒ` and `supportExtensor` of a
-`PanelHingeFramework` is `panelSupportExtensor (n_u, n_v)`, polynomial
-in the normals.
+**The abstract device `lem:genericity-device` (`genericityDevice`) is now
+GREEN** (see *Current state*): all three of the device's reusable pieces
+land — the rank-form engine + its codimension dual (`Rank.lean` bricks),
+the coannihilator coordinatization (`infinitesimalMotions_eq_dualCoannihilator`),
+and now their composition into the consumer-facing `dim Z(F t) ≤ D|V| − #s`
+cofinite bound, with the affine functional family carried as the `hcoord`
+hypothesis. What remains is the **per-consumer wiring**, now isolated as a
+single well-understood obligation (see *Blockers*): build, for each consumer,
+an affine functional family `a i + t • b i` discharging `hcoord` for that
+consumer's framework, then apply `genericityDevice` and pick a good `t` off
+the finite bad set.
 
-**Smallest next concrete commit (step (ii)/(iii), one consumer):** wire
-the abstract device to the *first* consumer. Concretely: (ii) exhibit an
-affine path `t ↦ panel normals` through panel-coordinate space whose `t₀`
-is the good realization `exists_independent_panelSupportExtensor`
-supplies, with the `rigidityRows` re-expressed as an affine family
-`a i + t • b i : ι → Module.Dual ℝ (α → ScrewSpace k)` (the row
-functionals are affine in the normals — assess on contact whether a
-*single* scalar path suffices or the multivariate Zariski-open form is
-needed; the single-path route worked for Phase 8's
-`exists_uniform_rowIndependent_placement`, try it first); (iii) apply
-`finrank_dualCoannihilator_along_affine_path_cofinite` to get
-cofinitely-many `t` with `dim Z(G,p_t) ≤ target`, pick one real `t` off
-the finite bad set, and read off the consumer's hypothesis. Start with
-**one** consumer — `hglue` for Case I
-(`rankHypothesis_iff_finrank_pinnedMotionsOn`) is the cleanest target
-since it is a single `finrank` inequality
-(`dim Z(G,p) ≤ D + dim Z_s`). The device's *target statements* are
-fixed: the consumers' `hglue`/`hspan`/`hub`/`hgen` hypotheses (see
-*Lemma checklist* + the named hypotheses in `AlgebraicInduction.lean`).
+**The genuinely open piece (assessment now pinned, was the hand-off's
+flagged gap): the panel rows are bilinear, hence degree-2, in the normals.**
+So `hcoord` cannot be discharged by a bare line `t ↦ panel normals` — the
+resulting `rigidityRows (F t)` are quadratic in `t`, not affine. The next
+concrete commit must therefore decide the affine-presentation route:
+- **Route (a), single-scalar restriction (try first):** find an affine
+  *functional* family `a i + t • b i` (degree-1 in `t`) whose span's
+  coannihilator equals `(F t).infinitesimalMotions` at every `t` along a
+  *chosen* path through normal-space, even though the normals themselves
+  move quadratically. Phase 8's `exists_uniform_rowIndependent_placement`
+  succeeded with a single line, so this may be feasible by choosing the
+  path so the row functionals (not the normals) come out affine — assess
+  whether such a path through the good realization
+  `exists_independent_panelSupportExtensor` supplies exists.
+- **Route (b), multivariate generalization (fallback):** add a mirror lemma
+  generalizing `finrank_dualCoannihilator_along_affine_path_cofinite` from
+  a single affine scalar to a multivariate *polynomial* family (Zariski-open
+  bad set), then feed the genuinely-quadratic panel rows directly. Heavier,
+  but unconditional.
 
-The likely API gap on contact: the device's affine-path brick
-parametrizes by a *single* scalar `t`, but the panel-coordinate space is
-multivariate; bridging may need either a single-line restriction (as in
-Phase 8) or a multivariate generalization of the Rank.lean brick. Pin
-that down before committing to the per-consumer wiring shape.
+**Smallest next concrete commit:** make the route-(a)-vs-(b) call concretely
+for **`hglue` of Case I** (`rankHypothesis_iff_finrank_pinnedMotionsOn`, a
+single `dim Z(G,p) ≤ D + dim Z_s` inequality, the cleanest target), then
+land whichever route applies as the Case-I wiring. The device's *target
+statements* are fixed: the consumers' `hglue`/`hspan`/`hub`/`hgen` hypotheses
+(see *Lemma checklist* + the named hypotheses in `AlgebraicInduction.lean`).
 
 **Also consumed by Phases 22–23** (Case III candidate-framework
 genericity, Claims 6.11/6.12), so building the device standalone pays

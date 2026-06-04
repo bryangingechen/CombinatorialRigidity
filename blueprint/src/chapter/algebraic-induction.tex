@@ -780,8 +780,10 @@ device is stated here, red, as the node \cref{lem:genericity-device}
 that those consumers reference; its discharge is the content of
 Phase~21b.
 
-\begin{lemma}[Genericity device; KT Claim 6.4, Claim 6.9]
+\begin{lemma}[Genericity device, codimension form; KT Claim 6.4, Claim 6.9]
   \label{lem:genericity-device}
+  \lean{CombinatorialRigidity.Molecular.genericityDevice}
+  \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization through its
   per-vertex panel normals as a point of the panel-coordinate space. The
@@ -791,13 +793,40 @@ Phase~21b.
   coordinates and attains its maximum on a Zariski-open (generic) subset.
   Consequently, if some realization $(G,p_0)$ attains a given rank, then
   the generic realization attains at least that rank.
+
+  In the codimension convention of \cref{sec:molecular-rigidity-matrix}
+  (the column space is the screw-assignment space of dimension $D|V|$ and
+  $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$, \cref{def:dof-generic}),
+  this reads dually: $\dim Z(G,p)$ is \emph{upper} semicontinuous,
+  attaining its minimum generically. The formalized device lands this
+  codimension form: along a one-parameter affine family of rigidity-row
+  functionals $t \mapsto a_i + t\, b_i$ on the screw-assignment space, with
+  $Z(G,p_t)$ the family's common kernel (the coannihilator coordinatization
+  $Z(G,p) = (\operatorname{span}\text{rigidityRows})^{\circ\circ}$ of
+  \cref{def:rigidity-matrix}), a corank witnessed once at $t_0$ (a subfamily
+  $s$ independent there, supplied by
+  \cref{lem:exists-independent-panel-extensor}) bounds $\dim Z(G,p_t) \le
+  D|V| - |s|$ for all but finitely many $t$ --- the consumer-facing
+  $\dim Z(G,p) \le \text{target}$ upper bound each of \cref{lem:case-I},
+  \cref{lem:case-II}, and \cref{prop:rigidity-matrix-prop11} carries.
 \end{lemma}
 \begin{proof}
-  Deferred to Phase~21b. A non-vanishing maximal minor of $R(G,p_0)$ is a
-  polynomial in the panel coordinates that is nonzero at $p_0$, hence
-  nonzero on a Zariski-open set; on that set the rank is at least the
-  size of that minor. See \cite[\S6.1, \S6.3]{katohTanigawa2011}
-  (Claim~6.4 and its Case-II twin Claim~6.9).
+  \leanok
+  A non-vanishing maximal minor of $R(G,p_0)$ is a polynomial in the panel
+  coordinates that is nonzero at $p_0$, hence nonzero on a Zariski-open
+  set; on that set the rank is at least the size of that minor. The
+  formalized codimension form is the composition of the analytic engine
+  (the corank of an affine functional family is cofinitely bounded above by
+  $\dim V - |s|$, via the Gram-determinant root-set argument and the
+  span/coannihilator complementary-dimension identity) with the
+  coannihilator coordinatization of \cref{def:rigidity-matrix} and the
+  screw-assignment dimension count $\dim(\text{screw assignments}) = D|V|$
+  (\cref{def:dof-generic}). The single affine scalar $t$ is the device's
+  parameter; presenting each consumer's panel rows as an affine family
+  along a chosen path (or generalizing the engine to the multivariate
+  Zariski-open form) is the residual per-consumer wiring. See
+  \cite[\S6.1, \S6.3]{katohTanigawa2011} (Claim~6.4 and its Case-II twin
+  Claim~6.9).
 \end{proof}
 
 \noindent The device discharges the explicit hypotheses each consumer

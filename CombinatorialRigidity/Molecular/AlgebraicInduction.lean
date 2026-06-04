@@ -1455,4 +1455,78 @@ theorem rigidityMatrix_prop11 [Nonempty α] [Finite α]
   rw [BodyHingeFramework.RankHypothesis]
   omega
 
+/-! ## The genericity device (Claim 6.4/6.9) (`lem:genericity-device`, Phase 21b)
+
+The shared analytic crux of Cases I/II, Theorem 5.5, Proposition 1.1, and the cycle-realization
+assembly — Katoh–Tanigawa 2011 §6.1 Claim 6.4 / §6.3 Claim 6.9. The entries of the panel-hinge
+rigidity matrix `R(G,p)` are polynomials in the panel coordinates (the per-vertex normals), so
+`rank R(G,p)` is lower semicontinuous and attains its maximum on a Zariski-open (generic) set:
+a single realization `(G,p₀)` at a given rank lifts to *at least* that rank at the generic
+realization. In the codimension convention of Phase 18 this is the dual statement — `dim Z(G,p)`
+is upper semicontinuous, attaining its *minimum* generically.
+
+This file lands the device in the **framework-facing codimension shape** the four consumers
+carry (each is a `dim Z(G,p) ≤ target` upper bound, the codimension reading of `rank R ≥ …`),
+assembled from the two Phase-21b bricks already in place:
+
+* the analytic engine `LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite`
+  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`): along an affine path `t ↦ a i + t • b i` of
+  *functionals* on a finite-dimensional space, a corank witnessed once at `t₀` (the subfamily
+  indexed by `s` independent there) bounds the common kernel's `finrank` cofinitely above by
+  `finrank V − #s`;
+* the coordinatization `RigidityMatrix.infinitesimalMotions_eq_dualCoannihilator`:
+  `Z(G,p) = (span (rigidityRows F)).dualCoannihilator`, the exact `dualCoannihilator`-of-a-span
+  shape the engine consumes.
+
+Composing them: if a panel-hinge realization is presented through an affine family of
+rigidity-row functionals `t ↦ a i + t • b i` on the screw-assignment space `α → ScrewSpace k`
+(with `(F t).infinitesimalMotions` the span's coannihilator at every `t`, the per-framework
+coordinatization), and the subfamily `s` is independent at one realization `t₀`, then for
+cofinitely many `t` the null space has `dim Z(F t) ≤ D|V| − #s`. The witnessed independent
+subfamily `s` is supplied by the existence half `exists_independent_panelSupportExtensor`
+(`lem:exists-independent-panel-extensor`, Phase 21 green), and `D|V| − #s` is the consumer's
+target codimension. The conclusion is stated additively (`D|V| < #s + dim Z`) to sidestep
+`ℕ`-subtraction, matching the engine's shape.
+
+The remaining gap to per-consumer wiring (deferred to the next Phase-21b commits) is that the
+panel rows are *affine* in this device's single scalar `t`, whereas the supporting extensor
+`panelSupportExtensor n_u n_v = complementIso (n_u ∧ n_v)` is *bilinear* in the normals — so a
+generic line through panel-coordinate space gives a row family that is quadratic, not affine, in
+`t`. Each consumer must therefore present its rows as an affine family along a *chosen* path (the
+single-scalar restriction route that worked for Phase 8's uniform-generic placement
+`exists_uniform_rowIndependent_placement`), or the engine must be generalized to a multivariate
+Zariski-open form; this device fixes the
+framework-facing target shape that wiring lands into. -/
+
+/-- **Genericity device, codimension form** (`lem:genericity-device`; Katoh–Tanigawa 2011
+Claim 6.4 / Claim 6.9, Phase 21b). Let `F : ℝ → BodyHingeFramework k α β` be a one-parameter
+family of frameworks on the same bodies whose null spaces are coordinatized by a single affine
+family of rigidity-row functionals `a b : ι → Module.Dual ℝ (α → ScrewSpace k)`: for every `t`,
+`(F t).infinitesimalMotions = (span ℝ (range (fun i => a i + t • b i))).dualCoannihilator`
+(the per-framework `infinitesimalMotions_eq_dualCoannihilator` after re-indexing
+`rigidityRows (F t)` as `i ↦ a i + t • b i`). If the subfamily indexed by `s : Set ι` is
+linearly independent at some realization `t₀` — the witnessed rank, supplied by
+`exists_independent_panelSupportExtensor` — then for all but finitely many `t : ℝ` the null
+space has dimension at most `D|V| − #s`:
+`D|V| < #s + dim Z(F t)` fails only on a finite set of `t`.
+
+This is the "generic point attains the maximum rank" mechanism the device supplies to its
+consumers, re-read as the codimension upper bound `dim Z(G,p) ≤ target` each carries
+(`hglue` for Case I, `hspan` for Case II, `hgen` for Proposition 1.1). It is a thin composition
+of the analytic engine `finrank_dualCoannihilator_along_affine_path_cofinite` with the
+coannihilator coordinatization, with `finrank (α → ScrewSpace k) = D|V|`
+(`finrank_screwAssignment`) substituted for the engine's `finrank V`. -/
+theorem genericityDevice [Fintype α] {ι : Type*} [Finite ι]
+    (F : ℝ → BodyHingeFramework k α β)
+    {a b : ι → Module.Dual ℝ (α → ScrewSpace k)} {t₀ : ℝ} {s : Set ι}
+    (hcoord : ∀ t, (F t).infinitesimalMotions
+      = (Submodule.span ℝ (Set.range (fun i => a i + t • b i))).dualCoannihilator)
+    (hindep : LinearIndependent ℝ (fun i : s => a i + t₀ • b i)) :
+    {t : ℝ | screwDim k * Fintype.card α
+      < Nat.card s + Module.finrank ℝ (F t).infinitesimalMotions}.Finite := by
+  have hfin := hindep.finrank_dualCoannihilator_along_affine_path_cofinite (a := a) (b := b)
+  refine hfin.subset (fun t ht => ?_)
+  rw [Set.mem_setOf_eq] at ht ⊢
+  rwa [BodyHingeFramework.finrank_screwAssignment (k := k) (α := α), ← hcoord t]
+
 end CombinatorialRigidity.Molecular
