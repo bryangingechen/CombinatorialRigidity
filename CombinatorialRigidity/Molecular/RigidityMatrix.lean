@@ -587,6 +587,42 @@ theorem linearIndependent_hingeRow_forest {J : Type*} [Finite J] {I : J → Type
       simpa [LinearMap.sum_apply, LinearMap.smul_apply] using hval x
   exact Fintype.linearIndependent_iff.1 (hr j₀) (fun i => g ⟨j₀, i⟩) hk i₀
 
+/-- **A rigid block's spanning forest of transversal hinges yields `(D−1)·|J|` independent
+rigidity rows** (`def:rigidity-matrix`, the Case-I `hindep`/`hmatch` assembly in its general form).
+This is the multi-body assembly the hand-off flagged: it combines the per-edge brick
+`exists_independent_rigidityRows_of_edge` (each transversal hinge contributing `D − 1 = screwDim
+k − 1` independent rows through the same relative-screw evaluation `screwDiff (u j) (other j)`) with
+the cross-hinge combination `linearIndependent_hingeRow_forest` (rows of *distinct* hinges jointly
+independent by the pin-a-body count over the spanning forest).
+
+Concretely, for a family of hinges `j : J` of a rigid block oriented along a spanning forest — each
+edge `e j` linking a *private endpoint* `u j` (the forest child, so `u` injective) to an arbitrary
+`other j`, with the forest-separation hypothesis `hsep : ∀ j j', other j ≠ u j'` and every hinge
+transversal (`he : F.supportExtensor (e j) ≠ 0`) — there is a linearly independent family of
+rigidity rows indexed by the disjoint union `Σ j, Fin (screwDim k − 1)`, all members of
+`F.rigidityRows`. The index type has cardinality `|J|·(screwDim k − 1)` (`Nat.card_sigma`), so this
+is the matching-size independent subfamily `s` the Case-I capstone `hglue_of_realization` consumes:
+its `hindep` is the joint independence and its `hmatch` count is `|J|·(D − 1)`, matched against the
+contraction's inductive rank. The per-edge block functionals `c j` (a basis of the
+`(D−1)`-dimensional hinge-row block `r(p(e j))`, `finrank_hingeRowBlock`) are extracted by
+`exists_linearIndependent_fin_of_finrank_eq`, fed to `linearIndependent_hingeRow_forest` for the
+joint independence, and witnessed as rigidity rows via the link `hlink j` and block membership. -/
+theorem exists_independent_rigidityRows_of_forest (F : BodyHingeFramework k α β) {J : Type*}
+    [Finite J] {u other : J → α} {e : J → β} (hu : Function.Injective u)
+    (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, F.graph.IsLink (e j) (u j) (other j))
+    (he : ∀ j, F.supportExtensor (e j) ≠ 0) :
+    ∃ r : (Σ _ : J, Fin (screwDim k - 1)) → Module.Dual ℝ (α → ScrewSpace k),
+      LinearIndependent ℝ r ∧ ∀ p, r p ∈ F.rigidityRows := by
+  classical
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  -- Per-edge basis of the `(D−1)`-dimensional hinge-row block `r(p(e j))`.
+  choose c hc hmem using fun j =>
+    (F.hingeRowBlock (e j)).exists_linearIndependent_fin_of_finrank_eq
+      (F.finrank_hingeRowBlock (he j))
+  refine ⟨fun p => hingeRow (u p.1) (other p.1) (c p.1 p.2),
+    linearIndependent_hingeRow_forest hu hsep hc, fun p => ?_⟩
+  exact ⟨e p.1, u p.1, other p.1, hlink p.1, c p.1 p.2, hmem p.1 p.2, rfl⟩
+
 /-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
 assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
 These are the rigid-motion screws — the constant assignments — and they form the

@@ -95,6 +95,7 @@ and the generic-rank argument are in hand.
     CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_edge,
     CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow_star,
     CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow_forest,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_forest,
     CombinatorialRigidity.Molecular.ScrewSpace,
     CombinatorialRigidity.Molecular.screwDim,
     CombinatorialRigidity.Molecular.screwSpace_finrank}
@@ -149,6 +150,12 @@ and the generic-rank argument are in hand.
   families remain jointly independent
   ($\mathrm{linearIndependent\_hingeRow\_forest}$, the star being the special
   case of one common body), by pinning the private endpoint of each hinge in turn.
+  Assembling the two ($D - 1$ rows per transversal hinge, jointly independent
+  across the forest) gives the rigid-block form
+  ($\mathrm{exists\_independent\_rigidityRows\_of\_forest}$): a spanning forest of
+  $|J|$ transversal hinges supplies $(D-1)|J|$ linearly independent rigidity rows
+  of $R(G,p)$, the matching-size independent subfamily Case~I's block-triangular
+  gluing counts against the contraction's inductive rank.
 \end{definition}
 
 \begin{definition}[Degree of freedom; generic realization]
