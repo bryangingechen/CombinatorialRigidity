@@ -49,13 +49,19 @@ dimension-free moment-curve assignment (`withMomentNormals`,
 at an *injective* `param`, the iff-realization `RankHypothesis k' ↔ dim
 Z_s = k'` holds given only the forest data stated on `(G, ends)` plus the
 count `hmatch`; general position, transversality, and the
-`PanelHingeFramework` packaging are all internal. **Next concrete step:**
-the `(G, ends)` gluing — supply the parent graph, endpoint selector,
-injective `param`, spanning forest, and `hmatch` from the contraction
-realization + rigid block (see *Hand-off*). All affine-path,
-spanning-family, subfamily-index, forest-assembly, and
-general-position/transversality plumbing is discharged; what remains is
-purely the geometric/combinatorial input.
+`PanelHingeFramework` packaging are all internal. The iff is now packaged
+into the Theorem-5.5 motive: `hasFullRankRealization_ofParam_of_pinnedMotionsOn`
+reads it forwards at `k' = 0` against a *trivial* block pin
+(`hpin : dim Z_s = 0`) to land `HasFullRankRealization k G` on the parent
+multigraph directly — the consumer-facing producer of `theorem_55`'s
+`hcontract` premise. **Next concrete step:** the block-pin ↔
+contraction-realization bridge — discharge `hpin` (`dim Z_s = 0`) and the
+count `hmatch` from the contraction `G/E(H)`'s inductive full-rank
+realization + rigidly-placed block, and supply `(G, ends)`/`param`/forest
+to the producer (see *Hand-off*). All affine-path, spanning-family,
+subfamily-index, forest-assembly, general-position/transversality, and
+the realization-motive packaging are discharged; what remains is purely
+the geometric/combinatorial block-pin input.
 
 ## Architectural choices made up front
 
@@ -156,6 +162,11 @@ Geometric side / general position (`Molecular/AlgebraicInduction.lean`,
   general position / packaging / transversality all internal. Thin compose
   of the two above; `hlink`/`hends` `@[simp]`-bridged via
   `ofParam_graph`/`ofParam_ends`/`toBodyHinge_graph`.
+- [x] `hasFullRankRealization_ofParam_of_pinnedMotionsOn` — realization-motive
+  packaging: reads the `ofParam` iff forwards at `k' = 0` against a trivial
+  block pin (`hpin : dim Z_s = 0`) to land `HasFullRankRealization k G` on
+  the parent graph. The consumer-facing producer of `theorem_55`'s
+  `hcontract`; leaves only `hpin` + `hmatch` from the contraction.
 
 Consumer-side discharge targets (each a named hypothesis in the Phase-21
 Lean, to be supplied by the device):
@@ -236,22 +247,32 @@ discharged, the geometric/general-position side is packaged, and the
 consumer-facing entry point `ofParam_rankHypothesis_iff_pinnedMotionsOn`
 has a purely combinatorial signature.
 
-**Smallest next concrete commit: the `(G, ends)` gluing.** Construct, from
+The realization-motive packaging is now in hand:
+`hasFullRankRealization_ofParam_of_pinnedMotionsOn` produces
+`HasFullRankRealization k G` (the `theorem_55` `hcontract` conclusion) from
+`(G, ends)` + injective `param` + the block's spanning forest + the count
+`hmatch` + the block-pin vanishing `hpin : dim Z_s = 0`. All analytic /
+general-position / packaging plumbing is discharged; the residual is two
+geometric/combinatorial inputs from the contraction.
+
+**Smallest next concrete commit: the block-pin ↔ contraction bridge.** From
 a minimal `0`-dof-graph `G` with a proper rigid subgraph `H` and the
 contraction `G/E(H)`'s inductive full-rank realization (the `hcontract`
 hypothesis of `theorem_55`, an `∃ Q, Q.graph = G/E(H) ∧ …RankHypothesis
-0`), the parent-graph data `(G, ends)` plus an injective `param` and the
-rigid block's spanning forest, then feed them through
-`ofParam_rankHypothesis_iff_pinnedMotionsOn`. The substantive piece is the
-graph-side gluing: defining `ends` on `E(G)` so block hinges orient along
-the spanning forest (`hends`) and inter-block hinges link the contracted
-vertex correctly (`hlink`), and exhibiting an injective `param` over
-`V(G)` (any injection into `ℝ`, e.g. via `Fintype`/`Countable`). The count
-`hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`) then matches the forest's row
-count against the contraction's inductive rank `dim Z_s` (the block pin).
-This is the genuinely-geometric Case-I assembly (KT §6.2/6.5); still
-likely more than one commit — assess once the `ends`/`param` gluing is in
-hand and the count is being matched to the corank. (For the genuine cycle
+0`; `rigidContract` + `contraction_isMinimalKDof` are green in
+`Induction.lean`), discharge `hpin : dim (pinnedMotionsOn V(H)) = 0` — the
+framework-side statement that the pinned rigid block leaves no residual
+motion, the dimension form of the contraction realized at its full rank.
+That is the geometric heart of KT §6.2/6.5. Alongside it, the `(G, ends)`
+graph-side gluing the producer still needs: defining `ends` on `E(G)` so
+block hinges orient along the spanning forest (`hends`) and inter-block
+hinges link the contracted vertex correctly (`hlink`), an injective
+`param` over `V(G)` (any injection into `ℝ`, e.g. via
+`Fintype`/`Countable`), and the count `hmatch` (`|J|·(D−1) = D(|V|−1) − dim
+Z_s`) matching the forest's row count against the contraction's inductive
+rank. This is the genuinely-geometric Case-I assembly (KT §6.2/6.5); still
+likely more than one commit — `hpin` (the block-pin bridge) is the natural
+first brick, then the `ends`/`param` gluing and count. (For the genuine cycle
 case, the `m ≤ D` extensor-independence of `lem:cycle-realization` +
 `exists_independent_panelSupportExtensor` general position controls the
 cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is

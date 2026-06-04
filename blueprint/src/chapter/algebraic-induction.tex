@@ -811,7 +811,8 @@ Phase~21b.
         CombinatorialRigidity.Molecular.hglue_of_independent_rigidityRows,
         CombinatorialRigidity.Molecular.hglue_of_forest,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_ofParam_of_pinnedMotionsOn}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization through its
@@ -882,7 +883,13 @@ Phase~21b.
   this is the realization-side entry point of the Case-I assembly: the parent
   graph $G$ and its hinge-endpoint selector carry the geometry of the
   rigid-subgraph contraction, the forest data is read off the rigid block, and
-  the only remaining obligation is the count match.
+  the only remaining obligation is the count match. Packaged into the
+  realization motive \cref{thm:theorem-55} inducts against
+  ($\mathrm{HasFullRankRealization}$), reading this iff forwards at the target
+  deficiency $k' = 0$ against a \emph{trivial} block pin $\dim Z_s = 0$ (the
+  contraction realized at its full rank) lands a full-rank realization of the
+  parent multigraph $G$ directly, reducing the residual Case-I obligation to the
+  block-pin~$\leftrightarrow$~contraction-realization bridge.
 \end{lemma}
 \begin{proof}
   \leanok

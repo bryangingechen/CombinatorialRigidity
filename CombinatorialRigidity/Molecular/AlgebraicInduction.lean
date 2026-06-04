@@ -2063,4 +2063,46 @@ theorem PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn
     (isGeneralPosition_ofParam G ends hparam) hs k' hu hsep
     (by simpa using hlink) (by simpa using hends) hmatch)
 
+/-- **Case I from-scratch full-rank realization of the parent graph** (`lem:case-I`, the
+`HasFullRankRealization` packaging of the `ofParam` Case-I realization entry point; Katoh–Tanigawa
+2011 §6.2/6.5, Phase 21b). Specializing `ofParam_rankHypothesis_iff_pinnedMotionsOn` at the target
+deficiency `k' = 0` and reading the resulting iff *forwards* against a *trivial* block pin
+(`dim Z_sblk = 0`) lands the realization motive `HasFullRankRealization k G` of Theorem 5.5 directly
+on the parent multigraph `G`: the witness framework is the from-scratch moment-curve framework
+`ofParam G ends param` (its `graph = G` definitionally, `ofParam_graph`), and its body-hinge
+interpretation realizes the full rank `D(|V|−1)` (`RankHypothesis 0`) exactly because the rigid
+block's pin carries no residual motion.
+
+The hypothesis `hpin : dim (pinnedMotionsOn sblk) = 0` is the framework-side statement of the
+geometric heart of Case I: the rigid block `H` on `s = V(H)`, pinned, leaves no infinitesimal
+freedom, so the parent's count is entirely the `D` trivial motions. It is the dimension form of the
+contraction `G/E(H)` being realized at *its* full rank — the inductive hypothesis supplied to Case I
+(`lem:contraction-minimality` makes `G/E(H)` a smaller minimal `k`-dof-graph; its full-rank
+realization is the block pin's vanishing). Taking `hpin` as a hypothesis isolates the remaining
+consumer obligation to the genuinely-geometric block-pin ↔ contraction-realization bridge (KT
+§6.2/6.5), leaving the analytic gluing, general position, transversality, and count `hmatch` all
+discharged here. This is the consumer-facing producer of the `hcontract` premise of
+`theorem_55`: supply `(G, ends)`, an injective `param`, the rigid block's spanning forest, the count
+`hmatch`, and the block-pin vanishing `hpin`, and obtain the parent realization. -/
+theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_pinnedMotionsOn
+    [Fintype α] [Nonempty α] {J : Type*} [Finite J]
+    (G : Graph α β) (ends : β → α × α) {param : α → ℝ} (hparam : Function.Injective param)
+    {sblk : Set α} (hs : sblk.Nonempty)
+    {u other : J → α} {e : J → β} (hu : Function.Injective u)
+    (hsep : ∀ j j', other j ≠ u j')
+    (hlink : ∀ j, G.IsLink (e j) (u j) (other j))
+    (hends : ∀ j, ends (e j) = (u j, other j))
+    (hmatch : Nat.card J * (screwDim k - 1)
+        + Module.finrank ℝ (ofParam (k := k) G ends param).toBodyHinge.infinitesimalMotions
+        ≤ screwDim k * Fintype.card α →
+      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
+        - Module.finrank ℝ
+            ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk))
+    (hpin : Module.finrank ℝ
+        ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk) = 0) :
+    HasFullRankRealization k G :=
+  ⟨ofParam (k := k) G ends param, ofParam_graph G ends param,
+    (PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn
+      G ends hparam hs 0 hu hsep hlink hends hmatch).mpr (by exact_mod_cast hpin)⟩
+
 end CombinatorialRigidity.Molecular
