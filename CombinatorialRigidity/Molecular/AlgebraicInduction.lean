@@ -646,6 +646,48 @@ theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
   have := Submodule.finrank_mono hle
   omega
 
+/-- **A rigid framework, pinned at any nonempty block, has no residual motion**
+(`lem:case-I`, the block-pin ↔ contraction-realization bridge, dimension form; Katoh–Tanigawa 2011
+§6.2/6.5). If the framework `F` is infinitesimally rigid (`IsInfinitesimallyRigid` — every
+infinitesimal motion is trivial, i.e. `F` realizes its full rank `RankHypothesis 0`) then block-
+pinning any *nonempty* body set `s` leaves nothing, `pinnedMotionsOn s = ⊥`. A block-pinned motion
+`S` is an infinitesimal motion, so rigidity makes it a *trivial* (constant) motion; vanishing at
+even one body `v ∈ s` then forces the constant to be `0`, so `S` is identically `0`.
+
+This is the geometric heart of Case I in dimension form: a full-rank realization of the parent
+graph `G` (the witness `ofParam G ends param` at its inductive rank) is rigid, hence pinning the
+rigid block `H` on `s = V(H)` carries no residual freedom — the framework-side statement that the
+contraction `G/E(H)`, realized at its own full rank, makes the block pin vanish. It discharges the
+`hpin : dim (pinnedMotionsOn sblk) = 0` premise of
+`hasFullRankRealization_ofParam_of_pinnedMotionsOn` (via `finrank_pinnedMotionsOn_eq_zero_of_
+isInfinitesimallyRigid`) from rigidity of the realization. -/
+theorem pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid (F : BodyHingeFramework k α β)
+    {s : Set α} (hs : s.Nonempty) (hrig : F.IsInfinitesimallyRigid) :
+    F.pinnedMotionsOn s = ⊥ := by
+  obtain ⟨v, hv⟩ := hs
+  rw [eq_bot_iff]
+  intro S hS
+  -- `S` is an infinitesimal motion, hence (by rigidity) a trivial one: constant on all bodies.
+  have htriv : IsTrivialMotion S := hrig hS.1
+  rw [Submodule.mem_bot]
+  -- A constant assignment that vanishes at `v ∈ s` is identically zero.
+  funext a
+  rw [show S a = S v from htriv a v, hS.2 v hv, Pi.zero_apply]
+
+/-- **The block-pinned dimension of a rigid framework is `0`** (`lem:case-I`, the block-pin ↔
+contraction-realization bridge, `finrank` form; Katoh–Tanigawa 2011 §6.2/6.5). For a nonempty
+block `s` of an infinitesimally rigid framework `F`, `finrank (pinnedMotionsOn s) = 0`. Immediate
+from `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` and `finrank_bot`. This is exactly the
+`hpin` premise consumed by `hasFullRankRealization_ofParam_of_pinnedMotionsOn`: a full-rank
+realization of the parent graph (its body-hinge interpretation rigid by `rankHypothesis_zero_iff`)
+pins the rigid block to dimension `0`, so the only remaining Case-I obligation is the count
+`hmatch` and the realization itself, not the block pin. -/
+theorem finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid [Finite α]
+    (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty)
+    (hrig : F.IsInfinitesimallyRigid) :
+    Module.finrank ℝ (F.pinnedMotionsOn s) = 0 := by
+  rw [F.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid hs hrig, finrank_bot]
+
 /-- **Case I: contracting a rigid block realizes the rank** (`lem:case-I`, Katoh–Tanigawa 2011
 §6.2/6.3/6.5 Lemmas 6.2, 6.3, 6.5; GREEN-modulo the Phase-21b genericity device). Let `F` be a
 body-hinge framework on the parent graph `G = F.graph` carrying a proper rigid subgraph `H` on the

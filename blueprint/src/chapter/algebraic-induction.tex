@@ -554,9 +554,12 @@ Cases~I and~II travel toward the smaller inductive graph.
 \begin{lemma}[Block-pinning drops at least the $D$ trivial-motion dimensions]
   \label{lem:pinned-motions-on-rank-bound}
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_finrank_pinnedMotionsOn_le}
+        CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_finrank_pinnedMotionsOn_le,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid}
   \leanok
-  \uses{def:pinned-motions-on, lem:rank-delete-vertex, lem:trivial-motions-rank-bound}
+  \uses{def:pinned-motions-on, lem:rank-delete-vertex, lem:trivial-motions-rank-bound,
+        def:dof-generic}
   For a nonempty block of bodies $s \subseteq V$,
   \[
     D + \dim Z_s(G,p) \;\le\; \dim Z(G,p),
@@ -571,6 +574,17 @@ Cases~I and~II travel toward the smaller inductive graph.
   body, the residual constraints making the bound an inequality whose slack the
   contraction's inductive rank fills. The lower-bound brick of Case~I's
   block-triangular gluing.
+
+  Conversely, when the framework $(G,p)$ is itself \emph{infinitesimally
+  rigid} (every motion trivial, the full-rank case $\dim Z(G,p) = D$), pinning
+  any nonempty block leaves nothing: $Z_s(G,p) = 0$, hence $\dim Z_s(G,p) = 0$.
+  This is the block-pin $\leftrightarrow$ contraction-realization bridge in
+  dimension form --- a full-rank realization of the parent graph (the witness
+  $(G,p)$ at its inductive rank) is rigid, so the rigid block $H$ on $s = V(H)$,
+  once pinned, carries no residual freedom. It discharges the block-pin
+  vanishing $\dim Z_s(G,p) = 0$ that the from-scratch full-rank realization
+  entry point (\cref{lem:case-I}) takes as a hypothesis, reducing the remaining
+  Case~I obligation to the count and the realization.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -580,6 +594,9 @@ Cases~I and~II travel toward the smaller inductive graph.
   motions only at $0$ (\cref{lem:rank-delete-vertex}), hence so does $Z_s(G,p)$.
   Both sit inside $Z(G,p)$, so $\dim(\text{trivial}) + \dim Z_s(G,p) \le \dim
   Z(G,p)$, and $\dim(\text{trivial}) = D$ (\cref{lem:trivial-motions-rank-bound}).
+  For the converse: a block-pinned motion is an infinitesimal motion, so rigidity
+  makes it trivial (constant); vanishing at one body $v \in s$ then forces the
+  constant to be $0$, whence $Z_s(G,p) = 0$.
 \end{proof}
 
 \begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
