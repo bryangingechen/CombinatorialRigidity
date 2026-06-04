@@ -240,6 +240,17 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **Case-I seed route: free `ofNormals`, not moment-curve `ofParam` (2026-06-04, coordinator + user
+  decision at the "assess the math" pause).** The three N5 scaffolding commits kept deferring the seed
+  because the `_ofParam` specialization (3rd commit) silently needs the IH's *free-normal* realization
+  coerced onto the moment-curve subvariety — an extra genericity sub-lemma the `∃ Q, …` motive does not
+  supply (a Zariski-open rigidity locus in the full normal space need not contain a moment-curve point).
+  Decision: build the witness-transfer in the full free-normal space via the device's non-zero-product
+  polynomial engine — both legs' rank-determinants are non-zero polynomials in the shared normals, so
+  their product (× general position) has a common non-root `q₀` by `MvPolynomial.funext` — consuming the
+  green `_ofNormals` brick; the `_ofParam` brick is kept but bypassed. Turns the seed into a ~2–3-commit
+  sub-build on green infra (device, B0 row coordinatization, splice glue, Lemma 5.1, funext mirror), not
+  a sub-phase. See *Hand-off*.
 - **N5 moment-curve seed specialization (2026-06-04).** Specialized the leg-native splice
   `hasFullRankRealization_of_splice_ofNormals`'s free seed `q₀` (+ its `hgp`) to the moment-curve
   assignment `ofParam GH/Gc ends param` at injective `param`. `isGeneralPosition_ofParam` discharges
@@ -438,16 +449,14 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   N4b (cycleMatroid under collapse), N4c (union↔contraction bridge), and now the N4 reconciliation
   (`rigidContract_isMinimalKDof`) — is closed and axiom-clean. What gates `lem:case-I-realization`
   (N6) is now only the **producers** N5 + N6, not any more matroid/contraction infrastructure.
-- **N5's remaining content is the common moment-curve seed `param`** (the witness-transfer / eq. 6.6
-  panel intersection): produce one *injective* parameter map `param : α → ℝ` at which *both* legs are
-  rigid on their vertex sets. The decomposition landed so far shows the rest of N5/N6 is already green
-  (transversality, `withGraph` normal-sharing, the splice→N7b-0→device chain in
-  `hasFullRankRealization_of_splice`, the leg-native restatement
-  `hasFullRankRealization_of_splice_ofNormals`, and now the moment-curve specialization
-  `hasFullRankRealization_of_splice_ofParam` so the consumer needs only per-leg `ofParam … param`
-  rigidity at one injective `param`, with general position free). This seed is the
-  genuinely-geometric, research-shaped step — it bottoms out on the panel-intersection construction +
-  the count `hmatch` coupling the rigid block's pin to the contraction's inductive rank.
+- **N5's remaining content is the common free-normal seed `q₀`** (the witness-transfer / eq. 6.6),
+  decomposed into two tractable commits per the *Hand-off* route decision: (1) the **H-leg witness**
+  (rigid block `H` rigid at some normals via `ofParam_rankHypothesis_iff_pinnedMotionsOn` + forest data
+  + the `hmatch` count) and (2) the **simultaneous witness-transfer** (both legs' rank-determinants are
+  non-zero polynomials in the shared normals ⇒ a common non-root `q₀` by `MvPolynomial.funext`, fed to
+  the green `hasFullRankRealization_of_splice_ofNormals`). The rest of N5/N6 is already green
+  (transversality, `withGraph` normal-sharing, the splice→N7b-0→device chain). The `_ofParam` seed was
+  ruled out (subvariety-genericity gap vs. the free-normal `∃ Q, …` motive); see *Decisions*.
 - **Track B** (the Case II/III producer) is a multi-node crux. So the remaining Track-A path
   (the N5 seed → feed `hasFullRankRealization_of_splice_ofNormals`) and Track B both still require
   math-first decomposition before a build.
@@ -462,24 +471,40 @@ general-position hypothesis `hgp`) to the moment-curve assignment `ofParam GH/Gc
 injective `param : α → ℝ`: `isGeneralPosition_ofParam` discharges `hgp` for free, so the consumer's
 obligation drops to **one injective `param` making both legs rigid**. See *Current state* + *Decisions*.
 
-**Recommended next concrete commit: exhibit the seed `param` (the witness-transfer, eq. 6.6).** This is
-the one genuinely-geometric step left in Track A: produce one *injective* parameter map `param : α → ℝ`
-at which *both* leg frameworks `(ofParam GH/Gc ends param).toBodyHinge` are rigid on their vertex sets,
-then feed them (+ cover/shared-body data, distinct endpoints) into
-`hasFullRankRealization_of_splice_ofParam` — that finishes N6 / `theorem_55.hcontract`. General position
-is no longer part of the gap (the brick fixed it to injective-`param` moment-curve). Decompose
-math-first: the rigid block `H`'s leg uses the green Case-I capstone
-`ofParam_rankHypothesis_iff_pinnedMotionsOn` (remaining obligation: the forest data + the count
-`hmatch` against the contraction's inductive `RankHypothesis`); the contraction leg `Gc = G/E(H)` is the
-IH realization on the same `param` — N4 (`rigidContract_isMinimalKDof`, green) lets `theorem_55` name
-`G/E(H)` and invoke the IH. **Note** the IH supplies the contraction leg's rigidity at *some* normals,
-which the seed must coerce onto the *moment-curve* `param` — either align the IH realization to a
-moment-curve seed, or relax the brick's contraction-leg hypothesis from `ofParam` back to a free
-`ofNormals` (the `_ofNormals` variant) for that leg. The KT math is `notes/Phase21b.md` *Finding A* +
-the `algebraic-induction.tex` `lem:case-I-splice-placement` proof sketch (the boundary-panel
-intersection + block-triangular independence via Lemma 5.1, `lem:rank-delete-vertex`). Honesty-gate
-caveat: any node that *exhibits* `param` realizing both legs is the genuine producer — keep it red until
-the seed construction (not just its consumers) is built.
+**Route decision (2026-06-04, coordinator + user; the "assess the math" pause).** Build the splice seed
+in **free `ofNormals` space, not moment-curve `ofParam`.** The `_ofParam` consumer asks both legs rigid
+at one shared *moment-curve* `param`, but `theorem_55`'s motive `HasFullRankRealization`
+(`∃ Q, Q.graph = G ∧ … IsInfinitesimallyRigidOn V(G)`) supplies each leg's IH realization at *some free
+normals*, not a moment-curve point — so `_ofParam` silently needs an extra subvariety-genericity
+sub-lemma (a moment-curve point lies in the rigidity locus) the IH does not give. That gap is the wall
+the three N5 scaffolding commits kept circling. The cleaner route consumes the already-green leg-native
+`hasFullRankRealization_of_splice_ofNormals` (free seed `q₀` + its `hgp`) and the device's polynomial
+engine: each leg's rank-determinant is a non-zero polynomial in the *shared* normals (B0
+`lem:rows-polynomial-in-normals` / `exists_good_realization_ofParam`, green), so the product (× the
+general-position polynomial) is non-zero and has a **common non-root `q₀`** via `MvPolynomial.funext`
+(mirror `Mathlib/Algebra/MvPolynomial/Funext.lean`) — no subvariety issue. The `_ofParam` brick stays
+(green, axiom-clean) but is bypassed by the splice. The blueprint flags
+`lem:case-I-splice-placement` as warranting its own decomposition; this is a **~2–3-commit sub-build on
+green infra**, not a sub-phase.
+
+**Recommended next concrete commit: the H-leg witness.** Exhibit *some* normal assignment at which the
+rigid block `H` is rigid on `V(H)` at rank `D(|V(H)|−1)`, via the green Case-I capstone
+`ofParam_rankHypothesis_iff_pinnedMotionsOn` — the remaining obligation is the forest data (orient the
+block hinges along a spanning forest of `H`, which exists since a rigid `H` is connected, N4a) + the
+count `hmatch` coupling the block pin (Lemma 5.1, `lem:rank-delete-vertex`, Phase-18 green) to the
+contraction's inductive `RankHypothesis`. This is the one genuinely-new bookkeeping step; it produces
+the H-leg's non-empty rigidity witness the transfer needs.
+
+**Then: the simultaneous witness-transfer** (one more commit). Feed the H-leg witness + the contraction
+leg's IH realization (`theorem_55` names `G/E(H)` via N4 `rigidContract_isMinimalKDof`, green, and
+invokes the IH for *its* free-normal witness) into the non-zero-product argument: the product of the two
+leg rank-determinant polynomials and the general-position polynomial is non-zero (each factor non-zero
+from its witness), so `MvPolynomial.funext` gives a common `q₀` with both legs rigid + general position;
+feed `(q₀, hH, hc, hgp, cover, endpoints)` into `hasFullRankRealization_of_splice_ofNormals`
+⟹ `HasFullRankRealization k G`, discharging `theorem_55.hcontract` (= N6). The KT math is
+`notes/Phase21b.md` *Finding A* + the `algebraic-induction.tex` `lem:case-I-splice-placement` proof
+sketch. Honesty-gate: keep `lem:case-I-splice-placement` / `lem:case-I-realization` red until the
+construction (not just its consumers) lands.
 
 *Alternatively*, the genericity-free `prop:rigidity-matrix-prop11` `hub` brick (`screwDim k + def ≤
 dim Z(G,p)`, the Phase-19 partition-contraction count) is a Track-independent closable target — but it
