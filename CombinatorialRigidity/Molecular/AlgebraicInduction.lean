@@ -2740,6 +2740,47 @@ theorem PanelHingeFramework.hasFullRankRealization_of_independent_panelRow [Fini
   rw [hG] at hrig
   exact hrig
 
+/-- **N7b-2: the inductive rows transport through the common subgraph `G − v`**
+(`lem:case-II-placement-old-rows`; Katoh–Tanigawa 2011 §6.3, Lemma 6.8). The inductive realization
+of the splitting-off `G_v^{ab}` is rigid on `V(G) ∖ {v}`, hence carries `D(|V(G)|−2)` linearly
+independent rigidity rows of `ofNormals G_v^{ab} ends₁ q₁`. This lemma transports such an
+independent family onto the parent `G`: along an *injective* reindex `f : s₂ → s₁` selecting the
+`e₀`-free subfamily (the short-circuit edge `e₀` of `G_v^{ab}` is dropped; the remaining indices
+are edges of the common subgraph `G − v`), with each selected row matching across the graph swap
+(`hrow`: `panelRow` of `ofNormals G₂ ends₂ q₂` at `i` equals `panelRow` of `ofNormals G₁ ends₁ q₁`
+at `f i`), the family is again linearly independent as rows of `ofNormals G₂ ends₂ q₂`.
+
+The transport is **not** along an inclusion — neither `G_v^{ab}` nor `G` is a subgraph of the
+other (the edge substitution adds `e₀`, deletes `v`'s two edges) — but both sit above `G − v`
+(`Graph.removeVertex_le` and `Graph.removeVertex_le_splitOff`, green), and the `e₀`-free rows are
+exactly the rows of `G − v`, which survive into `G`. The per-row match `hrow` is where the common
+subgraph enters: when the assembly (`lem:case-II-realization-placement`, N7b) picks `q₀` extending
+the inductive normals and `ends` agreeing on `G − v`'s edges, each `hrow i` is `rfl` (the panel
+support extensor `(ofNormals · ends q).toBodyHinge.supportExtensor` reads only `ends` and `q`, not
+the graph — `toBodyHinge_supportExtensor`). Independence is inherited as a subfamily of an
+independent family (`LinearIndependent.comp` along the injective reindex). The short-circuit edge
+`e₀`'s constraint is **not** transported here; it is recovered from `v`'s two new edges in N7b-1
+(`exists_independent_panelRow_of_edge`). -/
+theorem PanelHingeFramework.exists_independent_panelRow_transport {α β : Type*}
+    (G₁ G₂ : Graph α β) (ends₁ ends₂ : β → α × α) (q₁ q₂ : α × Fin (k + 2) → ℝ)
+    {s₁ s₂ : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (f : s₂ → s₁) (hf : Function.Injective f)
+    (hrow : ∀ i : s₂, (PanelHingeFramework.ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂
+        (i : β × _ × _)
+      = (PanelHingeFramework.ofNormals G₁ ends₁ q₁).toBodyHinge.panelRow ends₁
+        ((f i : s₁) : β × _ × _))
+    (hindep : LinearIndependent ℝ (fun i : s₁ =>
+      (PanelHingeFramework.ofNormals G₁ ends₁ q₁).toBodyHinge.panelRow ends₁ (i : β × _ × _))) :
+    LinearIndependent ℝ (fun i : s₂ =>
+      (PanelHingeFramework.ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂ (i : β × _ × _)) := by
+  have h := hindep.comp f hf
+  have he : (fun i : s₂ =>
+        (PanelHingeFramework.ofNormals G₂ ends₂ q₂).toBodyHinge.panelRow ends₂ (i : β × _ × _))
+      = ((fun i : s₁ =>
+        (PanelHingeFramework.ofNormals G₁ ends₁ q₁).toBodyHinge.panelRow ends₁ (i : β × _ × _))
+          ∘ f) := funext hrow
+  rw [he]; exact h
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by

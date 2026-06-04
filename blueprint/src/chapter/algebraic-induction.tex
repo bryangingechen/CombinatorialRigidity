@@ -1548,27 +1548,38 @@ non-spanning block).}
 
 \begin{lemma}[N7b-2: the inductive rows transport through the common subgraph $G-v$]
   \label{lem:case-II-placement-old-rows}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_independent_panelRow_transport}
+  \leanok
   \uses{def:panel-hinge-framework, lem:case-II, lem:rows-polynomial-in-normals}
   The inductive realization of $G_v^{ab}$ (rigid on $V(G)\setminus\{v\}$, hence
   $D(|V(G)|-2)$ independent rows of $\mathrm{ofNormals}\,G_v^{ab}\,\mathrm{ends}'\,q_0'$)
   transports to $D(|V(G)|-2)$ independent rows of $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
-  on $G$. The transport is \emph{not} along an inclusion (neither $G_v^{ab}$ nor $G$ is
-  a subgraph of the other): both sit above the common subgraph $G - v$
-  ($\mathrm{removeVertex}\,v$; $\mathrm{removeVertex\_le}$ and
+  on $G$. Concretely: along an \emph{injective} reindex $f : s_2 \to s_1$ selecting the
+  $e_0$-free subfamily, with each selected row matching across the graph swap (the per-row
+  hypothesis $\mathrm{hrow}$), the family is again linearly independent as rows of
+  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$. The transport is \emph{not} along an
+  inclusion (neither $G_v^{ab}$ nor $G$ is a subgraph of the other): both sit above the
+  common subgraph $G - v$ ($\mathrm{removeVertex}\,v$; $\mathrm{removeVertex\_le}$ and
   $\mathrm{removeVertex\_le\_splitOff}$, green), and the inductive rows that avoid $v$
   --- equivalently avoid the short-circuit edge $e_0$ --- are exactly the rows of
-  $G - v$, which survive into $G$ unchanged. The short-circuit edge $e_0$'s constraint
-  is \emph{not} transported here; it is recovered from $v$'s two new edges in N7b-1.
-  \emph{Red} (Phase-21b realization layer): the row coordinatization
-  \cref{lem:rows-polynomial-in-normals} identifies the rows; the content is selecting
-  the $e_0$-free subfamily and matching it across the two graphs through $G - v$.
+  $G - v$, which survive into $G$ unchanged. The per-row match is where the common
+  subgraph enters: a panel row of $\mathrm{ofNormals}$ reads only $\mathrm{ends}$ and the
+  normal assignment, not the underlying graph
+  (\cref{lem:rows-polynomial-in-normals}, via $\mathrm{toBodyHinge\_supportExtensor}$), so
+  when the assembly (\cref{lem:case-II-realization-placement}) picks $q_0$ extending the
+  inductive normals and $\mathrm{ends}$ agreeing on $G - v$'s edges, the match is
+  definitional. The short-circuit edge $e_0$'s constraint is \emph{not} transported here;
+  it is recovered from $v$'s two new edges in N7b-1.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:case-II, lem:rows-polynomial-in-normals}
   Restrict the inductive independent family to the rows indexed by edges of
   $G - v$ (drop the $e_0$-row), and read them as rows of $G$ through
-  $\mathrm{removeVertex\_le}$. Independence is inherited (a subfamily of an
-  independent family). See \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
+  $\mathrm{removeVertex\_le}$. Independence is inherited as a subfamily of an
+  independent family ($\mathrm{LinearIndependent.comp}$ along the injective reindex,
+  the family equality given by the per-row match). See
+  \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
 \end{proof}
 
 \begin{lemma}[N7b-3: the new-edge and old blocks are jointly independent]

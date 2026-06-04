@@ -2,8 +2,8 @@
 
 **Status:** in progress (opened 2026-06-03; realization layer re-planned
 2026-06-04; node-decomposition re-plan 2026-06-06; N7 decomposed into glue +
-placement 2026-06-04; N7b placement decomposed into N7b-1/2/3 2026-06-04).
-Cold-start-ready hand-off below.
+placement 2026-06-04; N7b placement decomposed into N7b-1/2/3 2026-06-04; N7b-1 + N7b-2 GREEN
+2026-06-04). Cold-start-ready hand-off below.
 
 Sub-phase scoped out of Phase 21 (user decision, risk #4/#7) — the **analytic
 sibling** of the Phase-21a meet. Two halves: (1) the **genericity device**
@@ -32,9 +32,10 @@ the rank-side accounting iffs (`lem:case-I` / `lem:case-II`, green-modulo-21b),
 the **B0 keystone** (`lem:rows-polynomial-in-normals` — the device closure on the
 *varying* panel family), the Case-I splice **glue** (`lem:case-I-splice-seed`), the
 **`V(G)`-relative count bridge N1–N3** (`lem:relative-screw-split` /
-`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`), and the **first Case-II
-placement sub-node N7b-1** (`lem:case-II-placement-new-rows` — a transversal hinge's `D−1`
-independent panel rows) are all green and axiom-clean {propext, Classical.choice, Quot.sound}.
+`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`), and the **first two Case-II
+placement sub-nodes N7b-1/N7b-2** (`lem:case-II-placement-new-rows` — a transversal hinge's `D−1`
+independent panel rows; `lem:case-II-placement-old-rows` — the inductive rows' `ofNormals`
+graph-swap transport) are all green and axiom-clean {propext, Classical.choice, Quot.sound}.
 (Authoritative inventory: the blueprint dep-graph. Per-commit history: *Completed items* in the
 Hand-off.)
 
@@ -101,9 +102,13 @@ per-node detail.
     `linearIndependent_hingeRow` + `finrank_hingeRowBlock`). The panel-row form of
     `exists_independent_rigidityRows_of_edge`; transversality `he` is the satisfiable
     general-position output (`supportExtensor_ne_zero_of_isGeneralPosition`), not laundered.
-  - [ ] N7b-2 `lem:case-II-placement-old-rows` — the inductive `D(|V(G)|−2)` rows transport
-    through the common subgraph `G−v` (`removeVertex_le`/`removeVertex_le_splitOff`), NOT a
-    free inclusion-transport (edge substitution: `e₀` deleted, `v`'s edges added).
+  - [x] N7b-2 `lem:case-II-placement-old-rows` — **GREEN 2026-06-04**.
+    `PanelHingeFramework.exists_independent_panelRow_transport`: transport an independent `panelRow`
+    family across the `ofNormals` graph swap along an *injective* reindex `f` (the `e₀`-free
+    subfamily) with a per-row match `hrow` (the rows match because `panelRow`/`supportExtensor`
+    read only `ends`+`q`, not the graph — `rfl` when the assembly's `q₀`/`ends` agree on `G−v`).
+    `LinearIndependent.comp` + a `funext` family rewrite. Both `G_v^{ab}` and `G` sit above `G−v`
+    (`removeVertex_le`/`removeVertex_le_splitOff`); `e₀`'s constraint is recovered in N7b-1.
   - [ ] N7b-3 `lem:case-II-placement-block-independent` — the two blocks jointly independent
     (pin-a-body Lemma 5.1 column split, `lem:rank-delete-vertex`); total `D(|V(G)|−1)`.
 - [ ] N7 `lem:case-II-realization` — compose N7a (glue) + N7b (placement). Discharges `hsplit`.
@@ -233,15 +238,22 @@ The transversality `he` is the *satisfiable* general-position output of the asse
 (`supportExtensor_ne_zero_of_isGeneralPosition`), taken as a hypothesis here exactly as the per-edge
 brick does — not a laundered deliverable.
 
-**Next concrete commit: N7b-2 `lem:case-II-placement-old-rows`** — transport the IH's `D(|V(G)|−2)`
-independent rows of `ofNormals G_v^{ab} ends' q₀'` to `ofNormals G ends q₀` through the *common
-subgraph* `G−v` (`removeVertex_le` / `removeVertex_le_splitOff`, both green). NOT a free
-inclusion-transport: `splitOff` is an edge substitution (`e₀` deleted in `G`, `v`'s two edges added),
-so restrict the IH family to the `e₀`-free subfamily (= rows of `G−v`) and read them as rows of `G`.
-Uses the row coordinatization `lem:rows-polynomial-in-normals` (B0) to identify rows across the two
-graphs. Then in order: N7b-3 (`lem:case-II-placement-block-independent`, the block-triangular union
-of the N7b-1 new rows + N7b-2 old rows, pin-a-body Lemma 5.1 column split), N7b (assemble the seed
-`(q₀, s)`), N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
+**N7b-2 `lem:case-II-placement-old-rows` is GREEN (landed 2026-06-04, this commit).**
+`PanelHingeFramework.exists_independent_panelRow_transport`: transport the IH's `D(|V(G)|−2)`
+independent `panelRow` rows of `ofNormals G_v^{ab} ends₁ q₁` to independent rows of
+`ofNormals G ends₂ q₂` along an *injective* reindex `f : s₂ → s₁` (the `e₀`-free subfamily,
+= rows of `G−v`) with a per-row match hypothesis `hrow`. NOT a free inclusion-transport: `splitOff`
+is an edge substitution (`e₀` deleted in `G`, `v`'s two edges added), neither graph a subgraph of
+the other — both sit above `G−v` (`removeVertex_le`/`removeVertex_le_splitOff`, green). The match
+`hrow` is `rfl` whenever the assembly's `q₀`/`ends` agree on `G−v` (`panelRow`/`supportExtensor`
+read only `ends`+`q`, not the graph). Proof: `LinearIndependent.comp f hf` + a `funext` family
+rewrite. The `e₀`-row's constraint is recovered from `v`'s two new edges in N7b-1.
+
+**Next concrete commit: N7b-3 `lem:case-II-placement-block-independent`** — the block-triangular
+union of the N7b-1 new rows (`D−1`, in `v`'s column screw block) + the N7b-2 old rows
+(`D(|V(G)|−2)`, off `v`'s columns), jointly independent via the pin-a-body Lemma 5.1 column split
+(`lem:rank-delete-vertex`); total `D(|V(G)|−1)`. Then in order: N7b (assemble the seed `(q₀, s)`),
+N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
 
 **The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
 (`exists_good_realization_ofParam`, green) gives the *absolute* codimension bound
@@ -257,8 +269,8 @@ of the N7b-1 new rows + N7b-2 old rows, pin-a-body Lemma 5.1 column split), N7b 
   at a singleton block `{v₀}` + N1 dimension-match (`finrank_pinnedMotions_add_screwDim`).
 
 Then, in order:
-1. **N7b `lem:case-II-realization-placement`**, decomposed into N7b-1 (GREEN) → N7b-2 → N7b-3 →
-   N7b-assembly (sub-nodes above; **N7b-2 is the next concrete commit**) →
+1. **N7b `lem:case-II-realization-placement`**, decomposed into N7b-1 (GREEN) → N7b-2 (GREEN) →
+   N7b-3 → N7b-assembly (sub-nodes above; **N7b-3 is the next concrete commit**) →
    **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
 2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
@@ -286,7 +298,9 @@ producers) — 2026-06-04** (and N7 decomposed into glue + red placement N7b);
 **N7b placement decomposed into the three buildable sub-nodes N7b-1/2/3 — 2026-06-04**
 (planning commit, blueprint + notes); **N7b-1 `lem:case-II-placement-new-rows`
 (`exists_independent_panelRow_of_edge` + the per-edge span identity `span_panelRow_edge_eq`)
-— 2026-06-04**. Per-node detail in the blueprint dep-graph.
+— 2026-06-04**; **N7b-2 `lem:case-II-placement-old-rows`
+(`exists_independent_panelRow_transport`, the `ofNormals` graph-swap row transport) — 2026-06-04**.
+Per-node detail in the blueprint dep-graph.
 
 **Process lessons (don't repeat).**
 (a) Build the keystone / validate the target shape *before* growing a reduction
