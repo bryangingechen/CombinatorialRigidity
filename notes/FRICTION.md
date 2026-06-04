@@ -1814,6 +1814,24 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Countable.exists_injective_real` — a countable type embeds injectively into `ℝ`
+- **Where it bit:** Phase 21b Case-I realization producer
+  (`Molecular/AlgebraicInduction.lean`,
+  `PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn`): the
+  block-pin-form producer carries the obligation `Function.Injective param` on
+  the panel parameter map `param : α → ℝ`; over a `[Countable]` (in particular
+  `[Finite]`) body type that injection always exists, so the obligation should
+  be internalized rather than threaded through every consumer.
+- **Friction:** mathlib ships `Countable.exists_injective_nat`
+  (`∃ f : α → ℕ, Injective f`) but no real-valued companion, even though
+  post-composing with the injective cast `ℕ → ℝ` is immediate.
+- **Resolution:** mirrored as `Countable.exists_injective_real`
+  (`∃ f : α → ℝ, Function.Injective f`), the two-line
+  `Nat.cast_injective.comp (Countable.exists_injective_nat α).choose_spec`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/Data/Countable/Defs.lean`. Sits alongside
+  `Countable.exists_injective_nat`.
+
 ### [mirrored] `exteriorPower.topEquiv` (+ `Set.powersetCard.instUniqueTop`) — the top-power volume-form iso `⋀ⁿ (Fin n → R) ≃ₗ R`
 - **Where it bit:** Phase 21a deliverable 1 (`Molecular/Meet.lean`,
   `screwAlgebraTopEquiv`): the volume form `⋀^(k+2) (Fin (k+2) → ℝ) ≃ₗ ℝ`

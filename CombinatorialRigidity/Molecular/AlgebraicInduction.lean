@@ -6,6 +6,7 @@ Authors: Bryan Gin-ge Chen
 import CombinatorialRigidity.Molecular.RigidityMatrix
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.Induction
+import CombinatorialRigidity.Mathlib.Data.Countable.Defs
 import Mathlib.Combinatorics.Graph.Subgraph
 
 /-!
@@ -2167,5 +2168,47 @@ theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_isInfinitesimallyR
     HasFullRankRealization k G :=
   ⟨ofParam (k := k) G ends param, ofParam_graph G ends param,
     (BodyHingeFramework.rankHypothesis_zero_iff _).mpr hrig⟩
+
+/-- **Case I from-scratch realization, block-pin form with the parameter map supplied**
+(`lem:case-I`, the `HasFullRankRealization` producer that internalizes the injective panel
+parameter; Katoh–Tanigawa 2011 §6.2/6.5, Phase 21b). The block-pin-form producer
+`hasFullRankRealization_ofParam_of_pinnedMotionsOn` carries the residual obligation
+`hparam : Function.Injective param` — the genericity of the moment-curve normals
+(`isGeneralPosition_ofParam`) is supplied by *any* injective real assignment on the bodies.
+Over a `[Countable]` (in particular `[Finite]`) body type that assignment always exists
+(`Countable.exists_injective_real`), so the obligation is not really a hypothesis: this form
+picks the canonical injective `param` internally and removes it from the consumer's surface,
+reducing the residual Case-I gluing data to the forest orientation `ends` plus the count
+`hmatch` and the block-pin vanishing `hpin`.
+
+The orientation `ends` and the rigid block `sblk`/its spanning forest (`u`/`other`/`e` with the
+injectivity `hu`, separation `hsep`, and link/orientation `hlink`/`hends`) and the analytic count
+`hmatch`/block-pin vanishing `hpin` are quantified existentially over an arbitrary injective
+`param`, so a consumer assembling Case I from the contraction realization need only exhibit the
+graph-side gluing data and the count — never the parameter map itself. The geometric residual
+(showing the contraction-glued realization is rigid, equivalently that the count + block-pin
+hold) is unchanged; this is bookkeeping that removes the `hparam` plumbing. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn
+    [Fintype α] [Nonempty α] {J : Type*} [Finite J]
+    (G : Graph α β) (ends : β → α × α)
+    {sblk : Set α} (hs : sblk.Nonempty)
+    {u other : J → α} {e : J → β} (hu : Function.Injective u)
+    (hsep : ∀ j j', other j ≠ u j')
+    (hlink : ∀ j, G.IsLink (e j) (u j) (other j))
+    (hends : ∀ j, ends (e j) = (u j, other j))
+    (hmatch : ∀ param : α → ℝ, Function.Injective param →
+      Nat.card J * (screwDim k - 1)
+        + Module.finrank ℝ (ofParam (k := k) G ends param).toBodyHinge.infinitesimalMotions
+        ≤ screwDim k * Fintype.card α →
+      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
+        - Module.finrank ℝ
+            ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk))
+    (hpin : ∀ param : α → ℝ, Function.Injective param →
+      Module.finrank ℝ
+        ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk) = 0) :
+    HasFullRankRealization k G := by
+  obtain ⟨param, hparam⟩ := Countable.exists_injective_real α
+  exact hasFullRankRealization_ofParam_of_pinnedMotionsOn G ends hparam hs hu hsep hlink hends
+    (hmatch param hparam) (hpin param hparam)
 
 end CombinatorialRigidity.Molecular

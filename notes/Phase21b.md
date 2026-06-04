@@ -69,9 +69,10 @@ collapse into rigidity of the contraction-glued realization. **Next concrete ste
 realization + rigidly-placed block forces rigidity of `ofParam …` (the `ends`/`param`/
 forest graph-side gluing; see *Hand-off*). All affine-path, spanning-family,
 subfamily-index, forest-assembly, general-position/transversality, the realization-motive
-packaging (both `hpin`-count and rigidity forms), and the `hpin`-from-rigidity brick are
-discharged; what remains is the contraction realization producing rigidity + the
-`ends`/`param`/count gluing.
+packaging (both `hpin`-count and rigidity forms), the `hpin`-from-rigidity brick, and the
+injective-`param` supply (`hasFullRankRealization_of_pinnedMotionsOn` internalizes it via the
+mirror `Countable.exists_injective_real`) are discharged; what remains is the genuinely-geometric
+contraction realization producing rigidity + the `ends`/count gluing.
 
 ## Architectural choices made up front
 
@@ -189,6 +190,13 @@ Geometric side / general position (`Molecular/AlgebraicInduction.lean`,
   any nonempty block, has `Z_s = ⊥` (`finrank = 0`). Discharges `hpin` from
   rigidity of the realization (KT §6.2/6.5); folded into the
   `lem:pinned-motions-on-rank-bound` blueprint node.
+- [x] `hasFullRankRealization_of_pinnedMotionsOn` — block-pin-form producer with
+  the injective `param` *internalized*: picks the canonical injective parameter
+  (`Countable.exists_injective_real`, mirror) and removes the `hparam` obligation
+  from the consumer surface, quantifying `hmatch`/`hpin` over the supplied param.
+  The geometric residual (rigidity of the contraction-glued realization) is
+  unchanged; this is the `hparam` plumbing removed. Mirror:
+  `Countable.exists_injective_real` (`Mathlib/Data/Countable/Defs.lean`).
 
 Consumer-side discharge targets (each a named hypothesis in the Phase-21
 Lean, to be supplied by the device):
@@ -300,15 +308,17 @@ k G` follows directly from the landed producer
 of the contraction realization + rigidly-placed block `V(H)`). Alongside it, the `(G, ends)`
 graph-side gluing the producer still needs: defining `ends` on `E(G)` so
 block hinges orient along the spanning forest (`hends`) and inter-block
-hinges link the contracted vertex correctly (`hlink`), an injective
-`param` over `V(G)` (any injection into `ℝ`, e.g. via
-`Fintype`/`Countable`), and the count `hmatch` (`|J|·(D−1) = D(|V|−1) − dim
-Z_s`) matching the forest's row count against the contraction's inductive
-rank. This is the genuinely-geometric Case-I assembly (KT §6.2/6.5); still
-likely more than one commit — both the `hpin`-from-rigidity brick and the
-rigidity-form producer are now landed, so the residual is the genuinely-geometric
-contraction → rigid-realization step (showing the contraction-glued `ofParam`
-realization is rigid) plus the `ends`/`param` gluing. (For the genuine cycle
+hinges link the contracted vertex correctly (`hlink`), and the count `hmatch`
+(`|J|·(D−1) = D(|V|−1) − dim Z_s`) matching the forest's row count against the
+contraction's inductive rank. The injective `param` over `V(G)` is no longer a
+residual — `hasFullRankRealization_of_pinnedMotionsOn` supplies the canonical
+injection internally (`Countable.exists_injective_real`); the
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` rigidity form needs no
+`param` injectivity at all. This is the genuinely-geometric Case-I assembly (KT
+§6.2/6.5); still likely more than one commit — the `hpin`-from-rigidity brick, the
+rigidity-form producer, and the `param`-plumbing are now landed, so the residual is the
+genuinely-geometric contraction → rigid-realization step (showing the contraction-glued
+`ofParam` realization is rigid) plus the `ends`/count gluing. (For the genuine cycle
 case, the `m ≤ D` extensor-independence of `lem:cycle-realization` +
 `exists_independent_panelSupportExtensor` general position controls the
 cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is
