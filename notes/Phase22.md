@@ -21,6 +21,18 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
+**N4c is GREEN** (`matroidMG_rigidContract_eq_contract`, `Induction.lean`, axiom-clean — infra
+below the N4 blueprint node, no `\leanok` flip): `M((G/E(H))̃) = M(G̃) ／ E(H̃)` for a rigid
+subgraph `H` of `G` (`H.IsKDof n 0`, `H ≤ G`, `r ∈ V(H)`, `V(H).Nonempty`, `[NeZero
+(bodyHingeMult n)]`). The union↔contraction crux is closed via a new **abstract** matroid lemma
+`Matroid.Union_pow_contract_eq_contract_of_rk_saturated`: when `C` saturates the `k`-fold union
+rank (`N.rk C = k·M.rk C`), `Union (M ／ C)` and `(Union M) ／ C` agree on independent sets. The
+two existing reduction bricks (`matroidMG_rigidContract_eq`, `matroidMG_contract_eq_restrict`)
+plus the saturation specialization (`union_cycleMatroid_rk_saturated_of_isKDof_zero`) feed it.
+**The crux proof took the count route, not the matching route the prior hand-off anticipated** —
+see *Decisions* + FRICTION. **Remaining for N4:** the rank/ambient reconciliation that assembles
+`(G.rigidContract H r).IsMinimalKDof n 0` from `contraction_isMinimalKDof` (green) + N4c, then N6.
+
 **N4c saturation specialization landed green** (`union_cycleMatroid_rk_saturated_of_isKDof_zero`
 + bridge `cycleMatroid_mulTilde_eq_restrict`, `Induction.lean`, axiom-clean, no `\leanok` flip —
 infra below the N4 blueprint node): the rank-saturation hypothesis the crux input wants, for a
@@ -88,12 +100,13 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 ## Lemma checklist
 
 **Track A — Case I producer (full-rank, KT §6.2).**
-- [ ] **N4** `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction-
+- [~] **N4** `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction-
   minimality bridge: `G.IsMinimalKDof n 0 ∧ H proper rigid ⟹ (G.rigidContract H
-  r).IsMinimalKDof n 0`. Matroid side (`contraction_isMinimalKDof`) green; the
-  content is the `matroidMG`-of-`(map ∘ deleteEdges)` correspondence — a
-  **several-node Whitney-style build** (see the refined N4 recon below; the
-  per-cycle-matroid `cycleMatroid_contract` does *not* apply). Sub-bricks:
+  r).IsMinimalKDof n 0`. The `matroidMG`-of-`(map ∘ deleteEdges)` correspondence
+  (N4c, `matroidMG_rigidContract_eq_contract`) is now **GREEN**, as is the matroid
+  side (`contraction_isMinimalKDof`). **Remaining:** the rank/ambient reconciliation
+  packaging the green `contraction_isMinimalKDof` (corank + base-meets-fiber on
+  `M(G̃)／E(H̃)`) plus N4c into `(G.rigidContract H r).IsMinimalKDof n 0`. Sub-bricks:
   - [x] **N4a** rigid subgraph's multiplied graph is connected
     (`mulTilde_preconnected_of_isKDof_zero`: `G.IsKDof n 0 ⟹ (G.mulTilde n).Preconnected`,
     under `[NeZero (bodyHingeMult n)]`), licensing the `collapseTo r V(H)` vertex-collapse.
@@ -104,17 +117,15 @@ content of N4c, plus the rank/ambient reconciliation that assembles
     `rigidContract_eq_contract'`, `rigidContract_collapseTo_isRepFun`), all green/axiom-clean
     in `Induction.lean`. The recon's "`cycleMatroid_contract` does not apply" call was **wrong**
     — it applies at the `mulTilde` level (N4a ⟹ `IsRepFun`); see *Decisions*. Needs `r ∈ V(H)`.
-  - [~] **N4c** union-level independence bridge. **Reduction bricks green**
+  - [x] **N4c** union-level independence bridge `matroidMG_rigidContract_eq_contract`
+    (`M((G/E(H))̃) = M(G̃) ／ E(H̃)`). **GREEN** (axiom-clean). Reduction bricks
     (`edgeSet_mulTilde_rigidContract`, `matroidMG_contract_eq_restrict`,
-    `matroidMG_rigidContract_eq`): both sides over the same ground `S = E(G̃)\E(H̃)`, each a
-    restriction of a `D`-fold-union over `G̃.cycleMatroid`. **Crux input green**
-    (`Matroid.Union_pow_isBasis'_split_of_rk_saturated`): rank-saturation ⟹ an `N`-basis of `c`
-    splits into `k` per-factor `M`-bases of `c` — the rigidity-content the crux consumes.
-    **Saturation specialization green** (`union_cycleMatroid_rk_saturated_of_isKDof_zero` + bridge
-    `cycleMatroid_mulTilde_eq_restrict`): `N.rk(E(H̃)) = D·r_cyc(E(H̃))` for rigid `H` (def=corank
-    `rank_add_deficiency_eq` + `matroidMG_restrict_mulTilde` + N4a connectivity).
-    **Remaining:** (i) the crux `ext_indep` itself (forward via the split, reverse via the
-    `N`-basis re-decomposition), then assemble N4c. *See Hand-off.*
+    `matroidMG_rigidContract_eq`) + saturation specialization
+    (`union_cycleMatroid_rk_saturated_of_isKDof_zero`) + the new abstract crux
+    `Matroid.Union_pow_contract_eq_contract_of_rk_saturated` (saturation ⟹ `Union (M／C)` and
+    `(Union M)／C` agree on indep sets, via the count route). The prior crux *input*
+    `Matroid.Union_pow_isBasis'_split_of_rk_saturated` (basis split) is **unused** by the count
+    route but kept (abstract, green, may serve a future matching-style consumer).
 - [ ] **N5** `lem:case-I-splice-placement` — splice the inductive legs `(H,p₁)`,
   `(G/E',p₂)` along boundary hinges at panel intersections (eq. 6.6); needs a
   *panel-transversality* lemma + block-triangular independence (Lemma 5.1). Three
@@ -246,6 +257,16 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   `S` — a clean, honest, single-commit reduction that does not yet need the rigidity/forest-packing
   input (that input is what the *remaining* crux equality consumes). The three bricks are infra
   below the `lem:rigidContract-isMinimalKDof` blueprint node, so no `\leanok` flip.
+- **N4c crux closed via the COUNT route, not the matching re-decomposition (2026-06-04).** The
+  prior hand-off planned the crux `ext_indep` reverse via `union_indep_iff` + per-factor basis
+  re-alignment — but that realignment is genuine matroid-union *matching* augmentation (an
+  arbitrary `Ks` decomposition of `I ∪ J` is not factor-aligned with the `Jᵢ`, and naive fixes
+  all fail; see FRICTION). The abstract crux `Union_pow_contract_eq_contract_of_rk_saturated`
+  instead expands *both* matroids to their count conditions via `Union_pow_indep_iff_count`
+  (`N.Indep E' ↔ ∀ Y ⊆ E', |Y| ≤ k·M.rk Y`), making the equivalence a symmetric `rk_submod` +
+  `rk_mono` + `contract_rk_cast_int_eq` ℤ-arithmetic. Saturation enters only as `|J| = k·M.rk C`.
+  The split lemma `Union_pow_isBasis'_split_of_rk_saturated` is thereby unused but kept. Full
+  lesson + the matching obstruction in FRICTION `[resolved] [matroid] Union↔contraction …`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *N4 recon lesson* → `DESIGN.md` *Constructibility recon before a producer build*
@@ -259,50 +280,50 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 - *`H.cycleMatroid = G.cycleMatroid ↾ E(H)` for `H ≤ G` via `cycleMatroid_isRestriction_of_le` +
   `exists_eq_restrict` + ground pin* → FRICTION [resolved] *`[matroid]` `H.cycleMatroid =
   G.cycleMatroid ↾ E(H)` …*.
+- *Union↔contraction equality via the count condition `Union_pow_indep_iff_count`, not the
+  matching re-decomposition* → FRICTION [resolved] *`[matroid]` Union↔contraction equality: prove
+  via the *count condition* … not … matching re-decomposition*.
 
 ## Blockers / open questions
 
-- **The union↔contraction crux is the last from-scratch content of N4c; its full input is now
-  green.** With the reduction bricks + the crux input
-  (`Matroid.Union_pow_isBasis'_split_of_rk_saturated`) + the saturation specialization
-  (`union_cycleMatroid_rk_saturated_of_isKDof_zero`) all green, the crux is the single matroid
-  equality `Union (fun _ ↦ G̃.cyc ／ E(H̃)) ↾ S = (Union (fun _ ↦ G̃.cyc) ／ E(H̃)) ↾ S` on
-  `S = E(G̃)\E(H̃)`. In general `Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`; the equality holds *here* because
-  `C = E(H̃)` is the full edge set of the rigid `H̃`, so the saturation specialization feeds the
-  crux input to give the per-factor `G̃.cyc`-basis split `J = ⋃ Jᵢ`. **Remaining:** the `ext_indep`
-  (forward via the split + `IsBasis'.contract_indep_iff`; reverse via the `N`-basis `J` and
-  `union_indep_iff`). **There is no vendored Union↔contract lemma** (checked
-  `Matroid/Constructions/Union.lean`). After it, the rank/ambient reconciliation assembles
-  `(G.rigidContract H r).IsMinimalKDof n 0` from the green `contraction_isMinimalKDof` (→ N4 → N6).
+- **N4c is closed; N4 needs one more reconciliation commit.** With N4c green
+  (`matroidMG_rigidContract_eq_contract`), what remains for N4 (`lem:rigidContract-isMinimalKDof`)
+  is purely the **rank/ambient reconciliation**: `contraction_isMinimalKDof` (green) packages the
+  matroid contraction `M(G̃)／E(H̃)` as a minimal `k`-dof *matroid* (corank `def(G̃)` at ambient
+  `D(|V(G)|−|V(H)|)` + every base meets every surviving fiber). N4c rewrites that matroid as
+  `M((G/E(H))̃)`, so the graph `G.rigidContract H r` has the right matroid; the remaining work is
+  reconciling the *ambient/vertex-count* bookkeeping (`|V(G/E(H))| = |V(G)| − |V(H)| + 1`, the
+  collapse-to-`r` vertex) so the matroid-side minimality reads as `IsMinimalKDof n 0` on the graph.
 - **N5 is research-shaped** (its blueprint proof note already says so); **Track B** (the
   Case II/III producer) is a multi-node crux. So there is still no clean single-commit
-  *producer* node — the infra route (finish N4c's crux) remains the lowest-risk forward path.
+  *producer* node — finishing N4 (the reconciliation, then N6) remains the lowest-risk forward path.
 
 ## Hand-off / next phase
 
-**N4c saturation specialization is green** (`union_cycleMatroid_rk_saturated_of_isKDof_zero` +
-bridge `cycleMatroid_mulTilde_eq_restrict`, `Induction.lean`; axiom-clean, no `\leanok` flip —
-infra below the N4 node): for a rigid subgraph `H` (`H.IsKDof n 0`, `H ≤ G`, `V(H).Nonempty`,
-`[NeZero (bodyHingeMult n)]`), `(Union (fun _ : Fin D ↦ G̃.cyc)).rk E(H̃) = D · G̃.cyc.rk E(H̃)`.
-This is the saturation hypothesis the crux input
-(`Matroid.Union_pow_isBasis'_split_of_rk_saturated`) consumes. With the three reduction bricks
-(`edgeSet_mulTilde_rigidContract`, `matroidMG_contract_eq_restrict`, `matroidMG_rigidContract_eq`),
-both sides of N4c sit over the common ground `S = E(G̃)\E(H̃)`.
+**N4c is GREEN** (`matroidMG_rigidContract_eq_contract`, `Induction.lean`; axiom-clean, no `\leanok`
+flip — infra below the N4 node): `M((G/E(H))̃) = M(G̃) ／ E(H̃)` for a rigid subgraph `H`
+(`H.IsKDof n 0`, `H ≤ G`, `r ∈ V(H)`, `V(H).Nonempty`, `[NeZero (bodyHingeMult n)]`). The
+union↔contraction crux is closed by the abstract `Matroid.Union_pow_contract_eq_contract_of_rk_saturated`
+(saturation ⟹ `Union (M／C)` and `(Union M)／C` agree on indep sets, via the count route — see
+*Decisions* + FRICTION), fed by the reduction bricks + saturation specialization.
 
-**Recommended next concrete commit: the crux `ext_indep` itself** — prove
-`Union (fun _ : Fin D ↦ G̃.cyc ／ E(H̃)) ↾ S = (Union (fun _ : Fin D ↦ G̃.cyc) ／ E(H̃)) ↾ S`, then
-`(matroidMG_rigidContract_eq …).trans <crux> |>.trans (matroidMG_contract_eq_restrict …).symm` gives
-N4c. Route `Matroid.ext_indep` over `S`, per `I ⊆ S` (so `Disjoint I E(H̃)`); feed the saturation
-specialization into the crux input to get the split `J = ⋃ Jᵢ` (`Jᵢ` each a `G̃.cyc`-basis of
-`E(H̃)`, `J` an `N`-basis of `E(H̃)`):
-- **Forward** (LHS→RHS): per-factor `(G̃.cyc ／ E(H̃)).Indep (Is i)` ⟹ (`IsBasis'.contract_indep_iff`
-  with `Jᵢ`) `G̃.cyc.Indep (Is i ∪ Jᵢ)`; then `Ks i := Is i ∪ Jᵢ`, `⋃ Ks = I ∪ J`, `union_indep_iff`
-  ⟹ `N.Indep (I ∪ J)` ⟹ (`IsBasis'.contract_indep_iff` with `J`) `(N ／ E(H̃)).Indep I`.
-- **Reverse** (RHS→LHS): `(N ／ E(H̃)).Indep I` ⟹ `N.Indep (I ∪ J)` ⟹ `union_indep_iff` `Ks`; the
-  subtlety is re-decomposing so each factor is `(G̃.cyc ／ E(H̃))`-indep — the per-factor basis `Jᵢ`
-  re-aligns it. Budget the `ext_indep` its own commit; it is the last from-scratch content of N4c.
-After N4c: rank/ambient reconciliation + `contraction_isMinimalKDof` ⟹ N4
-(`lem:rigidContract-isMinimalKDof`), then N6.
+**Recommended next concrete commit: the N4 rank/ambient reconciliation** — assemble
+`(G.rigidContract H r).IsMinimalKDof n 0` (= N4, `lem:rigidContract-isMinimalKDof`) from the green
+`contraction_isMinimalKDof` (the matroid-side minimal-`k`-dof packaging of `M(G̃)／E(H̃)`) rewritten
+through N4c (`matroidMG_rigidContract_eq_contract`, which identifies that contraction with
+`M((G/E(H))̃)`). The content is the **vertex-count bookkeeping**: `rigidContract` collapses `V(H)`
+to the single vertex `r`, so `|V(G.rigidContract H r)| = |V(G)| − |V(H)| + 1`, and the ambient
+`D(|V|−1)` and the per-fiber minimality must be restated on the contracted graph. Check whether
+`contraction_isMinimalKDof`'s `D(|V(G)|−|V(H)|)` ambient matches `D(|V(rigidContract)|−1)` under
+that vertex count (it should: `|V(rigidContract)|−1 = |V(G)|−|V(H)|`). Then N6 composes N4 + N5 +
+the green glue + the device to discharge `theorem_55.hcontract`.
+
+*If a producer is preferred over infrastructure:* **N5**
+`lem:case-I-splice-placement`, decomposed math-first per its blueprint proof note
+(boundary-panel intersection + block-triangular independence each break into
+sub-lemmas) — start with the **panel-transversality** lemma (two generic
+`(d−1)`-panels meet in a `(d−2)`-hinge), the one genuinely new geometry. The KT
+math is in `notes/Phase21b.md` *Finding A* (Case I tractable) and the
 
 *If a producer is preferred over infrastructure:* **N5**
 `lem:case-I-splice-placement`, decomposed math-first per its blueprint proof note

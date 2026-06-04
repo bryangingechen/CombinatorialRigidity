@@ -653,6 +653,31 @@ housekeeping pass once their resolution is fully indexed.
   for the vendored package's `*_cast_int_eq` rank lemmas, the int form uses honest
   ℤ-subtraction; keep atoms ℤ-cast and let `omega` reconcile.
 
+### [resolved] `[matroid]` Union↔contraction equality: prove via the *count condition* `Union_pow_indep_iff_count`, not via the per-factor `union_indep_iff` matching re-decomposition
+- **Where it bit:** `Matroid.Union_pow_contract_eq_contract_of_rk_saturated` in
+  `Molecular/Induction.lean` (Phase 22 N4c crux): show `Union (fun _ : Fin k ↦ M ／ C)`
+  and `Union (fun _ : Fin k ↦ M) ／ C` agree on independent sets when `C` *saturates*
+  the union rank (`N.rk C = k·M.rk C`). The intuitive route — decompose via
+  `union_indep_iff` and re-distribute the per-factor `C`-bases `Jᵢ` — has a genuine
+  obstruction in the reverse direction: an arbitrary `union_indep_iff` decomposition
+  `Ks` of `I ∪ J` is *not* factor-aligned with the `Jᵢ`, and naive realignments
+  (`Ksᵢ \ C`, `Ksᵢ ∩ I`, swapping `Ksᵢ ∩ C` for `Jᵢ`) all fail — `M.Indep (Ksᵢ)` does
+  **not** give `(M ／ C).Indep (Ksᵢ \ C)` (an element of `Ksᵢ \ C` can be a loop of
+  `M ／ C`). Aligning the matching is real matroid-union augmentation work, buried in the
+  package's `AdjIndep.augment` `Finset` layer, not exposed for `Set`-side unions.
+- **Fix / general lesson:** the vendored `Union_pow_indep_iff_count`
+  (`N.Indep E' ↔ ∀ Y ⊆ E', |Y| ≤ k·M.rk Y`) reduces *both* matroids to **rank-count
+  conditions**, making the equivalence a symmetric `rk_submod` + `rk_mono` +
+  `contract_rk_cast_int_eq` arithmetic over ℤ (the `k·` is a common factor; multiply the
+  submodular inequality by `(k : ℤ) ≥ 0` and finish with `nlinarith`). The
+  contracted-side `(N ／ C).Indep I ⟺ N.Indep (I ∪ J)` comes from `IsBasis'.contract_indep_iff`
+  for an `N`-basis `J` of `C`; saturation enters only as `|J| = k·M.rk C`. **General:**
+  when proving a union-of-matroids identity that the matching layer would make painful,
+  check whether `Union_pow_indep_iff_count` turns it into rank arithmetic first — the
+  count form sidesteps the per-factor decomposition entirely. (Kept here with the other
+  `[matroid]` idioms rather than lifted: the project's matroid-union lessons all live as
+  tagged FRICTION entries, there is no matroid section in `TACTICS-GOLF.md`.)
+
 ### [resolved] A hand-rolled `Graph α β` with several fresh edge labels needs a distinctness guard baked into a clause, or `eq_or_eq_of_isLink_of_isLink` is unprovable
 - **Where it bit:** `Graph.edgeSplit` in `Molecular/Induction.lean` (Phase 20
   `def:graph-operations`). Edge-splitting subdivides `e₀` into a path `a–v–b`

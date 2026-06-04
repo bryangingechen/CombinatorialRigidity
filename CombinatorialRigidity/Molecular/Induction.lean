@@ -2105,6 +2105,99 @@ lemma Union_pow_isBasis'_split_of_rk_saturated [DecidableEq α] [Finite α]
       (Set.eq_of_subset_of_ncard_le hJK (by rw [hKc, hcard_eq i]) hKfin).symm] at hK
   exact ⟨J, hJunion ▸ hB, hJbasis⟩
 
+/-- **A rank-saturated `k`-fold union commutes with contraction by the saturating set**
+(the abstract N4c crux). For `M : Matroid α` on a finite ground with `[RankFinite M]`,
+a set `C` on which the `k`-fold union `N := Matroid.Union (fun _ : Fin k ↦ M)` *saturates*
+its rank (`N.rk C = k · M.rk C`), and any `I` disjoint from `C`, the two natural matroids
+on `I` agree:
+`(Matroid.Union (fun _ : Fin k ↦ M ／ C)).Indep I ↔ (N ／ C).Indep I`.
+In general `Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`; equality of the independent sets holds *here*
+because `C` saturates the union rank.
+
+The proof is a rank-count argument, symmetric in both directions, avoiding the
+matroid-union *matching* re-decomposition. Pick an `N`-basis `J'` of `C`; by saturation
+`|J'| = N.rk C = k · M.rk C`. Both independence predicates expand to count conditions via
+`Union_pow_indep_iff_count` (independence in a `k`-fold union ⟺ `|Y| ≤ k · r(Y)` on all
+subsets), with `(N ／ C).Indep I ⟺ N.Indep (I ∪ J')` (`IsBasis'.contract_indep_iff`):
+* **forward** (`Union (M ／ C)` ⟹ `N ／ C`): for `Z ⊆ I ∪ J'`, split `Z = Y ⊔ W`
+  (`Y = Z ∩ I`, `W = Z \ I ⊆ J' ⊆ C`); the count on `Y` gives `|Y| ≤ k·(M.rk(Y∪C) − r_C)`,
+  submodularity `r(Y∪W) + r_C ≥ r(Y∪C) + r(W)` (since `W ⊆ C`) and the count on `W ⊆ J'`
+  (`J'` is `N`-independent) close `|Z| = |Y| + |W| ≤ k·M.rk Z`;
+* **reverse** (`N ／ C` ⟹ `Union (M ／ C)`): for `Y ⊆ I`, the count on `Z := Y ∪ J'` gives
+  `|Y| + k·r_C = |Y ∪ J'| ≤ k·M.rk(Y ∪ J') ≤ k·M.rk(Y ∪ C)` (monotonicity, `J' ⊆ C`), i.e.
+  `|Y| ≤ k·(M.rk(Y∪C) − r_C) = k·(M ／ C).rk Y`. -/
+lemma Union_pow_contract_eq_contract_of_rk_saturated [DecidableEq α] [Finite α]
+    (M : Matroid α) [RankFinite M] (k : ℕ) {C I : Set α} (hIC : Disjoint I C)
+    (hsat : (Matroid.Union (fun _ : Fin k ↦ M)).rk C = k * M.rk C) :
+    (Matroid.Union (fun _ : Fin k ↦ M ／ C)).Indep I ↔
+      ((Matroid.Union (fun _ : Fin k ↦ M)) ／ C).Indep I := by
+  classical
+  set N := Matroid.Union (fun _ : Fin k ↦ M) with hN
+  -- An `N`-basis `J'` of `C`; `|J'| = N.rk C = k · M.rk C` by saturation, and `J' ⊆ C`.
+  obtain ⟨J', hJ'⟩ := N.exists_isBasis' C
+  have hJ'card : J'.ncard = k * M.rk C := by rw [hJ'.card, hsat]
+  have hJ'sub : J' ⊆ C := hJ'.subset
+  have hJ'fin : J'.Finite := Set.toFinite _
+  -- `N`-independence of `J'` ⟹ the count condition on every `W ⊆ J'`.
+  have hJ'count : ∀ W ⊆ J', W.ncard ≤ k * M.rk W :=
+    (Union_pow_indep_iff_count M k).mp hJ'.indep
+  -- `(N ／ C).Indep I ↔ N.Indep (I ∪ J')`, since `J'` is an `N`-basis of `C` and `I ∩ C = ∅`.
+  have hcontr : (N ／ C).Indep I ↔ N.Indep (I ∪ J') := by
+    rw [hJ'.contract_indep_iff, and_iff_left hIC.symm]
+  -- Expand both unions to their count conditions.
+  rw [Union_pow_indep_iff_count, hcontr, Union_pow_indep_iff_count]
+  constructor
+  · -- forward: `∀ Y ⊆ I, |Y| ≤ k·(M ／ C).rk Y` ⟹ `∀ Z ⊆ I ∪ J', |Z| ≤ k·M.rk Z`.
+    intro hL Z hZ
+    set Y := Z ∩ I with hYdef
+    set W := Z \ I with hWdef
+    have hYsub : Y ⊆ I := Set.inter_subset_right
+    have hWsubJ' : W ⊆ J' := fun x hx ↦ by
+      rcases (hZ hx.1) with h | h
+      · exact absurd h hx.2
+      · exact h
+    have hWsubC : W ⊆ C := hWsubJ'.trans hJ'sub
+    have hYW : Z = Y ∪ W := by rw [hYdef, hWdef, Set.inter_union_diff]
+    have hdisjYW : Disjoint Y W := (Set.disjoint_sdiff_right).mono_left Set.inter_subset_right
+    -- count on `Y` (via `(M ／ C).rk Y = M.rk (Y ∪ C) − M.rk C`)
+    have hLY : (Y.ncard : ℤ) ≤ k * (M.rk (Y ∪ C) - M.rk C) := by
+      have h := hL Y hYsub
+      have h' : (Y.ncard : ℤ) ≤ k * ((M ／ C).rk Y : ℤ) := by exact_mod_cast h
+      rwa [contract_rk_cast_int_eq M C Y] at h'
+    -- submodularity `r(Y∪W) + r_C ≥ r(Y∪C) + r(W)` (W ⊆ C ⟹ (Y∪W)∪C = Y∪C, W ⊆ (Y∪W)∩C)
+    have hsubmod : M.rk (Y ∪ C) + M.rk W ≤ M.rk (Y ∪ W) + M.rk C := by
+      have h := M.rk_submod (Y ∪ W) C
+      rw [show (Y ∪ W) ∪ C = Y ∪ C from by
+            rw [Set.union_assoc, Set.union_eq_self_of_subset_left hWsubC]] at h
+      have hWinter : M.rk W ≤ M.rk ((Y ∪ W) ∩ C) :=
+        M.rk_mono (Set.subset_inter Set.subset_union_right hWsubC)
+      omega
+    -- count on `W ⊆ J'`
+    have hWcount : W.ncard ≤ k * M.rk W := hJ'count W hWsubJ'
+    have hcardZ : Z.ncard = Y.ncard + W.ncard :=
+      hYW ▸ Set.ncard_union_eq hdisjYW (Set.toFinite _) (Set.toFinite _)
+    -- assemble over ℤ
+    rw [← Nat.cast_le (α := ℤ), hcardZ, hYW, Nat.cast_add, Nat.cast_mul]
+    have hWcountZ : (W.ncard : ℤ) ≤ k * M.rk W := by exact_mod_cast hWcount
+    have hsubmodZ : (M.rk (Y ∪ C) : ℤ) + M.rk W ≤ M.rk (Y ∪ W) + M.rk C := by exact_mod_cast hsubmod
+    have hksub : (k : ℤ) * (M.rk (Y ∪ C) + M.rk W) ≤ k * (M.rk (Y ∪ W) + M.rk C) :=
+      mul_le_mul_of_nonneg_left hsubmodZ (Nat.cast_nonneg k)
+    nlinarith [hLY, hWcountZ, hksub]
+  · -- reverse: `∀ Z ⊆ I ∪ J', |Z| ≤ k·M.rk Z` ⟹ `∀ Y ⊆ I, |Y| ≤ k·(M ／ C).rk Y`.
+    intro hR Y hYsub
+    have hYJ'disj : Disjoint Y J' := (hIC.mono_left hYsub).mono_right hJ'sub
+    have hZsub : Y ∪ J' ⊆ I ∪ J' := Set.union_subset_union_left _ hYsub
+    have hRZ := hR (Y ∪ J') hZsub
+    have hcardYJ' : (Y ∪ J').ncard = Y.ncard + k * M.rk C := by
+      rw [Set.ncard_union_eq hYJ'disj (Set.toFinite _) hJ'fin, hJ'card]
+    have hmonoYC : M.rk (Y ∪ J') ≤ M.rk (Y ∪ C) :=
+      M.rk_mono (Set.union_subset_union_right _ hJ'sub)
+    rw [← Nat.cast_le (α := ℤ), Nat.cast_mul, contract_rk_cast_int_eq M C Y]
+    have hRZ' : (Y.ncard : ℤ) + k * M.rk C ≤ k * M.rk (Y ∪ J') := by
+      have h := hRZ; rw [hcardYJ'] at h; exact_mod_cast h
+    have hmonoYCZ : (M.rk (Y ∪ J') : ℤ) ≤ M.rk (Y ∪ C) := by exact_mod_cast hmonoYC
+    nlinarith [hRZ', hmonoYCZ, Nat.cast_nonneg (α := ℤ) k]
+
 end Matroid
 
 namespace Graph
@@ -2206,6 +2299,51 @@ lemma union_cycleMatroid_rk_saturated_of_isKDof_zero [DecidableEq β]
       ring
     exact_mod_cast this
   rw [hcyc, hunion]
+
+/-! ### The union↔contraction crux of N4c (`lem:rigidContract-isMinimalKDof`)
+
+The genuinely-hard leaf of N4c, now closed. The two reduction bricks
+(`matroidMG_rigidContract_eq`, `matroidMG_contract_eq_restrict`) put both sides of the
+N4c identity over the common ground `S = E(G̃) \ E(H̃)`, leaving exactly the abstract
+union↔contraction equality on `S`. That equality holds here — though `Union Mᵢ ／ C` and
+`Union (Mᵢ ／ C)` differ in general — because the contracted-out `C = E(H̃)` is the full
+edge set of the rigid `H̃`, on which the `D`-fold cycle-matroid union *saturates* its rank
+(`union_cycleMatroid_rk_saturated_of_isKDof_zero`). The abstract
+`Matroid.Union_pow_contract_eq_contract_of_rk_saturated` turns that saturation into
+equality of independent sets, and `matroidMG_indep` lifts it to the graph-level
+`matroidMG`. -/
+
+/-- **The graph↔matroid contraction-minimality bridge** (N4c; `lem:rigidContract-isMinimalKDof`):
+the matroid of the multiplied rigid-subgraph contraction is the matroid contraction,
+`M((G/E(H))̃) = M(G̃) ／ E(H̃)`. For a rigid subgraph `H` of `G` (`H.IsKDof n 0`, `H ≤ G`,
+`r ∈ V(H)`, `D = bodyBarDim n ≥ 2` so `H̃` has edge copies and is preconnected). Combines
+the two reduction bricks — `matroidMG_rigidContract_eq` (the contracted side as a restricted
+union-of-contractions) and `matroidMG_contract_eq_restrict` (the contraction side as a
+restricted contraction-of-union) — with the union↔contraction crux closed by the abstract
+`Matroid.Union_pow_contract_eq_contract_of_rk_saturated`, whose saturation hypothesis is the
+rigid-subgraph specialization `union_cycleMatroid_rk_saturated_of_isKDof_zero`. -/
+theorem matroidMG_rigidContract_eq_contract [DecidableEq β] [Finite α] [Finite β]
+    {H G : Graph α β} {n : ℕ} [NeZero (bodyHingeMult n)] (hle : H ≤ G) {r : α} (hr : r ∈ V(H))
+    (hrigid : H.IsKDof n 0) (hVHne : V(H).Nonempty) :
+    (G.rigidContract H r).matroidMG n = (G.matroidMG n) ／ E(H.mulTilde n) := by
+  classical
+  haveI : (G.mulTilde n).cycleMatroid.RankFinite :=
+    haveI : (G.mulTilde n).EdgeFinite := ⟨Set.toFinite _⟩
+    inferInstance
+  have hconn : (H.mulTilde n).Preconnected := mulTilde_preconnected_of_isKDof_zero hrigid
+  -- The union↔contraction crux on the common ground `S = E(G̃) \ E(H̃)`, via saturation.
+  have hcrux : Matroid.Union
+        (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid ／ E(H.mulTilde n))
+        ↾ (E(G.mulTilde n) \ E(H.mulTilde n)) =
+      (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)
+        ／ E(H.mulTilde n)) ↾ (E(G.mulTilde n) \ E(H.mulTilde n)) := by
+    refine Matroid.ext_indep (by simp) (fun I hI ↦ ?_)
+    rw [Matroid.restrict_ground_eq] at hI
+    rw [Matroid.restrict_indep_iff, Matroid.restrict_indep_iff, and_iff_left hI, and_iff_left hI]
+    exact Matroid.Union_pow_contract_eq_contract_of_rk_saturated _ _
+      (Set.disjoint_sdiff_left.mono_left hI)
+      (union_cycleMatroid_rk_saturated_of_isKDof_zero hle hrigid hVHne)
+  rw [matroidMG_rigidContract_eq hle hr n hconn, hcrux, matroidMG_contract_eq_restrict hle n]
 
 /-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
 
