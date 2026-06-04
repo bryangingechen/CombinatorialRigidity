@@ -51,12 +51,17 @@ Dual` with `range r ⊆ span F₀.rigidityRows` (the forest rows) directly into 
 (= `r`, independent), so `hglue_of_realization`'s `hspanrows`/`hindep` are discharged
 and only the count match `hmatch` (`Nat.card κ = D(|V|−1) − dim Z_s`) and the choice of
 `F₀` remain. The **route a/b decision is RESOLVED** (route (a), constant path;
-bilinearity sidestepped — see *Decisions* / *Blockers*). What remains is purely
-geometric: exhibit the realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`)
-and the `hmatch` count for Case I, then the analogous per-consumer bridges for Case
-II / Prop 1.1. **Next concrete commit: see *Hand-off*** — exhibit `F₀` and match the
-count, feeding `exists_independent_rigidityRows_of_forest` through
-`hglue_of_independent_rigidityRows`.
+bilinearity sidestepped — see *Decisions* / *Blockers*). **As of this commit the last
+*generic* reduction is also landed** (`hglue_of_forest`): it composes
+`exists_independent_rigidityRows_of_forest` straight into
+`hglue_of_independent_rigidityRows`, so the whole Case-I `hglue` reduces to the *forest
+data itself* (the private-endpoint `u`/`other`/`e` of `V(H)`'s transversal hinges +
+`Function.Injective u` / the separation `other j ≠ u j'` / transversality
+`supportExtensor (e j) ≠ 0`) plus the count `hmatch` keyed to `|J|·(D−1)`. What remains is
+purely geometric: exhibit the realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`)
+and its spanning-forest data + `hmatch` count for Case I, then the analogous per-consumer
+bridges for Case II / Prop 1.1. **Next concrete commit: see *Hand-off*** — exhibit `F₀`
+from the contraction realization + rigid block and feed it through `hglue_of_forest`.
 
 ## Architectural choices made up front
 
@@ -177,6 +182,17 @@ hand-off convenience.
   realization `F₀`, and the count `hmatch` (`Nat.card κ = D(|V|−1) − dim Z_s`). Green; folded into
   `lem:genericity-device`'s `\lean{...}` pin (route-(a) bridge, no new node).
 
+- [x] `hglue_of_forest` (`Molecular/AlgebraicInduction.lean`): the **last generic Case-I
+  reduction** — composes `exists_independent_rigidityRows_of_forest` (the rigid block's
+  `(D−1)·|J|` independent rigidity rows, indexed by `Σ _ : J, Fin (screwDim k − 1)`) directly into
+  `hglue_of_independent_rigidityRows`, reducing the whole Case-I `hglue` to the *forest data* (the
+  private-endpoint spanning forest `u`/`other`/`e` of `V(H)`'s transversal hinges, with `hu`/`hsep`/
+  `he`) plus the count `hmatch` keyed to `Nat.card J * (screwDim k − 1)`. Cardinality
+  `Nat.card (Σ _ : J, Fin (D−1)) = |J|·(D−1)` is `simp [Nat.card_eq_fintype_card]` after
+  `Fintype.ofFinite J`; row membership is `Submodule.subset_span ∘ hmem`. This is the last
+  graph-and-hinge-agnostic step; what remains is the geometric `F₀` exhibition. Green; folded into
+  `lem:genericity-device`'s `\lean{...}` pin (route-(a) bridge, no new node).
+
 - [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
   `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
   `span (range a) = span F.rigidityRows`, from finite-dimensionality of the dual (`α` finite ⇒
@@ -205,10 +221,13 @@ in the Phase-21 Lean, to be supplied by the device):
   independent extensors → independent rigidity rows. The **index gap is now closed**
   (`hglue_of_independent_rigidityRows`): the assembled forest family `r`
   (`exists_independent_rigidityRows_of_forest`) feeds the `hglue` inequality directly via the
-  `Sum.elim r a₀` concatenation, discharging `hspanrows` + `hindep` for *any* `F₀`. Residual is
-  purely geometric — exhibit the realization `F₀` and the count `hmatch`
-  (`Nat.card κ = D(|V|−1) − dim Z_s`) from the contraction realization + rigid block; no path
-  construction, no spanning-family/subfamily-index bookkeeping remains.
+  `Sum.elim r a₀` concatenation, discharging `hspanrows` + `hindep` for *any* `F₀`. **The last
+  generic reduction is `hglue_of_forest`**: it composes the forest assembly into that bridge, so the
+  whole `hglue` now reduces to the forest *data* (`u`/`other`/`e` + `hu`/`hsep`/`he`) plus the count
+  `hmatch` keyed to `|J|·(D−1)`. Residual is purely geometric — exhibit the realization `F₀` and its
+  spanning-forest data + the count `hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`) from the contraction
+  realization + rigid block; no path construction, no spanning-family/subfamily-index bookkeeping,
+  and no forest-assembly plumbing remains.
 - [ ] `hspan` for Case II — each base-`v`-pinned motion lands in the two
   new edges' panel-support spans (false pointwise; holds by the
   rank/dimension count, via `exists_independent_panelSupportExtensor`).
@@ -294,12 +313,12 @@ in the Phase-21 Lean, to be supplied by the device):
   (b) (multivariate Zariski-open) is unneeded for Case I, but may be cleaner
   if a future consumer genuinely requires a non-constant path.
 - **The single open piece for Case I is now purely geometric**: the index gap is
-  closed by `hglue_of_independent_rigidityRows` (feeds the assembled forest family `r`
-  into the `hglue` inequality via the `Sum.elim r a₀` concatenation, discharging
-  `hspanrows` + `hindep`), so all that remains is to exhibit the realization `F₀` and
-  the count `hmatch` (`Nat.card κ = D(|V|−1) − dim Z_s`) from the contraction realization
-  plus the rigidly-placed block `V(H)`. No affine-path, spanning-family, or
-  subfamily-index construction remains.
+  closed by `hglue_of_independent_rigidityRows`, and the forest assembly is composed in by
+  `hglue_of_forest`, so all that remains is to exhibit the realization `F₀` *together with* its
+  spanning-forest data (`u`/`other`/`e` + `hu`/`hsep`/`he`) and the count `hmatch`
+  (`|J|·(D−1) = D(|V|−1) − dim Z_s`) from the contraction realization plus the rigidly-placed block
+  `V(H)`. No affine-path, spanning-family, subfamily-index, or forest-assembly construction remains
+  — only the geometric `F₀` + forest-data exhibition.
 
 ## Hand-off / next phase
 
@@ -307,21 +326,22 @@ The abstract device `lem:genericity-device` (`genericityDevice`) and the full Ca
 *plumbing* are GREEN (route-(a) constant path; see *Current state* + *Blockers* + *Lemma
 checklist*). All non-geometric inputs are now discharged: the affine path (constant,
 `hcoord_const`), the finite spanning family (`exists_finite_spanning_rigidityRows`), the assembled
-forest `hindep` family (`exists_independent_rigidityRows_of_forest`, `(D−1)·|J|` LI rows), and — as
-of this commit — the **index gap** between them (`hglue_of_independent_rigidityRows`: feeds the
-forest family `r` straight into the `hglue` inequality via the `Sum.elim r a₀` concatenation, so a
-consumer supplies only `r`, the realization `F₀`, and the count `hmatch`).
+forest `hindep` family (`exists_independent_rigidityRows_of_forest`, `(D−1)·|J|` LI rows), the
+**index gap** between them (`hglue_of_independent_rigidityRows`), and — as of this commit — the
+**forest assembly composed in** (`hglue_of_forest`: the whole Case-I `hglue` now reduces to forest
+*data* `u`/`other`/`e` + `hu`/`hsep`/`he` plus the count `hmatch` keyed to `|J|·(D−1)`). This was the
+last generic (graph-and-hinge-agnostic) reduction.
 
-**Smallest next concrete commit: exhibit the Case-I realization `F₀` + count match.** From the
-contraction realization (`G/E(H)` at its inductive `RankHypothesis`) plus the rigid block `V(H)`
-placed rigidly, exhibit (a) the single realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`),
-supplying the forest data — the private-endpoint spanning forest `u`/`other`/`e` of `V(H)`'s
-transversal hinges — to `exists_independent_rigidityRows_of_forest` for `r`; and (b) the count
-`hmatch` (`Nat.card κ = |J|·(D−1) = D(|V|−1) − dim Z_s`) against the contraction's inductive
-`RankHypothesis`. Feed (a)+(b) through `hglue_of_independent_rigidityRows` →
-`toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`. This is the genuinely-geometric Case-I
-assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is in hand and the count is
-being matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
+**Smallest next concrete commit: exhibit the Case-I realization `F₀` + its spanning-forest data +
+count match.** From the contraction realization (`G/E(H)` at its inductive `RankHypothesis`) plus
+the rigid block `V(H)` placed rigidly, exhibit (a) the single realization `F₀` (a
+`PanelHingeFramework`-via-`toBodyHinge`) and (b) the private-endpoint spanning forest `u`/`other`/`e`
+of `V(H)`'s transversal hinges (`u` injective, `other j ≠ u j'`, `supportExtensor (e j) ≠ 0` from
+`exists_independent_panelSupportExtensor` general position) and (c) the count `hmatch`
+(`|J|·(D−1) = D(|V|−1) − dim Z_s`) against the contraction's inductive `RankHypothesis`. Feed
+(a)+(b)+(c) through `hglue_of_forest` → `toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`.
+This is the genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess
+once `F₀` is in hand and the count is being matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
 `lem:cycle-realization` + `exists_independent_panelSupportExtensor` general position controls the
 cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is the screw-space
 telescoping core.) The other consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same

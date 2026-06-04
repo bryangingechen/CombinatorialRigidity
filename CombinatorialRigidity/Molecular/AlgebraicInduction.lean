@@ -1771,4 +1771,52 @@ theorem hglue_of_independent_rigidityRows [Fintype α] [Nonempty α] {κ : Type*
     hspanrows hindep ?_
   rw [hcard]; exact hmatch
 
+/-- **Case I `hglue` from a rigid block's spanning forest** (`lem:case-I`, the route-(a) capstone
+in its fully geometry-facing form; Katoh–Tanigawa 2011 §6.1 Claim 6.4, §6.2/6.5, Phase 21b). The
+last reduction of the route-(a) chain before the genuinely-geometric `F₀` exhibition: it composes
+the assembled forest family `exists_independent_rigidityRows_of_forest` (the rigid block's
+`(D−1)·|J|` independent rigidity rows, indexed by `Σ _ : J, Fin (screwDim k − 1)`) straight into
+the consumer bridge `hglue_of_independent_rigidityRows`, so the only remaining consumer obligation
+is the *forest data itself* plus the count.
+
+Concretely: given a single body-hinge realization `F₀` whose rigid block `V(H) = s_blk` carries a
+spanning forest of transversal hinges — each hinge `e j` oriented from a *private endpoint* `u j`
+(the forest child, `u` injective) to an arbitrary `other j`, with the forest-separation hypothesis
+`hsep : ∀ j j', other j ≠ u j'` and every hinge transversal (`he : F₀.supportExtensor (e j) ≠ 0`)
+— the block-triangular gluing inequality `hglue : dim Z(G,p) ≤ D + dim Z_s` holds at `F₀`, provided
+only the **count match** `hmatch`: the forest's row count `|J|·(D−1)` equals the contraction's
+inductive rank `D(|V|−1) − dim Z_s`. The forest rows discharge `hglue_of_independent_rigidityRows`'s
+independent family `r` (via `linearIndependent_hingeRow_forest`) and its membership obligation
+(each row is in `F₀.rigidityRows` by the hinge link `hlink j`); the cardinality
+`Nat.card (Σ _ : J, Fin (screwDim k − 1)) = |J|·(D−1)` (`Nat.card_sigma`) keys `hmatch` to the
+forest size.
+
+This is the last *generic* (graph-and-hinge-agnostic) reduction. The remaining consumer work — the
+genuinely-geometric Case-I assembly (KT §6.2/6.5) — is to exhibit, from the contraction realization
+`G/E(H)` at its inductive `RankHypothesis` plus the rigidly placed block `V(H)`, the single
+realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`), the private-endpoint spanning forest
+`u`/`other`/`e` of `V(H)`'s transversal hinges (transversality from
+`exists_independent_panelSupportExtensor` general position), and the count `hmatch` against the
+contraction's inductive rank. -/
+theorem hglue_of_forest [Fintype α] [Nonempty α] {J : Type*} [Finite J]
+    (F₀ : BodyHingeFramework k α β) {sblk : Set α}
+    {u other : J → α} {e : J → β} (hu : Function.Injective u)
+    (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, F₀.graph.IsLink (e j) (u j) (other j))
+    (he : ∀ j, F₀.supportExtensor (e j) ≠ 0)
+    (hmatch : Nat.card J * (screwDim k - 1) + Module.finrank ℝ F₀.infinitesimalMotions
+        ≤ screwDim k * Fintype.card α →
+      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
+        - Module.finrank ℝ (F₀.pinnedMotionsOn sblk)) :
+    (Module.finrank ℝ F₀.infinitesimalMotions : ℤ) ≤
+      screwDim k + Module.finrank ℝ (F₀.pinnedMotionsOn sblk) := by
+  classical
+  haveI : Fintype J := Fintype.ofFinite J
+  obtain ⟨r, hr, hmem⟩ := F₀.exists_independent_rigidityRows_of_forest hu hsep hlink he
+  -- `Nat.card (Σ _ : J, Fin (screwDim k − 1)) = |J|·(D − 1)`.
+  have hcard : Nat.card ((_ : J) × Fin (screwDim k - 1)) = Nat.card J * (screwDim k - 1) := by
+    simp [Nat.card_eq_fintype_card]
+  refine hglue_of_independent_rigidityRows F₀ r hr
+    (fun p => Submodule.subset_span (hmem p)) (sblk := sblk) ?_
+  rw [hcard]; exact hmatch
+
 end CombinatorialRigidity.Molecular
