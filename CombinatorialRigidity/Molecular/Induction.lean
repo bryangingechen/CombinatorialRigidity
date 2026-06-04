@@ -1902,6 +1902,83 @@ lemma rigidContract_eq_contract (G H : Graph α β) (r : α) :
     G.rigidContract H r = (G.deleteEdges E(H)) /[E(H), collapseTo r V(H)] := by
   rw [contract_eq_map_of_disjoint (by simpa using Set.disjoint_sdiff_left), rigidContract]
 
+/-! ## The cycle matroid under the vertex-collapse map (N4b; `lem:rigidContract-isMinimalKDof`)
+
+The graph-side brick of the contraction-minimality bridge: edge multiplication commutes with
+rigid-subgraph contraction, and — once the multiplied rigid subgraph `H̃` is preconnected
+(`mulTilde_preconnected_of_isKDof_zero`, N4a) — the cycle matroid of the contracted multiplied
+graph is the matroid contraction `(G̃).cycleMatroid ／ E(H̃)`. This is the per-cycle-matroid
+step the `Matroid.Union` substrate of `matroidMG` is built on (N4c lifts it through the union).
+-/
+
+/-- **Edge multiplication commutes with rigid-subgraph contraction** (N4b graph-side brick):
+`(G / E(H))̃ = G̃ / E(H̃)`, i.e. `(G.rigidContract H r).mulTilde n = (G.mulTilde n).rigidContract
+(H.mulTilde n) r`. Both `deleteEdges` (lifted along the first projection) and the vertex-relabel
+`map` commute with the `Fin (D-1)`-indexing of `edgeMultiply`, so multiplying the edges of the
+delete-then-relabel contraction agrees with contracting the multiplied graph. The collapse map
+`collapseTo r V(H)` is unchanged because `V(H̃) = V(H)`. This puts `mulTilde`-of-`rigidContract`
+into the shape `cycleMatroid_contract` (vendored) is stated against. -/
+lemma mulTilde_rigidContract (G H : Graph α β) (r : α) (n : ℕ) :
+    (G.rigidContract H r).mulTilde n = (G.mulTilde n).rigidContract (H.mulTilde n) r := by
+  refine Graph.ext (by simp [mulTilde, rigidContract]) fun p x y => ?_
+  obtain ⟨e, i⟩ := p
+  simp [mulTilde, rigidContract, edgeMultiply_isLink, Graph.map_isLink, deleteEdges_isLink]
+
+/-- **The collapse map represents the connected components of a preconnected `H̃`** (N4b
+brick): for a preconnected multiplied subgraph `H̃` with representative `r ∈ V(H)`, the
+vertex-collapse `collapseTo r V(H)` is a representative function for `H̃`'s connectivity
+partition. Outside `V(H̃) = V(H)` it is the identity; on `V(H)` it sends everything to `r`,
+and preconnectedness makes `r` connected to each such vertex, so `collapseTo` respects the
+single connected component. This is the hypothesis the vendored `cycleMatroid_contract`
+demands; `mulTilde_preconnected_of_isKDof_zero` (N4a) supplies the preconnectedness. -/
+lemma rigidContract_collapseTo_isRepFun {H : Graph α β} {r : α} (hr : r ∈ V(H)) (n : ℕ)
+    (hconn : (H.mulTilde n).Preconnected) :
+    (H.mulTilde n).connPartition.IsRepFun (collapseTo r V(H)) := by
+  have hsupp : ∀ {x : α}, x ∈ (H.mulTilde n).connPartition.supp ↔ x ∈ V(H) := by
+    intro x; rw [Graph.connPartition_supp]; simp [mulTilde]
+  refine Partition.IsRepFun.mk' _ _ hsupp (fun x hx => ?_) (fun x hx => ?_) (fun x y hxy => ?_)
+  · -- `x ∉ V(H)`: `collapseTo` is the identity.
+    simp [collapseTo, hx]
+  · -- `x ∈ V(H)`: `collapseTo x = r`, related to `x` since `H̃` is preconnected.
+    rw [show collapseTo r V(H) x = r from by simp [collapseTo, hx]]
+    rw [Graph.connPartition_rel_iff]
+    exact hconn x r (show x ∈ V(H.mulTilde n) from hx) (show r ∈ V(H.mulTilde n) from hr)
+  · -- related `x, y`: both lie in the support `V(H)`, so both collapse to `r`.
+    have hxV : x ∈ V(H) := hsupp.mp hxy.left_mem
+    have hyV : y ∈ V(H) := hsupp.mp hxy.right_mem
+    simp [collapseTo, hxV, hyV]
+
+/-- **Rigid-subgraph contraction as the direct vendored contraction** (N4b brick): the
+delete-then-relabel `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))` *is* the
+vendored `G /[E(H), collapseTo r V(H)]` (which expands to `(collapseTo r V(H) ''ᴳ G) ＼ E(H)`),
+because the `map` commutes with the `＼ E(H)` (`map_deleteEdges_comm`). The shape
+`cycleMatroid_contract` consumes directly — without the spurious inner `＼ E(H)` that the
+delete-first phrasing `rigidContract_eq_contract` carries on the contracted matroid side. -/
+lemma rigidContract_eq_contract' (G H : Graph α β) (r : α) :
+    G.rigidContract H r = G /[E(H), collapseTo r V(H)] := by
+  rw [rigidContract, Graph.contract, ← Graph.map_deleteEdges_comm]
+
+/-- **The cycle matroid of a contracted multiplied graph** (N4b, the per-cycle-matroid step;
+`lem:rigidContract-isMinimalKDof`). For a subgraph `H ≤ G` whose multiplied graph `H̃` is
+preconnected (`mulTilde_preconnected_of_isKDof_zero`, N4a) with representative `r ∈ V(H)`, the
+cycle matroid of the multiplied rigid-subgraph contraction equals the matroid contraction:
+`((G / E(H))̃).cycleMatroid = (G̃).cycleMatroid ／ E(H̃)`. This is the genuinely new content of
+N4b — there is *no* vendored `cycleMatroid`-under-`map` lemma, so it must route through the
+vendored `cycleMatroid_contract` (which contracts an edge set rather than relabelling vertices).
+The bridge to `cycleMatroid_contract` is the commutation `mulTilde_rigidContract` (edge
+multiplication commutes with contraction) plus `rigidContract_eq_contract'` (the contraction is
+the vendored `G̃ /[E(H̃), collapseTo r V(H̃)]`), and its `IsRepFun` hypothesis is supplied by
+`rigidContract_collapseTo_isRepFun` from N4a's preconnectedness. The result lifts through the
+`Matroid.Union` of `matroidMG` in N4c (`ext_indep`). -/
+lemma cycleMatroid_mulTilde_rigidContract {H G : Graph α β} (hle : H ≤ G) {r : α} (hr : r ∈ V(H))
+    (n : ℕ) (hconn : (H.mulTilde n).Preconnected) :
+    ((G.rigidContract H r).mulTilde n).cycleMatroid
+      = (G.mulTilde n).cycleMatroid ／ E(H.mulTilde n) := by
+  rw [mulTilde_rigidContract, rigidContract_eq_contract',
+    show V(H.mulTilde n) = V(H) from rfl]
+  exact Graph.cycleMatroid_contract (rigidContract_collapseTo_isRepFun hr n hconn)
+    (edgeMultiply_mono hle _)
+
 /-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
 
 The minimality-transport half of KT Lemma 3.5: contracting a (rigid) subgraph `H` of a

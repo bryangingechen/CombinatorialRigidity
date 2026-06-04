@@ -21,28 +21,32 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-**N4a landed green** (`mulTilde_preconnected_of_isKDof_zero`, `Deficiency.lean`): a
-`0`-dof graph's multiplied graph `G̃` is preconnected, the leaf brick below the N4
-graph↔matroid bridge. Proof reuses the `two_le_crossingEdges_of_isKDof_zero`
-cut-partition contradiction verbatim — the connected component `V' = {z | G̃.ConnBetween x z}`
-of any vertex is a crossing-free two-part cut, so a disconnection would witness
-`def(G̃) ≥ D ≥ 1 > 0`. Axiom-clean; no `\leanok` flip (infrastructure below the N4
-blueprint node). Regime: `[NeZero (bodyHingeMult n)]` (i.e. `D ≥ 2`, `n ≥ 2`), matching
-`spanningVerts_edgeMultiply` — for `D = 1` the multiplied graph is edgeless and the claim
-is false. **No nonemptiness hypothesis** (`Preconnected` is vacuous on the empty graph).
+**N4b landed green** (`cycleMatroid_mulTilde_rigidContract`, `Induction.lean`): the
+per-cycle-matroid step of the N4 bridge,
+`((G/E(H))̃).cycleMatroid = (G̃).cycleMatroid ／ E(H̃)`, for `H ≤ G` with `H̃` preconnected
+(N4a) and representative `r ∈ V(H)`. **The recon's "`cycleMatroid_contract` does not apply"
+pessimism was wrong** (see *Decisions*): it does apply — *at the `mulTilde` level*, where N4a's
+preconnectedness makes `collapseTo r V(H)` a rep-fun of `H̃`'s (single) connected component. The
+three supporting bricks, all axiom-clean, no `\leanok` flip (infra below the N4 blueprint node):
+- `mulTilde_rigidContract` — edge multiplication commutes with rigid-subgraph contraction,
+  `(G/E(H))̃ = G̃/E(H̃)` (`Graph.ext`; `edgeMultiply` commutes with both `deleteEdges` and the
+  vertex-relabel `map`).
+- `rigidContract_eq_contract'` — `rigidContract` *is* the direct vendored contraction
+  `G /[E(H), collapseTo r V(H)]` (via `map_deleteEdges_comm`), the shape `cycleMatroid_contract`
+  consumes — *without* the spurious inner `＼ E(H)` the existing `rigidContract_eq_contract`
+  (delete-first) carries onto the matroid side.
+- `rigidContract_collapseTo_isRepFun` — the genuinely-new content: N4a's `(H̃).Preconnected`
+  ⟹ `collapseTo r V(H)` is `(H̃).connPartition.IsRepFun` (via `IsRepFun.mk'` +
+  `connPartition_rel_iff`/`connPartition_supp`), the hypothesis `cycleMatroid_contract` demands.
 
-The N4 graph↔matroid bridge itself remains a several-node sub-build (recon below
-unchanged). **A second constructibility recon
-(2026-06-04, below) sharpened N4: it is not merely a "union does not
-commute with contraction" issue — the per-cycle-matroid step `cycleMatroid_contract`
-does not even apply** (the graph `rigidContract` is a vertex-relabel `map` with
-`E(H)` *deleted*, the matroid side *contracts* `E(H̃)`; there is no vendored
-`cycleMatroid`-under-`map` lemma, and the Whitney rank-of-contraction identity is
-the real content). The matroid-side fact N4 would transport
-(`contraction_isMinimalKDof`, `Induction.lean:1998`) is green; the graph↔matroid
-bridge `matroidMG (G.rigidContract H r) = M(G̃)／E(H̃)` is a **several-node
-sub-build**, not a single commit. The next concrete commit is **N4b**
-(cycleMatroid-under-vertex-collapse), now licensed by N4a: see *Hand-off* below.
+**N4a** (`mulTilde_preconnected_of_isKDof_zero`, `Deficiency.lean`) landed previously: a
+`0`-dof graph's `G̃` is preconnected, regime `[NeZero (bodyHingeMult n)]` (`D ≥ 2`); cut-partition
+contradiction reusing `two_le_crossingEdges_of_isKDof_zero`'s structure. **No nonemptiness
+hypothesis** (`Preconnected` is vacuous on the empty graph).
+
+The N4 bridge remains a sub-build: **N4c** (union-level independence bridge to `matroidMG`) is the
+remaining leaf, plus the rank/ambient reconciliation that assembles `(G.rigidContract H r).IsMinimalKDof
+n 0` from `contraction_isMinimalKDof` (`Induction.lean:1998`, green). See *Hand-off*.
 
 ## Architectural choices made up front
 
@@ -70,11 +74,14 @@ sub-build**, not a single commit. The next concrete commit is **N4b**
     under `[NeZero (bodyHingeMult n)]`), licensing the `collapseTo r V(H)` vertex-collapse.
     Green, axiom-clean (`Deficiency.lean`); cut-partition contradiction reusing
     `two_le_crossingEdges_of_isKDof_zero`'s structure.
-  - [ ] **N4b** cycleMatroid under the vertex-collapse `map` (Whitney contraction).
-    *Leaf — the recommended next commit; N4a now in hand. See Hand-off.*
+  - [x] **N4b** cycleMatroid under the vertex-collapse `map` (Whitney contraction):
+    `cycleMatroid_mulTilde_rigidContract` (+ bricks `mulTilde_rigidContract`,
+    `rigidContract_eq_contract'`, `rigidContract_collapseTo_isRepFun`), all green/axiom-clean
+    in `Induction.lean`. The recon's "`cycleMatroid_contract` does not apply" call was **wrong**
+    — it applies at the `mulTilde` level (N4a ⟹ `IsRepFun`); see *Decisions*. Needs `r ∈ V(H)`.
   - [ ] **N4c** union-level independence bridge via `ext_indep` against
     `matroidMG_indep_iff` + `Matroid.Indep.contract_indep_iff` (the `(D,D)`-boundary
-    Whitney rank-of-contraction identity).
+    Whitney rank-of-contraction identity). *Leaf — recommended next commit; see Hand-off.*
 - [ ] **N5** `lem:case-I-splice-placement` — splice the inductive legs `(H,p₁)`,
   `(G/E',p₂)` along boundary hinges at panel intersections (eq. 6.6); needs a
   *panel-transversality* lemma + block-triangular independence (Lemma 5.1). Three
@@ -162,44 +169,66 @@ sub-build**, not a single commit. The next concrete commit is **N4b**
     several-node sub-build** (connectivity-of-`H̃` brick → cycleMatroid-under-collapse
     → union-level independence bridge), not one commit; or pivot to **Track A's N5 /
     Track B** (N4 gates only N6, the Case-I composer).
+- **N4b correction (2026-06-04, on building): `cycleMatroid_contract` DOES apply — the
+  second recon mis-read its hypothesis.** The recon (refinement bullet above) claimed the
+  per-cycle-matroid step needs a from-scratch `cycleMatroid`-under-collapse build because
+  `cycleMatroid_contract`'s `IsRepFun` hypothesis was "false here, on `(G ＼ E(H) ↾ E(H))`".
+  That graph is wrong: `cycleMatroid_contract {φ} (hφ : H.connPartition.IsRepFun φ) (hHG : H ≤ G)`
+  takes the rep-fun on the **subgraph being contracted**, and that subgraph is `H.mulTilde n`
+  (whose `connPartition` is *not* discrete). N4a (`(H̃).Preconnected`) makes `H̃`'s `connPartition`
+  a **single class** `V(H)`, so `collapseTo r V(H)` (sends `V(H) ↦ r`, else id) is a genuine
+  rep-fun — `rigidContract_collapseTo_isRepFun`. The graph side then needs only
+  `rigidContract_eq_contract'` (the direct `G̃ /[E(H̃), φ]` form, no inner `＼`, via
+  `map_deleteEdges_comm`) + `mulTilde_rigidContract` (edge mult. commutes with contraction).
+  So N4b is **three short lemmas, one commit**, not a from-scratch Whitney build. **What
+  remains genuinely hard is N4c** (lifting the per-cycle-matroid identity through `Matroid.Union`
+  to `matroidMG`): there the union↔contraction non-commutation (first recon bullet) still bites,
+  so N4c routes via `ext_indep` + contraction-independence at the `(D,D)` boundary, as planned.
+  **Lesson:** the constructibility recon under-checked the *exact vendored hypothesis* — read the
+  lemma's binder, not a paraphrase, before declaring it inapplicable.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
-- *(none yet — the N4 recon lesson is already captured by `DESIGN.md`
-  *Constructibility recon before a producer build*; this is its first
-  application post-21b.)*
+- *N4 recon lesson* → `DESIGN.md` *Constructibility recon before a producer build*
+  (its first post-21b application). The N4b *correction* sharpens it: the recon must
+  read the vendored lemma's **exact binder**, not a paraphrase, before declaring it
+  inapplicable — captured in the N4b correction entry above.
+- *`@[simps!]` projection name not resolving; bare-term field is `rfl`* → FRICTION
+  [resolved] *`edgeMultiply`'s `@[simps! vertexSet]` lemma does not resolve …*.
 
 ## Blockers / open questions
 
-- **N4 difficulty (above, refined twice).** The graph↔matroid bridge is a
-  several-node Whitney-style build, not the union↔contraction one-liner the launch
-  plan implied, and `cycleMatroid_contract` does not apply (the graph side is a
-  vertex-relabel `map`, not an edge contraction). Decompose, don't attempt
-  whole-hog.
-- **N5 is equally research-shaped** (its blueprint proof note already says so), so
-  it is not the clean fallback the launch hand-off treated it as. **Track B** (the
-  Case II/III producer) is also a multi-node crux. The phase still has *no* clean
-  single-commit next node among the named *producers*; the unblocking move is to
-  keep building the N4 leaf bricks (N4a green; N4b/N4c remain).
+- **N4c is the remaining hard N4 leaf.** Lifting N4b's per-cycle-matroid identity
+  `((G/E(H))̃).cycleMatroid = (G̃).cycleMatroid ／ E(H̃)` through the `D`-fold
+  `Matroid.Union` of `matroidMG` is where the union↔contraction non-commutation bites
+  (`Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`); the route is independence-level `ext_indep` +
+  contraction-independence (`Matroid.Indep.contract_indep_iff`) at the `(D,D)` boundary,
+  reading both sides through `matroidMG_indep_iff` — the Whitney rank-of-contraction
+  identity, *not* a `restrict`-style congruence. After N4c, the rank/ambient
+  reconciliation assembles `(G.rigidContract H r).IsMinimalKDof n 0` from the green
+  `contraction_isMinimalKDof`; that closes N4 (→ N6, the Case-I composer).
+- **N5 is research-shaped** (its blueprint proof note already says so); **Track B** (the
+  Case II/III producer) is a multi-node crux. So there is still no clean single-commit
+  *producer* node — the infra route (finish N4) remains the lowest-risk forward path.
 
 ## Hand-off / next phase
 
-**N4a is green** (`mulTilde_preconnected_of_isKDof_zero`, `Deficiency.lean`): a
-`0`-dof graph's multiplied graph is preconnected, with no `\leanok` flip
-(infrastructure below the N4 blueprint node). It now licenses the `collapseTo r V(H)`
-vertex-collapse the next brick needs.
+**N4b is green** (`cycleMatroid_mulTilde_rigidContract` + 3 bricks, `Induction.lean`;
+axiom-clean, no `\leanok` flip — infra below the N4 blueprint node). The recon's
+"`cycleMatroid_contract` does not apply" was corrected: it applies at the `mulTilde`
+level (N4a ⟹ `IsRepFun`), so N4b was one commit, not a from-scratch Whitney build.
 
-**Recommended next concrete commit: N4b — cycleMatroid under the vertex-collapse
-`map` (Whitney contraction).** The graph side of N4 is
-`rigidContract = (G.deleteEdges E(H)).map (collapseTo r V(H))` (already green as
-`rigidContract_eq_contract`); N4b is the cycle-matroid fact that collapsing a
-*connected* rigid subgraph `H̃` to its representative `r` (licensed by N4a's
-preconnectedness) realizes the matroid contraction `(G̃).cycleMatroid ／ E(H̃)` on the
-per-cycle-matroid level — the genuinely new content, since there is no vendored
-`cycleMatroid_map`/`cycleMatroid`-under-collapse lemma (`cycleMatroid_contract` does
-not apply; see the N4 recon under *Decisions*). Bottom out on N4a + the connected-contraction
-form of Whitney's identity, then N4c lifts it through the `Matroid.Union` to the
-`matroidMG` independence bridge via `ext_indep`. Budget N4b as its own (possibly
-multi-) commit: it is a from-scratch cycle-matroid build, not a one-liner.
+**Recommended next concrete commit: N4c — lift N4b through the `Matroid.Union` to the
+`matroidMG` independence bridge.** Target:
+`matroidMG (G.rigidContract H r) = matroidMG G ／ E(H̃)` (or, if cleaner, its
+`ext_indep` independence form). Route (per the recon's "viable route" bullet under
+*Decisions*): `Matroid.ext_indep`, reading the contraction side through
+`Matroid.Indep.contract_indep_iff` (basis `J` of `E(H̃)`, `(G̃ ↾ (I ∪ J))` `(D,D)`-sparse)
+and the LHS through `matroidMG_indep_iff` (`(rigidContract.mulTilde ↾ I)` `(D,D)`-sparse);
+N4b gives the per-cycle-matroid contraction these rest on. This is the genuinely hard
+leaf (union↔contraction non-commutation) — budget it as its own (possibly multi-) commit.
+Needs `r ∈ V(H)` and `H̃` preconnected (from N4a via `mulTilde_preconnected_of_isKDof_zero`,
+available since `H` proper rigid ⟹ `H.IsKDof n 0`). After N4c: the rank reconciliation +
+`contraction_isMinimalKDof` ⟹ N4 (`lem:rigidContract-isMinimalKDof`), then N6.
 
 *If a producer is preferred over infrastructure:* **N5**
 `lem:case-I-splice-placement`, decomposed math-first per its blueprint proof note

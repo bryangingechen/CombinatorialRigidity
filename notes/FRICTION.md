@@ -775,6 +775,22 @@ housekeeping pass once their resolution is fully indexed.
   a `def`-wrapper unfold tower that recurs is a missing fused mirror, not a
   standing idiom; tag the mirror `@[simp]` so the wrapper stops blocking `simp`.
 
+### [resolved] `edgeMultiply`'s `@[simps! vertexSet]` lemma does not resolve as `edgeMultiply_vertexSet`; `V(_.mulTilde _) = V(_)` is `rfl`
+- **Where it bit:** Phase 22 N4b (`cycleMatroid_mulTilde_rigidContract`,
+  `rigidContract_collapseTo_isRepFun` in `Molecular/Induction.lean`). Needed to
+  rewrite `V(H.mulTilde n)` to `V(H)` inside `collapseTo r V(H.mulTilde n)`; reached
+  for the `@[simps!]`-generated `edgeMultiply_vertexSet`, which errors *"Unknown
+  identifier"* (the `@[simps! vertexSet isLink]` on `def edgeMultiply` in
+  `BodyHinge.lean` does not register a callable lemma under that name).
+- **Resolved** by `show V(H.mulTilde n) = V(H) from rfl`: `edgeMultiply.vertexSet`
+  is set directly to `V(G)` (no wrapper depth), so `V(_.edgeMultiply _) = V(_)` and
+  `V(_.mulTilde _) = V(_)` are plain `rfl`. No mirror warranted — `rfl` is shorter
+  than any named lemma. The `IsLink`/`edgeSet` content is the wrapped case (see the
+  `mulTilde` unfold-tower entry above); `vertexSet` is the easy one.
+- **General lesson:** when a `@[simps!]`-generated projection name does not resolve,
+  check whether the projected field was set to a bare term — if so it is `rfl`, and
+  reaching for the (mis-named) generated lemma is the wrong move.
+
 ### ~~[open] No mathlib `Finset.univ.orderEmbOfFin = id` for `Fin n`~~
 - **Resolved by mirroring** (Phase 17-cleanup D2): the two callsites
   (`pluckerCoord_univ`, `extensor_ne_zero_iff_linearIndependent`, both in
