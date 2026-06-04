@@ -1070,6 +1070,57 @@ theorem screwDim_add_finrank_pinnedMotionsOn_le [Nonempty α] [Finite α]
   have := Submodule.finrank_mono hle
   omega
 
+/-- **Pinning the whole vertex set leaves only the free isolated bodies** (`def:pinned-motions-on`,
+the relative-split core of `lem:relative-screw-split`, N1; Phase 21b). The block pin on the *entire*
+vertex set `V(G)` is the submodule of all screw assignments vanishing on `V(G)`: a body in
+`α ∖ V(G)` is incident to no edge of `G`, so it carries no hinge constraint, and an assignment
+vanishing on `V(G)` automatically satisfies every constraint `S u − S v = 0 ∈ span C(p(e))` (both
+endpoints `u v ∈ V(G)`). Thus the `IsInfinitesimalMotion` half of `pinnedMotionsOn V(G)` is free,
+and the block pin reduces to the kernel of the projection onto the `V(G)` coordinates,
+`⨅ i ∈ V(G), ker (proj i)`. This identifies the residual freedom after pinning the whole graph
+with the free screws of the isolated bodies. -/
+theorem pinnedMotionsOn_vertexSet_eq_iInf_ker_proj (F : BodyHingeFramework k α β) :
+    F.pinnedMotionsOn F.graph.vertexSet =
+      ⨅ i ∈ F.graph.vertexSet,
+        LinearMap.ker (LinearMap.proj i : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k) := by
+  ext S
+  simp only [mem_pinnedMotionsOn, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]
+  constructor
+  · exact fun ⟨_, hvan⟩ => hvan
+  · intro hvan
+    refine ⟨fun e u v he => ?_, hvan⟩
+    rw [hingeConstraint, hvan u he.left_mem, hvan v he.right_mem, sub_self]
+    exact Submodule.zero_mem _
+
+/-- **The relative split** (`lem:relative-screw-split`, N1; Katoh–Tanigawa 2011 §5–6, Phase 21b).
+The dimension of the block pin on the entire vertex set `V(G)` is `D` times the number of bodies
+*outside* `V(G)`: `finrank (pinnedMotionsOn V(G)) = D · |α ∖ V(G)|`. These are exactly the free
+isolated bodies — each contributes its full `D = screwDim k` screw freedoms, none of which any
+hinge constraint touches. Combined with the block-pin lower bound
+`screwDim_add_finrank_pinnedMotionsOn_le`, this is the bridge that strips the ambient
+`D(|α| − |V(G)|)` free dimensions out of the device's *absolute* codimension count
+(`#s + dim Z ≤ D|α|`), leaving the `V(G)`-relative count `#s + dim Z_{V(G)} ≤ D(|V(G)| − 1)` the
+producers consume (`lem:isInfRigidOn-of-relative-count`, N3). The proof identifies
+`pinnedMotionsOn V(G)` with `⨅ i ∈ V(G), ker (proj i)`
+(`pinnedMotionsOn_vertexSet_eq_iInf_ker_proj`), then transports the dimension across mathlib's
+`LinearMap.iInfKerProjEquiv` (the kernel of the `V(G)`-projections is the product over the
+complement `V(G)ᶜ`) and `Module.finrank_pi_const`. -/
+theorem finrank_pinnedMotionsOn_vertexSet [Finite α] (F : BodyHingeFramework k α β) :
+    Module.finrank ℝ (F.pinnedMotionsOn F.graph.vertexSet)
+      = screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  -- The block pin on `V(G)` is the kernel of the projections onto `V(G)` coordinates.
+  rw [F.pinnedMotionsOn_vertexSet_eq_iInf_ker_proj]
+  -- Transport across `iInfKerProjEquiv`: that kernel is the product over the complement.
+  have hd : Disjoint (F.graph.vertexSet)ᶜ F.graph.vertexSet := disjoint_compl_left
+  have hu : Set.univ ⊆ (F.graph.vertexSet)ᶜ ∪ F.graph.vertexSet := by
+    simp [Set.compl_union_self]
+  rw [(LinearMap.iInfKerProjEquiv ℝ (fun _ : α => ScrewSpace k) hd hu).finrank_eq,
+    Module.finrank_pi_const ℝ, screwSpace_finrank, mul_comm]
+  congr 1
+  rw [Set.ncard_eq_toFinset_card', Set.toFinset_card]
+
 /-- **A rigid framework, pinned at any nonempty block, has no residual motion**
 (`lem:case-I`, the block-pin ↔ contraction-realization bridge, dimension form; Katoh–Tanigawa 2011
 §6.2/6.5). If the framework `F` is infinitesimally rigid (`IsInfinitesimallyRigid` — every
@@ -1195,6 +1246,45 @@ theorem isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le
     have hw' := hvan w hw
     rw [Pi.sub_apply, hT, sub_eq_zero] at hu' hw'
     rw [hu', hw']
+
+/-- **Relative full count ⇒ the `V(G)`-relative motive** (`lem:isInfRigidOn-of-relative-count`,
+N3; Katoh–Tanigawa 2011 §5–6, Phase 21b). The adapter that turns the genericity device's
+*absolute* codimension count into the `V(G)`-relative motive. The device produces a realization
+whose null space attains the relative full count, which after the relative split
+(`lem:relative-screw-split`, N1, `finrank_pinnedMotionsOn_vertexSet`) reads
+`dim Z(G,p) ≤ D·(|α ∖ V(G)| + 1)` --- the ambient free dimensions `D·|α ∖ V(G)|` plus the
+`D` trivial-motion dimensions, with *no* residual relative corank. From this single inequality
+the framework is infinitesimally rigid on `V(G)`.
+
+The proof picks any body `v₀ ∈ V(G)` and reads rigidity-on-`V(G)` off the relativized Case-I
+bridge `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` at the trivially-rigid singleton block
+`{v₀}`: it reduces to `pinnedMotionsOn {v₀} ≤ pinnedMotionsOn V(G)`. The reverse containment is
+automatic (`pinnedMotionsOn_mono`, `{v₀} ⊆ V(G)`), so it suffices to match dimensions. The single-
+body pin has `finrank (pinnedMotions v₀) = dim Z − D` (`finrank_pinnedMotions_add_screwDim`), which
+the hypothesis caps at `D·|α ∖ V(G)|`; the block pin on `V(G)` has exactly that dimension by N1
+(`finrank_pinnedMotionsOn_vertexSet`). Equal dimensions on a containment force equality, giving the
+needed inclusion. -/
+theorem isInfinitesimallyRigidOn_vertexSet_of_finrank_le [Finite α] (F : BodyHingeFramework k α β)
+    (hne : F.graph.vertexSet.Nonempty)
+    (hcount : Module.finrank ℝ F.infinitesimalMotions
+      ≤ screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1)) :
+    F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
+  haveI : Fintype α := Fintype.ofFinite α
+  obtain ⟨v₀, hv₀⟩ := hne
+  haveI : Nonempty α := ⟨v₀⟩
+  -- Read rigidity off the Case-I bridge at the trivially-rigid singleton block `{v₀}`.
+  rw [F.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le (s := {v₀})
+    (Set.singleton_nonempty v₀) (Set.singleton_subset_iff.2 hv₀)
+    (fun S _ u hu w hw => by rw [hu, hw])]
+  -- The reverse containment is automatic; equate dimensions to upgrade it to the needed one.
+  have hsub : F.pinnedMotionsOn F.graph.vertexSet ≤ F.pinnedMotionsOn {v₀} :=
+    F.pinnedMotionsOn_mono (Set.singleton_subset_iff.2 hv₀)
+  refine (Submodule.eq_of_le_of_finrank_le hsub ?_).ge
+  -- `finrank (pinnedMotions v₀) = dim Z − D ≤ D·|V(G)ᶜ| = finrank (pinnedMotionsOn V(G))`.
+  rw [F.pinnedMotionsOn_singleton, F.finrank_pinnedMotionsOn_vertexSet]
+  have hpin := F.finrank_pinnedMotions_add_screwDim v₀
+  rw [Nat.mul_succ] at hcount
+  omega
 
 /-- **Case I splice seed** (`lem:case-I-splice-seed`; Katoh–Tanigawa 2011 §6.2/6.5, eqs.\ (6.2),
 (6.6)). The genuine geometric content of Case I, `V(G)`-relative: from the two inductive
@@ -2515,6 +2605,45 @@ theorem PanelHingeFramework.exists_good_realization_ofParam [Fintype α]
     rw [(F q).infinitesimalMotions_eq_dualCoannihilator]
     exact Submodule.dualCoannihilator_anti (hsub q)
   exact exists_good_realization_reindex e F g c φ hg hcoord hindep
+
+/-- **The genericity device, `V(G)`-relative count form** (`lem:relative-device-count`, N2;
+Katoh–Tanigawa 2011 §5–6, Phase 21b). The B0 device closure
+(`exists_good_realization_ofParam`) produces a generic normal assignment `q` at which the rigidity
+rows attain the witnessed corank, but in the device's *absolute* screw-count
+`#s + dim Z(G,q) ≤ D·|α|`. This re-wraps that bound into the `V(G)`-relative form
+`dim Z(G,q) ≤ D·(|α ∖ V(G)| + 1)` (the relative full count, with the ambient `D·|α ∖ V(G)|`
+free dimensions of the isolated bodies stripped out), provided the witnessed independent-row count
+meets the relative target `#s ≥ D·(|V(G)| − 1)` (`hcard`) and `V(G)` is nonempty (`hne`). The
+arithmetic substitutes `|α| = |V(G)| + |α ∖ V(G)|` (`Set.ncard_add_ncard_compl`) into the device's
+absolute bound and cancels the `D·(|V(G)| − 1)` rows; it carries no relative-rank content of its
+own. The output point feeds the relative-motive adapter
+`isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (N3) to conclude rigidity on `V(G)`. -/
+theorem PanelHingeFramework.exists_relative_full_count_ofParam [Finite α]
+    (G : Graph α β) (ends : β → α × α) [Finite β]
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hindep : LinearIndependent ℝ
+      (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i))
+    (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card s) :
+    ∃ q : α × Fin (k + 2) → ℝ,
+      Module.finrank ℝ
+        (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions
+        ≤ screwDim k * ((V(G))ᶜ.ncard + 1) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  obtain ⟨q, hq⟩ := PanelHingeFramework.exists_good_realization_ofParam G ends hends hindep
+  refine ⟨q, ?_⟩
+  -- `1 ≤ |V(G)|` since `V(G)` is nonempty.
+  have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+  -- The product identities `omega` needs: `D·|α| = D·|V(G)| + D·|V(G)ᶜ|`, the relative target
+  -- `D·(|V(G)| − 1) = D·|V(G)| − D`, and the goal's `D·(|V(G)ᶜ| + 1) = D·|V(G)ᶜ| + D`.
+  have hsplit : screwDim k * Fintype.card α
+      = screwDim k * V(G).ncard + screwDim k * (V(G))ᶜ.ncard := by
+    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  rw [Nat.mul_succ]
+  rw [Nat.mul_sub, Nat.mul_one] at hcard
+  have hge : screwDim k ≤ screwDim k * V(G).ncard := Nat.le_mul_of_pos_right _ h1
+  omega
 
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)

@@ -28,17 +28,19 @@ cycle-realization, the `R(G,p)` coordinatization, the block-pin machinery, the
 relativized motive + base case (`def:rank-hypothesis`, `lem:theorem-55-base`),
 the rank-side accounting iffs (`lem:case-I` / `lem:case-II`, green-modulo-21b),
 the **B0 keystone** (`lem:rows-polynomial-in-normals` — the device closure on the
-*varying* panel family), and the Case-I splice **glue** (`lem:case-I-splice-seed`)
-are all green and axiom-clean {propext, Classical.choice, Quot.sound}.
-(Authoritative inventory: the blueprint dep-graph. Per-commit history: *Completed
-items* in the Hand-off.)
+*varying* panel family), the Case-I splice **glue** (`lem:case-I-splice-seed`), and
+the **`V(G)`-relative count bridge N1–N3** (`lem:relative-screw-split` /
+`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`) are all green
+and axiom-clean {propext, Classical.choice, Quot.sound}. (Authoritative inventory:
+the blueprint dep-graph. Per-commit history: *Completed items* in the Hand-off.)
 
 **Remaining: the realization producers, re-planned 2026-06-06** into the ordered
 node list in the Hand-off. Three forward facts shape the plan:
 - The device's output is an **absolute** codimension bound `#s + dim Z ≤ D·card α`
   over the ambient body type; the producers need the **`V(G)`-relative motive**
   `IsInfinitesimallyRigidOn V(G)`. The adapter is the relative-count bridge
-  **N1–N3** (build-shaped, the next commit).
+  **N1–N3**, now **GREEN** (landed 2026-06-04). The next commit is **N7** (Case II
+  producer), the cheapest full producer — it needs only the bridge (N3) + device.
 - The rigid-subgraph contraction is **mostly built, not fully**: `rigidContract`
   (`Induction.lean:1854`) + its vertex-drop (`:1869`) + the matroid-side
   `contraction_isMinimalKDof` (`:1998`) are green, but the graph↔matroid
@@ -65,10 +67,15 @@ Authoritative node list + green inventory: the blueprint dep-graph. Tracked here
 only as the RED frontier (the build) + retirements; the Hand-off carries the
 per-node detail.
 
+**GREEN — the `V(G)`-relative count bridge (landed 2026-06-04):**
+- [x] N1 `lem:relative-screw-split` — `finrank (pinnedMotionsOn V(G)) = D·|V(G)ᶜ|`
+  (`finrank_pinnedMotionsOn_vertexSet`; via `iInfKerProjEquiv` + `finrank_pi_const`).
+- [x] N2 `lem:relative-device-count` — device re-wrapped relative
+  (`exists_relative_full_count_ofParam`; `#s + dim Z ≤ D·|α|` ⇒ `dim Z ≤ D(|V(G)ᶜ|+1)`).
+- [x] N3 `lem:isInfRigidOn-of-relative-count` — relative full count ⇒ `IsInfinitesimallyRigidOn V(G)`
+  (`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`; singleton-block Case-I bridge + N1 dim-match).
+
 **RED — the build (ordered; detail in Hand-off):**
-- [ ] N1 `lem:relative-screw-split` — `dim Z = D(card α − V(G).ncard) + dim Z_{V(G)}` (`finrank_pi`).
-- [ ] N2 `lem:relative-device-count` — the device re-wrapped relative.
-- [ ] N3 `lem:isInfRigidOn-of-relative-count` — relative full count ⇒ `IsInfinitesimallyRigidOn V(G)`.
 - [ ] N7 `lem:case-II-realization` — 1-extension producer (needs only N3 + device). Discharges `hsplit`.
 - [ ] N4 `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction bridge; gates Case I.
 - [ ] N5 `lem:case-I-splice-placement` — the splice geometry (decompose first).
@@ -126,9 +133,10 @@ are **retained** (blueprint `lem:pinned-motions-on-rank-bound`).
 
 ## Blockers / open questions
 
-- **N1–N3 (the `V(G)`-relative count bridge) is the next build** — adapt the
-  device's absolute count to `IsInfinitesimallyRigidOn V(G)`. Build-shaped (mathlib
-  `finrank_pi` + the green block-pin bricks); shape MCP-validated as a `sorry`-stub.
+- **N1–N3 (the `V(G)`-relative count bridge) is GREEN** (landed 2026-06-04) —
+  adapted the device's absolute count to `IsInfinitesimallyRigidOn V(G)` via mathlib
+  `LinearMap.iInfKerProjEquiv` + the green block-pin bricks. **N7 (Case II producer)
+  is the next build** (cheapest full producer; needs only N3 + device).
 - **N4 (graph↔matroid contraction-minimality bridge) gates Case I.**
   `(rigidContract).IsMinimalKDof` is not built (Phase-20 carry-forward 1,
   `Induction.lean:2956–2961`); the matroid side is green. Build-shaped but
@@ -153,41 +161,43 @@ the retired vacuous lemmas. Scope: the remaining work is *known-construction*
 formalization (KT 2011), not open math; `apnelson1/Matroid` offers no reusable
 leverage (no `Pi`-finrank / generic-realization machinery).
 
-**Next concrete commit: N1–N3, the `V(G)`-relative count bridge** (likely one
-commit; the builder may split N1 from N2+N3). The device
-(`exists_good_realization_ofParam`, green) gives an *absolute* codimension bound
-`#s + dim Z(G,p) ≤ D·card α`; the producers need `IsInfinitesimallyRigidOn V(G)`.
-Build the adapter (blueprint `sec:molecular-algebraic-induction-relative`):
-- **N1 `lem:relative-screw-split`** — `dim Z = D(card α − V(G).ncard) + dim Z_{V(G)}`,
-  the `Pi`-product split (`finrank_pi`) removing the ambient free bodies. The one
-  piece with content; build-shaped (a clean free summand, NOT a relative-rank
-  argument over a non-spanning block).
-- **N2 `lem:relative-device-count`** — re-wrap the device with N1 substituted for
-  `finrank_screwAssignment`: a generic point attains `#s + dim Z_{V(G)} ≤
-  D(V(G).ncard − 1)`. Mechanical.
-- **N3 `lem:isInfRigidOn-of-relative-count`** — from the relative full count
-  conclude `IsInfinitesimallyRigidOn V(G)`, via green
-  `screwDim_add_finrank_pinnedMotionsOn_le` + `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le`.
-  Mechanical; shape MCP-validated as a `sorry`-stub.
+**Next concrete commit: N7 `lem:case-II-realization`** — the cheapest full
+producer: needs only the now-green bridge (N3) + device, NOT N4/N5. General-position
+panel normal (`exists_independent_panelSupportExtensor`), `+(D−1)` rows (KT 6.12).
+The producer flow: build a seed `ofNormals G ends q₀` whose hinge-row block gives a
+witnessed independent family `s` with `Nat.card s = D(|V(G)|−1)`; feed it to
+`exists_relative_full_count_ofParam` (N2) to get a generic `q` at `dim Z ≤ D(|V(G)ᶜ|+1)`;
+then `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (N3, needs `V(G).Nonempty`) ⇒
+`IsInfinitesimallyRigidOn V(G)`, i.e. `HasFullRankRealization k G`. (Likely also wants
+`isInfinitesimallyRigidOn_insert_iff`, green, to relate the 1-extension parent to the
+reduced graph.) Discharges `theorem_55`'s `hsplit`.
+
+**The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
+(`exists_good_realization_ofParam`, green) gives the *absolute* codimension bound
+`#s + dim Z(G,p) ≤ D·card α`; the bridge converts it to `IsInfinitesimallyRigidOn V(G)`:
+- **N1 `finrank_pinnedMotionsOn_vertexSet`** — `finrank (pinnedMotionsOn V(G)) = D·|V(G)ᶜ|`,
+  the free isolated bodies (via `pinnedMotionsOn_vertexSet_eq_iInf_ker_proj` +
+  mathlib `LinearMap.iInfKerProjEquiv` + `finrank_pi_const`). The one piece with content.
+- **N2 `exists_relative_full_count_ofParam`** — re-wraps `exists_good_realization_ofParam`:
+  given `#s ≥ D(|V(G)|−1)` (`hcard`) and `V(G).Nonempty` (`hne`), a generic `q` attains
+  `dim Z ≤ D·(|V(G)ᶜ|+1)`. Mechanical (`Set.ncard_add_ncard_compl` + omega).
+- **N3 `isInfinitesimallyRigidOn_vertexSet_of_finrank_le`** — from `dim Z ≤ D(|V(G)ᶜ|+1)` and
+  `V(G).Nonempty` conclude `IsInfinitesimallyRigidOn V(G)`, via `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le`
+  at a singleton block `{v₀}` + N1 dimension-match (`finrank_pinnedMotions_add_screwDim`).
 
 Then, in order:
-1. **N7 `lem:case-II-realization`** — the cheapest full producer: needs only the
-   bridge (N3) + device, NOT N4/N5. General-position panel normal
-   (`exists_independent_panelSupportExtensor`), `+(D−1)` rows (KT 6.12);
-   `isInfinitesimallyRigidOn_insert_iff` (green) + bridge ⇒ `HasFullRankRealization`.
-   Discharges `theorem_55`'s `hsplit`.
-2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
+1. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
    matroid-side `contraction_isMinimalKDof` (`Induction.lean:1998`) + a
    `matroidMG`-of-`(map ∘ deleteEdges)` correspondence (the content). Phase-20
    carry-forward 1 (`Induction.lean:2956–2961`); gates the Case-I IH application.
-3. **N5 `lem:case-I-splice-placement`** — the genuinely hard node. **Decompose
+2. **N5 `lem:case-I-splice-placement`** — the genuinely hard node. **Decompose
    first** (KT eqs. 6.2/6.6: the boundary-panel intersection + combined
    block-triangular independence). Exhibit one parent `F` realizing both legs at a
    generic point; the glue `isInfinitesimallyRigidOn_of_splice` (green) + the device
    lift then conclude. The device's `hindep` comes from
    `exists_independent_panelSupportExtensor` via the hinge-row block (`panelRow`'s `s`).
-4. **N6 `lem:case-I-realization`** — compose N4 + N5 + glue + B0 + N3/device ⇒
+3. **N6 `lem:case-I-realization`** — compose N4 + N5 + glue + B0 + N3/device ⇒
    `HasFullRankRealization k G`. Discharges `theorem_55`'s `hcontract`.
 
 **Phase 21b closes when N6 + N7 are green.** `thm:theorem-55` does not flip here
@@ -196,7 +206,8 @@ Then, in order:
 
 **Completed items:** Item 1 (motive relativized, base green) + Item 2 (accounting
 re-stated rank-side) — 2026-06-05; Item 3 (B0 keystone) + Item 4 (Case-I splice
-glue) — 2026-06-06. Per-node detail in the blueprint dep-graph.
+glue) — 2026-06-06; **N1–N3 (`V(G)`-relative count bridge) — 2026-06-04**. Per-node
+detail in the blueprint dep-graph.
 
 **Process lessons (don't repeat).**
 (a) Build the keystone / validate the target shape *before* growing a reduction

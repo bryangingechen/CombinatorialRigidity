@@ -1328,67 +1328,90 @@ non-spanning block).}
 
 \begin{lemma}[Isolated bodies carry no rigidity: the relative split]
   \label{lem:relative-screw-split}
-  \uses{def:rigidity-matrix, def:rank-hypothesis}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_vertexSet}
+  \leanok
+  \uses{def:rigidity-matrix, def:rank-hypothesis, def:pinned-motions-on}
   The screw-assignment space $\R^{D|V_\alpha|} = (\alpha \to \mathrm{Screw})$
   splits as a product along $V(G)$ and its complement, and a body
   $w \in \alpha \setminus V(G)$ carries no hinge constraint, so its $D$ screw
-  coordinates are free in every infinitesimal motion. Hence
+  coordinates are free in every infinitesimal motion. The block pin on the whole
+  vertex set $V(G)$ therefore captures exactly the free isolated bodies:
   \[
-    \dim Z(G,p) \;=\; D\,(|V_\alpha| - |V(G)|) \;+\; \dim Z_{V(G)}(G,p),
+    \dim\bigl(\mathrm{pinnedMotionsOn}\,V(G)\bigr) \;=\; D\,(|V_\alpha| - |V(G)|),
   \]
-  where $Z_{V(G)}$ is the $V(G)$-supported motion space; equivalently
-  $\operatorname{rank} R(G,p) = D|V(G)| - \dim Z_{V(G)}(G,p)$ is
-  $\alpha$-independent. This is a $\mathrm{Pi}$-product (\texttt{finrank\_pi})
-  decomposition, not a relative-rank inequality over a non-spanning block: the
-  complement contributes a clean free direct summand.
+  the $\alpha$-dependent free summand of $\dim Z(G,p)$. Combined with the
+  block-pin lower bound \cref{lem:pinned-motions-on-rank-bound}, this is what
+  isolates the $\alpha$-independent residual rank. The formalization carries the
+  split through the block pin $\mathrm{pinnedMotionsOn}\,V(G)$ rather than a
+  free-standing $Z_{V(G)}$ object: it is a clean $\mathrm{Pi}$-product
+  (\texttt{finrank\_pi\_const}) decomposition, not a relative-rank inequality
+  over a non-spanning block.
 \end{lemma}
 \begin{proof}
-  The rigidity rows of $R(G,p)$ involve only the screw coordinates of bodies
-  incident to an edge of $G$, i.e.\ of $V(G)$; the projection of a motion to
-  the $\alpha \setminus V(G)$ coordinates is therefore unconstrained, giving
-  the free summand of dimension $D(|V_\alpha|-|V(G)|)$, with residual
-  $Z_{V(G)}$. Sum the two by $\texttt{finrank\_pi}$.
+  \leanok
+  An assignment vanishing on $V(G)$ automatically satisfies every hinge
+  constraint $S u - S v = 0$ (both endpoints lie in $V(G)$), so
+  $\mathrm{pinnedMotionsOn}\,V(G)$ is the kernel of the projection onto the
+  $V(G)$ coordinates, $\bigsqcap_{i \in V(G)} \ker(\mathrm{proj}_i)$. Mathlib's
+  \texttt{iInfKerProjEquiv} identifies that kernel with the product over the
+  complement $\alpha \setminus V(G)$, of dimension $D(|V_\alpha|-|V(G)|)$ by
+  \texttt{finrank\_pi\_const}.
 \end{proof}
 
 \begin{lemma}[The genericity device, $V(G)$-relative form]
   \label{lem:relative-device-count}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_relative_full_count_ofParam}
+  \leanok
   \uses{lem:genericity-device, lem:relative-screw-split,
         lem:rows-polynomial-in-normals}
   Substituting the relative split \cref{lem:relative-screw-split} for the
   absolute screw-count in the device \cref{lem:genericity-device} (applied to
   the varying panel family via the row coordinatization
-  \cref{lem:rows-polynomial-in-normals}, B0), a generic panel assignment
-  attains
+  \cref{lem:rows-polynomial-in-normals}, B0), a generic panel assignment with at
+  least $\#s \ge D(|V(G)|-1)$ witnessed independent rows attains
   \[
-    \#s + \dim Z_{V(G)}(G,p) \;\le\; D\,(|V(G)| - 1),
+    \dim Z(G,p) \;\le\; D\,\bigl(|\alpha \setminus V(G)| + 1\bigr),
   \]
-  the device's codimension bound with the ambient free dimensions removed.
-  Mechanical given \cref{lem:relative-screw-split}: re-wrap the device's
-  conclusion, cancelling the $D(|V_\alpha|-|V(G)|)$ term on both sides.
+  the device's absolute codimension bound with the $D(|V(G)|-1)$ rows cancelled
+  --- i.e.\ the relative full count, the ambient $D|\alpha \setminus V(G)|$ free
+  dimensions plus the $D$ trivial-motion dimensions and no residual relative
+  corank. Mechanical given \cref{lem:relative-screw-split}: re-wrap the device's
+  conclusion using $|\alpha| = |V(G)| + |\alpha \setminus V(G)|$.
 \end{lemma}
 \begin{proof}
-  The device gives $\#s + \dim Z(G,p) \le D|V_\alpha|$ at the produced point;
-  rewrite $\dim Z(G,p)$ by \cref{lem:relative-screw-split} and cancel
-  $D(|V_\alpha|-|V(G)|)$.
+  \leanok
+  The device (\cref{lem:rows-polynomial-in-normals}) gives
+  $\#s + \dim Z(G,p) \le D|\alpha|$ at the produced point; substitute
+  $|\alpha| = |V(G)| + |\alpha \setminus V(G)|$ and the count
+  $\#s \ge D(|V(G)|-1)$, then cancel.
 \end{proof}
 
 \begin{lemma}[Relative count $\Rightarrow$ the relative motive]
   \label{lem:isInfRigidOn-of-relative-count}
-  \uses{lem:relative-device-count, lem:pinned-motions-on-rank-bound,
-        lem:case-I}
-  A realization carrying $D(|V(G)|-1)$ independent rigidity rows (the relative
-  full count, $k'=0$ in \cref{lem:relative-device-count}) is infinitesimally
-  rigid on $V(G)$: $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$. This is the
-  adapter the producers compose with the device output, routed through the
-  block-pin lower bound \cref{lem:pinned-motions-on-rank-bound} and the
-  relativized Case~I bridge \cref{lem:case-I}
-  ($\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$); both green.
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_finrank_le}
+  \leanok
+  \uses{lem:relative-device-count, lem:relative-screw-split,
+        lem:pinned-motions-on-rank-bound, lem:rank-delete-vertex, lem:case-I}
+  A realization at the relative full count ($k'=0$ in
+  \cref{lem:relative-device-count}, i.e.\ $\dim Z(G,p) \le
+  D(|\alpha \setminus V(G)| + 1)$) is infinitesimally rigid on $V(G)$:
+  $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$. This is the adapter the producers
+  compose with the device output, routed through the relative split
+  \cref{lem:relative-screw-split} and the relativized Case~I bridge
+  \cref{lem:case-I}
+  ($\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$).
 \end{lemma}
 \begin{proof}
-  At the relative full count the residual $\dim Z_{V(G)} = 0$, so the block pin
-  on $V(G)$ is trivial (\cref{lem:pinned-motions-on-rank-bound}) and every
-  motion is constant on $V(G)$; read off $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$
-  via the Case~I relative bridge \cref{lem:case-I}.
+  \leanok
+  Pick any $v_0 \in V(G)$ and read rigidity-on-$V(G)$ off the Case~I bridge
+  \cref{lem:case-I} at the trivially-rigid singleton block $\{v_0\}$: it reduces
+  to $\mathrm{pinnedMotionsOn}\,\{v_0\} \le \mathrm{pinnedMotionsOn}\,V(G)$. The
+  reverse containment is automatic, so it suffices to match dimensions. The
+  single-body pin has $\dim(\mathrm{pinnedMotions}\,v_0) = \dim Z(G,p) - D$
+  (\cref{lem:rank-delete-vertex}), capped at $D|\alpha \setminus V(G)|$ by the
+  hypothesis; the block pin on $V(G)$ has exactly that dimension
+  (\cref{lem:relative-screw-split}). Equal dimensions on a containment force the
+  needed equality.
 \end{proof}
 
 \subsection{Case III deferred (the crux)}
