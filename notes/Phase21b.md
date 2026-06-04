@@ -28,6 +28,46 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Multivariate analytic engine landed (2026-06-04).** The genuine Claim 6.4
+analytic *core* (route (a), the multivariate engine) is now formalized as
+upstream-eligible mirror lemmas, replacing the univariate/affine special case
+as the engine the device runs on. Four bricks (all axiom-clean {propext,
+Classical.choice, Quot.sound}, no `sorry`):
+- `MvPolynomial.exists_eval_ne_zero`
+  (`Mathlib/Algebra/MvPolynomial/Funext.lean`, **new mirror file**): a nonzero
+  `MvPolynomial σ ℝ` has a non-vanishing point — the contrapositive of
+  `MvPolynomial.funext` over the infinite domain `ℝ`. The foundational helper.
+- `Matrix.exists_linearIndependent_rows_specialize`
+  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`): for a polynomial-entry matrix
+  `P : Matrix m n (MvPolynomial σ ℝ)`, LI rows at one specialization `p₀` ⇒
+  `∃ p`, LI rows at `p`. The multivariate analogue of the affine
+  `finite_setOf_not_linearIndependent_rows_along_affine_path`, but `∃ p`-form
+  (the bad set is the zero locus of the Gram-det polynomial `Q := det(P·Pᵀ)`,
+  not finite). Same Gram-det route, `MvPolynomial.exists_eval_ne_zero` in place
+  of `Polynomial.finite_setOf_isRoot`.
+- `exists_le_finrank_span_polynomial` (same file): vector rank-`#s` `∃`-form on
+  an abstract finite-dim `W`, mirroring
+  `le_finrank_span_along_affine_path_cofinite` (pulls along a basis
+  identification `φ : W ≃ₗ (Fin (finrank ℝ W) → ℝ)`; the per-`i` coordinates are
+  `eval p (c i j)`). A subfamily on `s` LI at `p₀` ⇒ `∃ p` with full span
+  `finrank ≥ #s`.
+- `exists_finrank_dualCoannihilator_polynomial` (same file): **consumer-facing
+  codimension form** — the dual of the above, `∃ p` with `#s + dim coann ≤
+  finrank V`. Mirrors `finrank_dualCoannihilator_along_affine_path_cofinite` in
+  `∃ p`-form; this is the `dim Z(G,p) ≤ value` shape the device's consumers
+  carry (`hglue`/`hspan`/`hub`/`hgen`).
+
+These are the route-(a) analogue of the affine engine: where the affine lemmas
+conclude `{bad t}.Finite`, the multivariate ones conclude `∃ p, good` directly
+(via the non-vanishing point of a nonzero `MvPolynomial`). They are *not* yet
+wired into the abstract device / consumers — that is the next brick (rebuild
+`genericityDevice` multivariate on `exists_finrank_dualCoannihilator_polynomial`,
+then re-pin `lem:genericity-device` green). Per blueprint conventions mirror
+lemmas are not blueprinted; `lem:genericity-device` stays RED until the device
+statement itself is rebuilt on these bricks.
+
+---
+
 **Blueprint honesty flip (2026-06-04).** `lem:genericity-device` was
 prematurely marked `\leanok` (green) while only an affine/univariate
 special case is formalized; the genuine Claim 6.4 is the *multivariate*
@@ -161,13 +201,28 @@ pins (`lem:genericity-device`, `def:rigidity-matrix`,
 `def:hinge-row-block`, `def:panel-hinge-framework`) — no new nodes; glue
 and mirror lemmas skipped per the blueprint skip-glue rule.
 
-Analytic core (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, mirror lemmas):
+Analytic core — affine/univariate (`Mathlib/LinearAlgebra/Matrix/Rank.lean`):
 - [x] `LinearIndependent.le_finrank_span_along_affine_path_cofinite` —
   rank-form core: `finrank` of an affine vector family's span is
-  cofinitely bounded below by a once-witnessed rank.
+  cofinitely bounded below by a once-witnessed rank. (Special case; superseded
+  by the multivariate bricks below as the genuine Claim 6.4 engine.)
 - [x] `LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite`
   — codimension dual: common kernel `finrank` cofinitely bounded above
-  by `finrank V − #s`. The consumer-facing `dim ker ≤ value` shape.
+  by `finrank V − #s`. The consumer-facing `dim ker ≤ value` shape (univariate).
+
+Analytic core — **multivariate (genuine Claim 6.4, route (a))**:
+- [x] `MvPolynomial.exists_eval_ne_zero`
+  (`Mathlib/Algebra/MvPolynomial/Funext.lean`, new mirror file) — nonzero
+  `MvPolynomial σ ℝ` ⇒ non-vanishing point (contrapositive of
+  `MvPolynomial.funext`). Foundational helper.
+- [x] `Matrix.exists_linearIndependent_rows_specialize` — polynomial-entry
+  matrix: LI rows at `p₀` ⇒ `∃ p`, LI rows. Multivariate analogue of
+  `finite_setOf_not_linearIndependent_rows_along_affine_path`, `∃ p`-form.
+- [x] `exists_le_finrank_span_polynomial` — vector rank-`#s` `∃`-form, abstract
+  finite-dim `W`. Multivariate analogue of `le_finrank_span_along_affine_path_cofinite`.
+- [x] `exists_finrank_dualCoannihilator_polynomial` — codimension dual,
+  `∃ p, #s + dim coann ≤ finrank V`. Consumer-facing `dim Z ≤ value` shape;
+  the multivariate engine the device must be rebuilt on.
 
 Device + route-(a) chain (`Molecular/AlgebraicInduction.lean`):
 - [ ] `lem:genericity-device` — **RED** (blueprint flipped 2026-06-04). The
@@ -380,12 +435,22 @@ Lean, to be supplied by the device):
 ## Hand-off / next phase
 
 **Post-flip residual (2026-06-04).** The blueprint now states the honest
-target. Three concrete work items, in dependency order:
-1. **Multivariate genericity device** (`lem:genericity-device`, red): build
-   the route-(a) Zariski-open engine — a nonzero multivariate minor
-   polynomial of `R(G,p)` has a non-root over ℝ, via `MvPolynomial.funext`
-   + the determinant machinery. This is the genuine Claim 6.4 (the landed
-   `genericityDevice` is only the univariate/affine special case).
+target. The **multivariate analytic engine is now landed** (route (a); see
+*Current state* — the four `Mathlib/{Algebra/MvPolynomial/Funext, LinearAlgebra/
+Matrix/Rank}.lean` bricks). Three concrete work items remain, in dependency
+order:
+1. **Rebuild the device multivariate** (`lem:genericity-device`, red →
+   green): restate `genericityDevice` / `exists_good_realization` against the
+   multivariate engine `exists_finrank_dualCoannihilator_polynomial` (the
+   consumer-facing `∃ p, #s + dim coann ≤ finrank V` shape), replacing the
+   univariate `genericityDevice` (which runs only on a constant/affine path).
+   The coordinatization `hcoord` must now express `(F p).infinitesimalMotions`
+   as the coannihilator of a *polynomial-coordinate* functional family
+   `g : (σ → ℝ) → ι → Module.Dual ℝ (α → ScrewSpace k)` with
+   `φ (g p i) j = eval p (c i j)` — the panel coordinates `p` are the σ-vars,
+   the degree-two rigidity-matrix entries are the `c i j`. Then re-pin
+   `lem:genericity-device` green. The analytic content is done; this is the
+   coordinatization + statement-reshape glue.
 2. **Lean wrapper-chain consolidation** (no blueprint change): the 17 names
    removed from the device + Case-I pins (telescoping `hglue_*` /
    `hasFullRankRealization_*` chain) are a long single-use wrapper stack;
