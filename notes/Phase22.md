@@ -21,6 +21,36 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
+**N5 decomposition pass + first brick GREEN** (`PanelHingeFramework.hasFullRankRealization_of_splice`,
+`AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below the still-red
+`lem:case-I-splice-placement` / `lem:case-I-realization` nodes). The math-first decomposition the
+blueprint/hand-off demanded *before* a single-commit build found that **most of N5/N6 is already
+green** and the genuine remaining content is narrower than "splice two placements":
+- **The "panel-transversality lemma" the hand-off named is already green.** A panel's "panel" is
+  just its normal vector `n_v ∈ ℝ^(k+2)`; two panels meet transversally iff their normals are
+  independent (`panelSupportExtensor_ne_zero_iff`), and the moment-curve assignment gives pairwise
+  independence for *any* number of bodies (`isGeneralPosition_ofParam` /
+  `momentCurve_pair_linearIndependent`). So transversality is *not* the obstruction.
+- **`withGraph` keeps the same `normal`** (`withGraph_normal`). The two inductive legs `P.withGraph H`
+  and `P.withGraph (G/E(H))` are realized on the *same* normal assignment `P.normal` — there is no
+  literal "splice two distinct placements" step. The parent placement *is* the placement; `withGraph`
+  reads it on each leg.
+- **The genuine remaining obstruction is the common placement**: exhibit *one* seed `q₀` at which
+  *both* legs are rigid on their own vertex sets. This is the multivariate witness-transfer (the IH
+  gives each leg rigid for *some* normals; they must be put on one). That is the genuine content of
+  `lem:case-I-splice-placement`, left red.
+- **The new brick `hasFullRankRealization_of_splice` isolates that obstruction honestly.** Given the
+  common-placement legs as *satisfiable* hypotheses (each `(ofNormals G ends q₀).toBodyHinge.withGraph
+  H/Gc` rigid on its vertex set), distinct endpoints + general position, shared body `c`, and cover
+  `V(G) ⊆ V(GH) ∪ V(Gc)`, it produces `HasFullRankRealization k G` by composing **three already-green
+  pieces**: (i) the splice seed `isInfinitesimallyRigidOn_of_splice` → parent rigid on `V(G)`; (ii)
+  N7b-0 `exists_independent_panelRow_subfamily_of_rigidOn` → `D(|V(G)|−1)` independent panel rows;
+  (iii) the device closure `hasFullRankRealization_of_independent_panelRow` → generic realization at
+  the same rank. The deliverable rank is *concluded*, not assumed (honesty gate): the inputs are the
+  satisfiable inductive rigidities, not the parent rank. **What remains for N5/N6:** produce the seed
+  `q₀` with both legs rigid (the witness-transfer / panel-intersection eq. 6.6 — research-shaped), and
+  the count `hmatch` coupling the block pin to the contraction's inductive rank. See *Hand-off*.
+
 **N4 is GREEN** (`rigidContract_isMinimalKDof`, `Induction.lean`, axiom-clean — `lem:rigidContract-isMinimalKDof`
 flipped `\leanok` green in `algebraic-induction.tex`): `G.IsMinimalKDof n 0 ∧ H proper rigid ∧ r ∈ V(H) ⟹
 (G.rigidContract H r).IsMinimalKDof n 0`, under `[NeZero (bodyHingeMult n)]`. The rank/ambient
@@ -143,12 +173,20 @@ content of N4c, plus the rank/ambient reconciliation that assembles
     `Matroid.Union_pow_isBasis'_split_of_rk_saturated` (basis split) is **unused** by the count
     route but kept (abstract, green, may serve a future matching-style consumer).
 - [ ] **N5** `lem:case-I-splice-placement` — splice the inductive legs `(H,p₁)`,
-  `(G/E',p₂)` along boundary hinges at panel intersections (eq. 6.6); needs a
-  *panel-transversality* lemma + block-triangular independence (Lemma 5.1). Three
-  KT sub-cases (6.2/6.3/6.5). Research-shaped — decompose math-first.
+  `(G/E',p₂)` onto one parent placement (eq. 6.6 panel intersections). **Decomposed
+  math-first (this commit):** the panel-transversality "lemma" is already green
+  (`isGeneralPosition_ofParam`); `withGraph` keeps the same normals so there is no
+  two-placement splice; the genuine obstruction is producing *one seed `q₀` with
+  both legs rigid* (the witness-transfer) + the count `hmatch` coupling the block
+  pin to the contraction's inductive rank. **First brick GREEN:**
+  `hasFullRankRealization_of_splice` (axiom-clean) composes the three green pieces
+  (splice seed → N7b-0 → device closure) and isolates the seed obstruction into
+  satisfiable common-placement hypotheses. Remaining (red): exhibit the seed.
 - [ ] **N6** `lem:case-I-realization` — compose N4 + N5 + the green glue
   (`isInfinitesimallyRigidOn_union_of_inter`) + device ⇒ discharges
-  `theorem_55.hcontract`.
+  `theorem_55.hcontract`. **Largely subsumed by `hasFullRankRealization_of_splice`**
+  (which already ends at `HasFullRankRealization`); N6 = feed it the seed N5 builds
+  + the IH realizations (via N4).
 
 **Track B — Case II/III producer at `d=3` (the crux, KT §6.3 + §6.4.1).**
 - [ ] eq. (6.12) degenerate placement (`p1(vb)=q(ab)` reproduces the `e₀` row;
@@ -163,6 +201,17 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N5 decomposition recon (2026-06-04, before/with the first brick).** Ran the producer
+  recon the blueprint/hand-off demanded before scheduling N5 as a build. **Finding: N5 is
+  much narrower than "splice two placements."** (a) The "panel-transversality lemma" is
+  already green — a panel is its normal `n_v`, transversal ⟺ independent normals
+  (`panelSupportExtensor_ne_zero_iff`), and `momentCurve` gives general position for any
+  `|α|`. (b) `withGraph` keeps the same `normal`, so both legs ride one normal assignment —
+  no literal placement-gluing. (c) The genuine remaining obstruction is the **common-placement
+  witness-transfer**: exhibit one seed `q₀` with both legs rigid (eq. 6.6). The first brick
+  `hasFullRankRealization_of_splice` composes three green pieces (splice seed → N7b-0 → device)
+  and isolates that obstruction into *satisfiable* hypotheses, honest per the producer-scrutiny
+  gate (concludes `HasFullRankRealization`, doesn't assume it). N6 is now mostly this brick.
 - **N4a stated about `Preconnected`, regime `[NeZero (bodyHingeMult n)]`.** The
   "`H̃` connected on `V(H)`" target is `(G.mulTilde n).Preconnected` (mathlib `Graph`
   preconnectedness; `V(G̃) = V(G)` definitionally). The deficiency machinery
@@ -323,30 +372,41 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   N4b (cycleMatroid under collapse), N4c (union↔contraction bridge), and now the N4 reconciliation
   (`rigidContract_isMinimalKDof`) — is closed and axiom-clean. What gates `lem:case-I-realization`
   (N6) is now only the **producers** N5 + N6, not any more matroid/contraction infrastructure.
-- **N5 is research-shaped** (its blueprint proof note already says so); **Track B** (the
-  Case II/III producer) is a multi-node crux. So there is still no clean single-commit
-  *producer* node — the remaining Track-A path (N5 → N6) and Track B both require math-first
-  decomposition before a build.
+- **N5's remaining content is the common-placement seed `q₀`** (the witness-transfer / eq. 6.6
+  panel intersection): produce one normal assignment at which *both* legs are rigid on their
+  vertex sets. The decomposition this commit landed shows the rest of N5/N6 is already green
+  (transversality, `withGraph` normal-sharing, the splice→N7b-0→device chain in
+  `hasFullRankRealization_of_splice`). This seed is the genuinely-geometric, research-shaped
+  step — it bottoms out on the panel-intersection construction + the count `hmatch` coupling the
+  rigid block's pin to the contraction's inductive rank.
+- **Track B** (the Case II/III producer) is a multi-node crux. So the remaining Track-A path
+  (the N5 seed → feed `hasFullRankRealization_of_splice`) and Track B both still require
+  math-first decomposition before a build.
 
 ## Hand-off / next phase
 
-**N4 is GREEN** (`rigidContract_isMinimalKDof`, `Induction.lean`; axiom-clean, `\leanok` flipped on
-`lem:rigidContract-isMinimalKDof` in `algebraic-induction.tex`): `G.IsMinimalKDof n 0 ∧ H proper rigid
-∧ r ∈ V(H) ⟹ (G.rigidContract H r).IsMinimalKDof n 0`, under `[NeZero (bodyHingeMult n)]`. The
-reconciliation assembled the green `contraction_isMinimalKDof` + N4c
-(`matroidMG_rigidContract_eq_contract`) via two new graph-side bricks (`edgeSet_rigidContract`,
-`rigidContract_vertexSet_ncard`) and the def=corank bridge — see *Current state* + *Decisions*. This
-closes all of Track A's contraction-minimality reduction infrastructure (N4a–N4c + N4).
+**N5 decomposition pass + first brick GREEN** (`PanelHingeFramework.hasFullRankRealization_of_splice`,
+`AlgebraicInduction.lean`; axiom-clean, no `\leanok` flip — infra below the still-red
+`lem:case-I-splice-placement` / `lem:case-I-realization`). The math-first recon found the
+"panel-transversality lemma" already green and `withGraph` normal-sharing collapses the "splice two
+placements" picture; the new brick composes the three green pieces (splice seed → N7b-0 → device
+closure) into `HasFullRankRealization`, gated only on the *satisfiable* common-placement leg
+hypotheses. See *Current state* + *Decisions* for the recon.
 
-**Recommended next concrete commit: N5 `lem:case-I-splice-placement`** — the first *producer* node,
-decomposed math-first per its blueprint proof note (the boundary-panel intersection + the combined
-block-triangular independence each break into sub-lemmas). Start with the **panel-transversality**
-lemma (two generic `(d−1)`-panels meet in a `(d−2)`-hinge), the one genuinely new geometry. The KT
-math is in `notes/Phase21b.md` *Finding A* (Case I tractable) and the `algebraic-induction.tex`
-`lem:case-I-splice-placement` proof sketch. Once N5 lands, **N6** (`lem:case-I-realization`) composes
-N4 + N5 + the green glue (`isInfinitesimallyRigidOn_union_of_inter`) + the device to discharge
-`theorem_55.hcontract`. (N4 — the reduction step N6 needs to name `G/E(H)` and invoke the IH — is now
-in hand, so N6's only remaining inputs are the N5 producer + the already-green device/glue.)
+**Recommended next concrete commit: the N5 seed `q₀` (the witness-transfer, eq. 6.6).** This is the
+one genuinely-geometric step left in Track A: produce a moment-curve (or generic) normal assignment
+`q₀` at which *both* legs `(ofNormals G ends q₀).toBodyHinge.withGraph H/Gc` are rigid on their vertex
+sets, then feed it (+ the cover/shared-body data, distinct endpoints, general position) into
+`hasFullRankRealization_of_splice` — that finishes N6 / `theorem_55.hcontract`. Decompose math-first:
+the rigid block `H`'s leg uses the green Case-I capstone
+`ofParam_rankHypothesis_iff_pinnedMotionsOn` (its remaining obligation is the forest data + the count
+`hmatch` against the contraction's inductive `RankHypothesis`); the contraction leg `Gc = G/E(H)` is
+the IH realization on the same `q₀`, transported via `withGraph` — N4 (`rigidContract_isMinimalKDof`,
+green) lets `theorem_55` name `G/E(H)` and invoke the IH. The KT math is `notes/Phase21b.md`
+*Finding A* + the `algebraic-induction.tex` `lem:case-I-splice-placement` proof sketch (the
+boundary-panel intersection + block-triangular independence via Lemma 5.1, `lem:rank-delete-vertex`).
+Honesty-gate caveat: any node that *exhibits* `q₀` realizing both legs is the genuine producer — keep
+it red until the seed construction (not just its consumers) is built.
 
 *If Track B is preferred:* it remains a multi-node crux (eq. 6.12 degenerate placement + Lemma 6.10
 at `d=3`); see the Track-B checklist + `notes/MolecularConjecture.md` *Phase 22* for the node plan.

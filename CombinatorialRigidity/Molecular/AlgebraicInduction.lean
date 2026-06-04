@@ -2972,6 +2972,60 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
     exact hindep2
 
+/-- **Case I splice producer: two legs rigid on one parent placement give a full-rank realization**
+(`lem:case-I-splice-placement` / `lem:case-I-realization`, the device-direct closure once the common
+placement is named; Katoh–Tanigawa 2011 §6.2/6.5, eqs.\ (6.2), (6.3), (6.6), Phase 22). The honest
+*glue* the Case-I producer reduces to once its geometry is placed on a single parent framework: a
+seed normal assignment `q₀` (e.g.\ the moment-curve assignment, general position by
+`isGeneralPosition_ofParam`) realizes the parent panel framework `ofNormals G ends q₀` on the whole
+parent graph `G`, and *both* inductive legs — the proper rigid subgraph `GH` on `V(GH)` and the
+contraction `Gc` on `V(Gc)`, each a subgraph of `G` carried on the *same* parent placement via
+`withGraph` — are infinitesimally rigid on their own vertex sets. If the two legs share the
+contracted body `c` (`hcH`, `hcc`) and together cover `V(G)` (`hcover`), then `G` has a full-rank
+panel realization `HasFullRankRealization k G`.
+
+This composes three green pieces into the device closure, isolating the remaining genuine geometric
+obstruction (producing the common placement realizing both legs — the multivariate witness-transfer
+of `lem:case-I-splice-placement`) into the two *satisfiable* leg hypotheses, not the parent rank it
+concludes: (i) the block-triangular splice seed `isInfinitesimallyRigidOn_of_splice` glues the two
+relatively-rigid legs along the shared body to rigidity of the parent on `V(G)`; (ii) the rigid
+parent then carries `D(|V(G)|−1)` independent panel rows
+(`exists_independent_panelRow_subfamily_of_rigidOn`, N7b-0 — every hinge transversal under the
+general position of `q₀` and the distinct-endpoint hypothesis `hne_ends`); (iii) the genericity
+device closure `hasFullRankRealization_of_independent_panelRow` lifts that witnessed corank at the
+seed to a generic placement at the same rank. The deliverable rank is concluded, not assumed, so the
+node is honest (the deferred obstruction is *exhibiting* `q₀` with both legs rigid, the genuine
+content of `lem:case-I-splice-placement`). -/
+theorem PanelHingeFramework.hasFullRankRealization_of_splice [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
+    (hblock : ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.withGraph GH)
+      |>.IsInfinitesimallyRigidOn V(GH))
+    (hcontract : ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.withGraph Gc)
+      |>.IsInfinitesimallyRigidOn V(Gc)) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  -- (i) Glue the two legs along the shared body `c` to rigidity of the parent on `V(G)`.
+  have hrig : F.IsInfinitesimallyRigidOn V(G) :=
+    F.isInfinitesimallyRigidOn_of_splice (GH := GH) (Gc := Gc)
+      (by rw [hF]; exact hGH) (by rw [hF]; exact hGc) hcH hcc hcover hblock hcontract
+  -- (ii) Every hinge is transversal under general position + distinct endpoints, so the rigid
+  -- parent carries `D(|V(G)|−1)` independent panel rows.
+  have hsupp : ∀ e, F.supportExtensor e ≠ 0 := fun e =>
+    (PanelHingeFramework.ofNormals G ends q₀).supportExtensor_ne_zero_of_isGeneralPosition hgp
+      (by simpa using hne_ends e)
+  obtain ⟨s, hscard, hsindep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_rigidOn (ends := ends)
+      (by simpa using hends) hsupp (by simpa using hne) (by simpa using hrig)
+  -- (iii) The genericity device lifts the witnessed corank at the seed `q₀` to a generic placement.
+  exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
+    (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by
