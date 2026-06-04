@@ -1455,6 +1455,7 @@ non-spanning block).}
   \uses{def:panel-hinge-framework, lem:case-II, lem:genericity-device,
         lem:exists-independent-panel-extensor,
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
+        lem:case-II-placement-old-rows-extract,
         lem:case-II-placement-block-independent}
   The remaining geometric obligation of \cref{lem:case-II-realization}: from the
   inductive realization of the splitting-off $G_v^{ab}$, construct a free normal
@@ -1484,9 +1485,12 @@ non-spanning block).}
   \begin{enumerate}
     \item \cref{lem:case-II-placement-new-rows} (N7b-1): choose the normal $n$ for
       $v$ so that $v$'s two new hinges supply $D-1$ linearly independent panel rows.
-    \item \cref{lem:case-II-placement-old-rows} (N7b-2): transport the inductive
-      realization's $D(|V(G)|-2)$ independent rows of $G_v^{ab}$ onto $G$ through
-      the common subgraph $G - v$.
+    \item \cref{lem:case-II-placement-old-rows-extract} (N7b-0): \emph{produce} the
+      old block --- extract $D(|V(G)|-2)$ independent panel rows from the inductive
+      realization's rigidity on $V(G_v^{ab})$ (the rank-equals-codimension forward
+      direction, the converse of \cref{lem:isInfRigidOn-of-relative-count}).
+    \item \cref{lem:case-II-placement-old-rows} (N7b-2): transport that family onto
+      $G$ through the common subgraph $G - v$.
     \item \cref{lem:case-II-placement-block-independent} (N7b-3): the two blocks
       are jointly independent (the new-edge rows live in the $v$-column block, the
       old rows in its complement; pin-a-body Lemma~5.1,
@@ -1498,6 +1502,7 @@ non-spanning block).}
 \begin{proof}
   \uses{lem:case-II, lem:exists-independent-panel-extensor,
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
+        lem:case-II-placement-old-rows-extract,
         lem:case-II-placement-block-independent}
   Take $q_0$ to agree with the inductive realization's normals on
   $V(G)\setminus\{v\} = V(G_v^{ab})$ and to assign $v$ the general-position normal
@@ -1564,11 +1569,13 @@ non-spanning block).}
   \label{lem:case-II-placement-old-rows}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.exists_independent_panelRow_transport}
   \leanok
-  \uses{def:panel-hinge-framework, lem:case-II, lem:rows-polynomial-in-normals}
-  The inductive realization of $G_v^{ab}$ (rigid on $V(G)\setminus\{v\}$, hence
-  $D(|V(G)|-2)$ independent rows of $\mathrm{ofNormals}\,G_v^{ab}\,\mathrm{ends}'\,q_0'$)
-  transports to $D(|V(G)|-2)$ independent rows of $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
-  on $G$. Concretely: along an \emph{injective} reindex $f : s_2 \to s_1$ selecting the
+  \uses{def:panel-hinge-framework, lem:case-II, lem:rows-polynomial-in-normals,
+        lem:case-II-placement-old-rows-extract}
+  Given the inductive realization's $D(|V(G)|-2)$ independent rows of
+  $\mathrm{ofNormals}\,G_v^{ab}\,\mathrm{ends}'\,q_0'$ (produced by
+  \cref{lem:case-II-placement-old-rows-extract} from the inductive rigidity),
+  transport them to $D(|V(G)|-2)$ independent rows of
+  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ on $G$. Concretely: along an \emph{injective} reindex $f : s_2 \to s_1$ selecting the
   $e_0$-free subfamily, with each selected row matching across the graph swap (the per-row
   hypothesis $\mathrm{hrow}$), the family is again linearly independent as rows of
   $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$. The transport is \emph{not} along an
@@ -1593,6 +1600,53 @@ non-spanning block).}
   $\mathrm{removeVertex\_le}$. Independence is inherited as a subfamily of an
   independent family ($\mathrm{LinearIndependent.comp}$ along the injective reindex,
   the family equality given by the per-row match). See
+  \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
+\end{proof}
+
+\begin{lemma}[N7b-0: a rigid realization carries a full-rank independent row family]
+  \label{lem:case-II-placement-old-rows-extract}
+  \uses{def:panel-hinge-framework, def:rigidity-matrix, def:rank-hypothesis,
+        lem:rank-delete-vertex, lem:relative-screw-split}
+  The \emph{producer} of the old block that the transport
+  \cref{lem:case-II-placement-old-rows} consumes: from the inductive realization
+  of $G_v^{ab}$ --- a panel-hinge framework infinitesimally rigid on its own
+  vertex set $V(G_v^{ab}) = V(G)\setminus\{v\}$ ($\mathrm{HasFullRankRealization}$,
+  the realization motive) --- extract a linearly independent family of
+  $D(|V(G_v^{ab})|-1) = D(|V(G)|-2)$ \emph{actual} $\mathrm{panelRow}$ rows of
+  that realization (in the honest index-subfamily form
+  \cref{lem:case-II-placement-new-rows} supplies for the new block). This is the
+  \emph{forward converse} of the relative-count adapter
+  \cref{lem:isInfRigidOn-of-relative-count}: that node turns a witnessed corank
+  $\#s \ge D(|V|-1)$ \emph{into} rigidity on $V(G)$; this node runs the
+  implication backward --- rigidity on $V(G_v^{ab})$ forces
+  $\dim Z = D(|V_\alpha| - |V(G_v^{ab})| + 1)$
+  (\cref{lem:relative-screw-split}), so $\mathrm{rank}\,R = D|V_\alpha| - \dim Z =
+  D(|V(G_v^{ab})|-1)$, and the rigidity rows, spanning a space of that dimension,
+  contain an independent subfamily of size $D(|V(G_v^{ab})|-1)$
+  ($\mathrm{Submodule.exists\_fun\_fin\_finrank\_span\_eq}$ on the rigidity-row
+  span, re-indexed into a $\mathrm{panelRow}$-index subset as in
+  \cref{lem:case-II-placement-new-rows}'s honest form). \emph{Red} (Phase~21b
+  realization layer): this rank-equals-codimension forward direction is the
+  genuine deficit between ``rigid on a set'' and ``carries that many independent
+  rows'' --- it is \emph{not} discharged by the transport
+  \cref{lem:case-II-placement-old-rows} (which only carries an
+  \emph{already-witnessed} independent family across the graph swap) nor by the
+  graph-forest existence \cref{def:rigidity-matrix}
+  ($\mathrm{exists\_independent\_rigidityRows\_of\_forest}$, which sources rows
+  from a transversal-hinge spanning forest, of count bounded by the forest size
+  rather than the full $D(|V|-1)$ unless the block is itself rigid).
+\end{lemma}
+\begin{proof}
+  \uses{lem:rank-delete-vertex, lem:relative-screw-split}
+  The realization is rigid on $V(G_v^{ab})$, so $\mathrm{pinnedMotionsOn}\,
+  V(G_v^{ab})$ pins all residual freedom: its dimension is
+  $D(|V_\alpha| - |V(G_v^{ab})|)$ (\cref{lem:relative-screw-split}), and the
+  single-body pin gives $\dim Z = D + D(|V_\alpha| - |V(G_v^{ab})|)$
+  (\cref{lem:rank-delete-vertex}), whence $\mathrm{rank}\,R = D|V_\alpha| - \dim Z
+  = D(|V(G_v^{ab})|-1)$. The rigidity-row span has exactly that dimension, so
+  $\mathrm{Submodule.exists\_fun\_fin\_finrank\_span\_eq}$ extracts an independent
+  subfamily of that many actual rows; the $\mathrm{panelRow}$-index re-indexing is
+  as in \cref{lem:case-II-placement-new-rows}'s honest form. See
   \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
 \end{proof}
 
