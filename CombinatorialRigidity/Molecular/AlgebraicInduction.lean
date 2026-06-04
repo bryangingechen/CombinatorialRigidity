@@ -2017,4 +2017,50 @@ theorem PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_ge
   exact P.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn hs k'
     (hglue_of_forest P.toBodyHinge hu hsep hlink he hmatch)
 
+/-- **Case I from-scratch realization entry point: a moment-curve framework realizes the rank**
+(`lem:case-I`, the route-(a) panel-layer iff-realization specialized to the `ofParam` constructor;
+Katoh–Tanigawa 2011 §6.1 Claim 6.4, §6.2/6.5, Phase 21b). The packaging of the general-position
+capstone `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` against the
+from-scratch framework `ofParam G ends param` built directly on the parent multigraph `G`, its
+hinge-endpoint selector `ends`, and an *injective* real parameter map `param`. Because the
+moment-curve normals at an injective `param` are automatically in general position
+(`isGeneralPosition_ofParam`), the per-hinge transversality input is discharged for free, and the
+endpoint hypothesis `hends` of the capstone reduces to a statement about `ends` *directly*
+(`ofParam_ends` is definitional).
+
+Concretely, for the body-hinge interpretation `(ofParam G ends param).toBodyHinge` on a (nonempty)
+rigid block `s = sblk` carrying a spanning forest of hinges — each `e j` linking a *private
+endpoint* `u j` (the forest child, `u` injective) to an arbitrary `other j`, with the
+forest-separation `hsep : ∀ j j', other j ≠ u j'`, each hinge a genuine link of `G`
+(`hlink : G.IsLink (e j) (u j) (other j)`), and the endpoint selector matching the forest
+orientation (`hends : ∀ j, ends (e j) = (u j, other j)`) — the framework realizes the target rank
+at `k'` (`RankHypothesis k'`, i.e. `dim Z(G,p) = D + k'`) **iff** the block pin `pinnedMotionsOn s`
+has dimension `k'`, provided the **count match** `hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`). This
+is the realization-side entry point of the genuinely-geometric Case-I assembly (KT §6.2/6.5):
+combinatorial inputs `(G, ends)` carry the geometry of the rigid-subgraph contraction
+`G/E(H) ⊔ V(H)`, the forest data `u`/`other`/`e` is read off the rigid block, and the genericity is
+the single injective real assignment `param`. The remaining consumer obligation is purely
+combinatorial — exhibit the parent graph `G`, its endpoint selector `ends`, the block's spanning
+forest, and discharge the count `hmatch` against the contraction's inductive `RankHypothesis`. -/
+theorem PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn
+    [Fintype α] [Nonempty α] {J : Type*} [Finite J]
+    (G : Graph α β) (ends : β → α × α) {param : α → ℝ} (hparam : Function.Injective param)
+    {sblk : Set α} (hs : sblk.Nonempty) (k' : ℤ)
+    {u other : J → α} {e : J → β} (hu : Function.Injective u)
+    (hsep : ∀ j j', other j ≠ u j')
+    (hlink : ∀ j, G.IsLink (e j) (u j) (other j))
+    (hends : ∀ j, ends (e j) = (u j, other j))
+    (hmatch : Nat.card J * (screwDim k - 1)
+        + Module.finrank ℝ (ofParam (k := k) G ends param).toBodyHinge.infinitesimalMotions
+        ≤ screwDim k * Fintype.card α →
+      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
+        - Module.finrank ℝ
+            ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk)) :
+    (ofParam (k := k) G ends param).toBodyHinge.RankHypothesis k' ↔
+      (Module.finrank ℝ
+        ((ofParam (k := k) G ends param).toBodyHinge.pinnedMotionsOn sblk) : ℤ) = k' :=
+  ((ofParam (k := k) G ends param).toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition
+    (isGeneralPosition_ofParam G ends hparam) hs k' hu hsep
+    (by simpa using hlink) (by simpa using hends) hmatch)
+
 end CombinatorialRigidity.Molecular

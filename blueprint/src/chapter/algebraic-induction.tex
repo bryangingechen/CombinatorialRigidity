@@ -810,7 +810,8 @@ Phase~21b.
         CombinatorialRigidity.Molecular.hglue_of_realization,
         CombinatorialRigidity.Molecular.hglue_of_independent_rigidityRows,
         CombinatorialRigidity.Molecular.hglue_of_forest,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization through its
@@ -875,7 +876,13 @@ Phase~21b.
   ($\mathrm{RankHypothesis}\ k' \iff \dim Z_s = k'$) needs only the rigid block's
   spanning-forest \emph{graph} data and the count match --- no per-hinge
   transversality hypothesis --- leaving the consumer the graph-and-realization
-  exhibition of \cref{lem:case-I}.
+  exhibition of \cref{lem:case-I}. Specialized to the from-scratch constructor
+  $\mathrm{ofParam}\,(G, \mathit{ends}, \mathit{param})$ at an injective real
+  parameter map (general position then free, \cref{def:panel-hinge-framework}),
+  this is the realization-side entry point of the Case-I assembly: the parent
+  graph $G$ and its hinge-endpoint selector carry the geometry of the
+  rigid-subgraph contraction, the forest data is read off the rigid block, and
+  the only remaining obligation is the count match.
 \end{lemma}
 \begin{proof}
   \leanok

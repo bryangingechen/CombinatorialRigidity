@@ -86,11 +86,22 @@ from-scratch panel-framework constructor on a bare graph `G` + endpoint selector
 map `param`, moment-curve normals, in general position for free when `param` is injective. Unlike
 `withMomentNormals`/`withGraph`/`withNormal` (re-decorate an existing `P`), `ofParam` needs no prior
 framework — it is the realization-side entry point for the Case-I assembly, with the genericity
-isolated to one injective real assignment and the geometry carried by `(G, ends)` alone. **Next
-concrete commit: continue the `F₀` exhibition** (see *Hand-off*) — from `ofParam G ends param`,
-exhibit the rigid block's spanning-forest data (`u`/`other`/`e` + `hu`/`hsep`/`hlink`/`hends`, the
-last by `ofParam_ends`) and discharge the count `hmatch` against the contraction's inductive
-`RankHypothesis`.
+isolated to one injective real assignment and the geometry carried by `(G, ends)` alone. **As of
+this commit the `ofParam`-specialized capstone is landed**
+(`PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn`): for the from-scratch framework
+`ofParam G ends param` at an *injective* `param`, the iff-realization `RankHypothesis k' ↔ dim Z_s =
+k'` holds given only the rigid block's spanning-forest data (`u`/`other`/`e` + `hu`/`hsep`/`hlink`)
+stated *directly on `(G, ends)`* (`hlink : G.IsLink (e j) (u j) (other j)`, `hends : ends (e j) =
+(u j, other j)`, both `@[simp]`-bridged via `ofParam_graph`/`ofParam_ends`/`toBodyHinge_graph`) plus
+the count `hmatch` — general position is discharged for free by `isGeneralPosition_ofParam`, so no
+`PanelHingeFramework` term, no general-position hypothesis, and no per-hinge transversality survive
+in the consumer-facing signature. A thin composition of
+`toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` + `isGeneralPosition_ofParam`.
+This is the realization-side entry point of the genuinely-geometric Case-I assembly, keyed only to
+combinatorial inputs. **Next concrete commit: the `(G, ends)` gluing** (see *Hand-off*) — exhibit
+the parent graph `G` (the contraction `G/E(H)` glued with the rigid block `V(H)`), the endpoint
+selector `ends`, the block's spanning forest, and the count `hmatch` against the contraction's
+inductive `RankHypothesis`.
 
 ## Architectural choices made up front
 
@@ -247,6 +258,21 @@ hand-off convenience.
   `isGeneralPosition_ofParam` folded into `def:panel-hinge-framework`'s `\lean{...}` pin (the
   constructor + `_graph`/`_ends`/`_normal` simp lemmas skipped per the blueprint skip-glue rule).
 
+- [x] `PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn`
+  (`Molecular/AlgebraicInduction.lean`): the **`ofParam`-specialized Case-I capstone** — the
+  realization-side entry point. For the from-scratch framework `ofParam G ends param` at an
+  *injective* `param`, the iff-realization `RankHypothesis k' ↔ dim Z_s = k'` holds given only the
+  rigid block's spanning-forest data (`u`/`other`/`e` + `hu`/`hsep`) stated directly on `(G, ends)`
+  (`hlink : G.IsLink (e j) (u j) (other j)`, `hends : ends (e j) = (u j, other j)`) plus the count
+  `hmatch`. General position is discharged for free by `isGeneralPosition_ofParam` (injective
+  `param`), so no `PanelHingeFramework` term, no general-position hypothesis, and no per-hinge
+  transversality survive in the signature — the consumer's inputs are now purely combinatorial.
+  Thin composition of `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` +
+  `isGeneralPosition_ofParam`; the `hlink`/`hends` bridges are `@[simp]` via
+  `ofParam_graph`/`ofParam_ends`/`toBodyHinge_graph` (`by simpa using …`). Green (axioms {propext,
+  Classical.choice, Quot.sound}); folded into `lem:genericity-device`'s `\lean{...}` pin (route-(a)
+  bridge, no new node).
+
 - [x] `hglue_of_forest` (`Molecular/AlgebraicInduction.lean`): the **last generic Case-I
   reduction** — composes `exists_independent_rigidityRows_of_forest` (the rigid block's
   `(D−1)·|J|` independent rigidity rows, indexed by `Σ _ : J, Fin (screwDim k − 1)`) directly into
@@ -303,10 +329,13 @@ in the Phase-21 Lean, to be supplied by the device):
   `Sum.elim r a₀` concatenation, discharging `hspanrows` + `hindep` for *any* `F₀`. **The last
   generic reduction is `hglue_of_forest`**: it composes the forest assembly into that bridge, so the
   whole `hglue` now reduces to the forest *data* (`u`/`other`/`e` + `hu`/`hsep`/`he`) plus the count
-  `hmatch` keyed to `|J|·(D−1)`. Residual is purely geometric — exhibit the realization `F₀` and its
-  spanning-forest data + the count `hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`) from the contraction
-  realization + rigid block; no path construction, no spanning-family/subfamily-index bookkeeping,
-  and no forest-assembly plumbing remains.
+  `hmatch` keyed to `|J|·(D−1)`. **The realization-side entry point is now also packaged**
+  (`ofParam_rankHypothesis_iff_pinnedMotionsOn`): for `ofParam G ends param` at an injective `param`,
+  the iff-realization holds given only the forest data stated on `(G, ends)` + the count `hmatch` —
+  general position, transversality, and the `PanelHingeFramework` packaging all internal. Residual is
+  purely *combinatorial* — supply the parent graph `G`, its endpoint selector `ends`, an injective
+  `param`, the block's spanning forest, and the count `hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`) from
+  the contraction realization + rigid block; no geometric/genericity plumbing remains.
 - [ ] `hspan` for Case II — each base-`v`-pinned motion lands in the two
   new edges' panel-support spans (false pointwise; holds by the
   rank/dimension count, via `exists_independent_panelSupportExtensor`).
@@ -430,20 +459,27 @@ the geometric graph-and-realization construction.
 **The from-scratch panel-framework constructor is now landed** (`ofParam` +
 `isGeneralPosition_ofParam`): build a panel framework on a bare graph `G` + endpoint selector
 `ends` directly from an injective parameter map `param`, moment-curve normals, `IsGeneralPosition`
-for free — no prior framework needed. So the realization-side entry point of the Case-I assembly is
-in hand, and `hends` is now `ofParam_ends` (definitional).
+for free — no prior framework needed. **As of this commit the `ofParam`-specialized capstone is
+also landed** (`PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn`): the
+realization-side entry point with a *purely combinatorial* signature — given `(G, ends)`, an
+injective `param`, and the rigid block's spanning forest `u`/`other`/`e` (`hu`/`hsep`/`hlink`/
+`hends`, the latter two stated directly on `(G, ends)`), the iff-realization holds modulo the count
+`hmatch`. General position, the `PanelHingeFramework` packaging, and per-hinge transversality are
+all discharged internally. So nothing geometric/genericity-flavored remains in the consumer-facing
+API; what is left is to *supply* the combinatorial inputs.
 
-**Smallest next concrete commit: continue the `F₀` exhibition from `ofParam`** — using `P :=
-ofParam G ends param` (general position for free via `isGeneralPosition_ofParam` on an injective
-`param`), exhibit (a) the `(G, ends)` data gluing the contraction realization (`G/E(H)` at its
-inductive `RankHypothesis`) with the rigidly-placed block `V(H)`, (b) the private-endpoint spanning
-forest `u`/`other`/`e` of `V(H)`'s hinges (`u` injective, `other j ≠ u j'`, `hlink`, and `hends`
-now `ofParam_ends`-definitional), and (c) the count `hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`)
-against the contraction's inductive `RankHypothesis`. Feed (a)+(b)+(c) through
-`toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` (transversality `he` discharged
-for free by general position). This is the genuinely-geometric Case-I assembly (KT §6.2/6.5); still
-likely more than one commit — assess once the `(G, ends)` gluing is in hand and the count is being
-matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
+**Smallest next concrete commit: the `(G, ends)` gluing.** Construct, from a minimal `0`-dof-graph
+`G` with a proper rigid subgraph `H` and the contraction `G/E(H)`'s inductive full-rank realization
+(the `hcontract` hypothesis of `theorem_55`, an `∃ Q, Q.graph = G/E(H) ∧ …RankHypothesis 0`), the
+parent-graph data `(G, ends)` plus an injective `param` and the rigid block's spanning forest, then
+feed them through `ofParam_rankHypothesis_iff_pinnedMotionsOn`. The substantive piece is the
+graph-side gluing: defining `ends` on `E(G)` so that block hinges orient along the spanning forest
+(`hends`) and inter-block hinges link the contracted vertex correctly (`hlink`), and exhibiting an
+injective `param` over `V(G)` (any injection into `ℝ`, e.g. via `Fintype`/`Countable`). The count
+`hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`) then matches the forest's row count against the
+contraction's inductive rank `dim Z_s` (the block pin). This is the genuinely-geometric Case-I
+assembly (KT §6.2/6.5); still likely more than one commit — assess once the `ends`/`param` gluing is
+in hand and the count is being matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
 `lem:cycle-realization` + `exists_independent_panelSupportExtensor` general position controls the
 cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is the screw-space
 telescoping core.) The other consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same
