@@ -10,10 +10,17 @@ analytic half of Prop 1.1), with the shared analytic crux Claim 6.4/6.9
 (the genericity device) scoped out into its own sub-phase **Phase 21b**,
 entering each consuming node as an explicit hypothesis (risk #4/#7 +
 `DESIGN.md` *Genericity device (Claim 6.4/6.9) is its own sub-phase
-(Phase 21b)*). **Phase 21b is open and in progress** (the multivariate
-analytic engine is landed; the device statement, wrapper consolidation,
-and the Case-I splice remain — see *Phase 21b* below and
-`notes/Phase21b.md`). Phases 22–26 planned. This is the program design for
+(Phase 21b)*). **Phase 21b is complete** (closed 2026-06-04): it delivered
+the genericity device, the genericity-free accounting iffs, and the
+`V(G)`-relative count bridges. A math-first feasibility pass against KT
+§6.2–6.3 then **re-scoped the realization *producers* to Phases 22–23** and
+corrected the case-naming — **the project's reducible-vertex split
+(`theorem_55`'s `hsplit`, k=0) is KT Case III, not Case II** (it is one row
+short of full rank via eq. (6.12) and needs the Lemma 6.10/6.13 redundant-edge
+row); only the rigid-subgraph contraction (Case I) reaches full rank. The KT
+math for both producers is worked out in `notes/Phase21b.md` *Finding A/B* +
+*Hand-off to Phases 22–23* and folded into the *Phase 22+* plan below.
+Phases 22–26 planned. This is the program design for
 Phases 17–26 and the runbook for threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
@@ -196,13 +203,13 @@ The **molecule application** (Cor 5.7) adds, on top:
 |---|---|---|---|
 | 17 ✓ | Grassmann–Cayley extensor algebra; **Lemma 2.1** | §2.1 | 1 |
 | 18 ✓ | Genuine panel-hinge rigidity matrix `R(G,p)`; Lemmas 5.1–5.3 (Prop 1.1 deferred to 19) | §2.2–2.4, parts of §5 | 2 |
-| 19 | `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof, rigid subgraphs, def=corank (JJ Thm 6.1 / Cor 6.2); Lem 3.1/3.3/3.4 | §2.5, §3 | 3 |
-| 20 | Combinatorial induction: graph ops + forest surgery 4.1/4.2 + 4.3–4.8 + **Theorem 4.9** | §4 | 4 |
-| 21a | **GC meet / projective-duality foundations** (the dual half of §2.1): `topEquiv`, `pairingDual`-iso, `complementIso`, `meet` — the substrate the panel layer + Lemma 5.4 + Phase 25 rest on | §2.1 (dual half) | 1 |
-| 21 | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8), closing on the **genericity-free** content; **+ panel layer** (coplanar realizations). Genericity (Claim 6.4/6.9) enters as a cited black-box. | §5, §6.1–6.3 | 5 |
-| 21b | **Genericity device** (Claim 6.4/6.9): the panel-coordinate parametrization of `R(G,p)` + generic-max-rank argument — the shared analytic crux of Cases I/II, Thm 5.5, Prop 1.1, and the cycle assembly. Discharges the cited black-box left by Phase 21. | §6.1 (Claim 6.4), §6.3 (Claim 6.9) | 5 |
-| 22 | **Case III, `d=3`** (Lemma 6.10): Claim 6.11 (combinatorial↔linear bridge), Claim 6.12 (extensor-span genericity), 3 candidates | §6.4.1 | 5 |
-| 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
+| 19 ✓ | `M(G̃)`, `D`-deficiency, `k`-dof / minimal `k`-dof, rigid subgraphs, def=corank (JJ Thm 6.1 / Cor 6.2); Lem 3.1/3.3/3.4 | §2.5, §3 | 3 |
+| 20 ✓ | Combinatorial induction: graph ops + forest surgery 4.1/4.2 + 4.3–4.8 + **Theorem 4.9** | §4 | 4 |
+| 21a ✓ | **GC meet / projective-duality foundations** (the dual half of §2.1): `topEquiv`, `pairingDual`-iso, `complementIso`, `meet` — the substrate the panel layer + Lemma 5.4 + Phase 25 rest on | §2.1 (dual half) | 1 |
+| 21 ✓ | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8), closing on the **genericity-free** content; **+ panel layer** (coplanar realizations). Genericity (Claim 6.4/6.9) enters as a cited black-box. | §5, §6.1–6.3 | 5 |
+| 21b ✓ | **Genericity device** (Claim 6.4/6.9) + genericity-free accounting iffs + `V(G)`-relative count bridges. The realization *producers* re-scoped to 22–23 (math-first pass: the k=0 split is KT Case III, one row short via eq. 6.12; Case I splice is full-rank). | §6.1 (Claim 6.4), §6.3 (Claim 6.9) | 5 |
+| 22 | **Realization layer + Case III, `d=3`.** Case I producer (§6.2 splice: full-rank, N4 contraction bridge + N5 panel-transversality splice) + Case II/III reducible-vertex producer (eq. 6.12 degenerate placement + the Case-III extra row); **Lemma 6.10** (Claim 6.11 combinatorial↔linear, Claim 6.12 extensor-span genericity, 3 candidates) | §6.2, §6.4.1 | 5 |
+| 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
 | 26 | **Corollary 5.7**: `r(G²) = 3|V| − 6 − def(G̃)`; the protein-flexibility capstone | §5.2, §1.2 | 6+7 |

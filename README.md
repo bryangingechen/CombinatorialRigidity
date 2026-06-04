@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–21 + 21a complete (Phase 21 settled the algebraic induction's accounting layer and the genericity device); Phase 21b in progress — the genericity device Claim 6.4/6.9 is green, and the realization layer is being re-planned around a corrected (V(G)-relative) rank motive; Phases 22–26 planned.**
+* **Phases 1–21b + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; a math-first pass re-scoped the algebraic-induction realization producers to Phases 22–23, where they join Case III); Phases 22–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -228,16 +228,18 @@ project; commit history is preserved with paths rewritten.
   Phases 22–23. Forward-mode; the chapter `algebraic-induction.tex` is the
   authoritative dep-graph. `Molecular/AlgebraicInduction.lean`. See
   `notes/Phase21.md` and `notes/MolecularConjecture.md`.
-* **Phase 21b (in progress)** — the genericity device (Claim 6.4/6.9) plus
-  the realization layer of Theorem 5.5. The device (the panel-coordinate
-  generic-max-rank argument, the shared analytic crux of Cases I/II, Theorem
-  5.5, Proposition 1.1, and the cycle assembly) is **green**. A spike then
-  found the realization *motive* was mis-defined — infinitesimal rigidity as an
-  *absolute* property of the ambient body type, unsatisfiable for the
-  vertex-reduced inductive subgraphs — so the realization layer (the producers
-  exhibiting a rigid panel framework for each inductive case) is being
-  **re-planned** around the `V(G)`-relative rank motive `rank R = D(|V(G)|−1)`.
-  Also consumed by Phases 22–23. See `notes/Phase21b.md` and
+* **Phase 21b (complete)** — the **genericity device** (Claim 6.4/6.9), the
+  shared analytic crux of the algebraic induction: the panel-coordinate
+  generic-max-rank argument that lifts a rank attained at one realization to a
+  generic one. Delivered green and axiom-clean, applied to the varying panel
+  family (the B0 keystone), together with the genericity-free accounting iffs,
+  the `V(G)`-relative count bridges, and the reusable Case-I/Case-II row +
+  glue infrastructure. A math-first feasibility pass (against Katoh–Tanigawa
+  §6.2–6.3) then **re-scoped the realization *producers* to Phases 22–23**: the
+  reducible-vertex split producer is KT's Case III (one row short of full rank
+  for `k=0`, needing the Lemma 6.10/6.13 redundant-edge row), and the rigid-
+  subgraph splice producer (full-rank but research-shaped geometry) belongs with
+  the realization layer. See `notes/Phase21b.md` and
   `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,

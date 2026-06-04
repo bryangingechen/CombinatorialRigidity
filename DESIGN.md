@@ -997,6 +997,57 @@ producer-scrutiny honesty gate (`blueprint/CLAUDE.md`) applied to the *motive*,
 not just to a single node's hypotheses. Cross-refs: `notes/Phase21b.md`
 *Current state* + *Decisions*; the 2026-06-04 realization re-plan.
 
+## Constructibility recon before scheduling a producer build
+
+**The trap (Phase 21b, 2026-06-04; four re-plans).** A realization/existence
+producer was scheduled commit-after-commit as "build-shaped" by reasoning about
+**node names and types** — "feed N7b-2's transport to the glue N7a" — and the
+gap only surfaced mid-build, when a subagent checked whether the conclusion was
+actually *constructible* from the inputs. The hard kernel (KT's eq. (6.12)
+rank-lift) got relocated four times (N7b-4 e₀-recovery → motion-side M1/M2/M3 →
+…) before a math-first pass found the producer was **one row short by an
+arithmetic that fits on one line**: the device gives `+(D−1)` rows, the k=0
+target needs `+D`. The shortfall was visible from the start; the dep-graph
+(type-correct, honesty-gate-clean on hypotheses) was blind to it because no node
+checked the *count*.
+
+**The rule.** Before scheduling a producer/existence node (`∃ realization`,
+`HasFullRankRealization`, "attains rank `r`") as a *build* commit, run a
+**constructibility recon**: trace the conclusion's target quantity (rank, count,
+dimension) through the intended construction and confirm the arithmetic
+**closes** — not that the `\uses` edges type-check. If the source (KT) states
+the step in a few lines, that compression usually *is* the content; expand it to
+a complete gap-free argument (against the primary source + the rigidity
+literature) *before* decomposing into Lean nodes. Decompose-then-build is right
+only when the math is settled (Phases 1–20); when the math is the hard part
+(KT §6 realization layer), invert the order. This is the operational gate added
+to `blueprint/CLAUDE.md` (the honesty gate's second half: "is the obligation
+discharged" covers laundered hypotheses; this covers an invalid/short proof
+step). Cross-ref: `notes/Phase21b.md` *Finding A/B*; `notes/FRICTION.md`
+*[process] producer constructibility*.
+
+## Phase Case-naming must match KT's k-bookkeeping
+
+**The bug (Phase 21b, 2026-06-04).** The project labelled the reducible-vertex
+degree-2 split "Case II" and scoped its realization to Phase 21b, but KT's case
+structure keys on the dof `k`: **Case II (Lemma 6.8) is `k>0`** (the split drops
+to `(k−1)`-dof and `+(D−1)` rows suffice for the lower target `D(|V|−1)−k`),
+while the **`k=0`** split (KT Lemma 4.8(i): `G_v^{ab}` stays minimal `0`-dof,
+full-rank target) is **Case III** — one row short via eq. (6.12), needing the
+redundant-edge row of Lemma 6.10/6.13. The project's `theorem_55.hsplit` is
+`IsMinimalKDof n 0` (k=0), so it is Case III; only Case I (proper rigid subgraph)
+reaches full rank without the Case-III extra row. The blueprint `lem:case-II`
+prose said "k>0" but was wired to discharge the k=0 `hsplit` — a conflation that
+hid the difficulty.
+
+**The rule.** When mirroring a source's case analysis, **pin each project node to
+the source's case by the discriminating parameter** (here, the dof `k`), and check
+the target/rank arithmetic matches that case — don't inherit a case name by
+surface analogy ("it's a degree-2 split, so it's Case II"). Cross-ref:
+`notes/Phase21b.md` *Finding B*; the top-level `CLAUDE.md` *Referencing prior
+work* attribution bar (this is the rank-arithmetic analogue of verifying a §N
+pointer).
+
 ---
 
 ## Choices to revisit

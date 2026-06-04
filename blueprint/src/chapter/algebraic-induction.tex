@@ -69,33 +69,51 @@ $\mathrm{isInfinitesimallyRigidOn\_insert\_iff}$, with the device entering only
 in the producers). The panel-coordinate row coordinatization
 \cref{lem:rows-polynomial-in-normals} (the keystone, B0) and the Case~I splice
 \emph{glue} \cref{lem:case-I-splice-seed} (the block-triangular argument) are
-now green. \emph{Still red (the realization layer, Phase 21b build targets).}
-The device greening does \emph{not} build the placements: it lifts an attained
-rank to a generic point, but in its \emph{absolute} screw-count, so each
-producer must (i) convert that count to the $V(G)$-relative motive and
-(ii) construct a seed realization. The re-plan
-(\cref{sec:molecular-algebraic-induction-relative}) decomposes the layer into:
-the $V(G)$-relative count bridge (\cref{lem:relative-screw-split},
-\cref{lem:relative-device-count}, \cref{lem:isInfRigidOn-of-relative-count})
-adapting the device's absolute bound to
-$\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ (now green); the Case~II
-$1$-extension producer \cref{lem:case-II-realization}, which splits into the
-green device-closure glue \cref{lem:realization-of-independent-rows} and the
-geometric placement \cref{lem:case-II-realization-placement} (the seed
-construction across the edge substitution $G_v^{ab}$, itself decomposed into the
-three sub-nodes N7b-1/2/3); the graph$\leftrightarrow$matroid contraction-minimality
-bridge \cref{lem:rigidContract-isMinimalKDof} (a Phase-20 carry-forward gating
-Case~I --- the graph-level $(G/E(H)).\mathrm{IsMinimalKDof}$ the producer needs
-to invoke the induction hypothesis, the matroid side being green in
-\cref{lem:contraction-minimality}); the Case~I splice placement
-\cref{lem:case-I-splice-placement} (the witness-transfer geometry, the one
-genuinely hard node, warranting its own decomposition pass); and the Case~I
-producer \cref{lem:case-I-realization}. \emph{Phase 21b closes when the two
-producers (\cref{lem:case-I-realization}, \cref{lem:case-II-realization}) are
-green.} The capstone \cref{thm:theorem-55} stays red beyond Phase 21b: its
-recursion needs all three case-producers, and the crux Case~III
-(\cref{lem:case-III}) is deferred to Phases~22--23, where
-\cref{thm:theorem-55} flips.
+now green. The device greening does \emph{not} build the placements: it lifts an
+attained rank to a generic point, but in its \emph{absolute} screw-count, so each
+producer must (i) convert that count to the $V(G)$-relative motive --- the green
+$V(G)$-relative count bridge (\cref{lem:relative-screw-split},
+\cref{lem:relative-device-count}, \cref{lem:isInfRigidOn-of-relative-count}) does
+this --- and (ii) construct a seed realization.
+
+\emph{Realization producers re-scoped to Phases 22--23 (Phase~21b close,
+2026-06-04).} A math-first feasibility pass against
+Katoh--Tanigawa~\cite[\S6.2--6.3]{katohTanigawa2011} found that the two
+\emph{producers} — the only red realization-layer nodes — belong with the
+realization layer of Phases~22--23, not Phase~21b (whose named deliverable, the
+device, is green). Two findings (full record: \texttt{notes/Phase21b.md}; this
+re-scope is honesty-gate-driven, \cref{lem:case-II-realization} below):
+\begin{itemize}
+  \item \emph{The Case~II producer (\cref{lem:case-II-realization}) is KT
+        Case~III.} The project's $\mathtt{hsplit}$ branch is the $k=0$
+        reducible-vertex split (\cref{thm:theorem-55}, $\mathrm{IsMinimalKDof}\,n\,0$,
+        no proper rigid subgraph). By KT Lemma~4.8(i) $G_v^{ab}$ is then minimal
+        $0$-dof, and KT's eq.~(6.12) degenerate placement (the $vb$-hinge placed
+        at $q(ab)$, reproducing the $e_0$ row) yields only
+        $\mathrm{rank}\,R(G,p_1) \ge (D-1) + D(|V|-2) = D(|V|-1)-1$ --- \emph{one
+        row short} of full rank (KT p.~680). The missing row is the Case~III
+        redundant-edge row (Lemma~6.10/6.13). KT's Lemma~6.8 (where $+(D-1)$
+        suffices) is $k>0$ \emph{only}; the prior $k>0$ framing of
+        \cref{lem:case-II} below was a conflation. The motion-side M1/M2/M3 nodes
+        (\cref{lem:case-II-placement-disjoint-line-meet,%
+        lem:case-II-placement-pin-vertex,lem:case-II-placement-motion-side-assembly})
+        are \emph{not} KT's argument (they assume "a motion constant on
+        $V(G)\setminus\{v\}$", which a $G$-motion need not be) and are superseded.
+  \item \emph{The Case~I producer (\cref{lem:case-I-realization}) is full-rank
+        and tractable (KT~\S6.2), but research-shaped geometry.} It splices the
+        two inductive legs along boundary hinges at panel intersections (eq.~6.6),
+        reaching full $D(|V|-1)$ with \emph{no} shortfall; its genuine obligation
+        is the splice placement \cref{lem:case-I-splice-placement} (a
+        panel-transversality lemma + block-triangular independence, three KT
+        sub-cases 6.2/6.3/6.5) plus the graph$\leftrightarrow$matroid bridge
+        \cref{lem:rigidContract-isMinimalKDof} (Phase-20 carry-forward).
+\end{itemize}
+The reusable green infra (the row sub-nodes N7b-0/1/2/3, the device-closure glue
+\cref{lem:realization-of-independent-rows}, the count bridge) feeds those
+producers. The capstone \cref{thm:theorem-55} and the reconciliation
+\cref{prop:rigidity-matrix-prop11} therefore remain green-modulo-22--23 (awaiting
+the producers and the genericity-free $\mathtt{hub}$ partition brick); Case~III
+(\cref{lem:case-III}) is also Phases~22--23, where all three flip.
 
 \subsection{The panel layer}
 \label{sec:molecular-algebraic-induction-panel}
@@ -1201,15 +1219,25 @@ Cases~I and~II travel toward the smaller inductive graph.
   $S b \in \operatorname{span} C(e_b)$ for every base-$v$-pinned motion $S$) as
   a hypothesis, this node must \emph{construct} the panel normal $n$ for the
   re-inserted body $v$ on which $\mathtt{hspan}$ holds and the extended
-  framework realizes its rank. \emph{Red:} the producer routes through the
-  \emph{motion-side} rank-lift \cref{lem:case-II-placement-motion-side-assembly}
-  (M3) --- re-attaching $v$ to the rigid $G_v^{ab}$ by two transversal hinges with
-  independent support extensors pins $v$, so $G$ is rigid on $V(G)$ directly. This
-  supersedes the original row-side path (the witnessed-independent-row placement
-  \cref{lem:case-II-realization-placement} fed to the glue
-  \cref{lem:realization-of-independent-rows}), which was found geometrically
-  unbuildable at its missing producer N7b-4 (\cref{lem:case-II-placement-e0-recovery});
-  M3 is still red, so the producer is.
+  framework realizes its rank. \emph{Red --- re-scoped to Phases~22--23 as KT Case~III (Phase~21b close,
+  2026-06-04).} The project's $\mathtt{hsplit}$ is the $k=0$ reducible-vertex
+  split, so by KT Lemma~4.8(i) $G_v^{ab}$ is minimal $0$-dof and the realization
+  must reach \emph{full} rank $D(|V|-1)$. KT's actual construction (Lemma~6.8,
+  eq.~(6.12)) is a \emph{degenerate} placement: $p_1(va)=L\subset\Pi_q(a)$ a
+  $(d-2)$-hinge and \textbf{$p_1(vb)=q(ab)$} (the $vb$-hinge placed at the very
+  $e_0=ab$ hinge of $q$, so its row \emph{reproduces} the $e_0$ row of
+  $R(G_v^{ab},q)$); column ops make $R(G,p_1)$ block-triangular with
+  $R(G_v^{ab},q)$ a submatrix, giving $\mathrm{rank}\,R(G,p_1)\ge (D-1) +
+  D(|V|-2) = D(|V|-1)-1$ --- \emph{one row short}. For $k=0$ the missing row is
+  the Case~III redundant-edge row (KT Lemma~6.10/6.13), so this producer
+  \emph{is} Case~III, deferred with it to Phases~22--23. The reusable green row
+  infra (the device-closure glue \cref{lem:realization-of-independent-rows} and
+  the sub-nodes N7b-0/1/2/3) feeds it there. The earlier motion-side path
+  (\cref{lem:case-II-placement-motion-side-assembly}, M3) was \emph{not} KT's
+  argument --- it assumes a $G$-motion is constant on $V(G)\setminus\{v\}$, which
+  the non-rigid $G-v$ does not force --- and is superseded; the row-side
+  $e_0$-recovery is supplied by the eq.~(6.12) placement, not by an
+  ($e_0$-free) block. Full record: \texttt{notes/Phase21b.md} \emph{Finding A/B}.
   Against the relativized motive (\cref{def:rank-hypothesis}) the inductive
   hypothesis ``$G_v^{ab}$ realizes its rank'' is satisfiable (it spans its own
   vertices), so the producer is well-posed; it is the shallower sibling of the

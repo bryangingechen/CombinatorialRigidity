@@ -1760,6 +1760,39 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 Tried-and-rejected approaches, deprecated patterns, and tactic
 limitations. Worth a once-over so future agents don't re-litigate.
 
+### [process] Phase 21b realization producers — the four-re-plan thrash and the dead ends (read before opening Phase 22)
+- **Where it bit:** the Phase-21b "realization layer" — the Case-II
+  reducible-vertex split producer (`lem:case-II-realization`). Four
+  consecutive commits re-planned a producer that was mis-scoped, each
+  relocating the same hard kernel rather than confronting it. Root cause
+  + the standing fix are cross-cutting → `DESIGN.md` *Constructibility
+  recon before scheduling a producer build* and *Phase Case-naming must
+  match KT's k-bookkeeping*; full math in `notes/Phase21b.md` *Finding
+  A/B*. This entry is the **don't-re-attempt list** for Phase 22.
+- **Dead ends rejected (do not retry):**
+  1. **Row-side "e₀-free old block" (N7b-4 as first stated).** Asking for
+     `D(|V|−2)` independent rows of `G_v^{ab}` that avoid the `e₀=ab` edge
+     is geometrically impossible — `G−v` is *not* rigid, so its rows
+     under-span. The `e₀` row is genuinely needed.
+  2. **Motion-side pin (M1/M2/M3).** "A motion of `G` constant on
+     `V(G)∖{v}` is pinned at `v`" (M2) is fine, but *obtaining* "constant
+     on `V(G)∖{v}`" (M3) is false: a `G`-motion restricts to a `G−v`
+     motion, and `G−v` is not rigid, so it need not be constant. M3
+     hand-waves the actual gap. Not KT's argument.
+  3. **eq. (6.12) alone for the project's k=0 split.** KT's degenerate
+     placement (`p1(vb)=q(ab)`, reproducing the `e₀` row) gives only
+     `+(D−1)` rows ⇒ `rank = D(|V|−1)−1`, **one short** of the full rank
+     the `k=0` `hsplit` needs. The missing row is the **Case III**
+     redundant-edge row (KT Lemma 6.10/6.13). So this producer *is* Case
+     III, deferred to Phases 22–23 — it cannot be closed by the
+     1-extension (Lemma 6.8, `k>0`) construction alone.
+- **What IS reusable for Phase 22:** the green row sub-nodes N7b-0/1/2/3,
+  the device-closure glue `lem:realization-of-independent-rows`, the
+  `V(G)`-relative count bridge, and the genericity device — all feed the
+  real Case III / Case I producers. The Case I (proper rigid subgraph,
+  KT §6.2) producer *does* reach full rank (splice along boundary-panel
+  intersections, eq. 6.6) and is the tractable one.
+
 ### [wontfix] `omega` doesn't see through nonlinear algebra on opaque atoms
 - **Where it bit:**
   - `IsGenericallyRigid.card_mul_le` in `Framework.lean` —

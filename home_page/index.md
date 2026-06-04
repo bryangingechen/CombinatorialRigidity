@@ -21,14 +21,14 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–21 and the Grassmann–Cayley meet sub-phase 21a are complete and
+Phases 1–21b and the Grassmann–Cayley meet sub-phase 21a are complete and
 carry no `sorry`s; **Phase 21** settled the algebraic induction's accounting
-layer and the shared genericity device (Claim 6.4/6.9), and **Phase 21b (in
-progress)** carries the device — now **green** — together with the
-*realization* layer of Theorem 5.5, which is being **re-planned** around a
-corrected (`V(G)`-relative rank) motive after a spike found the original
-absolute-rigidity motive unsatisfiable for the vertex-reduced inductive
-subgraphs; **the body-bar
+layer, and **Phase 21b (complete)** delivered the shared **genericity device**
+(Claim 6.4/6.9) — green and axiom-clean — together with the genericity-free
+accounting and the `V(G)`-relative count bridges; a math-first feasibility pass
+then **re-scoped the realization *producers* of Theorem 5.5 to Phases 22–23**,
+where the reducible-vertex split is recognised as Katoh–Tanigawa's Case III and
+joins the deferred crux; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -199,15 +199,18 @@ chapter `algebraic-induction.tex` is the authoritative dep-graph.
 `Molecular/AlgebraicInduction.lean`. See `notes/Phase21.md` and
 `notes/MolecularConjecture.md`.
 
-**Phase 21b (in progress)** carries the genericity device (Claim 6.4/6.9) and
-the realization layer of Theorem 5.5. The device — the panel-coordinate
-generic-max-rank argument, the shared analytic crux of Cases I/II, Theorem 5.5,
-Proposition 1.1, and the cycle assembly — is **green**. A spike then found the
-realization *motive* was mis-defined (infinitesimal rigidity as an absolute
-property of the ambient body type, unsatisfiable for the vertex-reduced
-inductive subgraphs), so the realization producers are being **re-planned**
-around the `V(G)`-relative rank motive `rank R(G,p) = D(|V(G)|−1)`. Also
-consumed by Phases 22–23.
+**Phase 21b (complete)** delivers the **genericity device** (Claim 6.4/6.9) —
+the panel-coordinate generic-max-rank argument that lifts a rank attained at one
+realization to a generic one, the shared analytic crux of Cases I/II, Theorem
+5.5, Proposition 1.1, and the cycle assembly. It is **green and axiom-clean**,
+applied to the varying panel family (the B0 keystone), with the genericity-free
+accounting iffs, the `V(G)`-relative count bridges, and the reusable row + glue
+infrastructure. A math-first feasibility pass against Katoh–Tanigawa §6.2–6.3
+then **re-scoped the realization *producers* of Theorem 5.5 to Phases 22–23**:
+the reducible-vertex split producer is KT's Case III (one row short of full rank
+for `k=0`, needing the redundant-edge row of Lemma 6.10/6.13), and the rigid-
+subgraph splice producer (full-rank but research-shaped boundary-panel geometry)
+joins the realization layer.
 
 The development is divided into the phases below, with Lean source
 under
@@ -239,7 +242,7 @@ existing files or refactor across several).
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction.lean` | ✓ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
-|   21b | Genericity device (Claim 6.4/6.9) | `Molecular/AlgebraicInduction.lean` (+ `lem:genericity-device`) | ◷ |
+|   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction.lean` (+ `lem:genericity-device`) | ✓ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
