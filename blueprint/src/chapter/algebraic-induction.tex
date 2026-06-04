@@ -69,15 +69,30 @@ $\mathrm{isInfinitesimallyRigidOn\_insert\_iff}$, with the device entering only
 in the producers). The panel-coordinate row coordinatization
 \cref{lem:rows-polynomial-in-normals} (the keystone, B0) and the Case~I splice
 \emph{glue} \cref{lem:case-I-splice-seed} (the block-triangular argument) are
-now green. \emph{Still red:} the capstone \cref{thm:theorem-55} (pending its
-producers) and the realization producers --- the Case~I splice placement
-\cref{lem:case-I-splice-placement} (the witness-transfer onto one common
-placement), the Case~I producer \cref{lem:case-I-realization}, and the Case~II
-producer \cref{lem:case-II-realization} --- plus the crux Case~III
-(\cref{lem:case-III}, deferred to Phases~22--23). The device greening does
-\emph{not} build the placements: it lifts an attained rank to a generic
-point, but each producer must still construct its realization at the
-relativized motive.
+now green. \emph{Still red (the realization layer, Phase 21b build targets).}
+The device greening does \emph{not} build the placements: it lifts an attained
+rank to a generic point, but in its \emph{absolute} screw-count, so each
+producer must (i) convert that count to the $V(G)$-relative motive and
+(ii) construct a seed realization. The re-plan
+(\cref{sec:molecular-algebraic-induction-relative}) decomposes the layer into:
+the $V(G)$-relative count bridge (\cref{lem:relative-screw-split},
+\cref{lem:relative-device-count}, \cref{lem:isInfRigidOn-of-relative-count})
+adapting the device's absolute bound to
+$\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ (build-shaped); the Case~II
+$1$-extension producer \cref{lem:case-II-realization} (the cheapest, needing
+only the bridge); the graph$\leftrightarrow$matroid contraction-minimality
+bridge \cref{lem:rigidContract-isMinimalKDof} (a Phase-20 carry-forward gating
+Case~I --- the graph-level $(G/E(H)).\mathrm{IsMinimalKDof}$ the producer needs
+to invoke the induction hypothesis, the matroid side being green in
+\cref{lem:contraction-minimality}); the Case~I splice placement
+\cref{lem:case-I-splice-placement} (the witness-transfer geometry, the one
+genuinely hard node, warranting its own decomposition pass); and the Case~I
+producer \cref{lem:case-I-realization}. \emph{Phase 21b closes when the two
+producers (\cref{lem:case-I-realization}, \cref{lem:case-II-realization}) are
+green.} The capstone \cref{thm:theorem-55} stays red beyond Phase 21b: its
+recursion needs all three case-producers, and the crux Case~III
+(\cref{lem:case-III}) is deferred to Phases~22--23, where
+\cref{thm:theorem-55} flips.
 
 \subsection{The panel layer}
 \label{sec:molecular-algebraic-induction-panel}
@@ -905,14 +920,57 @@ Cases~I and~II travel toward the smaller inductive graph.
   $D(|V(G)|-|V(H)|)$ by $(G/E(H), p_2)$. Block-triangularity makes the union
   independent, so the spliced $F$ realizes both legs and
   \cref{lem:case-I-splice-seed} concludes. \emph{Deferred} (Phase~21b
-  realization layer).
+  realization layer). This node is the genuinely hard one of Phase~21b and
+  warrants its own decomposition pass (the boundary-panel intersection and the
+  combined block-triangular independence each break into sub-lemmas) before a
+  single-commit build.
+\end{proof}
+
+\begin{lemma}[Graph-level minimality of the rigid-subgraph contraction (the graph/matroid bridge)]
+  \label{lem:rigidContract-isMinimalKDof}
+  \uses{lem:contraction-minimality, def:rigid-contraction, lem:reduction-step}
+  The Case~I producer applies the induction hypothesis of
+  \cref{thm:theorem-55} to the contracted graph $G/E(H)$
+  (\cref{def:rigid-contraction}), which requires $G/E(H)$ to be itself a
+  minimal $0$-dof-graph with strictly fewer vertices. The vertex drop is
+  \cref{lem:reduction-step}; the minimality is the content here:
+  \[
+    G.\mathrm{IsMinimalKDof}\,n\,0,\ \ H \text{ proper rigid}
+      \;\Longrightarrow\; (G/E(H)).\mathrm{IsMinimalKDof}\,n\,0 .
+  \]
+  The matroid-side statement --- that the matroid contraction
+  $M(\tilde G)/E(\tilde H)$ is a minimal $k$-dof matroid --- is green
+  (\cref{lem:contraction-minimality}). What this node adds is the
+  \emph{graph$\leftrightarrow$matroid bridge}: that the matroid of the
+  \emph{graph} contraction $G/E(H) = (G \setminus E(H))$ with $V(H)$ collapsed
+  equals that matroid contraction, i.e.\ $\mathrm{matroidMG}$ commutes with the
+  $\mathrm{map} \circ \mathrm{deleteEdges}$ presentation of $G/E(H)$ up to the
+  ground-set relabeling. Phase~20 \emph{deliberately deferred} this bridge
+  (carry-forward~1; see \cref{thm:minimal-kdof-reduction}, whose contraction
+  branch is handed only the \emph{existence} of a rigid subgraph plus the
+  strong induction hypothesis), so the producer must itself name $G/E(H)$ and
+  prove its minimality to invoke the hypothesis. \emph{Red (Phase 21b build
+  target, gating \cref{lem:case-I-realization}); build-shaped but nontrivial.}
+\end{lemma}
+\begin{proof}
+  Unfold $\mathrm{IsMinimalKDof}$ (deficiency $0$ and every base meeting every
+  surviving edge-fiber) through the matroid $\mathrm{matroidMG}$ of $G/E(H)$.
+  Identify that matroid with $M(\tilde G)/E(\tilde H)$ via a
+  $\mathrm{matroidMG}$-of-a-mapped-graph correspondence (the
+  $\mathrm{deleteEdges}$ drops $E(H)$, the
+  $\mathrm{map}\,(\mathrm{collapseTo}\,r\,V(H))$ relabels vertices without
+  changing the surviving edge-fibers), then transport
+  \cref{lem:contraction-minimality} across the identification. The
+  correspondence is the deferred graph$\leftrightarrow$matroid map.
+  \emph{Deferred} (Phase~21b).
 \end{proof}
 
 \begin{lemma}[Case I realization: the contraction producer; KT eqs.\ (6.2), (6.6)]
   \label{lem:case-I-realization}
   \uses{def:panel-hinge-framework, lem:case-I, lem:genericity-device,
-        lem:contraction-minimality, lem:case-I-splice-seed,
-        lem:case-I-splice-placement, lem:rows-polynomial-in-normals}
+        lem:contraction-minimality, lem:rigidContract-isMinimalKDof,
+        lem:case-I-splice-seed, lem:case-I-splice-placement,
+        lem:rows-polynomial-in-normals, lem:isInfRigidOn-of-relative-count}
   The realization motive of \cref{thm:theorem-55}
   ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
   $D(|V(G)|-1)$) is closed under contracting a proper rigid subgraph. Let $G$
@@ -941,7 +999,8 @@ Cases~I and~II travel toward the smaller inductive graph.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-I-splice-seed, lem:case-I-splice-placement,
-        lem:rows-polynomial-in-normals, lem:genericity-device, lem:case-I}
+        lem:rows-polynomial-in-normals, lem:genericity-device, lem:case-I,
+        lem:rigidContract-isMinimalKDof, lem:isInfRigidOn-of-relative-count}
   Build the splice placement $F$ (\cref{lem:case-I-splice-placement}): one
   parent framework on $G$ realizing both legs, assembled block-triangularly
   from the inductive realizations of $H$ and $G/E(H)$; the glue
@@ -1124,7 +1183,8 @@ Cases~I and~II travel toward the smaller inductive graph.
 \begin{lemma}[Case II realization: the $1$-extension produces a full-rank realization; KT Lemma 6.8]
   \label{lem:case-II-realization}
   \uses{def:panel-hinge-framework, lem:case-II, lem:genericity-device,
-        lem:reduction-step, lem:exists-independent-panel-extensor}
+        lem:reduction-step, lem:exists-independent-panel-extensor,
+        lem:isInfRigidOn-of-relative-count}
   The realization motive of \cref{thm:theorem-55}
   ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
   $D(|V(G)|-1)$) is closed under splitting off a reducible degree-2 vertex.
@@ -1148,7 +1208,8 @@ Cases~I and~II travel toward the smaller inductive graph.
   a full splice.
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II, lem:genericity-device, lem:exists-independent-panel-extensor}
+  \uses{lem:case-II, lem:genericity-device, lem:exists-independent-panel-extensor,
+        lem:isInfRigidOn-of-relative-count}
   Place $G_v^{ab}$ at its inductive realization and re-insert $v$ joined to
   $a$ and $b$ by hinges whose supporting extensors are in general position
   (\cref{lem:exists-independent-panel-extensor}). For such a choice the
@@ -1244,6 +1305,91 @@ constructions are the Case~I splice placement (\cref{lem:case-I-splice-placement
 and the Case~II $1$-extension realization (\cref{lem:case-II-realization}). It
 is also consumed by the
 Case~III candidate-framework genericity of Phases~22--23.
+
+\subsection{The \texorpdfstring{$V(G)$}{V(G)}-relative count (device output to relative motive)}
+\label{sec:molecular-algebraic-induction-relative}
+
+The device (\cref{lem:genericity-device}) produces a generic realization at
+which the rigidity-matrix corank is minimized, but its bound is stated
+\emph{absolutely}, over the whole screw-assignment space $\R^{D|V_\alpha|}$ of
+the ambient body type: a produced point satisfies
+$\#s + \dim Z(G,p) \le D|V_\alpha|$. The realization motive
+(\cref{def:rank-hypothesis}), by contrast, is $V(G)$-relative
+($\mathrm{IsInfinitesimallyRigidOn}\,V(G)$). For a non-spanning inductive
+subgraph the two differ by the $D(|V_\alpha| - |V(G)|)$ free dimensions of the
+bodies outside $V(G)$ --- each carries no hinge constraint, hence is a free
+motion --- so the absolute count alone never reaches the relative motive. The
+three nodes here are the adapter the producers (\cref{lem:case-I-realization},
+\cref{lem:case-II-realization}) compose with the device to land the relative
+motive; they are the ``rank-equality bridge'' \cref{def:rank-hypothesis}
+anticipates. \emph{All three are red (Phase 21b build targets); the shapes are
+validated, the content is build-shaped (no relative-rank argument over a
+non-spanning block).}
+
+\begin{lemma}[Isolated bodies carry no rigidity: the relative split]
+  \label{lem:relative-screw-split}
+  \uses{def:rigidity-matrix, def:rank-hypothesis}
+  The screw-assignment space $\R^{D|V_\alpha|} = (\alpha \to \mathrm{Screw})$
+  splits as a product along $V(G)$ and its complement, and a body
+  $w \in \alpha \setminus V(G)$ carries no hinge constraint, so its $D$ screw
+  coordinates are free in every infinitesimal motion. Hence
+  \[
+    \dim Z(G,p) \;=\; D\,(|V_\alpha| - |V(G)|) \;+\; \dim Z_{V(G)}(G,p),
+  \]
+  where $Z_{V(G)}$ is the $V(G)$-supported motion space; equivalently
+  $\operatorname{rank} R(G,p) = D|V(G)| - \dim Z_{V(G)}(G,p)$ is
+  $\alpha$-independent. This is a $\mathrm{Pi}$-product (\texttt{finrank\_pi})
+  decomposition, not a relative-rank inequality over a non-spanning block: the
+  complement contributes a clean free direct summand.
+\end{lemma}
+\begin{proof}
+  The rigidity rows of $R(G,p)$ involve only the screw coordinates of bodies
+  incident to an edge of $G$, i.e.\ of $V(G)$; the projection of a motion to
+  the $\alpha \setminus V(G)$ coordinates is therefore unconstrained, giving
+  the free summand of dimension $D(|V_\alpha|-|V(G)|)$, with residual
+  $Z_{V(G)}$. Sum the two by $\texttt{finrank\_pi}$.
+\end{proof}
+
+\begin{lemma}[The genericity device, $V(G)$-relative form]
+  \label{lem:relative-device-count}
+  \uses{lem:genericity-device, lem:relative-screw-split,
+        lem:rows-polynomial-in-normals}
+  Substituting the relative split \cref{lem:relative-screw-split} for the
+  absolute screw-count in the device \cref{lem:genericity-device} (applied to
+  the varying panel family via the row coordinatization
+  \cref{lem:rows-polynomial-in-normals}, B0), a generic panel assignment
+  attains
+  \[
+    \#s + \dim Z_{V(G)}(G,p) \;\le\; D\,(|V(G)| - 1),
+  \]
+  the device's codimension bound with the ambient free dimensions removed.
+  Mechanical given \cref{lem:relative-screw-split}: re-wrap the device's
+  conclusion, cancelling the $D(|V_\alpha|-|V(G)|)$ term on both sides.
+\end{lemma}
+\begin{proof}
+  The device gives $\#s + \dim Z(G,p) \le D|V_\alpha|$ at the produced point;
+  rewrite $\dim Z(G,p)$ by \cref{lem:relative-screw-split} and cancel
+  $D(|V_\alpha|-|V(G)|)$.
+\end{proof}
+
+\begin{lemma}[Relative count $\Rightarrow$ the relative motive]
+  \label{lem:isInfRigidOn-of-relative-count}
+  \uses{lem:relative-device-count, lem:pinned-motions-on-rank-bound,
+        lem:case-I}
+  A realization carrying $D(|V(G)|-1)$ independent rigidity rows (the relative
+  full count, $k'=0$ in \cref{lem:relative-device-count}) is infinitesimally
+  rigid on $V(G)$: $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$. This is the
+  adapter the producers compose with the device output, routed through the
+  block-pin lower bound \cref{lem:pinned-motions-on-rank-bound} and the
+  relativized Case~I bridge \cref{lem:case-I}
+  ($\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$); both green.
+\end{lemma}
+\begin{proof}
+  At the relative full count the residual $\dim Z_{V(G)} = 0$, so the block pin
+  on $V(G)$ is trivial (\cref{lem:pinned-motions-on-rank-bound}) and every
+  motion is constant on $V(G)$; read off $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$
+  via the Case~I relative bridge \cref{lem:case-I}.
+\end{proof}
 
 \subsection{Case III deferred (the crux)}
 \label{sec:molecular-algebraic-induction-caseIII}
