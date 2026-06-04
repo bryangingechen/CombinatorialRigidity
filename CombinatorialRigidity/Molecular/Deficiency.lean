@@ -511,6 +511,70 @@ theorem two_le_crossingEdges_of_isKDof_zero [Finite α] {G : Graph α β} {n : �
   nlinarith [mul_nonneg (by linarith : (0:ℤ) ≤ (bodyBarDim n : ℤ) - 1)
     (by linarith : (0:ℤ) ≤ 1 - ((G.crossingEdges (cutLabeling V' a b)).ncard : ℤ))]
 
+/-- **A body-hinge-rigid (`0`-dof) graph's multiplied graph is connected** (Track-A
+N4a infrastructure below `lem:rigidContract-isMinimalKDof`; `notes/Phase22.md`). For a
+`0`-dof graph `G` with `D = bodyBarDim n ≥ 2` (so `bodyHingeMult n = D - 1 ≥ 1`, i.e.
+`G̃` carries an edge copy of each hinge — the regime KT works in, `n ≥ 2`), the multiplied
+graph `G̃ = (D-1)·G` is preconnected: every pair of vertices is joined by a walk
+(vacuous on the empty graph, so no nonemptiness hypothesis). This is the
+hypothesis a `cycleMatroid`-under-vertex-collapse argument needs to license the
+`collapseTo r V(H)` collapse on a proper rigid subgraph `H` (a disconnected `H` would
+collapse several components to one representative, which is not the connected contraction
+the cycle matroid sees).
+
+Proof (the cut-partition contradiction of `two_le_crossingEdges_of_isKDof_zero`, run for
+connectivity rather than two-edge-connectivity): if `G̃` were *not* preconnected, two
+vertices `x, y ∈ V(G)` would lie in distinct components. The connected component
+`V' = {z | G̃.ConnBetween x z}` is then a nonempty proper subset of `V(G)` that no edge of
+`G` crosses — every `G`-edge `e` linking `u ∈ V'` to `v` lifts to a `G̃`-edge (copy `0`),
+so `v` is connected to `x`, hence `v ∈ V'`. The induced two-part cut therefore has
+`d_G(V') = 0`, so its deficiency is `D·(2-1) - (D-1)·0 = D ≥ 1 > 0 = def(G̃)`,
+contradicting `partitionDef_le_deficiency`. -/
+theorem mulTilde_preconnected_of_isKDof_zero [Finite α] {G : Graph α β} {n : ℕ}
+    [NeZero (bodyHingeMult n)] (hrigid : G.IsKDof n 0) :
+    (G.mulTilde n).Preconnected := by
+  classical
+  -- `bodyHingeMult n = D - 1 ≥ 1` (so `G̃` has edge copies), hence `D = bodyBarDim n ≥ 2`.
+  have hmult : 1 ≤ bodyHingeMult n := Nat.one_le_iff_ne_zero.mpr (NeZero.ne _)
+  have hD : 2 ≤ bodyBarDim n := by rw [bodyHingeMult] at hmult; omega
+  by_contra hcon
+  -- Extract two vertices in distinct components.
+  simp only [Preconnected, not_forall] at hcon
+  obtain ⟨x, y, hx, hy, hxy⟩ := hcon
+  -- `V(G̃) = V(G)` definitionally, so the extracted vertices are vertices of `G`.
+  have hxV : x ∈ V(G) := hx
+  have hyV : y ∈ V(G) := hy
+  -- `V' = {z | x ⇝ z in G̃}` is the connected component of `x`.
+  set V' : Set α := {z | (G.mulTilde n).ConnBetween x z} with hV'def
+  have hxV' : x ∈ V' := ConnBetween.refl hx
+  have hyV' : y ∉ V' := hxy
+  -- `f = cutLabeling V' x y` is a genuine two-part partition (`x ∈ V'`, `y ∉ V'`, distinct).
+  have hparts : G.numParts (cutLabeling V' x y) = 2 :=
+    numParts_cutLabeling hxV' hyV hyV' hxV
+  -- No edge of `G` crosses the cut: a crossing `G`-edge lifts (copy `0`) to a `G̃`-edge
+  -- joining a vertex of `V'` to one outside, extending the component — impossible.
+  have hcross : G.crossingEdges (cutLabeling V' x y) = ∅ := by
+    rw [Set.eq_empty_iff_forall_notMem]
+    rintro e ⟨_, u, v, hlink, hne'⟩
+    -- The copy `(e, 0)` is a `G̃`-edge linking `u` and `v`.
+    have hp : (G.mulTilde n).IsLink (e, (⟨0, hmult⟩ : Fin (bodyHingeMult n))) u v :=
+      (mulTilde_isLink G n).mpr hlink
+    have huv : (G.mulTilde n).ConnBetween u v := hp.connBetween
+    -- `cutLabeling` takes only the two values `x, y`; `f u ≠ f v` forces one endpoint in
+    -- `V'` and the other out, but the edge connects them, so both are in `V'`. Contradiction.
+    by_cases hu : u ∈ V' <;> by_cases hv : v ∈ V'
+    · exact hne' (by simp [cutLabeling, hu, hv])
+    · exact hv ((hu.trans huv : (G.mulTilde n).ConnBetween x v))
+    · exact hu ((hv.trans huv.symm : (G.mulTilde n).ConnBetween x u))
+    · exact hne' (by simp [cutLabeling, hu, hv])
+  -- The two-part, crossing-free cut witnesses `def(G̃) ≥ D ≥ 1 > 0`, contradicting `def = 0`.
+  have hle : G.partitionDef n (cutLabeling V' x y) ≤ G.deficiency n :=
+    G.partitionDef_le_deficiency n _
+  rw [partitionDef, hparts, hcross, hrigid] at hle
+  simp only [Set.ncard_empty, Nat.cast_ofNat, Nat.cast_zero, mul_zero, sub_zero] at hle
+  have hDpos : (1 : ℤ) ≤ (bodyBarDim n : ℤ) := by exact_mod_cast (by omega : 1 ≤ bodyBarDim n)
+  linarith
+
 /-! ## The rank upper bound (`thm:def-eq-corank`, conjecture-relevant half) -/
 
 theorem rank_matroidMG_le [DecidableEq β] [Finite α] [Finite β] (G : Graph α β) (n : ℕ)

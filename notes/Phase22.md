@@ -21,8 +21,19 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-Phase opened; no Lean landed yet. **A second constructibility recon
-(2026-06-04, below) further sharpened N4: it is not merely a "union does not
+**N4a landed green** (`mulTilde_preconnected_of_isKDof_zero`, `Deficiency.lean`): a
+`0`-dof graph's multiplied graph `G̃` is preconnected, the leaf brick below the N4
+graph↔matroid bridge. Proof reuses the `two_le_crossingEdges_of_isKDof_zero`
+cut-partition contradiction verbatim — the connected component `V' = {z | G̃.ConnBetween x z}`
+of any vertex is a crossing-free two-part cut, so a disconnection would witness
+`def(G̃) ≥ D ≥ 1 > 0`. Axiom-clean; no `\leanok` flip (infrastructure below the N4
+blueprint node). Regime: `[NeZero (bodyHingeMult n)]` (i.e. `D ≥ 2`, `n ≥ 2`), matching
+`spanningVerts_edgeMultiply` — for `D = 1` the multiplied graph is edgeless and the claim
+is false. **No nonemptiness hypothesis** (`Preconnected` is vacuous on the empty graph).
+
+The N4 graph↔matroid bridge itself remains a several-node sub-build (recon below
+unchanged). **A second constructibility recon
+(2026-06-04, below) sharpened N4: it is not merely a "union does not
 commute with contraction" issue — the per-cycle-matroid step `cycleMatroid_contract`
 does not even apply** (the graph `rigidContract` is a vertex-relabel `map` with
 `E(H)` *deleted*, the matroid side *contracts* `E(H̃)`; there is no vendored
@@ -30,10 +41,8 @@ does not even apply** (the graph `rigidContract` is a vertex-relabel `map` with
 the real content). The matroid-side fact N4 would transport
 (`contraction_isMinimalKDof`, `Induction.lean:1998`) is green; the graph↔matroid
 bridge `matroidMG (G.rigidContract H r) = M(G̃)／E(H̃)` is a **several-node
-sub-build**, not a single commit. **Neither N4 nor the N5 fallback is a clean
-single-session node** (N5's own blueprint note: "the genuinely hard one …
-warrants its own decomposition pass before a single-commit build"). The next
-concrete commit is the leaf-most brick: see *Hand-off* below.
+sub-build**, not a single commit. The next concrete commit is **N4b**
+(cycleMatroid-under-vertex-collapse), now licensed by N4a: see *Hand-off* below.
 
 ## Architectural choices made up front
 
@@ -56,10 +65,13 @@ concrete commit is the leaf-most brick: see *Hand-off* below.
   content is the `matroidMG`-of-`(map ∘ deleteEdges)` correspondence — a
   **several-node Whitney-style build** (see the refined N4 recon below; the
   per-cycle-matroid `cycleMatroid_contract` does *not* apply). Sub-bricks:
-  - [ ] **N4a** rigid subgraph's multiplied graph is connected (`H̃` connected on
-    `V(H)`), licensing the `collapseTo r V(H)` vertex-collapse. *Leaf — the
-    recommended next commit; see Hand-off.*
+  - [x] **N4a** rigid subgraph's multiplied graph is connected
+    (`mulTilde_preconnected_of_isKDof_zero`: `G.IsKDof n 0 ⟹ (G.mulTilde n).Preconnected`,
+    under `[NeZero (bodyHingeMult n)]`), licensing the `collapseTo r V(H)` vertex-collapse.
+    Green, axiom-clean (`Deficiency.lean`); cut-partition contradiction reusing
+    `two_le_crossingEdges_of_isKDof_zero`'s structure.
   - [ ] **N4b** cycleMatroid under the vertex-collapse `map` (Whitney contraction).
+    *Leaf — the recommended next commit; N4a now in hand. See Hand-off.*
   - [ ] **N4c** union-level independence bridge via `ext_indep` against
     `matroidMG_indep_iff` + `Matroid.Indep.contract_indep_iff` (the `(D,D)`-boundary
     Whitney rank-of-contraction identity).
@@ -84,6 +96,15 @@ concrete commit is the leaf-most brick: see *Hand-off* below.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N4a stated about `Preconnected`, regime `[NeZero (bodyHingeMult n)]`.** The
+  "`H̃` connected on `V(H)`" target is `(G.mulTilde n).Preconnected` (mathlib `Graph`
+  preconnectedness; `V(G̃) = V(G)` definitionally). The deficiency machinery
+  (`crossingEdges`/`partitionDef`/`deficiency`) is all phrased on `G`'s edges in `β`,
+  so the proof never touches `G̃`'s edge type except to lift one `G`-edge to its copy-`0`
+  in `G̃` (`mulTilde_isLink`) for the crossing-free-cut step — which forces the `D ≥ 2`
+  regime (a copy must exist). Matches `spanningVerts_edgeMultiply`'s `[NeZero …]`. No
+  nonemptiness hypothesis: the contradiction extracts its two vertices from
+  `¬ Preconnected` itself, and `Preconnected` is vacuous on the empty graph.
 - **N4 constructibility recon (2026-06-04, before any build).** Ran the producer
   recon (`blueprint/CLAUDE.md` *the honesty gate*, second half) on N4. **Finding:
   N4 is the graph↔matroid correspondence Phase 20 deliberately deferred, and the
@@ -156,33 +177,29 @@ concrete commit is the leaf-most brick: see *Hand-off* below.
   whole-hog.
 - **N5 is equally research-shaped** (its blueprint proof note already says so), so
   it is not the clean fallback the launch hand-off treated it as. **Track B** (the
-  Case II/III producer) is also a multi-node crux. The phase has *no* clean
-  single-commit next node among the named producers; the unblocking move is to
-  build the leaf bricks first (below).
+  Case II/III producer) is also a multi-node crux. The phase still has *no* clean
+  single-commit next node among the named *producers*; the unblocking move is to
+  keep building the N4 leaf bricks (N4a green; N4b/N4c remain).
 
 ## Hand-off / next phase
 
-**No named producer (N4/N5/Track B) is a clean single-session commit** — the
-launch hand-off's "do N4, fall back to N5" was optimistic on both. Two recons
-(this session's is the second) place N4's matroid bridge as a several-node
-Whitney-style build; N5/Track B are research-shaped by their own blueprint notes.
+**N4a is green** (`mulTilde_preconnected_of_isKDof_zero`, `Deficiency.lean`): a
+`0`-dof graph's multiplied graph is preconnected, with no `\leanok` flip
+(infrastructure below the N4 blueprint node). It now licenses the `collapseTo r V(H)`
+vertex-collapse the next brick needs.
 
-**Recommended next concrete commit:** the leaf-most brick that *any* of these need
-— **N4a, connectivity of a rigid subgraph's multiplied graph** (`H.IsKDof n 0 ⟹ H̃`
-connected on `V(H)`): a self-contained `Graph`-level fact in `Deficiency.lean` (it
-owns `IsRigidSubgraph`/`matroidMG`), with no dependency on the matroid bridge. It
-is the hypothesis a `cycleMatroid`-under-vertex-collapse argument needs to license
-the `collapseTo r V(H)` collapse (a disconnected `H` collapses several components
-to one `r`, which is *not* the connected contraction the cycle matroid sees), and
-it is reusable by Track A's N5 splice (which orients hinges along a spanning forest
-of `H`). **Substrate already in `Deficiency.lean`:** the cut-labeling deficiency
-machinery `two_le_crossingEdges_of_isKDof_zero` (`lem:two-edge-conn`, KT 3.1) +
-`cutLabeling` / `numParts_cutLabeling` — a disconnected `H` admits a *crossing-free*
-cut, whose `cutLabeling` partition witnesses `partitionDef ≥ D > 0` via
-`partitionDef_le_deficiency`, contradicting `def(H̃) = 0`. So N4a is "0-dof ⟹
-connected", proved by the same cut-partition contradiction, *not* a fresh device.
-It does not flip a blueprint node on its own (infrastructure below N4), so **no
-`\leanok` flip** that commit. Then build N4b/N4c with it in hand.
+**Recommended next concrete commit: N4b — cycleMatroid under the vertex-collapse
+`map` (Whitney contraction).** The graph side of N4 is
+`rigidContract = (G.deleteEdges E(H)).map (collapseTo r V(H))` (already green as
+`rigidContract_eq_contract`); N4b is the cycle-matroid fact that collapsing a
+*connected* rigid subgraph `H̃` to its representative `r` (licensed by N4a's
+preconnectedness) realizes the matroid contraction `(G̃).cycleMatroid ／ E(H̃)` on the
+per-cycle-matroid level — the genuinely new content, since there is no vendored
+`cycleMatroid_map`/`cycleMatroid`-under-collapse lemma (`cycleMatroid_contract` does
+not apply; see the N4 recon under *Decisions*). Bottom out on N4a + the connected-contraction
+form of Whitney's identity, then N4c lifts it through the `Matroid.Union` to the
+`matroidMG` independence bridge via `ext_indep`. Budget N4b as its own (possibly
+multi-) commit: it is a from-scratch cycle-matroid build, not a one-liner.
 
 *If a producer is preferred over infrastructure:* **N5**
 `lem:case-I-splice-placement`, decomposed math-first per its blueprint proof note
