@@ -40,19 +40,23 @@ cofinitely), the route-(a) constant-path capstone
 input-(2) finite spanning family (`exists_finite_spanning_rigidityRows`),
 and the per-edge → cross-hinge `hindep` bricks (`finrank_hingeRowBlock`,
 `linearIndependent_hingeRow`, `exists_independent_rigidityRows_of_edge`,
-`linearIndependent_hingeRow_star`, `linearIndependent_hingeRow_forest`, and now
+`linearIndependent_hingeRow_star`, `linearIndependent_hingeRow_forest`,
 `exists_independent_rigidityRows_of_forest` — the assembled rigid-block form: a
 spanning forest of `|J|` transversal hinges yields `(D−1)·|J|` independent rigidity
-rows in `F.rigidityRows`, the matching-size independent subfamily `s` Case I's
-`hglue_of_realization` consumes). The **route a/b decision is RESOLVED**
-(route (a), constant path; bilinearity sidestepped — see *Decisions* /
-*Blockers*). What remains is purely combinatorial-geometric: supply
-`hglue_of_realization`'s remaining inputs (the realization `F₀` and the
-matching-size independent subfamily `s`) for Case I, then the analogous
-per-consumer bridges for Case II / Prop 1.1. **Next concrete commit: see
-*Hand-off*** — exhibit the realization `F₀` and feed
-`exists_independent_rigidityRows_of_forest` (the `(D−1)·|J|` independent rows)
-into `hglue_of_realization`'s `hindep`/`hmatch`.
+rows in `F.rigidityRows`). The **index gap is now closed**: the consumer bridge
+`hglue_of_independent_rigidityRows` feeds *any* finite independent family `r : κ →
+Dual` with `range r ⊆ span F₀.rigidityRows` (the forest rows) directly into the
+`hglue` inequality — it concatenates `a := Sum.elim r a₀` (`a₀` from
+`exists_finite_spanning_rigidityRows`), takes the subfamily at `s := range Sum.inl`
+(= `r`, independent), so `hglue_of_realization`'s `hspanrows`/`hindep` are discharged
+and only the count match `hmatch` (`Nat.card κ = D(|V|−1) − dim Z_s`) and the choice of
+`F₀` remain. The **route a/b decision is RESOLVED** (route (a), constant path;
+bilinearity sidestepped — see *Decisions* / *Blockers*). What remains is purely
+geometric: exhibit the realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`)
+and the `hmatch` count for Case I, then the analogous per-consumer bridges for Case
+II / Prop 1.1. **Next concrete commit: see *Hand-off*** — exhibit `F₀` and match the
+count, feeding `exists_independent_rigidityRows_of_forest` through
+`hglue_of_independent_rigidityRows`.
 
 ## Architectural choices made up front
 
@@ -162,6 +166,17 @@ hand-off convenience.
   block bases via `choose` + `exists_linearIndependent_fin_of_finrank_eq`, witnessed as rows through
   `hlink`/block membership. Green; folded into `def:rigidity-matrix`'s `\lean{...}` pin (no new node).
 
+- [x] `hglue_of_independent_rigidityRows` (`Molecular/AlgebraicInduction.lean`): the **consumer
+  bridge closing the index gap** between the assembled forest family and the route-(a) capstone.
+  `hglue_of_realization` wants the independent subfamily to index into the *spanning* family `a`;
+  the forest rows `r : κ → Dual` instead live in `span F₀.rigidityRows` without being a subfamily of
+  any enumeration. The bridge concatenates `a := Sum.elim r a₀` (`a₀` from
+  `exists_finite_spanning_rigidityRows`): `range r ⊆ span (range a₀)` keeps the concatenation
+  spanning (`hspanrows`), and the subfamily at `s := range Sum.inl` is exactly `r` (independent,
+  reindexed via `Set.rangeSplitting` — FRICTION). So Case I now needs only `r` (the forest), the
+  realization `F₀`, and the count `hmatch` (`Nat.card κ = D(|V|−1) − dim Z_s`). Green; folded into
+  `lem:genericity-device`'s `\lean{...}` pin (route-(a) bridge, no new node).
+
 - [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
   `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
   `span (range a) = span F.rigidityRows`, from finite-dimensionality of the dual (`α` finite ⇒
@@ -187,10 +202,13 @@ in the Phase-21 Lean, to be supplied by the device):
   realization `F₀`, all affine-path plumbing discharged. The finite spanning row family `a`
   (`hspanrows`) is now also discharged generically by `exists_finite_spanning_rigidityRows` for any
   `F₀`. The `hindep` *bridge* is now also in hand (`linearIndependent_hingeRow`): per genuine edge,
-  independent extensors → independent rigidity rows. Residual is purely combinatorial-geometric —
-  exhibit the realization `F₀` and the matching-size independent subfamily `s` from the contraction
-  realization + rigid block (combine `linearIndependent_hingeRow` across the block's hinges for
-  `hindep`, count via `finrank_hingeRowBlock` for `hmatch`); no path construction remains.
+  independent extensors → independent rigidity rows. The **index gap is now closed**
+  (`hglue_of_independent_rigidityRows`): the assembled forest family `r`
+  (`exists_independent_rigidityRows_of_forest`) feeds the `hglue` inequality directly via the
+  `Sum.elim r a₀` concatenation, discharging `hspanrows` + `hindep` for *any* `F₀`. Residual is
+  purely geometric — exhibit the realization `F₀` and the count `hmatch`
+  (`Nat.card κ = D(|V|−1) − dim Z_s`) from the contraction realization + rigid block; no path
+  construction, no spanning-family/subfamily-index bookkeeping remains.
 - [ ] `hspan` for Case II — each base-`v`-pinned motion lands in the two
   new edges' panel-support spans (false pointwise; holds by the
   rank/dimension count, via `exists_independent_panelSupportExtensor`).
@@ -275,74 +293,40 @@ in the Phase-21 Lean, to be supplied by the device):
   `F t = F₀` (`b = 0`) and reads off the corank at the one realization. Route
   (b) (multivariate Zariski-open) is unneeded for Case I, but may be cleaner
   if a future consumer genuinely requires a non-constant path.
-- **The single open piece for Case I is now purely combinatorial-geometric**:
-  supplying `hglue_of_realization`'s inputs — the single realization `F₀`, a
-  *finite* family `a` spanning `rigidityRows F₀`, and an independent subfamily `s`
-  of the matching size `#s = D(|V|−1) − dim Z_s` (`hspanrows` + `hindep` +
-  `hmatch`) — from the contraction realization plus the rigidly-placed block
-  `V(H)`. No affine-path construction remains.
+- **The single open piece for Case I is now purely geometric**: the index gap is
+  closed by `hglue_of_independent_rigidityRows` (feeds the assembled forest family `r`
+  into the `hglue` inequality via the `Sum.elim r a₀` concatenation, discharging
+  `hspanrows` + `hindep`), so all that remains is to exhibit the realization `F₀` and
+  the count `hmatch` (`Nat.card κ = D(|V|−1) − dim Z_s`) from the contraction realization
+  plus the rigidly-placed block `V(H)`. No affine-path, spanning-family, or
+  subfamily-index construction remains.
 
 ## Hand-off / next phase
 
-The abstract device `lem:genericity-device` (`genericityDevice`) and the
-full Case-I `hglue` route are GREEN (route-(a) constant path; see *Current
-state* + *Blockers* + *Lemma checklist*). Input (2) (`exists_finite_spanning_rigidityRows`)
-and the per-edge/cross-hinge `hindep` bricks are landed, so no affine-path
-or finite-spanning-family construction remains for any consumer — what's
-left is the per-consumer geometric assembly of `hglue_of_realization`'s
-remaining inputs.
+The abstract device `lem:genericity-device` (`genericityDevice`) and the full Case-I `hglue`
+*plumbing* are GREEN (route-(a) constant path; see *Current state* + *Blockers* + *Lemma
+checklist*). All non-geometric inputs are now discharged: the affine path (constant,
+`hcoord_const`), the finite spanning family (`exists_finite_spanning_rigidityRows`), the assembled
+forest `hindep` family (`exists_independent_rigidityRows_of_forest`, `(D−1)·|J|` LI rows), and — as
+of this commit — the **index gap** between them (`hglue_of_independent_rigidityRows`: feeds the
+forest family `r` straight into the `hglue` inequality via the `Sum.elim r a₀` concatenation, so a
+consumer supplies only `r`, the realization `F₀`, and the count `hmatch`).
 
-**Smallest next concrete commit: supply `hglue_of_realization`'s *remaining* inputs for Case I (the
-geometric construction).** From the contraction realization (`G/E(H)` at its inductive
-`RankHypothesis`) plus the rigid block `V(H)` placed rigidly, exhibit:
-1. the single realization `F₀` (a `BodyHingeFramework`/`PanelHingeFramework`-via-`toBodyHinge`), and
-2. an independent subfamily `s` of the finite spanning family `a` (from
-   `exists_finite_spanning_rigidityRows`) with `#s = D(|V|−1) − dim Z_s` (`hindep` + `hmatch`), the
-   independent rigidity rows coming from `exists_independent_panelSupportExtensor` through the
-   hinge-row block — each transversal hinge contributing `D − 1` rows (`finrank_hingeRowBlock`, now
-   green).
-No affine-path construction and no finite-spanning-family construction remain. This is the
-genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is
-in hand and `s` is being matched to the corank. The per-edge and cross-hinge sub-bricks toward (2)
-are now landed: `linearIndependent_hingeRow` (independent supporting extensors → independent
-`hingeRow u v r` per edge), `exists_independent_rigidityRows_of_edge` (one transversal hinge ⇒
-`D − 1` LI rigidity rows in `rigidityRows`), and now `linearIndependent_hingeRow_star` (the
-cross-hinge combination: rows from *distinct* hinges at a common pinned body, distinct other
-endpoints, are jointly LI by the pin-a-body / disjoint-support count), and now
-`linearIndependent_hingeRow_forest` (the multi-body extension: a rigid block whose hinges span
-*multiple* bodies, oriented along a private-endpoint spanning forest, jointly LI by the same
-pin-a-body count), and now `exists_independent_rigidityRows_of_forest` (the **assembled** family:
-forest of `|J|` transversal hinges ⇒ `(D−1)·|J|` LI rigidity rows in `rigidityRows`, indexed by
-`Σ j, Fin (screwDim k − 1)`). **Next: exhibit `F₀` and match the count.** With the assembled
-`hindep` family now in hand, the remaining Case-I work is: (a) exhibit the realization `F₀` (a
-`PanelHingeFramework`-via-`toBodyHinge`) from the contraction realization plus the rigidly-placed
-block `V(H)`; (b) feed `exists_independent_rigidityRows_of_forest` (through the finite spanning
-family `a` of `exists_finite_spanning_rigidityRows`) into `hglue_of_realization`'s `hindep`, and
-match `#s = |J|·(D−1) = D(|V|−1) − dim Z_s` (`hmatch`) against the contraction's inductive
-`RankHypothesis`. (For the genuine cycle case, the `m ≤ D` extensor-independence of
+**Smallest next concrete commit: exhibit the Case-I realization `F₀` + count match.** From the
+contraction realization (`G/E(H)` at its inductive `RankHypothesis`) plus the rigid block `V(H)`
+placed rigidly, exhibit (a) the single realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`),
+supplying the forest data — the private-endpoint spanning forest `u`/`other`/`e` of `V(H)`'s
+transversal hinges — to `exists_independent_rigidityRows_of_forest` for `r`; and (b) the count
+`hmatch` (`Nat.card κ = |J|·(D−1) = D(|V|−1) − dim Z_s`) against the contraction's inductive
+`RankHypothesis`. Feed (a)+(b) through `hglue_of_independent_rigidityRows` →
+`toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`. This is the genuinely-geometric Case-I
+assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is in hand and the count is
+being matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
 `lem:cycle-realization` + `exists_independent_panelSupportExtensor` general position controls the
-cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is the existing screw-space
-telescoping core.) The other
-consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same constant-path chain
-(`hcoord_const` → device) with an analogous per-consumer bridge; the device's *target statements*
-are fixed (the named hypotheses in `AlgebraicInduction.lean`).
-
-**Update (2026-06-03, this commit):** the forest `hindep` is now **assembled** into the
-matching-size subfamily — `exists_independent_rigidityRows_of_forest` combines the per-edge `D−1`
-brick (`exists_independent_rigidityRows_of_edge`) with the cross-hinge combination
-(`linearIndependent_hingeRow_forest`) into one LI family of `(D−1)·|J|` rigidity rows in
-`F.rigidityRows`, indexed by `Σ j, Fin (screwDim k − 1)`. This is exactly the `hindep`/`hmatch`
-input shape `hglue_of_realization` consumes (its `hindep` = the joint LI; its `hmatch` count
-`|J|·(D−1)`). All `hindep` sub-bricks **and their assembly** toward (2) are now landed. The
-**smallest next concrete commit** is now purely the geometric `F₀` exhibit + count match: (a)
-exhibit the realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`) from the contraction
-realization plus the rigidly-placed block `V(H)`; (b) feed
-`exists_independent_rigidityRows_of_forest` through the finite spanning family `a`
-(`exists_finite_spanning_rigidityRows`) into `hglue_of_realization`, and match
-`#s = |J|·(D−1) = D(|V|−1) − dim Z_s` (`hmatch`) against the contraction's inductive
-`RankHypothesis`. (a)+(b) discharge `hglue_of_realization`'s remaining inputs for Case I (KT
-§6.2/6.5); likely more than one commit — assess once `F₀` is in hand and the count is being
-matched to the corank.
+cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is the screw-space
+telescoping core.) The other consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same
+constant-path chain (`hcoord_const` → device) with an analogous per-consumer bridge; the device's
+*target statements* are fixed (the named hypotheses in `AlgebraicInduction.lean`).
 
 **Also consumed by Phases 22–23** (Case III candidate-framework
 genericity, Claims 6.11/6.12), so building the device standalone pays

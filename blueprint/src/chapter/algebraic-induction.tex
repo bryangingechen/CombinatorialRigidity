@@ -787,7 +787,8 @@ Phase~21b.
         CombinatorialRigidity.Molecular.hglue_of_genericityDevice,
         CombinatorialRigidity.Molecular.hcoord_of_rigidityRows_affine,
         CombinatorialRigidity.Molecular.hcoord_const,
-        CombinatorialRigidity.Molecular.hglue_of_realization}
+        CombinatorialRigidity.Molecular.hglue_of_realization,
+        CombinatorialRigidity.Molecular.hglue_of_independent_rigidityRows}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization through its
@@ -830,7 +831,13 @@ Phase~21b.
   along a real line) never bites --- the device reads off the corank at the one
   hand-built realization. With the constant path the affine family is any
   finite family spanning that realization's rigidity rows (with $b = 0$), and
-  the $\mathtt{hglue}$ inequality holds at the realization itself.
+  the $\mathtt{hglue}$ inequality holds at the realization itself. The
+  consumer-ready form feeds the rigid block's \emph{assembled} independent
+  rigidity-row family (the $(D-1)|J|$ rows of a spanning forest of transversal
+  hinges, \cref{def:rigidity-matrix}) directly, concatenating it in front of
+  any finite spanning family so the witnessed corank is the forest's row count
+  and the only residual obligations are geometric: the realization and the
+  count match.
 \end{lemma}
 \begin{proof}
   \leanok

@@ -76,6 +76,28 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Showing the subfamily of `Sum.elim r a₀` indexed by `range Sum.inl` *is* `r` — reindex via `Set.rangeSplitting`, not a hand-rolled `Subtype.ext`
+- **Where it bit:** `hglue_of_independent_rigidityRows` in
+  `Molecular/AlgebraicInduction.lean` (Phase 21b Case-I consumer bridge): the
+  device wants the independent subfamily to index *into* the spanning family,
+  so the bridge concatenates `a := Sum.elim r a₀` and takes the subfamily at
+  `s := range (Sum.inl : κ → κ ⊕ Fin n)`; the obligation is that this subfamily
+  is independent, i.e. equals `r` up to the `range`-subtype reindexing.
+- **Fix:** `(fun i : range Sum.inl => a ↑i) = r ∘ (Set.rangeSplitting Sum.inl)`
+  (each `↑i` is `Sum.inl (rangeSplitting … i)` by `Set.apply_rangeSplitting`, then
+  `Sum.elim_inl`), and `r ∘ rangeSplitting` is independent by
+  `hr.comp _ (Set.rangeSplitting_injective Sum.inl)`. A first attempt rolling the
+  injectivity by hand (`Subtype.ext (Sum.inl_injective (by …))`) left the inner
+  `by` goal elaborating to `Type` (placeholder-synthesis failure) — the canned
+  `Set.rangeSplitting_injective` is the clean route.
+- **Also:** the `range r ⊆ span (range a₀)` step needs `rw [SetLike.mem_coe]` to
+  drop the `↑(span …)` coercion before `ha₀ ▸ hmem i` lands (a bare `rw [ha₀]`
+  trips the coercion).
+- **General lesson:** to identify "the `Sum.elim f g`-subfamily indexed by
+  `range Sum.inl`" with `f`, reach for `Set.rangeSplitting` + `apply_rangeSplitting`
+  + `rangeSplitting_injective` rather than `Subtype.ext`-ing the section by hand.
+- **Status:** resolved — no mirror (project-internal bridge; the idiom is the lesson).
+
 ### [resolved] `Basis.linearIndependent.map' W.subtype` over a `Module.Dual` of an exterior power blows up at `whnf` — factor the basis-coercion into an abstract-field mirror lemma
 - **Where it bit:** `exists_independent_rigidityRows_of_edge` in
   `Molecular/RigidityMatrix.lean` (Phase 21b Case-I per-edge brick): coercing a

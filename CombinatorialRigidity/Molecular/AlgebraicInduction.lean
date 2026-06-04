@@ -1703,4 +1703,72 @@ theorem hglue_of_realization [Fintype α] [Nonempty α] {ι : Type*} [Finite ι]
     (hcoord_const F₀ a hspanrows) hindep (fun _ => hmatch)
   exact ht
 
+/-- **Case I `hglue` from an independent rigidity-row family** (`lem:case-I`, the route-(a)
+capstone in its consumer-ready form; Katoh–Tanigawa 2011 §6.1 Claim 6.4, Phase 21b). The bridge
+that feeds the **assembled** independent rigidity-row family of
+`exists_independent_rigidityRows_of_forest` directly into the block-triangular gluing inequality,
+discharging `hglue_of_realization`'s finite-spanning-family `a` and its independent-subfamily index
+`s` once and for all.
+
+`hglue_of_realization` is stated against a single finite family `a` that *spans* `F₀.rigidityRows`
+together with an independent subfamily indexed by `s ⊆ ι` of `a` itself. The Case-I assembly,
+however, produces its independent family `r : κ → Dual` (the `(D−1)·|J|` rows of a rigid block's
+spanning forest of transversal hinges) as members of `F₀.rigidityRows` — *not* as a syntactic
+subfamily of any pre-chosen spanning enumeration. This lemma closes that index gap with the
+**concatenation** `a := Sum.elim r a₀`, where `a₀` is any finite family spanning the rigidity rows
+(`exists_finite_spanning_rigidityRows`): its range is `range r ∪ range a₀`, and since `range r ⊆
+span F₀.rigidityRows = span (range a₀)`, the concatenated family still spans the rigidity rows
+(`hspanrows`); the subfamily indexed by `s := range Sum.inl` is exactly `r` (independent by
+`hr`, transported across the `Sum.inl` reindexing). The corank then matches `Nat.card κ` (the
+forest's `(D−1)·|J|`), so the route-(a) capstone fires with `hmatch` keyed to `κ` rather than to a
+hand-chosen subset of an enumeration.
+
+The residual per-consumer obligations are now exactly two and *both purely geometric*: (i) exhibit
+the realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge` from the contraction realization
+plus the rigidly placed block `V(H)`), supplying the forest data `r` via
+`exists_independent_rigidityRows_of_forest`; and (ii) the count match `hmatch`
+(`Nat.card κ = D(|V|−1) − dim Z_s`) against the contraction's inductive `RankHypothesis`. No
+spanning-family construction, no subfamily-index bookkeeping, and no affine path remain. -/
+theorem hglue_of_independent_rigidityRows [Fintype α] [Nonempty α] {κ : Type*} [Finite κ]
+    (F₀ : BodyHingeFramework k α β) {sblk : Set α}
+    (r : κ → Module.Dual ℝ (α → ScrewSpace k)) (hr : LinearIndependent ℝ r)
+    (hmem : ∀ i, r i ∈ Submodule.span ℝ F₀.rigidityRows)
+    (hmatch : Nat.card κ + Module.finrank ℝ F₀.infinitesimalMotions ≤ screwDim k * Fintype.card α →
+      (Nat.card κ : ℤ) = screwDim k * (Fintype.card α - 1)
+        - Module.finrank ℝ (F₀.pinnedMotionsOn sblk)) :
+    (Module.finrank ℝ F₀.infinitesimalMotions : ℤ) ≤
+      screwDim k + Module.finrank ℝ (F₀.pinnedMotionsOn sblk) := by
+  classical
+  -- A finite family `a₀` spanning the rigidity rows; concatenate `r` in front of it.
+  obtain ⟨n, a₀, ha₀⟩ := F₀.exists_finite_spanning_rigidityRows
+  set a : κ ⊕ Fin n → Module.Dual ℝ (α → ScrewSpace k) := Sum.elim r a₀ with ha
+  -- The concatenated family still spans the rigidity rows: `range r ⊆ span (range a₀)`.
+  have hspanrows : Submodule.span ℝ (Set.range a) = Submodule.span ℝ F₀.rigidityRows := by
+    rw [ha, Set.Sum.elim_range, Submodule.span_union, ha₀]
+    refine le_antisymm (sup_le ?_ le_rfl) le_sup_right
+    rw [Submodule.span_le]
+    rintro _ ⟨i, rfl⟩
+    rw [SetLike.mem_coe]; exact ha₀ ▸ hmem i
+  -- The subfamily indexed by `range Sum.inl` is exactly `r`, hence independent.
+  have hindep : LinearIndependent ℝ
+      (fun i : (Set.range (Sum.inl : κ → κ ⊕ Fin n)) =>
+        a i + (0 : ℝ) • (0 : Module.Dual ℝ (α → ScrewSpace k))) := by
+    simp only [smul_zero, add_zero]
+    have hcomp : (fun i : (Set.range (Sum.inl : κ → κ ⊕ Fin n)) => a (i : κ ⊕ Fin n))
+        = r ∘ (fun i => (Set.rangeSplitting Sum.inl i : κ)) := by
+      funext i
+      have := Set.apply_rangeSplitting (Sum.inl : κ → κ ⊕ Fin n) i
+      rw [ha]
+      simp only [Function.comp_apply]
+      rw [show (i : κ ⊕ Fin n) = Sum.inl (Set.rangeSplitting Sum.inl i) from this.symm,
+        Sum.elim_inl]
+    rw [hcomp]
+    exact hr.comp _ (Set.rangeSplitting_injective (Sum.inl : κ → κ ⊕ Fin n))
+  -- The corank `#s = Nat.card (range Sum.inl) = Nat.card κ`.
+  have hcard : Nat.card (Set.range (Sum.inl : κ → κ ⊕ Fin n)) = Nat.card κ := by
+    rw [Nat.card_range_of_injective Sum.inl_injective]
+  refine hglue_of_realization F₀ a (s := Set.range (Sum.inl : κ → κ ⊕ Fin n)) (sblk := sblk)
+    hspanrows hindep ?_
+  rw [hcard]; exact hmatch
+
 end CombinatorialRigidity.Molecular
