@@ -2645,6 +2645,46 @@ theorem PanelHingeFramework.exists_relative_full_count_ofParam [Finite α]
   have hge : screwDim k ≤ screwDim k * V(G).ncard := Nat.le_mul_of_pos_right _ h1
   omega
 
+/-- **Realization producer from a witnessed independent rigidity-row family** (`lem:case-II-
+realization` / `lem:case-I-realization`, the genericity-device closure; Katoh–Tanigawa 2011 §5–6,
+Phase 21b). The honest *glue* both case producers reduce to once their geometry is placed: given a
+free-normal panel family `ofNormals G ends q` (with `ends` recording each edge's link, `hends`) over
+a nonempty body set `V(G)`, if at *one* normal assignment `q₀` the rigidity rows indexed by `s` are
+linearly independent (`hindep`) and `s` meets the relative target count `#s ≥ D(|V(G)|−1)` (`hcard`,
+the witnessed corank — the genuine geometric input), then `G` has a full-rank panel realization
+`HasFullRankRealization k G`.
+
+This is the device-direct composition `N2 ∘ N3`: the genericity device closure
+`exists_relative_full_count_ofParam` (N2) lifts the witnessed corank at the seed `q₀` to a generic
+normal assignment `q` at which `dim Z(G,q) ≤ D·(|α ∖ V(G)| + 1)`, and the relative-count adapter
+`isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (N3) turns that into rigidity on `V(G) =
+V(ofNormals G ends q)`, the realization motive. The witness `(q₀, s)` is the *satisfiable* geometric
+data — exactly what each case producer constructs: Case II places the re-inserted body's normal so
+the `+(D−1)` new rows are independent (KT 6.12, `lem:case-II-realization-placement`), Case I places
+the two splice legs on one framework with a block-triangular-independent forest of rows
+(`lem:case-I-splice-placement`). It carries no laundered deliverable — `hindep`/`hcard` is the
+witnessed-rank input the placement supplies, not the rank the lemma concludes, matching the honesty
+split of the Case-I splice `glue`/`placement`. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_independent_panelRow [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hindep : LinearIndependent ℝ
+      (fun i : s => (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends i))
+    (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card s) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  obtain ⟨q, hq⟩ :=
+    PanelHingeFramework.exists_relative_full_count_ofParam G ends hends hne hindep hcard
+  refine ⟨PanelHingeFramework.ofNormals G ends q,
+    PanelHingeFramework.ofNormals_graph G ends q, ?_⟩
+  have hG : (PanelHingeFramework.ofNormals G ends q).toBodyHinge.graph = G := rfl
+  have hrig := (PanelHingeFramework.ofNormals G ends q).toBodyHinge
+    |>.isInfinitesimallyRigidOn_vertexSet_of_finrank_le (by rw [hG]; exact hne)
+      (by rw [hG]; exact hq)
+  rw [hG] at hrig
+  exact hrig
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by

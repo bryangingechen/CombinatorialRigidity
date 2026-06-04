@@ -1182,9 +1182,8 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Case II realization: the $1$-extension produces a full-rank realization; KT Lemma 6.8]
   \label{lem:case-II-realization}
-  \uses{def:panel-hinge-framework, lem:case-II, lem:genericity-device,
-        lem:reduction-step, lem:exists-independent-panel-extensor,
-        lem:isInfRigidOn-of-relative-count}
+  \uses{def:panel-hinge-framework, lem:case-II, lem:reduction-step,
+        lem:realization-of-independent-rows, lem:case-II-realization-placement}
   The realization motive of \cref{thm:theorem-55}
   ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
   $D(|V(G)|-1)$) is closed under splitting off a reducible degree-2 vertex.
@@ -1199,8 +1198,11 @@ Cases~I and~II travel toward the smaller inductive graph.
   $S b \in \operatorname{span} C(e_b)$ for every base-$v$-pinned motion $S$) as
   a hypothesis, this node must \emph{construct} the panel normal $n$ for the
   re-inserted body $v$ on which $\mathtt{hspan}$ holds and the extended
-  framework realizes its rank. \emph{Red:} no Lean producer yet lands the
-  realization motive for the $1$-extension --- only the accounting iff exists.
+  framework realizes its rank. \emph{Red:} it splits into the green
+  device-closure glue \cref{lem:realization-of-independent-rows} and the genuine
+  geometric obligation, the placement \cref{lem:case-II-realization-placement}
+  (construct the seed $(q_0, s)$ witnessing $D(|V(G)|-1)$ independent rows across
+  the edge substitution); the latter is still red, so the producer is.
   Against the relativized motive (\cref{def:rank-hypothesis}) the inductive
   hypothesis ``$G_v^{ab}$ realizes its rank'' is satisfiable (it spans its own
   vertices), so the producer is well-posed; it is the shallower sibling of the
@@ -1208,20 +1210,17 @@ Cases~I and~II travel toward the smaller inductive graph.
   a full splice.
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II, lem:genericity-device, lem:exists-independent-panel-extensor,
-        lem:isInfRigidOn-of-relative-count}
-  Place $G_v^{ab}$ at its inductive realization and re-insert $v$ joined to
-  $a$ and $b$ by hinges whose supporting extensors are in general position
-  (\cref{lem:exists-independent-panel-extensor}). For such a choice the
-  span-membership $\mathtt{hspan}$ holds for every base-$v$-pinned motion ---
-  false pointwise, true on the Zariski-open set the device
-  (\cref{lem:genericity-device}) selects --- so the accounting iff
-  \cref{lem:case-II} pins the extended framework's body-$v$-pinned dimension to
-  the inductive realization's ($k' = 0$), i.e.\ the $1$-extension lifts to the
-  target rank $D(|V(G)|-1)$. Constructing the general-position normal $n$
-  realizing $\mathtt{hspan}$ is the remaining geometric obligation, the
-  shallower parallel of the Case~I splice seed
-  \cref{lem:case-I-splice-seed}. \emph{Deferred} (Phase~21b realization layer).
+  \uses{lem:case-II, lem:realization-of-independent-rows,
+        lem:case-II-realization-placement}
+  The placement \cref{lem:case-II-realization-placement} supplies, from the
+  inductive realization of $G_v^{ab}$, a seed normal assignment $q_0$ and a
+  family of $D(|V(G)|-1)$ independent rigidity rows of
+  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ (re-inserting $v$ joined to $a, b$
+  by general-position hinges, \cref{lem:exists-independent-panel-extensor},
+  threading the inductive rows through the common subgraph $G - v$). Feeding that
+  witness to the glue \cref{lem:realization-of-independent-rows} lifts it to a
+  generic realization rigid on $V(G)$, the full target rank $D(|V(G)|-1)$. Only
+  the placement remains; the device-closure half is green.
 \end{proof}
 
 \subsection{The genericity device (Claim 6.4/6.9)}
@@ -1246,11 +1245,15 @@ producer: (i) the device must be \emph{applied} to a varying panel-coordinate
 family, which needs the row coordinatization
 \cref{lem:rows-polynomial-in-normals} (B0, now green) --- the prior phase only
 ever invoked the device on a constant family; and (ii) the device needs a
-\emph{seed} realization to lift. For Case~I the block-triangular \emph{glue}
-\cref{lem:case-I-splice-seed} is green, but the \emph{placement} realizing both
-legs on one common framework (\cref{lem:case-I-splice-placement}) is a separate
-construction, red; for Case~II it is the $1$-extension normal
-(\cref{lem:case-II-realization}), also red. Nor
+\emph{seed} realization to lift. The device-to-motive closure itself --- lift a
+seed's witnessed independent rows to a generic realization rigid on $V(G)$ --- is
+the green glue \cref{lem:realization-of-independent-rows}, shared by both cases;
+what remains in each is the \emph{placement}: the seed realization to feed it. For
+Case~I the block-triangular \emph{glue} \cref{lem:case-I-splice-seed} is green, but
+the placement realizing both legs on one common framework
+(\cref{lem:case-I-splice-placement}) is a separate construction, red; for Case~II
+the placement is the $1$-extension normal
+(\cref{lem:case-II-realization-placement}), also red. Nor
 does the device supply \cref{prop:rigidity-matrix-prop11}'s genericity-free
 upper bound $\mathtt{hub}$, a distinct Phase-19-partition obligation carried as
 an explicit hypothesis; the device underwrites only the $\mathtt{hgen}$ half.
@@ -1412,6 +1415,65 @@ non-spanning block).}
   hypothesis; the block pin on $V(G)$ has exactly that dimension
   (\cref{lem:relative-screw-split}). Equal dimensions on a containment force the
   needed equality.
+\end{proof}
+
+\begin{lemma}[Realization glue from a witnessed independent row family]
+  \label{lem:realization-of-independent-rows}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_of_independent_panelRow}
+  \leanok
+  \uses{def:rank-hypothesis, lem:relative-device-count,
+        lem:isInfRigidOn-of-relative-count, lem:rows-polynomial-in-normals}
+  The honest device closure both case producers reduce to once their geometry is
+  placed. Fix a multigraph $G$ on a nonempty body set $V(G)$ and an endpoint
+  selector $\mathrm{ends}$ recording each edge's link. If at \emph{one} free
+  normal assignment $q_0$ the rigidity rows of the free-normal panel family
+  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ indexed by $s$ are linearly
+  independent and $\#s \ge D(|V(G)|-1)$, then $G$ has a full-rank panel
+  realization ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank).
+  This is the composition $\text{N2} \circ \text{N3}$: the device's relative
+  count \cref{lem:relative-device-count} lifts the witnessed corank at $q_0$ to a
+  generic normal assignment $q$, and the relative-count adapter
+  \cref{lem:isInfRigidOn-of-relative-count} turns that into rigidity on
+  $V(G) = V(\mathrm{ofNormals}\,G\,\mathrm{ends}\,q)$. The witnessed independent
+  family $(q_0, s)$ is the \emph{satisfiable} geometric input the placement
+  supplies, not the rank the lemma concludes --- the honesty split matching the
+  Case~I splice glue/placement \cref{lem:case-I-splice-seed}.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Apply \cref{lem:relative-device-count} to the witness $(q_0, s)$ to obtain a
+  normal assignment $q$ with $\dim Z(G,q) \le D(|\alpha \setminus V(G)| + 1)$,
+  then \cref{lem:isInfRigidOn-of-relative-count} on
+  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q$ (whose vertex set is $V(G)$).
+\end{proof}
+
+\begin{lemma}[Case II placement: the $1$-extension normal; KT (6.12)]
+  \label{lem:case-II-realization-placement}
+  \uses{def:panel-hinge-framework, lem:case-II, lem:genericity-device,
+        lem:exists-independent-panel-extensor}
+  The remaining geometric obligation of \cref{lem:case-II-realization}: from the
+  inductive realization of the splitting-off $G_v^{ab}$, construct a free normal
+  assignment $q_0$ for the parent graph $G$ --- in particular a panel normal $n$
+  for the re-inserted body $v$ --- together with a linearly independent family of
+  $D(|V(G)|-1)$ rigidity rows of $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$.
+  Geometrically: re-insert $v$ joined to its two neighbours $a, b$ by hinges
+  whose supporting extensors are in general position
+  (\cref{lem:exists-independent-panel-extensor}), so the two new edges contribute
+  $+(D-1)$ independent rows that, combined with the inductive realization's rows
+  threaded through the common subgraph $G - v$ (recovering the short-circuit edge
+  $e_0$'s constraint from $v$'s two new edges --- the edge substitution
+  $G_v^{ab}$ adds $e_0$ but deletes $v$'s edges, so the count is \emph{not} a free
+  transport), witness the full target count. This is the shallower parallel of
+  the Case~I splice placement (one re-inserted body, $+(D-1)$ rows). \emph{Red}
+  (Phase~21b realization layer): the witnessed-independent-row construction across
+  the edge substitution is the genuine content; once green it feeds the glue
+  \cref{lem:realization-of-independent-rows}.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II, lem:exists-independent-panel-extensor}
+  Constructing the seed $(q_0, s)$ realizing the witnessed count is the geometric
+  step. Deferred to the Phase-21b realization layer; see
+  \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
 \end{proof}
 
 \subsection{Case III deferred (the crux)}

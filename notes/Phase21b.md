@@ -1,7 +1,8 @@
 # Phase 21b — Genericity device + realization layer (work log)
 
 **Status:** in progress (opened 2026-06-03; realization layer re-planned
-2026-06-04; node-decomposition re-plan 2026-06-06). Cold-start-ready hand-off below.
+2026-06-04; node-decomposition re-plan 2026-06-06; N7 decomposed into glue +
+placement 2026-06-04). Cold-start-ready hand-off below.
 
 Sub-phase scoped out of Phase 21 (user decision, risk #4/#7) — the **analytic
 sibling** of the Phase-21a meet. Two halves: (1) the **genericity device**
@@ -39,8 +40,17 @@ node list in the Hand-off. Three forward facts shape the plan:
 - The device's output is an **absolute** codimension bound `#s + dim Z ≤ D·card α`
   over the ambient body type; the producers need the **`V(G)`-relative motive**
   `IsInfinitesimallyRigidOn V(G)`. The adapter is the relative-count bridge
-  **N1–N3**, now **GREEN** (landed 2026-06-04). The next commit is **N7** (Case II
-  producer), the cheapest full producer — it needs only the bridge (N3) + device.
+  **N1–N3**, now **GREEN** (landed 2026-06-04). **The device-to-motive glue
+  `hasFullRankRealization_of_independent_panelRow` (`lem:realization-of-independent-rows`)
+  is also GREEN (2026-06-04):** the honest `N2 ∘ N3` closure shared by both
+  producers — a witnessed independent `panelRow` family of size `D(|V(G)|−1)` at one
+  seed `q₀` ⇒ `HasFullRankRealization`. **N7 was NOT a mechanical "N3 + device"
+  composition** (the splitting-off `G_v^{ab}` is an *edge substitution* of `G`, not a
+  subgraph — it adds the fresh `e₀` and drops `v`'s two edges, so rigidity-on-`t`
+  does not free-transport; the producer must *construct* the seed family across the
+  substitution). So N7 was decomposed (mirroring the Case-I glue/placement split):
+  the green glue above, plus the genuinely-geometric red **placement** node N7b
+  (`lem:case-II-realization-placement`, construct the seed `(q₀, s)`).
 - The rigid-subgraph contraction is **mostly built, not fully**: `rigidContract`
   (`Induction.lean:1854`) + its vertex-drop (`:1869`) + the matroid-side
   `contraction_isMinimalKDof` (`:1998`) are green, but the graph↔matroid
@@ -74,12 +84,17 @@ per-node detail.
   (`exists_relative_full_count_ofParam`; `#s + dim Z ≤ D·|α|` ⇒ `dim Z ≤ D(|V(G)ᶜ|+1)`).
 - [x] N3 `lem:isInfRigidOn-of-relative-count` — relative full count ⇒ `IsInfinitesimallyRigidOn V(G)`
   (`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`; singleton-block Case-I bridge + N1 dim-match).
+- [x] N7a `lem:realization-of-independent-rows` — the device-to-motive glue
+  (`hasFullRankRealization_of_independent_panelRow`; `N2 ∘ N3`, witnessed independent `panelRow`
+  family of size `D(|V(G)|−1)` ⇒ `HasFullRankRealization`). Shared by both producers. **GREEN 2026-06-04.**
 
 **RED — the build (ordered; detail in Hand-off):**
-- [ ] N7 `lem:case-II-realization` — 1-extension producer (needs only N3 + device). Discharges `hsplit`.
+- [ ] N7b `lem:case-II-realization-placement` — construct the seed `(q₀, s)` for the 1-extension
+  across the edge substitution (KT 6.12). The genuine geometry; feeds N7a.
+- [ ] N7 `lem:case-II-realization` — compose N7a (glue) + N7b (placement). Discharges `hsplit`.
 - [ ] N4 `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction bridge; gates Case I.
 - [ ] N5 `lem:case-I-splice-placement` — the splice geometry (decompose first).
-- [ ] N6 `lem:case-I-realization` — compose N4+N5+glue+B0+N3/device. Discharges `hcontract`.
+- [ ] N6 `lem:case-I-realization` — compose N4+N5+glue(N7a)+B0+N3/device. Discharges `hcontract`.
 - [ ] `thm:theorem-55` / `prop:rigidity-matrix-prop11` / `lem:case-III` — carry to Phases 22–23.
 
 **RETIRED (item 1, deleted; retirement note in `AlgebraicInduction.lean`):** the four
@@ -161,16 +176,31 @@ the retired vacuous lemmas. Scope: the remaining work is *known-construction*
 formalization (KT 2011), not open math; `apnelson1/Matroid` offers no reusable
 leverage (no `Pi`-finrank / generic-realization machinery).
 
-**Next concrete commit: N7 `lem:case-II-realization`** — the cheapest full
-producer: needs only the now-green bridge (N3) + device, NOT N4/N5. General-position
-panel normal (`exists_independent_panelSupportExtensor`), `+(D−1)` rows (KT 6.12).
-The producer flow: build a seed `ofNormals G ends q₀` whose hinge-row block gives a
-witnessed independent family `s` with `Nat.card s = D(|V(G)|−1)`; feed it to
-`exists_relative_full_count_ofParam` (N2) to get a generic `q` at `dim Z ≤ D(|V(G)ᶜ|+1)`;
-then `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (N3, needs `V(G).Nonempty`) ⇒
-`IsInfinitesimallyRigidOn V(G)`, i.e. `HasFullRankRealization k G`. (Likely also wants
-`isInfinitesimallyRigidOn_insert_iff`, green, to relate the 1-extension parent to the
-reduced graph.) Discharges `theorem_55`'s `hsplit`.
+**The device-to-motive glue N7a `lem:realization-of-independent-rows` is GREEN
+(landed 2026-06-04).** `hasFullRankRealization_of_independent_panelRow` = the honest
+`N2 ∘ N3` closure: a witnessed independent `panelRow` family of size `D(|V(G)|−1)` at
+*one* seed normal `q₀` ⇒ `HasFullRankRealization k G`. Both producers reduce to it. It
+carries no laundered deliverable — the witnessed-rank `(q₀, s)` is the placement's
+*satisfiable* geometric output, not the rank concluded (honesty split, like Case-I
+glue/placement).
+
+**Correction to the prior "N7 needs only N3 + device" hand-off.** That understated
+N7: the splitting-off `G_v^{ab}` is an *edge substitution* of `G` (adds fresh `e₀`,
+deletes `v`'s two edges), **not a subgraph**, so the inductive rigidity-on-`t` does
+*not* free-transport to the parent `G` and the seed family must be *constructed* across
+the substitution (recover `e₀`'s constraint from `v`'s two new edges). That seed
+construction is the genuine geometry — split out as the red node below.
+
+**Next concrete commit: N7b `lem:case-II-realization-placement`** — construct, from the
+inductive realization of `G_v^{ab}` (rigid on `V(G)∖{v}`), a seed normal assignment `q₀`
+for `G` (in particular a panel normal `n` for the re-inserted `v`) and a linearly
+independent family `s` of `D(|V(G)|−1)` `panelRow`s of `ofNormals G ends q₀`. KT §6.3
+Lemma 6.8 / eq. (6.12): re-insert `v` joined to `a, b` by general-position hinges
+(`exists_independent_panelSupportExtensor`, `+(D−1)` rows), threading the IH's rows
+through the common subgraph `G − v` (`removeVertex_le` / `removeVertex_le_splitOff`,
+green, `Induction.lean`). This is research-shaped (the witnessed-row count across the
+edge substitution); **decompose before building**, mirroring N5. Then N7 = N7a∘N7b is a
+one-line composition discharging `theorem_55`'s `hsplit`.
 
 **The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
 (`exists_good_realization_ofParam`, green) gives the *absolute* codimension bound
@@ -186,18 +216,20 @@ reduced graph.) Discharges `theorem_55`'s `hsplit`.
   at a singleton block `{v₀}` + N1 dimension-match (`finrank_pinnedMotions_add_screwDim`).
 
 Then, in order:
-1. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
+1. **N7b `lem:case-II-realization-placement`** (next concrete commit, above) →
+   **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
+2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
    matroid-side `contraction_isMinimalKDof` (`Induction.lean:1998`) + a
    `matroidMG`-of-`(map ∘ deleteEdges)` correspondence (the content). Phase-20
    carry-forward 1 (`Induction.lean:2956–2961`); gates the Case-I IH application.
-2. **N5 `lem:case-I-splice-placement`** — the genuinely hard node. **Decompose
+3. **N5 `lem:case-I-splice-placement`** — the genuinely hard node. **Decompose
    first** (KT eqs. 6.2/6.6: the boundary-panel intersection + combined
    block-triangular independence). Exhibit one parent `F` realizing both legs at a
    generic point; the glue `isInfinitesimallyRigidOn_of_splice` (green) + the device
    lift then conclude. The device's `hindep` comes from
    `exists_independent_panelSupportExtensor` via the hinge-row block (`panelRow`'s `s`).
-3. **N6 `lem:case-I-realization`** — compose N4 + N5 + glue + B0 + N3/device ⇒
+4. **N6 `lem:case-I-realization`** — compose N4 + N5 + glue (N7a) + B0 + N3/device ⇒
    `HasFullRankRealization k G`. Discharges `theorem_55`'s `hcontract`.
 
 **Phase 21b closes when N6 + N7 are green.** `thm:theorem-55` does not flip here
@@ -206,7 +238,9 @@ Then, in order:
 
 **Completed items:** Item 1 (motive relativized, base green) + Item 2 (accounting
 re-stated rank-side) — 2026-06-05; Item 3 (B0 keystone) + Item 4 (Case-I splice
-glue) — 2026-06-06; **N1–N3 (`V(G)`-relative count bridge) — 2026-06-04**. Per-node
+glue) — 2026-06-06; **N1–N3 (`V(G)`-relative count bridge) — 2026-06-04**;
+**N7a `lem:realization-of-independent-rows` (device-to-motive glue, shared by both
+producers) — 2026-06-04** (and N7 decomposed into glue + red placement N7b). Per-node
 detail in the blueprint dep-graph.
 
 **Process lessons (don't repeat).**
@@ -224,6 +258,16 @@ a spike and "done" by a recon — both wrong; the truth (matroid side green,
 graph-level `(rigidContract).IsMinimalKDof` = N4 not built) only surfaced by
 reading the statement (matroid- vs graph-side) and the deferral comment at
 `Induction.lean:2956–2961`.
+(e) **A "cheapest full producer" claim is itself a hand-off hypothesis to verify
+against the graph operation, not inherit.** N7 was tagged "needs only N3 + device";
+the actual obstruction is that `splitOff` is an *edge substitution* (`G_v^{ab}` adds
+`e₀`, deletes `v`'s edges), so neither it nor `G` is a subgraph of the other — the
+seed-row witness must be *constructed* across the substitution (the green
+`withGraph` monotonicity only travels between a graph and its subgraphs, via the
+common lower bound `G − v`). Both case producers therefore split the same way:
+green device-to-motive glue (`lem:realization-of-independent-rows`, N7a) + red
+placement (the seed construction). Validate the *transport* direction against the
+graph op before sizing a producer.
 
 **Session note.** Commits since an inadvertent earlier push are local. Match
 author `bryangingechen@gmail.com`; do **not** push without asking.
