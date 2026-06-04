@@ -993,6 +993,48 @@ theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework k α β) {p
   simp only [withMomentNormals_normal]
   exact momentCurve_pair_linearIndependent (fun h => hab (hparam h))
 
+/-- **The moment-curve panel framework on a graph** (`def:panel-hinge-framework`, Theorem 5.5
+infra): the from-scratch panel-hinge framework built directly from a multigraph `G`, an endpoint
+selector `ends`, and a parameter map `param : α → ℝ`, with every body's panel normal the
+moment-curve point `momentCurve (param a)`. Unlike `withMomentNormals` / `withGraph` / `withNormal`
+(which re-decorate an existing framework), `ofParam` needs no prior framework — it is the
+realization-side entry point for the genuinely-geometric Case-I assembly, where the parent graph
+`G` and its hinge-endpoint data are the combinatorial inputs and the genericity is a single
+injective real assignment `param`. When `param` is injective the normals are automatically in
+general position (`isGeneralPosition_ofParam`), so every hinge joining two distinct bodies is
+transversal — the realization-side source of `hglue_of_forest`'s `he`. -/
+def ofParam (G : Graph α β) (ends : β → α × α) (param : α → ℝ) :
+    PanelHingeFramework k α β where
+  graph := G
+  normal := fun a => momentCurve (param a)
+  ends := ends
+
+@[simp]
+theorem ofParam_graph (G : Graph α β) (ends : β → α × α) (param : α → ℝ) :
+    (ofParam (k := k) G ends param).graph = G := rfl
+
+@[simp]
+theorem ofParam_ends (G : Graph α β) (ends : β → α × α) (param : α → ℝ) :
+    (ofParam (k := k) G ends param).ends = ends := rfl
+
+@[simp]
+theorem ofParam_normal (G : Graph α β) (ends : β → α × α) (param : α → ℝ) (a : α) :
+    (ofParam (k := k) G ends param).normal a = momentCurve (param a) := rfl
+
+/-- **The moment-curve panel framework is in general position** (`def:panel-hinge-framework`,
+Theorem 5.5 infra): if `param : α → ℝ` is injective, then `ofParam G ends param`'s panel normals
+are in general position — any two normals at distinct bodies are linearly independent. The
+from-scratch analogue of `isGeneralPosition_withMomentNormals`; distinct bodies get distinct
+parameters (injectivity) and distinct-parameter moment-curve points are independent
+(`momentCurve_pair_linearIndependent`). This packages the genericity of the Case-I rigid block
+into a single injective real assignment on the parent graph's bodies, with the geometric gluing
+carried by the graph `G` and endpoint selector `ends` alone. -/
+theorem isGeneralPosition_ofParam (G : Graph α β) (ends : β → α × α) {param : α → ℝ}
+    (hparam : Function.Injective param) : (ofParam (k := k) G ends param).IsGeneralPosition := by
+  intro a b hab
+  simp only [ofParam_normal]
+  exact momentCurve_pair_linearIndependent (fun h => hab (hparam h))
+
 /-- **The panel framework on a new graph** (`def:framework-with-graph`, panel layer): replace the
 underlying multigraph of `P` by `G'`, keeping the per-body panel normals `normal` and the endpoint
 selector `ends` — hence every panel support extensor. The panel analogue of

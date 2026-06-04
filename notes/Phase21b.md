@@ -80,10 +80,17 @@ holds given only the rigid block's spanning-forest **graph** data (`u`/`other`/`
 general position via `supportExtensor_ne_zero_of_isGeneralPosition` (endpoint distinctness from the
 forest separation at the diagonal, `(hsep j j) : other j ≠ u j`, through `hends`). This folds
 `hglue_of_forest` + the general-position bricks into `toBodyHinge_rankHypothesis_iff_finrank_
-pinnedMotionsOn`, removing the last per-hinge transversality obligation from the Case-I path.
-**Next concrete commit: the `F₀` graph-and-realization exhibition** (see *Hand-off*) — build `P` on
-the parent graph `G` from the contraction realization + rigidly-placed block, its spanning-forest
-data (`hends` by construction), and the count `hmatch`.
+pinnedMotionsOn`, removing the last per-hinge transversality obligation from the Case-I path. **The
+first geometric-construction brick is now landed** (`ofParam` + `isGeneralPosition_ofParam`): the
+from-scratch panel-framework constructor on a bare graph `G` + endpoint selector `ends` + parameter
+map `param`, moment-curve normals, in general position for free when `param` is injective. Unlike
+`withMomentNormals`/`withGraph`/`withNormal` (re-decorate an existing `P`), `ofParam` needs no prior
+framework — it is the realization-side entry point for the Case-I assembly, with the genericity
+isolated to one injective real assignment and the geometry carried by `(G, ends)` alone. **Next
+concrete commit: continue the `F₀` exhibition** (see *Hand-off*) — from `ofParam G ends param`,
+exhibit the rigid block's spanning-forest data (`u`/`other`/`e` + `hu`/`hsep`/`hlink`/`hends`, the
+last by `ofParam_ends`) and discharge the count `hmatch` against the contraction's inductive
+`RankHypothesis`.
 
 ## Architectural choices made up front
 
@@ -228,6 +235,17 @@ hand-off convenience.
   `supportExtensor_ne_zero_of_isGeneralPosition`. Green; `isGeneralPosition_withMomentNormals` folded
   into `def:panel-hinge-framework`'s `\lean{...}` pin (the moment-curve construction lemmas skipped
   per the blueprint skip-glue rule).
+
+- [x] `ofParam` + `isGeneralPosition_ofParam` (`Molecular/AlgebraicInduction.lean`,
+  `PanelHingeFramework` namespace): the **from-scratch panel-framework constructor** on a bare
+  multigraph `G` + endpoint selector `ends` + parameter map `param : α → ℝ`, with moment-curve
+  normals `momentCurve (param a)`. Unlike `withMomentNormals`/`withGraph`/`withNormal` (re-decorate
+  an existing `P`), `ofParam` needs no prior framework — the realization-side entry point for the
+  geometric Case-I assembly, where `(G, ends)` are the combinatorial inputs and the genericity is
+  one injective real assignment. `isGeneralPosition_ofParam` (injective `param` ⇒
+  `IsGeneralPosition`) is a verbatim copy of `isGeneralPosition_withMomentNormals`'s proof. Green;
+  `isGeneralPosition_ofParam` folded into `def:panel-hinge-framework`'s `\lean{...}` pin (the
+  constructor + `_graph`/`_ends`/`_normal` simp lemmas skipped per the blueprint skip-glue rule).
 
 - [x] `hglue_of_forest` (`Molecular/AlgebraicInduction.lean`): the **last generic Case-I
   reduction** — composes `exists_independent_rigidityRows_of_forest` (the rigid block's
@@ -409,17 +427,23 @@ j)`). So the panel-layer Case-I iff-realization now needs only the rigid block's
 general-position / transversality obligation now remains on the Case-I path; what is left is purely
 the geometric graph-and-realization construction.
 
-**Smallest next concrete commit: the `F₀` graph-and-realization exhibition** — exhibit (a) the
-single panel-hinge framework `P` on the parent graph `G` (normals from `withMomentNormals` on an
-injective parameter map ⇒ `P.IsGeneralPosition` for free) gluing the contraction realization
-(`G/E(H)` at its inductive `RankHypothesis`) with the rigidly-placed block `V(H)`, (b) the
-private-endpoint spanning forest `u`/`other`/`e` of `V(H)`'s hinges (`u` injective, `other j ≠ u
-j'`, `hlink`, and `hends : P.ends (e j) = (u j, other j)` by construction), and (c) the count
-`hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`) against the contraction's inductive `RankHypothesis`.
-Feed (a)+(b)+(c) through `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` (the
-transversality `he` is now discharged for free by general position). This is the
-genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `P`/`F₀`
-is in hand and the count is being matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
+**The from-scratch panel-framework constructor is now landed** (`ofParam` +
+`isGeneralPosition_ofParam`): build a panel framework on a bare graph `G` + endpoint selector
+`ends` directly from an injective parameter map `param`, moment-curve normals, `IsGeneralPosition`
+for free — no prior framework needed. So the realization-side entry point of the Case-I assembly is
+in hand, and `hends` is now `ofParam_ends` (definitional).
+
+**Smallest next concrete commit: continue the `F₀` exhibition from `ofParam`** — using `P :=
+ofParam G ends param` (general position for free via `isGeneralPosition_ofParam` on an injective
+`param`), exhibit (a) the `(G, ends)` data gluing the contraction realization (`G/E(H)` at its
+inductive `RankHypothesis`) with the rigidly-placed block `V(H)`, (b) the private-endpoint spanning
+forest `u`/`other`/`e` of `V(H)`'s hinges (`u` injective, `other j ≠ u j'`, `hlink`, and `hends`
+now `ofParam_ends`-definitional), and (c) the count `hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`)
+against the contraction's inductive `RankHypothesis`. Feed (a)+(b)+(c) through
+`toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` (transversality `he` discharged
+for free by general position). This is the genuinely-geometric Case-I assembly (KT §6.2/6.5); still
+likely more than one commit — assess once the `(G, ends)` gluing is in hand and the count is being
+matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
 `lem:cycle-realization` + `exists_independent_panelSupportExtensor` general position controls the
 cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is the screw-space
 telescoping core.) The other consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same
