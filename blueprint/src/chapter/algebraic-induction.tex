@@ -1582,27 +1582,38 @@ non-spanning block).}
   \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
 \end{proof}
 
-\begin{lemma}[N7b-3: the new-edge and old blocks are jointly independent]
+\begin{lemma}[N7b-3: the new-edge and old blocks are jointly independent (pin-a-body column split)]
   \label{lem:case-II-placement-block-independent}
-  \uses{def:panel-hinge-framework, lem:case-II-placement-new-rows,
-        lem:case-II-placement-old-rows, lem:rank-delete-vertex}
-  The new-edge block (\cref{lem:case-II-placement-new-rows}, $D-1$ rows in the
-  $v$-column screw block) and the old block (\cref{lem:case-II-placement-old-rows},
-  $D(|V(G)|-2)$ rows supported off $v$'s columns) form a jointly linearly independent
-  family of $D(|V(G)|-1)$ rigidity rows. The split is the pin-a-body column
-  decomposition (Lemma~5.1, \cref{lem:rank-delete-vertex}): pinning $v$'s body removes
-  exactly the new-edge rows and leaves the old block, so the union is block-triangular.
-  This is the panel-row form of the $1$-extension's exact $+D$ rank lift the Case~II
-  accounting \cref{lem:case-II} pins. \emph{Red} (Phase-21b realization layer):
-  build-shaped given N7b-1, N7b-2, and the column split.
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_pinned_block}
+  \leanok
+  \uses{def:panel-hinge-framework, lem:rank-delete-vertex}
+  The pin-a-body column decomposition (Lemma~5.1, \cref{lem:rank-delete-vertex})
+  certifying that the new-edge block (\cref{lem:case-II-placement-new-rows}, the
+  rows carried by the re-inserted body $v$'s incident hinges, in the $v$-column
+  screw block) and the old block (\cref{lem:case-II-placement-old-rows}, the rows
+  of the common subgraph $G-v$, supported off $v$'s columns) form a jointly
+  linearly independent family. The split is the body-$v$ screw column: a screw
+  assignment pinned to $v$ alone ($\mathrm{Function.update}\,0\,v\,x$) reads the
+  old rows as $0$ (their edges avoid $v$) while reading the new rows through $v$'s
+  screw column $\mathrm{rn}\,i \circ \mathrm{single}_v$. So if the new rows are
+  independent \emph{as functionals of $v$'s screw} (the $D-1$ column-block rows of
+  N7b-1) and the old rows are independent (the $D(|V(G)|-2)$ inductive rows of
+  N7b-2), their union $\mathrm{Sum.elim}\,\mathrm{rn}\,\mathrm{ro}$ is independent.
+  This is the panel-row form of the $1$-extension's exact $+D$ rank lift the
+  Case~II accounting \cref{lem:case-II} pins; the assembly
+  \cref{lem:case-II-realization-placement} (N7b) supplies the two blocks (whence
+  the count $D(|V(G)|-1)$) and discharges the column-split hypotheses by
+  construction.
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
-        lem:rank-delete-vertex}
-  Block-triangular independence: the old block annihilates $v$'s screw columns
-  (its edges are $e_0$-free, away from $v$), the new block restricted to those
-  columns is independent by N7b-1, so a vanishing combination forces both halves to
-  vanish (pin-a-body Lemma~5.1, \cref{lem:rank-delete-vertex}). See
+  \leanok
+  \uses{lem:rank-delete-vertex}
+  A vanishing combination of the union, evaluated at the body-$v$ pin
+  $\mathrm{Function.update}\,0\,v\,x$, collapses to the new block alone (the old
+  terms vanish, edges $e_0$-free away from $v$), forcing the new coefficients to
+  vanish by their pinned independence; the residual is then a vanishing
+  combination of the old block, forcing the old coefficients by their
+  independence (pin-a-body Lemma~5.1, \cref{lem:rank-delete-vertex}). See
   \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 

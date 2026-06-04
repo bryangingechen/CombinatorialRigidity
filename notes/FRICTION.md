@@ -1881,6 +1881,20 @@ limitations. Worth a once-over so future agents don't re-litigate.
   to drop the analysis floor.
 - **Status:** resolved (post-Phase-8 perf pass).
 
+### [resolved] `rw [Finset.sum_eq_zero h]` rewrites the *first* summand, not the intended one
+- **Where it bit:** N7b-3 `linearIndependent_sum_pinned_block` (`RigidityMatrix.lean`),
+  the pin-a-body block-independence proof. After `Fintype.sum_sum_type`, the goal
+  carried `∑ inl + ∑ inr`; I wanted to kill the second (`inr`, old-block) sum via
+  `rw [Finset.sum_eq_zero …, add_zero]`, but `rw` matched the *first* (`inl`) sum,
+  producing an inl/inr type mismatch and a stuck `add_zero`.
+- **Friction:** `rw` picks the leftmost `Finset.sum` occurrence; the side-condition
+  proof then can't typecheck against the wrong index type.
+- **Resolution:** extract the vanishing of the intended sum as a named
+  `have holdsum : ∑ j, … = 0 := Finset.sum_eq_zero …`, then `rw [holdsum, add_zero]`.
+  Rewriting the *fact* (not re-deriving it inline) pins the occurrence. General
+  enough to be the standard fix, but a one-off here.
+- **Status:** resolved (Phase 21b N7b-3).
+
 ## Mirrored
 
 ### [mirrored] `Countable.exists_injective_real` — a countable type embeds injectively into `ℝ`

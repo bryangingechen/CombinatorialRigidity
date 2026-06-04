@@ -529,6 +529,64 @@ theorem linearIndependent_hingeRow_star {J : Type*} [Finite J] {I : J → Type*}
       simpa [LinearMap.sum_apply, LinearMap.smul_apply] using hval x
   exact Fintype.linearIndependent_iff.1 (hr j₀) (fun i => g ⟨j₀, i⟩) hk i₀
 
+/-- **N7b-3: the new-edge and old blocks are jointly independent (the pin-a-body column split)**
+(`lem:case-II-placement-block-independent`; Katoh–Tanigawa 2011 §6.3). The pin-a-body column
+decomposition (Lemma 5.1, `finrank_pinnedMotions_add_screwDim`) certifying the joint independence
+of the two blocks the Case-II $1$-extension placement assembles: a *new* block `rn` of rigidity
+rows carried by the re-inserted body `v`'s incident hinges, and an *old* block `ro` of rows of the
+common subgraph `G − v`. The split is the body-`v` column: pinning the screw assignment to body `v`
+alone (`Function.update 0 v x`) reads the old rows as `0` (their edges avoid `v`, `hold`) while
+reading the new rows through `v`'s screw column (`rn i ∘ₗ LinearMap.single ℝ _ v`). So if the new
+rows are independent *as functionals of `v`'s screw* (`hnewpin`, the $D-1$ column-block rows of
+N7b-1) and the old rows are independent (`holdindep`, the $D(|V(G)|-2)$ inductive rows of N7b-2),
+the union `Sum.elim rn ro` is independent: a vanishing combination, evaluated at `update 0 v x`,
+collapses to the new block (old terms vanish by `hold`) and forces the new coefficients to vanish
+by `hnewpin`; the residual is a vanishing combination of the old block, forcing the old
+coefficients by `holdindep`. This is the panel-row form of the $1$-extension's exact `+D` rank lift
+(`lem:case-II-rank-lift`); the assembly `lem:case-II-realization-placement` (N7b) feeds the union to
+the device-closure glue `hasFullRankRealization_of_independent_panelRow`. -/
+theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    [DecidableEq α] {v : α}
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (hnewpin : LinearIndependent ℝ
+      (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    (holdindep : LinearIndependent ℝ ro) :
+    LinearIndependent ℝ (Sum.elim rn ro) := by
+  classical
+  haveI : Fintype ιn := Fintype.ofFinite ιn
+  haveI : Fintype ιo := Fintype.ofFinite ιo
+  rw [Fintype.linearIndependent_iff]
+  intro g hg
+  -- Split the index sum over `ιn ⊕ ιo`.
+  rw [Fintype.sum_sum_type] at hg
+  simp only [Sum.elim_inl, Sum.elim_inr] at hg
+  -- Step 1: evaluate at `update 0 v x` to kill the old block, isolating the new block.
+  have hnew0 : ∑ i : ιn, g (.inl i) • (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)
+      = 0 := by
+    refine LinearMap.ext fun x => ?_
+    have happ := LinearMap.congr_fun hg (Function.update (0 : α → ScrewSpace k) v x)
+    rw [LinearMap.add_apply, LinearMap.zero_apply, LinearMap.sum_apply, LinearMap.sum_apply] at happ
+    -- The old block reads `0` at `update 0 v x`.
+    have holdsum : ∑ j : ιo, (g (.inr j) • ro j) (Function.update (0 : α → ScrewSpace k) v x)
+        = 0 := Finset.sum_eq_zero fun j _ => by rw [LinearMap.smul_apply, hold j x, smul_zero]
+    rw [holdsum, add_zero] at happ
+    -- The new block collapses to the pinned functionals.
+    rw [LinearMap.sum_apply, LinearMap.zero_apply]
+    refine Eq.trans (Finset.sum_congr rfl fun i _ => ?_) happ
+    rw [LinearMap.smul_apply, LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.coe_single,
+      Pi.single]
+  -- The new coefficients vanish by `hnewpin`.
+  have hgn : ∀ i : ιn, g (.inl i) = 0 := Fintype.linearIndependent_iff.1 hnewpin _ hnew0
+  -- Step 2: the residual is a vanishing combination of the old block.
+  have hold0 : ∑ j : ιo, g (.inr j) • ro j = 0 := by
+    rwa [Finset.sum_eq_zero (fun i _ => by rw [hgn i, zero_smul]), zero_add] at hg
+  have hgo : ∀ j : ιo, g (.inr j) = 0 := Fintype.linearIndependent_iff.1 holdindep _ hold0
+  rintro (i | j)
+  · exact hgn i
+  · exact hgo j
+
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
 generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,

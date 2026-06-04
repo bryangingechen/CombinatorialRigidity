@@ -32,10 +32,11 @@ the rank-side accounting iffs (`lem:case-I` / `lem:case-II`, green-modulo-21b),
 the **B0 keystone** (`lem:rows-polynomial-in-normals` — the device closure on the
 *varying* panel family), the Case-I splice **glue** (`lem:case-I-splice-seed`), the
 **`V(G)`-relative count bridge N1–N3** (`lem:relative-screw-split` /
-`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`), and the **first two Case-II
-placement sub-nodes N7b-1/N7b-2** (`lem:case-II-placement-new-rows` — a transversal hinge's `D−1`
-independent panel rows; `lem:case-II-placement-old-rows` — the inductive rows' `ofNormals`
-graph-swap transport) are all green and axiom-clean {propext, Classical.choice, Quot.sound}.
+`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`), and the **three Case-II
+placement sub-nodes N7b-1/N7b-2/N7b-3** (`lem:case-II-placement-new-rows` — a transversal hinge's
+`D−1` independent panel rows; `lem:case-II-placement-old-rows` — the inductive rows' `ofNormals`
+graph-swap transport; `lem:case-II-placement-block-independent` — the abstract pin-a-body column
+split joining the two blocks) are all green and axiom-clean {propext, Classical.choice, Quot.sound}.
 (Authoritative inventory: the blueprint dep-graph. Per-commit history: *Completed items* in the
 Hand-off.)
 
@@ -53,8 +54,12 @@ node list in the Hand-off. Three forward facts shape the plan:
   subgraph — it adds the fresh `e₀` and drops `v`'s two edges, so rigidity-on-`t`
   does not free-transport; the producer must *construct* the seed family across the
   substitution). So N7 was decomposed (mirroring the Case-I glue/placement split):
-  the green glue above, plus the genuinely-geometric red **placement** node N7b
-  (`lem:case-II-realization-placement`, construct the seed `(q₀, s)`).
+  the green glue above, plus the genuinely-geometric **placement** node N7b
+  (`lem:case-II-realization-placement`, construct the seed `(q₀, s)`). N7b's three
+  sub-nodes N7b-1/2/3 are now all green (the `D−1` new rows, the old-row transport,
+  the pin-a-body block split); the remaining red is the **N7b assembly** — pick `q₀`/`s`
+  and bridge the independent-functionals-in-the-`panelRow`-span to an actual independent
+  `panelRow` subfamily of size `D(|V(G)|−1)` that the glue N7a consumes.
 - The rigid-subgraph contraction is **mostly built, not fully**: `rigidContract`
   (`Induction.lean:1854`) + its vertex-drop (`:1869`) + the matroid-side
   `contraction_isMinimalKDof` (`:1998`) are green, but the graph↔matroid
@@ -109,8 +114,17 @@ per-node detail.
     read only `ends`+`q`, not the graph — `rfl` when the assembly's `q₀`/`ends` agree on `G−v`).
     `LinearIndependent.comp` + a `funext` family rewrite. Both `G_v^{ab}` and `G` sit above `G−v`
     (`removeVertex_le`/`removeVertex_le_splitOff`); `e₀`'s constraint is recovered in N7b-1.
-  - [ ] N7b-3 `lem:case-II-placement-block-independent` — the two blocks jointly independent
-    (pin-a-body Lemma 5.1 column split, `lem:rank-delete-vertex`); total `D(|V(G)|−1)`.
+  - [x] N7b-3 `lem:case-II-placement-block-independent` — **GREEN 2026-06-04**.
+    `BodyHingeFramework.linearIndependent_sum_pinned_block`: the abstract pin-a-body column
+    split — given a new block `rn` pinned at body `v` (independent *as functionals of `v`'s
+    screw* `rn i ∘ₗ single v`, `hnewpin`) and an old block `ro` reading `0` at the `v`-column
+    (`hold`, edges `e₀`-free) with `ro` independent (`holdindep`), the union `Sum.elim rn ro`
+    is independent. `Fintype.linearIndependent_iff` + evaluate at `Function.update 0 v x`: old
+    terms vanish, forcing new coeffs by `hnewpin`; residual forces old coeffs by `holdindep`.
+    Mirrors `linearIndependent_hingeRow_star`; count-agnostic (the `D(|V(G)|−1)` total is N7b's
+    job, satisfiable from N7b-1's `D−1` + N7b-2's `D(|V(G)|−2)`).
+- [ ] N7b `lem:case-II-realization-placement` — assemble the seed `(q₀, s)` from N7b-1/2/3
+  (next concrete commit).
 - [ ] N7 `lem:case-II-realization` — compose N7a (glue) + N7b (placement). Discharges `hsplit`.
 - [ ] N4 `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction bridge; gates Case I.
 - [ ] N5 `lem:case-I-splice-placement` — the splice geometry (decompose first).
@@ -249,11 +263,30 @@ the other — both sit above `G−v` (`removeVertex_le`/`removeVertex_le_splitOf
 read only `ends`+`q`, not the graph). Proof: `LinearIndependent.comp f hf` + a `funext` family
 rewrite. The `e₀`-row's constraint is recovered from `v`'s two new edges in N7b-1.
 
-**Next concrete commit: N7b-3 `lem:case-II-placement-block-independent`** — the block-triangular
-union of the N7b-1 new rows (`D−1`, in `v`'s column screw block) + the N7b-2 old rows
-(`D(|V(G)|−2)`, off `v`'s columns), jointly independent via the pin-a-body Lemma 5.1 column split
-(`lem:rank-delete-vertex`); total `D(|V(G)|−1)`. Then in order: N7b (assemble the seed `(q₀, s)`),
-N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
+**N7b-3 `lem:case-II-placement-block-independent` is GREEN (landed 2026-06-04, this commit).**
+`BodyHingeFramework.linearIndependent_sum_pinned_block`: the **abstract pin-a-body column split** —
+given a new block `rn` carried by body `v`'s incident hinges, independent *as functionals of `v`'s
+screw* (`hnewpin : LinearIndependent ℝ (fun i => rn i ∘ₗ LinearMap.single ℝ _ v)`), and an old block
+`ro` reading `0` at the `v`-column (`hold : ∀ j x, ro j (Function.update 0 v x) = 0`, edges
+`e₀`-free) with `ro` independent (`holdindep`), the union `Sum.elim rn ro` is independent. Proof:
+`Fintype.linearIndependent_iff`, evaluate a vanishing combination at `Function.update 0 v x` — old
+terms vanish (`hold`), forcing new coeffs by `hnewpin`; residual forces old coeffs by `holdindep`.
+Mirrors `linearIndependent_hingeRow_star` (same pin-a-body skeleton). Placed in `RigidityMatrix.lean`
+alongside the `_star`/`_forest` siblings; needs `[DecidableEq α]` in the binder (the statement uses
+`LinearMap.single`). **Count-agnostic** — the `D(|V(G)|−1)` total is N7b's job and is satisfiable
+from N7b-1's `D−1` (`hnewpin`-discharging, `hingeRow u v` at `single v` is `−c i`, independent iff
+`c` is) + N7b-2's `D(|V(G)|−2)` (`hold`-discharging, `G−v` edges avoid `v`). Honest: the
+column-split hypotheses are discharged-by-construction at the assembly, not the conclusion smuggled.
+
+**Next concrete commit: N7b `lem:case-II-realization-placement`** — assemble the seed `(q₀, s)`:
+pick `q₀` extending the inductive normals + `v`'s general-position normal (N7b-1 transversality);
+`s` = the `Sum` of N7b-1's new rows + N7b-2's old rows; feed N7b-1+N7b-2+N7b-3 to produce the
+witnessed independent `panelRow` family. **Watch (honesty gate):** N7b-1/N7b-2 produce rows that
+are *members of* `panelRow`-spans / actual `panelRow`s, while the glue N7a's `hindep` wants a
+`LinearIndependent` of `fun i : s => panelRow ends i` (actual panel rows). Bridging the
+independent-functionals-in-the-span to an independent `panelRow` subfamily of the same size is the
+remaining assembly content — verify it before flipping N7b green. Then N7 (one-line N7a∘N7b
+discharging `theorem_55`'s `hsplit`).
 
 **The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
 (`exists_good_realization_ofParam`, green) gives the *absolute* codimension bound
@@ -270,8 +303,9 @@ N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
 
 Then, in order:
 1. **N7b `lem:case-II-realization-placement`**, decomposed into N7b-1 (GREEN) → N7b-2 (GREEN) →
-   N7b-3 → N7b-assembly (sub-nodes above; **N7b-3 is the next concrete commit**) →
-   **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
+   N7b-3 (GREEN) → N7b-assembly (the sub-nodes are all green; **N7b assembly is the next concrete
+   commit** — see the honesty-gate watch above on the functionals-in-span → `panelRow` subfamily
+   bridge) → **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
 2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
    matroid-side `contraction_isMinimalKDof` (`Induction.lean:1998`) + a
@@ -299,7 +333,9 @@ producers) — 2026-06-04** (and N7 decomposed into glue + red placement N7b);
 (planning commit, blueprint + notes); **N7b-1 `lem:case-II-placement-new-rows`
 (`exists_independent_panelRow_of_edge` + the per-edge span identity `span_panelRow_edge_eq`)
 — 2026-06-04**; **N7b-2 `lem:case-II-placement-old-rows`
-(`exists_independent_panelRow_transport`, the `ofNormals` graph-swap row transport) — 2026-06-04**.
+(`exists_independent_panelRow_transport`, the `ofNormals` graph-swap row transport) — 2026-06-04**;
+**N7b-3 `lem:case-II-placement-block-independent` (`linearIndependent_sum_pinned_block`, the abstract
+pin-a-body column split joining the new+old blocks) — 2026-06-04**.
 Per-node detail in the blueprint dep-graph.
 
 **Process lessons (don't repeat).**
