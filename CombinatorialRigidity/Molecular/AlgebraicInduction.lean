@@ -1974,6 +1974,23 @@ throughout. -/
 theorem toBodyHinge_withGraph (P : PanelHingeFramework k α β) (G' : Graph α β) :
     (P.withGraph G').toBodyHinge = P.toBodyHinge.withGraph G' := rfl
 
+/-- **`ofNormals` on a leg graph is the parent `ofNormals` with that graph swapped in**
+(`def:framework-with-graph` / `def:panel-hinge-framework`, panel layer): for any leg `G'`,
+`(ofNormals G ends q).withGraph G' = ofNormals G' ends q`. Both frameworks carry the same per-body
+panel normals `fun a i => q (a, i)` and endpoint selector `ends` — graph-independent data that
+neither `withGraph` (`withGraph_normal`/`withGraph_ends`) nor the change of underlying graph in
+`ofNormals` touches — so they are definitionally equal.
+
+This is the bridge that lets the Case-I splice producer
+(`hasFullRankRealization_of_splice`), whose leg hypotheses are stated as `withGraph` of the *parent*
+`ofNormals G ends q₀`, consume instead the *satisfiable* leg-native form
+`(ofNormals G' ends q₀).toBodyHinge` rigid on `V(G')` — the shape a single-seed witness-transfer
+naturally produces (build the leg framework on each leg graph at the *same* seed `q₀`). The genuine
+remaining Case-I obligation is then exactly to exhibit one `q₀` realizing both leg-native
+frameworks; the graph-swap is no longer part of the gap. -/
+theorem ofNormals_withGraph (G G' : Graph α β) (ends : β → α × α) (q : α × Fin (k + 2) → ℝ) :
+    (ofNormals (k := k) G ends q).withGraph G' = ofNormals (k := k) G' ends q := rfl
+
 /-! ## Cycle realizations (`lem:cycle-realization`, KT Lemma 5.4 — panel content)
 
 Katoh–Tanigawa's Lemma 5.4 (the geometric content of Crapo–Whiteley 1982 Prop 3.4 / Whiteley
@@ -3025,6 +3042,39 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice [Finite α] [Finite
   -- (iii) The genericity device lifts the witnessed corank at the seed `q₀` to a generic placement.
   exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
     (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
+
+/-- **Case I splice producer, leg-native form: both legs rigid as their own `ofNormals` at one
+seed** (`lem:case-I-splice-placement` / `lem:case-I-realization`, the satisfiable restatement
+isolating the single-seed witness-transfer; Katoh–Tanigawa 2011 §6.2/6.5, eqs.\ (6.2), (6.6),
+Phase 22). The leg-native restatement of `hasFullRankRealization_of_splice`: rather than the two
+legs phrased as `withGraph` of the *parent* framework `ofNormals G ends q₀`, the legs are stated
+directly as the
+leg-native frameworks `(ofNormals GH ends q₀).toBodyHinge` and `(ofNormals Gc ends q₀).toBodyHinge`
+rigid on `V(GH)` resp.\ `V(Gc)` — *at the same seed* `q₀`. By `ofNormals_withGraph`
+(`(ofNormals G ends q₀).withGraph G' = ofNormals G' ends q₀`) and `toBodyHinge_withGraph` the two
+forms coincide, so this is a direct corollary of `hasFullRankRealization_of_splice`.
+
+This is the shape the genuine remaining Case-I obligation reduces to: the seed witness-transfer must
+produce *one* normal assignment `q₀` at which *both* leg graphs carry a rigid `ofNormals`
+realization on their own vertex sets (the panel-intersection construction, eq.\ (6.6)). Building
+each leg independently gives a leg-native rigid `ofNormals`; coupling them onto a single `q₀` is the
+research-shaped step (`lem:case-I-splice-placement`, red). With that seed in hand, this lemma closes
+`lem:case-I-realization` / `theorem_55.hcontract`. The deliverable rank is concluded, not assumed —
+the inputs are the satisfiable per-leg rigidities at the common seed, not the parent rank. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
+    (hblock : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
+    (hcontract :
+      (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
+    PanelHingeFramework.HasFullRankRealization k G :=
+  PanelHingeFramework.hasFullRankRealization_of_splice G ends hends hne_ends hne hgp hGH hGc
+    hcH hcc hcover hblock hcontract
 
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)

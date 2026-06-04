@@ -263,6 +263,23 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved — landed inline; `Fin.ofNat m p + 1 = …` is a one-liner, no
   separate mirror warranted.
 
+### [resolved] A hypothesis stated on `(ofNormals GH ends q₀).toBodyHinge` passes directly to a brick wanting `(ofNormals G ends q₀).toBodyHinge.withGraph GH` — defeq, no `rw` bridge
+- **Where it bit:** `hasFullRankRealization_of_splice_ofNormals` in
+  `Molecular/AlgebraicInduction.lean` (Phase 22 N5 decomposition). The leg-native
+  splice variant takes `hblock : (ofNormals GH ends q₀).toBodyHinge.IsInf…RigidOn …`
+  and feeds the parent splice brick, which wants
+  `((ofNormals G ends q₀).toBodyHinge.withGraph GH).IsInf…RigidOn …`.
+- **Friction:** `rw [toBodyHinge_withGraph, ofNormals_withGraph] at hblock ⊢` failed
+  ("Did not find … pattern") — `withGraph`/`ofNormals`/`toBodyHinge` are all `rfl`-
+  transparent structure projections, so the two forms are *defeq* and the `rw`
+  matcher has no syntactic occurrence to rewrite.
+- **Fix:** drop the `rw` bridge and pass `hblock`/`hcontract` directly as the brick's
+  arguments; application-mode unifies up to defeq. (`ofNormals_withGraph` is still a
+  useful named `rfl` lemma for prose/`simp`, but the proof doesn't need it.)
+- **Status:** resolved (no lift — recurrence of the "`rw` is syntactic, `exact`/
+  application is up-to-defeq" rule already in TACTICS-QUIRKS § 25, and a sibling of
+  the `map_eq_zero_iff` entry below. Lifted: TACTICS-QUIRKS § 25).
+
 ### [resolved] `LinearEquiv.map_eq_zero_iff` via `rw` fails on a defeq-wrapped codomain (`ScrewSpace k` = `⋀^(k+2−2)`); apply `map_ne_zero_iff … .injective` as a term
 - **Where it bit:** `panelSupportExtensor_ne_zero_iff` in
   `Molecular/AlgebraicInduction.lean` (Phase 21 panel leaf): showing

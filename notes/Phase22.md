@@ -21,7 +21,22 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-**N5 decomposition pass + first brick GREEN** (`PanelHingeFramework.hasFullRankRealization_of_splice`,
+**N5 leg-native restatement bricks GREEN** (`PanelHingeFramework.{ofNormals_withGraph,
+hasFullRankRealization_of_splice_ofNormals}`, `AlgebraicInduction.lean`, axiom-clean, no `\leanok`
+flip — infra below the still-red `lem:case-I-splice-placement` / `lem:case-I-realization` nodes). The
+prior commit's splice brick `hasFullRankRealization_of_splice` phrased both legs as `withGraph` of
+the *parent* `ofNormals G ends q₀`; this commit re-states them in the **leg-native** form a seed
+construction actually produces — `(ofNormals GH ends q₀).toBodyHinge` rigid on `V(GH)` and
+`(ofNormals Gc ends q₀).toBodyHinge` rigid on `V(Gc)`, *at the same seed* `q₀`. The graph-swap bridge
+`ofNormals_withGraph` (`(ofNormals G ends q).withGraph G' = ofNormals G' ends q`, one `rfl`) makes the
+two forms defeq, so `hasFullRankRealization_of_splice_ofNormals` is a direct corollary — and the two
+leg hypotheses pass to the parent brick directly (no `rw`; structure projections are `rfl`-
+transparent, see FRICTION). **Net effect:** the genuine remaining Case-I obligation is now stated in
+exactly the shape a witness-transfer must hit — *exhibit one `q₀` at which both leg graphs carry a
+rigid leg-native `ofNormals` realization* (the panel-intersection construction, eq. 6.6) — with the
+`withGraph` graph-swap no longer part of the gap. The seed `q₀` itself remains red (research-shaped).
+
+**N5 decomposition pass + first brick GREEN** (prior commit, `hasFullRankRealization_of_splice`,
 `AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below the still-red
 `lem:case-I-splice-placement` / `lem:case-I-realization` nodes). The math-first decomposition the
 blueprint/hand-off demanded *before* a single-commit build found that **most of N5/N6 is already
@@ -181,7 +196,12 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   pin to the contraction's inductive rank. **First brick GREEN:**
   `hasFullRankRealization_of_splice` (axiom-clean) composes the three green pieces
   (splice seed → N7b-0 → device closure) and isolates the seed obstruction into
-  satisfiable common-placement hypotheses. Remaining (red): exhibit the seed.
+  satisfiable common-placement hypotheses. **Leg-native restatement GREEN (this commit):**
+  `hasFullRankRealization_of_splice_ofNormals` + the graph-swap bridge `ofNormals_withGraph`
+  re-state the two legs in the form a seed construction produces —
+  `(ofNormals GH/Gc ends q₀).toBodyHinge` rigid on its own vertex set, at one `q₀` — so the
+  gap is now exactly "exhibit `q₀`", with the `withGraph` graph-swap dissolved into a `rfl`.
+  Remaining (red): exhibit the seed `q₀`.
 - [ ] **N6** `lem:case-I-realization` — compose N4 + N5 + the green glue
   (`isInfinitesimallyRigidOn_union_of_inter`) + device ⇒ discharges
   `theorem_55.hcontract`. **Largely subsumed by `hasFullRankRealization_of_splice`**
@@ -201,6 +221,16 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N5 leg-native restatement (2026-06-04).** The prior splice brick stated each leg as
+  `withGraph GH` of the *parent* `ofNormals G ends q₀`; but a seed construction builds each
+  leg as its *own* `ofNormals GH ends q₀` (same `q₀`, different graph). `ofNormals_withGraph`
+  (`(ofNormals G ends q).withGraph G' = ofNormals G' ends q`, `rfl` — `withGraph`/`ofNormals`
+  keep the same graph-independent `normal`/`ends`) bridges the two, so the leg-native variant
+  `hasFullRankRealization_of_splice_ofNormals` is a one-line corollary. Net: the remaining
+  Case-I gap is now stated in the exact shape a witness-transfer must hit, with no graph-swap
+  noise. The bricks are infra below the still-red `lem:case-I-splice-placement`/`-realization`,
+  no `\leanok` flip; the seed `q₀` itself stays red (honesty gate). The `rw`→defeq lesson is in
+  FRICTION (sibling of the `map_eq_zero_iff` entry; TACTICS-QUIRKS § 25).
 - **N5 decomposition recon (2026-06-04, before/with the first brick).** Ran the producer
   recon the blueprint/hand-off demanded before scheduling N5 as a build. **Finding: N5 is
   much narrower than "splice two placements."** (a) The "panel-transversality lemma" is
@@ -347,6 +377,9 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   collapse image *equal* `(V(G)\V(H)) ∪ {r}`, not just contained in it.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+- *A hypothesis on `(ofNormals GH ends q₀).toBodyHinge` passes directly to a brick wanting
+  `…withGraph GH` — defeq, no `rw` bridge* → FRICTION [resolved] *A hypothesis stated on
+  `(ofNormals GH ends q₀).toBodyHinge` …* (recurrence of TACTICS-QUIRKS § 25).
 - *N4 recon lesson* → `DESIGN.md` *Constructibility recon before a producer build*
   (its first post-21b application). The N4b *correction* sharpens it: the recon must
   read the vendored lemma's **exact binder**, not a paraphrase, before declaring it
@@ -374,35 +407,40 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   (N6) is now only the **producers** N5 + N6, not any more matroid/contraction infrastructure.
 - **N5's remaining content is the common-placement seed `q₀`** (the witness-transfer / eq. 6.6
   panel intersection): produce one normal assignment at which *both* legs are rigid on their
-  vertex sets. The decomposition this commit landed shows the rest of N5/N6 is already green
+  vertex sets. The decomposition landed so far shows the rest of N5/N6 is already green
   (transversality, `withGraph` normal-sharing, the splice→N7b-0→device chain in
-  `hasFullRankRealization_of_splice`). This seed is the genuinely-geometric, research-shaped
-  step — it bottoms out on the panel-intersection construction + the count `hmatch` coupling the
-  rigid block's pin to the contraction's inductive rank.
+  `hasFullRankRealization_of_splice`, and the leg-native restatement
+  `hasFullRankRealization_of_splice_ofNormals` so the consumer needs only per-leg `ofNormals`
+  rigidity at one `q₀`). This seed is the genuinely-geometric, research-shaped step — it bottoms
+  out on the panel-intersection construction + the count `hmatch` coupling the rigid block's pin
+  to the contraction's inductive rank.
 - **Track B** (the Case II/III producer) is a multi-node crux. So the remaining Track-A path
-  (the N5 seed → feed `hasFullRankRealization_of_splice`) and Track B both still require
+  (the N5 seed → feed `hasFullRankRealization_of_splice_ofNormals`) and Track B both still require
   math-first decomposition before a build.
 
 ## Hand-off / next phase
 
-**N5 decomposition pass + first brick GREEN** (`PanelHingeFramework.hasFullRankRealization_of_splice`,
-`AlgebraicInduction.lean`; axiom-clean, no `\leanok` flip — infra below the still-red
-`lem:case-I-splice-placement` / `lem:case-I-realization`). The math-first recon found the
-"panel-transversality lemma" already green and `withGraph` normal-sharing collapses the "splice two
-placements" picture; the new brick composes the three green pieces (splice seed → N7b-0 → device
-closure) into `HasFullRankRealization`, gated only on the *satisfiable* common-placement leg
-hypotheses. See *Current state* + *Decisions* for the recon.
+**N5 leg-native restatement bricks GREEN** (`PanelHingeFramework.{ofNormals_withGraph,
+hasFullRankRealization_of_splice_ofNormals}`, `AlgebraicInduction.lean`; axiom-clean, no `\leanok`
+flip — infra below the still-red `lem:case-I-splice-placement` / `lem:case-I-realization`). Building
+on the prior commit's `hasFullRankRealization_of_splice`, this commit re-states the two leg
+hypotheses in the **leg-native** form — `(ofNormals GH/Gc ends q₀).toBodyHinge` rigid on its own
+vertex set, at one shared `q₀` — bridged to the parent-`withGraph` form by the `rfl` lemma
+`ofNormals_withGraph`. The remaining Track-A gap is now stated in exactly the shape a witness-transfer
+must hit, with the graph-swap dissolved. See *Current state* + *Decisions*.
 
 **Recommended next concrete commit: the N5 seed `q₀` (the witness-transfer, eq. 6.6).** This is the
 one genuinely-geometric step left in Track A: produce a moment-curve (or generic) normal assignment
-`q₀` at which *both* legs `(ofNormals G ends q₀).toBodyHinge.withGraph H/Gc` are rigid on their vertex
-sets, then feed it (+ the cover/shared-body data, distinct endpoints, general position) into
-`hasFullRankRealization_of_splice` — that finishes N6 / `theorem_55.hcontract`. Decompose math-first:
+`q₀` at which *both* leg-native frameworks `(ofNormals GH/Gc ends q₀).toBodyHinge` are rigid on their
+vertex sets, then feed them (+ the cover/shared-body data, distinct endpoints, general position) into
+`hasFullRankRealization_of_splice_ofNormals` — that finishes N6 / `theorem_55.hcontract`. Decompose
+math-first:
 the rigid block `H`'s leg uses the green Case-I capstone
 `ofParam_rankHypothesis_iff_pinnedMotionsOn` (its remaining obligation is the forest data + the count
 `hmatch` against the contraction's inductive `RankHypothesis`); the contraction leg `Gc = G/E(H)` is
-the IH realization on the same `q₀`, transported via `withGraph` — N4 (`rigidContract_isMinimalKDof`,
-green) lets `theorem_55` name `G/E(H)` and invoke the IH. The KT math is `notes/Phase21b.md`
+the IH realization on the same `q₀` (now consumed leg-native, no `withGraph` step) — N4
+(`rigidContract_isMinimalKDof`, green) lets `theorem_55` name `G/E(H)` and invoke the IH. The KT math
+is `notes/Phase21b.md`
 *Finding A* + the `algebraic-induction.tex` `lem:case-I-splice-placement` proof sketch (the
 boundary-panel intersection + block-triangular independence via Lemma 5.1, `lem:rank-delete-vertex`).
 Honesty-gate caveat: any node that *exhibits* `q₀` realizing both legs is the genuine producer — keep
