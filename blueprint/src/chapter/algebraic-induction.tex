@@ -829,7 +829,8 @@ Phase~21b.
         CombinatorialRigidity.Molecular.hglue_of_forest,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition,
         CombinatorialRigidity.Molecular.PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_ofParam_of_pinnedMotionsOn}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_ofParam_of_pinnedMotionsOn,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_ofParam_of_isInfinitesimallyRigid}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization through its
@@ -906,7 +907,13 @@ Phase~21b.
   deficiency $k' = 0$ against a \emph{trivial} block pin $\dim Z_s = 0$ (the
   contraction realized at its full rank) lands a full-rank realization of the
   parent multigraph $G$ directly, reducing the residual Case-I obligation to the
-  block-pin~$\leftrightarrow$~contraction-realization bridge.
+  block-pin~$\leftrightarrow$~contraction-realization bridge. Equivalently, since
+  the block pin of a rigid framework vanishes (the bridge in dimension form,
+  \cref{lem:pinned-motions-on-rank-bound}), the same motive is produced from the
+  single geometric hypothesis that the from-scratch $\mathrm{ofParam}$ realization
+  is itself infinitesimally rigid --- rigidity \emph{is} $\mathrm{RankHypothesis}\
+  0$ --- collapsing both the block-pin vanishing and the count match into rigidity
+  of the contraction-glued realization, the lone residual Case-I obligation.
 \end{lemma}
 \begin{proof}
   \leanok

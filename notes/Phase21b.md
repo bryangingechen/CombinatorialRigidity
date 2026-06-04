@@ -59,14 +59,19 @@ now in hand in dimension form: `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid
 (+ `finrank_…_eq_zero_…`) discharge `hpin` from *rigidity of the realization* —
 a rigid (full-rank) framework, pinned at any nonempty block, has `Z_s = 0`
 (a block-pinned motion is an infinitesimal motion, hence trivial by rigidity,
-hence zero at one pinned body, hence identically zero). **Next concrete step:**
-*producing* the rigid realization — the contraction `G/E(H)`'s inductive
-full-rank realization + rigidly-placed block forces rigidity of `ofParam …`,
-and the count `hmatch` and the `(G, ends)`/`param`/forest graph-side gluing of
-the producer (see *Hand-off*). All affine-path, spanning-family, subfamily-index,
-forest-assembly, general-position/transversality, the realization-motive
-packaging, and now the `hpin`-from-rigidity brick are discharged; what remains
-is the contraction realization producing rigidity + the `ends`/`param`/count gluing.
+hence zero at one pinned body, hence identically zero). The producer is now also
+packaged in **rigidity form**: `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid`
+lands `HasFullRankRealization k G` from the *single* geometric hypothesis that the
+from-scratch witness `ofParam G ends param` is infinitesimally rigid — rigidity *is*
+`RankHypothesis 0` (`rankHypothesis_zero_iff`), so both `hpin` and the count `hmatch`
+collapse into rigidity of the contraction-glued realization. **Next concrete step:**
+*producing* that rigid realization — the contraction `G/E(H)`'s inductive full-rank
+realization + rigidly-placed block forces rigidity of `ofParam …` (the `ends`/`param`/
+forest graph-side gluing; see *Hand-off*). All affine-path, spanning-family,
+subfamily-index, forest-assembly, general-position/transversality, the realization-motive
+packaging (both `hpin`-count and rigidity forms), and the `hpin`-from-rigidity brick are
+discharged; what remains is the contraction realization producing rigidity + the
+`ends`/`param`/count gluing.
 
 ## Architectural choices made up front
 
@@ -172,6 +177,12 @@ Geometric side / general position (`Molecular/AlgebraicInduction.lean`,
   block pin (`hpin : dim Z_s = 0`) to land `HasFullRankRealization k G` on
   the parent graph. The consumer-facing producer of `theorem_55`'s
   `hcontract`; leaves only `hpin` + `hmatch` from the contraction.
+- [x] `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` — same motive,
+  **rigidity form**: lands `HasFullRankRealization k G` from the single hypothesis
+  that `ofParam G ends param` is infinitesimally rigid (rigidity *is* `RankHypothesis
+  0`, `rankHypothesis_zero_iff`), collapsing `hpin` + `hmatch` into rigidity of the
+  contraction-glued realization. Isolates the residual `hcontract` obligation to one
+  statement: *the contraction-glued `ofParam` realization is rigid*.
 - [x] `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` +
   `finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid` — block-pin ↔
   contraction-realization bridge (dimension form): a rigid framework, pinned at
@@ -266,9 +277,15 @@ The realization-motive packaging is now in hand:
 rigidity brick** is now landed: `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`
 (+ `finrank_…_eq_zero_…`) gives `dim Z_s = 0` whenever the realization is
 infinitesimally rigid (a block-pinned motion is trivial by rigidity, hence zero
-at a pinned body, hence identically zero). All analytic / general-position /
-packaging plumbing is discharged; the residual is *producing* the rigid
-realization (from the contraction) plus the `ends`/`param`/count gluing.
+at a pinned body, hence identically zero). The producer is now also packaged in
+**rigidity form**: `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` lands
+`HasFullRankRealization k G` from the single hypothesis that `ofParam G ends param`
+is infinitesimally rigid — rigidity *is* `RankHypothesis 0` (`rankHypothesis_zero_iff`),
+so `hpin` and the count `hmatch` both collapse into rigidity of the realization. All
+analytic / general-position / packaging plumbing is discharged; the residual is
+*producing* the rigid realization (from the contraction) plus the `ends`/`param`/count
+gluing — the residual `hcontract` obligation is now exactly *the contraction-glued
+`ofParam` realization is rigid*.
 
 **Smallest next concrete commit: produce the rigid realization from the
 contraction.** From a minimal `0`-dof-graph `G` with a proper rigid subgraph
@@ -276,10 +293,11 @@ contraction.** From a minimal `0`-dof-graph `G` with a proper rigid subgraph
 `hcontract` hypothesis of `theorem_55`, an `∃ Q, Q.graph = G/E(H) ∧
 …RankHypothesis 0`; `rigidContract` + `contraction_isMinimalKDof` are green in
 `Induction.lean`), exhibit a rigid (`IsInfinitesimallyRigid`, equivalently
-`RankHypothesis 0`) realization of the parent `G` — then `hpin` follows from the
-landed brick `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`. That is the
-geometric heart of KT §6.2/6.5 (the block-triangular glue of the contraction
-realization + rigidly-placed block `V(H)`). Alongside it, the `(G, ends)`
+`RankHypothesis 0`) realization of the parent `G` — then `HasFullRankRealization
+k G` follows directly from the landed producer
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` (no separate `hpin`/
+`hmatch`). That is the geometric heart of KT §6.2/6.5 (the block-triangular glue
+of the contraction realization + rigidly-placed block `V(H)`). Alongside it, the `(G, ends)`
 graph-side gluing the producer still needs: defining `ends` on `E(G)` so
 block hinges orient along the spanning forest (`hends`) and inter-block
 hinges link the contracted vertex correctly (`hlink`), an injective
@@ -287,9 +305,10 @@ hinges link the contracted vertex correctly (`hlink`), an injective
 `Fintype`/`Countable`), and the count `hmatch` (`|J|·(D−1) = D(|V|−1) − dim
 Z_s`) matching the forest's row count against the contraction's inductive
 rank. This is the genuinely-geometric Case-I assembly (KT §6.2/6.5); still
-likely more than one commit — the `hpin`-from-rigidity brick is now landed, so
-the next bricks are the contraction → rigid-realization producer, then the
-`ends`/`param` gluing and count. (For the genuine cycle
+likely more than one commit — both the `hpin`-from-rigidity brick and the
+rigidity-form producer are now landed, so the residual is the genuinely-geometric
+contraction → rigid-realization step (showing the contraction-glued `ofParam`
+realization is rigid) plus the `ends`/`param` gluing. (For the genuine cycle
 case, the `m ≤ D` extensor-independence of `lem:cycle-realization` +
 `exists_independent_panelSupportExtensor` general position controls the
 cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is

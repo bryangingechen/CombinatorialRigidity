@@ -2147,4 +2147,25 @@ theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_pinnedMotionsOn
     (PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn
       G ends hparam hs 0 hu hsep hlink hends hmatch).mpr (by exact_mod_cast hpin)⟩
 
+/-- **Case I from-scratch realization, rigidity form** (`lem:case-I`, the `HasFullRankRealization`
+producer keyed to *rigidity of the realization*; Katoh–Tanigawa 2011 §6.2/6.5, Phase 21b). Where
+`hasFullRankRealization_ofParam_of_pinnedMotionsOn` discharges the realization motive from the block
+pin's vanishing `hpin` plus the analytic count `hmatch`, this form takes the *single* geometric
+hypothesis that the from-scratch witness `ofParam G ends param` is itself infinitesimally rigid
+(its body-hinge interpretation realizes the full rank `D(|V|−1)`, `RankHypothesis 0`). That is the
+geometric output of Case I's block-triangular glue (KT §6.2/6.5): placing the contraction `G/E(H)`
+at its inductive full rank and rigidly placing the block `H` makes the combined parent realization
+rigid. Rigidity *is* `RankHypothesis 0` (`rankHypothesis_zero_iff`), so the realization motive
+`HasFullRankRealization k G` follows directly — the block-pin vanishing `hpin` (via the landed brick
+`finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid`) and the count `hmatch` collapse into
+rigidity and need not be supplied separately. This isolates the remaining `hcontract` obligation of
+`theorem_55` to a single statement: *the contraction-glued `ofParam` realization is rigid*. -/
+theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_isInfinitesimallyRigid
+    [Nonempty α] [Finite α]
+    (G : Graph α β) (ends : β → α × α) (param : α → ℝ)
+    (hrig : (ofParam (k := k) G ends param).toBodyHinge.IsInfinitesimallyRigid) :
+    HasFullRankRealization k G :=
+  ⟨ofParam (k := k) G ends param, ofParam_graph G ends param,
+    (BodyHingeFramework.rankHypothesis_zero_iff _).mpr hrig⟩
+
 end CombinatorialRigidity.Molecular
