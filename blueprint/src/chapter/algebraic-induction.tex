@@ -602,7 +602,8 @@ Cases~I and~II travel toward the smaller inductive graph.
 \begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
   \label{lem:case-I}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn}
+        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_le_withGraph}
   \leanok
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
         lem:rank-delete-vertex, def:pinned-motions-on,
@@ -634,7 +635,12 @@ Cases~I and~II travel toward the smaller inductive graph.
   (\cref{lem:exists-independent-panel-extensor}). Taking the gluing as an
   explicit hypothesis makes the lemma green modulo the device, parallel to
   Case~II (\cref{lem:case-II}) with the contraction's \emph{block} pin in
-  place of the $1$-extension's single-body pin.
+  place of the $1$-extension's single-body pin. The graph-side leg of the
+  block-triangular glue is monotone: re-adding the inter-block hinges to a
+  rigid spanning subgraph only shrinks the null space, and the
+  trivial-motion space is graph-independent, so a rigid spanning subgraph of
+  the parent certifies rigidity of the parent itself
+  ($\mathrm{isInfinitesimallyRigid\_of\_le\_withGraph}$).
 \end{lemma}
 \begin{proof}
   \leanok

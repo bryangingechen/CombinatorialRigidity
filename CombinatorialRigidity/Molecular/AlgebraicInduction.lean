@@ -529,6 +529,26 @@ theorem finrank_infinitesimalMotions_le_of_graph_le [Finite α] (F : BodyHingeFr
       Module.finrank ℝ (F.withGraph G').infinitesimalMotions :=
   Submodule.finrank_mono (F.infinitesimalMotions_le_withGraph_of_le hle)
 
+/-- **A rigid spanning subgraph certifies rigidity of the parent** (`lem:case-I`, the graph-side
+leg of Case I's block-triangular gluing; Katoh–Tanigawa 2011 §6.2/6.5, Phase 21b). If some
+subgraph `G' ≤ F.graph` (on the *same* body set, keeping the hinge data via `withGraph`) is
+infinitesimally rigid, then so is `F` itself. Re-adding hinges only *shrinks* the null space
+(`infinitesimalMotions_le_withGraph_of_le`), so `Z(G,p) ⊆ Z(G',p) ⊆ trivialMotions`; since the
+trivial-motion space depends only on the bodies, not on the graph
+(`trivialMotions` ignores its framework argument), the parent's null space lands back inside
+`F.trivialMotions` and `F` is rigid.
+
+This is the rigidity-monotonicity step the genuinely-geometric Case-I assembly needs (KT §6.2/6.5):
+the block-triangular glue places the contraction `G/E(H)` at its inductive full rank and the rigid
+block `H` rigidly, producing a rigid realization of a spanning subgraph of the parent `G`;
+re-adding the remaining inter-block hinges then preserves rigidity, and the parent realization is
+rigid. Composed with `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid`, it discharges the
+`hcontract` premise of `theorem_55` once the spanning rigid subgraph of the parent is exhibited. -/
+theorem isInfinitesimallyRigid_of_le_withGraph (F : BodyHingeFramework k α β) {G' : Graph α β}
+    (hle : G' ≤ F.graph) (hrig : (F.withGraph G').IsInfinitesimallyRigid) :
+    F.IsInfinitesimallyRigid :=
+  le_trans (F.infinitesimalMotions_le_withGraph_of_le hle) hrig
+
 /-! ## Block-pinning a rigid subgraph (`def:pinned-motions-on`, Case I infra)
 
 Case I of Theorem 5.5 contracts a *proper rigid subgraph* `H`: every body of `V(H)` collapses

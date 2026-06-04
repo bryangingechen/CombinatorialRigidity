@@ -72,7 +72,15 @@ subfamily-index, forest-assembly, general-position/transversality, the realizati
 packaging (both `hpin`-count and rigidity forms), the `hpin`-from-rigidity brick, and the
 injective-`param` supply (`hasFullRankRealization_of_pinnedMotionsOn` internalizes it via the
 mirror `Countable.exists_injective_real`) are discharged; what remains is the genuinely-geometric
-contraction realization producing rigidity + the `ends`/count gluing.
+contraction realization producing rigidity + the `ends`/count gluing. The **graph-side leg** of
+that glue is now landed: `isInfinitesimallyRigid_of_le_withGraph` — a rigid spanning subgraph
+`G' ≤ F.graph` (same bodies, hinge data via `withGraph`) certifies rigidity of the parent `F`
+(re-adding inter-block hinges only shrinks `Z`, and `trivialMotions` is graph-independent). So once
+the block-triangular glue produces a *rigid spanning subgraph* of the parent, the parent
+realization is rigid and `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` fires; the
+residual is the genuinely-geometric production of that rigid spanning subgraph (place the
+contraction `G/E(H)` at its inductive full rank + the rigid block `H` rigidly) plus the `ends`
+graph-side construction.
 
 ## Architectural choices made up front
 
@@ -184,6 +192,11 @@ Geometric side / general position (`Molecular/AlgebraicInduction.lean`,
   0`, `rankHypothesis_zero_iff`), collapsing `hpin` + `hmatch` into rigidity of the
   contraction-glued realization. Isolates the residual `hcontract` obligation to one
   statement: *the contraction-glued `ofParam` realization is rigid*.
+- [x] `isInfinitesimallyRigid_of_le_withGraph` — graph-side leg of the block-triangular
+  glue: a rigid spanning subgraph `G' ≤ F.graph` certifies rigidity of the parent `F`
+  (`Z(G,p) ⊆ Z(G',p) ⊆ trivialMotions`, the trivial-motion space graph-independent). Composed
+  with `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` it discharges `hcontract` once a
+  rigid spanning subgraph of the parent is exhibited; folded into `lem:case-I`.
 - [x] `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` +
   `finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid` — block-pin ↔
   contraction-realization bridge (dimension form): a rigid framework, pinned at
@@ -295,7 +308,15 @@ analytic / general-position / packaging plumbing is discharged; the residual is
 gluing — the residual `hcontract` obligation is now exactly *the contraction-glued
 `ofParam` realization is rigid*.
 
-**Smallest next concrete commit: produce the rigid realization from the
+The **graph-side rigidity-monotonicity leg** of the block-triangular glue is now landed:
+`isInfinitesimallyRigid_of_le_withGraph` — a rigid spanning subgraph `G' ≤ F.graph` (same bodies,
+hinge data via `withGraph`) certifies rigidity of the parent `F`, since re-adding the inter-block
+hinges only shrinks `Z` and `trivialMotions` is graph-independent. So the residual reduces to
+*exhibiting a rigid spanning subgraph of the parent*: place the contraction `G/E(H)` at its
+inductive full rank + the rigid block `H` rigidly (that union is a rigid spanning subgraph of `G`),
+then the parent realization is rigid by monotonicity and the producer fires.
+
+**Smallest next concrete commit: produce the rigid spanning subgraph from the
 contraction.** From a minimal `0`-dof-graph `G` with a proper rigid subgraph
 `H` and the contraction `G/E(H)`'s inductive full-rank realization (the
 `hcontract` hypothesis of `theorem_55`, an `∃ Q, Q.graph = G/E(H) ∧
