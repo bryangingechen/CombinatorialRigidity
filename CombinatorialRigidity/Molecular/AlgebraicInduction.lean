@@ -908,6 +908,42 @@ theorem pinnedMotionsOn_eq_bot_of_block_internal_rigid (F : BodyHingeFramework k
   rw [← F.pinnedMotionsOn_withGraph_eq_of_block_internal s hle hblk]
   exact (F.withGraph G').pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid hs hrig
 
+/-- **The contraction splice is rigid** (`lem:case-I-realization`, the assembled splice-rigidity
+core; Katoh–Tanigawa 2011 eqs. (6.2), (6.6), Phase 21b). The framework-level statement that the
+Case-I splice attains full rank: given a body-hinge framework `F` on the parent graph `G = F.graph`
+carrying a proper rigid subgraph `H` on the (nonempty) body set `s = V(H)`, if
+
+* the block subgraph `G_H ≤ F.graph` (the rigid subgraph `H` placed at `(H, p₁)`) realizes
+  rigidly (`hHrig : (F.withGraph G_H).IsInfinitesimallyRigid`), and
+* the contraction subgraph `G_c ≤ F.graph` — the parent with the block-internal edges `E(H)`
+  deleted, i.e. `G/E(H)` carried as the `G_c`-deletion (`hblk : every dropped link has both
+  endpoints in s`) — realizes rigidly at its inductive full rank
+  (`hcrig : (F.withGraph G_c).IsInfinitesimallyRigid`, the inductive `RankHypothesis 0` on the
+  smaller minimal `0`-dof-graph `G/E(H)` by `lem:contraction-minimality`),
+
+then the spliced parent framework `F` is itself infinitesimally rigid (full rank `D(|V|−1)`).
+
+This is the splice of KT eqs. (6.2)/(6.6) read at the framework level: the rigid block placement
+makes every parent motion constant on `s` (the `hblock` brick
+`isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph`, sourced from `hHrig`), and the
+contraction's inductive rigidity makes the residual block pin vanish (`hpin`, the geometric leaf
+`pinnedMotionsOn_eq_bot_of_block_internal_rigid` sourced from `hcrig`); the block-triangular glue
+`isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` turns the pair into rigidity of the
+glued parent. The genericity device (`lem:genericity-device`, now green) underwrites the
+no-rank-loss at the generic splice point through the block-pin lower/upper bounds of `lem:case-I`;
+here the two rigidity inputs `hHrig`/`hcrig` are the geometric output of placing the block and the
+contraction at their respective full ranks, the splice's "remaining geometric content" the
+blueprint flags. -/
+theorem isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal (F : BodyHingeFramework k α β)
+    {s : Set α} (hs : s.Nonempty)
+    {G_H : Graph α β} (hHle : G_H ≤ F.graph) (hHrig : (F.withGraph G_H).IsInfinitesimallyRigid)
+    {G_c : Graph α β} (hcle : G_c ≤ F.graph)
+    (hblk : ∀ e u v, F.graph.IsLink e u v → ¬ G_c.IsLink e u v → u ∈ s ∧ v ∈ s)
+    (hcrig : (F.withGraph G_c).IsInfinitesimallyRigid) :
+    F.IsInfinitesimallyRigid :=
+  F.isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot hs hHle hHrig
+    (F.pinnedMotionsOn_eq_bot_of_block_internal_rigid hs hcle hblk hcrig)
+
 /-- **The block-pinned dimension does not decrease under edge deletion** (`def:pinned-motions-on`,
 Case I infra, rank form): for `G' ≤ F.graph`,
 `finrank (pinnedMotionsOn s) ≤ finrank ((withGraph G').pinnedMotionsOn s)`. The supergraph's
@@ -2253,6 +2289,52 @@ theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_isInfinitesimallyR
     HasFullRankRealization k G :=
   ⟨ofParam (k := k) G ends param, ofParam_graph G ends param,
     (BodyHingeFramework.rankHypothesis_zero_iff _).mpr hrig⟩
+
+/-- **Case I realization: the contraction splice attains full rank** (`lem:case-I-realization`,
+the `HasFullRankRealization` closure under rigid-subgraph contraction; Katoh–Tanigawa 2011
+eqs. (6.2), (6.6), Phase 21b). This is the consumer-facing carrier of `lem:case-I-realization`:
+the full-rank realization motive of Theorem 5.5 is closed under contracting a proper rigid
+subgraph. On the from-scratch `ofParam G ends param` witness (its `graph = G` definitionally,
+`ofParam_graph`), supplying the two splice rigidity inputs
+
+* `hHrig` — the block subgraph `G_H ≤ G` (the rigid subgraph `H` placed rigidly, `(H, p₁)`)
+  realizes rigidly, and
+* `hcrig` together with the block-internal-deletion hypothesis `hblk` — the contraction subgraph
+  `G_c ≤ G`, the parent with the block edges `E(H)` deleted (`G/E(H)`), realizes rigidly at its
+  inductive full rank (`lem:contraction-minimality` makes `G/E(H)` a smaller minimal `0`-dof-graph,
+  the induction hypothesis of `hcontract`),
+
+lands the realization motive `HasFullRankRealization k G` directly.
+
+The proof is one composition: the splice-rigidity core
+`isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal` glues the rigid block (every motion
+constant on `s = V(H)`) with the vanishing residual block pin (the contraction's inductive
+rigidity) into rigidity of the parent, and
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` reads that rigidity as
+`RankHypothesis 0`.
+This discharges the `hcontract` premise of `theorem_55` once the splice realization data is
+exhibited: the genericity device (`lem:genericity-device`, green) underwrites the no-rank-loss at
+the generic splice point through the block-pin bounds of `lem:case-I`, and the two rigidity inputs
+are the geometric output of placing the block at `p₁` and the contraction at `p₂` and intersecting
+panels on the boundary `δ_G(V(H))` (KT eqs. (6.2)/(6.6)) — the splice's remaining geometric
+content. -/
+theorem PanelHingeFramework.hasFullRankRealization_ofParam_of_contraction
+    [Nonempty α] [Finite α]
+    (G : Graph α β) (ends : β → α × α) (param : α → ℝ)
+    {s : Set α} (hs : s.Nonempty)
+    {G_H : Graph α β} (hHle : G_H ≤ G)
+    (hHrig : (((ofParam (k := k) G ends param).toBodyHinge).withGraph G_H).IsInfinitesimallyRigid)
+    {G_c : Graph α β} (hcle : G_c ≤ G)
+    (hblk : ∀ e u v, G.IsLink e u v → ¬ G_c.IsLink e u v → u ∈ s ∧ v ∈ s)
+    (hcrig : (((ofParam (k := k) G ends param).toBodyHinge).withGraph G_c).IsInfinitesimallyRigid) :
+    HasFullRankRealization k G := by
+  set F := (ofParam (k := k) G ends param).toBodyHinge with hF
+  have hg : F.graph = G :=
+    (PanelHingeFramework.toBodyHinge_graph _).trans (ofParam_graph ..)
+  refine PanelHingeFramework.hasFullRankRealization_ofParam_of_isInfinitesimallyRigid
+    G ends param ?_
+  exact F.isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal
+    hs (hg ▸ hHle) hHrig (hg ▸ hcle) (fun e u v hl => hblk e u v (hg ▸ hl)) hcrig
 
 /-- **Case I from-scratch realization, block-pin form with the parameter map supplied**
 (`lem:case-I`, the `HasFullRankRealization` producer that internalizes the injective panel

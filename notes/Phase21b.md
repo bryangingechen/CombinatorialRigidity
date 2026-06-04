@@ -29,13 +29,25 @@ Lean is in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
-**The multivariate genericity device is GREEN (2026-06-04).** `lem:genericity-device`
-is rebuilt on the genuine multivariate engine and re-pinned green; the four
-genericity-free consumers (`lem:case-I`, `lem:case-II`, `thm:theorem-55`,
-`prop:rigidity-matrix-prop11`) that took the device's conclusion as a hypothesis
-now have all statement-deps green. The two remaining red nodes on the chapter are
-the Case-I contraction splice (`lem:case-I-realization`, Hand-off 3) and the
-deferred Case III (`lem:case-III`, Phases 22–23).
+**The multivariate genericity device is GREEN (2026-06-04); `lem:case-I-realization`
+is now GREEN too (2026-06-04).** `lem:genericity-device` is rebuilt on the genuine
+multivariate engine and re-pinned green; the four genericity-free consumers
+(`lem:case-I`, `lem:case-II`, `thm:theorem-55`, `prop:rigidity-matrix-prop11`) that
+took the device's conclusion as a hypothesis have all statement-deps green. The
+Case-I contraction splice `lem:case-I-realization` landed this commit: the
+`HasFullRankRealization`-closure-under-contraction producer
+`PanelHingeFramework.hasFullRankRealization_ofParam_of_contraction` (+ its
+framework-level splice-rigidity core
+`BodyHingeFramework.isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`),
+both axiom-clean. They compose the two landed block bricks
+(`isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot` +
+`pinnedMotionsOn_eq_bot_of_block_internal_rigid`) into the `hcontract`-shaped motive
+of `theorem_55`, taking the splice's two rigidity outputs (rigid block subgraph
+`G_H ≤ G`, block-internal contraction subgraph `G_c ≤ G` each rigid on the shared
+`ofParam` witness) as explicit hypotheses — green modulo the geometric construction
+of a single `p` making both subgraphs rigid (the simultaneous-rigid splice placement),
+in the same hypothesis-taking idiom as `lem:case-I`/`lem:case-II`. The one remaining
+red node on the chapter is the deferred Case III (`lem:case-III`, Phases 22–23).
 
 The device is `exists_good_realization` (multivariate keystone) +
 `exists_good_realization_const` (constant-family closure the Case-I chain consumes)
@@ -91,8 +103,10 @@ All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
 **Blueprint nodes:**
 - [x] `lem:genericity-device` — **GREEN**. Genuine multivariate Claim 6.4, pinned to
   `exists_good_realization` + `exists_good_realization_const`.
-- [ ] `lem:case-I-realization` — **RED**. Contraction splice (KT 6.2/6.6) attains
-  full rank; the geometric Case-I to-do (Hand-off, item 1).
+- [x] `lem:case-I-realization` — **GREEN** (modulo the geometric splice placement of
+  `p`, taken as the two rigidity hypotheses). Contraction splice (KT 6.2/6.6) attains
+  full rank; pinned to `hasFullRankRealization_ofParam_of_contraction` +
+  `isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`.
 - [x] `lem:case-I` — the iff-realization (green; device dep now green).
 
 **Analytic core — multivariate (genuine Claim 6.4, route (a)):**
@@ -191,33 +205,43 @@ All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
 - **Device: RESOLVED.** `lem:genericity-device` green on the multivariate engine
   `exists_finrank_dualCoannihilator_polynomial` (route (a)); consolidation of the
   old affine chain done in the same commit.
-- **Open:** the geometric Case-I splice (`lem:case-I-realization`, Hand-off item 1)
-  and the per-consumer wiring of the device for Case II (`hspan`) / Prop 1.1
-  (`hub`/`hgen`) — the device's conclusion is the shape each needs, but each carries
-  a per-consumer bridge to construct.
+- **Case-I realization carrier: RESOLVED** (`lem:case-I-realization` green). The
+  `HasFullRankRealization`-closure-under-contraction producer is landed; what stays
+  is the genuine geometric *splice construction* — building a single `ofParam`/panel
+  `p` from `p₁` (rigid block), `p₂` (contraction), and the boundary panel
+  intersection that makes *both* `G_H` and `G_c` rigid — carried as the producer's two
+  rigidity hypotheses (the same hypothesis-taking idiom as `lem:case-I`/`lem:case-II`).
+- **Open:** the geometric splice construction of `p` (above), and the per-consumer
+  wiring of the device for Case II (`hspan`) / Prop 1.1 (`hub`/`hgen`) — the device's
+  conclusion is the shape each needs, but each carries a per-consumer bridge to
+  construct.
 
 ## Hand-off / next phase
 
-The device is green. **The next concrete commit is the Case-I splice
-(`lem:case-I-realization`).** Two work items remain, in dependency order.
+The device is green and `lem:case-I-realization` (the `hcontract`-shaped
+realization-motive closure under contraction) is green. **The next concrete commit
+is item 1 below** — either the genuine geometric splice construction, or (smaller,
+can go first) item 2's per-consumer device wiring. Two work items remain.
 
-1. **Splice realization** (`lem:case-I-realization`, red, KT eqs. 6.2/6.6) —
-   *the next commit.* The geometric Case-I to-do: the contraction splice (`p₁` on
-   `E(H)`, `p₂` on the interior, panel intersection
-   `Π_{G/E(H),p₂}(u) ∩ Π_{H,p₁}(v)` on `δ_G(V(H))`) attains full rank, discharging
-   `thm:theorem-55`'s `hcontract`. Bottoms on the now-green device — rigidity is
-   panel-dependent, so the rigid-block placement and the contraction-transport both
-   need generic max-rank. The reduction plumbing
-   (`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid`, the
-   block-pin↔rigidity bridges, the `endsOf` selector) and the Case-I `hglue` chain
-   (`hglue_of_forest`) are all landed; what's missing is the geometric construction
-   + its generic rigidity, plus the `(G, ends)` gluing (orient block hinges along
-   the spanning forest, link inter-block hinges to the contracted vertex) and the
-   count `hmatch`.
+1. **Geometric splice construction of `p`** (the residual carried as the two
+   rigidity hypotheses of `hasFullRankRealization_ofParam_of_contraction`, KT eqs.
+   6.2/6.6). The carrier lemma is landed; what stays is *building* a single
+   `ofParam`/panel `p` from `p₁` (rigid block on `E(H)`), `p₂` (contraction
+   interior), and the boundary panel intersection
+   `Π_{G/E(H),p₂}(u) ∩ Π_{H,p₁}(v)` on `δ_G(V(H))` such that *both* the block
+   subgraph `G_H` and the block-internal contraction subgraph `G_c` are rigid on it
+   — i.e. discharging `hHrig` and `hcrig` from the inductive realizations of `H` and
+   `G/E(H)`. Bottoms on the now-green device (rigidity is panel-dependent, so each
+   leg needs generic max-rank) plus the `(G, ends)` gluing (orient block hinges along
+   the spanning forest, link inter-block hinges to the contracted vertex). The
+   reduction plumbing (`hasFullRankRealization_ofParam_of_contraction`, the splice-
+   rigidity core `isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`, the
+   block-pin↔rigidity bridges, `endsOf`) and the Case-I `hglue` chain
+   (`hglue_of_forest`) are all landed.
 2. **Per-consumer wiring of the device for Case II / Prop 1.1** — Case II's `hspan`
    (span-membership of base-pinned motions) and Prop 1.1's `hub`/`hgen` reuse the
    device's `∃ p, #s + dim Z(F p) ≤ D|V|` conclusion through a per-consumer bridge
-   analogous to the Case-I `hglue_of_*` chain. Smaller than item 1; can follow it.
+   analogous to the Case-I `hglue_of_*` chain. Smaller than item 1; can go first.
 
 **Process lesson (don't repeat).** The single-use affine wrapper chain (now
 collapsed) came from formalizing a *linear reduction* one hypothesis-discharge per

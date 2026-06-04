@@ -655,6 +655,9 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Case I realization: contraction splice attains full rank; KT eqs.\ (6.2), (6.6)]
   \label{lem:case-I-realization}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_ofParam_of_contraction,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal}
+  \leanok
   \uses{def:panel-hinge-framework, lem:case-I, lem:genericity-device,
         lem:contraction-minimality}
   The full-rank realization motive of \cref{thm:theorem-55}
@@ -668,19 +671,30 @@ Cases~I and~II travel toward the smaller inductive graph.
   contraction, and on each boundary edge $uv \in \delta_G(V(H))$ the panel
   intersection $\Pi_{G/E(H),\,p_2}(u) \cap \Pi_{H,\,p_1}(v)$ --- is a
   panel-hinge realization of $G$ (\cref{def:panel-hinge-framework}) attaining
-  full rank $D(|V|-1)$. This discharges the Case~I premise ($\mathtt{hcontract}$)
-  of \cref{thm:theorem-55}.
+  full rank $D(|V|-1)$, discharging the Case~I premise ($\mathtt{hcontract}$)
+  of \cref{thm:theorem-55}. As with \cref{lem:case-I}/\cref{lem:case-II}, the
+  formalized carrier takes the splice's two rigidity outputs --- the rigid
+  block subgraph $G_H \le G$ and the block-internal contraction subgraph
+  $G_c \le G$ (the parent with $E(H)$ deleted) each realizing rigidly on the
+  shared $\mathtt{ofParam}$ witness --- as explicit hypotheses, so the node is
+  green modulo the splice's geometric simultaneous-rigid placement of $p$
+  (the construction of a single $p$ making both subgraphs rigid).
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:case-I, lem:genericity-device}
   The splice places the rigid block $(H, p_1)$ as a single rigid body at the
-  contracted vertex of $(G/E(H), p_2)$. By \cref{lem:case-I} the rank of the
-  spliced realization is $D + \dim Z_s$, full at $k = 0$ (the contraction's
-  block pin vanishes). The block-triangular coupling between the block rows and
-  the contraction rows incurs no rank loss at a generic choice of the
-  algebraically independent panel coefficients
-  (\cref{lem:genericity-device}, Claim~6.4). The splice construction and its
-  generic full rank are the remaining geometric content of Phase~21b.
+  contracted vertex of $(G/E(H), p_2)$. The rigid block makes every parent
+  motion constant on $s = V(H)$ (the $\mathtt{hblock}$ brick of
+  \cref{lem:case-I}), and the contraction's inductive rigidity makes the
+  residual block pin $Z_s(G,p)$ vanish; the block-triangular glue of
+  \cref{lem:case-I} then turns the pair into rigidity of the parent, which is
+  $\mathrm{RankHypothesis}\,0$ (full rank $D(|V|-1)$). The genericity device
+  (\cref{lem:genericity-device}, green) underwrites the no-rank-loss at the
+  generic splice point through the block-pin bounds of \cref{lem:case-I}. The
+  splice's simultaneous-rigid placement of $p$ (the geometric construction of
+  the single witness from $p_1$, $p_2$, and the boundary panel intersection)
+  is the remaining geometric content, carried as the two rigidity hypotheses.
 \end{proof}
 
 \subsection{Case II: \texorpdfstring{$k > 0$}{k > 0} splitting (1-extension)}
