@@ -914,6 +914,85 @@ theorem supportExtensor_ne_zero_of_isGeneralPosition (P : PanelHingeFramework k 
     P.toBodyHinge.supportExtensor e ≠ 0 :=
   (P.toBodyHinge_supportExtensor_ne_zero_iff e).mpr (hP _ _ he)
 
+/-- **The moment curve in `ℝ^(k+2)`** (`def:panel-hinge-framework`, Theorem 5.5 infra): the point
+`(1, t, t², …, t^(k+1))` of the rational normal curve at parameter `t`, packaged as the panel
+normal `momentCurve t : Fin (k + 2) → ℝ`. Two such points at *distinct* parameters are linearly
+independent (`momentCurve_pair_linearIndependent`), so assigning bodies distinct parameters yields
+panel normals in general position for *any* number of bodies — the explicit witness that supplies
+the genericity-free general-position data of the Case-I rigid block, where standard-basis vectors
+cover only `|α| ≤ k + 2`. -/
+def momentCurve (t : ℝ) : Fin (k + 2) → ℝ := fun i => t ^ (i : ℕ)
+
+@[simp]
+theorem momentCurve_apply (t : ℝ) (i : Fin (k + 2)) : momentCurve t i = t ^ (i : ℕ) := rfl
+
+/-- **Distinct moment-curve points are linearly independent** (`def:panel-hinge-framework`,
+Theorem 5.5 infra): for `s ≠ t`, the two rational-normal-curve points `momentCurve s` and
+`momentCurve t` in `ℝ^(k+2)` are linearly independent. The `2 × 2` Vandermonde minor on the first
+two coordinates `(1, s)`, `(1, t)` has determinant `t − s ≠ 0`: evaluating a vanishing combination
+`c₁ • momentCurve s + c₂ • momentCurve t = 0` at coordinates `0` and `1` (the latter available
+since `k + 2 ≥ 2`) gives `c₁ + c₂ = 0` and `c₁ s + c₂ t = 0`, whence `c₁ (s − t) = 0` forces
+`c₁ = 0` and then `c₂ = 0`. This is the pairwise independence the moment-curve normal assignment
+needs for `IsGeneralPosition`. -/
+theorem momentCurve_pair_linearIndependent {s t : ℝ} (hst : s ≠ t) :
+    LinearIndependent ℝ ![momentCurve (k := k) s, momentCurve t] := by
+  rw [LinearIndependent.pair_iff]
+  intro c₁ c₂ h
+  have h0 := congr_fun h 0
+  have h1 := congr_fun h ⟨1, by omega⟩
+  simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, momentCurve_apply, Fin.val_zero,
+    pow_zero, pow_one, smul_eq_mul, mul_one] at h0 h1
+  have hc₁ : c₁ = 0 := by
+    have : c₁ * (s - t) = 0 := by linear_combination h1 - t * h0
+    rcases mul_eq_zero.mp this with h' | h'
+    · exact h'
+    · exact absurd (sub_eq_zero.mp h') hst
+  refine ⟨hc₁, ?_⟩
+  rw [hc₁, zero_add] at h0
+  exact h0
+
+/-- **The moment-curve general-position assignment** (`def:panel-hinge-framework`, Theorem 5.5
+infra): given an injective parameter map `param : α → ℝ` assigning a distinct real to each body,
+the panel framework `P.withMomentNormals param` re-uses `P`'s multigraph and endpoint selector but
+sets every body's panel normal to the moment-curve point `momentCurve (param a)`. Its normals are
+in general position (`isGeneralPosition_withMomentNormals`) for *any* number of bodies — the
+explicit construction the Case-I rigid block needs to source `hglue_of_forest`'s transversality
+hypothesis `he` (standard-basis normals cover only `|α| ≤ k + 2`). The endpoint selector and graph
+are untouched, so the framework is glued onto the inductive realization exactly as `withGraph` /
+`withNormal` are. -/
+def withMomentNormals (P : PanelHingeFramework k α β) (param : α → ℝ) :
+    PanelHingeFramework k α β where
+  graph := P.graph
+  normal := fun a => momentCurve (param a)
+  ends := P.ends
+
+@[simp]
+theorem withMomentNormals_graph (P : PanelHingeFramework k α β) (param : α → ℝ) :
+    (P.withMomentNormals param).graph = P.graph := rfl
+
+@[simp]
+theorem withMomentNormals_ends (P : PanelHingeFramework k α β) (param : α → ℝ) :
+    (P.withMomentNormals param).ends = P.ends := rfl
+
+@[simp]
+theorem withMomentNormals_normal (P : PanelHingeFramework k α β) (param : α → ℝ) (a : α) :
+    (P.withMomentNormals param).normal a = momentCurve (param a) := rfl
+
+/-- **The moment-curve assignment is in general position** (`def:panel-hinge-framework`,
+Theorem 5.5 infra): if `param : α → ℝ` is injective, then `P.withMomentNormals param`'s panel
+normals are in general position — any two normals at distinct bodies are linearly independent.
+Distinct bodies get distinct parameters (injectivity), and distinct-parameter moment-curve points
+are independent (`momentCurve_pair_linearIndependent`). This is the explicit, dimension-free
+general-position witness for the Case-I rigid block: combined with
+`supportExtensor_ne_zero_of_isGeneralPosition` it discharges every forest hinge's transversality
+hypothesis `he` in `hglue_of_forest`, isolating the genericity (a single injective real assignment)
+from the geometric gluing. -/
+theorem isGeneralPosition_withMomentNormals (P : PanelHingeFramework k α β) {param : α → ℝ}
+    (hparam : Function.Injective param) : (P.withMomentNormals param).IsGeneralPosition := by
+  intro a b hab
+  simp only [withMomentNormals_normal]
+  exact momentCurve_pair_linearIndependent (fun h => hab (hparam h))
+
 /-- **The panel framework on a new graph** (`def:framework-with-graph`, panel layer): replace the
 underlying multigraph of `P` by `G'`, keeping the per-body panel normals `normal` and the endpoint
 selector `ends` — hence every panel support extensor. The panel analogue of

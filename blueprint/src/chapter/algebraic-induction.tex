@@ -87,7 +87,8 @@ plumbing is needed.
         CombinatorialRigidity.Molecular.BodyHingeFramework.IsHingeCoplanar,
         CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge,
         CombinatorialRigidity.Molecular.PanelHingeFramework.IsGeneralPosition,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition}
+        CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_withMomentNormals}
   \leanok
   \uses{def:panel-support-extensor, def:hinge-constraint}
   A \emph{panel-hinge framework} is a multigraph $G = (V,E)$ together with a
@@ -112,7 +113,14 @@ plumbing is needed.
   distinct bodies has a nonzero supporting extensor
   ($\mathrm{supportExtensor\_ne\_zero\_of\_isGeneralPosition}$) --- the
   transversality the rigid-block forest hinges feed into the block-triangular
-  gluing of \cref{lem:case-I}.
+  gluing of \cref{lem:case-I}. An explicit, dimension-free general-position
+  assignment exists for any number of bodies: setting each body's normal to a
+  point $(1, t, t^2, \dots, t^{k+1})$ on the moment curve at a distinct
+  parameter $t$ makes any two normals at distinct bodies independent (the
+  $2 \times 2$ Vandermonde minor has determinant $t' - t \neq 0$), so an
+  injective real assignment of parameters yields
+  $\mathrm{IsGeneralPosition}$ ($\mathrm{isGeneralPosition\_withMomentNormals}$)
+  --- where standard-basis normals would cover only $|V| \le k+2$.
 \end{definition}
 
 \subsection{The generic-rank reconciliation (Proposition 1.1, analytic half)}

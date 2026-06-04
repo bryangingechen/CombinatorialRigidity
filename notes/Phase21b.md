@@ -66,7 +66,15 @@ general-position predicate and the transversality consequence discharging `hglue
 `he` once the block's normals are in general position. What remains is the `F₀` *construction*
 (gluing the contraction realization with the rigidly-placed block), the spanning-forest data
 `u`/`other`/`e`, the count `hmatch`, and a general-position normal *assignment* for the block.
-**Next concrete commit: see *Hand-off*.**
+The **general-position assignment is now landed** (`withMomentNormals` +
+`isGeneralPosition_withMomentNormals`): a moment-curve normal `t ↦ (1, t, t², …)` at an injective
+real parameter map gives pairwise-independent normals for *any* `|α|` (Vandermonde minor `t' − t ≠ 0`,
+via `momentCurve_pair_linearIndependent` + `LinearIndependent.pair_iff`), discharging
+`IsGeneralPosition` and hence (with `supportExtensor_ne_zero_of_isGeneralPosition`) every forest
+hinge's transversality `he` in `hglue_of_forest`. This isolates the genericity (one injective real
+assignment) from the geometric gluing. **Next concrete commit: see *Hand-off*** — the `F₀`
+construction proper (gluing the contraction realization with the rigidly-placed block) + its
+spanning-forest data + the count `hmatch`.
 
 ## Architectural choices made up front
 
@@ -199,6 +207,18 @@ hand-off convenience.
   not yet construct** a general-position assignment for arbitrary `|α|` — that is the polynomial
   non-vanishing belonging with the genericity argument (standard-basis vectors only cover
   `|α| ≤ k+2`), deliberately left to the `F₀`-glue commit.
+
+- [x] `momentCurve` + `momentCurve_pair_linearIndependent` + `withMomentNormals` +
+  `isGeneralPosition_withMomentNormals` (`Molecular/AlgebraicInduction.lean`, `PanelHingeFramework`
+  namespace): the **dimension-free general-position assignment** — the moment-curve point
+  `(1, t, t², …, t^(k+1)) : Fin (k+2) → ℝ`, the Vandermonde pairwise-independence of two such points
+  at distinct parameters (`LinearIndependent.pair_iff` + evaluate at coords 0/1 + `linear_combination`),
+  the `withMomentNormals param` constructor (re-uses graph/ends, sets `normal a = momentCurve (param a)`),
+  and `isGeneralPosition_withMomentNormals` (injective `param` ⇒ `IsGeneralPosition`). Covers any
+  `|α|` where standard-basis normals reached only `|α| ≤ k+2`; sources `hglue_of_forest`'s `he` via
+  `supportExtensor_ne_zero_of_isGeneralPosition`. Green; `isGeneralPosition_withMomentNormals` folded
+  into `def:panel-hinge-framework`'s `\lean{...}` pin (the moment-curve construction lemmas skipped
+  per the blueprint skip-glue rule).
 
 - [x] `hglue_of_forest` (`Molecular/AlgebraicInduction.lean`): the **last generic Case-I
   reduction** — composes `exists_independent_rigidityRows_of_forest` (the rigid block's
@@ -350,17 +370,18 @@ forest `hindep` family (`exists_independent_rigidityRows_of_forest`, `(D−1)·|
 *data* `u`/`other`/`e` + `hu`/`hsep`/`he` plus the count `hmatch` keyed to `|J|·(D−1)`). This was the
 last generic (graph-and-hinge-agnostic) reduction.
 
-The **first geometric brick** landed this commit: `IsGeneralPosition` (pairwise-independent panel
-normals) + `supportExtensor_ne_zero_of_isGeneralPosition` (every distinct-endpoint hinge transversal
-under it), which sources `hglue_of_forest`'s `he` once the block's normals are in general position.
+The two general-position geometric bricks are now landed: `IsGeneralPosition` (pairwise-independent
+panel normals) + `supportExtensor_ne_zero_of_isGeneralPosition` (every distinct-endpoint hinge
+transversal under it), and — as of this commit — the **explicit dimension-free assignment**
+`withMomentNormals` + `isGeneralPosition_withMomentNormals` (moment-curve normals at an injective
+real parameter map give `IsGeneralPosition` for any `|α|`, Vandermonde minor `t' − t ≠ 0`). Together
+they source `hglue_of_forest`'s `he` for a rigid block of any size, with the genericity reduced to a
+single injective real assignment. No genericity / general-position obligation now remains on the
+Case-I path; what is left is purely the geometric gluing.
 
-**Smallest next concrete commit: a general-position normal *assignment* for the rigid block** — a
-constructor producing a `P.normal : α → Fin (k+2) → ℝ` (or its restriction to `V(H)`) satisfying
-`IsGeneralPosition`. Standard-basis vectors cover only `|α| ≤ k+2`; the general case is the
-polynomial non-vanishing (a moment-curve / Vandermonde assignment is the clean witness — `t ↦
-(1, t, t², …)` at distinct reals gives pairwise-independent normals for any `|α|`). Landing this
-isolates the genericity from the gluing. After it: exhibit (a) the single realization `F₀` (a
-`PanelHingeFramework`-via-`toBodyHinge`) gluing the contraction realization (`G/E(H)` at its
+**Smallest next concrete commit: the `F₀` *construction* proper** — exhibit (a) the single
+realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`, its normals from `withMomentNormals`
+on an injective parameter map) gluing the contraction realization (`G/E(H)` at its
 inductive `RankHypothesis`) with the rigidly-placed block `V(H)`, (b) the private-endpoint spanning
 forest `u`/`other`/`e` of `V(H)`'s transversal hinges (`u` injective, `other j ≠ u j'`, `he` now from
 `supportExtensor_ne_zero_of_isGeneralPosition`), and (c) the count `hmatch` (`|J|·(D−1) = D(|V|−1) −
