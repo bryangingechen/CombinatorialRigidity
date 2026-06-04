@@ -28,6 +28,23 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**`hcoord` bridge landed (2026-06-03) — step (i) reduced to a pure-geometry obligation.**
+`hcoord_of_rigidityRows_affine` (before `genericityDevice` in `Molecular/AlgebraicInduction.lean`)
+discharges the device's `hcoord` hypothesis from the strictly more workable input a consumer can
+produce: an affine functional family `t ↦ a i + t • b i` whose *span* equals `span (rigidityRows
+(F t))` at every `t` (`hspan`). Two-line proof — `rw [hspan t,
+infinitesimalMotions_eq_dualCoannihilator]` (Phase 18 coannihilator coordinatization +
+`dualCoannihilator` respecting span equality under `rw`). This isolates the step-(i) obligation to
+its geometric core: a consumer now needs only to exhibit such an `a, b` with `hspan` (an
+*equality of spans*, no `dualCoannihilator` bookkeeping), and the device's analytic content + the
+arithmetic `hglue_of_genericityDevice` bridge are already in place. The residual genuinely-open
+piece is unchanged — *constructing* `a, b`: the panel rows depend bilinearly on the normals, so the
+affine path must be chosen so the row functionals (not the normals) come out affine (route (a),
+Phase-8 single-scalar trick), or the engine generalized to a multivariate Zariski-open form (route
+(b)). Green, build warning-clean + lint clean, axioms {propext, Classical.choice, Quot.sound}.
+Folded into the `lem:genericity-device` node's `\lean{...}` pin (consumer-facing API, not a new
+node).
+
 **Case I `hglue` wiring landed (2026-06-03), route-(a) call made.** Two new
 declarations after `genericityDevice` in `Molecular/AlgebraicInduction.lean`:
 `exists_good_realization` (the device's **generic-point form** — the finite
@@ -178,6 +195,13 @@ hand-off convenience.
   (route (a): `hmatch` rank-match collapses it to `hglue`). Green; folded into
   `lem:genericity-device`'s `\lean{...}` pin (no new node).
 
+- [x] `hcoord_of_rigidityRows_affine` (`Molecular/AlgebraicInduction.lean`):
+  step-(i) bridge — discharges the device's `hcoord` from an affine functional
+  family whose span equals `span (rigidityRows (F t))` at every `t` (`hspan`),
+  via `infinitesimalMotions_eq_dualCoannihilator`. Reduces the per-consumer
+  `hcoord` obligation to an *equality of spans*. Green; folded into
+  `lem:genericity-device`'s `\lean{...}` pin (no new node).
+
 The consumer-side discharge targets (each currently a named hypothesis
 in the Phase-21 Lean, to be supplied by the device):
 - [~] `hglue` for Case I — block-triangular generic gluing
@@ -319,21 +343,30 @@ collapses to Case I's relative `hglue : dim Z ≤ D + dim Z_s` once the
 realization. Route (a) confirmed: the genericity is `hcoord` + `hindep`; the
 residual geometric content is isolated as `hmatch`.
 
-**Smallest next concrete commit: discharge `hmatch` for Case I.** Build, from
-the contraction realization (`G/E(H)` at its inductive `RankHypothesis`) plus
-the rigid block `V(H)` placed rigidly (`exists_independent_panelSupportExtensor`
-supplies the independent supporting extensors), (i) the affine path `t ↦ a i +
-t • b i` of rigidity-row functionals coordinatizing `F`'s null spaces
-(discharging `hcoord` via the per-framework
-`infinitesimalMotions_eq_dualCoannihilator` after re-indexing
-`rigidityRows (F t)`), and (ii) the witness subfamily `s` of size exactly
-`D(|V|−1) − dim Z_s` independent at `t₀` (discharging `hindep` and the `hmatch`
-count). This is the genuinely-open geometric piece. Likely more than one
-commit — assess once the affine-path construction (i) closes whether the
-witness-size half (ii) is one session or more. The other consumers
-(`hspan`/`hgen`) reuse `exists_good_realization` + an analogous per-consumer
-bridge; the device's *target statements* are fixed (the named hypotheses in
-`AlgebraicInduction.lean`).
+**Step (i)'s `dualCoannihilator` plumbing is now discharged** (`hcoord_of_rigidityRows_affine`,
+2026-06-03): a consumer no longer touches `dualCoannihilator` to supply `hcoord`; it suffices to
+exhibit an affine functional family `t ↦ a i + t • b i` with `span (range (a + t•b)) = span
+(rigidityRows (F t))` at every `t` (`hspan`). So the Case I chain is now
+`hcoord_of_rigidityRows_affine` → `genericityDevice`/`exists_good_realization` →
+`hglue_of_genericityDevice`, with the only remaining inputs the *geometric* `hspan` and the
+witness/`hmatch` count.
+
+**Smallest next concrete commit: build the affine family `a, b` + `hspan` for Case I.** Construct,
+from the contraction realization (`G/E(H)` at its inductive `RankHypothesis`) plus the rigid block
+`V(H)` placed rigidly (`exists_independent_panelSupportExtensor` supplies the independent supporting
+extensors), the affine functional family `t ↦ a i + t • b i` and prove `hspan` — the *equality of
+spans* `span (range (a + t•b)) = span (rigidityRows (F t))` at every `t`. **This is where the
+route a/b decision finally bites:** the panel rows `hingeRow u v r` are bilinear in the normals, so
+the family `a, b` must be chosen so the row functionals come out affine along a chosen path (route
+(a)), or the engine generalized to a multivariate polynomial / Zariski-open form (route (b)).
+Assess feasibility of route (a) — does a path through the good realization
+`exists_independent_panelSupportExtensor` supplies admit an affine row-functional presentation? —
+before committing to it; route (b) is the unconditional fallback. After `hspan` lands, the residual
+is (ii) the witness subfamily `s` of size exactly `D(|V|−1) − dim Z_s` independent at `t₀`
+(discharging `hindep` and the `hmatch` count). Likely more than one commit; assess once `hspan`
+closes. The other consumers (`hspan`/`hgen`) reuse the same chain
+(`hcoord_of_rigidityRows_affine` → device) with an analogous per-consumer bridge; the device's
+*target statements* are fixed (the named hypotheses in `AlgebraicInduction.lean`).
 
 **Also consumed by Phases 22–23** (Case III candidate-framework
 genericity, Claims 6.11/6.12), so building the device standalone pays

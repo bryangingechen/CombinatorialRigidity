@@ -1498,6 +1498,35 @@ single-scalar restriction route that worked for Phase 8's uniform-generic placem
 Zariski-open form; this device fixes the
 framework-facing target shape that wiring lands into. -/
 
+/-- **The device's affine coordinatization from an affine *enumeration* of the rigidity rows**
+(`lem:genericity-device`, the `hcoord` bridge; Phase 21b). The genericity device `genericityDevice`
+takes its affine coordinatization `hcoord` as the per-`t` coannihilator identity
+`(F t).infinitesimalMotions = (span (range (a + t • b))).dualCoannihilator`. This lemma supplies
+that hypothesis from the more workable input a consumer can actually produce: an affine family of
+functionals `t ↦ a i + t • b i` whose span *equals* the span of the rigidity rows `rigidityRows
+(F t)` at every `t` (`hspan`). The bridge is the load-bearing coannihilator coordinatization
+`infinitesimalMotions_eq_dualCoannihilator`
+(`Z(F t) = (span (rigidityRows (F t))).dualCoannihilator`, Phase 18) with `hspan t` rewriting the
+span underneath the (monotone, so equality-respecting) `dualCoannihilator`.
+
+This isolates the per-consumer obligation to its *geometric* core — exhibiting an affine family of
+row functionals that re-spans the panel rows along a chosen path — from the device's analytic
+content: a consumer (Case I, Case II, Prop 1.1) discharges `hcoord` by providing such an `a, b`
+with `hspan`, no `dualCoannihilator` bookkeeping. The residual genuinely-open piece is the
+construction of `a, b` themselves: the panel rows `hingeRow u v r` depend on `supportExtensor e =
+panelSupportExtensor (normal u) (normal v)`, which is *bilinear* in the normals, so the path through
+panel-coordinate space must be chosen so the row functionals (not the normals) come out affine
+(the Phase-8 single-scalar trick), or the engine generalized to a multivariate Zariski-open form. -/
+theorem hcoord_of_rigidityRows_affine {ι : Type*}
+    (F : ℝ → BodyHingeFramework k α β)
+    {a b : ι → Module.Dual ℝ (α → ScrewSpace k)}
+    (hspan : ∀ t, Submodule.span ℝ (Set.range (fun i => a i + t • b i))
+      = Submodule.span ℝ (F t).rigidityRows) :
+    ∀ t, (F t).infinitesimalMotions
+      = (Submodule.span ℝ (Set.range (fun i => a i + t • b i))).dualCoannihilator := by
+  intro t
+  rw [hspan t, (F t).infinitesimalMotions_eq_dualCoannihilator]
+
 /-- **Genericity device, codimension form** (`lem:genericity-device`; Katoh–Tanigawa 2011
 Claim 6.4 / Claim 6.9, Phase 21b). Let `F : ℝ → BodyHingeFramework k α β` be a one-parameter
 family of frameworks on the same bodies whose null spaces are coordinatized by a single affine
