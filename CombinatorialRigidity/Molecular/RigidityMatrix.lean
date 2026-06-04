@@ -382,6 +382,25 @@ theorem exists_finite_spanning_rigidityRows [Finite α] (F : BodyHingeFramework 
   obtain ⟨n, a, ha⟩ := Submodule.fg_iff_exists_fin_generating_family.1 hfg
   exact ⟨n, a, ha⟩
 
+/-- **A transversal hinge's row block has dimension `D − 1`** (`def:hinge-row-block`,
+the genericity device's row-count input): when the supporting extensor `C(p(e))` is nonzero —
+the general-position condition that the hinge is a genuine codimension-2 intersection
+(`panelSupportExtensor_ne_zero_iff`) — the hinge-row block `r(p(e)) = (span C(p(e)))^⊥` has
+dimension `D − 1`, `finrank ℝ (F.hingeRowBlock e) = screwDim k − 1`. This is Katoh–Tanigawa's
+`(D−1) × D` block-row count `1 ≤ i ≤ D−1` carried basis-free: the supporting extensor spans a
+`1`-dimensional subspace of the `D`-dimensional screw space (`finrank_span_singleton`,
+`screwSpace_finrank`), and the dual annihilator's dimension is the codimension
+(`Subspace.finrank_add_finrank_dualAnnihilator_eq`). It is the per-edge brick that counts the
+rigidity rows `rigidityRows` of a rigid block — the source of the matching-size independent
+subfamily the Case-I capstone `hglue_of_realization` (Phase 21b) requires. -/
+theorem finrank_hingeRowBlock (F : BodyHingeFramework k α β) {e : β}
+    (he : F.supportExtensor e ≠ 0) :
+    Module.finrank ℝ (F.hingeRowBlock e) = screwDim k - 1 := by
+  have key := Subspace.finrank_add_finrank_dualAnnihilator_eq (K := ℝ)
+    (Submodule.span ℝ {F.supportExtensor e})
+  rw [screwSpace_finrank, finrank_span_singleton he, ← hingeRowBlock_apply] at key
+  omega
+
 /-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
 assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
 These are the rigid-motion screws — the constant assignments — and they form the

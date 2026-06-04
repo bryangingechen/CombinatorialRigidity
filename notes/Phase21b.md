@@ -28,6 +28,20 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Per-edge row-count brick landed (2026-06-03) — first geometric brick toward Case-I `hindep`/`hmatch`.**
+`finrank_hingeRowBlock` (`Molecular/RigidityMatrix.lean`, after `exists_finite_spanning_rigidityRows`):
+when the supporting extensor `C(p(e))` is nonzero (transversal hinge, the
+`panelSupportExtensor_ne_zero_iff` general-position condition), the hinge-row block
+`r(p(e)) = (span C(p(e)))^⊥` has dimension `D − 1`, `finrank ℝ (hingeRowBlock e) = screwDim k − 1`.
+Three-line proof: `Subspace.finrank_add_finrank_dualAnnihilator_eq` (codimension identity) +
+`finrank_span_singleton` (the `1`-dim span of a nonzero extensor) + `screwSpace_finrank` + `omega`.
+This is Katoh–Tanigawa's `(D−1) × D` block-row count carried basis-free — the per-edge brick that
+counts the rigidity rows `rigidityRows` of a rigid block, the source of the matching-size
+independent subfamily `s` that `hglue_of_realization`'s `hindep`/`hmatch` require. Green, build
+warning-clean + lint clean, axioms {propext, Classical.choice, Quot.sound}. Folded into the
+`def:hinge-row-block` node's `\lean{...}` pin (the `(D−1)`-row count is exactly that node's content;
+no new node).
+
 **Finite spanning row family landed (2026-06-03) — input (2) of `hglue_of_realization` discharged.**
 `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`, after
 `infinitesimalMotions_eq_dualCoannihilator`): when `α` is finite, the screw-assignment space
@@ -244,6 +258,12 @@ hand-off convenience.
   `hcoord` obligation to an *equality of spans*. Green; folded into
   `lem:genericity-device`'s `\lean{...}` pin (no new node).
 
+- [x] `finrank_hingeRowBlock` (`Molecular/RigidityMatrix.lean`): per-edge row-count brick —
+  `finrank ℝ (hingeRowBlock e) = screwDim k − 1` when `supportExtensor e ≠ 0` (transversal hinge),
+  the basis-free `(D−1) × D` block-row count. The brick that counts the rigidity rows of a rigid
+  block (source of the matching-size independent subfamily for Case-I `hindep`/`hmatch`). Green;
+  folded into `def:hinge-row-block`'s `\lean{...}` pin (no new node).
+
 - [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
   `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
   `span (range a) = span F.rigidityRows`, from finite-dimensionality of the dual (`α` finite ⇒
@@ -400,6 +420,10 @@ state* and *Blockers*.
 a finite `a : Fin n → Dual ℝ (α → ScrewSpace k)` with `span (range a) = span (rigidityRows F₀)`, so
 no per-consumer construction of `a`/`hspanrows` is needed anymore.
 
+**Per-edge row-count brick landed (2026-06-03):** `finrank_hingeRowBlock` (`finrank (hingeRowBlock
+e) = D − 1` for a transversal hinge) — the first piece of the row-counting needed for Case-I's
+`hindep`/`hmatch`. See *Current state*.
+
 **Smallest next concrete commit: supply `hglue_of_realization`'s *remaining* inputs for Case I (the
 geometric construction).** From the contraction realization (`G/E(H)` at its inductive
 `RankHypothesis`) plus the rigid block `V(H)` placed rigidly, exhibit:
@@ -407,10 +431,14 @@ geometric construction).** From the contraction realization (`G/E(H)` at its ind
 2. an independent subfamily `s` of the finite spanning family `a` (from
    `exists_finite_spanning_rigidityRows`) with `#s = D(|V|−1) − dim Z_s` (`hindep` + `hmatch`), the
    independent rigidity rows coming from `exists_independent_panelSupportExtensor` through the
-   hinge-row block.
+   hinge-row block — each transversal hinge contributing `D − 1` rows (`finrank_hingeRowBlock`, now
+   green).
 No affine-path construction and no finite-spanning-family construction remain. This is the
 genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is
-in hand and `s` is being matched to the corank. The other
+in hand and `s` is being matched to the corank. A useful next sub-brick toward (2): an independence
+bridge turning independent supporting extensors (`exists_independent_panelSupportExtensor`, through
+the now-`D−1`-counted hinge-row block) into independent rigidity-row functionals `hingeRow u v r`.
+The other
 consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same constant-path chain
 (`hcoord_const` → device) with an analogous per-consumer bridge; the device's *target statements*
 are fixed (the named hypotheses in `AlgebraicInduction.lean`).
