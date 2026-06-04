@@ -616,7 +616,9 @@ Cases~I and~II travel toward the smaller inductive graph.
         CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn,
         CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_le_withGraph,
         CombinatorialRigidity.Molecular.BodyHingeFramework.isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot}
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_withGraph_eq_of_block_internal,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_eq_bot_of_block_internal_rigid}
   \leanok
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
         lem:rank-delete-vertex, def:pinned-motions-on,
@@ -662,7 +664,15 @@ Cases~I and~II travel toward the smaller inductive graph.
   $G/E(H)$ at its inductive full rank), this constancy makes the glued parent
   realization rigid
   ($\mathrm{isInfinitesimallyRigid\_of\_rigid\_subgraph\_of\_pinnedMotionsOn\_eq\_bot}$),
-  the assembled geometric core of KT~\S6.2/6.5's block-triangular glue.
+  the assembled geometric core of KT~\S6.2/6.5's block-triangular glue. That
+  residual vanishing is itself read off the contraction: writing $G/E(H)$ as
+  the parent with the block-internal edges $E(H) \subseteq V(H)\times V(H)$
+  deleted, pinning the block $s = V(H)$ makes those deleted hinge constraints
+  vacuous (both endpoints pinned to $0$), so the block pin is unchanged by the
+  deletion ($\mathrm{pinnedMotionsOn\_withGraph\_eq\_of\_block\_internal}$);
+  hence rigidity of the inductive contraction realization forces the parent's
+  block pin to vanish
+  ($\mathrm{pinnedMotionsOn\_eq\_bot\_of\_block\_internal\_rigid}$).
 \end{lemma}
 \begin{proof}
   \leanok

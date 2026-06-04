@@ -851,6 +851,63 @@ theorem pinnedMotionsOn_le_withGraph_of_le (F : BodyHingeFramework k α β) (s :
     F.pinnedMotionsOn s ≤ (F.withGraph G').pinnedMotionsOn s :=
   fun _ hS => ⟨F.infinitesimalMotions_le_withGraph_of_le hle hS.1, hS.2⟩
 
+/-- **Deleting block-internal edges does not change the block pin** (`def:pinned-motions-on`,
+Case I infra; the contraction reduction of the block pin). If a subgraph `G' ≤ F.graph` drops only
+edges *internal to the pinned block* `s` — every link `e = uv` of the parent `F.graph` that `G'`
+omits has *both* endpoints `u, v ∈ s` — then the block pin is unchanged:
+`(F.withGraph G').pinnedMotionsOn s = F.pinnedMotionsOn s`.
+
+This is the framework primitive behind the Case-I contraction reduction (Katoh–Tanigawa 2011
+§6.2/6.5): writing the contraction `G/E(H)` as the parent with the block edges `E(H) ⊆ V(H)×V(H)`
+deleted (all internal to the pinned block `s = V(H)`), pinning `s` makes those deleted hinge
+constraints *vacuous* — at an internal edge `e = uv` both `S u = S v = 0`, so `S u − S v = 0` lies
+in any extensor span automatically. Hence a `G'`-motion pinned on `s` is already a parent motion,
+and the two block pins coincide. The `≤` direction is the unconditional graph-monotone
+`pinnedMotionsOn_le_withGraph_of_le`; the reverse uses the block-internality of the dropped edges.
+
+It lets the residual block-pin obligation `hpin` (`pinnedMotionsOn s = ⊥` for the parent) be read
+off the *contraction* `G/E(H)` directly: `F.pinnedMotionsOn s = (F.withGraph (G/E(H))).
+pinnedMotionsOn s`, the latter vanishing by rigidity of the inductive contraction realization
+(`pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`). -/
+theorem pinnedMotionsOn_withGraph_eq_of_block_internal (F : BodyHingeFramework k α β) (s : Set α)
+    {G' : Graph α β} (hle : G' ≤ F.graph)
+    (hblk : ∀ e u v, F.graph.IsLink e u v → ¬ G'.IsLink e u v → u ∈ s ∧ v ∈ s) :
+    (F.withGraph G').pinnedMotionsOn s = F.pinnedMotionsOn s := by
+  refine le_antisymm (fun S hS => ⟨fun e u v hlink => ?_, hS.2⟩)
+    (F.pinnedMotionsOn_le_withGraph_of_le s hle)
+  -- `S` is a `G'`-motion pinned on `s`; show it meets the parent hinge constraint at `e = uv`.
+  by_cases hG' : G'.IsLink e u v
+  · -- `e` survives in `G'`: reuse the `G'`-motion constraint (same support extensor).
+    exact hS.1 e u v hG'
+  · -- `e` is block-internal: both endpoints are pinned to `0`, so the constraint is vacuous.
+    obtain ⟨hu, hv⟩ := hblk e u v hlink hG'
+    rw [hingeConstraint, hS.2 u hu, hS.2 v hv, sub_zero]
+    exact Submodule.zero_mem _
+
+/-- **The parent block pin vanishes when the block-internal-deletion subgraph is rigid**
+(`lem:case-I`, the `hpin` geometric leaf in subgraph form; Katoh–Tanigawa 2011 §6.2/6.5,
+Phase 21b). This is the direct Case-I consumer of the contraction reduction: if `G' ≤ F.graph`
+drops only edges internal to the (nonempty) pinned block `s` (`hblk`) and the subgraph realization
+`F.withGraph G'` is itself infinitesimally rigid (`hrig` — the contraction `G/E(H)` realized at its
+inductive full rank), then the parent's block pin vanishes, `F.pinnedMotionsOn s = ⊥`.
+
+Mechanism: rigidity of `F.withGraph G'` makes *its* block pin trivial
+(`pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`), and the block-internal deletion leaves the
+block pin unchanged (`pinnedMotionsOn_withGraph_eq_of_block_internal`), so the parent's block pin is
+equally trivial. This discharges the residual `hpin` premise of
+`hasFullRankRealization_ofParam_of_pinnedMotionsOn` (equivalently the `hpin` feeding
+`isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot`) *from rigidity of the
+contraction realization alone* — the inductive `RankHypothesis 0` on `G/E(H)`, re-expressed as
+deletion of the block-internal edges `E(H)`. It is the framework-side reduction of the geometric
+`hpin` leaf to the contraction's inductive rigidity. -/
+theorem pinnedMotionsOn_eq_bot_of_block_internal_rigid (F : BodyHingeFramework k α β) {s : Set α}
+    (hs : s.Nonempty) {G' : Graph α β} (hle : G' ≤ F.graph)
+    (hblk : ∀ e u v, F.graph.IsLink e u v → ¬ G'.IsLink e u v → u ∈ s ∧ v ∈ s)
+    (hrig : (F.withGraph G').IsInfinitesimallyRigid) :
+    F.pinnedMotionsOn s = ⊥ := by
+  rw [← F.pinnedMotionsOn_withGraph_eq_of_block_internal s hle hblk]
+  exact (F.withGraph G').pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid hs hrig
+
 /-- **The block-pinned dimension does not decrease under edge deletion** (`def:pinned-motions-on`,
 Case I infra, rank form): for `G' ≤ F.graph`,
 `finrank (pinnedMotionsOn s) ≤ finrank ((withGraph G').pinnedMotionsOn s)`. The supergraph's
