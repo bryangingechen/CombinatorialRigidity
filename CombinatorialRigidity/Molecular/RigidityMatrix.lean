@@ -529,6 +529,64 @@ theorem linearIndependent_hingeRow_star {J : Type*} [Finite J] {I : J → Type*}
       simpa [LinearMap.sum_apply, LinearMap.smul_apply] using hval x
   exact Fintype.linearIndependent_iff.1 (hr j₀) (fun i => g ⟨j₀, i⟩) hk i₀
 
+/-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
+(`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
+generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,
+here each hinge `j : J` is oriented from a *private endpoint* `u j` — the "child" vertex of a
+spanning forest of the rigid block, so the `u j` are distinct (`hu` injective) — to an arbitrary
+*other endpoint* `other j`, subject only to the **forest separation** hypothesis `hsep`: no
+other-endpoint of any hinge is the private endpoint of any hinge (`other j ≠ u j'` for all
+`j, j'`; in particular `u j ≠ other j`). If for each `j` the hinge-row functionals
+`r j : Iⱼ → Module.Dual ℝ (ScrewSpace k)` are linearly independent, the combined rigidity-row
+family `⟨j, i⟩ ↦ hingeRow (u j) (other j) (r j i)` over `Σ j, Iⱼ` is linearly independent on
+`α → ScrewSpace k`.
+
+This is the cross-hinge step a genuine rigid block — a spanning tree / forest of the contracted
+block, hinges spanning *multiple* bodies rather than a single pinned `v` — presents to
+`hglue_of_realization`'s `hindep`. The star (`linearIndependent_hingeRow_star`) is the special
+case `u = w`, `other = const v`: there `hsep` is `w j' ≠ v`, here it is the forest property that
+each hinge has a private child vertex incident to no other hinge of the block. The proof is the
+same *pin-a-body* / disjoint-support count, pinning the private endpoint `u j₀` rather than the
+common body: evaluating a vanishing combination at the screw assignment `Function.update 0 (u j₀)
+x` reads `0` on every hinge `j ≠ j₀` (its private endpoint `u j ≠ u j₀` by injectivity, its other
+endpoint `other j ≠ u j₀` by `hsep`) and `x` on hinge `j₀` (its other endpoint `other j₀ ≠ u j₀`
+again by `hsep`), collapsing to `∑ i, c⟨j₀,i⟩ • (r j₀ i) x = 0` for all `x`, so per-hinge
+independence forces every coefficient at `j₀` to vanish. -/
+theorem linearIndependent_hingeRow_forest {J : Type*} [Finite J] {I : J → Type*}
+    [∀ j, Finite (I j)] {u other : J → α} (hu : Function.Injective u)
+    (hsep : ∀ j j', other j ≠ u j')
+    {r : ∀ j, I j → Module.Dual ℝ (ScrewSpace k)} (hr : ∀ j, LinearIndependent ℝ (r j)) :
+    LinearIndependent ℝ
+      (fun p : Σ j, I j => hingeRow (k := k) (α := α) (u p.1) (other p.1) (r p.1 p.2)) := by
+  classical
+  haveI : Fintype J := Fintype.ofFinite J
+  haveI : ∀ j, Fintype (I j) := fun j => Fintype.ofFinite (I j)
+  rw [Fintype.linearIndependent_iff]
+  intro g hg k₀
+  obtain ⟨j₀, i₀⟩ := k₀
+  -- Evaluate the vanishing functional combination at `update 0 (u j₀) x`.
+  have hval : ∀ x : ScrewSpace k, ∑ i, g ⟨j₀, i⟩ • (r j₀ i) x = 0 := by
+    intro x
+    have happ := LinearMap.congr_fun hg (Function.update (0 : α → ScrewSpace k) (u j₀) x)
+    rw [LinearMap.sum_apply, LinearMap.zero_apply, Fintype.sum_sigma] at happ
+    -- Every slice `j ≠ j₀` reads `0` at both endpoints; the `j₀` slice reads `x` at `u j₀`.
+    rw [Finset.sum_eq_single j₀] at happ
+    · refine Eq.trans (Finset.sum_congr rfl (fun i _ => ?_)) happ
+      rw [LinearMap.smul_apply, hingeRow_apply, Function.update_self,
+        Function.update_of_ne (hsep j₀ j₀), Pi.zero_apply, sub_zero]
+    · intro j _ hjk
+      refine Finset.sum_eq_zero (fun i _ => ?_)
+      have hjw : u j ≠ u j₀ := fun h => hjk (hu h)
+      rw [LinearMap.smul_apply, hingeRow_apply, Function.update_of_ne hjw,
+        Function.update_of_ne (hsep j j₀)]
+      simp only [Pi.zero_apply, sub_zero, map_zero, smul_zero]
+    · exact fun h => absurd (Finset.mem_univ j₀) h
+  -- The collapsed sum is a vanishing combination of `r j₀`, independent by hypothesis.
+  have hk : ∑ i, g ⟨j₀, i⟩ • r j₀ i = 0 :=
+    LinearMap.ext fun x => by
+      simpa [LinearMap.sum_apply, LinearMap.smul_apply] using hval x
+  exact Fintype.linearIndependent_iff.1 (hr j₀) (fun i => g ⟨j₀, i⟩) hk i₀
+
 /-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
 assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
 These are the rigid-motion screws — the constant assignments — and they form the

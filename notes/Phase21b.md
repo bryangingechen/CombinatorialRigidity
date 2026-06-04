@@ -40,7 +40,9 @@ cofinitely), the route-(a) constant-path capstone
 input-(2) finite spanning family (`exists_finite_spanning_rigidityRows`),
 and the per-edge → cross-hinge `hindep` bricks (`finrank_hingeRowBlock`,
 `linearIndependent_hingeRow`, `exists_independent_rigidityRows_of_edge`,
-`linearIndependent_hingeRow_star`). The **route a/b decision is RESOLVED**
+`linearIndependent_hingeRow_star`, and now `linearIndependent_hingeRow_forest`
+— the multi-body rigid block, hinges spanning many bodies via a private-endpoint
+forest, the general `hindep` shape). The **route a/b decision is RESOLVED**
 (route (a), constant path; bilinearity sidestepped — see *Decisions* /
 *Blockers*). What remains is purely combinatorial-geometric: supply
 `hglue_of_realization`'s remaining inputs (the realization `F₀` and the
@@ -138,6 +140,15 @@ hand-off convenience.
   cross-hinge combination the hand-off flagged; `linearIndependent_hingeRow`'s single-edge argument
   does not extend (distinct `screwDiff`). Green; folded into `def:rigidity-matrix`'s `\lean{...}` pin
   (no new node).
+
+- [x] `linearIndependent_hingeRow_forest` (`Molecular/RigidityMatrix.lean`): the multi-body
+  generalization of the star — each hinge `j` oriented from a *private endpoint* `u j` (the child
+  vertex of a spanning forest of the rigid block, `u` injective) to an arbitrary `other j`, with
+  the forest-separation hypothesis `hsep : ∀ j j', other j ≠ u j'`. Per-hinge LI row families stay
+  jointly LI by the *same* pin-a-body count, pinning `u j₀` (the star is the special case `u = w`,
+  `other = const v`). This is the cross-hinge `hindep` for a genuine rigid block whose hinges span
+  *multiple* bodies (the hand-off's next sub-brick). Green; folded into `def:rigidity-matrix`'s
+  `\lean{...}` pin (no new node).
 
 - [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
   `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
@@ -285,16 +296,33 @@ are now landed: `linearIndependent_hingeRow` (independent supporting extensors �
 `hingeRow u v r` per edge), `exists_independent_rigidityRows_of_edge` (one transversal hinge ⇒
 `D − 1` LI rigidity rows in `rigidityRows`), and now `linearIndependent_hingeRow_star` (the
 cross-hinge combination: rows from *distinct* hinges at a common pinned body, distinct other
-endpoints, are jointly LI by the pin-a-body / disjoint-support count). **Next sub-brick: extend the
-star combination to a rigid block whose hinges span *multiple* bodies** — the star handles edges
-sharing one endpoint `v`; the genuine rigid block is a cycle/spanning-tree where the
-`m ≤ D` extensor-independence of `lem:cycle-realization` + `exists_independent_panelSupportExtensor`
-general position controls the cross-body interaction (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`
-is the existing screw-space telescoping core). Then match `#s = D(|V|−1) − dim Z_s` (`hmatch`) using
-the `D−1` per-edge count against the contraction's inductive rank, and exhibit `F₀`. The other
+endpoints, are jointly LI by the pin-a-body / disjoint-support count), and now
+`linearIndependent_hingeRow_forest` (the multi-body extension: a rigid block whose hinges span
+*multiple* bodies, oriented along a private-endpoint spanning forest, jointly LI by the same
+pin-a-body count). **Next: assemble the forest `hindep` into the matching-size subfamily `s` and
+match the count.** Combine `exists_independent_rigidityRows_of_edge` across the spanning forest's
+transversal hinges through `linearIndependent_hingeRow_forest`, then match
+`#s = D(|V|−1) − dim Z_s` (`hmatch`) using the `D−1` per-edge count against the contraction's
+inductive rank, and exhibit `F₀`. (For the genuine cycle case, the `m ≤ D` extensor-independence of
+`lem:cycle-realization` + `exists_independent_panelSupportExtensor` general position controls the
+cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is the existing screw-space
+telescoping core.) The other
 consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same constant-path chain
 (`hcoord_const` → device) with an analogous per-consumer bridge; the device's *target statements*
 are fixed (the named hypotheses in `AlgebraicInduction.lean`).
+
+**Update (2026-06-03, this commit):** the cross-hinge `hindep` brick is now complete in its
+general form — `linearIndependent_hingeRow_forest` covers a rigid block whose hinges span multiple
+bodies (private-endpoint forest, the star being the one-common-body special case). All `hindep`
+sub-bricks toward (2) are landed. The **smallest next concrete commit** is now the `hmatch` count
+plus the `F₀` exhibit: (a) wire `exists_independent_rigidityRows_of_edge` across a spanning
+forest's transversal hinges through `linearIndependent_hingeRow_forest` to produce the
+matching-size independent subfamily `s` with `#s = D(|V|−1) − dim Z_s` (the per-edge `D−1` count
+against the contraction's inductive `RankHypothesis`); and (b) exhibit the realization `F₀` (a
+`PanelHingeFramework`-via-`toBodyHinge`) from the contraction realization plus the rigidly-placed
+block `V(H)`. (a) and (b) together discharge `hglue_of_realization`'s remaining inputs for Case I
+(KT §6.2/6.5); likely more than one commit — assess once the forest `hindep` is assembled into `s`
+and the `D−1` count is being matched to the corank.
 
 **Also consumed by Phases 22–23** (Case III candidate-framework
 genericity, Claims 6.11/6.12), so building the device standalone pays
