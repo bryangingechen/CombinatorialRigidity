@@ -176,6 +176,11 @@ bullets. If one matches, jump to the named section of
   polymorphic"* on `congrFun (congrArg DFunLike.coe h) x` → § 32 *`ext x` on an
   equation of `Module.Dual ℝ (ScrewSpace k)` descends too far*: use
   `LinearMap.ext fun x => …` and `LinearMap.congr_fun h x`.
+- *"Tactic `rewrite` failed: motive is not type correct"* on a `rw [hsub]` where
+  `hsub` is a `Submodule` equation `A = B` and the goal carries `finrank ℝ ↥A`
+  (the submodule under the `↥`-coercion-to-type) → § 33 *`rw` over a `Submodule`
+  equation under `finrank ℝ ↥(…)` trips the motive*: if the matching fact is in a
+  hypothesis, flip the equation and `rw [← hsub] at hp` instead of on the goal.
 
 ## Starting a Lean-touching session
 

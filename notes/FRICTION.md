@@ -76,6 +76,20 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `rw [hsub]` over a `Submodule` equation under `finrank ℝ ↥(…)` trips the motive — rewrite the *hypothesis* with the reversed equation instead
+- **Where it bit:** the multivariate genericity device `exists_good_realization` (Phase 21b). The
+  engine returns `hp : … + finrank ℝ ↥(span (range (g p))).dualCoannihilator ≤ finrank V`; the goal
+  carries `finrank ℝ ↥(F p).infinitesimalMotions`, and `hcoord p : (F p).infinitesimalMotions =
+  (span (range (g p))).dualCoannihilator`. A `rw [hcoord p]` on the *goal* fails with "motive is not
+  type correct" — the `Submodule` sits under the `↥`-coercion-to-type inside `finrank`, so the
+  rewrite motive `fun S => finrank ℝ ↥S ≤ …` is not type-correct in general.
+- **Fix:** rewrite the **hypothesis** in the opposite direction instead:
+  `rw […, ← hcoord p] at hp; exact hp`. The `← hcoord p` turns `hp`'s coannihilator into
+  `(F p).infinitesimalMotions`, matching the goal; rewriting `at hp` (a `≤`-Prop, not under a
+  fresh motive) sidesteps the type-correctness check entirely. **Lifted to:** TACTICS-QUIRKS § 33.
+- **Status:** resolved (same family as § 18/20/27 — `rw` motive traps; the new rescue axis is
+  "flip the equation and rewrite the hypothesis, not the goal").
+
 ### [resolved] Canonical edge endpoint selector `Graph.endsOf` — the repeated `obtain ⟨x, y, hlink⟩ := exists_isLink_of_mem_edgeSet …` pattern
 - **Where it bit:** the from-scratch panel realization `PanelHingeFramework.ofParam G ends param`
   (Phase 21b) takes an `ends : β → α × α` selector; Case I needs it consistent with the graph

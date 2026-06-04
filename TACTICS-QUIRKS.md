@@ -1272,3 +1272,27 @@ Worked case: `linearIndependent_hingeRow_star` in `Molecular/RigidityMatrix.lean
 (Phase 21b, the cross-hinge star independence — both the `LinearMap.ext` collapse
 of the per-hinge combination and the `LinearMap.congr_fun hg (update 0 (w j₀) x)`
 evaluation).
+
+## 33. `rw [hsub]` over a `Submodule` equation under `finrank ℝ ↥(…)` trips the motive — flip the equation and rewrite the *hypothesis*
+
+**Symptom.** A `Submodule`-valued equation `hsub : A = B` (e.g. `(F p).infinitesimalMotions =
+(span (range (g p))).dualCoannihilator`), and a goal of the form `… finrank ℝ ↥A … ≤ …`. Rewriting
+the goal with `rw [hsub]` fails with *"Tactic `rewrite` failed: motive is not type correct"*. Cause:
+the submodule `A` sits under the `↥`-coercion-to-type inside `Module.finrank ℝ`, so the rewrite
+motive `fun S => Module.finrank ℝ ↥S ≤ …` carries a dependent coercion `↥S` and is not type-correct
+in general (same family as § 18/20/27 — `rw` motive traps over dependent positions).
+
+**Fix.** When the matching fact lives in a *hypothesis* `hp : … finrank ℝ ↥B … ≤ …` (a `≤`-Prop,
+not a position under a fresh motive), rewrite the hypothesis with the **reversed** equation and
+close by `exact`:
+```
+rw […, ← hsub] at hp   -- turns `↥B` in `hp` into `↥A`, matching the goal
+exact hp
+```
+Rewriting `at hp` rather than on the goal sidesteps the motive type-correctness check (the
+hypothesis's type is just a `Prop`). The general rescue axis: *if `rw [eq]` on the goal trips the
+motive but the same content is already in a hypothesis, flip `eq` and rewrite the hypothesis
+instead.*
+
+Worked case: `exists_good_realization` in `Molecular/AlgebraicInduction.lean` (Phase 21b, the
+multivariate genericity device — `rw [finrank_screwAssignment, ← hcoord p] at hp`).

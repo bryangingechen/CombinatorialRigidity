@@ -29,46 +29,47 @@ Lean is in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
-**Blueprint flipped to the honest KT §6.2 structure (2026-06-04); route (a)
-multivariate analytic engine landed.** Two things happened this session:
+**The multivariate genericity device is GREEN (2026-06-04).** `lem:genericity-device`
+is rebuilt on the genuine multivariate engine and re-pinned green; the four
+genericity-free consumers (`lem:case-I`, `lem:case-II`, `thm:theorem-55`,
+`prop:rigidity-matrix-prop11`) that took the device's conclusion as a hypothesis
+now have all statement-deps green. The two remaining red nodes on the chapter are
+the Case-I contraction splice (`lem:case-I-realization`, Hand-off 3) and the
+deferred Case III (`lem:case-III`, Phases 22–23).
 
-1. **The device is genuinely *multivariate*.** The panel-matrix entries are
-   degree-2 (bilinear in the per-vertex normals), so the consumers' realizations
-   are *not* reached along any affine line — the affine/univariate engine landed
-   earlier (`…along_affine_path_cofinite`) is only a special case and does **not**
-   prove Claim 6.4. The genuine engine is multivariate Zariski-open
-   non-vanishing (route (a)).
-2. **Blueprint honesty flip.** `lem:genericity-device` had been prematurely marked
-   `\leanok` (green) on that affine special case, with a 14-name wrapper-chain
-   `\lean` pin; the Case-I prose embedded raw Lean identifiers. Rewritten to the
-   honest decomposition (commit `ad7cb0d`).
+The device is `exists_good_realization` (multivariate keystone) +
+`exists_good_realization_const` (constant-family closure the Case-I chain consumes)
+in `AlgebraicInduction.lean`, both axiom-clean. They compose the multivariate
+engine `exists_finrank_dualCoannihilator_polynomial` (route (a), landed `86f1221`)
+with the coannihilator coordinatization `infinitesimalMotions_eq_dualCoannihilator`
+and `finrank_screwAssignment` (`finrank (α → ScrewSpace k) = D|V|`). The device's
+`hcoord` expresses `(F p).infinitesimalMotions` as the coannihilator of a
+polynomial-coordinate functional family `g p` (panel coordinates `p : σ → ℝ` the
+`MvPolynomial` vars, degree-2 rigidity entries the coefficients `c`); the conclusion
+is `∃ p, #s + dim Z(F p) ≤ D|V|`.
 
-Node status after the flip:
-- `lem:genericity-device` — **RED**: genuine multivariate Claim 6.4. The landed
-  `genericityDevice` + the `hglue_*` route-(a) chain are the affine special case
-  only, now temporarily unblueprinted.
-- `lem:case-I-realization` — **new RED node** (KT eqs. 6.2/6.6): the contraction
-  splice attains full rank, discharging `thm:theorem-55`'s `hcontract`.
-- `lem:case-I` — **green** but depends on red `lem:genericity-device`; pin trimmed
-  to the two genuine iff lemmas.
+**Wrapper chain consolidated (partial, Hand-off 2 mostly done this commit).** The
+affine-special-case device + bridges (`genericityDevice`,
+`hcoord_of_rigidityRows_affine`, `hspan_const_of_span_eq`, `hcoord_const`, the
+affine `exists_good_realization`, the intermediate `hglue_of_genericityDevice`)
+are *removed*: the constant-family path is now packaged once in
+`exists_good_realization_const`, and `hglue_of_realization` folds in the old
+`hglue_of_genericityDevice` arithmetic directly. The surviving Case-I chain is
+`exists_good_realization{,_const}` → `hglue_of_realization` →
+`hglue_of_independent_rigidityRows` → `hglue_of_forest` (each a genuine reduction,
+no longer single-use affine plumbing).
 
-**Route (a) analytic core landed (commit `86f1221`)** — four upstream-eligible
-mirror bricks (axiom-clean, no `sorry`): `MvPolynomial.exists_eval_ne_zero`
-(new file `…/MvPolynomial/Funext.lean`), and in `…/Matrix/Rank.lean`:
+**Route (a) analytic core (commit `86f1221`, unchanged)** — four upstream-eligible
+mirror bricks (axiom-clean): `MvPolynomial.exists_eval_ne_zero`
+(`…/MvPolynomial/Funext.lean`), and in `…/Matrix/Rank.lean`:
 `Matrix.exists_linearIndependent_rows_specialize`,
-`exists_le_finrank_span_polynomial`, and the consumer-facing codimension form
-`exists_finrank_dualCoannihilator_polynomial` (`∃ p, #s + dim coann ≤ finrank V`).
-Where the affine lemmas conclude `{bad t}.Finite`, these conclude `∃ p, good`
-(via the non-vanishing point of a nonzero `MvPolynomial`, `MvPolynomial.funext`).
-**Not yet wired** into the device/consumers — that is the next step (Hand-off 1).
+`exists_le_finrank_span_polynomial`, `exists_finrank_dualCoannihilator_polynomial`.
 
-The full inventory of landed green bricks — the affine engine, the `R(G,p)`
-coannihilator coordinatization, the route-(a) `hglue` plumbing chain, the
-rigid-block forest linear-algebra, general position / moment-curve / `ofParam`,
-the realization-motive producers, the block-pin↔rigidity bridges, the `endsOf`
-graph selector — is in the *Lemma checklist*. Most of the `hglue_* /
-hasFullRankRealization_*` chain is single-use wrapper plumbing slated for
-consolidation (Hand-off 2).
+The full inventory of landed green bricks — the `R(G,p)` coannihilator
+coordinatization, the rigid-block forest linear-algebra, general position /
+moment-curve / `ofParam`, the realization-motive producers, the
+block-pin↔rigidity bridges, the `endsOf` graph selector — is in the
+*Lemma checklist*.
 
 ## Architectural choices made up front
 
@@ -88,12 +89,11 @@ Forward-mode: the authoritative node list is `algebraic-induction.tex`
 All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
 
 **Blueprint nodes:**
-- [ ] `lem:genericity-device` — **RED**. Genuine multivariate Claim 6.4. The
-  landed `genericityDevice` is the affine special case only; rebuild on the
-  multivariate engine (Hand-off 1).
+- [x] `lem:genericity-device` — **GREEN**. Genuine multivariate Claim 6.4, pinned to
+  `exists_good_realization` + `exists_good_realization_const`.
 - [ ] `lem:case-I-realization` — **RED**. Contraction splice (KT 6.2/6.6) attains
-  full rank; the geometric Case-I to-do (Hand-off 3).
-- [x] `lem:case-I` — the iff-realization (green, depends on red device).
+  full rank; the geometric Case-I to-do (Hand-off, item 1).
+- [x] `lem:case-I` — the iff-realization (green; device dep now green).
 
 **Analytic core — multivariate (genuine Claim 6.4, route (a)):**
 - [x] `MvPolynomial.exists_eval_ne_zero` (`…/MvPolynomial/Funext.lean`) — nonzero
@@ -102,18 +102,20 @@ All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
   LI rows at `p₀` ⇒ `∃ p`, LI rows (bad set = zero locus of Gram-det poly).
 - [x] `exists_le_finrank_span_polynomial` — vector rank-`#s` `∃`-form, abstract `W`.
 - [x] `exists_finrank_dualCoannihilator_polynomial` — codimension dual,
-  `∃ p, #s + dim coann ≤ finrank V`; **the engine the device must be rebuilt on.**
+  `∃ p, #s + dim coann ≤ finrank V`; **the engine the device is built on.**
 
-**Analytic core — affine/univariate (special case, superseded as the device):**
+**Analytic core — affine/univariate (special case, no longer used by the device):**
 - [x] `…le_finrank_span_along_affine_path_cofinite` / `…finrank_dualCoannihilator_along_affine_path_cofinite`
-  (`…/Matrix/Rank.lean`) — `{bad t}.Finite` form; runs only on a single affine line.
+  (`…/Matrix/Rank.lean`) — `{bad t}.Finite` form; the univariate predecessor, kept
+  as a mirror but no longer consumed (the device is multivariate).
 
-**Device + route-(a) chain (`AlgebraicInduction.lean`) — affine special case:**
-- [x] `genericityDevice` (codimension form, affine), `exists_good_realization`,
-  `hglue_of_genericityDevice`, `hcoord_of_rigidityRows_affine`, `hcoord_const`,
-  `hspan_const_of_span_eq`, `hglue_of_realization`,
-  `hglue_of_independent_rigidityRows`, `hglue_of_forest`. *Single-use telescoping
-  chain — consolidation target (Hand-off 2).*
+**Device + Case-I chain (`AlgebraicInduction.lean`) — multivariate (consolidated):**
+- [x] `exists_good_realization` (multivariate keystone), `exists_good_realization_const`
+  (constant-family closure), `hglue_of_realization` (folds the old affine
+  `hglue_of_genericityDevice` arithmetic), `hglue_of_independent_rigidityRows`,
+  `hglue_of_forest`. The affine device + bridges (`genericityDevice`,
+  `hcoord_of_rigidityRows_affine`, `hspan_const_of_span_eq`, `hcoord_const`,
+  `hglue_of_genericityDevice`) were removed.
 
 **`R(G,p)` coordinatization & rigid-block rows (`RigidityMatrix.lean`):**
 - [x] `screwDiff`/`hingeRow`/`rigidityRows` + `infinitesimalMotions_eq_dualCoannihilator`
@@ -166,66 +168,63 @@ All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
   Taken once as the `…dualCoannihilator…` lemmas, stated additively to avoid
   `ℕ`-subtraction.
 - **The device's *target statement* (consumer API) is fixed before its proof.**
-  `genericityDevice` lands with `hcoord` *receiving* the functional family — this
-  pinned the consumer-facing shape early. (See *Process lesson* in Hand-off: this
-  was right, but discharging it via a per-hypothesis wrapper chain was not.)
+  The device lands with `hcoord` *receiving* the functional family — this pinned
+  the consumer-facing shape early, validated against the consumer API before the
+  multivariate proof was wired in.
+- **The constant family IS a valid multivariate family.** Route (a)'s "no real
+  line is traversed" reading survives the multivariate rebuild: a single hand-built
+  realization `F₀` is the constant family `F p = F₀` over `σ := Unit`, with
+  polynomial coords the constants `c i j = C (φ (a i) j)` (`hg` = `eval_C`). This is
+  `exists_good_realization_const`, the form the Case-I chain consumes — the
+  multivariate keystone subsumes the old affine constant-path bridges.
+- **`rw` over a `Submodule` equation under `finrank ℝ ↥(…)` trips the motive** —
+  flip the equation and rewrite the hypothesis. → TACTICS-QUIRKS § 33.
 
 ### Promoted
 - *Forward-mode + linear reduction chain → single-use wrapper sprawl; build the
   keystone first.* → `DESIGN.md` *Forward-mode reduction chains*.
+- *`rw [hsub]` over a `Submodule` under `finrank ℝ ↥(…)` trips the motive; flip and
+  rewrite the hypothesis.* → TACTICS-QUIRKS § 33.
 
 ## Blockers / open questions
 
-- **Reuse-to-assess: RESOLVED.** Route (a) — the Phase-6/8 Gram-det mechanism,
-  lifted to *rank* form and generalized *multivariate* via `MvPolynomial.funext`
-  (the affine/univariate lift was insufficient: panel rows are bilinear, so the
-  consumers' realizations are not on any affine line). Engine landed (`86f1221`).
-- **Route a/b: RESOLVED → route (a) multivariate.** (Supersedes the earlier
-  "degenerate constant path" reading: the constant/affine path only restates the
-  rank at a hand-built realization and cannot *produce* a generic one, which is
-  what the splice and the other consumers need.) Engine is the four multivariate
-  bricks; the device must be rebuilt on `exists_finrank_dualCoannihilator_polynomial`.
-- **Open:** wiring the multivariate engine into the device (Hand-off 1), the
-  wrapper-chain consolidation (Hand-off 2), and the geometric splice (Hand-off 3).
+- **Device: RESOLVED.** `lem:genericity-device` green on the multivariate engine
+  `exists_finrank_dualCoannihilator_polynomial` (route (a)); consolidation of the
+  old affine chain done in the same commit.
+- **Open:** the geometric Case-I splice (`lem:case-I-realization`, Hand-off item 1)
+  and the per-consumer wiring of the device for Case II (`hspan`) / Prop 1.1
+  (`hub`/`hgen`) — the device's conclusion is the shape each needs, but each carries
+  a per-consumer bridge to construct.
 
 ## Hand-off / next phase
 
-The blueprint states the honest target. Three work items remain, in dependency
-order. **Item 1 is the smallest next concrete commit.**
+The device is green. **The next concrete commit is the Case-I splice
+(`lem:case-I-realization`).** Two work items remain, in dependency order.
 
-1. **Rebuild the device multivariate** (`lem:genericity-device`, red → green) —
-   *the next commit.* Restate `genericityDevice` / `exists_good_realization` in
-   `AlgebraicInduction.lean` against the landed multivariate engine
-   `exists_finrank_dualCoannihilator_polynomial`, replacing the affine/constant-path
-   version. The coordinatization `hcoord` must express `(F p).infinitesimalMotions`
-   as the coannihilator of a *polynomial-coordinate* functional family
-   `g : (σ → ℝ) → ι → Module.Dual ℝ (α → ScrewSpace k)` with
-   `φ (g p i) j = eval p (c i j)` — the panel coordinates `p` are the σ-vars, the
-   degree-2 rigidity entries the `c i j`. Then re-pin `lem:genericity-device`
-   green. The analytic content is done; this is coordinatization + statement-reshape.
-2. **Consolidate the Lean wrapper chain** (no blueprint change). The ~17 names
-   removed from the device/Case-I pins are a single-use telescoping
-   `hglue_* / hasFullRankRealization_*` stack. Once the multivariate device lands,
-   collapse them (inline single-use steps as `have`/`obtain`; keep only genuinely
-   reusable API — the forest linear-algebra, general position, `ofParam`, the
-   block-pin bound, the Case-I iff) and re-pin survivors.
-3. **Splice realization** (`lem:case-I-realization`, red, KT eqs. 6.2/6.6) — the
-   geometric Case-I to-do: the contraction splice (`p₁` on `E(H)`, `p₂` on the
-   interior, panel intersection `Π_{G/E(H),p₂}(u) ∩ Π_{H,p₁}(v)` on `δ_G(V(H))`)
-   attains full rank, discharging `thm:theorem-55`'s `hcontract`. Bottoms on the
-   device (item 1) — rigidity is panel-dependent, so the rigid-block placement and
-   the contraction-transport both need generic max-rank. The reduction plumbing
+1. **Splice realization** (`lem:case-I-realization`, red, KT eqs. 6.2/6.6) —
+   *the next commit.* The geometric Case-I to-do: the contraction splice (`p₁` on
+   `E(H)`, `p₂` on the interior, panel intersection
+   `Π_{G/E(H),p₂}(u) ∩ Π_{H,p₁}(v)` on `δ_G(V(H))`) attains full rank, discharging
+   `thm:theorem-55`'s `hcontract`. Bottoms on the now-green device — rigidity is
+   panel-dependent, so the rigid-block placement and the contraction-transport both
+   need generic max-rank. The reduction plumbing
    (`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid`, the
-   block-pin↔rigidity bridges, the `endsOf` selector) is all landed; what's missing
-   is the geometric construction + its generic rigidity, plus the `(G, ends)`
-   gluing (orient block hinges along the spanning forest, link inter-block hinges
-   to the contracted vertex) and the count `hmatch`.
+   block-pin↔rigidity bridges, the `endsOf` selector) and the Case-I `hglue` chain
+   (`hglue_of_forest`) are all landed; what's missing is the geometric construction
+   + its generic rigidity, plus the `(G, ends)` gluing (orient block hinges along
+   the spanning forest, link inter-block hinges to the contracted vertex) and the
+   count `hmatch`.
+2. **Per-consumer wiring of the device for Case II / Prop 1.1** — Case II's `hspan`
+   (span-membership of base-pinned motions) and Prop 1.1's `hub`/`hgen` reuse the
+   device's `∃ p, #s + dim Z(F p) ≤ D|V|` conclusion through a per-consumer bridge
+   analogous to the Case-I `hglue_of_*` chain. Smaller than item 1; can follow it.
 
-**Process lesson (don't repeat).** The single-use wrapper chain (item 2's debt)
-came from formalizing a *linear reduction* one hypothesis-discharge per commit in
-forward mode. The fix, applied mid-session: build the **keystone** (the device)
-and validate the consumer API against it *first*, then collapse. Promoted to
-`DESIGN.md` *Forward-mode reduction chains*; also relevant to Phases 22–23.
+**Process lesson (don't repeat).** The single-use affine wrapper chain (now
+collapsed) came from formalizing a *linear reduction* one hypothesis-discharge per
+commit in forward mode. The fix: build the **keystone** (the multivariate device)
+and validate the consumer API against it *first*, then collapse the affine bridges
+into the constant-family closure. Promoted to `DESIGN.md` *Forward-mode reduction
+chains*; also relevant to Phases 22–23.
 
 **Also consumed by Phases 22–23** (Case III genericity, Claims 6.11/6.12); the
 multivariate device pays forward (Case III bottoms on Lemma 2.1, Phase 17 green).

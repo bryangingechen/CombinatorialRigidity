@@ -30,14 +30,15 @@ Lemma~\cref{lem:rank-delete-vertex}), and Case~II ($k>0$ splitting, the
 panel-hinge analogue of Whiteley's bar-joint 1-extension). Each node that
 needs the shared analytic device --- the genericity argument
 (Claim~6.4/6.9, \cref{lem:genericity-device}) --- takes it as an explicit
-hypothesis, so it is green \emph{modulo} that device, which is scoped out
-into the sub-phase Phase~21b. That device is stated here as a red node
-(\cref{lem:genericity-device}) the four consumers reference; its discharge
-is the content of Phase~21b. The cycle-realization Lemma~5.4
-(\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
-Whiteley~\cite{whiteley1999}) enters here as an input. The remaining red
-nodes are this genericity device (\cref{lem:genericity-device}, Phase~21b)
-and the crux Case~III (\cref{lem:case-III}, deferred to Phases~22--23).
+hypothesis, so it was green \emph{modulo} that device, scoped out into the
+sub-phase Phase~21b. The device (\cref{lem:genericity-device}) has now
+landed in its genuine multivariate form, so those consumers are green; the
+cycle-realization Lemma~5.4 (\cref{lem:cycle-realization};
+Crapo--Whiteley~\cite{crapoWhiteley1982}, Whiteley~\cite{whiteley1999})
+enters here as an input. The remaining red nodes are the Case~I
+contraction splice (\cref{lem:case-I-realization}, the geometric wiring
+that feeds the device, Phase~21b) and the crux Case~III
+(\cref{lem:case-III}, deferred to Phases~22--23).
 
 \subsection{The panel layer}
 \label{sec:molecular-algebraic-induction-panel}
@@ -841,14 +842,16 @@ The four GREEN-modulo-21b nodes above (\cref{lem:case-I},
 \cref{lem:case-II}, \cref{thm:theorem-55},
 \cref{prop:rigidity-matrix-prop11}) and the projective assembly of the
 cycle realization (\cref{lem:cycle-realization}) all rest on one shared
-analytic crux, which is scoped out into the focused sub-phase
+analytic crux, scoped out into the focused sub-phase
 \textbf{Phase~21b} (the analytic sibling of the Phase-21a meet). The
-device is stated here, red, as the node \cref{lem:genericity-device}
-that those consumers reference; its discharge is the content of
-Phase~21b.
+device is the node \cref{lem:genericity-device} that those consumers
+reference.
 
 \begin{lemma}[Genericity device, codimension form; KT Claim 6.4, Claim 6.9]
   \label{lem:genericity-device}
+  \lean{CombinatorialRigidity.Molecular.exists_good_realization,
+        CombinatorialRigidity.Molecular.exists_good_realization_const}
+  \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization as a point
   $p \in \mathbb{R}^N$ of the panel-coordinate space (the per-vertex panel
@@ -865,6 +868,7 @@ Phase~21b.
   and minimized generically.
 \end{lemma}
 \begin{proof}
+  \leanok
   A maximal non-vanishing minor of $R(G,p_0)$ is a polynomial in $p$, nonzero
   at $p_0$. Over the infinite field $\mathbb{R}$ a nonzero polynomial does not
   vanish identically (\texttt{MvPolynomial.funext}), so its non-vanishing
@@ -874,13 +878,15 @@ Phase~21b.
   \cite[\S6.1, \S6.3]{katohTanigawa2011} (Claim~6.4 and its Case-II twin
   Claim~6.9).
 
-  \emph{Status (Phase~21b).} The formalization currently lands only the
-  univariate/affine special case --- a finite root set of a one-variable minor
-  along an affine line. Because the panel entries are bilinear, the consumers'
-  realizations are not reached along an affine line, so the genuine multivariate
-  form --- a nonzero multivariate minor polynomial has a non-root, via
-  \texttt{MvPolynomial.funext} and the determinant machinery --- is the
-  remaining analytic content.
+  The formalization is genuinely \emph{multivariate}: the parameter ranges
+  over the full panel-coordinate space $\mathbb{R}^N$, not a single affine line.
+  The minor's Gram determinant is one multivariate polynomial; nonzero at the
+  witness realization, it has a non-root by \texttt{MvPolynomial.funext}, and
+  there the rank is at least the witnessed corank. In the codimension shape the
+  consumers carry, this is $\#s + \dim Z(F\,p) \le D|V|$ at a produced
+  realization. The constant-family closure
+  (\texttt{exists\_good\_realization\_const}) reads the bound off a single
+  hand-built realization, the form Case~I's block-triangular gluing consumes.
 \end{proof}
 
 \noindent The device discharges the explicit hypotheses each consumer
