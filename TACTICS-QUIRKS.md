@@ -219,6 +219,21 @@ When `grind` is the closer it papers over this — both branches close
 regardless of which variables remain. Reach for named hypotheses
 only when downstream tactics depend on a specific name.
 
+**Related: destructuring a *term* doesn't rewrite its occurrences.**
+`obtain ⟨a, t⟩ := e j` (or `rcases e j with ⟨a, t⟩`) on a bare *term*
+`e j` — as opposed to a local hypothesis — introduces `a, t` but does
+**not** substitute the other `(e j).1` / `(e j).2` occurrences already
+in the goal, so projection-mismatches (`a` here, `(e j).fst` there)
+leave `unsolved goals`. Capture the equation and `simp` it instead:
+
+```lean
+rcases hej : e j with ⟨a, t⟩
+simp only [hej]   -- now every `e j` is `⟨a, t⟩`; `.fst`/`.snd` reduce
+```
+
+(Phase 22 `exists_rankPolynomial_of_rigidOn`, the `annihRowPoly`
+coordinatization at a reindexed basis vector `e j : Σ _, ⋀ᵏ`.)
+
 ---
 
 ## 5. `simp only` leaves residual subterms that block `rw` motives

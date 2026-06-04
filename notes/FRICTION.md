@@ -76,6 +76,35 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `obtain ⟨a, t⟩ := e j` on a *term* (not a hypothesis) doesn't substitute the term's other occurrences — use `rcases hej : e j with ⟨a, t⟩` then `simp only [hej]`
+- **Where it bit:** `exists_rankPolynomial_of_rigidOn` (Phase 22, Case-I per-leg rank polynomial), the
+  coordinatization `hg : φ (g q i) j = eval q (c i j)`. After `rw [hc_def]` the RHS panel polynomial
+  reads `c i j`, whose body refers to `(e j).1` / `(e j).2` (the reindexed basis vector). The `change`
+  surfacing the LHS row turned `e j`-on-the-LHS into `a`, but `obtain ⟨a, t⟩ := e j` left the RHS
+  `(e j).1` / `(e j).2` untouched — `obtain`/`rcases` on a *bare term* case-splits but does **not**
+  rewrite the term's occurrences elsewhere in the goal — so the `by_cases` arithmetic faced
+  `a` (LHS) vs `(e j).fst` (RHS) and left unsolved goals. One build cycle.
+- **Proposed fix:** `rcases hej : e j with ⟨a, t⟩` (records `hej : e j = ⟨a, t⟩`), then `simp only [hej]`
+  to substitute every `e j` occurrence by `⟨a, t⟩` (the `.fst`/`.snd` projections reduce to `a`/`t`),
+  *then* the `change`/`rw` chain. General rule: to destructure a term and have its projections
+  collapse goal-wide, capture the equation (`rcases h : t with …`) and `simp only [h]`; a bare
+  `obtain ⟨…⟩ := t` only helps when `t` is a local hypothesis. (Sibling of TACTICS-QUIRKS § 4.)
+- **Status:** resolved (tactic choice; no lemma needed). **Lifted to:** TACTICS-QUIRKS § 4 (cross-ref).
+
+### [resolved] `linearIndependent_rows_of_specialized_submatrix_det_ne_zero` on rows already over `ℝ` — pass `φ := RingHom.id ℝ`, not the polynomial `eval`
+- **Where it bit:** `exists_polynomial_ne_zero_of_linearIndependent_at`
+  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, Phase 22), the "non-root `p` ⟹ rows LI" branch. The mirror
+  lemma `linearIndependent_rows_of_specialized_submatrix_det_ne_zero (M : ι → κ → R) (φ : R →+* S)`
+  takes the rows `M` over the domain `R` and a hom `φ` whose image of the minor det is nonzero. The
+  reflex is `R := MvPolynomial`, `φ := eval p` — but that concludes `LinearIndependent (MvPolynomial)
+  M`, the *wrong* base ring; the goal is LI **over `ℝ`** of the *already-specialized* rows
+  `(P.map (eval p)).row`. One build cycle (an `Application type mismatch` on the hom direction).
+- **Proposed fix:** instantiate with `R = S = ℝ`, `M := (P.map (eval p)).row`, `φ := RingHom.id ℝ`,
+  and supply `hdet : (RingHom.id ℝ) (specialized minor).det ≠ 0`, where the specialized minor det
+  equals `eval p (polynomial minor det)` (`(eval p).map_det`). The `φ` slot is for reflecting a *domain*
+  det into a nontrivial ring; when the rows are already in the target field, it's the identity.
+- **Status:** resolved (instantiation choice; no lemma needed).
+
 ### [resolved] Repackaging a `HasFullRankRealization` witness as an `ofNormals` — `subst` the `Q.graph = G` conjunct, don't `rw` both sides
 - **Where it bit:** `exists_rigidOn_ofNormals_of_hasFullRankRealization` (Phase 22, Case-I
   witness-transfer prerequisite): from `HasFullRankRealization k G = ∃ Q, Q.graph = G ∧
@@ -2275,6 +2304,33 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Companion to the two
   rectangular-LI entries above; the natural "existence" partner of
   `LinearIndependent.rank_matrix`.
+
+### [mirrored] `exists_polynomial_ne_zero_of_linearIndependent_at` (constructive rank-witnessing polynomial)
+- **Where it bit:** Phase 22 Case-I per-leg rank polynomial
+  (`PanelHingeFramework.exists_rankPolynomial_of_rigidOn`): the seed witness-transfer
+  must couple *two* legs' rigid loci onto one shared seed, so each leg needs not just
+  *a* good point (`exists_le_finrank_span_polynomial` discards the polynomial) but the
+  **witnessing polynomial itself**, to take the product of the two and apply
+  `MvPolynomial.exists_eval_ne_zero` once to the product.
+- **Friction:** the existing multivariate bricks
+  (`exists_le_finrank_span_polynomial` / `exists_finrank_dualCoannihilator_polynomial`)
+  produce only `∃ p, good`, having already consumed the polynomial inside
+  `MvPolynomial.exists_eval_ne_zero`. Coupling several families needs the polynomial
+  exposed before the funext step.
+- **Resolution:** mirrored as `exists_polynomial_ne_zero_of_linearIndependent_at`: for a
+  polynomial-coordinate vector family `g` (coords `c`, basis id `φ`) LI on `s : Set ι`
+  at `p₀`, returns `Q : MvPolynomial σ ℝ` with `eval p₀ Q ≠ 0` and
+  `∀ p, eval p Q ≠ 0 → LinearIndependent ℝ (g p|_s)`. `Q` is the Gram-determinant minor
+  selected by `Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows` on the
+  polynomial-entry submatrix; the LI direction is
+  `Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero` (with `φ = RingHom.id ℝ`,
+  rows already over `ℝ` — see the resolved entry in *Open*). The constructive refinement of
+  `exists_le_finrank_span_polynomial` (which is its one-line corollary via
+  `MvPolynomial.exists_eval_ne_zero`).
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Sits with the multivariate
+  `exists_…_polynomial` family; the partner that exposes the witnessing polynomial for
+  cross-family coupling.
 
 ### [mirrored] `Finset.mul_card_union_add_mul_card_inter` (`k`-scaled `card_union_add_card_inter`)
 - **Where it bit:** the union-half of `IsTightOn.union_inter`

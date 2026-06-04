@@ -3197,6 +3197,102 @@ theorem PanelHingeFramework.exists_rigidOn_ofNormals_of_hasFullRankRealization
   subst hQg
   exact ⟨Q.ends, fun p => Q.normal p.1 p.2, hQrig⟩
 
+/-- **A rigid leg yields a nonzero rank polynomial** (`lem:case-I-splice-placement` infra, the
+per-leg half of the single-seed witness-transfer; Katoh–Tanigawa 2011 §6.2, eq. (6.6), Phase 22).
+The genuine next brick of the seed witness-transfer: turn one leg's rigidity at a seed into a
+*single* multivariate polynomial in the panel coordinates that is nonzero at that seed and witnesses
+the leg's full rank at any of its non-vanishing points. For `ofNormals G ends q₀` infinitesimally
+rigid on `V(G)` (`hrig`) with transversal hinges (`hne`) and an endpoint selector recording each
+edge's link (`hends`), there is a `panelRow`-index subset `s` of full size `D(|V(G)|−1)` and a
+`MvPolynomial (α × Fin (k+2)) ℝ` `Q` with `eval q₀ Q ≠ 0` such that at *every* non-root `q` of `Q`
+the `s`-subfamily of `panelRow ends` of `ofNormals G ends q` is linearly independent.
+
+This is the per-leg "rigid locus ⟹ nonzero rank polynomial" the witness-transfer couples across the
+two Case-I legs: the *following* step multiplies the two legs' polynomials and applies
+`MvPolynomial.exists_eval_ne_zero` to the product, producing one shared seed `q₀` at which *both*
+legs carry `D(|V|−1)` independent panel rows (hence are rigid, via
+`hasFullRankRealization_of_independent_panelRow` / N3), fed to
+`hasFullRankRealization_of_splice_ofNormals`.
+
+The independent full-size subfamily `s` is N7b-0
+(`exists_independent_panelRow_subfamily_of_rigidOn`); coordinatizing the `panelRow` family against
+the standard basis `Pi.basis (fun _ => screwBasis k)` makes each row's `⋀^k`-coordinate the degree-2
+panel polynomial `annihRowPoly` scaled by the body-incidence sign (`hg`, exactly as in
+`exists_good_realization_ofParam`); the mirror
+`exists_polynomial_ne_zero_of_linearIndependent_at` then extracts the witnessing Gram-determinant
+minor `Q`. It is honest per the producer-scrutiny gate: the input is the satisfiable single-seed
+rigidity `hrig`, and the deliverable is the *polynomial* witnessing that single seed's rank, not a
+generic rank a producer would conclude. -/
+theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hne : ∀ e, (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
+    (hnev : V(G).Nonempty)
+    (hrig : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G)) :
+    ∃ (s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k))
+      (Q : MvPolynomial (α × Fin (k + 2)) ℝ),
+      screwDim k * (V(G).ncard - 1) ≤ Nat.card s ∧ MvPolynomial.eval q₀ Q ≠ 0 ∧
+      ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+        LinearIndependent ℝ
+          (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  -- N7b-0: the rigid leg carries a full-size `D(|V(G)|−1)` independent panel-row subfamily at `q₀`.
+  obtain ⟨s, hscard, hsindep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_rigidOn
+      (ends := ends) (by simpa using hends) hne (by simpa using hnev) (by simpa using hrig)
+  -- The standard basis of `α → ScrewSpace k`, its dual-basis identification `φ`, and the bridge to
+  -- the canonical `Fin (finrank …)` index that the mirror lemma's `c`/`φ` require.
+  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) ℝ (α → ScrewSpace k) :=
+    Pi.basis (fun _ : α => screwBasis k) with hB
+  have hcard : Fintype.card (Σ _ : α, Set.powersetCard (Fin (k + 2)) k)
+      = Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)) := by
+    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
+  let e : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
+    (Fintype.equivFinOfCardEq hcard).symm
+  set φ : Module.Dual ℝ (α → ScrewSpace k)
+      ≃ₗ[ℝ] (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))) → ℝ) :=
+    B.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft ℝ ℝ e) with hφ
+  -- The row family and its degree-2 panel-polynomial coordinates (as in
+  -- `exists_good_realization_ofParam`), pulled back along `e` to the canonical index.
+  set g : (α × Fin (k + 2) → ℝ)
+      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Module.Dual ℝ (α → ScrewSpace k) :=
+    fun q i => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i with hg_def
+  set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      → MvPolynomial (α × Fin (k + 2)) ℝ :=
+    fun i j => ((if (ends i.1).1 = (e j).1 then (1 : ℝ) else 0)
+        - (if (ends i.1).2 = (e j).1 then 1 else 0))
+      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 (e j).2 with hc_def
+  -- The evaluation identity: each row coordinate is the panel polynomial `c`.
+  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
+    intro q i j
+    rw [hφ, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+      Module.Basis.dualBasis_equivFun, hg_def, hc_def]
+    -- Name the reindexed basis vector `e j = ⟨a, t⟩` and substitute it for `e j` everywhere, so
+    -- the RHS panel-polynomial coordinates `(e j).1`/`(e j).2` become `a`/`t`.
+    rcases hej : e j with ⟨a, t⟩
+    simp only [hej]
+    simp only [hB, Pi.basis_apply]
+    change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t)) = _
+    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+      PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
+    rw [Pi.single_apply, Pi.single_apply]
+    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
+      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+        map_neg, one_mul, neg_mul, zero_mul]
+  -- Extract the witnessing rank polynomial via the mirror lemma, and re-phrase its conclusion.
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg (p₀ := q₀) (s := s)
+      (by simpa only [hg_def] using hsindep)
+  exact ⟨s, Q, hscard.ge, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by

@@ -46,12 +46,15 @@ is a *univariate* polynomial in `t` with finitely many roots. The genuine Claim 
 the panel coordinates `p : σ → ℝ`, so no single affine line reaches the consumers' realizations.
 The multivariate bricks below mirror the affine engine's shape but over `MvPolynomial σ ℝ`-entry
 families: `Matrix.exists_linearIndependent_rows_specialize` (matrix `∃`-form),
-`exists_le_finrank_span_polynomial` (vector rank-`#s` `∃`-form), and the consumer-facing
-`exists_finrank_dualCoannihilator_polynomial` (codimension/null-space form). Where the affine
-lemmas conclude `{bad parameters}.Finite` (via `Polynomial.finite_setOf_isRoot`), the multivariate
-lemmas conclude `∃ p, good` directly: the Gram-determinant minor is a *nonzero* `MvPolynomial`,
-hence non-vanishing at *some* point by `MvPolynomial.exists_eval_ne_zero` (the contrapositive of
-`MvPolynomial.funext` over the infinite domain `ℝ`).
+`exists_le_finrank_span_polynomial` (vector rank-`#s` `∃`-form), the consumer-facing
+`exists_finrank_dualCoannihilator_polynomial` (codimension/null-space form), and the *constructive*
+`exists_polynomial_ne_zero_of_linearIndependent_at` (exposes the witnessing Gram-determinant
+polynomial itself, so several families' polynomials can be multiplied and the funext step applied
+once to the product). Where the affine lemmas conclude `{bad parameters}.Finite` (via
+`Polynomial.finite_setOf_isRoot`), the multivariate lemmas conclude `∃ p, good` directly: the
+Gram-determinant minor is a *nonzero* `MvPolynomial`, hence non-vanishing at *some* point by
+`MvPolynomial.exists_eval_ne_zero` (the contrapositive of `MvPolynomial.funext` over the infinite
+domain `ℝ`).
 
 Mirror path: `Mathlib/LinearAlgebra/Matrix/Rank.lean`. Promotion to mathlib is a copy-paste
 into the upstream file, alongside `Matrix.rank_self_mul_transpose` and
@@ -443,3 +446,70 @@ theorem exists_finrank_dualCoannihilator_polynomial
     rw [Subspace.finrank_dualCoannihilator_eq, add_comm,
       Subspace.finrank_add_finrank_dualAnnihilator_eq, Subspace.dual_finrank_eq]
   omega
+
+/-- **Vector-form rank-witnessing polynomial.** For a finite-dim ℝ-vector space `W` and a
+*polynomial-coordinate* family `g : (σ → ℝ) → ι → W` whose basis coordinates are multivariate
+polynomial evaluations — fixed `c : ι → Fin (finrank ℝ W) → MvPolynomial σ ℝ` and a basis
+identification `φ : W ≃ₗ[ℝ] (Fin (finrank ℝ W) → ℝ)` with `φ (g p i) j = eval p (c i j)` — if the
+subfamily indexed by a subset `s : Set ι` is linearly independent at some point `p₀ : σ → ℝ`, then
+there is a *single* multivariate polynomial `Q : MvPolynomial σ ℝ` that is **nonzero at `p₀`**
+(`eval p₀ Q ≠ 0`) and at *every* non-vanishing point of which the `s`-subfamily `g p` is again
+linearly independent.
+
+This is the *constructive* refinement of `exists_le_finrank_span_polynomial` (which produces a
+single good point `p` via `MvPolynomial.exists_eval_ne_zero`, discarding the polynomial): here the
+witnessing Gram-determinant minor `Q := det (P.submatrix on a maximal column selection)` is exposed,
+so several legs' polynomials can be **multiplied** and the funext step
+(`MvPolynomial.exists_eval_ne_zero`) applied to the product, producing one shared non-vanishing
+point at which *all* legs are independent. `Q` is built by selecting, via
+`exists_submatrix_det_ne_zero_of_linearIndependent_rows`, a square column subset `e` of the
+polynomial-entry submatrix `P : Matrix s (Fin (finrank ℝ W)) (MvPolynomial σ ℝ)` whose specialized
+minor at `p₀` is nonsingular; `eval p Q` is then the specialized minor's determinant
+(`(eval p).map_det`), so `eval p₀ Q ≠ 0` by construction and
+`linearIndependent_rows_of_specialized_submatrix_det_ne_zero` upgrades any other non-root `p` back
+to row independence. The LI of vectors ↔ LI of `φ`-coordinate rows is the same `φ`-pullback used in
+`exists_le_finrank_span_polynomial`. This is the per-leg "rigid locus ⟹ nonzero rank polynomial"
+brick the Phase-22 Case-I seed witness-transfer couples across its two legs (Katoh–Tanigawa 2011
+§6.2, eq. (6.6)). -/
+theorem exists_polynomial_ne_zero_of_linearIndependent_at
+    {ι W σ : Type*} [Finite ι] [AddCommGroup W] [Module ℝ W] [Module.Finite ℝ W]
+    (g : (σ → ℝ) → ι → W) (c : ι → Fin (Module.finrank ℝ W) → MvPolynomial σ ℝ)
+    (φ : W ≃ₗ[ℝ] (Fin (Module.finrank ℝ W) → ℝ))
+    (hg : ∀ p i j, φ (g p i) j = MvPolynomial.eval p (c i j))
+    {p₀ : σ → ℝ} {s : Set ι}
+    (h : LinearIndependent ℝ (fun i : s => g p₀ i)) :
+    ∃ Q : MvPolynomial σ ℝ, MvPolynomial.eval p₀ Q ≠ 0 ∧
+      ∀ p : σ → ℝ, MvPolynomial.eval p Q ≠ 0 → LinearIndependent ℝ (fun i : s => g p i) := by
+  classical
+  haveI : Fintype s := Fintype.ofFinite s
+  -- Submatrix on `s`: rows indexed by `s`, columns by `Fin (finrank ℝ W)`.
+  let P : Matrix s (Fin (Module.finrank ℝ W)) (MvPolynomial σ ℝ) :=
+    Matrix.of (fun i j => c (i : ι) j)
+  -- The specialized rows of `P` at `p` are `φ ∘ (g p)` restricted to `s`.
+  have hrow : ∀ p : σ → ℝ,
+      (P.map (MvPolynomial.eval p)).row = ⇑φ ∘ (fun i : s => g p i) := by
+    intro p; funext i j
+    change MvPolynomial.eval p (c (i : ι) j) = φ (g p i) j
+    rw [hg]
+  -- LI of the vector subfamily ↔ LI of the matrix rows, via the LinearEquiv `φ`.
+  have hiff : ∀ p : σ → ℝ, LinearIndependent ℝ (fun i : s => g p i)
+      ↔ LinearIndependent ℝ (P.map (MvPolynomial.eval p)).row := by
+    intro p; rw [hrow p]
+    exact (LinearMap.linearIndependent_iff φ.toLinearMap (LinearEquiv.ker φ)).symm
+  -- At `p₀` the rows are LI, so a maximal column selection gives a nonsingular specialized minor.
+  obtain ⟨e, he⟩ :=
+    Matrix.exists_submatrix_det_ne_zero_of_linearIndependent_rows ((hiff p₀).mp h)
+  -- Evaluating the polynomial minor at `p` is the det of the specialized minor at `p`.
+  have heval : ∀ p : σ → ℝ, MvPolynomial.eval p (Matrix.of (fun i j : s => P i (e j))).det
+      = (Matrix.of (fun i j : s => (P.map (MvPolynomial.eval p)).row i (e j))).det := by
+    intro p; rw [(MvPolynomial.eval p).map_det]; rfl
+  -- The witnessing minor polynomial `Q := det (P selected on columns `e`)`.
+  refine ⟨(Matrix.of (fun i j : s => P i (e j))).det, ?_, fun p hp => ?_⟩
+  · -- `eval p₀ Q = det ((P.map (eval p₀)) selected on `e`) ≠ 0` by `he`.
+    rw [heval p₀]; convert he using 2
+  · -- At any non-root `p`, the specialized minor is nonsingular, so the rows are LI.
+    rw [hiff p]
+    refine Matrix.linearIndependent_rows_of_specialized_submatrix_det_ne_zero
+      (P.map (MvPolynomial.eval p)).row (RingHom.id ℝ) e ?_
+    rw [RingHom.id_apply, ← heval p]
+    exact hp
