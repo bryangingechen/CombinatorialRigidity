@@ -1008,4 +1008,43 @@ theorem isBase_ncard_add_deficiency_eq [DecidableEq β] [Finite α] [Finite β] 
     (B.ncard : ℤ) + G.deficiency n = bodyBarDim n * ((V(G).ncard : ℤ) - 1) := by
   rw [hB.ncard]; exact G.rank_add_deficiency_eq n hD hne
 
+/-- **A rigid subgraph's multiplied graph packs `D` edge-disjoint forests on a base**
+(`thm:def-eq-corank` Cor 6.2; Jackson–Jordán 2009, Katoh–Tanigawa 2011 §6.2). The
+combinatorial substrate of the Case-I realization producer (`lem:case-I-realization`, Phase 22,
+option (a)): a `0`-dof (body-hinge-rigid) graph `H` — `def(H̃) = 0` — has a base `B` of `M(H̃)`
+that decomposes into `D = bodyBarDim n` edge-disjoint forests of `H̃ ↾ B`, with the full edge
+count `|B| = D(|V(H)| − 1)`.
+
+This is the prerequisite the per-leg rigid-seed construction needs: the single-forest brick
+`exists_independent_rigidityRows_of_forest` yields only `(D−1)·|J|` independent rigidity rows from
+*one* spanning forest, a factor `(D−1)/D` short of the full `D(|V(H)|−1)` that
+`HasFullRankRealization k H` demands; reaching full rank needs the `D`-fold packing assembled here,
+not a single tree. The base `B` is a maximal `(D,D)`-independent (hence `(D,D)`-sparse, via
+`matroidMG_indep_iff`) edge subset, so `tutte_nash_williams` decomposes it into `D` edge-disjoint
+forests; its cardinality is `rank M(H̃) = D(|V(H)|−1)` because `def(H̃) = 0`
+(`isBase_ncard_add_deficiency_eq`). Regime `[NeZero (bodyHingeMult n)]` (`D ≥ 1`, also forcing the
+copies that `mulTilde` needs); `V(H).Nonempty`.
+
+The `↾ B` restriction is forced: a general rigid `H` may be over-braced (`def(H̃) = 0` with extra
+edges), so the *whole* `H̃` need not be sparse — only a base packs into forests. The remaining
+Track-A obstruction (`notes/Phase22.md` *Hand-off*, option (a)) is to stack the `D` forests'
+rigidity rows to the full `D(|V(H)|−1)` count and produce the rigid seed; this lemma supplies the
+forest packing those rows are read off. -/
+theorem IsKDof.exists_isBase_isForestPacking [DecidableEq β] [Finite α] [Finite β]
+    {H : Graph α β} {n : ℕ} [NeZero (bodyHingeMult n)]
+    (hrig : H.IsKDof n 0) (hne : V(H).Nonempty) :
+    ∃ B, (H.matroidMG n).IsBase B ∧ ((H.mulTilde n) ↾ B).IsForestPacking (bodyBarDim n) ∧
+      (B.ncard : ℤ) = bodyBarDim n * ((V(H).ncard : ℤ) - 1) := by
+  have hmult : 1 ≤ bodyHingeMult n := Nat.one_le_iff_ne_zero.mpr (NeZero.ne _)
+  have hD : 1 ≤ bodyBarDim n := by rw [bodyHingeMult] at hmult; omega
+  obtain ⟨B, hB⟩ := (H.matroidMG n).exists_isBase
+  refine ⟨B, hB, ?_, ?_⟩
+  · -- `B` independent ⟹ `H̃ ↾ B` is `(D,D)`-sparse ⟹ packs `D` edge-disjoint forests.
+    rw [tutte_nash_williams]
+    exact ((matroidMG_indep_iff H n).mp hB.indep).2
+  · -- `|B| = rank M(H̃) = D(|V(H)| − 1)` since `def(H̃) = 0`.
+    have hcount := H.isBase_ncard_add_deficiency_eq n hD hne hB
+    rw [hrig] at hcount
+    linarith
+
 end Graph
