@@ -210,6 +210,12 @@ checklists:
   README silently misrepresent project state. Confirm Phase N-1's
   status on each surface at the same time — if the previous phase
   closed without flipping these, do it here.
+- **Cross-phase program docs that no CI/checkdecls gate covers** must
+  also be synced at the boundary, or they silently drift (Phase 21b
+  closed with `notes/MolecularConjecture.md` showing the prior phase
+  in-progress). For the molecular program (Phases 17–26): sync
+  `notes/MolecularConjecture.md` — its phase table, the per-phase
+  detail block, and the *Opening the next phase* pointer.
 
 ### When this commit closes a phase
 
@@ -228,7 +234,9 @@ of* the per-commit checklists above:
   `home_page/index.md` *Project status* + phase table, and
   `blueprint/src/chapter/intro.tex` §*Phase plan* + enumerate
   (including the dep-graph-status line at the end of the section).
-  Flip Phase N's marker to ✓ on each.
+  Flip Phase N's marker to ✓ on each. Plus any cross-phase program doc
+  (molecular phases: `notes/MolecularConjecture.md`) — see the phase-open
+  subsection.
 - **Re-read each new/edited blueprint chapter end-to-end as a domain
   mathematician** and collapse accumulated per-commit formalization
   asides. Forward-mode chapters are written one node at a time by

@@ -26,10 +26,15 @@ Phases 17–26 and the runbook for threading the remaining phases.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
 summary + status row); this file is the lemma-level detail.
 
-When opening each remaining phase, follow the top-level `CLAUDE.md`
-*When this commit opens a phase* protocol (create `notes/PhaseN.md`,
-sync the user-facing status surfaces, extend `blueprint/src/chapter/
-molecular.tex` with the phase's red dep-graph nodes).
+When opening or closing each remaining phase, follow the top-level
+`CLAUDE.md` *When this commit opens / closes a phase* protocol — and
+**keep this doc current as part of it** (its phase table, the per-phase
+detail block, and *Opening the next phase*). This cross-phase program doc
+is gated by no CI/checkdecls check, so it drifts unless synced at every
+molecular phase boundary (it did, pre-21b). Per-phase blueprint nodes go
+in that phase's chapter (`extensor.tex` / `rigidity-matrix.tex` / …, or by
+extending `algebraic-induction.tex` for the 21/22+ realization layer), not
+a single `molecular.tex`.
 
 ## The target
 
