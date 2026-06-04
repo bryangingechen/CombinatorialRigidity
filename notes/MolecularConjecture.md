@@ -10,9 +10,11 @@ analytic half of Prop 1.1), with the shared analytic crux Claim 6.4/6.9
 (the genericity device) scoped out into its own sub-phase **Phase 21b**,
 entering each consuming node as an explicit hypothesis (risk #4/#7 +
 `DESIGN.md` *Genericity device (Claim 6.4/6.9) is its own sub-phase
-(Phase 21b)*). **Phase 21b is the next phase to open.** Phases 21b,
-22–26 planned. This is the program design for Phases 17–26 and the runbook for
-threading the remaining phases.
+(Phase 21b)*). **Phase 21b is open and in progress** (the multivariate
+analytic engine is landed; the device statement, wrapper consolidation,
+and the Case-I splice remain — see *Phase 21b* below and
+`notes/Phase21b.md`). Phases 22–26 planned. This is the program design for
+Phases 17–26 and the runbook for threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
 summary + status row); this file is the lemma-level detail.
@@ -406,20 +408,31 @@ the consumers `\uses` it.
   the two new spans, via the rank count), the block-triangular generic
   gluing for Case I, the cycle projective assembly, and the generic-rank
   reconciliation for Prop 1.1.
-- **Reuse to assess on contact:** the Phase 6/8 Gram-det perturbation
-  machinery (`Mathlib/LinearAlgebra/Matrix/Rank.lean`,
-  `exists_uniform_rowIndependent_placement`-style arguments) is the
-  natural candidate; the Phase-21a finding was that the *cycle*
-  genericity was purely exterior-algebraic (no perturbation), so assess
-  whether the panel-coordinate rank argument is polynomial-perturbation
-  or reduces similarly. Bottoms (for Case III's share) on Lemma 2.1
-  (Phase 17).
+- **Reuse-to-assess: RESOLVED → route (a), multivariate.** The Phase-6/8
+  Gram-det machinery (`Mathlib/LinearAlgebra/Matrix/Rank.lean`) is the
+  right base, but lifted two ways: to *rank* form (`finrank ≥ r`, not just
+  full-rank) and — the key finding (2026-06-04) — to *multivariate*
+  Zariski-open non-vanishing. The panel-matrix entries are degree-2
+  (bilinear in the per-vertex normals), so the consumers' realizations are
+  **not** reached along any affine line; a single-scalar/affine engine is
+  only a special case and does not prove Claim 6.4. The genuine engine is
+  "a nonzero multivariate minor polynomial has a non-root" via
+  `MvPolynomial.funext`. Landed as four mirror bricks (the
+  `exists_…_polynomial` family); the device statement is rebuilt on them.
+  Bottoms (for Case III's share) on Lemma 2.1 (Phase 17).
+- **Honest decomposition (2026-06-04).** Blueprint rewritten to the KT §6.2
+  structure: `lem:genericity-device` (multivariate Claim 6.4) **red**;
+  `lem:case-I-realization` (the contraction *splice*, KT eqs. 6.2/6.6)
+  **red**; `lem:case-I` green-but-device-dependent. An earlier
+  per-hypothesis wrapper chain (the `hglue_*`/`hasFullRankRealization_*`
+  telescoping stack) is a consolidation target — see `DESIGN.md`
+  *Forward-mode reduction chains* for the lesson.
 - **Also consumed by Phases 22–23** (Case III's candidate-framework
   genericity, Claims 6.11/6.12) — building it as its own sub-phase pays
   off there too.
-- Opens with its own `notes/Phase21b.md` + a blueprint section (likely
-  in `algebraic-induction.tex` beside the consumers, or its own chapter
-  if it grows); follow the *When this commit opens a phase* protocol.
+- Current state, lemma inventory, and the three-item hand-off live in
+  `notes/Phase21b.md`; the live node list is `algebraic-induction.tex`
+  (`sec:molecular-algebraic-induction-genericity`).
 
 #### Phase 22 — Case III, `d=3` (§6.4.1, Lemma 6.10)
 

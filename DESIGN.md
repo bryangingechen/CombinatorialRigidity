@@ -922,6 +922,46 @@ Jackson–Jordán 2009 Thm 6.1 (the Prop 1.1 analytic side);
 
 ---
 
+## Forward-mode reduction chains: build the keystone first
+
+**The trap.** Forward mode's natural cadence is "one dep-graph node = one
+commit = one lemma." That is right when nodes *fan out* and get reused. It
+goes wrong when the work is a **linear reduction** — a goal you discharge
+one hypothesis at a time. Formalizing each hypothesis-discharge as its own
+public lemma then produces a *telescoping chain of single-use wrappers*:
+each lemma has exactly one caller (the next link), a 1–6 line proof, and a
+large signature, and the chain accretes a new public theorem (with a
+blueprint pin and a multi-paragraph docstring) per commit. Phase 21b's
+Case-I `hglue_* → hasFullRankRealization_*` stack (≈9 wrapper links + the
+`hblock`/`hpin` leaves) is the worked example; the blueprint mirrored it,
+cramming a 14-name `\lean` pin onto `lem:genericity-device` and narrating
+raw Lean identifiers in `lem:case-I`'s prose.
+
+**Two compounding failures.** (1) *Single-use shims dressed as API* — use
+`have`/`obtain` inside one theorem, or the `@[deprecated … (since :=
+"narrative-bridge")]` shim pattern (see `CombinatorialRigidity/CLAUDE.md`),
+not a named public lemma per step. (2) *Scaffolding ahead of its consumer*
+— the chain reduced Case I to "a geometric construction" that itself
+needed the (unbuilt) keystone device, so the wrappers were shaped against a
+*guessed* final consumer and several became dead weight.
+
+**The rule.** When the remaining work is a linear reduction onto one hard
+**keystone** (here: the genericity device), build the keystone — or at
+least pin its honest target statement and validate the consumer API against
+it — *before* growing the reduction chain. Then collapse single-use steps.
+Diagnose early: if a phase is emitting one thin wrapper lemma per commit and
+every hand-off says "the real work is still ahead," that is the smell.
+
+**Blueprint corollary.** In forward mode the dep-graph *is* the plan, so a
+chain of wrapper-shaped Lean lemmas is usually a symptom that the
+*blueprint's* decomposition is the unnatural one. Fixing the blueprint to
+the honest mathematical decomposition (few genuine nodes, prose as math, no
+Lean identifiers) is causal, not cosmetic — it redirects the formalization.
+Cross-refs: `notes/Phase21b.md` *Hand-off*; the 2026-06-04 honesty flip
+(commit `ad7cb0d`).
+
+---
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually
