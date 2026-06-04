@@ -1296,3 +1296,36 @@ instead.*
 
 Worked case: `exists_good_realization` in `Molecular/AlgebraicInduction.lean` (Phase 21b, the
 multivariate genericity device — `rw [finrank_screwAssignment, ← hcoord p] at hp`).
+
+## 34. `map_sum` won't push `Basis.repr` (a `LinearEquiv` to `Finsupp`) through a `∑` — route the coordinate through `Finsupp.lapply t ∘ₗ repr.toLinearMap`
+
+**Symptom.** A goal carrying `b.repr (∑ i ∈ s, f i) t` (a single `⋀`-power / module basis coordinate
+of a `Finset.sum`), and `rw [map_sum]` (or `simp only [map_sum]`, `conv` focused on the subterm)
+reports *"Did not find an occurrence of the pattern `?g (∑ x ∈ ?s, ?f x)`"* even though `b.repr (∑…)`
+is visibly a morphism applied to a sum. Forcing the morphism explicitly
+(`rw [map_sum (b.repr)]`) instead fails with *"failed to synthesize `AddMonoidHomClass (M ≃ₗ[R] (ι →₀ R)) ?m ?m`"* /
+`(deterministic) timeout at typeclass`. Cause: the codomain of `Basis.repr` is `Finsupp` (`ι →₀ R`),
+and the `AddMonoidHomClass` instance for the bundled `M ≃ₗ[R] (ι →₀ R)` (needed for `map_sum` to fire)
+does not synthesize — so `map_sum` silently won't unify `?g := b.repr`. The same snag blocks the
+`.toLinearMap` form `M →ₗ[R] (ι →₀ R)`.
+
+**Fix.** Don't push `repr` through the sum at all. The coordinate you actually want is the *`R`-valued*
+linear functional `Finsupp.lapply t ∘ₗ b.repr.toLinearMap` (codomain `R`, whose `map_sum` synthesizes
+fine). When the sum's terms are themselves a *linear* image (here `complementIso (c i • bs i)`),
+fold the outer linear maps into one composite and rewrite the whole coordinate to that composite by a
+`show … = (… ∘ₗ … ∘ₗ …) (∑ …) from rfl`, then `map_sum` fires:
+```
+rw [show b.repr (L (∑ i, c i • bs i)) t
+      = (Finsupp.lapply t ∘ₗ b.repr.toLinearMap ∘ₗ L.toLinearMap) (∑ i, c i • bs i) from rfl,
+  map_sum]
+refine Finset.sum_congr rfl fun i _ => ?_
+rw […, map_smul, smul_eq_mul, LinearMap.comp_apply, Finsupp.lapply_apply, LinearMap.comp_apply, …]
+```
+The `show … from rfl` holds because `Finsupp.lapply t (g x) = (g x) t` definitionally; routing through
+the `ℝ`-codomain composite is the whole trick. (`Finsupp.lapply` is `Mathlib.LinearAlgebra.Finsupp`.)
+General axis: *a `map_sum` / `map_smul` that silently won't match a `Basis.repr`-of-a-sum is the
+`Finsupp`-codomain `AddMonoidHomClass` synthesis failing — compose with `Finsupp.lapply t` to drop the
+codomain to the scalar ring first.*
+
+Worked case: `panelSupportPoly_eval` in `Molecular/AlgebraicInduction.lean` (Phase 21b B0,
+the panel-support-extensor coordinate-as-`MvPolynomial`).

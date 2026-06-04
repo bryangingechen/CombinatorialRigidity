@@ -781,14 +781,24 @@ Cases~I and~II travel toward the smaller inductive graph.
   $\mathrm{normalsJoinPoly\_totalDegree\_le}$ the degree-$2$ bound). The
   supporting extensor $C(p(e)) = \mathrm{complementIso}(n_u \wedge n_v)$
   (\cref{def:panel-support-extensor}) is a fixed linear image of it, so its
-  coordinates stay degree-$2$; and a per-edge spanning family of the row
-  block's annihilator can be taken linear in $C(p(e))$ (the combinations
-  $C_i\,e_j^{*} - C_j\,e_i^{*}$), keeping the row coordinates degree-$2$.
+  coordinates stay degree-$2$: each $\Lambda^k$-coordinate of $C(p(e))$ is a
+  fixed linear combination of the $\Lambda^2$-coordinates of the join (the
+  complement iso being a fixed $\mathrm{LinearEquiv}$), landed as the explicit
+  degree-$2$ polynomial $\mathrm{panelSupportPoly}\,u\,v\,t = \sum_s
+  m_{t,s}\,\mathrm{normalsJoinPoly}\,u\,v\,s$
+  ($\mathrm{panelSupportPoly\_eval}$ the eval identity,
+  $\mathrm{panelSupportPoly\_totalDegree\_le}$ the degree-$2$ bound). A per-edge
+  spanning family of the row block's annihilator can then be taken linear in
+  $C(p(e))$ (the combinations $C_i\,e_j^{*} - C_j\,e_i^{*}$), keeping the row
+  coordinates degree-$2$.
   \emph{Red:} the construction (assembling $g$, $c$, the coordinate iso
   $\varphi$, and $\mathtt{hg}$, and invoking the device) is the keystone
-  build; the coordinate bilinearity it rests on is now the landed part
+  build; the coordinate bilinearity it rests on is now the landed part --- both
+  the $\Lambda^2$-coordinate of the join
   ($\mathrm{normalsJoin\_basis\_repr}$, $\mathrm{normalsJoinPoly\_eval}$,
-  $\mathrm{normalsJoinPoly\_totalDegree\_le}$).
+  $\mathrm{normalsJoinPoly\_totalDegree\_le}$) and its image under the
+  complement iso ($\mathrm{panelSupportPoly\_eval}$,
+  $\mathrm{panelSupportPoly\_totalDegree\_le}$).
 \end{lemma}
 
 \begin{lemma}[Case I splice seed; KT eqs.\ (6.2), (6.6)]

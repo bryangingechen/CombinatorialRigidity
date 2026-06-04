@@ -321,6 +321,85 @@ theorem exists_independent_panelSupportExtensor {m : ℕ} (hm : m ≤ screwDim k
   obtain ⟨n₁, n₂, h⟩ := exists_independent_normalsJoin (k := k) hm
   exact ⟨n₁, n₂, (panelSupportExtensor_linearIndependent_iff n₁ n₂).mpr h⟩
 
+/-- **A `⋀^k`-coordinate of the panel support extensor as a degree-2 polynomial in the panel
+coordinates** (B0, the device-keystone polynomiality; `lem:rows-polynomial-in-normals`,
+sub-commit 2). The supporting `k`-extensor
+`panelSupportExtensor n_u n_v = complementIso (n_u ∧ n_v)` is a *fixed linear image* of the
+grade-2 join `normalsJoin n_u n_v`, so each of its coordinates in the standard exterior-power
+basis of `ScrewSpace k = ⋀^k ℝ^(k+2)` (indexed by `k`-element subsets `t ⊆ Fin (k+2)`) is a fixed
+linear combination of the `⋀²`-coordinates of the join — and those are the degree-2 minors
+`normalsJoinPoly` of sub-commit 1. Concretely, regarding a panel realization as a point
+`q : α × Fin (k+2) → ℝ` of the panel-coordinate space and fixing two bodies `u v : α`,
+`panelSupportPoly u v t` is the explicit `MvPolynomial`
+`∑ s, (complementIso-matrix coefficient)·normalsJoinPoly u v s`. The complement-iso coefficient
+at `(t, s)` is the fixed real `⋀^k`-coordinate `repr (complementIso (b₂ s)) t` of the image of the
+`s`-th grade-2 basis vector; carried as `MvPolynomial.C` constants, the sum stays degree-2
+(`panelSupportPoly_totalDegree_le`). The next B0 sub-commit assembles the per-edge annihilator
+family `{Cᵢeⱼ* − Cⱼeᵢ*}` (linear in `C`) on top, giving the device's coordinate family `c`. -/
+noncomputable def panelSupportPoly {α : Type*} (u v : α) (t : Set.powersetCard (Fin (k + 2)) k) :
+    MvPolynomial (α × Fin (k + 2)) ℝ :=
+  ∑ s : Set.powersetCard (Fin (k + 2)) 2,
+    MvPolynomial.C
+        (((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower k).repr
+          (complementIso (k := k) (j := 2) (by omega)
+            ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2 s)) t)
+      * normalsJoinPoly u v s
+
+/-- **The panel-support-extensor coordinate polynomial evaluates to the actual `⋀^k`-coordinate**
+(B0, `lem:rows-polynomial-in-normals`, sub-commit 2): the eval identity carrying
+`panelSupportPoly`. Evaluating `panelSupportPoly u v t` at a panel-coordinate point
+`q : α × Fin (k+2) → ℝ` gives the `t`-th coordinate (in the standard `⋀^k`-basis) of the panel
+support extensor `panelSupportExtensor (q (u, ·)) (q (v, ·))`. The proof expands
+`panelSupportExtensor = complementIso ∘ normalsJoin`, writes the grade-2 join in the `⋀²`-basis
+(`Basis.sum_repr`), and pushes the fixed linear `complementIso` and the basis `repr` through the
+sum (as the `ℝ`-valued composite `Finsupp.lapply t ∘ₗ repr ∘ₗ complementIso`, via `map_sum`),
+reducing the per-`s` coordinate to `eval q (normalsJoinPoly u v s)` (`normalsJoinPoly_eval`). This
+is the eval half of the `complementIso`-staging of B0: the panel rows' `ScrewSpace`-coordinates
+are `eval`-of-a-fixed-degree-2-polynomial. -/
+theorem panelSupportPoly_eval {α : Type*} (u v : α) (q : α × Fin (k + 2) → ℝ)
+    (t : Set.powersetCard (Fin (k + 2)) k) :
+    MvPolynomial.eval q (panelSupportPoly u v t) =
+      ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower k).repr
+        (panelSupportExtensor (fun i => q (u, i)) (fun i => q (v, i))) t := by
+  rw [panelSupportPoly, map_sum]
+  rw [panelSupportExtensor,
+    ← ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2).sum_repr
+      (normalsJoin (fun i => q (u, i)) (fun i => q (v, i)))]
+  -- Push the `⋀^k`-basis `repr (·) t` of `complementIso (∑ …)` through the two sums as the linear
+  -- functional `Finsupp.lapply t ∘ₗ repr ∘ₗ complementIso` (codomain `ℝ`, sidestepping the
+  -- `Finsupp`-codomain `map_sum` snag that blocks pushing `repr` directly).
+  rw [show ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower k).repr
+        ((complementIso (by omega : (2 : ℕ) ≤ k + 2))
+          (∑ x, (((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2).repr
+              (normalsJoin (fun i => q (u, i)) (fun i => q (v, i)))) x •
+            (((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2) x))) t
+      = (Finsupp.lapply t ∘ₗ
+          ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower k).repr.toLinearMap ∘ₗ
+            (complementIso (by omega : (2 : ℕ) ≤ k + 2)).toLinearMap)
+        (∑ x, (((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2).repr
+            (normalsJoin (fun i => q (u, i)) (fun i => q (v, i)))) x •
+          (((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2) x)) from rfl,
+    map_sum]
+  refine Finset.sum_congr rfl fun s _ => ?_
+  rw [MvPolynomial.eval_mul, MvPolynomial.eval_C, normalsJoinPoly_eval, map_smul, smul_eq_mul,
+    LinearMap.comp_apply, Finsupp.lapply_apply, LinearMap.comp_apply, mul_comm]
+  rfl
+
+/-- The panel-support coordinate polynomial `panelSupportPoly` is **degree-2** (`totalDegree ≤ 2`):
+a finite sum of `MvPolynomial.C` constants times the degree-2 minors `normalsJoinPoly`
+(`normalsJoinPoly_totalDegree_le`), each term degree ≤ 2, so the sum stays degree ≤ 2. This is the
+bilinearity, carried through the fixed linear `complementIso`, that makes the rigidity-matrix
+entries degree-2 in the panel coordinates — the analytic premise of the genericity device
+(`lem:genericity-device`). -/
+theorem panelSupportPoly_totalDegree_le {α : Type*} (u v : α)
+    (t : Set.powersetCard (Fin (k + 2)) k) :
+    (panelSupportPoly u v t).totalDegree ≤ 2 := by
+  rw [panelSupportPoly]
+  refine (MvPolynomial.totalDegree_finsetSum _ _).trans (Finset.sup_le fun s _ => ?_)
+  refine (MvPolynomial.totalDegree_mul _ _).trans ?_
+  rw [MvPolynomial.totalDegree_C, zero_add]
+  exact normalsJoinPoly_totalDegree_le u v s
+
 namespace BodyHingeFramework
 
 variable {α β : Type*}

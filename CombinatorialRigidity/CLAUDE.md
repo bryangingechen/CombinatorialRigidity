@@ -181,6 +181,13 @@ bullets. If one matches, jump to the named section of
   (the submodule under the `↥`-coercion-to-type) → § 33 *`rw` over a `Submodule`
   equation under `finrank ℝ ↥(…)` trips the motive*: if the matching fact is in a
   hypothesis, flip the equation and `rw [← hsub] at hp` instead of on the goal.
+- *"Did not find an occurrence of the pattern `?g (∑ x ∈ ?s, ?f x)`"* on
+  `rw [map_sum]` over a `Basis.repr (∑ …) t` coordinate, or *"failed to
+  synthesize `AddMonoidHomClass (M ≃ₗ[R] (ι →₀ R))`"* / typeclass timeout on
+  `rw [map_sum (b.repr)]` → § 34 *`map_sum` won't push `Basis.repr` (a
+  `LinearEquiv` to `Finsupp`) through a `∑`*: route the coordinate through the
+  `R`-valued composite `Finsupp.lapply t ∘ₗ b.repr.toLinearMap` (drop the
+  `Finsupp` codomain to the scalar ring) and `map_sum` fires.
 
 ## Starting a Lean-touching session
 

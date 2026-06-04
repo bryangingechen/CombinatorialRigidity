@@ -88,6 +88,23 @@ housekeeping pass once their resolution is fully indexed.
   definitionally the application, so simp makes no progress and `rfl` is the right closer.
 - **Status:** resolved; idiom for any `Pi.basisFun` exterior-power coordinate readout.
 
+### [resolved] `map_sum` won't push `Basis.repr` (a `LinearEquiv` to `Finsupp`) through a `∑` — route the coordinate through the `ℝ`-valued composite `Finsupp.lapply t ∘ₗ repr.toLinearMap`
+- **Where it bit:** B0 sub-commit 2 `panelSupportPoly_eval` (Phase 21b): pushing the `⋀^k`-basis
+  coordinate `repr (complementIso (∑ s, c s • b₂ s)) t` through the sum to read it off term-by-term.
+  `rw [map_sum]` reports "Did not find an occurrence of the pattern `?g (∑ …)`" on the `repr (∑ …)`;
+  forcing it (`rw [map_sum (b.repr)]`) instead fails with "failed to synthesize
+  `AddMonoidHomClass (M ≃ₗ[R] (ι →₀ R))`" / a typeclass timeout. The `Finsupp` codomain of
+  `Basis.repr` blocks the `AddMonoidHomClass` synthesis `map_sum` needs, so it silently won't unify.
+- **Fix:** the coordinate is the `ℝ`-valued functional `Finsupp.lapply t ∘ₗ b.repr.toLinearMap`; fold
+  the outer linear maps (`complementIso`) into one composite and rewrite the whole coordinate to it by
+  `rw [show repr (L (∑ …)) t = (Finsupp.lapply t ∘ₗ repr.toLinearMap ∘ₗ L.toLinearMap) (∑ …) from rfl,
+  map_sum]`, then `Finset.sum_congr` + per-term `map_smul` / `LinearMap.comp_apply` /
+  `Finsupp.lapply_apply`. The `show … from rfl` holds because `Finsupp.lapply t (g x) = g x t`
+  definitionally. **Lifted to:** TACTICS-QUIRKS § 34.
+- **Status:** resolved; sibling of the B0 sub-commit-1 coordinate entry above. General axis: a
+  `map_sum`/`map_smul` that silently won't match a `Basis.repr`-of-a-sum is the `Finsupp`-codomain
+  class synthesis failing — compose with `Finsupp.lapply t` to drop to the scalar ring first.
+
 ### [resolved] `rw [hsub]` over a `Submodule` equation under `finrank ℝ ↥(…)` trips the motive — rewrite the *hypothesis* with the reversed equation instead
 - **Where it bit:** the multivariate genericity device `exists_good_realization` (Phase 21b). The
   engine returns `hp : … + finrank ℝ ↥(span (range (g p))).dualCoannihilator ≤ finrank V`; the goal
