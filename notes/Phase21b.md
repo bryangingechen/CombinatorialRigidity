@@ -220,6 +220,10 @@ All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
   keystone first.* → `DESIGN.md` *Forward-mode reduction chains*.
 - *`rw [hsub]` over a `Submodule` under `finrank ℝ ↥(…)` trips the motive; flip and
   rewrite the hypothesis.* → TACTICS-QUIRKS § 33.
+- *Hypothesis laundering: a `\leanok` node may not carry a load-bearing hypothesis
+  with no `\uses`-node discharging it (surfaced by `lem:case-I-realization`'s
+  premature green).* → `blueprint/CLAUDE.md` *Static checks before commit → the
+  honesty gate* (per-commit) + `CLEANUP.md` §A step 1 (safety net).
 
 ## Blockers / open questions
 

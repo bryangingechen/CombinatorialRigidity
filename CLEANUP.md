@@ -50,7 +50,25 @@ For each chapter under `blueprint/src/chapter/`:
 
 1. For each `\lean{...}` entry, compare the blueprint statement form
    against the Lean declaration's signature. Flag any mismatch in
-   hypotheses, conclusion form, or implicit/explicit binders.
+   hypotheses, conclusion form, or implicit/explicit binders. Two
+   distinct failure modes hide here, and the second is easy to miss
+   if you only hunt the first:
+   - *Prose oversells the Lean* — the smoothness-gloss case the rest
+     of this section is about (a prose proof claiming an argument the
+     Lean can't sustain).
+   - *Hypothesis laundering* — a **`\leanok` node carrying a
+     load-bearing hypothesis** (the hard part assumed, not proved)
+     that is neither discharged in the Lean body nor the conclusion
+     of a node it `\uses{...}`. This is a dishonestly-green node and
+     should be red. This audit is the **between-phases safety net**
+     for the per-commit honesty gate in `blueprint/CLAUDE.md`
+     (*Static checks before commit → every hypothesis of a `\leanok`
+     node is discharged*) — that gate should have caught it at the
+     commit that added `\leanok`; §A is where a missed one surfaces.
+     Walk every `\leanok` node's hypotheses against its `\uses` edges,
+     not just the ones with suspicious prose. Phase 21b's
+     `lem:case-I-realization` (a producer lemma assuming the rigidity
+     it was named to construct) is the calibration case.
 2. Re-read each prose proof. If it suggests "the Lean does X via Y"
    where Y is harder than X, that's a candidate for Lean
    simplification — the blueprint shouldn't be carrying a smoothness

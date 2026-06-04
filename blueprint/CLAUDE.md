@@ -103,6 +103,14 @@ and the proof. The dep-graph then colors the node red. Carleson's
 convention is to rely on this absence-of-`\leanok` signal alone; no
 `\notready` macro is needed.
 
+The same red-not-green discipline applies to a node whose Lean
+declaration is `sorry`-free but **launders a load-bearing hypothesis**
+(assumes the hard part rather than proving it or `\uses`-linking a
+node that does). That is also a red node, for the same reason — the
+obligation is not yet discharged. See *Static checks before commit →
+the honesty gate* for the test and the Phase-21b
+`lem:case-I-realization` calibration case.
+
 ### Label prefixes
 
 Use semantic prefixes consistently:
@@ -401,6 +409,48 @@ comm -13 /tmp/cite-keys.txt /tmp/bib-keys.txt  # entries never cited
 Both `comm` outputs should be empty. The first signals a typo or
 missing entry; the second signals a defined-but-unused entry —
 either cite it or remove it.
+
+**Every hypothesis of a `\leanok` node is discharged (the honesty
+gate).** The three checks above are name/label *resolution* checks —
+they are blind to hypothesis *content*, and `checkdecls` happily
+passes a `\lean{...}` declaration carrying any number of smuggled
+hypotheses as long as the name exists. This gate is the semantic
+companion, and it is the one a human must run by eye on any commit
+that **adds a `\leanok`** (it is not scriptable, because "load-bearing
+vs ambient" is a judgement call). The rule:
+
+> A node may carry `\leanok` only if **every non-ambient hypothesis**
+> of its `\lean{...}` declaration is either (a) discharged inside the
+> Lean proof body, or (b) the *conclusion* of a node it `\uses{...}`.
+> A load-bearing hypothesis that is neither — a dangling assumption
+> with no node representing the obligation to prove it — means the
+> node is **dishonestly green**. Keep it red (drop `\leanok`, keep
+> `\lean{...}`) until the hypothesis is discharged or given its own
+> tracked node.
+
+"Ambient" = the lemma's genuine input data and typeclass/finiteness
+assumptions (`[Fintype V]`, "Let $G$ be a minimal $k$-dof-graph",
+the placement `p`). "Load-bearing" = a hypothesis that *is* a
+mathematical claim the lemma would otherwise have to prove. The
+legitimate **green-modulo-X** pattern (forward mode's GREEN-modulo-21b
+nodes) is exactly case (b): `lem:case-I` is honestly green because its
+hypothesis *is* `lem:genericity-device`, a `\uses`'d node that was red
+until discharged. The failure mode is case (b) *claimed* but not
+*true* — a `\uses` edge that doesn't actually conclude the hypothesis.
+
+**Producer / existence lemmas get extra scrutiny.** A node whose
+statement promises to *produce* something (`∃ p, …`,
+`HasFullRankRealization`, "attains full rank") but whose Lean
+*assumes* the very rank/rigidity/realization it claims to produce is
+the textbook smell — the deliverable smuggled in as a hypothesis.
+Phase 21b's `lem:case-I-realization` shipped green this way (it
+assumed `hHrig`/`hcrig`, the simultaneous-rigid placement it was
+named to construct, with no node tracking that obligation); the fix
+was to drop `\leanok`, keep the proven composition carrier, and add
+the red node `lem:case-I-splice-placement` for the construction. The
+between-phases re-run of this gate is `CLEANUP.md` §A step 1 — but
+this is a *per-commit* gate, run at the moment `\leanok` is added, not
+a debt deferred to a cleanup round.
 
 ## Local build
 
