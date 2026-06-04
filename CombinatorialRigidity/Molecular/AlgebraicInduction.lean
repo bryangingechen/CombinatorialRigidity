@@ -3119,6 +3119,56 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice_ofParam [Finite α]
   exact PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals G ends hends hne_ends hne
     hgp hGH hGc hcH hcc hcover hblock hcontract
 
+/-- **Case I H-leg witness: a rigid leg rigid at one seed has a full-rank realization**
+(`lem:case-I-splice-placement` / `lem:case-I-realization`, the single-leg specialization isolating
+the *seed* obligation; Katoh–Tanigawa 2011 §6.2/6.5, eqs.\ (6.2), (6.6), Phase 22). The single-leg
+analogue of `hasFullRankRealization_of_splice_ofNormals`: where the splice needs *both* legs rigid
+at one shared seed, this packages just one leg — the rigid block `H` (= `G` here). From a
+free-normal seed `q₀` at which the leg-native framework `ofNormals G ends q₀` is *itself* rigid
+on `V(G)` (`hrig`, the satisfiable single-seed witness the transfer constructs), distinct hinge
+endpoints (`hne_ends`), and general position of the seed (`hgp`, automatic at a moment-curve seed),
+the leg has a full-rank panel realization `HasFullRankRealization k G`.
+
+This is pieces (ii)+(iii) of `hasFullRankRealization_of_splice` run on the single leg, with the
+block-triangular gluing (piece (i)) dropped — there is no second leg to glue. The rigid parent
+carries `D(|V(G)|−1)` independent panel rows
+(`exists_independent_panelRow_subfamily_of_rigidOn`, N7b-0 — every hinge transversal under general
+position + `hne_ends`), and the genericity device closure
+`hasFullRankRealization_of_independent_panelRow` lifts that witnessed corank at the seed to a
+generic placement at the same rank. The deliverable rank is *concluded*, not assumed (honesty gate):
+input `hrig` is the satisfiable single-seed rigidity of the leg, not the generic realization the
+lemma produces.
+
+This is the H-leg's non-empty rigidity-witness packaging the splice's witness-transfer
+(`lem:case-I-splice-placement`, red) consumes: each leg's IH supplies *its own* full-rank
+realization `HasFullRankRealization k GH` (resp.\ `k Gc`), i.e. some seed at which the leg is rigid;
+this lemma is the bridge from that single-seed rigidity back up to the full-rank realization motive,
+and the
+genuine remaining obstruction is exhibiting *one shared* seed realizing *both* legs at once (the
+multivariate non-zero-product / `MvPolynomial.funext` step). It carries no laundered deliverable —
+`hrig` is the witnessed single-seed input the seed construction supplies, not the generic rank the
+lemma concludes. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_rigidOn_seed [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
+    (hrig : (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(G)) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  -- Every hinge is transversal under general position + distinct endpoints, so the rigid leg
+  -- carries `D(|V(G)|−1)` independent panel rows.
+  have hsupp : ∀ e, F.supportExtensor e ≠ 0 := fun e =>
+    (PanelHingeFramework.ofNormals G ends q₀).supportExtensor_ne_zero_of_isGeneralPosition hgp
+      (by simpa using hne_ends e)
+  obtain ⟨s, hscard, hsindep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_rigidOn (ends := ends)
+      (by simpa using hends) hsupp (by simpa using hne) (by simpa using hrig)
+  -- The genericity device lifts the witnessed corank at the seed `q₀` to a generic placement.
+  exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
+    (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by
