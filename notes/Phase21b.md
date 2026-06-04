@@ -1,16 +1,19 @@
 # Phase 21b — Genericity device + realization layer (work log)
 
 **Status:** in progress (opened 2026-06-03; realization layer re-planned
-2026-06-04; node-decomposition re-plan 2026-06-06; N7 decomposed into glue +
-placement 2026-06-04; N7b placement decomposed into N7b-1/2/3 2026-06-04; N7b-1/2/3 GREEN
-2026-06-04; N7b-1 honest index-subfamily bridge GREEN 2026-06-04; N7b re-plan surfaced the missing
-old-block producer N7b-0; N7b-0 `lem:case-II-placement-old-rows-extract` GREEN 2026-06-04;
-**N7b-assembly scrutiny (2026-06-04) found two gaps that block the "one-line N7a∘N7b" framing — (1)
-`theorem_55`'s `hsplit` premise was under-specified for the producer; FIXED (strengthened to carry
-the reducible-degree-2 data, threaded through Phase-20 `minimal_kdof_reduction`); (2) the four green
-N7b sub-nodes do NOT compose — a missing producer for the `e₀`-constraint recovery (the genuine
-rank-lift, KT 6.12) is now the red node N7b-4 `lem:case-II-placement-e0-recovery`, the next concrete
-commit**). Cold-start-ready hand-off below.
+2026-06-04; N7 decomposed into glue + placement; N7b placement decomposed into N7b-1/2/3, all GREEN;
+N7b-0 `lem:case-II-placement-old-rows-extract` GREEN; N7b-assembly scrutiny strengthened
+`theorem_55`'s `hsplit` premise and surfaced the missing producer N7b-4.
+**N7b-4 recon (2026-06-04, this commit) found the row-side framing geometrically wrong and re-framed
+the Case-II rank-lift motion-side.** The row-side ask ("produce an `e₀`-free old block of `G_v^{ab}`
+of full count") is unbuildable — `G−v` is not rigid, so no such block exists; the `e₀`-row is
+genuinely needed in `G_v^{ab}` and only becomes recoverable in `G` after `v`'s rows. The genuine
+rank-lift (KT 6.12) is re-framed motion-side — a motion constant on `V(G)∖{v}` is pinned at `v` via
+`S v − S a ∈ span C(eₐ) ∩ span C(e_b) = {0}` (two independent extensors, disjoint 1-dim spans) — and
+decomposed into the buildable sub-nodes **M1** (the line-meet), **M2** (the pin crux), **M3** (the
+assembly). The row-side N7b-0/1/2/3 + N7a glue stay green (reused by Case I). **Next concrete commit:
+M1 `lem:case-II-placement-disjoint-line-meet` (mechanical), then M2 → M3 → N7.** This is a
+planning/recon commit (blueprint + notes only, no Lean). Cold-start-ready hand-off below.
 
 Sub-phase scoped out of Phase 21 (user decision, risk #4/#7) — the **analytic
 sibling** of the Phase-21a meet. Two halves: (1) the **genericity device**
@@ -50,37 +53,35 @@ pin-a-body column split joining the two blocks) are all green and axiom-clean {p
 Classical.choice, Quot.sound}. (Authoritative inventory: the blueprint dep-graph. Per-commit
 history: *Completed items* in the Hand-off.)
 
-**N7b-0 (the old-block producer) LANDED GREEN (2026-06-04, this commit).**
-`BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn`: from a framework rigid on its
-own vertex set `V(F.graph)` (the realization motive, with transversal hinges) extract a
-`panelRow`-index subset of size `D(|V|−1)` whose actual subfamily is independent — the **forward
-converse of N3** (rigid-on-`V` ⇒ the dimension equality `dim Z = D·(|Vᶜ|+1)`, so `rank R = D(|V|−1)`,
-hence that many independent rows from the spanning panel-row family). This was the genuine deficit
-the prior recon surfaced (N7b-2 only *transports* an already-witnessed family; nothing *produced* the
-old block). **With N7b-0 green, all four N7b sub-nodes (N7b-0/1/2/3) are green; the remaining red is
-the N7b assembly** (pick `q₀`/`s`, then one-line N7a∘N7b). The functional-vs-`panelRow` honesty gate
-is fully resolved (both blocks now have honest index-subfamily producers).
+**N7b-4 RECON + MOTION-SIDE RE-FRAME (2026-06-04, this commit; planning/recon only).** The prior
+state framed "all four N7b sub-nodes green → one-line N7a∘N7b assembly, blocked on the missing
+producer N7b-4." A recon pass found the **row-side N7b-4 is geometrically unbuildable** and re-framed
+the Case-II rank-lift motion-side. Findings:
+- *Row-side N7b-4 is false-as-stated.* N7b-4 asks for an `e₀`-free old block of `G_v^{ab}` of full
+  count `D(|V(G)|−2)`. An `e₀`-free block = rows of `G−v`. But **`G−v` is not rigid** (missing `e₀`
+  and `v`'s edges), so its rows do not span the full `D(|V(G)|−2)`-dim rigid-row space of the rigid
+  `G_v^{ab}`. The `e₀`-row is genuinely needed in `G_v^{ab}`; it only becomes recoverable in `G` after
+  `v`'s two new rows are present. No such block exists in `G_v^{ab}` alone.
+- *The genuine rank-lift is motion-side (and tractable).* Since the motive is `V(G)`-relative, the
+  cleanest producer concludes `IsInfinitesimallyRigidOn V(G)` directly: a motion `S` of `G` constant
+  on `V(G)∖{v}` (so `S a = S b`) is pinned at `v` because `S v − S a ∈ span C(eₐ) ∩ span C(e_b)`, and
+  with `C(eₐ), C(e_b)` linearly independent the two 1-dim spans meet only at `{0}`, so `S v = S a`.
+  That independence is the satisfiable `m=2 ≤ D` output of `exists_independent_panelSupportExtensor`
+  (the same general-position normal N7b-1 already consumes). The meet step is "two distinct lines
+  meet at 0," not a deep extensor computation.
+- *Decomposed into M1/M2/M3* (blueprint). M1 the line-meet (mechanical), M2 the pin crux
+  (recon-before-build), M3 the assembly via `infinitesimalMotions_le_withGraph_of_le`
+  (`lem:motions-mono-of-graph-le`, the same subgraph-monotonicity the Case-I glue uses) + the
+  inductive rigidity ⇒ `HasFullRankRealization k G`. Feeds N7 directly (no detour through a witnessed
+  independent row family).
+- *Row-side stays green, reused by Case I.* N7b-0/1/2/3 + the glue N7a `lem:realization-of-independent-rows`
+  remain valid green lemmas; the Case-I producer N6 (a contraction splice with **no** single
+  re-attached body) genuinely needs the row-counting/device route, so they are not dead.
 
-**Remaining: the realization producers, re-planned 2026-06-06** into the ordered
-node list in the Hand-off. Three forward facts shape the plan:
-- The device's output is an **absolute** codimension bound `#s + dim Z ≤ D·card α`
-  over the ambient body type; the producers need the **`V(G)`-relative motive**
-  `IsInfinitesimallyRigidOn V(G)`. The adapter is the relative-count bridge
-  **N1–N3**, now **GREEN** (landed 2026-06-04). **The device-to-motive glue
-  `hasFullRankRealization_of_independent_panelRow` (`lem:realization-of-independent-rows`)
-  is also GREEN (2026-06-04):** the honest `N2 ∘ N3` closure shared by both
-  producers — a witnessed independent `panelRow` family of size `D(|V(G)|−1)` at one
-  seed `q₀` ⇒ `HasFullRankRealization`. **N7 was NOT a mechanical "N3 + device"
-  composition** (the splitting-off `G_v^{ab}` is an *edge substitution* of `G`, not a
-  subgraph — it adds the fresh `e₀` and drops `v`'s two edges, so rigidity-on-`t`
-  does not free-transport; the producer must *construct* the seed family across the
-  substitution). So N7 was decomposed (mirroring the Case-I glue/placement split):
-  the green glue above, plus the genuinely-geometric **placement** node N7b
-  (`lem:case-II-realization-placement`, construct the seed `(q₀, s)`). N7b's three
-  sub-nodes N7b-1/2/3 are now all green (the `D−1` new rows, the old-row transport,
-  the pin-a-body block split); the remaining red is the **N7b assembly** — pick `q₀`/`s`
-  and bridge the independent-functionals-in-the-`panelRow`-span to an actual independent
-  `panelRow` subfamily of size `D(|V(G)|−1)` that the glue N7a consumes.
+**The `V(G)`-relative count bridge N1–N3 + the device-to-motive glue N7a are GREEN (2026-06-04).**
+N7a `hasFullRankRealization_of_independent_panelRow` = the honest `N2 ∘ N3` closure: a witnessed
+independent `panelRow` family of size `D(|V(G)|−1)` at one seed `q₀` ⇒ `HasFullRankRealization`. Used
+by Case I; **Case II now bypasses it** via the motion-side M3.
 - The rigid-subgraph contraction is **mostly built, not fully**: `rigidContract`
   (`Induction.lean:1854`) + its vertex-drop (`:1869`) + the matroid-side
   `contraction_isMinimalKDof` (`:1998`) are green, but the graph↔matroid
@@ -119,23 +120,38 @@ per-node detail.
   family of size `D(|V(G)|−1)` ⇒ `HasFullRankRealization`). Shared by both producers. **GREEN 2026-06-04.**
 
 **RED — the build (ordered; detail in Hand-off):**
-- [ ] N7b `lem:case-II-realization-placement` — construct the seed `(q₀, s)` for the 1-extension
-  across the edge substitution (KT 6.12). The genuine geometry; feeds N7a. **Decomposed
-  2026-06-04** into buildable sub-nodes (blueprint, mirrors the Case-I placement split).
-  **N7b-0/1/2/3 GREEN, but they do NOT compose into the assembly** (scrutiny pass 2026-06-04, process
-  lesson (e) again): N7b-0 extracts an old block with no control over `e₀`-rows, but N7b-2 transports
-  only the `e₀`-free subfamily, so dropping `e₀`-rows can break the `D(|V(G)|−2)` count. The genuine
-  rank-lift content — recovering `e₀`'s span-membership constraint from `v`'s two new edges (the path
-  `a—v—b`, KT 6.12), equivalently producing an `e₀`-free old block of the full count — is the missing
-  producer, now the red node N7b-4 below. Also: the producer needs `v`'s reducible-degree-2 data;
-  **`theorem_55`'s `hsplit` premise was strengthened** to carry it (see *Premise strengthening*).
-  The assembly (pick `q₀` = inductive normals on `G−v` + `v`'s general-position normal; old block from
-  N7b-0+N7b-4 transported by N7b-2; new block from N7b-1; join via N7b-3; feed N7a) lands **after**
-  N7b-4:
-  - [ ] **N7b-4 `lem:case-II-placement-e0-recovery` — the missing producer (next concrete commit).**
-    Recover the `e₀`-row constraint from `v`'s two new-edge rows / produce an `e₀`-free old block of
-    count `D(|V(G)|−2)`. The actual geometric heart of why splitting-off preserves rank; NOT a
-    mechanical indexing chore, NOT discharged by N7b-0/1/2/3.
+- [~] N7b `lem:case-II-realization-placement` (row-side assembly) — **SUPERSEDED for Case II**
+  (2026-06-04). The row-side seed-construction was decomposed into N7b-0/1/2/3 (all GREEN) + the
+  missing producer N7b-4; a recon pass then found N7b-4 **geometrically unbuildable in row-side form**
+  (`G−v` is not rigid, so no `e₀`-free old block of full count exists in `G_v^{ab}`). The Case-II
+  producer is re-routed **motion-side** (M1–M3, below); the row-side sub-nodes N7b-0/1/2/3 + the glue
+  N7a stay green and are **reused by the Case-I producer N6** (which has no single re-attached body
+  and genuinely needs the row-counting/device route). `theorem_55`'s `hsplit` premise was strengthened
+  to carry `v`'s reducible-degree-2 data (see *Premise strengthening*); the motion-side producer
+  consumes it to name `v`'s two edges `eₐ, e_b`.
+  - [~] **N7b-4 `lem:case-II-placement-e0-recovery` — SUPERSEDED (row-side framing geometrically
+    wrong; re-framed motion-side 2026-06-04, this commit).** The row-side ask — "produce an `e₀`-free
+    old block of `G_v^{ab}` of full count `D(|V(G)|−2)`" — is **unbuildable**: an `e₀`-free block is a
+    set of rows of `G−v`, but `G−v` is **not rigid** (missing `e₀` and `v`'s edges), so it cannot span
+    the full `D(|V(G)|−2)`-dim rigid-row space; the `e₀`-row is genuinely needed in `G_v^{ab}` and only
+    becomes recoverable in `G` after `v`'s rows. Re-framed **motion-side** (the realization motive is
+    `V(G)`-relative, so the cleanest producer concludes `IsInfinitesimallyRigidOn V(G)` directly): a
+    motion of `G` constant on `V(G)∖{v}` (so `S a = S b`) is pinned at `v` because
+    `S v − S a ∈ span C(eₐ) ∩ span C(e_b) = {0}` when `C(eₐ), C(e_b)` are linearly independent (two
+    distinct 1-dim spans meet only at 0). That independence is the satisfiable `m=2 ≤ D` general
+    position `exists_independent_panelSupportExtensor`. Decomposed into buildable sub-nodes:
+    - [ ] **M1 `lem:case-II-placement-disjoint-line-meet`** — `C, C'` independent ⇒
+      `span{C} ∩ span{C'} = ⊥`. Pure linear algebra (`Submodule.mem_span_singleton` + independence);
+      mathlib-supported. **The next concrete commit (mechanical).**
+    - [ ] **M2 `lem:case-II-placement-pin-vertex`** — the crux: a motion with `S a = S b` and two
+      transversal hinges `va, vb` with independent extensors has `S v = S a` (via M1 + the two
+      `hingeConstraint`s). Recon-before-build.
+    - [ ] **M3 `lem:case-II-placement-motion-side-assembly`** — assemble M2 + subgraph monotonicity
+      `infinitesimalMotions_le_withGraph_of_le` (`lem:motions-mono-of-graph-le`) + inductive rigidity
+      on `V(G)∖{v}` ⇒ `HasFullRankRealization k G`. Feeds N7.
+    The row-side N7b-0/1/2/3 + N7a glue **stay green** — reused by the Case-I producer (N6), which has
+    no single re-attached body and genuinely needs the row-counting/device route. Build order:
+    M1 → M2 → M3 → N7.
   - [x] N7b-1 `lem:case-II-placement-new-rows` — **GREEN 2026-06-04**. A transversal hinge `e=uv`
     incident to `v` gives `D−1` independent rigidity rows, each in *that edge's* panel-row span
     (`exists_independent_panelRow_of_edge`; the per-edge span identity `span_panelRow_edge_eq` +
@@ -252,7 +268,10 @@ are **retained** (blueprint `lem:pinned-motions-on-rank-bound`).
   complementary `Subspace.finrank_dualCoannihilator_eq` / `…_dualAnnihilator_eq` (already used by
   the affine-path rank engine in `Mathlib/.../Rank.lean`). Stated on the `G_v^{ab}` framework
   directly (`s = V(F.graph)`), so the `s ≠ V(F.graph)` watch dissolved — no N1 generalization
-  needed; feed N7b-2's transport. **The N7b assembly is now the next concrete commit.**
+  needed. **(Superseded as a Case-II step by the motion-side re-frame; stays green, reused by Case I.)**
+- **The Case-II rank-lift is motion-side, not row-side (re-framed 2026-06-04).** The row-side N7b-4
+  ("e₀-free old block of full count") is geometrically unbuildable (`G−v` is not rigid). The crux is
+  the meet `span C(eₐ) ∩ span C(e_b) = {0}` for independent extensors, pinning `v`. Build M1→M2→M3.
 - **N4 (graph↔matroid contraction-minimality bridge) gates Case I.**
   `(rigidContract).IsMinimalKDof` is not built (Phase-20 carry-forward 1,
   `Induction.lean:2956–2961`); the matroid side is green. Build-shaped but
@@ -362,33 +381,26 @@ transversality (`span_panelRow_eq_rigidityRows`), then `Submodule.exists_fun_fin
 stating it on the `G_v^{ab}` framework directly (`s = V` is its own vertex set) and feeding N7b-2's
 transport — no N1 generalization. Axiom-clean {propext, Classical.choice, Quot.sound}.
 
-**Scrutiny: the assembly does not compose; next concrete commit is N7b-4 (2026-06-04).** The prior
-hand-off framed the assembly as "all four sub-nodes green → one-line N7a∘N7b." A scrutiny pass found
-two gaps (process lesson (e) again):
+**Motion-side re-frame; next concrete commit is M1 (2026-06-04).** The prior hand-off framed Case II
+as "all four N7b sub-nodes green → one-line N7a∘N7b assembly, blocked on the missing producer N7b-4."
+This commit's recon found the row-side N7b-4 unbuildable and re-framed Case II motion-side (see
+*Current state → N7b-4 RECON*). Net: the Case-II producer **no longer goes through the N7b row-side
+assembly or the N7a glue** — it concludes `IsInfinitesimallyRigidOn V(G)` directly.
 
-- **Gap 1 — `hsplit` under-specified (FIXED this commit).** The Case-II producer needs `v`'s
-  reducible-degree-2 data (the two edges `eₐ, e_b`, their links to `a, b`, the closure that they are
-  `v`'s only incident edges) to re-attach `v` in `G`. `theorem_55`'s `hsplit` (mirroring Phase-20
-  `minimal_kdof_reduction`) provided only `v ∈ V(G)`, `e₀ ∉ E(G)`, minimality, no-rigid-subgraph,
-  IH — not the reducibility data, which `minimal_kdof_reduction` consumes *internally* (via
-  `exists_splitOff_data_of_degree_eq_two`) and never passed to `hsplit`. **Strengthened both
-  `hsplit` premises** to carry `a≠v, b≠v, a∈V(G), b∈V(G), eₐ≠e_b, IsLink eₐ v a, IsLink e_b v b,
-  (∀ e x, IsLink e v x → e=eₐ ∨ e=e_b)`; all in scope at the call site (`Induction.lean:3018`).
-  `theorem_55` still forwards `hsplit` one-line; both files green, lint clean.
-- **Gap 2 — the four green sub-nodes do NOT compose (N7b-4, red, next commit).** N7b-0 extracts an old
-  block with no control over `e₀`-rows; N7b-2 transports only the `e₀`-free subfamily; if the block
-  uses `e₀`-rows, dropping them leaves `< D(|V(G)|−2)` rows and the count `(D−1) + D(|V(G)|−2)` fails.
-  The genuine rank-lift content — recover `e₀`'s span-membership constraint from `v`'s two new edges
-  (path `a—v—b`, KT 6.12), or produce an `e₀`-free old block of full count — is **N7b-4
-  `lem:case-II-placement-e0-recovery`**, the next concrete commit. Decompose-before-building if it
-  resists.
-
-After N7b-4: the assembly (seed `q₀` = inductive normals on `G−v` + `v`'s general-position normal,
-N7b-1's `supportExtensor_ne_zero_of_isGeneralPosition`; old block N7b-0+N7b-4 → N7b-2 to
-`s_old ⊆ E(G−v)×pc×pc`; new block `s_new` by N7b-1; join the disjoint `s_new ∪ s_old`,
-size `D(|V(G)|−1)`, via N7b-3, new as `rn` = functionals of `v`'s screw, old as `ro` reading 0 at the
-`v`-column; reconcile `Sum.elim` ↔ `Set`-union via `Sum (↥s_new) (↥s_old) ≃ ↥(s_new ∪ s_old)` under
-disjointness; feed N7a) → **N7** discharging the strengthened `hsplit`.
+- **Why row-side N7b-4 is unbuildable.** It asks for an `e₀`-free old block of `G_v^{ab}` of full
+  count `D(|V(G)|−2)`. An `e₀`-free block = rows of the common subgraph `G−v`, but `G−v` is **not
+  rigid** (missing `e₀` and `v`'s edges), so its rows can't span the full rigid-row space; the
+  `e₀`-row is genuinely needed in `G_v^{ab}`. The `e₀` constraint is only recoverable *in `G`* after
+  `v`'s rows — a motion-side fact, not a row block of `G_v^{ab}`.
+- **The motion-side rank-lift (M1/M2/M3).** A motion `S` of `G` constant on `V(G)∖{v}` has `S a = S b`;
+  the two transversal hinges give `S v − S a ∈ span C(eₐ) ∩ span C(e_b)`, and with `C(eₐ), C(e_b)`
+  linearly independent (the `m=2` general position) the two 1-dim spans meet at `{0}`, so `S v = S a`:
+  `v` is pinned. M1 = the line-meet, M2 = the pin, M3 = assemble M2 + `lem:motions-mono-of-graph-le`
+  (re-adding edges shrinks motions, the Case-I glue's tool) + inductive rigidity ⇒
+  `HasFullRankRealization k G`. **`hsplit` was already strengthened (prior commit)** to carry `v`'s
+  reducible-degree-2 data (`a≠v, b≠v, a,b∈V(G), eₐ≠e_b, IsLink eₐ v a, IsLink e_b v b,
+  (∀ e x, IsLink e v x → e=eₐ∨e=e_b)`); the motion-side producer consumes exactly that to name
+  `v`'s edges. So Gap 1 (under-specified `hsplit`) stays FIXED and is the right premise for M3.
 
 **The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
 (`exists_good_realization_ofParam`, green) gives the *absolute* codimension bound
@@ -404,11 +416,21 @@ disjointness; feed N7a) → **N7** discharging the strengthened `hsplit`.
   at a singleton block `{v₀}` + N1 dimension-match (`finrank_pinnedMotions_add_screwDim`).
 
 Then, in order:
-1. **N7b `lem:case-II-realization-placement`**: N7b-0/1/2/3 GREEN but they do **not** compose (see
-   *Scrutiny: the assembly does not compose* above). **N7b-4 `lem:case-II-placement-e0-recovery` is
-   the next concrete commit** (the `e₀`-constraint recovery / `e₀`-free old block, KT 6.12). Then the
-   assembly (pick `q₀`/`s`) → **N7 `lem:case-II-realization`**. Discharges the (now strengthened)
-   `hsplit`. (Gap 1 — the under-specified `hsplit` premise — is FIXED.)
+1. **Case II, motion-side (M1 → M2 → M3 → N7).** The row-side N7b assembly is superseded (see
+   *Motion-side re-frame* above). Build:
+   - **M1 `lem:case-II-placement-disjoint-line-meet` — the next concrete commit (mechanical).**
+     `C, C'` linearly independent ⇒ `span ℝ {C} ⊓ span ℝ {C'} = ⊥` in `ScrewSpace k`
+     (`Submodule.mem_span_singleton` on both memberships + independence forces the scalars to 0).
+     Pure linear algebra; place in `RigidityMatrix.lean` (or `AlgebraicInduction.lean`) near the
+     hinge-constraint API.
+   - **M2 `lem:case-II-placement-pin-vertex`** (recon-before-build): a motion `S` with `S a = S b` and
+     two hinges `eₐ=va, e_b=vb` with independent extensors has `S v = S a` (via M1 + the two
+     `hingeConstraint`s and `hingeConstraint_comm` for orientation). The crux.
+   - **M3 `lem:case-II-placement-motion-side-assembly`** ⇒ `HasFullRankRealization k G`: choose `v`'s
+     normal so `C(eₐ), C(e_b)` independent (`exists_independent_panelSupportExtensor`, `m=2`); on
+     `G'' = (G−v)∪{eₐ,e_b} ≤ G` a motion constant on `V(G)∖{v}` is pinned at `v` (M2), so `G''` rigid
+     on `V(G)`; re-add `G`'s remaining edges (`infinitesimalMotions_le_withGraph_of_le`) ⇒ `G` rigid
+     on `V(G)`. Feeds **N7 `lem:case-II-realization`**, discharging the strengthened `hsplit`.
 2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
    matroid-side `contraction_isMinimalKDof` (`Induction.lean:1998`) + a
@@ -470,6 +492,19 @@ fail. Added the RED node **N7b-4 `lem:case-II-placement-e0-recovery`** (recover 
 `v`'s two new edges / produce an `e₀`-free old block; the genuine rank-lift content, KT 6.12) as the
 next concrete commit; wired into the N7b assembly `\uses`. Blueprint dep-graph + prose updated.
 Per-node detail in the blueprint dep-graph.
+**N7b-4 recon → Case-II motion-side re-frame (recon/decomposition, blueprint + notes only) —
+2026-06-04** (this commit): a recon pass before building N7b-4 found its row-side statement ("produce
+an `e₀`-free old block of `G_v^{ab}` of full count `D(|V(G)|−2)`") **geometrically unbuildable** —
+`G−v` is not rigid, so no such block exists; the `e₀`-row is genuinely needed in `G_v^{ab}` and only
+recoverable in `G` after `v`'s rows. Re-framed the Case-II rank-lift **motion-side** (the motive is
+`V(G)`-relative): a motion constant on `V(G)∖{v}` is pinned at `v` because
+`S v − S a ∈ span C(eₐ) ∩ span C(e_b) = {0}` for independent extensors (two distinct 1-dim spans).
+Decomposed into M1 (`lem:case-II-placement-disjoint-line-meet`, the line-meet, mechanical), M2
+(`lem:case-II-placement-pin-vertex`, the pin crux), M3 (`lem:case-II-placement-motion-side-assembly`,
+assemble via `lem:motions-mono-of-graph-le` + inductive rigidity ⇒ `HasFullRankRealization`). N7's
+`\uses` re-pointed to M3; the N7b row-side assembly + N7b-4 marked superseded (kept for audit trail);
+N7b-0/1/2/3 + N7a glue stay green, reused by Case I. Next concrete commit: **M1**. Blueprint dep-graph
++ prose + the `lem:case-II-realization-placement` decomposition list updated.
 
 **Process lessons (don't repeat).**
 (a) Build the keystone / validate the target shape *before* growing a reduction
@@ -510,6 +545,16 @@ green ≠ assembly trivial.** N7b-0/1/2/3 each green, but they don't compose: N7
 can't avoid `e₀`-rows, N7b-2 transports only `e₀`-free rows — the `e₀`-recovery
 (N7b-4, the genuine rank-lift) was unaccounted-for. Re-derive the assembly's
 *count* from the sub-node outputs before declaring it a composition.
+(h) **"Decompose-before-building" must include a feasibility recon, not just a
+node split.** N7b-4 was decomposed only into a *name* ("recover `e₀`'s constraint /
+produce an `e₀`-free old block") whose row-side statement turned out false (`G−v` is
+not rigid, so no full-count `e₀`-free block exists in `G_v^{ab}`). A recon pass —
+"can this object exist? against what concrete fact?" — caught it before a wasted
+build and surfaced the right framing (motion-side, the meet pins `v`). When a node
+has a *shape choice* (row-side vs motion-side), the recon picks the shape that is
+both true and tractable; here the `V(G)`-relative motive made motion-side the natural
+one (lesson (c)). Lifts (a)/(b): the satisfiability/feasibility check is on the
+*conclusion's existence*, not only on hypotheses.
 
 **Session note.** Commits since an inadvertent earlier push are local. Match
 author `bryangingechen@gmail.com`; do **not** push without asking.

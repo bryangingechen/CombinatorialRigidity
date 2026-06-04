@@ -1186,7 +1186,7 @@ Cases~I and~II travel toward the smaller inductive graph.
 \begin{lemma}[Case II realization: the $1$-extension produces a full-rank realization; KT Lemma 6.8]
   \label{lem:case-II-realization}
   \uses{def:panel-hinge-framework, lem:case-II, lem:reduction-step,
-        lem:realization-of-independent-rows, lem:case-II-realization-placement}
+        lem:case-II-placement-motion-side-assembly}
   The realization motive of \cref{thm:theorem-55}
   ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
   $D(|V(G)|-1)$) is closed under splitting off a reducible degree-2 vertex.
@@ -1201,11 +1201,15 @@ Cases~I and~II travel toward the smaller inductive graph.
   $S b \in \operatorname{span} C(e_b)$ for every base-$v$-pinned motion $S$) as
   a hypothesis, this node must \emph{construct} the panel normal $n$ for the
   re-inserted body $v$ on which $\mathtt{hspan}$ holds and the extended
-  framework realizes its rank. \emph{Red:} it splits into the green
-  device-closure glue \cref{lem:realization-of-independent-rows} and the genuine
-  geometric obligation, the placement \cref{lem:case-II-realization-placement}
-  (construct the seed $(q_0, s)$ witnessing $D(|V(G)|-1)$ independent rows across
-  the edge substitution); the latter is still red, so the producer is.
+  framework realizes its rank. \emph{Red:} the producer routes through the
+  \emph{motion-side} rank-lift \cref{lem:case-II-placement-motion-side-assembly}
+  (M3) --- re-attaching $v$ to the rigid $G_v^{ab}$ by two transversal hinges with
+  independent support extensors pins $v$, so $G$ is rigid on $V(G)$ directly. This
+  supersedes the original row-side path (the witnessed-independent-row placement
+  \cref{lem:case-II-realization-placement} fed to the glue
+  \cref{lem:realization-of-independent-rows}), which was found geometrically
+  unbuildable at its missing producer N7b-4 (\cref{lem:case-II-placement-e0-recovery});
+  M3 is still red, so the producer is.
   Against the relativized motive (\cref{def:rank-hypothesis}) the inductive
   hypothesis ``$G_v^{ab}$ realizes its rank'' is satisfiable (it spans its own
   vertices), so the producer is well-posed; it is the shallower sibling of the
@@ -1222,17 +1226,16 @@ Cases~I and~II travel toward the smaller inductive graph.
   edges).
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II, lem:realization-of-independent-rows,
-        lem:case-II-realization-placement}
-  The placement \cref{lem:case-II-realization-placement} supplies, from the
-  inductive realization of $G_v^{ab}$, a seed normal assignment $q_0$ and a
-  family of $D(|V(G)|-1)$ independent rigidity rows of
-  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ (re-inserting $v$ joined to $a, b$
-  by general-position hinges, \cref{lem:exists-independent-panel-extensor},
-  threading the inductive rows through the common subgraph $G - v$). Feeding that
-  witness to the glue \cref{lem:realization-of-independent-rows} lifts it to a
-  generic realization rigid on $V(G)$, the full target rank $D(|V(G)|-1)$. Only
-  the placement remains; the device-closure half is green.
+  \uses{lem:case-II, lem:case-II-placement-motion-side-assembly}
+  The motion-side assembly \cref{lem:case-II-placement-motion-side-assembly} (M3)
+  supplies, from the inductive realization of $G_v^{ab}$ (rigid on
+  $V(G)\setminus\{v\}$), a realization of $G$ rigid on $V(G)$: re-insert $v$ joined
+  to $a, b$ by hinges whose support extensors are linearly independent
+  (\cref{lem:exists-independent-panel-extensor}, $m = 2$), so a motion constant on
+  $V(G)\setminus\{v\}$ is pinned at $v$ (\cref{lem:case-II-placement-pin-vertex}),
+  and re-adding $G$'s remaining edges keeps it rigid
+  (\cref{lem:motions-mono-of-graph-le}). That is the full target rank
+  $D(|V(G)|-1)$.
 \end{proof}
 
 \subsection{The genericity device (Claim 6.4/6.9)}
@@ -1506,16 +1509,22 @@ non-spanning block).}
       are jointly independent (the new-edge rows live in the $v$-column block, the
       old rows in its complement; pin-a-body Lemma~5.1,
       \cref{lem:rank-delete-vertex}, makes the union block-triangular).
-    \item \cref{lem:case-II-placement-e0-recovery} (N7b-4, red): \emph{the missing
-      producer.} A scrutiny pass found N7b-0/1/2/3 do not compose: N7b-0 extracts an
-      old block with no control over $e_0$-rows, but N7b-2 transports only the
-      $e_0$-free rows, so the count can fail. Recovering the $e_0$-row's constraint
-      from $v$'s two new edges (the path $a$--$v$--$b$, KT~(6.12)) --- equivalently
-      producing an $e_0$-free old block of the full count --- is the genuine rank-lift
-      content and is not discharged by the four green sub-nodes.
+    \item \cref{lem:case-II-placement-e0-recovery} (N7b-4, \emph{superseded}): a
+      scrutiny pass found N7b-0/1/2/3 do not compose --- N7b-0 extracts an old block
+      with no control over $e_0$-rows, but N7b-2 transports only the $e_0$-free rows,
+      so the count can fail --- and a recon pass then found the row-side fix
+      (``produce an $e_0$-free old block of full count'') \emph{geometrically
+      unbuildable} ($G - v$ is not rigid, so no such block exists in $G_v^{ab}$). The
+      genuine rank-lift is re-framed \emph{motion-side} (M1--M3,
+      \cref{lem:case-II-placement-motion-side-assembly}), which supersedes this whole
+      row-side assembly path for Case~II. See ``The rank-lift, motion-side'' below.
   \end{enumerate}
-  The assembly below packages these into the witness $(q_0, s)$ the glue
-  \cref{lem:realization-of-independent-rows} consumes, once N7b-4 is green.
+  \emph{Superseded (2026-06-04):} the row-side assembly below was the original plan,
+  but the missing producer N7b-4 is geometrically unbuildable in row-side form; the
+  Case~II producer instead routes through the motion-side re-frame
+  (\cref{lem:case-II-placement-motion-side-assembly}, M3), which concludes rigidity
+  on $V(G)$ directly without a witnessed independent row family. The row-side
+  sub-nodes N7b-0/1/2/3 + glue N7a stay green and are reused by Case~I.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-II, lem:exists-independent-panel-extensor,
@@ -1709,40 +1718,173 @@ non-spanning block).}
   \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 
-\begin{lemma}[N7b-4: recover the short-circuit edge $e_0$'s constraint from $v$'s two new edges; KT eq.~(6.12)]
+\subsubsection*{The rank-lift, motion-side (the N7b-4 re-frame, 2026-06-04)}
+
+A scrutiny+recon pass on the N7b assembly (Phase 21b, 2026-06-04) found the
+\emph{row-side} framing of the rank-lift below
+(\cref{lem:case-II-placement-e0-recovery}, ``produce an $e_0$-free old block of
+full count'') is \emph{geometrically wrong}, and re-frames the genuine content
+\emph{motion-side}. The finding, the corrected statement, and the buildable
+sub-node decomposition follow; the row-side node is kept (struck) for the
+audit trail.
+
+\medskip\noindent\emph{Why the row-side framing fails.} An $e_0$-free old block
+of $G_v^{ab}$ is a family of rigidity rows indexed by edges of $G_v^{ab}$ other
+than $e_0$ --- i.e.\ rows of the common subgraph $G - v$. But $G - v$ is
+\emph{not} rigid on $V(G)\setminus\{v\}$: it is missing both the short-circuit
+$e_0$ and $v$'s two edges, so its rows do \emph{not} span the full
+$D(|V(G)|-2)$-dimensional rigidity-row space of the rigid $G_v^{ab}$. Equivalently,
+the $e_0$-row of $G_v^{ab}$ is genuinely needed in $G_v^{ab}$ --- it is \emph{not}
+redundant there --- so no $e_0$-free old block of the full count exists in
+$G_v^{ab}$ alone. The $e_0$-row only becomes recoverable \emph{in $G$}, after $v$'s
+two new hinge rows are present; the row-counting bookkeeping that the green
+sub-nodes N7b-0/1/2/3 set up cannot express this, because it asks for the old
+block before $v$ is re-attached.
+
+\medskip\noindent\emph{The corrected, motion-side rank-lift.} The realization
+motive is $V(G)$-relative ($\mathrm{IsInfinitesimallyRigidOn}\,V(G)$,
+\cref{def:rank-hypothesis}), so the producer is most directly a
+\emph{motion-space} statement, in the established idiom of the Case~I splice
+\emph{glue} \cref{lem:case-I-splice-seed} (re-adding edges only shrinks the
+motion space, \cref{lem:motions-mono-of-graph-le}): \emph{if $G_v^{ab}$ is
+rigid on $V(G)\setminus\{v\}$ and $v$'s two re-attaching hinges $e_a = va$,
+$e_b = vb$ are transversal with $C(e_a), C(e_b)$ linearly independent, then $G$ is
+rigid on $V(G)$.} The argument bypasses the $e_0$ bookkeeping entirely:
+\begin{enumerate}
+  \item It suffices to be rigid on $V(G)$ for the subgraph
+    $G'' := (G-v) \cup \{e_a, e_b\} \le G$ (re-adding $G$'s remaining edges only
+    shrinks the motion space, \cref{lem:motions-mono-of-graph-le}); $G''$ shares
+    $G - v$ with $G_v^{ab}$.
+  \item Let $S$ be an infinitesimal motion of $G''$ constant on
+    $V(G)\setminus\{v\}$ (the hypothesis of rigid-on); in particular $S a = S b$.
+    On $G - v$ this is also a motion of $G_v^{ab}$, so rigidity of $G_v^{ab}$ gives
+    $S$ constant on $V(G)\setminus\{v\}$ (already assumed) --- the inductive input.
+  \item The two new hinge constraints give
+    $S v - S a \in \operatorname{span} C(e_a)$ and
+    $S v - S b = S v - S a \in \operatorname{span} C(e_b)$, so
+    $S v - S a \in \operatorname{span} C(e_a) \cap \operatorname{span} C(e_b)$.
+    With $C(e_a), C(e_b)$ \emph{linearly independent}, the two $1$-dimensional spans
+    meet only at $0$, so $S v = S a$: $v$ is pinned, $S$ is constant on $V(G)$.
+\end{enumerate}
+The general-position input ``$C(e_a), C(e_b)$ linearly independent'' is exactly the
+$m = 2 \le D$ case of \cref{lem:exists-independent-panel-extensor}
+($\mathrm{exists\_independent\_panelSupportExtensor}$), realized by choosing $v$'s
+panel normal off the relevant locus --- the same satisfiable general-position
+output N7b-1 (\cref{lem:case-II-placement-new-rows}) already consumes for the new
+block. This is the genuine geometric heart of why a $1$-extension preserves rank
+(KT~(6.12)), and unlike the row-side framing it is \emph{provable}: the meet step
+is the elementary ``two distinct lines through the origin intersect trivially'',
+not a deep extensor computation.
+
+\medskip\noindent\emph{Buildable sub-node decomposition (N7b-4, motion-side).}
+\begin{enumerate}
+  \item[(M1)] \cref{lem:case-II-placement-disjoint-line-meet}: $C, C' \ne 0$ linearly
+    independent $\Rightarrow \operatorname{span}\{C\} \cap \operatorname{span}\{C'\}
+    = 0$ (general fact about $1$-dimensional spans; the meet step). Pure linear
+    algebra, mathlib-supported.
+  \item[(M2)] \cref{lem:case-II-placement-pin-vertex}: a $G''$-motion constant on
+    $V(G)\setminus\{v\}$, with $v$ joined to $a, b$ by transversal hinges with
+    independent support extensors, is constant on all of $V(G)$ (the pin, via M1 +
+    the two hinge constraints). The crux.
+  \item[(M3)] \cref{lem:case-II-placement-motion-side-assembly}: assemble M2 with the
+    subgraph monotonicity \cref{lem:motions-mono-of-graph-le} and the inductive
+    realization's rigidity on $V(G)\setminus\{v\}$ to conclude $G$ rigid on $V(G)$;
+    feed the resulting $\mathrm{HasFullRankRealization}\,G$ to
+    \cref{lem:case-II-realization}. The general-position normal for $v$ comes from
+    \cref{lem:exists-independent-panel-extensor} ($m = 2$).
+\end{enumerate}
+This re-frame supersedes both the N7b row-side assembly path
+(\cref{lem:case-II-realization-placement}) and the device-closure glue
+\cref{lem:realization-of-independent-rows} \emph{for Case~II}: the motion-side
+producer concludes $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ directly from the
+inductive rigidity, with no detour through a witnessed independent row family.
+(The green row-side sub-nodes N7b-0/1/2/3 and the glue N7a remain valid lemmas ---
+they are reused by the Case~I producer, \cref{lem:case-I-realization}, which has no
+single re-attached body and genuinely needs the row-counting/device route.) Build
+order: M1 $\to$ M2 $\to$ M3 $\to$ N7. The motion-side route warrants its own
+recon-before-build pass on M2 (the pin); M1 and M3 are mechanical.
+
+\begin{lemma}[N7b-4 (superseded, row-side): recover $e_0$'s constraint from $v$'s two new edges; KT eq.~(6.12)]
   \label{lem:case-II-placement-e0-recovery}
   \uses{def:panel-hinge-framework, lem:case-II,
         lem:case-II-placement-old-rows-extract, lem:case-II-placement-old-rows,
         lem:case-II-placement-new-rows}
-  The genuine $1$-extension rank-lift content, surfaced by a scrutiny pass on the
-  N7b assembly (Phase 21b, 2026-06-04): the four green N7b sub-nodes do
-  \emph{not} compose into the assembly without it. The inductive realization's old
-  block (\cref{lem:case-II-placement-old-rows-extract}) is a family of
-  $D(|V(G)|-2)$ \emph{actual} $\mathrm{panelRow}$ rows of the rigid splitting-off
-  $G_v^{ab}$, but those rows are extracted from a spanning family with \emph{no
-  control over whether they use the short-circuit edge} $e_0$ --- whereas the
-  transport \cref{lem:case-II-placement-old-rows} can carry only the
-  $e_0$-\emph{free} rows onto $G$ (the edge substitution deletes $e_0$ in $G$). If
-  the extracted block uses $e_0$-rows, dropping them leaves fewer than
-  $D(|V(G)|-2)$ rows and the count $(D-1) + D(|V(G)|-2) = D(|V(G)|-1)$ fails. This
-  node is the missing producer: in $G$, the deleted edge $e_0$ (linking $a,b$ in
-  $G_v^{ab}$) is replaced by the path $a$--$v$--$b$ of $v$'s two new edges, and the
-  span-membership constraint $e_0$ imposed on a base-$v$-pinned motion
-  ($S a - S b \in \operatorname{span} C(e_0)$) is \emph{recovered} from the two new
-  hinge constraints at $v$ (\cref{lem:case-II-placement-new-rows}); equivalently,
-  an $e_0$-free independent old block of the full count $D(|V(G)|-2)$ is exhibited
-  by replacing each $e_0$-row of the extracted block with the corresponding row in
-  $v$'s column. This is the actual geometric heart of why splitting-off preserves
-  rank (KT~(6.12)); it is not a mechanical indexing reconciliation and is
-  \emph{not} discharged by N7b-0/1/2/3. \emph{Red} (Phase~21b realization layer).
+  \emph{Superseded by the motion-side re-frame above (M1--M3); kept for the audit
+  trail.} This row-side formulation was found geometrically unbuildable on
+  2026-06-04: it asks for an $e_0$-free independent old block of $G_v^{ab}$ of full
+  count $D(|V(G)|-2)$, but no such block exists --- the $e_0$-row is not redundant
+  in $G_v^{ab}$, since $G - v$ (the $e_0$-free subgraph) is not rigid (see ``Why the
+  row-side framing fails'' above). The genuine rank-lift content --- recovering
+  $e_0$'s span-membership constraint from $v$'s two new edges along the path
+  $a$--$v$--$b$ --- is correct, but it lives \emph{in $G$} (motion-side), not as a
+  row block of $G_v^{ab}$ alone, and is carried by \cref{lem:case-II-placement-pin-vertex}
+  (M2). \emph{Red, superseded} (Phase~21b realization layer).
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II-placement-old-rows-extract, lem:case-II-placement-new-rows}
-  Either extract the old block directly in an $e_0$-free form (an independent
-  $D(|V(G)|-2)$-family of $G_v^{ab}$-rows avoiding $e_0$, available because $v$'s
-  re-attachment column carries the residual rank the $e_0$-row would have), or
-  recover $e_0$'s row as a combination of $v$'s two new-edge rows through the
-  $a$--$v$--$b$ path. See \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8, eq.~(6.12)).
+  Superseded; see the motion-side rank-lift (M1--M3) above.
+\end{proof}
+
+\begin{lemma}[M1: independent extensors have disjoint $1$-dimensional spans]
+  \label{lem:case-II-placement-disjoint-line-meet}
+  \uses{def:hinge-constraint}
+  For $C, C' \in \mathrm{ScrewSpace}\,k$ linearly independent (in particular both
+  nonzero), the $1$-dimensional spans meet trivially:
+  $\operatorname{span}\{C\} \cap \operatorname{span}\{C'\} = \{0\}$. This is the meet
+  step of the Case~II pin (\cref{lem:case-II-placement-pin-vertex}): a vector lying
+  in both hinge spans is a scalar multiple of $C$ \emph{and} of $C'$, which forces it
+  to vanish by independence. \emph{Red} (Phase~21b); pure linear algebra.
+\end{lemma}
+\begin{proof}
+  A vector in the intersection is $\lambda C = \mu C'$; independence of $C, C'$
+  forces $\lambda = \mu = 0$.
+\end{proof}
+
+\begin{lemma}[M2: two transversal hinges with independent extensors pin a re-attached body]
+  \label{lem:case-II-placement-pin-vertex}
+  \uses{def:hinge-constraint, def:panel-hinge-framework,
+        lem:case-II-placement-disjoint-line-meet,
+        lem:exists-independent-panel-extensor}
+  The crux of the $1$-extension rank-lift (KT eq.~(6.12)), motion-side. Let $F$ be a
+  body-hinge framework in which the body $v$ is joined to $a, b$ by hinges $e_a, e_b$
+  whose support extensors $C(e_a), C(e_b)$ are linearly independent (the
+  general-position condition, $m = 2$ case of
+  \cref{lem:exists-independent-panel-extensor}). Then any infinitesimal motion $S$ of
+  $F$ with $S a = S b$ also has $S v = S a$. Hence a motion constant on a body set
+  containing $a, b$ is constant on that set together with $v$. Proof: the hinge
+  constraints give $S v - S a \in \operatorname{span} C(e_a)$ and
+  $S v - S b = S v - S a \in \operatorname{span} C(e_b)$, so the difference lies in
+  the trivial meet (\cref{lem:case-II-placement-disjoint-line-meet}) and vanishes.
+  \emph{Red} (Phase~21b); recon-before-build.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II-placement-disjoint-line-meet}
+  From $S a = S b$ and the two hinge constraints,
+  $S v - S a \in \operatorname{span} C(e_a) \cap \operatorname{span} C(e_b) = \{0\}$
+  by \cref{lem:case-II-placement-disjoint-line-meet}, so $S v = S a$.
+\end{proof}
+
+\begin{lemma}[M3: Case II realization, motion-side]
+  \label{lem:case-II-placement-motion-side-assembly}
+  \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:reduction-step,
+        lem:case-II-placement-pin-vertex, lem:motions-mono-of-graph-le,
+        lem:exists-independent-panel-extensor}
+  The motion-side assembly producing $\mathrm{HasFullRankRealization}\,k\,G$ from the
+  inductive realization of $G_v^{ab}$, superseding the row-side N7b path for Case~II.
+  Choose $v$'s panel normal so $C(e_a), C(e_b)$ are linearly independent
+  (\cref{lem:exists-independent-panel-extensor}, $m = 2$), placing the rest of $G$ at
+  the inductive normals. The subgraph $G'' = (G-v)\cup\{e_a, e_b\} \le G$ shares
+  $G - v$ with $G_v^{ab}$; on $G''$, a motion constant on $V(G)\setminus\{v\}$ (the
+  inductive rigidity of $G_v^{ab}$, transported through $G - v$) is pinned at $v$ by
+  \cref{lem:case-II-placement-pin-vertex}, so $G''$ is rigid on $V(G)$; re-adding $G$'s
+  remaining edges keeps it rigid (\cref{lem:motions-mono-of-graph-le}). Feeds the
+  resulting realization to \cref{lem:case-II-realization}. \emph{Red} (Phase~21b);
+  the heart is M2.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II-placement-pin-vertex, lem:motions-mono-of-graph-le}
+  Assemble M2 with the subgraph monotonicity
+  \cref{lem:motions-mono-of-graph-le} and the inductive rigidity on
+  $V(G)\setminus\{v\}$; see \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8, eq.~(6.12)).
 \end{proof}
 
 \subsection{Case III deferred (the crux)}
