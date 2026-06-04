@@ -717,6 +717,72 @@ theorem exists_independent_panelRow_of_edge (F : BodyHingeFramework k α β) {en
   rw [span_panelRow_edge_eq F e he]
   exact ⟨c i, hmem i, rfl⟩
 
+/-- **N7b-1, honest `panelRow`-subfamily form: a transversal hinge gives `D − 1` independent
+*actual* panel rows** (`lem:case-II-placement-new-rows`, the honesty-gate bridge to
+`lem:realization-of-independent-rows`; Katoh–Tanigawa 2011 §6.3, eq. (6.12)). The strengthening of
+`exists_independent_panelRow_of_edge` (N7b-1) that the Case-II placement assembly (N7b) consumes.
+Where N7b-1 produces a `D − 1` independent family of rows that are merely *members of* the per-edge
+panel-row span, the device-closure glue `hasFullRankRealization_of_independent_panelRow` (N7a) needs
+a `LinearIndependent` of a literal `panelRow ends`-subfamily indexed by a `Set` of panel-row
+indices. This lemma bridges that gap: for a transversal hinge `e = uv` (distinct endpoints, nonzero
+supporting extensor `he`), there is an *index subset* `s ⊆ {e} × ⋀^k-pairs` — every index using the
+edge `e` — of size `Nat.card s = D − 1` whose actual `panelRow ends`-subfamily
+`fun i : s ↦ F.panelRow ends i` is linearly independent.
+
+The construction is the honest extraction: the per-edge panel-row family
+`(t₁, t₂) ↦ F.panelRow ends (e, t₁, t₂)` spans a `(D − 1)`-dimensional space — its span is the
+`hingeRow u v` image of the `(D − 1)`-dimensional hinge-row block `r(p(e))` (`span_panelRow_edge_eq`
++ `finrank_hingeRowBlock`, equal `finrank` through the injective dual map
+`Submodule.equivMapOfInjective`). `Submodule.exists_fun_fin_finrank_span_eq` then extracts a
+`Fin (D − 1)`-indexed *independent* subfamily of *actual* panel rows from that span's generators;
+re-indexing each chosen row by its `⋀^k`-pair `idx i` (so `j i := (e, idx i)`, injective since the
+panel rows are independent) packages them as the genuine `panelRow`-index subset `s := range j`.
+This is the index-subfamily the genericity device varies over (`exists_good_realization_ofParam`'s
+`hindep`), so it is the honest input N7a consumes — no functional-vs-`panelRow` laundering. -/
+theorem exists_independent_panelRow_subfamily_of_edge (F : BodyHingeFramework k α β)
+    {ends : β → α × α} {e : β} (huv : (ends e).1 ≠ (ends e).2) (he : F.supportExtensor e ≠ 0) :
+    ∃ s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      (∀ i ∈ s, (i : β × _ × _).1 = e) ∧ Nat.card s = screwDim k - 1 ∧
+      LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _)) := by
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  set T := Set.range (fun p : Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+    F.panelRow ends (e, p.1, p.2)) with hT
+  haveI : Module.Finite ℝ (Submodule.span ℝ T) :=
+    Module.Finite.span_of_finite ℝ (Set.finite_range _)
+  -- The per-edge panel-row span has dimension `D − 1` (the `hingeRow u v` image of `r(p(e))`).
+  have hfin : Module.finrank ℝ (Submodule.span ℝ T) = screwDim k - 1 := by
+    rw [hT, span_panelRow_edge_eq F e he, (Submodule.equivMapOfInjective _
+      (LinearMap.dualMap_injective_of_surjective (screwDiff_surjective huv))
+      (F.hingeRowBlock e)).finrank_eq.symm]
+    exact F.finrank_hingeRowBlock he
+  -- Extract a `Fin (D − 1)`-indexed independent subfamily of *actual* panel rows from the span.
+  obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ T
+  choose idx hidx using hfmem
+  -- Re-index each chosen row by its `⋀^k`-pair; injective since the panel rows are independent.
+  set j : Fin (Module.finrank ℝ (Submodule.span ℝ T))
+      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :=
+    fun i => (e, idx i) with hj
+  have hjinj : Function.Injective j := by
+    intro a b hab
+    rw [hj] at hab
+    simp only [Prod.mk.injEq] at hab
+    have : f a = f b := by rw [← hidx a, ← hidx b, hab.2]
+    exact hfindep.injective this
+  refine ⟨Set.range j, ?_, ?_, ?_⟩
+  · rintro i ⟨a, rfl⟩; rfl
+  · rw [Nat.card_range_of_injective hjinj, Nat.card_eq_fintype_card, Fintype.card_fin, hfin]
+  · -- The `range j`-subfamily of `panelRow` is `f` reindexed across `Equiv.ofInjective j`.
+    have hreindex : (fun i : Set.range j => F.panelRow ends (i : β × _ × _))
+        ∘ (Equiv.ofInjective j hjinj) = f := by
+      funext a
+      simp only [Function.comp_apply, Equiv.ofInjective_apply]
+      rw [hj]
+      exact hidx a
+    have hindep2 :=
+      hfindep.comp (Equiv.ofInjective j hjinj).symm (Equiv.ofInjective j hjinj).symm.injective
+    rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
+    exact hindep2
+
 /-- **The realization (generic-rank) hypothesis (6.1)** (`def:rank-hypothesis`): a panel-hinge
 framework `(G,p)` realizes the target rank of a `k`-dof-graph when its null space has dimension
 `dim Z(G,p) = D + k`, i.e. `rank R(G,p) = D|V| − dim Z(G,p) = D(|V|−1) − k`

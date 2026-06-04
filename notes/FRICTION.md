@@ -167,6 +167,33 @@ housekeeping pass once their resolution is fully indexed.
   + `rangeSplitting_injective` rather than `Subtype.ext`-ing the section by hand.
 - **Status:** resolved — no mirror (project-internal bridge; the idiom is the lesson).
 
+### [resolved] Extracting an *honest index-subset* `panelRow` subfamily from a per-edge span — `Submodule.exists_fun_fin_finrank_span_eq` + `Equiv.ofInjective`, not `rw [hfin] at f`
+- **Where it bit:** `BodyHingeFramework.exists_independent_panelRow_subfamily_of_edge` in
+  `Molecular/AlgebraicInduction.lean` (Phase 21b N7b-1 honesty-gate bridge): the device-closure
+  glue `hasFullRankRealization_of_independent_panelRow` (N7a) wants `LinearIndependent` of a literal
+  `panelRow ends`-subfamily indexed by a `Set` of panel-row indices, but N7b-1
+  (`exists_independent_panelRow_of_edge`) only produced rows that are *members of* the per-edge span.
+- **Fix:** the per-edge family `(t₁,t₂) ↦ panelRow ends (e,t₁,t₂)` spans a `(D−1)`-dim space
+  (`span_panelRow_edge_eq` + `finrank_hingeRowBlock`, equal `finrank` through the injective dual map
+  via `(Submodule.equivMapOfInjective f hinj p).finrank_eq.symm`). Then
+  `Submodule.exists_fun_fin_finrank_span_eq ℝ T` extracts a `Fin (D−1)`-indexed independent subfamily
+  of *actual* members of the generating set `T = range (panelRow (e,·,·))`; `choose idx hidx` recovers
+  each row's `⋀^k`-pair, and `j i := (e, idx i)` (injective since the rows are independent) packages
+  them as the honest index subset `s := range j`.
+- **Two traps:** (a) `rw [hfin] at f` (to fold `finrank (span T)` to `D−1` in the extracted family's
+  index `Fin (finrank …)`) trips *"motive is not type correct"* on the dependent `Fin _`; keep the
+  `Fin (finrank …)` index throughout and fold only `Nat.card s = D−1` at the end. (b) The final
+  `range j`-subfamily-equals-`f`-reindexed step is `f ∘ (Equiv.ofInjective j hjinj).symm`; collapse
+  `(g ∘ e) ∘ e.symm` with `Function.comp_assoc` + `Equiv.self_comp_symm` + `Function.comp_id`, not
+  `simpa` (which left a residual `((·∘e)∘e.symm)`).
+- **General lesson:** to turn "independent functionals living in `span (range f)`" into an honest
+  index-subset subfamily of `f` itself, `Submodule.exists_fun_fin_finrank_span_eq` (members of the
+  *generating set*, at the span's `finrank`) + `Equiv.ofInjective` index-pullback is the clean route —
+  the index-into-the-spanning-family analogue of the `Set.rangeSplitting` idiom above, for when the
+  family is `f` itself rather than a `Sum.elim` concatenation.
+- **Status:** resolved — no mirror (`exists_fun_fin_finrank_span_eq` is already mathlib; the idiom is
+  the lesson).
+
 ### [resolved] `Basis.linearIndependent.map' W.subtype` over a `Module.Dual` of an exterior power blows up at `whnf` — factor the basis-coercion into an abstract-field mirror lemma
 - **Where it bit:** `exists_independent_rigidityRows_of_edge` in
   `Molecular/RigidityMatrix.lean` (Phase 21b Case-I per-edge brick): coercing a

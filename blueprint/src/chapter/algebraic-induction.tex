@@ -1515,7 +1515,8 @@ non-spanning block).}
 
 \begin{lemma}[N7b-1: a re-inserted body's transversal hinge gives $D-1$ independent panel rows]
   \label{lem:case-II-placement-new-rows}
-  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_of_edge}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_of_edge,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_subfamily_of_edge}
   \leanok
   \uses{def:panel-hinge-framework, def:hinge-row-block, def:rigidity-matrix, lem:rank-delete-vertex}
   Re-inserting the degree-2 body $v$ joins it to its neighbours $a, b$ by two hinges. Each such
@@ -1533,6 +1534,15 @@ non-spanning block).}
   membership in this edge's panel rows so the placement assembly
   (\cref{lem:case-II-realization-placement}) can thread it into the device-consuming
   $\mathrm{panelRow}$ family of \cref{lem:realization-of-independent-rows}.
+
+  \medskip\noindent\emph{Honest index-subfamily form
+  ($\mathrm{exists\_independent\_panelRow\_subfamily\_of\_edge}$).} The glue
+  \cref{lem:realization-of-independent-rows} consumes not a family of \emph{members} of the per-edge
+  span but a literal $\mathrm{panelRow}\,\mathrm{ends}$-subfamily indexed by a \emph{set} of panel-row
+  indices. This companion form bridges that gap: a transversal hinge $e$ yields an index subset
+  $s \subseteq \{e\}\times(\Lambda^k\text{-pairs})$ of size $D-1$ whose \emph{actual}
+  $\mathrm{panelRow}\,\mathrm{ends}$-subfamily is independent --- the honest input
+  \cref{lem:case-II-realization-placement} threads into the genericity device.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -1543,7 +1553,11 @@ non-spanning block).}
   injective at distinct endpoints) and, by the per-edge span identity
   $\mathrm{span\_panelRow\_edge\_eq}$ (the annihilator-family span
   $\mathrm{span\_annihRow\_eq\_dualAnnihilator}$ carried through $\mathrm{hingeRow}\,u\,v$), each row
-  lies in the single edge's panel-row span. See \cite[\S6.3]{katohTanigawa2011}.
+  lies in the single edge's panel-row span. For the index-subfamily form, the per-edge family
+  $(t_1,t_2)\mapsto\mathrm{panelRow}\,\mathrm{ends}\,(e,t_1,t_2)$ spans a $(D-1)$-dimensional space, so
+  extracting an independent subfamily of its generators at the span's $\mathrm{finrank}$
+  ($\mathrm{Submodule.exists\_fun\_fin\_finrank\_span\_eq}$) and re-indexing each chosen row by its
+  $\Lambda^k$-pair gives the honest index subset. See \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 
 \begin{lemma}[N7b-2: the inductive rows transport through the common subgraph $G-v$]
