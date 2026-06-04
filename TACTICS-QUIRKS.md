@@ -1242,3 +1242,33 @@ that's free.)
 Worked case: `hcoord_const` in `Molecular/AlgebraicInduction.lean` (Phase 21b,
 the constant-affine-path `hcoord` discharge; the `t • (0 : Module.Dual …)` term
 needed `∀ t : ℝ`).
+
+## 32. `ext x` on an equation of `Module.Dual ℝ (ScrewSpace k)` (a functional on an exterior power) descends too far
+
+**Symptom.** Proving an equation of `Module.Dual ℝ (ScrewSpace k)` functionals —
+e.g. `∑ i, c i • r i = 0` where `r i : Module.Dual ℝ (ScrewSpace k)` — by `ext x`
+binds `x : Fin k → Fin (k + 2) → ℝ` (the *generating-vector tuple* of the
+exterior power) instead of the intended `x : ScrewSpace k`, and the goal becomes
+a `LinearMap.compAlternatingMap … (exteriorPower.ιMulti ℝ k) x = …` between
+`AlternatingMap`s. A later `… x` / `congrFun … x` then errors with *"Application
+type mismatch: x has type `Fin k → Fin (k+2) → ℝ` but is expected to have type
+`ScrewSpace k`"*. Cause: `ScrewSpace k = ↥(⋀[ℝ]^k …)`, so `Module.Dual ℝ
+(ScrewSpace k) = ScrewSpace k →ₗ[ℝ] ℝ`, and the generic `ext` picks the
+exterior-power `AlternatingMap` ext lemma (which peels through `ιMulti` to the
+tuple of generators) over plain `LinearMap.ext`.
+
+**Fix.** Don't use the `ext` *tactic*; apply `LinearMap.ext` explicitly so the
+introduced point has type `ScrewSpace k`:
+```
+have hk : (∑ i, c i • r i : Module.Dual ℝ (ScrewSpace k)) = 0 :=
+  LinearMap.ext fun x => by simpa [LinearMap.sum_apply, LinearMap.smul_apply] using hval x
+```
+Relatedly, apply such a functional equation to a screw with `LinearMap.congr_fun
+h x` rather than `congrFun (congrArg DFunLike.coe h) x` — the latter routes the
+RHS `0` through the universe-polymorphic `DFunLike.coe` and fails with *"numerals
+are data … the expected type is universe polymorphic and may be a proposition"*.
+
+Worked case: `linearIndependent_hingeRow_star` in `Molecular/RigidityMatrix.lean`
+(Phase 21b, the cross-hinge star independence — both the `LinearMap.ext` collapse
+of the per-hinge combination and the `LinearMap.congr_fun hg (update 0 (w j₀) x)`
+evaluation).

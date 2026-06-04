@@ -476,6 +476,59 @@ theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework k α β)
   refine ⟨fun i => hingeRow u v (c i), linearIndependent_hingeRow huv hc, fun i => ?_⟩
   exact ⟨e, u, v, hlink, c i, hmem i, rfl⟩
 
+/-- **The star independence bridge: rows from distinct hinges at a common body are jointly
+independent** (`def:rigidity-matrix`, the Case-I cross-hinge `hindep` step). Fix a body `v` and a
+family of distinct other endpoints `w : J → α` (`hw` injective, `hwv` each `w j ≠ v`) — a *star*
+of edges all incident to `v`, the shape a rigid block pinned at `v` presents. If for each `j : J`
+the hinge-row functionals `r j : Iⱼ → Module.Dual ℝ (ScrewSpace k)` are linearly independent, then
+the combined rigidity-row family `⟨j, i⟩ ↦ hingeRow (w j) v (r j i)` over the disjoint union
+`Σ j, Iⱼ` is linearly independent on `α → ScrewSpace k`.
+
+This is the cross-hinge step the per-edge brick `exists_independent_rigidityRows_of_edge` does not
+cover: rows from *different* hinges go through *different* relative-screw evaluations
+`screwDiff (w j) v`, so `linearIndependent_hingeRow`'s single-edge dual-map argument no longer
+applies. The independence is instead the *pin-a-body* / disjoint-support count: evaluating a
+vanishing combination at the screw assignment `Function.update 0 (w k) x` (place `x` on the body
+`w k`, `0` elsewhere — legitimate since `w k ≠ v` and the `w j` are distinct) collapses it to
+`∑ i, c⟨k,i⟩ • (r k i) x = 0` for all `x`, so per-hinge independence
+(`Fintype.linearIndependent_iff` on `r k`) forces every coefficient at `k` to vanish. This is the
+joint independence of the rigid block's hinge rows that `hglue_of_realization`'s `hindep` consumes
+— each of the block's transversal hinges contributing its `D − 1` rows
+(`exists_independent_rigidityRows_of_edge`), the rows of distinct hinges jointly independent because
+they live on disjoint body-coordinate blocks once the common body is pinned. -/
+theorem linearIndependent_hingeRow_star {J : Type*} [Finite J] {I : J → Type*}
+    [∀ j, Finite (I j)] {v : α} {w : J → α} (hw : Function.Injective w) (hwv : ∀ j, w j ≠ v)
+    {r : ∀ j, I j → Module.Dual ℝ (ScrewSpace k)} (hr : ∀ j, LinearIndependent ℝ (r j)) :
+    LinearIndependent ℝ (fun p : Σ j, I j => hingeRow (k := k) (α := α) (w p.1) v (r p.1 p.2)) := by
+  classical
+  haveI : Fintype J := Fintype.ofFinite J
+  haveI : ∀ j, Fintype (I j) := fun j => Fintype.ofFinite (I j)
+  rw [Fintype.linearIndependent_iff]
+  intro g hg k₀
+  obtain ⟨j₀, i₀⟩ := k₀
+  -- Evaluate the vanishing functional combination at `update 0 (w j₀) x`.
+  have hval : ∀ x : ScrewSpace k, ∑ i, g ⟨j₀, i⟩ • (r j₀ i) x = 0 := by
+    intro x
+    have happ := LinearMap.congr_fun hg (Function.update (0 : α → ScrewSpace k) (w j₀) x)
+    rw [LinearMap.sum_apply, LinearMap.zero_apply, Fintype.sum_sigma] at happ
+    -- Every slice `j ≠ j₀` vanishes (its endpoint reads `0`); the `j₀` slice reads `x`.
+    rw [Finset.sum_eq_single j₀] at happ
+    · refine Eq.trans (Finset.sum_congr rfl (fun i _ => ?_)) happ
+      rw [LinearMap.smul_apply, hingeRow_apply, Function.update_self,
+        Function.update_of_ne (hwv j₀).symm, Pi.zero_apply, sub_zero]
+    · intro j _ hjk
+      refine Finset.sum_eq_zero (fun i _ => ?_)
+      have hjw : w j ≠ w j₀ := fun h => hjk (hw h)
+      rw [LinearMap.smul_apply, hingeRow_apply, Function.update_of_ne hjw,
+        Function.update_of_ne (hwv j₀).symm]
+      simp only [Pi.zero_apply, sub_zero, map_zero, smul_zero]
+    · exact fun h => absurd (Finset.mem_univ j₀) h
+  -- The collapsed sum is a vanishing combination of `r j₀`, independent by hypothesis.
+  have hk : ∑ i, g ⟨j₀, i⟩ • r j₀ i = 0 :=
+    LinearMap.ext fun x => by
+      simpa [LinearMap.sum_apply, LinearMap.smul_apply] using hval x
+  exact Fintype.linearIndependent_iff.1 (hr j₀) (fun i => g ⟨j₀, i⟩) hk i₀
+
 /-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
 assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
 These are the rigid-motion screws — the constant assignments — and they form the

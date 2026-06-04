@@ -169,6 +169,13 @@ bullets. If one matches, jump to the named section of
   is a metavariable"* at a `t • x` inside an **unascribed** `∀ t, …` binder (the
   bound variable's own type is free) → § 31 *Unascribed `∀ t, … t • x …` binder
   leaves the `•` scalar type a metavariable*: annotate the binder (`∀ t : ℝ, …`).
+- *"Application type mismatch: x has type `Fin k → Fin (k+2) → ℝ` but is expected
+  to have type `ScrewSpace k`"* after `ext x` on an equation of `Module.Dual ℝ
+  (ScrewSpace k)` (the goal turned into a `LinearMap.compAlternatingMap …
+  ιMulti` between `AlternatingMap`s), or *"numerals are data … universe
+  polymorphic"* on `congrFun (congrArg DFunLike.coe h) x` → § 32 *`ext x` on an
+  equation of `Module.Dual ℝ (ScrewSpace k)` descends too far*: use
+  `LinearMap.ext fun x => …` and `LinearMap.congr_fun h x`.
 
 ## Starting a Lean-touching session
 

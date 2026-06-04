@@ -28,6 +28,29 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Cross-hinge star independence landed (2026-06-03) — `linearIndependent_hingeRow_star`: rows from distinct hinges at a common body are jointly independent.**
+`linearIndependent_hingeRow_star` (`Molecular/RigidityMatrix.lean`, after
+`exists_independent_rigidityRows_of_edge`): fix a body `v` and distinct other endpoints
+`w : J → α` (`hw` injective, `hwv` each `w j ≠ v`) — a *star* of edges all incident to `v`, the
+shape a rigid block pinned at `v` presents. If for each `j` the hinge-row functionals `r j` are LI,
+the combined rigidity-row family `⟨j,i⟩ ↦ hingeRow (w j) v (r j i)` over `Σ j, I j` is LI on
+`α → ScrewSpace k`. This is the **substantive cross-hinge step** the hand-off flagged:
+`linearIndependent_hingeRow`'s single-edge dual-map argument does not extend because rows from
+*different* hinges route through *different* `screwDiff (w j) v`. The independence is instead the
+*pin-a-body* / disjoint-support count — evaluate a vanishing combination at
+`Function.update 0 (w j₀) x` (place `x` on body `w j₀`, `0` elsewhere; legitimate since `w j₀ ≠ v`
+and the `w j` distinct), which collapses the `Σ`-sum (via `Fintype.sum_sigma` + `Finset.sum_eq_single
+j₀`) to `∑ i, c⟨j₀,i⟩ • (r j₀ i) x = 0` for all `x`, so per-hinge independence
+(`Fintype.linearIndependent_iff` on `r j₀`) forces every coefficient at `j₀` to vanish. Green, build
+warning-clean + lint clean, checkdecls clean, axioms {propext, Classical.choice, Quot.sound}. Folded
+into the `def:rigidity-matrix` node's `\lean{...}` pin (the cross-hinge sibling of the per-edge
+brick); node body gains a sentence on the star combination. **Residual Case-I work toward `hindep`:**
+the star handles all of one rigid block's hinges that share a *single* pinned body; the remaining
+geometric content (the genuine cycle/spanning-tree structure of a rigid block whose hinges span
+multiple bodies, where the `m ≤ D` extensor-independence of `lem:cycle-realization` re-enters) plus
+exhibiting `F₀` and matching `#s = D(|V|−1) − dim Z_s` (`hmatch`) is the rest of `hglue_of_realization`'s
+inputs.
+
 **Per-edge independent-rows brick landed (2026-06-03) — `exists_independent_rigidityRows_of_edge`: one transversal hinge ⇒ `D−1` independent rigidity rows.**
 `exists_independent_rigidityRows_of_edge` (`Molecular/RigidityMatrix.lean`, after
 `finrank_hingeRowBlock`): for a genuine edge `e = uv` (`u ≠ v`, `supportExtensor e ≠ 0`,
@@ -327,6 +350,14 @@ hand-off convenience.
   `hindep`/`hmatch`. Green; folded into `def:rigidity-matrix`'s `\lean{...}` pin (mirror lemma
   skipped).
 
+- [x] `linearIndependent_hingeRow_star` (`Molecular/RigidityMatrix.lean`): the cross-hinge `hindep`
+  step — for a star of edges at a common body `v` with distinct other endpoints, per-hinge LI row
+  families remain jointly LI, via the pin-a-body / disjoint-support count
+  (`Fintype.sum_sigma` + `Finset.sum_eq_single` + `Fintype.linearIndependent_iff`). The substantive
+  cross-hinge combination the hand-off flagged; `linearIndependent_hingeRow`'s single-edge argument
+  does not extend (distinct `screwDiff`). Green; folded into `def:rigidity-matrix`'s `\lean{...}` pin
+  (no new node).
+
 - [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
   `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
   `span (range a) = span F.rigidityRows`, from finite-dimensionality of the dual (`α` finite ⇒
@@ -500,16 +531,18 @@ geometric construction).** From the contraction realization (`G/E(H)` at its ind
    green).
 No affine-path construction and no finite-spanning-family construction remain. This is the
 genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is
-in hand and `s` is being matched to the corank. The per-edge sub-bricks toward (2) are now landed:
-`linearIndependent_hingeRow` (independent supporting extensors → independent `hingeRow u v r` per
-edge) and `exists_independent_rigidityRows_of_edge` (one transversal hinge ⇒ `D − 1` LI rigidity
-rows in `rigidityRows`, the per-edge unit combining the row count and the lift). **Next sub-brick:
-combine `exists_independent_rigidityRows_of_edge` across the rigid block's hinges into a single LI
-family indexed by `s`** — this is the substantive step (rows from *different* hinges of the block
-must be jointly independent; the cycle/spanning-tree structure of the rigid block + the
-`exists_independent_panelSupportExtensor` general position is where the `m ≤ D` extensor-independence
-of `lem:cycle-realization` re-enters). Then match `#s = D(|V|−1) − dim Z_s` (`hmatch`) using the
-`D−1` per-edge count against the contraction's inductive rank, and exhibit `F₀`. The other
+in hand and `s` is being matched to the corank. The per-edge and cross-hinge sub-bricks toward (2)
+are now landed: `linearIndependent_hingeRow` (independent supporting extensors → independent
+`hingeRow u v r` per edge), `exists_independent_rigidityRows_of_edge` (one transversal hinge ⇒
+`D − 1` LI rigidity rows in `rigidityRows`), and now `linearIndependent_hingeRow_star` (the
+cross-hinge combination: rows from *distinct* hinges at a common pinned body, distinct other
+endpoints, are jointly LI by the pin-a-body / disjoint-support count). **Next sub-brick: extend the
+star combination to a rigid block whose hinges span *multiple* bodies** — the star handles edges
+sharing one endpoint `v`; the genuine rigid block is a cycle/spanning-tree where the
+`m ≤ D` extensor-independence of `lem:cycle-realization` + `exists_independent_panelSupportExtensor`
+general position controls the cross-body interaction (`eq_zero_of_mem_span_singleton_of_sum_eq_zero`
+is the existing screw-space telescoping core). Then match `#s = D(|V|−1) − dim Z_s` (`hmatch`) using
+the `D−1` per-edge count against the contraction's inductive rank, and exhibit `F₀`. The other
 consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same constant-path chain
 (`hcoord_const` → device) with an analogous per-consumer bridge; the device's *target statements*
 are fixed (the named hypotheses in `AlgebraicInduction.lean`).

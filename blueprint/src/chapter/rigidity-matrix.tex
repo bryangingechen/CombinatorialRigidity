@@ -93,6 +93,7 @@ and the generic-rank argument are in hand.
     CombinatorialRigidity.Molecular.BodyHingeFramework.exists_finite_spanning_rigidityRows,
     CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow,
     CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_edge,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow_star,
     CombinatorialRigidity.Molecular.ScrewSpace,
     CombinatorialRigidity.Molecular.screwDim,
     CombinatorialRigidity.Molecular.screwSpace_finrank}
@@ -134,7 +135,13 @@ and the generic-rank argument are in hand.
   ($\mathrm{exists\_independent\_rigidityRows\_of\_edge}$): a single transversal
   hinge $e = uv$ ($u \ne v$, $C(p(e)) \ne 0$) contributes exactly $D - 1$
   linearly independent rigidity rows, the per-edge unit of the matching-size
-  independent subfamily Case~I assembles over a rigid block's hinges.
+  independent subfamily Case~I assembles over a rigid block's hinges. The rows
+  of \emph{distinct} hinges combine without loss: for a star of edges incident
+  to one body $v$ with distinct other endpoints, per-hinge independent row
+  families remain jointly independent
+  ($\mathrm{linearIndependent\_hingeRow\_star}$), since evaluating a vanishing
+  combination at a screw supported on a single endpoint isolates that hinge's
+  block (the pin-a-body / disjoint-support count).
 \end{definition}
 
 \begin{definition}[Degree of freedom; generic realization]
