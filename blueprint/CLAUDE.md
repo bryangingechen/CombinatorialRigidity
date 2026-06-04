@@ -452,6 +452,18 @@ between-phases re-run of this gate is `CLEANUP.md` §A step 1 — but
 this is a *per-commit* gate, run at the moment `\leanok` is added, not
 a debt deferred to a cleanup round.
 
+The gate has a *second half*, and it is the one that bites producers:
+even with every hypothesis honest, the intended **proof step may not
+follow** or the **target count the construction can't reach**. Before a
+producer node is scheduled as a *build* (or tagged "build-shaped"), trace
+its target quantity (rank/count/dimension) through the construction and
+confirm the **arithmetic closes** — not just that `\uses` edges
+type-check; math-first when the math is the hard part. Rule + the
+Phase-21b calibration (a `+(D−1)` vs `+D` one-line shortfall that sat
+under four re-plans): `../DESIGN.md` *Constructibility recon before
+scheduling a producer build*; dead-ends in `../notes/FRICTION.md`
+*[process] Phase 21b realization producers*.
+
 ## Local build
 
 The blueprint builds in two formats:
