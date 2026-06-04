@@ -28,6 +28,29 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Blueprint honesty flip (2026-06-04).** `lem:genericity-device` was
+prematurely marked `\leanok` (green) while only an affine/univariate
+special case is formalized; the genuine Claim 6.4 is the *multivariate*
+statement (panel-matrix entries are degree-2 bilinear polynomials in the
+normals; the consumers' realizations are not reached along any affine
+line). The blueprint is now flipped to the honest KT §6.2 structure so the
+dep-graph drives a clean formalization:
+- `lem:genericity-device` → **RED**: 14-name `\lean` pin and both `\leanok`
+  removed; statement rewritten to the multivariate Claim 6.4 (Zariski-open
+  rank locus via `MvPolynomial.funext`), with a delimited *Status* note
+  recording that only the univariate/affine case is currently formalized.
+- `lem:case-I-realization` → **new RED node** (KT eqs. 6.2/6.6): the
+  contraction *splice* attains full rank — the geometric Case-I to-do that
+  discharges `thm:theorem-55`'s `hcontract` premise.
+- `lem:case-I` → **kept green** but now depends on red `lem:genericity-device`;
+  `\lean` pin trimmed to the two genuine iff lemmas, the Lean-identifier
+  changelog paragraph deleted, proof notes the device's gluing inequality is
+  taken as an explicit hypothesis (formalized modulo the device).
+- **Route (a) (multivariate Zariski-open engine on `MvPolynomial.funext`)
+  is the chosen route** for the genuine device.
+- The 17 removed Lean names are temporarily unblueprinted (intended; the Lean
+  wrapper chain is a separate later consolidation step — see Hand-off).
+
 The abstract device and the **entire non-geometric Case-I `hglue` route**
 are green (route (a), constant path). Landed: the analytic engine + its
 codimension dual (`Rank.lean`); the coannihilator coordinatization of
@@ -147,9 +170,18 @@ Analytic core (`Mathlib/LinearAlgebra/Matrix/Rank.lean`, mirror lemmas):
   by `finrank V − #s`. The consumer-facing `dim ker ≤ value` shape.
 
 Device + route-(a) chain (`Molecular/AlgebraicInduction.lean`):
-- [x] `genericityDevice` (`lem:genericity-device`) — Claim 6.4/6.9,
-  codimension form; thin composition of the two Rank.lean bricks +
-  `finrank_screwAssignment`.
+- [ ] `lem:genericity-device` — **RED** (blueprint flipped 2026-06-04). The
+  genuine multivariate Claim 6.4 (Zariski-open rank locus, route (a) via
+  `MvPolynomial.funext` + determinant machinery) is **open**. The landed
+  `genericityDevice` (+ chain below) is the *univariate/affine special case*
+  only — formalized but does not reach the consumers' bilinear realizations
+  along an affine line; now temporarily unblueprinted pending the
+  multivariate engine + Lean wrapper-chain consolidation.
+- [ ] `lem:case-I-realization` — **RED** (new node, KT eqs. 6.2/6.6). The
+  contraction splice attains full rank; the geometric Case-I to-do.
+- [x] `genericityDevice` (affine special case) — codimension form; thin
+  composition of the two Rank.lean bricks + `finrank_screwAssignment`.
+  Univariate; superseded as the device by the multivariate route above.
 - [x] `exists_good_realization` + `hglue_of_genericityDevice` — generic-point
   form + Case-I block-triangular bridge.
 - [x] `hcoord_of_rigidityRows_affine` — step-(i) bridge: discharges `hcoord`
@@ -346,6 +378,26 @@ Lean, to be supplied by the device):
   general-position/transversality construction remains.
 
 ## Hand-off / next phase
+
+**Post-flip residual (2026-06-04).** The blueprint now states the honest
+target. Three concrete work items, in dependency order:
+1. **Multivariate genericity device** (`lem:genericity-device`, red): build
+   the route-(a) Zariski-open engine — a nonzero multivariate minor
+   polynomial of `R(G,p)` has a non-root over ℝ, via `MvPolynomial.funext`
+   + the determinant machinery. This is the genuine Claim 6.4 (the landed
+   `genericityDevice` is only the univariate/affine special case).
+2. **Lean wrapper-chain consolidation** (no blueprint change): the 17 names
+   removed from the device + Case-I pins (telescoping `hglue_*` /
+   `hasFullRankRealization_*` chain) are a long single-use wrapper stack;
+   consolidate once the multivariate device lands, then re-pin the survivors.
+3. **Splice realization** (`lem:case-I-realization`, red, KT eqs. 6.2/6.6):
+   the geometric Case-I to-do — the contraction splice attains full rank,
+   discharging `thm:theorem-55`'s `hcontract`. Bottoms on the device (1).
+
+The *historical* (pre-flip) hand-off prose below describes the
+univariate-special-case plumbing and the geometric splice residual; it
+remains the map of the landed Lean, but the device it calls "GREEN" is the
+special case, not the genuine multivariate device now stated red.
 
 The abstract device `lem:genericity-device` (`genericityDevice`) and the
 full Case-I `hglue` plumbing are GREEN (route-(a) constant path; see

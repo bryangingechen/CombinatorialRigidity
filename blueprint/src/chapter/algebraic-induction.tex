@@ -613,17 +613,11 @@ Cases~I and~II travel toward the smaller inductive graph.
 \begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
   \label{lem:case-I}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_le_withGraph,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_withGraph_eq_of_block_internal,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_eq_bot_of_block_internal_rigid}
+        CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn}
   \leanok
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
         lem:rank-delete-vertex, def:pinned-motions-on,
-        lem:pinned-motions-on-rank-bound, lem:pinned-motions-on-mono,
-        lem:exists-independent-panel-extensor, lem:genericity-device}
+        lem:pinned-motions-on-rank-bound, lem:genericity-device}
   Let $G$ be a minimal $k$-dof-graph with a proper rigid subgraph $H$ on
   the (nonempty) body set $s = V(H)$. Contracting $H$ to a single pinned
   body is the block pin $Z_s(G,p)$ (\cref{def:pinned-motions-on}), the
@@ -637,46 +631,11 @@ Cases~I and~II travel toward the smaller inductive graph.
   the non-simple case (6.2), the simple case with simple contraction (6.3,
   via the Claim~6.4 genericity argument), and the remaining simple case
   (6.5).
-
-  The genericity-free skeleton is the block-pin lower bound
-  $D + \dim Z_s(G,p) \le \dim Z(G,p)$
-  (\cref{lem:pinned-motions-on-rank-bound}, the disjointness of the
-  trivial motions and the block pin inside $Z(G,p)$, always). The
-  \emph{one} input from the genericity device (Phase~21b, Claim~6.4) is
-  the block-triangular gluing closing that slack to an equality, $\dim
-  Z(G,p) \le D + \dim Z_s(G,p)$ --- the combined rigidity matrix attaining
-  the sum of the two block ranks at a generic point. That is not automatic;
-  it holds only at the generic point the rank/dimension count selects
-  (\cref{lem:exists-independent-panel-extensor}). Taking the gluing as an
-  explicit hypothesis makes the lemma green modulo the device, parallel to
-  Case~II (\cref{lem:case-II}) with the contraction's \emph{block} pin in
-  place of the $1$-extension's single-body pin. The graph-side leg of the
-  block-triangular glue is monotone: re-adding the inter-block hinges to a
-  rigid spanning subgraph only shrinks the null space, and the
-  trivial-motion space is graph-independent, so a rigid spanning subgraph of
-  the parent certifies rigidity of the parent itself
-  ($\mathrm{isInfinitesimallyRigid\_of\_le\_withGraph}$). The rigid \emph{block}
-  $H$ contributes the matching motion-side fact: every infinitesimal motion of
-  the parent is a fortiori a motion of the rigid sub-framework $F[H]$, hence
-  trivial there, so it is constant across the block $V(H)$
-  ($\mathrm{isConstantOnBlock\_of\_isInfinitesimalMotion\_of\_rigid\_subgraph}$).
-  Combined with the vanishing of the residual block pin (the contraction
-  $G/E(H)$ at its inductive full rank), this constancy makes the glued parent
-  realization rigid
-  ($\mathrm{isInfinitesimallyRigid\_of\_rigid\_subgraph\_of\_pinnedMotionsOn\_eq\_bot}$),
-  the assembled geometric core of KT~\S6.2/6.5's block-triangular glue. That
-  residual vanishing is itself read off the contraction: writing $G/E(H)$ as
-  the parent with the block-internal edges $E(H) \subseteq V(H)\times V(H)$
-  deleted, pinning the block $s = V(H)$ makes those deleted hinge constraints
-  vacuous (both endpoints pinned to $0$), so the block pin is unchanged by the
-  deletion ($\mathrm{pinnedMotionsOn\_withGraph\_eq\_of\_block\_internal}$);
-  hence rigidity of the inductive contraction realization forces the parent's
-  block pin to vanish
-  ($\mathrm{pinnedMotionsOn\_eq\_bot\_of\_block\_internal\_rigid}$).
 \end{lemma}
 \begin{proof}
   \leanok
-  \uses{lem:rank-delete-vertex, lem:pinned-motions-on-rank-bound}
+  \uses{lem:rank-delete-vertex, lem:pinned-motions-on-rank-bound,
+        lem:genericity-device}
   Pin the rigid block $H$ and place the contraction $G/E(H)$ at its
   inductive rank. The block pin and the $D$-dimensional trivial motions
   are disjoint inside $Z(G,p)$, so $D + \dim Z_s(G,p) \le \dim Z(G,p)$
@@ -688,6 +647,39 @@ Cases~I and~II travel toward the smaller inductive graph.
   --- Claim~6.4, the genericity device). The two bounds pin $\dim Z(G,p) =
   D + \dim Z_s(G,p)$, so the realization count is exactly the
   contraction's block-pinned dimension and the rank is $D(|V|-1) - k$.
+  The formalized iff takes this block-triangular gluing inequality
+  (\cref{lem:genericity-device}) as an explicit hypothesis, so the statement
+  is established modulo the device.
+\end{proof}
+
+\begin{lemma}[Case I realization: contraction splice attains full rank; KT eqs.\ (6.2), (6.6)]
+  \label{lem:case-I-realization}
+  \uses{def:panel-hinge-framework, lem:case-I, lem:genericity-device,
+        lem:contraction-minimality}
+  The full-rank realization motive of \cref{thm:theorem-55}
+  ($\mathrm{HasFullRankRealization}$) is closed under rigid-subgraph
+  contraction. Let $G$ be a minimal $0$-dof-graph with a proper rigid subgraph
+  $H$ on $s = V(H)$, let $(H, p_1)$ be a full-rank realization of the rigid
+  block, and let $(G/E(H), p_2)$ be the inductive realization of the
+  contraction (a smaller minimal $0$-dof-graph by
+  \cref{lem:contraction-minimality}). The \emph{splice} of KT eqs.\ (6.2),
+  (6.6) --- $p = p_1$ on $E(H)$, $p = p_2$ on the interior edges of the
+  contraction, and on each boundary edge $uv \in \delta_G(V(H))$ the panel
+  intersection $\Pi_{G/E(H),\,p_2}(u) \cap \Pi_{H,\,p_1}(v)$ --- is a
+  panel-hinge realization of $G$ (\cref{def:panel-hinge-framework}) attaining
+  full rank $D(|V|-1)$. This discharges the Case~I premise ($\mathtt{hcontract}$)
+  of \cref{thm:theorem-55}.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-I, lem:genericity-device}
+  The splice places the rigid block $(H, p_1)$ as a single rigid body at the
+  contracted vertex of $(G/E(H), p_2)$. By \cref{lem:case-I} the rank of the
+  spliced realization is $D + \dim Z_s$, full at $k = 0$ (the contraction's
+  block pin vanishes). The block-triangular coupling between the block rows and
+  the contraction rows incurs no rank loss at a generic choice of the
+  algebraically independent panel coefficients
+  (\cref{lem:genericity-device}, Claim~6.4). The splice construction and its
+  generic full rank are the remaining geometric content of Phase~21b.
 \end{proof}
 
 \subsection{Case II: \texorpdfstring{$k > 0$}{k > 0} splitting (1-extension)}
@@ -857,123 +849,38 @@ Phase~21b.
 
 \begin{lemma}[Genericity device, codimension form; KT Claim 6.4, Claim 6.9]
   \label{lem:genericity-device}
-  \lean{CombinatorialRigidity.Molecular.genericityDevice,
-        CombinatorialRigidity.Molecular.exists_good_realization,
-        CombinatorialRigidity.Molecular.hglue_of_genericityDevice,
-        CombinatorialRigidity.Molecular.hcoord_of_rigidityRows_affine,
-        CombinatorialRigidity.Molecular.hcoord_const,
-        CombinatorialRigidity.Molecular.hglue_of_realization,
-        CombinatorialRigidity.Molecular.hglue_of_independent_rigidityRows,
-        CombinatorialRigidity.Molecular.hglue_of_forest,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.ofParam_rankHypothesis_iff_pinnedMotionsOn,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_ofParam_of_pinnedMotionsOn,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_ofParam_of_isInfinitesimallyRigid,
-        CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn}
-  \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
-  Fix a multigraph $G$ and regard a panel-hinge realization through its
-  per-vertex panel normals as a point of the panel-coordinate space. The
-  entries of the panel-hinge rigidity matrix $R(G,p)$ are polynomials in
-  those (algebraically independent) panel coordinates, so
-  $\operatorname{rank} R(G,p)$ is a lower semicontinuous function of the
-  coordinates and attains its maximum on a Zariski-open (generic) subset.
-  Consequently, if some realization $(G,p_0)$ attains a given rank, then
-  the generic realization attains at least that rank.
-
-  In the codimension convention of \cref{sec:molecular-rigidity-matrix}
-  (the column space is the screw-assignment space of dimension $D|V|$ and
-  $\operatorname{rank} R(G,p) = D|V| - \dim Z(G,p)$, \cref{def:dof-generic}),
-  this reads dually: $\dim Z(G,p)$ is \emph{upper} semicontinuous,
-  attaining its minimum generically. The formalized device lands this
-  codimension form: along a one-parameter affine family of rigidity-row
-  functionals $t \mapsto a_i + t\, b_i$ on the screw-assignment space, with
-  $Z(G,p_t)$ the family's common kernel (the coannihilator coordinatization
-  $Z(G,p) = (\operatorname{span}\text{rigidityRows})^{\circ\circ}$ of
-  \cref{def:rigidity-matrix}), a corank witnessed once at $t_0$ (a subfamily
-  $s$ independent there, supplied by
-  \cref{lem:exists-independent-panel-extensor}) bounds $\dim Z(G,p_t) \le
-  D|V| - |s|$ for all but finitely many $t$ --- the consumer-facing
-  $\dim Z(G,p) \le \text{target}$ upper bound each of \cref{lem:case-I},
-  \cref{lem:case-II}, and \cref{prop:rigidity-matrix-prop11} carries. Since
-  $\mathbb{R}$ is infinite, the finite bad set has nonempty complement, so a
-  \emph{single} good realization at the witnessed corank exists (the
-  generic-point form the consumers actually use). For \cref{lem:case-I} this
-  is wired further: given the route-(a) rank-match $|s| = D(|V|-1) - \dim
-  Z_s$ at the good realization (the contraction's inductive rank, the size of
-  the block-triangular row block), the bound collapses to $\dim Z(G,p) \le D
-  + \dim Z_s$, exactly the $\mathtt{hglue}$ block-triangular gluing inequality
-  of \cref{lem:case-I}. The route-(a) decision is resolved in favour of a
-  \emph{degenerate} (constant) affine path: the witness realization Case~I
-  needs is constructed directly by the exterior-algebra existence lemma
-  \cref{lem:exists-independent-panel-extensor} (a basis choice on
-  $\bigwedge^2$), not reached by perturbing along a line through
-  panel-coordinate space, so the bilinearity obstruction (panel rows quadratic
-  along a real line) never bites --- the device reads off the corank at the one
-  hand-built realization. With the constant path the affine family is any
-  finite family spanning that realization's rigidity rows (with $b = 0$), and
-  the $\mathtt{hglue}$ inequality holds at the realization itself. The
-  consumer-ready form feeds the rigid block's \emph{assembled} independent
-  rigidity-row family (the $(D-1)|J|$ rows of a spanning forest of transversal
-  hinges, \cref{def:rigidity-matrix}) directly, concatenating it in front of
-  any finite spanning family so the witnessed corank is the forest's row count
-  and the only residual obligations are geometric: the realization and the
-  count match. Reduced one step further to the forest \emph{data} itself: from
-  a realization $F_0$ whose rigid block carries a spanning forest of
-  transversal hinges --- each oriented from a private endpoint $u(j)$ ($u$
-  injective) to an arbitrary $\mathit{other}(j)$, with the separation
-  $\mathit{other}(j) \ne u(j')$ --- the $\mathtt{hglue}$ inequality holds at
-  $F_0$ given only the count match $|J|(D-1) = D(|V|-1) - \dim Z_s$, so the
-  last \emph{generic} reduction leaves only the geometric $F_0$ exhibition.
-  On the panel layer this packages one step further: when $F_0 = P^{\flat}$ is
-  the body-hinge interpretation of a panel-hinge framework $P$ whose normals are
-  in general position (\cref{def:panel-hinge-framework}, e.g. the moment-curve
-  assignment), each forest hinge's transversality is read off the general
-  position from its endpoint distinctness $\mathit{other}(j) \ne u(j)$ (the
-  forest separation at the diagonal), so the panel-layer Case~I iff-realization
-  ($\mathrm{RankHypothesis}\ k' \iff \dim Z_s = k'$) needs only the rigid block's
-  spanning-forest \emph{graph} data and the count match --- no per-hinge
-  transversality hypothesis --- leaving the consumer the graph-and-realization
-  exhibition of \cref{lem:case-I}. Specialized to the from-scratch constructor
-  $\mathrm{ofParam}\,(G, \mathit{ends}, \mathit{param})$ at an injective real
-  parameter map (general position then free, \cref{def:panel-hinge-framework}),
-  this is the realization-side entry point of the Case-I assembly: the parent
-  graph $G$ and its hinge-endpoint selector carry the geometry of the
-  rigid-subgraph contraction, the forest data is read off the rigid block, and
-  the only remaining obligation is the count match. Packaged into the
-  realization motive \cref{thm:theorem-55} inducts against
-  ($\mathrm{HasFullRankRealization}$), reading this iff forwards at the target
-  deficiency $k' = 0$ against a \emph{trivial} block pin $\dim Z_s = 0$ (the
-  contraction realized at its full rank) lands a full-rank realization of the
-  parent multigraph $G$ directly, reducing the residual Case-I obligation to the
-  block-pin~$\leftrightarrow$~contraction-realization bridge. Equivalently, since
-  the block pin of a rigid framework vanishes (the bridge in dimension form,
-  \cref{lem:pinned-motions-on-rank-bound}), the same motive is produced from the
-  single geometric hypothesis that the from-scratch $\mathrm{ofParam}$ realization
-  is itself infinitesimally rigid --- rigidity \emph{is} $\mathrm{RankHypothesis}\
-  0$ --- collapsing both the block-pin vanishing and the count match into rigidity
-  of the contraction-glued realization, the lone residual Case-I obligation.
+  Fix a multigraph $G$ and regard a panel-hinge realization as a point
+  $p \in \mathbb{R}^N$ of the panel-coordinate space (the per-vertex panel
+  normals). Each entry of the panel-hinge rigidity matrix $R(G,p)$ is a
+  polynomial in $p$ --- of degree two, bilinear in the normals
+  (\cref{def:rigidity-matrix}, \cref{def:panel-hinge-framework}). Hence for
+  each $r$ the locus $\{p : \operatorname{rank} R(G,p) \ge r\}$, cut out by
+  the non-vanishing of some $r \times r$ minor, is Zariski-open, so
+  $\operatorname{rank} R(G,p)$ is lower semicontinuous and attains its maximum
+  on a dense generic set; a rank attained at one realization is attained
+  generically. Dually, in the codimension convention of
+  \cref{sec:molecular-rigidity-matrix} ($\operatorname{rank} R(G,p) = D|V| -
+  \dim Z(G,p)$, \cref{def:dof-generic}), $\dim Z(G,p)$ is upper semicontinuous
+  and minimized generically.
 \end{lemma}
 \begin{proof}
-  \leanok
-  A non-vanishing maximal minor of $R(G,p_0)$ is a polynomial in the panel
-  coordinates that is nonzero at $p_0$, hence nonzero on a Zariski-open
-  set; on that set the rank is at least the size of that minor. The
-  formalized codimension form is the composition of the analytic engine
-  (the corank of an affine functional family is cofinitely bounded above by
-  $\dim V - |s|$, via the Gram-determinant root-set argument and the
-  span/coannihilator complementary-dimension identity) with the
-  coannihilator coordinatization of \cref{def:rigidity-matrix} and the
-  screw-assignment dimension count $\dim(\text{screw assignments}) = D|V|$
-  (\cref{def:dof-generic}). The single affine scalar $t$ is the device's
-  parameter; for Case~I it is run at the degenerate (constant) path described
-  above, so the residual per-consumer wiring is purely combinatorial-geometric
-  --- exhibit the single witness realization, a finite spanning row family, and
-  the independent subfamily of the matching size --- with no path construction.
-  (Cases~II and Prop~1.1 may instead present a genuine chosen path or the
-  multivariate Zariski-open form.) See
+  A maximal non-vanishing minor of $R(G,p_0)$ is a polynomial in $p$, nonzero
+  at $p_0$. Over the infinite field $\mathbb{R}$ a nonzero polynomial does not
+  vanish identically (\texttt{MvPolynomial.funext}), so its non-vanishing
+  locus is dense and nonempty; on that locus $\operatorname{rank} R(G,p)$ is at
+  least the size of the minor. Several generic conditions intersect, each being
+  the complement of a proper algebraic subset. See
   \cite[\S6.1, \S6.3]{katohTanigawa2011} (Claim~6.4 and its Case-II twin
   Claim~6.9).
+
+  \emph{Status (Phase~21b).} The formalization currently lands only the
+  univariate/affine special case --- a finite root set of a one-variable minor
+  along an affine line. Because the panel entries are bilinear, the consumers'
+  realizations are not reached along an affine line, so the genuine multivariate
+  form --- a nonzero multivariate minor polynomial has a non-root, via
+  \texttt{MvPolynomial.funext} and the determinant machinery --- is the
+  remaining analytic content.
 \end{proof}
 
 \noindent The device discharges the explicit hypotheses each consumer
