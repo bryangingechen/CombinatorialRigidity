@@ -72,9 +72,18 @@ real parameter map gives pairwise-independent normals for *any* `|α|` (Vandermo
 via `momentCurve_pair_linearIndependent` + `LinearIndependent.pair_iff`), discharging
 `IsGeneralPosition` and hence (with `supportExtensor_ne_zero_of_isGeneralPosition`) every forest
 hinge's transversality `he` in `hglue_of_forest`. This isolates the genericity (one injective real
-assignment) from the geometric gluing. **Next concrete commit: see *Hand-off*** — the `F₀`
-construction proper (gluing the contraction realization with the rigidly-placed block) + its
-spanning-forest data + the count `hmatch`.
+assignment) from the geometric gluing. **The panel-layer Case-I capstone is now also landed**
+(`PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition`): for a
+panel framework `P` *in general position*, the iff-realization `RankHypothesis k' ↔ dim Z_s = k'`
+holds given only the rigid block's spanning-forest **graph** data (`u`/`other`/`e` + `hu`/`hsep`/
+`hlink`/`hends`) and the count `hmatch` — every forest hinge's transversality `he` is read off the
+general position via `supportExtensor_ne_zero_of_isGeneralPosition` (endpoint distinctness from the
+forest separation at the diagonal, `(hsep j j) : other j ≠ u j`, through `hends`). This folds
+`hglue_of_forest` + the general-position bricks into `toBodyHinge_rankHypothesis_iff_finrank_
+pinnedMotionsOn`, removing the last per-hinge transversality obligation from the Case-I path.
+**Next concrete commit: the `F₀` graph-and-realization exhibition** (see *Hand-off*) — build `P` on
+the parent graph `G` from the contraction realization + rigidly-placed block, its spanning-forest
+data (`hends` by construction), and the count `hmatch`.
 
 ## Architectural choices made up front
 
@@ -231,6 +240,20 @@ hand-off convenience.
   graph-and-hinge-agnostic step; what remains is the geometric `F₀` exhibition. Green; folded into
   `lem:genericity-device`'s `\lean{...}` pin (route-(a) bridge, no new node).
 
+- [x] `PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition`
+  (`Molecular/AlgebraicInduction.lean`): the **panel-layer Case-I capstone** — packages
+  `hglue_of_forest` against a panel framework `P` *in general position* (`P.IsGeneralPosition`).
+  Sources the per-hinge transversality `he` from general position
+  (`supportExtensor_ne_zero_of_isGeneralPosition`; endpoint distinctness `(hsep j j) : other j ≠
+  u j` routed through `hends : P.ends (e j) = (u j, other j)`), so the iff-realization
+  `RankHypothesis k' ↔ dim Z_s = k'` needs only the rigid block's spanning-forest *graph* data
+  (`u`/`other`/`e` + `hu`/`hsep`/`hlink`/`hends`) and the count `hmatch` — no per-hinge
+  transversality hypothesis. Composes `hglue_of_forest` →
+  `toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`. Removes the last per-hinge
+  transversality obligation from the Case-I route-(a) path, leaving the geometric `F₀`
+  graph-and-realization exhibition. Green (axioms {propext, Classical.choice, Quot.sound}); folded
+  into `lem:genericity-device`'s `\lean{...}` pin (route-(a) bridge, no new node).
+
 - [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
   `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
   `span (range a) = span F.rigidityRows`, from finite-dimensionality of the dual (`α` finite ⇒
@@ -376,19 +399,27 @@ transversal under it), and — as of this commit — the **explicit dimension-fr
 `withMomentNormals` + `isGeneralPosition_withMomentNormals` (moment-curve normals at an injective
 real parameter map give `IsGeneralPosition` for any `|α|`, Vandermonde minor `t' − t ≠ 0`). Together
 they source `hglue_of_forest`'s `he` for a rigid block of any size, with the genericity reduced to a
-single injective real assignment. No genericity / general-position obligation now remains on the
-Case-I path; what is left is purely the geometric gluing.
+single injective real assignment. **As of this commit the panel-layer transversality wiring is also
+done**: `PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition`
+packages `hglue_of_forest` against a general-position panel framework `P`, reading each forest
+hinge's `he` off `P.IsGeneralPosition` via `supportExtensor_ne_zero_of_isGeneralPosition` (endpoint
+distinctness from the forest separation at the diagonal, through `hends : P.ends (e j) = (u j, other
+j)`). So the panel-layer Case-I iff-realization now needs only the rigid block's spanning-forest
+*graph* data and the count — no per-hinge transversality hypothesis. No genericity /
+general-position / transversality obligation now remains on the Case-I path; what is left is purely
+the geometric graph-and-realization construction.
 
-**Smallest next concrete commit: the `F₀` *construction* proper** — exhibit (a) the single
-realization `F₀` (a `PanelHingeFramework`-via-`toBodyHinge`, its normals from `withMomentNormals`
-on an injective parameter map) gluing the contraction realization (`G/E(H)` at its
-inductive `RankHypothesis`) with the rigidly-placed block `V(H)`, (b) the private-endpoint spanning
-forest `u`/`other`/`e` of `V(H)`'s transversal hinges (`u` injective, `other j ≠ u j'`, `he` now from
-`supportExtensor_ne_zero_of_isGeneralPosition`), and (c) the count `hmatch` (`|J|·(D−1) = D(|V|−1) −
-dim Z_s`) against the contraction's inductive `RankHypothesis`. Feed (a)+(b)+(c) through
-`hglue_of_forest` → `toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn`. This is the
-genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is
-in hand and the count is being matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
+**Smallest next concrete commit: the `F₀` graph-and-realization exhibition** — exhibit (a) the
+single panel-hinge framework `P` on the parent graph `G` (normals from `withMomentNormals` on an
+injective parameter map ⇒ `P.IsGeneralPosition` for free) gluing the contraction realization
+(`G/E(H)` at its inductive `RankHypothesis`) with the rigidly-placed block `V(H)`, (b) the
+private-endpoint spanning forest `u`/`other`/`e` of `V(H)`'s hinges (`u` injective, `other j ≠ u
+j'`, `hlink`, and `hends : P.ends (e j) = (u j, other j)` by construction), and (c) the count
+`hmatch` (`|J|·(D−1) = D(|V|−1) − dim Z_s`) against the contraction's inductive `RankHypothesis`.
+Feed (a)+(b)+(c) through `toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition` (the
+transversality `he` is now discharged for free by general position). This is the
+genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `P`/`F₀`
+is in hand and the count is being matched to the corank. (For the genuine cycle case, the `m ≤ D` extensor-independence of
 `lem:cycle-realization` + `exists_independent_panelSupportExtensor` general position controls the
 cross-body interaction; `eq_zero_of_mem_span_singleton_of_sum_eq_zero` is the screw-space
 telescoping core.) The other consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same

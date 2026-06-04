@@ -805,7 +805,8 @@ Phase~21b.
         CombinatorialRigidity.Molecular.hcoord_const,
         CombinatorialRigidity.Molecular.hglue_of_realization,
         CombinatorialRigidity.Molecular.hglue_of_independent_rigidityRows,
-        CombinatorialRigidity.Molecular.hglue_of_forest}
+        CombinatorialRigidity.Molecular.hglue_of_forest,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization through its
@@ -861,6 +862,16 @@ Phase~21b.
   $\mathit{other}(j) \ne u(j')$ --- the $\mathtt{hglue}$ inequality holds at
   $F_0$ given only the count match $|J|(D-1) = D(|V|-1) - \dim Z_s$, so the
   last \emph{generic} reduction leaves only the geometric $F_0$ exhibition.
+  On the panel layer this packages one step further: when $F_0 = P^{\flat}$ is
+  the body-hinge interpretation of a panel-hinge framework $P$ whose normals are
+  in general position (\cref{def:panel-hinge-framework}, e.g. the moment-curve
+  assignment), each forest hinge's transversality is read off the general
+  position from its endpoint distinctness $\mathit{other}(j) \ne u(j)$ (the
+  forest separation at the diagonal), so the panel-layer Case~I iff-realization
+  ($\mathrm{RankHypothesis}\ k' \iff \dim Z_s = k'$) needs only the rigid block's
+  spanning-forest \emph{graph} data and the count match --- no per-hinge
+  transversality hypothesis --- leaving the consumer the graph-and-realization
+  exhibition of \cref{lem:case-I}.
 \end{lemma}
 \begin{proof}
   \leanok

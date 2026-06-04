@@ -1925,4 +1925,54 @@ theorem hglue_of_forest [Fintype α] [Nonempty α] {J : Type*} [Finite J]
     (fun p => Submodule.subset_span (hmem p)) (sblk := sblk) ?_
   rw [hcard]; exact hmatch
 
+/-- **Case I panel capstone: a general-position rigid block realizes the rank** (`lem:case-I`, the
+route-(a) panel-layer iff-realization; Katoh–Tanigawa 2011 §6.1 Claim 6.4, §6.2/6.5, Phase 21b).
+The packaging of `hglue_of_forest` against a *panel*-hinge framework `P` whose normals are in
+general position (`P.IsGeneralPosition`, e.g. the moment-curve assignment
+`isGeneralPosition_withMomentNormals`): it sources the per-hinge transversality input `he` of
+`hglue_of_forest` from the general position via `supportExtensor_ne_zero_of_isGeneralPosition`,
+leaving the consumer only the *graph* data of the rigid block's spanning forest and the count.
+
+Concretely, for the body-hinge interpretation `P.toBodyHinge` on a (nonempty) rigid block
+`s = sblk` carrying a spanning forest of hinges — each `e j` linking a *private endpoint* `u j`
+(the forest child, `u` injective) to an arbitrary `other j`, with the forest-separation hypothesis
+`hsep : ∀ j j', other j ≠ u j'` and each hinge's panel endpoints matching its forest orientation
+(`hends : P.ends (e j) = (u j, other j)`) — the framework realizes the target rank at `k'`
+(`RankHypothesis k'`, i.e. `dim Z(G,p) = D + k'`) **iff** the block pin `pinnedMotionsOn s` has
+dimension `k'`, the contraction's inductive rank, provided the **count match** `hmatch`: the
+forest's row count `|J|·(D−1)` equals `D(|V|−1) − dim Z_s`. Endpoint distinctness of each forest
+hinge — the input `supportExtensor_ne_zero_of_isGeneralPosition` needs — is read off the
+forest separation at the diagonal (`(hsep j j) : other j ≠ u j`, so `(P.ends (e j)).1 = u j ≠
+other j = (P.ends (e j)).2` through `hends`), so no extra transversality hypothesis is required:
+general position of the panel normals discharges every forest hinge at once.
+
+This is the last reduction of the Case-I route-(a) chain that still mentions the panel general
+position: it composes `hglue_of_forest` (the rigid block's `(D−1)·|J|` independent rigidity rows
+feeding the block-triangular gluing) with `supportExtensor_ne_zero_of_isGeneralPosition` (every
+forest hinge transversal under general position) into `toBodyHinge_rankHypothesis_iff_finrank_
+pinnedMotionsOn`. The remaining consumer work — the genuinely-geometric Case-I assembly (KT
+§6.2/6.5) — is the *graph-and-realization* exhibition: build `P` (a `PanelHingeFramework`, its
+normals from `withMomentNormals` on an injective parameter map, so `IsGeneralPosition` for free) on
+the parent graph `G` from the contraction realization `G/E(H)` plus the rigidly placed block
+`V(H)`, exhibit the block's spanning forest `u`/`other`/`e` (with `hends` by construction), and
+discharge the count `hmatch` against the contraction's inductive `RankHypothesis`. -/
+theorem PanelHingeFramework.toBodyHinge_rankHypothesis_iff_pinnedMotionsOn_of_generalPosition
+    [Fintype α] [Nonempty α] {J : Type*} [Finite J]
+    (P : PanelHingeFramework k α β) (hP : P.IsGeneralPosition)
+    {sblk : Set α} (hs : sblk.Nonempty) (k' : ℤ)
+    {u other : J → α} {e : J → β} (hu : Function.Injective u)
+    (hsep : ∀ j j', other j ≠ u j') (hlink : ∀ j, P.toBodyHinge.graph.IsLink (e j) (u j) (other j))
+    (hends : ∀ j, P.ends (e j) = (u j, other j))
+    (hmatch : Nat.card J * (screwDim k - 1) + Module.finrank ℝ P.toBodyHinge.infinitesimalMotions
+        ≤ screwDim k * Fintype.card α →
+      (Nat.card J * (screwDim k - 1) : ℤ) = screwDim k * (Fintype.card α - 1)
+        - Module.finrank ℝ (P.toBodyHinge.pinnedMotionsOn sblk)) :
+    P.toBodyHinge.RankHypothesis k' ↔
+      (Module.finrank ℝ (P.toBodyHinge.pinnedMotionsOn sblk) : ℤ) = k' := by
+  have he : ∀ j, P.toBodyHinge.supportExtensor (e j) ≠ 0 := fun j =>
+    P.supportExtensor_ne_zero_of_isGeneralPosition hP (e := e j)
+      (by rw [hends j]; exact (hsep j j).symm)
+  exact P.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn hs k'
+    (hglue_of_forest P.toBodyHinge hu hsep hlink he hmatch)
+
 end CombinatorialRigidity.Molecular
