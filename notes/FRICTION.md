@@ -280,6 +280,31 @@ housekeeping pass once their resolution is fully indexed.
   application is up-to-defeq" rule already in TACTICS-QUIRKS § 25, and a sibling of
   the `map_eq_zero_iff` entry below. Lifted: TACTICS-QUIRKS § 25).
 
+### [resolved] But: `ofParam`↔`ofNormals` defeq across a heavy `IsInfinitesimallyRigidOn` term times out — state the hypothesis pre-converted, don't lean on lazy application-defeq
+- **Where it bit:** `hasFullRankRealization_of_splice_ofParam` in
+  `Molecular/AlgebraicInduction.lean` (Phase 22 N5, the moment-curve seed
+  specialization of the `_ofNormals` splice). `ofParam G ends param` is `rfl`-equal to
+  `ofNormals G ends (fun p ↦ momentCurve (param p.1) p.2)`, so by the entry above the
+  natural move is to state the two leg hypotheses on `(ofParam GH/Gc …).toBodyHinge`
+  rigid and pass them straight to the `_ofNormals` brick.
+- **Friction:** that times out (`(deterministic) timeout at isDefEq`/`whnf`, 200k
+  heartbeats). The sibling entry's "application unifies up to defeq" holds, but the
+  framework defeq wrapped in `IsInfinitesimallyRigidOn` (a `dualCoannihilator`-of-span
+  predicate over the screw-assignment space) is *too expensive* to discharge lazily —
+  and `rw [ofParam_eq_ofNormals_momentCurve] at hblock hcontract` whnf-times-out the
+  same way (the motive re-check is just as heavy). The cheap-defeq lesson ≠ the
+  cost-of-defeq one.
+- **Fix:** state the leg hypotheses *already* in the target `ofNormals`-at-moment-curve
+  form (so the heavy term matches syntactically — no defeq needed on it), and isolate
+  the one *cheap* defeq (`isGeneralPosition_ofParam`'s `(ofParam …).IsGeneralPosition`
+  → `(ofNormals …).IsGeneralPosition`, which unfolds only to `LinearIndependent` on
+  `normal`) into a `have hgp : (ofNormals … ).IsGeneralPosition := …` with the target
+  type written out. Pin `ofNormals (k := k)` so the `momentCurve` lambda's binder type
+  resolves.
+- **Status:** resolved (no lift — refinement of TACTICS-QUIRKS § 25: prefer the
+  pre-converted hypothesis shape when the up-to-defeq term is heartbeat-heavy, rather
+  than relying on application-defeq or `rw`; sibling of the entry above).
+
 ### [resolved] `LinearEquiv.map_eq_zero_iff` via `rw` fails on a defeq-wrapped codomain (`ScrewSpace k` = `⋀^(k+2−2)`); apply `map_ne_zero_iff … .injective` as a term
 - **Where it bit:** `panelSupportExtensor_ne_zero_iff` in
   `Molecular/AlgebraicInduction.lean` (Phase 21 panel leaf): showing

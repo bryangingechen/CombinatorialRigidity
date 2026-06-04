@@ -3076,6 +3076,49 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals [Finite �
   PanelHingeFramework.hasFullRankRealization_of_splice G ends hends hne_ends hne hgp hGH hGc
     hcH hcc hcover hblock hcontract
 
+/-- **Case I splice producer, moment-curve seed: both legs rigid as `ofParam` at one injective
+parameter** (`lem:case-I-splice-placement` / `lem:case-I-realization`, the seed specialized to the
+moment-curve general-position assignment; Katoh–Tanigawa 2011 §6.2/6.5, eqs.\ (6.2), (6.6),
+Phase 22). The moment-curve specialization of `hasFullRankRealization_of_splice_ofNormals`: rather
+than a free seed `q₀` carrying its own general-position hypothesis `hgp`, the seed is the
+moment-curve assignment `q₀ = fun p ↦ momentCurve (param p.1) p.2` at an *injective* parameter map
+`param : α → ℝ`. Then general position is automatic
+(`isGeneralPosition_ofParam` — distinct bodies get distinct parameters, distinct-parameter
+moment-curve points are independent), so `hgp` drops out of the consumer's obligation, and the two
+leg hypotheses are stated at the explicit moment-curve seed `ofNormals · ends (fun p ↦ momentCurve
+(param p.1) p.2)` — the value `ofParam · ends param` reduces to (`ofParam_eq_ofNormals_momentCurve`,
+a `rfl`), kept in the `ofNormals` form so the leg framework terms match the parent brick
+syntactically (the deep framework defeq is too costly to discharge by `rw` on the rigidity goal).
+
+This is the shape the genuine remaining Case-I obligation reduces to once the genericity is fixed
+to a single injective real assignment (the dimension-free general-position witness the rigid block
+needs, where standard-basis normals cover only `|α| ≤ k + 2`): the seed witness-transfer must
+produce *one* parameter map `param` at which *both* leg graphs carry a rigid `ofParam` realization
+on their own vertex sets (the boundary-panel intersection of eq.\ (6.6) read off the moment curve).
+With both legs rigid at one `param`, this lemma closes `lem:case-I-realization` /
+`theorem_55.hcontract`. The deliverable rank is concluded, not assumed — the inputs are the
+satisfiable per-leg rigidities at the common moment-curve seed, not the parent rank. The remaining
+red content is exhibiting that common `param` (the construction, not the consumers). -/
+theorem PanelHingeFramework.hasFullRankRealization_of_splice_ofParam [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
+    {param : α → ℝ} (hparam : Function.Injective param)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
+    (hblock :
+      (PanelHingeFramework.ofNormals (k := k) GH ends
+          (fun p => momentCurve (param p.1) p.2)).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
+    (hcontract :
+      (PanelHingeFramework.ofNormals (k := k) Gc ends
+          (fun p => momentCurve (param p.1) p.2)).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends
+      (fun p => momentCurve (param p.1) p.2)).IsGeneralPosition :=
+    PanelHingeFramework.isGeneralPosition_ofParam G ends hparam
+  exact PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals G ends hends hne_ends hne
+    hgp hGH hGc hcH hcc hcover hblock hcontract
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by
