@@ -21,6 +21,36 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
+**N5 per-leg rank-polynomial CONSUMER GREEN — a non-root of the rank polynomial ⟹ the leg is rigid
+*at that point*** (`PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`,
+`AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below the still-red
+`lem:case-I-splice-placement` / `lem:case-I-realization`). The *forward* half of
+`exists_rankPolynomial_of_rigidOn`: at any `q` with `eval q Q ≠ 0`, the leg `ofNormals G ends q` is
+infinitesimally rigid on `V(G)`. Proved **at the seed `q` itself** (not at a generic point): the
+non-root clause gives the full-size `D(|V|−1)` `panelRow`-subfamily LI at `q`, which forces
+`finrank (span rigidityRows) ≥ #s` (the subfamily span sits inside the rigidity-row span — `⊆` needs
+*no* transversality, `annihRow_apply_self`), hence by rank–nullity
+(`infinitesimalMotions_eq_dualCoannihilator` + `finrank_dualCoannihilator_eq` +
+`finrank_screwAssignment`) `dim Z(G,q) = D|V| − finrank(span rigidityRows) ≤ D|V| − D(|V|−1) = D ≤
+D(|V(G)ᶜ|+1)`, so N3 reads off rigidity at `q`. This is the per-leg brick the shared-seed coupling
+consumes (each leg rigid *at the common non-root* `q₀`), not at a separately-generic point.
+
+**Constructibility recon on the coupling (this commit, key finding): the coupling is NOT the
+one-commit "tight assembly" the prior hand-off claimed — two real gaps remain.** Running the
+producer-scrutiny recon (`DESIGN.md` *Constructibility recon …*) on the planned coupling
+(product of the two legs' rank polynomials → shared non-root `q₀` → splice) found two genuine
+obstructions the type-level "feed the green bricks together" plan was blind to: **(G1) per-leg
+transversal-rigid *seed*** — `exists_rankPolynomial_of_rigidOn` (the polynomial *producer*) needs the
+leg rigid at a seed with *all hinges transversal* (`hne`), but the IH supplies only a *bare* rigid
+`HasFullRankRealization` (no general position); a rigid framework can have a degenerate hinge, and the
+whole `panelRow`/N7b-0 span argument needs transversal hinges. **(G2) general position at the shared
+seed** — the splice `hasFullRankRealization_of_splice_ofNormals` needs `hgp` (general position at
+`q₀`), but the product `Q_H · Q_c`'s non-root is not general-position; coupling general position into
+the shared-non-root search needs a *third* nonzero factor whose non-roots are general-position
+assignments (a Vandermonde-type brick that does not yet exist). Both are the genuine KT §6.2
+panel-intersection geometry (eq. 6.6) — the construction does *not* take an arbitrary rigid IH
+realization, it *builds* a specific general-position one. See *Blockers* / *Hand-off*.
+
 **N5 per-leg rank polynomial GREEN — a rigid leg ⟹ a nonzero Gram-det `MvPolynomial`**
 (`PanelHingeFramework.exists_rankPolynomial_of_rigidOn`, `AlgebraicInduction.lean`, axiom-clean,
 no `\leanok` flip — infra below the still-red `lem:case-I-splice-placement` / `lem:case-I-realization`).
@@ -162,14 +192,20 @@ N5 + N6.
   full count directly from rigidity-on-`V`). **Witness-transfer prerequisite GREEN (this commit):**
   `exists_rigidOn_ofNormals_of_hasFullRankRealization` — the IH's `HasFullRankRealization k G` gives a
   *non-empty rigid `ofNormals` locus* (`∃ ends q, (ofNormals G ends q).toBodyHinge` rigid on `V(G)`),
-  the first decomposable brick of option (b). **Per-leg rank polynomial GREEN (this commit):**
+  the first decomposable brick of option (b). **Per-leg rank polynomial GREEN:**
   `exists_rankPolynomial_of_rigidOn` — a rigid leg ⟹ a nonzero (at the seed) Gram-det
   `MvPolynomial` whose every non-root gives the leg's full `D(|V|−1)` `panelRow`-subfamily LI; built on
   the reused `exists_good_realization_ofParam` coordinatization + the new mirror
   `exists_polynomial_ne_zero_of_linearIndependent_at` (`Mathlib/LinearAlgebra/Matrix/Rank.lean`,
-  exposes the witnessing minor). Remaining (red): **couple** *both* legs' polynomials — product +
-  `MvPolynomial.exists_eval_ne_zero` ⟹ one shared `q₀`, re-derive both legs' rigidity at `q₀` (N3),
-  feed `hasFullRankRealization_of_splice_ofNormals`.
+  exposes the witnessing minor). **Rank-polynomial CONSUMER GREEN (this commit):**
+  `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` — the forward half: any non-root `q`
+  of the leg's rank polynomial gives the leg rigid on `V(G)` *at `q`* (subfamily LI at `q` ⟹
+  `dim Z(G,q) ≤ D` ⟹ N3), the per-leg brick the shared-seed coupling consumes at the common `q₀`.
+  **Coupling RED — recon found two gaps (this commit), not a one-commit assembly:** **(G1)** building
+  each leg's rank polynomial needs a *transversal*-rigid seed, which the bare IH does not supply;
+  **(G2)** the splice needs general position at the shared non-root, which `Q_H·Q_c` does not give
+  (needs a third general-position factor). Both are the genuine KT §6.2 panel-intersection geometry —
+  see *Decisions* / *Blockers* / *Hand-off*.
 - [ ] **N6** `lem:case-I-realization` — compose N4 + N5 + the green glue
   (`isInfinitesimallyRigidOn_union_of_inter`) + device ⇒ discharges
   `theorem_55.hcontract`. **Largely subsumed by `hasFullRankRealization_of_splice`**
@@ -189,6 +225,23 @@ N5 + N6.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N5 rank-polynomial consumer + coupling constructibility recon (2026-06-04).** Built
+  `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (`AlgebraicInduction.lean`,
+  axiom-clean), the forward half of `exists_rankPolynomial_of_rigidOn`: a non-root `q` of the leg's
+  rank polynomial ⟹ the leg rigid on `V(G)` *at `q` itself* (subfamily LI at `q` forces
+  `finrank(span rigidityRows) ≥ #s`, so `dim Z(G,q) ≤ D` by rank–nullity, then N3) — the per-leg brick
+  the shared-seed coupling consumes at the common `q₀`. **But the recon
+  (`DESIGN.md` *Constructibility recon …*) on the planned coupling found it is NOT the one-commit
+  assembly the prior hand-off claimed:** two real gaps the type-level plan was blind to. **(G1)**
+  `exists_rankPolynomial_of_rigidOn` (the polynomial *producer*) needs a *transversal*-rigid seed
+  (`hne`), but the IH gives only a *bare* rigid `HasFullRankRealization` (no general position) — a rigid
+  framework can have a degenerate hinge, and the whole `panelRow`/N7b-0 span argument needs transversal
+  hinges. **(G2)** the splice needs `hgp` (general position) at the shared non-root, which `Q_H·Q_c`
+  does not give — coupling it in needs a third nonzero factor whose non-roots are general-position
+  (a Vandermonde-type brick that does not exist yet). Both are the genuine KT §6.2 panel-intersection
+  geometry (eq. 6.6): the construction *builds* a specific general-position rigid realization, it does
+  not take an arbitrary rigid IH one. The consumer brick is honest (input is the satisfiable
+  non-root LI clause, deliverable is rigidity at that point); the producer node stays red.
 - **N5 per-leg rank polynomial via a new constructive multivariate mirror (2026-06-04).** Built
   `exists_rankPolynomial_of_rigidOn` (`AlgebraicInduction.lean`), the genuine next brick of the seed
   witness-transfer (option (b)): a rigid leg ⟹ a single `MvPolynomial` nonzero at the seed, every
@@ -433,6 +486,9 @@ N5 + N6.
 - *`exists_polynomial_ne_zero_of_linearIndependent_at` — constructive rank-witnessing polynomial mirror
   (exposes the Gram-det minor for cross-family coupling)* → FRICTION [mirrored]
   *`exists_polynomial_ne_zero_of_linearIndependent_at` …*; `Mathlib/LinearAlgebra/Matrix/Rank.lean`.
+- *A `panelRow ends i` membership `rfl` whnf-times-out with `i` a coerced subtype — `rintro
+  ⟨⟨e',t₁,t₂⟩, hi⟩` to expose a bare triple so the `rfl` is syntactic* → FRICTION [resolved] *A
+  `panelRow ends i` membership `rfl` whnf-times-out …* (instance of TACTICS-QUIRKS § 4).
 - *Repackaging a `HasFullRankRealization` witness as an `ofNormals` — `subst` the `Q.graph = G`
   conjunct, don't `rw` both sides (the `V(G)`-vs-`V(Q.graph)` mismatch)* → FRICTION [resolved]
   *Repackaging a `HasFullRankRealization` witness as an `ofNormals` …* (sibling of TACTICS-QUIRKS § 25).
@@ -489,58 +545,61 @@ N5 + N6.
   `ofNormals` locus) and — this commit — the per-leg **rank polynomial**
   `exists_rankPolynomial_of_rigidOn` (a rigid leg ⟹ a nonzero-at-the-seed Gram-det `MvPolynomial`,
   every non-root of which gives the leg's full-size `panelRow`-subfamily LI). What remains red is
-  exactly the **coupling**: take the two legs' polynomials, multiply, `MvPolynomial.exists_eval_ne_zero`
-  the product for one shared `q₀`, re-derive both legs' rigidity at `q₀` (via N3 /
-  `hasFullRankRealization_of_independent_panelRow`), feed `hasFullRankRealization_of_splice_ofNormals`.
-  The rest of N5/N6 is green (transversality, `withGraph` normal-sharing, the splice→N7b-0→device
-  chain, the single-leg bridge, the rigid-locus prerequisite, and now the per-leg rank polynomial). The
-  `_ofParam` seed was ruled out (subvariety-genericity gap vs. the free-normal `∃ Q, …` motive); see
-  *Decisions*.
-- **Track A's remaining path is now fully decomposed to one assembly commit** — the shared-seed
-  *coupling* (product of the two legs' rank polynomials + `MvPolynomial.exists_eval_ne_zero` + N3 +
-  `hasFullRankRealization_of_splice_ofNormals`); see *Hand-off*. **Track B** (the Case II/III producer)
-  remains a multi-node crux requiring its own math-first decomposition before a build (eq. 6.12
-  degenerate placement + Lemma 6.10 at `d=3`).
+  exactly the **coupling**, and the forward half is now GREEN:
+  `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (this commit) turns a non-root of a
+  leg's rank polynomial into the leg rigid *at that point*. The `_ofParam` seed was ruled out
+  (subvariety-genericity gap vs. the free-normal `∃ Q, …` motive); see *Decisions*.
+- **The coupling is NOT a one-commit assembly — the recon (this commit) found two real gaps that the
+  prior "fully decomposed to one assembly commit" framing missed.** **(G1) per-leg transversal-rigid
+  seed:** `exists_rankPolynomial_of_rigidOn` (the polynomial producer) needs the leg rigid at a seed
+  with all hinges *transversal* (`hne`); the IH gives only a *bare* rigid `HasFullRankRealization`,
+  and a rigid framework can have a degenerate hinge — the `panelRow`/N7b-0 span argument that builds
+  the polynomial genuinely needs transversal hinges. **(G2) general position at the shared seed:** the
+  splice `hasFullRankRealization_of_splice_ofNormals` needs `hgp` at `q₀`, but the product `Q_H·Q_c`'s
+  non-root is not general-position; coupling general position in needs a *third* nonzero factor whose
+  non-roots are general-position assignments (a Vandermonde-type brick that does not exist yet). Both
+  gaps are the genuine KT §6.2 panel-intersection geometry (eq. 6.6): the construction *builds* a
+  specific general-position rigid realization per leg, it does not consume an arbitrary rigid IH one.
+  The green forward half (consumer brick) is real progress, but the producer remains red and needs a
+  *math-first decomposition* of (G1)+(G2) before its build. **Track B** (the Case II/III producer)
+  remains a separate multi-node crux (eq. 6.12 degenerate placement + Lemma 6.10 at `d=3`).
 
 ## Hand-off / next phase
 
-**This commit: the per-leg "rigid ⟹ nonzero Gram-det `MvPolynomial`" brick.** The prior hand-off named
-this as the genuine next brick of the witness-transfer (option (b)), and demanded it be decomposed
-math-first. This commit lands it: `PanelHingeFramework.exists_rankPolynomial_of_rigidOn` turns one
-leg's single-seed rigidity into a single `Q : MvPolynomial (α × Fin (k+2)) ℝ` with `eval q₀ Q ≠ 0` and
-`∀ q, eval q Q ≠ 0 → (the leg's full-size D(|V|−1) panelRow-subfamily is LI)`. It reuses
-`exists_good_realization_ofParam`'s coordinatization (the `panelRow` `⋀^k`-coords are the degree-2
-`annihRowPoly`s scaled by the body-incidence sign) and feeds it to the **new constructive mirror**
-`exists_polynomial_ne_zero_of_linearIndependent_at` (`Mathlib/LinearAlgebra/Matrix/Rank.lean`) — the
-sibling of `exists_le_finrank_span_polynomial` that *exposes* the witnessing Gram-det minor (selected
-by `exists_submatrix_det_ne_zero_of_linearIndependent_rows`) rather than consuming it inside
-`MvPolynomial.exists_eval_ne_zero`. Both axiom-clean, honest (input is the satisfiable `hrig`). See
-*Current state* / *Decisions* / FRICTION.
+**This commit: the per-leg rank-polynomial *consumer* + a constructibility recon that corrects the
+prior hand-off.** Landed `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (axiom-clean):
+the forward half of `exists_rankPolynomial_of_rigidOn` — at any non-root `q` of a leg's rank
+polynomial, the leg `ofNormals G ends q` is rigid on `V(G)` *at that point* (subfamily LI at `q` ⟹
+`finrank(span rigidityRows) ≥ #s` ⟹ `dim Z(G,q) ≤ D` by rank–nullity ⟹ N3). This is the per-leg brick
+the shared-seed coupling consumes at the common `q₀`. **But the recon on the planned coupling found it
+is NOT a one-commit "tight assembly"** (the prior hand-off's framing): two real gaps, both the genuine
+KT §6.2 geometry. **(G1)** the rank-polynomial *producer* `exists_rankPolynomial_of_rigidOn` needs a
+*transversal*-rigid seed (`hne`), but the IH gives only a *bare* `HasFullRankRealization` (no general
+position); **(G2)** the splice needs general position at the shared non-root, which `Q_H·Q_c` does not
+supply. See *Current state* / *Decisions* / *Blockers*.
 
-**Recommended next concrete commit — the coupling step (`lem:case-I-splice-placement`, the
-deliverable).** Both per-leg inputs are now green: each leg's IH gives a non-empty rigid `ofNormals`
-locus (`exists_rigidOn_ofNormals_of_hasFullRankRealization`), and at any such locus the per-leg rank
-polynomial (`exists_rankPolynomial_of_rigidOn`, this commit) gives a nonzero `MvPolynomial`. The
-coupling commit is now a tight assembly on green infra: (1) from each leg's IH-locus take its rank
-polynomial `Q_H`, `Q_c` (both nonzero at *their own* seeds); (2) the **product** `Q_H * Q_c` is nonzero
-(integral domain), so `MvPolynomial.exists_eval_ne_zero` gives one shared `q₀` with `eval q₀ (Q_H*Q_c)
-≠ 0`, hence `eval q₀ Q_H ≠ 0` *and* `eval q₀ Q_c ≠ 0` (`mul_ne_zero` reverse / `map_mul`); (3) each
-polynomial's "non-root ⟹ subfamily LI" clause gives both legs' full-size `panelRow`-subfamilies LI at
-`q₀`, which `hasFullRankRealization_of_independent_panelRow` / N3 turn into both legs rigid on their
-vertex sets at `q₀`; (4) feed `hasFullRankRealization_of_splice_ofNormals` (green) to close
-`lem:case-I-splice-placement` / `lem:case-I-realization`. **One subtlety to watch:** the two legs'
-rank polynomials live over the *same* variable type `σ = α × Fin(k+2)` (both legs ride the parent's
-normal assignment) — confirm the `ends` selectors agree so the shared-`q₀` evaluation lines up; the
-legs are `withGraph GH`/`withGraph Gc` of the parent, same `ends`/`normal` (`withGraph_normal`,
-green). Route still in **free `ofNormals` space, not moment-curve `ofParam`** (the `_ofParam`
-subvariety-genericity gap, *Decisions*). This commit closes the producer if the four steps go through;
-if step (3)'s two-leg rigidity-at-`q₀` re-derivation snags on the `V(GH)`-vs-`V(Gc)` count match
-(`hmatch`), isolate that into a sub-brick.
+**Recommended next concrete commit — math-first decomposition of the coupling's two gaps (do NOT
+schedule the coupling as a build until these close).** The constructibility recon (`DESIGN.md`) is the
+binding gate here: the coupling's arithmetic does *not* close from the bare IH. The decomposition to
+do, against KT §6.2 (panel-intersection, eq. 6.6) + `notes/Phase21b.md` *Finding A*:
+- **(G1) Transversal-rigid seed per leg.** Either (a) strengthen the realization motive — change
+  `HasFullRankRealization` / the three `theorem_55` IH hypotheses (`hbase`/`hsplit`/`hcontract`) to
+  carry a *general-position* (hence transversal) rigid realization, so the IH directly feeds
+  `exists_rankPolynomial_of_rigidOn`; or (b) prove "a bare rigid realization admits a transversal-rigid
+  sibling at a nearby seed" (the generic-perturbation argument — likely itself needs the rank polynomial,
+  so (a) is cleaner). (a) is a signature reshape touching the base case + Case II + Case III producers;
+  scope it before building.
+- **(G2) General-position factor.** A nonzero `MvPolynomial (α × Fin (k+2)) ℝ` (Vandermonde/pairwise-
+  normal-independence product) whose non-roots are exactly `IsGeneralPosition` assignments, so the
+  triple product `Q_H · Q_c · Q_gp` has a shared non-root that is *also* general position. New brick.
+With (G1)+(G2) in hand the coupling is: triple product nonzero → `MvPolynomial.exists_eval_ne_zero` →
+shared `q₀`; both legs rigid at `q₀` (this commit's consumer brick, via the leg rank polynomials);
+`q₀` general position (Q_gp); feed `hasFullRankRealization_of_splice_ofNormals` (green). The legs ride
+the parent's `ends`/`normal` (`withGraph_normal`), and rigidity is `ends`-independent
+(`IsInfinitesimallyRigidOn` reads only `supportExtensor` = graph+normals), so the `ends`-swap is free.
 
-Honesty-gate: keep `lem:case-I-splice-placement` / `lem:case-I-realization` red until the *coupling*
-lands (both per-leg inputs are green, but the shared-seed deliverable is not). The KT math is
-`notes/Phase21b.md` *Finding A* + the `algebraic-induction.tex` `lem:case-I-splice-placement` proof
-sketch.
+Honesty-gate: `lem:case-I-splice-placement` / `lem:case-I-realization` stay red — the deliverable
+(shared-seed full-rank realization) is not produced; only the per-leg consumer half is green.
 
 *Alternatively*, the genericity-free `prop:rigidity-matrix-prop11` `hub` brick (`screwDim k + def ≤
 dim Z(G,p)`, the Phase-19 partition-contraction count) is a Track-independent closable target — but it

@@ -351,6 +351,25 @@ housekeeping pass once their resolution is fully indexed.
   pre-converted hypothesis shape when the up-to-defeq term is heartbeat-heavy, rather
   than relying on application-defeq or `rw`; sibling of the entry above).
 
+### [resolved] A `panelRow ends i` membership `rfl` whnf-times-out when `i` is left as the coerced subtype — `rintro ⟨⟨e', t₁, t₂⟩, hi⟩` to expose a bare triple
+- **Where it bit:** `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` in
+  `Molecular/AlgebraicInduction.lean` (Phase 22), the `hsub : span (range (subfamily of
+  panelRow)) ≤ span rigidityRows` step. The membership witness ends in a `rfl` proving
+  `F.panelRow ends i = hingeRow (ends i.1).1 (ends i.1).2 (annihRow (F.supportExtensor i.1) …)`.
+- **Friction:** with `rintro _ ⟨i, rfl⟩` (so `i : ↥s` a coerced subtype) and the witness
+  written via the projections `(i : β × _ × _).1` / `.2.1` / `.2.2`, the final `rfl`
+  whnf-times-out (200k heartbeats): the `panelRow` def-unfold against an opaque coerced
+  index doesn't reduce syntactically. Same family as the `ofParam`↔`ofNormals` entry above
+  (heavy `ofNormals`/`toBodyHinge` defeq), but the lever is the *index shape*, not the
+  framework term.
+- **Fix:** destructure the index to a bare triple up front — `rintro _ ⟨⟨⟨e', t₁, t₂⟩, hi⟩, rfl⟩`
+  — and write the witness as `⟨e', (ends e').1, (ends e').2, …, annihRow (F.supportExtensor e')
+  t₁ t₂, ?_, rfl⟩`. Then `panelRow ends ⟨e', t₁, t₂⟩` reduces to the `hingeRow …` witness
+  syntactically and the `rfl` is instant. Mirrors `exists_good_realization_ofParam`'s `hsub`,
+  which destructures the same way.
+- **Status:** resolved (no lift — instance of the existing "destructure the term so its
+  projections rewrite/reduce" rule, TACTICS-QUIRKS § 4 + the sibling above).
+
 ### [resolved] `LinearEquiv.map_eq_zero_iff` via `rw` fails on a defeq-wrapped codomain (`ScrewSpace k` = `⋀^(k+2−2)`); apply `map_ne_zero_iff … .injective` as a term
 - **Where it bit:** `panelSupportExtensor_ne_zero_iff` in
   `Molecular/AlgebraicInduction.lean` (Phase 21 panel leaf): showing
@@ -1971,12 +1990,38 @@ limitations. Worth a once-over so future agents don't re-litigate.
      witness-transfer), not the row count. So the row-stacking node is *both*
      arithmetic-short *and* unneeded — skip it. (Standing rule: `DESIGN.md`
      *Constructibility recon before scheduling a producer build*.)
+  5. **The Case-I "coupling" as a one-commit assembly from the bare IH
+     (Phase 22, 2026-06-04).** The hand-off framed the Case-I splice
+     coupling as "fully decomposed to one assembly commit": product the two
+     legs' rank polynomials (`exists_rankPolynomial_of_rigidOn`, green) →
+     `MvPolynomial.exists_eval_ne_zero` → shared `q₀` → splice (green).
+     Constructibility recon: the arithmetic does *not* close from the bare
+     IH, two real gaps. **(G1)** `exists_rankPolynomial_of_rigidOn` (the
+     producer of each leg's polynomial) requires the leg rigid at a seed with
+     *all hinges transversal* (`hne`); the IH supplies only a bare rigid
+     `HasFullRankRealization`, and a rigid framework can carry a degenerate
+     hinge — the `panelRow`/N7b-0 span argument genuinely needs transversal
+     hinges, so there is no polynomial to product. **(G2)** the splice
+     `hasFullRankRealization_of_splice_ofNormals` needs general position at
+     the shared non-root, but the product `Q_H·Q_c`'s non-root is not
+     general-position; coupling it in needs a *third* nonzero factor whose
+     non-roots are general-position (a Vandermonde-type brick, nonexistent).
+     Both are the genuine KT §6.2 panel-intersection geometry (eq. 6.6): the
+     construction *builds* a specific general-position rigid realization per
+     leg, it does not consume an arbitrary rigid IH one. **Reusable:** the
+     forward consumer half *is* green
+     (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`: non-root
+     ⟹ rigid at that point); the fix is (G1) strengthen the realization motive
+     to carry general position, (G2) build the general-position factor — both
+     to be decomposed math-first before the coupling build. (Standing rule:
+     `DESIGN.md` *Constructibility recon before scheduling a producer build*.)
 - **What IS reusable for Phase 22:** the green row sub-nodes N7b-0/1/2/3,
   the device-closure glue `lem:realization-of-independent-rows`, the
-  `V(G)`-relative count bridge, and the genericity device — all feed the
-  real Case III / Case I producers. The Case I (proper rigid subgraph,
-  KT §6.2) producer *does* reach full rank (splice along boundary-panel
-  intersections, eq. 6.6) and is the tractable one.
+  `V(G)`-relative count bridge, the genericity device, and the per-leg
+  rank-polynomial producer + consumer — all feed the real Case III / Case I
+  producers. The Case I (proper rigid subgraph, KT §6.2) producer *does* reach
+  full rank (splice along boundary-panel intersections, eq. 6.6) and is the
+  tractable one, **modulo the (G1)/(G2) gaps above**.
 
 ### [wontfix] `omega` doesn't see through nonlinear algebra on opaque atoms
 - **Where it bit:**

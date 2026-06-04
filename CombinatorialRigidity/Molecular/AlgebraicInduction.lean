@@ -3293,6 +3293,78 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite
       (by simpa only [hg_def] using hsindep)
   exact ⟨s, Q, hscard.ge, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
 
+/-- **A nonzero rank polynomial yields a rigid `ofNormals` leg at any general-position non-root**
+(`lem:case-I-splice-placement` infra, the per-leg consumer of `exists_rankPolynomial_of_rigidOn`;
+Katoh–Tanigawa 2011 §6.2, eq. (6.6), Phase 22). The forward half of the rank polynomial: at any
+normal assignment `q` that is not a root of the leg's rank polynomial `Q` (`hq`), the leg
+`ofNormals G ends q` is infinitesimally rigid on `V(G)`. From `Q`'s non-root clause the leg's
+full-size `D(|V(G)|−1)` `panelRow ends`-subfamily indexed by `s` is linearly independent at `q`
+(`hQ q hq`), which the relative-count adapter
+`hasFullRankRealization_of_independent_panelRow` / N3 turns into rigidity on `V(G)` --- the
+realization motive at the *single point* `q`, **without** assuming general position at `q` (N3
+needs only the count `#s ≥ D(|V(G)|−1)`, `hcard`).
+
+This is the bridge a shared-seed witness-transfer consumes per leg: once a common non-root `q₀` of
+*both* legs' rank polynomials is exhibited (the product `Q_H · Q_c` is nonzero, so
+`MvPolynomial.exists_eval_ne_zero` supplies one), each leg is rigid at `q₀` by this lemma, and
+`hasFullRankRealization_of_splice_ofNormals` (green) then splices them --- provided `q₀` is also a
+general-position assignment for the splice's transversality (the residual gap: coupling general
+position into the shared-non-root search, `lem:case-I-splice-placement`, red). It is honest per the
+producer-scrutiny gate: `hindep`/`hcard` (the `Q`-non-root LI witness) is the satisfiable
+witnessed-rank input, not the rank concluded. -/
+theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    {Q : MvPolynomial (α × Fin (k + 2)) ℝ} (hne : V(G).Nonempty)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card s)
+    (hQ : ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+      LinearIndependent ℝ
+        (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i))
+    {q : α × Fin (k + 2) → ℝ} (hq : MvPolynomial.eval q Q ≠ 0) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn V(G) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set F := (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF
+  have hG : F.graph = G := rfl
+  -- The non-root `q` gives the leg's full-size `D(|V|−1)` `panelRow`-subfamily LI at `q` itself.
+  have hLI : LinearIndependent ℝ (fun i : s => F.panelRow ends i) := hQ q hq
+  haveI : Fintype s := Fintype.ofFinite s
+  -- The independent subfamily forces `finrank (span rigidityRows) ≥ #s ≥ D(|V|−1)` at `q`.
+  -- The panel rows lie in the rigidity rows (no transversality needed for `⊆`); the subfamily
+  -- range is thus contained in the full `panelRow` range, contained in the rigidity-row span.
+  have hsub : Submodule.span ℝ (Set.range (fun i : s => F.panelRow ends i))
+      ≤ Submodule.span ℝ F.rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨⟨e', t₁, t₂⟩, hi⟩, rfl⟩
+    apply Submodule.subset_span
+    refine ⟨e', (ends e').1, (ends e').2, by rw [hG]; exact hends e',
+      annihRow (F.supportExtensor e') t₁ t₂, ?_, rfl⟩
+    rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+    intro x hx
+    rw [Submodule.mem_span_singleton] at hx
+    obtain ⟨r, rfl⟩ := hx
+    rw [map_smul, annihRow_apply_self, smul_zero]
+  have hrows : Nat.card s ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+    rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hLI]
+    exact Submodule.finrank_mono hsub
+  -- Rank-nullity: `dim Z = D|V| − finrank (span rigidityRows) ≤ D|V| − D(|V|−1) = D`.
+  have hcompl : Module.finrank ℝ F.infinitesimalMotions
+      + Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+      = screwDim k * Fintype.card α := by
+    rw [F.infinitesimalMotions_eq_dualCoannihilator, Subspace.finrank_dualCoannihilator_eq,
+      add_comm, Subspace.finrank_add_finrank_dualAnnihilator_eq, Subspace.dual_finrank_eq,
+      BodyHingeFramework.finrank_screwAssignment]
+  have hsplit : screwDim k * Fintype.card α
+      = screwDim k * V(G).ncard + screwDim k * (V(G))ᶜ.ncard := by
+    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  have h1 : 1 ≤ V(G).ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+  rw [Nat.mul_sub, Nat.mul_one] at hcard
+  -- N3: the relative full count at `q` gives rigidity on `V(G)`.
+  refine F.isInfinitesimallyRigidOn_vertexSet_of_finrank_le (by rw [hG]; exact hne) ?_
+  rw [hG, Nat.mul_succ]
+  omega
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by
