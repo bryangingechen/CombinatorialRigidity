@@ -23,6 +23,20 @@ must be V(G)-relative …*. Forward-mode dep-graph:
 
 ## Current state
 
+**Item 3 STARTED (2026-06-04): B0 sub-commit 1 — the coordinate bilinearity is landed in Lean.**
+`normalsJoin_basis_repr` (in `AlgebraicInduction.lean`): a `⋀²`-coordinate of the grade-2 join
+`normalsJoin n₁ n₂` in the standard exterior-power basis is the `2×2` minor `n₁(i)n₂(j) − n₁(j)n₂(i)`
+(via `exteriorPower.basis_repr_apply` + `ιMultiDual_apply_ιMulti` + `Matrix.det_fin_two`). Lifted to
+the explicit degree-2 `MvPolynomial` form: `normalsJoinPoly u v s = X(u,i)X(v,j) − X(u,j)X(v,i)`,
+with `normalsJoinPoly_eval` (eval at panel coords = the `⋀²`-coordinate) and
+`normalsJoinPoly_totalDegree_le` (`totalDegree ≤ 2`). These are the validated coordinate core the B0
+node `lem:rows-polynomial-in-normals` rests on; the node stays **RED** (the full device-input
+assembly — `g`/`c`/`φ`/`hg`/`hcoord` and invoking the device — is the remaining keystone build).
+Build + lint clean, axiom-clean {propext, Classical.choice, Quot.sound}. **Next B0 sub-commits:**
+push the coordinate through the fixed linear `complementIso` (degree stays 2) to a
+`panelSupportExtensor`-coordinate-as-`MvPolynomial`, then the per-edge annihilator family
+`{Cᵢeⱼ*−Cⱼeᵢ*}` (linear in `C`), then assemble `c`/`g`/`hg` and invoke `exists_good_realization`.
+
 **Item 2 LANDED (2026-06-05): the Case-I / Case-II accounting is re-stated rank-side.**
 Two genericity-free, `α`-independent rigidity bridges in `AlgebraicInduction.lean` give the
 relative-motive restatement of the accounting iffs (decision: **re-state rank-side as a new bridge,
@@ -175,6 +189,9 @@ Classical.choice, Quot.sound}.
 - [ ] `lem:rows-polynomial-in-normals` (**B0, keystone**) — coordinatize the
   panel-normal rows as degree-2 `MvPolynomial`, packaging the device's
   `g`/`c`/`φ`/`hg` (`hcoord` = green `infinitesimalMotions_eq_dualCoannihilator`). **Item 3.**
+  Sub-commit 1 (2026-06-04) LANDED the validated coordinate core: `normalsJoin_basis_repr`
+  (`⋀²`-coordinate = `2×2` minor), `normalsJoinPoly` + `normalsJoinPoly_eval` +
+  `normalsJoinPoly_totalDegree_le` (the degree-2 `MvPolynomial` lift). Node stays RED.
 - [ ] `lem:case-I-splice-seed` — one placement `p₀` with `D(|V(G)|−1)`
   independent parent rows, block-triangular from the two IH legs
   (genericity-free). **Item 4.**
@@ -258,7 +275,11 @@ its blueprint node's `\leanok` (or adds green infra) + updates this file. The
 device is green and `B0`'s coordinate core is validated, so this is build work,
 not research. **Do not** re-introduce the retired vacuous lemmas.
 
-**Next concrete commit: item 3** (items 1–2 landed 2026-06-05).
+**Next concrete commit: item 3, B0 sub-commit 2** (items 1–2 landed 2026-06-05;
+item 3 sub-commit 1 — the coordinate bilinearity core `normalsJoin_basis_repr` +
+`normalsJoinPoly{,_eval,_totalDegree_le}` — landed 2026-06-04, node still RED).
+Next: push the validated `⋀²`-coordinate `MvPolynomial` through the fixed linear
+`complementIso` to a `panelSupportExtensor`-coordinate-as-`MvPolynomial` (degree stays 2).
 
 1. ~~**Relativize the realization motive + base case**~~ **DONE (2026-06-05).**
    `IsInfinitesimallyRigidOn` + its API in `RigidityMatrix.lean`;
@@ -284,10 +305,16 @@ not research. **Do not** re-introduce the retired vacuous lemmas.
    coordinates (via the validated `normalsJoin` minor + `complementIso` linear +
    the `{Cᵢeⱼ*−Cⱼeᵢ*}` annihilator family), `φ` = a basis coordinate iso,
    `hg` = the eval identity, `hcoord` = green
-   `infinitesimalMotions_eq_dualCoannihilator`. First sub-commit: lift the
-   validated `⋀²`-coordinate bilinearity to a `supportExtensor`-coordinate-as-
-   `MvPolynomial` lemma. Seed point `p₀` = moment-curve normals (reuse
+   `infinitesimalMotions_eq_dualCoannihilator`. Seed point `p₀` = moment-curve normals (reuse
    `isGeneralPosition_ofParam` + `exists_independent_rigidityRows_of_forest`).
+   - ~~Sub-commit 1: lift the `⋀²`-coordinate bilinearity to a coordinate-as-`MvPolynomial`
+     lemma.~~ **DONE (2026-06-04):** `normalsJoin_basis_repr` (`⋀²`-coord = `2×2` minor),
+     `normalsJoinPoly` + `normalsJoinPoly_eval` + `normalsJoinPoly_totalDegree_le` (degree-2
+     `MvPolynomial` lift). Node still RED.
+   - Sub-commit 2 (next): push that `MvPolynomial` coordinate through the fixed linear
+     `complementIso` to a `panelSupportExtensor`-coordinate-as-`MvPolynomial` (degree stays 2).
+   - Then: the `{Cᵢeⱼ*−Cⱼeᵢ*}` per-edge annihilator family (linear in `C`), assemble `g`/`c`/`hg`,
+     invoke `exists_good_realization`; flip the node `\leanok`.
 
 4. **`lem:case-I-splice-seed`** — construct `p₀` on `G` with `D(|V(G)|−1)`
    independent parent rows: transport the IH realizations of `H` and `G/E(H)`

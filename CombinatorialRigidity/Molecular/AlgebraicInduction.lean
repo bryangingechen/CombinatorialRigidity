@@ -114,6 +114,73 @@ theorem normalsJoin_coe (n₁ n₂ : Fin (k + 2) → ℝ) :
     (normalsJoin n₁ n₂ : ExteriorAlgebra ℝ (Fin (k + 2) → ℝ)) = extensor ![n₁, n₂] := by
   rw [normalsJoin, exteriorPower.ιMulti_apply_coe, extensor_apply]
 
+/-- **A `⋀²`-coordinate of `normalsJoin` is the `2 × 2` minor of the two normals** (B0, the
+device-keystone bilinearity; `lem:rows-polynomial-in-normals`). In the standard exterior-power
+basis of `⋀² ℝ^(k+2)` (indexed by the 2-element subsets `s ⊆ Fin (k+2)`), the `s`-coordinate of
+the grade-2 join `normalsJoin n₁ n₂` is the `2 × 2` minor
+`n₁(i)·n₂(j) − n₁(j)·n₂(i)`, where `i < j` are the two ordered elements of `s`. This is the
+exterior-power duality pairing `ιMultiDual` against the standard dual basis
+(`exteriorPower.basis_repr_apply` + `ιMultiDual_apply_ιMulti`), whose value is the determinant of
+the `2 × 2` matrix of the normals' coordinates at the columns picked out by `s`
+(`Matrix.det_fin_two`). It is *bilinear* in the two normals — degree-2 in their entries — which is
+the analytic fact the genericity device (`lem:genericity-device`) rests on: the panel-support
+extensor `complementIso (normalsJoin n₁ n₂)` is a fixed linear image, so every rigidity-row
+coordinate is a degree-2 polynomial in the panel normals, and a rank attained at one realization is
+attained generically. -/
+theorem normalsJoin_basis_repr (n₁ n₂ : Fin (k + 2) → ℝ)
+    (s : Set.powersetCard (Fin (k + 2)) 2) :
+    ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2).repr (normalsJoin n₁ n₂) s =
+      n₁ ((s : Finset (Fin (k + 2))).orderEmbOfFin s.2 0)
+          * n₂ ((s : Finset (Fin (k + 2))).orderEmbOfFin s.2 1)
+        - n₁ ((s : Finset (Fin (k + 2))).orderEmbOfFin s.2 1)
+          * n₂ ((s : Finset (Fin (k + 2))).orderEmbOfFin s.2 0) := by
+  rw [normalsJoin, exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual_apply_ιMulti,
+    Matrix.det_fin_two]
+  simp only [Matrix.of_apply, Set.powersetCard.ofFinEmbEquiv_symm_apply,
+    Matrix.cons_val_zero, Matrix.cons_val_one]
+  rfl
+
+/-- **A `⋀²`-coordinate of `normalsJoin` as a degree-2 multivariate polynomial in the panel
+coordinates** (B0, the device-keystone polynomiality; `lem:rows-polynomial-in-normals`). Regard a
+panel realization as a point `q : α × Fin (k+2) → ℝ` of the panel-coordinate space — `q (a, i)` is
+the `i`-th coordinate of body `a`'s normal — and fix two bodies `u v : α` and a basis index
+`s ⊆ Fin (k+2)`. Then the `s`-coordinate of the grade-2 join `normalsJoin (q (u, ·)) (q (v, ·))`
+is the evaluation at `q` of the explicit degree-2 polynomial
+`X (u, i)·X (v, j) − X (u, j)·X (v, i)` (`normalsJoinPoly u v s`, with `i < j` the two ordered
+elements of `s`). This is the `MvPolynomial`-lift of the bilinear minor `normalsJoin_basis_repr`:
+each `⋀²`-coordinate of the join is `MvPolynomial.eval`-of-a-fixed-polynomial, the precise input
+shape (the coordinate family `c`, with `hg` the eval identity) the genericity device
+`exists_good_realization` consumes once the fixed linear `complementIso` and the per-edge
+annihilator family are composed on top (subsequent B0 sub-commits). -/
+noncomputable def normalsJoinPoly {α : Type*} (u v : α) (s : Set.powersetCard (Fin (k + 2)) 2) :
+    MvPolynomial (α × Fin (k + 2)) ℝ :=
+  MvPolynomial.X (u, (s : Finset (Fin (k + 2))).orderEmbOfFin s.2 0)
+      * MvPolynomial.X (v, (s : Finset (Fin (k + 2))).orderEmbOfFin s.2 1)
+    - MvPolynomial.X (u, (s : Finset (Fin (k + 2))).orderEmbOfFin s.2 1)
+      * MvPolynomial.X (v, (s : Finset (Fin (k + 2))).orderEmbOfFin s.2 0)
+
+theorem normalsJoinPoly_eval {α : Type*} (u v : α) (q : α × Fin (k + 2) → ℝ)
+    (s : Set.powersetCard (Fin (k + 2)) 2) :
+    MvPolynomial.eval q (normalsJoinPoly u v s) =
+      ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower 2).repr
+        (normalsJoin (fun i => q (u, i)) (fun i => q (v, i))) s := by
+  rw [normalsJoin_basis_repr, normalsJoinPoly]
+  simp only [map_sub, map_mul, MvPolynomial.eval_X]
+
+/-- The coordinate polynomial `normalsJoinPoly` is **degree-2** (`totalDegree ≤ 2`): a difference of
+two products of two `MvPolynomial.X` indeterminates. This is the bilinearity that makes the
+rigidity-matrix entries degree-2 in the panel coordinates, the analytic premise of the genericity
+device (`lem:genericity-device`). -/
+theorem normalsJoinPoly_totalDegree_le {α : Type*} (u v : α)
+    (s : Set.powersetCard (Fin (k + 2)) 2) :
+    (normalsJoinPoly u v s).totalDegree ≤ 2 := by
+  have hprod : ∀ a b : α × Fin (k + 2),
+      (MvPolynomial.X (R := ℝ) a * MvPolynomial.X b).totalDegree ≤ 2 :=
+    fun a b => (MvPolynomial.totalDegree_mul _ _).trans
+      (by rw [MvPolynomial.totalDegree_X, MvPolynomial.totalDegree_X])
+  rw [normalsJoinPoly]
+  exact (MvPolynomial.totalDegree_sub _ _).trans (max_le (hprod _ _) (hprod _ _))
+
 /-- **The join of two panel normals is nonzero iff the normals are independent**
 (`def:panel-support-extensor`): `normalsJoin n₁ n₂ ≠ 0 ↔ LinearIndependent ℝ ![n₁, n₂]`. The
 grade-2 extensor of two vectors vanishes exactly when they are linearly dependent

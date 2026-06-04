@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A `⋀ⁿ` coordinate in a `Pi.basisFun` exterior-power basis is `basis_repr_apply` + `ιMultiDual_apply_ιMulti` + a `Matrix.det` — close the residual `coord`→application with `rfl`, not `Pi.basisFun_repr`
+- **Where it bit:** B0 keystone bilinearity `normalsJoin_basis_repr` (Phase 21b): the `s`-coordinate
+  of `normalsJoin n₁ n₂ ∈ ⋀² ℝ^(k+2)` in the standard exterior-power basis. The clean chain is
+  `rw [exteriorPower.basis_repr_apply, exteriorPower.ιMultiDual_apply_ιMulti, Matrix.det_fin_two]`,
+  leaving a `Matrix.of`-of-`Basis.coord` goal. `simp only [Matrix.of_apply,
+  Set.powersetCard.ofFinEmbEquiv_symm_apply, Matrix.cons_val_zero, Matrix.cons_val_one]` reduces it to
+  `(Pi.basisFun ℝ _).coord c v = v c` shaped terms.
+- **Fix:** close with a bare `rfl`. Adding `Pi.basisFun_repr` (or `Basis.coord_apply`) to the
+  `simp only` is flagged *unused* by `linter.unusedSimpArgs` — the `coord` form is already
+  definitionally the application, so simp makes no progress and `rfl` is the right closer.
+- **Status:** resolved; idiom for any `Pi.basisFun` exterior-power coordinate readout.
+
 ### [resolved] `rw [hsub]` over a `Submodule` equation under `finrank ℝ ↥(…)` trips the motive — rewrite the *hypothesis* with the reversed equation instead
 - **Where it bit:** the multivariate genericity device `exists_good_realization` (Phase 21b). The
   engine returns `hp : … + finrank ℝ ↥(span (range (g p))).dualCoannihilator ≤ finrank V`; the goal

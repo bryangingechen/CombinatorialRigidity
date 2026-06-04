@@ -766,19 +766,29 @@ Cases~I and~II travel toward the smaller inductive graph.
   it is what lets the device be \emph{applied} to a varying realization (the
   prior phase only ever invoked the device on a constant family).
 
-  The degree-$2$ claim is verified: read off via the exterior-power duality
-  pairing against the standard dual basis, a $\Lambda^2$-coordinate of the
-  grade-$2$ join $n_u \wedge n_v$ is the $2 \times 2$ minor
+  The degree-$2$ claim is landed (in Lean): read off via the exterior-power
+  duality pairing against the standard dual basis
+  ($\mathrm{normalsJoin\_basis\_repr}$, on mathlib's
+  $\mathrm{exteriorPower.basis\_repr\_apply}$, the standard dual-basis pairing
+  evaluation, and $\mathrm{Matrix.det\_fin\_two}$),
+  a $\Lambda^2$-coordinate of the grade-$2$
+  join $n_u \wedge n_v$ is the $2 \times 2$ minor
   $n_u(i)\,n_v(j) - n_u(j)\,n_v(i)$ --- a determinant of the two normals'
-  coordinates, hence bilinear; the supporting extensor
-  $C(p(e)) = \mathrm{complementIso}(n_u \wedge n_v)$
+  coordinates, hence bilinear; this lifts to the explicit degree-$2$
+  multivariate polynomial $\mathrm{normalsJoinPoly}\,u\,v\,s = X_{(u,i)}X_{(v,j)}
+  - X_{(u,j)}X_{(v,i)}$ in the panel coordinates
+  ($\mathrm{normalsJoinPoly\_eval}$ the eval identity,
+  $\mathrm{normalsJoinPoly\_totalDegree\_le}$ the degree-$2$ bound). The
+  supporting extensor $C(p(e)) = \mathrm{complementIso}(n_u \wedge n_v)$
   (\cref{def:panel-support-extensor}) is a fixed linear image of it, so its
   coordinates stay degree-$2$; and a per-edge spanning family of the row
   block's annihilator can be taken linear in $C(p(e))$ (the combinations
   $C_i\,e_j^{*} - C_j\,e_i^{*}$), keeping the row coordinates degree-$2$.
   \emph{Red:} the construction (assembling $g$, $c$, the coordinate iso
   $\varphi$, and $\mathtt{hg}$, and invoking the device) is the keystone
-  build; the coordinate bilinearity it rests on is the validated part.
+  build; the coordinate bilinearity it rests on is now the landed part
+  ($\mathrm{normalsJoin\_basis\_repr}$, $\mathrm{normalsJoinPoly\_eval}$,
+  $\mathrm{normalsJoinPoly\_totalDegree\_le}$).
 \end{lemma}
 
 \begin{lemma}[Case I splice seed; KT eqs.\ (6.2), (6.6)]
