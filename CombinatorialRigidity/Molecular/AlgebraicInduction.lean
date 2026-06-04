@@ -2455,9 +2455,11 @@ theorem theorem_55 [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
     (hD : 3 ≤ Graph.bodyBarDim n) (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 →
       PanelHingeFramework.HasFullRankRealization k G)
-    (hsplit : ∀ (G : Graph α β) (v a b : α) (e₀ : β),
+    (hsplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β),
       G.IsMinimalKDof n 0 → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      v ∈ V(G) → e₀ ∉ E(G) →
+      v ∈ V(G) → a ≠ v → b ≠ v → a ∈ V(G) → b ∈ V(G) → eₐ ≠ e_b →
+      G.IsLink eₐ v a → G.IsLink e_b v b → (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
+      e₀ ∉ E(G) →
       PanelHingeFramework.HasFullRankRealization k (G.splitOff v a b e₀) →
       PanelHingeFramework.HasFullRankRealization k G)
     (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →

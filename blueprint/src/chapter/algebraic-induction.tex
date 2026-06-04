@@ -1210,7 +1210,16 @@ Cases~I and~II travel toward the smaller inductive graph.
   hypothesis ``$G_v^{ab}$ realizes its rank'' is satisfiable (it spans its own
   vertices), so the producer is well-posed; it is the shallower sibling of the
   Case~I producer (one re-inserted body, $+(D-1)$ rows, KT~(6.12)) rather than
-  a full splice.
+  a full splice. \emph{Premise audit (Phase 21b, 2026-06-04):} the producer needs
+  $v$'s reducible-degree-2 data --- the two incident edges $e_a, e_b$, their links
+  $G.\mathrm{IsLink}\,e_a\,v\,a$, $G.\mathrm{IsLink}\,e_b\,v\,b$, and the closure
+  that they are $v$'s only incident edges --- to re-attach $v$ in $G$. The
+  $\mathtt{hsplit}$ premise of \cref{thm:theorem-55} (and of
+  \cref{thm:minimal-kdof-reduction} it forwards) was strengthened to expose this
+  data (it was already in scope where \cref{thm:minimal-kdof-reduction} dispatches
+  $\mathtt{hsplit}$, via \cref{lem:reducible-vertex}), so the producer can consume
+  it; without it the producer is under-determined ($a, b$ alone do not name $v$'s
+  edges).
 \end{lemma}
 \begin{proof}
   \uses{lem:case-II, lem:realization-of-independent-rows,
@@ -1456,7 +1465,8 @@ non-spanning block).}
         lem:exists-independent-panel-extensor,
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
-        lem:case-II-placement-block-independent}
+        lem:case-II-placement-block-independent,
+        lem:case-II-placement-e0-recovery}
   The remaining geometric obligation of \cref{lem:case-II-realization}: from the
   inductive realization of the splitting-off $G_v^{ab}$, construct a free normal
   assignment $q_0$ for the parent graph $G$ --- in particular a panel normal $n$
@@ -1475,47 +1485,58 @@ non-spanning block).}
   the edge substitution is the genuine content; once green it feeds the glue
   \cref{lem:realization-of-independent-rows}.
 
-  \medskip\noindent\emph{Decomposition (Phase-21b realization-layer plan).} Per
-  the hand-off discipline for a genuinely-geometric node, this placement breaks
-  into three buildable sub-nodes plus a closing assembly, mirroring the Case~I
-  splice placement's boundary-panel/block-triangular split. The seed family $s$
-  partitions into the \emph{new-edge block} (the two hinges re-attaching $v$) and
-  the \emph{old block} (the inductive realization's rows, read off the common
+  \medskip\noindent\emph{Decomposition (Phase-21b realization-layer plan, revised
+  2026-06-04).} Per the hand-off discipline for a genuinely-geometric node, this
+  placement breaks into buildable sub-nodes plus a closing assembly, mirroring the
+  Case~I splice placement's boundary-panel/block-triangular split. The seed family
+  $s$ partitions into the \emph{new-edge block} (the two hinges re-attaching $v$)
+  and the \emph{old block} (the inductive realization's rows, read off the common
   subgraph $G - v$); the count is $(D-1) + D(|V(G)|-2) = D(|V(G)|-1)$.
   \begin{enumerate}
-    \item \cref{lem:case-II-placement-new-rows} (N7b-1): choose the normal $n$ for
-      $v$ so that $v$'s two new hinges supply $D-1$ linearly independent panel rows.
-    \item \cref{lem:case-II-placement-old-rows-extract} (N7b-0): \emph{produce} the
-      old block --- extract $D(|V(G)|-2)$ independent panel rows from the inductive
+    \item \cref{lem:case-II-placement-new-rows} (N7b-1, green): choose the normal $n$
+      for $v$ so that $v$'s two new hinges supply $D-1$ linearly independent panel rows.
+    \item \cref{lem:case-II-placement-old-rows-extract} (N7b-0, green): \emph{produce}
+      the old block --- extract $D(|V(G)|-2)$ independent panel rows from the inductive
       realization's rigidity on $V(G_v^{ab})$ (the rank-equals-codimension forward
       direction, the converse of \cref{lem:isInfRigidOn-of-relative-count}).
-    \item \cref{lem:case-II-placement-old-rows} (N7b-2): transport that family onto
-      $G$ through the common subgraph $G - v$.
-    \item \cref{lem:case-II-placement-block-independent} (N7b-3): the two blocks
+    \item \cref{lem:case-II-placement-old-rows} (N7b-2, green): transport the
+      $e_0$-\emph{free} subfamily of that block onto $G$ through the common subgraph
+      $G - v$.
+    \item \cref{lem:case-II-placement-block-independent} (N7b-3, green): the two blocks
       are jointly independent (the new-edge rows live in the $v$-column block, the
       old rows in its complement; pin-a-body Lemma~5.1,
       \cref{lem:rank-delete-vertex}, makes the union block-triangular).
+    \item \cref{lem:case-II-placement-e0-recovery} (N7b-4, red): \emph{the missing
+      producer.} A scrutiny pass found N7b-0/1/2/3 do not compose: N7b-0 extracts an
+      old block with no control over $e_0$-rows, but N7b-2 transports only the
+      $e_0$-free rows, so the count can fail. Recovering the $e_0$-row's constraint
+      from $v$'s two new edges (the path $a$--$v$--$b$, KT~(6.12)) --- equivalently
+      producing an $e_0$-free old block of the full count --- is the genuine rank-lift
+      content and is not discharged by the four green sub-nodes.
   \end{enumerate}
-  The assembly below packages the three into the witness $(q_0, s)$ the glue
-  \cref{lem:realization-of-independent-rows} consumes.
+  The assembly below packages these into the witness $(q_0, s)$ the glue
+  \cref{lem:realization-of-independent-rows} consumes, once N7b-4 is green.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-II, lem:exists-independent-panel-extensor,
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
-        lem:case-II-placement-block-independent}
+        lem:case-II-placement-block-independent,
+        lem:case-II-placement-e0-recovery}
   Take $q_0$ to agree with the inductive realization's normals on
   $V(G)\setminus\{v\} = V(G_v^{ab})$ and to assign $v$ the general-position normal
   $n$ of \cref{lem:case-II-placement-new-rows}. Let $s$ be the union of the
-  new-edge block (\cref{lem:case-II-placement-new-rows}, $D-1$ rows) and the old
-  block (\cref{lem:case-II-placement-old-rows}, $D(|V(G)|-2)$ rows);
+  new-edge block (\cref{lem:case-II-placement-new-rows}, $D-1$ rows) and the
+  $e_0$-free old block (\cref{lem:case-II-placement-e0-recovery,
+  lem:case-II-placement-old-rows}, $D(|V(G)|-2)$ rows);
   \cref{lem:case-II-placement-block-independent} makes the union independent, and
   the count is $D(|V(G)|-1)$. The genuine content is the edge substitution: $s$ is
   \emph{not} a free transport of $G_v^{ab}$'s rows (the short-circuit $e_0$ is
   deleted in $G$, $v$'s two edges added), so the old block is recovered through the
   common subgraph $G - v$ ($\mathrm{removeVertex}$), not along an inclusion
-  $G_v^{ab}\le G$. Deferred to the Phase-21b realization layer; see
-  \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
+  $G_v^{ab}\le G$; the $e_0$-row's constraint comes from $v$'s two new edges
+  (\cref{lem:case-II-placement-e0-recovery}). Deferred to the Phase-21b realization
+  layer; see \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
 \end{proof}
 
 \begin{lemma}[N7b-1: a re-inserted body's transversal hinge gives $D-1$ independent panel rows]
@@ -1686,6 +1707,42 @@ non-spanning block).}
   combination of the old block, forcing the old coefficients by their
   independence (pin-a-body Lemma~5.1, \cref{lem:rank-delete-vertex}). See
   \cite[\S6.3]{katohTanigawa2011}.
+\end{proof}
+
+\begin{lemma}[N7b-4: recover the short-circuit edge $e_0$'s constraint from $v$'s two new edges; KT eq.~(6.12)]
+  \label{lem:case-II-placement-e0-recovery}
+  \uses{def:panel-hinge-framework, lem:case-II,
+        lem:case-II-placement-old-rows-extract, lem:case-II-placement-old-rows,
+        lem:case-II-placement-new-rows}
+  The genuine $1$-extension rank-lift content, surfaced by a scrutiny pass on the
+  N7b assembly (Phase 21b, 2026-06-04): the four green N7b sub-nodes do
+  \emph{not} compose into the assembly without it. The inductive realization's old
+  block (\cref{lem:case-II-placement-old-rows-extract}) is a family of
+  $D(|V(G)|-2)$ \emph{actual} $\mathrm{panelRow}$ rows of the rigid splitting-off
+  $G_v^{ab}$, but those rows are extracted from a spanning family with \emph{no
+  control over whether they use the short-circuit edge} $e_0$ --- whereas the
+  transport \cref{lem:case-II-placement-old-rows} can carry only the
+  $e_0$-\emph{free} rows onto $G$ (the edge substitution deletes $e_0$ in $G$). If
+  the extracted block uses $e_0$-rows, dropping them leaves fewer than
+  $D(|V(G)|-2)$ rows and the count $(D-1) + D(|V(G)|-2) = D(|V(G)|-1)$ fails. This
+  node is the missing producer: in $G$, the deleted edge $e_0$ (linking $a,b$ in
+  $G_v^{ab}$) is replaced by the path $a$--$v$--$b$ of $v$'s two new edges, and the
+  span-membership constraint $e_0$ imposed on a base-$v$-pinned motion
+  ($S a - S b \in \operatorname{span} C(e_0)$) is \emph{recovered} from the two new
+  hinge constraints at $v$ (\cref{lem:case-II-placement-new-rows}); equivalently,
+  an $e_0$-free independent old block of the full count $D(|V(G)|-2)$ is exhibited
+  by replacing each $e_0$-row of the extracted block with the corresponding row in
+  $v$'s column. This is the actual geometric heart of why splitting-off preserves
+  rank (KT~(6.12)); it is not a mechanical indexing reconciliation and is
+  \emph{not} discharged by N7b-0/1/2/3. \emph{Red} (Phase~21b realization layer).
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II-placement-old-rows-extract, lem:case-II-placement-new-rows}
+  Either extract the old block directly in an $e_0$-free form (an independent
+  $D(|V(G)|-2)$-family of $G_v^{ab}$-rows avoiding $e_0$, available because $v$'s
+  re-attachment column carries the residual rank the $e_0$-row would have), or
+  recover $e_0$'s row as a combination of $v$'s two new-edge rows through the
+  $a$--$v$--$b$ path. See \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8, eq.~(6.12)).
 \end{proof}
 
 \subsection{Case III deferred (the crux)}

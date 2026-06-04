@@ -4,9 +4,13 @@
 2026-06-04; node-decomposition re-plan 2026-06-06; N7 decomposed into glue +
 placement 2026-06-04; N7b placement decomposed into N7b-1/2/3 2026-06-04; N7b-1/2/3 GREEN
 2026-06-04; N7b-1 honest index-subfamily bridge GREEN 2026-06-04; N7b re-plan surfaced the missing
-old-block producer N7b-0; **N7b-0 `lem:case-II-placement-old-rows-extract` GREEN 2026-06-04 — all
-four N7b sub-nodes green; next concrete commit is the N7b assembly**). Cold-start-ready hand-off
-below.
+old-block producer N7b-0; N7b-0 `lem:case-II-placement-old-rows-extract` GREEN 2026-06-04;
+**N7b-assembly scrutiny (2026-06-04) found two gaps that block the "one-line N7a∘N7b" framing — (1)
+`theorem_55`'s `hsplit` premise was under-specified for the producer; FIXED (strengthened to carry
+the reducible-degree-2 data, threaded through Phase-20 `minimal_kdof_reduction`); (2) the four green
+N7b sub-nodes do NOT compose — a missing producer for the `e₀`-constraint recovery (the genuine
+rank-lift, KT 6.12) is now the red node N7b-4 `lem:case-II-placement-e0-recovery`, the next concrete
+commit**). Cold-start-ready hand-off below.
 
 Sub-phase scoped out of Phase 21 (user decision, risk #4/#7) — the **analytic
 sibling** of the Phase-21a meet. Two halves: (1) the **genericity device**
@@ -118,10 +122,20 @@ per-node detail.
 - [ ] N7b `lem:case-II-realization-placement` — construct the seed `(q₀, s)` for the 1-extension
   across the edge substitution (KT 6.12). The genuine geometry; feeds N7a. **Decomposed
   2026-06-04** into buildable sub-nodes (blueprint, mirrors the Case-I placement split).
-  **All four sub-nodes N7b-0/1/2/3 are now GREEN** (the producer N7b-0 landed 2026-06-04); **the
-  remaining red is the N7b assembly** — pick `q₀`/`s` (= inductive normals on `G−v` + `v`'s
-  general-position normal), get the old block from N7b-0 (extract on `G_v^{ab}`) transported by
-  N7b-2 to `G`, the new block from N7b-1, join via N7b-3, feed to N7a:
+  **N7b-0/1/2/3 GREEN, but they do NOT compose into the assembly** (scrutiny pass 2026-06-04, process
+  lesson (e) again): N7b-0 extracts an old block with no control over `e₀`-rows, but N7b-2 transports
+  only the `e₀`-free subfamily, so dropping `e₀`-rows can break the `D(|V(G)|−2)` count. The genuine
+  rank-lift content — recovering `e₀`'s span-membership constraint from `v`'s two new edges (the path
+  `a—v—b`, KT 6.12), equivalently producing an `e₀`-free old block of the full count — is the missing
+  producer, now the red node N7b-4 below. Also: the producer needs `v`'s reducible-degree-2 data;
+  **`theorem_55`'s `hsplit` premise was strengthened** to carry it (see *Premise strengthening*).
+  The assembly (pick `q₀` = inductive normals on `G−v` + `v`'s general-position normal; old block from
+  N7b-0+N7b-4 transported by N7b-2; new block from N7b-1; join via N7b-3; feed N7a) lands **after**
+  N7b-4:
+  - [ ] **N7b-4 `lem:case-II-placement-e0-recovery` — the missing producer (next concrete commit).**
+    Recover the `e₀`-row constraint from `v`'s two new-edge rows / produce an `e₀`-free old block of
+    count `D(|V(G)|−2)`. The actual geometric heart of why splitting-off preserves rank; NOT a
+    mechanical indexing chore, NOT discharged by N7b-0/1/2/3.
   - [x] N7b-1 `lem:case-II-placement-new-rows` — **GREEN 2026-06-04**. A transversal hinge `e=uv`
     incident to `v` gives `D−1` independent rigidity rows, each in *that edge's* panel-row span
     (`exists_independent_panelRow_of_edge`; the per-edge span identity `span_panelRow_edge_eq` +
@@ -348,14 +362,33 @@ transversality (`span_panelRow_eq_rigidityRows`), then `Submodule.exists_fun_fin
 stating it on the `G_v^{ab}` framework directly (`s = V` is its own vertex set) and feeding N7b-2's
 transport — no N1 generalization. Axiom-clean {propext, Classical.choice, Quot.sound}.
 
-**Next concrete commit: the N7b assembly** (now unblocked, all four sub-nodes green): seed `q₀` =
-inductive normals on `G−v` + `v`'s general-position normal (N7b-1's
-`supportExtensor_ne_zero_of_isGeneralPosition`); old block by N7b-0 (extract on `G_v^{ab}`)
-transported by N7b-2 to `s_old ⊆ E(G−v)×pc×pc`; new block `s_new` by N7b-1; join the disjoint
-`s_new ∪ s_old` (size `D(|V(G)|−1)`) via N7b-3 (new as `rn` = functionals of `v`'s screw, old as `ro`
-reading 0 at the `v`-column). **Watch:** N7b-3 is `Sum.elim rn ro`-indexed; reconcile with the
-`Set`-union `panelRow`-subfamily via `Sum (↥s_new) (↥s_old) ≃ ↥(s_new ∪ s_old)` under disjointness.
-Then feed to N7a and N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
+**Scrutiny: the assembly does not compose; next concrete commit is N7b-4 (2026-06-04).** The prior
+hand-off framed the assembly as "all four sub-nodes green → one-line N7a∘N7b." A scrutiny pass found
+two gaps (process lesson (e) again):
+
+- **Gap 1 — `hsplit` under-specified (FIXED this commit).** The Case-II producer needs `v`'s
+  reducible-degree-2 data (the two edges `eₐ, e_b`, their links to `a, b`, the closure that they are
+  `v`'s only incident edges) to re-attach `v` in `G`. `theorem_55`'s `hsplit` (mirroring Phase-20
+  `minimal_kdof_reduction`) provided only `v ∈ V(G)`, `e₀ ∉ E(G)`, minimality, no-rigid-subgraph,
+  IH — not the reducibility data, which `minimal_kdof_reduction` consumes *internally* (via
+  `exists_splitOff_data_of_degree_eq_two`) and never passed to `hsplit`. **Strengthened both
+  `hsplit` premises** to carry `a≠v, b≠v, a∈V(G), b∈V(G), eₐ≠e_b, IsLink eₐ v a, IsLink e_b v b,
+  (∀ e x, IsLink e v x → e=eₐ ∨ e=e_b)`; all in scope at the call site (`Induction.lean:3018`).
+  `theorem_55` still forwards `hsplit` one-line; both files green, lint clean.
+- **Gap 2 — the four green sub-nodes do NOT compose (N7b-4, red, next commit).** N7b-0 extracts an old
+  block with no control over `e₀`-rows; N7b-2 transports only the `e₀`-free subfamily; if the block
+  uses `e₀`-rows, dropping them leaves `< D(|V(G)|−2)` rows and the count `(D−1) + D(|V(G)|−2)` fails.
+  The genuine rank-lift content — recover `e₀`'s span-membership constraint from `v`'s two new edges
+  (path `a—v—b`, KT 6.12), or produce an `e₀`-free old block of full count — is **N7b-4
+  `lem:case-II-placement-e0-recovery`**, the next concrete commit. Decompose-before-building if it
+  resists.
+
+After N7b-4: the assembly (seed `q₀` = inductive normals on `G−v` + `v`'s general-position normal,
+N7b-1's `supportExtensor_ne_zero_of_isGeneralPosition`; old block N7b-0+N7b-4 → N7b-2 to
+`s_old ⊆ E(G−v)×pc×pc`; new block `s_new` by N7b-1; join the disjoint `s_new ∪ s_old`,
+size `D(|V(G)|−1)`, via N7b-3, new as `rn` = functionals of `v`'s screw, old as `ro` reading 0 at the
+`v`-column; reconcile `Sum.elim` ↔ `Set`-union via `Sum (↥s_new) (↥s_old) ≃ ↥(s_new ∪ s_old)` under
+disjointness; feed N7a) → **N7** discharging the strengthened `hsplit`.
 
 **The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
 (`exists_good_realization_ofParam`, green) gives the *absolute* codimension bound
@@ -371,9 +404,11 @@ Then feed to N7a and N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`)
   at a singleton block `{v₀}` + N1 dimension-match (`finrank_pinnedMotions_add_screwDim`).
 
 Then, in order:
-1. **N7b `lem:case-II-realization-placement`**: N7b-0/1/2/3 all GREEN → **N7b-assembly (next concrete
-   commit** — pick `q₀`/`s`, see the "Next concrete commit" detail above for the assembly plan) →
-   **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
+1. **N7b `lem:case-II-realization-placement`**: N7b-0/1/2/3 GREEN but they do **not** compose (see
+   *Scrutiny: the assembly does not compose* above). **N7b-4 `lem:case-II-placement-e0-recovery` is
+   the next concrete commit** (the `e₀`-constraint recovery / `e₀`-free old block, KT 6.12). Then the
+   assembly (pick `q₀`/`s`) → **N7 `lem:case-II-realization`**. Discharges the (now strengthened)
+   `hsplit`. (Gap 1 — the under-specified `hsplit` premise — is FIXED.)
 2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
    matroid-side `contraction_isMinimalKDof` (`Induction.lean:1998`) + a
@@ -421,6 +456,19 @@ converse of N3), all built from existing bricks (N1, `finrank_pinnedMotions_add_
 `infinitesimalMotions_eq_dualCoannihilator` + `Subspace.finrank_dualCoannihilator_eq`,
 `span_panelRow_eq_rigidityRows`, `Submodule.exists_fun_fin_finrank_span_eq`). All four N7b sub-nodes
 green; next is the N7b assembly.
+**N7b-assembly scrutiny + `hsplit` strengthening — 2026-06-04** (this commit): a scrutiny pass before
+building the assembly found the "four green sub-nodes → one-line N7a∘N7b" framing wrong on two counts.
+**Fixed:** `theorem_55`'s + Phase-20 `minimal_kdof_reduction`'s `hsplit` premise was under-specified —
+it lacked `v`'s reducible-degree-2 data (the producer cannot re-attach `v` without its two edges /
+their links / the closure), which `minimal_kdof_reduction` consumed internally and never forwarded.
+Strengthened both premises to carry it (`a≠v, b≠v, a∈V(G), b∈V(G), eₐ≠e_b, IsLink eₐ v a,
+IsLink e_b v b, ∀ e x, IsLink e v x → e=eₐ∨e=e_b`); discharged at the call site
+(`Induction.lean:3018`, all in scope), `theorem_55` forwards one-line; both files green, lint clean.
+**Surfaced (red):** the four green sub-nodes do not compose — N7b-0 extracts an old block with no
+control over `e₀`-rows but N7b-2 transports only the `e₀`-free ones, so the `D(|V(G)|−2)` count can
+fail. Added the RED node **N7b-4 `lem:case-II-placement-e0-recovery`** (recover `e₀`'s constraint from
+`v`'s two new edges / produce an `e₀`-free old block; the genuine rank-lift content, KT 6.12) as the
+next concrete commit; wired into the N7b assembly `\uses`. Blueprint dep-graph + prose updated.
 Per-node detail in the blueprint dep-graph.
 
 **Process lessons (don't repeat).**
@@ -448,6 +496,20 @@ common lower bound `G − v`). Both case producers therefore split the same way:
 green device-to-motive glue (`lem:realization-of-independent-rows`, N7a) + red
 placement (the seed construction). Validate the *transport* direction against the
 graph op before sizing a producer.
+(f) **An induction-principle premise (`hsplit`/`hcontract`) only carries the data
+the principle chooses to expose — verify the producer can be built from *that*
+data, not from what the principle had internally.** `theorem_55`'s `hsplit`
+forwards `minimal_kdof_reduction`'s, which dispatched it *after* consuming the
+reducible-degree-2 witness (`exists_splitOff_data_of_degree_eq_two`) and dropping
+all but `v ∈ V(G)` / `e₀ ∉ E(G)`. The Case-II realization producer needs that
+dropped data (`v`'s two edges, links, closure) to re-attach `v`; the fix is to
+*widen the principle's premise* to re-expose it (the data was in scope at the
+dispatch site). The same audit applies to any future consumer of `minimal_kdof_
+reduction` (e.g. `prop:rigidity-matrix-prop11`, Phases 22–23). (g) **Sub-nodes
+green ≠ assembly trivial.** N7b-0/1/2/3 each green, but they don't compose: N7b-0
+can't avoid `e₀`-rows, N7b-2 transports only `e₀`-free rows — the `e₀`-recovery
+(N7b-4, the genuine rank-lift) was unaccounted-for. Re-derive the assembly's
+*count* from the sub-node outputs before declaring it a composition.
 
 **Session note.** Commits since an inadvertent earlier push are local. Match
 author `bryangingechen@gmail.com`; do **not** push without asking.

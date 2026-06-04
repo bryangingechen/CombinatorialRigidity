@@ -2967,9 +2967,11 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
     (hD : 3 ≤ bodyBarDim n) (hfresh : ∀ G' : Graph α β, ∃ e₀ : β, e₀ ∉ E(G'))
     {P : Graph α β → Prop}
     (hbase : ∀ G : Graph α β, G.IsMinimalKDof n 0 → V(G).ncard = 2 → P G)
-    (hsplit : ∀ (G : Graph α β) (v a b : α) (e₀ : β),
+    (hsplit : ∀ (G : Graph α β) (v a b : α) (eₐ e_b e₀ : β),
       G.IsMinimalKDof n 0 → (∀ H : Graph α β, ¬ H.IsProperRigidSubgraph G n) →
-      v ∈ V(G) → e₀ ∉ E(G) → P (G.splitOff v a b e₀) → P G)
+      v ∈ V(G) → a ≠ v → b ≠ v → a ∈ V(G) → b ∈ V(G) → eₐ ≠ e_b →
+      G.IsLink eₐ v a → G.IsLink e_b v b → (∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b) →
+      e₀ ∉ E(G) → P (G.splitOff v a b e₀) → P G)
     (hcontract : ∀ G : Graph α β, G.IsMinimalKDof n 0 → 3 ≤ V(G).ncard →
       (∃ H : Graph α β, H.IsProperRigidSubgraph G n) →
       (∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
@@ -3015,7 +3017,7 @@ theorem minimal_kdof_reduction [DecidableEq β] [Finite α] [Finite β] {n : ℕ
         have hdv : (V(G) \ {v}).ncard = V(G).ncard - 1 := by
           rw [Set.ncard_diff (by simpa using hvG) (Set.toFinite _), Set.ncard_singleton]
         omega
-      exact hsplit G v a b e₀ hG hrig hvG he₀
+      exact hsplit G v a b eₐ e_b e₀ hG hrig hvG hav hbv haV hbV heab hla hlb hdeg2 he₀
         (IH _ hsmaller _ rfl hsplitMin hsplit2)
 
 /-! ### The repacking descent: a base admits a balanced forest packing
