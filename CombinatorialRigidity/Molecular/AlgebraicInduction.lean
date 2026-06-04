@@ -923,6 +923,21 @@ theorem infinitesimalMotions_le_withGraph_of_le (F : BodyHingeFramework k α β)
     F.infinitesimalMotions ≤ (F.withGraph G').infinitesimalMotions :=
   F.infinitesimalMotions_mono_of_graph_le (F.withGraph G') hle fun _ => rfl
 
+/-- **Relative rigidity transports from a subgraph to the parent** (`def:rank-hypothesis`, Case I
+infra; the direction the splice travels). If the framework on a subgraph `G' ≤ F.graph` (same
+hinge data, via `withGraph`) is infinitesimally rigid on a body set `s`, then so is the parent
+framework `F` on `s`: re-adding the edges `F.graph ∖ G'` only *shrinks* the motion space
+(`infinitesimalMotions_le_withGraph_of_le`), so every parent motion is already a `G'`-motion and
+inherits constancy on `s`. This is how the inductive realizations of `H` and the contraction
+`G/E(H)` — each a `withGraph` of a single parent placement — supply the parent's relative rigidity
+on `V(H)` and `V(G/E(H))` (`lem:case-I-splice-seed`). -/
+theorem isInfinitesimallyRigidOn_of_withGraph_of_le (F : BodyHingeFramework k α β)
+    {G' : Graph α β} (hle : G' ≤ F.graph) {s : Set α}
+    (h : (F.withGraph G').IsInfinitesimallyRigidOn s) :
+    F.IsInfinitesimallyRigidOn s :=
+  fun S hS u hu v hv =>
+    h S (F.infinitesimalMotions_le_withGraph_of_le hle hS) u hu v hv
+
 /-- **The motion-space dimension does not increase under edge deletion** (`lem:motions-mono-of-
 graph-le`, rank form): for `G' ≤ F.graph`, `finrank Z(G,p) ≤ finrank Z(G',p)`, equivalently
 `rank R(G',p) ≤ rank R(G,p)` (the rank is the codimension `D|V| − finrank Z`,
@@ -1180,6 +1195,38 @@ theorem isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le
     have hw' := hvan w hw
     rw [Pi.sub_apply, hT, sub_eq_zero] at hu' hw'
     rw [hu', hw']
+
+/-- **Case I splice seed** (`lem:case-I-splice-seed`; Katoh–Tanigawa 2011 §6.2/6.5, eqs.\ (6.2),
+(6.6)). The genuine geometric content of Case I, `V(G)`-relative: from the two inductive
+sub-realizations transported onto a *single* parent placement `F` on `G`, the parent realizes the
+target rank on `V(G)`. Let `H` (on `sH = V(H)`) be the proper rigid subgraph and `G/E(H)` (on
+`sc = V(G/E(H))`) the contraction — both subgraphs of `F.graph = G` via `withGraph`, sharing the
+contracted body `c ∈ sH ∩ sc` and covering `V(G) ⊆ sH ∪ sc`. If `F` realizes the rigid block
+(`hblock`, `(F.withGraph H)` rigid on `sH`) and the contraction
+(`hcontract`, `(F.withGraph (G/E(H)))` rigid on `sc`) — each its own inductive `RankHypothesis`,
+transported to the common placement `F` —
+then `F` is infinitesimally rigid on `V(G)`, i.e. `R(G,p)` has `D(|V(G)|−1)` independent rows.
+
+This is the block-triangular splice of KT~(6.3): each leg transports to the parent by the
+"re-adding edges only shrinks motions" monotonicity (`isInfinitesimallyRigidOn_of_withGraph_of_le`,
+since `H, G/E(H) ≤ G`), and the two relatively-rigid pieces glue along the shared contracted body
+to rigidity on their union (`isInfinitesimallyRigidOn_union_of_inter`), restricted to `V(G)` by
+`IsInfinitesimallyRigidOn.mono`. It is **genericity-free**: the device (`lem:genericity-device`)
+enters only at the producer `lem:case-I-realization`, where the two legs must be realized at one
+*generic* placement (the witness-transfer step — the intersection of the two legs' Zariski-open
+rigid loci). The hypotheses here are the *satisfiable* inductive facts (relative rigidity of each
+piece on a common `F`), not the parent rank they conclude — so the seed is honest, not a producer
+that smuggles its deliverable. -/
+theorem isInfinitesimallyRigidOn_of_splice (F : BodyHingeFramework k α β)
+    {GH Gc : Graph α β} (hGH : GH ≤ F.graph) (hGc : Gc ≤ F.graph)
+    {sH sc t : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : t ⊆ sH ∪ sc)
+    (hblock : (F.withGraph GH).IsInfinitesimallyRigidOn sH)
+    (hcontract : (F.withGraph Gc).IsInfinitesimallyRigidOn sc) :
+    F.IsInfinitesimallyRigidOn t :=
+  BodyHingeFramework.IsInfinitesimallyRigidOn.mono F hcover
+    (F.isInfinitesimallyRigidOn_union_of_inter hcH hcc
+      (F.isInfinitesimallyRigidOn_of_withGraph_of_le hGH hblock)
+      (F.isInfinitesimallyRigidOn_of_withGraph_of_le hGc hcontract))
 
 /-- **Case II, relativized 1-extension bridge** (`lem:case-II`, the `V(G)`-relative rank-side
 restatement; Katoh–Tanigawa 2011 §6.3 Lemmas 6.7/6.8). The `α`-independent form of the Case-II

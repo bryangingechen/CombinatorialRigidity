@@ -23,6 +23,27 @@ must be V(G)-relative …*. Forward-mode dep-graph:
 
 ## Current state
 
+**Item 4 LANDED (2026-06-06): Case-I splice GREEN/RED split — the glue half is green, the placement
+half is the new red node.** `lem:case-I-splice-seed` was the genuine geometric heart and is now
+restated as the block-triangular **glue**: `BodyHingeFramework.isInfinitesimallyRigidOn_of_splice`
+(`AlgebraicInduction.lean`) — given a *single* parent framework `F` on `G` realizing both legs
+(`(F.withGraph H)` rigid on `V(H)`, `(F.withGraph G/E(H))` rigid on `V(G/E(H))`), sharing a body
+`c ∈ sH ∩ sc` and covering `V(G) ⊆ sH ∪ sc`, `F` is `IsInfinitesimallyRigidOn V(G)`. Two new
+bricks: `isInfinitesimallyRigidOn_union_of_inter` (`RigidityMatrix.lean` — two overlapping
+relatively-rigid pieces glue along a shared body) and `isInfinitesimallyRigidOn_of_withGraph_of_le`
+(`AlgebraicInduction.lean` — relative rigidity transports subgraph→parent via
+`infinitesimalMotions_le_withGraph_of_le`). The hypotheses are the *satisfiable* inductive facts
+(relative rigidity of each piece on a common `F`), NOT the parent rank they conclude — honest per
+the producer-scrutiny gate. The **placement-construction half** — exhibiting one `F` realizing both
+legs at a generic point (the witness-transfer / intersection of two Zariski-open rigid loci) —
+remains the genuine red obligation, split out as the new node `lem:case-I-splice-placement` (matching
+the gate's documented `lem:case-I-splice-placement` precedent). Blueprint: `lem:case-I-splice-seed`
+restated + flipped GREEN, `lem:case-I-splice-placement` added red, `lem:case-I-realization`'s `\uses`
++ prose updated to compose glue + placement + B0 + device; chapter intro + device-section summary
+synced (B0 + glue green, placement + producers red). Build + lint clean, axiom-clean {propext,
+Classical.choice, Quot.sound}. **Next: item 5 (`lem:case-I-realization`) — compose the placement +
+B0 + device into `HasFullRankRealization`; the splice glue is now available.**
+
 **Item 3 LANDED (2026-06-06): B0 sub-commit 4 — the device closure; `lem:rows-polynomial-in-normals`
 GREEN.** `PanelHingeFramework.exists_good_realization_ofParam` in `AlgebraicInduction.lean` assembles
 the device input shape on the **varying** panel family `q ↦ (ofNormals G ends q).toBodyHinge`
@@ -215,11 +236,16 @@ Classical.choice, Quot.sound}.
   Sub-commits 1–3 (the polynomial bricks `normalsJoin{Poly}`, `panelSupportPoly`, `annihRow{Poly}` +
   `span_annihRow_eq_dualAnnihilator`) landed 2026-06-04…06.
 
+**GREEN — Case-I splice glue (item 4, landed 2026-06-06):**
+- [x] `lem:case-I-splice-seed` — `isInfinitesimallyRigidOn_of_splice` (the block-triangular glue:
+  two legs realized on a common `F` ⇒ rigid on `V(G)`). Bricks: `isInfinitesimallyRigidOn_union_of_inter`,
+  `isInfinitesimallyRigidOn_of_withGraph_of_le`.
+
 **RED — realization producers (no `\lean` yet; the genuine build):**
-- [ ] `lem:case-I-splice-seed` — one placement `p₀` with `D(|V(G)|−1)`
-  independent parent rows, block-triangular from the two IH legs
-  (genericity-free). **Item 4.**
-- [ ] `lem:case-I-realization` — compose B0 + splice-seed + device ⇒
+- [ ] `lem:case-I-splice-placement` — exhibit one parent `F` realizing both legs at a generic point
+  (the witness-transfer; intersection of two Zariski-open rigid loci). The placement-construction half
+  the glue does not supply. **Item 4b (genuine geometric content).**
+- [ ] `lem:case-I-realization` — compose placement + B0 + device ⇒
   `HasFullRankRealization` (the device-direct producer, NOT the retired closure). **Item 5.**
 - [ ] `lem:case-II-realization` — the shallower 1-extension producer (one
   re-inserted body, `+(D−1)` rows, KT 6.12). **Item 6.**
@@ -240,6 +266,14 @@ The genuine block-pin bricks `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **The Case-I splice splits into a green `glue` + a red `placement`.** The original
+  `lem:case-I-splice-seed` promised to *produce a placement* `p₀` with `D(|V(G)|−1)` independent
+  rows — a producer, so flipping it green while the Lean *assumes* the two legs' rigidity would
+  launder the deliverable (producer-scrutiny gate). Resolution: the Lean `isInfinitesimallyRigidOn_
+  of_splice` is the honest **glue** (two legs realized on a common `F` ⇒ rigid on `V(G)`, hypotheses
+  satisfiable IH facts), green; the **placement** (one `F` realizing both legs at a generic point —
+  the witness-transfer) is the new red node `lem:case-I-splice-placement`. Matches the gate's
+  documented `lem:case-I-splice-placement` precedent. → blueprint honesty gate / producer scrutiny.
 - **The device's `hcoord` is a `≤`-containment, not equality.** At degenerate panel
   normals some `C(p(e)) = 0`, so the polynomial row family `panelRow` (annihRow 0 = 0)
   *under*-spans `rigidityRows` and the equality `Z = (span (range g))^∘` fails — but the
@@ -314,16 +348,22 @@ its blueprint node's `\leanok` (or adds green infra) + updates this file. The
 device is green and `B0`'s coordinate core is validated, so this is build work,
 not research. **Do not** re-introduce the retired vacuous lemmas.
 
-**Next concrete commit: item 4 — `lem:case-I-splice-seed`** (items 1–3 landed: 1–2 on 2026-06-05;
-item 3, the B0 keystone `lem:rows-polynomial-in-normals` GREEN, on 2026-06-06 —
-`PanelHingeFramework.exists_good_realization_ofParam`, the device closure on the varying panel
-family `ofNormals G ends q`; see *Current state*). Construct `p₀` on `G` with `D(|V(G)|−1)`
-independent parent rows by transporting the IH realizations of `H` and `G/E(H)` onto `G` and
-certifying block-triangular row independence (genericity-free, via pin-a-body Lemma 5.1's column
-split). The device leg is now available: `exists_good_realization_ofParam` lifts the splice seed to a
-generic realization, so item 5 (`lem:case-I-realization`) composes seed + device into
-`HasFullRankRealization`. The seed's witnessed independent subfamily `hindep` is supplied by
-`exists_independent_panelSupportExtensor` through the hinge-row block (the `panelRow` family's `s`).
+**Next concrete commit: item 4b — `lem:case-I-splice-placement`** (items 1–4 landed: 1–2 on
+2026-06-05; item 3, the B0 keystone `lem:rows-polynomial-in-normals` GREEN, on 2026-06-06; item 4,
+the Case-I splice **glue** `lem:case-I-splice-seed` GREEN, on 2026-06-06 —
+`isInfinitesimallyRigidOn_of_splice`, see *Current state*). The remaining genuine geometric content
+is the **placement** `lem:case-I-splice-placement`: exhibit one parent framework `F` on `G`
+realizing *both* legs simultaneously — `(F.withGraph H)` rigid on `V(H)` AND `(F.withGraph G/E(H))`
+rigid on `V(G/E(H))` — by transporting the IH realizations of `H` and `G/E(H)` onto a *common*
+placement (the witness-transfer / intersection of two Zariski-open rigid loci, lifted by the device
+`exists_good_realization_ofParam`). The glue `isInfinitesimallyRigidOn_of_splice` then turns the two
+legs into `IsInfinitesimallyRigidOn V(G)`, and item 5 (`lem:case-I-realization`) wraps it as
+`HasFullRankRealization`. The witnessed independent subfamily `hindep` the device needs is supplied
+by `exists_independent_panelSupportExtensor` through the hinge-row block (the `panelRow` family's
+`s`). This is the step the 5-brick decomposition (commit `eb7dda7`) flagged as the crux: the
+witness-transfer gap (two legs on one `ofParam` family) and the unexercised non-constant multivariate
+path through `exists_good_realization` (consumers used `…_const` only — but B0's
+`exists_good_realization_ofParam` now exercises the varying family).
 
 1. ~~**Relativize the realization motive + base case**~~ **DONE (2026-06-05).**
    `IsInfinitesimallyRigidOn` + its API in `RigidityMatrix.lean`;
@@ -353,12 +393,20 @@ generic realization, so item 5 (`lem:case-I-realization`) composes seed + device
    must hold at degenerate output normals, where the family under-spans). See *Current state* +
    *Decisions made*.
 
-4. **`lem:case-I-splice-seed`** — construct `p₀` on `G` with `D(|V(G)|−1)`
-   independent parent rows: transport the IH realizations of `H` and `G/E(H)`
-   onto `G` and certify block-triangular row independence (genericity-free, via
-   pin-a-body Lemma 5.1's column split). The genuine geometric content of Case I.
+4. ~~**`lem:case-I-splice-seed`** (the glue half)~~ **DONE (2026-06-06, GREEN).**
+   `BodyHingeFramework.isInfinitesimallyRigidOn_of_splice` — the block-triangular glue: from two
+   legs realized on a common `F` (`(F.withGraph H)` rigid on `V(H)`, `(F.withGraph G/E(H))` rigid on
+   `V(G/E(H))`, sharing a body, covering `V(G)`), `F` is `IsInfinitesimallyRigidOn V(G)`. Bricks:
+   `isInfinitesimallyRigidOn_union_of_inter`, `isInfinitesimallyRigidOn_of_withGraph_of_le`. The
+   placement-construction half split out as `lem:case-I-splice-placement` (item 4b).
 
-5. **`lem:case-I-realization`** — compose B0 + splice-seed + device ⇒
+4b. **`lem:case-I-splice-placement`** — exhibit one parent `F` realizing *both* legs at a generic
+   point: transport the IH realizations of `H` and `G/E(H)` onto a *common* placement (witness-
+   transfer / intersection of two Zariski-open rigid loci, lifted by `exists_good_realization_ofParam`).
+   The glue `isInfinitesimallyRigidOn_of_splice` then concludes. The genuine geometric content of
+   Case I; certify block-triangular row independence via pin-a-body Lemma 5.1's column split.
+
+5. **`lem:case-I-realization`** — compose splice-placement + glue + B0 + device ⇒
    `HasFullRankRealization k G`. Discharges `theorem_55`'s `hcontract`.
 
 6. **`lem:case-II-realization`** — the shallower 1-extension producer: re-insert

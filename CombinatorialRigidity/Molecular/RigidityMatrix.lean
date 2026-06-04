@@ -723,6 +723,25 @@ theorem isInfinitesimallyRigidOn_of_isInfinitesimallyRigid (F : BodyHingeFramewo
     (h : F.IsInfinitesimallyRigid) (s : Set α) : F.IsInfinitesimallyRigidOn s :=
   fun S hS u _ v _ => (F.isInfinitesimallyRigid_iff.mp h S hS) u v
 
+/-- **Two overlapping rigid pieces glue to a rigid union** (`def:rank-hypothesis`, the splice-glue
+of Case I; Katoh–Tanigawa 2011 §6.2/6.5). If a framework is infinitesimally rigid on each of two
+body sets `s` and `t` that share a body `c ∈ s ∩ t`, then it is rigid on their union `s ∪ t`:
+every motion is constant on `s` and constant on `t`, and the two constants agree at the shared
+body `c`, so the motion is constant across all of `s ∪ t`. This is the `α`-independent geometric
+core of the Case-I block-triangular splice — the rigid subgraph `H` (on `s = V(H)`) and the rigid
+contraction `G/E(H)` (on `t = V(G/E(H))`) overlap at the contracted body and cover `V(G)`, so a
+framework realizing both pieces realizes the parent rank. -/
+theorem isInfinitesimallyRigidOn_union_of_inter (F : BodyHingeFramework k α β) {s t : Set α}
+    {c : α} (hcs : c ∈ s) (hct : c ∈ t)
+    (hs : F.IsInfinitesimallyRigidOn s) (ht : F.IsInfinitesimallyRigidOn t) :
+    F.IsInfinitesimallyRigidOn (s ∪ t) := by
+  intro S hS u hu v hv
+  have key : ∀ x ∈ s ∪ t, S x = S c := by
+    rintro x (hx | hx)
+    · exact hs S hS x hx c hcs
+    · exact ht S hS x hx c hct
+  rw [key u hu, key v hv]
+
 /-- Infinitesimal rigidity is the equality `Z(G,p) = trivialMotions` of the two submodules
 (`lem:trivial-motions-rank-bound`): one inclusion always holds
 (`trivialMotions_le_infinitesimalMotions`), so rigidity — the reverse inclusion — upgrades it to
