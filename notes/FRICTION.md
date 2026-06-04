@@ -76,6 +76,30 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `Basis.linearIndependent.map' W.subtype` over a `Module.Dual` of an exterior power blows up at `whnf` — factor the basis-coercion into an abstract-field mirror lemma
+- **Where it bit:** `exists_independent_rigidityRows_of_edge` in
+  `Molecular/RigidityMatrix.lean` (Phase 21b Case-I per-edge brick): coercing a
+  basis of the hinge-row block `r(p(e)) ≤ Module.Dual ℝ (ScrewSpace k)` out into
+  the ambient dual to get `D − 1` independent ambient functionals.
+- **Friction:** building the basis inline (`Module.finBasisOfFinrankEq` +
+  `b.linearIndependent.map' W.subtype (Submodule.ker_subtype _)`) hit a
+  `(deterministic) timeout at whnf` even at `maxHeartbeats 400000` — `ScrewSpace k`
+  is `↥(⋀[ℝ]^k …)`, an `abbrev`, and the `.map'` unification + `Module.Free`/`Module.Finite`
+  synthesis on `Module.Dual ℝ (ScrewSpace k)` and its submodule force the exterior
+  power to whnf-normalize. Even `Module.Free.of_divisionRing` needed `V` given explicitly
+  (the inferred semiring path mismatched `Real.semiring`).
+- **Fix:** factor the basis-coercion into an upstream-eligible mirror lemma
+  `Submodule.exists_linearIndependent_fin_of_finrank_eq` (existence form, over an
+  abstract field, no concrete carrier). Its opaque proof keeps `ScrewSpace` from
+  unfolding at the use site — the consumer `obtain`s `⟨c, hc, hmem⟩` and only the
+  lemma's *statement* is elaborated.
+- **General lesson:** when a `Basis`/`map'`/`Module.Free` step times out at `whnf`
+  on a heavy `abbrev` carrier (exterior power, `Module.Dual` of one), state the
+  linear-algebra fact over an abstract field as a mirror lemma and apply it — the
+  proof's `whnf` cost is paid once, opaquely, not re-paid at every use site.
+- **Status:** resolved — mirror lemma landed (see Mirrored).
+- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`.
+
 ### [resolved] Iterating cyclic `+1` around `Fin m`: `(j : Fin m)` ascription / `NatCast` / `Fin.induction` all fail; use `Fin.ofNat`-based ℕ-induction
 - **Where it bit:** `isTrivialMotion_of_isInfinitesimalMotion_cycle` in
   `Molecular/AlgebraicInduction.lean` (Phase 21 `m`-body cycle): turning the
@@ -2482,6 +2506,22 @@ limitations. Worth a once-over so future agents don't re-litigate.
 - **Status:** mirrored.
 - **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
   (where `Module.finrank_pi_fintype` lives).
+
+### [mirrored] `Submodule.exists_linearIndependent_fin_of_finrank_eq` (independent `Fin n`-family inside a finite-dim subspace)
+- **Where it bit:** `exists_independent_rigidityRows_of_edge` in
+  `Molecular/RigidityMatrix.lean` (Phase 21b Case-I per-edge brick): obtaining
+  `D − 1` independent ambient functionals inside the hinge-row block.
+- **Friction:** the inline basis-coercion (`Module.finBasisOfFinrankEq` +
+  `b.linearIndependent.map' W.subtype`) timed out at `whnf` on the exterior-power
+  `Module.Dual` carrier — see the resolved Open entry on the `whnf` blow-up.
+- **Resolution:** mirrored as `Submodule.exists_linearIndependent_fin_of_finrank_eq`:
+  a finite-dim subspace `W` (over a field) of `finrank K W = n` carries an LI family
+  `Fin n → V` valued in `W` (the basis coerced along `W.subtype`). Existence-over-
+  abstract-field form, so the consumer never unfolds the carrier. Proof: `Module.Free`
+  from the field + `Module.finBasisOfFinrankEq` + `Basis.linearIndependent.map'`.
+- **Status:** mirrored.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean`
+  (beside the `FiniteDimensional` basis API).
 
 ### [mirrored] `Finset.disjoint_iff_eq_compl` (complementary-card disjointness ⟺ complement)
 - **Where it bit:** `wedgePairing_ιMulti_family_eq_zero_of_ne_compl` in

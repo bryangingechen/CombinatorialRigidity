@@ -449,6 +449,33 @@ theorem finrank_hingeRowBlock (F : BodyHingeFramework k α β) {e : β}
   rw [screwSpace_finrank, finrank_span_singleton he, ← hingeRowBlock_apply] at key
   omega
 
+/-- **A single transversal hinge contributes `D − 1` independent rigidity rows**
+(`def:rigidity-matrix`, the per-edge half of the Case-I `hindep`/`hmatch` assembly). For a genuine
+edge `e = uv` with distinct endpoints (`u ≠ v`) whose supporting extensor is nonzero (the
+transversal / general-position hinge, `panelSupportExtensor_ne_zero_iff`), there is a linearly
+independent family of `D − 1 = screwDim k − 1` rigidity rows, all members of `F.rigidityRows`.
+The family is `hingeRow u v` applied to a basis of the hinge-row block: the `(D−1)`-dimensional
+hinge-row block `r(p(e))` (`finrank_hingeRowBlock`) has a basis of `D − 1` functionals, supplied
+in ambient-coerced existence form by `Submodule.exists_linearIndependent_fin_of_finrank_eq` (so
+the heavy `Module.Dual` of an exterior power is never unfolded). Each basis functional lies in
+`r(p(e))`, so its `hingeRow u v` image is a rigidity row (witnessed by `e, u, v`), and the
+basis-independent functionals stay independent as rigidity rows through the relative-screw
+evaluation (`linearIndependent_hingeRow`). This is the per-edge brick that counts and produces the
+matching-size independent rigidity-row subfamily the Case-I capstone `hglue_of_realization` needs:
+each transversal hinge of a rigid block contributes exactly `D − 1` independent rows of `R(G,p)`,
+all routed through the same `screwDiff u v`. -/
+theorem exists_independent_rigidityRows_of_edge (F : BodyHingeFramework k α β) {e : β} {u v : α}
+    (huv : u ≠ v) (hlink : F.graph.IsLink e u v) (he : F.supportExtensor e ≠ 0) :
+    ∃ r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k),
+      LinearIndependent ℝ r ∧ ∀ i, r i ∈ F.rigidityRows := by
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  -- A basis of the `(D−1)`-dimensional hinge-row block, coerced out as ambient functionals.
+  obtain ⟨c, hc, hmem⟩ := (F.hingeRowBlock e).exists_linearIndependent_fin_of_finrank_eq
+    (F.finrank_hingeRowBlock he)
+  -- Lift each block functional to a rigidity row through the relative-screw evaluation.
+  refine ⟨fun i => hingeRow u v (c i), linearIndependent_hingeRow huv hc, fun i => ?_⟩
+  exact ⟨e, u, v, hlink, c i, hmem i, rfl⟩
+
 /-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
 assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
 These are the rigid-motion screws — the constant assignments — and they form the

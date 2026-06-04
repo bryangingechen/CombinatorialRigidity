@@ -28,6 +28,29 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Per-edge independent-rows brick landed (2026-06-03) — `exists_independent_rigidityRows_of_edge`: one transversal hinge ⇒ `D−1` independent rigidity rows.**
+`exists_independent_rigidityRows_of_edge` (`Molecular/RigidityMatrix.lean`, after
+`finrank_hingeRowBlock`): for a genuine edge `e = uv` (`u ≠ v`, `supportExtensor e ≠ 0`,
+transversal hinge) there is an LI family `Fin (screwDim k − 1) → Dual ℝ (α → ScrewSpace k)` of
+rigidity rows, all in `F.rigidityRows`. Composes the two prior per-edge bricks: a basis of the
+`(D−1)`-dimensional hinge-row block (`finrank_hingeRowBlock`) coerced out as ambient functionals,
+then lifted to rigidity rows by `linearIndependent_hingeRow`; membership in `rigidityRows` by the
+`⟨e, u, v, hlink, c i, …⟩` witness. The basis-coercion is factored into a new upstream-eligible
+mirror lemma `Submodule.exists_linearIndependent_fin_of_finrank_eq`
+(`Mathlib/LinearAlgebra/Dimension/Constructions.lean`): a finite-dim subspace `W` of finrank `n`
+carries an LI family `Fin n → V` valued in `W` (the basis, coerced along `W.subtype`). The
+existence-over-abstract-field form is *load-bearing*: doing the basis/`map'` step inside
+`RigidityMatrix.lean` directly timed out at `whnf` (the heavy `Module.Dual` of an exterior power
+unfolds during `Basis.linearIndependent.map' W.subtype` unification); the mirror lemma's opaque
+proof keeps `ScrewSpace` from unfolding at the use site (FRICTION [molecular] entry). This is the
+per-edge unit of the Case-I `hindep`/`hmatch` assembly — each transversal hinge of a rigid block
+contributes exactly `D − 1` independent rows of `R(G,p)`. Green, build warning-clean + lint clean,
+checkdecls clean, axioms {propext, Classical.choice, Quot.sound}. Folded into the
+`def:rigidity-matrix` node's `\lean{...}` pin (the mirror lemma is skipped per the blueprint
+mirror-lemma rule); node body gains a sentence on the per-edge `D−1`-row count. Residual Case-I work:
+combine across the rigid block's hinges into a single LI family indexed by `s`, match
+`#s = D(|V|−1) − dim Z_s` (`hmatch`), and exhibit the realization `F₀`.
+
 **Independence bridge landed (2026-06-03) — Case-I `hindep` brick: independent extensors → independent rigidity rows.**
 `linearIndependent_hingeRow` (`Molecular/RigidityMatrix.lean`, after `hingeRow_apply`),
 with two supporting glue lemmas `screwDiff_surjective` and `hingeRow_eq_dualMap`:
@@ -295,6 +318,15 @@ hand-off convenience.
   `hglue_of_realization` needs. Green; folded into `def:rigidity-matrix`'s `\lean{...}` pin (glue
   lemmas skipped per the blueprint skip-glue rule).
 
+- [x] `exists_independent_rigidityRows_of_edge` (`Molecular/RigidityMatrix.lean`): per-edge
+  independent-rows brick — a single transversal hinge `e = uv` (`u ≠ v`, `supportExtensor e ≠ 0`)
+  yields `D − 1` LI rigidity rows in `F.rigidityRows`. Composes `finrank_hingeRowBlock` (count) +
+  `linearIndependent_hingeRow` (lift) through the new mirror lemma
+  `Submodule.exists_linearIndependent_fin_of_finrank_eq` (basis-coercion in abstract-field form,
+  avoiding the `whnf` blow-up on the exterior-power dual). The per-edge unit of Case-I
+  `hindep`/`hmatch`. Green; folded into `def:rigidity-matrix`'s `\lean{...}` pin (mirror lemma
+  skipped).
+
 - [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
   `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
   `span (range a) = span F.rigidityRows`, from finite-dimensionality of the dual (`α` finite ⇒
@@ -468,13 +500,16 @@ geometric construction).** From the contraction realization (`G/E(H)` at its ind
    green).
 No affine-path construction and no finite-spanning-family construction remain. This is the
 genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is
-in hand and `s` is being matched to the corank. The independence-bridge sub-brick toward (2) is now
-landed (`linearIndependent_hingeRow`): independent supporting extensors
-(`exists_independent_panelSupportExtensor`, through the `D−1`-counted hinge-row block) become
-independent rigidity-row functionals `hingeRow u v r` per edge. The remaining sub-bricks: combine it
-across the rigid block's hinges into a single LI family indexed by `s`, then match `#s = D(|V|−1) −
-dim Z_s` (`hmatch`) using `finrank_hingeRowBlock`'s `D−1` per-edge count against the contraction's
-inductive rank. The other
+in hand and `s` is being matched to the corank. The per-edge sub-bricks toward (2) are now landed:
+`linearIndependent_hingeRow` (independent supporting extensors → independent `hingeRow u v r` per
+edge) and `exists_independent_rigidityRows_of_edge` (one transversal hinge ⇒ `D − 1` LI rigidity
+rows in `rigidityRows`, the per-edge unit combining the row count and the lift). **Next sub-brick:
+combine `exists_independent_rigidityRows_of_edge` across the rigid block's hinges into a single LI
+family indexed by `s`** — this is the substantive step (rows from *different* hinges of the block
+must be jointly independent; the cycle/spanning-tree structure of the rigid block + the
+`exists_independent_panelSupportExtensor` general position is where the `m ≤ D` extensor-independence
+of `lem:cycle-realization` re-enters). Then match `#s = D(|V|−1) − dim Z_s` (`hmatch`) using the
+`D−1` per-edge count against the contraction's inductive rank, and exhibit `F₀`. The other
 consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same constant-path chain
 (`hcoord_const` → device) with an analogous per-consumer bridge; the device's *target statements*
 are fixed (the named hypotheses in `AlgebraicInduction.lean`).

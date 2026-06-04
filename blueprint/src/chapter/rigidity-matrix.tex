@@ -92,6 +92,7 @@ and the generic-rank argument are in hand.
     CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_dualCoannihilator,
     CombinatorialRigidity.Molecular.BodyHingeFramework.exists_finite_spanning_rigidityRows,
     CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_rigidityRows_of_edge,
     CombinatorialRigidity.Molecular.ScrewSpace,
     CombinatorialRigidity.Molecular.screwDim,
     CombinatorialRigidity.Molecular.screwSpace_finrank}
@@ -127,7 +128,13 @@ and the generic-rank argument are in hand.
   rigidity rows ($\mathrm{linearIndependent\_hingeRow}$), the brick that turns
   the independent supporting extensors of a rigid block
   (\cref{lem:extensor-independence}) into the independent rigidity-row
-  subfamily Case~I's block-triangular gluing counts.
+  subfamily Case~I's block-triangular gluing counts. Composed with the
+  $(D-1)$-dimensional hinge-row block count of \cref{def:hinge-row-block}
+  ($\mathrm{finrank\_hingeRowBlock}$), this gives the per-edge form
+  ($\mathrm{exists\_independent\_rigidityRows\_of\_edge}$): a single transversal
+  hinge $e = uv$ ($u \ne v$, $C(p(e)) \ne 0$) contributes exactly $D - 1$
+  linearly independent rigidity rows, the per-edge unit of the matching-size
+  independent subfamily Case~I assembles over a rigid block's hinges.
 \end{definition}
 
 \begin{definition}[Degree of freedom; generic realization]
