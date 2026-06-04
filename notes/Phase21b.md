@@ -2,7 +2,8 @@
 
 **Status:** in progress (opened 2026-06-03; realization layer re-planned
 2026-06-04; node-decomposition re-plan 2026-06-06; N7 decomposed into glue +
-placement 2026-06-04). Cold-start-ready hand-off below.
+placement 2026-06-04; N7b placement decomposed into N7b-1/2/3 2026-06-04).
+Cold-start-ready hand-off below.
 
 Sub-phase scoped out of Phase 21 (user decision, risk #4/#7) — the **analytic
 sibling** of the Phase-21a meet. Two halves: (1) the **genericity device**
@@ -90,7 +91,15 @@ per-node detail.
 
 **RED — the build (ordered; detail in Hand-off):**
 - [ ] N7b `lem:case-II-realization-placement` — construct the seed `(q₀, s)` for the 1-extension
-  across the edge substitution (KT 6.12). The genuine geometry; feeds N7a.
+  across the edge substitution (KT 6.12). The genuine geometry; feeds N7a. **Decomposed
+  2026-06-04** into three buildable sub-nodes (blueprint, mirrors the Case-I placement split):
+  - [ ] N7b-1 `lem:case-II-placement-new-rows` — `v`'s two re-attaching hinges give `D−1`
+    independent panel rows (general-position normal via `exists_independent_panelSupportExtensor`).
+  - [ ] N7b-2 `lem:case-II-placement-old-rows` — the inductive `D(|V(G)|−2)` rows transport
+    through the common subgraph `G−v` (`removeVertex_le`/`removeVertex_le_splitOff`), NOT a
+    free inclusion-transport (edge substitution: `e₀` deleted, `v`'s edges added).
+  - [ ] N7b-3 `lem:case-II-placement-block-independent` — the two blocks jointly independent
+    (pin-a-body Lemma 5.1 column split, `lem:rank-delete-vertex`); total `D(|V(G)|−1)`.
 - [ ] N7 `lem:case-II-realization` — compose N7a (glue) + N7b (placement). Discharges `hsplit`.
 - [ ] N4 `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction bridge; gates Case I.
 - [ ] N5 `lem:case-I-splice-placement` — the splice geometry (decompose first).
@@ -106,6 +115,14 @@ are **retained** (blueprint `lem:pinned-motions-on-rank-bound`).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N7b (Case-II placement) decomposes into three sub-nodes before any build.** Per the
+  hand-off's "decompose before building" gate (process lesson (a)), the genuinely-geometric
+  N7b is split into N7b-1 (the re-inserted `v`'s two hinges give `D−1` independent panel rows
+  via `exists_independent_panelSupportExtensor`), N7b-2 (the IH's `D(|V(G)|−2)` rows transport
+  through the common subgraph `G−v` — NOT a free inclusion-transport, since `splitOff` is an
+  edge substitution), and N7b-3 (the two blocks jointly independent, pin-a-body Lemma 5.1
+  column split). N7b assembles the seed `(q₀, s)`; the count is `(D−1) + D(|V(G)|−2) =
+  D(|V(G)|−1)`. Mirrors the Case-I placement split.
 - **The Case-I splice splits into a green `glue` + a red `placement`.** The
   original `lem:case-I-splice-seed` promised to *produce* a placement, so flipping
   it green while the Lean merely *assumes* the two legs' rigidity would launder
@@ -191,16 +208,23 @@ deletes `v`'s two edges), **not a subgraph**, so the inductive rigidity-on-`t` d
 the substitution (recover `e₀`'s constraint from `v`'s two new edges). That seed
 construction is the genuine geometry — split out as the red node below.
 
-**Next concrete commit: N7b `lem:case-II-realization-placement`** — construct, from the
-inductive realization of `G_v^{ab}` (rigid on `V(G)∖{v}`), a seed normal assignment `q₀`
-for `G` (in particular a panel normal `n` for the re-inserted `v`) and a linearly
-independent family `s` of `D(|V(G)|−1)` `panelRow`s of `ofNormals G ends q₀`. KT §6.3
-Lemma 6.8 / eq. (6.12): re-insert `v` joined to `a, b` by general-position hinges
-(`exists_independent_panelSupportExtensor`, `+(D−1)` rows), threading the IH's rows
-through the common subgraph `G − v` (`removeVertex_le` / `removeVertex_le_splitOff`,
-green, `Induction.lean`). This is research-shaped (the witnessed-row count across the
-edge substitution); **decompose before building**, mirroring N5. Then N7 = N7a∘N7b is a
-one-line composition discharging `theorem_55`'s `hsplit`.
+**N7b `lem:case-II-realization-placement` is now DECOMPOSED (2026-06-04, this commit).**
+The genuine geometry — construct, from the inductive realization of `G_v^{ab}` (rigid on
+`V(G)∖{v}`), a seed normal assignment `q₀` for `G` (in particular a panel normal `n` for the
+re-inserted `v`) and a linearly independent family `s` of `D(|V(G)|−1)` `panelRow`s of
+`ofNormals G ends q₀` — splits into three buildable sub-nodes in the blueprint, mirroring the
+Case-I placement split. KT §6.3 Lemma 6.8 / eq. (6.12). This commit is a planning/decomposition
+commit (blueprint + notes only, no Lean), per the hand-off's "decompose before building" gate.
+
+**Next concrete commit: N7b-1 `lem:case-II-placement-new-rows`** — choose the normal `n` of `v`
+so its two re-attaching hinges (edges `e_a`, `e_b`) give `D−1` linearly independent `panelRow`s
+in the `v`-column screw block. Build-shaped: `exists_independent_panelSupportExtensor` at
+`m = D−1` (green, supplies general-position normals) + the `panelRow` span identity
+`span_panelRow_eq_rigidityRows` + pin-a-body Lemma 5.1 (`lem:rank-delete-vertex`, the column
+location). Then in order: N7b-2 (`lem:case-II-placement-old-rows`, transport the IH's
+`D(|V(G)|−2)` rows through `G−v` via `removeVertex_le`/`removeVertex_le_splitOff`), N7b-3
+(`lem:case-II-placement-block-independent`, the block-triangular union), N7b (assemble the seed
+`(q₀, s)`), N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
 
 **The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
 (`exists_good_realization_ofParam`, green) gives the *absolute* codimension bound
@@ -216,7 +240,8 @@ one-line composition discharging `theorem_55`'s `hsplit`.
   at a singleton block `{v₀}` + N1 dimension-match (`finrank_pinnedMotions_add_screwDim`).
 
 Then, in order:
-1. **N7b `lem:case-II-realization-placement`** (next concrete commit, above) →
+1. **N7b `lem:case-II-realization-placement`**, now decomposed into N7b-1 → N7b-2 → N7b-3 →
+   N7b-assembly (sub-nodes above; N7b-1 is the next concrete commit) →
    **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
 2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
@@ -240,8 +265,9 @@ Then, in order:
 re-stated rank-side) — 2026-06-05; Item 3 (B0 keystone) + Item 4 (Case-I splice
 glue) — 2026-06-06; **N1–N3 (`V(G)`-relative count bridge) — 2026-06-04**;
 **N7a `lem:realization-of-independent-rows` (device-to-motive glue, shared by both
-producers) — 2026-06-04** (and N7 decomposed into glue + red placement N7b). Per-node
-detail in the blueprint dep-graph.
+producers) — 2026-06-04** (and N7 decomposed into glue + red placement N7b);
+**N7b placement decomposed into the three buildable sub-nodes N7b-1/2/3 — 2026-06-04**
+(planning commit, blueprint + notes). Per-node detail in the blueprint dep-graph.
 
 **Process lessons (don't repeat).**
 (a) Build the keystone / validate the target shape *before* growing a reduction

@@ -78,9 +78,12 @@ producer must (i) convert that count to the $V(G)$-relative motive and
 the $V(G)$-relative count bridge (\cref{lem:relative-screw-split},
 \cref{lem:relative-device-count}, \cref{lem:isInfRigidOn-of-relative-count})
 adapting the device's absolute bound to
-$\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ (build-shaped); the Case~II
-$1$-extension producer \cref{lem:case-II-realization} (the cheapest, needing
-only the bridge); the graph$\leftrightarrow$matroid contraction-minimality
+$\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ (now green); the Case~II
+$1$-extension producer \cref{lem:case-II-realization}, which splits into the
+green device-closure glue \cref{lem:realization-of-independent-rows} and the
+geometric placement \cref{lem:case-II-realization-placement} (the seed
+construction across the edge substitution $G_v^{ab}$, itself decomposed into the
+three sub-nodes N7b-1/2/3); the graph$\leftrightarrow$matroid contraction-minimality
 bridge \cref{lem:rigidContract-isMinimalKDof} (a Phase-20 carry-forward gating
 Case~I --- the graph-level $(G/E(H)).\mathrm{IsMinimalKDof}$ the producer needs
 to invoke the induction hypothesis, the matroid side being green in
@@ -1450,7 +1453,9 @@ non-spanning block).}
 \begin{lemma}[Case II placement: the $1$-extension normal; KT (6.12)]
   \label{lem:case-II-realization-placement}
   \uses{def:panel-hinge-framework, lem:case-II, lem:genericity-device,
-        lem:exists-independent-panel-extensor}
+        lem:exists-independent-panel-extensor,
+        lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
+        lem:case-II-placement-block-independent}
   The remaining geometric obligation of \cref{lem:case-II-realization}: from the
   inductive realization of the splitting-off $G_v^{ab}$, construct a free normal
   assignment $q_0$ for the parent graph $G$ --- in particular a panel normal $n$
@@ -1468,12 +1473,117 @@ non-spanning block).}
   (Phase~21b realization layer): the witnessed-independent-row construction across
   the edge substitution is the genuine content; once green it feeds the glue
   \cref{lem:realization-of-independent-rows}.
+
+  \medskip\noindent\emph{Decomposition (Phase-21b realization-layer plan).} Per
+  the hand-off discipline for a genuinely-geometric node, this placement breaks
+  into three buildable sub-nodes plus a closing assembly, mirroring the Case~I
+  splice placement's boundary-panel/block-triangular split. The seed family $s$
+  partitions into the \emph{new-edge block} (the two hinges re-attaching $v$) and
+  the \emph{old block} (the inductive realization's rows, read off the common
+  subgraph $G - v$); the count is $(D-1) + D(|V(G)|-2) = D(|V(G)|-1)$.
+  \begin{enumerate}
+    \item \cref{lem:case-II-placement-new-rows} (N7b-1): choose the normal $n$ for
+      $v$ so that $v$'s two new hinges supply $D-1$ linearly independent panel rows.
+    \item \cref{lem:case-II-placement-old-rows} (N7b-2): transport the inductive
+      realization's $D(|V(G)|-2)$ independent rows of $G_v^{ab}$ onto $G$ through
+      the common subgraph $G - v$.
+    \item \cref{lem:case-II-placement-block-independent} (N7b-3): the two blocks
+      are jointly independent (the new-edge rows live in the $v$-column block, the
+      old rows in its complement; pin-a-body Lemma~5.1,
+      \cref{lem:rank-delete-vertex}, makes the union block-triangular).
+  \end{enumerate}
+  The assembly below packages the three into the witness $(q_0, s)$ the glue
+  \cref{lem:realization-of-independent-rows} consumes.
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II, lem:exists-independent-panel-extensor}
-  Constructing the seed $(q_0, s)$ realizing the witnessed count is the geometric
-  step. Deferred to the Phase-21b realization layer; see
+  \uses{lem:case-II, lem:exists-independent-panel-extensor,
+        lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
+        lem:case-II-placement-block-independent}
+  Take $q_0$ to agree with the inductive realization's normals on
+  $V(G)\setminus\{v\} = V(G_v^{ab})$ and to assign $v$ the general-position normal
+  $n$ of \cref{lem:case-II-placement-new-rows}. Let $s$ be the union of the
+  new-edge block (\cref{lem:case-II-placement-new-rows}, $D-1$ rows) and the old
+  block (\cref{lem:case-II-placement-old-rows}, $D(|V(G)|-2)$ rows);
+  \cref{lem:case-II-placement-block-independent} makes the union independent, and
+  the count is $D(|V(G)|-1)$. The genuine content is the edge substitution: $s$ is
+  \emph{not} a free transport of $G_v^{ab}$'s rows (the short-circuit $e_0$ is
+  deleted in $G$, $v$'s two edges added), so the old block is recovered through the
+  common subgraph $G - v$ ($\mathrm{removeVertex}$), not along an inclusion
+  $G_v^{ab}\le G$. Deferred to the Phase-21b realization layer; see
   \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
+\end{proof}
+
+\begin{lemma}[N7b-1: the re-inserted body's two hinges give $D-1$ independent rows]
+  \label{lem:case-II-placement-new-rows}
+  \uses{def:panel-hinge-framework, lem:exists-independent-panel-extensor,
+        lem:rank-delete-vertex}
+  Re-inserting the degree-2 body $v$ joins it to its two neighbours $a, b$ by two
+  hinges. Choosing the panel normal $n$ of $v$ in general position
+  (\cref{lem:exists-independent-panel-extensor}) makes the two new edges' supporting
+  extensors $C(e_a), C(e_b)$ span a $D-1$-dimensional space, so the two new
+  $\mathrm{panelRow}$ blocks --- the rows of $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
+  indexed by $e_a, e_b$ --- carry $D-1$ linearly independent functionals on the
+  $v$-column screw block. This is the panel-row form of the $+(D-1)$ contribution the
+  $1$-extension adds, sitting entirely in $v$'s columns (pin-a-body Lemma~5.1,
+  \cref{lem:rank-delete-vertex}). \emph{Red} (Phase-21b realization layer):
+  build-shaped given the green $\mathrm{exists\_independent\_panelSupportExtensor}$
+  and the $\mathrm{panelRow}$ span identity.
+\end{lemma}
+\begin{proof}
+  \uses{lem:exists-independent-panel-extensor, lem:rank-delete-vertex}
+  $\mathrm{exists\_independent\_panelSupportExtensor}$ at $m = D-1$ supplies the
+  general-position normals; carry them to $v$'s normal $n$ and read the independence
+  of the two edges' $\mathrm{panelRow}$ blocks off the support-extensor span. See
+  \cite[\S6.3]{katohTanigawa2011}.
+\end{proof}
+
+\begin{lemma}[N7b-2: the inductive rows transport through the common subgraph $G-v$]
+  \label{lem:case-II-placement-old-rows}
+  \uses{def:panel-hinge-framework, lem:case-II, lem:rows-polynomial-in-normals}
+  The inductive realization of $G_v^{ab}$ (rigid on $V(G)\setminus\{v\}$, hence
+  $D(|V(G)|-2)$ independent rows of $\mathrm{ofNormals}\,G_v^{ab}\,\mathrm{ends}'\,q_0'$)
+  transports to $D(|V(G)|-2)$ independent rows of $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
+  on $G$. The transport is \emph{not} along an inclusion (neither $G_v^{ab}$ nor $G$ is
+  a subgraph of the other): both sit above the common subgraph $G - v$
+  ($\mathrm{removeVertex}\,v$; $\mathrm{removeVertex\_le}$ and
+  $\mathrm{removeVertex\_le\_splitOff}$, green), and the inductive rows that avoid $v$
+  --- equivalently avoid the short-circuit edge $e_0$ --- are exactly the rows of
+  $G - v$, which survive into $G$ unchanged. The short-circuit edge $e_0$'s constraint
+  is \emph{not} transported here; it is recovered from $v$'s two new edges in N7b-1.
+  \emph{Red} (Phase-21b realization layer): the row coordinatization
+  \cref{lem:rows-polynomial-in-normals} identifies the rows; the content is selecting
+  the $e_0$-free subfamily and matching it across the two graphs through $G - v$.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II, lem:rows-polynomial-in-normals}
+  Restrict the inductive independent family to the rows indexed by edges of
+  $G - v$ (drop the $e_0$-row), and read them as rows of $G$ through
+  $\mathrm{removeVertex\_le}$. Independence is inherited (a subfamily of an
+  independent family). See \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
+\end{proof}
+
+\begin{lemma}[N7b-3: the new-edge and old blocks are jointly independent]
+  \label{lem:case-II-placement-block-independent}
+  \uses{def:panel-hinge-framework, lem:case-II-placement-new-rows,
+        lem:case-II-placement-old-rows, lem:rank-delete-vertex}
+  The new-edge block (\cref{lem:case-II-placement-new-rows}, $D-1$ rows in the
+  $v$-column screw block) and the old block (\cref{lem:case-II-placement-old-rows},
+  $D(|V(G)|-2)$ rows supported off $v$'s columns) form a jointly linearly independent
+  family of $D(|V(G)|-1)$ rigidity rows. The split is the pin-a-body column
+  decomposition (Lemma~5.1, \cref{lem:rank-delete-vertex}): pinning $v$'s body removes
+  exactly the new-edge rows and leaves the old block, so the union is block-triangular.
+  This is the panel-row form of the $1$-extension's exact $+D$ rank lift the Case~II
+  accounting \cref{lem:case-II} pins. \emph{Red} (Phase-21b realization layer):
+  build-shaped given N7b-1, N7b-2, and the column split.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
+        lem:rank-delete-vertex}
+  Block-triangular independence: the old block annihilates $v$'s screw columns
+  (its edges are $e_0$-free, away from $v$), the new block restricted to those
+  columns is independent by N7b-1, so a vanishing combination forces both halves to
+  vanish (pin-a-body Lemma~5.1, \cref{lem:rank-delete-vertex}). See
+  \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 
 \subsection{Case III deferred (the crux)}
