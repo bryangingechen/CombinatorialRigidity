@@ -23,6 +23,25 @@ must be V(G)-relative …*. Forward-mode dep-graph:
 
 ## Current state
 
+**Item 2 LANDED (2026-06-05): the Case-I / Case-II accounting is re-stated rank-side.**
+Two genericity-free, `α`-independent rigidity bridges in `AlgebraicInduction.lean` give the
+relative-motive restatement of the accounting iffs (decision: **re-state rank-side as a new bridge,
+keep the nullity iffs**). Case I:
+`BodyHingeFramework.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` — given every motion is
+constant on the rigid block `s` (`hblock`, from the rigidly-placed `H`), the framework is rigid on
+`t = V(G)` (`s ⊆ t`) iff `pinnedMotionsOn s ≤ pinnedMotionsOn t` (equiv., since `s ⊆ t` gives the
+reverse, `pinnedMotionsOn s = pinnedMotionsOn t`). Case II:
+`BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff` — rigid on `insert v t` iff rigid on `t`
+AND every motion pins `v`'s screw to `t` (`S v = S w ∀ w ∈ t`), the rank-side `+(D−1)` 1-extension
+read off the relative motive; the `S v = S w` condition is Claim 6.9's general position the device
+supplies. Both reference only `s,t ⊆ V(G)`, so they compose through the vertex-reducing induction
+(the absolute nullity bridges concluded `IsInfinitesimallyRigid` from `pinnedMotionsOn s = ⊥`,
+unsatisfiable for non-spanning subgraphs). The nullity iffs (`rankHypothesis_iff_finrank_*`) are
+**kept** as the `α`-dependent siblings feeding the deficiency / Prop 1.1 path. Blueprint
+`lem:case-I` / `lem:case-II` flipped GREEN-modulo-21b (relative bridge `\leanok`'d; device leg is
+the `\uses`'d green-modulo node, entering only in the producers). Build + lint clean, axiom-clean
+{propext, Classical.choice, Quot.sound}. **Next: item 3 (B0 keystone, `lem:rows-polynomial-in-normals`).**
+
 **Item 1 LANDED (2026-06-05): the motive is relativized + base case green.**
 `BodyHingeFramework.IsInfinitesimallyRigidOn (s : Set α)` ("motions constant on `s`") is in
 `RigidityMatrix.lean` (with `.mono`, `isInfinitesimallyRigidOn_univ_iff`,
@@ -140,10 +159,16 @@ Classical.choice, Quot.sound}.
 - [x] `lem:theorem-55-base` — `theorem_55_base` concludes `IsInfinitesimallyRigidOn {u,v}`,
   `hcover` (and `[Nonempty]`/`[Finite]`) dropped; `toBodyHinge_rankHypothesis_zero` follows.
 
+**GREEN-modulo-21b — accounting re-stated rank-side (item 2, landed 2026-06-05):**
+- [x] `lem:case-I` — `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` (the genericity-free
+  `α`-independent rigidity bridge; rigid on `t` iff `pinnedMotionsOn s ≤ pinnedMotionsOn t` given
+  `hblock`-constancy on the rigid block `s`). Nullity iffs kept as `α`-dependent siblings.
+- [x] `lem:case-II` — `isInfinitesimallyRigidOn_insert_iff` (rigid on `insert v t` iff rigid on `t`
+  + every motion pins `v`'s screw to `t`). Device leg enters only in the producers.
+
 **RED — realization spine, re-stated against the relativized motive:**
 - [ ] `thm:theorem-55` — recursion compiles motive-agnostically (`theorem_55` green as a
   conditional); node stays red until its producers land.
-- [ ] `lem:case-I`, `lem:case-II` — accounting iffs, re-stated rank-side. **Item 2.**
 - [ ] `prop:rigidity-matrix-prop11` — depends on the re-stated `theorem_55`.
 
 **RED — realization producers (no `\lean` yet; the genuine build):**
@@ -213,10 +238,12 @@ The genuine block-pin bricks `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn
   = D·(V(G).ncard−1)` was **not** built this commit (the base case proves constancy
   directly, not via the rank bridge) — it is a leaf the producers (items 4–6) need,
   build on contact.
-- **Accounting iffs (`lem:case-I`/`lem:case-II`) are nullity-side, α-dependent.**
-  They are true relative statements but do not directly serve the non-spanning
-  producers; re-state rank-side (or bridge) as the producers need them. Assess
-  on contact whether to re-state or keep + bridge.
+- ~~**Accounting iffs (`lem:case-I`/`lem:case-II`) are nullity-side, α-dependent.**~~
+  **DONE (item 2, 2026-06-05).** Decision: re-state rank-side as two new genericity-free,
+  α-independent rigidity bridges (`isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` for Case I,
+  `isInfinitesimallyRigidOn_insert_iff` for Case II); **keep** the nullity iffs as the α-dependent
+  siblings for the deficiency / Prop 1.1 path. These are the rank-side legs the producers (items
+  4–6) consume to convert their seeds/realizations into `IsInfinitesimallyRigidOn V(G)`.
 - **`prop:rigidity-matrix-prop11`'s `hub`** (genericity-free upper bound, the
   Phase-19-partition count `D + def ≤ dim Z`) is still an untracked obligation
   carried as a hypothesis. Independent of the motive fix.
@@ -231,7 +258,7 @@ its blueprint node's `\leanok` (or adds green infra) + updates this file. The
 device is green and `B0`'s coordinate core is validated, so this is build work,
 not research. **Do not** re-introduce the retired vacuous lemmas.
 
-**Next concrete commit: item 2** (item 1 landed 2026-06-05).
+**Next concrete commit: item 3** (items 1–2 landed 2026-06-05).
 
 1. ~~**Relativize the realization motive + base case**~~ **DONE (2026-06-05).**
    `IsInfinitesimallyRigidOn` + its API in `RigidityMatrix.lean`;
@@ -243,11 +270,13 @@ not research. **Do not** re-introduce the retired vacuous lemmas.
    (span rigidityRows) = D·(V(G).ncard−1)` was NOT built — it is a producer-side leaf
    (items 4–6 need it; build on contact).*
 
-2. **Re-state the Case-I / Case-II accounting** (`lem:case-I`, `lem:case-II`)
-   against the relativized motive — rank-side block-triangular addition (KT 6.3
-   for Case I, the `+(D−1)` column-op count for Case II), reusing the
-   genericity-free block-pin lower bound and the device's reverse bound. Assess
-   whether to re-state or keep-and-bridge the existing nullity iffs.
+2. ~~**Re-state the Case-I / Case-II accounting**~~ **DONE (2026-06-05).** Two genericity-free,
+   α-independent rigidity bridges in `AlgebraicInduction.lean`:
+   `isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` (Case I) +
+   `isInfinitesimallyRigidOn_insert_iff` (Case II). Nullity iffs **kept** as α-dependent siblings.
+   `lem:case-I` / `lem:case-II` flipped GREEN-modulo-21b (relative bridge `\leanok`'d; device leg is
+   the `\uses`'d green-modulo node). *These are the rank-side legs items 4–6 consume to convert
+   their seeds into `IsInfinitesimallyRigidOn V(G)`.*
 
 3. **B0 — `lem:rows-polynomial-in-normals`** (the keystone; likely 2–4 commits,
    builder decomposes). Build the device inputs for the panel-normal family:

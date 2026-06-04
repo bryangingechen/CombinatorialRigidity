@@ -61,9 +61,13 @@ $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ /
 $\mathrm{HasFullRankRealization}$, and \cref{lem:theorem-55-base} discharges
 the two-vertex case unconditionally); the recursion of \cref{thm:theorem-55}
 compiles motive-agnostically against it, and the absolute-motive Case-I
-producers were retired. \emph{Still red:} the capstone \cref{thm:theorem-55}
-(pending its producers), the two accounting iffs \cref{lem:case-I} /
-\cref{lem:case-II} (relative restatements), and the realization producers
+producers were retired. The two accounting iffs \cref{lem:case-I} /
+\cref{lem:case-II} are now green-modulo-21b under their relativized rank-side
+restatements (the genericity-free $\alpha$-independent rigidity bridges
+$\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$ /
+$\mathrm{isInfinitesimallyRigidOn\_insert\_iff}$, with the device entering only
+in the producers). \emph{Still red:} the capstone \cref{thm:theorem-55}
+(pending its producers) and the realization producers
 --- the panel-coordinate row coordinatization \cref{lem:rows-polynomial-in-normals}
 (the keystone, B0), the Case~I splice seed \cref{lem:case-I-splice-seed}, the
 Case~I producer \cref{lem:case-I-realization}, and the Case~II producer
@@ -688,8 +692,10 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Case I: rigid-subgraph contraction realizes the rank; KT Lemmas 6.2, 6.3, 6.5]
   \label{lem:case-I}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn,
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_rankHypothesis_iff_finrank_pinnedMotionsOn,
         CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotionsOn}
+  \leanok
   \uses{thm:minimal-kdof-reduction, lem:contraction-minimality,
         lem:rank-delete-vertex, def:pinned-motions-on,
         lem:pinned-motions-on-rank-bound, lem:genericity-device}
@@ -707,17 +713,25 @@ Cases~I and~II travel toward the smaller inductive graph.
   KT split this into the non-simple case (6.2), the simple case with simple
   contraction (6.3, via the Claim~6.4 genericity argument), and the
   remaining simple case (6.5).
-  \emph{Red, re-stated:} the prior Lean iff related the \emph{absolute}
-  null-space motive ($\dim Z = D + k'$) to the block-pin \emph{dimension}
-  $\dim Z_s$ --- both $\alpha$-dependent (a body outside $V(G)$ inflates
-  each). Against the relativized motive (\cref{def:rank-hypothesis}) the
-  accounting is re-stated rank-side (the rigid-block rows and the
-  contraction rows together span $D(|V(G)|-1)$), which is
-  $\alpha$-independent; the genericity-free block-pin lower bound
-  \cref{lem:pinned-motions-on-rank-bound} and the device's reverse bound
-  (\cref{lem:genericity-device}) survive as the two halves.
+  \emph{Re-stated rank-side (Phase 21b).} The prior Lean iff related the
+  \emph{absolute} null-space motive ($\dim Z = D + k'$) to the block-pin
+  \emph{dimension} $\dim Z_s$ --- both $\alpha$-dependent (a body outside
+  $V(G)$ inflates each). The relativized accounting is the bridge
+  $\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$: given that
+  every motion is constant on the rigid block $s = V(H)$ (the rigidly placed
+  $H$), the framework is rigid on $t = V(G)$ \emph{iff} the block pin on $s$
+  sits inside the block pin on $t$ (equivalently, since $s \subseteq t$,
+  $Z_s(G,p) = Z_t(G,p)$: the rigid block carries no residual freedom beyond
+  what $V(G)$ pins). This references only $s, t \subseteq V(G)$, hence is
+  $\alpha$-independent and composes through the vertex-reducing induction. It
+  is genericity-free; the device's reverse bound (\cref{lem:genericity-device})
+  enters only in the producer \cref{lem:case-I-realization}, where the
+  block-triangular row count must attain its generic maximum. The nullity-side
+  iffs are retained as the $\alpha$-dependent siblings feeding the
+  deficiency / Prop~1.1 path.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rank-delete-vertex, lem:pinned-motions-on-rank-bound,
         lem:genericity-device}
   Pin the rigid block $H$ and place the contraction $G/E(H)$ at its
@@ -731,7 +745,8 @@ Cases~I and~II travel toward the smaller inductive graph.
   --- Claim~6.4, the device \cref{lem:genericity-device}). The two bounds pin
   the parent rank to $D(|V(G)|-1) - k$. Read $V(G)$-relative throughout, the
   accounting is $\alpha$-independent and the inductive contraction rank
-  composes.
+  composes. The rank-side rigidity leg is the relativized bridge
+  $\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$.
 \end{proof}
 
 \begin{lemma}[Panel-coordinate row coordinatization (B0, the device keystone)]
@@ -947,7 +962,9 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Case II: splitting off a reducible vertex; KT Lemmas 6.7, 6.8]
   \label{lem:case-II}
-  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions}
+  \leanok
   \uses{thm:minimal-kdof-reduction, lem:reduction-step,
         lem:rank-delete-vertex, lem:case-II-rank-lift, lem:cycle-realization,
         lem:splitoff-edge-substitution, lem:exists-independent-panel-extensor,
@@ -978,14 +995,24 @@ Cases~I and~II travel toward the smaller inductive graph.
   C(e_b)$; this is false pointwise and holds only for the general-position
   normals the rank/dimension count selects
   (\cref{lem:exists-independent-panel-extensor}).
-  \emph{Red, re-stated:} as with Case~I, the prior iff measured the
-  $+D$ lift against the absolute null-space motive; re-stating it against
-  the $V(G)$-relative motive (\cref{def:rank-hypothesis}) is part of the
-  re-plan. The $1$-extension count itself ($v$'s two hinges add $D-1$ rows
-  to the rank, and $v$'s body adds one column block) is $\alpha$-independent
-  and rank-side.
+  \emph{Re-stated rank-side (Phase 21b).} As with Case~I, the prior iff
+  measured the $+D$ lift against the absolute null-space motive; the
+  relativized accounting is the bridge
+  $\mathrm{isInfinitesimallyRigidOn\_insert\_iff}$: re-inserting the single
+  body $v$ (so $V(G) = \{v\} \cup V(G_v^{ab})$), the framework is rigid on
+  $V(G)$ \emph{iff} it is rigid on the splitting-off body set $V(G_v^{ab})$
+  (the inductive realization) \emph{and} every motion pins $v$'s screw to the
+  bodies it joins, $S v = S w$ for $w \in V(G_v^{ab})$. This references only
+  $V(G)$, hence is $\alpha$-independent and composes through the induction. The
+  $S v = S w$ condition is the honest geometric content of Claim~6.9's general
+  position (the span-membership the device \cref{lem:genericity-device}
+  supplies, via \cref{lem:exists-independent-panel-extensor}); the
+  $1$-extension count itself ($v$'s two hinges add $D-1$ rows, $v$'s body adds
+  one column block) is rank-side and genericity-free. The nullity-side iff is
+  retained as the $\alpha$-dependent sibling.
 \end{lemma}
 \begin{proof}
+  \leanok
   \uses{lem:rank-delete-vertex, lem:case-II-rank-lift,
         lem:splitoff-edge-substitution}
   Place $G_v^{ab}$ at its inductive realization; re-insert $v$ joined to

@@ -730,6 +730,88 @@ theorem isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot
   rw [hdiff]
   exact hTtriv
 
+/-- **Case I, relativized rigidity bridge** (`lem:case-I`, the `V(G)`-relative rank-side
+restatement; Katoh–Tanigawa 2011 §6.2/6.3/6.5). The `α`-independent form of the Case-I accounting:
+given that every infinitesimal motion is constant on the rigid block `s` (`hblock` — supplied by
+the rigidly-placed subgraph `H`, with `s = V(H)`), the framework is infinitesimally rigid on the
+larger body set `t` (`s ⊆ t`, the relative motive `IsInfinitesimallyRigidOn t` at `t = V(G)`)
+**iff** the block pin on `s` sits inside the block pin on `t` — i.e. every motion that vanishes on
+the block already vanishes on all of `t`.
+
+This re-states the absolute nullity bridge
+(`pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` /
+`isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot`) `V(G)`-relative: both lemmas
+concluded the *absolute* `IsInfinitesimallyRigid` (constancy on all of `α`) from
+`pinnedMotionsOn s = ⊥`, which is unsatisfiable for a non-spanning subgraph (a free body in
+`α ∖ V(G)` keeps the block pin from being `⊥`). The relative form references only `s, t ⊆ V(G)`
+and so composes through the vertex-reducing induction. Since `s ⊆ t` already gives
+`pinnedMotionsOn t ≤ pinnedMotionsOn s` (`pinnedMotionsOn_mono`), the inclusion is equivalently the
+equality `pinnedMotionsOn s = pinnedMotionsOn t`: the rigid block carries no residual freedom
+beyond what `t` pins.
+
+The forward direction: a motion in `pinnedMotionsOn s` is constant on `t` (rigidity) and vanishes
+at the witness `v ∈ s`, so it vanishes on `t`. The converse: subtracting the constant trivial
+motion `T = S v` lands `S − T` in `pinnedMotionsOn s` (it vanishes on `s` by `hblock`), hence in
+`pinnedMotionsOn t`, so `S` agrees with the constant `S v` across `t`. This is the rank-side leg
+the Case-I producer (`lem:case-I-realization`) consumes to convert the block-triangular splice
+seed into `IsInfinitesimallyRigidOn V(G)`. -/
+theorem isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le
+    (F : BodyHingeFramework k α β) {s t : Set α} (hs : s.Nonempty) (hst : s ⊆ t)
+    (hblock : ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ w ∈ s, S u = S w) :
+    F.IsInfinitesimallyRigidOn t ↔ F.pinnedMotionsOn s ≤ F.pinnedMotionsOn t := by
+  obtain ⟨v, hv⟩ := hs
+  constructor
+  · intro hrig S hS
+    refine ⟨hS.1, fun u hu => ?_⟩
+    rw [hrig S hS.1 u hu v (hst hv), hS.2 v hv]
+  · intro hle S hS u hu w hw
+    set T : α → ScrewSpace k := fun _ => S v with hT
+    have hTmot : F.IsInfinitesimalMotion T :=
+      F.isInfinitesimalMotion_of_isTrivialMotion (fun _ _ => rfl)
+    have hdiff : S - T ∈ F.pinnedMotionsOn s := by
+      refine ⟨F.infinitesimalMotions.sub_mem hS hTmot, fun w hw => ?_⟩
+      rw [Pi.sub_apply, hT, hblock S hS w hw v hv, sub_self]
+    have hvan := (hle hdiff).2
+    have hu' := hvan u hu
+    have hw' := hvan w hw
+    rw [Pi.sub_apply, hT, sub_eq_zero] at hu' hw'
+    rw [hu', hw']
+
+/-- **Case II, relativized 1-extension bridge** (`lem:case-II`, the `V(G)`-relative rank-side
+restatement; Katoh–Tanigawa 2011 §6.3 Lemmas 6.7/6.8). The `α`-independent form of the Case-II
+accounting: re-inserting a single body `v` to the splitting-off vertex set `t` (so
+`V(G) = insert v t`), the framework is infinitesimally rigid on `V(G)`
+(`IsInfinitesimallyRigidOn (insert v t)`, the relative motive at the parent) **iff** it is
+infinitesimally rigid on the splitting-off body set `t` (the inductive realization of `G_v^{ab}`)
+*and* every infinitesimal motion pins `v`'s screw to the rest of `V(G)`, `S v = S w` for `w ∈ t`.
+
+This is the rank-side `+(D−1)` 1-extension count read off the relative motive: the inductive
+realization handles `t`, and the two new `v`-incident hinges contribute exactly the constraint that
+`v` move with the body it joins. The `S v = S w` condition is the honest geometric content of
+Claim 6.9's general position (the span-membership `S a ∈ span C(e_a)`, `S b ∈ span C(e_b)` the
+genericity device supplies); the existing nullity-side rank-lift
+(`rankHypothesis_iff_finrank_pinnedMotions`, the pin-a-body `+D` accounting) is its `α`-dependent
+sibling, retained for the deficiency/Prop 1.1 path. The forward direction restricts rigidity to the
+subset `t` (`IsInfinitesimallyRigidOn.mono`) and to the `v`-to-`t` pairs; the converse case-splits a
+pair in `insert v t` on whether each endpoint is `v`. This is the leg the Case-II producer
+(`lem:case-II-realization`) consumes to lift the inductive realization of `G_v^{ab}` to
+`IsInfinitesimallyRigidOn V(G)`. -/
+theorem isInfinitesimallyRigidOn_insert_iff (F : BodyHingeFramework k α β) {t : Set α} {v : α} :
+    F.IsInfinitesimallyRigidOn (insert v t) ↔
+      (F.IsInfinitesimallyRigidOn t ∧
+        ∀ S, F.IsInfinitesimalMotion S → ∀ w ∈ t, S v = S w) := by
+  constructor
+  · intro h
+    exact ⟨h.mono F (Set.subset_insert v t),
+      fun S hS w hw => h S hS v (Set.mem_insert v t) w (Set.mem_insert_of_mem v hw)⟩
+  · rintro ⟨hrig, hvw⟩ S hS u hu w hw
+    simp only [Set.mem_insert_iff] at hu hw
+    rcases hu with rfl | hu <;> rcases hw with rfl | hw
+    · rfl
+    · exact hvw S hS w hw
+    · exact (hvw S hS u hu).symm
+    · exact hrig S hS u hu w hw
+
 /-- **Case I: contracting a rigid block realizes the rank** (`lem:case-I`, Katoh–Tanigawa 2011
 §6.2/6.3/6.5 Lemmas 6.2, 6.3, 6.5; GREEN-modulo the Phase-21b genericity device). Let `F` be a
 body-hinge framework on the parent graph `G = F.graph` carrying a proper rigid subgraph `H` on the
