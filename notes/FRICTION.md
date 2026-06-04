@@ -76,6 +76,23 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Repackaging a `HasFullRankRealization` witness as an `ofNormals` — `subst` the `Q.graph = G` conjunct, don't `rw` both sides
+- **Where it bit:** `exists_rigidOn_ofNormals_of_hasFullRankRealization` (Phase 22, Case-I
+  witness-transfer prerequisite): from `HasFullRankRealization k G = ∃ Q, Q.graph = G ∧
+  Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)`, produce `∃ ends q, (ofNormals G ends q).toBodyHinge
+  rigid on V(G)`. The witness is *literally* an `ofNormals`: `ofNormals Q.graph Q.ends
+  (fun p => Q.normal p.1 p.2) = Q` is `rfl` (the constructor writes exactly `Q`'s three fields).
+- **Friction:** the obvious `rw [hEq, ← hQg]` mismatched — the rigidity conjunct `hQrig` is stated on
+  `V(G)` (bound `G`), but `rw [← hQg]` turned the goal's `V(G)` into `V(Q.graph)`, so `exact hQrig`
+  failed on `V(Q.graph)` vs `V(G)`. One build-cycle.
+- **Proposed fix:** `obtain ⟨Q, hQg, hQrig⟩ := h; subst hQg; exact ⟨Q.ends, fun p => Q.normal p.1 p.2,
+  hQrig⟩`. `subst hQg` replaces `G` by `Q.graph` uniformly, so `ofNormals Q.graph … = Q` is `rfl` *and*
+  the goal's `V(Q.graph)` matches `hQrig` — the `exact` closes by defeq with no `rw` on either side.
+  General rule: when a `def`-existence conjunct equates the graph, `subst` it rather than rewriting,
+  to avoid splitting the bound-vs-derived `V(·)` argument. Sibling of the `ofNormals`/framework defeq
+  entries below (TACTICS-QUIRKS § 25).
+- **Status:** resolved (tactic choice; no lemma needed).
+
 ### [resolved] `[matroid]` `H.cycleMatroid = G.cycleMatroid ↾ E(H)` for `H ≤ G` — route through `cycleMatroid_isRestriction_of_le` + `IsRestriction.exists_eq_restrict`, then pin the restriction set by ground equality
 - **Where it bit:** the rank-saturation specialization `union_cycleMatroid_rk_saturated_of_isKDof_zero`
   (Phase 22, N4c crux input II): needed `G̃.cycleMatroid.rk E(H̃) = H̃.cycleMatroid.rk E(H̃)` to

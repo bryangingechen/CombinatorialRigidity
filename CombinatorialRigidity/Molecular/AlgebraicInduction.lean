@@ -3169,6 +3169,34 @@ theorem PanelHingeFramework.hasFullRankRealization_of_rigidOn_seed [Finite α] [
   exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
     (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
 
+/-- **A full-rank realization is a non-empty rigid `ofNormals` locus**
+(`lem:case-I-splice-placement` infra, the prerequisite of the single-seed witness-transfer;
+Katoh–Tanigawa 2011 §6.2/6.5,
+Phase 22). The bridge from the realization motive `HasFullRankRealization k G` (the form the
+inductive hypothesis supplies, an *arbitrary*-normal rigid framework `Q` on `G`) to the *`ofNormals`
+shape* the seed witness-transfer must couple across the two legs: there exist an endpoint selector
+`ends` and a free normal assignment `q : α × Fin (k+2) → ℝ` at which the leg-native framework
+`ofNormals G ends q` is itself infinitesimally rigid on `V(G)`.
+
+This is the first decomposable brick of the witness-transfer (`lem:case-I-splice-placement`, red):
+each leg's IH gives *some* rigid framework `Q`, which is *literally* an `ofNormals` — set
+`ends := Q.ends` and `q (a, i) := Q.normal a i`, and `ofNormals Q.graph Q.ends q = Q` definitionally
+(`ofNormals` writes exactly `Q`'s three fields). `subst`-ing the conjunct `Q.graph = G` then lines
+up both the framework equality and the `V(G)`-vs-`V(Q.graph)` rigidity argument by defeq. It carries
+**no** rank assumption —
+its sole input is the existence statement `HasFullRankRealization k G` the IH proves, so it is
+honest (the rigid locus it witnesses *is* the realization the IH supplies, repackaged, not the rank
+a producer would conclude). The genuine remaining content is to put *both* legs' rigid loci — each
+non-empty by this brick — onto **one** shared `q₀` (the multivariate non-zero-product /
+`MvPolynomial.funext` step), which `hasFullRankRealization_of_splice_ofNormals` then consumes. -/
+theorem PanelHingeFramework.exists_rigidOn_ofNormals_of_hasFullRankRealization
+    {G : Graph α β} (h : PanelHingeFramework.HasFullRankRealization k G) :
+    ∃ (ends : β → α × α) (q : α × Fin (k + 2) → ℝ),
+      (PanelHingeFramework.ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn V(G) := by
+  obtain ⟨Q, hQg, hQrig⟩ := h
+  subst hQg
+  exact ⟨Q.ends, fun p => Q.normal p.1 p.2, hQrig⟩
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by
