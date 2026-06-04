@@ -22,11 +22,13 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 ## Project status
 
 Phases 1–21 and the Grassmann–Cayley meet sub-phase 21a are complete and
-carry no `sorry`s, and **Phase 21 (complete — GREEN-modulo-21b: all
-genericity-free content green, the shared genericity device Claim 6.4/6.9
-scoped out into sub-phase 21b as a cited black-box)** lands the algebraic
-induction, with **Phase 21b (in progress)** opening to discharge that
-device; **the body-bar
+carry no `sorry`s; **Phase 21** settled the algebraic induction's accounting
+layer and the shared genericity device (Claim 6.4/6.9), and **Phase 21b (in
+progress)** carries the device — now **green** — together with the
+*realization* layer of Theorem 5.5, which is being **re-planned** around a
+corrected (`V(G)`-relative rank) motive after a spike found the original
+absolute-rigidity motive unsatisfiable for the vertex-reduced inductive
+subgraphs; **the body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -197,11 +199,15 @@ chapter `algebraic-induction.tex` is the authoritative dep-graph.
 `Molecular/AlgebraicInduction.lean`. See `notes/Phase21.md` and
 `notes/MolecularConjecture.md`.
 
-**Phase 21b (in progress)** is the genericity device itself (Claim 6.4/6.9):
-the panel-coordinate parametrization of `R(G,p)` plus the
-generic-max-rank argument — the shared analytic crux of Cases I/II,
-Theorem 5.5, Proposition 1.1, and the cycle assembly, the analytic
-sibling of the Phase-21a meet sub-phase. Also consumed by Phases 22–23.
+**Phase 21b (in progress)** carries the genericity device (Claim 6.4/6.9) and
+the realization layer of Theorem 5.5. The device — the panel-coordinate
+generic-max-rank argument, the shared analytic crux of Cases I/II, Theorem 5.5,
+Proposition 1.1, and the cycle assembly — is **green**. A spike then found the
+realization *motive* was mis-defined (infinitesimal rigidity as an absolute
+property of the ambient body type, unsatisfiable for the vertex-reduced
+inductive subgraphs), so the realization producers are being **re-planned**
+around the `V(G)`-relative rank motive `rank R(G,p) = D(|V(G)|−1)`. Also
+consumed by Phases 22–23.
 
 The development is divided into the phases below, with Lean source
 under

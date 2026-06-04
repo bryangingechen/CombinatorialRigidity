@@ -420,13 +420,20 @@ the consumers `\uses` it.
   `MvPolynomial.funext`. Landed as four mirror bricks (the
   `exists_…_polynomial` family); the device statement is rebuilt on them.
   Bottoms (for Case III's share) on Lemma 2.1 (Phase 17).
-- **Honest decomposition (2026-06-04).** Blueprint rewritten to the KT §6.2
-  structure: `lem:genericity-device` (multivariate Claim 6.4) **red**;
-  `lem:case-I-realization` (the contraction *splice*, KT eqs. 6.2/6.6)
-  **red**; `lem:case-I` green-but-device-dependent. An earlier
-  per-hypothesis wrapper chain (the `hglue_*`/`hasFullRankRealization_*`
-  telescoping stack) is a consolidation target — see `DESIGN.md`
-  *Forward-mode reduction chains* for the lesson.
+- **Device GREEN; realization layer re-planned (2026-06-04).**
+  `lem:genericity-device` (multivariate Claim 6.4) landed green. Two spikes
+  then found (i) the realization *motive* was the *absolute* null-space
+  rigidity `dim Z = D` over the ambient body type `α`, **unsatisfiable** for
+  the non-spanning inductive subgraphs (verified: an isolated body is a free
+  motion); and (ii) the Case-I closure carrier took unsatisfiable
+  `withGraph`-subgraph-rigid hypotheses. Fix (user decision): carry the motive
+  in the `V(G)`-relative **rank form** `rank R = D(|V(G)|−1)`. The realization
+  spine (`def:rank-hypothesis`, base, `thm:theorem-55`, the case iffs, Prop 1.1)
+  is re-stated red against it; the producers (B0 `lem:rows-polynomial-in-normals`,
+  `lem:case-I-splice-seed`, `lem:case-I-realization`, `lem:case-II-realization`)
+  are the genuine device-direct build. Ordered single-commit hand-off in
+  `notes/Phase21b.md`. Lessons: `DESIGN.md` *Realization motive must be
+  V(G)-relative* + *Forward-mode reduction chains*.
 - **Also consumed by Phases 22–23** (Case III's candidate-framework
   genericity, Claims 6.11/6.12) — building it as its own sub-phase pays
   off there too.

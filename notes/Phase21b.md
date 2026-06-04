@@ -1,321 +1,267 @@
-# Phase 21b — Genericity device (Claim 6.4/6.9) (work log)
+# Phase 21b — Genericity device + realization-layer re-plan (work log)
 
-**Status:** in progress (opened 2026-06-03).
+**Status:** in progress (opened 2026-06-03; realization layer re-planned 2026-06-04).
 
-Sub-phase scoped out of Phase 21 on 2026-06-03 (user decision, risk
-#4/#7), the **analytic sibling** of the Phase-21a meet sub-phase. The one
-genuinely new analytic crux of Katoh–Tanigawa's algebraic induction
-(KT 2011 §6.1 Claim 6.4, §6.3 Claim 6.9): the entries of the panel-hinge
-rigidity matrix `R(G,p)` are polynomials in the algebraically independent
-panel coordinates (the per-vertex normals), so the rank is lower
-semicontinuous and attains its maximum on a Zariski-open (generic) set —
-hence a *single* good realization at the target rank lifts to a *generic*
-one. This is the shared black-box that Phase 21 left cited in `lem:case-I`
-(`hglue`), `lem:case-II` (`hspan`), `thm:theorem-55` (transitively),
-`prop:rigidity-matrix-prop11` (`hub`/`hgen`), and the projective assembly
-of `lem:cycle-realization`. Phase 21b discharges it once; the consumers
-flip GREEN-modulo-21b → GREEN.
+Sub-phase scoped out of Phase 21 on 2026-06-03 (user decision, risk #4/#7),
+the **analytic sibling** of the Phase-21a meet sub-phase. Two things live here
+now: (1) the genuinely-new analytic crux of Katoh–Tanigawa's algebraic
+induction — Claim 6.4/6.9, the **genericity device** (rigidity-matrix entries
+are polynomials in the panel coordinates, so a single good realization lifts to
+a generic one) — which is **GREEN**; and (2) the **realization layer** of
+Theorem 5.5 (the producers exhibiting a rigid panel framework for each
+inductive case), which a 2026-06-04 spike found was built on a **mis-defined
+motive** and is being **re-planned** around the corrected one.
 
-Program-level plan, reuse map, citations, risk register:
-`notes/MolecularConjecture.md` *Phase 21b*. Scope-out rationale + the
-node-by-node consumer split: `DESIGN.md` *Genericity device (Claim
-6.4/6.9) is its own sub-phase (Phase 21b)* and `notes/Phase21.md`
-*Hand-off*. Forward-mode dep-graph node:
+Program-level plan, reuse map, citations: `notes/MolecularConjecture.md`
+*Phase 21b*. Scope-out rationale + node-by-node consumer split: `DESIGN.md`
+*Genericity device …* + *Forward-mode reduction chains* + *Realization motive
+must be V(G)-relative …*. Forward-mode dep-graph:
 `blueprint/src/chapter/algebraic-induction.tex`
-(`lem:genericity-device`, `sec:molecular-algebraic-induction-genericity`).
-Lean is in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
-(beside the consumers) + mirror bricks under
+(`sec:molecular-algebraic-induction`). Lean is in
+`CombinatorialRigidity/Molecular/AlgebraicInduction.lean` + mirror bricks under
 `CombinatorialRigidity/Mathlib/{Algebra/MvPolynomial,LinearAlgebra/Matrix}/`.
 
 ## Current state
 
-**The multivariate genericity device is GREEN (2026-06-04). The realization layer
-is honestly RED (blueprint-honesty audit, 2026-06-04).** `lem:genericity-device` is
-rebuilt on the genuine multivariate engine and re-pinned green; the *accounting*
-consumers (`lem:case-I`, `lem:case-II`, `thm:theorem-55`,
-`prop:rigidity-matrix-prop11`) take the device's genericity inputs as explicit
-hypotheses and are green for what they state (iffs / equality-assemblies).
+**The device is GREEN; the realization layer is RED and re-planned (2026-06-04).**
+Two spike findings (both verified in Lean) reshaped the plan:
 
-**Audit correction (this commit).** The earlier hand-off claimed
-`lem:case-I-realization` was green and "the one remaining red node is Case III" —
-this was the premature-green anti-pattern. The Lean carrier
-`hasFullRankRealization_ofParam_of_contraction` takes the *two splice rigidity
-outputs* (`hHrig`: block subgraph `G_H ≤ G` rigid; `hcrig`: block-internal
-contraction subgraph `G_c ≤ G` rigid) on the **same** `ofParam G ends param` witness
-`p` as hypotheses. No Lean lemma constructs such a `p`, and the now-green device does
-*not* build it (it only lifts an attained rank to a generic point). So
-`lem:case-I-realization` is now **red** (`\leanok` dropped; `\lean{...}` kept — the
-closure carrier resolves), depending on a new red node
-`lem:case-I-splice-placement` (∃ `p` on which both subgraphs are rigid). A
-**parallel hole was found in Case II**: there is an accounting iff
-(`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`) but **no
-`HasFullRankRealization` producer** discharging the `hsplit` premise of `theorem_55`
-— all four producers in the file are Case-I-shaped. A new red node
-`lem:case-II-realization` (construct the re-inserted body's panel normal making
-`hspan` hold, then land full rank) now tracks it. `prop:rigidity-matrix-prop11`'s
-`hub` (genericity-free upper bound) is also a still-untracked Phase-19-partition
-obligation — left as an explicit hypothesis, but the device-section prose now states
-the device underwrites only the `hgen` half, not `hub`.
+1. **The realization motive was unsatisfiable for the inductive graphs.**
+   `HasFullRankRealization k G` unfolds to `RankHypothesis 0`, the *absolute*
+   null-space equality `dim Z(G,p) = D` over **all** of `α → ScrewSpace`. That
+   equals infinitesimal rigidity only when `G` **spans** `α` — a body in
+   `α ∖ V(G)` carries no hinge constraint, hence is a free non-trivial motion
+   (verified: a 1-line lemma, an isolated body gives a non-trivial motion). But
+   `minimal_kdof_reduction` (the recursion `theorem_55` runs on) reduces to
+   graphs with **strictly fewer vertices on the same fixed `α`**, which do not
+   span it. So `theorem_55`'s premises `hbase`/`hsplit`/`hcontract` are
+   unsatisfiable for `card α ≥ 3` (concrete counterexample: the double edge on
+   `{u,v}` inside a 3-body `α` is minimal-0-dof with `|V| = 2` but has no rigid
+   realization). `theorem_55` is green only as a conditional over unsatisfiable
+   hypotheses. `theorem_55_base`'s `hcover : ∀ w, w = u ∨ w = v` ("`α = {u,v}`")
+   is the exposed symptom.
 
-The genuine remaining red work on the chapter is therefore: the Case-I splice
-placement, the Case-II 1-extension realization, and the deferred Case III
-(`lem:case-III`, Phases 22–23) — **not** just Case III.
+   **Fix (user decision, rank-form):** carry the realization motive in the
+   **`V(G)`-relative rank form** `rank R(G,p) = D(|V(G)|−1)` — equivalently
+   `finrank (span rigidityRows) = D·(V(G).ncard − 1)`, equivalently "every
+   infinitesimal motion is constant on `V(G)`". This is **`α`-independent**
+   (isolated bodies contribute no rigidity rows / `rank = D·card α − dim Z`),
+   composes through the induction, and **resurrects the block-constancy
+   machinery** (which was vacuous only because of the global-`α` rigidity).
 
-The device is `exists_good_realization` (multivariate keystone) +
-`exists_good_realization_const` (constant-family closure the Case-I chain consumes)
-in `AlgebraicInduction.lean`, both axiom-clean. They compose the multivariate
-engine `exists_finrank_dualCoannihilator_polynomial` (route (a), landed `86f1221`)
-with the coannihilator coordinatization `infinitesimalMotions_eq_dualCoannihilator`
-and `finrank_screwAssignment` (`finrank (α → ScrewSpace k) = D|V|`). The device's
-`hcoord` expresses `(F p).infinitesimalMotions` as the coannihilator of a
-polynomial-coordinate functional family `g p` (panel coordinates `p : σ → ℝ` the
-`MvPolynomial` vars, degree-2 rigidity entries the coefficients `c`); the conclusion
-is `∃ p, #s + dim Z(F p) ≤ D|V|`.
+2. **The Case-I closure carrier targeted unsatisfiable hypotheses.** The retired
+   `hasFullRankRealization_ofParam_of_contraction` /
+   `isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal` took as
+   hypotheses that two subgraphs `G_H, G_c ≤ G` are *each* infinitesimally rigid
+   **over the whole `α`** — false for a proper `H` (same isolated-body argument).
+   Under the relativized motive the legs ("`H` realizes its rank", "`G/E(H)`
+   realizes its rank") are the **satisfiable** inductive hypotheses, and the
+   producer is a **device-direct** composition (B0 + splice-seed + device), not a
+   closure over unsatisfiable rigidity inputs.
 
-**Wrapper chain consolidated (partial, Hand-off 2 mostly done this commit).** The
-affine-special-case device + bridges (`genericityDevice`,
-`hcoord_of_rigidityRows_affine`, `hspan_const_of_span_eq`, `hcoord_const`, the
-affine `exists_good_realization`, the intermediate `hglue_of_genericityDevice`)
-are *removed*: the constant-family path is now packaged once in
-`exists_good_realization_const`, and `hglue_of_realization` folds in the old
-`hglue_of_genericityDevice` arithmetic directly. The surviving Case-I chain is
-`exists_good_realization{,_const}` → `hglue_of_realization` →
-`hglue_of_independent_rigidityRows` → `hglue_of_forest` (each a genuine reduction,
-no longer single-use affine plumbing).
-
-**Route (a) analytic core (commit `86f1221`, unchanged)** — four upstream-eligible
-mirror bricks (axiom-clean): `MvPolynomial.exists_eval_ne_zero`
-(`…/MvPolynomial/Funext.lean`), and in `…/Matrix/Rank.lean`:
-`Matrix.exists_linearIndependent_rows_specialize`,
-`exists_le_finrank_span_polynomial`, `exists_finrank_dualCoannihilator_polynomial`.
-
-The full inventory of landed green bricks — the `R(G,p)` coannihilator
-coordinatization, the rigid-block forest linear-algebra, general position /
-moment-curve / `ofParam`, the realization-motive producers, the
-block-pin↔rigidity bridges, the `endsOf` graph selector — is in the
-*Lemma checklist*.
+The device itself (`exists_good_realization` + `exists_good_realization_const`,
+on the route-(a) `exists_…_polynomial` engine) is unchanged and green; it is
+*motive-independent* (a generic-rank statement). The **B0 keystone** —
+coordinatizing the `ofParam`/panel-normal rows as `MvPolynomial` so the device
+can be *applied* to a varying realization — was spiked and is feasible/clean:
+mathlib's `exteriorPower.basis_repr_apply` + `ιMultiDual_apply_ιMulti` +
+`Matrix.det_fin_two` give a `⋀²` coordinate of `normalsJoin n₁ n₂` as the
+bilinear minor `n₁ᵢn₂ⱼ − n₁ⱼn₂ᵢ` (verified to compile); `complementIso` is a
+fixed `LinearEquiv` (stays degree-2); the annihilator spanning family
+`{Cᵢeⱼ* − Cⱼeᵢ*}` is linear in `C`.
 
 ## Architectural choices made up front
 
-- **Forward-mode, node beside the consumers.** A single `lem:genericity-device`
-  node (its own `sec:molecular-algebraic-induction-genericity` subsection) that
-  the Phase-21 consumers `\uses`. The Lean has grown into new mirror files; if
-  it grows further, split into its own `.lean`/`.tex`.
-- **Discharge the consumers' explicit hypotheses.** Each Phase-21 node is
-  GREEN-modulo-21b with the device's conclusion taken as a named hypothesis
-  (`hglue`/`hspan`/`hub`/`hgen`). The device must produce exactly those — this
-  fixes the device's *target statement* (the consumer API) before its proof.
+- **Forward-mode, nodes beside the consumers** (unchanged). The realization
+  spine + device live in `algebraic-induction.tex`'s
+  `sec:molecular-algebraic-induction`.
+- **The motive is `V(G)`-relative (rank form).** `def:rank-hypothesis` carries
+  `rank R(G,p) = D(|V(G)|−1) − k'`. Recommended Lean carrier: an
+  `IsInfinitesimallyRigidOn (s : Set α)` predicate ("motions constant on `s`")
+  with `HasFullRankRealization k G := ∃ Q, Q.graph = G ∧ Q.toBodyHinge.
+  IsInfinitesimallyRigidOn V(G)`; the rank-equality form is the bridge. This
+  reuses the block-constancy bricks (resurrected) and `theorem_55_base`'s `key`.
+- **Realization is device-direct on the full parent**, not via the (vacuous)
+  `withGraph`-subgraph-rigid carrier. The device proves the *full parent* rigid
+  (it spans `α`); the per-leg work is the genericity-free splice seed.
 
 ## Lemma checklist
 
-Forward-mode: the authoritative node list is `algebraic-induction.tex`
-(`sec:molecular-algebraic-induction-genericity`); tracked here for hand-off.
-All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
+Forward-mode: the authoritative node list is `algebraic-induction.tex`. Tracked
+here for hand-off. All `[x]` Lean bricks are axiom-clean {propext,
+Classical.choice, Quot.sound}.
 
-**Blueprint nodes:**
-- [x] `lem:genericity-device` — **GREEN**. Genuine multivariate Claim 6.4, pinned to
-  `exists_good_realization` + `exists_good_realization_const`.
-- [x] `lem:case-I` — the accounting iff (green; device dep green). Takes `hglue`.
-- [x] `lem:case-II` — the accounting iff (green; device dep green). Takes `hspan`.
-- [ ] `lem:case-I-realization` — **RED** (`\leanok` dropped this commit). The
-  `HasFullRankRealization`-closure-under-contraction *carrier*
-  (`hasFullRankRealization_ofParam_of_contraction` +
-  `isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`) is proven, but it
-  consumes the splice placement as two rigidity hypotheses, so the node depends on:
-- [ ] `lem:case-I-splice-placement` — **RED, new node** (no `\lean`). ∃ a single `p`
-  (KT 6.2/6.6) on which both the rigid block `G_H` and the block-internal contraction
-  `G_c` are infinitesimally rigid. The genuine Case-I geometric construction; 5-brick
-  decomposition (B1–B5) in *Hand-off* item 1 — only B5 flips this node + `lem:case-I-realization`.
-- [ ] `lem:case-II-realization` — **RED, new node** (no `\lean`). The
-  `HasFullRankRealization` *producer* for the 1-extension, discharging `theorem_55`'s
-  `hsplit`. Construct the re-inserted body's general-position panel normal making
-  `hspan` hold; no such producer exists in Lean yet (only the accounting iff).
+**GREEN and motive-independent (retained verbatim):**
+- [x] `lem:genericity-device` — `exists_good_realization{,_const}` on the
+  multivariate engine `exists_finrank_dualCoannihilator_polynomial` (route (a),
+  four mirror bricks: `MvPolynomial.exists_eval_ne_zero`,
+  `Matrix.exists_linearIndependent_rows_specialize`,
+  `exists_le_finrank_span_polynomial`,
+  `exists_finrank_dualCoannihilator_polynomial`).
+- [x] Panel layer `def:panel-support-extensor`, `def:panel-hinge-framework`
+  (+ `IsGeneralPosition`, moment-curve `withMomentNormals`/`ofParam`).
+- [x] All four Lean pieces of `lem:cycle-realization` (base, dim-bound,
+  panel-independence reduction, existence) + `lem:cycle-realization-rigid`.
+- [x] `R(G,p)` coordinatization: `infinitesimalMotions_eq_dualCoannihilator`,
+  `rigidityRows`/`hingeRow`/`screwDiff`, `exists_independent_rigidityRows_of_forest`,
+  `exists_finite_spanning_rigidityRows`, `finrank_screwAssignment`.
+- [x] `def:framework-with-graph`, `lem:motions-mono-of-graph-le`,
+  `def:pinned-motions-on`, `lem:pinned-motions-on-mono`,
+  `lem:pinned-motions-on-rank-bound` (the genericity-free block-pin lower bound
+  + `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot`, the
+  block-triangular glue — genuine, reusable under the relativized motive).
+- [x] `Graph.endsOf`, `pinnedMotionsOn_withGraph_eq_of_block_internal` (genuine,
+  no rigidity hypothesis), the Case-II `withNormal`/`hnew`/edge-substitution
+  graph bricks (`lem:case-II-rank-lift`, `lem:splitoff-edge-substitution`).
 
-**Analytic core — multivariate (genuine Claim 6.4, route (a)):**
-- [x] `MvPolynomial.exists_eval_ne_zero` (`…/MvPolynomial/Funext.lean`) — nonzero
-  `MvPolynomial σ ℝ` ⇒ non-vanishing point (contrapositive of `MvPolynomial.funext`).
-- [x] `Matrix.exists_linearIndependent_rows_specialize` — polynomial-entry matrix:
-  LI rows at `p₀` ⇒ `∃ p`, LI rows (bad set = zero locus of Gram-det poly).
-- [x] `exists_le_finrank_span_polynomial` — vector rank-`#s` `∃`-form, abstract `W`.
-- [x] `exists_finrank_dualCoannihilator_polynomial` — codimension dual,
-  `∃ p, #s + dim coann ≤ finrank V`; **the engine the device is built on.**
+**RED — realization spine, re-stated against the relativized motive (`\lean` kept
+where the name will be re-pinned, `\leanok` dropped):**
+- [ ] `def:rank-hypothesis` — re-pin to the `V(G)`-relative rank form.
+- [ ] `lem:theorem-55-base` — re-prove the 2-vertex base relative (drop `hcover`).
+- [ ] `thm:theorem-55` — re-run the recursion against the relativized motive.
+- [ ] `lem:case-I`, `lem:case-II` — accounting iffs, re-stated rank-side.
+- [ ] `prop:rigidity-matrix-prop11` — depends on the re-stated `theorem_55`.
 
-**Analytic core — affine/univariate (special case, no longer used by the device):**
-- [x] `…le_finrank_span_along_affine_path_cofinite` / `…finrank_dualCoannihilator_along_affine_path_cofinite`
-  (`…/Matrix/Rank.lean`) — `{bad t}.Finite` form; the univariate predecessor, kept
-  as a mirror but no longer consumed (the device is multivariate).
+**RED — realization producers (no `\lean` yet; the genuine build):**
+- [ ] `lem:rows-polynomial-in-normals` (**B0, keystone**) — coordinatize the
+  panel-normal rows as degree-2 `MvPolynomial`, packaging the device's
+  `g`/`c`/`φ`/`hg` (`hcoord` = green `infinitesimalMotions_eq_dualCoannihilator`).
+- [ ] `lem:case-I-splice-seed` — one placement `p₀` with `D(|V(G)|−1)`
+  independent parent rows, block-triangular from the two IH legs
+  (genericity-free).
+- [ ] `lem:case-I-realization` — compose B0 + splice-seed + device ⇒
+  `HasFullRankRealization`.
+- [ ] `lem:case-II-realization` — the shallower 1-extension producer (one
+  re-inserted body, `+(D−1)` rows, KT 6.12).
+- [ ] `lem:case-III` — deferred to Phases 22–23.
 
-**Device + Case-I chain (`AlgebraicInduction.lean`) — multivariate (consolidated):**
-- [x] `exists_good_realization` (multivariate keystone), `exists_good_realization_const`
-  (constant-family closure), `hglue_of_realization` (folds the old affine
-  `hglue_of_genericityDevice` arithmetic), `hglue_of_independent_rigidityRows`,
-  `hglue_of_forest`. The affine device + bridges (`genericityDevice`,
-  `hcoord_of_rigidityRows_affine`, `hspan_const_of_span_eq`, `hcoord_const`,
-  `hglue_of_genericityDevice`) were removed.
-
-**`R(G,p)` coordinatization & rigid-block rows (`RigidityMatrix.lean`):**
-- [x] `screwDiff`/`hingeRow`/`rigidityRows` + `infinitesimalMotions_eq_dualCoannihilator`
-  — `Z(G,p) = (span rigidityRows).dualCoannihilator`.
-- [x] `finrank_hingeRowBlock` (per-edge count `D−1`), `linearIndependent_hingeRow`,
-  `exists_independent_rigidityRows_of_edge`, `linearIndependent_hingeRow_star`,
-  `linearIndependent_hingeRow_forest`, `exists_independent_rigidityRows_of_forest`
-  (assembled `|J|·(D−1)` LI rows), `exists_finite_spanning_rigidityRows`.
-
-**Graph-side / geometric (`Induction.lean`, `AlgebraicInduction.lean`):**
-- [x] `Graph.endsOf` (+ `isLink_endsOf`, `endsOf_eq_or_swap`) — canonical endpoint
-  selector `ofParam` consumes (reusable; replaces inline `exists_isLink_of_mem_edgeSet`).
-- [x] `IsGeneralPosition` + `supportExtensor_ne_zero_of_isGeneralPosition`;
-  `momentCurve` + `withMomentNormals` + `isGeneralPosition_withMomentNormals`
-  (dimension-free general position at an injective `param`);
-  `ofParam` + `isGeneralPosition_ofParam` (from-scratch constructor).
-- [x] `…_iff_pinnedMotionsOn_of_generalPosition`, `ofParam_rankHypothesis_iff_pinnedMotionsOn`
-  — Case-I iff with purely-combinatorial signature `(G, ends)` + forest data + `hmatch`.
-
-**Realization-motive producers + bridges (`AlgebraicInduction.lean`):**
-- [x] `hasFullRankRealization_ofParam_of_pinnedMotionsOn` (`hpin`+`hmatch` form),
-  `…_of_isInfinitesimallyRigid` (rigidity form), `hasFullRankRealization_of_pinnedMotionsOn`
-  (internalizes injective `param` via mirror `Countable.exists_injective_real`).
-- [x] `pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid` (+ `finrank_…`) — `hpin`
-  from rigidity; `isInfinitesimallyRigid_of_le_withGraph` (graph-side leg);
-  `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` (rigidity-producing
-  converse); `isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph`
-  (`hblock` brick) + `isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot`;
-  `pinnedMotionsOn_withGraph_eq_of_block_internal` + `…_eq_bot_of_block_internal_rigid`
-  (`hpin` from contraction rigidity).
-
-**Consumer discharge targets (named hypotheses, supplied by the device):**
-- [~] `hglue` (Case I) — all non-geometric inputs discharged; residual is the
-  splice (Hand-off 3), bottoming on the multivariate device.
-- [ ] `hspan` (Case II), `hub`/`hgen` (Prop 1.1) — reuse the device with a
-  per-consumer bridge; target statements fixed in the Lean.
-- [ ] projective assembly of `lem:cycle-realization` (four Lean pieces green;
-  only the cited CW82/Whiteley99 projective assembly is non-Lean).
+**TO RETIRE (vacuous Lean, now blueprint-unreferenced):**
+`hasFullRankRealization_ofParam_of_contraction`,
+`isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`,
+`isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph` (takes
+`withGraph`-rigid, vacuous; the relativized analogue takes `IsInfinitesimallyRigidOn`),
+`pinnedMotionsOn_eq_bot_of_block_internal_rigid` (takes `G_c` rigid, vacuous;
+`hpin` should come from the *contraction* `G/E(H)` rigid, not `G − E(H)`),
+`isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot`,
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` /
+`hasFullRankRealization_ofParam_of_pinnedMotionsOn` /
+`hasFullRankRealization_of_pinnedMotionsOn` (absolute-motive producers).
+Delete (or relativize) as their replacements land — do **not** leave them as
+green decoys.
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-- **Coordinatize `R(G,p)` as a functional family, not a coordinate matrix.**
-  Rows are `hingeRow u v r = r ∘ₗ screwDiff u v`; `Z(G,p) =
-  (span rigidityRows).dualCoannihilator`. Keeps the screw space the graded-piece
-  element (no `⋀^k ≅ ℝ^D` basis forced). Elaboration gotcha (`proj − proj`
-  stuck): TACTICS-QUIRKS § 30. `ext`-on-`Module.Dual`: TACTICS-QUIRKS § 32.
-- **Dualize the analytic engine once into the codimension shape.** Every consumer
-  hypothesis is an upper bound `dim Z ≤ …` (codimension reading of `rank R ≥ …`).
-  Taken once as the `…dualCoannihilator…` lemmas, stated additively to avoid
-  `ℕ`-subtraction.
-- **The device's *target statement* (consumer API) is fixed before its proof.**
-  The device lands with `hcoord` *receiving* the functional family — this pinned
-  the consumer-facing shape early, validated against the consumer API before the
-  multivariate proof was wired in.
-- **The constant family IS a valid multivariate family.** Route (a)'s "no real
-  line is traversed" reading survives the multivariate rebuild: a single hand-built
-  realization `F₀` is the constant family `F p = F₀` over `σ := Unit`, with
-  polynomial coords the constants `c i j = C (φ (a i) j)` (`hg` = `eval_C`). This is
-  `exists_good_realization_const`, the form the Case-I chain consumes — the
-  multivariate keystone subsumes the old affine constant-path bridges.
-- **`rw` over a `Submodule` equation under `finrank ℝ ↥(…)` trips the motive** —
-  flip the equation and rewrite the hypothesis. → TACTICS-QUIRKS § 33.
+- **The realization motive must be `V(G)`-relative.** The absolute null-space
+  form `dim Z = D` is α-dependent and unsatisfiable for non-spanning inductive
+  subgraphs. Carry the rank form `rank R = D(|V(G)|−1)`. → `DESIGN.md`
+  *Realization motive must be V(G)-relative*.
+- **Producer hypotheses must be satisfiable, not just type-correct.** The
+  retired Case-I carrier and the absolute base case smuggled unsatisfiable
+  rigidity/coverage hypotheses; they typecheck and even prove (vacuously) but
+  can never be discharged. → blueprint honesty gate (producer scrutiny).
+- **B0 coordinate bilinearity is mathlib-supported** (no new hard mirror):
+  `exteriorPower.basis_repr_apply` + `ιMultiDual_apply_ιMulti` +
+  `Matrix.det_fin_two`. The device parameter is the panel **normals**
+  (`σ = α × Fin(k+2)` or moment-param `α`), entries degree-2.
+- **The Case-I splice seed is genericity-free.** Block-triangular row
+  independence (KT 6.3 + pin-a-body Lemma 5.1 column split) from the two IH
+  legs; genericity (the device) only lifts `p₀` to a generic point afterward.
+- **Coordinatize `R(G,p)` as a functional family** (carried forward): rows are
+  `hingeRow u v r`; `Z = (span rigidityRows).dualCoannihilator`. QUIRKS §30/§32/§33.
 
 ### Promoted
 - *Forward-mode + linear reduction chain → single-use wrapper sprawl; build the
   keystone first.* → `DESIGN.md` *Forward-mode reduction chains*.
-- *`rw [hsub]` over a `Submodule` under `finrank ℝ ↥(…)` trips the motive; flip and
-  rewrite the hypothesis.* → TACTICS-QUIRKS § 33.
-- *Hypothesis laundering: a `\leanok` node may not carry a load-bearing hypothesis
-  with no `\uses`-node discharging it (surfaced by `lem:case-I-realization`'s
-  premature green).* → `blueprint/CLAUDE.md` *Static checks before commit → the
-  honesty gate* (per-commit) + `CLEANUP.md` §A step 1 (safety net).
+- *A `\leanok`/producer node may not carry a load-bearing hypothesis no node
+  discharges — and the hypothesis must be **satisfiable**, not merely
+  type-correct.* → `blueprint/CLAUDE.md` *the honesty gate* + *producer scrutiny*.
+- *An absolute (ambient-type) rigidity/rank motive over a fixed body type is
+  unsatisfiable for non-spanning subgraphs; realization motives in a
+  vertex-reducing induction must be carried relative to `V(G)`.* → `DESIGN.md`
+  *Realization motive must be V(G)-relative*.
+- *`rw [hsub]` over a `Submodule` under `finrank ℝ ↥(…)` trips the motive.* →
+  TACTICS-QUIRKS § 33.
 
 ## Blockers / open questions
 
-- **Device: RESOLVED as a statement, but not yet APPLICABLE to `ofParam`.**
-  `lem:genericity-device` green on the multivariate engine
-  `exists_finrank_dualCoannihilator_polynomial` (route (a)). **Probe finding
-  (2026-06-04):** only the constant-family path (`exists_good_realization_const`,
-  σ := Unit) has ever been used; the non-constant `ofParam` coordinatization the
-  device's `hg`/`hcoord` demand is unbuilt, and building it (generic basis-of-annihilator
-  selection, degree-2 entries) is the substantive KT Claim 6.4 content. So the next
-  real work is brick **B0** (the `ofParam` coordinatization), not "invoke the device."
-  See *Hand-off* item 1.
-- **Case-I realization carrier: closure proven, placement OPEN.** The
-  `HasFullRankRealization`-closure-under-contraction carrier is landed, but it
-  consumes the splice placement as two rigidity hypotheses. `lem:case-I-realization`
-  is therefore **red** (honesty audit); the construction is tracked by the new node
-  `lem:case-I-splice-placement`.
-- **Case-II realization producer: MISSING (new red node).** Case II has only the
-  accounting iff; no Lean lemma produces `HasFullRankRealization` for the 1-extension
-  (`theorem_55`'s `hsplit`). Tracked by `lem:case-II-realization`.
-- **Prop 1.1 `hub`: untracked genericity-free gap.** `rigidityMatrix_prop11` takes
-  `hub` (genericity-free upper bound, "still to be bricked from Phase-19 partition
-  machinery") as a hypothesis. The device underwrites only `hgen`. Left as a hypothesis
-  for now; device-section prose states this explicitly.
+- **Motive relativization is the gating commit.** Nothing downstream
+  (producers) composes until the realization motive is `V(G)`-relative. Hand-off
+  item 1.
+- **Accounting iffs (`lem:case-I`/`lem:case-II`) are nullity-side, α-dependent.**
+  They are true relative statements but do not directly serve the non-spanning
+  producers; re-state rank-side (or bridge) as the producers need them. Assess
+  on contact whether to re-state or keep + bridge.
+- **`prop:rigidity-matrix-prop11`'s `hub`** (genericity-free upper bound, the
+  Phase-19-partition count `D + def ≤ dim Z`) is still an untracked obligation
+  carried as a hypothesis. Independent of the motive fix.
+- **Case III** (`lem:case-III`) deferred to Phases 22–23.
 
 ## Hand-off / next phase
 
-The device is green; the realization layer is honestly red. Three red obligations
-remain (Case III aside). **Item 1 is the next work, but it is NOT a single commit** —
-it decomposes into a 5-brick sequence (planned 2026-06-04); only the last brick flips
-a node.
+**For the `coordinate-phase` orchestrator:** the items below are an ordered
+single-commit sequence; do them top to bottom, re-reading this section after
+each commit (the building subagent updates it). Each commit lands Lean + flips
+its blueprint node's `\leanok` (or adds green infra) + updates this file. The
+device is green and `B0`'s coordinate core is validated, so this is build work,
+not research. **Do not** re-introduce the retired vacuous lemmas.
 
-1. **Case-I splice placement** (`lem:case-I-splice-placement`, red node). *Produce* the
-   `hHrig`/`hcrig` the landed carrier `hasFullRankRealization_ofParam_of_contraction`
-   consumes: a single `ofParam G ends param` on which both the rigid block `G_H` and
-   the block-internal contraction `G_c` are infinitesimally rigid.
+1. **Relativize the realization motive + base case** (flips `def:rank-hypothesis`,
+   `lem:theorem-55-base`, `thm:theorem-55`). Introduce
+   `BodyHingeFramework.IsInfinitesimallyRigidOn (s : Set α) := ∀ S,
+   IsInfinitesimalMotion S → ∀ u ∈ s, ∀ v ∈ s, S u = S v`; re-pin
+   `HasFullRankRealization k G := ∃ Q, Q.graph = G ∧ Q.toBodyHinge.
+   IsInfinitesimallyRigidOn V(G)` (rank-equality bridge:
+   `IsInfinitesimallyRigidOn V(G) ↔ finrank (span rigidityRows) = D·(V(G).ncard−1)`).
+   Re-prove `theorem_55_base` relative — its existing `key : S u = S v` already
+   gives constancy on `V(G) = {u,v}`; **drop the `hcover` hypothesis**. Re-run
+   `theorem_55` (the recursion `exact minimal_kdof_reduction …` is
+   motive-agnostic; only the case-premise *shapes* change). Keep the nullity
+   `RankHypothesis` for the accounting iffs for now. *This is the gating commit;
+   it may be bounded further (e.g. predicate + base in one commit, recursion in
+   the next) at the builder's discretion.*
 
-   **Device-gap probe (2026-06-04): the device NEEDS EXTENSION before any of this.** Two
-   findings correct the earlier brick plan:
-   - *The witness-transfer framing was wrong.* The IH gives rigidity at an arbitrary
-     `Q : PanelHingeFramework` whose normals are **not** moment-curve normals — there is no
-     `param₀` with `ofParam … param₀ = Q`, so the device's `hindep` seed **cannot** be
-     extracted from `Q`. The honest route does **not** transfer from `Q`: it **re-derives**
-     the seed from a general-position forest of the *subgraph* `G'`, exactly as the green
-     full-graph `hglue_of_forest` chain did (`isGeneralPosition_ofParam` +
-     `exists_independent_rigidityRows_of_forest`), plus a count turning the IH's
-     `RankHypothesis 0` on `G'` into the seed cardinality `#s = D(|V(G')|−1)`. `Q` is unused.
-   - *The non-constant `ofParam` coordinatization does not exist.* Every landed consumer used
-     only `exists_good_realization_const` (σ := Unit, constant `c i j = C(...)`). The device's
-     `hg : φ (g param i) j = eval param (c i j)` / `hcoord` for the genuine `param`-varying
-     family is unbuilt — and building it (a generic basis-of-annihilator selection for
-     `hingeRowBlock e = (span {supportExtensor e})ᗮ`, with degree-2 entries) **is the
-     substantive KT Claim 6.4 content.** The device is honestly green (its statement is
-     proven); it just can't be *applied* to `ofParam` until this coordinatization lands.
+2. **Re-state the Case-I / Case-II accounting** (`lem:case-I`, `lem:case-II`)
+   against the relativized motive — rank-side block-triangular addition (KT 6.3
+   for Case I, the `+(D−1)` column-op count for Case II), reusing the
+   genericity-free block-pin lower bound and the device's reverse bound. Assess
+   whether to re-state or keep-and-bridge the existing nullity iffs.
 
-   Revised brick order (keystone-first):
-   - **B0** *non-constant `ofParam` row coordinatization* — `g`/`c`/`φ` + `hg` + `hcoord`
-     for the `ofParam G ends ·` family. `RigidityMatrix.lean` (rows) + moment-curve plumbing
-     in `AlgebraicInduction.lean`. **The KT-6.4 core; hard; the real keystone.**
-   - **B-seed** subgraph seed producer: `G'` combinatorially rigid (from IH) ⇒ `ofParam`-rows
-     independent at an injective `param₀`, re-derived from a general-position forest of `G'` +
-     the IH count. Reuses the green forest machinery for a strict subgraph (subsumes old B2/B3
-     forest/count bookkeeping).
-   - **B1** single-leg: compose B0 + B-seed + `exists_good_realization` (non-constant) ⇒
-     `withGraph G'` rigid at a generic `param`.
-   - **B4** two-leg simultaneous merge (concatenated row family ⇒ intersection of two
-     Zariski-opens nonempty); **B5** the node assembly (+ `spliceEnds`, `G_c` deletion form,
-     `deleteEdges` simp QUIRKS §27) — flips `lem:case-I-splice-placement` +
-     `lem:case-I-realization` green.
+3. **B0 — `lem:rows-polynomial-in-normals`** (the keystone; likely 2–4 commits,
+   builder decomposes). Build the device inputs for the panel-normal family:
+   `g` = the rigidity-row functionals, `c` = their degree-2 `MvPolynomial`
+   coordinates (via the validated `normalsJoin` minor + `complementIso` linear +
+   the `{Cᵢeⱼ*−Cⱼeᵢ*}` annihilator family), `φ` = a basis coordinate iso,
+   `hg` = the eval identity, `hcoord` = green
+   `infinitesimalMotions_eq_dualCoannihilator`. First sub-commit: lift the
+   validated `⋀²`-coordinate bilinearity to a `supportExtensor`-coordinate-as-
+   `MvPolynomial` lemma. Seed point `p₀` = moment-curve normals (reuse
+   `isGeneralPosition_ofParam` + `exists_independent_rigidityRows_of_forest`).
 
-   **Do not** dispatch a "just invoke the device" build subagent — it stalls on the missing
-   B0 coordinatization. Land B0 first.
-2. **Case-II 1-extension realization** (`lem:case-II-realization`, new red node). The
-   missing `HasFullRankRealization` *producer* discharging `theorem_55`'s `hsplit`:
-   construct the re-inserted body's general-position panel normal `n` making the
-   accounting iff's `hspan` hold, then land full rank via
-   `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`. Parallel to item 1.
-3. **Prop 1.1 `hub`** (genericity-free upper bound). Brick the Phase-19-partition
-   count that gives `D + def(G̃) ≤ dim Z(G,p)` for *every* realization, discharging
-   `rigidityMatrix_prop11`'s remaining hypothesis. Independent of items 1–2.
+4. **`lem:case-I-splice-seed`** — construct `p₀` on `G` with `D(|V(G)|−1)`
+   independent parent rows: transport the IH realizations of `H` and `G/E(H)`
+   onto `G` and certify block-triangular row independence (genericity-free, via
+   pin-a-body Lemma 5.1's column split). The genuine geometric content of Case I.
 
-**Process lesson (don't repeat).** The single-use affine wrapper chain (now
-collapsed) came from formalizing a *linear reduction* one hypothesis-discharge per
-commit in forward mode. The fix: build the **keystone** (the multivariate device)
-and validate the consumer API against it *first*, then collapse the affine bridges
-into the constant-family closure. Promoted to `DESIGN.md` *Forward-mode reduction
-chains*; also relevant to Phases 22–23.
+5. **`lem:case-I-realization`** — compose B0 + splice-seed + device ⇒
+   `HasFullRankRealization k G`. Discharges `theorem_55`'s `hcontract`.
 
-**Also consumed by Phases 22–23** (Case III genericity, Claims 6.11/6.12); the
-multivariate device pays forward (Case III bottoms on Lemma 2.1, Phase 17 green).
+6. **`lem:case-II-realization`** — the shallower 1-extension producer: re-insert
+   the degree-2 body `v` with a general-position panel normal (KT 6.12), `+(D−1)`
+   rows; discharges `hsplit`. Parallel to 4–5 but single-body.
 
-**Session note.** `origin/master` was inadvertently pushed once this session
-(the local-only convention was otherwise kept; commits since are local). Match
-author `bryangingechen@gmail.com`; do **not** push without asking.
+7. **`prop:rigidity-matrix-prop11`** — re-close against the re-stated
+   `theorem_55`; brick `hub` (Phase-19 partition count) — independent, may be
+   done any time.
+
+**Process lessons (don't repeat).** (a) Build the keystone / validate the
+target shape *before* growing a reduction chain (`DESIGN.md` *Forward-mode
+reduction chains*). (b) A producer hypothesis must be **satisfiable**, not just
+type-correct — check it against a concrete small instance (the retired Case-I
+carrier and the absolute base case both failed this). (c) For a vertex-reducing
+induction, the realization motive must be carried relative to `V(G)`, not
+absolute over the ambient body type.
+
+**Session note.** `origin/master` was inadvertently pushed once an earlier
+session; commits since are local. Match author `bryangingechen@gmail.com`; do
+**not** push without asking.

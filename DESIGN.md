@@ -962,6 +962,43 @@ Cross-refs: `notes/Phase21b.md` *Hand-off*; the 2026-06-04 honesty flip
 
 ---
 
+## Realization motive must be V(G)-relative, not absolute over the ambient type
+
+**The trap (found 2026-06-04, Phase 21b).** A *realization* theorem proved by
+an induction that **reduces the vertex count** must carry its motive **relative
+to `V(G)`**, never as an absolute property of the whole ambient body type. The
+molecular `theorem_55` carried infinitesimal rigidity as the absolute
+null-space equality `dim Z(G,p) = D` over all of `α → ScrewSpace`. That equals
+rigidity only when `G` *spans* `α`: a body in `α ∖ V(G)` sits in no hinge
+constraint, so it is a free non-trivial motion and `dim Z > D`. But
+`minimal_kdof_reduction` reduces to subgraphs with strictly fewer vertices on
+the *same fixed* `α`, which do not span it — so the absolute motive is
+**unsatisfiable** for every inductive subgraph, and the case-producer premises
+(`hbase`/`hsplit`/`hcontract`) cannot be discharged for `card α ≥ 3`. The
+capstone was green only as a conditional over unsatisfiable hypotheses; the
+symptom was a base-case hypothesis `∀ w, w = u ∨ w = v` (i.e. "`α = {u,v}`").
+Verified in Lean by a one-line lemma: an isolated body yields a non-trivial
+motion, so a non-spanning framework is never (absolutely) rigid.
+
+**The rule.** Carry such a motive in an `α`-independent form. For a rank/rigidity
+motive, the **rank form** `rank R(G,p) = D(|V(G)|−1)` — equivalently
+`finrank (span rigidityRows) = D·(|V(G)|−1)`, equivalently "every infinitesimal
+motion is constant on `V(G)`" — is `α`-independent (the rigidity rows come only
+from `E(G)`, so isolated bodies contribute nothing), composes through the
+induction, and (bonus) makes the block-constancy machinery satisfiable (it was
+vacuous only because of the global-`α` rigidity). The dual nullity form
+`dim Z = D` is the special case `V(G) = α`.
+
+**The general lesson.** When a producer/existence statement is proved by a
+size-reducing induction, check that its motive is satisfiable for the *reduced*
+instances, not just the top one — and prefer a formulation intrinsic to the
+object (`V(G)`) over one referencing a fixed ambient (`α`). This is the
+producer-scrutiny honesty gate (`blueprint/CLAUDE.md`) applied to the *motive*,
+not just to a single node's hypotheses. Cross-refs: `notes/Phase21b.md`
+*Current state* + *Decisions*; the 2026-06-04 realization re-plan.
+
+---
+
 ## Choices to revisit
 
 These are *open*: we expect to revise based on how proofs actually

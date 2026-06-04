@@ -354,23 +354,32 @@ projective-duality foundations sub-phase inserted by the
 panel-coplanarity re-scope --- is complete: the top-power volume-form
 iso, the exterior-power duality iso, the complement iso, and the meet
 (\cref{def:meet}) are all green. \textbf{Phase~21}
-(\cref{sec:molecular-algebraic-induction}) is complete
-(GREEN-modulo-21b): the algebraic induction (Theorem~5.5 base and
-Cases~I \& II, \cref{thm:theorem-55}). The panel layer
+(\cref{sec:molecular-algebraic-induction}) settled the algebraic
+induction's accounting and the shared genericity device; \textbf{Phase~21b}
+(in progress) is re-planning the \emph{realization} layer. The panel layer
 (\cref{def:panel-support-extensor,def:panel-hinge-framework}), the
 regime-agnostic rank/structure nodes, all four Lean pieces of the
 cycle-realization Lemma~5.4 (\cref{lem:cycle-realization-base,%
 lem:cycle-realization-dim-bound,lem:cycle-realization-rigid,%
 lem:panel-support-extensor-independence,%
-lem:exists-independent-panel-extensor}), and the assembly nodes
-(\cref{thm:theorem-55,lem:case-I,lem:case-II,%
-prop:rigidity-matrix-prop11}) are all green --- each consuming node
-takes the shared genericity device (Claim~6.4/6.9) as an explicit
-hypothesis, scoped out into \textbf{Phase~21b}. That device
-(\cref{lem:genericity-device}) has now landed in its genuine multivariate
-form (a nonzero multivariate minor polynomial has a non-root, via
-\texttt{MvPolynomial.funext}), so the consuming nodes are green. The
-remaining red nodes on the chapter are the Case-I realization splice
-(\cref{lem:case-I-realization}, KT~eqs.\ 6.2/6.6, the geometric wiring that
-feeds the device, Phase~21b) and Case~III (\cref{lem:case-III}), deferred to
-Phases~22--23. Phases~22--26 remain to be opened.
+lem:exists-independent-panel-extensor}), and the genericity device
+(\cref{lem:genericity-device}, landed in its multivariate form: a nonzero
+multivariate minor polynomial has a non-root via
+\texttt{MvPolynomial.funext}) are green. A Phase-21b spike then found that
+the realization \emph{motive} as first carried --- infinitesimal rigidity
+as the \emph{absolute} null-space equality $\dim Z = D$ over the whole
+ambient body type --- holds only when the graph spans that type, whereas
+the induction reduces to graphs with fewer vertices; so the realization
+premises were unsatisfiable for the inductive subgraphs. The realization
+spine is being re-stated against the $\alpha$-independent \emph{$V(G)$-relative
+rank} motive $\operatorname{rank} R(G,p) = D(|V(G)|-1)$
+(\cref{def:rank-hypothesis}). \emph{Red, re-stated:} the motive and base case
+(\cref{def:rank-hypothesis,lem:theorem-55-base}), the capstone
+\cref{thm:theorem-55}, the two accounting iffs (\cref{lem:case-I,lem:case-II}),
+the generic-rank reconciliation \cref{prop:rigidity-matrix-prop11}, and the
+realization producers --- the panel-coordinate row coordinatization
+\cref{lem:rows-polynomial-in-normals} (the device keystone), the Case-I splice
+seed \cref{lem:case-I-splice-seed} and producer \cref{lem:case-I-realization},
+and the Case-II producer \cref{lem:case-II-realization} --- plus Case~III
+(\cref{lem:case-III}), deferred to Phases~22--23. Phases~22--26 remain to be
+opened.
