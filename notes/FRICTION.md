@@ -76,6 +76,19 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] The `Set.ncard` of a finite-index `iUnion` is `≤ ∑ ncard` via `Set.ncard_iUnion_le_of_fintype` — don't hand-roll through `toFinset`/`card_biUnion_le`
+- **Where it bit:** N4c crux input `Matroid.Union_pow_isBasis'_split_of_rk_saturated` (Phase 22):
+  the counting step `|⋃ Jᵢ| ≤ ∑ |Jᵢ|` over `Jᵢ : Fin k → Set α`.
+- **Friction:** first hand-rolled it via `Fintype.ofFinite α` + `Set.ncard_eq_toFinset_card'` +
+  `Set.toFinset_iUnion` + `Finset.card_biUnion_le` (4 rewrites). The single lemma
+  `Set.ncard_iUnion_le_of_fintype : (⋃ i, s i).ncard ≤ ∑ i, (s i).ncard` (only `[Fintype ι]`,
+  *no* finiteness/pairwise hyp) does it in one term. Sibling of the existing line-379 entry on
+  `Set.ncard_iUnion_of_finite` (the `∑ᶠ` *equality* form), but the *inequality* form is cleaner
+  here since the packing argument never needs disjointness.
+- **Proposed fix:** `hJunion ▸ Set.ncard_iUnion_le_of_fintype J`.
+- **Status:** resolved (no mirror; the lemma is in mathlib). Lesson: `lean_local_search` /
+  `exact?` for the exact `ncard` shape *before* converting to `Finset`.
+
 ### [resolved] A `⋀ⁿ` coordinate in a `Pi.basisFun` exterior-power basis is `basis_repr_apply` + `ιMultiDual_apply_ιMulti` + a `Matrix.det` — close the residual `coord`→application with `rfl`, not `Pi.basisFun_repr`
 - **Where it bit:** B0 keystone bilinearity `normalsJoin_basis_repr` (Phase 21b): the `s`-coordinate
   of `normalsJoin n₁ n₂ ∈ ⋀² ℝ^(k+2)` in the standard exterior-power basis. The clean chain is

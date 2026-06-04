@@ -2040,6 +2040,79 @@ lemma matroidMG_rigidContract_eq [DecidableEq β] [Finite α] [Finite β] {H G :
   rw [matroidMG, edgeSet_mulTilde_rigidContract,
     funext fun _ : Fin (bodyBarDim n) ↦ cycleMatroid_mulTilde_rigidContract hle hr n hconn]
 
+/-! ### The rank-saturated packing of the contracted-out set (N4c crux input)
+
+The union↔contraction crux of N4c bites exactly where the contracted-out set `c = E(H̃)`
+packs into `D` `G̃.cycleMatroid`-bases — the rigidity input. The abstract matroid fact behind
+that packing: when the `k`-fold union `N = Union (fun _ : Fin k ↦ M)` *saturates* its rank
+on `c` (`N.rk c = k · M.rk c`), an `N`-basis of `c` splits as `k` per-factor sets, each itself
+an `M`-basis of `c`. (For the molecular crux `M = G̃.cycleMatroid`, `k = D`, and the saturation
+`rk M(H̃) = D(|V(H)|−1) = D·(|V(H)|−1) = D·r_cyc(E(H̃))` is the Jackson–Jordán def=corank bridge
+for a rigid `H`, since `H̃` is connected — `isBase_ncard_add_deficiency_eq` + N4a.) -/
+
+end Graph
+
+namespace Matroid
+
+open Set
+
+variable {α : Type*}
+
+/-- **A rank-saturated `k`-fold union splits an `N`-basis of `c` into `k` `M`-bases of `c`**
+(N4c crux input). If `N := Matroid.Union (fun _ : Fin k ↦ M)` attains `N.rk c = k · M.rk c`
+on a set `c`, then there is a family `J : Fin k → Set α` with `⋃ i, J i` an `N`-basis of `c`
+and each `J i` an `M`-basis of `c`. The forcing is a counting argument: an `N`-basis `B` of
+`c` decomposes (`union_indep_iff`) into per-factor `M`-independent `J i ⊆ c` with `⋃ J i = B`;
+then `|B| = N.rk c = k · M.rk c`, while `|B| ≤ ∑ |J i| ≤ k · M.rk c` (each `|J i| ≤ M.rk c` as
+an `M`-independent subset of `c`), so the chain is tight and every `|J i| = M.rk c`, making
+each `J i` an `M`-basis of `c`. -/
+lemma Union_pow_isBasis'_split_of_rk_saturated [DecidableEq α] [Finite α]
+    (M : Matroid α) (k : ℕ) (c : Set α)
+    (hsat : (Matroid.Union (fun _ : Fin k ↦ M)).rk c = k * M.rk c) :
+    ∃ J : Fin k → Set α, (Matroid.Union (fun _ : Fin k ↦ M)).IsBasis' (⋃ i, J i) c ∧
+      ∀ i, M.IsBasis' (J i) c := by
+  classical
+  set N := Matroid.Union (fun _ : Fin k ↦ M) with hN
+  -- An `N`-basis `B` of `c`, with `|B| = N.rk c = k · M.rk c`.
+  obtain ⟨B, hB⟩ := N.exists_isBasis' c
+  have hBcard : B.ncard = k * M.rk c := by rw [hB.card, hsat]
+  -- Decompose `B` into per-factor `M`-independent sets `J i ⊆ c`.
+  obtain ⟨J, hJunion, hJindep⟩ := Matroid.union_indep_iff.mp hB.indep
+  have hJsub : ∀ i, J i ⊆ c :=
+    fun i ↦ (Set.subset_iUnion J i).trans (hJunion.trans_subset hB.subset)
+  -- Each factor is an `M`-independent subset of `c`, so `|J i| ≤ M.rk c`.
+  have hJle : ∀ i, (J i).ncard ≤ M.rk c := fun i ↦ (hJindep i).ncard_le_rk_of_subset (hJsub i)
+  -- `|B| ≤ ∑ |J i| ≤ k · M.rk c = |B|`, forcing each `|J i| = M.rk c`.
+  have hsum_le : B.ncard ≤ ∑ i, (J i).ncard :=
+    hJunion ▸ Set.ncard_iUnion_le_of_fintype J
+  have hcard_eq : ∀ i, (J i).ncard = M.rk c := by
+    have hsumle' : k * M.rk c ≤ ∑ i, (J i).ncard := hBcard ▸ hsum_le
+    intro i
+    refine le_antisymm (hJle i) ?_
+    by_contra hlt
+    push Not at hlt
+    have hlt' : ∑ j, (J j).ncard < ∑ _j : Fin k, M.rk c :=
+      Finset.sum_lt_sum (fun j _ ↦ hJle j) ⟨i, Finset.mem_univ i, hlt⟩
+    simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul] at hlt'
+    omega
+  -- Each `J i`: `M`-independent, `⊆ c`, `|J i| = M.rk c` ⟹ an `M`-basis of `c`.
+  have hJbasis : ∀ i, M.IsBasis' (J i) c := by
+    intro i
+    obtain ⟨K, hK, hJK⟩ := (hJindep i).subset_isBasis'_of_subset (hJsub i)
+    have hKfin : K.Finite := (M.isRkFinite_set c).finite_of_isBasis' hK
+    have hKc : K.ncard = M.rk c := hK.card
+    rwa [show K = J i from
+      (Set.eq_of_subset_of_ncard_le hJK (by rw [hKc, hcard_eq i]) hKfin).symm] at hK
+  exact ⟨J, hJunion ▸ hB, hJbasis⟩
+
+end Matroid
+
+namespace Graph
+
+open Set Matroid
+
+variable {α β : Type*}
+
 /-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
 
 The minimality-transport half of KT Lemma 3.5: contracting a (rigid) subgraph `H` of a
