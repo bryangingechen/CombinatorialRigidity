@@ -228,9 +228,15 @@ All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
 
 ## Blockers / open questions
 
-- **Device: RESOLVED.** `lem:genericity-device` green on the multivariate engine
-  `exists_finrank_dualCoannihilator_polynomial` (route (a)); consolidation of the
-  old affine chain done in the same commit.
+- **Device: RESOLVED as a statement, but not yet APPLICABLE to `ofParam`.**
+  `lem:genericity-device` green on the multivariate engine
+  `exists_finrank_dualCoannihilator_polynomial` (route (a)). **Probe finding
+  (2026-06-04):** only the constant-family path (`exists_good_realization_const`,
+  σ := Unit) has ever been used; the non-constant `ofParam` coordinatization the
+  device's `hg`/`hcoord` demand is unbuilt, and building it (generic basis-of-annihilator
+  selection, degree-2 entries) is the substantive KT Claim 6.4 content. So the next
+  real work is brick **B0** (the `ofParam` coordinatization), not "invoke the device."
+  See *Hand-off* item 1.
 - **Case-I realization carrier: closure proven, placement OPEN.** The
   `HasFullRankRealization`-closure-under-contraction carrier is landed, but it
   consumes the splice placement as two rigidity hypotheses. `lem:case-I-realization`
@@ -254,32 +260,43 @@ a node.
 1. **Case-I splice placement** (`lem:case-I-splice-placement`, red node). *Produce* the
    `hHrig`/`hcrig` the landed carrier `hasFullRankRealization_ofParam_of_contraction`
    consumes: a single `ofParam G ends param` on which both the rigid block `G_H` and
-   the block-internal contraction `G_c` are infinitesimally rigid. **The genuine crux
-   is the witness-transfer gap:** the IH (`theorem_55`'s `hcontract`, ~line 1805) hands
-   realizations of `H` and `G/E(H)` as *separate* `HasFullRankRealization` witnesses on
-   *different* families; the carrier needs both rigid on *one* `ofParam` witness.
-   Bridging that — lifting "rigid on some witness" to "rigid on the common moment-curve
-   family at a generic `param`" — is the new content; the device only lifts an attained
-   rank to a generic point, so two legs need the *intersection* of two Zariski-open
-   rigid loci. Brick sequence (statements in the Lemma checklist):
-   - **B1** `exists_param_isInfinitesimallyRigid_withGraph` — single-leg witness→`ofParam`
-     transfer for a generic `param` (the hard engine; may itself split). *Not single-commit.*
-   - **B2** `Graph.spliceEnds` (+ link lemmas) — endpoint selector: block hinges along the
-     forest, boundary hinges to the contracted vertex `r` (thin over `endsOf`). *Single commit.*
-   - **B3** `G_H`/`G_c` + `≤ G` + `hblk` block-internality bookkeeping (deletion form of
-     `G/E(H)`; watch `deleteEdges` simp, QUIRKS §27). *Single commit.*
-   - **B4** `exists_param_isInfinitesimallyRigid_two_withGraph` — the *simultaneous* merge:
-     one generic `param` rigidifies both legs (re-run `exists_linearIndependent_rows_specialize`
-     on the concatenated two-leg row family). *Borderline; absorbs the hard content if B1 doesn't.*
-   - **B5** `exists_splice_placement_of_contraction` (THE NODE) — assemble B2/B3, feed the two
-     IH realizations through B4, apply the carrier. *Single commit (glue); flips both
-     `lem:case-I-splice-placement` and `lem:case-I-realization` green.*
+   the block-internal contraction `G_c` are infinitesimally rigid.
 
-   **Main risk:** the non-constant multivariate path through `exists_good_realization` may
-   not have been exercised yet (consumers so far used only `…_const`); B1 surfaces any gap.
-   Secondary: matching `G_c`'s deletion presentation to the `rigidContract`/`collapseTo` form
-   the IH produces (possible `withGraph`-transport brick B3b). Keystone-first (DESIGN.md
-   *Forward-mode reduction chains*) argues for landing B1's engine first.
+   **Device-gap probe (2026-06-04): the device NEEDS EXTENSION before any of this.** Two
+   findings correct the earlier brick plan:
+   - *The witness-transfer framing was wrong.* The IH gives rigidity at an arbitrary
+     `Q : PanelHingeFramework` whose normals are **not** moment-curve normals — there is no
+     `param₀` with `ofParam … param₀ = Q`, so the device's `hindep` seed **cannot** be
+     extracted from `Q`. The honest route does **not** transfer from `Q`: it **re-derives**
+     the seed from a general-position forest of the *subgraph* `G'`, exactly as the green
+     full-graph `hglue_of_forest` chain did (`isGeneralPosition_ofParam` +
+     `exists_independent_rigidityRows_of_forest`), plus a count turning the IH's
+     `RankHypothesis 0` on `G'` into the seed cardinality `#s = D(|V(G')|−1)`. `Q` is unused.
+   - *The non-constant `ofParam` coordinatization does not exist.* Every landed consumer used
+     only `exists_good_realization_const` (σ := Unit, constant `c i j = C(...)`). The device's
+     `hg : φ (g param i) j = eval param (c i j)` / `hcoord` for the genuine `param`-varying
+     family is unbuilt — and building it (a generic basis-of-annihilator selection for
+     `hingeRowBlock e = (span {supportExtensor e})ᗮ`, with degree-2 entries) **is the
+     substantive KT Claim 6.4 content.** The device is honestly green (its statement is
+     proven); it just can't be *applied* to `ofParam` until this coordinatization lands.
+
+   Revised brick order (keystone-first):
+   - **B0** *non-constant `ofParam` row coordinatization* — `g`/`c`/`φ` + `hg` + `hcoord`
+     for the `ofParam G ends ·` family. `RigidityMatrix.lean` (rows) + moment-curve plumbing
+     in `AlgebraicInduction.lean`. **The KT-6.4 core; hard; the real keystone.**
+   - **B-seed** subgraph seed producer: `G'` combinatorially rigid (from IH) ⇒ `ofParam`-rows
+     independent at an injective `param₀`, re-derived from a general-position forest of `G'` +
+     the IH count. Reuses the green forest machinery for a strict subgraph (subsumes old B2/B3
+     forest/count bookkeeping).
+   - **B1** single-leg: compose B0 + B-seed + `exists_good_realization` (non-constant) ⇒
+     `withGraph G'` rigid at a generic `param`.
+   - **B4** two-leg simultaneous merge (concatenated row family ⇒ intersection of two
+     Zariski-opens nonempty); **B5** the node assembly (+ `spliceEnds`, `G_c` deletion form,
+     `deleteEdges` simp QUIRKS §27) — flips `lem:case-I-splice-placement` +
+     `lem:case-I-realization` green.
+
+   **Do not** dispatch a "just invoke the device" build subagent — it stalls on the missing
+   B0 coordinatization. Land B0 first.
 2. **Case-II 1-extension realization** (`lem:case-II-realization`, new red node). The
    missing `HasFullRankRealization` *producer* discharging `theorem_55`'s `hsplit`:
    construct the re-inserted body's general-position panel normal `n` making the
