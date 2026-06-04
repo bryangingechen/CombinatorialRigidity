@@ -29,25 +29,37 @@ Lean is in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
-**The multivariate genericity device is GREEN (2026-06-04); `lem:case-I-realization`
-is now GREEN too (2026-06-04).** `lem:genericity-device` is rebuilt on the genuine
-multivariate engine and re-pinned green; the four genericity-free consumers
-(`lem:case-I`, `lem:case-II`, `thm:theorem-55`, `prop:rigidity-matrix-prop11`) that
-took the device's conclusion as a hypothesis have all statement-deps green. The
-Case-I contraction splice `lem:case-I-realization` landed this commit: the
-`HasFullRankRealization`-closure-under-contraction producer
-`PanelHingeFramework.hasFullRankRealization_ofParam_of_contraction` (+ its
-framework-level splice-rigidity core
-`BodyHingeFramework.isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`),
-both axiom-clean. They compose the two landed block bricks
-(`isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot` +
-`pinnedMotionsOn_eq_bot_of_block_internal_rigid`) into the `hcontract`-shaped motive
-of `theorem_55`, taking the splice's two rigidity outputs (rigid block subgraph
-`G_H ≤ G`, block-internal contraction subgraph `G_c ≤ G` each rigid on the shared
-`ofParam` witness) as explicit hypotheses — green modulo the geometric construction
-of a single `p` making both subgraphs rigid (the simultaneous-rigid splice placement),
-in the same hypothesis-taking idiom as `lem:case-I`/`lem:case-II`. The one remaining
-red node on the chapter is the deferred Case III (`lem:case-III`, Phases 22–23).
+**The multivariate genericity device is GREEN (2026-06-04). The realization layer
+is honestly RED (blueprint-honesty audit, 2026-06-04).** `lem:genericity-device` is
+rebuilt on the genuine multivariate engine and re-pinned green; the *accounting*
+consumers (`lem:case-I`, `lem:case-II`, `thm:theorem-55`,
+`prop:rigidity-matrix-prop11`) take the device's genericity inputs as explicit
+hypotheses and are green for what they state (iffs / equality-assemblies).
+
+**Audit correction (this commit).** The earlier hand-off claimed
+`lem:case-I-realization` was green and "the one remaining red node is Case III" —
+this was the premature-green anti-pattern. The Lean carrier
+`hasFullRankRealization_ofParam_of_contraction` takes the *two splice rigidity
+outputs* (`hHrig`: block subgraph `G_H ≤ G` rigid; `hcrig`: block-internal
+contraction subgraph `G_c ≤ G` rigid) on the **same** `ofParam G ends param` witness
+`p` as hypotheses. No Lean lemma constructs such a `p`, and the now-green device does
+*not* build it (it only lifts an attained rank to a generic point). So
+`lem:case-I-realization` is now **red** (`\leanok` dropped; `\lean{...}` kept — the
+closure carrier resolves), depending on a new red node
+`lem:case-I-splice-placement` (∃ `p` on which both subgraphs are rigid). A
+**parallel hole was found in Case II**: there is an accounting iff
+(`rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`) but **no
+`HasFullRankRealization` producer** discharging the `hsplit` premise of `theorem_55`
+— all four producers in the file are Case-I-shaped. A new red node
+`lem:case-II-realization` (construct the re-inserted body's panel normal making
+`hspan` hold, then land full rank) now tracks it. `prop:rigidity-matrix-prop11`'s
+`hub` (genericity-free upper bound) is also a still-untracked Phase-19-partition
+obligation — left as an explicit hypothesis, but the device-section prose now states
+the device underwrites only the `hgen` half, not `hub`.
+
+The genuine remaining red work on the chapter is therefore: the Case-I splice
+placement, the Case-II 1-extension realization, and the deferred Case III
+(`lem:case-III`, Phases 22–23) — **not** just Case III.
 
 The device is `exists_good_realization` (multivariate keystone) +
 `exists_good_realization_const` (constant-family closure the Case-I chain consumes)
@@ -103,11 +115,20 @@ All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
 **Blueprint nodes:**
 - [x] `lem:genericity-device` — **GREEN**. Genuine multivariate Claim 6.4, pinned to
   `exists_good_realization` + `exists_good_realization_const`.
-- [x] `lem:case-I-realization` — **GREEN** (modulo the geometric splice placement of
-  `p`, taken as the two rigidity hypotheses). Contraction splice (KT 6.2/6.6) attains
-  full rank; pinned to `hasFullRankRealization_ofParam_of_contraction` +
-  `isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`.
-- [x] `lem:case-I` — the iff-realization (green; device dep now green).
+- [x] `lem:case-I` — the accounting iff (green; device dep green). Takes `hglue`.
+- [x] `lem:case-II` — the accounting iff (green; device dep green). Takes `hspan`.
+- [ ] `lem:case-I-realization` — **RED** (`\leanok` dropped this commit). The
+  `HasFullRankRealization`-closure-under-contraction *carrier*
+  (`hasFullRankRealization_ofParam_of_contraction` +
+  `isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`) is proven, but it
+  consumes the splice placement as two rigidity hypotheses, so the node depends on:
+- [ ] `lem:case-I-splice-placement` — **RED, new node** (no `\lean`). ∃ a single `p`
+  (KT 6.2/6.6) on which both the rigid block `G_H` and the block-internal contraction
+  `G_c` are infinitesimally rigid. The genuine Case-I geometric construction.
+- [ ] `lem:case-II-realization` — **RED, new node** (no `\lean`). The
+  `HasFullRankRealization` *producer* for the 1-extension, discharging `theorem_55`'s
+  `hsplit`. Construct the re-inserted body's general-position panel normal making
+  `hspan` hold; no such producer exists in Lean yet (only the accounting iff).
 
 **Analytic core — multivariate (genuine Claim 6.4, route (a)):**
 - [x] `MvPolynomial.exists_eval_ne_zero` (`…/MvPolynomial/Funext.lean`) — nonzero
@@ -205,43 +226,46 @@ All `[x]` bricks are axiom-clean {propext, Classical.choice, Quot.sound}.
 - **Device: RESOLVED.** `lem:genericity-device` green on the multivariate engine
   `exists_finrank_dualCoannihilator_polynomial` (route (a)); consolidation of the
   old affine chain done in the same commit.
-- **Case-I realization carrier: RESOLVED** (`lem:case-I-realization` green). The
-  `HasFullRankRealization`-closure-under-contraction producer is landed; what stays
-  is the genuine geometric *splice construction* — building a single `ofParam`/panel
-  `p` from `p₁` (rigid block), `p₂` (contraction), and the boundary panel
-  intersection that makes *both* `G_H` and `G_c` rigid — carried as the producer's two
-  rigidity hypotheses (the same hypothesis-taking idiom as `lem:case-I`/`lem:case-II`).
-- **Open:** the geometric splice construction of `p` (above), and the per-consumer
-  wiring of the device for Case II (`hspan`) / Prop 1.1 (`hub`/`hgen`) — the device's
-  conclusion is the shape each needs, but each carries a per-consumer bridge to
-  construct.
+- **Case-I realization carrier: closure proven, placement OPEN.** The
+  `HasFullRankRealization`-closure-under-contraction carrier is landed, but it
+  consumes the splice placement as two rigidity hypotheses. `lem:case-I-realization`
+  is therefore **red** (honesty audit); the construction is tracked by the new node
+  `lem:case-I-splice-placement`.
+- **Case-II realization producer: MISSING (new red node).** Case II has only the
+  accounting iff; no Lean lemma produces `HasFullRankRealization` for the 1-extension
+  (`theorem_55`'s `hsplit`). Tracked by `lem:case-II-realization`.
+- **Prop 1.1 `hub`: untracked genericity-free gap.** `rigidityMatrix_prop11` takes
+  `hub` (genericity-free upper bound, "still to be bricked from Phase-19 partition
+  machinery") as a hypothesis. The device underwrites only `hgen`. Left as a hypothesis
+  for now; device-section prose states this explicitly.
 
 ## Hand-off / next phase
 
-The device is green and `lem:case-I-realization` (the `hcontract`-shaped
-realization-motive closure under contraction) is green. **The next concrete commit
-is item 1 below** — either the genuine geometric splice construction, or (smaller,
-can go first) item 2's per-consumer device wiring. Two work items remain.
+The device is green; the realization layer is honestly red. **The next concrete
+commit is item 1** (`lem:case-I-splice-placement`), the smallest forward step. Three
+red obligations remain (Case III aside).
 
-1. **Geometric splice construction of `p`** (the residual carried as the two
-   rigidity hypotheses of `hasFullRankRealization_ofParam_of_contraction`, KT eqs.
-   6.2/6.6). The carrier lemma is landed; what stays is *building* a single
-   `ofParam`/panel `p` from `p₁` (rigid block on `E(H)`), `p₂` (contraction
+1. **Case-I splice placement** (`lem:case-I-splice-placement`, new red node). Build a
+   single `ofParam`/panel `p` from `p₁` (rigid block on `E(H)`), `p₂` (contraction
    interior), and the boundary panel intersection
-   `Π_{G/E(H),p₂}(u) ∩ Π_{H,p₁}(v)` on `δ_G(V(H))` such that *both* the block
-   subgraph `G_H` and the block-internal contraction subgraph `G_c` are rigid on it
-   — i.e. discharging `hHrig` and `hcrig` from the inductive realizations of `H` and
-   `G/E(H)`. Bottoms on the now-green device (rigidity is panel-dependent, so each
-   leg needs generic max-rank) plus the `(G, ends)` gluing (orient block hinges along
-   the spanning forest, link inter-block hinges to the contracted vertex). The
-   reduction plumbing (`hasFullRankRealization_ofParam_of_contraction`, the splice-
-   rigidity core `isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`, the
-   block-pin↔rigidity bridges, `endsOf`) and the Case-I `hglue` chain
-   (`hglue_of_forest`) are all landed.
-2. **Per-consumer wiring of the device for Case II / Prop 1.1** — Case II's `hspan`
-   (span-membership of base-pinned motions) and Prop 1.1's `hub`/`hgen` reuse the
-   device's `∃ p, #s + dim Z(F p) ≤ D|V|` conclusion through a per-consumer bridge
-   analogous to the Case-I `hglue_of_*` chain. Smaller than item 1; can go first.
+   `Π_{G/E(H),p₂}(u) ∩ Π_{H,p₁}(v)` on `δ_G(V(H))` such that *both* `G_H` and `G_c`
+   are rigid on it — i.e. *produce* the `hHrig`/`hcrig` the landed closure carrier
+   `hasFullRankRealization_ofParam_of_contraction` consumes. Bottoms on the now-green
+   device (each leg needs generic max-rank) plus the `(G, ends)` gluing (orient block
+   hinges along the spanning forest, link inter-block hinges to the contracted
+   vertex). The carrier, splice-rigidity core
+   `isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal`, block-pin↔rigidity
+   bridges, `endsOf`, and the `hglue_of_forest` chain are all landed — only the
+   placement is missing. Landing it flips both `lem:case-I-splice-placement` and
+   `lem:case-I-realization` green.
+2. **Case-II 1-extension realization** (`lem:case-II-realization`, new red node). The
+   missing `HasFullRankRealization` *producer* discharging `theorem_55`'s `hsplit`:
+   construct the re-inserted body's general-position panel normal `n` making the
+   accounting iff's `hspan` hold, then land full rank via
+   `rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions`. Parallel to item 1.
+3. **Prop 1.1 `hub`** (genericity-free upper bound). Brick the Phase-19-partition
+   count that gives `D + def(G̃) ≤ dim Z(G,p)` for *every* realization, discharging
+   `rigidityMatrix_prop11`'s remaining hypothesis. Independent of items 1–2.
 
 **Process lesson (don't repeat).** The single-use affine wrapper chain (now
 collapsed) came from formalizing a *linear reduction* one hypothesis-discharge per

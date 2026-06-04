@@ -20,7 +20,9 @@ $\tilde G = (D-1)\cdot G$ is the multiplied graph of
 $D$-deficiency of \cref{def:D-deficiency}.
 
 \medskip
-\noindent\emph{Status.} Complete, GREEN-modulo-21b. The chapter opens
+\noindent\emph{Status.} Accounting layer complete; the realization
+layer's geometric placements (Cases~I/II producers) and the crux
+Case~III remain red. The chapter opens
 with the generic-rank reconciliation (Tay--Whiteley's Proposition~1.1,
 relocated forward from Phase~18), states the induction skeleton, then
 discharges the base case (via the parallel-hinges Lemma
@@ -35,10 +37,18 @@ sub-phase Phase~21b. The device (\cref{lem:genericity-device}) has now
 landed in its genuine multivariate form, so those consumers are green; the
 cycle-realization Lemma~5.4 (\cref{lem:cycle-realization};
 Crapo--Whiteley~\cite{crapoWhiteley1982}, Whiteley~\cite{whiteley1999})
-enters here as an input. The remaining red nodes are the Case~I
-contraction splice (\cref{lem:case-I-realization}, the geometric wiring
-that feeds the device, Phase~21b) and the crux Case~III
-(\cref{lem:case-III}, deferred to Phases~22--23).
+enters here as an input. The remaining red nodes are the
+\emph{realization layer's} geometric placements --- the Case~I closure
+\cref{lem:case-I-realization} together with the splice placement it
+consumes (\cref{lem:case-I-splice-placement}, the construction of a single
+$p$ on which both the rigid block and the contraction are rigid), and the
+Case~II $1$-extension realization (\cref{lem:case-II-realization}, the
+construction of the re-inserted body's panel normal) --- plus the crux
+Case~III (\cref{lem:case-III}, deferred to Phases~22--23). The device's
+greening does \emph{not} discharge these: it lifts an attained rank to a
+generic point, but each placement must still be built. The accounting
+\emph{iffs} \cref{lem:case-I} and \cref{lem:case-II} are green; their
+\emph{producers} are not.
 
 \subsection{The panel layer}
 \label{sec:molecular-algebraic-induction-panel}
@@ -210,7 +220,8 @@ whole induction.
   \lean{CombinatorialRigidity.Molecular.theorem_55}
   \leanok
   \uses{def:rank-hypothesis, thm:minimal-kdof-reduction, lem:case-I,
-        lem:case-II, lem:case-III, lem:theorem-55-base}
+        lem:case-II, lem:case-I-realization, lem:case-II-realization,
+        lem:case-III, lem:theorem-55-base}
   Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
   realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V|-1)$ ---
   an infinitesimally rigid panel-hinge framework (\cref{def:rank-hypothesis},
@@ -220,21 +231,29 @@ whole induction.
 \begin{proof}
   \leanok
   \uses{thm:minimal-kdof-reduction, lem:theorem-55-base, lem:case-I,
-        lem:case-II, lem:case-III}
+        lem:case-II, lem:case-I-realization, lem:case-II-realization,
+        lem:case-III}
   Induction on $|V|$, driven by the combinatorial reduction
   Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): run its well-founded
   induction principle against the realization motive ``$G$ carries a
   full-rank panel realization''. The base case $|V| = 2$ is
   \cref{lem:theorem-55-base}. The inductive step splits three ways on the
-  reduction dichotomy: Case~I (a proper rigid subgraph, \cref{lem:case-I}),
-  Case~II (splitting off a reducible degree-2 vertex, \cref{lem:case-II}),
-  and Case~III (no proper rigid subgraph, closed combinatorially inside the
-  reduction). The two inductive cases are GREEN-modulo-21b --- each is an
-  iff-realization taking the general-position panel normals of Claim~6.9/6.4
-  (the Phase-21b genericity device) as an explicit hypothesis --- so the
-  induction itself is genericity-free and inherits the Phase-21b citation
-  transitively through the cases. Case~III --- the crux --- is realized in
-  Phases~22--23.
+  reduction dichotomy: Case~I (a proper rigid subgraph, premise
+  $\mathtt{hcontract}$, produced by \cref{lem:case-I-realization}), Case~II
+  (splitting off a reducible degree-2 vertex, premise $\mathtt{hsplit}$,
+  produced by \cref{lem:case-II-realization}), and Case~III (no proper rigid
+  subgraph, premise $\mathtt{hbase}$/the no-rigid-subgraph branch). The
+  \emph{well-founded induction itself is formalized and genericity-free}: the
+  Lean $\mathtt{theorem\_55}$ takes the three case-producers as premises and
+  closes the recursion. What is \emph{not} yet discharged is the construction of
+  those producers --- each requires a geometric placement that no Lean lemma yet
+  supplies. Case~I's producer needs the splice placement
+  \cref{lem:case-I-splice-placement}; Case~II's needs the $1$-extension normal
+  \cref{lem:case-II-realization}; and Case~III --- the crux --- is deferred to
+  Phases~22--23 (\cref{lem:case-III}). These are the genuine remaining red
+  obligations: the genericity device (\cref{lem:genericity-device}) is green and
+  lifts an attained rank to a generic point, but the placements themselves are
+  still to be constructed.
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 base case ($|V| = 2$)]
@@ -657,9 +676,8 @@ Cases~I and~II travel toward the smaller inductive graph.
   \label{lem:case-I-realization}
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.hasFullRankRealization_ofParam_of_contraction,
         CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_rigid_subgraph_of_block_internal}
-  \leanok
   \uses{def:panel-hinge-framework, lem:case-I, lem:genericity-device,
-        lem:contraction-minimality}
+        lem:contraction-minimality, lem:case-I-splice-placement}
   The full-rank realization motive of \cref{thm:theorem-55}
   ($\mathrm{HasFullRankRealization}$) is closed under rigid-subgraph
   contraction. Let $G$ be a minimal $0$-dof-graph with a proper rigid subgraph
@@ -672,29 +690,69 @@ Cases~I and~II travel toward the smaller inductive graph.
   intersection $\Pi_{G/E(H),\,p_2}(u) \cap \Pi_{H,\,p_1}(v)$ --- is a
   panel-hinge realization of $G$ (\cref{def:panel-hinge-framework}) attaining
   full rank $D(|V|-1)$, discharging the Case~I premise ($\mathtt{hcontract}$)
-  of \cref{thm:theorem-55}. As with \cref{lem:case-I}/\cref{lem:case-II}, the
-  formalized carrier takes the splice's two rigidity outputs --- the rigid
-  block subgraph $G_H \le G$ and the block-internal contraction subgraph
-  $G_c \le G$ (the parent with $E(H)$ deleted) each realizing rigidly on the
-  shared $\mathtt{ofParam}$ witness --- as explicit hypotheses, so the node is
-  green modulo the splice's geometric simultaneous-rigid placement of $p$
-  (the construction of a single $p$ making both subgraphs rigid).
+  of \cref{thm:theorem-55}. The formalized carrier
+  ($\mathtt{hasFullRankRealization\_ofParam\_of\_contraction}$) is a
+  \emph{closure} result: it takes the splice's two rigidity outputs --- the
+  rigid block subgraph $G_H \le G$ and the block-internal contraction subgraph
+  $G_c \le G$ (the parent with $E(H)$ deleted) \emph{each rigid on the same
+  $\mathtt{ofParam}$ witness $p$} --- as explicit hypotheses and composes them
+  into $\mathrm{HasFullRankRealization}$. What is \emph{not} yet formalized,
+  and what this node depends on, is the geometric construction of that single
+  witness $p$ on which both subgraphs are simultaneously rigid: the splice
+  placement \cref{lem:case-I-splice-placement}. Because that construction is
+  the genuine remaining content (not a consequence of the now-green genericity
+  device, which only lifts an attained rank to a generic point), the node is
+  \textbf{red}: the closure carrier is proven, but the placement it consumes is
+  not.
 \end{lemma}
 \begin{proof}
-  \leanok
-  \uses{lem:case-I, lem:genericity-device}
-  The splice places the rigid block $(H, p_1)$ as a single rigid body at the
-  contracted vertex of $(G/E(H), p_2)$. The rigid block makes every parent
-  motion constant on $s = V(H)$ (the $\mathtt{hblock}$ brick of
-  \cref{lem:case-I}), and the contraction's inductive rigidity makes the
-  residual block pin $Z_s(G,p)$ vanish; the block-triangular glue of
-  \cref{lem:case-I} then turns the pair into rigidity of the parent, which is
-  $\mathrm{RankHypothesis}\,0$ (full rank $D(|V|-1)$). The genericity device
-  (\cref{lem:genericity-device}, green) underwrites the no-rank-loss at the
-  generic splice point through the block-pin bounds of \cref{lem:case-I}. The
-  splice's simultaneous-rigid placement of $p$ (the geometric construction of
-  the single witness from $p_1$, $p_2$, and the boundary panel intersection)
-  is the remaining geometric content, carried as the two rigidity hypotheses.
+  \uses{lem:case-I, lem:genericity-device, lem:case-I-splice-placement}
+  Take the splice placement $p$ of \cref{lem:case-I-splice-placement}, on which
+  both $G_H$ and the block-internal contraction $G_c$ are infinitesimally
+  rigid. The rigid block makes every parent motion constant on $s = V(H)$ (the
+  $\mathtt{hblock}$ brick of \cref{lem:case-I}), and the contraction's
+  rigidity makes the residual block pin $Z_s(G,p)$ vanish; the block-triangular
+  glue of \cref{lem:case-I} then turns the pair into rigidity of the parent,
+  which is $\mathrm{RankHypothesis}\,0$ (full rank $D(|V|-1)$) --- this is the
+  formalized closure step. The genericity device (\cref{lem:genericity-device},
+  green) underwrites the no-rank-loss at the generic splice point through the
+  block-pin bounds of \cref{lem:case-I}, but does not itself build $p$; that is
+  \cref{lem:case-I-splice-placement}, the remaining red obligation.
+\end{proof}
+
+\begin{lemma}[Case I splice placement; KT eqs.\ (6.2), (6.6)]
+  \label{lem:case-I-splice-placement}
+  \uses{def:panel-hinge-framework, lem:genericity-device,
+        lem:contraction-minimality}
+  Let $G$ be a minimal $0$-dof-graph with a proper rigid subgraph $H$ on
+  $s = V(H)$, let $(H, p_1)$ be a full-rank realization of the rigid block, and
+  let $(G/E(H), p_2)$ be the inductive full-rank realization of the contraction
+  (a smaller minimal $0$-dof-graph, \cref{lem:contraction-minimality}). Then
+  there is a single panel-hinge placement $p$ on $G$
+  (\cref{def:panel-hinge-framework}) --- $p = p_1$ on $E(H)$, $p = p_2$ on the
+  interior edges of the contraction, and on each boundary edge
+  $uv \in \delta_G(V(H))$ the panel intersection
+  $\Pi_{G/E(H),\,p_2}(u) \cap \Pi_{H,\,p_1}(v)$ --- on which \emph{both} the
+  block subgraph $G_H \le G$ and the block-internal contraction subgraph
+  $G_c \le G$ (the parent with $E(H)$ deleted) are infinitesimally rigid. This
+  is the geometric splice of KT eqs.\ (6.2), (6.6): it produces the two rigidity
+  hypotheses ($\mathtt{hHrig}$, $\mathtt{hcrig}$) that the closure carrier
+  \cref{lem:case-I-realization} consumes. It is the genuine remaining geometric
+  obligation of Case~I.
+\end{lemma}
+\begin{proof}
+  \uses{lem:genericity-device, lem:case-I}
+  Orient the block hinges along a spanning forest of $H$ and link each
+  inter-block hinge to the contracted vertex of $G/E(H)$, so the two inductive
+  realizations agree on the boundary panels $\delta_G(V(H))$; the boundary
+  panel intersection $\Pi_{G/E(H),\,p_2}(u) \cap \Pi_{H,\,p_1}(v)$ is the hinge
+  carried into $p$. Rigidity of each leg is panel-dependent, so the
+  construction must place each leg's normals in general position: the genericity
+  device (\cref{lem:genericity-device}) lifts the inductively-attained full
+  ranks of $(H,p_1)$ and $(G/E(H), p_2)$ to the generic splice point, where
+  both $G_H$ and $G_c$ attain rigidity simultaneously. This is the only step of
+  Case~I not yet formalized; KT carry it as the explicit construction behind
+  eqs.\ (6.2), (6.6). \emph{Deferred} (Phase~21b residual).
 \end{proof}
 
 \subsection{Case II: \texorpdfstring{$k > 0$}{k > 0} splitting (1-extension)}
@@ -849,17 +907,67 @@ Cases~I and~II travel toward the smaller inductive graph.
   Phase~21b).
 \end{proof}
 
+\begin{lemma}[Case II realization: the $1$-extension produces a full-rank realization; KT Lemma 6.8]
+  \label{lem:case-II-realization}
+  \uses{def:panel-hinge-framework, lem:case-II, lem:genericity-device,
+        lem:reduction-step, lem:exists-independent-panel-extensor}
+  The full-rank realization motive of \cref{thm:theorem-55}
+  ($\mathrm{HasFullRankRealization}$) is closed under splitting off a reducible
+  degree-2 vertex. Let $G$ be a minimal $0$-dof-graph with a reducible
+  degree-2 vertex $v$ and splitting-off $G_v^{ab}$ (a smaller minimal
+  $0$-dof-graph, \cref{lem:reduction-step}), and let $G_v^{ab}$ carry a
+  full-rank realization. Then $G$ carries a full-rank realization, discharging
+  the Case~II premise ($\mathtt{hsplit}$) of \cref{thm:theorem-55}. This is the
+  \emph{producer} counterpart to the Case~II accounting iff
+  \cref{lem:case-II}: where that iff takes the span-membership condition
+  $\mathtt{hspan}$ ($S a \in \operatorname{span} C(e_a)$,
+  $S b \in \operatorname{span} C(e_b)$ for every base-$v$-pinned motion $S$) as
+  a hypothesis, this node must \emph{construct} the panel normal $n$ for the
+  re-inserted body $v$ on which $\mathtt{hspan}$ holds and the extended
+  framework is rigid. The placement is the genuine remaining geometric content:
+  no Lean producer currently lands $\mathrm{HasFullRankRealization}$ for the
+  $1$-extension, so the node is \textbf{red}.
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II, lem:genericity-device, lem:exists-independent-panel-extensor}
+  Place $G_v^{ab}$ at its inductive full-rank realization and re-insert $v$
+  joined to $a$ and $b$ by hinges whose supporting extensors are in general
+  position (\cref{lem:exists-independent-panel-extensor}). For such a choice the
+  span-membership condition $\mathtt{hspan}$ holds for every base-$v$-pinned
+  motion --- false pointwise, true on the Zariski-open set the genericity
+  device (\cref{lem:genericity-device}) selects --- so the accounting iff
+  \cref{lem:case-II} makes the extended framework's body-$v$-pinned dimension
+  equal the inductive realization's ($k' = 0$), i.e.\ the $1$-extension lifts
+  to full rank. The construction of the general-position normal $n$ realizing
+  $\mathtt{hspan}$ is the remaining geometric obligation, parallel to the Case~I
+  splice placement \cref{lem:case-I-splice-placement}. \emph{Deferred}
+  (Phase~21b residual).
+\end{proof}
+
 \subsection{The genericity device (Claim 6.4/6.9)}
 \label{sec:molecular-algebraic-induction-genericity}
 
-The four GREEN-modulo-21b nodes above (\cref{lem:case-I},
-\cref{lem:case-II}, \cref{thm:theorem-55},
-\cref{prop:rigidity-matrix-prop11}) and the projective assembly of the
-cycle realization (\cref{lem:cycle-realization}) all rest on one shared
-analytic crux, scoped out into the focused sub-phase
-\textbf{Phase~21b} (the analytic sibling of the Phase-21a meet). The
-device is the node \cref{lem:genericity-device} that those consumers
-reference.
+The accounting nodes above (\cref{lem:case-I}, \cref{lem:case-II},
+\cref{thm:theorem-55}, \cref{prop:rigidity-matrix-prop11}) and the
+projective assembly of the cycle realization (\cref{lem:cycle-realization})
+all reference one shared analytic crux, scoped out into the focused
+sub-phase \textbf{Phase~21b} (the analytic sibling of the Phase-21a meet).
+The device is the node \cref{lem:genericity-device}, now green.
+
+\medskip\noindent\emph{What the device does and does not discharge.} The
+device lifts a rank \emph{attained at one realization} to the same rank at a
+generic point. It supplies the genericity inputs each accounting node carries
+as a hypothesis (the block-triangular gluing inequality of \cref{lem:case-I},
+the span membership of \cref{lem:case-II}, the generic-rank lower bound
+$\mathtt{hgen}$ of \cref{prop:rigidity-matrix-prop11}, the projective assembly
+of \cref{lem:cycle-realization}), so those iffs/equalities are green. It does
+\emph{not} build the realizations the induction consumes: the Case~I splice
+placement (\cref{lem:case-I-splice-placement}) and the Case~II $1$-extension
+normal (\cref{lem:case-II-realization}) are separate geometric constructions,
+red. Nor does it supply \cref{prop:rigidity-matrix-prop11}'s genericity-free
+upper bound $\mathtt{hub}$, which is a distinct Phase-19-partition obligation
+carried as an explicit hypothesis (still to be bricked); the device underwrites
+only the $\mathtt{hgen}$ half.
 
 \begin{lemma}[Genericity device, codimension form; KT Claim 6.4, Claim 6.9]
   \label{lem:genericity-device}
@@ -903,15 +1011,12 @@ reference.
   hand-built realization, the form Case~I's block-triangular gluing consumes.
 \end{proof}
 
-\noindent The device discharges the explicit hypotheses each consumer
-carries: the block-triangular gluing inequality of \cref{lem:case-I},
-the span-membership input of \cref{lem:case-II} (each base-$v$-pinned
-motion lands in the two new edges' panel-support spans --- false
-pointwise, true for the general-position normals the rank count selects,
-\cref{lem:exists-independent-panel-extensor}), the generic-rank lower
-bound of \cref{prop:rigidity-matrix-prop11}, and the projective assembly
-of \cref{lem:cycle-realization}. It is also consumed by the Case~III
-candidate-framework genericity of Phases~22--23.
+\noindent The device thus discharges the genericity \emph{hypotheses} the
+accounting nodes carry, but not the realization-layer constructions that feed
+the induction --- the Case~I splice placement
+(\cref{lem:case-I-splice-placement}) and the Case~II $1$-extension realization
+(\cref{lem:case-II-realization}), which remain red. It is also consumed by the
+Case~III candidate-framework genericity of Phases~22--23.
 
 \subsection{Case III deferred (the crux)}
 \label{sec:molecular-algebraic-induction-caseIII}
