@@ -358,6 +358,30 @@ theorem infinitesimalMotions_eq_dualCoannihilator (F : BodyHingeFramework k α �
     have := hS (hingeRow u v r) ⟨e, u, v, he, r, hr, rfl⟩
     rwa [hingeRow_apply] at this
 
+/-- **A finite family of rows spans the rigidity row space** (`def:rigidity-matrix`,
+the genericity device's finite-index input): when the body set `α` is finite, the screw-
+assignment space `α → ScrewSpace k` is finite-dimensional (`finrank_screwAssignment`), hence so
+is its dual `Module.Dual ℝ (α → ScrewSpace k)` (`Subspace.instModuleDualFiniteDimensional`), and
+therefore every submodule of it is finitely generated — in particular `span ℝ F.rigidityRows`. So
+there is a *finite* family `a : Fin n → Module.Dual ℝ (α → ScrewSpace k)` with the same span as
+the (a priori infinite) row set `rigidityRows`,
+`span ℝ (range a) = span ℝ F.rigidityRows` (`Submodule.fg_iff_exists_fin_generating_family`).
+
+This supplies the finite-index spanning family `a` (with `hspanrows`) that the Phase-21b
+genericity device's consumer-facing capstone `hglue_of_realization` requires of each consumer: the
+device's engine needs a finite index type, and the constant-path route reads the corank off this
+family at the single hand-built realization `F`. The remaining Case-I inputs (the matching-size
+independent subfamily) come from `exists_independent_panelSupportExtensor` through the hinge-row
+block. -/
+theorem exists_finite_spanning_rigidityRows [Finite α] (F : BodyHingeFramework k α β) :
+    ∃ (n : ℕ) (a : Fin n → Module.Dual ℝ (α → ScrewSpace k)),
+      Submodule.span ℝ (Set.range a) = Submodule.span ℝ F.rigidityRows := by
+  haveI : Fintype α := Fintype.ofFinite α
+  have hfg : (Submodule.span ℝ F.rigidityRows).FG :=
+    IsNoetherian.noetherian (Submodule.span ℝ F.rigidityRows)
+  obtain ⟨n, a, ha⟩ := Submodule.fg_iff_exists_fin_generating_family.1 hfg
+  exact ⟨n, a, ha⟩
+
 /-- A **trivial infinitesimal motion** (`lem:trivial-motions-rank-bound`): a screw
 assignment that is the same screw center on every body, `S u = S v` for all `u v : α`.
 These are the rigid-motion screws — the constant assignments — and they form the

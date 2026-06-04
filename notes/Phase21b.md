@@ -28,6 +28,21 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Finite spanning row family landed (2026-06-03) — input (2) of `hglue_of_realization` discharged.**
+`exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`, after
+`infinitesimalMotions_eq_dualCoannihilator`): when `α` is finite, the screw-assignment space
+`α → ScrewSpace k` is finite-dimensional (`finrank_screwAssignment`), so its dual is too
+(`Subspace.instModuleDualFiniteDimensional`) and every submodule is FG — in particular
+`span ℝ F.rigidityRows`. Hence a *finite* family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
+`span (range a) = span F.rigidityRows` exists (`Submodule.fg_iff_exists_fin_generating_family` via
+`IsNoetherian.noetherian`). This is exactly input (2) the Case-I capstone `hglue_of_realization`
+requires (the finite-index spanning family `a` + `hspanrows`), and `Fin n` is `Finite` so it fits
+the consumer's `[Finite ι]`. The two residual Case-I inputs (the single realization `F₀` and the
+matching-size independent subfamily `s` from `exists_independent_panelSupportExtensor`) remain — the
+genuinely-geometric assembly. Green, build warning-clean + lint clean, checkdecls clean, axioms
+{propext, Classical.choice, Quot.sound}. Folded into the `def:rigidity-matrix` node's `\lean{...}`
+pin (device-plumbing for an existing node, not a new node).
+
 **Route-(a) decision RESOLVED + Case-I `hglue` capstone landed (2026-06-03).** The route a/b
 question the hand-off flagged as "where the decision finally bites" resolves in favour of **route
 (a) with a degenerate (constant) affine path**. Key observation: Case I's witness realization is
@@ -229,6 +244,13 @@ hand-off convenience.
   `hcoord` obligation to an *equality of spans*. Green; folded into
   `lem:genericity-device`'s `\lean{...}` pin (no new node).
 
+- [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
+  `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
+  `span (range a) = span F.rigidityRows`, from finite-dimensionality of the dual (`α` finite ⇒
+  screw-assignment space finite-dim ⇒ dual finite-dim ⇒ every submodule FG) via
+  `Submodule.fg_iff_exists_fin_generating_family`. Green; folded into `def:rigidity-matrix`'s
+  `\lean{...}` pin (no new node).
+
 - [x] `hspan_const_of_span_eq` + `hcoord_const` + `hglue_of_realization`
   (`Molecular/AlgebraicInduction.lean`): the **route-(a) constant-path** discharge.
   `hcoord_const` gives the device's `hcoord` for the constant family `F t = F₀`
@@ -244,10 +266,11 @@ in the Phase-21 Lean, to be supplied by the device):
   (`finrank Z ≤ D + finrank (pinnedMotionsOn s)`). **Route-(a) capstone done**
   (`hglue_of_realization` via constant path `hcoord_const` /
   `hspan_const_of_span_eq`): the `hglue` inequality holds at a single hand-built
-  realization `F₀`, all affine-path plumbing discharged. Residual is purely
-  combinatorial-geometric — exhibit `F₀`, a finite spanning row family `a`, and the
-  matching-size independent subfamily `s` from the contraction realization + rigid
-  block (`hspanrows` + `hindep` + `hmatch`); no path construction remains.
+  realization `F₀`, all affine-path plumbing discharged. The finite spanning row family `a`
+  (`hspanrows`) is now also discharged generically by `exists_finite_spanning_rigidityRows` for any
+  `F₀`. Residual is purely combinatorial-geometric — exhibit the realization `F₀` and the
+  matching-size independent subfamily `s` from the contraction realization + rigid block (`hindep` +
+  `hmatch`); no path construction remains.
 - [ ] `hspan` for Case II — each base-`v`-pinned motion lands in the two
   new edges' panel-support spans (false pointwise; holds by the
   rank/dimension count, via `exists_independent_panelSupportExtensor`).
@@ -372,19 +395,22 @@ realization is hand-built by `exists_independent_panelSupportExtensor`, so no re
 normal-space is traversed — the device reads off the corank at the one realization. See *Current
 state* and *Blockers*.
 
-**Smallest next concrete commit: supply `hglue_of_realization`'s inputs for Case I (the geometric
-construction).** From the contraction realization (`G/E(H)` at its inductive `RankHypothesis`) plus
-the rigid block `V(H)` placed rigidly, exhibit:
-1. the single realization `F₀` (a `BodyHingeFramework`/`PanelHingeFramework`-via-`toBodyHinge`),
-2. a *finite* family `a : ι → Dual ℝ (α → ScrewSpace k)` with `span (range a) = span (rigidityRows
-   F₀)` (a finite spanning subfamily exists since the row space is finite-dimensional; e.g.
-   enumerate over links × a basis of each finite hinge-row block, or pull a finite spanning set out
-   of the finite-dim span), and
-3. an independent subfamily `s ⊆ ι` with `#s = D(|V|−1) − dim Z_s` (`hindep` + `hmatch`), the
+**Input (2) — the finite spanning row family `a` — is now landed generically**
+(`exists_finite_spanning_rigidityRows`, see *Current state*): for *any* realization `F₀` it supplies
+a finite `a : Fin n → Dual ℝ (α → ScrewSpace k)` with `span (range a) = span (rigidityRows F₀)`, so
+no per-consumer construction of `a`/`hspanrows` is needed anymore.
+
+**Smallest next concrete commit: supply `hglue_of_realization`'s *remaining* inputs for Case I (the
+geometric construction).** From the contraction realization (`G/E(H)` at its inductive
+`RankHypothesis`) plus the rigid block `V(H)` placed rigidly, exhibit:
+1. the single realization `F₀` (a `BodyHingeFramework`/`PanelHingeFramework`-via-`toBodyHinge`), and
+2. an independent subfamily `s` of the finite spanning family `a` (from
+   `exists_finite_spanning_rigidityRows`) with `#s = D(|V|−1) − dim Z_s` (`hindep` + `hmatch`), the
    independent rigidity rows coming from `exists_independent_panelSupportExtensor` through the
    hinge-row block.
-No affine-path construction remains. This is the genuinely-geometric Case-I assembly (KT §6.2/6.5);
-likely more than one commit — assess once the finite spanning family `a` is in hand. The other
+No affine-path construction and no finite-spanning-family construction remain. This is the
+genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is
+in hand and `s` is being matched to the corank. The other
 consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same constant-path chain
 (`hcoord_const` → device) with an analogous per-consumer bridge; the device's *target statements*
 are fixed (the named hypotheses in `AlgebraicInduction.lean`).
