@@ -709,6 +709,34 @@ theorem finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid [Finite α]
     Module.finrank ℝ (F.pinnedMotionsOn s) = 0 := by
   rw [F.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid hs hrig, finrank_bot]
 
+/-- **A rigid block subgraph makes every motion constant on the block** (`lem:case-I`, the
+geometric `hblock` brick of Case I's block-triangular glue; Katoh–Tanigawa 2011 §6.2/6.5,
+Phase 21b). If some subgraph `G' ≤ F.graph` (on the *same* body set, keeping the hinge data via
+`withGraph`) is infinitesimally rigid — the rigid block `H` of Case I, placed rigidly on its body
+set `s = V(H)` — then *every* infinitesimal motion `S` of the parent `F` agrees across all bodies
+of the block: `∀ u ∈ s, ∀ w ∈ s, S u = S w`.
+
+The mechanism is graph monotonicity composed with rigidity of the block: a motion of the parent
+`F` is a fortiori a motion of the subgraph `G' = H` (`infinitesimalMotions_le_withGraph_of_le`,
+re-adding the inter-block hinges only shrinks the null space), and rigidity of `F[H]` forces every
+such motion to be *trivial* — a global constant (`IsTrivialMotion S`, `∀ u v, S u = S v`). The
+block constancy is then immediate (indeed `S` is constant everywhere, a fortiori on `s`). This is
+the geometric heart of `hblock`: it supplies the first of the two block hypotheses that
+`isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` consumes, sourced purely from rigidity
+of the block's own sub-framework — the rigid block `H` placed rigidly pins every parent motion to
+agree across `V(H)`. Paired with the block-pin vanishing `hpin` (the contraction `G/E(H)` realized
+at its inductive full rank), it produces rigidity of the glued parent realization. -/
+theorem isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph
+    (F : BodyHingeFramework k α β) {G' : Graph α β} (s : Set α)
+    (hle : G' ≤ F.graph) (hrig : (F.withGraph G').IsInfinitesimallyRigid) :
+    ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ w ∈ s, S u = S w := by
+  intro S hS u _ w _
+  -- `S` is a motion of the parent, hence of the rigid block subgraph `G' = H`.
+  have hS' : (F.withGraph G').IsInfinitesimalMotion S :=
+    F.infinitesimalMotions_le_withGraph_of_le hle hS
+  -- Rigidity of the block forces `S` to be a global constant.
+  exact (hrig hS') u w
+
 /-- **A block-rigid framework with a trivial block pin is rigid** (`lem:case-I`, the block-pin ↔
 contraction-realization bridge, *converse* / rigidity-producing direction; Katoh–Tanigawa 2011
 §6.2/6.5). This is the framework-side core of Case I's block-triangular glue, the converse of
@@ -747,6 +775,33 @@ theorem isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot
   rw [hpin, Submodule.mem_bot, sub_eq_zero] at hdiff
   rw [hdiff]
   exact hTtriv
+
+/-- **The block-triangular glue: rigid block subgraph + vanishing block pin ⇒ rigid parent**
+(`lem:case-I`, the assembled geometric core of Case I's block-triangular gluing; Katoh–Tanigawa
+2011 §6.2/6.5, Phase 21b). This composes the two geometric bricks into the single rigidity
+conclusion the from-scratch producer
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` consumes: from a rigid block subgraph
+`G' ≤ F.graph` (`hrig`, the rigid subgraph `H` placed rigidly on its body set `s = V(H)`) and the
+vanishing of the residual block pin (`hpin`, the contraction `G/E(H)` realized at its inductive
+full rank), the parent framework `F` is infinitesimally rigid.
+
+The rigid block subgraph supplies the block-constancy hypothesis `hblock`
+(`isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph`: every parent motion is constant on
+`s`, sourced from rigidity of `F[H]` via graph monotonicity), which combines with the block-pin
+vanishing in `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot`. This is the genuinely-
+geometric Case-I assembly KT §6.2/6.5 calls for: place the contraction at its inductive full rank
+and the rigid block rigidly, and the glued parent realization is rigid. Composed with
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` (which reads rigidity as
+`RankHypothesis 0`) it lands the realization motive `HasFullRankRealization k G`, reducing the
+residual Case-I obligation to *exhibiting* the rigid block subgraph and the block-pin vanishing
+(the inductive contraction realization) on a concrete `ofParam` witness. -/
+theorem isInfinitesimallyRigid_of_rigid_subgraph_of_pinnedMotionsOn_eq_bot
+    (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty)
+    {G' : Graph α β} (hle : G' ≤ F.graph) (hrig : (F.withGraph G').IsInfinitesimallyRigid)
+    (hpin : F.pinnedMotionsOn s = ⊥) :
+    F.IsInfinitesimallyRigid :=
+  F.isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot hs
+    (F.isConstantOnBlock_of_isInfinitesimalMotion_of_rigid_subgraph s hle hrig) hpin
 
 /-- **Case I: contracting a rigid block realizes the rank** (`lem:case-I`, Katoh–Tanigawa 2011
 §6.2/6.3/6.5 Lemmas 6.2, 6.3, 6.5; GREEN-modulo the Phase-21b genericity device). Let `F` be a
