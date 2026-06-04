@@ -28,245 +28,26 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
-**Cross-hinge star independence landed (2026-06-03) — `linearIndependent_hingeRow_star`: rows from distinct hinges at a common body are jointly independent.**
-`linearIndependent_hingeRow_star` (`Molecular/RigidityMatrix.lean`, after
-`exists_independent_rigidityRows_of_edge`): fix a body `v` and distinct other endpoints
-`w : J → α` (`hw` injective, `hwv` each `w j ≠ v`) — a *star* of edges all incident to `v`, the
-shape a rigid block pinned at `v` presents. If for each `j` the hinge-row functionals `r j` are LI,
-the combined rigidity-row family `⟨j,i⟩ ↦ hingeRow (w j) v (r j i)` over `Σ j, I j` is LI on
-`α → ScrewSpace k`. This is the **substantive cross-hinge step** the hand-off flagged:
-`linearIndependent_hingeRow`'s single-edge dual-map argument does not extend because rows from
-*different* hinges route through *different* `screwDiff (w j) v`. The independence is instead the
-*pin-a-body* / disjoint-support count — evaluate a vanishing combination at
-`Function.update 0 (w j₀) x` (place `x` on body `w j₀`, `0` elsewhere; legitimate since `w j₀ ≠ v`
-and the `w j` distinct), which collapses the `Σ`-sum (via `Fintype.sum_sigma` + `Finset.sum_eq_single
-j₀`) to `∑ i, c⟨j₀,i⟩ • (r j₀ i) x = 0` for all `x`, so per-hinge independence
-(`Fintype.linearIndependent_iff` on `r j₀`) forces every coefficient at `j₀` to vanish. Green, build
-warning-clean + lint clean, checkdecls clean, axioms {propext, Classical.choice, Quot.sound}. Folded
-into the `def:rigidity-matrix` node's `\lean{...}` pin (the cross-hinge sibling of the per-edge
-brick); node body gains a sentence on the star combination. **Residual Case-I work toward `hindep`:**
-the star handles all of one rigid block's hinges that share a *single* pinned body; the remaining
-geometric content (the genuine cycle/spanning-tree structure of a rigid block whose hinges span
-multiple bodies, where the `m ≤ D` extensor-independence of `lem:cycle-realization` re-enters) plus
-exhibiting `F₀` and matching `#s = D(|V|−1) − dim Z_s` (`hmatch`) is the rest of `hglue_of_realization`'s
-inputs.
-
-**Per-edge independent-rows brick landed (2026-06-03) — `exists_independent_rigidityRows_of_edge`: one transversal hinge ⇒ `D−1` independent rigidity rows.**
-`exists_independent_rigidityRows_of_edge` (`Molecular/RigidityMatrix.lean`, after
-`finrank_hingeRowBlock`): for a genuine edge `e = uv` (`u ≠ v`, `supportExtensor e ≠ 0`,
-transversal hinge) there is an LI family `Fin (screwDim k − 1) → Dual ℝ (α → ScrewSpace k)` of
-rigidity rows, all in `F.rigidityRows`. Composes the two prior per-edge bricks: a basis of the
-`(D−1)`-dimensional hinge-row block (`finrank_hingeRowBlock`) coerced out as ambient functionals,
-then lifted to rigidity rows by `linearIndependent_hingeRow`; membership in `rigidityRows` by the
-`⟨e, u, v, hlink, c i, …⟩` witness. The basis-coercion is factored into a new upstream-eligible
-mirror lemma `Submodule.exists_linearIndependent_fin_of_finrank_eq`
-(`Mathlib/LinearAlgebra/Dimension/Constructions.lean`): a finite-dim subspace `W` of finrank `n`
-carries an LI family `Fin n → V` valued in `W` (the basis, coerced along `W.subtype`). The
-existence-over-abstract-field form is *load-bearing*: doing the basis/`map'` step inside
-`RigidityMatrix.lean` directly timed out at `whnf` (the heavy `Module.Dual` of an exterior power
-unfolds during `Basis.linearIndependent.map' W.subtype` unification); the mirror lemma's opaque
-proof keeps `ScrewSpace` from unfolding at the use site (FRICTION [molecular] entry). This is the
-per-edge unit of the Case-I `hindep`/`hmatch` assembly — each transversal hinge of a rigid block
-contributes exactly `D − 1` independent rows of `R(G,p)`. Green, build warning-clean + lint clean,
-checkdecls clean, axioms {propext, Classical.choice, Quot.sound}. Folded into the
-`def:rigidity-matrix` node's `\lean{...}` pin (the mirror lemma is skipped per the blueprint
-mirror-lemma rule); node body gains a sentence on the per-edge `D−1`-row count. Residual Case-I work:
-combine across the rigid block's hinges into a single LI family indexed by `s`, match
-`#s = D(|V|−1) − dim Z_s` (`hmatch`), and exhibit the realization `F₀`.
-
-**Independence bridge landed (2026-06-03) — Case-I `hindep` brick: independent extensors → independent rigidity rows.**
-`linearIndependent_hingeRow` (`Molecular/RigidityMatrix.lean`, after `hingeRow_apply`),
-with two supporting glue lemmas `screwDiff_surjective` and `hingeRow_eq_dualMap`:
-for a genuine edge `e = uv` with distinct endpoints (`u ≠ v`), if a family `r : ι → Dual ℝ
-(ScrewSpace k)` of hinge-row-block functionals is LI, then so is the induced rigidity-row family
-`i ↦ hingeRow u v (r i)` on `α → ScrewSpace k`. Proof: `screwDiff u v` (the relative-screw
-evaluation `S ↦ S u − S v`) is surjective at distinct bodies (`Function.update 0 u x` witness,
-`classical` for `DecidableEq α`), so its dual map `(screwDiff u v).dualMap = hingeRow u v`
-(`hingeRow_eq_dualMap`, definitional via `LinearMap.dualMap_apply'`) is injective
-(`LinearMap.dualMap_injective_of_surjective`), and `LinearIndependent.map'` preserves LI under an
-injective linear map. This turns the independent supporting extensors of a rigid block
-(`exists_independent_panelSupportExtensor`, through the `(D−1)`-dim hinge-row block
-`finrank_hingeRowBlock`) into the independent rigidity-row subfamily `hglue_of_realization`'s
-`hindep` requires — one transversal hinge `e = uv` contributes `D − 1` independent rows of
-`R(G,p)`, all routed through the same `screwDiff u v`, so block-row independence reduces to
-hinge-row-block independence. Green, build warning-clean + lint clean, checkdecls clean, axioms
-{propext, Classical.choice, Quot.sound}. Folded into the `def:rigidity-matrix` node's `\lean{...}`
-pin (`linearIndependent_hingeRow`; the two glue lemmas are skipped per the blueprint skip-glue
-rule); node body gains one sentence on the row-map injectivity. Residual Case-I work: assemble the
-single realization `F₀` and match `#s` to the corank (`hmatch`) — the genuinely-geometric §6.2/6.5
-piece; `hindep` is now a single edge-by-edge application of this bridge over the rigid block's hinges.
-
-**Per-edge row-count brick landed (2026-06-03) — first geometric brick toward Case-I `hindep`/`hmatch`.**
-`finrank_hingeRowBlock` (`Molecular/RigidityMatrix.lean`, after `exists_finite_spanning_rigidityRows`):
-when the supporting extensor `C(p(e))` is nonzero (transversal hinge, the
-`panelSupportExtensor_ne_zero_iff` general-position condition), the hinge-row block
-`r(p(e)) = (span C(p(e)))^⊥` has dimension `D − 1`, `finrank ℝ (hingeRowBlock e) = screwDim k − 1`.
-Three-line proof: `Subspace.finrank_add_finrank_dualAnnihilator_eq` (codimension identity) +
-`finrank_span_singleton` (the `1`-dim span of a nonzero extensor) + `screwSpace_finrank` + `omega`.
-This is Katoh–Tanigawa's `(D−1) × D` block-row count carried basis-free — the per-edge brick that
-counts the rigidity rows `rigidityRows` of a rigid block, the source of the matching-size
-independent subfamily `s` that `hglue_of_realization`'s `hindep`/`hmatch` require. Green, build
-warning-clean + lint clean, axioms {propext, Classical.choice, Quot.sound}. Folded into the
-`def:hinge-row-block` node's `\lean{...}` pin (the `(D−1)`-row count is exactly that node's content;
-no new node).
-
-**Finite spanning row family landed (2026-06-03) — input (2) of `hglue_of_realization` discharged.**
-`exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`, after
-`infinitesimalMotions_eq_dualCoannihilator`): when `α` is finite, the screw-assignment space
-`α → ScrewSpace k` is finite-dimensional (`finrank_screwAssignment`), so its dual is too
-(`Subspace.instModuleDualFiniteDimensional`) and every submodule is FG — in particular
-`span ℝ F.rigidityRows`. Hence a *finite* family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
-`span (range a) = span F.rigidityRows` exists (`Submodule.fg_iff_exists_fin_generating_family` via
-`IsNoetherian.noetherian`). This is exactly input (2) the Case-I capstone `hglue_of_realization`
-requires (the finite-index spanning family `a` + `hspanrows`), and `Fin n` is `Finite` so it fits
-the consumer's `[Finite ι]`. The two residual Case-I inputs (the single realization `F₀` and the
-matching-size independent subfamily `s` from `exists_independent_panelSupportExtensor`) remain — the
-genuinely-geometric assembly. Green, build warning-clean + lint clean, checkdecls clean, axioms
-{propext, Classical.choice, Quot.sound}. Folded into the `def:rigidity-matrix` node's `\lean{...}`
-pin (device-plumbing for an existing node, not a new node).
-
-**Route-(a) decision RESOLVED + Case-I `hglue` capstone landed (2026-06-03).** The route a/b
-question the hand-off flagged as "where the decision finally bites" resolves in favour of **route
-(a) with a degenerate (constant) affine path**. Key observation: Case I's witness realization is
-*constructed directly* by `exists_independent_panelSupportExtensor` (a basis choice on `⋀²`, Phase
-17/21), not reached by perturbation, so the device can run on the **constant** path `F t = F₀` with
-`b = 0`. The bilinearity obstruction (panel rows quadratic along a real line through normal-space)
-never bites because no real line is traversed — the device reads off the corank at the one hand-built
-realization, which is all Case I's block-triangular gluing needs. Three new declarations after
-`hglue_of_genericityDevice` in `Molecular/AlgebraicInduction.lean`:
-- `hspan_const_of_span_eq` — the `hspan` of the constant family: for any family `a` spanning
-  `rigidityRows F₀`, `span (range (fun i => a i + t • 0)) = span (rigidityRows F₀)` at every `t`
-  (`smul_zero`/`add_zero`).
-- `hcoord_const` — discharges the device's `hcoord` for the constant family from `hspanrows`
-  (`span (range a) = span (rigidityRows F₀)`), via `hcoord_of_rigidityRows_affine`.
-- `hglue_of_realization` — the **consumer-facing Case-I capstone**: from a single realization `F₀`,
-  a *finite* family `a` spanning its rigidity rows, an independent subfamily `s` (size = the
-  contraction's inductive rank via `hmatch`), produces the `hglue` inequality
-  `dim Z(F₀) ≤ D + dim Z_s` at `F₀` itself — all affine-path plumbing discharged.
-
-The index `ι` is kept abstract + `[Finite]` (the engine needs a finite index; the
-finite-dimensional row space admits a finite spanning subfamily). The residual per-consumer work is
-now purely combinatorial-geometric (exhibit `F₀`, the finite spanning `a`, and the matching-size
-independent `s` from the contraction realization + rigid block) — **no path construction remains**.
-Green, build warning-clean + lint clean, axioms {propext, Classical.choice, Quot.sound}. Folded
-into the `lem:genericity-device` node's `\lean{...}` pin (consumer-facing API, not a new node);
-statement + proof prose updated to record the constant-path route-(a) resolution.
-
-**`hcoord` bridge landed (2026-06-03) — step (i) reduced to a pure-geometry obligation.**
-`hcoord_of_rigidityRows_affine` (before `genericityDevice` in `Molecular/AlgebraicInduction.lean`)
-discharges the device's `hcoord` hypothesis from the strictly more workable input a consumer can
-produce: an affine functional family `t ↦ a i + t • b i` whose *span* equals `span (rigidityRows
-(F t))` at every `t` (`hspan`). Two-line proof — `rw [hspan t,
-infinitesimalMotions_eq_dualCoannihilator]` (Phase 18 coannihilator coordinatization +
-`dualCoannihilator` respecting span equality under `rw`). This isolates the step-(i) obligation to
-its geometric core: a consumer now needs only to exhibit such an `a, b` with `hspan` (an
-*equality of spans*, no `dualCoannihilator` bookkeeping), and the device's analytic content + the
-arithmetic `hglue_of_genericityDevice` bridge are already in place. The residual genuinely-open
-piece is unchanged — *constructing* `a, b`: the panel rows depend bilinearly on the normals, so the
-affine path must be chosen so the row functionals (not the normals) come out affine (route (a),
-Phase-8 single-scalar trick), or the engine generalized to a multivariate Zariski-open form (route
-(b)). Green, build warning-clean + lint clean, axioms {propext, Classical.choice, Quot.sound}.
-Folded into the `lem:genericity-device` node's `\lean{...}` pin (consumer-facing API, not a new
-node).
-
-**Case I `hglue` wiring landed (2026-06-03), route-(a) call made.** Two new
-declarations after `genericityDevice` in `Molecular/AlgebraicInduction.lean`:
-`exists_good_realization` (the device's **generic-point form** — the finite
-bad set's complement is nonempty in `ℝ`, so a *single* good realization at the
-witnessed corank exists, via `Set.Finite.infinite_compl`) and
-`hglue_of_genericityDevice` (the **Case-I block-triangular bridge**: at the
-good realization, the rank-match `#s = D(|V|−1) − dim Z_s` collapses the
-device's absolute `dim Z ≤ D|V| − #s` to Case I's relative
-`hglue : dim Z ≤ D + dim Z_s`; `mul_sub` + `omega`). **The route call: route
-(a)** — the genericity content is entirely in `hcoord` + `hindep` (the affine
-coordinatization + the witnessed independent subfamily); the residual is
-isolated as the `hmatch` hypothesis (the corank `#s` equals the contraction's
-inductive rank `D(|V|−1) − dim Z_s`). This is the genuinely-open geometric
-piece — *constructing* the affine path and the witness subfamily of the
-matching size from the contraction realization — now isolated cleanly from the
-arithmetic, which this commit fully discharges. Green, build warning-clean +
-lint clean, axioms {propext, Classical.choice, Quot.sound}. Folded into the
-`lem:genericity-device` node's `\lean{...}` pin (consumer-facing API of the
-device, not a new node).
-
-**Abstract genericity device landed (2026-06-03) — `lem:genericity-device`
-GREEN.** `CombinatorialRigidity.Molecular.genericityDevice` (end of
-`Molecular/AlgebraicInduction.lean`) composes the two Phase-21b bricks into
-the device's consumer-facing **codimension shape**: given a one-parameter
-family of frameworks `F : ℝ → BodyHingeFramework k α β` whose null spaces are
-coordinatized by a single affine functional family `a b : ι → Dual ℝ (α →
-ScrewSpace k)` (`hcoord : ∀ t, (F t).infinitesimalMotions = (span (range
-(fun i => a i + t • b i))).dualCoannihilator`, the per-`t`
-`infinitesimalMotions_eq_dualCoannihilator`) and a subfamily `s` LI at one
-realization `t₀`, the bad-`t` set `{t | D|V| < #s + dim Z(F t)}` is finite —
-i.e. `dim Z(G,p_t) ≤ D|V| − #s` for cofinitely many `t`. Three-line proof:
-`finrank_dualCoannihilator_along_affine_path_cofinite` (engine) +
-`finrank_screwAssignment` (`finrank (α→ScrewSpace k) = D|V|`) + `hcoord`.
-Green, build warning-clean + lint clean, axioms {propext, Classical.choice,
-Quot.sound}. The blueprint node `lem:genericity-device` flips green (`\lean` +
-`\leanok`), restated in the dual codimension form it now formalizes.
-
-**Scoping finding (the API gap, now pinned): the panel rows are NOT affine
-in a single scalar.** The engine (`Rank.lean` bricks) is genuinely affine-only
-(`a i + t • b i`, degree ≤ 1, via the one-variable Gram-det polynomial). But
-`panelSupportExtensor n_u n_v = complementIso (n_u ∧ n_v)` is *bilinear* in the
-normals, so a generic line through panel-coordinate space gives a row family
-that is **quadratic**, not affine, in `t`. The abstract device fixes the
-target shape (`hcoord` takes the affine family as a hypothesis); the residual
-per-consumer wiring must either (a) present each consumer's rows as an affine
-family along a *chosen* path (the single-scalar restriction route that worked
-for Phase 8's `exists_uniform_rowIndependent_placement`), or (b) generalize
-the engine to a multivariate Zariski-open form. This is the genuinely open
-piece — see *Hand-off*.
-
-**RigidityMatrix coordinatization landed (2026-06-03), connecting the
-analytic engine to the consumers.** Step (i) of the hand-off is done:
-`F.infinitesimalMotions` is now expressed as the `dualCoannihilator` of
-the span of an explicit row-functional family on the screw-assignment
-space `α → ScrewSpace k`. Four new declarations in
-`Molecular/RigidityMatrix.lean` (beside the basis-free hinge-row block):
-`screwDiff u v` (the relative-screw evaluation `S ↦ S u − S v`, a
-`LinearMap`), `hingeRow u v r := r ∘ₗ screwDiff u v` (one coordinatized
-row of `R(G,p)`), `rigidityRows F` (the set of all such rows over links ×
-hinge-row-block elements), and the load-bearing identity
-`infinitesimalMotions_eq_dualCoannihilator : F.infinitesimalMotions =
-(span ℝ F.rigidityRows).dualCoannihilator` (via
-`Submodule.coe_dualCoannihilator_span` + `hingeConstraint_iff_hingeRowBlock`).
-This is exactly the shape
-`finrank_dualCoannihilator_along_affine_path_cofinite` consumes — the
-remaining step is the affine path through panel-coordinate space (steps
-(ii)/(iii); see *Hand-off*). Green, build+lint clean, axioms {propext,
-Classical.choice, Quot.sound}. Folded into the existing
-`def:rigidity-matrix` node's `\lean{...}` pin (forward-mode plumbing for
-that node, not a new node); `lem:genericity-device` stays red.
-
-**Analytic engine landed in both span (rank) and coannihilator
-(codimension) form (2026-06-03).** The reuse-to-assess is resolved
-(see *Decisions made* below): the device reuses the Phase-6/8 Gram-det
-polynomial-root-set machinery, but at the *rank* level rather than the
-full-rank (LI) level the Phase-8 lemmas stop at. Two bricks now sit in
-`Mathlib/LinearAlgebra/Matrix/Rank.lean` (upstream-eligible, beside
-their LI-form sibling):
-- `LinearIndependent.le_finrank_span_along_affine_path_cofinite` — the
-  *rank* form: finrank of the span of an affine vector family is
-  cofinitely bounded *below* by any rank witnessed once.
-- `LinearIndependent.finrank_dualCoannihilator_along_affine_path_cofinite`
-  — the *codimension/null-space* dual: the common kernel (packaged as
-  the `dualCoannihilator` of the span of an affine functional family)
-  has finrank cofinitely bounded *above* by `finrank V − #s`, via the
-  complementary-dimension identity `finrank coann + finrank span =
-  finrank V` (`Subspace.finrank_dualCoannihilator_eq` +
-  `Subspace.finrank_add_finrank_dualAnnihilator_eq` +
-  `Subspace.dual_finrank_eq`). This is the exact shape the consumers
-  carry (each is a `dim Z(G,p) ≤ …` upper bound on a null-space dim,
-  the codimension reading of `rank R ≥ …`).
-Both green, build warning-clean + lint clean, axioms {propext,
-Classical.choice, Quot.sound}. The `lem:genericity-device` node stays
-red (this is infrastructure, not yet the device's API); the analytic
-engine is now complete in the consumer-facing shape — what remains is
-the RigidityMatrix coordinatization that connects `infinitesimalMotions`
-to a `dualCoannihilator` of a panel-parametrized functional family (see
-*Hand-off*).
+The abstract device and the entire Case-I `hglue` route are green. Landed
+(all build/lint/checkdecls clean, axioms {propext, Classical.choice,
+Quot.sound}; itemized with file locations + proof sketches in *Lemma
+checklist*): the analytic engine + its codimension dual (`Rank.lean`),
+the coannihilator coordinatization of `R(G,p)`
+(`infinitesimalMotions_eq_dualCoannihilator`, `screwDiff`/`hingeRow`/
+`rigidityRows`), the abstract `genericityDevice` (`dim Z(F t) ≤ D|V| − #s`
+cofinitely), the route-(a) constant-path capstone
+(`hglue_of_realization` via `hcoord_const`/`hspan_const_of_span_eq`),
+input-(2) finite spanning family (`exists_finite_spanning_rigidityRows`),
+and the per-edge → cross-hinge `hindep` bricks (`finrank_hingeRowBlock`,
+`linearIndependent_hingeRow`, `exists_independent_rigidityRows_of_edge`,
+`linearIndependent_hingeRow_star`). The **route a/b decision is RESOLVED**
+(route (a), constant path; bilinearity sidestepped — see *Decisions* /
+*Blockers*). What remains is purely combinatorial-geometric: supply
+`hglue_of_realization`'s remaining inputs (the realization `F₀` and the
+matching-size independent subfamily `s`) for Case I, then the analogous
+per-consumer bridges for Case II / Prop 1.1. **Next concrete commit: see
+*Hand-off*** — extend the star combination to a rigid block whose hinges
+span multiple bodies.
 
 ## Architectural choices made up front
 
@@ -463,20 +244,14 @@ in the Phase-21 Lean, to be supplied by the device):
   reuses the Phase-8 Gram-det polynomial-root-set mechanism, lifted to
   rank form, in both the span and codimension shapes. Both bricks
   landed.
-- **The abstract device + the full Case-I `hglue` route are landed.**
-  `genericityDevice` (codimension form), the arithmetic wiring
-  (`hglue_of_genericityDevice` + `exists_good_realization`), and now the
-  **route-(a) constant-path capstone** (`hglue_of_realization` via
-  `hcoord_const` / `hspan_const_of_span_eq`) are all green. **The route a/b
-  decision is RESOLVED: route (a) with a degenerate constant path.** The
-  bilinearity caveat (a generic line through normal-space gives a quadratic row
-  family) is *sidestepped, not solved* — because Case I's witness realization is
-  constructed directly by `exists_independent_panelSupportExtensor` (a `⋀²` basis
-  choice, not perturbation), no real line is traversed, so the device runs on the
-  constant path `F t = F₀` (`b = 0`) and reads off the corank at the one
-  hand-built realization. Route (b) (multivariate Zariski-open generalization)
-  is no longer needed for Case I; it may still be the cleaner option if a future
-  consumer genuinely requires a non-constant path.
+- **Route a/b decision RESOLVED: route (a), degenerate constant path.** The
+  bilinearity caveat (a generic line through normal-space gives a quadratic
+  row family) is *sidestepped, not solved* — Case I's witness realization is
+  hand-built by `exists_independent_panelSupportExtensor` (a `⋀²` basis
+  choice, not perturbation), so no real line is traversed: the device runs on
+  `F t = F₀` (`b = 0`) and reads off the corank at the one realization. Route
+  (b) (multivariate Zariski-open) is unneeded for Case I, but may be cleaner
+  if a future consumer genuinely requires a non-constant path.
 - **The single open piece for Case I is now purely combinatorial-geometric**:
   supplying `hglue_of_realization`'s inputs — the single realization `F₀`, a
   *finite* family `a` spanning `rigidityRows F₀`, and an independent subfamily `s`
@@ -486,39 +261,13 @@ in the Phase-21 Lean, to be supplied by the device):
 
 ## Hand-off / next phase
 
-**The abstract device `lem:genericity-device` (`genericityDevice`) is now
-GREEN** (see *Current state*): all three of the device's reusable pieces
-land — the rank-form engine + its codimension dual (`Rank.lean` bricks),
-the coannihilator coordinatization (`infinitesimalMotions_eq_dualCoannihilator`),
-and now their composition into the consumer-facing `dim Z(F t) ≤ D|V| − #s`
-cofinite bound, with the affine functional family carried as the `hcoord`
-hypothesis. What remains is the **per-consumer wiring**, now isolated as a
-single well-understood obligation (see *Blockers*): build, for each consumer,
-an affine functional family `a i + t • b i` discharging `hcoord` for that
-consumer's framework, then apply `genericityDevice` and pick a good `t` off
-the finite bad set.
-
-**Earlier-2026-06-03 milestones (superseded by the route-(a) resolution below):** the device's
-arithmetic wiring (`hglue_of_genericityDevice` + `exists_good_realization`, isolating `hmatch`),
-the `dualCoannihilator` plumbing discharge (`hcoord_of_rigidityRows_affine`, reducing `hcoord` to
-an equality of spans), and the then-open route a/b question (bilinear panel rows ⇒ quadratic along
-a line). All folded into the resolution below.
-
-**Route-(a) decision RESOLVED + Case-I `hglue` capstone landed (2026-06-03).** The affine-path
-question is closed: route (a) with a *constant* path (`hcoord_const` / `hspan_const_of_span_eq` /
-`hglue_of_realization`). The bilinearity obstruction is sidestepped because Case I's witness
-realization is hand-built by `exists_independent_panelSupportExtensor`, so no real line through
-normal-space is traversed — the device reads off the corank at the one realization. See *Current
-state* and *Blockers*.
-
-**Input (2) — the finite spanning row family `a` — is now landed generically**
-(`exists_finite_spanning_rigidityRows`, see *Current state*): for *any* realization `F₀` it supplies
-a finite `a : Fin n → Dual ℝ (α → ScrewSpace k)` with `span (range a) = span (rigidityRows F₀)`, so
-no per-consumer construction of `a`/`hspanrows` is needed anymore.
-
-**Per-edge row-count brick landed (2026-06-03):** `finrank_hingeRowBlock` (`finrank (hingeRowBlock
-e) = D − 1` for a transversal hinge) — the first piece of the row-counting needed for Case-I's
-`hindep`/`hmatch`. See *Current state*.
+The abstract device `lem:genericity-device` (`genericityDevice`) and the
+full Case-I `hglue` route are GREEN (route-(a) constant path; see *Current
+state* + *Blockers* + *Lemma checklist*). Input (2) (`exists_finite_spanning_rigidityRows`)
+and the per-edge/cross-hinge `hindep` bricks are landed, so no affine-path
+or finite-spanning-family construction remains for any consumer — what's
+left is the per-consumer geometric assembly of `hglue_of_realization`'s
+remaining inputs.
 
 **Smallest next concrete commit: supply `hglue_of_realization`'s *remaining* inputs for Case I (the
 geometric construction).** From the contraction realization (`G/E(H)` at its inductive
