@@ -137,6 +137,32 @@ implicitly at EOF; existing `namespace/end` pairs unchanged).
 Per-file `@[expose]`/`public` dispositions, the conversion audit, and
 the eliminated opt-ins: `notes/PERFORMANCE.md` *Module system* / *F3.4–F3.5*.
 
+## Editing the `apnelson1/Matroid` fork
+
+The project's `Matroid` dependency is **the user's fork**
+(`github.com/bryangingechen/Matroid`, pinned by `lake-manifest.json` +
+`lakefile.toml`, checked out at `.lake/packages/Matroid/`) — *not* upstream
+`apnelson1/Matroid` — maintained precisely so the project can patch it. **You
+are authorized to edit it** when a proof genuinely needs a `cycleMatroid` /
+`Matroid.Graph` / union API that does not yet exist there. (This is distinct
+from the *local* vendored mirror under `CombinatorialRigidity/Matroid/`, which
+is plain project source — see top-level `CLAUDE.md` *Vendored provenance*.)
+
+- **Prefer the project-side route first.** A new lemma in
+  `CombinatorialRigidity/Matroid/` or a `Mathlib/<exact path>` mirror travels
+  with the project and needs no cross-repo step. Reach into the fork only when
+  the project-side route genuinely can't reach the internals you need. (Often
+  it can: Phase 22's N4b looked like it needed a fork-side `cycleMatroid`-under-
+  collapse lemma, but the vendored `cycleMatroid_contract` applied directly.)
+- **Mechanics — it is a separate git repo.** Edit + commit under
+  `.lake/packages/Matroid/` in *that* repo's own history. Do **not** push the
+  fork or bump its `rev`/`inputRev` in `lake-manifest.json` / `lakefile.toml`
+  unprompted — both are outward-facing, cross-repo steps; surface them to the
+  user as a follow-up. **Flag any pending fork edit** in the commit summary and
+  the active `notes/PhaseN.md`: a local-only fork edit will not travel with a
+  `git push` of this repo until the pin is bumped, so an unflagged one silently
+  breaks the build for the next checkout.
+
 ## Lean LSP MCP — reach for it
 
 `.mcp.json` at the repo root registers
