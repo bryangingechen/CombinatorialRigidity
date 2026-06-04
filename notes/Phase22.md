@@ -21,7 +21,16 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-**N4c crux input landed green** (`Matroid.Union_pow_isBasis'_split_of_rk_saturated`,
+**N4c saturation specialization landed green** (`union_cycleMatroid_rk_saturated_of_isKDof_zero`
++ bridge `cycleMatroid_mulTilde_eq_restrict`, `Induction.lean`, axiom-clean, no `\leanok` flip —
+infra below the N4 blueprint node): the rank-saturation hypothesis the crux input wants, for a
+rigid subgraph. `N.rk E(H̃) = D · G̃.cyc.rk E(H̃)` from two pieces — (a) `N.rk E(H̃) = rank M(H̃)
+= D(|V(H)|−1)` (restriction-rank `matroidMG = N ↾ E(G̃)` + `matroidMG_restrict_mulTilde` +
+def=corank `rank_add_deficiency_eq` with `def(H̃) = 0`), and (b) `G̃.cyc.rk E(H̃) = |V(H)|−1` via
+the new bridge `H̃.cyc = G̃.cyc ↾ E(H̃)` + `Connected.eRk_cycleMatroid_restrict_add_one` (N4a
+connectivity). Regime `[NeZero (bodyHingeMult n)]` (`D ≥ 2`, for N4a), `V(H).Nonempty`.
+
+**N4c crux input landed previously** (`Matroid.Union_pow_isBasis'_split_of_rk_saturated`,
 `Induction.lean`, axiom-clean, no `\leanok` flip — abstract-matroid infra below the N4 blueprint
 node): the rigidity-content fact the union↔contraction crux consumes. When the `k`-fold union
 `N = Union (fun _ : Fin k ↦ M)` saturates its rank on `c` (`N.rk c = k · M.rk c`), an `N`-basis
@@ -29,9 +38,8 @@ of `c` splits as `k` per-factor sets, each itself an `M`-basis of `c`. Counting 
 `N`-basis `B` decomposes (`union_indep_iff`) into per-factor `M`-independent `Jᵢ ⊆ c`; then
 `|B| = N.rk c = k·M.rk c` and `|B| ≤ ∑|Jᵢ| ≤ k·M.rk c` (each `|Jᵢ| ≤ M.rk c`), so the chain is
 tight and every `|Jᵢ| = M.rk c`, making each `Jᵢ` an `M`-basis of `c`. For the molecular crux
-`M = G̃.cyc`, `k = D`, and the saturation `rk M(H̃) = D(|V(H)|−1) = D·r_cyc(E(H̃))` is the
-def=corank bridge (`isBase_ncard_add_deficiency_eq`) for a rigid `H` with `H̃` connected (N4a).
-**Remaining:** wire the saturation specialization, then the crux `ext_indep` itself. See *Hand-off*.
+`M = G̃.cyc`, `k = D`, `c = E(H̃)`, the saturation is exactly what the specialization above supplies.
+**Remaining:** the crux `ext_indep` itself, then assemble N4c. See *Hand-off*.
 
 **N4c reduction bricks landed previously** (`Induction.lean`, three lemmas, axiom-clean, no
 `\leanok` flip — infra below the N4 blueprint node): both sides of N4c
@@ -102,9 +110,10 @@ content of N4c, plus the rank/ambient reconciliation that assembles
     restriction of a `D`-fold-union over `G̃.cycleMatroid`. **Crux input green**
     (`Matroid.Union_pow_isBasis'_split_of_rk_saturated`): rank-saturation ⟹ an `N`-basis of `c`
     splits into `k` per-factor `M`-bases of `c` — the rigidity-content the crux consumes.
-    **Remaining:** (i) the saturation specialization `N.rk(E(H̃)) = D·r_cyc(E(H̃))` for rigid `H`
-    (def=corank `isBase_ncard_add_deficiency_eq` + `G̃.cyc`/`H̃.cyc` agreement on `E(H̃)` + N4a
-    connectivity), (ii) the crux `ext_indep` itself (forward via the split, reverse via the
+    **Saturation specialization green** (`union_cycleMatroid_rk_saturated_of_isKDof_zero` + bridge
+    `cycleMatroid_mulTilde_eq_restrict`): `N.rk(E(H̃)) = D·r_cyc(E(H̃))` for rigid `H` (def=corank
+    `rank_add_deficiency_eq` + `matroidMG_restrict_mulTilde` + N4a connectivity).
+    **Remaining:** (i) the crux `ext_indep` itself (forward via the split, reverse via the
     `N`-basis re-decomposition), then assemble N4c. *See Hand-off.*
 - [ ] **N5** `lem:case-I-splice-placement` — splice the inductive legs `(H,p₁)`,
   `(G/E',p₂)` along boundary hinges at panel intersections (eq. 6.6); needs a
@@ -219,6 +228,15 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   for a rigid `H`. The proof is a tight counting chain `|B| = k·M.rk c = ∑|Jᵢ| ≤ k·M.rk c`
   forcing each `|Jᵢ| = M.rk c` (basis). Both directions of the crux's `ext_indep` will consume it.
 
+- **N4c saturation specialization: split (a) `rank M(H̃)` + (b) connected cycle rank (2026-06-04).**
+  `union_cycleMatroid_rk_saturated_of_isKDof_zero` proves `N.rk E(H̃) = D · G̃.cyc.rk E(H̃)` as the
+  product of two `|V(H)|−1` computations. (a) `N.rk E(H̃) = rank M(H̃)`: `matroidMG = N ↾ E(G̃)` and
+  `E(H̃) ⊆ E(G̃)` give `N.rk E(H̃) = (matroidMG G).rk E(H̃)`, then `matroidMG_restrict_mulTilde` +
+  `restrict_rk_eq` give `= rank M(H̃) = D(|V(H)|−1)` (def=corank, `def(H̃)=0`). (b) `G̃.cyc.rk E(H̃)
+  = |V(H)|−1` via the new bridge `cycleMatroid_mulTilde_eq_restrict` (`H̃.cyc = G̃.cyc ↾ E(H̃)`, so
+  the rank moves to `H̃`) + `Connected.eRk_cycleMatroid_restrict_add_one` (whose conclusion lands on
+  `V(H̃) = V(H)`, *not* `V(G̃)` — the reason the rank must be moved into `H̃` first). The bridge
+  lesson is in FRICTION `[resolved] [matroid] H.cycleMatroid = G.cycleMatroid ↾ E(H) …`.
 - **N4c reduced, not closed, via the restrict↔contract commutation (2026-06-04).** Rather than
   fight `Union ／ C` head-on, both sides of N4c are rewritten over the common ground
   `S = E(G̃)\E(H̃)`: the contraction side uses mathlib's
@@ -238,19 +256,23 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   [resolved] *`edgeMultiply`'s `@[simps! vertexSet]` lemma does not resolve …*.
 - *`Set.ncard_iUnion_le_of_fintype` for `|⋃| ≤ ∑ ncard` — don't hand-roll via `toFinset`* →
   FRICTION [resolved] *The `Set.ncard` of a finite-index `iUnion` is `≤ ∑ ncard` …*.
+- *`H.cycleMatroid = G.cycleMatroid ↾ E(H)` for `H ≤ G` via `cycleMatroid_isRestriction_of_le` +
+  `exists_eq_restrict` + ground pin* → FRICTION [resolved] *`[matroid]` `H.cycleMatroid =
+  G.cycleMatroid ↾ E(H)` …*.
 
 ## Blockers / open questions
 
-- **The union↔contraction crux is the last content of N4c; its rigidity-content input is now
+- **The union↔contraction crux is the last from-scratch content of N4c; its full input is now
   green.** With the reduction bricks + the crux input
-  (`Matroid.Union_pow_isBasis'_split_of_rk_saturated`) green, the crux is the single matroid
+  (`Matroid.Union_pow_isBasis'_split_of_rk_saturated`) + the saturation specialization
+  (`union_cycleMatroid_rk_saturated_of_isKDof_zero`) all green, the crux is the single matroid
   equality `Union (fun _ ↦ G̃.cyc ／ E(H̃)) ↾ S = (Union (fun _ ↦ G̃.cyc) ／ E(H̃)) ↾ S` on
   `S = E(G̃)\E(H̃)`. In general `Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`; the equality holds *here* because
-  `C = E(H̃)` is the full edge set of the rigid `H̃`, so it rank-saturates and the crux input gives
-  the per-factor `G̃.cyc`-basis split `J = ⋃ Jᵢ`. **Remaining:** (i) the saturation specialization
-  `N.rk(E(H̃)) = D·r_cyc(E(H̃))`, (ii) the `ext_indep` (forward via the split + `IsBasis'.contract_indep_iff`;
-  reverse via the `N`-basis `J` and `union_indep_iff`). **There is no vendored Union↔contract lemma**
-  (checked `Matroid/Constructions/Union.lean`). After it, the rank/ambient reconciliation assembles
+  `C = E(H̃)` is the full edge set of the rigid `H̃`, so the saturation specialization feeds the
+  crux input to give the per-factor `G̃.cyc`-basis split `J = ⋃ Jᵢ`. **Remaining:** the `ext_indep`
+  (forward via the split + `IsBasis'.contract_indep_iff`; reverse via the `N`-basis `J` and
+  `union_indep_iff`). **There is no vendored Union↔contract lemma** (checked
+  `Matroid/Constructions/Union.lean`). After it, the rank/ambient reconciliation assembles
   `(G.rigidContract H r).IsMinimalKDof n 0` from the green `contraction_isMinimalKDof` (→ N4 → N6).
 - **N5 is research-shaped** (its blueprint proof note already says so); **Track B** (the
   Case II/III producer) is a multi-node crux. So there is still no clean single-commit
@@ -258,26 +280,21 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 
 ## Hand-off / next phase
 
-**N4c crux input is green** (`Matroid.Union_pow_isBasis'_split_of_rk_saturated`, `Induction.lean`;
-axiom-clean, no `\leanok` flip — abstract-matroid infra below the N4 node): rank-saturation
-`N.rk c = k·M.rk c` ⟹ an `N`-basis of `c` splits into `k` per-factor `M`-bases of `c`. With the three
-reduction bricks (`edgeSet_mulTilde_rigidContract`, `matroidMG_contract_eq_restrict`,
-`matroidMG_rigidContract_eq`), both sides of N4c sit over the common ground `S = E(G̃)\E(H̃)`.
+**N4c saturation specialization is green** (`union_cycleMatroid_rk_saturated_of_isKDof_zero` +
+bridge `cycleMatroid_mulTilde_eq_restrict`, `Induction.lean`; axiom-clean, no `\leanok` flip —
+infra below the N4 node): for a rigid subgraph `H` (`H.IsKDof n 0`, `H ≤ G`, `V(H).Nonempty`,
+`[NeZero (bodyHingeMult n)]`), `(Union (fun _ : Fin D ↦ G̃.cyc)).rk E(H̃) = D · G̃.cyc.rk E(H̃)`.
+This is the saturation hypothesis the crux input
+(`Matroid.Union_pow_isBasis'_split_of_rk_saturated`) consumes. With the three reduction bricks
+(`edgeSet_mulTilde_rigidContract`, `matroidMG_contract_eq_restrict`, `matroidMG_rigidContract_eq`),
+both sides of N4c sit over the common ground `S = E(G̃)\E(H̃)`.
 
-**Recommended next concrete commit: the saturation specialization for a rigid `H`** —
-`(Union (fun _ : Fin D ↦ G̃.cyc)).rk E(H̃) = D · G̃.cyc.rk E(H̃)`. This is the hypothesis the crux
-input wants. Two pieces: (a) `(Union (fun _ : Fin D ↦ G̃.cyc)).rk E(H̃) = (matroidMG H).rank` — on
-`E(H̃)` the union over `G̃.cyc` restricts to the union over `H̃.cyc` (`cycleMatroid_restrict`-style
-agreement, since `E(H̃) ⊆ E(G̃)`), then `= D(|V(H)|−1)` by def=corank
-(`isBase_ncard_add_deficiency_eq`, using `H.IsKDof n 0`); (b) `G̃.cyc.rk E(H̃) = |V(H)|−1` since
-`H̃` is connected (N4a `mulTilde_preconnected_of_isKDof_zero`), so the cycle matroid of the
-connected `H̃` has rank `|V(H)|−1`. Then `D(|V(H)|−1) = D·(|V(H)|−1)`. This is one focused commit.
-
-**After that: the crux `ext_indep` itself** — prove
+**Recommended next concrete commit: the crux `ext_indep` itself** — prove
 `Union (fun _ : Fin D ↦ G̃.cyc ／ E(H̃)) ↾ S = (Union (fun _ : Fin D ↦ G̃.cyc) ／ E(H̃)) ↾ S`, then
 `(matroidMG_rigidContract_eq …).trans <crux> |>.trans (matroidMG_contract_eq_restrict …).symm` gives
-N4c. Route `Matroid.ext_indep` over `S`, per `I ⊆ S` (so `Disjoint I E(H̃)`); take `J = ⋃ Jᵢ` the
-crux-input split (`Jᵢ` each a `G̃.cyc`-basis of `E(H̃)`, `J` an `N`-basis of `E(H̃)`):
+N4c. Route `Matroid.ext_indep` over `S`, per `I ⊆ S` (so `Disjoint I E(H̃)`); feed the saturation
+specialization into the crux input to get the split `J = ⋃ Jᵢ` (`Jᵢ` each a `G̃.cyc`-basis of
+`E(H̃)`, `J` an `N`-basis of `E(H̃)`):
 - **Forward** (LHS→RHS): per-factor `(G̃.cyc ／ E(H̃)).Indep (Is i)` ⟹ (`IsBasis'.contract_indep_iff`
   with `Jᵢ`) `G̃.cyc.Indep (Is i ∪ Jᵢ)`; then `Ks i := Is i ∪ Jᵢ`, `⋃ Ks = I ∪ J`, `union_indep_iff`
   ⟹ `N.Indep (I ∪ J)` ⟹ (`IsBasis'.contract_indep_iff` with `J`) `(N ／ E(H̃)).Indep I`.

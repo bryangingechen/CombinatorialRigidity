@@ -76,6 +76,21 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] `[matroid]` `H.cycleMatroid = G.cycleMatroid ↾ E(H)` for `H ≤ G` — route through `cycleMatroid_isRestriction_of_le` + `IsRestriction.exists_eq_restrict`, then pin the restriction set by ground equality
+- **Where it bit:** the rank-saturation specialization `union_cycleMatroid_rk_saturated_of_isKDof_zero`
+  (Phase 22, N4c crux input II): needed `G̃.cycleMatroid.rk E(H̃) = H̃.cycleMatroid.rk E(H̃)` to
+  compute the connected-graph cycle rank `|V(H)| − 1` in `H̃` (where the conclusion of
+  `Connected.eRk_cycleMatroid_restrict_add_one` lands on `V(H)`, not `V(G)`).
+- **Friction:** there is no vendored `cycleMatroid_eq_restrict_of_le`. The vendored
+  `cycleMatroid_isRestriction_of_le (h : G ≤ H) : G.cycleMatroid ≤r H.cycleMatroid` gives only the
+  `≤r` relation; `IsRestriction.exists_eq_restrict` then yields `∃ R, R ⊆ … ∧ H.cyc = G.cyc ↾ R`,
+  and the restriction set `R` must be pinned to `E(H)` by `congrArg Matroid.E` (the restriction's
+  ground equals `R`, the subgraph's cycle matroid ground equals `E(H)`).
+- **Proposed fix:** project helper `Graph.cycleMatroid_mulTilde_eq_restrict` (Induction.lean) packages
+  this for the `mulTilde` case; combine with `Matroid.restrict_rk_eq _ subset_rfl` to move a rank
+  across the subgraph. Reusable whenever a connected-component rank must be read in the smaller graph.
+- **Status:** resolved (project helper).
+
 ### [resolved] The `Set.ncard` of a finite-index `iUnion` is `≤ ∑ ncard` via `Set.ncard_iUnion_le_of_fintype` — don't hand-roll through `toFinset`/`card_biUnion_le`
 - **Where it bit:** N4c crux input `Matroid.Union_pow_isBasis'_split_of_rk_saturated` (Phase 22):
   the counting step `|⋃ Jᵢ| ≤ ∑ |Jᵢ|` over `Jᵢ : Fin k → Set α`.

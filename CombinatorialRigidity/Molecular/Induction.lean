@@ -2113,6 +2113,100 @@ open Set Matroid
 
 variable {α β : Type*}
 
+/-! ### The rank-saturation specialization for a rigid subgraph (N4c crux input, II)
+
+The abstract crux input `Matroid.Union_pow_isBasis'_split_of_rk_saturated` consumes a
+rank-saturation hypothesis `N.rk c = k · M.rk c` on the contracted-out set `c = E(H̃)`. For
+the molecular crux that hypothesis is supplied *here*, for a rigid subgraph `H` (`H.IsKDof n 0`):
+the `D`-fold cycle-matroid union of `G̃` rank-saturates on `E(H̃)` because `H̃` is connected
+(N4a `mulTilde_preconnected_of_isKDof_zero`), so `G̃.cycleMatroid` ranks `E(H̃)` at `|V(H)| − 1`,
+and the Jackson–Jordán def=corank bridge (`isBase_ncard_add_deficiency_eq`, with
+`def(H̃) = 0`) ranks `M(H̃)` — equivalently the union of `G̃.cycleMatroid` restricted to the
+common ground `E(H̃)` — at `D(|V(H)| − 1) = D · (|V(H)| − 1)`. The two computations close the
+saturation `N.rk E(H̃) = D · G̃.cycleMatroid.rk E(H̃)`. -/
+
+/-- The cycle matroid of a multiplied subgraph is the restriction of the larger graph's cycle
+matroid to its edge fibers: `H̃.cycleMatroid = G̃.cycleMatroid ↾ E(H̃)`, for `H ≤ G`. The
+edge-relabel is a `≤`-monotone (`edgeMultiply_mono`) so `cycleMatroid_isRestriction_of_le` gives
+the restriction; the ground sets pin the restriction set to `E(H̃)`. The bridge that lets a
+cycle-matroid rank on `E(H̃)` be computed in either graph. -/
+lemma cycleMatroid_mulTilde_eq_restrict {H G : Graph α β} (hle : H ≤ G) (n : ℕ) :
+    (H.mulTilde n).cycleMatroid = (G.mulTilde n).cycleMatroid ↾ E(H.mulTilde n) := by
+  have hHG : H.mulTilde n ≤ G.mulTilde n := edgeMultiply_mono hle _
+  obtain ⟨R, _, hR⟩ := (cycleMatroid_isRestriction_of_le hHG).exists_eq_restrict
+  have hground : R = E(H.mulTilde n) := by
+    have := congrArg Matroid.E hR
+    simpa using this.symm
+  rw [hR, hground]
+
+/-- **Rank saturation of the `D`-fold cycle-matroid union on a rigid subgraph's fibers**
+(N4c crux input, II; `lem:rigidContract-isMinimalKDof`). For a rigid subgraph `H` of `G`
+(`H.IsKDof n 0`, `H ≤ G`, `V(H) ≠ ∅`, `D = bodyBarDim n ≥ 2` so that `H̃` has edge copies),
+the `D`-fold cycle-matroid union `N = Union (fun _ ↦ G̃.cycleMatroid)` *saturates* its rank on
+the contracted-out fibers `E(H̃)`: `N.rk E(H̃) = D · G̃.cycleMatroid.rk E(H̃)`. This is the
+hypothesis `Union_pow_isBasis'_split_of_rk_saturated` consumes; it bites exactly because `H̃` is
+connected (N4a), so `r_cyc(E(H̃)) = |V(H)| − 1` and, by def=corank, `rk M(H̃) = D(|V(H)| − 1)`. -/
+lemma union_cycleMatroid_rk_saturated_of_isKDof_zero [DecidableEq β]
+    [Finite α] [Finite β] {H G : Graph α β} {n : ℕ} [NeZero (bodyHingeMult n)]
+    (hle : H ≤ G) (hrigid : H.IsKDof n 0) (hVHne : V(H).Nonempty) :
+    (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)).rk
+        E(H.mulTilde n)
+      = bodyBarDim n * (G.mulTilde n).cycleMatroid.rk E(H.mulTilde n) := by
+  have hmult : 1 ≤ bodyHingeMult n := Nat.one_le_iff_ne_zero.mpr (NeZero.ne _)
+  have hD2 : 2 ≤ bodyBarDim n := by rw [bodyHingeMult] at hmult; omega
+  have hD1 : 1 ≤ bodyBarDim n := by omega
+  have hconn : (H.mulTilde n).Preconnected := mulTilde_preconnected_of_isKDof_zero hrigid
+  have hVHne' : V(H.mulTilde n).Nonempty := hVHne
+  have hconnected : (H.mulTilde n).Connected := connected_iff.mpr ⟨hVHne', hconn⟩
+  -- Piece (b): `r_cyc(E(H̃)) = |V(H)| − 1`, since `H̃` is connected.
+  have hVHfin : V(H).Finite := Set.toFinite _
+  have hVHcard : 1 ≤ V(H).ncard := (Set.ncard_pos hVHfin).mpr hVHne
+  have hcyc : (G.mulTilde n).cycleMatroid.rk E(H.mulTilde n) = V(H).ncard - 1 := by
+    -- Move the rank into `H̃.cyc` via the restriction bridge.
+    have hrestr : (G.mulTilde n).cycleMatroid.rk E(H.mulTilde n)
+        = (H.mulTilde n).cycleMatroid.rk E(H.mulTilde n) := by
+      rw [cycleMatroid_mulTilde_eq_restrict hle n, Matroid.restrict_rk_eq _ subset_rfl]
+    -- `(H̃ ↾ E(H̃)).Connected` gives `r_cyc(E(H̃)) + 1 = |V(H̃)| = |V(H)|`.
+    have hself : (H.mulTilde n) ↾ E(H.mulTilde n) = H.mulTilde n :=
+      (restrict_eq_self_iff (H.mulTilde n) E(H.mulTilde n)).mpr subset_rfl
+    have heRk : (H.mulTilde n).cycleMatroid.eRk E(H.mulTilde n) + 1 = V(H).encard :=
+      Connected.eRk_cycleMatroid_restrict_add_one (R := E(H.mulTilde n))
+        (by rw [hself]; exact hconnected)
+    rw [hrestr]
+    have hcast : ((H.mulTilde n).cycleMatroid.rk E(H.mulTilde n) : ℕ∞) + 1 = (V(H).ncard : ℕ∞) := by
+      rw [cast_rk_eq_eRk_of_finite _ (Set.toFinite _), heRk, ← hVHfin.cast_ncard_eq]
+    have hrk1 : (H.mulTilde n).cycleMatroid.rk E(H.mulTilde n) + 1 = V(H).ncard := by
+      exact_mod_cast hcast
+    omega
+  -- Piece (a): `N.rk E(H̃) = rank M(H̃) = D(|V(H)| − 1) = D · (|V(H)| − 1)`.
+  have hsub : E(H.mulTilde n) ⊆ E(G.mulTilde n) := (edgeMultiply_mono hle _).edgeSet_mono
+  have hunion : (Matroid.Union fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid).rk
+      E(H.mulTilde n) = bodyBarDim n * (V(H).ncard - 1) := by
+    -- `N.rk E(H̃) = (M(G̃)).rk E(H̃) = (M(G̃) ↾ E(H̃)).rk E(H̃) = rank M(H̃)`.
+    have hNrk : (Matroid.Union fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid).rk
+        E(H.mulTilde n) = (H.matroidMG n).rank := by
+      have h1 : (G.matroidMG n).rk E(H.mulTilde n)
+          = (Matroid.Union fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid).rk
+            E(H.mulTilde n) := by
+        rw [matroidMG, Matroid.restrict_rk_eq _ hsub]
+      have h2 : (H.matroidMG n).rank = (G.matroidMG n).rk E(H.mulTilde n) := by
+        rw [← matroidMG_restrict_mulTilde hle n, Matroid.rank_def, Matroid.restrict_ground_eq,
+          Matroid.restrict_rk_eq _ subset_rfl]
+      rw [h2, h1]
+    -- `rank M(H̃) = D(|V(H)| − 1)` (ℤ), via def=corank and `def(H̃) = 0`.
+    have hrankZ : ((H.matroidMG n).rank : ℤ) = bodyBarDim n * ((V(H).ncard : ℤ) - 1) := by
+      have := H.rank_add_deficiency_eq n hD1 hVHne
+      rw [hrigid] at this
+      omega
+    rw [hNrk]
+    -- Drop to ℕ: both sides nonneg since `|V(H)| ≥ 1`.
+    have : ((H.matroidMG n).rank : ℤ) = (bodyBarDim n * (V(H).ncard - 1) : ℕ) := by
+      rw [hrankZ]
+      push_cast [Nat.cast_sub hVHcard]
+      ring
+    exact_mod_cast this
+  rw [hcyc, hunion]
+
 /-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
 
 The minimality-transport half of KT Lemma 3.5: contracting a (rigid) subgraph `H` of a
