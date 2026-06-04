@@ -32,162 +32,39 @@ In addition to the project-wide reading order in `../CLAUDE.md`:
 ## Quirks index (skim this first)
 
 When a `lake build` fails with an unfamiliar Lean error, scan these
-bullets. If one matches, jump to the named section of
-`../TACTICS-QUIRKS.md` for the fix:
+symptoms; jump to the named `../TACTICS-QUIRKS.md` section for the fix.
+(The fix lives in §N — these are match-keys only.)
 
-- *"motive is not type correct"* after `simp only`, citing a
-  hypothesis not in the displayed goal → § 5 *`simp only` leaves
-  residual subterms*
-- *"Unknown identifier X"* after `rcases ⟨rfl, rfl⟩` or `subst`
-  between two free vars → § 4 *`subst` between two free variables
-  picks the wrong one*
+- *"motive is not type correct"* after `simp only` citing a hypothesis not in the goal → § 5
+- *"Unknown identifier X"* after `rcases ⟨rfl, rfl⟩` / `subst` between two free vars → § 4
 - `interval_cases (Fintype.card V)` won't close by `rfl` → § 7
-  *`interval_cases` is for free variables*
-- `omega`/`grind` fails despite hypotheses that should bridge →
-  check for `set`-aliased terms (§ 1) or for commutativity /
-  distributivity that needs pre-normalization (§ 2)
-- `nlinarith` fails on `4 * d + 2 ≤ (d + 1) * (d + 2)`-style
-  ℕ-quadratic → § 3 *`Nat.le_mul_self`*
-- `simp [name]` on a `set`-bound lambda doesn't unfold (or `⊢ sorry
-  () c = …` glitch) → § 6 *`set name := fun … + simp [name]`*
-- `And.foo not found` / `Henneberg.IsLaman.foo not found` via dot
-  notation → § 8 *Dot notation only consults the type's head
-  namespace*
-- *"Application type mismatch"* on `congr_fun h` over
-  `EuclideanSpace` → § 9 *`congr_fun` doesn't apply to
-  `EuclideanSpace`*
-- *"Application type mismatch"* on `congr_fun h` where `h` is an
-  equation between `LinearMap`s / `Module.Dual`s / bundled
-  morphisms → § 12 *`congr_fun` doesn't apply to `LinearMap`*
-- `(deterministic) timeout at whnf` or "Invalid `⟨...⟩` notation"
-  after `unfold`/`change` of a `Finset.univ.filter`-of-`Finset V`
-  definition over `[Finite V]` → § 14 *`Finset.univ.filter` of
-  `Finset V` under `[Finite V]`* (switch to `Set` + `toFinset`)
-- `simp_all` produces a confusing residual with a hypothesis you
-  expected to eliminate → § 10 *`simp_all` cross-contaminates*
-- `linearIndependent_fin2` rewrite leaves `![v₀, v₁] 0` blocking a
-  pattern match → § 11 *unsimplified at the indexing layer*
-- `set V₊ := …` / `let V₊ := …` (or any identifier with `₊ ₋ ₌`)
-  errors with *"expected token"* at the subscript column → § 13
-  *Subscript `₊` (U+208A) is not a valid identifier character*
-- *"typeclass instance problem is stuck: Semiring ?m"* (or
-  `Monoid ?m`, `Module ?m ?m`) on a `let`/`set` of a `Polynomial`-
-  valued expression involving a bare `Polynomial.X` / `0` / `1` →
-  § 15 *Bare `Polynomial.X` (or `0`, `1`) needs explicit type
-  ascription* — annotate the literal.
-- *"MVar does not look like a recursive call: ... → V → Fintype V"*
-  on a WF-recursive def whose `termination_by` uses `Finset.univ`,
-  or *"Unknown identifier `visited`"* from `termination_by` after a
-  `| visited, v => ...` pattern-match body, or `unused variable`
-  lint on an `if h : ...` binder used only inside `decreasing_by`,
-  or *"failed to synthesize Fintype ι"* at `termination_by` after
-  swapping a `[Fintype ι]` signature to `[Finite ι]` (to clear
-  `linter.unusedFintypeInType`) on a `Finset.univ`-based measure →
-  § 16 *`termination_by` / `decreasing_by` elaboration rescue*.
-- *"Application type mismatch: heq has type X = some ⟨…⟩ but is
-  expected to have type some ⟨…⟩ = some ⟨…⟩"* inside the `some`
-  branch of a `match heq : <expr> with | …` term — § 17 *`match h :
-  <expr> with` substitutes `expr ↦ pat` in the goal of each branch*.
-- *"Tactic `rewrite` failed: motive is not type correct"* when
-  `rw [h]` uses `h : D.field = …` and the goal contains a local
-  whose *type* references `D.field` (e.g. a `DirectedWalk
-  (fun a b => (a, b) ∈ D.arcs) u w` plus a `p.vertices`-mentioning
-  if-clause) — § 18 *`rw [h]` over a structure field whose value
-  appears in another local's type*; build the rewritten container
-  equation via `Finset.ext` and `rw` the equation as a unit.
-- *"Application type mismatch"* on the first hypothesis used inside
-  a `case caseN D h₁ ... =>` after `induction _ using funName.induct`,
-  or *"Did not find an occurrence of the pattern"* on a `rw [hyp] at
-  h` whose LHS visibly appears in `h` — § 19 *`induction … using
-  funName.induct` on a function with `let` in its body*; name the
-  `let`-bound parameter in the case-binder list, and apply `dsimp
-  only at h` after `rw [funName] at h` to inline the inner `let`.
-- *"Tactic `rewrite` failed: motive is not type correct"* on a
-  `rw [eq]` step where `eq` is a free-variable equation derived
-  *after* `obtain ⟨rfl, _⟩` substituted a cons-pattern endpoint, and
-  a sibling walk `q` in scope has the substituted endpoint in its
-  type — § 20 *`rw [eq]` after `obtain ⟨rfl, _⟩` on a cons-pattern
-  endpoint trips motive on the sibling walk's type*; bind both pair
-  equalities to named hypotheses and `rw` on the *un*-substituted
-  endpoint (the one not appearing in `q`'s type).
-- `ring` reports *"unsolved goals"* on a sum-of-sums identity
-  `Σ + B = B + Σ'` where `Σ` and `Σ'` are alpha-equivalent
-  `Finset.sum`s (same Finset and body, different bound-variable
-  name) — § 21 *`ring` fails on alpha-renamed `Finset.sum`s*; bind
-  each sum identity as a named `have` and close the surrounding
-  linear (in)equality with `omega` / `linarith`, both of which
-  treat each `Finset.sum` as an opaque atom.
-- *"failed to synthesize instance of type class Decidable (a ≤ b)"*
-  / *"DecidableRel fun x1 x2 ↦ x1 ≤ x2"* (or `fast_instance%` reports
-  *"Provided instance ... is not defeq to inferred instance
-  ... LinearOrder.toPartialOrder"*) on a `LinearOrder.lift'`-built
-  instance — § 22 *`LinearOrder.lift'` on a `SetLike` type silently
-  breaks `Decidable (· ≤ ·)`*: the type already owns the
-  `PartialOrder` slot via `SetLike.instPartialOrder`. Sort through
-  `Lex (β)` for some projection target `β`, or register on
-  `Lex (α)` instead.
-- *"Invalid `meta` definition `_eval`, `instFoo` is not accessible
-  here; consider adding `public meta import X`"* on a `#eval (decide
-  P)` (or any `#eval` synthesising an instance from a sibling
-  `module` file) — § 23 *`#eval`-bearing `module` files need `public
-  meta import` for the imported `Decidable` / elaboration instances*:
-  keep `public import X` for compile-time visibility and add a
-  second-form `public meta import X` for meta-time visibility.
-- *"Type mismatch … has type `A ↔ ?` but is expected to have type
-  `A' ↔ …`"* on a `refine h.trans ?_` / `Iff.trans` where `A'` is only
-  *defeq* to `A` (a `def`-unfolding wrapper like `F.IsIndependent` vs
-  `F.toBodyBar.IsIndependent`, or `∃ (_ : p), q` vs `p ∧ q`) — § 25
-  *`Iff.trans` requires a syntactic side-match*: drop `.trans`, bridge
-  with `constructor` + `.mp` / `.mpr` (closes up to full defeq).
-- *"motive is not type correct"* / *"Did not find an occurrence of the
-  pattern `(?G ↾ ?E₀).IsLink …`"* after `rw [deleteEdges]` (or `rw` on
-  any mathlib-`Graph` op defined via `.copy`) — § 27 *`rw [deleteEdges]`
-  trips the motive*: don't `rw` the `def`; use its `@[simps!]` lemmas
-  (`vertexSet_deleteEdges`, `deleteEdges_isLink`, `edgeSet_deleteEdges`)
-  via `simp only`.
-- *"Did not find an occurrence of the pattern"* on `rw [if_pos rfl]`
-  where the goal is a `(fun i ↦ if i = j then …) j` application (an
-  un-beta-reduced lambda hiding the `ite`) — § 28 *`rw [if_pos rfl]`
-  fails on a `(fun i ↦ if i = j then …) j` goal*: use `simp only
-  [↓reduceIte]` (beta + ite reduction in one), not the `if_pos` lemma.
-- *"unknown constant `WList.deleteEdges_isWalk_iff`"*, or `simp` "made
-  no progress" on a `WList.IsClosed` goal, or `rw [cons_edge]` failing
-  on a `.edgeSet` membership goal, while lifting a graph cycle back along
-  an edge-substitution — § 29 *Cycle-lift by edge-substitution*: the
-  walk-down-a-subgraph iff is `Graph.isWalk_deleteEdges_iff`
-  (`Graph.`-namespaced), `IsClosed` is a bare `def` (peel with
-  `cons_isClosed_iff`), edgeSet membership uses `cons_edgeSet` +
-  `mem_edgeSet_iff`, and sublist edge-containment is
-  `WList.IsSublist.edge_subset` (not `…edgeSet_subset`).
-- *"typeclass instance problem is stuck … `(i : α) → Module ?m (?φ i)`"* on a
-  `def f : (α → W) →ₗ[ℝ] W := LinearMap.proj u - LinearMap.proj v` (the `-`
-  unifies the two `proj` summands before the declared codomain, leaving the Pi
-  fiber stuck) → § 30 *`LinearMap.proj i - LinearMap.proj j` over a Pi type*:
-  type-ascribe the first summand to the full `LinearMap` type (`(R := ℝ)` alone
-  is not enough).
-- *"typeclass instance problem is stuck: `HSMul ?m W W` … first type argument …
-  is a metavariable"* at a `t • x` inside an **unascribed** `∀ t, …` binder (the
-  bound variable's own type is free) → § 31 *Unascribed `∀ t, … t • x …` binder
-  leaves the `•` scalar type a metavariable*: annotate the binder (`∀ t : ℝ, …`).
-- *"Application type mismatch: x has type `Fin k → Fin (k+2) → ℝ` but is expected
-  to have type `ScrewSpace k`"* after `ext x` on an equation of `Module.Dual ℝ
-  (ScrewSpace k)` (the goal turned into a `LinearMap.compAlternatingMap …
-  ιMulti` between `AlternatingMap`s), or *"numerals are data … universe
-  polymorphic"* on `congrFun (congrArg DFunLike.coe h) x` → § 32 *`ext x` on an
-  equation of `Module.Dual ℝ (ScrewSpace k)` descends too far*: use
-  `LinearMap.ext fun x => …` and `LinearMap.congr_fun h x`.
-- *"Tactic `rewrite` failed: motive is not type correct"* on a `rw [hsub]` where
-  `hsub` is a `Submodule` equation `A = B` and the goal carries `finrank ℝ ↥A`
-  (the submodule under the `↥`-coercion-to-type) → § 33 *`rw` over a `Submodule`
-  equation under `finrank ℝ ↥(…)` trips the motive*: if the matching fact is in a
-  hypothesis, flip the equation and `rw [← hsub] at hp` instead of on the goal.
-- *"Did not find an occurrence of the pattern `?g (∑ x ∈ ?s, ?f x)`"* on
-  `rw [map_sum]` over a `Basis.repr (∑ …) t` coordinate, or *"failed to
-  synthesize `AddMonoidHomClass (M ≃ₗ[R] (ι →₀ R))`"* / typeclass timeout on
-  `rw [map_sum (b.repr)]` → § 34 *`map_sum` won't push `Basis.repr` (a
-  `LinearEquiv` to `Finsupp`) through a `∑`*: route the coordinate through the
-  `R`-valued composite `Finsupp.lapply t ∘ₗ b.repr.toLinearMap` (drop the
-  `Finsupp` codomain to the scalar ring) and `map_sum` fires.
+- `omega`/`grind` fails despite bridging hypotheses → `set`-aliased terms (§ 1) or commutativity/distributivity needing pre-normalization (§ 2)
+- `nlinarith` fails on `4*d+2 ≤ (d+1)*(d+2)`-style ℕ-quadratic → § 3
+- `simp [name]` on a `set`-bound lambda doesn't unfold (or `⊢ sorry () c = …`) → § 6
+- `And.foo` / `Henneberg.IsLaman.foo not found` via dot notation → § 8
+- *"Application type mismatch"* on `congr_fun h` over `EuclideanSpace` → § 9; over `LinearMap`/`Module.Dual`/bundled morphisms → § 12
+- `(deterministic) timeout at whnf` / *"Invalid `⟨...⟩`"* after `unfold`/`change` of a `Finset.univ.filter`-of-`Finset V` over `[Finite V]` → § 14
+- `simp_all` confusing residual with a hypothesis you expected gone → § 10
+- `linearIndependent_fin2` rewrite leaves `![v₀, v₁] 0` blocking a match → § 11
+- `set V₊` / `let V₊` (subscript `₊ ₋ ₌`) → *"expected token"* → § 13
+- *"typeclass … stuck: Semiring/Monoid/Module ?m"* on a `let`/`set` of a `Polynomial` with bare `X`/`0`/`1` → § 15
+- *"MVar does not look like a recursive call"* / *"Unknown identifier `visited`"* / unused-`if h:` / *"failed to synthesize Fintype ι"* around `termination_by`/`decreasing_by` (`Finset.univ` measure) → § 16
+- *"Application type mismatch: heq has type X = some ⟨…⟩"* in a `some` branch of `match heq : … with` → § 17
+- *"rewrite … motive is not type correct"* on `rw [h]`, `h : D.field = …`, where a local's *type* references `D.field` → § 18
+- *"Application type mismatch"* / *"Did not find … pattern"* in a `case` after `induction … using funName.induct` on a function with `let` in its body → § 19
+- *"rewrite … motive is not type correct"* on `rw [eq]` after `obtain ⟨rfl, _⟩` on a cons-pattern endpoint, with a sibling walk holding that endpoint in its type → § 20
+- `ring` *"unsolved goals"* on `Σ + B = B + Σ'` with alpha-renamed `Finset.sum`s → § 21
+- *"failed to synthesize Decidable (a ≤ b)"* / *"DecidableRel"* / `fast_instance%` defeq, on a `LinearOrder.lift'` over a `SetLike` type → § 22
+- *"Invalid `meta` definition … consider `public meta import`"* on `#eval (decide P)` from a sibling `module` file → § 23
+- *"Type mismatch … `A ↔ ?` vs `A' ↔ …`"* on `refine h.trans ?_` / `Iff.trans` with `A'` only defeq to `A` → § 25
+- *"motive is not type correct"* / *"Did not find … `(?G ↾ ?E₀).IsLink`"* after `rw [deleteEdges]` (or any `.copy`-defined `Graph` op) → § 27
+- *"Did not find … pattern"* on `rw [if_pos rfl]` over a `(fun i ↦ if i = j then …) j` goal → § 28
+- *"unknown constant `WList.deleteEdges_isWalk_iff`"* / `simp` no-progress on `WList.IsClosed` / `rw [cons_edge]` on `.edgeSet`, lifting a graph cycle by edge-substitution → § 29
+- *"typeclass … stuck `(i : α) → Module ?m (?φ i)`"* on `def f : (α → W) →ₗ[ℝ] W := proj u - proj v` → § 30
+- *"typeclass … stuck `HSMul ?m W W`"* at `t • x` under an unascribed `∀ t, …` binder → § 31
+- *"Application type mismatch: x has type `Fin k → …`"* / *"numerals are data"* after `ext x` on a `Module.Dual ℝ (ScrewSpace k)` equation → § 32
+- *"rewrite … motive is not type correct"* on `rw [hsub]` (a `Submodule` eq) under `finrank ℝ ↥(…)` → § 33
+- *"Did not find … `?g (∑ …)`"* / *"AddMonoidHomClass (M ≃ₗ …)"* on `rw [map_sum]` over a `Basis.repr (∑ …) t` coordinate → § 34
 
 ## Starting a Lean-touching session
 
@@ -210,171 +87,55 @@ decidability, etc. — the authoritative list is in
   about `IsSparse` → `Sparsity.lean`, even if first invoked in
   `Laman.lean`.)
 - The `@[deprecated <general-form> (since := "narrative-bridge")]`
-  attribute carries a **second project-specific meaning** beyond the
-  standard "phasing out" semantics: it also marks **narrative-bridge
-  shims** — one-line composition lemmas that exist solely to anchor a
-  blueprint corollary's `\lean{...}` pin, with the deprecation
-  warning discouraging callsite proliferation in favour of the
-  general form. The canonical example is
-  `SimpleGraph.IsLaman.exists_rowIndependent_placement` in
-  `MatroidIdentification.lean` (deprecated in favour of
-  `IsSparse.exists_rowIndependent_placement`). See
-  `../blueprint/CLAUDE.md` *What to include vs. skip → Narrative-bridge
-  corollaries* for the authoring decision rule.
-
-  **The non-date `since` sentinel matters.** Mathlib's compile-time
-  `@[deprecated]` handler in `Lean/Linter/Deprecated.lean` emits an
-  unconditional `logWarning` if `since` is missing — there is no
-  `set_option` that silences it. The matching mathlib env-linter
-  `Batteries.Tactic.Lint.deprecatedNoSince` also flags it as a hard
-  `lake lint` error. Both are silenced by *any* present `since`
-  value (Lean only requires presence, with a `-- TODO: enforce
-  YYYY-MM-DD format` comment in the linter source). We pick
-  `"narrative-bridge"` over a date because:
-  1. Lean's warning text explicitly sanctions "the date or library
-     version" — a version-shaped string is documented as acceptable.
-  2. The mathlib date-range cleanup tooling
-     (`#clear_deprecations date₁ date₂ really` in
-     `Mathlib/Tactic/Linter/FindDeprecations.lean`) walks deprecations
-     whose `since` lex-compares between `date₁` and `date₂` in
-     `YYYY-MM-DD` shape. `"narrative-bridge"` lex-compares above any
-     realistic date bound (`'n'` > `'9'`), so the shim is invisible
-     to that tooling — accidental deletion by a future cleanup run
-     is structurally impossible.
-  3. Future Lean format-enforcement would have to contradict the
-     attribute's own warning text ("date *or library version*") to
-     reject this, which is unlikely.
+  attribute carries a **second project meaning**: it marks
+  **narrative-bridge shims** — one-line composition lemmas existing only
+  to anchor a blueprint corollary's `\lean{...}` pin (the warning
+  discourages new callsites). Authoring rule + canonical example
+  (`SimpleGraph.IsLaman.exists_rowIndependent_placement`):
+  `../blueprint/CLAUDE.md` *Narrative-bridge corollaries*. The non-date
+  `"narrative-bridge"` sentinel is deliberate: any present `since`
+  silences the `deprecatedNoSince` linter (Lean checks only presence,
+  sanctioning "date *or library version*"), and a non-date string
+  lex-sorts above any `YYYY-MM-DD` bound, so mathlib's
+  `#clear_deprecations` date-range tooling can never delete the shim.
 
 ## Module-system conversion
 
-Project files use Lean's module system (`module` + `public import`
-+ `@[expose] public section`) for the same reason mathlib does:
-downstream files only see the public interface of an imported
-module, not its full elaboration state. The conversion landed in
-the Phase 8-perf pass; the mechanic is uniform across all 28 files
-(14 `CombinatorialRigidity/Mathlib/*` mirrors + 14 project files)
-and matches the upstream reference
-`Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
+Project files use Lean's module system (`module` + `public import` +
+`@[expose] public section`) so downstream files see only an imported
+module's public interface, not its full elaboration state (as mathlib
+does). Landed in the Phase 8-perf pass across all 28 files; reference
+shape: `Mathlib/Analysis/InnerProductSpace/PiL2.lean`.
 
-When converting a new file, or when fixing a file that drifted out
-of the pattern:
+**Converting a file:** (1) blank line then bare `module` after the
+copyright block (the keyword *is* the marker — no `import`); (2) every
+`import X` → `public import X`; (3) an unnamed `@[expose] public section`
+between the `/-! … -/` doc block and the first declaration (closes
+implicitly at EOF; existing `namespace/end` pairs unchanged).
 
-1. **After the copyright block, insert a blank line then `module`.**
-   ```
-   /-
-   …
-   -/
-   module
-   ```
-2. **Rewrite every `import X` to `public import X`** — both upstream
-   mathlib imports and project-internal imports
-   (`CombinatorialRigidity.Mathlib.X`, `CombinatorialRigidity.Y`).
-3. **Between the doc block (`/-! … -/`) and the first
-   `open`/`namespace`/declaration, insert an unnamed `@[expose]
-   public section`.** Example:
-   ```
-   /-! # Title … -/
+**Constraints:**
+- A `module` file can only `import` (or `public import`) other `module`
+  files — build error *"cannot import non-`module` X"*. Mathlib is
+  ~98.6% converted; the holdout that matters is
+  `Matroid.Representation.Map` (`apnelson1/Matroid`), which keeps
+  `LinearRigidityMatroid.lean` non-`module`. Non-`module` files import
+  `module` files freely, so the rest of the project is unaffected.
+- `public section` hides `def` bodies for defeq *intra*-module too
+  (≈ `@[irreducible]`). Symptom: *"Not a definitional equality"* on a
+  `:= rfl` projection, or *"definitions were not unfolded … not
+  exposed"*. Fix: promote that `def` to `@[expose] def`. Default a new
+  file to `public section`; reach for `@[expose] public section` only
+  when most defs need exposure (cf. `Framework.lean`).
+- `set_option backward.privateInPublic` is debt: the project carries
+  **zero** opt-ins — do not add one. It's only needed when a `private`
+  decl sits in an *exposed* (`@[expose]`) body or is an attribute-tagged
+  (`@[simp]`/`@[fun_prop]`) helper resolved by name cross-module; the
+  cleaner fix is demoting the helper from `private`. (`theorem`/`lemma`
+  proof bodies are private scope regardless, so a private helper used
+  only there needs nothing.)
 
-   @[expose] public section
-
-   namespace Foo
-   ```
-   The section is unnamed and closes implicitly at end-of-file — no
-   matching `end` is needed. Existing `namespace X / end X` pairs
-   stay paired as before.
-
-Constraints and gotchas:
-
-- **A `module` file can only `import` other `module` files.** If
-  you add a new project-internal import, the imported file must
-  already be `module`-converted. (Build error: *"cannot import
-  non-`module` X from `module`"*.) This is why the Phase 8-perf
-  pass converted the mirror directory first (F3.2) and project
-  files second (F3.3).
-- **Mathlib v4.30.0-rc2 is ~98.6 % `module`-converted**, so almost
-  every `Mathlib.X` import already satisfies the constraint. The
-  remaining ~1.4 % are deep upstream files we don't depend on.
-- **Non-`module` files can freely import `module` files**, so
-  external consumers (blueprint snapshot tests, scratch files) work
-  unchanged.
-- **No `import` line for `module` itself** — the bare keyword on its
-  own line is the marker, not an import.
-- **`public section` is opaque intra-module too — not just
-  cross-module.** A `def` in `public section` (no `@[expose]`) has
-  its body hidden for elaboration-time defeq even within the same
-  file (close to `@[irreducible]` semantics). Symptoms a new
-  intra-file consumer trips: *"Not a definitional equality: the
-  left-hand side"* on a `@[simp] … := rfl` projection lemma; *"Type
-  mismatch … definitions were not unfolded because their definition
-  is not exposed: foo ↦ N"* on a `match`-arm whose result type needs
-  `foo`'s body. **Fix:** promote the specific `def` to `@[expose]
-  def …`; the surrounding section can stay `public section`. The
-  default for a new file is `public section`; reach for
-  `@[expose] public section` only when *most* of the file's defs
-  need body exposure (cf. `Framework.lean`). Project precedent and
-  per-file dispositions: see `notes/PERFORMANCE.md` *F3.5 audit
-  disposition*.
-- **`set_option backward.privateInPublic …` is technical debt and
-  must be eliminated, not propagated.** The option is a `backward.*`
-  compat knob that re-enables legacy "private-callable-from-public"
-  semantics — it exists to ease the module-system migration and the
-  reference manual explicitly says *"These warnings can be used to
-  locate and eventually eliminate these references, allowing
-  `backward.privateInPublic` to be disabled."* The project carries
-  **zero** opt-ins as of the F3.4 audit (the F3.3-followup's 4 + 3
-  per-declaration opt-ins in `Framework.lean` / `HennebergReverse.lean`
-  were eliminated, the former by promoting the three private helpers
-  `edgeRow` / `edgeRow_symm` / `continuous_rigidityMap_apply` to
-  non-`private` and the latter by demoting the file's `@[expose]
-  public section` to `public section`). Do not introduce new opt-ins;
-  the principled discharges are documented in `notes/PERFORMANCE.md`
-  *Granular `@[expose]` / `public` audit per file* (F3.4 + F3.5
-  disposition tables).
-
-  Mechanics: the opt-in is required only when a private declaration
-  participates in an *exposed* body — a `def` / `instance` body or
-  signature in `@[expose] public section`. Proof bodies of `theorem`
-  / `lemma` are in the *private scope* regardless of section
-  attributes (per the reference manual *Modules and Visibility* /
-  *Exposed and Unexposed Definitions*), so a `private lemma`
-  referenced only from public `theorem` proof bodies needs no opt-in
-  at all. When the build fails with *"Unknown identifier X. Note: A
-  private declaration X (from the current module) exists but would
-  need to be public to access here"*, the short-term fix is the
-  per-declaration form applied to **both** the private declaration
-  and its public consumer (matches mathlib's
-  `Mathlib/Data/Sym/Sym2.lean` and `Mathlib/Order/Sublocale.lean`):
-  ```
-  set_option backward.privateInPublic true in
-  set_option backward.privateInPublic.warn false in
-  private def edgeRow ...
-
-  set_option backward.privateInPublic true in
-  set_option backward.privateInPublic.warn false in
-  noncomputable def RigidityMap ...
-  ```
-  The set_option lines go *before* the doc-comment, not after — the
-  doc-comment must immediately precede the declaration it documents.
-  **A `private theorem` tagged `@[fun_prop]` / `@[simp]` / `@[ext]`
-  / etc.** that downstream tactics resolve by name also needs the
-  opt-in, because the tactic database stores the private name and
-  cross-module references then fail (cf.
-  `Framework.continuous_rigidityMap_apply`). For attribute-tagged
-  helpers, demoting from `private` to plain public is often the
-  cleaner fix and is preferred to a new opt-in.
-
-- **Some external dependencies block conversion.** The
-  `apnelson1/Matroid` package (used by `LinearRigidityMatroid.lean`)
-  is ~4 % module-converted as of 2026-05; specifically
-  `Matroid.Representation.Map` is non-`module`. A `module` file
-  cannot import a non-`module` file via `public import` *or* plain
-  `import` (the constraint applies to both forms — see
-  `notes/PERFORMANCE.md` *Module system*). `LinearRigidityMatroid.lean`
-  therefore stays non-`module` until either the upstream lib
-  converts or its Matroid usage can be refactored out. Non-`module`
-  files can freely import `module` files, so the rest of the project
-  is unaffected — `LinearRigidityMatroid` consumes the
-  module-converted `MatroidIdentification` chain normally.
+Per-file `@[expose]`/`public` dispositions, the conversion audit, and
+the eliminated opt-ins: `notes/PERFORMANCE.md` *Module system* / *F3.4–F3.5*.
 
 ## Lean LSP MCP — reach for it
 

@@ -210,124 +210,55 @@ it's churn-prone internal infrastructure — skip it.* See
 
 #### Narrative-bridge corollaries (the `@[deprecated]` shim pattern)
 
-There is a hybrid case between *Include* and *Skip*: a corollary
-that has real value as a **named consequence for the project's
-central object** (e.g. a Laman-specialised form of a sparse-level
-theorem), but whose Lean version is a **one-line composition with
-no downstream Lean caller**. Leaving it prose-only invites silent
-drift (the underlying theorem renames or restates, the prose claim
-silently breaks); landing it as a normal Lean lemma proliferates
-the API surface in a way that competes with the general form.
+A hybrid between *Include* and *Skip*: a corollary worth naming as a
+consequence for the project's central object (e.g. a Laman-specialised
+form of a sparse-level theorem) but whose Lean version is a one-line
+composition with **no downstream caller**. Prose-only invites silent
+drift; a normal lemma proliferates API that competes with the general
+form. The pattern: keep it a full `\begin{corollary}` with `\lean{}` +
+`\leanok`, and formalize the Lean shim under `@[deprecated <general-form>
+(since := "narrative-bridge")]` with the intent in its doc-comment — the
+build still checks the prose (a rename breaks the shim body), the warning
+discourages callsites, the dep-graph greens. (Why the non-date `since`
+sentinel: `CombinatorialRigidity/CLAUDE.md` *Engineering conventions*.)
+Canonical example: `cor:isLaman-exists-rowIndependent` ↔
+`SimpleGraph.IsLaman.exists_rowIndependent_placement`
+(`MatroidIdentification.lean`).
 
-The pattern: keep the corollary as a full `\begin{corollary}` with
-`\lean{...}` and `\leanok` in the blueprint, formalize the Lean
-shim under
-`@[deprecated <general-form> (since := "narrative-bridge")]`,
-and explain the intent in the Lean doc-comment. The
-build-checks-the-prose property is preserved (any rename of the
-general form breaks the shim's body); the deprecation warning
-discourages new callsites; the dep-graph turns green.
-
-The `(since := "narrative-bridge")` value is a **non-date
-sentinel** chosen for two reasons: (i) Lean's attribute warning
-text says `since` may be "the date or library version," so a
-version-shaped string is explicitly sanctioned and silences the
-attribute-time warning + the `deprecatedNoSince` env-linter; (ii)
-mathlib's date-range cleanup tooling (e.g. `#clear_deprecations
-date₁ date₂ really`) walks declarations whose `since` lex-compares
-inside `YYYY-MM-DD`-shaped bounds — `"narrative-bridge"` is
-lex-greater than any realistic upper bound and so is invisible to
-that tooling. See `CombinatorialRigidity/CLAUDE.md`
-*Engineering conventions* for the rationale.
-
-Canonical example (Phase 7 cleanup):
-`cor:isLaman-exists-rowIndependent` (in `rigidity-matroid.tex`)
-↔ `SimpleGraph.IsLaman.exists_rowIndependent_placement` (in
-`MatroidIdentification.lean`, marked
-`@[deprecated SimpleGraph.IsSparse.exists_rowIndependent_placement (since := "narrative-bridge")]`).
-
-**Distinguishing this from genuine specialization API.** Many
-Laman- or dim-2-specialized lemmas in the project — `IsLaman.iso`,
-`IsLaman.exists_two_le_degree_le_three`,
-`IsGenericallyRigid.card_mul_le_two`, etc. — are *real API
-surfaces* with downstream Lean callers, formalized eagerly without
-`@[deprecated]`. Only reach for the shim pattern when the Lean
-genuinely has zero expected callers and exists solely to anchor the
-blueprint's narrative claim. If you find yourself wanting to write
-`@[deprecated]` on a lemma that has callers, the right move is
-either to refactor the callers onto the general form (then deprecate
-the specialization) or to drop the deprecation marker (then it's
-genuine API).
+**Only when the Lean has zero expected callers.** Most specialized
+lemmas (`IsLaman.iso`, `IsGenericallyRigid.card_mul_le_two`, …) are real
+API with callers — formalize them eagerly, no `@[deprecated]`. If you
+want `@[deprecated]` on a lemma that *has* callers, either refactor them
+onto the general form or drop the marker (it's genuine API).
 
 ### Proof verbosity
 
-Match the carleson style: one to three sentences, in English, that
-gesture at the argument without trying to be exhaustive. A reader who
-wants the full proof clicks through to the Lean. Examples in
-`sparsity.tex`:
-- Trivial: "Immediate from the definition."
-- Short: "An edge has both endpoints in $\{v\}^c$ exactly when neither
-  endpoint equals $v$ ..."
-- Multi-step: the proof of `thm:isTightOn-union-inter` is the most
-  detailed in the chapter and runs ~10 lines.
+Match the carleson style: one to three sentences of English gesturing
+at the argument; a reader wanting the full proof clicks to the Lean.
+(Models in `sparsity.tex`: "Immediate from the definition." up to the
+~10-line `thm:isTightOn-union-inter`.)
 
-**First make Lean as painless as the math; only then add prose
-asides.** When a math step turns out harder to formalize than to
-state, the *first* response is to fix the Lean: a better proof
-strategy, an upstreamable helper, sharper mathlib tactic /
-proof-automation use. Only when those attempts fail do we add a brief
-prose aside calling out the residual gap. "The Lean is just verbose"
-is a smell, not a fact of life — friction we accept in the blueprint
-we also accept in the Lean, and the next phase pays for it.
+**First make Lean as painless as the math; only then add prose asides.**
+When a step is harder to formalize than to state, fix the *Lean* first
+(better strategy, an upstreamable helper, sharper automation); only if
+that fails add a brief aside naming the residual gap. "The Lean is just
+verbose" is a smell — friction we accept in the blueprint the next phase
+pays for.
 
-**Be honest about formalization cost.** Don't formalize Lean-tactic
-noise into the prose — the math should read as math. But once the
-Lean-simplification attempts above are exhausted, don't elide the
-residual *substantive* formalization cost either: if a one-line math
-step still expands to a named infrastructure lemma or a non-obvious
-construction in Lean, note that briefly so the prose is a faithful
-map of the formal proof, not a polished version that pretends Lean
-was easy. Use judgment:
-
-- *Omit*: `omega` / `grind` automating arithmetic the prose already
-  shows; `simp` collapses; type-class elaboration; mathlib-level
-  glue that's invisible to the math.
-- *Note*: hand-rolled `Equiv`s for type-level "canonical" moves; a
-  named project-internal helper standing in for what the prose treats
-  as a one-step correspondence; case-splits the Lean had to take that
-  the math wouldn't.
-
-The failure mode to avoid is writing a clean 3-sentence proof that
-suggests "the Lean is the same shape but more verbose" when the Lean
-actually had to grow a substantive piece of infrastructure to land
-that step. A one-clause aside (e.g. *"the formalization builds this
-iso explicitly via a custom `Equiv`-on-`Option`-types"*) keeps the
-math foregrounded while signalling the real cost.
-
-**Anti-pattern: basis-free / coordinatization-deferral narration.**
-The mirror failure of the above is *over*-noting: prose that narrates
-**how the formalization chose to model** an object — "formalized
-basis-free, deferring coordinatization", "we work in the abstract
-graded piece rather than picking a basis", "the Lean keeps this
-coordinate-free and only later identifies it with $\R^D$" — rather
-than what the object *is*. This is **changelog, not math**: it
-records a Lean-modelling decision (basis-free vs coordinatized,
-which representation a later lemma pins down) that a mathematician
-reading the statement does not need and would never write. It tends
-to accrete because each per-commit subagent, having just made that
-modelling choice, narrates it; a chapter written fast across several
-commits then carries one such aside per node. **One clause max, and
-only when the modelling choice is itself load-bearing for a later
-node** (e.g. a downstream lemma genuinely depends on the basis-free
-form); otherwise cut it entirely and state the object directly. This
-is distinct from the *Note* case above: there the aside flags a
-real formalization *cost* the prose would otherwise hide; here the
-aside flags only a *representation choice*, which is invisible to
-the math and belongs in the Lean doc-comment if anywhere. Phase 18's
-`molecular.tex` §2.2–2.4 accumulated four such asides
-(`def:hinge-row-block`, `def:rigidity-matrix`,
-`lem:trivial-motions-rank-bound`, `def:dof-generic`), collapsed in
-the Phase-18 cleanup round; don't reintroduce them.
+**Be honest about formalization cost, both ways.**
+- *Omit* (Lean noise invisible to the math): `omega`/`grind`/`simp`
+  closes, typeclass elaboration, mathlib glue.
+- *Note* (a one-line math step that grew real Lean infrastructure): a
+  hand-rolled `Equiv` for a "canonical" move, a named helper standing in
+  for a one-step correspondence, a case-split the math wouldn't take —
+  one clause, so the prose is a faithful map, not a polished fiction.
+- *Don't over-note* (the basis-free anti-pattern): prose narrating *how
+  the formalization models* an object ("basis-free, deferring
+  coordinatization", "abstract graded piece rather than a basis") is
+  changelog, not math. One clause max, and only when the modelling choice
+  is load-bearing for a later node; else cut it (it belongs in the Lean
+  doc-comment). Phase 18's §2.2–2.4 accreted four such asides — don't
+  reintroduce them.
 
 ## Static checks before commit
 
@@ -351,35 +282,17 @@ The bundled command — and the one to use by default — is:
 blueprint/verify.sh        # runs inv bp, inv web, lake exe checkdecls
 ```
 
-The script handles the cd/PATH/venv plumbing (computes the repo root
-from its own location, falls back to `/Library/TeX/texbin` only if
-`xelatex` isn't already on `PATH`), so it works from any cwd. Its
-final step is `lake exe checkdecls blueprint/lean_decls`; that step
-**prints nothing on success** — silence after the `==> lake exe
-checkdecls …` banner is the green signal, not a missing output.
-Non-zero exit + diagnostic on failure (the failing `\lean{...}` name
-is named in the output).
-
-The longhand, for when the script can't apply (a half-broken venv,
-manual debug iteration, etc.):
-
-```sh
-( cd blueprint && source .venv/bin/activate && inv bp && inv web )
-lake exe checkdecls blueprint/lean_decls   # exit 0, no output, = all names resolve
-```
-
-CI runs the same `checkdecls` command (via `docgen-action`) after
-`leanblueprint web` regenerates `lean_decls`; a missing-declaration
-failure is a hard merge blocker. The most common cause is forgetting
-an enclosing `namespace Foo` in the `\lean{...}` pointer — e.g.
-declarations inside `namespace Henneberg` need
-`SimpleGraph.Henneberg.IsLaman.foo`, not `SimpleGraph.IsLaman.foo`.
-
-`inv web` + `checkdecls` together run in ~15 seconds on this project
-(measured 2026-05); `blueprint/verify.sh` runs the additional `inv
-bp` pass and totals ~30–45 seconds. Either is the everyday path, not
-a heavy-machinery fallback. Don't reach for grep-only alternatives to
-dodge perceived build cost; the authoritative check is fast enough.
+The script handles cd/PATH/venv plumbing and works from any cwd; its
+final `checkdecls` step **prints nothing on success** (silence after the
+`==> lake exe checkdecls` banner = green; non-zero + the failing
+`\lean{...}` name on failure). Longhand when the script can't apply:
+`( cd blueprint && source .venv/bin/activate && inv bp && inv web )` then
+`lake exe checkdecls blueprint/lean_decls`. CI runs the same check
+(`docgen-action`); a missing-declaration failure is a hard merge blocker.
+Most common cause: a missing enclosing `namespace` in the `\lean{...}`
+pointer (`SimpleGraph.Henneberg.IsLaman.foo`, not
+`SimpleGraph.IsLaman.foo`). `inv web` + `checkdecls` run in ~15s,
+`verify.sh` ~30–45s — the everyday path, fast enough; don't substitute grep.
 
 **All `\uses{...}` and `\Cref{...}` labels are defined:**
 
@@ -585,61 +498,27 @@ the same recipe applies, but:
 
 ### Extending an existing chapter (later phase adds to an earlier file)
 
-When a later phase adds infrastructure to a file whose chapter
-already exists — e.g. Phase 5 added iso transport, openness, and
-the `IsGenericallyRigidInj` predicate to `Framework.lean`, and added
-the reverse-decomposition theorem to `Henneberg.lean` — the new
-entries land in the **same commit** as the phase backfill that
-introduces them, and they are **interleaved topically** into the
-existing chapter rather than appended at the end.
+When a later phase adds infrastructure to an existing chapter's file, the
+new entries land in the **same commit** as the work and are **interleaved
+topically** — the reader sees natural mathematical order, not the order
+phases landed (phase history goes in commit messages). (Phase 5 inserted
+`IsGenericallyRigidInj` + new subsections mid-chapter into
+`frameworks.tex`/`henneberg.tex`, not appended.)
 
-Concretely, the Phase 5 backfill (commit `3e8d0f4`):
-- Inserted the `IsGenericallyRigidInj` definition into
-  `frameworks.tex`'s existing *Definitions* subsection.
-- Added new *Transport along graph isomorphism* and *Openness of
-  infinitesimal rigidity* subsections to `frameworks.tex`.
-- Inserted `typeI_reverse_isLaman` and `typeI_isLaman_iff` into
-  `henneberg.tex`'s existing *Preservation of the Laman property*
-  subsection, then added a new *Decomposition: Laman half*
-  subsection alongside the existing *iso half*.
+A more aggressive variant — **restating entries in place** — applies when a
+phase reshapes a blueprinted signature (e.g. Phase 11's `Option` →
+`PebbleGameResult`): node-level edits land per Layer commit, the chapter
+spends a few commits with selected nodes red, and a reshaped node stays
+where it was (an *inserted* node goes in its natural position). See
+`../notes/PhaseN.md` *Layer plan* in structural-edit phases.
 
-The reader navigating the chapter should see entries in the natural
-mathematical order, not in the order phases happened to land them.
-Phase-history information belongs in commit messages, not in chapter
-structure.
-
-A more aggressive variant is **restating existing entries in
-place**: when a phase reshapes the return type or signature of an
-already-blueprinted algorithm — e.g. Phase 11's `Option` →
-`PebbleGameResult` reshape of `def:tryAddEdge` / `def:runPebbleGame`
-/ `def:runPebbleGameExec` — the node-level edits land alongside the
-matching Lean per Layer commit, not as a phase backfill at the end.
-The affected chapter spends a few Layer commits with selected nodes
-red until their Lean catches up; this is forward-mode discipline
-applied to an existing chapter rather than a new one. The
-mathematical-order rule above still holds: a reshaped node stays
-where it was; an inserted node (e.g. Phase 11's
-`def:workhorseWitness` in `chapter/pebble-game.tex`'s *Completeness*
-subsection) goes in its natural mathematical position, not at the
-end. See `../notes/PhaseN.md`'s *Layer plan* section in
-structural-edit phases for the per-Layer node-level work.
-
-**Keep the reshape history out of the prose.** The per-Layer
-scheduling — "Phase 11 Layer 3 reshape; was `some D'`", "Layer 4b —
-maximal reshape", "Layer 0 audit #1" — is changelog: it belongs in
-the commit message and `../notes/PhaseN.md`, never in the chapter a
-mathematician reads. A restated node must read as if its *current*
-shape were always the shape; the reader does not care that the return
-type was an `Option` two Layers ago, or which lemmas were retired when
-it changed. Same for Lean-internal plumbing in a definition body
-(`Quot.out`, `Finset.toList`, `toSucc` agreement witnesses, the
-`match h:` substitution quirk): state the computable-wrapper /
-`noncomputable`-wrapper split in one sentence and let the reader click
-through to Lean for the rest, exactly as the carleson *Proof
-verbosity* convention prescribes. Phase 11's first pass violated this
-across `chapter/{pebble-game,executable,dfs}.tex` and `intro.tex`; the
-2026-05 readability pass stripped it. Don't re-introduce it on the
-next structural-edit phase.
+**Keep reshape/phase history out of the prose.** Per-Layer scheduling ("was
+`some D'`", "Layer 4b") and Lean-internal plumbing (`Quot.out`,
+`Finset.toList`, agreement witnesses) are changelog — a restated node must
+read as if its *current* shape were always the shape; state any
+computable/`noncomputable` split in one sentence and click through for the
+rest. (Phase 11's first pass violated this; the 2026-05 readability pass
+stripped it — don't reintroduce it.)
 
 ### Macros
 
