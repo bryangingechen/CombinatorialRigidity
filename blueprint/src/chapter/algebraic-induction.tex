@@ -970,20 +970,30 @@ Cases~I and~II travel toward the smaller inductive graph.
   (carry-forward~1; see \cref{thm:minimal-kdof-reduction}, whose contraction
   branch is handed only the \emph{existence} of a rigid subgraph plus the
   strong induction hypothesis), so the producer must itself name $G/E(H)$ and
-  prove its minimality to invoke the hypothesis. \emph{Red (Phase 21b build
-  target, gating \cref{lem:case-I-realization}); build-shaped but nontrivial.}
+  prove its minimality to invoke the hypothesis. \emph{Red (Phase~22 target,
+  gating \cref{lem:case-I-realization}); a several-node Whitney-style build, not
+  the single-commit node earlier prose implied} --- see the proof.
 \end{lemma}
 \begin{proof}
   Unfold $\mathrm{IsMinimalKDof}$ (deficiency $0$ and every base meeting every
-  surviving edge-fiber) through the matroid $\mathrm{matroidMG}$ of $G/E(H)$.
-  Identify that matroid with $M(\tilde G)/E(\tilde H)$ via a
-  $\mathrm{matroidMG}$-of-a-mapped-graph correspondence (the
-  $\mathrm{deleteEdges}$ drops $E(H)$, the
-  $\mathrm{map}\,(\mathrm{collapseTo}\,r\,V(H))$ relabels vertices without
-  changing the surviving edge-fibers), then transport
-  \cref{lem:contraction-minimality} across the identification. The
-  correspondence is the deferred graph$\leftrightarrow$matroid map.
-  \emph{Deferred} (Phase~21b).
+  surviving edge-fiber) through the matroid $\mathrm{matroidMG}$ of $G/E(H)$, and
+  identify that matroid with $M(\tilde G)/E(\tilde H)$. The identification is the
+  deferred graph$\leftrightarrow$matroid map, and it is the genuine content: the
+  \emph{graph} $G/E(H) = (G \setminus E(H))$ with $V(H)$ collapsed to $r$
+  \emph{deletes} the edges $E(H)$ and \emph{relabels} vertices (a pure
+  $\mathrm{map}$, since $E(G\setminus E(H))$ is disjoint from $E(H)$), whereas the
+  \emph{matroid} $M(\tilde G)/E(\tilde H)$ \emph{contracts} the fibers
+  $E(\tilde H)$. Reconciling them is the classical Whitney identity
+  ``contracting a connected edge set in the cycle matroid $=$ collapsing its
+  vertex set in the graph'', which (i) needs $\tilde H$ connected on $V(H)$ to
+  license the collapse ($0$-dof $\Rightarrow$ connected, by the cut-partition
+  argument of \cref{lem:two-edge-conn}), and (ii) does \emph{not} follow from the
+  per-cycle-matroid contraction lemma alone, since $\mathrm{Union}$ does not
+  commute with contraction. The realizable route is independence-level
+  ($\mathrm{ext\_indep}$), routing both sides through the $(D,D)$-sparsity
+  characterization $\mathrm{matroidMG\_indep\_iff}$ and the contraction-independence
+  characterization (a $(D,D)$-boundary rank-of-contraction count). \emph{Deferred}
+  (Phase~22 realization layer).
 \end{proof}
 
 \begin{lemma}[Case I realization: the contraction producer; KT eqs.\ (6.2), (6.6)]

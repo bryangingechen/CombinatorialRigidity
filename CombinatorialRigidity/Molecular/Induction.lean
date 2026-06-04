@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Bryan Gin-ge Chen
 -/
 import CombinatorialRigidity.Molecular.Deficiency
+import Matroid.Graph.Minor.Defs
 
 /-!
 # The combinatorial induction: graph operations and Theorem 4.9 (`sec:molecular-induction`)
@@ -1886,6 +1887,20 @@ lemma rigidContract_vertexSet_ncard_lt [Finite α] {G H : Graph α β} {r : α}
           Set.ncard_diff hHsub (Set.toFinite _)
         have hVH : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
         omega
+
+/-- **Rigid-subgraph contraction is mathlib's graph contraction** (graph-side brick of
+`lem:rigidContract-isMinimalKDof`). The project's `rigidContract G H r =
+(G ＼ E(H)).map (collapseTo r V(H))` (delete-then-relabel) coincides with the vendored
+`apnelson1/Matroid` graph contraction `(G ＼ E(H)) /[E(H), collapseTo r V(H)]`. The vendored
+contraction `H' /[C, φ]` is `(φ ''ᴳ H') ＼ C`, but `H' = G ＼ E(H)` already has its edge set
+`E(G) \ E(H)` disjoint from `C = E(H)`, so the trailing `＼ E(H)` is a no-op and
+`contract_eq_map_of_disjoint` collapses it to the bare `map` form. This brick is the entry
+point of the graph↔matroid bridge for `lem:rigidContract-isMinimalKDof`: it puts
+`rigidContract` in the shape `cycleMatroid_contract` (and the `Matroid.Union`-of-`cycleMatroid`
+substrate of `matroidMG`) is stated against. -/
+lemma rigidContract_eq_contract (G H : Graph α β) (r : α) :
+    G.rigidContract H r = (G.deleteEdges E(H)) /[E(H), collapseTo r V(H)] := by
+  rw [contract_eq_map_of_disjoint (by simpa using Set.disjoint_sdiff_left), rigidContract]
 
 /-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
 

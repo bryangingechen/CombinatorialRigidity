@@ -471,16 +471,23 @@ tracks; the first is the tractable entry point. (Math for both worked out in
 `notes/Phase21b.md` *Finding A/B*; the green Phase-21b infra — device, count
 bridge, N7b row sub-nodes, splice/union glue — feeds them.)
 
-**N4 constructibility recon (at phase open):** N4
-`lem:rigidContract-isMinimalKDof` is heavier than the "build-shaped, natural
-first commit" label below. It is the graph↔matroid correspondence Phase 20
-deliberately deferred, and `Matroid.Union` does not commute with contraction
-(so the per-cycle-matroid `cycleMatroid_contract` does not push through the
-`D`-fold union of `M(G̃)`). The viable route is independence-level
-(`Matroid.ext_indep` against `matroidMG_indep_iff`, mirroring how
-`matroidMG_restrict_mulTilde` handled restriction). Budget it as a several-node
-sub-build; N4 gates only N6, so N5 / Track B may go first if it stalls. Detail:
-`notes/Phase22.md` *N4 constructibility recon*.
+**N4 constructibility recon (two passes; the second sharpened it).** N4
+`lem:rigidContract-isMinimalKDof` is **not** the "build-shaped, natural first
+commit" the node line below still labels it. It is the graph↔matroid
+correspondence Phase 20 deferred, and the second recon found the obstruction is
+deeper than "`Matroid.Union` does not commute with contraction": the
+per-cycle-matroid `cycleMatroid_contract` does not even *apply* — the graph
+`rigidContract` is a vertex-relabel `map` with `E(H)` *deleted*, the matroid side
+*contracts* `E(H̃)`, and reconciling them is the Whitney "connected-contraction =
+vertex-collapse" identity (no vendored `cycleMatroid`-under-`map` lemma exists).
+It is a **several-node Whitney-style build** (connectivity-of-`H̃` → cycleMatroid
+under collapse → union-level `ext_indep` against `matroidMG_indep_iff` +
+contraction-independence), bottoming on **0-dof ⟹ connected** (provable via the
+`cutLabeling` machinery of `two_le_crossingEdges_of_isKDof_zero`). **Neither N4
+nor N5 is a clean single-session node** (N5 is research-shaped per its own
+blueprint note); the unblocking first commit is the leaf brick **N4a (0-dof ⟹
+connected)**. Detail + decomposition: `notes/Phase22.md` *Current state* /
+*N4 constructibility recon* / *Hand-off*.
 
 **Track A — Case I producer (full-rank, KT §6.2).** Independent of Case III;
 reaches full `D(|V|−1)` with no shortfall (the contracted vertex's two
@@ -488,7 +495,8 @@ boundary hinges give `+D` via Lemma 5.3 / the splice). Nodes:
 - **N4 `lem:rigidContract-isMinimalKDof`** — graph↔matroid contraction-
   minimality bridge (matroid side `contraction_isMinimalKDof` green; content
   = the `matroidMG`-of-`(map ∘ deleteEdges)` correspondence). Phase-20
-  carry-forward, build-shaped. **The natural first commit.**
+  carry-forward, **several-node Whitney-style build** (see the recon above,
+  not "build-shaped"); leaf brick N4a (0-dof ⟹ connected) is the next commit.
 - **N5 `lem:case-I-splice-placement`** — splice the inductive legs `(H,p₁)`,
   `(G/E',p₂)` along boundary hinges at panel intersections (eq. 6.6); needs a
   *panel-transversality* lemma (two generic `(d−1)`-panels meet in a
