@@ -34,6 +34,7 @@ pass then re-scoped the algebraic induction's realization \emph{producers}
 to Phases~22--23, so the Theorem~5.5 capstone \texttt{thm:theorem-55} and
 \texttt{prop:rigidity-matrix-prop11} remain green-modulo-22--23 (they await
 the producers and the genericity-free \texttt{hub} partition brick).
+\textbf{Phase~22} (in progress) opens that realization layer.
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
@@ -317,6 +318,22 @@ per-phase breakdown:
         \emph{Complete.} (Node:
         \cref{lem:genericity-device}; file:
         \texttt{Molecular/AlgebraicInduction.lean}.)
+  \item \textbf{Realization layer: Case~I + Case~III at $d=3$ (Phase~22).}
+        The Theorem~5.5 case \emph{producers} the genericity device feeds,
+        re-scoped out of Phase~21b. Two tracks: Track~A, the Case~I producer
+        --- the full-rank rigid-subgraph splice
+        (Katoh--Tanigawa~\cite[\S6.2]{katohTanigawa2011}: the graph/matroid
+        contraction-minimality bridge \cref{lem:rigidContract-isMinimalKDof},
+        the boundary-hinge splice placement
+        \cref{lem:case-I-splice-placement}, and the composer
+        \cref{lem:case-I-realization}); and Track~B, the Case~II/III
+        reducible-vertex producer at $d=3$ (\S6.3, \S6.4.1: the degenerate
+        eq.~(6.12) placement on the green row infrastructure, one row short for
+        $k=0$, completed by the redundant-edge row of Lemma~6.10). A
+        structural-edit phase extending
+        \cref{sec:molecular-algebraic-induction} rather than opening a new
+        chapter. \emph{In progress.} (File:
+        \texttt{Molecular/\{Induction,AlgebraicInduction\}.lean}.)
 \end{enumerate}
 
 \subsection*{Reading this blueprint}
@@ -390,5 +407,10 @@ research-shaped boundary-panel geometry. \emph{Green-modulo-22--23
 (awaiting the producers and the genericity-free \texttt{hub} partition
 brick):} the capstone \cref{thm:theorem-55} and the generic-rank
 reconciliation \cref{prop:rigidity-matrix-prop11}; plus Case~III
-(\cref{lem:case-III}), all in Phases~22--23. Phases~22--26 remain to be
-opened.
+(\cref{lem:case-III}), all in Phases~22--23. \textbf{Phase~22}
+(\cref{sec:molecular-algebraic-induction}, in progress) opens the
+realization layer: the Case~I splice producer
+(\cref{lem:rigidContract-isMinimalKDof,lem:case-I-splice-placement,%
+lem:case-I-realization}) and the Case~II/III reducible-vertex producer
+(\cref{lem:case-II-realization,lem:case-III}), which stay red until their
+constructions land. Phases~23--26 remain to be opened.

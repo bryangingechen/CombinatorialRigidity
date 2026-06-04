@@ -20,7 +20,13 @@ short of full rank via eq. (6.12) and needs the Lemma 6.10/6.13 redundant-edge
 row); only the rigid-subgraph contraction (Case I) reaches full rank. The KT
 math for both producers is worked out in `notes/Phase21b.md` *Finding A/B* +
 *Hand-off to Phases 22–23* and folded into the *Phase 22+* plan below.
-Phases 22–26 planned. This is the program design for
+**Phase 22 is in progress** (opened 2026-06-04; see `notes/Phase22.md`): the
+realization layer — Track A (Case I splice producer, KT §6.2) + Track B (the
+Case II/III reducible-vertex producer at `d=3`). A constructibility recon on its
+first node N4 (`lem:rigidContract-isMinimalKDof`) found the graph↔matroid
+contraction bridge heavier than the launch-plan "build-shaped" label
+(`Matroid.Union` does not commute with contraction — route is independence-level
+`ext_indep`). Phases 23–26 planned. This is the program design for
 Phases 17–26 and the runbook for threading the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
@@ -213,7 +219,7 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 21a ✓ | **GC meet / projective-duality foundations** (the dual half of §2.1): `topEquiv`, `pairingDual`-iso, `complementIso`, `meet` — the substrate the panel layer + Lemma 5.4 + Phase 25 rest on | §2.1 (dual half) | 1 |
 | 21 ✓ | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8), closing on the **genericity-free** content; **+ panel layer** (coplanar realizations). Genericity (Claim 6.4/6.9) enters as a cited black-box. | §5, §6.1–6.3 | 5 |
 | 21b ✓ | **Genericity device** (Claim 6.4/6.9) + genericity-free accounting iffs + `V(G)`-relative count bridges. The realization *producers* re-scoped to 22–23 (math-first pass: the k=0 split is KT Case III, one row short via eq. 6.12; Case I splice is full-rank). | §6.1 (Claim 6.4), §6.3 (Claim 6.9) | 5 |
-| 22 | **Realization layer + Case III, `d=3`.** Case I producer (§6.2 splice: full-rank, N4 contraction bridge + N5 panel-transversality splice) + Case II/III reducible-vertex producer (eq. 6.12 degenerate placement + the Case-III extra row); **Lemma 6.10** (Claim 6.11 combinatorial↔linear, Claim 6.12 extensor-span genericity, 3 candidates) | §6.2, §6.4.1 | 5 |
+| 22 ◑ | **Realization layer + Case III, `d=3`.** Case I producer (§6.2 splice: full-rank, N4 contraction bridge + N5 panel-transversality splice) + Case II/III reducible-vertex producer (eq. 6.12 degenerate placement + the Case-III extra row); **Lemma 6.10** (Claim 6.11 combinatorial↔linear, Claim 6.12 extensor-span genericity, 3 candidates) | §6.2, §6.4.1 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
@@ -457,13 +463,24 @@ the consumers `\uses` it.
 - Final state + the KT math for both producers (Finding A/B) + the 22–23
   hand-off live in `notes/Phase21b.md`.
 
-#### Phase 22 — Realization layer (Case I + Case III at `d=3`) (§6.2, §6.4.1)
+#### Phase 22 — Realization layer (Case I + Case III at `d=3`) (§6.2, §6.4.1) — ◑ In progress
 
-Opens the realization layer re-scoped out of Phase 21b — the Theorem-5.5
-case producers the genericity device feeds. Two tracks; the first is the
-tractable entry point. (Math for both worked out in `notes/Phase21b.md`
-*Finding A/B*; the green Phase-21b infra — device, count bridge, N7b row
-sub-nodes, splice/union glue — feeds them.)
+Opened 2026-06-04 (`notes/Phase22.md`). The realization layer re-scoped out of
+Phase 21b — the Theorem-5.5 case producers the genericity device feeds. Two
+tracks; the first is the tractable entry point. (Math for both worked out in
+`notes/Phase21b.md` *Finding A/B*; the green Phase-21b infra — device, count
+bridge, N7b row sub-nodes, splice/union glue — feeds them.)
+
+**N4 constructibility recon (at phase open):** N4
+`lem:rigidContract-isMinimalKDof` is heavier than the "build-shaped, natural
+first commit" label below. It is the graph↔matroid correspondence Phase 20
+deliberately deferred, and `Matroid.Union` does not commute with contraction
+(so the per-cycle-matroid `cycleMatroid_contract` does not push through the
+`D`-fold union of `M(G̃)`). The viable route is independence-level
+(`Matroid.ext_indep` against `matroidMG_indep_iff`, mirroring how
+`matroidMG_restrict_mulTilde` handled restriction). Budget it as a several-node
+sub-build; N4 gates only N6, so N5 / Track B may go first if it stalls. Detail:
+`notes/Phase22.md` *N4 constructibility recon*.
 
 **Track A — Case I producer (full-rank, KT §6.2).** Independent of Case III;
 reaches full `D(|V|−1)` with no shortfall (the contracted vertex's two
@@ -624,20 +641,21 @@ Jackson–Jordán [13], conjecture-resolution to KT.
 
 ## Opening the next phase
 
-Phases 17–21b + 21a are complete. The Phase 1–21b dependency graph is
-green except the realization producers, Case III, and
+Phases 17–21b + 21a are complete; **Phase 22 is now open** (2026-06-04;
+work log `notes/Phase22.md`). The Phase 1–21b dependency graph is green
+except the realization producers, Case III, and
 `prop:rigidity-matrix-prop11`'s `hub` brick — which together are the
-**Phase 22–23 realization layer**. **Next is Phase 22 — the realization
-layer (Case I + Case III at `d=3`); its launch plan, node list, and first
-commit (N4 `lem:rigidContract-isMinimalKDof`) are in the *Phase 22* detail
-above, and the KT math is worked out in `notes/Phase21b.md` *Finding A/B*
-(Phase 22 formalizes it, does not re-derive).**
+**Phase 22–23 realization layer**. The phase-open commit created
+`notes/Phase22.md`, flipped the ROADMAP row to *in progress*, and synced
+`README.md` / `home_page/index.md` / `blueprint/src/chapter/intro.tex`
+(extending — not adding — `algebraic-induction.tex`, per the structural-edit
+discipline in `blueprint/CLAUDE.md`).
 
-Unlike Phases 17–20, Phase 22 does **not** open a new blueprint chapter:
-its producers (N4/N5/N6, the Case II/III producer) **extend the existing
-`algebraic-induction.tex`** — their nodes are already stubbed red there —
-so it follows the *extend-an-existing-chapter / structural-edit* discipline
-(`blueprint/CLAUDE.md`), not the one-chapter-per-phase recipe 17–20 used.
-On open, per top-level `CLAUDE.md` *When this commit opens a phase*: create
-`notes/Phase22.md`, flip the ROADMAP row to *in progress*, and sync
-`README.md` / `home_page/index.md` / `blueprint/src/chapter/intro.tex`.
+**Next concrete commit inside Phase 22:** N4 `lem:rigidContract-isMinimalKDof`
+(see the *Phase 22* detail above + the **N4 constructibility recon** flagging
+it as a several-node sub-build, not a one-commit node), *or* N5
+`lem:case-I-splice-placement` if N4's union↔contraction bridge proves too large
+for one session (N4 gates only N6). The KT math for both producers is worked
+out in `notes/Phase21b.md` *Finding A/B* — Phase 22 formalizes it, does not
+re-derive it. When Phase 22 closes, follow `CLAUDE.md` *When this commit closes
+a phase* and re-sync this doc (phase table, the Phase 22 detail, this section).

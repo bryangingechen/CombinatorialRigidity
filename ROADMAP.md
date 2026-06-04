@@ -116,7 +116,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 21. Algebraic induction: Thm 5.5 base + Cases I & II | `Molecular/AlgebraicInduction.lean` (KT §5, §6.1–6.3) | ✓ Complete (GREEN-modulo-21b; see `notes/Phase21.md`) — all genericity-free content green: the panel layer + regime-agnostic rank nodes, the four Lean pieces of `lem:cycle-realization`, Case I (`lem:case-I`) + Case II (`lem:case-II`) iff-realizations, the capstone induction `thm:theorem-55`, and the analytic half of KT Prop 1.1 `prop:rigidity-matrix-prop11`. Each node that needs the shared analytic crux Claim 6.4/6.9 takes it as an explicit hypothesis (`hglue`/`hspan`/`hub`/`hgen`), so the device is scoped into sub-phase **21b** and the surrounding reductions are fully formal modulo it. Case III deferred to 22–23. |
 | 21a. Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` (KT §2.1 dual half) + mirror lemmas | ✓ Complete — all four deliverables green (`screwAlgebraTopEquiv`, `screwAlgebraPairingDualEquiv`, `complementIso`, `meet`); the meet is the Grassmann–Cayley dual of the Phase-17 join, `*(*A ∨ₑ *B)` over the general-grade product `gradedMul`, with `* = complementIso` (closed via the signed-permutation pairing matrix ⇒ `wedgePairing_injective` + equal finrank). `meet_ne_zero_iff` / geometric reading deferred to the Phase-21 consumers. Mirrors under `Mathlib/LinearAlgebra/ExteriorPower/Basis.lean` + `Mathlib/Data/Finset/Card.lean`. See `notes/Phase21a.md`; dep-graph `meet.tex` `sec:molecular-meet`. |
 | 21b. Genericity device (Claim 6.4/6.9) | `Molecular/AlgebraicInduction.lean` + `Mathlib/{Algebra/MvPolynomial,LinearAlgebra/Matrix}/` (+ `algebraic-induction.tex`) | ✓ Complete (closed 2026-06-04; see `notes/Phase21b.md`) — the analytic sibling of 21a, scoped out of Phase 21 (risk #4/#7). **Delivered green + axiom-clean:** the **genericity device** `lem:genericity-device` (multivariate Claim 6.4/6.9, route (a) on the `exists_…_polynomial` engine) applied to the varying panel family via the **B0 keystone** `lem:rows-polynomial-in-normals`; the genericity-free accounting iffs `lem:case-I`/`lem:case-II`; the **`V(G)`-relative count bridge N1–N3** + device-to-motive glue N7a; the Case-I splice glue `lem:case-I-splice-seed`; and the reusable Case-II row sub-nodes N7b-0/1/2/3. **The realization producers were re-scoped to Phases 22–23** after a math-first feasibility pass (vs. KT §6.2–6.3): the project's `hsplit` (k=0 degree-2 split, full rank) is **KT Case III** — eq. (6.12) is one row short for k=0 and needs the Lemma 6.10/6.13 redundant-edge row (the blueprint `lem:case-II` "k>0" prose was a conflation, now corrected); and the Case-I splice producer (KT §6.2, full-rank/tractable but research-shaped geometry: the panel-transversality + block-triangular splice) belongs with the realization layer. `thm:theorem-55` / `prop:rigidity-matrix-prop11` / `lem:case-III` flip in 22–23. The green infra (esp. N7b row sub-nodes + N7a + the device) feeds those producers. See `notes/MolecularConjecture.md` *Phase 21b*; `DESIGN.md` *Realization motive must be V(G)-relative* + *Forward-mode reduction chains* + *Genericity device …* + *Constructibility recon before a producer build* + *Phase Case-naming vs. KT's k-bookkeeping*. |
-| 22–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
+| 22. Realization layer (Case I + Case III at `d=3`) | `Molecular/{Induction,AlgebraicInduction}.lean` (extends `algebraic-induction.tex`) | ◑ In progress (opened 2026-06-04; see `notes/Phase22.md`) — the Theorem-5.5 case *producers* the Phase-21b genericity device feeds; Track A (Case I, full-rank splice, KT §6.2: N4/N5/N6) + Track B (Case II/III reducible-vertex producer at `d=3`, KT §6.3+§6.4.1: eq. 6.12 + Lemma 6.10). **N4 constructibility recon (`notes/Phase22.md`): the graph↔matroid contraction bridge is heavier than "build-shaped" — `Matroid.Union` does not commute with contraction, so the route is independence-level (`ext_indep`), not a union identity.** |
+| 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
 that phase, hand-off notes) live under `notes/PhaseN.md`. Read those
@@ -704,6 +705,39 @@ to Phases 22–23. Forward-mode; dep-graph `algebraic-induction.tex`
 hinge-coplanar body-hinge* + *Genericity device (Claim 6.4/6.9) is its own
 sub-phase (Phase 21b)*; program-level plan in `notes/MolecularConjecture.md`
 *Phase 21* / *Phase 21b*.
+
+### Phase 22 — Realization layer (Case I + Case III at `d=3`) (KT §6.2, §6.4.1)
+
+**Status (◑ In progress; opened 2026-06-04; see `notes/Phase22.md`).** Opens the
+realization layer re-scoped out of Phase 21b: the Theorem-5.5 case *producers*
+the genericity device feeds. Phase 21b closed the genericity-free reductions and
+the device; Phase 22 builds the constructions that discharge `theorem_55`'s
+`hcontract` (Case I) and `hsplit` (Case II/III) premises. The KT math for both
+producers is worked out in `notes/Phase21b.md` *Finding A/B* — Phase 22
+formalizes it. **Structural-edit phase:** no new blueprint chapter; the producer
+nodes (N4/N5/N6, the Case II/III producer) **extend `algebraic-induction.tex`**,
+where they are already stubbed red. Two tracks:
+
+- **Track A — Case I producer (full-rank, KT §6.2):** N4
+  `lem:rigidContract-isMinimalKDof` (graph↔matroid contraction-minimality bridge)
+  → N5 `lem:case-I-splice-placement` (boundary-hinge splice + panel-transversality)
+  → N6 `lem:case-I-realization` (compose + device). Independent of Case III;
+  reaches full `D(|V|−1)`.
+- **Track B — Case II/III reducible-vertex producer at `d=3` (the crux, KT §6.3
+  + §6.4.1):** the eq. (6.12) degenerate placement (the green N7b row infra feeds
+  it) gives `+(D−1)`, one short; **Lemma 6.10** (Claim 6.11 combinatorial↔linear
+  + Claim 6.12 extensor-span genericity via Phase-17 Lemma 2.1) supplies the
+  missing row.
+
+**N4 constructibility recon (`notes/Phase22.md`):** the launch-plan "build-shaped,
+the natural first commit" framing for N4 was optimistic — N4 is the graph↔matroid
+correspondence Phase 20 deliberately deferred, and `Matroid.Union` does not
+commute with contraction, so the route is an independence-level `ext_indep`
+bridge (mirroring `matroidMG_restrict_mulTilde` for restriction), not a union
+identity. Budget accordingly; N4 gates only N6, so N5 / Track B can go first if
+N4 stalls. Per-node detail + decisions: `notes/Phase22.md` and
+`notes/MolecularConjecture.md` *Phase 22*; dep-graph `algebraic-induction.tex`
+`sec:molecular-algebraic-induction`.
 
 ## Engineering conventions
 

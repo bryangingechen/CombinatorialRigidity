@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–21b + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; a math-first pass re-scoped the algebraic-induction realization producers to Phases 22–23, where they join Case III); Phases 22–26 planned.**
+* **Phases 1–21b + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges); Phase 22 in progress — the algebraic-induction realization producers (Case I splice + the Case II/III reducible-vertex producer, where Case III is the deferred crux); Phases 23–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -241,6 +241,14 @@ project; commit history is preserved with paths rewritten.
   subgraph splice producer (full-rank but research-shaped geometry) belongs with
   the realization layer. See `notes/Phase21b.md` and
   `notes/MolecularConjecture.md`.
+
+* **Phase 22 (in progress)** — opens the **realization layer** re-scoped out of
+  Phase 21b: the Theorem-5.5 case *producers* the genericity device feeds. Two
+  tracks — Track A (Case I producer, the full-rank rigid-subgraph splice, KT
+  §6.2) and Track B (the Case II/III reducible-vertex producer at `d=3`, KT §6.3
+  + §6.4.1, with Case III the deferred crux Lemma 6.10). A structural-edit phase
+  extending `algebraic-induction.tex` (no new chapter). See `notes/Phase22.md`
+  and `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

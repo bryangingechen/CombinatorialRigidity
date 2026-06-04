@@ -28,7 +28,9 @@ layer, and **Phase 21b (complete)** delivered the shared **genericity device**
 accounting and the `V(G)`-relative count bridges; a math-first feasibility pass
 then **re-scoped the realization *producers* of Theorem 5.5 to Phases 22–23**,
 where the reducible-vertex split is recognised as Katoh–Tanigawa's Case III and
-joins the deferred crux; **the body-bar
+joins the deferred crux. **Phase 22 (in progress)** opens that realization
+layer — the Case I splice producer and the Case II/III reducible-vertex
+producer. **The body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -212,6 +214,13 @@ for `k=0`, needing the redundant-edge row of Lemma 6.10/6.13), and the rigid-
 subgraph splice producer (full-rank but research-shaped boundary-panel geometry)
 joins the realization layer.
 
+**Phase 22 (in progress)** opens that realization layer: the Theorem-5.5 case
+*producers* the genericity device feeds. Two tracks — Track A (the Case I
+producer, the full-rank rigid-subgraph splice, Katoh–Tanigawa §6.2) and Track B
+(the Case II/III reducible-vertex producer at `d=3`, §6.3 + §6.4.1, with Case III
+the deferred crux Lemma 6.10). A structural-edit phase extending the
+algebraic-induction chapter rather than opening a new one.
+
 The development is divided into the phases below, with Lean source
 under
 [`CombinatorialRigidity/`](https://github.com/bryangingechen/CombinatorialRigidity/tree/master/CombinatorialRigidity)
@@ -243,6 +252,7 @@ existing files or refactor across several).
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction.lean` | ✓ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
 |   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction.lean` (+ `lem:genericity-device`) | ✓ |
+|    22 | Realization layer: Case I splice producer + Case II/III reducible-vertex producer (`d=3`) | `Molecular/{Induction,AlgebraicInduction}.lean` | ◑ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
