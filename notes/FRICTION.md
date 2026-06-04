@@ -76,6 +76,19 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Canonical edge endpoint selector `Graph.endsOf` — the repeated `obtain ⟨x, y, hlink⟩ := exists_isLink_of_mem_edgeSet …` pattern
+- **Where it bit:** the from-scratch panel realization `PanelHingeFramework.ofParam G ends param`
+  (Phase 21b) takes an `ends : β → α × α` selector; Case I needs it consistent with the graph
+  (`IsLink e (ends e).1 (ends e).2`). The per-edge endpoint-choice idiom
+  `obtain ⟨x, y, hlink⟩ := exists_isLink_of_mem_edgeSet he` recurs ~a dozen times across
+  `Molecular/Induction.lean`, `BodyBar/TreePacking.lean`.
+- **Fix:** landed `Graph.endsOf` (`Classical.choice` on the `IsLink` existence, junk off `E(G)`)
+  with `isLink_endsOf` (genuine link on every edge) and `endsOf_eq_or_swap` (matches any named link
+  up to order, via `IsLink.eq_and_eq_or_eq_and_eq` + `Prod.ext`) in `Molecular/Induction.lean`.
+  The canonical `ends` argument for `ofParam`.
+- **Status:** resolved (project-internal `Graph` primitive; `[Inhabited α]` for the junk default).
+  Could be mirrored upstream if a use outside the molecular phase appears.
+
 ### [resolved] Showing the subfamily of `Sum.elim r a₀` indexed by `range Sum.inl` *is* `r` — reindex via `Set.rangeSplitting`, not a hand-rolled `Subtype.ext`
 - **Where it bit:** `hglue_of_independent_rigidityRows` in
   `Molecular/AlgebraicInduction.lean` (Phase 21b Case-I consumer bridge): the

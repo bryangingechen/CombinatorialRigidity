@@ -106,7 +106,13 @@ constraints vacuous, so the block pin is unchanged by the deletion
 realization forces the parent's block pin to vanish. So the residual now reduces to *exhibiting* both
 geometric witnesses on a concrete `ofParam` realization — the rigid block subgraph and the
 block-internal-deletion subgraph (the contraction `G/E(H)`) realized at its inductive full rank —
-plus the `ends`/count gluing.
+plus the `ends`/count gluing. The **graph-side `ends` selector leaf is now landed**: `Graph.endsOf`
+(+ `isLink_endsOf`, `endsOf_eq_or_swap`) in `Induction.lean` is the canonical endpoint selector
+`ofParam G ends param` consumes — a genuine link on every edge, matching any named forest-hinge link
+up to order — replacing the repeated inline `obtain ⟨x, y, hlink⟩ := exists_isLink_of_mem_edgeSet`
+choice. This is the reusable graph primitive the producer's `hlink`/`hends` plumbing builds on; the
+remaining residual is the genuinely-geometric block-rigidity / contraction-transport witnesses (each
+bottoming on the genericity device, since rigidity is panel-dependent) plus the count `hmatch`.
 
 ## Architectural choices made up front
 
@@ -182,6 +188,14 @@ RigidityMatrix coordinatization & independent rows (`Molecular/RigidityMatrix.le
   cardinality `|J|·(D−1)`.
 - [x] `exists_finite_spanning_rigidityRows` — input (2): finite `a` with
   `span (range a) = span F.rigidityRows` (dual finite-dim ⇒ FG).
+
+Graph-side `ends` selector (`Molecular/Induction.lean`, `Graph` namespace):
+- [x] `Graph.endsOf` + `isLink_endsOf` + `endsOf_eq_or_swap` — the canonical
+  endpoint selector `ofParam G ends param` consumes (`def:graph-operations`,
+  folded pin): an ordered endpoint pair per edge, a genuine `IsLink` on `E(G)`,
+  matching any named link up to order. Replaces the repeated inline
+  `exists_isLink_of_mem_edgeSet` choice; the reusable graph primitive the
+  producer's `hlink`/`hends` build on.
 
 Geometric side / general position (`Molecular/AlgebraicInduction.lean`,
 `PanelHingeFramework` namespace):

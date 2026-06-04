@@ -65,6 +65,56 @@ lemma vertexSet_inducedSpan (G : Graph α β) (n : ℕ) (X : Set (β × Fin (bod
     V(G.inducedSpan n X) = G.fiberSpan n X := by
   rw [inducedSpan, vertexSet_induce]
 
+/-! ## A canonical endpoint selector (`def:graph-operations`, the `ends` selector)
+
+The from-scratch panel-hinge realization `PanelHingeFramework.ofParam G ends param` of the
+algebraic induction (Phase 21b) takes an *endpoint selector* `ends : β → α × α` choosing an
+ordered pair of endpoints for each edge. Case I orients the rigid block's spanning forest along
+this selector; the producer
+`PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn` requires it to be *consistent*
+with the graph — `G.IsLink (e j) (u j) (other j)` and `ends (e j) = (u j, other j)` for the
+forest hinges. This section lands the canonical such selector once, as a reusable `Graph`
+primitive, rather than re-deriving the per-edge `obtain ⟨x, y, hlink⟩` choice inline at each use
+(the pattern `exists_isLink_of_mem_edgeSet` is repeated a dozen times across the molecular files).
+-/
+
+open Classical in
+/-- **The canonical endpoint selector of a graph** (`def:graph-operations`): for each edge
+`e : β`, an ordered pair `(x, y) : α × α` of endpoints, chosen (via `Classical.choice`) to be a
+genuine link `G.IsLink e x y` whenever `e ∈ E(G)`. On non-edges it returns the junk constant
+`(default, default)`; the only contract is consistency on `E(G)` (`isLink_endsOf`). This is the
+`ends` selector the from-scratch panel realization `PanelHingeFramework.ofParam` consumes: it
+supplies, for every edge, an orientation along which the rigid block's spanning forest is laid
+out, with the link witnessed by `isLink_endsOf`. -/
+noncomputable def endsOf [Inhabited α] (G : Graph α β) (e : β) : α × α :=
+  if h : ∃ x y, G.IsLink e x y then (h.choose, h.choose_spec.choose) else (default, default)
+
+/-- **The canonical endpoint selector is a genuine link on every edge** (`def:graph-operations`):
+if `e ∈ E(G)` then `G.IsLink e (G.endsOf e).1 (G.endsOf e).2`. The endpoint pair `G.endsOf e` is
+chosen by `Classical.choice` from `exists_isLink_of_mem_edgeSet`, so its components are an actual
+pair of ends of `e`. This is the consistency contract the panel-realization producer
+`PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn` requires of its forest hinges
+(`hlink`), discharging the per-edge `obtain ⟨x, y, hlink⟩` choice once and for all. -/
+lemma isLink_endsOf [Inhabited α] (G : Graph α β) {e : β} (he : e ∈ E(G)) :
+    G.IsLink e (G.endsOf e).1 (G.endsOf e).2 := by
+  have h : ∃ x y, G.IsLink e x y := exists_isLink_of_mem_edgeSet he
+  rw [endsOf, dif_pos h]
+  exact h.choose_spec.choose_spec
+
+/-- **The canonical endpoint selector orients along a given link** (`def:graph-operations`): if
+`G.IsLink e x y`, then `G.endsOf e` is one of the two oriented pairs `(x, y)` or `(y, x)`. The
+two ends of an edge are determined up to order (`IsLink.eq_and_eq_or_eq_and_eq`), so the canonical
+selector — itself a genuine link (`isLink_endsOf`) — must agree with `(x, y)` as an unordered
+pair. Lets a consumer that has *named* endpoints `x y` recover them (up to swap) from the canonical
+selector, which is what the Case-I spanning-forest orientation needs to match `ends (e j) =
+(u j, other j)` against a forest edge it already linked. -/
+lemma endsOf_eq_or_swap [Inhabited α] (G : Graph α β) {e : β} {x y : α} (h : G.IsLink e x y) :
+    G.endsOf e = (x, y) ∨ G.endsOf e = (y, x) := by
+  have hl := G.isLink_endsOf h.edge_mem
+  rcases hl.eq_and_eq_or_eq_and_eq h with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact Or.inl (Prod.ext h1 h2)
+  · exact Or.inr (Prod.ext h1 h2)
+
 /-! ## A circuit induces a rigid subgraph (`lem:circuit-induces-rigid`; KT Lemma 3.4 full form) -/
 
 /-- **A circuit exceeds the sparsity bound on its vertex span** (Katoh–Tanigawa 2011

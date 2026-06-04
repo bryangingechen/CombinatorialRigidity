@@ -207,9 +207,9 @@ stays deferred, being sound but unneeded.
 \subsection{Graph operations}
 \label{sec:molecular-induction-operations}
 
-\begin{definition}[Vertex removal, splitting-off, and edge-splitting]
+\begin{definition}[Vertex removal, splitting-off, edge-splitting, endpoint selector]
   \label{def:graph-operations}
-  \lean{Graph.removeVertex, Graph.splitOff, Graph.edgeSplit}
+  \lean{Graph.removeVertex, Graph.splitOff, Graph.edgeSplit, Graph.endsOf}
   \leanok
   \uses{def:k-dof}
   For a multigraph $G$ and a vertex $v$ of degree~2 with the two
@@ -224,6 +224,12 @@ stays deferred, being sound but unneeded.
       edge $ab$ of $H$ by a fresh degree-2 vertex $v$, replacing $ab$
       with the path $a$--$v$--$b$. It satisfies $(H_{ab}^v)_v^{ab} = H$.
   \end{itemize}
+  We also fix a canonical \emph{endpoint selector}
+  $\mathrm{ends} : \beta \to \alpha \times \alpha$ assigning to each edge
+  an ordered pair of its ends (a genuine link $G.\mathrm{IsLink}\,e\,x\,y$
+  on every $e \in E(G)$, junk off $E(G)$); the from-scratch panel-hinge
+  realization of \cref{lem:case-I} orients the rigid block's spanning
+  forest along it.
 \end{definition}
 
 \begin{definition}[Rigid-subgraph contraction]
