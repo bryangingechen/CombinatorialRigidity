@@ -28,6 +28,33 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Route-(a) decision RESOLVED + Case-I `hglue` capstone landed (2026-06-03).** The route a/b
+question the hand-off flagged as "where the decision finally bites" resolves in favour of **route
+(a) with a degenerate (constant) affine path**. Key observation: Case I's witness realization is
+*constructed directly* by `exists_independent_panelSupportExtensor` (a basis choice on `⋀²`, Phase
+17/21), not reached by perturbation, so the device can run on the **constant** path `F t = F₀` with
+`b = 0`. The bilinearity obstruction (panel rows quadratic along a real line through normal-space)
+never bites because no real line is traversed — the device reads off the corank at the one hand-built
+realization, which is all Case I's block-triangular gluing needs. Three new declarations after
+`hglue_of_genericityDevice` in `Molecular/AlgebraicInduction.lean`:
+- `hspan_const_of_span_eq` — the `hspan` of the constant family: for any family `a` spanning
+  `rigidityRows F₀`, `span (range (fun i => a i + t • 0)) = span (rigidityRows F₀)` at every `t`
+  (`smul_zero`/`add_zero`).
+- `hcoord_const` — discharges the device's `hcoord` for the constant family from `hspanrows`
+  (`span (range a) = span (rigidityRows F₀)`), via `hcoord_of_rigidityRows_affine`.
+- `hglue_of_realization` — the **consumer-facing Case-I capstone**: from a single realization `F₀`,
+  a *finite* family `a` spanning its rigidity rows, an independent subfamily `s` (size = the
+  contraction's inductive rank via `hmatch`), produces the `hglue` inequality
+  `dim Z(F₀) ≤ D + dim Z_s` at `F₀` itself — all affine-path plumbing discharged.
+
+The index `ι` is kept abstract + `[Finite]` (the engine needs a finite index; the
+finite-dimensional row space admits a finite spanning subfamily). The residual per-consumer work is
+now purely combinatorial-geometric (exhibit `F₀`, the finite spanning `a`, and the matching-size
+independent `s` from the contraction realization + rigid block) — **no path construction remains**.
+Green, build warning-clean + lint clean, axioms {propext, Classical.choice, Quot.sound}. Folded
+into the `lem:genericity-device` node's `\lean{...}` pin (consumer-facing API, not a new node);
+statement + proof prose updated to record the constant-path route-(a) resolution.
+
 **`hcoord` bridge landed (2026-06-03) — step (i) reduced to a pure-geometry obligation.**
 `hcoord_of_rigidityRows_affine` (before `genericityDevice` in `Molecular/AlgebraicInduction.lean`)
 discharges the device's `hcoord` hypothesis from the strictly more workable input a consumer can
@@ -202,13 +229,25 @@ hand-off convenience.
   `hcoord` obligation to an *equality of spans*. Green; folded into
   `lem:genericity-device`'s `\lean{...}` pin (no new node).
 
+- [x] `hspan_const_of_span_eq` + `hcoord_const` + `hglue_of_realization`
+  (`Molecular/AlgebraicInduction.lean`): the **route-(a) constant-path** discharge.
+  `hcoord_const` gives the device's `hcoord` for the constant family `F t = F₀`
+  (`b = 0`) from any finite family spanning `rigidityRows F₀`; `hglue_of_realization`
+  composes it into `hglue_of_genericityDevice` to land Case I's `hglue` inequality at
+  a single hand-built realization `F₀` (witness from
+  `exists_independent_panelSupportExtensor`, no path construction). Green; folded into
+  `lem:genericity-device`'s `\lean{...}` pin (`hcoord_const`, `hglue_of_realization`).
+
 The consumer-side discharge targets (each currently a named hypothesis
 in the Phase-21 Lean, to be supplied by the device):
 - [~] `hglue` for Case I — block-triangular generic gluing
-  (`finrank Z ≤ D + finrank (pinnedMotionsOn s)`). **Arithmetic wiring done**
-  (`hglue_of_genericityDevice`); residual is the `hmatch` obligation —
-  constructing the affine path + matching-size witness subfamily from the
-  contraction realization.
+  (`finrank Z ≤ D + finrank (pinnedMotionsOn s)`). **Route-(a) capstone done**
+  (`hglue_of_realization` via constant path `hcoord_const` /
+  `hspan_const_of_span_eq`): the `hglue` inequality holds at a single hand-built
+  realization `F₀`, all affine-path plumbing discharged. Residual is purely
+  combinatorial-geometric — exhibit `F₀`, a finite spanning row family `a`, and the
+  matching-size independent subfamily `s` from the contraction realization + rigid
+  block (`hspanrows` + `hindep` + `hmatch`); no path construction remains.
 - [ ] `hspan` for Case II — each base-`v`-pinned motion lands in the two
   new edges' panel-support spans (false pointwise; holds by the
   rank/dimension count, via `exists_independent_panelSupportExtensor`).
@@ -285,21 +324,26 @@ in the Phase-21 Lean, to be supplied by the device):
   reuses the Phase-8 Gram-det polynomial-root-set mechanism, lifted to
   rank form, in both the span and codimension shapes. Both bricks
   landed.
-- **The abstract device `genericityDevice` is landed** (codimension form),
-  and the **Case-I `hglue` arithmetic wiring** (`hglue_of_genericityDevice` +
-  the generic-point form `exists_good_realization`) is landed — **route (a)
-  confirmed**: the genericity content is `hcoord` + `hindep`, the residual
-  geometric content isolated as the `hmatch` rank-match hypothesis. The single
-  open piece is now **discharging `hmatch` for Case I**: building the affine
-  path `a i + t • b i` (`hcoord`) and the size-`D(|V|−1) − dim Z_s` witness
-  subfamily (`hindep` + the count) from the contraction realization plus the
-  rigidly-placed block. The bilinearity caveat below remains the live concern
-  for the path construction (i): `panelSupportExtensor` is bilinear in the
-  normals, so a generic line gives a quadratic row family — the affine path
-  must be chosen so the *row functionals* (not the normals) come out affine,
-  the Phase-8 single-scalar trick. Route (b) (multivariate Zariski-open
-  generalization of the `Rank.lean` brick) stays the fallback if no such path
-  hits the good realization.
+- **The abstract device + the full Case-I `hglue` route are landed.**
+  `genericityDevice` (codimension form), the arithmetic wiring
+  (`hglue_of_genericityDevice` + `exists_good_realization`), and now the
+  **route-(a) constant-path capstone** (`hglue_of_realization` via
+  `hcoord_const` / `hspan_const_of_span_eq`) are all green. **The route a/b
+  decision is RESOLVED: route (a) with a degenerate constant path.** The
+  bilinearity caveat (a generic line through normal-space gives a quadratic row
+  family) is *sidestepped, not solved* — because Case I's witness realization is
+  constructed directly by `exists_independent_panelSupportExtensor` (a `⋀²` basis
+  choice, not perturbation), no real line is traversed, so the device runs on the
+  constant path `F t = F₀` (`b = 0`) and reads off the corank at the one
+  hand-built realization. Route (b) (multivariate Zariski-open generalization)
+  is no longer needed for Case I; it may still be the cleaner option if a future
+  consumer genuinely requires a non-constant path.
+- **The single open piece for Case I is now purely combinatorial-geometric**:
+  supplying `hglue_of_realization`'s inputs — the single realization `F₀`, a
+  *finite* family `a` spanning `rigidityRows F₀`, and an independent subfamily `s`
+  of the matching size `#s = D(|V|−1) − dim Z_s` (`hspanrows` + `hindep` +
+  `hmatch`) — from the contraction realization plus the rigidly-placed block
+  `V(H)`. No affine-path construction remains.
 
 ## Hand-off / next phase
 
@@ -315,58 +359,35 @@ an affine functional family `a i + t • b i` discharging `hcoord` for that
 consumer's framework, then apply `genericityDevice` and pick a good `t` off
 the finite bad set.
 
-**The genuinely open piece (assessment now pinned, was the hand-off's
-flagged gap): the panel rows are bilinear, hence degree-2, in the normals.**
-So `hcoord` cannot be discharged by a bare line `t ↦ panel normals` — the
-resulting `rigidityRows (F t)` are quadratic in `t`, not affine. The next
-concrete commit must therefore decide the affine-presentation route:
-- **Route (a), single-scalar restriction (try first):** find an affine
-  *functional* family `a i + t • b i` (degree-1 in `t`) whose span's
-  coannihilator equals `(F t).infinitesimalMotions` at every `t` along a
-  *chosen* path through normal-space, even though the normals themselves
-  move quadratically. Phase 8's `exists_uniform_rowIndependent_placement`
-  succeeded with a single line, so this may be feasible by choosing the
-  path so the row functionals (not the normals) come out affine — assess
-  whether such a path through the good realization
-  `exists_independent_panelSupportExtensor` supplies exists.
-- **Route (b), multivariate generalization (fallback):** add a mirror lemma
-  generalizing `finrank_dualCoannihilator_along_affine_path_cofinite` from
-  a single affine scalar to a multivariate *polynomial* family (Zariski-open
-  bad set), then feed the genuinely-quadratic panel rows directly. Heavier,
-  but unconditional.
+**Earlier-2026-06-03 milestones (superseded by the route-(a) resolution below):** the device's
+arithmetic wiring (`hglue_of_genericityDevice` + `exists_good_realization`, isolating `hmatch`),
+the `dualCoannihilator` plumbing discharge (`hcoord_of_rigidityRows_affine`, reducing `hcoord` to
+an equality of spans), and the then-open route a/b question (bilinear panel rows ⇒ quadratic along
+a line). All folded into the resolution below.
 
-**Route-(a) call made + arithmetic wiring landed (2026-06-03).** The Case-I
-`hglue` bridge `hglue_of_genericityDevice` (+ the generic-point form
-`exists_good_realization`) is green: the device's absolute `dim Z ≤ D|V| − #s`
-collapses to Case I's relative `hglue : dim Z ≤ D + dim Z_s` once the
-**`hmatch` rank-match** `#s = D(|V|−1) − dim Z_s` holds at the good
-realization. Route (a) confirmed: the genericity is `hcoord` + `hindep`; the
-residual geometric content is isolated as `hmatch`.
+**Route-(a) decision RESOLVED + Case-I `hglue` capstone landed (2026-06-03).** The affine-path
+question is closed: route (a) with a *constant* path (`hcoord_const` / `hspan_const_of_span_eq` /
+`hglue_of_realization`). The bilinearity obstruction is sidestepped because Case I's witness
+realization is hand-built by `exists_independent_panelSupportExtensor`, so no real line through
+normal-space is traversed — the device reads off the corank at the one realization. See *Current
+state* and *Blockers*.
 
-**Step (i)'s `dualCoannihilator` plumbing is now discharged** (`hcoord_of_rigidityRows_affine`,
-2026-06-03): a consumer no longer touches `dualCoannihilator` to supply `hcoord`; it suffices to
-exhibit an affine functional family `t ↦ a i + t • b i` with `span (range (a + t•b)) = span
-(rigidityRows (F t))` at every `t` (`hspan`). So the Case I chain is now
-`hcoord_of_rigidityRows_affine` → `genericityDevice`/`exists_good_realization` →
-`hglue_of_genericityDevice`, with the only remaining inputs the *geometric* `hspan` and the
-witness/`hmatch` count.
-
-**Smallest next concrete commit: build the affine family `a, b` + `hspan` for Case I.** Construct,
-from the contraction realization (`G/E(H)` at its inductive `RankHypothesis`) plus the rigid block
-`V(H)` placed rigidly (`exists_independent_panelSupportExtensor` supplies the independent supporting
-extensors), the affine functional family `t ↦ a i + t • b i` and prove `hspan` — the *equality of
-spans* `span (range (a + t•b)) = span (rigidityRows (F t))` at every `t`. **This is where the
-route a/b decision finally bites:** the panel rows `hingeRow u v r` are bilinear in the normals, so
-the family `a, b` must be chosen so the row functionals come out affine along a chosen path (route
-(a)), or the engine generalized to a multivariate polynomial / Zariski-open form (route (b)).
-Assess feasibility of route (a) — does a path through the good realization
-`exists_independent_panelSupportExtensor` supplies admit an affine row-functional presentation? —
-before committing to it; route (b) is the unconditional fallback. After `hspan` lands, the residual
-is (ii) the witness subfamily `s` of size exactly `D(|V|−1) − dim Z_s` independent at `t₀`
-(discharging `hindep` and the `hmatch` count). Likely more than one commit; assess once `hspan`
-closes. The other consumers (`hspan`/`hgen`) reuse the same chain
-(`hcoord_of_rigidityRows_affine` → device) with an analogous per-consumer bridge; the device's
-*target statements* are fixed (the named hypotheses in `AlgebraicInduction.lean`).
+**Smallest next concrete commit: supply `hglue_of_realization`'s inputs for Case I (the geometric
+construction).** From the contraction realization (`G/E(H)` at its inductive `RankHypothesis`) plus
+the rigid block `V(H)` placed rigidly, exhibit:
+1. the single realization `F₀` (a `BodyHingeFramework`/`PanelHingeFramework`-via-`toBodyHinge`),
+2. a *finite* family `a : ι → Dual ℝ (α → ScrewSpace k)` with `span (range a) = span (rigidityRows
+   F₀)` (a finite spanning subfamily exists since the row space is finite-dimensional; e.g.
+   enumerate over links × a basis of each finite hinge-row block, or pull a finite spanning set out
+   of the finite-dim span), and
+3. an independent subfamily `s ⊆ ι` with `#s = D(|V|−1) − dim Z_s` (`hindep` + `hmatch`), the
+   independent rigidity rows coming from `exists_independent_panelSupportExtensor` through the
+   hinge-row block.
+No affine-path construction remains. This is the genuinely-geometric Case-I assembly (KT §6.2/6.5);
+likely more than one commit — assess once the finite spanning family `a` is in hand. The other
+consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same constant-path chain
+(`hcoord_const` → device) with an analogous per-consumer bridge; the device's *target statements*
+are fixed (the named hypotheses in `AlgebraicInduction.lean`).
 
 **Also consumed by Phases 22–23** (Case III candidate-framework
 genericity, Claims 6.11/6.12), so building the device standalone pays

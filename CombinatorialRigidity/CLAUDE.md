@@ -165,6 +165,10 @@ bullets. If one matches, jump to the named section of
   fiber stuck) → § 30 *`LinearMap.proj i - LinearMap.proj j` over a Pi type*:
   type-ascribe the first summand to the full `LinearMap` type (`(R := ℝ)` alone
   is not enough).
+- *"typeclass instance problem is stuck: `HSMul ?m W W` … first type argument …
+  is a metavariable"* at a `t • x` inside an **unascribed** `∀ t, …` binder (the
+  bound variable's own type is free) → § 31 *Unascribed `∀ t, … t • x …` binder
+  leaves the `•` scalar type a metavariable*: annotate the binder (`∀ t : ℝ, …`).
 
 ## Starting a Lean-touching session
 

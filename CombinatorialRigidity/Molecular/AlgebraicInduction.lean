@@ -1527,6 +1527,50 @@ theorem hcoord_of_rigidityRows_affine {ι : Type*}
   intro t
   rw [hspan t, (F t).infinitesimalMotions_eq_dualCoannihilator]
 
+/-- **The `hspan` of a constant family along a spanning enumeration of one realization's rigidity
+rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route a/b
+assessment the hand-off flagged resolves in favour of **route (a) with a degenerate (constant)
+affine path**: the witness realization Case I needs is *constructed directly* by the
+exterior-algebra existence lemma `exists_independent_panelSupportExtensor` (a basis choice on `⋀²`,
+Phase 21/17), not found by perturbing along a genuine line through panel-coordinate space. So the
+affine family the device consumes can be the *constant* path `F t = F₀`, with `b = 0` and `a` any
+family **spanning** the rigidity rows of the single good realization `F₀` (`hspanrows`). The
+bilinearity obstruction (the panel rows are quadratic along a real line through normal-space) never
+bites, because no real line is traversed — the device reads off the corank `#s` at the one
+hand-built realization, which is all Case I's block-triangular gluing needs.
+
+The index `ι` is kept abstract and `[Finite]` (the engine
+`finrank_dualCoannihilator_along_affine_path_cofinite` needs a finite index, and the
+finite-dimensional row space admits a finite spanning subfamily): the constant family
+`fun t i => a i + t • 0 = a i` has range `range a`, so its span equals `span (rigidityRows F₀)`
+by `hspanrows`. This discharges `hcoord_of_rigidityRows_affine`'s `hspan` for the constant family,
+hence the device's `hcoord`. The independent subfamily `s` (the device's `hindep`) is then a
+linearly independent subfamily of `a`, supplied by `exists_independent_panelSupportExtensor` through
+the hinge-row block. -/
+theorem hspan_const_of_span_eq {ι : Type*} (F₀ : BodyHingeFramework k α β)
+    (a : ι → Module.Dual ℝ (α → ScrewSpace k))
+    (hspanrows : Submodule.span ℝ (Set.range a) = Submodule.span ℝ F₀.rigidityRows) (t : ℝ) :
+    Submodule.span ℝ (Set.range (fun i => a i + t • (0 : Module.Dual ℝ (α → ScrewSpace k))))
+      = Submodule.span ℝ F₀.rigidityRows := by
+  simpa only [smul_zero, add_zero] using hspanrows
+
+/-- **The device's affine coordinatization from one realization** (`lem:genericity-device`, the
+route-(a) `hcoord` for Case I; Phase 21b). Specializing `hcoord_of_rigidityRows_affine` to the
+constant family `F t = F₀` with `a` any family spanning `rigidityRows F₀` and `b = 0`
+(`hspan_const_of_span_eq`): the device's `hcoord` hypothesis holds for the constant one-parameter
+family at the single hand-built realization `F₀`. This is the bridge that lets `genericityDevice` /
+`exists_good_realization` / `hglue_of_genericityDevice` fire against a realization produced by
+`exists_independent_panelSupportExtensor` rather than along a quadratic panel path — the
+route-(a) resolution of the bilinearity obstruction (see `hspan_const_of_span_eq`). -/
+theorem hcoord_const {ι : Type*} (F₀ : BodyHingeFramework k α β)
+    (a : ι → Module.Dual ℝ (α → ScrewSpace k))
+    (hspanrows : Submodule.span ℝ (Set.range a) = Submodule.span ℝ F₀.rigidityRows) :
+    ∀ t : ℝ, F₀.infinitesimalMotions
+      = (Submodule.span ℝ (Set.range (fun i =>
+          a i + t • (0 : Module.Dual ℝ (α → ScrewSpace k))))).dualCoannihilator :=
+  hcoord_of_rigidityRows_affine (fun _ => F₀) (a := a) (b := fun _ => 0)
+    (hspan_const_of_span_eq F₀ a hspanrows)
+
 /-- **Genericity device, codimension form** (`lem:genericity-device`; Katoh–Tanigawa 2011
 Claim 6.4 / Claim 6.9, Phase 21b). Let `F : ℝ → BodyHingeFramework k α β` be a one-parameter
 family of frameworks on the same bodies whose null spaces are coordinatized by a single affine
@@ -1623,5 +1667,40 @@ theorem hglue_of_genericityDevice [Fintype α] [Nonempty α] {ι : Type*} [Finit
   -- `D·(|V|−1) = D·|V| − D`, so substituting `#s` collapses the bound to `D + dim Z_s`.
   rw [Nat.cast_sub hcard, Nat.cast_one, mul_sub, mul_one] at hmatch'
   omega
+
+/-- **Case I `hglue` from a single panel realization** (`lem:case-I`, the route-(a) capstone;
+Katoh–Tanigawa 2011 §6.1 Claim 6.4). The genuinely-consumer-facing form of the genericity device
+for Case I, with *all* the affine-path plumbing discharged via the constant family
+(`hcoord_const`): given a single body-hinge realization `F₀`, a finite family `a` of functionals
+**spanning** its rigidity rows (`hspanrows`), a linearly independent subfamily indexed by `s`
+(`hindep`, the witnessed corank, supplied by `exists_independent_panelSupportExtensor` through the
+hinge-row block), and the **rank-match** `hmatch` — the witnessed corank `#s` equals the
+contraction's inductive rank `D(|V|−1) − dim Z_s` — the block-triangular gluing inequality
+`hglue : dim Z(G,p) ≤ D + dim Z_s` holds at `F₀` itself.
+
+This is the route-(a) resolution promised in the hand-off: the bilinearity obstruction (panel rows
+quadratic along a real line) is sidestepped because the witness realization `F₀` is *constructed*
+by the exterior-algebra existence lemma rather than reached by perturbation, so the device runs on
+the **constant** affine path `F t = F₀` (`hcoord_const`, `hspan_const_of_span_eq`). Composing
+`hcoord_const` into `hglue_of_genericityDevice` and reading the resulting `∃ t, …` at the constant
+family (every `F t = F₀`) yields the unquantified `hglue` for `F₀`. The residual per-consumer work
+is now purely combinatorial-geometric: exhibit, from the contraction realization plus the rigidly
+placed block `V(H)`, the single realization `F₀`, a finite spanning row family `a`, and the
+independent subfamily `s` whose size matches `#s = D(|V|−1) − dim Z_s` (`hspanrows` + `hindep` +
+`hmatch`); no path construction remains. -/
+theorem hglue_of_realization [Fintype α] [Nonempty α] {ι : Type*} [Finite ι]
+    (F₀ : BodyHingeFramework k α β) (a : ι → Module.Dual ℝ (α → ScrewSpace k))
+    {s : Set ι} {sblk : Set α}
+    (hspanrows : Submodule.span ℝ (Set.range a) = Submodule.span ℝ F₀.rigidityRows)
+    (hindep : LinearIndependent ℝ (fun i : s => a i + (0 : ℝ) • (0 : _)))
+    (hmatch : Nat.card s + Module.finrank ℝ F₀.infinitesimalMotions ≤ screwDim k * Fintype.card α →
+      (Nat.card s : ℤ) = screwDim k * (Fintype.card α - 1)
+        - Module.finrank ℝ (F₀.pinnedMotionsOn sblk)) :
+    (Module.finrank ℝ F₀.infinitesimalMotions : ℤ) ≤
+      screwDim k + Module.finrank ℝ (F₀.pinnedMotionsOn sblk) := by
+  obtain ⟨_, ht⟩ := hglue_of_genericityDevice (fun _ => F₀) (a := a)
+    (b := fun _ => 0) (t₀ := 0) (s := s) (sblk := sblk)
+    (hcoord_const F₀ a hspanrows) hindep (fun _ => hmatch)
+  exact ht
 
 end CombinatorialRigidity.Molecular

@@ -1219,3 +1219,26 @@ to the projection form under a `public section`): close it with
 Worked case: `BodyHingeFramework.screwDiff` in `Molecular/RigidityMatrix.lean`
 (Phase 21b, the relative-screw evaluation `S ↦ S u - S v` underlying the
 rigidity-matrix row functionals).
+
+## 31. Unascribed `∀ t, … t • x …` binder leaves the `•` scalar type a metavariable
+
+**Symptom.** A statement of the form
+```
+theorem foo … : ∀ t, P = (… (fun i => a i + t • (0 : W)) …) := …
+```
+fails with *"typeclass instance problem is stuck: `HSMul ?m W W` … the first
+type argument to `HSMul` is a metavariable"* at the `t • …` position. The
+`∀ t,` binder gives `t` no type annotation, and nothing else in the body forces
+it (here `t • (0 : W)` with `W` fixed pins the *result* type but not the
+*scalar* type `?m`), so `t`'s type is undetermined when the `HSMul` instance is
+sought. Same trap fires for any `∀ x, … x • _ …` / `∀ x, f x _` where the
+binder's type is only weakly constrained by the body.
+
+**Fix.** Ascribe the binder: `∀ t : ℝ, …`. The single annotation propagates and
+the `HSMul ℝ W W` instance resolves. (Distinct from § 30: there the *fiber/scalar
+of a `LinearMap` subtraction* was stuck; here it's the *bound variable's own type*
+that's free.)
+
+Worked case: `hcoord_const` in `Molecular/AlgebraicInduction.lean` (Phase 21b,
+the constant-affine-path `hcoord` discharge; the `t • (0 : Module.Dual …)` term
+needed `∀ t : ℝ`).

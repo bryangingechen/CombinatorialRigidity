@@ -785,7 +785,9 @@ Phase~21b.
   \lean{CombinatorialRigidity.Molecular.genericityDevice,
         CombinatorialRigidity.Molecular.exists_good_realization,
         CombinatorialRigidity.Molecular.hglue_of_genericityDevice,
-        CombinatorialRigidity.Molecular.hcoord_of_rigidityRows_affine}
+        CombinatorialRigidity.Molecular.hcoord_of_rigidityRows_affine,
+        CombinatorialRigidity.Molecular.hcoord_const,
+        CombinatorialRigidity.Molecular.hglue_of_realization}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization through its
@@ -819,7 +821,16 @@ Phase~21b.
   Z_s$ at the good realization (the contraction's inductive rank, the size of
   the block-triangular row block), the bound collapses to $\dim Z(G,p) \le D
   + \dim Z_s$, exactly the $\mathtt{hglue}$ block-triangular gluing inequality
-  of \cref{lem:case-I}.
+  of \cref{lem:case-I}. The route-(a) decision is resolved in favour of a
+  \emph{degenerate} (constant) affine path: the witness realization Case~I
+  needs is constructed directly by the exterior-algebra existence lemma
+  \cref{lem:exists-independent-panel-extensor} (a basis choice on
+  $\bigwedge^2$), not reached by perturbing along a line through
+  panel-coordinate space, so the bilinearity obstruction (panel rows quadratic
+  along a real line) never bites --- the device reads off the corank at the one
+  hand-built realization. With the constant path the affine family is any
+  finite family spanning that realization's rigidity rows (with $b = 0$), and
+  the $\mathtt{hglue}$ inequality holds at the realization itself.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -833,9 +844,12 @@ Phase~21b.
   coannihilator coordinatization of \cref{def:rigidity-matrix} and the
   screw-assignment dimension count $\dim(\text{screw assignments}) = D|V|$
   (\cref{def:dof-generic}). The single affine scalar $t$ is the device's
-  parameter; presenting each consumer's panel rows as an affine family
-  along a chosen path (or generalizing the engine to the multivariate
-  Zariski-open form) is the residual per-consumer wiring. See
+  parameter; for Case~I it is run at the degenerate (constant) path described
+  above, so the residual per-consumer wiring is purely combinatorial-geometric
+  --- exhibit the single witness realization, a finite spanning row family, and
+  the independent subfamily of the matching size --- with no path construction.
+  (Cases~II and Prop~1.1 may instead present a genuine chosen path or the
+  multivariate Zariski-open form.) See
   \cite[\S6.1, \S6.3]{katohTanigawa2011} (Claim~6.4 and its Case-II twin
   Claim~6.9).
 \end{proof}
