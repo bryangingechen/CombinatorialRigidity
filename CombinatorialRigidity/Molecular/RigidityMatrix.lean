@@ -254,6 +254,54 @@ theorem hingeRow_apply (u v : α) (r : Module.Dual ℝ (ScrewSpace k))
     hingeRow (k := k) (α := α) u v r S = r (S u - S v) := by
   rw [hingeRow, LinearMap.comp_apply, screwDiff_apply]
 
+/-- The **relative-screw evaluation is surjective at distinct bodies** (`def:rigidity-matrix`):
+when `u ≠ v`, `screwDiff u v : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k` (the map `S ↦ S u − S v`) is
+surjective. Any target screw `x` is hit by the assignment placing `x` on `u` and `0` elsewhere
+(`Function.update 0 u x`): at `u` it reads `x`, at the distinct `v` it reads `0`, so
+`S u − S v = x`. This is the dual of the row-functional injectivity `hingeRow` carries
+(`hingeRow_eq_dualMap`): a
+genuine edge `e = uv` (distinct endpoints) reads every relative screw, so its block of rows
+faithfully sees the whole hinge-row block. -/
+theorem screwDiff_surjective {u v : α} (huv : u ≠ v) :
+    Function.Surjective (screwDiff (k := k) (α := α) u v) := by
+  classical
+  intro x
+  refine ⟨Function.update 0 u x, ?_⟩
+  rw [screwDiff_apply, Function.update_self, Function.update_of_ne huv.symm, Pi.zero_apply,
+    sub_zero]
+
+/-- The **row functional is the dual map of the relative-screw evaluation** (`def:rigidity-matrix`):
+`hingeRow u v r = (screwDiff u v).dualMap r`. Definitional — both sides are `r ∘ₗ screwDiff u v`
+(`LinearMap.dualMap_apply'`) — but naming it lets the independence bridge
+`linearIndependent_hingeRow` route through the dual-map injectivity
+`LinearMap.dualMap_injective_of_surjective`. -/
+theorem hingeRow_eq_dualMap (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) :
+    hingeRow (k := k) (α := α) u v r = (screwDiff (k := k) (α := α) u v).dualMap r :=
+  rfl
+
+/-- **The independence bridge: independent hinge-row functionals stay independent as rigidity rows**
+(`def:rigidity-matrix`, the Case-I `hindep` brick). For a genuine edge `e = uv` with distinct
+endpoints, if a family `r : ι → Module.Dual ℝ (ScrewSpace k)` of hinge-row-block functionals is
+linearly independent, then so is the family of rigidity rows `i ↦ hingeRow u v (r i)` it induces on
+the screw-assignment space `α → ScrewSpace k`. Because `screwDiff u v` is surjective at distinct
+bodies (`screwDiff_surjective`), its dual map `(screwDiff u v).dualMap = hingeRow u v`
+(`hingeRow_eq_dualMap`) is injective (`LinearMap.dualMap_injective_of_surjective`), and an injective
+linear map preserves linear independence (`LinearIndependent.map'`).
+
+This turns the independent supporting extensors of a rigid block
+(`exists_independent_panelSupportExtensor`, through the `(D−1)`-dimensional hinge-row block
+`finrank_hingeRowBlock`) into the independent rigidity-row subfamily the Case-I capstone
+`hglue_of_realization` needs (`hindep`): one transversal hinge `e = uv` contributes `D − 1`
+independent rows of `R(G,p)`, all routed through the *same* relative-screw evaluation, so block-row
+independence is exactly hinge-row-block independence. -/
+theorem linearIndependent_hingeRow {ι : Type*} {u v : α} (huv : u ≠ v)
+    {r : ι → Module.Dual ℝ (ScrewSpace k)} (hr : LinearIndependent ℝ r) :
+    LinearIndependent ℝ (fun i => hingeRow (k := k) (α := α) u v (r i)) := by
+  have hinj : Function.Injective (screwDiff (k := k) (α := α) u v).dualMap :=
+    LinearMap.dualMap_injective_of_surjective (screwDiff_surjective huv)
+  simpa only [hingeRow_eq_dualMap] using hr.map' (screwDiff (k := k) (α := α) u v).dualMap
+    (LinearMap.ker_eq_bot.2 hinj)
+
 /-- The **rows of the panel-hinge rigidity matrix `R(G,p)`** (`def:rigidity-matrix`): the set of
 all row functionals `hingeRow u v r` over every link `e = uv` of `G` and every row `r` of the
 hinge-row block `r(p(e))` (`def:hinge-row-block`). This is the basis-free carrier of `R(G,p)` as

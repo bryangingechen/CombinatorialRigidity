@@ -28,6 +28,28 @@ Lean lands in `CombinatorialRigidity/Molecular/AlgebraicInduction.lean`
 
 ## Current state
 
+**Independence bridge landed (2026-06-03) — Case-I `hindep` brick: independent extensors → independent rigidity rows.**
+`linearIndependent_hingeRow` (`Molecular/RigidityMatrix.lean`, after `hingeRow_apply`),
+with two supporting glue lemmas `screwDiff_surjective` and `hingeRow_eq_dualMap`:
+for a genuine edge `e = uv` with distinct endpoints (`u ≠ v`), if a family `r : ι → Dual ℝ
+(ScrewSpace k)` of hinge-row-block functionals is LI, then so is the induced rigidity-row family
+`i ↦ hingeRow u v (r i)` on `α → ScrewSpace k`. Proof: `screwDiff u v` (the relative-screw
+evaluation `S ↦ S u − S v`) is surjective at distinct bodies (`Function.update 0 u x` witness,
+`classical` for `DecidableEq α`), so its dual map `(screwDiff u v).dualMap = hingeRow u v`
+(`hingeRow_eq_dualMap`, definitional via `LinearMap.dualMap_apply'`) is injective
+(`LinearMap.dualMap_injective_of_surjective`), and `LinearIndependent.map'` preserves LI under an
+injective linear map. This turns the independent supporting extensors of a rigid block
+(`exists_independent_panelSupportExtensor`, through the `(D−1)`-dim hinge-row block
+`finrank_hingeRowBlock`) into the independent rigidity-row subfamily `hglue_of_realization`'s
+`hindep` requires — one transversal hinge `e = uv` contributes `D − 1` independent rows of
+`R(G,p)`, all routed through the same `screwDiff u v`, so block-row independence reduces to
+hinge-row-block independence. Green, build warning-clean + lint clean, checkdecls clean, axioms
+{propext, Classical.choice, Quot.sound}. Folded into the `def:rigidity-matrix` node's `\lean{...}`
+pin (`linearIndependent_hingeRow`; the two glue lemmas are skipped per the blueprint skip-glue
+rule); node body gains one sentence on the row-map injectivity. Residual Case-I work: assemble the
+single realization `F₀` and match `#s` to the corank (`hmatch`) — the genuinely-geometric §6.2/6.5
+piece; `hindep` is now a single edge-by-edge application of this bridge over the rigid block's hinges.
+
 **Per-edge row-count brick landed (2026-06-03) — first geometric brick toward Case-I `hindep`/`hmatch`.**
 `finrank_hingeRowBlock` (`Molecular/RigidityMatrix.lean`, after `exists_finite_spanning_rigidityRows`):
 when the supporting extensor `C(p(e))` is nonzero (transversal hinge, the
@@ -264,6 +286,15 @@ hand-off convenience.
   block (source of the matching-size independent subfamily for Case-I `hindep`/`hmatch`). Green;
   folded into `def:hinge-row-block`'s `\lean{...}` pin (no new node).
 
+- [x] `linearIndependent_hingeRow` (+ glue `screwDiff_surjective`, `hingeRow_eq_dualMap`)
+  (`Molecular/RigidityMatrix.lean`): the Case-I `hindep` brick — for a genuine edge `u ≠ v`, an LI
+  family of hinge-row-block functionals induces an LI family of rigidity rows `hingeRow u v (r i)`,
+  via surjectivity of `screwDiff u v` + dual-map injectivity + `LinearIndependent.map'`. Turns
+  independent supporting extensors of a rigid block (`exists_independent_panelSupportExtensor`,
+  through the `(D−1)`-dim hinge-row block) into the independent rigidity-row subfamily
+  `hglue_of_realization` needs. Green; folded into `def:rigidity-matrix`'s `\lean{...}` pin (glue
+  lemmas skipped per the blueprint skip-glue rule).
+
 - [x] `exists_finite_spanning_rigidityRows` (`Molecular/RigidityMatrix.lean`): input (2) of
   `hglue_of_realization` — a finite family `a : Fin n → Dual ℝ (α → ScrewSpace k)` with
   `span (range a) = span F.rigidityRows`, from finite-dimensionality of the dual (`α` finite ⇒
@@ -288,9 +319,11 @@ in the Phase-21 Lean, to be supplied by the device):
   `hspan_const_of_span_eq`): the `hglue` inequality holds at a single hand-built
   realization `F₀`, all affine-path plumbing discharged. The finite spanning row family `a`
   (`hspanrows`) is now also discharged generically by `exists_finite_spanning_rigidityRows` for any
-  `F₀`. Residual is purely combinatorial-geometric — exhibit the realization `F₀` and the
-  matching-size independent subfamily `s` from the contraction realization + rigid block (`hindep` +
-  `hmatch`); no path construction remains.
+  `F₀`. The `hindep` *bridge* is now also in hand (`linearIndependent_hingeRow`): per genuine edge,
+  independent extensors → independent rigidity rows. Residual is purely combinatorial-geometric —
+  exhibit the realization `F₀` and the matching-size independent subfamily `s` from the contraction
+  realization + rigid block (combine `linearIndependent_hingeRow` across the block's hinges for
+  `hindep`, count via `finrank_hingeRowBlock` for `hmatch`); no path construction remains.
 - [ ] `hspan` for Case II — each base-`v`-pinned motion lands in the two
   new edges' panel-support spans (false pointwise; holds by the
   rank/dimension count, via `exists_independent_panelSupportExtensor`).
@@ -435,10 +468,13 @@ geometric construction).** From the contraction realization (`G/E(H)` at its ind
    green).
 No affine-path construction and no finite-spanning-family construction remain. This is the
 genuinely-geometric Case-I assembly (KT §6.2/6.5); likely more than one commit — assess once `F₀` is
-in hand and `s` is being matched to the corank. A useful next sub-brick toward (2): an independence
-bridge turning independent supporting extensors (`exists_independent_panelSupportExtensor`, through
-the now-`D−1`-counted hinge-row block) into independent rigidity-row functionals `hingeRow u v r`.
-The other
+in hand and `s` is being matched to the corank. The independence-bridge sub-brick toward (2) is now
+landed (`linearIndependent_hingeRow`): independent supporting extensors
+(`exists_independent_panelSupportExtensor`, through the `D−1`-counted hinge-row block) become
+independent rigidity-row functionals `hingeRow u v r` per edge. The remaining sub-bricks: combine it
+across the rigid block's hinges into a single LI family indexed by `s`, then match `#s = D(|V|−1) −
+dim Z_s` (`hmatch`) using `finrank_hingeRowBlock`'s `D−1` per-edge count against the contraction's
+inductive rank. The other
 consumers (`hspan` for Case II, `hgen` for Prop 1.1) reuse the same constant-path chain
 (`hcoord_const` → device) with an analogous per-consumer bridge; the device's *target statements*
 are fixed (the named hypotheses in `AlgebraicInduction.lean`).

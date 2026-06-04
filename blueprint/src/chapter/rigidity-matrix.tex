@@ -91,6 +91,7 @@ and the generic-rank argument are in hand.
     CombinatorialRigidity.Molecular.BodyHingeFramework.rigidityRows,
     CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_eq_dualCoannihilator,
     CombinatorialRigidity.Molecular.BodyHingeFramework.exists_finite_spanning_rigidityRows,
+    CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_hingeRow,
     CombinatorialRigidity.Molecular.ScrewSpace,
     CombinatorialRigidity.Molecular.screwDim,
     CombinatorialRigidity.Molecular.screwSpace_finrank}
@@ -118,7 +119,15 @@ and the generic-rank argument are in hand.
   common kernel of this family --- the dual coannihilator of its span
   ($\mathrm{infinitesimalMotions\_eq\_dualCoannihilator}$), the kernel reading
   $Z(G,p) = \ker R(G,p)$ in the functional encoding the Phase-21b genericity
-  device parametrizes by the panel coordinates.
+  device parametrizes by the panel coordinates. For a genuine edge $e = uv$
+  with distinct endpoints, the relative-screw evaluation $S \mapsto S(u)-S(v)$
+  is surjective, so the row map $r \mapsto \mathrm{hingeRow}(u,v,r)$ is
+  injective and carries linear independence: an independent family of
+  hinge-row functionals of a single edge induces an independent family of
+  rigidity rows ($\mathrm{linearIndependent\_hingeRow}$), the brick that turns
+  the independent supporting extensors of a rigid block
+  (\cref{lem:extensor-independence}) into the independent rigidity-row
+  subfamily Case~I's block-triangular gluing counts.
 \end{definition}
 
 \begin{definition}[Degree of freedom; generic realization]
