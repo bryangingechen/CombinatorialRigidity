@@ -80,7 +80,19 @@ the block-triangular glue produces a *rigid spanning subgraph* of the parent, th
 realization is rigid and `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` fires; the
 residual is the genuinely-geometric production of that rigid spanning subgraph (place the
 contraction `G/E(H)` at its inductive full rank + the rigid block `H` rigidly) plus the `ends`
-graph-side construction.
+graph-side construction. The **rigidity-producing converse** of the block-pin bridge is now also
+landed: `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` — from the two block hypotheses
+Case I supplies (`hblock`: every motion is *constant on the block* `s`, the rigidly placed `H`;
+`hpin`: the residual block pin vanishes, the contraction realized at full rank) it produces
+`F.IsInfinitesimallyRigid` directly (subtract the constant trivial motion at `v ∈ s`; the residual
+vanishes on `s`, lands in the trivial block pin, so the motion is trivial). This is the
+framework-side core of KT §6.2/6.5's glue, the exact converse of
+`pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`, and feeds the rigidity-form producer
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid`: once the geometric assembly supplies
+`hblock`+`hpin` (block rigidly placed, contraction at full rank), the parent realization is rigid.
+The residual now reduces to *establishing those two block facts geometrically* — `hblock` from the
+rigid block's placement (the panel normals of `V(H)` make every motion agree across the block) and
+`hpin` from the contraction's inductive `RankHypothesis` — plus the `ends`/count gluing.
 
 ## Architectural choices made up front
 
@@ -203,6 +215,13 @@ Geometric side / general position (`Molecular/AlgebraicInduction.lean`,
   any nonempty block, has `Z_s = ⊥` (`finrank = 0`). Discharges `hpin` from
   rigidity of the realization (KT §6.2/6.5); folded into the
   `lem:pinned-motions-on-rank-bound` blueprint node.
+- [x] `isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` — the
+  **rigidity-producing converse** of the bridge: from `hblock` (every motion is
+  constant on the rigid block `s`) + `hpin` (`pinnedMotionsOn s = ⊥`, the
+  contraction at full rank) produce `F.IsInfinitesimallyRigid`. Framework-side
+  core of KT §6.2/6.5's block-triangular glue; feeds
+  `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid`. Folded into the
+  `lem:pinned-motions-on-rank-bound` blueprint node (converse direction).
 - [x] `hasFullRankRealization_of_pinnedMotionsOn` — block-pin-form producer with
   the injective `param` *internalized*: picks the canonical injective parameter
   (`Countable.exists_injective_real`, mirror) and removes the `hparam` obligation
@@ -308,24 +327,32 @@ analytic / general-position / packaging plumbing is discharged; the residual is
 gluing — the residual `hcontract` obligation is now exactly *the contraction-glued
 `ofParam` realization is rigid*.
 
-The **graph-side rigidity-monotonicity leg** of the block-triangular glue is now landed:
-`isInfinitesimallyRigid_of_le_withGraph` — a rigid spanning subgraph `G' ≤ F.graph` (same bodies,
-hinge data via `withGraph`) certifies rigidity of the parent `F`, since re-adding the inter-block
-hinges only shrinks `Z` and `trivialMotions` is graph-independent. So the residual reduces to
-*exhibiting a rigid spanning subgraph of the parent*: place the contraction `G/E(H)` at its
-inductive full rank + the rigid block `H` rigidly (that union is a rigid spanning subgraph of `G`),
-then the parent realization is rigid by monotonicity and the producer fires.
+The **graph-side rigidity-monotonicity leg** of the block-triangular glue is landed
+(`isInfinitesimallyRigid_of_le_withGraph` — a rigid spanning subgraph `G' ≤ F.graph` certifies
+rigidity of the parent `F`), and now so is the **framework-side rigidity-producing core**:
+`isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` turns the two Case-I block facts —
+`hblock` (every motion is constant on the rigid block `s = V(H)`) and `hpin`
+(`pinnedMotionsOn s = ⊥`, the contraction at its inductive full rank) — into
+`F.IsInfinitesimallyRigid`, which `hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` then
+turns into the realization motive. So the residual reduces to *establishing `hblock` and `hpin`
+geometrically* on the `ofParam` witness: place the contraction `G/E(H)` at its inductive full rank
+and the rigid block `H` rigidly.
 
-**Smallest next concrete commit: produce the rigid spanning subgraph from the
-contraction.** From a minimal `0`-dof-graph `G` with a proper rigid subgraph
-`H` and the contraction `G/E(H)`'s inductive full-rank realization (the
-`hcontract` hypothesis of `theorem_55`, an `∃ Q, Q.graph = G/E(H) ∧
-…RankHypothesis 0`; `rigidContract` + `contraction_isMinimalKDof` are green in
-`Induction.lean`), exhibit a rigid (`IsInfinitesimallyRigid`, equivalently
-`RankHypothesis 0`) realization of the parent `G` — then `HasFullRankRealization
-k G` follows directly from the landed producer
-`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` (no separate `hpin`/
-`hmatch`). That is the geometric heart of KT §6.2/6.5 (the block-triangular glue
+**Smallest next concrete commit: establish the block facts geometrically.** From a minimal
+`0`-dof-graph `G` with a proper rigid subgraph `H` and the contraction `G/E(H)`'s inductive
+full-rank realization (the `hcontract` hypothesis of `theorem_55`, an `∃ Q, Q.graph = G/E(H) ∧
+…RankHypothesis 0`; `rigidContract` + `contraction_isMinimalKDof` are green in `Induction.lean`),
+produce — for the `ofParam G ends param` witness with its panel normals placing `V(H)` rigidly —
+the `hblock` fact (every infinitesimal motion of `ofParam …` is constant on `s = V(H)`, from
+rigidity of the block `H`'s own sub-framework) and the `hpin` fact
+(`pinnedMotionsOn s = ⊥`, from the contraction realized at full rank). Feeding the landed
+`isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot` then yields
+`(ofParam …).IsInfinitesimallyRigid`, and the producer
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` lands
+`HasFullRankRealization k G` (no separate count `hmatch`). The natural intermediate leaf is `hpin`
+(the block pin of a *rigidly placed* sub-block vanishes once the surrounding contraction is rigid)
+or `hblock` (a motion restricted to a rigid sub-block is trivial there) — each a self-contained
+geometric brick. That is the geometric heart of KT §6.2/6.5 (the block-triangular glue
 of the contraction realization + rigidly-placed block `V(H)`). Alongside it, the `(G, ends)`
 graph-side gluing the producer still needs: defining `ends` on `E(G)` so
 block hinges orient along the spanning forest (`hends`) and inter-block

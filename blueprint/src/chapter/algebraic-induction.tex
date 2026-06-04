@@ -556,7 +556,8 @@ Cases~I and~II travel toward the smaller inductive graph.
   \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.trivialMotions_inf_pinnedMotionsOn_eq_bot,
         CombinatorialRigidity.Molecular.BodyHingeFramework.screwDim_add_finrank_pinnedMotionsOn_le,
         CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid}
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot}
   \leanok
   \uses{def:pinned-motions-on, lem:rank-delete-vertex, lem:trivial-motions-rank-bound,
         def:dof-generic}
@@ -585,6 +586,16 @@ Cases~I and~II travel toward the smaller inductive graph.
   vanishing $\dim Z_s(G,p) = 0$ that the from-scratch full-rank realization
   entry point (\cref{lem:case-I}) takes as a hypothesis, reducing the remaining
   Case~I obligation to the count and the realization.
+
+  In the rigidity-producing direction, this converse pairs with the
+  block-triangular gluing: if every motion is \emph{constant on the block} $s$
+  (the rigid subgraph $H$, placed rigidly, pins every motion to agree with a
+  trivial motion across $V(H)$) and the residual block pin vanishes
+  ($Z_s(G,p) = 0$, the contraction $G/E(H)$ realized at its inductive full
+  rank), then $(G,p)$ is infinitesimally rigid. This is the framework-side core
+  of Case~I's glue: a motion $S$ differs from the constant trivial motion at any
+  $v \in s$ by a motion vanishing on all of $s$, hence in the trivial block pin,
+  so $S$ is itself trivial.
 \end{lemma}
 \begin{proof}
   \leanok

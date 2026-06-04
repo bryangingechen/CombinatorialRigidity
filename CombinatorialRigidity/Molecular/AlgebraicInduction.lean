@@ -709,6 +709,45 @@ theorem finrank_pinnedMotionsOn_eq_zero_of_isInfinitesimallyRigid [Finite α]
     Module.finrank ℝ (F.pinnedMotionsOn s) = 0 := by
   rw [F.pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid hs hrig, finrank_bot]
 
+/-- **A block-rigid framework with a trivial block pin is rigid** (`lem:case-I`, the block-pin ↔
+contraction-realization bridge, *converse* / rigidity-producing direction; Katoh–Tanigawa 2011
+§6.2/6.5). This is the framework-side core of Case I's block-triangular glue, the converse of
+`pinnedMotionsOn_eq_bot_of_isInfinitesimallyRigid`: from the *two* block hypotheses Case I supplies
+— `hblock`, every infinitesimal motion is *constant on the block* `s` (the rigid subgraph `H`,
+placed rigidly, pins every motion to agree with a trivial motion across `V(H)`), and `hpin`, the
+residual block pin vanishes `pinnedMotionsOn s = ⊥` (the contraction `G/E(H)`, realized at *its*
+inductive full rank, leaves no freedom once the block is pinned) — the framework `F` is
+infinitesimally rigid.
+
+The algebra is the block-triangular split made one line: given a motion `S` and a body `v ∈ s`,
+the constant assignment `T = fun _ => S v` is a trivial motion (hence a motion,
+`isInfinitesimalMotion_of_isTrivialMotion`); their difference `S - T` is a motion that *vanishes on
+every body of `s`* (on `s`, `hblock` makes `S` the constant `S v`, which `T` cancels), so
+`S - T ∈ pinnedMotionsOn s = ⊥` by `hpin`, forcing `S = T`, a trivial motion. This is the
+rigidity-producing brick the genuinely-geometric Case-I assembly (KT §6.2/6.5) feeds: the rigid
+block placement supplies `hblock` and the contraction realization supplies `hpin`, and this lemma
+turns the pair into rigidity of the glued framework — exactly the input
+`hasFullRankRealization_ofParam_of_isInfinitesimallyRigid` consumes. -/
+theorem isInfinitesimallyRigid_of_block_of_pinnedMotionsOn_eq_bot
+    (F : BodyHingeFramework k α β) {s : Set α} (hs : s.Nonempty)
+    (hblock : ∀ S, F.IsInfinitesimalMotion S → ∀ u ∈ s, ∀ w ∈ s, S u = S w)
+    (hpin : F.pinnedMotionsOn s = ⊥) :
+    F.IsInfinitesimallyRigid := by
+  obtain ⟨v, hv⟩ := hs
+  intro S hS
+  -- The constant trivial motion equal to `S v` everywhere.
+  set T : α → ScrewSpace k := fun _ => S v with hT
+  have hTtriv : IsTrivialMotion T := fun _ _ => rfl
+  have hTmot : F.IsInfinitesimalMotion T := F.isInfinitesimalMotion_of_isTrivialMotion hTtriv
+  -- `S - T` is a motion vanishing on every body of `s`, hence in the (trivial) block pin.
+  have hdiff : S - T ∈ F.pinnedMotionsOn s := by
+    refine ⟨F.infinitesimalMotions.sub_mem hS hTmot, fun w hw => ?_⟩
+    rw [Pi.sub_apply, hT, hblock S hS w hw v hv, sub_self]
+  -- The block pin is `⊥`, so `S = T`, a trivial motion.
+  rw [hpin, Submodule.mem_bot, sub_eq_zero] at hdiff
+  rw [hdiff]
+  exact hTtriv
+
 /-- **Case I: contracting a rigid block realizes the rank** (`lem:case-I`, Katoh–Tanigawa 2011
 §6.2/6.3/6.5 Lemmas 6.2, 6.3, 6.5; GREEN-modulo the Phase-21b genericity device). Let `F` be a
 body-hinge framework on the parent graph `G = F.graph` carrying a proper rigid subgraph `H` on the
