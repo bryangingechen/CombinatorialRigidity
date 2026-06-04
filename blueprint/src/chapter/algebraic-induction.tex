@@ -85,7 +85,9 @@ plumbing is needed.
   \lean{CombinatorialRigidity.Molecular.PanelHingeFramework,
         CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge,
         CombinatorialRigidity.Molecular.BodyHingeFramework.IsHingeCoplanar,
-        CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge}
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.IsGeneralPosition,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition}
   \leanok
   \uses{def:panel-support-extensor, def:hinge-constraint}
   A \emph{panel-hinge framework} is a multigraph $G = (V,E)$ together with a
@@ -104,7 +106,13 @@ plumbing is needed.
   ($\mathrm{IsHingeCoplanar}$) when it arises this way; this is the
   molecular-model constraint Katoh--Tanigawa's panel-hinge frameworks carry
   beyond the free-hinge body-hinge model, and the conjecture's content is
-  that it can be met without dropping rigidity.
+  that it can be met without dropping rigidity. The normals are in
+  \emph{general position} ($\mathrm{IsGeneralPosition}$) when any two normals
+  at distinct bodies are linearly independent; then every hinge joining two
+  distinct bodies has a nonzero supporting extensor
+  ($\mathrm{supportExtensor\_ne\_zero\_of\_isGeneralPosition}$) --- the
+  transversality the rigid-block forest hinges feed into the block-triangular
+  gluing of \cref{lem:case-I}.
 \end{definition}
 
 \subsection{The generic-rank reconciliation (Proposition 1.1, analytic half)}
