@@ -1513,28 +1513,37 @@ non-spanning block).}
   \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
 \end{proof}
 
-\begin{lemma}[N7b-1: the re-inserted body's two hinges give $D-1$ independent rows]
+\begin{lemma}[N7b-1: a re-inserted body's transversal hinge gives $D-1$ independent panel rows]
   \label{lem:case-II-placement-new-rows}
-  \uses{def:panel-hinge-framework, lem:exists-independent-panel-extensor,
-        lem:rank-delete-vertex}
-  Re-inserting the degree-2 body $v$ joins it to its two neighbours $a, b$ by two
-  hinges. Choosing the panel normal $n$ of $v$ in general position
-  (\cref{lem:exists-independent-panel-extensor}) makes the two new edges' supporting
-  extensors $C(e_a), C(e_b)$ span a $D-1$-dimensional space, so the two new
-  $\mathrm{panelRow}$ blocks --- the rows of $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
-  indexed by $e_a, e_b$ --- carry $D-1$ linearly independent functionals on the
-  $v$-column screw block. This is the panel-row form of the $+(D-1)$ contribution the
-  $1$-extension adds, sitting entirely in $v$'s columns (pin-a-body Lemma~5.1,
-  \cref{lem:rank-delete-vertex}). \emph{Red} (Phase-21b realization layer):
-  build-shaped given the green $\mathrm{exists\_independent\_panelSupportExtensor}$
-  and the $\mathrm{panelRow}$ span identity.
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_independent_panelRow_of_edge}
+  \leanok
+  \uses{def:panel-hinge-framework, def:hinge-row-block, def:rigidity-matrix, lem:rank-delete-vertex}
+  Re-inserting the degree-2 body $v$ joins it to its neighbours $a, b$ by two hinges. Each such
+  hinge $e = uv$ that is \emph{transversal} --- distinct endpoints and a nonzero supporting extensor
+  $C(p(e))$, the general-position condition supplied by choosing $v$'s normal $n$ off the
+  support-extensor locus (\cref{lem:exists-independent-panel-extensor}) --- contributes a linearly
+  independent family of $D-1 = \mathrm{screwDim}\,k - 1$ rigidity rows of
+  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$, each a member of \emph{that single edge's} panel-row
+  span $\langle \mathrm{panelRow}\,\mathrm{ends}\,(e, \cdot, \cdot)\rangle$. These are the $+(D-1)$
+  rows the $1$-extension adds in $v$'s column screw block: the hinge-row block $r(p(e))$ is
+  $(D-1)$-dimensional (\cref{lem:rank-delete-vertex}, the rank-count input), and its basis lifts
+  through the relative-screw evaluation $\mathrm{hingeRow}\,u\,v$ into the per-edge panel-row span.
+  This is the panel-row form of the per-edge brick of \cref{def:rigidity-matrix}
+  ($\mathrm{exists\_independent\_rigidityRows\_of\_edge}$), restricted to
+  membership in this edge's panel rows so the placement assembly
+  (\cref{lem:case-II-realization-placement}) can thread it into the device-consuming
+  $\mathrm{panelRow}$ family of \cref{lem:realization-of-independent-rows}.
 \end{lemma}
 \begin{proof}
-  \uses{lem:exists-independent-panel-extensor, lem:rank-delete-vertex}
-  $\mathrm{exists\_independent\_panelSupportExtensor}$ at $m = D-1$ supplies the
-  general-position normals; carry them to $v$'s normal $n$ and read the independence
-  of the two edges' $\mathrm{panelRow}$ blocks off the support-extensor span. See
-  \cite[\S6.3]{katohTanigawa2011}.
+  \leanok
+  \uses{def:hinge-row-block, lem:rank-delete-vertex}
+  The transversal hinge's row block $r(p(e)) = (\mathrm{span}\,C(p(e)))^\perp$ has dimension $D-1$
+  (\cref{lem:rank-delete-vertex}); pick a basis of it. Its image under the relative-screw evaluation
+  $\mathrm{hingeRow}\,u\,v = (\mathrm{screwDiff}\,u\,v)^\ast$ stays independent (the dual map is
+  injective at distinct endpoints) and, by the per-edge span identity
+  $\mathrm{span\_panelRow\_edge\_eq}$ (the annihilator-family span
+  $\mathrm{span\_annihRow\_eq\_dualAnnihilator}$ carried through $\mathrm{hingeRow}\,u\,v$), each row
+  lies in the single edge's panel-row span. See \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 
 \begin{lemma}[N7b-2: the inductive rows transport through the common subgraph $G-v$]

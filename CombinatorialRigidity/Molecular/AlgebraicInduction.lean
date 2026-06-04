@@ -662,6 +662,61 @@ theorem span_panelRow_eq_rigidityRows (F : BodyHingeFramework k α β) {ends : �
         Submodule.subset_span ⟨(e, t₁, t₂), by rw [panelRow, hu, hv]⟩) (-r)
         ((Submodule.neg_mem_iff _).2 hr)
 
+/-- **A single edge's panel rows span its hinge-row block image** (B0 corollary,
+`lem:case-II-placement-new-rows` infra). For an edge `e = uv` of `F` with nonzero supporting
+extensor (`hne : F.supportExtensor e ≠ 0`), the span of the per-pair panel rows
+`(t₁, t₂) ↦ F.panelRow ends (e, t₁, t₂)` — the rows of `R(G,p)` carried by this single edge —
+equals the `hingeRow u v` image of the whole hinge-row block `r(p(e))`. The `⊆` is membership
+(each `panelRow (e,t₁,t₂)` is `hingeRow u v (annihRow C t₁ t₂)` with `annihRow C t₁ t₂ ∈ r(p(e))`,
+`annihRow_apply_self`); the `⊇` is the annihilator-family spanning identity
+`span_annihRow_eq_dualAnnihilator` carried through the linear `hingeRow u v` via
+`Submodule.map_span`. This is the per-edge restriction of `span_panelRow_eq_rigidityRows` — it
+needs transversality of the *single* edge `e` only, the form the Case-II re-inserted body's two
+new hinges consume. -/
+theorem span_panelRow_edge_eq (F : BodyHingeFramework k α β) {ends : β → α × α} (e : β)
+    (hne : F.supportExtensor e ≠ 0) :
+    Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+        × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2)))
+      = Submodule.map (screwDiff (ends e).1 (ends e).2).dualMap (F.hingeRowBlock e) := by
+  have hblk : F.hingeRowBlock e
+      = Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+        × Set.powersetCard (Fin (k + 2)) k => annihRow (F.supportExtensor e) p.1 p.2)) := by
+    rw [hingeRowBlock_apply, span_annihRow_eq_dualAnnihilator _ hne]
+  rw [hblk, Submodule.map_span, ← Set.range_comp]
+  rfl
+
+/-- **N7b-1: the re-inserted body's transversal hinge gives `D − 1` independent panel rows**
+(`lem:case-II-placement-new-rows`; Katoh–Tanigawa 2011 §6.3, eq. (6.12)). For the free-normal panel
+family `ofNormals G ends q₀`, a genuine edge `e = uv` incident to the re-inserted body (distinct
+endpoints `u ≠ v`, nonzero supporting extensor `he` — supplied by choosing `v`'s normal in
+general position, `exists_independent_panelSupportExtensor` /
+`supportExtensor_ne_zero_of_isGeneralPosition`) contributes a linearly independent family of
+`D − 1 = screwDim k − 1` rigidity rows, each a member of the *single edge's* panel-row span
+`span {panelRow ends (e, ·, ·)}`. These are the `+(D−1)` rows the
+$1$-extension adds in `v`'s column block: the hinge-row block `r(p(e))` is `(D−1)`-dimensional
+(`finrank_hingeRowBlock`), its basis lifts through the relative-screw evaluation
+(`linearIndependent_hingeRow`) to independent rigidity rows lying in the per-edge panel-row span
+(`span_panelRow_edge_eq`). This is the panel-row form of the per-edge brick
+`exists_independent_rigidityRows_of_edge`, restricted to membership in *this* edge's panel rows so
+the Case-II placement assembly (N7b) can thread it into the device-consuming `panelRow` family of
+N7a. -/
+theorem exists_independent_panelRow_of_edge (F : BodyHingeFramework k α β) {ends : β → α × α}
+    {e : β} (huv : (ends e).1 ≠ (ends e).2) (he : F.supportExtensor e ≠ 0) :
+    ∃ r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k),
+      LinearIndependent ℝ r ∧
+      ∀ i, r i ∈ Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+        × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2))) := by
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  -- A basis of the `(D−1)`-dimensional hinge-row block, coerced out as ambient functionals.
+  obtain ⟨c, hc, hmem⟩ := (F.hingeRowBlock e).exists_linearIndependent_fin_of_finrank_eq
+    (F.finrank_hingeRowBlock he)
+  refine ⟨fun i => hingeRow (ends e).1 (ends e).2 (c i),
+    linearIndependent_hingeRow huv hc, fun i => ?_⟩
+  -- Each `hingeRow u v (c i)` lies in the per-edge panel-row span (the `hingeRow u v` image of
+  -- the hinge-row block `r(p(e))`).
+  rw [span_panelRow_edge_eq F e he]
+  exact ⟨c i, hmem i, rfl⟩
+
 /-- **The realization (generic-rank) hypothesis (6.1)** (`def:rank-hypothesis`): a panel-hinge
 framework `(G,p)` realizes the target rank of a `k`-dof-graph when its null space has dimension
 `dim Z(G,p) = D + k`, i.e. `rank R(G,p) = D|V| − dim Z(G,p) = D(|V|−1) − k`

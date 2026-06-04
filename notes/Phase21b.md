@@ -30,11 +30,13 @@ cycle-realization, the `R(G,p)` coordinatization, the block-pin machinery, the
 relativized motive + base case (`def:rank-hypothesis`, `lem:theorem-55-base`),
 the rank-side accounting iffs (`lem:case-I` / `lem:case-II`, green-modulo-21b),
 the **B0 keystone** (`lem:rows-polynomial-in-normals` — the device closure on the
-*varying* panel family), the Case-I splice **glue** (`lem:case-I-splice-seed`), and
-the **`V(G)`-relative count bridge N1–N3** (`lem:relative-screw-split` /
-`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`) are all green
-and axiom-clean {propext, Classical.choice, Quot.sound}. (Authoritative inventory:
-the blueprint dep-graph. Per-commit history: *Completed items* in the Hand-off.)
+*varying* panel family), the Case-I splice **glue** (`lem:case-I-splice-seed`), the
+**`V(G)`-relative count bridge N1–N3** (`lem:relative-screw-split` /
+`lem:relative-device-count` / `lem:isInfRigidOn-of-relative-count`), and the **first Case-II
+placement sub-node N7b-1** (`lem:case-II-placement-new-rows` — a transversal hinge's `D−1`
+independent panel rows) are all green and axiom-clean {propext, Classical.choice, Quot.sound}.
+(Authoritative inventory: the blueprint dep-graph. Per-commit history: *Completed items* in the
+Hand-off.)
 
 **Remaining: the realization producers, re-planned 2026-06-06** into the ordered
 node list in the Hand-off. Three forward facts shape the plan:
@@ -93,8 +95,12 @@ per-node detail.
 - [ ] N7b `lem:case-II-realization-placement` — construct the seed `(q₀, s)` for the 1-extension
   across the edge substitution (KT 6.12). The genuine geometry; feeds N7a. **Decomposed
   2026-06-04** into three buildable sub-nodes (blueprint, mirrors the Case-I placement split):
-  - [ ] N7b-1 `lem:case-II-placement-new-rows` — `v`'s two re-attaching hinges give `D−1`
-    independent panel rows (general-position normal via `exists_independent_panelSupportExtensor`).
+  - [x] N7b-1 `lem:case-II-placement-new-rows` — **GREEN 2026-06-04**. A transversal hinge `e=uv`
+    incident to `v` gives `D−1` independent rigidity rows, each in *that edge's* panel-row span
+    (`exists_independent_panelRow_of_edge`; the per-edge span identity `span_panelRow_edge_eq` +
+    `linearIndependent_hingeRow` + `finrank_hingeRowBlock`). The panel-row form of
+    `exists_independent_rigidityRows_of_edge`; transversality `he` is the satisfiable
+    general-position output (`supportExtensor_ne_zero_of_isGeneralPosition`), not laundered.
   - [ ] N7b-2 `lem:case-II-placement-old-rows` — the inductive `D(|V(G)|−2)` rows transport
     through the common subgraph `G−v` (`removeVertex_le`/`removeVertex_le_splitOff`), NOT a
     free inclusion-transport (edge substitution: `e₀` deleted, `v`'s edges added).
@@ -216,14 +222,25 @@ re-inserted `v`) and a linearly independent family `s` of `D(|V(G)|−1)` `panel
 Case-I placement split. KT §6.3 Lemma 6.8 / eq. (6.12). This commit is a planning/decomposition
 commit (blueprint + notes only, no Lean), per the hand-off's "decompose before building" gate.
 
-**Next concrete commit: N7b-1 `lem:case-II-placement-new-rows`** — choose the normal `n` of `v`
-so its two re-attaching hinges (edges `e_a`, `e_b`) give `D−1` linearly independent `panelRow`s
-in the `v`-column screw block. Build-shaped: `exists_independent_panelSupportExtensor` at
-`m = D−1` (green, supplies general-position normals) + the `panelRow` span identity
-`span_panelRow_eq_rigidityRows` + pin-a-body Lemma 5.1 (`lem:rank-delete-vertex`, the column
-location). Then in order: N7b-2 (`lem:case-II-placement-old-rows`, transport the IH's
-`D(|V(G)|−2)` rows through `G−v` via `removeVertex_le`/`removeVertex_le_splitOff`), N7b-3
-(`lem:case-II-placement-block-independent`, the block-triangular union), N7b (assemble the seed
+**N7b-1 `lem:case-II-placement-new-rows` is GREEN (landed 2026-06-04, this commit).**
+`BodyHingeFramework.exists_independent_panelRow_of_edge`: a transversal hinge `e=uv` (distinct
+endpoints, `supportExtensor e ≠ 0`) gives `D−1 = screwDim k − 1` linearly independent rigidity rows,
+each in *that edge's* panel-row span `span {panelRow ends (e, ·, ·)}`. The panel-row form of
+`exists_independent_rigidityRows_of_edge` (`finrank_hingeRowBlock` basis + `linearIndependent_hingeRow`
+lift), with membership routed through the new per-edge span identity `span_panelRow_edge_eq` (the
+annihilator-family span `span_annihRow_eq_dualAnnihilator` carried through `(screwDiff u v).dualMap`).
+The transversality `he` is the *satisfiable* general-position output of the assembly's normal choice
+(`supportExtensor_ne_zero_of_isGeneralPosition`), taken as a hypothesis here exactly as the per-edge
+brick does — not a laundered deliverable.
+
+**Next concrete commit: N7b-2 `lem:case-II-placement-old-rows`** — transport the IH's `D(|V(G)|−2)`
+independent rows of `ofNormals G_v^{ab} ends' q₀'` to `ofNormals G ends q₀` through the *common
+subgraph* `G−v` (`removeVertex_le` / `removeVertex_le_splitOff`, both green). NOT a free
+inclusion-transport: `splitOff` is an edge substitution (`e₀` deleted in `G`, `v`'s two edges added),
+so restrict the IH family to the `e₀`-free subfamily (= rows of `G−v`) and read them as rows of `G`.
+Uses the row coordinatization `lem:rows-polynomial-in-normals` (B0) to identify rows across the two
+graphs. Then in order: N7b-3 (`lem:case-II-placement-block-independent`, the block-triangular union
+of the N7b-1 new rows + N7b-2 old rows, pin-a-body Lemma 5.1 column split), N7b (assemble the seed
 `(q₀, s)`), N7 (one-line N7a∘N7b discharging `theorem_55`'s `hsplit`).
 
 **The `V(G)`-relative count bridge N1–N3 is GREEN (landed 2026-06-04).** The device
@@ -240,8 +257,8 @@ location). Then in order: N7b-2 (`lem:case-II-placement-old-rows`, transport the
   at a singleton block `{v₀}` + N1 dimension-match (`finrank_pinnedMotions_add_screwDim`).
 
 Then, in order:
-1. **N7b `lem:case-II-realization-placement`**, now decomposed into N7b-1 → N7b-2 → N7b-3 →
-   N7b-assembly (sub-nodes above; N7b-1 is the next concrete commit) →
+1. **N7b `lem:case-II-realization-placement`**, decomposed into N7b-1 (GREEN) → N7b-2 → N7b-3 →
+   N7b-assembly (sub-nodes above; **N7b-2 is the next concrete commit**) →
    **N7 `lem:case-II-realization`** (one-line N7a∘N7b). Discharges `hsplit`.
 2. **N4 `lem:rigidContract-isMinimalKDof`** — the graph↔matroid contraction bridge
    (independent of N1–N3): `(G.rigidContract H r).IsMinimalKDof n 0` from the green
@@ -267,7 +284,9 @@ glue) — 2026-06-06; **N1–N3 (`V(G)`-relative count bridge) — 2026-06-04**;
 **N7a `lem:realization-of-independent-rows` (device-to-motive glue, shared by both
 producers) — 2026-06-04** (and N7 decomposed into glue + red placement N7b);
 **N7b placement decomposed into the three buildable sub-nodes N7b-1/2/3 — 2026-06-04**
-(planning commit, blueprint + notes). Per-node detail in the blueprint dep-graph.
+(planning commit, blueprint + notes); **N7b-1 `lem:case-II-placement-new-rows`
+(`exists_independent_panelRow_of_edge` + the per-edge span identity `span_panelRow_edge_eq`)
+— 2026-06-04**. Per-node detail in the blueprint dep-graph.
 
 **Process lessons (don't repeat).**
 (a) Build the keystone / validate the target shape *before* growing a reduction
