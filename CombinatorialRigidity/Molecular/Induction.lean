@@ -1979,6 +1979,67 @@ lemma cycleMatroid_mulTilde_rigidContract {H G : Graph α β} (hle : H ≤ G) {r
   exact Graph.cycleMatroid_contract (rigidContract_collapseTo_isRepFun hr n hconn)
     (edgeMultiply_mono hle _)
 
+/-! ## Isolating the union↔contraction crux of N4c (`lem:rigidContract-isMinimalKDof`)
+
+N4c is the union-level independence bridge `M((G/E(H))̃) = M(G̃) ／ E(H̃)`, the genuinely hard
+leaf flagged at Phase-22 launch: the `D`-fold `Matroid.Union` of `matroidMG` does **not**
+commute with contraction in general (`Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`), so the per-cycle-matroid
+contraction `cycleMatroid_mulTilde_rigidContract` (N4b) cannot push through the union directly.
+
+The two bricks below reduce both sides of N4c to the **same restricted ground**
+`S = E(G̃) \ E(H̃)` and rewrite each as a restriction of a `D`-fold-union construction over
+`G̃.cycleMatroid`, isolating the irreducible crux to the single matroid equality
+`Union (fun _ ↦ G̃.cycleMatroid ／ E(H̃)) ↾ S = (Union (fun _ ↦ G̃.cycleMatroid) ／ E(H̃)) ↾ S`
+— union-of-contractions vs. contraction-of-union on the surviving fibers. That equality is
+where the rigidity input bites: `E(H̃)` is the full edge set of the rigid (hence `D`-spanning-
+tree-packing) `H̃`, so an `N`-basis of `E(H̃)` splits as one `G̃.cycleMatroid`-basis per factor,
+the condition under which the union commutes with the contraction on `S`. See `notes/Phase22.md`
+*Hand-off* for the remaining `ext_indep` + forest-packing argument the crux still needs. -/
+
+/-- **The ground set of the multiplied rigid-subgraph contraction** (N4c brick): the multiplied
+graph of `G.rigidContract H r` carries exactly the surviving fibers `E(G̃) \ E(H̃)`. The
+rigid contraction deletes `E(H)` and vertex-relabels (a `map`, edge-preserving), so its edge
+set is `E(G) \ E(H)`; multiplying lifts that fiberwise to `E(G̃) \ E(H̃)`
+(`p ∈ E(K̃) ↔ p.1 ∈ E(G) \ E(H) ↔ p ∈ E(G̃) \ E(H̃)`). This is the common restricted ground
+the two sides of N4c are matched on. -/
+lemma edgeSet_mulTilde_rigidContract (G H : Graph α β) (r : α) (n : ℕ) :
+    E((G.rigidContract H r).mulTilde n) = E(G.mulTilde n) \ E(H.mulTilde n) := by
+  ext p
+  simp only [mem_edgeSet_mulTilde, rigidContract, edgeSet_map, edgeSet_deleteEdges, Set.mem_diff]
+
+/-- **The contraction side of N4c reduces to a restricted contraction-of-union** (N4c brick).
+For `H ≤ G`, the matroid contraction `M(G̃) ／ E(H̃)` is the `D`-fold cycle-matroid union of `G̃`,
+*contracted* by `E(H̃)` and then restricted to the surviving fibers `E(G̃) \ E(H̃)`. Pure matroid
+bookkeeping: `matroidMG G = N ↾ E(G̃)` with `N = Union (fun _ ↦ G̃.cycleMatroid)`, and the
+restrict-then-contract commutes to contract-then-restrict because `E(H̃) ⊆ E(G̃)`
+(`Matroid.restrict_contract_eq_contract_restrict`). Together with `matroidMG_rigidContract_eq`
+(the matching union-of-contractions form for `M(K̃)`), this leaves N4c as the single
+union↔contraction equality on `E(G̃) \ E(H̃)`; see the section docstring. -/
+lemma matroidMG_contract_eq_restrict [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    (hle : H ≤ G) (n : ℕ) :
+    (G.matroidMG n) ／ E(H.mulTilde n) =
+      (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦ (G.mulTilde n).cycleMatroid)
+        ／ E(H.mulTilde n)) ↾ (E(G.mulTilde n) \ E(H.mulTilde n)) := by
+  have hsub : E(H.mulTilde n) ⊆ E(G.mulTilde n) := (edgeMultiply_mono hle _).edgeSet_mono
+  rw [matroidMG, Matroid.restrict_contract_eq_contract_restrict _ hsub]
+
+/-- **The contracted side of N4c as a restricted union-of-contractions** (N4c brick). The
+matroid `M((G/E(H))̃)` of the multiplied rigid-subgraph contraction is the `D`-fold union of
+the *per-factor contracted* cycle matroids `G̃.cycleMatroid ／ E(H̃)`, restricted to the
+surviving fibers `E(G̃) \ E(H̃)`. Combines `cycleMatroid_mulTilde_rigidContract` (N4b: each
+factor `K̃.cycleMatroid = G̃.cycleMatroid ／ E(H̃)`) with `edgeSet_mulTilde_rigidContract` (the
+ground `E(K̃) = E(G̃) \ E(H̃)`). Paired with `matroidMG_contract_eq_restrict`, the two sides of
+N4c sit over the same ground and differ only by union↔contraction order; see the section
+docstring. -/
+lemma matroidMG_rigidContract_eq [DecidableEq β] [Finite α] [Finite β] {H G : Graph α β}
+    (hle : H ≤ G) {r : α} (hr : r ∈ V(H)) (n : ℕ) (hconn : (H.mulTilde n).Preconnected) :
+    (G.rigidContract H r).matroidMG n =
+      (Matroid.Union (fun _ : Fin (bodyBarDim n) ↦
+        (G.mulTilde n).cycleMatroid ／ E(H.mulTilde n)))
+        ↾ (E(G.mulTilde n) \ E(H.mulTilde n)) := by
+  rw [matroidMG, edgeSet_mulTilde_rigidContract,
+    funext fun _ : Fin (bodyBarDim n) ↦ cycleMatroid_mulTilde_rigidContract hle hr n hconn]
+
 /-! ## Minimality transport along a contraction (`lem:contraction-minimality`, second half)
 
 The minimality-transport half of KT Lemma 3.5: contracting a (rigid) subgraph `H` of a

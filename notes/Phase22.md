@@ -21,32 +21,37 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-**N4b landed green** (`cycleMatroid_mulTilde_rigidContract`, `Induction.lean`): the
-per-cycle-matroid step of the N4 bridge,
-`((G/E(H))̃).cycleMatroid = (G̃).cycleMatroid ／ E(H̃)`, for `H ≤ G` with `H̃` preconnected
-(N4a) and representative `r ∈ V(H)`. **The recon's "`cycleMatroid_contract` does not apply"
-pessimism was wrong** (see *Decisions*): it does apply — *at the `mulTilde` level*, where N4a's
-preconnectedness makes `collapseTo r V(H)` a rep-fun of `H̃`'s (single) connected component. The
-three supporting bricks, all axiom-clean, no `\leanok` flip (infra below the N4 blueprint node):
-- `mulTilde_rigidContract` — edge multiplication commutes with rigid-subgraph contraction,
-  `(G/E(H))̃ = G̃/E(H̃)` (`Graph.ext`; `edgeMultiply` commutes with both `deleteEdges` and the
-  vertex-relabel `map`).
-- `rigidContract_eq_contract'` — `rigidContract` *is* the direct vendored contraction
-  `G /[E(H), collapseTo r V(H)]` (via `map_deleteEdges_comm`), the shape `cycleMatroid_contract`
-  consumes — *without* the spurious inner `＼ E(H)` the existing `rigidContract_eq_contract`
-  (delete-first) carries onto the matroid side.
-- `rigidContract_collapseTo_isRepFun` — the genuinely-new content: N4a's `(H̃).Preconnected`
-  ⟹ `collapseTo r V(H)` is `(H̃).connPartition.IsRepFun` (via `IsRepFun.mk'` +
-  `connPartition_rel_iff`/`connPartition_supp`), the hypothesis `cycleMatroid_contract` demands.
+**N4c reduction bricks landed green** (`Induction.lean`, three lemmas, axiom-clean, no
+`\leanok` flip — infra below the N4 blueprint node): both sides of N4c
+(`M((G/E(H))̃) = M(G̃) ／ E(H̃)`) are now rewritten over the **same restricted ground**
+`S = E(G̃) \ E(H̃)`, isolating the irreducible **union↔contraction crux** to a single equality.
+- `edgeSet_mulTilde_rigidContract` — the ground `E((G/E(H))̃) = E(G̃) \ E(H̃)` (one `simp only`:
+  `rigidContract` is `map ∘ deleteEdges`, edge-preserving, so its edge set is `E(G)\E(H)`,
+  lifted fiberwise).
+- `matroidMG_contract_eq_restrict` — the **contraction side**: `M(G̃) ／ E(H̃) =
+  (Union (fun _ ↦ G̃.cycleMatroid) ／ E(H̃)) ↾ S`, via mathlib's
+  `Matroid.restrict_contract_eq_contract_restrict` (`E(H̃) ⊆ E(G̃)`).
+- `matroidMG_rigidContract_eq` — the **contracted side**: `M((G/E(H))̃) =
+  Union (fun _ ↦ G̃.cycleMatroid ／ E(H̃)) ↾ S`, combining N4b (per-factor
+  `cycleMatroid_mulTilde_rigidContract`) with the ground brick (the per-factor N4b identity
+  pushed under `Union` via `funext`).
 
-**N4a** (`mulTilde_preconnected_of_isKDof_zero`, `Deficiency.lean`) landed previously: a
-`0`-dof graph's `G̃` is preconnected, regime `[NeZero (bodyHingeMult n)]` (`D ≥ 2`); cut-partition
-contradiction reusing `two_le_crossingEdges_of_isKDof_zero`'s structure. **No nonemptiness
-hypothesis** (`Preconnected` is vacuous on the empty graph).
+So N4c is reduced to the lone matroid equality
+`Union (fun _ ↦ G̃.cyc ／ E(H̃)) ↾ S = (Union (fun _ ↦ G̃.cyc) ／ E(H̃)) ↾ S` — union-of-contractions
+vs. contraction-of-union on the surviving fibers, the point where the rigidity (forest-packing)
+input bites. See *Hand-off*.
 
-The N4 bridge remains a sub-build: **N4c** (union-level independence bridge to `matroidMG`) is the
-remaining leaf, plus the rank/ambient reconciliation that assembles `(G.rigidContract H r).IsMinimalKDof
-n 0` from `contraction_isMinimalKDof` (`Induction.lean:1998`, green). See *Hand-off*.
+**N4b landed previously** (`cycleMatroid_mulTilde_rigidContract` + 3 bricks `mulTilde_rigidContract`,
+`rigidContract_eq_contract'`, `rigidContract_collapseTo_isRepFun`, `Induction.lean`): the
+per-cycle-matroid step `((G/E(H))̃).cycleMatroid = (G̃).cycleMatroid ／ E(H̃)`, for `H ≤ G` with `H̃`
+preconnected (N4a) and `r ∈ V(H)`. The recon's "`cycleMatroid_contract` does not apply" was wrong —
+it applies at the `mulTilde` level (N4a ⟹ `collapseTo r V(H)` is an `IsRepFun` of `H̃`'s single
+component). **N4a** (`mulTilde_preconnected_of_isKDof_zero`, `Deficiency.lean`): a `0`-dof graph's
+`G̃` is preconnected, regime `[NeZero (bodyHingeMult n)]` (`D ≥ 2`); cut-partition contradiction.
+
+The N4 bridge remains a sub-build: the **union↔contraction crux** (above) is the remaining
+content of N4c, plus the rank/ambient reconciliation that assembles
+`(G.rigidContract H r).IsMinimalKDof n 0` from `contraction_isMinimalKDof` (green). See *Hand-off*.
 
 ## Architectural choices made up front
 
@@ -79,9 +84,13 @@ n 0` from `contraction_isMinimalKDof` (`Induction.lean:1998`, green). See *Hand-
     `rigidContract_eq_contract'`, `rigidContract_collapseTo_isRepFun`), all green/axiom-clean
     in `Induction.lean`. The recon's "`cycleMatroid_contract` does not apply" call was **wrong**
     — it applies at the `mulTilde` level (N4a ⟹ `IsRepFun`); see *Decisions*. Needs `r ∈ V(H)`.
-  - [ ] **N4c** union-level independence bridge via `ext_indep` against
-    `matroidMG_indep_iff` + `Matroid.Indep.contract_indep_iff` (the `(D,D)`-boundary
-    Whitney rank-of-contraction identity). *Leaf — recommended next commit; see Hand-off.*
+  - [~] **N4c** union-level independence bridge. **Reduction bricks green**
+    (`edgeSet_mulTilde_rigidContract`, `matroidMG_contract_eq_restrict`,
+    `matroidMG_rigidContract_eq`): both sides over the same ground `S = E(G̃)\E(H̃)`, each a
+    restriction of a `D`-fold-union over `G̃.cycleMatroid`. **Remaining:** the lone
+    union↔contraction crux `Union (fun _ ↦ G̃.cyc ／ E(H̃)) ↾ S = (Union (fun _ ↦ G̃.cyc) ／ E(H̃)) ↾ S`
+    (where rigidity/forest-packing enters), then `ext_indep` against `matroidMG_indep_iff` +
+    `Matroid.Indep.contract_indep_iff`. *See Hand-off.*
 - [ ] **N5** `lem:case-I-splice-placement` — splice the inductive legs `(H,p₁)`,
   `(G/E',p₂)` along boundary hinges at panel intersections (eq. 6.6); needs a
   *panel-transversality* lemma + block-triangular independence (Lemma 5.1). Three
@@ -187,6 +196,16 @@ n 0` from `contraction_isMinimalKDof` (`Induction.lean:1998`, green). See *Hand-
   **Lesson:** the constructibility recon under-checked the *exact vendored hypothesis* — read the
   lemma's binder, not a paraphrase, before declaring it inapplicable.
 
+- **N4c reduced, not closed, via the restrict↔contract commutation (2026-06-04).** Rather than
+  fight `Union ／ C` head-on, both sides of N4c are rewritten over the common ground
+  `S = E(G̃)\E(H̃)`: the contraction side uses mathlib's
+  `Matroid.restrict_contract_eq_contract_restrict` (the *restrict*↔contract commutation, which
+  **does** hold, unlike *union*↔contract), and the contracted side pushes N4b under the `Union`
+  via `funext`. This isolates the irreducible union↔contraction crux to one matroid equality on
+  `S` — a clean, honest, single-commit reduction that does not yet need the rigidity/forest-packing
+  input (that input is what the *remaining* crux equality consumes). The three bricks are infra
+  below the `lem:rigidContract-isMinimalKDof` blueprint node, so no `\leanok` flip.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *N4 recon lesson* → `DESIGN.md` *Constructibility recon before a producer build*
   (its first post-21b application). The N4b *correction* sharpens it: the recon must
@@ -197,38 +216,46 @@ n 0` from `contraction_isMinimalKDof` (`Induction.lean:1998`, green). See *Hand-
 
 ## Blockers / open questions
 
-- **N4c is the remaining hard N4 leaf.** Lifting N4b's per-cycle-matroid identity
-  `((G/E(H))̃).cycleMatroid = (G̃).cycleMatroid ／ E(H̃)` through the `D`-fold
-  `Matroid.Union` of `matroidMG` is where the union↔contraction non-commutation bites
-  (`Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`); the route is independence-level `ext_indep` +
-  contraction-independence (`Matroid.Indep.contract_indep_iff`) at the `(D,D)` boundary,
-  reading both sides through `matroidMG_indep_iff` — the Whitney rank-of-contraction
-  identity, *not* a `restrict`-style congruence. After N4c, the rank/ambient
-  reconciliation assembles `(G.rigidContract H r).IsMinimalKDof n 0` from the green
-  `contraction_isMinimalKDof`; that closes N4 (→ N6, the Case-I composer).
+- **The union↔contraction crux is the last content of N4c.** With the reduction bricks green,
+  N4c is now the single matroid equality
+  `Union (fun _ ↦ G̃.cyc ／ E(H̃)) ↾ S = (Union (fun _ ↦ G̃.cyc) ／ E(H̃)) ↾ S` on `S = E(G̃)\E(H̃)`.
+  In general `Union Mᵢ ／ C ≠ Union (Mᵢ ／ C)`; the equality holds *here* because `C = E(H̃)` is the
+  full edge set of the rigid (⟹ `D`-spanning-tree-packing) `H̃`, so an `N`-basis of `C` splits as one
+  `G̃.cycleMatroid`-basis per factor. The route is `ext_indep` + per-factor / union-level
+  `Matroid.Indep.contract_indep_iff`, reading both sides through `matroidMG_indep_iff` (or the
+  forest-packing form `matroidMG_indep_iff_exists_forest_packing`). **There is no vendored
+  Union↔contract lemma** (checked `Matroid/Constructions/Union.lean`), so it is a from-scratch
+  argument needing the rigidity input. After it, the rank/ambient reconciliation assembles
+  `(G.rigidContract H r).IsMinimalKDof n 0` from the green `contraction_isMinimalKDof` (→ N4 → N6).
 - **N5 is research-shaped** (its blueprint proof note already says so); **Track B** (the
   Case II/III producer) is a multi-node crux. So there is still no clean single-commit
-  *producer* node — the infra route (finish N4) remains the lowest-risk forward path.
+  *producer* node — the infra route (finish N4c's crux) remains the lowest-risk forward path.
 
 ## Hand-off / next phase
 
-**N4b is green** (`cycleMatroid_mulTilde_rigidContract` + 3 bricks, `Induction.lean`;
-axiom-clean, no `\leanok` flip — infra below the N4 blueprint node). The recon's
-"`cycleMatroid_contract` does not apply" was corrected: it applies at the `mulTilde`
-level (N4a ⟹ `IsRepFun`), so N4b was one commit, not a from-scratch Whitney build.
+**N4c reduction bricks are green** (`edgeSet_mulTilde_rigidContract`,
+`matroidMG_contract_eq_restrict`, `matroidMG_rigidContract_eq`, `Induction.lean`; axiom-clean,
+no `\leanok` flip — infra below the N4 blueprint node). They put both sides of N4c
+(`matroidMG (G.rigidContract H r) = matroidMG G ／ E(H̃)`) over the common restricted ground
+`S = E(G̃)\E(H̃)`, each as a restriction of a `D`-fold union over `G̃.cycleMatroid`.
 
-**Recommended next concrete commit: N4c — lift N4b through the `Matroid.Union` to the
-`matroidMG` independence bridge.** Target:
-`matroidMG (G.rigidContract H r) = matroidMG G ／ E(H̃)` (or, if cleaner, its
-`ext_indep` independence form). Route (per the recon's "viable route" bullet under
-*Decisions*): `Matroid.ext_indep`, reading the contraction side through
-`Matroid.Indep.contract_indep_iff` (basis `J` of `E(H̃)`, `(G̃ ↾ (I ∪ J))` `(D,D)`-sparse)
-and the LHS through `matroidMG_indep_iff` (`(rigidContract.mulTilde ↾ I)` `(D,D)`-sparse);
-N4b gives the per-cycle-matroid contraction these rest on. This is the genuinely hard
-leaf (union↔contraction non-commutation) — budget it as its own (possibly multi-) commit.
-Needs `r ∈ V(H)` and `H̃` preconnected (from N4a via `mulTilde_preconnected_of_isKDof_zero`,
-available since `H` proper rigid ⟹ `H.IsKDof n 0`). After N4c: the rank reconciliation +
-`contraction_isMinimalKDof` ⟹ N4 (`lem:rigidContract-isMinimalKDof`), then N6.
+**Recommended next concrete commit: the union↔contraction crux of N4c.** Prove the single matroid
+equality (on the common ground `S`):
+`Union (fun _ : Fin D ↦ G̃.cyc ／ E(H̃)) ↾ S = (Union (fun _ : Fin D ↦ G̃.cyc) ／ E(H̃)) ↾ S`.
+Then N4c follows by `(matroidMG_rigidContract_eq …).trans <crux> |>.trans (matroidMG_contract_eq_restrict …).symm`.
+Route: `Matroid.ext_indep` over `S`. Per `I ⊆ S` (so `Disjoint I E(H̃)`):
+- **RHS** via union-level `Matroid.Indep.contract_indep_iff` with an `N`-basis `J` of `E(H̃)`
+  (`N = Union (fun _ ↦ G̃.cyc)`): `N.Indep (I ∪ J)`, i.e. `I ∪ J` packs into `D` `G̃.cyc`-forests.
+- **LHS** via union independence (`matroidMG_indep_iff_exists_forest_packing`-style): `I` packs into
+  `D` sets each `(G̃.cyc ／ E(H̃))`-independent, each lifting (per-factor `contract_indep_iff`) by a
+  `G̃.cyc`-basis `Jᵢ` of `E(H̃)`.
+The bridge is the **rigidity input**: `E(H̃)` is the full edge set of the rigid (`H.IsKDof n 0`)
+`H̃`, so it packs into exactly `D` `G̃.cyc`-spanning-trees — `J = ⋃ Jᵢ` with each `Jᵢ` a `G̃.cyc`-basis
+of `E(H̃)`. `rank_matroidMG_of_isKDof_zero` (`rank M(H̃) = D(|V(H)|−1)`) is the rank fact behind the
+split. No vendored Union↔contract lemma exists, so this is from-scratch — budget it its own
+(possibly multi-) commit. Needs `r ∈ V(H)` + `H̃` preconnected (N4a, since proper rigid ⟹
+`H.IsKDof n 0`). After the crux: rank/ambient reconciliation + `contraction_isMinimalKDof` ⟹ N4
+(`lem:rigidContract-isMinimalKDof`), then N6.
 
 *If a producer is preferred over infrastructure:* **N5**
 `lem:case-I-splice-placement`, decomposed math-first per its blueprint proof note
