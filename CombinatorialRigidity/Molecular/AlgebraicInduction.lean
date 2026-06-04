@@ -400,6 +400,191 @@ theorem panelSupportPoly_totalDegree_le {α : Type*} (u v : α)
   rw [MvPolynomial.totalDegree_C, zero_add]
   exact normalsJoinPoly_totalDegree_le u v s
 
+/-! ## The per-edge annihilator family (B0, `lem:rows-polynomial-in-normals`, sub-commit 3)
+
+The hinge-row block at an edge is the dual annihilator `(span {C})^⊥` of the supporting extensor
+`C = panelSupportExtensor n_u n_v ∈ ScrewSpace k` (`def:hinge-row-block`). To feed it into the
+genericity device the rows must be presented as a *spanning family* of functionals whose
+coordinates are polynomials in the panel normals. The standard spanning family of `(span {C})^⊥`
+is `{C_{t₁} e_{t₂}^{*} − C_{t₂} e_{t₁}^{*}}` over pairs of basis indices `(t₁, t₂)`, where `C_t` is
+the `t`-th coordinate of `C` in the standard `⋀^k` basis and `e_t^{*}` the dual basis functional:
+each member annihilates `C` (its value at `C` is `C_{t₁} C_{t₂} − C_{t₂} C_{t₁} = 0`), and together
+they span the whole `(D−1)`-dimensional annihilator. Crucially each member is *linear in `C`*, so
+substituting the degree-2 panel-coordinate polynomials `panelSupportPoly` for `C`'s coordinates
+keeps the rigidity rows degree-2 in the panel normals — the device's polynomiality input. -/
+
+/-- The **standard exterior-power basis of the screw space** `ScrewSpace k = ⋀^k ℝ^(k+2)`
+(`def:rigidity-matrix`): the exterior power of the standard basis `Pi.basisFun ℝ (Fin (k+2))` of
+`ℝ^(k+2)`, indexed by the `k`-element subsets `t ⊆ Fin (k+2)` (`Set.powersetCard (Fin (k+2)) k`).
+Its coordinate functionals `screwBasis.repr (·) t` are the `⋀^k`-coordinates the panel-support
+polynomial `panelSupportPoly` evaluates to (`panelSupportPoly_eval`); abbreviated here so the
+annihilator family below reads cleanly. -/
+noncomputable abbrev screwBasis (k : ℕ) :
+    Module.Basis (Set.powersetCard (Fin (k + 2)) k) ℝ (ScrewSpace k) :=
+  (Pi.basisFun ℝ (Fin (k + 2))).exteriorPower k
+
+/-- **The per-pair annihilator functional** of a screw vector `C ∈ ScrewSpace k` (B0,
+`lem:rows-polynomial-in-normals`): for a pair `(t₁, t₂)` of standard `⋀^k`-basis indices, the
+linear functional `C_{t₁} • e_{t₂}^{*} − C_{t₂} • e_{t₁}^{*}` on `ScrewSpace k`, where `C_t` is the
+`t`-th coordinate of `C` (`screwBasis k |>.repr C t`) and `e_t^{*} = screwBasis k |>.coord t` the
+dual basis functional. It annihilates `C` (`annihRow_apply_self`) and the whole family spans the
+dual annihilator `(span {C})^⊥` (`span_annihRow_eq_dualAnnihilator`); each functional is *linear in
+`C`*, which is what keeps the panel-coordinatized rigidity rows degree-2. -/
+noncomputable def annihRow (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    Module.Dual ℝ (ScrewSpace k) :=
+  (screwBasis k).repr C t₁ • (screwBasis k).coord t₂
+    - (screwBasis k).repr C t₂ • (screwBasis k).coord t₁
+
+@[simp]
+theorem annihRow_apply (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k)
+    (x : ScrewSpace k) :
+    annihRow C t₁ t₂ x =
+      (screwBasis k).repr C t₁ * (screwBasis k).repr x t₂
+        - (screwBasis k).repr C t₂ * (screwBasis k).repr x t₁ := by
+  simp [annihRow]
+
+/-- The annihilator functional vanishes at the screw vector it is built from (B0): `annihRow C t₁ t₂
+C = 0`, since its value is the antisymmetric minor `C_{t₁} C_{t₂} − C_{t₂} C_{t₁}`. So every member
+of the family lies in the dual annihilator `(span {C})^⊥`. -/
+theorem annihRow_apply_self (C : ScrewSpace k) (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    annihRow C t₁ t₂ C = 0 := by
+  rw [annihRow_apply]; ring
+
+/-- **The annihilator family spans the hinge-row block** (B0, `lem:rows-polynomial-in-normals`,
+the device-input span identity): for a nonzero screw vector `C`, the span of the per-pair
+annihilator functionals `annihRow C t₁ t₂` is the dual annihilator `(span {C})^⊥` — exactly the
+hinge-row block `r(p(e))` of an edge with supporting extensor `C` (`def:hinge-row-block`).
+
+The containment `⊆` is `annihRow_apply_self` (each member annihilates `C`). For `⊇`, fix a
+coordinate `t₀` with `C_{t₀} ≠ 0` (it exists since `C ≠ 0`). Any `f` annihilating `C` is the
+explicit combination `f = ∑_t (f(b t) / C_{t₀}) • annihRow C t₀ t`: checking it on each basis
+vector `b_s`, the `s ≠ t₀` coordinate is `f(b_s)` directly, and the `s = t₀` coordinate collapses
+to `f(b_{t₀})` precisely because `∑_t C_t f(b_t) = f C = 0`. So `f`
+lies in the span of the family. This is the spanning brick that turns the
+panel-coordinatized `annihRow` family into a finite family whose span is the rigidity-row space —
+the device's `hcoord` input through `infinitesimalMotions_eq_dualCoannihilator`. -/
+theorem span_annihRow_eq_dualAnnihilator (C : ScrewSpace k) (hC : C ≠ 0) :
+    Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+        × Set.powersetCard (Fin (k + 2)) k => annihRow C p.1 p.2))
+      = (Submodule.span ℝ {C}).dualAnnihilator := by
+  apply le_antisymm
+  · rw [Submodule.span_le]
+    rintro _ ⟨⟨t₁, t₂⟩, rfl⟩
+    rw [SetLike.mem_coe, Submodule.mem_dualAnnihilator]
+    intro c hc
+    rw [Submodule.mem_span_singleton] at hc
+    obtain ⟨r, rfl⟩ := hc
+    rw [map_smul, annihRow_apply_self, smul_zero]
+  · intro f hf
+    classical
+    rw [Submodule.mem_dualAnnihilator] at hf
+    have hfC : f C = 0 := hf C (Submodule.mem_span_singleton_self C)
+    -- A coordinate `t₀` with `C_{t₀} ≠ 0`, available because `C ≠ 0`.
+    obtain ⟨t₀, ht₀⟩ : ∃ t₀, (screwBasis k).repr C t₀ ≠ 0 := by
+      by_contra h
+      refine hC (Module.Basis.forall_coord_eq_zero_iff (screwBasis k) |>.1 fun t => ?_)
+      rw [Module.Basis.coord_apply]
+      exact not_not.1 fun ht => h ⟨t, ht⟩
+    -- The Kronecker-delta form of the basis coordinates of a basis vector.
+    have hδ : ∀ i j : Set.powersetCard (Fin (k + 2)) k,
+        (screwBasis k).repr (screwBasis k i) j = if i = j then (1 : ℝ) else 0 :=
+      fun i j => Module.Basis.repr_self_apply (screwBasis k) (i := i) j
+    -- `f C = ∑_t C_t · f(b t)` (the dual-basis expansion of `f C`), which is `0`.
+    have hfC' : ∑ t, (screwBasis k).repr C t * f (screwBasis k t) = 0 := by
+      rw [← hfC]
+      conv_rhs => rw [← (screwBasis k).sum_repr C, map_sum]
+      exact Finset.sum_congr rfl fun t _ => by rw [map_smul, smul_eq_mul]
+    -- `f` is the explicit combination `∑_t (f (b t) / C_{t₀}) • annihRow C t₀ t`.
+    have hsum : f = ∑ t, (f (screwBasis k t) / (screwBasis k).repr C t₀) • annihRow C t₀ t := by
+      refine (screwBasis k).ext fun s => ?_
+      rw [LinearMap.sum_apply]
+      simp only [LinearMap.smul_apply, smul_eq_mul, annihRow_apply, hδ]
+      rcases eq_or_ne s t₀ with hs | hs
+      · subst hs
+        -- Each summand is `(f(b x)/C_s)·(C_s·[s=x] − C_x·[s=s])`; split into two sums.
+        have hsplit : ∀ x, f (screwBasis k x) / (screwBasis k).repr C s
+            * ((screwBasis k).repr C s * (if s = x then (1 : ℝ) else 0)
+              - (screwBasis k).repr C x * (if s = s then (1 : ℝ) else 0))
+            = f (screwBasis k x) / (screwBasis k).repr C s
+                * ((screwBasis k).repr C s * (if s = x then (1 : ℝ) else 0))
+              - f (screwBasis k x) / (screwBasis k).repr C s * (screwBasis k).repr C x := by
+          intro x; rw [if_pos rfl, mul_one]; ring
+        rw [Finset.sum_congr rfl fun x _ => hsplit x, Finset.sum_sub_distrib]
+        have h1 : ∑ x, f (screwBasis k x) / (screwBasis k).repr C s
+            * ((screwBasis k).repr C s * (if s = x then (1 : ℝ) else 0)) = f (screwBasis k s) := by
+          rw [Finset.sum_eq_single s]
+          · rw [if_pos rfl, mul_one, div_mul_cancel₀ _ ht₀]
+          · intro x _ hxs; rw [if_neg (fun h => hxs h.symm), mul_zero, mul_zero]
+          · intro h; exact absurd (Finset.mem_univ s) h
+        have h2 : ∑ x, f (screwBasis k x) / (screwBasis k).repr C s
+            * (screwBasis k).repr C x = 0 := by
+          have hreorg : ∑ x, f (screwBasis k x) / (screwBasis k).repr C s
+              * (screwBasis k).repr C x
+              = (∑ x, (screwBasis k).repr C x * f (screwBasis k x))
+                / (screwBasis k).repr C s := by
+            rw [Finset.sum_div]
+            exact Finset.sum_congr rfl fun x _ => by ring
+          rw [hreorg, hfC', zero_div]
+        rw [h1, h2, sub_zero]
+      · rw [Finset.sum_eq_single s]
+        · rw [if_pos rfl, if_neg hs, mul_zero, sub_zero, mul_one,
+            div_mul_cancel₀ _ ht₀]
+        · intro t _ hts
+          rw [if_neg (fun h => hts h.symm), if_neg hs]; ring
+        · intro h; exact absurd (Finset.mem_univ s) h
+    rw [hsum]
+    refine Submodule.sum_mem _ fun t _ => Submodule.smul_mem _ _ ?_
+    exact Submodule.subset_span ⟨(t₀, t), rfl⟩
+
+/-- **The annihilator functional coordinatized in the panel coordinates** (B0,
+`lem:rows-polynomial-in-normals`, sub-commit 3): the `b_s`-coordinate of the per-pair annihilator
+functional `annihRow C t₁ t₂` of the panel support extensor `C = panelSupportExtensor n_u n_v` of
+an edge `(u, v)`, as a *degree-2 multivariate polynomial* in the panel coordinates
+`q : α × Fin (k+2) → ℝ`. Because `annihRow C t₁ t₂ (b_s) = C_{t₁}·[t₂ = s] − C_{t₂}·[t₁ = s]` is
+linear in `C`'s coordinates and those coordinates are the degree-2 polynomials `panelSupportPoly`
+(`panelSupportPoly_eval`), the result is the degree-2 polynomial
+`[t₂ = s]·panelSupportPoly u v t₁ − [t₁ = s]·panelSupportPoly u v t₂` (`annihRowPoly_eval`,
+`annihRowPoly_totalDegree_le`). This is the device's coordinate family `c` (and eval identity `hg`)
+for the panel-normal rows, the polynomiality the genericity device `exists_good_realization`
+consumes; the family spans the hinge-row block by `span_annihRow_eq_dualAnnihilator`. -/
+noncomputable def annihRowPoly {α : Type*} (u v : α)
+    (t₁ t₂ s : Set.powersetCard (Fin (k + 2)) k) : MvPolynomial (α × Fin (k + 2)) ℝ :=
+  (if t₂ = s then panelSupportPoly u v t₁ else 0)
+    - (if t₁ = s then panelSupportPoly u v t₂ else 0)
+
+theorem annihRowPoly_eval {α : Type*} (u v : α) (q : α × Fin (k + 2) → ℝ)
+    (t₁ t₂ s : Set.powersetCard (Fin (k + 2)) k) :
+    MvPolynomial.eval q (annihRowPoly u v t₁ t₂ s) =
+      annihRow (panelSupportExtensor (fun i => q (u, i)) (fun i => q (v, i))) t₁ t₂
+        (screwBasis k s) := by
+  rw [annihRowPoly, annihRow_apply, map_sub,
+    Module.Basis.repr_self_apply (screwBasis k) (i := s) t₂,
+    Module.Basis.repr_self_apply (screwBasis k) (i := s) t₁,
+    apply_ite (MvPolynomial.eval q), apply_ite (MvPolynomial.eval q),
+    map_zero, panelSupportPoly_eval, panelSupportPoly_eval, mul_ite, mul_one, mul_zero,
+    mul_ite, mul_one, mul_zero]
+  congr 1
+  · rcases eq_or_ne t₂ s with h | h
+    · rw [if_pos h, if_pos h.symm]
+    · rw [if_neg h, if_neg fun h' => h h'.symm]
+  · rcases eq_or_ne t₁ s with h | h
+    · rw [if_pos h, if_pos h.symm]
+    · rw [if_neg h, if_neg fun h' => h h'.symm]
+
+/-- The panel-coordinatized annihilator polynomial `annihRowPoly` is **degree-2**
+(`totalDegree ≤ 2`): a difference of two `if`-guarded copies of the degree-2 panel-support
+polynomial `panelSupportPoly` (`panelSupportPoly_totalDegree_le`), each branch (including the zero
+branch) of degree ≤ 2. This is the polynomiality — bilinear in the normals, linear in the support
+extensor — that keeps the panel-normal rigidity rows degree-2 in the panel coordinates, the
+analytic premise of the genericity device (`lem:genericity-device`). -/
+theorem annihRowPoly_totalDegree_le {α : Type*} (u v : α)
+    (t₁ t₂ s : Set.powersetCard (Fin (k + 2)) k) :
+    (annihRowPoly u v t₁ t₂ s).totalDegree ≤ 2 := by
+  refine (MvPolynomial.totalDegree_sub _ _).trans (max_le ?_ ?_) <;>
+    · split
+      · exact panelSupportPoly_totalDegree_le u v _
+      · rw [MvPolynomial.totalDegree_zero]; omega
+
 namespace BodyHingeFramework
 
 variable {α β : Type*}

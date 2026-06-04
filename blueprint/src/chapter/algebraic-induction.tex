@@ -787,18 +787,28 @@ Cases~I and~II travel toward the smaller inductive graph.
   degree-$2$ polynomial $\mathrm{panelSupportPoly}\,u\,v\,t = \sum_s
   m_{t,s}\,\mathrm{normalsJoinPoly}\,u\,v\,s$
   ($\mathrm{panelSupportPoly\_eval}$ the eval identity,
-  $\mathrm{panelSupportPoly\_totalDegree\_le}$ the degree-$2$ bound). A per-edge
-  spanning family of the row block's annihilator can then be taken linear in
-  $C(p(e))$ (the combinations $C_i\,e_j^{*} - C_j\,e_i^{*}$), keeping the row
-  coordinates degree-$2$.
-  \emph{Red:} the construction (assembling $g$, $c$, the coordinate iso
-  $\varphi$, and $\mathtt{hg}$, and invoking the device) is the keystone
-  build; the coordinate bilinearity it rests on is now the landed part --- both
-  the $\Lambda^2$-coordinate of the join
+  $\mathrm{panelSupportPoly\_totalDegree\_le}$ the degree-$2$ bound). The per-edge
+  spanning family of the row block's annihilator is then taken linear in
+  $C(p(e))$: the functionals $C_{t_1}\,e_{t_2}^{*} - C_{t_2}\,e_{t_1}^{*}$
+  ($\mathrm{annihRow}$) span the dual annihilator $(\operatorname{span}\{C\})^\perp =
+  r(p(e))$ for $C \neq 0$ ($\mathrm{span\_annihRow\_eq\_dualAnnihilator}$: each
+  annihilates $C$, and a coordinate $t_0$ with $C_{t_0} \neq 0$ gives the explicit
+  expansion of any $f$ annihilating $C$), and their $\Lambda^k$-coordinates are the
+  degree-$2$ polynomials $\mathrm{annihRowPoly}$ (the eval identity
+  $\mathrm{annihRowPoly\_eval}$, degree $\mathrm{annihRowPoly\_totalDegree\_le}$),
+  keeping the row coordinates degree-$2$.
+  \emph{Red:} the remaining construction (assembling the device families $g$, $c$,
+  the coordinate iso $\varphi$, the eval identity $\mathtt{hg}$, and invoking the
+  device through $\mathrm{span\_annihRow\_eq\_dualAnnihilator}$ +
+  $\mathrm{infinitesimalMotions\_eq\_dualCoannihilator}$ for $\mathtt{hcoord}$) is
+  the keystone closure; everything it rests on is now landed --- the
+  $\Lambda^2$-coordinate of the join
   ($\mathrm{normalsJoin\_basis\_repr}$, $\mathrm{normalsJoinPoly\_eval}$,
-  $\mathrm{normalsJoinPoly\_totalDegree\_le}$) and its image under the
+  $\mathrm{normalsJoinPoly\_totalDegree\_le}$), its image under the
   complement iso ($\mathrm{panelSupportPoly\_eval}$,
-  $\mathrm{panelSupportPoly\_totalDegree\_le}$).
+  $\mathrm{panelSupportPoly\_totalDegree\_le}$), and the panel-coordinatized
+  annihilator family ($\mathrm{span\_annihRow\_eq\_dualAnnihilator}$,
+  $\mathrm{annihRowPoly\_eval}$, $\mathrm{annihRowPoly\_totalDegree\_le}$).
 \end{lemma}
 
 \begin{lemma}[Case I splice seed; KT eqs.\ (6.2), (6.6)]

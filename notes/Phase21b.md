@@ -23,24 +23,27 @@ must be V(G)-relative …*. Forward-mode dep-graph:
 
 ## Current state
 
-**Item 3 IN PROGRESS (2026-06-05): B0 sub-commit 2 — the panel-support-extensor coordinate is
-landed as a degree-2 `MvPolynomial`.** `panelSupportPoly u v t = ∑ s, m(t,s)·normalsJoinPoly u v s`
-(in `AlgebraicInduction.lean`): a `⋀^k`-coordinate (in the standard exterior-power basis of
-`ScrewSpace k = ⋀^k ℝ^(k+2)`, indexed by `k`-element subsets `t`) of the panel support extensor
-`panelSupportExtensor (q(u,·)) (q(v,·)) = complementIso (normalsJoin …)`. The complement iso is a
-*fixed* `LinearEquiv`, so each `⋀^k`-coordinate is the fixed linear combination
-`m(t,s) = repr_k (complementIso (b₂ s)) t` of the sub-commit-1 `⋀²`-minors `normalsJoinPoly u v s`,
-hence stays degree-2: `panelSupportPoly_eval` (eval at panel coords = the `⋀^k`-coordinate) +
-`panelSupportPoly_totalDegree_le` (`totalDegree ≤ 2`). The eval proof routes the coordinate through
-the `ℝ`-valued composite `Finsupp.lapply t ∘ₗ repr_k.toLinearMap ∘ₗ complementIso.toLinearMap` so
-`map_sum` can push it through the two sums (the `Finsupp`-codomain `map_sum` snag — TACTICS-QUIRKS
-§34). Sub-commit 1 (`normalsJoin_basis_repr` + `normalsJoinPoly{,_eval,_totalDegree_le}`, the `⋀²`
-minor) landed 2026-06-04. The B0 node `lem:rows-polynomial-in-normals` stays **RED** (the full
-device-input assembly — the per-edge `{Cᵢeⱼ*−Cⱼeᵢ*}` annihilator family, then `g`/`c`/`φ`/`hg` and
-invoking `exists_good_realization` — is the remaining keystone build). Build + lint clean,
-axiom-clean {propext, Classical.choice, Quot.sound}. **Next B0 sub-commits:** the per-edge
-annihilator family `{Cᵢeⱼ*−Cⱼeᵢ*}` (linear in `C`), then assemble `c`/`g`/`hg` and invoke the
-device.
+**Item 3 IN PROGRESS (2026-06-06): B0 sub-commit 3 — the per-edge annihilator family is landed,
+panel-coordinatized as a degree-2 `MvPolynomial`.** In `AlgebraicInduction.lean` (next to
+`panelSupportPoly`): `screwBasis k` (the standard `⋀^k`-basis abbrev); `annihRow C t₁ t₂ =
+repr(C) t₁ • coord t₂ − repr(C) t₂ • coord t₁` (the functional `x ↦ C_{t₁}x_{t₂} − C_{t₂}x_{t₁}`,
+*linear in `C`*) with `annihRow_apply` / `annihRow_apply_self` (it annihilates `C`); the spanning
+identity `span_annihRow_eq_dualAnnihilator` — for `C ≠ 0`, `span (range (annihRow C)) =
+(span {C}).dualAnnihilator` (= the hinge-row block `r(p(e))`), the reverse containment via the
+explicit expansion `f = ∑_t (f(b t)/C_{t₀})·annihRow C t₀ t` at a coordinate `t₀` with `C_{t₀} ≠ 0`
+(uses `f C = ∑ C_t f(b_t) = 0`); and the panel coordinatization `annihRowPoly u v t₁ t₂ s =
+[t₂=s]·panelSupportPoly u v t₁ − [t₁=s]·panelSupportPoly u v t₂` with `annihRowPoly_eval` (eval at
+panel coords = `annihRow (panelSupportExtensor …) t₁ t₂ (b s)`) + `annihRowPoly_totalDegree_le`
+(`totalDegree ≤ 2`, since `panelSupportPoly` is degree-2 and the `if`-guards/`b s`-coordinates are
+constants). Sub-commit 1 (`normalsJoin_basis_repr` + `normalsJoinPoly{,_eval,_totalDegree_le}`, the
+`⋀²` minor) landed 2026-06-04; sub-commit 2 (`panelSupportPoly{,_eval,_totalDegree_le}`, the `⋀^k`
+coordinate through `complementIso`) 2026-06-05. The B0 node `lem:rows-polynomial-in-normals` stays
+**RED** (the device closure — assemble the device families `g`/`c`/`φ`/`hg` from `annihRow` +
+`hingeRow` lifted to `α → ScrewSpace k`, prove `hcoord` via `span_annihRow_eq_dualAnnihilator` +
+`infinitesimalMotions_eq_dualCoannihilator`, invoke `exists_good_realization` — is the remaining
+keystone build, sub-commit 4). Build + lint clean, axiom-clean {propext, Classical.choice,
+Quot.sound}. **Next B0 sub-commit 4:** assemble `g`/`c`/`φ`/`hg`/`hcoord` and invoke the device,
+flipping the node `\leanok`.
 
 **Item 2 LANDED (2026-06-05): the Case-I / Case-II accounting is re-stated rank-side.**
 Two genericity-free, `α`-independent rigidity bridges in `AlgebraicInduction.lean` give the
@@ -199,8 +202,11 @@ Classical.choice, Quot.sound}.
   `normalsJoinPoly_totalDegree_le` (the degree-2 `MvPolynomial` lift). Sub-commit 2
   (2026-06-05) LANDED the `⋀^k` panel-support-extensor coordinate through `complementIso`:
   `panelSupportPoly` + `panelSupportPoly_eval` + `panelSupportPoly_totalDegree_le` (degree
-  stays 2 under the fixed linear iso). Node stays RED (per-edge annihilator family + device
-  assembly remain).
+  stays 2 under the fixed linear iso). Sub-commit 3 (2026-06-06) LANDED the per-edge
+  annihilator family: `screwBasis`, `annihRow` (+ `annihRow_apply`/`annihRow_apply_self`),
+  `span_annihRow_eq_dualAnnihilator` (the family spans the hinge-row block `(span {C})^⊥`),
+  `annihRowPoly` + `annihRowPoly_eval` + `annihRowPoly_totalDegree_le` (panel-coordinatized,
+  degree-2). Node stays RED (device-closure assembly, sub-commit 4, remains).
 - [ ] `lem:case-I-splice-seed` — one placement `p₀` with `D(|V(G)|−1)`
   independent parent rows, block-triangular from the two IH legs
   (genericity-free). **Item 4.**
@@ -287,14 +293,21 @@ its blueprint node's `\leanok` (or adds green infra) + updates this file. The
 device is green and `B0`'s coordinate core is validated, so this is build work,
 not research. **Do not** re-introduce the retired vacuous lemmas.
 
-**Next concrete commit: item 3, B0 sub-commit 3** (items 1–2 landed 2026-06-05;
-item 3 sub-commit 1 — the `⋀²` minor `normalsJoin_basis_repr` +
-`normalsJoinPoly{,_eval,_totalDegree_le}` — landed 2026-06-04; item 3 sub-commit 2 — the `⋀^k`
+**Next concrete commit: item 3, B0 sub-commit 4 — the device closure** (items 1–2 landed
+2026-06-05; item 3 sub-commit 1 — the `⋀²` minor `normalsJoin_basis_repr` +
+`normalsJoinPoly{,_eval,_totalDegree_le}` — landed 2026-06-04; sub-commit 2 — the `⋀^k`
 panel-support-extensor coordinate `panelSupportPoly{,_eval,_totalDegree_le}` through `complementIso`
-— landed 2026-06-05; node still RED).
-Next: the per-edge annihilator family `{Cᵢeⱼ*−Cⱼeᵢ*}` (linear in `C`) on the `panelSupportPoly`
-coordinates, then assemble the device inputs `g`/`c`/`hg` and invoke `exists_good_realization`,
-flipping the B0 node `\leanok`.
+— landed 2026-06-05; sub-commit 3 — the per-edge annihilator family `annihRow` /
+`span_annihRow_eq_dualAnnihilator` / `annihRowPoly{,_eval,_totalDegree_le}` — landed 2026-06-06;
+node still RED).
+Next (sub-commit 4): assemble the device families from the now-landed bricks — `g p` = the
+`hingeRow u v`-lifts (`RigidityMatrix.hingeRow`, `linearIndependent_hingeRow`) of the `annihRow`
+family over each edge, `c` = their `annihRowPoly` coordinates, `φ` = a finite-basis coordinate iso
+of `Module.Dual ℝ (α → ScrewSpace k)`, `hg` = `annihRowPoly_eval` (+ the `hingeRow` coordinate
+identity); prove `hcoord` from `span_annihRow_eq_dualAnnihilator` (rows span the hinge-row block) +
+`infinitesimalMotions_eq_dualCoannihilator`; invoke `exists_good_realization`, flipping the B0 node
+`\leanok`. (`exists_good_realization_const` may suffice on a single hand-built realization, the
+route-(a) constant family — see the device doc-comment — if the splice seed supplies `F₀` directly.)
 
 1. ~~**Relativize the realization motive + base case**~~ **DONE (2026-06-05).**
    `IsInfinitesimallyRigidOn` + its API in `RigidityMatrix.lean`;
@@ -333,9 +346,17 @@ flipping the B0 node `\leanok`.
      degree-2 `MvPolynomial`, `m(t,s) = repr_k (complementIso (b₂ s)) t` the fixed-iso matrix
      coefficient). Node still RED. (Friction: the `Finsupp`-codomain `map_sum` snag — route the
      coordinate through `Finsupp.lapply t ∘ₗ repr.toLinearMap`; TACTICS-QUIRKS §34.)
-   - Sub-commit 3 (next): the `{Cᵢeⱼ*−Cⱼeᵢ*}` per-edge annihilator family (linear in `C`) on the
-     `panelSupportPoly` coordinates, then assemble `g`/`c`/`hg`, invoke `exists_good_realization`;
-     flip the node `\leanok`.
+   - ~~Sub-commit 3: the `{Cᵢeⱼ*−Cⱼeᵢ*}` per-edge annihilator family (linear in `C`) on the
+     `panelSupportPoly` coordinates.~~ **DONE (2026-06-06):** `screwBasis`, `annihRow`
+     (+ `annihRow_apply`/`annihRow_apply_self`), `span_annihRow_eq_dualAnnihilator` (the family
+     spans the hinge-row block `(span {C}).dualAnnihilator` for `C ≠ 0`), `annihRowPoly` +
+     `annihRowPoly_eval` + `annihRowPoly_totalDegree_le` (panel-coordinatized, degree-2). Node
+     still RED.
+   - Sub-commit 4 (next): assemble `g`/`c`/`φ`/`hg`/`hcoord` from the landed bricks (the `annihRow`
+     family lifted across `hingeRow u v` per edge, `annihRowPoly` for `c`, `hcoord` via
+     `span_annihRow_eq_dualAnnihilator` + `infinitesimalMotions_eq_dualCoannihilator`), invoke
+     `exists_good_realization` (or `exists_good_realization_const` on a hand-built `F₀`); flip the
+     node `\leanok`.
 
 4. **`lem:case-I-splice-seed`** — construct `p₀` on `G` with `D(|V(G)|−1)`
    independent parent rows: transport the IH realizations of `H` and `G/E(H)`

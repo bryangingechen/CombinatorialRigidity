@@ -88,6 +88,19 @@ housekeeping pass once their resolution is fully indexed.
   definitionally the application, so simp makes no progress and `rfl` is the right closer.
 - **Status:** resolved; idiom for any `Pi.basisFun` exterior-power coordinate readout.
 
+### [resolved] `Module.Basis.repr_self_apply` (and `forall_coord_eq_zero_iff`) need the `Module.` prefix and an explicit `(i := …)` — dot-projection `b.repr_self_apply j` mis-binds `j` to the implicit `i`
+- **Where it bit:** B0 sub-commit 3 `span_annihRow_eq_dualAnnihilator` / `annihRowPoly_eval`
+  (Phase 21b): the Kronecker-delta readout `b.repr (b i) j = if i = j then 1 else 0`. Bare
+  `Basis.repr_self_apply` is "Unknown identifier" — the `Basis` API lives under `Module.Basis`
+  (so `Module.Basis.repr_self_apply` / `Module.Basis.forall_coord_eq_zero_iff`, the project's
+  standing convention). Worse, the `i` in `repr_self_apply` is *implicit* (inferred from the `b i`
+  in the LHS), and `j` is the first explicit positional arg — so `(screwBasis k).repr_self_apply j`
+  unifies `i := j`, producing a type mismatch against the intended `b.repr (b s) j` (where `i = s`).
+- **Fix:** call it as `Module.Basis.repr_self_apply (screwBasis k) (i := s) j` — pass the basis-vector
+  index `i` by name and the coordinate `j` positionally. The same `(i := …)` discipline is what a
+  `∀ i j, b.repr (b i) j = …` helper `have` needs (`fun i j => …repr_self_apply (screwBasis k) (i := i) j`).
+- **Status:** resolved; small but recurrent for any per-basis-vector coordinate computation.
+
 ### [resolved] `map_sum` won't push `Basis.repr` (a `LinearEquiv` to `Finsupp`) through a `∑` — route the coordinate through the `ℝ`-valued composite `Finsupp.lapply t ∘ₗ repr.toLinearMap`
 - **Where it bit:** B0 sub-commit 2 `panelSupportPoly_eval` (Phase 21b): pushing the `⋀^k`-basis
   coordinate `repr (complementIso (∑ s, c s • b₂ s)) t` through the sum to read it off term-by-term.
