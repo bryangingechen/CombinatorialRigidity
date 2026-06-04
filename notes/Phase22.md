@@ -21,6 +21,21 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
+**N4 is GREEN** (`rigidContract_isMinimalKDof`, `Induction.lean`, axiom-clean — `lem:rigidContract-isMinimalKDof`
+flipped `\leanok` green in `algebraic-induction.tex`): `G.IsMinimalKDof n 0 ∧ H proper rigid ∧ r ∈ V(H) ⟹
+(G.rigidContract H r).IsMinimalKDof n 0`, under `[NeZero (bodyHingeMult n)]`. The rank/ambient
+reconciliation closed cleanly: the matroid-side `contraction_isMinimalKDof` (green) packages
+`M(G̃)／E(H̃)` as a minimal `0`-dof matroid; N4c (`matroidMG_rigidContract_eq_contract`) identifies that
+contraction with `M((G/E(H))̃)`; then the two halves of `IsMinimalKDof` transport. **Minimality half:**
+each edge of `G/E(H)` is a surviving `G`-edge (`edgeSet_rigidContract`: `E(G/E(H)) = E(G) \ E(H)`, one
+`simp`), so `contraction_isMinimalKDof`'s base/fiber-meeting clause applies via `hN4c ▸ hB`. **Deficiency
+half:** the def=corank bridge `rank_add_deficiency_eq` on `G/E(H)`, with the conserved rank from `hcons`
+(`rank(M(G̃)／E(H̃)) = D(|V(G)|−|V(H)|)`) and the *exact* collapse vertex-count
+`rigidContract_vertexSet_ncard` (`|V(G/E(H))| = (|V(G)|−|V(H)|)+1`, the sharpening of
+`rigidContract_vertexSet_ncard_lt`), gives `def((G/E(H))̃) = 0` by `linarith`. Two new graph-side bricks
+near `rigidContract`: `rigidContract_vertexSet_ncard` (exact count) + `edgeSet_rigidContract`.
+**Track A's reduction infra (N4) is complete; the remaining Track-A producers are N5 + N6.** See *Hand-off*.
+
 **N4c is GREEN** (`matroidMG_rigidContract_eq_contract`, `Induction.lean`, axiom-clean — infra
 below the N4 blueprint node, no `\leanok` flip): `M((G/E(H))̃) = M(G̃) ／ E(H̃)` for a rigid
 subgraph `H` of `G` (`H.IsKDof n 0`, `H ≤ G`, `r ∈ V(H)`, `V(H).Nonempty`, `[NeZero
@@ -100,13 +115,14 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 ## Lemma checklist
 
 **Track A — Case I producer (full-rank, KT §6.2).**
-- [~] **N4** `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction-
-  minimality bridge: `G.IsMinimalKDof n 0 ∧ H proper rigid ⟹ (G.rigidContract H
-  r).IsMinimalKDof n 0`. The `matroidMG`-of-`(map ∘ deleteEdges)` correspondence
-  (N4c, `matroidMG_rigidContract_eq_contract`) is now **GREEN**, as is the matroid
-  side (`contraction_isMinimalKDof`). **Remaining:** the rank/ambient reconciliation
-  packaging the green `contraction_isMinimalKDof` (corank + base-meets-fiber on
-  `M(G̃)／E(H̃)`) plus N4c into `(G.rigidContract H r).IsMinimalKDof n 0`. Sub-bricks:
+- [x] **N4** `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction-
+  minimality bridge: `G.IsMinimalKDof n 0 ∧ H proper rigid ∧ r ∈ V(H) ⟹ (G.rigidContract H
+  r).IsMinimalKDof n 0`. **GREEN** (`rigidContract_isMinimalKDof`, axiom-clean, `\leanok` flipped).
+  The rank/ambient reconciliation assembled the green `contraction_isMinimalKDof` (corank +
+  base-meets-fiber on `M(G̃)／E(H̃)`) through N4c (`matroidMG_rigidContract_eq_contract`) into the
+  graph-level minimality, using the two new graph-side bricks `edgeSet_rigidContract`
+  (`E(G/E(H)) = E(G)\E(H)`) and `rigidContract_vertexSet_ncard` (exact collapse count
+  `|V(G/E(H))| = (|V(G)|−|V(H)|)+1`) + the def=corank bridge. Sub-bricks:
   - [x] **N4a** rigid subgraph's multiplied graph is connected
     (`mulTilde_preconnected_of_isKDof_zero`: `G.IsKDof n 0 ⟹ (G.mulTilde n).Preconnected`,
     under `[NeZero (bodyHingeMult n)]`), licensing the `collapseTo r V(H)` vertex-collapse.
@@ -268,6 +284,19 @@ content of N4c, plus the rank/ambient reconciliation that assembles
   The split lemma `Union_pow_isBasis'_split_of_rk_saturated` is thereby unused but kept. Full
   lesson + the matching obstruction in FRICTION `[resolved] [matroid] Union↔contraction …`.
 
+- **N4 reconciliation closed in one commit, as the prior hand-off predicted (2026-06-04).** With
+  N4c green, `rigidContract_isMinimalKDof` is a clean assembly, not a sub-build: unfold
+  `IsMinimalKDof` into its two halves and transport each across N4c
+  (`matroidMG_rigidContract_eq_contract`, `K.matroidMG = M(G̃)／E(H̃)`). The minimality half is a
+  one-liner (`hN4c ▸ hB` + `edgeSet_rigidContract`'s `E(K) = E(G)\E(H)`). The deficiency half is
+  the only arithmetic: `rank_add_deficiency_eq` on `K` gives `rank(K) + def(K) = D(|V(K)|−1)`;
+  `rw [hN4c]` swaps `rank(K)` for `rank(M(G̃)／E(H̃))`, `hcons` (k=0) makes that `= D(|V(G)|−|V(H)|)`,
+  and the exact count `|V(K)| = (|V(G)|−|V(H)|)+1` makes the ambient match, so `linarith` forces
+  `def(K) = 0`. The two new bricks (`edgeSet_rigidContract`, `rigidContract_vertexSet_ncard`) are
+  general structural facts about `rigidContract`, placed by its definition. The *exact* count
+  (vs. `rigidContract_vertexSet_ncard_lt`'s `≤`) is the genuine new fact: `r ∈ V(H)` makes the
+  collapse image *equal* `(V(G)\V(H)) ∪ {r}`, not just contained in it.
+
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
 - *N4 recon lesson* → `DESIGN.md` *Constructibility recon before a producer build*
   (its first post-21b application). The N4b *correction* sharpens it: the recon must
@@ -283,52 +312,41 @@ content of N4c, plus the rank/ambient reconciliation that assembles
 - *Union↔contraction equality via the count condition `Union_pow_indep_iff_count`, not the
   matching re-decomposition* → FRICTION [resolved] *`[matroid]` Union↔contraction equality: prove
   via the *count condition* … not … matching re-decomposition*.
+- *The `V(...)` graph-vertex-set macro is greedy with a trailing binary operator (`V(H).ncard + 1`
+  fails to parse, not just `: ℤ`-coerced double-subtraction); parenthesize the leading `V(…)` term* →
+  FRICTION [resolved] *A `have h : … = … := by ring` whose type embeds `(V(G).ncard : ℤ) - 1 - 1`
+  fails to parse* (Broadening bullet).
 
 ## Blockers / open questions
 
-- **N4c is closed; N4 needs one more reconciliation commit.** With N4c green
-  (`matroidMG_rigidContract_eq_contract`), what remains for N4 (`lem:rigidContract-isMinimalKDof`)
-  is purely the **rank/ambient reconciliation**: `contraction_isMinimalKDof` (green) packages the
-  matroid contraction `M(G̃)／E(H̃)` as a minimal `k`-dof *matroid* (corank `def(G̃)` at ambient
-  `D(|V(G)|−|V(H)|)` + every base meets every surviving fiber). N4c rewrites that matroid as
-  `M((G/E(H))̃)`, so the graph `G.rigidContract H r` has the right matroid; the remaining work is
-  reconciling the *ambient/vertex-count* bookkeeping (`|V(G/E(H))| = |V(G)| − |V(H)| + 1`, the
-  collapse-to-`r` vertex) so the matroid-side minimality reads as `IsMinimalKDof n 0` on the graph.
+- **N4 is fully green; Track A's reduction infra is done.** The whole N4 chain — N4a (preconnected),
+  N4b (cycleMatroid under collapse), N4c (union↔contraction bridge), and now the N4 reconciliation
+  (`rigidContract_isMinimalKDof`) — is closed and axiom-clean. What gates `lem:case-I-realization`
+  (N6) is now only the **producers** N5 + N6, not any more matroid/contraction infrastructure.
 - **N5 is research-shaped** (its blueprint proof note already says so); **Track B** (the
   Case II/III producer) is a multi-node crux. So there is still no clean single-commit
-  *producer* node — finishing N4 (the reconciliation, then N6) remains the lowest-risk forward path.
+  *producer* node — the remaining Track-A path (N5 → N6) and Track B both require math-first
+  decomposition before a build.
 
 ## Hand-off / next phase
 
-**N4c is GREEN** (`matroidMG_rigidContract_eq_contract`, `Induction.lean`; axiom-clean, no `\leanok`
-flip — infra below the N4 node): `M((G/E(H))̃) = M(G̃) ／ E(H̃)` for a rigid subgraph `H`
-(`H.IsKDof n 0`, `H ≤ G`, `r ∈ V(H)`, `V(H).Nonempty`, `[NeZero (bodyHingeMult n)]`). The
-union↔contraction crux is closed by the abstract `Matroid.Union_pow_contract_eq_contract_of_rk_saturated`
-(saturation ⟹ `Union (M／C)` and `(Union M)／C` agree on indep sets, via the count route — see
-*Decisions* + FRICTION), fed by the reduction bricks + saturation specialization.
+**N4 is GREEN** (`rigidContract_isMinimalKDof`, `Induction.lean`; axiom-clean, `\leanok` flipped on
+`lem:rigidContract-isMinimalKDof` in `algebraic-induction.tex`): `G.IsMinimalKDof n 0 ∧ H proper rigid
+∧ r ∈ V(H) ⟹ (G.rigidContract H r).IsMinimalKDof n 0`, under `[NeZero (bodyHingeMult n)]`. The
+reconciliation assembled the green `contraction_isMinimalKDof` + N4c
+(`matroidMG_rigidContract_eq_contract`) via two new graph-side bricks (`edgeSet_rigidContract`,
+`rigidContract_vertexSet_ncard`) and the def=corank bridge — see *Current state* + *Decisions*. This
+closes all of Track A's contraction-minimality reduction infrastructure (N4a–N4c + N4).
 
-**Recommended next concrete commit: the N4 rank/ambient reconciliation** — assemble
-`(G.rigidContract H r).IsMinimalKDof n 0` (= N4, `lem:rigidContract-isMinimalKDof`) from the green
-`contraction_isMinimalKDof` (the matroid-side minimal-`k`-dof packaging of `M(G̃)／E(H̃)`) rewritten
-through N4c (`matroidMG_rigidContract_eq_contract`, which identifies that contraction with
-`M((G/E(H))̃)`). The content is the **vertex-count bookkeeping**: `rigidContract` collapses `V(H)`
-to the single vertex `r`, so `|V(G.rigidContract H r)| = |V(G)| − |V(H)| + 1`, and the ambient
-`D(|V|−1)` and the per-fiber minimality must be restated on the contracted graph. Check whether
-`contraction_isMinimalKDof`'s `D(|V(G)|−|V(H)|)` ambient matches `D(|V(rigidContract)|−1)` under
-that vertex count (it should: `|V(rigidContract)|−1 = |V(G)|−|V(H)|`). Then N6 composes N4 + N5 +
-the green glue + the device to discharge `theorem_55.hcontract`.
+**Recommended next concrete commit: N5 `lem:case-I-splice-placement`** — the first *producer* node,
+decomposed math-first per its blueprint proof note (the boundary-panel intersection + the combined
+block-triangular independence each break into sub-lemmas). Start with the **panel-transversality**
+lemma (two generic `(d−1)`-panels meet in a `(d−2)`-hinge), the one genuinely new geometry. The KT
+math is in `notes/Phase21b.md` *Finding A* (Case I tractable) and the `algebraic-induction.tex`
+`lem:case-I-splice-placement` proof sketch. Once N5 lands, **N6** (`lem:case-I-realization`) composes
+N4 + N5 + the green glue (`isInfinitesimallyRigidOn_union_of_inter`) + the device to discharge
+`theorem_55.hcontract`. (N4 — the reduction step N6 needs to name `G/E(H)` and invoke the IH — is now
+in hand, so N6's only remaining inputs are the N5 producer + the already-green device/glue.)
 
-*If a producer is preferred over infrastructure:* **N5**
-`lem:case-I-splice-placement`, decomposed math-first per its blueprint proof note
-(boundary-panel intersection + block-triangular independence each break into
-sub-lemmas) — start with the **panel-transversality** lemma (two generic
-`(d−1)`-panels meet in a `(d−2)`-hinge), the one genuinely new geometry. The KT
-math is in `notes/Phase21b.md` *Finding A* (Case I tractable) and the
-
-*If a producer is preferred over infrastructure:* **N5**
-`lem:case-I-splice-placement`, decomposed math-first per its blueprint proof note
-(boundary-panel intersection + block-triangular independence each break into
-sub-lemmas) — start with the **panel-transversality** lemma (two generic
-`(d−1)`-panels meet in a `(d−2)`-hinge), the one genuinely new geometry. The KT
-math is in `notes/Phase21b.md` *Finding A* (Case I tractable) and the
-`algebraic-induction.tex` `lem:case-I-splice-placement` proof sketch.
+*If Track B is preferred:* it remains a multi-node crux (eq. 6.12 degenerate placement + Lemma 6.10
+at `d=3`); see the Track-B checklist + `notes/MolecularConjecture.md` *Phase 22* for the node plan.

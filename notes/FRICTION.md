@@ -403,6 +403,11 @@ housekeeping pass once their resolution is fully indexed.
   closes. Rewriting an existing hypothesis sidesteps re-parsing the notation in a new type ascription.
 - **Status:** resolved (no lift — narrow parser/notation quirk; the `rw [… , mul_sub, mul_one] at h`
   rescue generalizes to any "distribute the corank product" step).
+- **Broadening (Phase 22, `rigidContract_isMinimalKDof`):** the root cause is the `V(...)` macro being
+  *greedy with a trailing binary operator* — it is not specific to `: ℤ` coercions or to repeated `-`.
+  A bare `V(H).ncard + 1` (no coercion) also fails with *"unexpected token '+'"* in a type/term position.
+  General rescue: **parenthesize the leading `V(…)`-expression** (`(V(G).ncard - V(H).ncard) + 1`, or
+  `1 + (…)`), which is what `lean_multi_attempt` confirmed in seconds vs. an edit-build cycle.
 
 ### [resolved] `Set.ncard_iUnion_of_finite` returns a `finsum` (`∑ᶠ`), not a `Finset.sum` — bridge with `finsum_eq_sum_of_fintype`
 - **Where it bit:** `Graph.exists_balanced_forest_packing` in `Molecular/Induction.lean`

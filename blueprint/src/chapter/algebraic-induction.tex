@@ -949,6 +949,8 @@ Cases~I and~II travel toward the smaller inductive graph.
 
 \begin{lemma}[Graph-level minimality of the rigid-subgraph contraction (the graph/matroid bridge)]
   \label{lem:rigidContract-isMinimalKDof}
+  \lean{Graph.rigidContract_isMinimalKDof}
+  \leanok
   \uses{lem:contraction-minimality, def:rigid-contraction, lem:reduction-step}
   The Case~I producer applies the induction hypothesis of
   \cref{thm:theorem-55} to the contracted graph $G/E(H)$
@@ -960,40 +962,45 @@ Cases~I and~II travel toward the smaller inductive graph.
       \;\Longrightarrow\; (G/E(H)).\mathrm{IsMinimalKDof}\,n\,0 .
   \]
   The matroid-side statement --- that the matroid contraction
-  $M(\tilde G)/E(\tilde H)$ is a minimal $k$-dof matroid --- is green
-  (\cref{lem:contraction-minimality}). What this node adds is the
+  $M(\tilde G)/E(\tilde H)$ is a minimal $0$-dof matroid --- is
+  \cref{lem:contraction-minimality}. What this node adds is the
   \emph{graph$\leftrightarrow$matroid bridge}: that the matroid of the
   \emph{graph} contraction $G/E(H) = (G \setminus E(H))$ with $V(H)$ collapsed
-  equals that matroid contraction, i.e.\ $\mathrm{matroidMG}$ commutes with the
-  $\mathrm{map} \circ \mathrm{deleteEdges}$ presentation of $G/E(H)$ up to the
-  ground-set relabeling. Phase~20 \emph{deliberately deferred} this bridge
+  equals that matroid contraction, $\mathrm{matroidMG}(G/E(H)) = M(\tilde
+  G)/E(\tilde H)$, together with the vertex-count reconciliation that aligns the
+  reduced matroid ambient $D(|V(G)|-|V(H)|)$ with the graph-side ambient
+  $D(|V(G/E(H))|-1)$. Phase~20 \emph{deliberately deferred} this bridge
   (carry-forward~1; see \cref{thm:minimal-kdof-reduction}, whose contraction
   branch is handed only the \emph{existence} of a rigid subgraph plus the
   strong induction hypothesis), so the producer must itself name $G/E(H)$ and
-  prove its minimality to invoke the hypothesis. \emph{Red (Phase~22 target,
-  gating \cref{lem:case-I-realization}); a several-node Whitney-style build, not
-  the single-commit node earlier prose implied} --- see the proof.
+  prove its minimality to invoke the hypothesis.
 \end{lemma}
 \begin{proof}
-  Unfold $\mathrm{IsMinimalKDof}$ (deficiency $0$ and every base meeting every
-  surviving edge-fiber) through the matroid $\mathrm{matroidMG}$ of $G/E(H)$, and
-  identify that matroid with $M(\tilde G)/E(\tilde H)$. The identification is the
-  deferred graph$\leftrightarrow$matroid map, and it is the genuine content: the
-  \emph{graph} $G/E(H) = (G \setminus E(H))$ with $V(H)$ collapsed to $r$
-  \emph{deletes} the edges $E(H)$ and \emph{relabels} vertices (a pure
-  $\mathrm{map}$, since $E(G\setminus E(H))$ is disjoint from $E(H)$), whereas the
-  \emph{matroid} $M(\tilde G)/E(\tilde H)$ \emph{contracts} the fibers
-  $E(\tilde H)$. Reconciling them is the classical Whitney identity
-  ``contracting a connected edge set in the cycle matroid $=$ collapsing its
-  vertex set in the graph'', which (i) needs $\tilde H$ connected on $V(H)$ to
-  license the collapse ($0$-dof $\Rightarrow$ connected, by the cut-partition
-  argument of \cref{lem:two-edge-conn}), and (ii) does \emph{not} follow from the
-  per-cycle-matroid contraction lemma alone, since $\mathrm{Union}$ does not
-  commute with contraction. The realizable route is independence-level
-  ($\mathrm{ext\_indep}$), routing both sides through the $(D,D)$-sparsity
-  characterization $\mathrm{matroidMG\_indep\_iff}$ and the contraction-independence
-  characterization (a $(D,D)$-boundary rank-of-contraction count). \emph{Deferred}
-  (Phase~22 realization layer).
+  \leanok
+  \uses{lem:contraction-minimality, thm:def-eq-corank, lem:two-edge-conn}
+  Unfold $\mathrm{IsMinimalKDof}$ into its two halves --- deficiency $0$ and
+  every base meeting every surviving edge-fiber --- through the matroid
+  $\mathrm{matroidMG}(G/E(H))$, which the bridge $\mathrm{matroidMG}(G/E(H)) =
+  M(\tilde G)/E(\tilde H)$ identifies with the matroid contraction. That bridge
+  is the genuine content. The \emph{graph} $G/E(H) = (G \setminus E(H))$ with
+  $V(H)$ collapsed to $r$ \emph{deletes} the edges $E(H)$ and \emph{relabels}
+  vertices (a pure $\mathrm{map}$, since $E(G\setminus E(H))$ is disjoint from
+  $E(H)$), whereas the \emph{matroid} $M(\tilde G)/E(\tilde H)$ \emph{contracts}
+  the fibers $E(\tilde H)$; reconciling them needs $\tilde H$ connected on
+  $V(H)$ ($0$-dof $\Rightarrow$ preconnected, by the cut-partition argument of
+  \cref{lem:two-edge-conn}) to license the collapse, and routes through the
+  per-cycle-matroid contraction lifted across the $D$-fold $\mathrm{Union}$ ---
+  which $\mathrm{Union}$ does \emph{not} commute with, so the lift goes through
+  the independence-level $\mathrm{ext\_indep}$ identity on the surviving fibers
+  $E(\tilde G)\setminus E(\tilde H)$, closed by the rank-saturation of the
+  contracted-out set on a rigid subgraph. With the bridge in hand the two halves
+  transport: an edge of $G/E(H)$ is a surviving $G$-edge ($e \in E(G)$, $e \notin
+  E(H)$), so the matroid-side base/fiber-meeting condition
+  (\cref{lem:contraction-minimality}) gives the graph-side one directly; and the
+  deficiency runs the $\mathrm{def}=\mathrm{corank}$ bridge
+  (\cref{thm:def-eq-corank}) on $G/E(H)$ against the conserved rank
+  $\mathrm{rank}(M(\tilde G)/E(\tilde H)) = D(|V(G)|-|V(H)|)$ and the collapse
+  vertex-count $|V(G/E(H))| = |V(G)|-|V(H)|+1$.
 \end{proof}
 
 \begin{lemma}[Case I realization: the contraction producer; KT eqs.\ (6.2), (6.6)]

@@ -493,10 +493,12 @@ connected)**. Detail + decomposition: `notes/Phase22.md` *Current state* /
 reaches full `D(|V|−1)` with no shortfall (the contracted vertex's two
 boundary hinges give `+D` via Lemma 5.3 / the splice). Nodes:
 - **N4 `lem:rigidContract-isMinimalKDof`** — graph↔matroid contraction-
-  minimality bridge (matroid side `contraction_isMinimalKDof` green; content
-  = the `matroidMG`-of-`(map ∘ deleteEdges)` correspondence). Phase-20
-  carry-forward, **several-node Whitney-style build** (see the recon above,
-  not "build-shaped"); leaf brick N4a (0-dof ⟹ connected) is the next commit.
+  minimality bridge. **GREEN** (`rigidContract_isMinimalKDof`, axiom-clean).
+  Landed as the Whitney-style sub-build the recon predicted: N4a (0-dof ⟹
+  preconnected) → N4b (cycleMatroid under collapse) → N4c (union↔contraction
+  bridge `matroidMG_rigidContract_eq_contract`, via rank-saturation + the count
+  route) → N4 reconciliation (assemble the green `contraction_isMinimalKDof`
+  through N4c + exact collapse vertex-count + def=corank).
 - **N5 `lem:case-I-splice-placement`** — splice the inductive legs `(H,p₁)`,
   `(G/E',p₂)` along boundary hinges at panel intersections (eq. 6.6); needs a
   *panel-transversality* lemma (two generic `(d−1)`-panels meet in a
@@ -659,11 +661,12 @@ except the realization producers, Case III, and
 (extending — not adding — `algebraic-induction.tex`, per the structural-edit
 discipline in `blueprint/CLAUDE.md`).
 
-**Next concrete commit inside Phase 22:** N4 `lem:rigidContract-isMinimalKDof`
-(see the *Phase 22* detail above + the **N4 constructibility recon** flagging
-it as a several-node sub-build, not a one-commit node), *or* N5
-`lem:case-I-splice-placement` if N4's union↔contraction bridge proves too large
-for one session (N4 gates only N6). The KT math for both producers is worked
-out in `notes/Phase21b.md` *Finding A/B* — Phase 22 formalizes it, does not
-re-derive it. When Phase 22 closes, follow `CLAUDE.md` *When this commit closes
-a phase* and re-sync this doc (phase table, the Phase 22 detail, this section).
+**Next concrete commit inside Phase 22:** N5 `lem:case-I-splice-placement` —
+the first *producer* node, now that all of Track A's reduction infrastructure
+(N4a–N4c + the N4 reconciliation `rigidContract_isMinimalKDof`) is green.
+Decompose it math-first (start with the panel-transversality lemma); then N6
+`lem:case-I-realization` composes N4 + N5 + the green glue + the device. The KT
+math for both producers is worked out in `notes/Phase21b.md` *Finding A/B* —
+Phase 22 formalizes it, does not re-derive it. When Phase 22 closes, follow
+`CLAUDE.md` *When this commit closes a phase* and re-sync this doc (phase table,
+the Phase 22 detail, this section).
