@@ -1529,4 +1529,70 @@ theorem genericityDevice [Fintype α] {ι : Type*} [Finite ι]
   rw [Set.mem_setOf_eq] at ht ⊢
   rwa [BodyHingeFramework.finrank_screwAssignment (k := k) (α := α), ← hcoord t]
 
+/-- **A good realization exists** (`lem:genericity-device`, generic-point form; Katoh–Tanigawa
+2011 Claim 6.4/6.9): under the hypotheses of `genericityDevice`, there is an actual parameter
+`t : ℝ` at which the null space attains the device's codimension bound,
+`dim Z(F t) ≤ D|V| − #s`. The bad set `{t | D|V| < #s + dim Z(F t)}` is finite
+(`genericityDevice`) and `ℝ` is infinite, so its complement is nonempty: a *single* good
+realization at the witnessed corank exists, rather than merely cofinitely many. This is the
+form the consumers use — they need one realization at the target rank, not the whole generic
+set — and is the bridge from the abstract device to the per-consumer wiring (`hglue` for
+Case I, `hspan` for Case II, `hgen` for Proposition 1.1). The conclusion is stated additively
+(`D|V| ≥ #s + dim Z`, i.e. `¬(D|V| < #s + dim Z)`) to match the engine's `ℕ`-subtraction-free
+shape. -/
+theorem exists_good_realization [Fintype α] {ι : Type*} [Finite ι]
+    (F : ℝ → BodyHingeFramework k α β)
+    {a b : ι → Module.Dual ℝ (α → ScrewSpace k)} {t₀ : ℝ} {s : Set ι}
+    (hcoord : ∀ t, (F t).infinitesimalMotions
+      = (Submodule.span ℝ (Set.range (fun i => a i + t • b i))).dualCoannihilator)
+    (hindep : LinearIndependent ℝ (fun i : s => a i + t₀ • b i)) :
+    ∃ t : ℝ, Nat.card s + Module.finrank ℝ (F t).infinitesimalMotions
+      ≤ screwDim k * Fintype.card α := by
+  have hbad := genericityDevice F hcoord hindep
+  obtain ⟨t, ht⟩ := hbad.infinite_compl.nonempty
+  exact ⟨t, by simpa [Set.mem_setOf_eq, not_lt] using ht⟩
+
+/-- **Case I block-triangular wiring of the genericity device** (`lem:case-I`, the `hglue`
+discharge; Katoh–Tanigawa 2011 §6.1 Claim 6.4). The route-(a) bridge from the abstract device
+`genericityDevice` to Case I's block-triangular gluing inequality
+`hglue : dim Z(G,p) ≤ D + dim Z_s`. Given the device's affine coordinatization `hcoord` of a
+one-parameter realization family `F`, an independent witness subfamily `s` of rigidity-row
+functionals at `t₀`, and the route-(a) **rank-match** hypothesis `hmatch` — at the good
+realization the witnessed corank `#s` equals `D(|V|−1) − dim Z_s` (the contraction's inductive
+rank, the size of the block-triangular row block), supplied by the rigid block placed rigidly
+plus the contraction realization — the device produces a good `t` with
+`dim Z(F t) ≤ D + dim (pinnedMotionsOn s_blk)`, the `hglue` Case I (`rankHypothesis_iff_finrank_
+pinnedMotionsOn`) takes as an explicit hypothesis.
+
+The arithmetic is the device's `dim Z ≤ D|V| − #s` (a good `t` from `exists_good_realization`)
+with `#s = D(|V|−1) − dim Z_s` substituted (`hmatch`) collapsing `D|V| − (D(|V|−1) − dim Z_s)`
+to `D + dim Z_s`. The genericity content is entirely in `hcoord` + `hindep`; `hmatch` is the
+**route-(a) obligation** isolated by this commit — constructing the affine path and the
+witness subfamily of the matching size from the contraction realization, the genuinely-open
+geometric piece (`exists_independent_panelSupportExtensor` supplies the independent extensors;
+the contraction's `RankHypothesis` supplies the count). It bottoms on `screwDim k * (|V|−1) =
+D|V| − D`, the trivial-motion codimension `lem:trivial-motions-rank-bound`. -/
+theorem hglue_of_genericityDevice [Fintype α] [Nonempty α] {ι : Type*} [Finite ι]
+    (F : ℝ → BodyHingeFramework k α β)
+    {a b : ι → Module.Dual ℝ (α → ScrewSpace k)} {t₀ : ℝ} {s : Set ι}
+    {sblk : Set α}
+    (hcoord : ∀ t, (F t).infinitesimalMotions
+      = (Submodule.span ℝ (Set.range (fun i => a i + t • b i))).dualCoannihilator)
+    (hindep : LinearIndependent ℝ (fun i : s => a i + t₀ • b i))
+    (hmatch : ∀ t : ℝ,
+      Nat.card s + Module.finrank ℝ (F t).infinitesimalMotions ≤ screwDim k * Fintype.card α →
+      (Nat.card s : ℤ) = screwDim k * (Fintype.card α - 1)
+        - Module.finrank ℝ ((F t).pinnedMotionsOn sblk)) :
+    ∃ t : ℝ, (Module.finrank ℝ (F t).infinitesimalMotions : ℤ) ≤
+      screwDim k + Module.finrank ℝ ((F t).pinnedMotionsOn sblk) := by
+  obtain ⟨t, ht⟩ := exists_good_realization F hcoord hindep
+  refine ⟨t, ?_⟩
+  have hcard : 1 ≤ Fintype.card α := Fintype.card_pos
+  have hmatch' := hmatch t ht
+  have ht' : (Nat.card s : ℤ) + Module.finrank ℝ (F t).infinitesimalMotions
+      ≤ screwDim k * Fintype.card α := by exact_mod_cast ht
+  -- `D·(|V|−1) = D·|V| − D`, so substituting `#s` collapses the bound to `D + dim Z_s`.
+  rw [Nat.cast_sub hcard, Nat.cast_one, mul_sub, mul_one] at hmatch'
+  omega
+
 end CombinatorialRigidity.Molecular

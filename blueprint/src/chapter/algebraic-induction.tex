@@ -782,7 +782,9 @@ Phase~21b.
 
 \begin{lemma}[Genericity device, codimension form; KT Claim 6.4, Claim 6.9]
   \label{lem:genericity-device}
-  \lean{CombinatorialRigidity.Molecular.genericityDevice}
+  \lean{CombinatorialRigidity.Molecular.genericityDevice,
+        CombinatorialRigidity.Molecular.exists_good_realization,
+        CombinatorialRigidity.Molecular.hglue_of_genericityDevice}
   \leanok
   \uses{def:rigidity-matrix, def:panel-hinge-framework}
   Fix a multigraph $G$ and regard a panel-hinge realization through its
@@ -808,7 +810,15 @@ Phase~21b.
   \cref{lem:exists-independent-panel-extensor}) bounds $\dim Z(G,p_t) \le
   D|V| - |s|$ for all but finitely many $t$ --- the consumer-facing
   $\dim Z(G,p) \le \text{target}$ upper bound each of \cref{lem:case-I},
-  \cref{lem:case-II}, and \cref{prop:rigidity-matrix-prop11} carries.
+  \cref{lem:case-II}, and \cref{prop:rigidity-matrix-prop11} carries. Since
+  $\mathbb{R}$ is infinite, the finite bad set has nonempty complement, so a
+  \emph{single} good realization at the witnessed corank exists (the
+  generic-point form the consumers actually use). For \cref{lem:case-I} this
+  is wired further: given the route-(a) rank-match $|s| = D(|V|-1) - \dim
+  Z_s$ at the good realization (the contraction's inductive rank, the size of
+  the block-triangular row block), the bound collapses to $\dim Z(G,p) \le D
+  + \dim Z_s$, exactly the $\mathtt{hglue}$ block-triangular gluing inequality
+  of \cref{lem:case-I}.
 \end{lemma}
 \begin{proof}
   \leanok
