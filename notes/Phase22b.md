@@ -1,18 +1,19 @@
 # Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge) (work log)
 
-**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U1 + U2 landed (sound), but
-one research-shaped crux remains and lives in U3** (opened 2026-06-05 as the coordinator's Close-C
-of Phase 22a; opening recon + the reduction N-22b-1/2/3 landed 2026-06-05; the T2b math-first
-re-recon landed 2026-06-05; U2 opened + reconciliation core landed 2026-06-05; **U1 + the U2
-per-edge tail landed 2026-06-05** as `9098129`). The phase does *not* close until `htransport` is
+**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U1 + U2 landed (sound), one
+research-shaped crux remains in U3b, build-recon now corrected** (opened 2026-06-05 as the
+coordinator's Close-C of Phase 22a; opening recon + the reduction N-22b-1/2/3 landed 2026-06-05; the
+T2b math-first re-recon landed 2026-06-05; U2 opened + reconciliation core landed 2026-06-05; **U1 +
+the U2 per-edge tail landed 2026-06-05** as `9098129`; **the U3b build-recon was corrected
+2026-06-05 — design doc §1.22, this commit**). The phase does *not* close until `htransport` is
 discharged: `lem:claim-6-4` stays red green-modulo it (KT eq. (6.9)'s algebraic-independence
-content).
+content). **This commit is docs-only** (the §1.22 U3b build-target correction); no Lean changed.
 
 **Course-correction (2026-06-05; design doc §1.20).** The U2-opening session **forked under
 backgrounding**: its (lost) pre-reset analysis found that §1.19's "walling node retired at U2 / U3
 is plumbing" is **wrong** — the research-shaped crux did not vanish, it *moved from U2 to U3*. The
 post-reset (context-wiped) instance committed the sound U1 + U2 Lean (`9098129`) but wrote an
-over-optimistic hand-off; this commit keeps the Lean and corrects the notes. U2 (the collapse-relabel
+over-optimistic hand-off; that commit keeps the Lean and corrects the notes. U2 (the collapse-relabel
 *row reconciliation* `panelRow_collapseTo_comp_extProj_dualMap` + `hingeRow_collapseTo_comp_extProj_eq`
 + U1 `degeneratePlacement`, KT's `p2`) **is** genuinely done. But the actual content of **KT Claim
 6.4** — that the exterior-column projection `(extProj V(H)).dualMap` (which drops exactly the
@@ -20,11 +21,30 @@ over-optimistic hand-off; this commit keeps the Lean and corrects the notes. U2 
 **missing** linear-algebra brick, and it sits in **U3** (split into U3a alignment + U3b the crux).
 See §1.20 for the full O1/O2 analysis and the corrected cut.
 
-The U3b math-first recon is **done** (design doc §1.21): the crux is a *bounded* brick (the projected
-sibling of the U3 tool, built off green Lemma 5.1 `finrank_pinnedMotions_add_screwDim`), **not** a
-research wall. The next concrete commit is the **U3b build** (that projected-rank brick); then U3a
-(alignment) → U4 (assemble + flip). The *Discharge plan* checklist + design doc §1.20/§1.21 carry
-the design.
+**Second course-correction (2026-06-05; design doc §1.22, this commit).** The U3b build-recon
+(traced against the live finrank machinery + the mathlib dual API) found §1.21's "U3b is a bounded
+one-line Lemma 5.1 corollary" was itself **wrong**: §1.21 assumed `Qcf'` rigid ⟹ `finrank(Z) = D`,
+but `Qcf'` is rigid on its *vertex set* `sc ⊊ α`, so `finrank(Z) = D(|scᶜ|+1)` and
+`finrank(pinnedMotions r) = D·|scᶜ| ≠ 0`. The clean `D(|sc|−1)` projected rank survives via an
+**exact free-isolated-body cancellation**, not a zero-rank-loss pin. §1.22 re-derives the
+verified-closing layer: the brick reduces to `Z ⊔ range(extProj V(H)) = ⊤` (via the mathlib dual
+API), whose one real-content fact is the rigid-block pin-count
+`finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ| − |V(H)| + 1)`. This is a docs-only re-recon (no Lean this
+commit): it corrects the build target before building, exactly the §1.20 pattern, so the U3b build
+opens on the right walling node (the pin-count sub-lemma) rather than a mis-stated one.
+
+The U3b math-first recon is **done and corrected** (design doc §1.21 → **§1.22**, this commit):
+§1.21's "bounded one-line Lemma 5.1 corollary" was **wrong** — it assumed `finrank(Z) = D`, but
+`Qcf'` is rigid on its *vertex set* `sc` (a proper subset of `α`), so `finrank(Z) = D(|scᶜ|+1)` and
+`finrank(pinnedMotions r) = D·|scᶜ| ≠ 0`. The clean `D(|sc|−1)` projected rank survives via an
+**exact free-isolated-body cancellation**. The corrected layer (§1.22, verified-closing against the
+live finrank machinery + the mathlib dual API): the brick reduces to `Φ ⊓ ker D = ⊥` ⟺
+`Z ⊔ range(extProj V(H)) = ⊤`, whose **one real-content fact** is the rigid-block pin-count
+`finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ| − |V(H)| + 1)` (a small product-space iso peeling the
+free isolated columns). All mathlib + green project facts are confirmed present. The next concrete
+commit is the **U3b build, opening on that pin-count sub-lemma** (the walling node); then the
+`Z ⊔ W = ⊤` assembly + the projected-subfamily extraction, then U3a (alignment) → U4 (assemble +
+flip). The *Discharge plan* checklist (U3b item) + design doc §1.20/§1.21/§1.22 carry the design.
 
 Stratum 5 of the molecular-conjecture program, continued. **Scope: just KT
 Claim 6.4** — the single deferred obligation Phase 22a left green-modulo. 22a's
@@ -277,17 +297,24 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
 - [ ] **U3b — pin-the-`r`-column projected-rank brick (O2; the genuine KT Claim 6.4 crux).** From
   `Qcf'` rigid on `sc`, show the exterior-column projection `(extProj V(H)).dualMap` — which drops
   *exactly the `r`-column* (`r` = the only `Qcf'` vertex in `V(H)`) — preserves independent rank
-  `≥ D(|sc|−1)`. **Recon done (design doc §1.21): bounded brick, NOT a research wall.** The
-  conceptual crux is already green — `(extProj V(H)).dualMap` on `Qcf'` *is* pin-at-`r`, and
-  pin-a-body rank-preservation is **Lemma 5.1** `finrank_pinnedMotions_add_screwDim` (rigid on `sc`
-  ⟹ `finrank(Z)=D` ⟹ `finrank(pinnedMotions r)=0` ⟹ dropping the `r`-column loses zero rank). The
-  one missing piece is a **projected sibling of `exists_independent_panelRow_subfamily_of_rigidOn_linking_set`**:
-  same skeleton (span identity → finrank bound → `Submodule.exists_fun_fin_finrank_span_eq`), but the
-  `H`-block rows vanish (`hingeRow_comp_extProj_eq_zero`, green) so the projected span = projected
-  *surviving* rows, and the finrank bound comes from Lemma 5.1's `pinnedMotions r` (the **finrank
-  bridge** `finrank((extProj).dualMap '' Φ) ≥ D(|sc|−1)`, the one real-content step; medium risk,
-  possibly a small `Mathlib/` mirror). The un-projected U3 tool does **not** suffice (projection can
-  lower rank — the whole point of Claim 6.4). **Build target.**
+  `≥ D(|sc|−1)`. **Build-recon done + CORRECTED (design doc §1.22, this commit): §1.21's "one-line
+  Lemma 5.1 corollary" was WRONG.** §1.21 read `Qcf'` rigid on `sc` as `finrank(Z) = D` ⟹
+  `finrank(pinnedMotions r) = 0` ⟹ zero rank loss. But `Qcf'` is rigid on its **vertex set** `sc`,
+  generally a *proper* subset of `α`, so `finrank(Z) = D(|scᶜ|+1)` (green
+  `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`), **not** `D` —
+  `finrank(pinnedMotions r) = D·|scᶜ| ≠ 0`, and `(extProj V(H)).dualMap` does NOT drop the free
+  isolated columns. The clean `D(|sc|−1)` survives only via an **exact free-isolated-body
+  cancellation**, which must be proven. **Corrected, verified-closing layer (§1.22):** the brick
+  reduces to `Φ ⊓ ker D = ⊥` (`D` injective on `Φ = span(linking rows)`, `finrank Φ = D(|sc|−1)` by
+  green `span_panelRow_linking_eq_rigidityRows`), and by the mathlib dual API
+  (`ker_dualMap_eq_dualAnnihilator_range` + `dualAnnihilator_sup_eq` + double-annihilator) that is
+  `Z ⊔ range(extProj V(H)) = ⊤`. The **one real-content fact** is the rigid-block pin-count
+  `finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ| − |V(H)| + 1)` (`V(H)∩sc={r}`; pinning the `|V(H)|−1`
+  isolated bodies of `V(H)∖{r} ⊆ scᶜ` removes `D(|V(H)|−1)` from `pinnedMotions r`'s `D·|scᶜ|`). All
+  mathlib + green project facts confirmed present; the genuine kernel is a small product-space iso
+  peeling the free isolated columns + an `extProj_range = ⨅ i ∈ V(H), ker(proj i)` identity. **Build
+  opens on the pin-count sub-lemma** (the walling node, §1.22). The un-projected U3 tool does **not**
+  suffice (projection can lower rank — the whole point of Claim 6.4). **Build target.**
 - [ ] **U4 — assemble + flip.** U3b gives projected-*collapsed* independence; U2 (landed) carries it
   to projected-*uncollapsed* rows at `q₀^deg`; assemble `(q₀^deg, t, hsupp, hcount, hindep)` into
   `htransport`, translating subfamily indices from `Gc.map f`-links (at `endsᵐ`) to `Gc`-links (at
@@ -335,11 +362,15 @@ pin-a-body fact needing a MISSING brick, and it sits in U3b.** The crux did not 
 U2 to U3. §1.20 carries the recovered O1 (alignment, solved-in-principle) / O2 (projected rank, the
 crux) analysis + the corrected cut.
 
-The U3b **math-first recon is done** (design doc §1.21): the crux is a *bounded* brick — the projected
-sibling of `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` built off green Lemma 5.1
-`finrank_pinnedMotions_add_screwDim` — not a research wall. **The next concrete commit is the U3b
-build** (that projected-rank brick); then U3a (alignment) and U4 (assemble + flip) (full
-statements/reuse/risk in the *Discharge plan* checklist above + §1.20/§1.21):
+The U3b **build-recon is done and corrected** (design doc §1.21 → **§1.22**): §1.21's "bounded
+one-line Lemma 5.1 corollary" was wrong (it assumed `finrank(Z)=D`; `Qcf'` is rigid on its vertex
+set `sc ⊊ α`, so `finrank(Z)=D(|scᶜ|+1)` and `finrank(pinnedMotions r)=D·|scᶜ|≠0`). §1.22 gives the
+verified-closing layer: the brick reduces to `Z ⊔ range(extProj V(H)) = ⊤` (mathlib dual API), one
+real-content fact = the rigid-block pin-count `finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ|−|V(H)|+1)`.
+**The next concrete commit is the U3b build, opening on that pin-count sub-lemma** (the walling
+node); then the `Z ⊔ W = ⊤` assembly + the projected-subfamily extraction (the U3-tool skeleton),
+then U3a (alignment) and U4 (assemble + flip) (full statements/reuse/risk in the *Discharge plan*
+checklist above + §1.20/§1.21/§1.22):
 - **U3a** (O1; bricked, medium): move the IH `Qcf`'s rigidity on `sc = V(Gc.map f)` to the
   `endsᵐ`-selector framework `Qcf'` via the `ends`-swap brick
   `infinitesimalMotions_ofNormals_eq_of_ends_swap` (the `hasGenericRealization_transport_ends`

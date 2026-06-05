@@ -1527,6 +1527,80 @@ identity); low elsewhere. The down-grade from §1.20: U3b is *one bounded brick 
 Lemma 5.1 + a projected re-run of the U3-tool skeleton*, not a from-scratch research lemma. U3a
 (alignment, the `ends`-swap brick) feeds `Qcf'`-rigid-on-`sc` in; U4 assembles + flips.
 
+**[Corrected by §1.22 below (2026-06-05, the U3b build-recon traced against the live finrank
+machinery): §1.21's "Key realization" — that `Qcf'` rigid on `sc` gives `finrank(Z) = D`, so
+`finrank(pinnedMotions r) = 0` and the projection loses zero rank — is WRONG whenever `sc ≠ α`. A
+framework rigid on its *vertex set* `sc` has `finrank(Z) = D·(|scᶜ|+1)` (the green
+`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`), **not** `D`: the free
+isolated bodies of `scᶜ` carry `D·|scᶜ|` extra null dimensions, so `finrank(pinnedMotions r) =
+D·|scᶜ| ≠ 0`. The clean conclusion `finrank(map D Φ) = D(|sc|−1)` *does* still hold, but via an
+**exact cancellation** of the free-isolated-body columns — and the genuine content is a
+block-pin count, not a one-line Lemma 5.1 application. See §1.22.]**
+
+---
+
+### 1.22 U3b build-recon — the recon's "finrank Z = D" is false for `sc ≠ α`; the brick closes via `Z ⊔ range(extProj V(H)) = ⊤`, whose real content is the rigid-block pin-count `finrank(pinnedMotionsOn_F V(H)) = D(|scᶜ|−|V(H)|+1)` (2026-06-05)
+
+Build-recon of U3b, traced against the live finrank machinery
+(`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` `GenericityDevice:386`,
+`span_panelRow_linking_eq_rigidityRows` `Pinning:130`, `finrank_pinnedMotionsOn_vertexSet`
+`Pinning:775`, `finrank_iInf_ker_proj_eq` `Pinning:800`, `extProj` `CaseI:720`) + the mathlib dual
+API. **Verdict: the brick is real linear-algebra content (≈ a product-iso block-pin sub-lemma), not
+the one-line Lemma 5.1 corollary §1.21 claimed — but it closes, and the layer is now nailed down.**
+
+**The §1.21 error.** §1.21's "Key realization" reads `Qcf'` rigid on `sc` as `finrank(Z) = D`. That
+is the rigid-on-*all-of-α* count. `Qcf'` is rigid on its **vertex set** `sc = (V(G)∖V(H)) ∪ {r}`,
+which is generally a *proper* subset of `α`; the green
+`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` gives
+`finrank(Z) = D·(|scᶜ|+1)`, so `finrank(pinnedMotions r) = finrank(Z) − D = D·|scᶜ|`, **nonzero**
+when isolated bodies exist. So "drop the `r`-column loses zero rank" does not follow from Lemma 5.1
+alone — the `D·|scᶜ|` free-isolated-body dimensions are still present after pinning `r`, and
+`(extProj V(H)).dualMap` does **not** drop their columns (it drops only `V(H)`-columns). The clean
+`D(|sc|−1)` survives only because those free columns *cancel exactly* between the row-space gain and
+the projection's column loss — which has to be proven, not waved through.
+
+**The corrected, verified-closing layer.** Let `Φ := span(F's linking panel rows)`,
+`D := (extProj V(H)).dualMap`, `Z := F.infinitesimalMotions`, `W := range(extProj V(H))`. The
+projected span is `map D Φ`; rank-nullity on `D|Φ` gives `finrank(map D Φ) = finrank Φ −
+finrank(Φ ⊓ ker D)`, and the green `span_panelRow_linking_eq_rigidityRows` + the rigid-block count
+give `finrank Φ = D(|sc|−1)`. So **the entire brick reduces to `Φ ⊓ ker D = ⊥`** (i.e. `D` injective
+on Φ — projection loses zero rank). Chain (all mathlib facts confirmed present):
+1. `ker D = W.dualAnnihilator` — `LinearMap.ker_dualMap_eq_dualAnnihilator_range` (`Dual/Defs`).
+2. `Φ = Z.dualAnnihilator` — double-annihilator in finite dim (`Φ = (span rows)`,
+   `Z = Φ.dualCoannihilator` by `infinitesimalMotions_eq_dualCoannihilator`, and
+   `Subspace.dualAnnihilator_dualCoannihilator_eq` / `…dualCoannihilator_dualAnnihilator…`).
+3. `Φ ⊓ ker D = Z.dualAnnihilator ⊓ W.dualAnnihilator = (Z ⊔ W).dualAnnihilator` —
+   `Submodule.dualAnnihilator_sup_eq` (`Dual/Defs:427`).
+4. So `Φ ⊓ ker D = ⊥` ⟺ `Z ⊔ W = ⊤` (`dualAnnihilator_top = ⊥`).
+
+`Z ⊔ W = ⊤` is the **genuine new content**, proved by the finrank count
+`finrank(Z⊔W) + finrank(Z⊓W) = finrank Z + finrank W` (`Submodule.finrank_sup_add_finrank_inf_eq`):
+- `finrank Z = D(|scᶜ|+1)` (green, rigid-on-vertexSet).
+- `W = range(extProj V(H)) = {S | S = 0 on V(H)} = ⨅ i ∈ V(H), ker(proj i)`, so
+  `finrank W = D·|V(H)ᶜ|` (green `finrank_iInf_ker_proj_eq`, modulo the `range extProj = iInf ker
+  proj` identity — a small new `extProj_range` lemma).
+- `Z ⊓ W = {motions, =0 on V(H)} = F.pinnedMotionsOn V(H)` (defeq to the `pinnedMotionsOn` carrier).
+
+Substituting, `Z ⊔ W = ⊤` ⟺ **`finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ| − |V(H)| + 1)`** — the one
+real-content fact. It is the *rigid-block pinned at one representative* count: `V(H) ∩ sc = {r}`, so
+`pinnedMotionsOn V(H) = pinnedMotions r ⊓ {vanish on V(H)∖{r}}`, and the `|V(H)|−1` bodies of
+`V(H)∖{r} ⊆ scᶜ` are isolated/free inside `pinnedMotions r` (dim `D·|scᶜ|`), so forcing them to 0
+removes exactly `D(|V(H)|−1)`: `D·|scᶜ| − D(|V(H)|−1) = D(|scᶜ| − |V(H)| + 1)`. **This is the
+sub-lemma to build** — a product-space iso peeling the free isolated columns (the genuine "research
+shaped" kernel §1.20 located in U3 and §1.21 under-estimated; the `htransport`-discharge crux).
+
+**Net.** §1.21's "one-line Lemma 5.1 corollary" is corrected to: the U3b brick = the rigid-block
+pin-count sub-lemma + the dual-annihilator `Z ⊔ W = ⊤` assembly + the projected-subfamily extraction
+(the U3-tool skeleton). All mathlib facts and green project facts are confirmed present; the build
+target is the pin-count sub-lemma (needs a small `extProj_range` identity + a free-isolated-body
+product iso). Risk: medium on the product iso; the rest is plumbing off confirmed API. **The
+build opens on the pin-count sub-lemma** per `DESIGN.md` *Constructibility recon … build the
+walling node first*.
+
+The recon-process lesson (rigid-on-`α` vs. rigid-on-vertex-set null-space counts) is lifted to
+`DESIGN.md` *Match the source's argument structure …* → *Sharpening: a "rigid" framework's
+null-space dimension depends on rigid-on-what*.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

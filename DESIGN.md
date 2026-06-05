@@ -1083,6 +1083,26 @@ generically-chosen output, and the survival question often reveals a shorter pat
 Cross-ref: `notes/Phase22a.md` *Decisions* → *N6-G1 spike*;
 `notes/Phase22-realization-design.md` §1.5 Route 2.
 
+**Sharpening: a "rigid" framework's null-space dimension depends on rigid-on-*what*
+— recon the *set* a rigidity hypothesis is stated over, not just the word "rigid"
+(Phase 22b U3b build-recon, 2026-06-05).** The U3b recon (§1.21) projected the
+pin-the-`r`-column rank-preservation as a one-line Lemma 5.1 corollary, reasoning
+"`Qcf'` rigid ⟹ `finrank Z = D` ⟹ `finrank(pinnedMotions r) = 0` ⟹ projection loses
+zero rank." The `finrank Z = D` step is the rigid-on-*all-of-`α`* count; `Qcf'` is
+rigid only on its **vertex set** `sc ⊊ α`, where the green
+`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet` gives
+`finrank Z = D(|scᶜ|+1)` — the `D·|scᶜ|` free-isolated-body dimensions are still
+present, so `finrank(pinnedMotions r) = D·|scᶜ| ≠ 0`. The clean conclusion survives,
+but via an *exact free-column cancellation* whose real content is a block-pin count
+(`finrank(pinnedMotionsOn V(H)) = D(|scᶜ|−|V(H)|+1)`), not a zero-rank-loss pin. **The
+rule:** when a recon invokes "`X` is rigid, so `dim Z(X) = c`", read off *which set*
+`X`'s rigidity is over and pick the matching count — rigid-on-`α` gives `D`, but
+rigid-on-vertex-set gives `D(|Vᶜ|+1)`, and the isolated bodies do not vanish under a
+column projection that only drops the graph's bodies. Same family as the N6-G1a "seed
+property ≠ output property" trap above. Cross-ref:
+`notes/Phase22-realization-design.md` §1.22 (corrects §1.21); `notes/Phase22b.md`
+*Discharge plan* U3b.
+
 ## Match the source's argument structure, not just its conclusion
 
 **The trap (Phase 22a, 2026-06-05; three undischargeable bridges).** The Case-I
