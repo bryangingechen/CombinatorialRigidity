@@ -118,8 +118,8 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 21b. Genericity device (Claim 6.4/6.9) | `Molecular/AlgebraicInduction/` + `Mathlib/{Algebra/MvPolynomial,LinearAlgebra/Matrix}/` (+ `algebraic-induction.tex`) | ✓ Complete (closed 2026-06-04; see `notes/Phase21b.md`) — the analytic sibling of 21a, scoped out of Phase 21 (risk #4/#7). **Delivered green + axiom-clean:** the **genericity device** `lem:genericity-device` (multivariate Claim 6.4/6.9, route (a) on the `exists_…_polynomial` engine) applied to the varying panel family via the **B0 keystone** `lem:rows-polynomial-in-normals`; the genericity-free accounting iffs `lem:case-I`/`lem:case-II`; the **`V(G)`-relative count bridge N1–N3** + device-to-motive glue N7a; the Case-I splice glue `lem:case-I-splice-seed`; and the reusable Case-II row sub-nodes N7b-0/1/2/3. **The realization producers were re-scoped to Phases 22–23** after a math-first feasibility pass (vs. KT §6.2–6.3): the project's `hsplit` (k=0 degree-2 split, full rank) is **KT Case III** — eq. (6.12) is one row short for k=0 and needs the Lemma 6.10/6.13 redundant-edge row (the blueprint `lem:case-II` "k>0" prose was a conflation, now corrected); and the Case-I splice producer (KT §6.2, full-rank/tractable but research-shaped geometry: the panel-transversality + block-triangular splice) belongs with the realization layer. `thm:theorem-55` / `prop:rigidity-matrix-prop11` / `lem:case-III` flip in 22–23. The green infra (esp. N7b row sub-nodes + N7a + the device) feeds those producers. See `notes/MolecularConjecture.md` *Phase 21b*; `DESIGN.md` *Realization motive must be V(G)-relative* + *Forward-mode reduction chains* + *Genericity device …* + *Constructibility recon before a producer build* + *Phase Case-naming vs. KT's k-bookkeeping*. |
 | 22a. Case I realization | `Molecular/Deficiency.lean` + `Induction/` + `AlgebraicInduction/` (extends `algebraic-induction.tex`) | ✓ Complete (green-modulo-22b; see `notes/Phase22a.md`) — Track A only: the Theorem-5.5 **Case I** realization producer the Phase-21b genericity device feeds. The composer `lem:case-I-realization` (`PanelHingeFramework.case_I_realization`) is **green-modulo a single dischargeable hypothesis = KT Claim 6.4** (the new red node `lem:claim-6-4`, deferred to Phase 22b), delivered via the **block-triangular reframe** (KT eq. 6.3 rank-addition over one common framework `ofNormals G ends q₀`, routed through the device's independent-row count — H-block edges ⊔ surviving edges made independent by the exterior-column projection; no common-seed splice). The single deferred obligation is Claim 6.4 (`lem:claim-6-4` = the surviving block's exterior-projected rank at the generic placement). Cross-cutting lesson: a formalization must reproduce the source's argument **structure**, not just its conclusion (`DESIGN.md` *Match the source's argument structure …*). Per-node detail + the superseded hpinc→asymmetric→block-triangular→Qc-non-root design arc: `notes/Phase22a.md`. |
 | ⋮ Structure pass (pre-Phase-22b) | `Molecular/{AlgebraicInduction,Induction}/` splits + `algebraic-induction.tex` split | ✓ Complete (see `notes/Phase22-structure.md`) — split the two over-cap Molecular giants into subdirectories (no-hub; the aggregator imports the terminal leaf) and split the large algebraic-induction blueprint chapter, before opening 22b. Pure semantics-preserving moves (`\lean{…}` pins are by-name, so `checkdecls` is unaffected). Done: `AlgebraicInduction/` → 5 files (`PanelLayer`/`Pinning`/`PanelHinge`/`GenericityDevice`/`CaseI`); `algebraic-induction.tex` → thin parent + 5 `\input`s; `Induction/` → 5 files (`Operations`/`SplitOffDeficiency`/`ReducibleVertex`/`Contraction`/`ForestSurgery`). `PERFORMANCE.md` *Post-Phase-8 file-structure audit* records both executed splits; doc/reference surfaces swept to the subdir form. |
-| 22b. KT Claim 6.4 (discharge the Case-I green-modulo obligation) | `Molecular/AlgebraicInduction/CaseI.lean` (extends `algebraic-induction.tex`) | ◷ Planning (opened 2026-06-05; see `notes/Phase22b.md`) — discharge the single hypothesis Phase 22a left green-modulo: KT **Claim 6.4** = the red node `lem:claim-6-4`, the surviving block of `G ＼ E(H)` projected to the surviving columns `V(G)∖V(H)` (via `(extProj V(H)).dualMap`) attaining independent rank `≥ D(|sc|−1)` at the generic locus (the `Qc`-non-root form `case_I_realization` carries as `hclaim64`; KT eqs. (6.5)/(6.9), §5.1). Discharge path: (a) the rank-transport across the collapse map from the contraction's generic IH via algebraic independence + (b) a bounded `D∘panelRow` variant of `exists_rankPolynomial_of_rigidOn_linking_set`. Flips `lem:claim-6-4` green + `lem:case-I-realization` to fully green. The detailed within-22b cut + the 22c+ renumbering of the Case-III/assembly territory are settled in the 22b opening recon. |
-| 22b+. (parked) Case III at `d=3` + `d=3` assembly | `Molecular/AlgebraicInduction/` (extends `algebraic-induction.tex`) | ◷ Planning (expected to split into multiple sub-phases; **Claim 6.4 (22b above) now precedes it**, and this territory may renumber to 22c+ — settled in the 22b opening recon) — the rest of the over-broad Phase-22 territory parked behind 22a: Track B (the Case II/III reducible-vertex producer at `d=3`, KT §6.3 + §6.4.1 — eq. (6.12) degenerate placement, one row short, + Lemma 6.10 Claims 6.11/6.12; nodes `lem:case-II-realization`, `lem:case-III`) and the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip). Design-pass-first per `notes/Phase22a.md` *Deferred to 22b+ (Case III + assembly)* + `notes/MolecularConjecture.md` *Phase 22* / *Phase 23*. |
+| 22b. KT Claim 6.4 (discharge the Case-I green-modulo obligation) | `Molecular/AlgebraicInduction/CaseI.lean` (extends `algebraic-induction.tex`) | ◷ In progress (opened 2026-06-05; opening recon landed 2026-06-05; see `notes/Phase22b.md`) — discharge the single hypothesis Phase 22a left green-modulo: KT **Claim 6.4** = the red node `lem:claim-6-4`, the surviving block of `G ＼ E(H)` projected to the surviving columns `V(G)∖V(H)` (via `(extProj V(H)).dualMap`) attaining independent rank `≥ D(|sc|−1)` at the generic locus (the `Qc`-non-root form `case_I_realization` carries as `hclaim64`; KT eqs. (6.5)/(6.9), §5.1). **Recon-settled node cut** (build order): N-22b-2 (bounded, *first buildable* — a `D∘panelRow` variant of `exists_rankPolynomial_of_rigidOn_linking_set`, feasibility re-verified against the engine `exists_polynomial_ne_zero_of_linearIndependent_at`) → N-22b-1 (research-shaped — the rank-transport across the collapse map from the contraction's generic IH via algebraic independence) → N-22b-3 (the wire-up/flip). Flips `lem:claim-6-4` green + `lem:case-I-realization` to fully green. |
+| 22c+. (parked) Case III at `d=3` + `d=3` assembly | `Molecular/AlgebraicInduction/` (extends `algebraic-induction.tex`) | ◷ Planning (renumbered `22b+`→`22c+` in the 22b opening recon, so each sub-letter names one distinct sub-phase; expected to split — 22c = Case III at `d=3` / Track B, the `d=3` assembly its likely further cut, deferred until 22c opens) — the rest of the over-broad Phase-22 territory parked behind 22a/22b: Track B (the Case II/III reducible-vertex producer at `d=3`, KT §6.3 + §6.4.1 — eq. (6.12) degenerate placement, one row short, + Lemma 6.10 Claims 6.11/6.12; nodes `lem:case-II-realization`, `lem:case-III`) and the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip). Design-pass-first per `notes/Phase22a.md` *Deferred to 22b+ (Case III + assembly)* + `notes/MolecularConjecture.md` *Phase 22* / *Phase 23*. |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 Phase-level details (per-phase lemma checklists, decisions made during
@@ -575,12 +575,15 @@ Phase map (floor; 18/21/22-23 may each split on contact):
 5. **21** — Theorem 5.5 base + Case I (proper rigid subgraph) + Case II
    (`k>0` splitting = Whiteley 1-extension) (§5, §6.1–6.3).
 6. **22** — sub-lettered. **22a** = Case I realization (full-rank
-   rigid-subgraph splice, §6.2: `lem:case-I-realization`). **22b+** =
-   Case III at `d=3` (Lemma 6.10: the `D`-candidate-frameworks argument,
-   Claims 6.11/6.12, the crux, §6.4.1) + the `d=3` assembly
+   rigid-subgraph splice, §6.2: `lem:case-I-realization`, green-modulo KT
+   Claim 6.4). **22b** = KT Claim 6.4 (`lem:claim-6-4`, the discharge of
+   22a's green-modulo obligation, §6.2/§5.1). **22c+** = Case III at
+   `d=3` (Lemma 6.10: the `D`-candidate-frameworks argument, Claims
+   6.11/6.12, the crux, §6.4.1) + the `d=3` assembly
    (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip), parked
-   as a single planning placeholder behind 22a (cut into sub-phases
-   deferred until 22a closes).
+   as a single planning placeholder behind 22a/22b (cut into sub-phases
+   deferred until 22c opens; renumbered from `22b+` in the 22b opening
+   recon).
 7. **23** — Case III general `d` (Lemma 6.13) → Thm 5.5 → Thm 5.6 →
    Conjecture 1.2 (§6.4.2, §5.2).
 8. **24** — the 3-D generic bar-joint rigidity matroid (linear-matroid
@@ -714,7 +717,7 @@ hinge-coplanar body-hinge* + *Genericity device (Claim 6.4/6.9) is its own
 sub-phase (Phase 21b)*; program-level plan in `notes/MolecularConjecture.md`
 *Phase 21* / *Phase 21b*.
 
-### Phase 22 — Realization layer (sub-lettered: 22a + 22b+)
+### Phase 22 — Realization layer (sub-lettered: 22a + 22b + 22c+)
 
 The realization layer re-scoped out of Phase 21b — the Theorem-5.5 case
 *producers* the genericity device feeds — was opened as a single Phase 22 on
@@ -723,7 +726,7 @@ bundled three independent bodies of work (Case I; Case III at `d=3`; the `d=3`
 assembly). Sub-lettering (22a, 22b, …) keeps the integer phase numbers 23–26
 stable. **Structural-edit phase:** no new blueprint chapter; the producer nodes
 extend `algebraic-induction.tex`, where they are already stubbed red. The KT math
-is worked out in `notes/Phase21b.md` *Finding A/B* — 22a/22b+ formalize it.
+is worked out in `notes/Phase21b.md` *Finding A/B* — 22a/22b/22c+ formalize it.
 
 #### Phase 22a — Case I realization (KT §6.2) — ✓ Complete (green-modulo-22b)
 
@@ -749,32 +752,35 @@ generic-motive induction G2a–c / G3a–c), the decision history, and the hand-
 live in `notes/Phase22a.md`; dep-graph `algebraic-induction.tex`
 `sec:molecular-algebraic-induction`.
 
-#### Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge, KT §6.2/§5.1) — ◷ Planning
+#### Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge, KT §6.2/§5.1) — ◷ In progress
 
-**Status (◷ Planning; opened 2026-06-05; see `notes/Phase22b.md`).** Scope: *just*
-KT Claim 6.4 — the single dischargeable hypothesis Phase 22a left green-modulo.
-22a's composer `case_I_realization` / `lem:case-I-realization` carries it as
-`hclaim64`, tracked by the red node `lem:claim-6-4`. The target is the
-`Qc`-non-root / exterior-projected-rank form (the surviving block of `G ＼ E(H)`,
-projected to the surviving columns `V(G)∖V(H)` via `(extProj V(H)).dualMap`, attains
-independent rank `≥ D(|sc|−1)` at a generic locus; KT eqs. (6.5)/(6.9), §5.1). The
-verified discharge path (design doc §1.16): (a) the rank-transport across the
-collapse map from the contraction's generic IH via algebraic independence (the
-research content) + (b) a bounded `D∘panelRow` variant of
-`exists_rankPolynomial_of_rigidOn_linking_set` (packaging). Same green-modulo →
-discharge pattern as Phase 21 → 21b; flips `lem:claim-6-4` green and
-`lem:case-I-realization` to fully green. The detailed within-22b node cut, and
-whether the parked Case-III/assembly territory below renumbers to 22c+, are settled
-in the 22b opening recon (deferred to the `coordinate-phase 22b` session, not
-finalized here). Full target + path + KT grounding: `notes/Phase22b.md`; design doc
-§1.13–§1.16.
+**Status (◷ In progress; opened 2026-06-05, opening recon landed 2026-06-05; see
+`notes/Phase22b.md`).** Scope: *just* KT Claim 6.4 — the single dischargeable
+hypothesis Phase 22a left green-modulo. 22a's composer `case_I_realization` /
+`lem:case-I-realization` carries it as `hclaim64`, tracked by the red node
+`lem:claim-6-4`. The target is the `Qc`-non-root / exterior-projected-rank form (the
+surviving block of `G ＼ E(H)`, projected to the surviving columns `V(G)∖V(H)` via
+`(extProj V(H)).dualMap`, attains independent rank `≥ D(|sc|−1)` at a generic locus;
+KT eqs. (6.5)/(6.9), §5.1). The **opening recon (landed)** decomposed the verified
+discharge path (design doc §1.16) into the node cut: **N-22b-2** (bounded, the *first
+buildable* — a `D∘panelRow` variant of `exists_rankPolynomial_of_rigidOn_linking_set`,
+feasibility re-verified against the generic engine
+`exists_polynomial_ne_zero_of_linearIndependent_at`) → **N-22b-1** (research-shaped —
+the rank-transport across the collapse map from the contraction's generic IH via
+algebraic independence) → **N-22b-3** (the wire-up that discharges `hclaim64` + the
+flip). Same green-modulo → discharge pattern as Phase 21 → 21b; flips `lem:claim-6-4`
+green and `lem:case-I-realization` to fully green. The recon also settled the
+renumber of the parked Case-III/assembly territory from `22b+` to `22c+` (so each
+sub-letter names one distinct sub-phase). Full target + path + KT grounding:
+`notes/Phase22b.md`; design doc §1.13–§1.16.
 
-#### Phase 22b+ — (parked) Case III at `d=3` + `d=3` assembly (KT §6.3, §6.4.1) — ◷ Planning
+#### Phase 22c+ — (parked) Case III at `d=3` + `d=3` assembly (KT §6.3, §6.4.1) — ◷ Planning
 
-The rest of the over-broad Phase-22 territory, parked behind 22a as a single
-light placeholder (expected to split into multiple sub-phases once its shape is
-clearer; **Claim 6.4 (Phase 22b above) now precedes it**, and this territory may
-renumber to 22c+ — settled in the 22b opening recon): **Track B** — the Case II/III
+The rest of the over-broad Phase-22 territory, parked behind 22a/22b as a single
+light placeholder (renumbered `22b+`→`22c+` in the 22b opening recon, so each
+sub-letter names one distinct sub-phase; expected to split into multiple sub-phases
+once its shape is clearer — 22c = Case III at `d=3` / Track B, the `d=3` assembly its
+likely further cut, deferred until 22c opens): **Track B** — the Case II/III
 reducible-vertex producer at `d=3` (`theorem_55.hsplit`, the crux), KT §6.3 +
 §6.4.1: the eq. (6.12) degenerate placement gives `+(D−1)`, one short, and
 **Lemma 6.10** (Claim 6.11 combinatorial↔linear + Claim 6.12 extensor-span

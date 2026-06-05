@@ -1,6 +1,7 @@
 # Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge) (work log)
 
-**Status:** planning (opened 2026-06-05 as the coordinator's Close-C of Phase 22a).
+**Status:** in progress (opened 2026-06-05 as the coordinator's Close-C of Phase 22a;
+opening recon landed 2026-06-05).
 
 Stratum 5 of the molecular-conjecture program, continued. **Scope: just KT
 Claim 6.4** — the single deferred obligation Phase 22a left green-modulo. 22a's
@@ -19,13 +20,45 @@ Lean lands in `Molecular/AlgebraicInduction/CaseI.lean`.
 
 ## Current state
 
-22b opens to **discharge KT Claim 6.4** (`lem:claim-6-4` / the composer's
-`hclaim64` hypothesis). The green-modulo source is 22a's
-`case_I_realization`: axiom-clean, build + lint green, honestly green-modulo this
-one hypothesis + the KT Lemma-6.3 case hypothesis `hcSimple` (the latter is a case
-hypothesis, not a 22b target). Nothing is mid-stream; the first concrete step is
-the 22b opening recon (decompose-then-build the discharge path below, and settle the
-sub-phase cut — see *Blockers*).
+22b discharges **KT Claim 6.4** (`lem:claim-6-4` / the composer's `hclaim64`
+hypothesis). The green-modulo source is 22a's `case_I_realization`: axiom-clean,
+build + lint green, honestly green-modulo this one hypothesis + the KT Lemma-6.3 case
+hypothesis `hcSimple` (the latter is a case hypothesis, not a 22b target). **The
+opening recon (this commit) is landed:** the §1.16 discharge path (a)+(b) is
+decomposed into the node cut below (N-22b-1 research / N-22b-2 bounded / N-22b-3
+wire-up), the within-22b cut and the 22c+ renumbering are settled (see *Blockers /
+settled*), and the feasibility of brick (b) is re-verified against the live engine.
+Nothing is mid-stream. **The next concrete commit is the bounded packaging brick (b)
+= N-22b-2** (the `D ∘ panelRow` producer variant; the first buildable Lean), per the
+build order below.
+
+### Opening recon — feasibility re-verification (this commit)
+
+Confirmed against the live Lean before settling the cut:
+
+- **Brick (b) has no wall (re-verified against the engine).** The bounded packaging
+  variant feeds the engine `exists_polynomial_ne_zero_of_linearIndependent_at`
+  (`Mathlib/LinearAlgebra/Matrix/Rank.lean`), which is fully generic in its target
+  space: it takes `g : (σ → ℝ) → ι → W` into *any* `[Module.Finite ℝ W]` space with a
+  polynomial coordinatization `hg : φ (g p i) j = eval p (c i j)` and produces the
+  `Qc ≠ 0` + `∀`-non-root LI packaging. The existing
+  `exists_rankPolynomial_of_rigidOn_linking_set`
+  (`GenericityDevice.lean:1285`) instantiates it at `W = Module.Dual ℝ (α → ScrewSpace
+  k)` with `g q i := panelRow ends i`. Brick (b) re-instantiates it at the
+  **post-projection** family `g q i := (extProj sH).dualMap (panelRow ends i)` — a
+  fixed linear map ∘ the rows, still polynomially coordinatized (`D` is `q`-independent
+  and `D ∘ panelRow` is linear in the same panel coordinates), so the coordinatization
+  `hg` survives as the `φ'`-pullback of `D ∘ g` for any basis `φ'` of the (finite-dim)
+  codomain. **No new matrix-rank theory.** This is exactly the §1.16 "no wall" claim,
+  now checked against the engine signature rather than asserted.
+- **The composer's `hclaim64` shape is the discharge target verbatim.**
+  `case_I_realization`'s `hbundle` third conjunct (CaseI.lean:1041–1058) is, for each
+  `Q : PanelHingeFramework k α β` realizing `G.rigidContract H r` at its rank, exactly
+  `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, (links in G ＼ E(H)) ∧ |rsc| ≥ D(|sc|−1) ∧
+  LinearIndependent ℝ (i ↦ (extProj V(H)).dualMap (panelRow ends i))`. N-22b-3 must
+  produce *this* term from N-22b-1 (the witness placement) + N-22b-2 (the packaging).
+  Both halves are present in the form the composer already consumes — the wire-up is
+  a discharge of one existing hypothesis, not a re-statement.
 
 ## The target
 
@@ -86,27 +119,65 @@ rank-poly non-roots). The recon rule + the `∀`-GP-vs-generic-locus sharpening 
 
 ## Lemma checklist
 
-Skeleton (settle the exact node cut in the 22b opening recon, math-first per
-`DESIGN.md` *Constructibility recon …*):
+**Node cut settled in the opening recon** (math-first per `DESIGN.md`
+*Constructibility recon …*). Three nodes, in build order. **N-22b-2 is the first
+buildable commit** (bounded); N-22b-1 is research-shaped and may itself decompose;
+N-22b-3 is the one-step wire-up + flip.
 
-- [ ] **(a) rank-transport lemma** (research-shaped) — the algebraic-independence
-  rank-transport across the collapse map from the contraction's generic IH: `∃` one
-  placement at which the surviving block attains full exterior-projected rank
-  (KT §5.1 / eq. (6.9)).
-- [ ] **(b) `D ∘ panelRow` producer variant** (bounded) — the `D ∘ panelRow` sibling
-  of `exists_rankPolynomial_of_rigidOn_linking_set`: package (a)'s witness placement
-  into `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, … D-projected-independent`.
-- [ ] **wire-up / flip** — discharge `case_I_realization`'s `hclaim64` from (a)+(b);
-  flip `lem:claim-6-4` green and `lem:case-I-realization` to fully green (drop the
-  green-modulo marker on each user-facing surface, à la 21b).
+- [ ] **N-22b-2 — `D ∘ panelRow` producer variant** (bounded; *first buildable*).
+  Name (proposed): `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj`
+  in `AlgebraicInduction/CaseI.lean` (sibling of the un-projected
+  `exists_rankPolynomial_of_rigidOn_linking_set` in `GenericityDevice.lean`). From a
+  leg rigid on a body set `s` at a witness placement `q₀` **plus the projected
+  independence at `q₀`** (the N-22b-1 output), produce
+  `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, (links) ∧ |rsc| ≥ D(|s|−1) ∧
+  LinearIndependent ℝ (i ↦ (extProj t).dualMap (panelRow ends i))`. Built by
+  re-instantiating the engine `exists_polynomial_ne_zero_of_linearIndependent_at` at
+  the post-projection family `g q i := (extProj t).dualMap (panelRow ends i)` (a fixed
+  linear map ∘ the rows), reusing the N7b-0 subfamily extraction for the `≥ D(|s|−1)`
+  count. The coordinatization `hg` is the same standard-basis pullback as the parent,
+  pre-composed with `D`. **No new matrix-rank theory** (recon feasibility check above).
+- [ ] **N-22b-1 — rank-transport lemma** (research-shaped; the genuine analytic
+  content). The algebraic-independence rank-transport across the collapse map: from the
+  contraction `G.rigidContract H r`'s generic IH (`HasGenericFullRankRealization`),
+  produce **one parent placement `q₀`** at which the surviving block of `G ＼ E(H)`,
+  exterior-projected onto the `V(G)∖V(H)` columns, attains independent rank `≥ D(|sc|−1)`
+  (KT §5.1 / eqs. (6.5)/(6.9); the collapse redirects surviving-edge normals, so the
+  green linking-edge brick does not apply — §1.7 irreducibility). This is the
+  `∃`-one-placement core that N-22b-2 packages into the `Qc`-non-root form. May
+  decompose on contact (e.g. an abstract algebraic-independence rank-preservation
+  brick + the collapse-normal bookkeeping); re-recon at open per `DESIGN.md`
+  *Constructibility recon … → design the LAYER*.
+- [ ] **N-22b-3 — wire-up / flip** (one step). Discharge `case_I_realization`'s
+  `hclaim64` by composing N-22b-1 (witness `q₀`) → N-22b-2 (`Qc`-non-root packaging),
+  producing the `hbundle` third conjunct verbatim. Then flip: drop the `hclaim64`
+  hypothesis from `case_I_realization` (or specialise it to the discharged form),
+  `\leanok` `lem:claim-6-4` + add its `\lean{…}` pin, and drop the green-modulo marker
+  on each user-facing surface (à la 21b — see `CLAUDE.md` *When this commit closes a
+  phase*).
 
-## Blockers / open questions
+**Build order:** N-22b-2 (bounded, first buildable) → N-22b-1 (research-shaped) →
+N-22b-3 (flip). N-22b-2 leads because it is the bounded brick whose feasibility is
+already re-verified; it can land and be unit-checked against a stub witness before
+N-22b-1's analytic core is in place. (Mirrors 22a's "buildable bricks before the
+research-shaped composer" ordering.)
 
-- **Sub-phase cut/ordering is NOT settled here.** 22b's scope in this scaffold is
-  *just Claim 6.4*. Whether the parked Case-III-at-`d=3` + `d=3`-assembly territory
-  (currently ROADMAP's "22b+" row) becomes 22c+ etc., and the detailed within-22b
-  node cut, is settled in the **22b opening recon** — the owner deferred this to the
-  `coordinate-phase 22b` session. Do not finalize it before that recon.
+## Blockers / settled in the opening recon
+
+- **Sub-phase cut — SETTLED.** 22b's scope is *just Claim 6.4*, cut into the three
+  nodes N-22b-1/2/3 above (build order: N-22b-2 → N-22b-1 → N-22b-3).
+- **Renumbering — SETTLED: the parked territory renumbers `22b+` → `22c+`.** 22b is
+  now a distinct, tightly-scoped sub-phase (one deliverable, Claim 6.4), so the parked
+  Case-III-at-`d=3` + `d=3`-assembly body of work should not share its label.
+  Renumber the old "22b+" row to **22c+** (still a single planning placeholder,
+  expected to split into multiple sub-phases — 22c = Case III at `d=3` / Track B,
+  22d = the `d=3` assembly is the *likely* further cut, but that finer split is
+  deferred until 22c opens, exactly as 22a deferred the 22b+ cut). Rationale: each
+  sub-letter names one distinct sub-phase; "22b+" conflated 22b's discharge with a
+  separate multi-phase undertaking. The integer phase numbers 23–26 stay stable
+  (Track B at general `d`, the matroid/projective/molecule capstones). This recon
+  applies the renumber to ROADMAP, `notes/MolecularConjecture.md`, and the user-facing
+  surfaces in the same commit.
 - **Recurring Lean traps** (FRICTION; `notes/Phase22a.md` *Hand-off*): the heavy
   `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph` graph-swaps (state
   hypotheses pre-converted; transfer across an `infinitesimalMotions` equality needs
@@ -115,14 +186,22 @@ Skeleton (settle the exact node cut in the 22b opening recon, math-first per
 
 ## Hand-off / next phase
 
-22b is a scaffold; the first concrete commit is the **22b opening recon** —
-decompose the §1.16 discharge path (a)+(b) into nodes, settle the within-22b cut and
-whether the Case-III/assembly territory renumbers to 22c+, then build the bounded
-packaging brick (b) (the likely first buildable commit; (a) is research-shaped and
-may itself decompose). Cross-references rather than re-derivation:
-`notes/Phase22-realization-design.md` §1.13–§1.16 (the block-triangular reframe + the
-`Qc`-non-root form), §1.7 (collapse-transport irreducibility); `notes/Phase22a.md`
-*Hand-off* (*22b target — Claim 6.4*) + *Blockers*; `DESIGN.md` *Match the source's
-argument structure, not just its conclusion* (incl. the `∀`-GP-vs-generic-locus
-sharpening). Follow `CLAUDE.md` *When this commit closes a phase* when
-`lem:claim-6-4` / `lem:case-I-realization` flip fully green.
+**Opening recon landed.** The next concrete commit is **N-22b-2** — the bounded
+`D ∘ panelRow` producer variant
+`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj` in
+`AlgebraicInduction/CaseI.lean`, built by re-instantiating the engine
+`exists_polynomial_ne_zero_of_linearIndependent_at` at the post-projection family
+`g q i := (extProj t).dualMap (panelRow ends i)` (feasibility re-verified above: a
+fixed linear map ∘ the rows, no new matrix-rank theory). It is the first buildable
+Lean; N-22b-1 (the research-shaped rank-transport) and N-22b-3 (the flip) follow.
+
+Cross-references rather than re-derivation: `notes/Phase22-realization-design.md`
+§1.16 (the `Qc`-non-root form + the engine "no wall"), §1.14 (the block-triangular
+reframe), §1.7 (collapse-transport irreducibility); `notes/Phase22a.md` *Hand-off*
+(*22b target — Claim 6.4*) + *Blockers*; the live `hclaim64` shape at
+`CaseI.lean:1041–1058`; the parent brick `exists_rankPolynomial_of_rigidOn_linking_set`
+at `GenericityDevice.lean:1285` and its engine at
+`Mathlib/LinearAlgebra/Matrix/Rank.lean:474`; `DESIGN.md` *Match the source's argument
+structure, not just its conclusion* (incl. the `∀`-GP-vs-generic-locus sharpening).
+Follow `CLAUDE.md` *When this commit closes a phase* when `lem:claim-6-4` /
+`lem:case-I-realization` flip fully green.

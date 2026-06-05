@@ -37,10 +37,10 @@ the producers and the genericity-free \texttt{hub} partition brick).
 \textbf{Phase~22} (the realization layer) is sub-lettered: \textbf{Phase~22a}
 (Case~I realization) is complete \emph{green-modulo} KT Claim~6.4
 (\cref{lem:claim-6-4}, deferred to Phase~22b), built via the block-triangular
-reframe; \textbf{Phase~22b} (in planning) discharges that obligation
-(\cref{lem:claim-6-4}, KT~\S6.2/\S5.1); and \textbf{Phase~22b+} (the parked
-Case~III at $d=3$ plus the $d=3$ assembly, which Claim~6.4 / Phase~22b now
-precedes) remains in planning.
+reframe; \textbf{Phase~22b} (in progress, opening recon landed) discharges that
+obligation (\cref{lem:claim-6-4}, KT~\S6.2/\S5.1); and \textbf{Phase~22c+} (the
+parked Case~III at $d=3$ plus the $d=3$ assembly, renumbered \texttt{22b+} to
+\texttt{22c+} in the Phase~22b opening recon) remains in planning.
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
@@ -346,21 +346,23 @@ per-phase breakdown:
                 hypothesis, KT Claim~6.4 (\cref{lem:claim-6-4}, the surviving
                 block's exterior-projected rank at the generic placement),
                 discharged in Phase~22b.
-          \item \textbf{Phase~22b --- KT Claim~6.4} (\emph{planning}): discharge
-                the single obligation Phase~22a left green-modulo
-                (\cref{lem:claim-6-4}, the surviving block of $G \setminus E(H)$
-                projected to the surviving columns $V(G) \setminus V(H)$ attaining
-                independent rank at the generic locus; KT~\S6.2/\S5.1,
-                eqs.~(6.5)/(6.9)), flipping \cref{lem:case-I-realization} fully
-                green. The within-22b cut is settled in the 22b opening recon.
-          \item \textbf{Phase~22b+ --- Case~III at $d=3$ + $d=3$ assembly}
-                (\emph{planning}; parked behind Phase~22b, which Claim~6.4 now
-                precedes; may renumber to 22c+): the Case~II/III reducible-vertex
-                producer at $d=3$ (\S6.3, \S6.4.1: the degenerate eq.~(6.12)
-                placement on the green row infrastructure, one row short for $k=0$,
-                completed by the redundant-edge row of Lemma~6.10 ---
-                \cref{lem:case-II-realization,lem:case-III}) plus the $d=3$
-                assembly (\cref{prop:rigidity-matrix-prop11,thm:theorem-55}),
+          \item \textbf{Phase~22b --- KT Claim~6.4} (\emph{in progress}, opening
+                recon landed): discharge the single obligation Phase~22a left
+                green-modulo (\cref{lem:claim-6-4}, the surviving block of
+                $G \setminus E(H)$ projected to the surviving columns
+                $V(G) \setminus V(H)$ attaining independent rank at the generic
+                locus; KT~\S6.2/\S5.1, eqs.~(6.5)/(6.9)), flipping
+                \cref{lem:case-I-realization} fully green. The opening recon settled
+                the node cut (a bounded $D \circ \mathrm{panelRow}$ producer variant,
+                the research-shaped collapse-map rank-transport, the wire-up/flip).
+          \item \textbf{Phase~22c+ --- Case~III at $d=3$ + $d=3$ assembly}
+                (\emph{planning}; parked behind Phases~22a/22b, renumbered
+                \texttt{22b+} to \texttt{22c+} in the Phase~22b opening recon): the
+                Case~II/III reducible-vertex producer at $d=3$ (\S6.3, \S6.4.1: the
+                degenerate eq.~(6.12) placement on the green row infrastructure, one
+                row short for $k=0$, completed by the redundant-edge row of
+                Lemma~6.10 --- \cref{lem:case-II-realization,lem:case-III}) plus the
+                $d=3$ assembly (\cref{prop:rigidity-matrix-prop11,thm:theorem-55}),
                 expected to split into multiple sub-phases.
         \end{itemize}
         (File: \texttt{Molecular/\{Induction,AlgebraicInduction\}.lean}.)
@@ -444,9 +446,9 @@ sub-lettered: \textbf{Phase~22a} (complete) builds the Case~I splice producer
 \cref{lem:case-I-realization} now \emph{green-modulo} KT Claim~6.4
 (\cref{lem:claim-6-4}) via the block-triangular reframe; the surviving
 \cref{lem:claim-6-4} is the one red Case-I node, deferred to Phase~22b. \textbf{Phase~22b}
-(planning) discharges \cref{lem:claim-6-4}, flipping
-\cref{lem:case-I-realization} fully green. \textbf{Phase~22b+} (planning, parked
-behind Phase~22b, which Claim~6.4 now precedes; may renumber to 22c+) holds the
-Case~II/III reducible-vertex producer (\cref{lem:case-II-realization,lem:case-III})
-and the $d=3$ assembly; these stay red until their constructions land.
-Phases~23--26 remain to be opened.
+(in progress, opening recon landed) discharges \cref{lem:claim-6-4}, flipping
+\cref{lem:case-I-realization} fully green. \textbf{Phase~22c+} (planning, parked
+behind Phases~22a/22b, renumbered \texttt{22b+} to \texttt{22c+} in the Phase~22b
+opening recon) holds the Case~II/III reducible-vertex producer
+(\cref{lem:case-II-realization,lem:case-III}) and the $d=3$ assembly; these stay red
+until their constructions land. Phases~23--26 remain to be opened.

@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–22a + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete green-modulo-22b, 22b (KT Claim 6.4) + 22b+ (Case III at d=3 + d=3 assembly) parked in planning; Phases 23–26 planned.**
+* **Phases 1–22a + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete green-modulo-22b, 22b (KT Claim 6.4) in progress (opening recon landed), 22c+ (Case III at d=3 + d=3 assembly) parked in planning; Phases 23–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -255,16 +255,18 @@ project; commit history is preserved with paths rewritten.
     **block-triangular reframe** (KT eq. 6.3's rank-addition over one common
     framework, routed through the genericity device's independent-row count, not a
     common-seed splice). See `notes/Phase22a.md`.
-  * **Phase 22b (planning)** — discharge KT **Claim 6.4** (`lem:claim-6-4`, the
-    single hypothesis 22a left green-modulo): the surviving block of `G ＼ E(H)`
-    projected to the surviving columns `V(G)∖V(H)` attaining independent rank at the
-    generic locus (KT §6.2/§5.1, eqs. (6.5)/(6.9)), flipping the Case-I producer
-    fully green. See `notes/Phase22b.md`.
-  * **Phase 22b+ (planning)** — the parked Case III at `d=3` (the crux Lemma 6.10,
+  * **Phase 22b (in progress, opening recon landed)** — discharge KT **Claim 6.4**
+    (`lem:claim-6-4`, the single hypothesis 22a left green-modulo): the surviving
+    block of `G ＼ E(H)` projected to the surviving columns `V(G)∖V(H)` attaining
+    independent rank at the generic locus (KT §6.2/§5.1, eqs. (6.5)/(6.9)), flipping
+    the Case-I producer fully green. Recon-settled node cut (build order): a bounded
+    `D∘panelRow` producer variant → the research-shaped collapse-map rank-transport →
+    the wire-up/flip. See `notes/Phase22b.md`.
+  * **Phase 22c+ (planning)** — the parked Case III at `d=3` (the crux Lemma 6.10,
     KT §6.3 + §6.4.1) plus the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` +
-    `thm:theorem-55` flip), behind 22b (Claim 6.4 now precedes it; may renumber to
-    22c+; expected to split into multiple sub-phases once its shape is clearer). See
-    `notes/MolecularConjecture.md`.
+    `thm:theorem-55` flip), behind 22a/22b (renumbered `22b+`→`22c+` in the 22b
+    opening recon; expected to split into multiple sub-phases once its shape is
+    clearer). See `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

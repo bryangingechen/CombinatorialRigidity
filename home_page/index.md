@@ -33,8 +33,9 @@ joins the deferred crux. **Phase 22 (the realization layer) is sub-lettered** �
 **block-triangular reframe** (KT eq. 6.3's rank-addition over one common framework,
 routed through the genericity device's independent-row count, not a common-seed
 splice) with the single deferred obligation — KT Claim 6.4, the surviving block's
-exterior-projected rank at the generic placement — handed to **22b**; **22b+ (Case III
-at d=3 + d=3 assembly) parked in planning**. **The body-bar
+exterior-projected rank at the generic placement — handed to **22b (in progress,
+opening recon landed)**; **22c+ (Case III at d=3 + d=3 assembly) parked in planning**.
+**The body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -225,13 +226,15 @@ keeps the integer phase numbers 23–26 stable). **Phase 22a (complete,
 green-modulo-22b)** is the Case I realization — the full-rank rigid-subgraph splice
 (Katoh–Tanigawa §6.2); the composer is green-modulo a single dischargeable
 hypothesis, KT Claim 6.4, delivered via the block-triangular reframe. **Phase 22b
-(planning)** discharges that obligation: KT Claim 6.4 (the surviving block's
-exterior-projected rank at the generic placement, §6.2/§5.1), flipping the Case-I
-producer fully green. **Phase 22b+ (planning)** parks the rest behind 22b (Claim 6.4
-now precedes it; may renumber to 22c+): Case III at `d=3` (the crux Lemma 6.10,
-§6.3 + §6.4.1) plus the `d=3` assembly, expected to split into multiple sub-phases
-once its shape is clearer. A structural-edit phase extending the algebraic-induction
-chapter rather than opening a new one.
+(in progress, opening recon landed)** discharges that obligation: KT Claim 6.4 (the
+surviving block's exterior-projected rank at the generic placement, §6.2/§5.1),
+flipping the Case-I producer fully green, via a recon-settled node cut (a bounded
+`D∘panelRow` producer variant → the research-shaped collapse-map rank-transport →
+the wire-up/flip). **Phase 22c+ (planning)** parks the rest behind 22a/22b
+(renumbered `22b+`→`22c+` in the 22b opening recon): Case III at `d=3` (the crux
+Lemma 6.10, §6.3 + §6.4.1) plus the `d=3` assembly, expected to split into multiple
+sub-phases once its shape is clearer. A structural-edit phase extending the
+algebraic-induction chapter rather than opening a new one.
 
 The development is divided into the phases below, with Lean source
 under
@@ -266,7 +269,7 @@ existing files or refactor across several).
 |   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction/` (+ `lem:genericity-device`) | ✓ |
 |   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ (green-modulo-22b) |
 |   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction/CaseI.lean` | ◷ |
-|  22b+ | (parked) Case III at `d=3` + `d=3` assembly (Claim 6.4 / 22b precedes it; may renumber to 22c+) | `Molecular/AlgebraicInduction/` | ◷ |
+|  22c+ | (parked) Case III at `d=3` + `d=3` assembly (renumbered `22b+`→`22c+` in the 22b opening recon) | `Molecular/AlgebraicInduction/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
