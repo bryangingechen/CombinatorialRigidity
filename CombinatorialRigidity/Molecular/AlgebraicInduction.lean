@@ -4403,6 +4403,41 @@ theorem PanelHingeFramework.rigidContract_rigidity_transport
   let ⟨Q, hQg, hQgp, hQrig⟩ := hQ
   htransport Q hQg hQgp hQrig
 
+/-- **The Case-I splice legs `H` and `G ＼ E(H)` cover `G` and share the body `r`** (N6-G3-G3b,
+the cover/shared-body/selector geometry of `lem:case-I-realization`; Katoh–Tanigawa 2011 §6.2,
+Phase 22a). The graph-combinatorics adapter that discharges the *geometric* inputs of the Case-I
+shared-seed coupling (`hasGenericFullRankRealization_of_couple_ofNormals` /
+`hasFullRankRealization_of_couple_ofNormals`) from the proper-rigid-subgraph data.
+
+The two splice legs are the rigid block `H` and the surviving-edge subgraph `G ＼ E(H)` (KT's
+`R(G,p; E∖E′, V∖V′)`, the contraction leg of the §1.7 recon; *not* the relabelled
+`G.rigidContract H r`, which is not `≤ G`). With a chosen representative body `r ∈ V(H)` they meet
+the coupling's combinatorial requirements:
+
+* both are subgraphs of `G` (`H ≤ G` from the rigid-subgraph hypothesis; `G ＼ E(H) ≤ G` always);
+* `r` is a shared body (`r ∈ V(H)` by choice; `r ∈ V(G ＼ E(H))` since `V(G ＼ E(H)) = V(G)` and
+  `r ∈ V(G)` because `V(H) ⊆ V(G)`);
+* the legs cover `G` (trivially — `V(G ＼ E(H)) = V(G)`, so the second leg alone covers);
+* both legs are nonempty (`V(H)` nonempty by hypothesis; `V(G ＼ E(H)) = V(G) ∋ r`).
+
+This is the §1.7 G3b brick: with the `Gc ≤ G` mismatch dissolved at the graph level (the splice's
+contraction leg is the literal subgraph `G ＼ E(H)`), the coupling's geometry inputs are pure
+graph combinatorics read off `IsProperRigidSubgraph`. The composer (G3c) feeds these facts, the
+per-leg rigidities (the `H`-leg IH and the G3a-transported `G ＼ E(H)` leg), and the parent endpoint
+selector into the coupling. -/
+theorem PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph
+    {G H : Graph α β} {r : α} {n : ℕ}
+    (hH : H.IsProperRigidSubgraph G n) (hr : r ∈ V(H)) :
+    H ≤ G ∧ G.deleteEdges E(H) ≤ G ∧ r ∈ V(H) ∧ r ∈ V(G.deleteEdges E(H)) ∧
+      V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H)) ∧ V(H).Nonempty ∧
+      V(G.deleteEdges E(H)).Nonempty := by
+  obtain ⟨⟨hle, _⟩, hVHne, hVHss⟩ := hH
+  have hrG : r ∈ V(G) := hVHss.subset hr
+  have hVc : V(G.deleteEdges E(H)) = V(G) := Graph.vertexSet_deleteEdges G E(H)
+  refine ⟨hle, Graph.deleteEdges_le, hr, by rw [hVc]; exact hrG, ?_, hVHne, ?_⟩
+  · rw [hVc]; exact fun x hx => Or.inr hx
+  · rw [hVc]; exact ⟨r, hrG⟩
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by

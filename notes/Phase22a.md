@@ -35,12 +35,13 @@ k-bookkeeping*.
 
 ## Current state
 
-**All Track-A *producer* bricks are GREEN, and G3a (the Claim-6.4 collapse transport) is now
-GREEN-MODULO** (N4 reduction infra; the Case-I producer bricks; N6-G1 generic producer; N6-G2-G2a
-`theorem_55_generic`; G2b `map`/`collapseTo` simplicity; G2c generic coupling producer
-`hasGenericFullRankRealization_of_couple_ofNormals`; **G3a `rigidContract_rigidity_transport`,
-green-modulo the explicit Claim-6.4 hypothesis `htransport`**); **the remaining red work is the
-N6-G3 composer assembly's G3b/G3c.** The §1.7 re-recon settled the binding `Gc ≤ G` obstruction: the
+**All Track-A *producer* bricks are GREEN, G3a (the Claim-6.4 collapse transport) is GREEN-MODULO,
+and G3b (the cover/shared-body/selector geometry) is now GREEN** (N4 reduction infra; the Case-I
+producer bricks; N6-G1 generic producer; N6-G2-G2a `theorem_55_generic`; G2b `map`/`collapseTo`
+simplicity; G2c generic coupling producer `hasGenericFullRankRealization_of_couple_ofNormals`;
+**G3a `rigidContract_rigidity_transport`, green-modulo the explicit Claim-6.4 hypothesis
+`htransport`; G3b `couple_geometry_of_isProperRigidSubgraph`**); **the remaining red work is the
+N6-G3 composer assembly's G3c** (the dispatch + IH-extraction + flip). The §1.7 re-recon settled the binding `Gc ≤ G` obstruction: the
 splice's contraction leg is **`G.deleteEdges E(H)`** (`≤ G`, KT eq. 6.3's `R(G,p; E∖E′, V∖V′)`),
 **not** the relabelled `G.rigidContract H r` — and the contraction IH's rigidity is *transported
 across the collapse map* to that `G ＼ E(H)` leg by **KT's Claim 6.4** (eq. 6.9). The G3a math-first
@@ -48,9 +49,11 @@ pass found this transport is irreducibly research-shaped (the collapse redirects
 endpoints, so it cannot be reduced to the green linking-edge brick — recovering the un-collapsed-
 endpoint rank *is* Claim 6.4); per the design-doc escalation authorization, G3a carries Claim 6.4 as
 the narrow explicit hypothesis `htransport` and does the surrounding plumbing, so it is green-modulo
-that one hypothesis (axiom-clean, no `sorry`). The next *build* commits are **G3b** (cover/shared-body
-/selector geometry, both legs now `≤ G`) and **G3c** (the assembly + `theorem_55`/`theorem_55_generic`
-flip), both `buildable`. The simple Case-I coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete
+that one hypothesis (axiom-clean, no `sorry`). **G3b is now GREEN** (the cover/shared-body/selector
+geometry adapter `couple_geometry_of_isProperRigidSubgraph` — both legs `H` and `G ＼ E(H)` `≤ G`,
+share the body `r`, cover `G`, are nonempty; pure graph combinatorics off `IsProperRigidSubgraph`).
+The only remaining *build* commit is **G3c** (the assembly + `theorem_55`/`theorem_55_generic`
+flip), `buildable`. The simple Case-I coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete
 assembly of green bricks, and the `ends`-swap leg-transport brick that feeds the IH into it is green. The
 generic-motive recon settled the IH-shape gap as a **hybrid** — Route 2 (make the simple-case *producer*
 conclude GP) and Route 1 (make the *IH* generic) are two halves, not alternatives, because the composer's
@@ -63,7 +66,7 @@ splitting-off branch *is* KT Case III (Track B, out of 22a scope, entirely red),
 obstruction is one of *scope*, not routing — G2a carries that branch's GP step as an explicit hypothesis
 `hsplitGP` (Phase-21b green-modulo `h…` idiom; design doc §1.6 escalation (ii)), and likewise carries the
 simple-base `hbaseGP` and the simple Case-I `hcontractGP` (the latter fed the *full conditioned IH*, the
-shape G2c/N6-G3 consume). **Remaining:** N6-G3-G3b → G3c (G3a green-modulo). No `\leanok` flip yet
+shape G2c/N6-G3 consume). **Remaining:** N6-G3-G3c (G3a green-modulo, G3b green). No `\leanok` flip yet
 (`lem:case-I-realization` stays red until G3c discharges `hcontractGP`/`hcontract` and G3a's
 `htransport` is itself supplied — KT Claim 6.4 / `lem:case-III`); axiom-clean; no `sorry`.
 
@@ -121,6 +124,13 @@ shape G2c/N6-G3 consume). **Remaining:** N6-G3-G3b → G3c (G3a green-modulo). N
   irreducibly research-shaped (the collapse redirects surviving-edge endpoints, so the green linking-edge
   brick does not apply); carried as the narrow explicit hypothesis `htransport` (Phase-21b green-modulo
   `h…` idiom). The brick is the surrounding plumbing only — axiom-clean, no `sorry`.
+- **N6-G3-G3b** (cover/shared-body/selector geometry, **GREEN**)
+  `PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph` — from `H.IsProperRigidSubgraph G n` +
+  a chosen representative `r ∈ V(H)`, the seven geometric inputs the G2c coupling consumes for legs
+  `GH := H`, `Gc := G.deleteEdges E(H)`, `c := r`: `H ≤ G`, `G ＼ E(H) ≤ G`, `r ∈ V(H)`,
+  `r ∈ V(G ＼ E(H))`, the cover `V(G) ⊆ V(H) ∪ V(G ＼ E(H))`, and both legs nonempty. Pure graph
+  combinatorics (`vertexSet_deleteEdges` reads `V(G ＼ E(H)) = V(G)`, so `r ∈ V(G ＼ E(H))` and the
+  cover are trivial); axiom-clean.
 
 ## Architectural choices made up front
 
@@ -248,15 +258,22 @@ shape G2c/N6-G3 consume). **Remaining:** N6-G3-G3b → G3c (G3a green-modulo). N
       **parent** selector `ends`, in the exact shape the G2c coupling consumes for its
       `Gc := G.deleteEdges E(H)` leg). `lem:case-III`/`thm:theorem-55` stay red; the obligation is one
       visible hypothesis pinned to KT eq. (6.9), not a `sorry`/`axiom`.
-    - [ ] **G3b** cover/shared-body/endpoint-selector geometry (`buildable` once G3a green) — both legs now
-      `≤ G` (`H` and `G.deleteEdges E(H)`): discharge `hcH : r ∈ V(H)`, `hcc : r ∈ V(G.deleteEdges E(H))`,
-      the cover `V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H))` (trivial — `V(G.deleteEdges E(H)) = V(G)`), the
-      parent selector `ends`, and (G2b) `rigidContract_simple`'s `hloop`/`hpar` for the simplicity conjunct.
-    - [ ] **G3c** assembly + `theorem_55`/`theorem_55_generic` flip (`buildable` once G3a/G3b green) —
-      dispatch on `G.Simple`; simple branch: `H`-leg IH (`Simple.mono` + `subgraph_minimality`) +
-      transported contraction leg (G3a + N4) → `hasGenericRealization_transport_ends` → G2c generic
-      coupling → `hasFullRankRealization_of_generic`; non-simple branch: N6a directly. Discharges
-      `hcontractGP`/`hcontract` ⟹ `lem:case-I-realization` green.
+    - [x] **G3b** cover/shared-body/endpoint-selector geometry. **GREEN** (2026-06-05, axiom-clean,
+      `couple_geometry_of_isProperRigidSubgraph`). Both legs now `≤ G` (`H` and `G.deleteEdges E(H)`):
+      discharges the coupling's seven *geometric* inputs — `H ≤ G`, `G ＼ E(H) ≤ G`, `r ∈ V(H)`,
+      `r ∈ V(G.deleteEdges E(H))`, the cover `V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H))` (trivial —
+      `vertexSet_deleteEdges` reads `V(G.deleteEdges E(H)) = V(G)`), and both legs nonempty — from
+      `H.IsProperRigidSubgraph G n` + a chosen `r ∈ V(H)`. The parent selector `ends` and (G2b)
+      `rigidContract_simple`'s `hloop`/`hpar` simplicity inputs are *IH-extraction* obligations,
+      relocated to G3c (where the conditioned IH for the contraction leg is extracted under
+      `(G.rigidContract H r).Simple`); G3b is the pure-geometry adapter.
+    - [ ] **G3c** assembly + `theorem_55`/`theorem_55_generic` flip (`buildable`, the only remaining
+      build — G3a green-modulo, G3b green) — dispatch on `G.Simple`; simple branch: `H`-leg IH
+      (`Simple.mono` + `subgraph_minimality`) + transported contraction leg (G3a + N4) →
+      `hasGenericRealization_transport_ends` → G2c generic coupling →
+      `hasFullRankRealization_of_generic`; non-simple branch: N6a directly. Consumes G3b's geometry
+      adapter; discharges the `hloop`/`hpar` of `rigidContract_simple` when extracting the contraction
+      leg's IH. Discharges `hcontractGP`/`hcontract` ⟹ `lem:case-I-realization` green.
   - [x] **N6a** non-simple Case I producer (KT Lemma 6.2), general-position-free. **GREEN**
     (`hasFullRankRealization_of_splice_of_supportExtensor` + leg-native form). Takes *transversal hinges*
     `hsupp` directly instead of general position `hgp`, strictly generalizing
@@ -554,10 +571,11 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **G3a is now GREEN-MODULO; the open blocker is N6-G3's G3b/G3c (both `buildable`).** All *producer*
+- **G3a green-modulo, G3b green; the only open build is N6-G3's G3c (`buildable`).** All *producer*
   bricks are green (N4, N5, N6a, N6b/N6c, the two-motive split, (G2), N6-G1, G2a/G2b/G2c, the transport
-  brick), and **G3a `rigidContract_rigidity_transport` is green-modulo** the explicit Claim-6.4 hypothesis
-  `htransport` (axiom-clean, no `sorry`). The `Gc ≤ G` mismatch is resolved at the graph level (the splice
+  brick); **G3a `rigidContract_rigidity_transport` is green-modulo** the explicit Claim-6.4 hypothesis
+  `htransport` (axiom-clean, no `sorry`); **G3b `couple_geometry_of_isProperRigidSubgraph` is green**
+  (the geometry adapter). The `Gc ≤ G` mismatch is resolved at the graph level (the splice
   contraction leg is `G.deleteEdges E(H)` `≤ G`, KT eq. 6.3, *not* the relabelled `rigidContract`); the
   one remaining genuinely-analytic obligation is **the `htransport` hypothesis itself = KT Claim 6.4
   (eq. 6.9)**, the algebraic-independence rank-transport across the collapse map. The G3a math-first pass
@@ -565,12 +583,12 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
   edge endpoints, breaking the `hspan` equality), so per the design-doc escalation it is carried as the
   node-level hypothesis. It re-enters at G3c (where the composer must supply `htransport` to flip
   `lem:case-I-realization` fully green; KT Claim 6.4 / `lem:case-III` discharges it, deferred to 22b+).
-  - **G3b (binding, `buildable`) — cover/shared-body/selector geometry.** Both legs now `≤ G` (`H` and
-    `G.deleteEdges E(H)`): discharge `hcH : r ∈ V(H)`, `hcc : r ∈ V(G.deleteEdges E(H))`, the cover
-    `V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H))` (trivial — `V(G.deleteEdges E(H)) = V(G)`), the parent selector
-    `ends`, and (G2b) `rigidContract_simple`'s `hloop`/`hpar` for the simplicity conjunct (discharge from
-    `H.IsProperRigidSubgraph G n` + `G.Simple`, or carry as green-modulo `h…`).
-  - **G3c (`buildable`) — assembly + flip.** Dispatch on `G.Simple`; feed the `H`-leg IH + the G3a-
+  - **G3b — cover/shared-body/selector geometry. GREEN** (`couple_geometry_of_isProperRigidSubgraph`):
+    from `H.IsProperRigidSubgraph G n` + a chosen `r ∈ V(H)`, the coupling's seven geometric inputs for
+    legs `H` / `G.deleteEdges E(H)` / shared body `r` (both `≤ G`, share `r`, cover `V(G)` since
+    `V(G.deleteEdges E(H)) = V(G)`, both nonempty). The parent selector `ends` and the simplicity
+    `hloop`/`hpar` are IH-extraction obligations, relocated to G3c.
+  - **G3c (`buildable`, the only remaining build) — assembly + flip.** Dispatch on `G.Simple`; feed the `H`-leg IH + the G3a-
     transported contraction leg through `hasGenericRealization_transport_ends` into the G2c coupling, then
     `hasFullRankRealization_of_generic` for the bare `hcontract`; non-simple via N6a. Discharges
     `hcontractGP`/`hcontract`.
@@ -581,48 +599,40 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**Clean handoff point; next agent picks up at N6-G3-G3b (the cover/shared-body/selector geometry,
-`buildable`).** This commit landed **N6-G3-G3a green-modulo**: the new brick
-`PanelHingeFramework.rigidContract_rigidity_transport` in `AlgebraicInduction.lean` (after
-`hasGenericRealization_transport_ends`, ~line 4353). The G3a math-first pass settled that the
-surviving-edge collapse transport is **irreducibly KT Claim 6.4** — the §1.7-proposed lever
-(`infinitesimalMotions_eq_of_isLink_span_supportExtensor` + the surviving-edge bijection) does **not**
-close it, because `collapseTo r V(H)` redirects each surviving edge's endpoints, so its support extensor
-uses *different* panel normals in `rigidContract` vs. `deleteEdges E(H)` and the brick's `hspan`
-equality fails. Per the §1.7 / hand-off escalation authorization, Claim 6.4 (eq. 6.9) is carried as the
-narrow explicit hypothesis `htransport`; the brick is the surrounding plumbing
-(`let ⟨Q,hQg,hQgp,hQrig⟩ := hQ; htransport …`) that extracts the contraction IH and forwards the seed
-`q_c` + surviving-edge rigidity on `(V(G)∖V(H)) ∪ {r}` at the **parent** selector `ends` — the exact
-shape the G2c coupling `hasGenericFullRankRealization_of_couple_ofNormals` consumes for its
-`Gc := G.deleteEdges E(H)` leg. Axiom-clean, no `sorry`; build + lint green + warning-clean. No `\leanok`
-flip (`lem:case-I-realization` stays red until G3c flips it and `htransport` is supplied via Claim 6.4 /
-`lem:case-III`, deferred to 22b+).
+**Clean handoff point; next agent picks up at N6-G3-G3c (the composer assembly + flip — the only
+remaining Track-A build).** This commit landed **N6-G3-G3b green**: the geometry adapter
+`PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph` in `AlgebraicInduction.lean` (after
+`rigidContract_rigidity_transport`, ~line 4406). From `H.IsProperRigidSubgraph G n` + a chosen
+representative `r ∈ V(H)`, it produces the G2c coupling's seven *geometric* inputs for legs
+`GH := H`, `Gc := G.deleteEdges E(H)`, `c := r`: `H ≤ G`, `G ＼ E(H) ≤ G` (`deleteEdges_le`),
+`r ∈ V(H)`, `r ∈ V(G ＼ E(H))`, the cover `V(G) ⊆ V(H) ∪ V(G ＼ E(H))`, and both legs nonempty. Pure
+graph combinatorics: `vertexSet_deleteEdges` reads `V(G ＼ E(H)) = V(G)`, so `r ∈ V(G ＼ E(H))`, the
+cover, and the second leg's nonemptiness are all immediate from `r ∈ V(G)` (= `V(H) ⊆ V(G)`). The
+parent selector `ends` and the simplicity inputs (`rigidContract_simple`'s `hloop`/`hpar`) are *not*
+geometry — they are IH-extraction obligations (extracting the contraction leg's conditioned IH needs
+`(G.rigidContract H r).Simple`), so they were relocated to G3c. Axiom-clean, no `sorry`; build + lint
+green + warning-clean. No `\leanok` flip (`lem:case-I-realization` stays red until G3c flips it and
+`htransport` is supplied via Claim 6.4 / `lem:case-III`, deferred to 22b+). **No BlueprintExposition
+ledger entry:** G3b landed exactly as scoped (`buildable`, no reroute/decomposition surfacing a new
+insight — the trigger is the "thought-one-commit → rerouted" signal, which does not apply).
 
-**Standing discipline — blueprint exposition ledger.** When a commit
-reroutes / reworks / decomposes a node that was scoped smaller (the
-"thought-one-commit → rerouted" signal), add a one-line entry to
-`notes/BlueprintExposition.md` naming the *stable* KT-glossed insight the
-reroute surfaced. The expanded blueprint prose itself lands at **phase-close**
-(once Case I is `sorry`-free), not during recon — see that file's header.
-(Mechanism agreed 2026-06-04; codification of the `blueprint/CLAUDE.md`
-*Proof verbosity* carve-out deferred until the principle settles.) **This commit
-qualifies** — the G3a math-first finding (the collapse redirects surviving-edge endpoints, so the
-linking-edge lever fails and Claim 6.4 is irreducible) is logged there.
+**Next concrete task — N6-G3-G3c: the composer assembly + `theorem_55`/`theorem_55_generic` flip
+(`buildable`, the only remaining Track-A build).** Assemble the green bricks into the simple Case-I
+producer. Dispatch on `G.Simple`:
+- **Simple branch.** Feed `couple_geometry_of_isProperRigidSubgraph` (G3b) for the seven geometric
+  inputs, plus the two per-leg rigidities (each routed through `hasGenericRealization_transport_ends`
+  into the G2c coupling `hasGenericFullRankRealization_of_couple_ofNormals`): the `H`-leg IH (via
+  `Simple.mono` for `H.Simple` + `subgraph_minimality` + N4 `rigidContract_isMinimalKDof` for the IH
+  precondition) and the G3a-transported contraction leg (`rigidContract_rigidity_transport` on the
+  contraction IH, which needs `(G.rigidContract H r).Simple` from `rigidContract_simple`'s
+  `hloop`/`hpar` — discharge from `G.Simple` + the rigid-subgraph data, or carry green-modulo `h…` if
+  the dichotomy resists; `rigidContract_simple` is in `Induction.lean`). Then
+  `hasFullRankRealization_of_generic` to land the bare `hcontract`.
+- **Non-simple branch.** N6a directly.
 
-**Next concrete task — N6-G3-G3b: cover/shared-body/endpoint-selector geometry (`buildable`).** With
-both legs now `≤ G` (`H` and `G.deleteEdges E(H)`), discharge the G2c coupling's combinatorial inputs
-from `H.IsProperRigidSubgraph G n` + the parent data: `hcH : r ∈ V(H)`, `hcc : r ∈ V(G.deleteEdges E(H))`,
-the cover `V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H))` (trivial — `V(G.deleteEdges E(H)) = V(G)`), nonemptiness,
-the parent endpoint selector `ends` (`hends : ∀ e, G.IsLink e (ends e).1 (ends e).2`), and the (G2b)
-`rigidContract_simple` `hloop`/`hpar` for the simplicity conjunct (discharge from `G.Simple` + the rigid
-subgraph data, or carry as green-modulo `h…` if the dichotomy resists — `rigidContract_simple` is in
-`Induction.lean`). Then **G3c** (`buildable`): dispatch on `G.Simple`; the `H`-leg IH (via `Simple.mono`
-+ `subgraph_minimality` + N4 `rigidContract_isMinimalKDof` for the IH precondition) and the G3a-
-transported contraction leg both go through `hasGenericRealization_transport_ends` into the G2c coupling
-`hasGenericFullRankRealization_of_couple_ofNormals`, then `hasFullRankRealization_of_generic` for the
-bare `hcontract`; non-simple branch via N6a directly. G3c discharges `theorem_55_generic`'s `hcontractGP`
-(`AlgebraicInduction.lean:2820`) / `hcontract` (`:2815`) and supplies G3a's `htransport` ⟹
-`lem:case-I-realization` flips green (modulo KT Claim 6.4 / `lem:case-III`, 22b+).
+G3c discharges `theorem_55_generic`'s `hcontractGP` (`AlgebraicInduction.lean:2820`) / `hcontract`
+(`:2815`) and supplies G3a's `htransport` ⟹ `lem:case-I-realization` flips green (modulo KT Claim 6.4
+/ `lem:case-III`, 22b+).
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an
