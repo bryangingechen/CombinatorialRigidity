@@ -1125,6 +1125,32 @@ asymmetric couplings + the `∃`-form transport stay as (now-unused) library bri
 `case_I_realization` honestly green-modulo `hsc_proj_indep` (Claim 6.4), restoring the
 coordinator-close path (blueprint flip green-modulo + a red Claim-6.4 node, à la 21→21b).
 
+### 1.15 Stage 3 — molecular 17–22 KT-divergence audit (clean; reframe corroborated) (2026-06-05)
+
+Audited molecular phases 17–22 for *sibling* structural divergences (a locally-sound green
+formalization that re-expresses a KT argument as a different shape, risking a downstream
+bridge hypothesis KT lacks). **Result: the Case-I splice (§1.13) is the ONLY structural
+divergence; no new blocker.**
+
+- **Cases II/III are SAFE (key positive finding).** Their producer (N7a/N7b-0/1/2/3) already
+  feeds the device's **independent-row-counting** closure on a *single* framework, making its
+  two row-blocks jointly independent via the pin-a-body Lemma-5.1 **block-triangular column
+  split** `linearIndependent_sum_pinned_block` (N7b-3) — i.e. they *already* use KT's block
+  structure, no common-seed glue. The §1.14 reframing routes Case I onto this same path, and
+  N7b-3 is a near-precedent for Piece B's exterior-column separation. Corroborates the reframe.
+- **Clean bills:** Phase 17 (Lemma 2.1 / extensor), 21a (meet — modulo the deferred sign,
+  flag below), 19 (def=corank / M(G̃)), 20 (Thm 4.9 reduction; the §1.11 `ends` impedance was
+  Lean-plumbing, not structural), 21 (Case-I/II accounting iffs faithfully carry the
+  rank-addition as `dim Z` inequalities; Case-naming bug fixed, no residue).
+- **Phase 18** motion-space carriage of rigidity is the *enabler* of the Case-I divergence but
+  benign on its own (the rank lemmas 5.1–5.3 are faithful rank-nullity equivalents; it only
+  bit when used to glue two legs). No change needed; the reframe routes Case I to the row side.
+- **Forward flags (outside 22a):** (i) item #2 — when 22b opens, the residual Claim 6.4 must be
+  the exterior-projected row-independence `hsc_proj_indep` (§1.14), NOT the motion-space
+  `∀`-GP-rigid `htransport(GP)` shape (the undischargeable one); (ii) the deferred
+  `complementIso` orientation sign (Phase 21a) — verify before **Phase 25** (projective
+  invariance) / 26 in case an *oriented* meet is consumed (recorded in `notes/Phase21a.md`).
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

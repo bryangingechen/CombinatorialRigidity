@@ -189,6 +189,11 @@ metric Hodge star.
   pairing `≠ 0`, so the diagonal half landed as nonzero (not the sign) and the
   convention check is deferred to wherever the panel hinge extensor consumes an
   oriented meet (Phase 21 panel layer / Lemma 5.4). No user decision needed now.
+  **Forward flag (Phase-22a Stage-3 KT audit, 2026-06-05):** everything 21a–22a consumes
+  needs only `≠ 0`, so the deferral remains correct; but **verify before Phase 25**
+  (Crapo–Whiteley projective invariance) / Phase 26 (molecule modelling equivalence) whether
+  an *oriented* meet (KT's sign convention on `C(·)`) is consumed there — if so, the deferred
+  diagonal-(c) sign computation has to land then. See `notes/Phase22-realization-design.md` §1.15.
 
 ## Hand-off / next phase
 
