@@ -35,19 +35,30 @@ k-bookkeeping*.
 
 ## Current state
 
-**⚠ PARTIAL (2026-06-05) — the block-triangular STRUCTURE is correct and verified, but the landed
-residual `hclaim64` is over-quantified (`∀`-GP) and NOT yet dischargeable; a bounded `Qc`-non-root fix
-is verified and pending.** Coordinator scrutiny of f504955 found `hclaim64`/`hsc_proj_indep` stated as
-`∀ q, GP(q) → surviving rows D-projected-independent` — the **4th over-claim**, the `htransportGP`
-over-quantification recurring as row-independence (it needs "GP ⟹ max rank", false; the tell: the
-coupling gets the `H`-block independent at `q₀` via the rank polynomial `QH`, not GP, yet treats the
-surviving block as `∀`-GP). The **structural reframe below is sound** (Piece B proven green, exterior
-projection, device-row-addition, false `hpinc` gone — build/lint/axioms clean), and the dischargeable
-fix is verified (design doc §1.16): condition the surviving-independence on a rank-polynomial
-`Qc`-non-root threaded into the seed via the triple product `QH·Qc·Qgp` (the symmetric coupling's
-pattern), making the residual **exactly** KT Claim 6.4 (the `V∖V′`-restricted surviving rank, eq. 6.9),
-dischargeable in 22b. **Next: the bounded `Qc`-non-root fix, then the coordinator close.** The text
-below describes the (structurally-correct, residual-over-quantified) f504955 landing.
+**✓ `Qc`-NON-ROOT FIX LANDED (2026-06-05, design doc §1.16) — `case_I_realization` is honestly
+GREEN-MODULO the *dischargeable* `Qc`-non-root residual + `hcSimple`; the coordinator close is now
+genuinely unblocked.** The f504955 block-triangular reframe had stated the residual
+`hclaim64`/`hsc_proj_indep` as `∀ q, GP(q) → surviving rows D-projected-independent` — the 4th
+over-claim, the `htransportGP` over-quantification recurring as row-independence (it needs
+"GP ⟹ max rank", false). This commit replaces that `∀`-GP quantifier with the **rank-polynomial
+`Qc`-non-root form** (§1.16): the coupling
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` now takes
+`(Qc ≠ 0)` + `(hsc_proj_indep : ∀ q, eval q Qc ≠ 0 → ∃ rsc, … D-projected-independent)` and builds
+its shared seed `q₀` as a non-root of the **triple product** `QH · Qc · Qgp` (the exact pattern the
+symmetric `…_couple_ofNormals_set` already uses), applying `hsc_proj_indep q₀ hq₀c`. The block-
+triangular STRUCTURE (Piece B `extProj`/`dualMap`, the device-row closure, the union via `of_comp` +
+`range_ker_disjoint` + `sum_type`) is UNCHANGED — it consumed only the conclusion
+`∃ rsc, … D-projected-independent`, which the `Qc`-non-root form still delivers at `q₀`. The composer
+`case_I_realization`'s `hbundle` third conjunct `hclaim64` matches: given the contraction's generic
+IH `Q`, it produces `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, …` (NOT `∀ q, GP(q) → …`). The residual is
+now **exactly** KT Claim 6.4 (the `V∖V′`-restricted/exterior-projected surviving rank at the generic
+placement, eqs. (6.5)/(6.9)), dischargeable in 22b. The **only** load-bearing green-modulo hypotheses
+on `case_I_realization` are this `Qc`-non-root `hbundle`/`hclaim64` + `hcSimple` (G2b) — no `∀`-GP, no
+`htransportGP`, no false `hpinc`, no "GP ⟹ rigid". Full build + `lake lint` green and warning-clean;
+`#print axioms` on the coupling AND on `case_I_realization` shows only
+`[propext, Classical.choice, Quot.sound]`. **No `\leanok`/blueprint/ROADMAP edits** (coordinator
+scope — see *Hand-off*). The text below describes the (now-superseded `∀`-GP) f504955 landing as the
+historical record of the block-triangular structure.
 
 **✓ BLOCK-TRIANGULAR REFRAME LANDED (2026-06-05, Stage 4) — `case_I_realization` is now honestly
 GREEN-MODULO `hsc_proj_indep` (the dischargeable KT Claim 6.4).** The §1.13 impasse — the asymmetric
@@ -307,19 +318,23 @@ Claim 6.4 / `lem:case-III`); axiom-clean; no `sorry`.
     **block-triangular coupling** (replaces the asymmetric one). H-block rows from the H-leg rank
     polynomial `⊔` surviving-edge rows from `hsc_proj_indep` (exterior-projected); Piece B
     (`of_comp` + `range_ker_disjoint` + `sum_type`) glues them; device-row closure reads rigidity at
-    `q₀`; GP from the H-leg×GP non-root. The H-leg needs **no** complement-isolation equality here
-    (only its rows). Single green-modulo input `hsc_proj_indep` (KT's bottom-right block rank).
-- **N6-G3-G3c-iii-b composer** `PanelHingeFramework.case_I_realization` (**GREEN-MODULO** `hsc_proj_indep`
-  + `hcSimple`, Stage 4, `AlgebraicInduction.lean`) — the capstone, **re-wired to the block-triangular
-  coupling**. From a fixed proper rigid subgraph `H` (`2 ≤ |V(H)|`) + representative `r` + the
-  conditioned IH, discharges `theorem_55_generic`'s `hcontractGP` (GP motive; → `theorem_55`'s
-  `hcontract` via `hasFullRankRealization_of_generic`) for the simple Case-I branch. Manufactures the
-  parent selector from the green `Graph.endsOf` (§1.11), extracts the `H`-leg IH genuinely
-  (`Simple.mono` + `subgraph_minimality` → generic IH → `hasGenericRealization_transport_ends`), routes
-  the `G ＼ E(H)`-leg via N4 + the contraction IH, and feeds the block-triangular coupling. **Honest
-  bundle** `hbundle` = `hswap`/`hne_ends` (KT eq. (6.6) placement, combinatorial) + `hsc_proj_indep`
-  (KT eqs. (6.5)/(6.9), the exterior-projected surviving-row independence — a row-count, NOT the
-  undischargeable `∀`-GP-rigid `htransportGP`) + `hcSimple` (G2b). Axiom-clean (`#print axioms`).
+    `q₀`; GP from the triple-product `QH·Qc·Qgp` non-root. The H-leg needs **no** complement-isolation
+    equality here (only its rows). Single green-modulo input: the **`Qc`-non-root** form
+    `(Qc ≠ 0)` + `(hsc_proj_indep : ∀ q, eval q Qc ≠ 0 → ∃ rsc, … D-projected-independent)` (§1.16, KT's
+    bottom-right block rank at the generic locus) — *not* the over-quantified `∀`-GP form.
+- **N6-G3-G3c-iii-b composer** `PanelHingeFramework.case_I_realization` (**GREEN-MODULO** the
+  `Qc`-non-root `hclaim64` + `hcSimple`, `Qc`-non-root fix §1.16, `AlgebraicInduction.lean`) — the
+  capstone, **wired to the block-triangular coupling**. From a fixed proper rigid subgraph `H`
+  (`2 ≤ |V(H)|`) + representative `r` + the conditioned IH, discharges `theorem_55_generic`'s
+  `hcontractGP` (GP motive; → `theorem_55`'s `hcontract` via `hasFullRankRealization_of_generic`) for
+  the simple Case-I branch. Manufactures the parent selector from the green `Graph.endsOf` (§1.11),
+  extracts the `H`-leg IH genuinely (`Simple.mono` + `subgraph_minimality` → generic IH →
+  `hasGenericRealization_transport_ends`), routes the `G ＼ E(H)`-leg via N4 + the contraction IH, and
+  feeds the block-triangular coupling. **Honest bundle** `hbundle` = `hswap`/`hne_ends` (KT eq. (6.6)
+  placement, combinatorial) + the `Qc`-non-root `hclaim64` (given the contraction's generic IH `Q`,
+  produces `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, … exterior-projected-independent` — KT eqs.
+  (6.5)/(6.9), a row-count at the generic locus, NOT `∀`-GP and NOT the undischargeable
+  `htransportGP`) + `hcSimple` (G2b). Axiom-clean (`#print axioms`).
 - **[superseded, kept as library bricks]** the asymmetric coupling
   `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` (561a94b, §1.12 — its `htransportGP`
   was undischargeable, §1.13) + the symmetric `…_couple_ofNormals_set` + the G3a `∃`-form
@@ -545,20 +560,27 @@ Claim 6.4 / `lem:case-III`); axiom-clean; no `sorry`.
           motive re-typing is unnecessary. So G3c-iii-b's `ends` work is a one-lemma side-condition
           (`exists_ends_of_graph`) + relaxing the coupling's parent `hends` to edge-restricted — not a
           layer-wide motive re-type. Resolved once for the whole layer.
-        - [x] **G3c-iii-b** the composer assembly + flip — **GREEN-MODULO `hsc_proj_indep` + `hcSimple`
-          (Stage 4, design doc §1.14, block-triangular reframe).** The 561a94b asymmetric coupling
-          (§1.12, below) was itself vacuous (its `htransportGP` = "GP ⟹ rigid", false — §1.13). The
-          reframe replaces the common-seed motion-space splice with KT eq. (6.3)'s **block-triangular
-          rank-addition** over the *single* common framework `ofNormals G ends q₀`: the new coupling
+        - [x] **G3c-iii-b** the composer assembly + flip — **GREEN-MODULO the `Qc`-non-root `hclaim64`
+          + `hcSimple` (`Qc`-non-root fix, design doc §1.16; on top of the Stage-4 block-triangular
+          reframe §1.14).** The 561a94b asymmetric coupling (§1.12, below) was vacuous (its
+          `htransportGP` = "GP ⟹ rigid", false — §1.13); the Stage-4 reframe replaced the common-seed
+          motion-space splice with KT eq. (6.3)'s **block-triangular rank-addition** over the *single*
+          common framework `ofNormals G ends q₀` (the new coupling
           `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` exhibits `D(|V(G)|−1)`
-          independent rows split `H`-block `⊔` surviving-edge (Piece B, via the exterior-column
-          projection `(extProj V(H)).dualMap`), and reads rigidity off the row count (device-row
-          closure). `case_I_realization` re-wired to it; the bundle's `htransportGP` replaced by the
-          **exterior-projected row-independence** `hsc_proj_indep` (KT eqs. (6.5)/(6.9), a row-count).
-          The `H`-leg needs **no** complement-isolation equality (only its rows). The asymmetric /
-          symmetric couplings + the G3a `∃`-form transport are kept as (now-unused) library bricks.
-          Axiom-clean (`#print axioms` = `propext`/`Classical.choice`/`Quot.sound`); build + lint green,
-          warning-clean. Dimension arithmetic: `sH = V(H)`, `sc = (V(G)∖V(H))∪{r}`, shared `r`, glued
+          independent rows split `H`-block `⊔` surviving-edge — Piece B, via the exterior-column
+          projection `(extProj V(H)).dualMap` — and reads rigidity off the row count via the device-row
+          closure). **But the Stage-4 residual was over-quantified** (`∀ q, GP(q) → …`, the 4th
+          over-claim, §1.16); this commit replaces that `∀`-GP quantifier with the **`Qc`-non-root**
+          form: the coupling takes `(Qc ≠ 0)` + `(hsc_proj_indep : ∀ q, eval q Qc ≠ 0 → ∃ rsc, …
+          D-projected-independent)` and builds `q₀` as a non-root of the **triple product**
+          `QH · Qc · Qgp` (the symmetric coupling's pattern); the composer's `hbundle` third conjunct
+          `hclaim64` produces `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, …` (NOT `∀`-GP). The block-
+          triangular STRUCTURE (Piece B, device-row closure) is UNCHANGED — it consumed only the
+          conclusion `∃ rsc, …`. The `H`-leg needs **no** complement-isolation equality (only its rows).
+          The asymmetric / symmetric couplings + the G3a `∃`-form transport are kept as (now-unused)
+          library bricks. Axiom-clean (`#print axioms` = `propext`/`Classical.choice`/`Quot.sound`)
+          on the coupling AND `case_I_realization`; build + lint green, warning-clean. Dimension
+          arithmetic: `sH = V(H)`, `sc = (V(G)∖V(H))∪{r}`, shared `r`, glued
           `D(|V(H)|−1) + D(|sc|−1) = D(|V(G)|−1)` (KT k=0 full rank, via cover + shared body). The
           `hcontract` non-simple branch (N6a) + the full `theorem_55` dispatch are coordinator wiring.
   - [x] **N6a** non-simple Case I producer (KT Lemma 6.2), general-position-free. **GREEN**
@@ -981,22 +1003,31 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **✓ RESOLVED — the block-triangular reframe landed; `case_I_realization` is honestly GREEN-MODULO
-  `hsc_proj_indep` (the dischargeable KT Claim 6.4). [2026-06-05, Stage 4.]** The §1.13 impasse (the
-  asymmetric coupling's `htransportGP` was "GP ⟹ rigid", false — the third relocation of an
-  unsatisfiable common-seed demand `hcrig` → `hpinc` → `htransportGP`) is fixed by the design-doc §1.14
-  block-triangular reframing: the new coupling
-  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` reproduces KT eq. (6.3)'s
-  block-triangular rank-addition over the *single* common framework `ofNormals G ends q₀` (exhibit
-  `D(|V(G)|−1)` independent rows split `H`-block `⊔` surviving-edge via the exterior-column projection,
-  read rigidity off the row count) — **no common placement rigid on both legs**, so the impasse is gone
-  by construction. The single green-modulo hypothesis is `hsc_proj_indep`: the surviving rows
-  exterior-projected-independent of size `≥ D(|sc|−1)` (KT's bottom-right block rank `R(G,p;E∖E′,V∖V′)`,
-  eqs. (6.5)/(6.9)) — single-placement, contraction-leg-local, a **row-count**. See *Current state*
-  banner, design doc §1.14, `DESIGN.md` *Match the source's argument structure …*. **The remaining
-  genuinely-analytic obligation is now `hsc_proj_indep`** (KT Claim 6.4 as exterior-projected
-  row-independence) + the eq.-(6.6) placement conjuncts `hswap`/`hne_ends` (combinatorial) + the
-  Lemma-6.3 `hcSimple`; deferred to 22b via `lem:case-III`. Axiom-clean; build + lint green.
+- **✓ RESOLVED — the `Qc`-non-root fix landed; `case_I_realization` is honestly GREEN-MODULO the
+  *dischargeable* `Qc`-non-root residual + `hcSimple`. [2026-06-05, design doc §1.16.]** The Stage-4
+  block-triangular reframe (below) had stated its residual `hsc_proj_indep`/`hclaim64` as `∀ q, GP(q) →
+  …` — the 4th over-claim (the `htransportGP` over-quantification recurring as row-independence; it
+  needs "GP ⟹ max rank", false). This fix replaces the `∀`-GP quantifier with the **rank-polynomial
+  `Qc`-non-root** form: the coupling
+  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` takes `(Qc ≠ 0)` +
+  `(hsc_proj_indep : ∀ q, eval q Qc ≠ 0 → ∃ rsc, … D-projected-independent)` and builds `q₀` as a
+  non-root of the **triple product** `QH · Qc · Qgp` (the symmetric coupling's pattern); the composer's
+  `hbundle` third conjunct `hclaim64` produces `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, …` (NOT `∀`-GP).
+  The residual is now **exactly** KT Claim 6.4 (the `V∖V′`-restricted/exterior-projected surviving rank
+  at the *generic locus*, eqs. (6.5)/(6.9)), dischargeable in 22b. The block-triangular STRUCTURE is
+  UNCHANGED. The only load-bearing green-modulo hypotheses are the `Qc`-non-root `hclaim64` + `hcSimple`
+  (G2b) — no `∀`-GP, no `htransportGP`, no false `hpinc`. Axiom-clean on the coupling AND
+  `case_I_realization` (`#print axioms` = `propext`/`Classical.choice`/`Quot.sound`); build + lint green
+  and warning-clean. See *Current state* banner, design doc §1.16, `DESIGN.md` *Match the source's
+  argument structure …*.
+
+- **[SUPERSEDED by the `Qc`-non-root fix above] block-triangular reframe (Stage 4, design doc §1.14).**
+  Fixed the §1.13 impasse (the asymmetric coupling's `htransportGP` = "GP ⟹ rigid", false) by
+  reproducing KT eq. (6.3)'s block-triangular rank-addition over the *single* common framework
+  `ofNormals G ends q₀` (exhibit `D(|V(G)|−1)` independent rows split `H`-block `⊔` surviving-edge via
+  the exterior-column projection, read rigidity off the row count) — **no common placement rigid on both
+  legs**. But its residual was over-quantified `∀`-GP (the §1.16 finding above corrected it to the
+  `Qc`-non-root form). The block-triangular structure (Piece B, device-row closure) survives unchanged.
 
 - **[SUPERSEDED] ✓ CORRECTNESS GAP FIXED (design doc §1.12).** The composer `PanelHingeFramework.case_I_realization`
   is now honest GREEN-MODULO: the false combinatorial equality `hpinc` is removed by routing the
@@ -1049,39 +1080,46 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**✓ STAGE 4 LANDED — the block-triangular reframe is in the tree; `case_I_realization` is honestly
-GREEN-MODULO `hsc_proj_indep`. The next step is the COORDINATOR CLOSE.** See *Current state* banner +
-*Blockers*. This session implemented design-doc §1.14 (Stages 1–3 — lesson capture, design, audit —
-already landed in prior commits); the four-step owner-directed plan is now complete:
+**✓ `Qc`-NON-ROOT FIX LANDED — `case_I_realization` is honestly GREEN-MODULO the *dischargeable*
+`Qc`-non-root residual + `hcSimple`. The next step is the COORDINATOR CLOSE (now genuinely unblocked).**
+See *Current state* banner + *Blockers*. This session implemented design-doc §1.16 (the bounded fix to
+the Stage-4 block-triangular coupling): the over-quantified `∀`-GP residual is replaced by the
+rank-polynomial `Qc`-non-root form, threaded into the shared seed via the triple product
+`QH · Qc · Qgp`. Concretely:
 
-1. **✓ Lesson captured** (prior commit) — `DESIGN.md` *Match the source's argument structure …*;
-   `blueprint/CLAUDE.md` honesty-gate *third check*; `notes/FRICTION.md` *[process] … block-triangular*.
-2. **✓ Block-triangular reframing designed** (prior commit, design doc §1.14, owner-signed-off).
-3. **✓ Molecular 17–22 audit** (prior commit, design doc §1.15 — clean, reframe corroborated).
-4. **✓ Implemented** (this commit) — new infra `extProj` / `extProj_apply_mem` /
-   `hingeRow_comp_extProj_eq_zero` (Piece B core, proved green) + the device-row closure
-   `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` + the
-   block-triangular coupling
-   `PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`;
-   `case_I_realization` re-wired to it (the bundle's `htransportGP` replaced by the exterior-projected
-   row-independence `hsc_proj_indep`). Axiom-clean; build + lint green and warning-clean. The
-   asymmetric / symmetric couplings + the G3a `∃`-form transport are kept as (now-unused) library
-   bricks. **No `\leanok` / blueprint / ROADMAP edits** (coordinator scope).
+1. **✓ The coupling** `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` — its
+   `∀`-GP `hsc_proj_indep` hypothesis replaced by `(Qc : MvPolynomial … ℝ)` + `(hQc_ne : Qc ≠ 0)` +
+   `(hsc_proj_indep : ∀ q, eval q Qc ≠ 0 → ∃ rsc, … D-projected-independent)`; `q₀` is now a non-root of
+   the triple product `QH · Qc · Qgp` (so it is a `Qc`-non-root AND a `QH`-non-root AND general
+   position), and `hsc_proj_indep q₀ hq₀c` feeds the surviving block. Everything downstream (Piece B
+   union-independence, the device-row closure) is UNCHANGED — it consumed only `∃ rsc, …`.
+2. **✓ The composer** `case_I_realization` — `hbundle`'s third conjunct `hclaim64` updated to the
+   matching `Qc`-non-root form (`∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, …`, NOT `∀ q, GP(q) → …`); the
+   produced `Qc`/`hQc_ne`/the implication threaded into the coupling call. Doc-comments corrected to
+   the `Qc`-non-root form. The contraction IH framework was renamed `Qc → Qcf` to free `Qc` for the
+   polynomial.
+
+Axiom-clean on the coupling AND `case_I_realization` (`#print axioms` = `propext`/`Classical.choice`/
+`Quot.sound`, no `sorry`); full build + lint green and warning-clean. The asymmetric / symmetric
+couplings + the G3a `∃`-form transport are kept as (now-unused) library bricks. **No `\leanok` /
+blueprint / ROADMAP edits** (coordinator scope).
 
 **Coordinator scope (the close, now unblocked).**
 - ✓ **G3c-iii-a** — parent-`ends` impedance, resolved 2026-06-05 (design doc §1.11): option (iii).
-- ✓ **G3c-iii-b** — composer + block-triangular coupling landed (this commit), honestly green-modulo
-  `hsc_proj_indep` (no smuggled rigidity/equality/GP hypothesis; verified by reading the signature +
-  `#print axioms`).
+- ✓ **G3c-iii-b** — composer + block-triangular coupling landed, honestly green-modulo the
+  **`Qc`-non-root** `hclaim64` (`Qc`-non-root fix, design doc §1.16) — no smuggled rigidity/equality/GP
+  hypothesis, no `∀`-GP over-quantification; verified by reading the signature (`hclaim64` is
+  `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → …`) + `#print axioms`.
 - **Coordinator green-modulo close** — blueprint green-modulo `\leanok` flip of `lem:case-I-realization`
   (`\lean{...PanelHingeFramework.case_I_realization}`) + a dedicated **red Claim-6.4 node** tracking the
-  `hsc_proj_indep`/`hcSimple` obligation (à la 21 → 21b) + `checkdecls`; then the phase-close checklist
-  (ROADMAP ✓-green-modulo, user-facing surfaces, `MolecularConjecture.md`, blueprint chapter re-read,
-  project-org review, Phase22a notes compression).
+  `Qc`-non-root `hclaim64` / `hcSimple` obligation (à la 21 → 21b) + `checkdecls`; then the phase-close
+  checklist (ROADMAP ✓-green-modulo, user-facing surfaces, `MolecularConjecture.md`, blueprint chapter
+  re-read, project-org review, Phase22a notes compression).
 - **Open 22b** — focused on Claim 6.4 (see *22b target* at the end of this section). The residual
-  obligation is now the **exterior-projected row-independence** `hsc_proj_indep` (KT's bottom-right
-  block rank, eqs. (6.5)/(6.9)) — NOT the motion-space `∀`-GP-rigid `htransportGP` (design doc §1.15
-  forward-flag (i)).
+  obligation is now the **`Qc`-non-root exterior-projected row-independence** (a contraction rank
+  polynomial `Qc ≠ 0` whose non-roots carry the projected independence — KT's bottom-right block rank at
+  the generic locus, eqs. (6.5)/(6.9)) — NOT the over-quantified `∀`-GP form, and NOT the motion-space
+  `∀`-GP-rigid `htransportGP` (design doc §1.15 forward-flag (i), §1.16).
 
 **The §1.12 fix commit (this commit).** Lands the **asymmetric body-set coupling**
 `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` and re-wires
