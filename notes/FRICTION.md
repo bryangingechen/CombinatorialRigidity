@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Dot notation `g.foo` doesn't find a `Graph.foo` lemma authored outside a `namespace Graph` block — it re-namespaces to `…Molecular.Graph.foo`, which projection can't reach
+- **Where it bit:** the Case-I composer `case_I_realization` (`Molecular/AlgebraicInduction.lean`,
+  Phase 22a N6-G3-G3c-iii-b). A scratch `theorem Graph.exists_ends_of_graph` written under the file's
+  enclosing `CombinatorialRigidity.Molecular` namespace landed at `…Molecular.Graph.exists_ends_of_graph`;
+  `G.exists_ends_of_graph` then failed with "environment does not contain `Graph.exists_ends_of_graph`"
+  although `Graph.exists_ends_of_graph G` (the open-namespace identifier) type-checked.
+- **Fix:** the project already had `Graph.endsOf` (in a real `namespace Graph` block in
+  `Molecular/Induction.lean`) + `isLink_endsOf` doing exactly this job, so the helper was dropped and
+  the composer reuses `endsOf` (search-before-rolling-your-own; cross-ref the existing `endsOf` entry
+  below). The general dot-notation-vs-root-namespace lesson is lifted.
+- **Status:** resolved (reused `endsOf`). **Lifted to:** TACTICS-QUIRKS § 35.
+
 ### [resolved] A standalone `⨅ i ∈ s, ker (proj i)` term needs an explicit `Submodule …` type ascription — `InfSet (Type _)` synth failure otherwise
 - **Where it bit:** G3c-i (`finrank_iInf_ker_proj_eq` / `pinnedMotionsOn_le_iInf_ker_proj`, Phase 22a).
   Writing `Module.finrank ℝ (⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : … →ₗ[ℝ] ScrewSpace k))` as a

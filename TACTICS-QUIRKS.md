@@ -1344,3 +1344,27 @@ codomain to the scalar ring first.*
 
 Worked case: `panelSupportPoly_eval` in `Molecular/AlgebraicInduction.lean` (Phase 21b B0,
 the panel-support-extensor coordinate-as-`MvPolynomial`).
+
+## 35. Dot notation `g.foo` resolves `foo` against the type head's *root* namespace, not a file-local re-namespace
+
+**Symptom.** A lemma written `theorem Graph.foo …` while the file sits inside an enclosing namespace
+(e.g. `CombinatorialRigidity.Molecular`) lands at the full name
+`CombinatorialRigidity.Molecular.Graph.foo`. A later call `g.foo` on `g : Graph α β` then fails with
+*"Invalid field `foo`: the environment does not contain `Graph.foo`"* — even though `Graph.foo`
+*resolves as an identifier* (the enclosing namespace is open). Dot/projection notation does **not**
+use the open-namespace search: it looks for `foo` in the *structure head's own root namespace*
+(mathlib's `Graph`), and the file-local `…Molecular.Graph.foo` is a different namespace, so the
+projection is not found.
+
+**Fix.** Either (a) call it by the (partially-qualified) identifier `Graph.foo g` instead of the
+projection `g.foo` — the open namespace resolves it; or (b) define the lemma *inside* an explicit
+`namespace Graph … end Graph` block so it really lands in the root `Graph` namespace and dot notation
+finds it (this is what `Molecular/Induction.lean` does, so e.g. `Graph.rigidContract_isMinimalKDof`
+*is* dot-callable). Cheap tell: if `g.foo` errors but `Graph.foo g` type-checks in the same file, you
+hit this — the lemma is re-namespaced. General axis: *dot notation keys off the value's type-head root
+namespace; a `T.foo` lemma authored outside a `namespace T` block is reachable by name but not by
+projection.*
+
+Worked case: `case_I_realization` in `Molecular/AlgebraicInduction.lean` (Phase 22a, N6-G3-G3c-iii-b)
+— first hit while drafting a `Graph.exists_ends_of_graph` helper (later dropped in favour of the
+pre-existing `Graph.endsOf`, which *is* in a `namespace Graph` block).

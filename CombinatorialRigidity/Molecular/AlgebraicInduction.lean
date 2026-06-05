@@ -5018,10 +5018,18 @@ the shared GP seed `q₀` directly, keeping general position) instead of the dev
 body-set splice. This is the producer the simple Case-I composer feeds to discharge
 `theorem_55_generic`'s `hcontractGP` GP conjunct, with the contraction leg rigid only on the
 surviving bodies `sc = (V(G)∖V(H)) ∪ {r}`. The complement-isolation equalities `hpinH`/`hpinc` are
-discharged per-leg at the composer call site (see `couple_ofNormals_set`). -/
+discharged per-leg at the composer call site (see `couple_ofNormals_set`).
+
+The parent selector `hends` is taken in the **edge-restricted** form `∀ e u v, G.IsLink e u v →
+G.IsLink e (ends e).1 (ends e).2` (N6-G3-G3c-iii-a, design doc §1.11), not the all-`β`
+`∀ e, G.IsLink e (ends e).1 (ends e).2`: an all-`β` selector is unsatisfiable for a label type
+carrying non-edges, and the body uses `hends` *only* to derive the edge-restricted leg forms
+`hendsH`/`hendsc` (everything downstream takes those or the witnessed-index `hsupp`). An
+edge-restricted parent selector is constructible from `G` alone (the canonical `Graph.endsOf`, which
+links every edge by `isLink_endsOf`), so the composer can supply it. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_set
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
-    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
     (hnesH : sH.Nonempty) (hnesc : sc.Nonempty)
@@ -5042,10 +5050,15 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
       (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn sc) :
     PanelHingeFramework.HasGenericFullRankRealization k G := by
   classical
-  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
-    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
-  have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
-    (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
+  -- The parent's *edge-restricted* `hends` weakens to each leg via `GH ≤ G` / `Gc ≤ G`: a leg-link
+  -- is a parent-link, the parent records its endpoints, and `isLink_iff` reads them back as a
+  -- leg-link of the same edge (this is the only place the relaxed `hends` is used).
+  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
+    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
+      (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
+  have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
+    (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr
+      (hends e u v ((Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mp h))
   -- (i) Each leg's *body-set* leg-restricted rank polynomial at its own seed.
   obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
@@ -5083,6 +5096,141 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
   -- so general position survives and the conclusion is the strengthened generic motive.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hgp
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+
+/-- **Case I realization: the contraction producer** (`lem:case-I-realization`, the N6 composer;
+Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a). The capstone of the Case-I
+realization layer: from a *fixed* proper rigid subgraph `H` of a simple minimal `0`-dof-graph `G`
+(KT Lemma 6.3's case object, `2 ≤ |V(H)|`) with a chosen representative body `r ∈ V(H)`, and the
+conditioned induction hypothesis `hIH` (the shape `theorem_55_generic` threads), the strengthened
+generic realization motive `HasGenericFullRankRealization k G` holds. Composed with
+`hasFullRankRealization_of_generic` this discharges `theorem_55_generic`'s `hcontractGP` premise
+(and `theorem_55`'s `hcontract`), the Case-I branch of the Theorem-5.5 reduction.
+
+The composer assembles the green Case-I bricks against the two splice legs KT eq. (6.3) forces — the
+rigid block `GH := H` and the surviving-edge subgraph `Gc := G ＼ E(H)`, both `≤ G` (G3b
+`couple_geometry_of_isProperRigidSubgraph`), sharing the representative body `r`:
+
+* **`H`-leg (genuine IH extraction).** `H` is simple (`Graph.Simple.mono` from `G.Simple`), minimal
+  `0`-dof (`subgraph_minimality` from its rigidity), and smaller (`V(H) ⊂ V(G)`), so the conditioned
+  induction hypothesis `hIH` supplies `HasGenericFullRankRealization k H`; the leg-transport brick
+  `hasGenericRealization_transport_ends` re-expresses it at the manufactured parent selector `ends`
+  (rigid + transversal on `sH := V(H)`). Its complement-isolation `hpinH` is the green
+  `finrank_pinnedMotionsOn_vertexSet` (the leg is rigid on its *full* vertex set).
+* **`G ＼ E(H)`-leg (N4 + the Claim-6.4 bundle).** The contraction `G.rigidContract H r` is itself a
+  minimal `0`-dof-graph (N4 `rigidContract_isMinimalKDof`), smaller than `G`
+  (`rigidContract_vertexSet_ncard_lt`), and — by the KT Lemma 6.3 case hypothesis `hcSimple`
+  (`(G.rigidContract H r).Simple`; G2b makes this the positive `map`-simplicity criterion) — simple,
+  so `hIH` supplies its *generic* realization. **The transport of that rank across the collapse map
+  to the surviving-edge leg `G ＼ E(H)`, rigid only on the surviving bodies
+  `sc := (V(G) ∖ V(H)) ∪ {r}`, is KT Claim 6.4 (eq. (6.9))**, irreducibly research-shaped (the
+  collapse redirects each surviving edge's endpoints, so no green brick converts the
+  relabelled-contraction rigidity into the original-endpoint rigidity — the G3a finding). It is
+  therefore taken via the green-modulo brick `rigidContract_rigidity_transport` with its explicit
+  Claim-6.4 hypothesis `htransport`; the transversality `hnec` at the transported seed and the
+  body-set complement-isolation `hpinc` are the rest of the same Claim-6.4 bundle, and the `H`-leg's
+  selector alignment `hswap`/`hne_ends` is the KT eq. (6.6) placement — all carried in the explicit
+  bundle `hbundle`.
+
+With both legs in hand the body-set generic coupling
+`hasGenericFullRankRealization_of_couple_ofNormals_set` lands the strengthened motive.
+**Green-modulo the Claim-6.4 bundle** (`hbundle` + `hcSimple`, the Phase-21b green-modulo `h…`
+idiom, discharged
+by `lem:case-III` / 22b+): every step the composer itself performs is honest, and the analytic
+obligation is one visible bundle pinned to KT eq. (6.9), not a `sorry`. -/
+theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
+    (hD : 3 ≤ Graph.bodyBarDim n)
+    (G : Graph α β) (hG : G.IsMinimalKDof n 0)
+    {H : Graph α β} (hH : H.IsProperRigidSubgraph G n) {r : α} (hr : r ∈ V(H))
+    (hVH2 : 2 ≤ V(H).ncard) (hSimple : G.Simple)
+    (hcSimple : (G.rigidContract H r).Simple)
+    (hIH : ∀ G' : Graph α β, G'.IsMinimalKDof n 0 → 2 ≤ V(G').ncard →
+      V(G').ncard < V(G).ncard →
+      (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k G') ∧
+        PanelHingeFramework.HasFullRankRealization k G')
+    -- The Claim-6.4 + placement bundle (KT eqs. (6.6), (6.9); design doc §1.7/§1.10), carried in
+    -- the Phase-21b green-modulo `h…` idiom against the manufactured parent selector `ends` and the
+    -- chosen `H`/`r`. It supplies (a) the `H`-leg selector alignment `hswap`/`hne_ends` that
+    -- `hasGenericRealization_transport_ends` consumes, (b) the contraction leg's Claim-6.4 collapse
+    -- transport `htransport` (the G3a hypothesis), and (c) the transported leg's transversality
+    -- `hnec` and complement-isolation `hpinc` at the seed.
+    (hbundle : ∀ ends : β → α × α,
+      (∀ Q : PanelHingeFramework k α β, Q.graph = H →
+        (∀ e u v, H.IsLink e u v →
+          ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
+          ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1))) ∧
+      (∀ e, (ends e).1 ≠ (ends e).2) ∧
+      (∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
+        Q.IsGeneralPosition →
+        Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
+        ∃ q_c : α × Fin (k + 2) → ℝ,
+          (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q_c).toBodyHinge
+            |>.IsInfinitesimallyRigidOn ((V(G) \ V(H)) ∪ {r})) ∧
+      (∀ qc : α × Fin (k + 2) → ℝ, ∀ e, (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2 →
+        (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends qc).toBodyHinge.supportExtensor e
+          ≠ 0) ∧
+      (∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+        ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q).toBodyHinge.pinnedMotionsOn
+          ((V(G) \ V(H)) ∪ {r}))
+        = screwDim k * ((V(G) \ V(H)) ∪ {r})ᶜ.ncard)) :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
+  obtain ⟨⟨hle, hKDof⟩, hVHne, hVHss⟩ := hH
+  have hHsub : V(H) ⊆ V(G) := hle.vertexSet_mono
+  have hVHlt : V(H).ncard < V(G).ncard := Set.ncard_lt_ncard hVHss (Set.toFinite _)
+  -- Manufacture the parent endpoint selector from `G` alone via the canonical `endsOf` (G3c-iii-a):
+  -- it links every edge (`isLink_endsOf`), exactly the edge-restricted `hends` the body-set generic
+  -- coupling needs (the all-`β` form is unsatisfiable for a label type with non-edges).
+  haveI : Inhabited α := ⟨r⟩
+  set ends := G.endsOf with hendsDef
+  have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
+    rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
+  have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVHne, hVHss⟩
+  obtain ⟨hswap, hne_ends, htransport, hnec, hpinc⟩ := hbundle ends
+  -- The geometric inputs of the coupling for legs `H` / `G ＼ E(H)` sharing `r` (G3b); the cover is
+  -- against the *surviving-body* set `sc := (V(G)∖V(H)) ∪ {r}` (its `(V(G)∖V(H))` part alone
+  -- complements `V(H)`).
+  obtain ⟨hGH, hGc, _, _, _, _, _⟩ :=
+    PanelHingeFramework.couple_geometry_of_isProperRigidSubgraph hHprop hr
+  have hcover : V(G) ⊆ V(H) ∪ ((V(G) \ V(H)) ∪ {r}) := by
+    intro x hx
+    by_cases hxH : x ∈ V(H)
+    · exact Or.inl hxH
+    · exact Or.inr (Or.inl ⟨hx, hxH⟩)
+  -- (1) The `H`-leg: extract its generic IH and transport it to the parent selector.
+  have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
+  obtain ⟨QH, hQHg, hQHgp, hQHrig⟩ :=
+    (hIH H hHmin hVH2 hVHlt).1 (hSimple.mono hle)
+  obtain ⟨qH, hneH, hrigH⟩ :=
+    PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
+      (hswap QH hQHg) hne_ends
+  -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller, simple minimal `0`-dof-graph (N4 +
+  -- `hcSimple`); its generic IH's rank is transported to the surviving-edge leg by Claim 6.4.
+  have hKmin : (G.rigidContract H r).IsMinimalKDof n 0 :=
+    Graph.rigidContract_isMinimalKDof hG hHprop hr
+  have hKlt : V(G.rigidContract H r).ncard < V(G).ncard :=
+    Graph.rigidContract_vertexSet_ncard_lt hHsub hVH2
+  have hK2 : 2 ≤ V(G.rigidContract H r).ncard := by
+    rw [Graph.rigidContract_vertexSet_ncard hr hHsub]
+    have hVHle : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
+    omega
+  obtain ⟨Qc, hQcg, hQcgp, hQcrig⟩ :=
+    (hIH (G.rigidContract H r) hKmin hK2 hKlt).1 hcSimple
+  obtain ⟨qc, hrigc⟩ :=
+    PanelHingeFramework.rigidContract_rigidity_transport G H ends
+      ⟨Qc, hQcg, hQcgp, hQcrig⟩ htransport
+  -- (3) `hpinH` is the green complement-isolation on the `H`-leg's full vertex set `V(H)`.
+  have hpinH : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+      ((PanelHingeFramework.ofNormals H ends q).toBodyHinge.pinnedMotionsOn V(H))
+      = screwDim k * V(H)ᶜ.ncard := by
+    intro q
+    have := (PanelHingeFramework.ofNormals H ends q).toBodyHinge.finrank_pinnedMotionsOn_vertexSet
+    simpa only [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+      using this
+  -- (4) Feed both legs into the body-set generic coupling (`sH := V(H)`, `sc := (V(G)∖V(H))∪{r}`).
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_set G ends hends
+    hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl) hcover
+    ⟨r, hr⟩ ⟨r, Or.inr rfl⟩ (qH := qH) (qc := qc) hpinH hpinc hneH (hnec qc) hrigH hrigc
 
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
