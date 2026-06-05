@@ -1493,6 +1493,42 @@ The honest scope is *one research-shaped node remains* (U3b); it was never retir
 
 ---
 
+### 1.21 U3b recon — the crux is bounded: `(extProj V(H)).dualMap` on the contracted framework = pin-at-`r`, so U3b is the projected sibling of the green U3 tool off Lemma 5.1, not a from-scratch research lemma (2026-06-05)
+
+Math-first recon of the U3b node §1.20 flagged, traced against the live bricks
+(`finrank_pinnedMotions_add_screwDim` `:995`, `linearIndependent_sum_pinned_block` `:548`,
+`exists_independent_panelRow_subfamily_of_rigidOn_linking_set` `GenericityDevice:644`, `extProj`
+`CaseI:720`). **Verdict: U3b is one bounded new brick, not a research wall** — §1.20's "missing
+infra / research-shaped" is sharpened: the *conceptual crux is already green*; only a *packaging*
+lemma is missing.
+
+**Key realization.** `(extProj V(H)).dualMap` applied to the contracted framework `Qcf'` (on
+`Gc.map f`, vertices `(V(G)∖V(H)) ∪ {r}`) **= "drop the `r`-column"** — `r` is the *only* vertex of
+`Qcf'` in `V(H)` (`f = collapseTo r V(H)` sends all of `V(H)` to `r`; surviving bodies stay outside
+`V(H)`). "Dropping one body's columns preserves rank" is exactly **Lemma 5.1**
+`finrank_pinnedMotions_add_screwDim`: `finrank(pinnedMotions r) + D = finrank(Z)`. For `Qcf'` rigid
+on `sc`, `finrank(Z) = D` ⟹ `finrank(pinnedMotions r) = 0` ⟹ dropping the `r`-column loses **zero**
+rank ⟹ the projected rows attain rank `D(|sc|−1)`. That is KT Claim 6.4.
+
+**The layer (3 steps; mirrors the green U3 tool nearly line-for-line):**
+1. **`extProj V(H)` on `Qcf'` = pin-at-`r`** — needs `V(Gc.map f) ∩ V(H) = {r}` (collapse fact).
+   Bounded.
+2. **The one new brick — a *projected* sibling of `exists_independent_panelRow_subfamily_of_rigidOn_linking_set`.**
+   Same skeleton (span identity → finrank lower bound → `Submodule.exists_fun_fin_finrank_span_eq`
+   extraction), but: (a) the projected `H`-block rows *vanish* (`hingeRow_comp_extProj_eq_zero`,
+   GREEN — KT's top-right `0`), so the projected span = projected *surviving* rows; (b) the finrank
+   bound comes from **Lemma 5.1** (`pinnedMotions r`) not the full motion space. The genuine content
+   is the **finrank bridge** `finrank((extProj V(H)).dualMap '' Φ) ≥ D(|sc|−1)` from
+   `finrank(pinnedMotions r) = 0` — standard dual-annihilator LA, possibly a small `Mathlib/` mirror.
+3. **Extract `D(|sc|−1)` independent projected rows** — identical machinery to the U3 tool. Plumbing.
+
+**Risk.** Medium on step 2's finrank bridge (the dual-map-image ↔ pinned-motion-space finrank
+identity); low elsewhere. The down-grade from §1.20: U3b is *one bounded brick built off green
+Lemma 5.1 + a projected re-run of the U3-tool skeleton*, not a from-scratch research lemma. U3a
+(alignment, the `ends`-swap brick) feeds `Qcf'`-rigid-on-`sc` in; U4 assembles + flips.
+
+---
+
 ## 2. Shared-infra map (green vs. missing across the layer)
 
 Built once, reused by all cases. **Green** unless marked.

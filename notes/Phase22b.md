@@ -20,9 +20,11 @@ over-optimistic hand-off; this commit keeps the Lean and corrects the notes. U2 
 **missing** linear-algebra brick, and it sits in **U3** (split into U3a alignment + U3b the crux).
 See §1.20 for the full O1/O2 analysis and the corrected cut.
 
-The next concrete commit is a **math-first recon of U3b** (the pin-the-`r`-column projected-rank
-brick — design the LAYER before building, per `DESIGN.md` *Constructibility recon …*), then U3a →
-U3b → U4. The *Discharge plan* checklist + design doc §1.20 carry the design.
+The U3b math-first recon is **done** (design doc §1.21): the crux is a *bounded* brick (the projected
+sibling of the U3 tool, built off green Lemma 5.1 `finrank_pinnedMotions_add_screwDim`), **not** a
+research wall. The next concrete commit is the **U3b build** (that projected-rank brick); then U3a
+(alignment) → U4 (assemble + flip). The *Discharge plan* checklist + design doc §1.20/§1.21 carry
+the design.
 
 Stratum 5 of the molecular-conjecture program, continued. **Scope: just KT
 Claim 6.4** — the single deferred obligation Phase 22a left green-modulo. 22a's
@@ -272,16 +274,20 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
   `infinitesimalMotions_ofNormals_eq_of_ends_swap` (both selectors record links of `e` in `Gc.map f`,
   agree up to swap; swap cancels). The `hasGenericRealization_transport_ends` pattern. *Not* pure
   green-reuse, but not a wall.
-- [ ] **U3b — pin-the-`r`-column projected-rank brick (O2; the GENUINE KT Claim 6.4 crux; MISSING
-  infra, research-shaped).** From `Qcf'` rigid on `sc`, show the exterior-column projection
-  `(extProj V(H)).dualMap` — which drops *exactly the `r`-column* (`r` = the only `Qcf'` vertex in
-  `V(H)`) — preserves independent rank `≥ D(|sc|−1)`. This is KT Claim 6.4 / eq. (6.3) bottom-right
-  block: a pin-a-body fact (rigidity ⟹ motions are the `D` trivial screws, pinnable at `r` ⟹ the
-  `r`-column is rank-redundant). **No green brick does this**; reuse candidates
-  `linearIndependent_sum_pinned_block` (N7b-3) + `finrank_pinnedMotions_add_screwDim` (Lemma 5.1),
-  insufficient as-is. **Open math-first (design the LAYER) before building.** The U3 tool
-  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` gives only *un-projected*
-  independence, so it does **not** suffice (projection can lower rank — the whole point of Claim 6.4).
+- [ ] **U3b — pin-the-`r`-column projected-rank brick (O2; the genuine KT Claim 6.4 crux).** From
+  `Qcf'` rigid on `sc`, show the exterior-column projection `(extProj V(H)).dualMap` — which drops
+  *exactly the `r`-column* (`r` = the only `Qcf'` vertex in `V(H)`) — preserves independent rank
+  `≥ D(|sc|−1)`. **Recon done (design doc §1.21): bounded brick, NOT a research wall.** The
+  conceptual crux is already green — `(extProj V(H)).dualMap` on `Qcf'` *is* pin-at-`r`, and
+  pin-a-body rank-preservation is **Lemma 5.1** `finrank_pinnedMotions_add_screwDim` (rigid on `sc`
+  ⟹ `finrank(Z)=D` ⟹ `finrank(pinnedMotions r)=0` ⟹ dropping the `r`-column loses zero rank). The
+  one missing piece is a **projected sibling of `exists_independent_panelRow_subfamily_of_rigidOn_linking_set`**:
+  same skeleton (span identity → finrank bound → `Submodule.exists_fun_fin_finrank_span_eq`), but the
+  `H`-block rows vanish (`hingeRow_comp_extProj_eq_zero`, green) so the projected span = projected
+  *surviving* rows, and the finrank bound comes from Lemma 5.1's `pinnedMotions r` (the **finrank
+  bridge** `finrank((extProj).dualMap '' Φ) ≥ D(|sc|−1)`, the one real-content step; medium risk,
+  possibly a small `Mathlib/` mirror). The un-projected U3 tool does **not** suffice (projection can
+  lower rank — the whole point of Claim 6.4). **Build target.**
 - [ ] **U4 — assemble + flip.** U3b gives projected-*collapsed* independence; U2 (landed) carries it
   to projected-*uncollapsed* rows at `q₀^deg`; assemble `(q₀^deg, t, hsupp, hcount, hindep)` into
   `htransport`, translating subfamily indices from `Gc.map f`-links (at `endsᵐ`) to `Gc`-links (at
@@ -329,10 +335,11 @@ pin-a-body fact needing a MISSING brick, and it sits in U3b.** The crux did not 
 U2 to U3. §1.20 carries the recovered O1 (alignment, solved-in-principle) / O2 (projected rank, the
 crux) analysis + the corrected cut.
 
-**The next concrete commit is a math-first recon of U3b** (the pin-the-`r`-column projected-rank
-brick — design the LAYER before building, `DESIGN.md` *Constructibility recon …*), surfaced for
-review. Then build **U3a → U3b → U4** (full statements/reuse/risk in the *Discharge plan* checklist
-above + §1.20):
+The U3b **math-first recon is done** (design doc §1.21): the crux is a *bounded* brick — the projected
+sibling of `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` built off green Lemma 5.1
+`finrank_pinnedMotions_add_screwDim` — not a research wall. **The next concrete commit is the U3b
+build** (that projected-rank brick); then U3a (alignment) and U4 (assemble + flip) (full
+statements/reuse/risk in the *Discharge plan* checklist above + §1.20/§1.21):
 - **U3a** (O1; bricked, medium): move the IH `Qcf`'s rigidity on `sc = V(Gc.map f)` to the
   `endsᵐ`-selector framework `Qcf'` via the `ends`-swap brick
   `infinitesimalMotions_ofNormals_eq_of_ends_swap` (the `hasGenericRealization_transport_ends`
