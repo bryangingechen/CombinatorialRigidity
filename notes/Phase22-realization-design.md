@@ -842,6 +842,14 @@ green-modulo obligation = KT eq. (6.9)).
 
 ### 1.12 G3c-iii-b correctness gap — the contraction leg's complement-isolation `hpinc` is a FALSE combinatorial equality, not Claim 6.4; the round-trip itself must be removed for that leg (2026-06-05, coordinator verification pass)
 
+> **✓ FIX LANDED (2026-06-05).** The route-(b)-corrected fix decided below is now in the tree: the
+> asymmetric coupling `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set`
+> (`AlgebraicInduction.lean`) runs only the `H`-leg through the rank-polynomial round-trip and feeds
+> the contraction leg's rigidity directly from the `∀`-over-GP-seeds conjunct `htransportGP` (KT
+> eq. (6.9)). `case_I_realization` re-wired to it; the false `hpinc` (and the now-unneeded `hnec`/
+> `∃`-form `htransport`) deleted from `hbundle`; the two false doc-comments corrected. The §1.12 step-1
+> open sub-question is settled in favor of the `∀`-over-GP-seeds form. Axiom-clean; build + lint green.
+
 A coordinator verification pass on commit c1ef55a (`case_I_realization`, the G3c-iii-b composer)
 found a **correctness gap** in the green-modulo bundle. **No Lean / `\leanok` / blueprint edits
 accompany this section; it is decision-support / a Constructibility recon (DESIGN.md), like
@@ -1043,11 +1051,13 @@ substrate is GREEN; **(G2) is now GREEN too** (2026-06-04,
 the **Case-I Claim-6.4 collapse transport** (G3a, `rigidContract_rigidity_transport`)
 landed **GREEN-MODULO** 2026-06-05, carrying KT eq. (6.9) as the explicit
 hypothesis `htransport` (the relabel-induced normal change makes it irreducible — the
-linking-edge lever fails). **BUT the composer that consumes it (`case_I_realization`,
-commit c1ef55a) is currently valid-but-VACUOUS** — its bundle carries a false
-combinatorial equality `hpinc` alongside the genuine Claim-6.4 content (§1.12); the
-fix (route (b)-corrected, the asymmetric coupling that removes the contraction leg's
-rank-polynomial round-trip) is the next 22a build commit. The N6b/N6c couplings are an
+linking-edge lever fails). The composer that consumes it (`case_I_realization`) was
+briefly valid-but-VACUOUS (commit c1ef55a, false `hpinc`); the **§1.12 fix has now
+landed** — the asymmetric coupling `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set`
+removes the contraction leg's rank-polynomial round-trip, deletes `hpinc`, and supplies
+the contraction rigidity directly from the `∀`-over-GP-seeds conjunct `htransportGP`
+(KT eq. (6.9)); the composer is now honest GREEN-MODULO the Claim-6.4-only bundle,
+axiom-clean. The N6b/N6c couplings are an
 assembly of green bricks *given both legs as `≤ G` rigid `ofNormals`*; G3a supplies the
 second such leg's *rigidity* (modulo `htransport` = KT Claim 6.4), but the **symmetric**
 body-set coupling cannot consume it without `hpinc` — hence the asymmetric replacement.

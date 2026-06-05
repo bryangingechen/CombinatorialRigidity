@@ -4456,11 +4456,18 @@ The rank-nullity step is identical to the all-of-`V(G)` linking consumer — the
 independent rows force `dim Z ≤ D·(|sᶜ|+1)` — but the final upgrade to rigidity on `s` is the
 **body-set N3** `isInfinitesimallyRigidOn_of_finrank_le_set`, which (unlike N3-on-`V(G)`) needs the
 complement-isolation equality `hpin : finrank (pinnedMotionsOn s) = D·|sᶜ|` (the body-set N1
-*equality* is false off `V(G)`; design doc §1.9). `hpin` is discharged per-leg at the composer call
-site (G3c-iii): for the rigid block `sH := V(H)` it is the green `finrank_pinnedMotionsOn_vertexSet`
-(on the leg), and for the contraction leg the surviving edges isolate the interior bodies. This is
-the per-leg consumer the body-set coupling (`couple_ofNormals_set`) pairs with the body-set rank
-polynomial producer `exists_rankPolynomial_of_rigidOn_linking_set`. -/
+*equality* is false off `V(G)`; design doc §1.9). `hpin` is discharged by the green
+`finrank_pinnedMotionsOn_vertexSet` precisely when the leg is rigid on its **full** vertex set
+`s = V(leg)` (where the complement bodies are genuinely isolated). For the Case-I rigid block leg
+`sH := V(H)` this is exactly that case; the **contraction** leg `G ＼ E(H)` is rigid only on the
+*proper* surviving-body set `sc = (V(G)∖V(H))∪{r} ⊊ V(G ＼ E(H))`, where the equality is **false**
+(the interior bodies `V(H)∖{r}` are not isolated in `G ＼ E(H)` — surviving boundary edges constrain
+them; design doc §1.12), so this consumer is the **wrong tool** for the contraction leg and is *not*
+applied to it (the asymmetric coupling
+`hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` feeds the contraction leg's rigidity
+directly from Claim 6.4 instead). This is the per-leg consumer the body-set couplings
+(`couple_ofNormals_set` for both-full-`V` legs; the asymmetric coupling for the `H`-leg only) pair
+with the body-set rank polynomial producer `exists_rankPolynomial_of_rigidOn_linking_set`. -/
 theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) {s : Set α}
     {rs : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
@@ -5097,6 +5104,96 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hgp
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
+/-- **Case I shared-seed coupling, *asymmetric* body-set form** (`lem:case-I-realization`, the
+asymmetric coupling N6-G3-G3c-iii-b; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a).
+The fix for the two-leg coupling KT Case I actually needs (design doc §1.12). The *symmetric*
+`hasGenericFullRankRealization_of_couple_ofNormals_set` runs **both** legs through the body-set
+rank-polynomial round-trip, and the body-set consumer it calls
+(`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set`) needs each leg's
+complement-isolation equality `hpin : finrank (pinnedMotionsOn s) = D·|sᶜ|`. For the **rigid block**
+leg `GH` rigid on its *full* vertex set `sH = V(GH)` that equality is the green
+`finrank_pinnedMotionsOn_vertexSet`; but for the **contraction** leg `Gc = G ＼ E(H)` rigid only on
+the surviving bodies `sc = (V(G)∖V(H))∪{r}` ⊊ `V(Gc) = V(G)`, the equality is **false** — the
+interior bodies `V(H)∖{r}` are *not* isolated in `G ＼ E(H)` (surviving boundary edges
+`δ_G(V(H))` constrain them; the project's `finrank_pinnedMotionsOn_le` proves only the *upper*
+bound). So the symmetric coupling forces a false hypothesis on the contraction leg.
+
+This asymmetric coupling matches KT eq. (6.6), which constructs **one** placement for all of `G`
+(it does *not* intersect two Zariski-open rigid loci): the `H`-leg's generic placement determines
+the shared seed, and the contraction leg's rigidity is read off *at that one seed* by Claim 6.4
+(eq. (6.9)). So the `H`-leg keeps the green round-trip — its rank polynomial `Q_H`
+(`exists_rankPolynomial_of_rigidOn_linking_set`) × the general-position factor `Q_gp`
+(`exists_generalPosition_polynomial`) produces the shared general-position non-root `q₀` — and the
+contraction leg's rigidity at `q₀` on `sc` is supplied **directly** by the Claim-6.4 hypothesis
+`hrigcGP`, *not* re-derived through the body-set N3 consumer. `hrigcGP` is quantified over all
+general-position seeds (matching KT eq. (6.9)'s "the rank is attained at generic placements"),
+decoupling the contraction obligation from the `H`-leg's internal seed search. The contraction leg
+therefore carries **no `hpinc`**, **no body-set rank polynomial**, and **no own-seed rigidity** —
+only the genuine Claim-6.4 content. Both `q₀`-rigid legs feed the generic body-set splice
+`hasGenericFullRankRealization_of_splice_set_ofNormals` directly.
+
+The parent selector `hends` is the edge-restricted form (N6-G3-G3c-iii-a, design doc §1.11), as in
+the symmetric coupling. -/
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNormals_set
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
+    (hnesH : sH.Nonempty)
+    {qH : α × Fin (k + 2) → ℝ}
+    (hpinH : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+      ((PanelHingeFramework.ofNormals GH ends q).toBodyHinge.pinnedMotionsOn sH)
+      = screwDim k * sHᶜ.ncard)
+    (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
+    (hrigH :
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn sH)
+    -- The contraction leg's rigidity on `sc`, supplied **directly** at every general-position seed
+    -- (KT eq. (6.9) / Claim 6.4 — the rank is attained at generic placements). No body-set N3, no
+    -- `hpinc`, no rank-polynomial round-trip for this leg.
+    (hrigcGP : ∀ q : α × Fin (k + 2) → ℝ,
+      (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition →
+      (PanelHingeFramework.ofNormals Gc ends q).toBodyHinge.IsInfinitesimallyRigidOn sc) :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  -- The parent's edge-restricted `hends` weakens to the `H`-leg via `GH ≤ G` (the only leg that
+  -- runs the rank-polynomial round-trip; the contraction leg is fed `hrigcGP` directly).
+  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
+    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
+      (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
+  -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed.
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
+  -- (ii) The general-position factor.
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+    exists_generalPosition_polynomial (k := k) G ends
+  -- (iii) The product `Q_H · Q_gp` has a shared non-root `q₀` (only the H-leg + GP factors now).
+  have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
+  have hQgpne : Qgp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
+    exact fun a b hab => hf (Nat.cast_injective hab)
+  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQHne hQgpne)
+  rw [map_mul] at hq₀
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  -- (iv) The parent normals are general at `q₀`.
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
+    hQgp_pos q₀ hq₀gp
+  -- The `H`-leg is rigid on `sH` at `q₀` (body-set consumer, with the honest `hpinH`).
+  have hrigH₀ :
+      (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sH :=
+    PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set
+      GH ends hnesH (hpinH q₀) hsuppH hcardH hLIH hq₀H
+  -- The contraction leg is rigid on `sc` at `q₀` **directly** from `hrigcGP` (KT Claim 6.4); the
+  -- general-position non-root `q₀` is exactly the generic seed `hrigcGP` quantifies over.
+  have hrigc₀ :
+      (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc :=
+    hrigcGP q₀ hgp
+  -- (v) The generic body-set splice: realize at the GP seed `q₀` itself.
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hgp
+    hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+
 /-- **Case I realization: the contraction producer** (`lem:case-I-realization`, the N6 composer;
 Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a). The capstone of the Case-I
 realization layer: from a *fixed* proper rigid subgraph `H` of a simple minimal `0`-dof-graph `G`
@@ -5116,27 +5213,31 @@ rigid block `GH := H` and the surviving-edge subgraph `Gc := G ＼ E(H)`, both `
   `hasGenericRealization_transport_ends` re-expresses it at the manufactured parent selector `ends`
   (rigid + transversal on `sH := V(H)`). Its complement-isolation `hpinH` is the green
   `finrank_pinnedMotionsOn_vertexSet` (the leg is rigid on its *full* vertex set).
-* **`G ＼ E(H)`-leg (N4 + the Claim-6.4 bundle).** The contraction `G.rigidContract H r` is itself a
-  minimal `0`-dof-graph (N4 `rigidContract_isMinimalKDof`), smaller than `G`
-  (`rigidContract_vertexSet_ncard_lt`), and — by the KT Lemma 6.3 case hypothesis `hcSimple`
-  (`(G.rigidContract H r).Simple`; G2b makes this the positive `map`-simplicity criterion) — simple,
-  so `hIH` supplies its *generic* realization. **The transport of that rank across the collapse map
-  to the surviving-edge leg `G ＼ E(H)`, rigid only on the surviving bodies
-  `sc := (V(G) ∖ V(H)) ∪ {r}`, is KT Claim 6.4 (eq. (6.9))**, irreducibly research-shaped (the
-  collapse redirects each surviving edge's endpoints, so no green brick converts the
-  relabelled-contraction rigidity into the original-endpoint rigidity — the G3a finding). It is
-  therefore taken via the green-modulo brick `rigidContract_rigidity_transport` with its explicit
-  Claim-6.4 hypothesis `htransport`; the transversality `hnec` at the transported seed and the
-  body-set complement-isolation `hpinc` are the rest of the same Claim-6.4 bundle, and the `H`-leg's
-  selector alignment `hswap`/`hne_ends` is the KT eq. (6.6) placement — all carried in the explicit
-  bundle `hbundle`.
+* **`G ＼ E(H)`-leg (N4 + the Claim-6.4 transport, *asymmetric* coupling).** The contraction
+  `G.rigidContract H r` is itself a minimal `0`-dof-graph (N4 `rigidContract_isMinimalKDof`),
+  smaller than `G` (`rigidContract_vertexSet_ncard_lt`), and — by the KT Lemma 6.3 case hypothesis
+  `hcSimple` (`(G.rigidContract H r).Simple`; G2b makes this the positive `map`-simplicity
+  criterion) — simple, so `hIH` supplies its *generic* realization. **The transport of that rank
+  across the collapse map to the surviving-edge leg `G ＼ E(H)`, rigid only on the surviving bodies
+  `sc := (V(G) ∖ V(H)) ∪ {r}` at every general-position seed, is KT Claim 6.4 (eq. (6.9))**,
+  irreducibly research-shaped (the collapse redirects each surviving edge's endpoints, so no green
+  brick converts the relabelled-contraction rigidity into the original-endpoint rigidity — the G3a
+  finding). It is carried as the `∀`-over-GP-seeds conjunct `htransportGP` of the explicit bundle
+  `hbundle` (KT eq. (6.9): the rank is attained at *every* generic placement). The `H`-leg's
+  selector alignment `hswap`/`hne_ends` is the KT eq. (6.6) placement, the other bundle conjunct.
 
-With both legs in hand the body-set generic coupling
-`hasGenericFullRankRealization_of_couple_ofNormals_set` lands the strengthened motive.
+With both legs in hand the **asymmetric** body-set generic coupling
+`hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` lands the strengthened motive: the
+`H`-leg runs the green rank-polynomial round-trip (rigid on its *full* `V(H)`, where the
+complement-isolation equality is the true `finrank_pinnedMotionsOn_vertexSet`) and produces the
+shared general-position seed `q₀`; the contraction leg's rigidity on `sc` at `q₀` is read off
+`htransportGP` directly (matching KT eq. (6.6), which constructs *one* placement for all of `G`, not
+a shared point found by intersecting two rigid loci). No body-set rank polynomial, hence no false
+complement-isolation equality, is forced on the contraction leg (the design-doc §1.12 fix).
 **Green-modulo the Claim-6.4 bundle** (`hbundle` + `hcSimple`, the Phase-21b green-modulo `h…`
-idiom, discharged
-by `lem:case-III` / 22b+): every step the composer itself performs is honest, and the analytic
-obligation is one visible bundle pinned to KT eq. (6.9), not a `sorry`. -/
+idiom, discharged by `lem:case-III` / 22b+): the bundle is now *genuinely* Claim-6.4-only — every
+step the composer itself performs is honest, and the analytic obligation is the single KT-eq. (6.9)
+transport pinned in `htransportGP`, not a `sorry`. -/
 theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
     (hD : 3 ≤ Graph.bodyBarDim n)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0)
@@ -5147,12 +5248,16 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k G') ∧
         PanelHingeFramework.HasFullRankRealization k G')
-    -- The Claim-6.4 + placement bundle (KT eqs. (6.6), (6.9); design doc §1.7/§1.10), carried in
-    -- the Phase-21b green-modulo `h…` idiom against the manufactured parent selector `ends` and the
-    -- chosen `H`/`r`. It supplies (a) the `H`-leg selector alignment `hswap`/`hne_ends` that
-    -- `hasGenericRealization_transport_ends` consumes, (b) the contraction leg's Claim-6.4 collapse
-    -- transport `htransport` (the G3a hypothesis), and (c) the transported leg's transversality
-    -- `hnec` and complement-isolation `hpinc` at the seed.
+    -- The Claim-6.4 + placement bundle (KT eqs. (6.6), (6.9); design doc §1.12), carried in the
+    -- Phase-21b green-modulo `h…` idiom against the manufactured parent selector `ends` and the
+    -- chosen `H`/`r`. **Genuinely Claim-6.4-only** (the false combinatorial `hpinc` of the prior
+    -- version is gone, design doc §1.12): it supplies (a) the `H`-leg selector alignment
+    -- `hswap`/`hne_ends` that `hasGenericRealization_transport_ends` consumes (KT eq. (6.6)), and
+    -- (b) the contraction leg's Claim-6.4 collapse transport, now in the `∀`-over-GP-seeds form (KT
+    -- eq. (6.9): the rank is attained at *every* generic placement) — given the contraction's
+    -- generic IH, the surviving-edge leg `G ＼ E(H)` is rigid on `sc = (V(G)∖V(H))∪{r}` at every
+    -- general-position parent seed. No `hpinc`, no transversality round-trip for the contraction
+    -- leg (the asymmetric coupling does not run a rank polynomial on it).
     (hbundle : ∀ ends : β → α × α,
       (∀ Q : PanelHingeFramework k α β, Q.graph = H →
         (∀ e u v, H.IsLink e u v →
@@ -5162,16 +5267,11 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
       (∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
         Q.IsGeneralPosition →
         Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
-        ∃ q_c : α × Fin (k + 2) → ℝ,
-          (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q_c).toBodyHinge
-            |>.IsInfinitesimallyRigidOn ((V(G) \ V(H)) ∪ {r})) ∧
-      (∀ qc : α × Fin (k + 2) → ℝ, ∀ e, (G.deleteEdges E(H)).IsLink e (ends e).1 (ends e).2 →
-        (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends qc).toBodyHinge.supportExtensor e
-          ≠ 0) ∧
-      (∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
-        ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q).toBodyHinge.pinnedMotionsOn
-          ((V(G) \ V(H)) ∪ {r}))
-        = screwDim k * ((V(G) \ V(H)) ∪ {r})ᶜ.ncard)) :
+        ∀ q : α × Fin (k + 2) → ℝ,
+          (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition →
+          BodyHingeFramework.IsInfinitesimallyRigidOn
+            (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q).toBodyHinge
+            ((V(G) \ V(H)) ∪ {r}))) :
     PanelHingeFramework.HasGenericFullRankRealization k G := by
   classical
   haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
@@ -5186,7 +5286,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
     rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
   have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVHne, hVHss⟩
-  obtain ⟨hswap, hne_ends, htransport, hnec, hpinc⟩ := hbundle ends
+  obtain ⟨hswap, hne_ends, htransportGP⟩ := hbundle ends
   -- The geometric inputs of the coupling for legs `H` / `G ＼ E(H)` sharing `r` (G3b); the cover is
   -- against the *surviving-body* set `sc := (V(G)∖V(H)) ∪ {r}` (its `(V(G)∖V(H))` part alone
   -- complements `V(H)`).
@@ -5197,7 +5297,8 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     by_cases hxH : x ∈ V(H)
     · exact Or.inl hxH
     · exact Or.inr (Or.inl ⟨hx, hxH⟩)
-  -- (1) The `H`-leg: extract its generic IH and transport it to the parent selector.
+  -- (1) The `H`-leg: extract its generic IH and transport it to the parent selector. The `H`-leg
+  -- runs the green rank-polynomial round-trip (it is rigid on its *full* vertex set `V(H)`).
   have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
   obtain ⟨QH, hQHg, hQHgp, hQHrig⟩ :=
     (hIH H hHmin hVH2 hVHlt).1 (hSimple.mono hle)
@@ -5205,7 +5306,10 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
       (hswap QH hQHg) hne_ends
   -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller, simple minimal `0`-dof-graph (N4 +
-  -- `hcSimple`); its generic IH's rank is transported to the surviving-edge leg by Claim 6.4.
+  -- `hcSimple`), so `hIH` supplies its generic realization. KT Claim 6.4 (eq. (6.9), the bundle's
+  -- `htransportGP`) transports that rank across the collapse map to the surviving-edge leg, rigid
+  -- on `sc` at *every* general-position seed — the asymmetric coupling consumes this directly, with
+  -- no body-set rank-polynomial round-trip and hence no (false) complement-isolation equality.
   have hKmin : (G.rigidContract H r).IsMinimalKDof n 0 :=
     Graph.rigidContract_isMinimalKDof hG hHprop hr
   have hKlt : V(G.rigidContract H r).ncard < V(G).ncard :=
@@ -5216,9 +5320,12 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     omega
   obtain ⟨Qc, hQcg, hQcgp, hQcrig⟩ :=
     (hIH (G.rigidContract H r) hKmin hK2 hKlt).1 hcSimple
-  obtain ⟨qc, hrigc⟩ :=
-    PanelHingeFramework.rigidContract_rigidity_transport G H ends
-      ⟨Qc, hQcg, hQcgp, hQcrig⟩ htransport
+  have hrigcGP : ∀ q : α × Fin (k + 2) → ℝ,
+      (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition →
+      BodyHingeFramework.IsInfinitesimallyRigidOn
+        (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q).toBodyHinge
+        ((V(G) \ V(H)) ∪ {r}) :=
+    htransportGP Qc hQcg hQcgp hQcrig
   -- (3) `hpinH` is the green complement-isolation on the `H`-leg's full vertex set `V(H)`.
   have hpinH : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
       ((PanelHingeFramework.ofNormals H ends q).toBodyHinge.pinnedMotionsOn V(H))
@@ -5227,10 +5334,12 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     have := (PanelHingeFramework.ofNormals H ends q).toBodyHinge.finrank_pinnedMotionsOn_vertexSet
     simpa only [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
       using this
-  -- (4) Feed both legs into the body-set generic coupling (`sH := V(H)`, `sc := (V(G)∖V(H))∪{r}`).
-  exact PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_set G ends hends
+  -- (4) Feed both legs into the *asymmetric* body-set generic coupling (`sH := V(H)`,
+  -- `sc := (V(G)∖V(H))∪{r}`): the `H`-leg via its green round-trip, the contraction leg's rigidity
+  -- supplied directly by `hrigcGP` (KT Claim 6.4).
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNormals_set G ends hends
     hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl) hcover
-    ⟨r, hr⟩ ⟨r, Or.inr rfl⟩ (qH := qH) (qc := qc) hpinH hpinc hneH (hnec qc) hrigH hrigc
+    ⟨r, hr⟩ (qH := qH) hpinH hneH hrigH hrigcGP
 
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)

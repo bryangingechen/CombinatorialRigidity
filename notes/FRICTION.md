@@ -76,6 +76,21 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A leading `|>.proj` on a continuation line after `… → (expr).field` fails to parse ("type expected") — spell the projection as a prefix application instead
+- **Where it bit:** the Case-I composer fix `case_I_realization` + the new asymmetric coupling
+  (`Molecular/AlgebraicInduction.lean`, Phase 22a G3c-iii-b). A hypothesis clause
+  `… → (ofNormals … ends q).toBodyHinge \n |>.IsInfinitesimallyRigidOn (…)` (the `|>.` leading the
+  next line) errored with `type expected, got ((…).toBodyHinge : BodyHingeFramework …)` — the parser
+  closed the term at `.toBodyHinge` (the preceding line ended in `→`, shifting the indentation column),
+  so the dangling `|>.` saw a bare type. The *same* `(expr).toBodyHinge \n |>.IsInfinitesimallyRigidOn`
+  shape parses fine elsewhere in the file when nested one level deeper (`rigidContract_rigidity_transport`),
+  so it is column-sensitive, not unconditional.
+- **Fix:** spell the projection as a prefix application — `BodyHingeFramework.IsInfinitesimallyRigidOn
+  (ofNormals … ends q).toBodyHinge (…)` — which is indentation-robust (and shorter under the 100-col
+  limit than the `(…).toBodyHinge).IsInfinitesimallyRigidOn` alternative). Reach for the prefix form
+  whenever a `|>.`/`.field` must lead a wrapped continuation line.
+- **Status:** resolved (prefix-application rewrite).
+
 ### [resolved] Dot notation `g.foo` doesn't find a `Graph.foo` lemma authored outside a `namespace Graph` block — it re-namespaces to `…Molecular.Graph.foo`, which projection can't reach
 - **Where it bit:** the Case-I composer `case_I_realization` (`Molecular/AlgebraicInduction.lean`,
   Phase 22a N6-G3-G3c-iii-b). A scratch `theorem Graph.exists_ends_of_graph` written under the file's
