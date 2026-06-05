@@ -28,9 +28,12 @@ opening recon (this commit) is landed:** the §1.16 discharge path (a)+(b) is
 decomposed into the node cut below (N-22b-1 research / N-22b-2 bounded / N-22b-3
 wire-up), the within-22b cut and the 22c+ renumbering are settled (see *Blockers /
 settled*), and the feasibility of brick (b) is re-verified against the live engine.
-Nothing is mid-stream. **The next concrete commit is the bounded packaging brick (b)
-= N-22b-2** (the `D ∘ panelRow` producer variant; the first buildable Lean), per the
-build order below.
+**N-22b-2 (the bounded `D ∘ panelRow` producer variant) is now also landed** —
+`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj` in
+`AlgebraicInduction/CaseI.lean`, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`
+only), build + lint warning-clean. Nothing is mid-stream. **The next concrete commit
+is the research-shaped rank-transport N-22b-1** (the `∃`-one-placement analytic core
+the producer packages), per the build order below.
 
 ### Opening recon — feasibility re-verification (this commit)
 
@@ -124,19 +127,28 @@ rank-poly non-roots). The recon rule + the `∀`-GP-vs-generic-locus sharpening 
 buildable commit** (bounded); N-22b-1 is research-shaped and may itself decompose;
 N-22b-3 is the one-step wire-up + flip.
 
-- [ ] **N-22b-2 — `D ∘ panelRow` producer variant** (bounded; *first buildable*).
-  Name (proposed): `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj`
+- [x] **N-22b-2 — `D ∘ panelRow` producer variant** (bounded; *first buildable*) —
+  **LANDED.** `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj`
   in `AlgebraicInduction/CaseI.lean` (sibling of the un-projected
-  `exists_rankPolynomial_of_rigidOn_linking_set` in `GenericityDevice.lean`). From a
-  leg rigid on a body set `s` at a witness placement `q₀` **plus the projected
-  independence at `q₀`** (the N-22b-1 output), produce
-  `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, (links) ∧ |rsc| ≥ D(|s|−1) ∧
-  LinearIndependent ℝ (i ↦ (extProj t).dualMap (panelRow ends i))`. Built by
-  re-instantiating the engine `exists_polynomial_ne_zero_of_linearIndependent_at` at
-  the post-projection family `g q i := (extProj t).dualMap (panelRow ends i)` (a fixed
-  linear map ∘ the rows), reusing the N7b-0 subfamily extraction for the `≥ D(|s|−1)`
-  count. The coordinatization `hg` is the same standard-basis pullback as the parent,
-  pre-composed with `D`. **No new matrix-rank theory** (recon feasibility check above).
+  `exists_rankPolynomial_of_rigidOn_linking_set` in `GenericityDevice.lean`). Takes the
+  **already-witnessed subfamily `t`** with its support `hsupp`, count `hcount : m ≤
+  Nat.card t`, and the **projected independence at `q₀`** `hindep` (the N-22b-1 output)
+  as hypotheses, and produces
+  `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, (links) ∧ m ≤ Nat.card rsc ∧
+  LinearIndependent ℝ (i ↦ (extProj t).dualMap (panelRow ends i))`. Passes `t`/`hsupp`/
+  `hcount` through unchanged (the N7b-0 extraction is *upstream*, fed in, not re-derived
+  here — cleaner factoring than the recon's proposed shape). Built by re-instantiating
+  the engine `exists_polynomial_ne_zero_of_linearIndependent_at` at the post-projection
+  family `gD q i := D (panelRow ends i)`, `D = (extProj t).dualMap`; the coordinatization
+  `hgD` is the parent's standard-basis pullback `hg` post-composed with `D`, where each
+  projected coordinate is the matrix-pullback polynomial `cD i j := ∑ l, C (M j l) · c i l`
+  via the matrix `M` of `φ ∘ D ∘ φ⁻¹`. **No new matrix-rank theory** (the engine is
+  generic in its codomain). One supporting private helper
+  `coord_linearMap_eq_matrix_mulVec` (the `φ (D w) j = ∑ l, M j l · φ w l` matrix-mulVec
+  fact) is stated over an **abstract** finite-dim ℝ-space rather than the heavy
+  `Module.Dual ℝ (α → ScrewSpace k)`, reusing the documented anti-`whnf` abstract-mirror
+  lesson (FRICTION *`Basis.linearIndependent.map'` … blows up at `whnf`* → *General
+  lesson*). Axiom-clean; build + lint warning-clean.
 - [ ] **N-22b-1 — rank-transport lemma** (research-shaped; the genuine analytic
   content). The algebraic-independence rank-transport across the collapse map: from the
   contraction `G.rigidContract H r`'s generic IH (`HasGenericFullRankRealization`),
@@ -186,14 +198,19 @@ research-shaped composer" ordering.)
 
 ## Hand-off / next phase
 
-**Opening recon landed.** The next concrete commit is **N-22b-2** — the bounded
-`D ∘ panelRow` producer variant
-`PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj` in
-`AlgebraicInduction/CaseI.lean`, built by re-instantiating the engine
-`exists_polynomial_ne_zero_of_linearIndependent_at` at the post-projection family
-`g q i := (extProj t).dualMap (panelRow ends i)` (feasibility re-verified above: a
-fixed linear map ∘ the rows, no new matrix-rank theory). It is the first buildable
-Lean; N-22b-1 (the research-shaped rank-transport) and N-22b-3 (the flip) follow.
+**Opening recon + N-22b-2 (bounded producer) landed.** The next concrete commit
+opens **N-22b-1** — the research-shaped rank-transport across the collapse map (KT §5.1
+/ eqs. (6.5)/(6.9)): from the contraction `G.rigidContract H r`'s generic IH, produce
+**one parent placement `q₀`** at which the surviving block of `G ＼ E(H)`,
+exterior-projected onto the `V(G)∖V(H)` columns, attains independent rank `≥ D(|sc|−1)`
+— i.e. exactly the `hindep` (+ `t`/`hsupp`/`hcount`) hypotheses that N-22b-2 now
+consumes. Since this node is research-shaped, start with a **math-first re-recon** at
+open (per `DESIGN.md` *Constructibility recon … → design the LAYER*): it likely
+decomposes into an abstract algebraic-independence rank-preservation brick + the
+collapse-normal bookkeeping (§1.7 irreducibility), so the smallest concrete first
+commit is *that re-recon + the first buildable sub-brick it identifies*, not the whole
+rank-transport in one shot. N-22b-3 (the one-step wire-up + `lem:claim-6-4` flip)
+follows once N-22b-1 lands `q₀`.
 
 Cross-references rather than re-derivation: `notes/Phase22-realization-design.md`
 §1.16 (the `Qc`-non-root form + the engine "no wall"), §1.14 (the block-triangular

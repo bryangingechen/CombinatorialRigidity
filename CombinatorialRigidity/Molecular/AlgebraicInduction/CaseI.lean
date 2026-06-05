@@ -742,6 +742,146 @@ theorem hingeRow_comp_extProj_eq_zero {t : Set α} {u v : α} (hu : u ∈ t) (hv
   rw [LinearMap.comp_apply, LinearMap.zero_apply, BodyHingeFramework.hingeRow_apply,
     extProj_apply_mem hu, extProj_apply_mem hv, sub_zero, map_zero]
 
+/-- **Coordinate of `D w` as a matrix-vector product in a basis identification** (the linearity
+fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algebra). For a finite-dim
+ℝ-space `W` with a basis identification `φ : W ≃ₗ[ℝ] (Fin n → ℝ)` and any linear endomorphism `D`,
+the `j`-th coordinate of `D w` is the matrix-vector product `∑ l, M j l · (φ w) l` where
+`M j l = φ (D (φ⁻¹ eₗ)) j` is the matrix of `φ ∘ D ∘ φ⁻¹` in the standard basis. Stated generically
+(not over the heavy `Module.Dual ℝ (α → ScrewSpace k)`) so the `map_sum`/`apply_symm_apply` chain
+never triggers a `whnf` on the concrete dual type. -/
+private theorem coord_linearMap_eq_matrix_mulVec {W : Type*} [AddCommGroup W] [Module ℝ W]
+    {n : ℕ} (φ : W ≃ₗ[ℝ] (Fin n → ℝ)) (D : W →ₗ[ℝ] W) (w : W) (j : Fin n) :
+    φ (D w) j = ∑ l, φ (D (φ.symm (Pi.single l 1))) j * φ w l := by
+  -- The standard `Fin n → ℝ` basis decomposition of the coordinate vector `φ w`.
+  have hbasis : (φ w) = ∑ l, (φ w l) • (Pi.single l 1 : Fin n → ℝ) := by
+    funext m
+    rw [Finset.sum_apply]
+    simp only [Pi.smul_apply, smul_eq_mul, Pi.single_apply, mul_ite, mul_one, mul_zero]
+    rw [Finset.sum_ite_eq Finset.univ m (fun l => φ w l)]
+    simp
+  have hw : w = ∑ l, (φ w l) • φ.symm (Pi.single l 1) := by
+    apply φ.injective
+    rw [map_sum]
+    simp only [map_smul, φ.apply_symm_apply]
+    exact hbasis
+  conv_lhs => rw [hw]
+  rw [map_sum, map_sum, Finset.sum_apply]
+  refine Finset.sum_congr rfl fun l _ => ?_
+  rw [map_smul, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
+
+/-- **The `D ∘ panelRow` rank polynomial: a projected-independent subfamily at one placement yields
+a nonzero rank polynomial witnessing exterior-projected row-independence at its generic locus**
+(`lem:claim-6-4` packaging brick N-22b-2; Katoh–Tanigawa 2011 §5.1, §6.2 eqs. (6.5)/(6.9), Phase
+22b). The **bounded packaging** half of the Claim-6.4 discharge: the projected sibling of
+`exists_rankPolynomial_of_rigidOn_linking_set` whose row family is post-composed with the fixed
+exterior-column projection `D := (extProj proj).dualMap`. Where the un-projected parent *derives*
+its independent subfamily from `hrig` via the body-set N7b-0, this brick takes the
+**already-projected independence at the witness placement `q₀`** as the hypothesis `hindep` — the
+`∃`-one-placement output of the research-shaped rank-transport N-22b-1 (the contraction's generic IH
+carried across the collapse map by algebraic independence) — and packages it into the `Qc`-non-root
+form the block-triangular coupling consumes.
+
+It re-instantiates the generic engine `exists_polynomial_ne_zero_of_linearIndependent_at` (fully
+generic in its target space) at the **post-projection** family `g q i := D (panelRow ends i)`. Since
+`D` is `q`-independent and linear, the coordinatization survives as the `D`-pullback of the parent's
+panel polynomials: writing `M` for the matrix of `φ ∘ D ∘ φ⁻¹` in the dual-standard basis,
+`φ (D (panelRow ends i)) j = ∑ l, M j l · φ (panelRow ends i) l = ∑ l, M j l · eval q (c i l)`, so
+each projected coordinate is the polynomial `cD i j := ∑ l, C (M j l) · c i l`. The witnessed
+subfamily index `t`, its linking-edge support `hsupp`, and the count `hscard` are passed through
+unchanged. **No new matrix-rank theory** (the engine is generic in `W`; here
+`W = Module.Dual ℝ (α → ScrewSpace k)` is the same finite-dim dual as the parent). The output is the
+conjunct `hclaim64` of `case_I_realization` consumes, modulo the rank-transport supplying `t`. -/
+theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α) (proj : Set α) {m : ℕ}
+    {q₀ : α × Fin (k + 2) → ℝ}
+    {t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hsupp : ∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+      (ends (i : β × _ × _).1).2)
+    (hcount : m ≤ Nat.card t)
+    (hindep : LinearIndependent ℝ (fun i : t => (extProj (k := k) proj).dualMap
+      ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (i : β × _ × _)))) :
+    ∃ Qc : MvPolynomial (α × Fin (k + 2)) ℝ, Qc ≠ 0 ∧
+      ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Qc ≠ 0 →
+        ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+          (∀ i ∈ rsc, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+            (ends (i : β × _ × _).1).2) ∧ m ≤ Nat.card rsc ∧
+          LinearIndependent ℝ (fun i : rsc => (extProj (k := k) proj).dualMap
+            ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends
+              (i : β × _ × _))) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set D := (extProj (k := k) proj).dualMap with hDdef
+  -- The standard basis of `α → ScrewSpace k`, its dual-basis identification `φ`, and the bridge to
+  -- the canonical `Fin (finrank …)` index that the engine's `c`/`φ` require (verbatim the parent).
+  set B : Module.Basis (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) ℝ (α → ScrewSpace k) :=
+    Pi.basis (fun _ : α => screwBasis k) with hB
+  have hcardB : Fintype.card (Σ _ : α, Set.powersetCard (Fin (k + 2)) k)
+      = Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)) := by
+    rw [Subspace.dual_finrank_eq, Module.finrank_eq_card_basis B]
+  let e : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      ≃ (Σ _ : α, Set.powersetCard (Fin (k + 2)) k) :=
+    (Fintype.equivFinOfCardEq hcardB).symm
+  set φ : Module.Dual ℝ (α → ScrewSpace k)
+      ≃ₗ[ℝ] (Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))) → ℝ) :=
+    B.dualBasis.equivFun.trans (LinearEquiv.funCongrLeft ℝ ℝ e) with hφ
+  -- The parent panel-row family + its degree-2 panel-polynomial coordinates, pulled back along `e`.
+  set g : (α × Fin (k + 2) → ℝ)
+      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Module.Dual ℝ (α → ScrewSpace k) :=
+    fun q i => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i with hg_def
+  set c : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      → MvPolynomial (α × Fin (k + 2)) ℝ :=
+    fun i j => ((if (ends i.1).1 = (e j).1 then (1 : ℝ) else 0)
+        - (if (ends i.1).2 = (e j).1 then 1 else 0))
+      • annihRowPoly (ends i.1).1 (ends i.1).2 i.2.1 i.2.2 (e j).2 with hc_def
+  -- The parent evaluation identity: each panel-row coordinate is the panel polynomial `c`.
+  have hg : ∀ q i j, φ (g q i) j = MvPolynomial.eval q (c i j) := by
+    intro q i j
+    rw [hφ, LinearEquiv.trans_apply, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+      Module.Basis.dualBasis_equivFun, hg_def, hc_def]
+    rcases hej : e j with ⟨a, t'⟩
+    simp only [hej]
+    simp only [hB, Pi.basis_apply]
+    change BodyHingeFramework.panelRow _ ends i (Pi.single a (screwBasis k t')) = _
+    rw [BodyHingeFramework.panelRow, BodyHingeFramework.hingeRow_apply,
+      PanelHingeFramework.toBodyHinge_supportExtensor,
+      PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+      PanelHingeFramework.ofNormals_normal, MvPolynomial.smul_eval, annihRowPoly_eval]
+    rw [Pi.single_apply, Pi.single_apply]
+    by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
+      simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
+        map_neg, one_mul, neg_mul, zero_mul]
+  -- The matrix `M` of `φ ∘ D ∘ φ⁻¹` in the dual-standard basis: `M j l = φ (D (φ⁻¹ (eₗ))) j`.
+  set M : Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k))) → ℝ :=
+    fun j l => φ (D (φ.symm (Pi.single l 1))) j with hM_def
+  -- The projected family `gD q i := D (panelRow ends i)`, coordinates `cD := M-pullback of c`.
+  set gD : (α × Fin (k + 2) → ℝ)
+      → (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Module.Dual ℝ (α → ScrewSpace k) := fun q i => D (g q i) with hgD_def
+  set cD : (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)
+      → Fin (Module.finrank ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      → MvPolynomial (α × Fin (k + 2)) ℝ :=
+    fun i j => ∑ l, MvPolynomial.C (M j l) * c i l with hcD_def
+  -- The matrix identity `φ (D w) j = ∑ l, M j l * φ w l`, via the generic linearity helper (stated
+  -- away from the heavy dual type, so no `whnf` on the concrete dual is triggered).
+  have hMrep : ∀ (w : Module.Dual ℝ (α → ScrewSpace k)) j,
+      φ (D w) j = ∑ l, M j l * φ w l :=
+    fun w j => by rw [hM_def]; exact coord_linearMap_eq_matrix_mulVec φ D w j
+  -- The projected evaluation identity: each projected coordinate is the polynomial `cD`.
+  have hgD : ∀ q i j, φ (gD q i) j = MvPolynomial.eval q (cD i j) := by
+    intro q i j
+    rw [hgD_def, hMrep, hcD_def, map_sum]
+    refine Finset.sum_congr rfl fun l _ => ?_
+    rw [map_mul, MvPolynomial.eval_C, hg]
+  -- Extract the witnessing rank polynomial via the engine on the projected family, re-phrase.
+  obtain ⟨Q, hQ₀, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at gD cD φ hgD (p₀ := q₀) (s := t)
+      (by simpa only [hgD_def, hg_def, hDdef] using hindep)
+  refine ⟨Q, fun hQz => hQ₀ (by rw [hQz, map_zero]), fun q hq => ?_⟩
+  exact ⟨t, hsupp, hcount, by simpa only [hgD_def, hg_def, hDdef] using hQ q hq⟩
+
 /-- **An independent family of rigidity rows of size `≥ D(|V(G)|−1)` forces rigidity on `V(G)`**
 (`lem:case-I-realization`, the device-row-addition closure; Katoh–Tanigawa 2011 §6.2 eq. (6.3),
 Phase 22a). The block-triangular reframing's device-side closure (design doc §1.14): rather than
