@@ -2445,6 +2445,43 @@ induction `Graph.minimal_kdof_reduction`. -/
 def HasFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
   ∃ Q : PanelHingeFramework k α β, Q.graph = G ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)
 
+/-- **A graph has a *general-position* full-rank panel realization** (`thm:theorem-55`, the
+general-position realization motive; Katoh–Tanigawa 2011 §5–§6, the "nonparallel" strengthening).
+The strengthening of `HasFullRankRealization` that additionally pins the realizing framework `Q` in
+general position (`Q.IsGeneralPosition`, pairwise-independent panel normals): there is a panel-hinge
+framework `Q` on `G` with `Q.IsGeneralPosition` whose body-hinge interpretation is infinitesimally
+rigid on `V(G)`. KT's Theorem 5.5 concludes exactly this whenever `G` is **simple** ("there exists a
+nonparallel realization", printed p. 669); general position can genuinely fail in the non-simple
+base / Lemma-6.2 cases (two parallel edges want *equal* panels, p. 670), so the bare
+`HasFullRankRealization` is the right motive there and this is a *separate* parallel motive carried
+only through the simple Case-I cases (KT Lemma 6.3/6.5).
+
+**Two-motive split (Phase 22).** Rather than condition a single motive on `G.Simple` — which would
+force threading simplicity through the Phase-20 reduction `Graph.minimal_kdof_reduction`, and
+`splitOff` does *not* preserve simplicity (KT Lemma 6.7, so an `(G.Simple → …)` conjunct's inductive
+hypothesis lands on the wrong graph at the splitting-off step) — the general-position obligation is
+localized to this second motive, carried only through the simple cases, with a one-line forgetful
+map `hasFullRankRealization_of_generic` to the bare motive. `theorem_55`'s bare-motive statement is
+untouched. This dissolves gap (G1) (the splice/rank-polynomial producers
+`hasFullRankRealization_of_splice_ofNormals` / `exists_rankPolynomial_of_rigidOn` need a
+*general-position* rigid seed, which a bare rigid IH does not supply) at the source: a
+general-position parent seed is general-position for every leg (`withGraph` keeps the same normals),
+so the producers' `hgp`/`hne` hypotheses are discharged for free. -/
+def HasGenericFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
+  ∃ Q : PanelHingeFramework k α β,
+    Q.graph = G ∧ Q.IsGeneralPosition ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)
+
+/-- **The forgetful map: a general-position realization is a realization** (`thm:theorem-55`,
+two-motive split; Phase 22). Dropping the `Q.IsGeneralPosition` conjunct, the strengthened motive
+`HasGenericFullRankRealization` implies the bare `HasFullRankRealization`. This is the one-line
+bridge that lets the simple Case-I cases (which produce a general-position realization, KT Lemma
+6.3/6.5) feed the bare-motive consumers — chiefly `theorem_55`'s `hcontract` premise — without the
+bare motive ever having to carry general position. -/
+theorem hasFullRankRealization_of_generic {k : ℕ} {G : Graph α β}
+    (h : HasGenericFullRankRealization k G) : HasFullRankRealization k G :=
+  let ⟨Q, hQg, _, hQrig⟩ := h
+  ⟨Q, hQg, hQrig⟩
+
 end PanelHingeFramework
 
 variable {α β : Type*}
