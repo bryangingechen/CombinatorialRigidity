@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–21b + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) in progress, 22b+ (Case III at d=3 + d=3 assembly) parked in planning; Phases 23–26 planned.**
+* **Phases 1–22a + 21a complete (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete green-modulo-22b, 22b (KT Claim 6.4) + 22b+ (Case III at d=3 + d=3 assembly) parked in planning; Phases 23–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -247,15 +247,20 @@ project; commit history is preserved with paths rewritten.
   into sub-phases because it over-broadly bundled three independent bodies of work;
   sub-lettering (22a, 22b, …) keeps the integer phase numbers 23–26 stable. A
   structural-edit phase extending `algebraic-induction.tex` (no new chapter).
-  * **Phase 22a (in progress)** — Case I realization (the full-rank
-    rigid-subgraph splice, KT §6.2). All Case-I bricks are green except the N6
-    composer's **generic-motive induction**; the next task is a math-first
-    recon/decomposition of that gap into buildable nodes. See `notes/Phase22a.md`.
-  * **Phase 22b+ (planning)** — Case III at `d=3` (the crux Lemma 6.10, KT §6.3 +
-    §6.4.1) plus the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` +
-    `thm:theorem-55` flip), parked as a single placeholder behind 22a (expected to
-    split into multiple sub-phases once its shape is clearer). See
-    `notes/MolecularConjecture.md`.
+  * **Phase 22a (complete, green-modulo-22b)** — Case I realization (the full-rank
+    rigid-subgraph splice, KT §6.2). The composer
+    `PanelHingeFramework.case_I_realization` discharges Theorem 5.5's Case-I branch
+    green-modulo a single dischargeable hypothesis (KT **Claim 6.4**, deferred to
+    Phase 22b — the same green-modulo pattern as Phase 21 → 21b), delivered via the
+    **block-triangular reframe** (KT eq. 6.3's rank-addition over one common
+    framework, routed through the genericity device's independent-row count, not a
+    common-seed splice). See `notes/Phase22a.md`.
+  * **Phase 22b+ (planning)** — KT Claim 6.4 (the surviving block's
+    exterior-projected rank at the generic placement, deferred from 22a) and then
+    Case III at `d=3` (the crux Lemma 6.10, KT §6.3 + §6.4.1) plus the `d=3`
+    assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip), parked
+    as a single placeholder behind 22a (expected to split into multiple sub-phases
+    once its shape is clearer). See `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries

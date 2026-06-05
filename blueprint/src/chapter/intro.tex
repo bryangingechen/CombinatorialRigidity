@@ -25,7 +25,7 @@ combinatorial rigidity, see
 
 The Lean code is organized into phases, tracked in
 \href{https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md}{\texttt{ROADMAP.md}}.
-Phases~1--21b and the Grassmann--Cayley meet sub-phase Phase~21a are
+Phases~1--22a and the Grassmann--Cayley meet sub-phase Phase~21a are
 complete (see the phase bullets below); \textbf{Phase~21} is
 GREEN-modulo-21b (all genericity-free content green, with the shared
 genericity device Claim~6.4/6.9 scoped out into sub-phase Phase~21b),
@@ -35,8 +35,10 @@ to Phases~22--23, so the Theorem~5.5 capstone \texttt{thm:theorem-55} and
 \texttt{prop:rigidity-matrix-prop11} remain green-modulo-22--23 (they await
 the producers and the genericity-free \texttt{hub} partition brick).
 \textbf{Phase~22} (the realization layer) is sub-lettered: \textbf{Phase~22a}
-(Case~I realization) is in progress, and \textbf{Phase~22b+} (Case~III at $d=3$
-plus the $d=3$ assembly) is parked in planning.
+(Case~I realization) is complete \emph{green-modulo} KT Claim~6.4
+(\cref{lem:claim-6-4}, deferred to Phase~22b), built via the block-triangular
+reframe; and \textbf{Phase~22b+} (Claim~6.4, then Case~III at $d=3$ plus the
+$d=3$ assembly) is parked in planning.
 \textbf{Phase~17} opened the longer-horizon
 molecular-conjecture program (Phases~17--26;
 Katoh--Tanigawa~\cite{katohTanigawa2011}), \textbf{Phase~18}
@@ -328,17 +330,24 @@ per-phase breakdown:
         \cref{sec:molecular-algebraic-induction} rather than opening a new
         chapter.
         \begin{itemize}
-          \item \textbf{Phase~22a --- Case~I realization} (\emph{in progress}):
-                the full-rank rigid-subgraph splice
+          \item \textbf{Phase~22a --- Case~I realization} (\emph{complete,
+                green-modulo Phase~22b}): the full-rank rigid-subgraph splice
                 (Katoh--Tanigawa~\cite[\S6.2]{katohTanigawa2011}: the
                 graph/matroid contraction-minimality bridge
-                \cref{lem:rigidContract-isMinimalKDof}, the residual KT Claim~6.4
-                \cref{lem:claim-6-4}, and the composer
-                \cref{lem:case-I-realization}). All Case-I bricks are green except
-                the composer's generic-motive induction.
-          \item \textbf{Phase~22b+ --- Case~III at $d=3$ + $d=3$ assembly}
-                (\emph{planning}): the Case~II/III reducible-vertex producer at
-                $d=3$ (\S6.3, \S6.4.1: the degenerate eq.~(6.12) placement on the
+                \cref{lem:rigidContract-isMinimalKDof} and the composer
+                \cref{lem:case-I-realization}). The composer is built via the
+                \emph{block-triangular reframe} --- KT eq.~(6.3)'s rank-addition
+                over one common framework, routed through the genericity device's
+                independent-row count (the $H$-block edges $\sqcup$ the surviving
+                edges made independent by the exterior-column projection), not a
+                common-seed splice --- and is green-modulo a single dischargeable
+                hypothesis, KT Claim~6.4 (\cref{lem:claim-6-4}, the surviving
+                block's exterior-projected rank at the generic placement),
+                discharged in Phase~22b.
+          \item \textbf{Phase~22b+ --- Claim~6.4, then Case~III at $d=3$ + $d=3$
+                assembly} (\emph{planning}): KT Claim~6.4 (\cref{lem:claim-6-4},
+                deferred from 22a), then the Case~II/III reducible-vertex producer
+                at $d=3$ (\S6.3, \S6.4.1: the degenerate eq.~(6.12) placement on the
                 green row infrastructure, one row short for $k=0$, completed by the
                 redundant-edge row of Lemma~6.10 ---
                 \cref{lem:case-II-realization,lem:case-III}) plus the $d=3$
@@ -422,11 +431,12 @@ brick):} the capstone \cref{thm:theorem-55} and the generic-rank
 reconciliation \cref{prop:rigidity-matrix-prop11}; plus Case~III
 (\cref{lem:case-III}), all in Phases~22--23. \textbf{Phase~22}
 (\cref{sec:molecular-algebraic-induction}) is the realization layer,
-sub-lettered: \textbf{Phase~22a} (in progress) builds the Case~I splice producer
-(\cref{lem:rigidContract-isMinimalKDof,lem:claim-6-4,%
-lem:case-I-realization} --- all the Case-I infrastructure is green except the
-composer \cref{lem:case-I-realization}, whose generic-motive induction is the one
-remaining red node), and \textbf{Phase~22b+} (planning) parks the Case~II/III
+sub-lettered: \textbf{Phase~22a} (complete) builds the Case~I splice producer
+(\cref{lem:rigidContract-isMinimalKDof,lem:case-I-realization}), with the composer
+\cref{lem:case-I-realization} now \emph{green-modulo} KT Claim~6.4
+(\cref{lem:claim-6-4}) via the block-triangular reframe; the surviving
+\cref{lem:claim-6-4} is the one red Case-I node, deferred to Phase~22b. \textbf{Phase~22b+}
+(planning) discharges \cref{lem:claim-6-4} and then parks the Case~II/III
 reducible-vertex producer (\cref{lem:case-II-realization,lem:case-III}) and the
 $d=3$ assembly behind it; these stay red until their constructions land.
 Phases~23--26 remain to be opened.

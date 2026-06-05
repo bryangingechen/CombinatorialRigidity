@@ -20,29 +20,22 @@ $\tilde G = (D-1)\cdot G$ is the multiplied graph of
 $D$-deficiency of \cref{def:D-deficiency}.
 
 \medskip
-\noindent\emph{Status (Phase 21b re-plan, 2026-06-04).} The
-\emph{accounting} layer (the block-pin / $1$-extension count iffs) and the
-shared genericity \emph{device} (\cref{lem:genericity-device}, now landed in
-its multivariate form) are settled; the \emph{realization} layer --- the
-producers that exhibit a rigid panel-hinge framework for each inductive
-case --- is being re-planned around a corrected motive. The correction: a
-spike found that the realization motive (\cref{def:rank-hypothesis}) as
-first carried was the \emph{absolute} null-space equality $\dim Z(G,p) = D$
-over the whole screw-assignment space $\R^{D|V_\alpha|}$ of the fixed body
-type $\alpha$. That equals infinitesimal rigidity only when $G$
-\emph{spans} $\alpha$ (a body in $\alpha \setminus V(G)$ carries no hinge
-constraint, so it is a free non-trivial motion); but the induction of
-Theorem~4.9 (\cref{thm:minimal-kdof-reduction}) reduces to graphs with
-strictly fewer vertices on the same $\alpha$, which therefore do
-\emph{not} span it. So the absolute motive is unsatisfiable for every
-inductive subgraph (the two-vertex base case already needs ``every body is
-one of the two''), and the inductive realization premises cannot be
-discharged. The fix carries the motive in its \emph{$V(G)$-relative rank
-form} $\operatorname{rank} R(G,p) = D(|V(G)|-1)$ (\cref{def:rank-hypothesis})
---- equivalently ``every infinitesimal motion is constant on $V(G)$'' ---
-which is $\alpha$-independent (isolated bodies contribute no rigidity rows),
-composes through the induction, and makes the block-triangular gluing of
-Case~I satisfiable.
+\noindent The realization motive is carried in its \emph{$V(G)$-relative
+rank form} $\operatorname{rank} R(G,p) = D(|V(G)|-1)$
+(\cref{def:rank-hypothesis}) --- equivalently ``every infinitesimal motion
+is constant on $V(G)$''. This is essential: the \emph{absolute} null-space
+equality $\dim Z(G,p) = D$ over the whole screw-assignment space
+$\R^{D|V_\alpha|}$ of the fixed body type $\alpha$ equals infinitesimal
+rigidity only when $G$ \emph{spans} $\alpha$ (a body in
+$\alpha \setminus V(G)$ carries no hinge constraint, so it is a free
+non-trivial motion). The induction of Theorem~4.9
+(\cref{thm:minimal-kdof-reduction}) reduces to graphs with strictly fewer
+vertices on the same $\alpha$, which therefore do \emph{not} span it, so
+the absolute motive is unsatisfiable for every inductive subgraph (the
+two-vertex base case already needs ``every body is one of the two''). The
+$V(G)$-relative form is $\alpha$-independent (isolated bodies contribute no
+rigidity rows), composes through the induction, and makes the
+block-triangular gluing of Case~I satisfiable.
 
 The chapter opens with the generic-rank reconciliation (Tay--Whiteley's
 Proposition~1.1, relocated forward from Phase~18), states the induction
@@ -54,35 +47,20 @@ panel-hinge analogue of Whiteley's bar-joint 1-extension). The shared
 analytic device --- the genericity argument (Claim~6.4/6.9,
 \cref{lem:genericity-device}) --- is green; the cycle-realization Lemma~5.4
 (\cref{lem:cycle-realization}; Crapo--Whiteley~\cite{crapoWhiteley1982},
-Whiteley~\cite{whiteley1999}) enters as an input. \emph{Landed (Phase 21b):}
-the relativized motive and the base case are green
-(\cref{def:rank-hypothesis} now carries
-$\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ /
-$\mathrm{HasFullRankRealization}$, and \cref{lem:theorem-55-base} discharges
-the two-vertex case unconditionally); the recursion of \cref{thm:theorem-55}
-compiles motive-agnostically against it, and the absolute-motive Case-I
-producers were retired. The two accounting iffs \cref{lem:case-I} /
-\cref{lem:case-II} are now green-modulo-21b under their relativized rank-side
-restatements (the genericity-free $\alpha$-independent rigidity bridges
-$\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$ /
-$\mathrm{isInfinitesimallyRigidOn\_insert\_iff}$, with the device entering only
-in the producers). The panel-coordinate row coordinatization
-\cref{lem:rows-polynomial-in-normals} (the keystone, B0) and the Case~I splice
-\emph{glue} \cref{lem:case-I-splice-seed} (the block-triangular argument) are
-now green. The device greening does \emph{not} build the placements: it lifts an
-attained rank to a generic point, but in its \emph{absolute} screw-count, so each
-producer must (i) convert that count to the $V(G)$-relative motive --- the green
-$V(G)$-relative count bridge (\cref{lem:relative-screw-split},
-\cref{lem:relative-device-count}, \cref{lem:isInfRigidOn-of-relative-count}) does
-this --- and (ii) construct a seed realization.
+Whiteley~\cite{whiteley1999}) enters as an input. The relativized motive,
+the base case (\cref{lem:theorem-55-base}, the two-vertex case
+unconditionally), the two accounting iffs \cref{lem:case-I} /
+\cref{lem:case-II} (genericity-free $\alpha$-independent rigidity bridges,
+with the device entering only in the producers), the panel-coordinate row
+coordinatization \cref{lem:rows-polynomial-in-normals} (the keystone, B0),
+and the $V(G)$-relative count bridge (\cref{lem:relative-screw-split},
+\cref{lem:relative-device-count}, \cref{lem:isInfRigidOn-of-relative-count})
+that converts the device's absolute screw-count to the $V(G)$-relative motive
+are all green.
 
-\emph{Realization producers re-scoped to Phases 22--23 (Phase~21b close,
-2026-06-04).} A math-first feasibility pass against
-Katoh--Tanigawa~\cite[\S6.2--6.3]{katohTanigawa2011} found that the two
-\emph{producers} — the only red realization-layer nodes — belong with the
-realization layer of Phases~22--23, not Phase~21b (whose named deliverable, the
-device, is green). Two findings (full record: \texttt{notes/Phase21b.md}; this
-re-scope is honesty-gate-driven, \cref{lem:case-II-realization} below):
+A math-first feasibility pass against
+Katoh--Tanigawa~\cite[\S6.2--6.3]{katohTanigawa2011} placed the two
+realization \emph{producers} with the realization layer of Phases~22--23:
 \begin{itemize}
   \item \emph{The Case~II producer (\cref{lem:case-II-realization}) is KT
         Case~III.} The project's $\mathtt{hsplit}$ branch is the $k=0$
@@ -93,24 +71,19 @@ re-scope is honesty-gate-driven, \cref{lem:case-II-realization} below):
         $\mathrm{rank}\,R(G,p_1) \ge (D-1) + D(|V|-2) = D(|V|-1)-1$ --- \emph{one
         row short} of full rank (KT p.~680). The missing row is the Case~III
         redundant-edge row (Lemma~6.10/6.13). KT's Lemma~6.8 (where $+(D-1)$
-        suffices) is $k>0$ \emph{only}; the prior $k>0$ framing of
-        \cref{lem:case-II} below was a conflation. The motion-side M1/M2/M3 nodes
-        (\cref{lem:case-II-placement-disjoint-line-meet,%
-        lem:case-II-placement-pin-vertex,lem:case-II-placement-motion-side-assembly})
-        are \emph{not} KT's argument (they assume "a motion constant on
-        $V(G)\setminus\{v\}$", which a $G$-motion need not be) and are superseded.
+        suffices) is $k>0$ \emph{only}.
   \item \emph{The Case~I producer (\cref{lem:case-I-realization}) is full-rank
         and tractable (KT~\S6.2), reaching full $D(|V|-1)$ with \emph{no}
-        shortfall.} \emph{Landed (Phase 22a) green-modulo:} it is KT eq.~(6.3)'s
-        block-triangular rank-addition over a single common framework --- the
-        rigid-block rows $E(H)$ $\sqcup$ the surviving-edge rows
-        $E(G) \setminus E(H)$, made jointly independent by the exterior-column
-        projection (KT's top-right $0$), fed to the device's row-count closure.
-        Its single residual analytic obligation is KT Claim~6.4
-        (\cref{lem:claim-6-4}, the surviving block's exterior-projected rank,
-        eq.~(6.9)), carried as a green-modulo hypothesis and deferred to
-        Phase~22b, together with the graph$\leftrightarrow$matroid bridge
-        \cref{lem:rigidContract-isMinimalKDof} (Phase-20 carry-forward, green).
+        shortfall.} It is KT eq.~(6.3)'s block-triangular rank-addition over a
+        single common framework --- the rigid-block rows $E(H)$ $\sqcup$ the
+        surviving-edge rows $E(G) \setminus E(H)$, made jointly independent by
+        the exterior-column projection (KT's top-right $0$), fed to the device's
+        row-count closure. It is green-modulo its single residual analytic
+        obligation, KT Claim~6.4 (\cref{lem:claim-6-4}, the surviving block's
+        exterior-projected rank, eq.~(6.9)), deferred to Phase~22b; the
+        graph$\leftrightarrow$matroid bridge
+        \cref{lem:rigidContract-isMinimalKDof} (a Phase-20 carry-forward) is
+        green.
 \end{itemize}
 The reusable green infra (the row sub-nodes N7b-0/1/2/3, the device-closure glue
 \cref{lem:realization-of-independent-rows}, the count bridge) feeds those
@@ -252,14 +225,13 @@ whole induction.
   minimal $k$-dof-graphs to all multigraphs by deleting down to a minimal
   $k$-dof spanning subgraph and observing that re-adding edges only grows the
   rank (\cref{lem:motions-mono-of-graph-le}); the Claim~6.4 generic-rank
-  argument selects the point attaining it. \emph{Red, re-stated:} the prior
-  assembly was an $\mathtt{omega}$ over the two inequalities in the
-  \emph{absolute} null-space convention ($\dim Z = D + \operatorname{def}$,
-  exact for the spanning $G$ this proposition is applied to, where
-  $V(G) = V_\alpha$); it now depends on the re-stated
-  \cref{thm:theorem-55}, whose relativized motive (\cref{def:rank-hypothesis})
-  it inherits. The genericity-free upper bound $\mathtt{hub}$ remains a
-  distinct Phase-19-partition obligation, carried as an explicit hypothesis.
+  argument selects the point attaining it. \emph{Red:} it depends on
+  \cref{thm:theorem-55}, whose $V(G)$-relative motive
+  (\cref{def:rank-hypothesis}) it inherits (here $V(G) = V_\alpha$, since the
+  proposition is applied to a spanning $G$, so the relative form coincides with
+  the absolute $\dim Z = D + \operatorname{def}$). The genericity-free upper
+  bound $\mathtt{hub}$ remains a distinct Phase-19-partition obligation, carried
+  as an explicit hypothesis.
 \end{proof}
 
 \subsection{The induction skeleton and base case}
@@ -337,15 +309,12 @@ whole induction.
 
   The well-founded recursion itself is a one-line application of
   \cref{thm:minimal-kdof-reduction} taking the three case-producers as
-  premises; the genericity-free content is the recursion. The motive has
-  been \emph{relativized} (Phase 21b): $\mathrm{HasFullRankRealization}$ now
-  carries the $V(G)$-relative form $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$
-  (\cref{def:rank-hypothesis}), and the recursion itself compiles
-  motive-agnostically against it (the prior absolute null-space motive
-  $\dim Z = D$ had case-producer premises unsatisfiable for the non-spanning
-  inductive subgraphs --- chapter status). The node stays \emph{red} because not
-  all three case-producers it depends on are built: Case~I
-  (\cref{lem:case-I-realization}) is now green-modulo KT Claim~6.4
+  premises; the genericity-free content is the recursion. The motive
+  $\mathrm{HasFullRankRealization}$ carries the $V(G)$-relative form
+  $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ (\cref{def:rank-hypothesis}), and
+  the recursion compiles motive-agnostically against it. The node stays
+  \emph{red} because not all three case-producers it depends on are built:
+  Case~I (\cref{lem:case-I-realization}) is now green-modulo KT Claim~6.4
   (\cref{lem:claim-6-4}, deferred to Phase~22b), via the block-triangular
   row-addition over one common framework; what remains red is
   \cref{lem:case-II-realization} and Case~III. The device
@@ -756,10 +725,7 @@ Cases~I and~II travel toward the smaller inductive graph.
   KT split this into the non-simple case (6.2), the simple case with simple
   contraction (6.3, via the Claim~6.4 genericity argument), and the
   remaining simple case (6.5).
-  \emph{Re-stated rank-side (Phase 21b).} The prior Lean iff related the
-  \emph{absolute} null-space motive ($\dim Z = D + k'$) to the block-pin
-  \emph{dimension} $\dim Z_s$ --- both $\alpha$-dependent (a body outside
-  $V(G)$ inflates each). The relativized accounting is the bridge
+  The accounting is carried $\alpha$-independently as the bridge
   $\mathrm{isInfinitesimallyRigidOn\_iff\_pinnedMotionsOn\_le}$: given that
   every motion is constant on the rigid block $s = V(H)$ (the rigidly placed
   $H$), the framework is rigid on $t = V(G)$ \emph{iff} the block pin on $s$
@@ -1186,9 +1152,8 @@ Cases~I and~II travel toward the smaller inductive graph.
   C(e_b)$; this is false pointwise and holds only for the general-position
   normals the rank/dimension count selects
   (\cref{lem:exists-independent-panel-extensor}).
-  \emph{Re-stated rank-side (Phase 21b).} As with Case~I, the prior iff
-  measured the $+D$ lift against the absolute null-space motive; the
-  relativized accounting is the bridge
+  As with Case~I, the $+D$ lift is accounted $\alpha$-independently through the
+  bridge
   $\mathrm{isInfinitesimallyRigidOn\_insert\_iff}$: re-inserting the single
   body $v$ (so $V(G) = \{v\} \cup V(G_v^{ab})$), the framework is rigid on
   $V(G)$ \emph{iff} it is rigid on the splitting-off body set $V(G_v^{ab})$
@@ -1240,8 +1205,8 @@ Cases~I and~II travel toward the smaller inductive graph.
   $S b \in \operatorname{span} C(e_b)$ for every base-$v$-pinned motion $S$) as
   a hypothesis, this node must \emph{construct} the panel normal $n$ for the
   re-inserted body $v$ on which $\mathtt{hspan}$ holds and the extended
-  framework realizes its rank. \emph{Red --- re-scoped to Phases~22--23 as KT Case~III (Phase~21b close,
-  2026-06-04).} The project's $\mathtt{hsplit}$ is the $k=0$ reducible-vertex
+  framework realizes its rank. \emph{Red --- re-scoped to Phases~22--23 as KT
+  Case~III.} The project's $\mathtt{hsplit}$ is the $k=0$ reducible-vertex
   split, so by KT Lemma~4.8(i) $G_v^{ab}$ is minimal $0$-dof and the realization
   must reach \emph{full} rank $D(|V|-1)$. KT's actual construction (Lemma~6.8,
   eq.~(6.12)) is a \emph{degenerate} placement: $p_1(va)=L\subset\Pi_q(a)$ a
@@ -1263,7 +1228,7 @@ Cases~I and~II travel toward the smaller inductive graph.
   hypothesis ``$G_v^{ab}$ realizes its rank'' is satisfiable (it spans its own
   vertices), so the producer is well-posed; it is the shallower sibling of the
   Case~I producer (one re-inserted body, $+(D-1)$ rows, KT~(6.12)) rather than
-  a full splice. \emph{Premise audit (Phase 21b, 2026-06-04):} the producer needs
+  a full splice. The producer needs
   $v$'s reducible-degree-2 data --- the two incident edges $e_a, e_b$, their links
   $G.\mathrm{IsLink}\,e_a\,v\,a$, $G.\mathrm{IsLink}\,e_b\,v\,b$, and the closure
   that they are $v$'s only incident edges --- to re-attach $v$ in $G$. The
@@ -1390,9 +1355,7 @@ motion --- so the absolute count alone never reaches the relative motive. The
 three nodes here are the adapter the producers (\cref{lem:case-I-realization},
 \cref{lem:case-II-realization}) compose with the device to land the relative
 motive; they are the ``rank-equality bridge'' \cref{def:rank-hypothesis}
-anticipates. \emph{All three are red (Phase 21b build targets); the shapes are
-validated, the content is build-shaped (no relative-rank argument over a
-non-spanning block).}
+anticipates.
 
 \begin{lemma}[Isolated bodies carry no rigidity: the relative split]
   \label{lem:relative-screw-split}
@@ -1409,11 +1372,7 @@ non-spanning block).}
   \]
   the $\alpha$-dependent free summand of $\dim Z(G,p)$. Combined with the
   block-pin lower bound \cref{lem:pinned-motions-on-rank-bound}, this is what
-  isolates the $\alpha$-independent residual rank. The formalization carries the
-  split through the block pin $\mathrm{pinnedMotionsOn}\,V(G)$ rather than a
-  free-standing $Z_{V(G)}$ object: it is a clean $\mathrm{Pi}$-product
-  (\texttt{finrank\_pi\_const}) decomposition, not a relative-rank inequality
-  over a non-spanning block.
+  isolates the $\alpha$-independent residual rank.
 \end{lemma}
 \begin{proof}
   \leanok

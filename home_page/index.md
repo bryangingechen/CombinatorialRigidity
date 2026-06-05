@@ -21,7 +21,7 @@ working toward [**Laman's theorem**](https://en.wikipedia.org/wiki/Laman_graph) 
 
 ## Project status
 
-Phases 1–21b and the Grassmann–Cayley meet sub-phase 21a are complete and
+Phases 1–22a and the Grassmann–Cayley meet sub-phase 21a are complete and
 carry no `sorry`s; **Phase 21** settled the algebraic induction's accounting
 layer, and **Phase 21b (complete)** delivered the shared **genericity device**
 (Claim 6.4/6.9) — green and axiom-clean — together with the genericity-free
@@ -29,8 +29,12 @@ accounting and the `V(G)`-relative count bridges; a math-first feasibility pass
 then **re-scoped the realization *producers* of Theorem 5.5 to Phases 22–23**,
 where the reducible-vertex split is recognised as Katoh–Tanigawa's Case III and
 joins the deferred crux. **Phase 22 (the realization layer) is sub-lettered** —
-**22a (Case I realization) in progress**, **22b+ (Case III at d=3 + d=3 assembly)
-parked in planning**. **The body-bar
+**22a (Case I realization) complete green-modulo KT Claim 6.4**, delivered via the
+**block-triangular reframe** (KT eq. 6.3's rank-addition over one common framework,
+routed through the genericity device's independent-row count, not a common-seed
+splice) with the single deferred obligation — KT Claim 6.4, the surviving block's
+exterior-projected rank at the generic placement — handed to **22b**; **22b+ (Case III
+at d=3 + d=3 assembly) parked in planning**. **The body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
 theorem — see below. **Phase 17 (complete)** opens the
@@ -257,8 +261,8 @@ existing files or refactor across several).
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction.lean` | ✓ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
 |   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction.lean` (+ `lem:genericity-device`) | ✓ |
-|   22a | Case I realization (full-rank rigid-subgraph splice) | `Molecular/{Induction,AlgebraicInduction}.lean` | ◑ |
-|  22b+ | Case III at `d=3` + `d=3` assembly (planning; expected to split) | `Molecular/AlgebraicInduction.lean` | ◷ |
+|   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/{Induction,AlgebraicInduction}.lean` | ✓ (green-modulo-22b) |
+|  22b+ | KT Claim 6.4 (deferred from 22a), then Case III at `d=3` + `d=3` assembly (planning; expected to split) | `Molecular/AlgebraicInduction.lean` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
