@@ -38,9 +38,11 @@ coupling, the N6 leg-transport `ends`-swap brick, and **N6-G1** (the generic-mot
 **except the N6 composer's generic-motive induction** (the IH supplies the *bare*
 `HasFullRankRealization`, the simple coupling needs `HasGenericFullRankRealization`).
 The recon settled the gap as a **hybrid** (Route 2 generic producer = N6-G1 ✓, +
-Route 1 generic IH = N6-G2). Next: **re-recon N6-G2** (Route 1, the Phase-20-touching
-generic-motive reduction; multi-commit, needs-further-recon — do not dispatch whole),
-then N6-G3 composer assembly. **Phase 22b+ is parked in planning** (Case III
+Route 1 generic IH = N6-G2). N6-G2 has now been **re-reconned** (2026-06-04,
+`notes/Phase22a.md` design doc §1.6): cut into G2a (conditioned-motive reduction
+skeleton, Phase-20-touch), G2b (`map`-simplicity, the hard kernel), G2c (wire-up).
+Next: **G2a** (settle the flagged `hsplit`-vs-`splitOff` routing sub-question first),
+then G2b, G2c, N6-G3 composer assembly. **Phase 22b+ is parked in planning** (Case III
 at `d=3` + the `d=3` assembly; expected to split into multiple sub-phases once its
 shape is clearer, cut deferred until 22a closes). Phases 23–26 planned. This is the
 program design for Phases 17–26 and the runbook for threading the remaining phases.
@@ -557,10 +559,12 @@ Case-I composer (`lem:case-I-realization`) is **not** a clean final step: the IH
 is the *bare* `HasFullRankRealization`, but the simple coupling needs
 `HasGenericFullRankRealization`, so the simple branch needs a **generic-motive
 induction** (re-run `minimal_kdof_reduction` against the GP motive, Phase-20 touch,
-multi-commit; re-opens the parked `Simple`-threading question). The 22a next task
-is a math-first recon/decomposition of that gap into right-sized buildable nodes
-(up-front planning before any build dispatch). The live, node-by-node hand-off is
-`notes/Phase22a.md`. **22b+** (deferred until 22a closes): Track B / Case III
+multi-commit; re-opens the parked `Simple`-threading question). That gap has now
+been **re-reconned** (2026-06-04, `notes/Phase22a.md` §1.6) into G2a/G2b/G2c: the
+motive is the *conditioned* `(G.Simple → GP) ∧ bare`, and — verified vs. KT §6.2 —
+only the Lemma-6.3 Case-I legs need the generic IH, the hard kernel being `G/E(H)`
+simplicity (KT 6.3-vs-6.5) + a flagged `hsplit`-vs-`splitOff` routing sub-question.
+The live, node-by-node hand-off is `notes/Phase22a.md`. **22b+** (deferred until 22a closes): Track B / Case III
 (above) and the `d=3` assembly — the `prop:rigidity-matrix-prop11` `hub` brick
 (Phase-19 partition count, Track-independent) + the `thm:theorem-55` flip.
 
@@ -696,9 +700,12 @@ flipped the ROADMAP row to *in progress*, and synced `README.md` /
 `algebraic-induction.tex`, per the structural-edit discipline in
 `blueprint/CLAUDE.md`).
 
-**Next concrete task inside 22a:** **re-recon N6-G2** (Route 1, the Phase-20-touching
-generic-motive reduction) — up-front planning before any build dispatch, per the live
-hand-off in `notes/Phase22a.md`. All of Track A's Case-I machinery is green
+**Next concrete task inside 22a:** **G2a** — the conditioned-motive reduction skeleton
+(re-instantiate `minimal_kdof_reduction` at `(G.Simple → GP) ∧ bare`), settling first
+its flagged `hsplit`-vs-`splitOff` routing sub-question. N6-G2 was re-reconned
+2026-06-04 (`notes/Phase22a.md` §1.6) into G2a → G2b (`map`-simplicity, the hard
+kernel) → G2c (wire-up) → N6-G3. Per the live hand-off in `notes/Phase22a.md`. All of
+Track A's Case-I machinery is green
 (N4a–N4c + N4 `rigidContract_isMinimalKDof`, N6a, the two-motive split, (G2), the
 N6b/N6c simple Case-I coupling, the N6 leg-transport `ends`-swap brick, and **N6-G1**
 the generic producer `hasGenericFullRankRealization_of_splice_ofNormals`), except the
