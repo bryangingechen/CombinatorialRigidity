@@ -461,6 +461,15 @@ G2a carries `hbaseGP`/`hsplitGP`/`hcontractGP` as explicit hypotheses (green-mod
 re-route. `hcontractGP` is fed the *full conditioned IH* (the shape G2c needs). No `\leanok` flip
 (`lem:case-I-realization` stays red until G2c discharges `hcontractGP`).
 
+**Standing discipline — blueprint exposition ledger.** When a commit
+reroutes / reworks / decomposes a node that was scoped smaller (the
+"thought-one-commit → rerouted" signal), add a one-line entry to
+`notes/BlueprintExposition.md` naming the *stable* KT-glossed insight the
+reroute surfaced. The expanded blueprint prose itself lands at **phase-close**
+(once Case I is `sorry`-free), not during recon — see that file's header.
+(Mechanism agreed 2026-06-04; codification of the `blueprint/CLAUDE.md`
+*Proof verbosity* carve-out deferred until the principle settles.)
+
 **Next concrete task — G2b: the `map`/`collapseTo` simplicity fact.** `(G/E(H)).Simple` (i.e.
 `(G.rigidContract H r).Simple`, where `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))`,
 `Induction.lean:1855`) under KT's Lemma-6.3 hypothesis, or the Lemma-6.3-vs-6.5 dichotomy as a decidable
