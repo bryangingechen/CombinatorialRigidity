@@ -2,11 +2,14 @@
 
 **Status:** in progress — **paused at the reduction checkpoint** (opened 2026-06-05 as the
 coordinator's Close-C of Phase 22a; opening recon + the reduction N-22b-1/2/3 landed
-2026-06-05). The phase does *not* close at the reduction: `lem:claim-6-4` stays red
-green-modulo the explicit hypothesis `htransport` (KT eq. (6.9)'s algebraic-independence
-content). A 2026-06-05 validation pass (design doc §1.18) found discharging `htransport` is a
-tractable 5-node cut (T1→T2a→T2b→T3→T4) that **stays Phase 22b**; the phase is paused there.
-Resume with `/coordinate-phase 22b` — the *Hand-off* below carries the discharge plan.
+2026-06-05; the T2b math-first re-recon landed 2026-06-05). The phase does *not* close at the
+reduction: `lem:claim-6-4` stays red green-modulo the explicit hypothesis `htransport` (KT eq.
+(6.9)'s algebraic-independence content). The T2b re-recon (design doc §1.19) **retired §1.18's
+lower-semicontinuity worry** (it is already green inside N-22b-2) and shrank the discharge cut
+**5→4 nodes (U1→U2→U3→U4)**, re-localizing the one walling node to **U2** (the collapse-relabel
+projected-row reproduction). Discharging `htransport` **stays Phase 22b**; the phase is paused
+there. Resume with `/coordinate-phase 22b`, **opening on U2** — the *Hand-off* below + the
+*Discharge plan* checklist carry the design.
 
 Stratum 5 of the molecular-conjecture program, continued. **Scope: just KT
 Claim 6.4** — the single deferred obligation Phase 22a left green-modulo. 22a's
@@ -50,9 +53,11 @@ green-modulo pattern (its load-bearing hypothesis IS the conclusion of the `\use
 `lem:claim-6-4`). The remaining work — discharging `htransport` itself — is **not** an
 indefinite "separate, deeper undertaking": a 2026-06-05 validation pass (design doc §1.18)
 re-derived §1.17 skeptically against KT §5.1/§6.2 + the live code and found `htransport`
-decomposes into a concrete, tractable **5-node cut T1→T2a→T2b→T3→T4** (~350–550 LoC, 3/5
-plumbing/green-reuse, one research-shaped crux T2b that *re-instantiates the existing
-genericity engine*). Per the coordinator decision it **stays Phase 22b**, paused; resume via
+decomposes into a concrete, tractable node cut; the follow-up **T2b math-first re-recon**
+(design doc §1.19, this commit) refined it to a **4-node cut U1→U2→U3→U4** (~240–400 LoC, 3/4
+plumbing/green-reuse, one research-shaped crux **U2** = the collapse-relabel projected-row
+reproduction) after finding §1.18's planned crux T2b (lower-semicontinuity) is *already green
+inside N-22b-2*. Per the coordinator decision it **stays Phase 22b**, paused; resume via
 `/coordinate-phase 22b` (the *Hand-off* below carries the cut). Nothing is mid-stream.
 
 ### Opening recon — feasibility re-verification (this commit)
@@ -211,30 +216,36 @@ wire-up composed them. This **reduces** Claim 6.4 to the single hypothesis `htra
 green-modulo which `lem:claim-6-4` stays red. (Mirrors 22a's "buildable bricks before the
 research-shaped composer" ordering.)
 
-### Discharge plan — the remaining 22b work (design doc §1.18; resume gated on a T2b re-recon)
+### Discharge plan — the remaining 22b work (design doc §1.19, the T2b re-recon; supersedes §1.18's 5-node cut)
 
-The 2026-06-05 validation pass cut `htransport`'s discharge into a tractable **5-node**
-sequence (full statements/reuse/risk in design doc §1.18). `Gc := G.deleteEdges E(H)`,
-`f := collapseTo r V(H)`, `sc := (V(G)∖V(H)) ∪ {r}`, `D = screwDim k`. Resume with
-`/coordinate-phase 22b`, **opening on a T2b math-first re-recon** (the one walling node) per
-`DESIGN.md` *Constructibility recon … → design the LAYER*.
+The 2026-06-05 T2b math-first re-recon (design doc §1.19, traced against the live brick/engine
+signatures) **retired the §1.18 lower-semicontinuity worry** and shrank the cut **5→4 nodes**.
+Finding: `htransport`'s conclusion is *single-placement* (`∃ q₀, …`), and the "generic ≥
+degenerate" lift it gated on is **already green inside N-22b-2**
+(`exists_rankPolynomial_of_rigidOn_linking_set_proj` builds the rank polynomial from one witness
+placement). So the degenerate member `q₀^deg` (KT's `p2`) is itself a valid witness — no generic
+placement needed — and the one walling node re-localizes from T2b to the **collapse-relabel
+projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo r V(H)`,
+`sc := (V(G)∖V(H)) ∪ {r}`, `D = screwDim k`. Resume with `/coordinate-phase 22b`, **opening on U2**
+(the one research-shaped node) per `DESIGN.md` *Constructibility recon … → design the LAYER*.
 
-- [ ] **T1 — placement bridge `q₀`** (KT family embedding, eq. 6.7). `q₀` over the original
-  vertices, agreeing with `Qcf` on `V(G)∖V(H)`, generic on `V(H)` (moment-curve seed infra).
-  Plumbing; low risk.
-- [ ] **T2a — degenerate member reproduces `Qcf`'s rows.** `q₀^deg` (H-side ≡ `Qcf.normal r`,
-  KT's `p2`) ⇒ the projected surviving rows match `Qcf`'s over `Gc.map f` (`map_isLink` +
-  `panelSupportExtensor`-equality). Mechanical but defeq-fiddly; medium risk.
-- [ ] **T2b — generic ≥ degenerate** (the analytic crux, KT lower-semicontinuity). Re-instantiate
-  the Phase-21b engine `exists_polynomial_ne_zero_of_linearIndependent_at` on the projected
-  family. **Research-shaped; the one node that could wall** (the `q₀^deg`-not-GP transversality
-  gate, §1.18); may sub-cut. **Open here first.**
-- [ ] **T3 — extract the independent surviving subfamily at `q₀`** via
-  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` (T2 supplies its hypothesis).
-  Pure green-reuse; low risk.
-- [ ] **T4 — assemble `htransport`, delete it from `case_I_realization`, flip.** `\leanok`
-  `lem:claim-6-4`, then the phase-close ceremony (`CLAUDE.md` *When this commit closes a phase*).
-  Plumbing; low risk.
+- [ ] **U1 — degenerate placement bridge `q₀^deg`** (KT's `p2`, eq. 6.7, H-side collapsed). Build
+  `q₀^deg` agreeing with `Qcf.normal ∘ f` on `V(G)∖V(H)` and `≡ Qcf.normal r` on `V(H)`. Plumbing,
+  *no* genericity/moment-curve needed (the witness is the degenerate member). Low risk.
+- [ ] **U2 — collapse-relabel projected-row reproduction** *(the crux; the live part of §1.18's
+  T2a+T2b)*. For each surviving link `e=uv ∈ Gc`, the projected uncollapsed row
+  `(extProj V(H)).dualMap ((ofNormals Gc ends q₀^deg).panelRow ends e)` equals `Qcf`'s analogous
+  projected row over `Gc.map f`, via `Graph.IsLink.map` + `panelSupportExtensor`-equality + `extProj`
+  killing the differing interior `V(H)` columns. **Research-shaped; the one node that could wall**
+  (the irreducible KT eq. (6.7)/(6.9) collapse-normal content, §1.7; `panelRow`-defeq-across-graph-
+  swaps caution). May sub-cut. **Open here first.**
+- [ ] **U3 — extract the independent surviving subfamily from `Qcf`, transport via U2.**
+  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` on `Qcf` (rigid on `V(Gc.map f)`)
+  gives the size-`≥ D(|sc|−1)` subfamily; U2 carries the independence to the projected uncollapsed
+  rows at `q₀^deg`. Green-reuse + the U2 transport; low–medium risk.
+- [ ] **U4 — assemble `htransport` (with `q₀ := q₀^deg`), delete it from `case_I_realization`,
+  flip.** `\leanok` `lem:claim-6-4`, then the phase-close ceremony (`CLAUDE.md` *When this commit
+  closes a phase*). Plumbing; low risk.
 
 ## Blockers / settled in the opening recon
 
@@ -260,30 +271,38 @@ sequence (full statements/reuse/risk in design doc §1.18). `Gc := G.deleteEdges
 
 ## Hand-off / next phase
 
-**22b is paused at the reduction checkpoint.** The reduction N-22b-1/2/3 landed (KT Claim 6.4
-formalized down to the single hypothesis `htransport`); `lem:claim-6-4` carries its `\lean{…}`
-pins but stays red, `lem:case-I-realization` stays legitimately green-modulo via the case-(b)
-pattern, ROADMAP row stays ◷. A 2026-06-05 coordinator validation pass (design doc §1.18)
-established that discharging `htransport` is **tractable and stays Phase 22b** — so 22b does
-not spawn a new sub-phase; it pauses here with the discharge plan below as its remaining work.
+**22b is paused at the reduction checkpoint, with the discharge layer now designed.** The
+reduction N-22b-1/2/3 landed (KT Claim 6.4 formalized down to the single hypothesis
+`htransport`); `lem:claim-6-4` carries its `\lean{…}` pins but stays red,
+`lem:case-I-realization` stays legitimately green-modulo via the case-(b) pattern, ROADMAP row
+stays ◷. The 2026-06-05 coordinator validation pass (design doc §1.18) established that
+discharging `htransport` is **tractable and stays Phase 22b**; the **T2b math-first re-recon**
+(design doc §1.19, this commit) then designed the layer — retiring §1.18's lower-semicontinuity
+crux (already green inside N-22b-2) and shrinking the cut to **4 nodes U1→U2→U3→U4**, with the
+one walling node re-localized to **U2**.
 
-**The next concrete commit, on resume** (`/coordinate-phase 22b`), is the **T2b math-first
-re-recon** — design the layer for the one walling node (generic ≥ degenerate projected rank;
-the `q₀^deg`-not-GP transversality gate) before building, per `DESIGN.md` *Constructibility
-recon … → design the LAYER*. Then build the 5-node cut **T1 → T2a → T2b → T3 → T4** (statements,
-reuse targets, and per-node risk in the *Discharge plan* checklist above + design doc §1.18).
-T4 is the flip: `\leanok` `lem:claim-6-4`, drop `htransport` from `case_I_realization`, and run
-the full phase-close ceremony (`CLAUDE.md` *When this commit closes a phase*: user-facing
-surfaces, `notes/MolecularConjecture.md` sync, the broadened blueprint re-read +
-`BlueprintExposition` ledger). The surrounding territory (22c+: Case III at `d=3` + the `d=3`
-assembly) can proceed in parallel — it depends on the green infra (N7b row sub-nodes, N7a, the
-device), not on `htransport`.
+**The next concrete commit, on resume** (`/coordinate-phase 22b`), is **U2 — the collapse-relabel
+projected-row reproduction** (the one research-shaped node; full statement/reuse/risk in the
+*Discharge plan* checklist above + design doc §1.19): for each surviving link `e=uv ∈
+G.deleteEdges E(H)`, the `extProj V(H)`-projected uncollapsed row at the degenerate witness
+`q₀^deg` equals `Qcf`'s analogous projected row over `Gc.map f` (via `Graph.IsLink.map` +
+`panelSupportExtensor`-equality + `extProj` killing the interior `V(H)` columns). It is the
+faithful Lean shape of §1.7's collapse-normal irreducibility / KT eq. (6.7). Open it
+math-first (it may sub-cut) before scheduling U1/U3/U4 as builds, then U1 → U2 → U3 → U4. U4 is
+the flip: `\leanok` `lem:claim-6-4`, drop `htransport` from `case_I_realization`, and run the
+full phase-close ceremony (`CLAUDE.md` *When this commit closes a phase*: user-facing surfaces,
+`notes/MolecularConjecture.md` sync, the broadened blueprint re-read + `BlueprintExposition`
+ledger). The surrounding territory (22c+: Case III at `d=3` + the `d=3` assembly) can proceed in
+parallel — it depends on the green infra (N7b row sub-nodes, N7a, the device), not on
+`htransport`.
 
 Cross-references rather than re-derivation: `notes/Phase22-realization-design.md`
-**§1.18** (the validation pass + the 5-node discharge cut + the phase-fit decision; sharpens
-§1.17's irreducibility overstatement), §1.17 (the N-22b-1 layer re-recon + the `htransport`
-decision), §1.16 (the `Qc`-non-root form + the engine "no wall"), §1.14 (the block-triangular
-reframe), §1.7 (collapse-transport irreducibility); `notes/Phase22a.md` *Hand-off* (*22b target
+**§1.19** (the T2b re-recon: lower-semicontinuity already green, the 4-node cut, U2 as the
+walling node), §1.18 (the validation pass + the original 5-node cut + the phase-fit decision;
+sharpens §1.17's irreducibility overstatement), §1.17 (the N-22b-1 layer re-recon + the
+`htransport` decision), §1.16 (the `Qc`-non-root form + the engine "no wall"), §1.14 (the
+block-triangular reframe), §1.7 (collapse-transport irreducibility); `notes/Phase22a.md`
+*Hand-off* (*22b target
 — Claim 6.4*) + *Blockers*; the wired composer `PanelHingeFramework.case_I_realization` + the
 two bricks `rigidContract_exterior_rank_transport` +
 `exists_rankPolynomial_of_rigidOn_linking_set_proj`, plus the discharge reuse targets

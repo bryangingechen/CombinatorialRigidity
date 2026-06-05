@@ -1335,6 +1335,91 @@ resume with `/coordinate-phase 22b`, opening on the T2b math-first decomposition
 gating/walling node) per `DESIGN.md` *Constructibility recon … → design the LAYER*, then
 T1→T2a→T2b→T3→T4. Does **not** fold into 22c+/23 (Case III is independent of `htransport`).
 
+### 1.19 T2b math-first re-recon — the lower-semicontinuity step is already green inside N-22b-2; the walling node is the collapse-relabel row reproduction (was T2a), and the cut shrinks 5→4 nodes (2026-06-05)
+
+The §1.18 *Hand-off* gated the resume on a math-first re-recon of T2b (the planned analytic crux:
+"generic projected rank ≥ degenerate projected rank", KT lower-semicontinuity). This re-recon —
+decision-support, traced against the *live* signatures of the two landed bricks
+(`rigidContract_exterior_rank_transport` / `exists_rankPolynomial_of_rigidOn_linking_set_proj`,
+`CaseI.lean:929`/`:794`), the engine `exists_polynomial_ne_zero_of_linearIndependent_at`
+(`Mathlib/LinearAlgebra/Matrix/Rank.lean:474`), the green reuse target
+`exists_independent_panelRow_subfamily_of_rigidOn_linking_set` (`GenericityDevice.lean:644`), and
+the `rigidContract`/`collapseTo`/`hingeRow` defns — finds T2b as stated **is not a node of the
+discharge at all**, and re-locates the one walling step. Per `DESIGN.md` *Constructibility recon …
+→ design the LAYER* and *trace a producer's actual output point*.
+
+**Finding 1 — `htransport`'s conclusion is single-placement; the lower-semicontinuity step lives
+*inside* already-green N-22b-2, not inside `htransport`.** The N-22b-1 brick's `htransport`
+hypothesis (and conclusion) is verbatim `∃ q₀, ∃ t, (Gc-links) ∧ D(|sc|−1) ≤ |t| ∧
+LinearIndependent (i ↦ (extProj V(H)).dualMap (panelRow ends i)) at q₀)` — a witness at **one**
+placement `q₀` (`CaseI.lean:935–942`). The "lift to a Zariski-open generic locus" is done by
+N-22b-2 (`exists_rankPolynomial_of_rigidOn_linking_set_proj`), which instantiates the engine at
+`p₀ := q₀` and returns the rank polynomial `Qc` whose non-roots carry the independence
+(`CaseI.lean:880–883`). So the engine *re-instantiated on the projected family* — the substance
+§1.18 assigned to T2b — is **already green and already wired** (N-22b-2, landed). `htransport`
+itself only needs the single witness placement. T2b as a separate node dissolves.
+
+**Finding 2 — the witness placement may be the degenerate member `q₀^deg` itself; no generic
+placement is required.** Because N-22b-2 builds `Qc` from *any* placement where the projected rows
+are independent, KT's degenerate collapsed realization `p2` (`q₀^deg`: H-side bodies ≡ `Qcf.normal
+r`) is a valid witness for `htransport` — *provided* its projected surviving rows are independent.
+KT's lower-semicontinuity ("generic ≥ degenerate", eq. 6.9) was needed in the paper because KT
+states Claim 6.4 about the *generic* `p_{E∖E′}`; the project's `htransport` is existential over the
+placement, so it can name the degenerate member directly. This is the §1.5/N6-G1a pattern again
+(a seed property need not survive to a generic output — here we never go to a generic output).
+
+**Finding 3 — the irreducible crux is the collapse-relabel row reproduction (was T2a), and it does
+*not* dissolve.** With `q₀^deg` as the witness, the remaining content is: the projected surviving
+rows of `ofNormals Gc ends q₀^deg` (uncollapsed, columns over `V(G)`) are independent, read off
+`Qcf`'s rigid rows (collapsed, columns over `(V(G)∖V(H))∪{r}`). The relabel is genuine: a surviving
+edge `e=uv` with `u∈V(H)` carries `hingeRow u v r` (reads `S u − S v`) in the uncollapsed framing
+but `hingeRow (f u) (f v) r = hingeRow r (f v) r` (reads `S r − S (f v)`) in `Qcf`; the exterior
+projection `extProj V(H)` (which **zeroes the `V(H)` columns**, incl. `u`, `CaseI.lean:720`) is what
+reconciles them — `(extProj V(H)).dualMap (hingeRow u v r)` reads only the surviving column `v`,
+matching `Qcf`'s `r`-redirected row on the surviving columns. This IS §1.7's irreducibility (the
+collapse-normal mismatch) and KT eq. (6.7)'s family embedding; it is research-shaped. So the
+walling risk **moves from T2b to the (renamed) collapse-relabel reproduction node** — the
+projection is load-bearing here exactly as §1.14 said, but for row-*reproduction*, not for the
+block-triangular split.
+
+**Revised cut (4 nodes, was 5).** `Gc := G.deleteEdges E(H)`, `f := collapseTo r V(H)`,
+`sc := (V(G)∖V(H))∪{r}`, `D = screwDim k`.
+
+- **U1 — degenerate placement bridge `q₀^deg`** (KT's `p2`, eq. 6.7 with the H-side collapsed).
+  Build `q₀^deg : α × Fin(k+2) → ℝ` agreeing with `Qcf`'s normal-coordinates on the surviving bodies
+  `V(G)∖V(H)` (via `Qcf.normal ∘ f`) and assigning the single representative normal `Qcf.normal r`
+  to every body of `V(H)`. *Plumbing; low risk (~40–80 LoC).* (Cf. T1, but no genericity/moment-curve
+  needed — the witness is the degenerate member, not a generic seed.)
+- **U2 — collapse-relabel projected-row reproduction** *(the crux; was T2a + the live part of T2b)*.
+  For each surviving link `e=uv ∈ Gc` (i.e. `e ∈ E(G)∖E(H)`), the projected uncollapsed row
+  `(extProj V(H)).dualMap ((ofNormals Gc ends q₀^deg).panelRow ends e)` **equals** the analogous
+  projected row of `Qcf` over `Gc.map f`, via `Graph.IsLink.map` (forward link transport, fork
+  `Map.lean:71`, already used at `Contraction.lean:54`) + a `panelSupportExtensor`-equality
+  (`panelSupportExtensor (Qcf.normal r) (Qcf.normal v)` in both framings) + `extProj` killing the
+  differing interior `V(H)` columns. **Research-shaped; the one node that could wall** — the genuine
+  algebraic-independence content of KT Claim 6.4 / eq. (6.9), now isolated to a row-equality across
+  the relabel rather than a semicontinuity inequality. *(~120–180 LoC; medium–high risk — the
+  `IsInfinitesimallyRigidOn`/`panelRow`-defeq-across-graph-swaps caution applies, FRICTION; **open
+  here first on resume, may sub-cut**.)*
+- **U3 — extract the independent surviving subfamily from `Qcf`'s rigidity, transport via U2.**
+  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` on `Qcf` (rigid on its full
+  `V(Gc.map f)`) yields the size-`≥ D(|sc|−1)` independent subfamily `t` + `hsupp`; U2's row-equality
+  carries the independence to the projected uncollapsed rows at `q₀^deg`. *Green-reuse + the U2
+  transport; low–medium risk (~50–90 LoC).* (The §1.18 T3.)
+- **U4 — assemble `htransport`, delete it from the composer, flip.** Compose U1–U3 into the
+  `htransport` shape with `q₀ := q₀^deg`, remove `htransport` from `case_I_realization`'s `hbundle`
+  (now in-proof from the IH `Qcf`), `\leanok` `lem:claim-6-4`, run the phase-close ceremony. *Plumbing
+  (mirror of N-22b-3 in reverse); low risk (~30–50 LoC).* (The §1.18 T4.)
+
+**Net effect of the re-recon.** The cut shrinks 5→4 nodes and ~350–550 → ~240–400 LoC; the
+lower-semicontinuity worry (the §1.18 "one walling risk") is **retired** — it is already green
+infrastructure (N-22b-2), and the project's existential `htransport` sidesteps KT's
+generic-placement framing by naming the degenerate member. The walling risk re-localizes to **U2**
+(the collapse-relabel projected-row reproduction), which is the faithful Lean shape of §1.7's
+irreducible collapse-normal mismatch / KT eq. (6.7). The phase stays **Phase 22b, paused**; resume
+with `/coordinate-phase 22b`, **opening on U2** (the one research-shaped node) before scheduling
+U1/U3/U4 as builds, then U1 → U2 → U3 → U4. Unchanged: 22b does not fold into 22c+/23.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
