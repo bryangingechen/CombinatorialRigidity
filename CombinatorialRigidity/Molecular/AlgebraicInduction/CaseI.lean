@@ -882,6 +882,75 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj [F
   refine ⟨Q, fun hQz => hQ₀ (by rw [hQz, map_zero]), fun q hq => ?_⟩
   exact ⟨t, hsupp, hcount, by simpa only [hgD_def, hg_def, hDdef] using hQ q hq⟩
 
+/-- **KT Claim 6.4 — the contraction leg's rank transports across the collapse map to a
+single-placement exterior-projected surviving-row witness** (`lem:claim-6-4`, the N-22b-1
+rank-transport; Katoh–Tanigawa 2011 §6.2/§5.1, eqs.\ (6.5)/(6.9), Phase 22b).
+
+This is the genuinely-new analytic content of Case I — the one obligation Phase 22a left
+green-modulo (the composer `case_I_realization`'s `hclaim64` reduces to *this* witness followed by
+the bounded packaging `exists_rankPolynomial_of_rigidOn_linking_set_proj`, N-22b-2). KT's eq. (6.3)
+block decomposition of `R(G,p)` puts the rigid block `H` in one block and the parent **restricted to
+the surviving edges** `R(G,p; E∖E′, V∖V′)` in the other; the surviving-edge subgraph is
+`G.deleteEdges E(H)` (a *literal* `≤ G` subgraph, `edgeSet_rigidContract`), and the collapse to the
+representative body `v∗ = r` lives entirely on the *placement* side (eq. (6.7)'s `p_{E∖E′}`).
+
+KT **Claim 6.4** (eq. (6.9)) is the rank-transport `rank R(G/E′, p_{E∖E′}) ≥ rank R(G/E′, p2)`:
+because the joint panel coefficients are algebraically independent over ℚ (general position — the GP
+conjunct of the contraction's *generic* IH), the `p_{E∖E′}`-realization of `G ＼ E(H)` attains the
+contraction's rank, **restricted to the surviving body columns** `V∖V′ = V(G)∖V(H)` (the
+exterior-column projection `D = (extProj V(H)).dualMap`). In the project's exterior-projected
+row-independence language (design doc §1.16, the `Qc`-non-root form) this is: there is one parent
+seed `q₀` and a subfamily `t` of surviving-edge links whose **exterior-projected** panel rows
+`(extProj V(H)).dualMap ∘ panelRow ends` are linearly independent at `q₀`, of size `≥ D(|sc|−1)`
+(`sc = (V(G)∖V(H)) ∪ {r}`, the surviving body set).
+
+**This rank-attainment across the relabel is the last research-shaped Case-I brick.** No green brick
+converts the contraction's relabelled-graph rigidity into the original-endpoint surviving-row
+independence: the collapse map `collapseTo r V(H)` redirects each surviving edge's endpoints (hence
+which panel normals its support extensor uses), so the green linking-edge brick
+(`infinitesimalMotions_eq_of_isLink_span_supportExtensor`, which demands a span-equality of the
+support extensors) is *inapplicable* (design doc §1.7 irreducibility — the `hspan` fails), and the
+genericity device of Phase 21b does not discharge it either (a distinct obligation, the
+collapse-normal mismatch). Recovering the surviving rank at the *un-collapsed* endpoints **is** the
+algebraic-independence statement of Claim 6.4. It is therefore carried here as the explicit
+hypothesis `htransport`, in the established Phase-21b green-modulo `h…` idiom (exactly as Cases I/II
+carried the genericity device before Phase 21b, and as the superseded motion-space form
+`rigidContract_rigidity_transport` carried G3a's `∃`-seed version): `lem:claim-6-4` /
+`lem:case-I-realization` stay green-modulo, but the obligation is tracked as a single visible
+hypothesis pinned to KT eq. (6.9) rather than buried in a `sorry` or an `axiom`, and the brick does
+the surrounding plumbing only.
+
+Given `htransport`, the brick is a thin repackaging: it extracts the contraction's generic IH
+`⟨Q, hQg, hQgp, hQrig⟩` and forwards the seed `q₀` and the witnessed exterior-projected
+surviving-row independence in the exact shape the bounded packaging
+`exists_rankPolynomial_of_rigidOn_linking_set_proj` (N-22b-2) consumes for its `hsupp`/`hcount`/
+`hindep` hypotheses (over `G.deleteEdges E(H)` at the parent selector `ends`, projecting away the
+rigid-block columns `V(H)`). Composing the two (N-22b-3) discharges the composer's `hclaim64`. -/
+theorem PanelHingeFramework.rigidContract_exterior_rank_transport [Finite α] [Finite β]
+    (G H : Graph α β) (ends : β → α × α) {r : α}
+    (hQ : PanelHingeFramework.HasGenericFullRankRealization k (G.rigidContract H r))
+    (htransport : ∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
+      Q.IsGeneralPosition →
+      Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
+      ∃ q₀ : α × Fin (k + 2) → ℝ,
+        ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+          (∀ i ∈ t, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
+            (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
+          screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) ≤ Nat.card t ∧
+          LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
+            ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q₀).toBodyHinge.panelRow
+              ends (i : β × _ × _)))) :
+    ∃ q₀ : α × Fin (k + 2) → ℝ,
+      ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+        (∀ i ∈ t, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
+          (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
+        screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) ≤ Nat.card t ∧
+        LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
+          ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q₀).toBodyHinge.panelRow
+            ends (i : β × _ × _))) :=
+  let ⟨Q, hQg, hQgp, hQrig⟩ := hQ
+  htransport Q hQg hQgp hQrig
+
 /-- **An independent family of rigidity rows of size `≥ D(|V(G)|−1)` forces rigidity on `V(G)`**
 (`lem:case-I-realization`, the device-row-addition closure; Katoh–Tanigawa 2011 §6.2 eq. (6.3),
 Phase 22a). The block-triangular reframing's device-side closure (design doc §1.14): rather than

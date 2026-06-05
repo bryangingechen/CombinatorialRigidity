@@ -1196,6 +1196,56 @@ lands in (a rank-polynomial non-root, intersected into the shared seed), matchin
 the recurring trap (`htransportGP` → `hclaim64`-∀-GP). See `DESIGN.md` *Match the source's
 argument structure …* and `notes/FRICTION.md` *[process] Phase 22a …*.
 
+### 1.17 N-22b-1 re-recon — the rank-transport reduces to a single-placement exterior-projected surviving-row witness; the analytic core is `htransport` (KT eq. 6.9), the brick is plumbing (2026-06-05)
+
+N-22b-2 (the bounded `D∘panelRow` producer `exists_rankPolynomial_of_rigidOn_linking_set_proj`)
+landed; the remaining red of Claim 6.4 is N-22b-1, the **rank-transport across the collapse map**.
+Per `DESIGN.md` *Constructibility recon … → design the LAYER*, this re-recon (decision-support,
+verified vs. the live N-22b-2 signature + the composer's `hclaim64` at `CaseI.lean:1187–1198`)
+settles its layer before the build.
+
+**What N-22b-1 must produce, traced through to N-22b-2's hypotheses.** N-22b-2 consumes
+`(t, q₀, hsupp, hcount, hindep)` and produces the `Qc`-non-root `∃ Qc …` form of `hclaim64`. So
+N-22b-1's job is exactly to supply that tuple from the contraction's generic IH `Q` (graph
+`= G.rigidContract H r`, GP, rigid on `V(G.rigidContract H r)`): **one** parent seed `q₀`, a
+subfamily `t` of surviving-edge (`G ＼ E(H)`) links with `screwDim k * (|sc|−1) ≤ |t|`
+(`sc = (V(G)∖V(H)) ∪ {r}`), whose **exterior-projected** rows
+`(extProj V(H)).dualMap ∘ panelRow ends` are independent **at `q₀`**. This is the `∃`-one-placement
+core (§1.16, the dischargeable Claim-6.4 form), not a `∀`-quantified one.
+
+**The constructibility check: the analytic core is irreducible (§1.7 corroborated against the
+projected form).** The contraction IH is rigidity of the *abstract relabelled* graph
+`G.rigidContract H r` at its own seed. No green brick converts that into surviving-row independence
+on `G ＼ E(H)` at the un-collapsed endpoints, because `collapseTo r V(H)` redirects each surviving
+edge's endpoints, so its support extensor uses *different panel normals* in `rigidContract` vs.
+`G ＼ E(H)` — the green linking-edge brick
+`infinitesimalMotions_eq_of_isLink_span_supportExtensor` demands a support-extensor span-equality
+(`hspan`) that fails, and the Phase-21b genericity device addresses a different obligation (it
+certifies a corank off independent rows of *one* framework; it does not bridge the collapse-normal
+mismatch). Recovering the surviving rank at the un-collapsed endpoints across the relabel **is** the
+algebraic-independence statement of KT Claim 6.4 / eq. (6.9) — irreducibly research-shaped. So the
+escalation fires (per §1.7's authorization, the Phase-21b green-modulo `h…` idiom): carry the
+**projected-independence-at-`q₀` witness** as the explicit hypothesis `htransport`.
+
+**Decision: N-22b-1 = the first buildable sub-brick `rigidContract_exterior_rank_transport`,
+carrying `htransport` (LANDED this commit).** It is the faithful exterior-projected analogue of
+G3a's superseded motion-space `rigidContract_rigidity_transport` (§1.7): extract the IH
+`⟨Q, hQg, hQgp, hQrig⟩`, forward `htransport`'s `(q₀, t, hsupp, hcount, hindep)` in N-22b-2's exact
+shape. Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`), no `sorry`. The brick is the
+surrounding plumbing only; the irreducible content is one visible hypothesis pinned to KT eq. (6.9).
+N-22b-3 (the one-step wire-up) composes `rigidContract_exterior_rank_transport` (witness `q₀`/`t`) →
+`exists_rankPolynomial_of_rigidOn_linking_set_proj` (packaging) to discharge the composer's
+`hclaim64` and flip `lem:claim-6-4` / `lem:case-I-realization` fully green.
+
+**Why this is the smallest honest first commit (not the whole transport in one shot).** The only
+genuinely-new content is the algebraic-independence rank-attainment, and §1.7 already verified it
+admits no green-brick reduction; stating it as the narrow `htransport` hypothesis is the established
+green-modulo discharge of the layer's research-shaped step, *not* a deferral of routine assembly
+(the surrounding plumbing — IH extraction, witness forwarding — is genuinely the only other content,
+and it lands green here). A future pass may discharge `htransport` itself (an abstract
+algebraic-independence rank-preservation brick + the collapse-normal bookkeeping), but that is a
+separate, deeper undertaking; the brick above is honest and complete as the green-modulo node.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
@@ -1223,7 +1273,9 @@ Built once, reused by all cases. **Green** unless marked.
 | Count bridges (`V(G)`-relative N1–N3) | `finrank_pinnedMotionsOn_vertexSet`, `exists_relative_full_count_ofParam`, `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` | GREEN | all |
 | **Lemma 2.1 (extensor independence)** | `omitTwoExtensor_linearIndependent` (`Extensor.lean:493`) | GREEN — **hyp `AffineIndependent ℝ p`** | Case III (the missing row) |
 | **(G2) general-position factor** | `exists_generalPosition_polynomial` (+ `pairLeadingMinorPoly`, `pair_linearIndependent_of_leading_minor_ne_zero`) | **GREEN** (2026-06-04; off-diagonal product of leading `2×2` minor polynomials) | Case I coupling |
-| **Claim 6.4 collapse transport (G3a)** | `PanelHingeFramework.rigidContract_rigidity_transport` | **GREEN-MODULO** (2026-06-05; carries KT Claim 6.4 / eq. (6.9) as the explicit hypothesis `htransport` — the rank-transport across the collapse map, irreducible because the relabel changes the surviving-edge normals; axiom-clean, no `sorry`) | Case I composer (the contraction leg) |
+| **Claim 6.4 collapse transport (G3a, superseded)** | `PanelHingeFramework.rigidContract_rigidity_transport` | **GREEN-MODULO** (2026-06-05; the motion-space `∃`-seed form of Claim 6.4 / eq. (6.9), carried as `htransport`; superseded by the block-triangular reframe — kept as a library brick) | (none; superseded) |
+| **Claim 6.4 rank transport (N-22b-1)** | `PanelHingeFramework.rigidContract_exterior_rank_transport` (`CaseI.lean`) | **GREEN-MODULO** (2026-06-05; the §1.16 exterior-projected-row form of Claim 6.4 / eq. (6.9), carries `htransport` = the single-placement projected surviving-row independence; feeds N-22b-2 packaging; axiom-clean, no `sorry`) | Case I composer (N-22b-3 wire-up) |
+| **Claim 6.4 packaging (N-22b-2)** | `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj` (`CaseI.lean`) | GREEN (2026-06-05; the bounded `D∘panelRow` producer variant) | Case I composer (N-22b-3 wire-up) |
 | **`prop:rigidity-matrix-prop11` `hub`** | carried as hypothesis (`:2527`) | RED (multi-commit, Phase-19 partition count) | Prop 1.1 only |
 
 **Reading:** the entire device + witness-transfer + splice + count + N4

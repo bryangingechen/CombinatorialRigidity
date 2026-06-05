@@ -28,12 +28,23 @@ opening recon (this commit) is landed:** the §1.16 discharge path (a)+(b) is
 decomposed into the node cut below (N-22b-1 research / N-22b-2 bounded / N-22b-3
 wire-up), the within-22b cut and the 22c+ renumbering are settled (see *Blockers /
 settled*), and the feasibility of brick (b) is re-verified against the live engine.
-**N-22b-2 (the bounded `D ∘ panelRow` producer variant) is now also landed** —
+**N-22b-2 (the bounded `D ∘ panelRow` producer variant) is landed** —
 `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set_proj` in
 `AlgebraicInduction/CaseI.lean`, axiom-clean (`propext`/`Classical.choice`/`Quot.sound`
-only), build + lint warning-clean. Nothing is mid-stream. **The next concrete commit
-is the research-shaped rank-transport N-22b-1** (the `∃`-one-placement analytic core
-the producer packages), per the build order below.
+only), build + lint warning-clean. **N-22b-1 (the research-shaped rank-transport) is now
+also landed** — `PanelHingeFramework.rigidContract_exterior_rank_transport` in
+`AlgebraicInduction/CaseI.lean`: the §1.16 exterior-projected-row form of KT Claim 6.4
+/ eq. (6.9), carrying the irreducible algebraic-independence content as the explicit
+hypothesis `htransport` (the established Phase-21b green-modulo `h…` idiom — the
+faithful exterior-projected analogue of G3a's superseded motion-space
+`rigidContract_rigidity_transport`); the brick extracts the contraction's generic IH and
+forwards the `(q₀, t, hsupp, hcount, hindep)` witness in N-22b-2's exact shape. The
+math-first re-recon settled the layer (design doc §1.17: the analytic core admits no
+green-brick reduction, so it is carried as `htransport`; the brick is plumbing only).
+Axiom-clean, build + lint warning-clean. Nothing is mid-stream. **The next concrete
+commit is the one-step wire-up N-22b-3** (compose N-22b-1 → N-22b-2 to discharge the
+composer's `hclaim64`, then flip `lem:claim-6-4` + `lem:case-I-realization` fully green),
+per the build order below.
 
 ### Opening recon — feasibility re-verification (this commit)
 
@@ -55,7 +66,8 @@ Confirmed against the live Lean before settling the cut:
   codomain. **No new matrix-rank theory.** This is exactly the §1.16 "no wall" claim,
   now checked against the engine signature rather than asserted.
 - **The composer's `hclaim64` shape is the discharge target verbatim.**
-  `case_I_realization`'s `hbundle` third conjunct (CaseI.lean:1041–1058) is, for each
+  `case_I_realization`'s `hbundle` third conjunct (CaseI.lean:1187–1198 after the N-22b-1
+  insertion) is, for each
   `Q : PanelHingeFramework k α β` realizing `G.rigidContract H r` at its rank, exactly
   `∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, (links in G ＼ E(H)) ∧ |rsc| ≥ D(|sc|−1) ∧
   LinearIndependent ℝ (i ↦ (extProj V(H)).dualMap (panelRow ends i))`. N-22b-3 must
@@ -149,17 +161,26 @@ N-22b-3 is the one-step wire-up + flip.
   `Module.Dual ℝ (α → ScrewSpace k)`, reusing the documented anti-`whnf` abstract-mirror
   lesson (FRICTION *`Basis.linearIndependent.map'` … blows up at `whnf`* → *General
   lesson*). Axiom-clean; build + lint warning-clean.
-- [ ] **N-22b-1 — rank-transport lemma** (research-shaped; the genuine analytic
-  content). The algebraic-independence rank-transport across the collapse map: from the
-  contraction `G.rigidContract H r`'s generic IH (`HasGenericFullRankRealization`),
-  produce **one parent placement `q₀`** at which the surviving block of `G ＼ E(H)`,
-  exterior-projected onto the `V(G)∖V(H)` columns, attains independent rank `≥ D(|sc|−1)`
-  (KT §5.1 / eqs. (6.5)/(6.9); the collapse redirects surviving-edge normals, so the
-  green linking-edge brick does not apply — §1.7 irreducibility). This is the
-  `∃`-one-placement core that N-22b-2 packages into the `Qc`-non-root form. May
-  decompose on contact (e.g. an abstract algebraic-independence rank-preservation
-  brick + the collapse-normal bookkeeping); re-recon at open per `DESIGN.md`
-  *Constructibility recon … → design the LAYER*.
+- [x] **N-22b-1 — rank-transport lemma** (research-shaped; the genuine analytic
+  content) — **LANDED.** `PanelHingeFramework.rigidContract_exterior_rank_transport` in
+  `AlgebraicInduction/CaseI.lean`. The algebraic-independence rank-transport across the
+  collapse map: from the contraction `G.rigidContract H r`'s generic IH
+  (`HasGenericFullRankRealization`), produce **one parent placement `q₀`** + a witnessed
+  subfamily `t` of `G ＼ E(H)`-links at which the surviving block, exterior-projected onto
+  the `V(G)∖V(H)` columns, attains independent rank `≥ D(|sc|−1)` (KT §5.1 / eqs.
+  (6.5)/(6.9)) — i.e. exactly the `(q₀, t, hsupp, hcount, hindep)` tuple N-22b-2 consumes.
+  The **math-first re-recon** (design doc §1.17) settled the layer: the collapse redirects
+  surviving-edge normals, so the green linking-edge brick
+  `infinitesimalMotions_eq_of_isLink_span_supportExtensor` does not apply (its `hspan`
+  fails) and the Phase-21b genericity device addresses a distinct obligation (§1.7
+  irreducibility, corroborated against the projected form). The irreducible
+  algebraic-independence content is therefore carried as the explicit hypothesis
+  `htransport` (Phase-21b green-modulo `h…` idiom; the faithful exterior-projected analogue
+  of G3a's superseded motion-space `rigidContract_rigidity_transport`); the brick extracts
+  the IH `⟨Q, hQg, hQgp, hQrig⟩` and forwards the witness — plumbing only. Axiom-clean
+  (`propext`/`Classical.choice`/`Quot.sound`), no `sorry`; build + lint warning-clean. A
+  future pass may discharge `htransport` itself (an abstract algebraic-independence
+  rank-preservation brick + the collapse-normal bookkeeping), a separate deeper undertaking.
 - [ ] **N-22b-3 — wire-up / flip** (one step). Discharge `case_I_realization`'s
   `hclaim64` by composing N-22b-1 (witness `q₀`) → N-22b-2 (`Qc`-non-root packaging),
   producing the `hbundle` third conjunct verbatim. Then flip: drop the `hclaim64`
@@ -168,11 +189,11 @@ N-22b-3 is the one-step wire-up + flip.
   on each user-facing surface (à la 21b — see `CLAUDE.md` *When this commit closes a
   phase*).
 
-**Build order:** N-22b-2 (bounded, first buildable) → N-22b-1 (research-shaped) →
-N-22b-3 (flip). N-22b-2 leads because it is the bounded brick whose feasibility is
-already re-verified; it can land and be unit-checked against a stub witness before
-N-22b-1's analytic core is in place. (Mirrors 22a's "buildable bricks before the
-research-shaped composer" ordering.)
+**Build order:** N-22b-2 (bounded, first buildable) ✓ → N-22b-1 (research-shaped) ✓ →
+N-22b-3 (flip) — next. N-22b-2 led because it is the bounded brick whose feasibility was
+already re-verified; N-22b-1 then landed the analytic core (carried as `htransport`).
+Only the one-step wire-up + flip (N-22b-3) remains. (Mirrors 22a's "buildable bricks
+before the research-shaped composer" ordering.)
 
 ## Blockers / settled in the opening recon
 
@@ -198,27 +219,36 @@ research-shaped composer" ordering.)
 
 ## Hand-off / next phase
 
-**Opening recon + N-22b-2 (bounded producer) landed.** The next concrete commit
-opens **N-22b-1** — the research-shaped rank-transport across the collapse map (KT §5.1
-/ eqs. (6.5)/(6.9)): from the contraction `G.rigidContract H r`'s generic IH, produce
-**one parent placement `q₀`** at which the surviving block of `G ＼ E(H)`,
-exterior-projected onto the `V(G)∖V(H)` columns, attains independent rank `≥ D(|sc|−1)`
-— i.e. exactly the `hindep` (+ `t`/`hsupp`/`hcount`) hypotheses that N-22b-2 now
-consumes. Since this node is research-shaped, start with a **math-first re-recon** at
-open (per `DESIGN.md` *Constructibility recon … → design the LAYER*): it likely
-decomposes into an abstract algebraic-independence rank-preservation brick + the
-collapse-normal bookkeeping (§1.7 irreducibility), so the smallest concrete first
-commit is *that re-recon + the first buildable sub-brick it identifies*, not the whole
-rank-transport in one shot. N-22b-3 (the one-step wire-up + `lem:claim-6-4` flip)
-follows once N-22b-1 lands `q₀`.
+**N-22b-2 + N-22b-1 landed (both green-modulo bricks of Claim 6.4 in place).** The next
+concrete commit is the **one-step wire-up + flip N-22b-3**: discharge the composer
+`case_I_realization`'s `hclaim64` by composing
+`rigidContract_exterior_rank_transport` (N-22b-1: from the contraction's generic IH `Q`,
+its witness `q₀` + subfamily `t`) → `exists_rankPolynomial_of_rigidOn_linking_set_proj`
+(N-22b-2: `Qc`-non-root packaging at `G := G.deleteEdges E(H)`, `proj := V(H)`,
+`m := screwDim k * (|sc|−1)`), producing the `hbundle` third conjunct verbatim. Then
+flip: drop the `hclaim64` hypothesis from `case_I_realization` (or specialise it to the
+discharged form — note N-22b-1 still carries the `htransport` hypothesis, so the *flip*
+either threads `htransport` up to the composer or discharges it; confirm at open whether
+`lem:claim-6-4` goes fully green or stays green-modulo `htransport`). On a full green:
+`\leanok` `lem:claim-6-4` + add its `\lean{…}` pin, drop the green-modulo marker on each
+user-facing surface (à la 21b — see `CLAUDE.md` *When this commit closes a phase*), and
+`checkdecls` per `blueprint/CLAUDE.md`.
+
+**Watch-point for N-22b-3.** N-22b-1 and N-22b-2 are stated against a *free* `ends`
+selector, but the composer manufactures `ends := G.endsOf` and binds
+`G := G.deleteEdges E(H)`, `proj := V(H)`. Confirm the `IsLink`-on-`G ＼ E(H)` support
+shapes and the `screwDim k * (sc.ncard − 1)` counts line up verbatim with `hclaim64`'s
+conjunct (`CaseI.lean:1187–1198`) when the two bricks are composed at those bindings —
+the count and `D = (extProj V(H)).dualMap` already match by construction (verified during
+the §1.17 re-recon), so the wire-up should be a clean `obtain`/`exact`.
 
 Cross-references rather than re-derivation: `notes/Phase22-realization-design.md`
-§1.16 (the `Qc`-non-root form + the engine "no wall"), §1.14 (the block-triangular
-reframe), §1.7 (collapse-transport irreducibility); `notes/Phase22a.md` *Hand-off*
+§1.17 (the N-22b-1 layer re-recon + the `htransport` decision), §1.16 (the `Qc`-non-root
+form + the engine "no wall"), §1.14 (the block-triangular reframe), §1.7
+(collapse-transport irreducibility); `notes/Phase22a.md` *Hand-off*
 (*22b target — Claim 6.4*) + *Blockers*; the live `hclaim64` shape at
-`CaseI.lean:1041–1058`; the parent brick `exists_rankPolynomial_of_rigidOn_linking_set`
-at `GenericityDevice.lean:1285` and its engine at
-`Mathlib/LinearAlgebra/Matrix/Rank.lean:474`; `DESIGN.md` *Match the source's argument
-structure, not just its conclusion* (incl. the `∀`-GP-vs-generic-locus sharpening).
-Follow `CLAUDE.md` *When this commit closes a phase* when `lem:claim-6-4` /
-`lem:case-I-realization` flip fully green.
+`CaseI.lean:1187–1198`; the two landed bricks
+`rigidContract_exterior_rank_transport` + `exists_rankPolynomial_of_rigidOn_linking_set_proj`
+in `CaseI.lean`; `DESIGN.md` *Match the source's argument structure, not just its
+conclusion* (incl. the `∀`-GP-vs-generic-locus sharpening). Follow `CLAUDE.md` *When this
+commit closes a phase* when `lem:claim-6-4` / `lem:case-I-realization` flip fully green.
