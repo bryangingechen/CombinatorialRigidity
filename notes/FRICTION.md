@@ -188,7 +188,7 @@ housekeeping pass once their resolution is fully indexed.
   the parent's `ends`. The full coupling stays red.
 - **Status:** resolved (recon finding recorded; the bricks it surfaced are the path forward). Rule →
   `DESIGN.md` *Constructibility recon before scheduling a producer build* (a fresh application: read the
-  *quantifier domain* of a brick's hypotheses, not just its conclusion shape). See `notes/Phase22.md`
+  *quantifier domain* of a brick's hypotheses, not just its conclusion shape). See `notes/Phase22a.md`
   *Blockers* / *Hand-off*.
 
 ### [resolved] `[matroid]` `H.cycleMatroid = G.cycleMatroid ↾ E(H)` for `H ≤ G` — route through `cycleMatroid_isRestriction_of_le` + `IsRestriction.exists_eq_restrict`, then pin the restriction set by ground equality

@@ -1,14 +1,14 @@
 # Phase 22 — realization-layer design (decision-support doc)
 
 **Status:** design pass, not a build plan. Produced 2026-06-04 after the
-constructibility recon (FRICTION dead-end #5; `notes/Phase22.md` *Blockers*)
+constructibility recon (FRICTION dead-end #5; `notes/Phase22a.md` *Blockers*)
 found the Case-I coupling has two real gaps **(G1)/(G2)** the type-level plan
 was blind to. The user paused per-commit Lean work to decide the **motive
 question** — should `PanelHingeFramework.HasFullRankRealization` carry general
 position (KT's "nonparallel"). The motive decision landed (the **two-motive
 split**, §1.4, green); §**1.5** (2026-06-04) is the follow-on **generic-motive
 recon** settling the N6-composer IH-shape gap as a **hybrid route** and cutting
-it into the buildable N6-G1/G2/G3 nodes (the live to-do is `notes/Phase22A.md`
+it into the buildable N6-G1/G2/G3 nodes (the live to-do is `notes/Phase22a.md`
 *Lemma checklist*). No Lean / `\leanok` / blueprint edits accompany this doc.
 
 Primary sources read for this pass: KT 2011 §5–§6.4 (`.refs/`, printed pp.
@@ -266,7 +266,7 @@ through coupling ⟹ `…_couple_generic`) → **re-recon `N6-G2`** → `N6-G3`
 (composer assembly: dispatch on `G.Simple`, feed N4 + the two transported
 generic IHs into `…_couple_generic`, forget down for non-simple via
 `hasFullRankRealization_of_generic`). The node list and statuses are in
-`notes/Phase22A.md` *Lemma checklist*.
+`notes/Phase22a.md` *Lemma checklist*.
 
 ---
 
@@ -346,7 +346,7 @@ Nodes (composing the green infra of §2):
   single commit: the composer's adapter needs each leg in
   `HasGenericFullRankRealization`, which (i) the coupling does not produce (N6-G1,
   Route 2, buildable) and (ii) `minimal_kdof_reduction` does not thread (N6-G2,
-  Route 1, multi-commit, needs-further-recon). See §1.5 + `notes/Phase22A.md`.
+  Route 1, multi-commit, needs-further-recon). See §1.5 + `notes/Phase22a.md`.
 
 **Build order (Track A), updated 2026-06-04 (everything before N6 is green):**
 §1 motive decision ✓ → N6a ✓ → (G2) ✓ → N6b/N6c coupling ✓ → **N6 composer

@@ -1,7 +1,7 @@
-# Phase 22A — Case I realization (work log)
+# Phase 22a — Case I realization (work log)
 
 **Status:** in progress (opened as Phase 22 on 2026-06-04; split into sub-phase
-22A on 2026-06-04).
+22a on 2026-06-04).
 
 Stratum 5 of the molecular-conjecture program, continued: **Track A only** — the
 Theorem-5.5 *Case I* realization producer that the Phase-21b genericity device
@@ -10,21 +10,21 @@ feeds. **Target:** `lem:case-I-realization` (the N6 composer) green, discharging
 
 The over-broad Phase 22 (which bundled Case I, Case III at `d=3`, and the
 `prop:rigidity-matrix-prop11` + `thm:theorem-55` assembly) was split using
-sub-lettering on 2026-06-04: **22A** is this focused Case-I sub-phase; the
+sub-lettering on 2026-06-04: **22a** is this focused Case-I sub-phase; the
 remaining territory (Case III at `d=3` + the `d=3` assembly) is parked as
-**22B+** (a single planning placeholder, expected to split into multiple
-sub-phases once its shape is clearer; the cut is deferred until 22A closes). The
-integer phase numbers 23–26 stay stable. See *Deferred to 22B+ (Case III +
+**22b+** (a single planning placeholder, expected to split into multiple
+sub-phases once its shape is clearer; the cut is deferred until 22a closes). The
+integer phase numbers 23–26 stay stable. See *Deferred to 22b+ (Case III +
 assembly)* below.
 
 Phase 21b closed the genericity-free reductions (the accounting iffs, the
 `V(G)`-relative count bridges, the device, the reusable row/glue infra) and
 re-scoped the realization *producers* here after a math-first feasibility pass.
 The KT math for the Case-I producer is worked out in `notes/Phase21b.md`
-*Finding A/B* + *Hand-off to Phases 22–23* — **22A formalizes it, it does not
+*Finding A/B* + *Hand-off to Phases 22–23* — **22a formalizes it, it does not
 re-derive it.**
 
-Forward-mode / **structural-edit** discipline (`blueprint/CLAUDE.md`): 22A
+Forward-mode / **structural-edit** discipline (`blueprint/CLAUDE.md`): 22a
 does *not* open a new blueprint chapter. Its producers (N4/N5/N6) **extend the
 existing `algebraic-induction.tex`** — their nodes are already stubbed red there.
 Program plan / reuse map / citations: `notes/MolecularConjecture.md` *Phase 22*.
@@ -74,11 +74,11 @@ NEEDS FURTHER RECON), **N6-G3** (composer assembly). See *Lemma checklist* / *De
 
 ## Architectural choices made up front
 
-- **Track A is its own sub-phase (22A).** Track A (Case I producer, full-rank,
+- **Track A is its own sub-phase (22a).** Track A (Case I producer, full-rank,
   KT §6.2) is the tractable entry point and independent of Case III; it is what
-  22A scopes. Track B (Case II/III reducible-vertex producer at `d=3`, KT §6.3 +
+  22a scopes. Track B (Case II/III reducible-vertex producer at `d=3`, KT §6.3 +
   §6.4.1) is the crux (Lemma 6.10, ~12 pages, the single largest proof in KT) and
-  is deferred to **22B+** along with the `d=3` assembly — see *Deferred to 22B+
+  is deferred to **22b+** along with the `d=3` assembly — see *Deferred to 22b+
   (Case III + assembly)* below and `notes/MolecularConjecture.md` *Phase 22* for
   the node-by-node plan.
 - **The motive is `V(G)`-relative** (`DESIGN.md` *Realization motive must be
@@ -88,7 +88,7 @@ NEEDS FURTHER RECON), **N6-G3** (composer assembly). See *Lemma checklist* / *De
 
 ## Lemma checklist
 
-**Track A — Case I producer (full-rank, KT §6.2). This is the 22A scope.**
+**Track A — Case I producer (full-rank, KT §6.2). This is the 22a scope.**
 - [x] **N4** `lem:rigidContract-isMinimalKDof` — graph↔matroid contraction-
   minimality bridge: `G.IsMinimalKDof n 0 ∧ H proper rigid ∧ r ∈ V(H) ⟹ (G.rigidContract H
   r).IsMinimalKDof n 0`. **GREEN** (`rigidContract_isMinimalKDof`, axiom-clean, `\leanok`). The
@@ -154,11 +154,11 @@ NEEDS FURTHER RECON), **N6-G3** (composer assembly). See *Lemma checklist* / *De
     polynomials × the (G2) factor, takes a shared non-root (`MvPolynomial.exists_eval_ne_zero`),
     re-derives each leg rigid + GP at it, feeds `hasFullRankRealization_of_splice_ofNormals`.
 
-## Deferred to 22B+ (Case III + assembly)
+## Deferred to 22b+ (Case III + assembly)
 
 The remaining Phase-22 territory is parked as a single light placeholder
-sub-phase **22B+** (planning; expected to split into multiple sub-phases once its
-shape is clearer; the cut is deferred until 22A closes). Node plan + the KT math
+sub-phase **22b+** (planning; expected to split into multiple sub-phases once its
+shape is clearer; the cut is deferred until 22a closes). Node plan + the KT math
 live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 (assembly); the node names are recorded here so nothing is lost:
 
@@ -374,10 +374,10 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
     exposing `G.Simple`; (b) KT Lemma 6.7(ii) for the split-off branch (absent); (c) the Case-I
     contraction-simplicity dichotomy (`Graph.Simple.mono` gives the block free; `G/E(H)` is KT 6.3-vs-6.5).
     Each is its own decomposition pass — re-recon at G2-open, not now.
-- **Track B + assembly are deferred to 22B+** (see *Deferred to 22B+ (Case III + assembly)* above), not
-  open blockers for 22A: the Case II/III producer (eq. 6.12 degenerate placement, one short, + Lemma 6.10
+- **Track B + assembly are deferred to 22b+** (see *Deferred to 22b+ (Case III + assembly)* above), not
+  open blockers for 22a: the Case II/III producer (eq. 6.12 degenerate placement, one short, + Lemma 6.10
   at `d=3`) and the `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip. They re-enter once
-  22A closes.
+  22a closes.
 
 ## Hand-off / next phase
 
@@ -400,13 +400,13 @@ variant (then 2). Do this before dispatching N6-G1 whole.
 **Then, in order:** N6-G1b (thread GP through the leg-restricted chain + coupling ⟹ `…_couple_generic`
 concludes `HasGenericFullRankRealization`) → **re-recon N6-G2** (the generic-motive reduction; multi-commit,
 Phase-20-touching, NEEDS FURTHER RECON — do not dispatch whole; see *Blockers*) → N6-G3 composer assembly
-→ `lem:case-I-realization` green, closing 22A.
+→ `lem:case-I-realization` green, closing 22a.
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an
 `infinitesimalMotions` equality needs a `mem_infinitesimalMotions` round-trip.
 
-*Out of 22A scope.* Track B (Case III at `d=3`) and the `d=3` assembly (the `prop:rigidity-matrix-prop11`
-`hub` brick + `thm:theorem-55` flip) are deferred to **22B+** — see *Deferred to 22B+ (Case III +
+*Out of 22a scope.* Track B (Case III at `d=3`) and the `d=3` assembly (the `prop:rigidity-matrix-prop11`
+`hub` brick + `thm:theorem-55` flip) are deferred to **22b+** — see *Deferred to 22b+ (Case III +
 assembly)* above and `notes/MolecularConjecture.md` *Phase 22* / *Phase 23* for the node plan. The cut of
-22B+ into its own sub-phases happens once 22A closes.
+22b+ into its own sub-phases happens once 22a closes.

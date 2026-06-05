@@ -1045,7 +1045,7 @@ Cases I/II/III against the realization motive), run that layer-level design pass
 *before* the first producer build, not after the per-node recons hit a wall.
 Per-node recon catches local short-by-one-row gaps; only the layer pass catches a
 too-weak shared invariant. Cross-ref: `notes/Phase22-realization-design.md`;
-`notes/Phase22.md` *Decisions*.
+`notes/Phase22a.md` *Decisions*.
 
 **Sharpening: recon the *quantifier domain* of a brick's hypotheses, not just its
 conclusion shape (Phase 22, 2026-06-04).** The N6b coupling was projected as a clean
@@ -1060,7 +1060,7 @@ assembly, read each consumed brick's *hypothesis binders* (especially `∀`-doma
 over the ambient type vs. over a subobject) against the actual inputs the assembly
 supplies — a conclusion-shape match is necessary but not sufficient. Cross-ref:
 `notes/FRICTION.md` *[resolved] The Case-I N6b coupling is NOT a clean assembly …*;
-`notes/Phase22.md` *Decisions* / *Hand-off*.
+`notes/Phase22a.md` *Decisions* / *Hand-off*.
 
 ## Phase Case-naming must match KT's k-bookkeeping
 
