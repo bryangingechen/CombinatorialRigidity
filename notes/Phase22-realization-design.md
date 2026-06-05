@@ -12,8 +12,14 @@ it into the buildable N6-G1/G2/G3 nodes; §**1.6** (2026-06-04) cuts N6-G2 into
 G2a/G2b/G2c (all now green); §**1.7** (2026-06-05) is the **N6-G3 recon**,
 settling the `Gc ≤ G` binding obstruction (the splice's contraction leg is
 `G ＼ E(H)`, not the relabelled `rigidContract`; the collapse lives on the
-placement side as KT's Claim 6.4 transport) and cutting N6-G3 into G3a/G3b/G3c
-(the live to-do is `notes/Phase22a.md` *Lemma checklist*). No Lean / `\leanok` /
+placement side as KT's Claim 6.4 transport) and cutting N6-G3 into G3a/G3b/G3c;
+§**1.8**–§**1.9** (2026-06-05) re-recon G3c (the body-set mismatch; route (a)),
+all green; §**1.10** (2026-06-05) lands G3c-iii's GP-conjunct producer bricks and
+cuts the residual assembly into G3c-iii-a/b; §**1.11** (2026-06-05) is the
+**G3c-iii-a parent-`ends` impedance recon**, settling it as **option (iii)** (the
+producers need only an *edge-restricted* `hends`, supplied by a small
+`ends`-existence side-lemma — verified buildable) and unblocking G3c-iii-b (the
+live to-do is `notes/Phase22a.md` *Lemma checklist*). No Lean / `\leanok` /
 blueprint edits accompany this doc.
 
 Primary sources read for this pass: KT 2011 §5–§6.4 (`.refs/`, printed pp.
@@ -732,6 +738,84 @@ assembly + flip, once `ends` is resolved and the Claim-6.4 bundle is fixed).** T
 half-baked composer (DESIGN.md *Constructibility recon … → Scale-up*). The two bricks are real,
 verified, axiom-clean additions strictly required by the GP conjunct, so they move work forward
 independently of the `ends` resolution.
+
+---
+
+### 1.11 G3c-iii-a re-recon — the parent-`ends` impedance dissolves: the producers need only an *edge-restricted* `hends`, which is constructible from `G` alone; resolution is option (iii), verified buildable (2026-06-05)
+
+§1.10 flagged the **parent-`ends` impedance** as the first of the two residual G3c-iii obstructions
+and labelled it a layer-wide motive/`ends`-convention recon. This section is that recon. **No Lean /
+`\leanok` / blueprint edits accompany it; it is decision-support**, like §1.4–§1.10. Verified against
+the live signatures (`AlgebraicInduction.lean` `theorem_55:2843`, `theorem_55_generic:2899`,
+`HasFullRankRealization:2780`, the body-set generic coupling
+`hasGenericFullRankRealization_of_couple_ofNormals_set:5022`, the linking-set rank polynomial
+`exists_rankPolynomial_of_rigidOn_linking_set:4242`; `Induction.lean` `minimal_kdof_reduction:3594`)
+and a scratch build of the `ends`-existence construction (compiled green, then removed — this is a
+recon commit).
+
+**The impedance, precisely.** Every producer above the base glue takes an *external* endpoint
+selector `ends : β → α × α`. The `theorem_55`/`theorem_55_generic` premises (`hcontract`,
+`hcontractGP`) conclude the **ends-free** motive `HasFullRankRealization k G` /
+`HasGenericFullRankRealization k G` — the realizing framework `Q` carries its own `Q.ends` inside the
+existential, but the *parent* `ends` the producers need is not in the premise shape. So the composer
+must *manufacture* a parent `ends` from the available data (`G`, `G.Simple`, `G.IsMinimalKDof n 0`).
+§1.10 worried `hends : ∀ e : β, G.IsLink e (ends e).1 (ends e).2` (link of **every** `β`-label) is
+unsatisfiable, because `hfresh : ∀ G', ∃ e₀, e₀ ∉ E(G')` (the reduction's standing freshness supply)
+*guarantees* `β` carries non-edges, and `G.IsLink e₀ x y` is false for a non-edge `e₀`.
+
+**Option (ii) ("restrict to `β = E(G)`") is ruled out at the source.** `minimal_kdof_reduction`
+(`Induction.lean:3594`) runs over a **fixed** `β`: the parent `G`, the splitting-off child
+`G.splitOff v a b e₀`, and the contraction IH's `G'` all live in `Graph α β` for the *same* `β`, and
+`splitOff` consumes a *fresh* label `e₀ : β` drawn from `hfresh`. So `β` is intrinsically a label
+*supply* with spare labels — it cannot be the edge type. (i) carrying `ends` in the motive would
+re-type `HasFullRankRealization`/`HasGenericFullRankRealization` and all of `theorem_55`/`_generic`
+across the whole layer — heavy, and unnecessary (see next).
+
+**The impedance dissolves: the producers never actually need the all-`β` `hends`.** Tracing the
+*body-set* producers the composer feeds (not the all-edges `exists_good_realization_ofParam`, which a
+proper-subgraph leg never calls): the body-set generic coupling
+`hasGenericFullRankRealization_of_couple_ofNormals_set:5022` uses its `hends` argument in **exactly
+two places** (lines 5045–5048), both to derive the **edge-restricted** form
+`hendsH/hendsc : ∀ e u v, G·.IsLink e u v → G·.IsLink e (ends e).1 (ends e).2` via
+`Graph.IsSubgraph.isLink_iff`; everything downstream
+(`exists_rankPolynomial_of_rigidOn_linking_set:4242`, the consumer
+`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set:4464`,
+`exists_generalPosition_polynomial`) takes only the edge-restricted `hends` or the witnessed-index
+`hsupp` — *never* the all-`β` form. This is the layer's documented deliberate weakening (the
+infra comment at `:688`–`:701`: "the all-edges form's `hends` is weakened to … a link of every
+*linking* edge … the form a proper-subgraph leg supplies"). So the all-`β` `hends` in the coupling's
+signature is a needless over-strengthening.
+
+**The keystone: an edge-restricted parent `ends` IS constructible from `G` alone** (verified by a
+scratch build, compiled green): for `[Nonempty α]`,
+```lean
+fun e => if h : e ∈ E(G) then ⟨(G.exists_isLink_of_mem_edgeSet h).choose, …⟩
+         else ⟨Classical.arbitrary α, Classical.arbitrary α⟩
+```
+links every edge (`exists_isLink_of_mem_edgeSet` supplies the witness pair per edge; non-edges take a
+default) and so satisfies `∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`. `[Nonempty α]`
+holds whenever `2 ≤ |V(G)|` (the reduction's hypothesis), so it is free at the call site.
+
+**Decision: option (iii), in its sharpest form — relax the producers' parent `hends` to
+edge-restricted and supply `ends` by a small side-lemma.** Two coordinated G3c-iii-b pieces, both
+buildable:
+1. **`exists_ends_of_graph`** (working name; project-internal, `AlgebraicInduction.lean`): from
+   `[Nonempty α]` (or `2 ≤ |V(G)|`) produce `⟨ends, hends_edge⟩` with the edge-restricted property.
+   The scratch above is the proof. (Friction-eligible if `exists_isLink_of_mem_edgeSet.choose`
+   plumbing is awkward; it was not in the scratch.)
+2. **Relax the body-set generic coupling's parent `hends`** from `∀ e, G.IsLink e (ends e).1
+   (ends e).2` to the edge-restricted `∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`
+   (the bare body-set coupling `hasFullRankRealization_of_couple_ofNormals_set` too, for parity). The
+   body's only two uses (lines 5045–5048) already *produce* the edge-restricted form — relaxing the
+   hypothesis to match deletes the `hends e`/`isLink_iff` step and the proof is unchanged otherwise.
+
+**Net.** The G3c-iii-a impedance is **not** the layer-wide motive re-typing §1.10 feared — it is a
+one-lemma + one-signature-relaxation fix, settled by reading the producers' *actual* `hends` usage
+(the recurring *quantifier-domain* sharpening of the recon rule, DESIGN.md *Constructibility recon
+…*). It is resolved once and unblocks every Case-I/II/III producer's `theorem_55`-premise discharge,
+exactly as §1.10 predicted ("resolved once for the whole layer"). G3c-iii-b is now pure (verified)
+assembly modulo the Claim-6.4 bundle (`htransport` + the transversality `hnec` at `q_c`, G3a's
+green-modulo obligation = KT eq. (6.9)).
 
 ---
 
