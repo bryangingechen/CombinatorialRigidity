@@ -1,8 +1,8 @@
 # Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge) (work log)
 
 **Status:** in progress — **discharging `htransport`; U1 + U2 + ALL of U3b LANDED (sound); route (i)
-(motive strengthening) Commits 1+2 of 5 LANDED — next is Commit 3 (the big mechanical re-type of
-`HasGenericFullRankRealization`, design doc §1.24)** (opened 2026-06-05 as the coordinator's Close-C
+(motive strengthening) Commits 1+2+3 of 5 LANDED — next is Commit 4 (discharge `hswap`/`hne_ends`
+from the strengthened bundle + build U3a, design doc §1.24)** (opened 2026-06-05 as the coordinator's Close-C
 of Phase 22a; opening recon + the reduction N-22b-1/2/3 landed 2026-06-05; the T2b math-first re-recon
 landed 2026-06-05; U2 opened + reconciliation core landed 2026-06-05; U1 + the U2 per-edge tail landed
 2026-06-05 as `9098129`; the U3b build-recon corrected 2026-06-05 (design doc §1.22); the U3b
@@ -11,10 +11,12 @@ dual-annihilator assembly landed 2026-06-05 as `6b004b8`; the U3b projected-subf
 landed 2026-06-05 as `8bafe8d`; the U3a build-recon (the alignment is NOT a leaf, design doc §1.23)
 landed 2026-06-05 as `95514b7`; route (i) scope-verification (§1.24) landed 2026-06-05 as `c880b9f`;
 route-(i) Commit 1 (edge-restrict `hasGenericRealization_transport_ends`'s `hne_ends` + the
-`endsOf_fst_ne_snd` distinctness fact) landed 2026-06-05 as `cee260e`; **route-(i) Commit 2 (the
-link-recording bridge lemma `PanelHingeFramework.ofNormals_endsOf_recordsLinks`) landed 2026-06-05,
-this commit**). The phase does *not* close until `htransport` is discharged: `lem:claim-6-4` stays
-red green-modulo it.
+`endsOf_fst_ne_snd` distinctness fact) landed 2026-06-05 as `cee260e`; route-(i) Commit 2 (the
+link-recording bridge lemma `PanelHingeFramework.ofNormals_endsOf_recordsLinks`) landed 2026-06-05
+as `417db77`; **route-(i) Commit 3 (the re-type of `HasGenericFullRankRealization` — add the
+link-recording conjunct + thread it through all 6 producers + the forgetful map + the composer's IH
+consumers) landed 2026-06-05, this commit**). The phase does *not* close until `htransport` is
+discharged: `lem:claim-6-4` stays red green-modulo it.
 
 **Route (i) scope-verified — the motive strengthening is buildable (design doc §1.24, this commit,
 docs-only).** The user decided route (i) (§1.23: add "the realization's `ends` records its own
@@ -126,8 +128,8 @@ in N-22b-2) closes by defeq — `panelRow` for `ofNormals` consults only `normal
 Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`), build + lint warning-clean.
 
 **State of 22b: reduction landed (green-modulo `htransport`); U1 + U2 + ALL of U3b landed (sound);
-route (i) decided + scope-verified; Commits 1+2 of 5 landed (edge-restrict + `endsOf_fst_ne_snd`;
-the link-recording bridge), paused before Commit 3, NOT closed.** The honesty gate
+route (i) decided + scope-verified; Commits 1+2+3 of 5 landed (edge-restrict + `endsOf_fst_ne_snd`;
+the link-recording bridge; the motive re-type), paused before Commit 4, NOT closed.** The honesty gate
 (`blueprint/CLAUDE.md` *Every hypothesis of a `\leanok` node is discharged*) forbids `\leanok` on
 `lem:claim-6-4` while `htransport` is an undischarged load-bearing hypothesis. So `lem:claim-6-4`
 gets its `\lean{}` pins (the two bricks) but **stays red**; `lem:case-I-realization` stays
@@ -141,14 +143,22 @@ crux — §1.22's pin-count + `Z ⊔ W = ⊤` assembly + projected-subfamily ext
 link-recording, so `Q`'s rigidity does not transport to the relabel selector; the same gap is the
 undischarged `H`-leg `hswap` conjunct. **The user decided route (i)** (strengthen the motive); the
 **§1.24 scope-verification recon** confirmed route (i) is buildable as a verified 5-commit
-sequence (the *Discharge plan* below), generic-motive-only. **Commits 1+2 of 5 are now landed**:
+sequence (the *Discharge plan* below), generic-motive-only. **Commits 1+2+3 of 5 are now landed**:
 Commit 1 (`cee260e`) edge-restricted `hasGenericRealization_transport_ends`'s `hne_ends` + added the
-`endsOf_fst_ne_snd` distinctness fact, closing risk (a); **Commit 2 (this commit, Lean) lands the
-link-recording bridge** `PanelHingeFramework.ofNormals_endsOf_recordsLinks` — the canonical-`endsOf`
-realization `ofNormals G G.endsOf q₀` records every link of `G` up to swap, exactly the conjunct the
-strengthened motive will carry and the term every fresh producer hands it. The next concrete commit
-is **Commit 3** (the big mechanical re-type of `HasGenericFullRankRealization`). Nothing is
-mid-stream.
+`endsOf_fst_ne_snd` distinctness fact, closing risk (a); Commit 2 (`417db77`) landed the
+link-recording bridge `PanelHingeFramework.ofNormals_endsOf_recordsLinks`; **Commit 3 (this commit,
+Lean) lands the re-type of `HasGenericFullRankRealization`** — the link-recording conjunct
+`∀ e u v, G.IsLink e u v → ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ swap` is now part of the motive
+`def` (`PanelHinge.lean`), threaded through all six producers, the forgetful map, and the composer's
+IH consumers. Each fresh producer supplies it for free from the new producer-facing helper
+`PanelHingeFramework.ofNormals_recordsLinks_of_hends` (a one-liner off mathlib
+`IsLink.eq_and_eq_or_eq_and_eq` + `ofNormals_ends`, beside the `def` in `PanelHinge.lean`); the
+helper lives in `PanelHinge.lean` rather than `CaseI.lean` because `GenericityDevice` (which carries
+the `splice_ofNormals` producer) imports `PanelHinge` but not `CaseI`. The conjunct is **not yet
+used** to discharge anything (`hswap`/`hne_ends` are still `hbundle` hypotheses) — that is Commit 4 —
+so `case_I_realization` stays green-modulo `htransport`, `lem:claim-6-4` stays red, ROADMAP row stays
+◷. The next concrete commit is **Commit 4** (discharge `hswap`/`hne_ends` from the strengthened
+bundle + build U3a). Nothing is mid-stream.
 
 ### Opening recon — feasibility re-verification (this commit)
 
@@ -313,9 +323,10 @@ The discharge cut evolved through §1.18 → §1.24; the current head is **route
 §1.23 found the §1.19/§1.20 U3a "alignment transport" was not a leaf. The two earlier-cut nodes that
 landed are kept below for the record (U1, U2 = the collapse-relabel reconciliation; U3b = the genuine
 KT Claim 6.4 crux, all sound). `Gc := G.deleteEdges E(H)`, `f := collapseTo r V(H)`,
-`sc := (V(G)∖V(H)) ∪ {r}`, `D = screwDim k`. **Commit 1 is landed** (edge-restrict + the
-`endsOf_fst_ne_snd` distinctness fact); the remaining work opens on **Commit 2** (provable now,
-no motive dependency) per `DESIGN.md` *Constructibility recon … → design the LAYER*; the §1.19
+`sc := (V(G)∖V(H)) ∪ {r}`, `D = screwDim k`. **Commits 1+2+3 are landed** (edge-restrict + the
+`endsOf_fst_ne_snd` distinctness fact; the link-recording bridge; the motive re-type); the remaining
+work opens on **Commit 4** (now buildable — the strengthened motive carries the conjunct `hswap`
+needs) per `DESIGN.md` *Constructibility recon … → design the LAYER*; the §1.19
 single-placement finding (`q₀^deg` = KT's `p2` is itself a valid witness, the "generic ≥ degenerate"
 lift already green inside N-22b-2) still stands and feeds Commit 5's `htransport` assembly.
 
@@ -376,13 +387,27 @@ Commits 4–5 are the (now-buildable) U3a + U4. Each:
   off mathlib `IsLink.eq_and_eq_or_eq_and_eq`). Stated before the Commit-3 re-type to de-risk it.
   Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`), build + lint warning-clean. No blueprint /
   `\leanok` (project-side motive plumbing, no new KT-math; the KT crux U3b is already bricked).
-- [ ] **Commit 3 — the re-type of `HasGenericFullRankRealization`** (*big mechanical; no missing deps
-  after 1–2*). Add the link-recording conjunct
-  (`∀ e u v, G.IsLink e u v → ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ swap`) to the `def`
-  (`PanelHinge:938`); thread it through every conclusion site (the 6 fresh producers, each supplied
-  by Commit 2; `hbaseGP`; the `theorem_55_generic` motive `Pc`; the composer forwarding from the IH);
-  re-destructure every `let ⟨Q, hQg, hQgp, hQrig⟩` consumer. `hasFullRankRealization_of_generic`
-  (`:948`) forgets the new conjunct as it forgets GP (one extra `_`).
+- [x] **Commit 3 — the re-type of `HasGenericFullRankRealization`** (*big mechanical; no missing deps
+  after 1–2*) — **LANDED.** The link-recording conjunct
+  (`∀ e u v, G.IsLink e u v → ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ swap`) is now the 4th conjunct
+  of the `def` (`PanelHinge.lean`). Threaded through every conclusion site: the six producers
+  (`couple_ofNormals`, `splice_set_ofNormals`, `couple_ofNormals_set`, `couple_asymm_ofNormals_set`,
+  `splice_ofNormals` in `GenericityDevice`, `couple_blockTriangular_ofNormals_set`), each supplied
+  for free by the new producer-facing helper `PanelHingeFramework.ofNormals_recordsLinks_of_hends`
+  (the edge-restricted-`hends` form of Commit 2's `ofNormals_endsOf_recordsLinks`, one line off
+  mathlib `IsLink.eq_and_eq_or_eq_and_eq` + `ofNormals_ends`); the two base producers `splice_ofNormals`
+  / `splice_set_ofNormals` gained an edge-restricted `hends` parameter (their callers pass it — the
+  all-`β` coupling weakens via `fun e _ _ _ => hends e`). The forgetful map
+  `hasFullRankRealization_of_generic` forgets the new conjunct (one extra `_`). The consumers
+  `rigidContract_rigidity_transport` / `rigidContract_exterior_rank_transport` re-destructure with a
+  5th `_`; `case_I_realization`'s contraction-IH consumer keeps the whole `HasGenericFullRankRealization`
+  value (`have hQcf : … := …`) rather than destructure-and-rebuild (cleaner than re-supplying the 5th
+  component), and the `H`-leg IH gets a 5th `_` binder (it discharges `hswap` in Commit 4, unused now).
+  The helper lives in `PanelHinge.lean` (not `CaseI.lean`) because `GenericityDevice` imports
+  `PanelHinge` but not `CaseI`. **The conjunct is not yet *used* to discharge `hswap`/`hne_ends`** (those
+  stay `hbundle` hypotheses), so `case_I_realization` stays green-modulo `htransport`, `lem:claim-6-4`
+  stays red. No blueprint / `\leanok` (project-side motive plumbing; the KT crux U3b is bricked).
+  All axiom-clean (`propext`/`Classical.choice`/`Quot.sound`), build + lint warning-clean.
 - [ ] **Commit 4 — discharge `hswap`/`hne_ends` from the strengthened bundle + build U3a.** The `H`-leg
   `hswap` derives via the already-landed `endsOf_eq_or_swap` (`Operations.lean:102`); the
   contraction-leg alignment via the new **`IsLink.map`-under-`collapseTo`** lemma (the one small new
@@ -487,30 +512,38 @@ Commits 4–5 are the (now-buildable) U3a + U4. Each:
 ## Hand-off / next phase
 
 **22b is discharging `htransport`; U1 + U2 + ALL of U3b landed (sound); route (i) DECIDED +
-scope-verified. Commits 1+2 of 5 landed; the next concrete commit is Commit 3.** The
+scope-verified. Commits 1+2+3 of 5 landed; the next concrete commit is Commit 4.** The
 reduction N-22b-1/2/3 landed (KT Claim 6.4 formalized down to the single hypothesis `htransport`);
 `lem:claim-6-4` carries its `\lean{…}` pins but stays red, `lem:case-I-realization` stays legitimately
 green-modulo via the case-(b) pattern, ROADMAP row stays ◷. U1 + U2 + U3b are landed and **sound**.
 Route-(i) Commit 1 (`cee260e`) edge-restricted `hasGenericRealization_transport_ends`'s `hne_ends` to
-linking edges + added `Graph.endsOf_fst_ne_snd` (`Operations.lean`), closing risk (a). **Route-(i)
-Commit 2 is landed** (this commit): the link-recording bridge
-`PanelHingeFramework.ofNormals_endsOf_recordsLinks` (`CaseI.lean`, beside the swap brick) — the
-canonical-`endsOf` realization records every link of `G` up to swap, the conjunct the strengthened
-motive will carry and the term every fresh producer hands it. One `rw [ofNormals_ends]` +
-`rcases G.endsOf_eq_or_swap he` read componentwise. Not yet *used* (no consumer until the Commit-3
-re-type), so `case_I_realization` stays green-modulo `htransport`.
+linking edges + added `Graph.endsOf_fst_ne_snd` (`Operations.lean`), closing risk (a). Route-(i)
+Commit 2 (`417db77`) landed the link-recording bridge `PanelHingeFramework.ofNormals_endsOf_recordsLinks`
+(`CaseI.lean`). **Route-(i) Commit 3 is landed** (this commit): the re-type of
+`HasGenericFullRankRealization` — the link-recording conjunct
+`∀ e u v, G.IsLink e u v → ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ swap` is now the 4th conjunct of
+the motive `def` (`PanelHinge.lean`), threaded through all six producers, the forgetful map
+`hasFullRankRealization_of_generic`, and the composer's two IH consumers. Each fresh producer supplies
+it for free from the new producer-facing helper `PanelHingeFramework.ofNormals_recordsLinks_of_hends`
+(the edge-restricted-`hends` form of Commit 2's bridge, one line off mathlib
+`IsLink.eq_and_eq_or_eq_and_eq` + `ofNormals_ends`, placed in `PanelHinge.lean` because
+`GenericityDevice` — carrying the `splice_ofNormals` producer — imports `PanelHinge` but not `CaseI`);
+the two base producers `splice_ofNormals`/`splice_set_ofNormals` gained an edge-restricted `hends`
+parameter (callers pass it; the all-`β` coupling weakens via `fun e _ _ _ => hends e`). The conjunct
+is **not yet *used*** to discharge `hswap`/`hne_ends` (those stay `hbundle` hypotheses — that is
+Commit 4), so `case_I_realization` stays green-modulo `htransport`, `lem:claim-6-4` stays red.
+All axiom-clean, build + lint warning-clean. No blueprint / `\leanok` (project-side motive plumbing;
+the KT crux U3b is bricked).
 
-**The next concrete commit is Commit 3: the big mechanical re-type of `HasGenericFullRankRealization`**
-(`PanelHinge.lean:938`) — add the link-recording conjunct
-(`∀ e u v, G.IsLink e u v → ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ swap`) to the `def`; thread it
-through every conclusion site (the 6 fresh producers — each supplied by Commit 2's bridge from the
-canonical `endsOf` — plus `hbaseGP` and the `theorem_55_generic` motive `Pc`, with the composer
-forwarding from the IH); re-destructure every `let ⟨Q, hQg, hQgp, hQrig⟩` consumer.
-`hasFullRankRealization_of_generic` (`:948`) forgets the new conjunct as it forgets GP (one extra
-`_`). Big mechanical commit, no missing deps after Commits 1+2. Then the rest of the verified
-route-(i) 5-commit sequence (the *Discharge plan*): Commit 4 (discharge `hswap`/`hne_ends` from the
-bundle + build U3a: `H`-leg via the landed `endsOf_eq_or_swap`, contraction-leg via the one new
-`IsLink.map`-under-`collapseTo` lemma) → Commit 5 (assemble `htransport`, delete it + the `H`-leg
+**The next concrete commit is Commit 4: discharge `hswap`/`hne_ends` from the strengthened bundle +
+build U3a.** With the motive conjunct now in hand, the `H`-leg `hswap` (`case_I_realization`'s first
+`hbundle` conjunct, consumed at the `hasGenericRealization_transport_ends H …` call) derives by
+composing the IH realization's link-recording conjunct with the parent selector's link-recording
+(`endsOf`, `isLink_endsOf` / the landed `endsOf_eq_or_swap`) — both pin the same unordered pair, so
+they agree up to swap; the contraction-leg alignment via the one new `IsLink.map`-under-`collapseTo`
+lemma (risk (c), off mathlib `Graph.map_isLink`); then transport `Qcf`'s rigidity on
+`sc = V(Gc.map f)` to the `endsᵐ` selector via `infinitesimalMotions_ofNormals_eq_of_ends_swap`. This
+is §1.20's U3a plan, now buildable. Then Commit 5 (assemble `htransport`, delete it + the `H`-leg
 `hswap` from `hbundle`, `\leanok` `lem:claim-6-4`, phase-close ceremony).
 
 **Route (i) decided + scope-verified (design doc §1.24, `c880b9f`).** §1.23 found
@@ -522,7 +555,7 @@ untouched), every fresh producer supplies the new conjunct for free from the can
 the three risk items hold — (a) edge-restrict `hne_ends` (Commit 1, now **landed**); (b) the
 `hswap`-discharge bridge `endsOf_eq_or_swap` is already landed; (c) the contraction-leg
 `IsLink.map`-under-`collapseTo` is one small derived lemma off mathlib `Graph.map_isLink`, not a wall.
-Do **not** re-recon the scope — build Commit 2.
+Do **not** re-recon the scope — Commits 1+2+3 are landed; build Commit 4.
 
 **Course-correction (design doc §1.20).** The U2-opening session **forked under backgrounding**; its
 post-reset hand-off claimed "walling retired, U3+U4 plumbing" — **wrong**. The collapse-relabel
@@ -570,8 +603,8 @@ depends on the green infra (N7b row sub-nodes, N7a, the device), not on `htransp
 
 Cross-references rather than re-derivation: `notes/Phase22-realization-design.md`
 **§1.24** (route (i) scope-verification + the 5-commit sequence: generic-motive-only, producers
-supply link-recording from `endsOf`, the three risk items confirmed; Commit 1 now landed, the next
-concrete commit is Commit 2), §1.23 (the U3a build-recon: the alignment is NOT a leaf — the IH motive carries a free
+supply link-recording from `endsOf`, the three risk items confirmed; Commits 1+2+3 now landed, the
+next concrete commit is Commit 4), §1.23 (the U3a build-recon: the alignment is NOT a leaf — the IH motive carries a free
 `ends`, so the swap transport is not derivable; the same gap is the undischarged `H`-leg `hswap`; fix
 = a motive strengthening; corrects §1.20's "alignment RESOLVED in principle"), §1.20 (the course-correction: O1
 alignment solved-in-principle [now corrected by §1.23] / O2 projected-rank = the

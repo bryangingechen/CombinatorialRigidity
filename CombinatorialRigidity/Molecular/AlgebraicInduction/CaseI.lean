@@ -205,9 +205,10 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
   have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
     hQgp_pos q₀ hq₀gp
   -- (v') The generic splice: realize at the GP seed `q₀` itself (bypassing the device), so general
-  -- position survives and the conclusion is the strengthened generic motive.
-  exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals G ends hgp
-    hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+  -- position survives and the conclusion is the strengthened generic motive. The all-`β` `hends`
+  -- weakens to the edge-restricted link-recording form the splice producer needs.
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals G ends
+    (fun e _ _ _ => hends e) hgp hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
 /-- **Case I shared-seed coupling, *body-set* form: two legs rigid on per-leg body sets `sH`/`sc`
 give a full-rank realization** (`lem:case-I-realization`, the body-set coupling N6-G3-G3c-ii;
@@ -484,7 +485,7 @@ theorem PanelHingeFramework.rigidContract_rigidity_transport
     ∃ q_c : α × Fin (k + 2) → ℝ,
       (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q_c).toBodyHinge
         |>.IsInfinitesimallyRigidOn ((V(G) \ V(H)) ∪ {r}) :=
-  let ⟨Q, hQg, hQgp, hQrig⟩ := hQ
+  let ⟨Q, hQg, hQgp, hQrig, _⟩ := hQ
   htransport Q hQg hQgp hQrig
 
 /-- **The Case-I splice legs `H` and `G ＼ E(H)` cover `G` and share the body `r`** (N6-G3-G3b,
@@ -540,6 +541,7 @@ body-set-rigid legs, so realizing at the GP seed `q₀` itself keeps the rigidit
 the general position (`hgp`, by hypothesis). No device round-trip. -/
 theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals
     [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
     {q₀ : α × Fin (k + 2) → ℝ}
     (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
@@ -549,10 +551,12 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormal
       (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc) :
     PanelHingeFramework.HasGenericFullRankRealization k G :=
   -- The witness is the seed framework itself; rigidity on `V(G)` is the genericity-free body-set
-  -- splice glue (no device round-trip, so general position of `q₀` survives), GP is `hgp`.
+  -- splice glue (no device round-trip, so general position of `q₀` survives), GP is `hgp`, and the
+  -- link-recording conjunct is the seed selector's link-recording (`hends`).
   ⟨PanelHingeFramework.ofNormals G ends q₀, PanelHingeFramework.ofNormals_graph G ends q₀, hgp,
     (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.isInfinitesimallyRigidOn_of_splice
-      (GH := GH) (Gc := Gc) (sH := sH) (sc := sc) hGH hGc hcH hcc hcover hblock hcontract⟩
+      (GH := GH) (Gc := Gc) (sH := sH) (sc := sc) hGH hGc hcH hcc hcover hblock hcontract,
+    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends⟩
 
 /-- **Case I shared-seed coupling, *generic* body-set form** (`lem:case-I-realization`, the body-set
 generic coupling N6-G3-G3c-iii; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), Phase 22a). The
@@ -641,7 +645,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
     hQgp_pos q₀ hq₀gp
   -- (v) The *generic* body-set splice: realize at the GP seed `q₀` itself (bypassing the device),
   -- so general position survives and the conclusion is the strengthened generic motive.
-  exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hgp
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hends hgp
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
 /-- **Case I shared-seed coupling, *asymmetric* body-set form** (`lem:case-I-realization`, the
@@ -731,7 +735,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
       (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc :=
     hrigcGP q₀ hgp
   -- (v) The generic body-set splice: realize at the GP seed `q₀` itself.
-  exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hgp
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hends hgp
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
 /-- **The exterior-column projection** (`lem:case-I-realization` Piece B infra, the block-triangular
@@ -1298,7 +1302,7 @@ theorem PanelHingeFramework.rigidContract_exterior_rank_transport [Finite α] [F
         LinearIndependent ℝ (fun i : t => (extProj (k := k) V(H)).dualMap
           ((PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q₀).toBodyHinge.panelRow
             ends (i : β × _ × _))) :=
-  let ⟨Q, hQg, hQgp, hQrig⟩ := hQ
+  let ⟨Q, hQg, hQgp, hQrig, _⟩ := hQ
   htransport Q hQg hQgp hQrig
 
 /-- **An independent family of rigidity rows of size `≥ D(|V(G)|−1)` forces rigidity on `V(G)`**
@@ -1510,9 +1514,11 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
       omega
     omega
   -- (v) The device-row closure makes `F = ofNormals G ends q₀` rigid on `V(G)` at `q₀` itself; with
-  -- `q₀` general position the strengthened generic motive holds. The witness is `F`.
+  -- `q₀` general position the strengthened generic motive holds. The witness is `F`; the
+  -- link-recording conjunct is the seed selector's link-recording (`hends`).
   refine ⟨PanelHingeFramework.ofNormals G ends q₀,
-    PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_⟩
+    PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_,
+    PanelHingeFramework.ofNormals_recordsLinks_of_hends G ends q₀ hends⟩
   have hFG : F.graph.vertexSet = V(G) := by
     rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
   have hrig := F.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows hunion hmem
@@ -1647,7 +1653,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   -- transversal on its *full* `V(H)`). The block-triangular coupling uses only the `H`-block *rows*
   -- (the `H`-leg rank polynomial), so no complement-isolation equality is needed for this leg.
   have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
-  obtain ⟨QH, hQHg, hQHgp, hQHrig⟩ :=
+  obtain ⟨QH, hQHg, hQHgp, hQHrig, _⟩ :=
     (hIH H hHmin hVH2 hVHlt).1 (hSimple.mono hle)
   -- The brick's `hne_ends` is edge-restricted (the all-`β` form is unsatisfiable for `endsOf`); an
   -- `H`-link's `ends`-endpoints form a `G`-link (`H ≤ G`), where the bundle's `hne_ends` applies.
@@ -1667,11 +1673,10 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     rw [Graph.rigidContract_vertexSet_ncard hr hHsub]
     have hVHle : V(H).ncard ≤ V(G).ncard := Set.ncard_le_ncard hHsub (Set.toFinite _)
     omega
-  obtain ⟨Qcf, hQcfg, hQcfgp, hQcfrig⟩ :=
+  have hQcf : PanelHingeFramework.HasGenericFullRankRealization k (G.rigidContract H r) :=
     (hIH (G.rigidContract H r) hKmin hK2 hKlt).1 hcSimple
   obtain ⟨q₀, t, hsupp, hcount, hindep⟩ :=
-    PanelHingeFramework.rigidContract_exterior_rank_transport (k := k) G H ends
-      ⟨Qcf, hQcfg, hQcfgp, hQcfrig⟩ htransport
+    PanelHingeFramework.rigidContract_exterior_rank_transport (k := k) G H ends hQcf htransport
   -- The bounded `D∘panelRow` packaging (N-22b-2) lifts the single-placement witness `(q₀, t)` to
   -- the contraction **rank polynomial** `Qc ≠ 0` whose non-roots carry exterior-projected
   -- surviving-row independence (the Zariski-open generic locus of KT eq. (6.9), not every GP seed).

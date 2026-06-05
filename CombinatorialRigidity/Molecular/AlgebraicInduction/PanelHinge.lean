@@ -934,10 +934,24 @@ untouched. This dissolves gap (G1) (the splice/rank-polynomial producers
 `hasFullRankRealization_of_splice_ofNormals` / `exists_rankPolynomial_of_rigidOn` need a
 *general-position* rigid seed, which a bare rigid IH does not supply) at the source: a
 general-position parent seed is general-position for every leg (`withGraph` keeps the same normals),
-so the producers' `hgp`/`hne` hypotheses are discharged for free. -/
+so the producers' `hgp`/`hne` hypotheses are discharged for free.
+
+**Link-recording conjunct (Phase 22b route (i)).** The motive additionally records that the
+realizing framework's endpoint selector `Q.ends` pins, for each link of `G`, the *same* unordered
+pair the link does (`∀ e u v, G.IsLink e u v → (Q.ends e = (u, v)) ∨ swap`). This is the invariant
+the Case-I composer's `ends`-swap transport (`hasGenericRealization_transport_ends`'s `hswap`) and
+contraction-leg alignment consume to move the IH realization's rigidity onto the parent / relabel
+selector: rigidity alone does not force a *free* `ends` to agree with another selector, but two
+link-recording selectors pin the same pair on every link and so agree up to swap. Every producer
+builds `ofNormals G ends q₀` with a link-recording `ends` and supplies the conjunct for free
+(`ofNormals_recordsLinks_of_hends`); the composer manufactures the canonical link-recording
+`G.endsOf`. The bare motive `HasFullRankRealization` and `theorem_55` are untouched — the
+strengthening is generic-motive only (only the Case-I generic flow transports across `ends`). -/
 def HasGenericFullRankRealization (k : ℕ) (G : Graph α β) : Prop :=
   ∃ Q : PanelHingeFramework k α β,
-    Q.graph = G ∧ Q.IsGeneralPosition ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)
+    Q.graph = G ∧ Q.IsGeneralPosition ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G) ∧
+    ∀ e u v, G.IsLink e u v →
+      ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ ((Q.ends e).1 = v ∧ (Q.ends e).2 = u)
 
 /-- **The forgetful map: a general-position realization is a realization** (`thm:theorem-55`,
 two-motive split; Phase 22). Dropping the `Q.IsGeneralPosition` conjunct, the strengthened motive
@@ -947,8 +961,32 @@ bridge that lets the simple Case-I cases (which produce a general-position reali
 bare motive ever having to carry general position. -/
 theorem hasFullRankRealization_of_generic {k : ℕ} {G : Graph α β}
     (h : HasGenericFullRankRealization k G) : HasFullRankRealization k G :=
-  let ⟨Q, hQg, _, hQrig⟩ := h
+  let ⟨Q, hQg, _, hQrig, _⟩ := h
   ⟨Q, hQg, hQrig⟩
+
+/-- **A free-normal panel realization with a link-recording selector records its own graph's links**
+(`thm:theorem-55`, the motive's link-recording conjunct, producer form; Katoh–Tanigawa 2011 §6.2,
+Phase 22b route (i)). For *any* endpoint selector `ends` that records each link's endpoints (the
+edge-restricted `hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`, the form every
+fresh producer carries), the free-normal panel framework `ofNormals G ends q₀` records every link of
+`G` up to swap — exactly the link-recording conjunct of `HasGenericFullRankRealization`.
+
+This is the term each producer hands the strengthened generic motive (Phase 22b route (i)). The
+content is one application of mathlib's `IsLink.eq_and_eq_or_eq_and_eq` (two `IsLink`s of the *same*
+edge pin the same unordered pair, so they agree up to order) to the recorded link `hends e u v he`
+and the given link `he`, read through `ofNormals_ends`. The canonical-`endsOf` instance
+`ofNormals_endsOf_recordsLinks` is the composer's specialization, off `isLink_endsOf`. -/
+theorem ofNormals_recordsLinks_of_hends
+    (G : Graph α β) (ends : β → α × α) (q₀ : α × Fin (k + 2) → ℝ)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2) :
+    ∀ e u v, G.IsLink e u v →
+      (((ofNormals (k := k) G ends q₀).ends e).1 = u ∧
+        ((ofNormals (k := k) G ends q₀).ends e).2 = v) ∨
+      (((ofNormals (k := k) G ends q₀).ends e).1 = v ∧
+        ((ofNormals (k := k) G ends q₀).ends e).2 = u) := by
+  intro e u v he
+  rw [ofNormals_ends]
+  exact (hends e u v he).eq_and_eq_or_eq_and_eq he
 
 end PanelHingeFramework
 
