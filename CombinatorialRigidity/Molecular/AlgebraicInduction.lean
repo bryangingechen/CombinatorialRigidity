@@ -4080,6 +4080,64 @@ theorem PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
   · rw [h1, h2]
   · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
 
+/-- **A leg's general-position rigid IH realization transports to the parent endpoint selector**
+(`lem:case-I-realization` infra, the N6-composer `ends`-swap step; Katoh–Tanigawa 2011 §6.2, Phase
+22). The genuine first decomposable piece of the Case-I composer: it bridges one inductive leg's
+`HasGenericFullRankRealization` (a *general-position* panel-hinge framework `Q` on the leg `GH`,
+infinitesimally rigid on `V(GH)`, recorded at the leg's *own* endpoint selector `Q.ends`) to the
+shape the shared-seed coupling `hasFullRankRealization_of_couple_ofNormals` consumes: a free-normal
+`ofNormals GH ends qH` at the **parent** selector `ends`, both *transversal at `ends`* (`hneH`) and
+*rigid on `V(GH)`* (`hrigH`).
+
+The two re-expressions are the brick's content. (1) **Selector transport.** `Q` is *literally* its
+own free-normal form `ofNormals GH Q.ends qH` with `qH p := Q.normal p.1 p.2` (`rfl` after
+`Q.graph = GH`); the `ends`-swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap` then carries
+its rigidity from `Q.ends` to the parent `ends`, since the two selectors record the same unordered
+link of every edge of `GH` (`hswap` — supplied by the composer from `GH ≤ G`: a leg edge's link is
+recorded by both selectors, so they agree up to swap). Rigidity-on-`V(GH)` is invariant under the
+`infinitesimalMotions` equality because `IsInfinitesimallyRigidOn` quantifies over
+`IsInfinitesimalMotion = (· ∈ infinitesimalMotions)`. (2) **Transversality at `ends`.** General
+position is a property of the normals `qH` alone (`ofNormals_normal`), unchanged by the selector, so
+`ofNormals GH ends qH` is again in general position; for any edge whose `ends`-endpoints are
+distinct (`hne_ends`), `supportExtensor_ne_zero_of_isGeneralPosition` gives the transversal hinge
+`hneH`.
+
+This is the composer's per-leg adapter; the composer itself (`lem:case-I-realization`) supplies
+`hswap` from the leg-subgraph relation, applies this brick to each of the two legs (the rigid block
+`H` and the contraction `G/E(H)`), and feeds the two outputs to
+`hasFullRankRealization_of_couple_ofNormals`. -/
+theorem PanelHingeFramework.hasGenericRealization_transport_ends
+    (GH : Graph α β) (ends : β → α × α) (Q : PanelHingeFramework k α β)
+    (hQg : Q.graph = GH) (hQgp : Q.IsGeneralPosition)
+    (hQrig : Q.toBodyHinge.IsInfinitesimallyRigidOn V(GH))
+    (hswap : ∀ e u v, GH.IsLink e u v →
+      ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
+      ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1))
+    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) :
+    ∃ qH : α × Fin (k + 2) → ℝ,
+      (∀ e, GH.IsLink e (ends e).1 (ends e).2 →
+        (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0) ∧
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn V(GH) := by
+  subst hQg
+  set qH := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hqH
+  -- General position transfers to `ofNormals … ends …` verbatim (normals are unchanged).
+  have hgp' : (PanelHingeFramework.ofNormals Q.graph ends qH).IsGeneralPosition := by
+    intro a b hab
+    simpa only [hqH, PanelHingeFramework.ofNormals_normal] using hQgp a b hab
+  -- The swap brick equates the motion spaces of `Q = ofNormals … Q.ends …` and `ofNormals … ends`.
+  have hmot : (PanelHingeFramework.ofNormals Q.graph ends qH).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals Q.graph Q.ends qH).toBodyHinge.infinitesimalMotions :=
+    PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap Q.graph ends Q.ends qH hswap
+  refine ⟨qH, fun e _ =>
+    (PanelHingeFramework.ofNormals Q.graph ends qH).supportExtensor_ne_zero_of_isGeneralPosition
+      hgp' (by rw [PanelHingeFramework.ofNormals_ends]; exact hne_ends e), ?_⟩
+  -- Rigidity at `ends`: `IsInfinitesimallyRigidOn` quantifies over `· ∈ infinitesimalMotions`.
+  intro S hS u hu v hv
+  refine hQrig S ?_ u hu v hv
+  rw [← BodyHingeFramework.mem_infinitesimalMotions] at hS ⊢
+  rw [hmot] at hS
+  exact hS
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by

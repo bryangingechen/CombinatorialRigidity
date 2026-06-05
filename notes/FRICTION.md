@@ -76,6 +76,21 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Transferring `IsInfinitesimallyRigidOn` across an `infinitesimalMotions` *equality* — round-trip through `mem_infinitesimalMotions`, there is no `IsInfinitesimallyRigidOn`-congruence lemma
+- **Where it bit:** `hasGenericRealization_transport_ends` (Phase 22, the N6-composer `ends`-swap
+  step). Have `hmot : F'.infinitesimalMotions = F.infinitesimalMotions` (from
+  `infinitesimalMotions_ofNormals_eq_of_ends_swap`) and `F.IsInfinitesimallyRigidOn s`; want
+  `F'.IsInfinitesimallyRigidOn s`. `IsInfinitesimallyRigidOn` is `∀ S, F.IsInfinitesimalMotion S → …`
+  and `IsInfinitesimalMotion = (· ∈ infinitesimalMotions)` only *definitionally*, so `rw [hmot]` finds
+  no syntactic `infinitesimalMotions` occurrence in the unfolded `hingeConstraint`-shaped hypothesis.
+- **Proposed fix:** after `intro S hS …; refine hrig S ?_ …`, rewrite the *membership* form on both
+  the hypothesis and goal: `rw [← BodyHingeFramework.mem_infinitesimalMotions] at hS ⊢` surfaces
+  `S ∈ F'.infinitesimalMotions` / `S ∈ F.infinitesimalMotions`, then `rw [hmot] at hS` closes by
+  `exact hS`. `mem_infinitesimalMotions` is `Iff.rfl`, so the round-trip is free; small enough to
+  inline. (No fused `IsInfinitesimallyRigidOn`-congruence lemma exists; not worth a mirror — the
+  membership round-trip is the idiom.)
+- **Status:** resolved (membership round-trip; no mirror needed).
+
 ### [resolved] An injective `α → ℝ` from a finite (or merely countable) `α` — `Countable.exists_injective_nat` then `Nat.cast_injective`, not a one-shot `exists_injective_toReal`
 - **Where it bit:** `hasFullRankRealization_of_couple_ofNormals` (Phase 22, Case-I shared-seed
   coupling), proving the general-position factor `Qgp ≠ 0`. `exists_generalPosition_polynomial`'s

@@ -21,8 +21,34 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
+**N6 composer recon + leg-transport `ends`-swap brick GREEN — the composer is NOT one commit; a
+genuine IH-motive mismatch remains** (this commit;
+`PanelHingeFramework.hasGenericRealization_transport_ends`, `AlgebraicInduction.lean`, axiom-clean,
+no `\leanok` flip — infra below the still-red `lem:case-I-splice-placement` / `lem:case-I-realization`).
+The hand-off recommended "the N6 composer (`lem:case-I-realization`)" as the next commit. **A
+constructibility recon found it is not a single clean commit:** `theorem_55`'s `hcontract` IH (and
+`minimal_kdof_reduction`'s, `Induction.lean:3538`) supplies a **bare** `HasFullRankRealization k G'`
+per smaller graph, but the simple-case coupling `hasFullRankRealization_of_couple_ofNormals` needs
+each leg *general-position* rigid (transversal hinges `hneH`/`hnec` — gap (G1), which the two-motive
+split dissolves only at a *general-position* IH). The simple Case-I branch therefore needs the
+induction run against `HasGenericFullRankRealization`, i.e. a *separate generic-motive reduction*
+(re-run of `minimal_kdof_reduction`, touches Phase 20) — multi-commit, not a clean composition. (And
+the coupling itself concludes only the *bare* motive: `hasFullRankRealization_of_independent_panelRow`
+realizes at a device-generic `q` with no `IsGeneralPosition` conjunct, so concluding the GP motive is
+a further analytic step.) **This commit lands the genuine first decomposable green brick of the
+composer:** `hasGenericRealization_transport_ends` — one leg's IH `HasGenericFullRankRealization` (a
+GP framework `Q` rigid at its *own* selector `Q.ends`) ⟹ the coupling-ready `(ofNormals GH ends qH)`
+form at the *parent* selector `ends`, both transversal (`hneH`, general position is normal-only) and
+rigid on `V(GH)` (via the green swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap` +
+`mem_infinitesimalMotions` round-trip). It abstracts out exactly the `ends`-swap step the hand-off
+named, leaving the composer's remaining content the *generic-motive induction* (the IH-shape gap) +
+the simplicity dispatch + the rigid-subgraph-contraction dichotomy plumbing (N4 + subgraph-minimality
+gives both legs minimal-0-dof at smaller vertex count). No `sorry`. The substantive Lean state below
+(N4/N5/N6a/two-motive split/(G2)/leg-restricted bricks/coupling) is unchanged. See *Decisions* /
+*Blockers* / *Hand-off*.
+
 **N6b/N6c shared-seed coupling assembly GREEN — the simple Case-I producer is a pure assembly of the
-green bricks** (this commit; `PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals`,
+green bricks** (prior commit; `PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals`,
 `AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below the still-red
 `lem:case-I-splice-placement` / `lem:case-I-realization`). The hand-off's recommended commit:
 assemble the green leg-restricted rank polynomials + (G2) factor + splice into the simple Case-I
@@ -311,9 +337,16 @@ N5 + N6.
   see *Decisions* / *Blockers* / *Hand-off*.
 - [ ] **N6** `lem:case-I-realization` — compose N4 + N5 + the green glue
   (`isInfinitesimallyRigidOn_union_of_inter`) + device ⇒ discharges
-  `theorem_55.hcontract`. **Largely subsumed by `hasFullRankRealization_of_splice`**
-  (which already ends at `HasFullRankRealization`); N6 = feed it the seed N5 builds
-  + the IH realizations (via N4).
+  `theorem_55.hcontract`. **Recon (this commit): NOT one commit — IH-motive mismatch.**
+  `theorem_55.hcontract`'s IH supplies a *bare* `HasFullRankRealization k G'`, but the simple-case
+  coupling needs each leg *general-position* rigid; the GP motive must be threaded by the *induction*,
+  i.e. a separate generic-motive reduction (re-run of `minimal_kdof_reduction`, Phase-20 touch).
+  Multi-commit. **First decomposable brick GREEN:** `hasGenericRealization_transport_ends` — one leg's
+  `HasGenericFullRankRealization` (GP rigid at its own `Q.ends`) ⟹ the coupling-ready
+  `(ofNormals GH ends qH)` at the *parent* `ends`, transversal + rigid on `V(GH)` (the `ends`-swap step
+  the hand-off named, via the green swap brick + `mem_infinitesimalMotions` round-trip). Remaining red:
+  the generic-motive induction + simplicity dispatch + the contraction-dichotomy plumbing (N4 +
+  subgraph-minimality).
   - [x] **N6a** non-simple Case I producer (KT Lemma 6.2), general-position-free. **GREEN**
     (`hasFullRankRealization_of_splice_of_supportExtensor` + leg-native
     `…_of_supportExtensor_ofNormals`, axiom-clean, no `\leanok` — infra below the red Case-I nodes).
@@ -373,6 +406,21 @@ N5 + N6.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N6 composer recon + leg-transport `ends`-swap brick (2026-06-04).** Ran the producer recon
+  (`DESIGN.md` *Constructibility recon …*) on the hand-off's recommended N6 composer. **Finding: not
+  one commit.** `theorem_55.hcontract`'s IH (and `minimal_kdof_reduction`'s) is the *bare*
+  `HasFullRankRealization k G'`; the simple-case coupling needs each leg *general-position* rigid
+  (gap (G1)). The two-motive split dissolves (G1) only when the *induction* runs against
+  `HasGenericFullRankRealization` — but the reduction is stated against the bare motive, so closing the
+  simple branch needs a *separate generic-motive reduction* (Phase-20 touch), and the coupling
+  concludes only the bare motive (`hasFullRankRealization_of_independent_panelRow` realizes at a
+  device-generic `q` with no GP conjunct). Multi-commit. **Built the first decomposable green brick:**
+  `hasGenericRealization_transport_ends` — a leg's `HasGenericFullRankRealization` ⟹ the coupling-ready
+  `(ofNormals GH ends qH)` at the parent selector, transversal + rigid on `V(GH)`. The two
+  re-expressions: GP is normal-only (transfers verbatim via `ofNormals_normal`); rigidity transfers via
+  the green swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap` + a `mem_infinitesimalMotions`
+  round-trip (FRICTION). Honest: the input is the satisfiable IH, the deliverable is the re-expressed
+  rigidity. No `\leanok` flip. See *Blockers* / *Hand-off*.
 - **N6b/N6c shared-seed coupling assembly — the simple Case-I producer as a pure assembly of green
   bricks (2026-06-04).** Built `hasFullRankRealization_of_couple_ofNormals` exactly per the hand-off's
   five-step recipe: each leg's leg-restricted rank polynomial (the parent `hends` records the leg's
@@ -859,49 +907,61 @@ N5 + N6.
   producer → `…_rankPolynomial_ne_zero_linking` consumer), all axiom-clean. Each brick weakens
   `hends`/`hne` to the *linking* edges and tracks a `hsupp` (every witnessed index links), so the chain
   applies to a proper-subgraph leg `GH ≤ G` whose `ends` is the parent's.
-- **RESOLVED (this commit): the N6b/N6c shared-seed coupling assembly is GREEN.**
+- **RESOLVED (prior commit): the N6b/N6c shared-seed coupling assembly is GREEN.**
   `hasFullRankRealization_of_couple_ofNormals` assembles the leg-restricted polynomials × the (G2)
-  factor → shared non-root → each leg rigid + GP → splice, exactly as the *Hand-off* build order
-  named. The leg's `hends` for the producer comes from the parent `hends` via
-  `Graph.IsSubgraph.isLink_iff` (a leg's linking edge links the parent selector within the leg). **What
-  remains red:** the **N6 composer** (`lem:case-I-realization`) — supply the coupling's leg hypotheses
-  (each leg rigid at the parent selector, transversal) from the IH `HasGenericFullRankRealization`
-  via the `ends`-swap brick, and dispatch on simplicity (non-simple → N6a, simple → this coupling).
-  See *Hand-off*.
+  factor → shared non-root → each leg rigid + GP → splice. The leg's `hends` for the producer comes
+  from the parent `hends` via `Graph.IsSubgraph.isLink_iff`.
+- **OPEN (this commit, recon): the N6 composer needs a *generic-motive induction* — an IH-shape gap,
+  not a clean composition.** `theorem_55.hcontract`'s IH (threaded by `minimal_kdof_reduction`,
+  `Induction.lean:3538`) is the *bare* `HasFullRankRealization k G'`, but the simple-case coupling needs
+  each leg `HasGenericFullRankRealization` (general position — gap (G1)). So the simple Case-I branch
+  cannot be closed against the bare-motive reduction; it needs `minimal_kdof_reduction` (or a wrapper)
+  re-run against the GP motive — a Phase-20-touching, multi-commit step. A second sub-gap: the coupling
+  concludes only the *bare* motive (`hasFullRankRealization_of_independent_panelRow` realizes at a
+  device-generic `q` with no `IsGeneralPosition` conjunct), so a GP-motive simple branch must *also*
+  re-establish general position at the device-output point. **First decomposable brick GREEN:**
+  `hasGenericRealization_transport_ends` (the `ends`-swap step). See *Hand-off*.
 
 ## Hand-off / next phase
 
-**This commit: the N6b/N6c shared-seed coupling assembly GREEN** —
-`PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals` (`AlgebraicInduction.lean`,
-axiom-clean, no `\leanok` flip, no blueprint entry — infra below the red Case-I nodes). It assembles
-the prior commit's green leg-restricted bricks + the (G2) factor + the splice exactly per the
-prior hand-off's five-step recipe: (i) each leg's leg-restricted rank polynomial
-`exists_rankPolynomial_of_rigidOn_linking` (the parent `hends` records the leg's linking edge via
-`Graph.IsSubgraph.isLink_iff`, so the producer's `hends` is discharged at the source); (ii) the (G2)
-factor `exists_generalPosition_polynomial`; (iii) the triple product is a nonzero polynomial ⟹ a
-shared non-root `q₀` (`MvPolynomial.exists_eval_ne_zero`); (iv) each leg rigid at `q₀`
-(`…_rankPolynomial_ne_zero_linking`) + GP at `q₀` (the (G2) non-root); (v)
-`hasFullRankRealization_of_splice_ofNormals`. **No `sorry` committed:** the N6 composer and
+**This commit: N6-composer recon + the leg-transport `ends`-swap brick GREEN** —
+`PanelHingeFramework.hasGenericRealization_transport_ends` (`AlgebraicInduction.lean`, axiom-clean,
+no `\leanok` flip, no blueprint entry — infra below the red Case-I nodes). The recon found the
+hand-off's recommended "N6 composer" is **not one commit** (see *Blockers* OPEN): the
+`theorem_55.hcontract` IH is the *bare* `HasFullRankRealization`, but the simple-case coupling needs
+each leg `HasGenericFullRankRealization` — the GP motive must be threaded by the induction, i.e. a
+separate generic-motive reduction (Phase-20 touch). This commit lands the genuine first decomposable
+green brick: `hasGenericRealization_transport_ends` re-expresses one leg's IH (GP rigid at its own
+selector `Q.ends`) as the coupling-ready `(ofNormals GH ends qH)` at the *parent* `ends`, transversal
++ rigid on `V(GH)`. **No `sorry` committed:** the N6 composer and
 `lem:case-I-splice-placement` / `lem:case-I-realization` stay red.
 
-**Recommended next concrete commit: the N6 composer (`lem:case-I-realization`).** This is the node
-that supplies `hasFullRankRealization_of_couple_ofNormals`'s leg hypotheses *from the IH* and
-dispatches on simplicity, discharging `theorem_55.hcontract`. Concretely, given the rigid-subgraph
-contraction dichotomy (a proper rigid subgraph `H`, the contraction `G/E(H)`, both arriving via the
-IH `HasGenericFullRankRealization` at their own selectors `ends_H`):
-1. **The `ends`-swap step.** Each leg's IH gives a *general-position* rigid `ofNormals GH ends_H q_H`
-   at the leg's *own* selector `ends_H`; the coupling wants it at the *parent's* `ends`. Use
-   `infinitesimalMotions_ofNormals_eq_of_ends_swap` (green): on the leg's *linking* edges `ends_H`
-   and `ends` record the same `IsLink`, hence agree up to swap (`IsLink.left_eq_or_eq`), so the leg's
-   rigidity transfers from `ends_H` to `ends`. This is the genuine geometric content the coupling
-   abstracted out as hypotheses — confirm `ends_H`/`ends` agree up-to-swap on the leg before building
-   (the `hswap` hypothesis of the swap brick). Transversality at the parent selector follows from the
-   IH's `Q.IsGeneralPosition` via `supportExtensor_ne_zero_of_isGeneralPosition`.
-2. **The simplicity dispatch.** Non-simple Case I (KT Lemma 6.2) → `hasFullRankRealization_of_splice_of_supportExtensor_ofNormals` (N6a, bare motive, transversal hinges suffice). Simple Case I (KT Lemma 6.3/6.5) → `hasFullRankRealization_of_couple_ofNormals` (this commit). The simple cases conclude the GP motive `HasGenericFullRankRealization`, forgetful-mapped to the bare `HasFullRankRealization` via `hasFullRankRealization_of_generic` for `theorem_55`'s `hcontract`.
+**Recommended next concrete commit: math-first decompose the generic-motive induction** (the IH-shape
+gap the recon surfaced), *before* building the composer. The decision input: the simple Case-I branch
+needs the IH in `HasGenericFullRankRealization` form, so one of —
+1. **A generic-motive reduction** — re-run `Graph.minimal_kdof_reduction` (`Induction.lean:3529`,
+   Phase 20, green) against `HasGenericFullRankRealization` instead of the bare motive. The
+   combinatorial reduction is motive-agnostic, so this is a re-parameterization, but it (a) touches a
+   closed Phase-20 node and (b) needs *every* case (base, Case II/III, non-simple Case I) to *also*
+   conclude GP — which the non-simple/parallel base cases cannot (KT's "if simple" caveat). So a naive
+   re-run fails on the same non-simple obstruction the two-motive split was built to dodge. The honest
+   shape is a reduction whose motive is the *conditioned* `(G.Simple → GP) ∧ bare` — re-opening the
+   `Simple`-threading question the spike parked (it needs KT Lemma 6.7(ii) simplicity-preservation on
+   `splitOff`, currently absent). **Decompose this math-first** — it is the genuine remaining content
+   of Case I and is not a single clean commit.
+2. **Scope the simple branch to conclude GP at the device point** — strengthen
+   `hasFullRankRealization_of_couple_ofNormals` (and the `_independent_panelRow` closure it routes
+   through) to also conclude `IsGeneralPosition` at the realizing `q`, so the simple cases supply
+   `HasGenericFullRankRealization`. This is a bounded analytic add (the device-output `q` is a non-root
+   of a GP polynomial by construction, since the (G2) factor was already multiplied in), and is the
+   smaller of the two — a reasonable next *buildable* commit toward the composer. Pairs with the green
+   `hasGenericRealization_transport_ends` (this commit) to make each leg's IH consumable.
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
-graph-swaps — state hypotheses pre-converted. Build order from there: N6 composer → the **Case-III
-row** (Track B) via the green Lemma 2.1 (`omitTwoExtensor_linearIndependent`).
+graph-swaps (state hypotheses pre-converted); and transferring `IsInfinitesimallyRigidOn` across an
+`infinitesimalMotions` equality needs a `mem_infinitesimalMotions` round-trip (this commit, FRICTION).
+Build order from there: generic-motive decision → N6 composer → the **Case-III row** (Track B) via the
+green Lemma 2.1 (`omitTwoExtensor_linearIndependent`).
 
 Honesty-gate: `lem:case-I-splice-placement` / `lem:case-I-realization` stay red — the deliverable
 (the IH-fed Case-I realization discharging `hcontract`) is not produced; only the decomposable
