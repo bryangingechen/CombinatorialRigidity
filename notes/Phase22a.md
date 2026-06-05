@@ -811,7 +811,20 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Hand-off / next phase
 
 **Clean handoff point; next agent picks up at N6-G3-G3c-iii-a (the parent-`ends` impedance
-recon/resolution).** This commit lands **G3c-iii's two GP-conjunct producer bricks GREEN** (design doc
+recon/resolution).**
+
+**Remaining path to close 22a, then open 22b (resume checklist).**
+1. **G3c-iii-a** — resolve the parent-`ends` impedance (a layer-wide *design-the-layer* recon; options
+   (i)/(ii)/(iii) below). Do it top-down — it de-risks Case II/III too, not just Case I.
+2. **G3c-iii-b** — the composer assembly: discharge `theorem_55`/`theorem_55_generic`'s Case-I branch
+   (Lean builds green-modulo-Claim-6.4).
+3. **Coordinator green-modulo close** — blueprint green-modulo `\leanok` flip of `lem:case-I-realization`
+   + a dedicated **red Claim-6.4 node** tracking `htransport` (à la 21 → 21b) + `checkdecls`; then the
+   phase-close checklist (ROADMAP ✓-green-modulo, user-facing surfaces, `MolecularConjecture.md`,
+   blueprint chapter re-read, project-org review, Phase22a notes compression).
+4. **Open 22b** — focused on Claim 6.4 (see *22b target* at the end of this section).
+
+This commit lands **G3c-iii's two GP-conjunct producer bricks GREEN** (design doc
 §1.10): the body-set **generic** splice + coupling the bare G3c-ii pair lacked. Axiom-clean, no `sorry`,
 build + lint warning-clean. No `\leanok` / blueprint edits (the coordinator owns the flip — see
 *Coordinator scope* below).
@@ -858,7 +871,7 @@ generic coupling** `hasGenericFullRankRealization_of_couple_ofNormals_set` for `
 interior) + the `hloop`/`hpar` of `rigidContract_simple`. ⟹ `lem:case-I-realization` green-modulo
 (`htransport` / KT Claim 6.4 / `lem:case-III`, deferred to 22b+).
 
-**Coordinator scope still holds (carried from the prior hand-off).** Once G3c-iii lands, **STOP**
+**Coordinator scope still holds (carried from the prior hand-off).** Through G3c-iii-a/b, **STOP**
 before the blueprint flip: do **not** touch the blueprint (no `\leanok` flip or node edits), do **not**
 run the phase-close checklist (ROADMAP ✓-flip, user-facing surfaces, `MolecularConjecture.md`), and do
 **not** open 22b. The coordinator handles the blueprint green-modulo flip of `lem:case-I-realization`
@@ -869,7 +882,34 @@ Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `of
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an
 `infinitesimalMotions` equality needs a `mem_infinitesimalMotions` round-trip.
 
-*Out of 22a scope.* Track B (Case III at `d=3`) and the `d=3` assembly (the `prop:rigidity-matrix-prop11`
-`hub` brick + `thm:theorem-55` flip) are deferred to **22b+** — see *Deferred to 22b+ (Case III +
-assembly)* above and `notes/MolecularConjecture.md` *Phase 22* / *Phase 23* for the node plan. The cut of
-22b+ into its own sub-phases happens once 22a closes.
+**22b target — Claim 6.4 (consolidated, for next-session open).** When 22a closes green-modulo, 22b
+opens **focused on Claim 6.4** (the owner's framing; be prepared for it to span several sub-phases).
+Gathered here so opening `Phase22b.md` is a copy-paste, not a re-gather:
+- **What.** KT **Claim 6.4 (eq. 6.9)** = the algebraic-independence **rank-transport across the collapse
+  map**: transport the contraction IH's rigidity (on the relabelled `rigidContract`) onto the
+  surviving-edge leg `G ＼ E(H)` at the collapse-redirected normals. It is the `htransport` hypothesis
+  that G3a (`rigidContract_rigidity_transport`) carries green-modulo, **plus** the transversality `hnec`
+  bundle (same Claim 6.4) the coupling needs.
+- **Why irreducible (G3a finding; design doc §1.7).** The green linking-edge brick does not apply —
+  `collapseTo` redirects each surviving edge's endpoints, so its support extensor uses *different* panel
+  normals in `rigidContract` vs. `G ＼ E(H)`, breaking the `hspan` span-equality. The 21b genericity
+  device does **not** discharge it (distinct obligation: the collapse-normal mismatch).
+- **KT grounding (2026-06-05 source check).** KT 2011 §5.1 (p. 668) bundles non-degeneracy (*nonparallel*)
+  + rank-maximality under one "coefficients algebraically independent over ℚ" hypothesis; **Claim 6.4**
+  (p. 675, inside Lemma 6.3) reads the Case-I rank-transport off it; footnote 4 (p. 668) flags this as a
+  *deliberate* simplification. Two ledger entries in `notes/BlueprintExposition.md` (`algebraic-induction.tex`):
+  the rank-vs-GP bundling + the placement-side splice structure.
+- **Pointers.** design doc §1.7 (collapse-transport analysis); `notes/BlueprintExposition.md` (the two
+  Claim-6.4 entries); this file's *Blockers* (`htransport`).
+- **Sub-phase renumbering — settle in the 22b opening recon.** 22b = Claim 6.4 (owner's framing). The
+  *existing* "Deferred to 22b+ (Case III + assembly)" territory (Track B Case II/III at `d=3` + the
+  `prop:rigidity-matrix-prop11` `hub` + the final `thm:theorem-55` flip) then shifts to a *later*
+  sub-phase (22c+); the full `theorem_55` flip needs Claim 6.4 **and** Case III done. Do **not** finalize
+  the cut/ordering now — that's the detailed planning the owner deferred to the `coordinate-phase 22b`
+  session.
+
+*Out of 22a scope (renumbering per the 22b-target note above).* Track B (Case III at `d=3`) and the
+`d=3` assembly (the `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip) remain deferred to
+a later molecular sub-phase — see *Deferred to 22b+ (Case III + assembly)* above and
+`notes/MolecularConjecture.md` *Phase 22* / *Phase 23* for the node plan. The cut into sub-phases (now
+including 22b = Claim 6.4 ahead of them) is settled in the 22b opening recon, once 22a closes.
