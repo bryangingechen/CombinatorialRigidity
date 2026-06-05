@@ -175,6 +175,21 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   (one `q₀` with both legs rigid). The moment-curve subvariety is a genericity
   trap (the IH delivers a free-normal realization), so the seed must be the *free
   `ofNormals`* space. Pointer: `notes/Phase22a.md` *Decisions* (N5 …).
+- **`lem:case-I-realization` N6-G3 / Claim 6.4 — the splice's contraction leg is
+  `G ＼ E(H)`, not the relabelled contraction; the collapse is placement-side** —
+  [pending] **(a)** thought "pure leg-data geometry" → reconned into G3a/G3b/G3c
+  (2026-06-05). **Stable insight:** KT's Case-I block matrix (eq. 6.3) splices the
+  rigid block `R(G′,p1)` against `R(G,p; E∖E′, V∖V′)` — the *parent restricted to
+  the surviving edges* `E(G)∖E(H)`, i.e. `G.deleteEdges E(H)` (a genuine subgraph),
+  **not** the abstract relabelled contraction `G/E′`. The vertex-collapse `V′↦v∗`
+  is entirely a *placement* operation (eq. 6.7's `p_{E∖E′}`, with `v∗` realized as
+  a `d`-dimensional body rather than a panel), and **Claim 6.4** (eq. 6.9) is the
+  rank-transport that the surviving-edge realization of `G ＼ E(H)` attains the
+  contraction's rank — riding on the algebraic-independence (general position) of
+  the joint `p1`/`p2` coefficients. The "contract the graph then splice it back"
+  reading conflates a graph operation with a placement one; the formalization is
+  forced to keep the splice leg `≤ G` and carry the collapse on the seed. Pointer:
+  `notes/Phase22-realization-design.md` §1.7; `notes/Phase22a.md` *Decisions*.
 - **`lem:case-I-realization` N4 union↔contraction crux
   (`rigidContract_isMinimalKDof`)** — [pending] **(a), model-induced**. **Stable
   insight:** `Matroid.Union` does *not* commute with contraction, so

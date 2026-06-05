@@ -8,8 +8,13 @@ question** — should `PanelHingeFramework.HasFullRankRealization` carry general
 position (KT's "nonparallel"). The motive decision landed (the **two-motive
 split**, §1.4, green); §**1.5** (2026-06-04) is the follow-on **generic-motive
 recon** settling the N6-composer IH-shape gap as a **hybrid route** and cutting
-it into the buildable N6-G1/G2/G3 nodes (the live to-do is `notes/Phase22a.md`
-*Lemma checklist*). No Lean / `\leanok` / blueprint edits accompany this doc.
+it into the buildable N6-G1/G2/G3 nodes; §**1.6** (2026-06-04) cuts N6-G2 into
+G2a/G2b/G2c (all now green); §**1.7** (2026-06-05) is the **N6-G3 recon**,
+settling the `Gc ≤ G` binding obstruction (the splice's contraction leg is
+`G ＼ E(H)`, not the relabelled `rigidContract`; the collapse lives on the
+placement side as KT's Claim 6.4 transport) and cutting N6-G3 into G3a/G3b/G3c
+(the live to-do is `notes/Phase22a.md` *Lemma checklist*). No Lean / `\leanok` /
+blueprint edits accompany this doc.
 
 Primary sources read for this pass: KT 2011 §5–§6.4 (`.refs/`, printed pp.
 669–697); `Molecular/{AlgebraicInduction,Extensor,Deficiency,Induction}.lean`;
@@ -411,6 +416,125 @@ question for G2c is discharging `rigidContract_simple`'s `hloop`/`hpar` from KT
 Lemma 6.3's standing setup — re-recon at G2c-open (escalation-eligible to the
 "carry `(G/E(H)).Simple` as `h…`" idiom if the failure cases need the dichotomy).
 
+### 1.7 N6-G3 re-recon — the `Gc ≤ G` mismatch is KT's Claim 6.4 transport; the splice's contraction leg is `G ＼ E(H)`, not the relabelled `rigidContract` (2026-06-05)
+
+G2c landed green (the *generic coupling producer*
+`hasGenericFullRankRealization_of_couple_ofNormals`), so every Case-I *producer*
+brick is now green and the one remaining red node is the N6-G3 composer assembly.
+The hand-off (`notes/Phase22a.md` *Blockers*/*Hand-off*) flagged the binding
+obstruction as "**the `Gc ≤ G` mismatch** — `G.rigidContract H r` collapses
+`V(H)` to `r`, so it is *not literally* a subgraph of `G`, yet the coupling
+brick's `hGc : Gc ≤ G` demands one — the right thing to recon first." This section
+is that recon. **No Lean / `\leanok` / blueprint edits accompany it; it is
+decision-support**, like §1.4–§1.6. Verified against KT 2011 §6.2 (printed
+pp. 673–675 = pdf pp. 27–29, eqs. (6.3)–(6.9)) and the live splice API
+(`AlgebraicInduction.lean` `isInfinitesimallyRigidOn_of_splice:1550`,
+`hasGenericFullRankRealization_of_couple_ofNormals:4197`; `Induction.lean`
+`rigidContract:1855`, `IsInfinitesimallyRigidOn` is constancy on `s` bodies,
+`RigidityMatrix.lean:752`).
+
+**The mismatch is real and not a relabelling artefact — it is structural.** Every
+splice brick across the layer (the glue `isInfinitesimallyRigidOn_of_splice`, the
+producers `hasFullRankRealization_of_splice*`, both couplings) requires **both**
+legs to be *literal subgraphs of the parent* `G` (`hGH : GH ≤ G`, `hGc : Gc ≤ G`),
+because the glue transports each leg's rigidity to the parent by
+`isInfinitesimallyRigidOn_of_withGraph_of_le` ("re-adding edges only shrinks
+motions", which needs `leg ≤ parent`). The rigid block `H` fits (`H ≤ G` from
+`IsRigidSubgraph`). The contraction `G.rigidContract H r =
+(G ＼ E(H)).map (collapseTo r V(H))` does **not**: `map` relabels `V(H) ↦ r`, so
+`V(G.rigidContract H r) = collapseTo r V(H) '' V(G)` is a *quotient* of `V(G)`,
+and there is **no** `rigidContract_le` lemma (confirmed: none exists, and none can
+— the vertex sets are not even comparable). Feeding `Gc := G.rigidContract H r`
+to the coupling's `hGc` is therefore *type-impossible*, not merely missing a proof.
+
+**What KT actually splices (eq. (6.3)) — the contraction leg in the rigidity
+matrix is `G ＼ E(H)`, a genuine `≤ G` subgraph.** KT's eq. (6.3) block form is
+`R(G,p) = [ R(G',p1)  0 ; *  R(G,p; E∖E′, V∖V′) ]`. The *second block* is
+`R(G,p; E∖E′, V∖V′)` — the rigidity matrix of the parent `G` **restricted to the
+surviving edges `E∖E′ = E(G) ∖ E(H)`** (over the body columns `V∖V′`). In the
+project's encoding that is exactly `(ofNormals G ends q₀).toBodyHinge.withGraph
+(G.deleteEdges E(H))` — and `G.deleteEdges E(H) ≤ G` holds (it is a subgraph
+operation with a `Simple`/`≤` instance, `edgeSet_rigidContract` already reads its
+edge set as `E(G) ∖ E(H)`). **So the contraction leg of the splice is
+`Gc' := G.deleteEdges E(H)`, NOT the relabelled `rigidContract`.** The collapse to
+`v∗`/`r` lives entirely on the *placement* side, not the graph side: eq. (6.7)'s
+`p_{E∖E′}` realizes the contraction's edges on `G ＼ E(H)` (the boundary hinges
+`δ_G(V′)` placed by the panel-intersection `Π_{G/E′,p2}(u) ∩ Π_{G′,p1}(v)`), with
+`v∗` realized as a *d-dimensional body* rather than a panel (KT p. 675, the
+`(G/E′, p_{E∖E′})` body-hinge framework).
+
+**The genuinely-new analytic content is KT Claim 6.4 — the rank-transport
+`rank R(G/E′, p_{E∖E′}) ≥ rank R(G/E′, p2)`** (eq. (6.9)). This is *not* a green
+brick. The contraction's inductive rigidity is `HasGenericFullRankRealization
+(G.rigidContract H r)` — rigidity of the *abstract relabelled* graph at its own
+seed. To feed the splice we need rigidity of `withGraph (G ＼ E(H))` on the body
+set `(V(G) ∖ V(H)) ∪ {r}` (where `r = v∗`). KT Claim 6.4 supplies exactly this:
+because the joint panel coefficients of `p1`, `p2` are algebraically independent
+over ℚ (general position — the GP conjunct of the *generic* motive, which is why
+the simple Case-I legs need `HasGenericFullRankRealization`), the
+`p_{E∖E′}`-realization of `G ＼ E(H)` attains the contraction's rank. In the
+project's rank-polynomial language this is a *new* per-leg brick:
+**transport the contraction leg's rigidity across the collapse map** — from
+`(ofNormals (G.rigidContract H r) ends_c q_c)` rigid on `V(G.rigidContract H r)`
+to `(ofNormals (G.deleteEdges E(H)) ends q₀)` rigid on `(V(G) ∖ V(H)) ∪ {r}` at a
+shared general-position seed. The lever is that the body-hinge motion space depends
+on the graph only through the *linking edges'* support extensors
+(`infinitesimalMotions_eq_of_isLink_span_supportExtensor`,
+`AlgebraicInduction.lean:1140`), and the surviving edges `E(G) ∖ E(H)` are in
+bijection between `G.rigidContract H r` and `G.deleteEdges E(H)` (only the
+endpoints are relabelled by `collapseTo`); the relabelling is absorbed by the
+endpoint selector / the `ends`-swap brick on the surviving edges, with the
+collapsed body `r` carrying the `v∗` panel.
+
+**Decision: N6-G3 is NOT one commit; it needs a new Claim-6.4 transport brick
+before the assembly. Cut into G3a/G3b/G3c.** The per-leg recon (DESIGN.md
+*Constructibility recon …*) shows the assembly's *second* leg cannot be supplied
+by any green brick — the coupling consumes a `≤ G` leg rigid as `ofNormals · ends
+·`, and the contraction IH delivers a relabelled-graph rigidity that no existing
+lemma converts. That conversion (KT Claim 6.4) is the genuine remaining analytic
+content of Case I. The three passes (each its own future commit; re-recon at open):
+
+- **G3a — the Claim-6.4 collapse-transport brick (the new analytic content).**
+  `rigidContract_rigidity_transport` (working name): from
+  `HasGenericFullRankRealization (G.rigidContract H r)` (the contraction IH) and
+  the general-position parent seed, produce a seed `q_c` and the rigidity of
+  `(ofNormals (G.deleteEdges E(H)) ends q_c)` on `(V(G) ∖ V(H)) ∪ {r}`. The math
+  is KT Claim 6.4 (eq. (6.9)); the Lean lever is the surviving-edge bijection +
+  `infinitesimalMotions_eq_of_isLink_span_supportExtensor` (motion space sees only
+  linking-edge support extensors) carrying rigidity across the relabel, with `r`
+  the collapsed-body representative. **`research-shaped`** (the genuine new
+  brick) — math-first decomposition before any dispatch; escalation-eligible to
+  carrying Claim 6.4 as an explicit `h…` hypothesis on the composer (the Phase-21b
+  green-modulo idiom) if the surviving-edge transport stalls.
+- **G3b — the cover/shared-body/endpoint-selector geometry.** With both legs now
+  `≤ G` (`H` and `G.deleteEdges E(H)`), discharge the coupling's combinatorial
+  inputs: `hcH : r ∈ V(H)`, `hcc : r ∈ V(G.deleteEdges E(H))`, the cover
+  `V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H))` (in fact `V(G.deleteEdges E(H)) = V(G)`,
+  so the cover is trivial), the parent endpoint selector `ends`, and (G2b)
+  `rigidContract_simple`'s `hloop`/`hpar` for the simplicity conjunct. **`buildable`**
+  once G3a is green (graph-combinatorics from `IsProperRigidSubgraph`).
+- **G3c — the composer assembly + `theorem_55`/`theorem_55_generic` flip.**
+  Dispatch on `G.Simple`: simple branch feeds the `H`-leg IH (via `Simple.mono` +
+  `subgraph_minimality`) and the transported contraction leg (G3a + N4
+  `rigidContract_isMinimalKDof`) through `hasGenericRealization_transport_ends`
+  into the G2c generic coupling, then `hasFullRankRealization_of_generic` for the
+  bare `hcontract`; non-simple branch uses N6a directly. Discharges
+  `hcontractGP`/`hcontract` ⟹ `lem:case-I-realization` green. **`buildable`** once
+  G3a/G3b are green.
+
+**Net.** The hand-off's blocker #1 (`Gc ≤ G` mismatch) **dissolves at the graph
+level** — the splice's contraction leg is `G ＼ E(H)` (`≤ G`), not the relabelled
+`rigidContract` — but **relocates to the placement level** as the genuinely-new
+KT Claim 6.4 transport (G3a), which is the last research-shaped brick of Case I.
+Blocker #2 (`rigidContract_simple`'s `hloop`/`hpar`) is G3b, downstream and
+`buildable`. The right next *build* commit is **G3a**, preceded by a math-first
+decomposition of the surviving-edge collapse transport (or its green-modulo
+`h…`-deferral if that decomposition stalls). N6-G3's apparent "pure leg-data
+geometry" framing in the prior hand-off was **too optimistic** — it was blind to
+the placement-side Claim 6.4 obligation, exactly the *quantifier-domain / actual-
+construction* sharpening the recon rule (DESIGN.md *Constructibility recon …*)
+exists to catch.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
@@ -438,15 +562,20 @@ Built once, reused by all cases. **Green** unless marked.
 | Count bridges (`V(G)`-relative N1–N3) | `finrank_pinnedMotionsOn_vertexSet`, `exists_relative_full_count_ofParam`, `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` | GREEN | all |
 | **Lemma 2.1 (extensor independence)** | `omitTwoExtensor_linearIndependent` (`Extensor.lean:493`) | GREEN — **hyp `AffineIndependent ℝ p`** | Case III (the missing row) |
 | **(G2) general-position factor** | `exists_generalPosition_polynomial` (+ `pairLeadingMinorPoly`, `pair_linearIndependent_of_leading_minor_ne_zero`) | **GREEN** (2026-06-04; off-diagonal product of leading `2×2` minor polynomials) | Case I coupling |
+| **Claim 6.4 collapse transport (G3a)** | none yet (`rigidContract_rigidity_transport`, working name) | **RED** (the new analytic brick — contraction-IH rigidity ⟹ `G ＼ E(H)`-leg rigidity at a GP seed; KT eq. (6.9)) | Case I composer (the contraction leg) |
 | **`prop:rigidity-matrix-prop11` `hub`** | carried as hypothesis (`:2527`) | RED (multi-commit, Phase-19 partition count) | Prop 1.1 only |
 
 **Reading:** the entire device + witness-transfer + splice + count + N4
 substrate is GREEN; **(G2) is now GREEN too** (2026-06-04,
-`exists_generalPosition_polynomial`). The *only remaining missing analytic brick
-across the whole layer* is the **Case-III missing row** via Lemma 2.1 (Track B);
-the simple Case-I cases N6b/N6c are now an *assembly* of green bricks (no new
-analytic content). (G1) was not a missing brick — it was the motive decision of
-§1, dissolved by the two-motive split.
+`exists_generalPosition_polynomial`). The remaining missing analytic bricks
+across the layer are now **two**: (i) the **Case-III missing row** via Lemma 2.1
+(Track B, 22b+); and (ii) the **Case-I Claim-6.4 collapse transport** (G3a,
+2026-06-05, surfaced by the §1.7 N6-G3 recon) — the contraction leg of the splice
+is `G ＼ E(H)` (`≤ G`), but its rigidity must be *transported across the collapse
+map* from the relabelled-contraction IH, KT's eq. (6.9). The N6b/N6c couplings are
+an assembly of green bricks *given both legs as `≤ G` rigid `ofNormals`*; G3a is
+what supplies the second such leg. (G1) was not a missing brick — it was the
+motive decision of §1, dissolved by the two-motive split.
 
 ---
 
@@ -485,17 +614,20 @@ Nodes (composing the green infra of §2):
   `exists_generalPosition_polynomial`). Off-diagonal product of leading `2×2`
   minor polynomials, witnessed nonzero at the moment-curve seed (Vandermonde).
 - **N6 — Case I composer (`lem:case-I-realization`).** **RED — decomposed in §1.5
-  into the hybrid N6-G1/G2/G3; N6-G1 now GREEN.** Not `buildable` as a single
-  commit: the composer's adapter needs each leg in `HasGenericFullRankRealization`,
-  which (i) the coupling did not produce — **fixed by N6-G1,
-  `hasGenericFullRankRealization_of_splice_ofNormals`, GREEN** — and (ii)
-  `minimal_kdof_reduction` does not thread (N6-G2, Route 1, multi-commit,
-  re-reconned in §1.6 into G2a/G2b/G2c). Remaining: G2a → G2b → G2c → N6-G3.
-  See §1.6 + `notes/Phase22a.md`.
+  into the hybrid N6-G1/G2/G3; N6-G1/G2 (G2a/G2b/G2c) now GREEN.** Not `buildable`
+  as a single commit: the composer's adapter needs each leg in
+  `HasGenericFullRankRealization`, which (i) the coupling did not produce — **fixed
+  by N6-G1, GREEN** — and (ii) `minimal_kdof_reduction` does not thread (N6-G2,
+  Route 1, re-reconned in §1.6 into G2a/G2b/G2c, **all GREEN**). **Remaining: N6-G3,
+  re-reconned in §1.7 into G3a/G3b/G3c** — the composer is NOT pure leg-data
+  geometry: the contraction leg's rigidity must be transported across the collapse
+  map (G3a, KT Claim 6.4, the new analytic brick), then the cover/simplicity
+  geometry (G3b) and the assembly/flip (G3c). See §1.7 + `notes/Phase22a.md`.
 
-**Build order (Track A), updated 2026-06-04 (everything before N6 is green):**
+**Build order (Track A), updated 2026-06-05 (everything before N6-G3 is green):**
 §1 motive decision ✓ → N6a ✓ → (G2) ✓ → N6b/N6c coupling ✓ → **N6 composer
-(§1.5 hybrid, §1.6 N6-G2 cut): N6-G1 ✓ → G2a → G2b → G2c → N6-G3.**
+(§1.5 hybrid, §1.6 N6-G2 cut, §1.7 N6-G3 cut): N6-G1 ✓ → G2a ✓ → G2b ✓ → G2c ✓ →
+N6-G3 (G3a → G3b → G3c).**
 
 ### Track B — Case II/III producer (`hsplit`), KT §6.3 (Lemma 6.8) + §6.4.1
 
