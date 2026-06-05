@@ -3013,12 +3013,11 @@ device closure `hasFullRankRealization_of_independent_panelRow` lifts that witne
 seed to a generic placement at the same rank. The deliverable rank is concluded, not assumed, so the
 node is honest (the deferred obstruction is *exhibiting* `q₀` with both legs rigid, the genuine
 content of `lem:case-I-splice-placement`). -/
-theorem PanelHingeFramework.hasFullRankRealization_of_splice [Finite α] [Finite β]
-    (G : Graph α β) (ends : β → α × α)
-    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
-    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
+theorem PanelHingeFramework.hasFullRankRealization_of_splice_of_supportExtensor
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
     {q₀ : α × Fin (k + 2) → ℝ}
-    (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
+    (hsupp : ∀ e, (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
     {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
     {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
     (hblock : ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.withGraph GH)
@@ -3031,17 +3030,59 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice [Finite α] [Finite
   have hrig : F.IsInfinitesimallyRigidOn V(G) :=
     F.isInfinitesimallyRigidOn_of_splice (GH := GH) (Gc := Gc)
       (by rw [hF]; exact hGH) (by rw [hF]; exact hGc) hcH hcc hcover hblock hcontract
-  -- (ii) Every hinge is transversal under general position + distinct endpoints, so the rigid
-  -- parent carries `D(|V(G)|−1)` independent panel rows.
-  have hsupp : ∀ e, F.supportExtensor e ≠ 0 := fun e =>
-    (PanelHingeFramework.ofNormals G ends q₀).supportExtensor_ne_zero_of_isGeneralPosition hgp
-      (by simpa using hne_ends e)
+  -- (ii) Every hinge is transversal (the explicit `hsupp`), so the rigid parent carries
+  -- `D(|V(G)|−1)` independent panel rows.
   obtain ⟨s, hscard, hsindep⟩ :=
     F.exists_independent_panelRow_subfamily_of_rigidOn (ends := ends)
       (by simpa using hends) hsupp (by simpa using hne) (by simpa using hrig)
   -- (iii) The genericity device lifts the witnessed corank at the seed `q₀` to a generic placement.
   exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
     (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
+
+/-- **Case I splice producer (general-position-free): two legs rigid on one parent placement with
+transversal hinges give a full-rank realization** (`lem:case-I-splice-placement` /
+`lem:case-I-realization`, the general-position-independent restatement; Katoh–Tanigawa 2011 §6.2,
+the non-simple Lemma 6.2 specialization, Phase 22). The bare-motive restatement of
+`hasFullRankRealization_of_splice_of_supportExtensor`: rather than asking for *general position* of
+the seed (`hgp`, every body-pair's normals independent — KT's "nonparallel, if `G` is simple"), it
+asks only for *transversal hinges* (`hsupp`, every hinge's two endpoint panels independent). General
+position implies transversal hinges (`supportExtensor_ne_zero_of_isGeneralPosition`), so this is
+strictly weaker; the two coincide whenever `G` is simple, but they part ways exactly in the
+non-simple Lemma-6.2 case, where two boundary panels are set *equal* (`ΠG',p1(a) = ΠG',p1(b)`,
+parallel normals) so general position fails while every retained hinge stays transversal. This is
+the splice producer the *non-simple* Case I (KT Lemma 6.2) consumes: a *bare* (non-general-position)
+realization suffices, so it consumes the bare `HasFullRankRealization` motive of `theorem_55` and
+supplies it back, with no motive strengthening.
+
+The proof is `hasFullRankRealization_of_splice_of_supportExtensor` itself, with general position
+discharged to transversality at the source. The same three green pieces compose: the
+block-triangular splice seed (`isInfinitesimallyRigidOn_of_splice`), the rigid parent's
+`D(|V(G)|−1)` independent panel rows (`exists_independent_panelRow_subfamily_of_rigidOn`, N7b-0,
+under the explicit `hsupp`), and the genericity device closure
+(`hasFullRankRealization_of_independent_panelRow`). The deliverable rank is concluded, not assumed —
+the honesty gate is met: the inputs are the satisfiable per-leg rigidities and per-hinge
+transversality at the common seed `q₀`, not the parent rank the lemma produces. The remaining red
+content of `lem:case-I-splice-placement` is exhibiting that `q₀` (the witness-transfer), unchanged
+by this restatement. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_splice [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
+    (hblock : ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.withGraph GH)
+      |>.IsInfinitesimallyRigidOn V(GH))
+    (hcontract : ((PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.withGraph Gc)
+      |>.IsInfinitesimallyRigidOn V(Gc)) :
+    PanelHingeFramework.HasFullRankRealization k G :=
+  -- General position implies every hinge is transversal (distinct endpoints + pairwise
+  -- independence of normals), so this is the `hsupp`-direct producer with `hsupp` discharged.
+  PanelHingeFramework.hasFullRankRealization_of_splice_of_supportExtensor G ends hends hne
+    (fun e => (PanelHingeFramework.ofNormals G ends q₀).supportExtensor_ne_zero_of_isGeneralPosition
+      hgp (by simpa using hne_ends e))
+    hGH hGc hcH hcc hcover hblock hcontract
 
 /-- **Case I splice producer, leg-native form: both legs rigid as their own `ofNormals` at one
 seed** (`lem:case-I-splice-placement` / `lem:case-I-realization`, the satisfiable restatement
@@ -3075,6 +3116,39 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals [Finite �
     PanelHingeFramework.HasFullRankRealization k G :=
   PanelHingeFramework.hasFullRankRealization_of_splice G ends hends hne_ends hne hgp hGH hGc
     hcH hcc hcover hblock hcontract
+
+/-- **Case I splice producer, leg-native general-position-free form (the non-simple producer)**
+(`lem:case-I-splice-placement` / `lem:case-I-realization`, the bare-motive node N6a for the
+non-simple Lemma 6.2 case; Katoh–Tanigawa 2011 §6.2, Phase 22). The leg-native restatement of
+`hasFullRankRealization_of_splice_of_supportExtensor`: rather than general position of the seed, it
+asks only that every hinge be transversal (`hsupp`), and rather than the two legs phrased as
+`withGraph` of the parent `ofNormals G ends q₀`, the legs are stated directly as the leg-native
+frameworks `(ofNormals GH ends q₀).toBodyHinge` and `(ofNormals Gc ends q₀).toBodyHinge` rigid on
+`V(GH)` resp.\ `V(Gc)` — *at the same seed* `q₀`. By `ofNormals_withGraph`
+(`(ofNormals G ends q₀).withGraph G' = ofNormals G' ends q₀`) and `toBodyHinge_withGraph` the two
+forms coincide, so this is a direct corollary of
+`hasFullRankRealization_of_splice_of_supportExtensor`.
+
+This is the producer the *non-simple* Case I (KT Lemma 6.2) consumes: where general position
+genuinely fails (two boundary panels are set equal, parallel normals), the retained hinges are still
+transversal, so a *bare* (non-general-position) realization suffices — it consumes the bare
+`HasFullRankRealization` motive of `theorem_55` and supplies it back, with no motive strengthening.
+The honesty gate is met: the inputs are the satisfiable per-leg rigidities at the common seed `q₀`
+and per-hinge transversality, not the parent rank the lemma produces; exhibiting the shared seed
+`q₀` realizing both legs is the remaining red content of `lem:case-I-splice-placement`. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_splice_of_supportExtensor_ofNormals
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hsupp : ∀ e, (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
+    (hblock : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
+    (hcontract :
+      (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
+    PanelHingeFramework.HasFullRankRealization k G :=
+  PanelHingeFramework.hasFullRankRealization_of_splice_of_supportExtensor G ends hends hne hsupp
+    hGH hGc hcH hcc hcover hblock hcontract
 
 /-- **Case I splice producer, moment-curve seed: both legs rigid as `ofParam` at one injective
 parameter** (`lem:case-I-splice-placement` / `lem:case-I-realization`, the seed specialized to the

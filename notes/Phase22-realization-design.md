@@ -201,7 +201,8 @@ Built once, reused by all cases. **Green** unless marked.
 | N7b-0 (rigid-on-V ⟹ full-size independent panel-row subfamily) | `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn` (`:2929`) | GREEN | Case I, Case II/III |
 | N7b-1/2/3 (per-edge new-block rows; transport; pin-a-body column split) | `exists_independent_panelRow_subfamily_of_edge`, `…_transport`, `linearIndependent_sum_pinned_block` | GREEN | Case II/III (eq. 6.12) |
 | Case-I splice glue (block-triangular gluing, genericity-free) | `BodyHingeFramework.isInfinitesimallyRigidOn_of_splice` (`lem:case-I-splice-seed`), `isInfinitesimallyRigidOn_union_of_inter` | GREEN | Case I |
-| Splice producer (composes glue→N7b-0→device) | `hasFullRankRealization_of_splice` / `…_ofNormals` / `…_ofParam` (`:3016`,`:3064`,`:3110`) | GREEN | Case I |
+| Splice producer (composes glue→N7b-0→device) | `hasFullRankRealization_of_splice` / `…_ofNormals` / `…_ofParam` | GREEN | Case I |
+| Splice producer, general-position-free (N6a) | `hasFullRankRealization_of_splice_of_supportExtensor` / `…_of_supportExtensor_ofNormals` | GREEN — takes `hsupp` not `hgp`; non-simple Lemma 6.2 | Case I (non-simple) |
 | Single-leg seed→realization bridge | `hasFullRankRealization_of_rigidOn_seed` (`:3151`) | GREEN | Case I, Case II/III |
 | IH repackage (motive ⟹ rigid `ofNormals` locus) | `exists_rigidOn_ofNormals_of_hasFullRankRealization` (`:3192`) | GREEN (re-types under §1.3.5) | Case I |
 | Per-leg rank polynomial (rigid leg ⟹ nonzero Gram-det `MvPolynomial`) | `exists_rankPolynomial_of_rigidOn` (`:3226`) | GREEN — **but needs `hne` (G1)** | Case I |
@@ -238,11 +239,15 @@ shortfall — this is the tractable track.
 
 Nodes (composing the green infra of §2):
 
-- **N6a — non-simple Case I (KT Lemma 6.2).** `buildable`. Equal-panel splice
-  (`ΠG/E',p2(v*) = ΠG',p1(a) = ΠG',p1(b)`); a bare (non-general-position)
+- **N6a — non-simple Case I (KT Lemma 6.2).** **GREEN** (2026-06-04). Equal-panel
+  splice (`ΠG/E',p2(v*) = ΠG',p1(a) = ΠG',p1(b)`); a bare (non-general-position)
   realization suffices, so it consumes the *bare* motive and supplies the bare
-  motive. Composes `hasFullRankRealization_of_splice` directly. Lowest-risk
-  starting node; **does not need the motive strengthening.**
+  motive. Built as `hasFullRankRealization_of_splice_of_supportExtensor`
+  (+ leg-native `…_ofNormals`): the splice producer parameterized by transversal
+  hinges (`hsupp`) directly rather than general position (`hgp`) — N7b-0 only ever
+  needed `hsupp`. The old `hasFullRankRealization_of_splice` now factors through it
+  as a thin GP corollary. Lowest-risk starting node; **does not need the motive
+  strengthening** — confirmed in practice (axiom-clean, no Phase-20 touch).
 - **N6b — simple Case I, simple contraction (KT Lemma 6.3).** `buildable
   conditional on §1`. Needs the two legs nonparallel + jointly generic (eq. 6.6
   boundary-panel intersection). With motive (A)/two-motive: the legs arrive
