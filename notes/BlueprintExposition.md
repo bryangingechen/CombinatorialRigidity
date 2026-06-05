@@ -168,13 +168,26 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   rotation (Lemma 5.2 semicontinuity) lifts to nonparallel. The motion-side route
   KT gestures at ("a motion constant on `V(G)∖{v}`") is unsound — a `G`-motion
   need not be (`G−v` isn't rigid). Pointer: `notes/Phase21b.md` *Finding A*.
-- **`lem:case-I-realization` N5 splice / witness-transfer** — [pending] **(a)**.
-  **Stable insight:** KT's eq. (6.6) Case-I splice does *not* glue two distinct
-  placements — `withGraph` keeps the *same* normals, so both inductive legs ride
-  one normal family; the real obligation is the **common-seed witness-transfer**
-  (one `q₀` with both legs rigid). The moment-curve subvariety is a genericity
-  trap (the IH delivers a free-normal realization), so the seed must be the *free
-  `ofNormals`* space. Pointer: `notes/Phase22a.md` *Decisions* (N5 …).
+- **`lem:case-I-realization` realization mechanism — KT eq. (6.3) block-triangular
+  rank-ADDITION** — [pending] **(c)** *(landed via a block-triangular reframe; the
+  reroute that preceded it was project-side, see note)*. **Stable insight:** Case I's
+  realization is KT eq. (6.3)'s block-triangular **rank-addition**: the rigid-block
+  rows (edges `E(H)`) occupy *only* the `V(H)` columns (the matrix's top-right `0`),
+  so at *one* placement the rigid-block rank `D(|V(H)|−1)` and the surviving-edge
+  (`E(G)∖E(H)`) rank `D(|s_c|−1)` **add** to `D(|V(G)|−1)`, and the genericity device
+  reads rigidity off that independent-row *count*. The two row-blocks are made jointly
+  independent by the **exterior-column projection** onto `V(G)∖V(H)` (where the
+  rigid-block rows vanish — the row-side of the top-right `0`); crucially there is
+  **no** need for a common placement on which *both* legs are simultaneously rigid.
+  *Project-side reroute note (excluded from the KT-gloss core per the inclusion
+  criterion):* an earlier draft formalized this as a motion-space **common-seed splice
+  glue** (one `q₀` rigid on both legs) — a re-expression of KT's clear block-triangular
+  structure that the project's motion-space rigidity model made the *natural*
+  composition; it type-checked but kept demanding undischargeable bridge hypotheses
+  (`hcrig`→`hpinc`→`htransportGP`→`∀`-GP), and was abandoned for the row-addition above.
+  That divergence is a *process* lesson, not a KT gloss → `DESIGN.md` *Match the
+  source's argument structure, not just its conclusion*. Pointer:
+  `notes/Phase22-realization-design.md` §1.13–§1.16; `notes/Phase22a.md`.
 - **`lem:case-I-realization` N6-G3 / Claim 6.4 — the splice's contraction leg is
   `G ＼ E(H)`, not the relabelled contraction; the collapse is placement-side** —
   [pending] **(a)** thought "pure leg-data geometry" → reconned into G3a/G3b/G3c
@@ -197,8 +210,16 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `G ＼ E(H)` and the spans differ — recovering the rank at the un-collapsed endpoints
   is exactly the algebraic-independence content. So the rank-transport across the
   relabel is genuinely new analytic content (not a structural rename), and G3a carries
-  it as the explicit hypothesis `htransport` (green-modulo). Pointer:
-  `notes/Phase22-realization-design.md` §1.7; `notes/Phase22a.md` *Decisions*.
+  it as the explicit hypothesis `htransport` (green-modulo). **Final form (block-triangular
+  reframe, §1.13–§1.16):** the residual is now the red node `lem:claim-6-4` = the surviving
+  block's *exterior-column-projected row-independence* (`(extProj V(H)).dualMap`, the
+  `V∖V′`-restricted rank `D(|s_c|−1)` of eq. (6.9)), carried by `case_I_realization` in the
+  `Qc`-non-root form (`∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → …`) — *not* the `∃`-form `htransport`,
+  and *not* a `∀`-general-position statement. (The `∀`-GP-vs-generic-locus distinction — KT's
+  "generic" is a Zariski-open *locus* / rank-poly non-roots, never "every GP placement" — was
+  itself a recurring project-side trap; process lesson in `DESIGN.md` *Match the source's
+  argument structure …*.) Pointer: `notes/Phase22-realization-design.md` §1.7, §1.13–§1.16;
+  `notes/Phase22a.md` *Decisions*; `notes/Phase22b.md` (the discharge).
 - **`lem:case-I-realization` N6-G3-G3c / the two splice legs live on *different*
   body sets, `V′` and `V∖V′ ∪ {v∗}`** — [pending] **(a)** thought "pure green-brick
   assembly (`buildable`)" → reconned into G3c-i/ii/iii (2026-06-05). **Stable
@@ -258,7 +279,14 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   in FRICTION/DESIGN only); and the 22a "device-output-is-not-GP" note (project
   device-API confusion from our recon mis-plan, not a KT gloss — preserved in
   `DESIGN.md`, and *superseded* by the Claim-6.4 entry above, which captures the
-  genuine KT bundling that sits underneath it).
+  genuine KT bundling that sits underneath it); and the 22a **common-seed-splice →
+  block-triangular reroute** (2026-06-05) — the reroute itself was a project-side
+  divergence (the motion-space rigidity model re-expressed KT's clear eq.-(6.3)
+  block-triangular rank-addition as a common-seed glue), a *process* lesson in
+  `DESIGN.md` *Match the source's argument structure …*; the genuine KT crux it sits
+  on (the block-triangular rank-addition) is folded into the corrected
+  `lem:case-I-realization` realization-mechanism entry above, and the now-wrong
+  common-seed framing in the prior N5 entry was corrected in the same pass.
 - **Non-molecular phases (1–16): not yet scanned.** TODO (unscheduled): the
   Phase 5 blocker argument is a likely candidate; run as a cleanup-style round,
   candidate list producible on demand from `notes/PhaseN.md` + `git log`.
