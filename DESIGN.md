@@ -1083,6 +1083,59 @@ generically-chosen output, and the survival question often reveals a shorter pat
 Cross-ref: `notes/Phase22a.md` *Decisions* → *N6-G1 spike*;
 `notes/Phase22-realization-design.md` §1.5 Route 2.
 
+## Match the source's argument structure, not just its conclusion
+
+**The trap (Phase 22a, 2026-06-05; three undischargeable bridges).** The Case-I
+realization producer stalled for three consecutive recon/fix passes, each producing
+a hypothesis that type-checked and whose *arithmetic closed* but that was **not
+dischargeable**: `hcrig` (each leg rigid on the *full* ambient `V`, unsatisfiable
+for a proper subgraph) → `hpinc` (a placement-independent complement-isolation
+*equality* `finrank(pinnedMotionsOn sc) = D·|scᶜ|`, **false** off a full vertex set —
+the contraction leg's interior bodies carry surviving boundary-edge constraints) →
+`htransportGP` (`∀` general-position seed ⟹ the leg is rigid, i.e. "GP implies
+maximal rank", **false** — `IsGeneralPosition` is pairwise normal independence,
+strictly weaker than full rank). Each pass took the green Phase-21b splice glue as
+fixed and tried to satisfy *its* obligation; none questioned the glue. The root cause
+sat one layer **below** the active nodes: the project formalizes rigidity as a
+**motion-space predicate** (`IsInfinitesimallyRigidOn s` = every infinitesimal motion
+is constant on `s`), and Phase 21b translated KT's **block-triangular rank-addition**
+(eq. 6.3: `rank R(G,p) = rank R(G′,p₁) + rank R(G,p;E∖E′,V∖V′)`, each block at its
+*own* leg-wise generic placement) into the motion-space **"overlapping rigid pieces
+glue"** `isInfinitesimallyRigidOn_of_splice` (`F` rigid on `s_H` ∧ `F` rigid on `s_c`
+⟹ `F` rigid on `s_H ∪ s_c`). These are **not the same argument**: the glue intersects
+the motions of *one* framework `F`, so it demands a **single common placement on which
+both legs are simultaneously rigid** — exactly what KT's block-triangular structure
+never needs (KT builds the placement leg-wise; the ranks add). That common-seed demand
+is the impasse, and the diagnostic tell was that **the arithmetic closed but every
+pass needed a fresh hypothesis to bridge a gap the source does not have.**
+
+**Why it hid.** The divergence was introduced as a *green* node (the glue) whose hard
+half was *split out as a red sibling* (`lem:case-I-splice-placement`, "one `F`
+realizing both legs") and mis-scored as "bounded assembly" at the Phase-21b
+feasibility pass. Forward-mode discipline (build on green infra) then had every
+downstream node build on the green glue's *assumed* shape, so the divergence stayed
+invisible at the node level for a whole layer.
+
+**The rule.** When formalizing a published proof, the formalization's **composition
+lemma must reproduce the source's argument *structure*, not merely its *conclusion*
+and *arithmetic*.** A locally-sound modeling choice (motion-space rigidity — correct
+and successful for Phases 4–16, where a single generic placement suffices) can
+silently re-express the source's argument as a *different* one with a different,
+possibly intractable obligation. At the layer-design / constructibility-recon pass,
+explicitly check: *does my composition lemma have the same shape as the source's*
+(rank-addition over leg-wise placements vs. common-seed motion glue; matrix-rank-level
+vs. null-space-level)? The arithmetic closing is necessary, not sufficient — a
+composition that re-expresses the source's *key structural step* is a smell, not
+routine assembly, even when its types and counts line up. **Corollary process rule**
+(also in `blueprint/CLAUDE.md` *the honesty gate*): a green node that defers its hard
+half as a red sibling must have that red half's feasibility **re-verified before
+downstream nodes build on the green half's assumed shape** — "green-with-a-red-sibling"
+is not "green". Cross-ref: `notes/FRICTION.md` *[process] Phase 22a — motion-space
+splice glue vs KT block-triangular*; `notes/Phase22-realization-design.md` §1.12–§1.13;
+`notes/Phase22a.md` *Decisions*. This is the sibling of *Constructibility recon …*
+above (that gate catches a short-by-one-row count; this one catches a count that
+closes over the *wrong structure*).
+
 ## Phase Case-naming must match KT's k-bookkeeping
 
 **The bug (Phase 21b, 2026-06-04).** The project labelled the reducible-vertex

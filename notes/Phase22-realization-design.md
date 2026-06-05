@@ -1017,6 +1017,56 @@ arithmetic that consumes it is untouched, so the fix closes the same count.
 
 ---
 
+### 1.13 Second coordinator verification — the §1.12 asymmetric fix is ALSO undischargeable; the real divergence is motion-space glue vs KT block-triangular; re-architect (2026-06-05)
+
+The §1.12 fix (commit 561a94b) removed the false `hpinc` via an **asymmetric coupling**
+(`hasGenericFullRankRealization_of_couple_asymm_ofNormals_set`): the `H`-leg keeps the
+rank-polynomial round-trip and produces the shared seed `q₀`; the contraction leg's
+rigidity-on-`sc` at `q₀` is supplied by a single `∀`-over-GP-seeds conjunct
+`htransportGP`. A coordinator verification pass (reading the coupling body + the motive
+defs) found **`htransportGP` is also undischargeable**, for a parallel reason:
+
+- `q₀` is built (coupling lines 5176–5192) as a non-root of `Q_H · Q_gp` — i.e. it is
+  known *only* to be **general-position** (and an `H`-leg rank-poly non-root). Nothing
+  constrains `q₀` to the contraction leg's rigid locus.
+- So discharging `htransportGP` (`∀` GP `q` ⟹ contraction rigid on `sc`) in 22b
+  requires **"GP ⟹ rigid"**. That is **false**: `IsGeneralPosition` is *pairwise*
+  normal independence (per-edge transversality, `supportExtensor ≠ 0`), strictly weaker
+  than the global full-rank/rigidity condition (a higher-order minor/extensor-span
+  condition). **The tell:** the `H`-leg — the same kind of object (simple minimal
+  0-dof) — does **not** get rigidity from GP; it runs the rank-polynomial round-trip
+  precisely because GP ⊊ rank-generic locus. If GP implied rigidity, the entire
+  N5/N7b/rank-poly/N3 machinery would be unnecessary for both legs.
+- (Note: option (a) "build `Q_c` as a direct rigidity-witnessing minor" does **not**
+  rescue it either — rigid-on-`sc` is *null-space-shaped*; turning a row-independence
+  polynomial non-root into rigid-on-`sc` routes through the body-set N3 consumer, which
+  needs the same false equality. The deep design pass's (c1) recommendation hit this
+  wall, which is why it too is rejected.)
+
+So `hcrig` → `hpinc` → `htransportGP` is one unsatisfiability **relocated three times**,
+never removed. **The genuine root cause** (sibling-promoted to `DESIGN.md` *Match the
+source's argument structure, not just its conclusion*): Phase 21b translated KT's
+**block-triangular rank-addition** (eq. 6.3 — `rank R(G,p) = rank R(G′,p₁) + rank
+R(G,p;E∖E′,V∖V′)`, each block realized at its *own* leg-wise generic placement, ranks
+add by block-triangularity) into the project's motion-space **"overlapping rigid pieces
+glue"** `isInfinitesimallyRigidOn_of_splice` (one framework `F` rigid on both `s_H` and
+`s_c` ⟹ rigid on the union). The glue intersects one framework's motions, so it demands
+a **single common placement on which both legs are simultaneously rigid** — which KT's
+block-triangular structure never needs. With the contraction leg on a **proper** body
+set `sc`, finding that common seed is the impasse all three bridges failed to cross.
+
+**Decision (owner-directed, 2026-06-05).** Re-architect the Case-I splice to reproduce
+KT's block-triangular rank-addition over leg-wise placements (design-first,
+owner-reviewed before any Lean — three automated passes have over-claimed). Audit
+molecular phases 17–22 for sibling structural divergences. Lesson captured in
+`DESIGN.md` + `blueprint/CLAUDE.md` (honesty-gate third check) + `notes/FRICTION.md`
+*[process] Phase 22a — motion-space splice glue vs KT block-triangular*.
+`case_I_realization` (561a94b) stays in the tree as a valid-but-vacuous theorem until
+the reframing rewrites the composer. The block-triangular reframing design lands as a
+new section here once produced.
+
+---
+
 ## 2. Shared-infra map (green vs. missing across the layer)
 
 Built once, reused by all cases. **Green** unless marked.

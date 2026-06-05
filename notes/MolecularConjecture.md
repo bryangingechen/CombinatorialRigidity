@@ -497,11 +497,20 @@ placeholder expected to split, cut deferred until 22a closes). Math for both
 worked out in `notes/Phase21b.md` *Finding A/B*; the green Phase-21b infra —
 device, count bridge, N7b row sub-nodes, splice/union glue — feeds them.
 
-**Phase 22a — Case I realization (§6.2) — ◑ In progress.** Track A: the tractable
-entry point, full-rank, independent of Case III. All Case-I bricks green incl.
-N6-G1 (the generic producer); the remaining red work is N6-G2 (Route 1) + N6-G3
-(composer assembly) — see the Track-A node list + build-order paragraph below.
-Target `lem:case-I-realization`. Live, node-by-node hand-off: `notes/Phase22a.md`.
+**Phase 22a — Case I realization (§6.2) — ◑ In progress; realization layer being
+RE-ARCHITECTED (2026-06-05).** Track A: the tractable entry point, full-rank,
+independent of Case III. A coordinator verification pass found the Case-I composer
+`case_I_realization` blocked on a **structural divergence from KT**: Phase 21b
+translated KT eq. (6.3)'s **block-triangular rank-addition** (leg-wise placements,
+ranks add) into the project's motion-space **common-seed splice glue**
+`isInfinitesimallyRigidOn_of_splice` (one placement rigid on both legs), and three
+successive bridge hypotheses (`hcrig` → false `hpinc` → too-strong `htransportGP`)
+each type-checked but were undischargeable. The splice is being re-architected to
+KT's block-triangular structure (design-first, owner-reviewed); molecular phases
+17–22 are being audited for sibling divergences. Standing lesson: `DESIGN.md` *Match
+the source's argument structure, not just its conclusion*. Target
+`lem:case-I-realization` (still red). Live hand-off + the full diagnosis:
+`notes/Phase22a.md` + `notes/Phase22-realization-design.md` §1.12–§1.13.
 
 **Track A — Case I producer (full-rank, KT §6.2). [22a scope]** Independent of Case III;
 reaches full `D(|V|−1)` with no shortfall (the contracted vertex's two

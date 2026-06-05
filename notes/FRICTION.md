@@ -2075,6 +2075,36 @@ Resolved by mirroring `LinearIndependent.dualMap_of_surjective` /
 Tried-and-rejected approaches, deprecated patterns, and tactic
 limitations. Worth a once-over so future agents don't re-litigate.
 
+### [process] Phase 22a — the motion-space splice glue diverges from KT's block-triangular structure (read before the realization re-architecture)
+- **Where it bit:** the Case-I realization producer (`lem:case-I-realization` /
+  `case_I_realization`), Phase 22a. Three consecutive coordinator-supervised passes
+  (re-recon → asymmetric-coupling fix → deep design pass) each produced a hypothesis
+  that type-checked and whose arithmetic closed but was **not dischargeable**:
+  `hcrig` (rigid on the full ambient `V`, unsatisfiable for a proper subgraph) →
+  `hpinc` (a placement-independent complement-isolation *equality*
+  `finrank(pinnedMotionsOn sc) = D·|scᶜ|`, **false** off a full vertex set — the
+  contraction leg's interior bodies carry surviving boundary-edge constraints) →
+  `htransportGP` (`∀` general-position seed ⟹ contraction rigid, i.e. "GP implies
+  maximal rank", **false** — `IsGeneralPosition` is pairwise normal independence,
+  strictly weaker than full rank; the H-leg needs its rank-polynomial round-trip for
+  exactly this reason).
+- **Root cause (one layer below the active nodes):** Phase 21b translated KT's
+  **block-triangular rank-addition** (eq. 6.3, each block at its own leg-wise generic
+  placement, ranks add) into the motion-space **"overlapping rigid pieces glue"**
+  `isInfinitesimallyRigidOn_of_splice`, which demands **one common placement rigid on
+  both legs**. KT's structure never needs that; the project's motion-space rigidity
+  model does. The common-seed demand — with the contraction leg on a *proper* body
+  set — is the impasse the three bridges tried and failed to cross.
+- **Don't retry:** any fourth "bridge hypothesis" that gets the contraction leg rigid
+  at the H-leg-determined shared seed (via a count/consumer needing the false
+  equality, or via GP). The fix is the **block-triangular reframing** (reproduce KT's
+  rank-addition over leg-wise placements), not another common-seed bridge.
+- **Status:** realization layer being re-architected (block-triangular, design-first).
+  Standing lesson lifted → `DESIGN.md` *Match the source's argument structure, not
+  just its conclusion* + `blueprint/CLAUDE.md` *the honesty gate* (third check). Math
+  + decision: `notes/Phase22-realization-design.md` §1.12–§1.13; `notes/Phase22a.md`
+  *Blockers*/*Hand-off*.
+
 ### [process] Phase 21b realization producers — the four-re-plan thrash and the dead ends (read before opening Phase 22)
 - **Where it bit:** the Phase-21b "realization layer" — the Case-II
   reducible-vertex split producer (`lem:case-II-realization`). Four

@@ -377,6 +377,25 @@ under four re-plans): `../DESIGN.md` *Constructibility recon before
 scheduling a producer build*; dead-ends in `../notes/FRICTION.md`
 *[process] Phase 21b realization producers*.
 
+The gate has a *third half* — structural fidelity. The second half confirms the
+**arithmetic** closes; this one confirms the **shape** does. When a `\leanok` (or
+to-be-built) node formalizes a step of a published proof, its **composition lemma
+must reproduce the source's argument *structure***, not just its conclusion and
+count. A locally-sound modelling choice can re-express the source's argument as a
+*different* one with a different — possibly intractable — obligation: Phase 22a's
+splice translated KT's **block-triangular rank-addition** (leg-wise placements, the
+ranks add) into a motion-space **common-seed glue** (one placement rigid on both
+legs), and three passes produced undischargeable bridge hypotheses (`hpinc`,
+`htransportGP`) whose *arithmetic closed* but whose *structure* didn't match KT. **The
+tell:** the counts line up but you keep needing fresh hypotheses to bridge a gap the
+source doesn't have. **Corollary:** a node that is *green with its hard half deferred
+as a red sibling* (Phase-21b `lem:case-I-splice-seed` green, `lem:case-I-splice-placement`
+red) must have that red sibling's feasibility **re-verified before downstream nodes
+build on the green half** — "green-with-a-red-sibling" ≠ "green". Rule + the Phase-22a
+calibration: `../DESIGN.md` *Match the source's argument structure, not just its
+conclusion*; dead-end in `../notes/FRICTION.md` *[process] Phase 22a — motion-space
+splice glue vs KT block-triangular*.
+
 ## Local build
 
 The blueprint builds in two formats:

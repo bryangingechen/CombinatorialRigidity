@@ -35,8 +35,31 @@ k-bookkeeping*.
 
 ## Current state
 
-**✓ CORRECTNESS GAP FIXED (this commit) — `case_I_realization` is now honest GREEN-MODULO; G3c-iii-b
-landed via the asymmetric coupling.** The c1ef55a vacuity (the composer's "Claim-6.4 bundle" carried a
+**⚠ SUPERSEDED by a second coordinator verification (2026-06-05) — `case_I_realization` is STILL NOT
+honestly green-modulo; the realization layer is being re-architected (block-triangular).** The 561a94b
+"asymmetric coupling" fix below removed the *false* `hpinc`, but a coordinator verification pass found
+its replacement `htransportGP` (the `∀`-over-general-position-seeds conjunct) is **also undischargeable**:
+it is applied at a shared seed `q₀` constrained only to be a non-root of `Q_H · Q_gp` (i.e. only known to
+be general-position), so discharging it in 22b requires "**GP ⟹ rigid**", which is false —
+`IsGeneralPosition` is *pairwise* normal independence (per-edge transversality), strictly weaker than
+the global full-rank/rigidity condition (the tell: the `H`-leg, the same kind of graph, does **not** get
+rigidity from GP — it runs the rank-polynomial round-trip precisely because GP ⊊ rank-generic locus). So
+the asymmetric fix **relocated** the unsatisfiability (false `hpinc` → too-strong `htransportGP`) rather
+than removing it. **Root cause (the genuine one, design doc §1.13 / `DESIGN.md` *Match the source's
+argument structure …*):** Phase 21b translated KT's **block-triangular rank-addition** (eq. 6.3, each
+block at its own *leg-wise* generic placement, ranks add) into the motion-space **common-seed glue**
+`isInfinitesimallyRigidOn_of_splice` (one placement rigid on *both* legs). KT never needs a common seed;
+the project's motion-space rigidity model does, and that demand — with the contraction leg on a *proper*
+body set — is the impasse all three bridge hypotheses (`hcrig` → `hpinc` → `htransportGP`) failed to
+cross. **Decision:** re-architect the Case-I splice to KT's block-triangular structure (design-first,
+owner-reviewed); audit molecular phases 17–22 for sibling divergences; lesson captured in `DESIGN.md` +
+`blueprint/CLAUDE.md` (honesty-gate third check) + `notes/FRICTION.md` *[process] Phase 22a — motion-space
+splice glue vs KT block-triangular*. **`case_I_realization` (561a94b) remains in the tree as a
+valid-but-vacuous theorem pending the reframing, which will rewrite the composer.** The detailed 561a94b
+narration below is retained as the historical record of that (superseded) attempt; read this banner +
+*Blockers* / *Hand-off* for the live state.
+
+**[SUPERSEDED — historical 561a94b narration]** The c1ef55a vacuity (the composer's "Claim-6.4 bundle" carried a
 FALSE combinatorial equality `hpinc` for the contraction leg `G ＼ E(H)`, generically unsatisfiable
 because the interior bodies `V(H)∖{r}` are not isolated in `G ＼ E(H)` — surviving boundary edges
 `δ_G(V(H))` constrain them, and `finrank_pinnedMotionsOn_le` proves only the *upper* bound) is
@@ -916,7 +939,22 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **✓ CORRECTNESS GAP FIXED (design doc §1.12).** The composer `PanelHingeFramework.case_I_realization`
+- **⚠ OPEN — Case-I realization is blocked on a structural divergence from KT; the splice is being
+  re-architected (block-triangular). [2026-06-05, second coordinator verification.]** The 561a94b
+  "asymmetric coupling" (the entry below, now superseded) deleted the false `hpinc` but replaced it with
+  `htransportGP`, the `∀`-over-general-position-seeds conjunct — **also undischargeable**, because the
+  coupling applies it at a seed `q₀` known only to be general-position, so 22b would need "**GP ⟹
+  rigid**", which is false (`IsGeneralPosition` = pairwise normal independence, strictly weaker than full
+  rank; the `H`-leg needs its rank-polynomial round-trip for exactly this reason). The unsatisfiability
+  was **relocated, not removed** (`hcrig` → `hpinc` → `htransportGP`). **Root cause:** the project's
+  motion-space splice glue `isInfinitesimallyRigidOn_of_splice` demands a *single common placement* rigid
+  on both legs, whereas KT eq. (6.3) is **block-triangular rank-addition over leg-wise placements** (no
+  common seed). The fix is the block-triangular reframing, not a fourth common-seed bridge. See *Current
+  state* banner, *Hand-off* (live plan), design doc §1.13, `DESIGN.md` *Match the source's argument
+  structure …*, and `notes/FRICTION.md` *[process] Phase 22a — motion-space splice glue vs KT
+  block-triangular*.
+
+- **[SUPERSEDED] ✓ CORRECTNESS GAP FIXED (design doc §1.12).** The composer `PanelHingeFramework.case_I_realization`
   is now honest GREEN-MODULO: the false combinatorial equality `hpinc` is removed by routing the
   contraction leg through the new **asymmetric** body-set coupling
   `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` (the `H`-leg keeps the green round-trip
@@ -967,15 +1005,30 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**Clean handoff to the coordinator close. The §1.12 correctness gap is FIXED (this commit): the
-asymmetric coupling removes the false `hpinc`, `case_I_realization` is honest GREEN-MODULO the
-Claim-6.4-only bundle, axiom-clean, build + lint green. The next step is the coordinator green-modulo
-close (blueprint flip + phase-close); no further 22a build commit is needed for Case I.** All Track-A
-bricks and the composer are green / green-modulo; G3c-iii-a/b are both landed.
+**⚠ NOT a handoff to the coordinator close — the Case-I splice is being RE-ARCHITECTED.** A second
+coordinator verification (2026-06-05) found the 561a94b `htransportGP` also undischargeable ("GP ⟹
+rigid", false); see *Current state* banner + *Blockers*. `case_I_realization` (561a94b) stays in the
+tree as a valid-but-vacuous theorem; **do NOT flip `lem:case-I-realization` green-modulo, do NOT run the
+phase-close.** The live plan (owner-directed, 2026-06-05):
 
-**Then (the coordinator close — coordinator scope, unchanged from before).**
+1. **✓ Lesson captured** — `DESIGN.md` *Match the source's argument structure, not just its conclusion*;
+   `blueprint/CLAUDE.md` honesty-gate *third check*; `notes/FRICTION.md` *[process] Phase 22a — motion-space
+   splice glue vs KT block-triangular*; this banner + the *Current state* / *Blockers* corrections.
+2. **Design the block-triangular reframing** (design-only, no Lean) — reproduce KT eq. (6.3)'s
+   rank-addition over *leg-wise* placements (the H-block at `p₁`, the contraction block at `p₂`, ranks add
+   via block-triangularity) in place of the common-seed motion glue `isInfinitesimallyRigidOn_of_splice`.
+   Verify it closes vs KT *and* vs the existing green infra; **bring to the owner for sign-off before any
+   Lean.** This likely re-touches the splice glue and its consumers (the couplings, the composer) and may
+   need new matrix-rank-level infrastructure.
+3. **Audit molecular phases 17–22** for sibling structural divergences (formalization re-expressing KT's
+   argument as a different one) that could block Phases 23–26.
+4. **Implement** the reframing (Lean + blueprint) after sign-off, re-wire `case_I_realization` honestly,
+   then resume the coordinator close.
+
+**[SUPERSEDED — the coordinator close, deferred behind the reframing.] Coordinator scope (unchanged).**
 - ✓ **G3c-iii-a** — parent-`ends` impedance, resolved 2026-06-05 (design doc §1.11): option (iii).
-- ✓ **G3c-iii-b** — composer + asymmetric coupling, landed honest GREEN-MODULO (this commit, §1.12 fix).
+- ⚠ **G3c-iii-b** — composer + asymmetric coupling landed (561a94b) but is **vacuous** (`htransportGP`
+  undischargeable); to be rewritten by the block-triangular reframing.
 - **Coordinator green-modulo close** — blueprint green-modulo `\leanok` flip of `lem:case-I-realization`
   (`\lean{...PanelHingeFramework.case_I_realization}`) + a dedicated **red Claim-6.4 node** tracking the
   (now-honest, `hpinc`-free) `hbundle`/`hcSimple` obligation (à la 21 → 21b) + `checkdecls`; then the
