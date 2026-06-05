@@ -3,12 +3,13 @@
 **Status:** design pass, not a build plan. Produced 2026-06-04 after the
 constructibility recon (FRICTION dead-end #5; `notes/Phase22.md` *Blockers*)
 found the Case-I coupling has two real gaps **(G1)/(G2)** the type-level plan
-was blind to. The user has paused per-commit Lean work to decide the **motive
+was blind to. The user paused per-commit Lean work to decide the **motive
 question** — should `PanelHingeFramework.HasFullRankRealization` carry general
-position (KT's "nonparallel") — before any more producer commits. This doc
-states the decision inputs, maps the layer, and gives a recommendation with its
-ripple cost. **The motive choice is the user's to make.** No Lean / `\leanok` /
-blueprint edits accompany this doc.
+position (KT's "nonparallel"). The motive decision landed (the **two-motive
+split**, §1.4, green); §**1.5** (2026-06-04) is the follow-on **generic-motive
+recon** settling the N6-composer IH-shape gap as a **hybrid route** and cutting
+it into the buildable N6-G1/G2/G3 nodes (the live to-do is `notes/Phase22A.md`
+*Lemma checklist*). No Lean / `\leanok` / blueprint edits accompany this doc.
 
 Primary sources read for this pass: KT 2011 §5–§6.4 (`.refs/`, printed pp.
 669–697); `Molecular/{AlgebraicInduction,Extensor,Deficiency,Induction}.lean`;
@@ -187,6 +188,86 @@ bifurcation (Lemma 6.2 bare vs. 6.3/6.5 nonparallel). The single-conjunct form
 `minimal_kdof_reduction` — that is a Lean-feasibility question worth a 1-commit
 spike before the full producer build.
 
+### 1.5 Generic-motive recon — the route is a hybrid (2026-06-04)
+
+The two-motive split (§1.4) landed green, and so did all the Case-I bricks (N4,
+N5, N6a, the (G2) factor, the N6b/N6c coupling, the leg-transport
+`hasGenericRealization_transport_ends`). The **one remaining red node** is the
+N6 composer, whose IH-shape gap the hand-off named for a math-first recon. This
+section settles it. The two candidate routes from the §1.4 hand-off:
+
+- **Route 1** — re-run `Graph.minimal_kdof_reduction` against
+  `HasGenericFullRankRealization` (make the *IH* generic).
+- **Route 2** — strengthen the simple-case coupling to conclude GP at the
+  realizing point (make the *producer* generic).
+
+**Decision: a hybrid — Route 2 *and* Route 1 are the two halves, not
+alternatives.** The composer's per-leg adapter
+`hasGenericRealization_transport_ends` (green, `AlgebraicInduction.lean:4109`)
+*consumes* each leg in `HasGenericFullRankRealization` (its `hQgp` hypothesis)
+and the coupling `…_couple_ofNormals` *produces* only the bare motive. So:
+
+1. **Route 2 is needed to make the producer generic.** The coupling already
+   *derives* `IsGeneralPosition` at its seed `q₀` (`:4036`, `hgp := hQgp_pos q₀
+   hq₀gp`), but the device closure realizes at a **different**, existentially-
+   hidden `q` returned by `exists_good_realization_ofParam` (`:2938`, conclusion
+   `∃ q, finrank ≤ …` — no GP conjunct). That `q` *is* general position (the
+   device varies over `ofParam` moment-curve points and
+   `isGeneralPosition_ofParam`, `:2048`, makes those GP), but the witness is
+   dropped on the way out. Route 2 = add a `_generic` twin to the device stack
+   (`exists_good_realization_ofParam` → `exists_relative_full_count_ofParam` →
+   `hasFullRankRealization_of_independent_panelRow` → the leg-restricted variant
+   → the coupling) that re-exposes `IsGeneralPosition q`. **Buildable, bounded,
+   no Phase-20 touch.** First commit `N6-G1a` re-exposes GP at the device output
+   `q`; its 1-vs-2-commit size depends on how the GP witness threads through the
+   internal `MvPolynomial.funext` — size with a spike.
+
+2. **Route 1 is still needed to make the IH generic.** Route 2 produces
+   `HasGenericFullRankRealization` for the simple-case *output*, but the
+   composer's *input* legs come from `minimal_kdof_reduction`'s IH, which is the
+   bare motive. Closing the simple branch therefore *also* needs the induction
+   to thread the GP motive. This is genuinely Phase-20-touching and
+   multi-commit (`N6-G2`, **needs-further-recon**): the honest motive is the
+   *conditioned* `(G.Simple → GP) ∧ bare` (unconditional GP is false at the
+   parallel-K₂ base, §1.1).
+
+**KT Lemma 6.7(ii), verified against the source (KT 2011 printed p.676 = pdf
+p.31).** For `G` 2-edge-connected minimal `k`-dof, `|V|≥3`, **and no proper
+rigid subgraph**: (i) `|V|=3 ⟹ k=0` and `G` (a triangle) has a nonparallel
+full-rank realization; (ii) `|V|≥4 ⟹ G_v^{ab}` is simple for any degree-2 `v`.
+The standing *no-proper-rigid-subgraph* hypothesis means **6.7(ii) is the
+Case-II/III (splitting-off) simplicity fact — it does NOT cover the Case-I
+contraction.** No `splitOff`/`rigidContract` simplicity lemma exists in the
+project. For the Case-I legs specifically: `Graph.Simple.mono`
+(`Matroid/Graph/Simple.lean:202`, `H ≤ G → G.Simple → H.Simple`) gives the
+rigid block `H` simple **for free** (it is a subgraph); the *contraction*
+`G/E(H)` simplicity is exactly KT's Lemma 6.3-vs-6.5 split (printed pp. 673,
+675), not a single fact. So `N6-G2` needs Lemma 6.7(ii) *for the split-off
+branch* **plus** a Case-I contraction-simplicity dichotomy — both new, each its
+own decomposition pass (re-recon at G2-open).
+
+**Why the hybrid and not Route 1 alone.** Route 1 alone (a fully generic
+reduction) would force *every* case — including the parallel-K₂ base and the
+non-simple Lemma-6.2 branch — to conclude GP, which they cannot (§1.1). The
+conditioned motive `(G.Simple → GP) ∧ bare` avoids that, but the GP conjunct of
+its conclusion still has to be *produced* somewhere for the simple cases — which
+is exactly Route 2's `_generic` producer. So Route 2 is a prerequisite of Route
+1's simple-case discharge regardless; doing Route 2 first (it is the buildable,
+motive-independent half) also de-risks G2's recon.
+
+**Why the hybrid and not Route 2 alone.** Route 2 alone makes the simple-case
+producer generic, but the composer still needs *generic legs in* — and those
+come from the IH, which only Route 1 upgrades. A producer that concludes the
+strong motive from strong-motive inputs is inert until the induction supplies
+strong-motive inputs.
+
+**Build order (N6):** `N6-G1a` (spike + re-expose device GP) → `N6-G1b` (thread
+through coupling ⟹ `…_couple_generic`) → **re-recon `N6-G2`** → `N6-G3`
+(composer assembly: dispatch on `G.Simple`, feed N4 + the two transported
+generic IHs into `…_couple_generic`, forget down for non-simple via
+`hasFullRankRealization_of_generic`). The node list and statuses are in
+`notes/Phase22A.md` *Lemma checklist*.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
@@ -250,33 +331,26 @@ Nodes (composing the green infra of §2):
   needed `hsupp`. The old `hasFullRankRealization_of_splice` now factors through it
   as a thin GP corollary. Lowest-risk starting node; **does not need the motive
   strengthening** — confirmed in practice (axiom-clean, no Phase-20 touch).
-- **N6b — simple Case I, simple contraction (KT Lemma 6.3).** `buildable
-  conditional on §1`. Needs the two legs nonparallel + jointly generic (eq. 6.6
-  boundary-panel intersection). With motive (A)/two-motive: the legs arrive
-  nonparallel; the shared generic seed is the (G2) factor. **Gated on (G2).**
-- **N6c — simple Case I, no simple contraction (KT Lemma 6.5).** `buildable
-  conditional on §1` (same shape as N6b; the contracted vertex's two boundary
-  hinges give `+D` via Lemma 5.3 / the splice). **Gated on (G2).**
-- **(G2) general-position factor.** `research-shaped (bounded).` A nonzero
-  `MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are exactly
-  `IsGeneralPosition` assignments. This is a *pairwise-independence* polynomial:
-  for each body-pair `{a,b}`, general position is "the `2 × (k+2)` matrix
-  `[q(a,·); q(b,·)]` has rank 2", i.e. *some* `2×2` minor `≠ 0`. A product over
-  pairs of "sum of squared minors" or a single Vandermonde-on-a-generic-line
-  witness works; the moment-curve assignment `ofParam` is the explicit non-root.
-  **Recon check:** non-roots of a finite product of nonzero polynomials are
-  Zariski-dense and the moment-curve point is a witnessed non-root, so the triple
-  product `Q_H · Q_c · Q_gp` (two rank polynomials × the gp factor) has a shared
-  non-root by `MvPolynomial.exists_eval_ne_zero` — arithmetic closes. Bounded:
-  the math is standard, the Lean is a new mirror brick (~1–2 commits).
-- **N6 — Case I composer (`lem:case-I-realization`).** `buildable` once
-  N6a/N6b/N6c land. Dispatches on simplicity, feeds N4 (the contraction is a
-  smaller minimal 0-dof-graph) + the IH legs + the (G2) seed into the splice
-  producer, concludes `hcontract`.
+- **N6b/N6c — simple Case I (KT Lemma 6.3/6.5).** **GREEN** (2026-06-04;
+  `hasFullRankRealization_of_couple_ofNormals`). The shared-seed coupling: each
+  leg's leg-restricted rank polynomial × the (G2) factor → triple-product shared
+  non-root → each leg rigid + GP at it → `…_splice_ofNormals`. *Note:* this
+  concludes only the **bare** motive — the GP is held at the seed `q₀` but the
+  device realizes at a different hidden `q` (see §1.5); upgrading it to conclude
+  `HasGenericFullRankRealization` is N6-G1.
+- **(G2) general-position factor.** **GREEN** (2026-06-04;
+  `exists_generalPosition_polynomial`). Off-diagonal product of leading `2×2`
+  minor polynomials, witnessed nonzero at the moment-curve seed (Vandermonde).
+- **N6 — Case I composer (`lem:case-I-realization`).** **RED — the one remaining
+  node; decomposed in §1.5 into the hybrid N6-G1/G2/G3.** Not `buildable` as a
+  single commit: the composer's adapter needs each leg in
+  `HasGenericFullRankRealization`, which (i) the coupling does not produce (N6-G1,
+  Route 2, buildable) and (ii) `minimal_kdof_reduction` does not thread (N6-G2,
+  Route 1, multi-commit, needs-further-recon). See §1.5 + `notes/Phase22A.md`.
 
-**Build order (Track A):** §1 motive decision → N6a (non-simple, motive-
-independent, de-risks the splice plumbing) → (G2) factor → N6b/N6c (need (G2) +
-strengthened motive) → N6 composer.
+**Build order (Track A), updated 2026-06-04 (everything before N6 is green):**
+§1 motive decision ✓ → N6a ✓ → (G2) ✓ → N6b/N6c coupling ✓ → **N6 composer
+(§1.5 hybrid): N6-G1a → N6-G1b → re-recon N6-G2 → N6-G3.**
 
 ### Track B — Case II/III producer (`hsplit`), KT §6.3 (Lemma 6.8) + §6.4.1
 

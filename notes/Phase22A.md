@@ -35,18 +35,17 @@ k-bookkeeping*.
 
 ## Current state
 
-**Track A's reduction infra (N4) and Case-I producer bricks are all GREEN; the one open
-blocker is the N6 composer's generic-motive induction.** The simple Case-I coupling
-(`hasFullRankRealization_of_couple_ofNormals`) is a complete assembly of green bricks, and the
-`ends`-swap leg-transport brick that feeds the IH into it is green. What remains red:
-`lem:case-I-splice-placement` / `lem:case-I-realization` (the N6 composer) — a recon found it is **not
-a clean composition**. `theorem_55.hcontract`'s IH (threaded by `minimal_kdof_reduction`,
-`Induction.lean:3538`) supplies a *bare* `HasFullRankRealization k G'`, but the simple Case-I coupling
-needs each leg `HasGenericFullRankRealization` (general position). The two-motive split dissolves that
-gap only when the *induction* runs against the GP motive — so the simple branch needs a *separate
-generic-motive reduction* (a re-run of `minimal_kdof_reduction`, Phase-20 touch), re-opening the
-parked `Simple`-threading / KT Lemma 6.7(ii) question. Multi-commit. No `\leanok` flip yet (all the
-green bricks are infra below the still-red Case-I nodes); no `sorry` committed.
+**Track A's reduction infra (N4) and Case-I producer bricks are all GREEN; the one open blocker — the
+N6 composer's generic-motive induction — is now decomposed (recon 2026-06-04).** The simple Case-I
+coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete assembly of green bricks, and the
+`ends`-swap leg-transport brick that feeds the IH into it is green. The generic-motive recon (docs-only)
+settled the IH-shape gap as a **hybrid** of the two candidate routes — Route 2 (make the simple-case
+*producer* conclude GP) and Route 1 (make the *IH* generic) are not alternatives but two halves, because
+the composer's adapter needs each leg in `HasGenericFullRankRealization` form while `minimal_kdof_reduction`
+threads only the bare motive. Cut into **N6-G1** (Route 2, buildable; first commit = N6-G1a, re-expose the
+device-output GP witness), **N6-G2** (Route 1, the generic-motive reduction — multi-commit, Phase-20-touch,
+NEEDS FURTHER RECON), **N6-G3** (composer assembly). See *Lemma checklist* / *Decisions* / *Hand-off*. No
+`\leanok` flip yet; no `sorry` committed.
 
 **Green-brick inventory (resume points; full detail in *Lemma checklist* / *Decisions*).**
 - **N4** `rigidContract_isMinimalKDof` — graph↔matroid contraction-minimality bridge (`\leanok`).
@@ -114,12 +113,32 @@ green bricks are infra below the still-red Case-I nodes); no `sorry` committed.
   into N6 below.
 - [ ] **N6** `lem:case-I-realization` — compose N4 + N5 + the green glue
   (`isInfinitesimallyRigidOn_union_of_inter`) + device ⇒ discharges
-  `theorem_55.hcontract`. **NOT one commit — IH-motive mismatch (recon).** The IH supplies a *bare*
-  `HasFullRankRealization k G'`, but the simple-case coupling needs each leg *general-position* rigid;
-  the GP motive must be threaded by the *induction*, i.e. a separate generic-motive reduction (re-run of
-  `minimal_kdof_reduction`, Phase-20 touch). Multi-commit. **Leg-transport brick GREEN:**
-  `hasGenericRealization_transport_ends` (the `ends`-swap step). Remaining red: the generic-motive
-  induction + simplicity dispatch + the contraction-dichotomy plumbing.
+  `theorem_55.hcontract`. **NOT one commit — IH-motive mismatch (recon).** The composer needs each leg in
+  `HasGenericFullRankRealization` (GP) form, but `minimal_kdof_reduction` threads only the *bare*
+  `HasFullRankRealization`. The 2026-06-04 generic-motive recon settled this as a **hybrid** (see
+  *Decisions* → *Generic-motive recon: hybrid …*): Route 2 (generic *producer*) and Route 1 (generic *IH*)
+  are not alternatives — they are the two halves. Sub-nodes ordered below; **N6-G1 is the first buildable
+  commit.** **Leg-transport brick GREEN:** `hasGenericRealization_transport_ends`.
+  - [ ] **N6-G1** `…_couple_generic` — generic *producer*: a `_generic` device stack (re-expose the
+    `ofParam` GP witness through `exists_good_realization_ofParam` → `…_relative_full_count` →
+    `…_independent_panelRow` → leg-restricted variant → coupling) so the simple-case coupling concludes
+    `HasGenericFullRankRealization k G`, not just bare. **Buildable, bounded** (Route 2; no Phase-20 touch).
+    *Sub-decompose*: G1a re-expose GP at the device output `q` (the 4 device bricks gain a `_generic` twin
+    returning `(q, IsGeneralPosition q)` via `isGeneralPosition_ofParam`); G1b thread it through the
+    leg-restricted chain + coupling. **G1a may itself be 2 commits** — flagged *needs further recon* once
+    the device-brick twin count is known (see *Blockers*).
+  - [ ] **N6-G2** the generic-motive reduction (Route 1, the structural core) — **NEEDS FURTHER RECON,
+    multi-commit, Phase-20-touching.** Supply each Case-I leg's IH in `HasGenericFullRankRealization` form.
+    Honest motive is the *conditioned* `(G.Simple → GP) ∧ bare` (unconditional GP is false at the
+    parallel-K₂ base), which re-opens `Simple`-threading through `minimal_kdof_reduction`. Needs: (a) a
+    Phase-20 re-parameterization exposing `G.Simple` to the case dispatch; (b) KT Lemma 6.7(ii)
+    (`splitOff` simplicity-preservation, *absent* — see *Decisions*); (c) the Case-I contraction-simplicity
+    dichotomy (`Graph.Simple.mono` gives the rigid block `H ≤ G` simple for free; `G/E(H)` simplicity is
+    KT Lemma 6.3-vs-6.5, not a single fact). **Do not dispatch as one commit.**
+  - [ ] **N6-G3** composer assembly — once G1+G2 land: dispatch on `G.Simple`, feed N4 (contraction is a
+    smaller minimal 0-dof-graph) + the two generic-motive leg IHs through `hasGenericRealization_transport_ends`
+    into `…_couple_generic`, forget down (`hasFullRankRealization_of_generic`) for the non-simple branch
+    (N6a), conclude `hcontract`. **Buildable once G1/G2 are green.**
   - [x] **N6a** non-simple Case I producer (KT Lemma 6.2), general-position-free. **GREEN**
     (`hasFullRankRealization_of_splice_of_supportExtensor` + leg-native form). Takes *transversal hinges*
     `hsupp` directly instead of general position `hgp`, strictly generalizing
@@ -163,6 +182,24 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **Generic-motive recon: the route is a HYBRID — Route 2 (generic producer) + Route 1 (generic IH) are
+  two halves, not alternatives (2026-06-04, docs-only).** Ground: the composer's per-leg adapter
+  (`hasGenericRealization_transport_ends`, green) consumes each leg in `HasGenericFullRankRealization`, but
+  `minimal_kdof_reduction` (`Induction.lean:3529`) threads only the bare `HasFullRankRealization`. Route 2
+  makes the simple-case *producer* conclude GP (the device realizes at a hidden `ofParam` `q` that *is* GP
+  by `isGeneralPosition_ofParam`, but `exists_good_realization_ofParam` returns a bare `∃ q`, hiding the
+  witness — re-expose it). Route 1 makes the *IH* generic. Both are required: G1 (Route 2, buildable),
+  then G2 (Route 1, needs-further-recon), then G3 assembly. **First buildable commit: N6-G1a** (re-expose
+  GP through the device stack). Cut into N6-G1/G2/G3 in the *Lemma checklist*; design doc §1.5.
+- **KT Lemma 6.7(ii) verified vs. source; absent in repo; only covers the Case-II/III branch (2026-06-04).**
+  KT 2011 printed p.676 (pdf p.31): for `G` 2-edge-connected minimal `k`-dof, `|V|≥3`, **and no proper
+  rigid subgraph**, (i) `|V|=3 ⟹ k=0` + nonparallel full-rank realization; (ii) `|V|≥4 ⟹ G_v^{ab}` is
+  simple for any degree-2 `v`. **No `splitOff`/`rigidContract` simplicity fact exists in the project.** The
+  no-proper-rigid-subgraph hypothesis means 6.7(ii) is the *Case II/III* (splitting-off) simplicity fact —
+  it does NOT cover the Case-I contraction. For Case I: `Graph.Simple.mono` (`Matroid/Graph/Simple.lean:202`,
+  `H ≤ G → G.Simple → H.Simple`) gives the rigid block `H` simple for free; `G/E(H)` simplicity is exactly
+  KT's Lemma 6.3-vs-6.5 split (not a single fact). So G2 (Route 1) needs 6.7(ii) *for the split-off branch*
+  plus a contraction-simplicity dichotomy — both new.
 - **N6 composer recon: not one commit — IH-motive mismatch; leg-transport `ends`-swap brick
   (2026-06-04).** The recon (`DESIGN.md` *Constructibility recon …*) found `theorem_55.hcontract`'s IH
   (and `minimal_kdof_reduction`'s) is the *bare* `HasFullRankRealization k G'`; the simple-case coupling
@@ -321,20 +358,22 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **The only open blocker is the N6 composer's generic-motive induction (an IH-shape gap).** Everything
-  else under Track A is green: N4 (the full reduction infra), the N5 splice/seed/rank-polynomial bricks
-  (all-edges + leg-restricted), N6a (non-simple Case I), the two-motive split, (G2), the N6b/N6c simple
-  Case-I coupling, and the N6 leg-transport `ends`-swap brick. The composer cannot be a clean composition:
-  `theorem_55.hcontract`'s IH (threaded by `minimal_kdof_reduction`, `Induction.lean:3538`) is the *bare*
-  `HasFullRankRealization k G'`, but the simple-case coupling needs each leg `HasGenericFullRankRealization`
-  (general position). So the simple Case-I branch needs `minimal_kdof_reduction` (or a wrapper) re-run
-  against the GP motive — a Phase-20-touching, multi-commit step — re-opening the parked `Simple`-threading
-  / KT Lemma 6.7(ii) simplicity-preservation question (currently absent on `splitOff`). A second sub-gap:
-  the coupling concludes only the *bare* motive (`_independent_panelRow` realizes at a device-generic `q`
-  with no GP conjunct), so a GP-motive simple branch must *also* re-establish general position at the
-  device-output point. **The first decomposable brick is green** (`hasGenericRealization_transport_ends`,
-  the `ends`-swap step). See *Hand-off* for the two routes (the math-first generic-motive decomposition and
-  the bounded device-point-GP add).
+- **The only open blocker is the N6 composer's generic-motive induction (an IH-shape gap), now decomposed
+  into N6-G1/G2/G3 (recon settled 2026-06-04 — hybrid route).** Everything else under Track A is green: N4,
+  the N5 splice/seed/rank-polynomial bricks (all-edges + leg-restricted), N6a, the two-motive split, (G2),
+  the N6b/N6c coupling, the leg-transport `ends`-swap brick. The recon (see *Decisions* → *Generic-motive
+  recon*) settled the decomposition; the residual recon items are:
+  - **N6-G1a sizing (buildable but possibly >1 commit).** Re-exposing GP through the device stack
+    (`exists_good_realization_ofParam` → `…_relative_full_count` → `…_independent_panelRow` → leg-restricted
+    → coupling) adds a `_generic` twin to each brick returning `(q, IsGeneralPosition q)`. Whether the
+    4-brick re-expose is 1 or 2 commits depends on how cheaply `isGeneralPosition_ofParam`'s witness threads
+    through `exists_good_realization_ofParam`'s internal `MvPolynomial.funext` — **size it with a 1-commit
+    G1a spike before dispatching G1 whole.**
+  - **N6-G2 is genuinely multi-commit and Phase-20-touching (NEEDS FURTHER RECON; do not dispatch whole).**
+    The generic-motive reduction needs (a) a Phase-20 re-parameterization of `minimal_kdof_reduction`
+    exposing `G.Simple`; (b) KT Lemma 6.7(ii) for the split-off branch (absent); (c) the Case-I
+    contraction-simplicity dichotomy (`Graph.Simple.mono` gives the block free; `G/E(H)` is KT 6.3-vs-6.5).
+    Each is its own decomposition pass — re-recon at G2-open, not now.
 - **Track B + assembly are deferred to 22B+** (see *Deferred to 22B+ (Case III + assembly)* above), not
   open blockers for 22A: the Case II/III producer (eq. 6.12 degenerate placement, one short, + Lemma 6.10
   at `d=3`) and the `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip. They re-enter once
@@ -342,40 +381,30 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**Clean handoff point.** The N6 leg-transport brick `hasGenericRealization_transport_ends`
-(`AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip) is the last green brick; all of Track A's
-Case-I machinery is green except the N6 composer, which the recon showed is **not one commit** (see
-*Blockers*): the IH is the *bare* `HasFullRankRealization`, the simple coupling needs
-`HasGenericFullRankRealization`. No `sorry` committed; `lem:case-I-splice-placement` /
-`lem:case-I-realization` stay red.
+**Clean handoff point.** The generic-motive recon is done (docs-only; see *Decisions* → *Generic-motive
+recon* + design doc §1.5). It settled the N6-composer IH-shape gap as a **hybrid** route and cut it into
+N6-G1/G2/G3 in the *Lemma checklist*. No Lean / `\leanok` touched; `lem:case-I-splice-placement` /
+`lem:case-I-realization` stay red. The last green brick is `hasGenericRealization_transport_ends`.
 
-**Next concrete task: a math-first recon / decomposition of the generic-motive induction into
-right-sized buildable nodes** (the N6-composer IH-shape gap), *before* any build dispatch — the user wants
-up-front planning first, not an immediate build commit. The recon's job is to settle which of the two
-routes below (or a hybrid) is the right decomposition and to cut the resulting work into nodes each sized
-for a single buildable commit. The decision input — the simple Case-I branch needs the IH in
-`HasGenericFullRankRealization` form, so one of:
-1. **Route 1 (the structural core) — a generic-motive reduction.** Re-run `Graph.minimal_kdof_reduction`
-   (`Induction.lean:3529`, Phase 20, green) against `HasGenericFullRankRealization`. The combinatorial
-   reduction is motive-agnostic, but it (a) touches a closed Phase-20 node and (b) needs *every* case to
-   *also* conclude GP — which the non-simple/parallel base cases cannot (KT's "if simple" caveat). The
-   honest shape is a reduction whose motive is the *conditioned* `(G.Simple → GP) ∧ bare` — re-opening the
-   `Simple`-threading question the spike parked (it needs KT Lemma 6.7(ii) simplicity-preservation on
-   `splitOff`, currently absent). **Decompose this math-first** — it is the genuine remaining content of
-   Case I and is not a single clean commit.
-2. **Route 2 (the buildable sub-step) — scope the simple branch to conclude GP at the device point.**
-   Strengthen `hasFullRankRealization_of_couple_ofNormals` (and the `_independent_panelRow` closure it
-   routes through) to also conclude `IsGeneralPosition` at the realizing `q`, so the simple cases supply
-   `HasGenericFullRankRealization`. This is a bounded analytic add (the device-output `q` is a non-root of
-   a GP polynomial by construction, since the (G2) factor was already multiplied in) and is the smaller of
-   the two — a reasonable next *buildable* commit toward the composer. Pairs with the green
-   `hasGenericRealization_transport_ends` to make each leg's IH consumable.
+**Next concrete task — the first buildable commit: N6-G1a, the device-output GP re-expose (Route 2's
+opening).** The simple-case coupling already *holds* GP at its seed `q₀` (`hasFullRankRealization_of_couple_ofNormals:4036`,
+`hgp := hQgp_pos q₀ hq₀gp`), but the device closure realizes at a *different*, existentially-hidden `q`
+from `exists_good_realization_ofParam` (`:2938`, returns a bare `∃ q`). That `q` *is* in general position
+(the device varies over `ofParam` moment-curve points, `isGeneralPosition_ofParam:2048`), but the witness
+is dropped. G1a adds a `_generic` twin to `exists_good_realization_ofParam` (and, if it threads cheaply,
+`…_relative_full_count` / `…_independent_panelRow`) that *also* returns `IsGeneralPosition` of the output
+`q`. **Spike-then-size:** confirm in 1 commit whether the GP witness threads through the internal
+`MvPolynomial.funext` cheaply (then G1a is 1 commit) or needs a separate `ofParam`-restricted device
+variant (then 2). Do this before dispatching N6-G1 whole.
+
+**Then, in order:** N6-G1b (thread GP through the leg-restricted chain + coupling ⟹ `…_couple_generic`
+concludes `HasGenericFullRankRealization`) → **re-recon N6-G2** (the generic-motive reduction; multi-commit,
+Phase-20-touching, NEEDS FURTHER RECON — do not dispatch whole; see *Blockers*) → N6-G3 composer assembly
+→ `lem:case-I-realization` green, closing 22A.
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an
-`infinitesimalMotions` equality needs a `mem_infinitesimalMotions` round-trip. Build order within 22A from
-there: generic-motive recon → the resulting buildable nodes → N6 composer → `lem:case-I-realization` green,
-closing 22A.
+`infinitesimalMotions` equality needs a `mem_infinitesimalMotions` round-trip.
 
 *Out of 22A scope.* Track B (Case III at `d=3`) and the `d=3` assembly (the `prop:rigidity-matrix-prop11`
 `hub` brick + `thm:theorem-55` flip) are deferred to **22B+** — see *Deferred to 22B+ (Case III +
