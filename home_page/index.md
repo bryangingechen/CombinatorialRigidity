@@ -177,7 +177,7 @@ around via a deficiency-count argument), and KT's iterated
 fundamental-circuit swaps are bypassed by partition-count / rank-count
 comparisons through the `def(G̃) = corank M(G̃)` bridge. The
 forest-surgery core (KT 4.1/4.2) is off the Theorem-4.9 critical path.
-`Molecular/Induction.lean`; chapter `molecular-induction.tex`. See
+`Molecular/Induction/`; chapter `molecular-induction.tex`. See
 `notes/Phase20.md` and `notes/MolecularConjecture.md`.
 
 **Phase 21 (complete — GREEN-modulo-21b)** lands stratum 5: the **algebraic
@@ -260,11 +260,11 @@ existing files or refactor across several).
 |    17 | Grassmann–Cayley extensor algebra | `Molecular/Extensor.lean` | ✓ |
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
-|    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
+|    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction/` | ✓ |
 |    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction/` | ✓ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
 |   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction/` (+ `lem:genericity-device`) | ✓ |
-|   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction.lean` + `AlgebraicInduction/` | ✓ (green-modulo-22b) |
+|   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ (green-modulo-22b) |
 |   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction/CaseI.lean` | ◷ |
 |  22b+ | (parked) Case III at `d=3` + `d=3` assembly (Claim 6.4 / 22b precedes it; may renumber to 22c+) | `Molecular/AlgebraicInduction/` | ◷ |
 

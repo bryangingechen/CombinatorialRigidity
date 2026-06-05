@@ -12,7 +12,7 @@ import CombinatorialRigidity.MatroidIdentification
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
 import CombinatorialRigidity.Molecular.Deficiency
 import CombinatorialRigidity.Molecular.Extensor
-import CombinatorialRigidity.Molecular.Induction
+import CombinatorialRigidity.Molecular.Induction.ForestSurgery
 import CombinatorialRigidity.Molecular.Meet
 import CombinatorialRigidity.Molecular.RigidityMatrix
 import CombinatorialRigidity.PebbleGame.Correctness

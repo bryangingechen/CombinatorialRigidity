@@ -57,9 +57,25 @@ Sub-files under `chapter/algebraic-induction/`: `panel-layer.tex` (335), `case-i
 green (`inv bp` + `inv web` + `checkdecls` all pass — pins resolve, no dangling `\uses`/`\cref`).
 Also fixed `intro.tex`'s two Phase-21/21b file-path references to the new subdir.
 
-### C — `Induction.lean` split ☐ (next)
+### C — `Induction.lean` split ✓ (this commit)
 
-### D — pass close (PERFORMANCE.md executed-split record, ROADMAP status flip) ☐
+5 files, linear chain `Operations ← SplitOffDeficiency ← ReducibleVertex ← Contraction ← ForestSurgery`;
+original deleted; the two importers (`AlgebraicInduction/PanelLayer.lean` + root aggregator) repointed
+to the terminal leaf `…Induction.ForestSurgery`. Build green + warning-clean + lint green.
+
+| File | LoC | Contents (blueprint nodes) |
+|---|---|---|
+| `Operations.lean` | 674 | `inducedSpan`/`endsOf`, circuit-induces-rigid (KT 3.4), forest-packing decomposition, contraction rank/deficiency bridges, `removeVertex`/`splitOff` |
+| `SplitOffDeficiency.lean` | 559 | split-off / removal deficiency (`lem:splitoff-deficiency`/`lem:removal-deficiency`, KT 4.3/4.4), `dof_tracking` |
+| `ReducibleVertex.lean` | 766 | edge-count (`lem:no-rigid-edge-count`, F′), reducible vertex (`lem:reducible-vertex`, F″), `edgeSplit`/`collapseTo`/`rigidContract` |
+| `Contraction.lean` | 731 | N4b/G2b/N4c contraction theory (incl. `namespace Matroid` block), `rigidContract_isMinimalKDof` (`lem:contraction-minimality`) |
+| `ForestSurgery.lean` | 1653 | acyclicity transport/reroute, `splitOff_isMinimalKDof`, **Theorem 4.9** (`thm:minimal-kdof-reduction`), forest-surgery (KT 4.1) |
+
+Note: `Contraction.lean` carries the original's `Graph → Matroid → Graph` namespace switch in its
+verbatim body (3 `namespace`/`end` pairs). The blueprint mirror `molecular-induction.tex` (1013 lines)
+left as-is — under the urgent threshold, and blueprint files carry no build cost.
+
+### D — pass close (PERFORMANCE.md executed-split record, ROADMAP status flip) ☐ (next)
 
 ## Hand-off / next
 
