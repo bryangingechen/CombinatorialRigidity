@@ -578,25 +578,35 @@ KT §6.2 geometry. **(G1)** the rank-polynomial *producer* `exists_rankPolynomia
 position); **(G2)** the splice needs general position at the shared non-root, which `Q_H·Q_c` does not
 supply. See *Current state* / *Decisions* / *Blockers*.
 
-**Recommended next concrete commit — math-first decomposition of the coupling's two gaps (do NOT
-schedule the coupling as a build until these close).** The constructibility recon (`DESIGN.md`) is the
-binding gate here: the coupling's arithmetic does *not* close from the bare IH. The decomposition to
-do, against KT §6.2 (panel-intersection, eq. 6.6) + `notes/Phase21b.md` *Finding A*:
-- **(G1) Transversal-rigid seed per leg.** Either (a) strengthen the realization motive — change
-  `HasFullRankRealization` / the three `theorem_55` IH hypotheses (`hbase`/`hsplit`/`hcontract`) to
-  carry a *general-position* (hence transversal) rigid realization, so the IH directly feeds
-  `exists_rankPolynomial_of_rigidOn`; or (b) prove "a bare rigid realization admits a transversal-rigid
-  sibling at a nearby seed" (the generic-perturbation argument — likely itself needs the rank polynomial,
-  so (a) is cleaner). (a) is a signature reshape touching the base case + Case II + Case III producers;
-  scope it before building.
-- **(G2) General-position factor.** A nonzero `MvPolynomial (α × Fin (k+2)) ℝ` (Vandermonde/pairwise-
-  normal-independence product) whose non-roots are exactly `IsGeneralPosition` assignments, so the
-  triple product `Q_H · Q_c · Q_gp` has a shared non-root that is *also* general position. New brick.
-With (G1)+(G2) in hand the coupling is: triple product nonzero → `MvPolynomial.exists_eval_ne_zero` →
-shared `q₀`; both legs rigid at `q₀` (this commit's consumer brick, via the leg rank polynomials);
-`q₀` general position (Q_gp); feed `hasFullRankRealization_of_splice_ofNormals` (green). The legs ride
-the parent's `ends`/`normal` (`withGraph_normal`), and rigidity is `ends`-independent
-(`IsInfinitesimallyRigidOn` reads only `supportExtensor` = graph+normals), so the `ends`-swap is free.
+**Design decision (2026-06-04, user, after the realization-layer design pass —
+`notes/Phase22-realization-design.md`, committed).** The whole Case I/II/III realization layer was
+designed as a unit. Decision: **strengthen the `HasFullRankRealization` motive to carry general
+position** (KT Thm 5.5's "nonparallel, if `G` simple"), which dissolves (G1) at the source — the bare
+motive dropping that conjunct *is* (G1), and the green producer infra
+(`exists_rankPolynomial_of_rigidOn`'s `hne`, the splice's `hgp`) already wants it, so a strengthened
+motive *discharges* these rather than the circular option (b) re-proving them. The design pass verified
+against KT (pp. 669, 673–675) that every case invokes the IH in the nonparallel form and the ripple is
+bounded/front-loaded.
+
+**Recommended next concrete commit: the `Graph.Simple`-threading spike.** Before reshaping the motive,
+run the 1-commit spike the design flags: `Graph.Simple` exists (vendored `Matroid/Graph/Simple.lean`)
+but `minimal_kdof_reduction` (`Induction.lean`) does not thread it. Determine whether `Simple` threads
+cleanly through `minimal_kdof_reduction` and `theorem_55`'s induction. **If clean:** the following
+commit strengthens `HasFullRankRealization` (+ `theorem_55`'s `hbase`/`hsplit`/`hcontract`) to conclude
+a *general-position* realization conditioned on `G.Simple`, re-types `theorem_55`, and updates the base
+case's conclusion (one small commit; the Case I/II accounting iffs `lem:case-I`/`lem:case-II` are
+untouched). **If costly:** fall back to the **two-motive split** (a separate general-position motive
+variant, avoiding the `Simple` thread through `minimal_kdof_reduction`). Pick the cheaper route per the
+spike's outcome. Full per-node ripple list: `notes/Phase22-realization-design.md` §motive.
+
+**Then, in order (all bounded / on green infra per the design):** (i) **(G2)** the general-position
+`MvPolynomial` factor (a nonzero Vandermonde/pairwise-normal-independence product whose non-roots are
+exactly `IsGeneralPosition`); (ii) the **Case-I coupling** — triple product `Q_H · Q_c · Q_gp` nonzero
+→ `MvPolynomial.exists_eval_ne_zero` → shared general-position `q₀` → both legs rigid at `q₀` (the green
+consumer brick) → `hasFullRankRealization_of_splice_ofNormals` ⟹ discharges `theorem_55.hcontract` and
+flips `lem:case-I-splice-placement` / `lem:case-I-realization` green; (iii) the **Case-III row** via the
+green Lemma 2.1 (`omitTwoExtensor_linearIndependent`). The legs ride the parent's `ends`/`normal`
+(`withGraph_normal`); rigidity is `ends`-independent, so the `ends`-swap is free.
 
 Honesty-gate: `lem:case-I-splice-placement` / `lem:case-I-realization` stay red — the deliverable
 (shared-seed full-rank realization) is not produced; only the per-leg consumer half is green.
