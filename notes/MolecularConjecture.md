@@ -549,13 +549,17 @@ plan).** N4 is green. The design pass (`notes/Phase22-realization-design.md`)
 found the at-open "N4 build-shaped → decompose N5 → N6" framing optimistic on
 both N4 (a Whitney sub-build) and N5 (the panel-transversality "lemma" is already
 green; the real gap was the too-weak motive, **G1**). Corrected order, all bounded
-on green infra: **N6a** (non-simple Case I, KT Lemma 6.2, motive-independent —
-the lowest-risk next commit) → **two-motive split** (add a general-position motive
-`HasGenericFullRankRealization` + forgetful map; bare `theorem_55` untouched) →
-**(G2)** the general-position `MvPolynomial` factor → **N6b/N6c** (simple Case-I
-cases, gated on the GP motive + G2) → **N6** the Case-I composer
-(`lem:case-I-realization`) ⟹ discharges `hcontract`. Then Track B / Case III
-(below) and the `prop:rigidity-matrix-prop11` `hub` brick (Phase-19 partition
+on green infra: **N6a** (non-simple Case I, KT Lemma 6.2, motive-independent) →
+**two-motive split** (add a general-position motive `HasGenericFullRankRealization`
++ forgetful map; bare `theorem_55` untouched) → **(G2)** the general-position
+`MvPolynomial` factor → **N6b/N6c** (simple Case-I cases). **All of these are now
+GREEN**, plus the N6 leg-transport `ends`-swap brick. A recon then found **N6** the
+Case-I composer (`lem:case-I-realization`) is **not** a clean final step: the IH
+is the *bare* `HasFullRankRealization`, but the simple coupling needs
+`HasGenericFullRankRealization`, so the simple branch needs a **generic-motive
+induction** (re-run `minimal_kdof_reduction` against the GP motive, Phase-20 touch,
+multi-commit; re-opens the parked `Simple`-threading question). Then Track B / Case
+III (below) and the `prop:rigidity-matrix-prop11` `hub` brick (Phase-19 partition
 count, Track-independent). The live, node-by-node hand-off is `notes/Phase22.md`.
 
 #### Phase 23 — Case III general `d` + assembly (§6.4.2, §5.2, §7)
@@ -686,15 +690,18 @@ except the realization producers, Case III, and
 (extending — not adding — `algebraic-induction.tex`, per the structural-edit
 discipline in `blueprint/CLAUDE.md`).
 
-**Next concrete commit inside Phase 22:** **N6a** — the non-simple Case-I producer
-(KT Lemma 6.2, motive-independent), per the live build order in `notes/Phase22.md`
-*Hand-off* and the realization-layer design (`notes/Phase22-realization-design.md`).
-Track A's reduction infra (N4a–N4c + N4 `rigidContract_isMinimalKDof`) and the
-Case-I per-leg machinery are green; the layer design pass decided the motive (carry
-general position via a two-motive split). Build order: N6a → two-motive split → the
-(G2) general-position factor → the simple Case-I cases → the N6 composer ⟹
-`hcontract`; then Case III (design-pass-first, see the Track-B *Process* note). The
-KT math is in `notes/Phase21b.md` *Finding A/B* + the design doc — Phase 22
-formalizes it, does not re-derive it. When Phase 22 closes, follow
+**Next concrete commit inside Phase 22:** **math-first decompose the generic-motive
+induction** (the N6-composer IH-shape gap), per the live hand-off in
+`notes/Phase22.md`. All of Track A's Case-I machinery is green (N4a–N4c + N4
+`rigidContract_isMinimalKDof`, N6a, the two-motive split, (G2), the N6b/N6c simple
+Case-I coupling, and the N6 leg-transport `ends`-swap brick), except the N6 composer:
+its IH is the *bare* `HasFullRankRealization`, the simple coupling needs
+`HasGenericFullRankRealization`, so the simple branch needs `minimal_kdof_reduction`
+re-run against the GP motive (a Phase-20-touching generic-motive reduction,
+multi-commit; re-opens the parked `Simple`-threading question). The bounded buildable
+sub-step is to scope the coupling to conclude GP at the device point. Then Case III
+(design-pass-first, see the Track-B *Process* note). The KT math is in
+`notes/Phase21b.md` *Finding A/B* + the design doc — Phase 22 formalizes it, does not
+re-derive it. When Phase 22 closes, follow
 `CLAUDE.md` *When this commit closes a phase* and re-sync this doc (phase table,
 the Phase 22 detail, this section).
