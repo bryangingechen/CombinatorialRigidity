@@ -616,8 +616,18 @@ green + warning-clean. No `\leanok` flip (`lem:case-I-realization` stays red unt
 ledger entry:** G3b landed exactly as scoped (`buildable`, no reroute/decomposition surfacing a new
 insight — the trigger is the "thought-one-commit → rerouted" signal, which does not apply).
 
-**Next concrete task — N6-G3-G3c: the composer assembly + `theorem_55`/`theorem_55_generic` flip
-(`buildable`, the only remaining Track-A build).** Assemble the green bricks into the simple Case-I
+**Next concrete task — N6-G3-G3c: the composer assembly (Lean only — the only remaining Track-A build).**
+
+**Scope (coordinator, 2026-06-05): G3c is the Lean assembly ONLY.** Discharge `theorem_55_generic`'s
+`hcontract`/`hcontractGP` and `theorem_55`'s Case-I branch by assembling the green bricks (supplying
+G3a's `htransport` as the carried explicit KT-Claim-6.4 hypothesis), so the Lean builds
+green-modulo-Claim-6.4. Then **STOP**: do **not** touch the blueprint (no `\leanok` flip or node edits),
+do **not** run the phase-close checklist (ROADMAP ✓-flip, user-facing surfaces, `MolecularConjecture.md`),
+and do **not** open 22b. The coordinator handles the blueprint green-modulo flip (with an honest red
+Claim-6.4 node tracking `htransport`, à la 21 → 21b), the phase-close, and the lossless 22b scaffold as a
+separate owner-supervised step.
+
+Assemble the green bricks into the simple Case-I
 producer. Dispatch on `G.Simple`:
 - **Simple branch.** Feed `couple_geometry_of_isProperRigidSubgraph` (G3b) for the seven geometric
   inputs, plus the two per-leg rigidities (each routed through `hasGenericRealization_transport_ends`
@@ -631,8 +641,10 @@ producer. Dispatch on `G.Simple`:
 - **Non-simple branch.** N6a directly.
 
 G3c discharges `theorem_55_generic`'s `hcontractGP` (`AlgebraicInduction.lean:2820`) / `hcontract`
-(`:2815`) and supplies G3a's `htransport` ⟹ `lem:case-I-realization` flips green (modulo KT Claim 6.4
-/ `lem:case-III`, 22b+).
+(`:2815`) and supplies G3a's `htransport`, completing the Lean assembly. The coordinator then flips
+`lem:case-I-realization` **green-modulo** in the blueprint, tracking the deferred `htransport` via a
+**dedicated red Claim-6.4 node** (the 22b target — *not* `lem:case-III`, which is the distinct Case-III
+eq.-(6.12) producer).
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an
