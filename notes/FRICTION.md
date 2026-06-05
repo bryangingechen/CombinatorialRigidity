@@ -76,6 +76,23 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] The fork's `Graph.Simple` API has no `map`-simplicity lemma — `map` is the one op that breaks `Simple`, so it needs a *conditional* criterion, not an instance
+- **Where it bit:** G2b (`rigidContract_simple`, Phase 22a). Needed `(G.rigidContract H r).Simple` where
+  `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))`. The fork's `Matroid/Graph/Simple.lean` has
+  `Simple` *instances* for `↾`/`＼`/`-`/induce/`noEdge`/`singleEdge` and `Simple.mono` for subgraphs, but
+  **nothing for `map`** — and rightly so: vertex-relabel can manufacture both loops (collapse an edge's
+  endpoints) and parallel edges (collapse two edges onto one pair), so `(f ''ᴳ G).Simple` is conditional,
+  not an instance.
+- **Proposed fix:** the positive criterion `Graph.map_simple` — `(f ''ᴳ G).Simple` from
+  `hloop : ∀ e x y, G.IsLink e x y → f x ≠ f y` (no edge becomes a loop) and
+  `hpar : ∀ e₁ e₂ x₁ y₁ x₂ y₂, G.IsLink e₁ x₁ y₁ → G.IsLink e₂ x₂ y₂ → f x₁ = f x₂ → f y₁ = f y₂ → e₁ = e₂`
+  (no two edges collapse to one pair). Proof is a two-field anonymous constructor: `rw [map_isLoopAt]` /
+  `rw [map_isLink]` then `rintro`/`obtain` and apply the hypothesis. Lives project-side in `Induction.lean`
+  (alongside `rigidContract`) per *prefer the project-side route*; **upstream-eligible** as a fork-side
+  `Graph.map_simple` if the fork's `Simple` API is revisited.
+- **Status:** resolved (project-side `map_simple` + `rigidContract_simple` consumer; fork-API gap noted
+  for potential upstream).
+
 ### [resolved] Transferring `IsInfinitesimallyRigidOn` across an `infinitesimalMotions` *equality* — round-trip through `mem_infinitesimalMotions`, there is no `IsInfinitesimallyRigidOn`-congruence lemma
 - **Where it bit:** `hasGenericRealization_transport_ends` (Phase 22, the N6-composer `ends`-swap
   step). Have `hmot : F'.infinitesimalMotions = F.infinitesimalMotions` (from

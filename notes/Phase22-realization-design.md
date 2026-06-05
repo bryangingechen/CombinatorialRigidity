@@ -379,13 +379,17 @@ open).**
   Phase-20 `removeVertex` re-route, no internalizing the `splitOff`-non-simplicity
   question. Pure structural composition (the motive plumbing is the only new
   content, and it is one `minimal_kdof_reduction` application).
-- **G2b — `map`/`collapseTo` simplicity (the new combinatorial fact).** Either
-  a positive `(G/E(H)).Simple` lemma when KT's Lemma-6.3 hypothesis holds, or the
-  Lemma-6.3-vs-6.5 dichotomy as a decidable case split. This is the genuinely new
-  graph-theory; **decompose math-first** — it is KT's Lemma 6.3/6.5 boundary, and
-  the fork has no `map`-simplicity API (candidate fork-side adder, but prefer the
-  project-side route per `CombinatorialRigidity/CLAUDE.md` *Editing the fork*).
-  `research-shaped`.
+- **G2b — `map`/`collapseTo` simplicity (the new combinatorial fact). GREEN
+  (`rigidContract_simple` + `map_simple`, 2026-06-04, project-side in
+  `Induction.lean`).** The math-first pass found the clean primitive is a
+  *positive* `map`-simplicity criterion — `map_simple` (`(f ''ᴳ G).Simple` from
+  no-self-collapse `hloop` + no-pair-collapse `hpar`), specialized to
+  `rigidContract`. The expected "Lemma-6.3-vs-6.5 dichotomy as a decidable case
+  split" turned out to be *downstream*: `map_simple` is the faithful statement of
+  Lemma 6.3's `G/E′`-simple *hypothesis*, and the dichotomy (which of `hloop`/`hpar`
+  holds at the realized contraction) is what G2c decides. `map` is the one op that
+  breaks `Simple` (it can make loops and parallel edges), absent any `map`-simplicity
+  instance in the fork — project-side route taken (no fork edit). Axiom-clean.
 - **G2c — wire G2a+G2b into the simple-Case-I `hcontract` discharge.** With the
   conditioned IH (G2a) giving `GP` on the two Lemma-6.3 legs (`H` via
   `Simple.mono`, `G/E(H)` via G2b), feed them through
@@ -394,17 +398,18 @@ open).**
   `buildable` once G2a/G2b are green (it is the same assembly N6-G3 does, at the
   conditioned-motive layer). This pass and N6-G3 may merge.
 
-**Net.** N6-G2's hard kernel is **G2b** (the `map`-simplicity / Lemma-6.3-vs-6.5
+**Net.** N6-G2's hard kernel was **G2b** (the `map`-simplicity / Lemma-6.3-vs-6.5
 fact) and the **G2a flagged sub-question** (does `Pc`'s `hsplit` survive the
 project's `splitOff` routing for a simple parent, or is a Phase-20 re-route
-onto vertex-removal needed). Both are escalation-eligible to the Phase-21b
-"carry as `h…`, keep the node red" idiom (`§4` deferral candidate (1)/(2)) if
-the math-first decomposition stalls — that keeps `theorem_55`'s Case-I branch
-green-modulo and honest while isolating the kernel. **G2a is now GREEN**
-(`theorem_55_generic`, 2026-06-04; the flagged sub-question resolved by scope,
-above). **The next commit is G2b** — the `map`/`collapseTo` simplicity fact
-(`(G/E(H)).Simple`); decompose math-first, deferral-eligible; do NOT bundle G2c
-with it.
+onto vertex-removal needed). **Both are now GREEN.** G2a (`theorem_55_generic`,
+2026-06-04; the flagged sub-question resolved by *scope*, above) and G2b
+(`rigidContract_simple` + `map_simple`, 2026-06-04; the dichotomy collapsed to a
+clean positive criterion, the dichotomy itself deferred downstream to G2c). **The
+next commit is G2c** — wire G2a+G2b into the simple-Case-I `hcontract` discharge
+(`theorem_55_generic`'s `hcontractGP`); may merge with N6-G3. The one open
+question for G2c is discharging `rigidContract_simple`'s `hloop`/`hpar` from KT
+Lemma 6.3's standing setup — re-recon at G2c-open (escalation-eligible to the
+"carry `(G/E(H)).Simple` as `h…`" idiom if the failure cases need the dichotomy).
 
 ---
 

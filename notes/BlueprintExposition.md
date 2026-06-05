@@ -67,6 +67,17 @@ where `status ∈ {pending, done (<commit>)}`.
   moment-curve point) — so general position must come from the *seed*, it cannot
   be recovered from the device. Pointer: `DESIGN.md` *Constructibility recon …*;
   `notes/Phase22a.md`.
+- **contraction simplicity `rigidContract_simple` / `map_simple` (G2b; folds into
+  `lem:case-I-realization` prose)** — [pending] G2b built clean (2026-06-04).
+  **Stable insight:** vertex-relabelling (`map`) is the *one* graph operation
+  that breaks `Simple` — it can manufacture both loops (collapse an edge's
+  endpoints) and parallel edges (collapse two edges onto one pair), so unlike
+  `↾`/`＼`/`-`/induce it has no unconditional `Simple` instance. This is *why* KT
+  Case I trifurcates: `G / E′` simple is a genuine *case hypothesis* (Lemma 6.3),
+  and its failure is routed to Lemma 6.5's vertex-*removal* (which does preserve
+  simplicity). The positive criterion `map_simple` (no-self-collapse +
+  no-pair-collapse) is the faithful statement of that case input. Pointer:
+  `notes/Phase22-realization-design.md` §1.6; `notes/Phase22a.md`.
 
 ### Retroactive (Phases 1–21b) — to be seeded from git history
 

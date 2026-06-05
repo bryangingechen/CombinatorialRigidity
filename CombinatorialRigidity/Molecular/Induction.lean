@@ -1995,6 +1995,71 @@ lemma rigidContract_eq_contract' (G H : Graph α β) (r : α) :
     G.rigidContract H r = G /[E(H), collapseTo r V(H)] := by
   rw [rigidContract, Graph.contract, ← Graph.map_deleteEdges_comm]
 
+/-! ## Simplicity of a rigid-subgraph contraction (G2b; `lem:case-I-realization`)
+
+The combinatorial obligation behind the *generic* (general-position) inductive hypothesis of
+Theorem 5.5's Case I: when does the contraction `G / E(H)` stay simple? Katoh–Tanigawa 2011's
+Case I trifurcates on exactly this question (printed pp. 673, 676): Lemma 6.3 *assumes* a proper
+rigid subgraph `H` with `G / E(H)` simple, while Lemma 6.5 handles the complementary case (no
+such `H`) by a *degree-2 vertex removal* rather than a contraction. So the contraction can
+genuinely fail to be simple — collapsing `V(H)` to one vertex can create a loop (an edge with
+both ends in `V(H)`, but such edges lie in `E(H)` and are deleted) or a parallel pair (two edges
+of `G ＼ E(H)` joining the same collapsed end-pair). The honest formalization therefore states a
+*positive* `map`-simplicity criterion (`map_simple`, the genuinely new graph-theoretic content,
+absent from the fork's `Simple` API) and specializes it to `rigidContract` (`rigidContract_simple`),
+reducing `(G / E(H)).Simple` to two graph-side hypotheses on `G ＼ E(H)` under the collapse map —
+the exact shape KT Lemma 6.3 supplies. -/
+
+/-- **Vertex-relabel simplicity criterion** (G2b abstract kernel; the fork has no `map`-simplicity
+lemma). The relabelled graph `f ''ᴳ G` is simple when (i) `f` never identifies the two ends of an
+edge (`hloop`: no edge of `G` becomes a loop under `f`) and (ii) `f` never identifies two distinct
+edges' end-pairs (`hpar`: edges with `f`-equal end-pairs are equal). Both are necessary: a `map`
+can manufacture both loops (collapsing an edge's endpoints) and parallel edges (collapsing two
+edges onto the same pair), which is why simplicity is *not* preserved by `map` unconditionally
+(unlike `↾`/`＼`/`-`/induce, all subgraph operations with `Simple` instances in the fork). -/
+lemma map_simple {α' : Type*} {f : α → α'} {G : Graph α β}
+    (hloop : ∀ e x y, G.IsLink e x y → f x ≠ f y)
+    (hpar : ∀ e₁ e₂ x₁ y₁ x₂ y₂, G.IsLink e₁ x₁ y₁ → G.IsLink e₂ x₂ y₂ →
+      f x₁ = f x₂ → f y₁ = f y₂ → e₁ = e₂) :
+    (f ''ᴳ G).Simple where
+  not_isLoopAt e x := by
+    rw [map_isLoopAt]
+    rintro ⟨u, v, huv, rfl, hv⟩
+    exact hloop e u v huv hv
+  eq_of_isLink e₁ e₂ x y he₁ he₂ := by
+    rw [map_isLink] at he₁ he₂
+    obtain ⟨u₁, v₁, h₁, rfl, rfl⟩ := he₁
+    obtain ⟨u₂, v₂, h₂, hu₂, hv₂⟩ := he₂
+    exact hpar e₁ e₂ u₁ v₁ u₂ v₂ h₁ h₂ hu₂ hv₂
+
+/-- **Rigid-subgraph contraction stays simple under KT Lemma 6.3's hypotheses** (G2b; the
+combinatorial fact feeding Theorem 5.5's *generic* Case-I inductive hypothesis). Specializing
+`map_simple` to `rigidContract G H r = (G ＼ E(H)).map (collapseTo r V(H))`: the contraction is
+simple provided
+
+* `hloop` — no surviving edge has both collapsed ends equal: an edge `e ∈ E(G) ＼ E(H)` linking
+  `x`,`y` never has `collapseTo r V(H) x = collapseTo r V(H) y`. Equivalently no surviving edge has
+  *both* endpoints in `V(H)` (which would collapse to the loop `r`-`r`), nor links `r`-adjacent
+  vertices that both land in `V(H)`;
+* `hpar` — no two surviving edges collapse to the same end-pair.
+
+These are KT Lemma 6.3's standing hypotheses ("`G` is simple and `G / E'` is simple", printed
+p. 673) read off the realized graph; KT itself takes `G / E'` simple as a *case hypothesis*
+(routing the failure to Lemma 6.5's vertex-removal), so this lemma is the faithful statement of
+that case's combinatorial input rather than an unconditional preservation theorem. The
+hypotheses are phrased on the surviving graph `G ＼ E(H)` directly (whose edge set is `E(G) ＼ E(H)`
+by `edgeSet_rigidContract`); G2c discharges them from `H.IsProperRigidSubgraph G n` + `G.Simple`. -/
+lemma rigidContract_simple {G H : Graph α β} {r : α}
+    (hloop : ∀ e x y, (G.deleteEdges E(H)).IsLink e x y →
+      collapseTo r V(H) x ≠ collapseTo r V(H) y)
+    (hpar : ∀ e₁ e₂ x₁ y₁ x₂ y₂, (G.deleteEdges E(H)).IsLink e₁ x₁ y₁ →
+      (G.deleteEdges E(H)).IsLink e₂ x₂ y₂ →
+      collapseTo r V(H) x₁ = collapseTo r V(H) x₂ →
+      collapseTo r V(H) y₁ = collapseTo r V(H) y₂ → e₁ = e₂) :
+    (G.rigidContract H r).Simple := by
+  rw [rigidContract]
+  exact map_simple hloop hpar
+
 /-- **The cycle matroid of a contracted multiplied graph** (N4b, the per-cycle-matroid step;
 `lem:rigidContract-isMinimalKDof`). For a subgraph `H ≤ G` whose multiplied graph `H̃` is
 preconnected (`mulTilde_preconnected_of_isKDof_zero`, N4a) with representative `r ∈ V(H)`, the
