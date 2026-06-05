@@ -221,14 +221,17 @@ joins the realization layer.
 **Phase 22 (the realization layer) is sub-lettered** — the Theorem-5.5 case
 *producers* the genericity device feeds, split into sub-phases because it
 over-broadly bundled three independent bodies of work (sub-lettering 22a, 22b, …
-keeps the integer phase numbers 23–26 stable). **Phase 22a (in progress)** is the
-Case I realization — the full-rank rigid-subgraph splice (Katoh–Tanigawa §6.2);
-all Case-I bricks are green except the N6 composer's generic-motive induction, and
-the next task is a math-first recon/decomposition of that gap into buildable
-nodes. **Phase 22b+ (planning)** parks the rest behind 22a: Case III at `d=3` (the
-crux Lemma 6.10, §6.3 + §6.4.1) plus the `d=3` assembly, expected to split into
-multiple sub-phases once its shape is clearer. A structural-edit phase extending
-the algebraic-induction chapter rather than opening a new one.
+keeps the integer phase numbers 23–26 stable). **Phase 22a (complete,
+green-modulo-22b)** is the Case I realization — the full-rank rigid-subgraph splice
+(Katoh–Tanigawa §6.2); the composer is green-modulo a single dischargeable
+hypothesis, KT Claim 6.4, delivered via the block-triangular reframe. **Phase 22b
+(planning)** discharges that obligation: KT Claim 6.4 (the surviving block's
+exterior-projected rank at the generic placement, §6.2/§5.1), flipping the Case-I
+producer fully green. **Phase 22b+ (planning)** parks the rest behind 22b (Claim 6.4
+now precedes it; may renumber to 22c+): Case III at `d=3` (the crux Lemma 6.10,
+§6.3 + §6.4.1) plus the `d=3` assembly, expected to split into multiple sub-phases
+once its shape is clearer. A structural-edit phase extending the algebraic-induction
+chapter rather than opening a new one.
 
 The development is divided into the phases below, with Lean source
 under
@@ -262,7 +265,8 @@ existing files or refactor across several).
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
 |   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction.lean` (+ `lem:genericity-device`) | ✓ |
 |   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/{Induction,AlgebraicInduction}.lean` | ✓ (green-modulo-22b) |
-|  22b+ | KT Claim 6.4 (deferred from 22a), then Case III at `d=3` + `d=3` assembly (planning; expected to split) | `Molecular/AlgebraicInduction.lean` | ◷ |
+|   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction.lean` | ◷ |
+|  22b+ | (parked) Case III at `d=3` + `d=3` assembly (Claim 6.4 / 22b precedes it; may renumber to 22c+) | `Molecular/AlgebraicInduction.lean` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,

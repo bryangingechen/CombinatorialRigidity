@@ -239,7 +239,8 @@ The **molecule application** (Cor 5.7) adds, on top:
 | 21 ✓ | Theorem 5.5 skeleton + base + **Case I** (6.2: 6.2/6.3/6.5) + **Case II** (6.3: 6.7/6.8), closing on the **genericity-free** content; **+ panel layer** (coplanar realizations). Genericity (Claim 6.4/6.9) enters as a cited black-box. | §5, §6.1–6.3 | 5 |
 | 21b ✓ | **Genericity device** (Claim 6.4/6.9) + genericity-free accounting iffs + `V(G)`-relative count bridges. The realization *producers* re-scoped to 22–23 (math-first pass: the k=0 split is KT Case III, one row short via eq. 6.12; Case I splice is full-rank). | §6.1 (Claim 6.4), §6.3 (Claim 6.9) | 5 |
 | 22a ✓ | **Case I realization** (§6.2 splice: full-rank, N4 contraction bridge + N6 composer). `lem:case-I-realization` green-modulo KT Claim 6.4 (`lem:claim-6-4`), via the **block-triangular reframe** (KT eq. 6.3 rank-addition over one common framework, routed through the device's independent-row count). | §6.2 | 5 |
-| 22b+ ◷ | **Claim 6.4, then Case III at `d=3` + `d=3` assembly** (planning; expected to split, cut deferred to the 22b opening recon). KT Claim 6.4 (`lem:claim-6-4`, deferred from 22a — surviving block's exterior-projected rank at the generic placement); then the Case II/III reducible-vertex producer (eq. 6.12 degenerate placement + the Case-III extra row), **Lemma 6.10** (Claim 6.11 combinatorial↔linear, Claim 6.12 extensor-span genericity, 3 candidates), + `prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip. | §6.1 (Claim 6.4), §6.3, §6.4.1 | 5 |
+| 22b ◷ | **KT Claim 6.4** (discharge the Case-I green-modulo obligation; opened 2026-06-05, `notes/Phase22b.md`). Discharge the red node `lem:claim-6-4` (`case_I_realization`'s `hclaim64`): the surviving block of `G ＼ E(H)` projected to `V(G)∖V(H)` attains independent rank `≥ D(|sc|−1)` at the generic locus (the `Qc`-non-root form; KT eqs. (6.5)/(6.9), §5.1). Path: (a) rank-transport across the collapse map via algebraic independence + (b) a bounded `D∘panelRow` variant of `exists_rankPolynomial_of_rigidOn_linking_set`. Flips `lem:claim-6-4` + `lem:case-I-realization` fully green. | §6.1 (Claim 6.4), §6.2, §5.1 | 5 |
+| 22b+ ◷ | **(parked) Case III at `d=3` + `d=3` assembly** (planning; expected to split; **Claim 6.4 (22b) now precedes it**, may renumber to 22c+ — cut settled in the 22b opening recon). The Case II/III reducible-vertex producer (eq. 6.12 degenerate placement + the Case-III extra row), **Lemma 6.10** (Claim 6.11 combinatorial↔linear, Claim 6.12 extensor-span genericity, 3 candidates), + `prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip. | §6.3, §6.4.1 | 5 |
 | 23 | **Case III, general `d`** (Lemma 6.13) → Thm 5.5 complete (incl. `prop:rigidity-matrix-prop11` + `hub`) → **Thm 5.6 → Conjecture 1.2** | §6.4.2, §5.2, §7 | 5 |
 | 24 | 3-D generic bar-joint rigidity matroid (linear-matroid form; dim-3 specialization of Phase 4/8) | (J–J [13], Phase 4/8 reuse) | 6 |
 | 25 | Crapo–Whiteley projective invariance + molecule ↔ hinge-concurrent body-hinge ↔ panel-hinge equivalence | §1.2 ([4,13,37]) | 7 |
@@ -483,18 +484,20 @@ the consumers `\uses` it.
 - Final state + the KT math for both producers (Finding A/B) + the 22–23
   hand-off live in `notes/Phase21b.md`.
 
-#### Phase 22 — Realization layer (sub-lettered: 22a + 22b+) (§6.2, §6.3, §6.4.1)
+#### Phase 22 — Realization layer (sub-lettered: 22a + 22b + 22b+) (§6.2, §6.3, §6.4.1)
 
 Opened as a single Phase 22 on 2026-06-04, then **split into sub-phases the same
 day** because it over-broadly bundled three independent bodies of work — Track A
 (Case I, ~90% green), Track B (Case III at `d=3`, the crux, entirely red), and the
 `d=3` assembly. Sub-lettering (22a, 22b, …) keeps the integer phase numbers 23–26
 stable. **22a** = Case I realization (`notes/Phase22a.md`, ✓ complete
-green-modulo-22b); **22b+** = Claim 6.4, then Case III at `d=3` + the `d=3`
-assembly (◷ planning, a single placeholder expected to split, cut deferred to the
-22b opening recon). Math for both worked out in `notes/Phase21b.md` *Finding A/B*;
-the green Phase-21b infra — device, count bridge, N7b row sub-nodes, splice/union
-glue — feeds them.
+green-modulo-22b); **22b** = KT Claim 6.4 (the discharge of 22a's green-modulo
+obligation, `notes/Phase22b.md`, ◷ planning, opened 2026-06-05); **22b+** = the
+parked Case III at `d=3` + the `d=3` assembly (◷ planning, a single placeholder
+expected to split; Claim 6.4 / 22b now precedes it, may renumber to 22c+ — cut
+deferred to the 22b opening recon). Math for all worked out in `notes/Phase21b.md`
+*Finding A/B*; the green Phase-21b infra — device, count bridge, N7b row sub-nodes,
+splice/union glue — feeds them.
 
 **Phase 22a — Case I realization (§6.2) — ✓ Complete (green-modulo-22b).** Track A:
 the tractable entry point, full-rank, independent of Case III. The composer
@@ -580,10 +583,11 @@ needing the generic IH (hard kernel: `G/E(H)` simplicity, `map_simple`,
 KT 6.3-vs-6.5). The composer assembly G3a–c then surfaced the structural divergence
 (above): the body-set splice's common-seed glue forced undischargeable bridge
 hypotheses, fixed by the **block-triangular reframe**, leaving KT Claim 6.4
-(`lem:claim-6-4`) as the one green-modulo obligation. **22b+** (deferred to the 22b
-opening recon): KT Claim 6.4 first, then Track B / Case III (above) and the `d=3`
-assembly — the `prop:rigidity-matrix-prop11` `hub` brick (Phase-19 partition count,
-Track-independent) + the `thm:theorem-55` flip.
+(`lem:claim-6-4`) as the one green-modulo obligation. **22b** (◷ planning, opened
+2026-06-05, `notes/Phase22b.md`): discharge KT Claim 6.4. **22b+** (parked behind
+22b, may renumber to 22c+ — cut deferred to the 22b opening recon): Track B / Case
+III (above) and the `d=3` assembly — the `prop:rigidity-matrix-prop11` `hub` brick
+(Phase-19 partition count, Track-independent) + the `thm:theorem-55` flip.
 
 #### Phase 23 — Case III general `d` + assembly (§6.4.2, §5.2, §7)
 
@@ -715,20 +719,24 @@ routed through the genericity device's independent-row count), with Claim 6.4 �
 surviving block's exterior-projected rank at the generic placement — the single
 deferred obligation.
 
-**Opening the next phase: 22b = KT Claim 6.4 (the owner's framing).** When the
-coordinator opens 22b (the separate Close-C step), the next phase is **focused on
-Claim 6.4** (KT eq. 6.9 / eqs. 6.5–6.9): the algebraic-independence rank-transport
-that supplies `lem:case-I-realization`'s `lem:claim-6-4` obligation — the
-surviving-block exterior-projected row-independence at the generic placement. It is
-irreducible (the green linking-edge brick does not apply — the collapse redirects
-surviving-edge endpoints; the 21b genericity device does not discharge it either),
-and the residual is the **`Qc`-non-root row-independence form**, not a motion-space
-`∀`-GP-rigid hypothesis. The KT math + grounding is gathered in `notes/Phase22a.md`
-*Hand-off* (*22b target — Claim 6.4*) and `notes/Phase22-realization-design.md`
-§1.7/§1.15/§1.16; the Case-III + assembly territory (Track B, the
-`prop:rigidity-matrix-prop11` `hub`, the `thm:theorem-55` flip) then shifts to a
-later sub-phase (22c+). **Do not finalize the 22b cut/ordering here** — that is the
-detailed planning the owner deferred to the `coordinate-phase 22b` session. The KT
-math is in `notes/Phase21b.md` *Finding A/B* + the design doc — 22b+ formalize it,
-they do not re-derive it. Follow `CLAUDE.md` *When this commit opens a phase* and
-re-sync this doc (phase table, the Phase 22 detail, this section).
+**Opening the next phase: 22b = KT Claim 6.4 — now OPEN (◷ planning; the owner's
+framing).** The coordinator opened 22b on 2026-06-05 (the separate Close-C step;
+scaffold `notes/Phase22b.md`). The phase is **focused on Claim 6.4** (KT eq. 6.9 /
+eqs. 6.5–6.9): the algebraic-independence rank-transport that supplies
+`lem:case-I-realization`'s `lem:claim-6-4` obligation — the surviving-block
+exterior-projected row-independence at the generic placement. It is irreducible (the
+green linking-edge brick does not apply — the collapse redirects surviving-edge
+endpoints; the 21b genericity device does not discharge it either), and the residual
+is the **`Qc`-non-root row-independence form**, not a motion-space `∀`-GP-rigid
+hypothesis. The verified discharge path (design doc §1.16): (a) the rank-transport
+across the collapse map via algebraic independence (research content) + (b) a bounded
+`D∘panelRow` variant of `exists_rankPolynomial_of_rigidOn_linking_set` (packaging).
+The KT math + grounding is gathered in `notes/Phase22b.md` (*The target* /
+*Discharge path*), `notes/Phase22a.md` *Hand-off* (*22b target — Claim 6.4*), and
+`notes/Phase22-realization-design.md` §1.7/§1.13–§1.16. The Case-III + assembly
+territory (Track B, the `prop:rigidity-matrix-prop11` `hub`, the `thm:theorem-55`
+flip) is parked behind 22b and **may shift to a later sub-phase (22c+)** — the
+detailed within-22b cut and that renumbering are settled in the **22b opening recon**,
+deferred to the `coordinate-phase 22b` session and **not finalized here**. The KT
+math is in `notes/Phase21b.md` *Finding A/B* + the design doc — 22b/22b+ formalize
+it, they do not re-derive it.

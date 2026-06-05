@@ -255,12 +255,16 @@ project; commit history is preserved with paths rewritten.
     **block-triangular reframe** (KT eq. 6.3's rank-addition over one common
     framework, routed through the genericity device's independent-row count, not a
     common-seed splice). See `notes/Phase22a.md`.
-  * **Phase 22b+ (planning)** — KT Claim 6.4 (the surviving block's
-    exterior-projected rank at the generic placement, deferred from 22a) and then
-    Case III at `d=3` (the crux Lemma 6.10, KT §6.3 + §6.4.1) plus the `d=3`
-    assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip), parked
-    as a single placeholder behind 22a (expected to split into multiple sub-phases
-    once its shape is clearer). See `notes/MolecularConjecture.md`.
+  * **Phase 22b (planning)** — discharge KT **Claim 6.4** (`lem:claim-6-4`, the
+    single hypothesis 22a left green-modulo): the surviving block of `G ＼ E(H)`
+    projected to the surviving columns `V(G)∖V(H)` attaining independent rank at the
+    generic locus (KT §6.2/§5.1, eqs. (6.5)/(6.9)), flipping the Case-I producer
+    fully green. See `notes/Phase22b.md`.
+  * **Phase 22b+ (planning)** — the parked Case III at `d=3` (the crux Lemma 6.10,
+    KT §6.3 + §6.4.1) plus the `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` +
+    `thm:theorem-55` flip), behind 22b (Claim 6.4 now precedes it; may renumber to
+    22c+; expected to split into multiple sub-phases once its shape is clearer). See
+    `notes/MolecularConjecture.md`.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
