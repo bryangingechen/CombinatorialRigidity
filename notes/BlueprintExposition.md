@@ -28,6 +28,16 @@ Lean-*modelling* narration ("basis-free", "Layer 4b reshaped …") and
 mathlib-standard background. The carve-out is for *mathematical difficulty*,
 not Lean verbosity.
 
+**Inclusion criterion (sharpened 2026-06-04).** The difficulty must be about
+*KT's mathematics*, not *our* formalization setup. **Exclude** entries whose
+trigger was a project-side mistake/misunderstanding about something KT was
+actually clear on — e.g. an early draft that proved the wrong (weaker) theorem
+because a constraint wasn't yet encoded. The "thought-one-commit → rerouted"
+signal is *suggestive, not sufficient*: a reroute caused by our own setup error
+does not earn an entry. (Calibration: the Phase-21 panel-coplanarity re-scope is
+excluded — KT is clear the conjecture is the *hinge-coplanar* case; our first
+draft just hadn't encoded coplanarity.)
+
 **Codification deferred.** The standing carve-out rule for `blueprint/CLAUDE.md`
 *Proof verbosity* is intentionally **not** written yet — we derive the
 principle by doing this a few times first (the format / criterion may sharpen,
@@ -38,51 +48,160 @@ Revisit codification once 22a plus a retroactive node or two are done.
 
 One entry per node, grouped by destination blueprint chapter:
 
-> `label / Lean name` — [status] trigger; **stable insight to expose** — pointer
+> `label / Lean name` — [status] **(flavor)** trigger; **stable insight to expose** — pointer
 
-where `status ∈ {pending, done (<commit>)}`.
+where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
+
+- **(a) KT-gap** — a hard detail KT glossed or got wrong that the formalization
+  forced into the open. The core of the deliverable.
+- **(b) KT-simplification** — KT's argument can be shortened / cleaned; "clearer
+  than KT" via a better route, not a filled gap.
+- **(c) hard-but-not-rerouted** — load-bearing and genuinely hard, but landed as
+  first scoped. Lower priority; included because the goal is making the hard
+  parts followable, not only the rerouted ones.
 
 ## Ledger
 
-### `algebraic-induction.tex` — molecular algebraic induction (Phases 21 / 21b / 22a)
+### `extensor.tex` — Phase 17 (Grassmann–Cayley / Lemma 2.1)
 
-- **`lem:case-I-realization` (N6 composer)** — [pending] thought 1 commit →
-  reconned into N6-G1/G2/G3 (2026-06-04). **Stable insight:** KT §6.2 Case I is
-  a *trifurcation* (Lemmas 6.2 non-simple, 6.3 `G/E′`-simple, 6.5 degree-2
-  vertex removal), not a uniform contraction recursion; and the realization
-  motive must be *strengthened to general position* on the inductive legs (the
-  composer's per-leg adapter consumes `HasGenericFullRankRealization`, while the
-  induction threads only the bare motive). Pointer:
-  `notes/Phase22-realization-design.md` §1.5–1.6; `notes/Phase22a.md`.
+- **Lemma 2.1 (`omitTwoExtensor_linearIndependent`)** — [pending] **(c)** landed
+  as scoped (no reroute); flagged for difficulty. **Stable insight:** the
+  independence of the `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1`
+  affinely independent points — join-on-the-left kills the off-diagonal terms,
+  the `pairAppend` bijection handles the diagonal. The deepest single
+  linear-algebra fact in the program; Case III (Phases 22b+/23) bottoms out on
+  it. Pointer: `notes/Phase17.md`.
+
+### `rigidity-matrix.tex` — Phase 18 (R(G,p), rank Lemmas 5.1–5.3)
+
+- **`prop:rigidity-matrix-prop11` (KT Prop 1.1)** — [pending] **(a)** scoped to
+  18 → deferred to 19 → relocated forward to 21+. **Stable insight:** Prop 1.1
+  is *two genuinely separate halves* KT presents as one — the **matroidal**
+  `def = corank M(G̃)` (combinatorial, JJ09 min–max) and the **analytic**
+  `rank R(G,p) = D(|V|−1) − def(G̃)` (generic, needs the genericity device).
+  Closing the matroidal half does not touch the analytic half. Pointer:
+  `notes/Phase18.md` *Hand-off*; `notes/Phase19.md` *Hand-off*.
+
+### `deficiency.tex` — Phase 19 (M(G̃), deficiency, k-dof)
+
+- *Scanned 2026-06-04, no candidate.* Every node landed as scoped, including the
+  full axiom-free `thm:def-eq-corank`. The one forward-looking finding (Prop
+  1.1's two halves) is filed under `rigidity-matrix.tex` above.
+
+### `molecular-induction.tex` — Phase 20 (combinatorial induction, Thm 4.9)
+
+- **KT Lemma 4.1 / forest-surgery track (`kt_lemma_41_overquantified`,
+  `lem:forest-surgery-split` family)** — [pending] **(a)**, the richest entry.
+  Planned hard core; turned out over-quantified, rerouted onto
+  deficiency-counting. **Stable insight (KT-non-erring framing):** (1) Lemma 4.1
+  as-quantified is *false* — it quantifies over independent sets but
+  `|I'| = |I|−D` needs bases. (2) Its base case silently assumes the chosen
+  `D`-forest packing is *balanced at `v`* (every forest meets `v`), unjustified
+  in KT; recovered via a pendant/bridge finite-descent (no `D ≥ 3`
+  counterexample — a gap, not an error). (3) The induction needs only
+  `def(G̃ᵥᵃᵇ) ≤ def(G̃)`, by partition-count through `def = corank`, routing
+  around the surgery entirely. Pointer: `notes/Phase20.md` *Findings*.
+- **`lem:removal-deficiency` (KT 4.4, `removeVertex_deficiency_ge`)** — [pending]
+  **(b)**. **Stable insight:** a shorter deficiency-count route than KT's `h'=0`
+  unsplit-forest argument (which is itself sound): the `−(D−1)·d` sign in
+  `partitionDef` makes dropping the crossing-count `d` the *helpful* direction,
+  and in the part-losing case `v`'s two neighbours are *forced* into distinct
+  blocks, so `c=2` — the `+2(D−1)` crossing-drop pays for the `−D` part-loss
+  exactly when `D ≥ 2`. Pointer: `notes/Phase20.md` *Findings*.
+- **`lem:reduction-step` (KT 4.7–4.8, `splitOff_isMinimalKDof`)** — [pending]
+  **(b)** *(borderline toward bookkeeping)*. **Stable insight:** KT's iterated
+  fundamental-circuit swap is bypassed by one rank count — KT 4.10 makes
+  `E(G̃_v)` a base of `M(G̃_v)`, so with KT 4.7 (`def > 0`) a single cardinality
+  split of any fiber-avoiding base contradicts `isBase_ncard_add_deficiency_eq`;
+  no matroid minor, no swap induction. Pointer: `notes/Phase20.md`; FRICTION
+  *[matroid] Transporting circuits …*.
+
+### `meet.tex` — Phase 21a (meet / projective duality)
+
+- **`def:meet-complement-iso` / `complementIso`** — [pending] **(b)**. **Stable
+  insight:** the regressive product (meet) needs only the *nondegeneracy* of the
+  wedge pairing `⋀ʲV × ⋀^(N−j)V → ⋀ᴺV ≅ ℝ`, not the oriented `j ↔ N−j` sign —
+  the pairing matrix is a signed-permutation matrix and `complementIso` reads off
+  only "diagonal ≠ 0"; the orientation/sign bookkeeping KT carries is deferrable
+  to a consumer that actually reads an oriented meet. Pointer:
+  `notes/Phase21a.md` *Decisions* + *Blockers*.
+
+### `algebraic-induction.tex` — Phases 21 / 21b / 22a (Thm 5.5, Cases I/II/III, genericity device)
+
+- **`lem:case-I-realization` (N6 composer)** — [pending] **(a)** thought 1 commit
+  → reconned into N6-G1/G2/G3 (2026-06-04). **Stable insight:** KT §6.2 Case I is
+  a *trifurcation* (Lemmas 6.2 non-simple, 6.3 `G/E′`-simple, 6.5 degree-2 vertex
+  removal), not a uniform contraction recursion; and the realization motive must
+  be *strengthened to general position* on the inductive legs (the composer's
+  per-leg adapter consumes `HasGenericFullRankRealization`, while the induction
+  threads only the bare motive). Pointer: `notes/Phase22-realization-design.md`
+  §1.5–1.6; `notes/Phase22a.md`.
 - **conditioned motive `Pc := (G.Simple → GP) ∧ bare` (`theorem_55_generic`;
-  folds into `lem:case-I-realization` prose)** — [pending] G2a (`f35be5d`).
-  **Stable insight:** the generic motive has to be *conditioned on simplicity*
-  — KT's "nonparallel, if `G` is simple" (printed p.669); unconditional general
-  position is *false* at the parallel-`K₂` base. Pointer:
+  folds into `lem:case-I-realization` prose)** — [pending] **(a)** G2a
+  (`f35be5d`). **Stable insight:** the generic motive must be *conditioned on
+  simplicity* — KT's "nonparallel, if `G` is simple" (printed p.669);
+  unconditional general position is *false* at the parallel-`K₂` base. Pointer:
   `notes/Phase22-realization-design.md` §1.6.
-- **genericity device output is not GP (`lem:case-I-realization` /
-  `lem:genericity-device` interface)** — [pending] N6-G1 spike (2026-06-04).
-  **Stable insight:** the genericity device's output realization is *not* itself
-  in general position (it lands at an arbitrary Gram-determinant non-root, not a
-  moment-curve point) — so general position must come from the *seed*, it cannot
-  be recovered from the device. Pointer: `DESIGN.md` *Constructibility recon …*;
-  `notes/Phase22a.md`.
-- **contraction simplicity `rigidContract_simple` / `map_simple` (G2b; folds into
-  `lem:case-I-realization` prose)** — [pending] G2b built clean (2026-06-04).
-  **Stable insight:** vertex-relabelling (`map`) is the *one* graph operation
-  that breaks `Simple` — it can manufacture both loops (collapse an edge's
-  endpoints) and parallel edges (collapse two edges onto one pair), so unlike
-  `↾`/`＼`/`-`/induce it has no unconditional `Simple` instance. This is *why* KT
-  Case I trifurcates: `G / E′` simple is a genuine *case hypothesis* (Lemma 6.3),
-  and its failure is routed to Lemma 6.5's vertex-*removal* (which does preserve
-  simplicity). The positive criterion `map_simple` (no-self-collapse +
-  no-pair-collapse) is the faithful statement of that case input. Pointer:
+- **contraction simplicity `rigidContract_simple` / `map_simple` (folds into
+  `lem:case-I-realization` prose)** — [pending] **(a)** G2b (`b9000ef`). **Stable
+  insight:** vertex-relabelling (`map`) is the *one* graph op that breaks
+  `Simple` — it can manufacture both loops (collapse an edge's endpoints) and
+  parallel edges (collapse two edges onto one pair), so unlike `↾`/`＼`/`-`/induce
+  it has no unconditional `Simple` instance. This is *why* Case I trifurcates:
+  `G/E′` simple is a genuine *case hypothesis* (Lemma 6.3), its failure routed to
+  Lemma 6.5's vertex-*removal* (which does preserve simplicity). Pointer:
   `notes/Phase22-realization-design.md` §1.6; `notes/Phase22a.md`.
+- **`lem:case-III` / `theorem_55.hsplit` (Case-naming + one-row shortfall)** —
+  [pending] **(a)**. **Stable insight (decisive KT-gloss):** KT's cases key on
+  the dof `k`, *not* the graph operation — **Case II (Lemma 6.8) is `k>0`**
+  (`+(D−1)` rows suffice for the lower target `D(|V|−1)−k`), while the **`k=0`
+  split is Case III**: eq. (6.12) reaches only `D(|V|−1)−1`, *one rigidity row
+  short*, the missing row being the redundant-edge / `M(G̃)`-base argument of
+  Lemma 6.10/6.13. Labelling by surface analogy ("degree-2 split ⇒ Case II") hid
+  the single hardest sub-proof in KT. Pointer: `DESIGN.md` *Phase Case-naming
+  must match KT's k-bookkeeping*; `notes/Phase21b.md` *Finding B*.
+- **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [pending]
+  **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
+  *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new
+  hinge *at the* `e₀=ab` *hinge of the inductive realization*, so column ops make
+  `R(G,p1)` block-triangular with the `vb`-row reproducing the `e₀`-row; a slight
+  rotation (Lemma 5.2 semicontinuity) lifts to nonparallel. The motion-side route
+  KT gestures at ("a motion constant on `V(G)∖{v}`") is unsound — a `G`-motion
+  need not be (`G−v` isn't rigid). Pointer: `notes/Phase21b.md` *Finding A*.
+- **`lem:case-I-realization` N5 splice / witness-transfer** — [pending] **(a)**.
+  **Stable insight:** KT's eq. (6.6) Case-I splice does *not* glue two distinct
+  placements — `withGraph` keeps the *same* normals, so both inductive legs ride
+  one normal family; the real obligation is the **common-seed witness-transfer**
+  (one `q₀` with both legs rigid). The moment-curve subvariety is a genericity
+  trap (the IH delivers a free-normal realization), so the seed must be the *free
+  `ofNormals`* space. Pointer: `notes/Phase22a.md` *Decisions* (N5 …).
+- **`lem:case-I-realization` N4 union↔contraction crux
+  (`rigidContract_isMinimalKDof`)** — [pending] **(a), model-induced**. **Stable
+  insight:** `Matroid.Union` does *not* commute with contraction, so
+  `M((G/E(H))̃) = M(G̃)/E(H̃)` is not a rename — it holds only because the `D`-fold
+  union *rank-saturates* on a rigid subgraph's fibers, reached via the *count*
+  condition, not a matching re-decomposition (an arbitrary decomposition of
+  `I ∪ J` is not factor-aligned). *(The most infrastructure-flavored of the (a)s
+  — the difficulty is partly induced by the project's `D`-fold-union model of
+  `M(G̃)`.)* Pointer: `notes/Phase22a.md` *Decisions* (N4c …).
+- **genericity device output is not GP (`lem:case-I-realization` /
+  `lem:genericity-device` interface)** — [pending] **(a) ⚠ exclusion candidate**
+  — triggered by our recon mis-plan, and the insight is about the *project's*
+  genericity device, not KT; flagged for the owner's ruling under the sharpened
+  inclusion criterion (coordinator note 2026-06-04). **Stable insight:** the
+  device's output realization is *not* itself in general position (it lands at an
+  arbitrary Gram-determinant non-root, not a moment-curve point), so general
+  position must come from the *seed*. Pointer: `DESIGN.md` *Constructibility
+  recon …*; `notes/Phase22a.md`.
 
-### Retroactive (Phases 1–21b) — to be seeded from git history
+## Retroactive coverage
 
-- TODO (unscheduled): scan for historical "thought-one-commit → rerouted" nodes
-  across earlier phases (candidates surface from `notes/PhaseN.md` reroute
-  records + `git log`). Run as a cleanup-style round; the candidate list can be
-  produced on demand. Phase 17's Lemma 2.1 and the Phase 5 blocker argument are
-  likely early candidates.
+- **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded
+  into the chapter sections above. *Excluded as project-side issues, not
+  KT-gloss:* the Phase-21 panel-coplanarity re-scope (early draft proved the
+  body-hinge theorem — KT is clear the conjecture is the hinge-coplanar case);
+  the Phase-20 N4b binder-paraphrase correction (formalization-rescue, recorded
+  in FRICTION/DESIGN only).
+- **Non-molecular phases (1–16): not yet scanned.** TODO (unscheduled): the
+  Phase 5 blocker argument is a likely candidate; run as a cleanup-style round,
+  candidate list producible on demand from `notes/PhaseN.md` + `git log`.
