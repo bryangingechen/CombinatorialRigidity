@@ -789,6 +789,75 @@ theorem hingeRow_collapseTo_comp_extProj_eq {t : Set α} {r : α} (hr : r ∈ t)
   rw [LinearMap.comp_apply, LinearMap.comp_apply, BodyHingeFramework.hingeRow_apply,
     BodyHingeFramework.hingeRow_apply, extProj_apply_collapseTo hr, extProj_apply_collapseTo hr]
 
+/-- **The degenerate collapsed placement `q₀^deg`** (`lem:claim-6-4`, the U1 degenerate witness
+bridge; Katoh–Tanigawa 2011 §6.2, eq. (6.7)'s `p2`, Phase 22b). The placement on the *original*
+body type `α` that pulls a contraction realization's normals back through the collapse map
+`f = collapseTo r V(H)`: it assigns each parent body `a` the panel normal `nrm (f a)` of its
+collapsed image — so bodies of the rigid block `V(H)` all share the single representative normal
+`nrm r` (KT's `p2`: all H-side panels forced equal to the `v∗` panel), and a surviving body
+`a ∈ V(G)∖V(H)` keeps its own `nrm a`. This is the *degenerate member* of KT's family embedding
+(6.7): not globally general position (the `V(H)` normals coincide), but a valid single witness for
+the existential `htransport` — no generic placement needed (design doc §1.19, Finding 2). Built as
+a plain pullback `(a, i) ↦ nrm (f a) i`; the reproduction `degeneratePlacement_ofNormals_normal`
+records that `ofNormals` at this placement has normal `nrm ∘ f`. (Not a `@[simp]` lemma: its
+left-hand side `(ofNormals … (degeneratePlacement …)).normal a` is already reducible by the existing
+`ofNormals_normal` simp lemma — `@[simp]` here is redundant and not in simp-normal form — so it is
+called by name from the row reproduction below.) -/
+noncomputable def degeneratePlacement (r : α) (t : Set α) (nrm : α → Fin (k + 2) → ℝ) :
+    α × Fin (k + 2) → ℝ :=
+  fun p => nrm (Graph.collapseTo r t p.1) p.2
+
+theorem degeneratePlacement_ofNormals_normal (G : Graph α β) (ends : β → α × α) (r : α) (t : Set α)
+    (nrm : α → Fin (k + 2) → ℝ) (a : α) :
+    (PanelHingeFramework.ofNormals (k := k) G ends
+        (degeneratePlacement r t nrm)).normal a = nrm (Graph.collapseTo r t a) := by
+  rw [PanelHingeFramework.ofNormals_normal]
+  rfl
+
+/-- **The exterior-projected uncollapsed row reproduces the projected collapsed row at `q₀^deg`**
+(`lem:claim-6-4`, the U2 collapse-relabel projected-row reproduction; Katoh–Tanigawa 2011 §6.2,
+eqs. (6.7)/(6.9), Phase 22b — the research-shaped Case-I row brick, lifted from the U2 column core
+`hingeRow_collapseTo_comp_extProj_eq` to a full per-edge `panelRow` equality). For the degenerate
+placement `q₀^deg = degeneratePlacement r V(H) nrm` and any index `i = (e, t₁, t₂)`, the
+exterior-column projection of the *uncollapsed* surviving-edge panel row of
+`ofNormals Gc ends q₀^deg` (endpoints `(ends e).1, (ends e).2` over the original bodies) **equals**
+the exterior-column projection of the *collapsed* panel row of `ofNormals (Gc.map f) endsᶠ q₀^deg'`
+over the contracted graph — the row at the relabelled endpoints `(f (ends e).1, f (ends e).2)`
+carried by the *same* normals `nrm` and selector `endsᶠ e = (f (ends e).1, f (ends e).2)`.
+
+This is the column-side of KT eq. (6.7)/(6.9) lifted across the support-extensor / selector
+framings. The two `panelRow`s differ only in their `hingeRow` endpoints — the uncollapsed `(ends e)`
+vs. the relabelled `(f (ends e))` — *and* in nothing else: both read the *same* panel support
+extensor `panelSupportExtensor (nrm (f (ends e).1)) (nrm (f (ends e).2))` (the degenerate
+placement's normal is `nrm ∘ f` in both framings, so the support extensor at `e` is the collapsed
+one on both sides), hence the *same* annihilator functional `ρ = annihRow … i.2.1 i.2.2`. The column
+core `hingeRow_collapseTo_comp_extProj_eq` then reconciles the differing endpoints under
+`(extProj V(H)).dualMap`, since the projection reads the same value at a body and its collapsed
+image (`extProj_apply_collapseTo`). This is §1.7's irreducible collapse-normal mismatch isolated to
+a single row equality across the relabel — the step that, fed an independent surviving subfamily of
+the contraction (U3), carries that independence back to the exterior-projected uncollapsed rows. -/
+theorem panelRow_collapseTo_comp_extProj_dualMap (Gc H : Graph α β) {r : α} (hr : r ∈ V(H))
+    (nrm : α → Fin (k + 2) → ℝ) (ends : β → α × α)
+    (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k) :
+    (extProj (k := k) V(H)).dualMap
+        ((PanelHingeFramework.ofNormals Gc ends
+          (degeneratePlacement r V(H) nrm)).toBodyHinge.panelRow ends i)
+      = (extProj (k := k) V(H)).dualMap
+        ((PanelHingeFramework.ofNormals (Gc.map (Graph.collapseTo r V(H)))
+            (fun e => (Graph.collapseTo r V(H) (ends e).1, Graph.collapseTo r V(H) (ends e).2))
+            (fun p => nrm p.1 p.2)).toBodyHinge.panelRow
+          (fun e =>
+            (Graph.collapseTo r V(H) (ends e).1, Graph.collapseTo r V(H) (ends e).2)) i) := by
+  rw [BodyHingeFramework.panelRow, BodyHingeFramework.panelRow,
+    PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_ends,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_normal,
+    LinearMap.dualMap_apply', LinearMap.dualMap_apply']
+  dsimp only [degeneratePlacement]
+  exact (hingeRow_collapseTo_comp_extProj_eq (k := k) (α := α) hr (ends i.1).1 (ends i.1).2 _).symm
+
 /-- **Coordinate of `D w` as a matrix-vector product in a basis identification** (the linearity
 fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algebra). For a finite-dim
 ℝ-space `W` with a basis identification `φ : W ≃ₗ[ℝ] (Fin n → ℝ)` and any linear endomorphism `D`,
