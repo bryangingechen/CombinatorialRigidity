@@ -100,13 +100,17 @@ re-scope is honesty-gate-driven, \cref{lem:case-II-realization} below):
         are \emph{not} KT's argument (they assume "a motion constant on
         $V(G)\setminus\{v\}$", which a $G$-motion need not be) and are superseded.
   \item \emph{The Case~I producer (\cref{lem:case-I-realization}) is full-rank
-        and tractable (KT~\S6.2), but research-shaped geometry.} It splices the
-        two inductive legs along boundary hinges at panel intersections (eq.~6.6),
-        reaching full $D(|V|-1)$ with \emph{no} shortfall; its genuine obligation
-        is the splice placement \cref{lem:case-I-splice-placement} (a
-        panel-transversality lemma + block-triangular independence, three KT
-        sub-cases 6.2/6.3/6.5) plus the graph$\leftrightarrow$matroid bridge
-        \cref{lem:rigidContract-isMinimalKDof} (Phase-20 carry-forward).
+        and tractable (KT~\S6.2), reaching full $D(|V|-1)$ with \emph{no}
+        shortfall.} \emph{Landed (Phase 22a) green-modulo:} it is KT eq.~(6.3)'s
+        block-triangular rank-addition over a single common framework --- the
+        rigid-block rows $E(H)$ $\sqcup$ the surviving-edge rows
+        $E(G) \setminus E(H)$, made jointly independent by the exterior-column
+        projection (KT's top-right $0$), fed to the device's row-count closure.
+        Its single residual analytic obligation is KT Claim~6.4
+        (\cref{lem:claim-6-4}, the surviving block's exterior-projected rank,
+        eq.~(6.9)), carried as a green-modulo hypothesis and deferred to
+        Phase~22b, together with the graph$\leftrightarrow$matroid bridge
+        \cref{lem:rigidContract-isMinimalKDof} (Phase-20 carry-forward, green).
 \end{itemize}
 The reusable green infra (the row sub-nodes N7b-0/1/2/3, the device-closure glue
 \cref{lem:realization-of-independent-rows}, the count bridge) feeds those
@@ -339,14 +343,15 @@ whole induction.
   (\cref{def:rank-hypothesis}), and the recursion itself compiles
   motive-agnostically against it (the prior absolute null-space motive
   $\dim Z = D$ had case-producer premises unsatisfiable for the non-spanning
-  inductive subgraphs --- chapter status). The node stays \emph{red} because
-  the three case-producers it depends on are not yet built: what remains is
-  \cref{lem:case-I-realization} (via the row coordinatization
-  \cref{lem:rows-polynomial-in-normals} and the splice seed
-  \cref{lem:case-I-splice-seed}), \cref{lem:case-II-realization}, and
-  Case~III. The device (\cref{lem:genericity-device}) is green and lifts an
-  attained rank to a generic point, but the placements themselves are still
-  to be built.
+  inductive subgraphs --- chapter status). The node stays \emph{red} because not
+  all three case-producers it depends on are built: Case~I
+  (\cref{lem:case-I-realization}) is now green-modulo KT Claim~6.4
+  (\cref{lem:claim-6-4}, deferred to Phase~22b), via the block-triangular
+  row-addition over one common framework; what remains red is
+  \cref{lem:case-II-realization} and Case~III. The device
+  (\cref{lem:genericity-device}) is green and lifts an attained rank to a
+  generic point, but those Case~II/III placements themselves are still to be
+  built.
 \end{proof}
 
 \begin{lemma}[Theorem 5.5 base case ($|V(G)| = 2$)]
@@ -885,13 +890,14 @@ Cases~I and~II travel toward the smaller inductive graph.
   $H, G/E(H) \le G$), so a parent motion is constant on $s_H$ and on $s_c$; the
   two constants agree at the shared contracted body $c$, so every motion is
   constant across $s_H \cup s_c \supseteq V(G)$. This is KT's block-triangular
-  count (6.3) read as overlapping rigid pieces gluing. It is
-  \emph{genericity-free}: the device (\cref{lem:genericity-device}) enters only
-  at the producer \cref{lem:case-I-realization}, where the two legs must be
-  realized on one \emph{generic} placement (the witness-transfer of
-  \cref{lem:case-I-splice-placement}). The hypotheses here are the
-  \emph{satisfiable} inductive facts (relative rigidity of each piece on a
-  common $F$), not the parent rank they conclude.
+  count (6.3) read as overlapping rigid pieces gluing, and it is
+  \emph{genericity-free}. It is a standalone motion-space library lemma; the
+  Case~I producer \cref{lem:case-I-realization} does \emph{not} route through it
+  (the producer takes the row-counting path of \cref{lem:genericity-device},
+  which counts independent \emph{rows} of one common framework rather than
+  demanding a placement rigid on both legs at a shared seed). The hypotheses
+  here are the \emph{satisfiable} inductive facts (relative rigidity of each
+  piece on a common $F$), not the parent rank they conclude.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -903,48 +909,6 @@ Cases~I and~II travel toward the smaller inductive graph.
   its constancy on $s_H$ (resp.\ $s_c$). Two relatively-rigid pieces sharing
   the body $c$ glue: a motion is the constant $S(c)$ on each piece, hence on
   $s_H \cup s_c$; restrict to $V(G) \subseteq s_H \cup s_c$.
-\end{proof}
-
-\begin{lemma}[Case I splice placement (witness transfer); KT eqs.\ (6.2), (6.6)]
-  \label{lem:case-I-splice-placement}
-  \uses{def:panel-hinge-framework, lem:case-I-splice-seed,
-        lem:rows-polynomial-in-normals, lem:rank-delete-vertex,
-        lem:contraction-minimality}
-  The placement-construction half of the Case~I splice: exhibit a \emph{single}
-  parent placement $F$ on $G$ realizing \emph{both} legs of
-  \cref{lem:case-I-splice-seed} at once. Given the inductive realizations
-  $(H, p_1)$ of the rigid block at rank $D(|V(H)|-1)$ and $(G/E(H), p_2)$ of the
-  contraction (a smaller minimal $0$-dof-graph, \cref{lem:contraction-minimality}),
-  splice them --- $p_1$ on $E(H)$, $p_2$ on the interior edges of the
-  contraction, and on each boundary edge $uv \in \delta_G(V(H))$ the panel
-  intersection $\Pi_{G/E(H),\,p_2}(u) \cap \Pi_{H,\,p_1}(v)$ --- into one $F$
-  whose restriction to $H$ is rigid on $V(H)$ \emph{and} whose restriction to
-  $G/E(H)$ is rigid on $V(G/E(H))$. The glue \cref{lem:case-I-splice-seed} then
-  yields $D(|V(G)|-1)$ independent parent rows.
-
-  \emph{Red:} this is the genuine geometric content of Case~I that
-  \cref{lem:case-I-splice-seed}'s glue does not supply --- transporting the two
-  inductive sub-realizations onto a \emph{common} placement. Each leg is rigid
-  on a Zariski-open locus of panel coordinates (the row coordinatization
-  \cref{lem:rows-polynomial-in-normals}, B0); the splice must land in the
-  intersection of the two loci, the multivariate witness-transfer the device
-  (\cref{lem:rows-polynomial-in-normals}) lifts to a generic point.
-\end{lemma}
-\begin{proof}
-  \uses{lem:rank-delete-vertex, lem:contraction-minimality}
-  Orient the block hinges along a spanning forest of $H$ and link each
-  inter-block hinge to the contracted vertex of $G/E(H)$, so the two
-  inductive realizations agree on the boundary panels $\delta_G(V(H))$. The
-  $H$-rows live in the $V(H)$ column block and have rank $D(|V(H)|-1)$ by
-  $(H,p_1)$; deleting the $V(H)$ columns (Lemma~5.1,
-  \cref{lem:rank-delete-vertex}) leaves the contraction rows with rank
-  $D(|V(G)|-|V(H)|)$ by $(G/E(H), p_2)$. Block-triangularity makes the union
-  independent, so the spliced $F$ realizes both legs and
-  \cref{lem:case-I-splice-seed} concludes. \emph{Deferred} (Phase~21b
-  realization layer). This node is the genuinely hard one of Phase~21b and
-  warrants its own decomposition pass (the boundary-panel intersection and the
-  combined block-triangular independence each break into sub-lemmas) before a
-  single-commit build.
 \end{proof}
 
 \begin{lemma}[Graph-level minimality of the rigid-subgraph contraction (the graph/matroid bridge)]
@@ -1003,53 +967,93 @@ Cases~I and~II travel toward the smaller inductive graph.
   vertex-count $|V(G/E(H))| = |V(G)|-|V(H)|+1$.
 \end{proof}
 
-\begin{lemma}[Case I realization: the contraction producer; KT eqs.\ (6.2), (6.6)]
-  \label{lem:case-I-realization}
-  \uses{def:panel-hinge-framework, lem:case-I, lem:genericity-device,
-        lem:contraction-minimality, lem:rigidContract-isMinimalKDof,
-        lem:case-I-splice-seed, lem:case-I-splice-placement,
-        lem:rows-polynomial-in-normals, lem:isInfRigidOn-of-relative-count}
-  The realization motive of \cref{thm:theorem-55}
-  ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
-  $D(|V(G)|-1)$) is closed under contracting a proper rigid subgraph. Let $G$
-  be a minimal $0$-dof-graph with a proper rigid subgraph $H$ on $s = V(H)$;
-  the induction hypothesis (\cref{lem:contraction-minimality}) supplies
-  realizations of both $H$ and $G/E(H)$ at their target ranks. Then $G$
-  carries a realization at rank $D(|V(G)|-1)$, discharging the Case~I premise
-  ($\mathtt{hcontract}$) of \cref{thm:theorem-55}.
+\begin{lemma}[KT Claim 6.4: the contraction block attains its rank at the generic placement (eq.\ (6.9))]
+  \label{lem:claim-6-4}
+  \uses{def:rigidity-matrix, def:rigid-contraction, lem:rank-delete-vertex,
+        lem:contraction-minimality}
+  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph $H$ on
+  $s = V(H)$, and write $s_c = (V(G) \setminus V(H)) \cup \{r\}$ for the
+  surviving body set ($r$ the contracted representative). Given the contraction
+  $G/E(H)$ (\cref{def:rigid-contraction}) realized at its inductive rank, the
+  surviving-edge block $R(G,p;\,E \setminus E', V \setminus V')$ of
+  $G \setminus E(H)$ --- the parent rigidity matrix restricted to the surviving
+  edges $E(G) \setminus E(H)$ and to the surviving-body columns $V \setminus V'
+  = V(G) \setminus V(H)$ --- attains rank $D(|s_c|-1)$ at the generic
+  placement. Equivalently: at a Zariski-open (generic) locus of panel
+  coordinates the surviving rows are linearly independent after the
+  exterior-column projection that kills the $V(H)$ columns (KT's bottom-right
+  block, eq.\ (6.9); the row-count companion of the pin-a-body Lemma~5.1,
+  \cref{lem:rank-delete-vertex}).
 
-  The producer composes four pieces: the splice glue
-  \cref{lem:case-I-splice-seed} (the block-triangular argument, green), the
-  splice placement \cref{lem:case-I-splice-placement} (the witness-transfer
-  exhibiting one $F$ realizing both legs), the row coordinatization
-  \cref{lem:rows-polynomial-in-normals} (B0), and the genericity device
-  \cref{lem:genericity-device} (lifting the seed to a generic realization at the
-  same rank). \emph{Red, re-shaped:} the prior carrier
-  ($\mathtt{hasFullRankRealization\_ofParam\_of\_contraction}$, retired) took
-  as hypotheses that two subgraphs $G_H, G_c \le G$ are \emph{each
-  infinitesimally rigid over the whole ambient body type} --- which a spike
-  proved \emph{unsatisfiable} for a proper $H$ (a body outside the subgraph is
-  an isolated, free, non-trivial motion). The relativized motive
-  (\cref{def:rank-hypothesis}) removes the ambient bodies from the count, so
-  the legs ``$H$ realizes its rank'' and ``$G/E(H)$ realizes its rank'' are
-  the satisfiable inductive hypotheses, and the producer is the device-direct
-  composition above rather than a closure over unsatisfiable rigidity inputs.
+  This is the rank-transport across the collapse map: the contraction's
+  inductive rank (\cref{lem:contraction-minimality}, on the relabelled
+  collapsed graph $G/E(H)$) is transported to the surviving-edge leg
+  $G \setminus E(H) \le G$ at the parent placement, the joint panel
+  coefficients being algebraically independent over $\Q$ (KT \S5.1 / Claim~6.4,
+  the deliberate genericity simplification). \emph{Red, deferred to Phase~22b:}
+  it is carried as the green-modulo hypothesis $\mathtt{hclaim64}$ of
+  \cref{lem:case-I-realization}, the single remaining analytic obligation of
+  Case~I.
+\end{lemma}
+
+\begin{lemma}[Case I realization: the contraction producer; KT eqs.\ (6.3), (6.9)]
+  \label{lem:case-I-realization}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.case_I_realization}
+  \leanok
+  \uses{def:panel-hinge-framework, lem:case-I, lem:rigidContract-isMinimalKDof,
+        lem:claim-6-4, lem:genericity-device, lem:rows-polynomial-in-normals,
+        lem:isInfRigidOn-of-relative-count}
+  The (strengthened, general-position) realization motive of
+  \cref{thm:theorem-55} is closed under contracting a proper rigid subgraph.
+  Let $G$ be a simple minimal $0$-dof-graph with a proper rigid subgraph $H$ on
+  $s = V(H)$ ($2 \le |V(H)|$, KT Lemma~6.3's case object) and representative
+  body $r \in V(H)$; the (conditioned, generic) induction hypothesis supplies
+  generic realizations of both $H$ and the contraction $G/E(H)$ at their target
+  ranks. Then $G$ carries a generic realization at rank $D(|V(G)|-1)$,
+  discharging the Case~I premise ($\mathtt{hcontract}$) of
+  \cref{thm:theorem-55}.
+
+  The proof is KT eq.\ (6.3)'s \emph{block-triangular rank-addition} over a
+  \emph{single} common framework $F = \mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$
+  at a general-position seed $q_0$: it exhibits $D(|V(G)|-1)$ independent
+  rigidity rows of $F$, split as the rigid-block rows ($E(H)$, from the
+  $H$-leg's rank polynomial \cref{lem:rows-polynomial-in-normals}) $\sqcup$ the
+  surviving-edge rows ($E(G) \setminus E(H)$, from \cref{lem:claim-6-4}).
+  Projecting onto the exterior columns $V(G) \setminus V(H)$ makes the union
+  independent --- the $H$-block vanishes there (KT's top-right $0$), so the two
+  row-blocks are jointly independent. The device's row-count closure
+  (\cref{lem:genericity-device}) then reads rigidity on $V(G)$ off the
+  $D(|V(G)|-1)$-row count via the relative-count adapter
+  (\cref{lem:isInfRigidOn-of-relative-count}), \emph{at $q_0$ itself}; since
+  $q_0$ is general position the strengthened motive holds. This needs \emph{no}
+  common placement rigid on both legs (the obstruction the prior common-seed
+  splice could not cross): the device counts independent \emph{rows}, never
+  rigidity of one framework on a leg at a shared seed.
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-I-splice-seed, lem:case-I-splice-placement,
-        lem:rows-polynomial-in-normals, lem:genericity-device, lem:case-I,
-        lem:rigidContract-isMinimalKDof, lem:isInfRigidOn-of-relative-count}
-  Build the splice placement $F$ (\cref{lem:case-I-splice-placement}): one
-  parent framework on $G$ realizing both legs, assembled block-triangularly
-  from the inductive realizations of $H$ and $G/E(H)$; the glue
-  \cref{lem:case-I-splice-seed} turns the two legs into $D(|V(G)|-1)$
-  independent rigidity rows. Coordinatize the rows in the panel normals
-  (\cref{lem:rows-polynomial-in-normals}) and feed the seed as the device's
-  independence witness; the device (\cref{lem:genericity-device}) then produces
-  a generic placement at the same rank $D(|V(G)|-1)$, i.e.\ a realization
-  witnessing $\mathrm{HasFullRankRealization}$. \emph{Deferred} (Phase~21b
-  realization layer): the placement and the coordinatization are the red
-  sub-obligations.
+  \leanok
+  \uses{lem:rows-polynomial-in-normals, lem:claim-6-4, lem:genericity-device,
+        lem:case-I, lem:rigidContract-isMinimalKDof,
+        lem:isInfRigidOn-of-relative-count}
+  Work on the one framework $F = \mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ at a
+  general-position seed $q_0$. The rigid-block rows $s_H$ (the edges $E(H)$) are
+  independent and $D(|V(H)|-1)$ in number, from the $H$-leg's inductive generic
+  realization fed through the row coordinatization
+  \cref{lem:rows-polynomial-in-normals}. The surviving-edge rows $s_c$ (the
+  edges $E(G) \setminus E(H)$, on $s_c = (V(G) \setminus V(H)) \cup \{r\}$) are
+  $D(|s_c|-1)$ in number and, after the exterior-column projection $D$ killing
+  the $V(H)$ columns, independent --- this is KT Claim~6.4
+  (\cref{lem:claim-6-4}), the single green-modulo hypothesis, supplied by the
+  contraction's generic IH (\cref{lem:rigidContract-isMinimalKDof}) at the
+  Zariski-open locus of a contraction rank polynomial's non-roots. The
+  $H$-block rows vanish under $D$ (KT's top-right $0$), so $\operatorname{span}
+  s_H \subseteq \ker D$ while $s_c$ is independent off $\ker D$; the two blocks
+  are disjoint and their union gives the $D(|V(G)|-1)$ independent rows the
+  device consumes. The device-row closure (\cref{lem:genericity-device}) bounds
+  $\dim Z(F)$ and the relative-count adapter
+  (\cref{lem:isInfRigidOn-of-relative-count}) converts it to rigidity on $V(G)$
+  (\cref{lem:case-I}); general position of $q_0$ delivers the strengthened
+  motive.
 \end{proof}
 
 \subsection{Case II: \texorpdfstring{$k > 0$}{k > 0} splitting (1-extension)}
@@ -1309,11 +1313,12 @@ ever invoked the device on a constant family; and (ii) the device needs a
 seed's witnessed independent rows to a generic realization rigid on $V(G)$ --- is
 the green glue \cref{lem:realization-of-independent-rows}, shared by both cases;
 what remains in each is the \emph{placement}: the seed realization to feed it. For
-Case~I the block-triangular \emph{glue} \cref{lem:case-I-splice-seed} is green, but
-the placement realizing both legs on one common framework
-(\cref{lem:case-I-splice-placement}) is a separate construction, red; for Case~II
+Case~I the producer (\cref{lem:case-I-realization}) is now green-modulo: KT
+eq.~(6.3)'s block-triangular rank-addition over one common framework supplies the
+$D(|V(G)|-1)$ independent rows directly, its single residual being KT Claim~6.4
+(\cref{lem:claim-6-4}, deferred to Phase~22b); for Case~II
 the placement is the $1$-extension normal
-(\cref{lem:case-II-realization-placement}), also red. Nor
+(\cref{lem:case-II-realization-placement}), still red. Nor
 does the device supply \cref{prop:rigidity-matrix-prop11}'s genericity-free
 upper bound $\mathtt{hub}$, a distinct Phase-19-partition obligation carried as
 an explicit hypothesis; the device underwrites only the $\mathtt{hgen}$ half.
@@ -1363,10 +1368,10 @@ an explicit hypothesis; the device underwrites only the $\mathtt{hgen}$ half.
 \noindent The device thus discharges the genericity \emph{hypotheses} the
 accounting nodes carry, but not the realization-layer constructions that feed
 the induction. With the row coordinatization \cref{lem:rows-polynomial-in-normals}
-and the Case~I splice glue \cref{lem:case-I-splice-seed} now green, the still-red
-constructions are the Case~I splice placement (\cref{lem:case-I-splice-placement})
-and the Case~II $1$-extension realization (\cref{lem:case-II-realization}). It
-is also consumed by the
+green and the Case~I producer (\cref{lem:case-I-realization}) now green-modulo KT
+Claim~6.4 (\cref{lem:claim-6-4}, deferred to Phase~22b), the still-red
+constructions are that residual Claim~6.4 and the Case~II $1$-extension
+realization (\cref{lem:case-II-realization}). The device is also consumed by the
 Case~III candidate-framework genericity of Phases~22--23.
 
 \subsection{The \texorpdfstring{$V(G)$}{V(G)}-relative count (device output to relative motive)}
@@ -1497,7 +1502,7 @@ non-spanning block).}
   $V(G) = V(\mathrm{ofNormals}\,G\,\mathrm{ends}\,q)$. The witnessed independent
   family $(q_0, s)$ is the \emph{satisfiable} geometric input the placement
   supplies, not the rank the lemma concludes --- the honesty split matching the
-  Case~I splice glue/placement \cref{lem:case-I-splice-seed}.
+  Case~I splice glue \cref{lem:case-I-splice-seed}.
 \end{lemma}
 \begin{proof}
   \leanok
