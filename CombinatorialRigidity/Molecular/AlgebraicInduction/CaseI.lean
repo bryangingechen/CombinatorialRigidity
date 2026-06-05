@@ -970,6 +970,98 @@ theorem infinitesimalMotions_sup_range_extProj_eq_top
     rw [← Nat.mul_add, ← Nat.mul_add, hcount]
   omega
 
+/-- **The exterior-column projection is injective on the rigidity-row span of a rigid block**
+(`lem:claim-6-4`, the U3b dual-annihilator core — the projection loses zero rank; Katoh–Tanigawa
+2011 §6.2 eqs.\ (6.5)/(6.9), Phase 22b). For `F` infinitesimally rigid on its whole vertex set
+`V(G)` and a block `proj` meeting `V(G)` in exactly the representative body `r`, the exterior-column
+projection's dual map `D = (extProj proj).dualMap` is **injective on the rigidity-row span**
+`Φ = span rigidityRows`. This is the §1.22 closing fact in injective form: `Φ ⊓ ker D = ⊥`.
+
+The chain is pure dual API on top of the `Z ⊔ W = ⊤` count
+(`infinitesimalMotions_sup_range_extProj_eq_top`, `Z = infinitesimalMotions`,
+`W = range (extProj proj)`):
+* `ker D = W.dualAnnihilator` (`LinearMap.ker_dualMap_eq_dualAnnihilator_range`);
+* `Φ = Z.dualAnnihilator` — `Z = Φ.dualCoannihilator` (`infinitesimalMotions_eq_dualCoannihilator`)
+  and the finite-dim double-annihilator `dualCoannihilator_dualAnnihilator_eq`;
+* `Φ ⊓ ker D = Z.dualAnnihilator ⊓ W.dualAnnihilator = (Z ⊔ W).dualAnnihilator`
+  (`Submodule.dualAnnihilator_sup_eq`) `= ⊤.dualAnnihilator = ⊥` (`dualAnnihilator_top`).
+Disjointness from the kernel is exactly injectivity on `Φ`
+(`Submodule.disjoint_ker_iff_injOn`). -/
+theorem BodyHingeFramework.injOn_extProj_dualMap_rigidityRows
+    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
+    (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ proj = {r}) :
+    Set.InjOn (extProj (k := k) proj).dualMap (Submodule.span ℝ F.rigidityRows) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  -- `Φ = Z.dualAnnihilator` (double annihilator) and `ker D = W.dualAnnihilator`, so
+  -- `Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator = ⊤.dualAnnihilator = ⊥`.
+  have hΦeq : Submodule.span ℝ F.rigidityRows
+      = F.infinitesimalMotions.dualAnnihilator := by
+    rw [F.infinitesimalMotions_eq_dualCoannihilator,
+      Subspace.dualCoannihilator_dualAnnihilator_eq]
+  refine LinearMap.injOn_of_disjoint_ker le_rfl ?_
+  rw [disjoint_iff, LinearMap.ker_dualMap_eq_dualAnnihilator_range, hΦeq,
+    ← Submodule.dualAnnihilator_sup_eq,
+    infinitesimalMotions_sup_range_extProj_eq_top F hrig hr hinter,
+    Submodule.dualAnnihilator_top]
+
+/-- **The projected-subfamily extraction: a framework rigid on its full vertex set, pinned at a
+block meeting `V(G)` in one body, carries `≥ D(|V(G)|−1)` independent *exterior-projected* panel
+rows of its linking edges** (`lem:claim-6-4`, the U3b projected U3-tool skeleton — the
+projected sibling of `exists_independent_panelRow_subfamily_of_rigidOn_linking_set`; Katoh–Tanigawa
+2011 §6.2 eqs.\ (6.5)/(6.9), §5.1, Phase 22b — KT Claim 6.4 proper). For `F` infinitesimally rigid
+on its whole vertex set `V(G)` and a block `proj` meeting `V(G)` in exactly the representative body
+`r` (`V(G) ∩ proj = {r}`), there is an index subset `t` whose `(extProj proj).dualMap ∘ panelRow
+ends`-subfamily is linearly independent, of size `≥ D(|V(G)|−1)`, every member of which links in
+`F.graph`.
+
+Unlike the un-projected parent — whose finrank bound the projection could in principle *lower* (that
+is exactly the content of Claim 6.4) — this brick uses the §1.22 `Z ⊔ W = ⊤` injectivity input
+(`injOn_extProj_dualMap_rigidityRows`): the exterior-column projection's dual map `D` is injective
+on the rigidity-row span `Φ` (the projection loses *zero* rank), so the un-projected independent
+subfamily of the green tool maps through `D` to an independent projected subfamily of the *same*
+size (`LinearIndependent.map_injOn`). The un-projected subfamily and its support/count are produced
+by `exists_independent_panelRow_subfamily_of_rigidOn_linking` (the equality-count form, whose
+`Nat.card t = D(|V(G)|−1)` gives the `≥` lower bound directly); each of its panel rows is a rigidity
+row of `F` (its edge links), so its span lies in `Φ` where `D` is injective. This is the final brick
+of the exterior-rank discharge that the rank-transport `htransport` consumes. -/
+theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj
+    [Finite α] [Finite β] (F : BodyHingeFramework k α β) {ends : β → α × α} {proj : Set α} {r : α}
+    (hends : ∀ e u v, F.graph.IsLink e u v → F.graph.IsLink e (ends e).1 (ends e).2)
+    (hne : ∀ e, F.graph.IsLink e (ends e).1 (ends e).2 → F.supportExtensor e ≠ 0)
+    (hnev : F.graph.vertexSet.Nonempty)
+    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
+    (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ proj = {r}) :
+    ∃ t : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      (∀ i ∈ t, F.graph.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+        (ends (i : β × _ × _).1).2) ∧
+      screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card t ∧
+      LinearIndependent ℝ (fun i : t => (extProj (k := k) proj).dualMap
+        (F.panelRow ends (i : β × _ × _))) := by
+  classical
+  -- The un-projected independent subfamily from the green tool.
+  obtain ⟨t, hsupp, hcard, hindep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_rigidOn_linking hends hne hnev hrig
+  refine ⟨t, hsupp, hcard.ge, ?_⟩
+  -- A panel row of `F` whose edge links in `F.graph` is one of `F`'s rigidity rows, so the
+  -- subfamily's span lies in `Φ = span rigidityRows`, where `D` is injective (the §1.22 core).
+  have hrow_mem : ∀ i : t,
+      F.panelRow ends (i : β × _ × _) ∈ Submodule.span ℝ F.rigidityRows := by
+    rintro ⟨⟨e', t₁, t₂⟩, hi⟩
+    refine Submodule.subset_span ⟨e', (ends e').1, (ends e').2, hsupp _ hi,
+      annihRow (F.supportExtensor e') t₁ t₂, ?_, rfl⟩
+    rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+    intro x hx
+    rw [Submodule.mem_span_singleton] at hx
+    obtain ⟨ρ, rfl⟩ := hx
+    rw [map_smul, annihRow_apply_self, smul_zero]
+  have hspan_le : Submodule.span ℝ (Set.range (fun i : t => F.panelRow ends (i : β × _ × _)))
+      ≤ Submodule.span ℝ F.rigidityRows :=
+    Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ hrow_mem i)
+  have hinj := F.injOn_extProj_dualMap_rigidityRows hrig hr hinter
+  exact hindep.map_injOn _ (hinj.mono hspan_le)
+
 /-- **Coordinate of `D w` as a matrix-vector product in a basis identification** (the linearity
 fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algebra). For a finite-dim
 ℝ-space `W` with a basis identification `φ : W ≃ₗ[ℝ] (Fin n → ℝ)` and any linear endomorphism `D`,

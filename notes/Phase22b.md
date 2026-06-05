@@ -1,18 +1,21 @@
 # Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge) (work log)
 
-**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U1 + U2 + the U3b pin-count
-walling node + the U3b `Z ⊔ W = ⊤` assembly all LANDED (sound), the projected-subfamily extraction
-remains** (opened 2026-06-05 as the coordinator's Close-C of Phase 22a; opening recon + the reduction
-N-22b-1/2/3 landed 2026-06-05; the T2b math-first re-recon landed 2026-06-05; U2 opened +
-reconciliation core landed 2026-06-05; **U1 + the U2 per-edge tail landed 2026-06-05** as `9098129`;
-the U3b build-recon corrected 2026-06-05 (design doc §1.22); **the U3b pin-count sub-lemma (the §1.22
-walling node) landed 2026-06-05** as `0f0e7aa`; **the U3b `Z ⊔ W = ⊤` dual-annihilator assembly
-landed 2026-06-05, this commit**). The phase does *not* close until `htransport` is discharged:
-`lem:claim-6-4` stays red green-modulo it (KT eq. (6.9)'s algebraic-independence content). **This
-commit lands the §1.22 U3b `Z ⊔ W = ⊤` assembly** `infinitesimalMotions_sup_range_extProj_eq_top`
-(+ two supporting bricks `extProj_range_eq_iInf_ker_proj`,
-`infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn`) in `CaseI.lean`; axiom-clean, build +
-lint warning-clean.
+**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U1 + U2 + ALL of U3b now
+LANDED (sound); U3a (alignment) + U4 (assemble + flip) remain** (opened 2026-06-05 as the
+coordinator's Close-C of Phase 22a; opening recon + the reduction N-22b-1/2/3 landed 2026-06-05; the
+T2b math-first re-recon landed 2026-06-05; U2 opened + reconciliation core landed 2026-06-05; **U1 +
+the U2 per-edge tail landed 2026-06-05** as `9098129`; the U3b build-recon corrected 2026-06-05
+(design doc §1.22); **the U3b pin-count sub-lemma (the §1.22 walling node) landed 2026-06-05** as
+`0f0e7aa`; **the U3b `Z ⊔ W = ⊤` dual-annihilator assembly landed 2026-06-05** as `6b004b8`; **the
+U3b projected-subfamily extraction landed 2026-06-05, this commit**). The phase does *not* close until
+`htransport` is discharged: `lem:claim-6-4` stays red green-modulo it (KT eq. (6.9)'s
+algebraic-independence content). **This commit lands the §1.22 U3b projected-subfamily extraction**
+— the injective-form core `injOn_extProj_dualMap_rigidityRows` (`(extProj proj).dualMap` injective on
+`Φ = span rigidityRows`, off the landed `Z ⊔ W = ⊤` via the dual-annihilator API) + the extraction
+proper `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` (the green un-projected
+subfamily mapped through `D` by `LinearIndependent.map_injOn`, the count carried for free) in
+`CaseI.lean`; axiom-clean, build + lint warning-clean. **All of U3b is now green; the genuine KT
+Claim 6.4 crux is fully bricked.** Next: U3a (alignment) → U4 (assemble + flip + phase-close).
 
 **Course-correction (2026-06-05; design doc §1.20).** The U2-opening session **forked under
 backgrounding**: its (lost) pre-reset analysis found that §1.19's "walling node retired at U2 / U3
@@ -345,15 +348,25 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
   node). The count closes by `omega` after distributing `D` over the `ncard`-level identity by hand
   (`omega` can't multiply — the documented TACTICS-QUIRKS § 1 atom-matching idiom: a `have hdist`
   factors the multiplication so `omega` sees matching `D*·` atoms). All three axiom-clean
-  (`propext`/`Classical.choice`/`Quot.sound`), build + lint warning-clean. **Remaining U3b:** the
-  **projected-subfamily extraction** — a projected sibling of
-  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` (`GenericityDevice.lean`) that takes
-  the extra `Z ⊔ W = ⊤` injectivity input (⟹ `(extProj proj).dualMap` injective on the rigidity-row
-  span `Φ` via the mathlib dual API `ker_dualMap_eq_dualAnnihilator_range` + `dualAnnihilator_sup_eq`
-  + `dualCoannihilator_dualAnnihilator_eq`, all confirmed present) and extracts `≥ D(|sc|−1)`
-  independent *projected* rows. The un-projected U3 tool does **not** suffice (projection can lower
-  rank — the whole point of Claim 6.4). **Build target (remaining): the projected-subfamily
-  extraction (the projected U3-tool skeleton).**
+  (`propext`/`Classical.choice`/`Quot.sound`), build + lint warning-clean.
+  **U3b — projected-subfamily extraction LANDED (this commit), so all of U3b is now green.** Two
+  bricks in `CaseI.lean`: (1) the §1.22-injective-form core
+  `BodyHingeFramework.injOn_extProj_dualMap_rigidityRows` — for `F` rigid on its vertex set with
+  `V(F) ∩ proj = {r}`, `(extProj proj).dualMap` is `Set.InjOn` on `Φ = span rigidityRows` (i.e.
+  `Φ ⊓ ker D = ⊥` — the projection loses zero rank), via the dual-API chain on the landed
+  `Z ⊔ W = ⊤`: `ker D = W.dualAnnihilator` (`ker_dualMap_eq_dualAnnihilator_range`),
+  `Φ = Z.dualAnnihilator` (`Z = Φ.dualCoannihilator` + `Subspace.dualCoannihilator_dualAnnihilator_eq`),
+  `Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator` (`dualAnnihilator_sup_eq`) `= ⊤.dualAnnihilator = ⊥`, then
+  `LinearMap.injOn_of_disjoint_ker` via `disjoint_iff`; (2) the extraction proper
+  `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`. **Simpler
+  than the recon's "projected U3-tool skeleton":** rather than re-run the
+  `exists_fun_fin_finrank_span_eq` span/finrank skeleton with a projected `finrank` bridge, it calls
+  the **green un-projected tool** `exists_independent_panelRow_subfamily_of_rigidOn_linking` for the
+  size-`≥ D(|V(F)|−1)` independent subfamily, then maps it through `D` by
+  `LinearIndependent.map_injOn` — the rows live in `Φ` (each links ⟹ is a rigidity row, the composer's
+  `hrow_mem` pattern), where `D` is injective, so the projected family is independent of the *same*
+  size and the projected count drops out of the un-projected count for free. Both axiom-clean
+  (`propext`/`Classical.choice`/`Quot.sound`), build + lint warning-clean.
 - [ ] **U4 — assemble + flip.** U3b gives projected-*collapsed* independence; U2 (landed) carries it
   to projected-*uncollapsed* rows at `q₀^deg`; assemble `(q₀^deg, t, hsupp, hcount, hindep)` into
   `htransport`, translating subfamily indices from `Gc.map f`-links (at `endsᵐ`) to `Gc`-links (at
@@ -385,13 +398,13 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
 
 ## Hand-off / next phase
 
-**22b is discharging `htransport` (the U1→U4 cut); U1 + U2 + both U3b bricks landed (sound), the
-projected-subfamily extraction + U3a + U4 remain.** The reduction N-22b-1/2/3 landed (KT Claim 6.4
-formalized down to the single hypothesis `htransport`); `lem:claim-6-4` carries its `\lean{…}` pins
-but stays red, `lem:case-I-realization` stays legitimately green-modulo via the case-(b) pattern,
-ROADMAP row stays ◷. U1 (`degeneratePlacement` + `degeneratePlacement_ofNormals_normal`, KT's `p2`)
-and U2 (the collapse-relabel *row* reconciliation: `panelRow_collapseTo_comp_extProj_dualMap` + the
-U2-opening column core `hingeRow_collapseTo_comp_extProj_eq`) are landed and **sound** (`9098129`).
+**22b is discharging `htransport` (the U1→U4 cut); U1 + U2 + ALL of U3b landed (sound); U3a + U4
+remain.** The reduction N-22b-1/2/3 landed (KT Claim 6.4 formalized down to the single hypothesis
+`htransport`); `lem:claim-6-4` carries its `\lean{…}` pins but stays red, `lem:case-I-realization`
+stays legitimately green-modulo via the case-(b) pattern, ROADMAP row stays ◷. U1
+(`degeneratePlacement` + `degeneratePlacement_ofNormals_normal`, KT's `p2`) and U2 (the
+collapse-relabel *row* reconciliation: `panelRow_collapseTo_comp_extProj_dualMap` + the U2-opening
+column core `hingeRow_collapseTo_comp_extProj_eq`) are landed and **sound** (`9098129`).
 
 **Course-correction (design doc §1.20).** The U2-opening session **forked under backgrounding**; its
 post-reset hand-off claimed "walling retired, U3+U4 plumbing" — **wrong**. The collapse-relabel
@@ -409,30 +422,23 @@ real-content fact = the rigid-block pin-count `finrank(F.pinnedMotionsOn V(H)) =
 **§1.22 was independently coordinator-verified** via a from-scratch motion-space decomposition (see
 §1.22 *Coordinator verification*) — the layer is sound; do **not** re-recon it, build it.
 
-**Both U3b bricks are LANDED.** The §1.22 pin-count walling node
-`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton` (`Pinning.lean`,
-`0f0e7aa`) and — **this commit** — the §1.22 `Z ⊔ W = ⊤` dual-annihilator assembly
-`infinitesimalMotions_sup_range_extProj_eq_top` (`CaseI.lean`): for `F` rigid on its vertex set and
-`proj` with `V(F) ∩ proj = {r}`, `Z ⊔ range(extProj proj) = ⊤`. The assembly built off two new
-supporting bricks (`extProj_range_eq_iInf_ker_proj`: range = `⨅ i∈proj, ker(proj i)`, idempotent
-coordinate projection; `infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn`:
-`Z ⊓ range = pinnedMotionsOn proj`) + the §1.22 inclusion–exclusion via
-`Submodule.finrank_sup_add_finrank_inf_eq` on the three confirmed dimensions (`finrank Z`,
-`finrank W`, the landed pin-count). All axiom-clean, build + lint warning-clean.
+**ALL THREE U3b bricks are LANDED — the genuine KT Claim 6.4 crux is fully bricked.** The §1.22
+pin-count walling node `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`
+(`Pinning.lean`, `0f0e7aa`); the §1.22 `Z ⊔ W = ⊤` dual-annihilator assembly
+`infinitesimalMotions_sup_range_extProj_eq_top` (`CaseI.lean`, `6b004b8`); and — **this commit** — the
+§1.22 projected-subfamily extraction (`CaseI.lean`): the injective-form core
+`injOn_extProj_dualMap_rigidityRows` (`(extProj proj).dualMap` injective on `Φ = span rigidityRows`,
+i.e. `Φ ⊓ ker D = ⊥` — projection loses zero rank — off `Z ⊔ W = ⊤` via the dual-annihilator API
+`ker_dualMap_eq_dualAnnihilator_range`/`Subspace.dualCoannihilator_dualAnnihilator_eq`/`dualAnnihilator_sup_eq`/`dualAnnihilator_top`)
++ the extraction proper `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`, which is
+**simpler than the recon's "projected U3-tool skeleton"**: it calls the green un-projected tool
+`exists_independent_panelRow_subfamily_of_rigidOn_linking` and maps the subfamily through
+`(extProj proj).dualMap` by `LinearIndependent.map_injOn` (rows in `Φ` ⟹ `D` injective ⟹ projected
+family independent of the *same* size, count for free) — no projected `finrank` bridge. All axiom-clean,
+build + lint warning-clean.
 
-**The next concrete commit is the remaining U3b — the projected-subfamily extraction** (the
-projected U3-tool skeleton), then U3a (alignment) and U4 (assemble + flip) (full
+**The next concrete commit is U3a (alignment), then U4 (assemble + flip + phase-close)** (full
 statements/reuse/risk in the *Discharge plan* checklist above + §1.20/§1.21/§1.22):
-- **U3b, remaining** (the projected U3-tool skeleton): a projected sibling of
-  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` (`GenericityDevice.lean`) that
-  takes the landed `Z ⊔ W = ⊤` (`infinitesimalMotions_sup_range_extProj_eq_top`) as its extra
-  injectivity input. `Z ⊔ W = ⊤` ⟹ `(extProj proj).dualMap` injective on the rigidity-row span `Φ`
-  (`Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator = ⊥`) via the mathlib dual API
-  (`ker_dualMap_eq_dualAnnihilator_range` + `dualAnnihilator_sup_eq` +
-  `dualCoannihilator_dualAnnihilator_eq` + `infinitesimalMotions_eq_dualCoannihilator`, all confirmed
-  present), then extract `≥ D(|sc|−1)` independent *projected* rows by the same
-  `Submodule.exists_fun_fin_finrank_span_eq` skeleton as the un-projected tool. The un-projected
-  tool does **not** suffice (projection can lower rank — the point of Claim 6.4).
 - **U3a** (O1; bricked, medium): move the IH `Qcf`'s rigidity on `sc = V(Gc.map f)` to the
   `endsᵐ`-selector framework `Qcf'` via the `ends`-swap brick
   `infinitesimalMotions_ofNormals_eq_of_ends_swap` (the `hasGenericRealization_transport_ends`

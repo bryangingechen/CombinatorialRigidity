@@ -1635,12 +1635,28 @@ claims, don't assert them*.)
    dimensions, closing by `omega` after distributing `D` over the `ncard`-level identity by hand.
    Both axiom-clean, build + lint warning-clean.
 
-**Remaining U3b (next):** the **projected-subfamily extraction** — a projected sibling of
-`exists_independent_panelRow_subfamily_of_rigidOn_linking_set` that consumes `Z ⊔ W = ⊤` as its
-injectivity input (⟹ `(extProj proj).dualMap` injective on `Φ`, via the mathlib dual API
-`ker_dualMap_eq_dualAnnihilator_range` + `dualAnnihilator_sup_eq` + `dualCoannihilator_dualAnnihilator_eq`,
-all confirmed present) and extracts `≥ D(|sc|−1)` independent *projected* rows by the same
-`exists_fun_fin_finrank_span_eq` skeleton. Then U3a (alignment) → U4 (assemble + flip + phase-close).
+3. **Projected-subfamily extraction** (LANDED, this commit): two bricks in `CaseI.lean`. The
+   §1.22-injective-form core `injOn_extProj_dualMap_rigidityRows` — for `F` rigid on its vertex set
+   and `V(F) ∩ proj = {r}`, `(extProj proj).dualMap` is `Set.InjOn` on `Φ = span rigidityRows`
+   (i.e. `Φ ⊓ ker D = ⊥`, the projection loses zero rank), proved by the dual-API chain on the
+   landed `Z ⊔ W = ⊤`: `ker D = W.dualAnnihilator` (`ker_dualMap_eq_dualAnnihilator_range`),
+   `Φ = Z.dualAnnihilator` (`Z = Φ.dualCoannihilator` + `Subspace.dualCoannihilator_dualAnnihilator_eq`),
+   `Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator` (`dualAnnihilator_sup_eq`) `= ⊤.dualAnnihilator = ⊥`,
+   then `LinearMap.injOn_of_disjoint_ker` via `disjoint_iff`. Then the extraction proper
+   `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`: rather than re-run the
+   `exists_fun_fin_finrank_span_eq` skeleton, it calls the **green un-projected tool**
+   `exists_independent_panelRow_subfamily_of_rigidOn_linking` for the size-`≥ D(|V(F)|−1)`
+   independent subfamily, then maps it through `D` by `LinearIndependent.map_injOn` — the rows live
+   in `Φ` (each links ⟹ is a rigidity row, the composer's `hrow_mem` pattern) where `D` is injective,
+   so the projected family is independent of the *same* size. Both axiom-clean, build + lint
+   warning-clean. **The simplification vs. the recon:** the projected extraction is *not* a re-run of
+   the U3-tool span/finrank skeleton — `map_injOn` carries the un-projected independence through
+   directly, so the projected count drops out of the un-projected count for free (no projected
+   `finrank` bridge needed).
+
+**Remaining U3b — none.** All three §1.22 sub-bricks (pin-count walling node, `Z ⊔ W = ⊤` assembly,
+projected-subfamily extraction) are landed. Next: U3a (alignment) → U4 (assemble + flip +
+phase-close).
 
 ---
 
