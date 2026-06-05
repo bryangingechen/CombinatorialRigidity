@@ -409,6 +409,14 @@ housekeeping pass once their resolution is fully indexed.
   which destructures the same way.
 - **Status:** resolved (no lift — instance of the existing "destructure the term so its
   projections rewrite/reduce" rule, TACTICS-QUIRKS § 4 + the sibling above).
+- **Recurrence (build side, leg-restricted span lemma `span_panelRow_linking_eq_rigidityRows`,
+  Phase 22):** same family, but on the *construction* side. Building a membership
+  `Submodule.subset_span ⟨⟨(e, t₁, t₂), hle⟩, <panelRow eq>⟩` over a subtype-indexed family
+  (the linking-edge subtype), the `<panelRow eq>` proof `by rw [panelRow, hu, hv]` fails —
+  `Failed to rewrite using equation theorems for panelRow` — because the anonymous-constructor
+  index `⟨(e, t₁, t₂), hle⟩`'s coercion does not reduce for `rw [panelRow]`. Fix:
+  `show F.panelRow ends (e, t₁, t₂) = _ by rw [panelRow, hu, hv]` — the explicit `show` pins the
+  index to the bare triple so the equation lemma fires. Same lever (index shape), dual direction.
 
 ### [resolved] `LinearEquiv.map_eq_zero_iff` via `rw` fails on a defeq-wrapped codomain (`ScrewSpace k` = `⋀^(k+2−2)`); apply `map_ne_zero_iff … .injective` as a term
 - **Where it bit:** `panelSupportExtensor_ne_zero_iff` in
