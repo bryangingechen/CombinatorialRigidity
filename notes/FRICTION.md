@@ -76,6 +76,19 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A standalone `⨅ i ∈ s, ker (proj i)` term needs an explicit `Submodule …` type ascription — `InfSet (Type _)` synth failure otherwise
+- **Where it bit:** G3c-i (`finrank_iInf_ker_proj_eq` / `pinnedMotionsOn_le_iInf_ker_proj`, Phase 22a).
+  Writing `Module.finrank ℝ (⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : … →ₗ[ℝ] ScrewSpace k))` as a
+  *standalone* goal term fails elaboration with `failed to synthesize InfSet (Type _)` — the `⨅` binder
+  tries to infer its carrier from the body alone and lands on `Type`, not `Submodule`. The existing
+  `pinnedMotionsOn_vertexSet_eq_iInf_ker_proj` had no trouble because the equation's LHS
+  (`F.pinnedMotionsOn V(G)`) pins the iInf's type; a fresh term has nothing to pin it.
+- **Proposed fix:** ascribe the whole iInf as `(⨅ i ∈ s, … : Submodule ℝ (α → ScrewSpace k))`. One-line
+  fix; no lemma needed. General lesson (a binder whose carrier type is only inferable from the *expected*
+  type needs an ascription when used standalone) is the same family as the `Polynomial.X` / `set`-binder
+  ascription entries below.
+- **Status:** resolved (type ascription).
+
 ### [resolved] The fork's `Graph.Simple` API has no `map`-simplicity lemma — `map` is the one op that breaks `Simple`, so it needs a *conditional* criterion, not an instance
 - **Where it bit:** G2b (`rigidContract_simple`, Phase 22a). Needed `(G.rigidContract H r).Simple` where
   `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))`. The fork's `Matroid/Graph/Simple.lean` has
