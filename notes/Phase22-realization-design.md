@@ -213,14 +213,16 @@ Built once, reused by all cases. **Green** unless marked.
 | N4 graph↔matroid contraction-minimality | `Graph.rigidContract_isMinimalKDof` (`Induction.lean`) | GREEN | Case I (`hcontract` recursion) |
 | Count bridges (`V(G)`-relative N1–N3) | `finrank_pinnedMotionsOn_vertexSet`, `exists_relative_full_count_ofParam`, `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` | GREEN | all |
 | **Lemma 2.1 (extensor independence)** | `omitTwoExtensor_linearIndependent` (`Extensor.lean:493`) | GREEN — **hyp `AffineIndependent ℝ p`** | Case III (the missing row) |
-| **(G2) general-position factor** | — (Vandermonde-type `MvPolynomial` whose non-roots are exactly general-position assignments) | **MISSING** | Case I coupling |
+| **(G2) general-position factor** | `exists_generalPosition_polynomial` (+ `pairLeadingMinorPoly`, `pair_linearIndependent_of_leading_minor_ne_zero`) | **GREEN** (2026-06-04; off-diagonal product of leading `2×2` minor polynomials) | Case I coupling |
 | **`prop:rigidity-matrix-prop11` `hub`** | carried as hypothesis (`:2527`) | RED (multi-commit, Phase-19 partition count) | Prop 1.1 only |
 
 **Reading:** the entire device + witness-transfer + splice + count + N4
-substrate is GREEN. The *only two missing analytic bricks across the whole layer*
-are **(G2)** the general-position `MvPolynomial` factor (Case I coupling) and the
-**Case-III missing row** via Lemma 2.1 (Track B). (G1) is not a missing brick —
-it is the motive decision of §1.
+substrate is GREEN; **(G2) is now GREEN too** (2026-06-04,
+`exists_generalPosition_polynomial`). The *only remaining missing analytic brick
+across the whole layer* is the **Case-III missing row** via Lemma 2.1 (Track B);
+the simple Case-I cases N6b/N6c are now an *assembly* of green bricks (no new
+analytic content). (G1) was not a missing brick — it was the motive decision of
+§1, dissolved by the two-motive split.
 
 ---
 

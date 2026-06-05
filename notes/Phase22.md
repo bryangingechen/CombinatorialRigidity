@@ -21,11 +21,33 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-**Two-motive split GREEN — the general-position realization motive + forgetful map** (this commit;
+**(G2) general-position `MvPolynomial` factor GREEN — the bounded analytic brick the Case-I coupling
+was missing** (this commit; `PanelHingeFramework.exists_generalPosition_polynomial` + the two helper
+bricks `pair_linearIndependent_of_leading_minor_ne_zero` + `pairLeadingMinorPoly` /
+`eval_pairLeadingMinorPoly`, `AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below
+the still-red Case-I nodes). The design build-order's node after the two-motive split
+(`notes/Phase22-realization-design.md` §3 Track A, §2 row "(G2)"): a single nonzero
+`MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are exactly the *general-position* normal
+assignments. Concretely the product over distinct body pairs `Finset.univ.offDiag` of the leading
+`2 × 2` minor polynomial `pairLeadingMinorPoly a b := X_{(a,0)}·X_{(b,1)} − X_{(a,1)}·X_{(b,0)}`:
+a non-root makes every pair's leading minor nonzero (`Finset.prod_ne_zero_iff`), which forces each
+pair of panel normals independent (the new minor helper, the coordinate-level generalization of
+`momentCurve_pair_linearIndependent`), i.e. general position of `ofNormals G ends q`. **Genuinely
+nonzero, witnessed:** at any injective `param` the moment-curve assignment `q(a,i)=(param a)^i` makes
+each factor evaluate to the Vandermonde determinant `param b − param a ≠ 0`, so the product is
+nonzero there — the explicit non-root the design names, ready to multiply into the triple product
+`Q_H · Q_c · Q_gp`. **This closes gap (G2);** (G1) was already dissolved by the two-motive split. So
+the only missing analytic bricks across the whole layer are now the *simple Case-I cases* N6b/N6c
+(assemble the triple product + the green splice) + the *Case-III row* (Track B, via Lemma 2.1). The
+three new declarations were first-try; the only deprecation (`push_neg`) is already-documented
+FRICTION, avoided via `rw [not_or, not_not, not_not]`. The substantive Lean state below
+(N4/N5/N6a/two-motive split) is unchanged from the prior commit. See *Hand-off*.
+
+**Two-motive split GREEN — the general-position realization motive + forgetful map** (prior commit;
 `PanelHingeFramework.HasGenericFullRankRealization` + `hasFullRankRealization_of_generic`,
 `AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below the still-red Case-I nodes).
-The design build-order's next node after N6a (`notes/Phase22-realization-design.md` §5; *Hand-off*
-below): add the *separate* unconditional-general-position motive
+The design build-order's node after N6a (`notes/Phase22-realization-design.md` §5): add the *separate*
+unconditional-general-position motive
 `HasGenericFullRankRealization k G := ∃ Q, Q.graph = G ∧ Q.IsGeneralPosition ∧ Q rigid on V(G)`
 (carried only through the simple Case-I cases, KT's "nonparallel, if simple") + the one-line
 forgetful map `hasFullRankRealization_of_generic : HasGenericFullRankRealization → HasFullRankRealization`
@@ -35,10 +57,7 @@ out the single-conjunct option (A): `splitOff` does not preserve simplicity, so 
 conjunct's IH lands on the wrong graph at `hsplit`). This **dissolves gap (G1) at the source**: the
 splice/rank-polynomial producers need a *general-position* rigid seed, which a bare rigid IH does not
 supply; the GP motive now carries it, and a general-position parent seed is GP for every leg
-(`withGraph` keeps the same normals), so the producers' `hgp`/`hne` are discharged for free. The
-new def's two declarations were first-try; no friction. The substantive Lean state below is unchanged
-from the prior commit. **(G2)** (the general-position `MvPolynomial` factor) + the simple Case-I cases
-N6b/N6c are now the next nodes — see *Hand-off*.
+(`withGraph` keeps the same normals), so the producers' `hgp`/`hne` are discharged for free.
 
 **N6a GREEN — the non-simple Case I splice producer (general-position-free)** (prior commit;
 `PanelHingeFramework.hasFullRankRealization_of_splice_of_supportExtensor` + its leg-native form
@@ -271,6 +290,17 @@ N5 + N6.
     doesn't preserve simplicity). **Dissolves gap (G1) at the source**: the GP motive carries the
     general-position seed the producers need; a GP parent seed is GP for every leg (`withGraph` keeps
     the same normals), discharging `hgp`/`hne`. Gates N6b/N6c (now also need (G2)).
+  - [x] **(G2) general-position polynomial factor**. **GREEN** (`exists_generalPosition_polynomial`
+    + helpers `pair_linearIndependent_of_leading_minor_ne_zero`, `pairLeadingMinorPoly` /
+    `eval_pairLeadingMinorPoly`, axiom-clean, no `\leanok` — infra below the red Case-I nodes). The
+    design build-order's node after the two-motive split (`notes/Phase22-realization-design.md` §3
+    Track A, §2 row "(G2)"): a single nonzero `MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are
+    exactly the general-position assignments — the product over `Finset.univ.offDiag` of the leading
+    `2 × 2` minor `pairLeadingMinorPoly a b := X_{(a,0)}·X_{(b,1)} − X_{(a,1)}·X_{(b,0)}`. Non-root ⟹
+    every pair's leading minor `≠ 0` (`Finset.prod_ne_zero_iff`) ⟹ pair LI (the minor helper, the
+    coordinate-level generalization of `momentCurve_pair_linearIndependent`) ⟹ GP. Nonzero witnessed:
+    the moment-curve seed makes each factor the Vandermonde det `param b − param a ≠ 0`. **Closes gap
+    (G2).** Gates N6b/N6c (the triple-product assembly + green splice).
 
 **Track B — Case II/III producer at `d=3` (the crux, KT §6.3 + §6.4.1).**
 - [ ] eq. (6.12) degenerate placement (`p1(vb)=q(ab)` reproduces the `e₀` row;
@@ -285,6 +315,21 @@ N5 + N6.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **(G2) general-position polynomial factor — the off-diagonal product of leading `2×2` minors
+  (2026-06-04).** Built the design build-order's node after the two-motive split
+  (`notes/Phase22-realization-design.md` §3 Track A): `exists_generalPosition_polynomial` — a nonzero
+  `MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are exactly the general-position assignments,
+  taken as `∏_{(a,b) ∈ Finset.univ.offDiag} pairLeadingMinorPoly a b` with
+  `pairLeadingMinorPoly a b := X_{(a,0)}·X_{(b,1)} − X_{(a,1)}·X_{(b,0)}`. **Why fixed coords 0,1, not
+  a general minor:** the design suggested "some `2×2` minor `≠ 0`"; but the *leading* (0,1) minor is
+  exactly the one the moment-curve seed makes nonzero (its Vandermonde det `param b − param a`), so
+  fixing 0,1 matches `momentCurve_pair_linearIndependent`'s own proof and the witnessed non-root drops
+  out for free — no need to range over minors. The minor⟹LI helper
+  `pair_linearIndependent_of_leading_minor_ne_zero` is the coordinate-level generalization of
+  `momentCurve_pair_linearIndependent` (`linear_combination` on the 0,1 evaluations, then the nonzero
+  minor rules out the degenerate `c₂` branch). First-try, axiom-clean; the only deprecation
+  (`push_neg`, already-documented FRICTION) avoided via `rw [not_or, not_not, not_not]`. Closes gap
+  (G2). Infra below the red Case-I nodes, no `\leanok` flip; no blueprint entry. See *Hand-off*.
 - **Two-motive split — the general-position realization motive + forgetful map (2026-06-04).** Built
   the design build-order's node after N6a (`notes/Phase22-realization-design.md` §1.4 / §5): added a
   *separate* unconditional-general-position motive
@@ -671,51 +716,59 @@ N5 + N6.
   The green forward half (consumer brick) is real progress, but the producer remains red and needs a
   *math-first decomposition* of (G1)+(G2) before its build. **Track B** (the Case II/III producer)
   remains a separate multi-node crux (eq. 6.12 degenerate placement + Lemma 6.10 at `d=3`).
-- **(G1) is now DISSOLVED — the two-motive split is GREEN (this commit).** The design pass settled
-  that (G1) is dissolved at the source by carrying general position in the motive rather than
-  re-proving it (option (b) is circular — it needs `exists_rankPolynomial_of_rigidOn`'s own `hne`); the
-  prior spike ruled out the single-conjunct option (A) (`splitOff` doesn't preserve simplicity, KT
-  Lemma 6.7, so an `(G.Simple → GP)` conjunct's IH lands on the wrong graph at `hsplit`). **This commit
-  lands the split:** `HasGenericFullRankRealization` (general position unconditional) + the one-line
-  forgetful map `hasFullRankRealization_of_generic`, carried only through the simple Case-I cases, the
-  bare `theorem_55` untouched. So (G1) is no longer a blocker — the GP motive supplies the
-  general-position seed the producers need, and a GP parent seed is GP for every leg (`withGraph` keeps
-  the same normals). **(G2)** remains the one missing analytic brick of the Case-I coupling (the
-  general-position `MvPolynomial` factor) — see *Hand-off* build order. **N6a is GREEN (prior commit):**
-  the *non-simple* Case-I branch needs neither the GP motive nor (G2) — its hinges are transversal even
-  though general position fails, so the `hsupp`-direct splice producer
-  `hasFullRankRealization_of_splice_of_supportExtensor` closes it on the bare motive. The GP motive +
-  (G2) gate only the *simple* cases N6b/N6c.
+- **(G1) and (G2) are BOTH now dissolved/closed — the two analytic gaps of the Case-I coupling are
+  gone.** (G1) was dissolved at the source by the two-motive split (prior commit): general position is
+  carried in the motive rather than re-proved (option (b) is circular — it needs
+  `exists_rankPolynomial_of_rigidOn`'s own `hne`); the spike ruled out the single-conjunct option (A)
+  (`splitOff` doesn't preserve simplicity, KT Lemma 6.7). The split landed
+  `HasGenericFullRankRealization` + the forgetful map `hasFullRankRealization_of_generic`, carried only
+  through the simple Case-I cases, bare `theorem_55` untouched. **(G2) is now CLOSED (this commit):**
+  `exists_generalPosition_polynomial` is the general-position `MvPolynomial` factor (the
+  off-diagonal product of leading `2×2` minors), nonzero (witnessed at the moment-curve seed) and with
+  non-roots exactly the general-position assignments. So neither (G1) nor (G2) is a blocker any more.
+  **N6a is GREEN:** the *non-simple* Case-I branch needs neither the GP motive nor (G2) — its hinges
+  are transversal even though general position fails, so `hasFullRankRealization_of_splice_of_supportExtensor`
+  closes it on the bare motive. **What remains for the simple cases N6b/N6c** is the *assembly* (no new
+  analytic brick): multiply the two legs' rank polynomials (`exists_rankPolynomial_of_rigidOn`, green)
+  by the (G2) factor, apply `MvPolynomial.exists_eval_ne_zero` to the triple product for one shared
+  seed, re-derive each leg rigid at it (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`,
+  green) + general position at it (the (G2) factor), and feed `hasFullRankRealization_of_splice_ofNormals`
+  (green). See *Hand-off* build order.
 
 ## Hand-off / next phase
 
-**This commit: the two-motive split GREEN.** The prior hand-off named the two-motive split as the next
-concrete commit (design build order, after N6a). Built `HasGenericFullRankRealization k G := ∃ Q,
-Q.graph = G ∧ Q.IsGeneralPosition ∧ Q rigid on V(G)` (next to `HasFullRankRealization`) + the one-line
-forgetful map `hasFullRankRealization_of_generic` (drop the GP conjunct). `theorem_55`'s bare-motive
-statement is untouched — the GP motive is a parallel scaffold carried only through the simple Case-I
-cases, not a strengthening of the reduction principle (the prior spike ruled out the `(G.Simple → GP)`
-single-conjunct: `splitOff` doesn't preserve simplicity). This dissolves gap (G1) at the source.
-Axiom-clean, first-try, no `\leanok` flip (infra below the still-red Case-I nodes), no blueprint entry.
-See *Decisions* / *Current state*; design doc §1.4 / §5.
+**This commit: the (G2) general-position `MvPolynomial` factor GREEN.** The prior hand-off named (G2)
+as the next concrete commit (design build order, after the two-motive split). Built
+`exists_generalPosition_polynomial` — a nonzero `MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are
+exactly the general-position assignments — as the off-diagonal product of the leading `2×2` minor
+polynomial `pairLeadingMinorPoly a b := X_{(a,0)}·X_{(b,1)} − X_{(a,1)}·X_{(b,0)}` (fixed coords 0,1,
+not a ranged minor, since the moment-curve seed makes exactly the leading minor nonzero — the
+Vandermonde det). The minor⟹LI helper `pair_linearIndependent_of_leading_minor_ne_zero` generalizes
+`momentCurve_pair_linearIndependent` to the coordinate level. Axiom-clean, first-try, no `\leanok`
+flip (infra below the still-red Case-I nodes), no blueprint entry. **Closes gap (G2);** (G1) was
+dissolved by the prior commit's two-motive split. See *Decisions* / *Current state*; design doc §3
+Track A / §2 row "(G2)".
 
-**Recommended next concrete commit: the (G2) general-position `MvPolynomial` factor** (design build
-order, after the split). A nonzero `MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are exactly
-`IsGeneralPosition` assignments — a *pairwise-independence* polynomial: for each body-pair `{a,b}`,
-general position is "the `2 × (k+2)` matrix `[q(a,·); q(b,·)]` has rank 2", i.e. *some* `2×2` minor
-`≠ 0`; a product over pairs (or a single Vandermonde-on-a-generic-line witness) works, with the
-moment-curve assignment `ofParam` the explicit non-root. Bounded research-shaped (standard math, a new
-Lean mirror brick, ~1–2 commits; `notes/Phase22-realization-design.md` §2 row "(G2)", §3 Track A).
-Once (G2) lands, the triple product `Q_H · Q_c · Q_gp` (two per-leg rank polynomials × the GP factor)
-has a shared non-root by `MvPolynomial.exists_eval_ne_zero`, giving one general-position seed at which
-both legs are rigid — fed to `hasFullRankRealization_of_splice_ofNormals` (green). Build order from
-there (all bounded / on green infra per the design): **(G2)** factor → **N6b/N6c** the simple Case-I
-cases (legs arrive GP via the GP motive, shared seed via the (G2) factor) → **N6** the Case-I composer
-(`lem:case-I-realization`, dispatches on simplicity, feeds N6a for non-simple + N6b/N6c for simple,
-the simple cases concluding the GP motive via `hasFullRankRealization_of_generic` for `theorem_55`'s
-bare `hcontract`) → the **Case-III row** via the green Lemma 2.1 (`omitTwoExtensor_linearIndependent`).
-The legs ride the parent's `ends`/`normal` (`withGraph_normal`); rigidity is `ends`-independent, so the
-`ends`-swap is free.
+**Recommended next concrete commit: N6b (simple Case I, simple contraction; KT Lemma 6.3)** — the
+*assembly* commit, no new analytic brick. With (G1)/(G2) both gone, all inputs are green: take the two
+legs' rank polynomials `exists_rankPolynomial_of_rigidOn` (each gives a nonzero `Q_H` / `Q_c` whose
+non-roots witness that leg's full panel-row count), multiply them by the (G2) factor `Q_gp`, apply
+`MvPolynomial.exists_eval_ne_zero` to the triple product `Q_H · Q_c · Q_gp` for one shared seed `q₀`,
+re-derive each leg rigid at `q₀` (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`,
+green) + general position at `q₀` (the (G2) factor's GP clause), and feed
+`hasFullRankRealization_of_splice_ofNormals` (green). The legs arrive GP via the GP motive
+(`HasGenericFullRankRealization`), and ride the parent's `ends`/`normal` (`withGraph_normal`); rigidity
+is `ends`-independent, so the `ends`-swap is free. **Caveat for the assembly:** the per-leg rank
+polynomials need each leg rigid *at a transversal-rigid seed with general position* — which the GP
+motive now supplies (a GP seed of the parent is GP for every leg). Decompose the shared-seed plumbing
+math-first if it does not fall out as one commit; the recurring trap (FRICTION) is the heavy
+`IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph` graph-swaps — state hypotheses
+pre-converted. Build order from there: **N6b** → **N6c** (KT Lemma 6.5, same shape, the contracted
+vertex's two boundary hinges give `+D` via Lemma 5.3 / the splice) → **N6** the Case-I composer
+(`lem:case-I-realization`, dispatches on simplicity: N6a for non-simple, N6b/N6c for simple; the simple
+cases conclude the GP motive via `hasFullRankRealization_of_generic` for `theorem_55`'s bare
+`hcontract`) → the **Case-III row** (Track B) via the green Lemma 2.1
+(`omitTwoExtensor_linearIndependent`).
 
 Honesty-gate: `lem:case-I-splice-placement` / `lem:case-I-realization` stay red — the deliverable
 (shared-seed full-rank realization) is not produced; only the per-leg consumer half is green.

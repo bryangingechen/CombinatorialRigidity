@@ -1932,6 +1932,116 @@ theorem isGeneralPosition_ofParam (G : Graph α β) (ends : β → α × α) {pa
   simp only [ofParam_normal]
   exact momentCurve_pair_linearIndependent (fun h => hab (hparam h))
 
+/-- **A nonzero leading `2 × 2` minor forces a pair of panel normals to be independent**
+(`def:panel-hinge-framework`, Theorem 5.5 infra, the (G2) general-position factor): for two panel
+normals `v, w : Fin (k+2) → ℝ`, if the `2 × 2` minor on the first two coordinates
+`v 0 · w 1 − v 1 · w 0` is nonzero, then `v` and `w` are linearly independent. The
+coordinate-level generalization of `momentCurve_pair_linearIndependent` (which is the special case
+`v = momentCurve s`, `w = momentCurve t`, where the minor is the Vandermonde determinant
+`t − s`): evaluating a vanishing combination `c₁ • v + c₂ • w = 0` at coordinates `0` and `1`
+(the latter available since `k + 2 ≥ 2`) gives the `2 × 2` linear system whose determinant is the
+minor, so `c₁ · (v 0 · w 1 − v 1 · w 0) = 0` forces `c₁ = 0`, then `c₂ = 0`. This is the per-pair
+linear-independence witness the general-position polynomial factor (G2) reads off a non-root: the
+factor's nonvanishing at `q` is exactly the nonvanishing of this leading minor for the pair. -/
+theorem pair_linearIndependent_of_leading_minor_ne_zero {v w : Fin (k + 2) → ℝ}
+    (h : v 0 * w ⟨1, by omega⟩ - v ⟨1, by omega⟩ * w 0 ≠ 0) :
+    LinearIndependent ℝ ![v, w] := by
+  rw [LinearIndependent.pair_iff]
+  intro c₁ c₂ hc
+  have h0 := congr_fun hc 0
+  have h1 := congr_fun hc ⟨1, by omega⟩
+  simp only [Pi.add_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul] at h0 h1
+  have hc₁ : c₁ = 0 := by
+    have hmul : c₁ * (v 0 * w ⟨1, by omega⟩ - v ⟨1, by omega⟩ * w 0) = 0 := by
+      linear_combination w ⟨1, by omega⟩ * h0 - w 0 * h1
+    rcases mul_eq_zero.mp hmul with h' | h'
+    · exact h'
+    · exact absurd h' h
+  refine ⟨hc₁, ?_⟩
+  -- With `c₁ = 0` the first coordinate equation reads `c₂ • w 0 = 0`; but the minor is nonzero, so
+  -- `(w 0, w 1) ≠ (0, 0)`, and `c₂` annihilates both, forcing `c₂ = 0`.
+  have hw : w 0 ≠ 0 ∨ w ⟨1, by omega⟩ ≠ 0 := by
+    by_contra hcon
+    rw [not_or, not_not, not_not] at hcon
+    apply h
+    rw [hcon.1, hcon.2]; ring
+  rcases hw with hw | hw
+  · have : c₂ * w 0 = 0 := by rw [hc₁, zero_mul, zero_add] at h0; exact h0
+    rcases mul_eq_zero.mp this with h' | h'
+    · exact h'
+    · exact absurd h' hw
+  · have : c₂ * w ⟨1, by omega⟩ = 0 := by
+      rw [hc₁, zero_mul, zero_add] at h1; exact h1
+    rcases mul_eq_zero.mp this with h' | h'
+    · exact h'
+    · exact absurd h' hw
+
+/-- **The pairwise leading-minor polynomial** (`def:panel-hinge-framework`, Theorem 5.5 infra,
+the (G2) general-position factor): for two bodies `a, b`, the leading `2 × 2` minor of the panel
+coordinates read as a `MvPolynomial (α × Fin (k+2)) ℝ`,
+`X_{(a,0)} · X_{(b,1)} − X_{(a,1)} · X_{(b,0)}`. Its evaluation at a free normal assignment
+`q : α × Fin (k+2) → ℝ` is exactly the leading minor `q(a,0)·q(b,1) − q(a,1)·q(b,0)`
+(`eval_pairLeadingMinorPoly`); by `pair_linearIndependent_of_leading_minor_ne_zero` a non-root of
+this polynomial gives the pair of normals at `a`, `b` linearly independent. The product of these
+factors over distinct body pairs is the general-position polynomial factor (G2). -/
+noncomputable def pairLeadingMinorPoly (a b : α) : MvPolynomial (α × Fin (k + 2)) ℝ :=
+  MvPolynomial.X (a, (0 : Fin (k + 2))) * MvPolynomial.X (b, (⟨1, by omega⟩ : Fin (k + 2)))
+    - MvPolynomial.X (a, (⟨1, by omega⟩ : Fin (k + 2))) * MvPolynomial.X (b, (0 : Fin (k + 2)))
+
+@[simp]
+theorem eval_pairLeadingMinorPoly (a b : α) (q : α × Fin (k + 2) → ℝ) :
+    MvPolynomial.eval q (pairLeadingMinorPoly a b) =
+      q (a, 0) * q (b, ⟨1, by omega⟩) - q (a, ⟨1, by omega⟩) * q (b, 0) := by
+  simp only [pairLeadingMinorPoly, map_sub, map_mul, MvPolynomial.eval_X]
+
+/-- **The general-position polynomial factor (G2)** (`def:panel-hinge-framework`,
+`lem:case-I-splice-placement` infra; Katoh–Tanigawa 2011 §6.2, the joint-genericity of the Case-I
+legs; Phase 22). The bounded analytic brick the Case-I shared-seed coupling was missing: a single
+nonzero `MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are exactly the *general-position* normal
+assignments. Concretely the product over distinct body pairs of the leading `2 × 2` minor
+polynomial `pairLeadingMinorPoly` — at a free normal assignment `q` the product is nonzero iff
+*every* pair's leading minor is nonzero (`Finset.prod_ne_zero_iff`), and a nonzero leading minor
+forces the pair's two panel normals to be independent
+(`pair_linearIndependent_of_leading_minor_ne_zero`), i.e. general position of `ofNormals G ends q`.
+
+The polynomial is genuinely nonzero (witnessed): at *any* injective `param : α → ℝ` the moment-curve
+assignment `q (a, i) = (param a)^i` makes each factor evaluate to the Vandermonde determinant
+`param b − param a ≠ 0`, so the product is nonzero there (`hgp_seed`) — the explicit non-root the
+design names. Multiplying this factor into the two per-leg rank polynomials of
+`exists_rankPolynomial_of_rigidOn` and applying `MvPolynomial.exists_eval_ne_zero` to the triple
+product yields one shared seed at which both legs are rigid *and* the normals are in general
+position — the seed `hasFullRankRealization_of_splice_ofNormals` consumes. The seed obligation of
+`lem:case-I-splice-placement` thereby reduces to the per-leg rank polynomials alone (gap (G1),
+dissolved by the two-motive split); this brick closes gap (G2). -/
+theorem exists_generalPosition_polynomial [Finite α] (G : Graph α β) (ends : β → α × α) :
+    ∃ Q : MvPolynomial (α × Fin (k + 2)) ℝ,
+      (∀ param : α → ℝ, Function.Injective param →
+        MvPolynomial.eval (fun p => momentCurve (param p.1) p.2) Q ≠ 0) ∧
+      ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+        (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  refine ⟨∏ p ∈ Finset.univ.offDiag, pairLeadingMinorPoly p.1 p.2, ?_, ?_⟩
+  · -- Nonzero at every moment-curve seed: each factor is the Vandermonde determinant.
+    intro param hparam
+    rw [map_prod]
+    rw [Finset.prod_ne_zero_iff]
+    rintro ⟨a, b⟩ hab
+    rw [Finset.mem_offDiag] at hab
+    have hne : a ≠ b := hab.2.2
+    rw [eval_pairLeadingMinorPoly]
+    simp only [momentCurve_apply, Fin.val_zero, pow_zero, pow_one, one_mul, mul_one]
+    rw [sub_ne_zero]
+    exact fun h => hne (hparam h.symm)
+  · -- A non-root assignment is in general position: every pair's leading minor is nonzero.
+    intro q hq a b hab
+    rw [map_prod, Finset.prod_ne_zero_iff] at hq
+    have hfac : MvPolynomial.eval q (pairLeadingMinorPoly a b) ≠ 0 :=
+      hq (a, b) (Finset.mem_offDiag.mpr ⟨Finset.mem_univ _, Finset.mem_univ _, hab⟩)
+    rw [eval_pairLeadingMinorPoly] at hfac
+    simp only [PanelHingeFramework.ofNormals_normal]
+    exact pair_linearIndependent_of_leading_minor_ne_zero hfac
+
 /-- **The panel framework on a new graph** (`def:framework-with-graph`, panel layer): replace the
 underlying multigraph of `P` by `G'`, keeping the per-body panel normals `normal` and the endpoint
 selector `ends` — hence every panel support extensor. The panel analogue of
