@@ -683,6 +683,56 @@ G3c-ii leg-agnostic (the coupling does not know which `s` it is handed). This is
 body-set N3 `isInfinitesimallyRigidOn_of_finrank_le_set` → the body-set consumer
 `…_rankPolynomial_ne_zero_linking_set` → the body-set coupling `couple_ofNormals_set`.
 
+### 1.10 G3c-iii re-recon — the GP conjunct needs a body-set *generic* coupling (built); the residual assembly faces the parent-`ends` impedance + Claim-6.4 bundling, not pure green-brick assembly (2026-06-05)
+
+G3c-ii landed the *bare* body-set coupling `hasFullRankRealization_of_couple_ofNormals_set`. The
+G3c-iii hand-off framed the remainder as "feed the `H`-leg IH + the G3a-transported contraction leg
+into that coupling, then `hasFullRankRealization_of_generic` for the bare `hcontract`" — but that
+path discharges **only** the bare `hcontract`. The conditioned-motive reduction `theorem_55_generic`
+*also* needs `hcontractGP`, whose conclusion is `HasGenericFullRankRealization k G` off the *same*
+body-set legs (the contraction leg rigid only on `sc = (V(G)∖V(H)) ∪ {r}`). **No body-set *generic*
+coupling/splice existed:** N6-G1 (`hasGenericFullRankRealization_of_splice_ofNormals`) and G2c
+(`hasGenericFullRankRealization_of_couple_ofNormals`) both hardcode each leg rigid on its *full*
+`V(·)`. So G3c-ii's "buildable assembly" tag was again incomplete on the GP half.
+
+**Landed this commit (the two missing producer bricks, GREEN, axiom-clean):**
+`hasGenericFullRankRealization_of_splice_set_ofNormals` (the body-set generic splice — realize at the
+GP seed `q₀` itself, rigidity on `V(G)` from the genericity-free body-set glue, GP from `hgp`; the
+common generalization of N6-G1 + G3c-ii's bare body-set splice) and
+`hasGenericFullRankRealization_of_couple_ofNormals_set` (the body-set generic coupling — the G2c
+witness-transfer (i)–(v) threaded through per-leg body sets `sH`/`sc` + the two `hpin`s, finishing on
+the body-set generic splice). These are the GP-conjunct producers the simple Case-I composer feeds.
+
+**Residual obstruction the assembly still faces (the `ends` impedance + Claim-6.4 bundling).** The
+composer must build the `hcontractGP`/`hcontract`-shaped *producers* `theorem_55_generic` consumes.
+Two unsurfaced obstructions remain, neither pure assembly:
+
+1. **Parent-`ends` impedance.** Every producer above the base glue takes `ends : β → α × α` with
+   `hends : ∀ e : β, G.IsLink e (ends e).1 (ends e).2` — quantified over *all* of `β`, the layer's
+   standing convention that the label type *is* the edge type. But `theorem_55`/`theorem_55_generic`'s
+   premises are stated on the *ends-free* motive `HasFullRankRealization k G` (the framework `Q`
+   carries its own `Q.ends`); the parent `ends` the producers need is **not** supplied by the premise
+   shape, and is not constructible from `G.Simple` alone for an arbitrary `β` (a non-edge `e₀ : β`
+   makes `hends` unsatisfiable). This is *not* G3c-specific — it would block every Case-I/II/III
+   producer from discharging a `theorem_55` premise. Resolving it is a motive/`ends`-convention
+   question at the `minimal_kdof_reduction` boundary (e.g. carry `ends` in the motive, or restrict the
+   development to `β = E(G)`), a recon-level decision, *not* a leaf assembly.
+2. **Contraction-leg Claim-6.4 bundling.** G3a's `rigidContract_rigidity_transport` gives the
+   contraction leg's *rigidity* on `sc` at a seed `q_c`, but the coupling also needs *transversality*
+   `hnec` at `q_c` and the parent selector alignment; both are downstream of the same KT Claim 6.4
+   (eq. 6.9) collapse-transport G3a carries as `htransport`. The composer must bundle the full
+   contraction-leg-at-parent-selector data as the green-modulo hypothesis, and the producer-scrutiny
+   honesty gate (`blueprint/CLAUDE.md`) forbids smuggling the deliverable — so the bundle must be the
+   *minimal* Claim-6.4 content, not the whole conclusion.
+
+**Decision: G3c-iii's two GP-conjunct producer bricks land now (this commit); the residual assembly is
+re-cut into G3c-iii-a (the parent-`ends` impedance recon/resolution) + G3c-iii-b (the composer
+assembly + flip, once `ends` is resolved and the Claim-6.4 bundle is fixed).** The honest move when a
+"buildable" node reveals an unsurfaced structural obstruction is a docs-only re-cut, not forcing a
+half-baked composer (DESIGN.md *Constructibility recon … → Scale-up*). The two bricks are real,
+verified, axiom-clean additions strictly required by the GP conjunct, so they move work forward
+independently of the `ends` resolution.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

@@ -46,9 +46,21 @@ green-modulo the explicit Claim-6.4 hypothesis `htransport`; G3b
 body-set N3 `isInfinitesimallyRigidOn_of_finrank_le_set`, the body-set consumer
 `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set`, the body-set splice
 producer `hasFullRankRealization_of_splice_set_of_supportExtensor`, and the body-set coupling
-`hasFullRankRealization_of_couple_ofNormals_set`**). **The remaining red work is N6-G3-G3c-iii (the
-assembly + `theorem_55`/`theorem_55_generic` flip).** A 2026-06-05 re-recon (design doc §1.8) had
-found G3c is NOT pure green-brick assembly — the §1.7 "buildable G3c" framing was blind to a
+`hasFullRankRealization_of_couple_ofNormals_set`**). **G3c-iii's two GP-conjunct *producer* bricks
+are now GREEN too** (this commit): the body-set **generic** splice
+`hasGenericFullRankRealization_of_splice_set_ofNormals` + the body-set **generic** coupling
+`hasGenericFullRankRealization_of_couple_ofNormals_set`, which the bare G3c-ii pair lacked but which
+`theorem_55_generic`'s `hcontractGP` (GP conclusion off the body-set legs) requires. **The remaining
+red work is N6-G3-G3c-iii's residual assembly**, re-reconned this commit (design doc §1.10) as **NOT
+pure green-brick assembly** — beyond the now-built GP bricks, two unsurfaced obstructions remain: the
+**parent-`ends` impedance** (`theorem_55`'s premises are on the *ends-free* `HasFullRankRealization`,
+but every producer needs `ends : β → α × α` with `hends` over *all* `β` — the layer's "`β` = edge
+type" convention, not constructible from `G.Simple` for arbitrary `β`, and not G3c-specific: it blocks
+every Case-I/II/III producer from discharging a `theorem_55` premise) and the **Claim-6.4 bundle**
+(G3a gives rigidity but not transversality `hnec` at `q_c`). Residual re-cut into **G3c-iii-a** (the
+parent-`ends` impedance recon/resolution, recon-level, resolved once for the whole layer) +
+**G3c-iii-b** (the composer assembly + flip, once `ends` is resolved). A 2026-06-05 re-recon (design
+doc §1.8) had found G3c is NOT pure green-brick assembly — the §1.7 "buildable G3c" framing was blind to a
 **body-set mismatch**: the G2c coupling (and the rank-polynomial witness-transfer it calls) hardcode
 each leg rigid on its **full** `V(GH)`/`V(Gc)`, but the contraction leg `Gc = G.deleteEdges E(H)` has
 `V(Gc) = V(G)` and is rigid *only* on `(V(G)∖V(H)) ∪ {r}` (G3a's output set; the surviving edges leave
@@ -65,8 +77,8 @@ across non-roots, rigidity-on-`s` does not). The equality is carried as the leg-
 literally that green lemma, the contraction leg's interior bodies are isolated in `G ＼ E(H)`). KT's
 eq. (6.3) splice respects exactly the body-set split (`R(G,p; E∖E′, V∖V′)`, surviving *bodies*
 `V∖V′`); the honest base glue `isInfinitesimallyRigidOn_of_splice` already supports arbitrary
-`sH`/`sc`. **G3c is cut into G3c-i (GREEN), G3c-ii (GREEN), G3c-iii (assembly + flip, `buildable` —
-the next build).**
+`sH`/`sc`. **G3c is cut into G3c-i (GREEN), G3c-ii (GREEN), G3c-iii (GP-conjunct producer bricks
+GREEN this commit; residual assembly re-cut into G3c-iii-a/b, design doc §1.10).**
 The §1.7 re-recon settled the binding `Gc ≤ G` obstruction: the
 splice's contraction leg is **`G.deleteEdges E(H)`** (`≤ G`, KT eq. 6.3's `R(G,p; E∖E′, V∖V′)`),
 **not** the relabelled `G.rigidContract H r` — and the contraction IH's rigidity is *transported
@@ -91,10 +103,11 @@ splitting-off branch *is* KT Case III (Track B, out of 22a scope, entirely red),
 obstruction is one of *scope*, not routing — G2a carries that branch's GP step as an explicit hypothesis
 `hsplitGP` (Phase-21b green-modulo `h…` idiom; design doc §1.6 escalation (ii)), and likewise carries the
 simple-base `hbaseGP` and the simple Case-I `hcontractGP` (the latter fed the *full conditioned IH*, the
-shape G2c/N6-G3 consume). **Remaining:** N6-G3-G3c-iii only (G3a green-modulo; G3b, G3c-i, G3c-ii
-green). No `\leanok` flip yet (`lem:case-I-realization` stays red until G3c-iii discharges
-`hcontractGP`/`hcontract` and G3a's `htransport` is itself supplied — KT Claim 6.4 / `lem:case-III`);
-axiom-clean; no `sorry`.
+shape G2c/N6-G3 consume). **Remaining:** N6-G3-G3c-iii's residual assembly — **G3c-iii-a** (parent-`ends`
+impedance) then **G3c-iii-b** (composer assembly + flip); G3a green-modulo; G3b, G3c-i, G3c-ii, and
+G3c-iii's GP-conjunct producer bricks green. No `\leanok` flip yet (`lem:case-I-realization` stays red
+until the composer discharges `hcontractGP`/`hcontract` and G3a's `htransport` is itself supplied — KT
+Claim 6.4 / `lem:case-III`); axiom-clean; no `sorry`.
 
 **Green-brick inventory (resume points; full detail in *Lemma checklist* / *Decisions*).**
 - **N4** `rigidContract_isMinimalKDof` — graph↔matroid contraction-minimality bridge (`\leanok`).
@@ -172,12 +185,20 @@ axiom-clean; no `sorry`.
   N3 `isInfinitesimallyRigidOn_of_finrank_le_set` (`hpin` + `dim Z ≤ D·(|sᶜ|+1)` ⟹ rigid on `s`,
   verbatim N3-on-`V(G)` modulo the `hpin` rewrite); (2) the body-set consumer
   `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set` (a `Q`-non-root ⟹ rigid
-  on `s`, via the body-set N3); (3) the body-set splice producer
+  on `s`, via the body-set N3); (3) the *bare* body-set splice producer
   `hasFullRankRealization_of_splice_set_of_supportExtensor` (legs rigid on `sH`/`sc` → glue at
-  `t := V(G)` → parent rigid on `V(G)` → device closure); (4) the body-set coupling
+  `t := V(G)` → parent rigid on `V(G)` → device closure); (4) the *bare* body-set coupling
   `hasFullRankRealization_of_couple_ofNormals_set` (threads `sH`/`sc` + the two `hpin`s through the
   five-step witness-transfer). `hpin` is the green sibling of `finrank_pinnedMotionsOn_vertexSet`,
   discharged per-leg by G3c-iii; *not* a new analytic hypothesis like G3a's `htransport`.
+- **N6-G3-G3c-iii GP-conjunct producer bricks** (**GREEN**, this commit, `AlgebraicInduction.lean`) —
+  the body-set **generic** splice + coupling the bare G3c-ii pair lacked, required because
+  `theorem_55_generic`'s `hcontractGP` concludes `HasGenericFullRankRealization` off the body-set legs:
+  (1) `hasGenericFullRankRealization_of_splice_set_ofNormals` (realize at the GP seed `q₀` itself —
+  rigidity on `V(G)` from the genericity-free body-set glue `isInfinitesimallyRigidOn_of_splice`, GP
+  from `hgp`; the common generalization of N6-G1 + the bare body-set splice); (2)
+  `hasGenericFullRankRealization_of_couple_ofNormals_set` (the G2c witness-transfer (i)–(v) threaded
+  through `sH`/`sc` + the two `hpin`s, finishing on the body-set generic splice).
 
 ## Architectural choices made up front
 
@@ -357,18 +378,36 @@ axiom-clean; no `sorry`.
         green `finrank_pinnedMotionsOn_vertexSet`, discharged per-leg at the G3c-iii call site
         (`sH := V(H)` *is* that green lemma on the leg; the contraction leg's interior bodies are
         isolated in `G ＼ E(H)`). So G3c-ii is *buildable*, the §1.8 tag, not a green-modulo escalation.
-      - [ ] **G3c-iii** assembly + flip (**`buildable` — G3c-i/ii now green; the next build**; the
-        original G3c) — dispatch on `G.Simple`; simple branch: `H`-leg IH (`Simple.mono` +
-        `subgraph_minimality`) on `sH := V(H)` + transported contraction leg (G3a + N4) on
-        `sc := (V(G)∖V(H)) ∪ {r}` → the **G3c-ii body-set coupling**
-        `hasFullRankRealization_of_couple_ofNormals_set` → `hasFullRankRealization_of_generic`;
-        non-simple branch: N6a directly. **Must discharge the coupling's two `hpin`s** —
-        `hpinH` (leg `H`, `sH := V(H)`) is the green `finrank_pinnedMotionsOn_vertexSet` on the leg
-        (`s = V(GH)`); `hpinc` (contraction leg `G ＼ E(H)`, `sc := (V(G)∖V(H)) ∪ {r}`) is the body-set
-        N1 equality where the interior `V(H)∖{r}` is isolated in `G ＼ E(H)` (same proof). Also
-        discharges the `hloop`/`hpar` of `rigidContract_simple` when extracting the contraction leg's IH.
-        Discharges `hcontractGP`/`hcontract` ⟹ `lem:case-I-realization` green-modulo
-        (`htransport` / Claim 6.4).
+      - [ ] **G3c-iii** assembly + flip — **RE-RECONNED 2026-06-05 (design doc §1.10); NOT pure
+        green-brick assembly; two GP-conjunct producer bricks landed, residual re-cut into
+        G3c-iii-a/b.** The G3c-ii "buildable assembly" tag was incomplete on the **GP conjunct**:
+        `theorem_55_generic`'s `hcontractGP` concludes `HasGenericFullRankRealization k G` off the
+        *same* body-set legs, but **no body-set *generic* coupling/splice existed** (N6-G1 + G2c both
+        hardcode each leg rigid on its full `V(·)`); the bare body-set coupling G3c-ii built only
+        discharges the bare `hcontract`. Two further unsurfaced obstructions: the **parent-`ends`
+        impedance** (`theorem_55`'s premises are on the *ends-free* `HasFullRankRealization`, but every
+        producer needs `ends : β → α × α` with `hends` over *all* `β` — the layer's "`β` = edge type"
+        convention; not constructible from `G.Simple` for arbitrary `β`, and not G3c-specific) and the
+        **Claim-6.4 bundle** (G3a gives rigidity but not transversality `hnec` at `q_c`).
+        - [x] **GP-conjunct producer bricks** — **GREEN** (this commit, 2026-06-05, axiom-clean):
+          `hasGenericFullRankRealization_of_splice_set_ofNormals` (body-set *generic* splice; realize
+          at the GP seed `q₀` itself, rigidity on `V(G)` from the genericity-free body-set glue, GP
+          from `hgp`) + `hasGenericFullRankRealization_of_couple_ofNormals_set` (body-set *generic*
+          coupling; the G2c witness-transfer threaded through `sH`/`sc` + the two `hpin`s, finishing
+          on the body-set generic splice). The GP-conjunct producers the simple Case-I composer feeds.
+        - [ ] **G3c-iii-a** the parent-`ends` impedance — recon/resolve the `ends`-convention mismatch
+          at the `minimal_kdof_reduction` boundary (carry `ends` in the motive, or restrict the
+          development to `β = E(G)`). Recon-level, *not* a leaf assembly; blocks every Case-I/II/III
+          producer from discharging a `theorem_55` premise, so resolved once for the whole layer.
+        - [ ] **G3c-iii-b** the composer assembly + flip (once `ends` is resolved) — dispatch on
+          `G.Simple`; simple branch: `H`-leg IH (`Simple.mono` + `subgraph_minimality`) on
+          `sH := V(H)` + the G3a-transported contraction leg (Claim-6.4 bundle, incl. `hnec`) on
+          `sc := (V(G)∖V(H)) ∪ {r}` → the **body-set generic coupling**
+          `hasGenericFullRankRealization_of_couple_ofNormals_set` for `hcontractGP`, then
+          `hasFullRankRealization_of_generic` for `hcontract`; non-simple branch: N6a. Discharges the
+          two `hpin`s (`hpinH` = green `finrank_pinnedMotionsOn_vertexSet`; `hpinc` = body-set N1
+          equality on the isolated interior) + the `hloop`/`hpar` of `rigidContract_simple`. ⟹
+          `lem:case-I-realization` green-modulo (`htransport` / Claim 6.4).
   - [x] **N6a** non-simple Case I producer (KT Lemma 6.2), general-position-free. **GREEN**
     (`hasFullRankRealization_of_splice_of_supportExtensor` + leg-native form). Takes *transversal hinges*
     `hsupp` directly instead of general position `hgp`, strictly generalizing
@@ -412,6 +451,21 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **G3c-iii re-recon: the GP conjunct needs body-set *generic* splice + coupling (built this commit);
+  the residual assembly is NOT pure green-brick — the parent-`ends` impedance + Claim-6.4 bundle
+  (2026-06-05).** Landed the two GP-conjunct producer bricks the bare G3c-ii pair lacked:
+  `hasGenericFullRankRealization_of_splice_set_ofNormals` (body-set generic splice — realize at the GP
+  seed `q₀` itself, no device round-trip) + `hasGenericFullRankRealization_of_couple_ofNormals_set`
+  (body-set generic coupling). Required because `theorem_55_generic`'s `hcontractGP` concludes
+  `HasGenericFullRankRealization` off the body-set legs, and N6-G1/G2c both hardcode full-`V(·)` legs.
+  **But the assembly still faces two unsurfaced obstructions** (design doc §1.10): the **parent-`ends`
+  impedance** — `theorem_55`'s premises are on the *ends-free* `HasFullRankRealization`, yet every
+  producer needs `ends` with `hends` over *all* `β` (the layer's "`β` = edge type" convention,
+  unsatisfiable for an arbitrary `β` with non-edges, and not constructible from `G.Simple`); this is a
+  motive/`ends`-convention recon at the `minimal_kdof_reduction` boundary, blocking every
+  Case-I/II/III producer — and the **Claim-6.4 bundle** (G3a gives rigidity but not transversality
+  `hnec`). Honest move (DESIGN.md *Constructibility recon … → Scale-up*): land the verified GP bricks,
+  docs-only re-cut into G3c-iii-a (the `ends` recon) + G3c-iii-b (assembly + flip). Axiom-clean.
 - **G3c-ii GREEN: route (a) — carry the complement-isolation equality as `hpin`; route (b) cannot
   avoid the body-set N3 because the shared seed is reachable only via the rank-polynomial round-trip
   (2026-06-05).** Built the four consumer/coupling siblings off the hardcoded `V(·)`: the body-set N3
@@ -706,10 +760,14 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **G3a green-modulo, G3b/G3c-i/G3c-ii green; the open work is N6-G3's G3c-iii only (the assembly +
-  flip).** All *producer* bricks are green (N4, N5, N6a, N6b/N6c, the two-motive split, (G2), N6-G1,
-  G2a/G2b/G2c, the transport brick, **G3c-i's four body-set producer bricks, and G3c-ii's body-set N3 +
-  consumer + splice + coupling**);
+- **G3a green-modulo; G3b, G3c-i, G3c-ii, and G3c-iii's GP-conjunct producer bricks green; the open
+  work is N6-G3's G3c-iii residual assembly (re-cut into G3c-iii-a + G3c-iii-b).** All *producer* bricks
+  are green (N4, N5, N6a, N6b/N6c, the two-motive split, (G2), N6-G1, G2a/G2b/G2c, the transport brick,
+  **G3c-i's four body-set producer bricks, G3c-ii's body-set N3 + consumer + bare splice + bare
+  coupling, and G3c-iii's body-set *generic* splice
+  `hasGenericFullRankRealization_of_splice_set_ofNormals` + *generic* coupling
+  `hasGenericFullRankRealization_of_couple_ofNormals_set`** — the GP-conjunct producers `hcontractGP`
+  needs);
   **G3a `rigidContract_rigidity_transport` is green-modulo** the explicit Claim-6.4 hypothesis
   `htransport` (axiom-clean, no `sorry`); **G3b `couple_geometry_of_isProperRigidSubgraph` is green**
   (the geometry adapter). The `Gc ≤ G` mismatch is resolved at the graph level (the splice
@@ -733,13 +791,18 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
     `isInfinitesimallyRigidOn_of_splice` already takes arbitrary `sH`/`sc`. **G3c-i** (GREEN):
     body-set-relative rank polynomial + N7b-0 (rigid on nonempty `s`, count `D(|s|−1)`) via the body-set
     N1 *upper* bound. **G3c-ii** (GREEN; design doc §1.9, route (a)): body-set-relative N3 + consumer +
-    splice + coupling, carrying the complement-isolation equality `finrank (pinnedMotionsOn s) = D·|sᶜ|`
-    as `hpin` (route (b) ruled out — the shared seed is reachable only via the rank-polynomial
-    round-trip; `hpin` is the green sibling of `finrank_pinnedMotionsOn_vertexSet`, discharged per-leg by
-    G3c-iii, *not* a new analytic hypothesis). **G3c-iii** (next build, `buildable`): the original
-    assembly + flip, dispatch on `G.Simple`, feeding the body-set coupling
-    `hasFullRankRealization_of_couple_ofNormals_set` and discharging the two `hpin`s +
-    `hcontractGP`/`hcontract`.
+    *bare* splice + *bare* coupling, carrying the complement-isolation equality
+    `finrank (pinnedMotionsOn s) = D·|sᶜ|` as `hpin`. **G3c-iii** (re-reconned 2026-06-05, design doc
+    §1.10; NOT pure assembly): the GP-conjunct *producer* bricks (body-set **generic** splice + coupling)
+    are GREEN this commit — `theorem_55_generic`'s `hcontractGP` concludes `HasGenericFullRankRealization`
+    off the body-set legs, which the bare G3c-ii pair could not produce. The residual assembly faces two
+    unsurfaced obstructions — **the parent-`ends` impedance** (`theorem_55`'s premise is on the ends-free
+    `HasFullRankRealization`, but every producer needs `ends` with `hends` over *all* `β`; not
+    constructible from `G.Simple` for arbitrary `β`, blocks every Case-I/II/III producer) and **the
+    Claim-6.4 bundle** (G3a gives rigidity but not transversality `hnec`) — so it is re-cut into
+    **G3c-iii-a** (the parent-`ends` impedance recon/resolution, resolved once for the whole layer) +
+    **G3c-iii-b** (composer assembly + flip, feeding the body-set generic coupling, discharging the two
+    `hpin`s + the `hloop`/`hpar` of `rigidContract_simple` + `hcontractGP`/`hcontract`).
 - **Track B + assembly are deferred to 22b+** (see *Deferred to 22b+ (Case III + assembly)* above), not
   open blockers for 22a: the Case II/III producer (eq. 6.12 degenerate placement, one short, + Lemma 6.10
   at `d=3`) and the `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip. They re-enter once
@@ -747,49 +810,53 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**Clean handoff point; next agent picks up at N6-G3-G3c-iii (the assembly + flip; `buildable` —
-G3c-i/ii now green).** This commit lands **G3c-ii GREEN** (design doc §1.9, route (a)): the body-set N3
-+ consumer + splice + coupling, lifting the rank-polynomial witness-transfer off the hardcoded `V(·)`.
-Axiom-clean, no `sorry`, build + lint warning-clean. No `\leanok` / blueprint edits (the coordinator
-owns the flip — see *Coordinator scope* below).
+**Clean handoff point; next agent picks up at N6-G3-G3c-iii-a (the parent-`ends` impedance
+recon/resolution).** This commit lands **G3c-iii's two GP-conjunct producer bricks GREEN** (design doc
+§1.10): the body-set **generic** splice + coupling the bare G3c-ii pair lacked. Axiom-clean, no `sorry`,
+build + lint warning-clean. No `\leanok` / blueprint edits (the coordinator owns the flip — see
+*Coordinator scope* below).
 
-**What landed (all in `AlgebraicInduction.lean`).** (1) the body-set N3
-`isInfinitesimallyRigidOn_of_finrank_le_set` (`hpin : finrank (pinnedMotionsOn s) = D·|sᶜ|` +
-`dim Z ≤ D·(|sᶜ|+1)` ⟹ rigid on `s`; verbatim N3-on-`V(G)` modulo the `hpin` rewrite); (2) the body-set
-consumer `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set` (a `Q`-non-root ⟹
-rigid on `s`, carrying `hpin`); (3) the body-set splice producer
-`hasFullRankRealization_of_splice_set_of_supportExtensor` (legs rigid on `sH`/`sc` → glue at
-`t := V(G)` → parent rigid on `V(G)` → device closure); (4) the body-set coupling
-`hasFullRankRealization_of_couple_ofNormals_set` (threads `sH`/`sc` + the two `hpin`s through the
-five-step witness-transfer, finishing on the body-set splice).
+**What landed (both in `AlgebraicInduction.lean`).** (1)
+`hasGenericFullRankRealization_of_splice_set_ofNormals` — the body-set *generic* splice: realize at the
+GP seed `q₀` *itself*, rigidity on `V(G)` from the genericity-free body-set glue
+`isInfinitesimallyRigidOn_of_splice` (at `t := V(G)`), GP from `hgp`; the common generalization of
+N6-G1's `hasGenericFullRankRealization_of_splice_ofNormals` and G3c-ii's bare body-set splice. (2)
+`hasGenericFullRankRealization_of_couple_ofNormals_set` — the body-set *generic* coupling: the G2c
+witness-transfer steps (i)–(v) threaded through per-leg body sets `sH`/`sc` + the two `hpin`s, finishing
+on the body-set generic splice (no device round-trip, so GP survives). These are the GP-conjunct
+producers `theorem_55_generic`'s `hcontractGP` needs.
 
-**The G3c-ii route decision (design doc §1.9, math-first).** Route (b) — "feed each leg's rigidity
-straight into the base glue, no rank-polynomial round-trip" — was ruled out: the *shared* seed `q₀` is
-reachable **only** through the rank-polynomial non-root intersection (independence is the Zariski-open
-condition that transfers across non-roots; rigidity-on-`s` is not), and each leg's own seed `qH`/`qc`
-differs from `q₀`, so a transport to `q₀` is structural and irreducibly goes through the rank
-polynomial. Route (a) carries the complement-isolation **equality**
-`hpin : finrank (pinnedMotionsOn s) = D·|sᶜ|` as a leg-specific hypothesis; with it the body-set N3
-closes **verbatim** N3-on-`V(G)`. `hpin` is **not** a new analytic black box (unlike G3a's `htransport`
-= KT Claim 6.4): it is the body-set sibling of the green `finrank_pinnedMotionsOn_vertexSet`,
-discharged per-leg at the G3c-iii call site — so G3c-ii is *buildable*, not a green-modulo escalation.
+**Why this commit, not the full assembly (design doc §1.10, math-first).** The G3c-ii "buildable
+assembly" tag was incomplete on the **GP conjunct**: `hcontractGP` concludes
+`HasGenericFullRankRealization k G` off the body-set legs, but no body-set *generic* coupling/splice
+existed (N6-G1 + G2c both hardcode full-`V(·)` legs). Building those two bricks was the genuine,
+verified G3c-iii prerequisite the prior pass missed. The residual assembly then revealed **two
+unsurfaced obstructions, neither pure green-brick assembly**: (1) the **parent-`ends` impedance** —
+every producer above the base glue takes `ends : β → α × α` with `hends : ∀ e : β, G.IsLink e …`
+(quantified over *all* `β`, the layer's standing "`β` = edge type" convention), but
+`theorem_55`/`theorem_55_generic`'s premises are stated on the *ends-free* motive
+`HasFullRankRealization k G` (the framework `Q` carries its own `Q.ends`); the parent `ends` the
+producers need is **not** supplied by the premise shape and is **not** constructible from `G.Simple`
+for an arbitrary `β` (a non-edge makes `hends` unsatisfiable). This is *not* G3c-specific — it blocks
+every Case-I/II/III producer from discharging a `theorem_55` premise, a motive/`ends`-convention recon
+at the `minimal_kdof_reduction` boundary. (2) the **Claim-6.4 bundle** — G3a's
+`rigidContract_rigidity_transport` gives the contraction leg's *rigidity* on `sc` at `q_c` but not the
+*transversality* `hnec` at `q_c` the coupling also needs; both are downstream of the same KT Claim 6.4.
 
-**Next concrete task — N6-G3-G3c-iii: assembly + flip.** Dispatch on `G.Simple`. **Simple branch:** feed
-`couple_geometry_of_isProperRigidSubgraph` (G3b) for the geometry, the `H`-leg IH (via `Simple.mono` for
-`H.Simple` + `subgraph_minimality` + N4 `rigidContract_isMinimalKDof`) on `sH := V(H)`, and the
-G3a-transported contraction leg on `sc := (V(G)∖V(H)) ∪ {r}` — both into the **G3c-ii body-set coupling**
-`hasFullRankRealization_of_couple_ofNormals_set` (not the V(·)-hardcoded G2c coupling). **The new
-G3c-iii obligation is the two `hpin`s:** `hpinH` (leg `H`, `sH := V(H)`) is the green
-`finrank_pinnedMotionsOn_vertexSet` applied to the leg framework `ofNormals GH ends q` (since
-`s = V(GH)`, the body-set is the leg's full vertex set); `hpinc` (contraction leg `G ＼ E(H)`,
-`sc := (V(G)∖V(H)) ∪ {r}`) is the body-set N1 equality where the interior `V(H)∖{r}` is isolated in
-`G ＼ E(H)` (surviving edges `E(G)∖E(H)` do not touch those bodies, so the same `iInfKerProjEquiv` proof
-gives equality, not just the upper bound). The contraction leg also needs `(G.rigidContract H r).Simple`
-from `rigidContract_simple`'s `hloop`/`hpar` (`Induction.lean`, discharge from `G.Simple` +
-rigid-subgraph data, or carry green-modulo `h…` if the dichotomy resists); then
-`hasFullRankRealization_of_generic` for the bare `hcontract`. **Non-simple branch:** N6a directly.
-Discharges `hcontractGP`/`hcontract` ⟹ `lem:case-I-realization` green-modulo (`htransport` / KT
-Claim 6.4 / `lem:case-III`, deferred to 22b+).
+**Next concrete task — N6-G3-G3c-iii-a: resolve the parent-`ends` impedance.** A recon (design-pass,
+docs-first per DESIGN.md *Constructibility recon …*): decide whether to (i) carry `ends` in the
+realization motive `HasFullRankRealization`/`HasGenericFullRankRealization` (re-typing the motive
+across the whole layer + `theorem_55`/`theorem_55_generic`), or (ii) restrict the development to
+`β = E(G)` (the edge type), or (iii) thread a per-`G` `ends`-existence side-condition. Resolved once
+for the whole layer; *then* **G3c-iii-b** (the composer assembly + flip): dispatch on `G.Simple`, feed
+`couple_geometry_of_isProperRigidSubgraph` (G3b) + the `H`-leg IH (via `Simple.mono` +
+`subgraph_minimality` + N4 `rigidContract_isMinimalKDof`) on `sH := V(H)` + the G3a-transported
+contraction leg (Claim-6.4 bundle, incl. `hnec`) on `sc := (V(G)∖V(H)) ∪ {r}` into the **body-set
+generic coupling** `hasGenericFullRankRealization_of_couple_ofNormals_set` for `hcontractGP`, then
+`hasFullRankRealization_of_generic` for `hcontract`; non-simple branch: N6a. Discharge the two `hpin`s
+(`hpinH` = green `finrank_pinnedMotionsOn_vertexSet`; `hpinc` = body-set N1 equality on the isolated
+interior) + the `hloop`/`hpar` of `rigidContract_simple`. ⟹ `lem:case-I-realization` green-modulo
+(`htransport` / KT Claim 6.4 / `lem:case-III`, deferred to 22b+).
 
 **Coordinator scope still holds (carried from the prior hand-off).** Once G3c-iii lands, **STOP**
 before the blueprint flip: do **not** touch the blueprint (no `\leanok` flip or node edits), do **not**
