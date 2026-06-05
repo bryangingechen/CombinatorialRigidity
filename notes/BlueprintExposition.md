@@ -184,15 +184,25 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   `I ∪ J` is not factor-aligned). *(The most infrastructure-flavored of the (a)s
   — the difficulty is partly induced by the project's `D`-fold-union model of
   `M(G̃)`.)* Pointer: `notes/Phase22a.md` *Decisions* (N4c …).
-- **genericity device output is not GP (`lem:case-I-realization` /
-  `lem:genericity-device` interface)** — [pending] **(a) ⚠ exclusion candidate**
-  — triggered by our recon mis-plan, and the insight is about the *project's*
-  genericity device, not KT; flagged for the owner's ruling under the sharpened
-  inclusion criterion (coordinator note 2026-06-04). **Stable insight:** the
-  device's output realization is *not* itself in general position (it lands at an
-  arbitrary Gram-determinant non-root, not a moment-curve point), so general
-  position must come from the *seed*. Pointer: `DESIGN.md` *Constructibility
-  recon …*; `notes/Phase22a.md`.
+- **`lem:case-I-realization` / Claim 6.4 — rank-genericity vs. general position
+  (one condition in KT, two in Lean)** — [pending] **(a)** general position had to
+  be split out of KT's single "generic" hypothesis during the N6b/N6c + G2c
+  coupling build. **Stable insight:** KT's §5.1 "generic" (KT 2011, p. 668)
+  bundles *two* conditions under one "vertex coordinates algebraically independent
+  over ℚ" hypothesis — configuration **non-degeneracy** (KT's *nonparallel*:
+  every panel pair meets in a `(d−2)`-flat) and **rank-maximality** — and Claim
+  6.4 (p. 675, inside Lemma 6.3's splice) reads *both* off that single assumption,
+  with no separate general-position check and no intersection of loci. KT never
+  writes "general position" (0 occurrences), and footnote 4 (p. 668) shows the
+  algebraic-independence definition is a *deliberate* fusion ("to make our proof
+  simpler"). The formalization is forced to separate them: the genericity device
+  certifies only the rank/corank (Gram-determinant) polynomial, while general
+  position is the *separate* `(G2)` factor `exists_generalPosition_polynomial`
+  (off-diagonal product of leading `2×2` minors), and the coupling
+  `hasFullRankRealization_of_couple_ofNormals` takes a shared non-root of the
+  *product* (per-leg rank polynomial × GP factor). Pointer:
+  `notes/Phase22-realization-design.md` §0, §1.1; `notes/Phase22a.md` *Decisions*
+  — (G2) / N6b–N6c.
 
 ## Retroactive coverage
 
@@ -201,7 +211,10 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   KT-gloss:* the Phase-21 panel-coplanarity re-scope (early draft proved the
   body-hinge theorem — KT is clear the conjecture is the hinge-coplanar case);
   the Phase-20 N4b binder-paraphrase correction (formalization-rescue, recorded
-  in FRICTION/DESIGN only).
+  in FRICTION/DESIGN only); and the 22a "device-output-is-not-GP" note (project
+  device-API confusion from our recon mis-plan, not a KT gloss — preserved in
+  `DESIGN.md`, and *superseded* by the Claim-6.4 entry above, which captures the
+  genuine KT bundling that sits underneath it).
 - **Non-molecular phases (1–16): not yet scanned.** TODO (unscheduled): the
   Phase 5 blocker argument is a likely candidate; run as a cleanup-style round,
   candidate list producible on demand from `notes/PhaseN.md` + `git log`.
