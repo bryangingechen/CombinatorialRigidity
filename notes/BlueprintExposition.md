@@ -199,6 +199,26 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   relabel is genuinely new analytic content (not a structural rename), and G3a carries
   it as the explicit hypothesis `htransport` (green-modulo). Pointer:
   `notes/Phase22-realization-design.md` §1.7; `notes/Phase22a.md` *Decisions*.
+- **`lem:case-I-realization` N6-G3-G3c / the two splice legs live on *different*
+  body sets, `V′` and `V∖V′ ∪ {v∗}`** — [pending] **(a)** thought "pure green-brick
+  assembly (`buildable`)" → reconned into G3c-i/ii/iii (2026-06-05). **Stable
+  insight:** KT eq. (6.3)'s second block is `R(G,p; E∖E′, V∖V′)` — the parent
+  restricted to surviving edges *and surviving bodies* `V∖V′`; the rank bookkeeping
+  `D(|V′|−1) + D(|V∖V′ ∪ {v∗}|−1) − k = D(|V|−1)−k` is a sum over **two distinct body
+  sets**, the rigid block's `V′` and the contraction's `V∖V′ ∪ {v∗}`. The contraction
+  leg is rigid *only* on `V∖V′ ∪ {v∗}` (the surviving edges leave the interior `V′∖{v∗}`
+  free), not on the parent's full `V`. KT's own splice respects this body-set split;
+  the formalization's earlier (all-of-`V`-leg) couplings had collapsed `sc := V(Gc)`
+  because every prior leg *was* rigid on its full vertex set — the contraction is the
+  first leg that is not, which exposes the collapse and forces the witness-transfer
+  producers (rank polynomial, coupling) to thread a per-leg body set `sH`/`sc` and
+  finish on the honest base glue `isInfinitesimallyRigidOn_of_splice` (which always
+  supported arbitrary body sets). *(Borderline by the sharpened inclusion criterion:
+  the body-set restriction is something KT states in eq. (6.3); our coupling just
+  hadn't encoded it. Kept because the `V∖V′`-body bookkeeping is load-bearing KT
+  content the splice rank-count rests on, and the "splice contraction = rigid on all
+  of `V`" reading is a natural mis-step the formalization forced open.)* Pointer:
+  `notes/Phase22-realization-design.md` §1.8; `notes/Phase22a.md` *Decisions*.
 - **`lem:case-I-realization` N4 union↔contraction crux
   (`rigidContract_isMinimalKDof`)** — [pending] **(a), model-induced**. **Stable
   insight:** `Matroid.Union` does *not* commute with contraction, so

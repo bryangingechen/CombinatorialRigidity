@@ -549,6 +549,82 @@ exists to catch.
 
 ---
 
+### 1.8 G3c re-recon — the splice coupling hardcodes each leg rigid on its *full* `V(·)`, but the contraction leg is rigid only on `V∖V′ ∪ {v∗}`; G3c is NOT pure green-brick assembly (2026-06-05)
+
+G3a (`rigidContract_rigidity_transport`) and G3b
+(`couple_geometry_of_isProperRigidSubgraph`) landed; the §1.7 hand-off scoped G3c
+as "the Lean assembly ONLY ... by assembling the green bricks" (`buildable`): feed
+the `H`-leg IH and the G3a-transported contraction leg into the G2c coupling
+`hasGenericFullRankRealization_of_couple_ofNormals`. **This recon (no Lean /
+`\leanok` / blueprint edits; decision-support like §1.4–§1.7, verified vs. the live
+brick signatures) finds that assembly is impossible as-is — a body-set mismatch the
+"buildable" tag was blind to.**
+
+**The mismatch.** Every Case-I splice *coupling/producer* above the honest base
+glue hardcodes each leg infinitesimally rigid on its **full vertex set** `V(GH)` /
+`V(Gc)`:
+- `hasGenericFullRankRealization_of_couple_ofNormals` (G2c, `:4197`) and its bare
+  sibling (`:4112`) take `hrigc : (ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)`;
+- the witness-transfer step (i) calls `exists_rankPolynomial_of_rigidOn_linking`
+  (`:3874`), whose `hrig` is rigidity on **`V(G)`** and whose count is the full
+  relative `D(|V(G)|−1)` (it bottoms on N7b-0
+  `exists_independent_panelRow_subfamily_of_rigidOn_linking`, which reads
+  `F.graph.vertexSet` rigidity and the full `D(|V|−1)` row count).
+
+But the contraction leg is `Gc := G.deleteEdges E(H)`, and `V(Gc) = V(G)`
+(`vertexSet_deleteEdges`, used by G3b's own cover proof). The contraction is **not**
+rigid on all of `V(G)`: the surviving edges `E(G)∖E(H)` do not connect the interior
+`V(H)∖{r}` (those edges were in `E(H)`, deleted), so those bodies are free — the
+framework is rigid only on `(V(G)∖V(H)) ∪ {r}`, exactly the set G3a
+(`rigidContract_rigidity_transport`) delivers (= `V(G.rigidContract H r)` as a set,
+`rigidContract_vertexSet_ncard`'s `himg`). So `hrigc` on `V(Gc) = V(G)` is
+unsatisfiable for the contraction leg; G3a's output does **not** fit the coupling.
+
+**This is KT's own body-set split, collapsed away by the formalization.** KT eq.
+(6.3)'s second block is `R(G,p; E∖E′, V∖V′)` — parent restricted to surviving edges
+*and* surviving **bodies** `V∖V′`; the rank bookkeeping is
+`D(|V′|−1) [block] + D(|V∖V′ ∪ {v∗}|−1) − k [contraction] = D(|V|−1)−k` (§3 Track A,
+line ~605), a sum over **two distinct body sets**. The honest base glue
+`isInfinitesimallyRigidOn_of_splice` (`:1550`) faithfully takes arbitrary `sH`,
+`sc` (`c ∈ sH`, `c ∈ sc`, `V(G) ⊆ sH ∪ sc`) — but the *coupling/rank-polynomial
+producers* layered on top specialized `sc := V(Gc)` (sound for the all-of-`V` legs
+the earlier nodes consumed, e.g. N6a's `withGraph` legs and the simple
+non-contraction couplings). G3a is the first consumer whose leg is rigid on a
+**proper subset** of `V(Gc)`, which is what exposes the collapse.
+
+**Decision: G3c needs a body-set-relative coupling first; the `buildable` framing
+was over-optimistic. Cut into G3c-i / G3c-ii / G3c-iii.** Two genuinely-new bricks
+(not assembly), then the assembly:
+- **G3c-i — body-set-relative rank polynomial + N7b-0.** Generalize
+  `exists_rankPolynomial_of_rigidOn_linking` (and its N7b-0 dependency
+  `exists_independent_panelRow_subfamily_of_rigidOn_linking` +
+  `finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`) from rigidity
+  on `V(G)`/count `D(|V(G)|−1)` to rigidity on an arbitrary body set `s ⊆ V(G)` /
+  count `D(|s|−1)`. **research-shaped** — the relative-count split (N1/N3,
+  `finrank_pinnedMotionsOn_vertexSet`) is stated against the *graph's* vertex set;
+  pushing it to a sub-body-set re-opens the relative-screw-split arithmetic. Math-first
+  before any dispatch; green-modulo `h…`-deferral eligible if it stalls.
+- **G3c-ii — body-set-relative coupling.** A `couple_ofNormals` variant threading
+  per-leg body sets `sH`, `sc` (`c ∈ sH`, `c ∈ sc`, `V(G) ⊆ sH ∪ sc`) through the
+  witness-transfer (steps (i)–(v)) and finishing on the base glue
+  `isInfinitesimallyRigidOn_of_splice` at the shared seed `q₀` directly (the legs
+  rigid on `sH`/`sc`, not `V(GH)`/`V(Gc)`). `buildable` once G3c-i is green.
+- **G3c-iii — the assembly + flip** (the original G3c). Dispatch on `G.Simple`;
+  simple branch feeds the `H`-leg IH (on `sH := V(H)`) and the G3a-transported
+  contraction leg (on `sc := (V(G)∖V(H)) ∪ {r}`) into the G3c-ii body-set coupling.
+  `buildable` once G3c-i/ii land.
+
+**Net.** The §1.7 recon dissolved the *graph-level* `Gc ≤ G` mismatch (leg is
+`G ＼ E(H)`) and relocated the analytic content to G3a (Claim 6.4, green-modulo).
+This recon finds a *second*, orthogonal mismatch the §1.7 framing missed: the
+**body-set** mismatch (`V(Gc) = V(G)` vs. the contraction's `V∖V′ ∪ {v∗}`), which
+makes G3c a multi-brick build, not assembly. The honest base glue already supports
+arbitrary body sets; the work is lifting the *witness-transfer producers* (rank
+polynomial + coupling) off the hardcoded `V(·)` to a per-leg body set — KT's own
+`V∖V′` restriction, collapsed away in the earlier (all-of-`V`-leg) nodes.
+
+---
+
 ## 2. Shared-infra map (green vs. missing across the layer)
 
 Built once, reused by all cases. **Green** unless marked.
