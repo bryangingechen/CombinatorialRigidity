@@ -1,15 +1,20 @@
 # Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge) (work log)
 
-**Status:** in progress — **paused at the reduction checkpoint** (opened 2026-06-05 as the
-coordinator's Close-C of Phase 22a; opening recon + the reduction N-22b-1/2/3 landed
-2026-06-05; the T2b math-first re-recon landed 2026-06-05). The phase does *not* close at the
-reduction: `lem:claim-6-4` stays red green-modulo the explicit hypothesis `htransport` (KT eq.
-(6.9)'s algebraic-independence content). The T2b re-recon (design doc §1.19) **retired §1.18's
-lower-semicontinuity worry** (it is already green inside N-22b-2) and shrank the discharge cut
-**5→4 nodes (U1→U2→U3→U4)**, re-localizing the one walling node to **U2** (the collapse-relabel
-projected-row reproduction). Discharging `htransport` **stays Phase 22b**; the phase is paused
-there. Resume with `/coordinate-phase 22b`, **opening on U2** — the *Hand-off* below + the
-*Discharge plan* checklist carry the design.
+**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U2 opened + its reconciliation
+core landed** (opened 2026-06-05 as the coordinator's Close-C of Phase 22a; opening recon + the
+reduction N-22b-1/2/3 landed 2026-06-05; the T2b math-first re-recon landed 2026-06-05; U2 opened +
+reconciliation core landed 2026-06-05). The phase does *not* close until `htransport` is discharged:
+`lem:claim-6-4` stays red green-modulo it (KT eq. (6.9)'s algebraic-independence content). The T2b
+re-recon (design doc §1.19) **retired §1.18's lower-semicontinuity worry** (already green inside
+N-22b-2) and shrank the discharge cut **5→4 nodes (U1→U2→U3→U4)**, re-localizing the one walling
+node to **U2** (the collapse-relabel projected-row reproduction). The U2 math-first opening then
+**isolated and landed its irreducible core** — the column-reconciliation `hingeRow_collapseTo_comp_
+extProj_eq` (the uncollapsed and collapsed hinge rows agree after `(extProj V(H)).dualMap`, since
+the projection reads the same value at `a` and `f a`) + supports `extProj_apply_collapseTo` /
+`extProj_apply_not_mem` — de-risking the one node flagged as "could wall". Discharging `htransport`
+**stays Phase 22b**. Resume with `/coordinate-phase 22b`: the next commit is **U1 + the U2-tail**
+(build `q₀^deg` and lift the column-core to the full per-edge `panelRow` equality) — the *Hand-off*
+below + the *Discharge plan* checklist carry the design.
 
 Stratum 5 of the molecular-conjecture program, continued. **Scope: just KT
 Claim 6.4** — the single deferred obligation Phase 22a left green-modulo. 22a's
@@ -232,13 +237,23 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
 - [ ] **U1 — degenerate placement bridge `q₀^deg`** (KT's `p2`, eq. 6.7, H-side collapsed). Build
   `q₀^deg` agreeing with `Qcf.normal ∘ f` on `V(G)∖V(H)` and `≡ Qcf.normal r` on `V(H)`. Plumbing,
   *no* genericity/moment-curve needed (the witness is the degenerate member). Low risk.
-- [ ] **U2 — collapse-relabel projected-row reproduction** *(the crux; the live part of §1.18's
+- [~] **U2 — collapse-relabel projected-row reproduction** *(the crux; the live part of §1.18's
   T2a+T2b)*. For each surviving link `e=uv ∈ Gc`, the projected uncollapsed row
   `(extProj V(H)).dualMap ((ofNormals Gc ends q₀^deg).panelRow ends e)` equals `Qcf`'s analogous
   projected row over `Gc.map f`, via `Graph.IsLink.map` + `panelSupportExtensor`-equality + `extProj`
   killing the differing interior `V(H)` columns. **Research-shaped; the one node that could wall**
   (the irreducible KT eq. (6.7)/(6.9) collapse-normal content, §1.7; `panelRow`-defeq-across-graph-
-  swaps caution). May sub-cut. **Open here first.**
+  swaps caution). **OPENED, sub-cut; reconciliation core LANDED.** The math-first opening isolated
+  the single irreducible step — the column-side of KT eq. (6.7)/(6.9) — as a clean reusable
+  column-equality `hingeRow_collapseTo_comp_extProj_eq` (`CaseI.lean`): the uncollapsed hinge row
+  `hingeRow u v ρ` and its collapsed relabel `hingeRow (f u) (f v) ρ` become the **same** functional
+  after `(extProj V(H)).dualMap`, because the projection reads the same value at `a` and at `f a`
+  (`extProj_apply_collapseTo`, for `r ∈ V(H)` — both `a ∈ V(H)` and `f a = r ∈ V(H)` project to `0`).
+  Plus the missing `extProj` companion `extProj_apply_not_mem`. All three axiom-clean + warning-clean.
+  This de-risks the "could-wall" node: the irreducible content compiles. **Remaining U2 sub-piece:**
+  lift this column-equality to the full per-edge `panelRow` equality (reconciling the two framings'
+  support extensors / selectors) — coupled to U1's `q₀^deg` construction (which pins
+  `Pdeg.normal = Qcf.normal ∘ f` and `Qcf.ends e = (f u, f v)`), so it lands *with* U1.
 - [ ] **U3 — extract the independent surviving subfamily from `Qcf`, transport via U2.**
   `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` on `Qcf` (rigid on `V(Gc.map f)`)
   gives the size-`≥ D(|sc|−1)` subfamily; U2 carries the independence to the projected uncollapsed
@@ -271,30 +286,35 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
 
 ## Hand-off / next phase
 
-**22b is paused at the reduction checkpoint, with the discharge layer now designed.** The
-reduction N-22b-1/2/3 landed (KT Claim 6.4 formalized down to the single hypothesis
-`htransport`); `lem:claim-6-4` carries its `\lean{…}` pins but stays red,
-`lem:case-I-realization` stays legitimately green-modulo via the case-(b) pattern, ROADMAP row
-stays ◷. The 2026-06-05 coordinator validation pass (design doc §1.18) established that
-discharging `htransport` is **tractable and stays Phase 22b**; the **T2b math-first re-recon**
-(design doc §1.19, this commit) then designed the layer — retiring §1.18's lower-semicontinuity
-crux (already green inside N-22b-2) and shrinking the cut to **4 nodes U1→U2→U3→U4**, with the
-one walling node re-localized to **U2**.
+**22b is discharging `htransport` (the U1→U4 cut); U2's irreducible core has landed.** The
+reduction N-22b-1/2/3 landed (KT Claim 6.4 formalized down to the single hypothesis `htransport`);
+`lem:claim-6-4` carries its `\lean{…}` pins but stays red, `lem:case-I-realization` stays
+legitimately green-modulo via the case-(b) pattern, ROADMAP row stays ◷. The **T2b math-first
+re-recon** (design doc §1.19) designed the 4-node cut U1→U2→U3→U4; the **U2 math-first opening**
+(this commit) then sub-cut U2 and landed its one research-shaped step as the reusable
+column-reconciliation `hingeRow_collapseTo_comp_extProj_eq` (+ `extProj_apply_collapseTo` /
+`extProj_apply_not_mem`) — the faithful Lean shape of §1.7's collapse-normal irreducibility / KT
+eq. (6.7), now proved (axiom-clean, warning-clean, lint-clean). The "could-wall" risk on U2 is
+**retired**: its irreducible content compiles.
 
-**The next concrete commit, on resume** (`/coordinate-phase 22b`), is **U2 — the collapse-relabel
-projected-row reproduction** (the one research-shaped node; full statement/reuse/risk in the
-*Discharge plan* checklist above + design doc §1.19): for each surviving link `e=uv ∈
-G.deleteEdges E(H)`, the `extProj V(H)`-projected uncollapsed row at the degenerate witness
-`q₀^deg` equals `Qcf`'s analogous projected row over `Gc.map f` (via `Graph.IsLink.map` +
-`panelSupportExtensor`-equality + `extProj` killing the interior `V(H)` columns). It is the
-faithful Lean shape of §1.7's collapse-normal irreducibility / KT eq. (6.7). Open it
-math-first (it may sub-cut) before scheduling U1/U3/U4 as builds, then U1 → U2 → U3 → U4. U4 is
-the flip: `\leanok` `lem:claim-6-4`, drop `htransport` from `case_I_realization`, and run the
-full phase-close ceremony (`CLAUDE.md` *When this commit closes a phase*: user-facing surfaces,
-`notes/MolecularConjecture.md` sync, the broadened blueprint re-read + `BlueprintExposition`
-ledger). The surrounding territory (22c+: Case III at `d=3` + the `d=3` assembly) can proceed in
-parallel — it depends on the green infra (N7b row sub-nodes, N7a, the device), not on
-`htransport`.
+**The next concrete commit, on resume** (`/coordinate-phase 22b`), is **U1 + the U2-tail**: build
+the degenerate witness placement `q₀^deg : α × Fin (k+2) → ℝ` (KT's `p2`, eq. 6.7 — set
+`q₀^deg (a,·) := Qcf.normal (collapseTo r V(H) a)`, so `(ofNormals Gc ends q₀^deg).normal a =
+Qcf.normal (f a)`; plumbing, no genericity/moment-curve), then lift the landed column-core to the
+**full per-edge `panelRow` equality**: for each surviving link `e=uv ∈ G.deleteEdges E(H)`,
+`(extProj V(H)).dualMap ((ofNormals Gc ends q₀^deg).panelRow ends e)` equals `Qcf`'s projected row
+over `Gc.map f`. The two pieces couple — the panelRow equality needs `q₀^deg`'s defining property to
+match the support extensors (`Pdeg.supportExtensor e = panelSupportExtensor (Qcf.normal (f u))
+(Qcf.normal (f v))`) and `Qcf.ends e = (f u, f v)` to match the selectors — so they land together.
+The annihRow functionals then coincide and `hingeRow_collapseTo_comp_extProj_eq` finishes the row
+equality. Then **U3** (extract the size-`≥ D(|sc|−1)` independent subfamily from `Qcf`'s rigidity via
+`exists_independent_panelRow_subfamily_of_rigidOn_linking_set`, transport across the per-edge
+equality) and **U4** (assemble `htransport` with `q₀ := q₀^deg`, delete it from
+`case_I_realization`, `\leanok` `lem:claim-6-4`, then the full phase-close ceremony — `CLAUDE.md`
+*When this commit closes a phase*: user-facing surfaces, `notes/MolecularConjecture.md` sync, the
+broadened blueprint re-read + `BlueprintExposition` ledger). The surrounding territory (22c+: Case
+III at `d=3` + the `d=3` assembly) can proceed in parallel — it depends on the green infra (N7b row
+sub-nodes, N7a, the device), not on `htransport`.
 
 Cross-references rather than re-derivation: `notes/Phase22-realization-design.md`
 **§1.19** (the T2b re-recon: lower-semicontinuity already green, the 4-node cut, U2 as the

@@ -728,6 +728,29 @@ theorem extProj_apply_mem {t : Set α} {a : α} (ha : a ∈ t) (S : α → Screw
   classical
   rw [extProj, LinearMap.pi_apply, if_pos ha, LinearMap.zero_apply]
 
+theorem extProj_apply_not_mem {t : Set α} {a : α} (ha : a ∉ t) (S : α → ScrewSpace k) :
+    extProj t S a = S a := by
+  classical
+  rw [extProj, LinearMap.pi_apply, if_neg ha, LinearMap.proj_apply]
+
+/-- **The exterior-column projection is invariant under the collapse relabel**
+(`lem:claim-6-4`, the U2 collapse-relabel reconciliation core; Katoh–Tanigawa 2011 §6.2, eq. (6.7),
+Phase 22b). For the collapse map `f = collapseTo r t` with the representative `r ∈ t`, the projected
+assignment reads the *same* value at a body `a` and at its collapsed image `f a`:
+`extProj t S (collapseTo r t a) = extProj t S a`. The two cases reconcile because the projection
+kills exactly the collapsed bodies: if `a ∈ t` then `f a = r ∈ t`, and both sides are `0`
+(`extProj_apply_mem`); if `a ∉ t` then `f a = a` and both sides are `S a`. This columnwise
+invariance is precisely what lets the exterior projection *reconcile* the collapse relabel of KT
+eq. (6.7) — the uncollapsed hinge row `hingeRow u v r` and the collapsed `hingeRow (f u) (f v) r`
+agree after `(extProj t).dualMap`, even though their endpoints differ on the interior block `t`. -/
+theorem extProj_apply_collapseTo {t : Set α} {r : α} (hr : r ∈ t) (S : α → ScrewSpace k) (a : α) :
+    extProj t S (Graph.collapseTo r t a) = extProj t S a := by
+  classical
+  unfold Graph.collapseTo
+  split_ifs with ha
+  · rw [extProj_apply_mem hr, extProj_apply_mem ha]
+  · rfl
+
 /-- **A rigid-block row vanishes under the exterior-column projection** (`lem:case-I-realization`
 Piece B fact 2, the row-side of KT eq. (6.3)'s top-right `0`; Phase 22a). If both endpoints `u, v`
 of a hinge lie in the rigid block `t = V(H)`, the row functional `hingeRow u v r` precomposed with
@@ -741,6 +764,30 @@ theorem hingeRow_comp_extProj_eq_zero {t : Set α} {u v : α} (hu : u ∈ t) (hv
   ext S
   rw [LinearMap.comp_apply, LinearMap.zero_apply, BodyHingeFramework.hingeRow_apply,
     extProj_apply_mem hu, extProj_apply_mem hv, sub_zero, map_zero]
+
+/-- **The exterior-column projection reconciles the collapse relabel of a hinge row**
+(`lem:claim-6-4`, the U2 collapse-relabel projected-row reproduction; Katoh–Tanigawa 2011 §6.2,
+eqs. (6.7)/(6.9), Phase 22b — the one research-shaped Case-I brick). This is the column-side of KT's
+algebraic-independence Claim 6.4: an *uncollapsed* hinge row `hingeRow u v ρ` (the surviving edge's
+row at its original endpoints) and its *collapsed* relabel `hingeRow (f u) (f v) ρ` (the same row
+after the rigid block `t = V(H)` is identified to the representative `r`) become the **same**
+functional once projected onto the exterior columns by `(extProj t).dualMap`, provided `r ∈ t`.
+
+The relabel is genuine — a surviving edge `e = uv` with `u ∈ t` reads `S u − S v` uncollapsed but
+`S r − S (f v)` collapsed — yet the exterior projection zeroes column `u ∈ t` *and* column
+`f u = r ∈ t` (`extProj_apply_collapseTo`), so the two rows read identically on the surviving
+columns. This is exactly the reconciliation §1.7's collapse-normal mismatch identified as the
+irreducible content of Claim 6.4, now isolated to a row equality across the relabel: it is what
+carries the contraction's rigid-row independence (read off `Qcf` over `Gc.map f`) back to the
+exterior-projected uncollapsed rows at the degenerate witness placement. -/
+theorem hingeRow_collapseTo_comp_extProj_eq {t : Set α} {r : α} (hr : r ∈ t) (u v : α)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (BodyHingeFramework.hingeRow (k := k) (α := α) (Graph.collapseTo r t u)
+        (Graph.collapseTo r t v) ρ).comp (extProj t)
+      = (BodyHingeFramework.hingeRow (k := k) (α := α) u v ρ).comp (extProj t) := by
+  ext S
+  rw [LinearMap.comp_apply, LinearMap.comp_apply, BodyHingeFramework.hingeRow_apply,
+    BodyHingeFramework.hingeRow_apply, extProj_apply_collapseTo hr, extProj_apply_collapseTo hr]
 
 /-- **Coordinate of `D w` as a matrix-vector product in a basis identification** (the linearity
 fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algebra). For a finite-dim
