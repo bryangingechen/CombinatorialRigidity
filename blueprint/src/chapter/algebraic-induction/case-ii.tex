@@ -1,0 +1,230 @@
+\subsection{Case II: \texorpdfstring{$k > 0$}{k > 0} splitting (1-extension)}
+\label{sec:molecular-algebraic-induction-caseII}
+
+\begin{lemma}[Case II rank-lift accounting; the $+D$ core of KT Lemma 6.8]
+  \label{lem:case-II-rank-lift}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.rankHypothesis_iff_finrank_pinnedMotions,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_iff_finrank_pinnedMotions,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotions_le_withGraph,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_le_withGraph,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.pinnedMotions_withGraph_eq,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_pinnedMotions_withGraph_eq,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hnew_of_isLink_incident,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_hnew_of_isLink_incident}
+  \leanok
+  \uses{def:rank-hypothesis, lem:rank-delete-vertex, def:framework-with-graph,
+        lem:exists-independent-panel-extensor}
+  In the codimension form of \cref{sec:molecular-rigidity-matrix},
+  re-inserting (equivalently, pinning) a body $v$ shifts the realization
+  count by exactly $D$. A framework $F$ realizes the target
+  rank at $k'$ ($\dim Z(G,p) = D + k'$, \cref{def:rank-hypothesis})
+  precisely when its body-$v$-pinned motion subspace has dimension $k'$.
+  This is the algebraic $+D$ core of the panel-hinge $1$-extension: the
+  pinned subspace is the null space of the rigidity matrix with $v$'s $D$
+  columns deleted (the smaller graph $G - v$), and $\dim(\text{pinned at
+  } v) + D = \dim Z(G,p)$ by the pin-a-body Lemma~5.1
+  (\cref{lem:rank-delete-vertex}). Assembled on the panel layer: building
+  the $1$-extension by choosing a panel normal $n$ for the re-inserted body
+  $v$ (still unhinged, so the choice does not disturb the inductive null
+  space, \cref{def:framework-with-graph}), the extended framework
+  $P[v \mapsto n]^\flat$ realizes the target rank at $k'$ exactly when the
+  splitting-off carries body-$v$-pinned motion dimension $k'$. The graph
+  step of the $1$-extension is the unconditional inclusion: re-adding $v$'s
+  two new hinge edges (passing from the splitting-off $G_v^{ab}$ up to $G$)
+  can only \emph{shrink} the body-$v$-pinned motions, so the inductive
+  realization of $G_v^{ab}$ bounds the extended framework's body-$v$-pinned
+  dimension from above (the residual cut by the two new edges is the
+  genericity-gated Claim~6.9 step). That inclusion is \emph{tight} exactly
+  when every base-$v$-pinned motion of $G_v^{ab}$ already clears the two
+  re-added $v$-incident hinge constraints $S a \in \operatorname{span}
+  C(e_a)$, $S b \in \operatorname{span} C(e_b)$ (a base-pinned motion has
+  $S v = 0$): under that hypothesis the body-$v$-pinned motions on $G$ and
+  on $G_v^{ab}$ \emph{coincide}, so the extended framework's pinned
+  dimension equals the inductive realization's and the $1$-extension lifts
+  the rank by exactly $D$. The hypothesis is the honest content of
+  Claim~6.9's general position --- supplied by placing the two new
+  supporting extensors in general position
+  (\cref{lem:exists-independent-panel-extensor}). Since the only links of
+  $G$ outside $G_v^{ab}$ are the two $v$-incident edges $v a$, $v b$, and a
+  base-pinned motion has $S v = 0$, each re-added hinge constraint
+  $S v - S w \in \operatorname{span} C(e)$ collapses to the single
+  span-membership $S w \in \operatorname{span} C(e)$ at the non-$v$
+  endpoint, reducing the tightness hypothesis to exactly the two conditions
+  $S a \in \operatorname{span} C(e_a)$, $S b \in \operatorname{span}
+  C(e_b)$ that general position achieves.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-delete-vertex, def:framework-with-graph}
+  Immediate from the pin-a-body identity
+  $\dim(\text{pinned at } v) + D = \dim Z(G,p)$
+  (\cref{lem:rank-delete-vertex}): substitute it into the definition of
+  the rank hypothesis $\dim Z(G,p) = D + k'$ and cancel the $D$ term. For
+  the panel assembly, the body-$v$-pinned motions of $P[v \mapsto n]^\flat$
+  agree with those of $P^\flat$ when $v$ is unhinged
+  (\cref{def:framework-with-graph}), so the $+D$ accounting applies to the
+  pre-choice framework's pinned dimension.
+\end{proof}
+
+\begin{lemma}[Edge-substitution bridge for splitting-off]
+  \label{lem:splitoff-edge-substitution}
+  \lean{Graph.removeVertex_le, Graph.removeVertex_le_splitOff,
+        Graph.isLink_incident_of_not_removeVertex}
+  \leanok
+  The splitting-off $G_v^{ab}$ is \emph{not} a subgraph of $G$: it deletes
+  the two $v$-incident edges $v a$, $v b$ but adds a fresh short-circuit
+  edge $e_0 \notin E(G)$ joining $a$ and $b$. The two graphs are instead an
+  \emph{edge substitution} of one another, sharing the common subgraph
+  $G - v$ (all of $G$ away from $v$): $G - v \le G$ and
+  $G - v \le G_v^{ab}$. The second inclusion holds because every edge of
+  $G - v$ is an edge of $G$, hence $\neq e_0$, so it survives into
+  $G_v^{ab}$. Conversely, every link of $G$ \emph{lost} by passing to
+  $G - v$ is incident to $v$: the re-added edges over the common lower
+  bound are exactly the $v$-incident ones, which is what lets the genericity
+  step (\cref{lem:case-II-rank-lift}) collapse each re-added hinge constraint
+  on a $v$-pinned motion to a single span membership at its non-$v$ endpoint.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Both inclusions are the definition of $\le$ on multigraphs (vertex-set
+  and link inclusion). For $G - v \le G_v^{ab}$, a link of $G - v$ is a
+  link $e\,x\,y$ of $G$ with $x, y \neq v$; since $e \in E(G)$ and
+  $e_0 \notin E(G)$ we have $e \neq e_0$, so $e$ lands in $G_v^{ab}$'s
+  $v$-avoiding branch.
+\end{proof}
+
+\begin{lemma}[Case II: splitting off a reducible vertex; KT Lemmas 6.7, 6.8]
+  \label{lem:case-II}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.isInfinitesimallyRigidOn_insert_iff,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_withNormal_withGraph_iff_finrank_pinnedMotions}
+  \leanok
+  \uses{thm:minimal-kdof-reduction, lem:reduction-step,
+        lem:rank-delete-vertex, lem:case-II-rank-lift, lem:cycle-realization,
+        lem:splitoff-edge-substitution, lem:exists-independent-panel-extensor,
+        lem:genericity-device}
+  Let $G$ be a minimal $k$-dof-graph with $k > 0$ and a reducible
+  degree-2 vertex $v$ (KT~4.6), and let $G_v^{ab}$ be the splitting-off
+  at $v$ (a smaller minimal $k$-dof-graph by \cref{lem:reduction-step}).
+  A realization of $G_v^{ab}$ at its inductive rank extends to a
+  realization of $G$ at rank $D(|V(G)|-1) - k$. This is the panel-hinge
+  analogue of Whiteley's bar-joint $1$-extension: re-inserting $v$ with
+  its two hinges lifts the rank by exactly $D$ (Lemma~6.8, via the
+  Claim~6.9 genericity argument).
+
+  Concretely, with $P$ a panel framework on $G_v^{ab}$ in which $v$ is
+  yet unhinged and $P.\mathrm{graph} \le G$, choosing a panel normal $n$
+  for $v$ and enlarging the graph to $G$ gives the extended framework
+  $(P[v \mapsto n]).\mathrm{withGraph}\,G$, which realizes the target
+  rank at $k'$ \emph{iff} the splitting-off $P$ carries body-$v$-pinned
+  dimension $k'$ --- the inductive realization lifts to $G$ with the two
+  new hinge-row blocks accounting for the $+D$
+  (\cref{lem:case-II-rank-lift}). The graph-side hypotheses are
+  genericity-free: $v$ is unhinged in $G_v^{ab}$ (true before its two new
+  edges are added) and every link of $G$ lost on passing to $G_v^{ab}$ is
+  $v$-incident (\cref{lem:splitoff-edge-substitution}). The \emph{one}
+  input from the genericity device (Phase~21b, Claim~6.9) is that each
+  base-$v$-pinned motion lands in the two new edges' panel-support spans,
+  $S a \in \operatorname{span} C(e_a)$, $S b \in \operatorname{span}
+  C(e_b)$; this is false pointwise and holds only for the general-position
+  normals the rank/dimension count selects
+  (\cref{lem:exists-independent-panel-extensor}).
+  As with Case~I, the $+D$ lift is accounted $\alpha$-independently through the
+  bridge
+  $\mathrm{isInfinitesimallyRigidOn\_insert\_iff}$: re-inserting the single
+  body $v$ (so $V(G) = \{v\} \cup V(G_v^{ab})$), the framework is rigid on
+  $V(G)$ \emph{iff} it is rigid on the splitting-off body set $V(G_v^{ab})$
+  (the inductive realization) \emph{and} every motion pins $v$'s screw to the
+  bodies it joins, $S v = S w$ for $w \in V(G_v^{ab})$. This references only
+  $V(G)$, hence is $\alpha$-independent and composes through the induction. The
+  $S v = S w$ condition is the honest geometric content of Claim~6.9's general
+  position (the span-membership the device \cref{lem:genericity-device}
+  supplies, via \cref{lem:exists-independent-panel-extensor}); the
+  $1$-extension count itself ($v$'s two hinges add $D-1$ rows, $v$'s body adds
+  one column block) is rank-side and genericity-free. The nullity-side iff is
+  retained as the $\alpha$-dependent sibling.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-delete-vertex, lem:case-II-rank-lift,
+        lem:splitoff-edge-substitution}
+  Place $G_v^{ab}$ at its inductive realization; re-insert $v$ joined to
+  $a$ and $b$ by hinges chosen generically. The rank-lift accounting
+  \cref{lem:case-II-rank-lift} (via the pin-a-body Lemma~5.1,
+  \cref{lem:rank-delete-vertex}) accounts for $v$'s screw freedoms through
+  the unhinged-$v$ panel-normal invariance, and the genericity-gated
+  tightness \cref{lem:case-II-rank-lift} (the $\ge$ half) makes the
+  $1$-extension inclusion an equality once the span-membership input
+  clears the two new $v$-incident edges (a base-pinned motion has
+  $S v = 0$, so each constraint $S v - S w \in \operatorname{span} C(e)$
+  collapses to $S w \in \operatorname{span} C(e)$ at the non-$v$
+  endpoint). Hence the extended pinned dimension equals the inductive
+  one and the rank lifts by exactly $D$, giving $D(|V|-1) - k$. The
+  span-membership input is supplied by the genericity device (Claim~6.9,
+  Phase~21b).
+\end{proof}
+
+\begin{lemma}[Case II realization: the $1$-extension produces a full-rank realization; KT Lemma 6.8]
+  \label{lem:case-II-realization}
+  \uses{def:panel-hinge-framework, lem:case-II, lem:reduction-step,
+        lem:case-II-placement-motion-side-assembly}
+  The realization motive of \cref{thm:theorem-55}
+  ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
+  $D(|V(G)|-1)$) is closed under splitting off a reducible degree-2 vertex.
+  Let $G$ be a minimal $0$-dof-graph with a reducible degree-2 vertex $v$ and
+  splitting-off $G_v^{ab}$ (a smaller minimal $0$-dof-graph,
+  \cref{lem:reduction-step}), and let $G_v^{ab}$ carry a realization at its
+  target rank. Then $G$ carries a realization at rank $D(|V(G)|-1)$,
+  discharging the Case~II premise ($\mathtt{hsplit}$) of \cref{thm:theorem-55}.
+  This is the \emph{producer} counterpart to the Case~II accounting iff
+  \cref{lem:case-II}: where that iff takes the span-membership condition
+  $\mathtt{hspan}$ ($S a \in \operatorname{span} C(e_a)$,
+  $S b \in \operatorname{span} C(e_b)$ for every base-$v$-pinned motion $S$) as
+  a hypothesis, this node must \emph{construct} the panel normal $n$ for the
+  re-inserted body $v$ on which $\mathtt{hspan}$ holds and the extended
+  framework realizes its rank. \emph{Red --- re-scoped to Phases~22--23 as KT
+  Case~III.} The project's $\mathtt{hsplit}$ is the $k=0$ reducible-vertex
+  split, so by KT Lemma~4.8(i) $G_v^{ab}$ is minimal $0$-dof and the realization
+  must reach \emph{full} rank $D(|V|-1)$. KT's actual construction (Lemma~6.8,
+  eq.~(6.12)) is a \emph{degenerate} placement: $p_1(va)=L\subset\Pi_q(a)$ a
+  $(d-2)$-hinge and \textbf{$p_1(vb)=q(ab)$} (the $vb$-hinge placed at the very
+  $e_0=ab$ hinge of $q$, so its row \emph{reproduces} the $e_0$ row of
+  $R(G_v^{ab},q)$); column ops make $R(G,p_1)$ block-triangular with
+  $R(G_v^{ab},q)$ a submatrix, giving $\mathrm{rank}\,R(G,p_1)\ge (D-1) +
+  D(|V|-2) = D(|V|-1)-1$ --- \emph{one row short}. For $k=0$ the missing row is
+  the Case~III redundant-edge row (KT Lemma~6.10/6.13), so this producer
+  \emph{is} Case~III, deferred with it to Phases~22--23. The reusable green row
+  infra (the device-closure glue \cref{lem:realization-of-independent-rows} and
+  the sub-nodes N7b-0/1/2/3) feeds it there. The earlier motion-side path
+  (\cref{lem:case-II-placement-motion-side-assembly}, M3) was \emph{not} KT's
+  argument --- it assumes a $G$-motion is constant on $V(G)\setminus\{v\}$, which
+  the non-rigid $G-v$ does not force --- and is superseded; the row-side
+  $e_0$-recovery is supplied by the eq.~(6.12) placement, not by an
+  ($e_0$-free) block. Full record: \texttt{notes/Phase21b.md} \emph{Finding A/B}.
+  Against the relativized motive (\cref{def:rank-hypothesis}) the inductive
+  hypothesis ``$G_v^{ab}$ realizes its rank'' is satisfiable (it spans its own
+  vertices), so the producer is well-posed; it is the shallower sibling of the
+  Case~I producer (one re-inserted body, $+(D-1)$ rows, KT~(6.12)) rather than
+  a full splice. The producer needs
+  $v$'s reducible-degree-2 data --- the two incident edges $e_a, e_b$, their links
+  $G.\mathrm{IsLink}\,e_a\,v\,a$, $G.\mathrm{IsLink}\,e_b\,v\,b$, and the closure
+  that they are $v$'s only incident edges --- to re-attach $v$ in $G$. The
+  $\mathtt{hsplit}$ premise of \cref{thm:theorem-55} (and of
+  \cref{thm:minimal-kdof-reduction} it forwards) was strengthened to expose this
+  data (it was already in scope where \cref{thm:minimal-kdof-reduction} dispatches
+  $\mathtt{hsplit}$, via \cref{lem:reducible-vertex}), so the producer can consume
+  it; without it the producer is under-determined ($a, b$ alone do not name $v$'s
+  edges).
+\end{lemma}
+\begin{proof}
+  \uses{lem:case-II, lem:case-II-placement-motion-side-assembly}
+  The motion-side assembly \cref{lem:case-II-placement-motion-side-assembly} (M3)
+  supplies, from the inductive realization of $G_v^{ab}$ (rigid on
+  $V(G)\setminus\{v\}$), a realization of $G$ rigid on $V(G)$: re-insert $v$ joined
+  to $a, b$ by hinges whose support extensors are linearly independent
+  (\cref{lem:exists-independent-panel-extensor}, $m = 2$), so a motion constant on
+  $V(G)\setminus\{v\}$ is pinned at $v$ (\cref{lem:case-II-placement-pin-vertex}),
+  and re-adding $G$'s remaining edges keeps it rigid
+  (\cref{lem:motions-mono-of-graph-le}). That is the full target rank
+  $D(|V(G)|-1)$.
+\end{proof}
+

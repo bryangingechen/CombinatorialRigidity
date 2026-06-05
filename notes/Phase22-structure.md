@@ -48,9 +48,16 @@ deleted; aggregator → `…AlgebraicInduction.CaseI`. Build green + warning-cle
 | `GenericityDevice.lean` | 1568 | `lem:genericity-device`: `exists_good_realization` engine, splice + rank-polynomial producers |
 | `CaseI.lean` | 1428 | couple/block-triangular producers, `extProj`, `case_I_realization` (green-modulo `lem:claim-6-4`) ← **22b lands here** |
 
-### B — `algebraic-induction.tex` split ☐ (next)
+### B — `algebraic-induction.tex` split ✓ (this commit)
 
-### C — `Induction.lean` split ☐
+Thin parent `algebraic-induction.tex` (99 lines: `\section` + preamble + 5 `\input`s) keeps the
+single logical chapter (dep-graph grouping + all internal `\cref`s intact; `main.tex` unchanged).
+Sub-files under `chapter/algebraic-induction/`: `panel-layer.tex` (335), `case-i.tex` (595),
+`case-ii.tex` (230), `genericity-and-count.tex` (644), `case-iii.tex` (20). `blueprint/verify.sh`
+green (`inv bp` + `inv web` + `checkdecls` all pass — pins resolve, no dangling `\uses`/`\cref`).
+Also fixed `intro.tex`'s two Phase-21/21b file-path references to the new subdir.
+
+### C — `Induction.lean` split ☐ (next)
 
 ### D — pass close (PERFORMANCE.md executed-split record, ROADMAP status flip) ☐
 

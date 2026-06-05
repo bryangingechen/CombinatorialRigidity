@@ -1,0 +1,335 @@
+\subsection{The panel layer}
+\label{sec:molecular-algebraic-induction-panel}
+
+Katoh--Tanigawa's \emph{panel-hinge} framework is a
+\emph{hinge-coplanar} body-hinge framework: at each body all incident
+hinges lie in a common hyperplane \cite[p.\,647]{katohTanigawa2011}. The
+molecular conjecture's content is that this coplanarity can be met
+without losing rigidity; the Phase-18 body-hinge framework
+(\cref{def:hinge-constraint}) carries free hinges with no coplanarity,
+so the realization-existence nodes below need a \emph{panel layer} on
+top. We take the panel-data form: a panel realization assigns each body
+$v$ a hyperplane normal $n_v \in \R^{k+2}$, and the hinge at an edge
+$e = uv$ is the codimension-2 intersection $\mathrm{panel}(u) \cap
+\mathrm{panel}(v)$. Its supporting $k$-extensor --- the screw-space
+element of \cref{def:hinge-constraint} the rigidity matrix constrains ---
+is the Grassmann--Cayley meet of the two panels, equivalently the
+complement iso of the join of the two normals. Coplanarity (both hinges
+at $v$ lie in $\mathrm{panel}(v)$ by construction) and transversality
+both live in the extensor algebra, so no affine-subspace-intersection
+plumbing is needed.
+
+\begin{definition}[Panel support extensor]
+  \label{def:panel-support-extensor}
+  \lean{CombinatorialRigidity.Molecular.panelSupportExtensor,
+        CombinatorialRigidity.Molecular.normalsJoin,
+        CombinatorialRigidity.Molecular.panelSupportExtensor_ne_zero_iff}
+  \leanok
+  \uses{def:join, def:meet-complement-iso, def:hinge-constraint}
+  For two panel normals $n_1, n_2 \in \R^{k+2}$, the \emph{panel support
+  extensor} is the supporting $k$-extensor $C(p(e)) \in \Lambda^k
+  \R^{k+2}$ of the codimension-2 intersection of the two panels, given as
+  the complement iso (\cref{def:meet-complement-iso}) of the grade-2 join
+  $n_1 \wedge n_2 \in \Lambda^2 \R^{k+2}$ (\cref{def:join}). Since
+  $k+2-2 = k$ is the screw-space grade, the result lands in the screw
+  space $\Lambda^k \R^{k+2}$ of \cref{def:hinge-constraint} and feeds the
+  hinge constraint verbatim. It is nonzero exactly when the two normals
+  are linearly independent --- the algebraic form of the two panels
+  meeting transversally in a genuine hinge --- the only general-position
+  condition the panel layer needs.
+\end{definition}
+
+\begin{definition}[Panel-hinge framework and its body-hinge interpretation]
+  \label{def:panel-hinge-framework}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.IsHingeCoplanar,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.isHingeCoplanar_toBodyHinge,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.IsGeneralPosition,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.supportExtensor_ne_zero_of_isGeneralPosition,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_withMomentNormals,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.isGeneralPosition_ofParam}
+  \leanok
+  \uses{def:panel-support-extensor, def:hinge-constraint}
+  A \emph{panel-hinge framework} is a multigraph $G = (V,E)$ together with a
+  per-body panel normal $n_v \in \R^{k+2}$ (the pole of body $v$'s
+  hyperplane $\mathrm{panel}(v)$). The hinge at an edge $e = uv$ is the
+  codimension-2 intersection $\mathrm{panel}(u) \cap \mathrm{panel}(v)$,
+  with supporting $k$-extensor the meet $C(p(e)) =
+  \mathrm{panelSupportExtensor}(n_u, n_v)$
+  (\cref{def:panel-support-extensor}). Its \emph{body-hinge interpretation}
+  is the body-hinge framework (\cref{def:hinge-constraint}) on $G$ carrying
+  exactly these supporting extensors, so the entire rigidity-matrix rank
+  theory of \cref{sec:molecular-rigidity-matrix} applies verbatim. Every
+  hinge incident to $v$ has $n_v$ as a join factor, hence lies in the single
+  panel $\mathrm{panel}(v)$: the framework is \emph{hinge-coplanar} by
+  construction. A body-hinge framework is hinge-coplanar
+  ($\mathrm{IsHingeCoplanar}$) when it arises this way; this is the
+  molecular-model constraint Katoh--Tanigawa's panel-hinge frameworks carry
+  beyond the free-hinge body-hinge model, and the conjecture's content is
+  that it can be met without dropping rigidity. The normals are in
+  \emph{general position} ($\mathrm{IsGeneralPosition}$) when any two normals
+  at distinct bodies are linearly independent; then every hinge joining two
+  distinct bodies has a nonzero supporting extensor
+  ($\mathrm{supportExtensor\_ne\_zero\_of\_isGeneralPosition}$) --- the
+  transversality the rigid-block forest hinges feed into the block-triangular
+  gluing of \cref{lem:case-I}. An explicit, dimension-free general-position
+  assignment exists for any number of bodies: setting each body's normal to a
+  point $(1, t, t^2, \dots, t^{k+1})$ on the moment curve at a distinct
+  parameter $t$ makes any two normals at distinct bodies independent (the
+  $2 \times 2$ Vandermonde minor has determinant $t' - t \neq 0$), so an
+  injective real assignment of parameters yields
+  $\mathrm{IsGeneralPosition}$
+  ($\mathrm{isGeneralPosition\_withMomentNormals}$, and from a bare graph and
+  endpoint selector directly via $\mathrm{isGeneralPosition\_ofParam}$ --- the
+  realization-side entry point for the Case-I assembly)
+  --- where standard-basis normals would cover only $|V| \le k+2$.
+\end{definition}
+
+\subsection{The generic-rank reconciliation (Proposition 1.1, analytic half)}
+\label{sec:molecular-algebraic-induction-prop11}
+
+The matroidal half of Tay--Whiteley's Proposition~1.1 --- the bridge
+$\operatorname{def}(\tilde G) = \operatorname{corank} M(\tilde G)$ ---
+landed green in Phase~19 (\cref{thm:def-eq-corank}). The analytic half
+relocated forward to this phase: it wires the rigidity-matrix rank
+$R(G,p)$ of \cref{sec:molecular-rigidity-matrix} to the matroid corank,
+and depends on the generic-rank argument (Claim~6.4) that drives the
+whole induction.
+
+\begin{proposition}[Generic rank equals $D(|V|-1) - \operatorname{def}$; KT Proposition 1.1, analytic half]
+  \label{prop:rigidity-matrix-prop11}
+  \lean{CombinatorialRigidity.Molecular.rigidityMatrix_prop11}
+  \uses{def:rigidity-matrix, def:D-deficiency, thm:def-eq-corank, def:dof-generic, lem:genericity-device}
+  For a generic panel-hinge realization $(G,p)$,
+  \[
+    \operatorname{rank} R(G,p) = D(|V|-1) - \operatorname{def}(\tilde G).
+  \]
+  Equivalently $G$ has a rigid panel-hinge realization iff
+  $\tilde G = (D-1)\cdot G$ contains $D$ edge-disjoint spanning trees,
+  reconciling the honest rank form of
+  \cref{sec:molecular-rigidity-matrix} with the body-hinge existence
+  form (\cref{thm:body-hinge-tay}) of Phase~16. This is
+  Jackson--Jord\'an's Theorem~6.1, geometric side
+  \cite{jacksonJordan2009}.
+\end{proposition}
+\begin{proof}
+  \uses{thm:theorem-55, lem:trivial-motions-rank-bound,
+        lem:motions-mono-of-graph-le}
+  The deficiency is the corank of $M(\tilde G)$
+  (\cref{thm:def-eq-corank}), so the claim is that a generic realization
+  attains the maximum rank $D(|V|-1) - \operatorname{corank}$. The target
+  equality is the realization hypothesis \cref{def:rank-hypothesis} at
+  $k' = \operatorname{def}$; it is pinned by two inequalities. The
+  genericity-free upper bound $\operatorname{rank} R(G,p) \le D(|V|-1) -
+  \operatorname{def}$ is the codimension form
+  \cref{lem:trivial-motions-rank-bound} together with the deficiency count: a
+  partition $P$ attaining $\operatorname{def}(\tilde G)$ contributes
+  $\operatorname{def}$ independent motions beyond the $D$ trivial ones --- this
+  holds for \emph{every} realization, no genericity. The reverse (generic
+  max-rank) bound is exactly Theorem~5.5 (\cref{thm:theorem-55}), pushed from
+  minimal $k$-dof-graphs to all multigraphs by deleting down to a minimal
+  $k$-dof spanning subgraph and observing that re-adding edges only grows the
+  rank (\cref{lem:motions-mono-of-graph-le}); the Claim~6.4 generic-rank
+  argument selects the point attaining it. \emph{Red:} it depends on
+  \cref{thm:theorem-55}, whose $V(G)$-relative motive
+  (\cref{def:rank-hypothesis}) it inherits (here $V(G) = V_\alpha$, since the
+  proposition is applied to a spanning $G$, so the relative form coincides with
+  the absolute $\dim Z = D + \operatorname{def}$). The genericity-free upper
+  bound $\mathtt{hub}$ remains a distinct Phase-19-partition obligation, carried
+  as an explicit hypothesis.
+\end{proof}
+
+\subsection{The induction skeleton and base case}
+\label{sec:molecular-algebraic-induction-base}
+
+\begin{definition}[Generic-rank hypothesis (6.1), $V(G)$-relative]
+  \label{def:rank-hypothesis}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.IsInfinitesimallyRigidOn,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.HasFullRankRealization,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.RankHypothesis}
+  \leanok
+  \uses{def:rigidity-matrix, def:k-dof}
+  For a minimal $k$-dof-graph $G$ with $|V| \ge 2$, the
+  \emph{realization hypothesis} $(6.1)$ asserts the existence of a
+  panel-hinge realization $(G,p)$ with
+  $\operatorname{rank} R(G,p) = D(|V|-1) - k$, and --- when $G$ is simple
+  --- with no two hinges parallel. This is the predicate Theorem~5.5
+  establishes by induction on $|V|$, where $|V| = |V(G)|$ is the number of
+  bodies $G$ actually carries.
+
+  \emph{The rank must be read $V(G)$-relative.} The rigidity rows of
+  $R(G,p)$ come only from the edges of $G$, so $\operatorname{rank} R(G,p) =
+  \dim \operatorname{span}(\text{rigidity rows})$ depends only on $V(G)$ ---
+  it is blind to any ambient bodies not in $V(G)$. The target form the Lean
+  carries is therefore the \emph{rank} equality
+  \[
+    \dim \operatorname{span}\bigl(\text{rigidity rows of } (G,p)\bigr)
+      \;=\; D\,(|V(G)| - 1) - k,
+  \]
+  equivalently ``every infinitesimal motion is constant on $V(G)$'' at
+  $k = 0$. This is \emph{not} the same as the null-space equality
+  $\dim Z(G,p) = D + k$ over the whole screw-assignment space
+  $\R^{D|V_\alpha|}$ of the ambient body type: by rank--nullity
+  $\operatorname{rank} R = D|V_\alpha| - \dim Z$, so the null-space form
+  reads $\dim Z(G,p) = D\,(|V_\alpha| - |V(G)| + 1) + k$, which coincides
+  with $\dim Z = D + k$ only when $G$ spans the ambient type
+  ($V(G) = V_\alpha$). The induction reduces to non-spanning subgraphs, so
+  the absolute null-space form is unsatisfiable for them (see the chapter
+  status); the rank form above is the $\alpha$-independent motive the
+  realization layer is re-stated against.
+\end{definition}
+
+\begin{theorem}[Realization at the target rank; KT Theorem 5.5]
+  \label{thm:theorem-55}
+  \lean{CombinatorialRigidity.Molecular.theorem_55}
+  \uses{def:rank-hypothesis, thm:minimal-kdof-reduction, lem:case-I,
+        lem:case-II, lem:case-I-realization, lem:case-II-realization,
+        lem:case-III, lem:theorem-55-base}
+  Every minimal $0$-dof-graph $G$ with $|V| \ge 2$ has a panel-hinge
+  realization $(G,p)$ with $\operatorname{rank} R(G,p) = D(|V(G)|-1)$ ---
+  an infinitesimally rigid (on $V(G)$) panel-hinge framework
+  (\cref{def:rank-hypothesis}, at $k' = 0$). (The general minimal $k$-dof
+  statement is recovered the same way; the molecular conjecture needs only
+  the $0$-dof case.)
+\end{theorem}
+\begin{proof}
+  \uses{thm:minimal-kdof-reduction, lem:theorem-55-base, lem:case-I,
+        lem:case-II, lem:case-I-realization, lem:case-II-realization,
+        lem:case-III}
+  Induction on $|V(G)|$, driven by the combinatorial reduction
+  Theorem~4.9 (\cref{thm:minimal-kdof-reduction}): run its well-founded
+  induction principle against the realization motive ``$G$ carries a
+  panel realization at rank $D(|V(G)|-1)$'' (\cref{def:rank-hypothesis}).
+  Because the motive is read $V(G)$-relative it composes: the inductive
+  subgraphs carry fewer bodies, and each step's target rank is measured
+  against its own $|V(\cdot)|$, unaffected by the ambient body type. The
+  base case $|V(G)| = 2$ is \cref{lem:theorem-55-base}. The inductive step
+  splits three ways on the reduction dichotomy: Case~I (a proper rigid
+  subgraph, premise $\mathtt{hcontract}$, produced by
+  \cref{lem:case-I-realization}), Case~II (splitting off a reducible
+  degree-2 vertex, premise $\mathtt{hsplit}$, produced by
+  \cref{lem:case-II-realization}), and Case~III (no proper rigid subgraph,
+  premise $\mathtt{hbase}$/the no-rigid-subgraph branch, deferred to
+  Phases~22--23, \cref{lem:case-III}).
+
+  The well-founded recursion itself is a one-line application of
+  \cref{thm:minimal-kdof-reduction} taking the three case-producers as
+  premises; the genericity-free content is the recursion. The motive
+  $\mathrm{HasFullRankRealization}$ carries the $V(G)$-relative form
+  $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ (\cref{def:rank-hypothesis}), and
+  the recursion compiles motive-agnostically against it. The node stays
+  \emph{red} because not all three case-producers it depends on are built:
+  Case~I (\cref{lem:case-I-realization}) is now green-modulo KT Claim~6.4
+  (\cref{lem:claim-6-4}, deferred to Phase~22b), via the block-triangular
+  row-addition over one common framework; what remains red is
+  \cref{lem:case-II-realization} and Case~III. The device
+  (\cref{lem:genericity-device}) is green and lifts an attained rank to a
+  generic point, but those Case~II/III placements themselves are still to be
+  built.
+\end{proof}
+
+\begin{lemma}[Theorem 5.5 base case ($|V(G)| = 2$)]
+  \label{lem:theorem-55-base}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.theorem_55_base}
+  \leanok
+  \uses{def:rank-hypothesis, lem:rank-parallel-full}
+  The two-vertex double edge has a panel-hinge realization of rank
+  $D(|V(G)|-1) - k = D - k$. For the minimal $0$-dof case (the double edge,
+  $k = 0$) this is the full rank $D$, attained by two non-parallel hinges
+  via the parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full}).
+  At $k = 0$, in the $V(G)$-relative motive (\cref{def:rank-hypothesis}),
+  the conclusion is exactly ``every infinitesimal motion is constant on the
+  two bodies $V(G) = \{u, v\}$'' ($\mathrm{IsInfinitesimallyRigidOn}\,\{u,v\}$).
+  The prior Lean required the constancy to hold over the \emph{whole} ambient
+  body type (a hypothesis $\forall w,\ w = u \lor w = v$, i.e.\ ``$\alpha =
+  \{u,v\}$''), the absolute-motive artefact; against the relativized motive the
+  constancy is only required on $V(G)$, so that ambient hypothesis is
+  dropped and the base case holds for any ambient type.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:rank-parallel-full}
+  Two bodies joined by hinges with linearly independent supporting
+  extensors realize the full screw-difference constraint: the
+  parallel-hinges-full Lemma~5.3 (\cref{lem:rank-parallel-full}) forces
+  $S(u) = S(v)$ for every infinitesimal motion $S$. That is exactly
+  constancy on $V(G) = \{u, v\}$, so the rank of the two hinge-row blocks is
+  the full $D = D(2-1)$ and the $V(G)$-relative motive holds at $k = 0$. No
+  condition on bodies outside $\{u, v\}$ is needed.
+\end{proof}
+
+\subsection{The framework-construction op}
+\label{sec:molecular-algebraic-induction-withgraph}
+
+Both inductive cases build a realization of $G$ from a realization of a
+\emph{different} graph: Case~I from the contraction $G/E(H)$, Case~II
+from the splitting-off $G_v^{ab}$. The shared, citation-free primitive
+both need is the ability to keep the hinge assignment fixed while
+changing the underlying multigraph --- the supporting extensors $C(p(e))$
+and hinge-row blocks depend only on the hinge data, not on which edges
+$G$ carries. The one fact this phase needs from the op is the
+graph-monotonicity of the motion space: deleting edges (passing to a
+subgraph) can only enlarge the null space $Z(G,p)$, the direction
+Cases~I and~II travel toward the smaller inductive graph.
+
+\begin{definition}[Framework on a new graph]
+  \label{def:framework-with-graph}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.withGraph,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.withGraph,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withGraph,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.withNormal,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_supportExtensor_of_ne,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_infinitesimalMotions_eq,
+        CombinatorialRigidity.Molecular.PanelHingeFramework.toBodyHinge_withNormal_pinnedMotions_eq}
+  \leanok
+  \uses{def:rigidity-matrix, def:panel-hinge-framework}
+  For a body-hinge framework $F = (G, p)$ and any multigraph $G'$ on the
+  same bodies, $F[G']$ is the framework with underlying multigraph $G'$
+  and the same hinge assignment $p$. Every supporting extensor $C(p(e))$,
+  hinge-row block, and per-edge constraint is untouched; only the set of
+  edges imposing a constraint changes. The panel layer carries the same
+  operation on a panel-hinge framework $P$ --- swap the multigraph, keep
+  the per-body panel normals and endpoint selector --- and the two commute
+  with the body-hinge interpretation, $(P[G'])^\flat = (P^\flat)[G']$, so
+  the graph-monotonicity and block-pin rank facts below apply verbatim to a
+  panel realization re-glued onto $G$, with coplanarity preserved (the
+  normals are unchanged). Case~II's $1$-extension additionally re-inserts a
+  body $v$ with a \emph{chosen} panel: the per-body variant $P[v \mapsto n]$
+  overrides only $v$'s panel normal, leaving the multigraph, endpoint
+  selector, and every other normal fixed, so each hinge whose endpoints
+  avoid $v$ keeps its supporting extensor and the inductive realization of
+  the splitting-off $G_v^{ab}$ is untouched away from $v$. In particular,
+  when $v$ is still unhinged (no edge of $G$ has $v$ as an endpoint, as in
+  $G_v^{ab}$ before $v$'s two new edges are added), the choice of $v$'s
+  panel normal changes neither the null space $Z(G,p)$ nor any
+  body-$w$-pinned motion subspace, so the inductive count is preserved
+  through the choice.
+\end{definition}
+
+\begin{lemma}[Edge deletion enlarges the motion space]
+  \label{lem:motions-mono-of-graph-le}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.infinitesimalMotions_le_withGraph_of_le,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.finrank_infinitesimalMotions_le_of_graph_le}
+  \leanok
+  \uses{def:framework-with-graph}
+  If $G' \le G$ then $Z(G,p) \subseteq Z(G', p)$, equivalently
+  $\dim Z(G,p) \le \dim Z(G', p)$ --- i.e.
+  $\operatorname{rank} R(G', p) \le \operatorname{rank} R(G, p)$. A
+  supergraph imposes more hinge constraints, so a motion of $G$ is a
+  fortiori a motion of any subgraph $G'$. This is the
+  ``re-adding edges only grows the rank'' monotonicity that lifts a
+  realization of a minimal $k$-dof spanning subgraph to one of the whole
+  multigraph (the step \cref{prop:rigidity-matrix-prop11} uses), and the
+  companion to the fixed-graph span-monotonicity Lemma~5.2.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{def:framework-with-graph}
+  Each link of $G'$ is a link of $G$ (\texttt{Graph.IsLink.mono}), and
+  the matching supporting extensors agree, so every infinitesimal motion
+  of $G$ meets every constraint of $G'$: $Z(G,p) \subseteq Z(G', p)$.
+  Taking dimensions (\texttt{Submodule.finrank\_mono}) gives the rank
+  form.
+\end{proof}
+
