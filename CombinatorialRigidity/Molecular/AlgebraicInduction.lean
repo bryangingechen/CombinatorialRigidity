@@ -217,6 +217,24 @@ theorem panelSupportExtensor_ne_zero_iff (n₁ n₂ : Fin (k + 2) → ℝ) :
   rw [panelSupportExtensor, ← normalsJoin_ne_zero_iff]
   exact map_ne_zero_iff _ (complementIso (by omega : 2 ≤ k + 2)).injective
 
+/-- **Swapping the two normals negates the panel support extensor** (`def:panel-support-extensor`,
+the anti-symmetry of the grade-2 join): `panelSupportExtensor n₂ n₁ = -panelSupportExtensor n₁ n₂`.
+The support extensor is `complementIso (normalsJoin n₁ n₂)` with `normalsJoin n₁ n₂ =
+exteriorPower.ιMulti ℝ 2 ![n₁, n₂]` *alternating* — swapping the two columns of `![n₁, n₂]` negates
+the wedge (`AlternatingMap.map_swap`) — so the fixed linear image `complementIso` carries the sign
+through. The hinge constraint is membership in `span {supportExtensor e}`, unchanged by this sign,
+which is why an edge's two endpoints may be recorded in either order without affecting the motion
+space (`PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap`). -/
+theorem panelSupportExtensor_swap (n₁ n₂ : Fin (k + 2) → ℝ) :
+    panelSupportExtensor n₂ n₁ = -panelSupportExtensor (k := k) n₁ n₂ := by
+  have hjoin : normalsJoin n₂ n₁ = -normalsJoin (k := k) n₁ n₂ := by
+    rw [normalsJoin, normalsJoin]
+    have hswap : (![n₁, n₂] : Fin 2 → Fin (k + 2) → ℝ) ∘ Equiv.swap 0 1 = ![n₂, n₁] := by
+      funext i; fin_cases i <;> simp
+    rw [← hswap, (exteriorPower.ιMulti ℝ 2).map_swap (v := ![n₁, n₂]) (Fin.zero_ne_one)]
+  rw [panelSupportExtensor, panelSupportExtensor, hjoin]
+  exact map_neg _ _
+
 /-- **A panel support extensor family factors through the complement iso** (`def:panel-support-
 extensor`): the family `i ↦ panelSupportExtensor (n₁ i) (n₂ i)` is `complementIso` applied to the
 family of grade-2 joins `i ↦ normalsJoin (n₁ i) (n₂ i)`. Definitional, unfolding
@@ -1029,6 +1047,29 @@ theorem infinitesimalMotions_eq_of_isLink_supportExtensor (F F' : BodyHingeFrame
     exact hS e u v (hgraph ▸ he)
   · intro S hS e u v he
     rw [hingeConstraint, ← hext e u v he]
+    exact hS e u v (hgraph ▸ he)
+
+/-- **The motion space depends only on the span of the supporting extensors of the linking edges**
+(`lem:motions-mono-of-graph-le`, span form): the span-keyed sibling of
+`infinitesimalMotions_eq_of_isLink_supportExtensor`. Two body-hinge frameworks `F`, `F'` on the
+*same* multigraph whose supporting extensors *span the same line* at every linking edge
+(`Submodule.span ℝ {F'.supportExtensor e} = Submodule.span ℝ {F.supportExtensor e}`) have the same
+null space. The hinge constraint is membership in `span {supportExtensor e}` (`hingeConstraint`,
+`IsInfinitesimalMotion`), so only the *span* — not the extensor itself — enters the motion space.
+This is strictly weaker than the extensor-equality form and is what an *anti-symmetric* extensor
+change (an endpoint swap, `panelSupportExtensor_swap`, where the extensor flips sign but its span is
+unchanged) needs: `span {−x} = span {x}`. -/
+theorem infinitesimalMotions_eq_of_isLink_span_supportExtensor (F F' : BodyHingeFramework k α β)
+    (hgraph : F'.graph = F.graph)
+    (hspan : ∀ e u v, F.graph.IsLink e u v →
+      Submodule.span ℝ {F'.supportExtensor e} = Submodule.span ℝ {F.supportExtensor e}) :
+    F.infinitesimalMotions = F'.infinitesimalMotions := by
+  apply le_antisymm
+  · intro S hS e u v he
+    rw [hingeConstraint, hspan e u v (hgraph ▸ he)]
+    exact hS e u v (hgraph ▸ he)
+  · intro S hS e u v he
+    rw [hingeConstraint, ← hspan e u v he]
     exact hS e u v (hgraph ▸ he)
 
 /-- **Deleting edges enlarges the motion space** (`lem:motions-mono-of-graph-le`, `withGraph`
@@ -3585,6 +3626,47 @@ theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial
   refine F.isInfinitesimallyRigidOn_vertexSet_of_finrank_le (by rw [hG]; exact hne) ?_
   rw [hG, Nat.mul_succ]
   omega
+
+/-- **Swapping a hinge's two endpoints leaves the panel framework's motion space unchanged**
+(`lem:case-I-splice-placement` infra, the `ends`-selector independence of leg rigidity;
+Katoh–Tanigawa 2011 §6.2, Phase 22). For two endpoint selectors `ends`, `ends'` that record the
+*same* unordered link of every edge of `G` (each `ends' e` is `ends e` or its swap, `hswap`), the
+free-normal panel frameworks `ofNormals G ends q` and `ofNormals G ends' q` on the *same* normal
+assignment `q` have the same null space (`infinitesimalMotions` of the two `toBodyHinge`
+interpretations agree).
+
+The motion space depends on the endpoint selector only through the support extensors of the
+*linking* edges (`infinitesimalMotions_eq_of_isLink_supportExtensor`), and the support extensor
+`panelSupportExtensor (q u) (q v) = complementIso (normalsJoin (q u) (q v))` is *anti-symmetric* in
+its two normals (`panelSupportExtensor_swap`: `normalsJoin` is the alternating `ιMulti ℝ 2 ![·,·]`,
+so swapping the endpoints negates it). The hinge constraint is membership in
+`span {supportExtensor e}`, which is unchanged by negation, so swapping an edge's two endpoints
+leaves every hinge constraint — hence the whole motion space — fixed.
+
+This is the first decomposable brick of the Case-I shared-seed coupling
+(`lem:case-I-splice-placement`, red): it re-expresses one inductive leg's rigidity at its *own*
+endpoint selector `ends_H` (the form its `HasGenericFullRankRealization` IH supplies) at the
+*parent's* endpoint selector `ends` (the form the splice
+`hasFullRankRealization_of_splice_ofNormals` consumes). For an edge of the leg, `ends_H e` and
+`ends e` record the same `IsLink`, hence agree up
+to swap (`IsLink.left_eq_or_eq`), so the leg's rigidity is the same at both selectors — the
+recon-surfaced `ends`-alignment obstruction, dissolved on the *linking* edges. -/
+theorem PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
+    (G : Graph α β) (ends ends' : β → α × α) (q : α × Fin (k + 2) → ℝ)
+    (hswap : ∀ e u v, G.IsLink e u v →
+      ((ends' e).1 = (ends e).1 ∧ (ends' e).2 = (ends e).2) ∨
+      ((ends' e).1 = (ends e).2 ∧ (ends' e).2 = (ends e).1)) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions =
+      (PanelHingeFramework.ofNormals G ends' q).toBodyHinge.infinitesimalMotions := by
+  refine BodyHingeFramework.infinitesimalMotions_eq_of_isLink_span_supportExtensor _ _ rfl ?_
+  intro e u v he
+  -- The two support extensors agree up to a sign (anti-symmetry of `panelSupportExtensor`), so
+  -- their spans (the lines the hinge constraints reference) coincide.
+  simp only [PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.ofNormals_normal, PanelHingeFramework.ofNormals_ends]
+  rcases hswap e u v he with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · rw [h1, h2]
+  · rw [h1, h2, panelSupportExtensor_swap, ← Set.neg_singleton, Submodule.span_neg]
 
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)

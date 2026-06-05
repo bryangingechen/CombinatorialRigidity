@@ -21,8 +21,30 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
+**N6b recon: the simple Case-I coupling is NOT the clean "assembly" the prior hand-off projected —
+the per-leg rank-polynomial route is blocked by the `hends`-over-all-`β` requirement; first
+decomposable brick GREEN** (this commit; `PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap`
++ its two infra lemmas `panelSupportExtensor_swap` (anti-symmetry of the panel support extensor) and
+`BodyHingeFramework.infinitesimalMotions_eq_of_isLink_span_supportExtensor` (the span-keyed sibling of
+`…_eq_of_isLink_supportExtensor`), `AlgebraicInduction.lean`, all axiom-clean, no `\leanok` flip — infra
+below the still-red Case-I nodes). **The recon finding** (`DESIGN.md` *Constructibility recon …*): the
+hand-off's "N6b = multiply the two legs' rank polynomials × the (G2) factor, take a shared non-root,
+splice" plan does *not* fall out — `exists_rankPolynomial_of_rigidOn GH ends …` (and the whole
+`panelRow`/`span_panelRow_eq_rigidityRows` chain) needs `hends : ∀ e : β, GH.IsLink e …` (every edge
+label of the realized graph must link, so the panel rows span *all* rigidity rows), which a
+*proper-subgraph* leg `GH ≤ G` does **not** satisfy, and the `IsLink` subgraph direction is
+`GH ≤ G → GH.IsLink → G.IsLink` (supergraph), not the reverse — so a leg's `hends` is not derivable
+from the parent's. The type-level plan was blind to the *quantifier domain* of the brick's hypotheses.
+**First decomposable brick toward the leg-restricted route:** `infinitesimalMotions_ofNormals_eq_of_ends_swap`
+— a leg's rigidity is invariant under swapping an edge's two endpoints (the support extensor flips sign,
+`panelSupportExtensor_swap`, but the hinge constraint references only its *span*, so the span-keyed
+`…_span_supportExtensor` brick closes it), which begins re-expressing one inductive leg's rigidity at its
+*own* `ends_H` (the IH form) at the *parent's* `ends` (the splice form). **The N6b coupling itself stays
+red** (no `sorry` committed — the producer is not landed; only the decomposable brick is). The substantive
+Lean state below (N4/N5/N6a/two-motive split/(G2)) is unchanged. See *Decisions* / *Blockers* / *Hand-off*.
+
 **(G2) general-position `MvPolynomial` factor GREEN — the bounded analytic brick the Case-I coupling
-was missing** (this commit; `PanelHingeFramework.exists_generalPosition_polynomial` + the two helper
+was missing** (prior commit; `PanelHingeFramework.exists_generalPosition_polynomial` + the two helper
 bricks `pair_linearIndependent_of_leading_minor_ne_zero` + `pairLeadingMinorPoly` /
 `eval_pairLeadingMinorPoly`, `AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below
 the still-red Case-I nodes). The design build-order's node after the two-motive split
@@ -301,6 +323,19 @@ N5 + N6.
     coordinate-level generalization of `momentCurve_pair_linearIndependent`) ⟹ GP. Nonzero witnessed:
     the moment-curve seed makes each factor the Vandermonde det `param b − param a ≠ 0`. **Closes gap
     (G2).** Gates N6b/N6c (the triple-product assembly + green splice).
+  - [ ] **N6b/N6c** simple Case I (KT Lemma 6.3/6.5) — the shared-seed coupling. **RED; recon (this
+    commit) found it is NOT a clean assembly of the green bricks.** The hand-off's plan (multiply the
+    two legs' rank polynomials `exists_rankPolynomial_of_rigidOn` × the (G2) factor → shared non-root →
+    splice) does **not** fall out: `exists_rankPolynomial_of_rigidOn GH ends …` (and the whole
+    `panelRow`/`span_panelRow_eq_rigidityRows` chain) needs `hends : ∀ e : β, GH.IsLink e …` (every edge
+    label of the realized graph must link), which a *proper-subgraph* leg `GH ≤ G` does not satisfy;
+    the `IsLink` subgraph direction is `GH ≤ G → GH.IsLink → G.IsLink` (supergraph), so a leg's `hends`
+    is not derivable from the parent's. Needs a *leg-restricted* rank polynomial — the genuine remaining
+    content of `lem:case-I-splice-placement`. **First decomposable brick GREEN (this commit):**
+    `infinitesimalMotions_ofNormals_eq_of_ends_swap` — a leg's rigidity is invariant under swapping an
+    edge's two endpoints (`panelSupportExtensor_swap` anti-symmetry + the span-keyed
+    `infinitesimalMotions_eq_of_isLink_span_supportExtensor`), the start of re-expressing a leg's IH
+    rigidity (own `ends_H`) at the parent's `ends`. See *Decisions* / *Blockers* / *Hand-off*.
 
 **Track B — Case II/III producer at `d=3` (the crux, KT §6.3 + §6.4.1).**
 - [ ] eq. (6.12) degenerate placement (`p1(vb)=q(ab)` reproduces the `e₀` row;
@@ -315,6 +350,21 @@ N5 + N6.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N6b recon: the simple Case-I coupling is not a clean assembly; the `ends`-swap brick is the
+  first decomposable step (2026-06-04).** Ran the producer recon (`DESIGN.md` *Constructibility
+  recon …*) on the hand-off's projected N6b ("the assembly commit, no new analytic brick"). **Finding:
+  it is not a clean assembly.** The plan applies `exists_rankPolynomial_of_rigidOn` per leg, but that
+  brick (whole `panelRow`/`span_panelRow_eq_rigidityRows` chain) needs `hends : ∀ e : β, GH.IsLink e …`
+  — *every* edge label of the realized graph must link, so the panel rows span all rigidity rows — which
+  a proper-subgraph leg `GH ≤ G` does not satisfy, and the `IsLink` subgraph direction is the *wrong way*
+  to derive it. The type-level plan was blind to the *quantifier domain* of the brick's hypotheses
+  (a fresh sharpening of the recon rule). N6b needs a *leg-restricted* rank polynomial. **First green
+  brick toward it:** `infinitesimalMotions_ofNormals_eq_of_ends_swap` — leg rigidity is invariant under
+  swapping an edge's two endpoints (support extensor flips sign by `panelSupportExtensor_swap`, but the
+  hinge constraint references only its span, closed by the span-keyed sibling
+  `infinitesimalMotions_eq_of_isLink_span_supportExtensor`), the start of re-expressing a leg's IH
+  rigidity (own `ends_H`) at the parent's `ends`. No `sorry` committed; the coupling stays red. See
+  FRICTION `[resolved] The Case-I N6b coupling is NOT a clean assembly …` + *Hand-off*.
 - **(G2) general-position polynomial factor — the off-diagonal product of leading `2×2` minors
   (2026-06-04).** Built the design build-order's node after the two-motive split
   (`notes/Phase22-realization-design.md` §3 Track A): `exists_generalPosition_polynomial` — a nonzero
@@ -630,6 +680,14 @@ N5 + N6.
   collapse image *equal* `(V(G)\V(H)) ∪ {r}`, not just contained in it.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+- *The N6b Case-I coupling is not a clean assembly — `exists_rankPolynomial_of_rigidOn` needs
+  `hends : ∀ e : β, GH.IsLink e …`, which a proper-subgraph leg cannot satisfy; recon must read the
+  hypothesis *quantifier domain*, not just the conclusion shape* → FRICTION [resolved] *The Case-I N6b
+  coupling is NOT a clean assembly …*; DESIGN.md *Constructibility recon before scheduling a producer build* (fresh
+  application).
+- *`rw […]` won't close a defeq goal whose two sides differ only in a proof-term argument — finish with
+  `exact lemma _ _`* → FRICTION [resolved] *`rw […]` won't close a defeq goal whose two sides differ only
+  in a proof-term argument …* (sibling of TACTICS-QUIRKS § 25).
 - *`obtain ⟨a,t⟩ := e j` on a bare term doesn't rewrite `(e j).1`/`(e j).2` occurrences — `rcases hej :
   e j with ⟨a,t⟩` then `simp only [hej]`* → FRICTION [resolved] *`obtain ⟨a, t⟩ := e j` on a term …* +
   TACTICS-QUIRKS § 4 (Related sub-note).
@@ -652,7 +710,7 @@ N5 + N6.
   by `rw`/lazy application — state the hypothesis pre-converted, isolate the cheap defeq in a typed
   `have`* → FRICTION [resolved] *But: `ofParam`↔`ofNormals` defeq across a heavy
   `IsInfinitesimallyRigidOn` term times out …* (refinement of TACTICS-QUIRKS § 25).
-- *N4 recon lesson* → `DESIGN.md` *Constructibility recon before a producer build*
+- *N4 recon lesson* → `DESIGN.md` *Constructibility recon before scheduling a producer build*
   (its first post-21b application). The N4b *correction* sharpens it: the recon must
   read the vendored lemma's **exact binder**, not a paraphrase, before declaring it
   inapplicable — captured in the N4b correction entry above.
@@ -734,44 +792,65 @@ N5 + N6.
   seed, re-derive each leg rigid at it (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`,
   green) + general position at it (the (G2) factor), and feed `hasFullRankRealization_of_splice_ofNormals`
   (green). See *Hand-off* build order.
+- **CORRECTION (this commit, recon): N6b is NOT that clean assembly — the prior bullet's "no new
+  analytic brick" was wrong.** The "multiply the two legs' rank polynomials" step needs
+  `exists_rankPolynomial_of_rigidOn GH ends …` per leg, which requires `hends : ∀ e : β, GH.IsLink e …`
+  (every edge label of the realized graph must link — the panel rows must span *all* rigidity rows).
+  A *proper-subgraph* leg `GH ≤ G` does not satisfy this, and the `IsLink` subgraph direction
+  (`GH ≤ G → GH.IsLink → G.IsLink`) is the wrong way to derive it. So the per-leg rank polynomial is
+  **not applicable to the legs as written**; N6b needs a *leg-restricted* rank polynomial (rigidity-row
+  span over `E(GH)` only). This is the genuine remaining content of `lem:case-I-splice-placement`, a
+  multi-brick decompose-math-first target, not a one-commit assembly. **First decomposable brick GREEN
+  (this commit):** `infinitesimalMotions_ofNormals_eq_of_ends_swap` — leg rigidity is invariant under
+  swapping an edge's two endpoints (so a leg's IH rigidity at its own `ends_H` can be re-expressed at
+  the parent's `ends`, since the two agree up to swap on `E(GH)`). The leg-restricted rank polynomial
+  and the shared-seed coupling stay red. See FRICTION `[resolved] The Case-I N6b coupling is NOT a clean
+  assembly …` + *Hand-off*.
 
 ## Hand-off / next phase
 
-**This commit: the (G2) general-position `MvPolynomial` factor GREEN.** The prior hand-off named (G2)
-as the next concrete commit (design build order, after the two-motive split). Built
-`exists_generalPosition_polynomial` — a nonzero `MvPolynomial (α × Fin (k+2)) ℝ` whose non-roots are
-exactly the general-position assignments — as the off-diagonal product of the leading `2×2` minor
-polynomial `pairLeadingMinorPoly a b := X_{(a,0)}·X_{(b,1)} − X_{(a,1)}·X_{(b,0)}` (fixed coords 0,1,
-not a ranged minor, since the moment-curve seed makes exactly the leading minor nonzero — the
-Vandermonde det). The minor⟹LI helper `pair_linearIndependent_of_leading_minor_ne_zero` generalizes
-`momentCurve_pair_linearIndependent` to the coordinate level. Axiom-clean, first-try, no `\leanok`
-flip (infra below the still-red Case-I nodes), no blueprint entry. **Closes gap (G2);** (G1) was
-dissolved by the prior commit's two-motive split. See *Decisions* / *Current state*; design doc §3
-Track A / §2 row "(G2)".
+**This commit: N6b recon — the simple Case-I coupling is NOT a clean assembly; first decomposable
+brick GREEN.** The prior hand-off recommended N6b as "the assembly commit, no new analytic brick"
+(multiply the two legs' rank polynomials × the (G2) factor → shared non-root → splice). Running the
+producer recon (`DESIGN.md` *Constructibility recon …*) before building found that plan **does not
+fall out**: `exists_rankPolynomial_of_rigidOn GH ends …` (and the whole
+`panelRow`/`span_panelRow_eq_rigidityRows` chain) requires `hends : ∀ e : β, GH.IsLink e …` — every
+edge label of the realized graph must link, so the panel rows span *all* rigidity rows — which a
+*proper-subgraph* leg `GH ≤ G` does not satisfy, and the `IsLink` subgraph direction
+(`GH ≤ G → GH.IsLink → G.IsLink`) is the wrong way to derive a leg's `hends` from the parent's. So the
+per-leg rank polynomial is not applicable to the legs as written; N6b needs a **leg-restricted rank
+polynomial** (rigidity-row span over `E(GH)` only), the genuine remaining content of
+`lem:case-I-splice-placement`. **Landed instead the first decomposable green brick:**
+`PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap` (+ its two infra lemmas
+`panelSupportExtensor_swap`, `BodyHingeFramework.infinitesimalMotions_eq_of_isLink_span_supportExtensor`),
+all axiom-clean, no `\leanok` flip, no blueprint entry. It establishes that a leg's rigidity is
+invariant under swapping an edge's two endpoints — so a leg's IH rigidity at its own `ends_H` can be
+re-expressed at the parent's `ends` (they agree up to swap on `E(GH)`). **No `sorry` committed:** the
+N6b coupling and the leg-restricted rank polynomial stay red. See *Current state* / *Decisions* /
+*Blockers* + FRICTION `[resolved] The Case-I N6b coupling is NOT a clean assembly …`.
 
-**Recommended next concrete commit: N6b (simple Case I, simple contraction; KT Lemma 6.3)** — the
-*assembly* commit, no new analytic brick. With (G1)/(G2) both gone, all inputs are green: take the two
-legs' rank polynomials `exists_rankPolynomial_of_rigidOn` (each gives a nonzero `Q_H` / `Q_c` whose
-non-roots witness that leg's full panel-row count), multiply them by the (G2) factor `Q_gp`, apply
-`MvPolynomial.exists_eval_ne_zero` to the triple product `Q_H · Q_c · Q_gp` for one shared seed `q₀`,
-re-derive each leg rigid at `q₀` (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`,
-green) + general position at `q₀` (the (G2) factor's GP clause), and feed
-`hasFullRankRealization_of_splice_ofNormals` (green). The legs arrive GP via the GP motive
-(`HasGenericFullRankRealization`), and ride the parent's `ends`/`normal` (`withGraph_normal`); rigidity
-is `ends`-independent, so the `ends`-swap is free. **Caveat for the assembly:** the per-leg rank
-polynomials need each leg rigid *at a transversal-rigid seed with general position* — which the GP
-motive now supplies (a GP seed of the parent is GP for every leg). Decompose the shared-seed plumbing
-math-first if it does not fall out as one commit; the recurring trap (FRICTION) is the heavy
-`IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph` graph-swaps — state hypotheses
-pre-converted. Build order from there: **N6b** → **N6c** (KT Lemma 6.5, same shape, the contracted
-vertex's two boundary hinges give `+D` via Lemma 5.3 / the splice) → **N6** the Case-I composer
+**Recommended next concrete commit: the leg-restricted rank polynomial** — the genuine new brick N6b
+needs. Mirror `exists_rankPolynomial_of_rigidOn` but with the rigidity-row span and `panelRow` family
+restricted to `E(GH)` (the leg's edges), so its `hends` quantifier ranges over edges *of the leg*
+(`∀ e ∈ E(GH), …`, or the `Subtype` of leg edges) rather than all of `β`. Math-first decomposition
+needed: identify which of `span_panelRow_eq_rigidityRows` /
+`exists_independent_panelRow_subfamily_of_rigidOn` / N3 admit a leg-restricted variant, and how the
+`ends`-swap brick (`infinitesimalMotions_ofNormals_eq_of_ends_swap`, this commit) feeds the leg's IH
+rigidity (own `ends_H`) into it at the parent's `ends`. Then the shared-seed coupling (multiply the two
+*leg-restricted* polynomials × the (G2) factor `exists_generalPosition_polynomial`, take a shared
+non-root via `MvPolynomial.exists_eval_ne_zero`, re-derive each leg rigid + GP at it, feed
+`hasFullRankRealization_of_splice_ofNormals`) becomes the assembly the prior hand-off envisioned — once
+the per-leg polynomial is leg-restricted. The legs arrive GP via the GP motive
+(`HasGenericFullRankRealization`). Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq
+across `ofNormals`/`withGraph` graph-swaps — state hypotheses pre-converted. Build order from there:
+leg-restricted rank polynomial → **N6b/N6c** coupling → **N6** the Case-I composer
 (`lem:case-I-realization`, dispatches on simplicity: N6a for non-simple, N6b/N6c for simple; the simple
 cases conclude the GP motive via `hasFullRankRealization_of_generic` for `theorem_55`'s bare
 `hcontract`) → the **Case-III row** (Track B) via the green Lemma 2.1
 (`omitTwoExtensor_linearIndependent`).
 
 Honesty-gate: `lem:case-I-splice-placement` / `lem:case-I-realization` stay red — the deliverable
-(shared-seed full-rank realization) is not produced; only the per-leg consumer half is green.
+(shared-seed full-rank realization) is not produced; only the decomposable bricks are green.
 
 *Alternatively*, the genericity-free `prop:rigidity-matrix-prop11` `hub` brick (`screwDim k + def ≤
 dim Z(G,p)`, the Phase-19 partition-contraction count) is a Track-independent closable target — but it

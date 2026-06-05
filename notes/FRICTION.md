@@ -122,6 +122,46 @@ housekeeping pass once their resolution is fully indexed.
   entries below (TACTICS-QUIRKS § 25).
 - **Status:** resolved (tactic choice; no lemma needed).
 
+### [resolved] `rw […]` won't close a defeq goal whose two sides differ only in a proof-term argument (`by omega : 2 ≤ k+2`) — end with `exact lemma _ _`, not the trailing `rw`
+- **Where it bit:** `panelSupportExtensor_swap` (Phase 22, the anti-symmetry of the panel support
+  extensor). After `rw [panelSupportExtensor, panelSupportExtensor, hjoin]` the goal was
+  `complementIso ⋯ (-normalsJoin n₁ n₂) = -(complementIso ⋯) (normalsJoin n₁ n₂)`, with both
+  `complementIso ⋯` carrying their *own* `(by omega : 2 ≤ k+2)` proof term. Appending `map_neg` to the
+  `rw` list left `-(complementIso ⋯) … = -(complementIso ⋯) …` — visibly identical, but `rw`'s closing
+  `rfl` is *syntactic* and the two `⋯` proof terms are distinct syntax (defeq by proof irrelevance,
+  not syntactically equal), so it failed with "unsolved goals". One build cycle.
+- **Proposed fix:** drop `map_neg` from the `rw` and close with `exact map_neg _ _` (term-mode
+  `exact` unifies up to defeq, so proof-irrelevant `⋯` arguments unify). General rule: when a
+  `rw`-chain's final step would land a goal whose two sides differ only in a `Prop`-valued proof-term
+  argument, finish with a term-mode `exact` rather than folding the last rewrite in — `rw`'s rfl is
+  syntactic and chokes on proof-irrelevant arguments. (Sibling of TACTICS-QUIRKS § 25, the
+  defeq-vs-syntactic-match family.)
+- **Status:** resolved (tactic choice; no lemma needed).
+
+### [resolved] The Case-I N6b coupling is NOT a clean assembly of the green bricks — `exists_rankPolynomial_of_rigidOn` needs `hends : ∀ e : β, GH.IsLink e …`, which a proper-subgraph leg cannot satisfy
+- **Where it bit:** the recon for N6b (Phase 22, the simple Case-I shared-seed coupling the hand-off
+  projected as "the assembly commit, no new analytic brick"). The plan: per leg `GH ≤ G`, apply
+  `exists_rankPolynomial_of_rigidOn GH ends …` to get a nonzero rank polynomial, multiply the two
+  legs' polynomials × the (G2) general-position factor, take a shared non-root, splice.
+- **Friction:** `exists_rankPolynomial_of_rigidOn` (and the whole `panelRow` /
+  `span_panelRow_eq_rigidityRows` / `exists_independent_panelRow_subfamily_of_rigidOn` chain) requires
+  `hends : ∀ e : β, G.IsLink e (ends e).1 (ends e).2` — *every* edge label of the realized graph must
+  link — because the panel rows must span **all** rigidity rows. For a *proper-subgraph* leg `GH ≤ G`
+  this is false (labels in `E(G) ∖ E(GH)` don't link in `GH`), and the subgraph direction of `IsLink`
+  is `GH ≤ G → GH.IsLink e → G.IsLink e` (supergraph), not the reverse — so a leg's `hends` cannot be
+  derived from the parent's. The type-level "feed the green bricks together" plan was blind to the
+  `β`-quantification. So N6b is *not* a one-commit assembly; it needs a leg-restricted rank polynomial
+  (the genuine remaining content of `lem:case-I-splice-placement`).
+- **Proposed fix:** decompose math-first. First decomposable green brick landed:
+  `PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap` (leg rigidity is invariant under
+  swapping an edge's two endpoints, via the span-keyed `infinitesimalMotions_eq_of_isLink_span_supportExtensor`
+  + the anti-symmetry `panelSupportExtensor_swap`), which begins re-expressing a leg's IH rigidity at
+  the parent's `ends`. The full coupling stays red.
+- **Status:** resolved (recon finding recorded; the bricks it surfaced are the path forward). Rule →
+  `DESIGN.md` *Constructibility recon before scheduling a producer build* (a fresh application: read the
+  *quantifier domain* of a brick's hypotheses, not just its conclusion shape). See `notes/Phase22.md`
+  *Blockers* / *Hand-off*.
+
 ### [resolved] `[matroid]` `H.cycleMatroid = G.cycleMatroid ↾ E(H)` for `H ≤ G` — route through `cycleMatroid_isRestriction_of_le` + `IsRestriction.exists_eq_restrict`, then pin the restriction set by ground equality
 - **Where it bit:** the rank-saturation specialization `union_cycleMatroid_rk_saturated_of_isKDof_zero`
   (Phase 22, N4c crux input II): needed `G̃.cycleMatroid.rk E(H̃) = H̃.cycleMatroid.rk E(H̃)` to

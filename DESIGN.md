@@ -1047,6 +1047,21 @@ Per-node recon catches local short-by-one-row gaps; only the layer pass catches 
 too-weak shared invariant. Cross-ref: `notes/Phase22-realization-design.md`;
 `notes/Phase22.md` *Decisions*.
 
+**Sharpening: recon the *quantifier domain* of a brick's hypotheses, not just its
+conclusion shape (Phase 22, 2026-06-04).** The N6b coupling was projected as a clean
+assembly of green bricks because the bricks' *conclusion types* lined up. But the
+per-leg producer `exists_rankPolynomial_of_rigidOn` carries a hypothesis
+`hends : ∀ e : β, G.IsLink e …` quantified over **all** of `β` (every edge label of
+the realized graph must link — the panel rows must span all rigidity rows), which a
+*proper-subgraph* leg `GH ≤ G` does not satisfy, and the `IsLink` subgraph direction
+is the wrong way to derive it. The type-level "feed the bricks together" plan was blind
+to the hypothesis *domain*. **The rule:** when recon'ing whether a producer is a clean
+assembly, read each consumed brick's *hypothesis binders* (especially `∀`-domains:
+over the ambient type vs. over a subobject) against the actual inputs the assembly
+supplies — a conclusion-shape match is necessary but not sufficient. Cross-ref:
+`notes/FRICTION.md` *[resolved] The Case-I N6b coupling is NOT a clean assembly …*;
+`notes/Phase22.md` *Decisions* / *Hand-off*.
+
 ## Phase Case-naming must match KT's k-bookkeeping
 
 **The bug (Phase 21b, 2026-06-04).** The project labelled the reducible-vertex
