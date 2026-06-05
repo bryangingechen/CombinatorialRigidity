@@ -56,6 +56,10 @@ symptom-indexed and lighter.
     consecutive-equality `f i = f (i+1)` to a global one, induct over
     `Fin.ofNat m j` on `ℕ` (not `(j : Fin m)` ascription, not
     `Fin.induction`); `Fin.ofNat_val_eq_self` returns to `i`.
+13. **State a ℕ count `a − b + c` as `a + c − b`** — subtraction
+    last, so the single truncating `−` lands on a provably-large-enough
+    quantity (otherwise the statement is off-by-one at a boundary and
+    `omega` can't prove it).
 
 ---
 
@@ -873,3 +877,24 @@ successor fact (`Fin.ext` + `simp [Fin.add_def, Nat.add_mod]`, since
 both sides are `(p+1) % m`) are all you need. The cyclic index type
 `Fin m` *is* the cycle — no `Graph`-walk/connectivity primitive is
 required to chain the per-step equalities.
+
+## 13. State a ℕ count `a − b + c` as `a + c − b` (subtraction last)
+
+When the conclusion of a lemma is a natural-number count of the form
+`a − b + c` (a free residual after adding `c` and removing `b`), write
+it with the **subtraction last**: `a + c − b`. The two are equal in ℝ /
+ℤ but **not** in ℕ, where `−` truncates at `0`: at the boundary `b = a`
+(so `a − b = 0`), `(a − b) + c = c` but the intended value is
+`a + c − b = c`… only when `c ≥ b − a`. The failure shows up as the
+*statement* being off-by-one at an extreme case — and then `omega` can't
+prove it, because it's genuinely false in ℕ as written.
+
+Concrete instance (`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`,
+`Molecular/AlgebraicInduction/Pinning.lean`): the free-isolated-body count
+`|Vᶜ| − |t| + 1` is correct in ℝ, but at the extreme `t = {r} ∪ Vᶜ` the ℕ
+form `(|Vᶜ| − |t|) + 1` reads `1` while the true value `|(V ∪ t)ᶜ|` is `0`
+(since `|t| = |Vᶜ| + 1 > |Vᶜ|`). Restating as `|Vᶜ| + 1 − |t|` (the `+1`
+*inside*, before the `−|t|`) is non-negative throughout (`|t| ≤ |Vᶜ| + 1`)
+and `omega` closes it from the partition facts. Rule of thumb: do the
+additions first so the single truncating `−` lands on a provably-large
+enough quantity.

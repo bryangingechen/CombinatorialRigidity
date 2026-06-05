@@ -851,6 +851,102 @@ theorem finrank_pinnedMotionsOn_le [Finite α] (F : BodyHingeFramework k α β) 
         Submodule.finrank_mono (F.pinnedMotionsOn_le_iInf_ker_proj s)
     _ = screwDim k * sᶜ.ncard := finrank_iInf_ker_proj_eq (k := k) s
 
+/-- **Pinning a superset of the vertex set leaves only the free isolated bodies**
+(`def:pinned-motions-on`, the U3b pin-count infra; Katoh–Tanigawa 2011 §6.2, Phase 22b). The
+vertex-set equality `pinnedMotionsOn_vertexSet_eq_iInf_ker_proj` generalized from `s = V(G)` to any
+`s ⊇ V(G)`: for a body set `s` containing the whole vertex set, the block pin
+`pinnedMotionsOn s` reduces to the kernel of the projections onto the `s` coordinates,
+`⨅ i ∈ s, ker (proj i)`. As in the `V(G)` case the `IsInfinitesimalMotion` half is *free* — every
+hinge constraint involves two endpoints `u v ∈ V(G) ⊆ s`, and an assignment vanishing on `s`
+vanishes at both, satisfying the constraint automatically — so the motion condition imposes nothing
+beyond the vanishing on `s`. Unlike the general body-set case (`pinnedMotionsOn_le_iInf_ker_proj`,
+only an inclusion when `s ⊊ V(G)`), the `s ⊇ V(G)` hypothesis restores the *equality*: no body of
+`V(G) ∖ s` survives to carry a free constraint. This is the brick that gives the exact free residual
+dimension after pinning a block that absorbs the entire vertex set. -/
+theorem pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset (F : BodyHingeFramework k α β)
+    {s : Set α} (hs : F.graph.vertexSet ⊆ s) :
+    F.pinnedMotionsOn s =
+      ⨅ i ∈ s, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k) := by
+  ext S
+  simp only [mem_pinnedMotionsOn, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]
+  constructor
+  · exact fun ⟨_, hvan⟩ => hvan
+  · intro hvan
+    refine ⟨fun e u v he => ?_, hvan⟩
+    rw [hingeConstraint, hvan u (hs he.left_mem), hvan v (hs he.right_mem), sub_self]
+    exact Submodule.zero_mem _
+
+/-- **The free residual dimension after pinning a superset of the vertex set**
+(`def:pinned-motions-on`, the U3b pin-count infra; Katoh–Tanigawa 2011 §6.2, Phase 22b). For a body
+set `s` containing the whole vertex set, the block pin `pinnedMotionsOn s` has dimension exactly
+`D·|sᶜ|` — the free screw freedoms of the `|sᶜ|` bodies outside `s`, each isolated (no constraint
+touches it). The body-set sibling of `finrank_pinnedMotionsOn_vertexSet` (where `s = V(G)`), with
+the `s ⊇ V(G)` hypothesis restoring the equality the general `s` only bounds
+(`finrank_pinnedMotionsOn_le`). Immediate from the superset iInf-ker identity
+(`pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset`) and the kernel dimension
+(`finrank_iInf_ker_proj_eq`). -/
+theorem finrank_pinnedMotionsOn_of_vertexSet_subset [Finite α] (F : BodyHingeFramework k α β)
+    {s : Set α} (hs : F.graph.vertexSet ⊆ s) :
+    Module.finrank ℝ (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard := by
+  rw [F.pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset hs, finrank_iInf_ker_proj_eq]
+
+/-- **A framework rigid on its full vertex set, pinned at a block meeting `V(G)` in one body, has
+the exact free-isolated-body residual** (`lem:claim-6-4` U3b pin-count sub-lemma — the walling node
+of the Case-I exterior-rank discharge; Katoh–Tanigawa 2011 §6.2 eqs. (6.5)/(6.9), §5.1, Phase 22b).
+This is the **one real-content fact** the exterior-column-projection rank brick (U3b) reduces to
+(design doc §1.22): for `F` infinitesimally rigid on its whole vertex set `V(G)` and a block `t`
+meeting `V(G)` in exactly the representative body `r` (`V(G) ∩ t = {r}`),
+
+  `finrank (pinnedMotionsOn t) = D·(|V(G)ᶜ| + 1 − |t|)`.
+
+(The `+1 − |t|` order keeps the count a genuine `ℕ` value at the extreme `t = {r} ∪ V(G)ᶜ`, where
+`|(V(G) ∪ t)ᶜ| = 0`; the real-arithmetic value is `|V(G)ᶜ| − |t| + 1`.) Pinning `t` forces
+`S r = 0`; rigidity on `V(G)` then propagates `S r = 0` to vanishing on all of `V(G)` (a rigid
+framework's motions are constant on the rigid block, and `r ∈ V(G)` is fixed), so `S` vanishes on
+`V(G) ∪ t` —
+the block pin on `t` *equals* the block pin on `V(G) ∪ t`. The latter absorbs the entire vertex set,
+so its dimension is the exact free-isolated-body count `D·|(V(G) ∪ t)ᶜ|`
+(`finrank_pinnedMotionsOn_of_vertexSet_subset`). The arithmetic `|(V(G) ∪ t)ᶜ| = |V(G)ᶜ| + 1 − |t|`
+is inclusion–exclusion with `|V(G) ∩ t| = 1`: the `|t| − 1` bodies of `t ∖ {r}` lie outside `V(G)`
+(so they are *additional* pins beyond `V(G)`), trimming the free residual `|V(G)ᶜ|` by `|t| − 1`.
+
+This is the §1.21-corrected count: a framework rigid on a *proper* vertex set `V(G) ⊊ α` carries
+`D·|V(G)ᶜ|` free isolated dimensions in its null space, **not** zero — so the clean `D(|sc|−1)`
+projected rank of Claim 6.4 survives by an *exact* free-isolated-body cancellation between the
+row-space gain and the projection's column loss, certified by this pin-count. -/
+theorem finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton
+    [Finite α] (F : BodyHingeFramework k α β) {t : Set α} {r : α}
+    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
+    (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ t = {r}) :
+    Module.finrank ℝ (F.pinnedMotionsOn t)
+      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1 - t.ncard) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  have hrt : r ∈ t := ((Set.ext_iff.1 hinter r).2 rfl).2
+  -- Pinning `t` equals pinning `V(G) ∪ t`: rigidity propagates `S r = 0` to all of `V(G)`.
+  have hpin : F.pinnedMotionsOn t = F.pinnedMotionsOn (F.graph.vertexSet ∪ t) := by
+    refine le_antisymm (fun S hS => ?_) (F.pinnedMotionsOn_mono Set.subset_union_right)
+    rw [F.mem_pinnedMotionsOn] at hS ⊢
+    refine ⟨hS.1, fun w hw => ?_⟩
+    rcases hw with hwV | hwt
+    · rw [hrig S hS.1 w hwV r hr, hS.2 r hrt]
+    · exact hS.2 w hwt
+  rw [hpin, F.finrank_pinnedMotionsOn_of_vertexSet_subset Set.subset_union_left]
+  -- Inclusion–exclusion: `|(V(G) ∪ t)ᶜ| = |V(G)ᶜ| − |t| + 1` since `|V(G) ∩ t| = 1`.
+  congr 1
+  have hcard_inter : (F.graph.vertexSet ∩ t).ncard = 1 := by rw [hinter, Set.ncard_singleton]
+  have hunion : (F.graph.vertexSet ∪ t).ncard + 1
+      = F.graph.vertexSet.ncard + t.ncard := by
+    have := Set.ncard_union_add_ncard_inter F.graph.vertexSet t
+    rw [hcard_inter] at this
+    omega
+  -- The two complement-counts as `|α| − |·|`, with the underlying `|·| + |·ᶜ| = |α|` partitions
+  -- giving `omega` the bounds it needs (no separate `≤` derivations).
+  have hpartU := Set.ncard_add_ncard_compl (F.graph.vertexSet ∪ t)
+  have hpartV := Set.ncard_add_ncard_compl F.graph.vertexSet
+  rw [Nat.card_eq_fintype_card] at hpartU hpartV
+  omega
+
 /-- **A rigid framework, pinned at any nonempty block, has no residual motion**
 (`lem:case-I`, the block-pin ↔ contraction-realization bridge, dimension form; Katoh–Tanigawa 2011
 §6.2/6.5). If the framework `F` is infinitesimally rigid (`IsInfinitesimallyRigid` — every

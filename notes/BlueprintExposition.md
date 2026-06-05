@@ -241,6 +241,18 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   itself a recurring project-side trap; process lesson in `DESIGN.md` *Match the source's
   argument structure …*.) Pointer: `notes/Phase22-realization-design.md` §1.7, §1.13–§1.16;
   `notes/Phase22a.md` *Decisions*; `notes/Phase22b.md` (the discharge).
+  **Sharpened at U3b (§1.22, 2026-06-05):** the exterior-projection rank-preservation reduces
+  (mathlib dual API) to `Z ⊔ range(extProj V(H)) = ⊤`, whose one real-content fact is the
+  rigid-block **pin-count** `finrank(pinnedMotionsOn V(H)) = D(|scᶜ| + 1 − |V(H)|)`. **Stable
+  insight (the §1.21 correction):** a framework rigid on a *proper* vertex set `V(F) ⊊ α` does
+  **not** have a zero residual after pinning a body — its null space carries `D·|V(F)ᶜ|` free
+  *isolated-body* dimensions (one free screw per body outside the graph). So the clean `D(|sc|−1)`
+  projected rank of Claim 6.4 survives by an **exact free-isolated-body cancellation** between the
+  row-space gain and the projection's column loss, certified by the pin-count — not by a
+  zero-rank-loss pin. The pin-count itself is `pinnedMotionsOn t = pinnedMotionsOn (V(F) ∪ t)`
+  (rigidity propagates `S r = 0` over `V(F)`) ⇒ exact free count `D·|(V(F)∪t)ᶜ|` ⇒ incl.–excl. on
+  `|V(F) ∩ t| = 1`. Pointer: §1.22; `Pinning.lean`
+  `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`.
 - **`lem:case-I-realization` N6-G3-G3c / the two splice legs live on *different*
   body sets, `V′` and `V∖V′ ∪ {v∗}`** — [pending] **(a)** thought "pure green-brick
   assembly (`buildable`)" → reconned into G3c-i/ii/iii (2026-06-05). **Stable

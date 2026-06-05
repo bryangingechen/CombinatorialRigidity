@@ -1,13 +1,15 @@
 # Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge) (work log)
 
-**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U1 + U2 landed (sound), one
-research-shaped crux remains in U3b, build-recon now corrected** (opened 2026-06-05 as the
+**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U1 + U2 landed (sound), the
+U3b pin-count walling node now LANDED, the `Z ⊔ W = ⊤` assembly remains** (opened 2026-06-05 as the
 coordinator's Close-C of Phase 22a; opening recon + the reduction N-22b-1/2/3 landed 2026-06-05; the
 T2b math-first re-recon landed 2026-06-05; U2 opened + reconciliation core landed 2026-06-05; **U1 +
-the U2 per-edge tail landed 2026-06-05** as `9098129`; **the U3b build-recon was corrected
-2026-06-05 — design doc §1.22, this commit**). The phase does *not* close until `htransport` is
-discharged: `lem:claim-6-4` stays red green-modulo it (KT eq. (6.9)'s algebraic-independence
-content). **This commit is docs-only** (the §1.22 U3b build-target correction); no Lean changed.
+the U2 per-edge tail landed 2026-06-05** as `9098129`; the U3b build-recon corrected 2026-06-05
+(design doc §1.22); **the U3b pin-count sub-lemma (the §1.22 walling node) landed 2026-06-05, this
+commit**). The phase does *not* close until `htransport` is discharged: `lem:claim-6-4` stays red
+green-modulo it (KT eq. (6.9)'s algebraic-independence content). **This commit lands the §1.22 U3b
+walling node** `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`
+(+ two supporting `s ⊇ V(G)` pin bricks) in `Pinning.lean`; axiom-clean, build + lint warning-clean.
 
 **Course-correction (2026-06-05; design doc §1.20).** The U2-opening session **forked under
 backgrounding**: its (lost) pre-reset analysis found that §1.19's "walling node retired at U2 / U3
@@ -314,7 +316,24 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
   mathlib + green project facts confirmed present; the genuine kernel is a small product-space iso
   peeling the free isolated columns + an `extProj_range = ⨅ i ∈ V(H), ker(proj i)` identity. **Build
   opens on the pin-count sub-lemma** (the walling node, §1.22). The un-projected U3 tool does **not**
-  suffice (projection can lower rank — the whole point of Claim 6.4). **Build target.**
+  suffice (projection can lower rank — the whole point of Claim 6.4).
+  **U3b — pin-count walling node LANDED (this commit).** The §1.22 walling node is green
+  (`Pinning.lean`): `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`
+  — for `F` rigid on its vertex set and a block `t` with `V(F) ∩ t = {r}`,
+  `finrank(F.pinnedMotionsOn t) = D·(|V(F)ᶜ| + 1 − |t|)` (the §1.22 pin-count, with the ℕ count
+  stated subtraction-last per TACTICS-GOLF § 13 — the `|Vᶜ| − |t| + 1` real-arithmetic form
+  truncates wrong at the boundary `t = {r} ∪ Vᶜ`). Built off two new supporting bricks
+  (`pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset` + `finrank_pinnedMotionsOn_of_vertexSet_subset`,
+  the `s ⊇ V(G)` generalization of the green `pinnedMotionsOn_vertexSet_eq_iInf_ker_proj` /
+  `finrank_pinnedMotionsOn_vertexSet`): pinning `t` ⇒ (rigidity propagates `S r = 0` over `V(F)`) ⇒
+  `pinnedMotionsOn t = pinnedMotionsOn (V(F) ∪ t)`, whose dimension is the exact free-isolated count
+  `D·|(V(F) ∪ t)ᶜ|`, then incl.–excl. on `|V(F) ∩ t| = 1`. All three axiom-clean
+  (`propext`/`Classical.choice`/`Quot.sound`), build + lint warning-clean. **Remaining U3b:** the
+  `Z ⊔ range(extProj V(H)) = ⊤` dual-annihilator assembly (using this pin-count + `finrank_iInf_ker_proj_eq`
+  via the `extProj_range = ⨅ i∈V(H), ker(proj i)` identity + `finrank_sup_add_finrank_inf_eq`), then
+  the projected-subfamily extraction (the U3-tool skeleton). The un-projected U3 tool does **not**
+  suffice (projection can lower rank — the whole point of Claim 6.4). **Build target (remaining):
+  the `Z ⊔ W = ⊤` assembly.**
 - [ ] **U4 — assemble + flip.** U3b gives projected-*collapsed* independence; U2 (landed) carries it
   to projected-*uncollapsed* rows at `q₀^deg`; assemble `(q₀^deg, t, hsupp, hcount, hindep)` into
   `htransport`, translating subfamily indices from `Gc.map f`-links (at `endsᵐ`) to `Gc`-links (at
@@ -369,21 +388,30 @@ verified-closing layer: the brick reduces to `Z ⊔ range(extProj V(H)) = ⊤` (
 real-content fact = the rigid-block pin-count `finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ|−|V(H)|+1)`.
 **§1.22 was independently coordinator-verified** via a from-scratch motion-space decomposition (see
 §1.22 *Coordinator verification*) — the layer is sound; do **not** re-recon it, build it.
-**The next concrete commit is the U3b build, opening on that pin-count sub-lemma** (the walling
-node); then the `Z ⊔ W = ⊤` assembly + the projected-subfamily extraction (the U3-tool skeleton),
-then U3a (alignment) and U4 (assemble + flip) (full statements/reuse/risk in the *Discharge plan*
-checklist above + §1.20/§1.21/§1.22):
+
+**The U3b pin-count walling node is LANDED (this commit).** The §1.22 walling node is green in
+`Pinning.lean`: `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`
+— for `F` rigid on its vertex set and a block `t` with `V(F) ∩ t = {r}`,
+`finrank(F.pinnedMotionsOn t) = D·(|V(F)ᶜ| + 1 − |t|)` (the ℕ count subtraction-last, TACTICS-GOLF
+§ 13). Built off two new supporting bricks (`pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset`
++ `finrank_pinnedMotionsOn_of_vertexSet_subset`, the `s ⊇ V(G)` generalization of the green
+vertex-set pin lemmas). All three axiom-clean, build + lint warning-clean.
+
+**The next concrete commit is the remaining U3b — the `Z ⊔ range(extProj V(H)) = ⊤` assembly**
+(then the projected-subfamily extraction, the U3-tool skeleton), then U3a (alignment) and U4
+(assemble + flip) (full statements/reuse/risk in the *Discharge plan* checklist above +
+§1.20/§1.21/§1.22):
 - **U3a** (O1; bricked, medium): move the IH `Qcf`'s rigidity on `sc = V(Gc.map f)` to the
   `endsᵐ`-selector framework `Qcf'` via the `ends`-swap brick
   `infinitesimalMotions_ofNormals_eq_of_ends_swap` (the `hasGenericRealization_transport_ends`
   pattern).
 - **U3b** (O2; the genuine Claim-6.4 crux — recon-verified *bounded*, §1.22 + coordinator check):
   from `Qcf'` rigid on `sc`, the exterior-column projection preserves independent rank `≥ D(|sc|−1)`.
-  **Build target = the pin-count sub-lemma** `finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ|−|V(H)|+1)`
-  (the walling node — a free-isolated-body product iso off the existing single-body pin infra
-  `finrank_pinnedMotions_add_screwDim` + a small `extProj_range = ⨅ i∈V(H), ker(proj i)` identity),
-  then the `Z ⊔ range(extProj V(H)) = ⊤` dual-annihilator assembly + the projected-subfamily
-  extraction (the U3-tool skeleton). The un-projected U3 tool
+  **The pin-count sub-lemma is LANDED** (`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`,
+  `Pinning.lean`, the walling node). **Remaining U3b build target = the `Z ⊔ range(extProj V(H)) = ⊤`
+  dual-annihilator assembly** (pin-count + `finrank_iInf_ker_proj_eq` via a small
+  `extProj_range = ⨅ i∈V(H), ker(proj i)` identity + `finrank_sup_add_finrank_inf_eq`) + the
+  projected-subfamily extraction (the U3-tool skeleton). The un-projected U3 tool
   `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` does **not** suffice (projection can
   lower rank — the point of Claim 6.4).
 - **U4** (plumbing): U2 (landed) carries U3b's projected-*collapsed* independence to projected-*uncollapsed*
