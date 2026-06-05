@@ -106,6 +106,18 @@ lemma endsOf_eq_or_swap [Inhabited α] (G : Graph α β) {e : β} {x y : α} (h 
   · exact Or.inl (Prod.ext h1 h2)
   · exact Or.inr (Prod.ext h1 h2)
 
+/-- **The canonical endpoint selector's two ends are distinct on every link of a loopless graph**
+(`def:graph-operations`): if `G` is loopless and `e ∈ E(G)`, then `(G.endsOf e).1 ≠ (G.endsOf e).2`.
+The canonical selector is a genuine link (`isLink_endsOf`), and a loopless graph's links join
+*distinct* bodies (`IsLink.ne`). This is the edge-restricted endpoint-distinctness fact the Case-I
+leg-transport brick `hasGenericRealization_transport_ends` consumes (KT eq. (6.6), Phase 22b): the
+all-`β` form `∀ e, (G.endsOf e).1 ≠ (G.endsOf e).2` is *unsatisfiable* for `endsOf` (it returns the
+junk constant `(default, default)` on non-edges), so the transversality input must be restricted to
+the links, where it is discharged from `G.Simple`/`G.Loopless`. -/
+lemma endsOf_fst_ne_snd [Inhabited α] (G : Graph α β) [G.Loopless] {e : β} (he : e ∈ E(G)) :
+    (G.endsOf e).1 ≠ (G.endsOf e).2 :=
+  (G.isLink_endsOf he).ne
+
 /-! ## A circuit induces a rigid subgraph (`lem:circuit-induces-rigid`; KT Lemma 3.4 full form) -/
 
 /-- **A circuit exceeds the sparsity bound on its vertex span** (Katoh–Tanigawa 2011

@@ -364,9 +364,10 @@ recorded by both selectors, so they agree up to swap). Rigidity-on-`V(GH)` is in
 `infinitesimalMotions` equality because `IsInfinitesimallyRigidOn` quantifies over
 `IsInfinitesimalMotion = (· ∈ infinitesimalMotions)`. (2) **Transversality at `ends`.** General
 position is a property of the normals `qH` alone (`ofNormals_normal`), unchanged by the selector, so
-`ofNormals GH ends qH` is again in general position; for any edge whose `ends`-endpoints are
-distinct (`hne_ends`), `supportExtensor_ne_zero_of_isGeneralPosition` gives the transversal hinge
-`hneH`.
+`ofNormals GH ends qH` is again in general position; for any *linking* edge whose `ends`-endpoints
+are distinct (`hne_ends`, restricted to links — the all-`β` form is unsatisfiable for the canonical
+`endsOf` selector, which returns junk on non-edges; see `endsOf_fst_ne_snd`),
+`supportExtensor_ne_zero_of_isGeneralPosition` gives the transversal hinge `hneH`.
 
 This is the composer's per-leg adapter; the composer itself (`lem:case-I-realization`) supplies
 `hswap` from the leg-subgraph relation, applies this brick to each of the two legs (the rigid block
@@ -379,7 +380,7 @@ theorem PanelHingeFramework.hasGenericRealization_transport_ends
     (hswap : ∀ e u v, GH.IsLink e u v →
       ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
       ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1))
-    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) :
+    (hne_ends : ∀ e, GH.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2) :
     ∃ qH : α × Fin (k + 2) → ℝ,
       (∀ e, GH.IsLink e (ends e).1 (ends e).2 →
         (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0) ∧
@@ -394,9 +395,9 @@ theorem PanelHingeFramework.hasGenericRealization_transport_ends
   have hmot : (PanelHingeFramework.ofNormals Q.graph ends qH).toBodyHinge.infinitesimalMotions
       = (PanelHingeFramework.ofNormals Q.graph Q.ends qH).toBodyHinge.infinitesimalMotions :=
     PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap Q.graph ends Q.ends qH hswap
-  refine ⟨qH, fun e _ =>
+  refine ⟨qH, fun e he =>
     (PanelHingeFramework.ofNormals Q.graph ends qH).supportExtensor_ne_zero_of_isGeneralPosition
-      hgp' (by rw [PanelHingeFramework.ofNormals_ends]; exact hne_ends e), ?_⟩
+      hgp' (by rw [PanelHingeFramework.ofNormals_ends]; exact hne_ends e he), ?_⟩
   -- Rigidity at `ends`: `IsInfinitesimallyRigidOn` quantifies over `· ∈ infinitesimalMotions`.
   intro S hS u hu v hv
   refine hQrig S ?_ u hu v hv
@@ -1576,7 +1577,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
         (∀ e u v, H.IsLink e u v →
           ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
           ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1))) ∧
-      (∀ e, (ends e).1 ≠ (ends e).2) ∧
+      (∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2) ∧
       (∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
         Q.IsGeneralPosition →
         Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
@@ -1619,9 +1620,11 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
   obtain ⟨QH, hQHg, hQHgp, hQHrig⟩ :=
     (hIH H hHmin hVH2 hVHlt).1 (hSimple.mono hle)
+  -- The brick's `hne_ends` is edge-restricted (the all-`β` form is unsatisfiable for `endsOf`); an
+  -- `H`-link's `ends`-endpoints form a `G`-link (`H ≤ G`), where the bundle's `hne_ends` applies.
   obtain ⟨qH, hneH, hrigH⟩ :=
     PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
-      (hswap QH hQHg) hne_ends
+      (hswap QH hQHg) (fun e he => hne_ends e (he.of_le hle))
   -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller, simple minimal `0`-dof-graph (N4 +
   -- `hcSimple`), so `hIH` supplies its generic realization `Qcf`. KT Claim 6.4 (eqs. (6.5)/(6.9),
   -- the bundle's `htransport`, N-22b-1) transports that rank across the collapse map to **one**
