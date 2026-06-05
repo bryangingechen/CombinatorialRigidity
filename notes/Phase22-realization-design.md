@@ -1246,6 +1246,95 @@ and it lands green here). A future pass may discharge `htransport` itself (an ab
 algebraic-independence rank-preservation brick + the collapse-normal bookkeeping), but that is a
 separate, deeper undertaking; the brick above is honest and complete as the green-modulo node.
 
+**[Sharpened by §1.18 below (2026-06-05 validation pass).]** The "admits no green-brick
+reduction" / "separate, deeper undertaking" framing above **overstates** the irreducibility.
+A skeptical re-derivation against KT §5.1+§6.2 and the live code found `htransport` decomposes
+into a concrete 5-node plan whose analytic crux *re-instantiates the existing genericity
+engine*, with 3 of 5 nodes plumbing or green-reuse. The *deferral* (it does not fit a
+few-commit 22b finish) stands; the *irreducibility* is softened. See §1.18.
+
+### 1.18 Validation of the `htransport` deferral + the discharge plan (5-node cut; stays Phase 22b, paused) (2026-06-05)
+
+A skeptical validation pass (coordinator-requested; read-only, vs. KT 2011 §5.1/§6.2 + the live
+Lean) re-derived §1.17's deferral rather than rubber-stamping it. **Verdict: the deferral is
+correct** — the discharge does not fit a few-commit 22b finish, and the single-placement
+`∃`-form of `htransport` is the right, sound target (the `∀`-over-GP forms remain false,
+§1.13/§1.16) — **but §1.17's "no green-brick reduction / separate, deeper undertaking" is an
+overstatement.** The discharge is a tractable dedicated effort with a concrete node cut; 22b
+stays open (◷) and **paused** at the reduction checkpoint, with the cut below as its remaining
+work.
+
+**The green-infra route §1.17 under-weighted.** §1.7's two load-bearing claims both hold — the
+`hspan` mismatch under `collapseTo` is real (boundary edges share one H-side normal `Qcf.normal r`
+in the contraction but get distinct generic H-side normals in `ofNormals (deleteEdges E(H)) ends
+q₀`; forcing them equal is KT's degenerate lower-bound member `p2` and destroys the GP the engine
+needs), and the Phase-21b device sits *downstream* of the gap (it consumes the independent witness
+`hindep`, it does not produce it). There is also no analytic `rigidContract`/`map`/`collapseTo`
+rigidity-transport in the tree (the only `rigidContract` bridges — `rigidContract_isMinimalKDof`,
+`mulTilde_rigidContract` in `Induction/` — are matroidal: minimal-`k`-dof-ness, not matrix rank).
+**But** the rigidity→independent-row extraction `htransport`'s *conclusion* needs already exists
+green: `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking_set`
+(`GenericityDevice.lean`) — for the *same* framework. So the missing content is *one* analytic
+brick (the collapse-map rank transport, KT's family-embedding argument) + bookkeeping, not the
+whole obligation.
+
+**KT's actual argument** (Claim 6.4, p. 675 = pdf p. 28, inside Lemma 6.3; grounded on §5.1, p. 668
+= pdf p. 21, footnote 4 — verified against `.refs/katoh-tanigawa-2011-…pdf`). Generic-attains-max-
+over-a-realization-family: (1) every `R(G,p)` entry is a polynomial in the panel coefficients, so
+`rank` is lower-semicontinuous and maximal at coefficients algebraically independent over ℚ; (2)
+the body-hinge realization `(G/E′, p_{E∖E′})` (eq. 6.7) gives each boundary edge a *separate*
+H-side panel per original endpoint, so the family (6.7) is *larger* than the panel-hinge
+realizations, and the canonical collapsed realization `p2` (all H-side panels forced equal to the
+`v∗` panel) is one degenerate member; (3) since the generic member attains max rank ≥ the special
+member `p2`, `rank R(G,p; E∖E′, V∖V′) ≥ rank R(G/E′, p2) = D(|sc|−1)` — eq. (6.9).
+
+**The discharge cut (T1→T2a→T2b→T3→T4).** `Gc := G.deleteEdges E(H)`, `f := collapseTo r V(H)`,
+`sc := (V(G)∖V(H)) ∪ {r}`, `D = screwDim k`.
+
+- **T1 — placement bridge `q₀`** (KT family embedding, eq. 6.7). Construct `q₀` over the original
+  vertex set agreeing with `Qcf` on `V(G)∖V(H)` and *generic* on `V(H)` (moment-curve via the
+  `ofParam`/`isGeneralPosition_ofParam`/`withMomentNormals` seed infra), so `ofNormals Gc ends q₀`
+  is GP. *Bounded/plumbing; low risk (~60–100 LoC).*
+- **T2a — degenerate member reproduces `Qcf`'s rows.** The specialized `q₀^deg` (H-side ≡
+  `Qcf.normal r`, KT's `p2`) makes the projected surviving rows of `ofNormals Gc ends q₀^deg`
+  reproduce `Qcf`'s panel rows over `Gc.map f`: a surviving edge `e=uv` (`u∈V(H)`) has support
+  extensor `panelSupportExtensor (Qcf.normal r) (Qcf.normal v)` in both framings. The projection
+  `(extProj V(H)).dualMap` is needed because the *interior* H-side columns differ — exactly the
+  §1.14 reason the projection is onto the **exterior** columns. New `map_isLink` +
+  `panelSupportExtensor`-equality bookkeeping. *Mechanical but defeq-fiddly; medium risk
+  (~100–150 LoC) — cf. the `IsInfinitesimallyRigidOn`-defeq-across-graph-swaps caution.*
+- **T2b — generic ≥ degenerate** (the analytic crux, KT lower-semicontinuity). The projected
+  surviving-row rank at the generic `q₀` ≥ at `q₀^deg`, via the Phase-21b engine
+  `exists_polynomial_ne_zero_of_linearIndependent_at` *re-instantiated on the projected family*
+  (the independent subfamily at `q₀^deg` from T2a + `exists_independent_panelRow_subfamily_of_
+  rigidOn_linking_set` on `Qcf` propagates Zariski-open; the generic `q₀` lands in it). **Re-uses
+  the existing engine — no new matrix-rank theory.** *Research-shaped but de-risked; the one node
+  that could wall (~100–200 LoC, may sub-cut).*
+- **T3 — extract the independent surviving subfamily at `q₀`.**
+  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` reads off the size-`≥ D(|sc|−1)`
+  subfamily `t` + `hsupp` + projected `hindep`; T2 supplies its hypothesis. *Pure green-reuse;
+  low risk (~30–50 LoC).*
+- **T4 — assemble `htransport`, delete it from the composer, flip.** Compose T1–T3 into the
+  `htransport` shape, remove `htransport` from `case_I_realization`'s `hbundle` (now provable
+  in-proof from the IH `Qcf`), `\leanok` `lem:claim-6-4`, run the phase-close ceremony. *Plumbing
+  (mirror of N-22b-3 in reverse); low risk (~30–50 LoC).*
+
+**The one walling risk — T2b's degenerate-placement transversality.** `q₀^deg` is not globally GP
+(H-side bodies coincide), so boundary-edge `supportExtensor`s are nonzero only where `Qcf.normal r
+≠ Qcf.normal v` — which holds by `Qcf`'s GP for the *surviving* rows; the subtlety is only that the
+non-GP `q₀^deg` must still lie in the projected polynomial's domain (the projection `extProj V(H)`
+kills the offending interior columns). Expected to close, but this is the verification to gate on.
+
+**Phase-fit: stays Phase 22b, paused; resume gated on a T2b math-first re-recon.** ~350–550 LoC,
+4–5 nodes, one research-shaped crux — a dedicated effort, not a few-commit finish, but tractable
+(3/5 nodes plumbing/green-reuse; the crux reuses the engine). Per the coordinator decision
+(2026-06-05) it stays **Phase 22b** (the phase's headline *is* Claim 6.4; keeping one phase
+accountable avoids the receding-goalpost optics, and 22's sub-letters denote *Case* sub-phases — a
+new letter would collide). 22b is **paused at the reduction checkpoint** (N-22b-1/2/3 landed);
+resume with `/coordinate-phase 22b`, opening on the T2b math-first decomposition (the
+gating/walling node) per `DESIGN.md` *Constructibility recon … → design the LAYER*, then
+T1→T2a→T2b→T3→T4. Does **not** fold into 22c+/23 (Case III is independent of `htransport`).
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

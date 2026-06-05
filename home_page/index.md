@@ -33,11 +33,11 @@ joins the deferred crux. **Phase 22 (the realization layer) is sub-lettered** �
 **block-triangular reframe** (KT eq. 6.3's rank-addition over one common framework,
 routed through the genericity device's independent-row count, not a common-seed
 splice) with the single deferred obligation — KT Claim 6.4, the surviving block's
-exterior-projected rank at the generic placement — handed to **22b, in progress at
-its terminal green-modulo-`htransport` state** (the three planned nodes landed,
-formalizing Claim 6.4 down to one irreducible explicit hypothesis `htransport` = KT
-eq. (6.9)'s algebraic-independence rank-attainment across the collapse relabel; not
-fully closed); **22c+ (Case III at d=3 + d=3 assembly) parked in planning**.
+exterior-projected rank at the generic placement — handed to **22b, in progress,
+paused at the reduction checkpoint** (the reduction landed, reducing Claim 6.4 to one
+explicit hypothesis `htransport` = KT eq. (6.9)'s algebraic-independence rank-attainment
+across the collapse relabel; a validation pass found discharging it is a tractable
+5-node cut that stays 22b); **22c+ (Case III at d=3 + d=3 assembly) parked in planning**.
 **The body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
@@ -229,13 +229,14 @@ keeps the integer phase numbers 23–26 stable). **Phase 22a (complete,
 green-modulo-22b)** is the Case I realization — the full-rank rigid-subgraph splice
 (Katoh–Tanigawa §6.2); the composer is green-modulo a single dischargeable
 hypothesis, KT Claim 6.4, delivered via the block-triangular reframe. **Phase 22b
-(in progress, terminal green-modulo-`htransport`)** formalizes KT Claim 6.4 (the
-surviving block's exterior-projected rank at the generic placement, §6.2/§5.1) down
-to its single irreducible analytic core — two landed bricks (a bounded `D∘panelRow`
+(in progress, paused at the reduction checkpoint)** reduces KT Claim 6.4 (the
+surviving block's exterior-projected rank at the generic placement, §6.2/§5.1) to
+its single analytic core — two landed bricks (a bounded `D∘panelRow`
 packaging producer + the collapse-map rank-transport) composed inside the Case-I
-producer — but does **not** fully close it: the algebraic-independence rank-attainment
+producer — but the reduction does **not** close it: the algebraic-independence rank-attainment
 across the collapse relabel is carried as the explicit hypothesis `htransport` (KT eq.
-(6.9)), whose discharge is a deferred future sub-phase. **Phase 22c+ (planning)** parks
+(6.9)). A validation pass found discharging it is a tractable 5-node cut that stays
+Phase 22b; the phase is paused there. **Phase 22c+ (planning)** parks
 the rest behind 22a/22b
 (renumbered `22b+`→`22c+` in the 22b opening recon): Case III at `d=3` (the crux
 Lemma 6.10, §6.3 + §6.4.1) plus the `d=3` assembly, expected to split into multiple

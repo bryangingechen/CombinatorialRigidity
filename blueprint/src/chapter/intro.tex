@@ -37,8 +37,9 @@ the producers and the genericity-free \texttt{hub} partition brick).
 \textbf{Phase~22} (the realization layer) is sub-lettered: \textbf{Phase~22a}
 (Case~I realization) is complete \emph{green-modulo} KT Claim~6.4
 (\cref{lem:claim-6-4}, deferred to Phase~22b), built via the block-triangular
-reframe; \textbf{Phase~22b} (in progress, opening recon landed) discharges that
-obligation (\cref{lem:claim-6-4}, KT~\S6.2/\S5.1); and \textbf{Phase~22c+} (the
+reframe; \textbf{Phase~22b} (in progress, paused at the reduction checkpoint)
+reduces that obligation to a single hypothesis
+(\cref{lem:claim-6-4}, KT~\S6.2/\S5.1) whose discharge stays Phase~22b; and \textbf{Phase~22c+} (the
 parked Case~III at $d=3$ plus the $d=3$ assembly, renumbered \texttt{22b+} to
 \texttt{22c+} in the Phase~22b opening recon) remains in planning.
 \textbf{Phase~17} opened the longer-horizon
@@ -346,15 +347,16 @@ per-phase breakdown:
                 hypothesis, KT Claim~6.4 (\cref{lem:claim-6-4}, the surviving
                 block's exterior-projected rank at the generic placement),
                 discharged in Phase~22b.
-          \item \textbf{Phase~22b --- KT Claim~6.4} (\emph{in progress}, opening
-                recon landed): discharge the single obligation Phase~22a left
+          \item \textbf{Phase~22b --- KT Claim~6.4} (\emph{in progress}, paused at the
+                reduction checkpoint): discharge the single obligation Phase~22a left
                 green-modulo (\cref{lem:claim-6-4}, the surviving block of
                 $G \setminus E(H)$ projected to the surviving columns
                 $V(G) \setminus V(H)$ attaining independent rank at the generic
-                locus; KT~\S6.2/\S5.1, eqs.~(6.5)/(6.9)), flipping
-                \cref{lem:case-I-realization} fully green. The opening recon settled
-                the node cut (a bounded $D \circ \mathrm{panelRow}$ producer variant,
-                the research-shaped collapse-map rank-transport, the wire-up/flip).
+                locus; KT~\S6.2/\S5.1, eqs.~(6.5)/(6.9)), to flip
+                \cref{lem:case-I-realization} fully green. The reduction landed (three
+                bricks reducing the obligation to a single hypothesis
+                $\mathtt{htransport}$); a validation pass found discharging it is a
+                tractable five-node cut that stays Phase~22b, where the phase is paused.
           \item \textbf{Phase~22c+ --- Case~III at $d=3$ + $d=3$ assembly}
                 (\emph{planning}; parked behind Phases~22a/22b, renumbered
                 \texttt{22b+} to \texttt{22c+} in the Phase~22b opening recon): the
@@ -446,12 +448,13 @@ sub-lettered: \textbf{Phase~22a} (complete) builds the Case~I splice producer
 \cref{lem:case-I-realization} now \emph{green-modulo} KT Claim~6.4
 (\cref{lem:claim-6-4}) via the block-triangular reframe; the surviving
 \cref{lem:claim-6-4} is the one red Case-I node, deferred to Phase~22b. \textbf{Phase~22b}
-(in progress) formalizes \cref{lem:claim-6-4} down to its single irreducible analytic
-core --- two landed bricks (the rank-transport across the collapse map and its bounded
+(in progress, paused at the reduction checkpoint) reduces \cref{lem:claim-6-4} to its single
+analytic core --- two landed bricks (the rank-transport across the collapse map and its bounded
 $D \circ \mathrm{panelRow}$ packaging) composed inside \cref{lem:case-I-realization} --- but
 \cref{lem:claim-6-4} \emph{stays red}: the algebraic-independence rank-attainment across
 the collapse-induced normal relabel (KT eq.\ (6.9)) is carried as an explicit hypothesis
-$\mathtt{htransport}$, whose discharge is left to a future pass. \textbf{Phase~22c+}
+$\mathtt{htransport}$. A validation pass found discharging it is a tractable five-node cut
+that stays Phase~22b, where the phase is paused. \textbf{Phase~22c+}
 (planning, parked
 behind Phases~22a/22b, renumbered \texttt{22b+} to \texttt{22c+} in the Phase~22b
 opening recon) holds the Case~II/III reducible-vertex producer
