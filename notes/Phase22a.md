@@ -35,23 +35,24 @@ k-bookkeeping*.
 
 ## Current state
 
-**Track A's reduction infra (N4) and Case-I producer bricks are all GREEN, including N6-G1 (the
-generic-motive *producer*, landed 2026-06-04); the remaining red work is N6-G2 (Route 1, now re-reconned
-+ cut into G2a/G2b/G2c) + N6-G3 (composer assembly).** The simple Case-I coupling
-(`hasFullRankRealization_of_couple_ofNormals`) is a complete assembly of green bricks, and the
-`ends`-swap leg-transport brick that feeds the IH into it is green. The generic-motive recon settled the
-IH-shape gap as a **hybrid** — Route 2 (make the simple-case *producer* conclude GP) and Route 1 (make the
-*IH* generic) are two halves, not alternatives, because the composer's adapter needs each leg in
-`HasGenericFullRankRealization` form while `minimal_kdof_reduction` threads only the bare motive. **N6-G1
-is GREEN** (the recon expected a multi-commit device-GP re-expose; the spike found that route was based on
-a *false premise* and replaced it with a direct one — see *Decisions* → *N6-G1 spike*). **N6-G2 has now
-been re-reconned** (2026-06-04, design doc §1.6, docs-only): the motive is the *conditioned*
-`Pc := (G.Simple → GP) ∧ bare`, and — verified against KT §6.2 — only the **Lemma-6.3 Case-I legs** need
-the generic IH, with the hard kernel being `G/E(H)` simplicity (KT Lemma 6.3-vs-6.5) plus a flagged
-`hsplit`-vs-`splitOff` routing sub-question. Cut into **G2a** (reduction skeleton, Phase-20-touch),
-**G2b** (`map`-simplicity, the new fact, math-first), **G2c** (wire-up, buildable). **Remaining:** G2a →
-G2b → G2c → N6-G3 (or G2c+N6-G3 merged). See *Lemma checklist* / *Decisions* / *Hand-off*. No `\leanok`
-flip yet; no `sorry` committed.
+**Track A's reduction infra (N4), the Case-I producer bricks, N6-G1 (generic producer), and now N6-G2-G2a
+(the conditioned-motive reduction skeleton, `theorem_55_generic`, landed 2026-06-04) are all GREEN; the
+remaining red work is N6-G2 sub-passes G2b (`map`-simplicity) → G2c (wire-up) + N6-G3 (composer
+assembly).** The simple Case-I coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete
+assembly of green bricks, and the `ends`-swap leg-transport brick that feeds the IH into it is green. The
+generic-motive recon settled the IH-shape gap as a **hybrid** — Route 2 (make the simple-case *producer*
+conclude GP) and Route 1 (make the *IH* generic) are two halves, not alternatives, because the composer's
+adapter needs each leg in `HasGenericFullRankRealization` form while `minimal_kdof_reduction` threads only
+the bare motive. **N6-G1 is GREEN** (the spike found the recon's device-GP re-expose route was a false
+premise; see *Decisions* → *N6-G1 spike*). **G2a is GREEN** (2026-06-04): `theorem_55_generic` re-runs
+`Graph.minimal_kdof_reduction` at the conditioned motive `Pc G := (G.Simple → GP G) ∧ bare G`. The flagged
+`hsplit`-vs-`splitOff` routing sub-question is **settled**: the `Simple → GP` conjunct of the
+splitting-off branch *is* KT Case III (Track B, out of 22a scope, entirely red), so the binding
+obstruction is one of *scope*, not routing — G2a carries that branch's GP step as an explicit hypothesis
+`hsplitGP` (Phase-21b green-modulo `h…` idiom; design doc §1.6 escalation (ii)), and likewise carries the
+simple-base `hbaseGP` and the simple Case-I `hcontractGP` (the latter fed the *full conditioned IH*, the
+shape G2c/N6-G3 consume). **Remaining:** G2b → G2c → N6-G3 (or G2c+N6-G3 merged). No `\leanok` flip yet
+(`lem:case-I-realization` stays red until G2c discharges `hcontractGP`); axiom-clean; no `sorry`.
 
 **Green-brick inventory (resume points; full detail in *Lemma checklist* / *Decisions*).**
 - **N4** `rigidContract_isMinimalKDof` — graph↔matroid contraction-minimality bridge (`\leanok`).
@@ -83,6 +84,13 @@ flip yet; no `sorry` committed.
   so rigidity comes from the genericity-free splice glue `isInfinitesimallyRigidOn_of_splice` and GP from
   the hypothesis. One commit (not the recon's expected 2 — the device-GP re-expose route was a false
   premise).
+- **N6-G2-G2a** (Route 1, skeleton) conditioned-motive reduction `theorem_55_generic` — the generic
+  sibling of `theorem_55`: `Graph.minimal_kdof_reduction` at `Pc G := (G.Simple → GP G) ∧ bare G`.
+  Discharges each branch's bare conjunct from the `theorem_55`-shaped hypotheses (`hbase`/`hsplit`/
+  `hcontract`) and each branch's `Simple → GP` conjunct from a carried hypothesis: `hbaseGP` (simple
+  two-vertex base), `hsplitGP` (= KT Case III / Track B, out of 22a scope, carried), `hcontractGP` (=
+  simple Case I, *fed the full conditioned IH* `∀ G', … → Pc G'`, the shape G2c/N6-G3 consume). Pure
+  structural composition (anonymous-constructor projections), axiom-clean.
 
 ## Architectural choices made up front
 
@@ -152,12 +160,15 @@ flip yet; no `sorry` committed.
     trifurcates — only the **Lemma-6.3 legs** (rigid block `H`, contraction `G/E(H)`) need the generic IH;
     `H` simple is free via `Graph.Simple.mono`, and `G/E(H)` simplicity is the genuine new obligation.
     Sub-passes (each its own commit, re-recon at open):
-    - [ ] **G2a** conditioned-motive reduction skeleton (Phase-20-touch) — instantiate
-      `minimal_kdof_reduction` at `Pc`; bare conjunct reuses `theorem_55`'s green proofs, `Simple → GP`
-      vacuous where non-simple. **Flagged open sub-question (G2a's first task):** does `Pc`'s `hsplit`
-      premise survive the project's `splitOff` routing for a *simple* parent (KT's Lemma-6.5 case uses
-      vertex-removal `Gv`, not `splitOff`)? If not, escalate to a Phase-20 `removeVertex`-routed variant
-      or carry the Lemma-6.5 step as an explicit `h…` (green-modulo). `research-shaped`.
+    - [x] **G2a** conditioned-motive reduction skeleton. **GREEN** (`theorem_55_generic`, 2026-06-04,
+      axiom-clean). `Graph.minimal_kdof_reduction` at `Pc G := (G.Simple → GP G) ∧ bare G`; bare conjunct
+      reuses `theorem_55`'s `hbase`/`hsplit`/`hcontract` hypotheses, `Simple → GP` per-branch from carried
+      hypotheses `hbaseGP`/`hsplitGP`/`hcontractGP`. **Flagged sub-question SETTLED:** the `Simple → GP`
+      conjunct of the *splitting-off* branch **is** KT Case III (Track B), out of 22a scope and entirely
+      red — so the binding obstruction is *scope*, not `splitOff`-routing. The honest in-scope shape
+      carries it as `hsplitGP` (Phase-21b green-modulo `h…`; design doc §1.6 escalation (ii)), no Phase-20
+      `removeVertex` re-route needed. `hcontractGP` is fed the *full conditioned IH* `∀ G', … → Pc G'` so
+      G2c can extract each Lemma-6.3 leg's `GP` (`H` via `Simple.mono`, `G/E(H)` via G2b).
     - [ ] **G2b** `map`/`collapseTo` simplicity (the new combinatorial fact) — `(G/E(H)).Simple` under KT
       Lemma 6.3, or the Lemma-6.3-vs-6.5 dichotomy. The fork has *no* `map`-simplicity API (instances cover
       `↾`/`＼`/`-`/induce only). **Decompose math-first.** `research-shaped` — the hard kernel.
@@ -211,6 +222,17 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **G2a GREEN: the conditioned-motive reduction skeleton `theorem_55_generic`; the flagged routing
+  sub-question is settled by *scope*, not `splitOff` routing (2026-06-04).** Built `theorem_55_generic`:
+  `Graph.minimal_kdof_reduction` re-instantiated at `Pc G := (G.Simple → GP G) ∧ bare G`. Each branch's
+  bare conjunct comes from the `theorem_55`-shaped hypotheses; each branch's `Simple → GP` conjunct from a
+  carried hypothesis (`hbaseGP`/`hsplitGP`/`hcontractGP`). **The G2a flagged sub-question** ("does `Pc`'s
+  `hsplit` survive `splitOff` routing for a simple parent?") **dissolves once you see the splitting-off
+  branch's `Simple → GP` conjunct *is* KT Case III** (Track B), out of 22a scope and entirely red. So the
+  binding obstruction is *scope*, not the `splitOff`-non-simplicity routing — carrying `hsplitGP` as an
+  explicit hypothesis (green-modulo `h…`) is the honest in-scope shape, and no Phase-20 `removeVertex`
+  re-route is needed. `hcontractGP` (simple Case I) is fed the *full conditioned IH* so G2c can extract
+  each Lemma-6.3 leg's `GP`. Pure structural composition; axiom-clean. Design doc §1.6.
 - **N6-G2 re-recon: condition the motive on `G.Simple`; Case I trifurcates and only the Lemma-6.3 legs
   need the generic IH; cut into G2a/G2b/G2c (2026-06-04, docs-only).** The §1.5 hand-off flagged N6-G2 as
   NEEDS-FURTHER-RECON. Settled (design doc §1.6, verified vs. KT 2011 §6.2 pp.673–676): the generic
@@ -414,16 +436,11 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Blockers / open questions
 
 - **The open blocker is the N6 composer's generic-motive induction (an IH-shape gap), decomposed into
-  N6-G1/G2/G3 (hybrid route) with N6-G2 now re-reconned into G2a/G2b/G2c (2026-06-04). N6-G1 is GREEN; the
-  remaining red work is G2a → G2b → G2c → N6-G3.** Everything else under Track A is green: N4, the N5
+  N6-G1/G2/G3 (hybrid route) with N6-G2 cut into G2a/G2b/G2c. N6-G1 and G2a are GREEN; the remaining red
+  work is G2b → G2c → N6-G3.** Everything else under Track A is green: N4, the N5
   splice/seed/rank-polynomial bricks (all-edges + leg-restricted), N6a, the two-motive split, (G2), the
-  N6b/N6c coupling, the leg-transport `ends`-swap brick, and N6-G1 (the generic producer). The residual
-  red items (design doc §1.6):
-  - **G2a — conditioned-motive reduction skeleton (Phase-20-touch, research-shaped).** Instantiate
-    `minimal_kdof_reduction` at `Pc := (G.Simple → GP) ∧ bare`. **First task: settle the flagged
-    sub-question** — does `Pc`'s `hsplit` premise survive the project's `splitOff` routing for a *simple*
-    parent (KT's Lemma-6.5 case uses vertex-removal `Gv`, not `splitOff`)? If not, escalate to a Phase-20
-    `removeVertex`-routed variant or carry the Lemma-6.5 step as an explicit `h…`.
+  N6b/N6c coupling, the leg-transport `ends`-swap brick, N6-G1 (the generic producer), and G2a
+  (`theorem_55_generic`, the conditioned-motive reduction skeleton). The residual red items (design doc §1.6):
   - **G2b — `map`/`collapseTo` simplicity (the hard kernel, math-first).** `(G/E(H)).Simple` under KT
     Lemma 6.3, or the 6.3-vs-6.5 dichotomy. No `map`-simplicity API in the fork. Deferral-eligible.
   - **G2c — wire G2a+G2b into the simple-Case-I `hcontract` discharge (buildable once G2a/G2b green; may
@@ -435,32 +452,31 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**Clean handoff point.** This commit is **docs-only** — the N6-G2 re-recon the prior hand-off named
-(NEEDS-FURTHER-RECON). It cut N6-G2 (the generic-motive reduction) into the three named decomposition
-passes G2a/G2b/G2c (design doc §1.6, *Lemma checklist*, *Blockers*), verified against KT 2011 §6.2
-(pp.673–676). No Lean / `\leanok` / blueprint edits. N6-G1 stays GREEN; `lem:case-I-splice-placement` /
-`lem:case-I-realization` stay red. Build state unchanged since the N6-G1 commit (no Lean touched).
+**Clean handoff point; next agent picks up at G2b.** This commit landed **G2a GREEN**
+(`theorem_55_generic`, `AlgebraicInduction.lean`, after `theorem_55`): the conditioned-motive reduction
+skeleton, `Graph.minimal_kdof_reduction` at `Pc G := (G.Simple → GP G) ∧ bare G`, axiom-clean, warning-
+and lint-clean. It **settles the flagged routing sub-question** — the splitting-off branch's `Simple → GP`
+conjunct *is* KT Case III (Track B, out of 22a scope, red), so the obstruction is *scope* not routing;
+G2a carries `hbaseGP`/`hsplitGP`/`hcontractGP` as explicit hypotheses (green-modulo `h…`), no Phase-20
+re-route. `hcontractGP` is fed the *full conditioned IH* (the shape G2c needs). No `\leanok` flip
+(`lem:case-I-realization` stays red until G2c discharges `hcontractGP`).
 
-**Next concrete task — G2a, and within it, settle the flagged routing sub-question first.** G2a is the
-conditioned-motive reduction skeleton: re-instantiate `Graph.minimal_kdof_reduction` (`Induction.lean:3529`)
-at the *conditioned* motive `Pc G := (G.Simple → GP G) ∧ bare G`, where `bare = HasFullRankRealization k`
-(reuse `theorem_55`'s green branch proofs) and `GP = HasGenericFullRankRealization k`. **Before
-dispatching G2a as a build, settle its open sub-question:** does `Pc`'s `hsplit` premise survive the
-project's `splitOff` routing for a *simple* parent? KT's Lemma 6.5 (the simple, no-simple-contraction
-case) recurses on a degree-2 vertex *removal* `Gv` (simple-because-removal), but
-`minimal_kdof_reduction` routes that case through `hsplit`/`splitOff`, which does NOT preserve simplicity.
-If `Pc`'s `hsplit` cannot be discharged for a simple parent, escalate to (i) a Phase-20
-`removeVertex`-routed reduction variant or (ii) carrying the Lemma-6.5 `Simple → GP` step as an explicit
-`h…` hypothesis (Phase-21b green-modulo idiom). **Do NOT bundle G2b or G2c with G2a.** See design doc §1.6
-+ *Blockers*.
+**Next concrete task — G2b: the `map`/`collapseTo` simplicity fact.** `(G/E(H)).Simple` (i.e.
+`(G.rigidContract H r).Simple`, where `rigidContract = (G ＼ E(H)).map (collapseTo r V(H))`,
+`Induction.lean:1855`) under KT's Lemma-6.3 hypothesis, or the Lemma-6.3-vs-6.5 dichotomy as a decidable
+case split. **The hard kernel** — the fork has *no* `map`-simplicity API (`Simple` instances cover
+`↾`/`＼`/`-`/induce/`noEdge`/`singleEdge`, **not** `map`; `Matroid/Graph/Simple.lean`). **Decompose
+math-first** before any build dispatch; it is KT's Lemma 6.3/6.5 boundary (printed pp. 673, 675).
+Deferral-eligible: if the math-first decomposition stalls, carry `(G/E(H)).Simple` as an explicit
+hypothesis on the G2c discharge (Phase-21b green-modulo idiom) and keep the kernel isolated/red.
 
-**Then:** **G2b** — the `map`/`collapseTo` simplicity fact (`(G/E(H)).Simple` under KT Lemma 6.3, or the
-6.3-vs-6.5 dichotomy; the hard kernel, no `map`-simplicity API in the fork — **decompose math-first**,
-deferral-eligible). **Then G2c** — wire G2a+G2b into the simple-Case-I `hcontract` discharge: feed the two
-generic Lemma-6.3 leg IHs (`H` simple via `Simple.mono`, `G/E(H)` simple via G2b) through
-`hasGenericRealization_transport_ends` into `hasGenericFullRankRealization_of_splice_ofNormals` (N6-G1),
-forget down (`hasFullRankRealization_of_generic`) for the non-simple branch (N6a), conclude `hcontract` ⟹
-`lem:case-I-realization` green, closing 22a (G2c may merge with N6-G3).
+**Then G2c** — wire G2a + G2b into the simple-Case-I discharge that instantiates `theorem_55_generic`'s
+`hcontractGP`: from the conditioned IH at the two Lemma-6.3 legs (`H` simple via `Graph.Simple.mono`,
+`G/E(H)` simple via G2b) extract each leg's `GP`, feed through `hasGenericRealization_transport_ends`
+into `hasGenericFullRankRealization_of_splice_ofNormals` (N6-G1), and (for the non-simple branch, via
+`hasFullRankRealization_of_generic`) discharge `theorem_55.hcontract` ⟹ `lem:case-I-realization` green,
+closing 22a (G2c may merge with N6-G3). The N4 contraction-minimality bridge (`rigidContract_isMinimalKDof`)
+supplies that `G/E(H)` is a strictly-smaller minimal `0`-dof-graph the IH applies to.
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an

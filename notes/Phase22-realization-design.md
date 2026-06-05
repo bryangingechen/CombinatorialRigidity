@@ -352,25 +352,33 @@ the parent is allowed to be non-simple (or the conjunct discharged trivially),
 so `splitOff`-non-preservation is harmless: a simple parent reaching `hsplit` is
 KT's Lemma-6.5 case (degree-2 removal), where KT itself recurses on the
 vertex-removal `Gv` (simple) — *not* on the project's edge-adding `splitOff`.
-**Open sub-question for G2a (flagged, not closed here):** the project's
+**Open sub-question for G2a — RESOLVED at G2a-build (2026-06-04):** the project's
 `minimal_kdof_reduction` routes *all* no-proper-rigid-subgraph cases — including
 KT's Lemma-6.5 simple case — through `hsplit`/`splitOff`, whereas KT's Lemma 6.5
-uses vertex-removal `Gv`. Whether `Pc`'s `hsplit` premise is dischargeable for a
-*simple* parent under the project's `splitOff` routing (vs. needing a Phase-20
-re-parameterization onto `Gv`) is the first thing G2a must settle. If it is not,
-G2a escalates to either (i) a Phase-20 `removeVertex`-routed reduction variant,
-or (ii) carrying the Lemma-6.5 `Simple → GP` step as an explicit hypothesis
-(the Phase-21b `h…` idiom), keeping the node green-modulo and honest.
+uses vertex-removal `Gv`. The flag asked whether `Pc`'s `hsplit` premise is
+dischargeable for a *simple* parent under the project's `splitOff` routing. **The
+resolution is by *scope*, not routing:** the `Simple → GP` conjunct of the
+splitting-off branch is itself the Case-III generic *producer* (Track B,
+`theorem_55.hsplit`, one rigidity row short), which is out of 22a's Case-I scope
+and entirely red — so regardless of whether `splitOff` preserves simplicity, that
+conjunct cannot be discharged *within* 22a. The honest in-scope shape (taken in
+`theorem_55_generic`) carries it as the explicit hypothesis `hsplitGP` — escalation
+(ii) above, the Phase-21b green-modulo `h…` idiom — keeping the node green-modulo and
+honest, with **no** Phase-20 `removeVertex` re-parameterization (escalation (i)) needed.
 
 **The three decomposition passes (each its own future commit; re-recon each at
 open).**
-- **G2a — the conditioned-motive reduction skeleton (Phase-20-touching).**
-  Instantiate `minimal_kdof_reduction` at `Pc G := (G.Simple → GP G) ∧ bare G`
-  (or thread `G.Simple` into the dispatch). Discharge: `hbase`/`hsplit`/the
-  non-simple `hcontract` reuse `theorem_55`'s existing green proofs for the bare
-  conjunct, and discharge `Simple → GP` *vacuously* where the graph is
-  non-simple. **The flagged open sub-question above is G2a's first task.**
-  `research-shaped` (the motive plumbing through Phase 20 is the new structure).
+- **G2a — the conditioned-motive reduction skeleton (Phase-20-touching). GREEN
+  (`theorem_55_generic`, 2026-06-04, axiom-clean).** `Graph.minimal_kdof_reduction`
+  at `Pc G := (G.Simple → GP G) ∧ bare G`; each branch's bare conjunct from the
+  `theorem_55`-shaped hypotheses, each branch's `Simple → GP` conjunct from a
+  carried hypothesis (`hbaseGP`/`hsplitGP`/`hcontractGP`, the latter fed the *full
+  conditioned IH*). **The flagged sub-question is SETTLED by scope, not routing:**
+  the splitting-off branch's `Simple → GP` conjunct *is* KT Case III (Track B, out
+  of 22a scope, red), so it is carried as `hsplitGP` (green-modulo `h…`) — no
+  Phase-20 `removeVertex` re-route, no internalizing the `splitOff`-non-simplicity
+  question. Pure structural composition (the motive plumbing is the only new
+  content, and it is one `minimal_kdof_reduction` application).
 - **G2b — `map`/`collapseTo` simplicity (the new combinatorial fact).** Either
   a positive `(G/E(H)).Simple` lemma when KT's Lemma-6.3 hypothesis holds, or the
   Lemma-6.3-vs-6.5 dichotomy as a decidable case split. This is the genuinely new
@@ -392,9 +400,11 @@ project's `splitOff` routing for a simple parent, or is a Phase-20 re-route
 onto vertex-removal needed). Both are escalation-eligible to the Phase-21b
 "carry as `h…`, keep the node red" idiom (`§4` deferral candidate (1)/(2)) if
 the math-first decomposition stalls — that keeps `theorem_55`'s Case-I branch
-green-modulo and honest while isolating the kernel. **The next commit is G2a's
-own decomposition pass** (settle the flagged sub-question first); do NOT bundle
-G2b or G2c with it.
+green-modulo and honest while isolating the kernel. **G2a is now GREEN**
+(`theorem_55_generic`, 2026-06-04; the flagged sub-question resolved by scope,
+above). **The next commit is G2b** — the `map`/`collapseTo` simplicity fact
+(`(G/E(H)).Simple`); decompose math-first, deferral-eligible; do NOT bundle G2c
+with it.
 
 ---
 
