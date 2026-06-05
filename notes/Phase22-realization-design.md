@@ -1740,6 +1740,111 @@ cannot feed any selector-sensitive transport) is a sibling of §1.22's rigid-on-
 lifted to `DESIGN.md` *Match the source's argument structure …* → *A realization motive must carry the
 selector invariants its consumers read* (companion to *Realization motive must be V(G)-relative*).
 
+### 1.24 Route-(i) scope verification + the U3a/U4 commit sequence — the motive strengthening is *generic-motive only*, all producers supply link-recording from `endsOf`, the three risk items confirmed (with two refinements) (2026-06-05)
+
+The user **decided route (i)** (§1.23: strengthen the motive to carry "the realization's `ends`
+records its own graph's links", then discharge the `hbundle` alignment conjuncts and build U3a/U4).
+This section is the **scope-verification recon** — every claim below was traced against the live
+code (no Lean written), and the commit sequence front-loads the provable-now bricks so the big
+re-type lands with no missing deps. **The inventory CONFIRMS the proposed scope** (no contradiction);
+two of the three risk items sharpen in the project's favour.
+
+**Scope item 1 — "generic motive only" — CONFIRMED.** Strengthen *only*
+`HasGenericFullRankRealization` (`PanelHinge.lean:938`); leave the bare `HasFullRankRealization`
+(`:913`) and `theorem_55` (`:976`) untouched. Verified: the `ends`-transport lives **entirely** in
+the generic Case-I flow. The swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap`
+(`CaseI.lean:332`) has exactly **one** call site — inside its own consumer
+`hasGenericRealization_transport_ends` (`:375`, used at `:396`) — and that consumer has exactly
+**one** call site, `case_I_realization`'s `H`-leg (`:1623`). `HasGenericFullRankRealization` occurs
+in only three files (`PanelHinge`/`GenericityDevice`/`CaseI`), all generic Case-I. The bare-motive
+couplings (`hasFullRankRealization_of_couple_ofNormals` `:70`, `…_set` `:240`,
+`…_splice_ofNormals` `GenericityDevice:869`) take each leg's rigidity **pre-aligned at the parent
+selector as an explicit hypothesis** (`hrigH`/`hrigc` at `ofNormals … ends …`) — they do *no*
+`ends`-swap, extract *no* IH. `theorem_55_generic`'s bare conjunct (`hcontract`, `PanelHinge:1054`)
+feeds the IH's bare half `(hIH …).2`; only the GP conjunct (`hcontractGP`, `:1059`) routes through
+`case_I_realization`. So no bare-motive producer/consumer transports across `ends` or needs
+link-recording. **The scope is correct.**
+
+**Scope item 2 — producer inventory — CONFIRMED (every generic producer constructs fresh, supplies
+link-recording from a parameter).** Sites concluding `HasGenericFullRankRealization`:
+| Site | Role | Witness | `ends` source |
+|---|---|---|---|
+| `…_of_couple_ofNormals` `CaseI:170` | coupling (all-`V`) | **fresh** `ofNormals G ends q₀` | param, all-`β` `hends : ∀ e, G.IsLink e (ends e).1 (ends e).2` |
+| `…_of_splice_set_ofNormals` `CaseI:520` | splice (body-set) | **fresh** | param (caller supplies) |
+| `…_of_couple_ofNormals_set` `CaseI:568` | coupling (body-set) | **fresh** | param, **edge-restricted** `hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2` |
+| `…_of_couple_asymm_ofNormals_set` `CaseI:667` | coupling (asymm, superseded) | **fresh** | param, edge-restricted |
+| `…_of_splice_ofNormals` `GenericityDevice:869` | device-free splice (N6-G1) | **fresh** `ofNormals G ends q₀` `:881` | param |
+| `…_of_couple_blockTriangular_ofNormals_set` `CaseI:1388` | block-triangular coupling | **fresh** `ofNormals G ends q` | param, edge-restricted |
+| `case_I_realization` `CaseI:1591` | composer | forwards via the coupling | **manufactures** `ends := G.endsOf`, `hends` from `isLink_endsOf` `:1602` |
+None forwards an IH realization's `Q` as the witness; every one builds `ofNormals G ends q₀` and
+takes `ends` as a parameter with a link-recording `hends`. So **link-recording is free for every
+producer** once the motive carries it (the composer already manufactures the canonical link-recording
+`endsOf`). The *only* place a link-recording selector must be *manufactured from an arbitrary IH*
+is inside the swap-transport (the IH's own `Q.ends`), which is exactly what the new motive conjunct
+supplies.
+
+**Scope item 3 — the three risk items — CONFIRMED, two sharpen:**
+- **(a) `hne_ends` unsatisfiable for `endsOf` — CONFIRMED (stronger than feared).** `endsOf` returns
+  the junk `(default, default)` on non-edges (`Operations.lean:80–81`), so the all-`β`
+  `hne_ends : ∀ e, (ends e).1 ≠ (ends e).2` (the second `hbundle` conjunct, `CaseI:1579`, and the
+  bare couplings' parameter at `CaseI:73`/`:243`) is **genuinely unsatisfiable** for `ends = G.endsOf`.
+  The swap-transport brick `hasGenericRealization_transport_ends` must be **edge-restricted** on its
+  `hne_ends` (consume it only on linking edges, where `supportExtensor_ne_zero` is actually read),
+  and that edge-restricted form discharges from `endsOf`-on-links distinctness via `G.Simple`
+  (a simple graph has no loops, so a link's two ends differ). Commit 1.
+- **(b) `hswap` discharge — CONFIRMED, and the bridge already exists.** The first `hbundle` conjunct
+  (`CaseI:1575–1578`) is exactly the alignment §1.23 found undischarged. With the new motive conjunct
+  ("`Q.ends` records `Q.graph`'s links"), `hswap` discharges by composing it with the parent
+  selector's link-recording (`endsOf`, `isLink_endsOf`) — both pin the *same unordered pair*, so they
+  agree up to swap. The bridge `endsOf_eq_or_swap` (`Operations.lean:102–107`) is **already landed** —
+  it is precisely `isLink_endsOf` + mathlib `IsLink.eq_and_eq_or_eq_and_eq`, the lemma the prompt
+  anticipated needing. So (b) is even cheaper than expected; the motive conjunct + the existing
+  bridge close it.
+- **(c) contraction-leg `IsLink.map`-under-`collapseTo` — CONFIRMED, bounded (one small lemma).**
+  `rigidContract G H r = (G.deleteEdges E(H)).map (collapseTo r V(H))` (`ReducibleVertex.lean:680`),
+  so the contracted graph is `Gc.map f` with `Gc = G.deleteEdges E(H)`, `f = collapseTo r V(H)`. The
+  mathlib fact `Graph.map_isLink` (`Mathlib.Combinatorics.Graph.Maps`:
+  `(map f G).IsLink e a b = Relation.Map (G.IsLink e) f f a b`) gives the forward direction
+  `G.IsLink e x y → (map f G).IsLink e (f x) (f y)` directly. So the relabelled selector
+  `endsᵐ := f ∘ (parent ends)` records the contracted link whenever the parent `ends` records the
+  `Gc`-link — a **small derived lemma**, not a research wall. This is the one genuinely new (if minor)
+  brick; it lands inside the U3a/U4 build (Commits 4–5), not as a front-loaded provable-now brick.
+
+**Verified commit sequence (route (i)).** Front-load the two provable-now bricks so the re-type
+threads through a complete dep set; the new `IsLink.map` lemma rides U3a; U4 is the flip + close.
+
+1. **Edge-restrict `hasGenericRealization_transport_ends`'s `hne_ends`** (consume distinctness only on
+   linking edges) **+ add the `endsOf`-on-links distinctness fact** (`Operations.lean`, off `G.Simple`
+   + `isLink_endsOf`). Provable now; no motive dependency. Closes risk (a). *First buildable.*
+2. **Add the `linkRecording (ofNormals G G.endsOf q₀) G` bridge lemma** — that the canonical-`endsOf`
+   realization records `G`'s links (its `.ends e = G.endsOf e` by `ofNormals_ends`, link-recording by
+   `isLink_endsOf`). This is the term every fresh producer will hand the strengthened motive. Provable
+   now (no re-type yet — states the conjunct the producers already satisfy). De-risks Commit 3.
+3. **The re-type of `HasGenericFullRankRealization`** — add the link-recording conjunct
+   (`∀ e u v, G.IsLink e u v → ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ swap`) to the `def` (`:938`);
+   thread it through every conclusion site (the 6 producers + the base-case `hbaseGP` and the
+   `theorem_55_generic` motive `Pc`), each supplied by Commit 2's bridge (fresh `endsOf` producers) or
+   the IH (the composer forwarding); re-destructure every consumer's `let ⟨Q, hQg, hQgp, hQrig⟩`. Big
+   mechanical commit, no missing deps after 1–2. (`hasFullRankRealization_of_generic` `:948` forgets
+   the new conjunct just as it forgets GP — one extra `_`.)
+4. **Discharge `hswap`/`hne_ends` from the strengthened bundle + build U3a** — with the motive
+   conjunct in hand, the `H`-leg `hswap` derives via `endsOf_eq_or_swap` (already landed) and the
+   contraction-leg alignment via the new `IsLink.map`-under-`collapseTo` lemma (risk (c)); transport
+   `Qcf`'s rigidity on `sc = V(Gc.map f)` to the `endsᵐ` selector by
+   `infinitesimalMotions_ofNormals_eq_of_ends_swap`. This is the U3a §1.20 plan, now *buildable*.
+5. **U4 — assemble `htransport`, delete it from `hbundle`, flip `lem:claim-6-4` green, phase-close.**
+   U3b (landed) gives projected-*collapsed* independence; U2 (landed) carries it to
+   projected-*uncollapsed* rows at `q₀^deg`; assemble `(q₀^deg, t, hsupp, hcount, hindep)` into
+   `htransport`; delete `htransport` (and, with route (i), the `H`-leg `hswap`) from `hbundle`;
+   `\leanok` `lem:claim-6-4`; then the full phase-close ceremony.
+
+**Net.** Route (i) is verified buildable: the scope is generic-motive-only, every producer supplies
+link-recording for free, and the three risk items hold — (a) needs the edge-restriction (Commit 1),
+(b)'s bridge is already landed, (c) is one small `IsLink.map` lemma. The motive recon owed by §1.23
+is settled; the next concrete commit is **Commit 1** (edge-restrict `hne_ends` + `endsOf`-on-links
+distinctness, provable now). No exposition-ledger entry: this is project-side motive plumbing, not a
+new KT-math insight (the KT crux is U3b, already bricked).
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
