@@ -5,7 +5,7 @@
 Stratum 5 of the molecular-conjecture program, continued. **Scope: just KT
 Claim 6.4** — the single deferred obligation Phase 22a left green-modulo. 22a's
 Case-I realization composer `PanelHingeFramework.case_I_realization`
-(`AlgebraicInduction.lean`) / blueprint `lem:case-I-realization` is green-modulo
+(`AlgebraicInduction/CaseI.lean`) / blueprint `lem:case-I-realization` is green-modulo
 one dischargeable hypothesis, `hclaim64`, tracked by the red blueprint node
 `lem:claim-6-4`. 22b's target is to **discharge it** — flipping `lem:claim-6-4`
 green and `lem:case-I-realization` to fully green.
@@ -15,7 +15,7 @@ is **worked out** in `notes/Phase22-realization-design.md` §1.13–§1.16 and
 `notes/Phase22a.md` *Hand-off* / *Blockers*; 22b **formalizes** it, it does not
 re-derive it. Forward-mode / structural-edit (`blueprint/CLAUDE.md`): 22b opens no
 new chapter — `lem:claim-6-4` is the existing red node in `algebraic-induction.tex`;
-Lean lands in `Molecular/AlgebraicInduction.lean`.
+Lean lands in `Molecular/AlgebraicInduction/CaseI.lean`.
 
 ## Current state
 

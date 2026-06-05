@@ -226,7 +226,7 @@ project; commit history is preserved with paths rewritten.
   Lean pieces of the cycle-realization Lemma 5.4 (Crapo–Whiteley 1982).
   The crux **Case III** (`k=0`, no proper rigid subgraph) is deferred to
   Phases 22–23. Forward-mode; the chapter `algebraic-induction.tex` is the
-  authoritative dep-graph. `Molecular/AlgebraicInduction.lean`. See
+  authoritative dep-graph. `Molecular/AlgebraicInduction/`. See
   `notes/Phase21.md` and `notes/MolecularConjecture.md`.
 * **Phase 21b (complete)** — the **genericity device** (Claim 6.4/6.9), the
   shared analytic crux of the algebraic induction: the panel-coordinate

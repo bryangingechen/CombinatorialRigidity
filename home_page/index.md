@@ -202,7 +202,7 @@ device. The panel layer and all four Lean pieces of the cycle-realization
 Lemma 5.4 (Crapo–Whiteley 1982) are green. The crux **Case III** (`k=0`,
 no proper rigid subgraph) is deferred to Phases 22–23. Forward-mode; the
 chapter `algebraic-induction.tex` is the authoritative dep-graph.
-`Molecular/AlgebraicInduction.lean`. See `notes/Phase21.md` and
+`Molecular/AlgebraicInduction/`. See `notes/Phase21.md` and
 `notes/MolecularConjecture.md`.
 
 **Phase 21b (complete)** delivers the **genericity device** (Claim 6.4/6.9) —
@@ -261,12 +261,12 @@ existing files or refactor across several).
 |    18 | Panel-hinge rigidity matrix `R(G,p)` | `Molecular/RigidityMatrix.lean` | ✓ |
 |    19 | `M(G̃)`, deficiency, `k`-dof graphs | `Molecular/Deficiency.lean` | ✓ |
 |    20 | Combinatorial induction → Theorem 4.9 | `Molecular/Induction.lean` | ✓ |
-|    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction.lean` | ✓ |
+|    21 | Algebraic induction: Thm 5.5 base + Cases I & II (genericity-free core; device cited to 21b) | `Molecular/AlgebraicInduction/` | ✓ |
 |   21a | Grassmann–Cayley meet / projective-duality foundations | `Molecular/Meet.lean` | ✓ |
-|   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction.lean` (+ `lem:genericity-device`) | ✓ |
-|   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/{Induction,AlgebraicInduction}.lean` | ✓ (green-modulo-22b) |
-|   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction.lean` | ◷ |
-|  22b+ | (parked) Case III at `d=3` + `d=3` assembly (Claim 6.4 / 22b precedes it; may renumber to 22c+) | `Molecular/AlgebraicInduction.lean` | ◷ |
+|   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction/` (+ `lem:genericity-device`) | ✓ |
+|   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction.lean` + `AlgebraicInduction/` | ✓ (green-modulo-22b) |
+|   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction/CaseI.lean` | ◷ |
+|  22b+ | (parked) Case III at `d=3` + `d=3` assembly (Claim 6.4 / 22b precedes it; may renumber to 22c+) | `Molecular/AlgebraicInduction/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
 for the full mathematical and engineering plan,
