@@ -35,29 +35,33 @@ k-bookkeeping*.
 
 ## Current state
 
-**⚠ SUPERSEDED by a second coordinator verification (2026-06-05) — `case_I_realization` is STILL NOT
-honestly green-modulo; the realization layer is being re-architected (block-triangular).** The 561a94b
-"asymmetric coupling" fix below removed the *false* `hpinc`, but a coordinator verification pass found
-its replacement `htransportGP` (the `∀`-over-general-position-seeds conjunct) is **also undischargeable**:
-it is applied at a shared seed `q₀` constrained only to be a non-root of `Q_H · Q_gp` (i.e. only known to
-be general-position), so discharging it in 22b requires "**GP ⟹ rigid**", which is false —
-`IsGeneralPosition` is *pairwise* normal independence (per-edge transversality), strictly weaker than
-the global full-rank/rigidity condition (the tell: the `H`-leg, the same kind of graph, does **not** get
-rigidity from GP — it runs the rank-polynomial round-trip precisely because GP ⊊ rank-generic locus). So
-the asymmetric fix **relocated** the unsatisfiability (false `hpinc` → too-strong `htransportGP`) rather
-than removing it. **Root cause (the genuine one, design doc §1.13 / `DESIGN.md` *Match the source's
-argument structure …*):** Phase 21b translated KT's **block-triangular rank-addition** (eq. 6.3, each
-block at its own *leg-wise* generic placement, ranks add) into the motion-space **common-seed glue**
-`isInfinitesimallyRigidOn_of_splice` (one placement rigid on *both* legs). KT never needs a common seed;
-the project's motion-space rigidity model does, and that demand — with the contraction leg on a *proper*
-body set — is the impasse all three bridge hypotheses (`hcrig` → `hpinc` → `htransportGP`) failed to
-cross. **Decision:** re-architect the Case-I splice to KT's block-triangular structure (design-first,
-owner-reviewed); audit molecular phases 17–22 for sibling divergences; lesson captured in `DESIGN.md` +
-`blueprint/CLAUDE.md` (honesty-gate third check) + `notes/FRICTION.md` *[process] Phase 22a — motion-space
-splice glue vs KT block-triangular*. **`case_I_realization` (561a94b) remains in the tree as a
-valid-but-vacuous theorem pending the reframing, which will rewrite the composer.** The detailed 561a94b
-narration below is retained as the historical record of that (superseded) attempt; read this banner +
-*Blockers* / *Hand-off* for the live state.
+**✓ BLOCK-TRIANGULAR REFRAME LANDED (2026-06-05, Stage 4) — `case_I_realization` is now honestly
+GREEN-MODULO `hsc_proj_indep` (the dischargeable KT Claim 6.4).** The §1.13 impasse — the asymmetric
+coupling's `htransportGP` ("GP ⟹ rigid", false) was the third relocation of an unsatisfiable
+common-seed demand (`hcrig` → `hpinc` → `htransportGP`) — is resolved by the design-doc §1.14
+block-triangular reframing. The new coupling
+`PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` reproduces
+KT eq. (6.3)'s **block-triangular rank-addition** over the *single* common framework
+`ofNormals G ends q₀`: it exhibits `D(|V(G)|−1)` independent rigidity rows split block-wise (Piece B,
+`Sum.elim`) — the `H`-block rows (which vanish under the **exterior-column projection**
+`D := (extProj V(H)).dualMap`, KT's top-right `0`, `hingeRow_comp_extProj_eq_zero`) `⊔` the
+surviving-edge rows (the projected block) — and reads rigidity on `V(G)` off the row count via the new
+device-row closure `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows`,
+*at `q₀` itself* (so general position survives ⟹ the generic motive). **This needs no common placement
+rigid on both legs** — the device counts independent *rows*, never rigidity of one framework on a leg
+at a shared seed. The single green-modulo hypothesis is now `hsc_proj_indep`: the surviving rows are
+`≥ D(|sc|−1)` and **independent after the exterior-column projection** (= KT's bottom-right block rank
+`rank R(G,p; E∖E′, V∖V′) = D(|sc|−1)`, eqs. (6.5)/(6.9) + Lemma 5.1). It is single-placement (the GP
+seed `q₀`), contraction-leg-local, and a **row-count** — *not* the undischargeable `∀`-GP-rigid
+`htransportGP`, not the false pin-equality `hpinc`. **Piece B is proved green** (not deferred — it is
+the block-triangular structure itself). `case_I_realization`'s only load-bearing green-modulo
+hypotheses are `hsc_proj_indep` + the KT Lemma-6.3 case hypothesis `hcSimple` (G2b's
+`map`-simplicity), plus the eq.-(6.6) placement conjuncts `hswap`/`hne_ends` (combinatorial, not
+analytic). `#print axioms` on the new bricks AND on `case_I_realization` shows only
+`[propext, Classical.choice, Quot.sound]`; full build + `lake lint` green and warning-clean. The
+asymmetric / symmetric couplings + the G3a `∃`-form transport are kept as (now-unused) library bricks.
+**No `\leanok` / blueprint / ROADMAP edits** (coordinator scope — see *Hand-off*). The detailed
+561a94b narration below is retained as the historical record of the superseded asymmetric attempt.
 
 **[SUPERSEDED — historical 561a94b narration]** The c1ef55a vacuity (the composer's "Claim-6.4 bundle" carried a
 FALSE combinatorial equality `hpinc` for the contraction leg `G ＼ E(H)`, generically unsatisfiable
@@ -275,26 +279,37 @@ Claim 6.4 / `lem:case-III`); axiom-clean; no `sorry`.
   `hasGenericFullRankRealization_of_couple_ofNormals_set` (the G2c witness-transfer (i)–(v) threaded
   through `sH`/`sc` + the two `hpin`s, finishing on the body-set generic splice; its parent `hends`
   *relaxed to edge-restricted* in the composer commit, the §1.11 resolution).
-- **N6-G3-G3c-iii-b asymmetric coupling** `PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNormals_set`
-  (**GREEN**, this commit, `AlgebraicInduction.lean`) — the §1.12 fix brick. Sibling of the symmetric
-  `…_couple_ofNormals_set` but the contraction leg is fed **directly** (no body-set rank polynomial, no
-  body-set N3, no `hpinc`): only the `H`-leg runs the green round-trip (its rank polynomial × the (G2)
-  factor → shared GP seed `q₀`), and the contraction leg's rigidity on `sc` at `q₀` comes from the
-  `∀`-over-GP-seeds hypothesis `hrigcGP` (KT eq. (6.9)). Both `q₀`-rigid legs feed the generic body-set
-  splice `hasGenericFullRankRealization_of_splice_set_ofNormals`. Axiom-clean.
-- **N6-G3-G3c-iii-b composer** `PanelHingeFramework.case_I_realization` (**GREEN-MODULO** the
-  honest Claim-6.4 bundle, this commit, `AlgebraicInduction.lean`) — the capstone. From a fixed proper
-  rigid subgraph `H` (`2 ≤ |V(H)|`) + representative `r` + the conditioned IH, discharges
-  `theorem_55_generic`'s `hcontractGP` (GP motive; → `theorem_55`'s `hcontract` via
-  `hasFullRankRealization_of_generic`) for the simple Case-I branch. Manufactures the parent selector
-  from the green canonical `Graph.endsOf` (the §1.11 `ends`, links every edge by `isLink_endsOf`;
-  `endsOf` already exists), extracts the `H`-leg IH genuinely (`Simple.mono` + `subgraph_minimality` →
-  generic IH → `hasGenericRealization_transport_ends`, `hpinH` green), routes the `G ＼ E(H)`-leg via
-  N4 + the contraction IH + the bundle's `∀`-over-GP-seeds transport `htransportGP`, feeds the
-  **asymmetric** body-set generic coupling. The **honest Claim-6.4 bundle** = explicit `hbundle`
-  (`hswap`/`hne_ends` = KT eq. (6.6); `htransportGP` = KT eq. (6.9), the single
-  contraction conjunct — false `hpinc` + `hnec`/`∃`-form `htransport` deleted) + `hcSimple :
-  (G.rigidContract H r).Simple` (G2b's positive `map`-simplicity). Axiom-clean.
+- **Block-triangular reframe (Stage 4, design doc §1.14) — three new bricks + the rewired composer,
+  all GREEN / GREEN-MODULO, `AlgebraicInduction.lean`:**
+  - `extProj` (+ `extProj_apply_mem`) — the **exterior-column projection** zeroing the bodies of a set
+    `t` (built from `LinearMap.pi`; see FRICTION). `hingeRow_comp_extProj_eq_zero` — a rigid-block row
+    (both endpoints in `t`) vanishes under `extProj t` (KT eq. (6.3)'s top-right `0`). Piece B's core,
+    proved green (not deferred — it *is* the block-triangular structure).
+  - `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` — the
+    **device-row closure**: an independent family of `≥ D(|V(G)|−1)` rigidity rows of `F` ⟹ `F` rigid
+    on `V(G)` (rank-nullity + N3, over an arbitrary finite index family — so `Sum.elim` feeds it). Reads
+    rows, never common-seed rigidity; concludes rigidity of `F` *itself* (GP survives).
+  - `PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` — the
+    **block-triangular coupling** (replaces the asymmetric one). H-block rows from the H-leg rank
+    polynomial `⊔` surviving-edge rows from `hsc_proj_indep` (exterior-projected); Piece B
+    (`of_comp` + `range_ker_disjoint` + `sum_type`) glues them; device-row closure reads rigidity at
+    `q₀`; GP from the H-leg×GP non-root. The H-leg needs **no** complement-isolation equality here
+    (only its rows). Single green-modulo input `hsc_proj_indep` (KT's bottom-right block rank).
+- **N6-G3-G3c-iii-b composer** `PanelHingeFramework.case_I_realization` (**GREEN-MODULO** `hsc_proj_indep`
+  + `hcSimple`, Stage 4, `AlgebraicInduction.lean`) — the capstone, **re-wired to the block-triangular
+  coupling**. From a fixed proper rigid subgraph `H` (`2 ≤ |V(H)|`) + representative `r` + the
+  conditioned IH, discharges `theorem_55_generic`'s `hcontractGP` (GP motive; → `theorem_55`'s
+  `hcontract` via `hasFullRankRealization_of_generic`) for the simple Case-I branch. Manufactures the
+  parent selector from the green `Graph.endsOf` (§1.11), extracts the `H`-leg IH genuinely
+  (`Simple.mono` + `subgraph_minimality` → generic IH → `hasGenericRealization_transport_ends`), routes
+  the `G ＼ E(H)`-leg via N4 + the contraction IH, and feeds the block-triangular coupling. **Honest
+  bundle** `hbundle` = `hswap`/`hne_ends` (KT eq. (6.6) placement, combinatorial) + `hsc_proj_indep`
+  (KT eqs. (6.5)/(6.9), the exterior-projected surviving-row independence — a row-count, NOT the
+  undischargeable `∀`-GP-rigid `htransportGP`) + `hcSimple` (G2b). Axiom-clean (`#print axioms`).
+- **[superseded, kept as library bricks]** the asymmetric coupling
+  `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` (561a94b, §1.12 — its `htransportGP`
+  was undischargeable, §1.13) + the symmetric `…_couple_ofNormals_set` + the G3a `∃`-form
+  `rigidContract_rigidity_transport` are kept GREEN/GREEN-MODULO but **no longer used by the composer**.
 
 ## Architectural choices made up front
 
@@ -516,28 +531,22 @@ Claim 6.4 / `lem:case-III`); axiom-clean; no `sorry`.
           motive re-typing is unnecessary. So G3c-iii-b's `ends` work is a one-lemma side-condition
           (`exists_ends_of_graph`) + relaxing the coupling's parent `hends` to edge-restricted — not a
           layer-wide motive re-type. Resolved once for the whole layer.
-        - [x] **G3c-iii-b** the composer assembly + flip — **GREEN-MODULO the honest Claim-6.4 bundle
-          (this commit; route (b)-corrected, design doc §1.12).** The c1ef55a vacuity (false `hpinc` in
-          the bundle) is fixed via the **asymmetric body-set coupling**
-          `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` (new brick): the `H`-leg keeps
-          the green rank-polynomial round-trip (rigid on its *full* `V(H)`, where `hpinH` is the true
-          `finrank_pinnedMotionsOn_vertexSet`) and produces the shared GP seed `q₀`; the contraction
-          leg's rigidity on `sc` at `q₀` is taken **directly** from the `∀`-over-GP-seeds hypothesis
-          `htransportGP` (KT eq. (6.9)) — no body-set N3, no body-set rank polynomial, **no `hpinc`**
-          for the contraction leg, matching KT eq. (6.6)'s single-placement construction. `case_I_realization`
-          re-wired to it; the bundle's false `hpinc` and the now-unneeded `hnec`/`∃`-form `htransport`
-          **deleted** — the honest bundle is `hswap`/`hne_ends` (KT eq. (6.6)) + `htransportGP` (KT
-          eq. (6.9)) + `hcSimple` (G2b). The two false Lean doc-comments corrected (the
-          `case_I_realization` narration; the body-set consumer's "surviving edges isolate the interior
-          bodies"). The reused c1ef55a structural work (manufacture `ends` from `Graph.endsOf`; the
-          edge-restricted `hends`; genuine `H`-leg IH extraction; the `G ＼ E(H)`-leg via N4 + contraction
-          IH) is unchanged. The existing symmetric `…_couple_ofNormals_set` + the G3a `∃`-form
-          `rigidContract_rigidity_transport` are kept (library bricks, now unused by the composer).
-          Axiom-clean; build + lint green. The dimension arithmetic closes: `sH = V(H)`,
-          `sc = (V(G)∖V(H))∪{r}` (`|sc| = (|V(G)|−|V(H)|)+1`), shared body `r`, glued
-          `D(|V(H)|−1) + D(|sc|−1) = D(|V(G)|−1)` (KT k=0 full rank). The `hcontract` non-simple branch
-          (N6a) + the simple/non-simple dispatch of the *full* `theorem_55` premise are the
-          coordinator's wiring, not this brick.
+        - [x] **G3c-iii-b** the composer assembly + flip — **GREEN-MODULO `hsc_proj_indep` + `hcSimple`
+          (Stage 4, design doc §1.14, block-triangular reframe).** The 561a94b asymmetric coupling
+          (§1.12, below) was itself vacuous (its `htransportGP` = "GP ⟹ rigid", false — §1.13). The
+          reframe replaces the common-seed motion-space splice with KT eq. (6.3)'s **block-triangular
+          rank-addition** over the *single* common framework `ofNormals G ends q₀`: the new coupling
+          `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` exhibits `D(|V(G)|−1)`
+          independent rows split `H`-block `⊔` surviving-edge (Piece B, via the exterior-column
+          projection `(extProj V(H)).dualMap`), and reads rigidity off the row count (device-row
+          closure). `case_I_realization` re-wired to it; the bundle's `htransportGP` replaced by the
+          **exterior-projected row-independence** `hsc_proj_indep` (KT eqs. (6.5)/(6.9), a row-count).
+          The `H`-leg needs **no** complement-isolation equality (only its rows). The asymmetric /
+          symmetric couplings + the G3a `∃`-form transport are kept as (now-unused) library bricks.
+          Axiom-clean (`#print axioms` = `propext`/`Classical.choice`/`Quot.sound`); build + lint green,
+          warning-clean. Dimension arithmetic: `sH = V(H)`, `sc = (V(G)∖V(H))∪{r}`, shared `r`, glued
+          `D(|V(H)|−1) + D(|sc|−1) = D(|V(G)|−1)` (KT k=0 full rank, via cover + shared body). The
+          `hcontract` non-simple branch (N6a) + the full `theorem_55` dispatch are coordinator wiring.
   - [x] **N6a** non-simple Case I producer (KT Lemma 6.2), general-position-free. **GREEN**
     (`hasFullRankRealization_of_splice_of_supportExtensor` + leg-native form). Takes *transversal hinges*
     `hsupp` directly instead of general position `hgp`, strictly generalizing
@@ -581,6 +590,21 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **Stage 4: the block-triangular reframe — route Case I through the device's independent-row count,
+  not a common-seed motion glue (2026-06-05, design doc §1.14).** The asymmetric coupling (§1.12) and
+  its `htransportGP` were a third relocation of an unsatisfiable *common-seed* demand (§1.13). The
+  reframe drops the common seed entirely: the new coupling
+  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` exhibits `D(|V(G)|−1)`
+  independent rigidity rows of the *single* framework `ofNormals G ends q₀`, split block-wise via Piece
+  B — `H`-block rows vanish under the exterior-column projection `(extProj V(H)).dualMap`
+  (`hingeRow_comp_extProj_eq_zero`, both endpoints in `V(H)`; KT's top-right `0`), the surviving-edge
+  rows are exterior-projected-independent (`hsc_proj_indep`); `of_comp` + `range_ker_disjoint` +
+  `sum_type` glue them — and the device-row closure
+  `isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` reads rigidity at `q₀` (GP survives).
+  **Two simplifications fell out:** (i) the `H`-leg needs only its rank-polynomial *rows*, so **no**
+  complement-isolation equality (`hpinH` dropped); (ii) the green-modulo content shrinks to the single
+  *row-count* `hsc_proj_indep` (KT's bottom-right block rank, eqs. (6.5)/(6.9)) — dischargeable, unlike
+  `htransportGP`. Axiom-clean; the device counts rows, so the §1.13 "GP ⟹ rigid" trap never arises.
 - **§1.12 fix: the asymmetric coupling deletes the false `hpinc`; only the contraction leg was the
   problem, because the two legs are NOT symmetric (2026-06-05).** The c1ef55a composer was
   valid-but-VACUOUS — its bundle forced `hpinc`, a placement-independent complement-isolation equality
@@ -889,6 +913,10 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
   `≤` form) is the genuine new fact: `r ∈ V(H)` makes the collapse image *equal* `(V(G)\V(H)) ∪ {r}`.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+- *A `(α → ScrewSpace k) →ₗ W` map with an `if … then 0 else …` body: build from `LinearMap.pi` (not a
+  `where`/`toFun`, which leaves the Pi fiber stuck — sibling of TACTICS-QUIRKS § 30); state only the
+  needed branch in `_apply_mem` to avoid `Decidable` in the statement* → FRICTION [resolved] *A
+  `(α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k)` defined by a `where`/`toFun` …*.
 - *Dot notation `g.foo` keys off the type-head *root* namespace; a `Graph.foo` lemma authored outside a
   `namespace Graph` block re-namespaces to `…Molecular.Graph.foo` and is unreachable by projection* →
   TACTICS-QUIRKS § 35; FRICTION [resolved] *Dot notation `g.foo` doesn't find a `Graph.foo` lemma
@@ -939,20 +967,22 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **⚠ OPEN — Case-I realization is blocked on a structural divergence from KT; the splice is being
-  re-architected (block-triangular). [2026-06-05, second coordinator verification.]** The 561a94b
-  "asymmetric coupling" (the entry below, now superseded) deleted the false `hpinc` but replaced it with
-  `htransportGP`, the `∀`-over-general-position-seeds conjunct — **also undischargeable**, because the
-  coupling applies it at a seed `q₀` known only to be general-position, so 22b would need "**GP ⟹
-  rigid**", which is false (`IsGeneralPosition` = pairwise normal independence, strictly weaker than full
-  rank; the `H`-leg needs its rank-polynomial round-trip for exactly this reason). The unsatisfiability
-  was **relocated, not removed** (`hcrig` → `hpinc` → `htransportGP`). **Root cause:** the project's
-  motion-space splice glue `isInfinitesimallyRigidOn_of_splice` demands a *single common placement* rigid
-  on both legs, whereas KT eq. (6.3) is **block-triangular rank-addition over leg-wise placements** (no
-  common seed). The fix is the block-triangular reframing, not a fourth common-seed bridge. See *Current
-  state* banner, *Hand-off* (live plan), design doc §1.13, `DESIGN.md` *Match the source's argument
-  structure …*, and `notes/FRICTION.md` *[process] Phase 22a — motion-space splice glue vs KT
-  block-triangular*.
+- **✓ RESOLVED — the block-triangular reframe landed; `case_I_realization` is honestly GREEN-MODULO
+  `hsc_proj_indep` (the dischargeable KT Claim 6.4). [2026-06-05, Stage 4.]** The §1.13 impasse (the
+  asymmetric coupling's `htransportGP` was "GP ⟹ rigid", false — the third relocation of an
+  unsatisfiable common-seed demand `hcrig` → `hpinc` → `htransportGP`) is fixed by the design-doc §1.14
+  block-triangular reframing: the new coupling
+  `hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` reproduces KT eq. (6.3)'s
+  block-triangular rank-addition over the *single* common framework `ofNormals G ends q₀` (exhibit
+  `D(|V(G)|−1)` independent rows split `H`-block `⊔` surviving-edge via the exterior-column projection,
+  read rigidity off the row count) — **no common placement rigid on both legs**, so the impasse is gone
+  by construction. The single green-modulo hypothesis is `hsc_proj_indep`: the surviving rows
+  exterior-projected-independent of size `≥ D(|sc|−1)` (KT's bottom-right block rank `R(G,p;E∖E′,V∖V′)`,
+  eqs. (6.5)/(6.9)) — single-placement, contraction-leg-local, a **row-count**. See *Current state*
+  banner, design doc §1.14, `DESIGN.md` *Match the source's argument structure …*. **The remaining
+  genuinely-analytic obligation is now `hsc_proj_indep`** (KT Claim 6.4 as exterior-projected
+  row-independence) + the eq.-(6.6) placement conjuncts `hswap`/`hne_ends` (combinatorial) + the
+  Lemma-6.3 `hcSimple`; deferred to 22b via `lem:case-III`. Axiom-clean; build + lint green.
 
 - **[SUPERSEDED] ✓ CORRECTNESS GAP FIXED (design doc §1.12).** The composer `PanelHingeFramework.case_I_realization`
   is now honest GREEN-MODULO: the false combinatorial equality `hpinc` is removed by routing the
@@ -1005,36 +1035,39 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**⚠ NOT a handoff to the coordinator close — the Case-I splice is being RE-ARCHITECTED.** A second
-coordinator verification (2026-06-05) found the 561a94b `htransportGP` also undischargeable ("GP ⟹
-rigid", false); see *Current state* banner + *Blockers*. `case_I_realization` (561a94b) stays in the
-tree as a valid-but-vacuous theorem; **do NOT flip `lem:case-I-realization` green-modulo, do NOT run the
-phase-close.** The live plan (owner-directed, 2026-06-05):
+**✓ STAGE 4 LANDED — the block-triangular reframe is in the tree; `case_I_realization` is honestly
+GREEN-MODULO `hsc_proj_indep`. The next step is the COORDINATOR CLOSE.** See *Current state* banner +
+*Blockers*. This session implemented design-doc §1.14 (Stages 1–3 — lesson capture, design, audit —
+already landed in prior commits); the four-step owner-directed plan is now complete:
 
-1. **✓ Lesson captured** — `DESIGN.md` *Match the source's argument structure, not just its conclusion*;
-   `blueprint/CLAUDE.md` honesty-gate *third check*; `notes/FRICTION.md` *[process] Phase 22a — motion-space
-   splice glue vs KT block-triangular*; this banner + the *Current state* / *Blockers* corrections.
-2. **Design the block-triangular reframing** (design-only, no Lean) — reproduce KT eq. (6.3)'s
-   rank-addition over *leg-wise* placements (the H-block at `p₁`, the contraction block at `p₂`, ranks add
-   via block-triangularity) in place of the common-seed motion glue `isInfinitesimallyRigidOn_of_splice`.
-   Verify it closes vs KT *and* vs the existing green infra; **bring to the owner for sign-off before any
-   Lean.** This likely re-touches the splice glue and its consumers (the couplings, the composer) and may
-   need new matrix-rank-level infrastructure.
-3. **Audit molecular phases 17–22** for sibling structural divergences (formalization re-expressing KT's
-   argument as a different one) that could block Phases 23–26.
-4. **Implement** the reframing (Lean + blueprint) after sign-off, re-wire `case_I_realization` honestly,
-   then resume the coordinator close.
+1. **✓ Lesson captured** (prior commit) — `DESIGN.md` *Match the source's argument structure …*;
+   `blueprint/CLAUDE.md` honesty-gate *third check*; `notes/FRICTION.md` *[process] … block-triangular*.
+2. **✓ Block-triangular reframing designed** (prior commit, design doc §1.14, owner-signed-off).
+3. **✓ Molecular 17–22 audit** (prior commit, design doc §1.15 — clean, reframe corroborated).
+4. **✓ Implemented** (this commit) — new infra `extProj` / `extProj_apply_mem` /
+   `hingeRow_comp_extProj_eq_zero` (Piece B core, proved green) + the device-row closure
+   `BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` + the
+   block-triangular coupling
+   `PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set`;
+   `case_I_realization` re-wired to it (the bundle's `htransportGP` replaced by the exterior-projected
+   row-independence `hsc_proj_indep`). Axiom-clean; build + lint green and warning-clean. The
+   asymmetric / symmetric couplings + the G3a `∃`-form transport are kept as (now-unused) library
+   bricks. **No `\leanok` / blueprint / ROADMAP edits** (coordinator scope).
 
-**[SUPERSEDED — the coordinator close, deferred behind the reframing.] Coordinator scope (unchanged).**
+**Coordinator scope (the close, now unblocked).**
 - ✓ **G3c-iii-a** — parent-`ends` impedance, resolved 2026-06-05 (design doc §1.11): option (iii).
-- ⚠ **G3c-iii-b** — composer + asymmetric coupling landed (561a94b) but is **vacuous** (`htransportGP`
-  undischargeable); to be rewritten by the block-triangular reframing.
+- ✓ **G3c-iii-b** — composer + block-triangular coupling landed (this commit), honestly green-modulo
+  `hsc_proj_indep` (no smuggled rigidity/equality/GP hypothesis; verified by reading the signature +
+  `#print axioms`).
 - **Coordinator green-modulo close** — blueprint green-modulo `\leanok` flip of `lem:case-I-realization`
   (`\lean{...PanelHingeFramework.case_I_realization}`) + a dedicated **red Claim-6.4 node** tracking the
-  (now-honest, `hpinc`-free) `hbundle`/`hcSimple` obligation (à la 21 → 21b) + `checkdecls`; then the
-  phase-close checklist (ROADMAP ✓-green-modulo, user-facing surfaces, `MolecularConjecture.md`,
-  blueprint chapter re-read, project-org review, Phase22a notes compression).
-- **Open 22b** — focused on Claim 6.4 (see *22b target* at the end of this section).
+  `hsc_proj_indep`/`hcSimple` obligation (à la 21 → 21b) + `checkdecls`; then the phase-close checklist
+  (ROADMAP ✓-green-modulo, user-facing surfaces, `MolecularConjecture.md`, blueprint chapter re-read,
+  project-org review, Phase22a notes compression).
+- **Open 22b** — focused on Claim 6.4 (see *22b target* at the end of this section). The residual
+  obligation is now the **exterior-projected row-independence** `hsc_proj_indep` (KT's bottom-right
+  block rank, eqs. (6.5)/(6.9)) — NOT the motion-space `∀`-GP-rigid `htransportGP` (design doc §1.15
+  forward-flag (i)).
 
 **The §1.12 fix commit (this commit).** Lands the **asymmetric body-set coupling**
 `hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` and re-wires

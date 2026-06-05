@@ -5194,6 +5194,256 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_set_ofNormals G ends hgp
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
+/-- **The exterior-column projection** (`lem:case-I-realization` Piece B infra, the block-triangular
+core; Katoh–Tanigawa 2011 §6.2, eq. (6.3), Phase 22a). The linear map on screw assignments that
+**zeroes out the bodies of `t`** (the rigid block `V(H)`) and keeps the rest: `extProj t S a = 0`
+for `a ∈ t`, `= S a` otherwise. Its dual map (precomposition) `(extProj t).dualMap` projects a
+rigidity-row functional onto its dependence on the **exterior columns** `α ∖ t`.
+
+This is the column-side of KT eq. (6.3)'s block-triangular split: a rigidity row carried by an
+edge of the rigid block `H` (both endpoints in `V(H) = t`) reads only the `t`-columns, so it
+**vanishes** under `extProj t` (`hingeRow_comp_extProj_eq_zero`); a surviving edge's row generally
+does not. Projecting onto the exterior columns therefore separates the `H`-block rows (which land in
+the kernel) from the surviving-edge rows, exactly the top-right `0` of KT's block-triangular matrix.
+The Case-II/III analogue is the *pin-a-body* column split `linearIndependent_sum_pinned_block`
+(N7b-3); here the "pinned" columns are the whole rigid block `V(H)` rather than a single body. -/
+noncomputable def extProj (t : Set α) :
+    (α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k) := by
+  classical
+  exact LinearMap.pi fun a =>
+    if a ∈ t then (0 : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k) else LinearMap.proj a
+
+theorem extProj_apply_mem {t : Set α} {a : α} (ha : a ∈ t) (S : α → ScrewSpace k) :
+    extProj t S a = 0 := by
+  classical
+  rw [extProj, LinearMap.pi_apply, if_pos ha, LinearMap.zero_apply]
+
+/-- **A rigid-block row vanishes under the exterior-column projection** (`lem:case-I-realization`
+Piece B fact 2, the row-side of KT eq. (6.3)'s top-right `0`; Phase 22a). If both endpoints `u, v`
+of a hinge lie in the rigid block `t = V(H)`, the row functional `hingeRow u v r` precomposed with
+the exterior-column projection `extProj t` is the zero functional: `extProj t S` reads `0` at both
+`u ∈ t` and `v ∈ t`, so `hingeRow u v r (extProj t S) = r (0 − 0) = 0`. Hence
+`(extProj t).dualMap (hingeRow u v r) = 0`, i.e. every `H`-block rigidity row lies in
+`ker (extProj t).dualMap`. -/
+theorem hingeRow_comp_extProj_eq_zero {t : Set α} {u v : α} (hu : u ∈ t) (hv : v ∈ t)
+    (r : Module.Dual ℝ (ScrewSpace k)) :
+    (BodyHingeFramework.hingeRow (k := k) (α := α) u v r).comp (extProj t) = 0 := by
+  ext S
+  rw [LinearMap.comp_apply, LinearMap.zero_apply, BodyHingeFramework.hingeRow_apply,
+    extProj_apply_mem hu, extProj_apply_mem hv, sub_zero, map_zero]
+
+/-- **An independent family of rigidity rows of size `≥ D(|V(G)|−1)` forces rigidity on `V(G)`**
+(`lem:case-I-realization`, the device-row-addition closure; Katoh–Tanigawa 2011 §6.2 eq. (6.3),
+Phase 22a). The block-triangular reframing's device-side closure (design doc §1.14): rather than
+gluing two legs at a *common seed* (the motion-space splice `isInfinitesimallyRigidOn_of_splice`,
+which demands one placement rigid on both legs), exhibit enough **independent rigidity rows** of the
+single common framework `F` and read rigidity off the row count. From any linearly independent
+family `a : ι → Module.Dual ℝ (α → ScrewSpace k)` of `F`'s rigidity rows (each
+`a i ∈ rigidityRows F`, `hmem`) with `Nat.card ι ≥ D(|V(G)|−1)` (`hcard`), the rank-nullity identity
+`dim Z(F) = D|V| − finrank (span rigidityRows) ≤ D|V| − D(|V|−1) = D` upgrades, via the
+relative-count adapter N3 (`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`), to infinitesimal
+rigidity on `V(G)`.
+
+This is the same rank-nullity argument the rank-polynomial consumer
+`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking` runs, but over an *arbitrary*
+finite index family rather than a `Set`-subfamily, so the **block-triangular union** of the
+`H`-block and surviving-edge rows (`Sum.elim`, Piece B) feeds it directly. Crucially it concludes
+rigidity of `F` *itself* (at its own seed), so when `F = ofNormals G ends q₀` with `q₀` general
+position the conclusion lifts to the *generic* motive — no device round-trip, general position
+survives. -/
+theorem BodyHingeFramework.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows
+    [Finite α] (F : BodyHingeFramework k α β) {ι : Type*} [Finite ι]
+    {a : ι → Module.Dual ℝ (α → ScrewSpace k)} (hLI : LinearIndependent ℝ a)
+    (hmem : ∀ i, a i ∈ F.rigidityRows) (hne : F.graph.vertexSet.Nonempty)
+    (hcard : screwDim k * (F.graph.vertexSet.ncard - 1) ≤ Nat.card ι) :
+    F.IsInfinitesimallyRigidOn F.graph.vertexSet := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : Fintype ι := Fintype.ofFinite ι
+  -- The independent family spans a subspace of the rigidity-row span of dimension `Nat.card ι`.
+  have hsub : Submodule.span ℝ (Set.range a) ≤ Submodule.span ℝ F.rigidityRows :=
+    Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ Submodule.subset_span (hmem i))
+  have hrows : Nat.card ι ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+    rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hLI]
+    exact Submodule.finrank_mono hsub
+  -- Rank-nullity: `dim Z = D|V| − finrank (span rigidityRows) ≤ D|V| − D(|V|−1) = D`.
+  have hcompl : Module.finrank ℝ F.infinitesimalMotions
+      + Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+      = screwDim k * Fintype.card α := by
+    rw [F.infinitesimalMotions_eq_dualCoannihilator, Subspace.finrank_dualCoannihilator_eq,
+      add_comm, Subspace.finrank_add_finrank_dualAnnihilator_eq, Subspace.dual_finrank_eq,
+      BodyHingeFramework.finrank_screwAssignment]
+  have hsplit : screwDim k * Fintype.card α
+      = screwDim k * F.graph.vertexSet.ncard + screwDim k * (F.graph.vertexSet)ᶜ.ncard := by
+    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  have h1 : 1 ≤ F.graph.vertexSet.ncard := (Set.ncard_pos (Set.toFinite _)).2 hne
+  rw [Nat.mul_sub, Nat.mul_one] at hcard
+  refine F.isInfinitesimallyRigidOn_vertexSet_of_finrank_le hne ?_
+  rw [Nat.mul_succ]
+  omega
+
+/-- **Case I shared-seed coupling, *block-triangular* body-set form** (`lem:case-I-realization`, the
+block-triangular reframing N6-G3-G3c-iii-b; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.5), (6.6),
+(6.9), Phase 22a). The honest replacement for the asymmetric coupling
+`hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` (design doc §1.14). The asymmetric
+coupling routed the contraction leg's rigidity-on-`sc`-at-`q₀` through the motion-space splice glue
+`isInfinitesimallyRigidOn_of_splice`, which demands one placement rigid on *both* legs; supplying
+that rigidity required the undischargeable `htransportGP` ("GP ⟹ rigid", false — design doc §1.13).
+
+This coupling reproduces KT eq. (6.3)'s **block-triangular rank-addition** over the *single* common
+framework `F = ofNormals G ends q₀` instead. It exhibits `D(|V(G)|−1)` independent rigidity rows of
+`F`, split block-wise (`Sum.elim`, Piece B):
+* **`s_H`** — `≥ D(|sH|−1)` rows of the rigid-block edges `E(GH)`, independent at `q₀` from the
+  `H`-leg's rank polynomial (`exists_rankPolynomial_of_rigidOn_linking_set`). The block-triangular
+  path uses only the `H`-block *rows* (not rigidity of the parent at a shared seed), so the `H`-leg
+  needs *no* complement-isolation equality here — only its own rigidity on `sH` (the legitimate,
+  honest round-trip, the `H`-leg being rigid on its *full* vertex set `sH`). Each row's endpoints
+  lie in `V(GH) ⊆ sH` (`hsHV`);
+* **`s_c`** — `≥ D(|sc|−1)` surviving-edge rows of `E(Gc)`, supplied by the Claim-6.4 hypothesis
+  `hsc_proj_indep` **after the exterior-column projection** `D := (extProj sH).dualMap` onto the
+  columns `α ∖ sH`.
+
+The block-triangular core (Piece B): the `H`-rows vanish under `D` (`hingeRow_comp_extProj_eq_zero`,
+both endpoints in `sH` — KT's top-right `0`), so `span s_H ⊆ ker D`; the projected `s_c`-rows are
+independent (`hsc_proj_indep`), so `s_c` is independent (`LinearIndependent.of_comp`) and disjoint
+from `ker D` (`Submodule.range_ker_disjoint`), whence `Disjoint (span s_H) (span s_c)` and the union
+`Sum.elim` is independent (`LinearIndependent.sum_type`). With both blocks' rows lying in `F`'s
+rigidity rows and summing to `≥ D(|V(G)|−1)` (cover + shared body `c`), the device-row closure
+`isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows` makes `F = ofNormals G ends q₀`
+rigid on `V(G)` *at `q₀` itself*; since `q₀` is general position the *generic* motive holds.
+
+**This eliminates the common-seed demand by construction** (the device-row closure reads independent
+*rows*, never rigidity of `F` on a leg at a shared seed). The single green-modulo hypothesis is
+`hsc_proj_indep` (KT's bottom-right block rank `rank R(G,p;E∖E′,V∖V′) = D(|sc|−1)`, eq. (6.5)/(6.9)
++ Lemma 5.1), stated as exterior-*projected* row-independence: single-placement (the seed `q₀` is
+GP, which is all `hsc_proj_indep` is quantified over), contraction-leg-local (only the surviving
+edges, only their exterior-projected rows), and a row-count — the genuine, dischargeable
+Claim 6.4. -/
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
+    (hneG : V(G).Nonempty) (hnesH : sH.Nonempty) (hsHV : V(GH) ⊆ sH)
+    {qH : α × Fin (k + 2) → ℝ}
+    (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
+    (hrigH :
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn sH)
+    -- The contraction block's surviving-edge rows are independent **after the exterior-column
+    -- projection** onto `α ∖ sH` (`extProj sH`), of size `≥ D(|sc|−1)` (KT's bottom-right block
+    -- rank, eq. (6.5)/(6.9)). Quantified over general-position seeds (KT eq. (6.9)'s generic
+    -- placement); the H-leg-produced shared seed `q₀` is one such. Each row's edge links in `Gc`.
+    (hsc_proj_indep : ∀ q : α × Fin (k + 2) → ℝ,
+      (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition →
+      ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+        (∀ i ∈ rsc, Gc.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+          (ends (i : β × _ × _).1).2) ∧
+        screwDim k * (sc.ncard - 1) ≤ Nat.card rsc ∧
+        LinearIndependent ℝ (fun i : rsc => (extProj (k := k) sH).dualMap
+          ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends (i : β × _ × _)))) :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  -- The parent's edge-restricted `hends` weakens to the `H`-leg (the only leg running the
+  -- rank-polynomial round-trip).
+  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e u v h =>
+    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
+      (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
+  -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed `qH`. Each witnessed
+  -- index links in `GH` (`hsuppH`), so both its endpoints lie in `V(GH) ⊆ sH`.
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
+  -- (ii) The general-position factor.
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+    exists_generalPosition_polynomial (k := k) G ends
+  -- (iii) The product `Q_H · Q_gp` has a shared non-root `q₀` (general-position + H-block LI).
+  have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
+  have hQgpne : Qgp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
+    exact fun a b hab => hf (Nat.cast_injective hab)
+  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero (mul_ne_zero hQHne hQgpne)
+  rw [map_mul] at hq₀
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
+    hQgp_pos q₀ hq₀gp
+  -- Abbreviations: the parent framework at `q₀`, the exterior-column projection's dual map `D`.
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  set D := (extProj (k := k) sH).dualMap with hD
+  -- (iv-H) The `H`-block rows of `F` indexed by `rsH`, independent at `q₀`.
+  have hLIH₀ : LinearIndependent ℝ (fun i : rsH => F.panelRow ends (i : β × _ × _)) := hLIH q₀ hq₀H
+  -- (iv-c) The surviving-edge block: exterior-projected independent at the GP seed `q₀`.
+  obtain ⟨rsc, hsuppc, hcardc, hprojc⟩ := hsc_proj_indep q₀ hgp
+  -- A panel row of `F` whose edge links in `G` is one of `F`'s rigidity rows.
+  have hrow_mem : ∀ (i : β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+      G.IsLink i.1 (ends i.1).1 (ends i.1).2 → F.panelRow ends i ∈ F.rigidityRows := by
+    rintro ⟨e', t₁, t₂⟩ hlink
+    exact ⟨e', (ends e').1, (ends e').2, hlink,
+      annihRow (F.supportExtensor e') t₁ t₂, by
+        rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+        intro x hx
+        rw [Submodule.mem_span_singleton] at hx
+        obtain ⟨ρ, rfl⟩ := hx
+        rw [map_smul, annihRow_apply_self, smul_zero], rfl⟩
+  -- Each `H`-block row vanishes under `D = (extProj sH).dualMap` (both endpoints in `V(GH) ⊆ sH`,
+  -- so `hingeRow_comp_extProj_eq_zero`): the row-side of KT's top-right `0`.
+  have hH_ker : ∀ i : rsH, D (F.panelRow ends (i : β × _ × _)) = 0 := by
+    rintro ⟨⟨e', t₁, t₂⟩, hi⟩
+    have hlink := hsuppH _ hi
+    rw [hD, BodyHingeFramework.panelRow, LinearMap.dualMap_apply',
+      hingeRow_comp_extProj_eq_zero (hsHV hlink.left_mem) (hsHV hlink.right_mem)]
+  -- (Piece B) Union-independence of the `H`-block and surviving-edge rows.
+  have hcindep : LinearIndependent ℝ (fun i : rsc => F.panelRow ends (i : β × _ × _)) :=
+    LinearIndependent.of_comp D hprojc
+  have hcdisj : Disjoint (Submodule.span ℝ (Set.range
+      (fun i : rsc => F.panelRow ends (i : β × _ × _)))) (LinearMap.ker D) :=
+    Submodule.range_ker_disjoint hprojc
+  have hHspan : Submodule.span ℝ (Set.range (fun i : rsH => F.panelRow ends (i : β × _ × _)))
+      ≤ LinearMap.ker D :=
+    Submodule.span_le.2 (fun _ ⟨i, hi⟩ => hi ▸ LinearMap.mem_ker.2 (hH_ker i))
+  have hdisj : Disjoint (Submodule.span ℝ (Set.range
+      (fun i : rsH => F.panelRow ends (i : β × _ × _))))
+      (Submodule.span ℝ (Set.range (fun i : rsc => F.panelRow ends (i : β × _ × _)))) :=
+    Disjoint.mono_left hHspan hcdisj.symm
+  have hunion : LinearIndependent ℝ
+      (Sum.elim (fun i : rsH => F.panelRow ends (i : β × _ × _))
+        (fun i : rsc => F.panelRow ends (i : β × _ × _))) :=
+    hLIH₀.sum_type hcindep hdisj
+  -- Every row of the union is a rigidity row of `F` (its edge links in `G`, by the two subgraphs).
+  have hmem : ∀ i : rsH ⊕ rsc, Sum.elim (fun i : rsH => F.panelRow ends (i : β × _ × _))
+      (fun i : rsc => F.panelRow ends (i : β × _ × _)) i ∈ F.rigidityRows := by
+    rintro (⟨i, hi⟩ | ⟨i, hi⟩)
+    · exact hrow_mem _ ((Graph.IsSubgraph.isLink_iff hGH (hsuppH _ hi).edge_mem).mp (hsuppH _ hi))
+    · exact hrow_mem _ ((Graph.IsSubgraph.isLink_iff hGc (hsuppc _ hi).edge_mem).mp (hsuppc _ hi))
+  -- The two blocks sum to `≥ D(|V(G)|−1)` rows (cover + shared body `c`).
+  have hcard : screwDim k * (V(G).ncard - 1) ≤ Nat.card (rsH ⊕ rsc) := by
+    rw [Nat.card_sum]
+    -- `|sH ∪ sc| + |sH ∩ sc| = |sH| + |sc|`, `1 ≤ |sH ∩ sc|` (shared `c`), `|V(G)| ≤ |sH ∪ sc|`.
+    have hunion_card := Set.ncard_union_add_ncard_inter sH sc
+    have hinter : 1 ≤ (sH ∩ sc).ncard :=
+      (Set.ncard_pos (Set.toFinite _)).2 ⟨c, hcH, hcc⟩
+    have hcov : V(G).ncard ≤ (sH ∪ sc).ncard := Set.ncard_le_ncard hcover (Set.toFinite _)
+    have h1H : 1 ≤ sH.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnesH
+    -- `D(|sH|−1) + D(|sc|−1) ≥ D(|V(G)|−1)`.
+    have hkey : screwDim k * (V(G).ncard - 1)
+        ≤ screwDim k * (sH.ncard - 1) + screwDim k * (sc.ncard - 1) := by
+      rw [← Nat.mul_add]
+      apply Nat.mul_le_mul_left
+      omega
+    omega
+  -- (v) The device-row closure makes `F = ofNormals G ends q₀` rigid on `V(G)` at `q₀` itself; with
+  -- `q₀` general position the strengthened generic motive holds. The witness is `F`.
+  refine ⟨PanelHingeFramework.ofNormals G ends q₀,
+    PanelHingeFramework.ofNormals_graph G ends q₀, hgp, ?_⟩
+  have hFG : F.graph.vertexSet = V(G) := by
+    rw [hF, PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
+  have hrig := F.isInfinitesimallyRigidOn_vertexSet_of_independent_rigidityRows hunion hmem
+    (by rw [hFG]; exact hneG) (by rw [hFG]; exact hcard)
+  rw [hFG] at hrig
+  exact hrig
+
 /-- **Case I realization: the contraction producer** (`lem:case-I-realization`, the N6 composer;
 Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), (6.9), Phase 22a). The capstone of the Case-I
 realization layer: from a *fixed* proper rigid subgraph `H` of a simple minimal `0`-dof-graph `G`
@@ -5205,39 +5455,46 @@ generic realization motive `HasGenericFullRankRealization k G` holds. Composed w
 
 The composer assembles the green Case-I bricks against the two splice legs KT eq. (6.3) forces — the
 rigid block `GH := H` and the surviving-edge subgraph `Gc := G ＼ E(H)`, both `≤ G` (G3b
-`couple_geometry_of_isProperRigidSubgraph`), sharing the representative body `r`:
+`couple_geometry_of_isProperRigidSubgraph`), sharing the representative body `r` — and feeds them to
+the **block-triangular** coupling
+`hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set` (design doc §1.14, the
+reframing that replaces the undischargeable common-seed splice of the prior asymmetric coupling):
 
 * **`H`-leg (genuine IH extraction).** `H` is simple (`Graph.Simple.mono` from `G.Simple`), minimal
   `0`-dof (`subgraph_minimality` from its rigidity), and smaller (`V(H) ⊂ V(G)`), so the conditioned
   induction hypothesis `hIH` supplies `HasGenericFullRankRealization k H`; the leg-transport brick
   `hasGenericRealization_transport_ends` re-expresses it at the manufactured parent selector `ends`
-  (rigid + transversal on `sH := V(H)`). Its complement-isolation `hpinH` is the green
-  `finrank_pinnedMotionsOn_vertexSet` (the leg is rigid on its *full* vertex set).
-* **`G ＼ E(H)`-leg (N4 + the Claim-6.4 transport, *asymmetric* coupling).** The contraction
+  (rigid + transversal on `sH := V(H)`). The block-triangular coupling consumes only the `H`-block
+  *rows* (the `H`-leg rank polynomial), so the `H`-leg needs **no** complement-isolation equality —
+  only its own rigidity on its full vertex set `V(H)`.
+* **`G ＼ E(H)`-leg (N4 + the Claim-6.4 *exterior-projected row-independence*).** The contraction
   `G.rigidContract H r` is itself a minimal `0`-dof-graph (N4 `rigidContract_isMinimalKDof`),
   smaller than `G` (`rigidContract_vertexSet_ncard_lt`), and — by the KT Lemma 6.3 case hypothesis
   `hcSimple` (`(G.rigidContract H r).Simple`; G2b makes this the positive `map`-simplicity
   criterion) — simple, so `hIH` supplies its *generic* realization. **The transport of that rank
-  across the collapse map to the surviving-edge leg `G ＼ E(H)`, rigid only on the surviving bodies
-  `sc := (V(G) ∖ V(H)) ∪ {r}` at every general-position seed, is KT Claim 6.4 (eq. (6.9))**,
+  across the collapse map to the surviving edges `E(G) ∖ E(H)` is KT Claim 6.4 (eq. (6.5)/(6.9))**,
   irreducibly research-shaped (the collapse redirects each surviving edge's endpoints, so no green
-  brick converts the relabelled-contraction rigidity into the original-endpoint rigidity — the G3a
-  finding). It is carried as the `∀`-over-GP-seeds conjunct `htransportGP` of the explicit bundle
-  `hbundle` (KT eq. (6.9): the rank is attained at *every* generic placement). The `H`-leg's
-  selector alignment `hswap`/`hne_ends` is the KT eq. (6.6) placement, the other bundle conjunct.
+  brick converts the relabelled-contraction rank into the surviving-edge rank — the G3a finding). It
+  is carried as the conjunct `hsc_proj_indep` of the explicit bundle `hbundle`, stated as
+  **exterior-column-projected row-independence**: for every general-position seed, the surviving
+  rows are `≥ D(|sc|−1)` and independent after projecting away the rigid-block columns `V(H)`
+  (`(extProj V(H)).dualMap`) — KT's bottom-right block rank. The `H`-leg's selector alignment
+  `hswap`/`hne_ends` is the KT eq. (6.6) placement, the other bundle conjunct.
 
-With both legs in hand the **asymmetric** body-set generic coupling
-`hasGenericFullRankRealization_of_couple_asymm_ofNormals_set` lands the strengthened motive: the
-`H`-leg runs the green rank-polynomial round-trip (rigid on its *full* `V(H)`, where the
-complement-isolation equality is the true `finrank_pinnedMotionsOn_vertexSet`) and produces the
-shared general-position seed `q₀`; the contraction leg's rigidity on `sc` at `q₀` is read off
-`htransportGP` directly (matching KT eq. (6.6), which constructs *one* placement for all of `G`, not
-a shared point found by intersecting two rigid loci). No body-set rank polynomial, hence no false
-complement-isolation equality, is forced on the contraction leg (the design-doc §1.12 fix).
+The block-triangular coupling exhibits `D(|V(G)|−1)` independent rigidity rows of the *single*
+common framework `ofNormals G ends q₀` — the `H`-block rows (which vanish under the exterior-column
+projection, KT's top-right `0`) `⊔` the surviving-edge rows (the projected block) — and reads
+rigidity on `V(G)` off the row count via the device-row closure, *at `q₀` itself*; since `q₀` is
+general position the strengthened motive holds. **This needs no common placement rigid on both
+legs** (the §1.13 impasse the asymmetric coupling could not cross): the device counts independent
+*rows*, never rigidity of one framework on a leg at a shared seed.
+
 **Green-modulo the Claim-6.4 bundle** (`hbundle` + `hcSimple`, the Phase-21b green-modulo `h…`
-idiom, discharged by `lem:case-III` / 22b+): the bundle is now *genuinely* Claim-6.4-only — every
-step the composer itself performs is honest, and the analytic obligation is the single KT-eq. (6.9)
-transport pinned in `htransportGP`, not a `sorry`. -/
+idiom, discharged by `lem:case-III` / 22b+): the only modulo-content is the single
+KT-eq. (6.5)/(6.9) exterior-projected row-independence `hsc_proj_indep`, a single-placement
+contraction-leg-local
+row-count (not the undischargeable `∀`-GP-rigid `htransportGP` the asymmetric coupling needed, nor a
+false pin-equality) — every step the composer itself performs is honest, not a `sorry`. -/
 theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Finite β] {n k : ℕ}
     (hD : 3 ≤ Graph.bodyBarDim n)
     (G : Graph α β) (hG : G.IsMinimalKDof n 0)
@@ -5248,16 +5505,16 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
       V(G').ncard < V(G).ncard →
       (G'.Simple → PanelHingeFramework.HasGenericFullRankRealization k G') ∧
         PanelHingeFramework.HasFullRankRealization k G')
-    -- The Claim-6.4 + placement bundle (KT eqs. (6.6), (6.9); design doc §1.12), carried in the
-    -- Phase-21b green-modulo `h…` idiom against the manufactured parent selector `ends` and the
-    -- chosen `H`/`r`. **Genuinely Claim-6.4-only** (the false combinatorial `hpinc` of the prior
-    -- version is gone, design doc §1.12): it supplies (a) the `H`-leg selector alignment
-    -- `hswap`/`hne_ends` that `hasGenericRealization_transport_ends` consumes (KT eq. (6.6)), and
-    -- (b) the contraction leg's Claim-6.4 collapse transport, now in the `∀`-over-GP-seeds form (KT
-    -- eq. (6.9): the rank is attained at *every* generic placement) — given the contraction's
-    -- generic IH, the surviving-edge leg `G ＼ E(H)` is rigid on `sc = (V(G)∖V(H))∪{r}` at every
-    -- general-position parent seed. No `hpinc`, no transversality round-trip for the contraction
-    -- leg (the asymmetric coupling does not run a rank polynomial on it).
+    -- The Claim-6.4 + placement bundle (KT eqs. (6.6), (6.5)/(6.9); design doc §1.14), carried in
+    -- the Phase-21b green-modulo `h…` idiom against the manufactured parent selector `ends` and the
+    -- chosen `H`/`r`. It supplies (a) the `H`-leg selector alignment `hswap`/`hne_ends` that
+    -- `hasGenericRealization_transport_ends` consumes (KT eq. (6.6)), and (b) the contraction leg's
+    -- Claim-6.4 transport as **exterior-column-projected row-independence** (KT's bottom-right
+    -- block rank `rank R(G,p; E∖E′, V∖V′) = D(|sc|−1)`, eqs. (6.5)/(6.9)): given the contraction's
+    -- generic IH `Q`, at *every* general-position parent seed the surviving rows of `G ＼ E(H)` are
+    -- `≥ D(|sc|−1)` and independent after projecting away the rigid-block columns `V(H)`
+    -- (`(extProj V(H)).dualMap`). This is the single dischargeable Claim-6.4 row-count (design
+    -- doc §1.13/§1.14), *not* the undischargeable `∀`-GP-rigid `htransportGP`.
     (hbundle : ∀ ends : β → α × α,
       (∀ Q : PanelHingeFramework k α β, Q.graph = H →
         (∀ e u v, H.IsLink e u v →
@@ -5269,9 +5526,13 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
         Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
         ∀ q : α × Fin (k + 2) → ℝ,
           (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition →
-          BodyHingeFramework.IsInfinitesimallyRigidOn
-            (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q).toBodyHinge
-            ((V(G) \ V(H)) ∪ {r}))) :
+          ∃ rsc : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k),
+            (∀ i ∈ rsc, (G.deleteEdges E(H)).IsLink (i : β × _ × _).1
+              (ends (i : β × _ × _).1).1 (ends (i : β × _ × _).1).2) ∧
+            screwDim k * (((V(G) \ V(H)) ∪ {r}).ncard - 1) ≤ Nat.card rsc ∧
+            LinearIndependent ℝ (fun i : rsc => (extProj (k := k) V(H)).dualMap
+              ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends
+                (i : β × _ × _))))) :
     PanelHingeFramework.HasGenericFullRankRealization k G := by
   classical
   haveI : NeZero (Graph.bodyHingeMult n) := ⟨by rw [Graph.bodyHingeMult]; omega⟩
@@ -5286,7 +5547,7 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
     rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
   have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVHne, hVHss⟩
-  obtain ⟨hswap, hne_ends, htransportGP⟩ := hbundle ends
+  obtain ⟨hswap, hne_ends, hclaim64⟩ := hbundle ends
   -- The geometric inputs of the coupling for legs `H` / `G ＼ E(H)` sharing `r` (G3b); the cover is
   -- against the *surviving-body* set `sc := (V(G)∖V(H)) ∪ {r}` (its `(V(G)∖V(H))` part alone
   -- complements `V(H)`).
@@ -5297,8 +5558,9 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     by_cases hxH : x ∈ V(H)
     · exact Or.inl hxH
     · exact Or.inr (Or.inl ⟨hx, hxH⟩)
-  -- (1) The `H`-leg: extract its generic IH and transport it to the parent selector. The `H`-leg
-  -- runs the green rank-polynomial round-trip (it is rigid on its *full* vertex set `V(H)`).
+  -- (1) The `H`-leg: extract its generic IH and transport it to the parent selector (rigid +
+  -- transversal on its *full* `V(H)`). The block-triangular coupling uses only the `H`-block *rows*
+  -- (the `H`-leg rank polynomial), so no complement-isolation equality is needed for this leg.
   have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
   obtain ⟨QH, hQHg, hQHgp, hQHrig⟩ :=
     (hIH H hHmin hVH2 hVHlt).1 (hSimple.mono hle)
@@ -5306,10 +5568,10 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
       (hswap QH hQHg) hne_ends
   -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller, simple minimal `0`-dof-graph (N4 +
-  -- `hcSimple`), so `hIH` supplies its generic realization. KT Claim 6.4 (eq. (6.9), the bundle's
-  -- `htransportGP`) transports that rank across the collapse map to the surviving-edge leg, rigid
-  -- on `sc` at *every* general-position seed — the asymmetric coupling consumes this directly, with
-  -- no body-set rank-polynomial round-trip and hence no (false) complement-isolation equality.
+  -- `hcSimple`), so `hIH` supplies its generic realization `Qc`. KT Claim 6.4 (eqs. (6.5)/(6.9),
+  -- the bundle's `hclaim64`) turns that rank into the surviving edges' **exterior-projected
+  -- row-independence** — KT's bottom-right block rank — which the block-triangular coupling reads
+  -- as the `s_c` block (no common-seed rigidity, no false complement-isolation equality).
   have hKmin : (G.rigidContract H r).IsMinimalKDof n 0 :=
     Graph.rigidContract_isMinimalKDof hG hHprop hr
   have hKlt : V(G.rigidContract H r).ncard < V(G).ncard :=
@@ -5320,26 +5582,14 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     omega
   obtain ⟨Qc, hQcg, hQcgp, hQcrig⟩ :=
     (hIH (G.rigidContract H r) hKmin hK2 hKlt).1 hcSimple
-  have hrigcGP : ∀ q : α × Fin (k + 2) → ℝ,
-      (PanelHingeFramework.ofNormals (k := k) G ends q).IsGeneralPosition →
-      BodyHingeFramework.IsInfinitesimallyRigidOn
-        (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q).toBodyHinge
-        ((V(G) \ V(H)) ∪ {r}) :=
-    htransportGP Qc hQcg hQcgp hQcrig
-  -- (3) `hpinH` is the green complement-isolation on the `H`-leg's full vertex set `V(H)`.
-  have hpinH : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
-      ((PanelHingeFramework.ofNormals H ends q).toBodyHinge.pinnedMotionsOn V(H))
-      = screwDim k * V(H)ᶜ.ncard := by
-    intro q
-    have := (PanelHingeFramework.ofNormals H ends q).toBodyHinge.finrank_pinnedMotionsOn_vertexSet
-    simpa only [PanelHingeFramework.toBodyHinge_graph, PanelHingeFramework.ofNormals_graph]
-      using this
-  -- (4) Feed both legs into the *asymmetric* body-set generic coupling (`sH := V(H)`,
-  -- `sc := (V(G)∖V(H))∪{r}`): the `H`-leg via its green round-trip, the contraction leg's rigidity
-  -- supplied directly by `hrigcGP` (KT Claim 6.4).
-  exact PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNormals_set G ends hends
-    hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl) hcover
-    ⟨r, hr⟩ (qH := qH) hpinH hneH hrigH hrigcGP
+  have hsc_proj_indep := hclaim64 Qc hQcg hQcgp hQcrig
+  -- (3) Feed both legs into the **block-triangular** body-set generic coupling (`sH := V(H)`,
+  -- `sc := (V(G)∖V(H))∪{r}`): the `H`-block rows from the rank polynomial, the surviving-edge
+  -- block from the Claim-6.4 exterior-projected row-independence. The device-row closure reads
+  -- rigidity on `V(G)` off the joint row count — no common placement rigid on both legs.
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangular_ofNormals_set
+    G ends hends hGH hGc (sH := V(H)) (sc := (V(G) \ V(H)) ∪ {r}) (c := r) hr (Or.inr rfl) hcover
+    ⟨r, hHsub hr⟩ ⟨r, hr⟩ le_rfl (qH := qH) hneH hrigH hsc_proj_indep
 
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)

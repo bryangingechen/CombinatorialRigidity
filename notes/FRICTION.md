@@ -76,6 +76,21 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] A `(α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k)` defined by a `where`/`toFun` with an `if … then 0 else S a` body leaves the Pi-fiber `Module` stuck (and the `if` needs `Decidable` in the *statement* of any `_apply` lemma)
+- **Where it bit:** the block-triangular reframing's exterior-column projection `extProj`
+  (`Molecular/AlgebraicInduction.lean`, Phase 22a §1.14, Piece B). Both the structure-`where` form
+  (`toFun S := fun a => if a ∈ t then 0 else S a`) and a separate `extProj_apply` `= if a ∈ t then …`
+  lemma fail: the `where` leaves *"failed to synthesize Module ?m …"* on the Pi fiber under the
+  `public section` (`0 : ScrewSpace k` doesn't pin the fiber, sibling of TACTICS-QUIRKS § 30), and the
+  `if a ∈ t` in the `_apply` *statement* needs `Decidable (a ∈ t)` — which `classical` (a *proof*
+  tactic) cannot supply for a statement.
+- **Fix:** build the map as `LinearMap.pi fun a => if a ∈ t then (0 : (α → W) →ₗ[ℝ] W) else
+  LinearMap.proj a` (the whole-`LinearMap` `0`/`proj` ascription pins the fiber, the §30 fix in `pi`
+  form), under a `by classical exact …`. State only the branch you need — `extProj_apply_mem (ha : a ∈ t)
+  : extProj t S a = 0` (`rw [extProj, LinearMap.pi_apply, if_pos ha, LinearMap.zero_apply]`) — so no
+  `Decidable` appears in any statement.
+- **Status:** resolved (`LinearMap.pi` + branch-specific `_apply_mem`).
+
 ### [resolved] A leading `|>.proj` on a continuation line after `… → (expr).field` fails to parse ("type expected") — spell the projection as a prefix application instead
 - **Where it bit:** the Case-I composer fix `case_I_realization` + the new asymmetric coupling
   (`Molecular/AlgebraicInduction.lean`, Phase 22a G3c-iii-b). A hypothesis clause
