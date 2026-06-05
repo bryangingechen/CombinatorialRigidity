@@ -4171,6 +4171,86 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite �
   exact PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals G ends hends hne_ends hne
     hgp hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
+/-- **Case I shared-seed coupling, *generic* form: two rigid legs on the parent selector give a
+*general-position* full-rank realization** (`lem:case-I-realization`, the simple Case-I coupling at
+the strengthened motive, G2c; Katoh–Tanigawa 2011 §6.2, eq. (6.6); Phase 22a). The generic sibling
+of `hasFullRankRealization_of_couple_ofNormals`: from the *same* per-leg inputs — each leg
+`GH`, `Gc` infinitesimally rigid as a leg-native framework `ofNormals · ends ·` at its **own** seed
+and at the **parent** endpoint selector `ends`, with transversal hinges — it concludes the
+strengthened motive `HasGenericFullRankRealization k G` rather than the bare
+`HasFullRankRealization k G`.
+
+The proof is identical up to the final splice. Steps (i)–(iv) (each leg's leg-restricted rank
+polynomial × the general-position factor (G2) → a shared non-root `q₀` at which both legs are rigid
+*and* the parent normals are general position) are the same as the bare coupling, so this lemma
+shares the witness-transfer. Only step (v) differs: where the bare coupling splices the two
+`q₀`-rigid legs through the device-routing `hasFullRankRealization_of_splice_ofNormals` (which loses
+the general position of `q₀` on the way through the genericity device and so can only conclude the
+bare motive), the generic coupling splices through the genericity-device-free
+`hasGenericFullRankRealization_of_splice_ofNormals` (N6-G1), which realizes at the GP seed `q₀`
+*itself* and so keeps both the rigidity (from the block-triangular glue) and the general position
+(`hgp`). This is the producer the simple Case I (KT Lemma 6.3/6.5) consumes to discharge
+`theorem_55_generic`'s `hcontractGP` GP conjunct: the composer (N6-G3 / G2c) supplies the two leg
+rigidities from the conditioned IH (transported to the parent selector by
+`hasGenericRealization_transport_ends`) and this lemma lands the `G.Simple → GP G` conjunct of
+`theorem_55_generic`'s motive. -/
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
+    (hnevH : V(GH).Nonempty) (hnevc : V(Gc).Nonempty)
+    {qH qc : α × Fin (k + 2) → ℝ}
+    (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
+    (hnec : ∀ e, Gc.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.supportExtensor e ≠ 0)
+    (hrigH :
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
+    (hrigc :
+      (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
+    PanelHingeFramework.HasGenericFullRankRealization k G := by
+  classical
+  -- Steps (i)–(iv) are identical to the bare coupling: a shared non-root `q₀` of the triple
+  -- product (each leg's leg-restricted rank polynomial × the general-position factor) at which
+  -- both legs are rigid and the parent normals are in general position.
+  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
+    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
+  have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
+    (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
+  obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking GH ends hendsH hneH hnevH hrigH
+  obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+    exists_generalPosition_polynomial (k := k) G ends
+  have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
+  have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
+  have hQgpne : Qgp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
+    exact fun a b hab => hf (Nat.cast_injective hab)
+  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
+    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
+  rw [map_mul, map_mul] at hq₀
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hrigH₀ : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn
+      V(GH) :=
+    PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking
+      GH ends hnevH hsuppH hcardH hLIH hq₀H
+  have hrigc₀ : (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn
+      V(Gc) :=
+    PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking
+      Gc ends hnevc hsuppc hcardc hLIc hq₀c
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
+    hQgp_pos q₀ hq₀gp
+  -- (v') The generic splice: realize at the GP seed `q₀` itself (bypassing the device), so general
+  -- position survives and the conclusion is the strengthened generic motive.
+  exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals G ends hgp
+    hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+
 /-- **Swapping a hinge's two endpoints leaves the panel framework's motion space unchanged**
 (`lem:case-I-splice-placement` infra, the `ends`-selector independence of leg rigidity;
 Katoh–Tanigawa 2011 §6.2, Phase 22). For two endpoint selectors `ends`, `ends'` that record the

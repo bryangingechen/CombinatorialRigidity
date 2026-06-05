@@ -36,10 +36,11 @@ k-bookkeeping*.
 ## Current state
 
 **Track A's reduction infra (N4), the Case-I producer bricks, N6-G1 (generic producer), N6-G2-G2a
-(the conditioned-motive reduction skeleton, `theorem_55_generic`), and now N6-G2-G2b
-(the `map`/`collapseTo` simplicity fact, landed 2026-06-04) are all GREEN; the
-remaining red work is N6-G2 sub-pass G2c (wire-up) + N6-G3 (composer
-assembly).** The simple Case-I coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete
+(the conditioned-motive reduction skeleton, `theorem_55_generic`), N6-G2-G2b
+(the `map`/`collapseTo` simplicity fact), and now the G2c *generic coupling producer*
+`hasGenericFullRankRealization_of_couple_ofNormals` (landed 2026-06-05) are all GREEN; the
+remaining red work is the N6-G3 composer assembly (build the leg data from the IH + N4 and dispatch
+on `G.Simple`, discharging `theorem_55.hcontract` / `theorem_55_generic`'s `hcontractGP`).** The simple Case-I coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete
 assembly of green bricks, and the `ends`-swap leg-transport brick that feeds the IH into it is green. The
 generic-motive recon settled the IH-shape gap as a **hybrid** — Route 2 (make the simple-case *producer*
 conclude GP) and Route 1 (make the *IH* generic) are two halves, not alternatives, because the composer's
@@ -76,7 +77,10 @@ shape G2c/N6-G3 consume). **Remaining:** G2b → G2c → N6-G3 (or G2c+N6-G3 mer
 - **Two-motive split** — `HasGenericFullRankRealization` + forgetful map `hasFullRankRealization_of_generic`.
 - **(G2)** general-position factor `exists_generalPosition_polynomial` (+ helpers
   `pair_linearIndependent_of_leading_minor_ne_zero`, `pairLeadingMinorPoly`).
-- **N6b/N6c** simple Case-I coupling `hasFullRankRealization_of_couple_ofNormals` (the full assembly).
+- **N6b/N6c** simple Case-I coupling `hasFullRankRealization_of_couple_ofNormals` (the full assembly,
+  bare motive) + the G2c *generic* sibling `hasGenericFullRankRealization_of_couple_ofNormals` (same
+  per-leg inputs, concludes the *strengthened* `HasGenericFullRankRealization` motive by routing the
+  shared GP seed through N6-G1 instead of the device-routing bare splice).
 - **N6 leg-transport** `hasGenericRealization_transport_ends` — the `ends`-swap step feeding the IH into
   the coupling (built on the swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap`).
 - **N6-G1** (Route 2) generic *producer* `hasGenericFullRankRealization_of_splice_ofNormals` — concludes
@@ -189,13 +193,27 @@ shape G2c/N6-G3 consume). **Remaining:** G2b → G2c → N6-G3 (or G2c+N6-G3 mer
       positive statement of Lemma 6.3's hypothesis — **not** an unconditional preservation theorem. The
       decomposition replaced the planned "research-shaped dichotomy" with this clean positive criterion:
       the dichotomy is downstream (G2c decides which of `hloop`/`hpar` holds at the realized contraction).
-    - [ ] **G2c** wire G2a+G2b into the simple-Case-I `hcontract` discharge — feed the two generic leg IHs
-      through `hasGenericRealization_transport_ends` → N6-G1 → `hasFullRankRealization_of_generic`.
-      `buildable` once G2a/G2b green; may merge with N6-G3.
-  - [ ] **N6-G3** composer assembly — once G1+G2 land: dispatch on `G.Simple`, feed N4 (contraction is a
-    smaller minimal 0-dof-graph) + the two generic-motive leg IHs through `hasGenericRealization_transport_ends`
-    into `…_couple_generic`, forget down (`hasFullRankRealization_of_generic`) for the non-simple branch
-    (N6a), conclude `hcontract`. **Buildable once G1/G2 are green.**
+    - [x] **G2c** *generic coupling producer* `hasGenericFullRankRealization_of_couple_ofNormals` —
+      **GREEN** (2026-06-05). The brick that wires N6-G1 to the per-leg generic IHs: the generic
+      sibling of `hasFullRankRealization_of_couple_ofNormals`, identical up to the final splice. From
+      the *same* per-leg inputs (each leg rigid as `ofNormals · ends ·` at its own seed + transversal
+      hinges, the shape `hasGenericRealization_transport_ends` delivers from a `HasGenericFullRankRealization`
+      IH), steps (i)–(iv) — the leg-restricted rank polynomials × the (G2) factor → a shared GP non-root
+      `q₀` at which both legs are rigid — are verbatim; only step (v) swaps the device-routing bare splice
+      `hasFullRankRealization_of_splice_ofNormals` (which loses GP through the device) for the
+      device-free N6-G1 `hasGenericFullRankRealization_of_splice_ofNormals` (realizes at `q₀` itself,
+      keeping GP). Concludes the strengthened motive. Axiom-clean. The remaining red work — building
+      the geometric leg data (legs `H` / `G.rigidContract H r`, shared body `r`, cover, endpoint
+      selector) from the conditioned IH + N4 and dispatching on `G.Simple` — is the **N6-G3 composer**.
+  - [ ] **N6-G3** composer assembly — G1/G2 (incl. G2c) all green: dispatch on `G.Simple`, feed N4
+    (contraction is a smaller minimal 0-dof-graph) + the two generic-motive leg IHs through
+    `hasGenericRealization_transport_ends` into the G2c generic coupling
+    `hasGenericFullRankRealization_of_couple_ofNormals` (then `hasFullRankRealization_of_generic` to
+    land the bare `theorem_55.hcontract`; for the non-simple branch, the bare coupling / N6a directly),
+    conclude `hcontract` ⟹ `lem:case-I-realization` green. **All producer bricks are green; the
+    remaining content is the geometric *leg data* construction** (legs `H` / `G.rigidContract H r`,
+    shared body `r`, the `V(G) ⊆ V(H) ∪ V(G/E(H))` cover, the endpoint selector `ends`, and each leg's
+    `HasGenericFullRankRealization` from the conditioned IH applied via N4 / `subgraph_minimality`).
   - [x] **N6a** non-simple Case I producer (KT Lemma 6.2), general-position-free. **GREEN**
     (`hasFullRankRealization_of_splice_of_supportExtensor` + leg-native form). Takes *transversal hinges*
     `hsupp` directly instead of general position `hgp`, strictly generalizing
@@ -239,6 +257,17 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **G2c GREEN: the *generic coupling producer* `hasGenericFullRankRealization_of_couple_ofNormals`
+  is a one-line variation of the bare coupling — swap the final splice (2026-06-05).** The G2c
+  deliverable turned out to be the missing *producer brick*, not a full wire-up: the bare coupling
+  `hasFullRankRealization_of_couple_ofNormals` already does all the witness-transfer (shared GP seed
+  `q₀`, both legs rigid at it, parent normals GP) and ends by calling the *bare* device-routing splice
+  `hasFullRankRealization_of_splice_ofNormals`; the generic sibling reuses steps (i)–(iv) verbatim and
+  ends with N6-G1 `hasGenericFullRankRealization_of_splice_ofNormals` (device-free, keeps GP). Dropping
+  `hne_ends`/`hne` from the signature (N6-G1 bypasses the device, so it needs neither) cleared the only
+  warnings. This is the brick that connects all three of N6-G1 (generic producer), the transport brick
+  (consumes generic legs), and G2a/G2b (supply simplicity to extract them) — N6-G3 is now pure leg-data
+  geometry. Axiom-clean, no Phase-20 touch.
 - **G2a GREEN: the conditioned-motive reduction skeleton `theorem_55_generic`; the flagged routing
   sub-question is settled by *scope*, not `splitOff` routing (2026-06-04).** Built `theorem_55_generic`:
   `Graph.minimal_kdof_reduction` re-instantiated at `Pc G := (G.Simple → GP G) ∧ bare G`. Each branch's
@@ -455,22 +484,29 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **The open blocker is the N6 composer's generic-motive induction (an IH-shape gap), decomposed into
-  N6-G1/G2/G3 (hybrid route) with N6-G2 cut into G2a/G2b/G2c. N6-G1, G2a, and G2b are GREEN; the remaining
-  red work is G2c → N6-G3.** Everything else under Track A is green: N4, the N5
-  splice/seed/rank-polynomial bricks (all-edges + leg-restricted), N6a, the two-motive split, (G2), the
-  N6b/N6c coupling, the leg-transport `ends`-swap brick, N6-G1 (the generic producer), G2a
-  (`theorem_55_generic`, the conditioned-motive reduction skeleton), and G2b (`rigidContract_simple` /
-  `map_simple`, the contraction-simplicity kernel). The residual red item (design doc §1.6):
-  - **G2c — wire G2a+G2b into the simple-Case-I `hcontract` discharge** (buildable now that G2a/G2b are
-    green; may merge with N6-G3). Instantiate `theorem_55_generic`'s `hcontractGP`: from the conditioned IH
-    at the two Lemma-6.3 legs (`H` simple via `Graph.Simple.mono`, `G/E(H)` simple via `rigidContract_simple`),
-    extract each leg's `GP`, feed through `hasGenericRealization_transport_ends` → N6-G1 →
-    `hasFullRankRealization_of_generic`, discharge `theorem_55.hcontract` ⟹ `lem:case-I-realization` green.
-    **Open sub-question for G2c-open:** `rigidContract_simple`'s `hloop`/`hpar` hypotheses are read off the
-    *realized* contraction — G2c must discharge them from KT Lemma 6.3's standing setup (the proper rigid
-    subgraph `H` with `G/E′` simple). Re-recon at G2c-open whether they fall out of `H.IsProperRigidSubgraph G n`
-    + `G.Simple` directly, or need to be carried (deferral-eligible per the green-modulo `h…` idiom).
+- **The open blocker is the N6-G3 composer assembly — the *geometric leg-data construction*. All
+  producer bricks are now GREEN** (N6-G1, the transport brick, G2a `theorem_55_generic`, G2b
+  `rigidContract_simple`/`map_simple`, and now G2c `hasGenericFullRankRealization_of_couple_ofNormals`).
+  Everything else under Track A is green too: N4, the N5 splice/seed/rank-polynomial bricks (all-edges +
+  leg-restricted), N6a, the two-motive split, (G2), the bare N6b/N6c coupling. The residual red item:
+  - **N6-G3 — the composer assembly (discharges `theorem_55.hcontract` ⟹ `lem:case-I-realization`).** No
+    new analytic content remains; the work is *geometric leg data*: given `H.IsProperRigidSubgraph G n` +
+    `r ∈ V(H)`, exhibit (a) the two legs `GH := H` (`hGH : H ≤ G` from `IsRigidSubgraph`) and
+    `Gc := G.rigidContract H r` (`hGc : Gc ≤ G` — but note the contraction *relabels* `V(H)` to `r`, so
+    `Gc ≤ G` needs care; the cover may instead be stated as `V(G) ⊆ V(H) ∪ V(Gc)` with the collapse
+    image `(V(G) \ V(H)) ∪ {r}` from `rigidContract_vertexSet`); (b) the shared body `c := r`
+    (`r ∈ V(H)`, `r ∈ V(Gc)`); (c) a parent endpoint selector `ends`; (d) each leg's
+    `HasGenericFullRankRealization` from the conditioned IH (`H` via `Simple.mono` + `subgraph_minimality`;
+    `G/E(H)` via N4 `rigidContract_isMinimalKDof` + G2b `rigidContract_simple` for simplicity), transported
+    by `hasGenericRealization_transport_ends`, then fed to the G2c coupling.
+  - **Open sub-question (carried from G2c-open, now N6-G3's):** `rigidContract_simple`'s `hloop`/`hpar`
+    hypotheses are read off the *realized* contraction — N6-G3 must discharge them from KT Lemma 6.3's
+    standing setup. Decide whether they fall out of `H.IsProperRigidSubgraph G n` + `G.Simple` directly,
+    or need to be carried (deferral-eligible per the green-modulo `h…` idiom). **Also re-examine the
+    `Gc ≤ G` mismatch** above: the contraction is *not* literally a subgraph of `G` (it collapses
+    vertices), so the G2c coupling's `hGH`/`hGc : · ≤ G` shape may need the composer to instead splice
+    against a common *relabelled* parent, or the coupling restated for the collapse. This is the genuine
+    remaining design question for N6-G3.
 - **Track B + assembly are deferred to 22b+** (see *Deferred to 22b+ (Case III + assembly)* above), not
   open blockers for 22a: the Case II/III producer (eq. 6.12 degenerate placement, one short, + Lemma 6.10
   at `d=3`) and the `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip. They re-enter once
@@ -478,17 +514,17 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**Clean handoff point; next agent picks up at G2c.** This commit landed **G2b GREEN** — the
-`map`/`collapseTo` simplicity fact in `Induction.lean`: the abstract kernel `map_simple` (`(f ''ᴳ G).Simple`
-from no-self-collapse + no-pair-collapse) and its specialization `rigidContract_simple`
-(`(G.rigidContract H r).Simple`). Both axiom-clean (`map_simple`: `propext`; `rigidContract_simple`:
-`propext`/`Classical.choice`/`Quot.sound`, the latter two from `collapseTo`'s `noncomputable` `Classical`),
-warning- and lint-clean. **Decomposition finding:** the hand-off flagged G2b as the "research-shaped hard
-kernel" expecting the Lemma-6.3-vs-6.5 *dichotomy*; the math-first pass found the clean primitive is a
-*positive* `map`-simplicity criterion (the dichotomy is downstream — G2c decides which hypotheses hold at
-the realized contraction). `map` is the one graph op that breaks `Simple` (it can make loops and parallel
-edges), which is precisely why KT Case I trifurcates and `G/E′`-simple is a *case hypothesis*. No `\leanok`
-flip (`lem:case-I-realization` stays red until G2c discharges `theorem_55_generic`'s `hcontractGP`).
+**Clean handoff point; next agent picks up at N6-G3 (the composer assembly).** This commit landed
+**G2c GREEN** — the *generic coupling producer* `hasGenericFullRankRealization_of_couple_ofNormals` in
+`AlgebraicInduction.lean`: the generic sibling of `hasFullRankRealization_of_couple_ofNormals`,
+identical up to the final splice, which routes the shared GP seed `q₀` through the device-free N6-G1
+`hasGenericFullRankRealization_of_splice_ofNormals` (keeping general position) instead of the
+device-routing bare splice. Axiom-clean (`propext`/`Classical.choice`/`Quot.sound`, all from
+`classical`/`MvPolynomial`), warning- and lint-clean. **Finding:** the G2c deliverable was the missing
+*producer brick*, not a wire-up — it is the connector between N6-G1 (generic producer), the transport
+brick (consumes generic legs), and G2a/G2b (supply the simplicity to extract them). With it green, **all
+Case-I producer bricks are green**; N6-G3 is now pure geometric leg-data construction. No `\leanok` flip
+(`lem:case-I-realization` stays red until N6-G3 discharges `theorem_55.hcontract`).
 
 **Standing discipline — blueprint exposition ledger.** When a commit
 reroutes / reworks / decomposes a node that was scoped smaller (the
@@ -499,24 +535,30 @@ reroute surfaced. The expanded blueprint prose itself lands at **phase-close**
 (Mechanism agreed 2026-06-04; codification of the `blueprint/CLAUDE.md`
 *Proof verbosity* carve-out deferred until the principle settles.)
 
-**Next concrete task — G2c: wire G2a + G2b into the simple-Case-I `hcontract` discharge.** Instantiate
-`theorem_55_generic`'s `hcontractGP` (`AlgebraicInduction.lean:2820`): from the conditioned IH at the two
-Lemma-6.3 legs (`H` simple via `Graph.Simple.mono`, `G/E(H) = G.rigidContract H r` simple via
-`rigidContract_simple`, G2b) extract each leg's `GP`, feed through `hasGenericRealization_transport_ends`
-into `hasGenericFullRankRealization_of_splice_ofNormals` (N6-G1), and (for the non-simple branch, via
-`hasFullRankRealization_of_generic`) discharge `theorem_55.hcontract` ⟹ `lem:case-I-realization` green,
-closing 22a (G2c may merge with N6-G3). The N4 contraction-minimality bridge (`rigidContract_isMinimalKDof`)
-supplies that `G/E(H)` is a strictly-smaller minimal `0`-dof-graph the IH applies to.
+**Next concrete task — N6-G3: the composer assembly (discharges `theorem_55.hcontract` ⟹
+`lem:case-I-realization` green, closing 22a's target).** No new analytic content remains — every producer
+brick is green. The work is *geometric leg-data construction*. Instantiate `theorem_55_generic`'s
+`hcontractGP` (`AlgebraicInduction.lean:2820`) and/or `theorem_55`'s `hcontract` (`:2748`): from the
+proper rigid subgraph `H` (`hrig : ∃ H, H.IsProperRigidSubgraph G n`) and a representative `r ∈ V(H)`,
+build the two legs `GH := H` and `Gc := G.rigidContract H r`, the shared body `c := r`, the cover, and a
+parent endpoint selector `ends`; supply each leg's `HasGenericFullRankRealization` from the conditioned IH
+(`H` via `Graph.Simple.mono` + `subgraph_minimality`; `G/E(H)` via N4 `rigidContract_isMinimalKDof` for
+minimality + G2b `rigidContract_simple` for simplicity), transport via `hasGenericRealization_transport_ends`,
+and feed the G2c generic coupling `hasGenericFullRankRealization_of_couple_ofNormals` (then
+`hasFullRankRealization_of_generic` for the bare `hcontract`; the non-simple branch uses the bare coupling
+/ N6a directly).
 
-**Re-recon at G2c-open (the one genuine open question for G2c).** `rigidContract_simple`'s `hloop`/`hpar`
-hypotheses are stated against the *realized* contraction's link structure. G2c must discharge them from KT
-Lemma 6.3's standing setup — `H.IsProperRigidSubgraph G n`, `G.Simple`, and the surviving edge set
-`E(G) ＼ E(H)` (via `edgeSet_rigidContract`). Decide at G2c-open whether they fall out directly (a simple
-`G` with all of `H`'s edges deleted: a surviving edge with both ends in `V(H)` would have to be an edge of
-`G` not in `E(H)` joining two `H`-vertices — `hloop`; two surviving edges joining the same collapsed pair
-— `hpar`) or whether the Lemma-6.3-vs-6.5 *case structure* is needed to rule out the failure cases (in
-which case carry `(G/E(H)).Simple` as a `h…` hypothesis on the simple-Case-I branch, green-modulo idiom,
-and the dichotomy lands with Track B). The positive G2b kernel makes either route a clean assembly.
+**The two genuine open design questions for N6-G3-open (Blockers has the detail):**
+1. **`Gc ≤ G` mismatch.** `G.rigidContract H r` collapses `V(H)` to `r`, so it is *not literally* a
+   subgraph of `G` (no `rigidContract_le` lemma exists — confirmed). The G2c/N6-G1 coupling's
+   `hGH`/`hGc : · ≤ G` shape therefore does not directly fit `Gc`; the composer must either splice against
+   a common *relabelled* parent (the collapse-image graph) or the coupling be restated for the collapse.
+   This is the binding obstruction and the right thing to recon first.
+2. **`rigidContract_simple`'s `hloop`/`hpar`** are stated against the realized contraction. Discharge them
+   from `H.IsProperRigidSubgraph G n` + `G.Simple` + `E(G) ＼ E(H)` (a surviving edge with both ends in
+   `V(H)` would be a `G`-edge not in `E(H)` joining two `H`-vertices — `hloop`; two surviving edges
+   collapsing to the same pair — `hpar`), or carry `(G/E(H)).Simple` as a green-modulo `h…` hypothesis on
+   the simple branch (dichotomy lands with Track B). G2b's positive kernel makes either route a clean assembly.
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an
