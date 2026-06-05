@@ -506,6 +506,18 @@ content of Case I. The three passes (each its own future commit; re-recon at ope
   brick) — math-first decomposition before any dispatch; escalation-eligible to
   carrying Claim 6.4 as an explicit `h…` hypothesis on the composer (the Phase-21b
   green-modulo idiom) if the surviving-edge transport stalls.
+  **OUTCOME (2026-06-05): GREEN-MODULO; the proposed lever does NOT close it.** The
+  math-first pass found `infinitesimalMotions_eq_of_isLink_span_supportExtensor` is
+  *inapplicable*: the surviving-edge "bijection" is endpoint-*relabelling*, and
+  `collapseTo r V(H)` sends a surviving edge's endpoints to different bodies, so its
+  support extensor `panelSupportExtensor (q u) (q v)` uses *different normals* in
+  `rigidContract` vs. `deleteEdges E(H)` — the `hspan` span-equality the brick demands
+  fails. Recovering the rank at the un-collapsed endpoints across that relabel *is* the
+  algebraic-independence statement of Claim 6.4, irreducibly research-shaped. So the
+  escalation fired: `PanelHingeFramework.rigidContract_rigidity_transport` carries
+  Claim 6.4 as the narrow explicit hypothesis `htransport` and is the surrounding
+  plumbing only (axiom-clean, no `sorry`); `htransport` re-enters at G3c (via
+  `lem:case-III` / 22b+).
 - **G3b — the cover/shared-body/endpoint-selector geometry.** With both legs now
   `≤ G` (`H` and `G.deleteEdges E(H)`), discharge the coupling's combinatorial
   inputs: `hcH : r ∈ V(H)`, `hcc : r ∈ V(G.deleteEdges E(H))`, the cover
@@ -562,20 +574,21 @@ Built once, reused by all cases. **Green** unless marked.
 | Count bridges (`V(G)`-relative N1–N3) | `finrank_pinnedMotionsOn_vertexSet`, `exists_relative_full_count_ofParam`, `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` | GREEN | all |
 | **Lemma 2.1 (extensor independence)** | `omitTwoExtensor_linearIndependent` (`Extensor.lean:493`) | GREEN — **hyp `AffineIndependent ℝ p`** | Case III (the missing row) |
 | **(G2) general-position factor** | `exists_generalPosition_polynomial` (+ `pairLeadingMinorPoly`, `pair_linearIndependent_of_leading_minor_ne_zero`) | **GREEN** (2026-06-04; off-diagonal product of leading `2×2` minor polynomials) | Case I coupling |
-| **Claim 6.4 collapse transport (G3a)** | none yet (`rigidContract_rigidity_transport`, working name) | **RED** (the new analytic brick — contraction-IH rigidity ⟹ `G ＼ E(H)`-leg rigidity at a GP seed; KT eq. (6.9)) | Case I composer (the contraction leg) |
+| **Claim 6.4 collapse transport (G3a)** | `PanelHingeFramework.rigidContract_rigidity_transport` | **GREEN-MODULO** (2026-06-05; carries KT Claim 6.4 / eq. (6.9) as the explicit hypothesis `htransport` — the rank-transport across the collapse map, irreducible because the relabel changes the surviving-edge normals; axiom-clean, no `sorry`) | Case I composer (the contraction leg) |
 | **`prop:rigidity-matrix-prop11` `hub`** | carried as hypothesis (`:2527`) | RED (multi-commit, Phase-19 partition count) | Prop 1.1 only |
 
 **Reading:** the entire device + witness-transfer + splice + count + N4
 substrate is GREEN; **(G2) is now GREEN too** (2026-06-04,
-`exists_generalPosition_polynomial`). The remaining missing analytic bricks
-across the layer are now **two**: (i) the **Case-III missing row** via Lemma 2.1
-(Track B, 22b+); and (ii) the **Case-I Claim-6.4 collapse transport** (G3a,
-2026-06-05, surfaced by the §1.7 N6-G3 recon) — the contraction leg of the splice
-is `G ＼ E(H)` (`≤ G`), but its rigidity must be *transported across the collapse
-map* from the relabelled-contraction IH, KT's eq. (6.9). The N6b/N6c couplings are
-an assembly of green bricks *given both legs as `≤ G` rigid `ofNormals`*; G3a is
-what supplies the second such leg. (G1) was not a missing brick — it was the
-motive decision of §1, dissolved by the two-motive split.
+`exists_generalPosition_polynomial`). The Case-I substrate is now also complete:
+the **Case-I Claim-6.4 collapse transport** (G3a, `rigidContract_rigidity_transport`)
+landed **GREEN-MODULO** 2026-06-05, carrying KT eq. (6.9) as the explicit
+hypothesis `htransport` (the relabel-induced normal change makes it irreducible — the
+linking-edge lever fails). So the one remaining *missing* analytic brick across the
+layer is now **one**: the **Case-III missing row** via Lemma 2.1 (Track B, 22b+).
+The N6b/N6c couplings are an assembly of green bricks *given both legs as `≤ G` rigid
+`ofNormals`*; G3a supplies the second such leg (modulo `htransport` = KT Claim 6.4,
+which itself re-enters via `lem:case-III` / 22b+). (G1) was not a missing brick — it
+was the motive decision of §1, dissolved by the two-motive split.
 
 ---
 
@@ -618,16 +631,18 @@ Nodes (composing the green infra of §2):
   as a single commit: the composer's adapter needs each leg in
   `HasGenericFullRankRealization`, which (i) the coupling did not produce — **fixed
   by N6-G1, GREEN** — and (ii) `minimal_kdof_reduction` does not thread (N6-G2,
-  Route 1, re-reconned in §1.6 into G2a/G2b/G2c, **all GREEN**). **Remaining: N6-G3,
-  re-reconned in §1.7 into G3a/G3b/G3c** — the composer is NOT pure leg-data
-  geometry: the contraction leg's rigidity must be transported across the collapse
-  map (G3a, KT Claim 6.4, the new analytic brick), then the cover/simplicity
-  geometry (G3b) and the assembly/flip (G3c). See §1.7 + `notes/Phase22a.md`.
+  Route 1, re-reconned in §1.6 into G2a/G2b/G2c, **all GREEN**). **Remaining: N6-G3's
+  G3b/G3c** (re-reconned in §1.7 into G3a/G3b/G3c; **G3a now GREEN-MODULO**, 2026-06-05).
+  The composer is NOT pure leg-data geometry: the contraction leg's rigidity is
+  transported across the collapse map by G3a `rigidContract_rigidity_transport` (KT
+  Claim 6.4, carried as the explicit hypothesis `htransport` — green-modulo, axiom-
+  clean); then the cover/simplicity geometry (G3b, buildable) and the assembly/flip
+  (G3c, buildable). See §1.7 + `notes/Phase22a.md`.
 
-**Build order (Track A), updated 2026-06-05 (everything before N6-G3 is green):**
+**Build order (Track A), updated 2026-06-05 (G3a green-modulo; G3b is the next build):**
 §1 motive decision ✓ → N6a ✓ → (G2) ✓ → N6b/N6c coupling ✓ → **N6 composer
 (§1.5 hybrid, §1.6 N6-G2 cut, §1.7 N6-G3 cut): N6-G1 ✓ → G2a ✓ → G2b ✓ → G2c ✓ →
-N6-G3 (G3a → G3b → G3c).**
+N6-G3 (G3a ✓ green-modulo → G3b → G3c).**
 
 ### Track B — Case II/III producer (`hsplit`), KT §6.3 (Lemma 6.8) + §6.4.1
 

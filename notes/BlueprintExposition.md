@@ -188,7 +188,16 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   contraction's rank — riding on the algebraic-independence (general position) of
   the joint `p1`/`p2` coefficients. The "contract the graph then splice it back"
   reading conflates a graph operation with a placement one; the formalization is
-  forced to keep the splice leg `≤ G` and carry the collapse on the seed. Pointer:
+  forced to keep the splice leg `≤ G` and carry the collapse on the seed.
+  **Sharpened at G3a (`a…`, 2026-06-05):** the math-first pass confirmed Claim 6.4
+  is *irreducible* — the natural Lean lever (the motion space sees only linking-edge
+  support extensors) does **not** discharge it, because `collapseTo r V(H)` redirects
+  each surviving edge's *endpoints*, so its support extensor
+  `panelSupportExtensor (q u) (q v)` uses *different normals* in `G/E′` vs.
+  `G ＼ E(H)` and the spans differ — recovering the rank at the un-collapsed endpoints
+  is exactly the algebraic-independence content. So the rank-transport across the
+  relabel is genuinely new analytic content (not a structural rename), and G3a carries
+  it as the explicit hypothesis `htransport` (green-modulo). Pointer:
   `notes/Phase22-realization-design.md` §1.7; `notes/Phase22a.md` *Decisions*.
 - **`lem:case-I-realization` N4 union↔contraction crux
   (`rigidContract_isMinimalKDof`)** — [pending] **(a), model-induced**. **Stable

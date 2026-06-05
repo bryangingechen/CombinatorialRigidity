@@ -35,17 +35,22 @@ k-bookkeeping*.
 
 ## Current state
 
-**All Track-A *producer* bricks are GREEN** (N4 reduction infra; the Case-I producer bricks; N6-G1
-generic producer; N6-G2-G2a `theorem_55_generic`; G2b `map`/`collapseTo` simplicity; G2c generic
-coupling producer `hasGenericFullRankRealization_of_couple_ofNormals`); **the remaining red work is
-the N6-G3 composer assembly**, now re-reconned (2026-06-05, design doc §1.7) and cut into
-**G3a/G3b/G3c**. The re-recon settled the binding `Gc ≤ G` obstruction the prior hand-off flagged:
-the splice's contraction leg is **`G.deleteEdges E(H)`** (`≤ G`, KT eq. 6.3's `R(G,p; E∖E′, V∖V′)`),
-**not** the relabelled `G.rigidContract H r` — but the contraction IH's rigidity must be *transported
-across the collapse map* to that `G ＼ E(H)` leg, which is **KT's Claim 6.4** (eq. 6.9) and the **last
-research-shaped Case-I brick** (G3a), with no green brick supplying it yet. The next *build* commit is
-G3a (math-first decompose the surviving-edge collapse transport, or its green-modulo `h…`-deferral).
-The simple Case-I coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete
+**All Track-A *producer* bricks are GREEN, and G3a (the Claim-6.4 collapse transport) is now
+GREEN-MODULO** (N4 reduction infra; the Case-I producer bricks; N6-G1 generic producer; N6-G2-G2a
+`theorem_55_generic`; G2b `map`/`collapseTo` simplicity; G2c generic coupling producer
+`hasGenericFullRankRealization_of_couple_ofNormals`; **G3a `rigidContract_rigidity_transport`,
+green-modulo the explicit Claim-6.4 hypothesis `htransport`**); **the remaining red work is the
+N6-G3 composer assembly's G3b/G3c.** The §1.7 re-recon settled the binding `Gc ≤ G` obstruction: the
+splice's contraction leg is **`G.deleteEdges E(H)`** (`≤ G`, KT eq. 6.3's `R(G,p; E∖E′, V∖V′)`),
+**not** the relabelled `G.rigidContract H r` — and the contraction IH's rigidity is *transported
+across the collapse map* to that `G ＼ E(H)` leg by **KT's Claim 6.4** (eq. 6.9). The G3a math-first
+pass found this transport is irreducibly research-shaped (the collapse redirects surviving-edge
+endpoints, so it cannot be reduced to the green linking-edge brick — recovering the un-collapsed-
+endpoint rank *is* Claim 6.4); per the design-doc escalation authorization, G3a carries Claim 6.4 as
+the narrow explicit hypothesis `htransport` and does the surrounding plumbing, so it is green-modulo
+that one hypothesis (axiom-clean, no `sorry`). The next *build* commits are **G3b** (cover/shared-body
+/selector geometry, both legs now `≤ G`) and **G3c** (the assembly + `theorem_55`/`theorem_55_generic`
+flip), both `buildable`. The simple Case-I coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete
 assembly of green bricks, and the `ends`-swap leg-transport brick that feeds the IH into it is green. The
 generic-motive recon settled the IH-shape gap as a **hybrid** — Route 2 (make the simple-case *producer*
 conclude GP) and Route 1 (make the *IH* generic) are two halves, not alternatives, because the composer's
@@ -58,8 +63,9 @@ splitting-off branch *is* KT Case III (Track B, out of 22a scope, entirely red),
 obstruction is one of *scope*, not routing — G2a carries that branch's GP step as an explicit hypothesis
 `hsplitGP` (Phase-21b green-modulo `h…` idiom; design doc §1.6 escalation (ii)), and likewise carries the
 simple-base `hbaseGP` and the simple Case-I `hcontractGP` (the latter fed the *full conditioned IH*, the
-shape G2c/N6-G3 consume). **Remaining:** G2b → G2c → N6-G3 (or G2c+N6-G3 merged). No `\leanok` flip yet
-(`lem:case-I-realization` stays red until G2c discharges `hcontractGP`); axiom-clean; no `sorry`.
+shape G2c/N6-G3 consume). **Remaining:** N6-G3-G3b → G3c (G3a green-modulo). No `\leanok` flip yet
+(`lem:case-I-realization` stays red until G3c discharges `hcontractGP`/`hcontract` and G3a's
+`htransport` is itself supplied — KT Claim 6.4 / `lem:case-III`); axiom-clean; no `sorry`.
 
 **Green-brick inventory (resume points; full detail in *Lemma checklist* / *Decisions*).**
 - **N4** `rigidContract_isMinimalKDof` — graph↔matroid contraction-minimality bridge (`\leanok`).
@@ -108,6 +114,13 @@ shape G2c/N6-G3 consume). **Remaining:** G2b → G2c → N6-G3 (or G2c+N6-G3 mer
   loops and parallel edges), which is exactly why KT Case I trifurcates: `G/E′` simple is a *case
   hypothesis* (Lemma 6.3), its failure routed to Lemma 6.5's vertex-removal. `map_simple` is the faithful
   positive statement of that hypothesis; both lemmas in `Induction.lean`, axiom-clean.
+- **N6-G3-G3a** (the Claim-6.4 collapse transport, **green-modulo**) `PanelHingeFramework.rigidContract_rigidity_transport`
+  — from the contraction IH `HasGenericFullRankRealization (G.rigidContract H r)`, produce a seed `q_c`
+  + rigidity of `(ofNormals (G.deleteEdges E(H)) ends q_c)` on `(V(G)∖V(H)) ∪ {r}` (the `≤ G` surviving-
+  edge leg the G2c coupling consumes). The transport across the collapse map *is* KT Claim 6.4 (eq. 6.9),
+  irreducibly research-shaped (the collapse redirects surviving-edge endpoints, so the green linking-edge
+  brick does not apply); carried as the narrow explicit hypothesis `htransport` (Phase-21b green-modulo
+  `h…` idiom). The brick is the surrounding plumbing only — axiom-clean, no `sorry`.
 
 ## Architectural choices made up front
 
@@ -221,15 +234,20 @@ shape G2c/N6-G3 consume). **Remaining:** G2b → G2c → N6-G3 (or G2c+N6-G3 mer
     relabelled-contraction IH to this `G ＼ E(H)`-leg rigidity. So the contraction leg's rigidity is **not
     available from any green brick** — it needs a new collapse-transport (the last research-shaped Case-I
     brick). Sub-passes (each its own commit; re-recon at open):
-    - [ ] **G3a** Claim-6.4 collapse-transport brick (`research-shaped`, the new analytic content) —
-      `rigidContract_rigidity_transport` (working name): from `HasGenericFullRankRealization
-      (G.rigidContract H r)` (the contraction IH) + the GP parent seed, produce a seed `q_c` and rigidity
-      of `(ofNormals (G.deleteEdges E(H)) ends q_c)` on `(V(G)∖V(H)) ∪ {r}`. Lever: the body-hinge motion
-      space sees the graph only through *linking-edge* support extensors
-      (`infinitesimalMotions_eq_of_isLink_span_supportExtensor`), and the surviving edges `E(G)∖E(H)` are
-      in bijection between `rigidContract` and `deleteEdges E(H)` (only endpoints relabelled by
-      `collapseTo`); `r = v∗` carries the collapsed body. Math-first decomposition before any dispatch;
-      escalation-eligible to carrying Claim 6.4 as an explicit `h…` (green-modulo idiom) if it stalls.
+    - [x] **G3a** Claim-6.4 collapse-transport brick (`research-shaped`, the new analytic content) —
+      `PanelHingeFramework.rigidContract_rigidity_transport`. **GREEN-MODULO (2026-06-05, axiom-clean, no
+      `sorry`).** The math-first decomposition (see *Decisions* → *G3a*) found the surviving-edge transport
+      does **not** reduce structurally to the green linking-edge brick: `collapseTo r V(H)` redirects each
+      surviving edge's endpoints, so its support extensor uses *different panel normals* in `rigidContract`
+      vs. `deleteEdges E(H)`, and recovering the rank at the un-collapsed endpoints **is** the
+      algebraic-independence statement of KT Claim 6.4 — irreducibly research-shaped, no green brick
+      converts a relabelled-graph rigidity into the original-endpoint rigidity. Per the §1.7 / hand-off
+      escalation authorization, the Claim-6.4 transport is carried as the explicit hypothesis `htransport`
+      (Phase-21b green-modulo `h…` idiom); the brick does the surrounding plumbing (extract the contraction
+      IH `⟨Q, hQg, hQgp, hQrig⟩`, forward `htransport`'s seed `q_c` + surviving-edge rigidity at the
+      **parent** selector `ends`, in the exact shape the G2c coupling consumes for its
+      `Gc := G.deleteEdges E(H)` leg). `lem:case-III`/`thm:theorem-55` stay red; the obligation is one
+      visible hypothesis pinned to KT eq. (6.9), not a `sorry`/`axiom`.
     - [ ] **G3b** cover/shared-body/endpoint-selector geometry (`buildable` once G3a green) — both legs now
       `≤ G` (`H` and `G.deleteEdges E(H)`): discharge `hcH : r ∈ V(H)`, `hcc : r ∈ V(G.deleteEdges E(H))`,
       the cover `V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H))` (trivial — `V(G.deleteEdges E(H)) = V(G)`), the
@@ -282,6 +300,20 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **G3a GREEN-MODULO: the surviving-edge collapse transport does NOT reduce to the green linking-edge
+  brick; KT Claim 6.4 is irreducible, carried as `htransport` (2026-06-05).** The §1.7 recon proposed
+  the lever might be `infinitesimalMotions_eq_of_isLink_span_supportExtensor` (motion space sees only
+  linking-edge support extensors) + the surviving-edge bijection. The math-first pass found that lever
+  *does not close it*: the bijection is endpoint-relabelling, and `collapseTo r V(H)` sends a surviving
+  edge's endpoints to *different* bodies, so its support extensor `panelSupportExtensor (q u) (q v)`
+  uses *different normals* in `rigidContract` vs. `deleteEdges E(H)` — the spans are not equal, so the
+  brick's `hspan` hypothesis fails. Recovering the rank at the un-collapsed endpoints across that relabel
+  *is* the algebraic-independence content of KT Claim 6.4 (eq. 6.9) — irreducibly research-shaped, no
+  green brick supplies it. Per the §1.7 / hand-off escalation authorization, carried Claim 6.4 as the
+  narrow explicit hypothesis `htransport` (Phase-21b green-modulo `h…` idiom); `rigidContract_rigidity_transport`
+  is then the plumbing (`let ⟨Q,hQg,hQgp,hQrig⟩ := hQ; htransport …`) packaging the seed + surviving-edge
+  rigidity at the parent selector for the G2c coupling. `lem:case-III`/`thm:theorem-55` stay red.
+  Axiom-clean, no `sorry`, one node-level hypothesis.
 - **N6-G3 re-recon: the `Gc ≤ G` mismatch dissolves at the graph level but relocates to KT Claim 6.4
   on the placement side; cut into G3a/G3b/G3c (2026-06-05, docs-only).** The hand-off flagged the
   binding obstruction: the coupling needs both legs `≤ G`, but `G.rigidContract H r` relabels `V(H)↦r`
@@ -522,25 +554,26 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **The open blocker is the N6-G3 composer, now cut (design doc §1.7) into G3a/G3b/G3c; the binding
-  sub-blocker is G3a, the KT Claim-6.4 collapse transport (the last research-shaped Case-I brick).** All
-  *producer* bricks are green (N4, N5, N6a, N6b/N6c, the two-motive split, (G2), N6-G1, G2a/G2b/G2c, the
-  transport brick). The `Gc ≤ G` mismatch the prior hand-off flagged is **resolved at the graph level**
-  (the splice contraction leg is `G.deleteEdges E(H)` `≤ G`, KT eq. 6.3, *not* the relabelled
-  `rigidContract`) but **relocates** to the placement side as the new analytic obligation:
-  - **G3a (binding) — the Claim-6.4 collapse transport (`research-shaped`).** No green brick converts the
-    contraction IH `HasGenericFullRankRealization (G.rigidContract H r)` (rigidity of the *relabelled*
-    graph) into the `(ofNormals (G.deleteEdges E(H)) ends q_c)`-leg rigidity on `(V(G)∖V(H)) ∪ {r}` the
-    coupling consumes. That conversion is KT Claim 6.4 (eq. 6.9): the algebraic-independence (GP) of the
-    joint coefficients makes the `p_{E∖E′}` realization of `G ＼ E(H)` attain the contraction's rank. Lean
-    lever: the motion space sees only *linking-edge* support extensors
-    (`infinitesimalMotions_eq_of_isLink_span_supportExtensor`), and `E(G)∖E(H)` is in bijection between
-    `rigidContract` and `deleteEdges E(H)` (only endpoints relabelled). Math-first decompose before any
-    dispatch; green-modulo `h…`-deferral eligible if it stalls.
-  - **G3b/G3c (downstream, `buildable`).** G3b: the cover/shared-body/selector geometry (both legs now
-    `≤ G`) + G2b `rigidContract_simple`'s `hloop`/`hpar` (still read off the realized contraction —
-    discharge from `H.IsProperRigidSubgraph G n` + `G.Simple`, or carry as green-modulo `h…`). G3c: the
-    `G.Simple` dispatch + assembly + `theorem_55`/`theorem_55_generic` flip.
+- **G3a is now GREEN-MODULO; the open blocker is N6-G3's G3b/G3c (both `buildable`).** All *producer*
+  bricks are green (N4, N5, N6a, N6b/N6c, the two-motive split, (G2), N6-G1, G2a/G2b/G2c, the transport
+  brick), and **G3a `rigidContract_rigidity_transport` is green-modulo** the explicit Claim-6.4 hypothesis
+  `htransport` (axiom-clean, no `sorry`). The `Gc ≤ G` mismatch is resolved at the graph level (the splice
+  contraction leg is `G.deleteEdges E(H)` `≤ G`, KT eq. 6.3, *not* the relabelled `rigidContract`); the
+  one remaining genuinely-analytic obligation is **the `htransport` hypothesis itself = KT Claim 6.4
+  (eq. 6.9)**, the algebraic-independence rank-transport across the collapse map. The G3a math-first pass
+  found this irreducible (the green linking-edge brick does not apply — the collapse redirects surviving-
+  edge endpoints, breaking the `hspan` equality), so per the design-doc escalation it is carried as the
+  node-level hypothesis. It re-enters at G3c (where the composer must supply `htransport` to flip
+  `lem:case-I-realization` fully green; KT Claim 6.4 / `lem:case-III` discharges it, deferred to 22b+).
+  - **G3b (binding, `buildable`) — cover/shared-body/selector geometry.** Both legs now `≤ G` (`H` and
+    `G.deleteEdges E(H)`): discharge `hcH : r ∈ V(H)`, `hcc : r ∈ V(G.deleteEdges E(H))`, the cover
+    `V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H))` (trivial — `V(G.deleteEdges E(H)) = V(G)`), the parent selector
+    `ends`, and (G2b) `rigidContract_simple`'s `hloop`/`hpar` for the simplicity conjunct (discharge from
+    `H.IsProperRigidSubgraph G n` + `G.Simple`, or carry as green-modulo `h…`).
+  - **G3c (`buildable`) — assembly + flip.** Dispatch on `G.Simple`; feed the `H`-leg IH + the G3a-
+    transported contraction leg through `hasGenericRealization_transport_ends` into the G2c coupling, then
+    `hasFullRankRealization_of_generic` for the bare `hcontract`; non-simple via N6a. Discharges
+    `hcontractGP`/`hcontract`.
 - **Track B + assembly are deferred to 22b+** (see *Deferred to 22b+ (Case III + assembly)* above), not
   open blockers for 22a: the Case II/III producer (eq. 6.12 degenerate placement, one short, + Lemma 6.10
   at `d=3`) and the `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip. They re-enter once
@@ -548,17 +581,22 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**Clean handoff point; next agent picks up at N6-G3-G3a (the KT Claim-6.4 collapse transport).** This
-commit is the **N6-G3 constructibility recon** (docs-only; design doc §1.7) — the math-first pass the
-prior hand-off flagged as "the right thing to recon first" before any N6-G3 build dispatch. It settled
-the binding `Gc ≤ G` obstruction against KT §6.2 (eqs. (6.3)–(6.9), verified against the source PDF):
-the splice's contraction leg is **`G.deleteEdges E(H)`** (`≤ G`, KT eq. 6.3's `R(G,p; E∖E′, V∖V′)`),
-**not** the relabelled `G.rigidContract H r` (which cannot be `≤ G` — no `rigidContract_le` exists or
-can). The graph-level mismatch dissolves, but the contraction IH's rigidity must be **transported across
-the collapse map** to that `G ＼ E(H)` leg, which is **KT's Claim 6.4** (eq. 6.9) — the *last
-research-shaped Case-I brick*, with no green brick supplying it. N6-G3 is therefore **not** the "pure
-leg-data geometry" the prior hand-off assumed; cut into G3a (the transport, research-shaped) / G3b
-(cover+simplicity, buildable) / G3c (assembly+flip, buildable). No `\leanok` flip; no Lean edits.
+**Clean handoff point; next agent picks up at N6-G3-G3b (the cover/shared-body/selector geometry,
+`buildable`).** This commit landed **N6-G3-G3a green-modulo**: the new brick
+`PanelHingeFramework.rigidContract_rigidity_transport` in `AlgebraicInduction.lean` (after
+`hasGenericRealization_transport_ends`, ~line 4353). The G3a math-first pass settled that the
+surviving-edge collapse transport is **irreducibly KT Claim 6.4** — the §1.7-proposed lever
+(`infinitesimalMotions_eq_of_isLink_span_supportExtensor` + the surviving-edge bijection) does **not**
+close it, because `collapseTo r V(H)` redirects each surviving edge's endpoints, so its support extensor
+uses *different* panel normals in `rigidContract` vs. `deleteEdges E(H)` and the brick's `hspan`
+equality fails. Per the §1.7 / hand-off escalation authorization, Claim 6.4 (eq. 6.9) is carried as the
+narrow explicit hypothesis `htransport`; the brick is the surrounding plumbing
+(`let ⟨Q,hQg,hQgp,hQrig⟩ := hQ; htransport …`) that extracts the contraction IH and forwards the seed
+`q_c` + surviving-edge rigidity on `(V(G)∖V(H)) ∪ {r}` at the **parent** selector `ends` — the exact
+shape the G2c coupling `hasGenericFullRankRealization_of_couple_ofNormals` consumes for its
+`Gc := G.deleteEdges E(H)` leg. Axiom-clean, no `sorry`; build + lint green + warning-clean. No `\leanok`
+flip (`lem:case-I-realization` stays red until G3c flips it and `htransport` is supplied via Claim 6.4 /
+`lem:case-III`, deferred to 22b+).
 
 **Standing discipline — blueprint exposition ledger.** When a commit
 reroutes / reworks / decomposes a node that was scoped smaller (the
@@ -567,36 +605,24 @@ reroutes / reworks / decomposes a node that was scoped smaller (the
 reroute surfaced. The expanded blueprint prose itself lands at **phase-close**
 (once Case I is `sorry`-free), not during recon — see that file's header.
 (Mechanism agreed 2026-06-04; codification of the `blueprint/CLAUDE.md`
-*Proof verbosity* carve-out deferred until the principle settles.) **This recon
-qualifies** — log the Claim-6.4 collapse-transport insight there.
+*Proof verbosity* carve-out deferred until the principle settles.) **This commit
+qualifies** — the G3a math-first finding (the collapse redirects surviving-edge endpoints, so the
+linking-edge lever fails and Claim 6.4 is irreducible) is logged there.
 
-**Next concrete task — N6-G3-G3a: the KT Claim-6.4 collapse transport (`research-shaped`; the binding
-sub-blocker).** A new analytic brick `rigidContract_rigidity_transport` (working name) in
-`AlgebraicInduction.lean`: from the contraction IH `HasGenericFullRankRealization (G.rigidContract H r)`
-(a *general-position* rigid realization of the *relabelled* contraction) and the GP parent seed, produce
-a seed `q_c` and infinitesimal rigidity of `(ofNormals (G.deleteEdges E(H)) ends q_c)` on the body set
-`(V(G)∖V(H)) ∪ {r}` (where `r = v∗`). This is KT Claim 6.4 (eq. 6.9): the algebraic-independence (GP)
-of the joint `p1`/`p2` coefficients makes the surviving-edge (`p_{E∖E′}`) realization of `G ＼ E(H)`
-attain the contraction's rank. **Math-first decompose before any build** (DESIGN.md *Constructibility
-recon … → design the LAYER*; this is research-shaped, not decompose-then-build). Lean lever: the
-body-hinge motion space sees the graph only through its *linking-edge* support extensors
-(`infinitesimalMotions_eq_of_isLink_span_supportExtensor`, `AlgebraicInduction.lean:1140`), and the
-surviving edges `E(G)∖E(H)` are in bijection between `G.rigidContract H r` and `G.deleteEdges E(H)` (only
-endpoints relabelled by `collapseTo`), so the relabel can be absorbed by the endpoint selector / the
-`ends`-swap brick on the surviving edges, with `r` the collapsed-body representative. **Escalation:** if
-the surviving-edge transport decomposition stalls, carry Claim 6.4 as an explicit `h…` hypothesis on the
-composer (the Phase-21b green-modulo idiom — `theorem_55`/`lem:case-III` stay red, the discharged steps
-honest), exactly as Cases I/II carried the device pre-21b.
-
-After G3a: **G3b** (cover/shared-body/selector geometry with both legs now `≤ G`, + G2b
-`rigidContract_simple`'s `hloop`/`hpar` discharge from `H.IsProperRigidSubgraph G n` + `G.Simple`) then
-**G3c** (the `G.Simple` dispatch + assembly + `theorem_55`/`theorem_55_generic` flip — discharges
-`hcontractGP` (`AlgebraicInduction.lean:2820`) / `hcontract` (`:2815`) ⟹ `lem:case-I-realization` green,
-closing 22a's target). Both `buildable` once G3a lands. Producers to assemble: `H`-leg IH via
-`Graph.Simple.mono` + `subgraph_minimality`; contraction leg via G3a (+ N4 `rigidContract_isMinimalKDof`
-for the IH precondition); both through `hasGenericRealization_transport_ends` into the G2c coupling
+**Next concrete task — N6-G3-G3b: cover/shared-body/endpoint-selector geometry (`buildable`).** With
+both legs now `≤ G` (`H` and `G.deleteEdges E(H)`), discharge the G2c coupling's combinatorial inputs
+from `H.IsProperRigidSubgraph G n` + the parent data: `hcH : r ∈ V(H)`, `hcc : r ∈ V(G.deleteEdges E(H))`,
+the cover `V(G) ⊆ V(H) ∪ V(G.deleteEdges E(H))` (trivial — `V(G.deleteEdges E(H)) = V(G)`), nonemptiness,
+the parent endpoint selector `ends` (`hends : ∀ e, G.IsLink e (ends e).1 (ends e).2`), and the (G2b)
+`rigidContract_simple` `hloop`/`hpar` for the simplicity conjunct (discharge from `G.Simple` + the rigid
+subgraph data, or carry as green-modulo `h…` if the dichotomy resists — `rigidContract_simple` is in
+`Induction.lean`). Then **G3c** (`buildable`): dispatch on `G.Simple`; the `H`-leg IH (via `Simple.mono`
++ `subgraph_minimality` + N4 `rigidContract_isMinimalKDof` for the IH precondition) and the G3a-
+transported contraction leg both go through `hasGenericRealization_transport_ends` into the G2c coupling
 `hasGenericFullRankRealization_of_couple_ofNormals`, then `hasFullRankRealization_of_generic` for the
-bare `hcontract`; non-simple branch via N6a directly.
+bare `hcontract`; non-simple branch via N6a directly. G3c discharges `theorem_55_generic`'s `hcontractGP`
+(`AlgebraicInduction.lean:2820`) / `hcontract` (`:2815`) and supplies G3a's `htransport` ⟹
+`lem:case-I-realization` flips green (modulo KT Claim 6.4 / `lem:case-III`, 22b+).
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an

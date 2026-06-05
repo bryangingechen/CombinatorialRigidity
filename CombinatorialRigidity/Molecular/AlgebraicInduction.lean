@@ -4350,6 +4350,59 @@ theorem PanelHingeFramework.hasGenericRealization_transport_ends
   rw [hmot] at hS
   exact hS
 
+/-- **The Case-I contraction leg's rigidity transports across the collapse map to the
+surviving-edge subgraph `G ＼ E(H)`** (`lem:case-I-realization` infra, the N6-G3-G3a Claim-6.4
+collapse transport; Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.7), (6.9), Phase 22a).
+
+The second leg the Case-I splice consumes. KT's eq. (6.3) block decomposition of `R(G,p)` has the
+rigid block `H` in one block and the parent **restricted to the surviving edges**
+`R(G,p; E∖E′, V∖V′)` in the other — and the surviving-edge subgraph is `G.deleteEdges E(H)`
+(`edgeSet_rigidContract` reads `E(G/E(H)) = E(G) ∖ E(H)`), a *literal* `≤ G` subgraph, **not** the
+relabelled `G.rigidContract H r` (which collapses `V(H) ↦ r` and so is not comparable to `G`; no
+`rigidContract_le` exists or can). So the contraction leg of the splice coupling is `G ＼ E(H)`, and
+the collapse to the representative body `v∗ = r` lives entirely on the *placement* side (eq. (6.7)'s
+`p_{E∖E′}`).
+
+The genuinely-new analytic content this brick performs is **KT Claim 6.4** (eq. (6.9)): the
+contraction's inductive realization is a general-position rigid realization of the *abstract
+relabelled* graph `G.rigidContract H r` (the `HasGenericFullRankRealization` IH, `hQ`), and Claim
+6.4 transports its rank across the collapse map — because the joint panel coefficients are
+algebraically independent over ℚ (general position), the surviving-edge `p_{E∖E′}`-realization of
+`G ＼ E(H)` attains the contraction's rank. In the project's `V(G)`-relative rank language this is
+exactly: there is a seed `q_c` at which `(ofNormals (G.deleteEdges E(H)) ends q_c)` is
+infinitesimally rigid on the contraction's body set `(V(G) ∖ V(H)) ∪ {r}`. **This rank-attainment
+across the relabel is the last research-shaped Case-I brick** — no green brick converts a
+relabelled-graph rigidity into the original-endpoint rigidity, because the collapse map
+`collapseTo r V(H)` redirects each surviving edge's endpoints (hence which panel normals its support
+extensor uses), and recovering the rank at the *un-collapsed* endpoints is precisely the
+algebraic-independence statement of Claim 6.4. It is therefore carried here as the explicit
+hypothesis `htransport`, in the established Phase-21b green-modulo `h…` idiom (exactly as Cases I/II
+carried the genericity device before Phase 21b): `lem:case-III` / `thm:theorem-55` stay red, but
+every step this brick *discharges* is honest, and the obligation is tracked as a single visible
+hypothesis pinned to KT Claim 6.4 rather than buried in a `sorry` or an `axiom`.
+
+Given `htransport`, the brick is a thin repackaging: it forwards the seed `q_c` and the
+surviving-edge rigidity, both at the **parent** endpoint selector `ends` (the form the G2c coupling
+`hasGenericFullRankRealization_of_couple_ofNormals` consumes for its `Gc := G.deleteEdges E(H)`
+leg). The body set `(V(G) ∖ V(H)) ∪ {r}` is `V(G.rigidContract H r)`
+(`rigidContract_vertexSet_ncard`'s set form), the set on which the contraction's rank is the
+relevant `V(G)`-relative count; the coupling reads it as `V(G.deleteEdges E(H)) = V(G) ⊇` the
+cover. -/
+theorem PanelHingeFramework.rigidContract_rigidity_transport
+    (G H : Graph α β) (ends : β → α × α) {r : α}
+    (hQ : PanelHingeFramework.HasGenericFullRankRealization k (G.rigidContract H r))
+    (htransport : ∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
+      Q.IsGeneralPosition →
+      Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
+      ∃ q_c : α × Fin (k + 2) → ℝ,
+        (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q_c).toBodyHinge
+          |>.IsInfinitesimallyRigidOn ((V(G) \ V(H)) ∪ {r})) :
+    ∃ q_c : α × Fin (k + 2) → ℝ,
+      (PanelHingeFramework.ofNormals (G.deleteEdges E(H)) ends q_c).toBodyHinge
+        |>.IsInfinitesimallyRigidOn ((V(G) \ V(H)) ∪ {r}) :=
+  let ⟨Q, hQg, hQgp, hQrig⟩ := hQ
+  htransport Q hQg hQgp hQrig
+
 /-- **The device's coordinatization from a spanning enumeration of one realization's rigidity
 rows** (`lem:genericity-device`, the route-(a) closure for Case I; Phase 21b). The route-(a)
 resolution the hand-off flagged: the witness realization Case I needs is *constructed directly* by
