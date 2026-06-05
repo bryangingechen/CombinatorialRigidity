@@ -1619,6 +1619,29 @@ So §1.22's layer is mathematically sound; the U3b build is grounded. (This inde
 discipline now codified in `DESIGN.md` *Constructibility recon …* → *Verify the recon's load-bearing
 claims, don't assert them*.)
 
+**Build progress (2026-06-05).** The §1.22 layer landed exactly as designed, in two commits:
+1. **Pin-count walling node** (`0f0e7aa`): `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`
+   (`Pinning.lean`) — `finrank(pinnedMotionsOn t) = D(|Vᶜ|+1−|t|)` for `V ∩ t = {r}`. The
+   "free-isolated-body product iso" the recon flagged as the medium-risk kernel turned out *not* to
+   need an explicit product iso: pinning `t` forces (rigidity) vanishing on all of `V`, so
+   `pinnedMotionsOn t = pinnedMotionsOn (V ∪ t)`, which is the kernel of the `(V∪t)`-projections
+   (`pinnedMotionsOn_eq_iInf_ker_proj_of_vertexSet_subset`, a clean `s ⊇ V(G)` generalization of the
+   green vertex-set pin), dimension `D·|(V∪t)ᶜ|` straight off `finrank_iInf_ker_proj_eq` + incl–excl.
+2. **`Z ⊔ W = ⊤` assembly** (this commit): `infinitesimalMotions_sup_range_extProj_eq_top`
+   (`CaseI.lean`), via two supporting bricks — `extProj_range_eq_iInf_ker_proj` (range of the
+   idempotent coordinate projection = `⨅ i∈proj, ker(proj i)`) and
+   `infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn` (`Z ⊓ W = pinnedMotionsOn proj`, the
+   defining conjunction) — then `Submodule.finrank_sup_add_finrank_inf_eq` on the three confirmed
+   dimensions, closing by `omega` after distributing `D` over the `ncard`-level identity by hand.
+   Both axiom-clean, build + lint warning-clean.
+
+**Remaining U3b (next):** the **projected-subfamily extraction** — a projected sibling of
+`exists_independent_panelRow_subfamily_of_rigidOn_linking_set` that consumes `Z ⊔ W = ⊤` as its
+injectivity input (⟹ `(extProj proj).dualMap` injective on `Φ`, via the mathlib dual API
+`ker_dualMap_eq_dualAnnihilator_range` + `dualAnnihilator_sup_eq` + `dualCoannihilator_dualAnnihilator_eq`,
+all confirmed present) and extracts `≥ D(|sc|−1)` independent *projected* rows by the same
+`exists_fun_fin_finrank_span_eq` skeleton. Then U3a (alignment) → U4 (assemble + flip + phase-close).
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

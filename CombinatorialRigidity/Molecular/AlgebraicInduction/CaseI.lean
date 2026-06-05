@@ -858,6 +858,118 @@ theorem panelRow_collapseTo_comp_extProj_dualMap (Gc H : Graph α β) {r : α} (
   dsimp only [degeneratePlacement]
   exact (hingeRow_collapseTo_comp_extProj_eq (k := k) (α := α) hr (ends i.1).1 (ends i.1).2 _).symm
 
+/-- **The range of the exterior-column projection is the kernel of the `proj`-projections**
+(`lem:claim-6-4`, the U3b dual-annihilator assembly infra; Katoh–Tanigawa 2011 §6.2, Phase 22b).
+The exterior-column projection `extProj proj` zeroes the `proj` columns and keeps the rest, so its
+range is exactly the screw assignments **vanishing on `proj`**: `range (extProj proj) =
+⨅ i ∈ proj, ker (proj i)`. `extProj proj` is idempotent (it is a coordinate projection), so an
+assignment `T` lies in the range iff `extProj proj T = T`, i.e.\ iff `T a = 0` for every `a ∈ proj`
+(`extProj_apply_mem`/`extProj_apply_not_mem`). This identifies the range as the `iInf`-of-kernels
+whose dimension is the free-isolated count `D·|projᶜ|` (`finrank_iInf_ker_proj_eq`), the `W`-term of
+the §1.22 `Z ⊔ W = ⊤` count. -/
+theorem extProj_range_eq_iInf_ker_proj (proj : Set α) :
+    LinearMap.range (extProj (k := k) proj) =
+      ⨅ i ∈ proj, LinearMap.ker (LinearMap.proj i : (α → ScrewSpace k) →ₗ[ℝ] ScrewSpace k) := by
+  classical
+  ext T
+  simp only [LinearMap.mem_range, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply]
+  constructor
+  · rintro ⟨S, rfl⟩ i hi
+    exact extProj_apply_mem hi S
+  · intro hT
+    refine ⟨T, ?_⟩
+    funext a
+    by_cases ha : a ∈ proj
+    · rw [extProj_apply_mem ha, (hT a ha).symm]
+    · rw [extProj_apply_not_mem ha]
+
+/-- **The trivial-and-pinned intersection is the block pin** (`lem:claim-6-4`, the U3b
+dual-annihilator assembly infra; Katoh–Tanigawa 2011 §6.2, Phase 22b). The intersection of the
+infinitesimal motions `Z = infinitesimalMotions` with the exterior-projection range
+`W = range (extProj proj)` is exactly the block pin `pinnedMotionsOn proj`: a member of `Z` is an
+infinitesimal motion, a member of `W` vanishes on `proj` (`extProj_range_eq_iInf_ker_proj`), and an
+assignment is both iff it is a motion vanishing on `proj` — the defining conjunction of
+`pinnedMotionsOn proj`. This is the `Z ⊓ W` term of the §1.22 inclusion–exclusion. -/
+theorem infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn
+    (F : BodyHingeFramework k α β) (proj : Set α) :
+    F.infinitesimalMotions ⊓ LinearMap.range (extProj (k := k) proj) = F.pinnedMotionsOn proj := by
+  classical
+  ext S
+  rw [Submodule.mem_inf, extProj_range_eq_iInf_ker_proj]
+  simp only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.proj_apply, F.mem_pinnedMotionsOn,
+    F.mem_infinitesimalMotions S]
+
+/-- **A framework rigid on its full vertex set, pinned at a block meeting `V(G)` in one body, spans
+together with the exterior-projection range** (`lem:claim-6-4`, the U3b `Z ⊔ W = ⊤` dual-annihilator
+assembly — the closing finrank count of the exterior-rank discharge; Katoh–Tanigawa 2011 §6.2
+eqs.\ (6.5)/(6.9), §5.1, Phase 22b). For `F` infinitesimally rigid on its whole vertex set `V(G)`
+and a block `proj` meeting `V(G)` in exactly the representative body `r` (`V(G) ∩ proj = {r}`), the
+infinitesimal motions `Z = infinitesimalMotions` and the exterior-projection range
+`W = range (extProj proj)` **jointly span everything**: `Z ⊔ W = ⊤`.
+
+This is the §1.22 closing fact: `Z ⊔ W = ⊤` is what makes the exterior-column projection
+`(extProj proj).dualMap` injective on the rigidity-row span `Φ`
+(`Φ ⊓ ker D = (Z ⊔ W).dualAnnihilator = ⊥`), so the projection loses *zero* rank and the surviving
+block keeps its independent rank `D(|sc|−1)` (KT Claim 6.4 proper). It is proved by the finrank
+count `finrank(Z ⊔ W) + finrank(Z ⊓ W) = finrank Z + finrank W`
+(`Submodule.finrank_sup_add_finrank_inf_eq`) using the three confirmed dimensions:
+`finrank Z = D(|V(G)ᶜ| + 1)` (rigid-on-vertexSet,
+`finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet`),
+`finrank W = D·|projᶜ|` (`extProj_range_eq_iInf_ker_proj` + `finrank_iInf_ker_proj_eq`), and the
+rigid-block pin-count `finrank(Z ⊓ W) = finrank(pinnedMotionsOn proj) = D(|V(G)ᶜ| + 1 − |proj|)`
+(`infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn` + the §1.22 walling node
+`finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`). The sum forces
+`finrank(Z ⊔ W) = D·|α| = finrank (α → ScrewSpace k)`, whence `Z ⊔ W = ⊤`. -/
+theorem infinitesimalMotions_sup_range_extProj_eq_top
+    [Finite α] (F : BodyHingeFramework k α β) {proj : Set α} {r : α}
+    (hrig : F.IsInfinitesimallyRigidOn F.graph.vertexSet)
+    (hr : r ∈ F.graph.vertexSet) (hinter : F.graph.vertexSet ∩ proj = {r}) :
+    F.infinitesimalMotions ⊔ LinearMap.range (extProj (k := k) proj) = ⊤ := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  -- The three confirmed dimensions of the §1.22 inclusion–exclusion.
+  have hZ : Module.finrank ℝ F.infinitesimalMotions
+      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) :=
+    F.finrank_infinitesimalMotions_of_isInfinitesimallyRigidOn_vertexSet ⟨r, hr⟩ hrig
+  have hW : Module.finrank ℝ (LinearMap.range (extProj (k := k) proj))
+      = screwDim k * projᶜ.ncard := by
+    rw [extProj_range_eq_iInf_ker_proj, BodyHingeFramework.finrank_iInf_ker_proj_eq]
+  have hinf : Module.finrank ℝ
+      (F.infinitesimalMotions ⊓ LinearMap.range (extProj (k := k) proj) :
+        Submodule ℝ (α → ScrewSpace k))
+      = screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1 - proj.ncard) := by
+    rw [infinitesimalMotions_inf_range_extProj_eq_pinnedMotionsOn,
+      F.finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton
+        hrig hr hinter]
+  -- `finrank (Z ⊔ W) + finrank (Z ⊓ W) = finrank Z + finrank W` (mathlib).
+  have hadd := Submodule.finrank_sup_add_finrank_inf_eq F.infinitesimalMotions
+    (LinearMap.range (extProj (k := k) proj))
+  rw [hZ, hW, hinf] at hadd
+  -- `|proj| ≤ |V(G)ᶜ| + 1`: `proj ⊆ {r} ∪ V(G)ᶜ`.
+  have hpcard : proj.ncard ≤ (F.graph.vertexSet)ᶜ.ncard + 1 := by
+    have hsub : proj ⊆ {r} ∪ (F.graph.vertexSet)ᶜ := by
+      intro a ha
+      by_cases hav : a ∈ F.graph.vertexSet
+      · left; exact (Set.ext_iff.1 hinter a).1 ⟨hav, ha⟩
+      · right; exact hav
+    calc proj.ncard ≤ ({r} ∪ (F.graph.vertexSet)ᶜ).ncard :=
+          Set.ncard_le_ncard hsub (Set.toFinite _)
+      _ ≤ ({r} : Set α).ncard + (F.graph.vertexSet)ᶜ.ncard := Set.ncard_union_le _ _
+      _ = (F.graph.vertexSet)ᶜ.ncard + 1 := by rw [Set.ncard_singleton]; ring
+  -- The complement count `|projᶜ| = |α| − |proj|`, and the `ncard`-level inclusion–exclusion.
+  have hcompl : proj.ncard + projᶜ.ncard = Fintype.card α := by
+    rw [Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  have hcount : (F.graph.vertexSet)ᶜ.ncard + 1 + projᶜ.ncard
+      = Fintype.card α + ((F.graph.vertexSet)ᶜ.ncard + 1 - proj.ncard) := by omega
+  -- Distribute `D` over the count identity, then rewrite `hadd` to read off `finrank (Z ⊔ W)`.
+  refine Submodule.eq_top_of_finrank_eq ?_
+  rw [BodyHingeFramework.finrank_screwAssignment]
+  have hdist : screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1) + screwDim k * projᶜ.ncard
+      = screwDim k * Fintype.card α
+        + screwDim k * ((F.graph.vertexSet)ᶜ.ncard + 1 - proj.ncard) := by
+    rw [← Nat.mul_add, ← Nat.mul_add, hcount]
+  omega
+
 /-- **Coordinate of `D w` as a matrix-vector product in a basis identification** (the linearity
 fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algebra). For a finite-dim
 ℝ-space `W` with a basis identification `φ : W ≃ₗ[ℝ] (Fin n → ℝ)` and any linear endomorphism `D`,
