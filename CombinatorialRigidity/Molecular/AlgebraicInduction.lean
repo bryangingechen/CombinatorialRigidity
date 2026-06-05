@@ -1589,6 +1589,49 @@ theorem isInfinitesimallyRigidOn_vertexSet_of_finrank_le [Finite α] (F : BodyHi
   rw [Nat.mul_succ] at hcount
   omega
 
+/-- **Body-set-relative full count ⇒ rigidity on `s`, given the complement-isolation equality**
+(`lem:isInfRigidOn-of-relative-count` body-set generalization, N3 for an arbitrary `s`;
+Katoh–Tanigawa 2011 §6.2 eq. (6.3) surviving bodies `V∖V′`, Phase 22a/G3c-ii). The body-set sibling
+of `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (N3-on-`V(G)`): from the witnessed count
+`dim Z ≤ D·(|sᶜ|+1)` (`hcount`, the form the body-set N7b-0 producer
+`finrank_infinitesimalMotions_le_of_isInfinitesimallyRigidOn` and the body-set rank polynomial
+deliver) the framework is infinitesimally rigid on a *nonempty* body set `s`.
+
+Unlike the `V(G)` case the count alone does **not** suffice — the body-set N1
+(`finrank_pinnedMotionsOn_le`) is only an *upper* bound `finrank (pinnedMotionsOn s) ≤ D·|sᶜ|`,
+false as an equality for `s ⊊ V(G)` (interior bodies of `V(G)∖s` still carry hinge constraints),
+and the dimension-matching argument needs the *equality*. So this brick carries the
+complement-isolation equality `hpin : finrank (pinnedMotionsOn s) = D·|sᶜ|` as a hypothesis (the
+body-set generalization of the green `finrank_pinnedMotionsOn_vertexSet`; for `s = V(G)` it *is*
+that lemma, and for the Case-I contraction leg's `s = (V(G)∖V(H)) ∪ {r}` the interior `V(H)∖{r}` is
+isolated in `G ＼ E(H)` so the same N1-equality proof applies — discharged at the composer call site,
+G3c-iii, per design doc §1.9).
+The proof is otherwise verbatim N3-on-`V(G)`: pick `v₀ ∈ s`, read rigidity off the Case-I bridge
+`isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` at the singleton block `{v₀}`, reduce to
+`pinnedMotionsOn s ≤ pinnedMotionsOn {v₀}` (the reverse is `pinnedMotionsOn_mono`), and match
+dimensions via `finrank_pinnedMotions_add_screwDim v₀` and `hpin`. -/
+theorem isInfinitesimallyRigidOn_of_finrank_le_set [Finite α] (F : BodyHingeFramework k α β)
+    {s : Set α} (hne : s.Nonempty)
+    (hpin : Module.finrank ℝ (F.pinnedMotionsOn s) = screwDim k * sᶜ.ncard)
+    (hcount : Module.finrank ℝ F.infinitesimalMotions ≤ screwDim k * (sᶜ.ncard + 1)) :
+    F.IsInfinitesimallyRigidOn s := by
+  haveI : Fintype α := Fintype.ofFinite α
+  obtain ⟨v₀, hv₀⟩ := hne
+  haveI : Nonempty α := ⟨v₀⟩
+  -- Read rigidity off the Case-I bridge at the trivially-rigid singleton block `{v₀}`.
+  rw [F.isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le (s := {v₀})
+    (Set.singleton_nonempty v₀) (Set.singleton_subset_iff.2 hv₀)
+    (fun S _ u hu w hw => by rw [hu, hw])]
+  -- The reverse containment is automatic; equate dimensions to upgrade it to the needed one.
+  have hsub : F.pinnedMotionsOn s ≤ F.pinnedMotionsOn {v₀} :=
+    F.pinnedMotionsOn_mono (Set.singleton_subset_iff.2 hv₀)
+  refine (Submodule.eq_of_le_of_finrank_le hsub ?_).ge
+  -- `finrank (pinnedMotions v₀) = dim Z − D ≤ D·|sᶜ| = finrank (pinnedMotionsOn s)`.
+  rw [F.pinnedMotionsOn_singleton, hpin]
+  have hadd := F.finrank_pinnedMotions_add_screwDim v₀
+  rw [Nat.mul_succ] at hcount
+  omega
+
 /-- **Case I splice seed** (`lem:case-I-splice-seed`; Katoh–Tanigawa 2011 §6.2/6.5, eqs.\ (6.2),
 (6.6)). The genuine geometric content of Case I, `V(G)`-relative: from the two inductive
 sub-realizations transported onto a *single* parent placement `F` on `G`, the parent realizes the
@@ -3829,6 +3872,50 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice_of_supportExtensor_
   PanelHingeFramework.hasFullRankRealization_of_splice_of_supportExtensor G ends hends hne hsupp
     hGH hGc hcH hcc hcover hblock hcontract
 
+/-- **Case I splice producer, body-set form: legs rigid on per-leg body sets `sH`/`sc` give a
+full-rank realization** (the body-set generalization of
+`hasFullRankRealization_of_splice_of_supportExtensor_ofNormals`; Katoh–Tanigawa 2011 §6.2 eq. (6.3)
+surviving bodies `V∖V′`, Phase 22a/G3c-ii). The form Case I's *contraction* leg forces: the
+all-of-`V(·)` producer demands each leg rigid on its full vertex set, but KT eq. (6.3)'s contraction
+block `R(G,p; E∖E′, V∖V′)` is rigid only on the surviving bodies `sc = (V(G)∖V(H)) ∪ {r}` (the
+interior `V(H)∖{r}` is left free by the surviving edges `E(G)∖E(H)`). This relativizes each leg's
+rigidity to an arbitrary per-leg body set (`sH`/`sc`, with `c ∈ sH ∩ sc` and `V(G) ⊆ sH ∪ sc`), the
+exact split the honest base glue `isInfinitesimallyRigidOn_of_splice` already supports.
+
+The proof is identical to the all-of-`V(·)` producer: the block-triangular glue
+`isInfinitesimallyRigidOn_of_splice` (at `t := V(G)`, the cover) makes the *parent* rigid on the
+*full* `V(G)` (rigidity on the union `sH ∪ sc ⊇ V(G)` is on all of `V(G)`, the parent's own vertex
+set — the body-set restriction is only on the *legs*), so the rigid parent carries `D(|V(G)|−1)`
+independent panel rows (`exists_independent_panelRow_subfamily_of_rigidOn`, N7b-0, under the
+explicit transversal hinges `hsupp`), which the genericity device closure
+(`hasFullRankRealization_of_independent_panelRow`) lifts to a generic placement. The deliverable
+rank is concluded, not assumed. This is the body-set splice the body-set coupling
+(`couple_ofNormals_set`) consumes. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_splice_set_of_supportExtensor
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2) (hne : V(G).Nonempty)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hsupp : ∀ e, (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.supportExtensor e ≠ 0)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
+    (hblock : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sH)
+    (hcontract :
+      (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  set F := (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge with hF
+  -- (i) Glue the two legs along the shared body `c` to rigidity of the parent on `V(G) ⊆ sH ∪ sc`.
+  have hrig : F.IsInfinitesimallyRigidOn V(G) :=
+    F.isInfinitesimallyRigidOn_of_splice (GH := GH) (Gc := Gc) (sH := sH) (sc := sc)
+      (by rw [hF]; exact hGH) (by rw [hF]; exact hGc) hcH hcc hcover hblock hcontract
+  -- (ii) Every hinge is transversal (the explicit `hsupp`), so the rigid parent carries
+  -- `D(|V(G)|−1)` independent panel rows.
+  obtain ⟨s, hscard, hsindep⟩ :=
+    F.exists_independent_panelRow_subfamily_of_rigidOn (ends := ends)
+      (by simpa using hends) hsupp (by simpa using hne) (by simpa using hrig)
+  -- (iii) The genericity device lifts the witnessed corank at the seed `q₀` to a generic placement.
+  exact PanelHingeFramework.hasFullRankRealization_of_independent_panelRow G ends hends hne
+    (q₀ := q₀) (s := s) hsindep (le_of_eq hscard.symm)
+
 /-- **Case I splice producer, moment-curve seed: both legs rigid as `ofParam` at one injective
 parameter** (`lem:case-I-splice-placement` / `lem:case-I-realization`, the seed specialized to the
 moment-curve general-position assignment; Katoh–Tanigawa 2011 §6.2/6.5, eqs.\ (6.2), (6.6),
@@ -4355,6 +4442,80 @@ theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial
   rw [hG, Nat.mul_succ]
   omega
 
+/-- **Body-set-relative: a nonzero rank polynomial supported on linking edges yields a leg rigid on
+a body set `s`** (the body-set generalization of
+`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking`; Katoh–Tanigawa 2011 §6.2
+eq. (6.3) surviving bodies `V∖V′`, Phase 22a/G3c-ii). The form Case I's *contraction* leg needs: the
+all-of-`V(G)` linking consumer re-derives rigidity on the leg's full `V(G)`, but the contraction
+block `R(G,p; E∖E′, V∖V′)` is rigid only on the surviving bodies `s = (V(G)∖V(H)) ∪ {r}`. At any
+non-root `q` of the (body-set) rank polynomial `Q` whose witnessed subfamily `rs` lies on the leg's
+linking edges (`hsupp`) and has size `≥ D(|s|−1)` (`hcard`), the leg `ofNormals G ends q` is
+infinitesimally rigid *on `s`*.
+
+The rank-nullity step is identical to the all-of-`V(G)` linking consumer — the `≥ D(|s|−1)`
+independent rows force `dim Z ≤ D·(|sᶜ|+1)` — but the final upgrade to rigidity on `s` is the
+**body-set N3** `isInfinitesimallyRigidOn_of_finrank_le_set`, which (unlike N3-on-`V(G)`) needs the
+complement-isolation equality `hpin : finrank (pinnedMotionsOn s) = D·|sᶜ|` (the body-set N1
+*equality* is false off `V(G)`; design doc §1.9). `hpin` is discharged per-leg at the composer call
+site (G3c-iii): for the rigid block `sH := V(H)` it is the green `finrank_pinnedMotionsOn_vertexSet`
+(on the leg), and for the contraction leg the surviving edges isolate the interior bodies. This is
+the per-leg consumer the body-set coupling (`couple_ofNormals_set`) pairs with the body-set rank
+polynomial producer `exists_rankPolynomial_of_rigidOn_linking_set`. -/
+theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) {s : Set α}
+    {rs : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    {Q : MvPolynomial (α × Fin (k + 2)) ℝ} (hnes : s.Nonempty)
+    {q : α × Fin (k + 2) → ℝ}
+    (hpin : Module.finrank ℝ
+        ((PanelHingeFramework.ofNormals G ends q).toBodyHinge.pinnedMotionsOn s)
+        = screwDim k * sᶜ.ncard)
+    (hsupp : ∀ i ∈ rs, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+      (ends (i : β × _ × _).1).2)
+    (hcard : screwDim k * (s.ncard - 1) ≤ Nat.card rs)
+    (hQ : ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+      LinearIndependent ℝ
+        (fun i : rs => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i))
+    (hq : MvPolynomial.eval q Q ≠ 0) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.IsInfinitesimallyRigidOn s := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set F := (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF
+  have hG : F.graph = G := rfl
+  have hLI : LinearIndependent ℝ (fun i : rs => F.panelRow ends i) := hQ q hq
+  haveI : Fintype rs := Fintype.ofFinite rs
+  -- Each panel row of `rs` lies in the rigidity rows; the per-index link witness is `hsupp`.
+  have hsub : Submodule.span ℝ (Set.range (fun i : rs => F.panelRow ends i))
+      ≤ Submodule.span ℝ F.rigidityRows := by
+    rw [Submodule.span_le]
+    rintro _ ⟨⟨⟨e', t₁, t₂⟩, hi⟩, rfl⟩
+    apply Submodule.subset_span
+    refine ⟨e', (ends e').1, (ends e').2, by rw [hG]; exact hsupp _ hi,
+      annihRow (F.supportExtensor e') t₁ t₂, ?_, rfl⟩
+    rw [BodyHingeFramework.hingeRowBlock_apply, Submodule.mem_dualAnnihilator]
+    intro x hx
+    rw [Submodule.mem_span_singleton] at hx
+    obtain ⟨r, rfl⟩ := hx
+    rw [map_smul, annihRow_apply_self, smul_zero]
+  have hrows : Nat.card rs ≤ Module.finrank ℝ (Submodule.span ℝ F.rigidityRows) := by
+    rw [Nat.card_eq_fintype_card, ← finrank_span_eq_card hLI]
+    exact Submodule.finrank_mono hsub
+  have hcompl : Module.finrank ℝ F.infinitesimalMotions
+      + Module.finrank ℝ (Submodule.span ℝ F.rigidityRows)
+      = screwDim k * Fintype.card α := by
+    rw [F.infinitesimalMotions_eq_dualCoannihilator, Subspace.finrank_dualCoannihilator_eq,
+      add_comm, Subspace.finrank_add_finrank_dualAnnihilator_eq, Subspace.dual_finrank_eq,
+      BodyHingeFramework.finrank_screwAssignment]
+  have hsplit : screwDim k * Fintype.card α
+      = screwDim k * s.ncard + screwDim k * sᶜ.ncard := by
+    rw [← Nat.mul_add, Set.ncard_add_ncard_compl, Nat.card_eq_fintype_card]
+  have h1 : 1 ≤ s.ncard := (Set.ncard_pos (Set.toFinite _)).2 hnes
+  rw [Nat.mul_sub, Nat.mul_one] at hcard
+  -- Body-set N3: the relative full count at `q` plus the complement-isolation equality `hpin`
+  -- gives rigidity on `s`.
+  refine F.isInfinitesimallyRigidOn_of_finrank_le_set hnes hpin ?_
+  rw [Nat.mul_succ]
+  omega
+
 /-- **Case I shared-seed coupling: two rigid legs on the parent selector give a full-rank
 realization** (`lem:case-I-splice-placement` / `lem:case-I-realization`, the simple Case-I
 shared-seed coupling assembly N6b/N6c; Katoh–Tanigawa 2011 §6.2, eq. (6.6), the joint genericity of
@@ -4529,6 +4690,102 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
   -- (v') The generic splice: realize at the GP seed `q₀` itself (bypassing the device), so general
   -- position survives and the conclusion is the strengthened generic motive.
   exact PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals G ends hgp
+    hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+
+/-- **Case I shared-seed coupling, *body-set* form: two legs rigid on per-leg body sets `sH`/`sc`
+give a full-rank realization** (`lem:case-I-realization`, the body-set coupling N6-G3-G3c-ii;
+Katoh–Tanigawa 2011 §6.2, eqs. (6.3), (6.6), Phase 22a). The body-set generalization of
+`hasFullRankRealization_of_couple_ofNormals`: where the all-of-`V(·)` coupling demands each leg
+rigid on its full vertex set `V(GH)`/`V(Gc)`, this threads per-leg body sets `sH`/`sc`
+(`c ∈ sH ∩ sc`, `V(G) ⊆ sH ∪ sc`), the form Case I's *contraction* leg `Gc = G ＼ E(H)` forces — it
+is rigid only on
+the surviving bodies `sc = (V(G)∖V(H)) ∪ {r}` (KT eq. (6.3)'s `V∖V′`), not all of `V(Gc) = V(G)`.
+
+The witness-transfer is the same five steps, lifted to the body-set bricks (design doc §1.9): (i)
+each leg's *body-set* leg-restricted rank polynomial `Q_H`/`Q_c`
+(`exists_rankPolynomial_of_rigidOn_linking_set`), nonzero at its own seed; (ii) the general-position
+factor `Q_gp`; (iii) the triple product has a shared non-root `q₀`; (iv) at `q₀` each leg is rigid
+*on its body set* (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set`, the
+body-set consumer — this is the only step that genuinely changes, since the body-set N3 needs the
+**complement-isolation equality** `hpinH`/`hpinc` `finrank (pinnedMotionsOn s) = D·|sᶜ|`, false off
+`V(G)` from the count alone) and the parent normals are in general position; (v) the body-set splice
+producer `hasFullRankRealization_of_splice_set_of_supportExtensor` glues the two body-set-rigid legs
+along the shared body into the parent's rigidity on `V(G) ⊆ sH ∪ sc` and lands the full-rank
+realization.
+
+The complement-isolation hypotheses `hpinH`/`hpinc` are quantified over all normal assignments
+(`∀ q, finrank (pinnedMotionsOn s) = D·|sᶜ|`) because the shared seed `q₀` is unknown at call time:
+the body-set pin dimension is graph-structural (which projection kernels the surviving edges leave
+free), so it is constant across normals, making this the honest leg-specific isolation fact. It is
+discharged per-leg by the composer (G3c-iii): `sH := V(H)` makes `hpinH` the green
+`finrank_pinnedMotionsOn_vertexSet`, and the contraction leg's interior bodies are isolated in
+`G ＼ E(H)`. The deliverable rank is concluded, not assumed. -/
+theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {sH sc : Set α} {c : α} (hcH : c ∈ sH) (hcc : c ∈ sc) (hcover : V(G) ⊆ sH ∪ sc)
+    (hnesH : sH.Nonempty) (hnesc : sc.Nonempty)
+    {qH qc : α × Fin (k + 2) → ℝ}
+    (hpinH : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+      ((PanelHingeFramework.ofNormals GH ends q).toBodyHinge.pinnedMotionsOn sH)
+      = screwDim k * sHᶜ.ncard)
+    (hpinc : ∀ q : α × Fin (k + 2) → ℝ, Module.finrank ℝ
+      ((PanelHingeFramework.ofNormals Gc ends q).toBodyHinge.pinnedMotionsOn sc)
+      = screwDim k * scᶜ.ncard)
+    (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
+    (hnec : ∀ e, Gc.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.supportExtensor e ≠ 0)
+    (hrigH :
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn sH)
+    (hrigc :
+      (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn sc) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  classical
+  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
+    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
+  have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
+    (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
+  -- (i) Each leg's *body-set* leg-restricted rank polynomial at its own seed.
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
+  obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
+  -- (ii) The general-position factor.
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+    exists_generalPosition_polynomial (k := k) G ends
+  -- (iii) The triple product has a shared non-root `q₀`.
+  have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
+  have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
+  have hQgpne : Qgp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
+    exact fun a b hab => hf (Nat.cast_injective hab)
+  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
+    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
+  rw [map_mul, map_mul] at hq₀
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  -- (iv) At `q₀` each leg is rigid *on its body set* (body-set consumer, carrying the leg's
+  -- complement-isolation equality `hpinH`/`hpinc`), and the parent normals are general.
+  have hrigH₀ :
+      (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sH :=
+    PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set
+      GH ends hnesH (hpinH q₀) hsuppH hcardH hLIH hq₀H
+  have hrigc₀ :
+      (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn sc :=
+    PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set
+      Gc ends hnesc (hpinc q₀) hsuppc hcardc hLIc hq₀c
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
+    hQgp_pos q₀ hq₀gp
+  -- (v) The body-set splice glues the two body-set-rigid legs into the parent realization, with
+  -- general position discharging every hinge's transversality.
+  exact PanelHingeFramework.hasFullRankRealization_of_splice_set_of_supportExtensor G ends hends hne
+    (fun e => (PanelHingeFramework.ofNormals G ends q₀).supportExtensor_ne_zero_of_isGeneralPosition
+      hgp (by simpa using hne_ends e))
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
 /-- **Swapping a hinge's two endpoints leaves the panel framework's motion space unchanged**

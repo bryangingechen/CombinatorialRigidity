@@ -623,6 +623,66 @@ arbitrary body sets; the work is lifting the *witness-transfer producers* (rank
 polynomial + coupling) off the hardcoded `V(·)` to a per-leg body set — KT's own
 `V∖V′` restriction, collapsed away in the earlier (all-of-`V`-leg) nodes.
 
+### 1.9 G3c-ii re-recon — the body-set N3 consumer needs the complement-isolation equality; route (a) (carry it as `h…`), buildable, mirrors `isInfinitesimallyRigidOn_vertexSet_of_finrank_le` (2026-06-05)
+
+G3c-i landed the four body-set *producer* bricks GREEN (rank polynomial + N7b-0,
+on a nonempty body set `s`, count `D(|s|−1)`). The G3c-i finding flagged the
+**body-set N3 *consumer*** — re-derive "rigid on `s`" from the row count — as the
+genuinely-stuck half, since the N1 *equality* `finrank (pinnedMotionsOn s) = D·|sᶜ|`
+is false for `s ⊊ V(G)`. The G3c-ii hand-off offered two routes: **(a)** carry the
+leg-specific complement-isolation equality as an honest `h…` (green-modulo), or
+**(b)** thread each leg's rigidity straight into the base glue, avoiding the
+rank-polynomial round-trip and its N3 re-derivation. **This recon (no Lean edits;
+decision-support like §1.4–§1.8) settles it as route (a), and confirms it is
+*buildable*, not green-modulo on new analytic content.**
+
+**Why route (b) does not actually avoid the obstruction.** The base glue
+`isInfinitesimallyRigidOn_of_splice` needs each leg rigid on its body set `sH`/`sc`
+*at the shared seed `q₀`*. The shared seed is found by intersecting the two legs'
+rank-polynomial non-root loci (the only mechanism that produces a *common* point).
+But each leg's rigidity is supplied at the leg's *own* seed `qH`/`qc` (the form G3a
+/ the `H`-leg IH deliver), a *different* point from `q₀`. So a transport from the
+own-seed to `q₀` is unavoidable, and the only generic-transport tool in the layer is
+the rank polynomial: independence (the row count) is the Zariski-open condition that
+transfers across non-roots, *rigidity on `s` is not*. Route (b)'s "feed rigidity
+directly" therefore cannot reach `q₀`; it would only re-derive rigidity at the
+own-seed, which the splice cannot consume (the two own-seeds differ). The
+round-trip is structural, not incidental — so the body-set N3 consumer is required
+either way, and it needs the N1 equality.
+
+**Route (a) is buildable and exactly parallels the green N3-on-`V(G)`.** The
+all-of-`V(G)` consumer `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking`
+ends by calling N3 `isInfinitesimallyRigidOn_vertexSet_of_finrank_le`, whose proof
+is: pick `v₀ ∈ V(G)`, read rigidity off the Case-I bridge
+`isInfinitesimallyRigidOn_iff_pinnedMotionsOn_le` at the singleton block `{v₀}`,
+reduce to `pinnedMotionsOn s ≤ pinnedMotionsOn {v₀}` (the reverse is `pinnedMotionsOn_mono`),
+and match dimensions via `finrank_pinnedMotions_add_screwDim v₀`
+(`finrank (pinnedMotionsOn {v₀}) = dim Z − D`) ≤ `D·|sᶜ|` =
+`finrank (pinnedMotionsOn s)` — the last `=` being **exactly the N1 equality**. For a
+body set `s`, that single rewrite is the only thing missing; supplying it as the
+hypothesis `hpin : finrank (pinnedMotionsOn s) = D·|sᶜ|` makes the body-set N3
+`isInfinitesimallyRigidOn_of_finrank_le_set` close *verbatim* (`v₀ ∈ s`, the count
+`dim Z ≤ D·(|sᶜ|+1)` from the body-set N7b-0 producer, `omega`). The body-set
+consumer `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set`
+is then the leg-restricted-linking variant carrying `hpin`, and the body-set
+coupling `couple_ofNormals_set` threads `sH`/`sc` + the two `hpin`s + `hnesH`/`hnesc`
+through the same (i)–(v) witness-transfer, finishing on `isInfinitesimallyRigidOn_of_splice`.
+
+**Honesty status.** `hpin` is *not* a new analytic black box like G3a's `htransport`
+(KT Claim 6.4): it is a green *consequence* of the leg being a body-set-isolated
+realization, the body-set sibling of the green `finrank_pinnedMotionsOn_vertexSet`,
+and it is **discharged at the call site** by the composer (G3c-iii) for each concrete
+leg — `sH := V(H)` is the leg's *full* vertex set so `hpin` is literally the green
+`finrank_pinnedMotionsOn_vertexSet` (on `withGraph H`); `sc := (V(G)∖V(H)) ∪ {r}` is
+the contraction leg's full effective body set, where the interior `V(H)∖{r}` is
+isolated in `G ＼ E(H)` so its complement bodies are free — the same N1-equality
+proof. So route (a) is a body-set *generalization* that stays green once G3c-iii
+supplies the leg-specific isolation; it carries `hpin` as a hypothesis only to keep
+G3c-ii leg-agnostic (the coupling does not know which `s` it is handed). This is
+*buildable*, the §1.8 tag, not a green-modulo escalation. **Build order:** the
+body-set N3 `isInfinitesimallyRigidOn_of_finrank_le_set` → the body-set consumer
+`…_rankPolynomial_ne_zero_linking_set` → the body-set coupling `couple_ofNormals_set`.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
