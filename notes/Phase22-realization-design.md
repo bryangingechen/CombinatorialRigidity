@@ -1420,6 +1420,77 @@ irreducible collapse-normal mismatch / KT eq. (6.7). The phase stays **Phase 22b
 **opens on U2** (the one research-shaped node) before scheduling
 U1/U3/U4 as builds, then U1 → U2 → U3 → U4. Unchanged: 22b does not fold into 22c+/23.
 
+**[Corrected by §1.20 below (2026-06-05, the U2-opening build): §1.19's "walling node
+retired at U2 / U3 is plumbing" is WRONG. The research-shaped crux did not vanish — it
+*moved* from U2 to U3. §1.19 correctly retired the *lower-semicontinuity* worry but
+conflated "the collapse-relabel ROW reproduction (U2)" with "the only research-shaped
+node", missing that the *exterior-projection rank-preservation* (the actual content of KT
+Claim 6.4) is a separate crux living in U3. See §1.20.]**
+
+---
+
+### 1.20 The U2 build surfaced the real crux: U3 is NOT plumbing — the exterior-projection drops the `r`-column, so it needs a pin-a-body rank-preservation brick (the genuine KT Claim 6.4) (2026-06-05)
+
+*Provenance.* Reconstructed from the U2-opening work session, which **forked under
+backgrounding**: the pre-reset instance did ~33 min of analysis and reached the findings
+below, then a context reset wiped it; the post-reset instance found the (sound) U1 + U2-tail
+Lean in the tree, committed it (`9098129`), but — lacking the analysis — wrote an
+over-optimistic hand-off ("walling retired, U3+U4 plumbing"). This section is the recovered
+analysis; the corrected cut supersedes §1.19's.
+
+**What landed (`9098129`, sound).** U1 `degeneratePlacement` (KT's `p2` = the normal field
+pulled back through the collapse map `f := collapseTo r V(H)`) + `degeneratePlacement_ofNormals_normal`;
+the U2 per-edge tail `panelRow_collapseTo_comp_extProj_dualMap` (the column core
+`hingeRow_collapseTo_comp_extProj_eq` lifted to a full per-edge row equality: the
+`(extProj V(H)).dualMap`-projected *uncollapsed* surviving row at `q₀^deg` equals the projected
+*collapsed* row of `ofNormals (Gc.map f) endsᶠ q₀^deg'`). These are correct, reusable bricks.
+
+**Obstruction O1 — `Qcf.ends` alignment (RESOLVED in principle).** The composer feeds an
+*arbitrary* generic realization `Qcf` of the contraction `G.rigidContract H r`; its selector
+`Qcf.ends` and normals are **not** tied to `f ∘ (parent ends)`. §1.19's plan implicitly assumed
+`Qcf.ends e = (f u, f v)`, which fails. Resolution: state the U2 brick **`Qcf.ends`-free** (as
+landed — it talks about the *constructed* framework `Qcf' := ofNormals (Gc.map f) endsᵐ
+(Qcf.normal-pullback)`, `endsᵐ e := (f (ends e).1, f (ends e).2)`), and move `Qcf`'s rigidity to
+`Qcf'` via the **`ends`-swap brick** `infinitesimalMotions_ofNormals_eq_of_ends_swap` — both
+`Qcf.ends e` and `endsᵐ e` record links of `e` in `Gc.map f`, so they agree up to swap, and the
+swap cancels (`annihRow` is linear in `C`; `panelSupportExtensor n₂ n₁ = −panelSupportExtensor
+n₁ n₂`; `hingeRow u v (−ρ) = hingeRow v u ρ` — the two negations cancel, the standard
+`span_panelRow_eq_rigidityRows` cancellation). This is the `hasGenericRealization_transport_ends`
+pattern. Bricked, real, but not research-shaped.
+
+**Obstruction O2 — exterior-projection rank-preservation = the genuine KT Claim 6.4 (NOT solved;
+missing infra).** The composer (via N-22b-2 `exists_rankPolynomial_of_rigidOn_linking_set_proj`)
+needs the **projected** rows `(extProj V(H)).dualMap ∘ panelRow` independent of size `≥ D(|sc|−1)`.
+The U3 tool `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` delivers only
+**un-projected** independence. **Projection can lower rank**, and `(extProj V(H)).dualMap` drops
+*exactly the `r`-column* (`r` is the only vertex of `Qcf'` lying in `V(H)`). That dropping this one
+column still preserves rank `D(|sc|−1)` **is precisely KT Claim 6.4 / eq. (6.3)'s bottom-right
+block** — a **pin-a-body** fact: rigidity on `sc` means the motions are exactly the `D`-dimensional
+trivial screws, which are pinned by fixing the single representative body `r`, so the `r`-column is
+rank-redundant. A search confirmed **no green brick** does this projected-subfamily extraction; the
+nearest green facts — `linearIndependent_sum_pinned_block` (N7b-3, the pin-a-body column split) and
+`finrank_pinnedMotions_add_screwDim` (Lemma 5.1, pin-a-body) — are *related but insufficient*. This
+is the research-shaped node, and it lives in **U3**, not U2.
+
+**Corrected U3 cut (U3 splits; U3b is the crux).**
+- **U3a — alignment transport** (O1): `Qcf` rigid on `sc = V(Gc.map f) = V(G.rigidContract H r)`
+  ⟹ `Qcf'` (the `endsᵐ`-selector framework) rigid on `sc`, via `infinitesimalMotions_ofNormals_eq_of_ends_swap`.
+  Bricked; medium (swap bookkeeping). *Not* pure green-reuse, but not a wall.
+- **U3b — pin-the-`r`-column projected-rank brick** (O2, the genuine KT Claim 6.4): from `Qcf'`
+  rigid on `sc`, the exterior-column projection (drop the `r`-column) preserves independent rank
+  `≥ D(|sc|−1)`. **New linear-algebra brick, missing infra, research-shaped.** Reuse candidates:
+  `linearIndependent_sum_pinned_block`, `finrank_pinnedMotions_add_screwDim`. *Open this math-first
+  before building (design the LAYER).*
+- Then **U2 (landed)** carries projected-*collapsed* independence to projected-*uncollapsed* rows at
+  `q₀^deg` per edge; **U4** assembles `(q₀^deg, t, …)` into `htransport`, translating the subfamily
+  indices from `Gc.map f`-links (at `endsᵐ`) to `Gc`-links (at parent `ends`) via a `Gc`-link
+  `hends`, deletes `htransport` from `case_I_realization`, flips `lem:claim-6-4`, then phase-close.
+
+**Net.** §1.19's "4-node cut, 3/4 plumbing, walling retired" is corrected to: U1 ✓, U2 ✓ (the
+collapse-relabel reconciliation, genuinely done), **U3a** (alignment, bricked) + **U3b** (the
+pin-the-`r`-column rank-preservation — the real Claim 6.4 crux, missing infra), **U4** (assembly).
+The honest scope is *one research-shaped node remains* (U3b); it was never retired, only relocated.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
