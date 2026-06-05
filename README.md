@@ -201,7 +201,7 @@ project; commit history is preserved with paths rewritten.
   deficiency-count argument; and KT's iterated fundamental-circuit swaps
   are bypassed by partition-count / rank-count comparisons through the
   Phase 19 `def(G̃) = corank M(G̃)` bridge. The forest-surgery core
-  (KT 4.1/4.2) is off the Theorem-4.9 critical path. `Molecular/Induction.lean`;
+  (KT 4.1/4.2) is off the Theorem-4.9 critical path. `Molecular/Induction/`;
   chapter `molecular-induction.tex`. See `notes/Phase20.md` and
   `notes/MolecularConjecture.md`.
 * **Phase 21 (complete, GREEN-modulo-21b)** — stratum 5 of the molecular

@@ -78,7 +78,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] A `(α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k)` defined by a `where`/`toFun` with an `if … then 0 else S a` body leaves the Pi-fiber `Module` stuck (and the `if` needs `Decidable` in the *statement* of any `_apply` lemma)
 - **Where it bit:** the block-triangular reframing's exterior-column projection `extProj`
-  (`Molecular/AlgebraicInduction.lean`, Phase 22a §1.14, Piece B). Both the structure-`where` form
+  (`Molecular/AlgebraicInduction/`, Phase 22a §1.14, Piece B). Both the structure-`where` form
   (`toFun S := fun a => if a ∈ t then 0 else S a`) and a separate `extProj_apply` `= if a ∈ t then …`
   lemma fail: the `where` leaves *"failed to synthesize Module ?m …"* on the Pi fiber under the
   `public section` (`0 : ScrewSpace k` doesn't pin the fiber, sibling of TACTICS-QUIRKS § 30), and the
@@ -93,7 +93,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] A leading `|>.proj` on a continuation line after `… → (expr).field` fails to parse ("type expected") — spell the projection as a prefix application instead
 - **Where it bit:** the Case-I composer fix `case_I_realization` + the new asymmetric coupling
-  (`Molecular/AlgebraicInduction.lean`, Phase 22a G3c-iii-b). A hypothesis clause
+  (`Molecular/AlgebraicInduction/`, Phase 22a G3c-iii-b). A hypothesis clause
   `… → (ofNormals … ends q).toBodyHinge \n |>.IsInfinitesimallyRigidOn (…)` (the `|>.` leading the
   next line) errored with `type expected, got ((…).toBodyHinge : BodyHingeFramework …)` — the parser
   closed the term at `.toBodyHinge` (the preceding line ended in `→`, shifting the indentation column),
@@ -107,13 +107,13 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved (prefix-application rewrite).
 
 ### [resolved] Dot notation `g.foo` doesn't find a `Graph.foo` lemma authored outside a `namespace Graph` block — it re-namespaces to `…Molecular.Graph.foo`, which projection can't reach
-- **Where it bit:** the Case-I composer `case_I_realization` (`Molecular/AlgebraicInduction.lean`,
+- **Where it bit:** the Case-I composer `case_I_realization` (`Molecular/AlgebraicInduction/`,
   Phase 22a N6-G3-G3c-iii-b). A scratch `theorem Graph.exists_ends_of_graph` written under the file's
   enclosing `CombinatorialRigidity.Molecular` namespace landed at `…Molecular.Graph.exists_ends_of_graph`;
   `G.exists_ends_of_graph` then failed with "environment does not contain `Graph.exists_ends_of_graph`"
   although `Graph.exists_ends_of_graph G` (the open-namespace identifier) type-checked.
 - **Fix:** the project already had `Graph.endsOf` (in a real `namespace Graph` block in
-  `Molecular/Induction.lean`) + `isLink_endsOf` doing exactly this job, so the helper was dropped and
+  `Molecular/Induction/`) + `isLink_endsOf` doing exactly this job, so the helper was dropped and
   the composer reuses `endsOf` (search-before-rolling-your-own; cross-ref the existing `endsOf` entry
   below). The general dot-notation-vs-root-namespace lesson is lifted.
 - **Status:** resolved (reused `endsOf`). **Lifted to:** TACTICS-QUIRKS § 35.
@@ -142,7 +142,7 @@ housekeeping pass once their resolution is fully indexed.
   `hloop : ∀ e x y, G.IsLink e x y → f x ≠ f y` (no edge becomes a loop) and
   `hpar : ∀ e₁ e₂ x₁ y₁ x₂ y₂, G.IsLink e₁ x₁ y₁ → G.IsLink e₂ x₂ y₂ → f x₁ = f x₂ → f y₁ = f y₂ → e₁ = e₂`
   (no two edges collapse to one pair). Proof is a two-field anonymous constructor: `rw [map_isLoopAt]` /
-  `rw [map_isLink]` then `rintro`/`obtain` and apply the hypothesis. Lives project-side in `Induction.lean`
+  `rw [map_isLink]` then `rintro`/`obtain` and apply the hypothesis. Lives project-side in `Induction/`
   (alongside `rigidContract`) per *prefer the project-side route*; **upstream-eligible** as a fork-side
   `Graph.map_simple` if the fork's `Simple` API is revisited.
 - **Status:** resolved (project-side `map_simple` + `rigidContract_simple` consumer; fork-API gap noted
@@ -273,7 +273,7 @@ housekeeping pass once their resolution is fully indexed.
   `≤r` relation; `IsRestriction.exists_eq_restrict` then yields `∃ R, R ⊆ … ∧ H.cyc = G.cyc ↾ R`,
   and the restriction set `R` must be pinned to `E(H)` by `congrArg Matroid.E` (the restriction's
   ground equals `R`, the subgraph's cycle matroid ground equals `E(H)`).
-- **Proposed fix:** project helper `Graph.cycleMatroid_mulTilde_eq_restrict` (Induction.lean) packages
+- **Proposed fix:** project helper `Graph.cycleMatroid_mulTilde_eq_restrict` (Induction/) packages
   this for the `mulTilde` case; combine with `Matroid.restrict_rk_eq _ subset_rfl` to move a rank
   across the subgraph. Reusable whenever a connected-component rank must be read in the smaller graph.
 - **Status:** resolved (project helper).
@@ -352,17 +352,17 @@ housekeeping pass once their resolution is fully indexed.
   (Phase 21b) takes an `ends : β → α × α` selector; Case I needs it consistent with the graph
   (`IsLink e (ends e).1 (ends e).2`). The per-edge endpoint-choice idiom
   `obtain ⟨x, y, hlink⟩ := exists_isLink_of_mem_edgeSet he` recurs ~a dozen times across
-  `Molecular/Induction.lean`, `BodyBar/TreePacking.lean`.
+  `Molecular/Induction/`, `BodyBar/TreePacking.lean`.
 - **Fix:** landed `Graph.endsOf` (`Classical.choice` on the `IsLink` existence, junk off `E(G)`)
   with `isLink_endsOf` (genuine link on every edge) and `endsOf_eq_or_swap` (matches any named link
-  up to order, via `IsLink.eq_and_eq_or_eq_and_eq` + `Prod.ext`) in `Molecular/Induction.lean`.
+  up to order, via `IsLink.eq_and_eq_or_eq_and_eq` + `Prod.ext`) in `Molecular/Induction/`.
   The canonical `ends` argument for `ofParam`.
 - **Status:** resolved (project-internal `Graph` primitive; `[Inhabited α]` for the junk default).
   Could be mirrored upstream if a use outside the molecular phase appears.
 
 ### [resolved] Showing the subfamily of `Sum.elim r a₀` indexed by `range Sum.inl` *is* `r` — reindex via `Set.rangeSplitting`, not a hand-rolled `Subtype.ext`
 - **Where it bit:** `hglue_of_independent_rigidityRows` in
-  `Molecular/AlgebraicInduction.lean` (Phase 21b Case-I consumer bridge): the
+  `Molecular/AlgebraicInduction/` (Phase 21b Case-I consumer bridge): the
   device wants the independent subfamily to index *into* the spanning family,
   so the bridge concatenates `a := Sum.elim r a₀` and takes the subfamily at
   `s := range (Sum.inl : κ → κ ⊕ Fin n)`; the obligation is that this subfamily
@@ -384,7 +384,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] Extracting an *honest index-subset* `panelRow` subfamily from a per-edge span — `Submodule.exists_fun_fin_finrank_span_eq` + `Equiv.ofInjective`, not `rw [hfin] at f`
 - **Where it bit:** `BodyHingeFramework.exists_independent_panelRow_subfamily_of_edge` in
-  `Molecular/AlgebraicInduction.lean` (Phase 21b N7b-1 honesty-gate bridge): the device-closure
+  `Molecular/AlgebraicInduction/` (Phase 21b N7b-1 honesty-gate bridge): the device-closure
   glue `hasFullRankRealization_of_independent_panelRow` (N7a) wants `LinearIndependent` of a literal
   `panelRow ends`-subfamily indexed by a `Set` of panel-row indices, but N7b-1
   (`exists_independent_panelRow_of_edge`) only produced rows that are *members of* the per-edge span.
@@ -435,7 +435,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] Iterating cyclic `+1` around `Fin m`: `(j : Fin m)` ascription / `NatCast` / `Fin.induction` all fail; use `Fin.ofNat`-based ℕ-induction
 - **Where it bit:** `isTrivialMotion_of_isInfinitesimalMotion_cycle` in
-  `Molecular/AlgebraicInduction.lean` (Phase 21 `m`-body cycle): turning the
+  `Molecular/AlgebraicInduction/` (Phase 21 `m`-body cycle): turning the
   consecutive equality `S i = S (i+1)` (cyclic `Fin m` `+1`) into `S i = S 0`.
 - **Friction:** `(j : Fin m)` for `j : ℕ` parses as a type ascription, not a
   coercion (*"Type mismatch j has type ℕ"*); `(↑j : Fin m)` / `Nat.cast` then trip
@@ -452,7 +452,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] A hypothesis stated on `(ofNormals GH ends q₀).toBodyHinge` passes directly to a brick wanting `(ofNormals G ends q₀).toBodyHinge.withGraph GH` — defeq, no `rw` bridge
 - **Where it bit:** `hasFullRankRealization_of_splice_ofNormals` in
-  `Molecular/AlgebraicInduction.lean` (Phase 22 N5 decomposition). The leg-native
+  `Molecular/AlgebraicInduction/` (Phase 22 N5 decomposition). The leg-native
   splice variant takes `hblock : (ofNormals GH ends q₀).toBodyHinge.IsInf…RigidOn …`
   and feeds the parent splice brick, which wants
   `((ofNormals G ends q₀).toBodyHinge.withGraph GH).IsInf…RigidOn …`.
@@ -469,7 +469,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] But: `ofParam`↔`ofNormals` defeq across a heavy `IsInfinitesimallyRigidOn` term times out — state the hypothesis pre-converted, don't lean on lazy application-defeq
 - **Where it bit:** `hasFullRankRealization_of_splice_ofParam` in
-  `Molecular/AlgebraicInduction.lean` (Phase 22 N5, the moment-curve seed
+  `Molecular/AlgebraicInduction/` (Phase 22 N5, the moment-curve seed
   specialization of the `_ofNormals` splice). `ofParam G ends param` is `rfl`-equal to
   `ofNormals G ends (fun p ↦ momentCurve (param p.1) p.2)`, so by the entry above the
   natural move is to state the two leg hypotheses on `(ofParam GH/Gc …).toBodyHinge`
@@ -494,7 +494,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] A `panelRow ends i` membership `rfl` whnf-times-out when `i` is left as the coerced subtype — `rintro ⟨⟨e', t₁, t₂⟩, hi⟩` to expose a bare triple
 - **Where it bit:** `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` in
-  `Molecular/AlgebraicInduction.lean` (Phase 22), the `hsub : span (range (subfamily of
+  `Molecular/AlgebraicInduction/` (Phase 22), the `hsub : span (range (subfamily of
   panelRow)) ≤ span rigidityRows` step. The membership witness ends in a `rfl` proving
   `F.panelRow ends i = hingeRow (ends i.1).1 (ends i.1).2 (annihRow (F.supportExtensor i.1) …)`.
 - **Friction:** with `rintro _ ⟨i, rfl⟩` (so `i : ↥s` a coerced subtype) and the witness
@@ -521,7 +521,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] `LinearEquiv.map_eq_zero_iff` via `rw` fails on a defeq-wrapped codomain (`ScrewSpace k` = `⋀^(k+2−2)`); apply `map_ne_zero_iff … .injective` as a term
 - **Where it bit:** `panelSupportExtensor_ne_zero_iff` in
-  `Molecular/AlgebraicInduction.lean` (Phase 21 panel leaf): showing
+  `Molecular/AlgebraicInduction/` (Phase 21 panel leaf): showing
   `complementIso (j:=2) (normalsJoin n₁ n₂) ≠ 0 ↔ …`, where the result is typed
   `ScrewSpace k` (a `def`-abbrev for `⋀^(k+2−2) (Fin (k+2) → ℝ)`).
 - **Friction:** `rw [LinearEquiv.map_eq_zero_iff]` and `rw [map_eq_zero_iff _
@@ -538,7 +538,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] No `LinearEquiv.linearIndependent_comp_iff` — reflect/preserve independence through `e.toLinearMap.linearIndependent_iff_of_injOn (injOn_of_disjoint_ker …)`
 - **Where it bit:** `panelSupportExtensor_linearIndependent_iff` in
-  `Molecular/AlgebraicInduction.lean` (Phase 21 genericity-device reduction): a family
+  `Molecular/AlgebraicInduction/` (Phase 21 genericity-device reduction): a family
   `i ↦ panelSupportExtensor (n₁ i) (n₂ i) = complementIso ∘ (i ↦ normalsJoin (n₁ i)(n₂ i))`
   is LI iff the grade-2-join family is, since `complementIso` is a `LinearEquiv`.
 - **Friction:** mathlib has no `LinearEquiv.linearIndependent_comp_iff` / `(e ∘ v) LI ↔ v LI`
@@ -637,7 +637,7 @@ housekeeping pass once their resolution is fully indexed.
   pairing, which `meet` (deliverable 4) and Phase 25 will rebuild on the same carrier).
 
 ### [resolved] `simp [key, key.symm]` loops to "maximum recursion depth" — feed only one orientation
-- **Where it bit:** `theorem_55_base` in `Molecular/AlgebraicInduction.lean`, closing the
+- **Where it bit:** `theorem_55_base` in `Molecular/AlgebraicInduction/`, closing the
   four `S a = S b` cases (`a, b ∈ {u, v}`) from `key : S u = S v`.
 - **Friction:** `rcases … <;> simp [key, key.symm]` overflowed the recursion limit — `simp`
   with both an equation and its `symm` rewrites `S u ↦ S v ↦ S u …` indefinitely.
@@ -647,7 +647,7 @@ housekeeping pass once their resolution is fully indexed.
   equation over a `<;>`-fanned case split).
 
 ### [resolved] A `have h : … = … := by ring` whose type embeds `(V(G).ncard : ℤ) - 1 - 1` fails to parse ("unexpected token '-'")
-- **Where it bit:** `Graph.forest_surgery_split` in `Molecular/Induction.lean` (the
+- **Where it bit:** `Graph.forest_surgery_split` in `Molecular/Induction/` (the
   def\,=\,corank read-off, expanding `D·((|V|−1)−1)`).
 - **Friction:** writing a standalone algebra `have hD2 : (bodyBarDim n : ℤ) * ((V(G).ncard : ℤ) - 1 - 1)
   = … := by ring` to feed `linarith` errored at parse time with *"unexpected token '-'; expected ')'"*
@@ -666,7 +666,7 @@ housekeeping pass once their resolution is fully indexed.
   `1 + (…)`), which is what `lean_multi_attempt` confirmed in seconds vs. an edit-build cycle.
 
 ### [resolved] `Set.ncard_iUnion_of_finite` returns a `finsum` (`∑ᶠ`), not a `Finset.sum` — bridge with `finsum_eq_sum_of_fintype`
-- **Where it bit:** `Graph.exists_balanced_forest_packing` in `Molecular/Induction.lean`
+- **Where it bit:** `Graph.exists_balanced_forest_packing` in `Molecular/Induction/`
   (the forest-packing descent's pigeonhole: `∑ i, (Fs i ∩ vfib).ncard = (B ∩ vfib).ncard`
   for a disjoint packing).
 - **Friction:** `Set.ncard_iUnion_of_finite (hfin) (hpairwise) : (⋃ i, s i).ncard = ∑ᶠ i, (s i).ncard`
@@ -680,7 +680,7 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved (no lift — narrow API-shape note).
 
 ### [resolved] `rw [if_pos rfl]` fails on a `(fun i ↦ if i = j then …) j` goal — `simp only [↓reduceIte]`
-- **Where it bit:** `Graph.exists_packing_move_of_not_inc` in `Molecular/Induction.lean`
+- **Where it bit:** `Graph.exists_packing_move_of_not_inc` in `Molecular/Induction/`
   (the forest-packing rebalancing move; the re-chosen packing `fun i => if i = j then
   insert x (Fs j) else Fs i \ {x}` evaluated at `j` in the recipient-forest subgoals).
 - **Friction:** after `refine ⟨fun i => …, …⟩` + `subst`, the goal still showed the
@@ -692,7 +692,7 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved. **Lifted to:** TACTICS-QUIRKS § 28.
 
 ### [resolved] `[matroid]` The vendored `apnelson1/Matroid` package already supplies a full multigraph `Graph.degree` + handshake API — do not roll your own
-- **Where it bit:** `Graph.exists_degree_le_two` in `Molecular/Induction.lean` (Phase 20
+- **Where it bit:** `Graph.exists_degree_le_two` in `Molecular/Induction/` (Phase 20
   KT 4.6, F″ core). The Phase-20 hand-off note asserted "the project has no `Graph α β`
   degree function" and scoped F″ as building one (degree, the `∑ deg = 2|E|` handshake,
   pigeonhole) from scratch. A first draft did exactly that (`endpointMult`/`degree`/
@@ -703,7 +703,7 @@ housekeeping pass once their resolution is fully indexed.
   `eDegree`/`degree`, `sum_incFun_eq_two`, and the handshake `handshake_eDegree`,
   `handshake_degree_subtype` (`∑ᶠ v ∈ V(G), G.degree v = 2 * E(G).ncard`, needs `[G.Finite]`),
   `handshake_degree_finset`, `handshake`. It is transitively imported via the `cycleMatroid`
-  chain, so it is usable in `Induction.lean` with **zero** new imports. `[G.Finite]` is
+  chain, so it is usable in `Induction/` with **zero** new imports. `[G.Finite]` is
   discharged under the project's `[Finite α] [Finite β]` by
   `{ edgeSet_finite := Set.toFinite _, vertexSet_finite := Set.toFinite _ }` (anonymous
   constructor `⟨⟨_⟩, _⟩` mis-elaborates — use named fields).
@@ -715,7 +715,7 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved (reused the vendored API; F″ core landed as the pigeonhole on top).
 
 ### [resolved] `Set.ncard_pos` (and `ncard_diff_singleton_of_mem`) carry a `(hs : s.Finite := by toFinite_tac)` autoparam, not an explicit arg — pass `(Set.toFinite _)` or omit
-- **Where it bit:** `Graph.isBase_vfiber_ncard_ge` in `Molecular/Induction.lean` (Phase 20
+- **Where it bit:** `Graph.isBase_vfiber_ncard_ge` in `Molecular/Induction/` (Phase 20
   forest-surgery TODO, `lem:base-vfiber-count`). Two stumbles in one proof: `Set.ncard_pos.mpr hne`
   failed (`Unknown constant Set.ncard_pos.mpr`) because the finiteness autoparam blocks the
   dot-`.mpr` chain, and `Set.ncard_diff_singleton_of_mem hvG (Set.toFinite _)` failed (`Function
@@ -732,7 +732,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] A lemma whose *statement* mentions `cutLabeling V' a b` needs `[∀ x, Decidable (x ∈ V')]` in the binder list
 - **Where it bit:** `crossingEdges_cutLabeling_singleton_subset` / `_ncard_le` in
-  `Molecular/Induction.lean` (Phase 20 KT 4.6, `lem:reducible-vertex` cut↔degree bridge).
+  `Molecular/Induction/` (Phase 20 KT 4.6, `lem:reducible-vertex` cut↔degree bridge).
   `cutLabeling V' a b` carries an instance argument `[∀ x, Decidable (x ∈ V')]`; with the
   ambient context holding only `[Finite α]` (no `DecidableEq α`), a `classical` inside the
   proof does **not** supply the instance the *statement* needs — the statement elaborates
@@ -747,7 +747,7 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved.
 
 ### [resolved] `[matroid]` Fundamental-circuit-swap idioms: finite-min over bases, "indep of full rank ⟹ base", and the `X∩ẽ≠∅` base-meets-fiber move
-- **Where it bit:** `Graph.no_rigid_edge_count` in `Molecular/Induction.lean` (Phase 20
+- **Where it bit:** `Graph.no_rigid_edge_count` in `Molecular/Induction/` (Phase 20
   KT 4.5(i), F′ swap core). KT's proof argues "`X∩ẽ=∅` ⟹ `D` spanning trees avoid `ẽ`,
   contra minimality" (forest language); the prior session read this as a real blocker.
 - **Friction / resolution:** three reusable moves, all standard once stated cleanly:
@@ -769,7 +769,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] `[matroid]` Transporting circuits between `M(G̃)` and `M(H̃)` for `H ≤ G`; and a rank count that bypasses KT 4.8(i)'s iterated swap
 - **Where it bit:** `Graph.circuit_splitOff_meets_fiber` + `Graph.splitOff_isMinimalKDof` in
-  `Molecular/Induction.lean` (Phase 20, KT 4.8(i) splitting-off minimality transport).
+  `Molecular/Induction/` (Phase 20, KT 4.8(i) splitting-off minimality transport).
 - **Friction / resolution — circuit transport:** to move a circuit between `M(G̃)` and `M(H̃)`
   for a graph-level `H ≤ G`, compose mathlib `Matroid.restrict_isCircuit_iff`
   (`(M ↾ R).IsCircuit C ↔ M.IsCircuit C ∧ C ⊆ R`) with the project's
@@ -792,7 +792,7 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved.
 
 ### [resolved] `[matroid]` Extending a cycle-matroid-independent set by a *pendant* edge: the `Isolated`/bridge idiom
-- **Where it bit:** `Graph.acyclicSet_insert_vfiber_of_not_inc` in `Molecular/Induction.lean`
+- **Where it bit:** `Graph.acyclicSet_insert_vfiber_of_not_inc` in `Molecular/Induction/`
   (Phase 20, KT 4.1 balanced-packing redistribution kernel).
 - **Friction / resolution:** to show `cycleMatroid.Indep (insert x F)` for a forest `F` whose
   edges avoid a vertex `v` and a non-loop `v`-fiber `x : v—w` (`w ≠ v`), the clean route is
@@ -812,7 +812,7 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved.
 
 ### [resolved] `[matroid]` Transporting acyclicity *down* a subgraph (`IsAcyclicSet.anti_inter`) always intersects with `E(G)` — clean up with `Set.inter_eq_self_of_subset_right`
-- **Where it bit:** `Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex` in `Molecular/Induction.lean`
+- **Where it bit:** `Graph.isAcyclicSet_splitOff_of_diff_fiberAtVertex` in `Molecular/Induction/`
   (Phase 20, `lem:forest-surgery-split` reroute wiring step 1 — the `v`-free part of a `G̃`-forest
   transports into `G̃ᵥᵃᵇ`).
 - **Friction / resolution:** the vendored `Graph.IsAcyclicSet.anti_inter (hGH : G ≤ H)
@@ -828,7 +828,7 @@ housekeeping pass once their resolution is fully indexed.
 - **Status:** resolved.
 
 ### [resolved] `[matroid]` Building a small explicit cyclic walk (`IsCyclicWalk`) needs the full structure tower + a hoisted `IsWalk` `have`
-- **Where it bit:** `Graph.isCycleSet_pair_edgeFiber_splitOff` in `Molecular/Induction.lean`
+- **Where it bit:** `Graph.isCycleSet_pair_edgeFiber_splitOff` in `Molecular/Induction/`
   (Phase 20 `lem:forest-surgery-split` reroute-count substrate). To exhibit `{p, q}` as a
   cycle of `G̃ᵥᵃᵇ` I constructed the explicit length-2 walk `cons a p (cons b q (nil a))` and
   had to discharge `IsCyclicWalk` directly.
@@ -845,11 +845,11 @@ housekeeping pass once their resolution is fully indexed.
   tower as `⟨⟨⟨hwalk, ?_⟩, by simp, ?_⟩, ?_⟩` and close `edge_nodup` / `isClosed` / `nodup` by
   `simp` (feed the edge-distinctness `p ≠ q` and the vertex-distinctness `a ≠ b`). The edge-set
   equation `E(C) = {p, q}` is plain `simp`. Project-internal (about our `splitOff`/`mulTilde`),
-  so it lives in `Induction.lean`; no upstream mirror.
+  so it lives in `Induction/`; no upstream mirror.
 - **Status:** resolved.
 
 ### [resolved] `[matroid]` Cycle-lift by edge-substitution (rotate-to-first + cons-substitute + tour-contains-cycle): four naming/`def`-unfold traps
-- **Where it bit:** `Graph.isAcyclicSet_splitOff_reroute` in `Molecular/Induction.lean`
+- **Where it bit:** `Graph.isAcyclicSet_splitOff_reroute` in `Molecular/Induction/`
   (Phase 20 `lem:forest-surgery-split` reroute wiring step 2, the `dᶠ(v)=2` cycle-lift crux).
   To show the rerouted forest `(F ∖ {pa,pb}) ∪ {r}` stays acyclic, a hypothetical `G̃ᵥᵃᵇ`-cycle
   `C` through the short-circuit copy `r` is lifted to a closed `G̃`-trail by substituting the
@@ -871,13 +871,13 @@ housekeeping pass once their resolution is fully indexed.
   (`hwb ▸ hpb`, no `.symm` — the `▸` already lands the direction). `IsTour`'s anonymous constructor
   is `⟨⟨isWalk, edge_nodup⟩, nonempty, isClosed⟩`; the `edge_nodup` for the spliced trail comes from
   `cons_edge`/`nodup_cons` on the original cyclic walk's `edge_nodup` plus the new edges' absence from
-  `w'.edge`. Project-internal (about our `splitOff`/`mulTilde`), lives in `Induction.lean`; no upstream
+  `w'.edge`. Project-internal (about our `splitOff`/`mulTilde`), lives in `Induction/`; no upstream
   mirror. **Lifted to:** TACTICS-QUIRKS § 29.
 - **Status:** resolved.
 
 ### [resolved] `[matroid]` no mathlib "base of `M ／ C` lifts to base of `M` via a basis of `C`" — route through `IsBasis'.contract_eq_contract_delete` + loops
 - **Where it bit:** `Matroid.IsBase.union_isBasis_of_contract` in
-  `Molecular/Induction.lean` (Phase 20 `lem:contract-minimality-transport`). mathlib
+  `Molecular/Induction/` (Phase 20 `lem:contract-minimality-transport`). mathlib
   has `Indep.contract_isBase_iff` (`(M／I).IsBase B ↔ M.IsBase (B∪I) ∧ Disjoint B I`)
   only for **independent** contracted `I`; for a general `C` there is no
   `(M／C).IsBase B' → M.IsBasis' J C → M.IsBase (B'∪J)`. Build it: pick `J` a basis of
@@ -897,7 +897,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] `[matroid]` contraction rank arithmetic already lives in vendored `Matroid.Minor.Rank`; the `cast_int` form's RHS is ℤ-subtraction, annotate as such
 - **Where it bit:** `Matroid.rank_contract_add_rank_restrict` in
-  `Molecular/Induction.lean` (Phase 20 `lem:contraction-minimality` contraction
+  `Molecular/Induction/` (Phase 20 `lem:contraction-minimality` contraction
   arithmetic). The standard matroid identity `r(M/C) = r(M) − r_M(C)` is **not**
   in mathlib's `Matroid` minor files, but the vendored `apnelson1/Matroid`
   package's `Matroid/Minor/Rank.lean` already carries it: `contract_rk_add_eq`
@@ -916,7 +916,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] `[matroid]` Union↔contraction equality: prove via the *count condition* `Union_pow_indep_iff_count`, not via the per-factor `union_indep_iff` matching re-decomposition
 - **Where it bit:** `Matroid.Union_pow_contract_eq_contract_of_rk_saturated` in
-  `Molecular/Induction.lean` (Phase 22 N4c crux): show `Union (fun _ : Fin k ↦ M ／ C)`
+  `Molecular/Induction/` (Phase 22 N4c crux): show `Union (fun _ : Fin k ↦ M ／ C)`
   and `Union (fun _ : Fin k ↦ M) ／ C` agree on independent sets when `C` *saturates*
   the union rank (`N.rk C = k·M.rk C`). The intuitive route — decompose via
   `union_indep_iff` and re-distribute the per-factor `C`-bases `Jᵢ` — has a genuine
@@ -940,7 +940,7 @@ housekeeping pass once their resolution is fully indexed.
   tagged FRICTION entries, there is no matroid section in `TACTICS-GOLF.md`.)
 
 ### [resolved] A hand-rolled `Graph α β` with several fresh edge labels needs a distinctness guard baked into a clause, or `eq_or_eq_of_isLink_of_isLink` is unprovable
-- **Where it bit:** `Graph.edgeSplit` in `Molecular/Induction.lean` (Phase 20
+- **Where it bit:** `Graph.edgeSplit` in `Molecular/Induction/` (Phase 20
   `def:graph-operations`). Edge-splitting subdivides `e₀` into a path `a–v–b`
   carried by two *fresh* edge labels `e₁`, `e₂`. The structure-literal `IsLink`
   has one clause per label; if `e₁ = e₂` the two new-edge clauses both fire on the
@@ -997,7 +997,7 @@ housekeeping pass once their resolution is fully indexed.
   front rather than discover the degenerate `D = 0` branch mid-`nlinarith`.
 
 ### [resolved] `ciSup_le` on `deficiency = ⨆ f : α → α, partitionDef …` needs `rw [deficiency]` + `Nonempty α`
-- **Where it bit:** `splitOff_deficiency_le` in `Molecular/Induction.lean`
+- **Where it bit:** `splitOff_deficiency_le` in `Molecular/Induction/`
   (Phase 20 `lem:splitoff-deficiency`, the deficiency-route `≤` direction).
   Bounding `def(H̃) = ⨆ f', H.partitionDef n f'` by `def(G̃)` per-partition
   wants `ciSup_le`, but two things block it: (i) `deficiency` is a plain
@@ -1022,7 +1022,7 @@ housekeeping pass once their resolution is fully indexed.
   witness for `def(G̃)` itself is needed.
 
 ### [resolved] Pinning `rank M(G̃) = D(|V|−1)` from a two-sided bound: `zify [hPos]` the ℕ rank bound, then a `D·(F−1) = D·F − D` ring-bridge for `linarith`
-- **Where it bit:** `circuit_induces_isRigidSubgraph` in `Molecular/Induction.lean`
+- **Where it bit:** `circuit_induces_isRigidSubgraph` in `Molecular/Induction/`
   (Phase 20 `lem:circuit-induces-rigid`, rigid-subgraph form). To turn the
   tightness equality `|X−e| = D(|V(X)|−1)` into `def(G[V(X)]̃) = 0` you pin
   `rank M(H̃)` from both sides: the upper bound `rank_matroidMG_le` is **ℕ-valued**
@@ -1057,7 +1057,7 @@ housekeeping pass once their resolution is fully indexed.
   the base-graph type, or restate via the congruence lemmas
   (`IsSubgraph.isLink_iff` / `.inc_congr`). One build cycle.
 - **Recurred (Phase 21, `infinitesimalMotions_mono_of_graph_le` in
-  `Molecular/AlgebraicInduction.lean`):** even on a *bare* `G.IsLink`
+  `Molecular/AlgebraicInduction/`):** even on a *bare* `G.IsLink`
   (no `edgeMultiply` wrapper), dot notation `he.mono hle` fails because
   the hypothesis type displays as the raw structure projection
   `G.2 e u v`, so dot-resolution can't see the `Graph.IsLink` head.
@@ -1067,7 +1067,7 @@ housekeeping pass once their resolution is fully indexed.
   file using the subgraph order needs that import. One build cycle.
 
 ### [resolved] `mulTilde` edge-set / `IsLink` unfold tower recurred ~30× — extracted two fused `@[simp]` mirrors
-- **Where it bit:** across `Molecular/Induction.lean` + `Molecular/Deficiency.lean`
+- **Where it bit:** across `Molecular/Induction/` + `Molecular/Deficiency.lean`
   (Phase 19/20). Reaching `mulTilde`'s edge-set or incidence content needed the
   three-token tower `rw [mulTilde, edgeMultiply_edgeSet, Set.mem_setOf_eq]`
   (membership) or `rw [mulTilde, edgeMultiply_isLink]` (incidence): `mulTilde`
@@ -1091,7 +1091,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] `edgeMultiply`'s `@[simps! vertexSet]` lemma does not resolve as `edgeMultiply_vertexSet`; `V(_.mulTilde _) = V(_)` is `rfl`
 - **Where it bit:** Phase 22 N4b (`cycleMatroid_mulTilde_rigidContract`,
-  `rigidContract_collapseTo_isRepFun` in `Molecular/Induction.lean`). Needed to
+  `rigidContract_collapseTo_isRepFun` in `Molecular/Induction/`). Needed to
   rewrite `V(H.mulTilde n)` to `V(H)` inside `collapseTo r V(H.mulTilde n)`; reached
   for the `@[simps!]`-generated `edgeMultiply_vertexSet`, which errors *"Unknown
   identifier"* (the `@[simps! vertexSet isLink]` on `def edgeMultiply` in
@@ -1206,7 +1206,7 @@ housekeeping pass once their resolution is fully indexed.
 
 ### [resolved] `[matroid]` `IsCircuit.subset_ground` for `M(G̃)` gives `X ⊆ (G.matroidMG n).E`, defeq-but-not-syntactic to `E(G.mulTilde n)` — `inter_eq_right.mpr` needs a `show`-ascription
 - **Where it bit:** `Graph.circuit_ncard_gt` / `circuit_induces_isTight`
-  (`Molecular/Induction.lean`, Phase 20). `(G.matroidMG n).E` is the
+  (`Molecular/Induction/`, Phase 20). `(G.matroidMG n).E` is the
   union-then-restrict ground `↾ E(G.mulTilde n)` (sibling of the `Union` ground
   being `univ`, above), so `hX.subset_ground : X ⊆ (G.matroidMG n).E` does not
   syntactically unify with the `E(G.mulTilde n)` that `edgeSet_restrict` /
@@ -2374,7 +2374,7 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ### [mirrored] `Countable.exists_injective_real` — a countable type embeds injectively into `ℝ`
 - **Where it bit:** Phase 21b Case-I realization producer
-  (`Molecular/AlgebraicInduction.lean`,
+  (`Molecular/AlgebraicInduction/`,
   `PanelHingeFramework.hasFullRankRealization_of_pinnedMotionsOn`): the
   block-pin-form producer carries the obligation `Function.Injective param` on
   the panel parameter map `param : α → ℝ`; over a `[Countable]` (in particular

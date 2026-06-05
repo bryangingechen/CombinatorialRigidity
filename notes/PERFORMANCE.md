@@ -176,7 +176,7 @@ upstream lands.
 
 **Molecular chain is non-`module` (Phase 17+).** The molecular /
 body-bar files (`BodyBar/*.lean`, `Molecular/{Extensor, Meet,
-RigidityMatrix, Deficiency, Induction}.lean`) were authored
+RigidityMatrix, Deficiency}.lean`, `Molecular/Induction/`) were authored
 non-`module`, so anything that must consume them stays non-`module`
 too. Phase 21's `Molecular/AlgebraicInduction.lean` was authored
 `module` (importing only the `module`-converted `RigidityMatrix` +
@@ -189,7 +189,10 @@ non-`module` (drop `module`, `public import` → `import`, drop the
 mechanical and warning-clean (non-`module` is the more permissive
 mode; demotion cannot break compilation). Converting the whole
 molecular chain to `module` is a future perf pass; re-promote
-`AlgebraicInduction` then.
+`AlgebraicInduction` then. **Pre-Phase-22b structure pass:**
+`AlgebraicInduction.lean` and `Induction.lean` were each split into a 5-file
+subdirectory (`AlgebraicInduction/`, `Induction/`); the sub-files all inherit
+the non-`module` status (`notes/Phase22-structure.md`).
 
 Constraint that drives ordering: a `module` file cannot import a
 non-`module` file (build error: *"cannot import non-`module` X from
@@ -279,6 +282,19 @@ F2 (item 2), and the `PebbleGame.lean` / `PebbleGame/{Basic,
 Algorithm, Correctness}.lean` subdirectory split landed
 post-Phase-9-perf under the revised framework (item 5). The other
 items are still recommendations.
+
+The **pre-Phase-22b structure pass** (`notes/Phase22-structure.md`) added two
+more subdirectory splits, on the over-cap molecular giants:
+`Molecular/AlgebraicInduction.lean` (5918 LoC, 3.9× the soft cap) →
+`AlgebraicInduction/` (5 files: `PanelLayer`/`Pinning`/`PanelHinge`/`GenericityDevice`/`CaseI`),
+and `Molecular/Induction.lean` (4256 LoC, 2.8×) → `Induction/` (5 files:
+`Operations`/`SplitOffDeficiency`/`ReducibleVertex`/`Contraction`/`ForestSurgery`). Both done
+bottom-up with a linear import chain and the no-hub convention (the original is deleted; the
+root aggregator imports the terminal leaf — cf. the deleted `PebbleGame.lean`). The splits are
+pure semantics-preserving moves: no declaration renamed, so the blueprint `\lean{...}` pins are
+by-name and `checkdecls` is unaffected. `AlgebraicInduction` is the active file for the
+realization-layer phases (22b+), so factor 3 (incremental-rebuild) is the live driver there;
+`Induction` is stable, split on the file-size/navigability axis (factor 2).
 
 The snapshot below is the post-Phase-8 state (pre-PebbleGame split);
 the import graph adds a `PebbleGame.Basic ← Algorithm ← Correctness`

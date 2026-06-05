@@ -1,5 +1,14 @@
 # Phase 22 — realization-layer design (decision-support doc)
 
+> **File-layout note (pre-Phase-22b structure pass, `notes/Phase22-structure.md`).**
+> The single files this doc cites have since been split into subdirectories:
+> `AlgebraicInduction.lean` → `Molecular/AlgebraicInduction/`
+> (`PanelLayer`/`Pinning`/`PanelHinge`/`GenericityDevice`/`CaseI`) and `Induction.lean` →
+> `Molecular/Induction/` (`Operations`/`SplitOffDeficiency`/`ReducibleVertex`/`Contraction`/`ForestSurgery`).
+> Inline `….lean:NNNN` line anchors below **predate the split** — find declarations by name in
+> the relevant sub-file (the Case-I composer `case_I_realization` and the couple / genericity-device
+> producers are in `CaseI` / `GenericityDevice`; `minimal_kdof_reduction` is in `Induction/ForestSurgery`).
+
 **Status:** design pass, not a build plan. Produced 2026-06-04 after the
 constructibility recon (FRICTION dead-end #5; `notes/Phase22a.md` *Blockers*)
 found the Case-I coupling has two real gaps **(G1)/(G2)** the type-level plan

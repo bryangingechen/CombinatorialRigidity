@@ -1063,7 +1063,7 @@ find an occurrence of the pattern"*. Apply the lemma as a **term**
 instead: `exact map_ne_zero_iff _ e.injective` (after `rw`-ing the goal
 into the `e x ≠ 0 ↔ x ≠ 0` shape), since `exact` unifies up to defeq.
 Worked case: `panelSupportExtensor_ne_zero_iff` in
-`Molecular/AlgebraicInduction.lean`.
+`Molecular/AlgebraicInduction/`.
 
 ## 26. `simp [← lemma]` stalls on a `Submodule`/subtype carrier over a `RingQuot`-built algebra
 
@@ -1115,7 +1115,7 @@ which `simp only` applies cleanly through the `.copy`:
 - `deleteEdges_inc`, `deleteEdges_isLoopAt`, …
 
 Worked case: `Graph.mulTilde_splitOff_deleteFiber_le` in
-`Molecular/Induction.lean` proves
+`Molecular/Induction/` proves
 `((G.splitOff …).mulTilde n).deleteEdges (edgeFiber e₀ n) ≤ G.mulTilde n`
 by `refine ⟨?_, ?_⟩` then `simp only [vertexSet_deleteEdges] at hx` /
 `simp only [deleteEdges_isLink, …] at hp` — `rw [deleteEdges]` had
@@ -1155,7 +1155,7 @@ name `↓reduceIte`, not the lemma. The `else`-branch (`i ≠ j`) is unaffected:
 free `hij : ¬ i = j`, no beta-redex in the way.
 
 Worked case: `Graph.exists_packing_move_of_not_inc` in
-`Molecular/Induction.lean` (the forest-packing rebalancing move, where the
+`Molecular/Induction/` (the forest-packing rebalancing move, where the
 re-chosen packing `fun i => if i = j then insert x (Fs j) else Fs i \ {x}` is
 evaluated at `j` in the recipient-forest subgoals).
 
@@ -1200,7 +1200,7 @@ contained cycle. Four traps surface as build failures along the way.
 write `hwb ▸ hpb` (no `.symm` — the `▸` rewrite already lands the direction);
 only the *outer* link `K.IsLink pa a v` from `hpa : K.IsLink pa v a` needs `hpa.symm`.
 
-Worked case: `Graph.isAcyclicSet_splitOff_reroute` in `Molecular/Induction.lean`
+Worked case: `Graph.isAcyclicSet_splitOff_reroute` in `Molecular/Induction/`
 (Phase 20 forest-surgery `dᶠ(v)=2` reroute, substituting the short-circuit edge
 by its `v`-traversing 2-path). Companion to the explicit-cyclic-walk tower in
 `isCycleSet_pair_edgeFiber_splitOff` (FRICTION "Building a small explicit cyclic
@@ -1254,7 +1254,7 @@ the `HSMul ℝ W W` instance resolves. (Distinct from § 30: there the *fiber/sc
 of a `LinearMap` subtraction* was stuck; here it's the *bound variable's own type*
 that's free.)
 
-Worked case: `hcoord_const` in `Molecular/AlgebraicInduction.lean` (Phase 21b,
+Worked case: `hcoord_const` in `Molecular/AlgebraicInduction/` (Phase 21b,
 the constant-affine-path `hcoord` discharge; the `t • (0 : Module.Dual …)` term
 needed `∀ t : ℝ`).
 
@@ -1309,7 +1309,7 @@ hypothesis's type is just a `Prop`). The general rescue axis: *if `rw [eq]` on t
 motive but the same content is already in a hypothesis, flip `eq` and rewrite the hypothesis
 instead.*
 
-Worked case: `exists_good_realization` in `Molecular/AlgebraicInduction.lean` (Phase 21b, the
+Worked case: `exists_good_realization` in `Molecular/AlgebraicInduction/` (Phase 21b, the
 multivariate genericity device — `rw [finrank_screwAssignment, ← hcoord p] at hp`).
 
 ## 34. `map_sum` won't push `Basis.repr` (a `LinearEquiv` to `Finsupp`) through a `∑` — route the coordinate through `Finsupp.lapply t ∘ₗ repr.toLinearMap`
@@ -1342,7 +1342,7 @@ General axis: *a `map_sum` / `map_smul` that silently won't match a `Basis.repr`
 `Finsupp`-codomain `AddMonoidHomClass` synthesis failing — compose with `Finsupp.lapply t` to drop the
 codomain to the scalar ring first.*
 
-Worked case: `panelSupportPoly_eval` in `Molecular/AlgebraicInduction.lean` (Phase 21b B0,
+Worked case: `panelSupportPoly_eval` in `Molecular/AlgebraicInduction/` (Phase 21b B0,
 the panel-support-extensor coordinate-as-`MvPolynomial`).
 
 ## 35. Dot notation `g.foo` resolves `foo` against the type head's *root* namespace, not a file-local re-namespace
@@ -1359,12 +1359,12 @@ projection is not found.
 **Fix.** Either (a) call it by the (partially-qualified) identifier `Graph.foo g` instead of the
 projection `g.foo` — the open namespace resolves it; or (b) define the lemma *inside* an explicit
 `namespace Graph … end Graph` block so it really lands in the root `Graph` namespace and dot notation
-finds it (this is what `Molecular/Induction.lean` does, so e.g. `Graph.rigidContract_isMinimalKDof`
+finds it (this is what `Molecular/Induction/` does, so e.g. `Graph.rigidContract_isMinimalKDof`
 *is* dot-callable). Cheap tell: if `g.foo` errors but `Graph.foo g` type-checks in the same file, you
 hit this — the lemma is re-namespaced. General axis: *dot notation keys off the value's type-head root
 namespace; a `T.foo` lemma authored outside a `namespace T` block is reachable by name but not by
 projection.*
 
-Worked case: `case_I_realization` in `Molecular/AlgebraicInduction.lean` (Phase 22a, N6-G3-G3c-iii-b)
+Worked case: `case_I_realization` in `Molecular/AlgebraicInduction/` (Phase 22a, N6-G3-G3c-iii-b)
 — first hit while drafting a `Graph.exists_ends_of_graph` helper (later dropped in favour of the
 pre-existing `Graph.endsOf`, which *is* in a `namespace Graph` block).

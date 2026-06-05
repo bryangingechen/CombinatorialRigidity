@@ -1,6 +1,8 @@
 # Phase 22 structure pass (pre-Phase-22b) — file splits (work log)
 
-**Status:** in progress (opened 2026-06-05, before opening Phase 22b).
+**Status:** ✓ complete (2026-06-05). All three splits landed (Passes A–C) plus the pass-close
+reference sweep (D); Lean `lake build` + `lake lint` + `blueprint/verify.sh` green throughout.
+Phase 22b can open.
 
 A dedicated **structure pass** — not a feature phase — run before Phase 22b, mirroring the
 project's perf-pass precedent (`notes/Phase8-perf.md`, `notes/Phase9-perf.md`; the
@@ -35,7 +37,7 @@ candidates* and the pre-pass review that motivated this.
 
 ## Progress
 
-### A — `AlgebraicInduction.lean` split ✓ (this commit)
+### A — `AlgebraicInduction.lean` split ✓
 
 5 files, linear chain `PanelLayer ← Pinning ← PanelHinge ← GenericityDevice ← CaseI`; original
 deleted; aggregator → `…AlgebraicInduction.CaseI`. Build green + warning-clean + lint green.
@@ -48,7 +50,7 @@ deleted; aggregator → `…AlgebraicInduction.CaseI`. Build green + warning-cle
 | `GenericityDevice.lean` | 1568 | `lem:genericity-device`: `exists_good_realization` engine, splice + rank-polynomial producers |
 | `CaseI.lean` | 1428 | couple/block-triangular producers, `extProj`, `case_I_realization` (green-modulo `lem:claim-6-4`) ← **22b lands here** |
 
-### B — `algebraic-induction.tex` split ✓ (this commit)
+### B — `algebraic-induction.tex` split ✓
 
 Thin parent `algebraic-induction.tex` (99 lines: `\section` + preamble + 5 `\input`s) keeps the
 single logical chapter (dep-graph grouping + all internal `\cref`s intact; `main.tex` unchanged).
@@ -57,7 +59,7 @@ Sub-files under `chapter/algebraic-induction/`: `panel-layer.tex` (335), `case-i
 green (`inv bp` + `inv web` + `checkdecls` all pass — pins resolve, no dangling `\uses`/`\cref`).
 Also fixed `intro.tex`'s two Phase-21/21b file-path references to the new subdir.
 
-### C — `Induction.lean` split ✓ (this commit)
+### C — `Induction.lean` split ✓
 
 5 files, linear chain `Operations ← SplitOffDeficiency ← ReducibleVertex ← Contraction ← ForestSurgery`;
 original deleted; the two importers (`AlgebraicInduction/PanelLayer.lean` + root aggregator) repointed
@@ -75,11 +77,20 @@ Note: `Contraction.lean` carries the original's `Graph → Matroid → Graph` na
 verbatim body (3 `namespace`/`end` pairs). The blueprint mirror `molecular-induction.tex` (1013 lines)
 left as-is — under the urgent threshold, and blueprint files carry no build cost.
 
-### D — pass close (PERFORMANCE.md executed-split record, ROADMAP status flip) ☐ (next)
+### D — pass close ✓
+
+`PERFORMANCE.md` *Post-Phase-8 file-structure audit* records both executed subdirectory splits,
+and its molecular-chain non-`module` note is updated; the ROADMAP structure-pass row is flipped to
+✓. The active reference docs (`README`, `home_page`, blueprint `intro.tex` / `molecular-induction.tex`,
+`TACTICS-GOLF` / `TACTICS-QUIRKS`, `FRICTION`, plus the `ROADMAP` / `Phase22b` pointers from Passes
+A/C) were swept from the old `…AlgebraicInduction.lean` / `…Induction.lean` paths to the `…/` subdir
+form; the 22b-consumed `Phase22-realization-design.md` got a file-layout orientation note (its inline
+`…lean:NNNN` anchors predate the split). Closed-phase work logs (`Phase20-cleanup`, `Phase21` / `21a`
+/ `21b`, `Phase22a`) are left as historical records.
 
 ## Hand-off / next
 
-After D closes: open Phase 22b per `notes/Phase22b.md`, now landing in
+Pass complete; clean handoff. Open Phase 22b per `notes/Phase22b.md`, now landing in
 `Molecular/AlgebraicInduction/CaseI.lean`. One small tooling note for this pass: when scanning for
 `linter.style.longLine` (>100-char) violations, count **characters not bytes** — `awk length()` is
 byte-based and false-positives on lines with multibyte glyphs (`ℝ`, `§`, `–`, `…`); trust the build's

@@ -853,7 +853,7 @@ moves fail and one works:
 
 The idiom (used in `rankHypothesis_zero_of_cycle`'s
 `isTrivialMotion_of_isInfinitesimalMotion_cycle`,
-`Molecular/AlgebraicInduction.lean`):
+`Molecular/AlgebraicInduction/`):
 
 ```lean
 have hofNat : ∀ p : ℕ, Fin.ofNat m p + 1 = Fin.ofNat m (p + 1) := fun p => by
