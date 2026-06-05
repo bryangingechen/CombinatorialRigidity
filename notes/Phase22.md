@@ -21,6 +21,17 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
+**`Graph.Simple`-threading spike resolved (this commit, docs-only): `Simple` does NOT thread cleanly —
+take the two-motive split.** The design pass left the motive-strengthening route as a fork: option (A)
+(one `G.Simple → GP`-conditioned motive) vs. the two-motive split. The spike determines the split is
+correct, because **`splitOff` does not preserve simplicity** (it adds a fresh `a`-`b` edge over a
+possibly-existing one — KT Lemma 6.7's caveat), so even the no-threading read of (A) fails: a simple
+parent recurses on its split-off child whose `(child.Simple → GP)` conditional is on the wrong graph.
+No Lean / blueprint edits; this commit re-points the hand-off to the two-motive split's build order
+(N6a first — motive-independent — then the separate GP motive + forgetful map for the simple cases).
+See *Decisions* / *Hand-off*. Build green on `AlgebraicInduction`. The substantive Lean state below is
+unchanged from the prior commit.
+
 **N5 per-leg rank-polynomial CONSUMER GREEN — a non-root of the rank polynomial ⟹ the leg is rigid
 *at that point*** (`PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`,
 `AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below the still-red
@@ -225,6 +236,26 @@ N5 + N6.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **`Graph.Simple`-threading spike — `Simple` does NOT thread cleanly; take the two-motive split
+  (2026-06-04, docs-only spike).** The design-pass decision was to strengthen the
+  `HasFullRankRealization` motive to carry general position (KT's "nonparallel, if simple"), with two
+  candidate shapes: **(A)** one motive with a `G.Simple → Q.IsGeneralPosition` conjunct (needs `Simple`
+  threaded through the reduction), or the **two-motive split** (a separate unconditional-GP motive
+  carried only through the simple cases + a one-line forgetful map). The spike determines (A) vs. the
+  split. **Finding: (A) is not viable; take the two-motive split.** Decisive structural fact:
+  **`splitOff` does not preserve simplicity.** `G.splitOff v a b e₀` (`Induction.lean:572`) adds the
+  fresh edge `e₀` linking `a`-`b` *unconditionally*; if simple `G` already carries an `a`-`b` edge `f`
+  with `a, b ≠ v` (which survives — `f ≠ e₀`, avoids `v`), the result has two `a`-`b` edges. This is
+  exactly KT Lemma 6.7's caveat and the reason KT splits Case I three ways by simplicity. Hence even
+  the *no-threading* read of (A) (`P G := … ∧ (G.Simple → GP)`, which needs no `Simple` through
+  `minimal_kdof_reduction`) fails: at `hsplit` a *simple* parent `G` recurses on
+  `P (G.splitOff v a b e₀)`, whose split-off child may be **non**-simple, so the IH's conditional
+  `(child.Simple → GP)` delivers nothing for the simple parent — the conditional is on the wrong graph.
+  Confirmed no existing simplicity-preservation lemma on `splitOff`/`rigidContract`. The split also
+  touches no Phase-20 node (`minimal_kdof_reduction` unchanged) and mirrors KT's own Lemma-6.2-bare /
+  6.3-6.5-nonparallel bifurcation. Spike is docs-only (no Lean / `\leanok` / blueprint edits); it
+  re-points the hand-off. Build green on `AlgebraicInduction`. See *Hand-off*; design doc
+  `notes/Phase22-realization-design.md` §1.4.
 - **N5 rank-polynomial consumer + coupling constructibility recon (2026-06-04).** Built
   `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (`AlgebraicInduction.lean`,
   axiom-clean), the forward half of `exists_rankPolynomial_of_rigidOn`: a non-root `q` of the leg's
@@ -563,50 +594,46 @@ N5 + N6.
   The green forward half (consumer brick) is real progress, but the producer remains red and needs a
   *math-first decomposition* of (G1)+(G2) before its build. **Track B** (the Case II/III producer)
   remains a separate multi-node crux (eq. 6.12 degenerate placement + Lemma 6.10 at `d=3`).
+- **(G1) is now a *motive* decision, resolved (this commit's spike): the two-motive split, not (A).**
+  The design pass settled that (G1) is dissolved at the source by carrying general position in the
+  motive rather than re-proving it (option (b) is circular — it needs `exists_rankPolynomial_of_rigidOn`'s
+  own `hne`). The spike then ruled out the single-conjunct option (A): `splitOff` does not preserve
+  simplicity (KT Lemma 6.7), so an `(G.Simple → GP)` conjunct's IH lands on the wrong graph at `hsplit`.
+  So the GP-carrying motive is a *separate* `HasGenericFullRankRealization` carried only through the
+  simple Case-I cases (forgetful map to the bare motive), and the bare `theorem_55` is untouched. (G2)
+  remains the one missing analytic brick of the Case-I coupling (the general-position `MvPolynomial`
+  factor) — see *Hand-off* build order.
 
 ## Hand-off / next phase
 
-**This commit: the per-leg rank-polynomial *consumer* + a constructibility recon that corrects the
-prior hand-off.** Landed `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (axiom-clean):
-the forward half of `exists_rankPolynomial_of_rigidOn` — at any non-root `q` of a leg's rank
-polynomial, the leg `ofNormals G ends q` is rigid on `V(G)` *at that point* (subfamily LI at `q` ⟹
-`finrank(span rigidityRows) ≥ #s` ⟹ `dim Z(G,q) ≤ D` by rank–nullity ⟹ N3). This is the per-leg brick
-the shared-seed coupling consumes at the common `q₀`. **But the recon on the planned coupling found it
-is NOT a one-commit "tight assembly"** (the prior hand-off's framing): two real gaps, both the genuine
-KT §6.2 geometry. **(G1)** the rank-polynomial *producer* `exists_rankPolynomial_of_rigidOn` needs a
-*transversal*-rigid seed (`hne`), but the IH gives only a *bare* `HasFullRankRealization` (no general
-position); **(G2)** the splice needs general position at the shared non-root, which `Q_H·Q_c` does not
-supply. See *Current state* / *Decisions* / *Blockers*.
+**This commit: the `Graph.Simple`-threading spike (docs-only), resolved.** The prior hand-off named
+this spike as the next concrete commit, gating the motive-strengthening route's two candidate shapes
+(option (A) vs. the two-motive split). **Result: take the two-motive split.** `Graph.Simple` exists
+(vendored `Matroid/Graph/Simple.lean:183`) but does **not** thread cleanly through
+`minimal_kdof_reduction`, because **`splitOff` does not preserve simplicity** (it adds a fresh `a`-`b`
+edge over a possibly-existing one — KT Lemma 6.7's caveat, the reason KT splits Case I three ways). So
+even option (A)'s no-threading read (`P G := … ∧ (G.Simple → GP)`, needing no `Simple` through the
+reduction) fails: a simple parent's `hsplit` recursion lands on a possibly-**non**-simple split-off
+child whose `(child.Simple → GP)` conditional is on the wrong graph. No Lean / `\leanok` / blueprint
+edits. See *Decisions* / *Current state*; design doc §1.4.
 
-**Design decision (2026-06-04, user, after the realization-layer design pass —
-`notes/Phase22-realization-design.md`, committed).** The whole Case I/II/III realization layer was
-designed as a unit. Decision: **strengthen the `HasFullRankRealization` motive to carry general
-position** (KT Thm 5.5's "nonparallel, if `G` simple"), which dissolves (G1) at the source — the bare
-motive dropping that conjunct *is* (G1), and the green producer infra
-(`exists_rankPolynomial_of_rigidOn`'s `hne`, the splice's `hgp`) already wants it, so a strengthened
-motive *discharges* these rather than the circular option (b) re-proving them. The design pass verified
-against KT (pp. 669, 673–675) that every case invokes the IH in the nonparallel form and the ripple is
-bounded/front-loaded.
-
-**Recommended next concrete commit: the `Graph.Simple`-threading spike.** Before reshaping the motive,
-run the 1-commit spike the design flags: `Graph.Simple` exists (vendored `Matroid/Graph/Simple.lean`)
-but `minimal_kdof_reduction` (`Induction.lean`) does not thread it. Determine whether `Simple` threads
-cleanly through `minimal_kdof_reduction` and `theorem_55`'s induction. **If clean:** the following
-commit strengthens `HasFullRankRealization` (+ `theorem_55`'s `hbase`/`hsplit`/`hcontract`) to conclude
-a *general-position* realization conditioned on `G.Simple`, re-types `theorem_55`, and updates the base
-case's conclusion (one small commit; the Case I/II accounting iffs `lem:case-I`/`lem:case-II` are
-untouched). **If costly:** fall back to the **two-motive split** (a separate general-position motive
-variant, avoiding the `Simple` thread through `minimal_kdof_reduction`). Pick the cheaper route per the
-spike's outcome. Full per-node ripple list: `notes/Phase22-realization-design.md` §motive.
-
-**Then, in order (all bounded / on green infra per the design):** (i) **(G2)** the general-position
-`MvPolynomial` factor (a nonzero Vandermonde/pairwise-normal-independence product whose non-roots are
-exactly `IsGeneralPosition`); (ii) the **Case-I coupling** — triple product `Q_H · Q_c · Q_gp` nonzero
-→ `MvPolynomial.exists_eval_ne_zero` → shared general-position `q₀` → both legs rigid at `q₀` (the green
-consumer brick) → `hasFullRankRealization_of_splice_ofNormals` ⟹ discharges `theorem_55.hcontract` and
-flips `lem:case-I-splice-placement` / `lem:case-I-realization` green; (iii) the **Case-III row** via the
-green Lemma 2.1 (`omitTwoExtensor_linearIndependent`). The legs ride the parent's `ends`/`normal`
-(`withGraph_normal`); rigidity is `ends`-independent, so the `ends`-swap is free.
+**Recommended next concrete commit: N6a — the non-simple Case I producer (KT Lemma 6.2).** Per the
+design's build order (`notes/Phase22-realization-design.md` §3 Track A + §3.1 / §5), N6a is the one
+node that needs **nothing** from the motive decision: it is the equal-panel splice
+(`ΠG/E',p2(v*) = ΠG',p1(a) = ΠG',p1(b)`) where a *bare* (non-general-position) realization suffices,
+so it consumes the bare `HasFullRankRealization` and supplies it back. It composes
+`hasFullRankRealization_of_splice` (green) directly — the lowest-risk node, and it de-risks the splice
+plumbing before any GP bookkeeping. Build order from there (all bounded / on green infra per the
+design): N6a → **the two-motive split** (add a separate unconditional-GP motive
+`HasGenericFullRankRealization k G := ∃ Q, Q.graph = G ∧ Q.IsGeneralPosition ∧ Q rigid on V(G)`,
+carried only through the simple Case-I cases, + a one-line `HasGenericFullRankRealization →
+HasFullRankRealization` forgetful map; `theorem_55`'s bare-motive statement is **untouched**) →
+**(G2)** the general-position `MvPolynomial` factor (a nonzero Vandermonde/pairwise-normal-independence
+product whose non-roots are exactly `IsGeneralPosition`) → **N6b/N6c** the simple Case-I cases (gated on
+(G2) + the GP motive: legs arrive GP, shared seed via the (G2) factor) → **N6** the Case-I composer
+(`lem:case-I-realization`, dispatches on simplicity) → the **Case-III row** via the green Lemma 2.1
+(`omitTwoExtensor_linearIndependent`). The legs ride the parent's `ends`/`normal` (`withGraph_normal`);
+rigidity is `ends`-independent, so the `ends`-swap is free.
 
 Honesty-gate: `lem:case-I-splice-placement` / `lem:case-I-realization` stay red — the deliverable
 (shared-seed full-rank realization) is not produced; only the per-leg consumer half is green.
