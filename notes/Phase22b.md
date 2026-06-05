@@ -12,7 +12,7 @@ node to **U2** (the collapse-relabel projected-row reproduction). The U2 math-fi
 extProj_eq` (the uncollapsed and collapsed hinge rows agree after `(extProj V(H)).dualMap`, since
 the projection reads the same value at `a` and `f a`) + supports `extProj_apply_collapseTo` /
 `extProj_apply_not_mem` — de-risking the one node flagged as "could wall". Discharging `htransport`
-**stays Phase 22b**. Resume with `/coordinate-phase 22b`: the next commit is **U1 + the U2-tail**
+**stays Phase 22b**. The next concrete commit is **U1 + the U2-tail**
 (build `q₀^deg` and lift the column-core to the full per-edge `panelRow` equality) — the *Hand-off*
 below + the *Discharge plan* checklist carry the design.
 
@@ -62,8 +62,8 @@ decomposes into a concrete, tractable node cut; the follow-up **T2b math-first r
 (design doc §1.19, this commit) refined it to a **4-node cut U1→U2→U3→U4** (~240–400 LoC, 3/4
 plumbing/green-reuse, one research-shaped crux **U2** = the collapse-relabel projected-row
 reproduction) after finding §1.18's planned crux T2b (lower-semicontinuity) is *already green
-inside N-22b-2*. Per the coordinator decision it **stays Phase 22b**, paused; resume via
-`/coordinate-phase 22b` (the *Hand-off* below carries the cut). Nothing is mid-stream.
+inside N-22b-2*. Per the coordinator decision it **stays Phase 22b** (the *Hand-off* below
+carries the cut). Nothing is mid-stream.
 
 ### Opening recon — feasibility re-verification (this commit)
 
@@ -231,7 +231,7 @@ degenerate" lift it gated on is **already green inside N-22b-2**
 placement). So the degenerate member `q₀^deg` (KT's `p2`) is itself a valid witness — no generic
 placement needed — and the one walling node re-localizes from T2b to the **collapse-relabel
 projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo r V(H)`,
-`sc := (V(G)∖V(H)) ∪ {r}`, `D = screwDim k`. Resume with `/coordinate-phase 22b`, **opening on U2**
+`sc := (V(G)∖V(H)) ∪ {r}`, `D = screwDim k`. The discharge **opens on U2**
 (the one research-shaped node) per `DESIGN.md` *Constructibility recon … → design the LAYER*.
 
 - [ ] **U1 — degenerate placement bridge `q₀^deg`** (KT's `p2`, eq. 6.7, H-side collapsed). Build
@@ -297,7 +297,7 @@ column-reconciliation `hingeRow_collapseTo_comp_extProj_eq` (+ `extProj_apply_co
 eq. (6.7), now proved (axiom-clean, warning-clean, lint-clean). The "could-wall" risk on U2 is
 **retired**: its irreducible content compiles.
 
-**The next concrete commit, on resume** (`/coordinate-phase 22b`), is **U1 + the U2-tail**: build
+**The next concrete commit** is **U1 + the U2-tail**: build
 the degenerate witness placement `q₀^deg : α × Fin (k+2) → ℝ` (KT's `p2`, eq. 6.7 — set
 `q₀^deg (a,·) := Qcf.normal (collapseTo r V(H) a)`, so `(ofNormals Gc ends q₀^deg).normal a =
 Qcf.normal (f a)`; plumbing, no genericity/moment-curve), then lift the landed column-core to the

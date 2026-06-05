@@ -913,7 +913,7 @@ The coordinator close runs in three steps, of which A and B are done:
   project-org review, this notes compression).
 - **Close C (next)** — open 22b focused on Claim 6.4 (see *22b target* below). Create
   `notes/Phase22b.md` + the 22b ROADMAP row + the cross-phase-doc sync. The detailed 22b cut/ordering is
-  the `coordinate-phase 22b` session's call, not finalized here.
+  the Phase 22b session's call, not finalized here.
 
 **22b discharges Claim 6.4** (`lem:claim-6-4`): the **`Qc`-non-root exterior-projected row-independence**
 (a contraction rank polynomial `Qc ≠ 0` whose non-roots carry the projected independence — KT's
@@ -949,7 +949,7 @@ Gathered here so opening `Phase22b.md` is a copy-paste, not a re-gather:
   *existing* "Deferred to 22b+ (Case III + assembly)" territory (Track B Case II/III at `d=3` + the
   `prop:rigidity-matrix-prop11` `hub` + the final `thm:theorem-55` flip) then shifts to a *later*
   sub-phase (22c+); the full `theorem_55` flip needs Claim 6.4 **and** Case III done. Do **not** finalize
-  the cut/ordering now — that's the detailed planning the owner deferred to the `coordinate-phase 22b`
+  the cut/ordering now — that's the detailed planning the owner deferred to the Phase 22b
   session.
 
 *Out of 22a scope (renumbering per the 22b-target note above).* Track B (Case III at `d=3`) and the

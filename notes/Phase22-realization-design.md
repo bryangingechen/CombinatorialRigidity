@@ -1331,7 +1331,7 @@ kills the offending interior columns). Expected to close, but this is the verifi
 (2026-06-05) it stays **Phase 22b** (the phase's headline *is* Claim 6.4; keeping one phase
 accountable avoids the receding-goalpost optics, and 22's sub-letters denote *Case* sub-phases — a
 new letter would collide). 22b is **paused at the reduction checkpoint** (N-22b-1/2/3 landed);
-resume with `/coordinate-phase 22b`, opening on the T2b math-first decomposition (the
+the resume opens on the T2b math-first decomposition (the
 gating/walling node) per `DESIGN.md` *Constructibility recon … → design the LAYER*, then
 T1→T2a→T2b→T3→T4. Does **not** fold into 22c+/23 (Case III is independent of `htransport`).
 
@@ -1416,8 +1416,8 @@ lower-semicontinuity worry (the §1.18 "one walling risk") is **retired** — it
 infrastructure (N-22b-2), and the project's existential `htransport` sidesteps KT's
 generic-placement framing by naming the degenerate member. The walling risk re-localizes to **U2**
 (the collapse-relabel projected-row reproduction), which is the faithful Lean shape of §1.7's
-irreducible collapse-normal mismatch / KT eq. (6.7). The phase stays **Phase 22b, paused**; resume
-with `/coordinate-phase 22b`, **opening on U2** (the one research-shaped node) before scheduling
+irreducible collapse-normal mismatch / KT eq. (6.7). The phase stays **Phase 22b, paused**; the resume
+**opens on U2** (the one research-shaped node) before scheduling
 U1/U3/U4 as builds, then U1 → U2 → U3 → U4. Unchanged: 22b does not fold into 22c+/23.
 
 ---
