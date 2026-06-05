@@ -18,9 +18,15 @@ all green; §**1.10** (2026-06-05) lands G3c-iii's GP-conjunct producer bricks a
 cuts the residual assembly into G3c-iii-a/b; §**1.11** (2026-06-05) is the
 **G3c-iii-a parent-`ends` impedance recon**, settling it as **option (iii)** (the
 producers need only an *edge-restricted* `hends`, supplied by a small
-`ends`-existence side-lemma — verified buildable) and unblocking G3c-iii-b (the
-live to-do is `notes/Phase22a.md` *Lemma checklist*). No Lean / `\leanok` /
-blueprint edits accompany this doc.
+`ends`-existence side-lemma — verified buildable) and unblocking G3c-iii-b; §**1.12**
+(2026-06-05, coordinator verification pass) is the **G3c-iii-b correctness gap**: the
+composer `case_I_realization` (commit c1ef55a) carries a FALSE combinatorial equality
+`hpinc` in its "Claim-6.4 bundle" (the contraction leg's complement-isolation is
+generically unsatisfiable), making the theorem valid-but-vacuous — §1.12 diagnoses it,
+**corrects the §1.9 premise**, and decides the fix (route (b)-corrected: an asymmetric
+coupling that removes the contraction leg's rank-polynomial round-trip, so `hpinc`
+never arises). The live to-do is the FIX (`notes/Phase22a.md` *Hand-off*). No Lean /
+`\leanok` / blueprint edits accompany this doc.
 
 Primary sources read for this pass: KT 2011 §5–§6.4 (`.refs/`, printed pp.
 669–697); `Molecular/{AlgebraicInduction,Extensor,Deficiency,Induction}.lean`;
@@ -674,19 +680,24 @@ is then the leg-restricted-linking variant carrying `hpin`, and the body-set
 coupling `couple_ofNormals_set` threads `sH`/`sc` + the two `hpin`s + `hnesH`/`hnesc`
 through the same (i)–(v) witness-transfer, finishing on `isInfinitesimallyRigidOn_of_splice`.
 
-**Honesty status.** `hpin` is *not* a new analytic black box like G3a's `htransport`
-(KT Claim 6.4): it is a green *consequence* of the leg being a body-set-isolated
-realization, the body-set sibling of the green `finrank_pinnedMotionsOn_vertexSet`,
-and it is **discharged at the call site** by the composer (G3c-iii) for each concrete
-leg — `sH := V(H)` is the leg's *full* vertex set so `hpin` is literally the green
-`finrank_pinnedMotionsOn_vertexSet` (on `withGraph H`); `sc := (V(G)∖V(H)) ∪ {r}` is
-the contraction leg's full effective body set, where the interior `V(H)∖{r}` is
-isolated in `G ＼ E(H)` so its complement bodies are free — the same N1-equality
-proof. So route (a) is a body-set *generalization* that stays green once G3c-iii
-supplies the leg-specific isolation; it carries `hpin` as a hypothesis only to keep
-G3c-ii leg-agnostic (the coupling does not know which `s` it is handed). This is
-*buildable*, the §1.8 tag, not a green-modulo escalation. **Build order:** the
-body-set N3 `isInfinitesimallyRigidOn_of_finrank_le_set` → the body-set consumer
+**Honesty status — PARTLY WRONG, corrected in §1.12 (2026-06-05).** This paragraph claimed `hpin`
+is *not* a new analytic black box but a green *consequence* of the leg being body-set-isolated, and
+that the claim holds for **both** call-site legs. The `sH := V(H)` half is **correct** (`hpin` is
+literally the green `finrank_pinnedMotionsOn_vertexSet` on the `H`-leg's *full* vertex set). The
+`sc := (V(G)∖V(H)) ∪ {r}` half — "the interior `V(H)∖{r}` is isolated in `G ＼ E(H)` so its
+complement bodies are free — the same N1-equality proof" — is **FALSE**: the interior bodies are
+*not* isolated (surviving boundary edges `δ_G(V(H))` constrain them), so the contraction-leg `hpin`
+(= `hpinc`) is generically *unsatisfiable*, the N1 equality genuinely fails off `V(G)`
+(`finrank_pinnedMotionsOn_le` proves only the *upper* bound, by design), and the resulting composer
+`case_I_realization` (commit c1ef55a) is valid-but-VACUOUS. The deeper error: the contraction leg's
+**rank-polynomial round-trip** (which is what forces `hpin` via the body-set N3) must be *removed*
+for that leg, not satisfied — the contraction rigidity should be fed to the splice glue directly
+from the Claim-6.4 bundle (route (b)-corrected, the asymmetric coupling). Full diagnosis, witness,
+KT cross-check, and the corrected fix: **§1.12**. The `sH`-leg round-trip below stays green; the
+`sc`-leg one does not.
+
+The (now-superseded for the `sc` leg) build order was: the body-set N3
+`isInfinitesimallyRigidOn_of_finrank_le_set` → the body-set consumer
 `…_rankPolynomial_ne_zero_linking_set` → the body-set coupling `couple_ofNormals_set`.
 
 ### 1.10 G3c-iii re-recon — the GP conjunct needs a body-set *generic* coupling (built); the residual assembly faces the parent-`ends` impedance + Claim-6.4 bundling, not pure green-brick assembly (2026-06-05)
@@ -817,6 +828,185 @@ exactly as §1.10 predicted ("resolved once for the whole layer"). G3c-iii-b is 
 assembly modulo the Claim-6.4 bundle (`htransport` + the transversality `hnec` at `q_c`, G3a's
 green-modulo obligation = KT eq. (6.9)).
 
+> **§1.9 premise CORRECTED — see §1.12.** The "Honesty status" paragraph of §1.9 (and the
+> parallel claim in §1.10/§1.11 that the residual is "pure assembly modulo the Claim-6.4 bundle")
+> asserted that `hpinc`, the contraction leg's complement-isolation **equality**
+> `finrank (pinnedMotionsOn sc) = D·|scᶜ|` for `sc = (V(G)∖V(H)) ∪ {r}`, is a *green consequence*
+> ("the interior `V(H)∖{r}` is isolated in `G ＼ E(H)` so its complement bodies are free — the same
+> N1-equality proof"). **That premise is FALSE** (the interior bodies are *not* isolated in
+> `G ＼ E(H)` — surviving boundary edges constrain them), so `hpinc` is generically *unsatisfiable*
+> and `case_I_realization` (commit c1ef55a) is valid-but-vacuous. The diagnosis, the witness, the
+> KT cross-check, and the corrected fix are §1.12.
+
+---
+
+### 1.12 G3c-iii-b correctness gap — the contraction leg's complement-isolation `hpinc` is a FALSE combinatorial equality, not Claim 6.4; the round-trip itself must be removed for that leg (2026-06-05, coordinator verification pass)
+
+A coordinator verification pass on commit c1ef55a (`case_I_realization`, the G3c-iii-b composer)
+found a **correctness gap** in the green-modulo bundle. **No Lean / `\leanok` / blueprint edits
+accompany this section; it is decision-support / a Constructibility recon (DESIGN.md), like
+§1.4–§1.11.** Verified against the live composer (`AlgebraicInduction.lean` `case_I_realization`,
+its `hbundle`), the body-set consumer
+(`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set:4464`), the body-set N3
+(`isInfinitesimallyRigidOn_of_finrank_le_set:1613`), the body-set N1 upper bound
+(`finrank_pinnedMotionsOn_le:1416` + its doc `:1406`), the green
+`finrank_pinnedMotionsOn_vertexSet:1348`, `IsProperRigidSubgraph` (`Deficiency.lean:381`), the
+generic coupling (`hasGenericFullRankRealization_of_couple_ofNormals_set:5030`), and KT 2011 §6.2
+eqs. (6.3)/(6.5)/(6.7)/(6.9) + Claim 6.4 (printed pp. 673–675 = pdf pp. 27–29).
+
+**The bundle is Claim 6.4 ⊕ a FALSE combinatorial fact, not "Claim 6.4 only".** `case_I_realization`
+is green-modulo a 5-part bundle `hbundle` (asserted = "the Claim-6.4 bundle"). Four parts are genuine
+KT eq. (6.6)/(6.9) content: `hswap`/`hne_ends` (the `H`-leg selector alignment, KT eq. (6.6)
+placement), `htransport` (the contraction-leg collapse transport, KT Claim 6.4 / eq. (6.9), the
+G3a research-shaped brick), and `hnec` (transversality at the transported seed). The **fifth part
+`hpinc` is NOT Claim 6.4**:
+```
+∀ q, finrank ℝ ((ofNormals (G ＼ E(H)) ends q).toBodyHinge.pinnedMotionsOn ((V(G)∖V(H)) ∪ {r}))
+       = screwDim k * ((V(G)∖V(H)) ∪ {r})ᶜ.ncard.
+```
+It is **placement-independent** (`∀ q` — it holds for *every* normal assignment, or none) and a pure
+**graph-combinatorial dimension equality**. Claim 6.4 is a statement about a *transported placement's*
+rank (`rank R(G/E′, p_{E∖E′}) ≥ rank R(G/E′, p2)`, eq. (6.9), at a *specific generic* placement); it
+**cannot** discharge a `∀ q` equality about a body set's pin dimension. So the bundle is not "Claim
+6.4 only" — it is Claim 6.4 ⊕ `hpinc`, and `hpinc` is a separate (false) obligation no analytic
+content can supply.
+
+**`hpinc` is generically FALSE.** The equality holds iff the interior bodies `V(H)∖{r}` are *isolated*
+in `G ＼ E(H)` (each contributing its full `D = screwDim k` free screws to the pin). They generically
+are **not**: a boundary edge of `δ_G(V(H))` (interior body → exterior body) is not in `E(H)`, so it
+*survives* `deleteEdges E(H)` and constrains the interior body it touches.
+- **Code confirms the equality is false off `V(G)`.** `finrank_pinnedMotionsOn_le:1416` (and its doc,
+  `:1406`–`:1415`) state outright: the N1 **equality** `= D·|sᶜ|` holds *only* for `s = V(G)` (where
+  the `sᶜ` bodies are genuinely isolated); "for a general `s ⊆ V(G)` the bodies of `V(G) ∖ s` carry
+  hinge constraints, so the pin is *smaller* than the free `D·|sᶜ|` — hence the upper bound."
+  `pinnedMotionsOn_le_iInf_ker_proj:1394` says the same ("a body in `V(G) ∖ s` still carries hinge
+  constraints, so the motion condition is *not* free off `s`"). The producer (body-set N7b-0) needs
+  only the upper bound; the *consumer* needs the equality, which is exactly the false half.
+- **Witness (D ≥ 3, the molecular regime).** Take `V(G) = {a, b, c, w}`, `H` rigid on `V(H) = {a, b}`,
+  `r = a` (so interior `V(H)∖{r} = {b}`), and a boundary edge `e_bd` linking `b`–`w` (not in `E(H)`,
+  so it survives `deleteEdges E(H)`). Then `sc = (V(G)∖V(H))∪{r} = {a, c, w}`, and the only complement
+  body in `V(G)` is `b`. For `hpinc`, `b` must be *free* (contribute `D`). But `e_bd` is a surviving
+  hinge coupling `b` to the pinned `w`, which removes `D−1` of `b`'s relative screw freedoms, leaving
+  at most `1`. So `finrank (pinnedMotionsOn sc) ≤ D·(|scᶜ|−1) + 1 < D·|scᶜ|` whenever `D ≥ 2`
+  (here `D ≥ 3` by `hD`). The gap is `D−1 ≥ 2`. `hpinc` is false; with `hbundle` unsatisfiable,
+  `case_I_realization` is valid-but-VACUOUS.
+- **`IsProperRigidSubgraph` does not save it.** `Deficiency.lean:381` is `H ≤ G ∧ H.IsKDof n 0 ∧
+  V(H).Nonempty ∧ V(H) ⊂ V(G)` — no constraint forcing `δ_G(V(H))` through `r`. Generic `G` has
+  interior-incident boundary edges.
+
+**Root cause (KT cross-check, eqs. (6.3)/(6.5)/(6.7)/(6.9)).** KT's contraction-block rank
+bookkeeping lives on the **COLLAPSED** graph `G/E′ = ((V∖V′)∪{v∗}, E∖E′)` — where the interior `V′`
+*is gone*, replaced by the single body `v∗`, and there are no interior bodies to be constrained. The
+load-bearing step is eq. (6.5)/(6.9): `R(G/E′, p_{E∖E′}; E∖E′, V∖V′)` "is the matrix obtained from
+`R(G/E′, p_{E∖E′})` by **deleting the D consecutive columns associated with v∗**", and *deleting those
+columns does not change the rank* (`= rank R(G/E′, p_{E∖E′}) ≥ rank R(G/E′, p2)`, Claim 6.4). So the
+contraction contributes `rank R(G/E′, p2) = D(|V∖V′∪{v∗}|−1)−k` — a rank statement on the *collapsed*
+graph, not a pin-dimension equality on the *un-collapsed* `G ＼ E(H)`. The §1.7 recon correctly moved
+the splice's contraction **leg** to `G ＼ E(H)` (to get `≤ G`) and bridged its *rigidity* via Claim 6.4
+(G3a, `htransport`). But the §1.9 round-trip then forced that rigidity through the body-set
+**rank-polynomial consumer**, which re-derives rigidity-at-the-shared-seed via the body-set N3
+(`isInfinitesimallyRigidOn_of_finrank_le_set:1613`), and N3 *needs the N1 equality on `sc`*
+(`hpin`, `:1615`, used at `:1628` `Submodule.eq_of_le_of_finrank_le`). On the collapsed graph that
+equality is the green `finrank_pinnedMotionsOn_vertexSet`; on the un-collapsed `G ＼ E(H)` it is
+`hpinc`, false. **The pin-count does not bridge across the collapse the way the rigidity does** —
+that is the precise mistake §1.9 missed.
+
+**Fix-direction evaluation.** Two candidates from the hand-off, plus a third I find decisive:
+
+- **(a) Route the contraction count through the COLLAPSED `G.rigidContract H r`** (where `hpin` IS
+  the green `finrank_pinnedMotionsOn_vertexSet`, since the leg is rigid on its *full* vertex set),
+  with a Claim-6.4-style count-bridge collapsed → `G ＼ E(H)`. **Rejected: strictly more analytic
+  content, and structurally blocked.** The base glue `isInfinitesimallyRigidOn_of_splice:1656`
+  requires both legs `≤ F.graph = G`; the collapsed `rigidContract` relabels `V(H)↦r` and is **not**
+  `≤ G` (no `rigidContract_le` exists or can — the very obstruction §1.7 dissolved by going to
+  `G ＼ E(H)`). So a collapsed leg cannot feed the glue at all; route (a) would need (i) a collapsed
+  round-trip producing rigidity-at-`q₀`-on-`V(rigidContract)`, **plus** (ii) a transport of *that*
+  back onto `G ＼ E(H)`-rigidity at the *same* `q₀` — and (ii) is Claim 6.4 / eq. (6.9) **again**, on
+  top of a second seed-reconciliation. Route (a) adds work, it does not remove `hpinc`'s root cause.
+
+- **(b) Revive route (b): feed the contraction leg's rigidity (from `htransport`) into the splice
+  glue directly, without the rank-polynomial round-trip.** This is the correct direction, but **§1.9's
+  rejection of it must itself be corrected** (see below). The base glue needs *both* legs rigid at
+  *one* common seed; §1.9 argued the only seed-reconciliation tool is the symmetric round-trip, hence
+  N3 for both legs, hence `hpinc`. The flaw: the two legs are **not** symmetric. The `H`-leg is rigid
+  on its **full** vertex set `sH = V(H)`, so its round-trip uses the *true, green*
+  `finrank_pinnedMotionsOn_vertexSet` (`hpinH` is honest — composer line 5223–5229) and is fine. Only
+  the **contraction** leg's round-trip needs the false `hpinc`. So the fix is an **asymmetric
+  (hybrid) coupling**: the `H`-leg goes through its green round-trip and *produces* the shared seed
+  `q₀` (as a non-root of `QH · Qgp`); the contraction leg's rigidity at that `q₀` is then supplied
+  **directly** by the Claim-6.4 bundle — *not* re-derived through the body-set N3 consumer. This
+  removes `hpinc` entirely (no body-set N3 on `sc`), leaving only the genuine Claim-6.4 content
+  (rigidity of the surviving-edge leg at the generic seed) plus transversality.
+
+- **This is exactly what KT does (the decisive cross-check).** KT eq. (6.6) constructs **one**
+  placement `p` for all of `G` (it does *not* find a shared point by intersecting two Zariski-open
+  rigid loci): `p|E′ = p1` (the block, freely generic — any generic point keeps the rigid block
+  rigid), `p|E∖(E′∪δ) = p2`, `p|δ = ΠG/E′,p2 ∩ ΠG′,p1` (boundary, *determined* by `p1`/`p2`). The
+  contraction's `p_{E∖E′}` (eq. (6.7)) is then determined, and Claim 6.4 certifies its rank **at that
+  one placement**. So the contraction leg's rigidity should be delivered *at the H-leg-determined
+  seed*, never re-found by a second round-trip. The honest bundle therefore broadens `htransport`
+  from "contraction rigid on `sc` at *some* `q_c`" to a *quantified-over-generic-seed* form
+  "contraction rigid on `sc` at the (generic) shared seed" — which is precisely the content of KT's
+  algebraic-independence argument (the rank is attained at *generic* placements, eq. (6.9)'s "maximum
+  rank over all realizations of `G/E′` determined by (6.7)").
+
+**Decision: route (b), corrected — the asymmetric/hybrid coupling.** The fix is *not* to satisfy
+`hpinc` (it is unsatisfiable) but to **remove the contraction leg's rank-polynomial round-trip
+entirely**, so `hpinc` never arises. Concretely:
+
+1. **A hybrid body-set coupling** (the new brick): the `H`-leg keeps the green round-trip
+   (`exists_rankPolynomial_of_rigidOn_linking_set` + the body-set consumer, with the *honest*
+   `hpinH = finrank_pinnedMotionsOn_vertexSet` on `sH = V(H)`), producing the shared seed `q₀`; the
+   contraction leg's rigidity at `q₀` on `sc` is taken as a hypothesis (the Claim-6.4 deliverable),
+   *not* re-derived via N3. Both `q₀`-rigid legs feed the generic body-set splice
+   `hasGenericFullRankRealization_of_splice_set_ofNormals:4990` directly. **No `hpinc`.** This
+   replaces `hasGenericFullRankRealization_of_couple_ofNormals_set:5030`'s symmetric (i)–(v)
+   witness-transfer with an asymmetric one for the contraction leg.
+
+   *Open Lean-feasibility sub-question (settle at the fix-build's recon):* the H-leg round-trip
+   produces `q₀` *inside* the coupling (a non-root of `QH·Qgp`), existentially; the contraction-leg
+   hypothesis must therefore be quantified — "contraction rigid on `sc` at **any** `q` with
+   `Qgp(q) ≠ 0`" (general position), or "at the produced `q₀`" via a dependent existential. The
+   former (a `∀`-over-GP-seeds Claim-6.4 hypothesis, matching KT's "generic placement attains the
+   rank") is the cleaner shape; the latter risks the round-trip-ordering tangle. Prefer the
+   `∀`-over-GP-seeds form — it is honest (KT eq. (6.9) is a generic statement) and decouples the
+   contraction obligation from the H-leg's internal seed search.
+
+2. **The honest `hbundle`.** After the fix, the bundle's contraction part is the *single* Claim-6.4
+   conjunct "the surviving-edge leg `G ＼ E(H)` is infinitesimally rigid on `sc = (V(G)∖V(H))∪{r}` at
+   every general-position seed" (KT eq. (6.9)) + transversality `hnec`, alongside the `H`-leg's
+   `hswap`/`hne_ends` (KT eq. (6.6)). `hpinc` is **deleted**. This makes "green-modulo Claim 6.4"
+   *accurate* — the only modulo-content is the one KT-(6.9) transport (already isolated in G3a's
+   `htransport`/G3a's brick), with no smuggled false combinatorial fact.
+
+**Cheapness / scope.** Route (b)-corrected is **cheaper than (a)** (one new hybrid coupling brick vs.
+two new analytic transports) and **strictly more honest** (it deletes a false hypothesis rather than
+carrying it). It **stays within 22a** but requires **re-opening G3c-iii-b** (and adding one brick):
+the bare/generic body-set couplings (`…_couple_ofNormals_set`) keep their symmetric form for any
+future *both-legs-full-`V`* caller, but Case I needs the new **asymmetric** coupling. The composer
+`case_I_realization` re-wires to it and drops `hpinc` from `hbundle`. The body-set N3 + body-set
+consumer (G3c-ii) are *not* deleted (the H-leg still uses them on its full `V(H)`, where they are
+green); only the contraction leg stops using them.
+
+**Dimension arithmetic (the fix closes).** The base glue's count is unchanged and already correct:
+`sH = V(H)` (block, `D(|V(H)|−1)`), `sc = (V(G)∖V(H))∪{r}` (`|sc| = (|V(G)|−|V(H)|)+1`, contraction
+`D(|sc|−1)`), sharing body `r`, covering `V(G)`; glued `D(|V(H)|−1) + D(|sc|−1) = D(|V(G)|−1)` since
+`|V(H)| + |sc| − 1 = |V(G)|`. (k=0 full rank; this is exactly KT's
+`D(|V′|−1) + D(|V∖V′∪{v∗}|−1) − k = D(|V|−1)−k`, eq. after (6.9).) The fix changes *only how the
+contraction leg's rigidity-at-`q₀`-on-`sc` is obtained* (Claim-6.4 directly, not N3); the glue
+arithmetic that consumes it is untouched, so the fix closes the same count.
+
+**Lean doc-comments the fix commit must correct (do NOT edit in the docs-only recon commit).**
+- `case_I_realization`'s narration (`AlgebraicInduction.lean` ~:5119–5132) calls `hpinc` "the body-set
+  complement-isolation … part of the same Claim-6.4 bundle" — it is *not* Claim 6.4 and is false; the
+  narration must drop `hpinc` and state the asymmetric coupling.
+- The body-set consumer's doc (`:4461`, the
+  `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking_set` block) asserts "for the
+  contraction leg the surviving edges isolate the interior bodies" — **the unjustified/false claim**;
+  the lemma itself stays (the H-leg uses it correctly on `V(H)`), but the doc's contraction-leg
+  example is wrong and must be struck.
+- §1.9's "Honesty status" paragraph (this doc) is corrected by the box above + this section.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
@@ -849,16 +1039,22 @@ Built once, reused by all cases. **Green** unless marked.
 
 **Reading:** the entire device + witness-transfer + splice + count + N4
 substrate is GREEN; **(G2) is now GREEN too** (2026-06-04,
-`exists_generalPosition_polynomial`). The Case-I substrate is now also complete:
+`exists_generalPosition_polynomial`). The Case-I substrate is **almost** complete:
 the **Case-I Claim-6.4 collapse transport** (G3a, `rigidContract_rigidity_transport`)
 landed **GREEN-MODULO** 2026-06-05, carrying KT eq. (6.9) as the explicit
 hypothesis `htransport` (the relabel-induced normal change makes it irreducible — the
-linking-edge lever fails). So the one remaining *missing* analytic brick across the
-layer is now **one**: the **Case-III missing row** via Lemma 2.1 (Track B, 22b+).
-The N6b/N6c couplings are an assembly of green bricks *given both legs as `≤ G` rigid
-`ofNormals`*; G3a supplies the second such leg (modulo `htransport` = KT Claim 6.4,
-which itself re-enters via `lem:case-III` / 22b+). (G1) was not a missing brick — it
-was the motive decision of §1, dissolved by the two-motive split.
+linking-edge lever fails). **BUT the composer that consumes it (`case_I_realization`,
+commit c1ef55a) is currently valid-but-VACUOUS** — its bundle carries a false
+combinatorial equality `hpinc` alongside the genuine Claim-6.4 content (§1.12); the
+fix (route (b)-corrected, the asymmetric coupling that removes the contraction leg's
+rank-polynomial round-trip) is the next 22a build commit. The N6b/N6c couplings are an
+assembly of green bricks *given both legs as `≤ G` rigid `ofNormals`*; G3a supplies the
+second such leg's *rigidity* (modulo `htransport` = KT Claim 6.4), but the **symmetric**
+body-set coupling cannot consume it without `hpinc` — hence the asymmetric replacement.
+The remaining *missing* analytic content across the layer is the Case-I contraction
+transport (G3a's `htransport`, re-entering via `lem:case-III` / 22b+) and the
+**Case-III missing row** via Lemma 2.1 (Track B, 22b+). (G1) was not a missing brick
+— it was the motive decision of §1, dissolved by the two-motive split.
 
 ---
 
