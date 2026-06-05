@@ -335,6 +335,34 @@ theorem PanelHingeFramework.ofNormals_endsOf_recordsLinks [Inhabited α]
   · exact Or.inl ⟨by rw [h], by rw [h]⟩
   · exact Or.inr ⟨by rw [h], by rw [h]⟩
 
+/-- **A link-recording selector agrees up to swap with the canonical parent selector on a subgraph's
+links** (`lem:case-I-realization` infra, the `H`-leg alignment discharge; Katoh–Tanigawa 2011 §6.2,
+Phase 22b route (i), design doc §1.24 item 4, Commit 4a). If an endpoint selector `ends'` records
+every link of a subgraph `H ≤ G` up to swap (the link-recording conjunct of the strengthened motive
+`HasGenericFullRankRealization`, e.g. an inductive leg realization's `Q.ends`), then on every link
+of `H` it agrees, up to swap, with the canonical parent selector `G.endsOf`.
+
+This is the discharge of the `H`-leg `hswap` the Case-I composer previously carried as a `hbundle`
+hypothesis: an `H`-link `e u v` is also a `G`-link (`H ≤ G`, `IsLink.of_le`), so both selectors
+pin the *same* unordered pair — `ends'` by `hrec`, `G.endsOf` by `endsOf_eq_or_swap` — hence they
+agree up to order. The four cases of the two disjunctions collapse pairwise into the swap
+disjunction. This is precisely the "two link-recording selectors agree up to swap" reasoning the
+motive strengthening (route (i)) was designed to enable, now that the leg's IH realization carries
+link-recording. -/
+theorem PanelHingeFramework.recordsLinks_swap_endsOf [Inhabited α]
+    {G H : Graph α β} (hle : H ≤ G) (ends' : β → α × α)
+    (hrec : ∀ e u v, H.IsLink e u v →
+      ((ends' e).1 = u ∧ (ends' e).2 = v) ∨ ((ends' e).1 = v ∧ (ends' e).2 = u)) :
+    ∀ e u v, H.IsLink e u v →
+      ((ends' e).1 = (G.endsOf e).1 ∧ (ends' e).2 = (G.endsOf e).2) ∨
+      ((ends' e).1 = (G.endsOf e).2 ∧ (ends' e).2 = (G.endsOf e).1) := by
+  intro e u v he
+  rcases G.endsOf_eq_or_swap (he.of_le hle) with hG | hG <;>
+    rcases hrec e u v he with ⟨h1, h2⟩ | ⟨h1, h2⟩ <;>
+    simp only [hG] <;>
+    [exact Or.inl ⟨h1, h2⟩; exact Or.inr ⟨h1, h2⟩;
+     exact Or.inr ⟨h1, h2⟩; exact Or.inl ⟨h1, h2⟩]
+
 /-- **Swapping a hinge's two endpoints leaves the panel framework's motion space unchanged**
 (`lem:case-I-splice-placement` infra, the `ends`-selector independence of leg rigidity;
 Katoh–Tanigawa 2011 §6.2, Phase 22). For two endpoint selectors `ends`, `ends'` that record the
@@ -1608,11 +1636,6 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
     -- the `∃`-one-placement core, *not* the undischargeable `∀`-GP-rigid form nor the
     -- over-quantified `∀`-GP-independent one.
     (hbundle : ∀ ends : β → α × α,
-      (∀ Q : PanelHingeFramework k α β, Q.graph = H →
-        (∀ e u v, H.IsLink e u v →
-          ((Q.ends e).1 = (ends e).1 ∧ (Q.ends e).2 = (ends e).2) ∨
-          ((Q.ends e).1 = (ends e).2 ∧ (Q.ends e).2 = (ends e).1))) ∧
-      (∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2) ∧
       (∀ Q : PanelHingeFramework k α β, Q.graph = G.rigidContract H r →
         Q.IsGeneralPosition →
         Q.toBodyHinge.IsInfinitesimallyRigidOn V(G.rigidContract H r) →
@@ -1638,7 +1661,16 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   have hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2 := by
     rw [hendsDef]; exact fun e _ _ h => G.isLink_endsOf h.edge_mem
   have hHprop : H.IsProperRigidSubgraph G n := ⟨⟨hle, hKDof⟩, hVHne, hVHss⟩
-  obtain ⟨hswap, hne_ends, htransport⟩ := hbundle ends
+  -- (Phase 22b route (i), Commit 4) The `H`-leg's selector-alignment `hswap`/`hne_ends` — formerly
+  -- `hbundle` conjuncts — are now *discharged* against the canonical parent selector `ends =
+  -- G.endsOf`: `hne_ends` is `endsOf_fst_ne_snd` (a link's two `endsOf`-ends differ in the loopless
+  -- `G`), and the leg-`hswap` is the strengthened-motive link-recording conjunct of the IH
+  -- realization composed with `endsOf`'s link-recording (`recordsLinks_swap_endsOf`), applied per
+  -- leg below. So `hbundle` now carries only the irreducible Claim-6.4 transport `htransport`.
+  haveI : G.Loopless := hSimple.toLoopless
+  have hne_ends : ∀ e, G.IsLink e (ends e).1 (ends e).2 → (ends e).1 ≠ (ends e).2 :=
+    fun e hlink => G.endsOf_fst_ne_snd hlink.edge_mem
+  have htransport := hbundle ends
   -- The geometric inputs of the coupling for legs `H` / `G ＼ E(H)` sharing `r` (G3b); the cover is
   -- against the *surviving-body* set `sc := (V(G)∖V(H)) ∪ {r}` (its `(V(G)∖V(H))` part alone
   -- complements `V(H)`).
@@ -1653,13 +1685,17 @@ theorem PanelHingeFramework.case_I_realization [DecidableEq β] [Finite α] [Fin
   -- transversal on its *full* `V(H)`). The block-triangular coupling uses only the `H`-block *rows*
   -- (the `H`-leg rank polynomial), so no complement-isolation equality is needed for this leg.
   have hHmin : H.IsMinimalKDof n 0 := Graph.subgraph_minimality hle hG hKDof
-  obtain ⟨QH, hQHg, hQHgp, hQHrig, _⟩ :=
+  obtain ⟨QH, hQHg, hQHgp, hQHrig, hQHrec⟩ :=
     (hIH H hHmin hVH2 hVHlt).1 (hSimple.mono hle)
-  -- The brick's `hne_ends` is edge-restricted (the all-`β` form is unsatisfiable for `endsOf`); an
-  -- `H`-link's `ends`-endpoints form a `G`-link (`H ≤ G`), where the bundle's `hne_ends` applies.
+  -- The `H`-leg `hswap` (U3a, route (i)): the IH realization `QH` records `H`'s links up to swap
+  -- (`hQHrec`, the strengthened-motive conjunct), and `endsOf` records `G`'s — so the two selectors
+  -- agree on `H`-links up to swap (`recordsLinks_swap_endsOf`). The brick's `hne_ends` is
+  -- edge-restricted; an `H`-link's `ends`-endpoints form a `G`-link (`H ≤ G`), where `hne_ends`
+  -- (the discharged `endsOf_fst_ne_snd`) applies.
   obtain ⟨qH, hneH, hrigH⟩ :=
     PanelHingeFramework.hasGenericRealization_transport_ends H ends QH hQHg hQHgp hQHrig
-      (hswap QH hQHg) (fun e he => hne_ends e (he.of_le hle))
+      (PanelHingeFramework.recordsLinks_swap_endsOf hle QH.ends hQHrec)
+      (fun e he => hne_ends e (he.of_le hle))
   -- (2) The `G ＼ E(H)`-leg: the contraction is a smaller, simple minimal `0`-dof-graph (N4 +
   -- `hcSimple`), so `hIH` supplies its generic realization `Qcf`. KT Claim 6.4 (eqs. (6.5)/(6.9),
   -- the bundle's `htransport`, N-22b-1) transports that rank across the collapse map to **one**
