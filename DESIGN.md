@@ -1062,6 +1062,27 @@ supplies — a conclusion-shape match is necessary but not sufficient. Cross-ref
 `notes/FRICTION.md` *[resolved] The Case-I N6b coupling is NOT a clean assembly …*;
 `notes/Phase22a.md` *Decisions* / *Hand-off*.
 
+**Sharpening: trace a producer's *actual output point*, don't assume it inherits a
+seed's property (Phase 22a N6-G1a spike, 2026-06-04).** The generic-motive recon
+scheduled N6-G1a as a multi-commit task to "re-expose the general-position witness
+the genericity device drops" — on the premise that the device realizes at an
+`ofParam` moment-curve point (which `isGeneralPosition_ofParam` would make GP). A
+one-commit spike *traced the device's output through its call chain*
+(`exists_good_realization_ofParam` → `exists_relative_full_count_ofParam` →
+`exists_good_realization` → `exists_finrank_dualCoannihilator_polynomial`) and found
+the output is an *arbitrary* non-root of a Gram-determinant `MvPolynomial`, **not** a
+moment-curve point — so it carries no GP and there was no witness to re-expose. The
+premise had reasoned from the device's *seed* (which is GP) to its *output* (which is
+not). Tracing the chain surfaced both the false premise and the *cheaper* real route:
+realize at the GP seed directly, since the splice glue is genericity-free and already
+gives rigidity there — collapsing the planned multi-commit build to one four-tuple.
+**The rule:** before scheduling work to "recover/thread a property `P` of a producer's
+output," confirm the *output point* actually has `P` by tracing the construction to
+where the point is chosen — a seed's property does not automatically survive to a
+generically-chosen output, and the survival question often reveals a shorter path.
+Cross-ref: `notes/Phase22a.md` *Decisions* → *N6-G1 spike*;
+`notes/Phase22-realization-design.md` §1.5 Route 2.
+
 ## Phase Case-naming must match KT's k-bookkeeping
 
 **The bug (Phase 21b, 2026-06-04).** The project labelled the reducible-vertex

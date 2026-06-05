@@ -35,17 +35,18 @@ k-bookkeeping*.
 
 ## Current state
 
-**Track A's reduction infra (N4) and Case-I producer bricks are all GREEN; the one open blocker — the
-N6 composer's generic-motive induction — is now decomposed (recon 2026-06-04).** The simple Case-I
-coupling (`hasFullRankRealization_of_couple_ofNormals`) is a complete assembly of green bricks, and the
-`ends`-swap leg-transport brick that feeds the IH into it is green. The generic-motive recon (docs-only)
-settled the IH-shape gap as a **hybrid** of the two candidate routes — Route 2 (make the simple-case
-*producer* conclude GP) and Route 1 (make the *IH* generic) are not alternatives but two halves, because
-the composer's adapter needs each leg in `HasGenericFullRankRealization` form while `minimal_kdof_reduction`
-threads only the bare motive. Cut into **N6-G1** (Route 2, buildable; first commit = N6-G1a, re-expose the
-device-output GP witness), **N6-G2** (Route 1, the generic-motive reduction — multi-commit, Phase-20-touch,
-NEEDS FURTHER RECON), **N6-G3** (composer assembly). See *Lemma checklist* / *Decisions* / *Hand-off*. No
-`\leanok` flip yet; no `sorry` committed.
+**Track A's reduction infra (N4) and Case-I producer bricks are all GREEN, including N6-G1 (the
+generic-motive *producer*, landed 2026-06-04); the remaining red work is N6-G2 (Route 1) + N6-G3
+(composer assembly).** The simple Case-I coupling (`hasFullRankRealization_of_couple_ofNormals`) is a
+complete assembly of green bricks, and the `ends`-swap leg-transport brick that feeds the IH into it is
+green. The generic-motive recon settled the IH-shape gap as a **hybrid** — Route 2 (make the simple-case
+*producer* conclude GP) and Route 1 (make the *IH* generic) are two halves, not alternatives, because the
+composer's adapter needs each leg in `HasGenericFullRankRealization` form while `minimal_kdof_reduction`
+threads only the bare motive. **N6-G1 is now GREEN as one commit** (the recon expected a multi-commit
+device-GP re-expose; the spike found that route was based on a *false premise* and replaced it with a
+direct one — see *Decisions* → *N6-G1 spike*). **Remaining:** N6-G2 (Route 1, the generic-motive
+reduction — multi-commit, Phase-20-touch, NEEDS FURTHER RECON), then N6-G3 (composer assembly). See
+*Lemma checklist* / *Decisions* / *Hand-off*. No `\leanok` flip yet; no `sorry` committed.
 
 **Green-brick inventory (resume points; full detail in *Lemma checklist* / *Decisions*).**
 - **N4** `rigidContract_isMinimalKDof` — graph↔matroid contraction-minimality bridge (`\leanok`).
@@ -71,6 +72,12 @@ NEEDS FURTHER RECON), **N6-G3** (composer assembly). See *Lemma checklist* / *De
 - **N6b/N6c** simple Case-I coupling `hasFullRankRealization_of_couple_ofNormals` (the full assembly).
 - **N6 leg-transport** `hasGenericRealization_transport_ends` — the `ends`-swap step feeding the IH into
   the coupling (built on the swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap`).
+- **N6-G1** (Route 2) generic *producer* `hasGenericFullRankRealization_of_splice_ofNormals` — concludes
+  the strengthened motive `HasGenericFullRankRealization k G` from a GP seed `q₀` with both legs rigid at
+  it. Realizes at `q₀` *itself* (bypassing the genericity device, whose output is NOT GP — spike finding),
+  so rigidity comes from the genericity-free splice glue `isInfinitesimallyRigidOn_of_splice` and GP from
+  the hypothesis. One commit (not the recon's expected 2 — the device-GP re-expose route was a false
+  premise).
 
 ## Architectural choices made up front
 
@@ -119,14 +126,18 @@ NEEDS FURTHER RECON), **N6-G3** (composer assembly). See *Lemma checklist* / *De
   *Decisions* → *Generic-motive recon: hybrid …*): Route 2 (generic *producer*) and Route 1 (generic *IH*)
   are not alternatives — they are the two halves. Sub-nodes ordered below; **N6-G1 is the first buildable
   commit.** **Leg-transport brick GREEN:** `hasGenericRealization_transport_ends`.
-  - [ ] **N6-G1** `…_couple_generic` — generic *producer*: a `_generic` device stack (re-expose the
-    `ofParam` GP witness through `exists_good_realization_ofParam` → `…_relative_full_count` →
-    `…_independent_panelRow` → leg-restricted variant → coupling) so the simple-case coupling concludes
-    `HasGenericFullRankRealization k G`, not just bare. **Buildable, bounded** (Route 2; no Phase-20 touch).
-    *Sub-decompose*: G1a re-expose GP at the device output `q` (the 4 device bricks gain a `_generic` twin
-    returning `(q, IsGeneralPosition q)` via `isGeneralPosition_ofParam`); G1b thread it through the
-    leg-restricted chain + coupling. **G1a may itself be 2 commits** — flagged *needs further recon* once
-    the device-brick twin count is known (see *Blockers*).
+  - [x] **N6-G1** `hasGenericFullRankRealization_of_splice_ofNormals` — generic *producer*. **GREEN**
+    (2026-06-04, one commit). The recon planned a multi-commit device-GP re-expose (a `_generic` twin on
+    each of `exists_good_realization_ofParam` → `…_relative_full_count` → `…_independent_panelRow` →
+    leg-restricted → coupling). **The N6-G1a spike found that route rests on a false premise:** the device
+    output `q` (from `exists_good_realization_ofParam`, ultimately `exists_finrank_dualCoannihilator_polynomial`)
+    is a generic Gram-determinant non-root, *not* an `ofParam` moment-curve point — so it carries no GP and
+    there is no dropped GP witness to re-expose. **The real, cheaper route:** the splice glue
+    `isInfinitesimallyRigidOn_of_splice` is genericity-free and gives rigidity of `ofNormals G ends q₀` on
+    all of `V(G)` *at the seed `q₀`*, which IS GP by hypothesis. So the `_generic` producer realizes at
+    `q₀` itself, bypassing the device round-trip entirely (the device is only needed to certify the
+    witnessed corank for the *bare* motive). One four-tuple `⟨ofNormals G ends q₀, rfl, hgp, glue⟩`.
+    Axiom-clean. See *Decisions* → *N6-G1 spike*.
   - [ ] **N6-G2** the generic-motive reduction (Route 1, the structural core) — **NEEDS FURTHER RECON,
     multi-commit, Phase-20-touching.** Supply each Case-I leg's IH in `HasGenericFullRankRealization` form.
     Honest motive is the *conditioned* `(G.Simple → GP) ∧ bare` (unconditional GP is false at the
@@ -182,6 +193,19 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N6-G1 spike: the device-GP re-expose route was a FALSE PREMISE; N6-G1 is one cheap commit, not a
+  multi-commit device-twin build (2026-06-04).** The recon (§1.5) planned N6-G1a as "re-expose the GP
+  witness the device drops". The spike traced the device output: `exists_good_realization_ofParam` →
+  `exists_relative_full_count_ofParam` → `exists_good_realization` → `exists_finrank_dualCoannihilator_polynomial`,
+  whose output `q` is an *arbitrary* non-root of a Gram-determinant `MvPolynomial` — **not** an `ofParam`
+  moment-curve point, so `isGeneralPosition_ofParam` does not apply and there is *no* dropped GP witness.
+  The right route: realize at the GP *seed* `q₀` directly. The splice glue `isInfinitesimallyRigidOn_of_splice`
+  is genericity-free (it does not call the device) and already proves `(ofNormals G ends q₀).toBodyHinge`
+  rigid on all of `V(G)`; `q₀` is GP by hypothesis; so the `_generic` producer
+  `hasGenericFullRankRealization_of_splice_ofNormals` is just `⟨ofNormals G ends q₀, rfl, hgp, glue⟩`,
+  bypassing the device. The device is needed only to certify the witnessed corank for the *bare* motive.
+  Lesson lifted to DESIGN.md *Constructibility recon …* *Sharpening: trace a producer's actual output
+  point …*.
 - **Generic-motive recon: the route is a HYBRID — Route 2 (generic producer) + Route 1 (generic IH) are
   two halves, not alternatives (2026-06-04, docs-only).** Ground: the composer's per-leg adapter
   (`hasGenericRealization_transport_ends`, green) consumes each leg in `HasGenericFullRankRealization`, but
@@ -358,17 +382,11 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Blockers / open questions
 
-- **The only open blocker is the N6 composer's generic-motive induction (an IH-shape gap), now decomposed
-  into N6-G1/G2/G3 (recon settled 2026-06-04 — hybrid route).** Everything else under Track A is green: N4,
-  the N5 splice/seed/rank-polynomial bricks (all-edges + leg-restricted), N6a, the two-motive split, (G2),
-  the N6b/N6c coupling, the leg-transport `ends`-swap brick. The recon (see *Decisions* → *Generic-motive
-  recon*) settled the decomposition; the residual recon items are:
-  - **N6-G1a sizing (buildable but possibly >1 commit).** Re-exposing GP through the device stack
-    (`exists_good_realization_ofParam` → `…_relative_full_count` → `…_independent_panelRow` → leg-restricted
-    → coupling) adds a `_generic` twin to each brick returning `(q, IsGeneralPosition q)`. Whether the
-    4-brick re-expose is 1 or 2 commits depends on how cheaply `isGeneralPosition_ofParam`'s witness threads
-    through `exists_good_realization_ofParam`'s internal `MvPolynomial.funext` — **size it with a 1-commit
-    G1a spike before dispatching G1 whole.**
+- **The open blocker is the N6 composer's generic-motive induction (an IH-shape gap), decomposed into
+  N6-G1/G2/G3 (recon settled 2026-06-04 — hybrid route). N6-G1 is now GREEN; the remaining red work is
+  N6-G2 + N6-G3.** Everything else under Track A is green: N4, the N5 splice/seed/rank-polynomial bricks
+  (all-edges + leg-restricted), N6a, the two-motive split, (G2), the N6b/N6c coupling, the leg-transport
+  `ends`-swap brick, and N6-G1 (the generic producer). The residual recon item is:
   - **N6-G2 is genuinely multi-commit and Phase-20-touching (NEEDS FURTHER RECON; do not dispatch whole).**
     The generic-motive reduction needs (a) a Phase-20 re-parameterization of `minimal_kdof_reduction`
     exposing `G.Simple`; (b) KT Lemma 6.7(ii) for the split-off branch (absent); (c) the Case-I
@@ -381,26 +399,31 @@ live in `notes/MolecularConjecture.md` *Phase 22* (Track B) and *Phase 23*
 
 ## Hand-off / next phase
 
-**Clean handoff point.** The generic-motive recon is done (docs-only; see *Decisions* → *Generic-motive
-recon* + design doc §1.5). It settled the N6-composer IH-shape gap as a **hybrid** route and cut it into
-N6-G1/G2/G3 in the *Lemma checklist*. No Lean / `\leanok` touched; `lem:case-I-splice-placement` /
-`lem:case-I-realization` stay red. The last green brick is `hasGenericRealization_transport_ends`.
+**Clean handoff point.** N6-G1 (the generic-motive *producer*) landed GREEN this commit as
+`hasGenericFullRankRealization_of_splice_ofNormals` (`AlgebraicInduction.lean`, axiom-clean, build +
+lint clean). The N6-G1a spike found the recon's device-GP re-expose route was a false premise (the
+device output is not GP) and replaced it with a direct realize-at-the-seed proof that bypasses the
+device — so N6-G1 closed as one commit, not the expected multi-commit twin build (see *Decisions* →
+*N6-G1 spike*). `lem:case-I-splice-placement` / `lem:case-I-realization` stay red. No `\leanok` flipped
+(the producer is a sub-node of the still-red composer; flip its blueprint node when N6-G3 closes the
+composer).
 
-**Next concrete task — the first buildable commit: N6-G1a, the device-output GP re-expose (Route 2's
-opening).** The simple-case coupling already *holds* GP at its seed `q₀` (`hasFullRankRealization_of_couple_ofNormals:4036`,
-`hgp := hQgp_pos q₀ hq₀gp`), but the device closure realizes at a *different*, existentially-hidden `q`
-from `exists_good_realization_ofParam` (`:2938`, returns a bare `∃ q`). That `q` *is* in general position
-(the device varies over `ofParam` moment-curve points, `isGeneralPosition_ofParam:2048`), but the witness
-is dropped. G1a adds a `_generic` twin to `exists_good_realization_ofParam` (and, if it threads cheaply,
-`…_relative_full_count` / `…_independent_panelRow`) that *also* returns `IsGeneralPosition` of the output
-`q`. **Spike-then-size:** confirm in 1 commit whether the GP witness threads through the internal
-`MvPolynomial.funext` cheaply (then G1a is 1 commit) or needs a separate `ofParam`-restricted device
-variant (then 2). Do this before dispatching N6-G1 whole.
+**Next concrete task — re-recon N6-G2 (Route 1, the generic-motive reduction).** This is the genuinely
+multi-commit, Phase-20-touching half: thread the generic motive `HasGenericFullRankRealization` through
+`Graph.minimal_kdof_reduction` (`Induction.lean:3529`) so the composer's *input* legs arrive generic
+(N6-G1 produced the generic *output*; the IH still supplies only the bare motive). **Do NOT dispatch as
+one commit** — it needs three new decomposition passes, each its own (re-recon at G2-open): (a) a Phase-20
+re-parameterization of `minimal_kdof_reduction` exposing `G.Simple` to the case dispatch; (b) KT Lemma
+6.7(ii) for the split-off branch (verified vs. source, absent in repo); (c) the Case-I
+contraction-simplicity dichotomy (`Graph.Simple.mono` gives the rigid block free; `G/E(H)` is KT
+6.3-vs-6.5). The honest motive is the *conditioned* `(G.Simple → GP) ∧ bare` (unconditional GP is false
+at the parallel-K₂ base). See *Blockers* + design doc §1.5.
 
-**Then, in order:** N6-G1b (thread GP through the leg-restricted chain + coupling ⟹ `…_couple_generic`
-concludes `HasGenericFullRankRealization`) → **re-recon N6-G2** (the generic-motive reduction; multi-commit,
-Phase-20-touching, NEEDS FURTHER RECON — do not dispatch whole; see *Blockers*) → N6-G3 composer assembly
-→ `lem:case-I-realization` green, closing 22a.
+**Then:** N6-G3 composer assembly — dispatch on `G.Simple`, feed N4 (contraction is a smaller minimal
+0-dof-graph) + the two generic-motive leg IHs through `hasGenericRealization_transport_ends` into
+`hasGenericFullRankRealization_of_splice_ofNormals` (N6-G1) for the simple branch, forget down
+(`hasFullRankRealization_of_generic`) and use N6a for the non-simple branch, conclude `hcontract` ⟹
+`lem:case-I-realization` green, closing 22a.
 
 Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
 graph-swaps (state hypotheses pre-converted); transferring `IsInfinitesimallyRigidOn` across an

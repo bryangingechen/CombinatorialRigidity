@@ -207,20 +207,27 @@ alternatives.** The composer's per-leg adapter
 *consumes* each leg in `HasGenericFullRankRealization` (its `hQgp` hypothesis)
 and the coupling `…_couple_ofNormals` *produces* only the bare motive. So:
 
-1. **Route 2 is needed to make the producer generic.** The coupling already
-   *derives* `IsGeneralPosition` at its seed `q₀` (`:4036`, `hgp := hQgp_pos q₀
-   hq₀gp`), but the device closure realizes at a **different**, existentially-
-   hidden `q` returned by `exists_good_realization_ofParam` (`:2938`, conclusion
-   `∃ q, finrank ≤ …` — no GP conjunct). That `q` *is* general position (the
-   device varies over `ofParam` moment-curve points and
-   `isGeneralPosition_ofParam`, `:2048`, makes those GP), but the witness is
-   dropped on the way out. Route 2 = add a `_generic` twin to the device stack
-   (`exists_good_realization_ofParam` → `exists_relative_full_count_ofParam` →
-   `hasFullRankRealization_of_independent_panelRow` → the leg-restricted variant
-   → the coupling) that re-exposes `IsGeneralPosition q`. **Buildable, bounded,
-   no Phase-20 touch.** First commit `N6-G1a` re-exposes GP at the device output
-   `q`; its 1-vs-2-commit size depends on how the GP witness threads through the
-   internal `MvPolynomial.funext` — size with a spike.
+1. **Route 2 is needed to make the producer generic. GREEN (2026-06-04, one
+   commit).** The coupling already *derives* `IsGeneralPosition` at its seed `q₀`
+   (`:4036`, `hgp := hQgp_pos q₀ hq₀gp`), but the bare device closure realizes at
+   a **different**, existentially-hidden `q` returned by
+   `exists_good_realization_ofParam` (`:2938`, conclusion `∃ q, finrank ≤ …` — no
+   GP conjunct). **N6-G1a spike correction:** the original plan asserted that `q`
+   *is* general position ("the device varies over `ofParam` moment-curve points");
+   **this was a false premise.** Tracing the device output —
+   `exists_good_realization_ofParam` → `exists_relative_full_count_ofParam` →
+   `exists_good_realization` → `exists_finrank_dualCoannihilator_polynomial` — shows
+   `q` is an *arbitrary* non-root of a Gram-determinant `MvPolynomial`, **not** an
+   `ofParam` moment-curve point, so `isGeneralPosition_ofParam` (`:2048`) does not
+   apply and there is *no* dropped GP witness to re-expose. The correct, cheaper
+   route realizes at the GP *seed* `q₀` directly: the splice glue
+   `isInfinitesimallyRigidOn_of_splice` (`:1550`) is *genericity-free* (it does not
+   invoke the device) and already proves `(ofNormals G ends q₀).toBodyHinge` rigid
+   on all of `V(G)`, and `q₀` is GP by hypothesis. So N6-G1 is the single lemma
+   `hasGenericFullRankRealization_of_splice_ofNormals` =
+   `⟨ofNormals G ends q₀, rfl, hgp, glue⟩`, bypassing the device entirely (the
+   device certifies the witnessed corank only for the *bare* motive). One commit,
+   axiom-clean, no Phase-20 touch.
 
 2. **Route 1 is still needed to make the IH generic.** Route 2 produces
    `HasGenericFullRankRealization` for the simple-case *output*, but the
@@ -261,12 +268,14 @@ come from the IH, which only Route 1 upgrades. A producer that concludes the
 strong motive from strong-motive inputs is inert until the induction supplies
 strong-motive inputs.
 
-**Build order (N6):** `N6-G1a` (spike + re-expose device GP) → `N6-G1b` (thread
-through coupling ⟹ `…_couple_generic`) → **re-recon `N6-G2`** → `N6-G3`
-(composer assembly: dispatch on `G.Simple`, feed N4 + the two transported
-generic IHs into `…_couple_generic`, forget down for non-simple via
-`hasFullRankRealization_of_generic`). The node list and statuses are in
-`notes/Phase22a.md` *Lemma checklist*.
+**Build order (N6):** `N6-G1` ✓ (`hasGenericFullRankRealization_of_splice_ofNormals`,
+GREEN — collapsed from the planned G1a-spike + G1b once the spike found the
+device-GP route false; see Route 2 above) → **re-recon `N6-G2`** (Route 1, the
+generic-motive reduction, multi-commit + Phase-20-touch, NEEDS FURTHER RECON) →
+`N6-G3` (composer assembly: dispatch on `G.Simple`, feed N4 + the two transported
+generic IHs into `hasGenericFullRankRealization_of_splice_ofNormals`, forget down
+for non-simple via `hasFullRankRealization_of_generic`). The node list and
+statuses are in `notes/Phase22a.md` *Lemma checklist*.
 
 ---
 
@@ -341,16 +350,17 @@ Nodes (composing the green infra of §2):
 - **(G2) general-position factor.** **GREEN** (2026-06-04;
   `exists_generalPosition_polynomial`). Off-diagonal product of leading `2×2`
   minor polynomials, witnessed nonzero at the moment-curve seed (Vandermonde).
-- **N6 — Case I composer (`lem:case-I-realization`).** **RED — the one remaining
-  node; decomposed in §1.5 into the hybrid N6-G1/G2/G3.** Not `buildable` as a
-  single commit: the composer's adapter needs each leg in
-  `HasGenericFullRankRealization`, which (i) the coupling does not produce (N6-G1,
-  Route 2, buildable) and (ii) `minimal_kdof_reduction` does not thread (N6-G2,
-  Route 1, multi-commit, needs-further-recon). See §1.5 + `notes/Phase22a.md`.
+- **N6 — Case I composer (`lem:case-I-realization`).** **RED — decomposed in §1.5
+  into the hybrid N6-G1/G2/G3; N6-G1 now GREEN.** Not `buildable` as a single
+  commit: the composer's adapter needs each leg in `HasGenericFullRankRealization`,
+  which (i) the coupling did not produce — **fixed by N6-G1,
+  `hasGenericFullRankRealization_of_splice_ofNormals`, GREEN** — and (ii)
+  `minimal_kdof_reduction` does not thread (N6-G2, Route 1, multi-commit,
+  needs-further-recon). Remaining: N6-G2 then N6-G3. See §1.5 + `notes/Phase22a.md`.
 
 **Build order (Track A), updated 2026-06-04 (everything before N6 is green):**
 §1 motive decision ✓ → N6a ✓ → (G2) ✓ → N6b/N6c coupling ✓ → **N6 composer
-(§1.5 hybrid): N6-G1a → N6-G1b → re-recon N6-G2 → N6-G3.**
+(§1.5 hybrid): N6-G1 ✓ → re-recon N6-G2 → N6-G3.**
 
 ### Track B — Case II/III producer (`hsplit`), KT §6.3 (Lemma 6.8) + §6.4.1
 

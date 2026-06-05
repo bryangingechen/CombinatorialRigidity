@@ -3470,6 +3470,48 @@ theorem PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals [Finite �
   PanelHingeFramework.hasFullRankRealization_of_splice G ends hends hne_ends hne hgp hGH hGc
     hcH hcc hcover hblock hcontract
 
+/-- **Case I splice producer, leg-native *generic* form: both legs rigid as their own `ofNormals` at
+one general-position seed give a *general-position* full-rank realization** (`lem:case-I-splice-
+placement` / `lem:case-I-realization`, the N6-G1 *generic*-motive producer; Katoh–Tanigawa 2011
+§6.2/6.5, eqs.\ (6.2), (6.6), the "nonparallel, if `G` is simple" strengthening; Phase 22). The
+general-position strengthening of `hasFullRankRealization_of_splice_ofNormals`: with the *same*
+hypotheses (a general-position seed `q₀` at which both legs `GH`, `Gc` are rigid as their own
+`ofNormals`), it concludes the *strengthened* motive `HasGenericFullRankRealization k G` rather than
+the bare `HasFullRankRealization k G`.
+
+The witness is the seed framework `ofNormals G ends q₀` *itself*, at `q₀`. The point of this
+strengthening — and the reason it is genuinely a separate lemma, not a corollary of the bare
+producer — is that the bare `hasFullRankRealization_of_splice_ofNormals` realizes at the genericity
+*device*'s output point `q` (`exists_good_realization_ofParam`), a generic Gram-determinant non-root
+that is *not* on the moment curve and carries *no* general-position guarantee — so the GP of the
+seed `q₀` is lost on the way through the device. Here we avoid the device round-trip entirely: the
+block-triangular splice glue `isInfinitesimallyRigidOn_of_splice` is *genericity-free* and already
+gives rigidity of `ofNormals G ends q₀` on the *whole* of `V(G)` at the seed, so realizing at `q₀`
+keeps both the rigidity (from the glue) and the general position (`hgp`, by hypothesis). The
+device is needed only to *certify the witnessed corank* for the bare motive; the generic motive
+needs the concrete rigid GP seed, which the splice supplies directly.
+
+This is the N6-G1 brick (Route 2 of the generic-motive recon): a producer concluding the generic
+motive from generic inputs, which the composer (N6-G3) feeds the two `HasGenericFullRankRealization`
+leg IHs (transported to the parent selector by `hasGenericRealization_transport_ends`). The legs are
+stated in the leg-native `ofNormals GH ends q₀` form by `ofNormals_withGraph` /
+`toBodyHinge_withGraph` (both `rfl`), matching the shape that brick delivers. -/
+theorem PanelHingeFramework.hasGenericFullRankRealization_of_splice_ofNormals
+    [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α)
+    {q₀ : α × Fin (k + 2) → ℝ}
+    (hgp : (PanelHingeFramework.ofNormals G ends q₀).IsGeneralPosition)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
+    (hblock : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
+    (hcontract :
+      (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
+    PanelHingeFramework.HasGenericFullRankRealization k G :=
+  -- The witness is the seed framework itself; rigidity on `V(G)` is the genericity-free splice glue
+  -- (no device round-trip, so general position of `q₀` survives), general position is `hgp`.
+  ⟨PanelHingeFramework.ofNormals G ends q₀, PanelHingeFramework.ofNormals_graph G ends q₀, hgp,
+    (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.isInfinitesimallyRigidOn_of_splice
+      (GH := GH) (Gc := Gc) hGH hGc hcH hcc hcover hblock hcontract⟩
+
 /-- **Case I splice producer, leg-native general-position-free form (the non-simple producer)**
 (`lem:case-I-splice-placement` / `lem:case-I-realization`, the bare-motive node N6a for the
 non-simple Lemma 6.2 case; Katoh–Tanigawa 2011 §6.2, Phase 22). The leg-native restatement of

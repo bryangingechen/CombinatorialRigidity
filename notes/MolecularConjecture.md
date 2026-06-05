@@ -33,11 +33,14 @@ rank-polynomial bricks (all-edges + leg-restricted), N6a (non-simple Case I), th
 + forgetful map, bare `theorem_55` untouched — the `Graph.Simple`-threading spike
 ruled out a single Simple-conditioned motive since `splitOff` breaks simplicity,
 KT Lemma 6.7), the (G2) general-position factor, the N6b/N6c simple Case-I
-coupling, and the N6 leg-transport `ends`-swap brick — **except the N6 composer's
-generic-motive induction** (the one remaining red node: the IH supplies the *bare*
+coupling, the N6 leg-transport `ends`-swap brick, and **N6-G1** (the generic-motive
+*producer* `hasGenericFullRankRealization_of_splice_ofNormals`, GREEN 2026-06-04) —
+**except the N6 composer's generic-motive induction** (the IH supplies the *bare*
 `HasFullRankRealization`, the simple coupling needs `HasGenericFullRankRealization`).
-Next: a math-first recon/decomposition of that gap into buildable nodes (up-front
-planning before any build dispatch). **Phase 22b+ is parked in planning** (Case III
+The recon settled the gap as a **hybrid** (Route 2 generic producer = N6-G1 ✓, +
+Route 1 generic IH = N6-G2). Next: **re-recon N6-G2** (Route 1, the Phase-20-touching
+generic-motive reduction; multi-commit, needs-further-recon — do not dispatch whole),
+then N6-G3 composer assembly. **Phase 22b+ is parked in planning** (Case III
 at `d=3` + the `d=3` assembly; expected to split into multiple sub-phases once its
 shape is clearer, cut deferred until 22a closes). Phases 23–26 planned. This is the
 program design for Phases 17–26 and the runbook for threading the remaining phases.
@@ -490,9 +493,10 @@ worked out in `notes/Phase21b.md` *Finding A/B*; the green Phase-21b infra —
 device, count bridge, N7b row sub-nodes, splice/union glue — feeds them.
 
 **Phase 22a — Case I realization (§6.2) — ◑ In progress.** Track A: the tractable
-entry point, full-rank, independent of Case III. All Case-I bricks green except
-the N6 composer (see the Track-A node list + build-order paragraph below). Target
-`lem:case-I-realization`. Live, node-by-node hand-off: `notes/Phase22a.md`.
+entry point, full-rank, independent of Case III. All Case-I bricks green incl.
+N6-G1 (the generic producer); the remaining red work is N6-G2 (Route 1) + N6-G3
+(composer assembly) — see the Track-A node list + build-order paragraph below.
+Target `lem:case-I-realization`. Live, node-by-node hand-off: `notes/Phase22a.md`.
 
 **Track A — Case I producer (full-rank, KT §6.2). [22a scope]** Independent of Case III;
 reaches full `D(|V|−1)` with no shortfall (the contracted vertex's two
@@ -692,18 +696,19 @@ flipped the ROADMAP row to *in progress*, and synced `README.md` /
 `algebraic-induction.tex`, per the structural-edit discipline in
 `blueprint/CLAUDE.md`).
 
-**Next concrete task inside 22a:** a **math-first recon / decomposition of the
-generic-motive induction** (the N6-composer IH-shape gap) into right-sized
-buildable nodes — up-front planning before any build dispatch, per the live
+**Next concrete task inside 22a:** **re-recon N6-G2** (Route 1, the Phase-20-touching
+generic-motive reduction) — up-front planning before any build dispatch, per the live
 hand-off in `notes/Phase22a.md`. All of Track A's Case-I machinery is green
 (N4a–N4c + N4 `rigidContract_isMinimalKDof`, N6a, the two-motive split, (G2), the
-N6b/N6c simple Case-I coupling, and the N6 leg-transport `ends`-swap brick), except
-the N6 composer: its IH is the *bare* `HasFullRankRealization`, the simple coupling
-needs `HasGenericFullRankRealization`, so the simple branch needs
-`minimal_kdof_reduction` re-run against the GP motive (a Phase-20-touching
-generic-motive reduction, multi-commit; re-opens the parked `Simple`-threading
-question). One candidate the recon should weigh: a bounded buildable sub-step that
-scopes the coupling to conclude GP at the device point. **22b+** (Case III,
+N6b/N6c simple Case-I coupling, the N6 leg-transport `ends`-swap brick, and **N6-G1**
+the generic producer `hasGenericFullRankRealization_of_splice_ofNormals`), except the
+N6 composer: its IH is the *bare* `HasFullRankRealization`, the simple coupling needs
+`HasGenericFullRankRealization`, so the simple branch needs `minimal_kdof_reduction`
+re-run against the GP motive (N6-G2, a Phase-20-touching generic-motive reduction,
+multi-commit; re-opens the parked `Simple`-threading question). N6-G1 already supplies
+the generic *output* — the N6-G1a spike found the recon's device-GP re-expose route was
+a false premise (the genericity device's output point is not GP) and realized at the GP
+seed directly, bypassing the device, collapsing N6-G1 to one commit. **22b+** (Case III,
 design-pass-first per the Track-B *Process* note, + the `d=3` assembly) re-enters
 once 22a closes. The KT math is in `notes/Phase21b.md` *Finding A/B* + the design
 doc — 22a/22b+ formalize it, they do not re-derive it. When 22a closes, follow
