@@ -21,28 +21,41 @@ before a producer build*, *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-**Leg-restricted rank polynomial GREEN — the genuine N6b brick the recon named; the per-leg
-rank-polynomial route now applies to *proper-subgraph* legs** (this commit; four axiom-clean
-declarations in `AlgebraicInduction.lean`, no `\leanok` flip — infra below the still-red Case-I
-nodes). The recon (prior commit) found the all-edges `exists_rankPolynomial_of_rigidOn` inapplicable
-to a leg `GH ≤ G`: its `span_panelRow_eq_rigidityRows` chain needs `hends : ∀ e : β, GH.IsLink e …`,
-which the parent's selector cannot supply on non-`GH` edges. **Fix: restrict the whole chain to the
-*linking* edges.** Built (i) the leg-restricted span lemma
-`BodyHingeFramework.span_panelRow_linking_eq_rigidityRows` — the panel rows of the *linking* edges
-span the rigidity-row space, requiring `hends`/`hne` only on edges that link (the form a leg
-supplies); (ii) the leg-restricted subfamily extractor
-`BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking` — a rigid leg carries
-`D(|V|−1)` independent panel rows *every member of which links* (`hsupp`); (iii) the leg-restricted
-producer `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking` — a rigid leg ⟹ a nonzero
-Gram-det `MvPolynomial` whose witnessed subfamily lies on the leg's linking edges; and (iv) the
-matching consumer `…_rankPolynomial_ne_zero_linking` — a non-root with `hsupp` ⟹ the leg rigid at
-that point, drawing each `⊆`-inclusion link witness from `hsupp` rather than the all-edges `hends`.
-Same coordinatization + rank-nullity as the all-edges forms; the only change is restricting the
-spanning identity to linking edges so the leg-restricted `hends` (link of every *linking* edge,
-automatic for a leg via `infinitesimalMotions_ofNormals_eq_of_ends_swap`) suffices. **The N6b/N6c
-coupling itself stays red** (no `sorry` committed — only the leg-restricted per-leg bricks land). The
-substantive Lean state below (N4/N5/N6a/two-motive split/(G2)) is unchanged. See *Decisions* /
+**N6b/N6c shared-seed coupling assembly GREEN — the simple Case-I producer is a pure assembly of the
+green bricks** (this commit; `PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals`,
+`AlgebraicInduction.lean`, axiom-clean, no `\leanok` flip — infra below the still-red
+`lem:case-I-splice-placement` / `lem:case-I-realization`). The hand-off's recommended commit:
+assemble the green leg-restricted rank polynomials + (G2) factor + splice into the simple Case-I
+shared-seed coupling. Given the two legs `GH`, `Gc` (both `≤ G`, sharing the contracted body `c`,
+covering `V(G)`) each *infinitesimally rigid on its own vertex set* as a leg-native
+`ofNormals GH ends qH` resp.\ `ofNormals Gc ends qc` at the **parent selector** `ends` and its
+**own** seed, with transversal hinges at each seed, the producer concludes `HasFullRankRealization k
+G`. The five-step assembly: (i) each leg's leg-restricted rank polynomial
+`exists_rankPolynomial_of_rigidOn_linking` (the parent's `hends` records each leg's linking edge via
+`Graph.IsSubgraph.isLink_iff`), nonzero at its own seed hence nonzero as a polynomial; (ii) the (G2)
+factor `exists_generalPosition_polynomial` nonzero (witnessed at a moment-curve seed for an injective
+`α → ℝ` built from `Countable.exists_injective_nat` + `Nat.cast`); (iii) the triple product is a
+nonzero polynomial ⟹ a shared non-root `q₀` via `MvPolynomial.exists_eval_ne_zero`; (iv) at `q₀`
+each leg is rigid (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking`) + GP holds
+(the (G2) non-root); (v) `hasFullRankRealization_of_splice_ofNormals` splices them. **The remaining
+red content** is the **N6 composer** (`lem:case-I-realization`): supply these leg hypotheses from the
+IH via the `ends`-swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap` and dispatch on
+simplicity (non-simple → N6a, simple → this coupling). No `sorry` committed. The substantive Lean
+state below (N4/N5/N6a/two-motive split/(G2)/leg-restricted bricks) is unchanged. See *Decisions* /
 *Blockers* / *Hand-off*.
+
+**Leg-restricted rank polynomial GREEN (prior commit) — the genuine N6b brick the recon named; the
+per-leg rank-polynomial route now applies to *proper-subgraph* legs** (four axiom-clean declarations
+in `AlgebraicInduction.lean`). The recon found the all-edges `exists_rankPolynomial_of_rigidOn`
+inapplicable to a leg `GH ≤ G`: its `span_panelRow_eq_rigidityRows` chain needs
+`hends : ∀ e : β, GH.IsLink e …`, which the parent's selector cannot supply on non-`GH` edges.
+**Fix: restrict the whole chain to the *linking* edges.** Built (i)
+`BodyHingeFramework.span_panelRow_linking_eq_rigidityRows`; (ii)
+`BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking` (`hsupp`); (iii) the
+producer `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking`; (iv) the consumer
+`…_rankPolynomial_ne_zero_linking`. Same coordinatization + rank-nullity as the all-edges forms; the
+only change is restricting the spanning identity to linking edges so the leg-restricted `hends`
+(automatic for a leg via `infinitesimalMotions_ofNormals_eq_of_ends_swap`) suffices.
 
 **N6b recon (prior commit): the simple Case-I coupling is NOT a clean assembly — the all-edges
 per-leg rank-polynomial route needs `hends : ∀ e : β, GH.IsLink e …`, which a proper-subgraph leg
@@ -333,21 +346,19 @@ N5 + N6.
     coordinate-level generalization of `momentCurve_pair_linearIndependent`) ⟹ GP. Nonzero witnessed:
     the moment-curve seed makes each factor the Vandermonde det `param b − param a ≠ 0`. **Closes gap
     (G2).** Gates N6b/N6c (the triple-product assembly + green splice).
-  - [ ] **N6b/N6c** simple Case I (KT Lemma 6.3/6.5) — the shared-seed coupling. **RED, but the
-    leg-restricted per-leg bricks are now GREEN** (this commit): the recon (prior commit) found the
-    all-edges `exists_rankPolynomial_of_rigidOn` inapplicable to a proper-subgraph leg (`hends :
-    ∀ e : β, GH.IsLink e …` unsatisfiable). **Fixed by the leg-restricted chain (this commit):**
-    `span_panelRow_linking_eq_rigidityRows` (linking-edge panel rows span the rigidity rows, `hends`/
-    `hne` on linking edges only) → `exists_independent_panelRow_subfamily_of_rigidOn_linking` (rigid
-    leg ⟹ `D(|V|−1)` independent panel rows, all linking, `hsupp`) → `exists_rankPolynomial_of_rigidOn_linking`
-    (the leg-restricted producer: rigid leg ⟹ nonzero Gram-det `MvPolynomial` supported on linking
-    edges) → `…_rankPolynomial_ne_zero_linking` (the matching consumer: non-root + `hsupp` ⟹ leg rigid
-    at that point). The `ends`-swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap` (prior
-    commit) supplies the leg's `hends` (link of every linking edge, automatic up to swap). **What
-    remains red for N6b/N6c:** the *coupling assembly* — multiply the two legs' leg-restricted rank
-    polynomials × the (G2) factor `exists_generalPosition_polynomial`, take a shared non-root via
-    `MvPolynomial.exists_eval_ne_zero`, re-derive each leg rigid (`…_ne_zero_linking`) + GP at it, feed
-    `hasFullRankRealization_of_splice_ofNormals`. See *Decisions* / *Blockers* / *Hand-off*.
+  - [x] **N6b/N6c** simple Case I (KT Lemma 6.3/6.5) — the shared-seed coupling assembly. **GREEN**
+    (`hasFullRankRealization_of_couple_ofNormals`, axiom-clean, no `\leanok` — infra below the red
+    Case-I nodes). The leg-restricted per-leg bricks (prior commit) made the coupling a *pure
+    assembly* of green bricks: `span_panelRow_linking_eq_rigidityRows` →
+    `exists_independent_panelRow_subfamily_of_rigidOn_linking` (`hsupp`) →
+    `exists_rankPolynomial_of_rigidOn_linking` (producer) → `…_rankPolynomial_ne_zero_linking`
+    (consumer), with `infinitesimalMotions_ofNormals_eq_of_ends_swap` supplying each leg's `hends`.
+    This commit assembles them: multiply the two legs' leg-restricted rank polynomials × the (G2)
+    factor `exists_generalPosition_polynomial`, take a shared non-root via
+    `MvPolynomial.exists_eval_ne_zero`, re-derive each leg rigid + GP at it, feed
+    `hasFullRankRealization_of_splice_ofNormals`. **What remains red:** the **N6 composer**
+    (`lem:case-I-realization`) — supply these leg hypotheses from the IH (the `ends`-swap step) and
+    dispatch on simplicity (non-simple → N6a, simple → this coupling). See *Decisions* / *Hand-off*.
 
 **Track B — Case II/III producer at `d=3` (the crux, KT §6.3 + §6.4.1).**
 - [ ] eq. (6.12) degenerate placement (`p1(vb)=q(ab)` reproduces the `e₀` row;
@@ -362,6 +373,17 @@ N5 + N6.
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N6b/N6c shared-seed coupling assembly — the simple Case-I producer as a pure assembly of green
+  bricks (2026-06-04).** Built `hasFullRankRealization_of_couple_ofNormals` exactly per the hand-off's
+  five-step recipe: each leg's leg-restricted rank polynomial (the parent `hends` records the leg's
+  linking edge via `Graph.IsSubgraph.isLink_iff hGH h.edge_mem`, dissolving the `ends`-domain
+  obstruction at the source), the (G2) general-position factor, the triple-product shared non-root
+  (`MvPolynomial.exists_eval_ne_zero`), each leg re-derived rigid + GP at `q₀`, then
+  `hasFullRankRealization_of_splice_ofNormals`. Honest per the gate: the inputs are the satisfiable
+  per-leg single-seed rigidities at the parent selector (the `ends`-swap form), the parent rank is
+  *concluded*. The `ends`-swap step that supplies these leg hypotheses from the IH lives in the N6
+  composer (still red). One build cycle (a wrong `Fintype.exists_injective_toReal` guess →
+  `Countable.exists_injective_nat` + `Nat.cast_injective`, FRICTION). No `\leanok` flip. See *Hand-off*.
 - **Leg-restricted rank-polynomial chain — restrict the spanning identity to *linking* edges
   (2026-06-04).** Discharged the N6b recon's `hends`-over-all-`β` obstruction by mirroring the
   whole `exists_rankPolynomial_of_rigidOn` chain with the panel-row family and rigidity-row span
@@ -706,6 +728,9 @@ N5 + N6.
   collapse image *equal* `(V(G)\V(H)) ∪ {r}`, not just contained in it.
 
 ### Promoted to TACTICS-GOLF / TACTICS-QUIRKS / FRICTION / DESIGN
+- *An injective `α → ℝ` from a finite/countable `α`: `Countable.exists_injective_nat` then
+  `Nat.cast_injective` — there is no one-shot `exists_injective_toReal`* → FRICTION [resolved] *An
+  injective `α → ℝ` from a finite (or merely countable) `α` …*.
 - *Building a subtype-indexed `panelRow` membership: `by rw [panelRow, …]` fails on the
   anonymous-constructor index's unreduced coercion — pin it with `show F.panelRow ends (e,t₁,t₂) = _`*
   → FRICTION [resolved] *A `panelRow ends i` membership `rfl` whnf-times-out …* (Recurrence, build
@@ -828,60 +853,59 @@ N5 + N6.
   link). A *proper-subgraph* leg `GH ≤ G` does not satisfy this, so the all-edges per-leg rank
   polynomial is not applicable to the legs; N6b needs a *leg-restricted* rank polynomial (rigidity-row
   span over the leg's linking edges only).
-- **RESOLVED (this commit): the leg-restricted rank polynomial is GREEN — the recon's blocker is gone.**
+- **RESOLVED (prior commit): the leg-restricted rank polynomial is GREEN — the recon's blocker is gone.**
   Built the four-brick leg-restricted chain (`span_panelRow_linking_eq_rigidityRows` →
   `exists_independent_panelRow_subfamily_of_rigidOn_linking` → `exists_rankPolynomial_of_rigidOn_linking`
   producer → `…_rankPolynomial_ne_zero_linking` consumer), all axiom-clean. Each brick weakens
   `hends`/`hne` to the *linking* edges and tracks a `hsupp` (every witnessed index links), so the chain
-  applies to a proper-subgraph leg `GH ≤ G` whose `ends` is the parent's (recording the link of every
-  edge that links, automatic up to swap via `infinitesimalMotions_ofNormals_eq_of_ends_swap`). **What
-  remains red:** the N6b/N6c *coupling assembly* itself (multiply the two leg-restricted polynomials ×
-  the (G2) factor → shared non-root → re-derive each leg rigid + GP → splice) — now a genuine assembly
-  of green bricks, no new analytic content. See *Hand-off* build order.
+  applies to a proper-subgraph leg `GH ≤ G` whose `ends` is the parent's.
+- **RESOLVED (this commit): the N6b/N6c shared-seed coupling assembly is GREEN.**
+  `hasFullRankRealization_of_couple_ofNormals` assembles the leg-restricted polynomials × the (G2)
+  factor → shared non-root → each leg rigid + GP → splice, exactly as the *Hand-off* build order
+  named. The leg's `hends` for the producer comes from the parent `hends` via
+  `Graph.IsSubgraph.isLink_iff` (a leg's linking edge links the parent selector within the leg). **What
+  remains red:** the **N6 composer** (`lem:case-I-realization`) — supply the coupling's leg hypotheses
+  (each leg rigid at the parent selector, transversal) from the IH `HasGenericFullRankRealization`
+  via the `ends`-swap brick, and dispatch on simplicity (non-simple → N6a, simple → this coupling).
+  See *Hand-off*.
 
 ## Hand-off / next phase
 
-**This commit: the leg-restricted rank polynomial GREEN — the genuine N6b brick the prior recon
-named.** The prior commit's recon found the all-edges `exists_rankPolynomial_of_rigidOn` inapplicable
-to a proper-subgraph leg (`hends : ∀ e : β, GH.IsLink e …` unsatisfiable) and called for a
-*leg-restricted* rank polynomial (rigidity-row span over the leg's *linking* edges only). This commit
-delivers it as four axiom-clean bricks in `AlgebraicInduction.lean` (no `\leanok` flip, no blueprint
-entry — infra below the red Case-I nodes):
-1. `BodyHingeFramework.span_panelRow_linking_eq_rigidityRows` — the panel rows of the *linking* edges
-   span the rigidity-row space, requiring `hends`/`hne` only on edges that link.
-2. `BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_linking` — a rigid leg carries
-   `D(|V|−1)` independent panel rows *every member of which links* (`hsupp`).
-3. `PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking` — the leg-restricted producer: rigid
-   leg ⟹ nonzero Gram-det `MvPolynomial` whose witnessed subfamily lies on the leg's linking edges.
-4. `PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking` — the
-   matching consumer: a non-root with `hsupp` ⟹ the leg rigid at that point.
-Same coordinatization + rank-nullity as the all-edges forms; the lever is restricting the spanning
-identity to linking edges, so the leg-restricted `hends` (link of every *linking* edge, automatic up
-to swap via the prior commit's `infinitesimalMotions_ofNormals_eq_of_ends_swap`) suffices. **No
-`sorry` committed:** the N6b/N6c *coupling assembly* and `lem:case-I-splice-placement` stay red.
+**This commit: the N6b/N6c shared-seed coupling assembly GREEN** —
+`PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals` (`AlgebraicInduction.lean`,
+axiom-clean, no `\leanok` flip, no blueprint entry — infra below the red Case-I nodes). It assembles
+the prior commit's green leg-restricted bricks + the (G2) factor + the splice exactly per the
+prior hand-off's five-step recipe: (i) each leg's leg-restricted rank polynomial
+`exists_rankPolynomial_of_rigidOn_linking` (the parent `hends` records the leg's linking edge via
+`Graph.IsSubgraph.isLink_iff`, so the producer's `hends` is discharged at the source); (ii) the (G2)
+factor `exists_generalPosition_polynomial`; (iii) the triple product is a nonzero polynomial ⟹ a
+shared non-root `q₀` (`MvPolynomial.exists_eval_ne_zero`); (iv) each leg rigid at `q₀`
+(`…_rankPolynomial_ne_zero_linking`) + GP at `q₀` (the (G2) non-root); (v)
+`hasFullRankRealization_of_splice_ofNormals`. **No `sorry` committed:** the N6 composer and
+`lem:case-I-splice-placement` / `lem:case-I-realization` stay red.
 
-**Recommended next concrete commit: the N6b/N6c shared-seed coupling assembly** — now a genuine
-assembly of green bricks (the recon's blocker is dissolved). For the two Case-I legs `GH`, `Gc`
-(both `≤ G`, arriving GP via the `HasGenericFullRankRealization` motive): (a) feed each leg's IH
-rigidity (own `ends_H`) into `exists_rankPolynomial_of_rigidOn_linking` at the parent's `ends`, using
-`infinitesimalMotions_ofNormals_eq_of_ends_swap` to re-express the IH rigidity at the parent selector
-and supplying the leg-restricted `hends` (every linking edge of the leg links, automatic since the
-leg's `ends` is the parent's and the IH leg links it); (b) multiply the two leg-restricted rank
-polynomials `Q_GH · Q_Gc` × the (G2) factor `exists_generalPosition_polynomial`; (c) take a shared
-non-root `q₀` via `MvPolynomial.exists_eval_ne_zero`; (d) re-derive each leg rigid at `q₀` via
-`…_rankPolynomial_ne_zero_linking` (consuming each leg's `hsupp`) + GP at `q₀` via the (G2) factor;
-(e) feed `hasFullRankRealization_of_splice_ofNormals`. Math-first check before building: confirm the
-two legs' `hends`-into-the-producer step composes cleanly with the `ends`-swap brick — that is the
-one place the per-leg link witness must be threaded. Recurring trap (FRICTION): the heavy
-`IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph` graph-swaps — state hypotheses
-pre-converted. Build order from there: N6b/N6c coupling → **N6** the Case-I composer
-(`lem:case-I-realization`, dispatches on simplicity: N6a for non-simple, N6b/N6c for simple; the
-simple cases conclude the GP motive via `hasFullRankRealization_of_generic` for `theorem_55`'s bare
-`hcontract`) → the **Case-III row** (Track B) via the green Lemma 2.1
-(`omitTwoExtensor_linearIndependent`).
+**Recommended next concrete commit: the N6 composer (`lem:case-I-realization`).** This is the node
+that supplies `hasFullRankRealization_of_couple_ofNormals`'s leg hypotheses *from the IH* and
+dispatches on simplicity, discharging `theorem_55.hcontract`. Concretely, given the rigid-subgraph
+contraction dichotomy (a proper rigid subgraph `H`, the contraction `G/E(H)`, both arriving via the
+IH `HasGenericFullRankRealization` at their own selectors `ends_H`):
+1. **The `ends`-swap step.** Each leg's IH gives a *general-position* rigid `ofNormals GH ends_H q_H`
+   at the leg's *own* selector `ends_H`; the coupling wants it at the *parent's* `ends`. Use
+   `infinitesimalMotions_ofNormals_eq_of_ends_swap` (green): on the leg's *linking* edges `ends_H`
+   and `ends` record the same `IsLink`, hence agree up to swap (`IsLink.left_eq_or_eq`), so the leg's
+   rigidity transfers from `ends_H` to `ends`. This is the genuine geometric content the coupling
+   abstracted out as hypotheses — confirm `ends_H`/`ends` agree up-to-swap on the leg before building
+   (the `hswap` hypothesis of the swap brick). Transversality at the parent selector follows from the
+   IH's `Q.IsGeneralPosition` via `supportExtensor_ne_zero_of_isGeneralPosition`.
+2. **The simplicity dispatch.** Non-simple Case I (KT Lemma 6.2) → `hasFullRankRealization_of_splice_of_supportExtensor_ofNormals` (N6a, bare motive, transversal hinges suffice). Simple Case I (KT Lemma 6.3/6.5) → `hasFullRankRealization_of_couple_ofNormals` (this commit). The simple cases conclude the GP motive `HasGenericFullRankRealization`, forgetful-mapped to the bare `HasFullRankRealization` via `hasFullRankRealization_of_generic` for `theorem_55`'s `hcontract`.
+
+Recurring trap (FRICTION): the heavy `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph`
+graph-swaps — state hypotheses pre-converted. Build order from there: N6 composer → the **Case-III
+row** (Track B) via the green Lemma 2.1 (`omitTwoExtensor_linearIndependent`).
 
 Honesty-gate: `lem:case-I-splice-placement` / `lem:case-I-realization` stay red — the deliverable
-(shared-seed full-rank realization) is not produced; only the decomposable bricks are green.
+(the IH-fed Case-I realization discharging `hcontract`) is not produced; only the decomposable
+coupling producer is green.
 
 *Alternatively*, the genericity-free `prop:rigidity-matrix-prop11` `hub` brick (`screwDim k + def ≤
 dim Z(G,p)`, the Phase-19 partition-contraction count) is a Track-independent closable target — but it

@@ -3943,6 +3943,102 @@ theorem PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial
   rw [hG, Nat.mul_succ]
   omega
 
+/-- **Case I shared-seed coupling: two rigid legs on the parent selector give a full-rank
+realization** (`lem:case-I-splice-placement` / `lem:case-I-realization`, the simple Case-I
+shared-seed coupling assembly N6b/N6c; Katoh–Tanigawa 2011 §6.2, eq. (6.6), the joint genericity of
+the two Case-I legs; Phase 22). The genuine remaining content of the simple Case I, assembled from
+the green leg-restricted rank polynomials and the general-position factor (G2): given the two
+inductive legs `GH`, `Gc` (both subgraphs of `G`, sharing the contracted body `c` and covering
+`V(G)`), each *infinitesimally rigid on its own vertex set* as a leg-native framework
+`ofNormals GH ends q_H` resp.\ `ofNormals Gc ends q_c` at the **parent endpoint selector** `ends`
+and at its **own** seed (`hrigH`/`hrigc`, the form the `ends`-swap brick
+`infinitesimalMotions_ofNormals_eq_of_ends_swap` delivers from each leg's
+`HasGenericFullRankRealization` inductive hypothesis), with transversal hinges at each leg's seed
+(`hneH`/`hnec`), the parent graph `G` has a full-rank panel realization
+`HasFullRankRealization k G`.
+
+This is the witness-transfer the prior scaffolding reduced the Case I geometry to, now a pure
+assembly of green bricks (the recon's `hends`-over-all-`β` obstruction was dissolved by the
+leg-restricted chain): (i) each leg's rigidity yields its leg-restricted rank polynomial `Q_H`/`Q_c`
+(`exists_rankPolynomial_of_rigidOn_linking`), nonzero at its own seed hence nonzero as a polynomial;
+(ii) the general-position factor `Q_gp` (`exists_generalPosition_polynomial`) is nonzero (witnessed
+at any moment-curve seed); (iii) the triple product `Q_H · Q_c · Q_gp` is a nonzero polynomial, so
+`MvPolynomial.exists_eval_ne_zero` exhibits one shared seed `q₀` at which all three factors are
+nonzero; (iv) at `q₀` each leg is rigid
+(`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking`,
+consuming each leg's `hsupp`) and the parent normals are in general position (the `Q_gp` non-root);
+(v) `hasFullRankRealization_of_splice_ofNormals` splices the two `q₀`-rigid legs along the shared
+body into the parent realization, with general position discharging the splice's `hgp`.
+
+The deliverable rank is concluded, not assumed (honesty gate): the inputs are the satisfiable
+per-leg single-seed rigidities and per-seed transversalities (each a
+`HasGenericFullRankRealization` leg, up
+to the `ends`-swap), not the parent rank. The remaining red content of `lem:case-I-realization` is
+the composer that supplies these leg hypotheses from the IH (the `ends`-swap step) and dispatches on
+simplicity (non-simple → `hasFullRankRealization_of_splice_of_supportExtensor_ofNormals`, N6a;
+simple → this lemma). -/
+theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite α] [Finite β]
+    (G : Graph α β) (ends : β → α × α)
+    (hends : ∀ e, G.IsLink e (ends e).1 (ends e).2)
+    (hne_ends : ∀ e, (ends e).1 ≠ (ends e).2) (hne : V(G).Nonempty)
+    {GH Gc : Graph α β} (hGH : GH ≤ G) (hGc : Gc ≤ G)
+    {c : α} (hcH : c ∈ V(GH)) (hcc : c ∈ V(Gc)) (hcover : V(G) ⊆ V(GH) ∪ V(Gc))
+    (hnevH : V(GH).Nonempty) (hnevc : V(Gc).Nonempty)
+    {qH qc : α × Fin (k + 2) → ℝ}
+    (hneH : ∀ e, GH.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.supportExtensor e ≠ 0)
+    (hnec : ∀ e, Gc.IsLink e (ends e).1 (ends e).2 →
+      (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.supportExtensor e ≠ 0)
+    (hrigH :
+      (PanelHingeFramework.ofNormals GH ends qH).toBodyHinge.IsInfinitesimallyRigidOn V(GH))
+    (hrigc :
+      (PanelHingeFramework.ofNormals Gc ends qc).toBodyHinge.IsInfinitesimallyRigidOn V(Gc)) :
+    PanelHingeFramework.HasFullRankRealization k G := by
+  classical
+  -- A leg's linking edge `e` (`GH.IsLink e u v`) links the parent selector *within the leg*: `e` is
+  -- in `E(GH)` and links `ends` in `G` (`hends`), so by `IsSubgraph.isLink_iff` it links in `GH`.
+  have hendsH : ∀ e u v, GH.IsLink e u v → GH.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
+    (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
+  have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
+    (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
+  -- (i) Each leg's leg-restricted rank polynomial: a `panelRow`-index subset `s` of full size and a
+  -- `MvPolynomial` `Q` nonzero at the leg's own seed whose every non-root gives the subfamily LI.
+  obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking GH ends hendsH hneH hnevH hrigH
+  obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
+    PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
+  -- (ii) The general-position factor: nonzero (witnessed at a moment-curve seed), non-roots general
+  -- position.
+  obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
+    exists_generalPosition_polynomial (k := k) G ends
+  -- (iii) The triple product is a nonzero polynomial (each factor nonzero), so it has a non-root.
+  have hQHne : QH ≠ 0 := fun h => hQ0H (by rw [h, map_zero])
+  have hQcne : Qc ≠ 0 := fun h => hQ0c (by rw [h, map_zero])
+  have hQgpne : Qgp ≠ 0 := by
+    obtain ⟨f, hf⟩ := Countable.exists_injective_nat α
+    refine fun h => hQgp_ne (fun a => (f a : ℝ)) ?_ (by rw [h, map_zero])
+    exact fun a b hab => hf (Nat.cast_injective hab)
+  obtain ⟨q₀, hq₀⟩ := MvPolynomial.exists_eval_ne_zero
+    (mul_ne_zero (mul_ne_zero hQHne hQcne) hQgpne)
+  rw [map_mul, map_mul] at hq₀
+  have hq₀H : MvPolynomial.eval q₀ QH ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hq₀c : MvPolynomial.eval q₀ Qc ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  have hq₀gp : MvPolynomial.eval q₀ Qgp ≠ 0 := fun h => hq₀ (by rw [h]; ring)
+  -- (iv) At `q₀` each leg is rigid (consuming its `hsupp`), and the parent normals are general.
+  have hrigH₀ : (PanelHingeFramework.ofNormals GH ends q₀).toBodyHinge.IsInfinitesimallyRigidOn
+      V(GH) :=
+    PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking
+      GH ends hnevH hsuppH hcardH hLIH hq₀H
+  have hrigc₀ : (PanelHingeFramework.ofNormals Gc ends q₀).toBodyHinge.IsInfinitesimallyRigidOn
+      V(Gc) :=
+    PanelHingeFramework.isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero_linking
+      Gc ends hnevc hsuppc hcardc hLIc hq₀c
+  have hgp : (PanelHingeFramework.ofNormals (k := k) G ends q₀).IsGeneralPosition :=
+    hQgp_pos q₀ hq₀gp
+  -- (v) Splice the two `q₀`-rigid legs along the shared body into the parent realization.
+  exact PanelHingeFramework.hasFullRankRealization_of_splice_ofNormals G ends hends hne_ends hne
+    hgp hGH hGc hcH hcc hcover hrigH₀ hrigc₀
+
 /-- **Swapping a hinge's two endpoints leaves the panel framework's motion space unchanged**
 (`lem:case-I-splice-placement` infra, the `ends`-selector independence of leg rigidity;
 Katoh–Tanigawa 2011 §6.2, Phase 22). For two endpoint selectors `ends`, `ends'` that record the

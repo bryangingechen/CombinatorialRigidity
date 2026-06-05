@@ -76,6 +76,20 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] An injective `α → ℝ` from a finite (or merely countable) `α` — `Countable.exists_injective_nat` then `Nat.cast_injective`, not a one-shot `exists_injective_toReal`
+- **Where it bit:** `hasFullRankRealization_of_couple_ofNormals` (Phase 22, Case-I shared-seed
+  coupling), proving the general-position factor `Qgp ≠ 0`. `exists_generalPosition_polynomial`'s
+  non-vanishing clause is witnessed only at a *moment-curve* seed `fun p ↦ momentCurve (param p.1) p.2`
+  for an **injective** `param : α → ℝ`; to conclude `Qgp ≠ 0` from "nonzero somewhere" one must
+  exhibit such a `param`. Guessed a one-shot `Fintype.exists_injective_toReal` (does not exist); one
+  build cycle.
+- **Proposed fix:** `obtain ⟨f, hf⟩ := Countable.exists_injective_nat α` (finite ⟹ countable ⟹
+  `∃ f : α → ℕ, Injective f`), then `param := fun a ↦ (f a : ℝ)` with injectivity
+  `fun a b hab ↦ hf (Nat.cast_injective hab)`. General rule: there is no direct
+  `Finite/Countable → ∃ _ : _ → ℝ, Injective`; compose the countable-to-`ℕ` injection with the
+  `ℕ ↪ ℝ` cast. Small enough to inline; not worth a mirror.
+- **Status:** resolved (lemma composition; no mirror needed).
+
 ### [resolved] `obtain ⟨a, t⟩ := e j` on a *term* (not a hypothesis) doesn't substitute the term's other occurrences — use `rcases hej : e j with ⟨a, t⟩` then `simp only [hej]`
 - **Where it bit:** `exists_rankPolynomial_of_rigidOn` (Phase 22, Case-I per-leg rank polynomial), the
   coordinatization `hg : φ (g q i) j = eval q (c i j)`. After `rw [hc_def]` the RHS panel polynomial
