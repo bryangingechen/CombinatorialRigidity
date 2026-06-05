@@ -1124,6 +1124,125 @@ theorem BodyHingeFramework.exists_independent_panelRow_subfamily_of_rigidOn_link
   have hinj := F.injOn_extProj_dualMap_rigidityRows hrig hr hinter
   exact hindep.map_injOn _ (hinj.mono hspan_le)
 
+/-- **The relabelled selector records the relabelled graph's links** (`lem:claim-6-4`, the U3a
+contraction-leg `IsLink.map`-under-collapse fact; Katoh–Tanigawa 2011 §6.2, eq. (6.7), Phase 22b
+route (i), risk (c)). If a parent endpoint selector `ends` records every link of `Gc` up to swap
+(the edge-restricted `hends`, the form every fresh producer carries), then the *relabelled*
+selector `endsᵐ e := (f (ends e).1, f (ends e).2)` records every link of the relabelled graph
+`Gc.map f` up to swap.
+
+This is the contracted-side analogue of `recordsLinks_swap_endsOf` for the contraction leg: a link
+of `Gc.map f` is, by `Graph.map_isLink`, the `f`-image of a `Gc`-link `Gc.IsLink e x y` with
+`f x = u`, `f y = v`; `ends` records *that* `Gc`-link (`hends`), and two `IsLink`s of the same edge
+pin the same unordered pair (`IsLink.eq_and_eq_or_eq_and_eq`), so `(ends e).1, (ends e).2` is `x, y`
+up to order; applying `f` gives `endsᵐ e = (u, v)` up to swap. This is the link-recording the U3a
+swap-transport needs of the relabel selector `endsᵐ` (so that, against the IH realization's own
+link-recording `Q.ends`, the two agree up to swap and the rigidity transports). -/
+theorem PanelHingeFramework.recordsLinks_map_of_records
+    {Gc : Graph α β} (f : α → α) (ends : β → α × α)
+    (hends : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2) :
+    ∀ e u v, (Gc.map f).IsLink e u v →
+      ((f (ends e).1) = u ∧ (f (ends e).2) = v) ∨
+      ((f (ends e).1) = v ∧ (f (ends e).2) = u) := by
+  intro e u v he
+  rw [Graph.map_isLink] at he
+  obtain ⟨x, y, hxy, hfx, hfy⟩ := he
+  rcases (hends e x y hxy).eq_and_eq_or_eq_and_eq hxy with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact Or.inl ⟨by rw [h1, hfx], by rw [h2, hfy]⟩
+  · exact Or.inr ⟨by rw [h1, hfy], by rw [h2, hfx]⟩
+
+/-- **Two selectors recording the same graph's links agree up to swap** (`lem:claim-6-4`, the U3a
+swap-bookkeeping infra; Katoh–Tanigawa 2011 §6.2, Phase 22b route (i)). If both `ends₁` and `ends₂`
+record every link of `G` up to swap (the strengthened-motive link-recording conjunct's shape), then
+on every link of `G` they agree up to swap. Both pin the *same* unordered pair on each link, so the
+four cases of the two disjunctions collapse pairwise into the swap disjunction. This is the
+selector-agnostic generalization of `recordsLinks_swap_endsOf` (which fixed `ends₂ = G.endsOf`); the
+U3a transport feeds it the IH realization's own link-recording `Q.ends` (`hrec₁`) and the relabel
+selector `endsᵐ`'s link-recording (`hrec₂`, from `recordsLinks_map_of_records`). -/
+theorem PanelHingeFramework.recordsLinks_agree_swap
+    {G : Graph α β} (ends₁ ends₂ : β → α × α)
+    (hrec₁ : ∀ e u v, G.IsLink e u v →
+      ((ends₁ e).1 = u ∧ (ends₁ e).2 = v) ∨ ((ends₁ e).1 = v ∧ (ends₁ e).2 = u))
+    (hrec₂ : ∀ e u v, G.IsLink e u v →
+      ((ends₂ e).1 = u ∧ (ends₂ e).2 = v) ∨ ((ends₂ e).1 = v ∧ (ends₂ e).2 = u)) :
+    ∀ e u v, G.IsLink e u v →
+      ((ends₁ e).1 = (ends₂ e).1 ∧ (ends₁ e).2 = (ends₂ e).2) ∨
+      ((ends₁ e).1 = (ends₂ e).2 ∧ (ends₁ e).2 = (ends₂ e).1) := by
+  intro e u v he
+  rcases hrec₁ e u v he with ⟨a1, a2⟩ | ⟨a1, a2⟩ <;>
+    rcases hrec₂ e u v he with ⟨b1, b2⟩ | ⟨b1, b2⟩
+  · exact Or.inl ⟨a1.trans b1.symm, a2.trans b2.symm⟩
+  · exact Or.inr ⟨a1.trans b2.symm, a2.trans b1.symm⟩
+  · exact Or.inr ⟨a1.trans b2.symm, a2.trans b1.symm⟩
+  · exact Or.inl ⟨a1.trans b1.symm, a2.trans b2.symm⟩
+
+/-- **The contraction leg's generic rigidity transports across the collapse map to the relabel
+selector** (`lem:claim-6-4`, the U3a contraction-leg rigidity transport; Katoh–Tanigawa 2011 §6.2,
+eqs. (6.7)/(6.9), Phase 22b route (i), design doc §1.20 U3a / §1.24 item 4 second half). Given the
+contraction's *strengthened* generic IH `Qcf : HasGenericFullRankRealization k (Gc.map f)` (whose
+witness `Q` carries the link-recording conjunct, so `Q.ends` records `Gc.map f`'s links), and a
+parent selector `ends` recording `Gc`'s links (`hends`), produce a free-normal panel framework on
+the relabelled graph `Gc.map f` at the **relabel selector**
+`endsᵐ e := (f (ends e).1, f (ends e).2)`, in general position and infinitesimally rigid on its
+whole vertex set `V(Gc.map f)`.
+
+This is the contraction-leg face of the alignment §1.23 found undischarged in the bare motive — now
+*derivable* from route (i)'s link-recording conjunct. The transport is the
+`hasGenericRealization_transport_ends` pattern, against the relabel selector instead of the parent:
+(1) `Q` is literally `ofNormals Q.graph Q.ends (Q.normal-pullback)`; the swap brick
+`infinitesimalMotions_ofNormals_eq_of_ends_swap` carries its rigidity from `Q.ends` to `endsᵐ`,
+since both record `Gc.map f`'s links and so agree up to swap (`recordsLinks_agree_swap` of
+`Q.ends`'s own link-recording `hQrec` and the relabel selector's `recordsLinks_map_of_records`).
+(2) General
+position is a property of the normals alone (`ofNormals_normal`), unchanged by the selector, so the
+relabel framework is again in general position. The output framework
+`ofNormals (Gc.map f) endsᵐ nrm` is exactly the `Qcf'` the U3b projected-subfamily extraction
+(`exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj`) consumes (a framework rigid on
+its vertex set at a link-recording selector); U4 then carries the projected independence back to the
+*uncollapsed* rows at the degenerate placement via the U2 row reproduction. -/
+theorem PanelHingeFramework.hasGenericRealization_transport_relabel
+    (Gc : Graph α β) (f : α → α) (ends : β → α × α)
+    (Qcf : PanelHingeFramework.HasGenericFullRankRealization k (Gc.map f))
+    (hends : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2) :
+    ∃ nrm : α × Fin (k + 2) → ℝ,
+      (PanelHingeFramework.ofNormals (Gc.map f)
+        (fun e => (f (ends e).1, f (ends e).2)) nrm).IsGeneralPosition ∧
+      (PanelHingeFramework.ofNormals (Gc.map f)
+        (fun e => (f (ends e).1, f (ends e).2)) nrm).toBodyHinge.IsInfinitesimallyRigidOn
+        V(Gc.map f) := by
+  obtain ⟨Q, hQg, hQgp, hQrig, hQrec⟩ := Qcf
+  set endsM : β → α × α := fun e => (f (ends e).1, f (ends e).2) with hendsM
+  set nrm := (fun p => Q.normal p.1 p.2 : α × Fin (k + 2) → ℝ) with hnrm
+  -- General position transfers to `ofNormals … endsM …` verbatim (normals are `Q.normal`, unchanged
+  -- by the selector); the graph-arg of `IsGeneralPosition` is irrelevant (it reads only normals).
+  have hgp' : (PanelHingeFramework.ofNormals (Gc.map f) endsM nrm).IsGeneralPosition := by
+    intro a b hab
+    simpa only [hnrm, PanelHingeFramework.ofNormals_normal] using hQgp a b hab
+  refine ⟨nrm, hgp', ?_⟩
+  -- The two selectors `Q.ends` and `endsM := f ∘ (parent ends)` both record `Q.graph = Gc.map f`'s
+  -- links (route (i)'s conjunct `hQrec` and the relabelled `recordsLinks_map_of_records`), so they
+  -- agree up to swap; the swap brick then equates the motion spaces of `Q = ofNormals Q.graph
+  -- Q.ends nrm` and `ofNormals Q.graph endsM nrm`.
+  have hswap : ∀ e u v, Q.graph.IsLink e u v →
+      ((Q.ends e).1 = (endsM e).1 ∧ (Q.ends e).2 = (endsM e).2) ∨
+      ((Q.ends e).1 = (endsM e).2 ∧ (Q.ends e).2 = (endsM e).1) := by
+    rw [hQg]
+    exact PanelHingeFramework.recordsLinks_agree_swap Q.ends endsM hQrec
+      (PanelHingeFramework.recordsLinks_map_of_records f ends hends)
+  have hmot : (PanelHingeFramework.ofNormals Q.graph endsM nrm).toBodyHinge.infinitesimalMotions
+      = (PanelHingeFramework.ofNormals Q.graph Q.ends nrm).toBodyHinge.infinitesimalMotions :=
+    PanelHingeFramework.infinitesimalMotions_ofNormals_eq_of_ends_swap
+      Q.graph endsM Q.ends nrm hswap
+  -- Rigidity at `endsM`: rewrite the graph to `Q.graph` (in both the goal and the IH rigidity),
+  -- then move rigidity off `Q` via `hmot`.
+  rw [← hQg] at hQrig ⊢
+  intro S hS u hu v hv
+  refine hQrig S ?_ u hu v hv
+  rw [← BodyHingeFramework.mem_infinitesimalMotions] at hS ⊢
+  rw [hmot] at hS
+  -- `Q = ofNormals Q.graph Q.ends nrm` definitionally (structure eta + `nrm = Q.normal`-pullback).
+  exact hS
+
 /-- **Coordinate of `D w` as a matrix-vector product in a basis identification** (the linearity
 fact behind the `D ∘ panelRow` coordinatization N-22b-2; standard linear algebra). For a finite-dim
 ℝ-space `W` with a basis identification `φ : W ≃ₗ[ℝ] (Fin n → ℝ)` and any linear endomorphism `D`,
