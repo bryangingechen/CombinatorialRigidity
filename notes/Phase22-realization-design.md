@@ -1065,6 +1065,66 @@ molecular phases 17–22 for sibling structural divergences. Lesson captured in
 the reframing rewrites the composer. The block-triangular reframing design lands as a
 new section here once produced.
 
+### 1.14 Block-triangular reframing — design (Stage 2, verified; pending owner sign-off to implement) (2026-06-05)
+
+**The reframe.** Replace the common-seed motion-space splice with KT eq. (6.3)'s
+block-triangular rank-addition, routed through the **device** `exists_good_realization`
+(which certifies `#s + dim Z(F) ≤ D·|α|` from `#s` *independent rows* of one framework
+`F` — `exists_good_realization_const`). Exhibit `D(|V(G)|−1)` independent rigidity rows of
+the common framework `F = ofNormals G ends q₀`, split block-wise:
+- **`s_H`** : `D(|V(H)|−1)` rows of the rigid-block edges `E(H)` — independent, from the
+  `H`-leg's rank polynomial (existing green machinery, at the `H`-leg's own generic
+  placement transferred to `q₀` across the Zariski-open non-root locus);
+- **`s_c`** : `D(|sc|−1)` rows of the surviving edges `E(G)∖E(H)`, `sc = (V(G)∖V(H))∪{r}`.
+
+The device then bounds `dim Z(F)`, and **N3** (`isInfinitesimallyRigidOn_vertexSet_of_finrank_le`)
+converts that to rigid-on-`V(G)` — the motive. **This eliminates the common-seed demand by
+construction:** the device needs independent *rows* (counts), never *rigidity of `F` on a
+leg at a shared seed*. It also re-aligns Case I with how Cases II/III already feed the
+device. (Three-trap check: no common-seed rigidity; no GP⟹rigid; no false pin-equality —
+the body-set N3 consumer with its `hpin` equality is never invoked on the contraction leg.)
+
+**Piece B — union-independence of `s_H ⊔ s_c` (the block-triangular core; VERIFIED bounded,
+~40–60 lines, scratch-compiled axiom-clean).** Project rows onto the **exterior** columns
+`V(G)∖V(H)` via `extProj H : (α → ScrewSpace k) →ₗ (α → ScrewSpace k)`,
+`S ↦ fun a => if a ∈ V(H) then 0 else S a` (one `LinearMap.mk`); set `D := (extProj H).dualMap`
+(precomposition). Then:
+- **`H`-rows vanish under `D`** (fact 2): for `u,v ∈ V(H)`, `hingeRow u v r ∘ extProj H = 0`
+  (a 3-line `rw` off the row formula `r ∘ (proj u − proj v)`) — the row-side of KT's
+  top-right `0`. So `span s_H ⊆ ker D`.
+- Given the residual `hsc_proj_indep` (= `D ∘ s_c` independent), `s_c` is independent
+  (`LinearIndependent.of_comp`) and `Disjoint (span s_c) (ker D)` (`Submodule.range_ker_disjoint`),
+  whence `Disjoint (span s_H) (span s_c)` and `LinearIndependent.sum_type` closes the union.
+
+  **N.B. the projection is to the EXTERIOR columns `V(G)∖V(H)`, not interior** (the original
+  Stage-2-draft sketch said "interior", which is backwards — interior columns are touched by
+  surviving boundary edges too, so they don't separate the blocks; exterior columns are where
+  the `H`-block vanishes). Lemmas (all mathlib, confirmed to fit):
+  `LinearMap.dualMap_apply'`, `LinearIndependent.{of_comp,sum_type}`,
+  `Submodule.{range_ker_disjoint,disjoint_def,span_le}`, `LinearMap.mem_ker`. The rows are
+  the *same functionals* in `ofNormals G ends q₀` (`panelRow ends i` depends only on `ends`/`q`,
+  not the graph — `toBodyHinge_supportExtensor`), so membership transport is `rfl`-style
+  (`exists_independent_panelRow_transport`). **Piece B is NOT `h…`-deferrable** — it is the
+  block-triangular structure itself, cheap to prove; deferring it would smuggle structure.
+
+**The residual honest Claim 6.4** (the single green-modulo hypothesis, replacing the
+undischargeable `htransportGP`): **`hsc_proj_indep` — the `s_c` surviving rows are
+independent after the exterior-column projection** `D` (= KT's bottom-right block rank
+`rank R(G,p;E∖E′,V∖V′) = D(|sc|−1)`, eq. 6.5/6.9 + Lemma 5.1). This is *single-placement*
+(one `q₀`), *contraction-leg-local* (only the surviving edges, only their exterior-projected
+rows), and a *row-count* (not a ∀-GP-rigid nor a placement-independent pin-equality), so it
+is the genuine, dischargeable KT Claim 6.4 (discharged in 22b via the contraction's generic
+IH + algebraic independence). State it as exterior-*projected* independence (`D ∘ s_c`),
+**not** full-space independence (which is too weak for the union argument).
+
+**Scope.** Piece B (~40–60 new lines) + the composer rewire (~40–60, swap the asymmetric
+coupling for the device-row-addition path, reusing IH extraction / N4 / G3b geometry /
+`endsOf` / the existing device closure `hasFullRankRealization_of_independent_panelRow`) +
+the count arithmetic (`omega`). Bounded rewrite, no new matrix-rank theory. The symmetric /
+asymmetric couplings + the `∃`-form transport stay as (now-unused) library bricks. Outcome:
+`case_I_realization` honestly green-modulo `hsc_proj_indep` (Claim 6.4), restoring the
+coordinator-close path (blueprint flip green-modulo + a red Claim-6.4 node, à la 21→21b).
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
