@@ -305,6 +305,35 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Fini
       hgp (by simpa using hne_ends e))
     hGH hGc hcH hcc hcover hrigH₀ hrigc₀
 
+/-- **The canonical-`endsOf` panel realization records its own graph's links** (`thm:theorem-55`,
+the motive's link-recording conjunct; Katoh–Tanigawa 2011 §6.2, Phase 22b route (i)). For the
+canonical endpoint selector `G.endsOf`, the free-normal panel framework `ofNormals G G.endsOf q₀`
+records every link of `G` up to swap: if `G.IsLink e u v` then its selector
+`(ofNormals G G.endsOf q₀).ends e = G.endsOf e` is `(u, v)` or its swap `(v, u)`.
+
+This is the **link-recording conjunct** the strengthened generic motive
+`HasGenericFullRankRealization` carries (Phase 22b route (i), design doc §1.24 Commit 2): it is the
+guarantee that the realizing framework's endpoint selector pins, for each link, the same unordered
+pair the link does — exactly what the `ends`-swap transport
+(`hasGenericRealization_transport_ends`'s `hswap`) and the contraction-leg alignment of Case I's
+composer consume. Every fresh producer builds `ofNormals G G.endsOf q₀` (the composer manufactures
+the canonical `endsOf` selector, `isLink_endsOf`), so this lemma is the term each one hands the
+strengthened motive. The content is `Graph.endsOf_eq_or_swap` (the canonical selector orients along
+any given link, up to order, via mathlib's `IsLink.eq_and_eq_or_eq_and_eq`) read componentwise
+through `ofNormals_ends`. -/
+theorem PanelHingeFramework.ofNormals_endsOf_recordsLinks [Inhabited α]
+    (G : Graph α β) (q₀ : α × Fin (k + 2) → ℝ) :
+    ∀ e u v, G.IsLink e u v →
+      (((PanelHingeFramework.ofNormals G G.endsOf q₀).ends e).1 = u ∧
+        ((PanelHingeFramework.ofNormals G G.endsOf q₀).ends e).2 = v) ∨
+      (((PanelHingeFramework.ofNormals G G.endsOf q₀).ends e).1 = v ∧
+        ((PanelHingeFramework.ofNormals G G.endsOf q₀).ends e).2 = u) := by
+  intro e u v he
+  rw [PanelHingeFramework.ofNormals_ends]
+  rcases G.endsOf_eq_or_swap he with h | h
+  · exact Or.inl ⟨by rw [h], by rw [h]⟩
+  · exact Or.inr ⟨by rw [h], by rw [h]⟩
+
 /-- **Swapping a hinge's two endpoints leaves the panel framework's motion space unchanged**
 (`lem:case-I-splice-placement` infra, the `ends`-selector independence of leg rigidity;
 Katoh–Tanigawa 2011 §6.2, Phase 22). For two endpoint selectors `ends`, `ends'` that record the
