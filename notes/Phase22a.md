@@ -35,6 +35,20 @@ k-bookkeeping*.
 
 ## Current state
 
+**⚠ PARTIAL (2026-06-05) — the block-triangular STRUCTURE is correct and verified, but the landed
+residual `hclaim64` is over-quantified (`∀`-GP) and NOT yet dischargeable; a bounded `Qc`-non-root fix
+is verified and pending.** Coordinator scrutiny of f504955 found `hclaim64`/`hsc_proj_indep` stated as
+`∀ q, GP(q) → surviving rows D-projected-independent` — the **4th over-claim**, the `htransportGP`
+over-quantification recurring as row-independence (it needs "GP ⟹ max rank", false; the tell: the
+coupling gets the `H`-block independent at `q₀` via the rank polynomial `QH`, not GP, yet treats the
+surviving block as `∀`-GP). The **structural reframe below is sound** (Piece B proven green, exterior
+projection, device-row-addition, false `hpinc` gone — build/lint/axioms clean), and the dischargeable
+fix is verified (design doc §1.16): condition the surviving-independence on a rank-polynomial
+`Qc`-non-root threaded into the seed via the triple product `QH·Qc·Qgp` (the symmetric coupling's
+pattern), making the residual **exactly** KT Claim 6.4 (the `V∖V′`-restricted surviving rank, eq. 6.9),
+dischargeable in 22b. **Next: the bounded `Qc`-non-root fix, then the coordinator close.** The text
+below describes the (structurally-correct, residual-over-quantified) f504955 landing.
+
 **✓ BLOCK-TRIANGULAR REFRAME LANDED (2026-06-05, Stage 4) — `case_I_realization` is now honestly
 GREEN-MODULO `hsc_proj_indep` (the dischargeable KT Claim 6.4).** The §1.13 impasse — the asymmetric
 coupling's `htransportGP` ("GP ⟹ rigid", false) was the third relocation of an unsatisfiable

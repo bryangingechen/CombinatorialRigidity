@@ -1136,6 +1136,24 @@ splice glue vs KT block-triangular*; `notes/Phase22-realization-design.md` §1.1
 above (that gate catches a short-by-one-row count; this one catches a count that
 closes over the *wrong structure*).
 
+**Sharpening: a green-modulo residual quantified `∀` over a genericity class is
+suspect (Phase 22a, 2026-06-05; four over-claims).** Even after the structure is
+right, the *quantifier* on the deferred hypothesis is the next trap. Phase 22a's
+realization residual was restated four times (`hcrig` → false `hpinc` → `htransportGP`
+→ `hclaim64`-∀-GP), and the last two share a defect: they are universally quantified
+over **general position** (`∀ q, GP(q) → …max rank…`), which requires "GP ⟹ maximal
+rank" — false (GP is necessary, not sufficient; the *same-kind* sibling leg in the
+very same proof gets its rank from a *rank polynomial*, not from GP). The source (KT
+Claim 6.4) gives the rank "at the **generic** placement" — a Zariski-**open locus**,
+i.e. the non-roots of a rank polynomial — **not** "at every general-position
+placement". **The rule:** condition a green-modulo residual on the specific
+Zariski-open locus the construction actually lands in (a rank-polynomial non-root,
+intersected into the shared seed via the existing triple-product pattern), matching the
+source's `∃`/open-locus genericity, never `∀`-over-GP. The tell that you over-quantified:
+a *sibling object in the same construction* gets the analogous property from a
+narrower condition (a rank-poly non-root) than you are demanding (all of GP) — an
+unjustified asymmetry. Cross-ref: `notes/Phase22-realization-design.md` §1.16.
+
 ## Phase Case-naming must match KT's k-bookkeeping
 
 **The bug (Phase 21b, 2026-06-04).** The project labelled the reducible-vertex

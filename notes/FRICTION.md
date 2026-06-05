@@ -2110,14 +2110,20 @@ limitations. Worth a once-over so future agents don't re-litigate.
   both legs**. KT's structure never needs that; the project's motion-space rigidity
   model does. The common-seed demand — with the contraction leg on a *proper* body
   set — is the impasse the three bridges tried and failed to cross.
-- **Don't retry:** any fourth "bridge hypothesis" that gets the contraction leg rigid
-  at the H-leg-determined shared seed (via a count/consumer needing the false
-  equality, or via GP). The fix is the **block-triangular reframing** (reproduce KT's
-  rank-addition over leg-wise placements), not another common-seed bridge.
+- **Don't retry:** any "bridge hypothesis" that gets the contraction leg rigid at the
+  H-leg-determined shared seed via a count/consumer needing the false equality, or via
+  GP. The fix is the **block-triangular reframing** (KT's rank-addition over leg-wise
+  placements). **And — 4th over-claim (2026-06-05):** even within the reframe, do NOT
+  state the residual `∀`-over-GP (`∀ q, GP(q) → surviving rows independent/rigid`) —
+  that is `htransportGP` recurring as row-independence, undischargeable ("GP ⟹ max
+  rank" is false; the H-leg, same kind of object, needs its rank polynomial, not GP).
+  Condition it on a surviving rank-polynomial `Qc`-non-root (triple product
+  `QH·Qc·Qgp`), = genuine KT Claim 6.4.
 - **Status:** realization layer being re-architected (block-triangular, design-first).
   Standing lesson lifted → `DESIGN.md` *Match the source's argument structure, not
-  just its conclusion* + `blueprint/CLAUDE.md` *the honesty gate* (third check). Math
-  + decision: `notes/Phase22-realization-design.md` §1.12–§1.13; `notes/Phase22a.md`
+  just its conclusion* (incl. the `∀`-GP-vs-generic-locus sharpening) +
+  `blueprint/CLAUDE.md` *the honesty gate* (third check). Math + decision:
+  `notes/Phase22-realization-design.md` §1.12–§1.16; `notes/Phase22a.md`
   *Blockers*/*Hand-off*.
 
 ### [process] Phase 21b realization producers — the four-re-plan thrash and the dead ends (read before opening Phase 22)

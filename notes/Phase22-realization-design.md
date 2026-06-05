@@ -1151,6 +1151,42 @@ divergence; no new blocker.**
   `complementIso` orientation sign (Phase 21a) — verify before **Phase 25** (projective
   invariance) / 26 in case an *oriented* meet is consumed (recorded in `notes/Phase21a.md`).
 
+### 1.16 The §1.14/Stage-4 residual was over-quantified (∀-GP); the dischargeable form is Qc-non-root (verified) (2026-06-05)
+
+The Stage-4 implementation (f504955) landed the block-triangular structure correctly
+(Piece B proven green, exterior projection, device-row-addition — all verified) but stated
+the residual `hclaim64`/`hsc_proj_indep` as **`∀ q, GP(q) → surviving D-projected-independent`**.
+A coordinator scrutiny found this is the **same over-quantification as `htransportGP`**, disguised
+as row-independence: it is strictly stronger than KT Claim 6.4 (which gives the surviving rank
+only at the *generic* placement, a Zariski-open locus, NOT at *every* GP seed), and discharging
+it needs "GP ⟹ surviving max rank", false. The **tell is in the code**: the coupling builds `q₀`
+from `QH · Qgp` and gets the `H`-block independent at `q₀` via the `H`-leg's *rank polynomial* `QH`
+(not GP) — yet treats the surviving block as `∀`-GP-independent, an unjustified asymmetry.
+
+**The dischargeable form (verified, the fix target): condition on a surviving rank polynomial
+`Qc`-non-root, threaded into the seed via the triple product `QH · Qc · Qgp`** (the pattern the
+symmetric coupling already uses):
+`∃ Qc ≠ 0, ∀ q, eval q Qc ≠ 0 → ∃ rsc, (links in Gc) ∧ |rsc| ≥ D(|sc|−1) ∧ LinearIndependent (D ∘ panelRow rsc)`.
+This reduces **exactly** to KT Claim 6.4 and is dischargeable in 22b:
+- It IS eq. (6.9): `D = (extProj V(H)).dualMap` is the restriction to `V∖V′ = V(G)∖V(H)` columns,
+  and Claim 6.4 gives the surviving block's `V∖V′`-restricted rank `= D(|sc|−1)` (full exterior
+  column rank) at the generic placement.
+- Packaging machinery exists (no wall): the existing `exists_rankPolynomial_of_rigidOn_linking_set`
+  builds its polynomial via the generic mirror `exists_polynomial_ne_zero_of_linearIndependent_at`
+  from full-space rows `panelRow`; the variant feeds `D ∘ panelRow` (a fixed linear map ∘ the rows,
+  still polynomially coordinatized) + a witness placement. So 22b = (deferred) Claim 6.4 [∃ one
+  placement with full exterior-projected surviving rank, from the contraction IH via algebraic
+  independence] + (bounded) the `D∘panelRow` producer variant.
+- Avoids all four known traps (false `hpinc`; `∀`-GP-rigid; `∀`-GP-independent; consumer/false-
+  equality) and restores leg-symmetry (both legs via rank-poly non-roots).
+
+**Meta-lesson (promoted):** a green-modulo residual quantified `∀` over a *genericity class*
+(`∀ GP`) is suspect — condition it on the specific Zariski-open locus the construction actually
+lands in (a rank-polynomial non-root, intersected into the shared seed), matching the source's
+"at the generic placement" (∃/open locus), NOT "at every general-position placement" (∀). This is
+the recurring trap (`htransportGP` → `hclaim64`-∀-GP). See `DESIGN.md` *Match the source's
+argument structure …* and `notes/FRICTION.md` *[process] Phase 22a …*.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
