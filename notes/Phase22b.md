@@ -1,21 +1,34 @@
 # Phase 22b — KT Claim 6.4 (Case-I green-modulo discharge) (work log)
 
-**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U1 + U2 + ALL of U3b now
-LANDED (sound); U3a (alignment) + U4 (assemble + flip) remain** (opened 2026-06-05 as the
-coordinator's Close-C of Phase 22a; opening recon + the reduction N-22b-1/2/3 landed 2026-06-05; the
-T2b math-first re-recon landed 2026-06-05; U2 opened + reconciliation core landed 2026-06-05; **U1 +
-the U2 per-edge tail landed 2026-06-05** as `9098129`; the U3b build-recon corrected 2026-06-05
-(design doc §1.22); **the U3b pin-count sub-lemma (the §1.22 walling node) landed 2026-06-05** as
-`0f0e7aa`; **the U3b `Z ⊔ W = ⊤` dual-annihilator assembly landed 2026-06-05** as `6b004b8`; **the
-U3b projected-subfamily extraction landed 2026-06-05, this commit**). The phase does *not* close until
-`htransport` is discharged: `lem:claim-6-4` stays red green-modulo it (KT eq. (6.9)'s
-algebraic-independence content). **This commit lands the §1.22 U3b projected-subfamily extraction**
-— the injective-form core `injOn_extProj_dualMap_rigidityRows` (`(extProj proj).dualMap` injective on
-`Φ = span rigidityRows`, off the landed `Z ⊔ W = ⊤` via the dual-annihilator API) + the extraction
-proper `exists_independent_panelRow_subfamily_of_rigidOn_linking_set_proj` (the green un-projected
-subfamily mapped through `D` by `LinearIndependent.map_injOn`, the count carried for free) in
-`CaseI.lean`; axiom-clean, build + lint warning-clean. **All of U3b is now green; the genuine KT
-Claim 6.4 crux is fully bricked.** Next: U3a (alignment) → U4 (assemble + flip + phase-close).
+**Status:** in progress — **discharging `htransport` (the U1→U4 cut); U1 + U2 + ALL of U3b LANDED
+(sound); U3a (alignment) is BLOCKED on a motive recon — NOT a leaf commit (design doc §1.23,
+2026-06-05)** (opened 2026-06-05 as the coordinator's Close-C of Phase 22a; opening recon + the
+reduction N-22b-1/2/3 landed 2026-06-05; the T2b math-first re-recon landed 2026-06-05; U2 opened +
+reconciliation core landed 2026-06-05; U1 + the U2 per-edge tail landed 2026-06-05 as `9098129`; the
+U3b build-recon corrected 2026-06-05 (design doc §1.22); the U3b pin-count sub-lemma (the §1.22
+walling node) landed 2026-06-05 as `0f0e7aa`; the U3b `Z ⊔ W = ⊤` dual-annihilator assembly landed
+2026-06-05 as `6b004b8`; the U3b projected-subfamily extraction landed 2026-06-05 as `8bafe8d`; **the
+U3a build-recon (design doc §1.23) landed 2026-06-05, this commit — docs-only**). The phase does
+*not* close until `htransport` is discharged: `lem:claim-6-4` stays red green-modulo it.
+
+**U3a build-recon — the §1.20 "alignment RESOLVED in principle" is NOT a buildable leaf (design doc
+§1.23, this commit, docs-only).** Tracing U3a against the live structure defs found the alignment
+transport rests on an assumption the IH motive does NOT provide: `HasGenericFullRankRealization k G`
+witnesses carry a **free** endpoint selector `ends` with no link-recording invariant, and the motion
+space depends on `ends` (the hinge constraint reads `supportExtensor e = panelSupportExtensor (normal
+(ends e))`). So `Q`'s rigidity (at `Q.ends`) does *not* transport to the `endsᵐ`-selector framework
+via `infinitesimalMotions_…_ends_swap` unless `Q.ends` records `Q.graph`'s links and aligns with the
+parent selector — which rigidity alone does not force. **The identical gap is already an *undischarged*
+`hbundle` conjunct** — the `H`-leg `hswap` (`case_I_realization`'s first `hbundle` conjunct, consumed
+at the `hasGenericRealization_transport_ends H …` call, never proven). So U3a is one of *two* faces of
+a single missing motive guarantee, not "the last research-shaped brick." The honest fix is a
+**motive strengthening** (add "the realization's `ends` records its graph's links" to the motive) — a
+Phase-21/22-touching structural edit re-typing every producer's conclusion, comparable to the §1.3/§1.4
+two-motive split, not a leaf commit. This commit is **docs-only** (no Lean / `\leanok` / blueprint
+edits): it corrects the build target before building, the §1.20/§1.22 course-correction pattern, so
+the next session opens on the motive recon rather than a mis-scoped transport build. U3b stays green
+(its bricks take a framework rigid at an external link-recording selector — that hypothesis is exactly
+what is now seen to need manufacturing).
 
 **Course-correction (2026-06-05; design doc §1.20).** The U2-opening session **forked under
 backgrounding**: its (lost) pre-reset analysis found that §1.19's "walling node retired at U2 / U3
@@ -296,12 +309,19 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
   **Caveat (corrected 2026-06-05, §1.20): this retires the collapse-relabel *row* crux, NOT the whole
   Claim-6.4 content.** The *projected-rank-preservation* crux (KT Claim 6.4 proper) is separate and
   moved to **U3b**. Axiom-clean, build + lint warning-clean.
-- [ ] **U3a — alignment transport (O1; bricked, medium).** Move the IH `Qcf`'s rigidity on
-  `sc = V(Gc.map f)` to the constructed `endsᵐ`-selector framework `Qcf' := ofNormals (Gc.map f)
-  endsᵐ (Qcf.normal-pullback)`, `endsᵐ e := (f (ends e).1, f (ends e).2)`, via the `ends`-swap brick
-  `infinitesimalMotions_ofNormals_eq_of_ends_swap` (both selectors record links of `e` in `Gc.map f`,
-  agree up to swap; swap cancels). The `hasGenericRealization_transport_ends` pattern. *Not* pure
-  green-reuse, but not a wall.
+- [ ] **U3a — alignment transport (O1) — BLOCKED on a motive recon (design doc §1.23); NOT a leaf
+  commit.** The §1.20 plan (move the IH `Qcf`'s rigidity on `sc = V(Gc.map f)` to the `endsᵐ`-selector
+  framework `Qcf'` via `infinitesimalMotions_ofNormals_eq_of_ends_swap`, both selectors recording links
+  up to swap) is **not buildable as scoped**: `HasGenericFullRankRealization` witnesses carry a *free*
+  `ends` (no link-recording invariant), the motion space depends on `ends` (hinge constraint reads
+  `supportExtensor e = panelSupportExtensor (normal (ends e))`), so `Q.ends e =(swap) endsᵐ e` — the
+  swap brick's input — does not follow from rigidity. The same gap is already the *undischarged* `H`-leg
+  `hswap` conjunct of `case_I_realization`'s `hbundle`. **Honest fix = a motive strengthening** (add
+  "the realization's `ends` records its graph's links" to the motive), a Phase-21/22-touching structural
+  edit re-typing every producer (~§1.3/§1.4 two-motive-split scope), OR keep the `H`-leg `hswap` +
+  contraction-leg alignment as explicit `hbundle` conjuncts (current honest green-modulo pattern,
+  deferring the discharge). **Open the motive recon math-first** before any U3a/U4 build (design doc
+  §1.23).
 - [ ] **U3b — pin-the-`r`-column projected-rank brick (O2; the genuine KT Claim 6.4 crux).** From
   `Qcf'` rigid on `sc`, show the exterior-column projection `(extProj V(H)).dualMap` — which drops
   *exactly the `r`-column* (`r` = the only `Qcf'` vertex in `V(H)`) — preserves independent rank
@@ -398,13 +418,20 @@ projected-row reproduction (U2)**. `Gc := G.deleteEdges E(H)`, `f := collapseTo 
 
 ## Hand-off / next phase
 
-**22b is discharging `htransport` (the U1→U4 cut); U1 + U2 + ALL of U3b landed (sound); U3a + U4
-remain.** The reduction N-22b-1/2/3 landed (KT Claim 6.4 formalized down to the single hypothesis
-`htransport`); `lem:claim-6-4` carries its `\lean{…}` pins but stays red, `lem:case-I-realization`
-stays legitimately green-modulo via the case-(b) pattern, ROADMAP row stays ◷. U1
-(`degeneratePlacement` + `degeneratePlacement_ofNormals_normal`, KT's `p2`) and U2 (the
-collapse-relabel *row* reconciliation: `panelRow_collapseTo_comp_extProj_dualMap` + the U2-opening
-column core `hingeRow_collapseTo_comp_extProj_eq`) are landed and **sound** (`9098129`).
+**22b is discharging `htransport` (the U1→U4 cut); U1 + U2 + ALL of U3b landed (sound); U3a is BLOCKED
+on a motive recon (design doc §1.23) — NOT a leaf commit; U4 follows the recon.** The reduction
+N-22b-1/2/3 landed (KT Claim 6.4 formalized down to the single hypothesis `htransport`);
+`lem:claim-6-4` carries its `\lean{…}` pins but stays red, `lem:case-I-realization` stays legitimately
+green-modulo via the case-(b) pattern, ROADMAP row stays ◷. U1 + U2 + U3b are landed and **sound**.
+
+**U3a build-recon (design doc §1.23, this commit, docs-only) — the §1.20 "alignment RESOLVED in
+principle" is corrected.** Discharging `htransport` (or the parallel `H`-leg `hswap`) needs an IH
+realization rigid at a selector that *records its graph's links*; `HasGenericFullRankRealization`
+carries a **free** `ends` with no such invariant, and rigidity depends on `ends` (through
+`supportExtensor`), so `Q`'s rigidity does not transport to the relabelled `endsᵐ` selector. The
+`H`-leg `hswap` already assumes this property undischarged in `case_I_realization`'s `hbundle`. The fix
+is a **motive strengthening** (a structural, multi-producer edit), not a leaf commit — settle it
+math-first before any U3a/U4 build.
 
 **Course-correction (design doc §1.20).** The U2-opening session **forked under backgrounding**; its
 post-reset hand-off claimed "walling retired, U3+U4 plumbing" — **wrong**. The collapse-relabel
@@ -425,8 +452,8 @@ real-content fact = the rigid-block pin-count `finrank(F.pinnedMotionsOn V(H)) =
 **ALL THREE U3b bricks are LANDED — the genuine KT Claim 6.4 crux is fully bricked.** The §1.22
 pin-count walling node `finrank_pinnedMotionsOn_of_isInfinitesimallyRigidOn_vertexSet_inter_eq_singleton`
 (`Pinning.lean`, `0f0e7aa`); the §1.22 `Z ⊔ W = ⊤` dual-annihilator assembly
-`infinitesimalMotions_sup_range_extProj_eq_top` (`CaseI.lean`, `6b004b8`); and — **this commit** — the
-§1.22 projected-subfamily extraction (`CaseI.lean`): the injective-form core
+`infinitesimalMotions_sup_range_extProj_eq_top` (`CaseI.lean`, `6b004b8`); and the
+§1.22 projected-subfamily extraction (`CaseI.lean`, `8bafe8d`): the injective-form core
 `injOn_extProj_dualMap_rigidityRows` (`(extProj proj).dualMap` injective on `Φ = span rigidityRows`,
 i.e. `Φ ⊓ ker D = ⊥` — projection loses zero rank — off `Z ⊔ W = ⊤` via the dual-annihilator API
 `ker_dualMap_eq_dualAnnihilator_range`/`Subspace.dualCoannihilator_dualAnnihilator_eq`/`dualAnnihilator_sup_eq`/`dualAnnihilator_top`)
@@ -437,25 +464,39 @@ i.e. `Φ ⊓ ker D = ⊥` — projection loses zero rank — off `Z ⊔ W = ⊤`
 family independent of the *same* size, count for free) — no projected `finrank` bridge. All axiom-clean,
 build + lint warning-clean.
 
-**The next concrete commit is U3a (alignment), then U4 (assemble + flip + phase-close)** (full
-statements/reuse/risk in the *Discharge plan* checklist above + §1.20/§1.21/§1.22):
-- **U3a** (O1; bricked, medium): move the IH `Qcf`'s rigidity on `sc = V(Gc.map f)` to the
-  `endsᵐ`-selector framework `Qcf'` via the `ends`-swap brick
-  `infinitesimalMotions_ofNormals_eq_of_ends_swap` (the `hasGenericRealization_transport_ends`
-  pattern).
-- **U4** (plumbing): U2 (landed) carries U3b's projected-*collapsed* independence to projected-*uncollapsed*
-  rows at `q₀^deg`; assemble `(q₀^deg, t, hsupp, hcount, hindep)` into `htransport` (translating
-  subfamily indices `Gc.map f`-link@`endsᵐ` → `Gc`-link@`ends`); delete `htransport` from
-  `case_I_realization`'s `hbundle`; `\leanok` `lem:claim-6-4`; then the **full phase-close ceremony**
-  — `CLAUDE.md` *When this commit closes a phase*: flip ROADMAP row to ✓ + compress its section, sync
-  user-facing surfaces (`README.md`, `home_page/index.md`, `blueprint/src/chapter/intro.tex`), sync
-  `notes/MolecularConjecture.md`, broadened blueprint re-read + `BlueprintExposition` ledger.
+**The next concrete commit is the U3a motive recon (design doc §1.23 carries the finding; the recon
+must settle the route), NOT a U3a build.** U3a as scoped in §1.20 is blocked (see §1.23 + the U3a
+*Discharge plan* item + *Blockers* below). The decision the recon owes:
+- **(i) Strengthen the motive** — add "the realization's `ends` records its graph's links" to
+  `HasGenericFullRankRealization` (and likely `HasFullRankRealization`), then re-type + re-supply it
+  through the base case + every producer (`hasGenericFullRankRealization_of_{splice_set,couple}_ofNormals`
+  already manufacture a link-recording `ends` via `Graph.endsOf`, so they *can* supply it — but the
+  conjunct must be threaded). With it, both the `H`-leg `hswap` and the contraction-leg alignment
+  *derive*, discharging the `hbundle` conjuncts. Scope ≈ §1.3/§1.4 two-motive split; Phase-21/22-touching.
+- **(ii) Keep the alignment conjuncts explicit `hbundle` hypotheses** (the current honest green-modulo
+  pattern — the `H`-leg `hswap` is already carried this way) and flip nothing this phase; defer the
+  discharge to the structural pass that does (i).
+- **(iii) Re-localize the contracted realization** so a link-recording selector is available without a
+  motive edit (if a cheaper route exists).
+
+  Once the motive route is chosen and the alignment derives, U4 is plumbing: U2 (landed) carries U3b's
+  projected-*collapsed* independence to projected-*uncollapsed* rows at `q₀^deg`; assemble
+  `(q₀^deg, t, hsupp, hcount, hindep)` into `htransport` (translating subfamily indices
+  `Gc.map f`-link@`endsᵐ` → `Gc`-link@`ends`); delete `htransport` from `case_I_realization`'s
+  `hbundle` (and, under (i), discharge the `H`-leg `hswap`); `\leanok` `lem:claim-6-4`; then the
+  **full phase-close ceremony** — `CLAUDE.md` *When this commit closes a phase*: flip ROADMAP row to ✓
+  + compress its section, sync user-facing surfaces (`README.md`, `home_page/index.md`,
+  `blueprint/src/chapter/intro.tex`), sync `notes/MolecularConjecture.md`, broadened blueprint re-read +
+  `BlueprintExposition` ledger.
 
 The surrounding territory (22c+: Case III at `d=3` + the `d=3` assembly) can proceed in parallel — it
 depends on the green infra (N7b row sub-nodes, N7a, the device), not on `htransport`.
 
 Cross-references rather than re-derivation: `notes/Phase22-realization-design.md`
-**§1.20** (the course-correction: O1 alignment solved-in-principle / O2 projected-rank = the
+**§1.23** (the U3a build-recon: the alignment is NOT a leaf — the IH motive carries a free `ends`, so
+the swap transport is not derivable; the same gap is the undischarged `H`-leg `hswap`; fix = a motive
+strengthening; corrects §1.20's "alignment RESOLVED in principle"), §1.20 (the course-correction: O1
+alignment solved-in-principle [now corrected by §1.23] / O2 projected-rank = the
 genuine Claim-6.4 crux in U3b; corrects §1.19 — the crux moved U2→U3, not retired), §1.19 (the T2b
 re-recon: lower-semicontinuity already green, the 4-node cut — but its "walling retired at U2 / U3
 plumbing" is superseded by §1.20), §1.18 (the validation pass + the original 5-node cut + the phase-fit decision;

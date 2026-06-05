@@ -1660,6 +1660,88 @@ phase-close).
 
 ---
 
+### 1.23 U3a build-recon — the §1.20 "alignment RESOLVED in principle" is NOT buildable as scoped: the IH motive `HasGenericFullRankRealization` carries an *arbitrary* `ends` (no link-recording), so `Q`'s rigidity does not transport to the `endsᵐ` selector; the same gap is already an *undischarged* `hbundle` conjunct for the `H`-leg (2026-06-05)
+
+Build-recon of U3a — the one node §1.20 left as "bricked, medium (swap bookkeeping)" — traced against
+the live structure defs (`PanelHingeFramework` `PanelHinge:64`, free `ends`/`normal` fields, no
+link-recording invariant; `IsInfinitesimalMotion` `RigidityMatrix:331`, the per-edge hinge constraint
+`S u − S v ∈ span {supportExtensor e}` quantified over the *graph* links `F.graph.IsLink e u v` but
+with `supportExtensor e = panelSupportExtensor (normal (ends e).1) (normal (ends e).2)` reading
+`F.ends`), the swap brick `infinitesimalMotions_ofNormals_eq_of_ends_swap` `CaseI:332`, its single
+consumer `hasGenericRealization_transport_ends` `CaseI:375`, and the composer's `hbundle`
+`case_I_realization` `CaseI:1574`. **Verdict: U3a is NOT a buildable single commit as §1.20 scoped it
+— it rests on an assumption the motive does not provide, and the same assumption is already carried,
+*undischarged*, as an `hbundle` conjunct for the `H`-leg. The honest next step is a motive-strengthening
+recon, not a build.**
+
+**The §1.20 error.** §1.20 O1 reads: "both `Qcf.ends e` and `endsᵐ e` record links of `e` in
+`Gc.map f`, so they agree up to swap, and the swap cancels." The second clause holds for `endsᵐ e :=
+(f (ends e).1, f (ends e).2)` (it records the contracted link via `IsLink.map` whenever the parent
+`ends` records the `Gc`-link). **But the first clause — that `Qcf.ends e` records the link — does
+NOT hold.** `Qcf` is an arbitrary witness of `HasGenericFullRankRealization k (G.rigidContract H r)`
+(`PanelHinge:938`): `∃ Q, Q.graph = … ∧ Q.IsGeneralPosition ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn …`.
+`Q.ends` is a **free field** with no constraint tying it to `Q.graph`'s links, and `IsGeneralPosition`
+constrains only the normals (`PanelHinge:84`, pairwise normal independence). So `Q.ends e` may name a
+body pair *unrelated* to `e`'s graph endpoints.
+
+**Why the gap is fatal to the transport, not cosmetic.** The motion space genuinely depends on
+`F.ends`: `IsInfinitesimalMotion` (`RigidityMatrix:331`) constrains `S u − S v ∈ span {supportExtensor e}`
+for graph links `e u v`, and `supportExtensor e` is computed from `F.normal (F.ends e)`. So moving
+`Q`'s rigidity (at `Q.ends`) to `Qcf' := ofNormals (Gc.map f) endsᵐ Q.normal` (at `endsᵐ`) via
+`infinitesimalMotions_ofNormals_eq_of_ends_swap` requires `Q.ends e =(swap) endsᵐ e` for every link —
+i.e. `Q.ends` records `Q.graph`'s links *and* aligns with `f ∘ (parent ends)`. Rigidity alone forces
+neither. For a `Q` whose `ends` is pathological (records non-links), `Q` can still be rigid at its own
+`ends` while telling us *nothing* about `endsᵐ`; the conclusion of `htransport` (which never mentions
+`Q.ends`) must then be manufactured from scratch, and the IH supplies no rigid framework at any
+link-recording selector to do it. So `htransport`, **universally quantified over `Q`**, is not
+discharge­able from the present motive.
+
+**The same gap is already live for the `H`-leg — and it's an *assumed* `hbundle` conjunct, never
+proven.** The composer `case_I_realization` (`CaseI:1574`) takes `hbundle` whose *first* conjunct is
+exactly the `H`-leg `hswap`: `∀ Q, Q.graph = H → (∀ e u v, H.IsLink e u v → Q.ends e =(swap) ends e)`.
+This is consumed at `CaseI:1624` (`hasGenericRealization_transport_ends H ends QH … (hswap QH hQHg) …`)
+but is **never discharged** — it is carried in the green-modulo `h…` bundle alongside `htransport`.
+It has the identical defect: it asserts an arbitrary IH realization's `ends` aligns with the
+manufactured parent selector. So the layer already *assumes* the property U3a would need to prove; U3a
+is not "the last research-shaped brick" — it is one of *two* faces (contraction-leg + `H`-leg) of a
+single missing motive guarantee.
+
+**The honest resolution is a motive strengthening, scoped by a recon — not a U3a build.** The realizations
+the induction actually produces are *all* `ofNormals G ends q₀` with a **link-recording** `ends`
+(the producers `hasGenericFullRankRealization_of_{splice_set,couple}_ofNormals` take/forward the
+edge-restricted `hends : ∀ e u v, G.IsLink e u v → G.IsLink e (ends e).1 (ends e).2`, manufactured from
+the canonical `Graph.endsOf`). So the natural fix is to add that guarantee to the motive — e.g.
+
+> `HasGenericFullRankRealization k G := ∃ Q, Q.graph = G ∧ Q.IsGeneralPosition ∧`
+> `  (∀ e u v, G.IsLink e u v → ((Q.ends e).1 = u ∧ (Q.ends e).2 = v) ∨ …swap…) ∧`
+> `  Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)`
+
+(the realization's selector records its own graph's links). With that conjunct, the `H`-leg `hswap`
+and the contraction-leg alignment both *derive* (compose the realization's link-recording with the
+parent selector's link-recording — both pin the same unordered pair, so they agree up to swap),
+discharging the `hswap` conjunct of `hbundle` directly and unblocking U3a's transport. **But this is
+a Phase-21/22-touching structural edit**, not a Phase-22b leaf: it re-types the motive that
+`theorem_55_generic` / the base case / every producer concludes, so each must be shown to *supply* the
+new conjunct (the producers do, via their `hends`, but it must be threaded). The scope is comparable to
+the §1.3/§1.4 two-motive split, not to the green U3b bricks. Whether to (i) strengthen the motive,
+(ii) keep the `H`-leg `hswap` + the new contraction-leg alignment as *explicit* `hbundle` conjuncts
+(the current pattern, honest green-modulo, deferring the discharge to a later structural pass) and
+flip nothing this phase, or (iii) re-localize the contracted realization differently so a link-recording
+selector is available — is the recon decision. It must be settled before any U3a/U4 build.
+
+**Net.** §1.20's "U3a — alignment transport (O1; bricked, medium); RESOLVED in principle" is corrected
+to: U3a is *blocked* on a motive guarantee (the realization's `ends` records its graph's links) that
+`HasGenericFullRankRealization` does not carry, and that the `H`-leg already assumes undischarged in
+`hbundle`. The U3b bricks are sound and remain green (they take a framework rigid at an external
+link-recording selector — that hypothesis is exactly what is now seen to need manufacturing). The
+discharge of `htransport` does not reduce to one more leaf commit; it needs the motive recon above.
+The recon-process lesson (a "rigid realization" motive that drops the selector-link-recording conjunct
+cannot feed any selector-sensitive transport) is a sibling of §1.22's rigid-on-what sharpening and is
+lifted to `DESIGN.md` *Match the source's argument structure …* → *A realization motive must carry the
+selector invariants its consumers read* (companion to *Realization motive must be V(G)-relative*).
+
+---
+
 ## 2. Shared-infra map (green vs. missing across the layer)
 
 Built once, reused by all cases. **Green** unless marked.

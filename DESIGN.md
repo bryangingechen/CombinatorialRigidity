@@ -1146,6 +1146,28 @@ property ≠ output property" trap above. Cross-ref:
 `notes/Phase22-realization-design.md` §1.22 (corrects §1.21); `notes/Phase22b.md`
 *Discharge plan* U3b.
 
+**A realization motive must carry the selector invariants its consumers read — recon
+what a "rigid realization" structurally *guarantees* before scoping a transport off it
+(Phase 22b U3a build-recon, 2026-06-05).** The companion to the `V(G)`-relative rule
+above. `PanelHingeFramework` carries a *free* endpoint selector `ends : β → α × α` with
+no link-recording invariant, and the motive `HasGenericFullRankRealization k G := ∃ Q,
+Q.graph = G ∧ Q.IsGeneralPosition ∧ Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)` does not
+add one — yet the framework's *motion space* depends on `ends` (the per-edge hinge
+constraint `S u − S v ∈ span {supportExtensor e}` reads `supportExtensor e =
+panelSupportExtensor (normal (ends e))`). The §1.20 U3a plan assumed an IH realization's
+`Q.ends` "records its graph's links" so its rigidity could transport to a relabelled
+selector (the `infinitesimalMotions_…_ends_swap` brick); but an arbitrary witness of the
+motive can be rigid at a *pathological* `ends`, so the transport is not derivable and
+`htransport` is not dischargeable from the present motive. The identical gap is already
+*assumed undischarged* as the `H`-leg `hswap` conjunct of the composer's `hbundle`. **The
+rule:** before scoping a brick as "transport leg `X`'s rigidity to selector `Y`", check
+that the motive supplying `X` actually *guarantees* `X`'s selector records its graph's
+links (or whatever invariant the transport reads) — a bare `∃ rigid realization` usually
+does not, and the fix is a motive strengthening (a structural, multi-node edit re-typing
+every producer), not a leaf commit. Cross-ref: `notes/Phase22-realization-design.md`
+§1.23 (corrects §1.20's "alignment RESOLVED in principle"); `notes/Phase22b.md`
+*Discharge plan* U3a + *Blockers*.
+
 ## Match the source's argument structure, not just its conclusion
 
 **The trap (Phase 22a, 2026-06-05; three undischargeable bridges).** The Case-I
