@@ -22,12 +22,22 @@ math for both producers is worked out in `notes/Phase21b.md` *Finding A/B* +
 *Hand-off to Phases 22–23* and folded into the *Phase 22+* plan below.
 **Phase 22 is in progress** (opened 2026-06-04; see `notes/Phase22.md`): the
 realization layer — Track A (Case I splice producer, KT §6.2) + Track B (the
-Case II/III reducible-vertex producer at `d=3`). A constructibility recon on its
-first node N4 (`lem:rigidContract-isMinimalKDof`) found the graph↔matroid
-contraction bridge heavier than the launch-plan "build-shaped" label
-(`Matroid.Union` does not commute with contraction — route is independence-level
-`ext_indep`). Phases 23–26 planned. This is the program design for
-Phases 17–26 and the runbook for threading the remaining phases.
+Case II/III reducible-vertex producer at `d=3`). **Landed so far:** N4
+(`rigidContract_isMinimalKDof`, the Phase-20-deferred graph↔matroid contraction
+bridge) is **green** via the Whitney-style sub-build N4a→N4b→N4c the recon
+predicted; and the Case-I producer's per-leg infrastructure (splice glue,
+leg-native restatement, the per-leg rank polynomial + its consumer, the
+witness-transfer prerequisite) is green. **A realization-layer design pass**
+(`notes/Phase22-realization-design.md`) then designed Cases I/II/III as one unit
+and **decided the motive question**: the induction motive `HasFullRankRealization`
+must carry *general position* (KT Thm 5.5's "nonparallel, if simple"), implemented
+via a **two-motive split** (a separate general-position motive + forgetful map;
+the bare `theorem_55` statement untouched) — the `Graph.Simple`-threading spike
+ruled out a single Simple-conditioned motive (`splitOff` breaks simplicity, KT
+Lemma 6.7). The live node list + build order is `notes/Phase22.md` *Hand-off*
+(next: **N6a**, the non-simple Case-I producer, motive-independent). Phases 23–26
+planned. This is the program design for Phases 17–26 and the runbook for threading
+the remaining phases.
 **Audience:** the agent picking up the molecular-conjecture program.
 Read this after `ROADMAP.md` (which carries the one-paragraph program
 summary + status row); this file is the lemma-level detail.
@@ -524,14 +534,29 @@ gives `+(D−1)` — one short — and the missing row is **Lemma 6.10** (`d=3`,
 - ~12 pages, the single largest proof in the paper; consider an abstracted
   "candidate normal form" lemma to avoid repeating the row-ops three times.
 
-**Launch plan.** Open the phase (`notes/Phase22.md` + the §6.2/§6.4.1
-blueprint nodes — N4/N5/N6 already stubbed red in `algebraic-induction.tex`),
-then **N4** (build-shaped) → decompose **N5** math-first (the panel-
-transversality lemma is the one genuinely new geometry) → **N6** closes Track
-A and discharges `hcontract`. Track B follows, opening with the eq. (6.12)
-placement on the green N7b infra, then Lemma 6.10. The
-`prop:rigidity-matrix-prop11` `hub` brick (Phase-19 partition count) lands
-alongside Track A or defers to Phase 23 with Thm 5.5's completion.
+**Process — design-pass-first for Case III (Phase-22 meta-lesson, 2026-06-04).**
+Track B / Case III is research-shaped and *interlocking* (Claims 6.11/6.12 + the
+candidate framework + the row matroid wired to `M(G̃_v^{ab})`). Per `DESIGN.md`
+*Constructibility recon … → Scale-up: design the LAYER, not just the node*: run a
+**layer-level design pass up front** (read the whole Case-III argument against KT
+§6.4 + the green Lemma 2.1, decide what each piece needs from the shared motive /
+candidate structure) **before** grinding it node-by-node. Case I cost ~10
+incremental commits before a one-commit design pass surfaced the binding gap (the
+too-weak motive); don't repeat that — for Case III, design first.
+
+**Build order (post-design-pass, 2026-06-04 — supersedes the at-open launch
+plan).** N4 is green. The design pass (`notes/Phase22-realization-design.md`)
+found the at-open "N4 build-shaped → decompose N5 → N6" framing optimistic on
+both N4 (a Whitney sub-build) and N5 (the panel-transversality "lemma" is already
+green; the real gap was the too-weak motive, **G1**). Corrected order, all bounded
+on green infra: **N6a** (non-simple Case I, KT Lemma 6.2, motive-independent —
+the lowest-risk next commit) → **two-motive split** (add a general-position motive
+`HasGenericFullRankRealization` + forgetful map; bare `theorem_55` untouched) →
+**(G2)** the general-position `MvPolynomial` factor → **N6b/N6c** (simple Case-I
+cases, gated on the GP motive + G2) → **N6** the Case-I composer
+(`lem:case-I-realization`) ⟹ discharges `hcontract`. Then Track B / Case III
+(below) and the `prop:rigidity-matrix-prop11` `hub` brick (Phase-19 partition
+count, Track-independent). The live, node-by-node hand-off is `notes/Phase22.md`.
 
 #### Phase 23 — Case III general `d` + assembly (§6.4.2, §5.2, §7)
 
@@ -661,12 +686,15 @@ except the realization producers, Case III, and
 (extending — not adding — `algebraic-induction.tex`, per the structural-edit
 discipline in `blueprint/CLAUDE.md`).
 
-**Next concrete commit inside Phase 22:** N5 `lem:case-I-splice-placement` —
-the first *producer* node, now that all of Track A's reduction infrastructure
-(N4a–N4c + the N4 reconciliation `rigidContract_isMinimalKDof`) is green.
-Decompose it math-first (start with the panel-transversality lemma); then N6
-`lem:case-I-realization` composes N4 + N5 + the green glue + the device. The KT
-math for both producers is worked out in `notes/Phase21b.md` *Finding A/B* —
-Phase 22 formalizes it, does not re-derive it. When Phase 22 closes, follow
+**Next concrete commit inside Phase 22:** **N6a** — the non-simple Case-I producer
+(KT Lemma 6.2, motive-independent), per the live build order in `notes/Phase22.md`
+*Hand-off* and the realization-layer design (`notes/Phase22-realization-design.md`).
+Track A's reduction infra (N4a–N4c + N4 `rigidContract_isMinimalKDof`) and the
+Case-I per-leg machinery are green; the layer design pass decided the motive (carry
+general position via a two-motive split). Build order: N6a → two-motive split → the
+(G2) general-position factor → the simple Case-I cases → the N6 composer ⟹
+`hcontract`; then Case III (design-pass-first, see the Track-B *Process* note). The
+KT math is in `notes/Phase21b.md` *Finding A/B* + the design doc — Phase 22
+formalizes it, does not re-derive it. When Phase 22 closes, follow
 `CLAUDE.md` *When this commit closes a phase* and re-sync this doc (phase table,
 the Phase 22 detail, this section).

@@ -1026,6 +1026,27 @@ discharged" covers laundered hypotheses; this covers an invalid/short proof
 step). Cross-ref: `notes/Phase21b.md` *Finding A/B*; `notes/FRICTION.md`
 *[process] producer constructibility*.
 
+**Scale-up: design the LAYER, not just the node (Phase 22, 2026-06-04).** Per-node
+constructibility recon is necessary but not sufficient when an entire *layer* of
+interlocking producers shares an invariant. Phase 22's Case-I seed was recon'd
+node-by-node for ~10 commits — each recon honestly pruned a *local* dead-end (the
+moment-curve over-specialization, the forest-row over-count) — yet the binding gap
+was structural and invisible to all of them: the shared induction **motive**
+`HasFullRankRealization` was too weak (it produced a *bare* rigid realization where
+every producer needed a *general-position* one — KT Thm 5.5's "nonparallel, if
+simple" conjunct the project had silently dropped). No single node's arithmetic
+exposed it, because it is a property of the shared invariant, not of any one
+construction. A one-commit **layer design pass**
+(`notes/Phase22-realization-design.md`) — read the whole producer family against
+the primary source, asking "what does each producer need *from* the motive and
+supply *to* it" — surfaced it at once and bounded the rest of the layer. **The
+rule:** when a research-shaped producer layer shares a motive/invariant (KT §6's
+Cases I/II/III against the realization motive), run that layer-level design pass
+*before* the first producer build, not after the per-node recons hit a wall.
+Per-node recon catches local short-by-one-row gaps; only the layer pass catches a
+too-weak shared invariant. Cross-ref: `notes/Phase22-realization-design.md`;
+`notes/Phase22.md` *Decisions*.
+
 ## Phase Case-naming must match KT's k-bookkeeping
 
 **The bug (Phase 21b, 2026-06-04).** The project labelled the reducible-vertex
