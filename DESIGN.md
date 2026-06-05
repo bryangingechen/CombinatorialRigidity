@@ -1047,6 +1047,49 @@ Per-node recon catches local short-by-one-row gaps; only the layer pass catches 
 too-weak shared invariant. Cross-ref: `notes/Phase22-realization-design.md`;
 `notes/Phase22a.md` *Decisions*.
 
+**Verify the recon's load-bearing claims, don't assert them (Phase 22b U3b,
+2026-06-05; two recon corrections).** The U3b node was recon'd twice and *both
+recons were wrong at their crux* before a third converged: §1.19 declared U3
+"plumbing / green-reuse"; §1.21 declared it "a bounded one-line Lemma 5.1
+corollary." Neither was short on prose — each named the right bricks and sketched a
+plausible layer. They failed because the **load-bearing claim was asserted from
+intuition, not checked against the live artifact**, then dressed in confident
+scoping words ("retired", "plumbing", "bounded", "no wall") that propagated false
+confidence to the next commit:
+- §1.19 called U3 *green-reuse* without checking that the reused tool's **output**
+  matches the consumer's **required input**:
+  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` produces
+  *un-projected* independence, but the composer needs the *projected*
+  (`extProj`-dualMap) rows — and projection can drop rank. A **consumer-fit** check
+  (write both shapes, confirm they match) catches it in one line.
+- §1.21 asserted `finrank Z = D` from "rigid ⟹ trivial-only motions", without
+  checking *which set* the rigidity is over: `Qcf'` is rigid on its vertex set
+  `sc ⊊ α`, and the exact lemma `finrank_…_vertexSet` gives `D(|scᶜ|+1)`. A
+  **quantitative-claim-vs-exact-lemma** check catches it.
+
+**Diagnosis (answering "are we going into enough detail?"): the gap is not detail
+*volume* — it is *verification of the crux*.** The recons that held (§1.16 traced
+against the engine signature; §1.22 against the live finrank lemmas + mathlib dual
+API; the coordinator's from-scratch motion-space decomposition) were grounded in the
+artifact; the ones that failed were grounded in memory of "how rigidity works."
+**The rule:** a recon may use a feasibility verdict word ("bounded", "green-reuse",
+"no wall", "plumbing", "retired") only for a claim it has *checked against ground
+truth*, and must say how — otherwise label it "asserted (unverified)". Two cheap,
+mandatory checks at every recon crux:
+1. **Consumer-fit.** For any "it's just lemma `X`" claim, write `X`'s conclusion and
+   the consumer's required hypothesis side by side and confirm the *shapes match*
+   (not just that the `\uses` edges type-check).
+2. **Quantitative against the exact lemma.** Any finrank/rank/dimension/count
+   equality cites the *exact* lemma yielding it — with its real hypotheses
+   (vertex-set vs `α`, `≤` vs `=`) — or is derived from first principles.
+
+Recon at *build fidelity*: read the actual signatures and derive the actual counts,
+the way the build would — a from-memory sketch is not a recon. (The build-attempt
+subagents caught §1.19/§1.21 precisely because building *forces* this fidelity;
+doing it at recon time avoids the churn.) Cross-ref:
+`notes/Phase22-realization-design.md` §1.19/§1.21 (the wrong recons) → §1.22 (+
+coordinator verification); `notes/Phase22b.md` *Discharge plan*.
+
 **Sharpening: recon the *quantifier domain* of a brick's hypotheses, not just its
 conclusion shape (Phase 22, 2026-06-04).** The N6b coupling was projected as a clean
 assembly of green bricks because the bricks' *conclusion types* lined up. But the

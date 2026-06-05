@@ -1601,6 +1601,24 @@ The recon-process lesson (rigid-on-`α` vs. rigid-on-vertex-set null-space count
 `DESIGN.md` *Match the source's argument structure …* → *Sharpening: a "rigid" framework's
 null-space dimension depends on rigid-on-what*.
 
+**Coordinator verification (2026-06-05).** The arithmetic above was independently re-derived from a
+direct motion-space decomposition (not by re-reading §1.22), and **confirmed sound**:
+- `finrank Z = D(|scᶜ|+1)`: a motion is *trivial on `sc`* (`D` dims, rigidity) ⊕ *free on `scᶜ`*
+  (`D·|scᶜ|`). [So §1.21's `=D` dropped the `D·|scᶜ|` free term — genuinely wrong.]
+- `finrank Φ = D|α| − finrank Z = D(|sc|−1)` (full row rank). `Gc.map f` carries *no* H-edges, so
+  `Φ` is already the surviving-row span — there are no H-block rows to vanish (the "H-rows die"
+  caveat is a composer-level concern, moot for the contracted `Qcf'`).
+- Goal ⟺ projection injective on `Φ` ⟺ `Φ ⊓ ker(extProj.dualMap) = ⊥` ⟺ `Z ⊔ range(extProj V(H)) =
+  ⊤` (dual annihilators: `Φ° = Z`, `(ker dualMap)° = range extProj`).
+- That `⊤` ⟺ (incl–excl) `finrank(Z ⊓ range) = D(|scᶜ|−|V(H)|+1)`, and `Z ⊓ range(extProj V(H)) =
+  pinnedMotionsOn V(H)`.
+- **Pin-count is true:** pinning `V(H)` forces `S(r)=0` ⟹ (trivial-motion-vanishing-at-a-body `=0`,
+  the existing single-body fact) `S|sc = 0`, *plus* `S|(V(H)∖{r})=0` pins the `|V(H)|−1` isolated
+  bodies of `V(H)∖{r} ⊆ scᶜ`; residual free = `scᶜ ∖ (V(H)∖{r})`, dim `D(|scᶜ|−|V(H)|+1)`. ✓
+So §1.22's layer is mathematically sound; the U3b build is grounded. (This independent check is the
+discipline now codified in `DESIGN.md` *Constructibility recon …* → *Verify the recon's load-bearing
+claims, don't assert them*.)
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

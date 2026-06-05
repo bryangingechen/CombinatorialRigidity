@@ -367,6 +367,8 @@ one-line Lemma 5.1 corollary" was wrong (it assumed `finrank(Z)=D`; `Qcf'` is ri
 set `sc ⊊ α`, so `finrank(Z)=D(|scᶜ|+1)` and `finrank(pinnedMotions r)=D·|scᶜ|≠0`). §1.22 gives the
 verified-closing layer: the brick reduces to `Z ⊔ range(extProj V(H)) = ⊤` (mathlib dual API), one
 real-content fact = the rigid-block pin-count `finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ|−|V(H)|+1)`.
+**§1.22 was independently coordinator-verified** via a from-scratch motion-space decomposition (see
+§1.22 *Coordinator verification*) — the layer is sound; do **not** re-recon it, build it.
 **The next concrete commit is the U3b build, opening on that pin-count sub-lemma** (the walling
 node); then the `Z ⊔ W = ⊤` assembly + the projected-subfamily extraction (the U3-tool skeleton),
 then U3a (alignment) and U4 (assemble + flip) (full statements/reuse/risk in the *Discharge plan*
@@ -375,12 +377,15 @@ checklist above + §1.20/§1.21/§1.22):
   `endsᵐ`-selector framework `Qcf'` via the `ends`-swap brick
   `infinitesimalMotions_ofNormals_eq_of_ends_swap` (the `hasGenericRealization_transport_ends`
   pattern).
-- **U3b** (O2; the GENUINE crux, MISSING infra, research-shaped): `Qcf'` rigid on `sc` ⟹ the
-  exterior-column projection preserves independent rank `≥ D(|sc|−1)` (drop-the-`r`-column = pin-a-body).
-  Reuse candidates `linearIndependent_sum_pinned_block` (N7b-3) + `finrank_pinnedMotions_add_screwDim`
-  (Lemma 5.1), insufficient as-is. The U3 tool
-  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` gives only *un-projected*
-  independence — it does **not** suffice (projection can lower rank — the very point of Claim 6.4).
+- **U3b** (O2; the genuine Claim-6.4 crux — recon-verified *bounded*, §1.22 + coordinator check):
+  from `Qcf'` rigid on `sc`, the exterior-column projection preserves independent rank `≥ D(|sc|−1)`.
+  **Build target = the pin-count sub-lemma** `finrank(F.pinnedMotionsOn V(H)) = D(|scᶜ|−|V(H)|+1)`
+  (the walling node — a free-isolated-body product iso off the existing single-body pin infra
+  `finrank_pinnedMotions_add_screwDim` + a small `extProj_range = ⨅ i∈V(H), ker(proj i)` identity),
+  then the `Z ⊔ range(extProj V(H)) = ⊤` dual-annihilator assembly + the projected-subfamily
+  extraction (the U3-tool skeleton). The un-projected U3 tool
+  `exists_independent_panelRow_subfamily_of_rigidOn_linking_set` does **not** suffice (projection can
+  lower rank — the point of Claim 6.4).
 - **U4** (plumbing): U2 (landed) carries U3b's projected-*collapsed* independence to projected-*uncollapsed*
   rows at `q₀^deg`; assemble `(q₀^deg, t, hsupp, hcount, hindep)` into `htransport` (translating
   subfamily indices `Gc.map f`-link@`endsᵐ` → `Gc`-link@`ends`); delete `htransport` from
