@@ -61,6 +61,16 @@ in that phase's chapter (`extensor.tex` / `rigidity-matrix.tex` / …, or by
 extending `algebraic-induction.tex` for the 21/22+ realization layer), not
 a single `molecular.tex`.
 
+The *detailed-exposition* deliverable for this program (spelling out the steps
+KT's paper compresses, so each crux is followable end-to-end) is tracked in
+`notes/BlueprintExposition.md` — the cross-phase ledger of hard nodes that earn
+a full followable blueprint proof (most of its entries are
+molecular: Lemma 2.1, Prop 1.1's two halves, the Thm-4.9 forest-surgery
+track, the Case I/II/III cruxes). **Capture** a one-line entry there when a
+node reroutes and surfaces a stable KT-math insight; **write** the prose at
+that phase's close. Keep it current at each molecular boundary alongside this
+doc (it is likewise gated by no CI check).
+
 ## The target
 
 The **Molecular Conjecture** (Tay–Whiteley 1984, proved by

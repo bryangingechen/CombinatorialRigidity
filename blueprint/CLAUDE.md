@@ -260,6 +260,25 @@ pays for.
   doc-comment). Phase 18's §2.2–2.4 accreted four such asides — don't
   reintroduce them.
 
+**The carve-out: crux nodes earn full, detailed exposition.**
+Terse-by-default is the rule above; the exception is the project's
+deliverable of a *fully detailed, self-contained exposition* of
+Katoh–Tanigawa's hardest arguments — spelling out the steps the paper
+reasonably compresses, so each crux is followable without the authors'
+context (a complement to KT's research exposition, not a verdict on it). A
+genuinely hard node earns a full, followable prose proof — and which nodes
+have earned it (and whether the prose has landed) is tracked in the
+cross-phase ledger `../notes/BlueprintExposition.md`.
+**Capture-now / write-later:** during a phase, add a one-line ledger entry
+whenever a node reroutes/decomposes and surfaces a stable mathematical
+insight (the case structure KT states compactly, why a strengthening is forced);
+**write** the expanded exposition at phase-close (the broadened blueprint
+re-read — top-level `CLAUDE.md` *When this commit closes a phase*), once the
+argument is `sorry`-free. The carve-out is for *mathematical* difficulty
+about **KT's math**, not our formalization setup — a reroute caused by a
+project-side mistake does not earn an entry (the ledger's own header has
+the sharpened inclusion criterion + the `(a)/(b)/(c)` flavors).
+
 ## Static checks before commit
 
 These are the **always-on per-commit gates** for any commit that

@@ -34,6 +34,15 @@ for *organizing* this directory is here.
   the file's *Deferral* section for resume criteria. Same editing
   discipline as phase notes (≤ 8-line entries, lift cross-cutting
   lessons).
+- **`BlueprintExposition.md`** — cross-phase *ledger* of hard nodes that
+  earn a fully detailed blueprint exposition (the project's deliverable of
+  spelling out the steps KT's paper compresses — a complement to, not a
+  verdict on, KT's research exposition). **Capture-now / write-later:** add a
+  one-line entry naming the stable *KT-math* insight when a node
+  reroutes/decomposes; write the expanded blueprint prose at phase-close
+  (the broadened blueprint re-read — see top-level `CLAUDE.md` *When this
+  commit closes a phase*). Inclusion criterion = KT-math difficulty, **not**
+  project-side setup; see the file's own header (format, flavors, criterion).
 
 ## Phase notes
 

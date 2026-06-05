@@ -248,6 +248,16 @@ of* the per-commit checklists above:
   round later (this is the step that would have caught the Phase-18
   §2.2–2.4 narration A2 cleaned up). The anti-pattern and the
   one-clause-max rule are in `blueprint/CLAUDE.md` *Proof verbosity*.
+  **This pass is also where the blueprint *exposition ledger*
+  (`notes/BlueprintExposition.md`) gets written down:** terse-by-default
+  is the rule, but the phase's *crux* nodes — the ones flagged there
+  during the phase (capture a one-line entry whenever a node
+  reroutes/decomposes and surfaces a stable KT-math insight) — earn the
+  fuller, fully detailed exposition (spelling out what the paper compresses)
+  now that the argument is final. Flip
+  their ledger status to `done` as the prose lands. (A node still
+  green-*modulo* a deferred sub-phase waits for that sub-phase's close —
+  the clean account isn't final until the `sorry`/`h…` is discharged.)
 - **Review project organization.** Re-skim ROADMAP.md,
   `TACTICS-GOLF.md`, `TACTICS-QUIRKS.md`, and `notes/FRICTION.md`
   (status sections). Have decisions in `notes/PhaseN.md` accumulated

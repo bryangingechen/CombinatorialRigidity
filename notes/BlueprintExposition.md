@@ -1,11 +1,17 @@
-# Blueprint exposition ledger — hard nodes deserving a clearer-than-KT account
+# Blueprint exposition ledger — hard nodes deserving a fully detailed account
 
-**Purpose.** One of the project's deliverables is a *clearer explanation of
-Katoh–Tanigawa's proof than KT themselves give* for the genuinely difficult /
-tricky arguments. The blueprint stays terse-by-default (carleson style, 1–3
-sentence proofs — `blueprint/CLAUDE.md` *Proof verbosity*), but **crux nodes
-earn full, followable exposition**. This file is the cross-phase *ledger* of
-which nodes have earned that treatment and whether the exposition has landed.
+**Purpose.** One of the project's deliverables is a *fully detailed,
+self-contained exposition* of Katoh–Tanigawa's most intricate arguments —
+spelling out the steps a research paper reasonably compresses (and the details
+formalization forces explicit), so each crux is followable end-to-end by a
+reader without the authors' context. This **complements** KT's necessarily
+terse research exposition; it is not a verdict on KT's clarity. (Where
+formalizing did surface a genuine gap or slip, the relevant entry records that
+factually — routine in formalization work, not a knock on the paper.) The
+blueprint stays terse-by-default (carleson style, 1–3 sentence proofs —
+`blueprint/CLAUDE.md` *Proof verbosity*), but **crux nodes earn full, followable
+exposition**. This file is the cross-phase *ledger* of which nodes have earned
+that treatment and whether the exposition has landed.
 
 It is a **capture-now / write-later** mechanism (agreed with the project owner,
 2026-06-04):
@@ -13,14 +19,14 @@ It is a **capture-now / write-later** mechanism (agreed with the project owner,
 - **Capture (cheap, while fresh).** When a node initially scoped as one commit
   turns out to be much harder and gets rerouted / reworked / decomposed, add a
   one-line entry here naming the *stable* mathematical insight the reroute
-  surfaced — the case structure KT glossed, why a strengthening is forced,
-  where the real difficulty sits. "Thought-one-commit → rerouted" is the
+  surfaced — the case structure KT states compactly, why a strengthening is
+  forced, where the real difficulty sits. "Thought-one-commit → rerouted" is the
   primary trigger and is recoverable from git history for retroactive entries.
 - **Write (at phase-close, once the argument is `sorry`-free).** The expanded
   blueprint prose lands in the phase-close end-to-end blueprint pass, *not*
   during the churny recon — the clean argument (and any simplification toward
   KT's own style) is only known once the result is final. That pass is
-  broadened from "collapse formalization asides" to *also* "add the KT-glossed
+  broadened from "collapse formalization asides" to *also* "add the detailed
   exposition for that phase's ledgered nodes."
 
 **Out of scope** (these stay terse / excluded, per the existing rules):
@@ -28,9 +34,12 @@ Lean-*modelling* narration ("basis-free", "Layer 4b reshaped …") and
 mathlib-standard background. The carve-out is for *mathematical difficulty*,
 not Lean verbosity.
 
-**Inclusion criterion (sharpened 2026-06-04).** The difficulty must be about
-*KT's mathematics*, not *our* formalization setup. **Exclude** entries whose
-trigger was a project-side mistake/misunderstanding about something KT was
+**Inclusion criterion (sharpened 2026-06-04).** The difficulty must be
+**source-side** — genuinely in *KT's mathematics* — not **project-side** (our
+formalization setup). (These two terms, *source-side* / *project-side*, are used
+throughout the ledger for the in-scope vs. excluded distinction.) **Exclude**
+entries whose trigger was a project-side mistake/misunderstanding about something
+KT was
 actually clear on — e.g. an early draft that proved the wrong (weaker) theorem
 because a constraint wasn't yet encoded. The "thought-one-commit → rerouted"
 signal is *suggestive, not sufficient*: a reroute caused by our own setup error
@@ -38,11 +47,20 @@ does not earn an entry. (Calibration: the Phase-21 panel-coplanarity re-scope is
 excluded — KT is clear the conjecture is the *hinge-coplanar* case; our first
 draft just hadn't encoded coplanarity.)
 
-**Codification deferred.** The standing carve-out rule for `blueprint/CLAUDE.md`
-*Proof verbosity* is intentionally **not** written yet — we derive the
-principle by doing this a few times first (the format / criterion may sharpen,
-and post-`sorry`-free simplification may change what the clean account is).
-Revisit codification once 22a plus a retroactive node or two are done.
+**Codification status (updated 2026-06-05, after 22a).** The **capture/tracking
+side is now codified**: this ledger is referenced from the standing process docs
+— `notes/CLAUDE.md` (the directory file list), top-level `CLAUDE.md` *When this
+commit closes a phase* (the blueprint re-read step now also writes ledgered
+nodes), `blueprint/CLAUDE.md` *Proof verbosity* (the crux-node carve-out), and
+`notes/MolecularConjecture.md`. The format, the sharpened inclusion criterion
+(KT-math, not project-side setup), and the `(a)/(b)/(c)` flavors are stable
+across 16 captured entries (17–22a). **The write-stage codification is still
+deferred**, for the file's original reason: *no exposition has been written yet*
+(0 of 16 entries are `done`), so "post-`sorry`-free simplification may change
+what the clean account is" remains untested. Revisit the full *Proof verbosity*
+write-stage rule once the first exposition lands — the natural trigger is
+**22b-close**, when Case I goes fully green (Claim 6.4 discharged) and its
+ledgered nodes get their first write-up.
 
 ## Format
 
@@ -52,10 +70,12 @@ One entry per node, grouped by destination blueprint chapter:
 
 where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
 
-- **(a) KT-gap** — a hard detail KT glossed or got wrong that the formalization
-  forced into the open. The core of the deliverable.
-- **(b) KT-simplification** — KT's argument can be shortened / cleaned; "clearer
-  than KT" via a better route, not a filled gap.
+- **(a) compressed step** — a step KT states compactly (or, where formalizing
+  found one, a genuine gap or slip) that the formalization expands in full /
+  makes explicit. The core of the deliverable, and the prototypical *source-side*
+  difficulty the ledger exists to surface.
+- **(b) KT-simplification** — the formalization found a shorter / more direct
+  route than KT's; an alternative presentation, not a filled gap.
 - **(c) hard-but-not-rerouted** — load-bearing and genuinely hard, but landed as
   first scoped. Lower priority; included because the goal is making the hard
   parts followable, not only the rerouted ones.
@@ -152,8 +172,8 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   Lemma 6.5's vertex-*removal* (which does preserve simplicity). Pointer:
   `notes/Phase22-realization-design.md` §1.6; `notes/Phase22a.md`.
 - **`lem:case-III` / `theorem_55.hsplit` (Case-naming + one-row shortfall)** —
-  [pending] **(a)**. **Stable insight (decisive KT-gloss):** KT's cases key on
-  the dof `k`, *not* the graph operation — **Case II (Lemma 6.8) is `k>0`**
+  [pending] **(a)**. **Stable insight (the decisive distinction):** KT's cases key
+  on the dof `k`, *not* the graph operation — **Case II (Lemma 6.8) is `k>0`**
   (`+(D−1)` rows suffice for the lower target `D(|V|−1)−k`), while the **`k=0`
   split is Case III**: eq. (6.12) reaches only `D(|V|−1)−1`, *one rigidity row
   short*, the missing row being the redundant-edge / `M(G̃)`-base argument of
@@ -179,14 +199,15 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   independent by the **exterior-column projection** onto `V(G)∖V(H)` (where the
   rigid-block rows vanish — the row-side of the top-right `0`); crucially there is
   **no** need for a common placement on which *both* legs are simultaneously rigid.
-  *Project-side reroute note (excluded from the KT-gloss core per the inclusion
+  *Project-side reroute note (excluded from the source-side core per the inclusion
   criterion):* an earlier draft formalized this as a motion-space **common-seed splice
   glue** (one `q₀` rigid on both legs) — a re-expression of KT's clear block-triangular
   structure that the project's motion-space rigidity model made the *natural*
   composition; it type-checked but kept demanding undischargeable bridge hypotheses
   (`hcrig`→`hpinc`→`htransportGP`→`∀`-GP), and was abandoned for the row-addition above.
-  That divergence is a *process* lesson, not a KT gloss → `DESIGN.md` *Match the
-  source's argument structure, not just its conclusion*. Pointer:
+  That divergence is a *process* lesson — project-side, not a source-side
+  difficulty → `DESIGN.md` *Match the source's argument structure, not just its
+  conclusion*. Pointer:
   `notes/Phase22-realization-design.md` §1.13–§1.16; `notes/Phase22a.md`.
 - **`lem:case-I-realization` N6-G3 / Claim 6.4 — the splice's contraction leg is
   `G ＼ E(H)`, not the relabelled contraction; the collapse is placement-side** —
@@ -273,13 +294,13 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
 
 - **Molecular program (Phases 17–22a): scanned 2026-06-04** — candidates folded
   into the chapter sections above. *Excluded as project-side issues, not
-  KT-gloss:* the Phase-21 panel-coplanarity re-scope (early draft proved the
+  source-side:* the Phase-21 panel-coplanarity re-scope (early draft proved the
   body-hinge theorem — KT is clear the conjecture is the hinge-coplanar case);
   the Phase-20 N4b binder-paraphrase correction (formalization-rescue, recorded
   in FRICTION/DESIGN only); and the 22a "device-output-is-not-GP" note (project
-  device-API confusion from our recon mis-plan, not a KT gloss — preserved in
-  `DESIGN.md`, and *superseded* by the Claim-6.4 entry above, which captures the
-  genuine KT bundling that sits underneath it); and the 22a **common-seed-splice →
+  device-API confusion from our recon mis-plan — project-side, not source-side —
+  preserved in `DESIGN.md`, and *superseded* by the Claim-6.4 entry above, which
+  captures the genuine KT bundling that sits underneath it); and the 22a **common-seed-splice →
   block-triangular reroute** (2026-06-05) — the reroute itself was a project-side
   divergence (the motion-space rigidity model re-expressed KT's clear eq.-(6.3)
   block-triangular rank-addition as a common-seed glue), a *process* lesson in
