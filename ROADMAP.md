@@ -121,8 +121,9 @@ to `<path>` here (with Lean sources rehomed under `CombinatorialRigidity/`).
 | 22b. KT Claim 6.4 (discharge the Case-I green-modulo obligation) | `Molecular/AlgebraicInduction/CaseI.lean` (extends `algebraic-induction.tex`) | ✓ Complete (closed 2026-06-05; see `notes/Phase22b.md`) |
 | 22c. Case III at `d=3`, stratum 1 (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement) | `Molecular/AlgebraicInduction/` (extends `algebraic-induction.tex`) | ✓ Stratum-1 complete (crux split to 22d; see `notes/Phase22c.md`) |
 | 22d. KT Claim 6.11 (eq. (6.23), the redundant `ab`-row) + its green-machinery prerequisites | `Molecular/Induction/ForestSurgery.lean` + `AlgebraicInduction/{CaseI,PanelLayer,PanelHinge}.lean` (extends `algebraic-induction.tex`) | ✓ Complete (see `notes/Phase22d.md`) |
-| 22e. candidate-completion (eqs. (6.24)–(6.29)) + KT Claim 6.12 (Case III at `d=3`, completing Lemma 6.10) | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ◷ In progress (see `notes/Phase22e.md`) |
-| ⋯ (deferred, unlettered) `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip) | `Molecular/AlgebraicInduction/` | ◷ Planning — successor to 22e (see `notes/Phase22e.md`) |
+| 22e. candidate-completion (eqs. (6.24)–(6.29)) + KT Claim 6.12 (Case III at `d=3`), green-modulo-N3b | `Molecular/AlgebraicInduction/` + `Molecular/RigidityMatrix.lean` | ◷ In progress (see `notes/Phase22e.md`) |
+| 22f. N3b: point-join↔panel-meet duality (the exterior-algebra infra completing Claim 6.12 / Lemma 6.10) | `Molecular/Meet.lean` (+ `Mathlib/LinearAlgebra/ExteriorPower/`) | ◷ Planning — discharges 22e's green-modulo-N3b (see `notes/Phase22e.md` *22f plan*) |
+| ⋯ (deferred, unlettered) `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip) | `Molecular/AlgebraicInduction/` | ◷ Planning — successor to 22e/22f (see `notes/Phase22e.md`) |
 | 23–26. Molecular conjecture program (rest) | (none yet — planned) | ◷ Planning (see `notes/MolecularConjecture.md` + §"Phase 17+" below) |
 
 The Status table is a **thin index**: each cell is a status marker plus
@@ -846,7 +847,7 @@ into that successor's work. General-`d` (Lemma 6.13) → Thm 5.5 → Thm 5.6 →
 stays Phase 23. KT math: `notes/Phase22d.md`, `notes/Phase21b.md` *Finding A/B*,
 `notes/MolecularConjecture.md` *Phase 22* / *Phase 23*.
 
-#### Phase 22e — candidate-completion + KT Claim 6.12 (completing Case III at `d=3`) — ◷ In progress
+#### Phase 22e — candidate-completion + KT Claim 6.12 (Case III at `d=3`), green-modulo-N3b — ◷ In progress
 
 **Status (◷ In progress; opened 2026-06-06 design-pass-first; opening recon landed
 2026-06-06; see `notes/Phase22e.md`).** Successor to 22d, the next chunk of Case III
@@ -858,7 +859,10 @@ row-op construction of the `v`-column output row `w` (its column-support core, e
 22d's tail as 22e's first leaf) — then resolves the **Claim 6.12** `D`-candidate
 extensor-span disjunction (de-risked: bottoms on the green Phase-17 Lemma 2.1; the
 degree-2 eq. (6.44) forces all candidates to test the same `r ∈ ℝ⁶`). Flips
-`lem:case-II-realization` and the `d=3` half of `lem:case-III` green. **Opened on a
+`lem:case-II-realization` and the `d=3` half of `lem:case-III` **green-modulo-N3b** —
+the one point-join↔panel-meet duality leaf (`lem:case-III-claim612-line-in-panel-union`,
+bounded exterior-algebra infra at `⋀²ℝ⁴`) is split to **Phase 22f**, which discharges it
+and takes both fully green. **Opened on a
 red-node consistency recon, not a build** (`CLAUDE.md` *When this commit opens a
 phase*): the target nodes (`lem:case-II-realization`,
 `lem:case-II-realization-placement`, `lem:case-III`) were read end-to-end and
