@@ -2219,6 +2219,71 @@ green inputs; the IH from `hsplit` feeds N7b-0 via `exists_rigidOn_ofNormals_of_
 The one genuinely-new construction is the eq. (6.12) shared-seed selector (step 1), plus the bounded
 `hnewpin` column-independence (step 2); `hrow` is `rfl`. Ready to build leaf-most-first.
 
+### 1.29 Phase 22c, fifth pass — step-1 constructibility recon: the single-seed coupling RESOLVED + the placement geometry pinned (the planning gate before the build, 2026-06-05)
+
+Fifth docs-only commit (no Lean / `\leanok` / blueprint). The user's standing direction for Phase 22c
+— *"this is a very intricate part of the proof; never dispatch a build before the plan is clear"* —
+applied to the one piece §1.28 left at the *requirements* level, not the *construction* level: **step 1,
+the shared-seed selector geometry**, the "only genuinely-new construction." §1.28's N7b-0 bullet deferred
+reconciling the IH's *existential* seed with the *single* shared `q₀` to "the single-seed coupling,
+below" — and never wrote the "below." A focused read-only recon against the live defs resolves both that
+gap and the concrete placement; every signature below was re-verified at the cited line.
+**Verdict: PLAN CLEAR — no build surprise hidden in step 1.**
+
+**(A) The single-seed coupling — SOUND, via a green lemma (not hand-waved).** The IH from
+`theorem_55.hsplit` repackages (`exists_rigidOn_ofNormals_of_hasFullRankRealization`,
+`GenericityDevice.lean:1078`) to `∃ ends₁ q, (ofNormals G_v^{ab} ends₁ q).toBodyHinge.IsInfinitesimallyRigidOn V(G_v^{ab})`.
+Build the shared seed by overriding only the fresh vertex: `q₀ := Function.update q v (placement)`
+(`ofNormals` takes `q : α × Fin (k+2) → ℝ`, so `q₀(v,·) : Fin (k+2) → ℝ` is the curried slice). This
+leaves the **old block untouched**: the IH rigidity `IsInfinitesimallyRigidOn V(G_v^{ab})`
+(`RigidityMatrix.lean:752`) quantifies only over `V(G_v^{ab}) = V(G)\{v}` (`vertexSet_splitOff`,
+`Operations.lean:599`) and its motions read only `G_v^{ab}` edges — **all avoiding `v`** (splitting-off
+removes `v`). The Lean lever is the green `toBodyHinge_withNormal_infinitesimalMotions_eq`
+(`PanelHinge.lean:594`), whose `hv` hypothesis (`v` is an endpoint of no `P.graph` edge) holds **exactly
+because** `v ∉ V(G_v^{ab})`; `ofNormals_withGraph` (`PanelHinge.lean:459`, `rfl`) swaps `G_v^{ab}→G`. So
+the IH rigidity at `q₀` feeds N7b-0's `hrig` directly. N7b-3's `hold` (old rows vanish at `update 0 v x`)
+holds for the same reason — every old edge's `hingeRow` endpoints are `≠ v`.
+
+**(B) The placement of `q₀(v,·)` — `n_a + t·n_b` with `t ≠ 0` (NOT `q₀ v = q₀ a`).** Write `n_a := q(a,·)`,
+`n_b := q(b,·)`; set `q₀(v,·) := n_a + t·n_b`, `t ≠ 0` (concretely `t = 1`). With `panelSupportExtensor
+n₁ n₂ = complementIso (normalsJoin n₁ n₂)` (`PanelLayer.lean:161`) and `normalsJoin = ιMulti ℝ 2 ![·,·]`
+(`PanelLayer.lean:64`, alternating):
+- `normalsJoin (n_a + t·n_b) n_b = normalsJoin n_a n_b` (the `t·n_b` term wedges `n_b∧n_b = 0`), so
+  `panelSupportExtensor (q₀ v)(q₀ b) = panelSupportExtensor (q₀ a)(q₀ b)` — the **`vb`-row reproduces the
+  `e₀=ab`-row** (≠ 0: the IH's `e₀` hinge is transversal, `q a, q b` independent, `panelSupportExtensor_ne_zero_iff`
+  `PanelLayer.lean:172`). This is N7b-1's `he` input on `e_b`.
+- `normalsJoin (n_a + t·n_b) n_a = −t·normalsJoin n_a n_b`, so `panelSupportExtensor (q₀ v)(q₀ a) =
+  −t·panelSupportExtensor (q₀ a)(q₀ b) ≠ 0` for `t ≠ 0` — the **`va`-hinge stays a nondegenerate line**
+  `L ⊂ Π(a)` (KT eq. (6.12)).
+
+  **The `t = 0` trap.** `q₀(v,·) := q₀(a,·)` (= `n_a`) still gives the `vb`-reproduction (so stratum 1's
+  *count* would close — the `D−1` new rows come from `e_b` alone via N7b-1, and the form-(b) closure
+  needs only `hmem ∈ rigidityRows`), **but it zeros the `va`-hinge** (`panelSupportExtensor n_a n_a = 0`,
+  `extensor_eq_zero_of_eq`), building a *degenerate* candidate. Since stratum 1 is meant to **set up the
+  KT candidate scaffold the crux strata complete** (*Sub-phase scope cut*, `notes/Phase22c.md`), and `t≠0`
+  costs stratum 1 nothing (the `va` edge is not referenced in its count), use `t ≠ 0` for fidelity to KT's
+  actual eq. (6.12) candidate — `DESIGN.md` *Match the source's argument structure, not just its conclusion*.
+  (If a `t≠0` statement proves awkward, `t=0` is a sound fallback for the lower-bound brick *alone*,
+  deferring the `va`-line to the crux — flagged, not chosen.)
+
+**(C) Sub-lemma cut (all bounded).**
+1. The wedge-bilinearity placement lemma in `PanelLayer.lean`: `normalsJoin (n_a + t•n_b) n_b =
+   normalsJoin n_a n_b` (+ the two `panelSupportExtensor` (in)equalities). A few lines from
+   `AlternatingMap.map_update_add`/`map_smul` + `map_eq_zero_of_eq`; no fused panel-layer lemma exists yet.
+2. The `withNormal`/`withGraph` glue relating `ofNormals G ends q₀` to the `withNormal`-updated IH
+   framework (uncurry of `Function.update`) — definitional / `rfl`-adjacent.
+3. The producer `PanelHingeFramework.case_II_placement_eq612` (lands near N7b-1 in `Pinning.lean`),
+   assembling N7b-1 → `hnewpin` (LANDED, `linearIndependent_panelRow_comp_single_of_edge`) → N7b-0 →
+   N7b-2 (`hrow := rfl`) → N7b-3 (`linearIndependent_sum_pinned_block`) → N7a form (b), yielding the
+   `rank R(G,p₁) ≥ D(|V|−1)−1 = 6|V|−7` lower-bound brick (explicitly NOT `HasFullRankRealization` — one
+   row short, the Case-III missing row deferred to strata 2–3).
+
+**(D) Precedent.** The green Case-I composer (`CaseI.lean:1754–1831`) already builds the analogous shared
+seed (one `q₀`, one `F = ofNormals G ends q₀`), splits rows into two blocks, proves union independence via
+`Sum.elim` (`linearIndependent_sum_pinned_block`), supplies `hmem`, closes with form (b). Step 1 mirrors
+it; the second block is a single re-inserted vertex, so the `withNormal` 1-extension replaces Case I's
+contraction/`extProj` machinery (22b's `degeneratePlacement`/`extProj` confirmed not reused, §1.27/§1.28).
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

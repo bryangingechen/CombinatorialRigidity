@@ -41,7 +41,7 @@ just its conclusion* + *Phase Case-naming vs. KT's k-bookkeeping*.
 
 22c's **design recon is settled** (two docs-only passes), the **third
 docs-only commit reconciled the blueprint** to the corrected understanding,
-and a **fourth docs-only commit (this one) signature-verified the stratum-1
+and a **fourth docs-only commit signature-verified the stratum-1
 node cut** against the real Lean signatures of the green bricks it composes
 with (§1.28) — the user asked for one more design pass before any build, a
 node-level constructibility recon against actual signatures. **Outcome: the
@@ -88,6 +88,23 @@ work is the **shared-seed selector geometry** (eq. (6.12) `q₀` placing the
 `vb`-hinge extensor to reproduce the `e₀`-hinge, the genuinely-new geometric
 construction, fact 1 of 2) and the green-brick composition (N7b-0/1/2/3 +
 N7a form (b)); see *Hand-off*.
+
+**Fifth docs-only commit (this one) — step-1 constructibility recon, the
+planning gate before the build (§1.29).** Per the user's standing direction
+("very intricate part; never dispatch a build before the plan is clear"), a
+focused read-only recon resolved the one piece §1.28 left at the *requirements*
+level: the **shared-seed selector geometry** (fact 1 of 2). **Verdict: PLAN
+CLEAR.** Two load-bearing resolutions: **(A)** the **single-seed coupling is
+sound** — `q₀ := Function.update q v (placement)` leaves the old block untouched
+because the IH's rigidity quantifies only over `V(G)∖{v}` and its motions read
+only `G−v` edges; the green lever is `toBodyHinge_withNormal_infinitesimalMotions_eq`
+(`PanelHinge.lean:594`), whose `hv` holds exactly because `v ∉ V(G_v^{ab})`. **(B)**
+the placement is `q₀(v,·) := n_a + t·n_b` with **`t ≠ 0`** (`n_a=q(a,·)`, `n_b=q(b,·)`),
+**NOT `q₀ v = q₀ a`** — the wedge fact `normalsJoin (n_a+t·n_b) n_b = normalsJoin n_a n_b`
+makes the `vb`-row reproduce the `e₀`-row for *any* `t`, but `t=0` zeros the `va`-hinge
+extensor and builds a *degenerate* candidate (a genuine trap); `t≠0` keeps the `va`-line
+nondegenerate, matching KT's eq. (6.12) candidate (`DESIGN.md` *Match the source's
+argument structure*). No `\leanok`/Lean/blueprint changes; the next commit is the build.
 
 ## Sub-phase scope cut (SETTLED; re-cut to first-chunk 2026-06-05)
 
@@ -284,13 +301,20 @@ toward them, not the full nodes.
   (`genericity-and-count.tex`) so statement+proof of each describe the
   eq. (6.12) row-side route; collapse M3 + N7b-4 out of the live route,
   retain-with-marker (§1.27).
-- [x] **(this commit, docs only)** Signature-level verification of the
+- [x] **(commit bea3217, docs only)** Signature-level verification of the
   stratum-1 cut against the real Lean signatures (§1.28): pulled the verbatim
   heads of N7b-0/1/2/3 + N7a (two forms), traced the critical `hrow` check,
   confirmed the composition + count close cleanly, and corrected the
   `hrow`/eq.-(6.12)-reproduction conflation (the reproduction is new-block,
   `hrow` is old-block `rfl`). No Lean / `\leanok` / blueprint flips.
-- [x] **(this commit, Lean — stratum-1 leaf 1)** `hnewpin`, the new-block column
+- [x] **(this commit, docs only)** Step-1 constructibility recon — the planning
+  gate before the build (§1.29): resolved the **single-seed coupling** (sound via
+  `toBodyHinge_withNormal_infinitesimalMotions_eq`, `q₀ := update q v (placement)`,
+  `hv` holds because `v ∉ V(G_v^{ab})`) and pinned the **placement geometry**
+  (`q₀(v,·) := n_a + t·n_b`, `t ≠ 0`, NOT `q₀ v = q₀ a` — the `t=0` trap zeros the
+  `va`-hinge). Verdict PLAN CLEAR; sub-lemma cut + Case-I precedent recorded. No
+  Lean / `\leanok` / blueprint flips.
+- [x] **(commit aeadb45, Lean — stratum-1 leaf 1)** `hnewpin`, the new-block column
   independence (§1.28 / *Hand-off* step 2): `linearIndependent_panelRow_comp_single_of_edge`
   in `Pinning.lean` (right after N7b-1). The 2nd of the two genuinely-new facts.
   From N7b-1's `D−1` panel rows on one edge `e` (subfamily `s`, all `i.1 = e`), they
@@ -300,12 +324,13 @@ toward them, not the full nodes.
   `LinearIndependent.of_comp` stripping the injective `(screwDiff …).dualMap`. Axiom-clean
   (`propext`/`Classical.choice`/`Quot.sound`), warning-clean, lint-clean. No `\leanok` flip
   (the target `lem:case-II-realization` / `lem:case-III` stay red; this is Lean-only infra).
-- [ ] **(22c, stratum 1 — remaining)** eq. (6.12) `+(D−1)` block-triangular placement
-  — the producer behind `lem:case-II-realization-placement`.
-  `buildable` + **signature-verified** from the green N7b row infra. Cut
-  leaf-most-first (the *exact* ordering, §1.28 / *Hand-off*): the **two** new
-  facts are (1) the shared-seed selector `q₀`/`ends` making the `vb`-hinge
-  reproduce the `e₀`-hinge extensor + agreeing on `G−v` edges, and (2)
+- [ ] **(22c, stratum 1 — remaining; construction PINNED §1.29)** eq. (6.12)
+  `+(D−1)` block-triangular placement — the producer behind
+  `lem:case-II-realization-placement`. `buildable` + **signature-verified** (§1.28)
+  + **construction-verified** (§1.29: single-seed coupling sound, `q₀(v,·):=n_a+t·n_b`
+  with `t≠0`). Cut leaf-most-first (the *exact* ordering, §1.28+§1.29 / *Hand-off*):
+  the **two** new facts are (1) the shared-seed selector `q₀`/`ends` making the
+  `vb`-hinge reproduce the `e₀`-hinge extensor + agreeing on `G−v` edges, and (2)
   `hnewpin` (N7b-1's `D−1` rows stay independent after `.comp (single … v)`);
   then green: N7b-1 (`exists_independent_panelRow_subfamily_of_edge`, `D−1`),
   N7b-0 (`exists_independent_panelRow_subfamily_of_rigidOn`, `D(|V|−2)` old,
@@ -348,7 +373,7 @@ toward them, not the full nodes.
   assembly the deferred 22d — each deferred until the prior shape is clear.
 - **Design-recon — SETTLED**: the four open recon questions are answered
   (§1.26); the layer is designed.
-- **Signature-level verification — DONE** (§1.28, this commit): the stratum-1
+- **Signature-level verification — DONE** (§1.28, commit bea3217): the stratum-1
   composition is verified against the *actual* current Lean signatures of all
   five green bricks (N7b-0/1/2/3 + N7a). The critical `hrow` check passes (the
   `panelRow` term depends only on `ends`+`q`, not the graph, so the old-block
@@ -359,7 +384,17 @@ toward them, not the full nodes.
   **new-block** content (feeds `hnewpin`/N7b-3's `v`-column), NOT N7b-2's
   `hrow` (which is the old-block `ends`/`q₀`-agreement `rfl`). The two new
   facts are the shared-seed selector + `hnewpin`; everything else is green.
-  The next commit cuts the first Lean node.
+- **Step-1 constructibility — RESOLVED** (§1.29, this commit): the one piece
+  §1.28 left at the *requirements* level — the shared-seed selector geometry
+  (fact 1 of 2) — is now construction-verified. **(A)** the **single-seed
+  coupling** (reconcile the IH's *existential* seed with the one shared `q₀`)
+  is sound: `q₀ := Function.update q v (placement)` leaves the old block
+  untouched via `toBodyHinge_withNormal_infinitesimalMotions_eq` (`PanelHinge.lean:594`),
+  whose `hv` holds because `v ∉ V(G_v^{ab})`. **(B)** the placement is
+  `q₀(v,·) := n_a + t·n_b` with **`t ≠ 0`** — the wedge fact `normalsJoin
+  (n_a+t·n_b) n_b = normalsJoin n_a n_b` reproduces the `vb`→`e₀` row for any
+  `t`, but `t = 0` (`q₀ v = q₀ a`) **zeros the `va`-hinge** (degenerate
+  candidate, a trap). Verdict **PLAN CLEAR**. The next commit cuts the build.
 - **Reuse-from-22b — ANSWERED** (the de-risking question, §1.27): stratum 1
   reuses the green **N7b row infra** (N7b-0/1/2/3 + N7a + `_transport`)
   near-wholesale — they were *built* for exactly this `1`-extension
@@ -382,15 +417,18 @@ toward them, not the full nodes.
 The design recon is **settled** (four questions answered, first-chunk
 scope cut; §1.26), **the blueprint is reconciled to it** (§1.27), **the
 stratum-1 cut is SIGNATURE-VERIFIED against the real Lean signatures**
-(§1.28), **and the first Lean node — `hnewpin` (fact 2 of 2) — has landed**
-(`linearIndependent_panelRow_comp_single_of_edge`, `Pinning.lean`). So the
-next agent does not re-fight the divergence, does not hit a signature
-surprise, and has the column-independence brick in hand. **The next concrete
-commit is the eq. (6.12) shared-seed selector geometry (fact 1 of 2) + the
-green-brick composition into the lower-bound producer behind
-`lem:case-II-realization-placement`.** The full signature record (verbatim
-heads of all five green bricks + the per-obligation discharge) is §1.28;
-this is the build-agent summary.
+(§1.28), **the first Lean node — `hnewpin` (fact 2 of 2) — has landed**
+(`linearIndependent_panelRow_comp_single_of_edge`, `Pinning.lean`), **and the
+remaining fact 1 (the shared-seed selector geometry) is now
+CONSTRUCTION-VERIFIED** (§1.29: single-seed coupling sound, placement pinned).
+So the next agent does not re-fight the divergence, does not hit a signature
+surprise, has the column-independence brick in hand, and **knows the exact
+`q₀` construction**. **The next concrete commit is the eq. (6.12) shared-seed
+selector geometry (fact 1 of 2) + the green-brick composition into the
+lower-bound producer behind `lem:case-II-realization-placement`.** The full
+signature record is §1.28; the construction resolution (single-seed coupling +
+placement geometry + sub-lemma cut + Case-I precedent) is §1.29; this is the
+build-agent summary.
 
 Precise target. A producer (working name
 `PanelHingeFramework.case_II_placement_eq612` / `…_independent_panelRow`)
@@ -415,12 +453,23 @@ repackages it to `∃ ends₁ q, (ofNormals G_v^{ab} ends₁ q).toBodyHinge.IsIn
 Leaf-most-first node order (the only red leaf is the new placement brick;
 steps 2–6 are green-brick applications):
 1. **shared seed `q₀` + two selectors `ends_G`, `ends₁`** (the one new brick,
-   eq. (6.12) geometric content): `q₀` chosen so `q₀(v,·)` places `panel(v)`
-   on the line `L⊂Π(a)` making the `vb`-hinge extensor
-   `panelSupportExtensor (q₀ v)(q₀ b)` reproduce the `e₀=ab`-hinge extensor
-   `panelSupportExtensor (q₀ a)(q₀ b)`; `ends_G`/`ends₁` record their links
-   (`hends`) **and agree on every `e₀`-free `G−v` edge** (so step 5's `hrow`
-   is `rfl`). This is the `p₁(vb)=q(ab)` **new-block** reproduction.
+   eq. (6.12) geometric content; **construction PINNED §1.29**): take the IH's
+   `(ends₁, q)` from `exists_rigidOn_ofNormals_of_hasFullRankRealization`, then
+   **`q₀ := Function.update q v (n_a + t·n_b)`** with `n_a := q(a,·)`, `n_b := q(b,·)`,
+   `t ≠ 0` (concretely `t = 1`). The **single-seed coupling is sound** — overriding
+   only the fresh vertex `v` leaves the old block untouched
+   (`toBodyHinge_withNormal_infinitesimalMotions_eq`, `PanelHinge.lean:594`; `hv`
+   holds because `v ∉ V(G_v^{ab})`). The wedge fact `normalsJoin (n_a+t·n_b) n_b =
+   normalsJoin n_a n_b` makes the `vb`-hinge extensor `panelSupportExtensor (q₀ v)(q₀ b)`
+   reproduce the `e₀=ab`-hinge extensor `panelSupportExtensor (q₀ a)(q₀ b)` (the
+   `p₁(vb)=q(ab)` **new-block** reproduction); `t ≠ 0` keeps the `va`-hinge
+   `panelSupportExtensor (q₀ v)(q₀ a) = −t·panelSupportExtensor (q₀ a)(q₀ b) ≠ 0`
+   nondegenerate (**NOT `q₀ v = q₀ a`** — `t=0` zeros it, building a degenerate
+   candidate). `ends_G`/`ends₁` record their links (`hends`) **and agree on every
+   `e₀`-free `G−v` edge** (so step 5's `hrow` is `rfl`). New sub-lemmas: the wedge
+   identity in `PanelLayer.lean` + the `withNormal`/`withGraph` glue (rfl-adjacent);
+   mirror the Case-I composer's shared-seed→`Sum.elim`→form-(b) pattern
+   (`CaseI.lean:1754–1831`).
 2. **`hnewpin` (new-block column independence)** — **DONE** (2026-06-05,
    `linearIndependent_panelRow_comp_single_of_edge` in `Pinning.lean`): from
    N7b-1 (`exists_independent_panelRow_subfamily_of_edge`, green) `D−1`
