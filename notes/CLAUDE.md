@@ -102,22 +102,30 @@ contract holds only if the file stays scannable.
     cross-references, not explanations.
 
   For small phases, a flat list under "Decisions made" is fine.
-- **Soft length budget, enforced per-commit.** A short phase (5–10
-  forward-work commits) sits near 100–200 lines; a long phase (20+
-  commits, multiple subsystems) may legitimately need 350–450. The test
-  is **density**, not absolute LoC: each *Decisions made* entry respects
-  the ≤8-line rule, cross-cutting lessons are lifted via *Promoted to
-  …*, and *Current state* + *Hand-off* still pass the hand-off contract.
-  **The budget is a per-commit constraint, not a cleanup-round task** —
-  if a commit pushes the note over budget, trim it in that same commit
-  (top-level `CLAUDE.md` *Before each commit → Compress in-commit*).
-  Deferring to a cleanup round writes the verbose version, then re-reads
-  and re-compresses it next session; the routine ~50% “D1 compression”
-  (Phase 13 312→181, Phase 14 329→152, Phase 20 1089→434) is precisely
-  that waste. Calibration: Phase 1/2 (small) ~100 lines; Phase 9 (25
-  commits, ~3300 LoC, 22 nodes) ~400 at the upper end; a note past 500
-  means *Decisions* has accumulated content that should have been
-  promoted or never written.
+- **Forward-weighted note — a composition ratio, not a line budget.** A
+  phase note is working memory for the *next* chunk, not an archive, so
+  its **forward** part (the *Current state* next step, open `[ ]`
+  checklist items, *Blockers*, *Hand-off*) must outweigh its **finished**
+  part (*Decisions made*, done-item notes). There is **no absolute line
+  budget** — a 25-commit phase may run long if its forward part is
+  genuinely large; a winding-down phase must shrink as its forward part
+  does. The gate is the ratio: **if *Decisions made* outgrows the forward
+  sections, the finished log has gone stale** — *promote* its
+  cross-cutting entries (*Promoted to …*) and *collapse* the rest to
+  one-line verdicts (decision + Lean name; the reasoning is in git / the
+  blueprint / the Lean source). A settled decision keeps full ≤8-line
+  prose only while upcoming work might lean on or contradict it. Enforce
+  **per-commit** (top-level `CLAUDE.md` *Before each commit → Compress
+  in-commit*): if a commit tips finished past forward, rebalance in that
+  commit — deferring just re-incurs the write-verbose / re-read /
+  re-compress waste the routine ~50% “D1 compression” (e.g. Phase 20
+  1089→434) used to pay. Two fixed backstops survive the move off
+  line-budgets: each *Decisions made* entry stays ≤8 lines, and a note
+  **past ~500 lines is a tripwire** — almost always a swallowed
+  promotion; stop and investigate, don't just trim. *At phase close* the
+  note becomes the compressed archive ROADMAP §N points at: forward
+  shrinks to the next-phase hand-off, and *Decisions made* settles as a
+  mostly one-line verdict record.
 
 `notes/Phase1.md` is a complete-phase example for a small phase
 (flat "Decisions made"); `notes/Phase3.md` is the canonical example
@@ -133,7 +141,9 @@ When starting a phase, seed the file with sections like:
 **Status:** in progress.
 
 ## Current state
-<one-paragraph: what's done, what's mid-stream, what's the next concrete step>
+<one-paragraph: lead with the next concrete step; then what's done /
+what's mid-stream. This + the sections below it are the *forward* part
+the note is weighted toward.>
 
 ## Architectural choices made up front
 <optional; phase-start design decisions. Cross-cutting ones go in DESIGN.md.>
@@ -143,10 +153,19 @@ When starting a phase, seed the file with sections like:
 - [ ] `lemma_b` — in progress; blocked on …
 - [ ] `lemma_c`
 
+## Blockers / open questions
+- …
+
+## Hand-off / next phase
+<the next concrete commit that moves work forward (the smallest one, not
+the target theorem); at phase close, what unlocks the next phase>
+
 ## Decisions made during this phase
 
-<For small phases, a flat list of bullets is fine. For phases with
-cleanup passes or many small refactors, sub-organize as below.>
+<The finished-work tail — keep it **shorter than the forward sections
+above** (*Forward-weighted note*); promote cross-cutting entries and
+one-line settled ones as they age. For small phases a flat list is fine;
+for phases with cleanup passes or many refactors, sub-organize as below.>
 
 ### Phase-local choices and proof techniques
 - <decision + rationale, ≤ 8 lines per entry>
@@ -156,10 +175,4 @@ cleanup passes or many small refactors, sub-organize as below.>
 
 ### Cleanup pass summaries
 <optional; per-file effect of any cleanup pass, with cross-references>
-
-## Blockers / open questions
-- …
-
-## Hand-off / next phase
-<written when the phase finishes; what unlocks the next phase>
 ```

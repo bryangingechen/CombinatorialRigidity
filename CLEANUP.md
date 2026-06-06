@@ -21,11 +21,12 @@ land there, not here.
 - **Between phases**, before opening the next phase's work log. The
   default cadence. A finished phase is a natural moment to step back
   before the next dependency-introducing decisions.
-- **When a `notes/PhaseN.md` is over budget** (cf. `notes/CLAUDE.md`
-  *Soft length budget*) — which now signals the per-commit
-  *Compress-in-commit* gate was skipped, since compression is meant to
-  happen continuously. Compress it and bundle related sweeps so the
-  next agent sees the slimmer notes.
+- **When a `notes/PhaseN.md` has gone finished-heavy** (*Decisions made*
+  outweighs the forward sections) **or trips the ~500-line tripwire**
+  (cf. `notes/CLAUDE.md` *Forward-weighted note*) — which now signals the
+  per-commit *Compress-in-commit* gate was skipped, since rebalancing is
+  meant to happen continuously. Compress it and bundle related sweeps so
+  the next agent sees the slimmer notes.
 - **When the friction log accumulates four+ open entries** of the
   same shape (e.g. four "I had to write `letI : Fintype V := …`"
   entries → consider a typeclass-boundary sweep).
@@ -172,12 +173,13 @@ matches one already known to be unifiable.
 ### D. Project-organization compression
 
 Compression is **primarily a per-commit constraint** now (`CLAUDE.md`
-*Before each commit → Compress in-commit*; `notes/CLAUDE.md` *Soft
-length budget*) — a note should rarely be over budget by the time a
-cleanup round runs. §D is the **safety net**: it catches notes that
-slipped past the per-commit gate (and is where a never-promoted
+*Before each commit → Compress in-commit*; `notes/CLAUDE.md`
+*Forward-weighted note*) — a note should rarely be finished-heavy by the
+time a cleanup round runs. §D is the **safety net**: it catches notes
+that slipped past the per-commit gate (and is where a never-promoted
 cross-cutting lesson referenced in 2+ files / 2+ phases finally lifts).
-Concretely, when a `notes/PhaseN.md` is past budget, or such a lesson
+Concretely, when a `notes/PhaseN.md`'s *Decisions made* outweighs its
+forward sections (or it trips the ~500-line tripwire), or such a lesson
 has gone unlifted:
 
 - **Lift** lessons from phase notes to `TACTICS-GOLF.md` (idioms),

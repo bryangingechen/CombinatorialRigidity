@@ -176,14 +176,16 @@ content change (docs commits):
   the Phase N entry with a one-line pointer. Cross-cutting lessons
   that stay in phase notes rot — this is the rule that prevents
   Phase notes from accumulating into 500-line documents.
-- **Compress in-commit, not in a cleanup round.** The phase-note length
-  budget (`notes/CLAUDE.md` *Soft length budget*) is a per-commit
-  constraint, not deferred hygiene: if this commit pushes the note over
-  budget, trim it *now*. Deferring compression to a later cleanup round
-  means the verbose intermediate gets written, re-read next session, and
-  re-compressed — three context costs for one durable paragraph. The
-  routine "D1 compression" halving (e.g. `notes/Phase20.md` 1089→434) is
-  exactly the waste this rule removes at the source.
+- **Compress in-commit, not in a cleanup round.** Keep the phase note
+  forward-weighted (`notes/CLAUDE.md` *Forward-weighted note*) as a
+  per-commit constraint, not deferred hygiene: if a commit tips the
+  note's finished part (*Decisions made*) past its forward part — or
+  trips the ~500-line tripwire — rebalance *now* (promote cross-cutting
+  entries, one-line the settled rest). Deferring to a later cleanup
+  round means the verbose intermediate gets written, re-read next
+  session, and re-compressed — three context costs for one durable
+  paragraph (the routine "D1 compression" halving, e.g.
+  `notes/Phase20.md` 1089→434, is exactly that waste).
 - **If you answered a "Choices to revisit" entry** in `DESIGN.md`,
   update it.
 
