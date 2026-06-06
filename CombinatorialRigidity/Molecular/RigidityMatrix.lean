@@ -1032,6 +1032,48 @@ theorem linearIndependent_sum_p2_candidateRow (F : BodyHingeFramework k α β) (
   rw [hingeRow_comp_columnOp_comp_single hvb ρ]
   exact (linearIndependent_sumElim_candidateRow_iff F e hrnpin hspan ρ).2 hr
 
+/-- **The `p₃` candidate full block: the third candidate split at the other degree-2 body `a`
+along `ac` attains the full `D(|V|−1)`-size family when its candidate functional is not orthogonal
+to the supporting extensor** (`lem:case-III-claim612-p3-placement`, KT eqs.~(6.31)–(6.41);
+Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The third of Claim~6.12's candidates, available because `a`
+too is a degree-2 vertex: split off at `a` along `ac` (rather than splitting at `v`). The
+isomorphism `G_v^{ab} ≅ G_a^{vc}` (`ρ : V∖{a} → V∖{v}`, `ρ(v) = a`, identity otherwise) is handled
+**functionally**, not by an `ofNormals` graph swap: the candidate row is `hingeRow a c ρ_c` for the
+candidate functional `ρ_c` on `ScrewSpace k`, and the producer is the *same* candidate-completion
+assembly (`linearIndependent_sum_augment_candidateRow`) instantiated at the column op
+`Φ = columnOp hac` for the edge `ac` in place of `va` — the split body is `a`, its operated endpoint
+`c`. Its one hypothesis — the operated, `a`-pinned top-left block being full rank — is supplied by
+the row-space criterion (`linearIndependent_sumElim_candidateRow_iff`) at the `ac`-hinge `e` once
+the operated, pinned candidate row `(hingeRow a c ρ_c) ∘ Φ ∘ single a` is identified with `ρ_c`
+itself (the column op makes it pure `a`-column with value `ρ_c(S_a)`,
+`hingeRow_comp_columnOp_comp_single`), which holds iff `ρ_c(C(e)) ≠ 0`. This is KT's `M₃`
+(eq.~(6.41)) full rank `⟺ r ∉ (span C(L''))^⊥` for the line `L'' ⊂ Π(c)` — the producer direction
+of the eq.~(6.42) row-space criterion the assembly consumes through its operated `hnewpinaug`. The
+link to the *same* common vector `r̂` the `M₁/M₂` criteria use is eq.~(6.44)
+(`candidateRow_ac_eq_neg`): the `M₃` candidate functional `ρ_c` is `−r̂` restricted to the
+`c`-endpoint, so the Claim-6.12 capstone (`lem:case-III-claim612`) reads its criterion off the
+same `r̂`; N7 itself is the graph-free producer, so the recurring `ofNormals` defeq trap does not
+bite. -/
+theorem linearIndependent_sum_p3_candidateRow (F : BodyHingeFramework k α β) (e : β)
+    [DecidableEq α] {a c : α} (hac : a ≠ c) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) a x) = 0)
+    (holdindep : LinearIndependent ℝ ro)
+    (hrnpin : LinearIndependent ℝ (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a)))
+    (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hac).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a))) = F.hingeRowBlock e)
+    (hr : ρ (F.supportExtensor e) ≠ 0) :
+    LinearIndependent ℝ
+      (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) a c ρ)) ro) := by
+  refine linearIndependent_sum_augment_candidateRow hac hold ?_ holdindep
+  rw [hingeRow_comp_columnOp_comp_single hac ρ]
+  exact (linearIndependent_sumElim_candidateRow_iff F e hrnpin hspan ρ).2 hr
+
 /-- **The common vector `r̂` of the `D`-candidate disjunction is nonzero**
 (`lem:case-III-claim612-r-nonzero`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1, Phase 22e).
 The candidate row shared by all three

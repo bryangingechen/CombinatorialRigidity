@@ -823,6 +823,8 @@ Grassmann--Cayley projective duality.
 
 \begin{lemma}[The $p_3$ placement: the third candidate via $G_v^{ab} \cong G_a^{vc}$; KT eqs.\ (6.31)--(6.41)]
   \label{lem:case-III-claim612-p3-placement}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p3_candidateRow}
+  \leanok
   \uses{lem:case-II-realization-placement, lem:case-III-columnop,
         lem:case-III-claim612-block-iff-perp, lem:case-III-claim612-eq644}
   The third candidate $p_3$, available because $a$ too is a degree-2 vertex: split off at $a$ along
@@ -836,13 +838,25 @@ Grassmann--Cayley projective duality.
   (\cref{lem:case-III-claim612-eq644}) to route the $M_3$ row onto the same $r$.
 \end{lemma}
 \begin{proof}
+  \leanok
   The isomorphism $\rho$ identifies $(G_a^{vc}, q_\rho)$ with $(G_v^{ab}, q)$ as panel-hinge
   frameworks (eq.~(6.31)), so $\Pi_{G_a^{vc}, q_\rho}(u) = \Pi(u)$ for $u \ne v, a$ and
-  $\Pi_{G_a^{vc}, q_\rho}(v) = \Pi(a)$. The placement $p_3$ extends $q_\rho$ as in eqs.~(6.32)/(6.33);
-  the column op at $(a,c)$ (eq.~(6.35)$\to$(6.36)) and the substitution $p_3(va) = q(ac)$,
-  $p_3(vb) = q(ab)$ (eq.~(6.34)) reduce $R(G, p_3)$ to eq.~(6.41) by the same row operations as for
-  $R(G, p_1)$ (the eq.~(6.40) row reduction). The eq.~(6.44) identity gives $M_3$'s row as
-  $-\sum_j \lambda_{(ac)j}\, r_j(q(ac)) = r$ (up to sign).
+  $\Pi_{G_a^{vc}, q_\rho}(v) = \Pi(a)$. Formally this is invisible: the candidate-completion assembly
+  (\cref{lem:case-III-candidate-row}) takes the splitting body, its two endpoints, the candidate
+  functional $\rho$, and the two row blocks abstractly, so applying it at the column op $\Phi =
+  \mathrm{columnOp}\ (a \ne c)$ for the edge $ac$ --- the split body now $a$, its operated endpoint
+  $c$ --- is the same lemma; no graph swap is needed, and the iso is handled functionally through
+  the candidate row (verbatim symmetric to the $p_2$ construction under the role change
+  $v, b \mapsto a, c$). Its one hypothesis --- the operated, $a$-pinned top-left block being full
+  rank --- is supplied by the row-space criterion (\cref{lem:case-III-claim612-block-iff-perp}) at
+  the $ac$-hinge once the operated, pinned candidate row
+  $(\mathrm{hingeRow}\ a\ c\ \rho) \circ \Phi \circ \mathrm{single}_a$ is identified with $\rho$
+  itself (the column op makes it pure $a$-column with value $\rho(S_a)$), which holds iff
+  $\rho(C) \ne 0$. The column op at $(a,c)$ (eq.~(6.35)$\to$(6.36)) and the substitution
+  $p_3(va) = q(ac)$, $p_3(vb) = q(ab)$ (eq.~(6.34)) reduce $R(G, p_3)$ to eq.~(6.41) by the same row
+  operations as for $R(G, p_1)$ (the eq.~(6.40) row reduction). The eq.~(6.44) identity
+  (\cref{lem:case-III-claim612-eq644}) gives $M_3$'s row as $-\sum_j \lambda_{(ac)j}\, r_j(q(ac)) =
+  r$ (up to sign), so the capstone reads its full-rank criterion off the same common vector $r$.
 \end{proof}
 
 \begin{lemma}[Eq.\ (6.44): the $M_3$ row equals $-r$, routing $M_3$ onto the same $r$; KT eq.\ (6.44)]
