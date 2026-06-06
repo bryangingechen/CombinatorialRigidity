@@ -1119,6 +1119,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite
     ∃ (s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k))
       (Q : MvPolynomial (α × Fin (k + 2)) ℝ),
       screwDim k * (V(G).ncard - 1) ≤ Nat.card s ∧ MvPolynomial.eval q₀ Q ≠ 0 ∧
+      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent ℝ
           (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
@@ -1173,11 +1174,14 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn [Finite α] [Finite
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
       simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
-  -- Extract the witnessing rank polynomial via the mirror lemma, and re-phrase its conclusion.
-  obtain ⟨Q, hQ₀, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg (p₀ := q₀) (s := s)
-      (by simpa only [hg_def] using hsindep)
-  exact ⟨s, Q, hscard.ge, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+  -- Each coordinate `c i j` is a body-incidence sign times `annihRowPoly`, hence rational.
+  have hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range := fun i j => by
+    rw [hc_def]; exact annihRowPoly_smul_sign_mem_range_map _ _ _ _ _ _
+  -- Extract the rational witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
+  obtain ⟨Q, hQ₀, hQrat, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range g c φ hg hc
+      (p₀ := q₀) (s := s) (by simpa only [hg_def] using hsindep)
+  exact ⟨s, Q, hscard.ge, hQ₀, hQrat, fun q hq => by simpa only [hg_def] using hQ q hq⟩
 
 /-- **Leg-restricted: a rigid leg yields a nonzero rank polynomial supported on its linking edges**
 (`lem:case-I-splice-placement` infra, the leg-restricted form of `exists_rankPolynomial_of_rigidOn`;
@@ -1211,6 +1215,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α]
       (∀ i ∈ s, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
         (ends (i : β × _ × _).1).2) ∧
       screwDim k * (V(G).ncard - 1) ≤ Nat.card s ∧ MvPolynomial.eval q₀ Q ≠ 0 ∧
+      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent ℝ
           (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
@@ -1264,11 +1269,14 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking [Finite α]
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
       simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
-  -- Extract the witnessing rank polynomial via the mirror lemma, and re-phrase its conclusion.
-  obtain ⟨Q, hQ₀, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg (p₀ := q₀) (s := s)
-      (by simpa only [hg_def] using hsindep)
-  exact ⟨s, Q, hsupp, hscard.ge, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+  -- Each coordinate `c i j` is a body-incidence sign times `annihRowPoly`, hence rational.
+  have hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range := fun i j => by
+    rw [hc_def]; exact annihRowPoly_smul_sign_mem_range_map _ _ _ _ _ _
+  -- Extract the rational witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
+  obtain ⟨Q, hQ₀, hQrat, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range g c φ hg hc
+      (p₀ := q₀) (s := s) (by simpa only [hg_def] using hsindep)
+  exact ⟨s, Q, hsupp, hscard.ge, hQ₀, hQrat, fun q hq => by simpa only [hg_def] using hQ q hq⟩
 
 /-- **Body-set-relative leg-restricted rank polynomial: a leg rigid on a body set `s` yields a
 nonzero rank polynomial witnessing `≥ D(|s|−1)` rows on its linking edges** (the body-set
@@ -1298,6 +1306,7 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite
       (∀ i ∈ t, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
         (ends (i : β × _ × _).1).2) ∧
       screwDim k * (s.ncard - 1) ≤ Nat.card t ∧ MvPolynomial.eval q₀ Q ≠ 0 ∧
+      (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ) ∧
       ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
         LinearIndependent ℝ
           (fun i : t => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i) := by
@@ -1350,11 +1359,14 @@ theorem PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set [Finite
     by_cases hu : (ends i.1).1 = a <;> by_cases hv : (ends i.1).2 = a <;>
       simp only [hu, hv, if_true, if_false, sub_zero, zero_sub, sub_self, map_zero,
         map_neg, one_mul, neg_mul, zero_mul]
-  -- Extract the witnessing rank polynomial via the mirror lemma, and re-phrase its conclusion.
-  obtain ⟨Q, hQ₀, hQ⟩ :=
-    exists_polynomial_ne_zero_of_linearIndependent_at g c φ hg (p₀ := q₀) (s := t)
-      (by simpa only [hg_def] using hsindep)
-  exact ⟨t, Q, hsupp, hscard, hQ₀, fun q hq => by simpa only [hg_def] using hQ q hq⟩
+  -- Each coordinate `c i j` is a body-incidence sign times `annihRowPoly`, hence rational.
+  have hc : ∀ i j, c i j ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range := fun i j => by
+    rw [hc_def]; exact annihRowPoly_smul_sign_mem_range_map _ _ _ _ _ _
+  -- Extract the rational witnessing rank polynomial via the mirror lemma; re-phrase its conclusion.
+  obtain ⟨Q, hQ₀, hQrat, hQ⟩ :=
+    exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range g c φ hg hc
+      (p₀ := q₀) (s := t) (by simpa only [hg_def] using hsindep)
+  exact ⟨t, Q, hsupp, hscard, hQ₀, hQrat, fun q hq => by simpa only [hg_def] using hQ q hq⟩
 
 /-- **A nonzero rank polynomial yields a rigid `ofNormals` leg at any general-position non-root**
 (`lem:case-I-splice-placement` infra, the per-leg consumer of `exists_rankPolynomial_of_rigidOn`;

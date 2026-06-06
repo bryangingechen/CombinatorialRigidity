@@ -93,9 +93,9 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals [Finite �
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
   -- (i) Each leg's leg-restricted rank polynomial: a `panelRow`-index subset `s` of full size and a
   -- `MvPolynomial` `Q` nonzero at the leg's own seed whose every non-root gives the subfamily LI.
-  obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+  obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking GH ends hendsH hneH hnevH hrigH
-  obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
+  obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, _, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
   -- (ii) The general-position factor: nonzero (witnessed at a moment-curve seed), non-roots general
   -- position.
@@ -176,9 +176,9 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals [F
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr (hends e)
   have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
-  obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+  obtain ⟨sH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking GH ends hendsH hneH hnevH hrigH
-  obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
+  obtain ⟨sc, Qc, hsuppc, hcardc, hQ0c, _, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking Gc ends hendsc hnec hnevc hrigc
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
     exists_generalPosition_polynomial (k := k) G ends
@@ -267,9 +267,9 @@ theorem PanelHingeFramework.hasFullRankRealization_of_couple_ofNormals_set [Fini
   have hendsc : ∀ e u v, Gc.IsLink e u v → Gc.IsLink e (ends e).1 (ends e).2 := fun e _ _ h =>
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr (hends e)
   -- (i) Each leg's *body-set* leg-restricted rank polynomial at its own seed.
-  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
+  obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, _, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
@@ -639,9 +639,9 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_ofNormals_se
     (Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGc h.edge_mem).mp h))
   -- (i) Each leg's *body-set* leg-restricted rank polynomial at its own seed.
-  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
-  obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, hLIc⟩ :=
+  obtain ⟨rsc, Qc, hsuppc, hcardc, hQ0c, _, hLIc⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set Gc ends hendsc hnec hnesc hrigc
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
@@ -734,7 +734,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_asymm_ofNorm
     (Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mpr
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
   -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed.
-  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=
@@ -1733,7 +1733,7 @@ theorem PanelHingeFramework.hasGenericFullRankRealization_of_couple_blockTriangu
       (hends e u v ((Graph.IsSubgraph.isLink_iff hGH h.edge_mem).mp h))
   -- (i) The `H`-leg's body-set leg-restricted rank polynomial at its own seed `qH`. Each witnessed
   -- index links in `GH` (`hsuppH`), so both its endpoints lie in `V(GH) ⊆ sH`.
-  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, hLIH⟩ :=
+  obtain ⟨rsH, QH, hsuppH, hcardH, hQ0H, _, hLIH⟩ :=
     PanelHingeFramework.exists_rankPolynomial_of_rigidOn_linking_set GH ends hendsH hneH hnesH hrigH
   -- (ii) The general-position factor.
   obtain ⟨Qgp, hQgp_ne, hQgp_pos⟩ :=

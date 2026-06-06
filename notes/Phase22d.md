@@ -33,16 +33,20 @@ polynomials (`PanelLayer.lean`: `normalsJoinPoly`/`panelSupportPoly`/`annihRowPo
 — exactly the open hypothesis the prior commit's assembly
 (`eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`) consumes. All axiom-clean.
 
-**Next concrete commit:** **wire (ii-b) into the device's actual `Q`** — re-derive (or strengthen)
-`PanelHingeFramework.exists_rankPolynomial_of_rigidOn` (`GenericityDevice.lean`) through
-`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` (in place of the bare
-`exists_polynomial_ne_zero_of_linearIndependent_at`), discharging its `hc` from
-`annihRowPoly_smul_sign_mem_range_map` (the device's `c i j = ([u=a]−[v=a]) • annihRowPoly`), so the
-produced `Q` carries `Q.coeffs ⊆ range (algebraMap ℚ ℝ)` alongside `eval q₀ Q ≠ 0`. Then **(iii)**
-`lem:case-III-seed-rank-bridge` composes that rational `Q` + the assembly with the device consumer
+**Next concrete commit:** **(ii-a)** — the seed-genericity motive conjunct (carry "realizing seed
+alg-indep over ℚ"), gated on the moment-curve alg-independence question (*Blockers*); resolving that
+question is (ii-a)'s first sub-step. Then **(iii)** `lem:case-III-seed-rank-bridge` composes the now-
+rational device `Q` + the assembly with the device consumer
 (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11` +
-`rank_add_deficiency_eq`, and **(ii-a)** supplies the alg-indep-over-ℚ seed [the moment-curve
-question, *Blockers*]. All built directly to green.
+`rank_add_deficiency_eq`. All built directly to green.
+
+The three rank-polynomial producers now carry `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`: all of
+`PanelHingeFramework.exists_rankPolynomial_of_rigidOn{,_linking,_linking_set}`
+(`GenericityDevice.lean`) route through
+`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`, discharging `hc` from
+`annihRowPoly_smul_sign_mem_range_map` (the shared `c i j = ([u=a]−[v=a]) • annihRowPoly`). So
+whichever producer (iii) consumes hands it a rational `Q`, the open hypothesis of
+`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`.
 
 ## Claim 6.11 discharge — the Gap 2 → 3 → 1 map
 
@@ -105,10 +109,15 @@ Claim 6.11 supplies the `+1` — the same missing content.
   certify `Q.coeffs ⊆ range (algebraMap ℚ ℝ)` from rational `c`. All axiom-clean. Mirror helper:
   `ExteriorAlgebra.ιMulti_family_congr` (cardinality cast). No blueprint node yet (kernel `\lean{}`
   lands with (iii)).
-- [ ] **wire (ii-b) into the device `Q`** (next build) — strengthen
-  `PanelHingeFramework.exists_rankPolynomial_of_rigidOn` (`GenericityDevice.lean`) to route through
-  the rational device lemma, discharging `hc` from `annihRowPoly_smul_sign_mem_range_map`, so the
-  produced `Q` carries `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`.
+- [x] **wire (ii-b) into the device `Q`** — all three producers
+  `PanelHingeFramework.exists_rankPolynomial_of_rigidOn{,_linking,_linking_set}`
+  (`GenericityDevice.lean`) route through
+  `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`, discharging `hc` from
+  `annihRowPoly_smul_sign_mem_range_map`, so each produced `Q` carries
+  `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`. Axiom-clean; CaseI callers re-destructure with a `_` for the
+  new conjunct. (`exists_rankPolynomial_of_rigidOn_linking_set_proj`'s `Q` runs a projected family
+  `cD = ∑ C(M j l)·c i l` whose rationality additionally needs `M` rational — out of scope here, not
+  on the direct kernel route.)
 - [ ] (ii-a) seed-genericity motive conjunct (carry "realizing seed alg-indep over ℚ"; 22b-shaped)
   — waits on the moment-curve alg-independence question (*Blockers*).
 - [ ] (iii) `lem:case-III-seed-rank-bridge` (= the eq. (6.22) generic-rank transfer ⊕ Gap-1 row
@@ -132,10 +141,11 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
   `AlgebraicIndependent.aeval_ne_zero` (alg.-indep. tuple ⟹ `aeval`-non-root of every nonzero
   ℚ-poly; mirror); **(ii)** SPLITS — **(ii-a)** seed-genericity motive conjunct (carry "realizing
   seed alg-indep over ℚ"; a third motive form paralleling 22b's GP / link-recording), waiting on
-  the moment-curve alg-independence question; **(ii-b)** [✓ landed] the rationality bridge — the
-  device's `Q : MvPolynomial σ ℝ` is rational (`Q.coeffs ⊆ range (algebraMap ℚ ℝ)`), via the
-  geometric `complementIso`-entry leaf + the panel-polynomial propagation + the rational device
-  lemma (see *Current state*); **(iii)** the kernel `lem:case-III-seed-rank-bridge` composing
+  the moment-curve alg-independence question; **(ii-b)** [✓ landed + wired into the device `Q`] the
+  rationality bridge — the device's `Q : MvPolynomial σ ℝ` is rational (`Q.coeffs ⊆ range
+  (algebraMap ℚ ℝ)`), via the geometric `complementIso`-entry leaf + the panel-polynomial
+  propagation + the rational device lemma, now threaded through the three rank-polynomial producers
+  (see *Current state*); **(iii)** the kernel `lem:case-III-seed-rank-bridge` composing
   (i) ⊕ (ii-a) ⊕ (ii-b)'s rational `Q` with the consumer + `rigidityMatrix_prop11` +
   `rank_add_deficiency_eq`. **Route (user,
   2026-06-06, design doc §1.31): build this DIRECTLY to green**, not as a permanent
@@ -170,18 +180,15 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the (ii-b) rationality bridge landed green end to end this commit — the
-geometric `complementIso`-entry leaf (`Meet.lean`), the panel-polynomial propagation
-(`PanelLayer.lean`), and the abstract rational device lemma + `det`-closure (`Rank.lean`); see
-*Current state* / *Lemma checklist*. The next **build** commit is **wiring (ii-b) into the device's
-actual `Q`**: strengthen `PanelHingeFramework.exists_rankPolynomial_of_rigidOn`
-(`GenericityDevice.lean`) to route through
-`exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` instead of the bare
-`exists_polynomial_ne_zero_of_linearIndependent_at`, discharging the new `hc` hypothesis from
-`annihRowPoly_smul_sign_mem_range_map` (the device's `c i j = ([u=a]−[v=a]) • annihRowPoly`), so the
-produced `Q` additionally carries `Q.coeffs ⊆ range (algebraMap ℚ ℝ)`. Then **(ii-a)** [waits on the
-moment-curve alg-independence question, *Blockers*], then **(iii)** `lem:case-III-seed-rank-bridge`
-composing (i) ⊕ (ii-a) ⊕ (ii-b)'s rational `Q` with the device consumer
+**Next concrete commit:** (ii-b) is now wired all the way into the device's actual `Q` — the three
+producers `PanelHingeFramework.exists_rankPolynomial_of_rigidOn{,_linking,_linking_set}`
+(`GenericityDevice.lean`) deliver a `Q` with `Q.coeffs ⊆ range (algebraMap ℚ ℝ)` (see *Current
+state* / *Lemma checklist*). The next commit is **(ii-a)**: a seed-genericity motive conjunct
+carrying "realizing seed alg-indep over ℚ" (a third motive form paralleling 22b's GP /
+link-recording), whose **first sub-step is settling the moment-curve alg-independence question**
+(*Blockers*) — confirm `withMomentNormals` is provably alg-indep over ℚ, or substitute a
+transcendental basis. Then **(iii)** `lem:case-III-seed-rank-bridge` composing (i) ⊕ (ii-a) ⊕
+(ii-b)'s rational `Q` with the device consumer
 (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11` +
 `rank_add_deficiency_eq`. The two combinatorial Claim-6.11 factors (Gap-2 leaf + Gap-3 shell) are
 green; `lem:case-III` stays red until the kernel lands.
@@ -200,6 +207,14 @@ KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (L
 The finished-work tail — one-line verdicts; the blow-by-blow is in the cited commits /
 design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 
+- **Kernel (ii-b) wired into the device `Q` (this commit).** The three producers
+  `exists_rankPolynomial_of_rigidOn{,_linking,_linking_set}` (`GenericityDevice.lean`) now route
+  through `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range`, with `hc`
+  discharged by `annihRowPoly_smul_sign_mem_range_map` against the shared `c i j` shape (one-line
+  `_ _ _ _ _ _` unification). Conclusion gains the `Q.coeffs ⊆ range (algebraMap ℚ ℝ)` conjunct;
+  the nine CaseI destructures re-pattern with a `_`. Mechanical, axiom-clean, no friction. The
+  `_proj` variant is out of scope (its projected `Q` needs `M` rational too; not the direct kernel
+  route).
 - **Re-scope (2026-06-05).** User overrode the opening "axiomatize Claim 6.11" verdict
   (commit 4e6a7bb): build Claim 6.11's leaf-most missing prerequisite bottom-up rather
   than deferring onto Claim 6.12.
