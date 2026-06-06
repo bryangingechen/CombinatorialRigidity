@@ -2,44 +2,15 @@
 
 [![Build & deploy site](https://github.com/bryangingechen/CombinatorialRigidity/actions/workflows/push.yml/badge.svg)](https://github.com/bryangingechen/CombinatorialRigidity/actions/workflows/push.yml)
 
-A Lean 4 / mathlib4 formalization of combinatorial rigidity theory, working
-toward **Laman's theorem** (1970): for `n ≥ 2`, a graph is generically rigid
-in the plane iff it contains a `(2, 3)`-tight spanning subgraph. Phase 7
-extends the development to the **Lovász–Yemini matroid identification**:
-the planar rigidity matroid coincides with the `(2, 3)`-count matroid on
-`E(K_V)`, packaged as a mathlib `Matroid` instance. Phase 8 reframes the
-planar rigidity matroid as a linear matroid via `Matroid.ofFun` (from the
-`apnelson1/Matroid` library) at a uniformly generic placement, and states
-Lovász–Yemini in linear-matroid form. Phase 9 formalizes the basic
-`(k, ℓ)`-pebble game of Lee–Streinu 2008 in the matroidal regime
-`ℓ < 2k`, with a certificate-form correctness theorem and the matroidal-
-independence corollary against the Phase 7 count matroid. Phase 10
-bridges Phase 9's `noncomputable` `runPebbleGame` to an actually-runnable
-decision procedure: a `Decidable G.IsLaman` instance backed by a
-computable wrapper `runPebbleGameExec`, plus a `lake exe pebble-game` CLI
-binary. Phase 11 reshapes Phase 9/10's `Option`-shaped
-pebble-game algorithms to return a verdict-bearing inductive carrying
-inline witnesses — a blocking subset `V'` on the `NOT_SPARSE` branch,
-the partial orientation `D` on the accept branches — and bumps the CLI
-to emit those witness lines alongside the trichotomy label, making the
-CLI's classification externally checkable. **Phases 12–15** (complete)
-extend the development to higher-dimensional body-bar rigidity,
-culminating in **Tay's theorem** (Tay 1984) — `G` admits an
-infinitesimally rigid body-bar framework in `Rⁿ` iff `G` is the
-edge-disjoint union of `d = n(n+1)/2` spanning trees — via Whiteley's
-matroid-union route (Whiteley 1988). The route is built bottom-up:
-Phase 12 formalizes the abstract matroid-union / Edmonds-partition
-machinery locally (ported from the `apnelson1/Matroid` library),
-Phase 13 derives Tutte–Nash-Williams tree-packing, Phase 14 identifies
-the `k`-frame matroid with the `k`-fold cycle-matroid union, and
-Phase 15 assembles Tay's theorem. **Phase 16** (complete) extends
-this to the **body-hinge / panel-hinge Tay–Whiteley theorem** (Tay
-1989, Whiteley 1988): a hinge behaves like a bundle of `δ−1` coincident
-body-bars (`δ = n(n+1)/2`), so a body-hinge framework on `G` reduces to
-a body-bar framework on `(δ−1)·G` (each hinge replaced by `δ−1`
-parallel bars), and the rigidity characterization reduces to Phase 15
-on `(δ−1)·G`. The longer-horizon target beyond is the **molecular
-conjecture** (Katoh–Tanigawa 2011).
+A Lean 4 / mathlib4 formalization of combinatorial rigidity theory. Its
+first goal is **Laman's theorem** (1970): for `n ≥ 2`, a graph is
+generically rigid in the plane iff it contains a `(2, 3)`-tight spanning
+subgraph. Beyond Laman's theorem the project formalizes the planar
+rigidity matroid and an executable `(k, ℓ)`-sparsity decision procedure
+(the Lee–Streinu pebble game), the abstract matroid-union machinery, Tay's
+body-bar theorem and the body-hinge / panel-hinge Tay–Whiteley theorem
+(Tay 1984/1989, Whiteley 1988), and — the longest-horizon target, in
+progress — Katoh–Tanigawa 2011's proof of the **molecular conjecture**.
 
 The development was originally hosted under `Archive/CombinatorialRigidity/`
 in a fork of mathlib4 and has been lifted to this standalone, mathlib-downstream
@@ -55,241 +26,39 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–22b + 21a complete, and Phase 22c's stratum 1 landed (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe; Phase 22b fully discharged KT Claim 6.4 — so the Case I realization producer is now fully green); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete, 22b (KT Claim 6.4) complete, 22c (Case III at d=3, stratum 1 = the eq. (6.12) `+(D−1)` placement) stratum-1 complete, 22d (Claim 6.11's first green-machinery prerequisite — the matroid-base 4.3(ii) leaf, attacking the conjecture's hardest node bottom-up) in progress (opened design-pass-first, re-scoped per a user direction to build Claim 6.11's leaf prerequisite rather than axiomatize it), the `d=3` assembly deferred and unlettered; Phases 23–26 planned.**
-* **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
-  both directions of Laman's theorem
-  (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
-  matroid identification (combinatorial form), the linear-matroid
-  framing of the planar rigidity matroid
-  (`linearRigidityMatroid_eq_rigidityMatroid`), the basic
-  `(k, ℓ)`-pebble game of Lee–Streinu 2008 with matroidal-independence
-  corollary (`countMatroid_indep_iff_runPebbleGame`), the executable
-  pebble game (a computable wrapper `runPebbleGameExec` under
-  `[LinearOrder V]`, canonical `Decidable` instances for
-  `IsSparse k ℓ` / `IsTight` / `IsLaman` in the matroidal regime
-  `ℓ < 2k`, and a `lake exe pebble-game` CLI binary), and the
-  witness-extraction reshape that bumps `runPebbleGame` /
-  `runPebbleGameExec` to a two-constructor verdict
-  `PebbleGameResult G k ℓ` carrying inline witnesses on every branch
-  (`.accept D _ _` with `D : PartialOrientation V`; `.reject V' _ _`
-  with `V' : Finset V`). The CLI prints `LAMAN` /
-  `SPARSE_NOT_TIGHT` / `NOT_SPARSE` as before, followed by witness
-  lines (`ARCS u v` per arc on accept; `BLOCKING n` + `VERTEX w`
-  lines per blocking-subset element on reject). Both `#eval` and
-  the CLI reduce through the same compiled `runPebbleGameExec`
-  body. The project carries no `sorry`s through Phase 11. See
-  `notes/Phase11.md` for the layer plan; the blueprint reshape
-  lands in-place in `chapter/{dfs,pebble-game,executable}.tex`.
-  Phase 10 details are in `notes/Phase10.md` and
-  `blueprint/src/chapter/executable.tex`.
-* **Phases 12–15 (body-bar program)** — re-scoped from a single
-  blocked "Phase 12" into a dependency-ordered chain after a 2026-06
-  re-investigation found the matroid-union machinery already fully
-  formalized (zero-sorry) in `apnelson1/Matroid`, just bit-rotted onto
-  a superseded constructor:
-  * **Phase 12 (complete)** — matroid foundations: the
-    matroid-from-submodular-function construction + polymatroid rank
-    (Edmonds 1970), matroid union (Nash-Williams 1966 / Edmonds) with
-    its independence characterization, Rado's theorem (Rado 1942), and
-    Edmonds' matroid-partition rank formula (Edmonds 1965), formalized
-    **locally** under `CombinatorialRigidity/Matroid/`. The Lean is
-    ported from Peter Nelson's `apnelson1/Matroid` (Apache-2.0; same
-    license as this project and mathlib), rebased onto the package's
-    live `FiniteCircuitMatroid` constructor. All
-    `blueprint/src/chapter/matroid-union.tex` dep-graph nodes are green
-    and carry no `sorry`s. See `notes/Phase12.md` for the Layer plan,
-    prerequisites audit, and attribution discipline.
-  * **Phase 13 (complete)** — Tutte–Nash-Williams tree-packing:
-    specializing Phase 12's Edmonds matroid-partition theorem to `k`
-    copies of `Graph.cycleMatroid`, a multigraph is the edge-disjoint
-    union of `k` forests iff it is `(k,k)`-sparse
-    (`Graph.tutte_nash_williams`), with the connected-tight spanning-tree
-    refinement `Graph.isSpanningTreePacking_of_isTight` (Whiteley
-    Theorem 13). Introduces a `Graph`-native `(k,ℓ)`-sparsity predicate.
-    See `notes/Phase13.md`.
-  * **Phase 14 (complete)** — the `k`-frame matroid = `k`-fold
-    cycle-matroid union restricted to `E(G)` (Whiteley Theorem 1):
-    the generic `k`-frame matroid `F(G,X)` (a linear matroid over
-    indeterminate coefficients) equals `(⋃ⱼ G.cycleMatroid) ↾ E(G)`
-    (`Graph.kFrameMatroid_eq_unionPow_cycleMatroid`), matching the two
-    `(k,k)`-sparsity count-characterizations by matroid extensionality.
-    `BodyBar/KFrame.lean`. See `notes/Phase14.md`.
-  * **Phase 15 (complete)** — **Tay's theorem** itself in
-    existence-of-realization form (`Graph.BodyBarFramework.tay_witness`):
-    for `d = n(n+1)/2`, a multigraph `G` carries an independent body-bar
-    framework in `ℝⁿ` iff `G` is `(d,d)`-sparse, and an isostatic one iff
-    `(d,d)`-tight. The standard-basis witness (two-extensor coordinates
-    `b_e = e_{j(e)}` on a tree-packing) gives the existence directions;
-    the converse is the body-bar Lovász–Yemini rank-upper-bound
-    (`finrank (span (rows on E')) ≤ d·r(E')`, the real specialization of
-    Phase 14's `k`-frame forward count). `BodyBar/{Framework,TayTheorem}.lean`.
-    See `notes/Phase15.md`. Whiteley's full
-    "almost-all-realizations-are-rigid" lift via irreducible-variety
-    machinery (Proposition 6) is deferred.
-* **Phase 16 (complete)** — the **body-hinge / panel-hinge
-  Tay–Whiteley theorem** (`Graph.BodyHingeFramework.body_hinge_tay`;
-  Tay 1989, Whiteley 1988), existence-of-realization form, **via the
-  matroid-union reduction to Phase 15**. A hinge in `ℝⁿ` is an
-  `(n−2)`-dimensional affine subspace (a pin-joint in 2-space, a
-  line-hinge in 3-space) that constrains all but one of the
-  `δ = n(n+1)/2` relative screw freedoms of the two bodies it joins, so
-  it behaves like a bundle of `δ−1` coincident body-bars. A body-hinge
-  framework on `G` is defined as the induced body-bar framework on
-  `(δ−1)·G` (each hinge replaced by `δ−1` parallel bars); `G` carries
-  an independent (resp. isostatic) body-hinge framework in `ℝⁿ` iff
-  `(δ−1)·G` is `(δ,δ)`-sparse (resp. tight) — equivalently the
-  edge-disjoint union of `δ` forests — reducing node-for-node to
-  Phase 15's `tay_witness` on `(δ−1)·G`. The `(δ−1)·G` device is
-  exactly the multiplied graph in Katoh–Tanigawa 2011's
-  molecular-conjecture statement, the longer-horizon target beyond.
-  Forward-mode phase; the chapter `body-hinge.tex` is the authoritative
-  dep-graph. `BodyBar/BodyHinge.lean`. See `notes/Phase16.md`.
-* **Phase 17 (complete)** — opens the longer-horizon **molecular
-  conjecture program** (Phases 17–26; Tay–Whiteley, proved by
-  Katoh–Tanigawa 2011), the project's largest single undertaking. Phase
-  17 formalizes the **Grassmann–Cayley / extensor-algebra** layer
-  (Katoh–Tanigawa §2.1): homogeneous coordinates `p ↦ (p,1)`, extensors
-  as decomposable elements of `⋀ʲ ℝ^(d+1)`, the join `∨`, Plücker
-  coordinates with Katoh–Tanigawa's sign convention, and the
-  affine-subspace extensor `C(·)` — culminating in **Lemma 2.1**: the
-  `D = (d+1 choose 2)` many `(d−1)`-extensors of `d+1` affinely
-  independent points are linearly independent, the linear-algebra
-  foundation the conjecture's hardest case (Case III) bottoms out on.
-  Forward-mode phase; the chapter `extensor.tex` is the authoritative
-  dep-graph. `Molecular/Extensor.lean`. See `notes/Phase17.md` and
-  the program-level plan in `notes/MolecularConjecture.md`.
-* **Phase 18 (complete)** — stratum 2 of the molecular program: the
-  **genuine panel-hinge rigidity matrix** `R(G,p)` (Katoh–Tanigawa
-  §2.2–2.4, §5 prep). A body-hinge framework assigns a `(d−2)`-affine
-  hinge to each edge; its supporting `(d−1)`-extensor `C(p(e))` (Phase
-  17) constrains the `D`-dimensional screw centers by
-  `S(u) − S(v) ∈ span C(p(e))`. The phase builds the null space
-  `Z(G,p)` of `R(G,p)` (basis-free, on the degree-`k` graded screw
-  space `⋀^k ℝ^(k+2)`, `finrank = D`), the `D` trivial motions and the
-  codimension form of `rank ≤ D(|V|−1)`, and the three rank Lemmas
-  5.1–5.3 (pin-a-body, parallel-hinges-full, rotation semicontinuity),
-  all green — the full rank-form substrate the algebraic induction runs
-  on. The reconciliation with Phase 16's reduction-form Prop 1.1 is a
-  top-of-DAG corollary depending on the analytic generic-rank theorem;
-  it is presented with the algebraic induction (Phase 21+).
-  `Molecular/RigidityMatrix.lean`.
-  See `notes/Phase18.md` and `notes/MolecularConjecture.md`.
-* **Phase 19 (complete)** — stratum 3 of the molecular program: the
-  matroidal substrate of the conjecture's algebraic induction
-  (Katoh–Tanigawa §2.5, §3). Builds the matroid `M(G̃)` — the
-  `(D,D)`-count matroid of the multiplied graph `G̃ = (D−1)·G` at the
-  boundary regime `ℓ = 2k = D` (the `D`-fold graphic-matroid union of
-  Phases 13/14 + Tutte–Nash-Williams, not the `ℓ<2k` count matroid of
-  Phase 7) — the `D`-deficiency `def(G̃)`, the `k`-dof / minimal-`k`-dof
-  hierarchy, rigid subgraphs (KT Lemmas 3.1/3.3/3.4), and the
-  `def(G̃) = corank M(G̃)` bridge (Jackson–Jordán 2009 Thm 6.1 / Cor 6.2,
-  proved in-repo axiom-free) — the matroidal half of the Phase 16
-  reconciliation. `Molecular/Deficiency.lean`. See `notes/Phase19.md` and
-  `notes/MolecularConjecture.md`.
-* **Phase 20 (complete)** — stratum 4 of the molecular program: the
-  **combinatorial induction** of Katoh–Tanigawa's proof (§3.4–3.5, §4).
-  Develops the graph operations on `Graph α β` (vertex removal,
-  splitting-off `G_v^{ab}` at a degree-2 vertex, its inverse
-  edge-splitting, and rigid-subgraph contraction), the degree-of-freedom
-  tracking lemmas (4.3–4.8), and the capstone **Theorem 4.9**: every
-  minimal `0`-dof-graph reduces to the two-vertex double edge by
-  splitting-off and rigid-subgraph contraction — the combinatorial
-  skeleton the algebraic induction of Phases 21–23 realizes at the
-  rigidity-matrix rank. The formalization surfaced two route findings:
-  KT Lemma 4.1 (the forest surgery) is over-quantified with a
-  balanced-packing gloss in its proof, routed around via a
-  deficiency-count argument; and KT's iterated fundamental-circuit swaps
-  are bypassed by partition-count / rank-count comparisons through the
-  Phase 19 `def(G̃) = corank M(G̃)` bridge. The forest-surgery core
-  (KT 4.1/4.2) is off the Theorem-4.9 critical path. `Molecular/Induction/`;
-  chapter `molecular-induction.tex`. See `notes/Phase20.md` and
-  `notes/MolecularConjecture.md`.
-* **Phase 21 (complete, GREEN-modulo-21b)** — stratum 5 of the molecular
-  program: the **algebraic induction** (Katoh–Tanigawa §5, §6.1–6.3),
-  which realizes the Phase 20 combinatorial reduction at the
-  rigidity-matrix rank. The phase lands KT **Theorem 5.5** (every minimal
-  `k`-dof-graph `G` with `|V| ≥ 2` has a panel-hinge realization with
-  `rank R(G,p) = D(|V|−1) − k`) and discharges its base case (`|V|=2`, via
-  the Phase 18 parallel-hinges Lemma 5.3), **Case I** (a proper rigid
-  subgraph — rigid-subgraph contraction + block-triangular gluing through
-  the Phase 18 pin-a-body Lemma 5.1), **Case II** (`k>0`, splitting off a
-  reducible degree-2 vertex — the panel-hinge analogue of Whiteley's
-  bar-joint 1-extension), and the analytic half of KT **Proposition 1.1**
-  (`rank R(G,p) = D(|V|−1) − def(G̃)`, the rank/deficiency reconciliation;
-  matroidal half green from Phase 19). The induction is driven by the same
-  reduction dichotomy as Theorem 4.9 (`Graph.minimal_kdof_reduction`). The
-  shared analytic device — the genericity argument (Claim 6.4/6.9) — is
-  scoped out into its own focused sub-phase **21b** and enters each
-  consuming node as an explicit hypothesis, so the surrounding reductions
-  are fully formal modulo that one device. The panel layer
-  (`PanelHingeFramework`, hinge-coplanarity) is green, as are all four
-  Lean pieces of the cycle-realization Lemma 5.4 (Crapo–Whiteley 1982).
-  The crux **Case III** (`k=0`, no proper rigid subgraph) is deferred to
-  Phases 22–23. Forward-mode; the chapter `algebraic-induction.tex` is the
-  authoritative dep-graph. `Molecular/AlgebraicInduction/`. See
-  `notes/Phase21.md` and `notes/MolecularConjecture.md`.
-* **Phase 21b (complete)** — the **genericity device** (Claim 6.4/6.9), the
-  shared analytic crux of the algebraic induction: the panel-coordinate
-  generic-max-rank argument that lifts a rank attained at one realization to a
-  generic one. Delivered green and axiom-clean, applied to the varying panel
-  family (the B0 keystone), together with the genericity-free accounting iffs,
-  the `V(G)`-relative count bridges, and the reusable Case-I/Case-II row +
-  glue infrastructure. A math-first feasibility pass (against Katoh–Tanigawa
-  §6.2–6.3) then **re-scoped the realization *producers* to Phases 22–23**: the
-  reducible-vertex split producer is KT's Case III (one row short of full rank
-  for `k=0`, needing the Lemma 6.10/6.13 redundant-edge row), and the rigid-
-  subgraph splice producer (full-rank but research-shaped geometry) belongs with
-  the realization layer. See `notes/Phase21b.md` and
-  `notes/MolecularConjecture.md`.
+The development proceeds in four arcs (full plan in `ROADMAP.md`):
 
-* **Phase 22 (sub-lettered)** — the **realization layer** re-scoped out of
-  Phase 21b (the Theorem-5.5 case *producers* the genericity device feeds), split
-  into sub-phases because it over-broadly bundled three independent bodies of work;
-  sub-lettering (22a, 22b, …) keeps the integer phase numbers 23–26 stable. A
-  structural-edit phase extending `algebraic-induction.tex` (no new chapter).
-  * **Phase 22a (complete)** — Case I realization (the full-rank
-    rigid-subgraph splice, KT §6.2). The composer
-    `PanelHingeFramework.case_I_realization` discharges Theorem 5.5's Case-I branch,
-    delivered via the **block-triangular reframe** (KT eq. 6.3's rank-addition over one
-    common framework, routed through the genericity device's independent-row count, not
-    a common-seed splice). Shipped green-modulo KT **Claim 6.4**, discharged in Phase 22b.
-    See `notes/Phase22a.md`.
-  * **Phase 22b (complete)** — KT **Claim 6.4** (`lem:claim-6-4`, the single hypothesis
-    22a left green-modulo) is **fully discharged**, so the Case-I realization producer is
-    now fully green. The surviving block of `G ＼ E(H)` projected to the surviving columns
-    `V(G)∖V(H)` keeps its independent rank at the generic locus (KT §6.2/§5.1, eqs.
-    (6.5)/(6.9)) because the exterior-column projection loses zero rank on a rigid block;
-    a collapse-relabel row reproduction carries that independence back to the surviving
-    rows at a degenerate placement, and a motive strengthening (the realization records
-    its graph's links) discharges the selector alignment. An assembly producer composes
-    these into the rank-transport witness from the contraction's generic induction
-    hypothesis. See `notes/Phase22b.md`.
-  * **Phase 22c (stratum-1 complete)** — Case III at `d=3`, stratum 1 (KT §6.4.1,
-    Lemma 6.10, the eq. (6.12) `+(D−1)` placement). The conjecture's crux and the
-    single largest proof in KT: Theorem 5.5's `hsplit` branch at `k=0`. **Case III
-    at `d=3` is multi-phase**; 22c claimed only the first of three difficulty
-    strata — the degenerate placement giving one row short of full rank
-    (`rank ≥ D(|V|−1)−1`, green + axiom-clean as `case_II_placement_eq612`, built
-    from the green Phase-21b row infra). **Opened design-pass-first** — on a
-    layer-level design recon (five passes), not a build. See `notes/Phase22c.md`.
-  * **Phase 22d (in progress)** — **Claim 6.11's first green-machinery prerequisite**
-    (the matroid-base 4.3(ii) leaf), attacking the conjecture's hardest node — KT
-    **Claim 6.11**, the *missing `+1` row* that lifts 22c's `D(|V|−1)−1` brick to full
-    `D(|V|−1)` — **bottom-up**, building the leaf-most missing-green prerequisite rather
-    than axiomatizing the whole claim. Re-scoped from the opening recon's
-    axiomatize-as-hypothesis verdict per a user direction (queue Claim 6.11's first
-    missing-green prerequisite rather than push the scaffold onto Claim 6.12). Claim
-    6.11's discharge decomposes into three gaps; the leaf — the matroid-base 4.3(ii)
-    form (a base of `M(G̃_v^{ab})` omitting some `ãb`-copy; pure combinatorial `M(G̃)`
-    theory) — is **buildable** from the green Phase-20 infra (`splitOff_isMinimalKDof`
-    already carries the `ãb`-base count). The nested IH-at-restriction, the
-    `M(G̃)`↔row-dependence bridge, and the candidate-completion + de-risked **Claim
-    6.12** disjunction (green Phase-17 Lemma 2.1) are deferred, unlettered. See
-    `notes/Phase22d.md`.
-  * **The `d=3` assembly (planning, deferred and unlettered)** —
-    `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + wiring the
-    fully-green `case_I_realization` into the Case-I branch; it gets a letter only
-    when its turn comes (the crux may itself split). See `notes/MolecularConjecture.md`.
+* **Laman's theorem** (phases 1–6) — both directions, via the Henneberg
+  route, landing `isGenericallyRigid_two_iff_exists_isLaman_le`.
+* **Rigidity matroid & sparsity decision** (phases 7–11) — the planar
+  rigidity matroid as a mathlib `Matroid` (Lovász–Yemini, combinatorial
+  and linear-matroid forms), and the Lee–Streinu `(k, ℓ)`-pebble game as
+  an executable, certificate-carrying decision procedure (`Decidable`
+  instances for `IsSparse` / `IsTight` / `IsLaman` and a
+  `lake exe pebble-game` CLI emitting inline witnesses).
+* **Body-bar & body-hinge rigidity** (phases 12–16) — abstract
+  matroid-union / Edmonds-partition machinery (ported locally from
+  `apnelson1/Matroid`), Tutte–Nash-Williams tree-packing, the `k`-frame
+  matroid as a cycle-matroid union, Tay's body-bar theorem, and the
+  body-hinge / panel-hinge Tay–Whiteley extension.
+* **The molecular conjecture** (phases 17–26) — Katoh–Tanigawa 2011's
+  proof, the project's largest single undertaking: the Grassmann–Cayley
+  extensor algebra (Lemma 2.1), the panel-hinge rigidity matrix `R(G,p)`,
+  the deficiency matroid `M(G̃)`, the combinatorial induction
+  (Theorem 4.9), and the algebraic induction realizing that reduction at
+  the rigidity-matrix rank (Theorem 5.5).
+
+Phases 1–16 are complete and carry no `sorry`s — the development is fully
+green through the body-hinge Tay–Whiteley theorem
+(`Graph.BodyHingeFramework.body_hinge_tay`). Within the
+molecular-conjecture program, phases 17–21 are complete (the extensor
+algebra, rigidity matrix, deficiency matroid, combinatorial induction, and
+the algebraic induction's accounting layer, including the genericity
+device of Claim 6.4/6.9); work is in progress on the algebraic induction's
+hardest case, Katoh–Tanigawa's **Case III** (`k=0`, no proper rigid
+subgraph — phase 22 onward). The per-phase status table is on the
+[project website](https://bryangingechen.github.io/CombinatorialRigidity/);
+`ROADMAP.md` and the per-phase logs under `notes/` carry the detail.
 
 See `ROADMAP.md` for the canonical hand-off doc — directory layout, status,
 mathematical plan, and engineering conventions. `DESIGN.md` carries
