@@ -577,8 +577,12 @@ blueprint/
     │   └── web.tex      ← web-only packages and overrides
     └── chapter/
         ├── main.tex     ← top-level `\input{}` orchestration
-        ├── intro.tex    ← project introduction (phase plan, reading
-        │                  guide, hyperlinks to live docs)
+        ├── intro.tex    ← reader's introduction: scope, the four-arc
+        │                  organization + per-phase one-liner, reading
+        │                  guide. A fixed-size orientation, NOT a status
+        │                  log — keep it jargon-free / forward-weighted
+        │                  (../CLAUDE.md *Sync the user-facing status
+        │                  surfaces*).
         └── sparsity.tex ← Phase 1 chapter (canonical example)
 ```
 

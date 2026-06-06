@@ -212,18 +212,39 @@ checklists:
 - Create `notes/PhaseN.md` from the template in `notes/CLAUDE.md`.
 - **Sync the user-facing status surfaces** so the project's
   externally-visible state reflects that Phase N is now in progress:
-  - `README.md` — *Project status* prose.
-  - `home_page/index.md` — *Project status* prose and the phase
-    table (add the new row).
-  - `blueprint/src/chapter/intro.tex` — §*Phase plan* prose and the
-    enumerate (add the new bullet); update the dep-graph-status line
-    at the end of the section if relevant.
+  - `README.md` — *Project status*.
+  - `home_page/index.md` — *Project status* and the phase table
+    (add the new row).
+  - `blueprint/src/chapter/intro.tex` — the *Organization of the
+    blueprint* enumerate (one terse line per phase) and the *Reading
+    this blueprint* status paragraph (which names the current frontier).
 
   These three are the project's public face (rendered to GitHub
   Pages on every master push); let them drift and the website +
   README silently misrepresent project state. Confirm Phase N-1's
   status on each surface at the same time — if the previous phase
   closed without flipping these, do it here.
+
+  **They are reader-facing summaries, not a status log — give them the
+  forward-weighted, jargon-free discipline the phase notes get:**
+  - *Register.* They address a rigidity-theory / formalization reader
+    (intro.tex) or a project visitor (README, home_page), not an agent
+    mid-phase. Banned: agent-process jargon — `green-modulo-N`,
+    `design-pass-first`, `stratum-N`, `axiom-clean`, `re-scoped`,
+    sub-phase blow-by-blow (`22a … 22b … 22c …`), and raw blueprint
+    labels in prose (`lem:claim-6-4`, `thm:theorem-55`). State status at
+    the arc / chapter level; the dep-graph's green/red is the
+    fine-grained status, the prose is not.
+  - *Sync = re-summarize, not append.* Flipping Phase N also folds the
+    now-closed phases back into the four-arc / chapter-level summary;
+    only the active frontier earns a sentence or two. The detail lives in
+    ROADMAP §N, `notes/PhaseN.md`, and the dep-graph — these surfaces
+    *point there* (one canonical home per content type). intro.tex's
+    orientation is fixed-size: a paragraph added per phase means you are
+    logging status, not summarizing. (Calibration: all three had
+    ballooned into per-sub-phase essays by Phase 22d and were rebuilt to
+    the four-arc summary — the same waste the phase-note forward-weight
+    rule prevents, now applied to the public face.)
 - **Cross-phase program docs that no CI/checkdecls gate covers** must
   also be synced at the boundary, or they silently drift (Phase 21b
   closed with `notes/MolecularConjecture.md` showing the prior phase
@@ -269,14 +290,15 @@ of* the per-commit checklists above:
   canonical model; the §N prose is the *single* per-phase summary home
   (the table cell stays a pointer, not a second copy). The lemma list
   and decisions live in `notes/PhaseN.md`.
-- **Sync the user-facing status surfaces.** Same three surfaces as
-  the phase-open subsection above: `README.md` *Project status*,
-  `home_page/index.md` *Project status* + phase table, and
-  `blueprint/src/chapter/intro.tex` §*Phase plan* + enumerate
-  (including the dep-graph-status line at the end of the section).
-  Flip Phase N's marker to ✓ on each. Plus any cross-phase program doc
-  (molecular phases: `notes/MolecularConjecture.md`) — see the phase-open
-  subsection.
+- **Sync the user-facing status surfaces.** Same three surfaces, same
+  discipline (reader-facing summary; jargon-free; re-summarize, don't
+  append) as the phase-open subsection above: `README.md` *Project
+  status*, `home_page/index.md` *Project status* + phase table, and
+  `blueprint/src/chapter/intro.tex`'s *Organization of the blueprint*
+  enumerate + *Reading this blueprint* status paragraph. Flip Phase N's
+  marker to ✓ on each and fold the just-closed phase's detail back into
+  the summary. Plus any cross-phase program doc (molecular phases:
+  `notes/MolecularConjecture.md`) — see the phase-open subsection.
 - **Re-read each new/edited blueprint chapter end-to-end as a domain
   mathematician** and collapse accumulated per-commit formalization
   asides. Forward-mode chapters are written one node at a time by
