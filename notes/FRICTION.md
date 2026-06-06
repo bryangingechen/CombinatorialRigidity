@@ -806,9 +806,13 @@ housekeeping pass once their resolution is fully indexed.
   1. **Min over bases:** `Set.exists_min_image {B | M.IsBase B} (fun B ↦ (ẽ ∩ B).ncard)`;
      finiteness of `{B | IsBase B}` via `(Set.toFinite M.E).finite_subsets` + `subset_ground`,
      nonemptiness via `M.exists_isBase`.
-  2. **Indep of full rank ⟹ base, without a dedicated lemma:** `exists_isBase_superset` to a
-     base `B'`, then `Set.eq_of_subset_of_ncard_le` with `|I| = |B*| = |B'|` (all bases share
-     cardinality, `IsBase.ncard_eq_ncard_of_isBase`) forces `I = B'`.
+  2. **Indep of full rank ⟹ base:** the manual route is `exists_isBase_superset` to a base
+     `B'`, then `Set.eq_of_subset_of_ncard_le` with `|I| = |B*| = |B'|` (all bases share
+     cardinality, `IsBase.ncard_eq_ncard_of_isBase`) forces `I = B'`. **When the rank count is
+     in hand, prefer the dedicated `Indep.isBase_of_ncard hI (h : M.rank ≤ I.ncard)`** (one
+     line; Phase-22d `splitOff_exists_base_inter_fiber_lt`). It needs `[M.RankFinite]`, which on
+     a finite ground type is `haveI : M.Finite := Matroid.finite_of_finite (M := …)` (pass `M`
+     explicitly; `matroidMG`'s `[DecidableEq β]` must be on the *statement*, not just `classical`).
   3. **`X∩ẽ≠∅` is base-meets-fiber, not forest:** if `X∩ẽ=∅`, `X−ej` is independent of full
      size (tight on `V(X)=V`) ⟹ a base avoiding `ẽ`, contradicting `IsMinimalKDof`'s clause
      (`hG.2`). No `rank M↾(E∖ẽ)` detour.

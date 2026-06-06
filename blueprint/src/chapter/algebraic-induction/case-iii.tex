@@ -1,19 +1,62 @@
 \subsection{Case III deferred (the crux)}
 \label{sec:molecular-algebraic-induction-caseIII}
 
+The crux of Case III is the missing $+1$ row of KT Claim~6.11 (the $D$-th
+$ab$-row of $R(G_v^{ab}, q)$ that lifts the stratum-1 brick
+$D(|V|-1) - 1$ of \cref{lem:case-II-realization-placement} to full rank
+$D(|V|-1)$). Claim~6.11's discharge factors, in dependency order, through three
+combinatorial$\to$linear gaps; the leaf-most --- pure $M(\tilde G)$ matroid
+theory, all inputs green --- is the matroid-base form of KT Lemma~4.3(ii) at
+$k = 0$, built here.
+
+\begin{lemma}[Matroid-base 4.3(ii) at $k = 0$; KT Lemma~4.3(ii), Claim~6.11 prerequisite]
+  \label{lem:case-III-claim-6-11-base}
+  \lean{Graph.splitOff_exists_base_inter_fiber_lt}
+  \leanok
+  \uses{def:k-dof, def:matroid-MG, thm:def-eq-corank, lem:forest-surgery-count, lem:splitoff-deficiency}
+  Let $G$ be a $0$-dof-graph ($\operatorname{def}(\tilde G) = 0$) with a degree-2
+  vertex $v$ (distinct neighbours $a, b$, incident edges exactly $e_a \ne e_b$,
+  $e_0 \notin E(G)$ fresh). Then $M(\widetilde{G_v^{ab}})$ has a base $B'$ with
+  \[
+    \bigl|\widetilde{ab} \cap B'\bigr| \;<\; D - 1,
+  \]
+  i.e.\ $\widetilde{ab} \not\subseteq B'$: a redundant $\widetilde{ab}$-copy exists.
+  This is KT's step~1 toward Claim~6.11 (the redundant $ab$-row of
+  $R(G_v^{ab}, q)$); the remaining gaps --- the nested IH at the restricted
+  realization and the $M(\tilde G)\leftrightarrow$row-dependence bridge --- stay
+  deferred.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Reroute a balanced $D$-forest packing of a base of $M(\tilde G)$ across $v$
+  (\cref{lem:forest-surgery-count}): this yields an $M(\widetilde{G_v^{ab}})$-%
+  independent set $I'$ with $|I'| = |\text{base}| - D$ and $|\widetilde{ab} \cap I'|
+  < D - 1$ (KT Lemma~4.1's two conclusions). At $k = 0$ splitting off keeps the
+  graph $0$-dof (\cref{lem:splitoff-deficiency}, with
+  $\operatorname{def} \ge 0$), so $\operatorname{rank} M(\widetilde{G_v^{ab}}) =
+  D(|V \setminus \{v\}| - 1) = |\text{base}| - D = |I'|$ by the def\,$=$\,corank
+  identity (\cref{thm:def-eq-corank}); an independent set of full rank is a base.
+  That base $I'$ carries the fiber bound.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
-        lem:cycle-realization}
+        lem:cycle-realization, lem:case-II-realization-placement,
+        lem:case-III-claim-6-11-base}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
-  rank, so KT build $D$ candidate realizations and show one is rigid;
-  the degree-2 condition forces all candidates to test the same normal
-  vector $r \in \mathbb{R}^D$, which by the extensor-independence
-  Lemma~2.1 (\cref{lem:extensor-independence}) must vanish ---
-  contradiction. \textbf{Deferred to Phases~22--23} ($d = 3$ first, then
-  general $d$); stated here only to close the Theorem~5.5 dichotomy.
+  rank (the stratum-1 brick $D(|V|-1) - 1$ of
+  \cref{lem:case-II-realization-placement}); the missing $+1$ row is KT
+  Claim~6.11, whose leaf-most prerequisite ---
+  \cref{lem:case-III-claim-6-11-base}, the matroid-base 4.3(ii) form --- is
+  green. KT then build $D$ candidate realizations and show one is rigid; the
+  degree-2 condition forces all candidates to test the same normal vector $r
+  \in \mathbb{R}^D$, which by the extensor-independence Lemma~2.1
+  (\cref{lem:extensor-independence}) must vanish --- contradiction.
+  \textbf{Deferred to Phases~22--23} ($d = 3$ first, then general $d$); stated
+  here only to close the Theorem~5.5 dichotomy.
 \end{lemma}
 \begin{proof}
   Deferred to Phases~22--23. See \cite[\S6.4]{katohTanigawa2011}.

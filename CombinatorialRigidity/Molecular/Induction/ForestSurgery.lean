@@ -1346,7 +1346,8 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
       (∀ i, ((G.splitOff v a b e₀).mulTilde n).cycleMatroid.Indep (Fs' i)) ∧
       (Pairwise (Function.onFun Disjoint Fs')) ∧
       ((G.splitOff v a b e₀).matroidMG n).Indep (⋃ i, Fs' i) ∧
-      (⋃ i, Fs' i).ncard + bodyBarDim n = I.ncard := by
+      (⋃ i, Fs' i).ncard + bodyBarDim n = I.ncard ∧
+      ((⋃ i, Fs' i) ∩ edgeFiber e₀ n).ncard < bodyHingeMult n := by
   classical
   -- Each forest is finite (subset of the finite ground set).
   have hssubE : ∀ i, Fs i ⊆ E(G.mulTilde n) := fun i ↦ (hindep i).subset_ground
@@ -1562,7 +1563,74 @@ theorem forest_surgery_count [DecidableEq β] [Finite α] [Finite β] {G : Graph
     rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
       smul_eq_mul, mul_one] at hkey
     rw [← hsumFs', ← hsumFs, hkey]
-  exact ⟨Fs', hindep', hdisj', hMindep, hcount⟩
+  -- The `ã̃b`-fiber bound `|⋃ Fs' i ∩ ã̃b| < D − 1` (KT Lemma 4.1's second conclusion). The only
+  -- `ã̃b = edgeFiber e₀ n` members of the reroute are the inserted copies `r i`, one per
+  -- `dᶠ(v) = 2` forest; their number `h'` is `< D − 1`.
+  -- Set of degree-2 forest indices `S`; `h' = |S|`.
+  set S : Finset (Fin (bodyBarDim n)) :=
+    {i | (Fs i ∩ G.fiberAtVertex n v).ncard = 2} with hS
+  -- `⋃ Fs' i ∩ ã̃b ⊆ r '' S`: a fiber-`e₀` member of `Fs' j` is the inserted `r j` (the core
+  -- `Fs j ∖ fib ⊆ E(G̃)` carries `G`-edges, copies avoiding the fresh `e₀`), forcing `dᶠ(j) = 2`.
+  have hfibsub_e0 : (⋃ i, Fs' i) ∩ edgeFiber e₀ n ⊆ r '' (S : Set (Fin (bodyBarDim n))) := by
+    rintro p ⟨hpU, hpf⟩
+    rw [Set.mem_iUnion] at hpU
+    obtain ⟨j, hpj⟩ := hpU
+    rw [edgeFiber, Set.mem_setOf_eq] at hpf
+    rcases Set.mem_insert_iff.mp (hFs'sub j hpj) with hrj | hcj
+    · -- `p = r j`; `r j ∈ Fs' j` forces `dᶠ(j) = 2`, so `j ∈ S`.
+      have hjS : j ∈ (S : Set (Fin (bodyBarDim n))) := by
+        simp only [hS, Finset.coe_filter, Set.mem_setOf_eq, Finset.mem_univ, true_and]
+        exact hrmem j (hrj ▸ hpj)
+      exact ⟨j, hjS, hrj.symm⟩
+    · -- core member: `p.1 ∈ E(G)`, contradicting `p.1 = e₀ ∉ E(G)`.
+      have hpE : p ∈ E(G.mulTilde n) := hssubE j hcj.1
+      rw [mem_edgeSet_mulTilde] at hpE
+      exact absurd (hpf ▸ hpE) he₀
+  -- `h' = |S| ≤ D − 2`: the base's `v`-fibers `h = ∑ (Fs i ∩ fib) = D + h'` are bounded by
+  -- `|ẽₐ ∪ ẽ_b| = 2(D − 1)`.
+  have hSle : S.card ≤ bodyBarDim n - 2 := by
+    -- `∑ (Fs i ∩ fib).ncard = D + |S|` (each term is `1`, or `2` exactly on `S`).
+    have hsum_fib : ∑ i, (Fs i ∩ G.fiberAtVertex n v).ncard = bodyBarDim n + S.card := by
+      have hterm : ∀ i, (Fs i ∩ G.fiberAtVertex n v).ncard
+          = 1 + (if (Fs i ∩ G.fiberAtVertex n v).ncard = 2 then 1 else 0) := by
+        intro i; rcases hdeg i with h1 | h2
+        · rw [h1, if_neg (by omega)]
+        · rw [h2, if_pos rfl]
+      calc ∑ i, (Fs i ∩ G.fiberAtVertex n v).ncard
+          = ∑ i, (1 + (if (Fs i ∩ G.fiberAtVertex n v).ncard = 2 then 1 else 0)) :=
+            Finset.sum_congr rfl (fun i _ ↦ hterm i)
+        _ = bodyBarDim n + S.card := by
+            rw [Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+              smul_eq_mul, mul_one, Finset.sum_boole, hS, Nat.cast_id]
+    -- `∑ (Fs i ∩ fib) = |⋃ (Fs i ∩ fib)| ≤ |fiberAtVertex v ∩ E(G̃)| = 2(D − 1)`.
+    have hdisj_fib : Pairwise (Function.onFun Disjoint (fun i ↦ Fs i ∩ G.fiberAtVertex n v)) :=
+      fun i j hij ↦ (hdisj hij).mono Set.inter_subset_left Set.inter_subset_left
+    have hsum_eq : ∑ i, (Fs i ∩ G.fiberAtVertex n v).ncard
+        = (⋃ i, Fs i ∩ G.fiberAtVertex n v).ncard := by
+      rw [← finsum_eq_sum_of_fintype,
+        ← Set.ncard_iUnion_of_finite (fun i ↦ Set.toFinite _) hdisj_fib]
+    have hUsub : (⋃ i, Fs i ∩ G.fiberAtVertex n v) ⊆ edgeFiber eₐ n ∪ edgeFiber e_b n := by
+      refine Set.iUnion_subset fun i ↦ ?_
+      exact fun p ⟨_, hpv⟩ ↦ hfibsub hpv
+    have hUle : (⋃ i, Fs i ∩ G.fiberAtVertex n v).ncard ≤ 2 * bodyHingeMult n := by
+      calc (⋃ i, Fs i ∩ G.fiberAtVertex n v).ncard
+          ≤ (edgeFiber eₐ n ∪ edgeFiber e_b n).ncard := Set.ncard_le_ncard hUsub (Set.toFinite _)
+        _ ≤ (edgeFiber eₐ n).ncard + (edgeFiber e_b n).ncard := Set.ncard_union_le _ _
+        _ = 2 * bodyHingeMult n := by rw [edgeFiber_ncard, edgeFiber_ncard]; ring
+    -- `D + |S| = ∑ ≤ 2(D − 1)`, so `|S| ≤ D − 2`. `D ≥ 2`, `D − 1 = bodyHingeMult n`.
+    have hHM : bodyHingeMult n = bodyBarDim n - 1 := by rw [bodyHingeMult]
+    omega
+  -- Assemble: `|⋃ Fs' i ∩ ã̃b| ≤ |r '' S| ≤ |S| ≤ D − 2 < D − 1 = bodyHingeMult n`.
+  have hfiblt : ((⋃ i, Fs' i) ∩ edgeFiber e₀ n).ncard < bodyHingeMult n := by
+    have h1 : ((⋃ i, Fs' i) ∩ edgeFiber e₀ n).ncard ≤ (r '' (S : Set (Fin (bodyBarDim n)))).ncard :=
+      Set.ncard_le_ncard hfibsub_e0 (Set.toFinite _)
+    have h2 : (r '' (S : Set (Fin (bodyBarDim n)))).ncard ≤ S.card := by
+      calc (r '' (S : Set (Fin (bodyBarDim n)))).ncard
+          ≤ (S : Set (Fin (bodyBarDim n))).ncard := Set.ncard_image_le (Set.toFinite _)
+        _ = S.card := by rw [Set.ncard_coe_finset]
+    have hHM : bodyHingeMult n = bodyBarDim n - 1 := by rw [bodyHingeMult]
+    omega
+  exact ⟨Fs', hindep', hdisj', hMindep, hcount, hfiblt⟩
 
 /-! ### The forest-surgery assembly (`lem:forest-surgery-split`, Katoh–Tanigawa Lemma 4.1)
 
@@ -1610,7 +1678,7 @@ theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
   obtain ⟨B, hB⟩ := (G.matroidMG n).exists_isBase
   obtain ⟨Fs, hcover, hindep, hpdisj, hmeetv⟩ :=
     exists_balanced_forest_packing hD hav hbv heab hla hlb hdeg2 hB
-  obtain ⟨Fs', _, _, hMindep, hcount⟩ :=
+  obtain ⟨Fs', _, _, hMindep, hcount, _⟩ :=
     forest_surgery_count hD hab hav hbv heab haV hbV he₀ hla hlb hdeg2 Fs hcover hindep
       hpdisj hmeetv
   -- `|⋃ Fs' i| ≤ rank M(G̃_v^{ab})`, and `|⋃ Fs' i| + D = |B|`.
@@ -1628,6 +1696,75 @@ theorem forest_surgery_split [Finite α] [Finite β] {G : Graph α β} {n : ℕ}
   rw [hVHcard, mul_sub, mul_one] at hHrank
   -- Combine: `def(H̃) = D(|V|−2) − rank ≤ D(|V|−2) − (|B|−D) = D(|V|−1) − |B| = def(G̃)`.
   linarith [hrkZ, hcountZ, hBrank, hHrank]
+
+/-! ### The matroid-base 4.3(ii) form at `k = 0` (`lem:case-III-claim-6-11-base`)
+
+Katoh–Tanigawa 2011 Lemma 4.3(ii) at `k = 0` (the splitting-off matroid-base count; KT p.660),
+the first missing-green prerequisite of KT Claim 6.11 (the `+1` redundant `ab`-row of §6.4.1;
+`notes/Phase22d.md`). For a `0`-dof-graph `G` (`def(G̃) = 0`) with a degree-2 vertex `v`
+(neighbours `a ≠ b`, incident edges exactly `eₐ ≠ e_b`, `e₀ ∉ E(G)` fresh), there is a **base**
+`B'` of `M(G̃_v^{ab})` whose intersection with the short-circuit fiber `ã̃b = edgeFiber e₀ n` has
+fewer than `D − 1 = bodyHingeMult n` copies — i.e. `ã̃b ⊄ B'`, so a redundant `ã̃b`-copy exists.
+
+This is KT's own step-1 argument, run on the corrected forest surgery: rerouting a balanced
+`D`-forest packing of a base of `M(G̃)` across `v` (`forest_surgery_count`) yields an
+`M(G̃_v^{ab})`-independent set `I' = ⋃ Fs' i` with `|I'| + D = |base|` and `|I' ∩ ã̃b| < D − 1`
+(KT Lemma 4.1's two conclusions). At `k = 0` the surgery's deficiency bound
+(`splitOff_deficiency_le`, with `def ≥ 0`) gives `def(G̃_v^{ab}) = 0`, so
+`rank M(G̃_v^{ab}) = D(|V \ {v}| − 1) = |base| − D = |I'|`; an independent set of full rank is a
+base (`Indep.isBase_of_ncard`). That base `I'` carries the fiber bound. Needs `D = bodyBarDim n ≥ 2`
+(so `G̃` has edge copies and the fiber `ã̃b` is nonempty). -/
+theorem splitOff_exists_base_inter_fiber_lt [DecidableEq β] [Finite α] [Finite β]
+    {G : Graph α β} {n : ℕ}
+    (hD : 2 ≤ bodyBarDim n) {v a b : α} {eₐ e_b e₀ : β}
+    (hab : a ≠ b) (hav : a ≠ v) (hbv : b ≠ v) (heab : eₐ ≠ e_b)
+    (hla : G.IsLink eₐ v a) (hlb : G.IsLink e_b v b)
+    (hdeg2 : ∀ e x, G.IsLink e v x → e = eₐ ∨ e = e_b)
+    (he₀ : e₀ ∉ E(G)) (hG : G.IsKDof n 0) :
+    ∃ B', ((G.splitOff v a b e₀).matroidMG n).IsBase B' ∧
+      (B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n := by
+  classical
+  haveI : Nonempty α := ⟨a⟩
+  have hD1 : 1 ≤ bodyBarDim n := le_trans (by norm_num) hD
+  have haV : a ∈ V(G) := hla.right_mem
+  have hbV : b ∈ V(G) := hlb.right_mem
+  have hvG : v ∈ V(G) := hla.left_mem
+  have hVne : V(G).Nonempty := ⟨v, hvG⟩
+  set H := G.splitOff v a b e₀ with hH
+  have hVHne : V(H).Nonempty := ⟨a, by rw [hH, vertexSet_splitOff]; exact ⟨haV, hav⟩⟩
+  -- The reroute: an `M(H̃)`-independent `I' = ⋃ Fs' i`, `|I'| + D = |base|`, `|I' ∩ ã̃b| < D − 1`.
+  obtain ⟨B, hB⟩ := (G.matroidMG n).exists_isBase
+  obtain ⟨Fs, hcover, hindep, hpdisj, hmeetv⟩ :=
+    exists_balanced_forest_packing hD hav hbv heab hla hlb hdeg2 hB
+  obtain ⟨Fs', _, _, hMindep, hcount, hfiblt⟩ :=
+    forest_surgery_count hD hab hav hbv heab haV hbV he₀ hla hlb hdeg2 Fs hcover hindep
+      hpdisj hmeetv
+  refine ⟨⋃ i, Fs' i, ?_, hfiblt⟩
+  -- At `k = 0`: `def(H̃) = 0` (splitting off does not increase deficiency, and `def ≥ 0`).
+  have hdofG : G.deficiency n = 0 := hG
+  have hdefH_zero : H.deficiency n = 0 := by
+    have hle : H.deficiency n ≤ G.deficiency n :=
+      splitOff_deficiency_le hD1 hav hbv heab hla hlb hdeg2 he₀
+    have hge : 0 ≤ H.deficiency n := H.deficiency_nonneg n hVHne
+    rw [hdofG] at hle; omega
+  -- `rank M(H̃) = D(|V \ {v}| − 1) = |base| − D = |I'|`, so `I'` is a base.
+  have hHrank := H.rank_add_deficiency_eq n hD1 hVHne
+  rw [hdefH_zero, add_zero] at hHrank
+  have hBrank := G.isBase_ncard_add_deficiency_eq n hD1 hVne hB
+  rw [hdofG, add_zero] at hBrank
+  have hVHcard : (V(H).ncard : ℤ) = (V(G).ncard : ℤ) - 1 := by
+    rw [hH, vertexSet_splitOff, Set.ncard_diff_singleton_of_mem hvG]
+    have : 0 < V(G).ncard := Set.ncard_pos (Set.toFinite _) |>.mpr hVne
+    omega
+  -- `|I'| = |base| − D = D(|V|−1) − D = D(|V|−2) = rank M(H̃)`.
+  have hcountZ : (((⋃ i, Fs' i).ncard : ℤ)) + (bodyBarDim n : ℤ) = (B.ncard : ℤ) := by
+    exact_mod_cast hcount
+  have hIcardZ : ((⋃ i, Fs' i).ncard : ℤ) = ((H.matroidMG n).rank : ℤ) := by
+    rw [hVHcard, mul_sub, mul_one] at hHrank
+    linarith [hcountZ, hBrank, hHrank]
+  have hIcard : (H.matroidMG n).rank ≤ (⋃ i, Fs' i).ncard := by omega
+  haveI : (H.matroidMG n).Finite := Matroid.finite_of_finite (M := H.matroidMG n)
+  exact hMindep.isBase_of_ncard hIcard
 
 /-- **The forest-surgery route to the KT-4.3 splitting-off deficiency bound**
 (`cor:forest-surgery-deficiency`; narrative bridge). The deficiency bound

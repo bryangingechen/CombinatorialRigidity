@@ -1,11 +1,33 @@
 # Phase 22d — Claim 6.11's first green-machinery prerequisite (the matroid-base 4.3(ii) leaf) (work log)
 
-**Status:** in progress (opened 2026-06-05 design-pass-first; **re-scoped
-2026-06-05 per a fresh user direction**, docs-only, NO Lean / NO `\leanok` /
-NO `\lean{}`). This sub-phase now builds the **leaf-most missing-green-machinery
-prerequisite of KT Claim 6.11**, bottom-up — not the candidate scaffold and not
-an axiomatized Claim 6.11. The Lean node cut below is the verified first build;
-no Lean has landed under either scope (22d is fresh), so the re-scope is clean.
+**Status:** in progress (opened 2026-06-05 design-pass-first; re-scoped
+2026-06-05 per a fresh user direction; **leaf landed green 2026-06-06**). This
+sub-phase builds the **leaf-most missing-green-machinery prerequisite of KT Claim
+6.11**, bottom-up — not the candidate scaffold and not an axiomatized Claim 6.11.
+
+## Current state
+
+The leaf node **landed green + axiom-clean** as
+`Graph.splitOff_exists_base_inter_fiber_lt` (`ForestSurgery.lean`), the
+**matroid-base form of KT Lemma 4.3(ii) at `k = 0`** — the existence of a base
+`B'` of `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1`, so `ãb ⊄ B'` (a redundant
+`ãb`-copy exists). Blueprint node `lem:case-III-claim-6-11-base` is green;
+`lem:case-III` / `lem:case-II-realization` stay red.
+
+**The re-recon at build open refined the node cut** (the hand-off flagged this
+exact check). KT 4.3(ii) is an **existence** statement ("there *is* a base with
+`< D−1`"), not the "every base `B'`" universal the opening cut sketched —
+matching the actual Claim-6.11 use ("the fiber `ãb` is not contained in *any*
+base — a redundant copy exists"). Its `k=0` proof is KT's own route via **Lemma
+4.1**'s surgery: the strengthened `forest_surgery_count` produces an
+`M(G̃_v^{ab})`-independent `I'` with `|I'| = |base| − D` **and** `|ãb ∩ I'| < D−1`
+(KT Lemma 4.1's *two* conclusions; the second was the genuinely-new half this
+phase added), and at `k=0` `def(G̃_v^{ab}) = 0` makes `I'` a base. So the leaf
+was a **two-brick** commit: (1) strengthen the green `forest_surgery_count` with
+the `|ãb ∩ I'| < D−1` conjunct (the inserted `r i` are the only `e₀`-copies, one
+per degree-2 forest, `h' ≤ D−2`); (2) the `k=0` base assembly. No separate
+"parallel-copies sub-leaf" was needed (the open construction question resolved:
+the bound falls out of the surgery's degree-count `2h' + (D−h') = h ≤ 2(D−1)`).
 
 ## The re-scope (user override of the opening recon, 2026-06-05)
 
@@ -120,7 +142,12 @@ the old scope* (don't pause to build the whole bridge before the scaffold), but
 the user's bottom-up direction is sound: the leaf prerequisite is reachable, and
 building it first de-risks Gaps 3/1 by making the combinatorial substrate concrete.
 
-## Node cut — the leaf-most-first first build of re-scoped 22d (VERIFIED, ready)
+## Node cut — the leaf-most-first first build of re-scoped 22d (the planning cut; LANDED)
+
+**Landed as `splitOff_exists_base_inter_fiber_lt`** (not the working name
+`splitOff_base_inter_fiber_lt`, and as the *existence* form — see *Current state*
+for the build-open refinement). The planning cut below is retained as the recon
+trail.
 
 The leaf piece (Gap 2) is itself a small two/three-brick chunk; per the
 multi-stratum discipline (22c), 22d cuts only its **first buildable sub-brick**,
@@ -203,14 +230,19 @@ is what 22d now attacks, leaf-first. The producer exposes the entry-point: its
 
 ## Lemma checklist
 
-- [ ] (next commit) `splitOff_base_inter_fiber_lt` — the matroid-base 4.3(ii)
-  upper-bound leaf (Gap 2's first sub-brick). Verified buildable from green
-  Phase-20 infra (`splitOff_isMinimalKDof`, `matroidMG_restrict_mulTilde`,
-  def=corank, KT 4.4/4.7); `isBase_vfiber_ncard_ge` is the proof template. New
-  red node `lem:case-III-claim-6-11-base`; `lem:case-III` stays red.
+- [x] `Graph.forest_surgery_count` — **strengthened** with the
+  `|ãb ∩ ⋃ Fs'i| < D−1` conjunct (KT Lemma 4.1's second conclusion; the only
+  `e₀`-copies of the reroute are the inserted `r i`, one per degree-2 forest,
+  `h' ≤ D−2`). The one prior caller `forest_surgery_split` re-destructures.
+- [x] `Graph.splitOff_exists_base_inter_fiber_lt` — the matroid-base 4.3(ii) leaf
+  at `k=0` (Gap 2), green + axiom-clean. Existence of a base `B'` of
+  `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1`, via the strengthened surgery + def=corank
+  (an independent set of full rank is a base, `Indep.isBase_of_ncard`). New green
+  node `lem:case-III-claim-6-11-base`; `lem:case-III` / `lem:case-II-realization`
+  stay red.
 - [ ] (deferred) Gap 3 nested IH-at-restriction; Gap 1 `M(G̃)`↔row bridge; the
   candidate-completion + Claim-6.12 disjunction; the `d=3` assembly. Named,
-  unlettered (above).
+  unlettered (below).
 
 ## Blockers / open questions
 
@@ -234,26 +266,29 @@ is what 22d now attacks, leaf-first. The producer exposes the entry-point: its
 
 ## Hand-off / next phase
 
-**This commit is the re-scope recon** — docs only, no Lean, no `\leanok`. Its
-load-bearing output is the **re-scope to building Claim 6.11's leaf prerequisite
-(the matroid-base 4.3(ii) form) bottom-up**, with the verified finding that the
-leaf is buildable from green Phase-20 infra (the opening recon understated the
-substrate). The Claim-6.11 axiomatize-as-hypothesis verdict is **superseded** by
-the user's bottom-up direction.
+**This commit landed the Gap-2 leaf** `Graph.splitOff_exists_base_inter_fiber_lt`
+(matroid-base 4.3(ii) at `k=0`) green + axiom-clean, plus the strengthening of
+`forest_surgery_count` it consumes, and the green blueprint node
+`lem:case-III-claim-6-11-base`. The verified-buildable re-recon held; the only
+refinement at build open was that KT 4.3(ii) is an *existence* statement, proved
+via Lemma 4.1's surgery (not a "every base" universal) — see *Current state*.
+`lem:case-III` / `lem:case-II-realization` stay red.
 
-**The next concrete commit builds the leaf Lean node** `splitOff_base_inter_fiber_lt`
-(the matroid-base 4.3(ii) upper-bound half, Gap 2's first sub-brick), modelled on
-`isBase_vfiber_ncard_ge`'s rank-count proof, with a new red blueprint node
-`lem:case-III-claim-6-11-base` that `\uses` the green Phase-20 nodes. `lem:case-III`
-and `lem:case-II-realization` stay red. **Re-recon at that build's open:** confirm
-the upper-bound count closes from `splitOff_isMinimalKDof`'s internal `ãb`-base
-count + KT 4.7 (the one open construction question above), and whether the sharp
-`≤ D−2` needs a parallel-copies sub-leaf — if so, that sub-leaf is the *actual*
-first commit.
+**The next concrete commit builds Gap 3 — the nested IH-at-restriction.** It
+consumes the leaf's `|ãb ∩ B'| < D−1` (⟹ `def(G̃_v) ≤ D−2`, so `G_v = G_v^{ab} − ab`
+is minimal `k'`-dof, `k' ≤ D−2`, by `subgraph_minimality`, green) and applies the
+geometric IH (6.1) to `G_v` at the restricted realization `q|_{E_v}` (KT eq. (6.22);
+the genericity device of Phase 21b re-applied to a nested subgraph). The
+research-shaped step is the restriction-survives-genericity argument (KT footnote
+6) — **recon Gap 3 at its open** (it may itself split, per the multi-stratum
+discipline): confirm the device re-applies to a nested `M(G̃)`-subgraph, and how
+`q|_{E_v}` inherits generic-nonparallel from `q`. Gap 1 (the `M(G̃)`↔row bridge,
+the genuinely-new analytic content — no green `panelRow`↔`matroidMG` bridge exists
+yet) consumes Gaps 2+3 and stays deferred after Gap 3.
 
-The remaining Claim-6.11 pieces (Gap 3 nested IH, Gap 1 row bridge), the
-candidate-completion + Claim-6.12 disjunction, the `d=3` assembly, and general-`d`
-(Phase 23) stay the **named, deferred, unlettered** further sub-phases above.
+The remaining pieces (Gap 1 row bridge, the candidate-completion + Claim-6.12
+disjunction, the `d=3` assembly, general-`d` Phase 23) stay the **named, deferred,
+unlettered** further sub-phases above.
 
 KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45));
 KT §4 (Lemmas 4.3(ii)/4.4/4.7/4.8, the matroid-base substrate); `notes/Phase20.md`

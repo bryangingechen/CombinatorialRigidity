@@ -534,7 +534,7 @@ stays deferred, being sound but unneeded.
   forest.
 \end{proof}
 
-\begin{lemma}[The surgery count: $|I'| = |I| - D$]
+\begin{lemma}[The surgery count: $|I'| = |I| - D$ and $|\widetilde{ab} \cap I'| < D - 1$]
   \label{lem:forest-surgery-count}
   \lean{Graph.forest_surgery_count}
   \leanok
@@ -546,7 +546,9 @@ stays deferred, being sound but unneeded.
   across forests (\cref{lem:reroute-cycle-lift}); a $v$-degree-$1$ forest drops
   its single $v$-fiber and adds nothing (\cref{lem:reroute-vfree-transport}). The
   rerouted family $F'_0, \dots, F'_{D-1}$ is an edge-disjoint forest packing of
-  $\widetilde{G_v^{ab}}$ with $\bigl|\bigcup_i F'_i\bigr| = |I| - D$.
+  $\widetilde{G_v^{ab}}$ with $\bigl|\bigcup_i F'_i\bigr| = |I| - D$ and, with
+  $I' = \bigcup_i F'_i$, also
+  $\bigl|\widetilde{ab} \cap I'\bigr| < D - 1$ --- KT Lemma~4.1's two conclusions.
 \end{lemma}
 \begin{proof}
   \leanok
@@ -560,6 +562,10 @@ stays deferred, being sound but unneeded.
   added, net $-D$.) Edge-disjointness: the $v$-free cores are disjoint subsets of
   the disjoint $F_i$, and the added copies are distinct --- enough exist, since
   the $h' \le D - 1$ degree-$2$ forests draw on $D - 1$ copies of $\widetilde{ab}$.
+  For the fiber bound, the only $\widetilde{ab}$-copies of $I'$ are the inserted
+  ones (each $v$-free core carries genuine $G$-edges, whose copies avoid the fresh
+  $e_0$), one per degree-$2$ forest; their number $h'$ satisfies $D + h' = h \le
+  |\widetilde{va} \cup \widetilde{vb}| = 2(D - 1)$, so $h' \le D - 2 < D - 1$.
 \end{proof}
 
 \begin{lemma}[Forest surgery at a degree-2 vertex, splitting-off direction; KT Lemma 4.1]
