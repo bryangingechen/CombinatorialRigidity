@@ -18,22 +18,37 @@ of `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1`) and Gap-3's combinatorial shell
 nodes `lem:case-III-claim-6-11-base` + `lem:case-III-gap3-minimalKDof` green; `lem:case-III`
 / `lem:case-II-realization` red.
 
-**Next concrete commit:** the second (ii-b) brick — the `complementIso`-rational-entries leaf: the
-device's `Q` (`exists_polynomial_ne_zero_of_linearIndependent_at`, a `det` of a submatrix of
-`c = ± annihRowPoly`, whose coefficients bottom on `panelSupportPoly`'s `MvPolynomial.C r` with
-`r : ℝ` a `complementIso`-`repr` structural constant) must be exhibited as `map (algebraMap ℚ ℝ) Q₀`,
-so the descent mirror just landed applies. This needs the structural constants `r` shown rational
-(±1 / fixed change-of-basis entries — the fact KT takes for granted, footnote 6) and the
-`map`-factorization assembled. Then **(ii-a)** [waits on the moment-curve alg-independence question,
-*Blockers*], then **(iii)** `lem:case-III-seed-rank-bridge` composes (i) ⊕ (ii-a) ⊕ (ii-b) with the
-device consumer + `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. All built directly to green,
-not carried as hypotheses.
+The analytic kernel's **rationality bridge (ii-b)** now has its consumed assembly green:
+`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` (`Tower.lean`) turns
+"coefficients of the `ℝ`-typed device `Q` lie in `range (algebraMap ℚ ℝ)` + `Q ≠ 0` +
+`AlgebraicIndependent ℚ q`" into `eval q Q ≠ 0`. What remains for (ii-b) is the *input* to that
+assembly: the `complementIso`-rational-entries leaf certifying the device's `Q` coefficients ARE
+rational (next build, *Hand-off*).
 
-The descent mirror (ii-b)'s leaf-most just landed: `MvPolynomial.eval_map_algebraMap` (`eval q
-(map (algebraMap R A) Q₀) = aeval q Q₀`) + `map_algebraMap_ne_zero_iff` (nonzero transfer along a
-faithful `algebraMap`), mirrored at `Mathlib/RingTheory/MvPolynomial/Tower.lean`, axiom-clean. With
-these two, leaf (i)'s `aeval`-non-root-ness over ℚ transfers to `eval`-non-root-ness over ℝ once
-`Q` is exhibited over ℚ.
+**Next concrete commit:** the **(ii-b) `complementIso`-rational-entries leaf** proper — exhibit
+the device's `Q` (`exists_polynomial_ne_zero_of_linearIndependent_at`, a `det` of a submatrix of
+`c = ± annihRowPoly`, whose coefficients bottom on `panelSupportPoly`'s `MvPolynomial.C r` with
+`r : ℝ` a `complementIso`-`repr` structural constant) with **`(Q.coeffs : Set ℝ) ⊆ Set.range
+(algebraMap ℚ ℝ)`**, the hypothesis the just-landed assembly consumes. The constants
+`r = repr (complementIso (b₂ s)) t` are signed-permutation entries (`Meet.lean` docstrings: the
+`wedgePairing` matrix in the standard exterior-power bases is signed-permutation), so `±1`/`0` —
+**but the existing `Meet.lean` API pins only `≠ 0` on the diagonal** (`wedgePairing_ιMulti_family_compl_ne_zero`),
+not the exact `±1` value, so the rationality needs a fresh pin of the volume-form value of
+`b₂ s ∨ b_k t` (via `coord_toDualEquiv_symm_apply` reducing `complementIso`'s `repr` to the
+`wedgePairing` of two standard-basis exterior vectors). This is a multi-lemma geometric sub-build.
+Then **(iii)** `lem:case-III-seed-rank-bridge` composes the assembly with the device consumer
+(`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11` +
+`rank_add_deficiency_eq`, and **(ii-a)** [waits on the moment-curve alg-independence question,
+*Blockers*]. All built directly to green, not carried as hypotheses.
+
+The **(ii-b) consumed assembly** landed this commit:
+`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` (`Tower.lean`) — the
+shape the kernel actually fires: a nonzero `Q : MvPolynomial σ A` whose coefficients lie in
+`Set.range (algebraMap R A)`, evaluated at an `AlgebraicIndependent R`-seed `q`, is nonzero. It
+packages the prior commit's descent pair (`eval_map_algebraMap` + `map_algebraMap_ne_zero_iff`) with
+leaf (i) over mathlib's `mem_range_map_iff_coeffs_subset` (the "coeffs in range ⟹ over the base
+ring" descent — already upstream, not re-mirrored). Axiom-clean. It takes the coefficient-rationality
+as a hypothesis; supplying it for the device's `Q` is the next build (above).
 
 ## Claim 6.11 discharge — the Gap 2 → 3 → 1 map
 
@@ -81,13 +96,22 @@ Claim 6.11 supplies the `+1` — the same missing content.
   `aeval_eq_eval`) and the nonzero transfer along a faithful `algebraMap`. Upstream-eligible,
   axiom-clean; mirrored at `Mathlib/RingTheory/MvPolynomial/Tower.lean`. No blueprint node (kernel
   `\lean{}` lands with (iii)).
+- [x] `MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` — (ii-b) consumed
+  assembly (`Tower.lean`): nonzero `Q : MvPolynomial σ A` with `(Q.coeffs : Set A) ⊆ range
+  (algebraMap R A)`, evaluated at `AlgebraicIndependent R`-seed `q`, is nonzero. Packages the descent
+  pair + leaf (i) over mathlib's `mem_range_map_iff_coeffs_subset`. Axiom-clean. No blueprint node yet.
+- [ ] (ii-b) the `complementIso`-rational-entries leaf — certify the device's `Q` coefficients lie
+  in `range (algebraMap ℚ ℝ)` (the assembly's hypothesis): `r = repr (complementIso (b₂ s)) t` is a
+  signed-permutation entry, but `Meet.lean` pins only `≠ 0`, so a fresh `±1`-value pin of the
+  volume form is needed (via `coord_toDualEquiv_symm_apply` → `wedgePairing` of standard-basis
+  exterior vectors). Multi-lemma geometric sub-build; the next build.
 - [ ] (the kernel, in build) (ii) **splits**: **(ii-a)** seed-genericity motive conjunct (carry
   "realizing seed alg-indep over ℚ"; 22b-shaped) — waits on the moment-curve alg-independence
-  question; **(ii-b)** the rationality bridge — descent mirror landed (above); remaining is the
-  `complementIso`-rational-entries leaf exhibiting the device's `Q` over ℚ + the `map`-factorization.
-  Then **(iii)** `lem:case-III-seed-rank-bridge` (= the eq. (6.22) generic-rank transfer ⊕ Gap-1 row
-  bridge) composing (i) ⊕ (ii-a) ⊕ (ii-b) with the device consumer + `rigidityMatrix_prop11`. Red;
-  built directly, not carried.
+  question; **(ii-b)** the rationality bridge — consumed assembly + descent pair + leaf (i) landed;
+  remaining is the `complementIso`-rational-entries leaf above. Then **(iii)**
+  `lem:case-III-seed-rank-bridge` (= the eq. (6.22) generic-rank transfer ⊕ Gap-1 row bridge)
+  composing (i) ⊕ (ii-a) ⊕ (ii-b) with the device consumer + `rigidityMatrix_prop11`. Red; built
+  directly, not carried.
 
 ## Deferred sub-phases (future work in the phase)
 
@@ -106,8 +130,9 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
   ℚ-poly; mirror); **(ii)** SPLITS — **(ii-a)** seed-genericity motive conjunct (carry "realizing
   seed alg-indep over ℚ"; a third motive form paralleling 22b's GP / link-recording), waiting on
   the moment-curve alg-independence question; **(ii-b)** the rationality bridge (the device's
-  `Q : MvPolynomial σ ℝ` exhibited over ℚ so leaf (i) applies — an `eval = aeval ∘ descend`
-  mirror ⊕ a `complementIso`-rational-entries leaf; the §1.30 cut missed this); **(iii)** the
+  `Q : MvPolynomial σ ℝ` exhibited over ℚ so leaf (i) applies — the descent pair + the consumed
+  assembly `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` ✓ landed, ⊕ the remaining
+  `complementIso`-rational-entries leaf; the §1.30 cut missed this); **(iii)** the
   kernel `lem:case-III-seed-rank-bridge` composing (i) ⊕ (ii-a) ⊕ (ii-b) with the consumer +
   `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. **Route (user,
   2026-06-06, design doc §1.31): build this DIRECTLY to green**, not as a permanent
@@ -146,17 +171,20 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the (ii-b) descent mirror landed this commit
-(`MvPolynomial.eval_map_algebraMap` + `map_algebraMap_ne_zero_iff`, mirrored at
-`Mathlib/RingTheory/MvPolynomial/Tower.lean`) — the `eval`-over-ℝ ⟶ `aeval`-over-ℚ descent + the
-nonzero transfer that lets leaf (i) apply once `Q` is exhibited over ℚ. The next **build** commit is
-the second (ii-b) brick: the `complementIso`-rational-entries leaf — exhibit the device's `Q`
-(`exists_polynomial_ne_zero_of_linearIndependent_at`, a `det` of `c = ± annihRowPoly`, bottoming on
-`panelSupportPoly`'s `MvPolynomial.C r` for `r : ℝ` a `complementIso`-`repr` structural constant) as
-`map (algebraMap ℚ ℝ) Q₀`, which needs the structural constants `r` shown rational (±1 / fixed
-change-of-basis entries; KT footnote 6) and the `map`-factorization assembled. Then (ii-a) [waits on
-the moment-curve alg-independence question, *Blockers*], then **(iii)** `lem:case-III-seed-rank-bridge`
-composing (i) ⊕ (ii-a) ⊕ (ii-b) with the device consumer
+**Next concrete commit:** the (ii-b) consumed assembly landed this commit
+(`MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`, `Tower.lean`) — the
+shape the kernel fires (`coeffs ⊆ range (algebraMap ℚ ℝ)` + `Q ≠ 0` + `AlgebraicIndependent ℚ q` ⟹
+`eval q Q ≠ 0`), packaging the prior commit's descent pair + leaf (i) over mathlib's
+`mem_range_map_iff_coeffs_subset`. The next **build** commit is the (ii-b)
+`complementIso`-rational-entries leaf proper: certify the device's `Q` coefficients lie in
+`range (algebraMap ℚ ℝ)` (the assembly's open hypothesis). `Q =
+exists_polynomial_ne_zero_of_linearIndependent_at` is a `det` of `c = ± annihRowPoly`, bottoming on
+`panelSupportPoly`'s `MvPolynomial.C r` for `r = repr (complementIso (b₂ s)) t` — a signed-permutation
+entry (`±1`/`0`). `Meet.lean` pins only `≠ 0` on the diagonal, so this needs a fresh `±1`-value pin of
+the volume form (via `coord_toDualEquiv_symm_apply`, reducing `complementIso`'s `repr` to the
+`wedgePairing` of two standard-basis exterior vectors) — a multi-lemma geometric sub-build. Then
+(ii-a) [waits on the moment-curve alg-independence question, *Blockers*], then **(iii)**
+`lem:case-III-seed-rank-bridge` composing (i) ⊕ (ii-a) ⊕ (ii-b) with the device consumer
 (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11` +
 `rank_add_deficiency_eq`. The two combinatorial Claim-6.11 factors (Gap-2 leaf + Gap-3 shell) are
 green; `lem:case-III` stays red until the kernel lands.
@@ -208,12 +236,19 @@ design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
   contrapositive of mathlib's `eq_zero_of_aeval_eq_zero`, mirrored under
   `Mathlib/RingTheory/AlgebraicIndependent/`; the `R=ℚ`, `A=ℝ` footnote-6 instance ships (the
   same-ring `eval` form is vacuous). Wired into the root aggregator as a leaf awaiting (iii).
-- **Kernel (ii-b) descent mirror (this commit).** `MvPolynomial.eval_map_algebraMap` (`eval q
+- **Kernel (ii-b) descent mirror (commit b21b239).** `MvPolynomial.eval_map_algebraMap` (`eval q
   (map (algebraMap R A) Q₀) = aeval q Q₀` — `aeval_map_algebraMap` at the self-tower `A=B` through
   `aeval_eq_eval`) + `map_algebraMap_ne_zero_iff` (nonzero transfer via the injective faithful
   `algebraMap`). All pieces already in mathlib; the leaf packages them in the consumed form. Mirrored
   at `Mathlib/RingTheory/MvPolynomial/Tower.lean`, axiom-clean. A true leaf — no geometry; FRICTION
   *[mirrored]* entry filed.
+- **Kernel (ii-b) consumed assembly (this commit).**
+  `MvPolynomial.eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent` (`Tower.lean`) — the
+  shape (iii) fires: nonzero `Q` with `coeffs ⊆ range (algebraMap ℚ ℝ)` at an `AlgebraicIndependent ℚ`
+  seed is `eval`-nonzero. The "coeffs in range ⟹ `Q = map (algebraMap) Q₀`" descent was already in
+  mathlib (`mem_range_map_iff_coeffs_subset`, *found by search, not re-mirrored*), so the assembly is
+  3 lines over it + the descent pair + leaf (i). Axiom-clean. It takes coefficient-rationality as a
+  hypothesis; the `complementIso`-rational-entries leaf supplying it is the next build.
 - **Kernel sub-phase (ii) recon (commit 7202bfd; design doc §1.32).** The math-first recon at the
   (ii) open: traced what (iii) must compose against the *real* device signatures. **(ii) splits.**
   (ii-a) = a seed-genericity motive conjunct (carry "realizing seed alg-indep over ℚ"; 22b-shaped,

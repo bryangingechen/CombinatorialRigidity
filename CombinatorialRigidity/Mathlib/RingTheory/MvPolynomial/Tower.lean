@@ -6,6 +6,8 @@ Authors: Bryan Gin-ge Chen
 module
 
 public import Mathlib.RingTheory.MvPolynomial.Tower
+public import Mathlib.Algebra.MvPolynomial.Eval
+public import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.Defs
 
 /-!
 # Upstream candidate: evaluating the base-ring image of a polynomial along the algebra map
@@ -52,5 +54,25 @@ image is nonzero exactly when `Q₀` is. -/
 theorem map_algebraMap_ne_zero_iff [FaithfulSMul R A] {Q₀ : MvPolynomial σ R} :
     map (algebraMap R A) Q₀ ≠ 0 ↔ Q₀ ≠ 0 :=
   (map_eq_zero_iff _ (map_injective _ (FaithfulSMul.algebraMap_injective R A))).not
+
+/-- **A nonzero polynomial with base-ring coefficients is a non-root of every algebraically
+independent point.** If every coefficient of `Q : MvPolynomial σ A` lies in the range of
+`algebraMap R A`, `Q ≠ 0`, and `q : σ → A` is algebraically independent over `R`
+(`FaithfulSMul R A`, so the descent is faithful), then `eval q Q ≠ 0`. This is the *consumed* form
+of the rationality bridge (Phase-22d KT-Claim-6.11 kernel, footnote 6): the genericity device
+builds a nonzero `ℝ`-typed rank polynomial `Q` whose coefficients are rational structural
+constants, and an inductive seed `q` algebraically independent over `ℚ` is then certified a
+non-root of `Q`. The proof descends `Q` to `Q₀ : MvPolynomial σ R` via
+`mem_range_map_iff_coeffs_subset` (`Q = map (algebraMap R A) Q₀`), transfers `Q ≠ 0` to `Q₀ ≠ 0`
+(`map_algebraMap_ne_zero_iff`), rewrites `eval q Q = aeval q Q₀` (`eval_map_algebraMap`), and
+applies `AlgebraicIndependent.aeval_ne_zero`. -/
+theorem eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent {R A : Type*} [CommRing R]
+    [CommRing A] [Algebra R A] [FaithfulSMul R A] {σ : Type*} {q : σ → A}
+    (hq : AlgebraicIndependent R q) {Q : MvPolynomial σ A}
+    (hcoeffs : (Q.coeffs : Set A) ⊆ Set.range (algebraMap R A)) (hQ : Q ≠ 0) :
+    eval q Q ≠ 0 := by
+  obtain ⟨Q₀, rfl⟩ := mem_range_map_iff_coeffs_subset.mpr hcoeffs
+  rw [eval_map_algebraMap]
+  exact hq.aeval_ne_zero (map_algebraMap_ne_zero_iff.mp hQ)
 
 end MvPolynomial

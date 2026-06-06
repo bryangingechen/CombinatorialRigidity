@@ -2482,9 +2482,19 @@ limitations. Worth a once-over so future agents don't re-litigate.
     aeval q Q₀` — `aeval_map_algebraMap` at `A = B`, through `aeval_eq_eval`.
   - `map_algebraMap_ne_zero_iff [FaithfulSMul R A] : map (algebraMap R A) Q₀ ≠ 0
     ↔ Q₀ ≠ 0` — `map_eq_zero_iff` of the injective faithful `algebraMap`.
-- **Status:** mirrored. Both axiom-clean; no geometry, true leaves.
-- **Mirror file:** `Mathlib/RingTheory/MvPolynomial/Tower.lean`. Sit directly
-  below `MvPolynomial.aeval_map_algebraMap`.
+- **Consumed assembly (same file):** `eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`
+  packages the pair with leaf (i) `AlgebraicIndependent.aeval_ne_zero` into the
+  shape the kernel consumes: `(Q.coeffs : Set A) ⊆ range (algebraMap R A)` + `Q ≠ 0`
+  + `AlgebraicIndependent R q` ⟹ `eval q Q ≠ 0`. The "coefficients in range ⟹ `Q
+  = map (algebraMap) Q₀`" descent is already in mathlib
+  (`MvPolynomial.mem_range_map_iff_coeffs_subset`, `…/Eval.lean` — found by search,
+  *not* re-mirrored), so the assembly is a 3-line `obtain`/`rw`/`exact`.
+- **Status:** mirrored. All axiom-clean; no geometry, true leaves. The assembly
+  takes the coefficient-rationality as a hypothesis; supplying it for the device's
+  `Q` (the `complementIso`-rational-entries leaf) is the next 22d build.
+- **Mirror file:** `Mathlib/RingTheory/MvPolynomial/Tower.lean`. The pair sits
+  directly below `MvPolynomial.aeval_map_algebraMap`; the assembly is project-glue
+  over the pair + the alg-independent mirror + the mathlib descent.
 
 ### [mirrored] `Countable.exists_injective_real` — a countable type embeds injectively into `ℝ`
 - **Where it bit:** Phase 21b Case-I realization producer
