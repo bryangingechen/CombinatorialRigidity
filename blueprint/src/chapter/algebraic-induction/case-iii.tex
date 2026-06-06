@@ -405,11 +405,44 @@ candidate-row input.
   therefore $0$ for every body $a$.
 \end{proof}
 
+\begin{lemma}[The conditional $D$-row block: the operated row lifts the $va$-block from $D-1$ to $D$; KT eq.\ (6.29)]
+  \label{lem:case-III-conditional-block}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_pinned_block_augment}
+  \leanok
+  \uses{lem:case-II-placement-block-independent, lem:case-III-vanish-off-column,
+        lem:case-III-columnop}
+  KT eq.~(6.29)'s block-triangular $+1$, the assembly that takes the stratum-1 brick
+  $D(|V|-1) - 1$ (\cref{lem:case-II-realization-placement}) to full $D(|V|-1)$ \emph{conditional} on
+  the top-left $D \times D$ block being full rank. The new block is the $D - 1$ rows $r_n$ of body
+  $v$'s $va$-hinge \emph{plus} the candidate-completion's operated extra row $w$ --- the pure
+  $v$-column row $\mathrm{hingeRow}\,v\,a\,\rho_g \circ \Phi$ produced by the column op
+  (\cref{lem:case-III-columnop}, \cref{lem:case-III-vanish-off-column}); the old block is the
+  $D(|V_v|-1)$ rows $r_o$ of the split-off $G_v^{ab} \setminus (ab)i^*$, vanishing at
+  $\mathrm{update}\ 0\ v$. The two blocks are jointly independent ---
+  $\mathrm{Sum.elim}\,(\mathrm{Sum.elim}\,r_n\,(\lambda \_.\ w))\,r_o$ --- provided the
+  \emph{augmented} pinned new block $\mathrm{Sum.elim}\,(r_n \circ \mathrm{single}_v)\,(w \circ
+  \mathrm{single}_v)$ of $D$ functionals is independent on body $v$'s $D$-dimensional screw column
+  (KT's eq.~(6.29) top-left $D \times D$ full rank: the $va$-block's $D-1$ pinned rows plus the
+  operated $(vb)i^*$-row $w$'s $v$-column block). The $+1$ over the stratum-1 brick is the extra
+  row; the count becomes $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  \uses{lem:case-II-placement-block-independent}
+  $w$ is a new-block row pinned through $v$'s column (the pure-$v$-column property of the operated
+  row, carried into the augmented-pinned-independence hypothesis), so it joins $r_n$ in the
+  pin-a-body new block rather than needing the old-block vanishing. The statement is then exactly
+  the pin-a-body column split (\cref{lem:case-II-placement-block-independent}) applied to the
+  augmented new block indexed by $\iota_n \oplus \{\ast\}$: the augmented new block composed with
+  $\mathrm{single}_v$ equals the supplied augmented pinned family (the $\mathrm{Sum.elim}$
+  distributes over the per-index $\circ\,\mathrm{single}_v$), discharging $h_{\mathrm{newpin}}$.
+\end{proof}
+
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.28)]
   \label{lem:case-III-candidate-row}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
         lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
-        lem:case-II-realization-placement}
+        lem:case-III-conditional-block, lem:case-II-realization-placement}
   Realize $G$ at the degenerate eq.~(6.12) placement $p_1$ with $p_1(vb) = q(ab)$
   (\cref{lem:case-II-realization-placement}). The redundant-$ab$-row of $R(G_v^{ab}, q)$,
   decomposed by \cref{lem:case-III-redundant-decomposition} (eqs.~(6.24)--(6.25)) into a $G_v$-row

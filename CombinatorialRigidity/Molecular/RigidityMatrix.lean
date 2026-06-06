@@ -698,6 +698,50 @@ theorem linearIndependent_sum_pinned_block {ιn ιo : Type*} [Finite ιn] [Finit
   · exact hgn i
   · exact hgo j
 
+/-- **The conditional `D`-row new block: the operated candidate row lifts the `va`-block from
+`D − 1` to `D`** (`lem:case-III-candidate-row`, KT eq.~(6.29); Katoh–Tanigawa 2011 §6.4.1, the
+candidate-completion's block-triangular `+1`, Phase 22e). The eq.~(6.29) assembly that takes the
+stratum-1 brick `D(|V|−1) − 1` (`case_II_placement_eq612`) to full `D(|V|−1)` *conditional* on the
+top-left `D × D` block being full rank. The new block is the `D − 1` rows `rn` of body `v`'s
+`va`-hinge **plus** the candidate-completion's operated extra row `w` — the pure-`v`-column row
+`hingeRow v a ρ_g ∘ₗ Φ` produced by the column op (`hingeRow_comp_columnOp_vanish_off` +
+`dualMap_eq_comp_single_proj_of_vanish_off`, eq.~(6.28)); the old block is the `D(|V_v|−1)` rows
+`ro` of the split-off `G_v^{ab} ∖ (ab)i^*` (vanishing at `update 0 v`, `hold`). The two blocks are
+jointly independent — `Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro` — provided the **augmented**
+pinned new block `Sum.elim (rn ·∘ₗ single v) (w ∘ₗ single v)` of `D` functionals is independent on
+body `v`'s `D`-dimensional screw column (`hnewpinaug`, KT's eq.~(6.29) top-left `D × D` full rank:
+the `(va)`-block's `D − 1` pinned rows plus the operated `(vb)i^*`-row `w`'s `v`-column block, all
+linearly independent). This is exactly `linearIndependent_sum_pinned_block` applied to the
+augmented new block: `w` is a new-block row pinned through `v`'s column (the pure-`v`-column
+property the caller establishes for the operated row, carried into `hnewpinaug`), so it joins `rn`
+in the `hnewpin` slot rather than needing the old-block `hold` vanishing. The `+1` over the
+stratum-1 brick is the extra `Unit` row; the count becomes
+`((D − 1) + 1) + D(|V_v|−1) = D(|V|−1)`. -/
+theorem linearIndependent_sum_pinned_block_augment {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    [DecidableEq α] {v : α}
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {w : Module.Dual ℝ (α → ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (hnewpinaug : LinearIndependent ℝ (Sum.elim
+      (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))
+      (fun _ : Unit => w.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))))
+    (holdindep : LinearIndependent ℝ ro) :
+    LinearIndependent ℝ (Sum.elim (Sum.elim rn (fun _ : Unit => w)) ro) := by
+  -- The pure-`v`-column row `w` joins the `va`-block as one more new-block row, pinned through
+  -- `v`'s column exactly like `rn`; feed the augmented new block to the pin-a-body split.
+  refine BodyHingeFramework.linearIndependent_sum_pinned_block (v := v) hold ?_ holdindep
+  -- The augmented new block, composed with `single v`, *is* `hnewpinaug` — the two functions agree
+  -- (`Sum.elim` distributes over the per-index `.comp (single v)`).
+  have hfun : (fun i : ιn ⊕ Unit =>
+      ((Sum.elim rn (fun _ : Unit => w)) i).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))
+      = Sum.elim
+        (fun i : ιn => (rn i).comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))
+        (fun _ : Unit => w.comp (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)) := by
+    funext i; cases i <;> rfl
+  rw [hfun]; exact hnewpinaug
+
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
 generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,
