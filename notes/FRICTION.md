@@ -2509,6 +2509,33 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` (+ helper `Submodule.finrank_map_mkQ`) — a finrank pigeonhole for a redundant family member
+- **Where it bit:** Phase 22d Gap 1, the KT Claim 6.11 / eq. (6.23) pigeonhole. Given a
+  finite family `g : ι → V` (the `D−1` `ab`-rows) whose span, added to a subspace `W`
+  (the `R(G_v)`-row span), raises `finrank W` by `< |ι|` (corank `k' ≤ D−2 < D−1` from
+  eqs. (6.18)+(6.22)), some `g i` must be redundant.
+- **Friction:** mathlib has `finrank_span_eq_card` / `linearIndependent_iff_notMem_span`
+  but no fused "small finrank-gain ⟹ a specific redundant member" pigeonhole, nor a
+  `finrank (S.map W.mkQ) = finrank (W ⊔ S) − finrank W` quotient-image finrank identity
+  (only `Submodule.finrank_quotient` for a full quotient).
+- **Resolution:** mirrored two upstream-eligible facts:
+  - `finrank_map_mkQ (W S) : finrank (S.map W.mkQ) = finrank (W ⊔ S) − finrank W` —
+    rank–nullity (`LinearMap.finrank_range_add_finrank_ker`) on `W.mkQ ∘ₗ S.subtype`
+    (range `S.map W.mkQ`, kernel `W ⊓ S` via `comapSubtypeEquivOfLe`) against
+    `finrank_sup_add_finrank_inf_eq`.
+  - `exists_mem_sup_span_image_compl_of_finrank_lt (W g)` — contrapositive in `V ⧸ W`:
+    no redundant member ⟹ `W.mkQ ∘ g` LI (`linearIndependent_iff_notMem_span`, where
+    `W.mkQ (g i) ∈ span (mkQ∘g '' T) ↔ g i ∈ W ⊔ span (g '' T)` by `comap_map_mkQ`) ⟹
+    span finrank `|ι|` ⟹ `finrank (W ⊔ span g) = finrank W + |ι|` via `finrank_map_mkQ`.
+- **Status:** mirrored. Both axiom-clean; no geometry, pure LA. The geometric
+  instantiation at the `ab`-rows (the row-set identity + the eq.-(6.18) seed-rank-bridge
+  instance) is the next 22d build.
+- **Mirror file:** `Mathlib/LinearAlgebra/Dimension/Constructions.lean` (the project's
+  existing finrank-construction mirror). Upstream `finrank_map_mkQ` would live beside the
+  quotient finrank API in `Dimension/RankNullity.lean`; the pigeonhole beside the
+  finrank/span API. Needed import: `Mathlib.LinearAlgebra.FiniteDimensional.Lemmas` (for
+  `LinearMap.finrank_range_add_finrank_ker`).
+
 ### [mirrored] `MvPolynomial.eval_map_algebraMap` / `map_algebraMap_ne_zero_iff` — descend an `ℝ`-eval to a base-ring `aeval`, and transfer nonzero-ness
 - **Where it bit:** Phase 22d KT-Claim-6.11 analytic kernel, rationality bridge
   (ii-b). Leaf (i) `AlgebraicIndependent.aeval_ne_zero` certifies non-root-ness
