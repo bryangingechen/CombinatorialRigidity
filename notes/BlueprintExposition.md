@@ -180,6 +180,24 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   Lemma 6.10/6.13. Labelling by surface analogy ("degree-2 split ⇒ Case II") hid
   the single hardest sub-proof in KT. Pointer: `DESIGN.md` *Phase Case-naming
   must match KT's k-bookkeeping*; `notes/Phase21b.md` *Finding B*.
+- **`lem:case-III` Claim 6.11 / the missing `+1` row — where the real difficulty
+  sits (Gap-3 recon, Phase 22d)** — [pending] **(a)**. **Stable insight:** KT's
+  discharge of the redundant `ab`-row factors as (Gap 2) a matroid-base fact
+  (`ãb ⊄` some base of `M(G̃_v^{ab})`, green), (Gap 3) eq. (6.22) computing the
+  rank of the *specific* restricted realization `R(G_v, q|_{E_v})`, and (Gap 1) a
+  pigeonhole turning the matroid redundancy into a linear one. The
+  research-shaped **kernel is Gap 3's eq. (6.22), which bottoms on KT footnote 6**:
+  *one nonparallel realization attaining the rank ⟹ all generic ones do, and the
+  already-chosen seed `q` restricted to `E_v` inherits algebraic independence, so
+  it is itself generic and attains the rank.* This is a **rank-of-a-given-seed**
+  statement — a different object from the *existence* of a full-rank realization
+  (the form the project's IH motive `HasFullRankRealization` supplies), and the
+  Phase-21b genericity device runs the opposite direction (one-point independence
+  ⟹ existence of a good point). So Gaps 3+1 share one kernel — "the rigidity matrix
+  at the inductively-fixed seed attains the rank `M(G̃)` predicts" — which is the
+  genuinely-new analytic content (carried-as-hypothesis until a dedicated
+  sub-phase). Pointer: `notes/Phase22d.md` *Gap 3 recon (2026-06-06)*; KT
+  pp. 684–685, eq. (6.22) + footnote 6.
 - **`lem:case-II-realization` / eq. (6.12) degenerate placement** — [pending]
   **(a)**. **Stable insight:** KT's construction (Lemma 6.8, eq. 6.12) is
   *row-side with a degenerate placement* — `p1(vb) = q(ab)` places `v`'s new

@@ -1,13 +1,28 @@
 # Phase 22d — Claim 6.11's first green-machinery prerequisite (the matroid-base 4.3(ii) leaf) (work log)
 
 **Status:** in progress (opened 2026-06-05 design-pass-first; re-scoped
-2026-06-05 per a fresh user direction; **leaf landed green 2026-06-06**). This
-sub-phase builds the **leaf-most missing-green-machinery prerequisite of KT Claim
-6.11**, bottom-up — not the candidate scaffold and not an axiomatized Claim 6.11.
+2026-06-05 per a fresh user direction; **Gap-2 leaf landed green 2026-06-06**;
+**Gap-3 design recon 2026-06-06, docs-only**). This sub-phase builds the
+**missing-green-machinery prerequisites of KT Claim 6.11**, bottom-up — not the
+candidate scaffold and not an axiomatized Claim 6.11.
 
 ## Current state
 
-The leaf node **landed green + axiom-clean** as
+**This commit is the design-pass-first recon of Gap 3 (the nested
+IH-at-restriction), docs-only** — settling Gap-3's buildability + node cut before
+any build, the way the Gap-2 re-scope recon preceded the Gap-2 build. **Verdict
+(load-bearing): Gap 3 SPLITS.** Its combinatorial shell (`def(G̃_v) ≤ D−2` ⟹
+`G_v` minimal `k'`-dof) is green; its analytic core — the eq. (6.22) rank of the
+*specific restricted realization* `R(G_v, q|_{E_v})` — is the **irreducible
+research-shaped kernel** (NOT buildable from green machinery the way Gap 2 turned
+out to be), for a structural reason verified against the real signatures: the
+project's IH motive is **existence-only** and KT's eq. (6.22) + footnote 6 need a
+**rank-of-a-given-realization** statement the existence motive cannot deliver. The
+leaf-most buildable Gap-3 piece — the combinatorial shell `splitOff_removeVertex_minimalKDof`
+— is cut below; the kernel is isolated as a named carry-as-hypothesis red node. See
+*Gap 3 recon (2026-06-06)* below.
+
+The Gap-2 leaf **landed green + axiom-clean** (prior commit) as
 `Graph.splitOff_exists_base_inter_fiber_lt` (`ForestSurgery.lean`), the
 **matroid-base form of KT Lemma 4.3(ii) at `k = 0`** — the existence of a base
 `B'` of `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1`, so `ãb ⊄ B'` (a redundant
@@ -189,15 +204,20 @@ The honesty-gate 2nd half (count closes) is traced above; the 3rd half
 These are parked until the leaf's shape is clear (a letter is minted when the
 turn comes — the assembly-naming precedent; the crux may still split):
 
-- **Gap 3 — the nested IH-at-restriction.** Consumes the leaf's `h ≤ D−2`:
-  `G_v` minimal `k'`-dof (`subgraph_minimality`, green), the IH (6.1) at the
-  restricted realization (the genericity device re-applied to a nested subgraph,
-  Phase-21b infra). Research-shaped (the restriction-survives-genericity step,
-  KT footnote 6).
+- **Gap 3 — the nested IH-at-restriction. SPLITS** (2026-06-06 recon, above):
+  - *shell (next build, green):* `splitOff_removeVertex_minimalKDof` — `G_v`
+    minimal `k'`-dof, `0 ≤ k' ≤ D−2` (`subgraph_minimality` etc., green).
+  - *kernel (research-shaped, red):* the eq. (6.22) generic-rank transfer — the
+    rank of the *specific* restricted realization `R(G_v, q|_{E_v})` at the
+    inductively-fixed seed `q` (KT footnote 6). NOT green-buildable: the IH motive
+    is existence-only; the device runs the opposite direction. Likely merges with
+    Gap 1.
 - **Gap 1 — the `M(G̃)`↔row-dependence bridge.** The genuinely-new analytic
   content: convert the leaf's combinatorial redundant `ãb`-copy + Gap 3's IH
   rank into a redundant *rigidity row* of `R(G_v^{ab},q)` (eq. (6.23)). Still no
   green `panelRow`↔`matroidMG` bridge exists (re-confirmed: no file mentions both).
+  **Likely shares the Gap-3 kernel** — "the seed `q` attains the rank `M(G̃)`
+  predicts" (recon item-3 sharpening).
 - **The candidate-completion node + Claim 6.12 disjunction.** Once Gaps 2/3/1
   give the redundant `ab`-row, lift 22c's `case_II_placement_eq612`'s `≥
   D(|V|−1)−1` to `= D(|V|−1)` on one candidate (eq. (6.24)–(6.29) row-op), then
@@ -217,6 +237,176 @@ now deferred). The three candidates are symmetric: `p₂ = p₁` with `a ↔ b`;
 row-op + eq. (6.29) completion **once**, instantiate ×3. `case_II_placement_eq612`
 is already this per-candidate shape. `d=3`-first (§1.26 Q2): general `d`
 (Lemma 6.13) stays Phase 23, KT's own §6.4.1-then-§6.4.2 cut.
+
+## Gap 3 recon (2026-06-06) — the nested IH-at-restriction (design-pass-first, docs-only)
+
+Settles the next piece flagged by the Gap-2 hand-off, verified against KT §6.4.1
+(pp. 684–685, eq. (6.22) + footnote 6, `.refs/katoh-tanigawa-2011-…pdf` pdf
+pp. 38–39) AND the actual green Lean signatures (lean-lsp / Read, not guesses).
+
+### What Gap 3's job is (KT eq. (6.22))
+
+From the Gap-2 leaf: a base `B'` of `M(G̃_v^{ab})` with `h := |ãb ∩ B'| < D−1`,
+so `h ≤ D−2 = 4` and `|B'| = D(|V∖v|−1)` (`G_v^{ab}` is 0-dof). Set
+`G_v := G_v^{ab} − ab = G − v` (`removeVertex v`). Then `B' ∖ ãb` is
+`M(G̃_v)`-independent of cardinality `D(|V∖v|−1) − h`, so `def(G̃_v) ≤ h` (KT
+(2.4)) ⟹ `G_v` is minimal `k'`-dof, `k' = def(G̃_v) ≤ h ≤ D−2`. KT's eq. (6.22)
+then claims, **for the specific restricted realization** `q|_{E_v}` (where `q` is
+the seed already chosen for `G_v^{ab}` in the inductive step):
+`rank R(G_v, q|_{E_v}) = D(|V∖v|−1) − k'`. Its *only* downstream use (Gap 1): with
+`rank R(G_v^{ab},q) = D(|V∖v|−1)` (full, eq. (6.18)), and `R(G_v, q|_{E_v}) =
+R(G_v^{ab},q)` minus the `D−1` `ab`-rows, the corank `k' ≤ D−2` over the `D−1`
+`ab`-rows forces (pigeonhole) **one `ab`-row redundant** (eqs. (6.23)–(6.24)). So
+Gap 3's payload is exactly: **`corank R(G_v, q|_{E_v}) = k' ≤ D−2`** at the
+incoming seed `q`.
+
+### 1. The combinatorial glue — GREEN (confirmed, pin the lemmas)
+
+The chain `leaf ⟹ def(G̃_v) ≤ D−2 ⟹ G_v minimal k'-dof` composes from green
+Phase-19/20 lemmas, no new analytic content:
+
+- **`def(G̃_v) ≤ h`** = the leaf's `h ≤ D−2` plus the `M(G̃_v)`-base count. The
+  leaf already gives `B' ∖ ãb` independent in `M(G̃_v)` of size `|B'| − h`
+  (`matroidMG_restrict_mulTilde` + `mulTilde_removeVertex_le_splitOff`, both green,
+  `Deficiency.lean:212` / `ForestSurgery.lean:91`); `def = corank` via
+  `rank_add_deficiency_eq` (`Deficiency.lean:994`) / `isBase_ncard_add_deficiency_eq`
+  (`Deficiency.lean:1005`) converts the count to `def(G̃_v) ≤ h`.
+- **lower bound `def(G̃) ≤ def(G̃_v)`** = `removeVertex_deficiency_ge` (KT 4.4,
+  `SplitOffDeficiency.lean:405`, green) ⟹ `k' ≥ 0`; combined gives `0 ≤ k' ≤ D−2`.
+- **`G_v` minimal `k'`-dof** = `subgraph_minimality` (KT Lemma 3.3,
+  `Deficiency.lean:400`, green): `G_v ≤ G` minimal-`0`-dof + `G_v.IsKDof n k'` ⟹
+  `G_v.IsMinimalKDof n k'`. The `G_v ≤ G` half is `removeVertex_le` (mathlib
+  `Graph` order, green); the `IsKDof n k'` half is just the def-count above.
+
+Small new sub-brick: a one-shot lemma `splitOff_removeVertex_minimalKDof` packaging
+"`G_v` is minimal `k'`-dof with `0 ≤ k' ≤ D−2`" from the leaf's `B'`. Pure `M(G̃)`
+matroid theory, mirrors `splitOff_exists_base_inter_fiber_lt`'s shape; buildable.
+**This is the leaf-most buildable Gap-3 piece** (the node cut, below).
+
+### 2. The device re-application — re-applies in PRINCIPLE, but to the WRONG output shape
+
+The Phase-21b device's real interface (signatures verified):
+
+- **`exists_good_realization_ofParam`** (`GenericityDevice.lean:177`): given a fixed
+  `(G, ends)` recording links + a seed `q₀` at which the `s`-indexed `panelRow`
+  family is independent, produces `∃ q, #s + dim Z(G,q) ≤ D|α|`. I.e.
+  *one-point-independence ⟹ existence of a good point with that corank bound.*
+- The IH motive **`HasFullRankRealization k G := ∃ Q, Q.graph = G ∧
+  Q.toBodyHinge.IsInfinitesimallyRigidOn V(G)`** (`PanelHinge.lean:931`) — an
+  **existence** of *some* full-rank framework, `V(G)`-relative (`DESIGN.md`
+  *Realization motive must be V(G)-relative*). `theorem_55`'s `hsplit`/`hcontract`
+  premises hand the IH for the smaller graph in exactly this existence shape.
+
+The device **does** re-apply to the nested subgraph `G_v` mechanically:
+`exists_good_realization_ofParam` is stated for an arbitrary fixed `(G, ends)`, so
+`G := G_v`, `ends := ends|_{E_v}` is a valid instance, and the nested-graph
+inclusion `mulTilde_removeVertex_le_splitOff` is green. **But it produces existence
+of a good point, not the rank of a *given* point** — which is the wrong shape for
+eq. (6.22) (see item 3). The `withGraph` primitive (`PanelHinge.lean:411`,
+`ofNormals_withGraph` `:459`, the panel-data-preserving graph swap) is the project's
+exact analogue of KT's `q|_{E_v}`: `(ofNormals G_v^{ab} ends q).withGraph G_v =
+ofNormals G_v ends q` — *same `q`, smaller graph*. So the OBJECT `R(G_v, q|_{E_v})`
+is expressible; what is missing is a theorem about its rank.
+
+### 3. The research-shaped step — THE VERDICT: irreducible kernel, NOT green-buildable
+
+**Verdict: the eq. (6.22) rank claim is the irreducible research-shaped kernel, NOT
+buildable from green machinery the way Gap 2 was.** The reason is structural, not a
+missing-lemma gap, and is verified against the real signatures:
+
+> KT eq. (6.22) is a statement about the rank of **the specific realization**
+> `(G_v, q|_{E_v})` for the **already-chosen** seed `q`. KT proves it via footnote 6:
+> *"if one particular nonparallel realization achieves the rank `D(|V∖v|−1)−k'`,
+> then all generic nonparallel realizations attain the same rank by definition"* —
+> and `q` restricted to `E_v` inherits algebraic independence of its panel
+> coefficients (KT: *"this property clearly remains in the realization restricted to
+> `E_v`"*), so `(G_v, q|_{E_v})` is itself a generic nonparallel realization and the
+> IH (6.1) applies to **it**.
+
+The project's IH gives `HasFullRankRealization k G_v` = *∃ some full-rank framework
+on `G_v`*. It does **not** give "the framework `ofNormals G_v ends q` (the
+restriction of the already-fixed `q`) attains rank `D(|V∖v|−1)−k'`." Bridging the
+two is exactly footnote 6, and the project's device runs the **opposite direction**:
+device = *one-point-independence ⟹ existence of a good point* (`∃ q, …`); footnote 6
+= *generic-attains-max ⟹ this generic point attains it* (`∀`-flavored, given-point).
+There is no green lemma that says "a realization whose coefficients are algebraically
+independent attains the existence-IH's maximal rank" — the project carries no
+"algebraically-independent ⟹ generic ⟹ attains max" transfer (the device only
+*produces* a good point, never certifies a *given* one is good). Confirmed: grep for
+`generic.*attain` / `attains.*max` over `AlgebraicInduction/` returns nothing of this
+shape; the only motive→`ofNormals` bridge, `exists_rigidOn_ofNormals_of_hasFullRankRealization`
+(`GenericityDevice.lean:1078`), re-packages the *existence* witness `Q` as *some*
+`ofNormals Q.ends q` — it does **not** let you pick `q`.
+
+**Why this is genuinely the kernel and not a Gap-2-style understated substrate.** The
+Gap-2 overturn worked because `splitOff_isMinimalKDof`'s green proof *already carried*
+the `ãb`-base count — the content existed, was discarded. Here the content
+(footnote 6's generic-rank-transfer for a *given* algebraically-independent seed) does
+**not** exist anywhere green: it is the "restriction-survives-genericity + generic-
+attains-max" device KT footnote 6 invokes, which the project never formalized (Phase
+21b built the *existence* device deliberately, since the realization producers only
+ever needed `∃ a good seed` — `notes/Phase21b.md` *What 21b delivered*). It is new
+analytic content of the same family as Gap 1's `M(G̃)`↔row bridge.
+
+**An important sharpening — Gap 3's payload may be reachable WITHOUT eq. (6.22)'s
+exact form, but only together with Gap 1, and still needs the same kernel.** Gap 3's
+sole downstream use is the corank bound `corank R(G_v, q|_{E_v}) ≤ D−2` feeding the
+pigeonhole. One could imagine getting the redundant `ab`-row directly from the
+*combinatorial* redundancy (Gap-2's `ãb ⊄ B'`) by a `M(G̃)`↔row-dependence bridge at
+the seed `q` — but that bridge **is Gap 1**, the genuinely-new analytic content
+(re-confirmed: no green `panelRow`↔`matroidMG` bridge exists, no file mentions both),
+and it *also* needs the realization at the specific seed `q` to attain its
+matroid-predicted rank — i.e. the same footnote-6 kernel. So Gaps 3+1 share one
+research-shaped kernel: **"the rigidity matrix at the inductively-chosen seed `q`
+attains the rank `M(G̃)` predicts"** (combinatorial corank = linear corank at `q`).
+This is the single hard node; eq. (6.22) is its specialization to the `ab`-deleted
+subgraph.
+
+### 4. Split + node cut — the leaf-most-first Gap-3 first build
+
+**Gap 3 splits** (multi-stratum, like 22c/Gap-2). Leaf-most-first:
+
+- [ ] **(next build, the Gap-3 leaf) `Graph.splitOff_removeVertex_minimalKDof`** —
+  *the combinatorial shell of Gap 3, pure `M(G̃)` matroid theory.* From the Gap-2
+  leaf's base `B'` (`splitOff_exists_base_inter_fiber_lt`) and the green def-count
+  chain (item 1): `G_v = G.removeVertex v` is a minimal `k'`-dof-graph with
+  `0 ≤ k' ≤ D−2` (`k' = def(G̃_v)`). **Statement (to confirm shape at build open):**
+  for `G` minimal 0-dof, no proper rigid subgraph, `v` reducible degree-2,
+  `(G.removeVertex v).IsMinimalKDof n (G.removeVertex v).deficiency n ∧
+  0 ≤ def(G̃_v) ∧ def(G̃_v) ≤ bodyHingeMult n − 1` (`= D−2`). **Green inputs (all
+  verified by signature):** `splitOff_exists_base_inter_fiber_lt` (Gap-2 leaf),
+  `subgraph_minimality` (`Deficiency.lean:400`), `removeVertex_le` (mathlib),
+  `matroidMG_restrict_mulTilde` (`Deficiency.lean:212`),
+  `mulTilde_removeVertex_le_splitOff` (`ForestSurgery.lean:91`),
+  `rank_add_deficiency_eq` (`Deficiency.lean:994`), `removeVertex_deficiency_ge`
+  (`SplitOffDeficiency.lean:405`). **Count** (honesty-gate 2nd half): `|B' ∖ ãb| =
+  |B'| − h = D(|V∖v|−1) − h ≤ rank M(G̃_v) ≤ D(|V∖v|−1)` and `def(G̃_v) = D(|V∖v|−1)
+  − rank M(G̃_v) ≤ h ≤ D−2` — closes from the named greens. **No rigidity matrix,
+  buildable.** New green node `lem:case-III-gap3-minimalKDof` (working label),
+  `\uses` Gap-2 leaf + the Phase-19/20 green nodes; `lem:case-III` /
+  `lem:case-II-realization` stay red.
+
+- **(deferred, the kernel) the eq. (6.22) generic-rank transfer.** Isolated as the
+  named research-shaped red node — the carry-as-hypothesis treatment, exactly the
+  Phase-21b "carry the analytic crux as `h…` and `\uses` a red node" idiom that
+  Cases I/II used for the device pre-21b, and that the design notes' escalation
+  ladder names as the recommended fallback for Lemma 6.10 / Claim 6.11
+  (`notes/Phase22-realization-design.md` §4, escalation 1). Working name
+  `h_seed_attains_matroid_rank` / red node `lem:case-III-gap3-rank` (or, once Gaps
+  3+1 are seen to share the kernel, a single `lem:case-III-seed-rank-bridge`). The
+  obligation it carries: `corank R(ofNormals G_v ends q) = def(G̃_v)` at the
+  inductively-fixed seed `q` (the linear corank at `q` equals the combinatorial
+  corank `M(G̃_v)` predicts). It does **not** get `\leanok` until discharged.
+
+**Recommendation for the next build commit:** land the Gap-3 leaf
+`splitOff_removeVertex_minimalKDof` (green, the combinatorial shell). The kernel
+(eq. (6.22) generic-rank transfer) and Gap 1 (`M(G̃)`↔row bridge) are the two
+research-shaped nodes; they likely **merge into one** "seed attains the
+matroid-predicted rank" node (item 3 sharpening) and want their own dedicated
+math-first sub-phase. Do NOT pre-commit their internal cut now (defer-the-finer-cut,
+as 22a→22b, 22c→22d). The honesty-gate 3rd half (structural fidelity): the leaf IS
+KT's own eq. (6.22) step-1 (the `def(G̃_v) ≤ h` count + `subgraph_minimality`), not a
+re-expression; the kernel is KT's footnote 6, carried honest as a red obligation.
 
 ## Where 22c left off (the stratum-1 brick this crux completes)
 
@@ -240,22 +430,42 @@ is what 22d now attacks, leaf-first. The producer exposes the entry-point: its
   (an independent set of full rank is a base, `Indep.isBase_of_ncard`). New green
   node `lem:case-III-claim-6-11-base`; `lem:case-III` / `lem:case-II-realization`
   stay red.
-- [ ] (deferred) Gap 3 nested IH-at-restriction; Gap 1 `M(G̃)`↔row bridge; the
-  candidate-completion + Claim-6.12 disjunction; the `d=3` assembly. Named,
-  unlettered (below).
+- [ ] **(next build, the Gap-3 leaf) `Graph.splitOff_removeVertex_minimalKDof`** —
+  the combinatorial shell of Gap 3 (cut by the 2026-06-06 recon above): `G_v =
+  removeVertex v` is minimal `k'`-dof, `0 ≤ k' ≤ D−2`, from the Gap-2 leaf's base +
+  the green def-count chain (`subgraph_minimality`, `removeVertex_deficiency_ge`,
+  `rank_add_deficiency_eq`, `matroidMG_restrict_mulTilde`,
+  `mulTilde_removeVertex_le_splitOff`). Pure `M(G̃)` matroid theory, **buildable**.
+  New green node `lem:case-III-gap3-minimalKDof`; `lem:case-III` /
+  `lem:case-II-realization` stay red.
+- [ ] (deferred, **research-shaped kernel**) the eq. (6.22) generic-rank transfer —
+  `corank R(ofNormals G_v ends q) = def(G̃_v)` at the inductively-fixed seed `q` (KT
+  footnote 6: algebraically-independent seed ⟹ generic ⟹ attains the IH's maximal
+  rank). NOT green-buildable: the IH motive is existence-only, the device runs the
+  opposite direction (see recon item 3). Likely **merges with Gap 1** into one "seed
+  attains matroid-predicted rank" node. Carry-as-hypothesis red node
+  `lem:case-III-gap3-rank` / `lem:case-III-seed-rank-bridge`.
+- [ ] (deferred) Gap 1 `M(G̃)`↔row bridge; the candidate-completion + Claim-6.12
+  disjunction; the `d=3` assembly. Named, unlettered (below).
 
 ## Blockers / open questions
 
-- **Re-scope (this recon): 22d = build Claim 6.11's leaf prerequisite bottom-up,
-  NOT axiomatize.** The leaf (matroid-base 4.3(ii), Gap 2) is buildable from
-  green Phase-20 infra — the opening recon understated the substrate
-  (`splitOff_isMinimalKDof`'s proof already carries the `ãb`-base count).
-- **The one open construction question (confirm at build open):** whether the
-  sharp upper bound `|B'∩ãb| ≤ D−2` falls directly out of
-  `splitOff_isMinimalKDof`'s internal count + KT 4.7, or needs a small
-  "parallel-copies-on-one-edge bound a union-matroid base by ≤ D−1, and `<D−1`
-  under `def(G̃_v)>0`" sub-leaf. Either way it is pure `M(G̃)` matroid theory,
-  no rigidity matrix — buildable, not research-shaped.
+- **Gap-3 verdict (this recon): Gap 3 SPLITS** — green combinatorial shell
+  (`splitOff_removeVertex_minimalKDof`, the leaf) + an **irreducible
+  research-shaped kernel** (eq. (6.22) generic-rank transfer). Unlike Gap 2 (whose
+  green substrate the opening recon understated), Gap 3's kernel content is
+  genuinely absent from green: the IH is existence-only and the device runs the
+  opposite direction from KT footnote 6. So the kernel is carried-as-hypothesis (a
+  red node), not built — the recommended Phase-21b escalation idiom. See *Gap 3
+  recon (2026-06-06)* items 2–3.
+- **Open: do Gap 3's kernel and Gap 1 merge?** The recon's item-3 sharpening says
+  the eq. (6.22) generic-rank transfer and the Gap-1 `M(G̃)`↔row bridge share one
+  kernel ("the rigidity matrix at the fixed seed `q` attains the rank `M(G̃)`
+  predicts"). Confirm when the kernel sub-phase opens whether to cut them as one
+  node or two; do not pre-commit now.
+- **(Gap-2, resolved):** the sharp upper bound `|B'∩ãb| ≤ D−2` came from the
+  strengthened `forest_surgery_count`'s degree-count, not a separate sub-leaf — see
+  *Current state*. The open construction question closed.
 - **Claim 6.12 — DE-RISKED** (unchanged): bottoms on the green Lemma 2.1.
 - **Recurring Lean traps** (carry from 22a/22b/22c, FRICTION): heavy
   `IsInfinitesimallyRigidOn`/framework defeq across `ofNormals`/`withGraph`
@@ -266,29 +476,33 @@ is what 22d now attacks, leaf-first. The producer exposes the entry-point: its
 
 ## Hand-off / next phase
 
-**This commit landed the Gap-2 leaf** `Graph.splitOff_exists_base_inter_fiber_lt`
-(matroid-base 4.3(ii) at `k=0`) green + axiom-clean, plus the strengthening of
-`forest_surgery_count` it consumes, and the green blueprint node
-`lem:case-III-claim-6-11-base`. The verified-buildable re-recon held; the only
-refinement at build open was that KT 4.3(ii) is an *existence* statement, proved
-via Lemma 4.1's surgery (not a "every base" universal) — see *Current state*.
-`lem:case-III` / `lem:case-II-realization` stay red.
+**This commit is the design-pass-first recon of Gap 3 (docs-only)** — the check
+the Gap-2 hand-off flagged. Verdict: **Gap 3 splits** into a green combinatorial
+shell + an irreducible research-shaped kernel (full reasoning + signature
+verification in *Gap 3 recon (2026-06-06)*). The shell is cut as the next build;
+the kernel is carried-as-hypothesis. `lem:case-III` / `lem:case-II-realization`
+stay red. No Lean, no build, no `\leanok`/`\lean{}` changes this commit.
 
-**The next concrete commit builds Gap 3 — the nested IH-at-restriction.** It
-consumes the leaf's `|ãb ∩ B'| < D−1` (⟹ `def(G̃_v) ≤ D−2`, so `G_v = G_v^{ab} − ab`
-is minimal `k'`-dof, `k' ≤ D−2`, by `subgraph_minimality`, green) and applies the
-geometric IH (6.1) to `G_v` at the restricted realization `q|_{E_v}` (KT eq. (6.22);
-the genericity device of Phase 21b re-applied to a nested subgraph). The
-research-shaped step is the restriction-survives-genericity argument (KT footnote
-6) — **recon Gap 3 at its open** (it may itself split, per the multi-stratum
-discipline): confirm the device re-applies to a nested `M(G̃)`-subgraph, and how
-`q|_{E_v}` inherits generic-nonparallel from `q`. Gap 1 (the `M(G̃)`↔row bridge,
-the genuinely-new analytic content — no green `panelRow`↔`matroidMG` bridge exists
-yet) consumes Gaps 2+3 and stays deferred after Gap 3.
+**The next concrete commit builds the Gap-3 leaf
+`Graph.splitOff_removeVertex_minimalKDof`** (in `ForestSurgery.lean` next to the
+Gap-2 leaf): from the Gap-2 leaf's base `B'` + the green def-count chain
+(`subgraph_minimality`, `removeVertex_deficiency_ge`, `rank_add_deficiency_eq`,
+`matroidMG_restrict_mulTilde`, `mulTilde_removeVertex_le_splitOff`), prove
+`G_v = removeVertex v` is minimal `k'`-dof with `0 ≤ k' ≤ D−2`. Pure `M(G̃)`
+matroid theory, no rigidity matrix, **buildable** (count closes — recon item 4).
+New green node `lem:case-III-gap3-minimalKDof`.
 
-The remaining pieces (Gap 1 row bridge, the candidate-completion + Claim-6.12
-disjunction, the `d=3` assembly, general-`d` Phase 23) stay the **named, deferred,
-unlettered** further sub-phases above.
+**After that, the research-shaped kernel** (eq. (6.22) generic-rank transfer) +
+**Gap 1** (`M(G̃)`↔row bridge) are the two remaining research-shaped nodes; the
+recon's item-3 sharpening argues they likely **merge into one** "the rigidity
+matrix at the inductively-fixed seed `q` attains the rank `M(G̃)` predicts" node
+(combinatorial corank = linear corank at `q`). They want their own dedicated
+math-first sub-phase, carried-as-hypothesis (red) until discharged. Do NOT
+pre-commit their internal cut now (defer-the-finer-cut, as 22a→22b, 22c→22d).
+
+The remaining pieces (the candidate-completion + Claim-6.12 disjunction, the
+`d=3` assembly, general-`d` Phase 23) stay the **named, deferred, unlettered**
+further sub-phases above.
 
 KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45));
 KT §4 (Lemmas 4.3(ii)/4.4/4.7/4.8, the matroid-base substrate); `notes/Phase20.md`
