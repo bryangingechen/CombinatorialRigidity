@@ -10,37 +10,35 @@ compressed verdict log.
 
 ## Current state
 
-**Gap 1's eq. (6.22) rank *upper* bound at the fixed seed is green this commit**
-(`PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`,
-`CaseI.lean`, after the seed-rank bridge): given a nonzero *rational* rank polynomial `Q` whose
-non-roots witness an independent `panelRow`-subfamily `s` (edges linking in `G`), at any
-alg-indep-over-ℚ seed `q` the null space is bounded `dim Z(G,q) ≤ D|α| − |s|`. The footnote-6 non-root
-device (`eval_ne_zero_of_coeffs_subset_range_of_algebraicIndependent`) makes the alg-indep `q` a
-non-root, so `s` is independent *at `q` itself*; the rank-nullity core of
-`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (panel rows ⊆ rigidity rows,
-`dim Z + finrank(span rigidityRows) = D|α|`) then bounds `dim Z`. Built green first try, axiom-clean,
-no friction. This is the eq. (6.22) `def>0` *upper* half (the `def=0` full-rigidity transfer is the
-prior commit's seed-rank bridge); paired with the genericity-free *lower* bound
-`D + def ≤ dim Z` (`rigidityMatrix_prop11`'s `hub`) it pins `dim Z(G_v,q) = D + k'`, i.e.
-`RankHypothesis k'`. Blueprint node `lem:case-III-seed-rank-upper` green; `lem:case-III` `\uses` it.
+**Next concrete commit:** the **`hub` brick** — the genericity-free codimension lower bound
+`D + def ≤ dim Z` for *every* panel-hinge realization, bricked from the Phase-19 partition
+machinery (a vertex partition attaining `def(G̃)` contributes `def` independent motions beyond the
+`D` trivial ones). It is the one hypothesis both `rigidityMatrix_prop11` and the just-landed
+rank-attainment packaging carry undischarged; landing it flips `lem:case-III-rank-attainment` (and
+`prop:rigidity-matrix-prop11`) from red toward green and is the remaining input to the Gap-1
+pigeonhole. After `hub`: the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows extracts the
+redundant row, lifting 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
 
-The two **combinatorial** factors of Claim 6.11 remain green + axiom-clean (`ForestSurgery.lean`):
-Gap-2 `Graph.splitOff_exists_base_inter_fiber_lt` and Gap-3's shell
-`Graph.splitOff_removeVertex_minimalKDof` (`G_v` minimal `k'`-dof, `0 ≤ k' ≤ D−2`). All three analytic
-prerequisites (i)/(ii)/(iii) green; the seed-rank bridge + this upper bound are the analytic core of
-Gap 1. Blueprint: `lem:case-III-claim-6-11-base`, `lem:case-III-gap3-minimalKDof`,
-`lem:case-III-seed-rank-bridge`, `lem:case-III-seed-rank-upper` green; `lem:case-III` /
-`lem:case-II-realization` red.
+**Gap 1's eq. (6.22) `def>0` rank-attainment packaging is green this commit (modulo the `hub`
+brick).** `PanelHingeFramework.rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent`
+(`CaseI.lean`, after the upper bound): given the upper-bound witness (rational `Q` witnessing an
+independent `panelRow`-subfamily `s` of the matroid-predicted full size
+`#s ≥ D(|V|−1) − def`), the spanning condition `V(G) = univ`, and the genericity-free lower bound
+`hub`, it concludes `RankHypothesis (def G̃)` (`dim Z(G,q) = D + def`) at the fixed alg-indep seed.
+The upper bound (`finrank_..._le_of_rankPolynomial_algebraicIndependent`) collapses `dim Z ≤ D|α| − #s`
+to `dim Z ≤ D + def` via the matroid count + the spanning split `D|V| = D(|V|−1) + D` (deficiency
+nonnegativity rules out the truncated branch); `rigidityMatrix_prop11` pins the equality against
+`hub`. Axiom-clean; the omega cast/product/truncation dance is QUIRKS § 2 (three-way variant).
+Carries `hub` as an explicit hypothesis (matching `rigidityMatrix_prop11`), so the blueprint node
+`lem:case-III-rank-attainment` is **red** (honest green-modulo per the honesty gate) until `hub`
+lands.
 
-**Next concrete commit:** the **eq. (6.22) `def>0` rank-attainment packaging** — assemble the just-landed
-upper bound with `rigidityMatrix_prop11`'s genericity-free lower bound `hub` (`D + def ≤ dim Z`) into
-the exact rank `dim Z(G_v,q) = D + k'` (`RankHypothesis (def G̃_v)`) for the nested-IH subgraph `G_v` at
-the fixed alg-indep seed. Inputs: the upper bound needs `G_v`'s rational rank polynomial `Q` (from
-`G_v`'s minimal-`k'`-dof IH realization via the device producer); the lower bound `hub` is the genericity-free
-codimension brick `rigidityMatrix_prop11` carries as a hypothesis (still to be bricked from the
-Phase-19 partition machinery — likely lands here or alongside). Then the `k' ≤ D−2 < D−1` pigeonhole
-over the `D−1` `ab`-rows (the rest of Gap 1) extracts the redundant row, lifting 22c's
-`case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
+All three analytic prerequisites (i)/(ii)/(iii) + the upper bound + the rank-attainment packaging
+green; both **combinatorial** factors of Claim 6.11 green + axiom-clean (`ForestSurgery.lean`): Gap-2
+`Graph.splitOff_exists_base_inter_fiber_lt`, Gap-3 shell `Graph.splitOff_removeVertex_minimalKDof`
+(`G_v` minimal `k'`-dof, `0 ≤ k' ≤ D−2`). Blueprint green: `lem:case-III-claim-6-11-base`,
+`lem:case-III-gap3-minimalKDof`, `lem:case-III-seed-rank-bridge`, `lem:case-III-seed-rank-upper`;
+red: `lem:case-III-rank-attainment` (needs `hub`), `lem:case-III`, `lem:case-II-realization`.
 
 ## Claim 6.11 discharge — the Gap 2 → 3 → 1 map
 
@@ -127,30 +125,39 @@ The eq. (6.18) full rank lifts 22c's `case_II_placement_eq612` `−1` to the `+1
   rigid `ofNormals G ends q₀` ⟹ rigid at any alg-indep-over-ℚ `q`, via (rational-`Q` producer) →
   (footnote-6 non-root) → (device consumer). This is the eq. (6.18)/(6.22) transfer **at the `0`-dof
   level** (rigidity); the `def>0` form (`RankHypothesis (def G̃_v)`) + Gap-1 pigeonhole are the next leaf.
-- [x] **Gap 1 — eq. (6.22) rank *upper* bound** (this commit):
+- [x] **Gap 1 — eq. (6.22) rank *upper* bound**:
   `PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`
   (`CaseI.lean`) — a rational rank polynomial `Q` witnessing an independent `panelRow`-subfamily `s`
   bounds `dim Z(G,q) ≤ D|α| − |s|` at any alg-indep-over-ℚ `q`. Green + axiom-clean. Node
-  `lem:case-III-seed-rank-upper`; `lem:case-III` `\uses` it.
-- [ ] **Gap 1 — eq. (6.22) rank-attainment + pigeonhole** (next leaf): assemble the upper bound with
-  `rigidityMatrix_prop11`'s genericity-free lower bound `hub` (`D + def ≤ dim Z`) into the exact
-  `RankHypothesis (def G̃_v)` for `G_v` at the fixed seed (needs `G_v`'s rational rank polynomial from
-  its minimal-`k'`-dof IH; `hub` still to be bricked from Phase-19 partition machinery), then the
-  `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)). Then lift
-  22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
+  `lem:case-III-seed-rank-upper`.
+- [x] **Gap 1 — eq. (6.22) rank-attainment packaging** (this commit):
+  `PanelHingeFramework.rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent` (`CaseI.lean`)
+  — assembles the upper bound with the matroid-predicted count (`#s ≥ D(|V|−1) − def`), the spanning
+  split `D|V| = D(|V|−1) + D`, and `hub` into `RankHypothesis (def G̃)` (`dim Z = D + def`) at the fixed
+  seed. Axiom-clean; carries `hub` undischarged ⟹ red node `lem:case-III-rank-attainment` (honest
+  green-modulo per the honesty gate). The omega cast/product/truncation dance: QUIRKS § 2 (three-way variant).
+- [ ] **Gap 1 — the `hub` brick** (next leaf): the genericity-free lower bound `D + def ≤ dim Z` for
+  every realization, from the Phase-19 partition machinery (a `def`-attaining partition's `def` extra
+  motions beyond the `D` trivial ones). Discharges the hypothesis both `rigidityMatrix_prop11` and the
+  rank-attainment packaging carry, flipping `lem:case-III-rank-attainment` /
+  `prop:rigidity-matrix-prop11` toward green.
+- [ ] **Gap 1 — the pigeonhole** (after `hub`): the `k' ≤ D−2 < D−1` corank over the `D−1` `ab`-rows
+  ⟹ one redundant row (eq. (6.23)), then lift 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to
+  `= D(|V|−1)`.
 
 ## Deferred sub-phases (future work in the phase)
 
 Parked until the leaf's shape is clear; a sub-letter is minted when its turn comes.
 
-- **Gap 1 — eq. (6.22) rank-attainment + the `M(G̃)`↔row pigeonhole** (next leaf, see *Hand-off*).
-  The analytic core is green (seed-rank bridge `lem:case-III-seed-rank-bridge` = `def=0` transfer +
-  `lem:case-III-seed-rank-upper` = `def>0` upper bound, both ✓; leaves (i)/(ii-a)/(ii-b) all green).
-  Remaining: assemble the upper bound with `rigidityMatrix_prop11`'s `hub` lower bound into the exact
-  `RankHypothesis (def G̃_v)` for `G_v`, then the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows
-  ⟹ one redundant row (eq. (6.23)). The product-route *relaxation* (pick `q` as a non-root of the
-  finite product of the nested IH rank polynomials, avoiding alg-independence at `d=3`; ~70%
-  confidence) is the deferred TODO in the tracker `notes/AlgebraicIndependence.md`.
+- **Gap 1 — the `hub` brick + the `M(G̃)`↔row pigeonhole** (next leaves, see *Hand-off*).
+  The analytic core is green: seed-rank bridge `lem:case-III-seed-rank-bridge` (`def=0` transfer),
+  upper bound `lem:case-III-seed-rank-upper` (`def>0`), and the rank-attainment packaging
+  `lem:case-III-rank-attainment` (assembles them into `RankHypothesis (def)`, red-modulo `hub`).
+  Remaining: brick `hub` (`D + def ≤ dim Z`) from the Phase-19 partition machinery, then the
+  `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)). The
+  product-route *relaxation* (pick `q` as a non-root of the finite product of the nested IH rank
+  polynomials, avoiding alg-independence at `d=3`; ~70% confidence) is the deferred TODO in the
+  tracker `notes/AlgebraicIndependence.md`.
 - **Candidate-completion + Claim 6.12 disjunction.** With the redundant `ab`-row, lift
   22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)` on one candidate (eq.
   (6.24)–(6.29) row-op), then the Claim-6.12 extensor-span contradiction via the **green**
@@ -164,13 +171,14 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Blockers / open questions
 
-- **Do the Gap-3 kernel and Gap-1 row bridge merge into one node? — mostly resolved.** The
-  rigidity-transfer core is now TWO green nodes serving both: the seed-rank bridge (`def=0`, eq.
-  (6.18) is its direct application) and the upper bound `lem:case-III-seed-rank-upper` (the `def>0`
-  half of eq. (6.22)). What stays separate is the rank-*attainment* assembly (the upper bound + the
-  genericity-free lower bound `hub` of `rigidityMatrix_prop11`, giving `RankHypothesis (def G̃_v)`)
-  and the pigeonhole; these are the next leaf. The `hub` brick (codimension lower bound from the
-  Phase-19 partition machinery) is the one piece `rigidityMatrix_prop11` still carries as a hypothesis.
+- **The `hub` brick is the one undischarged hypothesis on the Gap-1 analytic chain.** The
+  rigidity-transfer core is three green nodes: the seed-rank bridge (`def=0`, eq. (6.18)), the upper
+  bound `lem:case-III-seed-rank-upper` (`def>0` half of eq. (6.22)), and the rank-attainment
+  packaging `lem:case-III-rank-attainment` (assembles them into `RankHypothesis (def G̃)` via
+  `rigidityMatrix_prop11`). Both the packaging and `rigidityMatrix_prop11` carry the genericity-free
+  lower bound `hub` (`D + def ≤ dim Z`) as an explicit hypothesis — the codimension brick from the
+  Phase-19 partition machinery, still to be built. It is the next leaf; landing it flips both nodes
+  toward green.
 - **Claim 6.12 — de-risked** (bottoms on the green Lemma 2.1).
 - **Recurring Lean traps** (carry from 22a–c, FRICTION): heavy `IsInfinitesimallyRigidOn`
   defeq across `ofNormals`/`withGraph` graph-swaps can `isDefEq`-timeout — make the two
@@ -179,19 +187,18 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** **Gap 1 — the eq. (6.22) `def>0` rank-attainment packaging.** The two
-analytic halves are green (the `def=0` seed-rank bridge transfers full rigidity; the `def>0` upper
-bound `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent` bounds `dim Z ≤ D|α| −
-|s|` at the fixed alg-indep seed). The remaining content: assemble the upper bound with
-`rigidityMatrix_prop11`'s genericity-free lower bound `hub` (`D + def ≤ dim Z`) into the exact
-`RankHypothesis (def G̃_v)` for the nested-IH subgraph `G_v` at the fixed seed. The upper bound's input
-is `G_v`'s rational rank polynomial — obtained by running the device producer on `G_v`'s
-minimal-`k'`-dof IH realization; `hub` is the codimension lower bound `rigidityMatrix_prop11` still
-carries as a hypothesis, to be bricked from the Phase-19 partition machinery (likely lands here). Then
-the `k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)), lifting
-22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`. All three analytic prerequisites
-(i)/(ii)/(iii) and both combinatorial factors (Gap-2/Gap-3) are green; `lem:case-III` stays red until
-the candidate-completion assembly lands.
+**Next concrete commit:** **Gap 1 — the `hub` brick.** The rank-attainment packaging
+`lem:case-III-rank-attainment` (this commit) assembles the analytic chain into `RankHypothesis (def G̃)`
+but carries the genericity-free lower bound `hub` (`D + def ≤ dim Z`) as an explicit hypothesis — the
+same undischarged hypothesis `rigidityMatrix_prop11` carries, which is why both nodes are red. The
+brick is `hub` itself: a vertex partition `P` attaining `def(G̃)` contributes `def` independent motions
+beyond the `D` trivial ones (`lem:trivial-motions-rank-bound` + the Phase-19 deficiency partition
+count) — genericity-free, every realization. Build it as a node concluding `hub`, wire it into
+`rigidityMatrix_prop11` / `lem:case-III-rank-attainment`, and both flip toward green. Then the
+`k' ≤ D−2 < D−1` pigeonhole over the `D−1` `ab`-rows ⟹ one redundant row (eq. (6.23)), lifting 22c's
+`case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`. All three analytic prerequisites
+(i)/(ii)/(iii), the upper bound, the rank-attainment packaging, and both combinatorial factors
+(Gap-2/Gap-3) are green; `lem:case-III` stays red until the candidate-completion assembly lands.
 
 After Gap 1: the candidate-completion + Claim-6.12 disjunction, the `d=3` assembly, and
 general-`d` (Phase 23).
@@ -207,17 +214,19 @@ KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (L
 The finished-work tail — one-line verdicts; the blow-by-blow is in the cited commits /
 design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 
-- **Gap-1 eq. (6.22) rank *upper* bound landed (this commit).** `lem:case-III-seed-rank-upper` =
-  `PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`
-  (`CaseI.lean`, after the seed-rank bridge): a nonzero *rational* rank polynomial `Q` witnessing an
-  independent `panelRow`-subfamily `s` (edges linking in `G`) bounds `dim Z(G,q) ≤ D|α| − |s|` at any
-  alg-indep-over-ℚ `q`. The footnote-6 non-root device makes `q` a non-root (so `s` is LI at `q`); the
-  rank-nullity core of `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` (panel rows ⊆
-  rigidity rows; `dim Z + finrank(span rigidityRows) = D|α|`) bounds `dim Z`. Green first try,
-  axiom-clean, no friction; honest (the input is `Q`, an unrelated rigid seed's rank witness, not the
-  rank concluded). The `def>0` upper half of eq. (6.22); pairs with `rigidityMatrix_prop11`'s `hub`
-  lower bound for the exact `RankHypothesis k'`. One statement wrinkle: `Fintype.card α` in a
-  `[Finite α]` statement needs `Nat.card α` + `rw [Nat.card_eq_fintype_card]` (standard project idiom).
+- **Gap-1 rank-attainment packaging landed (this commit).** `lem:case-III-rank-attainment` =
+  `PanelHingeFramework.rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent` (`CaseI.lean`):
+  the upper bound's `dim Z ≤ D|α| − #s`, the matroid-predicted count `#s ≥ D(|V|−1) − def`, the
+  spanning split `D|V| = D(|V|−1) + D`, and the `hub` lower bound assemble (via `rigidityMatrix_prop11`)
+  into `RankHypothesis (def G̃)`. Axiom-clean. Carries `hub` undischarged ⟹ **red** node (honest
+  green-modulo per the honesty gate); breaks the would-be dep-graph cycle by *not* `\uses`-ing
+  `prop:rigidity-matrix-prop11` (whose proof uses `thm:theorem-55` ⟶ Case III). omega friction
+  (cast/product/truncation) → QUIRKS § 2 three-way variant.
+- **Gap-1 eq. (6.22) rank *upper* bound landed (commit b4299eb).** `lem:case-III-seed-rank-upper` =
+  `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent`: a rational rank polynomial
+  `Q` witnessing an independent `panelRow`-subfamily `s` bounds `dim Z(G,q) ≤ D|α| − #s` at any
+  alg-indep `q` (footnote-6 non-root makes `s` LI at `q`; rank-nullity bounds `dim Z`). Axiom-clean,
+  honest (input `Q` is an unrelated rigid seed's witness, not the rank concluded).
 - **(iii) seed-rank bridge landed (commit 0d71f44).** `lem:case-III-seed-rank-bridge` =
   `isInfinitesimallyRigidOn_ofNormals_of_algebraicIndependent`: rigid `ofNormals G ends q₀` ⟹ rigid at
   any alg-indep-over-ℚ `q`, via `exists_rankPolynomial_of_rigidOn` → footnote-6 non-root → device

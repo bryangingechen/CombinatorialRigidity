@@ -165,6 +165,25 @@ Canonical cases: `IsGenericallyRigid.card_mul_le` in `Framework.lean`
 (commutativity), `IsTightOn.union_inter` in `Sparsity.lean`
 (distributivity).
 
+**Three-way variant (ℕ-product, ℤ-cast, truncated subtraction).** The
+molecular rank/deficiency counts pit `D·|V|` (the screw-space dimension)
+against `D·(|V|−1)` (the matroid rank), with one bound an ℕ-truncated
+subtraction (`dim Z ≤ D·|V| − #s`) and the other an ℤ inequality carrying
+a signed `def` (`D·(|V|−1) − def ≤ #s`). Three traps stack: (a) the ℤ
+side elaborates `(D·(|V|−1) : ℤ)` as the *distributed* `↑D * ↑(|V|−1)`,
+a different atom from the ℕ product — `rw [← Nat.cast_mul]` undistributes
+it to `↑(D·(|V|−1))`; (b) omega still sees `D·|V|` and `D·(|V|−1)` as two
+unrelated nonlinear atoms — stage the bridge `D·|V| = D·(|V|−1) + D` (via
+`conv_lhs => rw [show |V| = (|V|−1)+1 …]; rw [Nat.mul_add, Nat.mul_one]`),
+`rw` it into the truncated bound, then `generalize D·(|V|−1) = Q'` to a
+single fresh atom shared by both hypotheses and `clear` the now-stale
+bridge; (c) the truncated branch (`#s > D·|V|` forcing `dim Z ≤ 0`) needs
+the deficiency-nonnegativity fact (`deficiency_nonneg`) in scope or omega
+finds a spurious counterexample with `def` very negative.
+
+Canonical case: `rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent`
+in `AlgebraicInduction/CaseI.lean` (Phase 22d).
+
 ---
 
 ## 3. `nlinarith` over ℕ on quadratic bounds: `Nat.le_mul_self`

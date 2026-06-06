@@ -140,12 +140,47 @@ the Proposition-1.1 reconciliation, \cref{prop:rigidity-matrix-prop11}) with the
   complements). Rearranging gives the bound.
 \end{proof}
 
+The upper bound above is the last \emph{leaf}; the two analytic halves now assemble. The nested
+subgraph $G_v$ attains its predicted rank at the inductively-fixed seed by pinning the equality
+between the genericity-free lower bound and the matroid-predicted upper bound.
+
+\begin{lemma}[Eq.~(6.22) rank attainment at the inductively-fixed seed; KT footnote 6, eq.\ (6.22)]
+  \label{lem:case-III-rank-attainment}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent}
+  \uses{lem:case-III-seed-rank-upper, thm:def-eq-corank}
+  Let $\mathrm{ofNormals}\,G\,\mathit{ends}\,q$ be the free-normal panel framework on the
+  spanning graph $G$ ($V(G) = \alpha$), and fix the inductively-fixed seed $q$, algebraically
+  independent over $\mathbb{Q}$. Suppose a nonzero \emph{rational} polynomial $Q$ witnesses a
+  linearly independent $\mathrm{panelRow}$-subfamily $s$ (edges linking in $G$) of the
+  matroid-predicted full size $|s| \ge D(|V|-1) - \operatorname{def}(\tilde G)$, and let the
+  genericity-free lower bound $D + \operatorname{def}(\tilde G) \le \dim Z(G, q)$ hold. Then
+  $G$ attains its predicted rank at $q$:
+  \[
+    \dim Z(G, q) \;=\; D + \operatorname{def}(\tilde G),
+    \qquad\text{i.e.}\qquad F.\,\mathrm{RankHypothesis}\bigl(\operatorname{def}(\tilde G)\bigr).
+  \]
+  \textbf{Red:} the genericity-free lower bound $D + \operatorname{def} \le \dim Z$ is carried as
+  an explicit hypothesis (the $\mathit{hub}$ input shared with
+  \cref{prop:rigidity-matrix-prop11}), not yet bricked from the Phase-19 partition machinery; the
+  Lean is the axiom-clean conditional packaging, green modulo that brick.
+\end{lemma}
+\begin{proof}
+  The eq.~(6.22) upper bound (\cref{lem:case-III-seed-rank-upper}) gives $\dim Z(G, q) \le D|V| -
+  |s|$ at $q$. Substituting the matroid-predicted size $|s| \ge D(|V|-1) - \operatorname{def}$
+  (the matroid rank $\operatorname{rank} M(\tilde G) = D(|V|-1) - \operatorname{def}$ of the
+  def\,$=$\,corank identity \cref{thm:def-eq-corank}) and the spanning split $D|V| = D(|V|-1) + D$
+  collapses the upper bound to $\dim Z(G, q) \le D + \operatorname{def}$. Pairing it with the
+  genericity-free lower bound (the hypothesis $\mathit{hub}$) pins the equality. Deficiency
+  nonnegativity rules out the degenerate over-count.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
         lem:cycle-realization, lem:case-II-realization-placement,
         lem:case-III-claim-6-11-base, lem:case-III-gap3-minimalKDof,
-        lem:case-III-seed-rank-bridge, lem:case-III-seed-rank-upper}
+        lem:case-III-seed-rank-bridge, lem:case-III-seed-rank-upper,
+        lem:case-III-rank-attainment}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
@@ -155,8 +190,10 @@ the Proposition-1.1 reconciliation, \cref{prop:rigidity-matrix-prop11}) with the
   form (\cref{lem:case-III-claim-6-11-base}), the nested-IH reduction
   $G - v$ minimal $k'$-dof with $k' \le D - 2$
   (\cref{lem:case-III-gap3-minimalKDof}), and the analytic
-  rank-at-the-fixed-seed transfer (\cref{lem:case-III-seed-rank-bridge}, with its
-  $\operatorname{def} > 0$ upper-bound half \cref{lem:case-III-seed-rank-upper}) ---
+  rank-at-the-fixed-seed attainment (\cref{lem:case-III-seed-rank-bridge} for
+  $\operatorname{def} = 0$, its $\operatorname{def} > 0$ upper-bound half
+  \cref{lem:case-III-seed-rank-upper}, and their packaging into the exact rank
+  \cref{lem:case-III-rank-attainment}) ---
   are green; what stays deferred is the Claim-6.11/6.12 candidate-completion
   assembly that converts the redundant $ab$-row into the missing $+1$. KT then
   build $D$ candidate realizations and show one is rigid; the

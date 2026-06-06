@@ -2500,6 +2500,83 @@ theorem PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_al
       BodyHingeFramework.finrank_screwAssignment]
   omega
 
+/-- **Eq. (6.22) rank attainment at the inductively-fixed seed** (`lem:case-III-rank-attainment`,
+the assembly of KT Claim~6.11's analytic kernel; Katoh–Tanigawa 2011 §6.4.1, footnote 6, eq.
+(6.22), Phase 22d). The nested-induction step of Claim~6.11: the nested subgraph `G_v` — minimal
+`k'`-dof with `k' = def(G̃_v)` (`lem:case-III-gap3-minimalKDof`) — attains its predicted rank
+`D(|V_v|−1) − k'` at the same inductively-fixed (algebraically-independent) seed `q`, equivalently
+`F.RankHypothesis (def G̃_v)`, i.e. `dim Z(G_v, q) = D + def`.
+
+This is the `def > 0` packaging that pairs the two analytic halves into the exact rank:
+
+* the **upper bound** `dim Z(G_v, q) ≤ D + def` — read off the eq. (6.22) upper bound
+  `finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent` (`dim Z ≤ D|α| − #s`) by
+  feeding it the matroid-predicted full independent family: at the spanning seed `V(G) = univ`
+  (`hspan`), a witnessed independent `panelRow`-subfamily `s` of size `#s ≥ D(|V|−1) − def`
+  (`hcard`, the matroid rank `rank M(G̃) = D(|V|−1) − def` of `thm:def-eq-corank`) forces
+  `dim Z ≤ D|α| − #s ≤ D + def`;
+* the **lower bound** `D + def ≤ dim Z` — the genericity-free codimension brick `hub` of
+  `rigidityMatrix_prop11` (every realization carries at least `D + def` motions).
+
+`rigidityMatrix_prop11` pins the equality from the two. The independent family `s` comes from
+`G_v`'s minimal-`k'`-dof IH realization run through the device producer, supplying the rational
+rank polynomial `Q` (`hQrat`/`hQne`/`hQ`) whose non-roots witness `s` (its edges linking in `G`,
+`hsupp`); the alg-independence of the fixed seed `q` (`halg`) makes `q` a non-root *at the fixed
+seed itself* (footnote 6). It is honest per the producer-scrutiny gate: the witnessed-rank input
+`Q` is an unrelated rigid seed's rank certificate, not the rank concluded; `hub` is the
+genericity-free lower bound carried (as in `rigidityMatrix_prop11`) as an explicit hypothesis. -/
+theorem PanelHingeFramework.rankHypothesis_ofNormals_of_rankPolynomial_algebraicIndependent
+    [Nonempty α] [Finite α] [Finite β] (G : Graph α β) (ends : β → α × α) (n : ℕ)
+    (hspan : V(G) = Set.univ)
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    {Q : MvPolynomial (α × Fin (k + 2)) ℝ}
+    (hsupp : ∀ i ∈ s, G.IsLink (i : β × _ × _).1 (ends (i : β × _ × _).1).1
+      (ends (i : β × _ × _).1).2)
+    (hQrat : (Q.coeffs : Set ℝ) ⊆ Set.range (algebraMap ℚ ℝ))
+    (hQne : Q ≠ 0)
+    (hQ : ∀ q : α × Fin (k + 2) → ℝ, MvPolynomial.eval q Q ≠ 0 →
+      LinearIndependent ℝ
+        (fun i : s => (PanelHingeFramework.ofNormals G ends q).toBodyHinge.panelRow ends i))
+    (hcard : (screwDim k * (V(G).ncard - 1) : ℤ) - G.deficiency n ≤ Nat.card s)
+    {q : α × Fin (k + 2) → ℝ} (halg : AlgebraicIndependent ℚ q)
+    (hub : screwDim k + G.deficiency n ≤
+      (Module.finrank ℝ (PanelHingeFramework.ofNormals G ends q).toBodyHinge.infinitesimalMotions :
+        ℤ)) :
+    (PanelHingeFramework.ofNormals G ends q).toBodyHinge.RankHypothesis (G.deficiency n) := by
+  classical
+  haveI : Fintype α := Fintype.ofFinite α
+  set F := (PanelHingeFramework.ofNormals G ends q).toBodyHinge with hF
+  have hG : F.graph = G := rfl
+  -- The eq. (6.22) upper bound at the fixed alg-indep seed: `dim Z ≤ D|α| − #s`.
+  have hupper :=
+    PanelHingeFramework.finrank_infinitesimalMotions_le_of_rankPolynomial_algebraicIndependent
+      G ends hsupp hQrat hQne hQ halg
+  rw [← hF] at hupper
+  -- `V(G) = univ`, so `V(G).ncard = |α|` and the matroid-predicted count turns `dim Z ≤ D|α| − #s`
+  -- into the `hgen` upper bound `dim Z ≤ D + def`.
+  have hvcard : V(G).ncard = Nat.card α := by
+    rw [hspan, Set.ncard_univ]
+  have h1 : 1 ≤ Nat.card α := by
+    rw [Nat.card_eq_fintype_card]; exact Fintype.card_pos
+  rw [hvcard, ← Nat.cast_mul] at hcard
+  -- The bridging product identity `D·|V| = D·(|V| − 1) + D` (needs `|V| ≥ 1`); with `hcard`'s
+  -- `D·(|V|−1) − def ≤ #s` it turns `dim Z ≤ D·|V| − #s` into `dim Z ≤ D + def`. After rewriting
+  -- the bridge into `hupper`, `generalize` the shared product `D·(|V|−1)` to a single fresh atom
+  -- `Q'` so `omega` reasons linearly (the deficiency nonnegativity `hdef` rules out truncation).
+  have hbridge : screwDim k * Nat.card α = screwDim k * (Nat.card α - 1) + screwDim k := by
+    conv_lhs => rw [show Nat.card α = (Nat.card α - 1) + 1 from (Nat.sub_add_cancel h1).symm]
+    rw [Nat.mul_add, Nat.mul_one]
+  -- The deficiency is nonnegative (`V(G) = univ ≠ ∅`), ruling out the truncated branch of `hupper`.
+  have hdef : 0 ≤ G.deficiency n :=
+    G.deficiency_nonneg n (by rw [hspan]; exact Set.univ_nonempty)
+  have hgen : (Module.finrank ℝ F.infinitesimalMotions : ℤ) ≤ screwDim k + G.deficiency n := by
+    rw [hbridge] at hupper
+    generalize screwDim k * (Nat.card α - 1) = Q' at hcard hupper
+    clear hbridge
+    omega
+  -- `rigidityMatrix_prop11` pins the equality from `hub` (lower) and `hgen` (upper).
+  exact rigidityMatrix_prop11 F n hub hgen
+
 /-- **Case III (= Case II at `k = 0`), stratum 1: the eq. (6.12) `+(D−1)` block-triangular
 placement** (`lem:case-II-realization-placement`, the first chunk of KT Lemma 6.10; Katoh–Tanigawa
 2011 §6.4.1, eqs. (6.12), (6.16), Phase 22c). The first of three difficulty strata of the
