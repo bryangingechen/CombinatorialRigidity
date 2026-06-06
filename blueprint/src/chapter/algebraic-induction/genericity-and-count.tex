@@ -223,33 +223,36 @@ anticipates.
         lem:exists-independent-panel-extensor,
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
-        lem:case-II-placement-block-independent,
-        lem:case-II-placement-e0-recovery}
+        lem:case-II-placement-block-independent}
   The remaining geometric obligation of \cref{lem:case-II-realization}: from the
   inductive realization of the splitting-off $G_v^{ab}$, construct a free normal
   assignment $q_0$ for the parent graph $G$ --- in particular a panel normal $n$
   for the re-inserted body $v$ --- together with a linearly independent family of
   $D(|V(G)|-1)$ rigidity rows of $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$.
-  Geometrically: re-insert $v$ joined to its two neighbours $a, b$ by hinges
-  whose supporting extensors are in general position
-  (\cref{lem:exists-independent-panel-extensor}), so the two new edges contribute
-  $+(D-1)$ independent rows that, combined with the inductive realization's rows
-  threaded through the common subgraph $G - v$ (recovering the short-circuit edge
-  $e_0$'s constraint from $v$'s two new edges --- the edge substitution
-  $G_v^{ab}$ adds $e_0$ but deletes $v$'s edges, so the count is \emph{not} a free
-  transport), witness the full target count. This is the shallower parallel of
-  the Case~I splice placement (one re-inserted body, $+(D-1)$ rows). \emph{Red}
-  (Phase~21b realization layer): the witnessed-independent-row construction across
-  the edge substitution is the genuine content; once green it feeds the glue
-  \cref{lem:realization-of-independent-rows}.
+  Geometrically: re-insert $v$ joined to its two neighbours $a, b$ by the
+  \emph{degenerate} placement of KT eq.~(6.12) --- $p_1(va)=L\subset\Pi_q(a)$ a
+  $(d-2)$-hinge inside $a$'s panel and $p_1(vb)=q(ab)$ placing $v$'s $b$-hinge at
+  the very $e_0=ab$ hinge of the inductive realization $q$. The two new edges then
+  contribute $+(D-1)$ independent rows in $v$'s column block, and the $vb$-row
+  \emph{reproduces} the short-circuit edge $e_0=ab$'s row of $R(G_v^{ab},q)$, so
+  the inductive realization's rows transport onto $G$ through the common subgraph
+  $G - v$ without an $e_0$-free old block: the edge substitution $G_v^{ab}$ adds
+  $e_0$ but deletes $v$'s edges, and the deleted $e_0$ constraint is recovered as
+  the reproduced $vb$-row, not as a free transport. The two blocks witness the
+  full target count $D(|V(G)|-1)$. This is the shallower parallel of the Case~I
+  splice placement (one re-inserted body, $+(D-1)$ rows). \emph{Red}
+  (realization layer, Phase~22c stratum~1): the witnessed-independent-row
+  construction across the edge substitution is the genuine content; once green it
+  feeds the glue \cref{lem:realization-of-independent-rows}.
 
-  \medskip\noindent\emph{Decomposition (Phase-21b realization-layer plan, revised
-  2026-06-04).} Per the hand-off discipline for a genuinely-geometric node, this
-  placement breaks into buildable sub-nodes plus a closing assembly, mirroring the
-  Case~I splice placement's boundary-panel/block-triangular split. The seed family
-  $s$ partitions into the \emph{new-edge block} (the two hinges re-attaching $v$)
-  and the \emph{old block} (the inductive realization's rows, read off the common
-  subgraph $G - v$); the count is $(D-1) + D(|V(G)|-2) = D(|V(G)|-1)$.
+  \medskip\noindent\emph{Decomposition (realization-layer plan, eq.~(6.12)
+  degenerate-placement route; Phase~22c stratum~1).} Per the hand-off discipline
+  for a genuinely-geometric node, this placement breaks into the green N7b
+  sub-nodes plus a closing assembly, mirroring the Case~I splice placement's
+  block-triangular split. The seed family $s$ partitions into the \emph{new-edge
+  block} (the two hinges re-attaching $v$) and the \emph{old block} (the inductive
+  realization's rows, threaded onto $G$ through the common subgraph $G - v$); the
+  count is $(D-1) + D(|V(G)|-2) = D(|V(G)|-1)$.
   \begin{enumerate}
     \item \cref{lem:case-II-placement-new-rows} (N7b-1, green): choose the normal $n$
       for $v$ so that $v$'s two new hinges supply $D-1$ linearly independent panel rows.
@@ -257,50 +260,51 @@ anticipates.
       the old block --- extract $D(|V(G)|-2)$ independent panel rows from the inductive
       realization's rigidity on $V(G_v^{ab})$ (the rank-equals-codimension forward
       direction, the converse of \cref{lem:isInfRigidOn-of-relative-count}).
-    \item \cref{lem:case-II-placement-old-rows} (N7b-2, green): transport the
-      $e_0$-\emph{free} subfamily of that block onto $G$ through the common subgraph
-      $G - v$.
+    \item \cref{lem:case-II-placement-old-rows} (N7b-2, green): transport that old
+      block onto $G$ through the common subgraph $G - v$. \emph{This is where the
+      eq.~(6.12) degeneracy enters:} the per-row match $\mathrm{hrow}$ that licenses
+      the transport is exactly the row reproduction $p_1(vb)=q(ab)$ --- the $e_0=ab$
+      row of $R(G_v^{ab},q)$ equals the $vb$-row of $R(G,p_1)$, so the full
+      $D(|V(G)|-2)$ old count transports (no $e_0$-free sub-selection is needed; the
+      $e_0$-row is carried by the reproduced $vb$-row, recovered jointly with the
+      new block in step~4).
     \item \cref{lem:case-II-placement-block-independent} (N7b-3, green): the two blocks
       are jointly independent (the new-edge rows live in the $v$-column block, the
       old rows in its complement; pin-a-body Lemma~5.1,
-      \cref{lem:rank-delete-vertex}, makes the union block-triangular).
-    \item \cref{lem:case-II-placement-e0-recovery} (N7b-4, \emph{superseded}): a
-      scrutiny pass found N7b-0/1/2/3 do not compose --- N7b-0 extracts an old block
-      with no control over $e_0$-rows, but N7b-2 transports only the $e_0$-free rows,
-      so the count can fail --- and a recon pass then found the row-side fix
-      (``produce an $e_0$-free old block of full count'') \emph{geometrically
-      unbuildable} ($G - v$ is not rigid, so no such block exists in $G_v^{ab}$). The
-      genuine rank-lift is re-framed \emph{motion-side} (M1--M3,
-      \cref{lem:case-II-placement-motion-side-assembly}), which supersedes this whole
-      row-side assembly path for Case~II. See ``The rank-lift, motion-side'' below.
+      \cref{lem:rank-delete-vertex}, makes the union block-triangular --- this is the
+      Lean form of KT's eq.~(6.16) column operations).
   \end{enumerate}
-  \emph{Superseded (2026-06-04):} the row-side assembly below was the original plan,
-  but the missing producer N7b-4 is geometrically unbuildable in row-side form; the
-  Case~II producer instead routes through the motion-side re-frame
-  (\cref{lem:case-II-placement-motion-side-assembly}, M3), which concludes rigidity
-  on $V(G)$ directly without a witnessed independent row family. The row-side
-  sub-nodes N7b-0/1/2/3 + glue N7a stay green and are reused by Case~I.
+  The genuine content is the eq.~(6.12) degeneracy itself: that the $vb$-row of
+  $R(G,p_1)$ reproduces the $e_0$-row of $R(G_v^{ab},q)$ (step~3's $\mathrm{hrow}$),
+  the single new placement obligation of stratum~1, fed to the green N7b-0/1/2/3
+  bricks. The remaining row-side $e_0$-recovery node N7b-4
+  (\cref{lem:case-II-placement-e0-recovery}) and the motion-side assembly M1--M3
+  (\cref{lem:case-II-placement-motion-side-assembly}) are two earlier dead-ends,
+  \emph{off} the live route and retained only for the audit trail; see ``The
+  superseded row-side and motion-side dead-ends'' below. The green N7b-0/1/2/3
+  sub-nodes + glue N7a are reused by Case~I.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-II, lem:exists-independent-panel-extensor,
         lem:case-II-placement-new-rows, lem:case-II-placement-old-rows,
         lem:case-II-placement-old-rows-extract,
-        lem:case-II-placement-block-independent,
-        lem:case-II-placement-e0-recovery}
-  Take $q_0$ to agree with the inductive realization's normals on
-  $V(G)\setminus\{v\} = V(G_v^{ab})$ and to assign $v$ the general-position normal
-  $n$ of \cref{lem:case-II-placement-new-rows}. Let $s$ be the union of the
-  new-edge block (\cref{lem:case-II-placement-new-rows}, $D-1$ rows) and the
-  $e_0$-free old block (\cref{lem:case-II-placement-e0-recovery,
-  lem:case-II-placement-old-rows}, $D(|V(G)|-2)$ rows);
-  \cref{lem:case-II-placement-block-independent} makes the union independent, and
-  the count is $D(|V(G)|-1)$. The genuine content is the edge substitution: $s$ is
-  \emph{not} a free transport of $G_v^{ab}$'s rows (the short-circuit $e_0$ is
-  deleted in $G$, $v$'s two edges added), so the old block is recovered through the
-  common subgraph $G - v$ ($\mathrm{removeVertex}$), not along an inclusion
-  $G_v^{ab}\le G$; the $e_0$-row's constraint comes from $v$'s two new edges
-  (\cref{lem:case-II-placement-e0-recovery}). Deferred to the Phase-21b realization
-  layer; see \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8).
+        lem:case-II-placement-block-independent}
+  Place the degenerate $p_1$ of KT eq.~(6.12): take $q_0$ to agree with the
+  inductive realization's normals on $V(G)\setminus\{v\} = V(G_v^{ab})$, assign
+  $v$ the general-position normal $n$ of \cref{lem:case-II-placement-new-rows}, and
+  set $v$'s $b$-hinge to $q(ab)$. Let $s$ be the union of the new-edge block
+  (\cref{lem:case-II-placement-new-rows}, $D-1$ rows) and the old block
+  (\cref{lem:case-II-placement-old-rows-extract,lem:case-II-placement-old-rows},
+  $D(|V(G)|-2)$ rows transported from the inductive realization through the common
+  subgraph $G - v$); \cref{lem:case-II-placement-block-independent} makes the union
+  independent (pin-a-body, KT eq.~(6.16)), and the count is $D(|V(G)|-1)$. The
+  genuine content is the edge substitution: $s$ is \emph{not} a free transport of
+  $G_v^{ab}$'s rows (the short-circuit $e_0$ is deleted in $G$, $v$'s two edges
+  added), so the old block is read through $G - v$ ($\mathrm{removeVertex}$), not
+  along an inclusion $G_v^{ab}\le G$, and the deleted $e_0$-row's constraint is
+  recovered as the reproduced $vb$-row ($p_1(vb)=q(ab)$ --- the per-row match
+  $\mathrm{hrow}$ of \cref{lem:case-II-placement-old-rows}). See
+  \cite[\S6.3]{katohTanigawa2011} (Lemma~6.8, eq.~(6.12)).
 \end{proof}
 
 \begin{lemma}[N7b-1: a re-inserted body's transversal hinge gives $D-1$ independent panel rows]
@@ -473,15 +477,28 @@ anticipates.
   \cite[\S6.3]{katohTanigawa2011}.
 \end{proof}
 
-\subsubsection*{The rank-lift, motion-side (the N7b-4 re-frame, 2026-06-04)}
+\subsubsection*{The superseded row-side and motion-side dead-ends (audit trail)}
 
-A scrutiny+recon pass on the N7b assembly (Phase 21b, 2026-06-04) found the
-\emph{row-side} framing of the rank-lift below
-(\cref{lem:case-II-placement-e0-recovery}, ``produce an $e_0$-free old block of
-full count'') is \emph{geometrically wrong}, and re-frames the genuine content
-\emph{motion-side}. The finding, the corrected statement, and the buildable
-sub-node decomposition follow; the row-side node is kept (struck) for the
-audit trail.
+\emph{Both the row-side N7b-4 and the motion-side M1--M3 below are
+superseded and \emph{off} the live route} --- the live Case~II/III stratum~1
+placement is the eq.~(6.12) degenerate placement of
+\cref{lem:case-II-realization-placement} (the $vb$-row reproduces the $e_0$-row),
+feeding the green N7b-0/1/2/3 bricks; see \texttt{notes/Phase21b.md}
+\emph{Finding A} and \texttt{notes/Phase22-realization-design.md} \S1.27. The two
+dead-ends are retained, struck, for the audit trail:
+
+A scrutiny+recon pass on the N7b assembly (Phase 21b, 2026-06-04) first found the
+\emph{row-side} N7b-4 framing (\cref{lem:case-II-placement-e0-recovery}, ``produce
+an $e_0$-free old block of full count'') \emph{geometrically unbuildable} --- $G-v$
+is not rigid, so no such block exists in $G_v^{ab}$ --- and re-framed the rank-lift
+\emph{motion-side} (M1--M3). The motion-side re-frame was then \emph{itself} found
+not to be KT's argument (a feasibility pass against KT \S6.3, \emph{Finding A}): M3
+assumes a $G$-motion is constant on $V(G)\setminus\{v\}$, which the non-rigid $G-v$
+does not force. KT's actual Lemma~6.8 construction is the row-side \emph{degenerate}
+placement (eq.~(6.12)), recovering $e_0$'s constraint by \emph{reproducing} the
+$e_0$-row rather than by an impossible $e_0$-free block or a motion-side pin. The
+finding, the (superseded) corrected statement, and the (superseded) buildable
+motion-side sub-node decomposition follow.
 
 \medskip\noindent\emph{Why the row-side framing fails.} An $e_0$-free old block
 of $G_v^{ab}$ is a family of rigidity rows indexed by edges of $G_v^{ab}$ other
@@ -496,15 +513,20 @@ two new hinge rows are present; the row-counting bookkeeping that the green
 sub-nodes N7b-0/1/2/3 set up cannot express this, because it asks for the old
 block before $v$ is re-attached.
 
-\medskip\noindent\emph{The corrected, motion-side rank-lift.} The realization
-motive is $V(G)$-relative ($\mathrm{IsInfinitesimallyRigidOn}\,V(G)$,
-\cref{def:rank-hypothesis}), so the producer is most directly a
-\emph{motion-space} statement, in the established idiom of the Case~I splice
-\emph{glue} \cref{lem:case-I-splice-seed} (re-adding edges only shrinks the
-motion space, \cref{lem:motions-mono-of-graph-le}): \emph{if $G_v^{ab}$ is
-rigid on $V(G)\setminus\{v\}$ and $v$'s two re-attaching hinges $e_a = va$,
-$e_b = vb$ are transversal with $C(e_a), C(e_b)$ linearly independent, then $G$ is
-rigid on $V(G)$.} The argument bypasses the $e_0$ bookkeeping entirely:
+\medskip\noindent\emph{The (superseded) motion-side rank-lift.} \emph{This
+motion-side statement was the 2026-06-04 re-frame; it is \emph{not} KT's argument
+and is off the live route (see \emph{Finding A} above). Retained struck for the
+audit trail.} It reads the producer as a \emph{motion-space} statement, in the
+idiom of the Case~I splice \emph{glue} \cref{lem:case-I-splice-seed} (re-adding
+edges only shrinks the motion space, \cref{lem:motions-mono-of-graph-le}):
+\emph{if $G_v^{ab}$ is rigid on $V(G)\setminus\{v\}$ and $v$'s two re-attaching
+hinges $e_a = va$, $e_b = vb$ are transversal with $C(e_a), C(e_b)$ linearly
+independent, then $G$ is rigid on $V(G)$.} \textbf{The flaw} (Finding~A): step~2
+below asserts an infinitesimal motion $S$ of $G''$ is constant on
+$V(G)\setminus\{v\}$, but the non-rigid $G-v$ does not force this --- only
+$G_v^{ab}$ (which has $e_0$ and is rigid) does, and $G''$ omits $e_0$. The
+argument as written bypasses the $e_0$ bookkeeping entirely \emph{and thereby
+drops a constraint KT's eq.~(6.12) row reproduction keeps}:
 \begin{enumerate}
   \item It suffices to be rigid on $V(G)$ for the subgraph
     $G'' := (G-v) \cup \{e_a, e_b\} \le G$ (re-adding $G$'s remaining edges only
@@ -521,17 +543,18 @@ rigid on $V(G)$.} The argument bypasses the $e_0$ bookkeeping entirely:
     With $C(e_a), C(e_b)$ \emph{linearly independent}, the two $1$-dimensional spans
     meet only at $0$, so $S v = S a$: $v$ is pinned, $S$ is constant on $V(G)$.
 \end{enumerate}
-The general-position input ``$C(e_a), C(e_b)$ linearly independent'' is exactly the
+The general-position input ``$C(e_a), C(e_b)$ linearly independent'' is the
 $m = 2 \le D$ case of \cref{lem:exists-independent-panel-extensor}
 ($\mathrm{exists\_independent\_panelSupportExtensor}$), realized by choosing $v$'s
-panel normal off the relevant locus --- the same satisfiable general-position
-output N7b-1 (\cref{lem:case-II-placement-new-rows}) already consumes for the new
-block. This is the genuine geometric heart of why a $1$-extension preserves rank
-(KT~(6.12)), and unlike the row-side framing it is \emph{provable}: the meet step
-is the elementary ``two distinct lines through the origin intersect trivially'',
-not a deep extensor computation.
+panel normal off the relevant locus. The meet step (M1/M2 below) is sound
+elementary linear algebra; \emph{the assembly M3 is not}, because of the step-2
+flaw above. KT's actual eq.~(6.12) construction keeps the $e_0$ constraint by
+placing $p_1(vb)=q(ab)$ so the $vb$-row reproduces the $e_0$-row --- the live
+route of \cref{lem:case-II-realization-placement} --- rather than discharging it
+motion-side.
 
-\medskip\noindent\emph{Buildable sub-node decomposition (N7b-4, motion-side).}
+\medskip\noindent\emph{(Superseded) buildable sub-node decomposition (N7b-4,
+motion-side).}
 \begin{enumerate}
   \item[(M1)] \cref{lem:case-II-placement-disjoint-line-meet}: $C, C' \ne 0$ linearly
     independent $\Rightarrow \operatorname{span}\{C\} \cap \operatorname{span}\{C'\}
@@ -548,32 +571,32 @@ not a deep extensor computation.
     \cref{lem:case-II-realization}. The general-position normal for $v$ comes from
     \cref{lem:exists-independent-panel-extensor} ($m = 2$).
 \end{enumerate}
-This re-frame supersedes both the N7b row-side assembly path
-(\cref{lem:case-II-realization-placement}) and the device-closure glue
-\cref{lem:realization-of-independent-rows} \emph{for Case~II}: the motion-side
-producer concludes $\mathrm{IsInfinitesimallyRigidOn}\,V(G)$ directly from the
-inductive rigidity, with no detour through a witnessed independent row family.
-(The green row-side sub-nodes N7b-0/1/2/3 and the glue N7a remain valid lemmas ---
-they are reused by the Case~I producer, \cref{lem:case-I-realization}, which has no
-single re-attached body and genuinely needs the row-counting/device route.) Build
-order: M1 $\to$ M2 $\to$ M3 $\to$ N7. The motion-side route warrants its own
-recon-before-build pass on M2 (the pin); M1 and M3 are mechanical.
+This motion-side re-frame was \emph{itself} superseded (\emph{Finding A}, KT
+\S6.3): the live route is the row-side eq.~(6.12) degenerate-placement assembly
+\cref{lem:case-II-realization-placement} feeding the device-closure glue
+\cref{lem:realization-of-independent-rows}, which is exactly the row-counting
+route the green N7b-0/1/2/3 sub-nodes were built for. (Those green sub-nodes +
+the glue N7a are reused both here and by the Case~I producer
+\cref{lem:case-I-realization}.) The M1/M2 meet lemmas are sound elementary linear
+algebra but irrelevant to KT's argument; M3's assembly is unsound (the step-2
+flaw above). They are kept, struck, only for the audit trail.
 
 \begin{lemma}[N7b-4 (superseded, row-side): recover $e_0$'s constraint from $v$'s two new edges; KT eq.~(6.12)]
   \label{lem:case-II-placement-e0-recovery}
   \uses{def:panel-hinge-framework, lem:case-II,
         lem:case-II-placement-old-rows-extract, lem:case-II-placement-old-rows,
         lem:case-II-placement-new-rows}
-  \emph{Superseded by the motion-side re-frame above (M1--M3); kept for the audit
-  trail.} This row-side formulation was found geometrically unbuildable on
-  2026-06-04: it asks for an $e_0$-free independent old block of $G_v^{ab}$ of full
-  count $D(|V(G)|-2)$, but no such block exists --- the $e_0$-row is not redundant
-  in $G_v^{ab}$, since $G - v$ (the $e_0$-free subgraph) is not rigid (see ``Why the
-  row-side framing fails'' above). The genuine rank-lift content --- recovering
-  $e_0$'s span-membership constraint from $v$'s two new edges along the path
-  $a$--$v$--$b$ --- is correct, but it lives \emph{in $G$} (motion-side), not as a
-  row block of $G_v^{ab}$ alone, and is carried by \cref{lem:case-II-placement-pin-vertex}
-  (M2). \emph{Red, superseded} (Phase~21b realization layer).
+  \emph{Superseded --- not on the live route; kept for the audit trail.} This
+  row-side formulation was found geometrically unbuildable on 2026-06-04: it asks
+  for an $e_0$-free independent old block of $G_v^{ab}$ of full count
+  $D(|V(G)|-2)$, but no such block exists --- the $e_0$-row is not redundant in
+  $G_v^{ab}$, since $G - v$ (the $e_0$-free subgraph) is not rigid (see ``Why the
+  row-side framing fails'' above). The genuine rank-lift content --- recovering the
+  $e_0$ constraint --- is carried instead by KT's eq.~(6.12) degenerate placement,
+  which reproduces the $e_0$-row via $p_1(vb)=q(ab)$ (the live route
+  \cref{lem:case-II-realization-placement}); it is \emph{not} an $e_0$-free block,
+  nor the motion-side pin this node's 2026-06-04 successor proposed. \emph{Red,
+  superseded} (Phase~21b realization layer).
 \end{lemma}
 \begin{proof}
   Superseded; see the motion-side rank-lift (M1--M3) above.
@@ -599,17 +622,21 @@ recon-before-build pass on M2 (the pin); M1 and M3 are mechanical.
   \uses{def:hinge-constraint, def:panel-hinge-framework,
         lem:case-II-placement-disjoint-line-meet,
         lem:exists-independent-panel-extensor}
-  The crux of the $1$-extension rank-lift (KT eq.~(6.12)), motion-side. Let $F$ be a
-  body-hinge framework in which the body $v$ is joined to $a, b$ by hinges $e_a, e_b$
-  whose support extensors $C(e_a), C(e_b)$ are linearly independent (the
-  general-position condition, $m = 2$ case of
-  \cref{lem:exists-independent-panel-extensor}). Then any infinitesimal motion $S$ of
-  $F$ with $S a = S b$ also has $S v = S a$. Hence a motion constant on a body set
-  containing $a, b$ is constant on that set together with $v$. Proof: the hinge
-  constraints give $S v - S a \in \operatorname{span} C(e_a)$ and
+  \emph{Superseded --- not on the live route} (the motion-side pin; see the M3
+  flaw above and \emph{Finding A}). A sound elementary fact in isolation, but
+  irrelevant to KT's eq.~(6.12) argument. Let $F$ be a body-hinge framework in
+  which the body $v$ is joined to $a, b$ by hinges $e_a, e_b$ whose support
+  extensors $C(e_a), C(e_b)$ are linearly independent (the general-position
+  condition, $m = 2$ case of \cref{lem:exists-independent-panel-extensor}). Then
+  any infinitesimal motion $S$ of $F$ with $S a = S b$ also has $S v = S a$. Hence
+  a motion constant on a body set containing $a, b$ is constant on that set
+  together with $v$. Proof: the hinge constraints give
+  $S v - S a \in \operatorname{span} C(e_a)$ and
   $S v - S b = S v - S a \in \operatorname{span} C(e_b)$, so the difference lies in
   the trivial meet (\cref{lem:case-II-placement-disjoint-line-meet}) and vanishes.
-  \emph{Red} (Phase~21b); recon-before-build.
+  (The assembly M3 that \emph{would} use this pin is unsound --- its premise
+  ``$S a = S b$'' is not forced; see \cref{lem:case-II-placement-motion-side-assembly}.)
+  \emph{Red, superseded} (Phase~21b).
 \end{lemma}
 \begin{proof}
   \uses{lem:case-II-placement-disjoint-line-meet}
@@ -623,17 +650,19 @@ recon-before-build pass on M2 (the pin); M1 and M3 are mechanical.
   \uses{def:panel-hinge-framework, def:rank-hypothesis, lem:reduction-step,
         lem:case-II-placement-pin-vertex, lem:motions-mono-of-graph-le,
         lem:exists-independent-panel-extensor}
-  The motion-side assembly producing $\mathrm{HasFullRankRealization}\,k\,G$ from the
-  inductive realization of $G_v^{ab}$, superseding the row-side N7b path for Case~II.
-  Choose $v$'s panel normal so $C(e_a), C(e_b)$ are linearly independent
+  \emph{Superseded --- not on the live route} (\emph{Finding A}; the live Case~II/III
+  stratum~1 placement is the eq.~(6.12) row-side
+  \cref{lem:case-II-realization-placement}). The motion-side assembly that would
+  produce $\mathrm{HasFullRankRealization}\,k\,G$ from the inductive realization of
+  $G_v^{ab}$: choose $v$'s panel normal so $C(e_a), C(e_b)$ are linearly independent
   (\cref{lem:exists-independent-panel-extensor}, $m = 2$), placing the rest of $G$ at
   the inductive normals. The subgraph $G'' = (G-v)\cup\{e_a, e_b\} \le G$ shares
-  $G - v$ with $G_v^{ab}$; on $G''$, a motion constant on $V(G)\setminus\{v\}$ (the
-  inductive rigidity of $G_v^{ab}$, transported through $G - v$) is pinned at $v$ by
-  \cref{lem:case-II-placement-pin-vertex}, so $G''$ is rigid on $V(G)$; re-adding $G$'s
-  remaining edges keeps it rigid (\cref{lem:motions-mono-of-graph-le}). Feeds the
-  resulting realization to \cref{lem:case-II-realization}. \emph{Red} (Phase~21b);
-  the heart is M2.
+  $G - v$ with $G_v^{ab}$; on $G''$, a motion constant on $V(G)\setminus\{v\}$ is
+  pinned at $v$ by \cref{lem:case-II-placement-pin-vertex}, so $G''$ would be rigid
+  on $V(G)$. \textbf{The flaw:} a $G''$-motion need \emph{not} be constant on
+  $V(G)\setminus\{v\}$ --- the non-rigid $G-v$ does not force it (only $G_v^{ab}$,
+  which has $e_0$, does), so the assembly is unsound. \emph{Red, superseded}
+  (Phase~21b); feeds nothing on the live route.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-II-placement-pin-vertex, lem:motions-mono-of-graph-le}

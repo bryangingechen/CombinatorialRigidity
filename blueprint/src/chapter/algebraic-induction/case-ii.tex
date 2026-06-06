@@ -166,7 +166,7 @@
 \begin{lemma}[Case II realization: the $1$-extension produces a full-rank realization; KT Lemma 6.8]
   \label{lem:case-II-realization}
   \uses{def:panel-hinge-framework, lem:case-II, lem:reduction-step,
-        lem:case-II-placement-motion-side-assembly}
+        lem:case-II-realization-placement}
   The realization motive of \cref{thm:theorem-55}
   ($\mathrm{HasFullRankRealization}$, the $V(G)$-relative rank
   $D(|V(G)|-1)$) is closed under splitting off a reducible degree-2 vertex.
@@ -194,12 +194,19 @@
   the Case~III redundant-edge row (KT Lemma~6.10/6.13), so this producer
   \emph{is} Case~III, deferred with it to Phases~22--23. The reusable green row
   infra (the device-closure glue \cref{lem:realization-of-independent-rows} and
-  the sub-nodes N7b-0/1/2/3) feeds it there. The earlier motion-side path
-  (\cref{lem:case-II-placement-motion-side-assembly}, M3) was \emph{not} KT's
-  argument --- it assumes a $G$-motion is constant on $V(G)\setminus\{v\}$, which
-  the non-rigid $G-v$ does not force --- and is superseded; the row-side
-  $e_0$-recovery is supplied by the eq.~(6.12) placement, not by an
-  ($e_0$-free) block. Full record: \texttt{notes/Phase21b.md} \emph{Finding A/B}.
+  the sub-nodes N7b-0/1/2/3) feeds it there via the live route, the eq.~(6.12)
+  \emph{degenerate placement} \cref{lem:case-II-realization-placement}: the
+  $e_0$-row is recovered by \emph{reproducing} it --- $p_1(vb)=q(ab)$ places $v$'s
+  $b$-hinge at the very $e_0=ab$ hinge of $q$, so the $vb$-row equals the $e_0$-row
+  of $R(G_v^{ab},q)$ --- not by an impossible $e_0$-free block. Two earlier
+  dead-ends are \emph{off} this route, retained only for the audit trail: the
+  row-side $e_0$-recovery node N7b-4 (\cref{lem:case-II-placement-e0-recovery}),
+  which sought an $e_0$-free old block of full count that does not exist in
+  $G_v^{ab}$ (the $e_0$-free $G-v$ is not rigid); and the motion-side assembly
+  M1--M3 (\cref{lem:case-II-placement-motion-side-assembly}), which was \emph{not}
+  KT's argument --- it assumes a $G$-motion is constant on $V(G)\setminus\{v\}$,
+  which the non-rigid $G-v$ does not force. Full record:
+  \texttt{notes/Phase21b.md} \emph{Finding A/B}.
   Against the relativized motive (\cref{def:rank-hypothesis}) the inductive
   hypothesis ``$G_v^{ab}$ realizes its rank'' is satisfiable (it spans its own
   vertices), so the producer is well-posed; it is the shallower sibling of the
@@ -216,15 +223,15 @@
   edges).
 \end{lemma}
 \begin{proof}
-  \uses{lem:case-II, lem:case-II-placement-motion-side-assembly}
-  The motion-side assembly \cref{lem:case-II-placement-motion-side-assembly} (M3)
-  supplies, from the inductive realization of $G_v^{ab}$ (rigid on
-  $V(G)\setminus\{v\}$), a realization of $G$ rigid on $V(G)$: re-insert $v$ joined
-  to $a, b$ by hinges whose support extensors are linearly independent
-  (\cref{lem:exists-independent-panel-extensor}, $m = 2$), so a motion constant on
-  $V(G)\setminus\{v\}$ is pinned at $v$ (\cref{lem:case-II-placement-pin-vertex}),
-  and re-adding $G$'s remaining edges keeps it rigid
-  (\cref{lem:motions-mono-of-graph-le}). That is the full target rank
+  \uses{lem:case-II, lem:case-II-realization-placement}
+  The eq.~(6.12) placement \cref{lem:case-II-realization-placement} supplies, from
+  the inductive realization of $G_v^{ab}$, a free normal assignment $q_0$ for $G$
+  together with a linearly independent family of $D(|V(G)|-1)$ panel-rows of
+  $\mathrm{ofNormals}\,G\,\mathrm{ends}\,q_0$ (the degenerate placement
+  $p_1(vb)=q(ab)$ making the $vb$-row reproduce the $e_0$-row, so the inductive
+  rows transport without an $e_0$-free block). Feeding that witnessed independent
+  family to the device-closure glue \cref{lem:realization-of-independent-rows}
+  (N7a) yields a generic realization of $G$ rigid on $V(G)$ at rank
   $D(|V(G)|-1)$.
 \end{proof}
 

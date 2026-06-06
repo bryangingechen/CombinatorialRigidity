@@ -39,24 +39,32 @@ just its conclusion* + *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-22c's **design recon is settled** (two docs-only passes; the second this
-commit). The first pass read the whole Case-III-at-`d=3` argument against
-the primary source; the second pass (this commit) pinned the **shared
-candidate structure**, answered the **four open recon questions**, and
-**re-cut 22c's scope to the first tractable chunk** (the eq. (6.12)
-`+(D−1)` block-triangular placement) per the user's "don't cram too much
-into 22c" direction. Full recon: `notes/Phase22-realization-design.md`
-§1.26 (the canonical record); summarized here under *Recon resolution*.
-**No Lean this commit** (docs-only, design-pass-first). The next concrete
-commit is the **first Lean node of stratum 1** — the eq. (6.12)
-degenerate placement producing the `+(D−1)` block-triangular lower bound,
-cut leaf-most-first against the green N7b-0/1/2/3 +
-`linearIndependent_sum_pinned_block` infra (confirm the count `5 +
-6(|V∖{v}|−1) = D(|V|−1)−1` closes from the named green inputs at that
-build's open — the honesty gate's second half). The Case-I composer
-`case_I_realization` is fully green (Phase 22b) and ready to wire into
-`theorem_55_generic`'s Case-I branch; that wiring + the `d=3` assembly is
-the deferred 22d territory.
+22c's **design recon is settled** (two docs-only passes), and a **third
+docs-only commit (this one) reconciled the blueprint** to the corrected
+understanding before any Lean build. The first recon pass read the whole
+Case-III-at-`d=3` argument against the primary source; the second pinned
+the **shared candidate structure**, answered the **four open recon
+questions**, and **re-cut 22c's scope to the first tractable chunk** (the
+eq. (6.12) `+(D−1)` block-triangular placement). This commit closed a
+**concrete blocker the recon surfaced**: the live blueprint prose for the
+exact nodes 22c builds (`lem:case-II-realization`,
+`lem:case-II-realization-placement`) still routed the live route through
+two superseded dead-ends (the motion-side M3
+`lem:case-II-placement-motion-side-assembly` and the unbuildable row-side
+N7b-4 `lem:case-II-placement-e0-recovery`), while the corrected eq. (6.12)
+degenerate-placement route lived only in the notes. The reconciliation
+(§1.27): both nodes' **statements and proofs** now consistently describe
+the eq. (6.12) row-side route (`p₁(vb)=q(ab)` → the `vb`-row reproduces the
+`e₀`-row → the green N7b-0/1/2/3 + `linearIndependent_sum_pinned_block`
+bricks transport the old block); M3 and N7b-4 are **collapsed out of the
+live route**, retained with explicit "superseded — not on the live route"
+markers (conservative retain-with-marker choice; M1/M2 helpers likewise);
+the green N7b-0/1/2/3 sub-nodes stay green (reused by Case I and this
+route). **No Lean / `\leanok` flips this commit** (docs+blueprint TeX
+only). The next concrete commit is the **first Lean node of stratum 1** —
+see *Hand-off*. The Case-I composer `case_I_realization` is fully green
+(Phase 22b) and ready to wire into `theorem_55_generic`'s Case-I branch;
+that wiring + the `d=3` assembly is the deferred 22d territory.
 
 ## Sub-phase scope cut (SETTLED; re-cut to first-chunk 2026-06-05)
 
@@ -243,16 +251,29 @@ sub-phase). See the *Sub-phase scope cut* section above + §1.26.
 
 ## Lemma checklist
 
-The Lean node cut for **stratum 1** (this phase's scope) is the next
-commit; strata 2–3 are deferred. The target *blueprint* nodes (already
-stubbed red in `algebraic-induction/`; **all stay red — 22c lands the
-eq. (6.12) `+(D−1)` brick toward them, not the full nodes**):
+The blueprint reconciliation lands this commit; the Lean node cut for
+**stratum 1** is the next commit; strata 2–3 are deferred. The target
+*blueprint* nodes stay red — 22c lands the eq. (6.12) `+(D−1)` brick
+toward them, not the full nodes.
 
+- [x] **(this commit, docs+blueprint)** Reconcile `lem:case-II-realization`
+  (`case-ii.tex`) + `lem:case-II-realization-placement`
+  (`genericity-and-count.tex`) so statement+proof of each describe the
+  eq. (6.12) row-side route; collapse M3 + N7b-4 out of the live route,
+  retain-with-marker (§1.27).
 - [ ] **(22c, stratum 1)** eq. (6.12) `+(D−1)` block-triangular placement
-  — the next Lean node, `buildable` from the green N7b-0/1/2/3 +
-  `linearIndependent_sum_pinned_block`. Produces `rank R(G,p₁) ≥
-  D(|V|−1)−1`. A lower-bound brick *toward* `lem:case-II-realization`,
-  not the full node.
+  — the next Lean node, the new producer behind `lem:case-II-realization-placement`.
+  `buildable` from the green N7b row infra. Cut leaf-most-first (the
+  ordering, §1.27 / *Hand-off*): (a) a placement def `p₁` with the
+  `p₁(vb)=q(ab)` row-reproduction `hrow` (the one new geometric brick);
+  (b) feed N7b-1 (`exists_independent_panelRow_subfamily_of_edge`, +(D−1)),
+  N7b-0 (`exists_independent_panelRow_subfamily_of_rigidOn`, D(|V|−2) old),
+  N7b-2 (`exists_independent_panelRow_transport`, the transport whose
+  `hrow` IS the eq. (6.12) reproduction), N7b-3
+  (`linearIndependent_sum_pinned_block`, joint independence = KT eq. (6.16));
+  (c) `hasFullRankRealization_of_independent_panelRow` (N7a) closure.
+  Count: `(D−1) + D(|V∖{v}|−1) = D(|V|−1)−1 = 6|V|−7` at `D=6`. A
+  lower-bound brick *toward* `lem:case-II-realization`, not the full node.
 - [ ] (later sub-phase) `lem:case-II-realization` (KT's Case III;
   `case-ii.tex`) + `lem:case-III` (`case-iii.tex`) — the D-candidate crux
   (Claim 6.11 redundant row + the candidate-normal-form / Claim-6.12
@@ -263,14 +284,27 @@ eq. (6.12) `+(D−1)` brick toward them, not the full nodes**):
 
 ## Blockers / open questions
 
-- **Sub-phase cut — SETTLED** (above, re-cut to first-chunk): 22c =
-  Case III at `d=3` *stratum 1* (the eq. (6.12) `+(D−1)` placement) only;
-  the D-candidate crux (strata 2–3) is a likely later sub-phase, the
-  `d=3` assembly the deferred 22d — each deferred until the prior shape
-  is clear.
-- **Design-recon — SETTLED** (this phase's organizing principle): the
-  four open recon questions are answered (above + §1.26); the layer is
-  designed. The next commit cuts the first Lean node (stratum 1).
+- **Blueprint divergence — RESOLVED** (this commit, §1.27): the live
+  `lem:case-II-realization` / `lem:case-II-realization-placement` prose no
+  longer routes through the superseded M3 / N7b-4; both describe the
+  eq. (6.12) row-side route consistently in statement+proof. This was the
+  binding doc-blocker the design recon surfaced (corrected understanding
+  was in the notes only).
+- **Sub-phase cut — SETTLED** (re-cut to first-chunk): 22c = Case III at
+  `d=3` *stratum 1* (the eq. (6.12) `+(D−1)` placement) only; the
+  D-candidate crux (strata 2–3) is a likely later sub-phase, the `d=3`
+  assembly the deferred 22d — each deferred until the prior shape is clear.
+- **Design-recon — SETTLED**: the four open recon questions are answered
+  (§1.26); the layer is designed. The next commit cuts the first Lean node.
+- **Reuse-from-22b — ANSWERED** (the de-risking question, §1.27): stratum 1
+  reuses the green **N7b row infra** (N7b-0/1/2/3 + N7a + `_transport`)
+  near-wholesale — they were *built* for exactly this `1`-extension
+  placement (Phase 21b). 22b's `degeneratePlacement`/`extProj`/
+  `panelRow_collapseTo_comp_extProj_dualMap` machinery is **NOT** reused:
+  it is the *block-collapse* relabel for Case I's contraction (`Gc.map
+  (collapseTo r V(H))`), structurally heavier than stratum 1's single-vertex
+  `p₁(vb)=q(ab)`. Stratum 1's *one* genuinely-new brick is the per-row
+  reproduction `hrow` (the eq. (6.12) row-equality feeding N7b-2's transport).
 - **Recurring Lean traps** (carry from 22a/22b, FRICTION): the heavy
   `IsInfinitesimallyRigidOn`/framework defeq across `ofNormals`/`withGraph`
   graph-swaps can `isDefEq`-timeout — make the two frameworks
@@ -282,23 +316,63 @@ eq. (6.12) `+(D−1)` brick toward them, not the full nodes**):
 ## Hand-off / next phase
 
 The design recon is **settled** (four questions answered, first-chunk
-scope cut made; §1.26). **The next concrete commit is the FIRST LEAN NODE
-of stratum 1 — the eq. (6.12) degenerate placement** (`p₁(va) = L ⊂
-Π(a)`, `p₁(vb) = q(ab)`) producing the block-triangular `R(G,p₁)` with
-`R(G_v^{ab},q)` a submatrix, hence the `+(D−1)` lower bound `rank R(G,p₁)
-≥ 5 + 6(|V∖{v}|−1) = D(|V|−1)−1`. Cut it leaf-most-first against the green
-N7b-0/1/2/3 + `linearIndependent_sum_pinned_block` infra; this is
-`buildable`, so re-recon is light, but **confirm the count `5 +
-6(|V∖{v}|−1) = D(|V|−1)−1` closes from the named green inputs at the
-build's open** (the honesty gate's second half). 22c lands this `+(D−1)`
-brick *toward* `lem:case-II-realization`/`lem:case-III` — those nodes stay
-red; the D-candidate crux (strata 2–3) is a later sub-phase, named but not
-scoped here.
+scope cut; §1.26) **and the blueprint is now reconciled to it** (§1.27,
+this commit) — so the next agent does not re-fight the divergence. **The
+next concrete commit is the FIRST LEAN NODE of stratum 1: the eq. (6.12)
+degenerate-placement producer behind `lem:case-II-realization-placement`.**
 
-The green infra 22c builds on: the fully-green Case-I composer
-`case_I_realization` (Phase 22b), the Phase-21b device + count bridge +
-N7b row sub-nodes + splice/union glue, the Phase-22b Claim-6.4 bricks,
-and — the load-bearing input for the deferred crux — Phase-17 Lemma 2.1.
-The KT math is in `notes/Phase21b.md` *Finding A/B*,
-`notes/Phase22-realization-design.md` §1.25–§1.26, and KT §6.4.1; 22c
-formalizes it.
+Precise target. A producer (working name
+`PanelHingeFramework.case_II_placement_eq612` / `…_independent_panelRow`)
+that, from the inductive realization of the split-off `G_v^{ab}` (rigid on
+`V(G)∖{v}` = the IH at full rank, since `k=0` ⟹ `G_v^{ab}` minimal 0-dof
+by KT Lemma 4.8(i)) and `v`'s reducible-degree-2 data (the two edges
+`e_a=va, e_b=vb`, their links, the degree-2 closure — already carried on
+`theorem_55.hsplit`), constructs a free normal assignment `q₀` for `G`
+**and** a linearly independent `panelRow ends q₀` subfamily of size
+`D(|V(G)|−1)`, i.e. `rank R(G,p₁) ≥ D(|V|−1)−1 = 6|V|−7` at `D=6`.
+
+Leaf-most-first node order (each mapped to a green input; the only red
+leaf is the new placement+`hrow` brick):
+1. **placement `p₁` + the row reproduction `hrow`** (the one new brick):
+   `p₁` agrees with `q` on `G−v`, sets `p₁(va)=L⊂Π_q(a)` and `p₁(vb)=q(ab)`;
+   prove `R(G,p₁)`'s `vb`-row equals `R(G_v^{ab},q)`'s `e₀=ab` row (the
+   per-row match `hrow` that `exists_independent_panelRow_transport` (N7b-2)
+   takes). This is the eq. (6.12) content; recon-before-build the `hrow`
+   row-equality specifically (it is the structural-fidelity crux — see below).
+2. **new block** `exists_independent_panelRow_subfamily_of_edge` (N7b-1, green):
+   `v`'s two transversal hinges ⟹ `D−1` independent rows in `v`'s column block.
+3. **old block** `exists_independent_panelRow_subfamily_of_rigidOn` (N7b-0,
+   green): the IH rigidity ⟹ `D(|V|−2)` independent old rows; transport them
+   onto `G` through `G−v` by `exists_independent_panelRow_transport` (N7b-2,
+   green) using `hrow` from step 1.
+4. **joint independence** `linearIndependent_sum_pinned_block` (N7b-3, green,
+   in `RigidityMatrix.lean`): pin-a-body column split = the Lean form of KT
+   eq. (6.16); makes `Sum.elim new old` independent at the full count.
+5. **closure** `hasFullRankRealization_of_independent_panelRow` (N7a, green):
+   lift the witnessed corank to a generic realization rigid on `V(G)`.
+
+Honesty-gate checks confirmed at recon (re-verify at the build's open):
+- **2nd half (count):** `(D−1) + D(|V∖{v}|−1) = (D−1) + D(|V|−2) =
+  D(|V|−1)−1`; at `D=6` that is `5 + 6(|V|−2) = 6|V|−7`. Closes from the
+  named green inputs (N7b-1 gives `D−1`; N7b-0 gives `D(|V|−2)` because the
+  `k=0` IH is *full* rank on `V(G_v^{ab})`). One short of `D(|V|−1)` — the
+  Case-III missing row, deferred to strata 2–3. ✓
+- **3rd half (structural fidelity — the trap that bit Case I):** KT's
+  eq. (6.16) **column operations making `R(G,p₁)` block-triangular with
+  `R(G_v^{ab},q)` a submatrix** is reproduced by the project's
+  `linearIndependent_sum_pinned_block` (pin-a-body, new rows in `v`'s screw
+  column, old rows off it) — NOT re-expressed as a different motion-space
+  obligation. The eq. (6.12) `p₁(vb)=q(ab)` *row reproduction* is exactly
+  the per-row match `hrow` of the N7b-2 transport. So the construction
+  matches KT's argument structure. (Contrast Case I, where a motion-space
+  splice glue silently swapped KT's block-triangular structure for a
+  common-seed one and accreted bridge hypotheses — `DESIGN.md` *Match the
+  source's argument structure*.)
+
+22c lands this `+(D−1)` brick *toward* `lem:case-II-realization` /
+`lem:case-III` — those nodes stay red; the D-candidate crux (strata 2–3) is
+a later sub-phase, named but not scoped here. The deferred crux's
+load-bearing input is Phase-17 Lemma 2.1 (`omitTwoExtensor_linearIndependent`).
+KT math: `notes/Phase21b.md` *Finding A/B*,
+`notes/Phase22-realization-design.md` §1.25–§1.27, KT §6.3 (Lemma 6.8) +
+§6.4.1; 22c formalizes it.

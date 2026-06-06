@@ -1988,6 +1988,84 @@ the next commit is the *first Lean node* of stratum 1 — the eq. (6.12) degener
 closes from the named green inputs before scheduling — the honesty gate's second half). The crux (strata
 2–3) gets its math-first decomposition when its sub-phase opens.
 
+### 1.27 Phase 22c, third pass — reconcile the blueprint Case-II nodes to the eq. (6.12) row-side route, before any Lean build (2026-06-05)
+
+Third docs-only commit (still decision-support; no Lean / `\leanok` / blueprint-`\lean{…}` flips). The
+user paused before the stratum-1 build to do **heavy up-front design**, and a review found a concrete
+build-blocker: the **live blueprint prose for the exact nodes 22c builds** still described two superseded
+dead-ends, while the corrected understanding (eq. (6.12) degenerate placement) lived only in the notes
+(`notes/Phase21b.md` *Finding A*, §1.25–§1.26 above). A node-by-node build against that prose would have
+re-derived the wrong route. This commit reconciles the blueprint and records the build-ready node cut.
+
+**The divergence (verified against the files).** Two nodes, each self-inconsistent (statement said one
+thing, proof did another):
+- `lem:case-II-realization` (`case-ii.tex`): statement said the motion-side M3
+  (`lem:case-II-placement-motion-side-assembly`) "was NOT KT's argument … superseded," yet its **proof
+  still routed through M3** (re-insert `v`, pin via M2, conclude rigid-on-`V(G)`).
+- `lem:case-II-realization-placement` (`genericity-and-count.tex`): its body described an
+  N7b-0/1/2/3/4 plan with N7b-4 (`lem:case-II-placement-e0-recovery`) marked superseded/"geometrically
+  unbuildable" and re-routed to motion-side M3, yet its **proof still consumed N7b-4** (the
+  `$e_0$-free old block`), and the "rank-lift, motion-side" subsection still called the motion-side route
+  "The corrected … genuine geometric heart" and claimed it "supersedes" the row-side placement node.
+
+**The corrected route (KT §6.3 Lemma 6.8 / eq. (6.12), the canonical record).** The live placement is the
+**row-side degenerate placement**: `p₁` agrees with the IH `q` on `G−v`, `p₁(va)=L⊂Π_q(a)` a `(d−2)`-hinge,
+and `p₁(vb)=q(ab)` placing `v`'s `b`-hinge at the very `e₀=ab` hinge of `q` so the `vb`-row **reproduces**
+the `e₀`-row of `R(G_v^{ab},q)`. Column ops (KT eq. (6.16)) make `R(G,p₁)` block-triangular with
+`R(G_v^{ab},q)` a submatrix ⟹ `rank ≥ (D−1) + D(|V∖{v}|−1) = D(|V|−1)−1`. The `e₀`-recovery the row-side
+recons sought (N7b-4) is real but is *not* an `e₀`-free block (none exists — `G−v` is not rigid); it is
+the reproduced `vb`-row. The motion-side M1/M2/M3 is *not* KT's argument: M3 assumes a `G''`-motion is
+constant on `V(G)∖{v}`, which the non-rigid `G−v` does not force (only `G_v^{ab}`, which has `e₀`, does).
+
+**What this commit edited (blueprint).** `lem:case-II-realization`: re-pointed statement+proof `\uses` from
+M3 to `lem:case-II-realization-placement`; proof now routes through the eq. (6.12) placement + N7a closure.
+`lem:case-II-realization-placement`: statement body + the enumerate decomposition + proof rewritten to the
+eq. (6.12) route (the per-row match `hrow` of N7b-2's transport IS the `p₁(vb)=q(ab)` reproduction; N7b-4
+dropped from the live `\uses`); the "rank-lift, motion-side" subsection relabelled an *audit-trail* of two
+superseded dead-ends. **Retain-with-marker** (the conservative choice flagged in the task as a deliberate
+design decision — delete-vs-retain has audit-trail value and the green sub-nodes N7b-0/1/2/3 still need to
+sit beside their history): N7b-4 (`lem:case-II-placement-e0-recovery`), M3
+(`lem:case-II-placement-motion-side-assembly`), and the helpers M1
+(`lem:case-II-placement-disjoint-line-meet`), M2 (`lem:case-II-placement-pin-vertex`) are **kept, struck,
+with explicit "superseded — not on the live route" markers**; no live node `\uses` them (M3 is now an
+orphan-off-the-live-route, correct). The green N7b-0/1/2/3 sub-nodes stay green (reused by Case I and by
+this route). All four target/Case nodes (`lem:case-II-realization`, `lem:case-III`) **stay red** — 22c
+lands the eq. (6.12) `+(D−1)` brick toward them.
+
+**Reuse from Phase 22b — the de-risking question, answered.** The eq. (6.12) "place the `vb`-hinge at
+`q(ab)` to reproduce a row" is the *same* degenerate-placement-reproduces-a-row *idea* as 22b's U1/U2, but
+22b's concrete machinery is **not** reused for stratum 1, for a structural reason: 22b's
+`degeneratePlacement r t nrm = nrm ∘ collapseTo r t`, `extProj t`, and
+`panelRow_collapseTo_comp_extProj_dualMap` implement a **block collapse** of an entire rigid block `V(H)→r`
+(Case I's contraction `Gc.map (collapseTo r V(H))`), with an exterior-column projection peeling off the
+collapsed block. Stratum 1's `p₁(vb)=q(ab)` is a **single-vertex** placement reproducing **one** row, with
+**no** block collapse and **no** exterior projection — the block-triangularity comes from the pin-a-body
+column split, not from projecting away a rigid block. So stratum 1 reuses the **green N7b row infra**
+near-wholesale (N7b-0 `exists_independent_panelRow_subfamily_of_rigidOn`, N7b-1
+`exists_independent_panelRow_subfamily_of_edge`, N7b-2 `exists_independent_panelRow_transport`, N7b-3
+`linearIndependent_sum_pinned_block` in `RigidityMatrix.lean`, N7a
+`hasFullRankRealization_of_independent_panelRow`) — *these were built in Phase 21b for exactly this
+`1`-extension placement*. The **one genuinely-new Lean brick** is the placement `p₁` + the per-row
+reproduction `hrow` (the `vb`-row = `e₀`-row equality) that N7b-2's transport consumes. (If a future need
+for a block-collapse arises in strata 2–3, *then* 22b's `extProj` machinery is the reuse target — not now.)
+
+**Honesty gate (2nd + 3rd halves) on the stratum-1 cut.** *2nd (count):* `(D−1) + D(|V∖{v}|−1) =
+D(|V|−1)−1 = 6|V|−7` at `D=6`, closing from N7b-1 (`D−1`) + N7b-0 (`D(|V|−2)`, full because the `k=0` IH is
+full rank on `V(G_v^{ab})` by KT Lemma 4.8(i)). One short of `D(|V|−1)` — the Case-III missing row, strata
+2–3. *3rd (structural fidelity):* KT eq. (6.16)'s **block-triangular column ops** are reproduced by
+`linearIndependent_sum_pinned_block` (pin-a-body: new rows in `v`'s screw column, old rows off it), and the
+eq. (6.12) `p₁(vb)=q(ab)` **row reproduction** is the per-row `hrow` of the N7b-2 transport — KT's argument
+*structure*, not a re-expression. This is the check Case I failed (a motion-space splice glue silently
+replaced KT's block-triangular structure, accreting bridge hypotheses; `DESIGN.md` *Match the source's
+argument structure*); stratum 1 passes it because the project's own N7b infra *is* the row-side
+block-triangular route, and the only new obligation is the honest eq. (6.12) row equality.
+
+**Next concrete commit (post-this-recon).** The **first Lean node of stratum 1** — the eq. (6.12) producer
+behind `lem:case-II-realization-placement`, cut leaf-most-first per the node order in `notes/Phase22c.md`
+*Hand-off* (the new red leaf is the placement `p₁` + `hrow`; everything else is green N7b infra). Re-recon
+the `hrow` row-equality specifically at the build's open (it is the structural-fidelity crux). The
+D-candidate crux (strata 2–3) gets its math-first decomposition when its sub-phase opens.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
