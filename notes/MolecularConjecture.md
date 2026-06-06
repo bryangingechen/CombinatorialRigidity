@@ -311,229 +311,65 @@ as living estimates; re-cut on contact.
 
 #### Phase 17 — Grassmann–Cayley extensor algebra (§2.1) — ✓ Complete
 
-Done; full detail in `notes/Phase17.md`, dep-graph in
-`molecular.tex` `sec:molecular`. Formalized the Grassmann–Cayley /
-extensor layer in `Molecular/Extensor.lean`: homogeneous
-coordinatization, the affine-independence ↔ top-extensor bridge, the
-symbolic extensor/join on `ExteriorAlgebra ℝ (Fin (d+1) → ℝ)`, the
-coordinatized Plücker bridge with KT's sign, the affine-subspace
-extensor `C(·)`, and the hard core **Lemma 2.1**
-(`omitTwoExtensor_linearIndependent` — independence of the `D`
-`(d−1)`-extensors of `d+1` affinely independent points), on which Case
-III (Phases 22–23) bottoms out. Built the symbolic layer first with a
-coordinatized bridge, per the user's full-GC choice.
+Formalized the Grassmann–Cayley / extensor layer in `Molecular/Extensor.lean`,
+landing the hard core **Lemma 2.1** (`omitTwoExtensor_linearIndependent` —
+independence of the `D` `(d−1)`-extensors of `d+1` affinely independent points),
+on which Case III bottoms out. Detail: ROADMAP §17 + notes/Phase17.md.
 
 #### Phase 18 — Panel-hinge rigidity matrix `R(G,p)` (§2.2–2.4) — ✓ Complete
 
-Done; full detail in `notes/Phase18.md`, dep-graph in
-`rigidity-matrix.tex` `sec:molecular-rigidity-matrix`. Built the genuine
-panel-hinge rigidity
-matrix `R(G,p)` in `Molecular/RigidityMatrix.lean` (basis-free: hinge
-constraint `S(u) − S(v) ∈ span C(p(e))` + dual-annihilator row block +
-null space `Z(G,p) = infinitesimalMotions`), the trivial-motion layer
-with the `D`-dimensional / `D·|V|` numeric counts (codimension form of
-`rank R ≤ D(|V|−1)`), and the three rank lemmas — 5.1 pin-a-body
-(`finrank_pinnedMotions_add_screwDim`), 5.3 parallel-hinges-full
-(`eq_of_hingeConstraint_two_parallel`), 5.2 rotation semicontinuity
-(`finrank_infinitesimalMotions_le_of_span_le`, the basis-free
-span-refinement monotonicity form — see risk #3, resolved). KT Prop 1.1
-(`prop:rigidity-matrix-prop11`, reconcile the rank form with Phase 16's
-`thm:body-hinge-tay`) was originally deferred from Phase 18 to Phase 19;
-at Phase-19 close it was **relocated forward to Phase 21+** — its
-matroidal half (`def = corank M(G̃)`) landed green in Phase 19, but its
-analytic half (`rank R(G,p) = D(|V|−1) − def(G̃)`) depends on the
-generic-rank argument (Claim 6.4) and lands with the algebraic induction
-(see the *Relocated forward* bullet under Phase 19 + the Phase 21 bullet).
-The completed `rigidity-matrix.tex` carries no red node.
+Built the genuine basis-free panel-hinge rigidity matrix `R(G,p)` in
+`Molecular/RigidityMatrix.lean` (with `Z(G,p) = infinitesimalMotions`, the
+`rank R ≤ D(|V|−1)` codimension bound) and the three rank lemmas 5.1/5.2/5.3
+(`finrank_pinnedMotions_add_screwDim`, `finrank_infinitesimalMotions_le_of_span_le`,
+`eq_of_hingeConstraint_two_parallel`). KT Prop 1.1's analytic half relocated
+forward to Phase 21+. Detail: ROADMAP §18 + notes/Phase18.md.
 
 #### Phase 19 — `M(G̃)`, deficiency, `k`-dof graphs (§2.5, §3) — ✓ Complete
 
-**Complete; see `notes/Phase19.md`.** Landed in `Molecular/Deficiency.lean`:
-`M(G̃)` (boundary-regime `(D,D)` count matroid, clean — risk #2 resolved),
-the `D`-deficiency `def(G̃) = maxₚ [D(|P|−1) − (D−1)d_G(P)]`, the
-`k`-dof / `0`-dof / minimal-`k`-dof hierarchy, rigid + proper rigid
-subgraphs, KT Lemmas 3.1/3.3/3.4 (matroidal-core forms), and the **full
+Landed in `Molecular/Deficiency.lean`: the matroid `M(G̃)` (boundary-regime
+`(D,D)` count matroid), the `D`-deficiency `def(G̃)`, the `k`-dof / minimal-`k`-dof
+hierarchy, rigid + proper rigid subgraphs, KT Lemmas 3.1/3.3/3.4, and the **full
 def = corank bridge** `|B| + def(G̃) = D(|V|−1)` (JJ [15] Thm 6.1 / Cor 6.2,
-proved in-repo axiom-free — risk #4 resolved, no axiom / no deferral).
+`thm:def-eq-corank`, proved in-repo axiom-free). Detail: ROADMAP §19 + notes/Phase19.md.
 
-- **Key reuse (as planned):** `M(G̃)` routed through the `D`-fold graphic
-  union of Phase 13/14 (`unionPow_cycleMatroid` + `tutte_nash_williams`),
-  **not** `CountMatroid.lean` (`ℓ<2k`). Confirmed clean by `matroidMG_indep_iff`.
-- **Relocated forward at phase close (2026-06-02):**
-  - **`prop:rigidity-matrix-prop11`** (KT Prop 1.1, the rank/reduction
-    reconciliation) → **Phase 21+**. Its matroidal half (`def = corank M(G̃)`)
-    is now green via `thm:def-eq-corank`, but its **analytic half** —
-    `rank R(G,p) = D(|V|−1) − def(G̃)` (JJ [15] Thm 6.1 geometric side, wiring
-    the rigidity-matrix rank to the matroid corank) — is a separate object
-    with no Lean yet, dependent on the generic-rank / genericity argument
-    (Claim 6.4) deferred since Phase 15–16. The node was removed from the
-    completed Phase-18 `rigidity-matrix.tex`; it gets (re)created in the
-    algebraic-induction chapter when Phase 21 opens. Lands with Claim 6.4.
-  - **Full KT 3.4** (`G[V(X)]` rigid — the tightness *equality*
-    `|X−e| = D(|V(X)|−1)`, vs. the Phase-19 matroidal-core sparse/basis
-    form) → **early Phase 20**. Now unblocked: the JJ09 reverse
-    `le_rank_add_deficiency` supplies the lower bound `|X| > D(|V(X)|−1)`
-    it waited on; still needs a vertex-induced-subgraph-from-edge-set
-    construction (no existing `Graph α β` analogue).
-  - **KT Lemma 3.5** (rigid-subgraph contraction preserves minimality —
-    Case I engine) → **early Phase 20**.
-- KT Lemmas 3.2 (not 3-edge-conn) and 3.6 (partition decomposition) remain
-  off the Thm-4.9 critical path; 3.6 is needed only by Case 6.1, schedule
-  with Phase 21.
+#### Phase 20 — Combinatorial induction → Theorem 4.9 (§4) — ✓ Complete
 
-#### Phase 20 — Combinatorial induction → Theorem 4.9 (§4)
+Landed the graph operations on `Graph α β` (splitting-off, edge-splitting,
+removal, rigid-subgraph contraction) plus the dof-tracking lemmas (4.3–4.8),
+the three-case decomposition, and **Theorem 4.9** (every minimal body-hinge-rigid
+graph reduces to the two-vertex double edge). KT 4.3 (`def(G̃ᵥᵃᵇ) ≤ def(G̃)`)
+proved directly via a deficiency-count partition comparison through `def = corank`,
+bypassing the over-quantified forest surgery 4.1/4.2. Detail: ROADMAP §20 + notes/Phase20.md.
 
-Graph operations on `Graph α β`: splitting off `G_v^{ab}` at a degree-2
-vertex, its inverse edge-splitting `H_{ab}^v`, removal `G_v`, rigid-
-subgraph contraction `G/E'`. The forest-surgery core (Lemmas 4.1, 4.2)
-+ the dof-tracking lemmas (4.3–4.8) + the three-case decomposition +
-**Theorem 4.9** (every minimal body-hinge-rigid graph reduces to the
-two-vertex double edge via splitting-off / rigid-contraction).
+#### Phase 21a — Grassmann–Cayley meet / projective-duality foundations — ✓ Complete
 
-- **Hard core:** 4.1/4.2 (explicit forest surgery at a degree-2 vertex
-  — no existing analogue, budget the most time); 4.6 (maximal-chain /
-  degree-sequence counting guaranteeing the degree-2 vertex); 4.8 (the
-  capstone, two circuit-swap arguments).
-- **Inherited from Phase 19** (relocated at Phase-19 close): KT Lemma 3.5
-  (rigid-subgraph contraction preserves minimality — Case I engine) and
-  the full KT 3.4 (`G[V(X)]` rigid, the tightness *equality* + a
-  vertex-induced-subgraph-from-edge-set construction; the lower bound it
-  needs is now green via `le_rank_add_deficiency`). Schedule early.
-- **Reuse:** matroid restriction/contraction + fundamental circuits
-  (mathlib `Matroid.restrict`, `Matroid.fundCircuit`), the vendored
-  union subsystem (`Matroid/Constructions/Union.lean`), `edgeMultiply`.
-- **Route change (2026-06-02 — see `notes/Phase20.md` *Finding* +
-  *Replan*).** Formalizing the forest surgery (4.1) surfaced that KT's
-  Lemma 4.1 is over-quantified (false for `|I| < D`, formally disproved)
-  and its proof of the base case glosses an unstated *balanced-packing*
-  assumption (every forest in the `D`-forest partition meets `v`) — in
-  both the 2011 (Lemma 4.1, p.660) and 2009 arXiv (Lemma 5.1, p.11)
-  versions. The induction needs only `def(G̃ᵥᵃᵇ) ≤ def(G̃)` (KT 4.3),
-  which is true and which we prove directly by a **deficiency-count
-  partition comparison** through `def = corank` (Phase 19), bypassing the
-  forest surgery. The surgery (and proving-or-refuting the balanced-packing
-  lemma) is a non-blocking TODO; the hard core is now 4.6 / the capstone
-  4.8, not 4.1/4.2.
+Built the Grassmann–Cayley *meet* (regressive product) — the dual sibling of
+Phase 17's join — as the substrate for the panel layer's coplanar hinges, Lemma 5.4,
+and Phase 25's projective-duality dictionary: `topEquiv` → `pairingDual`-iso →
+`complementIso` → `meet` + `meet_ne_zero_iff`. Detail: ROADMAP §21a + notes/Phase21a.md.
 
-#### Phase 21a — Grassmann–Cayley meet / projective-duality foundations
+#### Phase 21 — Theorem 5.5 base + Cases I & II (§5, §6.1–6.3) — ✓ Complete
 
-Inserted by the 2026-06-03 panel re-scope (risk #7). The dual sibling of
-Phase 17: where Phase 17 built the *join*, 21a builds the *meet*
-(regressive product) — the substrate on which the panel layer derives
-coplanar hinges, Lemma 5.4 builds its cycle realization, and Phase 25
-inherits the projective-duality dictionary. On `V = ℝ^(k+2)`, route (ii):
-`topEquiv` (`⋀ᴺ V ≃ R`) → `pairingDual`-iso (`⋀ʲ(V*) ≃ (⋀ʲ V)*`, the
-Phase-25 dictionary entry) → `complementIso` (`⋀ʲ V ≃ ⋀^(N−j) V`, via the
-perfect wedge pairing) → `meet` + `meet_ne_zero_iff` (⟺ transversal).
-Scope: regressive product only, no metric Hodge; projective *invariance*
-→ Phase 25. Items `topEquiv` / `pairingDual`-iso / `complementIso` are
-upstream-eligible (mirror directory). Full detail + checklist:
-`notes/Phase21a.md`; decision: `DESIGN.md` *Panel-hinge = hinge-coplanar
-body-hinge*.
+Landed the genericity-free content of KT's algebraic induction: the panel layer
+(`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar`, gated on the Phase-21a
+meet), the Theorem 5.5 induction skeleton + base + the Case I/II genericity-free
+reductions, and the analytic half of Prop 1.1 (`rigidityMatrix_prop11`, pinned by
+the genericity-free `hub` + a 21b-cited generic-max-rank `hgen`). The shared analytic
+crux Claim 6.4/6.9 enters as a cited black-box, scoped out into Phase 21b.
+Detail: ROADMAP §21 + notes/Phase21.md.
 
-#### Phase 21 — Theorem 5.5 base + Cases I & II (§5, §6.1–6.3)
+#### Phase 21b — Genericity device (Claim 6.4/6.9) (§6.1, §6.3) — ✓ Complete
 
-**Re-scoped 2026-06-03 (panel re-scope, risk #7; genericity scope-out,
-risk #4/#7), resumed and building.** Two re-scopes landed this day:
-(1) Theorem 5.5 and the realization-existence nodes are stated over
-**panel** (hinge-coplanar) realizations, not free body-hinge ones — the
-panel layer (`PanelHingeFramework` → `toBodyHinge` → `IsHingeCoplanar`),
-gated on the Phase-21a meet, is now green; (2) the shared analytic crux
-Claim 6.4/6.9 (the genericity device) is **scoped out into Phase 21b**,
-so Phase 21 aims to **close on the genericity-free content** with the
-device entering each remaining node as a **cited black-box**. See
-`DESIGN.md` *Panel-hinge = hinge-coplanar body-hinge* +
-*Genericity device (Claim 6.4/6.9) is its own sub-phase (Phase 21b)*,
-and `notes/Phase21.md` *Hand-off* for the node-by-node split.
-
-The induction skeleton on `|V|` with hypothesis (6.1) and the
-"nonparallel if simple" side condition. Base (`|V|=2`, via Lemma 5.3).
-**Case I** (proper rigid subgraph): §6.2 Lemmas 6.2 (non-simple), 6.3
-(simple, simple contraction; Claim 6.4 genericity → 21b), 6.5
-(remaining; Claim 6.6). **Case II** (`k>0`, splitting): §6.3 Lemmas
-6.7, 6.8 (Claim 6.9 → 21b) — the panel-hinge analogue of Whiteley's
-bar-joint 1-extension. Cycle Lemma 5.4 ([4,34]) — its four Lean pieces
-are green; the projective assembly is the 21b genericity device.
-
-- **Genericity-free hard core (Phase 21):** the panel layer, the
-  block-pin / `withGraph` / `withNormal` framework ops, the
-  block-triangular rank *accounting* (reusing Phase 18 Lemma 5.1), the
-  edge-substitution bridge, and the `hnew`/`hspan` reduction. The
-  *analytic* hard core — Claim 6.4 / Lemma 6.3 genericity ("entries are
-  polynomials in alg.-indep. panel coords ⇒ generic point attains max
-  rank") and Lemma 6.8's generic 1-extension lift — is **Phase 21b**.
-- **Inherited from Phase 19** (relocated at Phase-19 close, landed
-  GREEN-modulo-21b in Phase 21): the analytic half of
-  `prop:rigidity-matrix-prop11` (KT Prop 1.1) — `rank R(G,p) =
-  D(|V|−1) − def(G̃)` (JJ [15] Thm 6.1 geometric side), wiring the
-  rigidity-matrix rank `R(G,p)` (Phase 18) to the matroid corank
-  (`def = corank M(G̃)`, Phase 19's `thm:def-eq-corank`).
-  `rigidityMatrix_prop11` is the basis-free equality `dim Z = D + def`
-  (= `RankHypothesis (deficiency n)`), pinned by the genericity-free
-  upper bound (`hub`) + the 21b-cited generic-max-rank lower bound
-  (`hgen`) as explicit hypotheses. Matroidal half already green; the
-  generic-rank conclusion (`hgen`) is discharged in **Phase 21b**.
-- Split realized: Phase 21 = genericity-free reductions; Phase 21b =
-  the device. Case I vs Case II may still split within Phase 21.
-
-#### Phase 21b — Genericity device (Claim 6.4/6.9) (§6.1, §6.3)
-
-Scoped out of Phase 21 on 2026-06-03 (risk #4/#7), the analytic sibling
-of the Phase-21a meet sub-phase. The one genuinely new analytic crux of
-KT's algebraic induction: the entries of the panel-hinge rigidity matrix
-`R(G,p)` are polynomials in the algebraically independent panel
-coordinates (the per-vertex normals), so the rank is lower
-semicontinuous and attains its maximum on a Zariski-open (generic) set —
-a single good realization at the target rank lifts to a generic one
-(Claim 6.4, and its Case-II twin Claim 6.9). This is the shared
-black-box that Phase 21 leaves cited in `lem:case-I`, `lem:case-II`,
-`thm:theorem-55`, `prop:rigidity-matrix-prop11`, and the projective
-assembly of `lem:cycle-realization`; Phase 21b discharges it once and
-the consumers `\uses` it.
-
-- **Scope (at open):** the panel-coordinate parametrization of `R(G,p)`
-  (entries as polynomials in the normals), the generic-max-rank lemma
-  over that family, and the discharge of each consumer's cited
-  hypothesis — `hspan` for Case II (every base-pinned motion lands in
-  the two new spans, via the rank count), the block-triangular generic
-  gluing for Case I, the cycle projective assembly, and the generic-rank
-  reconciliation for Prop 1.1.
-- **Reuse-to-assess: RESOLVED → route (a), multivariate.** The Phase-6/8
-  Gram-det machinery (`Mathlib/LinearAlgebra/Matrix/Rank.lean`) is the
-  right base, but lifted two ways: to *rank* form (`finrank ≥ r`, not just
-  full-rank) and — the key finding (2026-06-04) — to *multivariate*
-  Zariski-open non-vanishing. The panel-matrix entries are degree-2
-  (bilinear in the per-vertex normals), so the consumers' realizations are
-  **not** reached along any affine line; a single-scalar/affine engine is
-  only a special case and does not prove Claim 6.4. The genuine engine is
-  "a nonzero multivariate minor polynomial has a non-root" via
-  `MvPolynomial.funext`. Landed as four mirror bricks (the
-  `exists_…_polynomial` family); the device statement is rebuilt on them.
-  Bottoms (for Case III's share) on Lemma 2.1 (Phase 17).
-- **Phase 21b COMPLETE (closed 2026-06-04).** `lem:genericity-device`
-  (multivariate Claim 6.4) + the genericity-free accounting iffs + the
-  `V(G)`-relative count bridges (N1–N3) + the reusable row/glue infra
-  (N7b-0/1/2/3, the device-closure glue) are green and axiom-clean. The
-  motive is `V(G)`-relative (`rank R = D(|V(G)|−1)`); the absolute
-  null-space form was unsatisfiable for non-spanning inductive subgraphs
-  (`DESIGN.md` *Realization motive must be V(G)-relative*).
-- **Realization producers re-scoped to Phases 22–23** (math-first pass vs.
-  KT §6.2–6.3; `notes/Phase21b.md` *Finding A/B*). The `theorem_55.hsplit`
-  branch (k=0 reducible-vertex split) is KT **Case III**, not Case II: KT's
-  eq. (6.12) degenerate placement is one row short of full rank for k=0 and
-  needs the Lemma 6.10/6.13 redundant-edge row. Only Case I (proper rigid
-  subgraph, §6.2 splice) reaches full rank. So both producers
-  (`lem:case-I-realization`, `lem:case-II-realization`) live with the
-  realization layer in 22–23; `thm:theorem-55` and
-  `prop:rigidity-matrix-prop11` stay green-modulo-22–23 (awaiting the
-  producers + the genericity-free `hub` partition brick). Lessons:
-  `DESIGN.md` *Constructibility recon before scheduling a producer build*
-  + *Phase Case-naming must match KT's k-bookkeeping*.
-- **Also consumed by Phases 22–23** (Case III's candidate-framework
-  genericity, Claims 6.11/6.12) — building it as its own sub-phase paid
-  off there too.
-- Final state + the KT math for both producers (Finding A/B) + the 22–23
-  hand-off live in `notes/Phase21b.md`.
+Discharged KT's one genuinely new analytic crux: `lem:genericity-device`
+(multivariate Claim 6.4 — `R(G,p)`'s entries are polynomials in the alg.-indep.
+panel normals, so a single good realization lifts to a generic one), built on the
+multivariate "nonzero minor has a non-root" engine (the `exists_…_polynomial` mirror
+bricks via `MvPolynomial.funext`), plus the genericity-free accounting iffs, the
+`V(G)`-relative count bridges (N1–N3), and the reusable N7b row/glue infra — all
+green + axiom-clean. The math-first pass here re-scoped the realization producers to
+Phases 22–23 and corrected the `k=0` split to KT Case III. Detail: ROADMAP §21b +
+notes/Phase21b.md.
 
 #### Phase 22 — Realization layer (sub-lettered: 22a + 22b + 22c + 22d + …) (§6.2, §6.4.1)
 
