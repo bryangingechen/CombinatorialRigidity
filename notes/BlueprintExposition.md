@@ -369,6 +369,36 @@ where `status ∈ {pending, done (<commit>)}` and **flavor** is one of:
   *product* (per-leg rank polynomial × GP factor). Pointer:
   `notes/Phase22-realization-design.md` §0, §1.1; `notes/Phase22a.md` *Decisions*
   — (G2) / N6b–N6c.
+- **`lem:case-III-claim612-p3-placement` — the third candidate via the graph iso
+  `Gᵥᵃᵇ ≅ Gₐᵛᶜ` (KT eqs. (6.31)–(6.41))** — [pending] **(a)** (Phase 22e capture). **Stable
+  insight:** Claim 6.12's third candidate `p₃` exists *because `a` is also a degree-2 vertex* — KT
+  splits off at `a` along `vc`, and `Gₐᵛᶜ` is isomorphic to `Gᵥᵃᵇ` (via `ρ(v)=a`, `ρ(u)=u`), so the
+  whole eq.-(6.29) candidate-completion machine reruns at the swapped roles. KT compresses this into a
+  half-page of matrix manipulations (eqs. (6.35)→(6.41): a column op `col_a += col_c`, the
+  substitutions `p₃(va)=q(ac)`, `p₃(vb)=q(ab)` of eq. (6.34), and a row reduction mirroring `R(G,p₁)`)
+  whose end state is the block-triangular eq. (6.41) with the `M₃` top-left block. The formalization
+  must make the graph-iso transport explicit (the `ofNormals` graph-swap defeq trap, the project's
+  recurring `IsInfinitesimallyRigidOn`-`convert` timeout). KT's densest single step in §6.4.1. Pointer:
+  KT pp. 687–689, eqs. (6.31)–(6.41); `notes/Phase22e.md` *Lemma checklist* N7.
+- **`lem:case-III-claim612-eq644` — eq. (6.44) routes `M₃` onto the same `r`** — [pending] **(a)**
+  (Phase 22e capture). **Stable insight:** the three candidates `M₁/M₂/M₃` only collapse to a *single*
+  contradiction because they all test the **same** vector `r`. `M₁/M₂` share `r := Σⱼ λ_{(ab)j} rⱼ(q(ab))`
+  by construction; `M₃`'s row is `Σⱼ λ_{(ac)j} rⱼ(q(ac))`, a priori different. Eq. (6.44) identifies it as
+  `−r`, and the mechanism is precisely *that `a` is degree-2*: in `Gᵥᵃᵇ` only `ab` and `ac` are incident
+  to `a`, so the `a`-column block of the eq.-(6.24) redundant-row vanishing (eq. (6.43), green
+  `lem:case-III-acolumn-zero`) has only two surviving sums, giving `Σⱼ λ_{(ab)j} rⱼ(q(ab)) + Σⱼ λ_{(ac)j}
+  rⱼ(q(ac)) = 0`, i.e. `M₃`'s row `= −r`. The degree-2-at-`a` hypothesis is doing real work here, not just
+  enabling `p₃`. Pointer: KT p. 691, eqs. (6.43)–(6.44); `notes/Phase22e.md` *Lemma checklist* N8.
+- **`lem:case-III-claim612` / the span-(6.45) + Lemma-2.1 finish** — [pending] **(c)** (Phase 22e
+  capture; load-bearing, expected to land as scoped). **Stable insight:** the disjunction's
+  contrapositive closes on a clean dimension count: if all three blocks fail, `r ⊥` every supporting
+  2-extensor `C(L)` over all lines `L ⊂ Π(a)∪Π(b)∪Π(c)`. KT then picks **four** affinely-independent
+  points realizing the `Π`-triple-intersection incidence pattern (`p₁∈Π(a)∩Π(b)∩Π(c)`, etc.), so each
+  of the `(4 choose 2)=6` connecting lines lies in `Π(a)∪Π(b)∪Π(c)` and its 2-extensor is in the union
+  (6.45); Lemma 2.1 (`omitTwoExtensor_linearIndependent` at `e=2`) makes those six independent, hence a
+  basis of `⋀²ℝ⁴ ≅ ℝ⁶`, so `r ⊥` a spanning set ⟹ `r = 0`, contradicting `r ≠ 0`. The deepest
+  linear-algebra fact of the program (Lemma 2.1) discharges the hardest case's final step. Pointer:
+  KT p. 691, eq. (6.45); `notes/Phase22e.md` *Lemma checklist* N1–N9.
 
 ## Retroactive coverage
 
