@@ -266,8 +266,13 @@ $w = \mathrm{hingeRow}\ v\ a\ \rho_g$ is supported on \emph{both} columns $v$ an
 op, not the seam alone, is what makes its $V \setminus \{v\}$ part zero --- and
 \cref{lem:case-III-columnop} now supplies $\Phi$ (the $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$
 change-of-variables automorphism) together with the fact that $w \circ \Phi$ is pure $v$-column.
-What remains open in \cref{lem:case-III-candidate-row} is assembling the transported combination
-into $w$ and threading the operated row to the eq.~(6.29) pin-block. The $a$-column-block vanishing
+The per-row eq.~(6.27) transport collapse (\cref{lem:case-III-transport-collapse}, green) closes the
+core algebra: each transported $(vb)j$-row minus the inductive $(ab)j$-row is the pure $(va)$-hinge
+row $\mathrm{hingeRow}\ v\ a\ (\mathrm{annihRow}\ C\ \cdot)$ (same supporting extensor by the shear
+identity), and it packages the column-op composition certifying $w \circ \Phi$ pure $v$-column.
+What remains open in \cref{lem:case-III-candidate-row} is threading the eqs.~(6.24)--(6.25)
+span-membership combination through this per-row collapse and feeding the operated row to the
+eq.~(6.29) pin-block. The $a$-column-block vanishing
 (\cref{lem:case-III-acolumn-zero}, green) is a Claim~6.12 fact (the $M_3$ case), not the
 candidate-row input.
 
@@ -438,10 +443,47 @@ candidate-row input.
   distributes over the per-index $\circ\,\mathrm{single}_v$), discharging $h_{\mathrm{newpin}}$.
 \end{proof}
 
+\begin{lemma}[The eq.\ (6.27) transport collapse: the $(vb)$-row minus the $(ab)$-row is a $(va)$-hinge row; KT eqs.\ (6.26)--(6.27)]
+  \label{lem:case-III-transport-collapse}
+  \lean{CombinatorialRigidity.Molecular.PanelHingeFramework.panelRow_vb_sub_panelRow_ab_eq_hingeRow_va,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.hingeRow_sub_hingeRow_eq,
+        CombinatorialRigidity.Molecular.BodyHingeFramework.comp_columnOp_eq_comp_single_proj}
+  \leanok
+  \uses{lem:case-III-seam, lem:case-III-columnop, lem:case-III-vanish-off-column}
+  The per-row form of KT eq.~(6.27)'s transport step, plus the column-op packaging that closes the
+  eq.~(6.28) vanishing. At the degenerate eq.~(6.12) placement $p_1 = q_0$ ($v$'s normal at
+  $n_a + t\,n_b$, $q_0 = q$ at the surviving endpoint $b$), the transported $(vb)j$-row of
+  $R(G, p_1)$ and the inductive $(ab)j$-row of $R(G_v^{ab}, q)$ read the \emph{same} supporting
+  extensor $C = \mathrm{panelSupportExtensor}\,n_a\,n_b$ --- the shear identity
+  $\mathrm{panelSupportExtensor}\,(n_a + t\,n_b)\,n_b = \mathrm{panelSupportExtensor}\,n_a\,n_b$
+  (KT eq.~(6.16)) --- so they are $\mathrm{hingeRow}\,v\,b\,(\mathrm{annihRow}\,C\,t_1\,t_2)$ and
+  $\mathrm{hingeRow}\,a\,b\,(\mathrm{annihRow}\,C\,t_1\,t_2)$, and their difference is the pure
+  $(va)$-hinge row
+  \[ R(G, p_1; (vb)j) - R(G_v^{ab}, q; (ab)j) = \mathrm{hingeRow}\,v\,a\,(\mathrm{annihRow}\,C\,t_1\,t_2), \]
+  by the hinge-difference collapse $\mathrm{hingeRow}\,v\,b\,\rho - \mathrm{hingeRow}\,a\,b\,\rho =
+  \mathrm{hingeRow}\,v\,a\,\rho$ (since $(S_v - S_b) - (S_a - S_b) = S_v - S_a$). This is exactly the
+  collapse KT eq.~(6.27) performs: transporting the redundant-$(ab)$-row combination as $(vb)$-rows
+  and subtracting the inductive $(ab)$-combination (which the eq.~(6.24) decomposition makes vanish,
+  $r\,i^* = w_{\mathrm{Gv}} + w_{\mathrm{Other}}$) collapses the transported row to
+  $w = \mathrm{hingeRow}\,v\,a\,\rho_g$. The companion fact composes the column op $\Phi$
+  (\cref{lem:case-III-columnop}) with the off-$v$ vanishing (\cref{lem:case-III-vanish-off-column}):
+  the operated row $w \circ \Phi$ \emph{is} its own pure $v$-column factorization
+  $(w \circ \Phi \circ \mathrm{single}_v) \circ \mathrm{proj}_v$, the eq.~(6.29) $(vb)i^*$-row.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Both panel rows unfold to $\mathrm{hingeRow}\,\cdot\,b\,(\mathrm{annihRow}\,C\,t_1\,t_2)$ with the
+  same $C$ (the shear identity at $q_0$ vs.\ the $(ab)$-extensor at $q$); the hinge-difference
+  identity then gives the $(va)$-hinge row. The column-op packaging is the composition of
+  \cref{lem:case-III-columnop} (the operated row vanishes off $v$) with
+  \cref{lem:case-III-vanish-off-column} (a row vanishing off $v$ factors through $v$'s column).
+\end{proof}
+
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.28)]
   \label{lem:case-III-candidate-row}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
         lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
+        lem:case-III-transport-collapse,
         lem:case-III-conditional-block, lem:case-II-realization-placement}
   Realize $G$ at the degenerate eq.~(6.12) placement $p_1$ with $p_1(vb) = q(ab)$
   (\cref{lem:case-II-realization-placement}). The redundant-$ab$-row of $R(G_v^{ab}, q)$,
@@ -460,22 +502,29 @@ candidate-row input.
 \end{lemma}
 \begin{proof}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam}
+        lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam,
+        lem:case-III-transport-collapse}
   \emph{The open crux, deferred within Phase~22.} The eqs.~(6.24)--(6.25) decomposition
   (\cref{lem:case-III-redundant-decomposition}), the per-edge seam identity
-  (\cref{lem:case-III-seam}), and the column operation $\Phi$ (\cref{lem:case-III-columnop}) are
-  green. Substituting the eqs.~(6.24)--(6.25) decomposition with $g = w_{\mathrm{Gv}} +
+  (\cref{lem:case-III-seam}), the column operation $\Phi$ (\cref{lem:case-III-columnop}), and the
+  per-row eq.~(6.27) transport collapse (\cref{lem:case-III-transport-collapse}) are green.
+  Substituting the eqs.~(6.24)--(6.25) decomposition with $g = w_{\mathrm{Gv}} +
   w_{\mathrm{Other}} - r\,i^* = 0$, the transported row collapses to
   $w = \mathrm{hingeRow}\ v\ a\ \rho_g$ with $\rho_g = \sum_j \lambda_{(ab)j} r_j \neq 0$ ---
   supported on \emph{both} columns $v$ and $a$, with $w(S) = \rho_g(S_v - S_a)$, which is
-  $-\rho_g(S_a) \neq 0$ on $S_v = 0$. The $V \setminus \{v\}$-vanishing comes from the
+  $-\rho_g(S_a) \neq 0$ on $S_v = 0$. The per-row collapse
+  $R(G, p_1; (vb)j) - R(G_v^{ab}, q; (ab)j) = \mathrm{hingeRow}\ v\ a\ (\mathrm{annihRow}\ C\ \cdot)$
+  is \cref{lem:case-III-transport-collapse}; the $V \setminus \{v\}$-vanishing comes from the
   eqs.~(6.14)--(6.15) \emph{column operation} $\mathrm{col}_a \mathrel{+}= \mathrm{col}_v$: by
   \cref{lem:case-III-columnop}, precomposing with $\Phi(S) = \mathrm{update}\ S\ v\ (S_v + S_a)$
   gives $w(\Phi(S)) = \rho_g(S_v)$, so $w \circ \Phi$ vanishes off $v$ and is pure $v$-column by
-  \cref{lem:case-III-vanish-off-column} --- \emph{not} from KT eq.~(6.43), which is a Claim~6.12 fact
-  (\cref{lem:case-III-acolumn-zero} is $g$'s $a$-column $= 0$, trivially $g = 0$, consumed in the
-  $M_3$ case). What stays open is assembling the transported combination into $w$ (the eq.~(6.27)
-  transport) and threading the operated row $w \circ \Phi$ to the eq.~(6.29) pin-block.
+  \cref{lem:case-III-vanish-off-column} (the composition packaged in
+  \cref{lem:case-III-transport-collapse}) --- \emph{not} from KT eq.~(6.43), which is a Claim~6.12
+  fact (\cref{lem:case-III-acolumn-zero} is $g$'s $a$-column $= 0$, trivially $g = 0$, consumed in
+  the $M_3$ case). What stays open is threading the eqs.~(6.24)--(6.25) span-membership combination
+  through the per-row transport (summing \cref{lem:case-III-transport-collapse} over the
+  $\lambda_{(ab)j}$-weights) and feeding the operated row $w \circ \Phi$ to the eq.~(6.29) pin-block
+  (\cref{lem:case-III-conditional-block}) with the count $((D-1)+1) + D(|V_v|-1) = D(|V|-1)$.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
@@ -487,6 +536,7 @@ candidate-row input.
         lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row,
         lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
         lem:case-III-acolumn-zero, lem:case-III-candidate-row,
+        lem:case-III-transport-collapse,
         lem:case-III-vanish-off-column, lem:case-III-columnop, lem:case-III-seam}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank

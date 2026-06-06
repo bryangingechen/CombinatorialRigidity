@@ -3057,4 +3057,50 @@ theorem BodyHingeFramework.exists_redundant_panelRow_ab_decomposition_acolumn_ze
   refine ⟨r, hr, hrspan, i, wGv, wOther, hwGv, hwOther, hsum, fun a => ?_⟩
   rw [hsum, sub_self, LinearMap.zero_comp]
 
+/-- **The eq. (6.27) per-row transport collapse: the `vb`-row minus the `ab`-row is a `va`-hinge
+row** (`lem:case-III-candidate-row`, the eqs. (6.26)–(6.27) transport step; Katoh–Tanigawa 2011
+§6.4.1, eq. (6.27), Phase 22e). At the degenerate eq. (6.12) placement `q₀` — `v`'s normal placed
+at `n_a + t • n_b` (`hq₀v`), with `q₀` agreeing with the inductive seed `q` at the surviving
+endpoint `b` (`hq₀b`; the `ab`-row reads `q` at `a` directly) — the transported `(vb)j`-row of
+`R(G, q₀)` reproduces the
+`(ab)j`-row of `R(G_v^{ab}, q)` *up to its endpoint*: both read the **same** supporting extensor
+`C = panelSupportExtensor n_a n_b` (the shear identity `panelSupportExtensor_add_smul_right` makes
+`v`'s `vb`-extensor equal `q`'s `ab`-extensor, KT eq. (6.16)), so they are
+`hingeRow v b (annihRow C t₁ t₂)` and `hingeRow a b (annihRow C t₁ t₂)`. Their difference is the
+pure `va`-hinge row
+\[ R(G, q₀; (vb)j) - R(G_v^{ab}, q; (ab)j)
+   = \mathrm{hingeRow}\ v\ a\ (\mathrm{annihRow}\ C\ t₁\ t₂), \]
+by the hinge-difference collapse `hingeRow_sub_hingeRow_eq`
+(`(S_v - S_b) - (S_a - S_b) = S_v - S_a`).
+
+This is the per-row form of KT eq. (6.27): transporting the redundant-`ab`-row combination
+(`exists_redundant_panelRow_ab_decomposition`, the `λ_{(ab)j}`-weighted `ab`-rows with
+`λ_{(ab)i^*} = 1`) up to `R(G, q₀)` as `(vb)j`-rows and subtracting the inductive `ab`-combination
+(which the eq. (6.24) decomposition makes vanish, `r i^* = w_{Gv} + w_{Other}`) collapses the
+transported row to `w = hingeRow v a ρ_g` with `ρ_g = Σ_j λ_{(ab)j} (annihRow C ·)`. The column op
+`columnOp` then turns this `va`-hinge row into the pure-`v`-column row of eq. (6.28)
+(`comp_columnOp_eq_comp_single_proj`), the `+1` row the eq. (6.29) pin-block
+(`linearIndependent_sum_pinned_block_augment`) consumes. -/
+theorem PanelHingeFramework.panelRow_vb_sub_panelRow_ab_eq_hingeRow_va
+    (G Gab : Graph α β) (ends : β → α × α) {q₀ q : α × Fin (k + 2) → ℝ}
+    {e_b e₀ : β} {v a b : α} {t : ℝ}
+    (hends_eb : ends e_b = (v, b)) (hends_e0 : ends e₀ = (a, b))
+    (hq₀v : (fun i => q₀ (v, i)) = (fun i => q (a, i)) + t • (fun i => q (b, i)))
+    (hq₀b : (fun i => q₀ (b, i)) = fun i => q (b, i))
+    (t₁ t₂ : Set.powersetCard (Fin (k + 2)) k) :
+    (PanelHingeFramework.ofNormals G ends q₀).toBodyHinge.panelRow ends (e_b, t₁, t₂)
+        - (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.panelRow ends (e₀, t₁, t₂)
+      = BodyHingeFramework.hingeRow v a (annihRow
+          (panelSupportExtensor (fun i => q (a, i)) (fun i => q (b, i))) t₁ t₂) := by
+  -- Both panel rows read the *same* supporting extensor `C = panelSupportExtensor n_a n_b`: at `q₀`
+  -- the `vb`-extensor is `panelSupportExtensor (n_a + t•n_b) n_b = panelSupportExtensor n_a n_b`
+  -- (the shear identity, KT eq. (6.16)); at `q` the `ab`-extensor is the same.
+  simp only [BodyHingeFramework.panelRow, PanelHingeFramework.toBodyHinge_supportExtensor,
+    PanelHingeFramework.ofNormals_ends, PanelHingeFramework.ofNormals_normal,
+    hends_eb, hends_e0, hq₀v, hq₀b]
+  rw [panelSupportExtensor_add_smul_right]
+  -- The two rows are now `hingeRow v b (annihRow C ·)` and `hingeRow a b (annihRow C ·)`; their
+  -- difference is the pure `va`-hinge row (`(S_v − S_b) − (S_a − S_b) = S_v − S_a`).
+  exact BodyHingeFramework.hingeRow_sub_hingeRow_eq v a b _
+
 end CombinatorialRigidity.Molecular

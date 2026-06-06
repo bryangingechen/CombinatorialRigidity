@@ -294,6 +294,21 @@ theorem hingeRow_swap (u v : α) (r : Module.Dual ℝ (ScrewSpace k)) :
   LinearMap.ext fun S => by rw [hingeRow_apply, hingeRow_apply, LinearMap.neg_apply, ← map_neg,
     neg_sub]
 
+/-- **The hinge-difference collapse: two rows sharing an endpoint subtract to a third hinge row**
+(`def:rigidity-matrix`, the candidate-completion's eq.~(6.27) collapse algebra; Katoh–Tanigawa 2011
+§6.4.1, Phase 22e). For a fixed hinge-row-block functional `r` and a common endpoint `w`,
+`hingeRow u w r - hingeRow v w r = hingeRow u v r`: both rows read the relative screw against the
+same `w`, so the shared `S w` cancels, `(S u - S w) - (S v - S w) = S u - S v`. This is the
+algebraic heart of the candidate-completion transport (`panelRow_vb_sub_panelRow_ab_eq_hingeRow_va`,
+eq.~(6.27)): the transported `(vb)`-row minus the inductive `(ab)`-row (sharing endpoint `b` and the
+same supporting extensor) collapses to the pure `(va)`-hinge row `hingeRow v a ρ_g` — the candidate
+row `w` whose column op makes it pure `v`-column. -/
+theorem hingeRow_sub_hingeRow_eq (u v w : α) (r : Module.Dual ℝ (ScrewSpace k)) :
+    hingeRow (k := k) (α := α) u w r - hingeRow v w r = hingeRow u v r :=
+  LinearMap.ext fun S => by
+    rw [LinearMap.sub_apply, hingeRow_apply, hingeRow_apply, hingeRow_apply, ← map_sub,
+      sub_sub_sub_cancel_right]
+
 /-- **The independence bridge: independent hinge-row functionals stay independent as rigidity rows**
 (`def:rigidity-matrix`, the Case-I `hindep` brick). For a genuine edge `e = uv` with distinct
 endpoints, if a family `r : ι → Module.Dual ℝ (ScrewSpace k)` of hinge-row-block functionals is
@@ -586,6 +601,29 @@ theorem hingeRow_comp_columnOp_vanish_off [DecidableEq α] {v a : α} (hva : v �
     (ρ : Module.Dual ℝ (ScrewSpace k)) (S : α → ScrewSpace k) (hS : S v = 0) :
     hingeRow (k := k) (α := α) v a ρ (columnOp (k := k) hva S) = 0 := by
   rw [hingeRow_comp_columnOp_apply hva ρ S, hS, map_zero]
+
+/-- **The operated candidate row is a pure `v`-column row** (`lem:case-III-candidate-row`, the
+eqs.~(6.27)–(6.28) packaging; Katoh–Tanigawa 2011 §6.4.1, Phase 22e). The combined certificate the
+candidate-completion's `w`-assembly produces: precomposing the transported candidate row
+`hingeRow v a ρ` of `R(G, p_1)` (supported on *both* columns `v` and `a`) with the column operation
+`Φ = columnOp hva` (`col_a += col_v`) gives the operated row `w := (hingeRow v a ρ) ∘ₗ Φ`, and this
+operated row factors through body `v`'s screw column:
+`w = (w ∘ₗ single v) ∘ₗ proj v` — a *pure `v`-column* row. This is exactly the composition of the
+two leaves the assembly threads: `hingeRow_comp_columnOp_vanish_off` (eqs.~(6.14)–(6.16): the
+operated row kills every assignment supported off `v`) feeds the off-`v` vanishing hypothesis of
+`dualMap_eq_comp_single_proj_of_vanish_off` (eq.~(6.28): a row vanishing off `v` is a pure
+`v`-column row). The result is the eq.~(6.29) `(vb)i^*`-row that joins the `va`-block in
+`linearIndependent_sum_pinned_block_augment`'s pin-a-body split — the missing `+1` taking the
+stratum-1 brick `D(|V|−1) − 1` to full `D(|V|−1)`. -/
+theorem comp_columnOp_eq_comp_single_proj [DecidableEq α] {v a : α} (hva : v ≠ a)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    (hingeRow (k := k) (α := α) v a ρ).comp (columnOp (k := k) hva).toLinearMap
+      = (((hingeRow (k := k) (α := α) v a ρ).comp (columnOp (k := k) hva).toLinearMap).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)).comp (LinearMap.proj v) :=
+  dualMap_eq_comp_single_proj_of_vanish_off
+    ((hingeRow (k := k) (α := α) v a ρ).comp (columnOp (k := k) hva).toLinearMap) v
+    (fun S hS => by
+      rw [LinearMap.comp_apply, LinearEquiv.coe_coe, hingeRow_comp_columnOp_vanish_off hva ρ S hS])
 
 /-- **The star independence bridge: rows from distinct hinges at a common body are jointly
 independent** (`def:rigidity-matrix`, the Case-I cross-hinge `hindep` step). Fix a body `v` and a
