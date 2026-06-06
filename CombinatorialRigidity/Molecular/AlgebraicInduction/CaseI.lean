@@ -2995,4 +2995,66 @@ theorem BodyHingeFramework.exists_redundant_panelRow_ab_decomposition
   obtain ⟨wGv, hwGv, wOther, hwOther, hsum⟩ := Submodule.mem_sup.1 hmem
   exact ⟨r, hr, hrspan, i, wGv, wOther, hwGv, hwOther, hsum.symm⟩
 
+/-- **KT eq. (6.43): the `a`-column block of the eq. (6.24) vanishing combination is `0`**
+(`lem:case-III-candidate-row` infra, the candidate-completion's eq. (6.43); Katoh–Tanigawa 2011
+§6.4.1, eq. (6.43), Phase 22e). The eq. (6.24)/(6.25) decomposition
+(`exists_redundant_panelRow_ab_decomposition`) records the redundant `ab`-row as
+`r i^* = wGv + wOther`, i.e.\ the *vanishing combination*
+`g := wGv + wOther - r i^* = 0` — KT's eq. (6.24)
+`Σ_j λ_{(ab)j} R(G_v^{ab}, q; (ab)j) + Σ_{e ∈ E_v, j} λ_{ej} R(G_v^{ab}, q; ej) = 0`
+as a functional on the screw assignments `α → ScrewSpace k`. KT eq. (6.43) is its
+**restriction to any single body `a`'s screw column**: precomposing the zero functional `g`
+with the column injection `single a : ScrewSpace k → (α → ScrewSpace k)` (place a screw on body
+`a`, `0` elsewhere) is again `0`,
+\[ g \circ \mathrm{single}_a \;=\; 0 \quad\text{on } \mathrm{ScrewSpace}\,k, \]
+concretely `Σ_{e ∈ E_v ∪ \{ab\}, j} λ_{ej} R(G_v^{ab}, q; e_j, a) = 0` (KT eq. (6.43)).
+
+This is the one fact the candidate-completion transport (`lem:case-III-candidate-row`, eqs.
+(6.26)–(6.28)) still needs to certify that the transported row `w`'s `V ∖ {v}` part vanishes:
+at the degenerate eq. (6.12) placement `p_1` the `(ab)j`-rows become `(vb)j`-rows, and over
+`V ∖ {v}` the two differ by exactly the `a`-column block `r_j(·\,a)` of the `ab`-edge (the
+`(vb)`-hinge is `0` in column `a`). So `w`'s `V ∖ {v}` part is the eq. (6.24) sum (`= g(S) = 0`)
+minus the residual `a`-block, which this lemma kills. The `a`-block reads off the column-`a`
+content of every term in the combination — `single a` evaluates each `hingeRow`-row at the screw
+placed on `a` — so the residual is exactly `g ∘ single a`, zero because `g` is the zero
+functional. Stated for *every* body `a` (the transport instantiates it at the `ab`-edge's surviving
+endpoint). The companion column-support core `dualMap_eq_comp_single_proj_of_vanish_off`
+(eq. (6.28)) then turns `w` (now `V ∖ {v}`-zero) into the pure `v`-column row of eq. (6.29). -/
+theorem BodyHingeFramework.exists_redundant_panelRow_ab_decomposition_acolumn_zero
+    [Finite α] [DecidableEq α] {Gab Gv : Graph α β} {ends : β → α × α}
+    {q : α × Fin (k + 2) → ℝ} {e₀ : β}
+    (hD : 2 ≤ screwDim k)
+    (huv : (ends e₀).1 ≠ (ends e₀).2)
+    (hne₀ : (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.supportExtensor e₀ ≠ 0)
+    (he₀ : Gab.IsLink e₀ (ends e₀).1 (ends e₀).2)
+    (hle : ∀ e u v, Gv.IsLink e u v → Gab.IsLink e u v)
+    (hsplit : ∀ e u v, Gab.IsLink e u v → Gv.IsLink e u v ∨ e = e₀)
+    {m k' : ℕ} (hk' : k' ≤ screwDim k - 2)
+    (h618 : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.rigidityRows)
+      = screwDim k * (m - 1))
+    (h622 : Module.finrank ℝ (Submodule.span ℝ
+        (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows)
+      = screwDim k * (m - 1) - k') :
+    ∃ (r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k)),
+      LinearIndependent ℝ r ∧
+      Submodule.span ℝ (Set.range r) = Submodule.span ℝ (Set.range (fun p :
+        Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+          (PanelHingeFramework.ofNormals Gab ends q).toBodyHinge.panelRow ends (e₀, p.1, p.2))) ∧
+      ∃ (i : Fin (screwDim k - 1))
+        (wGv wOther : Module.Dual ℝ (α → ScrewSpace k)),
+        wGv ∈ Submodule.span ℝ
+          (PanelHingeFramework.ofNormals Gv ends q).toBodyHinge.rigidityRows ∧
+        wOther ∈ Submodule.span ℝ (r '' {j | j ≠ i}) ∧
+        r i = wGv + wOther ∧
+        ∀ a : α, (wGv + wOther - r i).comp
+            (LinearMap.single ℝ (fun _ : α => ScrewSpace k) a) = 0 := by
+  obtain ⟨r, hr, hrspan, i, wGv, wOther, hwGv, hwOther, hsum⟩ :=
+    BodyHingeFramework.exists_redundant_panelRow_ab_decomposition hD huv hne₀ he₀ hle hsplit hk'
+      h618 h622
+  -- The combination `wGv + wOther - r i` is the zero functional (`r i = wGv + wOther`); its
+  -- restriction to any body `a`'s screw column (precompose with `single a`) is therefore `0`.
+  refine ⟨r, hr, hrspan, i, wGv, wOther, hwGv, hwOther, hsum, fun a => ?_⟩
+  rw [hsum, sub_self, LinearMap.zero_comp]
+
 end CombinatorialRigidity.Molecular

@@ -259,12 +259,13 @@ from $R(G_v^{ab}, q)$ up to $R(G, p_1)$ across the seam
 $R(G, p_1; E \setminus \{vb\}, V \setminus \{v\}) = R(G_v^{ab}, q)$, produces a row
 $w$ of $R(G, p_1)$ whose $V \setminus \{v\}$ part vanishes (eqs.~(6.27)--(6.28)).
 The eqs.~(6.24)--(6.25) decomposition of the redundant row
-(\cref{lem:case-III-redundant-decomposition}, green), the per-edge seam identity
+(\cref{lem:case-III-redundant-decomposition}, green), its eq.~(6.43) $a$-column-block vanishing
+(\cref{lem:case-III-acolumn-zero}, green), the per-edge seam identity
 (\cref{lem:case-III-seam}, green), and the pure-$v$-column characterization of such a row
 (\cref{lem:case-III-vanish-off-column}, green) are all in place; the eq.~(6.27) transport of the
-combination across the seam --- which needs the eq.~(6.43) $a$-block-vanishing to reconcile the
-$(vb)j \leftrightarrow (ab)j$ correspondence (see the caveat in
-\cref{lem:case-III-candidate-row}'s proof) --- remains the open crux.
+combination across the seam --- assembling these into the row $w$ and reconciling the
+$(vb)j \leftrightarrow (ab)j$ correspondence via the eq.~(6.43) $a$-block-vanishing (see the caveat
+in \cref{lem:case-III-candidate-row}'s proof) --- remains the open crux.
 
 \begin{lemma}[A rigidity row vanishing off $v$'s column is a pure $v$-column row; KT eq.\ (6.28)]
   \label{lem:case-III-vanish-off-column}
@@ -338,10 +339,40 @@ $(vb)j \leftrightarrow (ab)j$ correspondence (see the caveat in
   $\operatorname{span}(r \mathbin{''} \{j \neq i^*\})$ summand $w_{\mathrm{Other}}$.
 \end{proof}
 
+\begin{lemma}[The $a$-column block of the eq.\ (6.24) vanishing combination is $0$; KT eq.\ (6.43)]
+  \label{lem:case-III-acolumn-zero}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_ab_decomposition_acolumn_zero}
+  \leanok
+  \uses{lem:case-III-redundant-decomposition}
+  The eqs.~(6.24)--(6.25) decomposition (\cref{lem:case-III-redundant-decomposition}) writes the
+  redundant $ab$-row as $r\,i^* = w_{\mathrm{Gv}} + w_{\mathrm{Other}}$, i.e.\ the vanishing
+  combination $g := w_{\mathrm{Gv}} + w_{\mathrm{Other}} - r\,i^* = 0$ --- KT's eq.~(6.24)
+  $\sum_j \lambda_{(ab)j} R(G_v^{ab}, q; (ab)j) + \sum_{e \in E_v, j} \lambda_{ej} R(G_v^{ab}, q;
+  e_j) = 0$ as a functional on the screw assignments $\alpha \to \mathrm{ScrewSpace}\,k$. KT
+  eq.~(6.43) is its restriction to any single body $a$'s screw column: precomposing $g$ with the
+  column injection $\mathrm{single}_a \colon \mathrm{ScrewSpace}\,k \to (\alpha \to
+  \mathrm{ScrewSpace}\,k)$ (a screw on $a$, $0$ elsewhere) is again $0$,
+  \[ g \circ \mathrm{single}_a = 0, \qquad\text{i.e.}\qquad
+     \sum_{e \in E_v \cup \{ab\},\, j} \lambda_{ej}\, R(G_v^{ab}, q; e_j, a) = 0. \]
+  This is the residual that the candidate-completion transport
+  (\cref{lem:case-III-candidate-row}) must kill to certify that the transported row $w$'s
+  $V \setminus \{v\}$ part vanishes: over $V \setminus \{v\}$ the $(vb)j$-row of $R(G, p_1)$ and the
+  $(ab)j$-row of $R(G_v^{ab}, q)$ differ by exactly the $a$-column block $r_j(\cdot\,a)$, so $w$'s
+  $V \setminus \{v\}$ part is the eq.~(6.24) sum ($= g(S) = 0$) minus that $a$-block.
+\end{lemma}
+\begin{proof}
+  \leanok
+  Since $r\,i^* = w_{\mathrm{Gv}} + w_{\mathrm{Other}}$
+  (\cref{lem:case-III-redundant-decomposition}), the combination $g = w_{\mathrm{Gv}} +
+  w_{\mathrm{Other}} - r\,i^*$ is the zero functional; precomposing it with $\mathrm{single}_a$ is
+  therefore $0$ for every body $a$.
+\end{proof}
+
 \begin{lemma}[The candidate-completion row operation: the missing $+1$ row $w$; KT eqs.\ (6.24)--(6.28)]
   \label{lem:case-III-candidate-row}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-vanish-off-column, lem:case-III-seam, lem:case-II-realization-placement}
+        lem:case-III-acolumn-zero, lem:case-III-vanish-off-column, lem:case-III-seam,
+        lem:case-II-realization-placement}
   Realize $G$ at the degenerate eq.~(6.12) placement $p_1$ with $p_1(vb) = q(ab)$
   (\cref{lem:case-II-realization-placement}). The redundant-$ab$-row of $R(G_v^{ab}, q)$,
   decomposed by \cref{lem:case-III-redundant-decomposition} (eqs.~(6.24)--(6.25)) into a $G_v$-row
@@ -359,24 +390,23 @@ $(vb)j \leftrightarrow (ab)j$ correspondence (see the caveat in
 \end{lemma}
 \begin{proof}
   \uses{lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-vanish-off-column, lem:case-III-seam}
+        lem:case-III-acolumn-zero, lem:case-III-vanish-off-column, lem:case-III-seam}
   \emph{The open crux, deferred within Phase~22.} The eqs.~(6.24)--(6.25) decomposition
-  (\cref{lem:case-III-redundant-decomposition}) and the per-edge seam identity
-  (\cref{lem:case-III-seam}) are green. What stays open is the eq.~(6.27) transport of the
-  combination from $R(G_v^{ab}, q)$ to $R(G, p_1)$ and the proof that its $V \setminus \{v\}$ part
-  vanishes. \textbf{Structural caveat (Phase 22e finding).} The vanishing is \emph{not} immediate
-  from the per-edge seam alone: the $E_v$-rows transport as literal functional equalities (their
-  endpoints avoid $v$, so $q_0 = q$ there, \cref{lem:case-III-seam}), but the $(vb)j$-row of
-  $R(G, p_1)$ ($hingeRow\ v\ b\ r$) and the $(ab)j$-row of $R(G_v^{ab}, q)$ ($hingeRow\ a\ b\ r$),
-  restricted to $V \setminus \{v\}$, differ by the $a$-column block $r_j(\cdot\,a)$ (the $(vb)$-hinge
-  is $0$ in column $a$, the $(ab)$-hinge is $r_j$ there). The transported combination's $V \setminus
-  \{v\}$ part is therefore the eq.~(6.24) sum (which is $0$) \emph{minus} $\sum_j \lambda_{(ab)j}
-  r_j(\cdot\,a)$, the $a$-column block of eq.~(6.24). That residual term vanishes by KT eq.~(6.43)
-  --- the $a$-block of eq.~(6.24): $\sum_{e \in E_v \cup \{ab\}, j} \lambda_{ej} R(G_v^{ab}, q;
-  e_j, a) = 0$ --- so the full $V \setminus \{v\}$ part is $0$ after all. The remaining build is to
-  read off the $v$-column part from $R(G, p_1; E_v, v) = 0$ and $R(G, p_1; (vb)j, v) = r_j(p_1(vb))
-  = r_j(q(ab))$, and apply \cref{lem:case-III-vanish-off-column} to certify $w$ is a pure
-  $v$-column row.
+  (\cref{lem:case-III-redundant-decomposition}), its eq.~(6.43) $a$-column-block vanishing
+  (\cref{lem:case-III-acolumn-zero}), and the per-edge seam identity (\cref{lem:case-III-seam}) are
+  green. What stays open is the eq.~(6.27) transport of the combination from $R(G_v^{ab}, q)$ to
+  $R(G, p_1)$ and the proof that its $V \setminus \{v\}$ part vanishes. \textbf{Structural caveat
+  (Phase 22e finding).} The vanishing is \emph{not} immediate from the per-edge seam alone: the
+  $E_v$-rows transport as literal functional equalities (their endpoints avoid $v$, so $q_0 = q$
+  there, \cref{lem:case-III-seam}), but the $(vb)j$-row of $R(G, p_1)$ ($hingeRow\ v\ b\ r$) and the
+  $(ab)j$-row of $R(G_v^{ab}, q)$ ($hingeRow\ a\ b\ r$), restricted to $V \setminus \{v\}$, differ by
+  the $a$-column block $r_j(\cdot\,a)$ (the $(vb)$-hinge is $0$ in column $a$, the $(ab)$-hinge is
+  $r_j$ there). The transported combination's $V \setminus \{v\}$ part is therefore the eq.~(6.24)
+  sum (which is $0$) \emph{minus} $\sum_j \lambda_{(ab)j} r_j(\cdot\,a)$, the $a$-column block of
+  eq.~(6.24), killed by KT eq.~(6.43) (\cref{lem:case-III-acolumn-zero}, green) --- so the full
+  $V \setminus \{v\}$ part is $0$ after all. The remaining build is to read off the $v$-column part
+  from $R(G, p_1; E_v, v) = 0$ and $R(G, p_1; (vb)j, v) = r_j(p_1(vb)) = r_j(q(ab))$, and apply
+  \cref{lem:case-III-vanish-off-column} to certify $w$ is a pure $v$-column row.
 \end{proof}
 
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
@@ -387,7 +417,7 @@ $(vb)j \leftrightarrow (ab)j$ correspondence (see the caveat in
         lem:case-III-seed-rank-bridge, lem:case-III-seed-rank-upper,
         lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row,
         lem:case-III-claim-6-11, lem:case-III-redundant-decomposition,
-        lem:case-III-candidate-row,
+        lem:case-III-acolumn-zero, lem:case-III-candidate-row,
         lem:case-III-vanish-off-column, lem:case-III-seam}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank

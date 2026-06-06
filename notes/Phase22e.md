@@ -2,7 +2,8 @@
 
 **Status:** in progress (opened 2026-06-06 design-pass-first; opening recon +
 eq.-(6.28) blueprint node + `w` constructibility recon + `w` node-cut + the
-seam-identity build landed).
+seam-identity build + the eqs.-(6.24)/(6.25) decomposition + the eq.-(6.43)
+`a`-block vanishing landed).
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -16,31 +17,29 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: KT eq. (6.43) — the `a`-block of the eq.-(6.24) vanishing
-combination is itself `0`.** This is the one missing fact for the eq.-(6.27) transport
-(see *Decisions → eq.-(6.43) finding* below). With the eqs.-(6.24)/(6.25) decomposition
-now green (`exists_redundant_panelRow_ab_decomposition`), the seam green
-(`ofNormals_panelRow_eq_of_ends_seed_eq`), and the eq.-(6.28) leaf green
-(`dualMap_eq_comp_single_proj_of_vanish_off`), the remaining crux of
-`lem:case-III-candidate-row` is: the transported row `w`'s `V∖{v}` part is the eq.-(6.24)
-sum (= 0) *minus* the `a`-column block `Σⱼ λ_{(ab)j} r_j(·a)`; that residual vanishes only
-by KT eq. (6.43). Land eq. (6.43) as a Lean lemma (the per-column-block restriction of the
-eq.-(6.24) functional identity at body `a` is `0`), then assemble `w` and apply the
-eq.-(6.28) leaf; then the conditional `D`-row block (eq. (6.29),
-`linearIndependent_sum_pinned_block`) and Claim 6.12.
+**Next concrete commit: assemble the row `w` (KT eqs. (6.26)–(6.28))** — transport the
+eqs.-(6.24)/(6.25) decomposition across the seam and certify its `V∖{v}` part vanishes, then
+apply the eq.-(6.28) leaf to land `lem:case-III-candidate-row` green. All four inputs are now
+green: the eqs.-(6.24)/(6.25) decomposition (`exists_redundant_panelRow_ab_decomposition`), the
+eq.-(6.43) `a`-block vanishing (`…_acolumn_zero`, this commit), the per-edge seam
+(`ofNormals_panelRow_eq_of_ends_seed_eq`), and the eq.-(6.28) leaf
+(`dualMap_eq_comp_single_proj_of_vanish_off`). The open crux is the eq.-(6.27) *assembly*:
+build `w = Σⱼ λ_{(ab)j} hingeRow v b r_j + Σ_{E_v} λ_{ej}(…)` in `span(R(G,p₁)-rows)`, show its
+`V∖{v}` part = the eq.-(6.24) sum (= 0) *minus* the ab-part `a`-block (killed by eq. (6.43)),
+then `dualMap_eq_comp_single_proj_of_vanish_off` makes `w` a pure `v`-column row. Then the
+conditional `D`-row block (eq. (6.29), `linearIndependent_sum_pinned_block`) and Claim 6.12.
 
-**Landed this commit (eqs. (6.24)/(6.25) extraction, KT functional-identity form):**
-- `BodyHingeFramework.exists_redundant_panelRow_ab_decomposition` (`CaseI.lean`,
-  axiom-clean) — unwinds the redundant-row *membership* of
-  `exists_redundant_panelRow_ab_of_finrank_eq` (eq. (6.23)) via `Submodule.mem_sup` into
-  KT's eq. (6.24): the redundant `ab`-row `r i*` *equals* a `G_v`-row element `wGv` plus a
-  combination `wOther` of the other `ab`-rows, the `(ab)i*`-coefficient `= 1` (eq. (6.25)).
-  Blueprint node `lem:case-III-redundant-decomposition` (green); wired into
-  `lem:case-III-candidate-row` and `lem:case-III` `\uses`.
-- **`lem:case-III-candidate-row` proof prose corrected** with the eq.-(6.43) structural
-  caveat (the off-`v` vanishing is two facts, not one — the seam covers only `E_v`-rows;
-  the `(vb)↔(ab)` `a`-block discrepancy needs eq. (6.43)). Candidate-completion subsection
-  preamble + BlueprintExposition ledger capture entry updated to match. Node stays red.
+**Landed this commit (KT eq. (6.43), the `a`-column block of eq. (6.24) is `0`):**
+- `BodyHingeFramework.exists_redundant_panelRow_ab_decomposition_acolumn_zero` (`CaseI.lean`,
+  axiom-clean) — extends the eqs.-(6.24)/(6.25) decomposition with the eq.-(6.43) conclusion: the
+  vanishing combination `g := wGv + wOther − r i*` (= 0 since `r i* = wGv + wOther`) precomposed
+  with the column injection `single a` is `0` for every body `a`, i.e. the `a`-column block of
+  eq. (6.24) is itself `0` (`Σ_{e∈E_v∪{ab},j} λ_{ej} R(G_v^{ab},q;e_j,a) = 0`). One-line proof
+  (`rw [hsum, sub_self, LinearMap.zero_comp]`): trivial *given* the decomposition, but the
+  load-bearing fact the `w`-assembly's off-`v` vanishing consumes. Blueprint node
+  `lem:case-III-acolumn-zero` (green, `\uses lem:case-III-redundant-decomposition`); wired into
+  `lem:case-III-candidate-row` (statement + proof `\uses`) and `lem:case-III`. Candidate-completion
+  preamble + the candidate-row proof caveat updated (eq. (6.43) now green, only the transport open).
 
 ## Constructibility recon — `w`'s row operation (KT eqs. (6.24)→(6.28))
 
@@ -134,8 +133,13 @@ hypothesis, no dead-end on the live route).
   (`CaseI.lean`, axiom-clean) — the redundant `ab`-row `= wGv + wOther` (`Submodule.mem_sup`
   on the eq.-(6.23) membership), `λ_{(ab)i*}=1`. Blueprint node
   `lem:case-III-redundant-decomposition` (green).
-- [ ] **KT eq. (6.43)** — the `a`-column block of the eq.-(6.24) vanishing combination is
-  itself `0`. The one missing fact for the eq.-(6.27) transport's off-`v` vanishing.
+- [x] **KT eq. (6.43)** — `exists_redundant_panelRow_ab_decomposition_acolumn_zero` (`CaseI.lean`,
+  axiom-clean): the `a`-column block of the eq.-(6.24) vanishing combination is `0`
+  (`(wGv + wOther − r i).comp (single a) = 0`, all `a`). Blueprint node
+  `lem:case-III-acolumn-zero` (green).
+- [ ] **The eq.-(6.27) `w`-assembly** — transport the decomposition across the seam, off-`v`
+  vanishing now from seam-on-`E_v` + eq. (6.43)-on-`a`-block, then the eq.-(6.28) leaf →
+  `lem:case-III-candidate-row` green. **Next concrete commit.**
 - [ ] **The conditional `D`-row block** — `w` (a pure `v`-column row by eq. (6.28))
   extends the `va`-block to a `D`-row new block (`linearIndependent_sum_pinned_block`),
   giving a `D(|V|−1)`-family **conditional** on the top-left `D×D` block being full
@@ -152,13 +156,13 @@ hypothesis, no dead-end on the live route).
 
 ## Blockers / open questions
 
-- **The off-`v` vanishing is two facts, not one (eq.-(6.43) finding, this commit).** KT
-  eq. (6.27)→(6.28)'s "`V∖{v}` part vanishes from the seam + eq. (6.24)" needs *also* KT
-  eq. (6.43): the per-edge seam only transports the `E_v`-rows verbatim; the `(vb)j`-row
-  and `(ab)j`-row restricted to `V∖{v}` differ by the `a`-block `r_j(·a)`, killed only by
-  the `a`-block of eq. (6.24) being `0` (eq. 6.43). **Next commit = eq. (6.43).** The
-  remaining `w`-construction pieces (the pin-a-body `D`-row block; the Lemma-2.1
-  disjunction) are bounded.
+- **The off-`v` vanishing is two facts, not one (eq.-(6.43) finding).** KT eq. (6.27)→(6.28)'s
+  "`V∖{v}` part vanishes from the seam + eq. (6.24)" needs *also* KT eq. (6.43): the per-edge seam
+  only transports the `E_v`-rows verbatim; the `(vb)j`-row and `(ab)j`-row restricted to `V∖{v}`
+  differ by the `a`-block `r_j(·a)`, killed only by the `a`-block of eq. (6.24) being `0` (eq. 6.43,
+  now green: `…_acolumn_zero`). **Next commit = the eq.-(6.27) `w`-assembly** (the open crux of
+  `lem:case-III-candidate-row`); the remaining pieces after it (the pin-a-body `D`-row block; the
+  Lemma-2.1 disjunction) are bounded.
 - **Recurring Lean trap (carry from 22a–d, FRICTION):** heavy
   `IsInfinitesimallyRigidOn` defeq across `ofNormals`/`withGraph` graph-swaps can
   `isDefEq`-timeout — make the two frameworks *syntactically* equal before `convert`;
@@ -167,18 +171,17 @@ hypothesis, no dead-end on the live route).
 
 ## Hand-off / next phase
 
-**Next concrete commit: KT eq. (6.43) — the `a`-column block of the eq.-(6.24) vanishing
-combination is `0`.** This is the one fact still missing for the eq.-(6.27) transport's
-off-`v` vanishing (Blockers, *Decisions → eq.-(6.43) finding*). The three other inputs are
-green: the eqs.-(6.24)/(6.25) decomposition (`exists_redundant_panelRow_ab_decomposition`),
-the per-edge seam (`ofNormals_panelRow_eq_of_ends_seed_eq`), the eq.-(6.28) leaf
-(`dualMap_eq_comp_single_proj_of_vanish_off`). Eq. (6.43): the eq.-(6.24) combination is a
-functional `= 0` on `α → ScrewSpace k`; its restriction to the `a`-screw-column
-(precompose with `Pi.single a`) is the `a`-block, which is therefore also `0` — concretely
-`Σⱼ λ_{(ab)j} r_j(S a) + Σ_{e∈E_v,j} λ_{ej} R(G_v^{ab},q;ej,a)(S) = 0` for all `S`. Once
-green, assemble `w` (transport the decomposition across the seam, off-`v` vanishing now from
-seam-on-`E_v` + eq. (6.43)-on-`a`-block) and apply the eq.-(6.28) leaf → that lands
-`lem:case-III-candidate-row` green.
+**Next concrete commit: the eq.-(6.27) `w`-assembly — land `lem:case-III-candidate-row` green.**
+All four inputs are now green (eqs.-(6.24)/(6.25) decomposition
+`exists_redundant_panelRow_ab_decomposition`; eq.-(6.43) `a`-block vanishing
+`…_acolumn_zero`; per-edge seam `ofNormals_panelRow_eq_of_ends_seed_eq`; eq.-(6.28) leaf
+`dualMap_eq_comp_single_proj_of_vanish_off`). Build the transported row
+`w = Σⱼ λ_{(ab)j} hingeRow v b r_j + Σ_{E_v} λ_{ej}(…)` in `span(R(G,p₁)-rows)` at the eq.-(6.12)
+degenerate placement `p₁` (`p₁(vb)=q(ab)`); over `V∖{v}`, the `(vb)j`-rows differ from the `(ab)j`-rows
+by the `a`-block `r_j(·a)`, so `w`'s `V∖{v}` part = the eq.-(6.24) sum (= 0) minus the ab-part `a`-block
+(killed by eq. (6.43)) = 0; then `dualMap_eq_comp_single_proj_of_vanish_off` certifies `w` is a pure
+`v`-column row. **Recurring trap (Blockers):** make the two frameworks syntactically equal before
+`convert`; transfer rigidity via a `mem_infinitesimalMotions` round-trip.
 
 The follow-on after the `w`-assembly: the conditional `D`-row block (eq. (6.29),
 extending `va` via `linearIndependent_sum_pinned_block`), then Claim 6.12.
@@ -192,16 +195,14 @@ risk #8 — add a row if 22e introduces a new alg-independence use).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-- **eq.-(6.43) finding — the off-`v` vanishing is two facts, not one (2026-06-06).** Working
-  out the eq.-(6.27) transport in the project's per-row model revealed KT eq. (6.27)→(6.28)'s
-  "`V∖{v}` part vanishes from the seam + eq. (6.24)" is incomplete as stated: the per-edge seam
-  (`lem:case-III-seam`, literal functional equality) transports only the `E_v`-rows (endpoints
-  avoid `v`). The `(vb)j`-row (`hingeRow v b r`) vs the `(ab)j`-row (`hingeRow a b r`),
-  restricted to `V∖{v}`, differ by the `a`-column block `r_j(·a)` (the `vb`-hinge is `0` in
-  column `a`). So `w`'s `V∖{v}` part = the eq.-(6.24) sum (= 0) *minus* `Σⱼ λ_{(ab)j} r_j(·a)`,
-  which vanishes *only* by KT eq. (6.43) (the `a`-block of eq. (6.24) is itself `0`). This is
-  the next commit. Corrected `lem:case-III-candidate-row`'s proof caveat + the subsection
-  preamble; BlueprintExposition capture entry added (KT-math, flavor (a)).
+- **eq. (6.43) — `a`-block of eq. (6.24) is `0` (2026-06-06).** Landed
+  `exists_redundant_panelRow_ab_decomposition_acolumn_zero` (`CaseI.lean`, axiom-clean):
+  precomposing the eq.-(6.24) zero combination `g = wGv + wOther − r i*` with the column injection
+  `single a` is `0` for every body `a` (`rw [hsum, sub_self, LinearMap.zero_comp]`). The off-`v`
+  vanishing finding (the per-edge seam transports only `E_v`-rows; the `(vb)j` vs `(ab)j` rows
+  differ over `V∖{v}` by the `a`-block `r_j(·a)`, so `w`'s `V∖{v}` part = eq.-(6.24) sum (= 0)
+  minus that ab-part `a`-block) is what makes this fact load-bearing for the `w`-assembly. Blueprint
+  node `lem:case-III-acolumn-zero` (green); BlueprintExposition capture entry stands (KT-math (a)).
 - **eqs. (6.24)/(6.25) extraction (2026-06-06).** Landed
   `exists_redundant_panelRow_ab_decomposition` (`CaseI.lean`, axiom-clean): a one-line
   `Submodule.mem_sup.1` unwind of the eq.-(6.23) redundant-row *membership* into the
