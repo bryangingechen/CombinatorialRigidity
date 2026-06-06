@@ -10,28 +10,33 @@ compressed verdict log.
 
 ## Current state
 
-**Next concrete commit:** **Gap 1 — instantiate the pigeonhole at the `ab`-rows** (the
-geometric wiring of the abstract leaf landed this commit). With the abstract LA pigeonhole
-`Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` now in hand, the remaining Gap-1 work
-is to feed it the two rank facts: eq. (6.18) `rank R(G_v^{ab},q) = D(|V∖v|−1)` (seed-rank bridge
-at the `0`-dof `G_v^{ab}`, which is rigid) and Gap 3's eq. (6.22) `rank R(G_v,q) = D(|V∖v|−1) − k'`,
-`k' ≤ D−2`. Set `W := span (R(G_v,q)-rows)` (= `R(G_v^{ab})` minus the `D−1` `ab`-rows, since
-`G_v = G_v^{ab} − ab`) and `g :=` the `D−1` `ab`-rows; then
-`finrank (W ⊔ span g) = D(|V∖v|−1) = finrank W + k' < finrank W + (D−1)`, so the leaf yields a
-redundant `ab`-row. That `+1` lifts 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`
-on one candidate. The geometric inputs needed: a row-set identity relating
-`R(G_v^{ab})`'s rows to `R(G_v)`'s rows plus the `ab`-rows, and the eq.-(6.18) full-rank
-instance (seed-rank bridge `lem:case-III-seed-rank-bridge`, already green).
+**Next concrete commit:** **Gap 1 — feed the redundant-row pigeonhole the eq.-(6.18)/(6.22) bridge
+at the specific graphs `G_v^{ab}`, `G_v`** (the geometric *instantiation* of the abstract leaf at one
+edge's `D−1` rows landed this commit). The pure-LA step ③ — `exists_redundant_panelRow_of_edge_of_finrank_lt`
+— is now green: given any subspace `W` and the corank gap
+`finrank (W ⊔ span(e-block)) < finrank W + (D−1)` at a transversal hinge `e`, one of the `D−1`
+`e`-rows is redundant modulo `W` and the rest. What remains is to discharge `hgap` at `e = ab`,
+`W = span (R(G_v,q)-rows)`: eq. (6.18) `rank R(G_v^{ab},q) = D(|V∖v|−1)` (seed-rank bridge at the
+`0`-dof `G_v^{ab}`, `lem:case-III-seed-rank-bridge`, green) and Gap 3's eq. (6.22)
+`rank R(G_v,q) = D(|V∖v|−1) − k'`, `k' ≤ D−2`, give
+`finrank (W ⊔ span(ab-block)) = D(|V∖v|−1) = finrank W + k' < finrank W + (D−1)`. The one new
+geometric input is a **row-set identity**: `R(G_v^{ab})`'s rows = `R(G_v)`'s rows ∪ the `D−1`
+`ab`-rows (since `G_v = G_v^{ab} − ab`, and `rigidityRows`/`panelRow` read only `ends`/`q`, not the
+graph). With the redundant `ab`-row, lift 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to
+`= D(|V|−1)` on one candidate.
 
-**The abstract pigeonhole leaf is GREEN (this commit).**
-`Submodule.exists_mem_sup_span_image_compl_of_finrank_lt`
-(`Mathlib/LinearAlgebra/Dimension/Constructions.lean`, upstream-eligible mirror): a finite family
-`g : ι → V` raising `finrank W` by `< |ι|` has a member `g i ∈ W ⊔ span (g '' {j ≠ i})` — redundant
-modulo `W` and the rest. Contrapositive in the quotient `V ⧸ W`: no redundant member ⟹ `W.mkQ ∘ g`
-linearly independent (`linearIndependent_iff_notMem_span`) ⟹ its span has finrank `|ι|` ⟹
-`finrank (W ⊔ span (range g)) = finrank W + |ι|` (the helper `Submodule.finrank_map_mkQ`,
-rank–nullity on `W.mkQ ∘ S.subtype`), contradiction. Both lemmas axiom-clean. Mirrors, so no
-blueprint node (`blueprint/CLAUDE.md` *What to include vs. skip*).
+**The LA core of the redundant-row pigeonhole is GREEN (this commit).**
+`BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt` (`CaseI.lean`): the geometric
+instantiation of the abstract leaf at the `D−1` panel rows of a single transversal hinge `e`. It
+produces the `Fin (D−1)`-indexed independent `e`-row family `r` (via N7b-1
+`exists_independent_panelRow_of_edge`), proves `span (range r) = e-block` (`≤` by membership, `=` by
+equal finrank `D−1`), then applies the abstract leaf
+`Submodule.exists_mem_sup_span_image_compl_of_finrank_lt`. Node
+`lem:case-III-claim-6-11-redundant-row` (green; `\uses` the eq.-(6.18)/(6.22) nodes that supply the
+gap + N7b-1). The abstract leaf (prior commit) is in
+`Mathlib/LinearAlgebra/Dimension/Constructions.lean` (upstream-eligible mirror, axiom-clean, no
+blueprint node). The per-edge span finrank `= D−1` chain was duplicated → fused into
+`finrank_span_panelRow_edge` (`Pinning.lean`; FRICTION *[resolved]*).
 
 The full `hub` construction (all green now): `partitionMotions` foundation + `def`-free floor (653f902),
 `W_f` count (75c8fcc), dimension lower bound (a413308, `screwDim_mul_numParts_sub_le_finrank_partitionMotions`),
@@ -40,10 +45,11 @@ maximize-into-`hub` (bfafb7f). The dimension lower bound runs rank-nullity on th
 QUIRKS § 39).
 
 All three analytic prerequisites (i)/(ii)/(iii), the upper bound, the rank-attainment packaging, the
-full `hub`, and both **combinatorial** factors of Claim 6.11 (`ForestSurgery.lean`: Gap-2
-`splitOff_exists_base_inter_fiber_lt`, Gap-3 shell `splitOff_removeVertex_minimalKDof`) are green +
-axiom-clean. Blueprint green: `lem:case-III-claim-6-11-base`, `lem:case-III-gap3-minimalKDof`,
-`lem:case-III-seed-rank-bridge`, `lem:case-III-seed-rank-upper`, `lem:case-III-rank-attainment`,
+full `hub`, the redundant-row pigeonhole's LA core, and both **combinatorial** factors of Claim 6.11
+(`ForestSurgery.lean`: Gap-2 `splitOff_exists_base_inter_fiber_lt`, Gap-3 shell
+`splitOff_removeVertex_minimalKDof`) are green + axiom-clean. Blueprint green:
+`lem:case-III-claim-6-11-base`, `lem:case-III-gap3-minimalKDof`, `lem:case-III-seed-rank-bridge`,
+`lem:case-III-seed-rank-upper`, `lem:case-III-rank-attainment`, `lem:case-III-claim-6-11-redundant-row`,
 `lem:trivial-motions-rank-bound` (now carries `hub`); red: `lem:case-III`, `lem:case-II-realization`,
 `prop:rigidity-matrix-prop11` (the `thm:theorem-55` half).
 
@@ -66,9 +72,10 @@ KT's proof (pp. 684–685) factors, in dependency order:
 3. **Gap 1 — the `M(G̃)`↔row bridge.** eq. (6.18) `rank R(G_v^{ab},q) = D(|V∖v|−1)`
    is in hand at the fixed seed (the seed-rank bridge applies directly — `G_v^{ab}` is `0`-dof,
    so rigid); with Gap 3's eq. (6.22), the `k' ≤ D−2 < D−1` corank over the `D−1` `ab`-rows forces
-   one redundant (pigeonhole). Step ③ is pure LA *given* (6.18)+(6.22). **✓ abstract leaf landed**
-   (`Submodule.exists_mem_sup_span_image_compl_of_finrank_lt`); remaining is its **geometric
-   instantiation** at the `ab`-rows (the row-set identity + the seed-rank-bridge eq.-(6.18) instance).
+   one redundant (pigeonhole). Step ③ is pure LA *given* (6.18)+(6.22). **✓ abstract leaf + ✓ geometric
+   instantiation landed** (`exists_redundant_panelRow_of_edge_of_finrank_lt`: given the corank gap at
+   a transversal hinge `e`, one of the `D−1` `e`-rows is redundant); remaining is **discharging the
+   gap** at `e = ab`, `W = span(R(G_v)-rows)` — the row-set identity + the eq.-(6.18)/(6.22) instances.
 
 The eq. (6.18) full rank lifts 22c's `case_II_placement_eq612` `−1` to the `+1` Claim 6.11 supplies.
 
@@ -176,24 +183,31 @@ The eq. (6.18) full rank lifts 22c's `case_II_placement_eq612` `−1` to the `+1
   `Submodule.finrank_map_mkQ` (`Mathlib/LinearAlgebra/Dimension/Constructions.lean`,
   upstream-eligible mirrors, axiom-clean). The pure-LA `finrank (W ⊔ span g) < finrank W + |ι|` ⟹
   a redundant family member. No blueprint node (mirrors).
-- [ ] **Gap 1 — instantiate the pigeonhole at the `ab`-rows** (next): feed the abstract leaf the
-  eq. (6.18) full rank (seed-rank bridge at `0`-dof `G_v^{ab}`, green) + eq. (6.22) (Gap 3) with
-  `W = span (R(G_v)-rows)`, `g = D−1` `ab`-rows ⟹ a redundant `ab`-row (eq. (6.23)); then lift 22c's
-  `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`. Needs a row-set identity
-  `R(G_v^{ab})`-rows `= R(G_v)`-rows `∪` `ab`-rows.
+- [x] **Gap 1 — the redundant-row pigeonhole's LA core** (this commit):
+  `BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt` (`CaseI.lean`) — given a
+  transversal hinge `e`, a subspace `W`, and the corank gap `finrank (W ⊔ span(e-block)) < finrank W
+  + (D−1)`, produces the `Fin (D−1)`-indep `e`-row family `r` (`span (range r) = e-block`) with a
+  redundant member `r i₀ ∈ W ⊔ span(r '' {j≠i₀})`. The geometric instantiation of the abstract leaf
+  at one edge's `D−1` rows. Green + axiom-clean. Node `lem:case-III-claim-6-11-redundant-row`. Fused
+  helper `finrank_span_panelRow_edge` (`Pinning.lean`, dedups the per-edge finrank-`D−1` chain).
+- [ ] **Gap 1 — discharge the corank gap at `e = ab`** (next): feed
+  `exists_redundant_panelRow_of_edge_of_finrank_lt` the eq. (6.18) full rank (seed-rank bridge at
+  `0`-dof `G_v^{ab}`, green) + eq. (6.22) (Gap 3) with `W = span (R(G_v)-rows)` ⟹ a redundant
+  `ab`-row (eq. (6.23)); then lift 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)`.
+  Needs a row-set identity `R(G_v^{ab})`-rows `= R(G_v)`-rows `∪` `ab`-rows.
 
 ## Deferred sub-phases (future work in the phase)
 
 Parked until the leaf's shape is clear; a sub-letter is minted when its turn comes.
 
-- **Gap 1 — geometric instantiation of the pigeonhole** (next leaf, see *Hand-off*). The full
-  analytic core + the `hub` lower bound + the abstract LA pigeonhole leaf are all green; remaining is
-  feeding the leaf `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` the eq. (6.18) full rank
-  (seed-rank bridge at `0`-dof `G_v^{ab}`) + eq. (6.22) (Gap 3) via a row-set identity
-  (`R(G_v^{ab})`-rows `= R(G_v)`-rows ∪ `ab`-rows) ⟹ one redundant row (eq. (6.23)). The product-route
-  *relaxation* (pick `q` as a non-root of the finite product of the nested IH rank polynomials,
-  avoiding alg-independence at `d=3`; ~70% confidence) is the deferred TODO in the tracker
-  `notes/AlgebraicIndependence.md`.
+- **Gap 1 — discharge the corank gap at `e = ab`** (next leaf, see *Hand-off*). The full analytic
+  core + the `hub` lower bound + the abstract LA pigeonhole leaf + its geometric instantiation at one
+  edge (`exists_redundant_panelRow_of_edge_of_finrank_lt`) are all green; remaining is discharging the
+  corank gap `hgap` at `e = ab`, `W = span(R(G_v)-rows)` from eq. (6.18) (seed-rank bridge at `0`-dof
+  `G_v^{ab}`) + eq. (6.22) (Gap 3) via a row-set identity (`R(G_v^{ab})`-rows `= R(G_v)`-rows ∪
+  `ab`-rows) ⟹ one redundant row (eq. (6.23)). The product-route *relaxation* (pick `q` as a non-root
+  of the finite product of the nested IH rank polynomials, avoiding alg-independence at `d=3`; ~70%
+  confidence) is the deferred TODO in the tracker `notes/AlgebraicIndependence.md`.
 - **Candidate-completion + Claim 6.12 disjunction.** With the redundant `ab`-row, lift
   22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)` on one candidate (eq.
   (6.24)–(6.29) row-op), then the Claim-6.12 extensor-span contradiction via the **green**
@@ -207,14 +221,14 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Blockers / open questions
 
-- **The Gap-1 analytic chain + the abstract pigeonhole are green.** The rigidity-transfer core is
-  green: seed-rank bridge (`def=0`, eq. (6.18)), upper bound `lem:case-III-seed-rank-upper` (`def>0`
-  half of eq. (6.22)), and the rank-attainment packaging `lem:case-III-rank-attainment`. The
-  genericity-free lower bound `hub` is green + discharged. The abstract pigeonhole leaf
-  `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` (this commit) is green. What remains in
-  Gap 1 is **geometric wiring**: instantiate the leaf at the `ab`-rows, which needs a row-set
-  identity relating `R(G_v^{ab})`'s rows to `R(G_v)`'s rows ∪ the `D−1` `ab`-rows (see *Current
-  state*).
+- **The Gap-1 analytic chain + the redundant-row pigeonhole's LA core are green.** The
+  rigidity-transfer core is green: seed-rank bridge (`def=0`, eq. (6.18)), upper bound
+  `lem:case-III-seed-rank-upper` (`def>0` half of eq. (6.22)), and the rank-attainment packaging
+  `lem:case-III-rank-attainment`. The genericity-free lower bound `hub` is green + discharged. The
+  abstract pigeonhole leaf + its geometric instantiation at one edge
+  (`exists_redundant_panelRow_of_edge_of_finrank_lt`, this commit) are green. What remains in Gap 1 is
+  **discharging the corank gap** at the `ab`-rows, which needs a row-set identity relating
+  `R(G_v^{ab})`'s rows to `R(G_v)`'s rows ∪ the `D−1` `ab`-rows (see *Current state*).
 - **Claim 6.12 — de-risked** (bottoms on the green Lemma 2.1).
 - **Recurring Lean traps** (carry from 22a–c, FRICTION): heavy `IsInfinitesimallyRigidOn`
   defeq across `ofNormals`/`withGraph` graph-swaps can `isDefEq`-timeout — make the two
@@ -223,18 +237,19 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** **Gap 1 — instantiate the pigeonhole at the `ab`-rows.** The abstract
-pigeonhole leaf landed this commit (`Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` +
-helper `Submodule.finrank_map_mkQ`, `Mathlib/LinearAlgebra/Dimension/Constructions.lean`,
-upstream-eligible mirrors, axiom-clean). The remaining Gap-1 step is the geometric wiring: take
-`W = span (R(G_v,q)-rows)` and `g = ` the `D−1` `ab`-rows of `R(G_v^{ab},q)`; eq. (6.18) gives
-`finrank (W ⊔ span g) = D(|V∖v|−1)` (seed-rank bridge at `0`-dof `G_v^{ab}`, `lem:case-III-seed-rank-bridge`,
-green) and eq. (6.22) gives `finrank W = D(|V∖v|−1) − k'`, `k' ≤ D−2` (Gap 3), so
-`finrank (W ⊔ span g) = finrank W + k' < finrank W + (D−1)` and the leaf yields a redundant `ab`-row.
-The one new geometric input is a **row-set identity**: the rows of `R(G_v^{ab})` are the rows of
-`R(G_v)` together with the `D−1` `ab`-rows (`G_v = G_v^{ab} − ab`). Then lift 22c's
-`case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)` on one candidate. `lem:case-III` stays red
-until the candidate-completion assembly lands.
+**Next concrete commit:** **Gap 1 — discharge the corank gap at `e = ab`.** The LA core landed this
+commit (`exists_redundant_panelRow_of_edge_of_finrank_lt`, green + axiom-clean, node
+`lem:case-III-claim-6-11-redundant-row`): given any subspace `W` and the corank gap
+`finrank (W ⊔ span(e-block)) < finrank W + (D−1)` at a transversal hinge `e`, one of the `D−1`
+`e`-rows is redundant modulo `W` and the rest. The remaining Gap-1 step **discharges `hgap`** at
+`e = ab`, `W = span (R(G_v,q)-rows)`: eq. (6.18) gives `finrank (W ⊔ span(ab-block)) = D(|V∖v|−1)`
+(seed-rank bridge at `0`-dof `G_v^{ab}`, `lem:case-III-seed-rank-bridge`, green) and eq. (6.22) gives
+`finrank W = D(|V∖v|−1) − k'`, `k' ≤ D−2` (Gap 3), so
+`finrank (W ⊔ span(ab-block)) = finrank W + k' < finrank W + (D−1)`. The one new geometric input is a
+**row-set identity**: the rows of `R(G_v^{ab})` are the rows of `R(G_v)` together with the `D−1`
+`ab`-rows (`G_v = G_v^{ab} − ab`; `rigidityRows`/`panelRow` read only `ends`/`q`, not the graph).
+Then lift 22c's `case_II_placement_eq612` `≥ D(|V|−1)−1` to `= D(|V|−1)` on one candidate.
+`lem:case-III` stays red until the candidate-completion assembly lands.
 
 After Gap 1: the candidate-completion + Claim-6.12 disjunction, the `d=3` assembly, and
 general-`d` (Phase 23).
@@ -250,14 +265,23 @@ KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)), §4 (L
 The finished-work tail — one-line verdicts; the blow-by-blow is in the cited commits /
 design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 
-- **Gap-1 abstract pigeonhole leaf (this commit).** `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt`
+- **Gap-1 redundant-row pigeonhole's LA core (this commit).**
+  `BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt` (`CaseI.lean`): the geometric
+  instantiation of the abstract leaf at the `D−1` panel rows of one transversal hinge `e`. Given any
+  subspace `W` and the corank gap `finrank (W ⊔ span(e-block)) < finrank W + (D−1)`, produces the
+  `Fin (D−1)`-indep `e`-row family `r` (N7b-1 `exists_independent_panelRow_of_edge`; `span (range r) =
+  e-block` by `eq_of_le_of_finrank_eq`), then applies the abstract leaf. Green + axiom-clean. Node
+  `lem:case-III-claim-6-11-redundant-row` (`\uses` the eq.-(6.18)/(6.22) gap-suppliers + N7b-1). Fused
+  the duplicated per-edge finrank-`D−1` chain into `finrank_span_panelRow_edge` (`Pinning.lean`),
+  FRICTION *[resolved]*. Remaining Gap-1 step: discharge `hgap` at `e = ab` via the row-set identity
+  (see *Hand-off*).
+- **Gap-1 abstract pigeonhole leaf (commit 893e83f).** `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt`
   (`Mathlib/LinearAlgebra/Dimension/Constructions.lean`): `finrank (W ⊔ span (range g)) < finrank W + |ι|`
   ⟹ `∃ i, g i ∈ W ⊔ span (g '' {j ≠ i})` (a redundant family member). Contrapositive in `V ⧸ W`: no
   redundant member ⟹ `W.mkQ ∘ g` LI (`linearIndependent_iff_notMem_span`) ⟹ span finrank `|ι|` ⟹
   `finrank (W ⊔ span g) = finrank W + |ι|` via the helper `Submodule.finrank_map_mkQ` (rank–nullity on
   `W.mkQ ∘ S.subtype`, range `S.map mkQ`, kernel `W ⊓ S`). Both upstream-eligible mirrors, axiom-clean,
-  no blueprint node. FRICTION *[mirrored]*. The remaining Gap-1 step is its geometric instantiation at the
-  `ab`-rows (see *Hand-off*).
+  no blueprint node. FRICTION *[mirrored]*.
 - **Gap-1 `hub` maximized + discharged (commit bfafb7f).** `BodyHingeFramework.screwDim_add_deficiency_le_finrank_infinitesimalMotions`
   (`PanelLayer.lean`): `D + def(G̃) ≤ dim Z` for `n = k+1` given `∀ e, supportExtensor e ≠ 0`. Picks the
   `def`-attaining `f` (`exists_eq_ciSup_of_finite`), reconciles `screwDim k = bodyBarDim (k+1)`

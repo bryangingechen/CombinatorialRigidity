@@ -172,13 +172,56 @@ between the genericity-free lower bound and the matroid-predicted upper bound.
   equality. Deficiency nonnegativity rules out the degenerate over-count.
 \end{proof}
 
+The two rank attainments above (eq.~(6.18) for $G_v^{ab}$, eq.~(6.22) for $G_v = G_v^{ab} - ab$)
+combine into KT's eq.~(6.23): the $D-1$ many $ab$-rows of $R(G_v^{ab}, q)$ raise the rank of
+$R(G_v, q)$ by only $k' \le D - 2 < D - 1$ (the smaller graph $G_v$ already realizes all but $k'$ of
+the full rank), so one of those $ab$-rows is a linear combination of the others together with the
+$R(G_v, q)$ rows. The pure linear-algebra core of that pigeonhole --- the geometric instantiation of
+the abstract finrank pigeonhole at a single transversal hinge's $D - 1$ rows --- is green here; what
+stays deferred is feeding it the eq.~(6.18)/(6.22) bridge identities at the specific graphs
+$G_v^{ab}$, $G_v$ (the row-set identity $R(G_v^{ab})\text{-rows} = R(G_v)\text{-rows} \cup
+ab\text{-rows}$).
+
+\begin{lemma}[Redundant $ab$-row from a small corank over the $ab$-block; KT Claim 6.11, eq.\ (6.23)]
+  \label{lem:case-III-claim-6-11-redundant-row}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt}
+  \leanok
+  \uses{lem:case-III-seed-rank-bridge, lem:case-III-rank-attainment,
+        lem:case-III-gap3-minimalKDof, lem:case-II-placement-new-rows}
+  Let $F$ be a body-hinge framework with a transversal hinge $e$ (distinct endpoints, nonzero
+  supporting extensor $C(e) \ne 0$), and let $W$ be any subspace of the dual row space (intended:
+  $W = \operatorname{span}(R(G_v, q)\text{-rows})$ for the smaller graph $G_v = G_v^{ab} - ab$, with
+  $e = ab$). If the $e$-block --- the per-edge panel-row span
+  $\operatorname{span}\{\mathrm{panelRow}\,(e, \cdot, \cdot)\}$, of dimension $D - 1$ --- raises the
+  finrank of $W$ by strictly fewer than $D - 1$,
+  \[
+    \dim\bigl(W + \operatorname{span}(e\text{-block})\bigr) \;<\; \dim W + (D - 1),
+  \]
+  then there is a $\mathrm{Fin}(D-1)$-indexed independent family $r$ of the $e$-block (its span is
+  the whole block) with one redundant member: $r\,i_0 \in W + \operatorname{span}(r \restriction
+  \{j \ne i_0\})$. This is KT's eq.~(6.23): with the corank gap fed by eq.~(6.18)
+  (\cref{lem:case-III-seed-rank-bridge}, full rank of $R(G_v^{ab}, q)$ at the $0$-dof $G_v^{ab}$) and
+  eq.~(6.22) (\cref{lem:case-III-rank-attainment}, with $k' = \operatorname{def}(\tilde G_v) \le
+  D - 2$ from \cref{lem:case-III-gap3-minimalKDof}), one of the $ab$-rows is redundant, so dropping
+  it does not lower the rank.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The $e$-block is the $\mathrm{hingeRow}$ image of the $(D-1)$-dimensional hinge-row block
+  $r(p(e))$, so it is $(D-1)$-dimensional and is spanned by the $D - 1$ independent panel rows the
+  transversal hinge contributes (\cref{lem:case-II-placement-new-rows}). The finrank hypothesis is
+  exactly the abstract pigeonhole's input at this $\mathrm{Fin}(D-1)$-indexed family: a family
+  raising $\dim W$ by fewer than its cardinality has a member lying in $W$ plus the span of the rest.
+  That member is the redundant $ab$-row.
+\end{proof}
+
 \begin{lemma}[Case III: $k = 0$, no proper rigid subgraph; KT Lemma 6.10/6.13]
   \label{lem:case-III}
   \uses{thm:minimal-kdof-reduction, lem:extensor-independence,
         lem:cycle-realization, lem:case-II-realization-placement,
         lem:case-III-claim-6-11-base, lem:case-III-gap3-minimalKDof,
         lem:case-III-seed-rank-bridge, lem:case-III-seed-rank-upper,
-        lem:case-III-rank-attainment}
+        lem:case-III-rank-attainment, lem:case-III-claim-6-11-redundant-row}
   Let $G$ be a minimal $0$-dof-graph that is $2$-edge-connected with no
   proper rigid subgraph. Then $G$ has a panel-hinge realization at rank
   $D(|V|-1)$. A single candidate realization is one row short of full
@@ -191,9 +234,12 @@ between the genericity-free lower bound and the matroid-predicted upper bound.
   rank-at-the-fixed-seed attainment (\cref{lem:case-III-seed-rank-bridge} for
   $\operatorname{def} = 0$, its $\operatorname{def} > 0$ upper-bound half
   \cref{lem:case-III-seed-rank-upper}, and their packaging into the exact rank
-  \cref{lem:case-III-rank-attainment}) ---
-  are green; what stays deferred is the Claim-6.11/6.12 candidate-completion
-  assembly that converts the redundant $ab$-row into the missing $+1$. KT then
+  \cref{lem:case-III-rank-attainment}) and the pure linear-algebra core of the
+  redundant-row pigeonhole (\cref{lem:case-III-claim-6-11-redundant-row}) ---
+  are green; what stays deferred is feeding that pigeonhole the
+  eq.~(6.18)/(6.22) bridge at the specific graphs $G_v^{ab}$, $G_v$, and the
+  Claim-6.11/6.12 candidate-completion assembly that converts the redundant
+  $ab$-row into the missing $+1$. KT then
   build $D$ candidate realizations and show one is rigid; the
   degree-2 condition forces all candidates to test the same normal vector $r
   \in \mathbb{R}^D$, which by the extensor-independence Lemma~2.1

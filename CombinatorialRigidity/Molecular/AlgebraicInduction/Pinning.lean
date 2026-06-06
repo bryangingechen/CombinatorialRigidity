@@ -228,6 +228,27 @@ theorem span_panelRow_edge_eq (F : BodyHingeFramework k α β) {ends : β → α
   rw [hblk, Submodule.map_span, ← Set.range_comp]
   rfl
 
+/-- **A single transversal edge's panel-row span is `D − 1`-dimensional** (B0 corollary,
+`lem:case-II-placement-new-rows` infra). For a transversal hinge `e = uv` (distinct endpoints
+`huv`, nonzero supporting extensor `hne`), the per-edge panel-row span
+`span {panelRow ends (e, ·, ·)}` has finrank `screwDim k − 1 = D − 1`: it is the `hingeRow u v`
+image (`span_panelRow_edge_eq`) of the `(D − 1)`-dimensional hinge-row block `r(p(e))`
+(`finrank_hingeRowBlock`), and the image preserves dimension because `(screwDiff u v).dualMap` is
+injective (`Submodule.equivMapOfInjective` along `dualMap_injective_of_surjective` +
+`screwDiff_surjective`). The fused form of the per-edge finrank computation the Case-II/III row
+producers (`exists_independent_panelRow_subfamily_of_edge`,
+`exists_redundant_panelRow_of_edge_of_finrank_lt`) repeatedly perform. -/
+theorem finrank_span_panelRow_edge (F : BodyHingeFramework k α β) {ends : β → α × α} {e : β}
+    (huv : (ends e).1 ≠ (ends e).2) (hne : F.supportExtensor e ≠ 0) :
+    Module.finrank ℝ (Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+        × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2))))
+      = screwDim k - 1 := by
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  rw [span_panelRow_edge_eq F e hne, (Submodule.equivMapOfInjective _
+    (LinearMap.dualMap_injective_of_surjective (screwDiff_surjective huv))
+    (F.hingeRowBlock e)).finrank_eq.symm]
+  exact F.finrank_hingeRowBlock hne
+
 /-- **N7b-1: the re-inserted body's transversal hinge gives `D − 1` independent panel rows**
 (`lem:case-II-placement-new-rows`; Katoh–Tanigawa 2011 §6.3, eq. (6.12)). For the free-normal panel
 family `ofNormals G ends q₀`, a genuine edge `e = uv` incident to the re-inserted body (distinct
@@ -294,10 +315,7 @@ theorem exists_independent_panelRow_subfamily_of_edge (F : BodyHingeFramework k 
     Module.Finite.span_of_finite ℝ (Set.finite_range _)
   -- The per-edge panel-row span has dimension `D − 1` (the `hingeRow u v` image of `r(p(e))`).
   have hfin : Module.finrank ℝ (Submodule.span ℝ T) = screwDim k - 1 := by
-    rw [hT, span_panelRow_edge_eq F e he, (Submodule.equivMapOfInjective _
-      (LinearMap.dualMap_injective_of_surjective (screwDiff_surjective huv))
-      (F.hingeRowBlock e)).finrank_eq.symm]
-    exact F.finrank_hingeRowBlock he
+    rw [hT]; exact F.finrank_span_panelRow_edge huv he
   -- Extract a `Fin (D − 1)`-indexed independent subfamily of *actual* panel rows from the span.
   obtain ⟨f, hfmem, hfspan, hfindep⟩ := Submodule.exists_fun_fin_finrank_span_eq ℝ T
   choose idx hidx using hfmem

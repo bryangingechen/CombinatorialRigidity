@@ -2817,4 +2817,60 @@ theorem PanelHingeFramework.case_II_placement_eq612 [DecidableEq α] [Finite α]
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at h
     exact h
 
+/-- **The Claim~6.11 redundant `ab`-row: a small corank over the `ab`-block forces one of its
+`D − 1` rows redundant** (`lem:case-III-claim-6-11-redundant-row`, the linear-algebra core of KT
+Claim~6.11's eq. (6.23); Katoh–Tanigawa 2011 §6.4.1, eq. (6.23), Phase 22d). The geometric
+instantiation of the abstract finrank pigeonhole
+(`Submodule.exists_mem_sup_span_image_compl_of_finrank_lt`) at the `D − 1` panel rows of a single
+transversal hinge `e` (= the `ab`-edge of KT's split-off graph `G_v^{ab}`).
+
+Set `W := span(R(G_v)-rows)` for the smaller graph `G_v = G_v^{ab} − ab` (carried here abstractly
+as any subspace). The `e`-block is the per-edge panel-row span `span {panelRow ends (e, ·, ·)}` — a
+`(D − 1)`-dimensional space (`span_panelRow_edge_eq` + `finrank_hingeRowBlock`), spanned by a `Fin
+(D − 1)`-indexed independent family `r` (`exists_independent_panelRow_of_edge`). KT's two rank
+inputs — eq. (6.18) `finrank (W ⊔ e-block) = D(|V_v|−1)` and eq. (6.22)
+`finrank W = D(|V_v|−1) − k'` with `k' ≤ D − 2` — say exactly that the `e`-block raises
+`finrank W` by `k' < D − 1`, i.e.
+`finrank (W ⊔ span (range r)) < finrank W + (D − 1)` (the hypothesis `hgap`). The pigeonhole then
+yields an index `i₀` whose row `r i₀` is *redundant modulo `W` and the other `e`-rows*:
+`r i₀ ∈ W ⊔ span (r '' {j ≠ i₀})` — KT's eq. (6.23), one of the `ab`-rows is a row-combination of
+the rest plus the `R(G_v)` rows, so dropping it does not lower the rank.
+
+The produced family `r` is independent and lands in the per-edge panel-row span; its span *is* that
+block (an `≤` upgraded to `=` by equal finrank `D − 1`), so a caller pairing this with the
+eq. (6.18)/(6.22) bridge identities feeds `hgap` from `W = span(R(G_v)-rows)`. This is the pure-LA
+step ③ of the Gap-1 chain (`notes/Phase22d.md`); the geometric content beyond the abstract leaf is
+that the `e`-block has dimension exactly `D − 1` and is spanned by the independent family `r`. -/
+theorem BodyHingeFramework.exists_redundant_panelRow_of_edge_of_finrank_lt
+    [Finite α] (F : BodyHingeFramework k α β) {ends : β → α × α} {e : β}
+    (huv : (ends e).1 ≠ (ends e).2) (he : F.supportExtensor e ≠ 0)
+    (W : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+    (hgap : Module.finrank ℝ (W ⊔ Submodule.span ℝ (Set.range (fun p :
+        Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+          F.panelRow ends (e, p.1, p.2))) : Submodule ℝ (Module.Dual ℝ (α → ScrewSpace k)))
+      < Module.finrank ℝ W + (screwDim k - 1)) :
+    ∃ (r : Fin (screwDim k - 1) → Module.Dual ℝ (α → ScrewSpace k)),
+      LinearIndependent ℝ r ∧
+      Submodule.span ℝ (Set.range r) = Submodule.span ℝ (Set.range (fun p :
+        Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k =>
+          F.panelRow ends (e, p.1, p.2))) ∧
+      ∃ i, r i ∈ W ⊔ Submodule.span ℝ (r '' {j | j ≠ i}) := by
+  haveI : Fintype α := Fintype.ofFinite α
+  haveI : FiniteDimensional ℝ (ScrewSpace k) := inferInstance
+  set Eblk := Submodule.span ℝ (Set.range (fun p : Set.powersetCard (Fin (k + 2)) k
+    × Set.powersetCard (Fin (k + 2)) k => F.panelRow ends (e, p.1, p.2))) with hEblk
+  -- The `D − 1` independent panel rows of the transversal hinge `e` (N7b-1, `Fin`-indexed form).
+  obtain ⟨r, hr, hmem⟩ := F.exists_independent_panelRow_of_edge huv he
+  -- They span the `e`-block: `≤` by membership, `=` by equal finrank `D − 1`.
+  have hrspan : Submodule.span ℝ (Set.range r) = Eblk := by
+    refine Submodule.eq_of_le_of_finrank_eq ?_ ?_
+    · rw [Submodule.span_le]; rintro _ ⟨i, rfl⟩; rw [hEblk]; exact hmem i
+    · rw [finrank_span_eq_card hr, Fintype.card_fin, hEblk, F.finrank_span_panelRow_edge huv he]
+  refine ⟨r, hr, hrspan, ?_⟩
+  -- `Fintype.card (Fin (D − 1)) = D − 1`, and `span (range r) = e-block`, so `hgap` is exactly the
+  -- abstract pigeonhole's finrank hypothesis at the family `r`.
+  apply Submodule.exists_mem_sup_span_image_compl_of_finrank_lt W r
+  rw [Fintype.card_fin, hrspan]
+  exact hgap
+
 end CombinatorialRigidity.Molecular

@@ -76,6 +76,18 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] The per-edge panel-row span finrank `= D − 1` computation (`span_panelRow_edge_eq` + `equivMapOfInjective.finrank_eq` + `finrank_hingeRowBlock`) appeared twice — named as `finrank_span_panelRow_edge`
+- **Where it bit:** `exists_independent_panelRow_subfamily_of_edge` (`Pinning.lean`, Phase 22c) and
+  the new `exists_redundant_panelRow_of_edge_of_finrank_lt` (`CaseI.lean`, Phase 22d Gap-1). Both
+  need "the per-edge panel-row span `span {panelRow ends (e, ·, ·)}` has finrank `D − 1`".
+- **Friction:** a 4-line rewrite chain (`span_panelRow_edge_eq` → image-preserves-finrank via
+  `Submodule.equivMapOfInjective` along `dualMap_injective_of_surjective`/`screwDiff_surjective` →
+  `finrank_hingeRowBlock`) reproduced verbatim — the multi-rewrite-for-one-fact smell.
+- **Fix:** named lemma `BodyHingeFramework.finrank_span_panelRow_edge` in `Pinning.lean` (where the
+  per-edge span lives), `huv`/`hne` ⟹ `finrank (span e-block) = screwDim k − 1`. Both callsites
+  collapse to one `exact`.
+- **Status:** resolved (project helper `finrank_span_panelRow_edge`).
+
 ### [resolved] The `extProj`-dual-map matrix entry `M j l = φ (D (φ⁻¹ eₗ)) j` is rational — extract a *generic* `dualMap_matrix_entry_eq` helper; unfolding `φ` in place `whnf`/`isDefEq`-times-out on `Module.Dual ℝ (α → ScrewSpace k)`
 - **Where it bit:** `exists_rankPolynomial_of_rigidOn_linking_set_proj`'s rationality conjunct
   (`Molecular/AlgebraicInduction/CaseI.lean`, Phase 22d (ii-a)). The projected coordinate
