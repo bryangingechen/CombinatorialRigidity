@@ -76,6 +76,22 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
+### [resolved] Independence of the pin-a-body column family `panelRow ∘ₗ single v` (N7b-3's `hnewpin`) — strip the shared dual map via `of_comp`, don't fight `map'`
+- **Where it bit:** `linearIndependent_panelRow_comp_single_of_edge`
+  (`Molecular/AlgebraicInduction/Pinning.lean`, Phase 22c stratum-1 leaf). N7b-1 gives panel rows
+  on one edge `e` independent; N7b-3's `hnewpin` wants the same rows independent *after*
+  `.comp (LinearMap.single ℝ _ (ends e).1)` (read through body `v = (ends e).1`'s screw column).
+- **Friction:** the WANT family is `single`-postcomposed, so `LinearIndependent.map'` is the wrong
+  direction (it needs a map *into* the WANT family, injective on the span — not available). Also
+  `LinearMap.single` silently needs `[DecidableEq α]` in the lemma *statement* (matching N7b-3).
+- **Fix:** since all rows share the *one* edge `e`, they share one relative-screw evaluation
+  `screwDiff (ends e).1 (ends e).2`; the pin-at-`v` identity `hingeRow v w r ∘ₗ single v = r`
+  (`w ≠ v`, via `Pi.single_eq_same`/`Pi.single_eq_of_ne`) makes the panel rows the
+  `(screwDiff …).dualMap`-images of the WANT family. `LinearIndependent.of_comp (… .dualMap)` then
+  strips the (injective, `screwDiff_surjective`) dual map and returns the WANT independence. The
+  whole thing is `refine of_comp … ; have heq : dualMap ∘ WANT = panelRow := …; rw [heq]; exact hindep`.
+- **Status:** resolved (project helper `linearIndependent_panelRow_comp_single_of_edge`).
+
 ### [resolved] A `(α → ScrewSpace k) →ₗ[ℝ] (α → ScrewSpace k)` defined by a `where`/`toFun` with an `if … then 0 else S a` body leaves the Pi-fiber `Module` stuck (and the `if` needs `Decidable` in the *statement* of any `_apply` lemma)
 - **Where it bit:** the block-triangular reframing's exterior-column projection `extProj`
   (`Molecular/AlgebraicInduction/`, Phase 22a §1.14, Piece B). Both the structure-`where` form

@@ -306,6 +306,50 @@ theorem exists_independent_panelRow_subfamily_of_edge (F : BodyHingeFramework k 
     rw [← hreindex, Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id] at hindep2
     exact hindep2
 
+/-- **N7b-1's new-block rows stay independent through the re-inserted body `v`'s screw column**
+(the `hnewpin` input of the pin-a-body block split `linearIndependent_sum_pinned_block` / N7b-3;
+Katoh–Tanigawa 2011 §6.3, the column block of eq.~(6.16)). The Case-II/III $1$-extension placement
+(`lem:case-II-realization-placement`) re-inserts the reducible degree-2 body `v` and contributes
+the $D-1$ panel rows of one of `v`'s incident edges `e`
+(`exists_independent_panelRow_subfamily_of_edge`, N7b-1, on a subfamily `s` all using `e`, with
+first endpoint `(ends e).1 = v` — the `i.1 = e` conjunct `hs`). The block-triangular column split
+of eq.~(6.16) reads these rows through body `v`'s
+screw column alone (`.comp (LinearMap.single ℝ _ v)` for `v = (ends e).1`); this lemma certifies
+they remain independent there, so they discharge `linearIndependent_sum_pinned_block`'s `hnewpin`.
+
+The pin-at-`v` identity is the source of independence: each row is
+`panelRow ends i = hingeRow v (ends e).2 (annihRow …)` (`i.1 = e`), and the single-column composite
+`hingeRow v w r ∘ₗ single v = r` (the `single v` puts the test screw on `v`, the other endpoint
+`w = (ends e).2 ≠ v` reads `0`, so `S v − S w = S v` and `r(S v − 0) = r(S v)`). Thus the pinned
+family is `(screwDiff v w).dualMap`-precomposed by the panel rows; since N7b-1's panel rows
+*are* `(screwDiff v w).dualMap`-images of those raw rows (one common edge `e`, so one common
+relative-screw evaluation), `LinearIndependent.of_comp` strips the dual map and recovers the raw
+rows' independence — which is the pinned family. (The dual map is injective at the transversal hinge
+`v ≠ w`, `screwDiff_surjective`, so no information is lost.) -/
+theorem linearIndependent_panelRow_comp_single_of_edge [DecidableEq α]
+    (F : BodyHingeFramework k α β) {ends : β → α × α} {e : β}
+    (hev : (ends e).2 ≠ (ends e).1)
+    {s : Set (β × Set.powersetCard (Fin (k + 2)) k × Set.powersetCard (Fin (k + 2)) k)}
+    (hs : ∀ i ∈ s, (i : β × _ × _).1 = e)
+    (hindep : LinearIndependent ℝ (fun i : s => F.panelRow ends (i : β × _ × _))) :
+    LinearIndependent ℝ (fun i : s => (F.panelRow ends (i : β × _ × _)).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (ends e).1)) := by
+  refine LinearIndependent.of_comp
+    (screwDiff (k := k) (α := α) (ends e).1 (ends e).2).dualMap ?_
+  -- The dual map post-composes the pinned family back to the panel rows: one common edge `e`,
+  -- so one common relative-screw evaluation `screwDiff (ends e).1 (ends e).2`.
+  have heq : ((screwDiff (k := k) (α := α) (ends e).1 (ends e).2).dualMap ∘
+        fun i : s => (F.panelRow ends (i : β × _ × _)).comp
+          (LinearMap.single ℝ (fun _ : α => ScrewSpace k) (ends e).1))
+      = (fun i : s => F.panelRow ends (i : β × _ × _)) := by
+    funext i
+    have hi := hs i i.2
+    simp only [Function.comp_apply]
+    refine LinearMap.ext fun S => ?_
+    rw [← hingeRow_eq_dualMap, hingeRow_apply, panelRow, hi, LinearMap.comp_apply, hingeRow_apply,
+      LinearMap.coe_single, Pi.single_eq_same, Pi.single_eq_of_ne hev, sub_zero, hingeRow_apply]
+  rw [heq]; exact hindep
+
 /-- **The realization (generic-rank) hypothesis (6.1)** (`def:rank-hypothesis`): a panel-hinge
 framework `(G,p)` realizes the target rank of a `k`-dof-graph when its null space has dimension
 `dim Z(G,p) = D + k`, i.e. `rank R(G,p) = D|V| − dim Z(G,p) = D(|V|−1) − k`

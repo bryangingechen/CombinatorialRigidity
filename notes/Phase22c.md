@@ -1,7 +1,7 @@
 # Phase 22c — Case III at `d=3`, first chunk (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement) (work log)
 
 **Status:** in progress (opened 2026-06-05; scope re-cut to the *first
-tractable chunk* 2026-06-05). **Design-pass-first** — this phase opened
+tractable chunk* 2026-06-05; first Lean node landed 2026-06-05). **Design-pass-first** — this phase opened
 on a *layer-level design recon* of the whole Case-III-at-`d=3` argument
 (KT §6.4.1, Lemma 6.10, Claims 6.11/6.12) against the green Phase-17
 Lemma 2.1 and the green Phase-21b/22a/22b infra, **before** any Lean
@@ -71,11 +71,23 @@ bricks transport the old block); M3 and N7b-4 are **collapsed out of the
 live route**, retained with explicit "superseded — not on the live route"
 markers (conservative retain-with-marker choice; M1/M2 helpers likewise);
 the green N7b-0/1/2/3 sub-nodes stay green (reused by Case I and this
-route). **No Lean / `\leanok` flips this commit** (docs+blueprint TeX
-only). The next concrete commit is the **first Lean node of stratum 1** —
-see *Hand-off*. The Case-I composer `case_I_realization` is fully green
+route). The Case-I composer `case_I_realization` is fully green
 (Phase 22b) and ready to wire into `theorem_55_generic`'s Case-I branch;
 that wiring + the `d=3` assembly is the deferred 22d territory.
+
+**First Lean node landed (2026-06-05).** The 2nd of stratum 1's two
+genuinely-new facts — `hnewpin`, the new-block column independence — is
+green as `BodyHingeFramework.linearIndependent_panelRow_comp_single_of_edge`
+in `Pinning.lean` (right after N7b-1). It takes N7b-1's `D−1` panel rows on
+one of `v`'s incident edges `e` and shows they remain independent after the
+pin-a-body column composite `.comp (LinearMap.single ℝ _ (ends e).1)`, which
+is exactly N7b-3's `hnewpin` parameter. Axiom-clean, warning-clean,
+lint-clean. **No `\leanok` flips** (Lean-only infra; the target nodes
+`lem:case-II-realization` / `lem:case-III` stay red). The remaining stratum-1
+work is the **shared-seed selector geometry** (eq. (6.12) `q₀` placing the
+`vb`-hinge extensor to reproduce the `e₀`-hinge, the genuinely-new geometric
+construction, fact 1 of 2) and the green-brick composition (N7b-0/1/2/3 +
+N7a form (b)); see *Hand-off*.
 
 ## Sub-phase scope cut (SETTLED; re-cut to first-chunk 2026-06-05)
 
@@ -278,8 +290,18 @@ toward them, not the full nodes.
   confirmed the composition + count close cleanly, and corrected the
   `hrow`/eq.-(6.12)-reproduction conflation (the reproduction is new-block,
   `hrow` is old-block `rfl`). No Lean / `\leanok` / blueprint flips.
-- [ ] **(22c, stratum 1)** eq. (6.12) `+(D−1)` block-triangular placement
-  — the next Lean node, the new producer behind `lem:case-II-realization-placement`.
+- [x] **(this commit, Lean — stratum-1 leaf 1)** `hnewpin`, the new-block column
+  independence (§1.28 / *Hand-off* step 2): `linearIndependent_panelRow_comp_single_of_edge`
+  in `Pinning.lean` (right after N7b-1). The 2nd of the two genuinely-new facts.
+  From N7b-1's `D−1` panel rows on one edge `e` (subfamily `s`, all `i.1 = e`), they
+  stay independent after `.comp (LinearMap.single ℝ _ (ends e).1)` — feeds N7b-3's
+  `hnewpin` directly (`ιn := ↥s`). Proof = the pin-at-`v` identity
+  `hingeRow v w r ∘ₗ single v = r` (one shared edge ⟹ one shared `screwDiff`) +
+  `LinearIndependent.of_comp` stripping the injective `(screwDiff …).dualMap`. Axiom-clean
+  (`propext`/`Classical.choice`/`Quot.sound`), warning-clean, lint-clean. No `\leanok` flip
+  (the target `lem:case-II-realization` / `lem:case-III` stay red; this is Lean-only infra).
+- [ ] **(22c, stratum 1 — remaining)** eq. (6.12) `+(D−1)` block-triangular placement
+  — the producer behind `lem:case-II-realization-placement`.
   `buildable` + **signature-verified** from the green N7b row infra. Cut
   leaf-most-first (the *exact* ordering, §1.28 / *Hand-off*): the **two** new
   facts are (1) the shared-seed selector `q₀`/`ends` making the `vb`-hinge
@@ -358,11 +380,14 @@ toward them, not the full nodes.
 ## Hand-off / next phase
 
 The design recon is **settled** (four questions answered, first-chunk
-scope cut; §1.26), **the blueprint is reconciled to it** (§1.27), **and the
-stratum-1 cut is now SIGNATURE-VERIFIED against the real Lean signatures**
-(§1.28, this commit) — so the next agent does not re-fight the divergence and
-does not hit a signature surprise. **The next concrete commit is the FIRST
-LEAN NODE of stratum 1: the eq. (6.12) degenerate-placement producer behind
+scope cut; §1.26), **the blueprint is reconciled to it** (§1.27), **the
+stratum-1 cut is SIGNATURE-VERIFIED against the real Lean signatures**
+(§1.28), **and the first Lean node — `hnewpin` (fact 2 of 2) — has landed**
+(`linearIndependent_panelRow_comp_single_of_edge`, `Pinning.lean`). So the
+next agent does not re-fight the divergence, does not hit a signature
+surprise, and has the column-independence brick in hand. **The next concrete
+commit is the eq. (6.12) shared-seed selector geometry (fact 1 of 2) + the
+green-brick composition into the lower-bound producer behind
 `lem:case-II-realization-placement`.** The full signature record (verbatim
 heads of all five green bricks + the per-obligation discharge) is §1.28;
 this is the build-agent summary.
@@ -396,12 +421,12 @@ steps 2–6 are green-brick applications):
    `panelSupportExtensor (q₀ a)(q₀ b)`; `ends_G`/`ends₁` record their links
    (`hends`) **and agree on every `e₀`-free `G−v` edge** (so step 5's `hrow`
    is `rfl`). This is the `p₁(vb)=q(ab)` **new-block** reproduction.
-2. **`hnewpin` (new-block column independence)** — the second small new fact:
-   from N7b-1 (`exists_independent_panelRow_subfamily_of_edge`, green) `D−1`
-   raw-independent rows on `e_b`, show they stay independent after
-   `.comp (LinearMap.single ℝ _ v)` (the `hingeRow v w r ∘ single v = r`
-   pin-at-`v` identity; essentially `linearIndependent_hingeRow_star`
-   restricted to one edge). Feeds N7b-3's `hnewpin`.
+2. **`hnewpin` (new-block column independence)** — **DONE** (2026-06-05,
+   `linearIndependent_panelRow_comp_single_of_edge` in `Pinning.lean`): from
+   N7b-1 (`exists_independent_panelRow_subfamily_of_edge`, green) `D−1`
+   panel rows on `e_b`, they stay independent after `.comp (LinearMap.single ℝ _ v)`
+   (the `hingeRow v w r ∘ single v = r` pin-at-`v` identity; `of_comp` strips
+   the shared `(screwDiff …).dualMap`). Feeds N7b-3's `hnewpin`. Axiom-clean.
 3. **new block** `exists_independent_panelRow_subfamily_of_edge` (N7b-1, green):
    `v`'s transversal hinge ⟹ `D−1` independent new rows.
 4. **old block** `exists_independent_panelRow_subfamily_of_rigidOn` (N7b-0,
