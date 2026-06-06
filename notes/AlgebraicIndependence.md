@@ -102,7 +102,7 @@ a proven strategy*, not a gamble.
 | Where | What alg-independence is (would be) used for | Status | Relaxable? |
 |---|---|---|---|
 | Genericity device / **Claim 6.4/6.9** (Phases 21b, 22a, 22b) | KT transports rank across the collapse/generic step via alg-independence | **AVOIDED** — formalized via the existence/Zariski device + GP; green. *Not a site — the precedent.* | already avoided |
-| **Phase 22d kernel** — KT Claim 6.11, eq. (6.22)/(6.18), footnote 6 (`lem:case-III-seed-rank-bridge`) | the inductively-fixed seed `q` attains the IH/matroid-predicted rank of nested subgraphs (`G_v^{ab}`, `G_v`) — so a redundant `ab`-row exists | **first forced site; being built** via the alg-independence route ((i) `MvPolynomial.eval_ne_zero_of_algebraicIndependent` + (ii) seed-alg-indep invariant) | **candidate: §2 product-route** (~70% at `d=3`) — finitely many subgraphs, `q` chosen at composition |
+| **Phase 22d kernel** — KT Claim 6.11, eq. (6.22)/(6.18), footnote 6 (`lem:case-III-seed-rank-bridge`) | the inductively-fixed seed `q` attains the IH/matroid-predicted rank of nested subgraphs (`G_v^{ab}`, `G_v`) — so a redundant `ab`-row exists | **first forced site; being built** via the alg-independence route — leaf (i) `AlgebraicIndependent.aeval_ne_zero` ✓ landed (mirror; the `aeval` form, not the misnamed `eval`); (ii) seed-alg-indep invariant + (iii) the kernel bridge next | **candidate: §2 product-route** (~70% at `d=3`) — finitely many subgraphs, `q` chosen at composition |
 | **Phase 23** — KT Lemma 6.13, general `d` (the length-`d` chain) | same footnote-6 transfer along the chain `v₀…v_d` | future (planned) | **uncertain** — family may grow with `d` (§2 risk (c)); product-route may not suffice |
 
 (KT makes algebraic independence a single *global* inductive-seed choice, so the
@@ -114,8 +114,9 @@ surfacings the formalization must discharge, plus the avoided precedents.)
 
 - The alg-independence route is the **chosen path to green** (2026-06-06); this note
   does **not** block it.
-- When the Phase-22d kernel sub-phase opens, it builds (i)+(ii) directly
-  (`notes/Phase22d.md` *Kernel-route decision* + *Hand-off*).
+- The Phase-22d kernel sub-phase builds (i)+(ii)+(iii) directly. Leaf (i)
+  (`AlgebraicIndependent.aeval_ne_zero`, mirror) landed 2026-06-06; (ii)+(iii) next
+  (`notes/Phase22d.md` *Hand-off* + *Lemma checklist*).
 - The **relaxation phase** (deferred, unlettered — minted when its turn comes) takes
   §2 as its starting hypothesis and §3 as its checklist of sites to revisit.
 - Keep §3 current: any new "this seed attains the rank" use is a new row.

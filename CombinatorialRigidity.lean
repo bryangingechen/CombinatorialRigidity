@@ -8,6 +8,7 @@ import CombinatorialRigidity.LamanTheorem
 import CombinatorialRigidity.LinearRigidityMatroid
 import CombinatorialRigidity.Matroid.Constructions.Submodular
 import CombinatorialRigidity.Matroid.Constructions.Union
+import CombinatorialRigidity.Mathlib.RingTheory.AlgebraicIndependent.Defs
 import CombinatorialRigidity.MatroidIdentification
 import CombinatorialRigidity.Molecular.AlgebraicInduction.CaseI
 import CombinatorialRigidity.Molecular.Deficiency
