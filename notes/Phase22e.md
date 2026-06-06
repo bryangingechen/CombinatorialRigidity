@@ -4,8 +4,8 @@
 (eqs. (6.24)–(6.29)) landed green-modulo across 8 commits (`78f7eb4`…`3ab70cd`); the
 **Claim-6.12 design pass** decomposed KT §6.4.1 (eqs. (6.30)–(6.45)) into buildable
 red nodes N1–N9 and re-shaped the mis-shaped interface node `lem:case-III-eq629-conditional`
-(single-candidate → the true 3-way disjunction). **N1, N2, N4, N5, N6, N7, N8 are green** and **N3b is decomposed with its dictionary leaf
-`complementIso_toDual` green**
+(single-candidate → the true 3-way disjunction). **N1, N2, N4, N5, N6, N7, N8 are green** and **N3b is
+decomposed with its dictionary leaf `complementIso_toDual` AND step (i) green**
 (`span_omitTwoExtensor_eq_top`, `eq_zero_of_annihilates_span_top`,
 `linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`, `candidateRow_ne_zero`,
 the symmetric `p₂` producer `linearIndependent_sum_p2_candidateRow`, the third-candidate `p₃`
@@ -13,8 +13,8 @@ producer `linearIndependent_sum_p3_candidateRow`, and the eq.-(6.44) `candidateR
 + `hingeRow_comp_single_{tail,off}`). The three candidate producers (`p₁`/`p₂`/`p₃`) are now all
 green; what remains is the contrapositive glue. The N3b duality bridge was found multi-commit
 (needs the Hodge-star / regressive-duality-on-decomposables theorem); its metric-free dictionary entry
-`complementIso_toDual` is green, leaving two named steps (`complementIso(n_u∧n')∈⋀²W`; `dim ⋀²W=1`).
-Next: build N3b step (i), then (ii) + assemble N3b, then N3a, capstone N9, N10 flip.
+`complementIso_toDual` and step (i) (`complementIso(n_u∧n')∈⋀²W`) are green, leaving one named step
+(`dim ⋀²W=1`). Next: build N3b step (ii) + assemble N3b, then N3a, capstone N9, N10 flip.
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -28,25 +28,25 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: build N3b step (i) — `complementIso(n_u ∧ n')` lands in `⋀²W`** for `W =
-{n_u, n'}^⊥` (the decomposable-of-orthogonal-complement step), the second leaf of the now-decomposed
-N3b. With step (i) + the green dictionary entry `complementIso_toDual` (this commit), the duality
-reduces to step (ii): `⋀²W` is 1-dimensional for a 2-dim `W`, forcing the two nonzero members
-`pᵢ∨pⱼ` and `C(L)` to be scalar multiples. The incidence `⟨p̄, n⟩=0` (both panels) puts `pᵢ∨pⱼ ∈
-⋀²W`; the dictionary entry `complementIso_toDual` turns `r(complementIso(n_u∧n'))=0` into the volume
-pairing `vol((n_u∧n')∧·)`. Build (i) next, then (ii), then assemble N3b.
+**Next concrete commit: build N3b step (ii) — `dim ⋀²W = 1` for a 2-dim `W`**, forcing the two
+nonzero members `pᵢ∨pⱼ` and `C(L) = complementIso(n_u∧n')` to be scalar multiples, then assemble N3b.
+Step (i) (this commit) puts `complementIso(n_u∧n')` in `⋀²W` (operational dual form: annihilated by
+every 2-extensor sharing a vector with `n_u∧n'`); step (ii) is the 1-dimensionality that closes
+"two nonzero members of a 1-dim space are proportional", giving `pᵢ∨pⱼ = λ·C(L)`. The incidence
+`⟨p̄, n⟩=0` (both panels) puts `pᵢ∨pⱼ ∈ ⋀²W`. Build (ii) next, then assemble N3b.
 
-**N3b decomposed + its dictionary leaf `complementIso_toDual` landed green (this commit)**
-(`Molecular/Meet.lean`, axiom-clean). The recon found complete N3b is multi-commit research — the full
-"point-join = λ·panel-meet" needs the Hodge-star / regressive-duality-on-decomposables theorem (not in
-mathlib, not yet in-project). Landed the genuinely-new tractable staging leaf — the metric-free
-Grassmann–Cayley **dictionary entry** `complementIso_toDual` (`b.toDual (complementIso X) B =
-wedgePairing X B = vol(X∨B)`, the defining wedge-pairing property of `complementIso`, three-line proof
-via `complementIso = wedgePairing-equiv ≪≫ toDualEquiv.symm` + `apply_symm_apply`) — and re-decomposed
-the N3b blueprint node (`lem:case-III-claim612-line-in-panel-union`, still red) to route through it,
-naming the two remaining steps explicitly: (i) `complementIso(n_u∧n') ∈ ⋀²W`, (ii) `dim ⋀²W = 1`.
-New blueprint node `lem:complement-iso-toDual` (green) in `meet.tex`. `verify.sh` green; supersession +
-uses/cref gates clean; `lake lint` clean.
+**N3b step (i) landed green (this commit)** (`Molecular/Meet.lean`, axiom-clean). The
+decomposable-of-orthogonal-complement step `complementIso(n_u∧n') ∈ ⋀²W`, in operational dual form,
+as a two-half composition: `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` (the dictionary half —
+a vanishing wedge `X∨ₑB=0` gives `toDual(complementIso X) B = vol(X∨ₑB) = 0`, one `rw` chain via the
+green `complementIso_toDual` + `map_zero`) ∘ `wedgeProd_extensor_eq_zero_of_shared_vector` (the
+concrete half at `k=2`/`⋀²ℝ⁴` — two 2-extensors sharing a vector wedge to `0`: the join's appended
+family repeats the shared normal, `join_extensor` + `extensor_eq_zero_of_eq`), assembled in
+`complementIso_toDual_extensor_eq_zero_of_shared_vector`. New green blueprint node
+`lem:complement-iso-decomposable-wedge-perp` in `meet.tex`; N3b's `\uses` + proof prose rewired
+(step (i) green, step (ii) the remaining content). `verify.sh` green; supersession + uses/cref gates
+clean; `lake lint` clean. No new mirror, no FRICTION (standard `complementIso`-unfold idiom, as
+predicted by the design recon).
 
 After N3b: N3a (4 affinely-indep points, LOW risk — general position direct from `IsGeneralPosition`,
 NOT alg-independence), capstone N9 (the 3-way disjunction, discharges `lem:case-III-eq629-conditional`),
@@ -198,8 +198,14 @@ commit (no `\lean`/`\leanok`); build greens them.
   - [x] **N3b-dict** `lem:complement-iso-toDual` (`complementIso_toDual`, `Meet.lean`, green,
     axiom-clean) — the metric-free dictionary entry `b.toDual (complementIso X) B = wedgePairing X B
     = vol(X∨B)`. Three-line proof. Deps: `def:meet-complement-iso`, `def:meet-top-equiv`.
-  - [ ] **N3b-(i)** `complementIso(n_u∧n') ∈ ⋀²W` for `W = {n_u,n'}^⊥` (decomposable-of-orthogonal-
-    complement; the next concrete commit). Routes through N3b-dict + the incidence `⟨p̄,n⟩=0`.
+  - [x] **N3b-(i)** `complementIso(n_u∧n') ∈ ⋀²W` for `W = {n_u,n'}^⊥` (decomposable-of-orthogonal-
+    complement, green, axiom-clean) — `complementIso_toDual_extensor_eq_zero_of_shared_vector`
+    (`Meet.lean`), the composition of the dictionary half
+    `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` (vanishing wedge ⟹ vanishing complement
+    pairing, via N3b-dict) and the concrete half `wedgeProd_extensor_eq_zero_of_shared_vector`
+    (two 2-extensors sharing a vector wedge to 0 at `k=2`, `join_extensor` + alternating law). New
+    green node `lem:complement-iso-decomposable-wedge-perp` in `meet.tex`. Deps: N3b-dict, `def:join`,
+    `def:extensor`, `def:meet-complement-iso`.
   - [ ] **N3b-(ii)** `dim ⋀²W = 1` for a 2-dim `W`, forcing the two nonzero members to be scalar
     multiples; then assemble N3b. Deps for full N3b: N1 + Phase-21a Meet (`def:join`, `def:meet`,
     `def:meet-complement-iso`, `def:panel-support-extensor`, `lem:extensor-independence`).
@@ -257,18 +263,19 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: build N3b step (i) — `complementIso(n_u ∧ n') ∈ ⋀²W`** for `W =
-{n_u, n'}^⊥` (the decomposable-of-orthogonal-complement step). With the green dictionary leaf
-`complementIso_toDual` (`b.toDual (complementIso X) B = vol(X∨B)`, `Meet.lean`), the pairing of
-`complementIso(n_u∧n')` against `B` is `vol((n_u∧n')∧B)`, which vanishes whenever `B ∈ ⋀²W` (a third
-copy of `n_u` or `n'` in the wedge); the cleanest Lean form is membership of `complementIso(n_u∧n')`
-in `Submodule.span {pᵢ∨pⱼ}` (equivalently `⋀²W`). Then **N3b step (ii)** (`dim ⋀²W = 1` for 2-dim
-`W`, forcing the two nonzero members to be scalar multiples) + assemble N3b.
+**Next concrete commit: build N3b step (ii) — `dim ⋀²W = 1` for a 2-dim `W`**, forcing the two
+nonzero members `pᵢ∨pⱼ` and `C(L) = complementIso(n_u∧n')` to be scalar multiples
+(`pᵢ∨pⱼ = λ·C(L)`), then assemble N3b. Step (i) (just landed) put `complementIso(n_u∧n')` in `⋀²W`
+in operational dual form (annihilated by every 2-extensor sharing a vector); the incidence
+`⟨p̄,n⟩=0` (both panels) puts `pᵢ∨pⱼ ∈ ⋀²W` too. Step (ii) is the 1-dimensionality: `⋀²` of a 2-dim
+space is 1-dim, so any two nonzero members are proportional — the standard fact (mathlib's
+exterior-power finrank of a 2-dim space, or `extensor`-line span; tractable). Assembling N3b is then
+the annihilation transfer `r(C(L))=0 ⟹ r(pᵢ∨pⱼ) = λ·r(C(L)) = 0`.
 
-**Why N3b is decomposed (this commit):** complete N3b ("`pᵢ∨pⱼ = λ·C(L)`") needs the Hodge-star /
-regressive-duality-on-decomposables theorem — not in mathlib, not yet in-project — so it is multi-commit.
-The genuinely-new tractable staging leaf landed: the metric-free Grassmann–Cayley dictionary entry
-`complementIso_toDual`. The remaining two leaves (i)/(ii) are named above + in the checklist.
+**Why N3b is decomposed:** complete N3b ("`pᵢ∨pⱼ = λ·C(L)`") needs the Hodge-star /
+regressive-duality-on-decomposables content — not in mathlib, not yet in-project — so it is
+multi-commit. The dictionary leaf `complementIso_toDual` (prior commit) and step (i) (this commit)
+are green; step (ii) + the assembly are the remaining leaves, named above + in the checklist.
 
 Then, in order: **N3a** (`lem:case-III-claim612-points-affineIndep`, 4 affinely-indep points — LOW
 risk, general position direct from `IsGeneralPosition`, NOT alg-independence), then capstone **N9**
@@ -293,6 +300,17 @@ N3a/N3b are NOT alg-independence sites — general position direct from `IsGener
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N3b step (i) green — the decomposable-of-orthogonal-complement step as a two-half composition
+  (2026-06-06).** `complementIso_toDual_extensor_eq_zero_of_shared_vector` (`Meet.lean`, axiom-clean):
+  `complementIso(n_u∧n') ∈ ⋀²W` in operational dual form (annihilated by every 2-extensor sharing a
+  vector with `n_u∧n'`). Factored into the **dictionary half**
+  `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` (`wedgeProd X B = 0 ⟹ toDual(complementIso X)
+  B = 0`, one `rw` chain via the green `complementIso_toDual` + `map_zero`) and the **concrete half**
+  `wedgeProd_extensor_eq_zero_of_shared_vector` (two 2-extensors sharing a vector wedge to 0 at `k=2`:
+  `Subtype.ext` + `coe_wedgeProd` + a `change` to the join + `join_extensor` + `extensor_eq_zero_of_eq`
+  on the repeated appended index). New green node `lem:complement-iso-decomposable-wedge-perp` in
+  `meet.tex`; N3b's `\uses` + proof prose rewired. No new mirror, no FRICTION (the `change` is a routine
+  subtype-coercion defeq, not a missing lemma) — as the design recon predicted.
 - **N3b decomposed; dictionary leaf `complementIso_toDual` green (2026-06-06).** Recon confirmed the
   complete duality bridge (`pᵢ∨pⱼ = λ·C(L)`) is multi-commit research — it bottoms on the Hodge-star /
   regressive-duality-on-decomposables theorem (in `⋀²ℝ⁴`: `complementIso` of a decomposable lands in

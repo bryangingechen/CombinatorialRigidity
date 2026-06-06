@@ -501,6 +501,72 @@ noncomputable def meet {a b : ℕ} (ha : a ≤ k + 2) (hb : b ≤ k + 2) (hab : 
 
 @[inherit_doc] scoped infixl:70 " ∧ₑ " => meet
 
+/-! ## Step (i) of the point-join ↔ panel-meet duality: the complement of a decomposable lies in
+the wedge-orthogonal complement (`lem:case-III-claim612-line-in-panel-union`)
+
+The first remaining leaf of the duality bridge beyond the green dictionary entry
+`complementIso_toDual`. Geometrically: the complement `complementIso (n_u ∧ n')` of the grade-2
+decomposable `n_u ∧ n'` lands in `⋀²W` for `W = {n_u, n'}^⊥` — i.e. it is annihilated by every
+`2`-extensor that shares a factor with `n_u ∧ n'`. The metric-free reading, through the dictionary
+entry, is that pairing `complementIso (n_u ∧ n')` against any `B` whose wedge with `n_u ∧ n'`
+vanishes gives `0`; the concrete vanishing is the alternating law (`extensor_eq_zero_of_eq`) on the
+concatenated family of two `2`-extensors sharing a vector. -/
+
+/-- **Step (i), the dictionary half: `complementIso` of a wedge-orthogonal element vanishes**
+(`lem:case-III-claim612-line-in-panel-union`). If the graded wedge `X ∨ₑ B` of `X : ⋀ʲ V` with
+`B : ⋀^(N−j) V` vanishes (`wedgeProd hj X B = 0`), then `complementIso hj X` is annihilated by `B`
+through the standard exterior-power basis's `toDual`. Immediate from the defining wedge-pairing
+property `complementIso_toDual` (`b.toDual (complementIso X) B = vol(X ∨ₑ B)`) and the volume form's
+linearity: a vanishing wedge has volume `0`. This is the metric-free criterion turning
+"`X ∨ₑ B = 0`" (a shared factor) into "`complementIso X ⊥ B`", i.e. `complementIso X` lies in the
+wedge-orthogonal complement of every such `B`. -/
+theorem complementIso_toDual_eq_zero_of_wedgeProd_eq_zero {j : ℕ} (hj : j ≤ k + 2)
+    (X : ⋀[ℝ]^j (Fin (k + 2) → ℝ)) (B : ⋀[ℝ]^(k + 2 - j) (Fin (k + 2) → ℝ))
+    (hwedge : wedgeProd hj X B = 0) :
+    ((Pi.basisFun ℝ (Fin (k + 2))).exteriorPower (k + 2 - j)).toDual
+        (complementIso hj X) B = 0 := by
+  rw [complementIso_toDual, wedgePairing_apply, hwedge, map_zero]
+
+/-- **Step (i), the concrete half: the wedge of two `2`-extensors sharing a vector vanishes**
+(`lem:case-III-claim612-line-in-panel-union`, the `d = 3` / `ScrewSpace 2 = ⋀²ℝ⁴` case). If the
+families `n, c : Fin 2 → ℝ⁴` share a vector (here `n 0 = c 0`, the shared panel normal `n_u`), the
+graded wedge `wedgeProd (extensor n) (extensor c)` vanishes: its underlying element is the join
+`extensor n ∨ₑ extensor c = extensor (Fin.append n c)` (`join_extensor`), whose concatenated family
+repeats the shared vector, so the extensor is `0` by the alternating law `extensor_eq_zero_of_eq`.
+This supplies the hypothesis of `complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` for the
+decomposable `n_u ∧ n' = extensor n`, putting `complementIso (n_u ∧ n')` in `⋀²W`. -/
+theorem wedgeProd_extensor_eq_zero_of_shared_vector (n c : Fin 2 → Fin 4 → ℝ) (hshare : n 0 = c 0) :
+    wedgeProd (k := 2) (j := 2) (by omega)
+      ⟨extensor n, extensor_mem_exteriorPower n⟩
+      ⟨extensor c, extensor_mem_exteriorPower c⟩ = 0 := by
+  apply Subtype.ext
+  rw [coe_wedgeProd, ZeroMemClass.coe_zero]
+  change extensor n ∨ₑ extensor c = 0
+  rw [join_extensor]
+  apply extensor_eq_zero_of_eq _ (a := Fin.castAdd 2 0) (b := Fin.natAdd 2 0)
+  · rw [Fin.append_left, Fin.append_right, hshare]
+  · decide
+
+/-- **Step (i) of the point-join ↔ panel-meet duality**
+(`lem:case-III-claim612-line-in-panel-union`): `complementIso (n_u ∧ n')` lands in `⋀²W` for
+`W = {n_u, n'}^⊥`, in operational dual form. At `d = 3` (`k = 2`, `ScrewSpace 2 = ⋀²ℝ⁴`), for the
+grade-2 decomposable `n_u ∧ n' = extensor n` (family `n : Fin 2 → ℝ⁴` of two panel normals), its
+complement `complementIso (n_u ∧ n')` is annihilated — through the standard exterior-power basis's
+`toDual` — by every `2`-extensor `extensor c` sharing a vector with `n` (`n 0 = c 0`). This is the
+decomposable-of-orthogonal-complement step: composing the dictionary half
+`complementIso_toDual_eq_zero_of_wedgeProd_eq_zero` with the concrete wedge vanishing
+`wedgeProd_extensor_eq_zero_of_shared_vector`. With step (ii) (`dim ⋀²W = 1`) it forces the
+point-join `p_i ∨ p_j` and the panel-meet `C(L) = complementIso (n_u ∧ n')` to be scalar multiples,
+so an `r` annihilating every `C(L)` annihilates each spanning join — the contrapositive glue of the
+Claim 6.12 capstone. -/
+theorem complementIso_toDual_extensor_eq_zero_of_shared_vector
+    (n c : Fin 2 → Fin 4 → ℝ) (hshare : n 0 = c 0) :
+    ((Pi.basisFun ℝ (Fin (2 + 2))).exteriorPower (2 + 2 - 2)).toDual
+        (complementIso (k := 2) (j := 2) (by omega) ⟨extensor n, extensor_mem_exteriorPower n⟩)
+        ⟨extensor c, extensor_mem_exteriorPower c⟩ = 0 :=
+  complementIso_toDual_eq_zero_of_wedgeProd_eq_zero (by omega) _ _
+    (wedgeProd_extensor_eq_zero_of_shared_vector n c hshare)
+
 /-- **The wedge pairing of two standard exterior-power basis vectors is an integer**
 (ingredient (c), the rationality refinement of the signed-permutation matrix; B0
 rationality bridge of Phase 22d). For index subsets `S` (size `j`) and `T` (size `k+2−j`),

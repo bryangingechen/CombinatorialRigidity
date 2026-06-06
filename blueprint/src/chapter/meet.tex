@@ -159,6 +159,34 @@ consume them; projective invariance is Phase~25.
   $\mathrm{wedgePairing}\,X$.
 \end{proof}
 
+\begin{lemma}[Complement of a decomposable lies in the wedge-orthogonal complement (step (i))]
+  \label{lem:complement-iso-decomposable-wedge-perp}
+  \lean{CombinatorialRigidity.Molecular.complementIso_toDual_eq_zero_of_wedgeProd_eq_zero,
+        CombinatorialRigidity.Molecular.wedgeProd_extensor_eq_zero_of_shared_vector,
+        CombinatorialRigidity.Molecular.complementIso_toDual_extensor_eq_zero_of_shared_vector}
+  \leanok
+  \uses{def:meet-complement-iso, lem:complement-iso-toDual, def:join, def:extensor}
+  Step (i) of the point-join $\leftrightarrow$ panel-meet duality
+  (\cref{lem:case-III-claim612-line-in-panel-union}): the complement
+  $\mathrm{complementIso}(n_u \wedge n')$ of the grade-$2$ decomposable $n_u \wedge n'$ lands in
+  $\bigwedge^{2} W$ for $W = \{n_u, n'\}^{\perp}$, in operational dual form. First, through the
+  dictionary entry \cref{lem:complement-iso-toDual}, a vanishing wedge has vanishing complement
+  pairing: if $X \vee B = 0$ then $\langle \mathrm{complementIso}\,X,\ B\rangle = \mathrm{vol}(X \vee
+  B) = 0$. Second, at $d = 3$ ($N = 4$, $\mathrm{ScrewSpace}\,2 = \bigwedge^{2} \R^4$) the wedge of
+  two $2$-extensors that share a vector vanishes by alternation (the concatenated family repeats the
+  shared normal). Composing, $\mathrm{complementIso}(n_u \wedge n')$ is annihilated by every
+  $2$-extensor sharing a vector with $n_u \wedge n'$ --- i.e.\ it lies in the wedge-orthogonal
+  complement, the operational reading of $\mathrm{complementIso}(n_u \wedge n') \in \bigwedge^{2} W$.
+\end{lemma}
+\begin{proof}
+  \leanok
+  The dictionary half is immediate from \cref{lem:complement-iso-toDual} and linearity of the volume
+  form ($\mathrm{vol}\,0 = 0$). The concrete half writes the underlying element of the graded wedge
+  as the join $\mathrm{extensor}\,n \vee \mathrm{extensor}\,c = \mathrm{extensor}(\mathrm{append}\,n\,
+  c)$ (\cref{def:join}); a shared vector makes the appended family non-injective, so the extensor
+  vanishes by the alternating law (\cref{def:extensor}). The combined step (i) is the composition.
+\end{proof}
+
 \begin{definition}[The regressive product (meet)]
   \label{def:meet}
   \lean{CombinatorialRigidity.Molecular.meet}

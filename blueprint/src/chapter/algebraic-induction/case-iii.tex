@@ -713,7 +713,7 @@ Grassmann--Cayley projective duality.
   \label{lem:case-III-claim612-line-in-panel-union}
   \uses{def:join, def:meet, def:meet-complement-iso, def:panel-support-extensor,
         lem:extensor-independence, lem:case-III-claim612-extensor-span,
-        lem:complement-iso-toDual}
+        lem:complement-iso-toDual, lem:complement-iso-decomposable-wedge-perp}
   At $d = 3$ ($D = 6$, $k = 2$, $\mathrm{ScrewSpace}\,2 = \bigwedge^2 \R^4$), let $p_i, p_j$ be two
   of the points of \cref{lem:case-III-claim612-points-affineIndep} whose connecting line
   $L = p_i p_j$ lies in a panel $\Pi(u)$ ($u \in \{a, b, c\}$). Then the point-join
@@ -740,10 +740,14 @@ Grassmann--Cayley projective duality.
   $\langle \bar{p_i}, n_u \rangle = \langle \bar{p_i}, n' \rangle = 0$ (and likewise for $\bar{p_j}$)
   puts both $\bar{p_i} \vee \bar{p_j}$ and $C(L)$ in the $1$-dimensional extensor line of $W = \{n_u,
   n'\}^{\perp} = \mathrm{span}\{\bar{p_i}, \bar{p_j}\}$ (nonzero precisely because $L$ is a genuine
-  line). The remaining content beyond the dictionary entry is: (i) $\mathrm{complementIso}(n_u \wedge
-  n')$ lands in $\bigwedge^2 W$ (the decomposable-of-orthogonal-complement step), and (ii)
-  $\bigwedge^2 W$ is $1$-dimensional for a $2$-dimensional $W$, forcing the two nonzero members to be
-  scalar multiples $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$. The annihilation transfer is then
+  line). Step (i) --- $\mathrm{complementIso}(n_u \wedge n')$ lands in $\bigwedge^2 W$, the
+  decomposable-of-orthogonal-complement step --- is now green
+  (\cref{lem:complement-iso-decomposable-wedge-perp}): through the dictionary entry, a wedge with a
+  shared factor has vanishing complement pairing, so $\mathrm{complementIso}(n_u \wedge n')$ is
+  annihilated by every $2$-extensor sharing a vector with $n_u \wedge n'$. The one remaining step
+  beyond the dictionary entry is (ii) $\bigwedge^2 W$ is $1$-dimensional for a $2$-dimensional $W$,
+  forcing the two nonzero members to be scalar multiples $\bar{p_i} \vee \bar{p_j} = \lambda\, C(L)$.
+  The annihilation transfer is then
   immediate: $r(C(L)) = 0$ gives $r(\bar{p_i} \vee \bar{p_j}) = \lambda\, r(C(L)) = 0$. This is the
   duality KT use implicitly when reading eq.~(6.45): the spanning family of
   \cref{lem:case-III-claim612-extensor-span} (point-joins) and the annihilated family of the
