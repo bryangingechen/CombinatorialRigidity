@@ -1,79 +1,63 @@
 # Phase 22e — candidate-completion + Claim 6.12 (KT §6.4.1, eqs. (6.24)–(6.45)) (work log)
 
-**Status:** in progress (opened 2026-06-06 design-pass-first). The candidate-completion
-(eqs. (6.24)–(6.29)) landed green-modulo across 8 commits (`78f7eb4`…`3ab70cd`); the
-**Claim-6.12 design pass** decomposed KT §6.4.1 (eqs. (6.30)–(6.45)) into buildable
-red nodes N1–N9 and re-shaped the mis-shaped interface node `lem:case-III-eq629-conditional`
-(single-candidate → the true 3-way disjunction). **N1, N2, N4, N5, N6, N7, N8 are green** and **N3b's
-dictionary leaf `complementIso_toDual` + step (i) + step (ii) are green** — only the N3b *assembly*
-(the Hodge-star identification placing both members in `⋀²W` to extract the scalar) remains red.
-Green: `span_omitTwoExtensor_eq_top`, `eq_zero_of_annihilates_span_top`,
-`linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`, `candidateRow_ne_zero`,
-the symmetric `p₂` producer `linearIndependent_sum_p2_candidateRow`, the third-candidate `p₃`
-producer `linearIndependent_sum_p3_candidateRow`, the eq.-(6.44) `candidateRow_ac_eq_neg`
-+ `hingeRow_comp_single_{tail,off}`, and the N3b duality leaves `complementIso_toDual`,
-`complementIso_toDual_extensor_eq_zero_of_shared_vector` (step (i)),
-`finrank_exteriorPower_two_eq_one` + `exteriorPower_finrank_eq_one_proportional` (step (ii)). The
-three candidate producers (`p₁`/`p₂`/`p₃`) are all green; what remains is the contrapositive glue. The
-N3b duality bridge is multi-commit (needs the Hodge-star / regressive-duality-on-decomposables
-content to place both extensors in `⋀²W` as an honest submodule); its three leaves are green, leaving
-that assembly. The remaining red leaves are N3a (the 4-point construction — corrected this commit to
-its true characterization: a genericity/alg-independence site per KT p. 691/698, not "config-only")
-and the N3b assembly. Next: build N3a via the genericity device, then capstone N9, N10 flip.
-Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
-Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
-green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
-(`exists_redundant_panelRow_ab_of_finrank_eq` = KT eq. (6.23)) into the missing
-`+1` full-rank row, then resolving the `D`-candidate disjunction (Claim 6.12).
+**Status:** in progress (opened 2026-06-06 design-pass-first). **Re-scoped 2026-06-06 (steering):
+22e lands N3a + N9 + N10, closing green-modulo-N3b; the N3b exterior-algebra infra splits to a
+future Phase 22f.** The candidate-completion (eqs. (6.24)–(6.29)) + Claim-6.12 leaves N1, N2, N4–N8
+are green; the three N3b operational leaves (dictionary `complementIso_toDual`, step (i), step (ii))
+are green, leaving the N3b *assembly* (the Hodge-star identification placing both members in `⋀²W`)
+red and deferred to 22f. The three candidate producers (`p₁`/`p₂`/`p₃`) are all green; what remains
+is the contrapositive glue (N3a + N3b + N9). Successor to 22d, the next chunk of Case III at `d=3`
+(KT §6.4.1, Lemma 6.10): lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`, green)
+to full `D(|V|−1)` by converting 22d's green redundant `ab`-row (`exists_redundant_panelRow_ab_of_finrank_eq`
+= KT eq. (6.23)) into the missing `+1`, then resolving the `D`-candidate disjunction (Claim 6.12).
 **Forward-mode / structural-edit:** no new blueprint chapter — the target nodes
-(`lem:case-II-realization`, `lem:case-III`) are already stubbed red in
-`algebraic-induction/case-ii.tex` / `case-iii.tex`; Lean lands in
-`Molecular/AlgebraicInduction/` (+ `RigidityMatrix.lean` for LA leaves). KT math is
-worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it.
+(`lem:case-II-realization`, `lem:case-III`) are stubbed red in `algebraic-induction/case-ii.tex` /
+`case-iii.tex`; Lean lands in `Molecular/AlgebraicInduction/` (+ `RigidityMatrix.lean` for LA leaves).
+KT math: `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it.
 
 ## Current state
 
-**Next concrete commit: the N3a `P ≠ 0` genericity residual** (the irreducible genericity content
-of N3a, now the *sole* red remainder of the points half) **or the N3b assembly** (the multi-commit
-Hodge-star piece below). This commit landed the **N3a determinant-polynomial bridge**
-`lem:case-III-claim612-detpoly` (`exists_detPolynomial_of_pointPolynomial`, `RigidityMatrix.lean`,
-green, axiom-clean): when the `d+1` candidate points are built coordinate-by-coordinate as
-`MvPolynomial σ ℝ` in the seed (`pp : Fin (d+1) → Fin d → MvPolynomial σ ℝ`, realized point
-`p q i j := eval q (pp i j)`), their affine-independence determinant `det(homogenize ∘ p q)` is the
-eval at `q` of a *single* polynomial `P` — the det of the polynomial matrix with rows
-`Fin.snoc (pp i) 1`. This **discharges the `hdet` hypothesis** of the green closure half
-`exists_affineIndependent_of_det_polynomial_ne_zero`, isolating the polynomial-in-the-seed structure
-of the determinant from the genericity-bearing `P ≠ 0`. 6-line proof: `eval q` is a ring hom, so it
-commutes with `det` (`RingHom.map_det`) and entrywise with `Fin.snoc · 1` (fixing the constant final
-`1`) — a `Fin.lastCases` split closing both branches by `simp [homogenize, Matrix.map_apply]`. New
-green node `lem:case-III-claim612-detpoly` in `case-iii.tex`; N3a's `\uses` + proof prose rewired to
-cite it (green) and name `P ≠ 0` as the now-sole red remainder of the points half. All three N3a
-ingredients are now isolated as green bricks (existence dimension count, closure non-root,
-determinant-polynomial structure); only `P ≠ 0` is red. `verify.sh` + uses/cref + supersession gates
-clean; `lake build` warning-clean; `lake lint` clean. No new mirror (project-internal,
-`RingHom.map_det`/`Fin.lastCases`/`Fin.snoc`-simp all upstream), no FRICTION (clean ring-hom
-composition).
+**Next concrete commit: build N3a-1 — the `P ≠ 0` existence witness.** Assemble the per-panel
+incidence points (N3a-exists, green, supplies one at a time) into the `MvPolynomial` family
+`pp : Fin 4 → Fin 3 → MvPolynomial σ ℝ` the green det-poly bridge consumes, using the **projective /
+homogeneous cross-product** construction (denominator-free): `p₁` = triple-intersection of the 3
+panels (Cramer / cross-product of the normals), `p₂ = p₁ + s·(nₐ×n_b)`, `p₃ = p₁ + s'·(n_b×n_c)`,
+`p₄ = p₁ + s''·(n_c×nₐ)`. Then prove `P ≠ 0` by exhibiting **one explicit seed** (coordinate-ish
+normals + generic offsets), closed by `norm_num`/`decide` on the 4×4 homogenization determinant.
+LOW–MEDIUM risk. (N3a-2 then composes the green det-poly bridge + N3a-1 + the green closure half into
+`∃ q, AffineIndependent`, reading off the lines-in-panels incidence pattern N9 consumes — LOW risk;
+flips `lem:case-III-claim612-points-affineIndep` green.)
 
-**The N3b assembly (still red, multi-commit).** The three N3b duality leaves are green; the assembly
-places both the point-join `pᵢ∨pⱼ` and the panel-meet `C(L) = complementIso(n_u∧n')` in `⋀²W` as an
-honest submodule (via the incidence `⟨p̄, n⟩=0`, both panels) and applies the step-(ii)
-proportionality to extract `pᵢ∨pⱼ = λ·C(L)`, then the annihilation transfer `r(C(L))=0 ⟹
-r(pᵢ∨pⱼ)=λ·r(C(L))=0`. This needs the Hodge-star / regressive-duality-on-decomposables
-identification of `⋀²W` (as a submodule of `⋀²ℝ⁴`) with the join's extensor line — not yet in
-mathlib or the project (the multi-commit content the design recon flagged).
+**N3a is the EXISTENCE route, NOT the alg-independence hammer (scope decision, this commit).** The
+red residual `P ≠ 0` is *logically equivalent* — via the converse of `MvPolynomial.exists_eval_ne_zero`
++ the green det-poly bridge — to "exhibit ONE seed `q*` where the 4 constructed points are affinely
+independent", so it does **not** need `lem:genericity-device` / alg-independence. It is the same
+existence/Zariski route the pre-22d genericity sites (Claim 6.4/6.9) all used. Verified numerically
+(the cross-product construction above is affinely independent with all 6 lines in the panel union).
+This commit re-framed the N3a node prose+proof to the existence route, dropped its
+`\uses{lem:genericity-device}` edge, and flipped `AlgebraicIndependence.md` row #106 to **AVOIDED**.
+
+**N9/N10 will be built green-modulo-N3b.** N9's contrapositive `\uses` the red N3b node
+(`lem:case-III-claim612-line-in-panel-union`) — it needs `r(C(L))=0 ⟹ r(pᵢ∨pⱼ)=0` to connect the
+block-failures (panel-meets) to N1's spanning family (point-joins). Since N3b is deferred to 22f, N9
+lands green-modulo-N3b (honesty-gate case (b), the established green-modulo pattern); N10 likewise.
+
+**The N3b assembly is deferred to Phase 22f (decomposition in *Hand-off / 22f plan* below).** The
+three N3b operational leaves are green; the assembly places both `pᵢ∨pⱼ` and `C(L) =
+complementIso(n_u∧n')` in `⋀²W` as an honest submodule and extracts `pᵢ∨pⱼ = λ·C(L)`, then the
+annihilation transfer. This needs the bounded/concrete `⋀²ℝ⁴` exterior-algebra infra (NOT general
+Hodge theory) not yet in mathlib/the project — the multi-commit content split out as 22f.
 
 **Landed green this phase (one-lined; full entries in *Decisions made*, math in `case-iii.tex` /
-`meet.tex`):** the candidate-completion chain (eqs. (6.24)–(6.29), green-modulo the re-shaped
-conditional N9) + N1 (`span_omitTwoExtensor_eq_top`), N2 (`eq_zero_of_annihilates_span_top`), N4
+`meet.tex`):** candidate-completion chain (eqs. (6.24)–(6.29), green-modulo conditional N9) + N1
+(`span_omitTwoExtensor_eq_top`), N2 (`eq_zero_of_annihilates_span_top`), N4
 (`linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`), N5 (`candidateRow_ne_zero`),
 N6 (`linearIndependent_sum_p2_candidateRow`), N7 (`linearIndependent_sum_p3_candidateRow`), N8
-(`candidateRow_ac_eq_neg`), the three N3b leaves (`complementIso_toDual`; step (i)
-`…_extensor_eq_zero_of_shared_vector`; step (ii) `finrank_exteriorPower_two_eq_one` +
-`…_proportional`), and the two N3a genericity-free halves (existence
-`exists_ne_zero_dotProduct_eq_zero`; closure `exists_affineIndependent_of_det_polynomial_ne_zero`).
-The Claim-6.12 interface re-shape (the conditional `lem:case-III-eq629-conditional` is a **3-way
-disjunction** `M₁/M₂/M₃`, not single-candidate — does not strand green Lean since the assembly takes
-`ρ`/`rn`/`ro` abstractly) is in *Decisions made* + the N-node checklist below.
+(`candidateRow_ac_eq_neg`), the three N3b leaves, and the three N3a existence-route bricks (existence
+`exists_ne_zero_dotProduct_eq_zero`; closure `exists_affineIndependent_of_det_polynomial_ne_zero`;
+det-poly bridge `exists_detPolynomial_of_pointPolynomial`). The Claim-6.12 interface re-shape (the
+conditional `lem:case-III-eq629-conditional` is a **3-way disjunction** `M₁/M₂/M₃` — does not strand
+green Lean since the assembly takes `ρ`/`rn`/`ro` abstractly) is in *Decisions made* + the checklist.
 
 ## Red-node consistency gate — recon verdict (2026-06-06, opening commit)
 
@@ -148,46 +132,32 @@ commit (no `\lean`/`\leanok`); build greens them.
   axiom-clean) — a functional `r : Module.Dual ℝ (ScrewSpace k)` vanishing on a set `S` with
   `span S = ⊤` is `0`, via `LinearMap.ext_on`. Deps: N1. Dual-annihilator framing (not the
   inner-product `⟨r,r⟩=0` of the original prose) to match the `Module.Dual` candidate-row chain.
-- [ ] **N3a** `lem:case-III-claim612-points-affineIndep` — from a **generic** nonparallel framework
-  (`lem:genericity-device`: the panel coefficients are algebraically independent over ℚ), 4
-  **affinely-independent** points `p : Fin 4 → Fin 3 → ℝ` realizing the `Π(a)/Π(b)/Π(c)` incidence
-  pattern (`pᵢ ∈ Π(u) ⟺ ⟨homogenize pᵢ, n_u⟩ = 0`). The span side N1 consumes. Deps:
-  `def:rigidity-matrix`, `def:panel-hinge-framework`, `lem:genericity-device`,
-  `lem:case-III-claim612-panel-point-exists` (the existence sub-leaf, green this commit). **IS an
-  alg-independence (genericity) site** (KT p. 691/698 eq. (6.67): points affinely independent
-  *because* `q` is generic; pairwise independence of the ℝ⁴ normals does NOT suffice). Two halves:
-  - [x] **N3a-exists** `lem:case-III-claim612-panel-point-exists` (`exists_ne_zero_dotProduct_eq_zero`,
-    `RigidityMatrix.lean`, green, axiom-clean) — the **existence** half: `m < d+1` homogeneous
-    incidence equations `⟨p̄, nᵢ⟩ = 0` always have a nonzero solution (the `m×(d+1)` system has more
-    columns than rows; rank-nullity ⟹ nontrivial kernel). Genericity-free — a pure dimension count,
-    the `j`-hyperplane intersection brick (`p₁` on all three at `j=3`; `p₂/p₃/p₄` on each pair at
-    `j=2`). Deps: `def:panel-hinge-framework`.
-  - [x] **N3a-closure** `lem:case-III-claim612-points-affineIndep-producer`
-    (`exists_affineIndependent_of_det_polynomial_ne_zero`, `RigidityMatrix.lean`, green, axiom-clean) —
-    the **genericity-to-realization closure** half: 4 points built as functions of `q` with
-    homogenization determinant = eval of a *nonzero* `P` ⟹ `∃ q, AffineIndependent ℝ (p q)`.
-    `MvPolynomial.exists_eval_ne_zero` ∘ `affineIndependent_fin_iff_det_homogenize` (Lemma 2.1).
-    Deps: `lem:affine-indep-iff`, `lem:genericity-device`.
-  - [x] **N3a-detpoly** `lem:case-III-claim612-detpoly` (`exists_detPolynomial_of_pointPolynomial`,
-    `RigidityMatrix.lean`, green, axiom-clean, this commit) — the **determinant-polynomial bridge**:
-    points built coordinate-wise as `MvPolynomial` in `q` (`pp : Fin (d+1) → Fin d → MvPolynomial σ ℝ`)
-    ⟹ their homogenization determinant is eval at `q` of the single polynomial `det(of (Fin.snoc (pp i) 1))`.
-    Discharges the `hdet` hypothesis of N3a-closure. `eval q` (ring hom) commutes with `det` +
-    `Fin.snoc · 1` via a `Fin.lastCases` split. Deps: `lem:affine-indep-iff`.
-  - [ ] **N3a-affineIndep** (red remainder, now sole) — the residual hypothesis: that the
-    affine-independence determinant polynomial `P` (from N3a-detpoly) is **not the zero polynomial**
-    (`P ≠ 0`). The irreducible genericity content (`lem:genericity-device`: `P` is a poly in the
-    alg-indep-over-ℚ panel coefficients, so cannot vanish identically); foldable into the device's
-    non-root product (AlgebraicIndependence.md §2, the Claim-6.11-kernel route). The point-construction
-    plumbing (N3a-exists supplies one incidence point at a time; assembling into the `MvPolynomial`
-    family `pp` N3a-detpoly consumes) plus the `P ≠ 0` proof are the multi-commit content; this is what
-    keeps N3a red.
-- [ ] **N3b** `lem:case-III-claim612-line-in-panel-union` — the point-join↔panel-meet duality
-  bridge (still red, decomposed this commit). For a pair whose connecting line `L` lies in panel
-  `Π(u)`, the join `pᵢ∨pⱼ` equals a scalar multiple of the panel-meet extensor `C(L) =
-  panelSupportExtensor n_u (·) = complementIso(normalsJoin)`, so `r ⊥ all C(L⊂Π(u)) ⟹ r(pᵢ∨pⱼ)=0`.
-  Recon found this multi-commit (full "= λ·" needs Hodge-star / decomposable-duality, not in
-  mathlib/in-project). Three leaves:
+- [ ] **N3a** `lem:case-III-claim612-points-affineIndep` — 4 **affinely-independent** points
+  `p : Fin 4 → Fin 3 → ℝ` realizing the `Π(a)/Π(b)/Π(c)` incidence pattern
+  (`pᵢ ∈ Π(u) ⟺ ⟨homogenize pᵢ, n_u⟩ = 0`). The span side N1 consumes. **EXISTENCE route, NOT
+  alg-independence** (scope decision): the residual `P ≠ 0` is logically equivalent to "exhibit ONE
+  seed `q*` where the 4 points are affinely independent" (`MvPolynomial.exists_eval_ne_zero` converse
+  + the green det-poly bridge), the same Zariski route the pre-22d genericity sites used —
+  `\uses{lem:genericity-device}` dropped. Three green ingredient bricks
+  (`exists_ne_zero_dotProduct_eq_zero` existence; `exists_affineIndependent_of_det_polynomial_ne_zero`
+  closure; `exists_detPolynomial_of_pointPolynomial` det-poly bridge, all `RigidityMatrix.lean`). Two
+  build steps:
+  - [ ] **N3a-1** (`P ≠ 0`, the explicit-seed witness) — assemble the per-panel incidence points
+    (N3a-exists supplies one at a time) into the `MvPolynomial` family `pp : Fin 4 → Fin 3 →
+    MvPolynomial σ ℝ` the det-poly bridge consumes, via the **projective/homogeneous cross-product**
+    construction (denominator-free): `p₁` = triple-intersection of the 3 panels (Cramer/cross-product),
+    `p₂ = p₁ + s·(nₐ×n_b)`, `p₃ = p₁ + s'·(n_b×n_c)`, `p₄ = p₁ + s''·(n_c×nₐ)`. Then prove `P ≠ 0` by
+    exhibiting one explicit seed (coordinate-ish normals + generic offsets), closed by
+    `norm_num`/`decide` on the 4×4 homogenization determinant. **LOW–MEDIUM risk.** *Next commit.*
+  - [ ] **N3a-2** (node flip) — compose the green det-poly bridge + N3a-1 + the green closure half
+    into `∃ q, AffineIndependent`, read off the incidence pattern (the lines-in-panels data N9
+    consumes). **LOW risk.** Flips `lem:case-III-claim612-points-affineIndep` green.
+- [ ] **N3b** (→ **Phase 22f**) `lem:case-III-claim612-line-in-panel-union` — the point-join↔panel-meet
+  duality bridge. For a pair whose connecting line `L` lies in panel `Π(u)`, the join `pᵢ∨pⱼ` equals
+  a scalar multiple of the panel-meet extensor `C(L) = panelSupportExtensor n_u (·) =
+  complementIso(normalsJoin)`, so `r ⊥ all C(L⊂Π(u)) ⟹ r(pᵢ∨pⱼ)=0`. **Assembly deferred to 22f**
+  (the bounded `⋀²ℝ⁴` exterior-algebra infra — see *Hand-off / 22f plan*). The three operational
+  leaves are green:
   - [x] **N3b-dict** `lem:complement-iso-toDual` (`complementIso_toDual`, `Meet.lean`, green,
     axiom-clean) — the metric-free dictionary entry `b.toDual (complementIso X) B = wedgePairing X B
     = vol(X∨B)`. Three-line proof. Deps: `def:meet-complement-iso`, `def:meet-top-equiv`.
@@ -204,11 +174,12 @@ commit (no `\lean`/`\leanok`); build greens them.
     (dim W).choose 2 = 2.choose 2 = 1` via `exteriorPower.finrank_eq`, so two nonzero members are
     scalar multiples (over mathlib's `finrank_eq_one_iff_of_nonzero'`). New green node
     `lem:complement-iso-line-one-dim` in `meet.tex`. Deps: `def:join`, `def:extensor`.
-  - [ ] **N3b assembly** — place both `pᵢ∨pⱼ` and `C(L)` in `⋀²W` as an honest submodule and apply
-    (ii) to extract `pᵢ∨pⱼ = λ·C(L)`, then the annihilation transfer. The Hodge-star /
-    regressive-duality-on-decomposables content (not yet in mathlib/in-project). Deps for full N3b:
-    N1 + Phase-21a Meet (`def:join`, `def:meet`, `def:meet-complement-iso`,
-    `def:panel-support-extensor`, `lem:extensor-independence`) + N3b-(i) + N3b-(ii).
+  - [ ] **N3b assembly** (→ **Phase 22f**) — place both `pᵢ∨pⱼ` and `C(L)` in `⋀²W` as an honest
+    submodule and apply (ii) to extract `pᵢ∨pⱼ = λ·C(L)`, then the annihilation transfer. The
+    bounded/concrete `⋀²ℝ⁴` exterior-algebra content (N3b-1/2/3 in *Hand-off / 22f plan*), not yet in
+    mathlib/in-project. Deps for full N3b: N1 + Phase-21a Meet (`def:join`, `def:meet`,
+    `def:meet-complement-iso`, `def:panel-support-extensor`, `lem:extensor-independence`) + N3b-(i) +
+    N3b-(ii).
 - [x] **N4** `lem:case-III-claim612-block-iff-perp` (`linearIndependent_sumElim_candidateRow_iff` +
   `mem_hingeRowBlock_iff`, green, axiom-clean) — the D functionals (D−1 va-block rows spanning
   `(span C)^⊥` + candidate `r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Built on new mirror
@@ -242,14 +213,17 @@ commit (no `\lean`/`\leanok`); build greens them.
   vanishing off `a` (the degree-2-at-`a` content as hypothesis `hrest`) regroups, via the two new
   column-restriction leaves, into `r̂ + rAC = 0`. Deps: `lem:case-III-acolumn-zero`,
   `lem:case-III-redundant-decomposition` (both green).
-- [ ] **N9** `lem:case-III-claim612` (capstone) — at least one of `M₁/M₂/M₃` is LI; discharges
-  `lem:case-III-eq629-conditional`. Contrapositive: all dependent ⟹ `r ⊥ C(L),C(L′),C(L″)` (N4×2 +
-  N8) ⟹ (N3b duality) `r` annihilates each spanning join `pᵢ∨pⱼ` ⟹ `r` annihilates the span (6.45)
-  spanning set (N3a + N1) ⟹ `r=0` (N2), contradicting N5. Deps: N1, N2, N3a, N3b, N4, N5, N6, N7, N8.
-  Wired into `lem:case-III`'s `\uses`.
-- [ ] **N10 Flip** `lem:case-II-realization` (+ the `d=3` half of `lem:case-III`) green once N9
-  discharges `lem:case-III-eq629-conditional`. Candidate-completion subsection nodes are all green
-  (green-modulo the conditional N9 closes).
+- [ ] **N9** `lem:case-III-claim612` (capstone, **green-modulo-N3b**) — at least one of `M₁/M₂/M₃`
+  is LI; discharges `lem:case-III-eq629-conditional`. Contrapositive: all dependent ⟹
+  `r ⊥ C(L),C(L′),C(L″)` (N4×2 + N8) ⟹ (N3b duality) `r` annihilates each spanning join `pᵢ∨pⱼ` ⟹
+  `r` annihilates the span (6.45) spanning set (N3a + N1) ⟹ `r=0` (N2), contradicting N5. **Built
+  green-modulo-N3b** — its contrapositive `\uses` the red N3b node (`r(C(L))=0 ⟹ r(pᵢ∨pⱼ)=0` is the
+  N3b duality), honesty-gate case (b). Deps: N1, N2, N3a, N3b, N4, N5, N6, N7, N8. Wired into
+  `lem:case-III`'s `\uses`.
+- [ ] **N10 Flip** `lem:case-II-realization` (+ the `d=3` half of `lem:case-III`) **green-modulo-N3b**
+  once N9 discharges `lem:case-III-eq629-conditional`. Candidate-completion subsection nodes are all
+  green (green-modulo the conditional N9, itself green-modulo-N3b). 22e closes here
+  (green-modulo-N3b); N3b lands in 22f.
 
 ## Blockers / open questions
 
@@ -263,95 +237,75 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: the N3a-affineIndep `P ≠ 0` residual**
-(`lem:case-III-claim612-points-affineIndep`, the genericity content that keeps N3a red). All three
-N3a ingredients are now green and isolated: the *existence* dimension count
-(`lem:case-III-claim612-panel-point-exists`), the *closure* non-root step
-(`lem:case-III-claim612-points-affineIndep-producer`), and the *determinant-polynomial* bridge
-(`lem:case-III-claim612-detpoly`, this commit — the homogenization determinant of polynomial-valued
-points is itself `eval q` of a single polynomial `P`). What remains is the genericity-bearing
-hypothesis of the bridge+closure: that `P` is **not the zero polynomial** (`P ≠ 0`). Two pieces:
-(1) assemble the per-panel incidence points (N3a-exists gives one at a time) into the `MvPolynomial`
-family `pp : Fin 4 → Fin 3 → MvPolynomial σ ℝ` the N3a-detpoly bridge consumes (the parametric
-solution of the `Π(a)/Π(b)/Π(c)` incidence systems as polynomials in `q`), and (2) show that
-polynomial `P = det(of (Fin.snoc (pp i) 1))` is nonzero via `lem:genericity-device` / the §2
-product-route (fold `P` into the device's non-root product, the way the Phase-22d Claim-6.11 kernel
-folds the subgraph rank polynomials — AlgebraicIndependence.md row #106, §2). That product-route is
-the multi-commit genericity hammer. The alternative, **the N3b assembly**, remains the multi-commit
-Hodge-star piece (below); both remaining red leaves are now correctly characterized, each reduced to
-a single irreducible residual.
+**Scope (re-scoped this commit): 22e = N3a + N9 + N10, closing green-modulo-N3b; N3b → Phase 22f.**
+The three candidate producers (`p₁`/`p₂`/`p₃` = N6/N7 + `lem:case-III-candidate-row`) are green; the
+remaining 22e work is the contrapositive glue — N3a (existence route), then N9 (green-modulo-N3b),
+then N10 flip (green-modulo-N3b). KT Claim 6.12's full discharge is ~7–9 small commits; the
+exterior-algebra infra N3b needs is the genuinely-multi-commit piece, split to 22f.
 
-**Why N3b's assembly is the hard remainder:** identifying `⋀²W` (the exterior square of the
-2-dim `W = {n_u,n'}^⊥`) with the image inside `⋀²ℝ⁴` where the two concrete extensors live needs the
-Hodge-star / regressive-duality-on-decomposables content — not in mathlib, not yet in-project — so it
-is multi-commit. The three N3b operational leaves are green (dictionary `complementIso_toDual`,
-step (i) `complementIso(n_u∧n') ∈ ⋀²W` in operational dual form, step (ii) `dim ⋀²W = 1`); the
-assembly is the remaining content, named above + in the checklist (the N3b-assembly `[ ]` item).
+**Next concrete commit: build N3a-1 — `P ≠ 0` via one explicit seed.** Assemble the per-panel
+incidence points (N3a-exists, green, one at a time) into the `MvPolynomial` family `pp : Fin 4 →
+Fin 3 → MvPolynomial σ ℝ` the green det-poly bridge consumes, via the projective/homogeneous
+cross-product construction (denominator-free): `p₁` = triple-intersection (Cramer/cross-product),
+`p₂ = p₁ + s·(nₐ×n_b)`, `p₃ = p₁ + s'·(n_b×n_c)`, `p₄ = p₁ + s''·(n_c×nₐ)`; then `P ≠ 0` by exhibiting
+one explicit seed (coordinate-ish normals + generic offsets), `norm_num`/`decide` on the 4×4
+homogenization determinant. **This is the existence/Zariski route, NOT alg-independence** — `P ≠ 0` ⟺
+"one seed works" (`exists_eval_ne_zero` converse + det-poly bridge); the same route the pre-22d
+genericity sites used. **N3a-2** (LOW risk) then composes bridge + N3a-1 + closure into
+`∃ q, AffineIndependent` and flips N3a green. Then **N9** (green-modulo-N3b) discharges
+`lem:case-III-eq629-conditional`, and **N10** flips `lem:case-II-realization` + the `d=3` half of
+`lem:case-III` green-modulo-N3b — 22e closes here.
 
-Then capstone **N9** (`lem:case-III-claim612`, the 3-way disjunction) — which discharges the
-re-shaped `lem:case-III-eq629-conditional` — after which **N10** flips `lem:case-II-realization` +
-the `d=3` half of `lem:case-III` green. The three candidate producers (`p₁`/`p₂`/`p₃` = N6/N7 + the
-candidate-completion `lem:case-III-candidate-row`) are all green; N3a/N3b/N9 are the contrapositive
-glue (`r ⊥ all panel-meets ⟹ r ⊥ the spanning joins ⟹ r=0`).
+### 22f plan (N3b — the exterior-algebra infra)
 
-**Note (the brick-block extraction is deferred to the `d=3` assembly, not 22e).** The assembly
-producer takes `rn`/`ro` as abstract block functionals; the consumer (the unlettered `d=3` assembly
-after 22e) extracts them from `case_II_placement_eq612` (which packages a `Set`-family) and wires the
-augment with the real graph data — that is where the **recurring `ofNormals` defeq-timeout trap
-(Blockers)** bites, *not* in 22e (the 22e producer is graph-free by design).
+To be lifted into `notes/Phase22f.md` when 22f opens. N3b
+(`lem:case-III-claim612-line-in-panel-union`) needs `pᵢ∨pⱼ = λ·C(L)` for a line `L ⊂ Π(u)`, where
+`C(L) = complementIso(n_u∧n')`. The cheaper **point-join-direct** framing does **not** work — the
+candidate criterion is intrinsically a panel-meet `C(L)` (confirmed). The infra is bounded/concrete
+at `⋀²ℝ⁴` (**NOT general Hodge theory**). Three leaves:
+- **N3b-1** — `exteriorPower.map 2 W.subtype` injective for the 2-dim `W = {n_u,n'}^⊥` (concrete
+  retraction; spike mathlib first for an existing injectivity lemma).
+- **N3b-2** — both `pᵢ∨pⱼ` and `C(L)` lie in `range(that map)`: `pᵢ∨pⱼ` from incidence
+  `⟨p̄ᵢ,n_u⟩ = ⟨p̄ᵢ,n'⟩ = 0` (both panels), and `C(L)` is the non-operational upgrade of the green
+  step (i) (`complementIso_toDual_extensor_eq_zero_of_shared_vector`).
+- **N3b-3** — proportionality (green `exteriorPower_finrank_eq_one_proportional`, step (ii)) +
+  annihilation transfer `r(C(L))=0 ⟹ r(pᵢ∨pⱼ)=λ·r(C(L))=0`; flips N3b green, retiring the
+  green-modulo-N3b on N9/N10.
 
-Downstream (still deferred, unlettered): the `d=3` assembly
-(`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + Case-I wiring);
-then general-`d` is **Phase 23**. KT math: `notes/Phase22d.md` *Hand-off*, KT §6.4.1
-(eqs. (6.24)–(6.45)); `notes/AlgebraicIndependence.md` row #106 (N3a **IS** an alg-independence/
-genericity site per KT p. 691/698 — `\uses{lem:genericity-device}`; the genericity-free closure
-landed this commit, leaving `P ≠ 0` as the sole residual; N3b stays alg-independence-free, pure
-Grassmann–Cayley).
+Downstream (still deferred, unlettered, after 22f): the `d=3` assembly
+(`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + Case-I wiring) — where the
+**recurring `ofNormals` defeq-timeout trap (Blockers)** bites, as the consumer extracts `rn`/`ro`
+from `case_II_placement_eq612` and wires real graph data (the 22e producers are graph-free by
+design); then general-`d` is **Phase 23**. KT math: `notes/Phase22d.md` *Hand-off*, KT §6.4.1
+(eqs. (6.24)–(6.45)); `notes/AlgebraicIndependence.md` row #106 (N3a = **AVOIDED**, existence route;
+N3b stays alg-independence-free, pure Grassmann–Cayley).
 
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
-- **N3a-detpoly green — the affine-independence determinant of polynomial-valued points is `eval q P`
-  (2026-06-06).** `exists_detPolynomial_of_pointPolynomial` (`RigidityMatrix.lean`, axiom-clean):
-  candidate points built coordinate-wise as `MvPolynomial σ ℝ` (`pp : Fin (d+1) → Fin d → MvPolynomial σ ℝ`)
-  ⟹ `det(homogenize ∘ p q) = eval q (det(of (Fin.snoc (pp i) 1)))`. Discharges the `hdet` hypothesis
-  of N3a-closure, isolating the polynomial-in-the-seed structure from the genericity-bearing `P ≠ 0`.
-  6-line proof: `eval q` (ring hom) commutes with `det` (`RingHom.map_det`) + entrywise with `Fin.snoc · 1`
-  (fixing the final `1`), via a `Fin.lastCases` split closing on `simp [homogenize, Matrix.map_apply]`.
-  All three N3a ingredients (existence / closure / detpoly) now isolated as green bricks; only `P ≠ 0`
-  red. New green node `lem:case-III-claim612-detpoly` in `case-iii.tex`; N3a `\uses` + prose rewired.
-  No new mirror, no FRICTION (clean ring-hom composition).
-- **N3a-closure green — the product-route closure is a 2-lemma composition (2026-06-06).**
-  `exists_affineIndependent_of_det_polynomial_ne_zero` (`RigidityMatrix.lean`, axiom-clean): 4 points
-  built as functions of `q` with homogenization det = eval of a nonzero `P` ⟹ a seed where they are
-  affinely independent. `MvPolynomial.exists_eval_ne_zero` ∘ green det characterization
-  `affineIndependent_fin_iff_det_homogenize` (Lemma 2.1). Splits N3a into existence + closure (green)
-  + residual `P ≠ 0` (red). Added the Funext mirror import. New green node
-  `lem:case-III-claim612-points-affineIndep-producer`; N3a `\uses` + prose rewired.
-- **N3a-exists green — the existence half is a genericity-free dimension count (2026-06-06).**
-  `exists_ne_zero_dotProduct_eq_zero` (`RigidityMatrix.lean`, axiom-clean): `m < d+1` homogeneous
-  incidence equations `⟨p̄, nᵢ⟩ = 0` always have a nonzero solution — the incidence map `ℝ^(d+1) →
-  ℝ^m` has source dim > target dim, so rank-nullity (`finrank_range_add_finrank_ker`) forces a
-  nontrivial kernel (`Submodule.finrank_eq_zero` / `nontrivial_iff_ne_bot` / `exists_ne`). The
-  `j`-hyperplane intersection brick: a homogeneous representative exists on every chosen panel
-  (`p₁` at `j=3`, `p₂/p₃/p₄` at `j=2`). N3a stays red — its affine-independence determinant
-  (genericity-pinned, `lem:genericity-device`) is the multi-commit remainder. New green node
-  `lem:case-III-claim612-panel-point-exists` in `case-iii.tex`; N3a's `\uses` + prose rewired to
-  split existence (green) from the transversality/determinant half (red). No new mirror, no FRICTION
-  (clean rank-nullity).
-- **N3a IS a genericity (algebraic-independence) site — consistency fix (2026-06-06, docs/blueprint
-  only).** Re-reading KT against `.refs` overturned the same-day N3-design-pass claim that N3a's
-  affine independence is "general position direct from `IsGeneralPosition`, NOT alg-independence."
-  KT p. 691: *"Since `(Gᵥᵃᵇ,q)` is a **generic** nonparallel framework, we can take such four points
-  … affinely independent"*; general-`d` p. 698 eq. (6.67): *"the coefficients … expressing `Πᵢ` are
-  **algebraically independent over the rational field**; therefore for any `j` hyperplanes their
-  intersection forms a `(d−j)`-dim affine space."* Pairwise independence of the ℝ⁴ panel normals
-  does NOT suffice (parallel panels are pairwise-independent, no transversal triple point). Fixed the
-  N3a node (statement → *generic* framework; proof → KT's alg-independence argument;
-  `\uses{lem:genericity-device}`; still red) and `AlgebraicIndependence.md` row #106. The build route
-  is now the genericity hammer (like the Phase-22d kernel), not config-only. No Lean touched; all
-  blueprint gates clean. **Lesson** → FRICTION `[process]`: a red-node re-classification that *weakens*
-  a hypothesis must re-verify against the source, not just the local dep-graph.
+- **N3a re-scoped to the EXISTENCE route — NOT alg-independence (2026-06-06, scope decision, this
+  commit, docs/blueprint only).** The residual `P ≠ 0` (the homogenization-determinant polynomial of
+  the 4 candidate points) is *logically equivalent* — via the converse of
+  `MvPolynomial.exists_eval_ne_zero` + the green det-poly bridge — to "exhibit ONE seed `q*` where the
+  4 points are affinely independent." So N3a does **not** need `lem:genericity-device`: it is the
+  existence/Zariski route the pre-22d genericity sites (Claim 6.4/6.9) all used. Verified numerically
+  (cross-product construction `p₁`=triple-intersection, `pᵢ=p₁+sᵢ·(nⱼ×nₖ)`: affinely independent,
+  6 lines in panel union). Re-framed the N3a node prose+proof to the existence route, **dropped its
+  `\uses{lem:genericity-device}`** + the producer's, flipped `AlgebraicIndependence.md` row #106 to
+  **AVOIDED**. Build = N3a-1 (`P ≠ 0` explicit seed) + N3a-2 (flip). **This overturns the same-day
+  "N3a IS a genericity site" entry** (deleted): re-reading what KT *states* (genericity) is not the
+  same as what the *formalization needs* (one seed). **Lesson** → FRICTION `[process]`: a red-node
+  classification must check the formalization's actual obligation (`P ≠ 0` ⟺ one seed), not transcribe
+  the source's *stated* mechanism — the existence formulation reaches sites KT phrases generically.
+- **N3a green bricks (existence / closure / det-poly) — three isolated ingredients (2026-06-06).** All
+  three green, axiom-clean, `RigidityMatrix.lean`, now the ingredients of the existence route above:
+  `exists_ne_zero_dotProduct_eq_zero` (a `<d+1` homogeneous incidence system has a nonzero solution,
+  rank-nullity), `exists_affineIndependent_of_det_polynomial_ne_zero` (closure: nonzero det-poly ⟹
+  `∃ q, AffineIndependent`, via `exists_eval_ne_zero` ∘ `affineIndependent_fin_iff_det_homogenize`),
+  `exists_detPolynomial_of_pointPolynomial` (det-poly bridge: polynomial-valued points ⟹ det is
+  `eval q P`, `RingHom.map_det` + `Fin.lastCases` over `Fin.snoc · 1`). Green nodes
+  `lem:case-III-claim612-{panel-point-exists,points-affineIndep-producer,detpoly}`. No new mirror
+  (Funext import for the closure), no FRICTION.
 - **N3b step (ii) green — the exterior square of a 2-dim space is a line (2026-06-06).**
   `finrank_exteriorPower_two_eq_one` + `exteriorPower_finrank_eq_one_proportional` (`Meet.lean`,
   axiom-clean): `dim ⋀²W = (dim W).choose 2 = 2.choose 2 = 1` via `exteriorPower.finrank_eq`
@@ -391,9 +345,9 @@ Grassmann–Cayley).
   **N3b** (`lem:case-III-claim612-line-in-panel-union`: the point-join↔panel-meet Grassmann–Cayley
   duality — `pᵢ∨pⱼ` ∝ `C(L)=panelSupportExtensor=complementIso(normalsJoin)` — the genuinely-missing
   content N9 needs to turn `r⊥C(L)` into `r(pᵢ∨pⱼ)=0`). Re-wired N9's `\uses` + the `lem:case-III`
-  prose off the old label (no dangling). (The same-day claim here that N3a is "NOT alg-independence,
-  direct from `IsGeneralPosition`" was **overturned 2026-06-06** — see *N3a IS a genericity site*
-  below; N3a `\uses{lem:genericity-device}`.) **N7 de-risked**: follows N6's graph-free producer
+  prose off the old label (no dangling). (N3a's classification settled as the **existence route** —
+  see *N3a re-scoped to the EXISTENCE route* above; not config-only, not alg-independence.)
+  **N7 de-risked**: follows N6's graph-free producer
   pattern (assembly at `columnOp hac` + green N8 routing M₃ onto `r̂`; the iso is functional via N8,
   no `ofNormals` swap, defeq trap does NOT bite). All gates clean; `verify.sh` green (no cycle).
 - **N7 green — the `p₃` candidate is the abstract assembly at the `va↔ac` role change (2026-06-06).**

@@ -76,28 +76,34 @@ housekeeping pass once their resolution is fully indexed.
 
 ## Open
 
-### [process] A red-node re-classification that *weakens* a hypothesis must re-verify against the source, not just the local dep-graph
+### [process] A red-node re-classification: re-verify against the source — but classify by what the *formalization* must prove, which can be weaker than the source's *stated* mechanism
 - **Where it bit:** Phase 22e N3a (`lem:case-III-claim612-points-affineIndep`, KT eq. (6.45) point
-  choice). The 2026-06-06 N3-design-pass split the old N3 into N3a (points) + N3b (duality) and, in
-  the same pass, *weakened* N3a's hypothesis from genericity to "general position direct from
-  `IsGeneralPosition`" (pairwise-independent normals), re-classifying `AlgebraicIndependence.md`
-  row #106 to "NOT an alg-independence site." Re-reading KT against `.refs` the next day overturned
-  it: KT p. 691 takes the four points affinely independent *because* `(Gᵥᵃᵇ,q)` is **generic**, and
-  the general-`d` form (p. 698, eq. (6.67)) is explicit — the panel coefficients are *algebraically
-  independent over ℚ*, which is what forces transversal intersections. Pairwise independence of the
-  ℝ⁴ normals does NOT suffice (parallel panels are pairwise-independent but have no transversal
-  triple point), so the weakened statement was simply **not a theorem**.
-- **Friction:** a docs-only re-scoping pass dropped a load-bearing genericity hypothesis without
-  re-checking the source argument; the local dep-graph stayed consistent (N3a was red, nothing
-  built on it), so no gate caught it — the only check is re-reading KT. Had a build been scheduled
-  off the weakened statement it would have failed the honesty gate (false producer) or wasted a
-  session chasing an unprovable goal.
-- **Lesson / fix:** when a red-node re-scope *removes or weakens* a hypothesis (vs. merely splitting
-  or rewiring), treat it like a new statement and re-run the red-node consistency check against the
-  primary source — the dep-graph being internally consistent is necessary but not sufficient. The
-  design-pass-first recon already reads the target argument; this adds "and confirm the hypothesis
-  you kept is the one the source actually uses." Corrected the N3a node + row #106 (now
-  `\uses{lem:genericity-device}`, KT p. 691/698 cited).
+  choice), over three passes. (1) The 2026-06-06 N3-design-pass *weakened* N3a from genericity to
+  "general position direct from `IsGeneralPosition`" (pairwise-independent normals) and re-classified
+  `AlgebraicIndependence.md` row #106 to "NOT an alg-independence site." (2) Re-reading KT against
+  `.refs` overturned it: KT p. 691 takes the four points affinely independent *because* `(Gᵥᵃᵇ,q)` is
+  **generic** (p. 698 eq. (6.67): the panel coefficients are alg-indep over ℚ); pairwise independence
+  of the ℝ⁴ normals does NOT suffice (parallel panels are pairwise-independent but have no transversal
+  triple point), so the weakened statement was **not a theorem** — row #106 was set back to an
+  alg-independence site. (3) The 22e steering recon found the *formalization's* obligation is weaker
+  still than KT's stated mechanism: the residual `P ≠ 0` (homogenization-determinant polynomial) is
+  logically equivalent — converse of `MvPolynomial.exists_eval_ne_zero` + the green det-poly bridge —
+  to "exhibit ONE seed where the points are affinely independent", the **existence/Zariski route** the
+  pre-22d sites already use. Row #106 → **AVOIDED**; the `\uses{lem:genericity-device}` edge dropped.
+- **Friction:** three passes to settle one red node's classification, two of them reversing the prior.
+  Pass (1) dropped a load-bearing hypothesis without re-checking the source (the dep-graph stayed
+  internally consistent — N3a red, nothing built on it — so no gate caught it). Pass (2) over-corrected
+  by transcribing KT's *stated* generic argument as the formalization route, missing that our seed is
+  chosen at composition (not fixed up front), so "one good seed" suffices.
+- **Lesson / fix:** two complementary rules. **(a)** When a red-node re-scope *removes or weakens* a
+  hypothesis, treat it like a new statement and re-run the consistency check against the primary
+  source — dep-graph consistency is necessary but not sufficient (pass (1)'s failure). **(b)** But
+  classify the node by *what the formalization must discharge*, not by *how the source phrases its
+  argument* (pass (2)'s failure): KT states a genericity argument, yet our obligation is the strictly
+  weaker `P ≠ 0` ⟺ "one seed works", because the seed is free at the Claim-6.11 composition (cf.
+  `AlgebraicIndependence.md` §2 risk (a)). The existence formulation reaches sites KT phrases
+  generically — the same precedent as Claim 6.4/6.9 (row #104, AVOIDED). Settled: N3a = existence
+  route, row #106 = AVOIDED, `lem:genericity-device` dropped off the live route.
 - **Status:** open (lesson; the specific N3a node is fixed). Candidate to lift to CLAUDE.md
   *red-node consistency gate* if a second hypothesis-weakening re-scope recurs.
 
