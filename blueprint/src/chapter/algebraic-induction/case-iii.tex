@@ -746,21 +746,33 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
 
 \begin{lemma}[The $p_2$ placement: the symmetric $va \leftrightarrow vb$ candidate; KT eqs.\ (6.19)/(6.30)]
   \label{lem:case-III-claim612-p2-placement}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.linearIndependent_sum_p2_candidateRow}
+  \leanok
   \uses{lem:case-II-realization-placement, lem:case-III-columnop,
         lem:case-III-claim612-block-iff-perp}
   The second candidate $p_2$: split off at $v$ along $vb$ (rather than $va$), the symmetric image of
   $p_1$ under $a \leftrightarrow b$. It reuses the eq.~(6.12) degenerate placement
   (\cref{lem:case-II-realization-placement}) with the roles of $a, b$ exchanged, and the column
   operation at $(v, b)$ (\cref{lem:case-III-columnop}) in place of $(v, a)$. By the same
-  candidate-completion assembly (\cref{lem:case-III-candidate-row}, applied at the swapped roles), its
-  top-left $D \times D$ block is $M_2$ (eq.~(6.30)), full rank iff $r \notin (\operatorname{span}
-  C(L'))^\perp$ for the line $L' \subset \Pi(b)$. The same $\lambda_{(ab)j}$ and index $i^*$ appear in
-  $M_1$ and $M_2$ (they are determined by $(G_v^{ab}, q)$, independent of $p_1, p_2$).
+  candidate-completion assembly (\cref{lem:case-III-candidate-row}, applied at the swapped roles),
+  \emph{if} its top-left $D \times D$ block $M_2$ (eq.~(6.30)) is full rank --- equivalently
+  $r \notin (\operatorname{span} C(L'))^\perp$, i.e.\ $r(C(L')) \ne 0$ for the line $L' \subset
+  \Pi(b)$ (the row-space criterion \cref{lem:case-III-claim612-block-iff-perp}) --- then $R(G, p_2)$
+  attains the full $D(|V|-1)$-size independent family. The same $\lambda_{(ab)j}$ and index $i^*$
+  appear in $M_1$ and $M_2$ (they are determined by $(G_v^{ab}, q)$, independent of $p_1, p_2$).
 \end{lemma}
 \begin{proof}
-  Verbatim symmetric to the $p_1$ construction under $a \leftrightarrow b$; the redundant-row
-  combination is unchanged (it lives in $R(G_v^{ab}, q)$, common to both candidates), and the
-  column op at $(v,b)$ makes the transported $(va)i^*$-row pure $v$-column.
+  \leanok
+  Verbatim symmetric to the $p_1$ construction under $a \leftrightarrow b$. The candidate-completion
+  assembly (\cref{lem:case-III-candidate-row}) takes the splitting body $v$, its two endpoints, the
+  candidate functional $\rho$, and the two row blocks abstractly, so applying it at the column op
+  $\Phi = \mathrm{columnOp}\ (v \ne b)$ for the edge $vb$ in place of $va$ is the same lemma. Its one
+  hypothesis --- the operated, $v$-pinned top-left block being full rank --- is supplied by the
+  row-space criterion (\cref{lem:case-III-claim612-block-iff-perp}) at the $vb$-hinge once the
+  operated, pinned candidate row $(\mathrm{hingeRow}\ v\ b\ \rho) \circ \Phi \circ \mathrm{single}_v$
+  is identified with $\rho$ itself (the column op makes it pure $v$-column with value $\rho(S_v)$),
+  which holds iff $\rho(C) \ne 0$. The redundant-row combination is unchanged: it lives in
+  $R(G_v^{ab}, q)$, common to both candidates.
 \end{proof}
 
 \begin{lemma}[The $p_3$ placement: the third candidate via $G_v^{ab} \cong G_a^{vc}$; KT eqs.\ (6.31)--(6.41)]

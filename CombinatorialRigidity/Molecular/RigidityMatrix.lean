@@ -944,6 +944,63 @@ theorem linearIndependent_sumElim_candidateRow_iff (F : BodyHingeFramework k α 
     LinearIndependent ℝ (Sum.elim rn (fun _ : Unit => r)) ↔ r (F.supportExtensor e) ≠ 0 := by
   rw [linearIndependent_sumElim_unit_iff hrn, hspan, Ne, ← mem_hingeRowBlock_iff]
 
+/-- **The operated candidate row pinned to `v`'s column is the candidate functional `ρ` itself**
+(`lem:case-III-claim612-p2-placement`, the bridge feeding the row-space criterion to the
+candidate-completion assembly; Katoh–Tanigawa 2011 §6.4.1, Phase 22e). Precomposing the candidate
+row `hingeRow v b ρ` with the column op `Φ = columnOp hvb` (`col_b += col_v`) and then with body
+`v`'s screw-column injection `single v` recovers `ρ` exactly: by `hingeRow_comp_columnOp_apply`,
+`(hingeRow v b ρ ∘ₗ Φ) S = ρ(S v)`, and `single v x` reads `x` at `v`, so the composite is
+`x ↦ ρ x`. This identifies the operated, pinned `(vb)i^*`-row — the candidate-completion's extra
+top-left-block row — with the abstract candidate functional `ρ` on `ScrewSpace k`, so the row-space
+criterion `linearIndependent_sumElim_candidateRow_iff` (stated on `ScrewSpace k`) reads directly on
+the assembly's `hnewpinaug`. -/
+theorem hingeRow_comp_columnOp_comp_single [DecidableEq α] {v b : α} (hvb : v ≠ b)
+    (ρ : Module.Dual ℝ (ScrewSpace k)) :
+    ((hingeRow (k := k) (α := α) v b ρ).comp (columnOp (k := k) hvb).toLinearMap).comp
+      (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v) = ρ :=
+  LinearMap.ext fun x => by
+    rw [LinearMap.comp_apply, LinearMap.comp_apply, LinearEquiv.coe_coe,
+      hingeRow_comp_columnOp_apply, LinearMap.single_apply, Pi.single_eq_same]
+
+/-- **The `p₂` candidate full block: the symmetric `va ↔ vb` candidate attains the full
+`D(|V|−1)`-size family when `ρ` is not orthogonal to the supporting extensor**
+(`lem:case-III-claim612-p2-placement`, KT eqs.~(6.19)/(6.30); Katoh–Tanigawa 2011 §6.4.1,
+Phase 22e). The second of Claim~6.12's three candidates: split off at `v` along `vb` (rather than
+`va`), the symmetric image of `p₁` under `a ↔ b`. It reuses the candidate-completion assembly
+(`linearIndependent_sum_augment_candidateRow`) at the column op `Φ = columnOp hvb` for the edge `vb`
+in place of `va`, and the row-space criterion (`linearIndependent_sumElim_candidateRow_iff`) at the
+`vb`-hinge `e`: given the operated, `v`-pinned `vb`-block rows — the `D − 1` rows
+`(rn ·∘ₗ Φ) ∘ₗ single v`, linearly independent (`hrnpin`) and spanning the whole hinge-row block
+`r(p(e)) = (span C(e))^⊥` (`hspan`; `lem:case-II-placement-new-rows` supplies them at the
+`vb`-hinge) — **if** the candidate functional `ρ` is not orthogonal to the supporting extensor,
+`ρ(C(e)) ≠ 0`, **then** the full `p₂` family `Sum.elim (Sum.elim rn {hingeRow v b ρ}) ro` is
+linearly independent. This is KT's `M₂` (eq.~(6.30)) full rank `⟺ r ∉ (span C(L'))^⊥` for the line
+`L' ⊂ Π(b)` — the producer direction of the eq.~(6.42) row-space criterion the assembly consumes
+through its operated `hnewpinaug`. The `λ_{(ab)j}` / `i^*` of the redundant-row decomposition are
+unchanged between `M₁` and `M₂`: they live in `R(G_v^{ab}, q)`, common to both candidates and
+independent of `p₁, p₂`. The bridge `hingeRow_comp_columnOp_comp_single` identifies the operated,
+pinned candidate row with `ρ`, so the criterion's `ScrewSpace k`-level iff reads on the assembly's
+`hnewpinaug` directly. -/
+theorem linearIndependent_sum_p2_candidateRow (F : BodyHingeFramework k α β) (e : β)
+    [DecidableEq α] {v b : α} (hvb : v ≠ b) {ιn ιo : Type*} [Finite ιn] [Finite ιo]
+    {rn : ιn → Module.Dual ℝ (α → ScrewSpace k)} {ro : ιo → Module.Dual ℝ (α → ScrewSpace k)}
+    {ρ : Module.Dual ℝ (ScrewSpace k)}
+    (hold : ∀ (j : ιo) (x : ScrewSpace k),
+      ro j (Function.update (0 : α → ScrewSpace k) v x) = 0)
+    (holdindep : LinearIndependent ℝ ro)
+    (hrnpin : LinearIndependent ℝ (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v)))
+    (hspan : Submodule.span ℝ (Set.range (fun i : ιn =>
+      ((rn i).comp (columnOp (k := k) hvb).toLinearMap).comp
+        (LinearMap.single ℝ (fun _ : α => ScrewSpace k) v))) = F.hingeRowBlock e)
+    (hr : ρ (F.supportExtensor e) ≠ 0) :
+    LinearIndependent ℝ
+      (Sum.elim (Sum.elim rn (fun _ : Unit => hingeRow (k := k) (α := α) v b ρ)) ro) := by
+  refine linearIndependent_sum_augment_candidateRow hvb hold ?_ holdindep
+  rw [hingeRow_comp_columnOp_comp_single hvb ρ]
+  exact (linearIndependent_sumElim_candidateRow_iff F e hrnpin hspan ρ).2 hr
+
 /-- **The common vector `r̂` of the `D`-candidate disjunction is nonzero**
 (`lem:case-III-claim612-r-nonzero`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1, Phase 22e).
 The candidate row shared by all three

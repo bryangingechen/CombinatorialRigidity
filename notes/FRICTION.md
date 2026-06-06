@@ -93,6 +93,26 @@ housekeeping pass once their resolution is fully indexed.
   callsite); file for the next Case-III producer that hits it.
 - **Status:** open (project-internal fused lemma in `PanelHinge.lean`, where `ofNormals` lives).
 
+### [blueprint] A Claim-6.12 leaf that `\uses` the *shared* candidate-completion assembly node closes a dep-graph cycle through the "green-modulo" conditional — `\cref` the assembly in prose, don't `\uses` it
+- **Where it bit:** N6 (`lem:case-III-claim612-p2-placement`, `case-iii.tex`, Phase 22e). The
+  Lean producer `linearIndependent_sum_p2_candidateRow` *calls*
+  `linearIndependent_sum_augment_candidateRow` (blueprint node `lem:case-III-candidate-row`), so a
+  `\uses{lem:case-III-candidate-row}` looked correct — but `lem:case-III-candidate-row`
+  `\uses lem:case-III-eq629-conditional` `\uses lem:case-III-claim612` `\uses` N6, closing a 4-node
+  cycle. `inv web`/`leanblueprint` then `RecursionError`s in `plastexdepgraph.ancestors` (a stack
+  blow-up, not a readable "cycle" error), so the cause is non-obvious from the trace.
+- **Friction:** one `verify.sh` round-trip lost to a `RecursionError` deep in plastex; the fix is to
+  drop the `\uses` edge and keep a prose `\cref` pointer to the assembly node instead.
+- **Lesson:** the abstract candidate-completion assembly is *shared infrastructure* whose blueprint
+  node bundles the still-red Claim-6.12 conditional via `\uses` (it is green-**modulo** that node). A
+  Claim-6.12 leaf therefore must **not** `\uses` it — that points "up" through the conditional into
+  Claim 6.12 and loops. The math dependency a leaf actually needs is the column op + the row-space
+  criterion + the placement; the assembly is reached *the other way* (Claim 6.12 → conditional →
+  assembly). General rule: when a "green-modulo-X" node bundles its unresolved conditional X via
+  `\uses`, the leaves discharging X may `\cref` the bundled node in prose but never `\uses` it.
+- **Status:** resolved (N6 keeps the `\cref` prose pointer; `\uses` = placement + column op +
+  block-iff-perp criterion only).
+
 ### [resolved] The orientation flip `hingeRow u v r = hingeRow v u (-r)` was an inline `LinearMap.ext fun S => by rw […]` in three rigidity-row span proofs — named as `hingeRow_swap`
 - **Where it bit:** `span_panelRow_eq_rigidityRows` + `span_panelRow_linking_eq_rigidityRows`
   (`Pinning.lean`, Phase 22) and the new `span_rigidityRows_eq_sup_span_panelRow_edge` (`Pinning.lean`,
