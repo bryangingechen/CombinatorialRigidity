@@ -10,7 +10,9 @@ public import Mathlib.LinearAlgebra.Span.Basic
 public import Mathlib.Algebra.Module.Torsion.Field
 
 /-!
-# Upstream candidate: extending an independent family by one vector
+# Upstream candidates: independent-family facts
+
+Two facts about linearly independent families, both upstream-eligible.
 
 `linearIndependent_sumElim_unit_iff` is the row-space criterion for appending a
 single vector to a linearly independent family: over a division ring, augmenting
@@ -26,14 +28,30 @@ sub-families plus span-disjointness) specialised to `ι' = Unit`, where the seco
 sub-family is the singleton `{x}` and span-disjointness `Disjoint (span (range v)) (K ∙ x)`
 collapses to `x ∉ span (range v)` by `Submodule.disjoint_span_singleton'`.
 
+`linearIndependent_sum_smul_ne_zero` is the elementary fact that a finite linear
+combination `∑ j, c j • v j` of a linearly independent family with at least one
+nonzero coefficient `c i ≠ 0` is nonzero (the contrapositive of
+`Fintype.linearIndependent_iff`: a vanishing combination forces all coefficients to
+vanish, in particular `c i`).
+
 Promotion to mathlib: copy-paste into `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean`
 (it imports both `linearIndependent_sum` there and `disjoint_span_singleton'` from
-`Span.Basic`).
+`Span.Basic`, and `Fintype.linearIndependent_iff`).
 
 See `notes/FRICTION.md` *Mirrored* and `DESIGN.md` *Mirror directory*.
 -/
 
 @[expose] public section
+
+/-- **A linear combination of an independent family with a nonzero coefficient is
+nonzero.** Over a ring, for a linearly independent family `v : ι → M` indexed by a
+`Fintype` and coefficients `c : ι → R` with some `c i ≠ 0`, the combination
+`∑ j, c j • v j` is nonzero. (Contrapositive of `Fintype.linearIndependent_iff`: a
+vanishing combination forces every coefficient — in particular `c i` — to be `0`.) -/
+theorem linearIndependent_sum_smul_ne_zero {R M ι : Type*} [Ring R] [AddCommGroup M]
+    [Module R M] [Fintype ι] {v : ι → M} (hv : LinearIndependent R v) {c : ι → R} {i : ι}
+    (hci : c i ≠ 0) : ∑ j, c j • v j ≠ 0 :=
+  fun h => hci (Fintype.linearIndependent_iff.1 hv c h i)
 
 variable {K M ι : Type*} [DivisionRing K] [AddCommGroup M] [Module K M]
 

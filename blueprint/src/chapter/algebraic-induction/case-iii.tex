@@ -726,6 +726,8 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
 
 \begin{lemma}[The common vector $r$ is nonzero; KT (6.42)]
   \label{lem:case-III-claim612-r-nonzero}
+  \lean{CombinatorialRigidity.Molecular.BodyHingeFramework.candidateRow_ne_zero}
+  \leanok
   \uses{lem:case-III-redundant-decomposition, lem:case-II-placement-new-rows}
   The common vector of the disjunction, $r := \sum_{1 \le j \le 5} \lambda_{(ab)j}\, r_j(q(ab))
   \in \R^D$, is nonzero. (The $r_j(q(ab))$ are the $D - 1$ linearly independent rows of the $ab$-hinge
@@ -734,10 +736,12 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   nonzero.)
 \end{lemma}
 \begin{proof}
+  \leanok
   The $r_j(q(ab))$ ($1 \le j \le 5$, i.e.\ $D - 1$ of them) are linearly independent
   (\cref{lem:case-II-placement-new-rows}); by \cref{lem:case-III-redundant-decomposition} the
   coefficient $\lambda_{(ab)i^*} = 1$ (eq.~(6.25)). A linear combination of a linearly independent
-  family with a nonzero coefficient is nonzero.
+  family with a nonzero coefficient is nonzero
+  ($\mathrm{linearIndependent\_sum\_smul\_ne\_zero}$).
 \end{proof}
 
 \begin{lemma}[The $p_2$ placement: the symmetric $va \leftrightarrow vb$ candidate; KT eqs.\ (6.19)/(6.30)]

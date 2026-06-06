@@ -2613,6 +2613,21 @@ limitations. Worth a once-over so future agents don't re-litigate.
   upstream home of `linearIndependent_sum`). N4 proper (`mem_hingeRowBlock_iff` +
   `linearIndependent_sumElim_candidateRow_iff`) is project-internal, in `RigidityMatrix.lean`.
 
+### [mirrored] `linearIndependent_sum_smul_ne_zero` — a combination of an independent family with a nonzero coefficient is nonzero
+- **Where it bit:** Phase 22e N5 (`lem:case-III-claim612-r-nonzero`, KT eq. (6.42)). The
+  common candidate row `r̂ = ∑_j λ_{(ab)j} r_j` of the `D`-candidate disjunction is nonzero,
+  since `λ_{(ab)i^*} = 1` (eq. (6.25)) and the `r_j` are LI.
+- **Friction:** mathlib has `LinearIndependent.ne_zero` (a *member* `v i ≠ 0`) but no
+  combination-form "`∑ c_j • v j ≠ 0` when some `c i ≠ 0`"; no build cycle, just no direct
+  lemma.
+- **Resolution:** mirrored `linearIndependent_sum_smul_ne_zero` over a `Ring` — one line, the
+  contrapositive of `Fintype.linearIndependent_iff` (a vanishing combination forces every
+  coefficient to vanish, in particular `c i`). Project-side N5 (`candidateRow_ne_zero`,
+  `RigidityMatrix.lean`) instantiates it at `lam i = 1` via `one_ne_zero`.
+- **Status:** mirrored, axiom-clean. Pure LA, no geometry.
+- **Mirror file:** `Mathlib/LinearAlgebra/LinearIndependent/Basic.lean` (alongside
+  `linearIndependent_sumElim_unit_iff`).
+
 ### [mirrored] `Submodule.exists_mem_sup_span_image_compl_of_finrank_lt` (+ helper `Submodule.finrank_map_mkQ`) — a finrank pigeonhole for a redundant family member
 - **Where it bit:** Phase 22d Gap 1, the KT Claim 6.11 / eq. (6.23) pigeonhole. Given a
   finite family `g : ι → V` (the `D−1` `ab`-rows) whose span, added to a subspace `W`

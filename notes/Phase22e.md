@@ -4,10 +4,10 @@
 (eqs. (6.24)–(6.29)) landed green-modulo across 8 commits (`78f7eb4`…`3ab70cd`); the
 **Claim-6.12 design pass** decomposed KT §6.4.1 (eqs. (6.30)–(6.45)) into buildable
 red nodes N1–N9 and re-shaped the mis-shaped interface node `lem:case-III-eq629-conditional`
-(single-candidate → the true 3-way disjunction). **N1, N2, N4 are now green**
+(single-candidate → the true 3-way disjunction). **N1, N2, N4, N5 are now green**
 (`span_omitTwoExtensor_eq_top`, `eq_zero_of_annihilates_span_top`,
-`linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`). Next: N5 (the mechanical
-`r ≠ 0` leaf), then N6 (medium), N3/N7 (research-shaped — recon-before-build), N8, capstone N9.
+`linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`, `candidateRow_ne_zero`).
+Next: N6 (medium), N3/N7 (research-shaped — recon-before-build), N8, capstone N9.
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -21,12 +21,18 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: build N5 (`lem:case-III-claim612-r-nonzero`)** — the mechanical leaf:
-the common vector `r := Σ_{1≤j≤5} λ_{(ab)j} rⱼ(q(ab))` is nonzero, because `λ_{(ab)i*}=1` (from the
-green redundant-decomposition, eq. (6.25)) and the `rⱼ(q(ab))` are LI (`lem:case-II-placement-new-rows`):
-a combination of an LI family with a unit coefficient is nonzero. Deps:
-`lem:case-III-redundant-decomposition`, `lem:case-II-placement-new-rows` (both green). Then N6 (medium),
-N3/N7 (research-shaped, recon-before-build), N8 (medium), capstone N9.
+**Next concrete commit: build N6 (`lem:case-III-claim612-p2-placement`)** — the symmetric `p₂`
+candidate (`va ↔ vb`), reusing `case_II_placement_eq612` + `columnOp` at `(v,b)` in place of
+`(v,a)`. Its top-left `D×D` block is `M₂` (eq. (6.30)), full rank iff `r ∉ (span C(L'))^⊥` via the
+N4 criterion `linearIndependent_sumElim_candidateRow_iff`. Deps: `lem:case-II-realization-placement`,
+`lem:case-III-columnop`, `lem:case-III-claim612-block-iff-perp` (all green). Then N3/N7
+(research-shaped, recon-before-build), N8 (medium), capstone N9.
+
+**N5 green** (`candidateRow_ne_zero`, `RigidityMatrix.lean`, axiom-clean): the eq. (6.42) `r̂ ≠ 0`
+leaf. The common candidate row `r̂ = Σ_j λ_{(ab)j} rⱼ` is nonzero because `λ_{(ab)i*}=1` (green
+redundant-decomposition, eq. (6.25)) and the `rⱼ` are LI: a combination of an LI family with a unit
+coefficient is nonzero. Built on a new upstream-eligible mirror `linearIndependent_sum_smul_ne_zero`
+(`∑ c_j • v_j ≠ 0` when some `c i ≠ 0`, the contrapositive of `Fintype.linearIndependent_iff`).
 
 **N4 green** (`linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`,
 `RigidityMatrix.lean`, axiom-clean): the eq. (6.42) row-space criterion. The `D`-functional family
@@ -151,9 +157,10 @@ commit (no `\lean`/`\leanok`); build greens them.
   `(span C)^⊥` + candidate `r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Built on new mirror
   `linearIndependent_sumElim_unit_iff`. Deps: `def:rigidity-matrix`, `def:hinge-row-block`,
   `lem:case-II-placement-new-rows`.
-- [ ] **N5** `lem:case-III-claim612-r-nonzero` — `r := Σⱼ λ_{(ab)j} rⱼ(q(ab)) ≠ 0` (`λ_{(ab)i*}=1`
-  from the green redundant-decomposition). Deps: `lem:case-III-redundant-decomposition`,
-  `lem:case-II-placement-new-rows`. **Mechanical.**
+- [x] **N5** `lem:case-III-claim612-r-nonzero` (`candidateRow_ne_zero`, green, axiom-clean) —
+  `r̂ := Σⱼ λ_{(ab)j} rⱼ(q(ab)) ≠ 0` (`λ_{(ab)i*}=1` from the green redundant-decomposition). Built on
+  new mirror `linearIndependent_sum_smul_ne_zero`. Deps: `lem:case-III-redundant-decomposition`,
+  `lem:case-II-placement-new-rows`.
 - [ ] **N6** `lem:case-III-claim612-p2-placement` — the symmetric p₂ (va↔vb), reusing
   `case_II_placement_eq612` + `columnOp` at `(v,b)`. Deps: `lem:case-II-realization-placement`,
   `lem:case-III-columnop`, `lem:case-III-candidate-row`. **Medium.**
@@ -184,14 +191,15 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: build N5 (`lem:case-III-claim612-r-nonzero`)** — the mechanical leaf: the
-common vector `r := Σ_{1≤j≤5} λ_{(ab)j} rⱼ(q(ab))` is nonzero, since `λ_{(ab)i*}=1` (green
-redundant-decomposition, eq. (6.25)) and the `rⱼ(q(ab))` are LI (`lem:case-II-placement-new-rows`):
-a combination of an LI family with a unit coefficient is nonzero. Deps:
-`lem:case-III-redundant-decomposition`, `lem:case-II-placement-new-rows` (both green). Then proceed up
-the N6–N9 list (*Lemma checklist*): N6 (medium), N3/N7 (research-shaped — recon-before-build), N8
-(medium), capstone N9 — which discharges the re-shaped `lem:case-III-eq629-conditional`, after which
-N10 flips `lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
+**Next concrete commit: build N6 (`lem:case-III-claim612-p2-placement`)** — the symmetric `p₂`
+candidate (`va ↔ vb`), reusing `case_II_placement_eq612` + `columnOp` at `(v,b)` in place of `(v,a)`;
+its top-left `D×D` block `M₂` (eq. (6.30)) is full rank iff `r ∉ (span C(L'))^⊥` via N4's criterion
+`linearIndependent_sumElim_candidateRow_iff`. The same `λ_{(ab)j}`/`i*` appear in `M₁` and `M₂` (they
+live in `R(G_v^{ab}, q)`, independent of `p₁/p₂`). Deps: `lem:case-II-realization-placement`,
+`lem:case-III-columnop`, `lem:case-III-claim612-block-iff-perp` (all green). Then proceed up the
+N3/N7/N8/N9 list (*Lemma checklist*): N3/N7 (research-shaped — recon-before-build), N8 (medium),
+capstone N9 — which discharges the re-shaped `lem:case-III-eq629-conditional`, after which N10 flips
+`lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
 
 **Recon-before-build the two research-shaped nodes.** N3 (`-claim612-points`, general position of the
 4 incidence points) and N7 (`-claim612-p3-placement`, the `Gᵥᵃᵇ ≅ Gₐᵛᶜ` transport — KT's most
@@ -213,6 +221,13 @@ risk #8 — add a row if 22e introduces a new alg-independence use).
 ## Decisions made during this phase
 
 ### Phase-local choices and proof techniques
+- **N5 green — the `r̂ ≠ 0` leaf via a unit coefficient on an LI family (2026-06-06).**
+  `candidateRow_ne_zero` (`RigidityMatrix.lean`, axiom-clean): the common candidate row
+  `r̂ = Σⱼ λⱼ • rⱼ` is nonzero because the redundant index carries `λ_{i*} = 1` (eq. (6.25), green
+  `exists_redundant_panelRow_ab_decomposition`) and the `rⱼ` are LI. One line over a new
+  upstream-eligible mirror `linearIndependent_sum_smul_ne_zero` (`∑ c_j • v_j ≠ 0` when some
+  `c i ≠ 0`, contrapositive of `Fintype.linearIndependent_iff`) → FRICTION *Mirrored*. Honesty gate:
+  both hypotheses (`hr` LI, `hlam` unit) are conclusions of the two `\uses`'d green nodes.
 - **N4 green — the eq. (6.42) row-space criterion as an abstract augment-iff
   (2026-06-06).** `linearIndependent_sumElim_candidateRow_iff` + `mem_hingeRowBlock_iff`
   (`RigidityMatrix.lean`, axiom-clean): the `D`-functional family (`D−1` `va`-block rows spanning

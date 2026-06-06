@@ -944,6 +944,23 @@ theorem linearIndependent_sumElim_candidateRow_iff (F : BodyHingeFramework k α 
     LinearIndependent ℝ (Sum.elim rn (fun _ : Unit => r)) ↔ r (F.supportExtensor e) ≠ 0 := by
   rw [linearIndependent_sumElim_unit_iff hrn, hspan, Ne, ← mem_hingeRowBlock_iff]
 
+/-- **The common vector `r̂` of the `D`-candidate disjunction is nonzero**
+(`lem:case-III-claim612-r-nonzero`, KT eq.~(6.42); Katoh–Tanigawa 2011 §6.4.1, Phase 22e).
+The candidate row shared by all three
+blocks `M₁/M₂/M₃` of Claim~6.12 is `r̂ := ∑_j λ_{(ab)j} r_j(q(ab))`, where the `r_j` are the
+`D − 1` linearly independent rows of the `ab`-hinge block (`lem:case-II-placement-new-rows`) and
+the coefficients `λ_{(ab)j}` come from the redundant-`ab`-row decomposition of eqs.~(6.24)/(6.25)
+with the redundant index's coefficient pinned to `λ_{(ab)i^*} = 1`
+(`exists_redundant_panelRow_ab_decomposition`). Since `r̂` is a linear combination of the
+linearly independent `r_j` carrying the unit (hence nonzero) coefficient `1` on the member `i^*`,
+it is nonzero (`linearIndependent_sum_smul_ne_zero`). This is the `r ≠ 0` leaf the Claim-6.12
+capstone (`lem:case-III-claim612`) contradicts after the three blocks' joint dependence forces
+`r̂ = 0`. -/
+theorem candidateRow_ne_zero {ι : Type*} [Fintype ι] {r : ι → Module.Dual ℝ (ScrewSpace k)}
+    (hr : LinearIndependent ℝ r) {lam : ι → ℝ} {i : ι} (hlam : lam i = 1) :
+    ∑ j, lam j • r j ≠ 0 :=
+  linearIndependent_sum_smul_ne_zero hr (i := i) (hlam ▸ one_ne_zero)
+
 /-- **Cross-hinge independence over a rigid block of edges spanning many bodies**
 (`def:rigidity-matrix`, the Case-I `hindep` step in its general form). The multi-body
 generalization of `linearIndependent_hingeRow_star`: where the star fixes one common body `v`,
