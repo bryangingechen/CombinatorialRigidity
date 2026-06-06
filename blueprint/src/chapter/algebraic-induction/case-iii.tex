@@ -634,6 +634,8 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
 
 \begin{lemma}[The $D$ panel-support extensors of $4$ affinely-independent points span $\R^D$; KT eq.\ (6.45) via Lemma 2.1]
   \label{lem:case-III-claim612-extensor-span}
+  \lean{CombinatorialRigidity.Molecular.span_omitTwoExtensor_eq_top}
+  \leanok
   \uses{lem:extensor-independence, def:rigidity-matrix}
   At $d = 3$ ($D = 6$, $\mathrm{ScrewSpace}\,2 = \bigwedge^2 \R^4$, $\operatorname{finrank} = 6$),
   let $p_1, p_2, p_3, p_4 \in \R^3$ be affinely independent. The $\binom{4}{2} = 6$ panel-support
@@ -644,6 +646,7 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   \]
 \end{lemma}
 \begin{proof}
+  \leanok
   By Lemma~2.1 (\cref{lem:extensor-independence}, at $e = 2$: $4$ affinely-independent points in
   $\R^3$) the six omit-two extensors $p_i \vee p_j$ are linearly independent in $\bigwedge^2 \R^4$;
   a linearly independent family of $6 = \operatorname{finrank} \bigwedge^2 \R^4$ vectors is a basis,

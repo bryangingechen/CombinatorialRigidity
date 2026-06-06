@@ -60,6 +60,12 @@ symptom-indexed and lighter.
     last, so the single truncating `−` lands on a provably-large-enough
     quantity (otherwise the statement is off-by-one at a boundary and
     `omega` can't prove it).
+14. **"Polynomial with coefficients in a subring `R₀ ⊆ S`"** — carry as
+    `(map (algebraMap R₀ S)).range` membership, not `coeffs ⊆ range`;
+    the subring chains through every ring operation.
+15. **LI family of `finrank`-many vectors spans `⊤`** — `LinearIndependent`
+    + `Fintype.card ι = finrank` ⟹ `span (range v) = ⊤`, via
+    `basisOfLinearIndependentOfCardEqFinrank` + `coe_…` + `Basis.span_eq`.
 
 ---
 
@@ -921,3 +927,28 @@ propagates as `… ∈ (MvPolynomial.map (algebraMap ℚ ℝ)).range`, bottoming
 `complementIso` matrix entry's rationality and `X`'s integer coefficients;
 `exists_polynomial_ne_zero_of_linearIndependent_at_coeffs_subset_range` does the
 final `det`-and-convert. (FRICTION *[mirrored]* `Matrix.det_mem_range_of_entries`.)
+
+## 15. LI family of `finrank`-many vectors spans `⊤`
+
+To prove `Submodule.span R (Set.range v) = ⊤` from a `LinearIndependent R v`
+whose index `ι` has `Fintype.card ι = Module.finrank R V`, route through
+`basisOfLinearIndependentOfCardEqFinrank h hcard : Basis ι R V` (the LI family,
+having exactly `finrank`-many members, *is* a basis) and `Basis.span_eq`. Two
+gotchas: the basis needs `[Nonempty ι]` (supply it inline, e.g.
+`⟨⟨(0,1), by decide⟩⟩` for a subtype index), and `Basis.span_eq` produces
+`span (range ⇑(basisOf…)) = ⊤`, whose coercion is only *defeq* to `v` — finish by
+rewriting `coe_basisOfLinearIndependentOfCardEqFinrank` to turn `⇑(basisOf…)` back
+into `v` before the goal matches.
+
+When the LI family is **subtype-valued** (`v : ι → ↥S` for a submodule `S`) but
+the LI you have is on the coercion (`fun i => (v i : M)`, e.g. an extensor
+landing in the ambient `ExteriorAlgebra` while you want it in a graded piece),
+lift the independence across the inclusion with
+`(LinearMap.linearIndependent_iff S.subtype (Submodule.ker_subtype _)).1` — the
+`subtype ∘ v`-vs-`v` composite is defeq, so no `simp` glue is needed.
+
+Concrete instance (`span_omitTwoExtensor_eq_top`,
+`Molecular/RigidityMatrix.lean`, Phase 22e — KT eq. (6.45) / Claim 6.12 N1): the
+6 omit-two `2`-extensors of 4 affinely-independent points, LI by Lemma 2.1 in the
+ambient exterior algebra, lift into `ScrewSpace 2 = ⋀²ℝ⁴` (finrank `6 =
+binom(4,2)`) and span it.
