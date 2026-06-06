@@ -176,6 +176,14 @@ content change (docs commits):
   the Phase N entry with a one-line pointer. Cross-cutting lessons
   that stay in phase notes rot — this is the rule that prevents
   Phase notes from accumulating into 500-line documents.
+- **Compress in-commit, not in a cleanup round.** The phase-note length
+  budget (`notes/CLAUDE.md` *Soft length budget*) is a per-commit
+  constraint, not deferred hygiene: if this commit pushes the note over
+  budget, trim it *now*. Deferring compression to a later cleanup round
+  means the verbose intermediate gets written, re-read next session, and
+  re-compressed — three context costs for one durable paragraph. The
+  routine "D1 compression" halving (e.g. `notes/Phase20.md` 1089→434) is
+  exactly the waste this rule removes at the source.
 - **If you answered a "Choices to revisit" entry** in `DESIGN.md`,
   update it.
 
@@ -194,7 +202,11 @@ in-place restate of existing chapters. On top of the per-commit
 checklists:
 
 - Add or update the phase's row in the ROADMAP Status table (status:
-  *planning* or *in progress*) and write the §N planning section.
+  *planning* or *in progress*) and write the §N planning section. **The
+  table cell is a thin pointer** — status marker + at most one short
+  scope clause + `(see notes/PhaseN.md)`. The §N prose is the single
+  per-phase summary home (ROADMAP *Status* preamble states this); never
+  restate the §N summary inside the cell.
 - Create `notes/PhaseN.md` from the template in `notes/CLAUDE.md`.
 - **Sync the user-facing status surfaces** so the project's
   externally-visible state reflects that Phase N is now in progress:
@@ -214,8 +226,11 @@ checklists:
   also be synced at the boundary, or they silently drift (Phase 21b
   closed with `notes/MolecularConjecture.md` showing the prior phase
   in-progress). For the molecular program (Phases 17–26): sync
-  `notes/MolecularConjecture.md` — its phase table, the per-phase
-  detail block, and the *Opening the next phase* pointer.
+  `notes/MolecularConjecture.md`'s phase table + the *Opening the next
+  phase* pointer. It is the **program map**, not a fourth per-phase
+  detail surface — its per-phase entries are one-paragraph-max and point
+  at ROADMAP §N / `notes/PhaseN.md` for the detail (`notes/CLAUDE.md`
+  *One canonical home per content type*).
 - **Read the target red/deferred nodes end-to-end for internal
   consistency *before* scoping the build (the red-node consistency
   gate).** When a phase opens to build specific already-stubbed
@@ -244,11 +259,14 @@ The commit that takes the last red node green for a phase (or that
 otherwise discharges the phase's target) carries extra work *on top
 of* the per-commit checklists above:
 
-- Flip the phase's row in the ROADMAP Status table to ✓.
-- **Compress its planning section in ROADMAP** to a one-paragraph
-  summary plus a pointer to `notes/PhaseN.md`. Phase 1's section is
-  the canonical model. The lemma list and decisions live in
-  `notes/PhaseN.md`; ROADMAP carries the hand-off summary.
+- Flip the phase's row in the ROADMAP Status table to ✓ and **re-thin
+  the cell to a pointer** if it grew during the phase (status + ≤1 short
+  scope clause + `(see notes/PhaseN.md)`).
+- **Compress its §N planning section in ROADMAP** to a one-paragraph
+  summary plus a pointer to `notes/PhaseN.md`. Phase 1's section is the
+  canonical model; the §N prose is the *single* per-phase summary home
+  (the table cell stays a pointer, not a second copy). The lemma list
+  and decisions live in `notes/PhaseN.md`.
 - **Sync the user-facing status surfaces.** Same three surfaces as
   the phase-open subsection above: `README.md` *Project status*,
   `home_page/index.md` *Project status* + phase table, and

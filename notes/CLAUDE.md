@@ -44,6 +44,28 @@ for *organizing* this directory is here.
   commit closes a phase*). Inclusion criterion = KT-math difficulty, **not**
   project-side setup; see the file's own header (format, flavors, criterion).
 
+## One canonical home per content type
+
+Every piece of content has **one** home; every other mention is a
+pointer. This is the rule that stops the same paragraph being written
+3–5 times across the doc set (and re-synced on every edit). The
+molecular program (Phases 17–26) is where it bites hardest — a single
+phase can otherwise appear in five places at once.
+
+| Content | Canonical home | Everywhere else |
+|---|---|---|
+| At-a-glance status | ROADMAP *Status* table cell | thin pointer only (status + ≤1 clause + `see notes/PhaseN.md`) |
+| One-paragraph phase summary | ROADMAP *Mathematical roadmap* §N prose | — |
+| Phase working detail (lemma map, decisions, hand-off) | `notes/PhaseN.md` | — |
+| Program-level map (phase table, reuse map, risk register) | `notes/MolecularConjecture.md` | per-phase entries 1-paragraph-max → point at §N / `PhaseN.md` |
+| Live design recon (decision-support) | `notes/<topic>-design.md` | once a recon's verdict lands in `PhaseN.md`, compress the arc to a ≤3-line verdict + pointer |
+| Cross-cutting lesson / idiom / rationale | `TACTICS-GOLF.md` / `TACTICS-QUIRKS.md` / `DESIGN.md` | one-line *Promoted to …* pointer in `PhaseN.md` |
+
+A design-support doc (e.g. `notes/Phase22-realization-design.md`) is
+append-only *during* a recon, but its closed arcs compress to verdicts
+once the phase they served closes — they are not a second copy of the
+phase note's *Decisions made*.
+
 ## Phase notes
 
 `notes/PhaseN.md` is a working log, not an essay. The hand-off
@@ -59,6 +81,15 @@ contract holds only if the file stays scannable.
 - **Don't duplicate FRICTION explanations.** When a decision has both
   a Phase entry and a FRICTION entry, the Phase entry is a pointer;
   the explanation lives in FRICTION. One source of truth.
+- **Superseded reasoning leaves the live note.** When a recon's verdict
+  is overturned, *delete* the dead section — don't keep a “verdict
+  SUPERSEDED by …” or “retained for the audit trail” block in a
+  read-on-load `PhaseN.md`. The commit that made the call is the audit
+  trail (git history); the *Decisions made* entry records the final
+  verdict in ≤8 lines. If the dead end carries a reusable lesson (why
+  the route failed), lift that one-liner to FRICTION/DESIGN — the
+  blow-by-blow does not stay. A `PhaseN.md` reads as the *current* state
+  of the argument, not its changelog.
 - **Sub-organize "Decisions made" for non-trivial phases.** If a phase
   has multiple cleanup passes or many small refactors, split the
   section into:
@@ -71,25 +102,22 @@ contract holds only if the file stays scannable.
     cross-references, not explanations.
 
   For small phases, a flat list under "Decisions made" is fine.
-- **Soft length budget, adaptive to phase size.** A short phase
-  (5–10 forward-work commits) should sit near 100–200 lines; a long
-  phase (20+ forward-work commits, multiple substantive subsystems)
-  may legitimately need 350–450. The right test is **density**, not
-  absolute LoC: each *Decisions made* entry still respects the ≤8-line
-  per-entry rule above, cross-cutting lessons are still lifted via
-  *Promoted to ...*, and the *Current state* + *Hand-off* sections
-  still pass the hand-off contract from the top-level `CLAUDE.md`.
-  If those hold and you're at 400 lines, the phase was genuinely big.
-  If they don't and you're at 200 lines, the file is already drifting.
-  Phase 3 grew to ~500 lines before the rules above existed; applying
-  them dropped it below 300. Phase 1 and Phase 2 (small phases) sit
-  near 100 lines without sub-organization. Phase 9 (25 forward-work
-  commits, two new files totaling ~3300 LoC, 22 dep-graph nodes)
-  sits near 400 lines after compression — at the upper end of the
-  adaptive range, and a useful calibration point for a substantive
-  phase. If a phase looks like it's going to overshoot 500, that's
-  the cue to investigate whether *Decisions* has accumulated content
-  that should have been promoted.
+- **Soft length budget, enforced per-commit.** A short phase (5–10
+  forward-work commits) sits near 100–200 lines; a long phase (20+
+  commits, multiple subsystems) may legitimately need 350–450. The test
+  is **density**, not absolute LoC: each *Decisions made* entry respects
+  the ≤8-line rule, cross-cutting lessons are lifted via *Promoted to
+  …*, and *Current state* + *Hand-off* still pass the hand-off contract.
+  **The budget is a per-commit constraint, not a cleanup-round task** —
+  if a commit pushes the note over budget, trim it in that same commit
+  (top-level `CLAUDE.md` *Before each commit → Compress in-commit*).
+  Deferring to a cleanup round writes the verbose version, then re-reads
+  and re-compresses it next session; the routine ~50% “D1 compression”
+  (Phase 13 312→181, Phase 14 329→152, Phase 20 1089→434) is precisely
+  that waste. Calibration: Phase 1/2 (small) ~100 lines; Phase 9 (25
+  commits, ~3300 LoC, 22 nodes) ~400 at the upper end; a note past 500
+  means *Decisions* has accumulated content that should have been
+  promoted or never written.
 
 `notes/Phase1.md` is a complete-phase example for a small phase
 (flat "Decisions made"); `notes/Phase3.md` is the canonical example
