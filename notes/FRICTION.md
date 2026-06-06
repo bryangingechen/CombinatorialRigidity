@@ -2465,6 +2465,27 @@ limitations. Worth a once-over so future agents don't re-litigate.
 
 ## Mirrored
 
+### [mirrored] `MvPolynomial.eval_map_algebraMap` / `map_algebraMap_ne_zero_iff` — descend an `ℝ`-eval to a base-ring `aeval`, and transfer nonzero-ness
+- **Where it bit:** Phase 22d KT-Claim-6.11 analytic kernel, rationality bridge
+  (ii-b). Leaf (i) `AlgebraicIndependent.aeval_ne_zero` certifies non-root-ness
+  only for a polynomial *over* `ℚ` (`aeval q : MvPolynomial σ ℚ → ℝ`), but the
+  genericity device builds an `ℝ`-typed rank polynomial `Q : MvPolynomial σ ℝ`.
+  To apply (i) one exhibits `Q = map (algebraMap ℚ ℝ) Q₀` and needs both
+  `eval q Q = aeval q Q₀` and `Q ≠ 0 ↔ Q₀ ≠ 0`.
+- **Friction:** mathlib ships `MvPolynomial.aeval_map_algebraMap` (the `aeval`
+  form, in a scalar tower) and `map_injective`, but no `eval`-side descent for
+  the self-tower `A = B`, nor a packaged nonzero-transfer for an injective
+  `algebraMap` — the molecular tree had zero `algebraMap ℚ ℝ` / `map`
+  scaffolding.
+- **Resolution:** mirrored as the pair (any base ring `R`, `R`-algebra `A`):
+  - `eval_map_algebraMap (q : σ → A) (Q₀) : eval q (map (algebraMap R A) Q₀) =
+    aeval q Q₀` — `aeval_map_algebraMap` at `A = B`, through `aeval_eq_eval`.
+  - `map_algebraMap_ne_zero_iff [FaithfulSMul R A] : map (algebraMap R A) Q₀ ≠ 0
+    ↔ Q₀ ≠ 0` — `map_eq_zero_iff` of the injective faithful `algebraMap`.
+- **Status:** mirrored. Both axiom-clean; no geometry, true leaves.
+- **Mirror file:** `Mathlib/RingTheory/MvPolynomial/Tower.lean`. Sit directly
+  below `MvPolynomial.aeval_map_algebraMap`.
+
 ### [mirrored] `Countable.exists_injective_real` — a countable type embeds injectively into `ℝ`
 - **Where it bit:** Phase 21b Case-I realization producer
   (`Molecular/AlgebraicInduction/`,

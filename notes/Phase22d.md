@@ -18,20 +18,22 @@ of `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1`) and Gap-3's combinatorial shell
 nodes `lem:case-III-claim-6-11-base` + `lem:case-III-gap3-minimalKDof` green; `lem:case-III`
 / `lem:case-II-realization` red.
 
-**Next concrete commit:** the leaf-most brick of kernel sub-phase **(ii-b)** — the *rationality
-bridge* the (ii) opening recon (this commit, *Kernel sub-phase (ii) recon*) surfaced. The recon
-**split (ii)** into **(ii-a)** a seed-genericity motive conjunct (22b-shaped: carry "the realizing
-seed is alg-indep over ℚ", paralleling the GP / link-recording strengthenings) **and (ii-b)** a
-rationality bridge the §1.30 cut missed: leaf (i) needs the rank polynomial over **ℚ**, but the
-device builds `Q : MvPolynomial σ ℝ` — so `eval q Q = aeval q Q₀` needs `Q` exhibited as the
-`algebraMap ℚ ℝ`-image of a ℚ-polynomial (the device's `panelSupportPoly` coefficients are
-ℝ-typed `complementIso` structural constants, rational but not manifestly so; **zero** `algebraMap
-ℚ ℝ` scaffolding tree-wide). Leaf (i) landed (`AlgebraicIndependent.aeval_ne_zero`). The next
-*build* is (ii-b)'s leaf-most: the upstream-eligible `eval = aeval ∘ descend` descent mirror for a
-coefficient-rational ℝ-polynomial (a true leaf — independent of all the geometry; (ii-a) waits on
-the moment-curve alg-independence question). (iii) `lem:case-III-seed-rank-bridge` composes (i) ⊕
-(ii-a) ⊕ (ii-b) with the device consumer + `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. All
-built directly to green, not carried as hypotheses.
+**Next concrete commit:** the second (ii-b) brick — the `complementIso`-rational-entries leaf: the
+device's `Q` (`exists_polynomial_ne_zero_of_linearIndependent_at`, a `det` of a submatrix of
+`c = ± annihRowPoly`, whose coefficients bottom on `panelSupportPoly`'s `MvPolynomial.C r` with
+`r : ℝ` a `complementIso`-`repr` structural constant) must be exhibited as `map (algebraMap ℚ ℝ) Q₀`,
+so the descent mirror just landed applies. This needs the structural constants `r` shown rational
+(±1 / fixed change-of-basis entries — the fact KT takes for granted, footnote 6) and the
+`map`-factorization assembled. Then **(ii-a)** [waits on the moment-curve alg-independence question,
+*Blockers*], then **(iii)** `lem:case-III-seed-rank-bridge` composes (i) ⊕ (ii-a) ⊕ (ii-b) with the
+device consumer + `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. All built directly to green,
+not carried as hypotheses.
+
+The descent mirror (ii-b)'s leaf-most just landed: `MvPolynomial.eval_map_algebraMap` (`eval q
+(map (algebraMap R A) Q₀) = aeval q Q₀`) + `map_algebraMap_ne_zero_iff` (nonzero transfer along a
+faithful `algebraMap`), mirrored at `Mathlib/RingTheory/MvPolynomial/Tower.lean`, axiom-clean. With
+these two, leaf (i)'s `aeval`-non-root-ness over ℚ transfers to `eval`-non-root-ness over ℝ once
+`Q` is exhibited over ℚ.
 
 ## Claim 6.11 discharge — the Gap 2 → 3 → 1 map
 
@@ -74,13 +76,18 @@ Claim 6.11 supplies the `+1` — the same missing content.
   `Mathlib/RingTheory/AlgebraicIndependent/Defs.lean`, axiom-clean. The `R=ℚ`, `A=ℝ` instance is
   what footnote 6 needs (`q` real, rank-poly over ℚ); the same-ring `eval` form is vacuous (forces
   `ι` empty), so only the `aeval` form ships. No blueprint node yet (kernel `\lean{}` lands with (iii)).
-- [ ] (the kernel, in build) (ii) **splits** (recon below): **(ii-a)** seed-genericity motive
-  conjunct (carry "realizing seed alg-indep over ℚ"; 22b-shaped) — waits on the moment-curve
-  alg-independence question; **(ii-b)** the rationality bridge — leaf-most is the upstream-eligible
-  `eval = aeval ∘ descend` mirror for a coefficient-rational ℝ-polynomial, then a `complementIso`-
-  rational-entries leaf exhibiting the device's `Q` over ℚ. Then **(iii)** `lem:case-III-seed-rank-bridge`
-  (= the eq. (6.22) generic-rank transfer ⊕ Gap-1 row bridge) composing (i) ⊕ (ii-a) ⊕ (ii-b) with
-  the device consumer + `rigidityMatrix_prop11`. Red; built directly, not carried.
+- [x] `MvPolynomial.eval_map_algebraMap` / `map_algebraMap_ne_zero_iff` — (ii-b) leaf-most: the
+  evaluation descent (`eval q (map (algebraMap R A) Q₀) = aeval q Q₀`, via `aeval_map_algebraMap` +
+  `aeval_eq_eval`) and the nonzero transfer along a faithful `algebraMap`. Upstream-eligible,
+  axiom-clean; mirrored at `Mathlib/RingTheory/MvPolynomial/Tower.lean`. No blueprint node (kernel
+  `\lean{}` lands with (iii)).
+- [ ] (the kernel, in build) (ii) **splits**: **(ii-a)** seed-genericity motive conjunct (carry
+  "realizing seed alg-indep over ℚ"; 22b-shaped) — waits on the moment-curve alg-independence
+  question; **(ii-b)** the rationality bridge — descent mirror landed (above); remaining is the
+  `complementIso`-rational-entries leaf exhibiting the device's `Q` over ℚ + the `map`-factorization.
+  Then **(iii)** `lem:case-III-seed-rank-bridge` (= the eq. (6.22) generic-rank transfer ⊕ Gap-1 row
+  bridge) composing (i) ⊕ (ii-a) ⊕ (ii-b) with the device consumer + `rigidityMatrix_prop11`. Red;
+  built directly, not carried.
 
 ## Deferred sub-phases (future work in the phase)
 
@@ -139,17 +146,17 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** the (ii) opening recon landed this commit (*Kernel sub-phase (ii) recon*;
-design doc §1.32) — it **split (ii)** into (ii-a) a seed-genericity motive conjunct (22b-shaped,
-the third motive form the hand-off anticipated) and (ii-b) a *rationality bridge* the §1.30 cut
-missed (the device's `Q : MvPolynomial σ ℝ` must be exhibited over ℚ for leaf (i) to apply; zero
-`algebraMap ℚ ℝ` scaffolding tree-wide). The next **build** commit is (ii-b)'s leaf-most: the
-upstream-eligible `MvPolynomial.eval q = aeval q ∘ descend` mirror for a coefficient-rational
-ℝ-polynomial (equivalently the `MvPolynomial.map (algebraMap ℚ ℝ)` round-trip + `map`-injectivity
-for `≠ 0`) — a true leaf, provable independent of all the geometry. Mirror it under
-`Mathlib/Algebra/MvPolynomial/` (alongside the 21b adders). Then the `complementIso`-rational-entries
-leaf, then (ii-a) [waits on the moment-curve alg-independence question, *Blockers*], then **(iii)**
-`lem:case-III-seed-rank-bridge` composing (i) ⊕ (ii-a) ⊕ (ii-b) with the device consumer
+**Next concrete commit:** the (ii-b) descent mirror landed this commit
+(`MvPolynomial.eval_map_algebraMap` + `map_algebraMap_ne_zero_iff`, mirrored at
+`Mathlib/RingTheory/MvPolynomial/Tower.lean`) — the `eval`-over-ℝ ⟶ `aeval`-over-ℚ descent + the
+nonzero transfer that lets leaf (i) apply once `Q` is exhibited over ℚ. The next **build** commit is
+the second (ii-b) brick: the `complementIso`-rational-entries leaf — exhibit the device's `Q`
+(`exists_polynomial_ne_zero_of_linearIndependent_at`, a `det` of `c = ± annihRowPoly`, bottoming on
+`panelSupportPoly`'s `MvPolynomial.C r` for `r : ℝ` a `complementIso`-`repr` structural constant) as
+`map (algebraMap ℚ ℝ) Q₀`, which needs the structural constants `r` shown rational (±1 / fixed
+change-of-basis entries; KT footnote 6) and the `map`-factorization assembled. Then (ii-a) [waits on
+the moment-curve alg-independence question, *Blockers*], then **(iii)** `lem:case-III-seed-rank-bridge`
+composing (i) ⊕ (ii-a) ⊕ (ii-b) with the device consumer
 (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11` +
 `rank_add_deficiency_eq`. The two combinatorial Claim-6.11 factors (Gap-2 leaf + Gap-3 shell) are
 green; `lem:case-III` stays red until the kernel lands.
@@ -201,7 +208,13 @@ design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
   contrapositive of mathlib's `eq_zero_of_aeval_eq_zero`, mirrored under
   `Mathlib/RingTheory/AlgebraicIndependent/`; the `R=ℚ`, `A=ℝ` footnote-6 instance ships (the
   same-ring `eval` form is vacuous). Wired into the root aggregator as a leaf awaiting (iii).
-- **Kernel sub-phase (ii) recon (this commit; design doc §1.32).** The math-first recon at the
+- **Kernel (ii-b) descent mirror (this commit).** `MvPolynomial.eval_map_algebraMap` (`eval q
+  (map (algebraMap R A) Q₀) = aeval q Q₀` — `aeval_map_algebraMap` at the self-tower `A=B` through
+  `aeval_eq_eval`) + `map_algebraMap_ne_zero_iff` (nonzero transfer via the injective faithful
+  `algebraMap`). All pieces already in mathlib; the leaf packages them in the consumed form. Mirrored
+  at `Mathlib/RingTheory/MvPolynomial/Tower.lean`, axiom-clean. A true leaf — no geometry; FRICTION
+  *[mirrored]* entry filed.
+- **Kernel sub-phase (ii) recon (commit 7202bfd; design doc §1.32).** The math-first recon at the
   (ii) open: traced what (iii) must compose against the *real* device signatures. **(ii) splits.**
   (ii-a) = a seed-genericity motive conjunct (carry "realizing seed alg-indep over ℚ"; 22b-shaped,
   the anticipated third motive form). (ii-b) = a *rationality bridge* the §1.30 cut missed: leaf (i)
