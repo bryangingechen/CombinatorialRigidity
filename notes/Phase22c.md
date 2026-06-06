@@ -1,21 +1,29 @@
-# Phase 22c — Case III at `d=3` (KT Lemma 6.10) (work log)
+# Phase 22c — Case III at `d=3`, first chunk (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement) (work log)
 
-**Status:** in progress (opened 2026-06-05). **Design-pass-first** —
-this phase opens on a *layer-level design recon* of the whole
-Case-III-at-`d=3` argument (KT §6.4.1, Lemma 6.10, Claims 6.11/6.12)
-against the green Phase-17 Lemma 2.1 and the green Phase-21b/22a/22b
-infra, **before** any Lean node-cut or grinding. The opening commit is
-**docs-only** (this file + the phase-open surface sync); the Lean
-node-cut follows in subsequent commits, once the recon settles what each
-piece needs from the shared candidate structure.
+**Status:** in progress (opened 2026-06-05; scope re-cut to the *first
+tractable chunk* 2026-06-05). **Design-pass-first** — this phase opened
+on a *layer-level design recon* of the whole Case-III-at-`d=3` argument
+(KT §6.4.1, Lemma 6.10, Claims 6.11/6.12) against the green Phase-17
+Lemma 2.1 and the green Phase-21b/22a/22b infra, **before** any Lean
+node-cut or grinding. The recon (two docs-only passes) has now settled
+the candidate structure, answered its four open questions, and **cut
+22c's scope to the first chunk only** (below). The Lean node-cut follows
+in subsequent commits.
 
 Stratum 5 of the molecular-conjecture program, continued: **Track B at
 `d=3`** — the Case II/III reducible-vertex producer (KT's *Case III*),
-the single largest proof in KT and the conjecture's crux. This is
-`theorem_55`'s `hsplit` branch at `k=0`: a `2`-edge-connected minimal
-`0`-dof-graph with no proper rigid subgraph and a reducible degree-2
-vertex `v`, target full rank `D(|V|−1)`. At `d=3`, `D = (4 choose 2) =
-6`.
+the single largest proof in KT (~12 pages) and the conjecture's crux.
+This is `theorem_55`'s `hsplit` branch at `k=0`: a `2`-edge-connected
+minimal `0`-dof-graph with no proper rigid subgraph and a reducible
+degree-2 vertex `v`, target full rank `D(|V|−1)`. At `d=3`, `D = (4
+choose 2) = 6`. **22c does NOT attempt to land all of Lemma 6.10 in one
+phase** — Case III at `d=3` is multi-phase (the user's explicit
+direction, 2026-06-05: "let's not try to cram too much into 22c"); 22c
+claims only the *first* of three difficulty strata (the eq. (6.12)
+`+(D−1)` block-triangular placement). The harder D-candidate crux (the
+Claim 6.11 redundant row + the Claim 6.12 / candidate-normal-form
+assembly) is a **likely later sub-phase**; the `d=3` assembly later
+still.
 
 Forward-mode / **structural-edit** discipline (`blueprint/CLAUDE.md`):
 22c opens *no* new blueprint chapter — its target nodes
@@ -31,55 +39,74 @@ just its conclusion* + *Phase Case-naming vs. KT's k-bookkeeping*.
 
 ## Current state
 
-22c is **open and at the design-recon stage**. The opening commit
-(docs-only) settles the sub-phase scope cut (below), seeds this file
-with the layer-level design-recon plan, and lands a *first recon pass*
-that reads the whole Case-III-at-`d=3` argument against the primary
-source. **No Lean this commit.** The next concrete commit is the
-continuation of the design recon (not a build): trace each piece of KT
-Lemma 6.10's argument — the `D` candidate frameworks, the eq. (6.12)
-degenerate placement giving `+(D−1)`, Claim 6.11's redundant-`ab`-row
-(combinatorial↔linear), Claim 6.12's extensor-span genericity via
-Lemma 2.1 — and decide what each needs *from* the shared candidate
-structure and *supplies* to the producer node, **before** the first
-Lean node lands. The Case-I composer `case_I_realization` is fully green
-(Phase 22b) and ready to wire into `theorem_55_generic`'s Case-I branch;
-that wiring + the Case-III producer + the `d=3` assembly is the 22c (and
-likely 22d) territory.
+22c's **design recon is settled** (two docs-only passes; the second this
+commit). The first pass read the whole Case-III-at-`d=3` argument against
+the primary source; the second pass (this commit) pinned the **shared
+candidate structure**, answered the **four open recon questions**, and
+**re-cut 22c's scope to the first tractable chunk** (the eq. (6.12)
+`+(D−1)` block-triangular placement) per the user's "don't cram too much
+into 22c" direction. Full recon: `notes/Phase22-realization-design.md`
+§1.26 (the canonical record); summarized here under *Recon resolution*.
+**No Lean this commit** (docs-only, design-pass-first). The next concrete
+commit is the **first Lean node of stratum 1** — the eq. (6.12)
+degenerate placement producing the `+(D−1)` block-triangular lower bound,
+cut leaf-most-first against the green N7b-0/1/2/3 +
+`linearIndependent_sum_pinned_block` infra (confirm the count `5 +
+6(|V∖{v}|−1) = D(|V|−1)−1` closes from the named green inputs at that
+build's open — the honesty gate's second half). The Case-I composer
+`case_I_realization` is fully green (Phase 22b) and ready to wire into
+`theorem_55_generic`'s Case-I branch; that wiring + the `d=3` assembly is
+the deferred 22d territory.
 
-## Sub-phase scope cut (SETTLED this commit)
+## Sub-phase scope cut (SETTLED; re-cut to first-chunk 2026-06-05)
 
-The parked "22c+" territory bundled two independent bodies of work; this
-phase cuts it as follows.
+The parked "22c+" territory bundled the Case-III-at-`d=3` crux with the
+`d=3` assembly; **and Case III at `d=3` is itself multi-phase** (the
+recon's first-chunk cut, §1.26, folding in the user's direction that
+Case III at `d=3` and the `d=3` assembly may *each* need multiple
+phases). The cut:
 
-- **22c = Case III at `d=3` / Track B — THE CRUX (this phase).** KT
-  §6.4.1, **Lemma 6.10** at `D = 6` (`d = 3`): the `theorem_55.hsplit`
-  producer. Target nodes `lem:case-II-realization` (KT's Case III, the
-  eq. (6.12) `+(D−1)` degenerate placement) and `lem:case-III` (the
-  missing row via the `D`-candidate-frameworks argument, Claims
-  6.11/6.12). Bottoms out on the green Phase-17 Lemma 2.1
-  (`omitTwoExtensor_linearIndependent`); reuses the green Phase-21b row
-  infra (N7b-0/1/2/3, N7a, `linearIndependent_sum_pinned_block`) + the
-  Phase-22b Claim-6.4 bricks.
+- **22c = Case III at `d=3`, FIRST CHUNK ONLY — stratum 1, the eq. (6.12)
+  `+(D−1)` placement (this phase).** KT §6.4.1, the *first* of three
+  difficulty strata of Lemma 6.10: the eq. (6.12) degenerate placement
+  `p₁(va) = L ⊂ Π(a)`, `p₁(vb) = q(ab)` (the `vb`-row reproducing the
+  `e₀ = ab` row), giving via column ops (eq. (6.16)) a block-triangular
+  `R(G,p₁)` with `R(G_v^{ab},q)` a submatrix ⟹ `rank ≥ 5 +
+  6(|V∖{v}|−1) = D(|V|−1)−1`. `buildable` from the green Phase-21b row
+  infra (N7b-0/1/2/3, N7a, `linearIndependent_sum_pinned_block`). This is
+  the largest self-contained green-infra-fed piece and sets up the
+  candidate scaffold the crux completes. **22c does NOT claim the full
+  `lem:case-II-realization` + `lem:case-III`** — those stay red, with the
+  eq. (6.12) `+(D−1)` lower-bound brick landing toward them.
 
-- **22d (LIKELY further cut, DEFERRED until 22c's shape is clear) = the
-  `d=3` assembly.** The genericity-free `hub` partition brick of
-  `prop:rigidity-matrix-prop11` (a Phase-19-partition obligation,
-  Track-independent, itself multi-commit — decompose math-first before
-  scheduling) + the `thm:theorem-55` flip (one-line once the three case
-  producers land) + wiring `case_I_realization` into
-  `theorem_55_generic`'s Case-I branch. The finer 22c/22d cut is
-  deferred exactly as 22a deferred the 22b+ cut and 22b deferred the
-  22c+ cut: name the *next* distinct sub-phase, do not pre-commit its
-  internal node list before its shape is clear. **General-`d` (Lemma
-  6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 stays Phase 23** (integer
-  phase numbers 23–26 unchanged).
+- **The D-candidate crux (LIKELY its own later sub-phase; named, NOT
+  scoped this phase) = strata 2–3 of Lemma 6.10.** Stratum 2 = **Claim
+  6.11** (the redundant `(ab)i*`-row, the combinatorial↔linear conversion
+  via KT Lemma 4.3(ii) + the IH applied at the rigidity matrix — the
+  single highest-risk node in Phases 22–23). Stratum 3 = the **candidate
+  normal form + Claim 6.12** assembly (the three candidates' residual
+  normals `r/r'/r''`, the eq. (6.44) "same `r`" degree-2 forcing, and the
+  Lemma-2.1 extensor-span contradiction). These complete `lem:case-III`
+  and `lem:case-II-realization`. Defer the finer cut until stratum 1's
+  shape is clear — name the next distinct sub-phase, do not pre-commit its
+  internal node list (the same discipline as 22a→22b+, 22b→22c+).
 
-Rationale: each sub-letter names *one* distinct sub-phase (the
-discipline that renamed 22b+ → 22c+). 22c is the crux producer; the
-assembly is a separable downstream concern that should not share its
-label. Whether the assembly is a true 22d or folds into 22c's tail is a
-contact decision deferred to when 22c closes.
+- **The `d=3` assembly (deferred, downstream of the crux) = the
+  genericity-free `hub` partition brick of `prop:rigidity-matrix-prop11`
+  (a Phase-19-partition obligation, Track-independent, itself multi-commit
+  — decompose math-first before scheduling) + the `thm:theorem-55` flip
+  (one-line once the three case producers land) + wiring
+  `case_I_realization` into `theorem_55_generic`'s Case-I branch.**
+  **General-`d` (Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 stays
+  Phase 23** (integer phase numbers 23–26 unchanged).
+
+Rationale: each sub-letter / sub-phase names *one* distinct chunk. The
+recon (§1.26) shows Lemma 6.10 partitions into a `buildable` first
+stratum (stratum 1, this phase) and a research-shaped crux (strata 2–3),
+which the user's direction makes explicit: do not cram all of Case III at
+`d=3` into 22c. Stratum 1 first de-risks the crux's recon (it makes the
+candidate structure concrete in Lean) and yields a green `+(D−1)` brick
+even before the crux lands.
 
 ## The design-recon plan (this phase's organizing principle)
 
@@ -175,45 +202,75 @@ Read against KT §6.4.1 (verified in the primary source PDF, pp. 34–45):
     reducible-degree-2 data (the two edges `e_a, e_b`, their links, the
     degree-2 closure), strengthened in step with `minimal_kdof_reduction`.
 
-- **Open recon questions (to settle in the next, still-docs-only,
-  recon commits before any build).**
-  1. The **candidate normal form**: abstract a single "candidate"
-     lemma (one per-candidate row-op argument, instantiated `D` times)
-     vs. inlining three copies at `d=3`. KT's prose repeats the row-ops
-     three times; an abstraction is the cleaner formalization but must
-     be designed against what is genuinely common.
-  2. Whether to **build the `d=3` case fully concretely** (`D = 6`,
-     three candidates) first, with the general-`d` Lemma 6.13 (Phase 23)
-     generalizing the bookkeeping — KT itself does `d=3` (§6.4.1) then
-     general `d` (§6.4.2), so following that cut is natural.
-  3. The exact Lean shape of Claim 6.11's row-matroid↔`M(G̃_v^{ab})`
-     bridge — which green Phase-19 fact (`matroidMG_indep_iff`,
-     `def=corank`) it routes through.
-  4. Whether Claim 6.12's "same `r`" (eq. 6.44) is a separate brick or
-     folds into the candidate normal form.
+## Recon resolution (SETTLED 2026-06-05 — second pass; full record §1.26)
+
+The four open recon questions, resolved against the primary source (KT
+pp. 34–37, 44–45). The detailed reasoning is
+`notes/Phase22-realization-design.md` §1.26 (canonical); the answers:
+
+1. **Candidate normal form — ABSTRACT one candidate lemma, instantiate
+   ×3.** The three candidates are symmetric (`p₂` = `p₁` with `a↔b`; `p₃`
+   = `p₁∘ρ` for the iso `ρ : G_a^{vc} ≅ G_v^{ab}`), and KT does the
+   row-ops once ("the same analysis" for the others). State the
+   per-candidate row-op + `+(D−1)` argument once, parametrized by
+   `(degenerate hinge, free panel line L)`.
+2. **`d=3`-first — YES.** Concrete `D=6` / 3-candidate case first;
+   general `d` (Lemma 6.13, the length-`d` chain) stays Phase 23, KT's
+   own §6.4.1-then-§6.4.2 cut. The candidate normal form is the right
+   *internal* abstraction even at `d=3` (Lemma 6.13 re-instantiates it).
+3. **Claim 6.11's bridge — routes through KT Lemma 4.3(ii) + the IH,
+   landing as a redundant-row existence fact** (a non-base `ãb` fiber
+   edge ⟹ a redundant rigidity row at the IH realization). The Lean lever
+   is the green Phase-19 `M(G̃)`↔row-independence machinery
+   (`matroidMG_indep_iff`, `thm:def-eq-corank`), but the *conversion* is
+   genuinely new analytic content — **the D-candidate crux**, not the
+   first chunk.
+4. **Claim 6.12's "same `r`" (eq. 6.44) — FOLDS into the candidate normal
+   form's contradiction step, not a separate brick.** `r' = r` (symmetry),
+   `r'' = −r` (eq. 6.44, forced because `a` is degree-2 in `G_v^{ab}` —
+   only `ab, ac` incident, so the `a`-block of the row-dependency (6.43)
+   has two terms). Then four aff.-indep. points `p₁ = Π(a)∩Π(b)∩Π(c)`,
+   …, and **Lemma 2.1** (`omitTwoExtensor_linearIndependent`, `(4 choose
+   2)=6`) contradicts `r ≠ 0`.
+
+**First-chunk cut (this phase = stratum 1).** Lemma 6.10 partitions into
+three difficulty strata: (1) the eq. (6.12) `+(D−1)` block-triangular
+placement (`buildable`, green-infra-fed — **22c**); (2) Claim 6.11's
+redundant row (`research-shaped`, the highest-risk node — later
+sub-phase); (3) the candidate-normal-form + Claim-6.12 + eq.-(6.44)
+assembly (bottoms on green Lemma 2.1, composes after 1+2 — later
+sub-phase). See the *Sub-phase scope cut* section above + §1.26.
 
 ## Lemma checklist
 
-The Lean node cut is **deferred to the post-recon commits** (design-pass
--first; the recon settles it). The target *blueprint* nodes (already
-stubbed red in `algebraic-induction/`):
+The Lean node cut for **stratum 1** (this phase's scope) is the next
+commit; strata 2–3 are deferred. The target *blueprint* nodes (already
+stubbed red in `algebraic-induction/`; **all stay red — 22c lands the
+eq. (6.12) `+(D−1)` brick toward them, not the full nodes**):
 
-- [ ] `lem:case-II-realization` (KT's Case III; `case-ii.tex`) — the
-  eq. (6.12) degenerate placement giving `+(D−1)`, then the Case-III
-  missing row. Discharges `theorem_55.hsplit`.
-- [ ] `lem:case-III` (`case-iii.tex`) — the `D`-candidate-frameworks
-  argument (Claims 6.11/6.12), bottoming on Lemma 2.1.
+- [ ] **(22c, stratum 1)** eq. (6.12) `+(D−1)` block-triangular placement
+  — the next Lean node, `buildable` from the green N7b-0/1/2/3 +
+  `linearIndependent_sum_pinned_block`. Produces `rank R(G,p₁) ≥
+  D(|V|−1)−1`. A lower-bound brick *toward* `lem:case-II-realization`,
+  not the full node.
+- [ ] (later sub-phase) `lem:case-II-realization` (KT's Case III;
+  `case-ii.tex`) + `lem:case-III` (`case-iii.tex`) — the D-candidate crux
+  (Claim 6.11 redundant row + the candidate-normal-form / Claim-6.12
+  assembly, bottoming on Lemma 2.1). Discharges `theorem_55.hsplit`.
 - [ ] (22d, deferred) `prop:rigidity-matrix-prop11` `hub` brick + the
   `thm:theorem-55` flip + the `case_I_realization` → `theorem_55_generic`
   Case-I wiring.
 
 ## Blockers / open questions
 
-- **Sub-phase cut — SETTLED** (above): 22c = Case III at `d=3`; the
-  `d=3` assembly is the likely 22d, deferred until 22c's shape is clear.
-- **Design-recon-first — IN PROGRESS** (this phase's organizing
-  principle): no Lean node is cut until the layer recon settles the
-  candidate structure (the four open recon questions above).
+- **Sub-phase cut — SETTLED** (above, re-cut to first-chunk): 22c =
+  Case III at `d=3` *stratum 1* (the eq. (6.12) `+(D−1)` placement) only;
+  the D-candidate crux (strata 2–3) is a likely later sub-phase, the
+  `d=3` assembly the deferred 22d — each deferred until the prior shape
+  is clear.
+- **Design-recon — SETTLED** (this phase's organizing principle): the
+  four open recon questions are answered (above + §1.26); the layer is
+  designed. The next commit cuts the first Lean node (stratum 1).
 - **Recurring Lean traps** (carry from 22a/22b, FRICTION): the heavy
   `IsInfinitesimallyRigidOn`/framework defeq across `ofNormals`/`withGraph`
   graph-swaps can `isDefEq`-timeout — make the two frameworks
@@ -224,18 +281,24 @@ stubbed red in `algebraic-induction/`):
 
 ## Hand-off / next phase
 
-22c is open at the design-recon stage. **The next concrete commit is the
-continuation of the layer design recon (still docs-only): settle the
-four open recon questions above — the candidate normal form, the `d=3`-
-first cut, Claim 6.11's row-matroid bridge shape, and Claim 6.12's "same
-`r`" packaging — then cut the Lean nodes leaf-most-first.** Do *not* open
-a Lean build before the recon settles the candidate structure
-(design-pass-first; `DESIGN.md` *Scale-up: design the LAYER, not just the
-node*).
+The design recon is **settled** (four questions answered, first-chunk
+scope cut made; §1.26). **The next concrete commit is the FIRST LEAN NODE
+of stratum 1 — the eq. (6.12) degenerate placement** (`p₁(va) = L ⊂
+Π(a)`, `p₁(vb) = q(ab)`) producing the block-triangular `R(G,p₁)` with
+`R(G_v^{ab},q)` a submatrix, hence the `+(D−1)` lower bound `rank R(G,p₁)
+≥ 5 + 6(|V∖{v}|−1) = D(|V|−1)−1`. Cut it leaf-most-first against the green
+N7b-0/1/2/3 + `linearIndependent_sum_pinned_block` infra; this is
+`buildable`, so re-recon is light, but **confirm the count `5 +
+6(|V∖{v}|−1) = D(|V|−1)−1` closes from the named green inputs at the
+build's open** (the honesty gate's second half). 22c lands this `+(D−1)`
+brick *toward* `lem:case-II-realization`/`lem:case-III` — those nodes stay
+red; the D-candidate crux (strata 2–3) is a later sub-phase, named but not
+scoped here.
 
 The green infra 22c builds on: the fully-green Case-I composer
 `case_I_realization` (Phase 22b), the Phase-21b device + count bridge +
 N7b row sub-nodes + splice/union glue, the Phase-22b Claim-6.4 bricks,
-and — the load-bearing input — Phase-17 Lemma 2.1. The KT math is in
-`notes/Phase21b.md` *Finding A/B*, `notes/Phase22-realization-design.md`,
-and KT §6.4.1; 22c formalizes it.
+and — the load-bearing input for the deferred crux — Phase-17 Lemma 2.1.
+The KT math is in `notes/Phase21b.md` *Finding A/B*,
+`notes/Phase22-realization-design.md` §1.25–§1.26, and KT §6.4.1; 22c
+formalizes it.

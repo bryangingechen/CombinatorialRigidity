@@ -1884,6 +1884,110 @@ packaging) — *before* cutting the first Lean node. No exposition-ledger entry 
 ledger lines (`lem:case-II-realization`/eq. 6.12; Case III at large) already exist (`notes/BlueprintExposition.md`),
 status stays `pending` (write at 22c close, once `sorry`-free).
 
+### 1.26 Phase 22c recon, second pass — the candidate structure, the four open questions resolved, and the FIRST-CHUNK scope cut (2026-06-05)
+
+Second (still docs-only, decision-support) recon pass, **re-read against the primary source**
+(KT 2011 §6.4.1, pdf pp. 34–37 [candidate construction + sketch], pp. 44–45 [Claims 6.11/6.12
+rigorous]). It (a) pins the shared candidate structure, (b) answers the four open recon questions
+from §1.25 / `notes/Phase22c.md`, and (c) — folding in the user's fresh direction that Case III at
+`d=3` *and* the `d=3` assembly may each need multiple phases — **re-cuts 22c's scope to the first
+tractable chunk**, not all of `lem:case-II-realization` + `lem:case-III`.
+
+**The shared candidate structure (verified, KT pp. 34–37).** No proper rigid subgraph + `d=3` ⟹
+(Lemma 4.6) two *adjacent* degree-2 vertices `v, a`, with `N_G(v) = {a,b}`, `N_G(a) = {v,c}`. Both
+`G_v^{ab}` and `G_a^{vc}` are minimal 0-dof (Lemma 4.8), and `G_a^{vc} ≅ G_v^{ab}` (the panel of `a`
+in `(G_v^{ab},q)` plays the role of the panel of `v` in `(G_a^{vc},q_ρ)`, Fig. 6(b)(f)(g)). The IH
+(6.1) supplies one generic nonparallel realization `(G_v^{ab}, q)` with `rank R = 6(|V∖{v}|−1)` (eq.
+6.18). **All three candidates share this one `q`**: `(G,p₁)`/`(G,p₂)` are built on `(G_v^{ab},q)`
+(eqs. (6.12)/(6.19), differing only in which of `va`/`vb` carries the degenerate `q(ab)` placement),
+`(G,p₃)` on `(G_a^{vc},q_ρ)` (eqs. (6.31)/(6.32)), where `q_ρ` is `q` transported across the iso. So
+the *shared data* parametrizing a candidate is `(q, the degenerate hinge choice, the free panel line
+L ⊂ Π(·))`; the three differ only in which panel (`Π(a)`, `Π(b)`, `Π(c)`) the free line lives on.
+
+**Open question 1 — candidate normal form: ABSTRACT a single candidate lemma, instantiate ×3.**
+The three candidates are *not* three independent constructions: `p₁`/`p₂` are literally symmetric
+(`a ↔ b`, KT eq. (6.19) "symmetric to Claim 6.9"), and `p₃` is `p₁` precomposed with the iso `ρ`.
+Their row-ops are *identical* (KT performs them once for `p₁`, then says "the same analysis" for
+`p₂`/`p₃`, p. 35). So the formalization should state the per-candidate row-op + `+(D−1)` argument
+**once**, parametrized by `(degenerate hinge, free panel)`, and instantiate three times — KT's own
+structure. The Claim-6.12 contradiction then quantifies over the three instances' residual normals
+`r, r', r''` and uses the eq. (6.44) forcing (below) to identify them.
+
+**Open question 2 — `d=3`-first: YES, build the `D=6`/3-candidate case concretely first.** KT itself
+does §6.4.1 (`d=3`, three candidates) then §6.4.2 (general `d`, Lemma 6.13, a length-`d` chain); the
+project follows that cut (general `d` stays Phase 23). The "candidate normal form" of question 1 is
+the right *internal* abstraction even within `d=3` (it is what Lemma 6.13 later re-instantiates along
+the chain), but the candidate *count* and the `(4 choose 2)=6` extensor span are concretely `d=3`.
+
+**Open question 3 — Claim 6.11's row-matroid bridge: it routes through KT Lemma 4.3(ii) + the IH,
+landing as a *redundant-row existence* fact `R(G_v^{ab}, q; (ab)i*, ·)` is a row-combination of the
+others.** KT's redundant row comes from: in `M(G̃_v^{ab})`, at least one `ãb` fiber edge is *not* in a
+base (Lemma 4.3(ii) — there are `D=6` parallel `ãb` copies but a base uses at most `D−1` of any single
+fiber when… [the IH `def`-count]); the IH then converts that combinatorial non-base edge to a linear
+row-dependency (eq. 6.24 / 6.43). The Lean bridge is the green Phase-19 `M(G̃)` ↔ row-independence
+machinery (`matroidMG_indep_iff`, the `def = corank` bridge `thm:def-eq-corank`), but the *conversion*
+"combinatorial non-base edge ⟹ a redundant rigidity row at the IH realization" is genuinely new analytic
+content — it is the IH applied at the rigidity matrix, the hardest non-extensor step (KT calls it out
+on p. 680). This is the **D-candidate crux**, not the first chunk.
+
+**Open question 4 — Claim 6.12's "same `r`": it is eq. (6.44), and it FOLDS into the candidate normal
+form's contradiction step, NOT a separate brick.** The forcing is: `r := Σ_j λ_(ab)j r_j(q(ab))` is the
+residual normal of `M₁`/`M₂`; for `M₃` the residual is `Σ_j λ_(ac)j r_j(q(ac))`, and eq. (6.44) shows
+`r = −Σ_j λ_(ac)j r_j(q(ac))` **because `a` is degree-2 in `G_v^{ab}`** (only `ab, ac` incident to `a`,
+so the `a`-block of the row-dependency (6.43) has exactly two terms). So all three candidates'
+singularity puts the *same* `r` in the orthogonal complement of the extensors on `Π(a)`/`Π(b)`/`Π(c)`
+respectively; Claim 6.12 then takes four affinely-independent points `p₁ = Π(a)∩Π(b)∩Π(c)`, `p₂ ∈
+Π(a)∩Π(b)∖Π(c)`, etc., and **Lemma 2.1** (`omitTwoExtensor_linearIndependent`, green, the `(4 choose
+2)=6` 2-extensors of 4 aff.-indep. points span `ℝ⁶`) contradicts `r ≠ 0`. The extensor half maps onto
+Phase-17's Lemma 2.1 *directly*; the residual-normal bookkeeping (eq. 6.44, the degree-2 forcing) is
+the candidate-normal-form's shared `r`, so it does not need its own node — it is the glue between the
+three candidate instances and the Lemma-2.1 application.
+
+**The first-tractable-chunk cut (the load-bearing scope decision, folding in the user's direction).**
+The recon partitions Lemma 6.10 into three strata of difficulty:
+1. **The eq. (6.12) `+(D−1)` block-triangular placement** — `buildable`. `p₁(va) = L ⊂ Π(a)`,
+   `p₁(vb) = q(ab)` reproduces the `e₀ = ab` row; column ops (KT eq. (6.16)) make `R(G,p₁)`
+   block-triangular with `R(G_v^{ab},q)` a submatrix ⟹ `rank ≥ 5 + 6(|V∖{v}|−1) = D(|V|−1)−1`. This is
+   the *direct* reuse of the green Phase-21b row infra (N7b-0/1/2/3 + `linearIndependent_sum_pinned_block`),
+   the same machinery the eq. (6.12) warm-up in §3 Track B already names. **This is the first chunk** —
+   it is the largest self-contained, green-infra-fed piece, and it produces the candidate scaffold the
+   crux then completes.
+2. **Claim 6.11 (the redundant `(ab)i*`-row)** — `research-shaped`, the **D-candidate crux**. The
+   combinatorial↔linear conversion (Lemma 4.3(ii) ⟹ a redundant rigidity row at the IH realization).
+   The single highest-risk node in Phases 22–23 (`notes/Phase22-realization-design.md` §4).
+3. **Claim 6.12 (the extensor-span contradiction) + the candidate normal form + eq. (6.44)** — the
+   assembly that turns "each candidate singular ⟹ `r ⟂` its panel extensors" + "same `r`" + Lemma 2.1
+   into "some candidate is full rank". Bottoms on the green Lemma 2.1, but needs all three candidates'
+   residual-normal data, so it composes *after* strata 1 and 2.
+
+**Decision: 22c = stratum 1 (the eq. (6.12) `+(D−1)` placement) as the first sub-phase, with the
+candidate-framework scaffold it sets up.** Strata 2–3 (the redundant-row crux + the candidate-normal-form
+/ Claim-6.12 assembly) are **likely their own later sub-phase(s)** — name the *next* distinct sub-phase
+when stratum 1's shape is clear, do NOT pre-commit its internal node list now (the same defer-the-finer-cut
+discipline as 22a→22b+, 22b→22c+, and 22c→22d). 22c does **not** claim to land all of
+`lem:case-II-realization` + `lem:case-III` in one phase. This matches both the user's explicit direction
+("let's not try to cram too much into 22c") and the design-pass-first mandate: stratum 1 is the buildable
+warm-up that exercises the placement + row infra on the `k=0` target and exposes the candidate structure,
+*before* the genuinely-research-shaped crux is scheduled.
+
+**Why this is the right first cut and not, e.g., the crux first.** The crux (stratum 2) is research-shaped
+and its math-first decomposition is the natural target for a *dedicated* sub-phase (it is ~half of KT's
+~12-page proof and the single highest-risk node). Stratum 1 is `buildable` from green infra and is a
+*prerequisite scaffold* for strata 2–3 (the candidate frameworks, on which the residual-normal `r` and the
+missing row are defined, are exactly the eq. (6.12)/(6.19)/(6.32) placements). Building the scaffold first
+de-risks the crux's recon (it makes the candidate structure concrete in Lean) and gives a green, useful
+`+(D−1)` lower-bound brick even before the crux lands. This is the same staging as Track A's "N6a first,
+then the simple-case crux" and Track B's own "eq. (6.12) placement is the buildable warm-up; Lemma 6.10 is
+the crux and the natural decompose-math-first target for a dedicated sub-session" (§3 Track B build order).
+
+**Next concrete commit (post-this-recon).** With the four questions settled and the first-chunk cut made,
+the next commit is the *first Lean node* of stratum 1 — the eq. (6.12) degenerate placement producing the
+`+(D−1)` block-triangular lower bound, cut leaf-most-first against the green N7b-0/1/2/3 +
+`linearIndependent_sum_pinned_block` infra. Re-recon stratum 1's node order at that build's open (it is
+`buildable`, so a math-first decomposition is light, but confirm the count `5 + 6(|V∖{v}|−1) = D(|V|−1)−1`
+closes from the named green inputs before scheduling — the honesty gate's second half). The crux (strata
+2–3) gets its math-first decomposition when its sub-phase opens.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)

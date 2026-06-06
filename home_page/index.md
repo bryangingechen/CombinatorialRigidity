@@ -239,13 +239,16 @@ projection loses zero rank on a rigid block, a collapse-relabel row reproduction
 carries the resulting independence back to the surviving rows at a degenerate
 placement, and a motive strengthening discharges the selector alignment, all composed
 into a single assembly producer from the contraction's generic induction hypothesis.
-**Phase 22c (in progress)** is Case III at `d=3` (KT §6.4.1, Lemma 6.10), the
-conjecture's crux and the single largest proof in KT: Theorem 5.5's `hsplit` branch
-at `k=0`, where a degenerate placement is one row short of full rank and the missing
-row comes from the `D`-candidate-frameworks argument (Claim 6.11 combinatorial↔linear
-+ Claim 6.12 extensor-span genericity via the Phase-17 Lemma 2.1). It is opened
-**design-pass-first** — on a layer-level design recon, not a build — since Case I
-burned ~10 node-by-node commits before a layer pass surfaced the binding gap.
+**Phase 22c (in progress)** is Case III at `d=3`, first chunk (KT §6.4.1, Lemma 6.10,
+the eq. (6.12) `+(D−1)` placement), the conjecture's crux and the single largest proof
+in KT: Theorem 5.5's `hsplit` branch at `k=0`. **Case III at `d=3` is multi-phase**;
+22c claims only the first of three difficulty strata — the degenerate placement giving
+one row short of full rank (`+(D−1)`, buildable from the green Phase-21b row infra).
+The harder D-candidate crux (the `D`-candidate-frameworks argument: Claim 6.11
+combinatorial↔linear redundant row + Claim 6.12 extensor-span genericity via the
+Phase-17 Lemma 2.1) is a likely later sub-phase. It is opened **design-pass-first** —
+on a layer-level design recon, not a build — since Case I burned ~10 node-by-node
+commits before a layer pass surfaced the binding gap; the recon is now settled.
 **Phase 22d (planning, deferred)** is the `d=3` assembly
 (`prop:rigidity-matrix-prop11` `hub` brick + the Theorem-5.5 flip + the Case-I wiring),
 the likely further cut deferred until 22c's shape is clear (the parked `22c+`
@@ -285,7 +288,7 @@ existing files or refactor across several).
 |   21b | Genericity device (Claim 6.4/6.9) + accounting/bridges; realization producers re-scoped to 22–23 | `Molecular/AlgebraicInduction/` (+ `lem:genericity-device`) | ✓ |
 |   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ |
 |   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction/CaseI.lean` | ✓ |
-|   22c | Case III at `d=3` (KT Lemma 6.10, the crux); opened design-pass-first | `Molecular/AlgebraicInduction/` | ◷ |
+|   22c | Case III at `d=3`, first chunk (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement; the crux, multi-phase); opened design-pass-first, recon settled | `Molecular/AlgebraicInduction/` | ◷ |
 |   22d | (deferred) `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip) | `Molecular/AlgebraicInduction/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)

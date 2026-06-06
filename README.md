@@ -264,14 +264,18 @@ project; commit history is preserved with paths rewritten.
     its graph's links) discharges the selector alignment. An assembly producer composes
     these into the rank-transport witness from the contraction's generic induction
     hypothesis. See `notes/Phase22b.md`.
-  * **Phase 22c (in progress)** — Case III at `d=3` (KT §6.4.1, Lemma 6.10), the
-    conjecture's crux and the single largest proof in KT. This is Theorem 5.5's
-    `hsplit` branch at `k=0`: a degenerate placement gives one row short of full rank,
-    and the missing row comes from Lemma 6.10's `D`-candidate-frameworks argument
-    (Claim 6.11 combinatorial↔linear redundant-row + Claim 6.12 extensor-span
-    genericity, bottoming on the Phase-17 Lemma 2.1). **Opened design-pass-first** — on
-    a layer-level design recon, not a build (Case I burned ~10 node-by-node commits
-    before a layer pass surfaced the binding gap). See `notes/Phase22c.md`.
+  * **Phase 22c (in progress)** — Case III at `d=3`, first chunk (KT §6.4.1,
+    Lemma 6.10, the eq. (6.12) `+(D−1)` placement). The conjecture's crux and the
+    single largest proof in KT: Theorem 5.5's `hsplit` branch at `k=0`. **Case III
+    at `d=3` is multi-phase**; 22c claims only the first of three difficulty
+    strata — the degenerate placement giving one row short of full rank
+    (`+(D−1)`, buildable from the green Phase-21b row infra). The harder
+    D-candidate crux (the Lemma 6.10 `D`-candidate-frameworks argument: Claim 6.11's
+    combinatorial↔linear redundant row + Claim 6.12's extensor-span genericity,
+    bottoming on the Phase-17 Lemma 2.1) is a likely later sub-phase. **Opened
+    design-pass-first** — on a layer-level design recon, not a build (Case I burned
+    ~10 node-by-node commits before a layer pass surfaced the binding gap); recon
+    now settled. See `notes/Phase22c.md`.
   * **Phase 22d (planning, deferred)** — the `d=3` assembly
     (`prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + wiring the
     fully-green `case_I_realization` into the Case-I branch); the likely further cut,
