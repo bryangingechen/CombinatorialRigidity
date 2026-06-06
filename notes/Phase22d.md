@@ -18,12 +18,20 @@ of `M(G̃_v^{ab})` with `|ãb ∩ B'| < D−1`) and Gap-3's combinatorial shell
 nodes `lem:case-III-claim-6-11-base` + `lem:case-III-gap3-minimalKDof` green; `lem:case-III`
 / `lem:case-II-realization` red.
 
-**Next concrete commit:** the kernel sub-phase's **(ii)** — the seed-alg-independence invariant
-threaded through the induction (likely a third motive form, paralleling 22b's GP / link-recording
-strengthenings). Leaf **(i)** landed (`AlgebraicIndependent.aeval_ne_zero`, see *Lemma checklist*):
-an alg.-independent tuple is a non-root of every nonzero ℚ-poly. (ii) feeds the kernel **(iii)**
-`lem:case-III-seed-rank-bridge` (composing (i)+(ii) with the device consumer + `rigidityMatrix_prop11`
-+ `rank_add_deficiency_eq`). All built directly to green, not carried as hypotheses.
+**Next concrete commit:** the leaf-most brick of kernel sub-phase **(ii-b)** — the *rationality
+bridge* the (ii) opening recon (this commit, *Kernel sub-phase (ii) recon*) surfaced. The recon
+**split (ii)** into **(ii-a)** a seed-genericity motive conjunct (22b-shaped: carry "the realizing
+seed is alg-indep over ℚ", paralleling the GP / link-recording strengthenings) **and (ii-b)** a
+rationality bridge the §1.30 cut missed: leaf (i) needs the rank polynomial over **ℚ**, but the
+device builds `Q : MvPolynomial σ ℝ` — so `eval q Q = aeval q Q₀` needs `Q` exhibited as the
+`algebraMap ℚ ℝ`-image of a ℚ-polynomial (the device's `panelSupportPoly` coefficients are
+ℝ-typed `complementIso` structural constants, rational but not manifestly so; **zero** `algebraMap
+ℚ ℝ` scaffolding tree-wide). Leaf (i) landed (`AlgebraicIndependent.aeval_ne_zero`). The next
+*build* is (ii-b)'s leaf-most: the upstream-eligible `eval = aeval ∘ descend` descent mirror for a
+coefficient-rational ℝ-polynomial (a true leaf — independent of all the geometry; (ii-a) waits on
+the moment-curve alg-independence question). (iii) `lem:case-III-seed-rank-bridge` composes (i) ⊕
+(ii-a) ⊕ (ii-b) with the device consumer + `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. All
+built directly to green, not carried as hypotheses.
 
 ## Claim 6.11 discharge — the Gap 2 → 3 → 1 map
 
@@ -66,9 +74,13 @@ Claim 6.11 supplies the `+1` — the same missing content.
   `Mathlib/RingTheory/AlgebraicIndependent/Defs.lean`, axiom-clean. The `R=ℚ`, `A=ℝ` instance is
   what footnote 6 needs (`q` real, rank-poly over ℚ); the same-ring `eval` form is vacuous (forces
   `ι` empty), so only the `aeval` form ships. No blueprint node yet (kernel `\lean{}` lands with (iii)).
-- [ ] (deferred, the kernel) (ii) seed-alg-indep invariant + (iii) `lem:case-III-seed-rank-bridge`
-  (= the eq. (6.22) generic-rank transfer ⊕ Gap-1 row bridge) — see *Deferred sub-phases*. Red;
-  built directly, not carried.
+- [ ] (the kernel, in build) (ii) **splits** (recon below): **(ii-a)** seed-genericity motive
+  conjunct (carry "realizing seed alg-indep over ℚ"; 22b-shaped) — waits on the moment-curve
+  alg-independence question; **(ii-b)** the rationality bridge — leaf-most is the upstream-eligible
+  `eval = aeval ∘ descend` mirror for a coefficient-rational ℝ-polynomial, then a `complementIso`-
+  rational-entries leaf exhibiting the device's `Q` over ℚ. Then **(iii)** `lem:case-III-seed-rank-bridge`
+  (= the eq. (6.22) generic-rank transfer ⊕ Gap-1 row bridge) composing (i) ⊕ (ii-a) ⊕ (ii-b) with
+  the device consumer + `rigidityMatrix_prop11`. Red; built directly, not carried.
 
 ## Deferred sub-phases (future work in the phase)
 
@@ -81,13 +93,16 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
   `isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` already runs the
   given-point direction, so the only gap is certifying `eval q Q ≠ 0` for the specific
   device-built `Q` — which KT gets from `q` being **algebraically independent over ℚ**
-  (footnote 6). The project had **zero** `AlgebraicIndependent` machinery. Leaf-most-first
-  cut (do not pre-commit the finer cut): **(i)** [✓ landed] `AlgebraicIndependent.aeval_ne_zero`
-  (alg.-indep. tuple ⟹ `aeval`-non-root of every nonzero ℚ-poly; mirror — the `eval` name in the
-  earlier cut was wrong, the content is `aeval` over ℝ/ℚ); **(ii)** the seed-alg-indep invariant
-  threaded through the induction (may need a *third* motive form, paralleling 22b's GP /
-  link-recording strengthenings); **(iii)** the kernel `lem:case-III-seed-rank-bridge` composing
-  (i)+(ii) with the consumer + `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. **Route (user,
+  (footnote 6). The project had **zero** `AlgebraicIndependent` machinery. Cut (refined by the
+  (ii) opening recon, *Kernel sub-phase (ii) recon*; design doc §1.32): **(i)** [✓ landed]
+  `AlgebraicIndependent.aeval_ne_zero` (alg.-indep. tuple ⟹ `aeval`-non-root of every nonzero
+  ℚ-poly; mirror); **(ii)** SPLITS — **(ii-a)** seed-genericity motive conjunct (carry "realizing
+  seed alg-indep over ℚ"; a third motive form paralleling 22b's GP / link-recording), waiting on
+  the moment-curve alg-independence question; **(ii-b)** the rationality bridge (the device's
+  `Q : MvPolynomial σ ℝ` exhibited over ℚ so leaf (i) applies — an `eval = aeval ∘ descend`
+  mirror ⊕ a `complementIso`-rational-entries leaf; the §1.30 cut missed this); **(iii)** the
+  kernel `lem:case-III-seed-rank-bridge` composing (i) ⊕ (ii-a) ⊕ (ii-b) with the consumer +
+  `rigidityMatrix_prop11` + `rank_add_deficiency_eq`. **Route (user,
   2026-06-06, design doc §1.31): build this DIRECTLY to green**, not as a permanent
   hypothesis. The product-route *relaxation* candidate (pick `q` as a non-root of the
   finite product of the nested IH rank polynomials, avoiding alg-independence at `d=3`;
@@ -106,9 +121,16 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Blockers / open questions
 
+- **Is the inductive seed provably alg-indep over ℚ?** (ii-a)'s motive conjunct needs a
+  *concrete* alg-indep seed for the producers to build at. The moment-curve seed
+  (`withMomentNormals`) is the natural candidate — **confirm it is provably alg-indep over ℚ,
+  or substitute a transcendental basis** (open; the (ii-a) build's first question).
+- **(ii-b) cut: post-hoc descent vs device re-type.** (b2) the `Q`-coefficients-rational
+  descent on the already-built ℝ-polynomial (recommended; one descent mirror + a
+  `complementIso`-rational-entries leaf) vs (b1) re-typing the whole device coordinate chain
+  over a base ring `R` with `R = ℚ` (invasive). Pick (b2) first; design doc §1.32.
 - **Do the Gap-3 kernel and Gap-1 row bridge merge into one node?** Both bottom on "the
-  seed attains the rank `M(G̃)` predicts" / the `non-root-from-alg-indep` brick. Confirm
-  one-vs-two at the kernel sub-phase's open; do not pre-commit now.
+  seed attains the rank `M(G̃)` predicts". Confirm one-vs-two when (iii) is scheduled.
 - **Claim 6.12 — de-risked** (bottoms on the green Lemma 2.1).
 - **Recurring Lean traps** (carry from 22a–c, FRICTION): heavy `IsInfinitesimallyRigidOn`
   defeq across `ofNormals`/`withGraph` graph-swaps can `isDefEq`-timeout — make the two
@@ -117,11 +139,17 @@ Parked until the leaf's shape is clear; a sub-letter is minted when its turn com
 
 ## Hand-off / next phase
 
-**Next concrete commit:** kernel leaf **(i)** landed (`AlgebraicIndependent.aeval_ne_zero`, mirror).
-Next is **(ii)** — the seed-alg-independence invariant threaded through the induction (a math-first
-recon at its open: confirm whether it needs a third motive form paralleling 22b's GP / link-recording
-strengthenings, or threads onto the existing `HasGenericFullRankRealization`). Then **(iii)** the
-kernel `lem:case-III-seed-rank-bridge` composing (i)+(ii) with the device consumer
+**Next concrete commit:** the (ii) opening recon landed this commit (*Kernel sub-phase (ii) recon*;
+design doc §1.32) — it **split (ii)** into (ii-a) a seed-genericity motive conjunct (22b-shaped,
+the third motive form the hand-off anticipated) and (ii-b) a *rationality bridge* the §1.30 cut
+missed (the device's `Q : MvPolynomial σ ℝ` must be exhibited over ℚ for leaf (i) to apply; zero
+`algebraMap ℚ ℝ` scaffolding tree-wide). The next **build** commit is (ii-b)'s leaf-most: the
+upstream-eligible `MvPolynomial.eval q = aeval q ∘ descend` mirror for a coefficient-rational
+ℝ-polynomial (equivalently the `MvPolynomial.map (algebraMap ℚ ℝ)` round-trip + `map`-injectivity
+for `≠ 0`) — a true leaf, provable independent of all the geometry. Mirror it under
+`Mathlib/Algebra/MvPolynomial/` (alongside the 21b adders). Then the `complementIso`-rational-entries
+leaf, then (ii-a) [waits on the moment-curve alg-independence question, *Blockers*], then **(iii)**
+`lem:case-III-seed-rank-bridge` composing (i) ⊕ (ii-a) ⊕ (ii-b) with the device consumer
 (`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero`) + `rigidityMatrix_prop11` +
 `rank_add_deficiency_eq`. The two combinatorial Claim-6.11 factors (Gap-2 leaf + Gap-3 shell) are
 green; `lem:case-III` stays red until the kernel lands.
@@ -155,7 +183,7 @@ design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 - **Gap-3 recon (commit 0f7ef2a).** Gap 3 **splits**: green combinatorial shell
   + research-shaped analytic kernel; the combinatorial glue (`def(G̃_v) ≤ h` ⟹ `G_v`
   minimal `k'`-dof) is all green Phase-19/20.
-- **Gap-3 shell (this commit).** `splitOff_removeVertex_minimalKDof` green: minimality via
+- **Gap-3 shell (commit d218fa0).** `splitOff_removeVertex_minimalKDof` green: minimality via
   `subgraph_minimality` (`G_v ≤ G`), bound via the Gap-2 base (`B'∖ãb` indep in the
   restriction `M(G̃_v) = M(G̃_v^{ab})↾E(G̃_v)`, so `rank ≥ |B'|−h`; def=corank at `def=0`
   gives `def(G̃_v) ≤ h < D−1`). The route did **not** need `removeVertex_deficiency_ge` (the
@@ -169,10 +197,17 @@ design-doc arcs (per `notes/CLAUDE.md` *Forward-weighted note*).
 - **Kernel-route decision (commit 3f0ea8e; design doc §1.31).** Build the alg-independence
   route directly to green (the certain path); product-route relaxation tracked in
   `notes/AlgebraicIndependence.md`.
-- **Kernel leaf (i) (this commit).** `AlgebraicIndependent.aeval_ne_zero` — one-line contrapositive
-  of mathlib's `eq_zero_of_aeval_eq_zero`, mirrored under `Mathlib/RingTheory/AlgebraicIndependent/`.
-  The earlier cut's name `eval_ne_zero_of_algebraicIndependent` was wrong: the same-ring `eval` form
-  is vacuous (alg-indep over `R` of `x : ι → R` forces `ι` empty), so only the `aeval` form (the
-  `R=ℚ`, `A=ℝ` footnote-6 instance) ships. Wired into the root aggregator as a leaf awaiting (iii).
+- **Kernel leaf (i) (commit fb635d9).** `AlgebraicIndependent.aeval_ne_zero` — one-line
+  contrapositive of mathlib's `eq_zero_of_aeval_eq_zero`, mirrored under
+  `Mathlib/RingTheory/AlgebraicIndependent/`; the `R=ℚ`, `A=ℝ` footnote-6 instance ships (the
+  same-ring `eval` form is vacuous). Wired into the root aggregator as a leaf awaiting (iii).
+- **Kernel sub-phase (ii) recon (this commit; design doc §1.32).** The math-first recon at the
+  (ii) open: traced what (iii) must compose against the *real* device signatures. **(ii) splits.**
+  (ii-a) = a seed-genericity motive conjunct (carry "realizing seed alg-indep over ℚ"; 22b-shaped,
+  the anticipated third motive form). (ii-b) = a *rationality bridge* the §1.30 cut missed: leaf (i)
+  needs the rank polynomial over **ℚ**, but the device builds `Q : MvPolynomial σ ℝ` (its
+  `panelSupportPoly` coefficients are ℝ-typed `complementIso` constants — rational but not
+  manifestly so; zero `algebraMap ℚ ℝ` scaffolding tree-wide), so `Q` must be exhibited as an
+  `algebraMap ℚ ℝ`-image. Next build = (ii-b)'s upstream-eligible `eval = aeval ∘ descend` mirror.
 - **22c left off** at `case_II_placement_eq612` (`CaseI.lean:2331`) = the `≥ D(|V|−1)−1`
   brick; its `e_a=va` link is carried as `_hG_ea`. 22d supplies the `+1`.

@@ -676,6 +676,70 @@ likely), in the standing note **`notes/AlgebraicIndependence.md`** (the single s
 not duplicated here). Full decision + effect-on-plan: `notes/Phase22d.md` *Kernel-route
 decision (2026-06-06, user)*.
 
+### 1.32 Phase 22d, kernel sub-phase (ii) opening recon — the seed-genericity invariant SPLITS into a motive conjunct (ii-a) plus a *rationality bridge* (ii-b) the §1.30 cut missed (2026-06-06)
+
+The math-first recon mandated at the (ii) node's open (`notes/Phase22d.md`
+*Hand-off*: "confirm whether (ii) needs a third motive form … or threads onto the
+existing `HasGenericFullRankRealization`"). Read leaf (i)
+(`AlgebraicIndependent.aeval_ne_zero`) against the *actual* device producer/consumer
+signatures (`GenericityDevice.lean:1112`/`:1378`) and the polynomial-coordinate chain
+(`PanelLayer.lean` `annihRowPoly`/`panelSupportPoly`). Decision-support; no Lean /
+`\leanok` / blueprint edits (like §1.4–§1.31).
+
+**What (iii) must compose, traced through the real signatures.** The kernel
+`lem:case-III-seed-rank-bridge` fires the device *consumer*
+`isInfinitesimallyRigidOn_ofNormals_of_rankPolynomial_ne_zero` at the **inductively-fixed
+seed `q`** — i.e. it needs `MvPolynomial.eval q Q ≠ 0` for the device producer's `Q`
+(`exists_rankPolynomial_of_rigidOn` gives `Q : MvPolynomial σ ℝ` with `eval q₀ Q ≠ 0` at
+the *producer's own* rigid seed `q₀`, plus the non-root ⟹ LI clause). Leaf (i) supplies
+`eval`-non-root-ness from `q`'s algebraic independence over ℚ — **but only for a polynomial
+over ℚ** (`aeval q : MvPolynomial σ ℚ → ℝ`). Two distinct impedances surface; (i) closes
+neither alone.
+
+**Verdict: (ii) is NOT a single leaf and NOT pure motive-strengthening — it SPLITS.**
+- **(ii-a) the seed-genericity motive conjunct** [the part §1.30 anticipated]. The
+  realizing seed `q` must be algebraically independent over ℚ at the composition point, so
+  the kernel has an alg-indep `q` in hand. This is a third motive guarantee, **paralleling
+  22b's GP / link-recording** strengthenings (an extra conjunct on
+  `HasGenericFullRankRealization`, or a third sibling motive). Producers must build their
+  `ofNormals G ends q₀` at an alg-indep seed and carry the conjunct; the moment-curve seed
+  (`withMomentNormals`, `GenericityDevice.lean:~1785`) is the natural candidate alg-indep
+  point — **confirm it is provably alg-indep over ℚ, or substitute a transcendental basis**
+  (open).
+- **(ii-b) the rationality bridge** [NEW — the §1.30 cut missed this]. Leaf (i) needs the
+  rank polynomial over **ℚ**, but the device's `Q` is typed over **ℝ**
+  (`exists_polynomial_ne_zero_of_linearIndependent_at`, `Mathlib/.../Rank.lean:474`, builds
+  `Q := det` of a submatrix of the coordinate family `c`). `c = ± annihRowPoly`, and
+  `annihRowPoly` bottoms on `panelSupportPoly` (`PanelLayer.lean:385`) whose coefficients are
+  `MvPolynomial.C r` with `r : ℝ` a `complementIso`-`repr` structural constant — **rational
+  (±1 / fixed change-of-basis entries) mathematically, but ℝ-typed and not manifestly
+  rational in the term.** So `eval q Q = aeval q Q₀` needs `Q = MvPolynomial.map (algebraMap
+  ℚ ℝ) Q₀` for some `Q₀ : MvPolynomial σ ℚ`, plus `Q ≠ 0 ⟺ Q₀ ≠ 0` (`map` along an injective
+  ring hom). **Grep-confirmed: the molecular tree has ZERO `algebraMap ℚ ℝ` / `MvPolynomial.map`
+  scaffolding** — this is a genuinely-new obligation, invisible to §1.30 (which named only
+  "(ii) = seed-alg-indep invariant").
+
+**Why (ii-b) is the load-bearing surprise.** The two cuts diverge on cost: a pure motive
+conjunct (ii-a alone) is 22b-shaped plumbing; (ii-b) forces either (b1) re-typing the whole
+device coordinate chain `panelSupportPoly → annihRowPoly → c → Q` over a base ring `R` with
+`algebraMap R ℝ` and instantiating `R = ℚ` (invasive — touches every producer), or (b2) a
+*post-hoc* "`Q`'s coefficients lie in `range (algebraMap ℚ ℝ)`" descent on the already-built
+ℝ-polynomial (`MvPolynomial.eval q Q = aeval q (Q.descend)` when every `coeff` is rational),
+needing a `complementIso`-entries-are-rational lemma (the structural-constant rationality KT
+takes for granted). **(b2) is the lighter cut** (no producer re-type; one descent lemma + the
+`complementIso`-rationality fact) and is the recommended first attempt; (b1) is the fallback
+if the descent's coefficient bookkeeping proves worse than a clean re-type.
+
+**Net effect on the build queue.** (ii) is re-cut into **(ii-a)** [motive conjunct, 22b-shaped]
++ **(ii-b)** [rationality bridge: a `complementIso`-rational-entries leaf ⊕ the `Q`-descent
+mirror]. (iii) `lem:case-III-seed-rank-bridge` then composes (i) ⊕ (ii-a) ⊕ (ii-b) with the
+consumer + `rigidityMatrix_prop11`. The next *build* commit is the leaf-most of (ii-b): the
+descent mirror `MvPolynomial.eval = aeval ∘ descend` for a coefficient-rational ℝ-polynomial
+(or its `MvPolynomial.map` half), which is **upstream-eligible** and provable independent of
+all the molecular geometry — a true leaf, unlike (ii-a) which waits on the moment-curve
+alg-independence question. Full Q&A + the leaf order: `notes/Phase22d.md` *Kernel sub-phase
+(ii) recon*.
+
 ---
 
 ## 2. Shared-infra map (green vs. missing across the layer)
