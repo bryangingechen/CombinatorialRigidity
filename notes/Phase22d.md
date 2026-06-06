@@ -1,271 +1,282 @@
-# Phase 22d — the D-candidate crux (KT Lemma 6.10 strata 2–3) (work log)
+# Phase 22d — Claim 6.11's first green-machinery prerequisite (the matroid-base 4.3(ii) leaf) (work log)
 
-**Status:** in progress (opened 2026-06-05, **design-pass-first** — docs-only
-opening recon, NO Lean node cut, NO `\leanok` flips). This sub-phase is the
-**D-candidate crux** of Case III at `d=3`: KT §6.4.1, Lemma 6.10 strata 2–3
-— Claim 6.11's redundant `(ab)i*`-row (eq. (6.23)) plus the
-candidate-normal-form / Claim 6.12 extensor-span contradiction (eq. (6.44)).
-It is the conjecture's hardest single argument and carries the **single
-highest-risk node in Phases 22–23** (Claim 6.11, the combinatorial↔linear
-conversion). The Lean node cut is deferred to the next session, after this
-recon settles the load-bearing verdict (below) — the same design-pass-first
-discipline as 22c, and the same defer-the-finer-cut discipline as 22a→22b,
-22b→22c.
+**Status:** in progress (opened 2026-06-05 design-pass-first; **re-scoped
+2026-06-05 per a fresh user direction**, docs-only, NO Lean / NO `\leanok` /
+NO `\lean{}`). This sub-phase now builds the **leaf-most missing-green-machinery
+prerequisite of KT Claim 6.11**, bottom-up — not the candidate scaffold and not
+an axiomatized Claim 6.11. The Lean node cut below is the verified first build;
+no Lean has landed under either scope (22d is fresh), so the re-scope is clean.
 
-**Naming (user scoping decision, 2026-06-05).** 22d = **the D-candidate
-crux** (this sub-phase). The `d=3` *assembly* (the `prop:rigidity-matrix-prop11`
-`hub` brick + the `thm:theorem-55` flip + the `case_I_realization` →
-`theorem_55_generic` Case-I wiring) is **deferred and UNLETTERED** — it gets a
-letter only when its turn actually comes, because the number of crux
-sub-phases before it is unknown (the crux may itself split, exactly as Case
-III at `d=3` split into stratum 1 = 22c and strata 2–3 = 22d). See ROADMAP's
-deferred planning note.
+## The re-scope (user override of the opening recon, 2026-06-05)
 
-## Where 22c left off (the stratum-1 brick this crux completes)
+The opening recon (commit 4e6a7bb, below under *Superseded opening verdict*)
+concluded Claim 6.11 should be **axiomatized as a hypothesis** (`h_redundant_row`
++ a red node) and the Claim 6.12 scaffold built downstream onto eq. (6.12). The
+user **overrode** that:
 
-Phase 22c landed **stratum 1** of Lemma 6.10 — the eq. (6.12) `+(D−1)`
-block-triangular placement — green and axiom-clean as
-`PanelHingeFramework.case_II_placement_eq612` (`CaseI.lean:2331`). From the IH
-rigidity of the split-off `Gᵥ = G_v^{ab}` at a seed `q`, it builds the shared
-seed `q₀ = update q v (n_a + t·n_b)` (`t ≠ 0`, `n_a = q(a,·)`, `n_b = q(b,·)`),
-transports the IH rigidity to `q₀`, and composes the green Phase-21b N7b row
-infra (N7b-1 → `hnewpin` → N7b-0 `_linking` → N7b-2 → N7b-3) into an
-independent `panelRow` family of size `D(|V(G)|−1)−1`, all rigidity rows of
-`ofNormals G ends q₀`. Output:
+> "We just opened 22d so we can decide what to put here. If there's missing green
+> machinery for Claim 6.11, shouldn't we queue one of those into 22d rather than
+> pushing beyond onto 6.12?"
 
-> `rank R(G,p₁) ≥ D(|V(G)|−1) − 1 = 6|V|−7` at `D = 6`, *plus* the `va`-hinge
-> nondegeneracy (`supportExtensor e_a ≠ 0`, the `L ⊂ Π(a)` line, `t ≠ 0` —
-> KT's actual eq. (6.12) candidate).
+i.e. **do NOT defer Claim 6.11 and build onto 6.12; make 22d build the FIRST
+missing-green-machinery prerequisite of Claim 6.11, attacking the hard node
+bottom-up.** This recon re-scopes 22d to that leaf, verified against the *actual*
+green Phase-19/20 Lean (not the opening recon's reading of it — which, the
+re-recon found, **understated the green substrate**; see *The green substrate is
+richer than the opening recon credited* below).
 
-This is **one row short** of full rank `D(|V|−1)` — by KT's own statement
-(p. 680, "does not complete the proof" for `k=0`). **22d's job is to supply
-that missing `+1` row**, lifting the stratum-1 brick to full rank, discharging
-`lem:case-II-realization` / `lem:case-III` / `theorem_55.hsplit` at `k=0`.
+The Claim 6.11 discharge path's three gaps (opening recon) are, in dependency
+order:
+1. **Gap 2 — the matroid-base 4.3(ii) form** (a base `B'` of `M(G̃_v^{ab})`
+   with `|B' ∩ ãb| < D−1`). Pure combinatorial `M(G̃)` matroid theory, no
+   rigidity matrix. **All inputs green** (verified below) ⟹ **this is the leaf.**
+2. **Gap 3 — the nested IH-at-restriction** (apply the geometric IH (6.1) to
+   `G_v = G_v^{ab} − ab` at the restricted realization). **Consumes Gap 2's
+   output** (`def(G̃_v) ≤ |B'∩ãb| ≤ 4` ⟹ `G_v` is minimal `k'`-dof, `k' ≤ 4`,
+   the input to the IH). Not the leaf.
+3. **Gap 1 — the `M(G̃)`↔row-dependence bridge** (combinatorial redundancy ⟹
+   a redundant rigidity row at `q`). **Consumes Gap 2 AND Gap 3**. Not the leaf.
 
-The producer already exposes the crux entry-point: its `e_a = va` link
-hypothesis is carried as `_hG_ea` (named "crux-strata input"), so the crux's
-second and third candidates `(G,p₂),(G,p₃)` — which place `v`'s *a*-hinge
-degenerately — compose against the same signature with `a ↔ b` swapped.
+**22d = Gap 2, first buildable sub-brick** (the multi-stratum discipline 22c
+used — Gap 2 is itself a small chunk; 22d cuts its leaf sub-brick, see *Node
+cut*). The remaining Claim-6.11 pieces (Gap 3 nested IH, Gap 1 row bridge), the
+Claim-6.12 disjunction, the candidate scaffold, and the candidate-completion
+node become **named, deferred, unlettered further sub-phases** (the
+assembly-naming precedent: a sub-letter is minted when its turn comes).
 
-## The load-bearing verdict — Claim 6.11: AXIOMATIZE-AS-HYPOTHESIS (carry `h…`, `\uses` the red node)
+## The dependency decomposition of Claim 6.11 (verified against the green signatures)
 
-**This is the highest-risk decision in Phases 22–23 and the required output of
-this opening recon (per the task and `CLAUDE.md`'s phase-open red-node gate).
-The Lean node cut next session is built on it.**
+Claim 6.11 (KT p. 684): *in `R(G_v^{ab}, q)` there is a redundant row among the
+5 (= `D−1`) `ab`-rows* — eq. (6.23), the `+1` row that lifts 22c's stratum-1
+`D(|V|−1)−1` brick to full `D(|V|−1)`. KT's proof (pp. 684–685):
 
-### What Claim 6.11 actually is (read end-to-end against KT pp. 683–685)
+1. **(Gap 2) matroid-base 4.3(ii).** `G_v^{ab}` minimal 0-dof ⟹ a base `B'` of
+   `M(G̃_v^{ab})` has `|B' ∩ ãb| < D−1`, so the fiber `ãb` of the short-circuit
+   edge `e₀=ab` is **not contained in any base** — a *redundant* `ãb`-copy
+   exists in `M(G̃_v^{ab})`.
+2. **(Gap 3) nested IH.** Set `G_v := G_v^{ab} − ab` (`= G − v = removeVertex v`).
+   `B' ∖ ãb` is independent in `M(G̃_v)` of cardinality `D(|V∖{v}|−1) − h`,
+   `h = |B' ∩ ãb| ≤ D−2`, so `def(G̃_v) ≤ h ≤ D−2`; `G_v` is minimal `k'`-dof,
+   `k' = def(G̃_v) ≤ D−2` (minimality by Lemma 3.3, `subgraph_minimality`). Apply
+   the **geometric IH (6.1)** to `G_v` at `q|_{E_v}` (still generic-nonparallel,
+   KT footnote 6): `rank R(G_v, q|_{E_v}) = D(|V∖{v}|−1) − k'` (eq. (6.22)).
+3. **(Gap 1) combinatorial↔linear conversion.** `R(G_v, q|_{E_v})` is
+   `R(G_v^{ab}, q)` with the 5 `ab`-rows removed; `rank R(G_v^{ab},q) =
+   D(|V∖{v}|−1)`; adding back `≤ D−2` of the `ab`-rows already spans the row
+   space ⟹ at least one `ab`-row is redundant (eq. (6.23)). □
 
-Claim 6.11 (KT p. 684): *In `R(G_v^{ab}, q)`, there exists a redundant row
-vector among those associated with `ab`* — i.e. one of the 5 (= `D−1`) rows of
-the `ab`-block can be deleted without dropping `rank R(G_v^{ab},q) =
-6(|V∖{v}|−1)` (eq. (6.23)). This redundant row, after fundamental row
-operations (eqs. (6.24)–(6.28)), becomes the **`+1` row** that lifts the
-stratum-1 `D(|V|−1)−1` to full `D(|V|−1)` (the top-left `6×6` block of
-eq. (6.29) having full rank).
+**Dependency order (verified):** Gap 2 → Gap 3 → Gap 1. Gap 2 is the only piece
+whose inputs are *all* green (it is combinatorial-only); Gap 3 consumes Gap 2's
+`h ≤ D−2` count to name `k'` and feeds the IH; Gap 1 consumes both. So the
+leaf-most buildable piece is **Gap 2, the matroid-base 4.3(ii) form** — confirming
+the task's strong prior, *and* (the re-recon's main finding) it is far more nearly
+green than the opening recon credited.
 
-KT's proof of Claim 6.11 (pp. 684–685, the heart):
+## The green substrate is RICHER than the opening recon credited (the load-bearing finding)
 
-1. **KT Lemma 4.3(ii), matroid-base form.** Because `G_v^{ab}` is a minimal
-   `0`-dof-graph, Lemma 4.3(ii) gives *a base `B'` of the combinatorial matroid
-   `M(G̃_v^{ab})` (the `D`-fold graphic union) with `|B' ∩ ãb| < 5`*. Hence
-   `G̃_v^{ab}` has a **redundant edge** `(ab)ᵢ` among the fiber `ãb` w.r.t.
-   `M(G̃_v^{ab})` — removing it does not drop `rank M(G̃_v^{ab})`.
-2. **The combinatorial → linear conversion (the genuinely new content).** KT
-   then show *"this redundancy also appears in the linear matroid derived from
-   `R(G_v^{ab},q)`"*. The bridge runs through a **further IH application**: let
-   `G_v := G_v^{ab} − ab` (delete the short-circuit edge). Then `B' ∖ ãb` is
-   independent in `M(G̃_v)` of cardinality `6(|V∖{v}|−1) − h` with `h = |B' ∩
-   ãb| ≤ 4`, so `def(G̃_v) ≤ h ≤ 4` (eq. (2.4)); `G_v` is a minimal `k'`-dof-graph
-   for some `k' ≤ 4` (minimality by Lemma 3.3). Apply the **induction
-   hypothesis (6.1)** to `G_v` at the *restricted* realization `q|_{E_v}` (still
-   generic-nonparallel because `q`'s coefficients are algebraically independent
-   over ℚ and that property survives restriction): `rank R(G_v, q|_{E_v}) =
-   6(|V∖{v}|−1) − k'` (eq. (6.22)). Since `R(G_v, q|_{E_v})` is exactly
-   `R(G_v^{ab},q)` with the 5 `ab`-rows removed, and `rank R(G_v^{ab},q) =
-   6(|V∖{v}|−1)`, adding back at most `4` of the `ab`-rows already spans the row
-   space — so **at least one `ab`-row is redundant** (eq. (6.23)). □
+The opening recon's Gap-2 claim — "KT 4.3(ii) is not in matroid-base form;
+even the first input would have to be freshly formalized
+(`SplitOffDeficiency.lean:195`)" — is **only half right**. The deficiency-count
+form was indeed all Theorem 4.9 needed, BUT the green Phase-20 proof of
+`splitOff_isMinimalKDof` (`ForestSurgery.lean:763`) **already builds the
+matroid-base count for the `ãb` fiber** — it just discards it after using it for
+minimality. Read its doc-comment (`ForestSurgery.lean:758–762`):
 
-### Why this is NOT buildable from the green Phase-19 `M(G̃)` machinery (the verdict's evidence)
+> *"any base `B'` of `M(G̃_v^{ab})` avoiding a fiber `ẽ` has `|B'| ≤ |E(G̃_v)|`
+> (case `e = e₀`: `B' ⊆ E(G̃_v)`; case `e ≠ e₀`: `B'` splits into `B' ∩ ã̃b` of
+> size `≤ D − 1` and `B' ∩ E(G̃_v) ⊆ E(G̃_v) ∖ ẽ` …). Via
+> `isBase_ncard_add_deficiency_eq` … this forces `def(G̃_v) ≤ def(G̃_v^{ab}) = 0`."*
 
-The task asks: is Claim 6.11 buildable from `matroidMG_indep_iff` /
-`thm:def-eq-corank`, or does it need the axiomatize-as-hypothesis fallback?
-**Verdict: it needs the fallback.** Three independent gaps, each surfaced by
-re-reading KT's proof against the actual green Lean:
+This is the **same** base-splits-across-`ãb` count Gap 2 needs. The green inputs,
+all verified by signature:
 
-- **Gap 1 — no `M(G̃)`↔row-dependence bridge exists.** The crux of Claim 6.11
-  is the *conversion* of redundancy in the **combinatorial** matroid
-  `M(G̃_v^{ab})` (the `D`-fold graphic union on edges, Phase 19) into
-  redundancy in the **linear** matroid of the *rows of `R(G_v^{ab},q)`* at a
-  *specific* realization `q`. A grep of `Molecular/` confirms **there is no
-  such bridge in the project** — `matroidMG` and the rigidity-matrix row family
-  (`panelRow` / `rigidityRows`) are never related; Phase 19 deliberately built
-  `M(G̃)` as a *purely combinatorial* object (`matroidMG_indep_iff` routes
-  through `mulTilde` sparsity, never touching `R`). Building that bridge IS the
-  research content KT calls *"a key observation"* — it is not a corollary of the
-  green machinery, it is a theorem the green machinery does not contain.
+- **`circuit_splitOff_meets_fiber`** (`ForestSurgery.lean:669`, KT (4.10), green):
+  under no-proper-rigid, every circuit of `M(G̃_v^{ab})` meets `ãb`; equivalently
+  `E(G̃_v) = E(G̃_v^{ab}) ∖ ãb` is **circuit-free**, i.e. an `M(G̃_v^{ab})`-base of
+  its own ground set, descending to a base of `M(G̃_v)` by restriction.
+- **`mulTilde_splitOff_deleteFiber_le`** (`ForestSurgery.lean:65`): `(G̃_v^{ab})
+  ＼ ãb ≤ G̃` — surviving fibers are `v`-avoiding `G`-fibers.
+- **`mulTilde_removeVertex_le_splitOff`** (`ForestSurgery.lean:91`): `(G_v)̃ ≤
+  G̃_v^{ab}`, the Gap-3 nested-graph inclusion *already present at the
+  combinatorial level*.
+- **`matroidMG_restrict_mulTilde`** (`Deficiency.lean:212`): `M(G̃) ↾ E(H̃) =
+  M(H̃)` — the base-transport engine.
+- **`isBase_ncard_add_deficiency_eq`** (`Deficiency.lean:1005`, def=corank base
+  form): `|B| + def(G̃) = D(|V|−1)`.
+- **`splitOff_isMinimalKDof`** (`ForestSurgery.lean:763`): `G_v^{ab}` is minimal
+  0-dof, so a base `B'` has `|B'| = D(|V∖{v}|−1)` and meets every fiber.
+- **`removeVertex_deficiency_ge`** (`SplitOffDeficiency.lean:405`, KT 4.4):
+  `def(G̃) ≤ def(G̃_v)` — the lower bound on `k'`.
+- **The template** `isBase_vfiber_ncard_ge` (`ReducibleVertex.lean:60`): the
+  *exact same proof shape* (rank count via `B ∖ fiber ⊆ E(restricted)` +
+  def=corank) for the **parent** graph's `v`-fibers. Gap 2 is the split-off-graph,
+  single-`e₀`-fiber analogue — `isBase_vfiber_ncard_ge` is a near-verbatim
+  template.
 
-- **Gap 2 — KT Lemma 4.3(ii) is not formalized in matroid-base form.** Phase 20
-  formalized KT 4.3 only in the **deficiency-count** form (`splitOff_deficiency_le`
-  / `splitOff_deficiency_ge`, confining `def(G̃_v^{ab}) ∈ {def(G̃), def(G̃)−1}`).
-  The matroid-base form Claim 6.11 needs — *a base `B'` of `M(G̃_v^{ab})` with
-  `|B' ∩ ãb| < 5`* — was explicitly recorded as **off the Theorem-4.9 critical
-  path and not built** (`SplitOffDeficiency.lean:195`: "why the matroid-base form
-  of KT 4.3(ii) is off the Theorem-4.9 critical path"; `notes/Phase20.md`,
-  `rem:kt-lemma-41`). So even the first input to Claim 6.11 would have to be
-  freshly formalized.
+**Net.** Gap 2 (the matroid-base 4.3(ii) form) is **buildable from green
+infrastructure** — no axiom, no hypothesis-launder. The opening recon's
+"axiomatize-as-hypothesis" verdict on Claim 6.11 was the right fallback *under
+the old scope* (don't pause to build the whole bridge before the scaffold), but
+the user's bottom-up direction is sound: the leaf prerequisite is reachable, and
+building it first de-risks Gaps 3/1 by making the combinatorial substrate concrete.
 
-- **Gap 3 — the conversion routes through a *fresh* IH application, not the
-  green corank bridge.** KT's bridge (step 2 above) is not "read off `def =
-  corank`": it applies the *geometric* induction hypothesis (6.1) — `rank R = D(|V|−1)
-  − k'` — to a *different, further-reduced* graph `G_v = G_v^{ab} − ab` at a
-  *restricted realization*, and uses the *algebraic-independence-survives-restriction*
-  fact (KT footnote 6: one nonparallel realization at the rank ⟹ all generic ones
-  attain it). This is the genericity device (Phase 21b) re-applied to a nested
-  subgraph, wired to the matroid-base count — exactly the kind of interlocking,
-  research-shaped step the "carry the analytic crux as a hypothesis" idiom exists
-  for.
+## Node cut — the leaf-most-first first build of re-scoped 22d (VERIFIED, ready)
 
-**Conclusion.** Claim 6.11 is the established **axiomatize-as-hypothesis**
-case: the next session carries the redundant-row fact as an explicit `h…`
-hypothesis on the candidate-completion node and `\uses`-links a red node
-`lem:case-III-claim-6-11` (working label) that tracks the obligation, exactly
-as Phase 21 carried Claim 6.4/6.9 as `hglue`/`hspan`/`hub`/`hgen` and `\uses`'d
-`lem:genericity-device` before 21b discharged it, and as 22a carried `hclaim64`
-before 22b discharged it. The honest shape:
+The leaf piece (Gap 2) is itself a small two/three-brick chunk; per the
+multi-stratum discipline (22c), 22d cuts only its **first buildable sub-brick**,
+the redundant-`ãb`-edge existence fact, leaf-most-first:
 
-> the candidate-completion producer is **green-modulo** `h_redundant_row`
-> (Claim 6.11's eq. (6.23) redundant-`ab`-row fact), with the red node
-> `lem:case-III-claim-6-11` tracking it; a *later* sub-phase discharges it
-> (the matroid-base 4.3(ii) + the `M(G̃)`↔row-dependence bridge + the nested
-> IH-at-restriction), exactly the 21→21b / 22a→22b discharge pattern.
+- [ ] **(next commit, the leaf) `splitOff_base_inter_fiber_lt`** (working name) —
+  *the matroid-base 4.3(ii) form, upper-bound half.* For `G` minimal 0-dof with
+  no proper rigid subgraph, `v` a reducible degree-2 vertex, `G_v^{ab} =
+  splitOff v a b e₀`, and any base `B'` of `M(G̃_v^{ab})`:
+  `(B' ∩ edgeFiber e₀ n).ncard < bodyHingeMult n` (`= D−1`), equivalently
+  `(B' ∩ ãb).ncard ≤ D−2` — so `ãb ⊄ B'`, a redundant `e₀`-copy exists.
+  **Inputs** (all green): `splitOff_isMinimalKDof` (`|B'| = D(|V∖{v}|−1)`,
+  meets every fiber), the base-splits-across-`ãb` count
+  (`|B'| = |B'∩ãb| + |B'∩E(G̃_v)|`, `Set.ncard_inter_add_ncard_diff_eq_ncard`
+  as in `isBase_vfiber_ncard_ge:113`), `B'∩E(G̃_v)` independent in `M(G̃_v)`
+  (`matroidMG_restrict_mulTilde` + `mulTilde_removeVertex_le_splitOff`),
+  def=corank on `G_v` (`rank_add_deficiency_eq`), and KT 4.7
+  (`def(G̃_v) > 0`, the proper-subgraph-not-rigid step that
+  `splitOff_isMinimalKDof`'s proof already discharges internally — extract it).
+  **Count** (to confirm at build open): `|B'∩ãb| = |B'| − |B'∩E(G̃_v)| ≥
+  D(|V∖{v}|−1) − rank M(G̃_v) = def(G̃_v)`. The UPPER bound `< D−1` is the
+  genuinely-new half: `B'∩ãb` is an independent set inside the `D−1` parallel
+  `e₀`-copies on the single vertex pair `{a,b}`; the redundancy comes from the
+  `def(G̃_v) ≥ def(G̃) > 0`-driven mismatch (a base cannot use all `D−1` copies
+  without exceeding `rank M(G̃_v^{ab})`). **Likely one residual sub-brick:** a
+  small "parallel-copies fiber on a single edge contribute a bounded amount to a
+  union-matroid base" fact may be needed for the sharp `≤ D−2`; confirm at build
+  open whether `splitOff_isMinimalKDof`'s internal count gives it directly or it
+  needs its own leaf. **Target blueprint node:** new red `lem:case-III-claim-6-11-base`
+  (working label), `\uses` the green Phase-20 nodes; `lem:case-III` /
+  `lem:case-II-realization` stay red.
 
-This keeps the surrounding candidate-normal-form + Claim-6.12 assembly **fully
-formal modulo the one analytic crux**, and is honest under the blueprint
-honesty gate (the hypothesis is the *conclusion of a `\uses`'d node*, case (b)).
-**Do NOT attempt to build Claim 6.11 from `matroidMG_indep_iff` next session** —
-the recon above shows that route does not close.
+The honesty-gate 2nd half (count closes) is traced above; the 3rd half
+(structural fidelity) holds because this brick *is* KT's own step-1 argument
+(matroid base + def=corank), not a re-expression.
 
-## The other half — Claim 6.12 / eq. (6.44) — DE-RISKED (bottoms on the green Lemma 2.1)
+## Deferred, named, unlettered further sub-phases (the rest of Claim 6.11 + downstream)
 
-Claim 6.12's extensor-span contradiction (KT p. 691, eqs. (6.44)–(6.45)) is the
-*opposite* risk profile: it bottoms cleanly on the **green Phase-17 Lemma 2.1**
-(`omitTwoExtensor_linearIndependent`). Read end-to-end against the source:
+These are parked until the leaf's shape is clear (a letter is minted when the
+turn comes — the assembly-naming precedent; the crux may still split):
 
-- If none of the three candidate top-left blocks `M1, M2, M3` has full rank,
-  then a nonzero `r ∈ ℝ⁶` is orthogonal to the span of all `2`-extensors `C(L)`
-  over lines `L ⊂ Π(a) ∪ Π(b) ∪ Π(c)` (eq. (6.45)).
-- The **degree-2 forcing (eq. (6.44))**: because `a` has degree 2 in `G_v^{ab}`
-  (only `ab, ac` incident), the `a`-block of the row-dependency forces `r =
-  −Σⱼ λ_(ac)j rⱼ(q(ac))`; symmetry gives `r' = r`, `r'' = −r`. All three
-  candidates test the **same** `r`.
-- **The contradiction (the load-bearing use of Lemma 2.1).** Take four
-  affinely-independent points `p₁ = Π(a)∩Π(b)∩Π(c)`, `p₂ ∈ Π(a)∩Π(b)∖Π(c)`,
-  `p₃ ∈ Π(b)∩Π(c)∖Π(a)`, `p₄ ∈ Π(c)∩Π(a)∖Π(b)` (possible since `(G_v^{ab},q)` is
-  generic-nonparallel). Every line `pᵢpⱼ` lies in `Π(a)∪Π(b)∪Π(c)`, so each
-  `2`-extensor `pᵢ ∨ pⱼ` belongs to (6.45). By **Lemma 2.1**, the `(4 choose 2) =
-  6` extensors `{pᵢ∨pⱼ}` are linearly independent, hence span ℝ⁶ — so `r ⟂` all
-  of ℝ⁶ forces `r = 0`, contradiction. □
-
-So at least one of `(G,p₁),(G,p₂),(G,p₃)` is full rank. (The final "convert to
-nonparallel by slightly rotating `v`'s or `a`'s panel without dropping rank" is
-KT Lemma 5.2, green from Phase 18 — `finrank_infinitesimalMotions_le_of_span_le`.)
-
-**This half is buildable** once the candidate scaffold is in Lean; its only
-deep input (Lemma 2.1) is green. The risk is concentrated entirely in Claim
-6.11.
+- **Gap 3 — the nested IH-at-restriction.** Consumes the leaf's `h ≤ D−2`:
+  `G_v` minimal `k'`-dof (`subgraph_minimality`, green), the IH (6.1) at the
+  restricted realization (the genericity device re-applied to a nested subgraph,
+  Phase-21b infra). Research-shaped (the restriction-survives-genericity step,
+  KT footnote 6).
+- **Gap 1 — the `M(G̃)`↔row-dependence bridge.** The genuinely-new analytic
+  content: convert the leaf's combinatorial redundant `ãb`-copy + Gap 3's IH
+  rank into a redundant *rigidity row* of `R(G_v^{ab},q)` (eq. (6.23)). Still no
+  green `panelRow`↔`matroidMG` bridge exists (re-confirmed: no file mentions both).
+- **The candidate-completion node + Claim 6.12 disjunction.** Once Gaps 2/3/1
+  give the redundant `ab`-row, lift 22c's `case_II_placement_eq612`'s `≥
+  D(|V|−1)−1` to `= D(|V|−1)` on one candidate (eq. (6.24)–(6.29) row-op), then
+  the Claim-6.12 extensor-span contradiction via the **green** Lemma 2.1
+  (`omitTwoExtensor_linearIndependent`) + the eq. (6.44) degree-2 forcing picks
+  the full-rank candidate. Claim 6.12 stays **de-risked** (Lemma 2.1 green); the
+  candidate normal form is **abstract-one / instantiate-×3** (settled, below).
+- **The `d=3` assembly** (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55`
+  flip + the Case-I wiring) — unchanged, deferred + unlettered.
+- **General `d`** (Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture 1.2 — Phase 23.
 
 ## Candidate normal form — ABSTRACT one per-candidate lemma, instantiate ×3 (settled in 22c's recon, §1.26 Q1)
 
-The three candidates are symmetric: `p₂ = p₁` with `a ↔ b`; `p₃ = p₁ ∘ ρ` for
-the iso `ρ : G_a^{vc} ≅ G_v^{ab}` (KT p. 686, `ρ(v)=a`, `ρ(u)=u` otherwise — `v,a`
-both degree-2 adjacent). KT does the row-ops once ("the same analysis" for the
-others). So the formalization states the **per-candidate row-op + the eq. (6.29)
-block-triangular completion once**, parametrized by `(degenerate hinge, free
-panel line L)`, and instantiates it three times via the `a↔b` swap and the `ρ`
-relabel. The stratum-1 producer `case_II_placement_eq612` is already this
-per-candidate shape (it takes the degenerate hinge `e_b`/`e_a` and the shear
-`t`); 22d generalizes its output from `≥ D(|V|−1)−1` to `= D(|V|−1)` *under
-Claim 6.11's redundant-row hypothesis* on a single candidate, then the
-Claim-6.12 disjunction picks the full-rank one.
+Unchanged by the re-scope (it governs the *downstream* candidate-completion node,
+now deferred). The three candidates are symmetric: `p₂ = p₁` with `a ↔ b`;
+`p₃ = p₁ ∘ ρ` for the iso `ρ : G_a^{vc} ≅ G_v^{ab}`. State the per-candidate
+row-op + eq. (6.29) completion **once**, instantiate ×3. `case_II_placement_eq612`
+is already this per-candidate shape. `d=3`-first (§1.26 Q2): general `d`
+(Lemma 6.13) stays Phase 23, KT's own §6.4.1-then-§6.4.2 cut.
 
-`d=3`-first (§1.26 Q2): YES — concrete `D=6` / 3-candidate case; general `d`
-(Lemma 6.13, the length-`d` chain `v₀…v_d`, which re-instantiates the same
-candidate normal form via isos `ρᵢ`, eqs. (6.46)–(6.64)) stays Phase 23, KT's
-own §6.4.1-then-§6.4.2 cut.
+## Where 22c left off (the stratum-1 brick this crux completes)
+
+Phase 22c landed **stratum 1** — the eq. (6.12) `+(D−1)` block-triangular
+placement — green + axiom-clean as `PanelHingeFramework.case_II_placement_eq612`
+(`CaseI.lean:2331`): `rank R(G,p₁) ≥ D(|V(G)|−1) − 1 = 6|V|−7` at `D = 6`, plus
+the `va`-hinge nondegeneracy. **One row short** of full rank `D(|V|−1)`. 22d's
+crux supplies the missing `+1` row — and the *bottom* of that crux (KT Claim 6.11)
+is what 22d now attacks, leaf-first. The producer exposes the entry-point: its
+`e_a = va` link hypothesis is carried as `_hG_ea` ("crux-strata input").
 
 ## Lemma checklist
 
-The Lean node cut is **deferred to the next session** (after this recon
-settles, same as 22a→22b, 22b→22c). The opening recon's output is the verdict
-above. Provisional node shape (to be cut leaf-most-first next session, NOT
-committed yet):
-
-- [ ] (next session) `lem:case-III-claim-6-11` — the redundant-`ab`-row fact
-  (Claim 6.11, eq. (6.23)). **Carried as a hypothesis `h_redundant_row`** on the
-  candidate-completion node, red, `\uses`'d; discharged in a *later* sub-phase
-  (matroid-base 4.3(ii) + `M(G̃)`↔row-dependence bridge + nested IH-at-restriction).
-- [ ] (next session) per-candidate completion: lift `case_II_placement_eq612`'s
-  `≥ D(|V|−1)−1` to `= D(|V|−1)` on one candidate using `h_redundant_row` (the
-  eq. (6.24)–(6.29) row-op + top-left-`6×6`-full-rank step). Candidate normal
-  form, instantiated ×3.
-- [ ] (next session) Claim 6.12 disjunction: `extensorSpan` contradiction via
-  Lemma 2.1 (`omitTwoExtensor_linearIndependent`) + the eq. (6.44) degree-2
-  forcing ⟹ one candidate is full rank. **Buildable** (Lemma 2.1 green).
-- [ ] (next session) compose ⟹ `lem:case-III` / `lem:case-II-realization` /
-  `theorem_55.hsplit` at `k=0`, **green-modulo `lem:case-III-claim-6-11`**.
+- [ ] (next commit) `splitOff_base_inter_fiber_lt` — the matroid-base 4.3(ii)
+  upper-bound leaf (Gap 2's first sub-brick). Verified buildable from green
+  Phase-20 infra (`splitOff_isMinimalKDof`, `matroidMG_restrict_mulTilde`,
+  def=corank, KT 4.4/4.7); `isBase_vfiber_ncard_ge` is the proof template. New
+  red node `lem:case-III-claim-6-11-base`; `lem:case-III` stays red.
+- [ ] (deferred) Gap 3 nested IH-at-restriction; Gap 1 `M(G̃)`↔row bridge; the
+  candidate-completion + Claim-6.12 disjunction; the `d=3` assembly. Named,
+  unlettered (above).
 
 ## Blockers / open questions
 
-- **Claim 6.11 build vs axiomatize — RESOLVED (this recon, the load-bearing
-  verdict):** AXIOMATIZE-AS-HYPOTHESIS — carry `h_redundant_row`, `\uses` a red
-  `lem:case-III-claim-6-11`. Three gaps (no `M(G̃)`↔row bridge; KT 4.3(ii) not in
-  matroid-base form; the conversion is a fresh nested-IH-at-restriction, not the
-  green corank bridge) make the build route not close. Discharge it in a later
-  sub-phase (the 21→21b / 22a→22b pattern). Do NOT build it from
-  `matroidMG_indep_iff` next session.
-- **Claim 6.12 — DE-RISKED:** bottoms on the green Lemma 2.1
-  (`omitTwoExtensor_linearIndependent`); buildable once the candidate scaffold
-  is in Lean.
-- **Candidate normal form — SETTLED (22c §1.26 Q1):** abstract one per-candidate
-  lemma, instantiate ×3 (`a↔b` swap + `ρ` relabel).
-- **Node cut deferred:** the leaf-most-first Lean node order is the next
-  session's first task, after this verdict. Same discipline as 22c's stratum-1
-  node-cut deferral.
+- **Re-scope (this recon): 22d = build Claim 6.11's leaf prerequisite bottom-up,
+  NOT axiomatize.** The leaf (matroid-base 4.3(ii), Gap 2) is buildable from
+  green Phase-20 infra — the opening recon understated the substrate
+  (`splitOff_isMinimalKDof`'s proof already carries the `ãb`-base count).
+- **The one open construction question (confirm at build open):** whether the
+  sharp upper bound `|B'∩ãb| ≤ D−2` falls directly out of
+  `splitOff_isMinimalKDof`'s internal count + KT 4.7, or needs a small
+  "parallel-copies-on-one-edge bound a union-matroid base by ≤ D−1, and `<D−1`
+  under `def(G̃_v)>0`" sub-leaf. Either way it is pure `M(G̃)` matroid theory,
+  no rigidity matrix — buildable, not research-shaped.
+- **Claim 6.12 — DE-RISKED** (unchanged): bottoms on the green Lemma 2.1.
 - **Recurring Lean traps** (carry from 22a/22b/22c, FRICTION): heavy
   `IsInfinitesimallyRigidOn`/framework defeq across `ofNormals`/`withGraph`
   graph-swaps can `isDefEq`-timeout — make the two frameworks *syntactically*
-  equal before a `convert`; pre-convert rigidity hypotheses; transfer across an
-  `infinitesimalMotions` equality via a `mem_infinitesimalMotions` round-trip.
+  equal before a `convert`; transfer rigidity across an `infinitesimalMotions`
+  equality via a `mem_infinitesimalMotions` round-trip. (Less likely to bite the
+  Gap-2 leaf, which is pure matroid theory, but relevant once Gap 1 lands.)
 
 ## Hand-off / next phase
 
-**This commit is the design-pass-first opening recon** — docs only, no Lean, no
-`\leanok`. Its load-bearing output is the **Claim 6.11 verdict
-(axiomatize-as-hypothesis)** above, reached before any Lean node is cut, per the
-user's standing direction for the crux ("very intricate; never dispatch a build
-before the plan is clear").
+**This commit is the re-scope recon** — docs only, no Lean, no `\leanok`. Its
+load-bearing output is the **re-scope to building Claim 6.11's leaf prerequisite
+(the matroid-base 4.3(ii) form) bottom-up**, with the verified finding that the
+leaf is buildable from green Phase-20 infra (the opening recon understated the
+substrate). The Claim-6.11 axiomatize-as-hypothesis verdict is **superseded** by
+the user's bottom-up direction.
 
-**The next concrete commit cuts the FIRST LEAN NODE of 22d**, leaf-most-first:
-build the **Claim 6.12 disjunction half first** (it is the de-risked, buildable
-half — the extensor-span contradiction via the green Lemma 2.1 + the eq. (6.44)
-degree-2 forcing), wiring the three candidates produced by instantiating
-`case_II_placement_eq612` ×3, and carry the per-candidate completion's
-redundant-row input (Claim 6.11) as the explicit hypothesis `h_redundant_row`
-with the red node `lem:case-III-claim-6-11`. The candidate-completion node
-(eq. (6.29) row-op lifting `≥ D(|V|−1)−1` to `= D(|V|−1)` under `h_redundant_row`)
-is the second node. Compose ⟹ `lem:case-III` green-modulo `lem:case-III-claim-6-11`.
+**The next concrete commit builds the leaf Lean node** `splitOff_base_inter_fiber_lt`
+(the matroid-base 4.3(ii) upper-bound half, Gap 2's first sub-brick), modelled on
+`isBase_vfiber_ncard_ge`'s rank-count proof, with a new red blueprint node
+`lem:case-III-claim-6-11-base` that `\uses` the green Phase-20 nodes. `lem:case-III`
+and `lem:case-II-realization` stay red. **Re-recon at that build's open:** confirm
+the upper-bound count closes from `splitOff_isMinimalKDof`'s internal `ãb`-base
+count + KT 4.7 (the one open construction question above), and whether the sharp
+`≤ D−2` needs a parallel-copies sub-leaf — if so, that sub-leaf is the *actual*
+first commit.
 
-Re-recon the node order at that build's open (confirm the count
-`(D−1)+1+D(|V|−2) = D(|V|−1)` closes and the candidate-normal-form ×3
-instantiation type-aligns against `case_II_placement_eq612`'s signature — the
-honesty gate's 2nd/3rd halves).
+The remaining Claim-6.11 pieces (Gap 3 nested IH, Gap 1 row bridge), the
+candidate-completion + Claim-6.12 disjunction, the `d=3` assembly, and general-`d`
+(Phase 23) stay the **named, deferred, unlettered** further sub-phases above.
 
-The **`d=3` assembly** (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55`
-flip + `case_I_realization` → `theorem_55_generic` Case-I wiring) stays the
-**deferred, unlettered** planning note (it gets a letter when its turn comes;
-the crux may split). General-`d` (Lemma 6.13) → Thm 5.5 → Thm 5.6 → Conjecture
-1.2 stays Phase 23.
+KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45));
+KT §4 (Lemmas 4.3(ii)/4.4/4.7/4.8, the matroid-base substrate); `notes/Phase20.md`
+(`splitOff_isMinimalKDof`, the `ãb`-base count); `notes/Phase21b.md` *Finding A/B*;
+`notes/Phase22-realization-design.md` §1.26 (Q1–Q4) + §3 *Track B*;
+`notes/Phase22c.md` *Sub-phase scope cut*.
 
-KT math: KT §6.4.1 (Lemma 6.10, Claims 6.11/6.12, eqs. (6.22)–(6.45)),
-`notes/Phase21b.md` *Finding A/B*, `notes/Phase22-realization-design.md`
-§1.26 (Q3/Q4) + §3 *Track B*, `notes/Phase22c.md` *Sub-phase scope cut*.
+---
+
+## Superseded opening verdict (2026-06-05, commit 4e6a7bb) — retained for the audit trail
+
+The opening recon concluded **AXIOMATIZE-AS-HYPOTHESIS** for Claim 6.11 (carry
+`h_redundant_row`, `\uses` a red `lem:case-III-claim-6-11`, build the Claim-6.12
+scaffold downstream, discharge in a later sub-phase — the 21→21b / 22a→22b
+pattern). It identified the three gaps (no `M(G̃)`↔row bridge; KT 4.3(ii) not in
+matroid-base form; the conversion is a fresh nested-IH-at-restriction) and judged
+the *whole* Claim 6.11 not buildable before the scaffold.
+
+**Superseded** by the user's bottom-up direction (above): rather than axiomatize
+the whole claim and push onto 6.12, 22d builds the leaf-most missing prerequisite
+(Gap 2, the matroid-base 4.3(ii) form), which the re-recon verified IS buildable
+from green Phase-20 infra. The three-gaps decomposition stands; what changed is
+that 22d now *attacks* the bottom gap rather than deferring the whole claim. The
+opening recon's Gap-2 "not formalized in matroid-base form" was literally true of
+the *standalone* lemma but understated that `splitOff_isMinimalKDof`'s proof
+already builds the count.

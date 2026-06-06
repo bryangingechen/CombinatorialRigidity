@@ -55,7 +55,7 @@ project; commit history is preserved with paths rewritten.
 
 ## Project status
 
-* **Phases 1–22b + 21a complete, and Phase 22c's stratum 1 landed (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe; Phase 22b fully discharged KT Claim 6.4 — so the Case I realization producer is now fully green); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete, 22b (KT Claim 6.4) complete, 22c (Case III at d=3, stratum 1 = the eq. (6.12) `+(D−1)` placement) stratum-1 complete, 22d (the D-candidate crux, KT Lemma 6.10 strata 2–3 — the conjecture's hardest single argument) in progress (opened design-pass-first), the `d=3` assembly deferred and unlettered; Phases 23–26 planned.**
+* **Phases 1–22b + 21a complete, and Phase 22c's stratum 1 landed (Phase 21b delivered the genericity device Claim 6.4/6.9, the genericity-free accounting, and the V(G)-relative count bridges; Phase 22a delivered the Case I realization producer green-modulo KT Claim 6.4 via the block-triangular reframe; Phase 22b fully discharged KT Claim 6.4 — so the Case I realization producer is now fully green); Phase 22 (the algebraic-induction realization layer) is sub-lettered — 22a (Case I realization) complete, 22b (KT Claim 6.4) complete, 22c (Case III at d=3, stratum 1 = the eq. (6.12) `+(D−1)` placement) stratum-1 complete, 22d (Claim 6.11's first green-machinery prerequisite — the matroid-base 4.3(ii) leaf, attacking the conjecture's hardest node bottom-up) in progress (opened design-pass-first, re-scoped per a user direction to build Claim 6.11's leaf prerequisite rather than axiomatize it), the `d=3` assembly deferred and unlettered; Phases 23–26 planned.**
 * **Phases 1–11 (complete)** — sparsity, Laman, Henneberg, frameworks,
   both directions of Laman's theorem
   (`isGenericallyRigid_two_iff_exists_isLaman_le`), the Lovász–Yemini
@@ -272,17 +272,20 @@ project; commit history is preserved with paths rewritten.
     (`rank ≥ D(|V|−1)−1`, green + axiom-clean as `case_II_placement_eq612`, built
     from the green Phase-21b row infra). **Opened design-pass-first** — on a
     layer-level design recon (five passes), not a build. See `notes/Phase22c.md`.
-  * **Phase 22d (in progress)** — the **D-candidate crux** (KT §6.4.1, Lemma 6.10
-    strata 2–3), the conjecture's hardest single argument: the *missing `+1` row*
-    that lifts 22c's `D(|V|−1)−1` brick to full `D(|V|−1)`. Stratum 2 = **Claim
-    6.11**'s redundant `(ab)i*`-row (the combinatorial↔linear conversion wiring
-    `M(G̃_v^{ab})` to the row matroid of `R`, the single highest-risk node in Phases
-    22–23); stratum 3 = the candidate-normal-form + **Claim 6.12** extensor-span
-    contradiction (via the green Phase-17 Lemma 2.1). **Opened design-pass-first**;
-    the load-bearing opening verdict: Claim 6.11 takes the axiomatize-as-hypothesis
-    fallback (not buildable from the green `M(G̃)` machinery — no `M(G̃)`↔row-dependence
-    bridge, KT 4.3(ii) not in matroid-base form, a fresh nested-IH conversion),
-    while Claim 6.12 is de-risked on the green Lemma 2.1. See `notes/Phase22d.md`.
+  * **Phase 22d (in progress)** — **Claim 6.11's first green-machinery prerequisite**
+    (the matroid-base 4.3(ii) leaf), attacking the conjecture's hardest node — KT
+    **Claim 6.11**, the *missing `+1` row* that lifts 22c's `D(|V|−1)−1` brick to full
+    `D(|V|−1)` — **bottom-up**, building the leaf-most missing-green prerequisite rather
+    than axiomatizing the whole claim. Re-scoped from the opening recon's
+    axiomatize-as-hypothesis verdict per a user direction (queue Claim 6.11's first
+    missing-green prerequisite rather than push the scaffold onto Claim 6.12). Claim
+    6.11's discharge decomposes into three gaps; the leaf — the matroid-base 4.3(ii)
+    form (a base of `M(G̃_v^{ab})` omitting some `ãb`-copy; pure combinatorial `M(G̃)`
+    theory) — is **buildable** from the green Phase-20 infra (`splitOff_isMinimalKDof`
+    already carries the `ãb`-base count). The nested IH-at-restriction, the
+    `M(G̃)`↔row-dependence bridge, and the candidate-completion + de-risked **Claim
+    6.12** disjunction (green Phase-17 Lemma 2.1) are deferred, unlettered. See
+    `notes/Phase22d.md`.
   * **The `d=3` assembly (planning, deferred and unlettered)** —
     `prop:rigidity-matrix-prop11` `hub` brick + `thm:theorem-55` flip + wiring the
     fully-green `case_I_realization` into the Case-I branch; it gets a letter only

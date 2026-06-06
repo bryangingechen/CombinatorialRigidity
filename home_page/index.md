@@ -41,9 +41,11 @@ surviving rows at a degenerate placement, and a motive strengthening discharges 
 selector alignment, all composed into a single assembly producer from the
 contraction's generic induction hypothesis; **22c (Case III at d=3, stratum 1 = the
 eq. (6.12) `+(D−1)` placement) stratum-1 complete**, opened design-pass-first (on a
-layer-level design recon, not a build); **22d (the D-candidate crux, KT Lemma 6.10 strata
-2–3 — the conjecture's hardest single argument) in progress**, opened design-pass-first,
-with the **`d=3` assembly deferred and unlettered**.
+layer-level design recon, not a build); **22d (Claim 6.11's first green-machinery
+prerequisite — the matroid-base 4.3(ii) leaf, attacking the conjecture's hardest node
+bottom-up) in progress**, opened design-pass-first and re-scoped per a user direction
+(build Claim 6.11's leaf prerequisite rather than axiomatize it), with the **`d=3`
+assembly deferred and unlettered**.
 **The body-bar
 program (Phases 12–15) lands Tay's theorem**, and **Phase 16
 (complete)** extends it to the body-hinge / panel-hinge Tay–Whiteley
@@ -248,15 +250,18 @@ multi-phase**; 22c claimed only the first of three difficulty strata — the deg
 placement giving one row short of full rank (`rank ≥ D(|V|−1)−1`, green + axiom-clean,
 built from the green Phase-21b row infra). It was opened **design-pass-first** — on a
 layer-level design recon (five passes), not a build.
-**Phase 22d (in progress)** is the **D-candidate crux** (KT §6.4.1, Lemma 6.10 strata
-2–3), the conjecture's hardest single argument: the *missing `+1` row* that lifts 22c's
-`D(|V|−1)−1` brick to full `D(|V|−1)`. Stratum 2 = **Claim 6.11**'s redundant
-`(ab)i*`-row (the combinatorial↔linear conversion wiring `M(G̃_v^{ab})` to the row
-matroid of `R`, the single highest-risk node in Phases 22–23); stratum 3 = the
-candidate-normal-form + **Claim 6.12** extensor-span contradiction via the green
-Phase-17 Lemma 2.1. Opened **design-pass-first**, with the load-bearing verdict that
-Claim 6.11 takes the axiomatize-as-hypothesis fallback (not buildable from the green
-`M(G̃)` machinery), while Claim 6.12 is de-risked on the green Lemma 2.1.
+**Phase 22d (in progress)** is **Claim 6.11's first green-machinery prerequisite** (the
+matroid-base 4.3(ii) leaf), attacking the conjecture's hardest node — KT **Claim 6.11**,
+the *missing `+1` row* that lifts 22c's `D(|V|−1)−1` brick to full `D(|V|−1)` —
+**bottom-up**, building the leaf-most missing-green prerequisite rather than axiomatizing
+the whole claim. Re-scoped from the opening recon's axiomatize-as-hypothesis verdict per
+a user direction (queue Claim 6.11's first missing-green prerequisite rather than push
+the scaffold onto Claim 6.12). Claim 6.11's discharge decomposes into three gaps; the
+leaf — the matroid-base 4.3(ii) form (a base of `M(G̃_v^{ab})` omitting some `ãb`-copy;
+pure combinatorial `M(G̃)` theory) — is **buildable** from the green Phase-20 infra
+(`splitOff_isMinimalKDof` already carries the `ãb`-base count). The nested
+IH-at-restriction, the `M(G̃)`↔row-dependence bridge, and the candidate-completion +
+de-risked **Claim 6.12** disjunction (green Phase-17 Lemma 2.1) are deferred, unlettered.
 **The `d=3` assembly (planning, deferred and unlettered)** is the
 `prop:rigidity-matrix-prop11` `hub` brick + the Theorem-5.5 flip + the Case-I wiring;
 it gets a letter only when its turn comes (the crux may itself split). A structural-edit
@@ -296,7 +301,7 @@ existing files or refactor across several).
 |   22a | Case I realization (full-rank rigid-subgraph splice; block-triangular reframe) | `Molecular/Induction/` + `AlgebraicInduction/` | ✓ |
 |   22b | KT Claim 6.4 (discharge the Case-I green-modulo obligation; `lem:claim-6-4`) | `Molecular/AlgebraicInduction/CaseI.lean` | ✓ |
 |   22c | Case III at `d=3`, stratum 1 (KT Lemma 6.10, the eq. (6.12) `+(D−1)` placement; the crux, multi-phase) | `Molecular/AlgebraicInduction/` | ✓ stratum 1 |
-|   22d | The D-candidate crux (KT Lemma 6.10 strata 2–3: Claim 6.11 + Claim 6.12); opened design-pass-first | `Molecular/AlgebraicInduction/` | ◷ |
+|   22d | Claim 6.11's first green-machinery prerequisite (the matroid-base 4.3(ii) leaf; KT Lemma 6.10 strata 2–3 attacked bottom-up); re-scoped per a user direction | `Molecular/AlgebraicInduction/` + `Molecular/Induction/` | ◷ |
 |   ⋯ | (deferred, unlettered) `d=3` assembly (`prop:rigidity-matrix-prop11` `hub` + `thm:theorem-55` flip + Case-I wiring) | `Molecular/AlgebraicInduction/` | ◷ |
 
 See [`ROADMAP.md`](https://github.com/bryangingechen/CombinatorialRigidity/blob/master/ROADMAP.md)
