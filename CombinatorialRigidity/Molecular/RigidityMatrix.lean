@@ -142,6 +142,22 @@ theorem span_omitTwoExtensor_eq_top {p : Fin 4 → Fin 3 → ℝ} (hp : AffineIn
   have hbasis := (basisOfLinearIndependentOfCardEqFinrank hLI hcard).span_eq
   rwa [coe_basisOfLinearIndependentOfCardEqFinrank] at hbasis
 
+/-- **A functional annihilating a spanning set is zero** (`lem:case-III-claim612-orthseq-vanish`,
+the Claim-6.12 contrapositive's non-degeneracy step). If a screw-space functional
+`r : Module.Dual ℝ (ScrewSpace k)` vanishes on every element of a set `S` whose span is all of
+`ScrewSpace k`, then `r = 0`. Two linear maps agreeing on a spanning set are equal
+(`LinearMap.ext_on`); `r` agrees with the zero functional on `S` and `span S = ⊤`, so `r = 0` — the
+non-degeneracy of the dual pairing on `ℝ^D`. This is
+the final step of the Claim-6.12 contrapositive (`lem:case-III-claim612`): the common vector `r` is
+orthogonal to every supporting extensor in KT's union (6.45), which the six panel-support extensors
+of four affinely-independent points force to span `ScrewSpace 2` (`span_omitTwoExtensor_eq_top`), so
+`r = 0`, contradicting `r ≠ 0`. -/
+theorem eq_zero_of_annihilates_span_top {k : ℕ} {S : Set (ScrewSpace k)}
+    (hS : Submodule.span ℝ S = ⊤) {r : Module.Dual ℝ (ScrewSpace k)}
+    (hr : ∀ x ∈ S, r x = 0) : r = 0 :=
+  -- `r` agrees with `0` on the spanning set `S`, hence everywhere (`LinearMap.ext_on`).
+  LinearMap.ext_on hS (fun x hx => by simp [hr x hx])
+
 /-- A **`d = k+1`-dimensional body-hinge framework** `(G,p)` (`def:hinge-constraint`):
 a multigraph `G : Graph α β` together with, for each edge `e : β`, its supporting
 `(d-1) = k`-extensor `C(p(e)) = supportExtensor e ∈ ⋀^k ℝ^(k+2)` — the screw-space

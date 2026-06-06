@@ -653,16 +653,20 @@ the union~(6.45), which Lemma~2.1 forces to span all of $\R^D$, so $r = 0$ --- a
   so it spans.
 \end{proof}
 
-\begin{lemma}[A nonzero functional annihilating a spanning set is zero]
+\begin{lemma}[A functional annihilating a spanning set is zero]
   \label{lem:case-III-claim612-orthseq-vanish}
+  \lean{CombinatorialRigidity.Molecular.eq_zero_of_annihilates_span_top}
+  \leanok
   \uses{lem:case-III-claim612-extensor-span}
-  If a vector $r \in \R^D$ lies in $(\operatorname{span} S)^\perp$ for a set $S$ whose span is all
-  of $\R^D$, then $r = 0$. (The non-degeneracy of the inner product / dual pairing on $\R^D$: a
-  vector orthogonal to a spanning set is orthogonal to everything, hence to itself.)
+  If a screw-space functional $r \in (\R^D)^* = \mathrm{Module.Dual}\,\R\,(\mathrm{ScrewSpace}\,k)$
+  vanishes on every element of a set $S$ whose span is all of $\R^D$, then $r = 0$. (The
+  non-degeneracy of the dual pairing on $\R^D$: a functional vanishing on a spanning set vanishes
+  everywhere.)
 \end{lemma}
 \begin{proof}
-  $r \perp \operatorname{span} S = \R^D$, so in particular $r \perp r$, giving $\langle r, r\rangle =
-  0$ and $r = 0$.
+  \leanok
+  Two linear maps agreeing on a spanning set are equal (\texttt{LinearMap.ext\_on}); $r$ agrees with
+  the zero functional on $S$, and $\operatorname{span} S = \R^D$, so $r = 0$.
 \end{proof}
 
 \begin{lemma}[Four affinely-independent points with the $\Pi(a)/\Pi(b)/\Pi(c)$ incidence pattern; KT eq.\ (6.45) point choice]

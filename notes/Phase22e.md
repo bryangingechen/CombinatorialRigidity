@@ -4,8 +4,9 @@
 (eqs. (6.24)–(6.29)) landed green-modulo across 8 commits (`78f7eb4`…`3ab70cd`); the
 **Claim-6.12 design pass** decomposed KT §6.4.1 (eqs. (6.30)–(6.45)) into buildable
 red nodes N1–N9 and re-shaped the mis-shaped interface node `lem:case-III-eq629-conditional`
-(single-candidate → the true 3-way disjunction). **N1 is now green**
-(`span_omitTwoExtensor_eq_top`). Next: N2 (the trivial annihilator-of-spanning-set leaf).
+(single-candidate → the true 3-way disjunction). **N1, N2 are now green**
+(`span_omitTwoExtensor_eq_top`, `eq_zero_of_annihilates_span_top`). Next: N4 (the mechanical
+block-full-rank ⟺ dual-annihilator leaf).
 Successor to 22d, the next chunk of Case III at `d=3` (KT §6.4.1,
 Lemma 6.10). Lifts 22c's stratum-1 `D(|V|−1)−1` brick (`case_II_placement_eq612`,
 green) to full `D(|V|−1)` by converting 22d's green redundant `ab`-row
@@ -19,9 +20,17 @@ worked out in `notes/Phase22d.md` *Hand-off* + KT §6.4.1; 22e **formalizes** it
 
 ## Current state
 
-**Next concrete commit: build N2 (`lem:case-III-claim612-orthseq-vanish`)** — the trivial leaf:
-a vector `r` in `(span S)^⊥` for a set `S` spanning `⊤` is `0` (non-degeneracy of the ℝ^D
-pairing). Deps: green N1. Then N3–N9 in dependency order (N3/N7 recon-before-build).
+**Next concrete commit: build N4 (`lem:case-III-claim612-block-iff-perp`)** — the mechanical
+dual-annihilator leaf: the `D` functionals (`D−1` `va`-block rows spanning `(span C)^⊥` + candidate
+`r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Deps: `def:rigidity-matrix`,
+`lem:case-II-placement-new-rows` (both green). Then N5 (mechanical), N6 (medium), N3/N7
+(research-shaped, recon-before-build), N8 (medium), capstone N9.
+
+**N2 green** (`eq_zero_of_annihilates_span_top`, `RigidityMatrix.lean`, axiom-clean): a functional
+`r : Module.Dual ℝ (ScrewSpace k)` vanishing on a set `S` with `span S = ⊤` is `0`, via
+`LinearMap.ext_on` (`r` agrees with `0` on the spanning set). The dual-annihilator framing —
+not the inner-product `⟨r,r⟩=0` of the original blueprint prose — matches the `Module.Dual`
+candidate-row chain; blueprint prose + `\leanok` updated to the `LinearMap.ext_on` route.
 
 **N1 (`span_omitTwoExtensor_eq_top`, `RigidityMatrix.lean`) — green, axiom-clean.** The 6
 panel-support 2-extensors of 4 affinely-independent points in ℝ³ span `ScrewSpace 2 = ⋀²ℝ⁴`
@@ -120,8 +129,10 @@ commit (no `\lean`/`\leanok`); build greens them.
   axiom-clean) — the 6 panel-support 2-extensors of 4 affinely-indep points in ℝ³ span
   `ScrewSpace 2 = ⋀²ℝ⁴` (finrank 6), via `omitTwoExtensor_linearIndependent` (Lemma 2.1, `e=2`)
   + `extensor_mem_exteriorPower` lift + `basisOfLinearIndependentOfCardEqFinrank`.
-- [ ] **N2** `lem:case-III-claim612-orthseq-vanish` — a nonzero functional annihilating a spanning
-  set is 0. Deps: N1. **Trivial** (non-degeneracy of the pairing on ℝ^D). **Next concrete commit.**
+- [x] **N2** `lem:case-III-claim612-orthseq-vanish` (`eq_zero_of_annihilates_span_top`, green,
+  axiom-clean) — a functional `r : Module.Dual ℝ (ScrewSpace k)` vanishing on a set `S` with
+  `span S = ⊤` is `0`, via `LinearMap.ext_on`. Deps: N1. Dual-annihilator framing (not the
+  inner-product `⟨r,r⟩=0` of the original prose) to match the `Module.Dual` candidate-row chain.
 - [ ] **N3** `lem:case-III-claim612-points` — from a generic nonparallel framework, 4
   affinely-indep points with the `Π(a)/Π(b)/Π(c)` triple-intersection incidence pattern, every line
   `pᵢpⱼ` in `Π(a)∪Π(b)∪Π(c)`. Deps: `def:rigidity-matrix`. **RESEARCH-SHAPED** (general position;
@@ -162,11 +173,13 @@ commit (no `\lean`/`\leanok`); build greens them.
 
 ## Hand-off / next phase
 
-**Next concrete commit: build N2 (`lem:case-III-claim612-orthseq-vanish`)** — the trivial leaf: a
-vector `r ∈ (span S)^⊥` for `S` spanning `⊤` is `0` (non-degeneracy of the ℝ^D pairing; `r ⊥ r ⟹
-r = 0`). Deps: green N1 (`span_omitTwoExtensor_eq_top`). Then proceed up the N2–N9 list (*Lemma
-checklist*); N9 (the capstone disjunction) discharges the re-shaped `lem:case-III-eq629-conditional`,
-after which N10 flips `lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
+**Next concrete commit: build N4 (`lem:case-III-claim612-block-iff-perp`)** — the mechanical
+dual-annihilator leaf: the `D` functionals (`D−1` `va`-block rows spanning `(span C)^⊥` + candidate
+`r̂`) are LI ⟺ `r̂ ∉ (span C)^⊥` ⟺ `r̂(C) ≠ 0`. Deps: `def:rigidity-matrix`,
+`lem:case-II-placement-new-rows` (both green). Then proceed up the N5–N9 list (*Lemma checklist*):
+N5 (mechanical), N6 (medium), N3/N7 (research-shaped — recon-before-build), N8 (medium), capstone
+N9 — which discharges the re-shaped `lem:case-III-eq629-conditional`, after which N10 flips
+`lem:case-II-realization` + the `d=3` half of `lem:case-III` green.
 
 **Recon-before-build the two research-shaped nodes.** N3 (`-claim612-points`, general position of the
 4 incidence points) and N7 (`-claim612-p3-placement`, the `Gᵥᵃᵇ ≅ Gₐᵛᶜ` transport — KT's most
